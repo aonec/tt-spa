@@ -67,6 +67,9 @@ import { ReactComponent as ActiveFiltersIcon } from './svg/activeFilters.svg';
 import { ReactComponent as ChevronBoldIcon } from './svg/chevronBold.svg';
 import { ReactComponent as CheckConnection } from './svg/checkConnection.svg';
 import { ReactComponent as SortingIcon } from './svg/sorting.svg';
+import { ReactComponent as PlusIcon } from './svg/plus.svg';
+import { ReactComponent as ApartmentIcon } from './svg/apartment.svg';
+import { ReactComponent as PencilBigIcon } from './svg/pencilBig.svg';
 
 export {
   FinishIcon,
@@ -138,4 +141,7 @@ export {
   CheckConnection,
   ChevronBoldIcon,
   SortingIcon,
+  PlusIcon,
+  ApartmentIcon,
+  PencilBigIcon,
 };

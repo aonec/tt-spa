@@ -4,13 +4,16 @@ import { Wrapper } from './CreateObjectFinalStageModal.styled';
 import { CreateObjectFinalStageModalProps } from './CreateObjectFinalStageModal.types';
 import { CreateObjectFinalStageForm } from './CreateObjectFinalStageForm/CreateObjectFinalStageForm';
 
-export const CreateObjectFinalStageModal: FC<CreateObjectFinalStageModalProps> = ({
+export const CreateObjectFinalStageModal: FC<
+  CreateObjectFinalStageModalProps
+> = ({
   createObjectData,
   houseManagements,
   handlePostCreateObject,
   heatingStations,
   closePreviewModal,
   isPreviewModalOpen,
+  isCreateLoading,
 }) => {
   const formId = 'create-object-final-stage-form';
   return (
@@ -30,6 +33,7 @@ export const CreateObjectFinalStageModal: FC<CreateObjectFinalStageModalProps> =
         }
         formId={formId}
         submitBtnText="Создать объект"
+        loading={isCreateLoading}
       />
     </Wrapper>
   );

@@ -3,7 +3,7 @@ import React from 'react';
 import { FormModal } from 'ui-kit/Modals/FormModal/FormModal';
 import { EditHomeownerForm } from '../HomeownerForm';
 import { createHomeownerService } from './createHomeownerService.model';
-import { ConfirmationAddingExistingPersonalNumber } from '01/features/homeowner/editPersonalNumber/components/ConfirmationAddingExistingPersonalNumberModal';
+import { ConfirmationAddingExistingPersonalNumber } from 'services/homeowner/personalNumber/components/ConfirmationAddingExistingPersonalNumberModal';
 
 const { inputs, outputs } = createHomeownerService;
 

@@ -4,9 +4,9 @@ import { apartmentReadingsService } from './ApartmentReadingsService.model';
 import { useEvent, useStore } from 'effector-react';
 import { useHistory, useParams } from 'react-router-dom';
 import { PauseApartmentModal } from '01/features/apartments/pauseApartment';
-import { SelectEditPersonalNumberTypeModal } from '01/features/homeowner/editPersonalNumber/SelectEditPersonalNumberTypeModal';
 import { ESecuredIdentityRoleName } from 'myApi';
 import { usePermission } from 'hooks/usePermission';
+import { SelectPersonalNumberActionContainer } from 'services/homeowner/personalNumber/selectPersonalNumberActionService';
 
 const { inputs, outputs } = apartmentReadingsService;
 
@@ -51,7 +51,9 @@ export const ApartmentReadingsContainer = () => {
   return (
     <>
       {apartment?.id && <PauseApartmentModal apartmentId={apartment.id} />}
-      {apartment && <SelectEditPersonalNumberTypeModal apartment={apartment} />}
+      {apartment && (
+        <SelectPersonalNumberActionContainer apartment={apartment} />
+      )}
       <ApartmentsReadings
         setSearchMode={setSearchMode}
         searchMode={searchMode}
@@ -61,7 +63,7 @@ export const ApartmentReadingsContainer = () => {
         handleUpdateApartment={handleUpdateApartment}
         handlePauseApartment={() => handlePauseApartment()}
         handleCancelPauseApartment={() => handleCancelPauseApartment()}
-        openEditPersonalNumberModal={() => openEditPersonalNumberModal()}
+        openEditPersonalNumberModal={openEditPersonalNumberModal}
         setSelectedHomeownerName={setSelectedHomeownerName}
         selectedHomeownerName={selectedHomeownerName}
         isPermitionToApartmentStatusPatch={isPermitionToApartmentStatusPatch}

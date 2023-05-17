@@ -44,6 +44,7 @@ export const FormModal: React.FC<FormModalProps> = ({
       disabled={loading || disabled}
       type={submitButtonType}
       isLoading={loading}
+      htmlForm={formId}
     >
       {submitBtnText}
     </Button>
@@ -51,7 +52,7 @@ export const FormModal: React.FC<FormModalProps> = ({
 
   const DefaultModalFooter = (
     <Footer>
-      <Button disabled type="ghost" key="back" onClick={onCancel}>
+      <Button type="ghost" key="back" onClick={onCancel}>
         {cancelBtnText}
       </Button>
       {customSubmit || DefaultModalSubmitButton}

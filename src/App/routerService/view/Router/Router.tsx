@@ -37,10 +37,7 @@ import { EditCompanyContainer } from 'services/company/editCompanyService';
 import { ReportsPageContainer } from '01/features/reports';
 import { featureToggles } from 'featureToggles';
 import { ReportsContainer } from 'services/reportsService';
-import { AddPersonalNumberPage } from '01/features/homeowner/addPersonalNumber';
-import { EditHomeownerPersonalNumberPage } from '01/features/homeowner/editPersonalNumber';
 import { SplitPersonalNumber } from '01/features/homeowner/splitPersonalNumber';
-import { SwitchPersonalNumberPage } from '01/features/homeowner/switchPersonalNumber';
 import { AddIndividualDevice } from '01/features/individualDevices/addIndividualDevice';
 import { SwitchIndividualDevice } from '01/features/individualDevices/switchIndividualDevice';
 import { ReadingHistoryPage } from '01/features/readings/displayReadingHistory';
@@ -49,6 +46,9 @@ import { EditObjectContainer } from 'services/objects/editObjectService';
 import { EditIndividualDeviceContainer } from 'services/meters/editIndividualDeviceService';
 import { LoginContainer } from 'services/authorizations/loginService';
 import { RegistrationContainer } from 'services/authorizations/registrationService';
+import { AddPersonalNumberContainer } from 'services/homeowner/personalNumber/addPersonalNumberService';
+import { EditPersonalNumberContainer } from 'services/homeowner/personalNumber/editPersonalNumberService';
+import { SwitchPersonalNumberContainer } from 'services/homeowner/personalNumber/switchPersonalNumberService';
 import { SettingsPageContainer } from 'services/settings/settingsPageService';
 import { ActsJournalContainer } from 'services/actsJournalService';
 
@@ -505,16 +505,13 @@ export const Router: FC<RouterProps> = ({ roles, isRolesLoadded }) => {
                     </Route>
                   )}
                   {(isAdministrator || isSeniorOperator || isOperator) && (
-                    <Route
-                      path="/apartment/:id/homeowners/addPersonalNumber"
-                      exact
-                    >
-                      <AddPersonalNumberPage />
+                    <Route path="/apartment/:id/homeowners/add" exact>
+                      <AddPersonalNumberContainer />
                     </Route>
                   )}
                   {(isAdministrator || isSeniorOperator || isOperator) && (
                     <Route
-                      path="/apartment/:id/homeowners/:homeownerId/splitApartment"
+                      path="/apartment/:id/homeowners/:homeownerId/split"
                       exact
                     >
                       <SplitPersonalNumber />
@@ -522,18 +519,18 @@ export const Router: FC<RouterProps> = ({ roles, isRolesLoadded }) => {
                   )}
                   {(isAdministrator || isSeniorOperator || isOperator) && (
                     <Route
-                      path="/apartment/:id/homeowners/:homeownerId/editPersonalNumber"
+                      path="/apartment/:id/homeowners/:homeownerId/edit"
                       exact
                     >
-                      <EditHomeownerPersonalNumberPage />
+                      <EditPersonalNumberContainer />
                     </Route>
                   )}
                   {(isAdministrator || isSeniorOperator || isOperator) && (
                     <Route
-                      path="/apartment/:id/homeowners/:homeownerId/switchPersonalNumberFx"
+                      path="/apartment/:id/homeowners/:homeownerId/switch"
                       exact
                     >
-                      <SwitchPersonalNumberPage />
+                      <SwitchPersonalNumberContainer />
                     </Route>
                   )}
 
