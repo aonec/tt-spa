@@ -38,7 +38,6 @@ import { ReportsPageContainer } from '01/features/reports';
 import { featureToggles } from 'featureToggles';
 import { ReportsContainer } from 'services/reportsService';
 import { SplitPersonalNumber } from '01/features/homeowner/splitPersonalNumber';
-import { SwitchPersonalNumberPage } from '01/features/homeowner/switchPersonalNumber';
 import { AddIndividualDevice } from '01/features/individualDevices/addIndividualDevice';
 import { SwitchIndividualDevice } from '01/features/individualDevices/switchIndividualDevice';
 import { ReadingHistoryPage } from '01/features/readings/displayReadingHistory';
