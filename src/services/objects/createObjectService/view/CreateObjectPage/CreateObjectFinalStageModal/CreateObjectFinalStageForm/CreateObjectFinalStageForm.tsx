@@ -135,6 +135,11 @@ export const CreateObjectFinalStageForm: FC<
           </Field>
         </GridContainer>
         <SpaceLine />
+        <GridContainer>
+          <FieldDescrition> Год постройки </FieldDescrition>
+          <Field>{createObjectData?.constructionYear || '-'}</Field>
+        </GridContainer>
+        <SpaceLine />
       </Wrapper>
     </Form>
   );

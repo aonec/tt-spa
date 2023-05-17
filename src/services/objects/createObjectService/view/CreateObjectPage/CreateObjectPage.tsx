@@ -26,6 +26,7 @@ export const CreateObjectPage: FC<CreateObjectPageProps> = ({
   openCreateHeatingStationModal,
   openEditHeatingStationModal,
   heatingStationCapture,
+  isCreateLoading,
 }) => {
   const { Step } = Steps;
   const stepTitles = [
@@ -82,6 +83,7 @@ export const CreateObjectPage: FC<CreateObjectPageProps> = ({
             heatingStations={heatingStations}
             closePreviewModal={closePreviewModal}
             isPreviewModalOpen={isPreviewModalOpen}
+            isCreateLoading={isCreateLoading}
           />
         </div>
         <div>
