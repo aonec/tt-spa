@@ -2,11 +2,13 @@ import { Event } from 'effector';
 import { ApartmentResponse, HomeownerAccountListResponse } from 'myApi';
 import { PersonalNumberFormTypes } from 'services/homeowner/personalNumber/components/PersonalNumberForm/PersonalNumberForm.types';
 
-export type EditPersonalNumberPageProps = {
+export type SwitchPersonalNumberPageProps = {
   isLoading: boolean;
   apartment: ApartmentResponse | null;
-  handleEditHomeownerAccount: (payload: PersonalNumberFormTypes) => void;
+  handleSwitchHomeownerAccount: (payload: {
+    replaceableAccountId: string;
+    form: PersonalNumberFormTypes;
+  }) => void;
   handleForced: Event<void>;
   homeowner: HomeownerAccountListResponse | undefined;
-  setVisibleCloseHomeownerAccountModal: (payload: boolean) => void;
 };

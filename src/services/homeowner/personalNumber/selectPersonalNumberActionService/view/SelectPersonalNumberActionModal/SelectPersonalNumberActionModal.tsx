@@ -18,7 +18,7 @@ const formId = 'select-personal-number-action-modal';
 
 export const SelectPersonalNumberActionModal: FC<
   SelectPersonalNumberActionModalProps
-> = ({ isOpen, setAction, apartmentId }) => {
+> = ({ isOpen, setAction, apartmentId, setSelectActionModalOpen }) => {
   const history = useHistory();
 
   return (
@@ -27,6 +27,7 @@ export const SelectPersonalNumberActionModal: FC<
       formId={formId}
       customFooter={<></>}
       visible={isOpen}
+      onCancel={() => setSelectActionModalOpen(false)}
       form={
         <>
           <SelectItem onClick={() => setAction(PersonalNumberActions.Edit)}>

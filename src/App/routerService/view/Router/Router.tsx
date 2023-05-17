@@ -49,6 +49,7 @@ import { LoginContainer } from 'services/authorizations/loginService';
 import { RegistrationContainer } from 'services/authorizations/registrationService';
 import { AddPersonalNumberContainer } from 'services/homeowner/personalNumber/addPersonalNumberService';
 import { EditPersonalNumberContainer } from 'services/homeowner/personalNumber/editPersonalNumberService';
+import { SwitchPersonalNumberContainer } from 'services/homeowner/personalNumber/switchPersonalNumberService';
 import { SettingsPageContainer } from 'services/settings/settingsPageService';
 import { ActsJournalContainer } from 'services/actsJournalService';
 
@@ -530,7 +531,7 @@ export const Router: FC<RouterProps> = ({ roles, isRolesLoadded }) => {
                       path="/apartment/:id/homeowners/:homeownerId/switch"
                       exact
                     >
-                      <SwitchPersonalNumberPage />
+                      <SwitchPersonalNumberContainer />
                     </Route>
                   )}
 

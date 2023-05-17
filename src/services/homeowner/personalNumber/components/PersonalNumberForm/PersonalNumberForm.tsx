@@ -30,18 +30,22 @@ export const PersonalNumberForm: FC<PersonalNumberFormProps> = ({
   handleEditHomeownerAccount,
   homeowner,
   handleForced,
+  setVisibleCloseHomeownerAccountModal,
+  handleSwitchHomeownerAccount,
 }) => {
   const isEdit = type === PersonalNumberActions.Edit;
 
   const { values, setFieldValue, errors, handleSubmit } =
     useFormik<PersonalNumberFormTypes>({
       initialValues: {
-        name: homeowner?.name || '',
-        phoneNumber: homeowner?.phoneNumber || '',
-        openAt: homeowner?.openAt || '',
-        personalAccountNumber: homeowner?.personalAccountNumber || '',
-        paymentCode: homeowner?.paymentCode || '',
-        isMainOnApartment: homeowner?.isMainPersonalAccountNumber || false,
+        name: (isEdit && homeowner?.name) || '',
+        phoneNumber: (isEdit && homeowner?.phoneNumber) || '',
+        openAt: (isEdit && homeowner?.openAt) || '',
+        personalAccountNumber:
+          (isEdit && homeowner?.personalAccountNumber) || '',
+        paymentCode: (isEdit && homeowner?.paymentCode) || '',
+        isMainOnApartment:
+          (isEdit && homeowner?.isMainPersonalAccountNumber) || false,
         apartmentId,
         homeownerId: homeowner?.id,
       },
@@ -62,6 +66,13 @@ export const PersonalNumberForm: FC<PersonalNumberFormProps> = ({
         data.homeownerId &&
           handleEditHomeownerAccount &&
           handleEditHomeownerAccount(data);
+
+        homeowner &&
+          handleSwitchHomeownerAccount &&
+          handleSwitchHomeownerAccount({
+            form: data,
+            replaceableAccountId: homeowner.id,
+          });
       },
     });
 
@@ -132,7 +143,12 @@ export const PersonalNumberForm: FC<PersonalNumberFormProps> = ({
           Основной лицевой счет
         </SwitchWrapper>
         {isEdit && (
-          <DeleteButton onClick={() => {}}>
+          <DeleteButton
+            onClick={() =>
+              setVisibleCloseHomeownerAccountModal &&
+              setVisibleCloseHomeownerAccountModal(true)
+            }
+          >
             <TrashIcon />
             Закрыть лицевой счет
           </DeleteButton>
