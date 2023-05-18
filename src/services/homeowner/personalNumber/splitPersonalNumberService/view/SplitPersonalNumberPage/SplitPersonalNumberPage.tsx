@@ -21,6 +21,9 @@ export const SplitPersonalNumberPage: FC<SplitPersonalNumberPageProps> = ({
   handleSubmitSwitchStage,
   handleSubmitAddNewApartmentStage,
   goBackStage,
+  addNewApartmentStageData,
+  switchStageData,
+  transferDevicesData,
 }) => {
   const { Step } = Steps;
   const stepTitles = [
@@ -45,6 +48,7 @@ export const SplitPersonalNumberPage: FC<SplitPersonalNumberPageProps> = ({
             homeowner={homeowner}
             formId={formId}
             handleSubmitSwitchStage={handleSubmitSwitchStage}
+            switchStageData={switchStageData}
           />
         )}
         {stageNumber === 2 && (
@@ -52,6 +56,7 @@ export const SplitPersonalNumberPage: FC<SplitPersonalNumberPageProps> = ({
             formId={formId}
             apartment={apartment}
             handleSubmitAddNewApartmentStage={handleSubmitAddNewApartmentStage}
+            addNewApartmentStageData={addNewApartmentStageData}
           />
         )}
         {stageNumber === 3 && <TransferDevicesStage />}

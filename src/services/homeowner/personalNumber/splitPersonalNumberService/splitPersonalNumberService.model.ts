@@ -183,6 +183,9 @@ export const splitPersonalNumberService = {
   outputs: {
     $stageNumber,
     $apartment,
+    $switchStageData,
+    $addNewApartmentStageData,
+    $transferDevicesData,
   },
   gates: { ApartmentGate: apartmentProfileService.gates.ApartmentGate },
 };

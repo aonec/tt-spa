@@ -24,6 +24,10 @@ export const SplitPersonalNumberContainer = () => {
     (homeownerAccount) => homeownerAccount.id === homeownerId,
   );
 
+  const switchStageData = useStore(outputs.$switchStageData);
+  const addNewApartmentStageData = useStore(outputs.$addNewApartmentStageData);
+  const transferDevicesData = useStore(outputs.$transferDevicesData);
+
   const handleSubmitSwitchStage = useEvent(inputs.handleSubmitSwitchStage);
   const handleSubmitAddNewApartmentStage = useEvent(
     inputs.handleSubmitAddNewApartmentStage,
@@ -44,6 +48,9 @@ export const SplitPersonalNumberContainer = () => {
         handleSubmitSwitchStage={handleSubmitSwitchStage}
         handleSubmitAddNewApartmentStage={handleSubmitAddNewApartmentStage}
         goBackStage={goBackStage}
+        switchStageData={switchStageData}
+        addNewApartmentStageData={addNewApartmentStageData}
+        transferDevicesData={transferDevicesData}
       />
     </>
   );

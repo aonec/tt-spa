@@ -5,4 +5,5 @@ export type AddNewApartmentStageProps = {
   formId: string;
   apartment: ApartmentResponse | null;
   handleSubmitAddNewApartmentStage: (payload: AddNewApartmentStage) => void;
+  addNewApartmentStageData: AddNewApartmentStage | null
 };
