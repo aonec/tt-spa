@@ -1,4 +1,8 @@
-import { ApartmentResponse, HomeownerAccountListResponse } from 'myApi';
+import {
+  ApartmentResponse,
+  HomeownerAccountListResponse,
+  IndividualDeviceListItemResponse,
+} from 'myApi';
 import {
   AddNewApartmentStage,
   SwitchStage,
@@ -15,4 +19,8 @@ export type SplitPersonalNumberPageProps = {
   switchStageData: SwitchStage | null;
   addNewApartmentStageData: AddNewApartmentStage | null;
   transferDevicesData: TransferStage | null;
+  individualDevices: {
+    items: IndividualDeviceListItemResponse[];
+  } | null;
+  handleSubmitTransferDevicesStage: (payload: TransferStage) => void;
 };

@@ -10,4 +10,5 @@ export type PersonalNumberPageContainerProps = {
   cancelButtonText?: string;
   saveButtonText?: string;
   onCancelHandler?(): void;
+  isLastStage?: boolean
 };

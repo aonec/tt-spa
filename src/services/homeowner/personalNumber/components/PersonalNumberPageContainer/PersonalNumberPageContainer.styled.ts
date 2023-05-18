@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 export const Wrapper = styled.div`
-  max-width: 620px;
+  max-width: 640px;
 `;
 
 export const Title = styled.div`

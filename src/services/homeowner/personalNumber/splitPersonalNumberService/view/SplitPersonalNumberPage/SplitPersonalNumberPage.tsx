@@ -24,6 +24,8 @@ export const SplitPersonalNumberPage: FC<SplitPersonalNumberPageProps> = ({
   addNewApartmentStageData,
   switchStageData,
   transferDevicesData,
+  individualDevices,
+  handleSubmitTransferDevicesStage,
 }) => {
   const { Step } = Steps;
   const stepTitles = [
@@ -42,6 +44,7 @@ export const SplitPersonalNumberPage: FC<SplitPersonalNumberPageProps> = ({
         saveButtonText={stageNumber === 3 ? 'Сохранить' : void 0}
         cancelButtonText={stageNumber !== 1 ? 'Назад' : void 0}
         onCancelHandler={goBackStage}
+        isLastStage={stageNumber === 3}
       >
         {stageNumber === 1 && (
           <SwitchStage
@@ -59,7 +62,14 @@ export const SplitPersonalNumberPage: FC<SplitPersonalNumberPageProps> = ({
             addNewApartmentStageData={addNewApartmentStageData}
           />
         )}
-        {stageNumber === 3 && <TransferDevicesStage />}
+        {stageNumber === 3 && (
+          <TransferDevicesStage
+            formId={formId}
+            individualDevices={individualDevices}
+            transferDevicesData={transferDevicesData}
+            handleSubmitTransferDevicesStage={handleSubmitTransferDevicesStage}
+          />
+        )}
       </PersonalNumberPageContainer>
 
       <StepsWrapper>

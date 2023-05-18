@@ -2,16 +2,22 @@ import { combine, createDomain, guard, sample } from 'effector';
 import { apartmentProfileService } from 'services/apartments/apartmentProfileService';
 import {
   AddNewApartmentStage,
+  GetIndividualDeviceRequestParams,
   SwitchStage,
   TransferStage,
 } from './splitPersonalNumberService.types';
 import {
   doesApartmentExist,
+  getIndividualDevices,
   splitHomeownerAccount,
 } from './splitPersonalNumberService.api';
-import { HomeownerAccountSplitRequest } from 'myApi';
+import {
+  HomeownerAccountSplitRequest,
+  IndividualDeviceListItemResponse,
+} from 'myApi';
 import { EffectFailDataAxiosErrorDataApartmentId } from 'types';
 import moment from 'moment';
+import { createGate } from 'effector-react';
 
 const domain = createDomain('splitPersonalNumberService');
 
@@ -61,6 +67,25 @@ guard({
   filter: (stageNumber) => stageNumber < 3,
   target: goNextStage,
 });
+
+const IndividualDevicesGate = createGate<GetIndividualDeviceRequestParams>();
+
+const getIndividualDevicesFx = domain.createEffect<
+  GetIndividualDeviceRequestParams,
+  {
+    items: IndividualDeviceListItemResponse[];
+  }
+>(getIndividualDevices);
+
+sample({
+  source: IndividualDevicesGate.state.map((elem) => elem),
+  filter: (params) => Object.values(params).length !== 0,
+  target: getIndividualDevicesFx,
+});
+
+const $individualDevices = domain
+  .createStore<{ items: IndividualDeviceListItemResponse[] } | null>(null)
+  .on(getIndividualDevicesFx.doneData, (_, devices) => devices);
 
 const checkApartmentExistingFx = domain.createEffect<
   {
@@ -186,6 +211,10 @@ export const splitPersonalNumberService = {
     $switchStageData,
     $addNewApartmentStageData,
     $transferDevicesData,
+    $individualDevices,
   },
-  gates: { ApartmentGate: apartmentProfileService.gates.ApartmentGate },
+  gates: {
+    ApartmentGate: apartmentProfileService.gates.ApartmentGate,
+    IndividualDevicesGate,
+  },
 };

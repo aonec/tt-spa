@@ -3,11 +3,12 @@ import { splitPersonalNumberService } from './splitPersonalNumberService.model';
 import { SplitPersonalNumberPage } from './view/SplitPersonalNumberPage';
 import { useEvent, useStore } from 'effector-react';
 import { useHistory, useParams } from 'react-router-dom';
+import { AllIndividualDeviceMountPlacesGate } from '01/features/individualDeviceMountPlaces/displayIndividualDeviceMountPlaces/models';
 
 const {
   inputs,
   outputs,
-  gates: { ApartmentGate },
+  gates: { ApartmentGate, IndividualDevicesGate },
 } = splitPersonalNumberService;
 
 export const SplitPersonalNumberContainer = () => {
@@ -23,6 +24,7 @@ export const SplitPersonalNumberContainer = () => {
   const homeowner = apartment?.homeownerAccounts?.find(
     (homeownerAccount) => homeownerAccount.id === homeownerId,
   );
+  const individualDevices = useStore(outputs.$individualDevices);
 
   const switchStageData = useStore(outputs.$switchStageData);
   const addNewApartmentStageData = useStore(outputs.$addNewApartmentStageData);
@@ -41,6 +43,8 @@ export const SplitPersonalNumberContainer = () => {
   return (
     <>
       <ApartmentGate apartmentId={Number(apartmentId)} />
+      <IndividualDevicesGate ApartmentId={Number(apartmentId)} />
+      <AllIndividualDeviceMountPlacesGate />
       <SplitPersonalNumberPage
         stageNumber={stageNumber}
         apartment={apartment}
@@ -51,6 +55,8 @@ export const SplitPersonalNumberContainer = () => {
         switchStageData={switchStageData}
         addNewApartmentStageData={addNewApartmentStageData}
         transferDevicesData={transferDevicesData}
+        individualDevices={individualDevices}
+        handleSubmitTransferDevicesStage={handleSubmitTransferDevicesStage}
       />
     </>
   );

@@ -24,6 +24,7 @@ export const PersonalNumberPageContainer: FC<
   saveButtonText,
   formId,
   onCancelHandler,
+  isLastStage,
 }) => {
   const history = useHistory();
 
@@ -45,9 +46,21 @@ export const PersonalNumberPageContainer: FC<
         <Button type="ghost" onClick={onCancelHandler || history.goBack}>
           {cancelButtonText || 'Отмена'}
         </Button>
-        <Button htmlType="submit" htmlForm={formId} isLoading={isLoading}>
-          {isSplit ? saveButtonText || 'Далее' : 'Сохранить изменения'}
-        </Button>
+        {!isLastStage && (
+          <Button htmlType="submit" htmlForm={formId} isLoading={isLoading}>
+            Далее
+          </Button>
+        )}
+        {isLastStage && (
+          <Button
+            htmlType="submit"
+            htmlForm={formId}
+            isLoading={isLoading}
+            onClick={() => console.log('first')}
+          >
+            Сохранить изменения
+          </Button>
+        )}
       </FlexContainer>
     </Wrapper>
   );
