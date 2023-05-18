@@ -66,6 +66,8 @@ forward({
 
 successUpdateStatus.watch(() => message.success('Статус изменен!'));
 
+const $isLoading = updateStatusFx.pending;
+
 export const changeStatusEmployeeService = {
   inputs: {
     handleOpenModal,
@@ -74,5 +76,5 @@ export const changeStatusEmployeeService = {
     handleCatchEmployeeStatusData,
     successUpdateStatus,
   },
-  outputs: { $isModalOpen, $employeeStatus },
+  outputs: { $isModalOpen, $employeeStatus, $isLoading },
 };

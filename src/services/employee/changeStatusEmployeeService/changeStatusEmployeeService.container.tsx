@@ -8,9 +8,11 @@ const { inputs, outputs } = changeStatusEmployeeService;
 export const ChangeStatusEmployeeContainer = () => {
   const isModalOpen = useStore(outputs.$isModalOpen);
   const employeeStatus = useStore(outputs.$employeeStatus);
+  const isLoading = useStore(outputs.$isLoading);
 
   const handleCloseModal = useEvent(inputs.handleCloseModal);
   const handleUpdateStatus = useEvent(inputs.handleUpdateStatus);
+
   return (
     <>
       <ChangeStatusEmployeeModal
@@ -18,6 +20,7 @@ export const ChangeStatusEmployeeContainer = () => {
         handleCloseModal={() => handleCloseModal()}
         handleUpdateStatus={handleUpdateStatus}
         employeeStatus={employeeStatus}
+        isLoading={isLoading}
       />
     </>
   );
