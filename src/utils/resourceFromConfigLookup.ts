@@ -9,4 +9,6 @@ export const resourceFromConfig: {
   [EPipeNodeConfig.HotWaterSupplyNoBackflow]: EResourceType.HotWaterSupply,
   [EPipeNodeConfig.HotWaterSupplyWithBackflow]: EResourceType.HotWaterSupply,
   [EPipeNodeConfig.HeatNoHousingMeteringDevice]: EResourceType.Heat,
+  [EPipeNodeConfig.HotWaterNoDevice]: EResourceType.HotWaterSupply,
+  [EPipeNodeConfig.ColdWaterNoDevice]: EResourceType.ColdWaterSupply,
 };
