@@ -7,4 +7,6 @@ export const configNamesLookup: { [key in EPipeNodeConfig]: string } = {
   [EPipeNodeConfig.HotWaterSupplyNoBackflow]: 'УГВС без обратной магистрали',
   [EPipeNodeConfig.HotWaterSupplyWithBackflow]: 'УГВС с обратной магистралью',
   [EPipeNodeConfig.HeatNoHousingMeteringDevice]: 'УУТЭ без ОДПУ',
+  [EPipeNodeConfig.HotWaterNoDevice]: 'УГВС без ОДПУ',
+  [EPipeNodeConfig.ColdWaterNoDevice]: 'УХВС без ОДПУ',
 };
