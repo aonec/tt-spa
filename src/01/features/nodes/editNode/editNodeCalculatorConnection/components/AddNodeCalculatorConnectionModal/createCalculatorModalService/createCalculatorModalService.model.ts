@@ -25,7 +25,12 @@ const goPrevStep = domain.createEvent();
 const $stepNumber = domain
   .createStore(1)
   .on(goNextStep, (step) => step + 1)
-  .on(goPrevStep, (step) => step - 1)
+  .on(goPrevStep, (step) => {
+    if (step > 1) {
+      return step - 1;
+    }
+    return step;
+  })
   .reset(closeModal);
 
 const createCalculatorFx = domain.createEffect<

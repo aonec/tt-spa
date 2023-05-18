@@ -17,17 +17,15 @@ export const CreateCalculatorModalContainer = () => {
   const closeModal = useEvent(inputs.closeModal);
 
   return (
-    <>
-      <CreateCalculatorModal
-        handleSubmitForm={handleSubmitForm}
-        goPrevStep={goPrevStep}
-        stepNumber={stepNumber}
-        updatePayload={updatePayload}
-        closeModal={closeModal}
-        isOpen={isOpen}
-        isLoading={isLoading}
-        payload={payload}
-      />
-    </>
+    <CreateCalculatorModal
+      handleSubmitForm={handleSubmitForm}
+      goPrevStep={goPrevStep}
+      stepNumber={stepNumber}
+      updatePayload={updatePayload}
+      closeModal={closeModal}
+      isOpen={isOpen}
+      isLoading={isLoading}
+      payload={payload}
+    />
   );
 };
