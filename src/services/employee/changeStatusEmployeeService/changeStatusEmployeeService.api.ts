@@ -33,7 +33,10 @@ export const getOrganizationUserTasksByRoles = ({
 }: GetOrganizationUserTasksByRolesRequestParams): Promise<UserTasksByRoles> => {
   return Promise.all(
     roles.map(async (role) => {
-      const pagedTasksList = await getOrganizationUserTasks({ userId });
+      const pagedTasksList = await getOrganizationUserTasks({
+        userId,
+        CurrentStageRequiredUserRole: role.key,
+      });
 
       return { role, tasks: pagedTasksList?.items || [] };
     }),

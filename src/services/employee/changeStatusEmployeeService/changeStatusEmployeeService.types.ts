@@ -1,6 +1,7 @@
 import {
   EOrderByRule,
   ESecuredIdentityRoleName,
+  ESecuredIdentityRoleNameStringDictionaryItem,
   TaskListResponse,
   UserStatusResponse,
 } from 'myApi';
@@ -16,11 +17,11 @@ export type GetOrganizationUserTasksRequestParams = {
 
 export type GetOrganizationUserTasksByRolesRequestParams = {
   userId: number;
-  roles: ESecuredIdentityRoleName[];
+  roles: ESecuredIdentityRoleNameStringDictionaryItem[];
 };
 
 export type UserTasksByRoles = {
-  role: ESecuredIdentityRoleName;
+  role: ESecuredIdentityRoleNameStringDictionaryItem;
   tasks: TaskListResponse[];
 }[];
 

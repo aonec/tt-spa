@@ -125,7 +125,7 @@ sample({
   fn: (user): GetOrganizationUserTasksByRolesRequestParams => {
     return {
       userId: user?.id!,
-      roles: user?.roles?.map((elem) => elem.key!)!,
+      roles: user?.roles!,
     };
   },
   target: fetchOrganizationUserTasksByRolesFx,
