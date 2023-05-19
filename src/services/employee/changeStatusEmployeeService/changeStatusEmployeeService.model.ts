@@ -1,4 +1,4 @@
-import { combine, createDomain, forward, sample } from 'effector';
+import { combine, createDomain, forward, sample, split } from 'effector';
 import {
   getOrganizationUser,
   getOrganizationUserTasksByRoles,
@@ -17,23 +17,33 @@ import {
   GetOrganizationUserTasksByRolesRequestParams,
   UserTasksByRoles,
 } from './changeStatusEmployeeService.types';
-import { getTasksCount } from './changeStatusEmployeeService.utils';
-import moment from 'moment';
+import {
+  getTasksCount,
+  isNeedTransferTasks,
+  prepareUpdateStatusPayload,
+} from './changeStatusEmployeeService.utils';
 
 const domain = createDomain('changeStatusEmployeeService');
 
 const handleOpenModal = domain.createEvent();
 const handleCloseModal = domain.createEvent();
 
+const openTransferTasksModal = domain.createEvent();
+
 const handleCatchEmployeeStatusData = domain.createEvent<{
   id: number;
   status: UserStatusResponse | null;
 }>();
 
+const fetchOrganizationUserTasksByRoles = domain.createEvent();
+
 const handleUpdateStatus =
   domain.createEvent<AddOrganizationUserWorkingStatusRequest>();
 
-const updateStatus = domain.createEvent();
+const sendUpdateStatusRequest = domain.createEvent();
+
+const sendUpdateStatusRequestWithPayload =
+  domain.createEvent<AddOrganizationUserWorkingStatusRequest>();
 
 const updateStatusFx = domain.createEffect<
   AddOrganizationUserWorkingStatusRequest,
@@ -78,12 +88,38 @@ const $userStatusChangeRequestPayload = domain
   .on(handleUpdateStatus, (_, data) => data)
   .reset(handleCloseModal);
 
-const $userTasksByRolesCount = $organizationUserTasksByRoles.map(
-  (tasksByRoles) => getTasksCount(tasksByRoles || []),
-);
+const $isTransferUserTasksModalOpen = domain
+  .createStore(false)
+  .on(openTransferTasksModal, () => true)
+  .reset(handleCloseModal);
+
+split({
+  source: fetchOrganizationUserTasksByRolesFx.doneData,
+  match: (tasksByRoles) => {
+    const tasksCount = getTasksCount(tasksByRoles);
+
+    return tasksCount > 0 ? 'tasksExist' : 'emptyTasksList';
+  },
+  cases: {
+    emptyTasksList: sendUpdateStatusRequest,
+    tasksExist: openTransferTasksModal,
+  },
+});
 
 sample({
   clock: handleUpdateStatus,
+  filter: (payload) => !isNeedTransferTasks(payload.type!),
+  target: sendUpdateStatusRequestWithPayload,
+});
+
+sample({
+  clock: handleUpdateStatus,
+  filter: (payload) => isNeedTransferTasks(payload.type!),
+  target: fetchOrganizationUserTasksByRoles,
+});
+
+sample({
+  clock: fetchOrganizationUserTasksByRoles,
   source: $currentUser,
   filter: (user): user is OrganizationUserResponse => Boolean(user),
   fn: (user): GetOrganizationUserTasksByRolesRequestParams => {
@@ -96,21 +132,17 @@ sample({
 });
 
 sample({
-  clock: updateStatus,
   source: $userStatusChangeRequestPayload,
+  clock: sendUpdateStatusRequest,
   filter: (payload): payload is AddOrganizationUserWorkingStatusRequest =>
     Boolean(payload),
-  fn: (data) => {
-    return {
-      ...data,
-      startDate: moment(data?.startDate)
-        .set({ hour: 0, minute: 0, second: 0, millisecond: 0 })
-        .toISOString(true),
-      endDate: moment(data?.endDate)
-        .set({ hour: 0, minute: 0, second: 0, millisecond: 0 })
-        .toISOString(true),
-    };
-  },
+  fn: prepareUpdateStatusPayload,
+  target: updateStatusFx,
+});
+
+sample({
+  clock: sendUpdateStatusRequestWithPayload,
+  fn: prepareUpdateStatusPayload,
   target: updateStatusFx,
 });
 
@@ -151,7 +183,7 @@ export const changeStatusEmployeeService = {
     $employeeStatus,
     $isLoading,
     $organizationUserTasksByRoles,
-    $userTasksByRolesCount,
+    $isTransferUserTasksModalOpen,
     $currentUser,
   },
 };
