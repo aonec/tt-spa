@@ -2,6 +2,7 @@ import {
   EOrderByRule,
   ESecuredIdentityRoleName,
   TaskListResponse,
+  UserStatusResponse,
 } from 'myApi';
 
 export type GetOrganizationUserTasksRequestParams = {
@@ -22,3 +23,5 @@ export type UserTasksByRoles = {
   role: ESecuredIdentityRoleName;
   tasks: TaskListResponse[];
 }[];
+
+export type EmployeeStatus = { id: number; status: UserStatusResponse | null };

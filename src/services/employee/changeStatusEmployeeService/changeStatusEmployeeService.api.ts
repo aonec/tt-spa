@@ -1,6 +1,7 @@
 import { axios } from '01/axios';
 import {
   AddOrganizationUserWorkingStatusRequest,
+  OrganizationUserResponse,
   OrganizationUserWorkingStatusResponse,
   TasksPagedList,
 } from 'myApi';
@@ -14,6 +15,11 @@ export const postEmloyeeStatus = (
   data: AddOrganizationUserWorkingStatusRequest,
 ): Promise<OrganizationUserWorkingStatusResponse | null> =>
   axios.post('OrganizationUserWorkingStatuses', data);
+
+export const getOrganizationUser = (
+  userId: number,
+): Promise<OrganizationUserResponse> =>
+  axios.get(`OrganizationUsers/${userId}`);
 
 export const getOrganizationUserTasks = ({
   userId,

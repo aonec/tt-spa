@@ -14,6 +14,7 @@ export const ChangeStatusEmployeeContainer = () => {
     outputs.$organizationUserTasksByRoles,
   );
   const organizationUserTasksCount = useStore(outputs.$userTasksByRolesCount);
+  const currentUser = useStore(outputs.$currentUser);
 
   const handleCloseModal = useEvent(inputs.handleCloseModal);
   const handleUpdateStatus = useEvent(inputs.handleUpdateStatus);
@@ -24,7 +25,7 @@ export const ChangeStatusEmployeeContainer = () => {
     <>
       <ChangeStatusEmployeeModal
         isModalOpen={isModalOpen && isTasksListEmpty}
-        handleCloseModal={() => handleCloseModal()}
+        handleCloseModal={handleCloseModal}
         handleUpdateStatus={handleUpdateStatus}
         employeeStatus={employeeStatus}
         isLoading={isLoading}
@@ -32,6 +33,8 @@ export const ChangeStatusEmployeeContainer = () => {
       <UserTasksTransferModal
         organizationUserTasksByRoles={organizationUserTasksByRoles}
         isModalOpen={!isTasksListEmpty}
+        handleCloseModal={handleCloseModal}
+        currentUser={currentUser}
       />
     </>
   );

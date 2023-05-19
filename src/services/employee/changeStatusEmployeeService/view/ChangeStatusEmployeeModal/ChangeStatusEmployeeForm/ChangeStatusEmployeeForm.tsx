@@ -1,16 +1,16 @@
 import React, { FC } from 'react';
-import { GridContainer } from './ChangeStatusEmployeeForm.styled';
-import { ChangeStatusEmployeeFormProps } from './ChangeStatusEmployeeForm.types';
+import * as yup from 'yup';
+import { useFormik } from 'formik';
 import { Form } from 'antd';
+import { EOrganizationUserWorkingStatusType } from 'myApi';
 import { FormItem } from 'ui-kit/FormItem';
 import { ErrorMessage } from 'ui-kit/ErrorMessage';
-import { useFormik } from 'formik';
-import * as yup from 'yup';
-import { EOrganizationUserWorkingStatusType } from 'myApi';
 import { RangePicker } from 'ui-kit/RangePicker';
 import { DatePeriod } from 'services/objects/objectProfileService/consolidatedReportService/view/ConsolidatedReportForm/ConsolidatedReportForm.types';
 import { StaffStatus } from 'ui-kit/shared_components/StaffStatus/StaffStatus';
 import { Select } from 'ui-kit/Select';
+import { ChangeStatusEmployeeFormProps } from './ChangeStatusEmployeeForm.types';
+import { GridContainer } from './ChangeStatusEmployeeForm.styled';
 
 export const ChangeStatusEmployeeForm: FC<ChangeStatusEmployeeFormProps> = ({
   formId,
@@ -41,9 +41,26 @@ export const ChangeStatusEmployeeForm: FC<ChangeStatusEmployeeFormProps> = ({
       type: yup.string().nullable().required('Выберите Статус'),
       period: yup
         .array()
-        .of(yup.date().required('Укажите период').typeError('Укажите период'))
-        .typeError('Укажите период')
-        .required('Укажите период'),
+        .when(
+          [
+            EOrganizationUserWorkingStatusType.OnDuty,
+            EOrganizationUserWorkingStatusType.OnVacation,
+            EOrganizationUserWorkingStatusType.Sick,
+          ],
+          {
+            is: true,
+            then: yup
+              .array()
+              .of(
+                yup
+                  .date()
+                  .required('Укажите период')
+                  .typeError('Укажите период'),
+              )
+              .typeError('Укажите период')
+              .required('Укажите период'),
+          },
+        ),
     }),
   });
 
