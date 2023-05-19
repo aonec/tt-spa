@@ -30,8 +30,6 @@ export const EditNodeCalculatorConnectionContainer = () => {
 
   const { CalculatorsGate } = calculatorsListService.gates;
 
-  console.log(node?.housingStockId);
-
   return (
     <>
       {node && <CalculatorsGate housingStockId={node.housingStockId} />}

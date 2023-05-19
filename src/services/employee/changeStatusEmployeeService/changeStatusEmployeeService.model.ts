@@ -1,13 +1,22 @@
-import { createDomain, forward, sample } from 'effector';
-import { postEmloyeeStatus } from './changeStatusEmployeeService.api';
+import { combine, createDomain, forward, sample } from 'effector';
+import {
+  getOrganizationUserTasksByRoles,
+  postEmloyeeStatus,
+} from './changeStatusEmployeeService.api';
 import {
   AddOrganizationUserWorkingStatusRequest,
+  OrganizationUserResponse,
   OrganizationUserWorkingStatusResponse,
   UserStatusResponse,
 } from 'myApi';
 import { message } from 'antd';
 import { EffectFailDataAxiosError } from 'types';
-import moment from 'moment';
+import {
+  GetOrganizationUserTasksByRolesRequestParams,
+  UserTasksByRoles,
+} from './changeStatusEmployeeService.types';
+import { currentUserService } from 'services/currentUserService';
+import { getTasksCount } from './changeStatusEmployeeService.utils';
 
 const domain = createDomain('changeStatusEmployeeService');
 
@@ -28,6 +37,11 @@ const updateStatusFx = domain.createEffect<
   EffectFailDataAxiosError
 >(postEmloyeeStatus);
 
+const fetchOrganizationUserTasksByRolesFx = domain.createEffect<
+  GetOrganizationUserTasksByRolesRequestParams,
+  UserTasksByRoles
+>(getOrganizationUserTasksByRoles);
+
 const successUpdateStatus = updateStatusFx.doneData;
 
 const $isModalOpen = domain
@@ -39,21 +53,42 @@ const $employeeStatus = domain
   .createStore<{ id: number; status: UserStatusResponse | null } | null>(null)
   .on(handleCatchEmployeeStatusData, (_, data) => data);
 
+const $organizationUserTasksByRoles = domain
+  .createStore<UserTasksByRoles | null>(null)
+  .on(fetchOrganizationUserTasksByRolesFx.doneData, (_, data) => data);
+
+const $userTasksByRolesCount = $organizationUserTasksByRoles.map(
+  (tasksByRoles) => getTasksCount(tasksByRoles || []),
+);
+
 sample({
   clock: handleUpdateStatus,
-  fn: (data) => {
+  source: currentUserService.outputs.$currentUser,
+  filter: (user): user is OrganizationUserResponse => Boolean(user),
+  fn: (user): GetOrganizationUserTasksByRolesRequestParams => {
     return {
-      ...data,
-      startDate: moment(data.startDate)
-        .set({ hour: 0, minute: 0, second: 0, millisecond: 0 })
-        .toISOString(true),
-      endDate: moment(data.endDate)
-        .set({ hour: 0, minute: 0, second: 0, millisecond: 0 })
-        .toISOString(true),
+      userId: user?.id!,
+      roles: user?.roles?.map((elem) => elem.key!)!,
     };
   },
-  target: updateStatusFx,
+  target: fetchOrganizationUserTasksByRolesFx,
 });
+
+// sample({
+//   clock: handleUpdateStatus,
+//   fn: (data) => {
+//     return {
+//       ...data,
+//       startDate: moment(data.startDate)
+//         .set({ hour: 0, minute: 0, second: 0, millisecond: 0 })
+//         .toISOString(true),
+//       endDate: moment(data.endDate)
+//         .set({ hour: 0, minute: 0, second: 0, millisecond: 0 })
+//         .toISOString(true),
+//     };
+//   },
+//   target: updateStatusFx,
+// });
 
 updateStatusFx.failData.watch((error) =>
   message.error(error.response.data.error.Text),
@@ -66,7 +101,11 @@ forward({
 
 successUpdateStatus.watch(() => message.success('Статус изменен!'));
 
-const $isLoading = updateStatusFx.pending;
+const $isLoading = combine(
+  updateStatusFx.pending,
+  fetchOrganizationUserTasksByRolesFx.pending,
+  (...loadings) => loadings.some(Boolean),
+);
 
 export const changeStatusEmployeeService = {
   inputs: {
@@ -76,5 +115,11 @@ export const changeStatusEmployeeService = {
     handleCatchEmployeeStatusData,
     successUpdateStatus,
   },
-  outputs: { $isModalOpen, $employeeStatus, $isLoading },
+  outputs: {
+    $isModalOpen,
+    $employeeStatus,
+    $isLoading,
+    $organizationUserTasksByRoles,
+    $userTasksByRolesCount,
+  },
 };
