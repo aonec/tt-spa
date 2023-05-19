@@ -9,28 +9,24 @@ import { PersonalNumberPageContainerProps } from './PersonalNumberPageContainer.
 import { GoBack } from 'ui-kit/shared_components/GoBack';
 import { Button } from 'ui-kit/Button';
 import { Link, useHistory } from 'react-router-dom';
-import { PersonalNumberActions } from '../../selectPersonalNumberActionService/selectPersonalNumberActionService.types';
 import { getApartmentAddressString } from 'utils/getApartmentAddress';
 
 export const PersonalNumberPageContainer: FC<
   PersonalNumberPageContainerProps
 > = ({
   children,
-  type,
   apartment,
   titleText,
   isLoading,
-  cancelButtonText,
-  saveButtonText,
   formId,
   onCancelHandler,
   isLastStage,
+  isFirstStage,
+  handleCheckApartmentExist,
 }) => {
   const history = useHistory();
 
   const address = apartment && getApartmentAddressString(apartment);
-
-  const isSplit = type === PersonalNumberActions.Split;
 
   return (
     <Wrapper>
@@ -43,9 +39,15 @@ export const PersonalNumberPageContainer: FC<
       {children}
 
       <FlexContainer>
-        <Button type="ghost" onClick={onCancelHandler || history.goBack}>
-          {cancelButtonText || 'Отмена'}
-        </Button>
+        {isFirstStage ? (
+          <Button type="ghost" onClick={history.goBack}>
+            Отмена
+          </Button>
+        ) : (
+          <Button type="ghost" onClick={onCancelHandler}>
+            Назад
+          </Button>
+        )}
         {!isLastStage && (
           <Button htmlType="submit" htmlForm={formId} isLoading={isLoading}>
             Далее
@@ -56,7 +58,9 @@ export const PersonalNumberPageContainer: FC<
             htmlType="submit"
             htmlForm={formId}
             isLoading={isLoading}
-            onClick={() => console.log('first')}
+            onClick={() =>
+              handleCheckApartmentExist && handleCheckApartmentExist()
+            }
           >
             Сохранить изменения
           </Button>

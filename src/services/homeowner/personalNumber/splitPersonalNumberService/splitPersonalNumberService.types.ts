@@ -31,3 +31,8 @@ export interface GetIndividualDeviceRequestParams {
   PageSize?: number;
   OrderBy?: EOrderByRule;
 }
+
+export type CheckApartmentRequest = {
+  housingStockId: number;
+  apartmentNumber: string;
+};

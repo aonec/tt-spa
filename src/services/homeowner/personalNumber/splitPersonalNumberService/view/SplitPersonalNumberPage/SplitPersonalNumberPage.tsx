@@ -10,7 +10,6 @@ import { SwitchStage } from './stages/SwitchStage';
 import { AddNewApartmentStage } from './stages/AddNewApartmentStage';
 import { TransferDevicesStage } from './stages/TransferDevicesStage';
 import { PersonalNumberPageContainer } from 'services/homeowner/personalNumber/components/PersonalNumberPageContainer';
-import { PersonalNumberActions } from 'services/homeowner/personalNumber/selectPersonalNumberActionService/selectPersonalNumberActionService.types';
 
 const formId = 'split-personal-number-page';
 
@@ -26,6 +25,7 @@ export const SplitPersonalNumberPage: FC<SplitPersonalNumberPageProps> = ({
   transferDevicesData,
   individualDevices,
   handleSubmitTransferDevicesStage,
+  handleCheckApartmentExist,
 }) => {
   const { Step } = Steps;
   const stepTitles = [
@@ -39,12 +39,11 @@ export const SplitPersonalNumberPage: FC<SplitPersonalNumberPageProps> = ({
       <PersonalNumberPageContainer
         titleText="Разделение лицевого счета"
         apartment={apartment}
-        type={PersonalNumberActions.Split}
         formId={formId}
-        saveButtonText={stageNumber === 3 ? 'Сохранить' : void 0}
-        cancelButtonText={stageNumber !== 1 ? 'Назад' : void 0}
         onCancelHandler={goBackStage}
+        isFirstStage={stageNumber === 1}
         isLastStage={stageNumber === 3}
+        handleCheckApartmentExist={handleCheckApartmentExist}
       >
         {stageNumber === 1 && (
           <SwitchStage

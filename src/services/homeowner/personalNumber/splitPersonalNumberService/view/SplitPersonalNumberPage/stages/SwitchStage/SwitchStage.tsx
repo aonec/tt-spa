@@ -54,7 +54,7 @@ export const SwitchStage: FC<SwitchStageProps> = ({
             isMainOnApartment: data.isMainOnApartment,
             paymentCode: data.paymentCode,
           },
-          replaceableAccountId: homeowner?.personalAccountNumber,
+          replaceableAccountId: homeowner?.id,
         });
     },
   });

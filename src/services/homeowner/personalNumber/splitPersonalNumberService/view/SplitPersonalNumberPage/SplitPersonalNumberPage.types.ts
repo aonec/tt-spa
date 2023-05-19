@@ -23,4 +23,5 @@ export type SplitPersonalNumberPageProps = {
     items: IndividualDeviceListItemResponse[];
   } | null;
   handleSubmitTransferDevicesStage: (payload: TransferStage) => void;
+  handleCheckApartmentExist: () => void;
 };

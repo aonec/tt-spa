@@ -2,6 +2,7 @@ import { combine, createDomain, guard, sample } from 'effector';
 import { apartmentProfileService } from 'services/apartments/apartmentProfileService';
 import {
   AddNewApartmentStage,
+  CheckApartmentRequest,
   GetIndividualDeviceRequestParams,
   SwitchStage,
   TransferStage,
@@ -18,6 +19,7 @@ import {
 import { EffectFailDataAxiosErrorDataApartmentId } from 'types';
 import moment from 'moment';
 import { createGate } from 'effector-react';
+import { message } from 'antd';
 
 const domain = createDomain('splitPersonalNumberService');
 
@@ -31,6 +33,8 @@ const handleSubmitSwitchStage = domain.createEvent<SwitchStage>();
 const handleSubmitAddNewApartmentStage =
   domain.createEvent<AddNewApartmentStage>();
 const handleSubmitTransferDevicesStage = domain.createEvent<TransferStage>();
+
+const handleCheckApartmentExist = domain.createEvent();
 
 const $apartment = apartmentProfileService.outputs.$apartment;
 
@@ -124,8 +128,32 @@ const $samePersonalAccountNumderId = domain
 const $isConfirmationModalOpen = $samePersonalAccountNumderId.map(Boolean);
 
 sample({
+  clock: handleCheckApartmentExist,
+  source: combine(
+    $apartment,
+    $addNewApartmentStageData,
+    (apartment, addNewApartmentStageData) => ({
+      housingStockId: apartment?.housingStock?.id,
+      apartmentNumber: addNewApartmentStageData?.apartmentNumber.toString(),
+    }),
+  ),
+  filter: (data) =>
+    Boolean(data.apartmentNumber) && Boolean(data.housingStockId),
+  fn: (data) => {
+    return data as unknown as CheckApartmentRequest;
+  },
+  target: checkApartmentExistingFx,
+});
+
+sample({
   clock: checkApartmentExistingFx.doneData,
   filter: (value) => value === null,
+  fn: () => false,
+  target: splitPersonalNumber,
+});
+
+sample({
+  clock: onForced,
   fn: () => false,
   target: splitPersonalNumber,
 });
@@ -197,6 +225,24 @@ sample({
   target: splitPersonalNumberFx,
 });
 
+splitPersonalNumberFx.failData.watch((error) => {
+  if (
+    error.response.data.error.Code === 'HomeownerAccountAlreadyExistConflict'
+  ) {
+    return;
+  }
+
+  return message.error(
+    error.response.data.error.Text ||
+      error.response.data.error.Message ||
+      'Произошла ошибка',
+  );
+});
+
+const successSplit = splitPersonalNumberFx.doneData;
+
+successSplit.watch(() => message.success('Квартира успшно разделена'));
+
 export const splitPersonalNumberService = {
   inputs: {
     goNextStage,
@@ -204,6 +250,10 @@ export const splitPersonalNumberService = {
     handleSubmitTransferDevicesStage,
     handleSubmitAddNewApartmentStage,
     handleSubmitSwitchStage,
+    handleCheckApartmentExist,
+    handleForceConfirmationModalClose,
+    onForced,
+    successSplit,
   },
   outputs: {
     $stageNumber,
@@ -212,6 +262,8 @@ export const splitPersonalNumberService = {
     $addNewApartmentStageData,
     $transferDevicesData,
     $individualDevices,
+    $isConfirmationModalOpen,
+    $samePersonalAccountNumderId,
   },
   gates: {
     ApartmentGate: apartmentProfileService.gates.ApartmentGate,

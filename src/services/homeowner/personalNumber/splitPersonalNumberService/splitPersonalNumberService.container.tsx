@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { splitPersonalNumberService } from './splitPersonalNumberService.model';
 import { SplitPersonalNumberPage } from './view/SplitPersonalNumberPage';
 import { useEvent, useStore } from 'effector-react';
 import { useHistory, useParams } from 'react-router-dom';
 import { AllIndividualDeviceMountPlacesGate } from '01/features/individualDeviceMountPlaces/displayIndividualDeviceMountPlaces/models';
+import { ConfirmationAddingExistingPersonalNumber } from '../components/ConfirmationAddingExistingPersonalNumberModal';
 
 const {
   inputs,
@@ -30,6 +31,11 @@ export const SplitPersonalNumberContainer = () => {
   const addNewApartmentStageData = useStore(outputs.$addNewApartmentStageData);
   const transferDevicesData = useStore(outputs.$transferDevicesData);
 
+  const isConfirmationModalOpen = useStore(outputs.$isConfirmationModalOpen);
+  const samePersonalAccountNumderId = useStore(
+    outputs.$samePersonalAccountNumderId,
+  );
+
   const handleSubmitSwitchStage = useEvent(inputs.handleSubmitSwitchStage);
   const handleSubmitAddNewApartmentStage = useEvent(
     inputs.handleSubmitAddNewApartmentStage,
@@ -37,14 +43,32 @@ export const SplitPersonalNumberContainer = () => {
   const handleSubmitTransferDevicesStage = useEvent(
     inputs.handleSubmitTransferDevicesStage,
   );
+  const handleCheckApartmentExist = useEvent(inputs.handleCheckApartmentExist);
 
   const goBackStage = useEvent(inputs.goBackStage);
+
+  const handleForceConfirmationModalClose = useEvent(
+    inputs.handleForceConfirmationModalClose,
+  );
+  const onForced = useEvent(inputs.onForced);
+
+  useEffect(() => {
+    return inputs.successSplit.watch(() => {
+      history.push(`meters/apartments/${apartmentId}`);
+    });
+  }, [history]);
 
   return (
     <>
       <ApartmentGate apartmentId={Number(apartmentId)} />
       <IndividualDevicesGate ApartmentId={Number(apartmentId)} />
       <AllIndividualDeviceMountPlacesGate />
+      <ConfirmationAddingExistingPersonalNumber
+        isConfirmationModalOpen={isConfirmationModalOpen}
+        samePersonalAccountNumderId={samePersonalAccountNumderId}
+        confirmationModalClose={() => handleForceConfirmationModalClose()}
+        handleForced={onForced}
+      />
       <SplitPersonalNumberPage
         stageNumber={stageNumber}
         apartment={apartment}
@@ -57,6 +81,7 @@ export const SplitPersonalNumberContainer = () => {
         transferDevicesData={transferDevicesData}
         individualDevices={individualDevices}
         handleSubmitTransferDevicesStage={handleSubmitTransferDevicesStage}
+        handleCheckApartmentExist={handleCheckApartmentExist}
       />
     </>
   );
