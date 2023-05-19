@@ -54,7 +54,11 @@ sample({
 });
 
 export const confirmUsingExistingArartmentService = {
-  inputs: { handleCloseModal },
+  inputs: {
+    handleCloseModal,
+    handleSplitInExistApart:
+      splitPersonalNumberService.inputs.handleSplitInExistApart,
+  },
   outputs: {
     $devices,
     $apartment,

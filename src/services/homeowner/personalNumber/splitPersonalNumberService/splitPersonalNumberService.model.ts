@@ -49,6 +49,7 @@ const $transferDevicesData = domain
   .on(handleSubmitTransferDevicesStage, (_, data) => data);
 
 const splitPersonalNumber = domain.createEvent<boolean>();
+const handleSplitInExistApart = domain.createEvent();
 
 const $isForced = domain
   .createStore<boolean>(false)
@@ -110,10 +111,8 @@ const splitPersonalNumberFx = domain.createEffect<
 
 const $checkedExistingApartmentId = domain
   .createStore<number | null>(null)
-  .on(checkApartmentExistingFx.doneData, (_, id) => {
-    return id;
-  });
-// .reset(SplitPersonalNumberGate.close, closeConfirmExistingApartmentModal);
+  .on(checkApartmentExistingFx.doneData, (_, id) => id);
+// .reset(SplitPersonalNumberGate.close);
 
 const $samePersonalAccountNumderId = domain
   .createStore<number | null>(null)
@@ -147,8 +146,14 @@ sample({
 
 sample({
   clock: checkApartmentExistingFx.doneData,
-  filter: (value) => value === null,
+  filter: (existApartId) => existApartId === null,
   fn: () => false,
+  target: splitPersonalNumber,
+});
+
+sample({
+  clock: handleSplitInExistApart,
+  fn: () => true,
   target: splitPersonalNumber,
 });
 
@@ -243,6 +248,8 @@ const successSplit = splitPersonalNumberFx.doneData;
 
 successSplit.watch(() => message.success('Квартира успшно разделена'));
 
+const $isCheckApartLoading = checkApartmentExistingFx.pending;
+
 export const splitPersonalNumberService = {
   inputs: {
     goNextStage,
@@ -254,6 +261,7 @@ export const splitPersonalNumberService = {
     handleForceConfirmationModalClose,
     onForced,
     successSplit,
+    handleSplitInExistApart,
   },
   outputs: {
     $stageNumber,
@@ -265,6 +273,7 @@ export const splitPersonalNumberService = {
     $isConfirmationModalOpen,
     $samePersonalAccountNumderId,
     $checkedExistingApartmentId,
+    $isCheckApartLoading,
   },
   gates: {
     ApartmentGate: apartmentProfileService.gates.ApartmentGate,

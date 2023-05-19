@@ -37,6 +37,8 @@ export const SplitPersonalNumberContainer = () => {
     outputs.$samePersonalAccountNumderId,
   );
 
+  const isCheckApartLoading = useStore(outputs.$isCheckApartLoading);
+
   const handleSubmitSwitchStage = useEvent(inputs.handleSubmitSwitchStage);
   const handleSubmitAddNewApartmentStage = useEvent(
     inputs.handleSubmitAddNewApartmentStage,
@@ -84,6 +86,7 @@ export const SplitPersonalNumberContainer = () => {
         individualDevices={individualDevices}
         handleSubmitTransferDevicesStage={handleSubmitTransferDevicesStage}
         handleCheckApartmentExist={handleCheckApartmentExist}
+        isCheckApartLoading={isCheckApartLoading}
       />
     </>
   );

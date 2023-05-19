@@ -23,6 +23,7 @@ export const PersonalNumberPageContainer: FC<
   isLastStage,
   isFirstStage,
   handleCheckApartmentExist,
+  isCheckApartLoading,
 }) => {
   const history = useHistory();
 
@@ -57,10 +58,10 @@ export const PersonalNumberPageContainer: FC<
           <Button
             htmlType="submit"
             htmlForm={formId}
-            isLoading={isLoading}
             onClick={() =>
               handleCheckApartmentExist && handleCheckApartmentExist()
             }
+            isLoading={isCheckApartLoading}
           >
             Сохранить изменения
           </Button>

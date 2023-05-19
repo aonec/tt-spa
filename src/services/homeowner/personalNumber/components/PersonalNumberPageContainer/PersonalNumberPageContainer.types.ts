@@ -9,4 +9,5 @@ export type PersonalNumberPageContainerProps = {
   isFirstStage?: boolean;
   isLastStage?: boolean;
   handleCheckApartmentExist?: () => void;
+  isCheckApartLoading?: boolean;
 };

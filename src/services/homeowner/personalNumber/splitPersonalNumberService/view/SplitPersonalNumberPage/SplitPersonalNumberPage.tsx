@@ -26,6 +26,7 @@ export const SplitPersonalNumberPage: FC<SplitPersonalNumberPageProps> = ({
   individualDevices,
   handleSubmitTransferDevicesStage,
   handleCheckApartmentExist,
+  isCheckApartLoading,
 }) => {
   const { Step } = Steps;
   const stepTitles = [
@@ -44,6 +45,7 @@ export const SplitPersonalNumberPage: FC<SplitPersonalNumberPageProps> = ({
         isFirstStage={stageNumber === 1}
         isLastStage={stageNumber === 3}
         handleCheckApartmentExist={handleCheckApartmentExist}
+        isCheckApartLoading={isCheckApartLoading}
       >
         {stageNumber === 1 && (
           <SwitchStage

@@ -13,10 +13,13 @@ import {
 
 export const ConfirmUsingExistingApartmentForm: FC<
   ConfirmUsingExistingApartmentFormProps
-> = ({ apartment, devices, isPending }) => {
-  const isApartmentHasDevices = Boolean(devices?.length);
-  const hasApartmentHomeowners = Boolean(apartment?.homeownerAccounts);
-
+> = ({
+  apartment,
+  devices,
+  isPending,
+  isApartmentHasDevices,
+  isApartmentHasHomeowners,
+}) => {
   const address = apartment && getApartmentAddressString(apartment);
 
   return (
@@ -27,12 +30,12 @@ export const ConfirmUsingExistingApartmentForm: FC<
           {address}
         </LinkSc>{' '}
         {` уже существует, ${
-          isApartmentHasDevices || hasApartmentHomeowners
+          isApartmentHasDevices || isApartmentHasHomeowners
             ? 'но вы не можете ее использовать, так как на ней есть приборы или незакрытые лицевые счета'
             : 'вы хотите использовать ее?'
         }`}
       </Description>
-      {hasApartmentHomeowners && (
+      {isApartmentHasHomeowners && (
         <>
           <FlexContainer>
             {apartment?.homeownerAccounts?.map((elem) => (
