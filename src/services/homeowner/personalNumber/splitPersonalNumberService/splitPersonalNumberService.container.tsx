@@ -5,6 +5,7 @@ import { useEvent, useStore } from 'effector-react';
 import { useHistory, useParams } from 'react-router-dom';
 import { AllIndividualDeviceMountPlacesGate } from '01/features/individualDeviceMountPlaces/displayIndividualDeviceMountPlaces/models';
 import { ConfirmationAddingExistingPersonalNumber } from '../components/ConfirmationAddingExistingPersonalNumberModal';
+import { ConfirmUsingExistingArartmentModal } from '../components/ConfirmUsingExistingApartmentModal/ConfirmUsingExistingArartmentModal';
 
 const {
   inputs,
@@ -56,7 +57,7 @@ export const SplitPersonalNumberContainer = () => {
     return inputs.successSplit.watch(() => {
       history.push(`meters/apartments/${apartmentId}`);
     });
-  }, [history]);
+  }, [history, apartmentId]);
 
   return (
     <>
@@ -69,6 +70,7 @@ export const SplitPersonalNumberContainer = () => {
         confirmationModalClose={() => handleForceConfirmationModalClose()}
         handleForced={onForced}
       />
+      <ConfirmUsingExistingArartmentModal />
       <SplitPersonalNumberPage
         stageNumber={stageNumber}
         apartment={apartment}

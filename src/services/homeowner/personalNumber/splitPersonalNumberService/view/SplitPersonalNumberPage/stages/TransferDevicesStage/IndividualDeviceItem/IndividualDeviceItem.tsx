@@ -17,14 +17,18 @@ export const IndividualDeviceItem: FC<IndividualDeviceItemProps> = ({
   device,
   isSelected,
   chooseDevice,
+  isCheckable,
 }) => {
   const allIndividualDeviceMountPlaces = useStore(
     $allIndividualDeviceMountPlaces,
   );
 
   return (
-    <Device selected={isSelected} onClick={() => chooseDevice(device.id)}>
-      <Checkbox checked={isSelected} />
+    <Device
+      selected={isSelected}
+      onClick={() => chooseDevice && chooseDevice(device.id)}
+    >
+      {isCheckable && <Checkbox checked={isSelected} />}
       <>
         {device?.resource && <ResourceIconLookup resource={device?.resource} />}
         {device.serialNumber && (

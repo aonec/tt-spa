@@ -264,6 +264,7 @@ export const splitPersonalNumberService = {
     $individualDevices,
     $isConfirmationModalOpen,
     $samePersonalAccountNumderId,
+    $checkedExistingApartmentId,
   },
   gates: {
     ApartmentGate: apartmentProfileService.gates.ApartmentGate,

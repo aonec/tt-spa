@@ -45,6 +45,7 @@ export const TransferDevicesStage: FC<TransferDevicesStageProps> = ({
     <Wrapper onSubmitCapture={handleSubmit} id={formId}>
       {individualDevices?.items.map((device) => (
         <IndividualDeviceItem
+          isCheckable
           key={device.id}
           device={device}
           isSelected={values.individualDeviceIdsForSwitch.includes(device.id)}
