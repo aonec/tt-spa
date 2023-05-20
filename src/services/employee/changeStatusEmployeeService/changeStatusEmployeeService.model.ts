@@ -2,10 +2,12 @@ import { combine, createDomain, forward, sample, split } from 'effector';
 import {
   getOrganizationUser,
   getOrganizationUserTasksByRoles,
+  getOrganizationUsersByRolesList,
   postEmloyeeStatus,
 } from './changeStatusEmployeeService.api';
 import {
   AddOrganizationUserWorkingStatusRequest,
+  ESecuredIdentityRoleName,
   OrganizationUserResponse,
   OrganizationUserWorkingStatusResponse,
   UserStatusResponse,
@@ -15,6 +17,7 @@ import { EffectFailDataAxiosError } from 'types';
 import {
   EmployeeStatus,
   GetOrganizationUserTasksByRolesRequestParams,
+  OrganizationUsersByRolesList,
   UserTasksByRoles,
 } from './changeStatusEmployeeService.types';
 import {
@@ -61,6 +64,11 @@ const fetchOrganizationUserTasksByRolesFx = domain.createEffect<
   UserTasksByRoles
 >(getOrganizationUserTasksByRoles);
 
+const fetchOrganizationUsersByRolesListFx = domain.createEffect<
+  ESecuredIdentityRoleName[],
+  OrganizationUsersByRolesList
+>(getOrganizationUsersByRolesList);
+
 const successUpdateStatus = updateStatusFx.doneData;
 
 const $isModalOpen = domain
@@ -91,6 +99,11 @@ const $userStatusChangeRequestPayload = domain
 const $isTransferUserTasksModalOpen = domain
   .createStore(false)
   .on(openTransferTasksModal, () => true)
+  .reset(handleCloseModal);
+
+const $organizationUsersByRolesList = domain
+  .createStore<OrganizationUsersByRolesList | null>(null)
+  .on(fetchOrganizationUsersByRolesListFx.doneData, (_, users) => users)
   .reset(handleCloseModal);
 
 split({
@@ -129,6 +142,16 @@ sample({
     };
   },
   target: fetchOrganizationUserTasksByRolesFx,
+});
+
+sample({
+  clock: fetchOrganizationUserTasksByRoles,
+  source: $currentUser,
+  filter: (user): user is OrganizationUserResponse => Boolean(user),
+  fn: (user) => {
+    return user?.roles?.map((elem) => elem.key!) || [];
+  },
+  target: fetchOrganizationUsersByRolesListFx,
 });
 
 sample({
@@ -185,5 +208,6 @@ export const changeStatusEmployeeService = {
     $organizationUserTasksByRoles,
     $isTransferUserTasksModalOpen,
     $currentUser,
+    $organizationUsersByRolesList,
   },
 };

@@ -1,6 +1,10 @@
+import queryString from 'query-string';
 import { axios } from '01/axios';
 import {
   AddOrganizationUserWorkingStatusRequest,
+  EOrganizationUserWorkingStatusType,
+  ESecuredIdentityRoleName,
+  OrganizationUserListResponsePagedList,
   OrganizationUserResponse,
   OrganizationUserWorkingStatusResponse,
   TasksPagedList,
@@ -8,6 +12,8 @@ import {
 import {
   GetOrganizationUserTasksByRolesRequestParams,
   GetOrganizationUserTasksRequestParams,
+  GetOrganizationUsersListRequestParams,
+  OrganizationUsersByRolesList,
   UserTasksByRoles,
 } from './changeStatusEmployeeService.types';
 
@@ -39,6 +45,29 @@ export const getOrganizationUserTasksByRoles = ({
       });
 
       return { role, tasks: pagedTasksList?.items || [] };
+    }),
+  );
+};
+
+export const getOrganizationUsersList = (
+  params: GetOrganizationUsersListRequestParams,
+): Promise<OrganizationUserListResponsePagedList> =>
+  axios.get('OrganizationUsers', {
+    params,
+    paramsSerializer: queryString.stringify,
+  });
+
+export const getOrganizationUsersByRolesList = (
+  roles: ESecuredIdentityRoleName[],
+): Promise<OrganizationUsersByRolesList> => {
+  return Promise.all(
+    roles.map(async (role) => {
+      const pagedTasksList = await getOrganizationUsersList({
+        RoleNames: [role],
+        WorkingStatusType: EOrganizationUserWorkingStatusType.Working,
+      });
+
+      return { role, users: pagedTasksList?.items || [] };
     }),
   );
 };

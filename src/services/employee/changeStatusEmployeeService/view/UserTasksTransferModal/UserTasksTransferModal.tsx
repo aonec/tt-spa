@@ -1,20 +1,27 @@
-import React, { FC, useState } from 'react';
-import { UserTasksTransferModalProps } from './UserTasksTransferModal.types';
+import React, { FC, useEffect, useState } from 'react';
+import { ESecuredIdentityRoleName } from 'myApi';
 import { FormModal } from 'ui-kit/Modals/FormModal';
+import { Select } from 'ui-kit/Select';
+import { TasksListPanel } from './TasksListPanel';
+import { SpaceLine } from '01/shared/ui/Layout/Space/Space';
+import { Input } from 'ui-kit/Input';
+import { SearchIcon } from 'ui-kit/icons';
+import { UserTasksTransferModalProps } from './UserTasksTransferModal.types';
 import {
   ContentWrapper,
   Header,
+  SearchWrapper,
   SelectSC,
+  SpaceLineWrapper,
 } from './UserTasksTransferModal.styled';
-import { Select } from 'ui-kit/Select';
-import { TasksListPanel } from './TasksListPanel';
-import { ESecuredIdentityRoleName } from 'myApi';
+import { UsersListSelect } from './UsersListSelect';
 
 export const UserTasksTransferModal: FC<UserTasksTransferModalProps> = ({
   isModalOpen,
   organizationUserTasksByRoles,
   handleCloseModal,
   currentUser,
+  organizationUsersByRolesList,
 }) => {
   const [selectedRole, setSelectedRole] =
     useState<ESecuredIdentityRoleName | null>(null);
@@ -44,6 +51,14 @@ export const UserTasksTransferModal: FC<UserTasksTransferModalProps> = ({
     organizationUserTasksByRoles?.find((elem) => elem.role.key === selectedRole)
       ?.tasks || [];
 
+  const filteredUsers =
+    organizationUsersByRolesList?.find((elem) => elem.role === selectedRole)
+      ?.users || [];
+
+  useEffect(() => {
+    setSelectedRole(null);
+  }, [isModalOpen]);
+
   return (
     <FormModal
       title="У сотрудника есть незавершенные задачи"
@@ -56,6 +71,17 @@ export const UserTasksTransferModal: FC<UserTasksTransferModalProps> = ({
             filteredTasks={filteredTasks}
             selectedRole={selectedRole}
           />
+          <SearchWrapper>
+            <Input
+              small
+              prefix={<SearchIcon />}
+              placeholder="Введите ФИО сотрудника"
+            />
+            <SpaceLineWrapper>
+              <SpaceLine />
+            </SpaceLineWrapper>
+          </SearchWrapper>
+          <UsersListSelect organizationUsersList={filteredUsers} />
         </ContentWrapper>
       }
       formId="user-tasks-transfer-form"

@@ -1,7 +1,7 @@
 import React from 'react';
+import { useEvent, useStore } from 'effector-react';
 import { ChangeStatusEmployeeModal } from './view/ChangeStatusEmployeeModal';
 import { changeStatusEmployeeService } from './changeStatusEmployeeService.model';
-import { useEvent, useStore } from 'effector-react';
 import { UserTasksTransferModal } from './view/UserTasksTransferModal';
 
 const { inputs, outputs } = changeStatusEmployeeService;
@@ -17,6 +17,9 @@ export const ChangeStatusEmployeeContainer = () => {
     outputs.$isTransferUserTasksModalOpen,
   );
   const currentUser = useStore(outputs.$currentUser);
+  const organizationUsersByRolesList = useStore(
+    outputs.$organizationUsersByRolesList,
+  );
 
   const handleCloseModal = useEvent(inputs.handleCloseModal);
   const handleUpdateStatus = useEvent(inputs.handleUpdateStatus);
@@ -31,10 +34,11 @@ export const ChangeStatusEmployeeContainer = () => {
         isLoading={isLoading}
       />
       <UserTasksTransferModal
-        organizationUserTasksByRoles={organizationUserTasksByRoles}
         isModalOpen={isTransferUserTasksModalOpen}
+        organizationUserTasksByRoles={organizationUserTasksByRoles}
         handleCloseModal={handleCloseModal}
         currentUser={currentUser}
+        organizationUsersByRolesList={organizationUsersByRolesList}
       />
     </>
   );
