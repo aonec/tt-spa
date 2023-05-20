@@ -31,3 +31,9 @@ export const TasksCount = styled.div`
   font-size: 14px;
   color: rgba(39, 47, 90, 0.7);
 `;
+
+export const TasksCountWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 16px;
+`;
