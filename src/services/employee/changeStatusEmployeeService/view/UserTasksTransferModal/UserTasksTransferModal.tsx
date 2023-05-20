@@ -52,8 +52,9 @@ export const UserTasksTransferModal: FC<UserTasksTransferModalProps> = ({
       ?.tasks || [];
 
   const filteredUsers =
-    organizationUsersByRolesList?.find((elem) => elem.role === selectedRole)
-      ?.users || [];
+    organizationUsersByRolesList
+      ?.find((elem) => elem.role === selectedRole)
+      ?.users?.filter((user) => user.id !== currentUser?.id) || [];
 
   useEffect(() => {
     setSelectedRole(null);

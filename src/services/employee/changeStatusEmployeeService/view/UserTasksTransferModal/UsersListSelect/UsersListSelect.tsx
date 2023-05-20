@@ -6,6 +6,8 @@ import {
   UserWrapper,
   TasksCount,
 } from './UsersListSelect.styled';
+import { getCountText } from 'utils/getCountText';
+import { tasksCountTexts } from '../TasksListPanel/TasksListPanel.constants';
 
 export const UsersListSelect: FC<UsersListSelectProps> = ({
   organizationUsersList,
@@ -17,7 +19,10 @@ export const UsersListSelect: FC<UsersListSelectProps> = ({
           <UserName>
             {user.lastName} {user.firstName} {user.middleName}
           </UserName>
-          <TasksCount>{user.executingTaskCount} задач</TasksCount>
+          <TasksCount>
+            {user.executingTaskCount}{' '}
+            {getCountText(user.executingTaskCount, tasksCountTexts)}
+          </TasksCount>
         </UserWrapper>
       ))}
     </Wrapper>

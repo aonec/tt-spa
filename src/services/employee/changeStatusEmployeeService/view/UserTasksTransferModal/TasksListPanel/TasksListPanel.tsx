@@ -13,6 +13,8 @@ import { prepareData } from 'services/tasks/tasksProfileService/tasksProfileServ
 import { TaskGroupingFilter } from 'myApi';
 import { TasksList } from 'services/tasks/tasksProfileService/view/TasksList';
 import { TaskType } from 'services/tasks/tasksProfileService/view/TasksListItem/TasksListItem.types';
+import { getCountText } from 'utils/getCountText';
+import { tasksCountTexts } from './TasksListPanel.constants';
 
 export const TasksListPanel: FC<TasksListPanelProps> = ({
   filteredTasks,
@@ -21,7 +23,10 @@ export const TasksListPanel: FC<TasksListPanelProps> = ({
   const [isOpen, setIsOpen] = useState(false);
 
   const tasksCountText = Boolean(filteredTasks.length)
-    ? `${filteredTasks.length} задач`
+    ? `${filteredTasks.length} ${getCountText(
+        filteredTasks.length,
+        tasksCountTexts,
+      )}`
     : selectedRole
     ? 'Нет задач'
     : '';
