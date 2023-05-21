@@ -41,6 +41,8 @@ export const UserTasksTransferModal: FC<UserTasksTransferModalProps> = ({
     UserReassignment[]
   >([]);
 
+  const [userSearchText, setUserSearchText] = useState('');
+
   const onSubmit = () => {
     const filteredReassignments = usersReassignments.filter(
       (elem) => elem.userId,
@@ -69,9 +71,20 @@ export const UserTasksTransferModal: FC<UserTasksTransferModalProps> = ({
     return (
       organizationUsersByRolesList
         ?.find((elem) => elem.role === selectedRole)
-        ?.users?.filter((user) => user.id !== currentUser?.id) || []
+        ?.users?.filter((user) => user.id !== currentUser?.id)
+        ?.filter(
+          (user) =>
+            `${user.lastName} ${user.firstName} ${user.middleName}`
+              .toLowerCase()
+              .indexOf(userSearchText.toLowerCase()) !== -1,
+        ) || []
     );
-  }, [currentUser?.id, organizationUsersByRolesList, selectedRole]);
+  }, [
+    currentUser?.id,
+    organizationUsersByRolesList,
+    selectedRole,
+    userSearchText,
+  ]);
 
   const filteredTasks = useMemo(() => {
     return (
@@ -176,6 +189,8 @@ export const UserTasksTransferModal: FC<UserTasksTransferModalProps> = ({
               small
               prefix={<SearchIcon />}
               placeholder="Введите ФИО сотрудника"
+              value={userSearchText}
+              onChange={(e) => setUserSearchText(e.target.value)}
             />
             <SpaceLineWrapper>
               <SpaceLine />
