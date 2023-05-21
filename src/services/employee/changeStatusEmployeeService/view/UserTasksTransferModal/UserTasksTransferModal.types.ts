@@ -1,4 +1,4 @@
-import { OrganizationUserResponse } from 'myApi';
+import { ESecuredIdentityRoleName, OrganizationUserResponse } from 'myApi';
 import {
   OrganizationUsersByRolesList,
   UserTasksByRoles,
@@ -10,4 +10,9 @@ export type UserTasksTransferModalProps = {
   handleCloseModal: () => void;
   currentUser: OrganizationUserResponse | null;
   organizationUsersByRolesList: OrganizationUsersByRolesList | null;
+};
+
+export type UserReassingment = {
+  role: ESecuredIdentityRoleName;
+  userId: number | null;
 };

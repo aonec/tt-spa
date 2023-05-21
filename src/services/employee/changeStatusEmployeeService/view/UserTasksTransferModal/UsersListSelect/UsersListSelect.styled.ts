@@ -5,7 +5,7 @@ export const Wrapper = styled.div`
   width: calc(100% + 32px);
 `;
 
-export const UserWrapper = styled.div`
+export const UserWrapper = styled.div<{ isSelected: boolean }>`
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -14,9 +14,17 @@ export const UserWrapper = styled.div`
   border-radius: 8px;
   transition: 0.2s;
   padding: 0 16px;
+  margin-top: 4px;
+
+  &:first-child {
+    margin-top: 0;
+  }
+
+  ${({ isSelected }) =>
+    isSelected && 'background: rgba(24, 158, 233, 0.16) !important;'}
 
   &:hover {
-    background: rgba(24, 158, 233, 0.16);
+    background: rgba(24, 158, 233, 0.08);
   }
 `;
 

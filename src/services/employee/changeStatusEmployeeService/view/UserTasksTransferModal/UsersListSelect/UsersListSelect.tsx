@@ -13,23 +13,32 @@ import { CheckMark } from 'ui-kit/icons';
 
 export const UsersListSelect: FC<UsersListSelectProps> = ({
   organizationUsersList,
+  selectedUser,
+  handleSelectUser,
 }) => {
   return (
     <Wrapper>
-      {organizationUsersList?.map((user) => (
-        <UserWrapper>
-          <UserName>
-            {user.lastName} {user.firstName} {user.middleName}
-          </UserName>
-          <TasksCountWrapper>
-            <TasksCount>
-              {user.executingTaskCount}{' '}
-              {getCountText(user.executingTaskCount, tasksCountTexts)}
-            </TasksCount>
-            <CheckMark />
-          </TasksCountWrapper>
-        </UserWrapper>
-      ))}
+      {organizationUsersList?.map((user) => {
+        const isUserSelected = selectedUser === user.id;
+
+        return (
+          <UserWrapper
+            isSelected={isUserSelected}
+            onClick={() => handleSelectUser(user.id)}
+          >
+            <UserName>
+              {user.lastName} {user.firstName} {user.middleName}
+            </UserName>
+            <TasksCountWrapper>
+              <TasksCount>
+                {user.executingTaskCount}{' '}
+                {getCountText(user.executingTaskCount, tasksCountTexts)}
+              </TasksCount>
+              {isUserSelected && <CheckMark />}
+            </TasksCountWrapper>
+          </UserWrapper>
+        );
+      })}
     </Wrapper>
   );
 };

@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useCallback, useEffect, useMemo, useState } from 'react';
 import { ESecuredIdentityRoleName } from 'myApi';
 import { FormModal } from 'ui-kit/Modals/FormModal';
 import { Select } from 'ui-kit/Select';
@@ -6,11 +6,16 @@ import { TasksListPanel } from './TasksListPanel';
 import { SpaceLine } from '01/shared/ui/Layout/Space/Space';
 import { Input } from 'ui-kit/Input';
 import { SearchIcon } from 'ui-kit/icons';
-import { UserTasksTransferModalProps } from './UserTasksTransferModal.types';
+import {
+  UserReassingment,
+  UserTasksTransferModalProps,
+} from './UserTasksTransferModal.types';
 import {
   ContentWrapper,
+  GreenPoint,
   Header,
   SearchWrapper,
+  SelectRoleOptionWrapper,
   SelectSC,
   SpaceLineWrapper,
 } from './UserTasksTransferModal.styled';
@@ -26,6 +31,61 @@ export const UserTasksTransferModal: FC<UserTasksTransferModalProps> = ({
   const [selectedRole, setSelectedRole] =
     useState<ESecuredIdentityRoleName | null>(null);
 
+  const [usersReassigments, setUsersReassigments] = useState<
+    UserReassingment[]
+  >([]);
+
+  useEffect(() => {
+    setSelectedRole(null);
+  }, [isModalOpen]);
+
+  useEffect(() => {
+    const initialReassingments: UserReassingment[] =
+      organizationUsersByRolesList?.map((elem) => ({
+        role: elem.role,
+        userId: null,
+      })) || [];
+
+    setUsersReassigments(initialReassingments);
+  }, [organizationUsersByRolesList]);
+
+  const filteredUsers = useMemo(() => {
+    return (
+      organizationUsersByRolesList
+        ?.find((elem) => elem.role === selectedRole)
+        ?.users?.filter((user) => user.id !== currentUser?.id) || []
+    );
+  }, [currentUser?.id, organizationUsersByRolesList, selectedRole]);
+
+  const filteredTasks = useMemo(() => {
+    return (
+      organizationUserTasksByRoles?.find(
+        (elem) => elem.role.key === selectedRole,
+      )?.tasks || []
+    );
+  }, [organizationUserTasksByRoles, selectedRole]);
+
+  const currentSelectedUser = useMemo(() => {
+    return (
+      usersReassigments.find((elem) => elem.role === selectedRole)?.userId ||
+      null
+    );
+  }, [selectedRole, usersReassigments]);
+
+  const handleSelectUser = useCallback(
+    (userId: number) => {
+      const isSelectedUser = userId === currentSelectedUser;
+      const newValue = isSelectedUser ? null : userId;
+
+      setUsersReassigments((prev) =>
+        prev.map((elem) =>
+          elem.role === selectedRole ? { ...elem, userId: newValue } : elem,
+        ),
+      );
+    },
+    [currentSelectedUser, selectedRole],
+  );
+
   const header = (
     <Header>
       <h4>
@@ -38,27 +98,25 @@ export const UserTasksTransferModal: FC<UserTasksTransferModalProps> = ({
         value={selectedRole || undefined}
         onChange={(value) => setSelectedRole(value as ESecuredIdentityRoleName)}
       >
-        {organizationUserTasksByRoles?.map(({ role }) => (
-          <Select.Option key={role.key} value={role.key!}>
-            {role.value}
-          </Select.Option>
-        ))}
+        {organizationUserTasksByRoles?.map(({ role }) => {
+          const reassingmentByRole = usersReassigments.find(
+            (elem) => elem.role === role?.key,
+          );
+
+          const isReassigmentFilled = Boolean(reassingmentByRole?.userId);
+
+          return (
+            <Select.Option key={role.key} value={role.key!}>
+              <SelectRoleOptionWrapper>
+                <div>{role.value}</div>
+                {isReassigmentFilled && <GreenPoint />}
+              </SelectRoleOptionWrapper>
+            </Select.Option>
+          );
+        })}
       </SelectSC>
     </Header>
   );
-
-  const filteredTasks =
-    organizationUserTasksByRoles?.find((elem) => elem.role.key === selectedRole)
-      ?.tasks || [];
-
-  const filteredUsers =
-    organizationUsersByRolesList
-      ?.find((elem) => elem.role === selectedRole)
-      ?.users?.filter((user) => user.id !== currentUser?.id) || [];
-
-  useEffect(() => {
-    setSelectedRole(null);
-  }, [isModalOpen]);
 
   return (
     <FormModal
@@ -82,7 +140,11 @@ export const UserTasksTransferModal: FC<UserTasksTransferModalProps> = ({
               <SpaceLine />
             </SpaceLineWrapper>
           </SearchWrapper>
-          <UsersListSelect organizationUsersList={filteredUsers} />
+          <UsersListSelect
+            selectedUser={currentSelectedUser}
+            handleSelectUser={handleSelectUser}
+            organizationUsersList={filteredUsers}
+          />
         </ContentWrapper>
       }
       formId="user-tasks-transfer-form"
