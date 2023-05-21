@@ -23,6 +23,9 @@ export const ChangeStatusEmployeeContainer = () => {
 
   const handleCloseModal = useEvent(inputs.handleCloseModal);
   const handleUpdateStatus = useEvent(inputs.handleUpdateStatus);
+  const handleApplyTasksReassignment = useEvent(
+    inputs.handleApplyTasksReassignment,
+  );
 
   return (
     <>
@@ -35,10 +38,12 @@ export const ChangeStatusEmployeeContainer = () => {
       />
       <UserTasksTransferModal
         isModalOpen={isTransferUserTasksModalOpen}
+        isLoading={isLoading}
         organizationUserTasksByRoles={organizationUserTasksByRoles}
         handleCloseModal={handleCloseModal}
         currentUser={currentUser}
         organizationUsersByRolesList={organizationUsersByRolesList}
+        handleApplyTasksReassignment={handleApplyTasksReassignment}
       />
     </>
   );

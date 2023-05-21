@@ -1,5 +1,8 @@
 import React, { FC, useCallback, useEffect, useMemo, useState } from 'react';
-import { ESecuredIdentityRoleName } from 'myApi';
+import {
+  ESecuredIdentityRoleName,
+  OrganizationUserTaskReassignment,
+} from 'myApi';
 import { FormModal } from 'ui-kit/Modals/FormModal';
 import { Select } from 'ui-kit/Select';
 import { TasksListPanel } from './TasksListPanel';
@@ -7,11 +10,12 @@ import { SpaceLine } from '01/shared/ui/Layout/Space/Space';
 import { Input } from 'ui-kit/Input';
 import { SearchIcon } from 'ui-kit/icons';
 import {
-  UserReassingment,
+  UserReassignment,
   UserTasksTransferModalProps,
 } from './UserTasksTransferModal.types';
 import {
   ContentWrapper,
+  GrayPoint,
   GreenPoint,
   Header,
   SearchWrapper,
@@ -27,26 +31,38 @@ export const UserTasksTransferModal: FC<UserTasksTransferModalProps> = ({
   handleCloseModal,
   currentUser,
   organizationUsersByRolesList,
+  isLoading,
+  handleApplyTasksReassignment,
 }) => {
   const [selectedRole, setSelectedRole] =
     useState<ESecuredIdentityRoleName | null>(null);
 
-  const [usersReassigments, setUsersReassigments] = useState<
-    UserReassingment[]
+  const [usersReassignments, setUsersReassignments] = useState<
+    UserReassignment[]
   >([]);
+
+  const onSubmit = () => {
+    const filteredReassignments = usersReassignments.filter(
+      (elem) => elem.userId,
+    );
+
+    handleApplyTasksReassignment(
+      filteredReassignments as OrganizationUserTaskReassignment[],
+    );
+  };
 
   useEffect(() => {
     setSelectedRole(null);
   }, [isModalOpen]);
 
   useEffect(() => {
-    const initialReassingments: UserReassingment[] =
+    const initialReassignments: UserReassignment[] =
       organizationUsersByRolesList?.map((elem) => ({
         role: elem.role,
         userId: null,
       })) || [];
 
-    setUsersReassigments(initialReassingments);
+    setUsersReassignments(initialReassignments);
   }, [organizationUsersByRolesList]);
 
   const filteredUsers = useMemo(() => {
@@ -67,17 +83,31 @@ export const UserTasksTransferModal: FC<UserTasksTransferModalProps> = ({
 
   const currentSelectedUser = useMemo(() => {
     return (
-      usersReassigments.find((elem) => elem.role === selectedRole)?.userId ||
+      usersReassignments.find((elem) => elem.role === selectedRole)?.userId ||
       null
     );
-  }, [selectedRole, usersReassigments]);
+  }, [selectedRole, usersReassignments]);
+
+  const isDisabledSubmitButton = useMemo(() => {
+    const neededReassignments = usersReassignments.filter((reassingment) => {
+      const tasksByRole = organizationUserTasksByRoles?.find(
+        ({ role }) => role.key === reassingment.role,
+      );
+
+      return Boolean(tasksByRole?.tasks?.length);
+    });
+
+    return !neededReassignments.every((reassingment) =>
+      Boolean(reassingment.userId),
+    );
+  }, [organizationUserTasksByRoles, usersReassignments]);
 
   const handleSelectUser = useCallback(
     (userId: number) => {
       const isSelectedUser = userId === currentSelectedUser;
       const newValue = isSelectedUser ? null : userId;
 
-      setUsersReassigments((prev) =>
+      setUsersReassignments((prev) =>
         prev.map((elem) =>
           elem.role === selectedRole ? { ...elem, userId: newValue } : elem,
         ),
@@ -99,17 +129,25 @@ export const UserTasksTransferModal: FC<UserTasksTransferModalProps> = ({
         onChange={(value) => setSelectedRole(value as ESecuredIdentityRoleName)}
       >
         {organizationUserTasksByRoles?.map(({ role }) => {
-          const reassingmentByRole = usersReassigments.find(
+          const reassingmentByRole = usersReassignments.find(
             (elem) => elem.role === role?.key,
           );
 
-          const isReassigmentFilled = Boolean(reassingmentByRole?.userId);
+          const tasksByRole = organizationUserTasksByRoles?.find(
+            ({ role: paramRole }) => paramRole.key === role?.key,
+          );
+
+          const isReassignmentNotNeed = !tasksByRole?.tasks?.length;
+          const isReassignmentFilled = Boolean(reassingmentByRole?.userId);
 
           return (
             <Select.Option key={role.key} value={role.key!}>
               <SelectRoleOptionWrapper>
                 <div>{role.value}</div>
-                {isReassigmentFilled && <GreenPoint />}
+                {isReassignmentNotNeed && !isReassignmentFilled && (
+                  <GrayPoint />
+                )}
+                {isReassignmentFilled && <GreenPoint />}
               </SelectRoleOptionWrapper>
             </Select.Option>
           );
@@ -123,6 +161,9 @@ export const UserTasksTransferModal: FC<UserTasksTransferModalProps> = ({
       title="У сотрудника есть незавершенные задачи"
       visible={isModalOpen}
       onCancel={handleCloseModal}
+      loading={isLoading}
+      onSubmit={onSubmit}
+      disabled={isDisabledSubmitButton}
       form={
         <ContentWrapper>
           {header}
@@ -141,6 +182,7 @@ export const UserTasksTransferModal: FC<UserTasksTransferModalProps> = ({
             </SpaceLineWrapper>
           </SearchWrapper>
           <UsersListSelect
+            isRoleSelected={Boolean(selectedRole)}
             selectedUser={currentSelectedUser}
             handleSelectUser={handleSelectUser}
             organizationUsersList={filteredUsers}

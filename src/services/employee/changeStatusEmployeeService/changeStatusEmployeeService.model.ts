@@ -9,6 +9,7 @@ import {
   AddOrganizationUserWorkingStatusRequest,
   ESecuredIdentityRoleName,
   OrganizationUserResponse,
+  OrganizationUserTaskReassignment,
   OrganizationUserWorkingStatusResponse,
   UserStatusResponse,
 } from 'myApi';
@@ -47,6 +48,9 @@ const sendUpdateStatusRequest = domain.createEvent();
 
 const sendUpdateStatusRequestWithPayload =
   domain.createEvent<AddOrganizationUserWorkingStatusRequest>();
+
+const handleApplyTasksReassignment =
+  domain.createEvent<OrganizationUserTaskReassignment[]>();
 
 const updateStatusFx = domain.createEffect<
   AddOrganizationUserWorkingStatusRequest,
@@ -169,6 +173,13 @@ sample({
   target: updateStatusFx,
 });
 
+sample({
+  source: $userStatusChangeRequestPayload,
+  clock: handleApplyTasksReassignment,
+  fn: (payload, reassignments) => ({ ...payload, reassignments }),
+  target: sendUpdateStatusRequestWithPayload,
+});
+
 updateStatusFx.failData.watch((error) =>
   message.error(error.response.data.error.Text),
 );
@@ -200,6 +211,7 @@ export const changeStatusEmployeeService = {
     handleUpdateStatus,
     handleCatchEmployeeStatusData,
     successUpdateStatus,
+    handleApplyTasksReassignment,
   },
   outputs: {
     $isModalOpen,

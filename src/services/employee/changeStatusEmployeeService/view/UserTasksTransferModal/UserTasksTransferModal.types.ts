@@ -1,4 +1,8 @@
-import { ESecuredIdentityRoleName, OrganizationUserResponse } from 'myApi';
+import {
+  ESecuredIdentityRoleName,
+  OrganizationUserResponse,
+  OrganizationUserTaskReassignment,
+} from 'myApi';
 import {
   OrganizationUsersByRolesList,
   UserTasksByRoles,
@@ -10,9 +14,13 @@ export type UserTasksTransferModalProps = {
   handleCloseModal: () => void;
   currentUser: OrganizationUserResponse | null;
   organizationUsersByRolesList: OrganizationUsersByRolesList | null;
+  isLoading: boolean;
+  handleApplyTasksReassignment: (
+    payload: OrganizationUserTaskReassignment[],
+  ) => void;
 };
 
-export type UserReassingment = {
+export type UserReassignment = {
   role: ESecuredIdentityRoleName;
   userId: number | null;
 };

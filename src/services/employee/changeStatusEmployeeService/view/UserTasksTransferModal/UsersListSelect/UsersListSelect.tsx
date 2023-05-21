@@ -10,12 +10,18 @@ import {
 import { getCountText } from 'utils/getCountText';
 import { tasksCountTexts } from '../TasksListPanel/TasksListPanel.constants';
 import { CheckMark } from 'ui-kit/icons';
+import { Empty } from 'antd';
 
 export const UsersListSelect: FC<UsersListSelectProps> = ({
   organizationUsersList,
   selectedUser,
   handleSelectUser,
+  isRoleSelected,
 }) => {
+  const emptyDescription = isRoleSelected
+    ? 'Нет подходящих сотрудников'
+    : 'Выберите роль для просмотра сотрудников';
+
   return (
     <Wrapper>
       {organizationUsersList?.map((user) => {
@@ -39,6 +45,12 @@ export const UsersListSelect: FC<UsersListSelectProps> = ({
           </UserWrapper>
         );
       })}
+      {!organizationUsersList?.length && (
+        <Empty
+          image={Empty.PRESENTED_IMAGE_SIMPLE}
+          description={emptyDescription}
+        />
+      )}
     </Wrapper>
   );
 };

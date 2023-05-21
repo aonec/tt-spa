@@ -36,3 +36,7 @@ export const GreenPoint = styled(PointIcon)`
     fill: #17b45a !important;
   }
 `;
+
+export const GrayPoint = styled(PointIcon)`
+  transform: scale(1.2);
+`;
