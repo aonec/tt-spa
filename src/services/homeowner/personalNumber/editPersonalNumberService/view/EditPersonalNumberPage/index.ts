@@ -1,0 +1,1 @@
+export { EditPersonalNumberPage } from './EditPersonalNumberPage';

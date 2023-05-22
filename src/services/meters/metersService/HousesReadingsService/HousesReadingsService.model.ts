@@ -17,9 +17,9 @@ import {
   getHousingStock,
   getIndividualDevicesList,
 } from './HousesReadingsService.api';
-import { InspectorGate, $inspector } from '01/features/Inspectors/models';
 import { managementFirmConsumptionRatesService } from 'services/meters/managementFirmConsumptionRatesService';
 import { openReadingsHistoryModal } from '01/features/readings/displayReadingHistory/models/index';
+import { inspectorService } from 'services/inspectors/inspectorService';
 
 const domain = createDomain('housesReadingsService');
 
@@ -159,7 +159,7 @@ export const housesReadingsService = {
   outputs: {
     $housingStock,
     $isLoadingHousingStock,
-    $inspector,
+    $inspector: inspectorService.outputs.$inspector,
     $individualDevices,
     $isAllDevicesLoaded,
     $isLoadingIndividualDevices,
@@ -168,6 +168,6 @@ export const housesReadingsService = {
   },
   gates: {
     HousingStockGate,
-    InspectorGate,
+    InspectorGate: inspectorService.gates.InspectorGate,
   },
 };

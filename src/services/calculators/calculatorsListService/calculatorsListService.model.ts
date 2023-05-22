@@ -1,4 +1,4 @@
-import { createDomain, sample } from 'effector';
+import { createDomain, forward, sample } from 'effector';
 import { createGate } from 'effector-react';
 import { CalculatorIntoHousingStockResponse } from 'myApi';
 import { getCalculatorsList } from './calculatorsListService.api';
@@ -31,6 +31,11 @@ sample({
   source: CalculatorsGate.state.map(({ housingStockId }) => housingStockId),
   filter: (housingStockId) => Boolean(housingStockId),
   target: fetchCalculatorsFx,
+});
+
+forward({
+  from: CalculatorsGate.state.map(({ housingStockId }) => housingStockId),
+  to: fetchCalculatorsFx,
 });
 
 export const calculatorsListService = {

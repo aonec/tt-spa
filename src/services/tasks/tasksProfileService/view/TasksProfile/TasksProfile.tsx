@@ -7,7 +7,9 @@ import {
   FiltrationWrapper,
   PaginationSC,
   TabsSC,
+  ContentWrapper,
   Wrapper,
+  HeaderWrapper,
 } from './TasksProfile.styled';
 import { TasksPageSegment, TasksProfileProps } from './TasksProfile.types';
 import { TaskGroupingFilter } from 'myApi';
@@ -59,8 +61,8 @@ export const TasksProfile: FC<TasksProfileProps> = ({
     }
   });
 
-  return (
-    <div>
+  const header = (
+    <HeaderWrapper isList={tasksPageSegment === 'list'}>
       <PageHeader
         title="Задачи"
         contextMenu={{
@@ -90,30 +92,39 @@ export const TasksProfile: FC<TasksProfileProps> = ({
           onChange={setTasksPageSegment}
         />
       </PageHeader>
+    </HeaderWrapper>
+  );
+
+  return (
+    <Wrapper>
+      {tasksPageSegment === 'map' && header}
       {tasksPageSegment === 'list' && (
         <div>
           <FiltrationWrapper>
-            <TabsSC activeKey={grouptype} onChange={history.push}>
-              {!isSpectator && (
-                <TabPane tab={executingTabText} key="Executing"></TabPane>
-              )}
-              <TabPane tab={observingTabText} key="Observing"></TabPane>
-              <TabPane tab="Архив" key="Archived"></TabPane>
-            </TabsSC>
-            <SearchTasks
-              onSubmit={handleSearch}
-              taskTypes={taskTypes}
-              currentFilter={initialValues}
-              isExtendedSearchOpen={isExtendedSearchOpen}
-              closeExtendedSearch={closeExtendedSearch}
-              openExtendedSearch={openExtendedSearch}
-              clearFilters={clearFilters}
-              changeFiltersByGroupType={changeFiltersByGroupType}
-              housingManagments={housingManagments}
-              perpetrators={perpetrators}
-            />
+            {header}
+            <ContentWrapper>
+              <TabsSC activeKey={grouptype} onChange={history.push}>
+                {!isSpectator && (
+                  <TabPane tab={executingTabText} key="Executing"></TabPane>
+                )}
+                <TabPane tab={observingTabText} key="Observing"></TabPane>
+                <TabPane tab="Архив" key="Archived"></TabPane>
+              </TabsSC>
+              <SearchTasks
+                onSubmit={handleSearch}
+                taskTypes={taskTypes}
+                currentFilter={initialValues}
+                isExtendedSearchOpen={isExtendedSearchOpen}
+                closeExtendedSearch={closeExtendedSearch}
+                openExtendedSearch={openExtendedSearch}
+                clearFilters={clearFilters}
+                changeFiltersByGroupType={changeFiltersByGroupType}
+                housingManagments={housingManagments}
+                perpetrators={perpetrators}
+              />
+            </ContentWrapper>
           </FiltrationWrapper>
-          <Wrapper>
+          <ContentWrapper>
             <WithLoader isLoading={isLoading}>
               {Boolean(tasks?.length) ? (
                 tasksList
@@ -134,10 +145,10 @@ export const TasksProfile: FC<TasksProfileProps> = ({
                 showSizeChanger={false}
               />
             )}
-          </Wrapper>
+          </ContentWrapper>
         </div>
       )}
       {tasksPageSegment === 'map' && <TasksMapContainer />}
-    </div>
+    </Wrapper>
   );
 };

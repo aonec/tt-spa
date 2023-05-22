@@ -1,3 +1,4 @@
+import { ReactElement, ReactNode } from 'react';
 import { SearchType } from './../../objectsProfileService.types';
 
 export type ObjectsProfileProps = {
@@ -14,4 +15,8 @@ export type ObjectsProfileProps = {
   isPermitionToCreateResourceDisconnection: boolean;
   handleOpenGroupreportModal: () => void;
   openHeatIndividualDevicesReportModal: () => void;
+};
+
+export type HeaderInject = {
+  Header: (props: { children: ReactNode }) => ReactElement;
 };

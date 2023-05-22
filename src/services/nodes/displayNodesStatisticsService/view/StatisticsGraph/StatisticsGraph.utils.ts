@@ -54,18 +54,22 @@ const getTaskXPos = (payload: GetTaskXPosPayload) => {
   const minDataMoment = moment(minDate).utcOffset(0).startOf('d');
   const maxDataMoment = moment(maxDate).utcOffset(0, false);
 
+  const currentDate = moment(currentData)
+    .utc(true)
+    .add(moment().utcOffset(), 'minutes');
+
   let diff = 0;
   if (reportType === 'hourly') {
-    diff = moment(currentData).utc(true).diff(maxDataMoment, 'h');
+    diff = currentDate.diff(maxDataMoment, 'h');
   } else {
-    diff = moment(currentData).utc(true).diff(maxDataMoment, 'd');
+    diff = currentDate.diff(maxDataMoment, 'd');
   }
 
   if (!currentData || diff > 0) {
     return null;
   }
   if (reportType === 'hourly') {
-    return moment(currentData).utc(true).diff(minDataMoment, 'h') + 1;
+    return currentDate.diff(minDataMoment, 'h') + 1;
   }
 
   return moment(currentData).utc(true).diff(minDataMoment, 'd') + 1;
@@ -85,10 +89,11 @@ export const getPreparedData = ({
   maxDate: string;
 }) => {
   const tasksArr = tasksByDate.value || [];
+  const isAlone = tasksArr.length === 1;
 
   return {
     x: getTaskXPos({
-      currentData: tasksByDate?.key,
+      currentData: isAlone ? tasksArr[0]?.creationTime : tasksByDate?.key,
       minDate,
       maxDate,
       reportType,
@@ -151,8 +156,8 @@ const formHourlyTicks = (
   const sortedArchive = sortArchiveArray(archiveArr);
 
   return [
+    sortedArchive[0],
     ...sortedArchive.filter((entry) => isHourMultiplySix(entry.time)),
-    sortedArchive[sortedArchive.length - 1],
   ];
 };
 

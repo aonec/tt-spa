@@ -19,6 +19,7 @@ export const PageTitle = styled.div`
   line-height: 32px;
   letter-spacing: 0em;
   margin-bottom: 10px;
+  margin-top: 10px;
 `;
 
 export const BlockTitle = styled.div`
