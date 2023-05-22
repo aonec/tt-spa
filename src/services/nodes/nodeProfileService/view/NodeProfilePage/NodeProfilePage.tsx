@@ -6,7 +6,6 @@ import { HeaderInfoString } from 'ui-kit/shared_components/HeaderInfoString';
 import { ResourceIconLookup } from 'ui-kit/shared_components/ResourceIconLookup';
 import { LinkCard } from 'ui-kit/shared_components/LinkCard';
 import { WithLoader } from 'ui-kit/shared_components/WithLoader';
-import { NodeChecksContainer } from '01/features/nodes/nodeChecks/displayNodeChecks/NodeChecksContainer';
 import { ENodeRegistrationType } from 'myApi';
 import { HousingMeteringDeviceReadingsContainer } from 'services/housingMeteringDevices/housingMeteringDeviceReadingsService';
 import { getDeviceIds } from 'services/housingMeteringDevices/housingMeteringDeviceReadingsService/housingMeteringDeviceReadingsService.utils';
@@ -32,6 +31,7 @@ import { CommonInfoTab } from './CommonInfoTab';
 import { HousingMeteringDevicesList } from './HousingMeteringDevicesList';
 import { NodeConnection } from './NodeConnection';
 import { ContextMenuButtonColor } from 'ui-kit/ContextMenuButton/ContextMenuButton.types';
+import { DisplayNodeChecksContainer } from 'services/nodes/displayNodeChecks';
 
 const { TabPane } = TabsSC;
 
@@ -75,7 +75,7 @@ export const NodeProfilePage: FC<NodeProfilePageProps> = ({
         />
       ),
       [PipeNodeProfileSection.Checks]: (
-        <NodeChecksContainer pipeNodeId={pipeNode.id} />
+        <DisplayNodeChecksContainer pipeNodeId={pipeNode.id} />
       ),
       [PipeNodeProfileSection.Documents]: <></>,
     };

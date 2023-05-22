@@ -8,10 +8,12 @@ import {
 import { WithLoader } from 'ui-kit/shared_components/WithLoader';
 import { editNodeService } from './editNodeService.model';
 import { EditNodePage } from './view/EditNodePage';
-import { createCalcuatorService } from '01/features/nodes/editNode/editNodeCalculatorConnection/components/AddNodeCalculatorConnectionModal/CreateCalculatorModal/models';
-import { CreateCalculatorModalContainer } from '01/features/nodes/editNode/editNodeCalculatorConnection/components/AddNodeCalculatorConnectionModal/CreateCalculatorModal/CreateCalculatorModalContainer';
 import { calculatorsListService } from 'services/calculators/calculatorsListService';
 import { removeNodeCalculatorConnectionService } from './view/EditNodePage/removeConnectionService';
+import {
+  CreateCalculatorModalContainer,
+  createCalculatorModalService,
+} from '01/features/nodes/editNode/editNodeCalculatorConnection/components/AddNodeCalculatorConnectionModal/createCalculatorModalService';
 
 const { gates, inputs, outputs } = editNodeService;
 const { NodeIdGate, NodeResourceGate } = gates;
@@ -35,7 +37,7 @@ export const EditNodeContainer = () => {
   const refetchNode = useEvent(inputs.refetchNode);
   const updateNode = useEvent(inputs.updateNode);
   const openCreateCalculatorModal = useEvent(
-    createCalcuatorService.inputs.openCreateCalculatorModal,
+    createCalculatorModalService.inputs.openModal,
   );
   const openRemoveConnectionModal = useEvent(
     removeNodeCalculatorConnectionService.inputs.openModal,
@@ -60,7 +62,9 @@ export const EditNodeContainer = () => {
               nodeZones={nodeZones}
               refetchNode={() => refetchNode()}
               updateNode={updateNode}
-              handleOpenCreateCalculatorModal={openCreateCalculatorModal}
+              handleOpenCreateCalculatorModal={() =>
+                openCreateCalculatorModal(node.housingStockId)
+              }
               calculators={calculators || []}
               isUpdateLoading={isUpdateLoading}
               openRemoveConnectionModal={openRemoveConnectionModal}
