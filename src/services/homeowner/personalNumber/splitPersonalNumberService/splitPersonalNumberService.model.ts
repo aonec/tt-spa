@@ -23,6 +23,8 @@ import { message } from 'antd';
 
 const domain = createDomain('splitPersonalNumberService');
 
+const SplitPageGate = createGate();
+
 const goBackStage = domain.createEvent();
 const goNextStage = domain.createEvent();
 
@@ -40,13 +42,16 @@ const $apartment = apartmentProfileService.outputs.$apartment;
 
 const $switchStageData = domain
   .createStore<SwitchStage | null>(null)
-  .on(handleSubmitSwitchStage, (_, data) => data);
+  .on(handleSubmitSwitchStage, (_, data) => data)
+  .reset(SplitPageGate.close);
 const $addNewApartmentStageData = domain
   .createStore<AddNewApartmentStage | null>(null)
-  .on(handleSubmitAddNewApartmentStage, (_, data) => data);
+  .on(handleSubmitAddNewApartmentStage, (_, data) => data)
+  .reset(SplitPageGate.close);
 const $transferDevicesData = domain
   .createStore<TransferStage | null>(null)
-  .on(handleSubmitTransferDevicesStage, (_, data) => data);
+  .on(handleSubmitTransferDevicesStage, (_, data) => data)
+  .reset(SplitPageGate.close);
 
 const splitPersonalNumber = domain.createEvent<boolean>();
 const handleSplitInExistApart = domain.createEvent();
@@ -59,8 +64,8 @@ const $isForced = domain
 const $stageNumber = domain
   .createStore<number>(1)
   .on(goNextStage, (stageNumber) => stageNumber + 1)
-  .on(goBackStage, (stageNumber) => stageNumber - 1);
-// .reset(resetter);
+  .on(goBackStage, (stageNumber) => stageNumber - 1)
+  .reset(SplitPageGate.close);
 
 guard({
   source: $stageNumber,
@@ -111,8 +116,8 @@ const splitPersonalNumberFx = domain.createEffect<
 
 const $checkedExistingApartmentId = domain
   .createStore<number | null>(null)
-  .on(checkApartmentExistingFx.doneData, (_, id) => id);
-// .reset(SplitPersonalNumberGate.close);
+  .on(checkApartmentExistingFx.doneData, (_, id) => id)
+  .reset(SplitPageGate.close);
 
 const $samePersonalAccountNumderId = domain
   .createStore<number | null>(null)
@@ -122,7 +127,7 @@ const $samePersonalAccountNumderId = domain
     }
     return prev;
   })
-  .reset(handleForceConfirmationModalClose);
+  .reset([handleForceConfirmationModalClose, SplitPageGate.close]);
 
 const $isConfirmationModalOpen = $samePersonalAccountNumderId.map(Boolean);
 
@@ -278,5 +283,6 @@ export const splitPersonalNumberService = {
   gates: {
     ApartmentGate: apartmentProfileService.gates.ApartmentGate,
     IndividualDevicesGate,
+    SplitPageGate,
   },
 };

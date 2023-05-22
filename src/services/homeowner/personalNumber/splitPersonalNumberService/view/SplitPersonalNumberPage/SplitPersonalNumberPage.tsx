@@ -76,7 +76,7 @@ export const SplitPersonalNumberPage: FC<SplitPersonalNumberPageProps> = ({
       <StepsWrapper>
         <FormHeader>Этапы разделения</FormHeader>
         <Steps direction="vertical" current={stageNumber - 1}>
-          {stepTitles.map((step, key) => (
+          {stepTitles.map((step) => (
             <Step title={step} key={step} />
           ))}
         </Steps>

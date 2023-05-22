@@ -10,7 +10,7 @@ import { ConfirmUsingExistingArartmentModal } from '../components/ConfirmUsingEx
 const {
   inputs,
   outputs,
-  gates: { ApartmentGate, IndividualDevicesGate },
+  gates: { ApartmentGate, IndividualDevicesGate, SplitPageGate },
 } = splitPersonalNumberService;
 
 export const SplitPersonalNumberContainer = () => {
@@ -57,12 +57,13 @@ export const SplitPersonalNumberContainer = () => {
 
   useEffect(() => {
     return inputs.successSplit.watch(() => {
-      history.push(`meters/apartments/${apartmentId}`);
+      history.push(`/meters/apartments/${apartmentId}`);
     });
   }, [history, apartmentId]);
 
   return (
     <>
+      <SplitPageGate />
       <ApartmentGate apartmentId={Number(apartmentId)} />
       <IndividualDevicesGate ApartmentId={Number(apartmentId)} />
       <AllIndividualDeviceMountPlacesGate />
