@@ -67,7 +67,8 @@ export const PersonalNumberForm: FC<PersonalNumberFormProps> = ({
           handleEditHomeownerAccount &&
           handleEditHomeownerAccount(data);
 
-        homeowner &&
+        apartmentId &&
+          homeowner &&
           handleSwitchHomeownerAccount &&
           handleSwitchHomeownerAccount({
             form: data,
