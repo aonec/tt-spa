@@ -28,14 +28,12 @@ import _ from 'lodash';
 
 export const AddressTab: FC<AddressTabProps> = ({
   address,
-  index,
   existingCities,
   existingStreets,
   onPageCancel,
   handleCreateHousingStockAddress,
   handleDeleteHousingStockAddress,
   handleUpdateHousingStockAddress,
-  isDeleteLoading,
   isCreateLoading,
   isUpdateLoading,
   handleRefetchHousingStock,
@@ -48,7 +46,6 @@ export const AddressTab: FC<AddressTabProps> = ({
       street: mainAddress?.street || '',
       house: mainAddress?.number || null,
       corpus: mainAddress?.corpus || null,
-      index: index || null,
       additionalAddresses: additionalAddresses || [],
     },
     enableReinitialize: true,
@@ -191,14 +188,6 @@ export const AddressTab: FC<AddressTabProps> = ({
               />
             </FormItem>
           </ItemGridWrapper>
-
-          {/* <FormItem label="Индекс">
-            <Input
-              placeholder="Введите"
-              value={values.index || undefined}
-              onChange={(value) => setFieldValue('index', value.target.value)}
-            />
-          </FormItem> */}
         </GridWrapper>
 
         <SpaceLine />
@@ -261,7 +250,6 @@ export const AddressTab: FC<AddressTabProps> = ({
             </GridWrapper>
             <DeleteButton
               className="ant-btn-link"
-              isLoading={isDeleteLoading}
               onClick={() => {
                 const currentAdditionalAddress = address;
 
@@ -273,7 +261,7 @@ export const AddressTab: FC<AddressTabProps> = ({
                 !Boolean(currentAdditionalAddress?.id) &&
                   setFieldValue(
                     'additionalAddresses',
-                    values.additionalAddresses.filter((el, i) => index !== i),
+                    values.additionalAddresses.filter((_, i) => index !== i),
                   );
               }}
             >

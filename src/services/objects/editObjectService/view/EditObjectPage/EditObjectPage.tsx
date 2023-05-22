@@ -27,7 +27,6 @@ export const EditObjectPage: FC<EditObjectPageProps> = ({
   handleCreateHousingStockAddress,
   handleDeleteHousingStockAddress,
   handleUpdateHousingStockAddress,
-  isDeleteLoading,
   isCreateLoading,
   isUpdateLoading,
   handleRefetchHousingStock,
@@ -35,7 +34,6 @@ export const EditObjectPage: FC<EditObjectPageProps> = ({
   const [activeTab, setTab] = useState(EditObjectPageTabs.Address);
 
   const { address } = housingStock;
-  const { index } = housingStock;
   const addressString = getHousingStockAddress(housingStock);
   const city = address?.mainAddress?.city || '';
 
@@ -55,14 +53,12 @@ export const EditObjectPage: FC<EditObjectPageProps> = ({
           {housingStock.address && (
             <AddressTab
               address={housingStock.address}
-              index={index}
               existingCities={existingCities}
               existingStreets={existingStreets}
               onPageCancel={onPageCancel}
               handleCreateHousingStockAddress={handleCreateHousingStockAddress}
               handleDeleteHousingStockAddress={handleDeleteHousingStockAddress}
               handleUpdateHousingStockAddress={handleUpdateHousingStockAddress}
-              isDeleteLoading={isDeleteLoading}
               isUpdateLoading={isUpdateLoading}
               isCreateLoading={isCreateLoading}
               handleRefetchHousingStock={handleRefetchHousingStock}

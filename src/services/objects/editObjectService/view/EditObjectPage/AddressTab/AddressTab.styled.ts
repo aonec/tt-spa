@@ -42,7 +42,7 @@ export const AddButtonWrapper = styled.div`
   width: max-content;
 `;
 
-export const DeleteButton = styled.div<{ isLoading: boolean }>`
+export const DeleteButton = styled.div<{ isLoading?: boolean }>`
   margin-top: 4px;
   color: red;
   width: max-content;

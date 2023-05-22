@@ -66,12 +66,6 @@ export const EditObjectContainer = () => {
     ).unsubscribe;
   }, [history, housingStockId]);
 
-  useEffect(() => {
-    return inputs.successUpdate.watch(() =>
-      history.push(`/objects/profile/${housingStockId}`),
-    ).unsubscribe;
-  }, [history, housingStockId]);
-
   return (
     <>
       <CatchHousingStockId housingStockId={housingStockIdNumber} />
