@@ -83,12 +83,10 @@ forward({
 });
 
 forward({
-  from: updateNodeFx.doneData,
-  to: refetchNode,
-});
-
-forward({
-  from: addHosuingMeteringDeviceService.inputs.deviceCreated,
+  from: [
+    addHosuingMeteringDeviceService.inputs.deviceCreated,
+    updateNodeFx.doneData,
+  ],
   to: refetchNode,
 });
 
