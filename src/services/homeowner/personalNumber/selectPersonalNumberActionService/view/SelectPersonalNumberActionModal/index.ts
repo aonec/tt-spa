@@ -1,1 +1,1 @@
-export { SelectPersonalNumberActionModal } from './SelectPersonalNumberActionModal'
+export { SelectPersonalNumberActionModal } from './SelectPersonalNumberActionModal';
