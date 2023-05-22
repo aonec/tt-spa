@@ -424,7 +424,7 @@ export const Router: FC<RouterProps> = ({ roles, isRolesLoadded }) => {
 
                   <Redirect
                     from="/statistics/"
-                    to="/statistics/subscribersConsumption/houses"
+                    to="/statistics/resourceConsumption"
                     exact
                   />
 
