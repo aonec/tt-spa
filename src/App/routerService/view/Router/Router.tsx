@@ -51,6 +51,7 @@ import { AddPersonalNumberContainer } from 'services/homeowner/personalNumber/ad
 import { EditPersonalNumberContainer } from 'services/homeowner/personalNumber/editPersonalNumberService';
 import { SettingsPageContainer } from 'services/settings/settingsPageService';
 import { ActsJournalContainer } from 'services/actsJournalService';
+import { ServicesContainer } from 'services/services/servicesService';
 
 const { gates } = objectProfileService;
 
@@ -378,6 +379,13 @@ export const Router: FC<RouterProps> = ({ roles, isRolesLoadded }) => {
 
                   {isAnyRole && (
                     <Route
+                      path="/services/:service/:section/:id?"
+                      component={ServicesContainer}
+                    />
+                  )}
+
+                  {isAnyRole && (
+                    <Route
                       path="/nodeArchive/:nodeId"
                       component={NodeArchivePageContainer}
                       exact
@@ -537,6 +545,13 @@ export const Router: FC<RouterProps> = ({ roles, isRolesLoadded }) => {
                   <Route path="/access-denied/">
                     <AccessDeniedPage />
                   </Route>
+                  <Redirect from="/services" to="/services/seal" exact />
+                  <Redirect
+                    from="/services/seal"
+                    to="/services/seal/select"
+                    exact
+                  />
+
                   <Redirect from="/meters" to="/meters/apartments" exact />
                   <Route path="*" component={AccessDeniedPage} exact />
                 </Switch>

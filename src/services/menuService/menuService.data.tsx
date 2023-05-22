@@ -9,9 +9,11 @@ import {
   SettingsIcon,
   StatisticIcon,
   TasksIcon,
+  WrenchIcon,
 } from 'ui-kit/icons';
 import { MenuFiltrationConfig, MenuItem, MenuType } from './menuService.types';
 import { MeterSection } from 'services/meters/metersService/metersService.types';
+import { ServiceSection } from 'services/services/servicesService/servicesService.types';
 
 export const menuItems: MenuItem[] = [
   {
@@ -80,6 +82,19 @@ export const menuItems: MenuItem[] = [
     ],
   },
   {
+    title: 'Услуги',
+    path: `/services`,
+    icon: WrenchIcon,
+    type: MenuType.Services,
+    sub: [
+      {
+        title: 'Опломбировка',
+        path: `/services/${ServiceSection.Seal}`,
+        type: MenuType.ServicesSeal,
+      },
+    ],
+  },
+  {
     title: 'Настройки',
     path: '/settings/controllers',
     icon: SettingsIcon,
@@ -95,6 +110,7 @@ export const menuItems: MenuItem[] = [
 
 export const privates: MenuFiltrationConfig = {
   [MenuType.Meters]: [ESecuredIdentityRoleName.Operator],
+  [MenuType.Services]: [ESecuredIdentityRoleName.Operator],
   [MenuType.ActsJournal]: [ESecuredIdentityRoleName.Operator],
   [MenuType.Reports]: [ESecuredIdentityRoleName.SeniorOperator],
   [MenuType.Settings]: [ESecuredIdentityRoleName.SeniorOperator],
