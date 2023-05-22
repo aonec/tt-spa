@@ -13,7 +13,7 @@ import { removeNodeCalculatorConnectionService } from './view/EditNodePage/remov
 import {
   CreateCalculatorModalContainer,
   createCalculatorModalService,
-} from '01/features/nodes/editNode/editNodeCalculatorConnection/components/AddNodeCalculatorConnectionModal/createCalculatorModalService';
+} from 'services/calculators/createCalculatorModalService';
 
 const { gates, inputs, outputs } = editNodeService;
 const { NodeIdGate, NodeResourceGate } = gates;

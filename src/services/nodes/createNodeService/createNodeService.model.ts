@@ -22,7 +22,7 @@ import {
 import { CreateNodeFormPayload } from './createNodeService.types';
 import { EffectFailDataAxiosError } from 'types';
 import { message } from 'antd';
-import { createCalculatorModalService } from '01/features/nodes/editNode/editNodeCalculatorConnection/components/AddNodeCalculatorConnectionModal/createCalculatorModalService';
+import { createCalculatorModalService } from 'services/calculators/createCalculatorModalService';
 
 const domain = createDomain('createNodeService');
 

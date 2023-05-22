@@ -6,7 +6,7 @@ import { createNodeService } from './createNodeService.model';
 import { CreateNodePage } from './view/CreateNodePage';
 import { CreateNodeServiceZoneContainer } from '../createNodeServiceZoneService';
 import { CreateNodeConfirmationModal } from './view/CreateNodeConfirmationModal';
-import { CreateCalculatorModalContainer } from '01/features/nodes/editNode/editNodeCalculatorConnection/components/AddNodeCalculatorConnectionModal/createCalculatorModalService';
+import { CreateCalculatorModalContainer } from 'services/calculators/createCalculatorModalService';
 
 const { inputs, outputs, gates } = createNodeService;
 const { CreateNodeGate } = gates;
