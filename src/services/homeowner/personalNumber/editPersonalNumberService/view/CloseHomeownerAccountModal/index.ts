@@ -1,1 +1,1 @@
-export { CloseHomeownerAccountModal } from './CloseHomeownerAccountModal'
+export { CloseHomeownerAccountModal } from './CloseHomeownerAccountModal';

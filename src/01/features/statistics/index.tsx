@@ -66,15 +66,15 @@ export const StatisticsPage = () => {
         activeKey={grouptype}
         onChange={(value) => history.push(`/statistics/${value}`)}
       >
+        <TabPane tab="Анализ потребления ресурсов" key="resourceConsumption">
+          <ResourceConsumptionContainer />
+        </TabPane>
         <TabPane
           style={{ overflow: 'none' }}
           tab="Учет абонентского потребления"
           key="subscribersConsumption"
         >
           <SubscribersConsumption />
-        </TabPane>
-        <TabPane tab="Анализ потребления ресурсов" key="resourceConsumption">
-          <ResourceConsumptionContainer />
         </TabPane>
       </TabsSC>
     </div>

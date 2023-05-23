@@ -10,5 +10,3 @@ export const fetchHomeownerFx = createEffect<
 >();
 
 export const HomeownerGate = createGate<{ id: string }>();
-
-

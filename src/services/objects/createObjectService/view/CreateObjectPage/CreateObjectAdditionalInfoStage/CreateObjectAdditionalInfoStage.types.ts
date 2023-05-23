@@ -13,5 +13,5 @@ export type AdditionalInfo = {
   floors: number | null;
   entrances: number | null;
   elevator: ElevatorExistingType | null;
-  constructionYear: string ;
+  constructionYear: string;
 };
