@@ -19,10 +19,10 @@ import {
   getNodeServiceZones,
   postPipeNode,
 } from './createNodeService.api';
-import { createCalcuatorService } from '01/features/nodes/editNode/editNodeCalculatorConnection/components/AddNodeCalculatorConnectionModal/CreateCalculatorModal/models';
 import { CreateNodeFormPayload } from './createNodeService.types';
 import { EffectFailDataAxiosError } from 'types';
 import { message } from 'antd';
+import { createCalculatorModalService } from 'services/calculators/createCalculatorModalService';
 
 const domain = createDomain('createNodeService');
 
@@ -91,7 +91,7 @@ const $calculatorsList = domain
   .createStore<CalculatorIntoHousingStockResponse[] | null>(null)
   .on(fetchCalculatorsListFx.doneData, (_, calculators) => calculators)
   .on(
-    createCalcuatorService.events.newCalculatorCreated,
+    createCalculatorModalService.inputs.calculatorCreated,
     (prev, newCalculator) => [
       ...(prev || []),
       {
@@ -210,8 +210,7 @@ export const createNodeService = {
   inputs: {
     goPrevStep,
     updateRequestPayload,
-    openCreateCalculatorModal:
-      createCalcuatorService.inputs.openCreateCalculatorModal,
+    openCreateCalculatorModal: createCalculatorModalService.inputs.openModal,
     openCreateNodeServiceZoneModal:
       createNodeServiceZoneService.inputs.openCreateNodeServiceZoneModal,
     openConfiramtionModal,
@@ -238,6 +237,5 @@ export const createNodeService = {
   },
   gates: {
     CreateNodeGate,
-    CreateCalculatorGate: createCalcuatorService.gates.CreateCalculatorGate,
   },
 };
