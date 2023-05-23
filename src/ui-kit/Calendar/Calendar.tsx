@@ -31,7 +31,7 @@ export const Calendar: FC<CalendarProps> = ({
       dateFullCellRender={(date) => {
         const formatedDate = date.startOf('day');
 
-        const isSelectedDate = selectedDate
+        const isSelectedDate = formatedSelectedDate
           ? formatedDate.diff(formatedSelectedDate, 'days') === 0
           : false;
         const isCurrentDate = formatedDate.diff(currentDate, 'days') === 0;
