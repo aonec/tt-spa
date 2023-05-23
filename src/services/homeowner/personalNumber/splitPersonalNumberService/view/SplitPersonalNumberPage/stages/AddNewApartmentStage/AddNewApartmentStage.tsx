@@ -38,7 +38,7 @@ export const AddNewApartmentStage: FC<AddNewApartmentStageProps> = ({
       isMainOnApartment: addNewApartmentStageData?.isMainOnApartment || false,
     },
     validationSchema: yup.object().shape({
-      apartmentNumber: yup.number().nullable().required('Это поле обязательно'),
+      apartmentNumber: yup.string().nullable().required('Это поле обязательно'),
       name: yup.string().nullable().required('Это поле обязательно'),
       openAt: yup.string().nullable().required('Это поле обязательно'),
       personalAccountNumber: yup
@@ -77,7 +77,6 @@ export const AddNewApartmentStage: FC<AddNewApartmentStageProps> = ({
           </FormItem>
           <FormItem label="Квартира">
             <Input
-              type="number"
               value={values.apartmentNumber || undefined}
               onChange={(value) =>
                 setFieldValue('apartmentNumber', value.target.value)

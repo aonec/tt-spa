@@ -15,7 +15,7 @@ export type AddNewApartmentStage = {
   paymentCode?: string | null;
   apartmentId: number;
   isForced?: boolean | null;
-  apartmentNumber: number;
+  apartmentNumber: string;
 };
 
 export type TransferStage = { individualDeviceIdsForSwitch: number[] };

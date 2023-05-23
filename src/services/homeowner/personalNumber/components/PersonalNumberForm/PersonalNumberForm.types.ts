@@ -22,7 +22,7 @@ export type PersonalNumberFormProps = {
   handleForced?: Event<void>;
   handleSubmitSwitchStage?: (payload: SwitchStage) => void;
   handleSubmitAddNewApartmentStage?: (payload: AddNewApartmentStage) => void;
-  apartmentNumber?: number | null;
+  apartmentNumber?: string | null;
 };
 
 export type PersonalNumberFormTypes = {
