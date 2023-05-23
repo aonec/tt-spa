@@ -70,6 +70,10 @@ export const SettingPage: FC<SettingPageProps> = ({
         <TabsSC.TabPane tab="Распределение инспекторов" key="inspectors">
           <InspectorsDistributionPage />
         </TabsSC.TabPane>
+        <TabsSC.TabPane
+          tab="Границы районов"
+          key="districtBorder"
+        ></TabsSC.TabPane>
       </>
     );
   }, [adminSettings]);
