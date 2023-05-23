@@ -1,1 +1,1 @@
-export { PersonalNumberPageContainer } from './PersonalNumberPageContainer'
+export { PersonalNumberPageContainer } from './PersonalNumberPageContainer';

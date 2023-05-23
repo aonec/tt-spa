@@ -1,4 +1,4 @@
-import { ApartmentResponse, HomeownerAccountListResponse } from 'myApi';
+import { HomeownerAccountListResponse } from 'myApi';
 import { PersonalNumberActions } from '../../selectPersonalNumberActionService/selectPersonalNumberActionService.types';
 import { Event } from 'effector';
 

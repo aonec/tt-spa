@@ -1,1 +1,1 @@
-export { SwitchPersonalNumberPage } from './SwitchPersonalNumberPage'
+export { SwitchPersonalNumberPage } from './SwitchPersonalNumberPage';
