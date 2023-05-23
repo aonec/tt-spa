@@ -191,12 +191,12 @@ sample({
       const homeownerAccountForSplittedApartment = {
         apartmentId: apartment?.id,
         ...switchStageData?.form,
-        openAt: moment(switchStageData?.form.openAt).toISOString(true),
+        openAt: switchStageData?.form.openAt,
       };
 
       const newHomeownerAccount = {
         ...addNewApartmentStageData,
-        openAt: moment(addNewApartmentStageData?.openAt).toISOString(true),
+        openAt: addNewApartmentStageData?.openAt,
       };
 
       const newApartment = {

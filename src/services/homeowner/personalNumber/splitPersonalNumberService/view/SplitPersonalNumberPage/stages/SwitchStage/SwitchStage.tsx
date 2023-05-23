@@ -16,6 +16,7 @@ import { DatePickerNative } from 'ui-kit/shared_components/DatePickerNative';
 import { ErrorMessage } from 'ui-kit/ErrorMessage';
 import { Input } from 'ui-kit/Input';
 import { Switch } from 'antd';
+import moment from 'moment';
 
 export const SwitchStage: FC<SwitchStageProps> = ({
   homeowner,
@@ -44,6 +45,7 @@ export const SwitchStage: FC<SwitchStageProps> = ({
     validateOnChange: false,
     enableReinitialize: true,
     onSubmit: (data) => {
+      console.log(data.openAt);
       homeowner?.personalAccountNumber &&
         handleSubmitSwitchStage({
           form: {
@@ -59,6 +61,8 @@ export const SwitchStage: FC<SwitchStageProps> = ({
     },
   });
 
+  console.log(values.openAt);
+
   return (
     <Wrapper onSubmitCapture={handleSubmit} id={formId}>
       <PersonalNumberWrapper>
@@ -70,7 +74,9 @@ export const SwitchStage: FC<SwitchStageProps> = ({
       <FormItem label="Дата открытия лицевого счета">
         <DatePickerNative
           value={values.openAt}
-          onChange={(value) => setFieldValue('openAt', value)}
+          onChange={(value) =>
+            setFieldValue('openAt', moment(value).format('YYYY-MM-DD'))
+          }
         />
         <ErrorMessage>{errors.openAt}</ErrorMessage>
       </FormItem>

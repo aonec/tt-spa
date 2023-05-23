@@ -15,6 +15,7 @@ import * as yup from 'yup';
 import { ErrorMessage } from 'ui-kit/ErrorMessage';
 import { DatePickerNative } from 'ui-kit/shared_components/DatePickerNative';
 import { Switch } from 'antd';
+import moment from 'moment';
 
 export const AddNewApartmentStage: FC<AddNewApartmentStageProps> = ({
   apartment,
@@ -90,7 +91,9 @@ export const AddNewApartmentStage: FC<AddNewApartmentStageProps> = ({
       <FormItem label="Дата открытия лицевого счета">
         <DatePickerNative
           value={values.openAt}
-          onChange={(value) => setFieldValue('openAt', value)}
+          onChange={(value) =>
+            setFieldValue('openAt', moment(value).format('YYYY-MM-DD'))
+          }
         />
         <ErrorMessage>{errors.openAt}</ErrorMessage>
       </FormItem>
