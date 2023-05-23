@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useMemo, useState } from 'react';
+import React, { FC, useEffect, useMemo } from 'react';
 import { useHistory } from 'react-router-dom';
 import { PageHeader } from 'ui-kit/shared_components/PageHeader';
 import { SearchTasks } from '../SearchTasks';
@@ -18,7 +18,6 @@ import { ListIcon, MapIcon } from 'ui-kit/icons';
 import { TasksMapContainer } from 'services/tasks/tasksMapService';
 import { Empty } from 'antd';
 import { WithLoader } from 'ui-kit/shared_components/WithLoader';
-import { Calendar } from 'ui-kit/Calendar';
 
 const { TabPane } = TabsSC;
 
@@ -62,11 +61,8 @@ export const TasksProfile: FC<TasksProfileProps> = ({
     }
   });
 
-  const [date, setDate] = useState<any>(null);
-
   const header = (
     <HeaderWrapper isList={tasksPageSegment === 'list'}>
-      <Calendar selectedDate={date} handleSelectDate={setDate} />
       <PageHeader
         title="Задачи"
         contextMenu={{

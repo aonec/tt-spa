@@ -3,17 +3,15 @@ import { Calendar } from 'antd';
 
 const circleRadius = 16;
 
-export const Wrapper = styled.div`
-  width: 320px;
-  box-shadow: 0px 4px 4px rgba(78, 93, 146, 0.16),
-    0px 8px 16px rgba(78, 93, 146, 0.08);
-`;
-
 export const CalendarSC = styled(Calendar)`
   th {
     color: #272f5a52;
     text-transform: uppercase;
   }
+
+  padding: 8px 16px;
+  box-shadow: 0px 4px 4px rgba(78, 93, 146, 0.16),
+    0px 8px 16px rgba(78, 93, 146, 0.08);
 `;
 
 const selectedDateStyle = css`
@@ -64,12 +62,12 @@ export const DateCircle = styled.div<{
 `;
 
 export const HeaderWrapper = styled.div`
-  display: flex;
+  display: grid;
   align-items: center;
-  justify-content: space-around;
+  grid-template-columns: 2fr 1fr;
+  grid-gap: 48px;
 
   width: 100%;
-  padding: 8px 8px 0 8px;
 `;
 
 export const SliderWrapper = styled.div`
@@ -84,10 +82,17 @@ export const SliderWrapper = styled.div`
 
   svg {
     cursor: pointer;
+    transition: 0.2s;
+
+    :hover {
+      path {
+        fill: #189ee9;
+      }
+    }
   }
 `;
 
-const TextWrapper = styled.span`
+export const TextWrapper = styled.span`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -95,12 +100,4 @@ const TextWrapper = styled.span`
   color: #272f5a;
   font-weight: 600;
   text-transform: capitalize;
-`;
-
-export const MonthWrapper = styled(TextWrapper)`
-  width: 96px;
-`;
-
-export const YearWrapper = styled(TextWrapper)`
-  width: 48px;
 `;
