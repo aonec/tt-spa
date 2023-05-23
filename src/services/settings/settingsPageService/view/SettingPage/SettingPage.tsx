@@ -10,6 +10,8 @@ import { InspectorAddressesResetModalContainer } from 'services/settings/inspect
 import { CreateResourceDisconnectionContainer } from 'services/resources/createResourceDisconnectionService';
 import { ChooseTypeOfResourceDisconnectionModalContainer } from 'services/resources/chooseTypeOfResourceDisconnectionModalService/chooseTypeOfResourceDisconnectionModalService.container';
 import { PageHeader } from 'ui-kit/shared_components/PageHeader';
+import { featureToggles } from 'featureToggles';
+import { WorkingRangeTab } from 'services/workingRanges/WorkingRangeTab';
 
 export const SettingPage: FC<SettingPageProps> = ({
   handleReassingInspector,
@@ -51,19 +53,21 @@ export const SettingPage: FC<SettingPageProps> = ({
           >
             <ResourceDisablingScheduleContainer />
           </TabsSC.TabPane>
-          {/* <TabsSC.TabPane tab="Рабочие диапазоны узлов" key="operatingRanges">
-            <WorkingRangeTab />
-          </TabsSC.TabPane> */}
+          {featureToggles.workingRanges && (
+            <TabsSC.TabPane tab="Рабочие диапазоны узлов" key="operatingRanges">
+              <WorkingRangeTab />
+            </TabsSC.TabPane>
+          )}
         </>
       );
     }
     return (
       <>
         <TabsSC.TabPane
-          tab="Распредление контролеров"
+          tab="Распределение контролеров"
           key="controllers"
         ></TabsSC.TabPane>
-        <TabsSC.TabPane tab="Распредление инспекторов" key="inspectors">
+        <TabsSC.TabPane tab="Распределение инспекторов" key="inspectors">
           <InspectorsDistributionPage />
         </TabsSC.TabPane>
       </>

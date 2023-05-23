@@ -31,7 +31,9 @@ export const AddressSearch: FC<AddressSearchProps> = ({
   function clearFields(index: number) {
     const clearingFieldsTypes = fields.slice(index, fields.length);
 
-    clearingFieldsTypes.forEach((fieldType) => handleChange(fieldType, ''));
+    clearingFieldsTypes
+      .filter((elem) => elem !== SearchFieldType.City)
+      .forEach((fieldType) => handleChange(fieldType, ''));
   }
 
   const citySearch = (index: number, isDisabled?: boolean) => (
@@ -40,7 +42,11 @@ export const AddressSearch: FC<AddressSearchProps> = ({
       placeholder="Город"
       ref={refs[index]}
       onKeyDown={keyDownEnterGuardedHandler(index)}
-      onChange={(value) => handleChange(SearchFieldType.City, value.toString())}
+      onChange={(value) => {
+        handleChange(SearchFieldType.City, value.toString());
+
+        handleSubmit();
+      }}
       value={values.city}
       disabled={isDisabled}
     >
