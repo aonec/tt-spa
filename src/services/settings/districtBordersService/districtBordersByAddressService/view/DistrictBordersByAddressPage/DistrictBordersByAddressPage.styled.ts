@@ -11,6 +11,7 @@ export const AddressSortWrapper = styled.div`
   grid-template-columns: 3fr 1fr;
   grid-gap: 16px;
   margin-top: 20px;
+  margin-bottom: 20px;
 `;
 
 export const LabelWrapper = styled.div`
@@ -31,9 +32,8 @@ export const Panel = styled.div`
   height: 80px;
   left: 208px;
   width: calc(100% - 208px);
-  background-color: #ffffff74;
+  background-color: #ffffff;
   box-shadow: 0px -4px 8px rgba(78, 93, 146, 0.16);
-  backdrop-filter: blur(3px);
   gap: 16px;
 
   display: flex;

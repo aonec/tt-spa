@@ -1,5 +1,4 @@
 import React, { FC, useState } from 'react';
-import { useFormik } from 'formik';
 import {
   AddressSortWrapper,
   ButtonSC,
@@ -15,11 +14,14 @@ import { GoBack } from 'ui-kit/shared_components/GoBack';
 import { Select } from 'ui-kit/Select';
 import { EOrderByRule } from 'myApi';
 import { Button } from 'ui-kit/Button';
+import { AddressStreetGroup } from './AddressStreetGroup';
 
 export const DistrictBordersByAddressPage: FC<
   DistrictBordersByAddressPageProps
-> = ({ handleFetchAddress }) => {
+> = ({ handleFetchAddress, addresses }) => {
   const [orderBy, setOrderBy] = useState<EOrderByRule | null>(null);
+
+  console.log(addresses);
 
   return (
     <Wrapper>
@@ -59,14 +61,18 @@ export const DistrictBordersByAddressPage: FC<
             </Select.Option>
           </Select>
         </LabelWrapper>
-
-        <Footerwrapper>
-          <Panel>
-            <Button type="ghost"> Отмена</Button>
-            <ButtonSC>Продолжить</ButtonSC>
-          </Panel>
-        </Footerwrapper>
       </AddressSortWrapper>
+
+      {addresses?.map((address) => (
+        <AddressStreetGroup address={address} />
+      ))}
+
+      <Footerwrapper>
+        <Panel>
+          <Button type="ghost"> Отмена</Button>
+          <ButtonSC>Продолжить</ButtonSC>
+        </Panel>
+      </Footerwrapper>
     </Wrapper>
   );
 };
