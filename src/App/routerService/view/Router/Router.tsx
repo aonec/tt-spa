@@ -395,7 +395,7 @@ export const Router: FC<RouterProps> = ({ roles, isRolesLoadded }) => {
 
                   {(isSeniorOperator || isOperator) && (
                     <Route
-                      path="/settings/districtBorder/list"
+                      path="/districtBordersSettings/createByHousingStocksList"
                       component={DistrictBordersByAddressContainer}
                       exact
                     />

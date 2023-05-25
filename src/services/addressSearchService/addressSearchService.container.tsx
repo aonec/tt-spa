@@ -63,7 +63,7 @@ export const AddressSearchContainer: FC<AddressSearchContainerProps> = ({
     if (onChange) onChange('city', last(cities) || '');
 
     handleSubmit();
-  }, [cities, initialValues, setFieldValue, onChange]);
+  }, [cities, initialValues, setFieldValue, onChange, handleSubmit]);
 
   const handleChange = (key: string, value: string) => {
     setFieldValue(key, value);

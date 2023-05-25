@@ -21,8 +21,6 @@ export const DistrictBordersByAddressPage: FC<
 > = ({ handleFetchAddress, addresses }) => {
   const [orderBy, setOrderBy] = useState<EOrderByRule | null>(null);
 
-  console.log(addresses);
-
   return (
     <Wrapper>
       <GoBack />
