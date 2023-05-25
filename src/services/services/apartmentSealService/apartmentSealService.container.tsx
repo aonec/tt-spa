@@ -3,6 +3,7 @@ import { useHistory, useParams } from 'react-router';
 import { apartmentSealService } from './apartmentSealService.model';
 import { useEvent, useStore } from 'effector-react';
 import { ApartmentSealProfile } from './view/ApartmentSealProfile';
+import { CreateSealContainer, createSealService } from '../createSealService';
 
 const { inputs, outputs, gates } = apartmentSealService;
 const { ApartmentGate } = gates;
@@ -19,6 +20,9 @@ export const ApartmentSealContainer = () => {
   const searchApartment = useEvent(inputs.handleSearchApartment);
   const setSelectedHomeownerName = useEvent(inputs.setSelectedHomeownerName);
   const updateApartment = useEvent(inputs.handleUpdateApartment);
+  const openCreateSealAppointmentModal = useEvent(
+    createSealService.inputs.openModal,
+  );
 
   useEffect(() => {
     return inputs.handleApartmentLoaded.watch((apartment) => {
@@ -31,6 +35,7 @@ export const ApartmentSealContainer = () => {
   return (
     <>
       <ApartmentGate id={Number(id)} />
+      <CreateSealContainer />
       <ApartmentSealProfile
         apartment={apartment}
         isLoadingApartment={isApartmentLoading}
@@ -39,6 +44,7 @@ export const ApartmentSealContainer = () => {
         selectedHomeownerName={selectedHomeownerName}
         updateApartment={updateApartment}
         individualDevices={individualDevices}
+        openCreateSealAppointmentModal={openCreateSealAppointmentModal}
       />
     </>
   );

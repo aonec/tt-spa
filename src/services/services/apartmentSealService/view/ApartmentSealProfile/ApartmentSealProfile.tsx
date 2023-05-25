@@ -19,6 +19,7 @@ export const ApartmentSealProfile: FC<ApartmentSealProfileProps> = ({
   selectedHomeownerName,
   updateApartment,
   individualDevices,
+  openCreateSealAppointmentModal,
 }) => {
   const address = apartment?.housingStock?.address?.mainAddress;
 
@@ -79,6 +80,12 @@ export const ApartmentSealProfile: FC<ApartmentSealProfileProps> = ({
               apartment={apartment}
               handleUpdateApartment={updateApartment}
               setSelectedHomeownerName={setSelectedHomeownerName}
+              menuButtons={[
+                {
+                  title: 'Запись на опломбировку',
+                  onClick: () => openCreateSealAppointmentModal(apartment),
+                },
+              ]}
             />
             <IndividualDevicesList individualDevices={individualDevices} />
           </ContentWrapper>

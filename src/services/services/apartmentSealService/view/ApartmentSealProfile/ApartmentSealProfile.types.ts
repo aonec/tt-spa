@@ -12,4 +12,5 @@ export type ApartmentSealProfileProps = {
   selectedHomeownerName: string | null;
   updateApartment: (payload: UpdateApartmentRequestPayload) => void;
   individualDevices: IndividualDeviceListItemResponse[];
+  openCreateSealAppointmentModal: (apartment: ApartmentResponse) => void;
 };
