@@ -1,14 +1,44 @@
-export function isPointInPolygon(point: [number, number], polygon: number[][]) {
-  let inside = false;
-  for (let i = 0, j = polygon.length - 1; i < polygon.length; j = i++) {
-    const xi = polygon[i][0],
-      yi = polygon[i][1];
-    const xj = polygon[j][0],
-      yj = polygon[j][1];
-    const intersect =
-      yi > point[1] !== yj > point[1] &&
-      point[0] < ((xj - xi) * (point[1] - yi)) / (yj - yi) + xi;
-    if (intersect) inside = !inside;
+export function isPointInsidePolygon(
+  point: number[],
+  polygonVertices: number[][],
+) {
+  const numberOfVertices = polygonVertices.length;
+  let isInside = false;
+
+  // Loop through each vertex of the polygon
+  for (let i = 0, j = numberOfVertices - 1; i < numberOfVertices; j = i++) {
+    const [xi, yi] = polygonVertices[i];
+    const [xj, yj] = polygonVertices[j];
+
+    // Check if the point intersects with the line between the current vertex and the previous vertex
+    const intersect = isPointOnLeftOfLine(point, xi, yi, xj, yj);
+
+    if (intersect) {
+      // If the point intersects with the line, toggle the isInside flag
+      isInside = !isInside;
+    } else if (isPointOnLine(point, xi, yi)) {
+      // If the point is on the line, return true
+      return true;
+    }
   }
-  return inside;
+
+  // Return whether the point is inside the polygon
+  return isInside;
+}
+
+function isPointOnLeftOfLine(
+  point: number[],
+  xi: number,
+  yi: number,
+  xj: number,
+  yj: number,
+) {
+  return (
+    yi > point[1] !== yj > point[1] &&
+    point[0] < ((xj - xi) * (point[1] - yi)) / (yj - yi) + xi
+  );
+}
+
+function isPointOnLine(point: number[], x: number, y: number) {
+  return point[0] === x && point[1] === y;
 }

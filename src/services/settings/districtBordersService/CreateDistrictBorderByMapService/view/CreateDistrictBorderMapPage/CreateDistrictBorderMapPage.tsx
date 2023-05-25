@@ -5,7 +5,7 @@ import { Header, MapWrapper } from './CreateDistrictBorderMapPage.styled';
 import { CreateDistrictBorderMapPageProps } from './CreateDistrictBorderMapPage.types';
 import { ymaps } from './CreateDistrictBorderMapPage.types';
 import { CreateDistrictFormPanel } from './CreateDistrictFormPanel';
-import { isPointInPolygon } from './CreateDistrictBorderMapPage.utils';
+import { isPointInsidePolygon } from './CreateDistrictBorderMapPage.utils';
 
 export const CreateDistrictBorderMapPage: FC<
   CreateDistrictBorderMapPageProps
@@ -93,7 +93,7 @@ export const CreateDistrictBorderMapPage: FC<
     const polygonCoordinates = district.geometry?.getCoordinates();
 
     return housingStocksList.filter((elem) =>
-      isPointInPolygon(
+      isPointInsidePolygon(
         [elem.coordinates?.latitude || 0, elem.coordinates?.longitude || 0],
         polygonCoordinates?.[0] || [[0, 0]],
       ),

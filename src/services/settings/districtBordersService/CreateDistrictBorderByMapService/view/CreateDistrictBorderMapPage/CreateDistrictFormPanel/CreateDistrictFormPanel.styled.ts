@@ -21,3 +21,29 @@ export const Title = styled.div`
   font-weight: 400;
   font-size: 14px;
 `;
+
+export const ListWrapper = styled.div`
+  max-height: 500px;
+  overflow: auto;
+`;
+
+export const AddressItem = styled.div`
+  height: 48px;
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+  border-bottom: 1px solid #dcdee488;
+  margin-right: 16px;
+
+  &:last-child {
+    border-bottom: 0;
+  }
+`;
+
+export const Footer = styled.div`
+  display: flex;
+  padding: 16px;
+  background: #f3f5f6;
+  justify-content: flex-end;
+  gap: 12px;
+`;
