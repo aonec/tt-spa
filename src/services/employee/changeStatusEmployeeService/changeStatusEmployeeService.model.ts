@@ -2,11 +2,14 @@ import { combine, createDomain, forward, sample, split } from 'effector';
 import {
   getOrganizationUser,
   getOrganizationUserTasksByRoles,
+  getOrganizationUsersByRolesList,
   postEmloyeeStatus,
 } from './changeStatusEmployeeService.api';
 import {
   AddOrganizationUserWorkingStatusRequest,
+  ESecuredIdentityRoleName,
   OrganizationUserResponse,
+  OrganizationUserTaskReassignment,
   OrganizationUserWorkingStatusResponse,
   UserStatusResponse,
 } from 'myApi';
@@ -15,6 +18,7 @@ import { EffectFailDataAxiosError } from 'types';
 import {
   EmployeeStatus,
   GetOrganizationUserTasksByRolesRequestParams,
+  OrganizationUsersByRolesList,
   UserTasksByRoles,
 } from './changeStatusEmployeeService.types';
 import {
@@ -45,6 +49,9 @@ const sendUpdateStatusRequest = domain.createEvent();
 const sendUpdateStatusRequestWithPayload =
   domain.createEvent<AddOrganizationUserWorkingStatusRequest>();
 
+const handleApplyTasksReassignment =
+  domain.createEvent<OrganizationUserTaskReassignment[]>();
+
 const updateStatusFx = domain.createEffect<
   AddOrganizationUserWorkingStatusRequest,
   OrganizationUserWorkingStatusResponse | null,
@@ -60,6 +67,11 @@ const fetchOrganizationUserTasksByRolesFx = domain.createEffect<
   GetOrganizationUserTasksByRolesRequestParams,
   UserTasksByRoles
 >(getOrganizationUserTasksByRoles);
+
+const fetchOrganizationUsersByRolesListFx = domain.createEffect<
+  ESecuredIdentityRoleName[],
+  OrganizationUsersByRolesList
+>(getOrganizationUsersByRolesList);
 
 const successUpdateStatus = updateStatusFx.doneData;
 
@@ -91,6 +103,11 @@ const $userStatusChangeRequestPayload = domain
 const $isTransferUserTasksModalOpen = domain
   .createStore(false)
   .on(openTransferTasksModal, () => true)
+  .reset(handleCloseModal);
+
+const $organizationUsersByRolesList = domain
+  .createStore<OrganizationUsersByRolesList | null>(null)
+  .on(fetchOrganizationUsersByRolesListFx.doneData, (_, users) => users)
   .reset(handleCloseModal);
 
 split({
@@ -132,6 +149,16 @@ sample({
 });
 
 sample({
+  clock: fetchOrganizationUserTasksByRoles,
+  source: $currentUser,
+  filter: (user): user is OrganizationUserResponse => Boolean(user),
+  fn: (user) => {
+    return user?.roles?.map((elem) => elem.key!) || [];
+  },
+  target: fetchOrganizationUsersByRolesListFx,
+});
+
+sample({
   source: $userStatusChangeRequestPayload,
   clock: sendUpdateStatusRequest,
   filter: (payload): payload is AddOrganizationUserWorkingStatusRequest =>
@@ -144,6 +171,13 @@ sample({
   clock: sendUpdateStatusRequestWithPayload,
   fn: prepareUpdateStatusPayload,
   target: updateStatusFx,
+});
+
+sample({
+  source: $userStatusChangeRequestPayload,
+  clock: handleApplyTasksReassignment,
+  fn: (payload, reassignments) => ({ ...payload, reassignments }),
+  target: sendUpdateStatusRequestWithPayload,
 });
 
 updateStatusFx.failData.watch((error) =>
@@ -177,6 +211,7 @@ export const changeStatusEmployeeService = {
     handleUpdateStatus,
     handleCatchEmployeeStatusData,
     successUpdateStatus,
+    handleApplyTasksReassignment,
   },
   outputs: {
     $isModalOpen,
@@ -185,5 +220,6 @@ export const changeStatusEmployeeService = {
     $organizationUserTasksByRoles,
     $isTransferUserTasksModalOpen,
     $currentUser,
+    $organizationUsersByRolesList,
   },
 };

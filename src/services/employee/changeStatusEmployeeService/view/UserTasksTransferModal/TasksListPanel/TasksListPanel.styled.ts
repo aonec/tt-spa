@@ -7,7 +7,7 @@ export const Wrapper = styled.div`
   border-radius: 4px;
   padding: 16px;
   margin-top: 16px;
-  max-height: 400px;
+  max-height: 360px;
   overflow: auto;
 `;
 

@@ -1,9 +1,26 @@
-import { OrganizationUserResponse } from 'myApi';
-import { UserTasksByRoles } from '../../changeStatusEmployeeService.types';
+import {
+  ESecuredIdentityRoleName,
+  OrganizationUserResponse,
+  OrganizationUserTaskReassignment,
+} from 'myApi';
+import {
+  OrganizationUsersByRolesList,
+  UserTasksByRoles,
+} from '../../changeStatusEmployeeService.types';
 
 export type UserTasksTransferModalProps = {
   organizationUserTasksByRoles: UserTasksByRoles | null;
   isModalOpen: boolean;
   handleCloseModal: () => void;
   currentUser: OrganizationUserResponse | null;
+  organizationUsersByRolesList: OrganizationUsersByRolesList | null;
+  isLoading: boolean;
+  handleApplyTasksReassignment: (
+    payload: OrganizationUserTaskReassignment[],
+  ) => void;
+};
+
+export type UserReassignment = {
+  role: ESecuredIdentityRoleName;
+  userId: number | null;
 };
