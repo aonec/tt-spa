@@ -1,11 +1,7 @@
 import React, { FC, useEffect, useRef, useState } from 'react';
 import { GoBack } from 'ui-kit/shared_components/GoBack';
 import { Button } from 'ui-kit/Button';
-import {
-  Header,
-  Wrapper,
-  MapWrapper,
-} from './CreateDistrictBorderMapPage.styled';
+import { Header, MapWrapper } from './CreateDistrictBorderMapPage.styled';
 import { CreateDistrictBorderMapPageProps } from './CreateDistrictBorderMapPage.types';
 import { ymaps } from './CreateDistrictBorderMapPage.types';
 
@@ -14,7 +10,11 @@ export const CreateDistrictBorderMapPage: FC<
 > = () => {
   const mapRef = useRef<HTMLDivElement | null>(null);
 
+  const [map, setMap] = useState<ymaps.Map | null>(null);
+
   const [district, setDistrict] = useState<ymaps.Polygon | null>(null);
+
+  const [isEditing, setIsEditing] = useState(false);
 
   const initMaps = () => {
     if (!ymaps || !mapRef.current) {
@@ -27,48 +27,70 @@ export const CreateDistrictBorderMapPage: FC<
       controls: [],
     });
 
-    map.cursors.push('CROSSHAIR');
-
-    const district = new ymaps.Polygon(
-      [],
-      {},
-      {
-        // Курсор в режиме добавления новых вершин.
-        cursor: 'crosshair',
-        // Цвет заливки.
-        fillColor: 'rgba(24, 158, 233, 0.16)',
-        // Цвет обводки.
-        strokeColor: '#189EE9',
-        // Ширина обводки.
-        strokeWidth: 3,
-      },
-    );
-    // Добавляем многоугольник на карту.
-    map.geoObjects.add(district);
-
-    setDistrict(district);
+    setMap(map);
   };
 
+  // 1
   useEffect(() => {
     ymaps.ready(initMaps);
   }, [mapRef]);
 
+  const startEditing = () => {
+    if (!map) return;
+
+    const district = new ymaps.Polygon([], {}, {
+      editorDrawingCursor: 'crosshair',
+      fillColor: 'rgba(24, 158, 233, 0.16)',
+      strokeColor: '#189EE9',
+      strokeWidth: 3,
+    } as any);
+
+    map.geoObjects.add(district);
+
+    (district.editor as any).startDrawing();
+
+    const stateMonitor = new ymaps.Monitor(district.editor.state);
+
+    stateMonitor.add('drawing', (newValue) => {
+      district.options.set('strokeColor', newValue ? '#189EE9' : '#189Eff');
+    });
+
+    setIsEditing(true);
+
+    setDistrict(district);
+  };
+
+  const handleApplyDistrict = () => {
+    if (!map || !district) return;
+
+    const polygonCoordinates = district.geometry?.getCoordinates();
+
+    const mountedDistrict = new ymaps.Polygon(polygonCoordinates || [], {}, {
+      editorDrawingCursor: 'crosshair',
+      fillColor: 'rgba(24, 158, 233, 0.16)',
+      strokeColor: '#189EE9',
+      strokeWidth: 3,
+    } as any);
+
+    map.geoObjects.removeAll();
+
+    map.geoObjects.add(mountedDistrict);
+
+    setDistrict(mountedDistrict);
+  };
+
   return (
-    <Wrapper>
+    <div>
       <Header>
         <GoBack />
-        <Button
-          onClick={() => {
-            console.log(district);
-            (district as any)?.editor?.startDrawing?.();
-          }}
-        >
-          Создать район
-        </Button>
+        {!isEditing && <Button onClick={startEditing}>Создать район</Button>}
+        {isEditing && (
+          <Button onClick={handleApplyDistrict}>Подтвердить</Button>
+        )}
       </Header>
       <MapWrapper>
         <div ref={mapRef} style={{ width: '100%', height: '86vh' }} />
       </MapWrapper>
-    </Wrapper>
+    </div>
   );
 };
