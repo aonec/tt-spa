@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { HousingStockNumberProps } from './HousingStockNumber.types';
 import { Checkbox } from 'antd';
 
@@ -9,10 +9,14 @@ export const HousingStockNumber: FC<HousingStockNumberProps> = ({
 }) => {
   const [isChecked, setCheck] = useState(false);
 
-  setCheck(
-    housingStockIds.some(
-      (housingStockId) => housingStockId === housingStock.housingStockId,
-    ),
+  useEffect(
+    () =>
+      setCheck(
+        housingStockIds.some(
+          (housingStockId) => housingStockId === housingStock.housingStockId,
+        ),
+      ),
+    [housingStock, housingStockIds],
   );
 
   return (
