@@ -5,7 +5,10 @@ import { Header, MapWrapper } from './CreateDistrictBorderMapPage.styled';
 import { CreateDistrictBorderMapPageProps } from './CreateDistrictBorderMapPage.types';
 import { ymaps } from './CreateDistrictBorderMapPage.types';
 import { CreateDistrictFormPanel } from './CreateDistrictFormPanel';
-import { isPointInsidePolygon } from './CreateDistrictBorderMapPage.utils';
+import {
+  getHousingStockItemLink,
+  isPointInsidePolygon,
+} from './CreateDistrictBorderMapPage.utils';
 
 export const CreateDistrictBorderMapPage: FC<
   CreateDistrictBorderMapPageProps
@@ -15,6 +18,8 @@ export const CreateDistrictBorderMapPage: FC<
   const [map, setMap] = useState<ymaps.Map | null>(null);
 
   const [district, setDistrict] = useState<ymaps.Polygon | null>(null);
+  const [housingStocksGroup, setHousingStocksGroup] =
+    useState<ymaps.GeoObjectCollection | null>(null);
 
   const [isEditing, setIsEditing] = useState(false);
 
@@ -29,7 +34,12 @@ export const CreateDistrictBorderMapPage: FC<
       controls: [],
     });
 
+    const housingStocksGroup = new ymaps.GeoObjectCollection();
+
+    map.geoObjects.add(housingStocksGroup);
+
     setMap(map);
+    setHousingStocksGroup(housingStocksGroup);
   };
 
   // 1
@@ -99,6 +109,30 @@ export const CreateDistrictBorderMapPage: FC<
       ),
     );
   }, [district, housingStocksList]);
+
+  useEffect(() => {
+    if (!housingStocksGroup) return;
+
+    const housingStockPlacemarks = housingStocksInDistrict.map((elem) => {
+      const placemark = new ymaps.Placemark(
+        [elem.coordinates?.latitude, elem.coordinates?.longitude],
+        {},
+        {
+          iconLayout: 'default#image',
+          iconImageHref: getHousingStockItemLink(),
+          iconImageSize: [51, 51],
+        },
+      );
+
+      return placemark;
+    });
+
+    housingStocksGroup.removeAll();
+
+    housingStockPlacemarks.forEach((elem) => {
+      housingStocksGroup.add(elem);
+    });
+  }, [housingStocksGroup, housingStocksInDistrict]);
 
   return (
     <div>

@@ -10,6 +10,7 @@ import {
 import { CreateDistrictFormPanelProps } from './CreateDistrictFormPanel.types';
 import { Checkbox } from 'antd';
 import { Button } from 'ui-kit/Button';
+import { sortBy } from 'lodash';
 
 export const CreateDistrictFormPanel: FC<CreateDistrictFormPanelProps> = ({
   housingStocksInDistrict,
@@ -20,7 +21,10 @@ export const CreateDistrictFormPanel: FC<CreateDistrictFormPanelProps> = ({
         <Title>Выбранные адреса</Title>
       </Header>
       <ListWrapper>
-        {housingStocksInDistrict.map((elem) => (
+        {sortBy(housingStocksInDistrict, (elem) => {
+          const address = elem.address?.mainAddress;
+          return `${address?.street}${address?.number}${address?.corpus || ''}`;
+        }).map((elem) => (
           <AddressItem>
             <Checkbox>
               {elem.address?.mainAddress?.street}

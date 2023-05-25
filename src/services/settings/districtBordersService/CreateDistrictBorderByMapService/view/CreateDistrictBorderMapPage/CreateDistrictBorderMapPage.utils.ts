@@ -1,3 +1,23 @@
+import { getLinkToSvg } from 'utils/getLinkToSvg';
+import { HousingStockPlacemark } from './CreateDistrictBorderMapPage.constants';
+
+function isPointOnLeftOfLine(
+  point: number[],
+  xi: number,
+  yi: number,
+  xj: number,
+  yj: number,
+) {
+  return (
+    yi > point[1] !== yj > point[1] &&
+    point[0] < ((xj - xi) * (point[1] - yi)) / (yj - yi) + xi
+  );
+}
+
+function isPointOnLine(point: number[], x: number, y: number) {
+  return point[0] === x && point[1] === y;
+}
+
 export function isPointInsidePolygon(
   point: number[],
   polygonVertices: number[][],
@@ -26,19 +46,6 @@ export function isPointInsidePolygon(
   return isInside;
 }
 
-function isPointOnLeftOfLine(
-  point: number[],
-  xi: number,
-  yi: number,
-  xj: number,
-  yj: number,
-) {
-  return (
-    yi > point[1] !== yj > point[1] &&
-    point[0] < ((xj - xi) * (point[1] - yi)) / (yj - yi) + xi
-  );
-}
-
-function isPointOnLine(point: number[], x: number, y: number) {
-  return point[0] === x && point[1] === y;
+export function getHousingStockItemLink() {
+  return getLinkToSvg(HousingStockPlacemark);
 }
