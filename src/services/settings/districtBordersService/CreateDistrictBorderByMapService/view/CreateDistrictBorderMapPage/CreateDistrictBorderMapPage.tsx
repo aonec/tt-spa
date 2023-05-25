@@ -112,7 +112,10 @@ export const CreateDistrictBorderMapPage: FC<
 
   useEffect(() => {
     if (!housingStocksGroup) return;
-
+    if (isEditing) {
+      housingStocksGroup.removeAll();
+      return;
+    }
     const housingStockPlacemarks = housingStocksInDistrict.map((elem) => {
       const placemark = new ymaps.Placemark(
         [elem.coordinates?.latitude, elem.coordinates?.longitude],
@@ -132,7 +135,7 @@ export const CreateDistrictBorderMapPage: FC<
     housingStockPlacemarks.forEach((elem) => {
       housingStocksGroup.add(elem);
     });
-  }, [housingStocksGroup, housingStocksInDistrict]);
+  }, [housingStocksGroup, housingStocksInDistrict, isEditing]);
 
   return (
     <div>
