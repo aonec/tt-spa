@@ -1,14 +1,15 @@
-import React, { FC, useEffect, useRef, useState } from 'react';
+import React, { FC, useEffect, useMemo, useRef, useState } from 'react';
 import { GoBack } from 'ui-kit/shared_components/GoBack';
 import { Button } from 'ui-kit/Button';
 import { Header, MapWrapper } from './CreateDistrictBorderMapPage.styled';
 import { CreateDistrictBorderMapPageProps } from './CreateDistrictBorderMapPage.types';
 import { ymaps } from './CreateDistrictBorderMapPage.types';
 import { CreateDistrictFormPanel } from './CreateDistrictFormPanel';
+import { isPointInPolygon } from './CreateDistrictBorderMapPage.utils';
 
 export const CreateDistrictBorderMapPage: FC<
   CreateDistrictBorderMapPageProps
-> = () => {
+> = ({ isLoadingHousingStocks, housingStocksList }) => {
   const mapRef = useRef<HTMLDivElement | null>(null);
 
   const [map, setMap] = useState<ymaps.Map | null>(null);
@@ -86,6 +87,19 @@ export const CreateDistrictBorderMapPage: FC<
     setIsEditing(false);
   };
 
+  const housingStocksInDistrict = useMemo(() => {
+    if (!district || !housingStocksList) return [];
+
+    const polygonCoordinates = district.geometry?.getCoordinates();
+
+    return housingStocksList.filter((elem) =>
+      isPointInPolygon(
+        [elem.coordinates?.latitude || 0, elem.coordinates?.longitude || 0],
+        polygonCoordinates?.[0] || [[0, 0]],
+      ),
+    );
+  }, [district, housingStocksList]);
+
   return (
     <div>
       <Header>
@@ -101,7 +115,12 @@ export const CreateDistrictBorderMapPage: FC<
       </Header>
       <MapWrapper>
         <div ref={mapRef} style={{ width: '100%', height: '86vh' }} />
-        {!isEditing && district && <CreateDistrictFormPanel />}
+        {!isEditing && district && (
+          <CreateDistrictFormPanel
+            isLoadingHousingStocks={isLoadingHousingStocks}
+            housingStocksInDistrict={housingStocksInDistrict}
+          />
+        )}
       </MapWrapper>
     </div>
   );
