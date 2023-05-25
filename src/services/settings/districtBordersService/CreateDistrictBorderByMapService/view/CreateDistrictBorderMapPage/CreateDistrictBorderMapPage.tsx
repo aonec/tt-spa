@@ -4,6 +4,7 @@ import { Button } from 'ui-kit/Button';
 import { Header, MapWrapper } from './CreateDistrictBorderMapPage.styled';
 import { CreateDistrictBorderMapPageProps } from './CreateDistrictBorderMapPage.types';
 import { ymaps } from './CreateDistrictBorderMapPage.types';
+import { CreateDistrictFormPanel } from './CreateDistrictFormPanel';
 
 export const CreateDistrictBorderMapPage: FC<
   CreateDistrictBorderMapPageProps
@@ -38,26 +39,30 @@ export const CreateDistrictBorderMapPage: FC<
   const startEditing = () => {
     if (!map) return;
 
-    const district = new ymaps.Polygon([], {}, {
+    const polygonCoordinates = district?.geometry?.getCoordinates();
+
+    const newDistrict = new ymaps.Polygon(polygonCoordinates || [], {}, {
       editorDrawingCursor: 'crosshair',
       fillColor: 'rgba(24, 158, 233, 0.16)',
       strokeColor: '#189EE9',
       strokeWidth: 3,
     } as any);
 
-    map.geoObjects.add(district);
+    district && map.geoObjects.remove(district);
 
-    (district.editor as any).startDrawing();
+    map.geoObjects.add(newDistrict);
 
-    const stateMonitor = new ymaps.Monitor(district.editor.state);
+    (newDistrict.editor as any).startDrawing();
+
+    const stateMonitor = new ymaps.Monitor(newDistrict.editor.state);
 
     stateMonitor.add('drawing', (newValue) => {
-      district.options.set('strokeColor', newValue ? '#189EE9' : '#189Eff');
+      newDistrict.options.set('strokeColor', newValue ? '#189EE9' : '#189Eff');
     });
 
     setIsEditing(true);
 
-    setDistrict(district);
+    setDistrict(newDistrict);
   };
 
   const handleApplyDistrict = () => {
@@ -72,24 +77,31 @@ export const CreateDistrictBorderMapPage: FC<
       strokeWidth: 3,
     } as any);
 
-    map.geoObjects.removeAll();
+    map.geoObjects.remove(district);
 
     map.geoObjects.add(mountedDistrict);
 
     setDistrict(mountedDistrict);
+
+    setIsEditing(false);
   };
 
   return (
     <div>
       <Header>
         <GoBack />
-        {!isEditing && <Button onClick={startEditing}>Создать район</Button>}
+        {!isEditing && (
+          <Button onClick={startEditing}>
+            {district ? 'Изменить' : 'Создать район'}
+          </Button>
+        )}
         {isEditing && (
           <Button onClick={handleApplyDistrict}>Подтвердить</Button>
         )}
       </Header>
       <MapWrapper>
         <div ref={mapRef} style={{ width: '100%', height: '86vh' }} />
+        {!isEditing && district && <CreateDistrictFormPanel />}
       </MapWrapper>
     </div>
   );
