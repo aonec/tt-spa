@@ -76,6 +76,13 @@ export const ResourceConsumptionFilter: FC<ResourceConsumptionFilterProps> = ({
     setValues(filter);
   }, [filter, setValues]);
 
+  useEffect(() => {
+    if (selectedCity) {
+      setFieldValue('HousingStockIds', []);
+      setFieldValue('AdditionalHousingStockIds', []);
+    }
+  }, [selectedCity, setFieldValue]);
+
   const handleReset = useCallback(() => {
     handleClearFilter();
     handleClearData();

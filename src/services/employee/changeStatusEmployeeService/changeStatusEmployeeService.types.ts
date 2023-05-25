@@ -1,7 +1,9 @@
 import {
   EOrderByRule,
+  EOrganizationUserWorkingStatusType,
   ESecuredIdentityRoleName,
   ESecuredIdentityRoleNameStringDictionaryItem,
+  OrganizationUserListResponse,
   TaskListResponse,
   UserStatusResponse,
 } from 'myApi';
@@ -26,3 +28,20 @@ export type UserTasksByRoles = {
 }[];
 
 export type EmployeeStatus = { id: number; status: UserStatusResponse | null };
+
+export type GetOrganizationUsersListRequestParams = {
+  Name?: string;
+  IsSuspended?: boolean;
+  RoleNames?: ESecuredIdentityRoleName[];
+  WorkingStatusType?: EOrganizationUserWorkingStatusType;
+  PageNumber?: number;
+  PageSize?: number;
+  OrderBy?: EOrderByRule;
+  Skip?: number;
+  Take?: number;
+};
+
+export type OrganizationUsersByRolesList = {
+  users: OrganizationUserListResponse[];
+  role: ESecuredIdentityRoleName;
+}[];
