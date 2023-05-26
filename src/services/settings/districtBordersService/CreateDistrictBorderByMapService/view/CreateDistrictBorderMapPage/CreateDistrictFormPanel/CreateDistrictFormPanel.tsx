@@ -55,6 +55,14 @@ export const CreateDistrictFormPanel: FC<CreateDistrictFormPanelProps> = ({
           <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
         )}
       </ListWrapper>
+      <Footer>
+        <Button size="small" type="ghost" onClick={handleCancel}>
+          Отмена
+        </Button>
+        <Button size="small" onClick={() => setFormSection(formSection + 1)}>
+          Продолжить
+        </Button>
+      </Footer>
     </>
   );
 
@@ -82,6 +90,16 @@ export const CreateDistrictFormPanel: FC<CreateDistrictFormPanelProps> = ({
           </Select>
         </FormItem>
       </FormWrapper>
+      <Footer>
+        <Button
+          size="small"
+          type="ghost"
+          onClick={() => setFormSection(formSection - 1)}
+        >
+          Назад
+        </Button>
+        <Button size="small">Сохранить</Button>
+      </Footer>
     </>
   );
 
@@ -89,14 +107,6 @@ export const CreateDistrictFormPanel: FC<CreateDistrictFormPanelProps> = ({
     <Wrapper>
       {formSection === 0 && housingStocksListSection}
       {formSection === 1 && settingsSection}
-      <Footer>
-        <Button size="small" type="ghost" onClick={handleCancel}>
-          Отмена
-        </Button>
-        <Button size="small" onClick={() => setFormSection(formSection + 1)}>
-          Продолжить
-        </Button>
-      </Footer>
     </Wrapper>
   );
 };
