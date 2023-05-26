@@ -6,9 +6,10 @@ import { createNodeService } from './createNodeService.model';
 import { CreateNodePage } from './view/CreateNodePage';
 import { CreateNodeServiceZoneContainer } from '../createNodeServiceZoneService';
 import { CreateNodeConfirmationModal } from './view/CreateNodeConfirmationModal';
+import { CreateCalculatorModalContainer } from 'services/calculators/createCalculatorModalService';
 
 const { inputs, outputs, gates } = createNodeService;
-const { CreateNodeGate, CreateCalculatorGate } = gates;
+const { CreateNodeGate } = gates;
 
 export const CreateNodeContainer = () => {
   const { housingStockId } = useParams<{ housingStockId: string }>();
@@ -49,8 +50,8 @@ export const CreateNodeContainer = () => {
     <>
       <CreateNodeGate housingStockId={Number(housingStockId)} />
       <ExistingCitiesGate />
-      <CreateCalculatorGate housingStockId={requestPayload.housingStockId} />
       <CreateNodeServiceZoneContainer />
+      <CreateCalculatorModalContainer />
       {housingStock && selectedServiceZone && (
         <CreateNodeConfirmationModal
           isOpen={isConfirmationModalOpen}
@@ -73,7 +74,10 @@ export const CreateNodeContainer = () => {
         goPrevStep={() => goPrevStep()}
         stepNumber={stepNumber}
         calculatorsList={calculatorsList}
-        openCreateCalculatorModal={() => openCreateCalculatorModal()}
+        openCreateCalculatorModal={() =>
+          requestPayload.housingStockId &&
+          openCreateCalculatorModal(requestPayload.housingStockId)
+        }
         isDisabledAddress={Boolean(housingStockId)}
         isValidationLoading={isValidationLoading}
         requestPayload={requestPayload}

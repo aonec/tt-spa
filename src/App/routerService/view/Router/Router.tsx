@@ -12,10 +12,8 @@ import {
 import { DevicesPageContainer } from 'services/housingMeteringDevices/devicesPageService';
 import { ChangeODPUContainer } from 'services/housingMeteringDevices/сhangeODPUService';
 import { EditElectricNodeContainer } from 'services/housingMeteringDevices/editElectricNodeService';
-import { NodeArchivePageContainer } from '01/features/nodes/nodeArchiveService';
 import { StatisticsPage } from '01/features/statistics';
 import { Panel } from 'App/Panel';
-import { EditNodeContainer } from 'services/housingMeteringDevices/editNodeService';
 import { CreateObjectContainer } from 'services/objects/createObjectService';
 import { EditApartmentProfileContainer } from 'services/apartments/editApartmentProfileService';
 import { EmployeeProfileContainer } from 'services/employee/employeeProfileService';
@@ -51,6 +49,9 @@ import { SwitchPersonalNumberContainer } from 'services/homeowner/personalNumber
 import { SplitPersonalNumberContainer } from 'services/homeowner/personalNumber/splitPersonalNumberService';
 import { SettingsPageContainer } from 'services/settings/settingsPageService';
 import { ActsJournalContainer } from 'services/actsJournalService';
+import { NodeArchivePageContainer } from 'services/nodes/nodeArchiveService';
+import { EditNodeContainer } from 'services/nodes/editNodeService';
+import { DistrictBordersByAddressContainer } from 'services/settings/districtBordersService/districtBordersByAddressService';
 
 const { gates } = objectProfileService;
 
@@ -386,8 +387,16 @@ export const Router: FC<RouterProps> = ({ roles, isRolesLoadded }) => {
 
                   {(isSeniorOperator || isOperator) && (
                     <Route
-                      path="/settings/:section/:id?"
+                      path="/settings/:section"
                       component={SettingsPageContainer}
+                      exact
+                    />
+                  )}
+
+                  {(isSeniorOperator || isOperator) && (
+                    <Route
+                      path="/districtBordersSettings/createByHousingStocksList"
+                      component={DistrictBordersByAddressContainer}
                       exact
                     />
                   )}
@@ -424,7 +433,7 @@ export const Router: FC<RouterProps> = ({ roles, isRolesLoadded }) => {
 
                   <Redirect
                     from="/statistics/"
-                    to="/statistics/subscribersConsumption/houses"
+                    to="/statistics/resourceConsumption"
                     exact
                   />
 
