@@ -9,13 +9,18 @@ import React, {
 import { GoBack } from 'ui-kit/shared_components/GoBack';
 import { Button } from 'ui-kit/Button';
 import { Header, MapWrapper } from './CreateDistrictBorderMapPage.styled';
-import { CreateDistrictBorderMapPageProps } from './CreateDistrictBorderMapPage.types';
+import {
+  CreateDistrictBorderMapPageProps,
+  DistrictColor,
+} from './CreateDistrictBorderMapPage.types';
 import { ymaps } from './CreateDistrictBorderMapPage.types';
 import { CreateDistrictFormPanel } from './CreateDistrictFormPanel';
 import {
+  getDistrictColorData,
   getHousingStockItemLink,
   isPointInsidePolygon,
 } from './CreateDistrictBorderMapPage.utils';
+import { PencilIcon } from 'ui-kit/icons';
 
 export const CreateDistrictBorderMapPage: FC<
   CreateDistrictBorderMapPageProps
@@ -33,6 +38,12 @@ export const CreateDistrictBorderMapPage: FC<
   const [selectedHousingStocks, setSelectedHousingStocks] = useState<number[]>(
     [],
   );
+
+  const [districtColor, setDistrictColor] = useState<DistrictColor>(
+    DistrictColor.Blue,
+  );
+
+  const [formSection, setFormSection] = useState<number>(0);
 
   const handleClickHousingStock = useCallback(
     (id: number) => {
@@ -66,20 +77,21 @@ export const CreateDistrictBorderMapPage: FC<
     setHousingStocksGroup(housingStocksGroup);
   };
 
-  // 1
   useEffect(() => {
     ymaps.ready(initMaps);
   }, [mapRef]);
 
-  const startEditing = () => {
+  const startEditing = useCallback(() => {
     if (!map) return;
 
     const polygonCoordinates = district?.geometry?.getCoordinates();
 
+    const { color, strokeColor } = getDistrictColorData(districtColor);
+
     const newDistrict = new ymaps.Polygon(polygonCoordinates || [], {}, {
       editorDrawingCursor: 'crosshair',
-      fillColor: 'rgba(24, 158, 233, 0.16)',
-      strokeColor: '#189EE9',
+      fillColor: color,
+      strokeColor: strokeColor,
       strokeWidth: 3,
     } as any);
 
@@ -98,17 +110,19 @@ export const CreateDistrictBorderMapPage: FC<
     setIsEditing(true);
 
     setDistrict(newDistrict);
-  };
+  }, [district, districtColor, map]);
 
   const handleApplyDistrict = () => {
     if (!map || !district) return;
 
     const polygonCoordinates = district.geometry?.getCoordinates();
 
+    const { color, strokeColor } = getDistrictColorData(districtColor);
+
     const mountedDistrict = new ymaps.Polygon(polygonCoordinates || [], {}, {
       editorDrawingCursor: 'crosshair',
-      fillColor: 'rgba(24, 158, 233, 0.16)',
-      strokeColor: '#189EE9',
+      fillColor: color,
+      strokeColor: strokeColor,
       strokeWidth: 3,
     } as any);
 
@@ -177,12 +191,24 @@ export const CreateDistrictBorderMapPage: FC<
     selectedHousingStocks,
   ]);
 
+  useEffect(() => {
+    if (!district) return;
+
+    const { color, strokeColor } = getDistrictColorData(districtColor);
+
+    district.options.set('strokeColor', strokeColor);
+    district.options.set('fillColor', color);
+  }, [district, districtColor]);
+
   return (
     <div>
       <Header>
         <GoBack />
         {!isEditing && (
-          <Button onClick={startEditing}>
+          <Button
+            onClick={startEditing}
+            icon={district ? <PencilIcon /> : undefined}
+          >
             {district ? 'Изменить' : 'Создать район'}
           </Button>
         )}
@@ -198,6 +224,11 @@ export const CreateDistrictBorderMapPage: FC<
             housingStocksInDistrict={housingStocksInDistrict}
             selectedHousingStocks={selectedHousingStocks}
             handleClickHousingStock={handleClickHousingStock}
+            handleCancel={startEditing}
+            setDistrictColor={setDistrictColor}
+            districtColor={districtColor}
+            formSection={formSection}
+            setFormSection={setFormSection}
           />
         )}
       </MapWrapper>

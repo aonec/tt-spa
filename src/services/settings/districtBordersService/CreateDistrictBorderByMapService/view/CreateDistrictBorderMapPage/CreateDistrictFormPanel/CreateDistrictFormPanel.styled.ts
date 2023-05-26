@@ -46,4 +46,23 @@ export const Footer = styled.div`
   background: #f3f5f6;
   justify-content: flex-end;
   gap: 12px;
+  border-radius: 0 0 4px 4px;
+`;
+
+export const FormWrapper = styled.div`
+  padding: 8px 16px;
+`;
+
+export const SelectColorOptionWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 8px;
+`;
+
+export const ColorCircle = styled.div<{ color: string; strokeColor: string }>`
+  width: 12px;
+  height: 12px;
+  border-radius: 12px;
+  background: ${({ color }) => color};
+  border: 3px solid ${({ strokeColor }) => strokeColor};
 `;
