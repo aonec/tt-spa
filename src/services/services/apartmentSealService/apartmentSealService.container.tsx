@@ -4,6 +4,7 @@ import { apartmentSealService } from './apartmentSealService.model';
 import { useEvent, useStore } from 'effector-react';
 import { ApartmentSealProfile } from './view/ApartmentSealProfile';
 import { CreateSealContainer, createSealService } from '../createSealService';
+import { SetSealAppointmentsContainer } from '../setSealAppointmentsService';
 
 const { inputs, outputs, gates } = apartmentSealService;
 const { ApartmentGate } = gates;
@@ -36,6 +37,7 @@ export const ApartmentSealContainer = () => {
     <>
       <ApartmentGate id={Number(id)} />
       <CreateSealContainer />
+      <SetSealAppointmentsContainer />
       <ApartmentSealProfile
         apartment={apartment}
         isLoadingApartment={isApartmentLoading}
