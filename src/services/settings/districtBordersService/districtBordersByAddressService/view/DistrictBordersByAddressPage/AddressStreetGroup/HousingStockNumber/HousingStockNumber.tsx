@@ -38,7 +38,7 @@ export const HousingStockNumber: FC<HousingStockNumberProps> = ({
       }}
     >
       <Checkbox checked={isChecked} />
-      <Number isChecked={isChecked}>{housingStock.housingStockNumber}</Number>
+      <Number isChecked={isChecked}>{housingStock.housingStockNumber} {housingStock.housingStockCorpus}</Number>
     </HousingStockNumberWrapper>
   );
 };

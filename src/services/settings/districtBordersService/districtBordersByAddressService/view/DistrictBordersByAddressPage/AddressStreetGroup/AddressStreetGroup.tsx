@@ -27,7 +27,7 @@ export const AddressStreetGroup: FC<AddressStreetGroupProps> = ({
     address.addresses?.map((address) => address.housingStockId) || [];
 
   useEffect(() => {
-    if (address.addresses?.length === checkedhousingStockIds.length) {
+    if (housingStockIds?.length === checkedhousingStockIds.length) {
       setCheck(true);
     } else {
       setCheck(false);

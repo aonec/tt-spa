@@ -71,7 +71,7 @@ export const DistrictBordersByAddressPage: FC<
       </AddressSortWrapper>
 
       {addresses?.map((address) => (
-        <AddressStreetGroup address={address} />
+        <AddressStreetGroup address={address} key={address.street} />
       ))}
 
       <FooterWrapper>
