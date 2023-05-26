@@ -51,6 +51,7 @@ import { SettingsPageContainer } from 'services/settings/settingsPageService';
 import { ActsJournalContainer } from 'services/actsJournalService';
 import { NodeArchivePageContainer } from 'services/nodes/nodeArchiveService';
 import { EditNodeContainer } from 'services/nodes/editNodeService';
+import { DistrictBordersByAddressContainer } from 'services/settings/districtBordersService/districtBordersByAddressService';
 
 const { gates } = objectProfileService;
 
@@ -386,8 +387,16 @@ export const Router: FC<RouterProps> = ({ roles, isRolesLoadded }) => {
 
                   {(isSeniorOperator || isOperator) && (
                     <Route
-                      path="/settings/:section/:id?"
+                      path="/settings/:section"
                       component={SettingsPageContainer}
+                      exact
+                    />
+                  )}
+
+                  {(isSeniorOperator || isOperator) && (
+                    <Route
+                      path="/districtBordersSettings/createByHousingStocksList"
+                      component={DistrictBordersByAddressContainer}
                       exact
                     />
                   )}

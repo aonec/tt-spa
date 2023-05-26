@@ -12,6 +12,7 @@ import { ChooseTypeOfResourceDisconnectionModalContainer } from 'services/resour
 import { PageHeader } from 'ui-kit/shared_components/PageHeader';
 import { featureToggles } from 'featureToggles';
 import { WorkingRangeTab } from 'services/workingRanges/WorkingRangeTab';
+import { DistrictBordersContainer } from 'services/settings/districtBordersService';
 
 export const SettingPage: FC<SettingPageProps> = ({
   handleReassingInspector,
@@ -69,6 +70,9 @@ export const SettingPage: FC<SettingPageProps> = ({
         ></TabsSC.TabPane>
         <TabsSC.TabPane tab="Распределение инспекторов" key="inspectors">
           <InspectorsDistributionPage />
+        </TabsSC.TabPane>
+        <TabsSC.TabPane tab="Границы районов" key="districtBorder">
+          <DistrictBordersContainer />
         </TabsSC.TabPane>
       </>
     );
