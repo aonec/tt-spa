@@ -1,5 +1,5 @@
-import { InputSC } from '01/shared/ui/Fields';
 import styled, { keyframes } from 'styled-components';
+import { Input } from 'ui-kit/Input';
 import { CloseIcon } from 'ui-kit/icons';
 
 export const Wrapper = styled.div`
@@ -23,7 +23,7 @@ export const FilterHeader = styled.div`
   padding: 16px;
 `;
 
-export const SearchInput = styled(InputSC)`
+export const SearchInput = styled(Input)`
   width: 100%;
   margin: 0 !important;
 `;

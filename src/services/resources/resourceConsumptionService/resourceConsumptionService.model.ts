@@ -8,8 +8,8 @@ import {
 } from './resourceConsumptionService.api';
 import { initialSelectedGraphTypes } from './resourceConsumptionService.constants';
 import {
-  ConsumptionDataFilter,
   ConsumptionDataForTwoMonth,
+  ConsumptionDataPayload,
   MonthConsumptionData,
 } from './resourceConsumptionService.types';
 import { BooleanTypesOfResourceConsumptionGraphForTwoMonth } from './view/ResourceConsumptionProfile/ResourceConsumptionProfile.types';
@@ -20,10 +20,10 @@ const domain = createDomain('resourceConsumptionService');
 
 const clearData = domain.createEvent();
 
-const getConsumptionData = domain.createEvent<ConsumptionDataFilter>();
+const getConsumptionData = domain.createEvent<ConsumptionDataPayload>();
 
 const getHousingConsumptionFx = domain.createEffect<
-  ConsumptionDataFilter,
+  ConsumptionDataPayload,
   ConsumptionDataForTwoMonth,
   EffectFailDataAxiosError
 >(fetchConsumptionsForTwoMonth);
@@ -34,11 +34,11 @@ const $housingConsumptionData = domain
   .reset(clearData);
 
 const getAdditionalConsumptionData =
-  domain.createEvent<ConsumptionDataFilter>();
+  domain.createEvent<ConsumptionDataPayload>();
 
 const clearAdditionalAddressData = domain.createEvent();
 const getAdditionalConsumptionFx = domain.createEffect<
-  ConsumptionDataFilter,
+  ConsumptionDataPayload,
   MonthConsumptionData
 >(fetchConsumptionsForMonth);
 const $additionalConsumption = domain
@@ -56,16 +56,14 @@ const $selectedGraphTypes = domain
   .reset(clearData);
 
 const clearSummary = domain.createEvent();
+const getSummaryConsumptions = domain.createEvent<ConsumptionDataPayload>();
 const getSummaryConsumptionsFx = domain.createEffect<
-  ConsumptionDataFilter,
+  ConsumptionDataPayload,
   GetSummaryHousingConsumptionsByResourcesResponse
 >(fetchSummaryConsumption);
 const $summaryConsumption = domain
   .createStore<GetSummaryHousingConsumptionsByResourcesResponse | null>(null)
   .on(getSummaryConsumptionsFx.doneData, (_, consumptions) => consumptions)
-  .on(clearData, () => ({
-    consumptions: [],
-  }))
   .reset(clearSummary);
 
 const ResourceConsumptionGate = createGate();
@@ -83,7 +81,12 @@ sample({
 
 sample({
   clock: getConsumptionData,
-  target: [getHousingConsumptionFx, getSummaryConsumptionsFx],
+  target: getHousingConsumptionFx,
+});
+
+sample({
+  clock: getSummaryConsumptions,
+  target: getSummaryConsumptionsFx,
 });
 
 forward({
@@ -97,11 +100,10 @@ forward({
 });
 
 getHousingConsumptionFx.failData.watch((error) => {
-  return message.error(
-    error.response.data.error.Text ||
-      error.response.data.error.Message ||
-      'Произошла ошибка',
-  );
+  const errorText =
+    error.response?.data.error.Text || error.response?.data.error.Message;
+
+  return errorText && message.error(errorText);
 });
 
 export const resourceConsumptionService = {
@@ -112,6 +114,7 @@ export const resourceConsumptionService = {
     clearSummary,
     setSelectedGraphTypes,
     clearAdditionalAddressData,
+    getSummaryConsumptions,
   },
   outputs: {
     $housingConsumptionData,

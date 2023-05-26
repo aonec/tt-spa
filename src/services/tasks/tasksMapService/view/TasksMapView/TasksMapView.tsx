@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 import { Wrapper } from './TasksMapView.styled';
 import { TasksMapViewProps } from './TasksMapView.types';
 import { TasksMapFiltration } from './TasksMapFiltration';
-import { TasksMap } from './TasksMap/TasksMap';
+import { TasksMapsNative } from './TasksMapsNative';
 
 export const TasksMapView: FC<TasksMapViewProps> = ({
   taskTypes,
@@ -36,7 +36,7 @@ export const TasksMapView: FC<TasksMapViewProps> = ({
         clearTask={clearTask}
         organizationUsers={organizationUsers}
       />
-      <TasksMap
+      <TasksMapsNative
         housingStocksWithTasks={housingStocksWithTasks}
         handleClickMarker={handleClickMarker}
         selectedHousingStockId={selectedHousingStock?.housingStock?.id}

@@ -71,6 +71,13 @@ export const DocumentsLineUpload: FC<DocumentsLineUploadProps> = ({
           disabled={isLoading || isMaxDocuments}
           type="ghost"
           icon={<UploadIcon />}
+          onClick={() => {
+            const element = document.getElementById(id);
+
+            if (!element) return;
+
+            element?.click?.();
+          }}
         >
           {label}
         </Button>

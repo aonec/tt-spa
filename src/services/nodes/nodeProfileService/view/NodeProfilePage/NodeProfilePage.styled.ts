@@ -1,9 +1,7 @@
+import { PageHeader } from 'ui-kit/shared_components/PageHeader';
 import styled from 'styled-components';
+import { Tabs } from 'ui-kit/Tabs';
 import { IncorrectConfigurationIcon } from 'ui-kit/icons';
-
-export const TabsWrapper = styled.div`
-  margin-top: 16px;
-`;
 
 export const Wrapper = styled.div`
   display: flex;
@@ -26,10 +24,6 @@ export const AdditionalAddress = styled.span`
   margin-left: 6px;
 `;
 
-export const HeaderWrapper = styled.div`
-  padding: 25px 0 5px;
-`;
-
 export const HeaderInfoStringWrapper = styled.div`
   margin-top: -5px;
 `;
@@ -42,4 +36,12 @@ export const IncorrectConfigurationIconSC = styled(IncorrectConfigurationIcon)`
 export const NodeNumberWrapper = styled.div`
   display: flex;
   align-items: center;
+`;
+
+export const PageHeaderSC = styled(PageHeader)`
+  margin-top: 16px;
+`;
+
+export const TabsSC = styled(Tabs)`
+  margin-top: 16px;
 `;

@@ -1,11 +1,13 @@
 import { Pagination } from 'antd';
 import { useEvent, useStore } from 'effector-react';
-import React from 'react';
+import React, { FC } from 'react';
 import { displayObjectsListService } from './displayObjectsListService.model';
 import { ObjectsList } from './view/ObjectsList';
 import { SearchObjects } from './view/SearchObjects';
+import { HeaderInject } from '../objectsProfileService/view/ObjectsProfile/ObjectsProfile.types';
+import { SizeWrapper } from '../objectsProfileService/view/ObjectsProfile/ObjectsProfile.styled';
 
-export const ObjectsListContainer = () => {
+export const ObjectsListContainer: FC<HeaderInject> = ({ Header }) => {
   const pagedHousingStocks = useStore(
     displayObjectsListService.outputs.$housingStocks,
   );
@@ -27,10 +29,14 @@ export const ObjectsListContainer = () => {
   const { HousingStocksGate } = displayObjectsListService.gates;
 
   return (
-    <>
+    <div>
       <HousingStocksGate />
-      <SearchObjects handleSearch={handleSearch} />
-      <ObjectsList isLoading={isLoading} housingStocks={housingStocks} />
+      <Header>
+        <SearchObjects handleSearch={handleSearch} />
+      </Header>
+      <SizeWrapper>
+        <ObjectsList isLoading={isLoading} housingStocks={housingStocks} />
+      </SizeWrapper>
       {isNotEmpty && !isLoading && (
         <Pagination
           showSizeChanger={false}
@@ -41,6 +47,6 @@ export const ObjectsListContainer = () => {
           pageSize={pagedHousingStocks?.pageSize}
         />
       )}
-    </>
+    </div>
   );
 };

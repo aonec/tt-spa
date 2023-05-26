@@ -1,5 +1,5 @@
-import { fromEnter } from '01/shared/ui/DatePickerNative';
-import { ExtendedSearch } from '01/shared/ui/ExtendedSearch';
+import { fromEnter } from 'ui-kit/shared_components/DatePickerNative';
+import { ExtendedSearch } from 'ui-kit/ExtendedSearch';
 import { useFormik } from 'formik';
 import { last } from 'lodash';
 import React, { FC, useEffect } from 'react';
@@ -42,6 +42,7 @@ export const PersonalNumbersSearch: FC<PersonalNumbersSearchProps> = ({
       >
         <SearchFieldsWrapper>
           <SelectCitySC
+            small
             value={values.City || undefined}
             placeholder="Выберите город"
             onChange={(value) => setFieldValue('City', value)}
@@ -54,6 +55,7 @@ export const PersonalNumbersSearch: FC<PersonalNumbersSearchProps> = ({
           </SelectCitySC>
 
           <PersonalNumberInput
+            small
             placeholder="Номер лицевого счёта или ФИО"
             value={values.Question}
             onChange={(e) => setFieldValue('Question', e.target.value)}

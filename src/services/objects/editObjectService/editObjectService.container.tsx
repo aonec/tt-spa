@@ -5,7 +5,7 @@ import { editObjectService } from './editObjectService.model';
 import { useEvent, useStore } from 'effector-react';
 import { addressSearchService } from 'services/addressSearchService/addressSearchService.models';
 
-const { inputs, outputs, gates } = editObjectService;
+const { outputs, gates } = editObjectService;
 const { FetchObjectGate } = gates;
 
 export const EditObjectContainer = () => {

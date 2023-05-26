@@ -1,8 +1,6 @@
 import React, { FC } from 'react';
 import _ from 'lodash';
 import { Tooltip } from 'antd';
-import { CalculatorIcon } from 'ui-kit/icons';
-import { ResourceIconLookup } from 'ui-kit/shared_components/ResourceIconLookup';
 import {
   Address,
   ApartmentInfo,
@@ -16,10 +14,10 @@ import {
   TaskItem,
   TaskTitle,
 } from './HousingStockTasks.styled';
-import { EActResourceType } from 'myApi';
 import { HousingStockTasksProps } from './HousingStockTasks.types';
 import { WithLoader } from 'ui-kit/shared_components/WithLoader';
 import { TaskInfoPanel } from './TaskInfoPanel';
+import { getTaskIconByTaskType } from './HousingStockTasks.utils';
 
 export const HousingStockTasks: FC<HousingStockTasksProps> = ({
   selectedHousingStock,
@@ -36,21 +34,14 @@ export const HousingStockTasks: FC<HousingStockTasksProps> = ({
   const sortedTasks = _.sortBy(tasks, (task) => _.sortBy(task.resourceTypes));
 
   const tasksListView = sortedTasks.map((task) => {
-    const resource =
-      (task.resourceTypes?.length || 1) > 1
-        ? EActResourceType.All
-        : task.resourceTypes?.[0];
-
     const isDrawTooltip = (task.typeString?.length || 0) > 26;
+
+    const TaskIcon = getTaskIconByTaskType(task);
 
     return (
       <TaskItem key={task.id} onClick={() => handleClickTask(task.id)}>
         <TaskInfo>
-          {resource ? (
-            <ResourceIconLookup resource={resource} />
-          ) : (
-            <CalculatorIcon />
-          )}
+          {TaskIcon && <TaskIcon />}
           <div>
             {!isDrawTooltip && <TaskTitle>{task.typeString}</TaskTitle>}
             {isDrawTooltip && (

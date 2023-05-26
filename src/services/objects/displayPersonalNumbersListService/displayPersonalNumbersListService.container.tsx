@@ -1,15 +1,19 @@
 import { ExistingCitiesGate } from '01/features/housingStocks/displayHousingStockCities/models';
 import { useEvent, useStore } from 'effector-react';
-import React from 'react';
+import React, { FC } from 'react';
 import { PaginationSC } from './displayPersonalNumberListSevice.styled';
 import { displayPersonalNumbersListService } from './displayPersonalNumbersListService.model';
 import { PersonalNumbersList } from './view/PersonalNumbersList';
 import { PersonalNumbersSearch } from './view/PersonalNumbersSearch';
+import { HeaderInject } from '../objectsProfileService/view/ObjectsProfile/ObjectsProfile.types';
+import { SizeWrapper } from '../objectsProfileService/view/ObjectsProfile/ObjectsProfile.styled';
 
 const { inputs, outputs, gates } = displayPersonalNumbersListService;
 const { SearchPersonalNumberGate } = gates;
 
-export const DisplayPersonalNumbersListContainer = () => {
+export const DisplayPersonalNumbersListContainer: FC<HeaderInject> = ({
+  Header,
+}) => {
   const cities = useStore(outputs.$cities);
   const apartments = useStore(outputs.$apartments);
   const isLoading = useStore(outputs.$isLoading);
@@ -24,8 +28,12 @@ export const DisplayPersonalNumbersListContainer = () => {
     <>
       <SearchPersonalNumberGate />
       <ExistingCitiesGate />
-      <PersonalNumbersSearch handleSearch={handleSearch} cities={cities} />
-      <PersonalNumbersList apartments={apartments} isLoading={isLoading} />
+      <Header>
+        <PersonalNumbersSearch handleSearch={handleSearch} cities={cities} />
+      </Header>
+      <SizeWrapper>
+        <PersonalNumbersList apartments={apartments} isLoading={isLoading} />
+      </SizeWrapper>
       {isNotEmpty && !isLoading && (
         <PaginationSC
           showSizeChanger={false}

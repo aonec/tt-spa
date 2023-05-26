@@ -1,1 +1,1 @@
-export { AddressTab } from './AddressTab'
+export { AddressTab } from './AddressTab';

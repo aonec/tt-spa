@@ -1,6 +1,5 @@
 import React, { useMemo } from 'react';
 import { Footer, Header, ModalText, StyledModal } from './FormModal.styled';
-import { Loader } from '01/_components/Loader';
 import { FormModalProps } from './formModal.types';
 import { Button } from 'ui-kit/Button';
 
@@ -44,8 +43,10 @@ export const FormModal: React.FC<FormModalProps> = ({
       onClick={onSubmitButtonClick}
       disabled={loading || disabled}
       type={submitButtonType}
+      isLoading={loading}
+      htmlForm={formId}
     >
-      {loading ? <Loader show /> : submitBtnText}
+      {submitBtnText}
     </Button>
   );
 

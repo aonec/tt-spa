@@ -1,13 +1,8 @@
-import {
-  EActResourceType,
-  EActType,
-  EActTypeStringDictionaryItem,
-} from 'myApi';
+import { EActResourceType, EActType } from 'myApi';
 
 export type CreateApartmentActFormProps = {
   formId: string;
   handleSubmit: (payload: any) => void;
-  actTypes: EActTypeStringDictionaryItem[] | null;
 };
 
 export const actResourceTypes = Object.values(EActResourceType);

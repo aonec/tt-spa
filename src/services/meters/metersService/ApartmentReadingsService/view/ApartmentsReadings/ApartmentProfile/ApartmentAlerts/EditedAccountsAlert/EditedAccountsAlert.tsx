@@ -8,7 +8,7 @@ import {
   HomeownerAccountChangeDate,
 } from './EditedAccountsAlert.styled';
 import { EditedAccountsAlertProps } from './EditedAccountsAlert.types';
-import { Alert } from '01/shared/ui/Alert/Alert';
+import { Alert } from 'ui-kit/Alert/Alert';
 
 export const EditedAccountsAlert: FC<EditedAccountsAlertProps> = ({
   recentlyEditedAccount,
@@ -17,7 +17,7 @@ export const EditedAccountsAlert: FC<EditedAccountsAlertProps> = ({
   const preparedDate = moment(editedAt).format('DD.MM.YYYY');
   return (
     <ApartmentAlertWrapper>
-      <Alert type="info">
+      <Alert>
         <AlertContent>
           <AlertTextWrapper>
             Лицевой счёт квартиры был отредактирован{' '}

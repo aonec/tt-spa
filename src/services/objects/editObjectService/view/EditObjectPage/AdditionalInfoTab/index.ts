@@ -1,1 +1,1 @@
-export { AdditionalInfoTab } from './AdditionalInfoTab'
+export { AdditionalInfoTab } from './AdditionalInfoTab';

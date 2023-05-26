@@ -1,10 +1,10 @@
 import React, { FC, useEffect, useState } from 'react';
-import { InputSC } from '01/shared/ui/Fields';
-import { ExtendedSearch } from '01/shared/ui/ExtendedSearch';
+import { ExtendedSearch } from 'ui-kit/ExtendedSearch';
 import { Wrapper } from './SearchReports.styled';
 import { SearchReportsProps } from './SearchReports.types';
-import { fromEnter } from '01/shared/ui/DatePickerNative';
+import { fromEnter } from 'ui-kit/shared_components/DatePickerNative';
 import { SearchIcon } from 'ui-kit/icons';
+import { Input } from 'ui-kit/Input';
 
 export const SearchReports: FC<SearchReportsProps> = ({
   reportName,
@@ -17,7 +17,7 @@ export const SearchReports: FC<SearchReportsProps> = ({
   return (
     <Wrapper>
       <ExtendedSearch disabled>
-        <InputSC
+        <Input
           value={text}
           prefix={<SearchIcon />}
           onChange={(event) => {

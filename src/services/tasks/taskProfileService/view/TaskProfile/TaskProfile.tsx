@@ -47,6 +47,7 @@ export const TaskProfile: FC<TaskProfileProps> = ({
     housingStockId,
     pipeNode,
     comments,
+    canBeReverted,
   } = task;
 
   const apartmemtId = apartment?.id || 0;
@@ -130,7 +131,7 @@ export const TaskProfile: FC<TaskProfileProps> = ({
               handleRevertStage={handleRevertStage}
               stages={stages || []}
               isRevertStageLoading={isRevertStageLoading}
-              isPerpetrator={isPerpetrator}
+              isStageCanBeReverted={canBeReverted}
             />
           </TaskWrapper>
         </>

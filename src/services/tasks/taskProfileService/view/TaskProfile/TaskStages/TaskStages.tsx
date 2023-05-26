@@ -2,32 +2,33 @@ import React, { FC, useMemo } from 'react';
 import { Stage } from './Stage';
 import { TitleWrapper, Wrapper } from './TaskStages.styled';
 import { TaskStagesProps } from './TaskStages.types';
-import { EStageStatus } from '../../../../../../myApi';
+import { EStageStatus } from 'myApi';
 
 export const TaskStages: FC<TaskStagesProps> = ({
   stages,
   handleRevertStage,
   isRevertStageLoading,
-  isPerpetrator,
+  isStageCanBeReverted,
 }) => {
   const stagesView = useMemo(
     () =>
       stages.map((stage, index) => {
         const canRevertStage =
-          stages[stage.number]?.status === EStageStatus.InProgress;
+          stages[stage.number]?.status === EStageStatus.InProgress &&
+          isStageCanBeReverted;
 
         return (
           <Stage
             key={stage.id}
             stage={stage}
             isLast={stage.number === stages.length}
-            isShowRevertStageButton={isPerpetrator && canRevertStage}
             handleRevertStage={handleRevertStage}
             isRevertStageLoading={isRevertStageLoading}
+            isShowRevertStageButton={canRevertStage}
           />
         );
       }),
-    [stages, handleRevertStage, isRevertStageLoading, isPerpetrator],
+    [stages, handleRevertStage, isRevertStageLoading, isStageCanBeReverted],
   );
 
   return (

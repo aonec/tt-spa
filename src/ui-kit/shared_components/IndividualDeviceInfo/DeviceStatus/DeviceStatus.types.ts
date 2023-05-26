@@ -1,4 +1,4 @@
-import { EClosingReason } from './../../../../myApi';
+import { EClosingReason } from '../../../../myApi';
 
 export type DeviceStatusProps = {
   isActive: boolean;

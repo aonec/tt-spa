@@ -5,13 +5,13 @@ import { FormItem } from 'ui-kit/FormItem';
 import { Select } from 'ui-kit/Select';
 import { Input } from 'ui-kit/Input';
 import { DatePicker } from 'ui-kit/DatePicker';
-import { ErrorMessage } from '01/shared/ui/ErrorMessage';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 import { Button } from 'ui-kit/Button';
 import { UpdateCalculatorRequest } from 'myApi';
 import moment from 'moment';
 import { NodesInfo } from './NodesInfo';
+import { ErrorMessage } from 'ui-kit/ErrorMessage';
 
 export const EditMainInfo: FC<EditMainInfoProps> = ({
   calculator,

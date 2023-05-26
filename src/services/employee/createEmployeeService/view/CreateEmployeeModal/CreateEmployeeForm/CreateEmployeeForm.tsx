@@ -8,7 +8,7 @@ import * as yup from 'yup';
 import { Input } from 'ui-kit/Input';
 import { usePhoneMask } from 'hooks/usePhoneMask';
 import { DatePicker } from 'ui-kit/DatePicker';
-import { ErrorMessage } from '01/shared/ui/ErrorMessage';
+import { ErrorMessage } from 'ui-kit/ErrorMessage';
 import { SelectMultiple } from 'ui-kit/SelectMultiple';
 
 export const CreateEmployeeForm: FC<CreateEmployeeFormProps> = ({
@@ -46,6 +46,7 @@ export const CreateEmployeeForm: FC<CreateEmployeeFormProps> = ({
         .min(2, 'Минимум два символа')
         .required('Обязательное поле'),
       email: yup.string().nullable().required('Обязательное поле'),
+      roleTypes: yup.string().nullable().required('Обязательное поле'),
     }),
   });
 
@@ -107,7 +108,7 @@ export const CreateEmployeeForm: FC<CreateEmployeeFormProps> = ({
             onChange={(value) =>
               setFieldValue(
                 'cellphone',
-                phoneMask.unmaskedValue(value.target.value)
+                phoneMask.unmaskedValue(value.target.value),
               )
             }
           />
@@ -128,6 +129,7 @@ export const CreateEmployeeForm: FC<CreateEmployeeFormProps> = ({
               </SelectMultiple.Option>
             ))}
           </SelectMultiple>
+          <ErrorMessage>{errors.roleTypes}</ErrorMessage>
         </FormItem>
         <FormItem label="Дата начала работы">
           <DatePicker

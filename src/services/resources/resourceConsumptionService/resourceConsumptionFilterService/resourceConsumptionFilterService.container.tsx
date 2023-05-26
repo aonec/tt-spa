@@ -24,6 +24,9 @@ export const ResourceConsumptionFilterContainer = () => {
     resourceConsumptionService.inputs.clearAdditionalAddressData,
   );
   const handleClearData = useEvent(resourceConsumptionService.inputs.clearData);
+  const hadleClearData = useEvent(
+    resourceConsumptionService.inputs.clearSummary,
+  );
 
   const preparedHouseManagements = useMemo(
     () =>
@@ -48,6 +51,7 @@ export const ResourceConsumptionFilterContainer = () => {
       handleClearAdditionalAddressData={handleClearAdditionalAddressData}
       handleClearData={handleClearData}
       isLoading={isLoading}
+      handleClearSummary={hadleClearData}
     />
   );
 };

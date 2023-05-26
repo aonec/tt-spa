@@ -35,7 +35,6 @@ export type GetNodesRequestPayload = RequestPayload;
 
 export const $nodes = createStore<NodesPagedList | null>(null);
 
-export const $pipeNodes = $nodes.map((nodes) => nodes?.pipeNodes);
 export const $electricNodes = $nodes.map((nodes) => nodes?.electricNodes);
 
 export const fetchNodes = createEffect<RequestPayload, NodesPagedList>();

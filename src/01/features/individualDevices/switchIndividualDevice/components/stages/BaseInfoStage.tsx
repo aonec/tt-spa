@@ -3,10 +3,7 @@ import {
   IndividualDeviceMountPlacesGate,
 } from '01/features/individualDeviceMountPlaces/displayIndividualDeviceMountPlaces/models';
 import { Flex } from '01/shared/ui/Layout/Flex';
-import { InputTT } from '01/tt-components';
-import { allResources } from '01/tt-components/localBases';
-import { StyledSelect } from '01/_pages/IndividualDeviceEdit/components/IndividualDeviceEditForm';
-import { AutoComplete, Form, Select, Switch } from 'antd';
+import { AutoComplete, Form, Switch } from 'antd';
 import { useForm } from 'effector-forms/dist';
 import { useEvent, useStore } from 'effector-react';
 import moment from 'moment';
@@ -18,8 +15,6 @@ import {
   SwitchIndividualDeviceGate,
 } from '../../models';
 import { FormHeader } from '../Header';
-import DeviceIcons from '../../../../../_components/DeviceIcons';
-import { StockIconTT } from '01/_pages/Devices/components/DeviceBlock/DeviceBlock';
 import {
   EIndividualDeviceRateType,
   EResourceType,
@@ -35,8 +30,11 @@ import {
   fetchIndividualDeviceFx,
 } from '../../../displayIndividualDevice/models';
 import { Space, SpaceLine } from '01/shared/ui/Layout/Space/Space';
-import { DatePickerNative, fromEnter } from '01/shared/ui/DatePickerNative';
-import { Loader } from '01/components';
+import {
+  DatePickerNative,
+  fromEnter,
+} from 'ui-kit/shared_components/DatePickerNative';
+import { Loader } from 'ui-kit/Loader';
 import { SwitchWrapper, TextWrapper } from './BaseInfoStage.styled';
 import { useSwitchInputOnEnter } from './BaseInfoStage.hook';
 import {
@@ -45,6 +43,9 @@ import {
   handleFetchSerialNumberForCheck,
 } from '../../models/init';
 import { displayContractorsService } from 'services/contractors/displayContractorsService';
+import { Select } from 'ui-kit/Select';
+import { Input } from 'ui-kit/Input';
+import { ResourceSelect } from 'ui-kit/shared_components/ResourceSelect';
 
 const {
   outputs,
@@ -189,7 +190,7 @@ export const BaseInfoStage = () => {
 
   const rateTypeSelector = (
     <FormItem label="Тариф прибора">
-      <StyledSelect
+      <Select
         data-reading-input={getDataAttr(isSwitch)}
         onKeyDown={enterKeyDownHandler(5, isSwitch)}
         disabled={!isSwitch}
@@ -198,22 +199,22 @@ export const BaseInfoStage = () => {
         onChange={(value) => value && fields.rateType.onChange(value as any)}
         showAction={['focus']}
       >
-        <StyledSelect.Option value={EIndividualDeviceRateType.OneZone}>
+        <Select.Option value={EIndividualDeviceRateType.OneZone}>
           Одна зона
-        </StyledSelect.Option>
-        <StyledSelect.Option value={EIndividualDeviceRateType.TwoZone}>
+        </Select.Option>
+        <Select.Option value={EIndividualDeviceRateType.TwoZone}>
           Две зоны
-        </StyledSelect.Option>
-        <StyledSelect.Option value={EIndividualDeviceRateType.ThreeZone}>
+        </Select.Option>
+        <Select.Option value={EIndividualDeviceRateType.ThreeZone}>
           Три зоны
-        </StyledSelect.Option>
-      </StyledSelect>
+        </Select.Option>
+      </Select>
     </FormItem>
   );
 
   const selectSwitchReason = (
     <Form.Item label="Причина замены">
-      <StyledSelect
+      <Select
         data-reading-input={getDataAttr(isSwitch)}
         onKeyDown={enterKeyDownHandler(6, isSwitch)}
         disabled={!isSwitch}
@@ -227,33 +228,19 @@ export const BaseInfoStage = () => {
             {elem}
           </Select.Option>
         ))}
-      </StyledSelect>
+      </Select>
     </Form.Item>
   );
 
   const baseInfo = (
     <FormWrap>
       <FormItem label="Тип ресурса">
-        <StyledSelect
+        <ResourceSelect
           disabled
-          placeholder="Выберите тип ресурса"
           onChange={(value: any) => fields.resource.onChange(value)}
-          value={fields.resource.value || undefined}
-        >
-          {allResources.map((elem) => (
-            <Select.Option value={elem.value} key={elem.value}>
-              <Flex>
-                <StockIconTT
-                  icon={DeviceIcons[elem.value]?.icon}
-                  dark
-                  fill={DeviceIcons[elem.value]?.color}
-                />
-                <Space />
-                <div>{elem.label}</div>
-              </Flex>
-            </Select.Option>
-          ))}
-        </StyledSelect>
+          resource={fields.resource.value}
+        />
+
         <ErrorMessage>
           {fields.resource.errorText({
             required: 'Это поле обязательное',
@@ -262,7 +249,7 @@ export const BaseInfoStage = () => {
       </FormItem>
 
       <FormItem label="Место установки">
-        <StyledSelect
+        <Select
           disabled
           placeholder="Выберите место установки"
           value={fields.mountPlaceId.value || undefined}
@@ -273,7 +260,7 @@ export const BaseInfoStage = () => {
               {elem.description}
             </Select.Option>
           ))}
-        </StyledSelect>
+        </Select>
         <ErrorMessage>
           {fields.mountPlaceId.errorText({
             required: 'Это поле обязательное',
@@ -282,7 +269,7 @@ export const BaseInfoStage = () => {
       </FormItem>
 
       <FormItem label="Серийный номер">
-        <InputTT
+        <Input
           data-reading-input={getDataAttr(isSwitch)}
           disabled={!isSwitch}
           type="text"
@@ -329,14 +316,14 @@ export const BaseInfoStage = () => {
 
       <Flex>
         <FormItem label="Разрядность">
-          <InputTT
+          <Input
             data-reading-input={getDataAttr(isSwitch)}
             disabled={!isSwitch}
             type="number"
             placeholder="Введите разрядность прибора"
             name="bitDepth"
             onChange={onChange}
-            value={fields.bitDepth.value}
+            value={fields.bitDepth.value || undefined}
             onKeyDown={enterKeyDownHandler(2, isSwitch)}
           />
           <ErrorMessage>
@@ -347,14 +334,14 @@ export const BaseInfoStage = () => {
         </FormItem>
         <Space />
         <FormItem label="Множитель">
-          <InputTT
+          <Input
             data-reading-input={getDataAttr(isSwitch)}
             disabled={!isSwitch}
             type="number"
             placeholder="Введите множитель прибора"
             name="scaleFactor"
             onChange={onChange}
-            value={fields.scaleFactor.value}
+            value={fields.scaleFactor.value || undefined}
             onKeyDown={enterKeyDownHandler(3, isSwitch)}
           />
           <ErrorMessage>
@@ -403,12 +390,12 @@ export const BaseInfoStage = () => {
       <FormWrap>
         <FormItem label="Пломба">
           <Flex>
-            <InputTT
+            <Input
               data-reading-input={getDataAttr(!isCheck)}
               onKeyDown={enterKeyDownHandler(isReopen ? 0 : 9, !isCheck)}
               disabled={isCheck}
               placeholder="Номер пломбы"
-              value={fields.sealNumber.value}
+              value={fields.sealNumber.value || undefined}
               onChange={onChange}
               name="sealNumber"
             />
@@ -427,7 +414,7 @@ export const BaseInfoStage = () => {
         </FormItem>
       </FormWrap>
       <FormItem label="Монтажная организация">
-        <StyledSelect
+        <Select
           data-reading-input={getDataAttr(!isCheck)}
           disabled={isCheck}
           onChange={(value: any) =>
@@ -438,11 +425,11 @@ export const BaseInfoStage = () => {
           showAction={['focus']}
         >
           {contractors?.map((elem) => (
-            <StyledSelect.Option value={elem.id} key={elem.id}>
+            <Select.Option value={elem.id} key={elem.id}>
               {elem.name}
-            </StyledSelect.Option>
+            </Select.Option>
           ))}
-        </StyledSelect>
+        </Select>
       </FormItem>
     </>
   );

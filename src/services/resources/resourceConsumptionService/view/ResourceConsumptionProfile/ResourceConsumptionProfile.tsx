@@ -24,9 +24,8 @@ export const ResourceConsumptionProfile: FC<
   setSelectedGraphTypes,
   additionalConsumptionData,
   summaryConsumption,
+  resource,
 }) => {
-  const { ResourceType } = resourceConsumptionFilter || {};
-
   const [selectedAddresses, setSelectedAddresses] = useState<SelectedAddresses>(
     initialSelectedAddresses,
   );
@@ -50,7 +49,7 @@ export const ResourceConsumptionProfile: FC<
     <Wrapper>
       <GraphWrapper>
         <SelectResource
-          selectedResource={ResourceType || null}
+          selectedResource={resource}
           setResource={setResource}
           summaryConsumption={summaryConsumption}
         />
@@ -58,7 +57,7 @@ export const ResourceConsumptionProfile: FC<
         <WithLoader isLoading={isLoading}>
           <ResourceConsumptionGraph
             consumptionData={consumptionData}
-            resource={ResourceType}
+            resource={resource}
             startOfMonth={resourceConsumptionFilter?.From || ''}
             checked={selectedGraphTypes}
             additionalConsumptionData={additionalConsumptionData}
@@ -72,10 +71,10 @@ export const ResourceConsumptionProfile: FC<
                 disabled={getDisabledGraphTypes(housingConsumptionData)}
                 checked={selectedGraphTypes}
                 setCheckedGraphTypes={setSelectedGraphTypes}
-                resource={resourceConsumptionFilter?.ResourceType}
+                resource={resource}
                 isAdditionalAddress={Boolean(additionalConsumptionData)}
-                additionalAddress={'Основные адреса'}
-                currentAddress={'Адреса для сравнения'}
+                currentAddress={'Основные адреса'}
+                additionalAddress={'Адреса для сравнения'}
                 selectedAddresses={selectedAddresses}
                 setSelectedAddresses={(selected) =>
                   setSelectedAddresses(selected)

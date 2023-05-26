@@ -43,7 +43,6 @@ import { ReactComponent as PreparedForDeliveryIcon } from './svg/preparedForDeli
 import { ReactComponent as PendingApprovalIcon } from './svg/pendingApproval.svg';
 import { ReactComponent as RegisteredIcon } from './svg/registered.svg';
 import { ReactComponent as TelegramIcon } from './svg/telegram.svg';
-import { ReactComponent as FallbackGraphIcon } from './svg/fallbackGraph.svg';
 import { ReactComponent as SearchIcon } from './svg/search.svg';
 import { ReactComponent as ListIcon } from './svg/list.svg';
 import { ReactComponent as CellsIcon } from './svg/cells.svg';
@@ -65,6 +64,13 @@ import { ReactComponent as BriefcaseIcon } from './svg/briefcase.svg';
 import { ReactComponent as HouseIcon } from './svg/house.svg';
 import { ReactComponent as IncorrectConfigurationIcon } from './svg/incorrectConfiguration.svg';
 import { ReactComponent as ActiveFiltersIcon } from './svg/activeFilters.svg';
+import { ReactComponent as ChevronBoldIcon } from './svg/chevronBold.svg';
+import { ReactComponent as CheckConnection } from './svg/checkConnection.svg';
+import { ReactComponent as SortingIcon } from './svg/sorting.svg';
+import { ReactComponent as PlusIcon } from './svg/plus.svg';
+import { ReactComponent as ApartmentIcon } from './svg/apartment.svg';
+import { ReactComponent as PencilBigIcon } from './svg/pencilBig.svg';
+import { ReactComponent as CheckMark } from './svg/checkMark.svg';
 
 export {
   FinishIcon,
@@ -112,7 +118,6 @@ export {
   PendingApprovalIcon,
   RegisteredIcon,
   TelegramIcon,
-  FallbackGraphIcon,
   CellsIcon,
   PauseIcon,
   ListIcon,
@@ -134,4 +139,11 @@ export {
   BriefcaseIcon,
   IncorrectConfigurationIcon,
   ActiveFiltersIcon,
+  CheckConnection,
+  ChevronBoldIcon,
+  SortingIcon,
+  PlusIcon,
+  ApartmentIcon,
+  PencilBigIcon,
+  CheckMark,
 };
