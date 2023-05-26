@@ -13,7 +13,6 @@ import { createObjectService } from 'services/objects/createObjectService';
 import { FormItem } from 'ui-kit/FormItem';
 import { Select } from 'ui-kit/Select';
 import { useFormik } from 'formik';
-import { ErrorMessage } from '01/shared/ui/ErrorMessage';
 import { SpaceLine } from '01/shared/ui/Layout/Space/Space';
 import {
   EHouseCategory,
@@ -31,6 +30,7 @@ import { Button } from 'ui-kit/Button';
 import { SelectedEntityPanel } from 'ui-kit/shared_components/SelectedEntityPanel';
 import { CreateHeatingStationContainer } from 'services/objects/heatingStations/createHeatingStationService';
 import { EditHeatingStationContainer } from 'services/objects/heatingStations/editHeatingStationService';
+import { ErrorMessage } from 'ui-kit/ErrorMessage';
 
 const HeatingStationsFetchGate =
   createObjectService.gates.HeatingStationsFetchGate;
@@ -237,9 +237,7 @@ export const MainInfoTab: FC<MainInfoTabProps> = ({
                 Отмена
               </Button>
             </ButtonPadding>
-            <Button sidePadding={25} onClick={() => handleSubmit()}>
-              Сохранить
-            </Button>
+            <Button onClick={() => handleSubmit()}>Сохранить</Button>
           </RightButtonBlock>
         </Footer>
       </Wrapper>
