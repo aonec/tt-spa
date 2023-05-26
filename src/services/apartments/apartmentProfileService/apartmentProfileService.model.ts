@@ -1,4 +1,4 @@
-import { createDomain, forward, sample } from 'effector';
+import { createDomain, sample } from 'effector';
 import { createGate } from 'effector-react';
 import { ApartmentResponse } from 'myApi';
 import { getApartment } from './apartmentProfileService.api';

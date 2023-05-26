@@ -5,18 +5,71 @@ import {
   ReportType,
   PreparedArchiveValues,
 } from './StatisticsGraph.types';
-import { format } from 'date-fns';
+import { differenceInDays, differenceInHours, format } from 'date-fns';
+
+export function prepareDataForNodeStatistic(
+  unsortedData: PreparedArchiveValues[],
+  reportType: ReportType,
+) {
+  const data = sortArchiveArray(unsortedData);
+
+  const minTime = data[0].time;
+  const maxTime = data[data.length - 1].time;
+
+  let elemsCount = 0;
+
+  if (reportType === 'daily') {
+    elemsCount = differenceInDays(new Date(maxTime), new Date(minTime));
+  } else if (reportType === 'hourly') {
+    elemsCount = differenceInHours(new Date(maxTime), new Date(minTime));
+  }
+
+  const result = [];
+
+  for (let iterator = 0, index = 0; iterator < elemsCount; iterator++) {
+    const elem = data[index];
+    let diff = 0;
+
+    if (reportType === 'daily') {
+      diff = differenceInDays(new Date(elem.time), new Date(minTime));
+    } else if (reportType === 'hourly') {
+      diff = differenceInHours(new Date(elem.time), new Date(minTime));
+    }
+
+    if (diff === iterator) {
+      result.push(elem);
+      index++;
+    } else {
+      result.push({
+        time: moment(minTime).add(iterator, 'hours').format(),
+        value: 0,
+      });
+    }
+  }
+  return result;
+}
 
 const getTaskXPos = (payload: GetTaskXPosPayload) => {
-  const { currentData, minData, reportType } = payload;
+  let { currentData, minDate, maxDate, reportType } = payload;
+  const minDataMoment = moment(minDate).utcOffset(0).startOf('d');
+  const maxDataMoment = moment(maxDate).utcOffset(0, false);
 
-  const minDataMoment = moment(minData).utcOffset(0).startOf('d');
+  const currentDate = moment(currentData)
+    .utc(true)
+    .add(moment().utcOffset(), 'minutes');
 
-  if (!currentData) {
+  let diff = 0;
+  if (reportType === 'hourly') {
+    diff = currentDate.diff(maxDataMoment, 'h');
+  } else {
+    diff = currentDate.diff(maxDataMoment, 'd');
+  }
+
+  if (!currentData || diff > 0) {
     return null;
   }
   if (reportType === 'hourly') {
-    return moment(currentData).utc(true).diff(minDataMoment, 'h') + 1;
+    return currentDate.diff(minDataMoment, 'h') + 1;
   }
 
   return moment(currentData).utc(true).diff(minDataMoment, 'd') + 1;
@@ -25,20 +78,24 @@ const getTaskXPos = (payload: GetTaskXPosPayload) => {
 export const getPreparedData = ({
   tasksByDate,
   maxValue,
-  minData,
+  minDate,
+  maxDate,
   reportType,
 }: {
   tasksByDate: DateTimeTaskStatisticsItemArrayDictionaryItem;
   reportType: ReportType;
   maxValue: number;
-  minData: string;
+  minDate: string;
+  maxDate: string;
 }) => {
   const tasksArr = tasksByDate.value || [];
+  const isAlone = tasksArr.length === 1;
 
   return {
     x: getTaskXPos({
-      currentData: tasksByDate?.key,
-      minData,
+      currentData: isAlone ? tasksArr[0]?.creationTime : tasksByDate?.key,
+      minDate,
+      maxDate,
       reportType,
     }),
     y: maxValue * 0.9,
@@ -99,8 +156,8 @@ const formHourlyTicks = (
   const sortedArchive = sortArchiveArray(archiveArr);
 
   return [
+    sortedArchive[0],
     ...sortedArchive.filter((entry) => isHourMultiplySix(entry.time)),
-    sortedArchive[sortedArchive.length - 1],
   ];
 };
 

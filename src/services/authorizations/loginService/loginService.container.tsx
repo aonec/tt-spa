@@ -3,7 +3,6 @@ import React, { useEffect } from 'react';
 import { LoginPage } from './view/LoginPage';
 import { loginService } from './loginService.model';
 import { useEvent, useStore } from 'effector-react';
-import { openDevSettingsModal } from '01/features/developmentSettings/models';
 import { useHistory, useLocation } from 'react-router-dom';
 import { parse } from 'query-string';
 
@@ -15,6 +14,8 @@ const isDevMode =
 
 export const LoginContainer = () => {
   const handlePostLogin = useEvent(inputs.handlePostLogin);
+  const openDevSettingsModal = useEvent(inputs.openDevSettingsModal);
+
   const isLoading = useStore(outputs.$isLoading);
 
   const { replace } = useHistory();

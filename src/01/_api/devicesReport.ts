@@ -1,7 +1,7 @@
 import { stringify } from 'query-string';
-import { CalculatorsListRequestPayload } from '01/features/carlculators/calculatorsIntoHousingStockService/calculatorsIntoHousingStockService.types';
 import axios from '01/axios';
 import { downloadURI } from 'utils/downloadByURL';
+import { CalculatorsListRequestPayload } from 'services/calculators/calculatorsListService/calculatorsListService.types';
 
 export const requestDevicesReport = async (
   query?: CalculatorsListRequestPayload | null,

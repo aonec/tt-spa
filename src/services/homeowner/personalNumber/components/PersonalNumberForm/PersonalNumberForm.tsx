@@ -1,6 +1,7 @@
 import React, { FC, useEffect } from 'react';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
+import moment from 'moment';
 import {
   DeleteButton,
   FlexContainer,
@@ -42,7 +43,8 @@ export const PersonalNumberForm: FC<PersonalNumberFormProps> = ({
       initialValues: {
         name: ((isEdit || isSplit) && homeowner?.name) || '',
         phoneNumber: (isEdit && homeowner?.phoneNumber) || '',
-        openAt: (isEdit && homeowner?.openAt) || '',
+        openAt:
+          (isEdit && moment(homeowner?.openAt).format('YYYY-MM-DD')) || '',
         personalAccountNumber:
           (isEdit && homeowner?.personalAccountNumber) || '',
         paymentCode: (isEdit && homeowner?.paymentCode) || '',
@@ -69,7 +71,8 @@ export const PersonalNumberForm: FC<PersonalNumberFormProps> = ({
           handleEditHomeownerAccount &&
           handleEditHomeownerAccount(data);
 
-        homeowner &&
+        apartmentId &&
+          homeowner &&
           handleSwitchHomeownerAccount &&
           handleSwitchHomeownerAccount({
             form: data,
@@ -85,6 +88,8 @@ export const PersonalNumberForm: FC<PersonalNumberFormProps> = ({
       },
     });
 
+  console.log(values.openAt);
+
   useEffect(() => {
     return handleForced?.watch(() => handleSubmit()).unsubscribe;
   }, [handleForced, handleSubmit]);
@@ -94,7 +99,9 @@ export const PersonalNumberForm: FC<PersonalNumberFormProps> = ({
       <FormItem label="Дата открытия лицевого счета">
         <DatePickerNative
           value={values.openAt}
-          onChange={(value) => setFieldValue('openAt', value)}
+          onChange={(value) =>
+            setFieldValue('openAt', moment(value).format('YYYY-MM-DD'))
+          }
           disabled={isEdit}
         />
         <ErrorMessage>{errors.openAt}</ErrorMessage>

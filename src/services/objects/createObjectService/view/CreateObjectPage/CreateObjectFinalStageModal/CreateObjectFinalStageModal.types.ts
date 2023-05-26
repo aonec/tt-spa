@@ -11,4 +11,5 @@ export type CreateObjectFinalStageModalProps = {
   heatingStations: HeatingStationResponsePagedList | null;
   closePreviewModal: () => void;
   isPreviewModalOpen: boolean;
+  isCreateLoading: boolean;
 };

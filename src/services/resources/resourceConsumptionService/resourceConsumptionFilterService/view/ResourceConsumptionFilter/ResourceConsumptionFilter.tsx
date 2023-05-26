@@ -36,6 +36,7 @@ export const ResourceConsumptionFilter: FC<ResourceConsumptionFilterProps> = ({
   selectCity,
   selectedCity,
   isLoading,
+  handleClearSummary,
 }) => {
   const existingCities = useStore($existingCities);
   const [isAdditionalAddress, setIsAdditionalAddress] = useState(false);
@@ -75,16 +76,23 @@ export const ResourceConsumptionFilter: FC<ResourceConsumptionFilterProps> = ({
     setValues(filter);
   }, [filter, setValues]);
 
+  useEffect(() => {
+    if (selectedCity) {
+      setFieldValue('HousingStockIds', []);
+      setFieldValue('AdditionalHousingStockIds', []);
+    }
+  }, [selectedCity, setFieldValue]);
+
   const handleReset = useCallback(() => {
-    setHouseManagement('');
-    handleClearData();
-    handleClearAdditionalAddressData();
     handleClearFilter();
+    handleClearData();
+    handleClearSummary();
+    handleClearAdditionalAddressData();
   }, [
-    setHouseManagement,
     handleClearData,
     handleClearFilter,
     handleClearAdditionalAddressData,
+    handleClearSummary,
   ]);
 
   return (

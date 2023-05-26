@@ -6,11 +6,12 @@ export type CreateObjectAdditionalInfoStageProps = {
   onPageCancel: () => void;
   handleSubmitCreateObject: (payload: ObjectCreateSubmitData) => void;
   createObjectData: ObjectCreateSubmitData | null;
-  openPreviewModal: () => void
+  openPreviewModal: () => void;
 };
 
 export type AdditionalInfo = {
   floors: number | null;
   entrances: number | null;
   elevator: ElevatorExistingType | null;
+  constructionYear: string;
 };

@@ -3,6 +3,7 @@ import { LoginRequest, TokenResponse } from 'myApi';
 import { EffectFailDataAxiosError } from 'types';
 import { loginPost } from './loginService.api';
 import { message } from 'antd';
+import { developmentSettingsService } from 'services/developmentSettings/developmentSettings.models';
 
 const domain = createDomain('loginService');
 
@@ -29,6 +30,11 @@ postLoginFx.failData.watch((error) => {
 forward({ from: handlePostLogin, to: postLoginFx });
 
 export const loginService = {
-  inputs: { handlePostLogin, successLogin },
+  inputs: {
+    handlePostLogin,
+    successLogin,
+    openDevSettingsModal:
+      developmentSettingsService.inputs.openDevSettingsModal,
+  },
   outputs: { $isLoading },
 };
