@@ -1,5 +1,8 @@
 import { getLinkToSvg } from 'utils/getLinkToSvg';
-import { HousingStockPlacemark } from './CreateDistrictBorderMapPage.constants';
+import {
+  HousingStockPlacemark,
+  InactiveHousingStockPlacemark,
+} from './CreateDistrictBorderMapPage.constants';
 
 function isPointOnLeftOfLine(
   point: number[],
@@ -46,6 +49,8 @@ export function isPointInsidePolygon(
   return isInside;
 }
 
-export function getHousingStockItemLink() {
-  return getLinkToSvg(HousingStockPlacemark);
+export function getHousingStockItemLink(active: boolean) {
+  return getLinkToSvg(
+    active ? HousingStockPlacemark : InactiveHousingStockPlacemark,
+  );
 }

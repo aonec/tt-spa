@@ -14,6 +14,8 @@ import { sortBy } from 'lodash';
 
 export const CreateDistrictFormPanel: FC<CreateDistrictFormPanelProps> = ({
   housingStocksInDistrict,
+  selectedHousingStocks,
+  handleClickHousingStock,
 }) => {
   return (
     <Wrapper>
@@ -26,7 +28,10 @@ export const CreateDistrictFormPanel: FC<CreateDistrictFormPanelProps> = ({
           return `${address?.street}${address?.number}${address?.corpus || ''}`;
         }).map((elem) => (
           <AddressItem>
-            <Checkbox>
+            <Checkbox
+              onChange={() => handleClickHousingStock(elem.id)}
+              checked={selectedHousingStocks.includes(elem.id)}
+            >
               {elem.address?.mainAddress?.street}
               {', '}
               {elem.address?.mainAddress?.number}

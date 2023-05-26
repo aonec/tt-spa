@@ -1,4 +1,11 @@
-import React, { FC, useEffect, useMemo, useRef, useState } from 'react';
+import React, {
+  FC,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 import { GoBack } from 'ui-kit/shared_components/GoBack';
 import { Button } from 'ui-kit/Button';
 import { Header, MapWrapper } from './CreateDistrictBorderMapPage.styled';
@@ -22,6 +29,23 @@ export const CreateDistrictBorderMapPage: FC<
     useState<ymaps.GeoObjectCollection | null>(null);
 
   const [isEditing, setIsEditing] = useState(false);
+
+  const [selectedHousingStocks, setSelectedHousingStocks] = useState<number[]>(
+    [],
+  );
+
+  const handleClickHousingStock = useCallback(
+    (id: number) => {
+      const isHousingStockIncludes = selectedHousingStocks.includes(id);
+
+      if (!isHousingStockIncludes) {
+        return setSelectedHousingStocks((prev) => [...prev, id]);
+      }
+
+      setSelectedHousingStocks((prev) => prev.filter((elem) => elem !== id));
+    },
+    [selectedHousingStocks, setSelectedHousingStocks],
+  );
 
   const initMaps = () => {
     if (!ymaps || !mapRef.current) {
@@ -102,12 +126,16 @@ export const CreateDistrictBorderMapPage: FC<
 
     const polygonCoordinates = district.geometry?.getCoordinates();
 
-    return housingStocksList.filter((elem) =>
+    const filteredHousingStocks = housingStocksList.filter((elem) =>
       isPointInsidePolygon(
         [elem.coordinates?.latitude || 0, elem.coordinates?.longitude || 0],
         polygonCoordinates?.[0] || [[0, 0]],
       ),
     );
+
+    setSelectedHousingStocks(filteredHousingStocks.map((elem) => elem.id));
+
+    return filteredHousingStocks;
   }, [district, housingStocksList]);
 
   useEffect(() => {
@@ -122,10 +150,16 @@ export const CreateDistrictBorderMapPage: FC<
         {},
         {
           iconLayout: 'default#image',
-          iconImageHref: getHousingStockItemLink(),
+          iconImageHref: getHousingStockItemLink(
+            selectedHousingStocks.includes(elem.id),
+          ),
           iconImageSize: [51, 51],
         },
       );
+
+      placemark.events.add('click', () => {
+        handleClickHousingStock(elem.id);
+      });
 
       return placemark;
     });
@@ -135,7 +169,13 @@ export const CreateDistrictBorderMapPage: FC<
     housingStockPlacemarks.forEach((elem) => {
       housingStocksGroup.add(elem);
     });
-  }, [housingStocksGroup, housingStocksInDistrict, isEditing]);
+  }, [
+    handleClickHousingStock,
+    housingStocksGroup,
+    housingStocksInDistrict,
+    isEditing,
+    selectedHousingStocks,
+  ]);
 
   return (
     <div>
@@ -156,6 +196,8 @@ export const CreateDistrictBorderMapPage: FC<
           <CreateDistrictFormPanel
             isLoadingHousingStocks={isLoadingHousingStocks}
             housingStocksInDistrict={housingStocksInDistrict}
+            selectedHousingStocks={selectedHousingStocks}
+            handleClickHousingStock={handleClickHousingStock}
           />
         )}
       </MapWrapper>
