@@ -19,8 +19,10 @@ import { AddressStreetGroup } from './AddressStreetGroup';
 
 export const DistrictBordersByAddressPage: FC<
   DistrictBordersByAddressPageProps
-> = ({ handleFetchAddress, addresses }) => {
+> = ({ handleFetchAddress, addresses, setFilter }) => {
   const [orderBy, setOrderBy] = useState<EOrderByRule | null>(null);
+
+  const [prevCity, setPrevCity] = useState<string | undefined>(undefined);
 
   return (
     <Wrapper>
@@ -36,23 +38,26 @@ export const DistrictBordersByAddressPage: FC<
             SearchFieldType.House,
             SearchFieldType.Corpus,
           ]}
-          handleSubmit={(data) =>
-            data.city &&
-            handleFetchAddress({
-              City: data.city,
-              Street: data.street,
-              OrderBy: orderBy || undefined,
-            })
-          }
+          handleSubmit={(data) => {
+            setFilter(data);
+
+            if (data.city && prevCity !== data.city) {
+              handleFetchAddress({
+                City: data.city,
+                // OrderBy: orderBy || undefined,
+              });
+              setPrevCity(data.city);
+            }
+          }}
         />
-        <LabelWrapper>
+        {/* <LabelWrapper>
           <div>Сортировать по:</div>
           <Select
             small
             placeholder="Выберите"
             value={orderBy || undefined}
             onChange={(value) => {
-              // setOrderBy(value);
+              setOrderBy(value);
             }}
           >
             <Select.Option value={EOrderByRule.Descending}>
@@ -62,7 +67,7 @@ export const DistrictBordersByAddressPage: FC<
               Улице (возр.)
             </Select.Option>
           </Select>
-        </LabelWrapper>
+        </LabelWrapper> */}
       </AddressSortWrapper>
 
       {addresses?.map((address) => (

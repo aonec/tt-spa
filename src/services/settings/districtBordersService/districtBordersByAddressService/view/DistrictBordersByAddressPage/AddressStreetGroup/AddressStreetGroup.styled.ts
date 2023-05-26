@@ -25,6 +25,7 @@ export const Street = styled.div<{ isChecked: boolean }>`
   font-size: 16px;
   line-height: 32px;
   color: rgba(39, 47, 90, 0.9);
+   user-select: none;
 
   font-weight: ${({ isChecked }) => (isChecked ? '500' : '400')};
 `;
@@ -52,6 +53,8 @@ export const SelectedAddressCount = styled.div`
   color: #686d8c;
   font-weight: 400;
   font-size: 16px;
+
+  user-select: none;
 `;
 
 export const ChevronWrapper = styled.div`

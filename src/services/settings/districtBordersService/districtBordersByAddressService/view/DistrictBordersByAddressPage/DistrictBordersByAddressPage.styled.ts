@@ -12,7 +12,7 @@ export const GoBackWrapper = styled.div`
 
 export const AddressSortWrapper = styled.div`
   display: grid;
-  grid-template-columns: 3fr 1fr;
+  grid-template-columns: 3fr ;
   grid-gap: 16px;
   margin-top: 20px;
   margin-bottom: 20px;
