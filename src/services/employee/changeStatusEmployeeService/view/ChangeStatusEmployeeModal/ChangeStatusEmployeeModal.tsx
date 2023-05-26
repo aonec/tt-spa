@@ -10,18 +10,22 @@ export const ChangeStatusEmployeeModal: FC<ChangeStatusEmployeeModalProps> = ({
   isModalOpen,
   handleUpdateStatus,
   employeeStatus,
+  isLoading,
 }) => {
   return (
     <FormModal
       title="Статус сотрудника"
       visible={isModalOpen}
       onCancel={handleCloseModal}
+      loading={isLoading}
       form={
-        <ChangeStatusEmployeeForm
-          formId={formId}
-          handleUpdateStatus={handleUpdateStatus}
-          employeeStatus={employeeStatus}
-        />
+        <>
+          <ChangeStatusEmployeeForm
+            formId={formId}
+            handleUpdateStatus={handleUpdateStatus}
+            employeeStatus={employeeStatus}
+          />
+        </>
       }
       formId={formId}
     />

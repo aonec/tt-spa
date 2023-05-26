@@ -25,8 +25,6 @@ import './homeowner/addPersonalNumber/models/init';
 import './homeowner/splitPersonalNumber/models/init';
 import './housingStocks/displayHousingStockCities/models/init';
 import './individualDevices/deleteIndividualDevice/deleteIndividualDeviceService.init';
-import './nodes/nodeArchiveService/displayNodeArchiveService/displayNodeArchiveService.relations';
-import './nodes/nodeArchiveService/searchNodeArchiveFiltersService/searchNodeArchiveFiltersService.relations';
 import './housingStocks/displayHosuingStockFiltersService/displayHosuingStockFiltersService.init';
 import '../../services/settings/inspectorsDistributionService/searchInspectorsHousingStocksService/searchInspectorsHousingStockService.init';
 import '../../services/settings/inspectorsDistributionService/displayInspectorsHousingStocksService/displayInspectorsHousingStocksService.init';

@@ -1,6 +1,7 @@
-import { ApartmentResponse, HomeownerAccountListResponse } from 'myApi';
+import { HomeownerAccountListResponse } from 'myApi';
 import { PersonalNumberActions } from '../../selectPersonalNumberActionService/selectPersonalNumberActionService.types';
 import { Event } from 'effector';
+import { SwitchStage } from '../../splitPersonalNumberService/splitPersonalNumberService.types';
 
 export type PersonalNumberFormProps = {
   type: PersonalNumberActions;
@@ -8,9 +9,15 @@ export type PersonalNumberFormProps = {
   apartmentId?: number;
   isMainPersonalAccountNumber?: boolean;
   homeowner?: HomeownerAccountListResponse;
+  setVisibleCloseHomeownerAccountModal?: (payload: boolean) => void;
   handleAddPersonalNumber?: (payload: PersonalNumberFormTypes) => void;
   handleEditHomeownerAccount?: (payload: PersonalNumberFormTypes) => void;
+  handleSwitchHomeownerAccount?: (payload: {
+    replaceableAccountId: string;
+    form: PersonalNumberFormTypes;
+  }) => void;
   handleForced?: Event<void>;
+  handleSubmitSwitchStage?: (payload: SwitchStage) => void;
 };
 
 export type PersonalNumberFormTypes = {

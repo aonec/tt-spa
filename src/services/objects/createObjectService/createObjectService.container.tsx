@@ -17,6 +17,7 @@ export const CreateObjectContainer = () => {
 
   const stageNumber = useStore(outputs.$stageNumber);
   const isPreviewModalOpen = useStore(outputs.$isPreviewModalOpen);
+  const isCreateLoading = useStore(outputs.$isCreateLoading);
 
   const houseManagements = useStore(outputs.$houseManagements);
   const createObjectData = useStore(outputs.$createObjectData);
@@ -75,6 +76,7 @@ export const CreateObjectContainer = () => {
         openCreateHeatingStationModal={() => openCreateHeatingStationModal()}
         openEditHeatingStationModal={() => openEditHeatingStationModal()}
         heatingStationCapture={heatingStationCapture}
+        isCreateLoading={isCreateLoading}
       />
     </>
   );

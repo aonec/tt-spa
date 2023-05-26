@@ -100,6 +100,7 @@ export const DevicesSearch: FC<DevicesSearchProps> = ({
     <>
       <AllIndividualDeviceMountPlacesGate />
       <AutoComplete
+        style={{ width: '100%' }}
         small
         value={serialNumber}
         onChange={setSerialNumber}

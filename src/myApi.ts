@@ -108,6 +108,7 @@ export interface AddOrganizationUserWorkingStatusRequest {
 
   /** @format date-time */
   endDate?: string | null;
+  reassignments?: OrganizationUserTaskReassignment[] | null;
 }
 
 export interface AddOrganizationUsersRequest {
@@ -1847,6 +1848,8 @@ export enum EPipeNodeConfig {
   HeatWithRecharge = 'HeatWithRecharge',
   HotWaterSupplyWithBackflow = 'HotWaterSupplyWithBackflow',
   HeatNoHousingMeteringDevice = 'HeatNoHousingMeteringDevice',
+  HotWaterNoDevice = 'HotWaterNoDevice',
+  ColdWaterNoDevice = 'ColdWaterNoDevice',
 }
 
 export enum EPipeNodeValidationMessage {
@@ -4261,12 +4264,6 @@ export interface MeteringDeviceSearchListResponseIEnumerableSuccessApiResponse {
   successResponse: MeteringDeviceSearchListResponse[] | null;
 }
 
-export interface NoHousingMeteringDeviceConfigurationRequest {
-  updateNodeConfigs?: boolean;
-  removePipes?: boolean;
-  removeDevices?: boolean;
-}
-
 export interface NodeCheckResponse {
   /** @format int32 */
   id: number;
@@ -4675,6 +4672,13 @@ export interface OrganizationUserStatisticsResponseSuccessApiResponse {
   successResponse: OrganizationUserStatisticsResponse | null;
 }
 
+export interface OrganizationUserTaskReassignment {
+  role?: ESecuredIdentityRoleName;
+
+  /** @format int32 */
+  userId?: number;
+}
+
 export interface OrganizationUserUpdateRequest {
   /** @format email */
   email?: string | null;
@@ -4691,8 +4695,6 @@ export interface OrganizationUserUpdateRequest {
 }
 
 export interface OrganizationUserWorkingStatusResponse {
-  /** @format uuid */
-  id: string | null;
   type: EOrganizationUserWorkingStatusType;
 
   /** @format date-time */
@@ -6086,8 +6088,6 @@ export interface UserCompetenceResponse {
 }
 
 export interface UserStatusResponse {
-  /** @format uuid */
-  id: string | null;
   title: string | null;
   type: EOrganizationUserWorkingStatusType;
 
@@ -7659,28 +7659,6 @@ export class Api<
         path: `/api/DataMigrations/CheckReadingsHistory`,
         method: 'POST',
         secure: true,
-        ...params,
-      }),
-
-    /**
-     * @description Роли:<li>Администратор системы</li>
-     *
-     * @tags DataMigrations
-     * @name DataMigrationsSetNoHousingMeteringDeviceConfigurationCreate
-     * @summary DataMigration
-     * @request POST:/api/DataMigrations/SetNoHousingMeteringDeviceConfiguration
-     * @secure
-     */
-    dataMigrationsSetNoHousingMeteringDeviceConfigurationCreate: (
-      data: NoHousingMeteringDeviceConfigurationRequest,
-      params: RequestParams = {},
-    ) =>
-      this.request<void, any>({
-        path: `/api/DataMigrations/SetNoHousingMeteringDeviceConfiguration`,
-        method: 'POST',
-        body: data,
-        secure: true,
-        type: ContentType.Json,
         ...params,
       }),
 
@@ -11630,7 +11608,8 @@ export class Api<
       query?: {
         Name?: string;
         IsSuspended?: boolean;
-        RoleNames?: string[];
+        RoleNames?: ESecuredIdentityRoleName[];
+        WorkingStatusType?: EOrganizationUserWorkingStatusType;
         PageNumber?: number;
         PageSize?: number;
         OrderBy?: EOrderByRule;
@@ -11721,6 +11700,36 @@ export class Api<
         body: data,
         secure: true,
         type: ContentType.Json,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
+     *
+     * @tags OrganizationUsers
+     * @name OrganizationUsersTasksDetail
+     * @summary OrganizationUsersRead
+     * @request GET:/api/OrganizationUsers/{userId}/Tasks
+     * @secure
+     */
+    organizationUsersTasksDetail: (
+      userId: number,
+      query?: {
+        CurrentStageRequiredUserRole?: ESecuredIdentityRoleName;
+        PageNumber?: number;
+        PageSize?: number;
+        OrderBy?: EOrderByRule;
+        Skip?: number;
+        Take?: number;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<TasksPagedListSuccessApiResponse, ErrorApiResponse>({
+        path: `/api/OrganizationUsers/${userId}/Tasks`,
+        method: 'GET',
+        query: query,
+        secure: true,
         format: 'json',
         ...params,
       }),
@@ -13372,7 +13381,6 @@ export class Api<
         PipeNodeId?: number;
         ClosingStatuses?: ETaskClosingStatus[];
         TimeStatus?: EStageTimeStatus;
-        PerpetratorId?: number;
         Resource?: EResourceType;
         EngineeringElement?: ETaskEngineeringElement;
         City?: string;
@@ -13420,7 +13428,6 @@ export class Api<
         PipeNodeId?: number;
         ClosingStatuses?: ETaskClosingStatus[];
         TimeStatus?: EStageTimeStatus;
-        PerpetratorId?: number;
         Resource?: EResourceType;
         EngineeringElement?: ETaskEngineeringElement;
         City?: string;
@@ -13719,7 +13726,6 @@ export class Api<
         PipeNodeId?: number;
         ClosingStatuses?: ETaskClosingStatus[];
         TimeStatus?: EStageTimeStatus;
-        PerpetratorId?: number;
         Resource?: EResourceType;
         EngineeringElement?: ETaskEngineeringElement;
         City?: string;
