@@ -158,6 +158,7 @@ const formHourlyTicks = (
   return [
     sortedArchive[0],
     ...sortedArchive.filter((entry) => isHourMultiplySix(entry.time)),
+    sortedArchive[sortedArchive.length - 1],
   ];
 };
 

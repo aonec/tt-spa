@@ -26,7 +26,8 @@ const getAddressesFx = domain.createEffect<
 const selectCity = domain.createEvent<string>();
 const $selectedCity = domain
   .createStore<string | null>(null)
-  .on(selectCity, (_, city) => city);
+  .on(selectCity, (_, city) => city)
+  .reset(resourceConsumptionService.gates.ResourceConsumptionGate.close);
 
 const selectHouseManagememt = domain.createEvent<string | null>();
 const $selectedHouseManagement = domain
@@ -36,7 +37,8 @@ const $selectedHouseManagement = domain
 
 const $houseManagements = domain
   .createStore<HouseManagementWithStreetsResponse[]>([])
-  .on(getAddressesFx.doneData, (_, houseManagements) => houseManagements);
+  .on(getAddressesFx.doneData, (_, houseManagements) => houseManagements)
+  .reset(resourceConsumptionService.gates.ResourceConsumptionGate.close);
 
 const setResource = domain.createEvent<EResourceType>();
 const $selectedResource = domain
@@ -96,11 +98,7 @@ const $treeData = combine(
 );
 
 sample({
-  source: $selectedCity,
-  clock: [
-    $selectedCity,
-    resourceConsumptionService.gates.ResourceConsumptionGate.open,
-  ],
+  clock: $selectedCity,
   filter: Boolean,
   target: getAddressesFx,
 });

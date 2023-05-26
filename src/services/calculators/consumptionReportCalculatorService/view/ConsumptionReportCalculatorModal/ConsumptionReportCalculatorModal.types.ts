@@ -6,4 +6,5 @@ export type ConsumptionReportCalculatorModalProps = {
   handleModalClosed: () => void;
   calculator: CalculatorResponse | null;
   handleSubmit: (payload: GetCalculatorReportParams) => void;
+  isLoading: boolean;
 };
