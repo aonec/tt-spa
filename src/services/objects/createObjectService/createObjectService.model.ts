@@ -2,7 +2,6 @@ import { message } from 'antd';
 import { createDomain, forward, guard, sample } from 'effector';
 import { createGate } from 'effector-react';
 import {
-  AddHeatingStationRequest,
   HouseManagementResponse,
   HousingStockCreateRequest,
   HousingStockResponse,
@@ -26,16 +25,10 @@ const goNextStage = domain.createEvent();
 
 const handleSubmitCreateObject = domain.createEvent<ObjectCreateSubmitData>();
 
-const handleCreateHeatingStation =
-  domain.createEvent<AddHeatingStationRequest>();
-
 const handlePostCreateObject = domain.createEvent();
 
 const closePreviewModal = domain.createEvent();
 const openPreviewModal = domain.createEvent();
-
-const openCreateHeatingStationModal =
-  createHeatingStationService.inputs.handleOpenModal;
 
 const openEditHeatingStationModal =
   editHeatingStationService.inputs.handleOpenModal;
@@ -189,12 +182,10 @@ export const createObjectService = {
   inputs: {
     goBackStage,
     handleSubmitCreateObject,
-    handleCreateHeatingStation,
     handlePostCreateObject,
     openPreviewModal,
     closePreviewModal,
     handleCreateObjectSuccessDone,
-    openCreateHeatingStationModal,
     openEditHeatingStationModal,
     heatingStationCapture,
     handleHeatindStationModalOpen,
