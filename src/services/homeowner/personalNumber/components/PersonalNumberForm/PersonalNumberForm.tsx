@@ -33,13 +33,15 @@ export const PersonalNumberForm: FC<PersonalNumberFormProps> = ({
   handleForced,
   setVisibleCloseHomeownerAccountModal,
   handleSwitchHomeownerAccount,
+  handleSubmitSwitchStage,
 }) => {
   const isEdit = type === PersonalNumberActions.Edit;
+  const isSplit = type === PersonalNumberActions.Split;
 
   const { values, setFieldValue, errors, handleSubmit } =
     useFormik<PersonalNumberFormTypes>({
       initialValues: {
-        name: (isEdit && homeowner?.name) || '',
+        name: ((isEdit || isSplit) && homeowner?.name) || '',
         phoneNumber: (isEdit && homeowner?.phoneNumber) || '',
         openAt:
           (isEdit && moment(homeowner?.openAt).format('YYYY-MM-DD')) || '',
@@ -73,6 +75,13 @@ export const PersonalNumberForm: FC<PersonalNumberFormProps> = ({
           homeowner &&
           handleSwitchHomeownerAccount &&
           handleSwitchHomeownerAccount({
+            form: data,
+            replaceableAccountId: homeowner.id,
+          });
+
+        homeowner &&
+          handleSubmitSwitchStage &&
+          handleSubmitSwitchStage({
             form: data,
             replaceableAccountId: homeowner.id,
           });

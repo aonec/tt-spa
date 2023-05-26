@@ -35,7 +35,6 @@ import { EditCompanyContainer } from 'services/company/editCompanyService';
 import { ReportsPageContainer } from '01/features/reports';
 import { featureToggles } from 'featureToggles';
 import { ReportsContainer } from 'services/reportsService';
-import { SplitPersonalNumber } from '01/features/homeowner/splitPersonalNumber';
 import { AddIndividualDevice } from '01/features/individualDevices/addIndividualDevice';
 import { SwitchIndividualDevice } from '01/features/individualDevices/switchIndividualDevice';
 import { ReadingHistoryPage } from '01/features/readings/displayReadingHistory';
@@ -47,6 +46,7 @@ import { RegistrationContainer } from 'services/authorizations/registrationServi
 import { AddPersonalNumberContainer } from 'services/homeowner/personalNumber/addPersonalNumberService';
 import { EditPersonalNumberContainer } from 'services/homeowner/personalNumber/editPersonalNumberService';
 import { SwitchPersonalNumberContainer } from 'services/homeowner/personalNumber/switchPersonalNumberService';
+import { SplitPersonalNumberContainer } from 'services/homeowner/personalNumber/splitPersonalNumberService';
 import { SettingsPageContainer } from 'services/settings/settingsPageService';
 import { ActsJournalContainer } from 'services/actsJournalService';
 import { NodeArchivePageContainer } from 'services/nodes/nodeArchiveService';
@@ -523,7 +523,7 @@ export const Router: FC<RouterProps> = ({ roles, isRolesLoadded }) => {
                       path="/apartment/:id/homeowners/:homeownerId/split"
                       exact
                     >
-                      <SplitPersonalNumber />
+                      <SplitPersonalNumberContainer />
                     </Route>
                   )}
                   {(isAdministrator || isSeniorOperator || isOperator) && (
