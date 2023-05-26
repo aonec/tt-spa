@@ -2,7 +2,8 @@ import React, { FC, useState } from 'react';
 import {
   AddressSortWrapper,
   ButtonSC,
-  Footerwrapper,
+  FooterWrapper,
+  GoBackWrapper,
   LabelWrapper,
   Panel,
   Wrapper,
@@ -23,7 +24,10 @@ export const DistrictBordersByAddressPage: FC<
 
   return (
     <Wrapper>
-      <GoBack />
+      <GoBackWrapper>
+        <GoBack />
+      </GoBackWrapper>
+
       <AddressSortWrapper>
         <AddressSearchContainer
           fields={[
@@ -65,12 +69,12 @@ export const DistrictBordersByAddressPage: FC<
         <AddressStreetGroup address={address} />
       ))}
 
-      <Footerwrapper>
+      <FooterWrapper>
         <Panel>
           <Button type="ghost"> Отмена</Button>
           <ButtonSC>Продолжить</ButtonSC>
         </Panel>
-      </Footerwrapper>
+      </FooterWrapper>
     </Wrapper>
   );
 };

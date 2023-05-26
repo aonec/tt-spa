@@ -6,6 +6,10 @@ export const Wrapper = styled.div`
   margin: 0 30px;
 `;
 
+export const GoBackWrapper = styled.div`
+  width: 70px;
+`;
+
 export const AddressSortWrapper = styled.div`
   display: grid;
   grid-template-columns: 3fr 1fr;
@@ -21,7 +25,7 @@ export const LabelWrapper = styled.div`
   white-space: nowrap;
 `;
 
-export const Footerwrapper = styled.div`
+export const FooterWrapper = styled.div`
   position: relative;
   height: 80px;
 `;
@@ -39,7 +43,7 @@ export const Panel = styled.div`
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  padding: 0 56px;
+  padding: 0 80px;
 `;
 
 export const ButtonSC = styled(Button)`

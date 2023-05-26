@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import {
   ChevronSC,
   ChevronWrapper,
@@ -26,31 +26,38 @@ export const AddressStreetGroup: FC<AddressStreetGroupProps> = ({
   const housingStockIds =
     address.addresses?.map((address) => address.housingStockId) || [];
 
+  useEffect(() => {
+    if (address.addresses?.length === checkedhousingStockIds.length) {
+      setCheck(true);
+    } else {
+      setCheck(false);
+    }
+  }, [checkedhousingStockIds]);
+
   return (
     <Wrapper>
       <GroupHeader onClick={() => setIsOpen((isOpen) => !isOpen)}>
-        <LeftBlock onClick={() => setIsOpen((isOpen) => !isOpen)}>
-          <Checkbox
-            checked={isChecked}
-            onChange={() => {
-              if (isChecked) {
-                setHousingStockIds((prev) =>
-                  _.difference(prev, housingStockIds),
-                );
-                setCheck(false);
-              } else {
-                setHousingStockIds((prev) => [...prev, ...housingStockIds]);
-                setCheck(true);
-              }
-            }}
-          />
-          <Street>ул. {address.street}</Street>
+        <LeftBlock
+          onClick={() => {
+            setIsOpen((isOpen) => !isOpen);
+
+            if (isChecked) {
+              setHousingStockIds((prev) => _.difference(prev, housingStockIds));
+              setCheck(false);
+            } else {
+              setHousingStockIds((prev) => _.union(prev, housingStockIds));
+              setCheck(true);
+            }
+          }}
+        >
+          <Checkbox checked={false} indeterminate={isChecked} />
+          <Street isChecked={isChecked}>ул. {address.street}</Street>
         </LeftBlock>
 
         <RightBlock>
           <SelectedAddressCount>
             {address.addresses?.length
-              ? address.addresses?.length === checkedhousingStockIds.length
+              ? isChecked
                 ? 'Выбрано: Все'
                 : `Выбрано: ${checkedhousingStockIds.length} `
               : ''}
