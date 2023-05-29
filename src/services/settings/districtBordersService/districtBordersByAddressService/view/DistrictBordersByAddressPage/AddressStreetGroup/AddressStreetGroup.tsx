@@ -36,9 +36,9 @@ export const AddressStreetGroup: FC<AddressStreetGroupProps> = ({
     if (
       housingStockIds?.length === currentStreetCheckedHousingStockIds.length
     ) {
-      // setCheck(true);
+      setCheck(true);
     } else {
-      // setCheck(false);
+      setCheck(false);
     }
   }, [currentStreetCheckedHousingStockIds]);
 
@@ -61,8 +61,6 @@ export const AddressStreetGroup: FC<AddressStreetGroupProps> = ({
             } else {
               setHousingStockIds(
                 checkedhousingStockIds.map((housingStock) => {
-                  console.log(housingStock.street);
-
                   return housingStock.street !== street
                     ? housingStock
                     : {
@@ -71,7 +69,6 @@ export const AddressStreetGroup: FC<AddressStreetGroupProps> = ({
                       };
                 }),
               );
-              console.log(checkedhousingStockIds);
               setCheck(true);
             }
           }}

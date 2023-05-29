@@ -1,9 +1,8 @@
-import React, { useEffect, useMemo } from 'react';
+import React, { useMemo } from 'react';
 import { DistrictBordersByAddressPage } from './view/DistrictBordersByAddressPage/DistrictBordersByAddressPage';
 import { districtBordersByAddressService } from './districtBordersByAddressService.model';
 import { useEvent, useStore } from 'effector-react';
 import { StreetWithHousingStockNumbersResponse } from 'myApi';
-import { axios } from '01/axios';
 
 const { inputs, outputs } = districtBordersByAddressService;
 
@@ -13,9 +12,20 @@ export const DistrictBordersByAddressContainer = () => {
   const setHousingStockIds = useEvent(inputs.setHousingStockIds);
 
   const addresses = useStore(outputs.$addresses);
+  const housingStocksWithCoordinates = useStore(
+    outputs.$housingStocksWithCoordinates,
+  );
   const filterData = useStore(outputs.$filter);
-  const checkedhousingStockIds = useStore(outputs.$checkedhousingStockIds);
-  console.log(checkedhousingStockIds)
+  const checkedhousingStockIdsWithStreet = useStore(
+    outputs.$checkedhousingStockIds,
+  );
+
+  const checkedhousingStockIds = checkedhousingStockIdsWithStreet.reduce(
+    (acc, current) => [...acc, ...current.housingStocksId],
+    [] as number[],
+  );
+
+  const checkedhousingStockWithCoordinates = housingStocksWithCoordinates?.items
 
   const filteredAddress =
     useMemo(() => {
@@ -69,7 +79,7 @@ export const DistrictBordersByAddressContainer = () => {
         addresses={filteredAddress}
         setFilter={setFilter}
         setHousingStockIds={setHousingStockIds}
-        checkedhousingStockIds={checkedhousingStockIds}
+        checkedhousingStockIds={checkedhousingStockIdsWithStreet}
       />
     </>
   );

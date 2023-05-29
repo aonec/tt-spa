@@ -22,8 +22,6 @@ const setFilter = domain.createEvent<FilterType>();
 
 const setHousingStockIds = domain.createEvent<CheckedHousingStocksIdType[]>();
 
-setHousingStockIds.watch((first) => console.log(first));
-
 const fetchAddressFx = domain.createEffect<
   FetchAddressQueryType,
   StreetWithHousingStockNumbersResponsePagedList
