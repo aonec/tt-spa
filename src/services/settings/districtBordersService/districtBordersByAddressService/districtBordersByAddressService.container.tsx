@@ -3,15 +3,19 @@ import { DistrictBordersByAddressPage } from './view/DistrictBordersByAddressPag
 import { districtBordersByAddressService } from './districtBordersByAddressService.model';
 import { useEvent, useStore } from 'effector-react';
 import { StreetWithHousingStockNumbersResponse } from 'myApi';
+import { axios } from '01/axios';
 
 const { inputs, outputs } = districtBordersByAddressService;
 
 export const DistrictBordersByAddressContainer = () => {
   const handleFetchAddress = useEvent(inputs.handleFetchAddress);
   const setFilter = useEvent(inputs.setFilter);
+  const setHousingStockIds = useEvent(inputs.setHousingStockIds);
 
   const addresses = useStore(outputs.$addresses);
   const filterData = useStore(outputs.$filter);
+  const checkedhousingStockIds = useStore(outputs.$checkedhousingStockIds);
+  console.log(checkedhousingStockIds)
 
   const filteredAddress =
     useMemo(() => {
@@ -64,6 +68,8 @@ export const DistrictBordersByAddressContainer = () => {
         handleFetchAddress={handleFetchAddress}
         addresses={filteredAddress}
         setFilter={setFilter}
+        setHousingStockIds={setHousingStockIds}
+        checkedhousingStockIds={checkedhousingStockIds}
       />
     </>
   );

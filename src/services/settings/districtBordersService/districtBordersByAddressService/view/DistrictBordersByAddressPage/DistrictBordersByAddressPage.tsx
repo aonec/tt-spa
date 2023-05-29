@@ -19,7 +19,13 @@ import { AddressStreetGroup } from './AddressStreetGroup';
 
 export const DistrictBordersByAddressPage: FC<
   DistrictBordersByAddressPageProps
-> = ({ handleFetchAddress, addresses, setFilter }) => {
+> = ({
+  handleFetchAddress,
+  addresses,
+  setFilter,
+  checkedhousingStockIds,
+  setHousingStockIds,
+}) => {
   const [orderBy, setOrderBy] = useState<EOrderByRule | null>(null);
 
   const [prevCity, setPrevCity] = useState<string | undefined>(undefined);
@@ -71,7 +77,12 @@ export const DistrictBordersByAddressPage: FC<
       </AddressSortWrapper>
 
       {addresses?.map((address) => (
-        <AddressStreetGroup address={address} key={address.street} />
+        <AddressStreetGroup
+          address={address}
+          key={address.street}
+          checkedhousingStockIds={checkedhousingStockIds}
+          setHousingStockIds={setHousingStockIds}
+        />
       ))}
 
       <FooterWrapper>

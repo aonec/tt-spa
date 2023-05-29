@@ -16,23 +16,31 @@ import _ from 'lodash';
 
 export const AddressStreetGroup: FC<AddressStreetGroupProps> = ({
   address,
+  checkedhousingStockIds,
+  setHousingStockIds,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
 
-  const [checkedhousingStockIds, setHousingStockIds] = useState<number[]>([]);
-
   const [isChecked, setCheck] = useState(false);
+
+  const street = address.street;
 
   const housingStockIds =
     address.addresses?.map((address) => address.housingStockId) || [];
 
+  const currentStreetCheckedHousingStockIds =
+    checkedhousingStockIds.find((data) => data.street === street)
+      ?.housingStocksId || [];
+
   useEffect(() => {
-    if (housingStockIds?.length === checkedhousingStockIds.length) {
-      setCheck(true);
+    if (
+      housingStockIds?.length === currentStreetCheckedHousingStockIds.length
+    ) {
+      // setCheck(true);
     } else {
-      setCheck(false);
+      // setCheck(false);
     }
-  }, [checkedhousingStockIds]);
+  }, [currentStreetCheckedHousingStockIds]);
 
   return (
     <Wrapper>
@@ -42,10 +50,28 @@ export const AddressStreetGroup: FC<AddressStreetGroupProps> = ({
             setIsOpen((isOpen) => !isOpen);
 
             if (isChecked) {
-              setHousingStockIds((prev) => _.difference(prev, housingStockIds));
+              setHousingStockIds(
+                checkedhousingStockIds.map((housingStock) => {
+                  return housingStock.street !== street
+                    ? housingStock
+                    : { ...housingStock, housingStocksId: [] };
+                }),
+              );
               setCheck(false);
             } else {
-              setHousingStockIds((prev) => _.union(prev, housingStockIds));
+              setHousingStockIds(
+                checkedhousingStockIds.map((housingStock) => {
+                  console.log(housingStock.street);
+
+                  return housingStock.street !== street
+                    ? housingStock
+                    : {
+                        ...housingStock,
+                        housingStocksId: [...housingStockIds],
+                      };
+                }),
+              );
+              console.log(checkedhousingStockIds);
               setCheck(true);
             }
           }}
@@ -59,7 +85,7 @@ export const AddressStreetGroup: FC<AddressStreetGroupProps> = ({
             {address.addresses?.length
               ? isChecked
                 ? 'Выбрано: Все'
-                : `Выбрано: ${checkedhousingStockIds.length} `
+                : `Выбрано: ${currentStreetCheckedHousingStockIds.length} `
               : ''}
           </SelectedAddressCount>
 
@@ -74,8 +100,12 @@ export const AddressStreetGroup: FC<AddressStreetGroupProps> = ({
             <HousingStockNumber
               key={housingStock.housingStockId}
               housingStock={housingStock}
-              housingStockIds={checkedhousingStockIds}
+              checkedhousingStockIds={checkedhousingStockIds}
+              currentStreetCheckedHousingStockIds={
+                currentStreetCheckedHousingStockIds
+              }
               setHousingStockIds={setHousingStockIds}
+              street={street}
             />
           ))}
         </div>

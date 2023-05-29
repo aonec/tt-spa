@@ -16,3 +16,8 @@ export type FilterType = {
   house?: string;
   corpus?: string;
 };
+
+export type CheckedHousingStocksIdType = {
+  street: string;
+  housingStocksId: number[];
+};
