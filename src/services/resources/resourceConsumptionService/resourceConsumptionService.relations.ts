@@ -23,21 +23,6 @@ sample({
 });
 
 sample({
-  source: resourceConsumptionFilterService.outputs.$resourceConsumptionFilter,
-  clock: sample({
-    source: resourceConsumptionService.outputs.$summaryConsumption,
-    clock: resourceConsumptionFilterService.outputs.$addressesList,
-    filter: Boolean,
-  }),
-  fn: (oldFilter) => ({
-    ...oldFilter,
-    AdditionalHousingStockIds: [],
-    HousingStockIds: [],
-  }),
-  target: resourceConsumptionFilterService.inputs.setFilter,
-});
-
-sample({
   source: sample({
     source: $existingCities,
     fn: (cities) => _.last(cities) || null,
@@ -90,12 +75,7 @@ sample({
     (filter, ResourceType) => ({ ...filter, ResourceType }),
   ),
   filter: (filter): filter is ConsumptionDataPayload =>
-    Boolean(
-      filter?.From &&
-        filter?.To &&
-        filter?.HousingStockIds?.length &&
-        filter?.ResourceType,
-    ),
+    Boolean(filter?.From && filter?.To && filter?.HousingStockIds?.length),
   target: resourceConsumptionService.inputs.getConsumptionData,
 });
 

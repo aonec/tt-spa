@@ -31,6 +31,8 @@ fetchReportFx.failData.watch(async (error) => {
   return message.error(errObject.error.Text || errObject.error.Message);
 });
 
+const $isLoading = fetchReportFx.pending;
+
 const $isModalOpen = domain
   .createStore<boolean>(false)
   .on(handleModalOpen, () => true)
@@ -39,5 +41,5 @@ const $isModalOpen = domain
 
 export const consumptionReportCalculatorService = {
   inputs: { handleModalOpen, handleModalClose, handleSubmit },
-  outputs: { $isModalOpen },
+  outputs: { $isModalOpen, $isLoading },
 };
