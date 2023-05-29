@@ -1,4 +1,4 @@
-import { createDomain, forward, sample } from 'effector';
+import { createDomain, sample } from 'effector';
 import {
   getAddresses,
   getHousingStocksWithCoordinates,
@@ -12,6 +12,7 @@ import {
   CheckedHousingStocksIdType,
   FetchAddressQueryType,
   FilterType,
+  HousingStocksIdsWithCoordinates,
 } from './districtBordersByAddressService.types';
 
 const domain = createDomain('districtBordersByAddressService');
@@ -43,10 +44,12 @@ const $filter = domain
   .on(setFilter, (_, data) => data);
 
 const $housingStocksWithCoordinates = domain
-  .createStore<HousingStockListResponsePagedList | null>(null)
-  .on(
-    fetchHousingStocksWithCoordinatesFx.doneData,
-    (_, housingStocks) => housingStocks,
+  .createStore<HousingStocksIdsWithCoordinates[]>([])
+  .on(fetchHousingStocksWithCoordinatesFx.doneData, (_, housingStocks) =>
+    housingStocks.items?.map((data) => ({
+      id: data.id,
+      coordinates: data.coordinates,
+    })),
   );
 
 const $checkedhousingStockIds = $addresses

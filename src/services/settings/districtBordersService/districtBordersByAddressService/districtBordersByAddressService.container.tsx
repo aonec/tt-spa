@@ -3,6 +3,7 @@ import { DistrictBordersByAddressPage } from './view/DistrictBordersByAddressPag
 import { districtBordersByAddressService } from './districtBordersByAddressService.model';
 import { useEvent, useStore } from 'effector-react';
 import { StreetWithHousingStockNumbersResponse } from 'myApi';
+import _ from 'lodash';
 
 const { inputs, outputs } = districtBordersByAddressService;
 
@@ -25,7 +26,12 @@ export const DistrictBordersByAddressContainer = () => {
     [] as number[],
   );
 
-  const checkedhousingStockWithCoordinates = housingStocksWithCoordinates?.items
+  const checkedHousingStockWithCoordinates =
+    housingStocksWithCoordinates.filter((housingStock) => {
+      return checkedhousingStockIds.some((checkedHousingStockId) => {
+        return checkedHousingStockId === housingStock.id;
+      });
+    });
 
   const filteredAddress =
     useMemo(() => {

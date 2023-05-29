@@ -21,3 +21,11 @@ export type CheckedHousingStocksIdType = {
   street: string;
   housingStocksId: number[];
 };
+
+export type HousingStocksIdsWithCoordinates = {
+  id: number;
+  coordinates: {
+    latitude: number;
+    longitude: number;
+  } | null;
+};
