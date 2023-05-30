@@ -1,11 +1,6 @@
 {
   "templatesDirectoryPath": "./templates",
-  "arguments": [
-    {
-      "name": "name",
-      "description": "Entity name"
-    }
-  ],
+  "arguments": [],
   "options": [
     {
       "name": "component",
