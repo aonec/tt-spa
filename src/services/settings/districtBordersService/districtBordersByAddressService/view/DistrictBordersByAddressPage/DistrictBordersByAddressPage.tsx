@@ -19,7 +19,7 @@ import { AddressStreetGroup } from './AddressStreetGroup';
 export const DistrictBordersByAddressPage: FC<
   DistrictBordersByAddressPageProps
 > = ({ handleFetchAddress, addresses }) => {
-  const [orderBy, setOrderBy] = useState<EOrderByRule | null>(null);
+  const [orderBy] = useState<EOrderByRule | null>(null);
 
   return (
     <Wrapper>
