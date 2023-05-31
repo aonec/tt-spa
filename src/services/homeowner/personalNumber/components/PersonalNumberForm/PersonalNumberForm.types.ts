@@ -1,6 +1,7 @@
 import { HomeownerAccountListResponse } from 'myApi';
 import { PersonalNumberActions } from '../../selectPersonalNumberActionService/selectPersonalNumberActionService.types';
 import { Event } from 'effector';
+import { SwitchStage } from '../../splitPersonalNumberService/splitPersonalNumberService.types';
 
 export type PersonalNumberFormProps = {
   type: PersonalNumberActions;
@@ -16,6 +17,7 @@ export type PersonalNumberFormProps = {
     form: PersonalNumberFormTypes;
   }) => void;
   handleForced?: Event<void>;
+  handleSubmitSwitchStage?: (payload: SwitchStage) => void;
 };
 
 export type PersonalNumberFormTypes = {

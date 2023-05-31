@@ -16,7 +16,7 @@ export const DistrictBorderCreationTypeSelect: FC<
       />
       <LinkPanel
         text="Задать границы районов по адресам"
-        link="/settings/districtBorder/list"
+        link="/districtBordersSettings/createByHousingStocksList"
         icon={<ListIcon />}
       />
     </Wrapper>
