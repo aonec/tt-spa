@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, ReactNode, useMemo } from 'react';
 import { useHistory } from 'react-router-dom';
 import { ResourceAccountingSystemsContainer } from 'services/housingMeteringDevices/resourceAccountingSystemsService';
 import { GoBack } from 'ui-kit/shared_components/GoBack';
@@ -6,10 +6,17 @@ import { getHousingStockAddress } from 'utils/getHousingStockAddress';
 import { ApartmentsListContainer } from '../../apartmentsListService';
 import { ObjectProfileGrouptype } from '../../objectProfileService.constants';
 import { ObjectInfo } from '../ObjectInfo';
-import { CityWrappper, PageHeaderSC, TabsSC } from './ObjectProfile.styled';
+import {
+  CityWrappper,
+  ContentWrapper,
+  PageHeaderSC,
+  TabsSC,
+  Wrapper,
+} from './ObjectProfile.styled';
 import { ObjectProfileProps } from './ObjectProfile.types';
-import { RedirectToTasksContainer } from './redirectToTasks';
 import { featureToggles } from 'featureToggles';
+import { LinkCard } from 'ui-kit/shared_components/LinkCard';
+import { stringifyUrl } from 'query-string';
 const { TabPane } = TabsSC;
 
 export const ObjectProfile: FC<ObjectProfileProps> = ({
@@ -26,6 +33,18 @@ export const ObjectProfile: FC<ObjectProfileProps> = ({
   const { address } = housingStock;
   const addressString = getHousingStockAddress(housingStock);
   const city = address?.mainAddress?.city || '';
+  const tasksCount = housingStock.numberOfTasks;
+
+  const content: { [key in ObjectProfileGrouptype]: ReactNode } = useMemo(
+    () => ({
+      [ObjectProfileGrouptype.Apartments]: <ApartmentsListContainer />,
+      [ObjectProfileGrouptype.Common]: (
+        <ObjectInfo housingStock={housingStock} />
+      ),
+      [ObjectProfileGrouptype.Devices]: <ResourceAccountingSystemsContainer />,
+    }),
+    [housingStock],
+  );
 
   return (
     <div>
@@ -63,22 +82,26 @@ export const ObjectProfile: FC<ObjectProfileProps> = ({
         }
         activeKey={currentGrouptype}
       >
-        <TabPane tab="Общая информация" key={ObjectProfileGrouptype.Common}>
-          <ObjectInfo housingStock={housingStock} />
-          <RedirectToTasksContainer />
-        </TabPane>
-        <TabPane tab="Квартиры" key={ObjectProfileGrouptype.Apartments}>
-          <ApartmentsListContainer />
-          <RedirectToTasksContainer />
-        </TabPane>
+        <TabPane tab="Общая информация" key={ObjectProfileGrouptype.Common} />
+        <TabPane tab="Квартиры" key={ObjectProfileGrouptype.Apartments} />
         <TabPane
           tab="Системы учета ресурсов"
           key={ObjectProfileGrouptype.Devices}
-        >
-          <ResourceAccountingSystemsContainer />
-          <RedirectToTasksContainer />
-        </TabPane>
+        />
       </TabsSC>
+      <Wrapper>
+        <ContentWrapper>{content[currentGrouptype]}</ContentWrapper>
+        <div>
+          <LinkCard
+            text={`Задачи: ${tasksCount}`}
+            link={stringifyUrl({
+              url: '/tasks/list/Executing',
+              query: { housingStockId: housingStock?.id },
+            })}
+            showLink={Boolean(tasksCount)}
+          />
+        </div>
+      </Wrapper>
     </div>
   );
 };

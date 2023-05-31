@@ -6,7 +6,7 @@ import { HeaderInfoString } from 'ui-kit/shared_components/HeaderInfoString';
 import { ResourceIconLookup } from 'ui-kit/shared_components/ResourceIconLookup';
 import { LinkCard } from 'ui-kit/shared_components/LinkCard';
 import { WithLoader } from 'ui-kit/shared_components/WithLoader';
-import { ENodeRegistrationType } from 'myApi';
+import { ENodeRegistrationType, TaskGroupingFilter } from 'myApi';
 import { HousingMeteringDeviceReadingsContainer } from 'services/housingMeteringDevices/housingMeteringDeviceReadingsService';
 import { getDeviceIds } from 'services/housingMeteringDevices/housingMeteringDeviceReadingsService/housingMeteringDeviceReadingsService.utils';
 import { DisplayNodesStatisticsContainer } from 'services/nodes/displayNodesStatisticsService';
@@ -201,7 +201,7 @@ export const NodeProfilePage: FC<NodeProfilePageProps> = ({
               <LinkCard
                 text={`Задачи: ${pipeNode.numberOfTasks}`}
                 link={stringifyUrl({
-                  url: '/tasks/list/Observing',
+                  url: `/tasks/list/${TaskGroupingFilter.Executing}`,
                   query: { pipeNodeId: pipeNode.id },
                 })}
                 showLink={Boolean(pipeNode.numberOfTasks)}

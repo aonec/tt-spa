@@ -2,7 +2,6 @@ import React, { FC, ReactNode } from 'react';
 import { useHistory } from 'react-router-dom';
 import { ActsCardContainer } from 'services/apartments/actsCardService';
 import { ApartmentActsListContainer } from 'services/apartments/apartmentActsListService';
-import { TasksCardContainer } from 'services/apartments/tasksCardService';
 import { ApartmentIndividualDevicesMetersContainer } from 'services/meters/apartmentIndividualDevicesMetersService';
 import { CommonInfo } from 'ui-kit/shared_components/CommonInfo';
 import { GoBack } from 'ui-kit/shared_components/GoBack';
@@ -27,6 +26,9 @@ import {
   ApartmentSection,
 } from './ApartmentProfile.types';
 import { HomeownersList } from './HomeownersList';
+import { LinkCard } from 'ui-kit/shared_components/LinkCard';
+import { stringifyUrl } from 'query-string';
+import { TaskGroupingFilter } from 'myApi';
 
 export const ApartmentProfile: FC<ApartmentProfileProps> = ({
   apartment,
@@ -39,6 +41,7 @@ export const ApartmentProfile: FC<ApartmentProfileProps> = ({
   const address = apartment?.housingStock?.address?.mainAddress;
   const additionalAddresses =
     apartment?.housingStock?.address?.additionalAddresses;
+  const tasksCount = apartment?.activeTaskIds?.length || 0;
 
   const homeowner = apartment?.homeownerAccounts?.[0];
 
@@ -177,9 +180,13 @@ export const ApartmentProfile: FC<ApartmentProfileProps> = ({
               {tabSection && ContentComponentsDictionary[tabSection]}
             </BaseContentWrapper>
             <CardsWrapper>
-              <TasksCardContainer
-                apartmentId={String(apartment.id)}
-                tasksNumber={apartment.activeTaskIds?.length || 0}
+              <LinkCard
+                text={`Задачи: ${tasksCount}`}
+                link={stringifyUrl({
+                  url: `/tasks/list/${TaskGroupingFilter.Executing}`,
+                  query: { apartmentId: apartment.id },
+                })}
+                showLink={Boolean(tasksCount)}
               />
               <ActsCardContainer apartmentId={String(apartment.id)} />
             </CardsWrapper>
