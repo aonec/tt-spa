@@ -32,7 +32,6 @@ export const CreateDistrictBorderMapPage: FC<
     setMap(map);
   };
 
-  // 1
   useEffect(() => {
     ymaps.ready(initMaps);
   }, [mapRef]);
