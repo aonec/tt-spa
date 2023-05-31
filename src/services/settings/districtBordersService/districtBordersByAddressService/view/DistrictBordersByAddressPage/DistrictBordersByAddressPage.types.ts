@@ -10,5 +10,7 @@ export type DistrictBordersByAddressPageProps = {
   addresses: StreetWithHousingStockNumbersResponse[] | null;
   setFilter: (payload: FilterType) => void;
   setHousingStockIds: (payload: CheckedHousingStocksIdType[]) => void;
-  checkedhousingStockIds: CheckedHousingStocksIdType[];
+  checkedhousingStockIdsWithStreet: CheckedHousingStocksIdType[];
+  handleOpenDistrictEditer: () => void;
+  isAllowedToEditer: boolean;
 };

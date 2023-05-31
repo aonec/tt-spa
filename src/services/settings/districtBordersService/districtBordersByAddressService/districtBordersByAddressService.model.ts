@@ -14,8 +14,14 @@ import {
   FilterType,
   HousingStocksIdsWithCoordinates,
 } from './districtBordersByAddressService.types';
+import { CreateDistrictBorderByMapService } from '../CreateDistrictBorderByMapService';
 
 const domain = createDomain('districtBordersByAddressService');
+
+const handleOpenDistrictEditer = domain.createEvent();
+
+const setSelectedHousingStocksIds =
+  CreateDistrictBorderByMapService.inputs.setSelectedHousingStocksIds;
 
 const handleFetchAddress = domain.createEvent<FetchAddressQueryType>();
 
@@ -52,7 +58,7 @@ const $housingStocksWithCoordinates = domain
     })),
   );
 
-const $checkedhousingStockIds = $addresses
+const $checkedhousingStockIdsWithStreet = $addresses
   .map<CheckedHousingStocksIdType[]>((address) => {
     if (!address) {
       return [];
@@ -77,11 +83,16 @@ sample({
 });
 
 export const districtBordersByAddressService = {
-  inputs: { handleFetchAddress, setFilter, setHousingStockIds },
+  inputs: {
+    handleFetchAddress,
+    setFilter,
+    setHousingStockIds,
+    handleOpenDistrictEditer,
+  },
   outputs: {
     $addresses,
     $filter,
     $housingStocksWithCoordinates,
-    $checkedhousingStockIds,
+    $checkedhousingStockIdsWithStreet,
   },
 };

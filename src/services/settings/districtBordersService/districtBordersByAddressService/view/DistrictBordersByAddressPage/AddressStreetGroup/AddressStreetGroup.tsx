@@ -15,7 +15,7 @@ import { HousingStockNumber } from './HousingStockNumber';
 
 export const AddressStreetGroup: FC<AddressStreetGroupProps> = ({
   address,
-  checkedhousingStockIds,
+  checkedhousingStockIdsWithStreet,
   setHousingStockIds,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -28,7 +28,7 @@ export const AddressStreetGroup: FC<AddressStreetGroupProps> = ({
     address.addresses?.map((address) => address.housingStockId) || [];
 
   const currentStreetCheckedHousingStockIds =
-    checkedhousingStockIds.find((data) => data.street === street)
+  checkedhousingStockIdsWithStreet.find((data) => data.street === street)
       ?.housingStocksId || [];
 
   useEffect(() => {
@@ -50,7 +50,7 @@ export const AddressStreetGroup: FC<AddressStreetGroupProps> = ({
 
             if (isChecked) {
               setHousingStockIds(
-                checkedhousingStockIds.map((housingStock) => {
+                checkedhousingStockIdsWithStreet.map((housingStock) => {
                   return housingStock.street !== street
                     ? housingStock
                     : { ...housingStock, housingStocksId: [] };
@@ -59,7 +59,7 @@ export const AddressStreetGroup: FC<AddressStreetGroupProps> = ({
               setCheck(false);
             } else {
               setHousingStockIds(
-                checkedhousingStockIds.map((housingStock) => {
+                checkedhousingStockIdsWithStreet.map((housingStock) => {
                   return housingStock.street !== street
                     ? housingStock
                     : {
@@ -96,7 +96,7 @@ export const AddressStreetGroup: FC<AddressStreetGroupProps> = ({
             <HousingStockNumber
               key={housingStock.housingStockId}
               housingStock={housingStock}
-              checkedhousingStockIds={checkedhousingStockIds}
+              checkedhousingStockIdsWithStreet={checkedhousingStockIdsWithStreet}
               currentStreetCheckedHousingStockIds={
                 currentStreetCheckedHousingStockIds
               }

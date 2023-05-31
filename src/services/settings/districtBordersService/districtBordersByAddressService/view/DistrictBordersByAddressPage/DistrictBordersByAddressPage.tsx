@@ -20,11 +20,14 @@ export const DistrictBordersByAddressPage: FC<
   handleFetchAddress,
   addresses,
   setFilter,
-  checkedhousingStockIds,
+  checkedhousingStockIdsWithStreet,
   setHousingStockIds,
+  handleOpenDistrictEditer,
+  isAllowedToEditer,
 }) => {
   const [prevCity, setPrevCity] = useState<string | undefined>(undefined);
 
+  console.log(checkedhousingStockIdsWithStreet);
   return (
     <Wrapper>
       <GoBackWrapper>
@@ -56,7 +59,7 @@ export const DistrictBordersByAddressPage: FC<
         <AddressStreetGroup
           address={address}
           key={address.street}
-          checkedhousingStockIds={checkedhousingStockIds}
+          checkedhousingStockIdsWithStreet={checkedhousingStockIdsWithStreet}
           setHousingStockIds={setHousingStockIds}
         />
       ))}
@@ -64,7 +67,12 @@ export const DistrictBordersByAddressPage: FC<
       <FooterWrapper>
         <Panel>
           <Button type="ghost"> Отмена</Button>
-          <ButtonSC>Продолжить</ButtonSC>
+          <ButtonSC
+            disabled={!isAllowedToEditer}
+            onClick={handleOpenDistrictEditer}
+          >
+            Продолжить
+          </ButtonSC>
         </Panel>
       </FooterWrapper>
     </Wrapper>

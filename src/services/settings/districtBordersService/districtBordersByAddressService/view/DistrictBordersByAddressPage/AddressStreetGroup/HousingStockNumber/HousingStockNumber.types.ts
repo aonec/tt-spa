@@ -4,7 +4,7 @@ import { CheckedHousingStocksIdType } from 'services/settings/districtBordersSer
 export type HousingStockNumberProps = {
   housingStock: AddressShortResponse;
   currentStreetCheckedHousingStockIds: number[];
-  checkedhousingStockIds: CheckedHousingStocksIdType[];
+  checkedhousingStockIdsWithStreet: CheckedHousingStocksIdType[];
   setHousingStockIds: (payload: CheckedHousingStocksIdType[]) => void;
   street: string | null;
 };

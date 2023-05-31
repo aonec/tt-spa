@@ -8,6 +8,11 @@ const domain = createDomain('createDistrictBorderByMapService');
 
 const HousingStocksListGate = createGate();
 
+const setSelectedHousingStocksIds = domain.createEvent<{
+  housingStockIds: number[];
+  polygon: number[][];
+}>();
+
 const fetchHousingStocksListFx = domain.createEffect<
   GetHousingStocksRequestParams,
   HousingStockListResponsePagedList
@@ -28,7 +33,7 @@ forward({
 const $isLoadingHousingStocks = fetchHousingStocksListFx.pending;
 
 export const CreateDistrictBorderByMapService = {
-  inputs: {},
+  inputs: { setSelectedHousingStocksIds },
   outputs: {
     $housingStocks,
     $isLoadingHousingStocks,

@@ -3,6 +3,6 @@ import { CheckedHousingStocksIdType } from '../../../districtBordersByAddressSer
 
 export type AddressStreetGroupProps = {
   address: StreetWithHousingStockNumbersResponse;
-  checkedhousingStockIds: CheckedHousingStocksIdType[];
+  checkedhousingStockIdsWithStreet: CheckedHousingStocksIdType[];
   setHousingStockIds: (payload: CheckedHousingStocksIdType[]) => void;
 };

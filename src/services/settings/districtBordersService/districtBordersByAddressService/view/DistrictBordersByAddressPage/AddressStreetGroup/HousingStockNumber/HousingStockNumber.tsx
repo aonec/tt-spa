@@ -7,7 +7,7 @@ export const HousingStockNumber: FC<HousingStockNumberProps> = ({
   housingStock,
   setHousingStockIds,
   currentStreetCheckedHousingStockIds,
-  checkedhousingStockIds,
+  checkedhousingStockIdsWithStreet,
   street,
 }) => {
   const [isChecked, setCheck] = useState(false);
@@ -29,7 +29,7 @@ export const HousingStockNumber: FC<HousingStockNumberProps> = ({
       onClick={() => {
         if (isChecked) {
           setHousingStockIds(
-            checkedhousingStockIds.map((housingStock) => {
+            checkedhousingStockIdsWithStreet.map((housingStock) => {
               return housingStock.street !== street
                 ? housingStock
                 : {
@@ -45,7 +45,7 @@ export const HousingStockNumber: FC<HousingStockNumberProps> = ({
           setCheck(false);
         } else {
           setHousingStockIds(
-            checkedhousingStockIds.map((housingStock) => {
+            checkedhousingStockIdsWithStreet.map((housingStock) => {
               return housingStock.street !== street
                 ? housingStock
                 : {
