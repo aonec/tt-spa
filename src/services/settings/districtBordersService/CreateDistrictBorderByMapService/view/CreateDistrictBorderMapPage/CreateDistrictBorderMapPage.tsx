@@ -101,12 +101,6 @@ export const CreateDistrictBorderMapPage: FC<
 
     (newDistrict.editor as any).startDrawing();
 
-    const stateMonitor = new ymaps.Monitor(newDistrict.editor.state);
-
-    stateMonitor.add('drawing', (newValue) => {
-      newDistrict.options.set('strokeColor', newValue ? '#189EE9' : '#189Eff');
-    });
-
     setIsEditing(true);
 
     setDistrict(newDistrict);

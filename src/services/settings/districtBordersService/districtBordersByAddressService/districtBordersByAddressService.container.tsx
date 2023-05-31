@@ -1,9 +1,8 @@
 import React, { useMemo } from 'react';
-import { DistrictBordersByAddressPage } from './view/DistrictBordersByAddressPage/DistrictBordersByAddressPage';
-import { districtBordersByAddressService } from './districtBordersByAddressService.model';
 import { useEvent, useStore } from 'effector-react';
 import { StreetWithHousingStockNumbersResponse } from 'myApi';
-import _ from 'lodash';
+import { DistrictBordersByAddressPage } from './view/DistrictBordersByAddressPage/DistrictBordersByAddressPage';
+import { districtBordersByAddressService } from './districtBordersByAddressService.model';
 
 const { inputs, outputs } = districtBordersByAddressService;
 
@@ -66,6 +65,7 @@ export const DistrictBordersByAddressContainer = () => {
                 address.housingStockNumber === filterData.house
               );
             }
+            return true;
           },
         );
 
