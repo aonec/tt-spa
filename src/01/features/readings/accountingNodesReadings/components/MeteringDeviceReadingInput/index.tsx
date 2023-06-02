@@ -1,7 +1,6 @@
 import { RequestStatusShared } from '01/features/readings/displayReadingHistory/hooks/useReadingValues';
 import { openConfirmReadingModal } from '01/features/readings/readingsInput/confirmInputReadingModal/models';
 import { Flex } from '01/shared/ui/Layout/Flex';
-import DeviceIcons from '01/_components/DeviceIcons';
 import moment from 'moment';
 import { EResourceType } from 'myApi';
 import React, { useCallback } from 'react';
@@ -11,6 +10,7 @@ import { MeteringDeviceReading } from '../MeteringDeviceReadingsLine/useMetering
 import { getColorByRequestStatus } from './MeteringDeviceReadingInput.utils';
 import { useUploadingReadings } from './useUploadingReadings';
 import { fromEnter } from 'ui-kit/shared_components/DatePickerNative';
+import { getInputBorderColor } from 'services/meters/individualDeviceMetersInputService/view/MetersInputsBlock/MetersInputsBlock.styled';
 
 interface Props {
   prevReading?: MeteringDeviceReading;
@@ -41,7 +41,7 @@ export const MeteringDeviceReadingInput: React.FC<Props> = (props) => {
 
   const colored = Boolean(current);
 
-  const { color: resourceColor } = DeviceIcons[resource];
+  const resourceColor = getInputBorderColor({ resource });
   const color = colored ? resourceColor : '#c3c3c3';
 
   const onFocusHandler = (e: any) => e.target.select();
