@@ -1,15 +1,15 @@
+import { axios } from '01/axios';
 import {
   IndividualDeviceMountPlaceForFilterResponse,
   IndividualDeviceMountPlaceListResponse,
-} from './../../myApi';
-import axios from '01/axios';
+} from 'myApi';
 
 export const getIndividualDeviceMountPlaces = async (
   id: number,
 ): Promise<IndividualDeviceMountPlaceListResponse[]> => {
-  const res: any = await axios.get(
-    `IndividualDeviceMountPlaces?apartmentId=${id}`,
-  );
+  const res: any = await axios.get('IndividualDeviceMountPlaces', {
+    params: { apartmentId: id },
+  });
 
   return res.items;
 };

@@ -1,5 +1,4 @@
 import './devicesReport/models/init';
-import './individualDeviceMountPlaces/displayIndividualDeviceMountPlaces/models/init';
 import './individualDevices/closeIndividualDevice/models/init';
 import './individualDevices/addIndividualDevice/models/init';
 import './apartments/displayApartment/models/init';
