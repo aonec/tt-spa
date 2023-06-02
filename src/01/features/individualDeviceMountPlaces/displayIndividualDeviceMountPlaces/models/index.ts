@@ -9,6 +9,8 @@ export const $individualDeviceMountPlaces = createStore<
   IndividualDeviceMountPlaceListResponse[] | null
 >(null);
 
+$individualDeviceMountPlaces.watch(console.log);
+
 export const fetchIndividualDeviceFxMountPlacesFx = createEffect<
   number,
   IndividualDeviceMountPlaceListResponse[]
