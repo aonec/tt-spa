@@ -1,4 +1,3 @@
-import { fromEnter } from '01/features/housingStocks/displayHousingStocks/components/HousingStockFilter/HousingStockFilter';
 import { RequestStatusShared } from '01/features/readings/displayReadingHistory/hooks/useReadingValues';
 import { openConfirmReadingModal } from '01/features/readings/readingsInput/confirmInputReadingModal/models';
 import { Flex } from '01/shared/ui/Layout/Flex';
@@ -11,6 +10,7 @@ import styled, { keyframes } from 'styled-components';
 import { MeteringDeviceReading } from '../MeteringDeviceReadingsLine/useMeteringDeviceReadings';
 import { getColorByRequestStatus } from './MeteringDeviceReadingInput.utils';
 import { useUploadingReadings } from './useUploadingReadings';
+import { fromEnter } from 'ui-kit/shared_components/DatePickerNative';
 
 interface Props {
   prevReading?: MeteringDeviceReading;

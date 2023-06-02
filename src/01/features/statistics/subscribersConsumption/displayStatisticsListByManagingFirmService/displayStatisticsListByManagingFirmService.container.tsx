@@ -1,4 +1,3 @@
-import { ExistingCitiesGate } from '01/features/housingStocks/displayHousingStockCities/models';
 import { Skeleton } from 'antd';
 import { useEvent, useStore } from 'effector-react';
 import React from 'react';
@@ -10,9 +9,11 @@ import { displayStatisticsListByManagingFirmService } from './displayStatisticsL
 import { HousingStocksList } from './view/HousingStocksList';
 import { ManagingFirmSearch } from './view/ManagingFirmSearch';
 import { WithLoader } from 'ui-kit/shared_components/WithLoader';
+import { addressSearchService } from 'services/addressSearchService/addressSearchService.models';
 
 const { gates, outputs, inputs } = displayStatisticsListByManagingFirmService;
 const { StatiscticsPageGate } = gates;
+const { ExistingCitiesGate } = addressSearchService.gates;
 
 export const DisplayStatisticsListByManagingFirmContainer = () => {
   const cities = useStore(outputs.$cities);
