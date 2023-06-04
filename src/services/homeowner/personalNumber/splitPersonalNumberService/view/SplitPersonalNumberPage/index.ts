@@ -1,0 +1,1 @@
+export { SplitPersonalNumberPage } from './SplitPersonalNumberPage';
