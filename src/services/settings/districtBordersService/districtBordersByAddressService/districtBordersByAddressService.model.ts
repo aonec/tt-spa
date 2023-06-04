@@ -26,5 +26,5 @@ forward({
 
 export const districtBordersByAddressService = {
   inputs: { handleFetchAddress },
-  outputs: {$addresses},
+  outputs: { $addresses },
 };

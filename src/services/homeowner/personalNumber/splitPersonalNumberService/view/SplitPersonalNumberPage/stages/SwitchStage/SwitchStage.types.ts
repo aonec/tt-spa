@@ -4,5 +4,5 @@ import { SwitchStage } from 'services/homeowner/personalNumber/splitPersonalNumb
 export type SwitchStageProps = {
   homeowner: HomeownerAccountListResponse | undefined;
   formId: string;
-  handleSubmitSwitchStage: (payload: SwitchStage) => void
+  handleSubmitSwitchStage: (payload: SwitchStage) => void;
 };
