@@ -13,6 +13,7 @@ import { SearchFieldType } from 'services/addressSearchService/view/AddressSearc
 import { GoBack } from 'ui-kit/shared_components/GoBack';
 import { Button } from 'ui-kit/Button';
 import { AddressStreetGroup } from './AddressStreetGroup';
+import { useHistory } from 'react-router-dom';
 
 export const DistrictBordersByAddressPage: FC<
   DistrictBordersByAddressPageProps
@@ -27,7 +28,8 @@ export const DistrictBordersByAddressPage: FC<
 }) => {
   const [prevCity, setPrevCity] = useState<string | undefined>(undefined);
 
-  console.log(checkedhousingStockIdsWithStreet);
+  const history = useHistory();
+
   return (
     <Wrapper>
       <GoBackWrapper>
@@ -69,7 +71,10 @@ export const DistrictBordersByAddressPage: FC<
           <Button type="ghost"> Отмена</Button>
           <ButtonSC
             disabled={!isAllowedToEditer}
-            onClick={handleOpenDistrictEditer}
+            onClick={() => {
+              handleOpenDistrictEditer();
+              history.push('/districtBordersSettings/createByMap');
+            }}
           >
             Продолжить
           </ButtonSC>

@@ -13,6 +13,8 @@ const setSelectedHousingStocksIds = domain.createEvent<{
   polygon: number[][];
 }>();
 
+setSelectedHousingStocksIds.watch(console.log);
+
 const fetchHousingStocksListFx = domain.createEffect<
   GetHousingStocksRequestParams,
   HousingStockListResponsePagedList

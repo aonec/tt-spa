@@ -20,8 +20,13 @@ const domain = createDomain('districtBordersByAddressService');
 
 const handleOpenDistrictEditer = domain.createEvent();
 
-const setSelectedHousingStocksIds =
+const handleCallEditByMap =
   CreateDistrictBorderByMapService.inputs.setSelectedHousingStocksIds;
+
+const setPoligon = domain.createEvent<{
+  housingStockIds: number[];
+  polygon: number[][];
+}>();
 
 const handleFetchAddress = domain.createEvent<FetchAddressQueryType>();
 
@@ -70,6 +75,13 @@ const $checkedhousingStockIdsWithStreet = $addresses
   })
   .on(setHousingStockIds, (_, ids) => ids);
 
+const $checkedHousingStockIdsAndPoligon = domain
+  .createStore<{
+    housingStockIds: number[];
+    polygon: number[][];
+  }>({ housingStockIds: [], polygon: [] })
+  .on(setPoligon, (_, data) => data);
+
 sample({
   clock: handleFetchAddress,
   target: fetchAddressFx,
@@ -82,12 +94,19 @@ sample({
   target: fetchHousingStocksWithCoordinatesFx,
 });
 
+sample({
+  clock: handleOpenDistrictEditer,
+  source: $checkedHousingStockIdsAndPoligon,
+  target: handleCallEditByMap,
+});
+
 export const districtBordersByAddressService = {
   inputs: {
     handleFetchAddress,
     setFilter,
     setHousingStockIds,
     handleOpenDistrictEditer,
+    setPoligon,
   },
   outputs: {
     $addresses,

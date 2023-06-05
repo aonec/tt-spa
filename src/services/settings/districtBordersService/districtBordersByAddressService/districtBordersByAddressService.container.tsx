@@ -1,8 +1,9 @@
-import React, { useMemo } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { useEvent, useStore } from 'effector-react';
 import { StreetWithHousingStockNumbersResponse } from 'myApi';
 import { DistrictBordersByAddressPage } from './view/DistrictBordersByAddressPage/DistrictBordersByAddressPage';
 import { districtBordersByAddressService } from './districtBordersByAddressService.model';
+import { getBorderPoints } from './districtBordersByAddressService.utils';
 
 const { inputs, outputs } = districtBordersByAddressService;
 
@@ -11,6 +12,7 @@ export const DistrictBordersByAddressContainer = () => {
   const setFilter = useEvent(inputs.setFilter);
   const setHousingStockIds = useEvent(inputs.setHousingStockIds);
   const handleOpenDistrictEditer = useEvent(inputs.handleOpenDistrictEditer);
+  const setPoligon = useEvent(inputs.setPoligon);
 
   const addresses = useStore(outputs.$addresses);
   const housingStocksWithCoordinates = useStore(
@@ -28,12 +30,24 @@ export const DistrictBordersByAddressContainer = () => {
 
   const isAllowedToEditer = checkedhousingStockIds.length > 2;
 
-  const checkedHousingStockWithCoordinates =
-    housingStocksWithCoordinates.filter((housingStock) => {
+  const checkedHousingStockCoordinates = housingStocksWithCoordinates
+    .filter((housingStock) => {
       return checkedhousingStockIds.some((checkedHousingStockId) => {
         return checkedHousingStockId === housingStock.id;
       });
+    })
+    .map((housingStock) => housingStock.coordinates);
+
+  useEffect(() => {
+    const borderCoordinates = getBorderPoints(
+      checkedHousingStockCoordinates,
+    ).map((data) => [data.latitude, data.longitude]);
+
+    setPoligon({
+      housingStockIds: checkedhousingStockIds,
+      polygon: borderCoordinates,
     });
+  }, [checkedHousingStockCoordinates]);
 
   const filteredAddress =
     useMemo(() => {
