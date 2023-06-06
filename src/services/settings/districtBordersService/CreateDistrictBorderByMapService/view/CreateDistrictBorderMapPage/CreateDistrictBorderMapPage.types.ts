@@ -1,10 +1,12 @@
 import { HousingStockListResponse } from 'myApi';
+import { Coordinate } from 'services/settings/districtBordersService/districtBordersByAddressService/districtBordersByAddressService.utils';
 
 export type CreateDistrictBorderMapPageProps = {
   isLoadingHousingStocks: boolean;
   housingStocksList: HousingStockListResponse[];
   selectedByAddressHousingStockIds: number[];
   selectedByAddressPoligon: number[][];
+  poligonCenter: [number, number];
 };
 
 export const ymaps = window.ymaps;

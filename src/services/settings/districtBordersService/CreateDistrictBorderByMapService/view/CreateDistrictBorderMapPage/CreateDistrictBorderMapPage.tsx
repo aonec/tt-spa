@@ -29,6 +29,7 @@ export const CreateDistrictBorderMapPage: FC<
   housingStocksList,
   selectedByAddressHousingStockIds,
   selectedByAddressPoligon,
+  poligonCenter,
 }) => {
   const mapRef = useRef<HTMLDivElement | null>(null);
 
@@ -53,8 +54,13 @@ export const CreateDistrictBorderMapPage: FC<
   const [formSection, setFormSection] = useState<number>(0);
 
   useEffect(() => {
+    if (!map) return;
+
     setSelectedHousingStocks(selectedByAddressHousingStockIds);
-  }, [selectedByAddressHousingStockIds]);
+    startEditing();
+
+    district && handleApplyDistrict();
+  }, [selectedByAddressHousingStockIds, map]);
 
   const handleClickHousingStock = useCallback(
     (id: number) => {
@@ -75,7 +81,7 @@ export const CreateDistrictBorderMapPage: FC<
     }
 
     const map = new ymaps.Map(mapRef.current, {
-      center: [55.6366, 51.8245],
+      center: poligonCenter || [55.6366, 51.8245],
       zoom: 15,
       controls: [],
     });
@@ -159,7 +165,9 @@ export const CreateDistrictBorderMapPage: FC<
       ),
     );
 
-    setSelectedHousingStocks(filteredHousingStocks.map((elem) => elem.id));
+    selectedByAddressHousingStockIds
+      ? setSelectedHousingStocks(selectedByAddressHousingStockIds)
+      : setSelectedHousingStocks(filteredHousingStocks.map((elem) => elem.id));
 
     return filteredHousingStocks;
   }, [district, housingStocksList]);

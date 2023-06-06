@@ -42,14 +42,11 @@ export const DistrictBordersByAddressContainer = () => {
     longitude: number;
   }[];
 
-  // console.log(JSON.stringify(checkedHousingStockCoordinates));
-
   useEffect(() => {
-    // console.log(checkedHousingStockCoordinates);
     const borderCoordinates = getConvexHull(checkedHousingStockCoordinates).map(
       (data) => [data?.latitude, data?.longitude],
     );
-    console.log(borderCoordinates)
+    console.log(JSON.stringify(borderCoordinates));
 
     setPoligon({
       housingStockIds: checkedhousingStockIds,
