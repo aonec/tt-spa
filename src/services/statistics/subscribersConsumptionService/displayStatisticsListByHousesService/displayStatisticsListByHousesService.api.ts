@@ -6,17 +6,12 @@ import {
 } from 'myApi';
 import { HousingStockAddressForm } from './displayStatisticsListByHousesService.types';
 
-export const fetchStatisticsByHouse = async (
+export const fetchStatisticsByHouse = (
   params: SubscriberStatisticsFilter,
-): Promise<SubscriberStatisticsСonsumptionResponse[]> => {
-  const res = await axios.get(`SubscriberStatistics`, {
+): Promise<SubscriberStatisticsСonsumptionResponse[]> =>
+  axios.get(`SubscriberStatistics`, {
     params,
   });
-
-  console.log((res as any)['successResponse']);
-
-  return [];
-};
 
 export const fetchHousingStockId = async (
   address: HousingStockAddressForm,
