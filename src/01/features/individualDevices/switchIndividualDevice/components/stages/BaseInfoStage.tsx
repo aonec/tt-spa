@@ -1,7 +1,4 @@
-import {
-  $individualDeviceMountPlaces,
-  IndividualDeviceMountPlacesGate,
-} from '01/features/individualDeviceMountPlaces/displayIndividualDeviceMountPlaces/models';
+import { individualDeviceMountPlacesService } from 'services/devices/individualDeviceMountPlacesService/individualDeviceMountPlacesService.model';
 import { Flex } from '01/shared/ui/Layout/Flex';
 import { AutoComplete, Form, Switch } from 'antd';
 import { useForm } from 'effector-forms/dist';
@@ -51,11 +48,15 @@ const {
   outputs,
   gates: { ContractorsGate },
 } = displayContractorsService;
+const { IndividualDeviceMountPlacesGate } =
+  individualDeviceMountPlacesService.gates;
 
 export const BaseInfoStage = () => {
   const { id } = useParams<{ id: string }>();
 
-  const mountPlaces = useStore($individualDeviceMountPlaces);
+  const mountPlaces = useStore(
+    individualDeviceMountPlacesService.outputs.$individualDeviceMountPlaces,
+  );
   const modelNames = useStore($individualDevicesNames);
   const contractors = useStore(outputs.$contractors);
   const device = useStore($individualDevice);

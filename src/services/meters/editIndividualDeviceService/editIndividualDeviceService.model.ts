@@ -12,7 +12,7 @@ import {
 } from 'myApi';
 import { EffectFailDataAxiosError } from 'types';
 import { message } from 'antd';
-import { $individualDeviceMountPlaces } from '01/features/individualDeviceMountPlaces/displayIndividualDeviceMountPlaces/models';
+import { individualDeviceMountPlacesService } from 'services/devices/individualDeviceMountPlacesService/individualDeviceMountPlacesService.model';
 
 const domain = createDomain('editIndividualDeviceService');
 
@@ -82,7 +82,8 @@ export const editIndividualDeviceService = {
     $currentTab,
     $individualDevice,
     $isDeviceLoading,
-    $mountPlaces: $individualDeviceMountPlaces,
+    $mountPlaces:
+      individualDeviceMountPlacesService.outputs.$individualDeviceMountPlaces,
     $isDeviceUpdating,
   },
   gates: { FetchIndividualDeviceGate },

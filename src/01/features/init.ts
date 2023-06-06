@@ -1,5 +1,4 @@
 import './devicesReport/models/init';
-import './individualDeviceMountPlaces/displayIndividualDeviceMountPlaces/models/init';
 import './individualDevices/closeIndividualDevice/models/init';
 import './individualDevices/addIndividualDevice/models/init';
 import './apartments/displayApartment/models/init';
@@ -14,11 +13,6 @@ import './readings/readingsInput/confirmInputReadingModal/models/init';
 import './readings/accountingNodesReadings/models/init.ts';
 import './nodes/displayNodes/models/init';
 import './statistics/subscribersConsumption/models/init.ts';
-import './homeowner/editPersonalNumber/models/init';
-import './homeowner/displayHomeowner/models/init';
-import './homeowner/switchPersonalNumber/models/init';
-import './homeowner/addPersonalNumber/models/init';
-import './homeowner/splitPersonalNumber/models/init';
 import './individualDevices/deleteIndividualDevice/deleteIndividualDeviceService.init';
 import '../../services/settings/inspectorsDistributionService/searchInspectorsHousingStocksService/searchInspectorsHousingStockService.init';
 import '../../services/settings/inspectorsDistributionService/displayInspectorsHousingStocksService/displayInspectorsHousingStocksService.init';

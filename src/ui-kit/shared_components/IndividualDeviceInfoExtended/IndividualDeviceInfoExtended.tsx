@@ -15,11 +15,11 @@ import {
 } from './IndividualDeviceInfoExtended.styled';
 import { prepareDateForDateLine } from './IndividualDeviceInfoExtended.utils';
 import { Tooltip } from 'antd';
-import {
-  $allIndividualDeviceMountPlaces,
-  AllIndividualDeviceMountPlacesGate,
-} from '01/features/individualDeviceMountPlaces/displayIndividualDeviceMountPlaces/models';
+import { individualDeviceMountPlacesService } from 'services/devices/individualDeviceMountPlacesService/individualDeviceMountPlacesService.model';
 import { useStore } from 'effector-react';
+
+const { AllIndividualDeviceMountPlacesGate } =
+  individualDeviceMountPlacesService.gates;
 
 export const IndividualDeviceInfoExtended: FC<
   IndividualDeviceInfoExtendedProps
@@ -27,7 +27,7 @@ export const IndividualDeviceInfoExtended: FC<
   const isActive = device.closingDate === null;
 
   const allIndividualDeviceMountPlaces = useStore(
-    $allIndividualDeviceMountPlaces,
+    individualDeviceMountPlacesService.outputs.$allIndividualDeviceMountPlaces,
   );
 
   const preparedLastCheckingDate = prepareDateForDateLine(
