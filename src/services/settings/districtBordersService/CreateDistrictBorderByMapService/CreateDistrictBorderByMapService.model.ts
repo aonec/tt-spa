@@ -13,8 +13,6 @@ const setSelectedHousingStocksIds = domain.createEvent<{
   polygon: number[][];
 }>();
 
-setSelectedHousingStocksIds.watch(console.log);
-
 const fetchHousingStocksListFx = domain.createEffect<
   GetHousingStocksRequestParams,
   HousingStockListResponsePagedList
@@ -26,6 +24,13 @@ const $housingStocks = domain
     fetchHousingStocksListFx.doneData,
     (_, housingStocksPagedList) => housingStocksPagedList,
   );
+
+const $selectedHousingStockIdsAndPoligon = domain
+  .createStore<{
+    housingStockIds: number[];
+    polygon: number[][];
+  }>({ housingStockIds: [], polygon: [] })
+  .on(setSelectedHousingStocksIds, (_, data) => data);
 
 forward({
   from: HousingStocksListGate.open,
@@ -39,6 +44,7 @@ export const CreateDistrictBorderByMapService = {
   outputs: {
     $housingStocks,
     $isLoadingHousingStocks,
+    $selectedHousingStockIdsAndPoligon,
   },
   gates: { HousingStocksListGate },
 };

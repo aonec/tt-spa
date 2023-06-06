@@ -3,7 +3,7 @@ import { useEvent, useStore } from 'effector-react';
 import { StreetWithHousingStockNumbersResponse } from 'myApi';
 import { DistrictBordersByAddressPage } from './view/DistrictBordersByAddressPage/DistrictBordersByAddressPage';
 import { districtBordersByAddressService } from './districtBordersByAddressService.model';
-import { getBorderPoints } from './districtBordersByAddressService.utils';
+import { getConvexHull } from './districtBordersByAddressService.utils';
 
 const { inputs, outputs } = districtBordersByAddressService;
 
@@ -36,12 +36,20 @@ export const DistrictBordersByAddressContainer = () => {
         return checkedHousingStockId === housingStock.id;
       });
     })
-    .map((housingStock) => housingStock.coordinates);
+    .map((housingStock) => housingStock.coordinates)
+    .filter((data) => Boolean(data)) as {
+    latitude: number;
+    longitude: number;
+  }[];
+
+  // console.log(JSON.stringify(checkedHousingStockCoordinates));
 
   useEffect(() => {
-    const borderCoordinates = getBorderPoints(
-      checkedHousingStockCoordinates,
-    ).map((data) => [data.latitude, data.longitude]);
+    // console.log(checkedHousingStockCoordinates);
+    const borderCoordinates = getConvexHull(checkedHousingStockCoordinates).map(
+      (data) => [data?.latitude, data?.longitude],
+    );
+    console.log(borderCoordinates)
 
     setPoligon({
       housingStockIds: checkedhousingStockIds,

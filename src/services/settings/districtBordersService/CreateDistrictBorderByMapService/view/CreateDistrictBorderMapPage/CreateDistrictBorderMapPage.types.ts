@@ -3,6 +3,8 @@ import { HousingStockListResponse } from 'myApi';
 export type CreateDistrictBorderMapPageProps = {
   isLoadingHousingStocks: boolean;
   housingStocksList: HousingStockListResponse[];
+  selectedByAddressHousingStockIds: number[];
+  selectedByAddressPoligon: number[][];
 };
 
 export const ymaps = window.ymaps;

@@ -9,6 +9,13 @@ const { HousingStocksListGate } = gates;
 export const CreateDistrictBorderByMapContainer = () => {
   const housingStocksPagedList = useStore(outputs.$housingStocks);
   const isLoadingHousingStocks = useStore(outputs.$isLoadingHousingStocks);
+  const selectedHousingStockIdsAndPoligon = useStore(
+    outputs.$selectedHousingStockIdsAndPoligon,
+  );
+
+  const selectedByAddressHousingStockIds =
+    selectedHousingStockIdsAndPoligon.housingStockIds;
+  const selectedByAddressPoligon = selectedHousingStockIdsAndPoligon.polygon;
 
   return (
     <>
@@ -16,6 +23,8 @@ export const CreateDistrictBorderByMapContainer = () => {
       <CreateDistrictBorderMapPage
         isLoadingHousingStocks={isLoadingHousingStocks}
         housingStocksList={housingStocksPagedList?.items || []}
+        selectedByAddressHousingStockIds={selectedByAddressHousingStockIds}
+        selectedByAddressPoligon={selectedByAddressPoligon}
       />
     </>
   );

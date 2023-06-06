@@ -24,7 +24,12 @@ import { PencilIcon } from 'ui-kit/icons';
 
 export const CreateDistrictBorderMapPage: FC<
   CreateDistrictBorderMapPageProps
-> = ({ isLoadingHousingStocks, housingStocksList }) => {
+> = ({
+  isLoadingHousingStocks,
+  housingStocksList,
+  selectedByAddressHousingStockIds,
+  selectedByAddressPoligon,
+}) => {
   const mapRef = useRef<HTMLDivElement | null>(null);
 
   const [map, setMap] = useState<ymaps.Map | null>(null);
@@ -39,11 +44,17 @@ export const CreateDistrictBorderMapPage: FC<
     [],
   );
 
+  console.log(selectedHousingStocks);
+
   const [districtColor, setDistrictColor] = useState<DistrictColor>(
     DistrictColor.Blue,
   );
 
   const [formSection, setFormSection] = useState<number>(0);
+
+  useEffect(() => {
+    setSelectedHousingStocks(selectedByAddressHousingStockIds);
+  }, [selectedByAddressHousingStockIds]);
 
   const handleClickHousingStock = useCallback(
     (id: number) => {
@@ -86,14 +97,21 @@ export const CreateDistrictBorderMapPage: FC<
 
     const polygonCoordinates = district?.geometry?.getCoordinates();
 
+    const polygonCoordinatesByAddress = [selectedByAddressPoligon];
+    console.log(polygonCoordinatesByAddress);
+
     const { color, strokeColor } = getDistrictColorData(districtColor);
 
-    const newDistrict = new ymaps.Polygon(polygonCoordinates || [], {}, {
-      editorDrawingCursor: 'crosshair',
-      fillColor: color,
-      strokeColor: strokeColor,
-      strokeWidth: 3,
-    } as any);
+    const newDistrict = new ymaps.Polygon(
+      polygonCoordinatesByAddress || polygonCoordinates || [],
+      {},
+      {
+        editorDrawingCursor: 'crosshair',
+        fillColor: color,
+        strokeColor: strokeColor,
+        strokeWidth: 3,
+      } as any,
+    );
 
     district && map.geoObjects.remove(district);
 
