@@ -12,9 +12,10 @@ import {
 } from './tasksProfileService.utils';
 import { TaskType } from './view/TasksListItem/TasksListItem.types';
 import { TasksProfile } from './view/TasksProfile';
-import { ExistingCitiesGate } from '01/features/housingStocks/displayHousingStockCities/models';
 import queryString from 'query-string';
+import { addressSearchService } from 'services/addressSearchService/addressSearchService.models';
 
+const { ExistingCitiesGate } = addressSearchService.gates;
 const { inputs, outputs, gates } = tasksProfileService;
 const { ApartmentIdGate } = gates;
 

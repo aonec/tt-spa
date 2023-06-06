@@ -10,7 +10,7 @@ import {
   closeReadingsHistoryModal,
 } from './index';
 import { forward, sample } from 'effector';
-import { refetchIndividualDevices } from '01/features/individualDevices/displayIndividualDevices/models';
+import { apartmentIndividualDevicesMetersService } from 'services/meters/apartmentIndividualDevicesMetersService';
 
 fetchReadingHistoryFx.use(getReadingsHistory);
 
@@ -40,5 +40,5 @@ forward({
 
 forward({
   from: ReadingHistoryGate.close,
-  to: refetchIndividualDevices,
+  to: apartmentIndividualDevicesMetersService.inputs.refetchIndividualDevices,
 });

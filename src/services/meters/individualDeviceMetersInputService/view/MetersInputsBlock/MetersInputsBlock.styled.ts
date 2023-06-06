@@ -2,8 +2,11 @@ import { EResourceType } from 'myApi';
 import styled from 'styled-components';
 import { MetersInputBlockStatus } from './MetersInputsBlock.types';
 
-const getInputBorderColor = ({ resource }: { resource?: EResourceType }) =>
-  resource ? ResourceColorLookup[resource] : '#3c436a';
+export const getInputBorderColor = ({
+  resource,
+}: {
+  resource?: EResourceType;
+}) => (resource ? ResourceColorLookup[resource] : '#3c436a');
 
 const ResourceColorLookup = {
   [EResourceType.Electricity]: '#E2B104',

@@ -7,10 +7,7 @@ import { ResourceIconLookup } from 'ui-kit/shared_components/ResourceIconLookup'
 import { LinkCard } from 'ui-kit/shared_components/LinkCard';
 import { WithLoader } from 'ui-kit/shared_components/WithLoader';
 import { ENodeRegistrationType, TaskGroupingFilter } from 'myApi';
-import { HousingMeteringDeviceReadingsContainer } from 'services/housingMeteringDevices/housingMeteringDeviceReadingsService';
-import { getDeviceIds } from 'services/housingMeteringDevices/housingMeteringDeviceReadingsService/housingMeteringDeviceReadingsService.utils';
 import { DisplayNodesStatisticsContainer } from 'services/nodes/displayNodesStatisticsService';
-
 import {
   Title,
   ContentWrapper,
@@ -32,6 +29,8 @@ import { HousingMeteringDevicesList } from './HousingMeteringDevicesList';
 import { NodeConnection } from './NodeConnection';
 import { ContextMenuButtonColor } from 'ui-kit/ContextMenuButton/ContextMenuButton.types';
 import { DisplayNodeChecksContainer } from 'services/nodes/displayNodeChecks';
+import { HousingMeteringDeviceReadingsContainer } from 'services/devices/housingMeteringDevices/housingMeteringDeviceReadingsService';
+import { getDeviceIds } from 'services/devices/housingMeteringDevices/housingMeteringDeviceReadingsService/housingMeteringDeviceReadingsService.utils';
 
 const { TabPane } = TabsSC;
 

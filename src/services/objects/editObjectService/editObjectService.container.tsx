@@ -17,8 +17,10 @@ export const EditObjectContainer = () => {
   const houseManagements = useStore(outputs.$houseManagements);
   const heatingStations = useStore(outputs.$heatingStations);
 
-  const existingCities = useStore(addressSearchService.outputs.cities);
-  const existingStreets = useStore(addressSearchService.outputs.streets);
+  const existingCities = useStore(addressSearchService.outputs.$existingCities);
+  const existingStreets = useStore(
+    addressSearchService.outputs.$existingStreets,
+  );
 
   const openCreateHeatingStationModal = useEvent(
     inputs.openCreateHeatingStationModal,

@@ -14,7 +14,7 @@ import {
   pauseApartmentStatusFx,
 } from '01/features/apartments/pauseApartment/models';
 import { EffectFailDataAxiosError } from 'types';
-import { $allIndividualDeviceMountPlaces } from '01/features/individualDeviceMountPlaces/displayIndividualDeviceMountPlaces/models';
+import { individualDeviceMountPlacesService } from 'services/devices/individualDeviceMountPlacesService/individualDeviceMountPlacesService.model';
 import { selectPersonalNumberActionService } from 'services/homeowner/personalNumber/selectPersonalNumberActionService';
 
 const domain = createDomain('apartmentReadingsService');
@@ -120,7 +120,9 @@ export const apartmentReadingsService = {
     $apartment,
     $isLoadingApartment,
     $selectedHomeownerName,
-    $allIndividualDeviceMountPlaces: $allIndividualDeviceMountPlaces,
+    $allIndividualDeviceMountPlaces:
+      individualDeviceMountPlacesService.outputs
+        .$allIndividualDeviceMountPlaces,
   },
   gates: { ApartmentGate },
 };
