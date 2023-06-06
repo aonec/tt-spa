@@ -11,7 +11,7 @@ export const DistrictBorderCreationTypeSelect: FC<
     <Wrapper>
       <LinkPanel
         text="Задать границы районов на карте"
-        link="/settings/districtBorder/map"
+        link="/districtBordersSettings/createByMap"
         icon={<MapIcon />}
       />
       <LinkPanel

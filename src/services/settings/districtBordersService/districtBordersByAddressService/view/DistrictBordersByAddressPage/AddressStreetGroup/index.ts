@@ -1,1 +1,1 @@
-export { AddressStreetGroup } from './AddressStreetGroup'
+export { AddressStreetGroup } from './AddressStreetGroup';

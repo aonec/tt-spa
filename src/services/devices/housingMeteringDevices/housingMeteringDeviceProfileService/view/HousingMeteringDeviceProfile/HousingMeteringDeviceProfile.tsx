@@ -28,6 +28,7 @@ import {
 } from './HousingMeteringDeviceProfile.styled';
 import { HousingMeteringDeviceProfileProps } from './HousingMeteringDeviceProfile.types';
 import { ContextMenuButtonColor } from 'ui-kit/ContextMenuButton/ContextMenuButton.types';
+import { TaskGroupingFilter } from 'myApi';
 
 const { TabPane } = TabsSC;
 
@@ -143,7 +144,7 @@ export const HousingMeteringDeviceProfile: FC<
             <LinkCard
               text={`Задачи: ${tasksCount}`}
               link={stringifyUrl({
-                url: '/tasks/list/Observing',
+                url: `/tasks/list/${TaskGroupingFilter.Executing}`,
                 query: { housingMeteringDeviceId: housingMeteringDevice?.id },
               })}
               showLink={Boolean(tasksCount)}

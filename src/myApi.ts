@@ -3145,6 +3145,7 @@ export interface HousingStockListResponse {
   numberOfApartments: number;
   houseManagement: HouseManagementResponse | null;
   address: HousingStockAddressResponse | null;
+  coordinates: PointResponse | null;
   managementFirm: ManagementFirmLiteResponse | null;
 }
 

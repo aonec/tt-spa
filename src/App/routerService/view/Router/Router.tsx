@@ -51,6 +51,7 @@ import { SettingsPageContainer } from 'services/settings/settingsPageService';
 import { ActsJournalContainer } from 'services/actsJournalService';
 import { NodeArchivePageContainer } from 'services/nodes/nodeArchiveService';
 import { EditNodeContainer } from 'services/nodes/editNodeService';
+import { CreateDistrictBorderByMapContainer } from 'services/settings/districtBordersService/CreateDistrictBorderByMapService';
 import { DistrictBordersByAddressContainer } from 'services/settings/districtBordersService/districtBordersByAddressService';
 
 const { gates } = objectProfileService;
@@ -427,6 +428,14 @@ export const Router: FC<RouterProps> = ({ roles, isRolesLoadded }) => {
                     <Route
                       path="/adminSettings/operatingRanges/Unique"
                       component={UniqueWorkingRangeContainer}
+                      exact
+                    />
+                  )}
+
+                  {isSeniorOperator && (
+                    <Route
+                      path="/districtBordersSettings/createByMap"
+                      component={CreateDistrictBorderByMapContainer}
                       exact
                     />
                   )}

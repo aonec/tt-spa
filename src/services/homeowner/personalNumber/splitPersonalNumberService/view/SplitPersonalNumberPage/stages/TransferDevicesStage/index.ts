@@ -1,1 +1,1 @@
-export { TransferDevicesStage } from './TransferDevicesStage'
+export { TransferDevicesStage } from './TransferDevicesStage';
