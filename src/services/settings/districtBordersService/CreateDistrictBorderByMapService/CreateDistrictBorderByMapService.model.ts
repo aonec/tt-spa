@@ -7,6 +7,9 @@ import { GetHousingStocksRequestParams } from './CreateDistrictBorderByMapServic
 const domain = createDomain('createDistrictBorderByMapService');
 
 const HousingStocksListGate = createGate();
+const CreateDistrictBorderMapPageGate = createGate();
+
+const handleCloseDistrictEditer = domain.createEvent();
 
 const setSelectedHousingStocksIds = domain.createEvent<{
   housingStockIds: number[];
@@ -30,7 +33,8 @@ const $selectedHousingStockIdsAndPoligon = domain
     housingStockIds: number[];
     polygon: number[][];
   }>({ housingStockIds: [], polygon: [] })
-  .on(setSelectedHousingStocksIds, (_, data) => data);
+  .on(setSelectedHousingStocksIds, (_, data) => data)
+  .reset(CreateDistrictBorderMapPageGate.close);
 
 forward({
   from: HousingStocksListGate.open,
@@ -40,11 +44,14 @@ forward({
 const $isLoadingHousingStocks = fetchHousingStocksListFx.pending;
 
 export const CreateDistrictBorderByMapService = {
-  inputs: { setSelectedHousingStocksIds },
+  inputs: {
+    setSelectedHousingStocksIds,
+    handleCloseDistrictEditer,
+  },
   outputs: {
     $housingStocks,
     $isLoadingHousingStocks,
     $selectedHousingStockIdsAndPoligon,
   },
-  gates: { HousingStocksListGate },
+  gates: { HousingStocksListGate, CreateDistrictBorderMapPageGate },
 };

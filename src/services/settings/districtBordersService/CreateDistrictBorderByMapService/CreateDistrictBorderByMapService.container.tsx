@@ -1,11 +1,11 @@
 import React from 'react';
 import { CreateDistrictBorderMapPage } from './view/CreateDistrictBorderMapPage';
 import { CreateDistrictBorderByMapService } from './CreateDistrictBorderByMapService.model';
-import { useStore } from 'effector-react';
+import { useEvent, useStore } from 'effector-react';
 import { findPolygonCenter } from '../districtBordersByAddressService/districtBordersByAddressService.utils';
 
-const { outputs, gates } = CreateDistrictBorderByMapService;
-const { HousingStocksListGate } = gates;
+const { inputs, outputs, gates } = CreateDistrictBorderByMapService;
+const { HousingStocksListGate, CreateDistrictBorderMapPageGate } = gates;
 
 export const CreateDistrictBorderByMapContainer = () => {
   const housingStocksPagedList = useStore(outputs.$housingStocks);
@@ -13,6 +13,8 @@ export const CreateDistrictBorderByMapContainer = () => {
   const selectedHousingStockIdsAndPoligon = useStore(
     outputs.$selectedHousingStockIdsAndPoligon,
   );
+
+  const handleCloseDistrictEditer = useEvent(inputs.handleCloseDistrictEditer);
 
   const selectedByAddressHousingStockIds =
     selectedHousingStockIdsAndPoligon.housingStockIds;
@@ -23,6 +25,7 @@ export const CreateDistrictBorderByMapContainer = () => {
 
   return (
     <>
+      <CreateDistrictBorderMapPageGate />
       <HousingStocksListGate />
       <CreateDistrictBorderMapPage
         isLoadingHousingStocks={isLoadingHousingStocks}
@@ -30,6 +33,7 @@ export const CreateDistrictBorderByMapContainer = () => {
         selectedByAddressHousingStockIds={selectedByAddressHousingStockIds}
         selectedByAddressPoligon={selectedByAddressPoligon}
         poligonCenter={poligonCenter}
+        handleCloseDistrictEditer={handleCloseDistrictEditer}
       />
     </>
   );

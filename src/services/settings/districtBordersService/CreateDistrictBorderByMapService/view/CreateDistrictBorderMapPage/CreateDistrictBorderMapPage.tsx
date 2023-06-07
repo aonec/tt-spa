@@ -30,6 +30,7 @@ export const CreateDistrictBorderMapPage: FC<
   selectedByAddressHousingStockIds,
   selectedByAddressPoligon,
   poligonCenter,
+  handleCloseDistrictEditer,
 }) => {
   const byAddressList = Boolean(selectedByAddressHousingStockIds.length);
 
@@ -226,7 +227,9 @@ export const CreateDistrictBorderMapPage: FC<
   return (
     <div>
       <Header>
-        <GoBack />
+        <div onClick={() => handleCloseDistrictEditer()}>
+          <GoBack />
+        </div>
         {!isEditing && (
           <Button
             onClick={startEditing}

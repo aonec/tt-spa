@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { FC } from 'react';
 import {
   AddressSortWrapper,
   ButtonSC,
@@ -25,9 +25,8 @@ export const DistrictBordersByAddressPage: FC<
   setHousingStockIds,
   handleOpenDistrictEditer,
   isAllowedToEditer,
+  cityInFilter,
 }) => {
-  const [prevCity, setPrevCity] = useState<string | undefined>(undefined);
-
   const history = useHistory();
 
   return (
@@ -47,11 +46,10 @@ export const DistrictBordersByAddressPage: FC<
           handleSubmit={(data) => {
             setFilter(data);
 
-            if (data.city && prevCity !== data.city) {
+            if (data.city && cityInFilter !== data.city) {
               handleFetchAddress({
                 City: data.city,
               });
-              setPrevCity(data.city);
             }
           }}
         />
@@ -68,7 +66,9 @@ export const DistrictBordersByAddressPage: FC<
 
       <FooterWrapper>
         <Panel>
-          <Button type="ghost"> Отмена</Button>
+          <Button type="ghost" onClick={history.goBack}>
+            Отмена
+          </Button>
           <ButtonSC
             disabled={!isAllowedToEditer}
             onClick={() => {

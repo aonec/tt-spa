@@ -5,7 +5,11 @@ import { DistrictBordersByAddressPage } from './view/DistrictBordersByAddressPag
 import { districtBordersByAddressService } from './districtBordersByAddressService.model';
 import { getConvexHull } from './districtBordersByAddressService.utils';
 
-const { inputs, outputs } = districtBordersByAddressService;
+const {
+  inputs,
+  outputs,
+  gates: { DistrictBordersByAddressPageGate },
+} = districtBordersByAddressService;
 
 export const DistrictBordersByAddressContainer = () => {
   const handleFetchAddress = useEvent(inputs.handleFetchAddress);
@@ -22,6 +26,11 @@ export const DistrictBordersByAddressContainer = () => {
   const checkedhousingStockIdsWithStreet = useStore(
     outputs.$checkedhousingStockIdsWithStreet,
   );
+
+  const streets = useStore(outputs.$streets);
+  console.log(streets);
+
+  const cityInFilter = filterData?.city;
 
   const checkedhousingStockIds = checkedhousingStockIdsWithStreet.reduce(
     (acc, current) => [...acc, ...current.housingStocksId],
@@ -101,6 +110,7 @@ export const DistrictBordersByAddressContainer = () => {
 
   return (
     <>
+      <DistrictBordersByAddressPageGate />
       <DistrictBordersByAddressPage
         handleFetchAddress={handleFetchAddress}
         addresses={filteredAddress}
@@ -109,6 +119,7 @@ export const DistrictBordersByAddressContainer = () => {
         checkedhousingStockIdsWithStreet={checkedhousingStockIdsWithStreet}
         handleOpenDistrictEditer={handleOpenDistrictEditer}
         isAllowedToEditer={isAllowedToEditer}
+        cityInFilter={cityInFilter}
       />
     </>
   );

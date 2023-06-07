@@ -13,4 +13,5 @@ export type DistrictBordersByAddressPageProps = {
   checkedhousingStockIdsWithStreet: CheckedHousingStocksIdType[];
   handleOpenDistrictEditer: () => void;
   isAllowedToEditer: boolean;
+  cityInFilter: string | undefined;
 };

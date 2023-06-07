@@ -7,6 +7,7 @@ export type CreateDistrictBorderMapPageProps = {
   selectedByAddressHousingStockIds: number[];
   selectedByAddressPoligon: number[][];
   poligonCenter: [number, number];
+  handleCloseDistrictEditer: () => void;
 };
 
 export const ymaps = window.ymaps;
