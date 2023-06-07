@@ -2,14 +2,14 @@ import React from 'react';
 import { useParams } from 'react-router-dom';
 import { getAddress } from '../utils';
 import { useStore } from 'effector-react';
-import {
-  $apartment,
-  ApartmentGate,
-} from '01/features/apartments/displayApartment/models';
+import { apartmentService } from 'services/apartments/apartment/apartmentService.models';
+
+const { outputs, gates } = apartmentService;
+const { ApartmentGate } = gates;
 
 export const HousingStockAddress = () => {
   const { id } = useParams<{ id: string }>();
-  const apartment = useStore($apartment);
+  const apartment = useStore(outputs.$apartment);
   const address = getAddress(apartment);
 
   return (

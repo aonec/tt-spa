@@ -1,7 +1,6 @@
 import './devicesReport/models/init';
 import './individualDevices/closeIndividualDevice/models/init';
 import './individualDevices/addIndividualDevice/models/init';
-import './apartments/displayApartment/models/init';
 import './individualDevices/displayIndividualDevicesNames/models/init.ts';
 import './individualDevices/switchIndividualDevice/models/init';
 import './individualDevices/displayIndividualDevice/models/init';

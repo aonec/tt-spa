@@ -1,4 +1,3 @@
-import { refetchApartment } from './../../displayApartment/models/index';
 import {
   PauseApartmentGate,
   cancelPauseApartmentButtonClicked,
@@ -13,6 +12,7 @@ import { EApartmentStatus } from 'myApi';
 import moment from 'moment';
 import { message } from 'antd';
 import { handleResetProblemDevices } from '../../displayProblemDevices/models';
+import { apartmentService } from 'services/apartments/apartment/apartmentService.models';
 
 pauseApartmentStatusFx.use(setApartmentStatus);
 
@@ -25,7 +25,7 @@ $isPauseApartmentModalVisible
 
 forward({
   from: pauseApartmentStatusFx.done,
-  to: refetchApartment,
+  to: apartmentService.inputs.refetchApartment,
 });
 
 forward({
