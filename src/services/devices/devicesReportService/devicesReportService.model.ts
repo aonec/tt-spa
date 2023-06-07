@@ -42,7 +42,7 @@ downloadDeviceReportFx.failData.watch(async (error) => {
   return message.error(
     errObject.error.Text ||
       errObject.error.Message ||
-      'Невозможно выгрузить отчёт',
+      'Невозможно выгрузить список',
   );
 });
 
