@@ -31,7 +31,6 @@ sample({
   clock: handleUpdateHousingStock,
   source: CatchHousingStockId.state,
   fn: (gateState, clockPayload) => {
-    console.log(gateState);
     return { housingStockId: gateState.housingStockId, data: clockPayload };
   },
   target: handleUpdateHousingStockFx,

@@ -41,7 +41,6 @@ export const SubscribersConsumptionExtendedSearch: FC<
       const dateLastCheckFromValue = dates[0];
       const dateLastCheckTo = dates[1];
 
-      console.log(dateLastCheckTo);
 
       if (!dateLastCheckTo || !dateLastCheckFromValue) {
         return;
