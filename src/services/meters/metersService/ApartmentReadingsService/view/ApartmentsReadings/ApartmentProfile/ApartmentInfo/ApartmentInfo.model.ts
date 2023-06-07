@@ -1,5 +1,5 @@
 import { createDomain } from 'effector';
-import { getIssueCertificateButtonClicked } from '01/features/apartments/printIssueCertificate/models';
+import { printApartmentDevicesCertificateService } from 'services/apartments/printApartmentDevicesCertificateService/printApartmentDevicesCertificateService.models';
 
 const domain = createDomain('apartmentInfoService');
 
@@ -12,7 +12,9 @@ const $isPanelOpen = domain
 export const apartmentInfoService = {
   inputs: {
     togglePanel,
-    printIssueCertificate: getIssueCertificateButtonClicked,
+    printIssueCertificate:
+      printApartmentDevicesCertificateService.inputs
+        .getIssueCertificateButtonClicked,
   },
   outputs: {
     $isPanelOpen,
