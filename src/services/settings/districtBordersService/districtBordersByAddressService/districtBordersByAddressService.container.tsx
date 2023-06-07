@@ -46,13 +46,12 @@ export const DistrictBordersByAddressContainer = () => {
     const borderCoordinates = getConvexHull(checkedHousingStockCoordinates).map(
       (data) => [data?.latitude, data?.longitude],
     );
-    console.log(JSON.stringify(borderCoordinates));
 
     setPoligon({
       housingStockIds: checkedhousingStockIds,
       polygon: borderCoordinates,
     });
-  }, [checkedHousingStockCoordinates]);
+  }, [checkedHousingStockCoordinates, checkedhousingStockIds, setPoligon]);
 
   const filteredAddress =
     useMemo(() => {

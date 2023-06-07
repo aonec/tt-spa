@@ -31,6 +31,8 @@ export const CreateDistrictBorderMapPage: FC<
   selectedByAddressPoligon,
   poligonCenter,
 }) => {
+  const byAddressList = Boolean(selectedByAddressHousingStockIds.length);
+
   const mapRef = useRef<HTMLDivElement | null>(null);
 
   const [map, setMap] = useState<ymaps.Map | null>(null);
@@ -45,8 +47,6 @@ export const CreateDistrictBorderMapPage: FC<
     [],
   );
 
-  console.log(selectedHousingStocks);
-
   const [districtColor, setDistrictColor] = useState<DistrictColor>(
     DistrictColor.Blue,
   );
@@ -54,13 +54,14 @@ export const CreateDistrictBorderMapPage: FC<
   const [formSection, setFormSection] = useState<number>(0);
 
   useEffect(() => {
+    if (!byAddressList) return;
     if (!map) return;
 
     setSelectedHousingStocks(selectedByAddressHousingStockIds);
     startEditing();
 
-    district && handleApplyDistrict();
-  }, [selectedByAddressHousingStockIds, map]);
+    setIsEditing(false);
+  }, [selectedByAddressHousingStockIds, map, byAddressList]);
 
   const handleClickHousingStock = useCallback(
     (id: number) => {
@@ -81,7 +82,10 @@ export const CreateDistrictBorderMapPage: FC<
     }
 
     const map = new ymaps.Map(mapRef.current, {
-      center: poligonCenter || [55.6366, 51.8245],
+      center:
+        poligonCenter[0] && poligonCenter[1]
+          ? poligonCenter
+          : [55.6366, 51.8245],
       zoom: 15,
       controls: [],
     });
@@ -104,7 +108,6 @@ export const CreateDistrictBorderMapPage: FC<
     const polygonCoordinates = district?.geometry?.getCoordinates();
 
     const polygonCoordinatesByAddress = [selectedByAddressPoligon];
-    console.log(polygonCoordinatesByAddress);
 
     const { color, strokeColor } = getDistrictColorData(districtColor);
 
@@ -165,7 +168,7 @@ export const CreateDistrictBorderMapPage: FC<
       ),
     );
 
-    selectedByAddressHousingStockIds
+    byAddressList
       ? setSelectedHousingStocks(selectedByAddressHousingStockIds)
       : setSelectedHousingStocks(filteredHousingStocks.map((elem) => elem.id));
 
