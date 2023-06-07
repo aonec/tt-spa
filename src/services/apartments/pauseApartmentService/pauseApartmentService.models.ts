@@ -19,6 +19,7 @@ import { Document } from 'ui-kit/DocumentsService';
 import { SetApartmentStatusRequest } from './pauseApartmentService.types';
 import { apartmentService } from '../apartmentService';
 import { apartmentProblemDevicesService } from '../apartmentProblemDevicesService';
+import { setApartmentStatus } from './pauseApartmentService.api';
 
 const domain = createDomain('pauseApartmentService');
 
@@ -58,7 +59,7 @@ const pauseApartmentStatusFx = createEffect<
   SetApartmentStatusRequest,
   IndividualDeviceWithExpiredCheckingDateListResponse,
   EffectFailDataAxiosError
->();
+>(setApartmentStatus);
 
 const $isPauseApartmentModalVisible = domain
   .createStore(false)
@@ -144,6 +145,7 @@ export const pauseApartmentService = {
     pauseApartmentModalCancelButtonClicked,
     pauseApartmentButtonClicked,
     cancelPauseApartmentButtonClicked,
+    pauseApartmentStatusFx,
   },
   outputs: {
     $isPauseApartmentModalVisible,
