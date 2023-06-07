@@ -9,10 +9,6 @@ import React, { FC } from 'react';
 import { useMemo } from 'react';
 import styled from 'styled-components';
 import {
-  $problemDevices,
-  ProblemDevicesGate,
-} from '../displayProblemDevices/models';
-import {
   $isPauseApartmentModalVisible,
   PauseApartmentGate,
   pauseApartmentForm,
@@ -23,6 +19,10 @@ import { FormItem } from 'ui-kit/FormItem';
 import { DatePicker } from 'ui-kit/DatePicker';
 import { DocumentsUploadContainer } from 'ui-kit/DocumentsService';
 import { ErrorMessage } from 'ui-kit/ErrorMessage';
+import { apartmentProblemDevicesService } from 'services/apartments/apartmentProblemDevices';
+
+const { outputs, gates } = apartmentProblemDevicesService;
+const { ProblemDevicesGate } = gates;
 
 export const PauseApartmentModal: FC<{ apartmentId: number }> = ({
   apartmentId,
@@ -72,7 +72,7 @@ export const PauseApartmentModal: FC<{ apartmentId: number }> = ({
     </Grid>
   );
 
-  const problemDevices = useStore($problemDevices)?.filter((device) => {
+  const problemDevices = useStore(outputs.$problemDevices)?.filter((device) => {
     return !Boolean(device.closingDate);
   });
 

@@ -11,8 +11,8 @@ import { sample, combine, forward } from 'effector';
 import { EApartmentStatus } from 'myApi';
 import moment from 'moment';
 import { message } from 'antd';
-import { handleResetProblemDevices } from '../../displayProblemDevices/models';
 import { apartmentService } from 'services/apartments/apartment/apartmentService.models';
+import { apartmentProblemDevicesService } from 'services/apartments/apartmentProblemDevices';
 
 pauseApartmentStatusFx.use(setApartmentStatus);
 
@@ -33,7 +33,10 @@ forward({
     pauseApartmentStatusFx.doneData,
     pauseApartmentModalCancelButtonClicked,
   ],
-  to: [pauseApartmentForm.reset, handleResetProblemDevices],
+  to: [
+    pauseApartmentForm.reset,
+    apartmentProblemDevicesService.inputs.handleResetProblemDevices,
+  ],
 });
 
 const payload = combine(
