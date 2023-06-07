@@ -21,17 +21,9 @@ export const DistrictBordersByAddressContainer = () => {
     outputs.$checkedhousingStockIds,
   );
 
-  const checkedhousingStockIds = checkedhousingStockIdsWithStreet.reduce(
-    (acc, current) => [...acc, ...current.housingStocksId],
-    [] as number[],
+  const checkedhousingStockIds = checkedhousingStockIdsWithStreet.flatMap(
+    (data) => data.housingStocksId,
   );
-
-  const checkedHousingStockWithCoordinates =
-    housingStocksWithCoordinates.filter((housingStock) => {
-      return checkedhousingStockIds.some((checkedHousingStockId) => {
-        return checkedHousingStockId === housingStock.id;
-      });
-    });
 
   const filteredAddress =
     useMemo(() => {
