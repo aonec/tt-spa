@@ -12,7 +12,7 @@ import { EApartmentStatus } from 'myApi';
 import moment from 'moment';
 import { message } from 'antd';
 import { apartmentService } from 'services/apartments/apartmentService/apartmentService.models';
-import { apartmentProblemDevicesService } from 'services/apartments/apartmentProblemDevices';
+import { apartmentProblemDevicesService } from 'services/apartments/apartmentProblemDevicesService';
 
 pauseApartmentStatusFx.use(setApartmentStatus);
 

@@ -19,7 +19,7 @@ import { FormItem } from 'ui-kit/FormItem';
 import { DatePicker } from 'ui-kit/DatePicker';
 import { DocumentsUploadContainer } from 'ui-kit/DocumentsService';
 import { ErrorMessage } from 'ui-kit/ErrorMessage';
-import { apartmentProblemDevicesService } from 'services/apartments/apartmentProblemDevices';
+import { apartmentProblemDevicesService } from 'services/apartments/apartmentProblemDevicesService';
 
 const { outputs, gates } = apartmentProblemDevicesService;
 const { ProblemDevicesGate } = gates;
