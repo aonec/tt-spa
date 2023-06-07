@@ -39,8 +39,8 @@ export const SplitPersonalNumberPage: FC<SplitPersonalNumberPageProps> = ({
         apartment={apartment}
         type={PersonalNumberActions.Split}
         formId={formId}
-        saveButtonText={stageNumber === 3 ? 'Сохранить' : void 0}
-        cancelButtonText={stageNumber !== 1 ? 'Назад' : void 0}
+        saveButtonText={stageNumber === 3 ? 'Сохранить' : ''}
+        cancelButtonText={stageNumber !== 1 ? 'Назад' : ''}
         onCancelHandler={goBackStage}
       >
         {stageNumber === 1 && (
