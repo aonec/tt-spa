@@ -11,7 +11,7 @@ import { sample, combine, forward } from 'effector';
 import { EApartmentStatus } from 'myApi';
 import moment from 'moment';
 import { message } from 'antd';
-import { apartmentService } from 'services/apartments/apartment/apartmentService.models';
+import { apartmentService } from 'services/apartments/apartmentService/apartmentService.models';
 import { apartmentProblemDevicesService } from 'services/apartments/apartmentProblemDevices';
 
 pauseApartmentStatusFx.use(setApartmentStatus);

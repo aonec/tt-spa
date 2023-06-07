@@ -50,7 +50,7 @@ import { ReplacedAccountAlert } from './ReplacedAccountAlert';
 import _ from 'lodash';
 import { getMeasurementUnit } from 'services/meters/individualDeviceMetersInputService/individualDeviceMetersInputService.utils';
 import { getFilledArray } from 'utils/getFilledArray';
-import { apartmentService } from 'services/apartments/apartment/apartmentService.models';
+import { apartmentService } from 'services/apartments/apartmentService/apartmentService.models';
 
 interface Props {
   isModal?: boolean;
