@@ -15,6 +15,7 @@ export const PauseApartmentContainer: FC<Props> = ({ apartmentId }) => {
   const pauseApartmentModalCancelButtonClicked = useEvent(
     inputs.pauseApartmentModalCancelButtonClicked,
   );
+  const pauseApartment = useEvent(inputs.pauseApartment);
 
   return (
     <>
@@ -27,6 +28,7 @@ export const PauseApartmentContainer: FC<Props> = ({ apartmentId }) => {
         pauseApartmentModalCancelButtonClicked={
           pauseApartmentModalCancelButtonClicked
         }
+        pauseApartment={pauseApartment}
       />
     </>
   );

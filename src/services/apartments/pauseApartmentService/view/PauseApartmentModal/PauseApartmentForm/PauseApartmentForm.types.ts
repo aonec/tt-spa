@@ -1,11 +1,8 @@
 import { IndividualDeviceWithExpiredCheckingDateResponse } from 'myApi';
-import { SetApartmentStatusRequest } from '../../pauseApartmentService.types';
+import { SetApartmentStatusRequest } from 'services/apartments/pauseApartmentService/pauseApartmentService.types';
 
 export type Props = {
-  isLoading: boolean;
-  isOpen: boolean;
   problemDevices: IndividualDeviceWithExpiredCheckingDateResponse[];
   apartmentId: number;
-  pauseApartmentModalCancelButtonClicked: () => void;
   pauseApartment: (payload: SetApartmentStatusRequest) => void;
 };
