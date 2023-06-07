@@ -19,6 +19,7 @@ import {
   EDocumentType,
 } from 'myApi';
 import { pauseApartmentService } from 'services/apartments/pauseApartmentService/pauseApartmentService.models';
+import { Form } from 'antd';
 
 const {
   gates: { ProblemDevicesGate },
@@ -27,8 +28,9 @@ const {
 export const PauseApartmentForm: FC<Props> = ({
   problemDevices,
   apartmentId,
+  pauseApartment,
 }) => {
-  const { values, setFieldValue, errors } = useFormik({
+  const { values, setFieldValue, errors, handleSubmit } = useFormik({
     initialValues: {
       fromDate: moment().toISOString(true) as string | null,
       toDate: null as string | null,
@@ -47,7 +49,7 @@ export const PauseApartmentForm: FC<Props> = ({
         },
       };
 
-      console.log(payload);
+      pauseApartment(payload);
     },
   });
 
@@ -89,7 +91,7 @@ export const PauseApartmentForm: FC<Props> = ({
   );
 
   return (
-    <div>
+    <Form id="pause-apartment-form" onSubmitCapture={handleSubmit}>
       <ProblemDevicesGate apartmentId={apartmentId} requestPayload={payload} />
       <HeaderWrapper>
         <div>Максимальный срок поставновки квартиры на паузу - 1 год</div>
@@ -114,6 +116,6 @@ export const PauseApartmentForm: FC<Props> = ({
           type={EDocumentType.ApartmentStoppingStatement}
         />
       </FilesUploadWrap>
-    </div>
+    </Form>
   );
 };
