@@ -1,8 +1,4 @@
 import { useSliderIndex } from '01/features/individualDevices/switchIndividualDevice/components/ReadingsInput';
-import {
-  fetchNodes,
-  $electricNodes,
-} from '01/features/nodes/displayNodes/models';
 import { Flex } from '01/shared/ui/Layout/Flex';
 import { Grid } from '01/shared/ui/Layout/Grid';
 import { useStore } from 'effector-react';
@@ -14,6 +10,8 @@ import { meteringDeviceReadingsService } from './meteringDevicesListService.mode
 import { ChevronBoldIcon } from 'ui-kit/icons';
 import { WithLoader } from 'ui-kit/shared_components/WithLoader';
 import { getPreviousReadingsMonth } from '01/features/individualDevices/switchIndividualDevice/components/ReadingsInput.utils';
+import { $electricNodes, fetchNodes } from '../../models';
+import { Empty } from 'antd';
 
 const { outputs, gates } = meteringDeviceReadingsService;
 
@@ -71,14 +69,17 @@ export const MeteringDevicesList = () => {
     );
   };
 
-  const isNullElectricNodes = electricNodes === undefined;
   const isEmptyElectricNodes = electricNodes?.length === 0;
-  const isShowPage = !isNullElectricNodes && !isEmptyElectricNodes;
+  const isShowPage = !isEmptyElectricNodes;
 
   return (
     <WithLoader isLoading={pendingNodes}>
-      {isNullElectricNodes && null}
-      {isEmptyElectricNodes && 'Нет приборов'}
+      {isEmptyElectricNodes && (
+        <Empty
+          image={Empty.PRESENTED_IMAGE_SIMPLE}
+          description="Нет приборов"
+        />
+      )}
       {isShowPage && renderPage()}
     </WithLoader>
   );

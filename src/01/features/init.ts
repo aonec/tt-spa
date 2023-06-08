@@ -11,7 +11,6 @@ import './apartments/displayProblemDevices/models/init';
 import './apartments/printIssueCertificate/models/init';
 import './readings/readingsInput/confirmInputReadingModal/models/init';
 import './readings/accountingNodesReadings/models/init.ts';
-import './nodes/displayNodes/models/init';
 import './statistics/subscribersConsumption/models/init.ts';
 import './individualDevices/deleteIndividualDevice/deleteIndividualDeviceService.init';
 import '../../services/settings/inspectorsDistributionService/searchInspectorsHousingStocksService/searchInspectorsHousingStockService.init';

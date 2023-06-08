@@ -1,6 +1,9 @@
-import { accountingNodesFilterForm, getAccountingNodesDevices } from './index';
+import {
+  accountingNodesFilterForm,
+  fetchNodes,
+  getAccountingNodesDevices,
+} from './index';
 import { sample } from 'effector';
-import { fetchNodes } from '01/features/nodes/displayNodes/models';
 import { addressSearchService } from 'services/addressSearchService/addressSearchService.models';
 
 sample({
