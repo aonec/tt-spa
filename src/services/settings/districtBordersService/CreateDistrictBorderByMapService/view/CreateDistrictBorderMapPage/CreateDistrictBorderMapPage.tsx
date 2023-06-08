@@ -59,9 +59,7 @@ export const CreateDistrictBorderMapPage: FC<
     if (!map) return;
 
     setSelectedHousingStocks(selectedByAddressHousingStockIds);
-    startEditing();
-
-    setIsEditing(false);
+    afterMovingByAddress();
   }, [selectedByAddressHousingStockIds, map, byAddressList]);
 
   const handleClickHousingStock = useCallback(
@@ -103,17 +101,17 @@ export const CreateDistrictBorderMapPage: FC<
     ymaps.ready(initMaps);
   }, [mapRef]);
 
-  const startEditing = useCallback(() => {
+  const afterMovingByAddress = useCallback(() => {
     if (!map) return;
-
-    const polygonCoordinates = district?.geometry?.getCoordinates();
 
     const polygonCoordinatesByAddress = [selectedByAddressPoligon];
 
     const { color, strokeColor } = getDistrictColorData(districtColor);
 
-    const newDistrict = new ymaps.Polygon(
-      polygonCoordinatesByAddress || polygonCoordinates || [],
+    const byAddressDistrict = new ymaps.Polygon(
+      (Boolean(polygonCoordinatesByAddress[0].length) &&
+        polygonCoordinatesByAddress) ||
+        [],
       {},
       {
         editorDrawingCursor: 'crosshair',
@@ -122,6 +120,27 @@ export const CreateDistrictBorderMapPage: FC<
         strokeWidth: 3,
       } as any,
     );
+
+    district && map.geoObjects.remove(district);
+
+    map.geoObjects.add(byAddressDistrict);
+
+    setDistrict(byAddressDistrict);
+  }, [district, districtColor, map]);
+
+  const startEditing = useCallback(() => {
+    if (!map) return;
+
+    const polygonCoordinates = district?.geometry?.getCoordinates();
+
+    const { color, strokeColor } = getDistrictColorData(districtColor);
+
+    const newDistrict = new ymaps.Polygon(polygonCoordinates || [], {}, {
+      editorDrawingCursor: 'crosshair',
+      fillColor: color,
+      strokeColor: strokeColor,
+      strokeWidth: 3,
+    } as any);
 
     district && map.geoObjects.remove(district);
 
