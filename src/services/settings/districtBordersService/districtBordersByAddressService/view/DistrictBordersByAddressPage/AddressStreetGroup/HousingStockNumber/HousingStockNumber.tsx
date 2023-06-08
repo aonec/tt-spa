@@ -5,7 +5,7 @@ import { HousingStockNumberWrapper, Number } from './HousingStockNumber.styled';
 
 export const HousingStockNumber: FC<HousingStockNumberProps> = ({
   housingStock,
-  setHousingStockIds,
+  setHousingStockIdsWithStreet,
   currentStreetCheckedHousingStockIds,
   checkedhousingStockIdsWithStreet,
   street,
@@ -28,35 +28,19 @@ export const HousingStockNumber: FC<HousingStockNumberProps> = ({
     <HousingStockNumberWrapper
       onClick={() => {
         if (isChecked) {
-          setHousingStockIds(
-            checkedhousingStockIdsWithStreet.map((housingStock) => {
-              return housingStock.street !== street
-                ? housingStock
-                : {
-                    ...housingStock,
-                    housingStocksId: currentStreetCheckedHousingStockIds.filter(
-                      (streetCheckedHousingStock) =>
-                        streetCheckedHousingStock !== currentHousingStockId,
-                    ),
-                  };
-            }),
-          );
+          setHousingStockIdsWithStreet({
+            street,
+            housingStocksId: currentHousingStockId,
+            isToAdd: false,
+          });
 
           setCheck(false);
         } else {
-          setHousingStockIds(
-            checkedhousingStockIdsWithStreet.map((housingStock) => {
-              return housingStock.street !== street
-                ? housingStock
-                : {
-                    ...housingStock,
-                    housingStocksId: [
-                      ...currentStreetCheckedHousingStockIds,
-                      currentHousingStockId,
-                    ],
-                  };
-            }),
-          );
+          setHousingStockIdsWithStreet({
+            street,
+            housingStocksId: currentHousingStockId,
+            isToAdd: true,
+          });
 
           setCheck(true);
         }

@@ -16,7 +16,7 @@ import { HousingStockNumber } from './HousingStockNumber';
 export const AddressStreetGroup: FC<AddressStreetGroupProps> = ({
   address,
   checkedhousingStockIdsWithStreet,
-  setHousingStockIds,
+  setHousingStockIdsWithStreet,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -28,7 +28,7 @@ export const AddressStreetGroup: FC<AddressStreetGroupProps> = ({
     address.addresses?.map((address) => address.housingStockId) || [];
 
   const currentStreetCheckedHousingStockIds =
-  checkedhousingStockIdsWithStreet.find((data) => data.street === street)
+    checkedhousingStockIdsWithStreet.find((data) => data.street === street)
       ?.housingStocksId || [];
 
   useEffect(() => {
@@ -49,25 +49,18 @@ export const AddressStreetGroup: FC<AddressStreetGroupProps> = ({
             setIsOpen((isOpen) => !isOpen);
 
             if (isChecked) {
-              setHousingStockIds(
-                checkedhousingStockIdsWithStreet.map((housingStock) => {
-                  return housingStock.street !== street
-                    ? housingStock
-                    : { ...housingStock, housingStocksId: [] };
-                }),
-              );
+              setHousingStockIdsWithStreet({
+                street,
+                housingStocksId: [],
+                isToAdd: false,
+              });
               setCheck(false);
             } else {
-              setHousingStockIds(
-                checkedhousingStockIdsWithStreet.map((housingStock) => {
-                  return housingStock.street !== street
-                    ? housingStock
-                    : {
-                        ...housingStock,
-                        housingStocksId: [...housingStockIds],
-                      };
-                }),
-              );
+              setHousingStockIdsWithStreet({
+                street,
+                housingStocksId: housingStockIds,
+                isToAdd: true,
+              });
               setCheck(true);
             }
           }}
@@ -96,11 +89,13 @@ export const AddressStreetGroup: FC<AddressStreetGroupProps> = ({
             <HousingStockNumber
               key={housingStock.housingStockId}
               housingStock={housingStock}
-              checkedhousingStockIdsWithStreet={checkedhousingStockIdsWithStreet}
+              checkedhousingStockIdsWithStreet={
+                checkedhousingStockIdsWithStreet
+              }
               currentStreetCheckedHousingStockIds={
                 currentStreetCheckedHousingStockIds
               }
-              setHousingStockIds={setHousingStockIds}
+              setHousingStockIdsWithStreet={setHousingStockIdsWithStreet}
               street={street}
             />
           ))}

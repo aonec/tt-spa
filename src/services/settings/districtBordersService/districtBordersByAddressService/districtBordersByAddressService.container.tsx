@@ -14,7 +14,7 @@ const {
 export const DistrictBordersByAddressContainer = () => {
   const handleFetchAddress = useEvent(inputs.handleFetchAddress);
   const setFilter = useEvent(inputs.setFilter);
-  const setHousingStockIds = useEvent(inputs.setHousingStockIds);
+  const setHousingStockIdsWithStreet = useEvent(inputs.setHousingStockIdsWithStreet);
   const handleOpenDistrictEditer = useEvent(inputs.handleOpenDistrictEditer);
   const setPoligon = useEvent(inputs.setPoligon);
 
@@ -26,9 +26,6 @@ export const DistrictBordersByAddressContainer = () => {
   const checkedhousingStockIdsWithStreet = useStore(
     outputs.$checkedhousingStockIdsWithStreet,
   );
-
-  const streets = useStore(outputs.$streets);
-  console.log(streets);
 
   const cityInFilter = filterData?.city;
 
@@ -115,7 +112,7 @@ export const DistrictBordersByAddressContainer = () => {
         handleFetchAddress={handleFetchAddress}
         addresses={filteredAddress}
         setFilter={setFilter}
-        setHousingStockIds={setHousingStockIds}
+        setHousingStockIdsWithStreet={setHousingStockIdsWithStreet}
         checkedhousingStockIdsWithStreet={checkedhousingStockIdsWithStreet}
         handleOpenDistrictEditer={handleOpenDistrictEditer}
         isAllowedToEditer={isAllowedToEditer}

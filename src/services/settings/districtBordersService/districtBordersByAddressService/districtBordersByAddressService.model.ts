@@ -9,7 +9,8 @@ import {
   StreetWithHousingStockNumbersResponsePagedList,
 } from 'myApi';
 import {
-  CheckedHousingStocksIdType,
+  CheckedHousingStocksIdWithStreets,
+  CheckedHousingStocksIdWithStreetsHandler,
   FetchAddressQueryType,
   FilterType,
   HousingStocksIdsWithCoordinates,
@@ -39,7 +40,8 @@ const handleFetchAddress = domain.createEvent<FetchAddressQueryType>();
 
 const setFilter = domain.createEvent<FilterType>();
 
-const setHousingStockIds = domain.createEvent<CheckedHousingStocksIdType[]>();
+const setHousingStockIdsWithStreet =
+  domain.createEvent<CheckedHousingStocksIdWithStreetsHandler>();
 
 const fetchAddressFx = domain.createEffect<
   FetchAddressQueryType,
@@ -70,38 +72,68 @@ const $housingStocksWithCoordinates = domain
     })),
   );
 
-const $streets = $addresses.map((address) => {
-  if (!address) {
-    return [];
-  }
-  return address.map((data) => ({
-    street: data.street!,
-    housingStocksId: [],
-  }));
-});
-
-const addresses = $addresses.getState();
-const streets = $streets.getState();
-
-console.log(addresses);
-console.log(streets);
-
 const $checkedhousingStockIdsWithStreet = domain
-  .createStore<CheckedHousingStocksIdType[]>(streets)
-  .on(setHousingStockIds, (_, ids) => ids)
-  .reset(pageResetter);
+  .createStore<CheckedHousingStocksIdWithStreets[]>([])
+  .on(
+    setHousingStockIdsWithStreet,
+    (prevIdsWithStreet, commingIdsWithStreet) => {
+      const street = commingIdsWithStreet.street;
 
-$checkedhousingStockIdsWithStreet.defaultState = $addresses
-  .map((address) => {
-    if (!address) {
-      return [];
-    }
-    return address.map((data) => ({
-      street: data.street!,
-      housingStocksId: [],
-    }));
-  })
-  .getState();
+      const isArray = Array.isArray(commingIdsWithStreet.housingStocksId);
+
+      const housingStockByStreetIndex = prevIdsWithStreet.findIndex(
+        (elem) => elem.street === street,
+      );
+
+      if (!housingStockByStreetIndex) {
+        // return [
+        //   ...prevIdsWithStreet, // почему тут не могу использовать push , типо ссылку на прев нельзя класть в стору?
+        //   {
+        //     street: street ? street : 'unknown',
+        //     housingStocksId: isArray
+        //       ? commingIdsWithStreet.housingStocksId
+        //       : ([commingIdsWithStreet.housingStocksId] as any),
+        //   },
+        // ];
+
+        prevIdsWithStreet.push({
+          street: street ? street : 'unknown',
+          housingStocksId: isArray
+            ? commingIdsWithStreet.housingStocksId
+            : ([commingIdsWithStreet.housingStocksId] as any),
+        });
+        return prevIdsWithStreet;
+      } else {
+        if (commingIdsWithStreet.isToAdd) {
+          prevIdsWithStreet[housingStockByStreetIndex] = {
+            street: street ? street : 'unknown',
+            housingStocksId: isArray
+              ? (commingIdsWithStreet.housingStocksId as any)
+              : [
+                  ...prevIdsWithStreet[housingStockByStreetIndex]
+                    .housingStocksId,
+                  commingIdsWithStreet.housingStocksId,
+                ],
+          };
+        }
+        if (!commingIdsWithStreet.isToAdd) {
+          prevIdsWithStreet[housingStockByStreetIndex] = {
+            street: street ? street : 'unknown',
+            housingStocksId: isArray
+              ? ([] as any)
+              : prevIdsWithStreet[
+                  housingStockByStreetIndex
+                ].housingStocksId.filter(
+                  (housingStockId) =>
+                    housingStockId !==
+                    (commingIdsWithStreet.housingStocksId as number),
+                ),
+          };
+        }
+      }
+    },
+  )
+  .reset(pageResetter);
 
 const $checkedHousingStockIdsAndPoligon = domain
   .createStore<{
@@ -119,24 +151,9 @@ sample({
   clock: DistrictBordersByAddressPageGate.close,
   source: $onEditingInMap,
   filter: (inMap) => {
-    console.log(!inMap);
     return !inMap;
   },
   target: pageResetter,
-});
-
-sample({
-  clock: $addresses,
-  fn: (address) => {
-    if (!address) {
-      return [];
-    }
-    return address.map((data) => ({
-      street: data.street!,
-      housingStocksId: [],
-    }));
-  },
-  target: $checkedhousingStockIdsWithStreet,
 });
 
 sample({
@@ -161,7 +178,7 @@ export const districtBordersByAddressService = {
   inputs: {
     handleFetchAddress,
     setFilter,
-    setHousingStockIds,
+    setHousingStockIdsWithStreet,
     handleOpenDistrictEditer,
     setPoligon,
   },
@@ -170,7 +187,6 @@ export const districtBordersByAddressService = {
     $filter,
     $housingStocksWithCoordinates,
     $checkedhousingStockIdsWithStreet,
-    $streets,
   },
   gates: { DistrictBordersByAddressPageGate },
 };

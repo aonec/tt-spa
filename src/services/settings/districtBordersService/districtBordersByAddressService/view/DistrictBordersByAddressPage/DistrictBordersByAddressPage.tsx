@@ -22,10 +22,10 @@ export const DistrictBordersByAddressPage: FC<
   addresses,
   setFilter,
   checkedhousingStockIdsWithStreet,
-  setHousingStockIds,
   handleOpenDistrictEditer,
   isAllowedToEditer,
   cityInFilter,
+  setHousingStockIdsWithStreet,
 }) => {
   const history = useHistory();
 
@@ -60,7 +60,7 @@ export const DistrictBordersByAddressPage: FC<
           address={address}
           key={address.street}
           checkedhousingStockIdsWithStreet={checkedhousingStockIdsWithStreet}
-          setHousingStockIds={setHousingStockIds}
+          setHousingStockIdsWithStreet={setHousingStockIdsWithStreet}
         />
       ))}
 
