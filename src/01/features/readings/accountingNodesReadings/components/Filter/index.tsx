@@ -3,20 +3,18 @@ import { useForm } from 'effector-forms';
 import { accountingNodesFilterForm } from '../../models';
 import { Grid } from '01/shared/ui/Layout/Grid';
 import { useRef } from 'react';
-import { fromEnter } from '01/features/housingStocks/displayHousingStocks/components/HousingStockFilter/HousingStockFilter';
-import {
-  $existingStreets,
-  ExistingStreetsGate,
-} from '01/features/housingStocks/displayHousingStockStreets/model';
+
 import { useStore } from 'effector-react';
 import { useAutocomplete } from '01/hooks/useFilter';
-import {
-  $existingCities,
-  ExistingCitiesGate,
-} from '01/features/housingStocks/displayHousingStockCities/models';
+
 import { getArrayByCountRange } from './Filter.utils';
 import { Select } from 'ui-kit/Select';
 import { AutoComplete } from 'ui-kit/AutoComplete';
+import { fromEnter } from 'ui-kit/shared_components/DatePickerNative';
+import { addressSearchService } from 'services/addressSearchService/addressSearchService.models';
+
+const { gates, outputs } = addressSearchService;
+const { ExistingCitiesGate, ExistingStreetsGate } = gates;
 
 export const AccountingNodesFilter = () => {
   const { fields, submit } = useForm(accountingNodesFilterForm);
@@ -27,7 +25,7 @@ export const AccountingNodesFilter = () => {
     refs: [cityRef, streetRef, homeNumberRef],
   } = useOnEnterSwitch(3);
 
-  const existingStreets = useStore($existingStreets);
+  const existingStreets = useStore(outputs.$existingStreets);
 
   const { match: streetMatch, options } = useAutocomplete(
     fields.street.value,
@@ -47,7 +45,7 @@ export const AccountingNodesFilter = () => {
   const clearValuesOnFocusCallback = (index: number) => () =>
     clearValuesOnFocus(index);
 
-  const cities = useStore($existingCities);
+  const cities = useStore(outputs.$existingCities);
 
   return (
     <>

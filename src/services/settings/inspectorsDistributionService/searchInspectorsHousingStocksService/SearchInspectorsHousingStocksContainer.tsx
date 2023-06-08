@@ -1,20 +1,22 @@
-import { $existingCities } from '01/features/housingStocks/displayHousingStockCities/models';
-import { $existingStreets } from '01/features/housingStocks/displayHousingStockStreets/model';
 import { useForm } from 'effector-forms/dist';
 import { useEvent, useStore } from 'effector-react';
 import React from 'react';
 import { searchInspectorsHousingStockService } from './searchInspectorsHousingStockService.models';
 import { SearchInspectorsHousingStocks } from './views/SearchInspectorsHousingStocks';
-import { ExistingStreetsGate } from '01/features/housingStocks/displayHousingStockStreets/model';
-import { ExistingCitiesGate } from '01/features/housingStocks/displayHousingStockCities/models';
 import { displayInspectorsService } from 'services/inspectors/displayInspectorsService/displayInspectorsService.models';
-import { displayHousingStockFiltersService } from '01/features/housingStocks/displayHosuingStockFiltersService/displayHosuingStockFiltersService.models';
+import { addressSearchService } from 'services/addressSearchService/addressSearchService.models';
+import { displayHousingStockFiltersService } from '../displayHosuingStockFiltersService/displayHosuingStockFiltersService.models';
+
+const { gates, outputs } = addressSearchService;
+const { ExistingCitiesGate, ExistingStreetsGate } = gates;
+const { InspectorsGate } = displayInspectorsService.inputs;
+const { HousingStockFiltersGate } = displayHousingStockFiltersService.inputs;
 
 export const SearchInspectorsHousingStocksContainer = () => {
   const form = useForm(searchInspectorsHousingStockService.forms.searchForm);
 
-  const cities = useStore($existingCities);
-  const existingStreets = useStore($existingStreets);
+  const cities = useStore(outputs.$existingCities);
+  const existingStreets = useStore(outputs.$existingStreets);
   const isExtendedSearchOpen = useStore(
     searchInspectorsHousingStockService.outputs.$isExtendedSearchOpen,
   );
@@ -38,9 +40,6 @@ export const SearchInspectorsHousingStocksContainer = () => {
   const handleApplyFilters = useEvent(
     searchInspectorsHousingStockService.inputs.applyExtendedFilters,
   );
-
-  const { InspectorsGate } = displayInspectorsService.inputs;
-  const { HousingStockFiltersGate } = displayHousingStockFiltersService.inputs;
 
   return (
     <>

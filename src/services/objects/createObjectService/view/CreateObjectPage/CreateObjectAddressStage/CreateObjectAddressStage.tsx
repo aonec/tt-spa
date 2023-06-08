@@ -1,5 +1,3 @@
-import { ExistingCitiesGate } from '01/features/housingStocks/displayHousingStockCities/models';
-import { ExistingStreetsGate } from '01/features/housingStocks/displayHousingStockStreets/model';
 import { SpaceLine } from '01/shared/ui/Layout/Space/Space';
 import { useFormik } from 'formik';
 import React, { FC } from 'react';
@@ -28,6 +26,9 @@ import { validationSchema } from './createObjectAddressStage.constants';
 import { Select } from 'ui-kit/Select';
 import { LinkButton } from 'ui-kit/shared_components/LinkButton';
 import { getPreparedStreetsOptions } from './CreateObjectAddressStage.utils';
+import { addressSearchService } from 'services/addressSearchService/addressSearchService.models';
+
+const { ExistingCitiesGate, ExistingStreetsGate } = addressSearchService.gates;
 
 export const CreateObjectAddressStage: FC<CreateObjectAddressStageProps> = ({
   existingStreets,

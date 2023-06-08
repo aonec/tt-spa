@@ -1,4 +1,3 @@
-import { $existingCities } from '01/features/housingStocks/displayHousingStockCities/models';
 import { createDomain, forward, guard, sample, split } from 'effector';
 import { createGate } from 'effector-react';
 import {
@@ -24,6 +23,7 @@ import {
   GetTasksListRequestPayload,
 } from './tasksProfileService.types';
 import { TasksPageSegment } from './view/TasksProfile/TasksProfile.types';
+import { addressSearchService } from 'services/addressSearchService/addressSearchService.models';
 
 const domain = createDomain('tasksProfileService');
 
@@ -136,7 +136,7 @@ $searchState
     PageNumber: 1,
   }))
   .on(changePageNumber, (filters, PageNumber) => ({ ...filters, PageNumber }))
-  .on($existingCities, (prev, cities) => ({
+  .on(addressSearchService.outputs.$existingCities, (prev, cities) => ({
     ...prev,
     City: cities?.length ? cities[cities.length - 1] : undefined,
   }))
@@ -149,7 +149,7 @@ forward({
 
 sample({
   source: guard({
-    source: $existingCities,
+    source: addressSearchService.outputs.$existingCities,
     filter: (cities) => Boolean(cities),
   }),
   clock: guard({

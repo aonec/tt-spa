@@ -12,7 +12,10 @@ import { DeviceStatus } from 'ui-kit/shared_components/IndividualDeviceInfo/Devi
 import { WithLoader } from 'ui-kit/shared_components/WithLoader';
 import { AutoComplete } from 'ui-kit/AutoComplete';
 import { DateRange } from 'ui-kit/shared_components/DateRange';
-import { AllIndividualDeviceMountPlacesGate } from '01/features/individualDeviceMountPlaces/displayIndividualDeviceMountPlaces/models';
+import { individualDeviceMountPlacesService } from 'services/devices/individualDeviceMountPlacesService/individualDeviceMountPlacesService.model';
+
+const { AllIndividualDeviceMountPlacesGate } =
+  individualDeviceMountPlacesService.gates;
 
 export const DevicesSearch: FC<DevicesSearchProps> = ({
   handleClickDevice,

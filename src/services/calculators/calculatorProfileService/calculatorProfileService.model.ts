@@ -4,7 +4,7 @@ import { CalculatorResponse } from 'myApi';
 import { fetchCalculator } from './calculatorProfileService.api';
 import { CalculatorProfileGrouptype } from './calculatorProfileService.constants';
 import { consumptionReportCalculatorService } from '../consumptionReportCalculatorService';
-import { meteringDevicesService } from 'services/housingMeteringDevices/resourceAccountingSystemsService/view/ResourceAccountingSystems/meteringDevicesService';
+import { meteringDevicesService } from 'services/devices/resourceAccountingSystemsService/view/ResourceAccountingSystems/meteringDevicesService';
 import { calculatorCommentService } from './CalculatorProfile/calculatorCommentService';
 
 const domain = createDomain('calculatorProfileService');
