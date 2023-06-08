@@ -9,11 +9,11 @@ import '../editResourceDisconnectionService/editResourceDisconnectionService.rel
 import '../chooseTypeOfResourceDisconnectionModalService/chooseTypeOfResourceDisconnectionModalService.relations';
 import { editResourceDisconnectionService } from '../editResourceDisconnectionService';
 import { EAddressDetails } from './createResourceDisconnectionService.types';
-import { $existingCities } from '01/features/housingStocks/displayHousingStockCities/models';
 import {
   prepareAddressesForTreeSelect,
   prepareAddressesWithParentsForTreeSelect,
 } from 'ui-kit/shared_components/AddressTreeSelect/AddressTreeSelect.utils';
+import { addressSearchService } from 'services/addressSearchService/addressSearchService.models';
 
 const { inputs, outputs } = createResourceDisconnectionService;
 const { gates } = resourceDisconnectionFiltersService;
@@ -44,7 +44,7 @@ export const CreateResourceDisconnectionContainer = () => {
   const isDisconnectionLoading = useStore(
     editResourceDisconnectionService.outputs.$isDisconectionLoading,
   );
-  const existingCities = useStore($existingCities);
+  const existingCities = useStore(addressSearchService.outputs.$existingCities);
 
   const selectCity = useEvent(inputs.selectCity);
   const setTypeOfAddress = useEvent(inputs.setTypeOfAddress);

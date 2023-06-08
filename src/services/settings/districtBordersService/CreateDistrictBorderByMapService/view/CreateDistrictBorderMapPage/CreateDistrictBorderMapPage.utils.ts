@@ -30,24 +30,24 @@ export function isPointInsidePolygon(
   const numberOfVertices = polygonVertices.length;
   let isInside = false;
 
-  // Loop through each vertex of the polygon
+  // Проходимся по каждой вершине многоугольника
   for (let i = 0, j = numberOfVertices - 1; i < numberOfVertices; j = i++) {
     const [xi, yi] = polygonVertices[i];
     const [xj, yj] = polygonVertices[j];
 
-    // Check if the point intersects with the line between the current vertex and the previous vertex
+    // Проверяем, пересекает ли точка линию между текущей и предыдущей вершинами
     const intersect = isPointOnLeftOfLine(point, xi, yi, xj, yj);
 
     if (intersect) {
-      // If the point intersects with the line, toggle the isInside flag
+      // Если точка пересекает линию, меняем значение флага isInside
       isInside = !isInside;
     } else if (isPointOnLine(point, xi, yi)) {
-      // If the point is on the line, return true
+      // Если точка лежит на линии, возвращаем true
       return true;
     }
   }
 
-  // Return whether the point is inside the polygon
+  // Возвращаем, находится ли точка внутри многоугольника
   return isInside;
 }
 

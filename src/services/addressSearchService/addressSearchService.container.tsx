@@ -1,5 +1,3 @@
-import { ExistingCitiesGate } from '01/features/housingStocks/displayHousingStockCities/models';
-import { ExistingStreetsGate } from '01/features/housingStocks/displayHousingStockStreets/model';
 import { useStore } from 'effector-react';
 import { useFormik } from 'formik';
 import { last } from 'lodash';
@@ -13,6 +11,9 @@ import {
   SearchFieldType,
 } from './view/AddressSearch/AddressSearch.types';
 
+const { gates, outputs } = addressSearchService;
+const { ExistingCitiesGate, ExistingStreetsGate } = gates;
+
 export const AddressSearchContainer: FC<AddressSearchContainerProps> = ({
   fields,
   handleSubmit: onSubmit,
@@ -22,8 +23,6 @@ export const AddressSearchContainer: FC<AddressSearchContainerProps> = ({
   disabledFields,
   onChange,
 }) => {
-  const { outputs } = addressSearchService;
-
   const { values, handleSubmit, setFieldValue } =
     useFormik<AddressSearchValues>({
       initialValues: initialValues || {
@@ -40,8 +39,8 @@ export const AddressSearchContainer: FC<AddressSearchContainerProps> = ({
       },
     });
 
-  const cities = useStore(outputs.cities);
-  const streets = useStore(outputs.streets);
+  const cities = useStore(outputs.$existingCities);
+  const streets = useStore(outputs.$existingStreets);
   const hasCorpuses = useStore(currentUserService.outputs.$hasCorpuses);
 
   const preparedFields = useMemo(

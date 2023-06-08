@@ -18,11 +18,11 @@ import {
   Wrapper,
 } from './ResourceConsumptionFilter.styled';
 import { ResourceConsumptionFilterProps } from './ResourceConsumptionFilter.types';
-import { $existingCities } from '01/features/housingStocks/displayHousingStockCities/models';
 import { useStore } from 'effector-react';
 import { ConsumptionDataFilter } from '../../resourceConsumptionFilterService.types';
 import { Select } from 'ui-kit/Select';
 import { resourceConsumptionFilterService } from '../../resourceConsumptionFilterService.model';
+import { addressSearchService } from 'services/addressSearchService/addressSearchService.models';
 
 export const ResourceConsumptionFilter: FC<ResourceConsumptionFilterProps> = ({
   setFilter,
@@ -39,7 +39,7 @@ export const ResourceConsumptionFilter: FC<ResourceConsumptionFilterProps> = ({
   isLoading,
   handleClearSummary,
 }) => {
-  const existingCities = useStore($existingCities);
+  const existingCities = useStore(addressSearchService.outputs.$existingCities);
   const [isAdditionalAddress, setIsAdditionalAddress] = useState(false);
 
   const { values, setFieldValue, submitForm, errors, setValues } = useFormik<

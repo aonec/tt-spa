@@ -1,3 +1,1 @@
-export type AddNewApartmentStageProps = {
-  
-};
+export type AddNewApartmentStageProps = {};

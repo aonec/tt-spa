@@ -1,6 +1,5 @@
 import {
   HousingStockListResponse,
-  HousingStockResponse,
   NumberIdResponse,
   StringPagedList,
 } from './../../myApi';
@@ -28,12 +27,6 @@ export const getHousingStocks = async (params: GetHousingStockParams) => {
   } catch (error) {
     return null;
   }
-};
-
-export const getHousingStock = async (
-  id: number,
-): Promise<HousingStockResponse> => {
-  return await axios.get(`HousingStocks/${id}`);
 };
 
 export const doesApartmentExist = async ({

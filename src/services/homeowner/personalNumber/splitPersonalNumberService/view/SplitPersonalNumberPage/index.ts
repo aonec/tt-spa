@@ -1,1 +1,1 @@
-export { SplitPersonalNumberPage } from './SplitPersonalNumberPage'
+export { SplitPersonalNumberPage } from './SplitPersonalNumberPage';
