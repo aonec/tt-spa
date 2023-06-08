@@ -1,4 +1,4 @@
-import { createDomain, forward } from 'effector';
+import { createDomain, forward, sample } from 'effector';
 import { HousingStockListResponsePagedList } from 'myApi';
 import { getHousingStocks } from './CreateDistrictBorderByMapService.api';
 import { createGate } from 'effector-react';
@@ -15,6 +15,9 @@ const setSelectedHousingStocksIds = domain.createEvent<{
   housingStockIds: number[];
   polygon: number[][];
 }>();
+
+const handleFetchHousingStocksList =
+  domain.createEvent<GetHousingStocksRequestParams>();
 
 const fetchHousingStocksListFx = domain.createEffect<
   GetHousingStocksRequestParams,
@@ -36,9 +39,11 @@ const $selectedHousingStockIdsAndPoligon = domain
   .on(setSelectedHousingStocksIds, (_, data) => data)
   .reset(CreateDistrictBorderMapPageGate.close);
 
-forward({
-  from: HousingStocksListGate.open,
-  to: fetchHousingStocksListFx.prepend(() => ({})),
+sample({
+  clock: [HousingStocksListGate.open, handleFetchHousingStocksList],
+  source: $housingStocks,
+  filter: (housingStocks) => !Boolean(housingStocks),
+  target: fetchHousingStocksListFx.prepend(() => ({})),
 });
 
 const $isLoadingHousingStocks = fetchHousingStocksListFx.pending;
@@ -47,6 +52,7 @@ export const CreateDistrictBorderByMapService = {
   inputs: {
     setSelectedHousingStocksIds,
     handleCloseDistrictEditer,
+    handleFetchHousingStocksList,
   },
   outputs: {
     $housingStocks,

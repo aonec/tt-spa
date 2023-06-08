@@ -43,6 +43,7 @@ export const DistrictBordersByAddressPage: FC<
             SearchFieldType.House,
             SearchFieldType.Corpus,
           ]}
+          initialValues={{ city: cityInFilter }}
           handleSubmit={(data) => {
             setFilter(data);
 

@@ -36,25 +36,27 @@ export const DistrictBordersByAddressContainer = () => {
     [] as number[],
   );
 
-  console.log(checkedhousingStockIdsWithStreet);
-
   const isAllowedToEditer = checkedhousingStockIds.length > 2;
 
-  const checkedHousingStockCoordinates = housingStocksWithCoordinates
-    .filter((housingStock) => {
-      return checkedhousingStockIds.some((checkedHousingStockId) => {
-        return checkedHousingStockId === housingStock.id;
-      });
-    })
-    .map((housingStock) => housingStock.coordinates)
-    .filter((data) => Boolean(data)) as {
-    latitude: number;
-    longitude: number;
-  }[];
+  const checkedHousingStockCoordinates =
+    housingStocksWithCoordinates?.items
+      ?.filter((housingStock) =>
+        checkedhousingStockIds.includes(housingStock.id),
+      )
+      .flatMap((housingStock) =>
+        housingStock.coordinates
+          ? [
+              {
+                latitude: housingStock.coordinates.latitude,
+                longitude: housingStock.coordinates.longitude,
+              },
+            ]
+          : [],
+      ) || [];
 
   useEffect(() => {
     const borderCoordinates = getConvexHull(checkedHousingStockCoordinates).map(
-      (data) => [data?.latitude, data?.longitude],
+      (data) => [data.latitude, data.longitude],
     );
 
     setPoligon({

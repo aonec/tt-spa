@@ -1,8 +1,5 @@
 import { createDomain, sample } from 'effector';
-import {
-  getAddresses,
-  getHousingStocksWithCoordinates,
-} from './districtBordersByAddressService.api';
+import { getAddresses } from './districtBordersByAddressService.api';
 import {
   HousingStockListResponsePagedList,
   StreetWithHousingStockNumbersResponse,
@@ -37,6 +34,8 @@ const setPoligon = domain.createEvent<{
 }>();
 
 const handleFetchAddress = domain.createEvent<FetchAddressQueryType>();
+const handleFetchHousingStocksList =
+  CreateDistrictBorderByMapService.inputs.handleFetchHousingStocksList;
 
 const setFilter = domain.createEvent<FilterType>();
 
@@ -48,29 +47,14 @@ const fetchAddressFx = domain.createEffect<
   StreetWithHousingStockNumbersResponsePagedList
 >(getAddresses);
 
-const fetchHousingStocksWithCoordinatesFx = domain.createEffect<
-  {
-    City?: string;
-  },
-  HousingStockListResponsePagedList
->(getHousingStocksWithCoordinates);
-
 const $addresses = domain
   .createStore<StreetWithHousingStockNumbersResponse[] | null>(null)
-  .on(fetchAddressFx.doneData, (_, addresses) => addresses.items);
+  .on(fetchAddressFx.doneData, (_, addresses) => addresses.items)
 
 const $filter = domain
   .createStore<FilterType | null>(null)
-  .on(setFilter, (_, data) => data);
-
-const $housingStocksWithCoordinates = domain
-  .createStore<HousingStocksIdsWithCoordinates[]>([])
-  .on(fetchHousingStocksWithCoordinatesFx.doneData, (_, housingStocks) =>
-    housingStocks.items?.map((data) => ({
-      id: data.id,
-      coordinates: data.coordinates,
-    })),
-  );
+  .on(setFilter, (_, data) => data)
+  .reset(pageResetter);
 
 const $checkedhousingStockIdsWithStreet = domain
   .createStore<CheckedHousingStocksIdWithStreets[]>([])
@@ -138,21 +122,13 @@ const $checkedHousingStockIdsAndPoligon = domain
     housingStockIds: number[];
     polygon: number[][];
   }>({ housingStockIds: [], polygon: [] })
-  .on(setPoligon, (_, data) => data);
+  .on(setPoligon, (_, data) => data).reset(pageResetter);
 
 const $onEditingInMap = domain
   .createStore<boolean>(false)
   .on(handleOpenDistrictEditer, () => true)
-  .on(handleCloseDistrictEditer, () => false);
-
-sample({
-  clock: DistrictBordersByAddressPageGate.close,
-  source: $onEditingInMap,
-  filter: (inMap) => {
-    return !inMap;
-  },
-  target: pageResetter,
-});
+  .on(handleCloseDistrictEditer, () => false)
+  .reset(pageResetter);
 
 sample({
   clock: handleFetchAddress,
@@ -163,7 +139,16 @@ sample({
   clock: fetchAddressFx.doneData,
   source: $filter,
   fn: (data) => ({ City: data?.city }),
-  target: fetchHousingStocksWithCoordinatesFx,
+  target: handleFetchHousingStocksList,
+});
+
+sample({
+  clock: DistrictBordersByAddressPageGate.close,
+  source: $onEditingInMap,
+  filter: (inMap) => {
+    return !inMap;
+  },
+  target: pageResetter,
 });
 
 sample({
@@ -183,7 +168,8 @@ export const districtBordersByAddressService = {
   outputs: {
     $addresses,
     $filter,
-    $housingStocksWithCoordinates,
+    $housingStocksWithCoordinates:
+      CreateDistrictBorderByMapService.outputs.$housingStocks,
     $checkedhousingStockIdsWithStreet,
   },
   gates: { DistrictBordersByAddressPageGate },
