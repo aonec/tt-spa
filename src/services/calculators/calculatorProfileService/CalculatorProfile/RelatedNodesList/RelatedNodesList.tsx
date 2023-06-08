@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import { RelatedNodesListProps } from './RelatedNodesList.types';
 import { NodeItem } from './NodeItem';
-import { MeteringDevicesContainer } from 'services/housingMeteringDevices/resourceAccountingSystemsService/view/ResourceAccountingSystems/meteringDevicesService';
+import { MeteringDevicesContainer } from 'services/devices/resourceAccountingSystemsService/view/ResourceAccountingSystems/meteringDevicesService';
 
 export const RelatedNodesList: FC<RelatedNodesListProps> = ({
   nodes,

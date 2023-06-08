@@ -21,7 +21,6 @@ import {
   ResourceLookUp,
   TimeStatusesLookUp,
 } from '../../tasksProfileService.types';
-import { fromEnter } from '01/features/housingStocks/displayHousingStocks/components/HousingStockFilter/HousingStockFilter';
 import { AddressSearchContainer } from 'services/addressSearchService';
 import { SearchFieldType } from 'services/addressSearchService/view/AddressSearch/AddressSearch.types';
 import { AddressSearchFieldsNameLookup } from './SearchTasks.constants';
@@ -30,6 +29,7 @@ import { FormItem } from 'ui-kit/FormItem';
 import { taskCategories } from './ToExecutionTasksExtendedSearchForm.constants';
 import { Select } from 'ui-kit/Select';
 import { Input } from 'ui-kit/Input';
+import { fromEnter } from 'ui-kit/shared_components/DatePickerNative';
 
 const { Option } = Select;
 

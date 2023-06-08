@@ -1,1 +1,1 @@
-export { SwitchStage } from './SwitchStage'
+export { SwitchStage } from './SwitchStage';

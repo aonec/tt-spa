@@ -6,14 +6,15 @@ import {
 } from './tasksProfileService';
 import React from 'react';
 import { useStore } from 'effector-react';
+import { TaskGroupingFilter } from 'myApi';
 
 export const TasksRouter = () => {
   const isSpectator = useStore(tasksProfileService.outputs.$isSpectator);
   const TasksIsOpen = tasksProfileService.gates.TasksIsOpen;
 
   const initialTasksPath = isSpectator
-    ? '/tasks/list/Observing'
-    : '/tasks/list/Executing';
+    ? `/tasks/list/${TaskGroupingFilter.Observing}`
+    : `/tasks/list/${TaskGroupingFilter.Executing}`;
 
   return [
     <Redirect from="/tasks" to={initialTasksPath} exact />,

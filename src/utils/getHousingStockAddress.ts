@@ -3,7 +3,7 @@ import {
   HousingStockListResponse,
   HousingStockShortResponse,
 } from 'myApi';
-import { DevicesByAddressInterface } from 'services/housingMeteringDevices/displayDevicesService/displayDevicesService.types';
+import { DevicesByAddressInterface } from 'services/devices/displayDevicesService/displayDevicesService.types';
 
 export const getHousingStockAddress = (
   housingStock:

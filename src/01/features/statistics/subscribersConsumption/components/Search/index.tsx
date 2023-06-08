@@ -1,13 +1,4 @@
 import axios from '01/axios';
-import {
-  $existingCities,
-  ExistingCitiesGate,
-} from '01/features/housingStocks/displayHousingStockCities/models';
-import { fromEnter } from '01/features/housingStocks/displayHousingStocks/components/HousingStockFilter/HousingStockFilter';
-import {
-  $existingStreets,
-  ExistingStreetsGate,
-} from '01/features/housingStocks/displayHousingStockStreets/model';
 import { useOnEnterSwitch } from '01/features/readings/accountingNodesReadings/components/Filter';
 import { ExtendedSearch } from 'ui-kit/ExtendedSearch';
 import { Grid } from '01/shared/ui/Layout/Grid';
@@ -28,8 +19,11 @@ import { SubscribersConsumptionExtendedSearch } from '../SubscribersConsumptionE
 import { Wrapper } from './Search.styled';
 import { Select } from 'ui-kit/Select';
 import { AutoComplete } from 'ui-kit/AutoComplete';
+import { fromEnter } from 'ui-kit/shared_components/DatePickerNative';
+import { addressSearchService } from 'services/addressSearchService/addressSearchService.models';
 
 const { inputs, outputs } = subscribersConsumptionService;
+const { ExistingCitiesGate, ExistingStreetsGate } = addressSearchService.gates;
 
 export const Search: React.FC<{ isHousingStockHasCorpuses: boolean }> = ({
   isHousingStockHasCorpuses,
@@ -38,8 +32,10 @@ export const Search: React.FC<{ isHousingStockHasCorpuses: boolean }> = ({
   const openExtendedSearchOpen = () => setIsExtendedSearchOpen(true);
   const closeExtendedSearchOpen = () => setIsExtendedSearchOpen(false);
 
-  const existingStreets = useStore($existingStreets);
-  const cities = useStore($existingCities);
+  const existingStreets = useStore(
+    addressSearchService.outputs.$existingStreets,
+  );
+  const cities = useStore(addressSearchService.outputs.$existingCities);
 
   const { fields, submit } = useForm(subscribersConsumptionFindForm);
 
