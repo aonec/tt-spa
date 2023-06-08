@@ -14,7 +14,9 @@ const {
 export const DistrictBordersByAddressContainer = () => {
   const handleFetchAddress = useEvent(inputs.handleFetchAddress);
   const setFilter = useEvent(inputs.setFilter);
-  const setHousingStockIdsWithStreet = useEvent(inputs.setHousingStockIdsWithStreet);
+  const setHousingStockIdsWithStreet = useEvent(
+    inputs.setHousingStockIdsWithStreet,
+  );
   const handleOpenDistrictEditer = useEvent(inputs.handleOpenDistrictEditer);
   const setPoligon = useEvent(inputs.setPoligon);
 
@@ -33,6 +35,8 @@ export const DistrictBordersByAddressContainer = () => {
     (acc, current) => [...acc, ...current.housingStocksId],
     [] as number[],
   );
+
+  console.log(checkedhousingStockIdsWithStreet);
 
   const isAllowedToEditer = checkedhousingStockIds.length > 2;
 

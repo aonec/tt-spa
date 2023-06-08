@@ -85,27 +85,21 @@ const $checkedhousingStockIdsWithStreet = domain
         (elem) => elem.street === street,
       );
 
-      if (!housingStockByStreetIndex) {
-        // return [
-        //   ...prevIdsWithStreet, // почему тут не могу использовать push , типо ссылку на прев нельзя класть в стору?
-        //   {
-        //     street: street ? street : 'unknown',
-        //     housingStocksId: isArray
-        //       ? commingIdsWithStreet.housingStocksId
-        //       : ([commingIdsWithStreet.housingStocksId] as any),
-        //   },
-        // ];
-
-        prevIdsWithStreet.push({
-          street: street ? street : 'unknown',
-          housingStocksId: isArray
-            ? commingIdsWithStreet.housingStocksId
-            : ([commingIdsWithStreet.housingStocksId] as any),
-        });
-        return prevIdsWithStreet;
+      if (housingStockByStreetIndex === -1) {
+        return [
+          ...prevIdsWithStreet,
+          {
+            street: street ? street : 'unknown',
+            housingStocksId: isArray
+              ? commingIdsWithStreet.housingStocksId
+              : ([commingIdsWithStreet.housingStocksId] as any),
+          },
+        ];
       } else {
         if (commingIdsWithStreet.isToAdd) {
-          prevIdsWithStreet[housingStockByStreetIndex] = {
+          const clonePrevIdsWithStreet = prevIdsWithStreet.slice();
+
+          clonePrevIdsWithStreet[housingStockByStreetIndex] = {
             street: street ? street : 'unknown',
             housingStocksId: isArray
               ? (commingIdsWithStreet.housingStocksId as any)
@@ -115,20 +109,24 @@ const $checkedhousingStockIdsWithStreet = domain
                   commingIdsWithStreet.housingStocksId,
                 ],
           };
+
+          return clonePrevIdsWithStreet;
         }
         if (!commingIdsWithStreet.isToAdd) {
-          prevIdsWithStreet[housingStockByStreetIndex] = {
+          const clonePrevIdsWithStreet = prevIdsWithStreet.slice();
+
+          clonePrevIdsWithStreet[housingStockByStreetIndex] = {
             street: street ? street : 'unknown',
             housingStocksId: isArray
-              ? ([] as any)
+              ? []
               : prevIdsWithStreet[
                   housingStockByStreetIndex
                 ].housingStocksId.filter(
                   (housingStockId) =>
-                    housingStockId !==
-                    (commingIdsWithStreet.housingStocksId as number),
+                    housingStockId !== commingIdsWithStreet.housingStocksId,
                 ),
           };
+          return clonePrevIdsWithStreet;
         }
       }
     },

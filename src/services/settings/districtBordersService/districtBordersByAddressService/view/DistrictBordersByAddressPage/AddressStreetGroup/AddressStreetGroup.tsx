@@ -31,6 +31,7 @@ export const AddressStreetGroup: FC<AddressStreetGroupProps> = ({
     checkedhousingStockIdsWithStreet.find((data) => data.street === street)
       ?.housingStocksId || [];
 
+
   useEffect(() => {
     if (
       housingStockIds?.length === currentStreetCheckedHousingStockIds.length
