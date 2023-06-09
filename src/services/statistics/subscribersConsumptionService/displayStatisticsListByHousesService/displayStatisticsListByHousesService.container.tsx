@@ -1,7 +1,7 @@
 import React from 'react';
 import { WithLoader } from 'ui-kit/shared_components/WithLoader';
 import { displayStatisticsListByHousesService } from './displayStatisticsListByHousesService.model';
-import { useEvent, useStore } from 'effector-react';
+import { useUnit } from 'effector-react';
 import { Empty } from 'antd';
 import { TypeAddressToStart } from 'ui-kit/shared_components/TypeToStart';
 import { ExportSubscribersConsumptionContainer } from '../exportSubscribersConsumptionService';
@@ -11,14 +11,14 @@ import { SearchHousingStock } from './view/SearchHousingStock';
 const { inputs, outputs } = displayStatisticsListByHousesService;
 
 export const DisplayStatisticsListByHousesContainer = () => {
-  const isLoading = useStore(outputs.$isLoading);
-  const filter = useStore(outputs.$subscriberStatisticsByHouseFilter);
-  const statistics = useStore(outputs.$consumptionStatisticsByHouse);
-  const housingStockId = useStore(outputs.$selectedHousingStockId);
-  const housingStockAddress = useStore(outputs.$housingStockAddress);
+  const isLoading = useUnit(outputs.$isLoading);
+  const filter = useUnit(outputs.$subscriberStatisticsByHouseFilter);
+  const statistics = useUnit(outputs.$consumptionStatisticsByHouse);
+  const housingStockId = useUnit(outputs.$selectedHousingStockId);
+  const housingStockAddress = useUnit(outputs.$housingStockAddress);
 
-  const setFilter = useEvent(inputs.setSubscriberStatisticsFilter);
-  const setHousingStockAddress = useEvent(inputs.setHousingStockAddress);
+  const setFilter = useUnit(inputs.setSubscriberStatisticsFilter);
+  const setHousingStockAddress = useUnit(inputs.setHousingStockAddress);
 
   const isStatisticsExist = Boolean(statistics.length);
   const isHousingStockExist = Boolean(housingStockId);

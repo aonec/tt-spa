@@ -2,7 +2,7 @@ import React from 'react';
 import { useParams } from 'react-router-dom';
 import { StatisticProfile } from './view/StatisticProfile';
 import { exportSubscribersConsumptionService } from '../subscribersConsumptionService/exportSubscribersConsumptionService';
-import { useEvent, useStore } from 'effector-react';
+import { useUnit } from 'effector-react';
 import { StatisticProfileGrouptype } from './statisticsProfileService.types';
 import { SubscribersConsumptionSearchType } from '../subscribersConsumptionService/subscribersConsumptionService.types';
 import { displayStatisticsListByHousesService } from '../subscribersConsumptionService/displayStatisticsListByHousesService';
@@ -13,16 +13,16 @@ export const StatisticsProfileContainer = () => {
     searchType: SubscribersConsumptionSearchType;
   }>();
 
-  const handleOpenExportStatisticModal = useEvent(
+  const handleOpenExportStatisticModal = useUnit(
     exportSubscribersConsumptionService.inputs.openModal,
   );
-  const setFileName = useEvent(
+  const setFileName = useUnit(
     exportSubscribersConsumptionService.inputs.setFileName,
   );
-  const housingStockId = useStore(
+  const housingStockId = useUnit(
     displayStatisticsListByHousesService.outputs.$selectedHousingStockId,
   );
-  const housingStockAddress = useStore(
+  const housingStockAddress = useUnit(
     displayStatisticsListByHousesService.outputs.$housingStockAddress,
   );
 
