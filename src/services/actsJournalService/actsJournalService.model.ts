@@ -4,10 +4,10 @@ import { AddApartmentActRequest, ApartmentActResponsePagedList } from 'myApi';
 import { message } from 'antd';
 import { createGate } from 'effector-react';
 import { ActsJournalRequestParams } from './actsJournalService.types';
-import { $existingCities } from '01/features/housingStocks/displayHousingStockCities/models';
 import { last } from 'lodash';
 import moment from 'moment';
 import { addressIdSearchService } from './addressIdSearchService';
+import { addressSearchService } from 'services/addressSearchService/addressSearchService.models';
 
 const domain = createDomain('actsJournalService');
 
@@ -47,7 +47,7 @@ actCreated.watch(() => message.success('Акт успешно добавлен')
 createActFx.failData.watch(() => message.error('Ошибка при добавлении акта'));
 
 sample({
-  clock: $existingCities,
+  clock: addressSearchService.outputs.$existingCities,
   fn: (cities) => ({ City: last(cities) }),
   target: updateActsFilter,
 });

@@ -2,7 +2,6 @@ import { message } from 'antd';
 import { createDomain, forward, guard, sample } from 'effector';
 import { createGate } from 'effector-react';
 import {
-  AddHeatingStationRequest,
   HouseManagementResponse,
   HousingStockCreateRequest,
   HousingStockResponse,
@@ -26,16 +25,10 @@ const goNextStage = domain.createEvent();
 
 const handleSubmitCreateObject = domain.createEvent<ObjectCreateSubmitData>();
 
-const handleCreateHeatingStation =
-  domain.createEvent<AddHeatingStationRequest>();
-
 const handlePostCreateObject = domain.createEvent();
 
 const closePreviewModal = domain.createEvent();
 const openPreviewModal = domain.createEvent();
-
-const openCreateHeatingStationModal =
-  createHeatingStationService.inputs.handleOpenModal;
 
 const openEditHeatingStationModal =
   editHeatingStationService.inputs.handleOpenModal;
@@ -94,8 +87,8 @@ const $houseManagements = domain
 
 const $isPreviewModalOpen = domain
   .createStore<boolean>(false)
-  .on(closePreviewModal, () => false)
-  .on(openPreviewModal, () => true);
+  .on(openPreviewModal, () => true)
+  .reset(resetter, closePreviewModal);
 
 const $heatingStations = displayHeatingStationsService.outputs.$heatingStations;
 
@@ -131,12 +124,14 @@ guard({
         floors,
         entrances,
         elevator,
+        constructionYear,
       } = data;
 
       if (!city || !street || !house || !heatingStationId || !objectCategory)
         return null;
 
       const payload: HousingStockCreateRequest = {
+        city,
         mainAddress: {
           city,
           street,
@@ -163,6 +158,7 @@ guard({
         isThereElevator: elevator
           ? IsElevatorDictionaryBoolean[elevator]
           : null,
+        constructionYear: Number(constructionYear) || null,
       };
 
       return payload;
@@ -180,16 +176,16 @@ createObjectFx.failData.watch((error) => {
 
 createObjectFx.doneData.watch(() => message.success('Дом успешно создан!'));
 
+const $isCreateLoading = createObjectFx.pending;
+
 export const createObjectService = {
   inputs: {
     goBackStage,
     handleSubmitCreateObject,
-    handleCreateHeatingStation,
     handlePostCreateObject,
     openPreviewModal,
     closePreviewModal,
     handleCreateObjectSuccessDone,
-    openCreateHeatingStationModal,
     openEditHeatingStationModal,
     heatingStationCapture,
     handleHeatindStationModalOpen,
@@ -200,6 +196,7 @@ export const createObjectService = {
     $houseManagements,
     $isPreviewModalOpen,
     $heatingStations,
+    $isCreateLoading,
   },
   gates: { HouseManagementsFetchGate, PageCloseGate, HeatingStationsFetchGate },
 };

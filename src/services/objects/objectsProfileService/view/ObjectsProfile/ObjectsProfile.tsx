@@ -36,7 +36,9 @@ export const ObjectsProfile: FC<ObjectsProfileProps> = ({
   isPermitionToDownloadFeedBackFlowReport,
   isPermitionToDownloadGroupReport,
   isPermitionToDownloadSOIReport,
+  isPermitionToCreateFeedFlowPipeTemperatureReport,
   openHeatIndividualDevicesReportModal,
+  openFlowTemperatureDeviationReportModal,
 }) => {
   const menuButtons = useMemo(
     () => [
@@ -61,6 +63,11 @@ export const ObjectsProfile: FC<ObjectsProfileProps> = ({
         hidden: !isPermitionToDownloadFeedBackFlowReport,
       },
       {
+        title: 'Выгрузить сводный отчёт по ГВС',
+        onClick: openFlowTemperatureDeviationReportModal,
+        hidden: !isPermitionToCreateFeedFlowPipeTemperatureReport,
+      },
+      {
         title: 'Создать оключение ресурса на объекте',
         onClick: handleOpenChooseResourceDisconnectionModal,
         hidden: !isPermitionToCreateResourceDisconnection,
@@ -72,16 +79,18 @@ export const ObjectsProfile: FC<ObjectsProfileProps> = ({
       },
     ],
     [
-      handleOpenChooseResourceDisconnectionModal,
       handleCreateObject,
-      openFeedFlowBackReportModal,
-      openSoiReportModal,
-      handleExportGroupReport,
       isPermitionToCreateObjectAndIPUReport,
-      isPermitionToCreateResourceDisconnection,
-      isPermitionToDownloadFeedBackFlowReport,
+      handleExportGroupReport,
       isPermitionToDownloadGroupReport,
+      openSoiReportModal,
       isPermitionToDownloadSOIReport,
+      openFeedFlowBackReportModal,
+      isPermitionToDownloadFeedBackFlowReport,
+      openFlowTemperatureDeviationReportModal,
+      isPermitionToCreateFeedFlowPipeTemperatureReport,
+      handleOpenChooseResourceDisconnectionModal,
+      isPermitionToCreateResourceDisconnection,
       openHeatIndividualDevicesReportModal,
     ],
   );

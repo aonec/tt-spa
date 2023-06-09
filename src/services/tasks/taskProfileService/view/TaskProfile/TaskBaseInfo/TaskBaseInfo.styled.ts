@@ -20,7 +20,9 @@ export const RowWrapper = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr;
   align-items: center;
-  height: 48px;
+  min-height: 48px;
+  padding: 12px 0;
+  line-height: 18px;
 
   color: #272f5ae5;
   font-size: 14px;

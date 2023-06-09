@@ -1,5 +1,5 @@
 import { message } from 'antd';
-import { createDomain, sample } from 'effector';
+import { createDomain, forward, sample } from 'effector';
 import {
   HomeownerAccountCloseRequest,
   HomeownerAccountUpdateRequest,
@@ -24,16 +24,10 @@ const handleConfirmationModalClose = domain.createEvent();
 const handleEditHomeownerAccount =
   domain.createEvent<PersonalNumberFormTypes>();
 
-const $isForced = domain
-  .createStore<boolean>(false)
-  .on(onForced, () => true)
-  .reset(handleConfirmationModalClose);
+const handleCloseHomeownerAccount =
+  domain.createEvent<HomeownerAccountCloseRequest>();
 
-const editHomeownerAccountEffect = domain.createEffect<
-  { id: string; data: HomeownerAccountUpdateRequest },
-  void,
-  EffectFailDataAxiosErrorDataApartmentId
->(putHomeownerAccount);
+const setVisibleCloseHomeownerAccountModal = domain.createEvent<boolean>();
 
 const closeHomeownerAccountFx = domain.createEffect<
   HomeownerAccountCloseRequest,
@@ -41,9 +35,25 @@ const closeHomeownerAccountFx = domain.createEffect<
   EffectFailDataAxiosError
 >(closeHomeownerAccount);
 
+const $isVisibleCloseHomeownerAccountModal = domain
+  .createStore<boolean>(false)
+  .on(setVisibleCloseHomeownerAccountModal, (_, data) => data)
+  .reset(closeHomeownerAccountFx.doneData);
+
+const $isForced = domain
+  .createStore<boolean>(false)
+  .on(onForced, () => true)
+  .reset(handleConfirmationModalClose);
+
+const editHomeownerAccountFx = domain.createEffect<
+  { id: string; data: HomeownerAccountUpdateRequest },
+  void,
+  EffectFailDataAxiosErrorDataApartmentId
+>(putHomeownerAccount);
+
 const $samePersonalAccountNumderId = domain
   .createStore<number | null>(null)
-  .on(editHomeownerAccountEffect.failData, (prev, errData) => {
+  .on(editHomeownerAccountFx.failData, (prev, errData) => {
     if (errData.response.status === 409) {
       return errData.response.data.error.Data.ApartmentId;
     }
@@ -72,16 +82,27 @@ sample({
       id: string;
       data: HomeownerAccountUpdateRequest;
     }),
-  target: editHomeownerAccountEffect,
+  target: editHomeownerAccountFx,
 });
 
-const $isLoading = editHomeownerAccountEffect.pending;
+forward({
+  from: handleCloseHomeownerAccount,
+  to: closeHomeownerAccountFx,
+});
 
-const successEditHomeownerAccount = editHomeownerAccountEffect.doneData;
+const $isLoading = editHomeownerAccountFx.pending;
+const $isLoadingClosingAccount = closeHomeownerAccountFx.pending;
+
+const successEditHomeownerAccount = editHomeownerAccountFx.doneData;
+const successCloseHomeownerAccount = closeHomeownerAccountFx.doneData;
 
 successEditHomeownerAccount.watch(() => message.success('Успешно обновлен'));
 
-editHomeownerAccountEffect.failData.watch((error) => {
+successCloseHomeownerAccount.watch(() =>
+  message.success('Лицевой счёт закрыт'),
+);
+
+editHomeownerAccountFx.failData.watch((error) => {
   if (
     error.response.data.error.Code === 'HomeownerAccountAlreadyExistConflict'
   ) {
@@ -109,12 +130,17 @@ export const editPersonalNumberService = {
     successEditHomeownerAccount,
     handleConfirmationModalClose,
     onForced,
+    handleCloseHomeownerAccount,
+    setVisibleCloseHomeownerAccountModal,
+    successCloseHomeownerAccount,
   },
   outputs: {
     $isLoading,
     $apartment: apartmentProfileService.outputs.$apartment,
     $samePersonalAccountNumderId,
     $isConfirmationModalOpen,
+    $isLoadingClosingAccount,
+    $isVisibleCloseHomeownerAccountModal,
   },
   gates: { ApartmentGate: apartmentProfileService.gates.ApartmentGate },
 };

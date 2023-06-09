@@ -15,6 +15,11 @@ export const EditObjectPage: FC<EditObjectPageProps> = ({
   housingStock,
   existingCities,
   existingStreets,
+  houseManagements,
+  openCreateHeatingStationModal,
+  openEditHeatingStationModal,
+  heatingStations,
+  heatingStationCapture,
 }) => {
   const [activeTab, setTab] = useState(EditObjectPageTabs.Address);
 
@@ -47,7 +52,14 @@ export const EditObjectPage: FC<EditObjectPageProps> = ({
           tab="Основная информация"
           key={EditObjectPageTabs.MainInfo}
         >
-          <MainInfoTab />
+          <MainInfoTab
+            housingStock={housingStock}
+            houseManagements={houseManagements}
+            openCreateHeatingStationModal={openCreateHeatingStationModal}
+            openEditHeatingStationModal={openEditHeatingStationModal}
+            heatingStations={heatingStations}
+            heatingStationCapture={heatingStationCapture}
+          />
         </Tabs.TabPane>
         <Tabs.TabPane
           tab="Дополнительная информация"

@@ -1,6 +1,6 @@
 import React, { ChangeEvent } from 'react';
 import { ExtendedSearchTypes } from './SearchTasks.types';
-import { StyledContainerFourItems } from 'services/housingMeteringDevices/devicesProfileService/view/DevicesProfile/DevicesProfile.styled';
+import { StyledContainerFourItems } from 'services/devices/devicesProfileService/view/DevicesProfile/DevicesProfile.styled';
 import {
   StyledContainerThreeItemsMainTypes,
   StyledFormTwoRows,

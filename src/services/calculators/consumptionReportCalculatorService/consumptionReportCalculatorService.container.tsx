@@ -6,10 +6,12 @@ import { ConsumptionReportCalculatorServiceContainerProps } from './consumptionR
 
 const { inputs, outputs } = consumptionReportCalculatorService;
 
-export const ConsumptionReportCalculatorContainer: FC<ConsumptionReportCalculatorServiceContainerProps> = ({
-  calculator,
-}) => {
+export const ConsumptionReportCalculatorContainer: FC<
+  ConsumptionReportCalculatorServiceContainerProps
+> = ({ calculator }) => {
   const isModalOpen = useStore(outputs.$isModalOpen);
+
+  const isLoading = useStore(outputs.$isLoading);
 
   const handleModalClosed = useEvent(inputs.handleModalClose);
 
@@ -22,6 +24,7 @@ export const ConsumptionReportCalculatorContainer: FC<ConsumptionReportCalculato
         handleModalClosed={() => handleModalClosed()}
         calculator={calculator}
         handleSubmit={handleSubmit}
+        isLoading={isLoading}
       />
     </>
   );

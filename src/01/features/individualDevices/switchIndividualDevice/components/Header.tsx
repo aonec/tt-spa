@@ -1,6 +1,5 @@
 import { Flex } from '01/shared/ui/Layout/Flex';
 import { Space } from '01/shared/ui/Layout/Space/Space';
-import { HeaderWrap, Title } from '01/_components/Headers';
 import { useStore } from 'effector-react';
 import React from 'react';
 import styled from 'styled-components';
@@ -17,30 +16,23 @@ const headerTitles = {
 
 export const CreateIndividualDeviceFormHeader: React.FC = () => {
   const type = useStore(
-    SwitchIndividualDeviceGate.state.map(({ type }) => type)
+    SwitchIndividualDeviceGate.state.map(({ type }) => type),
   );
 
   return (
-    <>
-      <HeaderWrap
-        style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-        }}
-      >
+    <Header>
+      <div>
+        <GoBack />
         <div>
-          <GoBack />
-          <div>
-            <Title>{headerTitles[type]}</Title>
-            <Flex>
-              <HousingStockAddress />
-              <Space />
-              <DeviceDataString />
-            </Flex>
-          </div>
+          <Title>{headerTitles[type]}</Title>
+          <Flex>
+            <HousingStockAddress />
+            <Space />
+            <DeviceDataString />
+          </Flex>
         </div>
-      </HeaderWrap>
-    </>
+      </div>
+    </Header>
   );
 };
 
@@ -49,4 +41,19 @@ export const FormHeader = styled.div`
   font-size: 24px;
   line-height: 32px;
   color: #272f5a;
+`;
+
+const Header = styled.div`
+  margin-bottom: 10px;
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+`;
+
+const Title = styled.div`
+  padding: 0;
+  margin-top: 16px;
+  font-weight: 300;
+  font-size: 32px;
+  line-height: 48px;
 `;

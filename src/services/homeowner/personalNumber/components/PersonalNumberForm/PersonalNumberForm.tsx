@@ -1,6 +1,7 @@
 import React, { FC, useEffect } from 'react';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
+import moment from 'moment';
 import {
   DeleteButton,
   FlexContainer,
@@ -30,18 +31,25 @@ export const PersonalNumberForm: FC<PersonalNumberFormProps> = ({
   handleEditHomeownerAccount,
   homeowner,
   handleForced,
+  setVisibleCloseHomeownerAccountModal,
+  handleSwitchHomeownerAccount,
+  handleSubmitSwitchStage,
 }) => {
   const isEdit = type === PersonalNumberActions.Edit;
+  const isSplit = type === PersonalNumberActions.Split;
 
   const { values, setFieldValue, errors, handleSubmit } =
     useFormik<PersonalNumberFormTypes>({
       initialValues: {
-        name: homeowner?.name || '',
-        phoneNumber: homeowner?.phoneNumber || '',
-        openAt: homeowner?.openAt || '',
-        personalAccountNumber: homeowner?.personalAccountNumber || '',
-        paymentCode: homeowner?.paymentCode || '',
-        isMainOnApartment: homeowner?.isMainPersonalAccountNumber || false,
+        name: ((isEdit || isSplit) && homeowner?.name) || '',
+        phoneNumber: (isEdit && homeowner?.phoneNumber) || '',
+        openAt:
+          (isEdit && moment(homeowner?.openAt).format('YYYY-MM-DD')) || '',
+        personalAccountNumber:
+          (isEdit && homeowner?.personalAccountNumber) || '',
+        paymentCode: (isEdit && homeowner?.paymentCode) || '',
+        isMainOnApartment:
+          (isEdit && homeowner?.isMainPersonalAccountNumber) || false,
         apartmentId,
         homeownerId: homeowner?.id,
       },
@@ -62,8 +70,25 @@ export const PersonalNumberForm: FC<PersonalNumberFormProps> = ({
         data.homeownerId &&
           handleEditHomeownerAccount &&
           handleEditHomeownerAccount(data);
+
+        apartmentId &&
+          homeowner &&
+          handleSwitchHomeownerAccount &&
+          handleSwitchHomeownerAccount({
+            form: data,
+            replaceableAccountId: homeowner.id,
+          });
+
+        homeowner &&
+          handleSubmitSwitchStage &&
+          handleSubmitSwitchStage({
+            form: data,
+            replaceableAccountId: homeowner.id,
+          });
       },
     });
+
+  console.log(values.openAt);
 
   useEffect(() => {
     return handleForced?.watch(() => handleSubmit()).unsubscribe;
@@ -74,7 +99,9 @@ export const PersonalNumberForm: FC<PersonalNumberFormProps> = ({
       <FormItem label="Дата открытия лицевого счета">
         <DatePickerNative
           value={values.openAt}
-          onChange={(value) => setFieldValue('openAt', value)}
+          onChange={(value) =>
+            setFieldValue('openAt', moment(value).format('YYYY-MM-DD'))
+          }
           disabled={isEdit}
         />
         <ErrorMessage>{errors.openAt}</ErrorMessage>
@@ -132,7 +159,12 @@ export const PersonalNumberForm: FC<PersonalNumberFormProps> = ({
           Основной лицевой счет
         </SwitchWrapper>
         {isEdit && (
-          <DeleteButton onClick={() => {}}>
+          <DeleteButton
+            onClick={() =>
+              setVisibleCloseHomeownerAccountModal &&
+              setVisibleCloseHomeownerAccountModal(true)
+            }
+          >
             <TrashIcon />
             Закрыть лицевой счет
           </DeleteButton>

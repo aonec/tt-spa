@@ -5,10 +5,6 @@ import { DisablingResourceWrapperContainer } from './views/DisablingResourcesLis
 import { DisablingResourcesList } from './views/DisablingResourcesList/DisablingResoursesList';
 import { DisablingResourcesSearch } from './views/DisablingResourcesSearchHeader/DisablingResourcesSearchHeader';
 import {
-  $existingCities,
-  ExistingCitiesGate,
-} from '01/features/housingStocks/displayHousingStockCities/models';
-import {
   CompleteResourceDisconnectionContainer,
   completeResourceDisconnectionService,
 } from 'services/resources/completeResourceDisconnectionService';
@@ -21,15 +17,17 @@ import {
   DisplayResourceDisconenctionAddressesServiceContainer,
   displayResourceDisconenctionAddressesServiceService,
 } from './views/displayResourceDisconenctionAddressesServiceService';
+import { addressSearchService } from 'services/addressSearchService/addressSearchService.models';
 
 const { inputs, outputs, gates } = resourceDisablingScheduleServiceService;
+const { ExistingCitiesGate } = addressSearchService.gates;
 
 export const ResourceDisablingScheduleContainer = () => {
   const DisablingResouresGate = gates.resourceDisablingGate;
 
   const resources = useStore(outputs.$disablingResources);
   const loading = useStore(outputs.$loading);
-  const cities = useStore($existingCities);
+  const cities = useStore(addressSearchService.outputs.$existingCities);
   const filters = useStore(outputs.$filters);
 
   const applyFilters = useEvent(inputs.applyFilters);
