@@ -1,4 +1,4 @@
-import { ContextMenuButton } from '01/shared/ui/ContextMenuButton';
+import { ContextMenuButton } from 'ui-kit/ContextMenuButton/ContextMenuButton';
 import { Tooltip } from 'antd';
 import React, { FC, useMemo } from 'react';
 import { WarningIcon } from 'ui-kit/icons';
@@ -19,7 +19,7 @@ export const HousingStockItem: FC<HousingStockItemProps> = ({
 
   const additionalAddressesString = useMemo(() => {
     const additionalAddresses = housingStock.address?.additionalAddresses || [];
-    
+
     return additionalAddresses
       .map((elem) => `${elem.street}, ${elem.number}`)
       .join('; ');

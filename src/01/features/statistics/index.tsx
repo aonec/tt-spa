@@ -1,4 +1,4 @@
-import { PageHeader } from '01/shared/ui/PageHeader';
+import { PageHeader } from 'ui-kit/shared_components/PageHeader';
 import { useForm } from 'effector-forms/dist';
 import { useEvent, useStore } from 'effector-react';
 import React, { useMemo } from 'react';
@@ -66,15 +66,15 @@ export const StatisticsPage = () => {
         activeKey={grouptype}
         onChange={(value) => history.push(`/statistics/${value}`)}
       >
+        <TabPane tab="Анализ потребления ресурсов" key="resourceConsumption">
+          <ResourceConsumptionContainer />
+        </TabPane>
         <TabPane
           style={{ overflow: 'none' }}
           tab="Учет абонентского потребления"
           key="subscribersConsumption"
         >
           <SubscribersConsumption />
-        </TabPane>
-        <TabPane tab="Анализ потребления ресурсов" key="resourceConsumption">
-          <ResourceConsumptionContainer />
         </TabPane>
       </TabsSC>
     </div>

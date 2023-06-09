@@ -1,16 +1,6 @@
 import axios from '01/axios';
-import {
-  $existingCities,
-  ExistingCitiesGate,
-} from '01/features/housingStocks/displayHousingStockCities/models';
-import { fromEnter } from '01/features/housingStocks/displayHousingStocks/components/HousingStockFilter/HousingStockFilter';
-import {
-  $existingStreets,
-  ExistingStreetsGate,
-} from '01/features/housingStocks/displayHousingStockStreets/model';
 import { useOnEnterSwitch } from '01/features/readings/accountingNodesReadings/components/Filter';
-import { ExtendedSearch } from '01/shared/ui/ExtendedSearch';
-import { StyledAutocomplete, SelectSC } from '01/shared/ui/Fields';
+import { ExtendedSearch } from 'ui-kit/ExtendedSearch';
 import { Grid } from '01/shared/ui/Layout/Grid';
 import { useAutocomplete } from '01/hooks/useFilter';
 import { useForm } from 'effector-forms/dist';
@@ -27,8 +17,13 @@ import {
 } from '../../models';
 import { SubscribersConsumptionExtendedSearch } from '../SubscribersConsumptionExtendedSearch';
 import { Wrapper } from './Search.styled';
+import { Select } from 'ui-kit/Select';
+import { AutoComplete } from 'ui-kit/AutoComplete';
+import { fromEnter } from 'ui-kit/shared_components/DatePickerNative';
+import { addressSearchService } from 'services/addressSearchService/addressSearchService.models';
 
 const { inputs, outputs } = subscribersConsumptionService;
+const { ExistingCitiesGate, ExistingStreetsGate } = addressSearchService.gates;
 
 export const Search: React.FC<{ isHousingStockHasCorpuses: boolean }> = ({
   isHousingStockHasCorpuses,
@@ -37,8 +32,10 @@ export const Search: React.FC<{ isHousingStockHasCorpuses: boolean }> = ({
   const openExtendedSearchOpen = () => setIsExtendedSearchOpen(true);
   const closeExtendedSearchOpen = () => setIsExtendedSearchOpen(false);
 
-  const existingStreets = useStore($existingStreets);
-  const cities = useStore($existingCities);
+  const existingStreets = useStore(
+    addressSearchService.outputs.$existingStreets,
+  );
+  const cities = useStore(addressSearchService.outputs.$existingCities);
 
   const { fields, submit } = useForm(subscribersConsumptionFindForm);
 
@@ -55,13 +52,15 @@ export const Search: React.FC<{ isHousingStockHasCorpuses: boolean }> = ({
         ColdWaterSupply: filter?.ColdWaterSupply,
         Electricity: filter?.Electricity,
         HotWaterSupply: filter?.HotWaterSupply,
-        ColdWaterSupplyConsumptionFrom: filter?.ColdWaterSupplyConsumptionFrom,
-        ColdWaterSupplyConsumptionTo: filter?.ColdWaterSupplyConsumptionTo,
-        ElectricitySupplyConsumptionFrom:
-          filter?.ElectricitySupplyConsumptionFrom,
-        ElectricitySupplyConsumptionTo: filter?.ElectricitySupplyConsumptionTo,
-        HotWaterSupplyConsumptionFrom: filter?.HotWaterSupplyConsumptionFrom,
-        HotWaterSupplyConsumptionTo: filter?.HotWaterSupplyConsumptionTo,
+        Heat: filter?.Heat,
+        'ColdWaterSupplyFilter.From': filter?.['ColdWaterSupplyFilter.From'],
+        'ColdWaterSupplyFilter.To': filter?.['ColdWaterSupplyFilter.To'],
+        'ElectricityFilter.From': filter?.['ElectricityFilter.From'],
+        'ElectricityFilter.To': filter?.['ElectricityFilter.To'],
+        'HotWaterSupplyFilter.From': filter?.['HotWaterSupplyFilter.From'],
+        'HotWaterSupplyFilter.To': filter?.['HotWaterSupplyFilter.To'],
+        'HeatFilter.From': filter?.['HeatFilter.From'],
+        'HeatFilter.To': filter?.['ElectricityFilter.To'],
         ExcludeApartments: isExcluded,
       },
       onSubmit: (values) => {
@@ -138,7 +137,8 @@ export const Search: React.FC<{ isHousingStockHasCorpuses: boolean }> = ({
         <ExistingCitiesGate />
         <ExistingStreetsGate City={fields.city.value} />
         <Grid temp={temp} gap="15px">
-          <SelectSC
+          <Select
+            small
             onBlur={onFindHandler}
             placeholder="Город"
             ref={cityRef}
@@ -147,12 +147,13 @@ export const Search: React.FC<{ isHousingStockHasCorpuses: boolean }> = ({
             value={fields.city.value}
           >
             {cities?.map((elem, index) => (
-              <SelectSC.Option key={index} value={elem}>
+              <Select.Option key={index} value={elem}>
                 {elem}
-              </SelectSC.Option>
+              </Select.Option>
             ))}
-          </SelectSC>
-          <StyledAutocomplete
+          </Select>
+          <AutoComplete
+            small
             onBlur={onFindHandler}
             placeholder="Улица"
             ref={streetRef}
@@ -169,7 +170,8 @@ export const Search: React.FC<{ isHousingStockHasCorpuses: boolean }> = ({
             options={options}
             onSelect={() => fields.street.onChange(streetMatch)}
           />
-          <StyledAutocomplete
+          <AutoComplete
+            small
             onBlur={onFindHandler}
             placeholder="Дом"
             value={fields.house.value}
@@ -182,7 +184,8 @@ export const Search: React.FC<{ isHousingStockHasCorpuses: boolean }> = ({
             }}
           />
           {isHousingStockHasCorpuses && (
-            <StyledAutocomplete
+            <AutoComplete
+              small
               onBlur={onFindHandler}
               placeholder="Корпус"
               value={fields.corpus.value}

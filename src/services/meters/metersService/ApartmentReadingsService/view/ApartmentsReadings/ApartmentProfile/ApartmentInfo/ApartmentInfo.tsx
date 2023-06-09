@@ -26,7 +26,7 @@ import {
   TextareaSC,
 } from './ApartmentInfo.styled';
 import { ApartmentInfoProps } from './ApartmentInfo.types';
-import { ContextMenuButton } from '01/shared/ui/ContextMenuButton';
+import { ContextMenuButton } from 'ui-kit/ContextMenuButton/ContextMenuButton';
 import { getApartmentAddressString } from 'utils/getApartmentAddress';
 import { BriefcaseIcon, CrownIcon, HouseIcon } from 'ui-kit/icons';
 import { Button } from 'ui-kit/Button';
@@ -165,7 +165,7 @@ export const ApartmentInfo: FC<ApartmentInfoProps> = ({
               },
               {
                 title: 'Изменить лицевой счет',
-                onClick: openEditPersonalNumberModal,
+                onClick: () => openEditPersonalNumberModal(true),
               },
               {
                 title: 'Добавить новый прибор',

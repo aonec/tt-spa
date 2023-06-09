@@ -2,10 +2,7 @@ import React, { FC } from 'react';
 import { Button } from 'ui-kit/Button';
 import { Dialog } from 'ui-kit/shared_components/Dialog/Dialog';
 import { SendReportToEmailDescription } from './SendReportToEmailDescription';
-import {
-  ButtonsWrapper,
-  FooterWrapper,
-} from './SendReportToEmailModal.styled';
+import { ButtonsWrapper, FooterWrapper } from './SendReportToEmailModal.styled';
 import { SendReportToEmailModalProps } from './SendReportToEmailModal.types';
 
 export const SendReportToEmailModal: FC<SendReportToEmailModalProps> = ({
@@ -22,7 +19,7 @@ export const SendReportToEmailModal: FC<SendReportToEmailModalProps> = ({
       isOpen={isOpen}
       onCancel={() => handleClose()}
       onSubmit={() => submitEmail()}
-      type="default"
+      type="primary"
       zIndex={1001}
       description={<SendReportToEmailDescription email={defaultEmail} />}
       footer={
@@ -34,9 +31,7 @@ export const SendReportToEmailModal: FC<SendReportToEmailModalProps> = ({
             <Button onClick={handleOpenSetEmailModal} type="ghost">
               Указать другую почту
             </Button>
-            <Button onClick={submitEmail} type="default">
-              Отправить отчёт
-            </Button>
+            <Button onClick={submitEmail}>Отправить отчёт</Button>
           </ButtonsWrapper>
         </FooterWrapper>
       }

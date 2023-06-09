@@ -13,8 +13,9 @@ import {
   cancelPauseApartmentButtonClicked,
   pauseApartmentStatusFx,
 } from '01/features/apartments/pauseApartment/models';
-import { openEditPersonalNumberTypeModal } from '01/features/homeowner/editPersonalNumber/models';
 import { EffectFailDataAxiosError } from 'types';
+import { individualDeviceMountPlacesService } from 'services/devices/individualDeviceMountPlacesService/individualDeviceMountPlacesService.model';
+import { selectPersonalNumberActionService } from 'services/homeowner/personalNumber/selectPersonalNumberActionService';
 
 const domain = createDomain('apartmentReadingsService');
 
@@ -109,7 +110,8 @@ export const apartmentReadingsService = {
     handleUpdateApartment,
     handlePauseApartment: pauseApartmentButtonClicked,
     handleCancelPauseApartment: cancelPauseApartmentButtonClicked,
-    openEditPersonalNumberModal: openEditPersonalNumberTypeModal,
+    openEditPersonalNumberModal:
+      selectPersonalNumberActionService.inputs.setSelectActionModalOpen,
     handleApartmentLoaded,
     setSelectedHomeownerName,
   },
@@ -118,6 +120,9 @@ export const apartmentReadingsService = {
     $apartment,
     $isLoadingApartment,
     $selectedHomeownerName,
+    $allIndividualDeviceMountPlaces:
+      individualDeviceMountPlacesService.outputs
+        .$allIndividualDeviceMountPlaces,
   },
   gates: { ApartmentGate },
 };

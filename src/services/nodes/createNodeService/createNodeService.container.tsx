@@ -1,14 +1,16 @@
 import React, { useEffect } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 import { useEvent, useStore } from 'effector-react';
-import { ExistingCitiesGate } from '01/features/housingStocks/displayHousingStockCities/models';
 import { createNodeService } from './createNodeService.model';
 import { CreateNodePage } from './view/CreateNodePage';
 import { CreateNodeServiceZoneContainer } from '../createNodeServiceZoneService';
 import { CreateNodeConfirmationModal } from './view/CreateNodeConfirmationModal';
+import { CreateCalculatorModalContainer } from 'services/calculators/createCalculatorModalService';
+import { addressSearchService } from 'services/addressSearchService/addressSearchService.models';
 
 const { inputs, outputs, gates } = createNodeService;
-const { CreateNodeGate, CreateCalculatorGate } = gates;
+const { CreateNodeGate } = gates;
+const { ExistingCitiesGate } = addressSearchService.gates;
 
 export const CreateNodeContainer = () => {
   const { housingStockId } = useParams<{ housingStockId: string }>();
@@ -49,8 +51,8 @@ export const CreateNodeContainer = () => {
     <>
       <CreateNodeGate housingStockId={Number(housingStockId)} />
       <ExistingCitiesGate />
-      <CreateCalculatorGate housingStockId={requestPayload.housingStockId} />
       <CreateNodeServiceZoneContainer />
+      <CreateCalculatorModalContainer />
       {housingStock && selectedServiceZone && (
         <CreateNodeConfirmationModal
           isOpen={isConfirmationModalOpen}
@@ -73,7 +75,10 @@ export const CreateNodeContainer = () => {
         goPrevStep={() => goPrevStep()}
         stepNumber={stepNumber}
         calculatorsList={calculatorsList}
-        openCreateCalculatorModal={() => openCreateCalculatorModal()}
+        openCreateCalculatorModal={() =>
+          requestPayload.housingStockId &&
+          openCreateCalculatorModal(requestPayload.housingStockId)
+        }
         isDisabledAddress={Boolean(housingStockId)}
         isValidationLoading={isValidationLoading}
         requestPayload={requestPayload}

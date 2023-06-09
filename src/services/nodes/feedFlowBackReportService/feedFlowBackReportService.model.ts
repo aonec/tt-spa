@@ -1,10 +1,10 @@
 import { createDomain, forward } from 'effector';
 import { FeedBackFlowReportPayload } from './feedFlowBackReportService.types';
 import { getFeedBackFlowReport } from './feedFlowBackReportService.api';
-import { $existingCities } from '01/features/housingStocks/displayHousingStockCities/models';
 import { houseManagementsService } from 'services/objects/houseManagementsService';
 import { EffectFailDataAxiosError } from 'types';
 import { message } from 'antd';
+import { addressSearchService } from 'services/addressSearchService/addressSearchService.models';
 
 const domain = createDomain('feedFlowBackReportService');
 
@@ -45,7 +45,7 @@ export const feedFlowBackReportService = {
   },
   outputs: {
     $isModalOpen,
-    $existingCities,
+    $existingCities: addressSearchService.outputs.$existingCities,
     $houseManagements: houseManagementsService.outputs.$houseManagements,
     $isLoading,
   },

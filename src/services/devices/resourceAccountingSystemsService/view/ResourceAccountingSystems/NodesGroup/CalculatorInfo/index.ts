@@ -1,1 +1,1 @@
-export { CalculatorInfo } from './CalculatorInfo'
+export { CalculatorInfo } from './CalculatorInfo';

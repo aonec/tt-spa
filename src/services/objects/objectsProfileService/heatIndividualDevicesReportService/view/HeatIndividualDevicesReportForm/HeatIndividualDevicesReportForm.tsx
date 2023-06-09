@@ -12,14 +12,14 @@ import { DatePicker } from 'ui-kit/DatePicker';
 import { AddressTreeSelect } from 'ui-kit/shared_components/AddressTreeSelect';
 import { Select } from 'ui-kit/Select';
 import { useStore } from 'effector-react';
-import { $existingCities } from '01/features/housingStocks/displayHousingStockCities/models';
 import { validationSchema } from './HeatIndividualDevicesReportForm.constants';
-import { ErrorMessage } from '01/shared/ui/ErrorMessage';
+import { ErrorMessage } from 'ui-kit/ErrorMessage';
+import { addressSearchService } from 'services/addressSearchService/addressSearchService.models';
 
 export const HeatIndividualDevicesReportForm: FC<
   HeatIndividualDevicesReportFormProps
 > = ({ handleDownloadModal, formId, selectCity, selectedCity, treeData }) => {
-  const existingCities = useStore($existingCities);
+  const existingCities = useStore(addressSearchService.outputs.$existingCities);
 
   const { values, handleSubmit, setFieldValue, errors } = useFormik({
     initialValues: {

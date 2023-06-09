@@ -1,4 +1,3 @@
-import { StyledDatePicker, StyledRangePicker } from '01/shared/ui/Fields';
 import { NumberRange } from '01/shared/ui/Fields/NumberRange';
 import { Checkbox } from 'antd';
 import moment from 'moment';
@@ -11,6 +10,8 @@ import {
 } from './SubscribersConsumptionExtendedSearch.styled';
 import { SubscribersConsumptionExtendedSearchProps } from './SubscribersConsumptionExtendedSearch.types';
 import { prepareConsumptionForInput } from './SubscribersConsumptionExtendedSearch.utils';
+import { RangePicker } from 'ui-kit/RangePicker';
+import { DatePicker } from 'ui-kit/DatePicker';
 
 export const SubscribersConsumptionExtendedSearch: FC<
   SubscribersConsumptionExtendedSearchProps
@@ -19,12 +20,7 @@ export const SubscribersConsumptionExtendedSearch: FC<
     ColdWaterSupply,
     HotWaterSupply,
     Electricity,
-    ColdWaterSupplyConsumptionFrom,
-    ColdWaterSupplyConsumptionTo,
-    ElectricitySupplyConsumptionFrom,
-    ElectricitySupplyConsumptionTo,
-    HotWaterSupplyConsumptionFrom,
-    HotWaterSupplyConsumptionTo,
+    Heat,
     MonthOfLastTransmission,
     ExcludeApartments,
     DateLastCheckFrom,
@@ -40,7 +36,6 @@ export const SubscribersConsumptionExtendedSearch: FC<
       }
       const dateLastCheckFromValue = dates[0];
       const dateLastCheckTo = dates[1];
-
 
       if (!dateLastCheckTo || !dateLastCheckFromValue) {
         return;
@@ -86,12 +81,14 @@ export const SubscribersConsumptionExtendedSearch: FC<
         <NumberRange
           disabled={!ColdWaterSupply}
           value={{
-            from: prepareConsumptionForInput(ColdWaterSupplyConsumptionFrom),
-            to: prepareConsumptionForInput(ColdWaterSupplyConsumptionTo),
+            from: prepareConsumptionForInput(
+              values['ColdWaterSupplyFilter.From'],
+            ),
+            to: prepareConsumptionForInput(values['ColdWaterSupplyFilter.To']),
           }}
           onChange={({ from, to }) => {
-            setFieldValue('ColdWaterSupplyConsumptionFrom', from);
-            setFieldValue('ColdWaterSupplyConsumptionTo', to);
+            setFieldValue("['ColdWaterSupplyFilter.From']", from);
+            setFieldValue("['ColdWaterSupplyFilter.To']", to);
           }}
         />
 
@@ -106,12 +103,14 @@ export const SubscribersConsumptionExtendedSearch: FC<
         <NumberRange
           disabled={!HotWaterSupply}
           value={{
-            from: prepareConsumptionForInput(HotWaterSupplyConsumptionFrom),
-            to: prepareConsumptionForInput(HotWaterSupplyConsumptionTo),
+            from: prepareConsumptionForInput(
+              values['HotWaterSupplyFilter.From'],
+            ),
+            to: prepareConsumptionForInput(values['HotWaterSupplyFilter.To']),
           }}
           onChange={({ from, to }) => {
-            setFieldValue('HotWaterSupplyConsumptionFrom', from);
-            setFieldValue('HotWaterSupplyConsumptionTo', to);
+            setFieldValue("['HotWaterSupplyFilter.From']", from);
+            setFieldValue("['HotWaterSupplyFilter.To']", to);
           }}
         />
 
@@ -126,12 +125,29 @@ export const SubscribersConsumptionExtendedSearch: FC<
         <NumberRange
           disabled={!Electricity}
           value={{
-            from: prepareConsumptionForInput(ElectricitySupplyConsumptionFrom),
-            to: prepareConsumptionForInput(ElectricitySupplyConsumptionTo),
+            from: prepareConsumptionForInput(values['ElectricityFilter.From']),
+            to: prepareConsumptionForInput(values['ElectricityFilter.To']),
           }}
           onChange={({ from, to }) => {
-            setFieldValue('ElectricitySupplyConsumptionFrom', from);
-            setFieldValue('ElectricitySupplyConsumptionTo', to);
+            setFieldValue("['ElectricityFilter.From']", from);
+            setFieldValue("['ElectricityFilter.To']", to);
+          }}
+        />
+        <Checkbox
+          checked={Heat}
+          onChange={(value) => setFieldValue('Heat', value.target.checked)}
+        >
+          Отопление
+        </Checkbox>
+        <NumberRange
+          disabled={!Heat}
+          value={{
+            from: prepareConsumptionForInput(values['HeatFilter.From']),
+            to: prepareConsumptionForInput(values['HeatFilter.To']),
+          }}
+          onChange={({ from, to }) => {
+            setFieldValue("['HeatFilter.From']", from);
+            setFieldValue("['HeatFilter.To']", to);
           }}
         />
       </ResourceWrapper>
@@ -140,7 +156,8 @@ export const SubscribersConsumptionExtendedSearch: FC<
         <TitleText>Период проверки ИПУ</TitleText>
         <TitleText>Месяц последней передачи показаний</TitleText>
 
-        <StyledRangePicker
+        <RangePicker
+          small
           allowClear
           disabled={ExcludeApartments}
           value={
@@ -155,7 +172,8 @@ export const SubscribersConsumptionExtendedSearch: FC<
           onChange={(dates) => handleChangeDateRange(dates)}
         />
 
-        <StyledDatePicker
+        <DatePicker
+          small
           allowClear
           onChange={(value) => {
             setFieldValue(

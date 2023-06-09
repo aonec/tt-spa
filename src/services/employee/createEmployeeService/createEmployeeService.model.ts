@@ -15,7 +15,7 @@ const handleCreateEmloyee = domain.createEvent<OrganizationUserCreateRequest>();
 
 const createEmloyeeFx = domain.createEffect<
   OrganizationUserCreateRequest,
-  Promise<OrganizationUserResponse>,
+  OrganizationUserResponse,
   EffectFailDataAxiosError
 >(addStaff);
 
@@ -29,13 +29,22 @@ const $isModalOpen = domain
 
 forward({ from: handleCreateEmloyee, to: createEmloyeeFx });
 
+const $isLoading = createEmloyeeFx.pending;
+
 createEmloyeeFx.failData.watch((error) =>
-  message.error(error.response.data.error.Text)
+  message.error(error.response.data.error.Text),
 );
 
-createEmloyeeSuccess.watch(() =>
-  message.success('Сотрудник успешно добавлен!')
-);
+createEmloyeeSuccess.watch((newUserData) => {
+  message.success('Сотрудник успешно добавлен!');
+
+  setTimeout(() => {
+    message.destroy();
+    message.info(
+      `Cсылка на регистрацию отправлена на почту ${newUserData.email || ''}`,
+    );
+  }, 2000);
+});
 
 export const createEmployeeService = {
   inputs: {
@@ -48,6 +57,7 @@ export const createEmployeeService = {
     $isModalOpen,
     $competencesCatalog: competencesService.outputs.$competencesCatalog,
     $userRoles: rolesService.outputs.$userRoles,
+    $isLoading,
   },
   gates: {
     CompetencesGate: competencesService.gates.CompetencesGate,

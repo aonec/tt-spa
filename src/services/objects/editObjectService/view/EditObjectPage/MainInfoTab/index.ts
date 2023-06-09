@@ -1,1 +1,1 @@
-export { MainInfoTab } from './MainInfoTab'
+export { MainInfoTab } from './MainInfoTab';

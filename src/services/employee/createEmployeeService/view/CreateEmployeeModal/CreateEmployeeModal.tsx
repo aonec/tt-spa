@@ -11,6 +11,7 @@ export const CreateEmployeeModal: FC<CreateEmployeeModalProps> = ({
   multipleSelectionCompetences,
   multipleSelectionUserRoles,
   handleCreateEmloyee,
+  isLoading,
 }) => {
   return (
     <FormModal
@@ -19,6 +20,7 @@ export const CreateEmployeeModal: FC<CreateEmployeeModalProps> = ({
       onCancel={handleCloseModal}
       formId={formId}
       submitBtnText="Добавить"
+      loading={isLoading}
       form={
         <CreateEmployeeForm
           formId={formId}

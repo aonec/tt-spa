@@ -8,12 +8,11 @@ import {
   HeatingStationType,
   NewHeatingStationFormProps,
 } from './NewHeatingStationForm.types';
-import { StyledSelect } from '01/shared/ui/Select/components';
 import { FormItem } from 'ui-kit/FormItem';
 import { Select } from 'ui-kit/Select';
 import { useFormik } from 'formik';
 import { Input } from 'ui-kit/Input';
-import { ErrorMessage } from '01/shared/ui/ErrorMessage';
+import { ErrorMessage } from 'ui-kit/ErrorMessage';
 import { Form } from 'antd';
 import {
   HeatingStationTypeDictionary,
@@ -21,8 +20,9 @@ import {
 } from './newHeatingStationForm.constants';
 import { AutoComplete } from 'ui-kit/AutoComplete';
 import { getPreparedStreetsOptions } from 'services/objects/createObjectService/view/CreateObjectPage/CreateObjectAddressStage/CreateObjectAddressStage.utils';
-import { ExistingCitiesGate } from '01/features/housingStocks/displayHousingStockCities/models';
-import { ExistingStreetsGate } from '01/features/housingStocks/displayHousingStockStreets/model';
+import { addressSearchService } from 'services/addressSearchService/addressSearchService.models';
+
+const { ExistingCitiesGate, ExistingStreetsGate } = addressSearchService.gates;
 
 export const NewHeatingStationForm: FC<NewHeatingStationFormProps> = ({
   formId,
@@ -32,39 +32,36 @@ export const NewHeatingStationForm: FC<NewHeatingStationFormProps> = ({
   handleEditHeatingStation,
   openedHeatingStationData,
 }) => {
-  const {
-    values,
-    handleSubmit,
-    setFieldValue,
-    errors,
-  } = useFormik<HeatingStation>({
-    initialValues: {
-      isThermalChamber: (openedHeatingStationData?.isThermalChamber
-        ? HeatingStationType.ThermalChamber
-        : HeatingStationType.CentralHeatingStation) || null,
-      name: openedHeatingStationData?.name || null,
-      address: {
-        city: openedHeatingStationData?.address?.city || null,
-        street: openedHeatingStationData?.address?.street || '',
-        number: openedHeatingStationData?.address?.housingStockNumber || null,
+  const { values, handleSubmit, setFieldValue, errors } =
+    useFormik<HeatingStation>({
+      initialValues: {
+        isThermalChamber:
+          (openedHeatingStationData?.isThermalChamber
+            ? HeatingStationType.ThermalChamber
+            : HeatingStationType.CentralHeatingStation) || null,
+        name: openedHeatingStationData?.name || null,
+        address: {
+          city: openedHeatingStationData?.address?.city || null,
+          street: openedHeatingStationData?.address?.street || '',
+          number: openedHeatingStationData?.address?.housingStockNumber || null,
+        },
       },
-    },
-    enableReinitialize: true,
-    onSubmit: (data) => {
-      handleCreateHeatingStation && handleCreateHeatingStation(data);
-      handleEditHeatingStation &&
-        openedHeatingStationData?.id &&
-        handleEditHeatingStation({ id: openedHeatingStationData?.id, data });
-    },
-    validateOnChange: false,
-    validationSchema,
-  });
+      enableReinitialize: true,
+      onSubmit: (data) => {
+        handleCreateHeatingStation && handleCreateHeatingStation(data);
+        handleEditHeatingStation &&
+          openedHeatingStationData?.id &&
+          handleEditHeatingStation({ id: openedHeatingStationData?.id, data });
+      },
+      validateOnChange: false,
+      validationSchema,
+    });
 
   const addressSearch = values.address.street;
 
   const preparedExistingStreets = getPreparedStreetsOptions(
     addressSearch,
-    existingStreets || []
+    existingStreets || [],
   );
 
   return (
@@ -77,7 +74,7 @@ export const NewHeatingStationForm: FC<NewHeatingStationFormProps> = ({
       <Form id={formId} onSubmitCapture={handleSubmit}>
         <GridContainer>
           <FormItem label="Тип">
-            <StyledSelect
+            <Select
               placeholder="Выберите из списка"
               value={values.isThermalChamber || undefined}
               onChange={(value) => setFieldValue('isThermalChamber', value)}
@@ -87,7 +84,7 @@ export const NewHeatingStationForm: FC<NewHeatingStationFormProps> = ({
                   {HeatingStationTypeDictionary[e]}
                 </Select.Option>
               ))}
-            </StyledSelect>
+            </Select>
             <ErrorMessage>{errors?.isThermalChamber}</ErrorMessage>
           </FormItem>
 

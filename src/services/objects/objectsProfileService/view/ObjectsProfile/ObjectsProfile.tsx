@@ -1,6 +1,6 @@
-import { PageHeader } from '01/shared/ui/PageHeader';
+import { PageHeader } from 'ui-kit/shared_components/PageHeader';
 import { Radio } from 'antd';
-import React, { FC, useMemo } from 'react';
+import React, { FC, ReactNode, useCallback, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { ApartmentsListContainer } from 'services/objects/displayApartmentsListService';
 import { ObjectsListContainer } from 'services/objects/displayObjectsListService';
@@ -10,10 +10,15 @@ import {
   Wrapper,
   ContentWrapper,
   SearchTypesWrapper,
+  FiltrationWrapper,
+  HeaderCustomContentWrapper,
+  SizeWrapper,
 } from './ObjectsProfile.styled';
-import { ObjectsProfileProps } from './ObjectsProfile.types';
+import { HeaderInject, ObjectsProfileProps } from './ObjectsProfile.types';
 
-const objectListComponentsLookup: { [key: string]: FC } = {
+const objectListComponentsLookup: {
+  [key: string]: FC<HeaderInject>;
+} = {
   [SearchType.Houses]: ObjectsListContainer,
   [SearchType.Apartments]: ApartmentsListContainer,
   [SearchType.PersonaNumbers]: DisplayPersonalNumbersListContainer,
@@ -31,7 +36,9 @@ export const ObjectsProfile: FC<ObjectsProfileProps> = ({
   isPermitionToDownloadFeedBackFlowReport,
   isPermitionToDownloadGroupReport,
   isPermitionToDownloadSOIReport,
+  isPermitionToCreateFeedFlowPipeTemperatureReport,
   openHeatIndividualDevicesReportModal,
+  openFlowTemperatureDeviationReportModal,
 }) => {
   const menuButtons = useMemo(
     () => [
@@ -56,6 +63,11 @@ export const ObjectsProfile: FC<ObjectsProfileProps> = ({
         hidden: !isPermitionToDownloadFeedBackFlowReport,
       },
       {
+        title: 'Выгрузить сводный отчёт по ГВС',
+        onClick: openFlowTemperatureDeviationReportModal,
+        hidden: !isPermitionToCreateFeedFlowPipeTemperatureReport,
+      },
+      {
         title: 'Создать оключение ресурса на объекте',
         onClick: handleOpenChooseResourceDisconnectionModal,
         hidden: !isPermitionToCreateResourceDisconnection,
@@ -67,18 +79,54 @@ export const ObjectsProfile: FC<ObjectsProfileProps> = ({
       },
     ],
     [
-      handleOpenChooseResourceDisconnectionModal,
       handleCreateObject,
-      openFeedFlowBackReportModal,
-      openSoiReportModal,
-      handleExportGroupReport,
       isPermitionToCreateObjectAndIPUReport,
-      isPermitionToCreateResourceDisconnection,
-      isPermitionToDownloadFeedBackFlowReport,
+      handleExportGroupReport,
       isPermitionToDownloadGroupReport,
+      openSoiReportModal,
       isPermitionToDownloadSOIReport,
+      openFeedFlowBackReportModal,
+      isPermitionToDownloadFeedBackFlowReport,
+      openFlowTemperatureDeviationReportModal,
+      isPermitionToCreateFeedFlowPipeTemperatureReport,
+      handleOpenChooseResourceDisconnectionModal,
+      isPermitionToCreateResourceDisconnection,
       openHeatIndividualDevicesReportModal,
     ],
+  );
+
+  const Header = useCallback(
+    ({ children }: { children: ReactNode }) => {
+      return (
+        <FiltrationWrapper>
+          <PageHeader
+            title="Объекты"
+            contextMenu={{
+              menuButtons,
+            }}
+          />
+          <SizeWrapper>
+            <SearchTypesWrapper>
+              <Radio.Group value={searchType}>
+                <Link to={`/objects/${SearchType.Houses}`}>
+                  <Radio value={SearchType.Houses}>Поиск по адресу</Radio>
+                </Link>
+                <Link to={`/objects/${SearchType.Apartments}`}>
+                  <Radio value={SearchType.Apartments}>Поиск по квартире</Radio>
+                </Link>
+                <Link to={`/objects/${SearchType.PersonaNumbers}`}>
+                  <Radio value={SearchType.PersonaNumbers}>
+                    Поиск по лицевому счету
+                  </Radio>
+                </Link>
+              </Radio.Group>
+            </SearchTypesWrapper>
+            <HeaderCustomContentWrapper>{children}</HeaderCustomContentWrapper>
+          </SizeWrapper>
+        </FiltrationWrapper>
+      );
+    },
+    [menuButtons, searchType],
   );
 
   const objectsProfileComponent = useMemo(() => {
@@ -88,33 +136,12 @@ export const ObjectsProfile: FC<ObjectsProfileProps> = ({
 
     if (!Component) return null;
 
-    return <Component />;
-  }, [searchType]);
+    return <Component Header={Header} />;
+  }, [searchType, Header]);
 
   return (
     <>
-      <PageHeader
-        title="Объекты"
-        contextMenu={{
-          menuButtons,
-        }}
-      />
       <Wrapper>
-        <SearchTypesWrapper>
-          <Radio.Group value={searchType}>
-            <Link to={`/objects/${SearchType.Houses}`}>
-              <Radio value={SearchType.Houses}>Поиск по адресу</Radio>
-            </Link>
-            <Link to={`/objects/${SearchType.Apartments}`}>
-              <Radio value={SearchType.Apartments}>Поиск по квартире</Radio>
-            </Link>
-            <Link to={`/objects/${SearchType.PersonaNumbers}`}>
-              <Radio value={SearchType.PersonaNumbers}>
-                Поиск по лицевому счету
-              </Radio>
-            </Link>
-          </Radio.Group>
-        </SearchTypesWrapper>
         <ContentWrapper>{objectsProfileComponent}</ContentWrapper>
       </Wrapper>
     </>

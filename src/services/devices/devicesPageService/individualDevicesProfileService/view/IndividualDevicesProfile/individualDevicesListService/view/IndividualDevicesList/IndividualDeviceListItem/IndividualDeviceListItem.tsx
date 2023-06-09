@@ -1,4 +1,3 @@
-import { Loader } from '01/components';
 import { Tooltip } from 'antd';
 import moment from 'moment';
 import React, { FC, useCallback } from 'react';
@@ -17,6 +16,7 @@ import {
   Wrapper,
 } from './IndividualDeviceListItem.styled';
 import { IndividualDeviceListItemProps } from './IndividualDeviceListItem.types';
+import { Loader } from 'ui-kit/Loader';
 
 export const IndividualDeviceListItem: FC<IndividualDeviceListItemProps> = ({
   device,

@@ -1,4 +1,3 @@
-import { $existingCities } from '01/features/housingStocks/displayHousingStockCities/models';
 import { createDomain, guard, sample } from 'effector';
 import {
   HouseManagementResponse,
@@ -11,6 +10,7 @@ import {
   getOrganizations,
 } from './closedIndividualDevicesFormService.api';
 import { UnloadingType } from './closedIndividualDevicesFormService.types';
+import { addressSearchService } from 'services/addressSearchService/addressSearchService.models';
 
 const domain = createDomain('closedIndividualDevicesFormService');
 
@@ -39,7 +39,7 @@ sample({
 
 sample({
   source: sample({
-    source: $existingCities,
+    source: addressSearchService.outputs.$existingCities,
     filter: (cities): cities is string[] =>
       Boolean(cities && cities.length === 1),
   }),

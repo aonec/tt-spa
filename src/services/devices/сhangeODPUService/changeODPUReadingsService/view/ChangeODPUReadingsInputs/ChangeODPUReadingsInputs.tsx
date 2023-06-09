@@ -1,4 +1,3 @@
-import DeviceIcons from '01/_components/DeviceIcons';
 import React, { FC, useCallback, useMemo } from 'react';
 import { ResourceIconLookup } from 'ui-kit/shared_components/ResourceIconLookup';
 import { Slider } from '../Slider';
@@ -14,6 +13,7 @@ import {
   Wrapper,
 } from './ChangeODPUReadingsInputs.styled';
 import { ChangeODPUReadingsInputsProps } from './ChangeODPUReadingsInputs.types';
+import { getInputBorderColor } from 'services/meters/individualDeviceMetersInputService/view/MetersInputsBlock/MetersInputsBlock.styled';
 
 export const ChangeODPUReadingsInputs: FC<ChangeODPUReadingsInputsProps> = ({
   title,
@@ -25,7 +25,7 @@ export const ChangeODPUReadingsInputs: FC<ChangeODPUReadingsInputsProps> = ({
   const prevReadings = oldReadings.slice(1);
 
   const color = deviceInfo.resource
-    ? DeviceIcons[deviceInfo.resource].color
+    ? getInputBorderColor({ resource: deviceInfo.resource })
     : '#c3c3c3';
 
   const { model, resource, serialNumber } = deviceInfo;

@@ -1,9 +1,9 @@
-import { DevicesByAddressInterface } from '01/_pages/Devices/components/utils/groupDevicesByObjects';
 import {
   HouseAddress,
   HousingStockListResponse,
   HousingStockShortResponse,
 } from 'myApi';
+import { DevicesByAddressInterface } from 'services/devices/displayDevicesService/displayDevicesService.types';
 
 export const getHousingStockAddress = (
   housingStock:
@@ -11,7 +11,7 @@ export const getHousingStockAddress = (
     | DevicesByAddressInterface
     | HousingStockShortResponse
     | null,
-  isCityNeeded?: boolean
+  isCityNeeded?: boolean,
 ) => {
   if (!housingStock) return null;
 

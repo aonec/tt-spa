@@ -1,5 +1,5 @@
 import { useSwitchInputOnEnter } from '01/features/individualDevices/switchIndividualDevice/components/stages/BaseInfoStage.hook';
-import { fromEnter } from '01/shared/ui/DatePickerNative';
+import { fromEnter } from 'ui-kit/shared_components/DatePickerNative';
 import { useFormik } from 'formik';
 import { OrganizationUpdateRequest } from 'myApi';
 import React, { FC, useCallback } from 'react';
@@ -121,7 +121,7 @@ export const EditCompanyForm: FC<EditCompanyFormProps> = ({
         <Button type="ghost" onClick={() => history.goBack()}>
           Отмена
         </Button>
-        <Button type="default" onClick={submitForm} isLoading={isUpdating}>
+        <Button type="primary" onClick={submitForm} isLoading={isUpdating}>
           Сохранить
         </Button>
       </FooterWrapper>

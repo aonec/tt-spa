@@ -1,5 +1,3 @@
-import { Select } from '01/shared/ui/Select';
-import { InputTT } from '01/tt-components';
 import { Form } from 'antd';
 import { useFormik } from 'formik';
 import moment from 'moment';
@@ -19,11 +17,13 @@ import {
 import * as yup from 'yup';
 import { CreateActFormPayload } from '../../createApartmentActService.types';
 import { Document, DocumentsUploadContainer } from 'ui-kit/DocumentsService';
+import { Input } from 'ui-kit/Input';
+import { Select } from 'ui-kit/Select';
+import { ActTypesNamesLookup } from 'dictionaries';
 
 export const CreateApartmentActForm: FC<CreateApartmentActFormProps> = ({
   formId,
   handleSubmit,
-  actTypes,
 }) => {
   const {
     values,
@@ -64,8 +64,8 @@ export const CreateApartmentActForm: FC<CreateApartmentActFormProps> = ({
         </Form.Item>
 
         <Form.Item label="Номер документа">
-          <InputTT
-            value={values.registryNumber}
+          <Input
+            value={values.registryNumber || undefined}
             onChange={(e: SyntheticEvent<HTMLInputElement>) =>
               setFieldValue('registryNumber', e.currentTarget.value)
             }
@@ -98,8 +98,8 @@ export const CreateApartmentActForm: FC<CreateApartmentActFormProps> = ({
               value={values.actType || undefined}
               onChange={(value) => setFieldValue('actType', value as EActType)}
             >
-              {actTypes?.map(({ key, value }) => (
-                <Select.Option value={key!} key={key}>
+              {Object.entries(ActTypesNamesLookup).map(([key, value]) => (
+                <Select.Option value={key} key={key}>
                   {value}
                 </Select.Option>
               ))}

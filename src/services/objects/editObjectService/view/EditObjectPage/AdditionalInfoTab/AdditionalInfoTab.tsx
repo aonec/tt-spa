@@ -25,7 +25,7 @@ export const AdditionalInfoTab: FC<AdditionalInfoTabProps> = ({
   onPageCancel,
   handleUpdateHousingStock,
 }) => {
-  const constructionYear = moment(housingStock.constructionDate).format('YYYY');
+  const constructionYear = moment(housingStock.constructionYear).format('YYYY');
 
   const { values, handleSubmit, setFieldValue } = useFormik({
     initialValues: {
@@ -35,7 +35,7 @@ export const AdditionalInfoTab: FC<AdditionalInfoTabProps> = ({
       apartments: housingStock.numberOfApartments,
       totalArea: housingStock.totalArea,
       totalLivingArea: housingStock.totalLivingArea,
-      constructionYear: constructionYear,
+      constructionYear: Number(constructionYear),
     },
     enableReinitialize: true,
     onSubmit: (data) => {
@@ -131,9 +131,7 @@ export const AdditionalInfoTab: FC<AdditionalInfoTabProps> = ({
               Отмена
             </Button>
           </ButtonPadding>
-          <Button sidePadding={25} onClick={() => handleSubmit()}>
-            Сохранить
-          </Button>
+          <Button onClick={() => handleSubmit()}>Сохранить</Button>
         </RightButtonBlock>
       </Footer>
     </Wrapper>

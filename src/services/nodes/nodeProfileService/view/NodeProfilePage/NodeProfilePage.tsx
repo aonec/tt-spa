@@ -1,31 +1,23 @@
 import React, { FC, ReactNode, useCallback, useMemo } from 'react';
 import { stringifyUrl } from 'query-string';
 import { Empty, Tooltip, message } from 'antd';
-
 import { GoBack } from 'ui-kit/shared_components/GoBack';
 import { HeaderInfoString } from 'ui-kit/shared_components/HeaderInfoString';
 import { ResourceIconLookup } from 'ui-kit/shared_components/ResourceIconLookup';
-import { Tabs } from 'ui-kit/Tabs';
 import { LinkCard } from 'ui-kit/shared_components/LinkCard';
 import { WithLoader } from 'ui-kit/shared_components/WithLoader';
-import { PageHeader } from '01/shared/ui/PageHeader';
-import { NodeConnection } from '01/tt-components/NodeConnection';
-import { NodeChecksContainer } from '01/features/nodes/nodeChecks/displayNodeChecks/NodeChecksContainer';
-import { ENodeRegistrationType } from 'myApi';
-import { HousingMeteringDeviceReadingsContainer } from 'services/devices/housingMeteringDeviceReadingsService';
-import { getDeviceIds } from 'services/devices/housingMeteringDeviceReadingsService/housingMeteringDeviceReadingsService.utils';
-import { DisplayNodesStatisticsContainer } from 'services/displayNodesStatisticsService';
-
+import { ENodeRegistrationType, TaskGroupingFilter } from 'myApi';
+import { DisplayNodesStatisticsContainer } from 'services/nodes/displayNodesStatisticsService';
 import {
   Title,
   ContentWrapper,
-  TabsWrapper,
   Wrapper,
-  HeaderWrapper,
   HeaderInfoStringWrapper,
   AdditionalAddress,
   IncorrectConfigurationIconSC,
   NodeNumberWrapper,
+  PageHeaderSC,
+  TabsSC,
 } from './NodeProfilePage.styled';
 import {
   NodeProfilePageProps,
@@ -34,6 +26,13 @@ import {
 import { getHousingStockItemAddress } from 'utils/getHousingStockItemAddress';
 import { CommonInfoTab } from './CommonInfoTab';
 import { HousingMeteringDevicesList } from './HousingMeteringDevicesList';
+import { NodeConnection } from './NodeConnection';
+import { ContextMenuButtonColor } from 'ui-kit/ContextMenuButton/ContextMenuButton.types';
+import { DisplayNodeChecksContainer } from 'services/nodes/displayNodeChecks';
+import { HousingMeteringDeviceReadingsContainer } from 'services/devices/housingMeteringDevices/housingMeteringDeviceReadingsService';
+import { getDeviceIds } from 'services/devices/housingMeteringDevices/housingMeteringDeviceReadingsService/housingMeteringDeviceReadingsService.utils';
+
+const { TabPane } = TabsSC;
 
 export const NodeProfilePage: FC<NodeProfilePageProps> = ({
   isLoading,
@@ -75,7 +74,7 @@ export const NodeProfilePage: FC<NodeProfilePageProps> = ({
         />
       ),
       [PipeNodeProfileSection.Checks]: (
-        <NodeChecksContainer pipeNodeId={pipeNode.id} />
+        <DisplayNodeChecksContainer pipeNodeId={pipeNode.id} />
       ),
       [PipeNodeProfileSection.Documents]: <></>,
     };
@@ -111,46 +110,44 @@ export const NodeProfilePage: FC<NodeProfilePageProps> = ({
       {pipeNode && (
         <div>
           <GoBack />
-          <HeaderWrapper>
-            <PageHeader
-              title={
-                <Title>
-                  <ResourceIconLookup
-                    resource={pipeNode.resource}
-                    style={{ transform: 'scale(1.2)' }}
-                  />
-                  <NodeNumberWrapper>
-                    Узел {pipeNode.number}
-                    {isIncorrectConfig && (
-                      <Tooltip title="Проверьте конфигурацию узла">
-                        <IncorrectConfigurationIconSC />
-                      </Tooltip>
-                    )}
-                  </NodeNumberWrapper>
-                </Title>
-              }
-              contextMenu={{
-                menuButtons: [
-                  {
-                    title: 'Редактировать узел',
-                    onClick: handleEditNode,
-                    hidden: !isPermitionToEditsNode,
-                  },
-                  {
-                    title: 'Сменить статус узла',
-                    onClick: () => openChangeNodeStatusModal(pipeNode),
-                    hidden: !isNodeCommercial || !isPermitionToEditsNode,
-                  },
-                  {
-                    title: 'Изменить тип узла',
-                    onClick: handleClickChangeNodeType,
-                    color: 'danger',
-                    hidden: !isPermitionToEditsNode,
-                  },
-                ],
-              }}
-            />
-          </HeaderWrapper>
+          <PageHeaderSC
+            title={
+              <Title>
+                <ResourceIconLookup
+                  resource={pipeNode.resource}
+                  style={{ transform: 'scale(1.2)' }}
+                />
+                <NodeNumberWrapper>
+                  Узел {pipeNode.number}
+                  {isIncorrectConfig && (
+                    <Tooltip title="Проверьте конфигурацию узла">
+                      <IncorrectConfigurationIconSC />
+                    </Tooltip>
+                  )}
+                </NodeNumberWrapper>
+              </Title>
+            }
+            contextMenu={{
+              menuButtons: [
+                {
+                  title: 'Редактировать узел',
+                  onClick: handleEditNode,
+                  hidden: !isPermitionToEditsNode,
+                },
+                {
+                  title: 'Сменить статус узла',
+                  onClick: () => openChangeNodeStatusModal(pipeNode),
+                  hidden: !isNodeCommercial || !isPermitionToEditsNode,
+                },
+                {
+                  title: 'Изменить тип узла',
+                  onClick: handleClickChangeNodeType,
+                  color: ContextMenuButtonColor.danger,
+                  hidden: !isPermitionToEditsNode,
+                },
+              ],
+            }}
+          />
           <HeaderInfoStringWrapper>
             <HeaderInfoString>
               <div>{address?.mainAddress?.city}</div>
@@ -165,41 +162,33 @@ export const NodeProfilePage: FC<NodeProfilePageProps> = ({
               </div>
             </HeaderInfoString>
           </HeaderInfoStringWrapper>
-          <TabsWrapper>
-            <Tabs
-              activeKey={section}
-              onChange={(activeKey) =>
-                handleChangeTab(activeKey as PipeNodeProfileSection)
-              }
-            >
-              <Tabs.TabPane
-                tab="Общие данные"
-                key={PipeNodeProfileSection.Common}
+          <TabsSC
+            activeKey={section}
+            onChange={(activeKey) =>
+              handleChangeTab(activeKey as PipeNodeProfileSection)
+            }
+          >
+            <TabPane tab="Общие данные" key={PipeNodeProfileSection.Common} />
+            <TabPane tab="Статистика" key={PipeNodeProfileSection.Stats} />
+            {isShowReadingsTab && (
+              <TabPane
+                tab="Ввод показаний"
+                key={PipeNodeProfileSection.Readings}
               />
-              <Tabs.TabPane
-                tab="Статистика"
-                key={PipeNodeProfileSection.Stats}
-              />
-              {isShowReadingsTab && (
-                <Tabs.TabPane
-                  tab="Ввод показаний"
-                  key={PipeNodeProfileSection.Readings}
-                />
-              )}
-              <Tabs.TabPane
-                tab="Настройки соединения"
-                key={PipeNodeProfileSection.Connection}
-              />
-              <Tabs.TabPane
-                tab="Подключенные приборы"
-                key={PipeNodeProfileSection.Related}
-              />
-              <Tabs.TabPane
-                tab="История проверок"
-                key={PipeNodeProfileSection.Checks}
-              />
-            </Tabs>
-          </TabsWrapper>
+            )}
+            <TabPane
+              tab="Настройки соединения"
+              key={PipeNodeProfileSection.Connection}
+            />
+            <TabPane
+              tab="Подключенные приборы"
+              key={PipeNodeProfileSection.Related}
+            />
+            <TabPane
+              tab="История проверок"
+              key={PipeNodeProfileSection.Checks}
+            />
+          </TabsSC>
           <Wrapper>
             <ContentWrapper>{contentComponent}</ContentWrapper>
             <div>
@@ -211,7 +200,7 @@ export const NodeProfilePage: FC<NodeProfilePageProps> = ({
               <LinkCard
                 text={`Задачи: ${pipeNode.numberOfTasks}`}
                 link={stringifyUrl({
-                  url: '/tasks/list/Observing',
+                  url: `/tasks/list/${TaskGroupingFilter.Executing}`,
                   query: { pipeNodeId: pipeNode.id },
                 })}
                 showLink={Boolean(pipeNode.numberOfTasks)}

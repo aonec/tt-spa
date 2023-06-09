@@ -1,13 +1,10 @@
-import { $individualDeviceMountPlaces } from '01/features/individualDeviceMountPlaces/displayIndividualDeviceMountPlaces/models';
 import { Flex } from '01/shared/ui/Layout/Flex';
 import { Space } from '01/shared/ui/Layout/Space/Space';
 import { Footer, Header, StyledModal } from '01/shared/ui/Modal/Modal';
-import { ButtonTT } from '01/tt-components';
-import { allResources } from '01/tt-components/localBases';
 import { useForm } from 'effector-forms/dist';
 import { useStore } from 'effector-react';
 import moment from 'moment';
-import { EResourceType, IndividualDeviceMountPlaceListResponse } from 'myApi';
+import { IndividualDeviceMountPlaceListResponse } from 'myApi';
 import React, { ReactNode } from 'react';
 import styled from 'styled-components';
 import {
@@ -19,13 +16,14 @@ import {
   SwitchIndividualDeviceGate,
 } from '../models';
 import { FileIcon, TrashIcon } from '../icons';
-import { Loader } from '01/components';
-import { StockIconTT } from '01/_pages/Devices/components/DeviceBlock/DeviceBlock';
-import DeviceIcons from '01/_components/DeviceIcons';
+import { Loader } from 'ui-kit/Loader';
 import { ReadingsInput } from './ReadingsInput';
 import { $individualDevice } from '../../displayIndividualDevice/models';
+import { Button } from 'ui-kit/Button';
 import { displayContractorsService } from 'services/contractors/displayContractorsService';
 import { FileData } from 'ui-kit/DocumentsService/DocumentsService.types';
+import { ResourceInfo } from 'ui-kit/shared_components/ResourceInfo';
+import { individualDeviceMountPlacesService } from 'services/devices/individualDeviceMountPlacesService';
 
 interface ILine {
   name: string;
@@ -38,7 +36,9 @@ interface RemoveFile {
 
 export const CheckFormValuesModal = () => {
   const { fields } = useForm(addIndividualDeviceForm);
-  const mountPlaces = useStore($individualDeviceMountPlaces);
+  const mountPlaces = useStore(
+    individualDeviceMountPlacesService.outputs.$individualDeviceMountPlaces,
+  );
 
   const pending = useStore(createIndividualDeviceFx.pending);
 
@@ -52,17 +52,15 @@ export const CheckFormValuesModal = () => {
   );
   const isCheck = type === 'check';
 
-  const deviceIcon = DeviceIcons[fields.resource.value! || ''];
-
   const lines: ILine[] = [
     {
       name: 'Ресурс',
       value: (
-        <Flex>
-          <StockIconTT icon={deviceIcon?.icon} fill={deviceIcon?.color} dark />
-          <Space />
-          <div>{getResourceName(fields.resource.value)}</div>
-        </Flex>
+        <>
+          {fields.resource.value && (
+            <ResourceInfo resource={fields.resource.value} />
+          )}
+        </>
       ),
     },
     {
@@ -158,14 +156,12 @@ export const CheckFormValuesModal = () => {
       title={<Header>{isCheck ? 'Поверка прибора' : 'Замена прибора'}</Header>}
       footer={
         <Footer>
-          <ButtonTT color="white" key="back" onClick={onCancel}>
+          <Button type="ghost" onClick={onCancel}>
             Отмена
-          </ButtonTT>
-          <ButtonTT
-            color="blue"
-            key="submit"
+          </Button>
+          <Button
             disabled={pending}
-            onClick={confirmCreationNewDeviceButtonClicked}
+            onClick={() => confirmCreationNewDeviceButtonClicked()}
           >
             {pending ? (
               <Loader show />
@@ -174,7 +170,7 @@ export const CheckFormValuesModal = () => {
             ) : (
               'Заменить прибор'
             )}
-          </ButtonTT>
+          </Button>
         </Footer>
       }
     >
@@ -242,12 +238,6 @@ const renderFile = (file: FileData & RemoveFile) => (
     <TrashIcon style={{ cursor: 'pointer' }} onClick={file.removeFile} />
   </StyledFile>
 );
-
-function getResourceName(resource: EResourceType | null) {
-  if (!resource) return null;
-
-  return allResources.find((elem) => elem.value === resource)?.label || null;
-}
 
 function getMountPlaceById(
   id: number | null,

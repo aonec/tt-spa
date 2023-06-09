@@ -1,12 +1,14 @@
 import { useOnEnterSwitch } from '01/features/readings/accountingNodesReadings/components/Filter';
-import { fromEnter } from '01/shared/ui/DatePickerNative';
-import { StyledAutocomplete, InputSC, SelectSC } from '01/shared/ui/Fields';
+import { fromEnter } from 'ui-kit/shared_components/DatePickerNative';
 import { useAutocomplete } from '01/hooks/useFilter';
 import React, { FC, ReactElement } from 'react';
 import { FormItem } from 'ui-kit/FormItem';
 import { SearchFieldsLabels } from './AddressSearch.constants';
 import { Wrapper } from './AddressSearch.styled';
 import { AddressSearchProps, SearchFieldType } from './AddressSearch.types';
+import { Select } from 'ui-kit/Select';
+import { Input } from 'ui-kit/Input';
+import { AutoComplete } from 'ui-kit/AutoComplete';
 
 export const AddressSearch: FC<AddressSearchProps> = ({
   streets,
@@ -29,28 +31,36 @@ export const AddressSearch: FC<AddressSearchProps> = ({
   function clearFields(index: number) {
     const clearingFieldsTypes = fields.slice(index, fields.length);
 
-    clearingFieldsTypes.forEach((fieldType) => handleChange(fieldType, ''));
+    clearingFieldsTypes
+      .filter((elem) => elem !== SearchFieldType.City)
+      .forEach((fieldType) => handleChange(fieldType, ''));
   }
 
   const citySearch = (index: number, isDisabled?: boolean) => (
-    <SelectSC
+    <Select
+      small
       placeholder="Город"
       ref={refs[index]}
       onKeyDown={keyDownEnterGuardedHandler(index)}
-      onChange={(value) => handleChange(SearchFieldType.City, value.toString())}
+      onChange={(value) => {
+        handleChange(SearchFieldType.City, value.toString());
+
+        handleSubmit();
+      }}
       value={values.city}
       disabled={isDisabled}
     >
       {cities?.map((elem, index) => (
-        <SelectSC.Option key={index} value={elem}>
+        <Select.Option key={index} value={elem}>
           {elem}
-        </SelectSC.Option>
+        </Select.Option>
       ))}
-    </SelectSC>
+    </Select>
   );
 
   const streetSearch = (index: number, isDisabled?: boolean) => (
-    <StyledAutocomplete
+    <AutoComplete
+      small
       placeholder="Улица"
       ref={refs[index]}
       value={values.street || ''}
@@ -77,7 +87,8 @@ export const AddressSearch: FC<AddressSearchProps> = ({
   );
 
   const homeNumberSearch = (index: number, isDisabled?: boolean) => (
-    <InputSC
+    <Input
+      small
       placeholder="Дом"
       value={values.house}
       onChange={(e) => handleChange(SearchFieldType.House, e.target.value)}
@@ -94,7 +105,8 @@ export const AddressSearch: FC<AddressSearchProps> = ({
   );
 
   const corpusSearch = (index: number, isDisabled?: boolean) => (
-    <InputSC
+    <Input
+      small
       placeholder="Корпус"
       value={values.corpus}
       onChange={(e) => handleChange(SearchFieldType.Corpus, e.target.value)}
@@ -111,7 +123,8 @@ export const AddressSearch: FC<AddressSearchProps> = ({
   );
 
   const apartmentSearch = (index: number, isDisabled?: boolean) => (
-    <InputSC
+    <Input
+      small
       placeholder="Квартирa"
       value={values.apartment}
       onChange={(e) => handleChange(SearchFieldType.Apartment, e.target.value)}
@@ -128,7 +141,8 @@ export const AddressSearch: FC<AddressSearchProps> = ({
   );
 
   const questionSearch = (index: number, isDisabled?: boolean) => (
-    <InputSC
+    <Input
+      small
       placeholder="Л/С или ФИО"
       value={values.question}
       onChange={(e) => handleChange(SearchFieldType.Question, e.target.value)}

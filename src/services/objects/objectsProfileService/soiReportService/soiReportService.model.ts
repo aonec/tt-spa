@@ -13,10 +13,10 @@ import {
   GetHouseManagementsRequestPayload,
   SoiReportType,
 } from './soiReportService.types';
-import { $existingCities } from '01/features/housingStocks/displayHousingStockCities/models';
 import { BlobResponseErrorType } from 'types';
 import { message } from 'antd';
-import { GetAddressesWithCityRequestPayload } from '01/features/settings/uniqueWorkingRangeService/uniqueWorkingRangeService.types';
+import { GetAddressesWithCityRequestPayload } from 'services/workingRanges/uniqueWorkingRangeService/uniqueWorkingRangeService.types';
+import { addressSearchService } from 'services/addressSearchService/addressSearchService.models';
 
 const domain = createDomain('soiReportService');
 
@@ -123,7 +123,7 @@ export const soiReportService = {
     $isModalOpen,
     $soiReportType,
     $houseManagements,
-    $existingCities,
+    $existingCities: addressSearchService.outputs.$existingCities,
     $selectedCity,
     $addressesPagedList,
     $isCreateReportLoading,

@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import moment from 'moment';
-import { Alert } from '01/shared/ui/Alert/Alert';
+import { Alert } from 'ui-kit/Alert/Alert';
 import {
   AccountNumberWrapper,
   AlertContent,
@@ -8,7 +8,7 @@ import {
   ApartmentAlertWrapper,
   HomeownerAccountChangeDate,
 } from './ReplacedAccountAlert.styled';
-import { ReplacedAccountAlertProps} from './ReplacedAccountAlert.types';
+import { ReplacedAccountAlertProps } from './ReplacedAccountAlert.types';
 
 export const ReplacedAccountAlert: FC<ReplacedAccountAlertProps> = ({
   recentlyReplacedAccount,
@@ -17,12 +17,12 @@ export const ReplacedAccountAlert: FC<ReplacedAccountAlertProps> = ({
     return null;
   }
   const closedDate = moment(recentlyReplacedAccount.closedAt).format(
-    'DD.MM.YYYY'
+    'DD.MM.YYYY',
   );
 
   return (
     <ApartmentAlertWrapper>
-      <Alert type="info">
+      <Alert>
         <AlertContent>
           <AlertTextWrapper>
             Лицевой счет
@@ -35,7 +35,7 @@ export const ReplacedAccountAlert: FC<ReplacedAccountAlertProps> = ({
             </AccountNumberWrapper>
           </AlertTextWrapper>
           <HomeownerAccountChangeDate>
-          Дата изменения: {closedDate}
+            Дата изменения: {closedDate}
           </HomeownerAccountChangeDate>
         </AlertContent>
       </Alert>

@@ -6,6 +6,7 @@ import {
   UserManagingFirmName,
   UserInfoWrapper,
   UserIconSC,
+  UserLoader,
 } from './UserInfo.styled';
 import { UserInfoProps } from './UserInfo.types';
 
@@ -15,9 +16,12 @@ export const UserInfo: FC<UserInfoProps> = ({ isLoading, currentUser }) => {
       <UserEmailWrapper>
         <UserIconSC />
         <Tooltip title={currentUser?.email}>
-          <UserEmail to={`/user/${currentUser?.id}`}>
-            {currentUser?.email}
-          </UserEmail>
+          {!currentUser && <UserLoader active={isLoading} />}
+          {currentUser && (
+            <UserEmail to={`/user/${currentUser?.id}`}>
+              {currentUser?.email}
+            </UserEmail>
+          )}
         </Tooltip>
       </UserEmailWrapper>
       <UserManagingFirmName>

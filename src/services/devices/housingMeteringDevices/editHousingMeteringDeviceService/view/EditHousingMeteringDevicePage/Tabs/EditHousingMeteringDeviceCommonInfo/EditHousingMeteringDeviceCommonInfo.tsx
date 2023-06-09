@@ -1,4 +1,4 @@
-import { ErrorMessage } from '01/shared/ui/ErrorMessage';
+import { ErrorMessage } from 'ui-kit/ErrorMessage';
 import { MagistralsDisctionary } from 'dictionaries';
 import { useFormik } from 'formik';
 import moment from 'moment';
@@ -12,6 +12,7 @@ import { Input } from 'ui-kit/Input';
 import { Select } from 'ui-kit/Select';
 import { ResourceSelect } from 'ui-kit/shared_components/ResourceSelect';
 import {
+  ButtonSC,
   Footer,
   GridContainer,
   PipeInfoWrapper,
@@ -29,7 +30,6 @@ export const EditHousingMeteringDeviceCommonInfo: FC<
 > = ({
   housingMeteringDevice,
   handleSubmitForm,
-  deviceId,
   onCancel,
   communicationPipes,
 }) => {
@@ -166,9 +166,7 @@ export const EditHousingMeteringDeviceCommonInfo: FC<
         <Button type="ghost" onClick={() => onCancel()}>
           Отмена
         </Button>
-        <Button type="default" sidePadding={10} onClick={() => handleSubmit()}>
-          Сохранить
-        </Button>
+        <ButtonSC onClick={() => handleSubmit()}>Сохранить</ButtonSC>
       </Footer>
     </Wrapper>
   );

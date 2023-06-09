@@ -18,10 +18,6 @@ import {
 } from 'myApi';
 import { houseManagementsService } from 'services/objects/houseManagementsService';
 import {
-  $existingCities,
-  ExistingCitiesGate,
-} from '01/features/housingStocks/displayHousingStockCities/models';
-import {
   downloadReportFile,
   getActJournalReport,
   getAddressesWithHouseManagements,
@@ -51,6 +47,7 @@ import {
 import { ReportType } from '../view/ReportsPage/ReportsPage.types';
 import { BlobResponseErrorType, EffectFailDataAxiosError } from 'types';
 import { message } from 'antd';
+import { addressSearchService } from 'services/addressSearchService/addressSearchService.models';
 
 const domain = createDomain('reportViewService');
 
@@ -285,7 +282,7 @@ export const reportViewService = {
     clearFiltrationValues,
   },
   outputs: {
-    $existingCities,
+    $existingCities: addressSearchService.outputs.$existingCities,
     $houseManagements: houseManagementsService.outputs.$houseManagements,
     $addressesWithHouseManagements,
     $filtrationValues,
@@ -298,7 +295,7 @@ export const reportViewService = {
     $emloyeeReportData,
   },
   gates: {
-    ExistingCitiesGate,
+    ExistingCitiesGate: addressSearchService.gates.ExistingCitiesGate,
     AddressesWithHouseManagementsGate,
     HouseManagementsGate: houseManagementsService.gates.HouseManagementsGate,
     ReportViewGate,

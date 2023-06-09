@@ -1,4 +1,7 @@
-import { ApartmentResponse } from 'myApi';
+import {
+  ApartmentResponse,
+  IndividualDeviceMountPlaceForFilterResponse,
+} from 'myApi';
 import {
   GetApartmentsRequestPayload,
   UpdateApartmentRequestPayload,
@@ -13,10 +16,13 @@ export type ApartmentsReadingsProps = {
   handleUpdateApartment: (payload: UpdateApartmentRequestPayload) => void;
   handlePauseApartment: () => void;
   handleCancelPauseApartment: () => void;
-  openEditPersonalNumberModal: () => void;
+  openEditPersonalNumberModal: (payload: boolean) => boolean;
   setSelectedHomeownerName: (payload: string) => void;
   selectedHomeownerName: string | null;
   isPermitionToApartmentStatusPatch: boolean;
+  allIndividualDeviceMountPlaces:
+    | IndividualDeviceMountPlaceForFilterResponse[]
+    | null;
 };
 
 export enum SearchMode {

@@ -6,7 +6,7 @@ import { useFormik } from 'formik';
 import * as yup from 'yup';
 import { Input } from 'ui-kit/Input';
 import { FormItem } from 'ui-kit/FormItem';
-import { ErrorMessage } from '01/shared/ui/ErrorMessage';
+import { ErrorMessage } from 'ui-kit/ErrorMessage';
 import { GridContainer } from './AddContractorForm.styled';
 
 export const AddContractorForm: FC<AddContractorFormProps> = ({
@@ -39,7 +39,7 @@ export const AddContractorForm: FC<AddContractorFormProps> = ({
         .required('Обязательное поле'),
     }),
   });
-  
+
   return (
     <Form id={formId} onSubmitCapture={handleSubmit}>
       <FormItem label="Название организации">
@@ -74,7 +74,7 @@ export const AddContractorForm: FC<AddContractorFormProps> = ({
             onChange={(value) =>
               setFieldValue(
                 'cellphone',
-                phoneMask.unmaskedValue(value.target.value)
+                phoneMask.unmaskedValue(value.target.value),
               )
             }
           />

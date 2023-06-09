@@ -1,4 +1,3 @@
-import { $existingCities } from '01/features/housingStocks/displayHousingStockCities/models';
 import { combine, createDomain, sample } from 'effector';
 import { createGate } from 'effector-react';
 import {
@@ -18,6 +17,7 @@ import {
 import { prepareFilterBeforeSenging } from './displayStatisticsListByManagingFirmService.utils';
 import { SubscriberStatisticsForm } from './view/ManagingFirmSearch/ManagingFirmSearch.types';
 import _ from 'lodash';
+import { addressSearchService } from 'services/addressSearchService/addressSearchService.models';
 
 const domain = createDomain('displayStatisticsListByManagingFirmService');
 
@@ -104,7 +104,9 @@ sample({
 });
 
 sample({
-  clock: $existingCities.map((cities) => _.last(cities)),
+  clock: addressSearchService.outputs.$existingCities.map((cities) =>
+    _.last(cities),
+  ),
   filter: Boolean,
   target: selectCity,
 });
@@ -134,7 +136,7 @@ export const displayStatisticsListByManagingFirmService = {
   },
   outputs: {
     $managingFirms,
-    $cities: $existingCities,
+    $cities: addressSearchService.outputs.$existingCities,
     $selectedCity,
     $selectedManagingFirm,
     $selectedHousingStock,

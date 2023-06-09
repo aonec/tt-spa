@@ -6,9 +6,7 @@ import { GoBack } from 'ui-kit/shared_components/GoBack';
 import { HeaderInfoString } from 'ui-kit/shared_components/HeaderInfoString';
 import { DeviceStatus } from 'ui-kit/shared_components/IndividualDeviceInfo/DeviceStatus';
 import { ResourceIconLookup } from 'ui-kit/shared_components/ResourceIconLookup';
-import { Tabs } from 'ui-kit/Tabs';
 import { LinkCard } from 'ui-kit/shared_components/LinkCard';
-import { PageHeader } from '01/shared/ui/PageHeader';
 import { getHousingStockItemAddress } from 'utils/getHousingStockItemAddress';
 import { CheckHousingMeteringDeviceContainer } from 'services/devices/housingMeteringDevices/checkHousingMeteringDeviceService';
 import { CloseHousingMeteringDeviceContainer } from 'services/devices/housingMeteringDevices/closeHousingMeteringDeviceService';
@@ -22,12 +20,17 @@ import {
   DeviceNumber,
   DeviceTitle,
   PageGridContainer,
-  PageTitle,
+  PageHeaderSC,
   ResourceIconWrapper,
   RightBlock,
+  TabsSC,
   Wrapper,
 } from './HousingMeteringDeviceProfile.styled';
 import { HousingMeteringDeviceProfileProps } from './HousingMeteringDeviceProfile.types';
+import { ContextMenuButtonColor } from 'ui-kit/ContextMenuButton/ContextMenuButton.types';
+import { TaskGroupingFilter } from 'myApi';
+
+const { TabPane } = TabsSC;
 
 export const HousingMeteringDeviceProfile: FC<
   HousingMeteringDeviceProfileProps
@@ -65,9 +68,9 @@ export const HousingMeteringDeviceProfile: FC<
       <Wrapper>
         <GoBack />
 
-        <PageHeader
+        <PageHeaderSC
           title={
-            <PageTitle>
+            <div>
               <DeviceTitle>
                 <ResourceIconWrapper>
                   {resource && <ResourceIconLookup resource={resource} />}
@@ -86,7 +89,7 @@ export const HousingMeteringDeviceProfile: FC<
                   <DeviceStatus isActive={isActive} />
                 )}
               </HeaderInfoString>
-            </PageTitle>
+            </div>
           }
           contextMenu={{
             menuButtons: [
@@ -95,41 +98,36 @@ export const HousingMeteringDeviceProfile: FC<
                 onClick: () => {
                   push(`/housingMeteringDevices/${deviceId}/edit`);
                 },
-                color: 'default',
                 hidden: !isPermitionToEditHousingMeteringDevice,
               },
               {
                 title: 'Поверка ОДПУ',
                 onClick: () => handleCheckModalOpen(),
-                color: 'default',
                 hidden: !isPermitionToCheckHousingMeteringDevice,
               },
               {
                 title: 'Закрыть ОДПУ',
                 onClick: () => handleDeviceClosingModalOpen(),
-                color: 'danger',
+                color: ContextMenuButtonColor.danger,
                 hidden: !isPermitionToCloseHousingMeteringDevice,
               },
             ],
           }}
         />
 
-        <Tabs
+        <TabsSC
           onChange={(value) => {
             handleChangeTab(value as HousingProfileTabs);
           }}
           activeKey={currentTab}
         >
-          <Tabs.TabPane
-            tab="Общие данные"
-            key={HousingProfileTabs.CommonInfo}
-          />
-          <Tabs.TabPane
+          <TabPane tab="Общие данные" key={HousingProfileTabs.CommonInfo} />
+          <TabPane
             tab="Настройки соединения"
             key={HousingProfileTabs.ConnectionSettings}
           />
-          <Tabs.TabPane tab="Документы" key={HousingProfileTabs.Documents} />
-        </Tabs>
+          <TabPane tab="Документы" key={HousingProfileTabs.Documents} />
+        </TabsSC>
 
         <PageGridContainer>
           {currentTab === HousingProfileTabs.CommonInfo && (
@@ -146,7 +144,7 @@ export const HousingMeteringDeviceProfile: FC<
             <LinkCard
               text={`Задачи: ${tasksCount}`}
               link={stringifyUrl({
-                url: '/tasks/list/Observing',
+                url: `/tasks/list/${TaskGroupingFilter.Executing}`,
                 query: { housingMeteringDeviceId: housingMeteringDevice?.id },
               })}
               showLink={Boolean(tasksCount)}

@@ -8,13 +8,13 @@ import {
   EOrderByRule,
   HousingByFilterResponse,
 } from 'myApi';
-import { CalculatorsListRequestPayload } from '01/features/carlculators/calculatorsIntoHousingStockService/calculatorsIntoHousingStockService.types';
+import { CalculatorsListRequestPayload } from 'services/calculators/calculatorsListService/calculatorsListService.types';
 import { createGate } from 'effector-react';
-import { groupDevicesByObjects } from '01/_pages/Devices/components/utils/groupDevicesByObjects';
 import { GetHousingByFilterRequestPayload } from '../devicesPageService/individualDevicesProfileService/view/IndividualDevicesProfile/individualDevicesViewByAddressService/individualDevicesViewByAddressService.types';
 import { DevicesSearchType } from '../devicesPageService/devicesPageService.types';
 import { EffectFailDataAxiosError } from 'types';
 import { message } from 'antd';
+import { groupDevicesByObjects } from 'utils/groupDevicesByObjects';
 
 const domain = createDomain('displayDevicesService');
 

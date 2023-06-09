@@ -1,8 +1,9 @@
-import { Alert } from '01/shared/ui/Alert';
+import { Alert } from 'ui-kit/Alert';
 import { EApartmentStatus } from 'myApi';
 import React, { FC } from 'react';
 import { ApartmentOnPauseAlertProps } from './ApartmentOnPauseAlert.types';
 import moment from 'moment';
+import { AlertIconType, AlertType } from 'ui-kit/Alert/Alert.types';
 
 export const ApartmentOnPauseAlert: FC<ApartmentOnPauseAlertProps> = ({
   apartment,
@@ -22,7 +23,7 @@ export const ApartmentOnPauseAlert: FC<ApartmentOnPauseAlertProps> = ({
   }
 
   return (
-    <Alert color="FC525B" type="stop">
+    <Alert type={AlertType.danger} icon={AlertIconType.stop}>
       Квартира на паузе: {from} - {to}
     </Alert>
   );

@@ -1,5 +1,4 @@
-import { $existingCities } from '01/features/housingStocks/displayHousingStockCities/models';
-import { resourceDisablingScheduleServiceService } from '01/features/settings/resourcesDisablingScheduleService/ResourceDisablingScheduleService.model';
+import { resourceDisablingScheduleServiceService } from 'services/settings/resourcesDisablingScheduleService/ResourceDisablingScheduleService.model';
 import { message } from 'antd';
 import { combine, createDomain, forward, sample, split } from 'effector';
 import {
@@ -21,6 +20,7 @@ import {
   fetchExistingHousingStocksWithHouseManagement,
 } from './createResourceDisconnectionService.api';
 import { EAddressDetails } from './createResourceDisconnectionService.types';
+import { addressSearchService } from 'services/addressSearchService/addressSearchService.models';
 
 const domain = createDomain('createResourceDisconnectionService');
 
@@ -163,7 +163,7 @@ sample({
 
 sample({
   source: sample({
-    source: $existingCities,
+    source: addressSearchService.outputs.$existingCities,
     filter: (cities): cities is string[] =>
       Boolean(cities && cities.length === 1),
   }),

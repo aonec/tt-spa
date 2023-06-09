@@ -15,15 +15,15 @@ import { AddressTabProps } from './AddressTab.types';
 import { getPreparedStreetsOptions } from 'services/objects/createObjectService/view/CreateObjectPage/CreateObjectAddressStage/CreateObjectAddressStage.utils';
 import { FormItem } from 'ui-kit/FormItem';
 import { Select } from 'ui-kit/Select';
-import { ErrorMessage } from '01/shared/ui/ErrorMessage';
 import { AutoComplete } from 'ui-kit/AutoComplete';
 import { Input } from 'ui-kit/Input';
 import { SpaceLine } from '01/shared/ui/Layout/Space/Space';
-import { StyledSelect } from '01/shared/ui/Select/components';
 import { LinkButton } from 'ui-kit/shared_components/LinkButton';
 import { Button } from 'ui-kit/Button';
-import { ExistingCitiesGate } from '01/features/housingStocks/displayHousingStockCities/models';
-import { ExistingStreetsGate } from '01/features/housingStocks/displayHousingStockStreets/model';
+import { ErrorMessage } from 'ui-kit/ErrorMessage';
+import { addressSearchService } from 'services/addressSearchService/addressSearchService.models';
+
+const { ExistingCitiesGate, ExistingStreetsGate } = addressSearchService.gates;
 
 export const AddressTab: FC<AddressTabProps> = ({
   address,
@@ -141,7 +141,7 @@ export const AddressTab: FC<AddressTabProps> = ({
           <>
             <GridWrapper key={index}>
               <FormItem label="Город">
-                <StyledSelect value={values.city || undefined} disabled />
+                <Select value={values.city || undefined} disabled />
               </FormItem>
 
               <FormItem label="Улица">
@@ -225,7 +225,7 @@ export const AddressTab: FC<AddressTabProps> = ({
               </Button>
             </ButtonPadding>
             <Button
-              sidePadding={25}
+              // sidePadding={25}
               onClick={() => {
                 handleSubmit();
               }}

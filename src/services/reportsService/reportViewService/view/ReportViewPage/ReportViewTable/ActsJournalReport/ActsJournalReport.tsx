@@ -1,5 +1,4 @@
 import { Empty } from 'antd';
-import { useStore } from 'effector-react';
 import moment from 'moment';
 import React, { FC } from 'react';
 import { ResourceIconLookup } from 'ui-kit/shared_components/ResourceIconLookup';
@@ -11,18 +10,13 @@ import {
 } from '../IndividualDevicesReport/IndividualDevicesReport.styled';
 import { getReportElemAddress } from '../ReportViewTable.utils';
 import { ActsCountPanel } from './ActsCountPanel';
-import { actsJournalReportService } from './ActsJournalReport.model';
 import { ActDate } from './ActsJournalReport.styled';
 import { ActsJournalReportProps } from './ActsJournalReport.types';
-
-const { outputs, gates } = actsJournalReportService;
-const { ApartmentActTypesGate } = gates;
+import { ActTypesNamesLookup } from 'dictionaries';
 
 export const ActsJournalReport: FC<ActsJournalReportProps> = ({
   actJournalReportData,
 }) => {
-  const apartmentActTypes = useStore(outputs.$actTypes);
-
   if (!actJournalReportData) {
     return (
       <Empty
@@ -34,7 +28,6 @@ export const ActsJournalReport: FC<ActsJournalReportProps> = ({
 
   return (
     <>
-      <ApartmentActTypesGate />
       <Table
         columns={[
           {
@@ -71,9 +64,7 @@ export const ActsJournalReport: FC<ActsJournalReportProps> = ({
           {
             label: 'Тип документа',
             size: '190px',
-            render: (act) =>
-              apartmentActTypes?.find((elem) => elem.key === act.actType)
-                ?.value,
+            render: (act) => ActTypesNamesLookup[act.actType],
           },
           {
             label: 'Ресурс',
@@ -86,7 +77,7 @@ export const ActsJournalReport: FC<ActsJournalReportProps> = ({
             ),
           },
           {
-            label: 'Дата раброт',
+            label: 'Дата работ',
             size: '100px',
             render: (elem) => moment(elem.actJobDate).format('DD.MM.YYYY'),
           },

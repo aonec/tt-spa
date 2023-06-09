@@ -1,5 +1,5 @@
 import { message } from 'antd';
-import { EffectFailDataAxiosError } from './../../../types/index';
+import { EffectFailDataAxiosError } from '../../../types/index';
 import { createDomain, forward } from 'effector';
 import { createGate } from 'effector-react';
 import {

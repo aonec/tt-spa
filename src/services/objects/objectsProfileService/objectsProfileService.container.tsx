@@ -19,6 +19,7 @@ import {
   HeatIndividualDevicesReportContainer,
   heatIndividualDevicesReportService,
 } from './heatIndividualDevicesReportService';
+import { FlowTemperatureDeviationReportContainer } from './flowTemperatureDeviationReport';
 
 const { inputs } = objectsProfileService;
 
@@ -45,6 +46,10 @@ export const ObjectsProfileContainer = () => {
 
   const handleOpenHeatIndividualDevicesReportModal = useEvent(
     heatIndividualDevicesReportService.inputs.openModal,
+  );
+
+  const openFlowTemperatureDeviationReportModal = useEvent(
+    inputs.openFlowTemperatureDeviationReportModal,
   );
 
   const handleCreateObject = () => history.push('/objects/create');
@@ -74,6 +79,10 @@ export const ObjectsProfileContainer = () => {
   const isPermitionToCreateObjectAndIPUReport = usePermission([
     ESecuredIdentityRoleName.Administrator,
   ]);
+  const isPermitionToCreateFeedFlowPipeTemperatureReport = usePermission([
+    ESecuredIdentityRoleName.Administrator,
+    ESecuredIdentityRoleName.ManagingFirmSpectator,
+  ]);
 
   useEffect(() => {
     if (!searchType) {
@@ -89,6 +98,7 @@ export const ObjectsProfileContainer = () => {
       <ChooseTypeOfResourceDisconnectionModalContainer />
       <FeedFlowBackReportContainer />
       <GroupReportContainer />
+      <FlowTemperatureDeviationReportContainer />
       <ObjectsProfile
         openSoiReportModal={() => openSoiReportModal()}
         searchType={searchType}
@@ -109,9 +119,15 @@ export const ObjectsProfileContainer = () => {
         }
         isPermitionToDownloadSOIReport={isPermitionToDownloadSOIReport}
         isPermitionToDownloadGroupReport={isPermitionToDownloadGroupReport}
+        isPermitionToCreateFeedFlowPipeTemperatureReport={
+          isPermitionToCreateFeedFlowPipeTemperatureReport
+        }
         handleOpenGroupreportModal={() => handleOpenGroupreportModal()}
         openHeatIndividualDevicesReportModal={() =>
           handleOpenHeatIndividualDevicesReportModal()
+        }
+        openFlowTemperatureDeviationReportModal={
+          openFlowTemperatureDeviationReportModal
         }
       />
     </>

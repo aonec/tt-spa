@@ -1,4 +1,3 @@
-import { PageHeader } from '01/shared/ui/PageHeader';
 import { stringifyUrl } from 'query-string';
 import React, { FC, ReactElement, useMemo } from 'react';
 import { useHistory } from 'react-router-dom';
@@ -16,16 +15,17 @@ import {
   Content,
   ContentWrapper,
   CalculatorIconSC,
-  HeaderTitleWrapper,
-  HeaderWrapper,
   TabsSC,
   PanelsWrapper,
+  PageHeaderSC,
 } from './CalculatorProfile.styled';
 import { CalculatorProfileProps } from './CalculatorProfile.types';
 import { ConnectionInfo } from './ConnectionInfo';
 import { DocumentsPanel } from './DocumentsPanel';
 import { NodeDocumentsList } from './NodeDocumentsList';
 import { RelatedNodesList } from './RelatedNodesList';
+import { ContextMenuButtonColor } from 'ui-kit/ContextMenuButton/ContextMenuButton.types';
+import { TaskGroupingFilter } from 'myApi';
 
 const { TabPane } = Tabs;
 
@@ -113,7 +113,7 @@ export const CalculatorProfile: FC<CalculatorProfileProps> = ({
         {
           title: 'Снять вычислитель с учёта',
           onClick: () => handleOpenCloseCalculatorModal(calculator),
-          color: 'danger',
+          color: ContextMenuButtonColor.danger,
           hidden: !isPermitionToCalculatorActions,
         },
       ],
@@ -157,12 +157,15 @@ export const CalculatorProfile: FC<CalculatorProfileProps> = ({
   return (
     <div>
       <GoBack />
-      <HeaderWrapper>
-        <CalculatorIconSC />
-        <HeaderTitleWrapper>
-          <PageHeader title={headerTitle} contextMenu={menuButtons} />
-        </HeaderTitleWrapper>
-      </HeaderWrapper>
+      <PageHeaderSC
+        title={
+          <>
+            <CalculatorIconSC />
+            {headerTitle}
+          </>
+        }
+        contextMenu={menuButtons}
+      />
       <AdditionalInfoWrapper>
         <>{getHousingStockAddress(address, true)}</>
       </AdditionalInfoWrapper>
@@ -187,7 +190,7 @@ export const CalculatorProfile: FC<CalculatorProfileProps> = ({
           <LinkCard
             text={`Задачи: ${numberOfTasks}`}
             link={stringifyUrl({
-              url: '/tasks/list/Observing',
+              url: `/tasks/list/${TaskGroupingFilter.Executing}`,
               query: { calculatorId: id },
             })}
             showLink={Boolean(numberOfTasks)}

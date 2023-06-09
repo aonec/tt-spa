@@ -5,19 +5,20 @@ import { Select } from 'ui-kit/Select';
 import { Title } from 'ui-kit/Title';
 import { Button } from 'ui-kit/Button';
 import { Footer } from '../CreateNodePage.styled';
-import { FormWrapper } from './MountAddress.styled';
+import { ButtonSC, FormWrapper } from './MountAddress.styled';
 import { MountAddressProps } from './MountAddress.types';
 import { useFormik } from 'formik';
 import { validationSchema } from './MountAddress.constants';
-import { ErrorMessage } from '01/shared/ui/ErrorMessage';
-import { ExistingStreetsGate } from '01/features/housingStocks/displayHousingStockStreets/model';
+import { ErrorMessage } from 'ui-kit/ErrorMessage';
 import { AutoComplete } from 'ui-kit/AutoComplete';
 import { getPreparedStreetsOptions } from 'services/objects/createObjectService/view/CreateObjectPage/CreateObjectAddressStage/CreateObjectAddressStage.utils';
 import { useHistory } from 'react-router-dom';
 import { mountAddressService } from './MountAddress.models';
 import { useStore } from 'effector-react';
+import { addressSearchService } from 'services/addressSearchService/addressSearchService.models';
 
 const { outputs, effects } = mountAddressService;
+const { ExistingStreetsGate } = addressSearchService.gates;
 
 export const MountAddress: FC<MountAddressProps> = ({
   housingStock,
@@ -143,9 +144,7 @@ export const MountAddress: FC<MountAddressProps> = ({
           <Button type="ghost" onClick={() => history.goBack()}>
             Отмена
           </Button>
-          <Button sidePadding={20} onClick={() => handleSubmitForm()}>
-            Далее
-          </Button>
+          <ButtonSC onClick={() => handleSubmitForm()}>Далее</ButtonSC>
         </Footer>
       </div>
     </>

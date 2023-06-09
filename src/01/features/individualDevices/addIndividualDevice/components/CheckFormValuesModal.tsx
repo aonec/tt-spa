@@ -1,13 +1,10 @@
-import { $individualDeviceMountPlaces } from '01/features/individualDeviceMountPlaces/displayIndividualDeviceMountPlaces/models';
 import { Flex } from '01/shared/ui/Layout/Flex';
 import { Space } from '01/shared/ui/Layout/Space/Space';
 import { Footer, Header, StyledModal } from '01/shared/ui/Modal/Modal';
-import { ButtonTT } from '01/tt-components';
-import { allResources } from '01/tt-components/localBases';
 import { useForm } from 'effector-forms/dist';
 import { useStore } from 'effector-react';
 import moment from 'moment';
-import { EResourceType, IndividualDeviceMountPlaceListResponse } from 'myApi';
+import { IndividualDeviceMountPlaceListResponse } from 'myApi';
 import React, { ReactNode } from 'react';
 import styled from 'styled-components';
 import {
@@ -18,10 +15,11 @@ import {
   createIndividualDeviceFx,
 } from '../models';
 import { FileIcon, TrashIcon } from '../icons';
-import { Loader } from '01/components';
-import { StockIconTT } from '01/_pages/Devices/components/DeviceBlock/DeviceBlock';
-import DeviceIcons from '01/_components/DeviceIcons';
+import { Button } from 'ui-kit/Button';
 import { FileData } from 'ui-kit/DocumentsService/DocumentsService.types';
+import { ResourceInfo } from 'ui-kit/shared_components/ResourceInfo';
+import { individualDeviceMountPlacesService } from 'services/devices/individualDeviceMountPlacesService';
+import { getInputBorderColor } from 'services/meters/individualDeviceMetersInputService/view/MetersInputsBlock/MetersInputsBlock.styled';
 
 interface ILine {
   name: string;
@@ -34,22 +32,23 @@ interface RemoveFile {
 
 export const CheckFormValuesModal = () => {
   const { fields } = useForm(addIndividualDeviceForm);
-  const mountPlaces = useStore($individualDeviceMountPlaces);
+  const mountPlaces = useStore(
+    individualDeviceMountPlacesService.outputs.$individualDeviceMountPlaces,
+  );
 
   const pending = useStore(createIndividualDeviceFx.pending);
 
   const isOpen = useStore($isCheckCreationDeviceFormDataModalOpen);
   const onCancel = () => cancelCheckingButtonClicked();
 
-  const deviceIcon = DeviceIcons[fields.resource.value! || ''];
-
   const lines: ILine[] = [
     {
       name: 'Ресурс',
       value: (
         <Flex>
-          <StockIconTT icon={deviceIcon?.icon} fill={deviceIcon?.color} />
-          <div>{getResourceName(fields.resource.value)}</div>
+          {fields.resource.value && (
+            <ResourceInfo resource={fields.resource.value} />
+          )}
         </Flex>
       ),
     },
@@ -74,14 +73,14 @@ export const CheckFormValuesModal = () => {
       name: 'Первичные показания прибора',
       value: getStartupReadingsString(
         fields.startupReadings.value,
-        deviceIcon?.color,
+        getInputBorderColor({ resource: fields.resource.value! }),
       ),
     },
     {
       name: 'Текущие показания прибора',
       value: getStartupReadingsString(
         fields.defaultReadings.value,
-        deviceIcon?.color,
+        getInputBorderColor({ resource: fields.resource.value! }),
       ),
     },
     { name: 'Диспетчеризация', value: fields.isPolling.value ? 'Да' : 'Нет' },
@@ -129,17 +128,16 @@ export const CheckFormValuesModal = () => {
       title={<Header>Добавление нового прибора</Header>}
       footer={
         <Footer>
-          <ButtonTT color="white" key="back" onClick={onCancel}>
+          <Button type="ghost" onClick={onCancel}>
             Отмена
-          </ButtonTT>
-          <ButtonTT
-            color="blue"
-            key="submit"
+          </Button>
+          <Button
+            isLoading={pending}
             disabled={pending}
-            onClick={confirmCreationNewDeviceButtonClicked}
+            onClick={() => confirmCreationNewDeviceButtonClicked()}
           >
-            {pending ? <Loader show /> : 'Создать прибор'}
-          </ButtonTT>
+            Создать прибор
+          </Button>
         </Footer>
       }
     >
@@ -199,12 +197,6 @@ const renderFile = (file: FileData & RemoveFile) => (
     <TrashIcon style={{ cursor: 'pointer' }} onClick={file.removeFile} />
   </StyledFile>
 );
-
-function getResourceName(resource: EResourceType | null) {
-  if (!resource) return null;
-
-  return allResources.find((elem) => elem.value === resource)?.label || null;
-}
 
 function getMountPlaceById(
   id: number | null,

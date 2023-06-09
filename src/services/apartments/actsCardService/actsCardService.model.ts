@@ -1,4 +1,3 @@
-import { $actTypes } from '01/features/actsJournal/displayActTypes/models';
 import { createDomain, forward } from 'effector';
 import { createGate } from 'effector-react';
 import {
@@ -21,7 +20,7 @@ const saveFileFx = domain.createEffect<DocumentResponse, void>(fetchSaveFile);
 
 $acts.on(
   getPreviousActs.doneData,
-  (_, actsPagedList) => actsPagedList.items || []
+  (_, actsPagedList) => actsPagedList.items || [],
 );
 
 const ActsCardGate = createGate<{ apartmentId: number }>();
@@ -40,7 +39,6 @@ export const actsCardService = {
   inputs: { saveFile },
   outputs: {
     $acts,
-    $actTypes,
   },
   gates: { ActsCardGate },
 };

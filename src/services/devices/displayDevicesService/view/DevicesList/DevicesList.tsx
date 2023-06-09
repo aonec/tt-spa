@@ -1,43 +1,51 @@
-import { DevicesByAddress } from '01/_pages/Devices/components/DevicesByAddress/DevicesByAddress';
 import { Pagination, Skeleton } from 'antd';
 import { Empty } from 'antd';
 import React, { FC } from 'react';
 import { DevicesListProps } from './DevicesList.types';
+import { HousingStockCalculators } from './HousingStockCalculators/HousingStockCalculators';
 
 export const DevicesList: FC<DevicesListProps> = ({
-  devices,
+  housingStocksDevices,
   isLoading,
   total,
   pageNumber,
   pageSize,
   setPageNumber,
-  setAddress,
-  housingsByFilter,
-  devicesSearchType,
-  setDevicesSearchType,
+  setAddressBySwither,
+  housingStocksAddressForSwitcher,
+  mainFilterSearchType,
+  setMainFilterSearchType,
 }) => {
-  const isDevicesListEmpty = !devices.length;
-  const deviceArray = devices.map((addressDevicesGroup) => (
-    <DevicesByAddress
-      key={addressDevicesGroup.address?.mainAddress?.id}
-      addressDevicesGroup={addressDevicesGroup}
-      setAddress={setAddress}
-      housingsByFilter={housingsByFilter.find(
-        (housing) =>
-          housing.current?.id === addressDevicesGroup.devices[0].address?.id
-      )}
-      devicesSearchType={devicesSearchType}
-      setDevicesSearchType={setDevicesSearchType}
-    />
-  ));
+  const isHousingStocksDevicesListEmpty = Boolean(!housingStocksDevices.length);
+
+  const housingStocksDevicesList = housingStocksDevices.map(
+    (housingStockDevices) => (
+      <HousingStockCalculators
+        key={housingStockDevices.address?.mainAddress?.id}
+        housingStockDevices={housingStockDevices}
+        setAddressBySwither={setAddressBySwither}
+        housingStocksAddressForSwitcher={housingStocksAddressForSwitcher.find(
+          (housingStock) =>
+            housingStock.current?.id ===
+            housingStockDevices.devices[0].address?.id,
+        )}
+        mainFilterSearchType={mainFilterSearchType}
+        setMainFilterSearchType={setMainFilterSearchType}
+      />
+    ),
+  );
   return (
     <div>
       {isLoading ? (
         <Skeleton active />
       ) : (
         <>
-          {deviceArray.length ? deviceArray : <Empty />}
-          {!isDevicesListEmpty && (
+          {!isHousingStocksDevicesListEmpty ? (
+            housingStocksDevicesList
+          ) : (
+            <Empty />
+          )}
+          {!isHousingStocksDevicesListEmpty && (
             <Pagination
               total={total}
               showSizeChanger={false}

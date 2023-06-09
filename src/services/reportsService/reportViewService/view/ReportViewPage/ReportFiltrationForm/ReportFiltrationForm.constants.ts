@@ -31,7 +31,7 @@ export const addressesCountTexts: DigitCountTextList = [
 export const selectedCountTexts: DigitCountTextList = [
   {
     digits: [0, 2, 3, 4, 5, 6, 7, 8, 9, 11, 12, 13, 14],
-    text: 'Выбраны',
+    text: 'Выбрано',
   },
   {
     digits: [1],

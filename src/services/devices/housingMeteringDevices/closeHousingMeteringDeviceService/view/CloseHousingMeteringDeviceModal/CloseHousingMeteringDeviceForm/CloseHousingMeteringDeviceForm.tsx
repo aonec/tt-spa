@@ -7,7 +7,7 @@ import { useFormik } from 'formik';
 import moment from 'moment';
 import * as yup from 'yup';
 import { CloseDeviceRequest, EDocumentType } from 'myApi';
-import { ErrorMessage } from '01/shared/ui/ErrorMessage';
+import { ErrorMessage } from 'ui-kit/ErrorMessage';
 import { Description } from './CloseHousingMeteringDeviceForm.styled';
 import { DocumentsUploadContainer, Document } from 'ui-kit/DocumentsService';
 

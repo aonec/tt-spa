@@ -1,1 +1,1 @@
-export { SearchDevices } from './SearchDevices'
+export { SearchDevices } from './SearchDevices';
