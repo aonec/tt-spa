@@ -1,4 +1,4 @@
-import React, { FC, useMemo } from 'react';
+import React, { FC, useMemo, useState } from 'react';
 import {
   AppointmentCreateFormik,
   CreateSealAppointmentFormProps,
@@ -13,6 +13,8 @@ import { Form } from 'antd';
 import _ from 'lodash';
 import { getDatePickerValue } from 'utils/getDatePickerValue';
 import { DatePicker } from 'ui-kit/DatePicker';
+import { validationSchema } from './CreateSealAppointmentForm.constants';
+import { ErrorMessage } from 'ui-kit/ErrorMessage';
 
 export const CreateSealAppointmentForm: FC<CreateSealAppointmentFormProps> = ({
   formId,
@@ -27,19 +29,31 @@ export const CreateSealAppointmentForm: FC<CreateSealAppointmentFormProps> = ({
     [apartment],
   );
 
-  const { values, setFieldValue, submitForm } =
+  const [additionalOption, setAdditionalOption] = useState('');
+
+  const { values, setFieldValue, submitForm, errors } =
     useFormik<AppointmentCreateFormik>({
       initialValues: {
         homeownerFullName: mainHomeowner?.name || undefined,
         homeownerPhone: mainHomeowner?.phoneNumber || undefined,
       },
+      validationSchema,
+      validateOnBlur: false,
+      validateOnChange: false,
       onSubmit: (values) => {
-        const { date, sealCountPlan, homeownerPhone } = values;
+        const { date, sealCountPlan, homeownerPhone, homeownerFullName } =
+          values;
 
-        if (!date || !sealCountPlan || !homeownerPhone) {
+        if (!date || !sealCountPlan || !homeownerPhone || !homeownerFullName) {
           return;
         }
-        handleCreateAppointment({ ...values, date, sealCountPlan, homeownerPhone });
+        handleCreateAppointment({
+          ...values,
+          date,
+          sealCountPlan,
+          homeownerPhone,
+          homeownerFullName,
+        });
       },
     });
 
@@ -54,12 +68,17 @@ export const CreateSealAppointmentForm: FC<CreateSealAppointmentFormProps> = ({
       <GroupWrapper>
         <FormItem label="ФИО">
           <Select
-            placeholder="Выберите"
+            showSearch
+            onSearch={(name) => setAdditionalOption(name)}
+            placeholder="Введите"
             value={values.homeownerFullName || undefined}
-            onChange={(homeowner) =>
-              setFieldValue('homeownerFullName', homeowner)
-            }
+            onChange={(name) => setFieldValue('homeownerFullName', name)}
           >
+            {additionalOption && (
+              <Select.Option value={additionalOption}>
+                {additionalOption}
+              </Select.Option>
+            )}
             {(apartment.homeownerAccounts || []).map((homeowner) => {
               if (!homeowner.name) {
                 return null;
@@ -71,6 +90,7 @@ export const CreateSealAppointmentForm: FC<CreateSealAppointmentFormProps> = ({
               );
             })}
           </Select>
+          <ErrorMessage>{errors.homeownerFullName}</ErrorMessage>
         </FormItem>
         <FormItem label="Телефон">
           <Input
@@ -78,6 +98,7 @@ export const CreateSealAppointmentForm: FC<CreateSealAppointmentFormProps> = ({
             value={values.homeownerPhone}
             onChange={(e) => setFieldValue('homeownerPhone', e.target.value)}
           />
+          <ErrorMessage>{errors.homeownerPhone}</ErrorMessage>
         </FormItem>
       </GroupWrapper>
       <GroupWrapper>
@@ -89,14 +110,18 @@ export const CreateSealAppointmentForm: FC<CreateSealAppointmentFormProps> = ({
               setFieldValue('date', date?.format('YYYY-MM-DD'))
             }
           />
+          <ErrorMessage>{errors.date}</ErrorMessage>
         </FormItem>
         <FormItem label="Количество пломб">
           <Input
             type="number"
             placeholder="Введите"
             value={values.sealCountPlan || undefined}
-            onChange={(e) => setFieldValue('sealCountPlan', Number(e.target.value))}
+            onChange={(e) =>
+              setFieldValue('sealCountPlan', Number(e.target.value))
+            }
           />
+          <ErrorMessage>{errors.sealCountPlan}</ErrorMessage>
         </FormItem>
       </GroupWrapper>
       <FormItem label="Комментарий">

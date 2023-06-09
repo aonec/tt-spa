@@ -43,7 +43,9 @@ export const IndividualDevicesList: FC<IndividualDevicesListProps> = ({
           return null;
         }
 
-        return <IndividualDevicesSealListItem device={device} />;
+        return (
+          <IndividualDevicesSealListItem key={device.id} device={device} />
+        );
       })}
     </Wrapper>
   );
