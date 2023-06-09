@@ -3,7 +3,7 @@ import { createGate } from 'effector-react';
 import { GetProblemDevicesRequestPayload } from './apartmentProblemDevicesService.types';
 import { IndividualDeviceWithExpiredCheckingDateResponse } from 'myApi';
 import { getProblemDevices } from './apartmentProblemDevicesService.api';
-import moment from 'moment';
+import { preparedDevicesToFetch } from './apartmentProblemDevicesService.constants';
 
 const domain = createDomain('apartmentProblemDevicesService');
 
@@ -23,26 +23,11 @@ const $problemDevices = domain
 
 sample({
   clock: ProblemDevicesGate.state,
-  fn: (values) => {
-    const res = {
-      ...values,
-      requestPayload: {
-        ...values.requestPayload,
-        fromDate:
-          values.requestPayload?.fromDate &&
-          moment(values.requestPayload?.fromDate).format('YYYY-MM-DD'),
-        toDate:
-          values.requestPayload?.toDate &&
-          moment(values.requestPayload?.toDate).format('YYYY-MM-DD'),
-      },
-    };
-    return res;
-  },
+  fn: preparedDevicesToFetch,
   filter: (getProblemDevicesRequestPayload) => {
-    return (
-      Boolean(getProblemDevicesRequestPayload.requestPayload.fromDate) &&
-      Boolean(getProblemDevicesRequestPayload.requestPayload.toDate)
-    );
+    const { fromDate, toDate } = getProblemDevicesRequestPayload.requestPayload;
+
+    return Boolean(fromDate && toDate);
   },
   target: fetchProblemDevicesFx,
 });
