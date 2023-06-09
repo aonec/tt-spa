@@ -1,11 +1,18 @@
-import { createDomain } from 'effector';
-import { sample } from 'lodash';
-import { ApartmentResponse } from 'myApi';
+import { createDomain, sample } from 'effector';
+import { ApartmentResponse, AppointmentCreateRequest } from 'myApi';
+import { message } from 'antd';
+import { fetchCreateSeal } from './createSealService.api';
+import { EffectFailDataAxiosError } from 'types';
 
 const domain = createDomain('createSealService');
 
-const createSealAppointment = domain.createEvent();
-const createSealAppointmentFx = domain.createEffect();
+const createSealAppointment =
+  domain.createEvent<Omit<AppointmentCreateRequest, 'apartmentId'>>();
+const createSealAppointmentFx = domain.createEffect<
+  AppointmentCreateRequest,
+  void,
+  EffectFailDataAxiosError
+>(fetchCreateSeal);
 
 const openModal = domain.createEvent<ApartmentResponse>();
 const closeModal = domain.createEvent();
@@ -17,8 +24,28 @@ const $apartment = domain
 const $isOpen = $apartment.map(Boolean);
 
 sample({
+  source: $apartment,
   clock: createSealAppointment,
-  to: createSealAppointmentFx,
+  fn: (apartment, payload) => ({ ...payload, apartmentId: apartment.id }),
+  filter: Boolean,
+  target: createSealAppointmentFx,
+});
+
+createSealAppointmentFx.doneData.watch(() =>
+  message.success('Заявка на опломбировку успешно создана!'),
+);
+
+createSealAppointmentFx.failData.watch((error) => {
+  return message.error(
+    error.response.data.error.Text ||
+      error.response.data.error.Message ||
+      'Произошла ошибка',
+  );
+});
+
+sample({
+  clock: createSealAppointmentFx.doneData,
+  target: closeModal,
 });
 
 export const createSealService = {

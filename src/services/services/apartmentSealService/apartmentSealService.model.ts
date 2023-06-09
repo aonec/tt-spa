@@ -1,5 +1,9 @@
 import { createDomain, forward, sample } from 'effector';
-import { ApartmentResponse, IndividualDeviceListItemResponse } from 'myApi';
+import {
+  ApartmentResponse,
+  AppointmentResponse,
+  IndividualDeviceListItemResponse,
+} from 'myApi';
 import { EffectFailDataAxiosError } from 'types';
 import { message } from 'antd';
 import { createGate } from 'effector-react';
@@ -11,7 +15,10 @@ import {
   GetApartmentsRequestPayload,
   UpdateApartmentRequestPayload,
 } from 'services/meters/metersService/ApartmentReadingsService/ApartmentReadingsService.types';
-import { getIndividualDevices } from './apartmentSealService.api';
+import {
+  getIndividualDevices,
+  getNearestAppointmentForApartment,
+} from './apartmentSealService.api';
 
 const domain = createDomain('apartmentSealService');
 
@@ -39,6 +46,13 @@ const $apartment = domain
     (_, apartment) => apartment,
   )
   .reset(ApartmentGate.close);
+
+const fetchAppointmentFx = domain.createEffect<number, AppointmentResponse[]>(
+  getNearestAppointmentForApartment,
+);
+const $apartmentAppointment = domain
+  .createStore<AppointmentResponse | null>(null)
+  .on(fetchAppointmentFx.doneData, (_, appointments) => appointments[0]);
 
 const handleApartmentLoaded = fetchApartmentFx.doneData;
 const $isApartmentLoading = fetchApartmentFx.pending;
@@ -77,6 +91,13 @@ forward({
   to: fetchApartmentFx,
 });
 
+sample({
+  clock: $apartment,
+  fn: (apartment) => apartment.id,
+  filter: Boolean,
+  target: fetchAppointmentFx,
+});
+
 forward({
   from: handleUpdateApartment,
   to: updateApartmentFx,
@@ -104,6 +125,7 @@ export const apartmentSealService = {
     $apartment,
     $selectedHomeownerName,
     $individualDevices,
+    $apartmentAppointment,
   },
   gates: { ApartmentGate },
 };

@@ -1,12 +1,17 @@
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import { ChevronIcon } from 'ui-kit/icons';
+import { ChevronIcon, UserIcon } from 'ui-kit/icons';
+import { Skeleton } from 'antd';
 
 export const Wrapper = styled.div`
   margin-top: 32px;
+
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 `;
 
-export const ReportBlock = styled(Link)`
+export const LinkBlock = styled(Link)`
   width: 100%;
   height: 72px;
   background: white;
@@ -29,9 +34,13 @@ export const ReportBlock = styled(Link)`
   }
 `;
 
-export const TextWrapper = styled.span`
+export const TitleWrapper = styled.span`
   color: #272f5a;
   font-weight: 500;
+`;
+
+export const TextWrapper = styled.span`
+  color: #272f5ab2;
 `;
 
 export const GroupWrrapper = styled.div`
@@ -42,4 +51,22 @@ export const GroupWrrapper = styled.div`
 
 export const ChevronIconSC = styled(ChevronIcon)`
   transform: rotate(180deg);
+`;
+
+export const UserIconSC = styled(UserIcon)`
+  height: 24px;
+  width: 24px;
+`;
+
+export const AppointmentsInfoWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 8px;
+`;
+
+export const SkeletonInputSC = styled(Skeleton.Input)`
+  width: 144px;
+  height: 24px !important;
+
+  border-radius: 4px;
 `;

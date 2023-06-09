@@ -1,7 +1,10 @@
-import React, { FC, useCallback } from 'react';
+import React, { FC, useCallback, useMemo } from 'react';
 import { ApartmentSealProfileProps } from './ApartmentSealProfile.types';
 import { WithLoader } from 'ui-kit/shared_components/WithLoader';
-import { ContentWrapper } from './ApartmentSealProfile.styled';
+import {
+  AppointmentTextWrapper,
+  ContentWrapper,
+} from './ApartmentSealProfile.styled';
 import { TypeAddressToStart } from 'ui-kit/shared_components/TypeToStart';
 import { ApartmentInfo } from 'services/meters/metersService/ApartmentReadingsService/view/ApartmentsReadings/ApartmentProfile/ApartmentInfo';
 import {
@@ -10,6 +13,7 @@ import {
 } from 'services/addressSearchService/view/AddressSearch/AddressSearch.types';
 import { AddressSearchContainer } from 'services/addressSearchService';
 import { IndividualDevicesList } from './IndividualDevicesList';
+import moment from 'moment';
 
 export const ApartmentSealProfile: FC<ApartmentSealProfileProps> = ({
   apartment,
@@ -20,8 +24,15 @@ export const ApartmentSealProfile: FC<ApartmentSealProfileProps> = ({
   updateApartment,
   individualDevices,
   openCreateSealAppointmentModal,
+  nearestAppointment,
 }) => {
   const address = apartment?.housingStock?.address?.mainAddress;
+  const appointmentDate = useMemo(
+    () =>
+      nearestAppointment &&
+      moment(nearestAppointment.date).format('DD.MM.YYYY'),
+    [nearestAppointment],
+  );
 
   const handleSubmit = useCallback(
     (values: AddressSearchValues) => {
@@ -86,6 +97,13 @@ export const ApartmentSealProfile: FC<ApartmentSealProfileProps> = ({
                   onClick: () => openCreateSealAppointmentModal(apartment),
                 },
               ]}
+              additionalHeaderInfo={
+                appointmentDate && (
+                  <AppointmentTextWrapper>
+                    Запись на опломбировку: {appointmentDate}
+                  </AppointmentTextWrapper>
+                )
+              }
             />
             <IndividualDevicesList individualDevices={individualDevices} />
           </ContentWrapper>

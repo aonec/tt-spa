@@ -29,7 +29,6 @@ export const CreateSealContainer = () => {
         )
       }
       formId={fromId}
-      onSubmit={handleCreateAppointment}
       onCancel={closeModal}
     />
   );

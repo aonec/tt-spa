@@ -1,5 +1,8 @@
 import React, { FC, useMemo } from 'react';
-import { CreateSealAppointmentFormProps } from './CreateSealAppointmentForm.types';
+import {
+  AppointmentCreateFormik,
+  CreateSealAppointmentFormProps,
+} from './CreateSealAppointmentForm.types';
 import { useFormik } from 'formik';
 import { FormItem } from 'ui-kit/FormItem';
 import { Input } from 'ui-kit/Input';
@@ -24,15 +27,21 @@ export const CreateSealAppointmentForm: FC<CreateSealAppointmentFormProps> = ({
     [apartment],
   );
 
-  const { values, setFieldValue, submitForm } = useFormik({
-    initialValues: {
-      sealNumbers: undefined,
-      id: mainHomeowner?.id || undefined,
-      phoneNumber: mainHomeowner?.phoneNumber || undefined,
-      date: '',
-    },
-    onSubmit: handleCreateAppointment,
-  });
+  const { values, setFieldValue, submitForm } =
+    useFormik<AppointmentCreateFormik>({
+      initialValues: {
+        homeownerFullName: mainHomeowner?.name || undefined,
+        homeownerPhone: mainHomeowner?.phoneNumber || undefined,
+      },
+      onSubmit: (values) => {
+        const { date, sealCountPlan, homeownerPhone } = values;
+
+        if (!date || !sealCountPlan || !homeownerPhone) {
+          return;
+        }
+        handleCreateAppointment({ ...values, date, sealCountPlan, homeownerPhone });
+      },
+    });
 
   return (
     <Form id={formId} onSubmitCapture={submitForm}>
@@ -46,21 +55,28 @@ export const CreateSealAppointmentForm: FC<CreateSealAppointmentFormProps> = ({
         <FormItem label="ФИО">
           <Select
             placeholder="Выберите"
-            value={values.id || undefined}
-            onChange={(homeowner) => setFieldValue('name', homeowner)}
+            value={values.homeownerFullName || undefined}
+            onChange={(homeowner) =>
+              setFieldValue('homeownerFullName', homeowner)
+            }
           >
-            {(apartment.homeownerAccounts || []).map((homeowner) => (
-              <Select.Option key={homeowner.id} value={homeowner.id}>
-                {homeowner.name}
-              </Select.Option>
-            ))}
+            {(apartment.homeownerAccounts || []).map((homeowner) => {
+              if (!homeowner.name) {
+                return null;
+              }
+              return (
+                <Select.Option key={homeowner.id} value={homeowner.name}>
+                  {homeowner.name}
+                </Select.Option>
+              );
+            })}
           </Select>
         </FormItem>
         <FormItem label="Телефон">
           <Input
             placeholder="Введите"
-            value={values.phoneNumber}
-            onChange={(e) => setFieldValue('phoneNumber', e.target.value)}
+            value={values.homeownerPhone}
+            onChange={(e) => setFieldValue('homeownerPhone', e.target.value)}
           />
         </FormItem>
       </GroupWrapper>
@@ -78,13 +94,17 @@ export const CreateSealAppointmentForm: FC<CreateSealAppointmentFormProps> = ({
           <Input
             type="number"
             placeholder="Введите"
-            value={values.sealNumbers}
-            onChange={(e) => setFieldValue('sealNumbers', e.target.value)}
+            value={values.sealCountPlan || undefined}
+            onChange={(e) => setFieldValue('sealCountPlan', Number(e.target.value))}
           />
         </FormItem>
       </GroupWrapper>
       <FormItem label="Комментарий">
-        <Input placeholder="Добавьте свой комментарий" />
+        <Input
+          value={values.comment}
+          onChange={(e) => setFieldValue('comment', e.target.value)}
+          placeholder="Добавьте свой комментарий"
+        />
       </FormItem>
     </Form>
   );
