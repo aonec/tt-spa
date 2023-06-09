@@ -39,10 +39,9 @@ sample({
     return res;
   },
   filter: (getProblemDevicesRequestPayload) => {
-    return (
-      Boolean(getProblemDevicesRequestPayload.requestPayload.fromDate) &&
-      Boolean(getProblemDevicesRequestPayload.requestPayload.toDate)
-    );
+    const { fromDate, toDate } = getProblemDevicesRequestPayload.requestPayload;
+
+    return Boolean(fromDate && toDate);
   },
   target: fetchProblemDevicesFx,
 });
