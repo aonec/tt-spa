@@ -1,11 +1,26 @@
-import React, { FC, useEffect, useMemo, useRef, useState } from 'react';
+import React, {
+  FC,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 import { GoBack } from 'ui-kit/shared_components/GoBack';
 import { Button } from 'ui-kit/Button';
 import { Header, MapWrapper } from './CreateDistrictBorderMapPage.styled';
-import { CreateDistrictBorderMapPageProps } from './CreateDistrictBorderMapPage.types';
+import {
+  CreateDistrictBorderMapPageProps,
+  DistrictColor,
+} from './CreateDistrictBorderMapPage.types';
 import { ymaps } from './CreateDistrictBorderMapPage.types';
 import { CreateDistrictFormPanel } from './CreateDistrictFormPanel';
-import { isPointInsidePolygon } from './CreateDistrictBorderMapPage.utils';
+import {
+  getDistrictColorData,
+  getHousingStockItemLink,
+  isPointInsidePolygon,
+} from './CreateDistrictBorderMapPage.utils';
+import { PencilIcon } from 'ui-kit/icons';
 
 export const CreateDistrictBorderMapPage: FC<
   CreateDistrictBorderMapPageProps
@@ -15,8 +30,33 @@ export const CreateDistrictBorderMapPage: FC<
   const [map, setMap] = useState<ymaps.Map | null>(null);
 
   const [district, setDistrict] = useState<ymaps.Polygon | null>(null);
+  const [housingStocksGroup, setHousingStocksGroup] =
+    useState<ymaps.GeoObjectCollection | null>(null);
 
   const [isEditing, setIsEditing] = useState(false);
+
+  const [selectedHousingStocks, setSelectedHousingStocks] = useState<number[]>(
+    [],
+  );
+
+  const [districtColor, setDistrictColor] = useState<DistrictColor>(
+    DistrictColor.Blue,
+  );
+
+  const [formSection, setFormSection] = useState<number>(0);
+
+  const handleClickHousingStock = useCallback(
+    (id: number) => {
+      const isHousingStockIncludes = selectedHousingStocks.includes(id);
+
+      if (!isHousingStockIncludes) {
+        return setSelectedHousingStocks((prev) => [...prev, id]);
+      }
+
+      setSelectedHousingStocks((prev) => prev.filter((elem) => elem !== id));
+    },
+    [selectedHousingStocks, setSelectedHousingStocks],
+  );
 
   const initMaps = () => {
     if (!ymaps || !mapRef.current) {
@@ -29,22 +69,29 @@ export const CreateDistrictBorderMapPage: FC<
       controls: [],
     });
 
+    const housingStocksGroup = new ymaps.GeoObjectCollection();
+
+    map.geoObjects.add(housingStocksGroup);
+
     setMap(map);
+    setHousingStocksGroup(housingStocksGroup);
   };
 
   useEffect(() => {
     ymaps.ready(initMaps);
   }, [mapRef]);
 
-  const startEditing = () => {
+  const startEditing = useCallback(() => {
     if (!map) return;
 
     const polygonCoordinates = district?.geometry?.getCoordinates();
 
+    const { color, strokeColor } = getDistrictColorData(districtColor);
+
     const newDistrict = new ymaps.Polygon(polygonCoordinates || [], {}, {
       editorDrawingCursor: 'crosshair',
-      fillColor: 'rgba(24, 158, 233, 0.16)',
-      strokeColor: '#189EE9',
+      fillColor: color,
+      strokeColor: strokeColor,
       strokeWidth: 3,
     } as any);
 
@@ -63,17 +110,19 @@ export const CreateDistrictBorderMapPage: FC<
     setIsEditing(true);
 
     setDistrict(newDistrict);
-  };
+  }, [district, districtColor, map]);
 
   const handleApplyDistrict = () => {
     if (!map || !district) return;
 
     const polygonCoordinates = district.geometry?.getCoordinates();
 
+    const { color, strokeColor } = getDistrictColorData(districtColor);
+
     const mountedDistrict = new ymaps.Polygon(polygonCoordinates || [], {}, {
       editorDrawingCursor: 'crosshair',
-      fillColor: 'rgba(24, 158, 233, 0.16)',
-      strokeColor: '#189EE9',
+      fillColor: color,
+      strokeColor: strokeColor,
       strokeWidth: 3,
     } as any);
 
@@ -91,20 +140,75 @@ export const CreateDistrictBorderMapPage: FC<
 
     const polygonCoordinates = district.geometry?.getCoordinates();
 
-    return housingStocksList.filter((elem) =>
+    const filteredHousingStocks = housingStocksList.filter((elem) =>
       isPointInsidePolygon(
         [elem.coordinates?.latitude || 0, elem.coordinates?.longitude || 0],
         polygonCoordinates?.[0] || [[0, 0]],
       ),
     );
+
+    setSelectedHousingStocks(filteredHousingStocks.map((elem) => elem.id));
+
+    return filteredHousingStocks;
   }, [district, housingStocksList]);
+
+  useEffect(() => {
+    if (!housingStocksGroup) return;
+    if (isEditing) {
+      housingStocksGroup.removeAll();
+      return;
+    }
+    const housingStockPlacemarks = housingStocksInDistrict.map((elem) => {
+      const placemark = new ymaps.Placemark(
+        [elem.coordinates?.latitude, elem.coordinates?.longitude],
+        {},
+        {
+          iconLayout: 'default#image',
+          iconImageHref: getHousingStockItemLink(
+            selectedHousingStocks.includes(elem.id),
+          ),
+          iconImageSize: [51, 51],
+        },
+      );
+
+      placemark.events.add('click', () => {
+        handleClickHousingStock(elem.id);
+      });
+
+      return placemark;
+    });
+
+    housingStocksGroup.removeAll();
+
+    housingStockPlacemarks.forEach((elem) => {
+      housingStocksGroup.add(elem);
+    });
+  }, [
+    handleClickHousingStock,
+    housingStocksGroup,
+    housingStocksInDistrict,
+    isEditing,
+    selectedHousingStocks,
+  ]);
+
+  useEffect(() => {
+    if (!district) return;
+
+    const { color, strokeColor } = getDistrictColorData(districtColor);
+
+    district.options.set('strokeColor', strokeColor);
+    district.options.set('fillColor', color);
+  }, [district, districtColor]);
 
   return (
     <div>
       <Header>
         <GoBack />
         {!isEditing && (
-          <Button onClick={startEditing}>
+          <Button
+            onClick={startEditing}
+            icon={district ? <PencilIcon /> : undefined}
+          >
             {district ? 'Изменить' : 'Создать район'}
           </Button>
         )}
@@ -118,6 +222,13 @@ export const CreateDistrictBorderMapPage: FC<
           <CreateDistrictFormPanel
             isLoadingHousingStocks={isLoadingHousingStocks}
             housingStocksInDistrict={housingStocksInDistrict}
+            selectedHousingStocks={selectedHousingStocks}
+            handleClickHousingStock={handleClickHousingStock}
+            handleCancel={startEditing}
+            setDistrictColor={setDistrictColor}
+            districtColor={districtColor}
+            formSection={formSection}
+            setFormSection={setFormSection}
           />
         )}
       </MapWrapper>
