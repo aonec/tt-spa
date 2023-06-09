@@ -14,6 +14,7 @@ export const Wrapper = styled.div<{ isDeviceClosed?: boolean }>`
 export const SealNumberWrapper = styled.div`
   color: #272f5ae5;
   font-size: 16px;
+  font-weight: 500;
 `;
 
 export const SealDateWrapper = styled.div`
