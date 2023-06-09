@@ -13,6 +13,7 @@ export const CreateDistrictBorderByMapContainer = () => {
   const isLoadingCreatingDistrict = useStore(
     outputs.$isLoadingCreatingDistrict,
   );
+  const existingDistricts = useStore(outputs.$existingDistricts);
   const handleCreateDistrict = useEvent(inputs.handleCreateDistrict);
 
   const history = useHistory();
@@ -29,6 +30,7 @@ export const CreateDistrictBorderByMapContainer = () => {
         isLoadingCreatingDistrict={isLoadingCreatingDistrict}
         housingStocksList={housingStocksPagedList?.items || []}
         handleCreateDistrict={handleCreateDistrict}
+        existingDistricts={existingDistricts}
       />
     </>
   );

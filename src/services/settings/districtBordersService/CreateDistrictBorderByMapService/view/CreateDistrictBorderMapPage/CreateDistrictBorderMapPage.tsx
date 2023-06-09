@@ -21,6 +21,8 @@ import {
   isPointInsidePolygon,
 } from './CreateDistrictBorderMapPage.utils';
 import { PencilIcon } from 'ui-kit/icons';
+import { DistrictAdditionalInfo } from './CreateDistrictFormPanel/CreateDistrictFormPanel.types';
+import { DistrictColorsList } from './CreateDistrictBorderMapPage.constants';
 
 export const CreateDistrictBorderMapPage: FC<
   CreateDistrictBorderMapPageProps
@@ -29,7 +31,9 @@ export const CreateDistrictBorderMapPage: FC<
   housingStocksList,
   handleCreateDistrict,
   isLoadingCreatingDistrict,
+  existingDistricts,
 }) => {
+  console.log(existingDistricts);
   const mapRef = useRef<HTMLDivElement | null>(null);
 
   const [map, setMap] = useState<ymaps.Map | null>(null);
@@ -65,7 +69,7 @@ export const CreateDistrictBorderMapPage: FC<
     [selectedHousingStocks, setSelectedHousingStocks],
   );
 
-  const initMaps = () => {
+  const initMaps = useCallback(() => {
     if (!ymaps || !mapRef.current) {
       return;
     }
@@ -82,11 +86,38 @@ export const CreateDistrictBorderMapPage: FC<
 
     setMap(map);
     setHousingStocksGroup(housingStocksGroup);
-  };
+  }, []);
+
+  useEffect(() => {
+    if (!map || !existingDistricts.length) return;
+
+    existingDistricts.forEach((elem) => {
+      const districtAdditionalInfo = JSON.parse(
+        elem.additionalInfo || '',
+      ) as unknown as DistrictAdditionalInfo;
+
+      const color = DistrictColorsList.find(
+        (elem) => elem.type === districtAdditionalInfo.districtColor,
+      );
+
+      const polygon = new ymaps.Polygon(
+        [districtAdditionalInfo.districtPolygonCoordinates] || [],
+        {},
+        {
+          editorDrawingCursor: 'crosshair',
+          fillColor: color?.color,
+          strokeColor: color?.strokeColor,
+          strokeWidth: 3,
+        } as any,
+      );
+
+      map.geoObjects.add(polygon);
+    });
+  }, [map, existingDistricts]);
 
   useEffect(() => {
     ymaps.ready(initMaps);
-  }, [mapRef]);
+  }, [initMaps, mapRef]);
 
   const startEditing = useCallback(() => {
     if (!map) return;

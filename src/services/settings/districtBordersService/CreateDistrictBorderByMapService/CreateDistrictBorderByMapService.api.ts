@@ -1,6 +1,7 @@
 import { axios } from '01/axios';
 import {
   DistrictCreateRequest,
+  DistrictResponse,
   HousingStockListResponsePagedList,
 } from 'myApi';
 import { GetHousingStocksRequestParams } from './CreateDistrictBorderByMapService.types';
@@ -12,3 +13,6 @@ export const getHousingStocks = (
 
 export const createDistrict = (payload: DistrictCreateRequest): Promise<void> =>
   axios.post('IndividualSeal/Districts', payload);
+
+export const getExistingDistricts = (): Promise<DistrictResponse[]> =>
+  axios.get('IndividualSeal/Districts');

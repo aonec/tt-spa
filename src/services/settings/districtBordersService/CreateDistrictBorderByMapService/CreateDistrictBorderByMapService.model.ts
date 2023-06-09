@@ -1,10 +1,12 @@
 import { createDomain, forward } from 'effector';
 import {
   DistrictCreateRequest,
+  DistrictResponse,
   HousingStockListResponsePagedList,
 } from 'myApi';
 import {
   createDistrict,
+  getExistingDistricts,
   getHousingStocks,
 } from './CreateDistrictBorderByMapService.api';
 import { createGate } from 'effector-react';
@@ -27,6 +29,10 @@ const createDistrictFx = domain.createEffect<
   EffectFailDataAxiosError
 >(createDistrict);
 
+const fetchExistingDistrictsFx = domain.createEffect<void, DistrictResponse[]>(
+  getExistingDistricts,
+);
+
 const handleCreateDistrict = domain.createEvent<DistrictCreateRequest>();
 
 const $housingStocks = domain
@@ -36,9 +42,16 @@ const $housingStocks = domain
     (_, housingStocksPagedList) => housingStocksPagedList,
   );
 
+const $existingDistricts = domain
+  .createStore<DistrictResponse[]>([])
+  .on(fetchExistingDistrictsFx.doneData, (_, districts) => {
+    return districts;
+  })
+  .reset(HousingStocksListGate.close);
+
 forward({
   from: HousingStocksListGate.open,
-  to: fetchHousingStocksListFx.prepend(() => ({})),
+  to: [fetchHousingStocksListFx.prepend(() => ({})), fetchExistingDistrictsFx],
 });
 
 forward({
@@ -65,6 +78,7 @@ export const CreateDistrictBorderByMapService = {
     $housingStocks,
     $isLoadingHousingStocks,
     $isLoadingCreatingDistrict,
+    $existingDistricts,
   },
   gates: { HousingStocksListGate },
 };
