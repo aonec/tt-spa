@@ -1,7 +1,8 @@
-export type Coordinate = {
-  latitude: number;
-  longitude: number;
-};
+import { StreetWithHousingStockNumbersResponse } from 'myApi';
+import {
+  Coordinate,
+  FilterType,
+} from './districtBordersByAddressService.types';
 
 // Функция, определяющая, лежит ли точка p1 левее точки p2 относительно точки p0
 function isLeftTurn(p0: Coordinate, p1: Coordinate, p2: Coordinate): boolean {
@@ -74,4 +75,47 @@ export const findPolygonCenter = (polygon: Polygon): [number, number] => {
   const centerY = sumY / n;
 
   return [centerX, centerY];
+};
+
+export const getFilteredAddresses = (
+  addresses: StreetWithHousingStockNumbersResponse[] | null,
+  filterData: FilterType | null,
+) => {
+  if (!addresses) return [];
+  if (!filterData?.street) return addresses;
+
+  if (!filterData.corpus && !filterData.house) {
+    return addresses.filter((address) => address.street === filterData.street);
+  }
+
+  if (filterData.corpus || filterData.house) {
+    const filteredByStreetAddress = addresses.filter(
+      (address) => address.street === filterData.street,
+    );
+
+    const filteredHouses = filteredByStreetAddress[0].addresses?.filter(
+      (address) => {
+        if (!filterData.corpus) {
+          return address.housingStockNumber === filterData.house;
+        }
+        if (!filterData.house) {
+          return address.housingStockCorpus === filterData.corpus;
+        }
+        if (filterData.house && filterData.corpus) {
+          return (
+            address.housingStockCorpus === filterData.corpus &&
+            address.housingStockNumber === filterData.house
+          );
+        }
+        return true;
+      },
+    );
+
+    return [
+      {
+        street: filteredByStreetAddress[0].street,
+        addresses: filteredHouses,
+      },
+    ] as StreetWithHousingStockNumbersResponse[];
+  }
 };

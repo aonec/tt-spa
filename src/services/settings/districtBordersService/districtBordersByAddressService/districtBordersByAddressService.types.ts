@@ -35,3 +35,8 @@ export type HousingStocksIdsWithCoordinates = {
     longitude: number;
   } | null;
 };
+
+export type Coordinate = {
+  latitude: number;
+  longitude: number;
+};

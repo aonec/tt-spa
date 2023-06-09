@@ -31,10 +31,12 @@ export const AddressStreetGroup: FC<AddressStreetGroupProps> = ({
     checkedhousingStockIdsWithStreet.find((data) => data.street === street)
       ?.housingStocksId || [];
 
-
   useEffect(() => {
+    const isEqualIdsLength =
+      housingStockIds?.length === currentStreetCheckedHousingStockIds.length;
     if (
-      housingStockIds?.length === currentStreetCheckedHousingStockIds.length
+      isEqualIdsLength &&
+      Boolean(currentStreetCheckedHousingStockIds.length)
     ) {
       setCheck(true);
     } else {

@@ -1,5 +1,4 @@
 import { HousingStockListResponse } from 'myApi';
-import { Coordinate } from 'services/settings/districtBordersService/districtBordersByAddressService/districtBordersByAddressService.utils';
 
 export type CreateDistrictBorderMapPageProps = {
   isLoadingHousingStocks: boolean;

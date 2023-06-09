@@ -3,7 +3,10 @@ import { useEvent, useStore } from 'effector-react';
 import { StreetWithHousingStockNumbersResponse } from 'myApi';
 import { DistrictBordersByAddressPage } from './view/DistrictBordersByAddressPage/DistrictBordersByAddressPage';
 import { districtBordersByAddressService } from './districtBordersByAddressService.model';
-import { getConvexHull } from './districtBordersByAddressService.utils';
+import {
+  getConvexHull,
+  getFilteredAddresses,
+} from './districtBordersByAddressService.utils';
 
 const {
   inputs,
@@ -67,48 +70,7 @@ export const DistrictBordersByAddressContainer = () => {
 
   const filteredAddress =
     useMemo(() => {
-      if (!addresses) return [];
-      if (!filterData) return addresses;
-      if (!filterData.street) return addresses;
-
-      if (!filterData.corpus && !filterData.house) {
-        return (
-          addresses?.filter(
-            (address) => address.street === filterData.street,
-          ) || []
-        );
-      }
-
-      if (filterData.corpus || filterData.house) {
-        const filteredByStreetAddress = addresses?.filter(
-          (address) => address.street === filterData.street,
-        );
-
-        const filteredHouses = filteredByStreetAddress[0].addresses?.filter(
-          (address) => {
-            if (!filterData.corpus) {
-              return address.housingStockNumber === filterData.house;
-            }
-            if (!filterData.house) {
-              return address.housingStockCorpus === filterData.corpus;
-            }
-            if (filterData.house && filterData.corpus) {
-              return (
-                address.housingStockCorpus === filterData.corpus &&
-                address.housingStockNumber === filterData.house
-              );
-            }
-            return true;
-          },
-        );
-
-        return [
-          {
-            street: filteredByStreetAddress[0].street,
-            addresses: filteredHouses,
-          },
-        ] as StreetWithHousingStockNumbersResponse[];
-      }
+      return getFilteredAddresses(addresses, filterData);
     }, [addresses, filterData]) || [];
 
   return (
