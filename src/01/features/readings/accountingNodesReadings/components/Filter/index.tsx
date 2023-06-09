@@ -1,6 +1,5 @@
 import React from 'react';
 import { useForm } from 'effector-forms';
-import { accountingNodesFilterForm } from '../../models';
 import { Grid } from '01/shared/ui/Layout/Grid';
 import { useRef } from 'react';
 
