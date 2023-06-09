@@ -1,6 +1,5 @@
 import React, { FC, ReactNode, useCallback, useMemo } from 'react';
 import { PageHeader } from 'ui-kit/shared_components/PageHeader';
-import { showDownloadDeviceReportButtonClicked } from '01/features/devicesReport/models';
 import {
   ContentWrapper,
   FiltrationWrapper,
@@ -17,12 +16,13 @@ export const DevicesPageProfile: FC<DevicesPageProfileProps> = ({
   setDevicesType,
   handleAddNode,
   isPermitionToAddNode,
+  openDownloadDevicesReportModal,
 }) => {
   const menuButtonArr = useMemo(
     () => [
       {
         title: 'Выгрузить список ОДПУ',
-        onClick: showDownloadDeviceReportButtonClicked,
+        onClick: openDownloadDevicesReportModal,
         hidden: type !== DevicesProfileTabsType.ODPU,
       },
       {
@@ -31,7 +31,7 @@ export const DevicesPageProfile: FC<DevicesPageProfileProps> = ({
         hidden: !isPermitionToAddNode,
       },
     ],
-    [handleAddNode, isPermitionToAddNode, type],
+    [handleAddNode, isPermitionToAddNode, type, openDownloadDevicesReportModal],
   );
 
   const Header = useCallback(

@@ -1,6 +1,5 @@
 import React, { FC } from 'react';
 import { useFormik } from 'formik';
-import { searchStateChanged } from '01/features/devicesReport/models';
 import { DevicesListContainer } from 'services/devices/displayDevicesService/displayDevicesService.container';
 import { SearchDevices } from '../SearchDevices';
 import { ExtendedSearch } from 'ui-kit/ExtendedSearch';
@@ -17,7 +16,7 @@ interface DeviceProfileProps extends HeaderInject {
   isOpen: boolean;
   open: (payload: void) => void;
   close: (payload: void) => void;
-  showDownloadDeviceReportButtonClicked: (payload: void) => void;
+  openDownloadDevicesReportModal: () => void;
   searchState: CalculatorsListRequestPayload | null;
   clearSearchPayload: (payload: void) => void;
   diametersConfig: DiamtersConfig;
@@ -78,7 +77,6 @@ export const DevicesProfile: FC<DeviceProfileProps> = ({
     enableReinitialize: true,
     onSubmit: (values) => {
       setFilter(values);
-      searchStateChanged(values);
     },
   });
 
@@ -119,7 +117,6 @@ export const DevicesProfile: FC<DeviceProfileProps> = ({
             handleOpen={() => open()}
             handleApply={() => {
               submitForm();
-              searchStateChanged(values);
             }}
             handleClear={() => {
               resetForm();
