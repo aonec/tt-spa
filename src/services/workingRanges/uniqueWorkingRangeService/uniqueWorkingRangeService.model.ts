@@ -13,8 +13,8 @@ import {
   getNodeUniqueWorkingRange,
   getNodes,
 } from './uniqueWorkingRangeService.api';
-import { $existingCities } from '01/features/housingStocks/displayHousingStockCities/models';
 import { GetAddressesWithCityRequestPayload } from './uniqueWorkingRangeService.types';
+import { addressSearchService } from 'services/addressSearchService/addressSearchService.models';
 
 const domain = createDomain('uniqueWorkingRangeService');
 
@@ -112,7 +112,7 @@ export const uniqueWorkingRangeService = {
     $housingStockUniqueWorkingRange,
     $isLoading,
     $addressesPagedList,
-    $existingCities,
+    $existingCities: addressSearchService.outputs.$existingCities,
     $selectedCity,
     $nodes,
   },

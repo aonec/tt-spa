@@ -11,19 +11,24 @@ export const CityWrappper = styled.div`
 export const TabsSC = styled(Tabs)`
   min-width: 850px;
   margin-top: 16px;
-  overflow: visible;
 
   .ant-tabs-tab-btn {
     color: #272f5a;
     font-weight: 400;
     font-size: 16px;
   }
-  .ant-tabs-tabpane {
-    display: grid;
-    grid-template-columns: auto 300px;
-  }
 `;
 
 export const PageHeaderSC = styled(PageHeader)`
   margin-top: 16px;
+`;
+
+export const ContentWrapper = styled.div`
+  min-width: 850px;
+`;
+
+export const Wrapper = styled.div`
+  display: flex;
+  gap: 16px;
+  justify-content: space-between;
 `;

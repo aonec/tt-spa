@@ -79,25 +79,6 @@ const splitPersonalNumberFx = domain.createEffect<
   EffectFailDataAxiosErrorDataApartmentId
 >(splitHomeownerAccount);
 
-const $checkedExistingApartmentId = domain
-  .createStore<number | null>(null)
-  .on(checkApartmentExistingFx.doneData, (_, id) => {
-    return id;
-  });
-// .reset(SplitPersonalNumberGate.close, closeConfirmExistingApartmentModal);
-
-const $samePersonalAccountNumderId = domain
-  .createStore<number | null>(null)
-  .on(splitPersonalNumberFx.failData, (prev, errData) => {
-    if (errData.response.status === 409) {
-      return errData.response.data.error.Data.ApartmentId;
-    }
-    return prev;
-  })
-  .reset(handleForceConfirmationModalClose);
-
-const $isConfirmationModalOpen = $samePersonalAccountNumderId.map(Boolean);
-
 sample({
   clock: checkApartmentExistingFx.doneData,
   filter: (value) => value === null,

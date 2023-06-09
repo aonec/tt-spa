@@ -16,10 +16,11 @@ import { ToExecutionTasksExtendedSearchForm } from './ToExecutionTasksExtendedSe
 import { Wrapper } from './SearchTasks.styled';
 import { GetTasksListRequestPayload } from '../../tasksProfileService.types';
 import { SearchTasksProps } from './SearchTasks.types';
-import { ExistingStreetsGate } from '01/features/housingStocks/displayHousingStockStreets/model';
-import { ExistingCitiesGate } from '01/features/housingStocks/displayHousingStockCities/models';
 import { Select } from 'ui-kit/Select';
 import { Input } from 'ui-kit/Input';
+import { addressSearchService } from 'services/addressSearchService/addressSearchService.models';
+
+const { ExistingCitiesGate, ExistingStreetsGate } = addressSearchService.gates;
 
 export const SearchTasks: FC<SearchTasksProps> = ({
   onSubmit,

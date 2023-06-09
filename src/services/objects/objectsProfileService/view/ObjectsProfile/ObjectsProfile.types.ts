@@ -13,8 +13,10 @@ export type ObjectsProfileProps = {
   isPermitionToDownloadFeedBackFlowReport: boolean;
   isPermitionToCreateObjectAndIPUReport: boolean;
   isPermitionToCreateResourceDisconnection: boolean;
+  isPermitionToCreateFeedFlowPipeTemperatureReport: boolean;
   handleOpenGroupreportModal: () => void;
   openHeatIndividualDevicesReportModal: () => void;
+  openFlowTemperatureDeviationReportModal: () => void;
 };
 
 export type HeaderInject = {

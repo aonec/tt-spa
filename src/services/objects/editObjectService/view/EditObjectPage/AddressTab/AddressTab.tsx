@@ -21,10 +21,11 @@ import { Input } from 'ui-kit/Input';
 import { SpaceLine } from '01/shared/ui/Layout/Space/Space';
 import { LinkButton } from 'ui-kit/shared_components/LinkButton';
 import { Button } from 'ui-kit/Button';
-import { ExistingCitiesGate } from '01/features/housingStocks/displayHousingStockCities/models';
-import { ExistingStreetsGate } from '01/features/housingStocks/displayHousingStockStreets/model';
 import { ErrorMessage } from 'ui-kit/ErrorMessage';
 import _ from 'lodash';
+import { addressSearchService } from 'services/addressSearchService/addressSearchService.models';
+
+const { ExistingCitiesGate, ExistingStreetsGate } = addressSearchService.gates;
 
 export const AddressTab: FC<AddressTabProps> = ({
   address,

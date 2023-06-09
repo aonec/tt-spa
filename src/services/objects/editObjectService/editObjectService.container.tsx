@@ -19,8 +19,8 @@ export const EditObjectContainer = () => {
 
   const housingStockIdNumber = Number(housingStockId);
 
-  const existingCities = useStore(addressSearchService.outputs.cities);
-  const existingStreets = useStore(addressSearchService.outputs.streets);
+  const existingCities = useStore(addressSearchService.outputs.$existingCities);
+  const existingStreets = useStore(addressSearchService.outputs.$existingStreets);
 
   const housingStock = useStore(outputs.$housingStock);
   const houseManagements = useStore(outputs.$houseManagements);

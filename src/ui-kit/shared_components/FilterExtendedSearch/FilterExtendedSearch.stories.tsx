@@ -6,7 +6,7 @@ import { EActResourceType } from 'myApi';
 import {
   IndividualDeviceConsumptionGraphLookup,
   IndividualDeviceConsumptionGraphType,
-} from 'services/housingMeteringDevices/devicesPageService/individualDevicesProfileService/view/IndividualDevicesProfile/individualDevicesListService/individualDevicesListService.constants';
+} from 'services/devices/devicesPageService/individualDevicesProfileService/view/IndividualDevicesProfile/individualDevicesListService/individualDevicesListService.constants';
 
 export default {
   title: 'FilterExtendedSearch',
