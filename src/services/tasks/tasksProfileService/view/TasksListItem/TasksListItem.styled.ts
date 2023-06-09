@@ -2,7 +2,8 @@ import styled from 'styled-components';
 import { CalendarIcon, MapIcon, TimerIcon, UserIcon } from 'ui-kit/icons';
 
 export const TaskItemWrapper = styled.div`
-  min-width: 850px;
+  width: 100%;
+  max-width: 960px;
   padding: 10px;
   border-radius: 4px;
   border: 1px solid transparent;

@@ -10,6 +10,7 @@ import { PageTitle } from '../CreateObjectPage.styled';
 import {
   ButtonPadding,
   ButtonSC,
+  ConstrutionYearWrapper,
   Footer,
   GridContainer,
   RightButtonBlock,
@@ -19,6 +20,8 @@ import {
   AdditionalInfo,
   CreateObjectAdditionalInfoStageProps,
 } from './CreateObjectAdditionalInfoStage.types';
+import { DatePicker } from 'ui-kit/DatePicker';
+import moment from 'moment';
 
 export const CreateObjectAdditionalInfoStage: FC<
   CreateObjectAdditionalInfoStageProps
@@ -34,6 +37,7 @@ export const CreateObjectAdditionalInfoStage: FC<
       floors: createObjectData?.floors || null,
       entrances: createObjectData?.entrances || null,
       elevator: createObjectData?.elevator || null,
+      constructionYear: createObjectData?.constructionYear || '',
     },
     enableReinitialize: true,
     onSubmit: (data) => {
@@ -80,6 +84,22 @@ export const CreateObjectAdditionalInfoStage: FC<
           </Select>
         </FormItem>
       </GridContainer>
+
+      <ConstrutionYearWrapper>
+        <FormItem label="Год постройки">
+          <DatePicker
+            picker="year"
+            onChange={(value, dateString) =>
+              setFieldValue('constructionYear', dateString)
+            }
+            value={
+              values.constructionYear
+                ? moment(values.constructionYear)
+                : undefined
+            }
+          />
+        </FormItem>
+      </ConstrutionYearWrapper>
 
       <Footer>
         <Button type="ghost" onClick={() => goBackStage()}>

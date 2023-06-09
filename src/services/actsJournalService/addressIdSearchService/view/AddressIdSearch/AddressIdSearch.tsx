@@ -12,8 +12,8 @@ import { Loader } from 'ui-kit/Loader';
 import { AddressIdSearchProps } from './AddressIdSearch.types';
 import { useFocusedIndex } from './AddressIdSearch.hooks';
 import { fromEnter } from 'ui-kit/shared_components/DatePickerNative';
-import { $existingStreets } from '01/features/housingStocks/displayHousingStockStreets/model';
 import { SearchIcon } from 'ui-kit/icons';
+import { addressSearchService } from 'services/addressSearchService/addressSearchService.models';
 
 const addressIdSearchKey = 'address-id-search';
 
@@ -27,7 +27,9 @@ export const AddressIdSearch: FC<AddressIdSearchProps> = ({
   addressFilter,
   dataKey,
 }) => {
-  const existingStreets = useStore($existingStreets);
+  const existingStreets = useStore(
+    addressSearchService.outputs.$existingStreets,
+  );
   const focusedIndex = useFocusedIndex(addressIdSearchKey);
   const isFirstFocused = focusedIndex === 0;
 

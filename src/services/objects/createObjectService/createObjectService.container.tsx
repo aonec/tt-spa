@@ -12,11 +12,14 @@ const { HouseManagementsFetchGate, PageCloseGate, HeatingStationsFetchGate } =
   gates;
 
 export const CreateObjectContainer = () => {
-  const existingCities = useStore(addressSearchService.outputs.cities);
-  const existingStreets = useStore(addressSearchService.outputs.streets);
+  const existingCities = useStore(addressSearchService.outputs.$existingCities);
+  const existingStreets = useStore(
+    addressSearchService.outputs.$existingStreets,
+  );
 
   const stageNumber = useStore(outputs.$stageNumber);
   const isPreviewModalOpen = useStore(outputs.$isPreviewModalOpen);
+  const isCreateLoading = useStore(outputs.$isCreateLoading);
 
   const houseManagements = useStore(outputs.$houseManagements);
   const createObjectData = useStore(outputs.$createObjectData);
@@ -75,6 +78,7 @@ export const CreateObjectContainer = () => {
         openCreateHeatingStationModal={() => openCreateHeatingStationModal()}
         openEditHeatingStationModal={() => openEditHeatingStationModal()}
         heatingStationCapture={heatingStationCapture}
+        isCreateLoading={isCreateLoading}
       />
     </>
   );

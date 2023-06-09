@@ -1,13 +1,13 @@
 import { $individualDevice } from '01/features/individualDevices/displayIndividualDevice/models';
 import { DeviceDataString } from '01/features/individualDevices/switchIndividualDevice/components/DeviceDataString';
 import { Spaces } from '01/shared/ui/Layout/Space/Space';
-import { HeaderWrap, Title } from '01/_components/Headers';
 import { useStore } from 'effector-react';
 import moment from 'moment';
 import React from 'react';
 import { GoBack } from 'ui-kit/shared_components/GoBack';
 import { getApartmentFromFullAddress } from 'utils/getApartmentFromFullAddress';
 import { DeviceStatus } from 'ui-kit/shared_components/IndividualDeviceInfo/DeviceStatus';
+import styled from 'styled-components';
 
 interface Props {
   isModal?: boolean;
@@ -22,12 +22,7 @@ export const ReadingHistoryHeader: React.FC<Props> = ({ isModal }) => {
 
   return (
     <>
-      <HeaderWrap
-        style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-        }}
-      >
+      <Header>
         <div>
           {!isModal && <GoBack />}
           <div style={{ marginTop: 5 }}>
@@ -42,7 +37,7 @@ export const ReadingHistoryHeader: React.FC<Props> = ({ isModal }) => {
             </Spaces>
           </div>
         </div>
-      </HeaderWrap>
+      </Header>
     </>
   );
 };
@@ -57,3 +52,18 @@ export function useDeviceCheckingDates() {
     ).format('DD.MM.YYYY')}`
   );
 }
+
+const Header = styled.div`
+  margin-bottom: 10px;
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+`;
+
+export const Title = styled.div`
+  padding: 0;
+  margin-top: 16px;
+  font-weight: 300;
+  font-size: 32px;
+  line-height: 48px;
+`;

@@ -17,6 +17,12 @@ import { ServiceSection } from 'services/services/servicesService/servicesServic
 
 export const menuItems: MenuItem[] = [
   {
+    title: 'Задачи',
+    path: '/tasks',
+    icon: TasksIcon,
+    type: MenuType.Tasks,
+  },
+  {
     title: 'Статистика',
     path: '/statistics',
     icon: StatisticIcon,
@@ -33,12 +39,6 @@ export const menuItems: MenuItem[] = [
     path: '/actsJournal',
     icon: ListIcon,
     type: MenuType.ActsJournal,
-  },
-  {
-    title: 'Задачи',
-    path: '/tasks',
-    icon: TasksIcon,
-    type: MenuType.Tasks,
   },
   {
     title: 'Объекты',

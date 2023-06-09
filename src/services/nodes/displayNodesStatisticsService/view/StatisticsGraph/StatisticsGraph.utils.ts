@@ -54,18 +54,22 @@ const getTaskXPos = (payload: GetTaskXPosPayload) => {
   const minDataMoment = moment(minDate).utcOffset(0).startOf('d');
   const maxDataMoment = moment(maxDate).utcOffset(0, false);
 
+  const currentDate = moment(currentData)
+    .utc(true)
+    .add(moment().utcOffset(), 'minutes');
+
   let diff = 0;
   if (reportType === 'hourly') {
-    diff = moment(currentData).utc(true).diff(maxDataMoment, 'h');
+    diff = currentDate.diff(maxDataMoment, 'h');
   } else {
-    diff = moment(currentData).utc(true).diff(maxDataMoment, 'd');
+    diff = currentDate.diff(maxDataMoment, 'd');
   }
 
   if (!currentData || diff > 0) {
     return null;
   }
   if (reportType === 'hourly') {
-    return moment(currentData).utc(true).diff(minDataMoment, 'h') + 1;
+    return currentDate.diff(minDataMoment, 'h') + 1;
   }
 
   return moment(currentData).utc(true).diff(minDataMoment, 'd') + 1;
@@ -105,8 +109,17 @@ export const getPreparedData = ({
   };
 };
 
+export const formatDate = (timeStamp: string): Date => {
+  const dateObject = new Date(timeStamp);
+  const millisecondsInHour = 60 * 1000;
+  const date = new Date(
+    dateObject.valueOf() + dateObject.getTimezoneOffset() * millisecondsInHour,
+  );
+  return date;
+};
+
 const getHourFromTimeStamp = (timeStamp: string): number => {
-  const date = new Date(timeStamp);
+  const date = formatDate(timeStamp);
   return +format(date, 'HH');
 };
 
@@ -116,7 +129,7 @@ const isHourMultiplySix = (timeStamp: string): boolean => {
 };
 
 const getDayFromTimeStamp = (timeStamp: string): number => {
-  const date = new Date(timeStamp);
+  const date = formatDate(timeStamp);
   return +format(date, 'dd');
 };
 
@@ -145,6 +158,7 @@ const formHourlyTicks = (
   return [
     sortedArchive[0],
     ...sortedArchive.filter((entry) => isHourMultiplySix(entry.time)),
+    sortedArchive[sortedArchive.length - 1],
   ];
 };
 
@@ -195,15 +209,15 @@ export const getTickFormat = (
   x: string,
 ) => {
   if (reportType === 'daily') {
-    return format(new Date(x), 'dd.MM');
+    return format(formatDate(x), 'dd.MM');
   }
   if (archiveArrLength <= 24) {
-    return format(new Date(x), 'HH');
+    return format(formatDate(x), 'HH');
   }
 
   if (archiveArrLength >= 97) {
-    return format(new Date(x), 'H');
+    return format(formatDate(x), 'H');
   }
 
-  return format(new Date(x), 'HH:mm');
+  return format(formatDate(x), 'HH:mm');
 };

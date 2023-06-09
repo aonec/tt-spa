@@ -7,10 +7,11 @@ export type ChangeStatusEmployeeModalProps = {
   isModalOpen: boolean;
   handleCloseModal: () => void;
   handleUpdateStatus: (
-    payload: AddOrganizationUserWorkingStatusRequest
+    payload: AddOrganizationUserWorkingStatusRequest,
   ) => void;
   employeeStatus: {
     id: number;
     status: UserStatusResponse | null;
   } | null;
+  isLoading: boolean;
 };
