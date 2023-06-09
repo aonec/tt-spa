@@ -1,4 +1,3 @@
-import './devicesReport/models/init';
 import './individualDevices/closeIndividualDevice/models/init';
 import './individualDevices/addIndividualDevice/models/init';
 import './apartments/displayApartment/models/init';
@@ -11,7 +10,6 @@ import './apartments/displayProblemDevices/models/init';
 import './apartments/printIssueCertificate/models/init';
 import './readings/readingsInput/confirmInputReadingModal/models/init';
 import './readings/accountingNodesReadings/models/init.ts';
-import './statistics/subscribersConsumption/models/init.ts';
 import './individualDevices/deleteIndividualDevice/deleteIndividualDeviceService.init';
 import '../../services/settings/inspectorsDistributionService/searchInspectorsHousingStocksService/searchInspectorsHousingStockService.init';
 import '../../services/settings/inspectorsDistributionService/displayInspectorsHousingStocksService/displayInspectorsHousingStocksService.init';

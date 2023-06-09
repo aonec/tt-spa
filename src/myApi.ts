@@ -79,11 +79,13 @@ export interface AddOrganizationRequest {
   name: string;
   city: string;
   street?: string | null;
+  corpus?: string | null;
   houseNumber?: string | null;
   timeZone: TimeSpan;
 
   /** @format uuid */
   responsibilityZoneId?: string | null;
+  phoneNumber?: string | null;
   type: OrganizationType;
 }
 
@@ -499,6 +501,7 @@ export enum ArchivesDataGroupType {
   Volume = 'Volume',
   TemperatureOut = 'TemperatureOut',
   Energy = 'Energy',
+  TemperatureIn = 'TemperatureIn',
 }
 
 export interface ArchivesDataGroupValue {
@@ -4856,6 +4859,9 @@ export interface PipeNodeIntoCalculatorResponse {
 
   /** @format int32 */
   number: number;
+
+  /** @format int32 */
+  entryNumber: number | null;
   commercialStatus: NodeCommercialStatusResponse | null;
   resource: EResourceType;
   nodeServiceZone: NodeServiceZoneResponse | null;
@@ -7981,37 +7987,14 @@ export class Api<
      * @tags ElectricNodes
      * @name ElectricNodesDetail
      * @summary NodeRead
-     * @request GET:/api/ElectricNodes/{nodeId}
+     * @request GET:/api/ElectricNodes/{electricNodeId}
      * @secure
      */
-    electricNodesDetail: (nodeId: number, params: RequestParams = {}) =>
+    electricNodesDetail: (electricNodeId: number, params: RequestParams = {}) =>
       this.request<ElectricNodeResponseSuccessApiResponse, ErrorApiResponse>({
-        path: `/api/ElectricNodes/${nodeId}`,
+        path: `/api/ElectricNodes/${electricNodeId}`,
         method: 'GET',
         secure: true,
-        format: 'json',
-        ...params,
-      }),
-
-    /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li>
-     *
-     * @tags ElectricNodes
-     * @name ElectricNodesCreate
-     * @summary NodeCreate
-     * @request POST:/api/ElectricNodes
-     * @secure
-     */
-    electricNodesCreate: (
-      data: CreateElectricNodeRequest,
-      params: RequestParams = {},
-    ) =>
-      this.request<ElectricNodeResponseSuccessApiResponse, ErrorApiResponse>({
-        path: `/api/ElectricNodes`,
-        method: 'POST',
-        body: data,
-        secure: true,
-        type: ContentType.Json,
         format: 'json',
         ...params,
       }),
@@ -8033,6 +8016,29 @@ export class Api<
       this.request<ElectricNodeResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/ElectricNodes/${electricNodeId}`,
         method: 'PUT',
+        body: data,
+        secure: true,
+        type: ContentType.Json,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li>
+     *
+     * @tags ElectricNodes
+     * @name ElectricNodesCreate
+     * @summary NodeCreate
+     * @request POST:/api/ElectricNodes
+     * @secure
+     */
+    electricNodesCreate: (
+      data: CreateElectricNodeRequest,
+      params: RequestParams = {},
+    ) =>
+      this.request<ElectricNodeResponseSuccessApiResponse, ErrorApiResponse>({
+        path: `/api/ElectricNodes`,
+        method: 'POST',
         body: data,
         secure: true,
         type: ContentType.Json,
@@ -8419,18 +8425,15 @@ export class Api<
      * @tags HomeownerAccounts
      * @name HomeownerAccountsDetail
      * @summary HomeownersRead
-     * @request GET:/api/HomeownerAccounts/{homeownerAccId}
+     * @request GET:/api/HomeownerAccounts/{id}
      * @secure
      */
-    homeownerAccountsDetail: (
-      homeownerAccId: string,
-      params: RequestParams = {},
-    ) =>
+    homeownerAccountsDetail: (id: string, params: RequestParams = {}) =>
       this.request<
         HomeownerAccountResponseSuccessApiResponse,
         ErrorApiResponse
       >({
-        path: `/api/HomeownerAccounts/${homeownerAccId}`,
+        path: `/api/HomeownerAccounts/${id}`,
         method: 'GET',
         secure: true,
         format: 'json',
@@ -12621,6 +12624,28 @@ export class Api<
     ) =>
       this.request<File, ErrorApiResponse>({
         path: `/api/Reports/HeatIndividualDevicesReport`,
+        method: 'GET',
+        query: query,
+        secure: true,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Администратор</li><li>Наблюдатель УК</li>
+     *
+     * @tags Reports
+     * @name ReportsFeedFlowPipeTemperatureReportList
+     * @summary FeedFlowPipeTemperatureReportCreate
+     * @request GET:/api/Reports/FeedFlowPipeTemperatureReport
+     * @secure
+     */
+    reportsFeedFlowPipeTemperatureReportList: (
+      query?: { HouseManagementId?: string; LimitTemperature?: number },
+      params: RequestParams = {},
+    ) =>
+      this.request<File, ErrorApiResponse>({
+        path: `/api/Reports/FeedFlowPipeTemperatureReport`,
         method: 'GET',
         query: query,
         secure: true,

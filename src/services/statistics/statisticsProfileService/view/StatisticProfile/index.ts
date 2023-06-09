@@ -1,0 +1,1 @@
+export { StatisticProfile } from './StatisticProfile';
