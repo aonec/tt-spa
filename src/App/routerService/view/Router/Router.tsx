@@ -432,7 +432,7 @@ export const Router: FC<RouterProps> = ({ roles, isRolesLoadded }) => {
                     />
                   )}
 
-                  {isSeniorOperator && (
+                  {(isSeniorOperator || isAdministrator) && (
                     <Route
                       path="/districtBordersSettings/createByMap"
                       component={CreateDistrictBorderByMapContainer}

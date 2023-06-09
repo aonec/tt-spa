@@ -59,6 +59,9 @@ export const SettingPage: FC<SettingPageProps> = ({
               <WorkingRangeTab />
             </TabsSC.TabPane>
           )}
+          <TabsSC.TabPane tab="Границы районов" key="districtBorder">
+            <DistrictBordersContainer />
+          </TabsSC.TabPane>
         </>
       );
     }

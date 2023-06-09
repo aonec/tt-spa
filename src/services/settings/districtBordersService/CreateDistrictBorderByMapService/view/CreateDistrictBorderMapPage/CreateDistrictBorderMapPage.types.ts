@@ -1,8 +1,10 @@
-import { HousingStockListResponse } from 'myApi';
+import { DistrictCreateRequest, HousingStockListResponse } from 'myApi';
 
 export type CreateDistrictBorderMapPageProps = {
   isLoadingHousingStocks: boolean;
   housingStocksList: HousingStockListResponse[];
+  handleCreateDistrict: (payload: DistrictCreateRequest) => void;
+  isLoadingCreatingDistrict: boolean;
 };
 
 export const ymaps = window.ymaps;

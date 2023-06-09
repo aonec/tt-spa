@@ -24,7 +24,12 @@ import { PencilIcon } from 'ui-kit/icons';
 
 export const CreateDistrictBorderMapPage: FC<
   CreateDistrictBorderMapPageProps
-> = ({ isLoadingHousingStocks, housingStocksList }) => {
+> = ({
+  isLoadingHousingStocks,
+  housingStocksList,
+  handleCreateDistrict,
+  isLoadingCreatingDistrict,
+}) => {
   const mapRef = useRef<HTMLDivElement | null>(null);
 
   const [map, setMap] = useState<ymaps.Map | null>(null);
@@ -42,6 +47,8 @@ export const CreateDistrictBorderMapPage: FC<
   const [districtColor, setDistrictColor] = useState<DistrictColor>(
     DistrictColor.Blue,
   );
+
+  const [districtName, setDistrictName] = useState('');
 
   const [formSection, setFormSection] = useState<number>(0);
 
@@ -200,6 +207,10 @@ export const CreateDistrictBorderMapPage: FC<
     district.options.set('fillColor', color);
   }, [district, districtColor]);
 
+  const districtPolygonCoordinates = useMemo(() => {
+    return district?.geometry?.getCoordinates()?.[0] || [];
+  }, [district]);
+
   return (
     <div>
       <Header>
@@ -229,6 +240,11 @@ export const CreateDistrictBorderMapPage: FC<
             districtColor={districtColor}
             formSection={formSection}
             setFormSection={setFormSection}
+            handleCreateDistrict={handleCreateDistrict}
+            isLoadingCreatingDistrict={isLoadingCreatingDistrict}
+            districtName={districtName}
+            setDistrictName={setDistrictName}
+            districtPolygonCoordinates={districtPolygonCoordinates}
           />
         )}
       </MapWrapper>
