@@ -1,1 +1,1 @@
-export { DistrictBordersByAddressPage } from './DistrictBordersByAddressPage'
+export { DistrictBordersByAddressPage } from './DistrictBordersByAddressPage';

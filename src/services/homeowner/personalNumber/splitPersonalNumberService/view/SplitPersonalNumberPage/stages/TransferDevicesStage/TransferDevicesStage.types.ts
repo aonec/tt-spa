@@ -1,3 +1,1 @@
-export type TransferDevicesStageProps = {
-  
-};
+export type TransferDevicesStageProps = {};

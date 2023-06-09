@@ -25,6 +25,7 @@ import { DocumentsPanel } from './DocumentsPanel';
 import { NodeDocumentsList } from './NodeDocumentsList';
 import { RelatedNodesList } from './RelatedNodesList';
 import { ContextMenuButtonColor } from 'ui-kit/ContextMenuButton/ContextMenuButton.types';
+import { TaskGroupingFilter } from 'myApi';
 
 const { TabPane } = Tabs;
 
@@ -189,7 +190,7 @@ export const CalculatorProfile: FC<CalculatorProfileProps> = ({
           <LinkCard
             text={`Задачи: ${numberOfTasks}`}
             link={stringifyUrl({
-              url: '/tasks/list/Observing',
+              url: `/tasks/list/${TaskGroupingFilter.Executing}`,
               query: { calculatorId: id },
             })}
             showLink={Boolean(numberOfTasks)}

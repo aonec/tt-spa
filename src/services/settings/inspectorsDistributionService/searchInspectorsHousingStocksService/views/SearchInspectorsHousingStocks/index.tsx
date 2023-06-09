@@ -1,4 +1,3 @@
-import { fromEnter } from '01/features/housingStocks/displayHousingStocks/components/HousingStockFilter/HousingStockFilter';
 import { useOnEnterSwitch } from '01/features/readings/accountingNodesReadings/components/Filter';
 import { ExtendedSearch } from 'ui-kit/ExtendedSearch';
 import { Grid } from '01/shared/ui/Layout/Grid';
@@ -10,6 +9,7 @@ import { SearchInspectorsHousingStocksProps } from './types';
 import { Select } from 'ui-kit/Select';
 import { Input } from 'ui-kit/Input';
 import { AutoComplete } from 'ui-kit/AutoComplete';
+import { fromEnter } from 'ui-kit/shared_components/DatePickerNative';
 
 export const SearchInspectorsHousingStocks: FC<
   SearchInspectorsHousingStocksProps

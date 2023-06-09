@@ -1,6 +1,4 @@
 import { createNodeServiceZoneService } from './../createNodeServiceZoneService/createNodeServiceZoneService.model';
-import { $existingStreets } from '01/features/housingStocks/displayHousingStockStreets/model';
-import { $existingCities } from '01/features/housingStocks/displayHousingStockCities/models';
 import { combine, createDomain, forward, guard, sample } from 'effector';
 import { createGate } from 'effector-react';
 import {
@@ -23,6 +21,7 @@ import { CreateNodeFormPayload } from './createNodeService.types';
 import { EffectFailDataAxiosError } from 'types';
 import { message } from 'antd';
 import { createCalculatorModalService } from 'services/calculators/createCalculatorModalService';
+import { addressSearchService } from 'services/addressSearchService/addressSearchService.models';
 
 const domain = createDomain('createNodeService');
 
@@ -221,8 +220,8 @@ export const createNodeService = {
   },
   outputs: {
     $housingStock,
-    $existingCities,
-    $existingStreets,
+    $existingCities: addressSearchService.outputs.$existingCities,
+    $existingStreets: addressSearchService.outputs.$existingStreets,
     $isLoadingHousingStock,
     $stepNumber,
     $calculatorsList,

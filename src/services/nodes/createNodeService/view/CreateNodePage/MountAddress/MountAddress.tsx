@@ -10,14 +10,15 @@ import { MountAddressProps } from './MountAddress.types';
 import { useFormik } from 'formik';
 import { validationSchema } from './MountAddress.constants';
 import { ErrorMessage } from 'ui-kit/ErrorMessage';
-import { ExistingStreetsGate } from '01/features/housingStocks/displayHousingStockStreets/model';
 import { AutoComplete } from 'ui-kit/AutoComplete';
 import { getPreparedStreetsOptions } from 'services/objects/createObjectService/view/CreateObjectPage/CreateObjectAddressStage/CreateObjectAddressStage.utils';
 import { useHistory } from 'react-router-dom';
 import { mountAddressService } from './MountAddress.models';
 import { useStore } from 'effector-react';
+import { addressSearchService } from 'services/addressSearchService/addressSearchService.models';
 
 const { outputs, effects } = mountAddressService;
+const { ExistingStreetsGate } = addressSearchService.gates;
 
 export const MountAddress: FC<MountAddressProps> = ({
   housingStock,

@@ -1,9 +1,9 @@
-import { $existingCities } from '01/features/housingStocks/displayHousingStockCities/models';
 import { combine, sample } from 'effector';
 import _ from 'lodash';
 import { resourceConsumptionFilterService } from './resourceConsumptionFilterService';
 import { resourceConsumptionService } from './resourceConsumptionService.model';
 import { ConsumptionDataPayload } from './resourceConsumptionService.types';
+import { addressSearchService } from 'services/addressSearchService/addressSearchService.models';
 
 sample({
   source: resourceConsumptionFilterService.outputs.$resourceConsumptionFilter,
@@ -24,13 +24,13 @@ sample({
 
 sample({
   source: sample({
-    source: $existingCities,
+    source: addressSearchService.outputs.$existingCities,
     fn: (cities) => _.last(cities) || null,
   }),
   clock: sample({
     source: resourceConsumptionService.gates.ResourceConsumptionGate.open,
     clock: [
-      $existingCities,
+      addressSearchService.outputs.$existingCities,
       resourceConsumptionService.gates.ResourceConsumptionGate.open,
     ],
     filter: (isOpen) => Boolean(isOpen),
