@@ -5,11 +5,17 @@ import { AddressSearchContainer } from 'services/addressSearchService';
 import { SearchFieldType } from 'services/addressSearchService/view/AddressSearch/AddressSearch.types';
 import { Empty } from 'antd';
 import { TypeAddressToStart } from 'ui-kit/shared_components/TypeToStart';
+import { WithLoader } from 'ui-kit/shared_components/WithLoader';
+import { AccountingNodesList } from '../AccountingNodesList';
 
 export const AccountingNodesReadings: FC<AccountingNodesReadingsProps> = ({
   handleGetElectricNodes,
   address,
   electricNodes,
+  isLoading,
+  downSliderIndex,
+  sliderIndex,
+  upSliderIndex,
 }) => {
   const electricNodesExist = electricNodes.length !== 0;
 
@@ -41,16 +47,25 @@ export const AccountingNodesReadings: FC<AccountingNodesReadingsProps> = ({
           }
         }
       />
-      <Wrapper>
-        {!address && <TypeAddressToStart />}
-        {!electricNodesExist && address && (
-          <Empty
-            image={Empty.PRESENTED_IMAGE_SIMPLE}
-            description="Нет приборов"
-          />
-        )}
-        {electricNodesExist && address && null}
-      </Wrapper>
+      <WithLoader isLoading={isLoading}>
+        <Wrapper>
+          {!address && <TypeAddressToStart />}
+          {!electricNodesExist && address && (
+            <Empty
+              image={Empty.PRESENTED_IMAGE_SIMPLE}
+              description="Нет приборов"
+            />
+          )}
+          {electricNodesExist && address && (
+            <AccountingNodesList
+              electricNodes={electricNodes}
+              sliderIndex={sliderIndex}
+              upSliderIndex={upSliderIndex}
+              downSliderIndex={downSliderIndex}
+            />
+          )}
+        </Wrapper>
+      </WithLoader>
     </>
   );
 };

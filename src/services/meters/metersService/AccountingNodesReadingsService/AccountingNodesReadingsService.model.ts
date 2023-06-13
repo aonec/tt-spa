@@ -6,10 +6,27 @@ import {
 } from './AccountingNodesReadingsService.types';
 import { ElectricNodeResponse } from 'myApi';
 import { createGate } from 'effector-react';
+import { PREVIOUS_READING_INDEX_LIMIT } from './AccountingNodesReadingsService.constants';
 
 const domain = createDomain('AccountingNodesReadingsService');
 
 const HousingStockIdGate = createGate<{ id?: number }>();
+
+const upSliderIndex = domain.createEvent();
+const downSliderIndex = domain.createEvent();
+
+const $sliderIndex = domain
+  .createStore(0)
+  .on(upSliderIndex, (index) => {
+    if (index === PREVIOUS_READING_INDEX_LIMIT) return index;
+
+    return ++index;
+  })
+  .on(downSliderIndex, (index) => {
+    if (index === 0) return index;
+
+    return --index;
+  });
 
 const fetchElectricNodes = domain.createEvent<GetElectricNodesByAddress>();
 const fetchElectricNodesFx = domain.createEffect<
@@ -49,11 +66,14 @@ sample({
 export const AccountingNodesReadingsService = {
   inputs: {
     fetchElectricNodes,
+    upSliderIndex,
+    downSliderIndex,
   },
   outputs: {
     $electricNodes,
     $housingStockAddress,
     $isLoading,
+    $sliderIndex,
   },
   gates: {
     HousingStockIdGate,

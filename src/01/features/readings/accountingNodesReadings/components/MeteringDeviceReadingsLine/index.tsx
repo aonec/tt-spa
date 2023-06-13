@@ -4,7 +4,6 @@ import { Space } from '01/shared/ui/Layout/Space/Space';
 import { ElectricNodeResponse } from 'myApi';
 import React, { useCallback } from 'react';
 import styled from 'styled-components';
-import { gridTemp } from '../MeteringDevicesList';
 import { MeteringDeviceReadingInput } from '../MeteringDeviceReadingInput';
 import { useMeteringDeviceReadings } from './useMeteringDeviceReadings';
 import { ConsumptionInput } from '../ConsumptionInput/ConsumptionInput';
@@ -114,7 +113,7 @@ export const MeteringDeviceReadingsLine: React.FC<Props> = ({
   };
 
   return (
-    <Wrap temp={gridTemp} gap="15px">
+    <Wrap temp="" gap="15px">
       {deviceData}
       <div>{counter?.scaleFactor}</div>
       {readingsInput()}

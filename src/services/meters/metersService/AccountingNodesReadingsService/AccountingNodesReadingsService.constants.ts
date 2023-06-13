@@ -1,0 +1,2 @@
+export const PREVIOUS_READING_INDEX_LIMIT = 6;
+export const NEXT_READING_INDEX_LIMIT = -1;

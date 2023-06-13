@@ -3,7 +3,6 @@ import { useHistory, useParams } from 'react-router-dom';
 import { AccountingNodesReadings } from './view/AccountingNodesReadings';
 import { AccountingNodesReadingsService } from './AccountingNodesReadingsService.model';
 import { useUnit } from 'effector-react';
-import { WithLoader } from 'ui-kit/shared_components/WithLoader';
 import { ConfirmReadingValueModal } from '01/features/readings/readingsInput/confirmInputReadingModal';
 
 const { inputs, outputs, gates } = AccountingNodesReadingsService;
@@ -16,8 +15,12 @@ export const AccountingNodesReadingsContainer = () => {
   const address = useUnit(outputs.$housingStockAddress);
   const electricNodes = useUnit(outputs.$electricNodes);
   const isLoading = useUnit(outputs.$isLoading);
+  const sliderIndex = useUnit(outputs.$sliderIndex);
 
   const handleGetElectricNodes = useUnit(inputs.fetchElectricNodes);
+  const upSliderIndex = useUnit(inputs.upSliderIndex);
+  const downSliderIndex = useUnit(inputs.downSliderIndex);
+
 
   useEffect(() => {
     return outputs.$housingStockAddress.watch((address) => {
@@ -32,13 +35,15 @@ export const AccountingNodesReadingsContainer = () => {
       <ConfirmReadingValueModal />
 
       <HousingStockIdGate id={Number(id)} />
-      <WithLoader isLoading={isLoading}>
-        <AccountingNodesReadings
-          handleGetElectricNodes={handleGetElectricNodes}
-          address={address}
-          electricNodes={electricNodes}
-        />
-      </WithLoader>
+      <AccountingNodesReadings
+        handleGetElectricNodes={handleGetElectricNodes}
+        address={address}
+        electricNodes={electricNodes}
+        isLoading={isLoading}
+        sliderIndex={sliderIndex}
+        upSliderIndex={upSliderIndex}
+        downSliderIndex={downSliderIndex}
+      />
     </>
   );
 };

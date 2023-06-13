@@ -5,4 +5,8 @@ export type AccountingNodesReadingsProps = {
   handleGetElectricNodes: (address: GetElectricNodesByAddress) => void;
   address: HousingStockAddressItemResponse | null;
   electricNodes: ElectricNodeResponse[];
+  isLoading: boolean;
+  sliderIndex: number;
+  upSliderIndex: () => void;
+  downSliderIndex: () => void;
 };

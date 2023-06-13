@@ -1,4 +1,3 @@
-import { getMeteringDeviceReadings } from '01/_api/meteringDeviceReadings';
 import { useEvent } from 'effector-react';
 import moment from 'moment';
 import { HousingMeteringDeviceReadingsIncludingPlacementResponse } from 'myApi';
@@ -33,17 +32,6 @@ export function useMeteringDeviceReadings(id: number, sliderIndex?: number) {
   const [loading, setLoading] = useState(false);
 
   async function fetchMeteringDeviceReadings(id: number) {
-    setLoading(true);
-
-    try {
-      const response = await getMeteringDeviceReadings(id);
-
-      const newReadings = response;
-
-      setReadings(newReadings.filter((elem) => !elem.isArchived));
-    } catch (error) {}
-
-    setLoading(false);
   }
 
   useEffect(() => void fetchMeteringDeviceReadings(id), [id]);
