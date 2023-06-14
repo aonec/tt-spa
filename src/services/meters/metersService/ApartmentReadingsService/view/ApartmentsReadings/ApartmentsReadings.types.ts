@@ -23,6 +23,7 @@ export type ApartmentsReadingsProps = {
   allIndividualDeviceMountPlaces:
     | IndividualDeviceMountPlaceForFilterResponse[]
     | null;
+  printIssueCertificate: () => void;
 };
 
 export enum SearchMode {
