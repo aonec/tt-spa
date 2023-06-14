@@ -119,7 +119,11 @@ export const NewHeatingStationForm: FC<NewHeatingStationFormProps> = ({
           <FormItem label="Улица">
             <AutoComplete
               placeholder="Улица"
-              value={values.address.street}
+              value={
+                values.address.street === 'Default'
+                  ? 'Не выбрано'
+                  : values.address.street
+              }
               onChange={(value) =>
                 setFieldValue('address', { ...values.address, street: value })
               }

@@ -6,17 +6,11 @@ import { Select } from 'ui-kit/Select';
 import { PageTitle } from '../CreateObjectPage.styled';
 import {
   ButtonPadding,
-  FlexEnd,
-  FlexStart,
   Footer,
   GridContainer,
-  InputTypeDisplayingDiv,
-  PencilIconSC,
   RightButtonBlock,
   Title,
-  Wrapper,
   WrapperLinkButton,
-  CloseIconSC,
   ButtonSC,
 } from './CreateObjectMainInfoStage.styled';
 import {
@@ -41,6 +35,7 @@ import { sortBy } from 'lodash';
 import { LinkButton } from 'ui-kit/shared_components/LinkButton';
 import { createHeatingStationService } from 'services/objects/heatingStations/createHeatingStationService';
 import { editHeatingStationService } from 'services/objects/heatingStations/editHeatingStationService';
+import { SelectedEntityPanel } from 'ui-kit/shared_components/SelectedEntityPanel';
 
 const {
   inputs: { handleHeatingStationCreated },
@@ -104,14 +99,14 @@ export const CreateObjectMainInfoStage: FC<CreateObjectMainInfoStageProps> = ({
     [setFieldValue],
   );
 
-  const selectedHeatingStation = heatingStations?.items?.find(
+  const selectedHeatingStation = heatingStationsValues?.find(
     (station) => station.id === values.heatingStationId,
   );
 
   return (
     <>
       <HeatingStationsFetchGate />
-      <Wrapper>
+      <>
         <PageTitle>Основная информация </PageTitle>
 
         <FormItem label="Домоуправления">
@@ -247,25 +242,17 @@ export const CreateObjectMainInfoStage: FC<CreateObjectMainInfoStageProps> = ({
 
         {values.heatingStationId && (
           <FormItem label="Тепловой пункт">
-            <InputTypeDisplayingDiv>
-              <FlexStart>
-                <Title>{selectedHeatingStation?.name}</Title>
-              </FlexStart>
-              <FlexEnd>
-                <PencilIconSC
-                  onClick={() => {
-                    openEditHeatingStationModal();
-                    selectedHeatingStation &&
-                      heatingStationCapture(selectedHeatingStation);
-                  }}
-                />
-                <CloseIconSC
-                  onClick={() => {
-                    setFieldValue('heatingStationId', null);
-                  }}
-                />
-              </FlexEnd>
-            </InputTypeDisplayingDiv>
+            <SelectedEntityPanel
+              children={<Title>{selectedHeatingStation?.name}</Title>}
+              onEdit={() => {
+                openEditHeatingStationModal();
+                selectedHeatingStation &&
+                  heatingStationCapture(selectedHeatingStation);
+              }}
+              onRemove={() => {
+                setFieldValue('heatingStationId', null);
+              }}
+            />
           </FormItem>
         )}
 
@@ -282,7 +269,7 @@ export const CreateObjectMainInfoStage: FC<CreateObjectMainInfoStageProps> = ({
             <ButtonSC onClick={() => handleSubmit()}>Далее</ButtonSC>
           </RightButtonBlock>
         </Footer>
-      </Wrapper>
+      </>
     </>
   );
 };
