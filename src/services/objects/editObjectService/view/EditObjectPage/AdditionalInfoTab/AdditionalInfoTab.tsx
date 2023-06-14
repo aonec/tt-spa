@@ -17,6 +17,7 @@ import { Button } from 'ui-kit/Button';
 import { ElevatorExistingType } from 'services/objects/createObjectService/view/CreateObjectPage/CreateObjectFinalStageModal/CreateObjectFinalStageForm/CreateObjectFinalStageForm.types';
 import {
   ElevatorDictionary,
+  IsElevatorDictionaryBoolean,
   getElevatorType,
 } from 'services/objects/createObjectService/view/CreateObjectPage/CreateObjectFinalStageModal/CreateObjectFinalStageModal.constants';
 
@@ -29,17 +30,35 @@ export const AdditionalInfoTab: FC<AdditionalInfoTabProps> = ({
 
   const { values, handleSubmit, setFieldValue } = useFormik({
     initialValues: {
-      floors: housingStock.numberOfFloors,
-      entrances: housingStock.numberOfEntrances,
-      elevator: getElevatorType(housingStock.isThereElevator),
-      apartments: housingStock.numberOfApartments,
+      numberOfFloors: housingStock.numberOfFloors,
+      numberOfEntrances: housingStock.numberOfEntrances,
+      isThereElevator: getElevatorType(housingStock.isThereElevator),
+      numberOfApartments: housingStock.numberOfApartments,
       totalArea: housingStock.totalArea,
       totalLivingArea: housingStock.totalLivingArea,
       constructionYear: Number(constructionYear),
     },
     enableReinitialize: true,
     onSubmit: (data) => {
-      handleUpdateHousingStock(data);
+      const {
+        constructionYear,
+        isThereElevator,
+        numberOfApartments,
+        numberOfEntrances,
+        numberOfFloors,
+        totalArea,
+        totalLivingArea,
+      } = data;
+
+      handleUpdateHousingStock({
+        constructionYear,
+        isThereElevator: IsElevatorDictionaryBoolean[isThereElevator],
+        numberOfApartments,
+        numberOfEntrances,
+        numberOfFloors,
+        totalArea,
+        totalLivingArea,
+      });
     },
     validateOnChange: false,
   });
@@ -52,8 +71,10 @@ export const AdditionalInfoTab: FC<AdditionalInfoTabProps> = ({
         <FormItem label="Количество этажей">
           <Input
             placeholder="Введите"
-            onChange={(value) => setFieldValue('floors', value.target.value)}
-            value={values.floors || undefined}
+            onChange={(value) =>
+              setFieldValue('numberOfFloors', Number(value.target.value))
+            }
+            value={values.numberOfFloors || undefined}
             type="number"
           />
         </FormItem>
@@ -61,8 +82,8 @@ export const AdditionalInfoTab: FC<AdditionalInfoTabProps> = ({
         <FormItem label="Лифт">
           <Select
             placeholder="Выберите из списка"
-            onChange={(value) => setFieldValue('elevator', value)}
-            value={values.elevator || undefined}
+            onChange={(value) => setFieldValue('isThereElevator', value)}
+            value={values.isThereElevator || undefined}
           >
             {Object.values(ElevatorExistingType).map((e) => (
               <Select.Option value={e} key={e}>
@@ -75,8 +96,10 @@ export const AdditionalInfoTab: FC<AdditionalInfoTabProps> = ({
         <FormItem label="Число подъездов">
           <Input
             placeholder="Введите"
-            onChange={(value) => setFieldValue('entrances', value.target.value)}
-            value={values.entrances || undefined}
+            onChange={(value) =>
+              setFieldValue('numberOfEntrances', Number(value.target.value))
+            }
+            value={values.numberOfEntrances || undefined}
             type="number"
           />
         </FormItem>
@@ -85,9 +108,9 @@ export const AdditionalInfoTab: FC<AdditionalInfoTabProps> = ({
           <Input
             placeholder="Введите"
             onChange={(value) =>
-              setFieldValue('apartments', value.target.value)
+              setFieldValue('numberOfApartments', Number(value.target.value))
             }
-            value={values.apartments || undefined}
+            value={values.numberOfApartments || undefined}
             type="number"
           />
         </FormItem>
@@ -96,7 +119,7 @@ export const AdditionalInfoTab: FC<AdditionalInfoTabProps> = ({
           <Input
             placeholder="Введите"
             onChange={(value) =>
-              setFieldValue('totalLivingArea', value.target.value)
+              setFieldValue('totalLivingArea', Number(value.target.value))
             }
             value={values.totalLivingArea || undefined}
             type="number"
@@ -106,7 +129,9 @@ export const AdditionalInfoTab: FC<AdditionalInfoTabProps> = ({
         <FormItem label="Общая площадь">
           <Input
             placeholder="Введите"
-            onChange={(value) => setFieldValue('totalArea', value.target.value)}
+            onChange={(value) =>
+              setFieldValue('totalArea', Number(value.target.value))
+            }
             value={values.totalArea || undefined}
             type="number"
           />
@@ -116,7 +141,7 @@ export const AdditionalInfoTab: FC<AdditionalInfoTabProps> = ({
           <Input
             placeholder="Введите"
             onChange={(value) =>
-              setFieldValue('constructionYear', value.target.value)
+              setFieldValue('constructionYear', Number(value.target.value))
             }
             value={values.constructionYear || undefined}
             type="number"

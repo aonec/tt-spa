@@ -2,6 +2,8 @@ import {
   HeatingStationResponse,
   HeatingStationResponsePagedList,
   HouseManagementResponse,
+  HousingStockAddressCreateRequest,
+  HousingStockAddressUpdateRequest,
   HousingStockResponse,
   HousingStockUpdateRequest,
 } from 'myApi';
@@ -17,6 +19,20 @@ export type EditObjectPageProps = {
   heatingStationCapture: (payload: HeatingStationResponse) => void;
   onPageCancel: () => void;
   handleUpdateHousingStock: (payload: HousingStockUpdateRequest) => void;
+  isHouseManagementsLoading: boolean;
+  isHeatingStationsLoading: boolean;
+  handleCreateHousingStockAddress: (
+    payload: HousingStockAddressCreateRequest,
+  ) => void;
+  handleUpdateHousingStockAddress: (payload: {
+    addressId: number;
+    data: HousingStockAddressUpdateRequest;
+  }) => void;
+  handleDeleteHousingStockAddress: (payload: { addressId: number }) => void;
+  isDeleteLoading: boolean;
+  isCreateLoading: boolean;
+  isUpdateLoading: boolean;
+  handleRefetchHousingStock: () => void;
 };
 
 export enum EditObjectPageTabs {

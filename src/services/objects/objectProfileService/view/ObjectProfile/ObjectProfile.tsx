@@ -14,7 +14,6 @@ import {
   Wrapper,
 } from './ObjectProfile.styled';
 import { ObjectProfileProps } from './ObjectProfile.types';
-import { featureToggles } from 'featureToggles';
 import { LinkCard } from 'ui-kit/shared_components/LinkCard';
 import { stringifyUrl } from 'query-string';
 const { TabPane } = TabsSC;
@@ -67,9 +66,8 @@ export const ObjectProfile: FC<ObjectProfileProps> = ({
             {
               title: 'Редактировать',
               onClick: () => history.push(`/objects/${housingStock.id}/edit`),
-              hidden:
-                !isPermissionToEditHousingStock ||
-                !featureToggles.editHousingStock,
+              hidden: !isPermissionToEditHousingStock,
+              // !featureToggles.editHousingStock,
             },
           ],
         }}

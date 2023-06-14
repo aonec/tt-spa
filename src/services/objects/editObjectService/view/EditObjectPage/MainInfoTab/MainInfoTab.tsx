@@ -1,4 +1,4 @@
-import React, { FC, useMemo } from 'react';
+import React, { FC, useEffect, useMemo } from 'react';
 import {
   ButtonPadding,
   Footer,
@@ -9,32 +9,26 @@ import {
   WrapperLinkButton,
 } from './MainInfoTab.styled';
 import { MainInfoTabProps } from './MainInfoTab.types';
-import { createObjectService } from 'services/objects/createObjectService';
 import { FormItem } from 'ui-kit/FormItem';
 import { Select } from 'ui-kit/Select';
 import { useFormik } from 'formik';
-import { SpaceLine } from '01/shared/ui/Layout/Space/Space';
-import {
-  EHouseCategory,
-  ELivingHouseType,
-  ENonResidentialHouseType,
-  HousingStockUpdateRequest,
-} from 'myApi';
-import {
-  HouseCategoryDictionary,
-  LivingHouseTypeDictionary,
-  NonResidentialHouseTypeDictionary,
-} from 'services/objects/createObjectService/view/CreateObjectPage/CreateObjectMainInfoStage/createObjectMainInfoStage.constants';
+import * as yup from 'yup';
+import { HousingStockUpdateRequest } from 'myApi';
 import { sortBy } from 'lodash';
 import { LinkButton } from 'ui-kit/shared_components/LinkButton';
 import { Button } from 'ui-kit/Button';
 import { SelectedEntityPanel } from 'ui-kit/shared_components/SelectedEntityPanel';
-import { CreateHeatingStationContainer } from 'services/objects/heatingStations/createHeatingStationService';
+import {
+  CreateHeatingStationContainer,
+  createHeatingStationService,
+} from 'services/objects/heatingStations/createHeatingStationService';
 import { EditHeatingStationContainer } from 'services/objects/heatingStations/editHeatingStationService';
 import { ErrorMessage } from 'ui-kit/ErrorMessage';
 
-const HeatingStationsFetchGate =
-  createObjectService.gates.HeatingStationsFetchGate;
+const {
+  inputs: { handleHeatingStationCreated },
+} = createHeatingStationService;
+
 const withoutHouseMagement = 'withoutHouseMagement';
 
 export const MainInfoTab: FC<MainInfoTabProps> = ({
@@ -46,13 +40,12 @@ export const MainInfoTab: FC<MainInfoTabProps> = ({
   heatingStationCapture,
   onPageCancel,
   handleUpdateHousingStock,
+  isHeatingStationsLoading,
+  isHouseManagementsLoading,
 }) => {
   const initialValues = useMemo(
     () => ({
       houseManagementId: housingStock.houseManagement?.id || null,
-      houseCategory: housingStock.houseCategory || null,
-      livingHouseType: housingStock.livingHouseType || null,
-      nonResidentialHouseType: housingStock.nonResidentialHouseType || null,
       heatingStationId: housingStock.heatingStation?.id || null,
     }),
     [housingStock],
@@ -65,7 +58,10 @@ export const MainInfoTab: FC<MainInfoTabProps> = ({
       handleUpdateHousingStock(data);
     },
     validateOnChange: false,
-    // validationSchema,
+    validationSchema: yup.object().shape({
+      houseManagement: yup.string().nullable(true),
+      heatingStationId: yup.string().nullable().required('Обязательное поле'),
+    }),
   });
 
   const heatingStationsValues = heatingStations?.items;
@@ -73,9 +69,16 @@ export const MainInfoTab: FC<MainInfoTabProps> = ({
     (station) => station.id === values.heatingStationId,
   );
 
+  useEffect(
+    () =>
+      handleHeatingStationCreated.watch((newHeatingStationData) =>
+        setFieldValue('heatingStationId', newHeatingStationData?.id),
+      ),
+    [setFieldValue],
+  );
+
   return (
     <>
-      <HeatingStationsFetchGate />
       <CreateHeatingStationContainer />
       <EditHeatingStationContainer />
       <Wrapper>
@@ -91,10 +94,13 @@ export const MainInfoTab: FC<MainInfoTabProps> = ({
               setFieldValue('houseManagementId', value);
             }}
             value={
-              values.houseManagementId === null
-                ? withoutHouseMagement
-                : housingStock.houseManagement?.name || undefined
+              !isHouseManagementsLoading
+                ? values.houseManagementId === null
+                  ? withoutHouseMagement
+                  : values.houseManagementId
+                : undefined
             }
+            disabled={isHouseManagementsLoading}
           >
             <Select.Option value={withoutHouseMagement}>
               Без домоуправления
@@ -114,72 +120,6 @@ export const MainInfoTab: FC<MainInfoTabProps> = ({
           <ErrorMessage>{errors.houseManagementId}</ErrorMessage>
         </FormItem>
 
-        <SpaceLine />
-
-        <GridContainer>
-          <FormItem label="Категория объекта">
-            <Select
-              placeholder="Выберите из списка"
-              onChange={(value) => {
-                setFieldValue('houseCategory', value);
-                setFieldValue('livingHouseType', null);
-                setFieldValue('nonResidentialHouseType', null);
-              }}
-              value={values.houseCategory || undefined}
-            >
-              {Object.values(EHouseCategory).map((category) => (
-                <Select.Option value={category} key={category}>
-                  {HouseCategoryDictionary[category]}
-                </Select.Option>
-              ))}
-            </Select>
-            <ErrorMessage>{errors.houseCategory}</ErrorMessage>
-          </FormItem>
-
-          <FormItem label="Тип объекта">
-            {!values.houseCategory && (
-              <Select disabled placeholder="Выберите" />
-            )}
-            {values.houseCategory === EHouseCategory.Living && (
-              <>
-                <Select
-                  placeholder="Выберите из списка"
-                  onChange={(value) => setFieldValue('livingHouseType', value)}
-                  value={values.livingHouseType || undefined}
-                >
-                  {Object.values(ELivingHouseType).map((houseType) => (
-                    <Select.Option value={houseType} key={houseType}>
-                      {LivingHouseTypeDictionary[houseType]}
-                    </Select.Option>
-                  ))}
-                </Select>
-                <ErrorMessage>{errors.livingHouseType}</ErrorMessage>
-              </>
-            )}
-
-            {values.houseCategory === EHouseCategory.NonResidential && (
-              <>
-                <Select
-                  placeholder="Выберите из списка"
-                  onChange={(value) =>
-                    setFieldValue('nonResidentialHouseType', value)
-                  }
-                  value={values.nonResidentialHouseType || undefined}
-                >
-                  {Object.values(ENonResidentialHouseType).map((houseType) => (
-                    <Select.Option value={houseType} key={houseType}>
-                      {NonResidentialHouseTypeDictionary[houseType]}
-                    </Select.Option>
-                  ))}
-                </Select>
-                <ErrorMessage>{errors.nonResidentialHouseType}</ErrorMessage>
-              </>
-            )}
-          </FormItem>
-        </GridContainer>
-
-        <SpaceLine />
-
         {!values.heatingStationId && (
           <GridContainer>
             <FormItem label="Тепловой пункт">
@@ -188,7 +128,10 @@ export const MainInfoTab: FC<MainInfoTabProps> = ({
                 onChange={(value) => {
                   setFieldValue('heatingStationId', value);
                 }}
-                value={values.heatingStationId || undefined}
+                value={
+                  (isHeatingStationsLoading && values.heatingStationId) ||
+                  undefined
+                }
               >
                 {sortBy(heatingStationsValues || [], 'name').map(
                   (heatingStations) =>

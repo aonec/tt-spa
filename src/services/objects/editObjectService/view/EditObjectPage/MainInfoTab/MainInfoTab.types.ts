@@ -15,4 +15,6 @@ export type MainInfoTabProps = {
   heatingStationCapture: (payload: HeatingStationResponse) => void;
   onPageCancel: () => void;
   handleUpdateHousingStock: (payload: HousingStockUpdateRequest) => void;
+  isHeatingStationsLoading: boolean;
+  isHouseManagementsLoading: boolean;
 };
