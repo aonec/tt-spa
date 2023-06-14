@@ -32,7 +32,7 @@ export const SealActionSelectProfile: FC<SealProfileProps> = ({
         />
 
         <LinkPanel
-          link={`/services/seal/${SealActionType.Select}`}
+          link={`/services/seal/${SealActionType.DistributeRecords}`}
           icon={<UserIconSC />}
           text="Распределить записи между контролерами"
           additionalInfo={

@@ -49,6 +49,7 @@ export const AddressSearch: FC<AddressSearchProps> = ({
       }}
       value={values.city}
       disabled={isDisabled}
+      style={{ minWidth: 180 }}
     >
       {cities?.map((elem, index) => (
         <Select.Option key={index} value={elem}>
