@@ -1,9 +1,9 @@
 import React, { FC, useEffect, useState } from 'react';
 import { useEvent, useStore } from 'effector-react';
-import { useHistory } from 'react-router-dom';
 import { Tooltip } from 'antd';
 import {
   AccountOpeningDate,
+  AdditionalHeaderInfoWrapper,
   Address,
   AddressWrapper,
   BaseInfoWrapper,
@@ -32,7 +32,6 @@ import { BriefcaseIcon, CrownIcon, HouseIcon } from 'ui-kit/icons';
 import { Button } from 'ui-kit/Button';
 import moment from 'moment';
 import { apartmentInfoService } from './ApartmentInfo.model';
-import { EApartmentStatus } from 'myApi';
 import { PrintApartmentDevicesCertificateContainer } from 'services/apartments/printApartmentDevicesCertificateService';
 
 const { inputs, outputs } = apartmentInfoService;
@@ -40,16 +39,10 @@ const { inputs, outputs } = apartmentInfoService;
 export const ApartmentInfo: FC<ApartmentInfoProps> = ({
   apartment,
   handleUpdateApartment,
-  handlePauseApartment,
-  handleCancelPauseApartment,
-  openEditPersonalNumberModal,
   setSelectedHomeownerName,
-  isPermitionToApartmentStatusPatch,
+  menuButtons,
+  additionalHeaderInfo,
 }) => {
-  const history = useHistory();
-
-  const isPaused = apartment.status === EApartmentStatus.Pause;
-
   const filteredHomeowners = apartment.homeownerAccounts
     ?.filter((homeowner) => !homeowner.closedAt)
     .sort((a, b) => {
@@ -67,7 +60,6 @@ export const ApartmentInfo: FC<ApartmentInfoProps> = ({
   const [comment, setComment] = useState(apartment.comment);
 
   const togglePanel = useEvent(inputs.togglePanel);
-  const printIssueCertificate = useEvent(inputs.printIssueCertificate);
 
   const isPanelOpen = useStore(outputs.$isPanelOpen);
 
@@ -150,36 +142,10 @@ export const ApartmentInfo: FC<ApartmentInfoProps> = ({
               ))}
             </PersonalNumbersWrapper>
           </AddressWrapper>
-          <ContextMenuButton
-            size="small"
-            menuButtons={[
-              {
-                title: 'Поставить на паузу',
-                hidden: isPaused || !isPermitionToApartmentStatusPatch,
-                onClick: handlePauseApartment,
-              },
-              {
-                title: 'Снять с паузы',
-                hidden: !isPaused || !isPermitionToApartmentStatusPatch,
-                onClick: handleCancelPauseApartment,
-              },
-              {
-                title: 'Изменить лицевой счет',
-                onClick: () => openEditPersonalNumberModal(true),
-              },
-              {
-                title: 'Добавить новый прибор',
-                onClick: () =>
-                  history.push(
-                    `/apartment/${apartment.id}/addIndividualDevice`,
-                  ),
-              },
-              {
-                title: 'Выдать справку',
-                onClick: () => printIssueCertificate(),
-              },
-            ]}
-          />
+          <AdditionalHeaderInfoWrapper>
+            {additionalHeaderInfo}
+            <ContextMenuButton size="small" menuButtons={menuButtons} />
+          </AdditionalHeaderInfoWrapper>
         </Header>
         <InfoPanel>
           <BaseInfoWrapper>
