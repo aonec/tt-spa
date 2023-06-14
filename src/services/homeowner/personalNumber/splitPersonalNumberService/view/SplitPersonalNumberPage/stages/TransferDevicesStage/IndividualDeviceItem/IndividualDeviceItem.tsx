@@ -11,7 +11,9 @@ import { ResourceIconLookup } from 'ui-kit/shared_components/ResourceIconLookup'
 import { DateRange } from 'ui-kit/shared_components/DateRange';
 import { DeviceStatus } from 'ui-kit/shared_components/IndividualDeviceInfo/DeviceStatus';
 import { useStore } from 'effector-react';
-import { $allIndividualDeviceMountPlaces } from '01/features/individualDeviceMountPlaces/displayIndividualDeviceMountPlaces/models';
+import { individualDeviceMountPlacesService } from 'services/devices/individualDeviceMountPlacesService';
+
+const { outputs } = individualDeviceMountPlacesService;
 
 export const IndividualDeviceItem: FC<IndividualDeviceItemProps> = ({
   device,
@@ -20,7 +22,7 @@ export const IndividualDeviceItem: FC<IndividualDeviceItemProps> = ({
   isCheckable,
 }) => {
   const allIndividualDeviceMountPlaces = useStore(
-    $allIndividualDeviceMountPlaces,
+    outputs.$allIndividualDeviceMountPlaces,
   );
 
   return (
