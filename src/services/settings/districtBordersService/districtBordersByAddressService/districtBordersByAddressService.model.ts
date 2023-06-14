@@ -1,7 +1,6 @@
 import { createDomain, sample } from 'effector';
 import { getAddresses } from './districtBordersByAddressService.api';
 import {
-  HousingStockListResponsePagedList,
   StreetWithHousingStockNumbersResponse,
   StreetWithHousingStockNumbersResponsePagedList,
 } from 'myApi';
@@ -10,7 +9,6 @@ import {
   CheckedHousingStocksIdWithStreetsHandler,
   FetchAddressQueryType,
   FilterType,
-  HousingStocksIdsWithCoordinates,
 } from './districtBordersByAddressService.types';
 import { CreateDistrictBorderByMapService } from '../CreateDistrictBorderByMapService';
 import { createGate } from 'effector-react';

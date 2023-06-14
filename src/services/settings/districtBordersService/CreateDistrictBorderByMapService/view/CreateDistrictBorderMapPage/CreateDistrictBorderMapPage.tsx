@@ -99,7 +99,7 @@ export const CreateDistrictBorderMapPage: FC<
 
   useEffect(() => {
     ymaps.ready(initMaps);
-  }, [mapRef]);
+  }, [mapRef, initMaps]);
 
   const afterMovingByAddress = useCallback(() => {
     if (!map) return;
@@ -193,7 +193,7 @@ export const CreateDistrictBorderMapPage: FC<
       : setSelectedHousingStocks(filteredHousingStocks.map((elem) => elem.id));
 
     return filteredHousingStocks;
-  }, [district, housingStocksList]);
+  }, [district, housingStocksList, byAddressList, selectedByAddressHousingStockIds]);
 
   useEffect(() => {
     if (!housingStocksGroup) return;

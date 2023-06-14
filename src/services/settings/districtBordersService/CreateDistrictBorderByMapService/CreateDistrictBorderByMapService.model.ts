@@ -1,4 +1,4 @@
-import { createDomain, forward, sample } from 'effector';
+import { createDomain,  sample } from 'effector';
 import { HousingStockListResponsePagedList } from 'myApi';
 import { getHousingStocks } from './CreateDistrictBorderByMapService.api';
 import { createGate } from 'effector-react';

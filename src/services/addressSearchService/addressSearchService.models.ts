@@ -29,7 +29,7 @@ const ExistingStreetsGate = createGate<GetExistingSteetRequestParams>();
 sample({
   source: $existingCities,
   clock: ExistingCitiesGate.open,
-  filter: (source) => !source,
+  filter: (cities) => !cities,
   target: fetchExistingCities,
 });
 

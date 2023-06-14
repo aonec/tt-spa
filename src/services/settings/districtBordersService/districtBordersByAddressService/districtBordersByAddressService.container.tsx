@@ -1,6 +1,5 @@
 import React, { useEffect, useMemo } from 'react';
 import { useEvent, useStore } from 'effector-react';
-import { StreetWithHousingStockNumbersResponse } from 'myApi';
 import { DistrictBordersByAddressPage } from './view/DistrictBordersByAddressPage/DistrictBordersByAddressPage';
 import { districtBordersByAddressService } from './districtBordersByAddressService.model';
 import {

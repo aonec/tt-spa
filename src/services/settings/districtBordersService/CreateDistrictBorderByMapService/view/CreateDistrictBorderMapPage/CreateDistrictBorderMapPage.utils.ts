@@ -1,10 +1,7 @@
-import { getLinkToSvg } from 'utils/getLinkToSvg';
-import {
-  DistrictColorsList,
-  HousingStockPlacemark,
-  InactiveHousingStockPlacemark,
-} from './CreateDistrictBorderMapPage.constants';
+import { DistrictColorsList } from './CreateDistrictBorderMapPage.constants';
 import { DistrictColor } from './CreateDistrictBorderMapPage.types';
+import housingStockPlacemark from './placemarks/housingStockPlacemark.svg';
+import inactiveHousingStockPlacemark from './placemarks/inactiveHousingStockPlacemark.svg';
 
 function isPointOnLeftOfLine(
   point: number[],
@@ -52,9 +49,7 @@ export function isPointInsidePolygon(
 }
 
 export function getHousingStockItemLink(active: boolean) {
-  return getLinkToSvg(
-    active ? HousingStockPlacemark : InactiveHousingStockPlacemark,
-  );
+  return active ? housingStockPlacemark : inactiveHousingStockPlacemark;
 }
 
 export function getDistrictColorData(districtColor: DistrictColor) {
