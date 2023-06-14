@@ -4,7 +4,7 @@ import { useHistory } from 'react-router-dom';
 import {
   DeletePipeHousingMeteringDeviceContainer,
   deletePipeHousingMeteringDeviceService,
-} from 'services/housingMeteringDevices/deletePipeHousingMeteringDeviceService';
+} from 'services/devices/deletePipeHousingMeteringDeviceService';
 import { HousingMeteringDevicesList } from 'services/nodes/nodeProfileService/view/NodeProfilePage/HousingMeteringDevicesList';
 import {
   AddHosuingMeteringDeviceContainer,

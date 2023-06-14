@@ -12,12 +12,12 @@ import {
   HeaderWrapper,
 } from './TasksProfile.styled';
 import { TasksPageSegment, TasksProfileProps } from './TasksProfile.types';
-import { TaskGroupingFilter } from 'myApi';
 import { Segmented } from 'ui-kit/Segmented';
 import { ListIcon, MapIcon } from 'ui-kit/icons';
 import { TasksMapContainer } from 'services/tasks/tasksMapService';
 import { Empty } from 'antd';
 import { WithLoader } from 'ui-kit/shared_components/WithLoader';
+import { TaskGroupingFilter } from 'myApi';
 
 const { TabPane } = TabsSC;
 
@@ -105,10 +105,19 @@ export const TasksProfile: FC<TasksProfileProps> = ({
             <ContentWrapper>
               <TabsSC activeKey={grouptype} onChange={history.push}>
                 {!isSpectator && (
-                  <TabPane tab={executingTabText} key="Executing"></TabPane>
+                  <TabPane
+                    tab={executingTabText}
+                    key={TaskGroupingFilter.Executing}
+                  ></TabPane>
                 )}
-                <TabPane tab={observingTabText} key="Observing"></TabPane>
-                <TabPane tab="Архив" key="Archived"></TabPane>
+                <TabPane
+                  tab={observingTabText}
+                  key={TaskGroupingFilter.Observing}
+                ></TabPane>
+                <TabPane
+                  tab="Архив"
+                  key={TaskGroupingFilter.Archived}
+                ></TabPane>
               </TabsSC>
               <SearchTasks
                 onSubmit={handleSearch}

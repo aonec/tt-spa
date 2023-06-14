@@ -1,1 +1,1 @@
-export { HousingStockNumber } from './HousingStockNumber'
+export { HousingStockNumber } from './HousingStockNumber';

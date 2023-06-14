@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import moment from 'moment';
-import { NodeStatusIconsDictionary } from 'services/housingMeteringDevices/resourceAccountingSystemsService/view/ResourceAccountingSystems/NodesGroup/NodeItem/NodeStatus/NodeStatus.constants';
+import { NodeStatusIconsDictionary } from 'services/devices/resourceAccountingSystemsService/view/ResourceAccountingSystems/NodesGroup/NodeItem/NodeStatus/NodeStatus.constants';
 import { CommonInfo } from 'ui-kit/shared_components/CommonInfo';
 import { getHousingStockAddress } from 'utils/getHousingStockAddress';
 import { AddressWrapper, NodeStatusWrapper } from './CommonInfoTab.styled';

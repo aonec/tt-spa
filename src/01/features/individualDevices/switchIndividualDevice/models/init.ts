@@ -4,10 +4,6 @@ import {
   IndividualDeviceGate,
 } from './../../displayIndividualDevice/models/index';
 import {
-  $individualDeviceMountPlaces,
-  fetchIndividualDeviceFxMountPlacesFx,
-} from './../../../individualDeviceMountPlaces/displayIndividualDeviceMountPlaces/models/index';
-import {
   forward,
   sample,
   combine,
@@ -50,6 +46,7 @@ import { axios } from '01/axios';
 import { getFilledArray } from 'utils/getFilledArray';
 import { message } from 'antd';
 import { FileData } from 'ui-kit/DocumentsService/DocumentsService.types';
+import { individualDeviceMountPlacesService } from 'services/devices/individualDeviceMountPlacesService';
 
 createIndividualDeviceFx.use(switchIndividualDevice);
 
@@ -153,11 +150,12 @@ forward({
 
 sample({
   source: combine(
-    $individualDeviceMountPlaces,
+    individualDeviceMountPlacesService.outputs.$individualDeviceMountPlaces,
     addIndividualDeviceForm.fields.mountPlaceId.$value,
     (places, name) => places?.find((elem) => elem.name === name)?.id || null,
   ),
-  clock: fetchIndividualDeviceFxMountPlacesFx.doneData,
+  clock:
+    individualDeviceMountPlacesService.outputs.$individualDeviceMountPlaces,
   target: addIndividualDeviceForm.fields.mountPlaceId.set,
 });
 

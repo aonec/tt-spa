@@ -9,10 +9,9 @@ import {
   ObjectProfileContainer,
   objectProfileService,
 } from 'services/objects/objectProfileService';
-import { DevicesPageContainer } from 'services/housingMeteringDevices/devicesPageService';
-import { ChangeODPUContainer } from 'services/housingMeteringDevices/сhangeODPUService';
-import { EditElectricNodeContainer } from 'services/housingMeteringDevices/editElectricNodeService';
-import { StatisticsPage } from '01/features/statistics';
+import { DevicesPageContainer } from 'services/devices/devicesPageService';
+import { ChangeODPUContainer } from 'services/devices/сhangeODPUService';
+import { EditElectricNodeContainer } from 'services/devices/editElectricNodeService';
 import { Panel } from 'App/Panel';
 import { CreateObjectContainer } from 'services/objects/createObjectService';
 import { EditApartmentProfileContainer } from 'services/apartments/editApartmentProfileService';
@@ -20,8 +19,8 @@ import { EmployeeProfileContainer } from 'services/employee/employeeProfileServi
 import { ApartmentProfileContainer } from 'services/apartments/apartmentProfileService';
 import { CreateNodeContainer } from 'services/nodes/createNodeService';
 import { CalculatorProfileContainer } from 'services/calculators/calculatorProfileService';
-import { HousingMeteringDeviceProfileContainer } from 'services/housingMeteringDevices/housingMeteringDevices/housingMeteringDeviceProfileService';
-import { EditHousingMeteringDeviceContainer } from 'services/housingMeteringDevices/housingMeteringDevices/editHousingMeteringDeviceService';
+import { HousingMeteringDeviceProfileContainer } from 'services/devices/housingMeteringDevices/housingMeteringDeviceProfileService';
+import { EditHousingMeteringDeviceContainer } from 'services/devices/housingMeteringDevices/editHousingMeteringDeviceService';
 import { NodeProfileContainer } from 'services/nodes/nodeProfileService';
 import { MetersContainer } from 'services/meters/metersService';
 import { CompanyProfileContainer } from 'services/company/companyProfileService';
@@ -51,7 +50,9 @@ import { SettingsPageContainer } from 'services/settings/settingsPageService';
 import { ActsJournalContainer } from 'services/actsJournalService';
 import { NodeArchivePageContainer } from 'services/nodes/nodeArchiveService';
 import { EditNodeContainer } from 'services/nodes/editNodeService';
+import { CreateDistrictBorderByMapContainer } from 'services/settings/districtBordersService/CreateDistrictBorderByMapService';
 import { DistrictBordersByAddressContainer } from 'services/settings/districtBordersService/districtBordersByAddressService';
+import { StatisticsProfileContainer } from 'services/statistics/statisticsProfileService';
 
 const { gates } = objectProfileService;
 
@@ -431,6 +432,14 @@ export const Router: FC<RouterProps> = ({ roles, isRolesLoadded }) => {
                     />
                   )}
 
+                  {isSeniorOperator && (
+                    <Route
+                      path="/districtBordersSettings/createByMap"
+                      component={CreateDistrictBorderByMapContainer}
+                      exact
+                    />
+                  )}
+
                   <Redirect
                     from="/statistics/"
                     to="/statistics/resourceConsumption"
@@ -444,7 +453,7 @@ export const Router: FC<RouterProps> = ({ roles, isRolesLoadded }) => {
                   />
                   {isAnyRole && (
                     <Route path="/statistics/:grouptype/:searchType?">
-                      <StatisticsPage />
+                      <StatisticsProfileContainer />
                     </Route>
                   )}
 

@@ -11,7 +11,6 @@ import {
   $isClosingIndividualDeviceRequstSuccessfull,
 } from './index';
 import { $closingIndividualDevice } from '.';
-import { refetchIndividualDevices } from '../../displayIndividualDevices/models';
 import { apartmentIndividualDevicesMetersService } from 'services/meters/apartmentIndividualDevicesMetersService';
 import { message } from 'antd';
 
@@ -34,10 +33,7 @@ forward({
 
 forward({
   from: closeIndividualDeviceFx.doneData,
-  to: [
-    refetchIndividualDevices,
-    apartmentIndividualDevicesMetersService.inputs.refetchIndividualDevices,
-  ],
+  to: apartmentIndividualDevicesMetersService.inputs.refetchIndividualDevices,
 });
 
 sample({

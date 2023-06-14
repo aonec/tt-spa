@@ -1,4 +1,3 @@
-import { $individualDeviceMountPlaces } from '01/features/individualDeviceMountPlaces/displayIndividualDeviceMountPlaces/models';
 import { Flex } from '01/shared/ui/Layout/Flex';
 import { Space } from '01/shared/ui/Layout/Space/Space';
 import { Footer, Header, StyledModal } from '01/shared/ui/Modal/Modal';
@@ -16,10 +15,11 @@ import {
   createIndividualDeviceFx,
 } from '../models';
 import { FileIcon, TrashIcon } from '../icons';
-import DeviceIcons from '01/_components/DeviceIcons';
 import { Button } from 'ui-kit/Button';
 import { FileData } from 'ui-kit/DocumentsService/DocumentsService.types';
 import { ResourceInfo } from 'ui-kit/shared_components/ResourceInfo';
+import { individualDeviceMountPlacesService } from 'services/devices/individualDeviceMountPlacesService';
+import { getInputBorderColor } from 'services/meters/individualDeviceMetersInputService/view/MetersInputsBlock/MetersInputsBlock.styled';
 
 interface ILine {
   name: string;
@@ -32,14 +32,14 @@ interface RemoveFile {
 
 export const CheckFormValuesModal = () => {
   const { fields } = useForm(addIndividualDeviceForm);
-  const mountPlaces = useStore($individualDeviceMountPlaces);
+  const mountPlaces = useStore(
+    individualDeviceMountPlacesService.outputs.$individualDeviceMountPlaces,
+  );
 
   const pending = useStore(createIndividualDeviceFx.pending);
 
   const isOpen = useStore($isCheckCreationDeviceFormDataModalOpen);
   const onCancel = () => cancelCheckingButtonClicked();
-
-  const deviceIcon = DeviceIcons[fields.resource.value! || ''];
 
   const lines: ILine[] = [
     {
@@ -73,14 +73,14 @@ export const CheckFormValuesModal = () => {
       name: 'Первичные показания прибора',
       value: getStartupReadingsString(
         fields.startupReadings.value,
-        deviceIcon?.color,
+        getInputBorderColor({ resource: fields.resource.value! }),
       ),
     },
     {
       name: 'Текущие показания прибора',
       value: getStartupReadingsString(
         fields.defaultReadings.value,
-        deviceIcon?.color,
+        getInputBorderColor({ resource: fields.resource.value! }),
       ),
     },
     { name: 'Диспетчеризация', value: fields.isPolling.value ? 'Да' : 'Нет' },
