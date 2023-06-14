@@ -14,5 +14,10 @@ export const getHousingStocks = (
 export const createDistrict = (payload: DistrictCreateRequest): Promise<void> =>
   axios.post('IndividualSeal/Districts', payload);
 
-export const getExistingDistricts = (): Promise<DistrictResponse[]> =>
-  axios.get('IndividualSeal/Districts');
+export const getExistingDistricts = async (): Promise<DistrictResponse[]> => {
+  const districts: DistrictResponse[] = await axios.get(
+    'IndividualSeal/Districts',
+  );
+
+  return districts;
+};

@@ -27,6 +27,8 @@ import {
 import { PencilIcon } from 'ui-kit/icons';
 import { DistrictAdditionalInfo } from './CreateDistrictFormPanel/CreateDistrictFormPanel.types';
 import { DistrictColorsList } from './CreateDistrictBorderMapPage.constants';
+import { HousingStockListResponse } from 'myApi';
+import housingStockMiniPlacemark from './placemarks/housingStockMiniPlacemark.svg';
 
 export const CreateDistrictBorderMapPage: FC<
   CreateDistrictBorderMapPageProps
@@ -37,7 +39,6 @@ export const CreateDistrictBorderMapPage: FC<
   isLoadingCreatingDistrict,
   existingDistricts,
 }) => {
-  console.log(existingDistricts);
   const mapRef = useRef<HTMLDivElement | null>(null);
 
   const [map, setMap] = useState<ymaps.Map | null>(null);
@@ -182,19 +183,29 @@ export const CreateDistrictBorderMapPage: FC<
     setIsEditing(false);
   };
 
-  const housingStocksInDistrict = useMemo(() => {
-    if (!district || !housingStocksList) return [];
+  const { housingStocks, selected: housingStocksInDistrict } = useMemo(() => {
+    const polygonCoordinates = district?.geometry?.getCoordinates();
 
-    const polygonCoordinates = district.geometry?.getCoordinates();
+    const filteredHousingStocks = housingStocksList.reduce(
+      (acc, elem) => {
+        const isInPolygon = isPointInsidePolygon(
+          [elem.coordinates?.latitude || 0, elem.coordinates?.longitude || 0],
+          polygonCoordinates?.[0] || [[0, 0]],
+        );
 
-    const filteredHousingStocks = housingStocksList.filter((elem) =>
-      isPointInsidePolygon(
-        [elem.coordinates?.latitude || 0, elem.coordinates?.longitude || 0],
-        polygonCoordinates?.[0] || [[0, 0]],
-      ),
+        const key = isInPolygon ? 'selected' : 'housingStocks';
+
+        return { ...acc, [key]: [...acc[key], elem] };
+      },
+      {
+        selected: [] as HousingStockListResponse[],
+        housingStocks: [] as HousingStockListResponse[],
+      },
     );
 
-    setSelectedHousingStocks(filteredHousingStocks.map((elem) => elem.id));
+    setSelectedHousingStocks(
+      filteredHousingStocks.selected.map((elem) => elem.id),
+    );
 
     return filteredHousingStocks;
   }, [district, housingStocksList]);
@@ -205,6 +216,21 @@ export const CreateDistrictBorderMapPage: FC<
       housingStocksGroup.removeAll();
       return;
     }
+
+    const pointHousingStocksPlacemarks = housingStocks.map((elem) => {
+      const placemark = new ymaps.Placemark(
+        [elem.coordinates?.latitude, elem.coordinates?.longitude],
+        {},
+        {
+          iconLayout: 'default#image',
+          iconImageHref: housingStockMiniPlacemark,
+          iconImageSize: [26, 26],
+        },
+      );
+
+      return placemark;
+    });
+
     const housingStockPlacemarks = housingStocksInDistrict.map((elem) => {
       const placemark = new ymaps.Placemark(
         [elem.coordinates?.latitude, elem.coordinates?.longitude],
@@ -227,15 +253,18 @@ export const CreateDistrictBorderMapPage: FC<
 
     housingStocksGroup.removeAll();
 
-    housingStockPlacemarks.forEach((elem) => {
-      housingStocksGroup.add(elem);
-    });
+    [...housingStockPlacemarks, ...pointHousingStocksPlacemarks].forEach(
+      (elem) => {
+        housingStocksGroup.add(elem);
+      },
+    );
   }, [
     handleClickHousingStock,
     housingStocksGroup,
     housingStocksInDistrict,
     isEditing,
     selectedHousingStocks,
+    housingStocks,
   ]);
 
   useEffect(() => {
@@ -256,7 +285,6 @@ export const CreateDistrictBorderMapPage: FC<
       <Header>
         <GoBack />
         <ControlButtonsWrapper>
-          {!isEditing && <Button type="ghost">Удалить район</Button>}
           {!isEditing && (
             <Button
               onClick={startEditing}
