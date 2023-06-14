@@ -176,6 +176,7 @@ createObjectFx.failData.watch((error) => {
 
 createObjectFx.doneData.watch(() => message.success('Дом успешно создан!'));
 
+const $isHouseManagementsLoading = fetchHouseManagementsFx.pending;
 const $isCreateLoading = createObjectFx.pending;
 
 export const createObjectService = {
@@ -196,6 +197,7 @@ export const createObjectService = {
     $houseManagements,
     $isPreviewModalOpen,
     $heatingStations,
+    $isHouseManagementsLoading,
     $isCreateLoading,
   },
   gates: { HouseManagementsFetchGate, PageCloseGate, HeatingStationsFetchGate },

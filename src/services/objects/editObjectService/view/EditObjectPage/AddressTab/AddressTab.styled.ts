@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { AutoComplete } from 'ui-kit/AutoComplete';
 
 export const Wrapper = styled.div`
   width: 480px;
@@ -41,11 +42,11 @@ export const AddButtonWrapper = styled.div`
   width: max-content;
 `;
 
-export const DeleteButton = styled.div`
+export const DeleteButton = styled.div<{ isLoading?: boolean }>`
   margin-top: 4px;
-  cursor: pointer;
   color: red;
   width: max-content;
+  cursor: ${({ isLoading }) => (isLoading ? 'wait' : 'pointer')};
 `;
 
 export const BlockTitle = styled.div`
@@ -54,4 +55,8 @@ export const BlockTitle = styled.div`
   line-height: 32px;
   letter-spacing: 0em;
   user-select: none;
+`;
+
+export const AutoCompleteSc = styled(AutoComplete)`
+  font-size: 16px;
 `;
