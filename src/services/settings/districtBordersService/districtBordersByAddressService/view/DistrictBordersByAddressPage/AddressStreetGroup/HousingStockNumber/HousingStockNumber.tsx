@@ -1,47 +1,71 @@
 import React, { FC, useEffect, useState } from 'react';
 import { HousingStockNumberProps } from './HousingStockNumber.types';
 import { Checkbox } from 'antd';
+import { HousingStockNumberWrapper, Number } from './HousingStockNumber.styled';
 
 export const HousingStockNumber: FC<HousingStockNumberProps> = ({
   housingStock,
   setHousingStockIds,
-  housingStockIds,
+  currentStreetCheckedHousingStockIds,
+  checkedhousingStockIds,
+  street,
 }) => {
   const [isChecked, setCheck] = useState(false);
+
+  const currentHousingStockId = housingStock.housingStockId;
 
   useEffect(
     () =>
       setCheck(
-        housingStockIds.some(
-          (housingStockId) => housingStockId === housingStock.housingStockId,
+        currentStreetCheckedHousingStockIds.some(
+          (streetCheckedId) => streetCheckedId === currentHousingStockId,
         ),
       ),
-    [housingStock, housingStockIds],
+    [currentHousingStockId, currentStreetCheckedHousingStockIds],
   );
 
   return (
-    <>
-      <Checkbox
-        checked={isChecked}
-        onChange={() => {
-          if (isChecked) {
-            setHousingStockIds((prev) =>
-              prev.filter(
-                (housingStockId) =>
-                  housingStockId !== housingStock.housingStockId,
-              ),
-            );
-            setCheck(false);
-          } else {
-            setHousingStockIds((prev) => [
-              ...prev,
-              housingStock.housingStockId,
-            ]);
-            setCheck(true);
-          }
-        }}
-      />
-      <div>{housingStock.housingStockNumber}</div>
-    </>
+    <HousingStockNumberWrapper
+      onClick={() => {
+        if (isChecked) {
+          setHousingStockIds(
+            checkedhousingStockIds.map((housingStock) => {
+              return housingStock.street !== street
+                ? housingStock
+                : {
+                    ...housingStock,
+                    housingStocksId: currentStreetCheckedHousingStockIds.filter(
+                      (streetCheckedHousingStock) =>
+                        streetCheckedHousingStock !== currentHousingStockId,
+                    ),
+                  };
+            }),
+          );
+
+          setCheck(false);
+        } else {
+          setHousingStockIds(
+            checkedhousingStockIds.map((housingStock) => {
+              return housingStock.street !== street
+                ? housingStock
+                : {
+                    ...housingStock,
+                    housingStocksId: [
+                      ...currentStreetCheckedHousingStockIds,
+                      currentHousingStockId,
+                    ],
+                  };
+            }),
+          );
+
+          setCheck(true);
+        }
+      }}
+    >
+      <Checkbox checked={isChecked} />
+      <Number isChecked={isChecked}>
+        {housingStock.housingStockNumber} {housingStock.housingStockCorpus}
+      </Number>
+    </HousingStockNumberWrapper>
   );
 };

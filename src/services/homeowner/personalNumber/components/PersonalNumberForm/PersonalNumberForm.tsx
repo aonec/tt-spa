@@ -88,8 +88,6 @@ export const PersonalNumberForm: FC<PersonalNumberFormProps> = ({
       },
     });
 
-  console.log(values.openAt);
-
   useEffect(() => {
     return handleForced?.watch(() => handleSubmit()).unsubscribe;
   }, [handleForced, handleSubmit]);

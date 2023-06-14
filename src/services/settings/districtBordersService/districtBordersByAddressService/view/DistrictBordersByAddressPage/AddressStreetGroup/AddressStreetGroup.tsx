@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import {
   ChevronSC,
   ChevronWrapper,
@@ -16,43 +16,73 @@ import _ from 'lodash';
 
 export const AddressStreetGroup: FC<AddressStreetGroupProps> = ({
   address,
+  checkedhousingStockIds,
+  setHousingStockIds,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
 
-  const [checkedhousingStockIds, setHousingStockIds] = useState<number[]>([]);
-
   const [isChecked, setCheck] = useState(false);
+
+  const street = address.street;
 
   const housingStockIds =
     address.addresses?.map((address) => address.housingStockId) || [];
 
+  const currentStreetCheckedHousingStockIds =
+    checkedhousingStockIds.find((data) => data.street === street)
+      ?.housingStocksId || [];
+
+  useEffect(() => {
+    if (
+      housingStockIds?.length === currentStreetCheckedHousingStockIds.length
+    ) {
+      setCheck(true);
+    } else {
+      setCheck(false);
+    }
+  }, [currentStreetCheckedHousingStockIds]);
+
   return (
     <Wrapper>
       <GroupHeader onClick={() => setIsOpen((isOpen) => !isOpen)}>
-        <LeftBlock onClick={() => setIsOpen((isOpen) => !isOpen)}>
-          <Checkbox
-            checked={isChecked}
-            onChange={() => {
-              if (isChecked) {
-                setHousingStockIds((prev) =>
-                  _.difference(prev, housingStockIds),
-                );
-                setCheck(false);
-              } else {
-                setHousingStockIds((prev) => [...prev, ...housingStockIds]);
-                setCheck(true);
-              }
-            }}
-          />
-          <Street>ул. {address.street}</Street>
+        <LeftBlock
+          onClick={() => {
+            setIsOpen((isOpen) => !isOpen);
+
+            if (isChecked) {
+              setHousingStockIds(
+                checkedhousingStockIds.map((housingStock) => {
+                  return housingStock.street !== street
+                    ? housingStock
+                    : { ...housingStock, housingStocksId: [] };
+                }),
+              );
+              setCheck(false);
+            } else {
+              setHousingStockIds(
+                checkedhousingStockIds.map((housingStock) => {
+                  return housingStock.street !== street
+                    ? housingStock
+                    : {
+                        ...housingStock,
+                        housingStocksId: [...housingStockIds],
+                      };
+                }),
+              );
+              setCheck(true);
+            }
+          }}
+        >
+          <Checkbox checked={false} indeterminate={isChecked} />
+          <Street isChecked={isChecked}>ул. {address.street}</Street>
         </LeftBlock>
 
         <RightBlock>
           <SelectedAddressCount>
             {address.addresses?.length
-              ? address.addresses?.length === checkedhousingStockIds.length
+              ? isChecked
                 ? 'Выбрано: Все'
-                : `Выбрано: ${checkedhousingStockIds.length} `
+                : `Выбрано: ${currentStreetCheckedHousingStockIds.length} `
               : ''}
           </SelectedAddressCount>
 
@@ -67,8 +97,12 @@ export const AddressStreetGroup: FC<AddressStreetGroupProps> = ({
             <HousingStockNumber
               key={housingStock.housingStockId}
               housingStock={housingStock}
-              housingStockIds={checkedhousingStockIds}
+              checkedhousingStockIds={checkedhousingStockIds}
+              currentStreetCheckedHousingStockIds={
+                currentStreetCheckedHousingStockIds
+              }
               setHousingStockIds={setHousingStockIds}
+              street={street}
             />
           ))}
         </div>
