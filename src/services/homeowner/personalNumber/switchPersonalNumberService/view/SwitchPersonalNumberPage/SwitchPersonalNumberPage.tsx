@@ -25,6 +25,8 @@ export const SwitchPersonalNumberPage: FC<SwitchPersonalNumberPageProps> = ({
     );
   };
 
+  const apartmentId = apartment?.id;
+
   return (
     <PersonalNumberPageContainer
       titleText="Замена лицевого счета"
@@ -39,6 +41,7 @@ export const SwitchPersonalNumberPage: FC<SwitchPersonalNumberPageProps> = ({
         handleSwitchHomeownerAccount={handleSwitchHomeownerAccount}
         homeowner={homeowner}
         handleForced={handleForced}
+        apartmentId={apartmentId}
       />
     </PersonalNumberPageContainer>
   );

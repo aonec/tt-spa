@@ -15,8 +15,10 @@ import { consolidatedReportService } from './consolidatedReportService';
 
 const domain = createDomain('objectProfileService');
 
+const handleFetchHousingStock = domain.createEvent<number>();
+
 const getHousingStockFx = domain.createEffect<number, HousingStockResponse>(
-  fetchHousingStock
+  fetchHousingStock,
 );
 const $housingStock = domain
   .createStore<HousingStockResponse | null>(null)
@@ -31,7 +33,7 @@ const $housingStockId = $housingStock.map((housingStock) => {
 });
 
 const $isAdministrator = tasksProfileService.outputs.$isAdministrator.map(
-  (isAdministrator) => isAdministrator
+  (isAdministrator) => isAdministrator,
 );
 
 const $resourceDisconnections = domain.createStore<
@@ -45,7 +47,7 @@ const getResourceDisconnectionsFx = domain.createEffect<
 
 $resourceDisconnections.on(
   getResourceDisconnectionsFx.doneData,
-  (_, disconnectionPagedData) => disconnectionPagedData.items || []
+  (_, disconnectionPagedData) => disconnectionPagedData.items || [],
 );
 
 const resetGrouptype = domain.createEvent();
@@ -59,10 +61,15 @@ const $isLoading = getHousingStockFx.pending;
 
 const ObjectProfileIdGate = createGate<{ objectId: number }>();
 const ObjectGroupIsOpen = createGate();
+const FetchObjectGate = createGate<{ objectId: number }>();
 
 forward({
   from: ObjectProfileIdGate.open.map(({ objectId }) => objectId),
   to: [getResourceDisconnectionsFx, getHousingStockFx],
+});
+forward({
+  from: FetchObjectGate.open.map(({ objectId }) => objectId),
+  to: getHousingStockFx,
 });
 
 forward({
@@ -70,11 +77,14 @@ forward({
   to: resetGrouptype,
 });
 
+forward({ from: handleFetchHousingStock, to: getHousingStockFx });
+
 export const objectProfileService = {
   inputs: {
     setCurrentGroutype,
     openConsolidatedReportModal:
       consolidatedReportService.inputs.openConsolidatedReportModal,
+    handleFetchHousingStock,
   },
   outputs: {
     $housingStock,
@@ -87,5 +97,6 @@ export const objectProfileService = {
   gates: {
     ObjectProfileIdGate,
     ObjectGroupIsOpen,
+    FetchObjectGate,
   },
 };

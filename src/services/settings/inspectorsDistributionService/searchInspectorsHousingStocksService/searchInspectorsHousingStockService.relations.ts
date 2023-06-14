@@ -1,10 +1,10 @@
-import { fetchExistingCities } from '01/features/housingStocks/displayHousingStockCities/models';
 import { forward, sample, guard } from 'effector';
 import { GetInspectorsHousingStocksRequestParams } from '../displayInspectorsHousingStocksService/types';
 import { searchInspectorsHousingStockService } from './searchInspectorsHousingStockService.models';
+import { addressSearchService } from 'services/addressSearchService/addressSearchService.models';
 
 forward({
-  from: fetchExistingCities.doneData.map((cities) =>
+  from: addressSearchService.outputs.$existingCities.map((cities) =>
     cities ? cities[cities.length - 1] : '',
   ),
   to: searchInspectorsHousingStockService.forms.searchForm.fields.City.set,

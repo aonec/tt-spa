@@ -1,24 +1,24 @@
-import { $existingCities } from '01/features/housingStocks/displayHousingStockCities/models';
 import { createDomain, forward, guard, sample } from 'effector';
 import { createGate } from 'effector-react';
 import { ApartmentListResponsePagedList } from 'myApi';
 import { GetApartmentsListRequestPayload } from '../displayApartmentsListService/displayApartmentsListService.types';
 import { getApartments } from './displayPersonalNumbersListService.api';
+import { addressSearchService } from 'services/addressSearchService/addressSearchService.models';
 
 const domain = createDomain('displayPersonalNumbersListService');
 
-const $apartmentsListPage = domain.createStore<ApartmentListResponsePagedList | null>(
-  null
-);
+const $apartmentsListPage =
+  domain.createStore<ApartmentListResponsePagedList | null>(null);
 const $apartments = $apartmentsListPage.map(
-  (apartmentsResponse) => apartmentsResponse?.items || []
+  (apartmentsResponse) => apartmentsResponse?.items || [],
 );
 const $filters = domain.createStore<GetApartmentsListRequestPayload | null>(
-  null
+  null,
 );
 
 const setPageNumber = domain.createEvent<number>();
-const searchPersonalNumbers = domain.createEvent<GetApartmentsListRequestPayload>();
+const searchPersonalNumbers =
+  domain.createEvent<GetApartmentsListRequestPayload>();
 const getApartmentsListByPersonalNumber = domain.createEffect<
   GetApartmentsListRequestPayload,
   ApartmentListResponsePagedList
@@ -33,7 +33,7 @@ const SearchPersonalNumberGate = createGate();
 $apartmentsListPage
   .on(
     getApartmentsListByPersonalNumber.doneData,
-    (_, apartmentsResponse) => apartmentsResponse || []
+    (_, apartmentsResponse) => apartmentsResponse || [],
   )
   .reset(clearStores);
 
@@ -68,7 +68,7 @@ export const displayPersonalNumbersListService = {
   },
   outputs: {
     $apartments,
-    $cities: $existingCities,
+    $cities: addressSearchService.outputs.$existingCities,
     $isLoading,
     $apartmentsListPage,
   },

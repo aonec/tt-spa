@@ -1,1 +1,1 @@
-export { AddNewApartmentStage } from './AddNewApartmentStage'
+export { AddNewApartmentStage } from './AddNewApartmentStage';

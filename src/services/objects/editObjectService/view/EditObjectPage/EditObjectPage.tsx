@@ -15,6 +15,21 @@ export const EditObjectPage: FC<EditObjectPageProps> = ({
   housingStock,
   existingCities,
   existingStreets,
+  houseManagements,
+  openCreateHeatingStationModal,
+  openEditHeatingStationModal,
+  heatingStations,
+  heatingStationCapture,
+  onPageCancel,
+  handleUpdateHousingStock,
+  isHeatingStationsLoading,
+  isHouseManagementsLoading,
+  handleCreateHousingStockAddress,
+  handleDeleteHousingStockAddress,
+  handleUpdateHousingStockAddress,
+  isCreateLoading,
+  isUpdateLoading,
+  handleRefetchHousingStock,
 }) => {
   const [activeTab, setTab] = useState(EditObjectPageTabs.Address);
 
@@ -40,6 +55,13 @@ export const EditObjectPage: FC<EditObjectPageProps> = ({
               address={housingStock.address}
               existingCities={existingCities}
               existingStreets={existingStreets}
+              onPageCancel={onPageCancel}
+              handleCreateHousingStockAddress={handleCreateHousingStockAddress}
+              handleDeleteHousingStockAddress={handleDeleteHousingStockAddress}
+              handleUpdateHousingStockAddress={handleUpdateHousingStockAddress}
+              isUpdateLoading={isUpdateLoading}
+              isCreateLoading={isCreateLoading}
+              handleRefetchHousingStock={handleRefetchHousingStock}
             />
           )}
         </Tabs.TabPane>
@@ -47,13 +69,28 @@ export const EditObjectPage: FC<EditObjectPageProps> = ({
           tab="Основная информация"
           key={EditObjectPageTabs.MainInfo}
         >
-          <MainInfoTab />
+          <MainInfoTab
+            housingStock={housingStock}
+            houseManagements={houseManagements}
+            openCreateHeatingStationModal={openCreateHeatingStationModal}
+            openEditHeatingStationModal={openEditHeatingStationModal}
+            heatingStations={heatingStations}
+            heatingStationCapture={heatingStationCapture}
+            onPageCancel={onPageCancel}
+            handleUpdateHousingStock={handleUpdateHousingStock}
+            isHeatingStationsLoading={isHeatingStationsLoading}
+            isHouseManagementsLoading={isHouseManagementsLoading}
+          />
         </Tabs.TabPane>
         <Tabs.TabPane
           tab="Дополнительная информация"
           key={EditObjectPageTabs.AdditionalInfo}
         >
-          <AdditionalInfoTab />
+          <AdditionalInfoTab
+            housingStock={housingStock}
+            onPageCancel={onPageCancel}
+            handleUpdateHousingStock={handleUpdateHousingStock}
+          />
         </Tabs.TabPane>
       </Tabs>
     </>

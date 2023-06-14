@@ -3,9 +3,12 @@ import { splitPersonalNumberService } from './splitPersonalNumberService.model';
 import { SplitPersonalNumberPage } from './view/SplitPersonalNumberPage';
 import { useEvent, useStore } from 'effector-react';
 import { useHistory, useParams } from 'react-router-dom';
-import { AllIndividualDeviceMountPlacesGate } from '01/features/individualDeviceMountPlaces/displayIndividualDeviceMountPlaces/models';
 import { ConfirmationAddingExistingPersonalNumber } from '../components/ConfirmationAddingExistingPersonalNumberModal';
 import { ConfirmUsingExistingArartmentModal } from '../components/ConfirmUsingExistingApartmentModal/ConfirmUsingExistingArartmentModal';
+import { individualDeviceMountPlacesService } from 'services/devices/individualDeviceMountPlacesService';
+
+const { AllIndividualDeviceMountPlacesGate } =
+  individualDeviceMountPlacesService.gates;
 
 const {
   inputs,

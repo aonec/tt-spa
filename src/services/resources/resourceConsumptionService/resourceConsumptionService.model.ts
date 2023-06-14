@@ -100,11 +100,10 @@ forward({
 });
 
 getHousingConsumptionFx.failData.watch((error) => {
-  return message.error(
-    error.response?.data.error.Text ||
-      error.response?.data.error.Message ||
-      'Произошла ошибка',
-  );
+  const errorText =
+    error.response?.data.error.Text || error.response?.data.error.Message;
+
+  return errorText && message.error(errorText);
 });
 
 export const resourceConsumptionService = {

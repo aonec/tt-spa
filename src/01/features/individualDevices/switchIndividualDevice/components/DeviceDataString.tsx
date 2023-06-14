@@ -2,10 +2,10 @@ import React from 'react';
 import { useStore } from 'effector-react';
 import { $individualDevice } from '../../displayIndividualDevice/models';
 import { EIndividualDeviceRateType, EResourceType } from 'myApi';
-import DeviceIcons from '01/_components/DeviceIcons';
 import styled from 'styled-components';
 import { Spaces } from '01/shared/ui/Layout/Space/Space';
 import { ResourceIconLookup } from 'ui-kit/shared_components/ResourceIconLookup';
+import { getInputBorderColor } from 'services/meters/individualDeviceMetersInputService/view/MetersInputsBlock/MetersInputsBlock.styled';
 
 export interface DataStringDevice {
   resource: EResourceType | null;
@@ -51,7 +51,7 @@ const DeviceSerialNumber = styled.span`
 export function getResourceColor(resource: EResourceType, index?: number) {
   if (resource === EResourceType.Electricity && index === 2) return '#957400E5';
 
-  const { color } = DeviceIcons[resource];
+  const color = getInputBorderColor({ resource });
 
   return color;
 }

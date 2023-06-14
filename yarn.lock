@@ -17292,6 +17292,11 @@ yaml@^2.1.3:
   resolved "https://registry.yarnpkg.com/yaml/-/yaml-2.2.1.tgz#3014bf0482dcd15147aa8e56109ce8632cd60ce4"
   integrity sha512-e0WHiYql7+9wr4cWMx3TVQrNwejKaEe7/rHNmQmqRjazfOP5W8PB6Jpebb5o6fIapbz9o9+2ipcaTM2ZwDI6lw==
 
+yandex-maps@^0.0.1:
+  version "0.0.1"
+  resolved "https://registry.yarnpkg.com/yandex-maps/-/yandex-maps-0.0.1.tgz#aeea2ebcc32a700c06fc3193e36e886f92e7cdd0"
+  integrity sha512-7gW254ut4HEpSyQEaztSB4lZiuIz/DtS4jvfbJJWHxpuztMNZtYmSVBqhGRSaBgESe8f6T7/fAtEO/FkRHzdXQ==
+
 yargs-parser@^20.2.2:
   version "20.2.6"
   resolved "https://registry.yarnpkg.com/yargs-parser/-/yargs-parser-20.2.6.tgz#69f920addf61aafc0b8b89002f5d66e28f2d8b20"

@@ -1,0 +1,16 @@
+{
+  "templatesDirectoryPath": "./templates",
+  "arguments": [],
+  "options": [
+    {
+      "name": "component",
+      "option": "-C",
+      "description": "Create react component"
+    },
+    {
+      "name": "service",
+      "option": "-S",
+      "description": "Create effector service"
+    }
+  ]
+}

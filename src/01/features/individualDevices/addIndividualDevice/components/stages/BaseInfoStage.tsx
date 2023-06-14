@@ -1,7 +1,3 @@
-import {
-  $individualDeviceMountPlaces,
-  IndividualDeviceMountPlacesGate,
-} from '01/features/individualDeviceMountPlaces/displayIndividualDeviceMountPlaces/models';
 import { AutoComplete, Form, Switch } from 'antd';
 import { useForm } from 'effector-forms/dist';
 import { useEvent, useStore } from 'effector-react';
@@ -30,16 +26,21 @@ import { Select } from 'ui-kit/Select';
 import { Input } from 'ui-kit/Input';
 import { Loader } from 'ui-kit/Loader';
 import { ResourceSelect } from 'ui-kit/shared_components/ResourceSelect';
+import { individualDeviceMountPlacesService } from 'services/devices/individualDeviceMountPlacesService';
 
 const {
   outputs,
   gates: { ContractorsGate },
 } = displayContractorsService;
+const { IndividualDeviceMountPlacesGate } =
+  individualDeviceMountPlacesService.gates;
 
 export const BaseInfoStage = () => {
   const { id } = useParams<{ id: string }>();
 
-  const mountPlaces = useStore($individualDeviceMountPlaces);
+  const mountPlaces = useStore(
+    individualDeviceMountPlacesService.outputs.$individualDeviceMountPlaces,
+  );
   const modelNames = useStore($individualDevicesNames);
 
   const { fields } = useForm(addIndividualDeviceForm);
