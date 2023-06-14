@@ -8,7 +8,11 @@ import React, {
 } from 'react';
 import { GoBack } from 'ui-kit/shared_components/GoBack';
 import { Button } from 'ui-kit/Button';
-import { Header, MapWrapper } from './CreateDistrictBorderMapPage.styled';
+import {
+  ControlButtonsWrapper,
+  Header,
+  MapWrapper,
+} from './CreateDistrictBorderMapPage.styled';
 import {
   CreateDistrictBorderMapPageProps,
   DistrictColor,
@@ -155,6 +159,11 @@ export const CreateDistrictBorderMapPage: FC<
 
     const polygonCoordinates = district.geometry?.getCoordinates();
 
+    if (!polygonCoordinates?.[0].length) {
+      setIsEditing(false);
+      return;
+    }
+
     const { color, strokeColor } = getDistrictColorData(districtColor);
 
     const mountedDistrict = new ymaps.Polygon(polygonCoordinates || [], {}, {
@@ -246,17 +255,20 @@ export const CreateDistrictBorderMapPage: FC<
     <div>
       <Header>
         <GoBack />
-        {!isEditing && (
-          <Button
-            onClick={startEditing}
-            icon={district ? <PencilIcon /> : undefined}
-          >
-            {district ? 'Изменить' : 'Создать район'}
-          </Button>
-        )}
-        {isEditing && (
-          <Button onClick={handleApplyDistrict}>Подтвердить</Button>
-        )}
+        <ControlButtonsWrapper>
+          {!isEditing && <Button type="ghost">Удалить район</Button>}
+          {!isEditing && (
+            <Button
+              onClick={startEditing}
+              icon={district ? <PencilIcon /> : undefined}
+            >
+              {district ? 'Изменить' : 'Создать район'}
+            </Button>
+          )}
+          {isEditing && (
+            <Button onClick={handleApplyDistrict}>Подтвердить</Button>
+          )}
+        </ControlButtonsWrapper>
       </Header>
       <MapWrapper>
         <div ref={mapRef} style={{ width: '100%', height: '86vh' }} />
