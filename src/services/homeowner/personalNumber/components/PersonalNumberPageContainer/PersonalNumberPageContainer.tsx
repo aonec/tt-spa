@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useMemo } from 'react';
 import {
   Address,
   FlexContainer,
@@ -29,6 +29,51 @@ export const PersonalNumberPageContainer: FC<
 
   const address = apartment && getApartmentAddressString(apartment);
 
+  const getFirstButton = useMemo(() => {
+    if (isFirstStage || isFirstStage === undefined) {
+      return (
+        <Button type="ghost" onClick={history.goBack}>
+          Отмена
+        </Button>
+      );
+    } else {
+      return (
+        <Button type="ghost" onClick={onCancelHandler}>
+          Назад
+        </Button>
+      );
+    }
+  }, [isFirstStage, history.goBack, onCancelHandler]);
+
+  const getSecondButton = useMemo(() => {
+    if (isLastStage || isLastStage === undefined) {
+      return (
+        <Button
+          htmlType="submit"
+          htmlForm={formId}
+          onClick={() =>
+            handleCheckApartmentExist && handleCheckApartmentExist()
+          }
+          isLoading={isCheckApartLoading}
+        >
+          Сохранить изменения
+        </Button>
+      );
+    } else {
+      return (
+        <Button htmlType="submit" htmlForm={formId} isLoading={isLoading}>
+          Далее
+        </Button>
+      );
+    }
+  }, [
+    isLastStage,
+    formId,
+    isLoading,
+    isCheckApartLoading,
+    handleCheckApartmentExist,
+  ]);
+
   return (
     <Wrapper>
       <GoBack />
@@ -40,32 +85,8 @@ export const PersonalNumberPageContainer: FC<
       {children}
 
       <FlexContainer>
-        {isFirstStage ? (
-          <Button type="ghost" onClick={history.goBack}>
-            Отмена
-          </Button>
-        ) : (
-          <Button type="ghost" onClick={onCancelHandler}>
-            Назад
-          </Button>
-        )}
-        {!isLastStage && (
-          <Button htmlType="submit" htmlForm={formId} isLoading={isLoading}>
-            Далее
-          </Button>
-        )}
-        {isLastStage && (
-          <Button
-            htmlType="submit"
-            htmlForm={formId}
-            onClick={() =>
-              handleCheckApartmentExist && handleCheckApartmentExist()
-            }
-            isLoading={isCheckApartLoading}
-          >
-            Сохранить изменения
-          </Button>
-        )}
+        {getFirstButton}
+        {getSecondButton}
       </FlexContainer>
     </Wrapper>
   );

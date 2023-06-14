@@ -61,9 +61,7 @@ export const SwitchStage: FC<SwitchStageProps> = ({
     },
   });
 
-  console.log(values.openAt);
-
-  return (
+return (
     <Wrapper onSubmitCapture={handleSubmit} id={formId}>
       <PersonalNumberWrapper>
         <InputSC
