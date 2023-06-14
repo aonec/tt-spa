@@ -1,6 +1,6 @@
 import { ApartmentResponse } from 'myApi';
 
-export type GetIssueCertificateModalProps = {
+export type Props = {
   apartment: ApartmentResponse;
   homeownerId: string;
 };

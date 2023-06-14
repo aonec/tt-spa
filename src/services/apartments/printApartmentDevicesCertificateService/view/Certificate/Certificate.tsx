@@ -1,14 +1,12 @@
- 
-
 /* eslint-disable react/jsx-filename-extension */
-import React, { useState } from 'react';
+import React, { FC, useState } from 'react';
 import { useEffect } from 'react';
 import moment from 'moment';
+import { Props } from './Certificate.types';
 
-export const Certificate = (props) => {
-  const { certificate } = props;
+export const Certificate: FC<Props> = ({ certificate }) => {
   const { fullName: name, address, individualDevices: devices } = certificate;
-  const { city, street, housingStockNumber, apartmentNumber } = address;
+  const { city, street, housingStockNumber, apartmentNumber } = address || {};
 
   const [fullName, setFullName] = useState(name);
 
@@ -18,7 +16,6 @@ export const Certificate = (props) => {
 
   return (
     <div
-      ref={props.ref}
       className="messageBox"
       style={{ left: '454px', top: '66px', padding: '12px 24px' }}
     >
@@ -60,7 +57,7 @@ export const Certificate = (props) => {
         >
           <input
             type={'text'}
-            value={fullName}
+            value={fullName || ''}
             onChange={(e) => setFullName(e.target.value)}
           />
         </div>
@@ -233,4 +230,3 @@ export const Certificate = (props) => {
     </div>
   );
 };
-

@@ -1,21 +1,17 @@
 import {
-  combine,
   createDomain,
   createEffect,
   createEvent,
   forward,
   sample,
 } from 'effector';
-import { createForm } from 'effector-forms/dist';
 import { createGate } from 'effector-react';
-import moment from 'moment';
 import { message } from 'antd';
 import { EffectFailDataAxiosError } from 'types';
 import {
   EApartmentStatus,
   IndividualDeviceWithExpiredCheckingDateListResponse,
 } from 'myApi';
-import { Document } from 'ui-kit/DocumentsService';
 import { SetApartmentStatusRequest } from './pauseApartmentService.types';
 import { apartmentService } from '../apartmentService';
 import { apartmentProblemDevicesService } from '../apartmentProblemDevicesService';
@@ -24,32 +20,6 @@ import { setApartmentStatus } from './pauseApartmentService.api';
 const domain = createDomain('pauseApartmentService');
 
 const PauseApartmentGate = createGate<{ id: number }>();
-
-const pauseApartmentForm = createForm({
-  fields: {
-    fromDate: {
-      init: moment().toISOString(true) as string | null,
-      rules: [
-        {
-          name: 'required',
-          validator: Boolean,
-        },
-      ],
-    },
-    toDate: {
-      init: null as string | null,
-      rules: [
-        {
-          name: 'required',
-          validator: Boolean,
-        },
-      ],
-    },
-    documents: {
-      init: [] as Document[],
-    },
-  },
-});
 
 const pauseApartmentButtonClicked = createEvent();
 const pauseApartmentModalCancelButtonClicked = createEvent();
@@ -60,6 +30,8 @@ const pauseApartmentStatusFx = createEffect<
   IndividualDeviceWithExpiredCheckingDateListResponse,
   EffectFailDataAxiosError
 >(setApartmentStatus);
+
+const pauseApartment = domain.createEvent<SetApartmentStatusRequest>();
 
 const $isPauseApartmentModalVisible = domain
   .createStore(false)
@@ -79,32 +51,12 @@ forward({
     pauseApartmentStatusFx.doneData,
     pauseApartmentModalCancelButtonClicked,
   ],
-  to: [
-    pauseApartmentForm.reset,
-    apartmentProblemDevicesService.inputs.handleResetProblemDevices,
-  ],
+  to: apartmentProblemDevicesService.inputs.handleResetProblemDevices,
 });
 
-const payload = combine(
-  PauseApartmentGate.state,
-  pauseApartmentForm.$values,
-  ({ id }, values) => ({
-    apartmentId: id,
-    requestPayload: {
-      fromDate: moment(values.fromDate).format('YYYY-MM-DD'),
-      toDate: moment(values.toDate).format('YYYY-MM-DD'),
-      status: EApartmentStatus.Pause,
-      documentIds: values.documents
-        .map((document) => document.id)
-        .filter((documentId): documentId is number => Boolean(documentId)),
-    },
-  }),
-);
-
-sample({
-  clock: pauseApartmentForm.formValidated,
-  source: payload,
-  target: pauseApartmentStatusFx,
+forward({
+  from: pauseApartment,
+  to: pauseApartmentStatusFx,
 });
 
 sample({
@@ -146,10 +98,10 @@ export const pauseApartmentService = {
     pauseApartmentButtonClicked,
     cancelPauseApartmentButtonClicked,
     pauseApartmentStatusFx,
+    pauseApartment,
   },
   outputs: {
     $isPauseApartmentModalVisible,
-    pauseApartmentForm,
     $isLoading,
     $problemDevices: $filteredProblemDevices,
   },
