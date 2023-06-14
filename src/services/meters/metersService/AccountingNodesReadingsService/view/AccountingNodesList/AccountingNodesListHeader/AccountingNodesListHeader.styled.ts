@@ -1,9 +1,13 @@
 import styled from 'styled-components';
 import { ChevronIcon } from 'ui-kit/icons';
 
+export const accountingNodesReadingsListTemplate =
+  '0.9fr 0.38fr 0.6fr 0.6fr 0.35fr 0.6fr 70px';
+
 export const Wrapper = styled.div`
   display: grid;
-  grid-template-columns: 0.9fr 0.38fr 0.6fr 0.6fr 0.35fr 0.6fr 70px;
+  grid-template-columns: ${accountingNodesReadingsListTemplate};
+  grid-gap: 16px;
 
   color: #616161;
   align-items: center;

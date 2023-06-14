@@ -4,27 +4,14 @@ import {
   UpdateHousingMeteringDeviceReadingsRequest,
 } from 'myApi';
 
-
-export async function postMeteringDeviceReading(
-  payload: CreateHousingMeteringDeviceReadingsRequest
-) {
-  return await axios.post('HousingMeteringDeviceReadings', payload);
-}
-
-export async function putMeteringDeviceReading(
-  payload: UpdateHousingMeteringDeviceReadingsRequest
-) {
-  return await axios.put('HousingMeteringDeviceReadings', payload);
-}
-
 export async function createOrUpdateLast(
-  payload: CreateHousingMeteringDeviceReadingsRequest
+  payload: CreateHousingMeteringDeviceReadingsRequest,
 ) {
   return await axios.post('HousingMeteringDeviceReadings', payload);
 }
 
 export async function updateHousingMeteringDeviceReading(
-  payload: UpdateHousingMeteringDeviceReadingsRequest
+  payload: UpdateHousingMeteringDeviceReadingsRequest,
 ) {
   return await axios.put('HousingMeteringDeviceReadings', payload);
 }
