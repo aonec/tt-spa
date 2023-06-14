@@ -47,6 +47,9 @@ export const CreateDistrictBorderMapPage: FC<
   const [housingStocksGroup, setHousingStocksGroup] =
     useState<ymaps.GeoObjectCollection | null>(null);
 
+  const [miniHousingStocksGroup, setMiniHousingStocksGroup] =
+    useState<ymaps.GeoObjectCollection | null>(null);
+
   const [isEditing, setIsEditing] = useState(false);
 
   const [selectedHousingStocks, setSelectedHousingStocks] = useState<number[]>(
@@ -89,8 +92,13 @@ export const CreateDistrictBorderMapPage: FC<
 
     map.geoObjects.add(housingStocksGroup);
 
+    const miniHousingStocksGroup = new ymaps.GeoObjectCollection();
+
+    map.geoObjects.add(miniHousingStocksGroup);
+
     setMap(map);
     setHousingStocksGroup(housingStocksGroup);
+    setMiniHousingStocksGroup(miniHousingStocksGroup);
   }, []);
 
   useEffect(() => {
@@ -211,11 +219,9 @@ export const CreateDistrictBorderMapPage: FC<
   }, [district, housingStocksList]);
 
   useEffect(() => {
-    if (!housingStocksGroup) return;
-    if (isEditing) {
-      housingStocksGroup.removeAll();
-      return;
-    }
+    if (!miniHousingStocksGroup) return;
+
+    miniHousingStocksGroup.removeAll();
 
     const pointHousingStocksPlacemarks = housingStocks.map((elem) => {
       const placemark = new ymaps.Placemark(
@@ -230,6 +236,18 @@ export const CreateDistrictBorderMapPage: FC<
 
       return placemark;
     });
+
+    pointHousingStocksPlacemarks.forEach((elem) =>
+      miniHousingStocksGroup.add(elem),
+    );
+  }, [miniHousingStocksGroup, housingStocks]);
+
+  useEffect(() => {
+    if (!housingStocksGroup) return;
+    if (isEditing) {
+      housingStocksGroup.removeAll();
+      return;
+    }
 
     const housingStockPlacemarks = housingStocksInDistrict.map((elem) => {
       const placemark = new ymaps.Placemark(
@@ -253,11 +271,9 @@ export const CreateDistrictBorderMapPage: FC<
 
     housingStocksGroup.removeAll();
 
-    [...housingStockPlacemarks, ...pointHousingStocksPlacemarks].forEach(
-      (elem) => {
-        housingStocksGroup.add(elem);
-      },
-    );
+    [...housingStockPlacemarks].forEach((elem) => {
+      housingStocksGroup.add(elem);
+    });
   }, [
     handleClickHousingStock,
     housingStocksGroup,
