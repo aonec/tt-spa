@@ -45,4 +45,5 @@ export const Header = styled.h1`
   line-height: 1.5;
   font-weight: 300;
   margin: 0;
+  color: #272f5a;
 `;

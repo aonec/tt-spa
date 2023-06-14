@@ -3,10 +3,10 @@ import { ApartmentsReadings } from './view/ApartmentsReadings';
 import { apartmentReadingsService } from './ApartmentReadingsService.model';
 import { useEvent, useStore } from 'effector-react';
 import { useHistory, useParams } from 'react-router-dom';
-import { PauseApartmentModal } from '01/features/apartments/pauseApartment';
 import { ESecuredIdentityRoleName } from 'myApi';
 import { usePermission } from 'hooks/usePermission';
 import { SelectPersonalNumberActionContainer } from 'services/homeowner/personalNumber/selectPersonalNumberActionService';
+import { PauseApartmentContainer } from 'services/apartments/pauseApartmentService';
 
 const { inputs, outputs } = apartmentReadingsService;
 
@@ -50,7 +50,7 @@ export const ApartmentReadingsContainer = () => {
 
   return (
     <>
-      {apartment?.id && <PauseApartmentModal apartmentId={apartment.id} />}
+      {apartment?.id && <PauseApartmentContainer apartmentId={apartment.id} />}
       {apartment && (
         <SelectPersonalNumberActionContainer apartment={apartment} />
       )}

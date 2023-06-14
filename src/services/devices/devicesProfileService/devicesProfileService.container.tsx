@@ -2,10 +2,10 @@ import { useEvent, useStore } from 'effector-react';
 import React, { FC, useEffect, useRef } from 'react';
 import { displayDevicesService } from '../displayDevicesService';
 import { DevicesProfile } from './view/DevicesProfile';
-import { showDownloadDeviceReportButtonClicked } from '01/features/devicesReport/models';
 import { currentUserService } from 'services/currentUserService';
 import { DevicesSearchType } from '../devicesPageService/devicesPageService.types';
 import { HeaderInject } from 'services/objects/objectsProfileService/view/ObjectsProfile/ObjectsProfile.types';
+import { devicesReportService } from '../devicesReportService';
 
 const { outputs, inputs, gates } = displayDevicesService;
 
@@ -28,6 +28,9 @@ export const DevicesProfileContainer: FC<HeaderInject> = ({ Header }) => {
   const setDevicesProfileFilter = useEvent(inputs.setDevicesProfileFilter);
   const close = useEvent(inputs.extendedSearchClosed);
   const open = useEvent(inputs.extendedSearchOpened);
+  const openDownloadDevicesReportModal = useEvent(
+    devicesReportService.inputs.openModal,
+  );
 
   useEffect(() => {
     if (prevSearchType.current === devicesSearchType) {
@@ -51,9 +54,7 @@ export const DevicesProfileContainer: FC<HeaderInject> = ({ Header }) => {
       <CalculatorsGate />
       <DevicesProfile
         Header={Header}
-        showDownloadDeviceReportButtonClicked={
-          showDownloadDeviceReportButtonClicked
-        }
+        openDownloadDevicesReportModal={openDownloadDevicesReportModal}
         setFilter={setDevicesProfileFilter}
         isOpen={isOpen}
         close={close}
