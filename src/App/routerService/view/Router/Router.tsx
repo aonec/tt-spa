@@ -53,6 +53,7 @@ import { EditNodeContainer } from 'services/nodes/editNodeService';
 import { CreateDistrictBorderByMapContainer } from 'services/settings/districtBordersService/CreateDistrictBorderByMapService';
 import { DistrictBordersByAddressContainer } from 'services/settings/districtBordersService/districtBordersByAddressService';
 import { StatisticsProfileContainer } from 'services/statistics/statisticsProfileService';
+import { AddIndividualDeviceContainer } from 'services/devices/individualDevices/addIndividualDeviceService';
 
 const { gates } = objectProfileService;
 
@@ -478,7 +479,7 @@ export const Router: FC<RouterProps> = ({ roles, isRolesLoadded }) => {
 
                   {(isAdministrator || isSeniorOperator || isOperator) && (
                     <Route path="/apartment/:id/addIndividualDevice" exact>
-                      <AddIndividualDevice />
+                      <AddIndividualDeviceContainer />
                     </Route>
                   )}
 
