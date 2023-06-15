@@ -29,9 +29,14 @@ export const createOrUpdateNodeReading = (
 ): Promise<HousingMeteringDeviceReadingsIncludingPlacementResponse> =>
   axios.post('HousingMeteringDeviceReadings', reading);
 
-export const createOrUpdateNonResidentialRoomConsumption = (
-  payload: UpdateHousingMeteringDeviceReadingsPayload,
-): Promise<void> => axios.put('HousingMeteringDeviceReadings', payload);
+export const createOrUpdateNonResidentialRoomConsumption = ({
+  nonResidentialRoomConsumption,
+  oldReadingId,
+}: UpdateHousingMeteringDeviceReadingsPayload): Promise<HousingMeteringDeviceReadingsIncludingPlacementResponse> =>
+  axios.put('HousingMeteringDeviceReadings', {
+    nonResidentialRoomConsumption,
+    id: oldReadingId,
+  });
 
 export const deleteNodeReading = ({ id }: DeleteNodeReading) =>
   axios.post(`HousingMeteringDeviceReadings/${id}/remove`, {

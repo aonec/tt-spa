@@ -22,6 +22,7 @@ import { fromEnter } from 'ui-kit/shared_components/DatePickerNative';
 import { getTimeStringByUTC } from 'utils/getTimeStringByUTC';
 import moment from 'moment';
 import { useSwitchInputOnEnter } from '01/features/individualDevices/switchIndividualDevice/components/stages/BaseInfoStage.hook';
+import { isNumber } from 'lodash';
 
 export const AccountingNodeReadingsInputBlock: FC<
   AccountingNodeReadingsInputBlockProps
@@ -35,6 +36,7 @@ export const AccountingNodeReadingsInputBlock: FC<
   readingDate,
   handleSendReading,
   dataKey,
+  withoutDate = false,
 }) => {
   const [status, setStatus] = useState<MetersInputBlockStatus | null>(null);
   const [bufferedReadingValue, setBufferedReadingValue] = useState<
@@ -73,7 +75,10 @@ export const AccountingNodeReadingsInputBlock: FC<
       value: bufferedReadingValue,
       readingDate: preparedReadingDate,
     });
-    next(inputIndex);
+    
+    if (isNumber(inputIndex)) {
+      next(inputIndex);
+    }
   }, [
     handleSendReading,
     bufferedReadingValue,
@@ -105,7 +110,9 @@ export const AccountingNodeReadingsInputBlock: FC<
             />
           </InputWrapper>
         </Wrapper>
-        <ReadingDate>{formattedReadingDate || 'Нет показаний'}</ReadingDate>
+        {!withoutDate && (
+          <ReadingDate>{formattedReadingDate || 'Нет показаний'}</ReadingDate>
+        )}
       </InputBlockWrapper>
     </Tooltip>
   );

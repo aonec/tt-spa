@@ -140,14 +140,14 @@ export const AccountingNodeReadingsLine: FC<
         <AccountingNodeReadingsInputBlock
           handleSendReading={({ value }) =>
             handleSendNonResConsumption({
-              id: currentReading.id,
+              oldReadingId: currentReading.id,
               nonResidentialRoomConsumption: value || 0,
             })
           }
           readingValue={currentReading.nonResidentialRoomConsumption}
           sliderIndex={-1}
           status={deviceNonResConsumptionInputStatuses[currentReading.id]}
-          inputIndex={deviceIndex}
+          withoutDate
           dataKey="nonResidentialRoomConsumption"
         />
       ) : (

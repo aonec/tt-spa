@@ -1,5 +1,8 @@
 import React, { FC, useCallback, useMemo } from 'react';
-import { AccountingNodesReadingsInputContainerProps } from './accountingNodesReadingsInputService.types';
+import {
+  AccountingNodesReadingsInputContainerProps,
+  UpdateHousingMeteringDeviceReadingsPayload,
+} from './accountingNodesReadingsInputService.types';
 import { accountingNodesReadingsInputService } from './accountingNodesReadingsInputService.model';
 import { AccountingNodeReadingsLine } from './view/AccountingNodeReadingsLine';
 import { useUnit } from 'effector-react';
@@ -7,6 +10,7 @@ import { AccountingNodesReadingsService } from '../metersService/AccountingNodes
 import { UpdateAccountingNodesSumPayload } from '../metersService/AccountingNodesReadingsService/AccountingNodesReadingsService.types';
 import { PreValidatedNodeReadings } from './view/AccountingNodeReadingsLine/AccountingNodeReadingsLine.types';
 import moment from 'moment';
+import { getNodeReadingValue } from './view/AccountingNodeReadingsLine/AccountingNodeReadingsLine.utils';
 
 const { gates, inputs, outputs } = accountingNodesReadingsInputService;
 const { AccountingNodesReadingsInputGate } = gates;
@@ -37,7 +41,7 @@ export const AccountingNodesReadingsInputContainer: FC<
   const handleValidateReading = useCallback(
     (payload: PreValidatedNodeReadings) => {
       const { value, reading, readingDate } = payload;
-      const isEdited = value !== (reading?.value || null);
+      const isEdited = value !== getNodeReadingValue(reading);
 
       const readingMonth = moment(readingDate).format('MMMM');
       // const prevReading = readings.find(
@@ -71,7 +75,14 @@ export const AccountingNodesReadingsInputContainer: FC<
         oldReadingId: reading?.id,
       });
     },
-    [sendReading, device, openConfirmReadingModal, removeReading],
+    [sendReading, device, openConfirmReadingModal, removeReading, readings],
+  );
+
+  const handleSendNonResConsumption = useCallback(
+    (payload: Omit<UpdateHousingMeteringDeviceReadingsPayload, 'deviceId'>) => {
+      sendNonResConsumption({ ...payload, deviceId: device.id });
+    },
+    [sendNonResConsumption, device],
   );
 
   const handleUpdateReadingsSum = useCallback(
@@ -97,7 +108,7 @@ export const AccountingNodesReadingsInputContainer: FC<
         deviceNonResConsumptionInputStatuses={
           deviceNonResConsumptionInputStatuses
         }
-        handleSendNonResConsumption={sendNonResConsumption}
+        handleSendNonResConsumption={handleSendNonResConsumption}
         handleValidateReading={handleValidateReading}
         handleUpdateReadingsSum={handleUpdateReadingsSum}
       />

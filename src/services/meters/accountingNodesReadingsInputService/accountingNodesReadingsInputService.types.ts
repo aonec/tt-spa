@@ -12,7 +12,8 @@ export type AccountingNodesReadingsInputContainerProps = {
 };
 
 export type UpdateHousingMeteringDeviceReadingsPayload = {
-  id: string;
+  oldReadingId: string;
+  deviceId: number;
   nonResidentialRoomConsumption: number;
 };
 
