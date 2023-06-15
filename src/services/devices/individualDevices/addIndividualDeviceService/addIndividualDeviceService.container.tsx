@@ -11,10 +11,10 @@ const { ApartmentGate } = gates;
 export const AddIndividualDeviceContainer = () => {
   const { id } = useParams<{ id: string }>();
 
-  const [stageNumber, handleGoFirstStage, handleGoSecondStage] = useUnit([
+  const [stageNumber, handleGoNextStage, handleGoPrevStage] = useUnit([
     outputs.$stageNumber,
-    inputs.handleGoFirstStage,
-    inputs.handleGoSecondStage,
+    inputs.handleGoNextStage,
+    inputs.handleGoPrevStage,
   ]);
 
   const apartment = useUnit(outputs.$apartment);
@@ -26,11 +26,11 @@ export const AddIndividualDeviceContainer = () => {
 
   return (
     <>
-      { <ApartmentGate id={idFromParams} />}
+      {<ApartmentGate id={idFromParams} />}
       <AddIndividualDevicePage
         stageNumber={stageNumber}
-        handleGoFirstStage={handleGoFirstStage}
-        handleGoSecondStage={handleGoSecondStage}
+        handleGoNextStage={handleGoNextStage}
+        handleGoPrevStage={handleGoPrevStage}
         apartment={apartment}
       />
     </>

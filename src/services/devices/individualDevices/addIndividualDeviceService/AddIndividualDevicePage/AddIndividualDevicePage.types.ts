@@ -2,7 +2,7 @@ import { ApartmentResponse } from 'myApi';
 
 export type AddIndividualDevicePageProps = {
   stageNumber: number;
-  handleGoSecondStage: () => void;
-  handleGoFirstStage: () => void;
+  handleGoNextStage: () => void;
+  handleGoPrevStage: () => void;
   apartment: ApartmentResponse | null;
 };

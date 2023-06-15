@@ -1,22 +1,59 @@
-import React, { FC } from 'react';
+import React, { FC, useMemo } from 'react';
 import { AddIndividualDevicePageProps } from './AddIndividualDevicePage.types';
 import { GoBack } from 'ui-kit/shared_components/GoBack';
 import { Link, useHistory } from 'react-router-dom';
-
-import { Address, FlexContainer, Title } from './AddIndividualDevicePage.styled';
+import { Steps } from 'antd';
+import {
+  Address,
+  Footer,
+  Forms,
+  PageGridContainer,
+  StepsHeader,
+  Title,
+} from './AddIndividualDevicePage.styled';
 import { getApartmentAddressString } from 'utils/getApartmentAddress';
 import { Button } from 'ui-kit/Button';
+import { DocumentsStage } from './stages/DocumentsStage';
+import { BaseInfoStage } from './stages/BaseInfoStage';
 
 export const AddIndividualDevicePage: FC<AddIndividualDevicePageProps> = ({
-  handleGoFirstStage,
-  handleGoSecondStage,
   stageNumber,
   apartment,
+  handleGoNextStage,
+  handleGoPrevStage,
 }) => {
   const history = useHistory();
 
-  const address =
-    apartment && getApartmentAddressString(apartment, true);
+  const { Step } = Steps;
+  const stepTitles = ['Общие данные о приборе', 'Документы'];
+
+  const address = apartment && getApartmentAddressString(apartment, true);
+
+  const getFirstButton = useMemo(() => {
+    if (stageNumber === 1) {
+      return (
+        <Button type="ghost" onClick={history.goBack}>
+          Отмена
+        </Button>
+      );
+    }
+    if (stageNumber === 2) {
+      return (
+        <Button type="ghost" onClick={handleGoPrevStage}>
+          Назад
+        </Button>
+      );
+    }
+  }, [stageNumber, history.goBack, handleGoPrevStage]);
+
+  const getSecondButton = useMemo(() => {
+    return (
+      <Button onClick={handleGoNextStage}>
+        {stageNumber === 1 && 'Далее'}
+        {stageNumber === 2 && 'Сохранить изменения'}
+      </Button>
+    );
+  }, [stageNumber, handleGoNextStage]);
 
   return (
     <>
@@ -26,16 +63,26 @@ export const AddIndividualDevicePage: FC<AddIndividualDevicePageProps> = ({
         <Link to={`/apartments/${apartment?.id}`}>{address}</Link>
       </Address>
 
-      <FlexContainer>
-        <Button type="ghost" onClick={history.goBack}>
-          {stageNumber === 1 && 'Отмена'}
-          {stageNumber === 2 && 'Назад'}
-        </Button>
-        <Button>
-          {stageNumber === 1 && 'Далее'}
-          {stageNumber === 2 && 'Сохранить изменения'}
-        </Button>
-      </FlexContainer>
+      <PageGridContainer>
+        <Forms>
+          {stageNumber === 1 && <BaseInfoStage />}
+          {stageNumber === 2 && <DocumentsStage />}
+
+          <Footer>
+            {getFirstButton}
+            {getSecondButton}
+          </Footer>
+        </Forms>
+
+        <div>
+          <StepsHeader>Этапы создания</StepsHeader>
+          <Steps direction="vertical" current={stageNumber - 1}>
+            {stepTitles.map((step) => (
+              <Step title={step} key={step} />
+            ))}
+          </Steps>
+        </div>
+      </PageGridContainer>
     </>
   );
 };
