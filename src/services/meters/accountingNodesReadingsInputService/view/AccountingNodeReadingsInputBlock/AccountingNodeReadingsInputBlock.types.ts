@@ -2,15 +2,15 @@ import { EResourceType } from 'myApi';
 import { MetersInputBlockStatus } from 'services/meters/individualDeviceMetersInputService/view/MetersInputsBlock/MetersInputsBlock.types';
 
 export type AccountingNodeReadingsInputBlockProps = {
+  readingValue: number | null;
   status: MetersInputBlockStatus | null;
-  resource?: EResourceType;
   sliderIndex: number;
+  handleSendReading: (payload: SendReadingPayload) => void;
+  dataKey: string;
+  resource?: EResourceType;
   inputIndex?: number;
   tooltip?: string;
-  readingValue: number | null;
   readingDate?: string;
-  dataKey: string;
-  handleSendReading: (payload: SendReadingPayload) => void;
   withoutDate?: boolean;
 };
 

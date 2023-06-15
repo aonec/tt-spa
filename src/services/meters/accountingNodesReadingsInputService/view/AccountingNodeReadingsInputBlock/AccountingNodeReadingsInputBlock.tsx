@@ -21,8 +21,8 @@ import { Tooltip } from 'antd';
 import { fromEnter } from 'ui-kit/shared_components/DatePickerNative';
 import { getTimeStringByUTC } from 'utils/getTimeStringByUTC';
 import moment from 'moment';
-import { useSwitchInputOnEnter } from '01/features/individualDevices/switchIndividualDevice/components/stages/BaseInfoStage.hook';
 import { isNumber } from 'lodash';
+import { useSwitchInputOnEnter } from 'hooks/useSwitchInputOnEnter';
 
 export const AccountingNodeReadingsInputBlock: FC<
   AccountingNodeReadingsInputBlockProps
