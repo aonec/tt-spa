@@ -17,8 +17,3 @@ export type CreateDistrictFormPanelProps = {
   setDistrictName: (value: string) => void;
   districtPolygonCoordinates: number[][];
 };
-
-export type DistrictAdditionalInfo = {
-  districtPolygonCoordinates: number[][];
-  districtColor: DistrictColor;
-};

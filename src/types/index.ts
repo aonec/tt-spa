@@ -83,6 +83,28 @@ export type EffectFailDataAxiosErrorDataApartmentId = {
   };
 };
 
+export const ymaps = window.ymaps;
+
+export enum DistrictColor {
+  Blue = 'blue',
+  Violet = 'violete',
+  Yellow = 'yellow',
+  Red = 'red',
+  Green = 'green',
+}
+
+export type DistrictData = {
+  id: string;
+  type: DistrictColor;
+  coordinates: number[][][];
+  name: string;
+};
+
 export type BlobResponseErrorType = {
   response: { data: Blob; status: number };
+};
+
+export type DistrictAdditionalInfo = {
+  districtPolygonCoordinates: number[][];
+  districtColor: DistrictColor;
 };
