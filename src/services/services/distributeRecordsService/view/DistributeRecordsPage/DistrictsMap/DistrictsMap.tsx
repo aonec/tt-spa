@@ -1,31 +1,22 @@
-import React, { FC, useMemo, useState } from 'react';
+import React, { FC, useMemo } from 'react';
 import { MapWrapper } from './DistrictsMap.styled';
 import { Props } from './DistrictsMap.types';
 import { useYMaps } from 'hooks/ymaps/useYMaps';
 import { useRenderDistricts } from 'hooks/ymaps/utils';
 import { getPayloadFromDistricts } from 'utils/districtsData';
-import { DistrictData, ymaps } from 'types';
+import { DistrictData } from 'types';
 
 export const DistrictsMap: FC<Props> = ({ districtsList }) => {
-  const [districtsGroup, setDistrictsGroup] =
-    useState<ymaps.GeoObjectCollection | null>(null);
+  const { mapRef, map } = useYMaps();
 
-  const { mapRef } = useYMaps((map) => {
-    const districtsGroup = new ymaps.GeoObjectCollection();
+  const districtsDataList: DistrictData[] = useMemo(() => {
+    return getPayloadFromDistricts(districtsList).map((elem) => ({
+      ...elem,
+      onClick: console.log,
+    }));
+  }, [districtsList]);
 
-    map.geoObjects.add(districtsGroup);
-
-    console.log(map, districtsGroup);
-
-    setDistrictsGroup(districtsGroup);
-  });
-
-  const districtsDataList: DistrictData[] = useMemo(
-    () => getPayloadFromDistricts(districtsList),
-    [districtsList],
-  );
-
-  useRenderDistricts(districtsGroup, districtsDataList);
+  useRenderDistricts(map, districtsDataList);
 
   return (
     <MapWrapper>

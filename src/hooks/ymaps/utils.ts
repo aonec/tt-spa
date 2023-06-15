@@ -1,13 +1,33 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { DistrictColorsList } from 'services/settings/districtBordersService/CreateDistrictBorderByMapService/view/CreateDistrictBorderMapPage/CreateDistrictBorderMapPage.constants';
 import { DistrictData, ymaps } from 'types';
 
+export function useMapGroup(map: ymaps.Map | null) {
+  const [group, setGroup] = useState<ymaps.GeoObjectCollection | null>(null);
+
+  useEffect(() => {
+    if (!map) return;
+
+    const newGroup = new ymaps.GeoObjectCollection();
+
+    map.geoObjects.add(newGroup);
+
+    setGroup(newGroup);
+  }, [map]);
+
+  return group;
+}
+
 export function useRenderDistricts(
-  group: ymaps.GeoObjectCollection | null,
+  map: ymaps.Map | null,
   districts: (DistrictData & { onClick?: (id: string) => void })[],
 ) {
+  const districtsGroup = useMapGroup(map);
+
   useEffect(() => {
-    if (!group || !districts.length) return;
+    if (!districtsGroup || !districts.length) return;
+
+    districtsGroup.removeAll();
 
     districts.forEach((district) => {
       const color = DistrictColorsList.find(
@@ -25,7 +45,15 @@ export function useRenderDistricts(
         polygon.events.add('click', () => district.onClick?.(district.id));
       }
 
-      group.add(polygon);
+      districtsGroup.add(polygon);
     });
-  }, [group, districts]);
+  }, [districtsGroup, districts]);
 }
+
+// export function useRenderTextPlacemarks(
+//   group: ymaps.GeoObjectCollection | null,
+//   text: string,
+//   coords: [number, number],
+// ) {
+//   group.
+// }

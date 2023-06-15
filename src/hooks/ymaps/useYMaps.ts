@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { ymaps } from 'types';
 
-export function useYMaps(callback: (map: ymaps.Map) => void) {
+export function useYMaps(callback?: (map: ymaps.Map) => void) {
   const mapRef = useRef<HTMLDivElement | null>(null);
 
   const [map, setMap] = useState<ymaps.Map | null>(null);
@@ -17,9 +17,11 @@ export function useYMaps(callback: (map: ymaps.Map) => void) {
       controls: [],
     });
 
-    callback(map);
+    callback?.(map);
 
     setMap(map);
+
+    return () => map.geoObjects.removeAll();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
