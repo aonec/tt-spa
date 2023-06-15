@@ -1,5 +1,6 @@
-import React, { FC, useCallback, useMemo } from 'react';
+import React, { FC, useCallback, useEffect, useMemo } from 'react';
 import {
+  ContextMenuWrapper,
   DeviceInfo,
   DeviceModelWrapper,
   DeviceSerialNumberWrapper,
@@ -12,6 +13,9 @@ import { useHistory } from 'react-router-dom';
 import { ContextMenuButton } from 'ui-kit/ContextMenuButton';
 import moment from 'moment';
 import { round } from 'utils/round';
+import { useNodeReadings } from './AccountingNodeReadingsLine.hook';
+import { getNodeReadingValue } from './AccountingNodeReadingsLine.utils';
+import { AccountingNodeReadingsInputBlock } from '../AccountingNodeReadingsInputBlock';
 
 export const AccountingNodeReadingsLine: FC<
   AccountingNodeReadingsLineProps
@@ -19,17 +23,25 @@ export const AccountingNodeReadingsLine: FC<
   device,
   sliderIndex,
   deviceIndex,
-  currentReading,
-  previousExistingReadingBySliderIndex,
-  previousReading,
   deviceInputStatuses,
-  handleSendReading,
+  handleValidateReading,
   deviceNonResConsumptionInputStatuses,
+  handleSendNonResConsumption,
+  readings,
+  handleUpdateReadingsSum,
 }) => {
   const history = useHistory();
 
+  const {
+    currentReading,
+    previousExistingReadingBySliderIndex,
+    previousExistingReading,
+    previousReadingReadingBySliderIndex,
+  } = useNodeReadings(readings, sliderIndex);
+
   const consumption = useMemo(() => {
-    const previousReadingValue = previousReading?.value || null;
+    const previousReadingValue =
+      previousReadingReadingBySliderIndex?.value || null;
     const currentReadingValue = currentReading?.value || null;
 
     return (
@@ -39,7 +51,7 @@ export const AccountingNodeReadingsLine: FC<
           : null}
       </div>
     );
-  }, [previousReading, currentReading]);
+  }, [previousReadingReadingBySliderIndex, currentReading]);
 
   const previousReadingTooltipTitle = useMemo(() => {
     if (!previousExistingReadingBySliderIndex) {
@@ -62,6 +74,13 @@ export const AccountingNodeReadingsLine: FC<
     [history, device.id],
   );
 
+  useEffect(() => {
+    handleUpdateReadingsSum({
+      currentReading,
+      previousExistingReading,
+    });
+  }, [previousExistingReading, currentReading, handleUpdateReadingsSum]);
+
   return (
     <Wrapper>
       <DeviceInfo>
@@ -74,22 +93,80 @@ export const AccountingNodeReadingsLine: FC<
         </DeviceSerialNumberWrapper>
       </DeviceInfo>
       <div>{device?.scaleFactor}</div>
-
-      <div>{consumption}</div>
-
-      <ContextMenuButton
-        size="small"
-        menuButtons={[
-          {
-            title: 'Заменить прибор',
-            onClick: handleChangeODPU,
-          },
-          {
-            title: 'Редактировать прибор',
-            onClick: handleEditODPU,
-          },
-        ]}
+      <AccountingNodeReadingsInputBlock
+        handleSendReading={(payload) =>
+          handleValidateReading({
+            ...payload,
+            reading: previousReadingReadingBySliderIndex,
+          })
+        }
+        readingValue={getNodeReadingValue(previousReadingReadingBySliderIndex)}
+        readingDate={previousReadingReadingBySliderIndex?.readingDate}
+        sliderIndex={sliderIndex}
+        status={deviceInputStatuses[sliderIndex]}
+        tooltip={
+          (!previousReadingReadingBySliderIndex &&
+            previousReadingTooltipTitle) ||
+          ''
+        }
+        inputIndex={deviceIndex}
+        dataKey="previuos"
       />
+
+      <AccountingNodeReadingsInputBlock
+        handleSendReading={(payload) =>
+          handleValidateReading({
+            ...payload,
+            reading: currentReading,
+          })
+        }
+        readingValue={getNodeReadingValue(currentReading)}
+        readingDate={currentReading?.readingDate}
+        resource={device.resource}
+        sliderIndex={-1}
+        status={deviceInputStatuses[-1]}
+        inputIndex={deviceIndex}
+        tooltip={
+          (!previousReadingReadingBySliderIndex &&
+            !currentReading &&
+            previousReadingTooltipTitle) ||
+          ''
+        }
+        dataKey="current"
+      />
+      <div>{consumption}</div>
+      {currentReading ? (
+        <AccountingNodeReadingsInputBlock
+          handleSendReading={({ value }) =>
+            handleSendNonResConsumption({
+              oldReadingId: currentReading.id,
+              nonResidentialRoomConsumption: value || 0,
+            })
+          }
+          readingValue={currentReading.nonResidentialRoomConsumption}
+          sliderIndex={-1}
+          status={deviceNonResConsumptionInputStatuses[currentReading.id]}
+          withoutDate
+          dataKey="nonResidentialRoomConsumption"
+        />
+      ) : (
+        <div />
+      )}
+      <ContextMenuWrapper>
+        <ContextMenuButton
+          size="small"
+          menuButtons={[
+            {
+              title: 'Заменить прибор',
+              onClick: handleChangeODPU,
+            },
+            {
+              title: 'Редактировать прибор',
+              onClick: handleEditODPU,
+            },
+          ]}
+        />
+      </ContextMenuWrapper>
     </Wrapper>
   );
 };

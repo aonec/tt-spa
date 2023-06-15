@@ -16,6 +16,7 @@ export const AccountingNodesReadings: FC<AccountingNodesReadingsProps> = ({
   downSliderIndex,
   sliderIndex,
   upSliderIndex,
+  sum,
 }) => {
   const electricNodesExist = electricNodes.length !== 0;
 
@@ -62,6 +63,7 @@ export const AccountingNodesReadings: FC<AccountingNodesReadingsProps> = ({
               sliderIndex={sliderIndex}
               upSliderIndex={upSliderIndex}
               downSliderIndex={downSliderIndex}
+              sum={sum}
             />
           )}
         </Wrapper>

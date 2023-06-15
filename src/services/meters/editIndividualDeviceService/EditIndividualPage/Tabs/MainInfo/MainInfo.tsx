@@ -20,7 +20,10 @@ import { ResourceIconLookup } from 'ui-kit/shared_components/ResourceIconLookup'
 import { Input } from 'ui-kit/Input';
 import { DatePicker } from 'ui-kit/DatePicker';
 import { Button } from 'ui-kit/Button';
-import { useOnEnterSwitch } from '01/features/readings/accountingNodesReadings/components/Filter';
+import { useSwitchInputOnEnter } from 'hooks/useSwitchInputOnEnter';
+import { fromEnter } from 'ui-kit/shared_components/DatePickerNative';
+
+const dataKey = 'edit-individual-device-main-info';
 
 export const MainInfo: FC<MainInfoProps> = ({
   individualDevice,
@@ -83,7 +86,7 @@ export const MainInfo: FC<MainInfoProps> = ({
     },
   });
 
-  const { keyDownEnterGuardedHandler, refs } = useOnEnterSwitch(8);
+  const next = useSwitchInputOnEnter(dataKey, false);
 
   return (
     <Wrapper>
@@ -104,10 +107,8 @@ export const MainInfo: FC<MainInfoProps> = ({
           placeholder="Укажите модель"
           type="text"
           onChange={(value) => setFieldValue('model', value.target.value)}
-          ref={refs[0]}
-          onKeyDown={(e) => {
-            keyDownEnterGuardedHandler(0)(e);
-          }}
+          data-reading-input={dataKey}
+          onKeyDown={fromEnter(() => next(0))}
         />
       </FormItem>
 
@@ -119,10 +120,8 @@ export const MainInfo: FC<MainInfoProps> = ({
           onChange={(value) =>
             setFieldValue('serialNumber', value.target.value)
           }
-          ref={refs[1]}
-          onKeyDown={(e) => {
-            keyDownEnterGuardedHandler(1)(e);
-          }}
+          data-reading-input={dataKey}
+          onKeyDown={fromEnter(() => next(1))}
         />
       </FormItem>
 
@@ -132,10 +131,9 @@ export const MainInfo: FC<MainInfoProps> = ({
           onChange={(value) => setFieldValue('mountPlaceId', value)}
           placeholder="Укажите место"
           disabled={!mountPlaces}
-          ref={refs[2]}
-          onKeyDown={(e) => {
-            keyDownEnterGuardedHandler(2)(e);
-          }}
+          data-reading-input={dataKey}
+          onKeyDown={fromEnter(() => next(2))}
+          showAction={['focus']}
         >
           {mountPlaces?.map((elem) => (
             <Select.Option value={elem.id} key={elem.id}>
@@ -152,10 +150,8 @@ export const MainInfo: FC<MainInfoProps> = ({
             type="number"
             onChange={(value) => setFieldValue('bitDepth', value.target.value)}
             value={values.bitDepth || undefined}
-            ref={refs[3]}
-            onKeyDown={(e) => {
-              keyDownEnterGuardedHandler(3)(e);
-            }}
+            data-reading-input={dataKey}
+            onKeyDown={fromEnter(() => next(3))}
           />
         </FormItem>
         <FormItem label="Множитель">
@@ -166,10 +162,8 @@ export const MainInfo: FC<MainInfoProps> = ({
               setFieldValue('scaleFactor', value.target.value)
             }
             value={values.scaleFactor || undefined}
-            ref={refs[4]}
-            onKeyDown={(e) => {
-              keyDownEnterGuardedHandler(4)(e);
-            }}
+            data-reading-input={dataKey}
+            onKeyDown={fromEnter(() => next(4))}
           />
         </FormItem>
       </GridContainer>
@@ -203,10 +197,8 @@ export const MainInfo: FC<MainInfoProps> = ({
           type="number"
           onChange={(value) => setFieldValue('sealNumber', value.target.value)}
           value={values.sealNumber || undefined}
-          ref={refs[5]}
-          onKeyDown={(e) => {
-            keyDownEnterGuardedHandler(5)(e);
-          }}
+          data-reading-input={dataKey}
+          onKeyDown={fromEnter(() => next(5))}
         />
       </FormItem>
 
@@ -217,7 +209,7 @@ export const MainInfo: FC<MainInfoProps> = ({
           onChange={(date) => {
             setFieldValue('sealInstallationDate', date);
           }}
-          ref={refs[6]}
+          data-reading-input={dataKey}
         />
       </FormItem>
 

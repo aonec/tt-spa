@@ -1,4 +1,3 @@
-import { useOnEnterSwitch } from '01/features/readings/accountingNodesReadings/components/Filter';
 import { fromEnter } from 'ui-kit/shared_components/DatePickerNative';
 import { useAutocomplete } from '01/hooks/useFilter';
 import React, { FC, ReactElement } from 'react';
@@ -9,6 +8,9 @@ import { AddressSearchProps, SearchFieldType } from './AddressSearch.types';
 import { Select } from 'ui-kit/Select';
 import { Input } from 'ui-kit/Input';
 import { AutoComplete } from 'ui-kit/AutoComplete';
+import { useSwitchInputOnEnter } from 'hooks/useSwitchInputOnEnter';
+
+const dataKey = 'search-address-inputs';
 
 export const AddressSearch: FC<AddressSearchProps> = ({
   streets,
@@ -21,7 +23,7 @@ export const AddressSearch: FC<AddressSearchProps> = ({
   showLabels,
   disabledFields,
 }) => {
-  const { keyDownEnterGuardedHandler, refs } = useOnEnterSwitch(5);
+  const next = useSwitchInputOnEnter(dataKey, false);
 
   const { match: streetMatch, options } = useAutocomplete(
     values.street,
@@ -40,8 +42,9 @@ export const AddressSearch: FC<AddressSearchProps> = ({
     <Select
       small
       placeholder="Город"
-      ref={refs[index]}
-      onKeyDown={keyDownEnterGuardedHandler(index)}
+      onKeyDown={fromEnter(() => next(index))}
+      data-reading-input={dataKey}
+      showAction={['focus']}
       onChange={(value) => {
         handleChange(SearchFieldType.City, value.toString());
 
@@ -62,18 +65,16 @@ export const AddressSearch: FC<AddressSearchProps> = ({
     <AutoComplete
       small
       placeholder="Улица"
-      ref={refs[index]}
+      data-reading-input={dataKey}
       value={values.street || ''}
       onChange={(value) => {
         handleChange(SearchFieldType.Street, value.toString());
       }}
-      onKeyDown={(e) => {
-        fromEnter(() => {
-          if (values.street) handleChange(SearchFieldType.Street, streetMatch);
-          handleSubmit();
-        })(e);
-        keyDownEnterGuardedHandler(index)(e);
-      }}
+      onKeyDown={fromEnter(() => {
+        if (values.street) handleChange(SearchFieldType.Street, streetMatch);
+        handleSubmit();
+        next(index);
+      })}
       options={options}
       onSelect={() => {
         if (values.street) handleChange(SearchFieldType.Street, streetMatch);
@@ -92,14 +93,14 @@ export const AddressSearch: FC<AddressSearchProps> = ({
       placeholder="Дом"
       value={values.house}
       onChange={(e) => handleChange(SearchFieldType.House, e.target.value)}
-      ref={refs[index]}
       onClick={() => {
         clearFields(index);
       }}
-      onKeyDown={(e) => {
-        fromEnter(handleSubmit)(e);
-        keyDownEnterGuardedHandler(index)(e);
-      }}
+      data-reading-input={dataKey}
+      onKeyDown={fromEnter(() => {
+        handleSubmit();
+        next(index);
+      })}
       disabled={isDisabled}
     />
   );
@@ -110,14 +111,14 @@ export const AddressSearch: FC<AddressSearchProps> = ({
       placeholder="Корпус"
       value={values.corpus}
       onChange={(e) => handleChange(SearchFieldType.Corpus, e.target.value)}
-      ref={refs[index]}
+      data-reading-input={dataKey}
       onClick={() => {
         clearFields(index);
       }}
-      onKeyDown={(e) => {
-        fromEnter(handleSubmit)(e);
-        keyDownEnterGuardedHandler(index)(e);
-      }}
+      onKeyDown={fromEnter(() => {
+        handleSubmit();
+        next(index);
+      })}
       disabled={isDisabled}
     />
   );
@@ -128,14 +129,14 @@ export const AddressSearch: FC<AddressSearchProps> = ({
       placeholder="Квартирa"
       value={values.apartment}
       onChange={(e) => handleChange(SearchFieldType.Apartment, e.target.value)}
-      ref={refs[index]}
+      data-reading-input={dataKey}
       onClick={() => {
         clearFields(index);
       }}
-      onKeyDown={(e) => {
-        fromEnter(handleSubmit)(e);
-        keyDownEnterGuardedHandler(index)(e);
-      }}
+      onKeyDown={fromEnter(() => {
+        handleSubmit();
+        next(index);
+      })}
       disabled={isDisabled}
     />
   );
@@ -146,14 +147,14 @@ export const AddressSearch: FC<AddressSearchProps> = ({
       placeholder="Л/С или ФИО"
       value={values.question}
       onChange={(e) => handleChange(SearchFieldType.Question, e.target.value)}
-      ref={refs[index]}
+      data-reading-input={dataKey}
       onClick={() => {
         clearFields(index);
       }}
-      onKeyDown={(e) => {
-        fromEnter(handleSubmit)(e);
-        keyDownEnterGuardedHandler(index)(e);
-      }}
+      onKeyDown={fromEnter(() => {
+        handleSubmit();
+        next(index);
+      })}
       disabled={isDisabled}
     />
   );

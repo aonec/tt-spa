@@ -10,6 +10,7 @@ export const AccountingNodesList: FC<AccountingNodesListProps> = ({
   downSliderIndex,
   sliderIndex,
   upSliderIndex,
+  sum,
 }) => {
   const list = useMemo(
     () =>
@@ -30,8 +31,6 @@ export const AccountingNodesList: FC<AccountingNodesListProps> = ({
       }),
     [electricNodes, sliderIndex],
   );
-
-  const sum = 0;
 
   return (
     <>

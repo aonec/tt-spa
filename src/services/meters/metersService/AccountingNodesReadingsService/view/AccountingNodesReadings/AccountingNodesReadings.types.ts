@@ -9,4 +9,5 @@ export type AccountingNodesReadingsProps = {
   sliderIndex: number;
   upSliderIndex: () => void;
   downSliderIndex: () => void;
+  sum: number;
 };

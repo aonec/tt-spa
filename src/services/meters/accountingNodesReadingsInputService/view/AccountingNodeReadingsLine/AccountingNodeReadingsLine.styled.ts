@@ -4,8 +4,9 @@ import styled from 'styled-components';
 export const Wrapper = styled.div`
   display: grid;
   grid-template-columns: ${accountingNodesReadingsListTemplate};
-  grid-gap: 16px;
   align-items: center;
+
+  grid-gap: 16px;
   padding: 24px 16px;
   border-bottom: 1px solid #dcdee4;
 `;
@@ -28,4 +29,10 @@ export const DeviceModelWrapper = styled.div`
 export const IconWrapper = styled.div`
   display: flex;
   align-self: flex-start;
+`;
+
+export const ContextMenuWrapper = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
 `;

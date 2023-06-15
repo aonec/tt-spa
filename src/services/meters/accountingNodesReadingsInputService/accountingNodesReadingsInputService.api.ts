@@ -5,6 +5,7 @@ import {
 } from 'myApi';
 import {
   CreateHousingMeteringDeviceReadingsPayload,
+  DeleteNodeReading,
   UpdateHousingMeteringDeviceReadingsPayload,
 } from './accountingNodesReadingsInputService.types';
 
@@ -25,8 +26,19 @@ export const fetchReadingsOfElectricNode = async ({
 
 export const createOrUpdateNodeReading = (
   reading: CreateHousingMeteringDeviceReadingsPayload,
-): Promise<void> => axios.post('HousingMeteringDeviceReadings', reading);
+): Promise<HousingMeteringDeviceReadingsIncludingPlacementResponse> =>
+  axios.post('HousingMeteringDeviceReadings', reading);
 
-export const createOrUpdateNonResidentialRoomConsumption = (
-  payload: UpdateHousingMeteringDeviceReadingsPayload,
-): Promise<void> => axios.put('HousingMeteringDeviceReadings', payload);
+export const createOrUpdateNonResidentialRoomConsumption = ({
+  nonResidentialRoomConsumption,
+  oldReadingId,
+}: UpdateHousingMeteringDeviceReadingsPayload): Promise<HousingMeteringDeviceReadingsIncludingPlacementResponse> =>
+  axios.put('HousingMeteringDeviceReadings', {
+    nonResidentialRoomConsumption,
+    id: oldReadingId,
+  });
+
+export const deleteNodeReading = ({ id }: DeleteNodeReading) =>
+  axios.post(`HousingMeteringDeviceReadings/${id}/remove`, {
+    readingId: id,
+  });
