@@ -31,7 +31,6 @@ import {
   ApartmentIdGate,
 } from './index';
 import { fetchIndividualDeviceFx } from '../../displayIndividualDevice/models';
-import { getBitDepthAndScaleFactor } from '../../addIndividualDevice/utils';
 import {
   EIndividualDeviceRateType,
   IndividualDeviceListResponseFromDevicePagePagedList,
@@ -47,6 +46,7 @@ import { getFilledArray } from 'utils/getFilledArray';
 import { message } from 'antd';
 import { FileData } from 'ui-kit/DocumentsService/DocumentsService.types';
 import { individualDeviceMountPlacesService } from 'services/devices/individualDeviceMountPlacesService';
+import { getBitDepthAndScaleFactor } from 'utils/getBitDepthAndScaleFactor';
 
 createIndividualDeviceFx.use(switchIndividualDevice);
 

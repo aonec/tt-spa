@@ -12,7 +12,6 @@ import {
   $individualDevicesNames,
   IndividualDevicecModelsGate,
 } from '01/features/individualDevices/displayIndividualDevicesNames/models';
-import { getBitDepthAndScaleFactor } from '../../utils';
 import { DatePickerNative } from 'ui-kit/shared_components/DatePickerNative';
 import { SwitchWrapper, TextWrapper } from './BaseInfoStage.styled';
 import { getIndividualDeviceRateNumByName } from 'utils/getIndividualDeviceRateNumByName';
@@ -27,6 +26,7 @@ import { Input } from 'ui-kit/Input';
 import { Loader } from 'ui-kit/Loader';
 import { ResourceSelect } from 'ui-kit/shared_components/ResourceSelect';
 import { individualDeviceMountPlacesService } from 'services/devices/individualDeviceMountPlacesService';
+import { getBitDepthAndScaleFactor } from 'utils/getBitDepthAndScaleFactor';
 
 const {
   outputs,
