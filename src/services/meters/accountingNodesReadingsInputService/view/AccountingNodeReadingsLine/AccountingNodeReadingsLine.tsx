@@ -10,7 +10,6 @@ import { AccountingNodeReadingsLineProps } from './AccountingNodeReadingsLine.ty
 import { ResourceIconLookup } from 'ui-kit/shared_components/ResourceIconLookup';
 import { useHistory } from 'react-router-dom';
 import { ContextMenuButton } from 'ui-kit/ContextMenuButton';
-import { AccountingNodeReadingsInputBlock } from '../AccountingNodeReadingsInputBlock';
 import moment from 'moment';
 import { round } from 'utils/round';
 
@@ -76,64 +75,7 @@ export const AccountingNodeReadingsLine: FC<
       </DeviceInfo>
       <div>{device?.scaleFactor}</div>
 
-      <AccountingNodeReadingsInputBlock
-        handleSendReading={(payload) =>
-          handleSendReading({
-            ...payload,
-            nonResidentialRoomConsumption:
-              currentReading?.nonResidentialRoomConsumption,
-          })
-        }
-        readingValue={previousReading?.value || null}
-        readingDate={previousReading?.readingDate}
-        sliderIndex={sliderIndex}
-        status={deviceInputStatuses[sliderIndex]}
-        tooltip={(!previousReading && previousReadingTooltipTitle) || ''}
-        inputIndex={deviceIndex}
-        dataKey="previuos"
-      />
-
-      <AccountingNodeReadingsInputBlock
-        handleSendReading={(payload) =>
-          handleSendReading({
-            ...payload,
-            nonResidentialRoomConsumption:
-              currentReading?.nonResidentialRoomConsumption,
-          })
-        }
-        readingValue={currentReading?.value || null}
-        readingDate={currentReading?.readingDate}
-        resource={device.resource}
-        sliderIndex={-1}
-        status={deviceInputStatuses[-1]}
-        inputIndex={deviceIndex}
-        tooltip={
-          (!previousReading &&
-            !currentReading &&
-            previousReadingTooltipTitle) ||
-          ''
-        }
-        dataKey="current"
-      />
       <div>{consumption}</div>
-      {currentReading ? (
-        <AccountingNodeReadingsInputBlock
-          handleSendReading={({ readingDate, value }) =>
-            handleSendReading({
-              value: currentReading.value,
-              readingDate,
-              nonResidentialRoomConsumption: value,
-            })
-          }
-          readingValue={currentReading?.nonResidentialRoomConsumption || null}
-          sliderIndex={-1}
-          status={deviceNonResConsumptionInputStatuses[currentReading.id]}
-          inputIndex={deviceIndex}
-          dataKey="nonResidentialRoomConsumption"
-        />
-      ) : (
-        <div />
-      )}
 
       <ContextMenuButton
         size="small"
