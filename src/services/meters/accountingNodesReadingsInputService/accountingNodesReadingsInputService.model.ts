@@ -40,13 +40,20 @@ const sendReadingFx = domain.createEffect<
   EffectFailDataAxiosError
 >(createOrUpdateNodeReading);
 
+const sendNonResConsumptionReading =
+  domain.createEvent<UpdateHousingMeteringDeviceReadingsPayload>();
+const sendNonResConsumptionReadingFx = domain.createEffect<
+  UpdateHousingMeteringDeviceReadingsPayload,
+  HousingMeteringDeviceReadingsIncludingPlacementResponse
+>(createOrUpdateNonResidentialRoomConsumption);
+
 const getReadingsOfElectricNodeFx = domain.createEffect<
   { nodeId: number },
   HousingMeteringDeviceReadingsIncludingPlacementResponse[]
 >(fetchReadingsOfElectricNode);
 const $readings = domain
   .createStore<NodeReadingsDataByDevices>({})
-  .on(getReadingsOfElectricNodeFx.done, (readings, { params, result }) => {
+  .on(getReadingsOfElectricNodeFx.doneData, (readings, result) => {
     if (!result.length) {
       return readings;
     }
@@ -55,15 +62,18 @@ const $readings = domain
       [result[0].deviceId]: result,
     };
   })
-  .on(sendReadingFx.done, (readings, { params, result: newReading }) => {
-    const { deviceId, oldReadingId } = params;
-    const filteredReadings = (readings[deviceId] || []).filter(
-      (elem) => elem.id !== oldReadingId,
-    );
+  .on(
+    [sendReadingFx.done, sendNonResConsumptionReadingFx.done],
+    (readings, { params, result: newReading }) => {
+      const { deviceId, oldReadingId } = params;
+      const filteredReadings = (readings[deviceId] || []).filter(
+        (elem) => elem.id !== oldReadingId,
+      );
 
-    return { ...readings, [deviceId]: [...filteredReadings, newReading] };
-  })
-  .on(removeReadingFx.done, (readings, { params, result: newReading }) => {
+      return { ...readings, [deviceId]: [...filteredReadings, newReading] };
+    },
+  )
+  .on(removeReadingFx.done, (readings, { params }) => {
     const { id, deviceId } = params;
     const filteredReadings = (readings[deviceId] || []).filter(
       (elem) => elem.id !== id,
@@ -73,29 +83,22 @@ const $readings = domain
   })
   .reset(AccountingNodesReadingsInputGate.close);
 
-const sendNonResConsumptionReading =
-  domain.createEvent<UpdateHousingMeteringDeviceReadingsPayload>();
-const sendNonResConsumptionReadingFx = domain.createEffect<
-  UpdateHousingMeteringDeviceReadingsPayload,
-  void
->(createOrUpdateNonResidentialRoomConsumption);
-
 const setLoadingStatusToNonResConsumptionInput = domain.createEvent<{
-  id: string;
+  oldReadingId: string;
 }>();
 const $nonResConsumptionInputStatuses = domain
   .createStore<NodeReadingsStatuses>({})
-  .on(setLoadingStatusToNonResConsumptionInput, (statuses, { id }) => ({
+  .on(setLoadingStatusToNonResConsumptionInput, (statuses, { oldReadingId }) => ({
     ...statuses,
-    [id]: MetersInputBlockStatus.Loading,
+    [oldReadingId]: MetersInputBlockStatus.Loading,
   }))
   .on(sendNonResConsumptionReadingFx.done, (statuses, { params }) => ({
     ...statuses,
-    [params.id]: MetersInputBlockStatus.Done,
+    [params.oldReadingId]: MetersInputBlockStatus.Done,
   }))
   .on(sendNonResConsumptionReadingFx.fail, (statuses, { params }) => ({
     ...statuses,
-    [params.id]: MetersInputBlockStatus.Failed,
+    [params.oldReadingId]: MetersInputBlockStatus.Failed,
   }));
 
 const setLoadingStatusToInput = domain.createEvent<{

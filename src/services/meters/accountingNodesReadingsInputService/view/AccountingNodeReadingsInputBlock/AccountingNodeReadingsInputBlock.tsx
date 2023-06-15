@@ -9,19 +9,20 @@ import React, {
 import {
   InputBlockWrapper,
   ReadingDate,
+  WrapperSC,
 } from './AccountingNodeReadingsInputBlock.styled';
 import { AccountingNodeReadingsInputBlockProps } from './AccountingNodeReadingsInputBlock.types';
 import {
   Input,
   InputWrapper,
-  Wrapper,
 } from 'services/meters/individualDeviceMetersInputService/view/MetersInputsBlock/MetersInputsBlock.styled';
 import { MetersInputBlockStatus } from 'services/meters/individualDeviceMetersInputService/view/MetersInputsBlock/MetersInputsBlock.types';
 import { Tooltip } from 'antd';
 import { fromEnter } from 'ui-kit/shared_components/DatePickerNative';
 import { getTimeStringByUTC } from 'utils/getTimeStringByUTC';
 import moment from 'moment';
-import { useSwitchInputOnEnter } from '01/features/individualDevices/switchIndividualDevice/components/stages/BaseInfoStage.hook';
+import { isNumber } from 'lodash';
+import { useSwitchInputOnEnter } from 'hooks/useSwitchInputOnEnter';
 
 export const AccountingNodeReadingsInputBlock: FC<
   AccountingNodeReadingsInputBlockProps
@@ -35,6 +36,7 @@ export const AccountingNodeReadingsInputBlock: FC<
   readingDate,
   handleSendReading,
   dataKey,
+  withoutDate = false,
 }) => {
   const [status, setStatus] = useState<MetersInputBlockStatus | null>(null);
   const [bufferedReadingValue, setBufferedReadingValue] = useState<
@@ -73,7 +75,10 @@ export const AccountingNodeReadingsInputBlock: FC<
       value: bufferedReadingValue,
       readingDate: preparedReadingDate,
     });
-    next(inputIndex);
+
+    if (isNumber(inputIndex)) {
+      next(inputIndex);
+    }
   }, [
     handleSendReading,
     bufferedReadingValue,
@@ -86,7 +91,7 @@ export const AccountingNodeReadingsInputBlock: FC<
   return (
     <Tooltip title={tooltip}>
       <InputBlockWrapper>
-        <Wrapper resource={resource}>
+        <WrapperSC resource={resource}>
           <InputWrapper>
             <Input
               type="number"
@@ -104,8 +109,10 @@ export const AccountingNodeReadingsInputBlock: FC<
               data-reading-input={dataKey}
             />
           </InputWrapper>
-        </Wrapper>
-        <ReadingDate>{formattedReadingDate || 'Нет показаний'}</ReadingDate>
+        </WrapperSC>
+        {!withoutDate && (
+          <ReadingDate>{formattedReadingDate || 'Нет показаний'}</ReadingDate>
+        )}
       </InputBlockWrapper>
     </Tooltip>
   );

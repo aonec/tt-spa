@@ -5,8 +5,8 @@ import {
   PreparedNodeReadingsData,
 } from './accountingNodesReadingsInputService.types';
 import { PREVIOUS_READING_INDEX_LIMIT } from '../metersService/AccountingNodesReadingsService/AccountingNodesReadingsService.constants';
-import { getArrayByCountRange } from '01/features/readings/accountingNodesReadings/components/Filter/Filter.utils';
 import { MetersInputBlockStatus } from '../individualDeviceMetersInputService/view/MetersInputsBlock/MetersInputsBlock.types';
+import { getFilledArray } from 'utils/getFilledArray';
 
 export const getPreparedNodeReadingsDictionary = (
   readings: HousingMeteringDeviceReadingsIncludingPlacementResponse[],
@@ -56,7 +56,7 @@ export function getPreviousExistingReading(
 export const getELectricNodeInputStatuses = (
   status: MetersInputBlockStatus | null,
 ) =>
-  getArrayByCountRange(8, (index) => index - 2).reduce(
+  getFilledArray(8, (index) => index - 1).reduce(
     (acc, elem) => ({ ...acc, [elem]: status }),
     {} as NodeReadingsStatuses,
   );

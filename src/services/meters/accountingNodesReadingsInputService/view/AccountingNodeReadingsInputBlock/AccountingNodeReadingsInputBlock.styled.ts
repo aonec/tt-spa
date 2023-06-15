@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { Wrapper } from 'services/meters/individualDeviceMetersInputService/view/MetersInputsBlock/MetersInputsBlock.styled';
 
 export const ReadingDate = styled.div`
   line-height: 0;
@@ -11,4 +12,8 @@ export const InputBlockWrapper = styled.div`
   display: flex;
   justify-content: center;
   flex-direction: column;
+`;
+
+export const WrapperSC = styled(Wrapper)`
+  max-width: none;
 `;

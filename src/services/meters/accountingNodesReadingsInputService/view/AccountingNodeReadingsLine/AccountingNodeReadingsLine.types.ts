@@ -16,7 +16,7 @@ export type AccountingNodeReadingsLineProps = {
   deviceInputStatuses: NodeReadingsStatuses;
   deviceNonResConsumptionInputStatuses: NodeReadingsStatuses;
   handleSendNonResConsumption: (
-    payload: UpdateHousingMeteringDeviceReadingsPayload,
+    payload: Omit<UpdateHousingMeteringDeviceReadingsPayload, 'deviceId'>,
   ) => void;
   handleValidateReading: (payload: PreValidatedNodeReadings) => void;
   handleUpdateReadingsSum: (
