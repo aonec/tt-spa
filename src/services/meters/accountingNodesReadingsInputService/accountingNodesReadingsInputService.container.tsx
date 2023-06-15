@@ -44,9 +44,9 @@ export const AccountingNodesReadingsInputContainer: FC<
       const isEdited = value !== getNodeReadingValue(reading);
 
       const readingMonth = moment(readingDate).format('MMMM');
-      // const prevReading = readings.find(
-      //   (elem) => elem.id === reading?.previousReadingsId,
-      // );
+      const prevReading = readings.find(
+        (elem) => elem.id === reading?.previousReadingsId,
+      );
 
       if (!isEdited) {
         return null;
@@ -67,13 +67,30 @@ export const AccountingNodesReadingsInputContainer: FC<
         });
       }
 
-      sendReading({
-        value,
-        readingDate,
-        nonResidentialRoomConsumption: reading?.nonResidentialRoomConsumption,
-        deviceId: device.id,
-        oldReadingId: reading?.id,
-      });
+      const sendReadingCallback = () =>
+        sendReading({
+          value,
+          readingDate,
+          nonResidentialRoomConsumption: reading?.nonResidentialRoomConsumption,
+          deviceId: device.id,
+          oldReadingId: reading?.id,
+        });
+
+      if (prevReading && value < prevReading.value) {
+        return openConfirmReadingModal({
+          title: (
+            <>
+              Введенное показание по прибору <b>{device.serialNumber}</b> (
+              {device.model}) меньше предыдущего на:
+              {prevReading.value - value}
+              кВт/ч
+            </>
+          ),
+          onSubmit: sendReadingCallback,
+        });
+      }
+
+      sendReadingCallback();
     },
     [sendReading, device, openConfirmReadingModal, removeReading, readings],
   );
