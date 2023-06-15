@@ -5,4 +5,5 @@ export type AccountingNodesListProps = {
   sliderIndex: number;
   upSliderIndex: () => void;
   downSliderIndex: () => void;
+  sum: number;
 };

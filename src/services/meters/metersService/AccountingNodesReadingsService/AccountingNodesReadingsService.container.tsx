@@ -16,11 +16,11 @@ export const AccountingNodesReadingsContainer = () => {
   const electricNodes = useUnit(outputs.$electricNodes);
   const isLoading = useUnit(outputs.$isLoading);
   const sliderIndex = useUnit(outputs.$sliderIndex);
+  const sum = useUnit(outputs.$sumOfReadings);
 
   const handleGetElectricNodes = useUnit(inputs.fetchElectricNodes);
   const upSliderIndex = useUnit(inputs.upSliderIndex);
   const downSliderIndex = useUnit(inputs.downSliderIndex);
-
 
   useEffect(() => {
     return outputs.$housingStockAddress.watch((address) => {
@@ -43,6 +43,7 @@ export const AccountingNodesReadingsContainer = () => {
         sliderIndex={sliderIndex}
         upSliderIndex={upSliderIndex}
         downSliderIndex={downSliderIndex}
+        sum={sum}
       />
     </>
   );
