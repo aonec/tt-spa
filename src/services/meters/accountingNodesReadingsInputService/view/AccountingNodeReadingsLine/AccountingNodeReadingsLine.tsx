@@ -94,80 +94,21 @@ export const AccountingNodeReadingsLine: FC<
       </DeviceInfo>
       <div>{device?.scaleFactor}</div>
 
-      <AccountingNodeReadingsInputBlock
-        handleSendReading={(payload) =>
-          handleValidateReading({
-            ...payload,
-            reading: previousReadingReadingBySliderIndex,
-          })
-        }
-        readingValue={getNodeReadingValue(previousReadingReadingBySliderIndex)}
-        readingDate={previousReadingReadingBySliderIndex?.readingDate}
-        sliderIndex={sliderIndex}
-        status={deviceInputStatuses[sliderIndex]}
-        tooltip={
-          (!previousReadingReadingBySliderIndex &&
-            previousReadingTooltipTitle) ||
-          ''
-        }
-        inputIndex={deviceIndex}
-        dataKey="previuos"
-      />
-
-      <AccountingNodeReadingsInputBlock
-        handleSendReading={(payload) =>
-          handleValidateReading({
-            ...payload,
-            reading: currentReading,
-          })
-        }
-        readingValue={getNodeReadingValue(currentReading)}
-        readingDate={currentReading?.readingDate}
-        resource={device.resource}
-        sliderIndex={-1}
-        status={deviceInputStatuses[-1]}
-        inputIndex={deviceIndex}
-        tooltip={
-          (!previousReadingReadingBySliderIndex &&
-            !currentReading &&
-            previousReadingTooltipTitle) ||
-          ''
-        }
-        dataKey="current"
-      />
       <div>{consumption}</div>
-      {currentReading ? (
-        <AccountingNodeReadingsInputBlock
-          handleSendReading={({ value }) =>
-            handleSendNonResConsumption({
-              id: currentReading.id,
-              nonResidentialRoomConsumption: value || 0,
-            })
-          }
-          readingValue={currentReading.nonResidentialRoomConsumption}
-          sliderIndex={-1}
-          status={deviceNonResConsumptionInputStatuses[currentReading.id]}
-          inputIndex={deviceIndex}
-          dataKey="nonResidentialRoomConsumption"
-        />
-      ) : (
-        <div />
-      )}
-      <ContextMenuWrapper>
-        <ContextMenuButton
-          size="small"
-          menuButtons={[
-            {
-              title: 'Заменить прибор',
-              onClick: handleChangeODPU,
-            },
-            {
-              title: 'Редактировать прибор',
-              onClick: handleEditODPU,
-            },
-          ]}
-        />
-      </ContextMenuWrapper>
+
+      <ContextMenuButton
+        size="small"
+        menuButtons={[
+          {
+            title: 'Заменить прибор',
+            onClick: handleChangeODPU,
+          },
+          {
+            title: 'Редактировать прибор',
+            onClick: handleEditODPU,
+          },
+        ]}
+      />
     </Wrapper>
   );
 };
