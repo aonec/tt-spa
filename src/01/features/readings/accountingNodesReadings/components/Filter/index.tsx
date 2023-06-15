@@ -1,6 +1,3 @@
-import React from 'react';
-import { useForm } from 'effector-forms';
-import { Grid } from '01/shared/ui/Layout/Grid';
 import { useRef } from 'react';
 
 import { getArrayByCountRange } from './Filter.utils';

@@ -56,7 +56,7 @@ export function getPreviousExistingReading(
 export const getELectricNodeInputStatuses = (
   status: MetersInputBlockStatus | null,
 ) =>
-  getArrayByCountRange(7, (index) => index - 1).reduce(
+  getArrayByCountRange(8, (index) => index - 2).reduce(
     (acc, elem) => ({ ...acc, [elem]: status }),
     {} as NodeReadingsStatuses,
   );

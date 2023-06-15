@@ -14,6 +14,6 @@ export type AccountingNodeReadingsInputBlockProps = {
 };
 
 type SendReadingPayload = {
-  value: number;
+  value: number | null;
   readingDate: string;
 };

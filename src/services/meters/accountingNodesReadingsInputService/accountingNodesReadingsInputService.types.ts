@@ -16,8 +16,16 @@ export type UpdateHousingMeteringDeviceReadingsPayload = {
   nonResidentialRoomConsumption: number;
 };
 
+export type DeleteNodeReading = {
+  id: string;
+  deviceId: number;
+};
+
 export type CreateHousingMeteringDeviceReadingsPayload =
-  CreateHousingMeteringDeviceReadingsRequest & { deviceId: number };
+  CreateHousingMeteringDeviceReadingsRequest & {
+    deviceId: number;
+    oldReadingId?: string;
+  };
 
 export type NodeReadingsStatusesByDevices = {
   [deviceId: number]: NodeReadingsStatuses;
@@ -27,8 +35,8 @@ export type NodeReadingsStatuses = {
   [key: number | string]: MetersInputBlockStatus | null;
 };
 
-export type PreparedNodeReadingsDataByDevices = {
-  [deviceId: number]: PreparedNodeReadingsData;
+export type NodeReadingsDataByDevices = {
+  [deviceId: number]: HousingMeteringDeviceReadingsIncludingPlacementResponse[];
 };
 
 export type PreparedNodeReadingsData = {

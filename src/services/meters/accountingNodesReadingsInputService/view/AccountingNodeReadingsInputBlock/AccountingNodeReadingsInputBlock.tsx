@@ -6,7 +6,10 @@ import React, {
   useMemo,
   useState,
 } from 'react';
-import { ReadingDate } from './AccountingNodeReadingsInputBlock.styled';
+import {
+  InputBlockWrapper,
+  ReadingDate,
+} from './AccountingNodeReadingsInputBlock.styled';
 import { AccountingNodeReadingsInputBlockProps } from './AccountingNodeReadingsInputBlock.types';
 import {
   Input,
@@ -18,6 +21,7 @@ import { Tooltip } from 'antd';
 import { fromEnter } from 'ui-kit/shared_components/DatePickerNative';
 import { getTimeStringByUTC } from 'utils/getTimeStringByUTC';
 import moment from 'moment';
+import { useSwitchInputOnEnter } from '01/features/individualDevices/switchIndividualDevice/components/stages/BaseInfoStage.hook';
 
 export const AccountingNodeReadingsInputBlock: FC<
   AccountingNodeReadingsInputBlockProps
@@ -35,14 +39,16 @@ export const AccountingNodeReadingsInputBlock: FC<
   const [status, setStatus] = useState<MetersInputBlockStatus | null>(null);
   const [bufferedReadingValue, setBufferedReadingValue] = useState<
     number | null
-  >(readingValue || null);
+  >(readingValue);
+
+  const next = useSwitchInputOnEnter(dataKey, false);
 
   useEffect(() => {
-    setBufferedReadingValue(readingValue || null);
+    setBufferedReadingValue(readingValue);
   }, [readingValue, sliderIndex]);
 
   useEffect(() => {
-    setStatus(uploadingStatus || null);
+    setStatus(uploadingStatus);
   }, [uploadingStatus, sliderIndex]);
 
   const formattedReadingDate = useMemo(() => {
@@ -62,28 +68,34 @@ export const AccountingNodeReadingsInputBlock: FC<
     const preparedReadingDate =
       readingDate ||
       moment().subtract(sliderIndex, 'month').format('YYYY-MM-DD');
-    if (!bufferedReadingValue) {
-      return;
-    }
+
     handleSendReading({
       value: bufferedReadingValue,
       readingDate: preparedReadingDate,
     });
-  }, [handleSendReading, bufferedReadingValue, sliderIndex, readingDate]);
+    next(inputIndex);
+  }, [
+    handleSendReading,
+    bufferedReadingValue,
+    sliderIndex,
+    readingDate,
+    next,
+    inputIndex,
+  ]);
 
   return (
     <Tooltip title={tooltip}>
-      <div>
+      <InputBlockWrapper>
         <Wrapper resource={resource}>
           <InputWrapper>
             <Input
               type="number"
               status={status}
               onKeyDown={fromEnter(handleTriggerInput)}
-              value={bufferedReadingValue || ''}
+              value={bufferedReadingValue === null ? '' : bufferedReadingValue}
               onChange={(e) => {
                 const value = e.target.value;
-                if (!value) {
+                if (value === '') {
                   return setBufferedReadingValue(null);
                 }
                 setBufferedReadingValue(Number(value));
@@ -94,7 +106,7 @@ export const AccountingNodeReadingsInputBlock: FC<
           </InputWrapper>
         </Wrapper>
         <ReadingDate>{formattedReadingDate || 'Нет показаний'}</ReadingDate>
-      </div>
+      </InputBlockWrapper>
     </Tooltip>
   );
 };

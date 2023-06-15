@@ -2,21 +2,21 @@ import { createDomain, sample } from 'effector';
 import {
   createOrUpdateNodeReading,
   createOrUpdateNonResidentialRoomConsumption,
+  deleteNodeReading,
   fetchReadingsOfElectricNode,
 } from './accountingNodesReadingsInputService.api';
 import { HousingMeteringDeviceReadingsIncludingPlacementResponse } from 'myApi';
 import { createGate } from 'effector-react';
-import {
-  getELectricNodeInputStatuses,
-  getPreparedNodeReadingsDictionary,
-} from './accountingNodesReadingsInputService.utils';
+import { getELectricNodeInputStatuses } from './accountingNodesReadingsInputService.utils';
 import {
   CreateHousingMeteringDeviceReadingsPayload,
+  DeleteNodeReading,
+  NodeReadingsDataByDevices,
   NodeReadingsStatuses,
   NodeReadingsStatusesByDevices,
-  PreparedNodeReadingsDataByDevices,
   UpdateHousingMeteringDeviceReadingsPayload,
 } from './accountingNodesReadingsInputService.types';
+import { openConfirmReadingModal } from '01/features/readings/readingsInput/confirmInputReadingModal/models';
 import { MetersInputBlockStatus } from '../individualDeviceMetersInputService/view/MetersInputsBlock/MetersInputsBlock.types';
 import moment from 'moment';
 import { EffectFailDataAxiosError } from 'types';
@@ -29,13 +29,49 @@ const AccountingNodesReadingsInputGate = createGate<{
   deviceId: number;
 }>();
 
+const removeReading = domain.createEvent<DeleteNodeReading>();
+const removeReadingFx = domain.createEffect(deleteNodeReading);
+
 const sendReading =
   domain.createEvent<CreateHousingMeteringDeviceReadingsPayload>();
 const sendReadingFx = domain.createEffect<
   CreateHousingMeteringDeviceReadingsPayload,
-  void,
+  HousingMeteringDeviceReadingsIncludingPlacementResponse,
   EffectFailDataAxiosError
 >(createOrUpdateNodeReading);
+
+const getReadingsOfElectricNodeFx = domain.createEffect<
+  { nodeId: number },
+  HousingMeteringDeviceReadingsIncludingPlacementResponse[]
+>(fetchReadingsOfElectricNode);
+const $readings = domain
+  .createStore<NodeReadingsDataByDevices>({})
+  .on(getReadingsOfElectricNodeFx.done, (readings, { params, result }) => {
+    if (!result.length) {
+      return readings;
+    }
+    return {
+      ...readings,
+      [result[0].deviceId]: result,
+    };
+  })
+  .on(sendReadingFx.done, (readings, { params, result: newReading }) => {
+    const { deviceId, oldReadingId } = params;
+    const filteredReadings = (readings[deviceId] || []).filter(
+      (elem) => elem.id !== oldReadingId,
+    );
+
+    return { ...readings, [deviceId]: [...filteredReadings, newReading] };
+  })
+  .on(removeReadingFx.done, (readings, { params, result: newReading }) => {
+    const { id, deviceId } = params;
+    const filteredReadings = (readings[deviceId] || []).filter(
+      (elem) => elem.id !== id,
+    );
+
+    return { ...readings, [deviceId]: filteredReadings };
+  })
+  .reset(AccountingNodesReadingsInputGate.close);
 
 const sendNonResConsumptionReading =
   domain.createEvent<UpdateHousingMeteringDeviceReadingsPayload>();
@@ -62,31 +98,16 @@ const $nonResConsumptionInputStatuses = domain
     [params.id]: MetersInputBlockStatus.Failed,
   }));
 
-const getReadingsOfElectricNodeFx = domain.createEffect<
-  { nodeId: number },
-  HousingMeteringDeviceReadingsIncludingPlacementResponse[]
->(fetchReadingsOfElectricNode);
-const $readings = domain
-  .createStore<PreparedNodeReadingsDataByDevices>({})
-  .on(getReadingsOfElectricNodeFx.done, (readings, { params, result }) => {
-    if (!result.length) {
-      return readings;
-    }
-    return {
-      ...readings,
-      [result[0].deviceId]: getPreparedNodeReadingsDictionary(result),
-    };
-  })
-  .reset(AccountingNodesReadingsInputGate.close);
-
 const setLoadingStatusToInput = domain.createEvent<{
   deviceId: number;
   readingDate: string;
 }>();
-const setLoadingInputStatuses = domain.createEvent<{ deviceId: number }>();
+const setInitialLoadingInputStatuses = domain.createEvent<{
+  deviceId: number;
+}>();
 const $deviceInputStatuses = domain
   .createStore<NodeReadingsStatusesByDevices>({})
-  .on(setLoadingInputStatuses, (statuses, { deviceId }) => ({
+  .on(setInitialLoadingInputStatuses, (statuses, { deviceId }) => ({
     ...statuses,
     [deviceId]: getELectricNodeInputStatuses(MetersInputBlockStatus.Loading),
   }))
@@ -100,7 +121,10 @@ const $deviceInputStatuses = domain
     };
   })
   .on(setLoadingStatusToInput, (statuses, { deviceId, readingDate }) => {
-    const index = moment().startOf('M').diff(readingDate, 'M');
+    const index = moment()
+      .startOf('M')
+      .diff(moment(readingDate).startOf('M'), 'M');
+
     let statusesByDevice = statuses[deviceId];
 
     statusesByDevice[index] = MetersInputBlockStatus.Loading;
@@ -112,7 +136,9 @@ const $deviceInputStatuses = domain
   })
   .on(sendReadingFx.done, (statuses, { params }) => {
     const { readingDate, deviceId } = params;
-    const index = moment().startOf('M').diff(readingDate, 'M');
+    const index = moment()
+      .startOf('M')
+      .diff(moment(readingDate).startOf('M'), 'M');
 
     let statusesByDevice = statuses[deviceId];
 
@@ -124,8 +150,10 @@ const $deviceInputStatuses = domain
     };
   })
   .on(sendReadingFx.fail, (statuses, { params }) => {
-    const { deviceId, readingDate } = params;
-    const index = moment().startOf('M').diff(readingDate, 'M');
+    const { readingDate, deviceId } = params;
+    const index = moment()
+      .startOf('M')
+      .diff(moment(readingDate).startOf('M'), 'M');
 
     let statusesByDevice = statuses[deviceId];
 
@@ -139,9 +167,8 @@ const $deviceInputStatuses = domain
   .reset(AccountingNodesReadingsInputGate.close);
 
 sample({
-  source: AccountingNodesReadingsInputGate.state,
   clock: AccountingNodesReadingsInputGate.open,
-  target: [getReadingsOfElectricNodeFx, setLoadingInputStatuses],
+  target: [getReadingsOfElectricNodeFx, setInitialLoadingInputStatuses],
 });
 
 sample({
@@ -151,7 +178,15 @@ sample({
 
 sample({
   clock: sendNonResConsumptionReading,
-  target: sendNonResConsumptionReadingFx,
+  target: [
+    sendNonResConsumptionReadingFx,
+    setLoadingStatusToNonResConsumptionInput,
+  ],
+});
+
+sample({
+  clock: removeReading,
+  target: removeReadingFx,
 });
 
 sendReadingFx.failData.watch((error) =>
@@ -166,6 +201,8 @@ export const accountingNodesReadingsInputService = {
   inputs: {
     sendReading,
     sendNonResConsumptionReading,
+    removeReading,
+    openConfirmReadingModal,
   },
   outputs: {
     $readings,
