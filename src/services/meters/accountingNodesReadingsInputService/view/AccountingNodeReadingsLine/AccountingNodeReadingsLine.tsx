@@ -93,7 +93,6 @@ export const AccountingNodeReadingsLine: FC<
         </DeviceSerialNumberWrapper>
       </DeviceInfo>
       <div>{device?.scaleFactor}</div>
-
       <AccountingNodeReadingsInputBlock
         handleSendReading={(payload) =>
           handleValidateReading({
