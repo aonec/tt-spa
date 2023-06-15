@@ -15,12 +15,17 @@ const { AccountingNodesReadingsInputGate } = gates;
 export const AccountingNodesReadingsInputContainer: FC<
   AccountingNodesReadingsInputContainerProps
 > = ({ sliderIndex, device, deviceIndex }) => {
-  const readings = useUnit(outputs.$readings);
-  const deviceInputStatuses =
-    useUnit(outputs.$deviceInputStatuses)[device.id] || {};
-  const deviceNonResConsumptionInputStatuses = useUnit(
-    outputs.$nonResConsumptionInputStatuses,
-  );
+  const {
+    readings,
+    deviceInputStatuses,
+    deviceNonResConsumptionInputStatuses,
+  } = {
+    readings: useUnit(outputs.$readings),
+    deviceInputStatuses: useUnit(outputs.$deviceInputStatuses)[device.id] || {},
+    deviceNonResConsumptionInputStatuses: useUnit(
+      outputs.$nonResConsumptionInputStatuses,
+    ),
+  };
 
   const sendReading = useUnit(inputs.sendReading);
   const sendNonResConsumption = useUnit(inputs.sendNonResConsumptionReading);
