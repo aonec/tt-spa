@@ -11,11 +11,11 @@ import { AccountingNodeReadingsLineProps } from './AccountingNodeReadingsLine.ty
 import { ResourceIconLookup } from 'ui-kit/shared_components/ResourceIconLookup';
 import { useHistory } from 'react-router-dom';
 import { ContextMenuButton } from 'ui-kit/ContextMenuButton';
-import { AccountingNodeReadingsInputBlock } from '../AccountingNodeReadingsInputBlock';
 import moment from 'moment';
 import { round } from 'utils/round';
 import { useNodeReadings } from './AccountingNodeReadingsLine.hook';
 import { getNodeReadingValue } from './AccountingNodeReadingsLine.utils';
+import { AccountingNodeReadingsInputBlock } from '../AccountingNodeReadingsInputBlock';
 
 export const AccountingNodeReadingsLine: FC<
   AccountingNodeReadingsLineProps
