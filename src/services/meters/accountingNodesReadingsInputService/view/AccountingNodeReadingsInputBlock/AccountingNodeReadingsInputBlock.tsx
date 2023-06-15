@@ -9,12 +9,12 @@ import React, {
 import {
   InputBlockWrapper,
   ReadingDate,
+  WrapperSC,
 } from './AccountingNodeReadingsInputBlock.styled';
 import { AccountingNodeReadingsInputBlockProps } from './AccountingNodeReadingsInputBlock.types';
 import {
   Input,
   InputWrapper,
-  Wrapper,
 } from 'services/meters/individualDeviceMetersInputService/view/MetersInputsBlock/MetersInputsBlock.styled';
 import { MetersInputBlockStatus } from 'services/meters/individualDeviceMetersInputService/view/MetersInputsBlock/MetersInputsBlock.types';
 import { Tooltip } from 'antd';
@@ -75,7 +75,7 @@ export const AccountingNodeReadingsInputBlock: FC<
       value: bufferedReadingValue,
       readingDate: preparedReadingDate,
     });
-    
+
     if (isNumber(inputIndex)) {
       next(inputIndex);
     }
@@ -91,7 +91,7 @@ export const AccountingNodeReadingsInputBlock: FC<
   return (
     <Tooltip title={tooltip}>
       <InputBlockWrapper>
-        <Wrapper resource={resource}>
+        <WrapperSC resource={resource}>
           <InputWrapper>
             <Input
               type="number"
@@ -109,7 +109,7 @@ export const AccountingNodeReadingsInputBlock: FC<
               data-reading-input={dataKey}
             />
           </InputWrapper>
-        </Wrapper>
+        </WrapperSC>
         {!withoutDate && (
           <ReadingDate>{formattedReadingDate || 'Нет показаний'}</ReadingDate>
         )}
