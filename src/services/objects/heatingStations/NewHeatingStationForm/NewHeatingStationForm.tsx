@@ -101,6 +101,7 @@ export const NewHeatingStationForm: FC<NewHeatingStationFormProps> = ({
         <AddressGridWrapper>
           <FormItem label="Город">
             <Select
+              disabled
               onChange={(value) =>
                 setFieldValue('address', { ...values.address, city: value })
               }
@@ -118,6 +119,7 @@ export const NewHeatingStationForm: FC<NewHeatingStationFormProps> = ({
 
           <FormItem label="Улица">
             <AutoComplete
+              disabled
               placeholder="Улица"
               value={
                 values.address.street === 'Default'
@@ -134,6 +136,7 @@ export const NewHeatingStationForm: FC<NewHeatingStationFormProps> = ({
 
           <FormItem label="Номер">
             <Input
+              disabled
               placeholder="Введите"
               value={values.address.number || undefined}
               onChange={(value) =>
