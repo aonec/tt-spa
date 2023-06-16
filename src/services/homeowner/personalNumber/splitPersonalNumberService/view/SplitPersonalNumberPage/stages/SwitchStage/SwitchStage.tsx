@@ -45,7 +45,6 @@ export const SwitchStage: FC<SwitchStageProps> = ({
     validateOnChange: false,
     enableReinitialize: true,
     onSubmit: (data) => {
-      console.log(data.openAt);
       homeowner?.personalAccountNumber &&
         handleSubmitSwitchStage({
           form: {
