@@ -2,9 +2,10 @@ import React, { FC, useMemo } from 'react';
 import { MapWrapper } from './DistrictsMap.styled';
 import { Props } from './DistrictsMap.types';
 import { useYMaps } from 'hooks/ymaps/useYMaps';
-import { useRenderDistricts } from 'hooks/ymaps/utils';
+import { useRenderDistricts, useRenderTextPlacemarks } from 'hooks/ymaps/utils';
 import { getPayloadFromDistricts } from 'utils/districtsData';
 import { DistrictData } from 'types';
+import { findPolygonCenter } from 'utils/findPolygonCenter';
 
 export const DistrictsMap: FC<Props> = ({ districtsList }) => {
   const { mapRef, map } = useYMaps();
@@ -17,6 +18,15 @@ export const DistrictsMap: FC<Props> = ({ districtsList }) => {
   }, [districtsList]);
 
   useRenderDistricts(map, districtsDataList);
+
+  const districtTitles = useMemo(() => {
+    return getPayloadFromDistricts(districtsList).map((elem) => ({
+      text: elem.name,
+      coords: findPolygonCenter(elem.coordinates[0]),
+    }));
+  }, [districtsList]);
+
+  useRenderTextPlacemarks(map, districtTitles);
 
   return (
     <MapWrapper>

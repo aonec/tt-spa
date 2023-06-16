@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { DistrictColorsList } from 'services/settings/districtBordersService/CreateDistrictBorderByMapService/view/CreateDistrictBorderMapPage/CreateDistrictBorderMapPage.constants';
 import { DistrictData, ymaps } from 'types';
+import { getTextPlacemarkCode } from './placemarks/textPlacemark';
 
 export function useMapGroup(map: ymaps.Map | null) {
   const [group, setGroup] = useState<ymaps.GeoObjectCollection | null>(null);
@@ -46,14 +47,39 @@ export function useRenderDistricts(
       }
 
       districtsGroup.add(polygon);
+
+      return () => districtsGroup.removeAll();
     });
   }, [districtsGroup, districts]);
 }
 
-// export function useRenderTextPlacemarks(
-//   group: ymaps.GeoObjectCollection | null,
-//   text: string,
-//   coords: [number, number],
-// ) {
-//   group.
-// }
+export function useRenderTextPlacemarks(
+  map: ymaps.Map | null,
+  texts: { text: string; coords: [number, number] }[],
+) {
+  const textGroup = useMapGroup(map);
+
+  useEffect(() => {
+    if (!textGroup) return;
+
+    textGroup.removeAll();
+
+    texts.forEach(({ text, coords }) => {
+      const code = getTextPlacemarkCode(text);
+
+      var polygonLayout = ymaps.templateLayoutFactory.createClass(code);
+
+      const placemark = new ymaps.Placemark(
+        coords,
+        {},
+        {
+          iconLayout: polygonLayout,
+        },
+      );
+
+      textGroup.add(placemark);
+    });
+
+    return () => void textGroup.removeAll();
+  }, [textGroup, texts]);
+}
