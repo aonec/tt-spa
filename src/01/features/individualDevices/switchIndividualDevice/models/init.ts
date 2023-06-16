@@ -1,9 +1,5 @@
 import { switchIndividualDevice } from './../../../../_api/individualDevices';
 import {
-  $individualDevice,
-  IndividualDeviceGate,
-} from './../../displayIndividualDevice/models/index';
-import {
   forward,
   sample,
   combine,
@@ -30,7 +26,6 @@ import {
   checkIndividualDeviceFx,
   ApartmentIdGate,
 } from './index';
-import { fetchIndividualDeviceFx } from '../../displayIndividualDevice/models';
 import {
   EIndividualDeviceRateType,
   IndividualDeviceListResponseFromDevicePagePagedList,
@@ -47,6 +42,12 @@ import { message } from 'antd';
 import { FileData } from 'ui-kit/DocumentsService/DocumentsService.types';
 import { individualDeviceMountPlacesService } from 'services/devices/individualDeviceMountPlacesService';
 import { getBitDepthAndScaleFactor } from 'utils/getBitDepthAndScaleFactor';
+import { displayIndividualDeviceAndNamesService } from 'services/devices/individualDevices/displayIndividualDeviceAndNamesService/displayIndividualDeviceAndNamesService.model';
+
+const {
+  outputs: { $individualDevice },
+  gates: { IndividualDeviceGate },
+} = displayIndividualDeviceAndNamesService;
 
 createIndividualDeviceFx.use(switchIndividualDevice);
 
@@ -92,7 +93,7 @@ $isCreateIndividualDeviceSuccess
   .reset(resetCreationRequestStatus);
 
 forward({
-  from: fetchIndividualDeviceFx.doneData.map(
+  from: $individualDevice.map(
     (
       device,
     ): (SwitchIndividualDeviceReadingsCreateRequest & { id: number })[] =>
@@ -113,7 +114,9 @@ forward({
 });
 
 forward({
-  from: fetchIndividualDeviceFx.doneData.map((values) => {
+  from: $individualDevice.map((values) => {
+    if (!values) return;
+    
     const { bitDepth, scaleFactor } = getBitDepthAndScaleFactor(
       values.resource,
     );

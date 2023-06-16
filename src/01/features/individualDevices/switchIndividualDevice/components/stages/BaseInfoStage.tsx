@@ -22,10 +22,6 @@ import {
   IndividualDevicecModelsGate,
 } from '01/features/individualDevices/displayIndividualDevicesNames/models';
 import { ReadingsInput } from '../ReadingsInput';
-import {
-  $individualDevice,
-  fetchIndividualDeviceFx,
-} from '../../../displayIndividualDevice/models';
 import { Space, SpaceLine } from '01/shared/ui/Layout/Space/Space';
 import {
   DatePickerNative,
@@ -43,6 +39,7 @@ import { displayContractorsService } from 'services/contractors/displayContracto
 import { Select } from 'ui-kit/Select';
 import { Input } from 'ui-kit/Input';
 import { ResourceSelect } from 'ui-kit/shared_components/ResourceSelect';
+import { displayIndividualDeviceAndNamesService } from 'services/devices/individualDevices/displayIndividualDeviceAndNamesService/displayIndividualDeviceAndNamesService.model';
 
 const {
   outputs,
@@ -50,6 +47,10 @@ const {
 } = displayContractorsService;
 const { IndividualDeviceMountPlacesGate } =
   individualDeviceMountPlacesService.gates;
+
+const {
+  outputs: { $individualDevice, $isIndividualDeviceLoading },
+} = displayIndividualDeviceAndNamesService;
 
 export const BaseInfoStage = () => {
   const { id } = useParams<{ id: string }>();
@@ -70,7 +71,7 @@ export const BaseInfoStage = () => {
 
   const next = useSwitchInputOnEnter('infoForm', true);
 
-  const pending = useStore(fetchIndividualDeviceFx.pending);
+  const pending = useStore($isIndividualDeviceLoading);
 
   const onChange = (e: any) => {
     const field = (fields as any)[e.target.name];

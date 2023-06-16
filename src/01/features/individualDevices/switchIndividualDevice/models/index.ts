@@ -16,12 +16,16 @@ import {
 import { createForm } from 'effector-forms/dist';
 import { checkIndividualDevice } from '01/_api/individualDevices';
 import { CheckIndividualDevicePayload } from '../switchIndividualDevice.types';
-import { $individualDevice } from '../../displayIndividualDevice/models';
 import { createGate } from 'effector-react';
 import { getPreparedReadingsOfIndividualDevice } from '../switchIndividualDevice.utils';
 import { EffectFailDataAxiosError } from 'types';
 import { message } from 'antd';
 import { Document } from 'ui-kit/DocumentsService';
+import { displayIndividualDeviceAndNamesService } from 'services/devices/individualDevices/displayIndividualDeviceAndNamesService/displayIndividualDeviceAndNamesService.model';
+
+const {
+  outputs: { $individualDevice },
+} = displayIndividualDeviceAndNamesService;
 
 export const $creationDeviceStage = createStore<0 | 1>(0);
 export const $isCreateIndividualDeviceSuccess = createStore<boolean | null>(
