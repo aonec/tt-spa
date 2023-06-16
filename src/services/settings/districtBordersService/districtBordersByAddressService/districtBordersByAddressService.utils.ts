@@ -1,5 +1,7 @@
 import { StreetWithHousingStockNumbersResponse } from 'myApi';
 import {
+  CheckedHousingStocksIdWithStreets,
+  CheckedHousingStocksIdWithStreetsHandler,
   Coordinate,
   FilterType,
 } from './districtBordersByAddressService.types';
@@ -117,5 +119,60 @@ export const getFilteredAddresses = (
         addresses: filteredHouses,
       },
     ] as StreetWithHousingStockNumbersResponse[];
+  }
+};
+
+export const addHousingStocksToChecked = (
+  prevIdsWithStreet: CheckedHousingStocksIdWithStreets[],
+  commingIdsWithStreet: CheckedHousingStocksIdWithStreetsHandler,
+) => {
+  const street = commingIdsWithStreet.street;
+
+  const isArray = Array.isArray(commingIdsWithStreet.housingStocksId);
+
+  const housingStockByStreetIndex = prevIdsWithStreet.findIndex(
+    (elem) => elem.street === street,
+  );
+
+  if (housingStockByStreetIndex === -1) {
+    return [
+      ...prevIdsWithStreet,
+      {
+        street: street ? street : 'unknown',
+        housingStocksId: isArray
+          ? commingIdsWithStreet.housingStocksId
+          : ([commingIdsWithStreet.housingStocksId] as any),
+      },
+    ];
+  } else {
+    if (commingIdsWithStreet.isToAdd) {
+      const clonePrevIdsWithStreet = prevIdsWithStreet.slice();
+
+      clonePrevIdsWithStreet[housingStockByStreetIndex] = {
+        street: street ? street : 'unknown',
+        housingStocksId: isArray
+          ? (commingIdsWithStreet.housingStocksId as any)
+          : [
+              ...prevIdsWithStreet[housingStockByStreetIndex].housingStocksId,
+              commingIdsWithStreet.housingStocksId,
+            ],
+      };
+
+      return clonePrevIdsWithStreet;
+    }
+    if (!commingIdsWithStreet.isToAdd) {
+      const clonePrevIdsWithStreet = prevIdsWithStreet.slice();
+
+      clonePrevIdsWithStreet[housingStockByStreetIndex] = {
+        street: street ? street : 'unknown',
+        housingStocksId: isArray
+          ? []
+          : prevIdsWithStreet[housingStockByStreetIndex].housingStocksId.filter(
+              (housingStockId) =>
+                housingStockId !== commingIdsWithStreet.housingStocksId,
+            ),
+      };
+      return clonePrevIdsWithStreet;
+    }
   }
 };

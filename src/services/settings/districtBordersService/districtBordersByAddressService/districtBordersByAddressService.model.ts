@@ -12,6 +12,7 @@ import {
 } from './districtBordersByAddressService.types';
 import { CreateDistrictBorderByMapService } from '../CreateDistrictBorderByMapService';
 import { createGate } from 'effector-react';
+import { addHousingStocksToChecked } from './districtBordersByAddressService.utils';
 
 const domain = createDomain('districtBordersByAddressService');
 
@@ -47,7 +48,7 @@ const fetchAddressFx = domain.createEffect<
 
 const $addresses = domain
   .createStore<StreetWithHousingStockNumbersResponse[] | null>(null)
-  .on(fetchAddressFx.doneData, (_, addresses) => addresses.items)
+  .on(fetchAddressFx.doneData, (_, addresses) => addresses.items);
 
 const $filter = domain
   .createStore<FilterType | null>(null)
@@ -56,62 +57,8 @@ const $filter = domain
 
 const $checkedhousingStockIdsWithStreet = domain
   .createStore<CheckedHousingStocksIdWithStreets[]>([])
-  .on(
-    setHousingStockIdsWithStreet,
-    (prevIdsWithStreet, commingIdsWithStreet) => {
-      const street = commingIdsWithStreet.street;
-
-      const isArray = Array.isArray(commingIdsWithStreet.housingStocksId);
-
-      const housingStockByStreetIndex = prevIdsWithStreet.findIndex(
-        (elem) => elem.street === street,
-      );
-
-      if (housingStockByStreetIndex === -1) {
-        return [
-          ...prevIdsWithStreet,
-          {
-            street: street ? street : 'unknown',
-            housingStocksId: isArray
-              ? commingIdsWithStreet.housingStocksId
-              : ([commingIdsWithStreet.housingStocksId] as any),
-          },
-        ];
-      } else {
-        if (commingIdsWithStreet.isToAdd) {
-          const clonePrevIdsWithStreet = prevIdsWithStreet.slice();
-
-          clonePrevIdsWithStreet[housingStockByStreetIndex] = {
-            street: street ? street : 'unknown',
-            housingStocksId: isArray
-              ? (commingIdsWithStreet.housingStocksId as any)
-              : [
-                  ...prevIdsWithStreet[housingStockByStreetIndex]
-                    .housingStocksId,
-                  commingIdsWithStreet.housingStocksId,
-                ],
-          };
-
-          return clonePrevIdsWithStreet;
-        }
-        if (!commingIdsWithStreet.isToAdd) {
-          const clonePrevIdsWithStreet = prevIdsWithStreet.slice();
-
-          clonePrevIdsWithStreet[housingStockByStreetIndex] = {
-            street: street ? street : 'unknown',
-            housingStocksId: isArray
-              ? []
-              : prevIdsWithStreet[
-                  housingStockByStreetIndex
-                ].housingStocksId.filter(
-                  (housingStockId) =>
-                    housingStockId !== commingIdsWithStreet.housingStocksId,
-                ),
-          };
-          return clonePrevIdsWithStreet;
-        }
-      }
-    },
+  .on(setHousingStockIdsWithStreet, (prevIdsWithStreet, commingIdsWithStreet) =>
+    addHousingStocksToChecked(prevIdsWithStreet, commingIdsWithStreet),
   )
   .reset(pageResetter);
 
@@ -120,7 +67,8 @@ const $checkedHousingStockIdsAndPoligon = domain
     housingStockIds: number[];
     polygon: number[][];
   }>({ housingStockIds: [], polygon: [] })
-  .on(setPoligon, (_, data) => data).reset(pageResetter);
+  .on(setPoligon, (_, data) => data)
+  .reset(pageResetter);
 
 const $onEditingInMap = domain
   .createStore<boolean>(false)
