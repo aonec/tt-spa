@@ -21,6 +21,14 @@ export const AddIndividualDeviceContainer = () => {
   const mountPlaces = useUnit(outputs.$individualDeviceMountPlaces);
   const modelNames = useUnit(outputs.$individualDevicesNames);
   const contractors = useUnit(outputs.$contractors);
+  const serialNumberForChecking = useUnit(outputs.$serialNumberForChecking);
+  const isFetchSerialNumberLoading = useUnit(
+    outputs.$isFetchSerialNumberLoading,
+  );
+
+  const handleFetchSerialNumberForCheck = useUnit(
+    inputs.handleFetchSerialNumberForCheck,
+  );
 
   const currentFetchedApartmentId = apartment?.id;
   const idFromParams = Number(id);
@@ -38,6 +46,9 @@ export const AddIndividualDeviceContainer = () => {
         mountPlaces={mountPlaces}
         modelNames={modelNames}
         contractors={contractors}
+        handleFetchSerialNumberForCheck={handleFetchSerialNumberForCheck}
+        isFetchSerialNumberLoading={isFetchSerialNumberLoading}
+        serialNumberForChecking={serialNumberForChecking}
       />
     </>
   );

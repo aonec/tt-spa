@@ -24,6 +24,9 @@ export const AddIndividualDevicePage: FC<AddIndividualDevicePageProps> = ({
   contractors,
   modelNames,
   mountPlaces,
+  handleFetchSerialNumberForCheck,
+  isFetchSerialNumberLoading,
+  serialNumberForChecking,
 }) => {
   const history = useHistory();
 
@@ -73,6 +76,9 @@ export const AddIndividualDevicePage: FC<AddIndividualDevicePageProps> = ({
               contractors={contractors}
               modelNames={modelNames}
               mountPlaces={mountPlaces}
+              handleFetchSerialNumberForCheck={handleFetchSerialNumberForCheck}
+              isFetchSerialNumberLoading={isFetchSerialNumberLoading}
+              serialNumberForChecking={serialNumberForChecking}
             />
           )}
           {stageNumber === 2 && <DocumentsStage />}

@@ -1,6 +1,10 @@
 import { axios } from '01/axios';
 import queryString from 'query-string';
-import { EMeteringDeviceType, IndividualDeviceResponse } from 'myApi';
+import {
+  EMeteringDeviceType,
+  IndividualDeviceListResponseFromDevicePagePagedList,
+  IndividualDeviceResponse,
+} from 'myApi';
 import { GetMeteringDevicesModelsRequest } from './displayIndividualDeviceAndNamesService.types';
 
 export const getIndividualDevice = async (
@@ -35,3 +39,12 @@ export const getIndividualDevicesModels = async (
 
   return res.items;
 };
+
+export const getSerialNumberForCheck = (
+  serialNumber: string,
+): Promise<IndividualDeviceListResponseFromDevicePagePagedList> =>
+  axios.get('devices/individual', {
+    params: {
+      serialNumber,
+    },
+  });

@@ -24,10 +24,22 @@ import moment from 'moment';
 import { getBitDepthAndScaleFactor } from 'utils/getBitDepthAndScaleFactor';
 import { addIndividualDeviceService } from '../../../addIndividualDeviceService.model';
 
-const {gates:{ContractorsGate,AllIndividualDeviceMountPlacesGate,IndividualDevicecModelsGate}} = addIndividualDeviceService
+const {
+  gates: {
+    ContractorsGate,
+    AllIndividualDeviceMountPlacesGate,
+    IndividualDevicecModelsGate,
+  },
+} = addIndividualDeviceService;
 
-export const BaseInfoStage: FC<BaseInfoStageProps> = ({handleFetchSerialNumberForCheck,serialNumberForChecking,isFetchSerialNumberLoading,contractors,modelNames,mountPlaces}) => {
-
+export const BaseInfoStage: FC<BaseInfoStageProps> = ({
+  handleFetchSerialNumberForCheck,
+  serialNumberForChecking,
+  isFetchSerialNumberLoading,
+  contractors,
+  modelNames,
+  mountPlaces,
+}) => {
   const { values, setFieldValue, errors, handleSubmit } = useFormik({
     initialValues: {
       serialNumber: '',
@@ -101,8 +113,7 @@ export const BaseInfoStage: FC<BaseInfoStageProps> = ({handleFetchSerialNumberFo
   });
 
   const isSerialNumberAllreadyExist =
-  serialNumberForChecking?.items?.[0]?.serialNumber ===
-  values.serialNumber;
+    serialNumberForChecking?.items?.[0]?.serialNumber === values.serialNumber;
 
   const modelNameDebounced = values.model;
 
@@ -129,8 +140,8 @@ export const BaseInfoStage: FC<BaseInfoStageProps> = ({handleFetchSerialNumberFo
         <DatePickerNative
           onChange={(incomingValue: string) => {
             const value = moment(incomingValue);
-            
-            setFieldValue("lastCheckingDate", incomingValue);
+
+            setFieldValue('lastCheckingDate', incomingValue);
 
             const nextCheckingDate = moment(value);
 
@@ -142,22 +153,18 @@ export const BaseInfoStage: FC<BaseInfoStageProps> = ({handleFetchSerialNumberFo
 
             nextCheckingDate.set('year', nextYear);
 
-            setFieldValue("futureCheckingDate", nextCheckingDate.format());
+            setFieldValue('futureCheckingDate', nextCheckingDate.format());
           }}
           value={values.lastCheckingDate}
         />
-        <ErrorMessage>
-          {errors.lastCheckingDate}
-        </ErrorMessage>
+        <ErrorMessage>{errors.lastCheckingDate}</ErrorMessage>
       </FormItem>
       <FormItem label="Дата следующей поверки прибора">
         <DatePickerNative
-          onChange={(value) => setFieldValue( "futureCheckingDate" ,value) }
+          onChange={(value) => setFieldValue('futureCheckingDate', value)}
           value={values.futureCheckingDate}
         />
-        <ErrorMessage>
-          {errors.futureCheckingDate }
-        </ErrorMessage>
+        <ErrorMessage>{errors.futureCheckingDate}</ErrorMessage>
       </FormItem>
     </>
   );
@@ -173,9 +180,7 @@ export const BaseInfoStage: FC<BaseInfoStageProps> = ({handleFetchSerialNumberFo
           onChange={onChangeDefaultReadings(1)}
           value={values.defaultReadings.value1 || undefined}
         />
-        <ErrorMessage>
-          {}
-        </ErrorMessage>
+        <ErrorMessage>{}</ErrorMessage>
       </FormItem>
 
       {rateNum >= 2 && (
@@ -186,9 +191,7 @@ export const BaseInfoStage: FC<BaseInfoStageProps> = ({handleFetchSerialNumberFo
             onChange={onChangeDefaultReadings(2)}
             value={values.defaultReadings.value2 || undefined}
           />
-          <ErrorMessage>
-            {}
-          </ErrorMessage>
+          <ErrorMessage>{}</ErrorMessage>
         </FormItem>
       )}
       {rateNum >= 3 && (
@@ -199,9 +202,7 @@ export const BaseInfoStage: FC<BaseInfoStageProps> = ({handleFetchSerialNumberFo
             onChange={onChangeDefaultReadings(3)}
             value={values.defaultReadings.value3 || undefined}
           />
-          <ErrorMessage>
-            {}
-          </ErrorMessage>
+          <ErrorMessage>{}</ErrorMessage>
         </FormItem>
       )}
     </>
@@ -210,7 +211,7 @@ export const BaseInfoStage: FC<BaseInfoStageProps> = ({handleFetchSerialNumberFo
   return (
     <Wrap>
       <IndividualDevicecModelsGate model={modelNameDebounced} />
-      <AllIndividualDeviceMountPlacesGate  />
+      <AllIndividualDeviceMountPlacesGate />
       <ContractorsGate />
 
       <FormHeader>Общие данные о приборе</FormHeader>
@@ -218,23 +219,20 @@ export const BaseInfoStage: FC<BaseInfoStageProps> = ({handleFetchSerialNumberFo
         <FormItem label="Тип ресурса">
           <ResourceSelect
             onChange={(value) => {
-
-              setFieldValue("resource", value)
+              setFieldValue('resource', value);
 
               if (!value) return;
 
               const { bitDepth, scaleFactor } =
                 getBitDepthAndScaleFactor(value);
 
-              setFieldValue("bitDepth",bitDepth )
-              setFieldValue("scaleFactor",scaleFactor )
+              setFieldValue('bitDepth', bitDepth);
+              setFieldValue('scaleFactor', scaleFactor);
             }}
             resource={values.resource}
           />
 
-          <ErrorMessage>
-            {errors.resource}
-          </ErrorMessage>
+          <ErrorMessage>{errors.resource}</ErrorMessage>
         </FormItem>
 
         <FormItem label="Модель прибора">
@@ -242,19 +240,19 @@ export const BaseInfoStage: FC<BaseInfoStageProps> = ({handleFetchSerialNumberFo
             size="large"
             value={values.model}
             placeholder="Введите модель прибора"
-            onChange={(value) => setFieldValue("model",value)}
+            onChange={(value) => setFieldValue('model', value)}
             options={modelNames?.map((elem) => ({ value: elem })) || []}
           />
-          <ErrorMessage>
-            {errors.model}
-          </ErrorMessage>
+          <ErrorMessage>{errors.model}</ErrorMessage>
         </FormItem>
 
         <FormItem label="Серийный номер">
           <Input
             type="text"
             placeholder="Введите серийный номер прибора"
-            onChange={(value) => setFieldValue( "serialNumber",value.target.value)}
+            onChange={(value) =>
+              setFieldValue('serialNumber', value.target.value)
+            }
             name="serialNumber"
             value={values.serialNumber}
             onBlur={(value) =>
@@ -263,9 +261,7 @@ export const BaseInfoStage: FC<BaseInfoStageProps> = ({handleFetchSerialNumberFo
             }
             suffix={<Loader show={isFetchSerialNumberLoading} />}
           />
-          <ErrorMessage>
-            {errors.serialNumber}
-          </ErrorMessage>
+          <ErrorMessage>{errors.serialNumber}</ErrorMessage>
           {isSerialNumberAllreadyExist && (
             <ErrorMessage>
               Данный серийный номер уже существует в базе
@@ -277,15 +273,13 @@ export const BaseInfoStage: FC<BaseInfoStageProps> = ({handleFetchSerialNumberFo
           <Select
             placeholder="Выберите место установки"
             value={values.mountPlaceId || undefined}
-            onChange={(value) => setFieldValue("mountPlaceId", value)}
+            onChange={(value) => setFieldValue('mountPlaceId', value)}
           >
             {mountPlaces?.map((elem) => (
               <Select.Option value={elem.id}>{elem.description}</Select.Option>
             ))}
           </Select>
-          <ErrorMessage>
-            {errors.mountPlaceId}
-          </ErrorMessage>
+          <ErrorMessage>{errors.mountPlaceId}</ErrorMessage>
         </FormItem>
 
         <FormItem label="Разрядность">
@@ -293,12 +287,10 @@ export const BaseInfoStage: FC<BaseInfoStageProps> = ({handleFetchSerialNumberFo
             type="number"
             placeholder="Введите разрядность прибора"
             name="bitDepth"
-            onChange={(value) => setFieldValue("bitDepth" ,value )}
+            onChange={(value) => setFieldValue('bitDepth', value)}
             value={values.bitDepth || undefined}
           />
-          <ErrorMessage>
-            {errors.bitDepth}
-          </ErrorMessage>
+          <ErrorMessage>{errors.bitDepth}</ErrorMessage>
         </FormItem>
 
         <FormItem label="Множитель">
@@ -306,12 +298,10 @@ export const BaseInfoStage: FC<BaseInfoStageProps> = ({handleFetchSerialNumberFo
             type="number"
             placeholder="Введите множитель прибора"
             name="scaleFactor"
-            onChange={(value) => setFieldValue("scaleFactor", value)}
+            onChange={(value) => setFieldValue('scaleFactor', value)}
             value={values.scaleFactor || undefined}
           />
-          <ErrorMessage>
-            {errors.scaleFactor}
-          </ErrorMessage>
+          <ErrorMessage>{errors.scaleFactor}</ErrorMessage>
         </FormItem>
       </FormWrap>
 
@@ -319,7 +309,7 @@ export const BaseInfoStage: FC<BaseInfoStageProps> = ({handleFetchSerialNumberFo
         <Select
           placeholder="Выберите тариф прибора"
           value={values.rateType}
-          onChange={(value) => setFieldValue("rateType" , value)}
+          onChange={(value) => setFieldValue('rateType', value)}
         >
           <Select.Option value={EIndividualDeviceRateType.OneZone}>
             Одна зона
@@ -343,9 +333,7 @@ export const BaseInfoStage: FC<BaseInfoStageProps> = ({handleFetchSerialNumberFo
             onChange={onChangeStartupReadings(1)}
             value={values.startupReadings.value1 || undefined}
           />
-          <ErrorMessage>
-            {errors.startupReadings}
-          </ErrorMessage>
+          <ErrorMessage>{errors.startupReadings}</ErrorMessage>
         </FormItem>
 
         {rateNum >= 2 && (
@@ -356,9 +344,7 @@ export const BaseInfoStage: FC<BaseInfoStageProps> = ({handleFetchSerialNumberFo
               onChange={onChangeStartupReadings(2)}
               value={values.startupReadings.value2 || undefined}
             />
-            <ErrorMessage>
-              {}
-            </ErrorMessage>
+            <ErrorMessage>{}</ErrorMessage>
           </FormItem>
         )}
         {rateNum >= 3 && (
@@ -369,9 +355,7 @@ export const BaseInfoStage: FC<BaseInfoStageProps> = ({handleFetchSerialNumberFo
               onChange={onChangeStartupReadings(3)}
               value={values.startupReadings.value3 || undefined}
             />
-            <ErrorMessage>
-              {}
-            </ErrorMessage>
+            <ErrorMessage>{}</ErrorMessage>
           </FormItem>
         )}
 
@@ -382,18 +366,18 @@ export const BaseInfoStage: FC<BaseInfoStageProps> = ({handleFetchSerialNumberFo
 
       <FormItem label="Дата ввода в эксплуатацию">
         <DatePickerNative
-          onChange={(value) => setFieldValue("lastCommercialAccountingDate",value)}
+          onChange={(value) =>
+            setFieldValue('lastCommercialAccountingDate', value)
+          }
           value={values.lastCommercialAccountingDate}
         />
-        <ErrorMessage>
-          {errors.lastCommercialAccountingDate}
-        </ErrorMessage>
+        <ErrorMessage>{errors.lastCommercialAccountingDate}</ErrorMessage>
       </FormItem>
 
       <SwitchWrapper>
         <Switch
           checked={values.isPolling}
-          onChange={(value) => setFieldValue("isPolling" , value)}
+          onChange={(value) => setFieldValue('isPolling', value)}
         />
         <TextWrapper>Дистанционное снятие показаний</TextWrapper>
       </SwitchWrapper>
@@ -405,14 +389,16 @@ export const BaseInfoStage: FC<BaseInfoStageProps> = ({handleFetchSerialNumberFo
           <Input
             placeholder="Номер пломбы"
             value={values.magneticSealTypeName || undefined}
-            onChange={(value) => setFieldValue("magneticSealTypeName" , value)}
+            onChange={(value) => setFieldValue('magneticSealTypeName', value)}
             name="magneticSealTypeName"
           />
         </FormItem>
 
         <FormItem label="Дата установки пломбы">
           <DatePickerNative
-            onChange={(value) => setFieldValue("magneticSealInstallationDate" , value)}
+            onChange={(value) =>
+              setFieldValue('magneticSealInstallationDate', value)
+            }
             value={values.magneticSealInstallationDate}
           />
         </FormItem>
@@ -420,8 +406,7 @@ export const BaseInfoStage: FC<BaseInfoStageProps> = ({handleFetchSerialNumberFo
 
       <FormItem label="Монтажная организация">
         <Select
-          onChange={
-            (value) => setFieldValue("contractorId" , value)        }
+          onChange={(value) => setFieldValue('contractorId', value)}
           value={values.contractorId || void 0}
           placeholder="Выберите монтажную организацию"
         >

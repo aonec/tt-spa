@@ -17,16 +17,26 @@ const $stageNumber = domain
   .on(handleGoPrevStage, (prev) => prev - 1);
 
 export const addIndividualDeviceService = {
-  inputs: { handleGoNextStage, handleGoPrevStage },
+  inputs: {
+    handleGoNextStage,
+    handleGoPrevStage,
+    handleFetchSerialNumberForCheck:
+      displayIndividualDeviceAndNamesService.inputs
+        .handleFetchSerialNumberForCheck,
+  },
   outputs: {
     $stageNumber,
     $apartment: apartmentService.outputs.$apartment,
     $individualDevicesNames:
       displayIndividualDeviceAndNamesService.outputs.$individualDevicesNames,
     $individualDeviceMountPlaces:
-      individualDeviceMountPlacesService.outputs
-        .$individualDeviceMountPlaces,
+      individualDeviceMountPlacesService.outputs.$individualDeviceMountPlaces,
     $contractors: displayContractorsService.outputs.$contractors,
+    $isFetchSerialNumberLoading:
+      displayIndividualDeviceAndNamesService.outputs
+        .$isFetchSerialNumberLoading,
+    $serialNumberForChecking:
+      displayIndividualDeviceAndNamesService.outputs.$serialNumberForChecking,
   },
   gates: {
     ApartmentGate: apartmentService.gates.ApartmentGate,

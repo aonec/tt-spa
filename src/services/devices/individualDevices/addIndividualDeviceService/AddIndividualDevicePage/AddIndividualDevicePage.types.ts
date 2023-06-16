@@ -1,6 +1,7 @@
 import {
   ApartmentResponse,
   ContractorListResponse,
+  IndividualDeviceListResponseFromDevicePagePagedList,
   IndividualDeviceMountPlaceListResponse,
 } from 'myApi';
 
@@ -9,7 +10,10 @@ export type AddIndividualDevicePageProps = {
   handleGoNextStage: () => void;
   handleGoPrevStage: () => void;
   apartment: ApartmentResponse | null;
-  mountPlaces:   IndividualDeviceMountPlaceListResponse[] | null;
+  mountPlaces: IndividualDeviceMountPlaceListResponse[] | null;
   modelNames: string[] | null;
   contractors: ContractorListResponse[] | null;
+  handleFetchSerialNumberForCheck: (payload: string) => string;
+  isFetchSerialNumberLoading: boolean;
+  serialNumberForChecking: IndividualDeviceListResponseFromDevicePagePagedList | null;
 };
