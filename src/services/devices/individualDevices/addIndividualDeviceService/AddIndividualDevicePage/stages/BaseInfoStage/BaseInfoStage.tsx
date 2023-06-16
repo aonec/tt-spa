@@ -22,8 +22,11 @@ import { DatePickerNative } from 'ui-kit/shared_components/DatePickerNative';
 import { getIndividualDeviceRateNumByName } from 'utils/getIndividualDeviceRateNumByName';
 import moment from 'moment';
 import { getBitDepthAndScaleFactor } from 'utils/getBitDepthAndScaleFactor';
+import { addIndividualDeviceService } from '../../../addIndividualDeviceService.model';
 
-export const BaseInfoStage: FC<BaseInfoStageProps> = ({handleFetchSerialNumberForCheck,serialNumberForChecking,isFetchSerialNumberLoading}) => {
+const {gates:{ContractorsGate,AllIndividualDeviceMountPlacesGate,IndividualDevicecModelsGate}} = addIndividualDeviceService
+
+export const BaseInfoStage: FC<BaseInfoStageProps> = ({handleFetchSerialNumberForCheck,serialNumberForChecking,isFetchSerialNumberLoading,contractors,modelNames,mountPlaces}) => {
 
   const { values, setFieldValue, errors, handleSubmit } = useFormik({
     initialValues: {
@@ -101,6 +104,8 @@ export const BaseInfoStage: FC<BaseInfoStageProps> = ({handleFetchSerialNumberFo
   serialNumberForChecking?.items?.[0]?.serialNumber ===
   values.serialNumber;
 
+  const modelNameDebounced = values.model;
+
   const onChangeStartupReadings = (valueNumber: 1 | 2 | 3 | 4) => (e: any) =>
     fields.startupReadings.onChange({
       ...fields.startupReadings.value,
@@ -169,9 +174,7 @@ export const BaseInfoStage: FC<BaseInfoStageProps> = ({handleFetchSerialNumberFo
           value={values.defaultReadings.value1 || undefined}
         />
         <ErrorMessage>
-          {fields.defaultReadings.errorText({
-            requiredFirstField: 'Это поле обязательное',
-          })}
+          {}
         </ErrorMessage>
       </FormItem>
 
@@ -184,9 +187,7 @@ export const BaseInfoStage: FC<BaseInfoStageProps> = ({handleFetchSerialNumberFo
             value={values.defaultReadings.value2 || undefined}
           />
           <ErrorMessage>
-            {fields.defaultReadings.errorText({
-              requiredSecondField: 'Это поле обязательное',
-            })}
+            {}
           </ErrorMessage>
         </FormItem>
       )}
@@ -199,9 +200,7 @@ export const BaseInfoStage: FC<BaseInfoStageProps> = ({handleFetchSerialNumberFo
             value={values.defaultReadings.value3 || undefined}
           />
           <ErrorMessage>
-            {fields.defaultReadings.errorText({
-              requiredThirdField: 'Это поле обязательное',
-            })}
+            {}
           </ErrorMessage>
         </FormItem>
       )}
@@ -211,7 +210,7 @@ export const BaseInfoStage: FC<BaseInfoStageProps> = ({handleFetchSerialNumberFo
   return (
     <Wrap>
       <IndividualDevicecModelsGate model={modelNameDebounced} />
-      <IndividualDeviceMountPlacesGate apartmentId={Number(id)} />
+      <AllIndividualDeviceMountPlacesGate  />
       <ContractorsGate />
 
       <FormHeader>Общие данные о приборе</FormHeader>
@@ -358,9 +357,7 @@ export const BaseInfoStage: FC<BaseInfoStageProps> = ({handleFetchSerialNumberFo
               value={values.startupReadings.value2 || undefined}
             />
             <ErrorMessage>
-              {fields.startupReadings.errorText({
-                requiredSecondField: 'Это поле обязательное',
-              })}
+              {}
             </ErrorMessage>
           </FormItem>
         )}
@@ -373,9 +370,7 @@ export const BaseInfoStage: FC<BaseInfoStageProps> = ({handleFetchSerialNumberFo
               value={values.startupReadings.value3 || undefined}
             />
             <ErrorMessage>
-              {fields.startupReadings.errorText({
-                requiredThirdField: 'Это поле обязательное',
-              })}
+              {}
             </ErrorMessage>
           </FormItem>
         )}

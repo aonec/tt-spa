@@ -18,6 +18,9 @@ export const AddIndividualDeviceContainer = () => {
   ]);
 
   const apartment = useUnit(outputs.$apartment);
+  const mountPlaces = useUnit(outputs.$individualDeviceMountPlaces);
+  const modelNames = useUnit(outputs.$individualDevicesNames);
+  const contractors = useUnit(outputs.$contractors);
 
   const currentFetchedApartmentId = apartment?.id;
   const idFromParams = Number(id);
@@ -32,6 +35,9 @@ export const AddIndividualDeviceContainer = () => {
         handleGoNextStage={handleGoNextStage}
         handleGoPrevStage={handleGoPrevStage}
         apartment={apartment}
+        mountPlaces={mountPlaces}
+        modelNames={modelNames}
+        contractors={contractors}
       />
     </>
   );

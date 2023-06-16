@@ -21,6 +21,9 @@ export const AddIndividualDevicePage: FC<AddIndividualDevicePageProps> = ({
   apartment,
   handleGoNextStage,
   handleGoPrevStage,
+  contractors,
+  modelNames,
+  mountPlaces,
 }) => {
   const history = useHistory();
 
@@ -65,7 +68,13 @@ export const AddIndividualDevicePage: FC<AddIndividualDevicePageProps> = ({
 
       <PageGridContainer>
         <Forms>
-          {stageNumber === 1 && <BaseInfoStage />}
+          {stageNumber === 1 && (
+            <BaseInfoStage
+              contractors={contractors}
+              modelNames={modelNames}
+              mountPlaces={mountPlaces}
+            />
+          )}
           {stageNumber === 2 && <DocumentsStage />}
 
           <Footer>
