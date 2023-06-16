@@ -10,6 +10,7 @@ export const getTextPlacemarkCode = (text: string) => {
             border: 1px solid #FFFFFF;
             box-shadow: 0px 4px 4px rgba(78, 93, 146, 0.16), 0px 8px 16px rgba(78, 93, 146, 0.08);
             border-radius: 8px;
+            transform: translateX(-50%);
         ">
             ${text}
         </div>

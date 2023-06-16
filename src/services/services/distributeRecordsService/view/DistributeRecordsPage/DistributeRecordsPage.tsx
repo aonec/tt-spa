@@ -7,12 +7,27 @@ import { Select } from 'ui-kit/Select';
 import { DatePicker } from 'ui-kit/DatePicker';
 import { DistrictsMap } from './DistrictsMap';
 
-export const DistributeRecordsPage: FC<Props> = ({ districtsList }) => {
+export const DistributeRecordsPage: FC<Props> = ({
+  districtsList,
+  handleSelectDistrict,
+  handleUnselectDistrict,
+  selectedDistrict,
+}) => {
   return (
     <Wrapper>
       <FiltrationWrapper>
         <AddressSearchContainer fields={[SearchFieldType.City]} />
-        <Select small placeholder="Выберите район">
+        <Select
+          small
+          placeholder="Выберите район"
+          value={selectedDistrict || undefined}
+          allowClear
+          onChange={(value) => {
+            if (!value) handleUnselectDistrict();
+
+            if (value) handleSelectDistrict(value as string);
+          }}
+        >
           {districtsList.map((district) => {
             return (
               <Select.Option key={district.id} value={district.id}>
@@ -23,7 +38,11 @@ export const DistributeRecordsPage: FC<Props> = ({ districtsList }) => {
         </Select>
         <DatePicker small style={{ width: 240 }} format="DD.MM.YYYY" />
       </FiltrationWrapper>
-      <DistrictsMap districtsList={districtsList} />
+      <DistrictsMap
+        districtsList={districtsList}
+        handleSelectDistrict={handleSelectDistrict}
+        selectedDistrict={selectedDistrict}
+      />
     </Wrapper>
   );
 };

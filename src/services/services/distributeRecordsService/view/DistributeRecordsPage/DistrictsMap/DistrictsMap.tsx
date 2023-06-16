@@ -7,24 +7,36 @@ import { getPayloadFromDistricts } from 'utils/districtsData';
 import { DistrictData } from 'types';
 import { findPolygonCenter } from 'utils/findPolygonCenter';
 
-export const DistrictsMap: FC<Props> = ({ districtsList }) => {
+export const DistrictsMap: FC<Props> = ({
+  districtsList,
+  handleSelectDistrict,
+  selectedDistrict,
+}) => {
   const { mapRef, map } = useYMaps();
 
+  const filteredDistrictsList = useMemo(() => {
+    if (!selectedDistrict) return districtsList;
+
+    return districtsList.filter((elem) => elem.id === selectedDistrict);
+  }, [districtsList, selectedDistrict]);
+
   const districtsDataList: DistrictData[] = useMemo(() => {
-    return getPayloadFromDistricts(districtsList).map((elem) => ({
+    return getPayloadFromDistricts(filteredDistrictsList).map((elem) => ({
       ...elem,
-      onClick: console.log,
+      onClick: handleSelectDistrict,
     }));
-  }, [districtsList]);
+  }, [filteredDistrictsList, handleSelectDistrict]);
 
   useRenderDistricts(map, districtsDataList);
 
   const districtTitles = useMemo(() => {
-    return getPayloadFromDistricts(districtsList).map((elem) => ({
+    if (selectedDistrict) return [];
+
+    return getPayloadFromDistricts(filteredDistrictsList).map((elem) => ({
       text: elem.name,
       coords: findPolygonCenter(elem.coordinates[0]),
     }));
-  }, [districtsList]);
+  }, [filteredDistrictsList, selectedDistrict]);
 
   useRenderTextPlacemarks(map, districtTitles);
 
