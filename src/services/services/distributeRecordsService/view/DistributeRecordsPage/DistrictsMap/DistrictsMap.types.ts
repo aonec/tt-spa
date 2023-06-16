@@ -9,6 +9,7 @@ export type Props = {
   handleSelectDistrict: (payload: string) => void;
   selectedDistrict: string | null;
   appointmentsInDistrict: AppointmentResponse[] | null;
+  handleSelectHousingStock?: (data: AppointmentsByHousingStocks) => void;
 };
 
 export type AppointmentsByHousingStocks = {

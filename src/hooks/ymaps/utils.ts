@@ -40,6 +40,7 @@ export function useRenderDistricts(
         fillColor: color?.color,
         strokeColor: color?.strokeColor,
         strokeWidth: 3,
+        zIndex: 10,
       } as any);
 
       if (district.onClick) {
@@ -82,4 +83,40 @@ export function useRenderTextPlacemarks(
 
     return () => void textGroup.removeAll();
   }, [textGroup, texts]);
+}
+
+export function useRenderPlacemarks(
+  map: ymaps.Map | null,
+  placemarks: {
+    placemarkIconLink: string;
+    coords: [number, number];
+    onClick?: () => void;
+  }[],
+) {
+  const placemarksGroup = useMapGroup(map);
+
+  useEffect(() => {
+    if (!placemarksGroup) return;
+
+    placemarksGroup.removeAll();
+
+    placemarks.forEach(({ placemarkIconLink, coords, onClick }) => {
+      const placemark = new ymaps.Placemark(
+        coords,
+        {},
+        {
+          iconLayout: 'default#image',
+          iconImageHref: placemarkIconLink,
+          iconImageSize: [51, 51],
+          zIndex: 100,
+        },
+      );
+
+      if (onClick) placemark.events.add('click', onClick);
+
+      placemarksGroup.add(placemark);
+    });
+
+    return () => void placemarksGroup.removeAll();
+  }, [placemarks, placemarksGroup]);
 }

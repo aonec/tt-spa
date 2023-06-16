@@ -40,6 +40,7 @@ export const DistributeRecordsContainer = () => {
         handleSetAppointmentDate={handleSetAppointmentDate}
         appointmentsInDistrict={appointmentsInDistrict}
         isLoadingAppointments={isLoadingAppointments}
+        handleSelectHousingStock={console.log}
       />
     </>
   );

@@ -2,16 +2,23 @@ import React, { FC, useMemo } from 'react';
 import { MapWrapper } from './DistrictsMap.styled';
 import { Props } from './DistrictsMap.types';
 import { useYMaps } from 'hooks/ymaps/useYMaps';
-import { useRenderDistricts, useRenderTextPlacemarks } from 'hooks/ymaps/utils';
+import {
+  useRenderDistricts,
+  useRenderPlacemarks,
+  useRenderTextPlacemarks,
+} from 'hooks/ymaps/utils';
 import { getPayloadFromDistricts } from 'utils/districtsData';
 import { DistrictData } from 'types';
 import { findPolygonCenter } from 'utils/findPolygonCenter';
+import { prepareAppointments } from './DistrictsMap.utils';
+import warningPlacemark from 'hooks/ymaps/placemarks/warningPlacemark.svg';
 
 export const DistrictsMap: FC<Props> = ({
   districtsList,
   handleSelectDistrict,
   selectedDistrict,
   appointmentsInDistrict,
+  handleSelectHousingStock,
 }) => {
   const { mapRef, map } = useYMaps();
 
@@ -40,6 +47,21 @@ export const DistrictsMap: FC<Props> = ({
   }, [filteredDistrictsList, selectedDistrict]);
 
   useRenderTextPlacemarks(map, districtTitles);
+
+  const preparedAppointments = useMemo(
+    () =>
+      prepareAppointments(appointmentsInDistrict || []).map((elem) => ({
+        placemarkIconLink: warningPlacemark,
+        coords: [elem.address.latitude || 0, elem.address.longitude || 0] as [
+          number,
+          number,
+        ],
+        onClick: () => handleSelectHousingStock?.(elem),
+      })),
+    [appointmentsInDistrict, handleSelectHousingStock],
+  );
+
+  useRenderPlacemarks(map, preparedAppointments);
 
   return (
     <MapWrapper>
