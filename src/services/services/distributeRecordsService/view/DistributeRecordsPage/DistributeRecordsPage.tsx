@@ -6,12 +6,16 @@ import { SearchFieldType } from 'services/addressSearchService/view/AddressSearc
 import { Select } from 'ui-kit/Select';
 import { DatePicker } from 'ui-kit/DatePicker';
 import { DistrictsMap } from './DistrictsMap';
+import moment from 'moment';
 
 export const DistributeRecordsPage: FC<Props> = ({
   districtsList,
   handleSelectDistrict,
   handleUnselectDistrict,
   selectedDistrict,
+  appointmentDate,
+  handleSetAppointmentDate,
+  appointmentsInDistrict,
 }) => {
   return (
     <Wrapper>
@@ -36,12 +40,21 @@ export const DistributeRecordsPage: FC<Props> = ({
             );
           })}
         </Select>
-        <DatePicker small style={{ width: 240 }} format="DD.MM.YYYY" />
+        <DatePicker
+          value={moment(appointmentDate)}
+          onChange={(date) =>
+            date && handleSetAppointmentDate(date.format('YYYY-MM-DD'))
+          }
+          small
+          style={{ width: 240 }}
+          format="DD.MM.YYYY"
+        />
       </FiltrationWrapper>
       <DistrictsMap
         districtsList={districtsList}
         handleSelectDistrict={handleSelectDistrict}
         selectedDistrict={selectedDistrict}
+        appointmentsInDistrict={appointmentsInDistrict}
       />
     </Wrapper>
   );

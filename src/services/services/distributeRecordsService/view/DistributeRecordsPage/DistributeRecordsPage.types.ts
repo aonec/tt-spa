@@ -1,4 +1,4 @@
-import { DistrictResponse } from 'myApi';
+import { AppointmentResponse, DistrictResponse } from 'myApi';
 
 export type Props = {
   districtsList: DistrictResponse[];
@@ -6,4 +6,8 @@ export type Props = {
   handleSelectDistrict: (payload: string) => void;
   handleUnselectDistrict: () => void;
   selectedDistrict: string | null;
+  handleSetAppointmentDate: (date: string) => void;
+  appointmentDate: string;
+  appointmentsInDistrict: AppointmentResponse[] | null;
+  isLoadingAppointments: boolean;
 };

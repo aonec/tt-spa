@@ -11,6 +11,7 @@ export const DistrictsMap: FC<Props> = ({
   districtsList,
   handleSelectDistrict,
   selectedDistrict,
+  appointmentsInDistrict,
 }) => {
   const { mapRef, map } = useYMaps();
 
