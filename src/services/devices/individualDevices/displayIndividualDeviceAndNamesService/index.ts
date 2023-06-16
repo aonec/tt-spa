@@ -1,1 +1,1 @@
-export 
+export { displayIndividualDeviceAndNamesService } from './displayIndividualDeviceAndNamesService.model';

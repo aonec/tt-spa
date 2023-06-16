@@ -17,10 +17,6 @@ import {
   EResourceType,
   EClosingReason,
 } from 'myApi';
-import {
-  $individualDevicesNames,
-  IndividualDevicecModelsGate,
-} from '01/features/individualDevices/displayIndividualDevicesNames/models';
 import { ReadingsInput } from '../ReadingsInput';
 import { Space, SpaceLine } from '01/shared/ui/Layout/Space/Space';
 import {
@@ -49,7 +45,12 @@ const { IndividualDeviceMountPlacesGate } =
   individualDeviceMountPlacesService.gates;
 
 const {
-  outputs: { $individualDevice, $isIndividualDeviceLoading },
+  outputs: {
+    $individualDevice,
+    $isIndividualDeviceLoading,
+    $individualDevicesNames,
+  },
+  gates: { IndividualDevicecModelsGate },
 } = displayIndividualDeviceAndNamesService;
 
 export const BaseInfoStage = () => {

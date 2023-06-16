@@ -8,10 +8,6 @@ import styled from 'styled-components';
 import { addIndividualDeviceForm } from '../../models';
 import { FormHeader } from '../Header';
 import { EIndividualDeviceRateType, EResourceType } from 'myApi';
-import {
-  $individualDevicesNames,
-  IndividualDevicecModelsGate,
-} from '01/features/individualDevices/displayIndividualDevicesNames/models';
 import { DatePickerNative } from 'ui-kit/shared_components/DatePickerNative';
 import { SwitchWrapper, TextWrapper } from './BaseInfoStage.styled';
 import { getIndividualDeviceRateNumByName } from 'utils/getIndividualDeviceRateNumByName';
@@ -27,6 +23,7 @@ import { Loader } from 'ui-kit/Loader';
 import { ResourceSelect } from 'ui-kit/shared_components/ResourceSelect';
 import { individualDeviceMountPlacesService } from 'services/devices/individualDeviceMountPlacesService';
 import { getBitDepthAndScaleFactor } from 'utils/getBitDepthAndScaleFactor';
+import { displayIndividualDeviceAndNamesService } from 'services/devices/individualDevices/displayIndividualDeviceAndNamesService';
 
 const {
   outputs,
@@ -34,6 +31,11 @@ const {
 } = displayContractorsService;
 const { IndividualDeviceMountPlacesGate } =
   individualDeviceMountPlacesService.gates;
+
+const {
+  outputs: { $individualDevicesNames },
+  gates: { IndividualDevicecModelsGate },
+} = displayIndividualDeviceAndNamesService;
 
 export const BaseInfoStage = () => {
   const { id } = useParams<{ id: string }>();
