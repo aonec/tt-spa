@@ -12,7 +12,10 @@ import { DistrictData } from 'types';
 import { findPolygonCenter } from 'utils/findPolygonCenter';
 import { prepareAppointments } from './DistrictsMap.utils';
 import warningPlacemark from 'hooks/ymaps/placemarks/warningPlacemark.svg';
+import warningInactivePlacemark from 'hooks/ymaps/placemarks/warningInactivePlacemark.svg';
+
 import { DistributeAppointmentsPanel } from '../DistributeAppointmentsPanel';
+import _ from 'lodash';
 
 export const DistrictsMap: FC<Props> = ({
   districtsList,
@@ -56,14 +59,20 @@ export const DistrictsMap: FC<Props> = ({
   const preparedAppointments = useMemo(
     () =>
       prepareAppointments(appointmentsInDistrict || []).map((elem) => ({
-        placemarkIconLink: warningPlacemark,
+        placemarkIconLink:
+          _.intersection(
+            elem.appointments.map((elem) => elem.id),
+            selectedAppointmentsIds,
+          ).length !== 0
+            ? warningPlacemark
+            : warningInactivePlacemark,
         coords: [elem.address.latitude || 0, elem.address.longitude || 0] as [
           number,
           number,
         ],
         onClick: () => handleSelectHousingStock?.(elem),
       })),
-    [appointmentsInDistrict, handleSelectHousingStock],
+    [appointmentsInDistrict, handleSelectHousingStock, selectedAppointmentsIds],
   );
 
   useRenderPlacemarks(map, preparedAppointments);
