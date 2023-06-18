@@ -12,6 +12,7 @@ import { DistrictData } from 'types';
 import { findPolygonCenter } from 'utils/findPolygonCenter';
 import { prepareAppointments } from './DistrictsMap.utils';
 import warningPlacemark from 'hooks/ymaps/placemarks/warningPlacemark.svg';
+import { DistributeAppointmentsPanel } from '../DistributeAppointmentsPanel';
 
 export const DistrictsMap: FC<Props> = ({
   districtsList,
@@ -19,6 +20,9 @@ export const DistrictsMap: FC<Props> = ({
   selectedDistrict,
   appointmentsInDistrict,
   handleSelectHousingStock,
+  selectedAppointmentsIds,
+  handleSelectAppointments,
+  isLoadingAppointments
 }) => {
   const { mapRef, map } = useYMaps();
 
@@ -65,6 +69,14 @@ export const DistrictsMap: FC<Props> = ({
 
   return (
     <MapWrapper>
+      {selectedDistrict && (
+        <DistributeAppointmentsPanel
+          appointmentsInDistrict={appointmentsInDistrict || []}
+          selectedAppointmentsIds={selectedAppointmentsIds}
+          handleSelectAppointments={handleSelectAppointments}
+          isLoadingAppointments={isLoadingAppointments}
+        />
+      )}
       <div ref={mapRef} style={{ width: '100%', height: '86vh' }} />
     </MapWrapper>
   );

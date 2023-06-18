@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { useUnit } from 'effector-react';
 import { DistributeRecordsPage } from './view/DistributeRecordsPage';
 import {
@@ -6,6 +6,7 @@ import {
   districtsQuery,
 } from './distributeRecordsService.api';
 import { distributeRecordsService } from './distributeRecordsService.models';
+import { AppointmentsByHousingStocks } from './view/DistributeRecordsPage/DistrictsMap/DistrictsMap.types';
 
 const {
   inputs,
@@ -23,9 +24,20 @@ export const DistributeRecordsContainer = () => {
   const handleSelectDistrict = useUnit(inputs.handleSelectDistrict);
   const handleUnselectDistrict = useUnit(inputs.handleUnselectDistrict);
   const handleSetAppointmentDate = useUnit(inputs.setAppointmentDate);
+  const handleSelectAppointments = useUnit(inputs.selectAppointments);
 
   const selectedDistrict = useUnit(outputs.$selectedDistrict);
   const appointmentDate = useUnit(outputs.$appointmentDate);
+  const selectedAppointmentsIds = useUnit(outputs.$selectedAppointmentsIds);
+
+  const handleSelectHousingStock = useCallback(
+    (data: AppointmentsByHousingStocks) =>
+      handleSelectAppointments([
+        ...selectedAppointmentsIds,
+        ...data.appointments.map((elem) => elem.id),
+      ]),
+    [selectedAppointmentsIds, handleSelectAppointments],
+  );
 
   return (
     <>
@@ -40,7 +52,9 @@ export const DistributeRecordsContainer = () => {
         handleSetAppointmentDate={handleSetAppointmentDate}
         appointmentsInDistrict={appointmentsInDistrict}
         isLoadingAppointments={isLoadingAppointments}
-        handleSelectHousingStock={console.log}
+        handleSelectHousingStock={handleSelectHousingStock}
+        selectedAppointmentsIds={selectedAppointmentsIds}
+        handleSelectAppointments={handleSelectAppointments}
       />
     </>
   );

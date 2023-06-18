@@ -17,6 +17,10 @@ export const DistributeRecordsPage: FC<Props> = ({
   handleSetAppointmentDate,
   appointmentsInDistrict,
   handleSelectHousingStock,
+  isLoadingAppointments,
+  isLoadingDistricts,
+  selectedAppointmentsIds,
+  handleSelectAppointments,
 }) => {
   return (
     <Wrapper>
@@ -57,6 +61,9 @@ export const DistributeRecordsPage: FC<Props> = ({
         selectedDistrict={selectedDistrict}
         appointmentsInDistrict={appointmentsInDistrict}
         handleSelectHousingStock={handleSelectHousingStock}
+        selectedAppointmentsIds={selectedAppointmentsIds}
+        handleSelectAppointments={handleSelectAppointments}
+        isLoadingAppointments={isLoadingAppointments}
       />
     </Wrapper>
   );

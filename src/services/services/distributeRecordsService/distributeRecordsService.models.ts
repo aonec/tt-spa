@@ -13,18 +13,22 @@ const DistributeRecordsGate = createGate();
 
 const handleUnselectDistrict = domain.createEvent();
 const handleSelectDistrict = domain.createEvent<string>();
-
-const setAppointmentDate = domain.createEvent<string>();
-
 const $selectedDistrict = domain
   .createStore<string | null>(null)
   .on(handleSelectDistrict, (_, id) => id)
   .reset(DistributeRecordsGate.close, handleUnselectDistrict);
 
+const setAppointmentDate = domain.createEvent<string>();
 const $appointmentDate = domain
   .createStore<string>(moment().format('YYYY-MM-DD'))
   .on(setAppointmentDate, (_, date) => date)
   .reset();
+
+const selectAppointments = domain.createEvent<string[]>();
+const $selectedAppointmentsIds = domain
+  .createStore<string[]>([])
+  .on(selectAppointments, (_, ids) => ids)
+  .reset(districtAppointmentsQuery.$data);
 
 const $getAppointmentsRequestPayload = combine(
   $selectedDistrict,
@@ -50,7 +54,12 @@ forward({
 });
 
 export const distributeRecordsService = {
-  inputs: { handleSelectDistrict, handleUnselectDistrict, setAppointmentDate },
-  outputs: { $selectedDistrict, $appointmentDate },
+  inputs: {
+    handleSelectDistrict,
+    handleUnselectDistrict,
+    setAppointmentDate,
+    selectAppointments,
+  },
+  outputs: { $selectedDistrict, $appointmentDate, $selectedAppointmentsIds },
   gates: { DistributeRecordsGate },
 };

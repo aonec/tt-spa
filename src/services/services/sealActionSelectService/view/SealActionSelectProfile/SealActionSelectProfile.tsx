@@ -12,6 +12,8 @@ import { PlusIcon } from 'ui-kit/icons';
 import { SealActionType } from '../../../sealService/sealService.types';
 import moment from 'moment';
 import { LinkPanel } from 'ui-kit/shared_components/LinkPanel';
+import { getCountText } from 'utils/getCountText';
+import { appointmentsText } from './SealActionSelectProfile.constants';
 
 export const SealActionSelectProfile: FC<SealProfileProps> = ({
   isNearestTotalAppointmentsLoading,
@@ -43,9 +45,11 @@ export const SealActionSelectProfile: FC<SealProfileProps> = ({
                   <>
                     <TextWrapper>{totalAppointmentsDate}:</TextWrapper>
                     <TextWrapper>
-                      {nearestTotalAppointments.distributed +
-                        nearestTotalAppointments.notDistributed}
-                      запись(-ей)
+                      {nearestTotalAppointments.notDistributed}{' '}
+                      {getCountText(
+                        nearestTotalAppointments.notDistributed,
+                        appointmentsText,
+                      )}
                     </TextWrapper>
                   </>
                 )}
