@@ -20,7 +20,7 @@ export const DistributeRecordsContainer = () => {
 
   const { data: appointmentsInDistrict, pending: isLoadingAppointments } =
     useUnit(districtAppointmentsQuery);
-
+    
   const handleSelectDistrict = useUnit(inputs.handleSelectDistrict);
   const handleUnselectDistrict = useUnit(inputs.handleUnselectDistrict);
   const handleSetAppointmentDate = useUnit(inputs.setAppointmentDate);

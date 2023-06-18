@@ -22,7 +22,8 @@ export const DistrictsMap: FC<Props> = ({
   handleSelectHousingStock,
   selectedAppointmentsIds,
   handleSelectAppointments,
-  isLoadingAppointments
+  isLoadingAppointments,
+  handleUnselectDistrict,
 }) => {
   const { mapRef, map } = useYMaps();
 
@@ -75,6 +76,7 @@ export const DistrictsMap: FC<Props> = ({
           selectedAppointmentsIds={selectedAppointmentsIds}
           handleSelectAppointments={handleSelectAppointments}
           isLoadingAppointments={isLoadingAppointments}
+          handleUnselectDistrict={handleUnselectDistrict}
         />
       )}
       <div ref={mapRef} style={{ width: '100%', height: '86vh' }} />

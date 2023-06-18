@@ -1,5 +1,5 @@
 import { Tree } from 'antd';
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 import { ChevronIcon } from 'ui-kit/icons';
 
 export const Wrapper = styled.div`
@@ -7,7 +7,9 @@ export const Wrapper = styled.div`
   border-radius: 4px;
   width: 352px;
   min-height: 64px;
-  padding: 16px;
+  max-height: calc(86vh - 64px);
+  overflow-y: scroll;
+  overflow-x: hidden;
 
   position: absolute;
   transition: 0.2s;
@@ -17,6 +19,47 @@ export const Wrapper = styled.div`
   box-shadow: 0px 4px 4px rgba(78, 93, 146, 0.16),
     0px 8px 16px rgba(78, 93, 146, 0.08);
 `;
+
+const slideDown = keyframes`
+  from {
+    opacity: 0;
+    transform: translateY(-50px);
+  }
+  
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+`;
+
+export const HeaderWrapper = styled.div`
+  position: sticky;
+  top: 0px;
+  z-index: 10;
+
+  background: white;
+  padding: 16px 16px 0 16px;
+`;
+
+export const ContentWrapper = styled.div`
+  animation-duration: 0.2s;
+  animation-name: ${slideDown};
+  padding: 0px 16px 16px 16px;
+`;
+
+export const Footer = styled.div`
+  position: sticky;
+  bottom: 0px;
+
+  background: #f3f5f6;
+  border-radius: 0 0 4px 4px;
+  padding: 16px;
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+`;
+
+
 
 export const TreeSC = styled(Tree)`
   width: 100%;

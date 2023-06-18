@@ -13,6 +13,7 @@ export type Props = {
   selectedAppointmentsIds: string[];
   handleSelectAppointments: (ids: string[]) => void;
   isLoadingAppointments: boolean;
+  handleUnselectDistrict: () => void;
 };
 
 export type AppointmentsByHousingStocks = {

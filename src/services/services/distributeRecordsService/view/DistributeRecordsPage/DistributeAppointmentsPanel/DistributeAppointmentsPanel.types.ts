@@ -5,4 +5,5 @@ export type DistributeAppointmentsPanelProps = {
   selectedAppointmentsIds: string[];
   handleSelectAppointments: (ids: string[]) => void;
   isLoadingAppointments: boolean;
+  handleUnselectDistrict: () => void;
 };

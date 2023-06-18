@@ -1,7 +1,10 @@
 import React, { FC, useCallback, useMemo, useState } from 'react';
 import {
   CancelAllText,
+  ContentWrapper,
   CountWrapper,
+  Footer,
+  HeaderWrapper,
   ListHeaderWrapper,
   RootWrapperTitle,
   SelectAllText,
@@ -18,6 +21,7 @@ import {
 import { countSimilarityPoints } from 'utils/countSimilarityPoints';
 import { WithLoader } from 'ui-kit/shared_components/WithLoader';
 import { Empty } from 'antd';
+import { Button } from 'ui-kit/Button';
 
 export const DistributeAppointmentsPanel: FC<
   DistributeAppointmentsPanelProps
@@ -26,6 +30,7 @@ export const DistributeAppointmentsPanel: FC<
   selectedAppointmentsIds,
   handleSelectAppointments,
   isLoadingAppointments,
+  handleUnselectDistrict,
 }) => {
   const [expandedKeys, setExpandedKeys] = useState<React.Key[]>([]);
 
@@ -93,56 +98,70 @@ export const DistributeAppointmentsPanel: FC<
       <WithLoader isLoading={isLoadingAppointments}>
         {isAppointmentsExist && (
           <>
-            <Input
-              small
-              placeholder="Введите адрес"
-              onChange={(e) => handleChangeInputValue(e.target.value)}
-            />
-            <ListHeaderWrapper>
-              <SelectAllText
-                onClick={() =>
-                  handleSelectAppointments(
-                    appointmentsList.map((elem) => String(elem.key)),
-                  )
-                }
-              >
-                Выбрать все ({appointmentsInDistrict.length})
-              </SelectAllText>
-              <CancelAllText onClick={() => handleSelectAppointments([])}>
-                Отменить выбор
-              </CancelAllText>
-            </ListHeaderWrapper>
-            <TreeSC
-              selectable={false}
-              checkable={true}
-              treeData={preparedTreeData}
-              titleRender={(elem) => {
-                if (elem.key !== elem.title) {
-                  return elem.title;
-                }
-                return (
-                  <RootWrapperTitle>
-                    {elem.title}
-                    <CountWrapper>
-                      Заявки: {(elem.children || []).length}
-                    </CountWrapper>
-                  </RootWrapperTitle>
-                );
-              }}
-              onCheck={(_, info) => {
-                const { checkedNodes } = info;
-                const filteredNodes = checkedNodes.filter((elem) =>
-                  Boolean(elem.key !== elem.title),
-                );
+            <HeaderWrapper>
+              <Input
+                small
+                placeholder="Введите адрес"
+                onChange={(e) => handleChangeInputValue(e.target.value)}
+              />
+              <ListHeaderWrapper>
+                <SelectAllText
+                  onClick={() =>
+                    handleSelectAppointments(
+                      appointmentsList.map((elem) => String(elem.key)),
+                    )
+                  }
+                >
+                  Выбрать все ({appointmentsInDistrict.length})
+                </SelectAllText>
+                <CancelAllText onClick={() => handleSelectAppointments([])}>
+                  Отменить выбор
+                </CancelAllText>
+              </ListHeaderWrapper>
+            </HeaderWrapper>
+            <ContentWrapper>
+              <TreeSC
+                selectable={false}
+                checkable={true}
+                treeData={preparedTreeData}
+                titleRender={(elem) => {
+                  if (elem.key !== elem.title) {
+                    return elem.title;
+                  }
+                  return (
+                    <RootWrapperTitle>
+                      {elem.title}
+                      <CountWrapper>
+                        Заявки: {(elem.children || []).length}
+                      </CountWrapper>
+                    </RootWrapperTitle>
+                  );
+                }}
+                onCheck={(_, info) => {
+                  const { checkedNodes } = info;
+                  const filteredNodes = checkedNodes.filter((elem) =>
+                    Boolean(elem.key !== elem.title),
+                  );
 
-                handleSelectAppointments(
-                  filteredNodes.map((elem) => String(elem.key)),
-                );
-              }}
-              onExpand={setExpandedKeys}
-              expandedKeys={expandedKeys}
-              checkedKeys={selectedAppointmentsIds}
-            />
+                  handleSelectAppointments(
+                    filteredNodes.map((elem) => String(elem.key)),
+                  );
+                }}
+                onExpand={setExpandedKeys}
+                expandedKeys={expandedKeys}
+                checkedKeys={selectedAppointmentsIds}
+              />
+            </ContentWrapper>
+            <Footer>
+              <Button
+                type="ghost"
+                size="small"
+                onClick={handleUnselectDistrict}
+              >
+                Назад
+              </Button>
+              <Button size="small">Распределить</Button>
+            </Footer>
           </>
         )}
         {!isAppointmentsExist && (

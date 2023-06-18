@@ -3,6 +3,7 @@ import { createGate } from 'effector-react';
 import {
   districtAppointmentsQuery,
   districtsQuery,
+  getNearestAppointmentsDate,
 } from './distributeRecordsService.api';
 import moment from 'moment';
 import { GetDistrictAppointmentsRequestPayload } from './distributeRecordsService.types';
@@ -20,8 +21,9 @@ const $selectedDistrict = domain
 
 const setAppointmentDate = domain.createEvent<string>();
 const $appointmentDate = domain
-  .createStore<string>(moment().format('YYYY-MM-DD'))
+  .createStore<string | null>(moment().format('YYYY-MM-DD'))
   .on(setAppointmentDate, (_, date) => date)
+  .on(getNearestAppointmentsDate.$data, (_, res) => res?.date)
   .reset();
 
 const selectAppointments = domain.createEvent<string[]>();
@@ -45,7 +47,7 @@ sample({
 
 forward({
   from: DistributeRecordsGate.open,
-  to: districtsQuery.start,
+  to: [districtsQuery.start, getNearestAppointmentsDate.start],
 });
 
 forward({
