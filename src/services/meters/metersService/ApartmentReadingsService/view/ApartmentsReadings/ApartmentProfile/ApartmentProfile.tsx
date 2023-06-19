@@ -35,7 +35,9 @@ export const ApartmentProfile: FC<ApartmentProfileProps> = ({
 }) => {
   const { id } = useParams<{ id: string }>();
   const history = useHistory();
-  const printIssueCertificate = useEvent(apartmentInfoService.inputs.printIssueCertificate);
+  const printIssueCertificate = useEvent(
+    apartmentInfoService.inputs.printIssueCertificate,
+  );
 
   const isPaused = apartment
     ? apartment.status === EApartmentStatus.Pause
