@@ -3,4 +3,5 @@ export const featureToggles = {
   editHousingStock: false,
   workingRanges: false,
   services: false,
+  districtsManage: false,
 };
