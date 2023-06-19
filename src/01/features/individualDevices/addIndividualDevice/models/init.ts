@@ -79,6 +79,8 @@ sample({
         values.startupReadings as unknown as BaseIndividualDeviceReadingsCreateRequest,
       defaultReadings:
         values.defaultReadings as unknown as BaseIndividualDeviceReadingsCreateRequest,
+      sealInstallationDate: values.sealInstallationDate,
+      sealNumber: values.sealNumber,
     }),
   ),
   target: createIndividualDeviceFx,
