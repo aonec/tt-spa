@@ -32,7 +32,7 @@ import { BriefcaseIcon, CrownIcon, HouseIcon } from 'ui-kit/icons';
 import { Button } from 'ui-kit/Button';
 import moment from 'moment';
 import { apartmentInfoService } from './ApartmentInfo.model';
-import { GetIssueCertificateModal } from '01/features/apartments/printIssueCertificate';
+import { PrintApartmentDevicesCertificateContainer } from 'services/apartments/printApartmentDevicesCertificateService';
 
 const { inputs, outputs } = apartmentInfoService;
 
@@ -110,7 +110,7 @@ export const ApartmentInfo: FC<ApartmentInfoProps> = ({
   return (
     <>
       {activeHomeowner && (
-        <GetIssueCertificateModal
+        <PrintApartmentDevicesCertificateContainer
           apartment={apartment}
           homeownerId={activeHomeowner}
         />

@@ -2,8 +2,8 @@ import React, { FC, useState } from 'react';
 import {
   AddressSortWrapper,
   ButtonSC,
-  Footerwrapper,
-  LabelWrapper,
+  FooterWrapper,
+  GoBackWrapper,
   Panel,
   Wrapper,
 } from './DistrictBordersByAddressPage.styled';
@@ -11,19 +11,26 @@ import { DistrictBordersByAddressPageProps } from './DistrictBordersByAddressPag
 import { AddressSearchContainer } from 'services/addressSearchService';
 import { SearchFieldType } from 'services/addressSearchService/view/AddressSearch/AddressSearch.types';
 import { GoBack } from 'ui-kit/shared_components/GoBack';
-import { Select } from 'ui-kit/Select';
-import { EOrderByRule } from 'myApi';
 import { Button } from 'ui-kit/Button';
 import { AddressStreetGroup } from './AddressStreetGroup';
 
 export const DistrictBordersByAddressPage: FC<
   DistrictBordersByAddressPageProps
-> = ({ handleFetchAddress, addresses }) => {
-  const [orderBy] = useState<EOrderByRule | null>(null);
+> = ({
+  handleFetchAddress,
+  addresses,
+  setFilter,
+  checkedhousingStockIds,
+  setHousingStockIds,
+}) => {
+  const [prevCity, setPrevCity] = useState<string | undefined>(undefined);
 
   return (
     <Wrapper>
-      <GoBack />
+      <GoBackWrapper>
+        <GoBack />
+      </GoBackWrapper>
+
       <AddressSortWrapper>
         <AddressSearchContainer
           fields={[
@@ -32,45 +39,34 @@ export const DistrictBordersByAddressPage: FC<
             SearchFieldType.House,
             SearchFieldType.Corpus,
           ]}
-          handleSubmit={(data) =>
-            data.city &&
-            handleFetchAddress({
-              City: data.city,
-              Street: data.street,
-              OrderBy: orderBy || undefined,
-            })
-          }
+          handleSubmit={(data) => {
+            setFilter(data);
+
+            if (data.city && prevCity !== data.city) {
+              handleFetchAddress({
+                City: data.city,
+              });
+              setPrevCity(data.city);
+            }
+          }}
         />
-        <LabelWrapper>
-          <div>Сортировать по:</div>
-          <Select
-            small
-            placeholder="Выберите"
-            value={orderBy || undefined}
-            onChange={(value) => {
-              // setOrderBy(value);
-            }}
-          >
-            <Select.Option value={EOrderByRule.Descending}>
-              Улице (уб.)
-            </Select.Option>
-            <Select.Option value={EOrderByRule.Ascending}>
-              Улице (возр.)
-            </Select.Option>
-          </Select>
-        </LabelWrapper>
       </AddressSortWrapper>
 
       {addresses?.map((address) => (
-        <AddressStreetGroup address={address} />
+        <AddressStreetGroup
+          address={address}
+          key={address.street}
+          checkedhousingStockIds={checkedhousingStockIds}
+          setHousingStockIds={setHousingStockIds}
+        />
       ))}
 
-      <Footerwrapper>
+      <FooterWrapper>
         <Panel>
           <Button type="ghost"> Отмена</Button>
           <ButtonSC>Продолжить</ButtonSC>
         </Panel>
-      </Footerwrapper>
+      </FooterWrapper>
     </Wrapper>
   );
 };

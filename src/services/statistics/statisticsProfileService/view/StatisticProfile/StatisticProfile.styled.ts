@@ -5,6 +5,4 @@ export const TabsSC = styled(Tabs)`
   height: fit-content;
   overflow: visible;
   margin-top: 16px;
-
-  max-width: 950px;
 `;

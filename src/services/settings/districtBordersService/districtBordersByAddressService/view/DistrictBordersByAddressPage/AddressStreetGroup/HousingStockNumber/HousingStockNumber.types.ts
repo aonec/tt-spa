@@ -1,7 +1,10 @@
 import { AddressShortResponse } from 'myApi';
+import { CheckedHousingStocksIdType } from 'services/settings/districtBordersService/districtBordersByAddressService/districtBordersByAddressService.types';
 
 export type HousingStockNumberProps = {
   housingStock: AddressShortResponse;
-  setHousingStockIds: React.Dispatch<React.SetStateAction<number[]>>;
-  housingStockIds: number[];
+  currentStreetCheckedHousingStockIds: number[];
+  checkedhousingStockIds: CheckedHousingStocksIdType[];
+  setHousingStockIds: (payload: CheckedHousingStocksIdType[]) => void;
+  street: string | null;
 };

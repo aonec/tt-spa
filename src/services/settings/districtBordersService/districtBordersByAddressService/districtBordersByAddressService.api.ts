@@ -1,5 +1,8 @@
 import { axios } from '01/axios';
-import { StreetWithHousingStockNumbersResponsePagedList } from 'myApi';
+import {
+  HousingStockListResponsePagedList,
+  StreetWithHousingStockNumbersResponsePagedList,
+} from 'myApi';
 import { FetchAddressQueryType } from './districtBordersByAddressService.types';
 
 export const getAddresses = (
@@ -9,3 +12,8 @@ export const getAddresses = (
     params,
   });
 };
+
+export const getHousingStocksWithCoordinates = (params: {
+  City?: string;
+}): Promise<HousingStockListResponsePagedList> =>
+  axios.get('HousingStocks', { params });

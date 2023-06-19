@@ -21,6 +21,8 @@ import { addressSearchService } from 'services/addressSearchService/addressSearc
 
 const domain = createDomain('displayStatisticsListByManagingFirmService');
 
+const StatiscticsPageGate = createGate();
+
 const getManagingFirmsFx = domain.createEffect<
   string,
   HouseManagementWithStreetsResponse[]
@@ -86,14 +88,22 @@ const $housingStocks = domain
       }),
   );
 
-const StatiscticsPageGate = createGate();
-
 const $housingStocksIsLoading = getHousingStocksFx.pending;
 const $statisticIsLoading = getStatisticFx.pending;
 const $managingFirmsLoading = getManagingFirmsFx.pending;
 
 sample({
   clock: $selectedCity,
+  source: StatiscticsPageGate.status,
+  filter: (isPageOpen) => isPageOpen,
+  fn: (_, selectedCity) => selectedCity,
+  target: getManagingFirmsFx,
+});
+
+sample({
+  source: $selectedCity,
+  clock: StatiscticsPageGate.open,
+  filter: (city): city is string => Boolean(city),
   target: getManagingFirmsFx,
 });
 
