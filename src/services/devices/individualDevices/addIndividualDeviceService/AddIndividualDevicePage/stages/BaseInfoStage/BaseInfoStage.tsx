@@ -23,11 +23,12 @@ import { getIndividualDeviceRateNumByName } from 'utils/getIndividualDeviceRateN
 import moment from 'moment';
 import { getBitDepthAndScaleFactor } from 'utils/getBitDepthAndScaleFactor';
 import { addIndividualDeviceService } from '../../../addIndividualDeviceService.model';
+import { useParams } from 'react-router-dom';
 
 const {
   gates: {
     ContractorsGate,
-    AllIndividualDeviceMountPlacesGate,
+    IndividualDeviceMountPlacesGate,
     IndividualDevicecModelsGate,
   },
 } = addIndividualDeviceService;
@@ -112,22 +113,35 @@ export const BaseInfoStage: FC<BaseInfoStageProps> = ({
     onSubmit: (data) => {},
   });
 
+  const { id } = useParams<{ id: string }>();
+
   const isSerialNumberAllreadyExist =
     serialNumberForChecking?.items?.[0]?.serialNumber === values.serialNumber;
 
   const modelNameDebounced = values.model;
 
   const onChangeStartupReadings = (valueNumber: 1 | 2 | 3 | 4) => (e: any) =>
-    fields.startupReadings.onChange({
-      ...fields.startupReadings.value,
+    // fields.startupReadings.onChange({
+    //   ...fields.startupReadings.value,
+    //   [`value${valueNumber}`]:
+    //     e.target.value === '' ? null : Number(e.target.value),
+    // }
+
+    setFieldValue('startupReadings', {
+      ...values.startupReadings,
       [`value${valueNumber}`]:
         e.target.value === '' ? null : Number(e.target.value),
     });
-
   const onChangeDefaultReadings = (valueNumber: 1 | 2 | 3 | 4) => (e: any) =>
-    fields.defaultReadings.
-    ({
-      ...fields.defaultReadings.value,
+    // fields.defaultReadings.
+    // ({
+    //   ...fields.defaultReadings.value,
+    //   [`value${valueNumber}`]:
+    //     e.target.value === '' ? null : Number(e.target.value),
+    // });
+
+    setFieldValue('defaultReadings', {
+      ...values.defaultReadings,
       [`value${valueNumber}`]:
         e.target.value === '' ? null : Number(e.target.value),
     });
@@ -211,7 +225,7 @@ export const BaseInfoStage: FC<BaseInfoStageProps> = ({
   return (
     <Wrap>
       <IndividualDevicecModelsGate model={modelNameDebounced} />
-      <AllIndividualDeviceMountPlacesGate />
+      <IndividualDeviceMountPlacesGate apartmentId={Number(id)} />
       <ContractorsGate />
 
       <FormHeader>Общие данные о приборе</FormHeader>

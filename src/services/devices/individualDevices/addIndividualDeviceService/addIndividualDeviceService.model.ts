@@ -43,8 +43,8 @@ export const addIndividualDeviceService = {
     ContractorsGate: displayContractorsService.gates.ContractorsGate,
     IndividualDevicecModelsGate:
       displayIndividualDeviceAndNamesService.gates.IndividualDevicecModelsGate,
-    AllIndividualDeviceMountPlacesGate:
+      IndividualDeviceMountPlacesGate:
       individualDeviceMountPlacesService.gates
-        .AllIndividualDeviceMountPlacesGate,
+        .IndividualDeviceMountPlacesGate,
   },
 };
