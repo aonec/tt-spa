@@ -12,12 +12,7 @@ export const Title = styled.div`
   line-height: 48px;
 `;
 
-export const Footer = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  gap: 16px;
-`;
+
 
 export const PageGridContainer = styled.div`
   margin-top: 20px;

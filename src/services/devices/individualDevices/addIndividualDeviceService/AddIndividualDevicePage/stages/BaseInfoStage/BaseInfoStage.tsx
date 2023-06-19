@@ -4,6 +4,7 @@ import { useFormik } from 'formik';
 import * as yup from 'yup';
 import { BaseInfoStageProps } from './BaseInfoStage.types';
 import {
+  Footer,
   FormHeader,
   FormWrap,
   SwitchWrapper,
@@ -17,13 +18,18 @@ import { AutoComplete } from 'ui-kit/AutoComplete';
 import { Input } from 'ui-kit/Input';
 import { Loader } from 'ui-kit/Loader';
 import { Select } from 'ui-kit/Select';
-import { EIndividualDeviceRateType, EResourceType } from 'myApi';
+import {
+  CreateIndividualDeviceRequest,
+  EIndividualDeviceRateType,
+  EResourceType,
+} from 'myApi';
 import { DatePickerNative } from 'ui-kit/shared_components/DatePickerNative';
 import { getIndividualDeviceRateNumByName } from 'utils/getIndividualDeviceRateNumByName';
 import moment from 'moment';
 import { getBitDepthAndScaleFactor } from 'utils/getBitDepthAndScaleFactor';
 import { addIndividualDeviceService } from '../../../addIndividualDeviceService.model';
-import { useParams } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
+import { Button } from 'ui-kit/Button';
 
 const {
   gates: {
@@ -40,6 +46,8 @@ export const BaseInfoStage: FC<BaseInfoStageProps> = ({
   contractors,
   modelNames,
   mountPlaces,
+  handleSubmitForm,
+  apartmentId,
 }) => {
   const { values, setFieldValue, errors, handleSubmit } = useFormik({
     initialValues: {
@@ -55,7 +63,7 @@ export const BaseInfoStage: FC<BaseInfoStageProps> = ({
 
       scaleFactor: null as number | null,
 
-      apartmentId: null as number | null,
+      apartmentId: apartmentId as number | null,
 
       mountPlaceId: null as number | null,
 
@@ -87,7 +95,7 @@ export const BaseInfoStage: FC<BaseInfoStageProps> = ({
 
       magneticSealInstallationDate: null as null | string,
 
-      magneticSealTypeName: null as null | string,
+      sealNumber: null as null | string,
 
       contractorId: null as number | null,
 
@@ -106,14 +114,39 @@ export const BaseInfoStage: FC<BaseInfoStageProps> = ({
       model: yup.string().required('Это поле обязательно'),
       rateType: yup.string().required('Это поле обязательно'),
       resource: yup.string().nullable().required('Это поле обязательно'),
+      bitDepth: yup.number().nullable().required('Это поле обязательно'),
+      scaleFactor: yup.number().nullable().required('Это поле обязательно'),
     }),
     validateOnBlur: false,
     validateOnChange: false,
     enableReinitialize: true,
-    onSubmit: (data) => {},
+    onSubmit: (data) => {
+      const {
+        apartmentId,
+        bitDepth,
+        contractorId,
+        defaultReadings,
+        futureCheckingDate,
+        isPolling,
+        lastCheckingDate,
+        lastCommercialAccountingDate,
+        magneticSealInstallationDate,
+        sealNumber,
+        model,
+        mountPlaceId,
+        rateType,
+        resource,
+        scaleFactor,
+        serialNumber,
+        startupReadings,
+      } = data;
+
+      handleSubmitForm(data as unknown as CreateIndividualDeviceRequest);
+    },
   });
 
   const { id } = useParams<{ id: string }>();
+  const history = useHistory();
 
   const isSerialNumberAllreadyExist =
     serialNumberForChecking?.items?.[0]?.serialNumber === values.serialNumber;
@@ -121,25 +154,12 @@ export const BaseInfoStage: FC<BaseInfoStageProps> = ({
   const modelNameDebounced = values.model;
 
   const onChangeStartupReadings = (valueNumber: 1 | 2 | 3 | 4) => (e: any) =>
-    // fields.startupReadings.onChange({
-    //   ...fields.startupReadings.value,
-    //   [`value${valueNumber}`]:
-    //     e.target.value === '' ? null : Number(e.target.value),
-    // }
-
     setFieldValue('startupReadings', {
       ...values.startupReadings,
       [`value${valueNumber}`]:
         e.target.value === '' ? null : Number(e.target.value),
     });
   const onChangeDefaultReadings = (valueNumber: 1 | 2 | 3 | 4) => (e: any) =>
-    // fields.defaultReadings.
-    // ({
-    //   ...fields.defaultReadings.value,
-    //   [`value${valueNumber}`]:
-    //     e.target.value === '' ? null : Number(e.target.value),
-    // });
-
     setFieldValue('defaultReadings', {
       ...values.defaultReadings,
       [`value${valueNumber}`]:
@@ -262,7 +282,7 @@ export const BaseInfoStage: FC<BaseInfoStageProps> = ({
 
         <FormItem label="Серийный номер">
           <Input
-            type="text"
+            small={false}
             placeholder="Введите серийный номер прибора"
             onChange={(value) =>
               setFieldValue('serialNumber', value.target.value)
@@ -301,7 +321,7 @@ export const BaseInfoStage: FC<BaseInfoStageProps> = ({
             type="number"
             placeholder="Введите разрядность прибора"
             name="bitDepth"
-            onChange={(value) => setFieldValue('bitDepth', value)}
+            onChange={(value) => setFieldValue('bitDepth', value.target.value)}
             value={values.bitDepth || undefined}
           />
           <ErrorMessage>{errors.bitDepth}</ErrorMessage>
@@ -312,7 +332,9 @@ export const BaseInfoStage: FC<BaseInfoStageProps> = ({
             type="number"
             placeholder="Введите множитель прибора"
             name="scaleFactor"
-            onChange={(value) => setFieldValue('scaleFactor', value)}
+            onChange={(value) =>
+              setFieldValue('scaleFactor', value.target.value)
+            }
             value={values.scaleFactor || undefined}
           />
           <ErrorMessage>{errors.scaleFactor}</ErrorMessage>
@@ -402,9 +424,11 @@ export const BaseInfoStage: FC<BaseInfoStageProps> = ({
         <FormItem label="Пломба">
           <Input
             placeholder="Номер пломбы"
-            value={values.magneticSealTypeName || undefined}
-            onChange={(value) => setFieldValue('magneticSealTypeName', value)}
-            name="magneticSealTypeName"
+            value={values.sealNumber || undefined}
+            onChange={(value) =>
+              setFieldValue('sealNumber', value.target.value)
+            }
+            name="sealNumber"
           />
         </FormItem>
 
@@ -431,6 +455,13 @@ export const BaseInfoStage: FC<BaseInfoStageProps> = ({
           ))}
         </Select>
       </FormItem>
+
+      <Footer>
+        <Button type="ghost" onClick={history.goBack}>
+          Отмена
+        </Button>
+        <Button onClick={() => handleSubmit()}>Далее</Button>
+      </Footer>
     </Wrap>
   );
 };

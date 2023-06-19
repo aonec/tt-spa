@@ -1,5 +1,6 @@
 import {
   ContractorListResponse,
+  CreateIndividualDeviceRequest,
   IndividualDeviceListResponseFromDevicePagePagedList,
   IndividualDeviceMountPlaceListResponse,
 } from 'myApi';
@@ -11,4 +12,6 @@ export type BaseInfoStageProps = {
   handleFetchSerialNumberForCheck: (payload: string) => string;
   isFetchSerialNumberLoading: boolean;
   serialNumberForChecking: IndividualDeviceListResponseFromDevicePagePagedList | null;
+  handleSubmitForm: (payload: CreateIndividualDeviceRequest) => void;
+  apartmentId: number | undefined;
 };

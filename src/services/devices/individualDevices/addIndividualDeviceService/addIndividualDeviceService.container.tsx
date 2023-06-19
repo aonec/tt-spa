@@ -25,10 +25,14 @@ export const AddIndividualDeviceContainer = () => {
   const isFetchSerialNumberLoading = useUnit(
     outputs.$isFetchSerialNumberLoading,
   );
+  const formsData = useUnit(outputs.$formsData);
+  console.log(formsData)
 
   const handleFetchSerialNumberForCheck = useUnit(
     inputs.handleFetchSerialNumberForCheck,
   );
+  const handleCreateDevice = useUnit(inputs.handleCreateDevice);
+  const handleSubmitForm = useUnit(inputs.handleSubmitForm);
 
   const currentFetchedApartmentId = apartment?.id;
   const idFromParams = Number(id);
@@ -49,6 +53,7 @@ export const AddIndividualDeviceContainer = () => {
         handleFetchSerialNumberForCheck={handleFetchSerialNumberForCheck}
         isFetchSerialNumberLoading={isFetchSerialNumberLoading}
         serialNumberForChecking={serialNumberForChecking}
+        handleSubmitForm={handleSubmitForm}
       />
     </>
   );

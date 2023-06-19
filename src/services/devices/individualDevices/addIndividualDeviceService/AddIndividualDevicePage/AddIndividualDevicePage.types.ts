@@ -1,6 +1,7 @@
 import {
   ApartmentResponse,
   ContractorListResponse,
+  CreateIndividualDeviceRequest,
   IndividualDeviceListResponseFromDevicePagePagedList,
   IndividualDeviceMountPlaceListResponse,
 } from 'myApi';
@@ -16,4 +17,5 @@ export type AddIndividualDevicePageProps = {
   handleFetchSerialNumberForCheck: (payload: string) => string;
   isFetchSerialNumberLoading: boolean;
   serialNumberForChecking: IndividualDeviceListResponseFromDevicePagePagedList | null;
+  handleSubmitForm: (payload: CreateIndividualDeviceRequest) => void;
 };

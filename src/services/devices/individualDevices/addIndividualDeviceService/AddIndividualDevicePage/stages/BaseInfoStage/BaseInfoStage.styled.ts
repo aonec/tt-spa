@@ -36,3 +36,12 @@ export const FormHeader = styled.div`
   line-height: 32px;
   color: #272f5a;
 `;
+
+export const Footer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 16px;
+  margin-top: 26px;
+  margin-bottom: 30px;
+`;

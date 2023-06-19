@@ -1,11 +1,10 @@
 import React, { FC, useMemo } from 'react';
 import { AddIndividualDevicePageProps } from './AddIndividualDevicePage.types';
 import { GoBack } from 'ui-kit/shared_components/GoBack';
-import { Link, useHistory } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { Steps } from 'antd';
 import {
   Address,
-  Footer,
   Forms,
   PageGridContainer,
   StepsHeader,
@@ -27,22 +26,15 @@ export const AddIndividualDevicePage: FC<AddIndividualDevicePageProps> = ({
   handleFetchSerialNumberForCheck,
   isFetchSerialNumberLoading,
   serialNumberForChecking,
+  handleSubmitForm,
 }) => {
-  const history = useHistory();
-
   const { Step } = Steps;
   const stepTitles = ['Общие данные о приборе', 'Документы'];
 
   const address = apartment && getApartmentAddressString(apartment, true);
+  const apartmentId = apartment?.id;
 
   const getFirstButton = useMemo(() => {
-    if (stageNumber === 1) {
-      return (
-        <Button type="ghost" onClick={history.goBack}>
-          Отмена
-        </Button>
-      );
-    }
     if (stageNumber === 2) {
       return (
         <Button type="ghost" onClick={handleGoPrevStage}>
@@ -50,7 +42,7 @@ export const AddIndividualDevicePage: FC<AddIndividualDevicePageProps> = ({
         </Button>
       );
     }
-  }, [stageNumber, history.goBack, handleGoPrevStage]);
+  }, [stageNumber, handleGoPrevStage]);
 
   const getSecondButton = useMemo(() => {
     return (
@@ -66,7 +58,7 @@ export const AddIndividualDevicePage: FC<AddIndividualDevicePageProps> = ({
       <GoBack />
       <Title>Добавление нового прибора</Title>
       <Address>
-        <Link to={`/apartments/${apartment?.id}`}>{address}</Link>
+        <Link to={`/apartments/${apartmentId}`}>{address}</Link>
       </Address>
 
       <PageGridContainer>
@@ -79,14 +71,11 @@ export const AddIndividualDevicePage: FC<AddIndividualDevicePageProps> = ({
               handleFetchSerialNumberForCheck={handleFetchSerialNumberForCheck}
               isFetchSerialNumberLoading={isFetchSerialNumberLoading}
               serialNumberForChecking={serialNumberForChecking}
+              handleSubmitForm={handleSubmitForm}
+              apartmentId={apartmentId}
             />
           )}
           {stageNumber === 2 && <DocumentsStage />}
-
-          <Footer>
-            {getFirstButton}
-            {getSecondButton}
-          </Footer>
         </Forms>
 
         <div>

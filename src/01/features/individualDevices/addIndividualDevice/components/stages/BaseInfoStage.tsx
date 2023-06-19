@@ -237,6 +237,7 @@ export const BaseInfoStage = () => {
               eventFetchSerialNumberForCheck(value.target.value)
             }
             suffix={<Loader show={isFetchSerialNumberLoading} />}
+            
           />
           <ErrorMessage>
             {fields.serialNumber.errorText({
@@ -257,7 +258,7 @@ export const BaseInfoStage = () => {
             onChange={(value: any) => fields.mountPlaceId.onChange(value)}
           >
             {mountPlaces?.map((elem) => (
-              <Select.Option value={elem.id}>{elem.description}</Select.Option>
+              <Select.Option value={elem.id} key={elem.id}>{elem.description}</Select.Option>
             ))}
           </Select>
           <ErrorMessage>
