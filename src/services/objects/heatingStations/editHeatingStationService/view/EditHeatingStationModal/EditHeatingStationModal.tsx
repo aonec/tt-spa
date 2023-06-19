@@ -20,6 +20,7 @@ export const EditHeatingStationModal: FC<EditHeatingStationModalProps> = ({
       onCancel={handleCloseModal}
       form={
         <NewHeatingStationForm
+          isEdit
           formId={formId}
           handleEditHeatingStation={handleEditHeatingStation}
           existingCities={existingCities}

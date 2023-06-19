@@ -11,13 +11,11 @@ import {
 import { FormItem } from 'ui-kit/FormItem';
 import { Select } from 'ui-kit/Select';
 import { useFormik } from 'formik';
+import * as yup from 'yup';
 import { Input } from 'ui-kit/Input';
 import { ErrorMessage } from 'ui-kit/ErrorMessage';
 import { Form } from 'antd';
-import {
-  HeatingStationTypeDictionary,
-  validationSchema,
-} from './newHeatingStationForm.constants';
+import { HeatingStationTypeDictionary } from './newHeatingStationForm.constants';
 import { AutoComplete } from 'ui-kit/AutoComplete';
 import { getPreparedStreetsOptions } from 'services/objects/createObjectService/view/CreateObjectPage/CreateObjectAddressStage/CreateObjectAddressStage.utils';
 import { addressSearchService } from 'services/addressSearchService/addressSearchService.models';
@@ -31,6 +29,7 @@ export const NewHeatingStationForm: FC<NewHeatingStationFormProps> = ({
   existingStreets,
   handleEditHeatingStation,
   openedHeatingStationData,
+  isEdit,
 }) => {
   const { values, handleSubmit, setFieldValue, errors } =
     useFormik<HeatingStation>({
@@ -54,7 +53,14 @@ export const NewHeatingStationForm: FC<NewHeatingStationFormProps> = ({
           handleEditHeatingStation({ id: openedHeatingStationData?.id, data });
       },
       validateOnChange: false,
-      validationSchema,
+      validationSchema: yup.object().shape({
+        name: yup.string().nullable().required('Обязательное поле'),
+        address: yup.object().shape({
+          city: yup.string().nullable().required('Обязательное поле'),
+          street: yup.string().required('Обязательное поле'),
+          number: yup.string().nullable().required('Обязательное поле'),
+        }),
+      }),
     });
 
   const addressSearch = values.address.street;
@@ -101,7 +107,7 @@ export const NewHeatingStationForm: FC<NewHeatingStationFormProps> = ({
         <AddressGridWrapper>
           <FormItem label="Город">
             <Select
-              disabled
+              disabled={isEdit ? true : false}
               onChange={(value) =>
                 setFieldValue('address', { ...values.address, city: value })
               }
@@ -119,7 +125,7 @@ export const NewHeatingStationForm: FC<NewHeatingStationFormProps> = ({
 
           <FormItem label="Улица">
             <AutoComplete
-              disabled
+              disabled={isEdit ? true : false}
               placeholder="Улица"
               value={
                 values.address.street === 'Default'
@@ -136,7 +142,7 @@ export const NewHeatingStationForm: FC<NewHeatingStationFormProps> = ({
 
           <FormItem label="Номер">
             <Input
-              disabled
+              disabled={isEdit ? true : false}
               placeholder="Введите"
               value={values.address.number || undefined}
               onChange={(value) =>
