@@ -14,6 +14,7 @@ import {
 import { MenuFiltrationConfig, MenuItem, MenuType } from './menuService.types';
 import { MeterSection } from 'services/meters/metersService/metersService.types';
 import { ServiceSection } from 'services/services/servicesService/servicesService.types';
+import { featureToggles } from 'featureToggles';
 
 export const menuItems: MenuItem[] = [
   {
@@ -81,19 +82,23 @@ export const menuItems: MenuItem[] = [
       },
     ],
   },
-  {
-    title: 'Услуги',
-    path: `/services`,
-    icon: WrenchIcon,
-    type: MenuType.Services,
-    sub: [
-      {
-        title: 'Опломбировка',
-        path: `/services/${ServiceSection.Seal}`,
-        type: MenuType.ServicesSeal,
-      },
-    ],
-  },
+  ...(featureToggles.services
+    ? [
+        {
+          title: 'Услуги',
+          path: `/services`,
+          icon: WrenchIcon,
+          type: MenuType.Services,
+          sub: [
+            {
+              title: 'Опломбировка',
+              path: `/services/${ServiceSection.Seal}`,
+              type: MenuType.ServicesSeal,
+            },
+          ],
+        },
+      ]
+    : ([] as MenuItem[])),
   {
     title: 'Настройки',
     path: '/settings/controllers',

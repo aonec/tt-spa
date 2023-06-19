@@ -98,11 +98,11 @@ export const CheckFormValuesModal = () => {
     },
     {
       name: 'Пломба',
-      value: fields.magneticSealTypeName.value,
+      value: fields.sealNumber.value,
     },
     {
       name: 'Дата установки пломбы',
-      value: getDate(fields.magneticSealInstallationDate.value),
+      value: getDate(fields.sealInstallationDate.value),
     },
   ];
 
