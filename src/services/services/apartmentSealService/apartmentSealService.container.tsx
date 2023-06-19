@@ -1,8 +1,9 @@
 import React, { useEffect } from 'react';
 import { useHistory, useParams } from 'react-router';
 import { apartmentSealService } from './apartmentSealService.model';
-import { useEvent, useStore } from 'effector-react';
+import { useUnit } from 'effector-react';
 import { ApartmentSealProfile } from './view/ApartmentSealProfile';
+import { CreateSealContainer, createSealService } from '../createSealService';
 
 const { inputs, outputs, gates } = apartmentSealService;
 const { ApartmentGate } = gates;
@@ -11,14 +12,18 @@ export const ApartmentSealContainer = () => {
   const history = useHistory();
   const { id } = useParams<{ id: string }>();
 
-  const isApartmentLoading = useStore(outputs.$isApartmentLoading);
-  const apartment = useStore(outputs.$apartment);
-  const selectedHomeownerName = useStore(outputs.$selectedHomeownerName);
-  const individualDevices = useStore(outputs.$individualDevices);
+  const isApartmentLoading = useUnit(outputs.$isApartmentLoading);
+  const apartment = useUnit(outputs.$apartment);
+  const selectedHomeownerName = useUnit(outputs.$selectedHomeownerName);
+  const individualDevices = useUnit(outputs.$individualDevices);
+  const nearestAppointment = useUnit(outputs.$apartmentAppointment);
 
-  const searchApartment = useEvent(inputs.handleSearchApartment);
-  const setSelectedHomeownerName = useEvent(inputs.setSelectedHomeownerName);
-  const updateApartment = useEvent(inputs.handleUpdateApartment);
+  const searchApartment = useUnit(inputs.handleSearchApartment);
+  const setSelectedHomeownerName = useUnit(inputs.setSelectedHomeownerName);
+  const updateApartment = useUnit(inputs.handleUpdateApartment);
+  const openCreateSealAppointmentModal = useUnit(
+    createSealService.inputs.openModal,
+  );
 
   useEffect(() => {
     return inputs.handleApartmentLoaded.watch((apartment) => {
@@ -31,6 +36,7 @@ export const ApartmentSealContainer = () => {
   return (
     <>
       <ApartmentGate id={Number(id)} />
+      <CreateSealContainer />
       <ApartmentSealProfile
         apartment={apartment}
         isLoadingApartment={isApartmentLoading}
@@ -39,6 +45,8 @@ export const ApartmentSealContainer = () => {
         selectedHomeownerName={selectedHomeownerName}
         updateApartment={updateApartment}
         individualDevices={individualDevices}
+        openCreateSealAppointmentModal={openCreateSealAppointmentModal}
+        nearestAppointment={nearestAppointment}
       />
     </>
   );

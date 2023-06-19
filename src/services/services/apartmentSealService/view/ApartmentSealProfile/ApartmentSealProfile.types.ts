@@ -1,4 +1,4 @@
-import { ApartmentResponse, IndividualDeviceListItemResponse } from 'myApi';
+import { ApartmentResponse, AppointmentResponse, IndividualDeviceListItemResponse } from 'myApi';
 import {
   GetApartmentsRequestPayload,
   UpdateApartmentRequestPayload,
@@ -12,4 +12,6 @@ export type ApartmentSealProfileProps = {
   selectedHomeownerName: string | null;
   updateApartment: (payload: UpdateApartmentRequestPayload) => void;
   individualDevices: IndividualDeviceListItemResponse[];
+  openCreateSealAppointmentModal: (apartment: ApartmentResponse) => void;
+  nearestAppointment: AppointmentResponse | null;
 };

@@ -3,6 +3,7 @@ import { useEvent, useStore } from 'effector-react';
 import { Tooltip } from 'antd';
 import {
   AccountOpeningDate,
+  AdditionalHeaderInfoWrapper,
   Address,
   AddressWrapper,
   BaseInfoWrapper,
@@ -40,6 +41,7 @@ export const ApartmentInfo: FC<ApartmentInfoProps> = ({
   handleUpdateApartment,
   setSelectedHomeownerName,
   menuButtons,
+  additionalHeaderInfo,
 }) => {
   const filteredHomeowners = apartment.homeownerAccounts
     ?.filter((homeowner) => !homeowner.closedAt)
@@ -140,7 +142,10 @@ export const ApartmentInfo: FC<ApartmentInfoProps> = ({
               ))}
             </PersonalNumbersWrapper>
           </AddressWrapper>
-          <ContextMenuButton size="small" menuButtons={menuButtons} />
+          <AdditionalHeaderInfoWrapper>
+            {additionalHeaderInfo}
+            <ContextMenuButton size="small" menuButtons={menuButtons} />
+          </AdditionalHeaderInfoWrapper>
         </Header>
         <InfoPanel>
           <BaseInfoWrapper>
