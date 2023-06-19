@@ -18,7 +18,9 @@ export const IndividualDevicesSealListItem: FC<
       <IndividualDeviceInfoExtended device={device} />
       <div>
         <SealNumberWrapper>{device.sealNumber}</SealNumberWrapper>
-        <SealDateWrapper>{formatedDate}</SealDateWrapper>
+        <SealDateWrapper>
+          {device.sealInstallationDate && formatedDate}
+        </SealDateWrapper>
       </div>
     </Wrapper>
   );
