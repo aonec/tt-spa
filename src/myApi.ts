@@ -75,6 +75,31 @@ export interface AddOrUpdateNodeWorkingRangeRequest {
   max?: number | null;
 }
 
+export interface AddOrganizationModel {
+  name: string;
+  city: string;
+  street: string;
+  corpus?: string | null;
+  houseNumber: string;
+  timeZone: TimeSpan;
+
+  /** @format uuid */
+  responsibilityZoneId?: string | null;
+  phoneNumber?: string | null;
+  type: OrganizationType;
+}
+
+export interface AddOrganizationUserModel {
+  email: string;
+  lastName: string;
+  firstName: string;
+  middleName?: string | null;
+  phoneNumber?: string | null;
+  department?: string | null;
+  roles: SecuredIdentityRoleName[];
+  position?: string | null;
+}
+
 export interface AddOrganizationUserWorkingStatusRequest {
   /** @format int32 */
   userId?: number;
@@ -86,6 +111,14 @@ export interface AddOrganizationUserWorkingStatusRequest {
   /** @format date-time */
   endDate?: string | null;
   reassignments?: OrganizationUserTaskReassignment[] | null;
+}
+
+export interface AddOrganizationUsersModel {
+  addOrganizationRequest?: AddOrganizationModel | null;
+
+  /** @format int32 */
+  organizationId?: number | null;
+  addOrganizationUserRequests: AddOrganizationUserModel[];
 }
 
 export interface AddressResponse {
@@ -1274,6 +1307,29 @@ export interface CreateElectricNodeRequest {
   currentTransformers?: CreateCurrentTransformerRequest[] | null;
 }
 
+export interface CreateErpTaskRequest {
+  /** @format uuid */
+  workCategoryId?: string;
+  taskType?: EisTaskType;
+
+  /** @format uuid */
+  objectId?: string;
+  taskDescription?: string | null;
+
+  /** @format uuid */
+  sourceId?: string;
+  sourceNumber?: string | null;
+
+  /** @format date-time */
+  sourceDateTime?: string;
+
+  /** @format uuid */
+  leadId?: string;
+
+  /** @format uuid */
+  workerId?: string;
+}
+
 export interface CreateGroupReportRequest {
   title?: string | null;
   housingStockIds?: number[] | null;
@@ -2262,6 +2318,12 @@ export interface EditIndividualDeviceReadingsHistoryRequest {
   newReadings?: SwitchIndividualDeviceReadingsCreateRequest[] | null;
 }
 
+export enum EisTaskType {
+  Emergency = 'Emergency',
+  Planned = 'Planned',
+  Current = 'Current',
+}
+
 export interface ElectricHousingMeteringDeviceResponse {
   /** @format int32 */
   id: number;
@@ -2365,6 +2427,11 @@ export interface ErrorResponse {
   text: string | null;
   data: Record<string, any>;
   requestId: string | null;
+}
+
+export interface ExecutorGrpcModel {
+  id?: string | null;
+  name?: string | null;
 }
 
 export interface FileContentResultSuccessApiResponse {
@@ -4656,6 +4723,12 @@ export interface OrganizationResponseSuccessApiResponse {
   successResponse: OrganizationResponse | null;
 }
 
+export enum OrganizationType {
+  ManagementFirm = 'ManagementFirm',
+  CallCenter = 'CallCenter',
+  ControllerFirm = 'ControllerFirm',
+}
+
 export interface OrganizationUpdateRequest {
   name?: string | null;
   city?: string | null;
@@ -5309,6 +5382,21 @@ export interface ResourceDisconnectingUpdateRequest {
   sender?: string | null;
 }
 
+export enum SecuredIdentityRoleName {
+  Administrator = 'Administrator',
+  ManagingFirmExecutor = 'ManagingFirmExecutor',
+  Homeowner = 'Homeowner',
+  Operator = 'Operator',
+  ErcService = 'ErcService',
+  Admin = 'Admin',
+  Worker = 'Worker',
+  ManagingFirmSpectator = 'ManagingFirmSpectator',
+  ManagingFirmDispatcher = 'ManagingFirmDispatcher',
+  Controller = 'Controller',
+  SeniorOperator = 'SeniorOperator',
+  ManagingFirmSpectatorRestricted = 'ManagingFirmSpectatorRestricted',
+}
+
 export interface SetMagneticSealRequest {
   /** @format date-time */
   magneticSealInstallationDate?: string | null;
@@ -5318,6 +5406,11 @@ export interface SetMagneticSealRequest {
 
 export interface SkippedReadingOnOneOfRisersConstructedReportResponse {
   reading: ReadingOnRiserResponse | null;
+}
+
+export interface SourceGrpcModel {
+  id?: string | null;
+  name?: string | null;
 }
 
 export interface StageEmailNotifyRequest {
@@ -5949,6 +6042,41 @@ export interface TasksPagedListSuccessApiResponse {
   successResponse: TasksPagedList | null;
 }
 
+export interface TimeSpan {
+  /** @format int64 */
+  ticks?: number;
+
+  /** @format int32 */
+  days?: number;
+
+  /** @format int32 */
+  hours?: number;
+
+  /** @format int32 */
+  milliseconds?: number;
+
+  /** @format int32 */
+  minutes?: number;
+
+  /** @format int32 */
+  seconds?: number;
+
+  /** @format double */
+  totalDays?: number;
+
+  /** @format double */
+  totalHours?: number;
+
+  /** @format double */
+  totalMilliseconds?: number;
+
+  /** @format double */
+  totalMinutes?: number;
+
+  /** @format double */
+  totalSeconds?: number;
+}
+
 export interface TokenResponse {
   token: string | null;
   refreshToken: string | null;
@@ -6067,7 +6195,6 @@ export interface UpdateElectricNodeRequest {
 export interface UpdateHeatingStationRequest {
   name?: string | null;
   isThermalChamber?: boolean;
-  address?: CreateAddressRequest | null;
 }
 
 export interface UpdateHouseManagementRequest {
@@ -6214,6 +6341,11 @@ export interface ValueNodeWorkingRangeResponseSuccessApiResponse {
   successResponse: ValueNodeWorkingRangeResponse | null;
 }
 
+export interface WorkCategoryGrpcModel {
+  id?: string | null;
+  name?: string | null;
+}
+
 export enum YearRangeType {
   FirstHalf = 'FirstHalf',
   SecondHalf = 'SecondHalf',
@@ -6333,7 +6465,7 @@ export class Api<
 > extends HttpClient<SecurityDataType> {
   api = {
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li>
      *
      * @tags ApartmentActs
      * @name ApartmentActsList
@@ -6461,7 +6593,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li>
      *
      * @tags ApartmentActs
      * @name ApartmentActsActTypesList
@@ -6482,7 +6614,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li>
      *
      * @tags ApartmentActs
      * @name ApartmentActsActResourceTypesList
@@ -10028,12 +10160,36 @@ export class Api<
      * @description Роли:<li>Администратор системы</li>
      *
      * @tags Imports
+     * @name ImportsAddOrganizationUsersCreate
+     * @summary DataMigration
+     * @request POST:/api/Imports/AddOrganizationUsers
+     * @secure
+     */
+    importsAddOrganizationUsersCreate: (
+      data: AddOrganizationUsersModel,
+      params: RequestParams = {},
+    ) =>
+      this.request<string, ErrorApiResponse>({
+        path: `/api/Imports/AddOrganizationUsers`,
+        method: 'POST',
+        body: data,
+        secure: true,
+        type: ContentType.Json,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Администратор системы</li>
+     *
+     * @tags Imports
      * @name ImportsImportOrganizationCreate
      * @summary DataMigration
      * @request POST:/api/Imports/ImportOrganization
      * @secure
      */
     importsImportOrganizationCreate: (
+      query: { managementFirmId: number },
       data: {
         ContentType?: string;
         ContentDisposition?: string;
@@ -10044,9 +10200,10 @@ export class Api<
       },
       params: RequestParams = {},
     ) =>
-      this.request<void, any>({
+      this.request<void, ErrorApiResponse>({
         path: `/api/Imports/ImportOrganization`,
         method: 'POST',
+        query: query,
         body: data,
         secure: true,
         type: ContentType.FormData,
@@ -14055,6 +14212,123 @@ export class Api<
         method: 'GET',
         query: query,
         secure: true,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
+     *
+     * @tags Tasks
+     * @name TasksErpSourcesList
+     * @summary TasksRead
+     * @request GET:/api/Tasks/ErpSources
+     * @secure
+     */
+    tasksErpSourcesList: (params: RequestParams = {}) =>
+      this.request<SourceGrpcModel[], ErrorApiResponse>({
+        path: `/api/Tasks/ErpSources`,
+        method: 'GET',
+        secure: true,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
+     *
+     * @tags Tasks
+     * @name TasksErpWorkCategoriesList
+     * @summary TasksRead
+     * @request GET:/api/Tasks/ErpWorkCategories
+     * @secure
+     */
+    tasksErpWorkCategoriesList: (params: RequestParams = {}) =>
+      this.request<WorkCategoryGrpcModel[], ErrorApiResponse>({
+        path: `/api/Tasks/ErpWorkCategories`,
+        method: 'GET',
+        secure: true,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
+     *
+     * @tags Tasks
+     * @name TasksErpLeadsList
+     * @summary TasksRead
+     * @request GET:/api/Tasks/ErpLeads
+     * @secure
+     */
+    tasksErpLeadsList: (params: RequestParams = {}) =>
+      this.request<ExecutorGrpcModel[], ErrorApiResponse>({
+        path: `/api/Tasks/ErpLeads`,
+        method: 'GET',
+        secure: true,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
+     *
+     * @tags Tasks
+     * @name TasksErpExecutorsForLeadList
+     * @summary TasksRead
+     * @request GET:/api/Tasks/ErpExecutorsForLead
+     * @secure
+     */
+    tasksErpExecutorsForLeadList: (
+      query?: { leadId?: string },
+      params: RequestParams = {},
+    ) =>
+      this.request<ExecutorGrpcModel[], ErrorApiResponse>({
+        path: `/api/Tasks/ErpExecutorsForLead`,
+        method: 'GET',
+        query: query,
+        secure: true,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
+     *
+     * @tags Tasks
+     * @name TasksErpObjectsList
+     * @summary TasksRead
+     * @request GET:/api/Tasks/ErpObjects
+     * @secure
+     */
+    tasksErpObjectsList: (params: RequestParams = {}) =>
+      this.request<ExecutorGrpcModel[], ErrorApiResponse>({
+        path: `/api/Tasks/ErpObjects`,
+        method: 'GET',
+        secure: true,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Диспетчер УК</li>
+     *
+     * @tags Tasks
+     * @name TasksErpCreateTaskCreate
+     * @summary TaskCreate
+     * @request POST:/api/Tasks/ErpCreateTask
+     * @secure
+     */
+    tasksErpCreateTaskCreate: (
+      data: CreateErpTaskRequest,
+      params: RequestParams = {},
+    ) =>
+      this.request<File, ErrorApiResponse>({
+        path: `/api/Tasks/ErpCreateTask`,
+        method: 'POST',
+        body: data,
+        secure: true,
+        type: ContentType.Json,
         format: 'json',
         ...params,
       }),
