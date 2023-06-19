@@ -97,11 +97,11 @@ export const ApartmentInfo: FC<ApartmentInfoProps> = ({
       setSelectedHomeownerName(selectedHomeowner?.name);
   }, [selectedHomeowner, setSelectedHomeownerName]);
 
-  const houseManagement = housingStock?.houseManagement;
+  const houseManagement = housingStock?.managementFirm;
 
   const houseManagementName = `Домоуправление «${houseManagement?.name}»`;
 
-  const houseManagementInfo = `${houseManagement?.phone}; ${houseManagement?.comment}`;
+  const houseManagementInfo = `${houseManagement?.phoneNumber}; ${houseManagement?.information}`;
 
   const accountingOpeningDate = `открыт с ${moment(
     selectedHomeowner?.openAt,

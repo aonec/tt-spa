@@ -48,12 +48,12 @@ export const ApartmentProfile: FC<ApartmentProfileProps> = ({
   const filteredHomeownerAccounts =
     apartment?.homeownerAccounts?.filter((elem) => !elem.closedAt) || [];
 
-  const houseManagement = apartment?.housingStock?.houseManagement;
+  const houseManagement = apartment?.housingStock?.managementFirm;
 
   const houseManagementInfo =
-    houseManagement?.comment &&
-    houseManagement?.phone &&
-    `${houseManagement?.comment || ''} (${houseManagement?.phone})`;
+    houseManagement?.information &&
+    houseManagement?.phoneNumber &&
+    `${houseManagement?.information || ''} (${houseManagement?.phoneNumber})`;
 
   const ContentComponentsDictionary: {
     [key in ApartmentSection]: ReactNode;
@@ -144,7 +144,7 @@ export const ApartmentProfile: FC<ApartmentProfileProps> = ({
                 </AdditionalAddressWrapper>
               ))}
             </>
-            <>ДУ "{apartment?.housingStock?.houseManagement?.name}"</>
+            <>ДУ "{houseManagement?.name}"</>
           </HeaderInfoString>
           <TabsWrapper>
             <Tabs

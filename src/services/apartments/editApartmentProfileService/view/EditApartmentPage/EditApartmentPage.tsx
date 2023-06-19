@@ -48,7 +48,7 @@ export const EditApartmentPage: FC<EditApartmentPageProps> = ({
               </AdditionalAddressWrapper>
             ))}
           </>
-          <>ДУ "{apartment?.housingStock?.houseManagement?.name}"</>
+          <>ДУ "{apartment?.housingStock?.managementFirm?.name}"</>
         </HeaderInfoString>
         <TabsSC
           activeKey={tabSection}

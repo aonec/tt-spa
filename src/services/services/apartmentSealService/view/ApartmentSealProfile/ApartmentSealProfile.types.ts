@@ -1,4 +1,5 @@
-import { ApartmentResponse, AppointmentResponse, IndividualDeviceListItemResponse } from 'myApi';
+import { ApartmentResponse, IndividualDeviceListItemResponse } from 'myApi';
+import { AppointmentResponse } from 'myApi-test';
 import {
   GetApartmentsRequestPayload,
   UpdateApartmentRequestPayload,
