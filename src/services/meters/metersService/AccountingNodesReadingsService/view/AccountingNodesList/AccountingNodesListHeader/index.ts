@@ -1,1 +1,1 @@
-export { AccountingNodesListHeader } from './AccountingNodesListHeader'
+export { AccountingNodesListHeader } from './AccountingNodesListHeader';

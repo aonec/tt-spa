@@ -1,1 +1,1 @@
-export { AccountingNodesList } from './AccountingNodesList'
+export { AccountingNodesList } from './AccountingNodesList';

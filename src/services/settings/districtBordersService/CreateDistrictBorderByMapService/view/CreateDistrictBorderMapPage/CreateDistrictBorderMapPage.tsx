@@ -8,7 +8,11 @@ import React, {
 } from 'react';
 import { GoBack } from 'ui-kit/shared_components/GoBack';
 import { Button } from 'ui-kit/Button';
-import { Header, MapWrapper } from './CreateDistrictBorderMapPage.styled';
+import {
+  ControlButtonsWrapper,
+  Header,
+  MapWrapper,
+} from './CreateDistrictBorderMapPage.styled';
 import {
   CreateDistrictBorderMapPageProps,
   DistrictColor,
@@ -21,16 +25,29 @@ import {
   isPointInsidePolygon,
 } from './CreateDistrictBorderMapPage.utils';
 import { PencilIcon } from 'ui-kit/icons';
+import { DistrictAdditionalInfo } from './CreateDistrictFormPanel/CreateDistrictFormPanel.types';
+import { DistrictColorsList } from './CreateDistrictBorderMapPage.constants';
+import { HousingStockListResponse } from 'myApi';
+import housingStockMiniPlacemark from './placemarks/housingStockMiniPlacemark.svg';
 
 export const CreateDistrictBorderMapPage: FC<
   CreateDistrictBorderMapPageProps
-> = ({ isLoadingHousingStocks, housingStocksList }) => {
+> = ({
+  isLoadingHousingStocks,
+  housingStocksList,
+  handleCreateDistrict,
+  isLoadingCreatingDistrict,
+  existingDistricts,
+}) => {
   const mapRef = useRef<HTMLDivElement | null>(null);
 
   const [map, setMap] = useState<ymaps.Map | null>(null);
 
   const [district, setDistrict] = useState<ymaps.Polygon | null>(null);
   const [housingStocksGroup, setHousingStocksGroup] =
+    useState<ymaps.GeoObjectCollection | null>(null);
+
+  const [miniHousingStocksGroup, setMiniHousingStocksGroup] =
     useState<ymaps.GeoObjectCollection | null>(null);
 
   const [isEditing, setIsEditing] = useState(false);
@@ -42,6 +59,8 @@ export const CreateDistrictBorderMapPage: FC<
   const [districtColor, setDistrictColor] = useState<DistrictColor>(
     DistrictColor.Blue,
   );
+
+  const [districtName, setDistrictName] = useState('');
 
   const [formSection, setFormSection] = useState<number>(0);
 
@@ -58,7 +77,7 @@ export const CreateDistrictBorderMapPage: FC<
     [selectedHousingStocks, setSelectedHousingStocks],
   );
 
-  const initMaps = () => {
+  const initMaps = useCallback(() => {
     if (!ymaps || !mapRef.current) {
       return;
     }
@@ -73,13 +92,45 @@ export const CreateDistrictBorderMapPage: FC<
 
     map.geoObjects.add(housingStocksGroup);
 
+    const miniHousingStocksGroup = new ymaps.GeoObjectCollection();
+
+    map.geoObjects.add(miniHousingStocksGroup);
+
     setMap(map);
     setHousingStocksGroup(housingStocksGroup);
-  };
+    setMiniHousingStocksGroup(miniHousingStocksGroup);
+  }, []);
+
+  useEffect(() => {
+    if (!map || !existingDistricts.length) return;
+
+    existingDistricts.forEach((elem) => {
+      const districtAdditionalInfo = JSON.parse(
+        elem.additionalInfo || '',
+      ) as unknown as DistrictAdditionalInfo;
+
+      const color = DistrictColorsList.find(
+        (elem) => elem.type === districtAdditionalInfo.districtColor,
+      );
+
+      const polygon = new ymaps.Polygon(
+        [districtAdditionalInfo.districtPolygonCoordinates] || [],
+        {},
+        {
+          editorDrawingCursor: 'crosshair',
+          fillColor: color?.color,
+          strokeColor: color?.strokeColor,
+          strokeWidth: 3,
+        } as any,
+      );
+
+      map.geoObjects.add(polygon);
+    });
+  }, [map, existingDistricts]);
 
   useEffect(() => {
     ymaps.ready(initMaps);
-  }, [mapRef]);
+  }, [initMaps, mapRef]);
 
   const startEditing = useCallback(() => {
     if (!map) return;
@@ -117,6 +168,11 @@ export const CreateDistrictBorderMapPage: FC<
 
     const polygonCoordinates = district.geometry?.getCoordinates();
 
+    if (!polygonCoordinates?.[0].length) {
+      setIsEditing(false);
+      return;
+    }
+
     const { color, strokeColor } = getDistrictColorData(districtColor);
 
     const mountedDistrict = new ymaps.Polygon(polygonCoordinates || [], {}, {
@@ -135,22 +191,56 @@ export const CreateDistrictBorderMapPage: FC<
     setIsEditing(false);
   };
 
-  const housingStocksInDistrict = useMemo(() => {
-    if (!district || !housingStocksList) return [];
+  const { housingStocks, selected: housingStocksInDistrict } = useMemo(() => {
+    const polygonCoordinates = district?.geometry?.getCoordinates();
 
-    const polygonCoordinates = district.geometry?.getCoordinates();
+    const filteredHousingStocks = housingStocksList.reduce(
+      (acc, elem) => {
+        const isInPolygon = isPointInsidePolygon(
+          [elem.coordinates?.latitude || 0, elem.coordinates?.longitude || 0],
+          polygonCoordinates?.[0] || [[0, 0]],
+        );
 
-    const filteredHousingStocks = housingStocksList.filter((elem) =>
-      isPointInsidePolygon(
-        [elem.coordinates?.latitude || 0, elem.coordinates?.longitude || 0],
-        polygonCoordinates?.[0] || [[0, 0]],
-      ),
+        const key = isInPolygon ? 'selected' : 'housingStocks';
+
+        return { ...acc, [key]: [...acc[key], elem] };
+      },
+      {
+        selected: [] as HousingStockListResponse[],
+        housingStocks: [] as HousingStockListResponse[],
+      },
     );
 
-    setSelectedHousingStocks(filteredHousingStocks.map((elem) => elem.id));
+    setSelectedHousingStocks(
+      filteredHousingStocks.selected.map((elem) => elem.id),
+    );
 
     return filteredHousingStocks;
   }, [district, housingStocksList]);
+
+  useEffect(() => {
+    if (!miniHousingStocksGroup) return;
+
+    miniHousingStocksGroup.removeAll();
+
+    const pointHousingStocksPlacemarks = housingStocks.map((elem) => {
+      const placemark = new ymaps.Placemark(
+        [elem.coordinates?.latitude, elem.coordinates?.longitude],
+        {},
+        {
+          iconLayout: 'default#image',
+          iconImageHref: housingStockMiniPlacemark,
+          iconImageSize: [26, 26],
+        },
+      );
+
+      return placemark;
+    });
+
+    pointHousingStocksPlacemarks.forEach((elem) =>
+      miniHousingStocksGroup.add(elem),
+    );
+  }, [miniHousingStocksGroup, housingStocks]);
 
   useEffect(() => {
     if (!housingStocksGroup) return;
@@ -158,6 +248,7 @@ export const CreateDistrictBorderMapPage: FC<
       housingStocksGroup.removeAll();
       return;
     }
+
     const housingStockPlacemarks = housingStocksInDistrict.map((elem) => {
       const placemark = new ymaps.Placemark(
         [elem.coordinates?.latitude, elem.coordinates?.longitude],
@@ -180,7 +271,7 @@ export const CreateDistrictBorderMapPage: FC<
 
     housingStocksGroup.removeAll();
 
-    housingStockPlacemarks.forEach((elem) => {
+    [...housingStockPlacemarks].forEach((elem) => {
       housingStocksGroup.add(elem);
     });
   }, [
@@ -189,6 +280,7 @@ export const CreateDistrictBorderMapPage: FC<
     housingStocksInDistrict,
     isEditing,
     selectedHousingStocks,
+    housingStocks,
   ]);
 
   useEffect(() => {
@@ -200,21 +292,27 @@ export const CreateDistrictBorderMapPage: FC<
     district.options.set('fillColor', color);
   }, [district, districtColor]);
 
+  const districtPolygonCoordinates = useMemo(() => {
+    return district?.geometry?.getCoordinates()?.[0] || [];
+  }, [district]);
+
   return (
     <div>
       <Header>
         <GoBack />
-        {!isEditing && (
-          <Button
-            onClick={startEditing}
-            icon={district ? <PencilIcon /> : undefined}
-          >
-            {district ? 'Изменить' : 'Создать район'}
-          </Button>
-        )}
-        {isEditing && (
-          <Button onClick={handleApplyDistrict}>Подтвердить</Button>
-        )}
+        <ControlButtonsWrapper>
+          {!isEditing && (
+            <Button
+              onClick={startEditing}
+              icon={district ? <PencilIcon /> : undefined}
+            >
+              {district ? 'Изменить' : 'Создать район'}
+            </Button>
+          )}
+          {isEditing && (
+            <Button onClick={handleApplyDistrict}>Подтвердить</Button>
+          )}
+        </ControlButtonsWrapper>
       </Header>
       <MapWrapper>
         <div ref={mapRef} style={{ width: '100%', height: '86vh' }} />
@@ -229,6 +327,11 @@ export const CreateDistrictBorderMapPage: FC<
             districtColor={districtColor}
             formSection={formSection}
             setFormSection={setFormSection}
+            handleCreateDistrict={handleCreateDistrict}
+            isLoadingCreatingDistrict={isLoadingCreatingDistrict}
+            districtName={districtName}
+            setDistrictName={setDistrictName}
+            districtPolygonCoordinates={districtPolygonCoordinates}
           />
         )}
       </MapWrapper>

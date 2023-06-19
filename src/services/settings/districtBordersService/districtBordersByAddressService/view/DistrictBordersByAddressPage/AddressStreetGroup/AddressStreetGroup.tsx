@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useEffect, useMemo, useState } from 'react';
 import {
   ChevronSC,
   ChevronWrapper,
@@ -12,7 +12,6 @@ import {
 import { AddressStreetGroupProps } from './AddressStreetGroup.types';
 import { HousingStockNumber } from './HousingStockNumber';
 import { Checkbox } from 'antd';
-import _ from 'lodash';
 
 export const AddressStreetGroup: FC<AddressStreetGroupProps> = ({
   address,
@@ -28,9 +27,12 @@ export const AddressStreetGroup: FC<AddressStreetGroupProps> = ({
   const housingStockIds =
     address.addresses?.map((address) => address.housingStockId) || [];
 
-  const currentStreetCheckedHousingStockIds =
-    checkedhousingStockIds.find((data) => data.street === street)
-      ?.housingStocksId || [];
+  const currentStreetCheckedHousingStockIds = useMemo(
+    () =>
+      checkedhousingStockIds.find((data) => data.street === street)
+        ?.housingStocksId || [],
+    [checkedhousingStockIds, street],
+  );
 
   useEffect(() => {
     if (
@@ -40,7 +42,7 @@ export const AddressStreetGroup: FC<AddressStreetGroupProps> = ({
     } else {
       setCheck(false);
     }
-  }, [currentStreetCheckedHousingStockIds]);
+  }, [currentStreetCheckedHousingStockIds, housingStockIds?.length]);
 
   return (
     <Wrapper>

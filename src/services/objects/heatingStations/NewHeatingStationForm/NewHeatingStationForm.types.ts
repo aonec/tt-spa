@@ -11,7 +11,7 @@ export type NewHeatingStationFormProps = {
   existingStreets: string[];
   currentHeatingStationId?: string | null;
   openedHeatingStationData?: HeatingStationResponse | null;
-  isEdit?: boolean ;
+  isEdit?: boolean;
 };
 
 export type HeatingStation = {

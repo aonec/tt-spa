@@ -3,7 +3,6 @@ import { DistrictBordersByAddressPage } from './view/DistrictBordersByAddressPag
 import { districtBordersByAddressService } from './districtBordersByAddressService.model';
 import { useEvent, useStore } from 'effector-react';
 import { StreetWithHousingStockNumbersResponse } from 'myApi';
-import _ from 'lodash';
 
 const { inputs, outputs } = districtBordersByAddressService;
 
@@ -13,16 +12,9 @@ export const DistrictBordersByAddressContainer = () => {
   const setHousingStockIds = useEvent(inputs.setHousingStockIds);
 
   const addresses = useStore(outputs.$addresses);
-  const housingStocksWithCoordinates = useStore(
-    outputs.$housingStocksWithCoordinates,
-  );
   const filterData = useStore(outputs.$filter);
   const checkedhousingStockIdsWithStreet = useStore(
     outputs.$checkedhousingStockIds,
-  );
-
-  const checkedhousingStockIds = checkedhousingStockIdsWithStreet.flatMap(
-    (data) => data.housingStocksId,
   );
 
   const filteredAddress =
@@ -58,6 +50,7 @@ export const DistrictBordersByAddressContainer = () => {
                 address.housingStockNumber === filterData.house
               );
             }
+            return false;
           },
         );
 

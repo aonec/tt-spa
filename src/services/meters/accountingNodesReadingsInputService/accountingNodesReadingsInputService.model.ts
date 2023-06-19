@@ -88,10 +88,13 @@ const setLoadingStatusToNonResConsumptionInput = domain.createEvent<{
 }>();
 const $nonResConsumptionInputStatuses = domain
   .createStore<NodeReadingsStatuses>({})
-  .on(setLoadingStatusToNonResConsumptionInput, (statuses, { oldReadingId }) => ({
-    ...statuses,
-    [oldReadingId]: MetersInputBlockStatus.Loading,
-  }))
+  .on(
+    setLoadingStatusToNonResConsumptionInput,
+    (statuses, { oldReadingId }) => ({
+      ...statuses,
+      [oldReadingId]: MetersInputBlockStatus.Loading,
+    }),
+  )
   .on(sendNonResConsumptionReadingFx.done, (statuses, { params }) => ({
     ...statuses,
     [params.oldReadingId]: MetersInputBlockStatus.Done,
