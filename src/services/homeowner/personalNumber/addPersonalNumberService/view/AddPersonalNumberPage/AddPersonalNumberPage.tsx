@@ -20,7 +20,6 @@ export const AddPersonalNumberPage: FC<AddPersonalNumberPageProps> = ({
       <PersonalNumberPageContainer
         titleText="Добавление лицевого счета"
         apartment={apartment}
-        type={PersonalNumberActions.Add}
         isLoading={isLoading}
         formId={formId}
       >

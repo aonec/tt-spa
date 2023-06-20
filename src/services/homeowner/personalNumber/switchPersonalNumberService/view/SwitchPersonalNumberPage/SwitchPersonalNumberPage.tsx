@@ -31,7 +31,6 @@ export const SwitchPersonalNumberPage: FC<SwitchPersonalNumberPageProps> = ({
     <PersonalNumberPageContainer
       titleText="Замена лицевого счета"
       apartment={apartment}
-      type={PersonalNumberActions.Switch}
       isLoading={isLoading}
       formId={formId}
     >
