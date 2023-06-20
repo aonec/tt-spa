@@ -116,6 +116,12 @@ export const BaseInfoStage: FC<BaseInfoStageProps> = ({
       resource: yup.string().nullable().required('Это поле обязательно'),
       bitDepth: yup.number().nullable().required('Это поле обязательно'),
       scaleFactor: yup.number().nullable().required('Это поле обязательно'),
+      startupReadings: yup.object().shape({
+        value1: yup.number().nullable().required('Это поле обязательно'),
+        value2: yup.number().nullable().required('Это поле обязательно'),
+        value3: yup.number().nullable().required('Это поле обязательно'),
+        value4: yup.number().nullable().required('Это поле обязательно'),
+      }),
     }),
     validateOnBlur: false,
     validateOnChange: false,
@@ -369,7 +375,7 @@ export const BaseInfoStage: FC<BaseInfoStageProps> = ({
             onChange={onChangeStartupReadings(1)}
             value={values.startupReadings.value1 || undefined}
           />
-          <ErrorMessage>{errors.startupReadings}</ErrorMessage>
+          <ErrorMessage>{errors.startupReadings?.value1}</ErrorMessage>
         </FormItem>
 
         {rateNum >= 2 && (
@@ -380,7 +386,7 @@ export const BaseInfoStage: FC<BaseInfoStageProps> = ({
               onChange={onChangeStartupReadings(2)}
               value={values.startupReadings.value2 || undefined}
             />
-            <ErrorMessage>{}</ErrorMessage>
+            <ErrorMessage>{errors.startupReadings?.value2}</ErrorMessage>
           </FormItem>
         )}
         {rateNum >= 3 && (
