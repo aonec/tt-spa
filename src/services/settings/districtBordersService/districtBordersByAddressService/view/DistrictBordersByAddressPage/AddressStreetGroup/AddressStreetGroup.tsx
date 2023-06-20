@@ -33,7 +33,7 @@ export const AddressStreetGroup: FC<AddressStreetGroupProps> = ({
 
   useEffect(() => {
     const isEqualIdsLength =
-      housingStockIds?.length === currentStreetCheckedHousingStockIds.length;
+      housingStockIds.length === currentStreetCheckedHousingStockIds.length;
     if (
       isEqualIdsLength &&
       Boolean(currentStreetCheckedHousingStockIds.length)
@@ -42,7 +42,7 @@ export const AddressStreetGroup: FC<AddressStreetGroupProps> = ({
     } else {
       setCheck(false);
     }
-  }, [currentStreetCheckedHousingStockIds.length, housingStockIds?.length]);
+  }, [currentStreetCheckedHousingStockIds.length, housingStockIds.length]);
 
   return (
     <Wrapper>

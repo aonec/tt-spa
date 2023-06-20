@@ -14,6 +14,8 @@ export enum MenuType {
   Settings = 'Settings',
   SettingsAdministrator = 'SettingsAdministrator',
   Log = 'Log',
+  Services = 'Services',
+  ServicesSeal = 'ServicesSeal',
 }
 
 type Icon = React.FunctionComponent<

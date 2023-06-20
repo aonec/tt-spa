@@ -1,4 +1,8 @@
-import { HousingStockListResponse } from 'myApi';
+import {
+  DistrictCreateRequest,
+  DistrictResponse,
+  HousingStockListResponse,
+} from 'myApi';
 
 export type CreateDistrictBorderMapPageProps = {
   isLoadingHousingStocks: boolean;
@@ -7,6 +11,9 @@ export type CreateDistrictBorderMapPageProps = {
   selectedByAddressPoligon: number[][];
   poligonCenter: [number, number];
   handleCloseDistrictEditer: () => void;
+  handleCreateDistrict: (payload: DistrictCreateRequest) => void;
+  isLoadingCreatingDistrict: boolean;
+  existingDistricts: DistrictResponse[];
 };
 
 export const ymaps = window.ymaps;

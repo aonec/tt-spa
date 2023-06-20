@@ -1,4 +1,4 @@
-import { HousingStockListResponse } from 'myApi';
+import { DistrictCreateRequest, HousingStockListResponse } from 'myApi';
 import { DistrictColor } from '../CreateDistrictBorderMapPage.types';
 
 export type CreateDistrictFormPanelProps = {
@@ -11,4 +11,14 @@ export type CreateDistrictFormPanelProps = {
   districtColor: DistrictColor;
   formSection: number;
   setFormSection: (section: number) => void;
+  handleCreateDistrict: (payload: DistrictCreateRequest) => void;
+  isLoadingCreatingDistrict: boolean;
+  districtName: string;
+  setDistrictName: (value: string) => void;
+  districtPolygonCoordinates: number[][];
+};
+
+export type DistrictAdditionalInfo = {
+  districtPolygonCoordinates: number[][];
+  districtColor: DistrictColor;
 };

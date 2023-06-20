@@ -23,12 +23,12 @@ export const DistrictBordersByAddressContainer = () => {
   const setPoligon = useEvent(inputs.setPoligon);
 
   const addresses = useStore(outputs.$addresses);
-  const housingStocksWithCoordinates = useStore(
-    outputs.$housingStocksWithCoordinates,
-  );
   const filterData = useStore(outputs.$filter);
   const checkedhousingStockIdsWithStreet = useStore(
     outputs.$checkedhousingStockIdsWithStreet,
+  );
+  const housingStocksWithCoordinates = useStore(
+    outputs.$housingStocksWithCoordinates,
   );
 
   const cityInFilter = filterData?.city;
