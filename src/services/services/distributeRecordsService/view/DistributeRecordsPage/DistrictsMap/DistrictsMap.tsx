@@ -27,6 +27,7 @@ export const DistrictsMap: FC<Props> = ({
   handleSelectAppointments,
   isLoadingAppointments,
   handleUnselectDistrict,
+  appointmentsCounting,
 }) => {
   const { mapRef, map } = useYMaps();
 
@@ -48,11 +49,19 @@ export const DistrictsMap: FC<Props> = ({
   const districtTitles = useMemo(() => {
     if (selectedDistrict) return [];
 
-    return getPayloadFromDistricts(filteredDistrictsList).map((elem) => ({
-      text: elem.name,
-      coords: findPolygonCenter(elem.coordinates[0]),
-    }));
-  }, [filteredDistrictsList, selectedDistrict]);
+    return getPayloadFromDistricts(filteredDistrictsList).map((elem) => {
+      const districtAppointmentsCounting = appointmentsCounting?.[elem.id];
+
+      const count =
+        (districtAppointmentsCounting?.distributed || 0) +
+        (districtAppointmentsCounting?.notDistributed || 0);
+
+      return {
+        text: `${elem.name} ${count ? `(${count})` : ''}`,
+        coords: findPolygonCenter(elem.coordinates[0]),
+      };
+    });
+  }, [filteredDistrictsList, selectedDistrict, appointmentsCounting]);
 
   useRenderTextPlacemarks(map, districtTitles);
 

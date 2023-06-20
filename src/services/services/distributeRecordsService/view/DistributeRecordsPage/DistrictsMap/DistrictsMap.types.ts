@@ -3,6 +3,7 @@ import {
   AppointmentResponse,
   DistrictResponse,
 } from 'myApi';
+import { AppointmentsCountingByDistrictsResponse } from 'services/services/distributeRecordsService/distributeRecordsService.types';
 
 export type Props = {
   districtsList: DistrictResponse[];
@@ -14,6 +15,7 @@ export type Props = {
   handleSelectAppointments: (ids: string[]) => void;
   isLoadingAppointments: boolean;
   handleUnselectDistrict: () => void;
+  appointmentsCounting: AppointmentsCountingByDistrictsResponse | null;
 };
 
 export type AppointmentsByHousingStocks = {

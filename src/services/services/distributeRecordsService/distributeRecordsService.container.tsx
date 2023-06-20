@@ -2,6 +2,7 @@ import React, { useCallback } from 'react';
 import { useUnit } from 'effector-react';
 import { DistributeRecordsPage } from './view/DistributeRecordsPage';
 import {
+  appointmentsCountingQuery,
   districtAppointmentsQuery,
   districtsQuery,
 } from './distributeRecordsService.api';
@@ -20,7 +21,9 @@ export const DistributeRecordsContainer = () => {
 
   const { data: appointmentsInDistrict, pending: isLoadingAppointments } =
     useUnit(districtAppointmentsQuery);
-    
+
+  const { data: appointmentsCounting } = useUnit(appointmentsCountingQuery);
+
   const handleSelectDistrict = useUnit(inputs.handleSelectDistrict);
   const handleUnselectDistrict = useUnit(inputs.handleUnselectDistrict);
   const handleSetAppointmentDate = useUnit(inputs.setAppointmentDate);
@@ -55,6 +58,7 @@ export const DistributeRecordsContainer = () => {
         handleSelectHousingStock={handleSelectHousingStock}
         selectedAppointmentsIds={selectedAppointmentsIds}
         handleSelectAppointments={handleSelectAppointments}
+        appointmentsCounting={appointmentsCounting}
       />
     </>
   );
