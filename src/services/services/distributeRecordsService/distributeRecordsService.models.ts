@@ -1,12 +1,16 @@
 import { combine, createDomain, forward, sample } from 'effector';
 import { createGate } from 'effector-react';
 import {
+  appointmentsCountingQuery,
   districtAppointmentsQuery,
   districtsQuery,
   getNearestAppointmentsDate,
 } from './distributeRecordsService.api';
 import moment from 'moment';
-import { GetDistrictAppointmentsRequestPayload } from './distributeRecordsService.types';
+import {
+  GetDistrictAppointmentsRequestPayload,
+  GetDistrictsAppointmentsCountingRequestPayload,
+} from './distributeRecordsService.types';
 
 const domain = createDomain('distributeRecords');
 
@@ -43,6 +47,22 @@ sample({
   filter: (data): data is GetDistrictAppointmentsRequestPayload =>
     Boolean(data.districtId),
   target: districtAppointmentsQuery.start,
+});
+
+const $getDistrictsAppointmnetsCounting = combine(
+  districtsQuery.$data,
+  $appointmentDate,
+  (districts, date) => ({
+    districtIds: districts?.map((elem) => elem.id) || [],
+    date,
+  }),
+);
+
+sample({
+  source: $getDistrictsAppointmnetsCounting,
+  filter: (data): data is GetDistrictsAppointmentsCountingRequestPayload =>
+    Boolean(data.date),
+  target: appointmentsCountingQuery.start,
 });
 
 forward({

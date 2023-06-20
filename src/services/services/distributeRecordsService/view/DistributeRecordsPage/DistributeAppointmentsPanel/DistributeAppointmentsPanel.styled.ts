@@ -20,6 +20,10 @@ export const Wrapper = styled.div`
     0px 8px 16px rgba(78, 93, 146, 0.08);
 `;
 
+export const LoaderWrapper = styled.div`
+  padding: 12px 16px 16px;
+`;
+
 const slideDown = keyframes`
   from {
     opacity: 0;
@@ -58,8 +62,6 @@ export const Footer = styled.div`
   gap: 12px;
   justify-content: flex-end;
 `;
-
-
 
 export const TreeSC = styled(Tree)`
   width: 100%;
