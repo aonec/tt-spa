@@ -48,41 +48,41 @@ export const BaseInfoStage: FC<BaseInfoStageProps> = ({
   mountPlaces,
   handleSubmitForm,
   apartmentId,
-  formsData,
+  formData,
 }) => {
   const { values, setFieldValue, errors, handleSubmit } = useFormik({
     initialValues: {
-      serialNumber: formsData?.serialNumber || '',
-      lastCheckingDate: formsData?.lastCheckingDate || (null as string | null),
+      serialNumber: formData?.serialNumber || '',
+      lastCheckingDate: formData?.lastCheckingDate || (null as string | null),
       futureCheckingDate:
-        formsData?.futureCheckingDate || (null as string | null),
-      openingDate: formsData?.openingDate || (null as string | null),
-      bitDepth: formsData?.bitDepth || (null as number | null),
-      scaleFactor: formsData?.scaleFactor || (null as number | null),
+        formData?.futureCheckingDate || (null as string | null),
+      openingDate: formData?.openingDate || (null as string | null),
+      bitDepth: formData?.bitDepth || (null as number | null),
+      scaleFactor: formData?.scaleFactor || (null as number | null),
       apartmentId: apartmentId as number | null,
-      mountPlaceId: formsData?.mountPlaceId || (null as number | null),
-      model: formsData?.model || '',
+      mountPlaceId: formData?.mountPlaceId || (null as number | null),
+      model: formData?.model || '',
       rateType:
-        formsData?.rateType ||
+        formData?.rateType ||
         (EIndividualDeviceRateType.OneZone as EIndividualDeviceRateType),
       startupReadings1:
-        formsData?.startupReadings.value1 || (null as number | null),
+        formData?.startupReadings.value1 || (null as number | null),
       startupReadings2:
-        formsData?.startupReadings.value2 || (null as number | null),
+        formData?.startupReadings.value2 || (null as number | null),
       startupReadings3:
-        formsData?.startupReadings.value3 || (null as number | null),
+        formData?.startupReadings.value3 || (null as number | null),
       defaultReadings1:
-        formsData?.defaultReadings?.value1 || (null as number | null),
+        formData?.defaultReadings?.value1 || (null as number | null),
       defaultReadings2:
-        formsData?.defaultReadings?.value2 || (null as number | null),
+        formData?.defaultReadings?.value2 || (null as number | null),
       defaultReadings3:
-        formsData?.defaultReadings?.value3 || (null as number | null),
-      resource: formsData?.resource || (null as EResourceType | null),
+        formData?.defaultReadings?.value3 || (null as number | null),
+      resource: formData?.resource || (null as EResourceType | null),
       sealInstallationDate:
-        formsData?.sealInstallationDate || (null as null | string),
-      sealNumber: formsData?.sealNumber || (null as null | string),
-      contractorId: formsData?.contractorId || (null as number | null),
-      isPolling: formsData?.isPolling || false,
+        formData?.sealInstallationDate || (null as null | string),
+      sealNumber: formData?.sealNumber || (null as null | string),
+      contractorId: formData?.contractorId || (null as number | null),
+      isPolling: formData?.isPolling || false,
     },
     validationSchema: yup.object().shape({
       serialNumber: yup.string().required('Это поле обязательно'),

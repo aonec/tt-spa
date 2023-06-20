@@ -14,5 +14,5 @@ export type BaseInfoStageProps = {
   serialNumberForChecking: IndividualDeviceListResponseFromDevicePagePagedList | null;
   handleSubmitForm: (payload: CreateIndividualDeviceRequest) => void;
   apartmentId: number | undefined;
-  formsData: CreateIndividualDeviceRequest | null;
+  formData: CreateIndividualDeviceRequest | null;
 };

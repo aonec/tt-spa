@@ -5,6 +5,7 @@ import {
   IndividualDeviceListResponseFromDevicePagePagedList,
   IndividualDeviceMountPlaceListResponse,
 } from 'myApi';
+import { DocumentStageForm } from './stages/DocumentsStage/DocumentsStage.types';
 
 export type AddIndividualDevicePageProps = {
   stageNumber: number;
@@ -17,5 +18,7 @@ export type AddIndividualDevicePageProps = {
   isFetchSerialNumberLoading: boolean;
   serialNumberForChecking: IndividualDeviceListResponseFromDevicePagePagedList | null;
   handleSubmitForm: (payload: CreateIndividualDeviceRequest) => void;
-  formsData: CreateIndividualDeviceRequest | null;
+  formData: CreateIndividualDeviceRequest | null;
+  documents: DocumentStageForm | null;
+  handleSubmitDocumentStage: (payload: DocumentStageForm) => void;
 };

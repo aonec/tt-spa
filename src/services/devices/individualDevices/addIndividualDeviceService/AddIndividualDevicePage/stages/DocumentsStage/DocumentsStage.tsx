@@ -1,32 +1,34 @@
 import React, { FC } from 'react';
-import { DocumentsStageProps } from './DocumentsStage.types';
+import { DocumentStageForm, DocumentsStageProps } from './DocumentsStage.types';
 import {
   DocumentsUploadWrapper,
   Footer,
   FormHeader,
 } from './DocumentsStage.styled';
 import { Document, DocumentsUploadContainer } from 'ui-kit/DocumentsService';
-import { EDocumentType } from 'myApi';
+import { CreateIndividualDeviceRequest, EDocumentType } from 'myApi';
 import { Button } from 'ui-kit/Button';
 import { useFormik } from 'formik';
 import _ from 'lodash';
 
 export const DocumentsStage: FC<DocumentsStageProps> = ({
   handleGoPrevStage,
+  documents,
+  handleSubmitDocumentStage,
 }) => {
-  const { values, setFieldValue, handleSubmit } = useFormik({
+  const { values, setFieldValue, handleSubmit } = useFormik<DocumentStageForm>({
     initialValues: {
-      completedWorks: null as Document[] | null,
-      devicePassport: null as Document[] | null,
-      deviceCheck: null as Document[] | null,
+      completedWorks: (documents?.completedWorks || null) as Document[] | null,
+      devicePassport: (documents?.devicePassport || null) as Document[] | null,
+      deviceCheck: (documents?.deviceCheck || null) as Document[] | null,
     },
     validateOnBlur: false,
     validateOnChange: false,
     enableReinitialize: true,
     onSubmit: (data) => {
-      const flatedDocumentIds = Object.entries(data)
-        .map((data) => data[1]?.[0].id)
-        .filter(Boolean);
+   
+
+      handleSubmitDocumentStage(data);
     },
   });
 

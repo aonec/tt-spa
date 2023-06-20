@@ -25,7 +25,9 @@ export const AddIndividualDevicePage: FC<AddIndividualDevicePageProps> = ({
   isFetchSerialNumberLoading,
   serialNumberForChecking,
   handleSubmitForm,
-  formsData,
+  formData,
+  documents,
+  handleSubmitDocumentStage,
 }) => {
   const { Step } = Steps;
   const stepTitles = ['Общие данные о приборе', 'Документы'];
@@ -53,11 +55,15 @@ export const AddIndividualDevicePage: FC<AddIndividualDevicePageProps> = ({
               serialNumberForChecking={serialNumberForChecking}
               handleSubmitForm={handleSubmitForm}
               apartmentId={apartmentId}
-              formsData={formsData}
+              formData={formData}
             />
           )}
           {stageNumber === 2 && (
-            <DocumentsStage handleGoPrevStage={handleGoPrevStage} />
+            <DocumentsStage
+              handleGoPrevStage={handleGoPrevStage}
+              documents={documents}
+              handleSubmitDocumentStage={handleSubmitDocumentStage}
+            />
           )}
         </Forms>
 

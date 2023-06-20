@@ -16,6 +16,18 @@ export const AddIndividualDeviceContainer = () => {
     inputs.handleGoPrevStage,
   ]);
 
+  const [formData, handleSubmitForm] = useUnit([
+    outputs.$formData,
+    inputs.handleSubmitForm,
+  ]);
+
+  const [documents, handleSubmitDocumentStage] = useUnit([
+    outputs.$documents,
+    inputs.handleSubmitDocumentStage,
+  ]);
+
+  console.log(documents)
+
   const apartment = useUnit(outputs.$apartment);
   const mountPlaces = useUnit(outputs.$individualDeviceMountPlaces);
   const modelNames = useUnit(outputs.$individualDevicesNames);
@@ -24,13 +36,11 @@ export const AddIndividualDeviceContainer = () => {
   const isFetchSerialNumberLoading = useUnit(
     outputs.$isFetchSerialNumberLoading,
   );
-  const formsData = useUnit(outputs.$formsData);
 
   const handleFetchSerialNumberForCheck = useUnit(
     inputs.handleFetchSerialNumberForCheck,
   );
   const handleCreateDevice = useUnit(inputs.handleCreateDevice);
-  const handleSubmitForm = useUnit(inputs.handleSubmitForm);
 
   const currentFetchedApartmentId = apartment?.id;
   const idFromParams = Number(id);
@@ -51,7 +61,9 @@ export const AddIndividualDeviceContainer = () => {
         isFetchSerialNumberLoading={isFetchSerialNumberLoading}
         serialNumberForChecking={serialNumberForChecking}
         handleSubmitForm={handleSubmitForm}
-        formsData={formsData}
+        formData={formData}
+        documents={documents}
+        handleSubmitDocumentStage={handleSubmitDocumentStage}
       />
     </>
   );
