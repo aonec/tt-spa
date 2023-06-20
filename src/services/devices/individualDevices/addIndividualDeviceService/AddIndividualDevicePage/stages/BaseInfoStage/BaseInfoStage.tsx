@@ -48,56 +48,41 @@ export const BaseInfoStage: FC<BaseInfoStageProps> = ({
   mountPlaces,
   handleSubmitForm,
   apartmentId,
+  formsData,
 }) => {
   const { values, setFieldValue, errors, handleSubmit } = useFormik({
     initialValues: {
-      serialNumber: '',
-
-      lastCheckingDate: null as string | null,
-
-      futureCheckingDate: null as string | null,
-
-      lastCommercialAccountingDate: null as string | null,
-
-      bitDepth: null as number | null,
-
-      scaleFactor: null as number | null,
-
+      serialNumber: formsData?.serialNumber || '',
+      lastCheckingDate: formsData?.lastCheckingDate || (null as string | null),
+      futureCheckingDate:
+        formsData?.futureCheckingDate || (null as string | null),
+      openingDate: formsData?.openingDate || (null as string | null),
+      bitDepth: formsData?.bitDepth || (null as number | null),
+      scaleFactor: formsData?.scaleFactor || (null as number | null),
       apartmentId: apartmentId as number | null,
-
-      mountPlaceId: null as number | null,
-
-      model: '',
-
-      startupReadings: {
-        value1: null,
-        value2: null,
-        value3: null,
-        value4: null,
-      } as {
-        [key: string]: number | null;
-      },
-
-      defaultReadings: {
-        value1: null,
-        value2: null,
-        value3: null,
-        value4: null,
-      } as {
-        [key: string]: number | null;
-      },
-
-      rateType: EIndividualDeviceRateType.OneZone as EIndividualDeviceRateType,
-
-      resource: null as EResourceType | null,
-
-      magneticSealInstallationDate: null as null | string,
-
-      sealNumber: null as null | string,
-
-      contractorId: null as number | null,
-
-      isPolling: false,
+      mountPlaceId: formsData?.mountPlaceId || (null as number | null),
+      model: formsData?.model || '',
+      rateType:
+        formsData?.rateType ||
+        (EIndividualDeviceRateType.OneZone as EIndividualDeviceRateType),
+      startupReadings1:
+        formsData?.startupReadings.value1 || (null as number | null),
+      startupReadings2:
+        formsData?.startupReadings.value2 || (null as number | null),
+      startupReadings3:
+        formsData?.startupReadings.value3 || (null as number | null),
+      defaultReadings1:
+        formsData?.defaultReadings?.value1 || (null as number | null),
+      defaultReadings2:
+        formsData?.defaultReadings?.value2 || (null as number | null),
+      defaultReadings3:
+        formsData?.defaultReadings?.value3 || (null as number | null),
+      resource: formsData?.resource || (null as EResourceType | null),
+      sealInstallationDate:
+        formsData?.sealInstallationDate || (null as null | string),
+      sealNumber: formsData?.sealNumber || (null as null | string),
+      contractorId: formsData?.contractorId || (null as number | null),
+      isPolling: formsData?.isPolling || false,
     },
     validationSchema: yup.object().shape({
       serialNumber: yup.string().required('Это поле обязательно'),
@@ -114,44 +99,77 @@ export const BaseInfoStage: FC<BaseInfoStageProps> = ({
       resource: yup.string().nullable().required('Это поле обязательно'),
       bitDepth: yup.number().nullable().required('Это поле обязательно'),
       scaleFactor: yup.number().nullable().required('Это поле обязательно'),
-      startupReadings: yup.object().shape({
-        value1: yup.number().nullable().required('Это поле обязательно'),
-        value2: yup.number().nullable().required('Это поле обязательно'),
-        value3: yup.number().nullable().required('Это поле обязательно'),
-        value4: yup.number().nullable().required('Это поле обязательно'),
-      }),
-      defaultReadings: yup.object().shape({
-        value1: yup.number().nullable().required('Это поле обязательно'),
-        value2: yup.number().nullable().required('Это поле обязательно'),
-        value3: yup.number().nullable().required('Это поле обязательно'),
-        value4: yup.number().nullable().required('Это поле обязательно'),
-      }),
+      startupReadings1: yup
+        .number()
+        .nullable()
+        .required('Это поле обязательно'),
+      startupReadings2: yup
+        .number()
+        .nullable()
+        .when('rateType', {
+          is: EIndividualDeviceRateType.TwoZone,
+          then: yup.number().required('Это поле обязательно'),
+        })
+        .when('rateType', {
+          is: EIndividualDeviceRateType.ThreeZone,
+          then: yup.number().required('Это поле обязательно'),
+        }),
+      startupReadings3: yup
+        .number()
+        .nullable()
+        .when('rateType', {
+          is: EIndividualDeviceRateType.ThreeZone,
+          then: yup.number().required('Это поле обязательно'),
+        }),
+
+      defaultReadings1: yup
+        .number()
+        .nullable()
+        .required('Это поле обязательно'),
+      defaultReadings2: yup
+        .number()
+        .nullable()
+        .when('rateType', {
+          is: EIndividualDeviceRateType.TwoZone,
+          then: yup.number().required('Это поле обязательно'),
+        })
+        .when('rateType', {
+          is: EIndividualDeviceRateType.ThreeZone,
+          then: yup.number().required('Это поле обязательно'),
+        }),
+      defaultReadings3: yup
+        .number()
+        .nullable()
+        .when('rateType', {
+          is: EIndividualDeviceRateType.ThreeZone,
+          then: yup.number().required('Это поле обязательно'),
+        }),
     }),
     validateOnBlur: false,
     validateOnChange: false,
     enableReinitialize: true,
-    onSubmit: (data) => {
-      const {
-        apartmentId,
-        bitDepth,
-        contractorId,
-        defaultReadings,
-        futureCheckingDate,
-        isPolling,
-        lastCheckingDate,
-        lastCommercialAccountingDate,
-        magneticSealInstallationDate,
-        sealNumber,
-        model,
-        mountPlaceId,
-        rateType,
-        resource,
-        scaleFactor,
-        serialNumber,
-        startupReadings,
-      } = data;
-
-      handleSubmitForm(data as unknown as CreateIndividualDeviceRequest);
+    onSubmit: ({
+      defaultReadings1,
+      defaultReadings2,
+      defaultReadings3,
+      startupReadings1,
+      startupReadings2,
+      startupReadings3,
+      ...data
+    }) => {
+      handleSubmitForm({
+        ...data,
+        defaultReadings: {
+          value1: defaultReadings1,
+          value2: defaultReadings2,
+          value3: defaultReadings3,
+        },
+        startupReadings: {
+          value1: startupReadings1,
+          value2: startupReadings2,
+          value3: startupReadings3,
+        },
+      } as unknown as CreateIndividualDeviceRequest);
     },
   });
 
@@ -163,18 +181,16 @@ export const BaseInfoStage: FC<BaseInfoStageProps> = ({
 
   const modelNameDebounced = values.model;
 
-  const onChangeStartupReadings = (valueNumber: 1 | 2 | 3 | 4) => (e: any) =>
-    setFieldValue('startupReadings', {
-      ...values.startupReadings,
-      [`value${valueNumber}`]:
-        e.target.value === '' ? null : Number(e.target.value),
-    });
-  const onChangeDefaultReadings = (valueNumber: 1 | 2 | 3 | 4) => (e: any) =>
-    setFieldValue('defaultReadings', {
-      ...values.defaultReadings,
-      [`value${valueNumber}`]:
-        e.target.value === '' ? null : Number(e.target.value),
-    });
+  const onChangeStartupReadings = (valueNumber: 1 | 2 | 3) => (e: any) =>
+    setFieldValue(
+      `startupReadings${valueNumber}`,
+      e.target.value === '' ? null : Number(e.target.value),
+    );
+  const onChangeDefaultReadings = (valueNumber: 1 | 2 | 3) => (e: any) =>
+    setFieldValue(
+      `defaultReadings${valueNumber}`,
+      e.target.value === '' ? null : Number(e.target.value),
+    );
 
   const rateNum = getIndividualDeviceRateNumByName(values.rateType);
 
@@ -222,9 +238,9 @@ export const BaseInfoStage: FC<BaseInfoStageProps> = ({
           type="number"
           placeholder="Введите текущие показания"
           onChange={onChangeDefaultReadings(1)}
-          value={values.defaultReadings.value1 || undefined}
+          value={values.defaultReadings1 || undefined}
         />
-        <ErrorMessage>{errors.defaultReadings?.value1}</ErrorMessage>
+        <ErrorMessage>{errors.defaultReadings1}</ErrorMessage>
       </FormItem>
 
       {rateNum >= 2 && (
@@ -233,9 +249,9 @@ export const BaseInfoStage: FC<BaseInfoStageProps> = ({
             type="number"
             placeholder="Введите текущие показания"
             onChange={onChangeDefaultReadings(2)}
-            value={values.defaultReadings.value2 || undefined}
+            value={values.defaultReadings2 || undefined}
           />
-          <ErrorMessage>{errors.defaultReadings?.value2}</ErrorMessage>
+          <ErrorMessage>{errors.defaultReadings2}</ErrorMessage>
         </FormItem>
       )}
       {rateNum >= 3 && (
@@ -244,9 +260,9 @@ export const BaseInfoStage: FC<BaseInfoStageProps> = ({
             type="number"
             placeholder="Введите текущие показания"
             onChange={onChangeDefaultReadings(3)}
-            value={values.defaultReadings.value3 || undefined}
+            value={values.defaultReadings3 || undefined}
           />
-          <ErrorMessage>{errors.defaultReadings?.value3}</ErrorMessage>
+          <ErrorMessage>{errors.defaultReadings3}</ErrorMessage>
         </FormItem>
       )}
     </>
@@ -377,9 +393,9 @@ export const BaseInfoStage: FC<BaseInfoStageProps> = ({
             type="number"
             placeholder="Введите первичные показания"
             onChange={onChangeStartupReadings(1)}
-            value={values.startupReadings.value1 || undefined}
+            value={values.startupReadings1 || undefined}
           />
-          <ErrorMessage>{errors.startupReadings?.value1}</ErrorMessage>
+          <ErrorMessage>{errors.startupReadings1}</ErrorMessage>
         </FormItem>
 
         {rateNum >= 2 && (
@@ -388,9 +404,9 @@ export const BaseInfoStage: FC<BaseInfoStageProps> = ({
               type="number"
               placeholder="Введите первичные показания"
               onChange={onChangeStartupReadings(2)}
-              value={values.startupReadings.value2 || undefined}
+              value={values.startupReadings2 || undefined}
             />
-            <ErrorMessage>{errors.startupReadings?.value2}</ErrorMessage>
+            <ErrorMessage>{errors.startupReadings2}</ErrorMessage>
           </FormItem>
         )}
         {rateNum >= 3 && (
@@ -399,9 +415,9 @@ export const BaseInfoStage: FC<BaseInfoStageProps> = ({
               type="number"
               placeholder="Введите первичные показания"
               onChange={onChangeStartupReadings(3)}
-              value={values.startupReadings.value3 || undefined}
+              value={values.startupReadings3 || undefined}
             />
-            <ErrorMessage>{errors.startupReadings?.value3}</ErrorMessage>
+            <ErrorMessage>{errors.startupReadings3}</ErrorMessage>
           </FormItem>
         )}
 
@@ -412,12 +428,10 @@ export const BaseInfoStage: FC<BaseInfoStageProps> = ({
 
       <FormItem label="Дата ввода в эксплуатацию">
         <DatePickerNative
-          onChange={(value) =>
-            setFieldValue('lastCommercialAccountingDate', value)
-          }
-          value={values.lastCommercialAccountingDate}
+          onChange={(value) => setFieldValue('openingDate', value)}
+          value={values.openingDate}
         />
-        <ErrorMessage>{errors.lastCommercialAccountingDate}</ErrorMessage>
+        <ErrorMessage>{errors.openingDate}</ErrorMessage>
       </FormItem>
 
       <SwitchWrapper>
@@ -444,10 +458,8 @@ export const BaseInfoStage: FC<BaseInfoStageProps> = ({
 
         <FormItem label="Дата установки пломбы">
           <DatePickerNative
-            onChange={(value) =>
-              setFieldValue('magneticSealInstallationDate', value)
-            }
-            value={values.magneticSealInstallationDate}
+            onChange={(value) => setFieldValue('sealInstallationDate', value)}
+            value={values.sealInstallationDate}
           />
         </FormItem>
       </FormWrap>

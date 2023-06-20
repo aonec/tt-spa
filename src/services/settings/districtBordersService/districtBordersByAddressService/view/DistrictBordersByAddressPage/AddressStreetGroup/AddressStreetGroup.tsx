@@ -12,7 +12,6 @@ import {
 import { AddressStreetGroupProps } from './AddressStreetGroup.types';
 import { HousingStockNumber } from './HousingStockNumber';
 import { Checkbox } from 'antd';
-import _ from 'lodash';
 
 export const AddressStreetGroup: FC<AddressStreetGroupProps> = ({
   address,

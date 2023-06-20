@@ -11,9 +11,8 @@ const { ApartmentGate } = gates;
 export const AddIndividualDeviceContainer = () => {
   const { id } = useParams<{ id: string }>();
 
-  const [stageNumber, handleGoNextStage, handleGoPrevStage] = useUnit([
+  const [stageNumber, handleGoPrevStage] = useUnit([
     outputs.$stageNumber,
-    inputs.handleGoNextStage,
     inputs.handleGoPrevStage,
   ]);
 
@@ -43,7 +42,6 @@ export const AddIndividualDeviceContainer = () => {
       {<ApartmentGate id={idFromParams} />}
       <AddIndividualDevicePage
         stageNumber={stageNumber}
-        handleGoNextStage={handleGoNextStage}
         handleGoPrevStage={handleGoPrevStage}
         apartment={apartment}
         mountPlaces={mountPlaces}
@@ -53,6 +51,7 @@ export const AddIndividualDeviceContainer = () => {
         isFetchSerialNumberLoading={isFetchSerialNumberLoading}
         serialNumberForChecking={serialNumberForChecking}
         handleSubmitForm={handleSubmitForm}
+        formsData={formsData}
       />
     </>
   );

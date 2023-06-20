@@ -8,7 +8,6 @@ import {
 
 export type AddIndividualDevicePageProps = {
   stageNumber: number;
-  handleGoNextStage: () => void;
   handleGoPrevStage: () => void;
   apartment: ApartmentResponse | null;
   mountPlaces: IndividualDeviceMountPlaceListResponse[] | null;
@@ -18,4 +17,5 @@ export type AddIndividualDevicePageProps = {
   isFetchSerialNumberLoading: boolean;
   serialNumberForChecking: IndividualDeviceListResponseFromDevicePagePagedList | null;
   handleSubmitForm: (payload: CreateIndividualDeviceRequest) => void;
+  formsData: CreateIndividualDeviceRequest | null;
 };

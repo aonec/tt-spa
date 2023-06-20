@@ -9,7 +9,6 @@ import { CreateIndividualDeviceRequest, MeteringDeviceResponse } from 'myApi';
 
 const domain = createDomain('addIndividualDeviceService');
 
-const handleGoNextStage = domain.createEvent();
 const handleGoPrevStage = domain.createEvent();
 
 const handleSubmitForm = domain.createEvent<CreateIndividualDeviceRequest>();
@@ -22,8 +21,8 @@ const createIndividualDeviceFx = domain.createEffect<
 >(createIndividualDevice);
 
 const $stageNumber = domain
-  .createStore<number>(2)
-  .on(handleGoNextStage, (prev) => prev + 1)
+  .createStore<number>(1)
+  .on(handleSubmitForm, (prev) => prev + 1)
   .on(handleGoPrevStage, (prev) => prev - 1);
 
 const $formsData = domain
@@ -41,7 +40,6 @@ sample({
 
 export const addIndividualDeviceService = {
   inputs: {
-    handleGoNextStage,
     handleGoPrevStage,
     handleFetchSerialNumberForCheck:
       displayIndividualDeviceAndNamesService.inputs
