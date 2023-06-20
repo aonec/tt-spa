@@ -1,1 +1,3 @@
-export type DocumentsStageProps = {};
+export type DocumentsStageProps = {
+  handleGoPrevStage: () => void;
+};

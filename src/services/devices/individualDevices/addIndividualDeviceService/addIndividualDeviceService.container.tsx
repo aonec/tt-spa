@@ -26,7 +26,6 @@ export const AddIndividualDeviceContainer = () => {
     outputs.$isFetchSerialNumberLoading,
   );
   const formsData = useUnit(outputs.$formsData);
-  console.log(formsData)
 
   const handleFetchSerialNumberForCheck = useUnit(
     inputs.handleFetchSerialNumberForCheck,

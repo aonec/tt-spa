@@ -22,7 +22,7 @@ const createIndividualDeviceFx = domain.createEffect<
 >(createIndividualDevice);
 
 const $stageNumber = domain
-  .createStore<number>(1)
+  .createStore<number>(2)
   .on(handleGoNextStage, (prev) => prev + 1)
   .on(handleGoPrevStage, (prev) => prev - 1);
 

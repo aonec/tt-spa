@@ -1,4 +1,4 @@
-import React, { FC, useMemo } from 'react';
+import React, { FC } from 'react';
 import { AddIndividualDevicePageProps } from './AddIndividualDevicePage.types';
 import { GoBack } from 'ui-kit/shared_components/GoBack';
 import { Link } from 'react-router-dom';
@@ -11,14 +11,12 @@ import {
   Title,
 } from './AddIndividualDevicePage.styled';
 import { getApartmentAddressString } from 'utils/getApartmentAddress';
-import { Button } from 'ui-kit/Button';
 import { DocumentsStage } from './stages/DocumentsStage';
 import { BaseInfoStage } from './stages/BaseInfoStage';
 
 export const AddIndividualDevicePage: FC<AddIndividualDevicePageProps> = ({
   stageNumber,
   apartment,
-  handleGoNextStage,
   handleGoPrevStage,
   contractors,
   modelNames,
@@ -33,25 +31,6 @@ export const AddIndividualDevicePage: FC<AddIndividualDevicePageProps> = ({
 
   const address = apartment && getApartmentAddressString(apartment, true);
   const apartmentId = apartment?.id;
-
-  const getFirstButton = useMemo(() => {
-    if (stageNumber === 2) {
-      return (
-        <Button type="ghost" onClick={handleGoPrevStage}>
-          Назад
-        </Button>
-      );
-    }
-  }, [stageNumber, handleGoPrevStage]);
-
-  const getSecondButton = useMemo(() => {
-    return (
-      <Button onClick={handleGoNextStage}>
-        {stageNumber === 1 && 'Далее'}
-        {stageNumber === 2 && 'Сохранить изменения'}
-      </Button>
-    );
-  }, [stageNumber, handleGoNextStage]);
 
   return (
     <>
@@ -75,7 +54,9 @@ export const AddIndividualDevicePage: FC<AddIndividualDevicePageProps> = ({
               apartmentId={apartmentId}
             />
           )}
-          {stageNumber === 2 && <DocumentsStage />}
+          {stageNumber === 2 && (
+            <DocumentsStage handleGoPrevStage={handleGoPrevStage} />
+          )}
         </Forms>
 
         <div>
