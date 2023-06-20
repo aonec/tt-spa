@@ -107,6 +107,8 @@ export const ApartmentInfo: FC<ApartmentInfoProps> = ({
 
   const houseManagement = housingStock?.houseManagement;
 
+  console.log(housingStock)
+
   const houseManagementName = `Домоуправление «${houseManagement?.name}»`;
 
   const houseManagementInfo = `${houseManagement?.phone}; ${houseManagement?.comment}`;

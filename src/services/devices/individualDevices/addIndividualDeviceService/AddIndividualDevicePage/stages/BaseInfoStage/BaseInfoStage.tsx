@@ -77,7 +77,6 @@ export const BaseInfoStage: FC<BaseInfoStageProps> = ({
       } as {
         [key: string]: number | null;
       },
-      // rules: readingsValuesValidators,
 
       defaultReadings: {
         value1: null,
@@ -87,7 +86,6 @@ export const BaseInfoStage: FC<BaseInfoStageProps> = ({
       } as {
         [key: string]: number | null;
       },
-      // rules: readingsValuesValidators,
 
       rateType: EIndividualDeviceRateType.OneZone as EIndividualDeviceRateType,
 
@@ -117,6 +115,12 @@ export const BaseInfoStage: FC<BaseInfoStageProps> = ({
       bitDepth: yup.number().nullable().required('Это поле обязательно'),
       scaleFactor: yup.number().nullable().required('Это поле обязательно'),
       startupReadings: yup.object().shape({
+        value1: yup.number().nullable().required('Это поле обязательно'),
+        value2: yup.number().nullable().required('Это поле обязательно'),
+        value3: yup.number().nullable().required('Это поле обязательно'),
+        value4: yup.number().nullable().required('Это поле обязательно'),
+      }),
+      defaultReadings: yup.object().shape({
         value1: yup.number().nullable().required('Это поле обязательно'),
         value2: yup.number().nullable().required('Это поле обязательно'),
         value3: yup.number().nullable().required('Это поле обязательно'),
@@ -220,7 +224,7 @@ export const BaseInfoStage: FC<BaseInfoStageProps> = ({
           onChange={onChangeDefaultReadings(1)}
           value={values.defaultReadings.value1 || undefined}
         />
-        <ErrorMessage>{}</ErrorMessage>
+        <ErrorMessage>{errors.defaultReadings?.value1}</ErrorMessage>
       </FormItem>
 
       {rateNum >= 2 && (
@@ -231,7 +235,7 @@ export const BaseInfoStage: FC<BaseInfoStageProps> = ({
             onChange={onChangeDefaultReadings(2)}
             value={values.defaultReadings.value2 || undefined}
           />
-          <ErrorMessage>{}</ErrorMessage>
+          <ErrorMessage>{errors.defaultReadings?.value2}</ErrorMessage>
         </FormItem>
       )}
       {rateNum >= 3 && (
@@ -242,7 +246,7 @@ export const BaseInfoStage: FC<BaseInfoStageProps> = ({
             onChange={onChangeDefaultReadings(3)}
             value={values.defaultReadings.value3 || undefined}
           />
-          <ErrorMessage>{}</ErrorMessage>
+          <ErrorMessage>{errors.defaultReadings?.value3}</ErrorMessage>
         </FormItem>
       )}
     </>
@@ -397,7 +401,7 @@ export const BaseInfoStage: FC<BaseInfoStageProps> = ({
               onChange={onChangeStartupReadings(3)}
               value={values.startupReadings.value3 || undefined}
             />
-            <ErrorMessage>{}</ErrorMessage>
+            <ErrorMessage>{errors.startupReadings?.value3}</ErrorMessage>
           </FormItem>
         )}
 
