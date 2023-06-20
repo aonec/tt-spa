@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { DistrictColorsList } from 'services/settings/districtBordersService/CreateDistrictBorderByMapService/view/CreateDistrictBorderMapPage/CreateDistrictBorderMapPage.constants';
 import { DistrictData, ymaps } from 'types';
 import { getTextPlacemarkCode } from './placemarks/textPlacemark';
+import { getCountPlacemarkCode } from './placemarks/countPlacemark';
 
 export function useMapGroup(map: ymaps.Map | null) {
   const [group, setGroup] = useState<ymaps.GeoObjectCollection | null>(null);
@@ -68,7 +69,7 @@ export function useRenderTextPlacemarks(
     texts.forEach(({ text, coords }) => {
       const code = getTextPlacemarkCode(text);
 
-      var polygonLayout = ymaps.templateLayoutFactory.createClass(code);
+      const polygonLayout = ymaps.templateLayoutFactory.createClass(code);
 
       const placemark = new ymaps.Placemark(
         coords,
@@ -91,6 +92,7 @@ export function useRenderPlacemarks(
     placemarkIconLink: string;
     coords: [number, number];
     onClick?: () => void;
+    count?: number;
   }[],
 ) {
   const placemarksGroup = useMapGroup(map);
@@ -100,7 +102,7 @@ export function useRenderPlacemarks(
 
     placemarksGroup.removeAll();
 
-    placemarks.forEach(({ placemarkIconLink, coords, onClick }) => {
+    placemarks.forEach(({ placemarkIconLink, coords, onClick, count }) => {
       const placemark = new ymaps.Placemark(
         coords,
         {},
@@ -109,12 +111,30 @@ export function useRenderPlacemarks(
           iconImageHref: placemarkIconLink,
           iconImageSize: [51, 51],
           zIndex: 100,
+          zIndexHover: 100,
         },
       );
 
       if (onClick) placemark.events.add('click', onClick);
 
       placemarksGroup.add(placemark);
+
+      if (count) {
+        const code = getCountPlacemarkCode(count);
+
+        const polygonLayout = ymaps.templateLayoutFactory.createClass(code);
+
+        const countPlacemark = new ymaps.Placemark(
+          coords,
+          {},
+          {
+            iconLayout: polygonLayout,
+            zIndex: 100,
+          },
+        );
+
+        placemarksGroup.add(countPlacemark);
+      }
     });
 
     return () => void placemarksGroup.removeAll();

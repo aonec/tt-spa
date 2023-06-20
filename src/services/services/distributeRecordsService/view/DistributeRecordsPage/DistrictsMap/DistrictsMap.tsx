@@ -80,6 +80,7 @@ export const DistrictsMap: FC<Props> = ({
           number,
         ],
         onClick: () => handleSelectHousingStock?.(elem),
+        count: elem.appointments.length,
       })),
     [appointmentsInDistrict, handleSelectHousingStock, selectedAppointmentsIds],
   );
