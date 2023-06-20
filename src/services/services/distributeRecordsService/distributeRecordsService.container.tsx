@@ -8,6 +8,7 @@ import {
 } from './distributeRecordsService.api';
 import { distributeRecordsService } from './distributeRecordsService.models';
 import { AppointmentsByHousingStocks } from './view/DistributeRecordsPage/DistrictsMap/DistrictsMap.types';
+import { intersection } from 'lodash';
 
 const {
   inputs,
@@ -34,11 +35,32 @@ export const DistributeRecordsContainer = () => {
   const selectedAppointmentsIds = useUnit(outputs.$selectedAppointmentsIds);
 
   const handleSelectHousingStock = useCallback(
-    (data: AppointmentsByHousingStocks) =>
-      handleSelectAppointments([
-        ...selectedAppointmentsIds,
-        ...data.appointments.map((elem) => elem.id),
-      ]),
+    (data: AppointmentsByHousingStocks) => {
+      const isHouseSelected = Boolean(
+        intersection(
+          data.appointments.map((elem) => elem.id),
+          selectedAppointmentsIds,
+        ).length,
+      );
+
+      if (!isHouseSelected) {
+        handleSelectAppointments([
+          ...selectedAppointmentsIds,
+          ...data.appointments.map((elem) => elem.id),
+        ]);
+      }
+
+      if (isHouseSelected) {
+        handleSelectAppointments(
+          selectedAppointmentsIds.filter(
+            (elem) =>
+              !data.appointments
+                .map((appointment) => appointment.id)
+                .includes(elem),
+          ),
+        );
+      }
+    },
     [selectedAppointmentsIds, handleSelectAppointments],
   );
 

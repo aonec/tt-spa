@@ -12,7 +12,7 @@ export type Props = {
   appointmentDate: string | null;
   appointmentsInDistrict: AppointmentResponse[] | null;
   isLoadingAppointments: boolean;
-  handleSelectHousingStock?: (data: AppointmentsByHousingStocks) => void;
+  handleSelectHousingStock: (data: AppointmentsByHousingStocks) => void;
   selectedAppointmentsIds: string[];
   handleSelectAppointments: (ids: string[]) => void;
   appointmentsCounting: AppointmentsCountingByDistrictsResponse | null;
