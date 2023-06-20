@@ -1,9 +1,8 @@
 import { createDomain, sample } from 'effector';
-import { ApartmentResponse } from 'myApi';
+import { ApartmentResponse, AppointmentCreateRequest } from 'myApi';
 import { message } from 'antd';
 import { fetchCreateSeal } from './createSealService.api';
 import { EffectFailDataAxiosError } from 'types';
-import { AppointmentCreateRequest } from 'myApi';
 
 const domain = createDomain('createSealService');
 

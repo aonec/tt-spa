@@ -97,16 +97,16 @@ export const ApartmentInfo: FC<ApartmentInfoProps> = ({
       setSelectedHomeownerName(selectedHomeowner?.name);
   }, [selectedHomeowner, setSelectedHomeownerName]);
 
-  const houseManagement = housingStock?.managementFirm;
+  const houseManagement = housingStock?.houseManagement;
 
   const houseManagementName = `Домоуправление «${houseManagement?.name}»`;
 
   const houseManagementInfo = useMemo(() => {
-    const phoneNumber = houseManagement?.phoneNumber
-      ? `${houseManagement?.phoneNumber};`
+    const phoneNumber = houseManagement?.phone
+      ? `${houseManagement?.phone};`
       : '';
-    const information = houseManagement?.information
-      ? `${houseManagement?.information}`
+    const information = houseManagement?.comment
+      ? `${houseManagement?.comment}`
       : '';
 
     return `${phoneNumber} ${information}`;

@@ -1,5 +1,9 @@
 import { createDomain, forward, sample } from 'effector';
-import { ApartmentResponse, IndividualDeviceListItemResponse } from 'myApi';
+import {
+  ApartmentResponse,
+  IndividualDeviceListItemResponse,
+  AppointmentResponse,
+} from 'myApi';
 import { EffectFailDataAxiosError } from 'types';
 import { message } from 'antd';
 import { createGate } from 'effector-react';
@@ -15,7 +19,6 @@ import {
   getIndividualDevices,
   getNearestAppointmentForApartment,
 } from './apartmentSealService.api';
-import { AppointmentResponse } from 'myApi';
 
 const domain = createDomain('apartmentSealService');
 
