@@ -4,4 +4,6 @@ export type GraphLegendProps = {
   deltaMassAccuracy?: number | null;
   averageDeltaMass?: number | null;
   resource?: string | null;
+  withFault: boolean;
+  setWithFault: (withFault: boolean) => void;
 };
