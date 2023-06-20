@@ -15,7 +15,7 @@ import {
   getIndividualDevices,
   getNearestAppointmentForApartment,
 } from './apartmentSealService.api';
-import { AppointmentResponse } from 'myApi-test';
+import { AppointmentResponse } from 'myApi';
 
 const domain = createDomain('apartmentSealService');
 

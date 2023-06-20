@@ -27,7 +27,7 @@ import {
 import { PencilIcon } from 'ui-kit/icons';
 import { DistrictAdditionalInfo } from './CreateDistrictFormPanel/CreateDistrictFormPanel.types';
 import { DistrictColorsList } from './CreateDistrictBorderMapPage.constants';
-import { HousingStockListResponse } from 'myApi-test';
+import { HousingStockListResponse } from 'myApi';
 import housingStockMiniPlacemark from './placemarks/housingStockMiniPlacemark.svg';
 
 export const CreateDistrictBorderMapPage: FC<

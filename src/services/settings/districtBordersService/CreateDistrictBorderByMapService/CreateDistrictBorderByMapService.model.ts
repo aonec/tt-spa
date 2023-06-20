@@ -3,7 +3,7 @@ import {
   DistrictCreateRequest,
   DistrictResponse,
   HousingStockListResponsePagedList,
-} from 'myApi-test';
+} from 'myApi';
 import {
   createDistrict,
   getExistingDistricts,

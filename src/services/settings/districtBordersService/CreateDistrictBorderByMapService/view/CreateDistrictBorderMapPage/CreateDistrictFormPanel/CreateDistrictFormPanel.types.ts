@@ -1,4 +1,4 @@
-import { DistrictCreateRequest, HousingStockListResponse } from 'myApi-test';
+import { DistrictCreateRequest, HousingStockListResponse } from 'myApi';
 import { DistrictColor } from '../CreateDistrictBorderMapPage.types';
 
 export type CreateDistrictFormPanelProps = {

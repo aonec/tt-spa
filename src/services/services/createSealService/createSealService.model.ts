@@ -3,7 +3,7 @@ import { ApartmentResponse } from 'myApi';
 import { message } from 'antd';
 import { fetchCreateSeal } from './createSealService.api';
 import { EffectFailDataAxiosError } from 'types';
-import { AppointmentCreateRequest } from 'myApi-test';
+import { AppointmentCreateRequest } from 'myApi';
 
 const domain = createDomain('createSealService');
 

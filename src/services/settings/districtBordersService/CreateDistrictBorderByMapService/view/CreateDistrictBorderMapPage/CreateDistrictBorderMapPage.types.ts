@@ -2,7 +2,7 @@ import {
   DistrictCreateRequest,
   DistrictResponse,
   HousingStockListResponse,
-} from 'myApi-test';
+} from 'myApi';
 
 export type CreateDistrictBorderMapPageProps = {
   isLoadingHousingStocks: boolean;

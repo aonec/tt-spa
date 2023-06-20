@@ -1,5 +1,5 @@
 import { ApartmentResponse } from 'myApi';
-import { AppointmentCreateRequest } from 'myApi-test';
+import { AppointmentCreateRequest } from 'myApi';
 
 export type CreateSealAppointmentFormProps = {
   formId: string;

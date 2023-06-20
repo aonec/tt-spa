@@ -1,4 +1,4 @@
-import { DistrictCreateRequest } from 'myApi-test';
+import { DistrictCreateRequest } from 'myApi';
 import { DistrictColor } from '../CreateDistrictBorderMapPage.types';
 import { DistrictAdditionalInfo } from './CreateDistrictFormPanel.types';
 
