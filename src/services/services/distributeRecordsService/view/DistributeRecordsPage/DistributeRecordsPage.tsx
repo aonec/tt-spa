@@ -25,12 +25,15 @@ export const DistributeRecordsPage: FC<Props> = ({
   isDistributeAppointmentsModalOpen,
   openDistributeAppointmentsModal,
   closeDistributeAppointmentsModal,
+  controllers,
 }) => {
   return (
     <Wrapper>
       <DistributeAppointmentsModal
         isModalOpen={isDistributeAppointmentsModalOpen}
         handleCloseModal={closeDistributeAppointmentsModal}
+        appointmentDate={appointmentDate}
+        controllers={controllers}
       />
       <FiltrationWrapper>
         <AddressSearchContainer fields={[SearchFieldType.City]} />

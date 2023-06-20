@@ -5,6 +5,7 @@ import {
   appointmentsCountingQuery,
   districtAppointmentsQuery,
   districtsQuery,
+  individualSealControllersQuery,
 } from './distributeRecordsService.api';
 import { distributeRecordsService } from './distributeRecordsService.models';
 import { AppointmentsByHousingStocks } from './view/DistributeRecordsPage/DistrictsMap/DistrictsMap.types';
@@ -24,6 +25,8 @@ export const DistributeRecordsContainer = () => {
     useUnit(districtAppointmentsQuery);
 
   const { data: appointmentsCounting } = useUnit(appointmentsCountingQuery);
+
+  const { data: controllers } = useUnit(individualSealControllersQuery);
 
   const handleSelectDistrict = useUnit(inputs.handleSelectDistrict);
   const handleUnselectDistrict = useUnit(inputs.handleUnselectDistrict);
@@ -93,6 +96,7 @@ export const DistributeRecordsContainer = () => {
         openDistributeAppointmentsModal={openDistributeAppointmentsModal}
         closeDistributeAppointmentsModal={closeDistributeAppointmentsModal}
         isDistributeAppointmentsModalOpen={isDistributeAppointmentsModalOpen}
+        controllers={controllers}
       />
     </>
   );

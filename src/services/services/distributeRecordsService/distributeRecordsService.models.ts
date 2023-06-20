@@ -4,7 +4,8 @@ import {
   appointmentsCountingQuery,
   districtAppointmentsQuery,
   districtsQuery,
-  getNearestAppointmentsDate,
+  individualSealControllersQuery,
+  nearestAppointmentsDateQuery,
 } from './distributeRecordsService.api';
 import moment from 'moment';
 import {
@@ -32,7 +33,7 @@ const $selectedDistrict = domain
 const $appointmentDate = domain
   .createStore<string | null>(moment().format('YYYY-MM-DD'))
   .on(setAppointmentDate, (_, date) => date)
-  .on(getNearestAppointmentsDate.$data, (_, res) => res?.date)
+  .on(nearestAppointmentsDateQuery.$data, (_, res) => res?.date)
   .reset();
 
 const $selectedAppointmentsIds = domain
@@ -76,7 +77,11 @@ sample({
 
 forward({
   from: DistributeRecordsGate.open,
-  to: [districtsQuery.start, getNearestAppointmentsDate.start],
+  to: [
+    districtsQuery.start,
+    nearestAppointmentsDateQuery.start,
+    individualSealControllersQuery.start,
+  ],
 });
 
 forward({
