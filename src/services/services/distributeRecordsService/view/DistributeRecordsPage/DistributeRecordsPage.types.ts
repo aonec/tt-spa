@@ -16,4 +16,7 @@ export type Props = {
   selectedAppointmentsIds: string[];
   handleSelectAppointments: (ids: string[]) => void;
   appointmentsCounting: AppointmentsCountingByDistrictsResponse | null;
+  openDistributeAppointmentsModal: () => void;
+  closeDistributeAppointmentsModal: () => void;
+  isDistributeAppointmentsModalOpen: boolean;
 };

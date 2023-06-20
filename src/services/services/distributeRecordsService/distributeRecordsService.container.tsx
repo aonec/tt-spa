@@ -29,10 +29,19 @@ export const DistributeRecordsContainer = () => {
   const handleUnselectDistrict = useUnit(inputs.handleUnselectDistrict);
   const handleSetAppointmentDate = useUnit(inputs.setAppointmentDate);
   const handleSelectAppointments = useUnit(inputs.selectAppointments);
+  const openDistributeAppointmentsModal = useUnit(
+    inputs.openDistributeAppointmentsModal,
+  );
+  const closeDistributeAppointmentsModal = useUnit(
+    inputs.closeDistributeAppointmentsModal,
+  );
 
   const selectedDistrict = useUnit(outputs.$selectedDistrict);
   const appointmentDate = useUnit(outputs.$appointmentDate);
   const selectedAppointmentsIds = useUnit(outputs.$selectedAppointmentsIds);
+  const isDistributeAppointmentsModalOpen = useUnit(
+    outputs.$isDistributeAppointmentsModalOpen,
+  );
 
   const handleSelectHousingStock = useCallback(
     (data: AppointmentsByHousingStocks) => {
@@ -81,6 +90,9 @@ export const DistributeRecordsContainer = () => {
         selectedAppointmentsIds={selectedAppointmentsIds}
         handleSelectAppointments={handleSelectAppointments}
         appointmentsCounting={appointmentsCounting}
+        openDistributeAppointmentsModal={openDistributeAppointmentsModal}
+        closeDistributeAppointmentsModal={closeDistributeAppointmentsModal}
+        isDistributeAppointmentsModalOpen={isDistributeAppointmentsModalOpen}
       />
     </>
   );

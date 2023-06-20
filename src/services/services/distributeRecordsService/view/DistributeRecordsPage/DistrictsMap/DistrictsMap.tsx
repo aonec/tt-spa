@@ -28,6 +28,7 @@ export const DistrictsMap: FC<Props> = ({
   isLoadingAppointments,
   handleUnselectDistrict,
   appointmentsCounting,
+  openDistributeAppointmentsModal,
 }) => {
   const { mapRef, map } = useYMaps();
 
@@ -96,6 +97,7 @@ export const DistrictsMap: FC<Props> = ({
           handleSelectAppointments={handleSelectAppointments}
           isLoadingAppointments={isLoadingAppointments}
           handleUnselectDistrict={handleUnselectDistrict}
+          openDistributeAppointmentsModal={openDistributeAppointmentsModal}
         />
       )}
       <div ref={mapRef} style={{ width: '100%', height: '86vh' }} />

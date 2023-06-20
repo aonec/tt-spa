@@ -18,23 +18,32 @@ const DistributeRecordsGate = createGate();
 
 const handleUnselectDistrict = domain.createEvent();
 const handleSelectDistrict = domain.createEvent<string>();
+const setAppointmentDate = domain.createEvent<string>();
+const selectAppointments = domain.createEvent<string[]>();
+
+const openDistributeAppointmentsModal = domain.createEvent();
+const closeDistributeAppointmentsModal = domain.createEvent();
+
 const $selectedDistrict = domain
   .createStore<string | null>(null)
   .on(handleSelectDistrict, (_, id) => id)
   .reset(DistributeRecordsGate.close, handleUnselectDistrict);
 
-const setAppointmentDate = domain.createEvent<string>();
 const $appointmentDate = domain
   .createStore<string | null>(moment().format('YYYY-MM-DD'))
   .on(setAppointmentDate, (_, date) => date)
   .on(getNearestAppointmentsDate.$data, (_, res) => res?.date)
   .reset();
 
-const selectAppointments = domain.createEvent<string[]>();
 const $selectedAppointmentsIds = domain
   .createStore<string[]>([])
   .on(selectAppointments, (_, ids) => ids)
   .reset(districtAppointmentsQuery.$data);
+
+const $isDistributeAppointmentsModalOpen = domain
+  .createStore(false)
+  .on(openDistributeAppointmentsModal, () => true)
+  .on(closeDistributeAppointmentsModal, () => false);
 
 const $getAppointmentsRequestPayload = combine(
   $selectedDistrict,
@@ -81,7 +90,14 @@ export const distributeRecordsService = {
     handleUnselectDistrict,
     setAppointmentDate,
     selectAppointments,
+    openDistributeAppointmentsModal,
+    closeDistributeAppointmentsModal,
   },
-  outputs: { $selectedDistrict, $appointmentDate, $selectedAppointmentsIds },
+  outputs: {
+    $selectedDistrict,
+    $appointmentDate,
+    $selectedAppointmentsIds,
+    $isDistributeAppointmentsModalOpen,
+  },
   gates: { DistributeRecordsGate },
 };

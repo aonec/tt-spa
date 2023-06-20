@@ -23,6 +23,8 @@ import { countSimilarityPoints } from 'utils/countSimilarityPoints';
 import { WithLoader } from 'ui-kit/shared_components/WithLoader';
 import { Empty } from 'antd';
 import { Button } from 'ui-kit/Button';
+import { getCountText } from 'utils/getCountText';
+import { AppointmentsCountTexts } from './DistributeAppointmentsPanel.constants';
 
 export const DistributeAppointmentsPanel: FC<
   DistributeAppointmentsPanelProps
@@ -32,6 +34,7 @@ export const DistributeAppointmentsPanel: FC<
   handleSelectAppointments,
   isLoadingAppointments,
   handleUnselectDistrict,
+  openDistributeAppointmentsModal,
 }) => {
   const [expandedKeys, setExpandedKeys] = useState<React.Key[]>([]);
 
@@ -167,7 +170,19 @@ export const DistributeAppointmentsPanel: FC<
                 >
                   Назад
                 </Button>
-                <Button size="small">Распределить</Button>
+                <Button
+                  onClick={openDistributeAppointmentsModal}
+                  size="small"
+                  disabled={!selectedAppointmentsIds.length}
+                >
+                  Распределить{' '}
+                  {Boolean(selectedAppointmentsIds.length) &&
+                    `${selectedAppointmentsIds.length} 
+                      ${getCountText(
+                        selectedAppointmentsIds.length,
+                        AppointmentsCountTexts,
+                      )}`}
+                </Button>
               </Footer>
             </>
           )}
