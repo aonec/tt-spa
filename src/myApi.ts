@@ -410,7 +410,7 @@ export interface ApartmentResponse {
 
   /** @format double */
   coefficient: number | null;
-  housingStock: BuildingListResponse | null;
+  housingStock: HousingStockListResponse | null;
   comment: string | null;
   apartmentNumber: string | null;
   status: EApartmentStatus;
@@ -630,6 +630,7 @@ export interface ArchivesDataGroupValue {
 
   /** @format double */
   value?: number;
+  hasFault?: boolean;
 }
 
 export interface ArchivesDataModel {
