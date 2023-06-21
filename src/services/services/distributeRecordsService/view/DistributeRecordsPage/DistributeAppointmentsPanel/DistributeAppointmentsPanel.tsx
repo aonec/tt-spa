@@ -12,19 +12,22 @@ import {
   TreeSC,
   Wrapper,
 } from './DistributeAppointmentsPanel.styled';
-import { DistributeAppointmentsPanelProps } from './DistributeAppointmentsPanel.types';
-import type { DataNode } from 'antd/es/tree';
+import {
+  AppointmentsIdWithController,
+  DistributeAppointmentsPanelProps,
+} from './DistributeAppointmentsPanel.types';
 import { Input } from 'ui-kit/Input';
 import {
-  getParentNode,
+  countSimilarityPointsForAppointment,
+  getKeysByControllerId,
   prepareAppointmentsToTree,
 } from './DistributeAppointmentsPanel.utils';
-import { countSimilarityPoints } from 'utils/countSimilarityPoints';
 import { WithLoader } from 'ui-kit/shared_components/WithLoader';
 import { Empty } from 'antd';
 import { Button } from 'ui-kit/Button';
 import { getCountText } from 'utils/getCountText';
 import { AppointmentsCountTexts } from './DistributeAppointmentsPanel.constants';
+import _ from 'lodash';
 
 export const DistributeAppointmentsPanel: FC<
   DistributeAppointmentsPanelProps
@@ -35,66 +38,119 @@ export const DistributeAppointmentsPanel: FC<
   isLoadingAppointments,
   handleUnselectDistrict,
   openDistributeAppointmentsModal,
+  controllers,
 }) => {
-  const [expandedKeys, setExpandedKeys] = useState<React.Key[]>([]);
+  const [expandedKeys, setExpandedKeys] = useState<
+    AppointmentsIdWithController[]
+  >([]);
 
   const isAppointmentsExist = appointmentsInDistrict.length !== 0;
 
-  const preparedTreeData = useMemo(
+  const preparedTreeDataByControllers = useMemo(
     () => prepareAppointmentsToTree(appointmentsInDistrict),
     [appointmentsInDistrict],
-  );
-
-  const appointmentsList = useMemo(
-    () =>
-      preparedTreeData.reduce((acc, elem) => {
-        if (elem.children) {
-          return [...acc, ...elem.children];
-        }
-        return acc;
-      }, [] as DataNode[]),
-    [preparedTreeData],
   );
 
   const handleChangeInputValue = useCallback(
     (value: string) => {
       let maxSimilarityPoints = 0;
 
-      const newExpandedKeys = appointmentsList.reduce((acc, item) => {
-        const parent = getParentNode(item.key, preparedTreeData);
+      const appointmentWithSimilarityCount = appointmentsInDistrict.map(
+        (appointment) => {
+          const preparedAppointment = countSimilarityPointsForAppointment(
+            value,
+            appointment,
+          );
 
-        if (!parent?.title) {
-          return acc;
-        }
-
-        const similarityPoints = countSimilarityPoints(
-          value,
-          `${parent.title} ${item.title}`,
-        );
-        if (similarityPoints > 0) {
-          if (similarityPoints > maxSimilarityPoints) {
-            maxSimilarityPoints = similarityPoints;
+          if (preparedAppointment.similarityPoints > maxSimilarityPoints) {
+            maxSimilarityPoints = preparedAppointment.similarityPoints;
           }
 
-          return [...acc, { key: String(parent.title), similarityPoints }];
-        }
-
-        return acc;
-      }, [] as { key: string; similarityPoints: number }[]);
-
-      const preparedNewKeys = newExpandedKeys.reduce(
-        (acc, { key, similarityPoints }) => {
-          if (similarityPoints === maxSimilarityPoints) {
-            return [...acc, key];
-          }
-          return acc;
+          return preparedAppointment;
         },
-        [] as React.Key[],
+      );
+
+      const preparedNewKeys = _.uniq(
+        appointmentWithSimilarityCount.reduce((acc, elem) => {
+          if (elem.similarityPoints === maxSimilarityPoints) {
+            return [...acc, elem];
+          }
+          return acc;
+        }, [] as AppointmentsIdWithController[]),
       );
 
       setExpandedKeys(preparedNewKeys);
     },
-    [appointmentsList, preparedTreeData],
+    [appointmentsInDistrict],
+  );
+
+  const treeList = useMemo(
+    () =>
+      Object.entries(preparedTreeDataByControllers).map(
+        ([controllerId, data]) => {
+          const expKeys = getKeysByControllerId(expandedKeys, controllerId);
+          const checkedKeys = getKeysByControllerId(
+            selectedAppointmentsIds,
+            controllerId,
+          );
+
+          return (
+            <>
+              {controllerId}
+              <TreeSC
+                selectable={false}
+                checkable={true}
+                treeData={data}
+                titleRender={(elem) => {
+                  if (elem.key !== elem.title) {
+                    return elem.title;
+                  }
+                  return (
+                    <RootWrapperTitle>
+                      {elem.title}
+                      <CountWrapper>
+                        Заявки: {(elem.children || []).length}
+                      </CountWrapper>
+                    </RootWrapperTitle>
+                  );
+                }}
+                onCheck={(_, info) => {
+                  const { checkedNodes } = info;
+                  const filteredNodes = checkedNodes.filter((elem) =>
+                    Boolean(elem.key !== elem.title),
+                  );
+
+                  handleSelectAppointments([
+                    ...selectedAppointmentsIds.filter(
+                      (elem) => elem.controllerId !== controllerId,
+                    ),
+                    ...filteredNodes.map((elem) => ({
+                      id: String(elem.key),
+                      controllerId,
+                    })),
+                  ]);
+                }}
+                onExpand={(keys) =>
+                  setExpandedKeys((prev) => [
+                    ...prev.filter(
+                      (elem) => elem.controllerId !== controllerId,
+                    ),
+                    ...keys.map((id) => ({ id, controllerId })),
+                  ])
+                }
+                expandedKeys={expKeys}
+                checkedKeys={checkedKeys}
+              />
+            </>
+          );
+        },
+      ),
+    [
+      preparedTreeDataByControllers,
+      expandedKeys,
+      handleSelectAppointments,
+      selectedAppointmentsIds,
+    ],
   );
 
   return (
@@ -117,9 +173,7 @@ export const DistributeAppointmentsPanel: FC<
                 <ListHeaderWrapper>
                   <SelectAllText
                     onClick={() =>
-                      handleSelectAppointments(
-                        appointmentsList.map((elem) => String(elem.key)),
-                      )
+                      handleSelectAppointments(appointmentsInDistrict)
                     }
                   >
                     Выбрать все ({appointmentsInDistrict.length})
@@ -129,39 +183,7 @@ export const DistributeAppointmentsPanel: FC<
                   </CancelAllText>
                 </ListHeaderWrapper>
               </HeaderWrapper>
-              <ContentWrapper>
-                <TreeSC
-                  selectable={false}
-                  checkable={true}
-                  treeData={preparedTreeData}
-                  titleRender={(elem) => {
-                    if (elem.key !== elem.title) {
-                      return elem.title;
-                    }
-                    return (
-                      <RootWrapperTitle>
-                        {elem.title}
-                        <CountWrapper>
-                          Заявки: {(elem.children || []).length}
-                        </CountWrapper>
-                      </RootWrapperTitle>
-                    );
-                  }}
-                  onCheck={(_, info) => {
-                    const { checkedNodes } = info;
-                    const filteredNodes = checkedNodes.filter((elem) =>
-                      Boolean(elem.key !== elem.title),
-                    );
-
-                    handleSelectAppointments(
-                      filteredNodes.map((elem) => String(elem.key)),
-                    );
-                  }}
-                  onExpand={setExpandedKeys}
-                  expandedKeys={expandedKeys}
-                  checkedKeys={selectedAppointmentsIds}
-                />
-              </ContentWrapper>
+              <ContentWrapper>{treeList}</ContentWrapper>
               <Footer>
                 <Button
                   type="ghost"
