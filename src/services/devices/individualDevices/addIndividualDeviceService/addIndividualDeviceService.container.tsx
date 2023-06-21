@@ -3,9 +3,9 @@ import React from 'react';
 import { addIndividualDeviceService } from './addIndividualDeviceService.model';
 import { AddIndividualDevicePage } from './AddIndividualDevicePage';
 import { useParams } from 'react-router-dom';
+import { PreviewModal } from './AddIndividualDevicePage/PreviewModal/PreviewModal';
 
 const { inputs, outputs, gates } = addIndividualDeviceService;
-
 const { ApartmentGate } = gates;
 
 export const AddIndividualDeviceContainer = () => {
@@ -26,7 +26,10 @@ export const AddIndividualDeviceContainer = () => {
     inputs.handleSubmitDocumentStage,
   ]);
 
-  console.log(documents)
+  const [isModalOpen, handleCloseModal] = useUnit([
+    outputs.$isModalOpen,
+    inputs.handleCloseModal,
+  ]);
 
   const apartment = useUnit(outputs.$apartment);
   const mountPlaces = useUnit(outputs.$individualDeviceMountPlaces);
@@ -36,6 +39,7 @@ export const AddIndividualDeviceContainer = () => {
   const isFetchSerialNumberLoading = useUnit(
     outputs.$isFetchSerialNumberLoading,
   );
+  const isLoading = useUnit(outputs.$isLoading);
 
   const handleFetchSerialNumberForCheck = useUnit(
     inputs.handleFetchSerialNumberForCheck,
@@ -50,6 +54,14 @@ export const AddIndividualDeviceContainer = () => {
   return (
     <>
       {<ApartmentGate id={idFromParams} />}
+      <PreviewModal
+        isModalOpen={isModalOpen}
+        handleCloseModal={handleCloseModal}
+        isLoading={isLoading}
+        formData={formData}
+        documents={documents}
+        mountPlaces={mountPlaces}
+      />
       <AddIndividualDevicePage
         stageNumber={stageNumber}
         handleGoPrevStage={handleGoPrevStage}

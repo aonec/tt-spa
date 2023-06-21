@@ -1,31 +1,32 @@
 import React, { FC } from 'react';
 import { FormModal } from 'ui-kit/Modals/FormModal';
+import { PreviewModalForm } from './PreviewModalForm';
+import { PreviewModalProps } from './PreviewModal.types';
 
-const formId = 'new-heating-station-form';
+const formId = 'individual-device-preview';
 
-export const PreviewModal: FC<ChangeStatusEmployeeModalProps> = ({
+export const PreviewModal: FC<PreviewModalProps> = ({
   handleCloseModal,
   isModalOpen,
   isLoading,
+  documents,
+  formData,
+  mountPlaces,
 }) => {
-  const PreviewModalForm: FC = ({}) => {
-    return <></>;
-  };
-
   return (
     <FormModal
-      title="Статус сотрудника"
+      title="Добавление нового прибора"
+      formId={formId}
       visible={isModalOpen}
       onCancel={handleCloseModal}
       loading={isLoading}
       form={
         <PreviewModalForm
-          formId={formId}
-          handleUpdateStatus={handleUpdateStatus}
-          employeeStatus={employeeStatus}
+          documents={documents}
+          formData={formData}
+          mountPlaces={mountPlaces}
         />
       }
-      formId={formId}
     />
   );
 };

@@ -15,6 +15,7 @@ const handleGoPrevStage = domain.createEvent();
 const handleSubmitForm = domain.createEvent<CreateIndividualDeviceRequest>();
 const handleSubmitDocumentStage = domain.createEvent<DocumentStageForm>();
 const handleCreateDevice = domain.createEvent();
+const handleCloseModal = domain.createEvent();
 
 const createIndividualDeviceFx = domain.createEffect<
   CreateIndividualDeviceRequest,
@@ -23,9 +24,8 @@ const createIndividualDeviceFx = domain.createEffect<
 >(createIndividualDevice);
 
 const $stageNumber = domain
-  .createStore<number>(2)
+  .createStore<number>(1)
   .on(handleSubmitForm, (prev) => prev + 1)
-  .on(handleSubmitDocumentStage, (prev) => prev + 1)
   .on(handleGoPrevStage, (prev) => prev - 1);
 
 const $formData = domain
@@ -37,6 +37,11 @@ const $formData = domain
 const $documents = domain
   .createStore<DocumentStageForm | null>(null)
   .on(handleSubmitDocumentStage, (_, docs) => docs);
+
+const $isModalOpen = domain
+  .createStore<boolean>(false)
+  .on(handleSubmitDocumentStage, () => true)
+  .on(handleCloseModal, () => false);
 
 sample({
   clock: handleCreateDevice,
@@ -54,6 +59,8 @@ sample({
   target: createIndividualDeviceFx,
 });
 
+const $isLoading = createIndividualDeviceFx.pending;
+
 export const addIndividualDeviceService = {
   inputs: {
     handleGoPrevStage,
@@ -63,6 +70,7 @@ export const addIndividualDeviceService = {
     handleCreateDevice,
     handleSubmitForm,
     handleSubmitDocumentStage,
+    handleCloseModal,
   },
   outputs: {
     $stageNumber,
@@ -79,6 +87,8 @@ export const addIndividualDeviceService = {
       displayIndividualDeviceAndNamesService.outputs.$serialNumberForChecking,
     $formData,
     $documents,
+    $isModalOpen,
+    $isLoading,
   },
   gates: {
     ApartmentGate: apartmentService.gates.ApartmentGate,
