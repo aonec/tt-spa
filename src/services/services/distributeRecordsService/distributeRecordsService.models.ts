@@ -6,6 +6,7 @@ import {
   districtsQuery,
   individualSealControllersQuery,
   nearestAppointmentsDateQuery,
+  setAppointmentsToControllerMutation,
 } from './distributeRecordsService.api';
 import moment from 'moment';
 import {
@@ -16,6 +17,7 @@ import {
   createControllerService,
   createIndividualSealControllerMutation,
 } from './createControllerService';
+import { message } from 'antd';
 
 const domain = createDomain('distributeRecords');
 
@@ -62,6 +64,15 @@ sample({
     Boolean(data.districtId),
   target: districtAppointmentsQuery.start,
 });
+
+forward({
+  from: setAppointmentsToControllerMutation.finished.success,
+  to: [closeDistributeAppointmentsModal],
+});
+
+setAppointmentsToControllerMutation.finished.success.watch(() =>
+  message.success('Записи успешно распределены'),
+);
 
 const $getDistrictsAppointmnetsCounting = combine(
   districtsQuery.$data,

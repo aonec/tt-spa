@@ -1,8 +1,9 @@
 import { axios } from '01/axios';
-import { createQuery } from '@farfetched/core';
+import { createMutation, createQuery } from '@farfetched/core';
 import {
   AppointmentCounterResponse,
   AppointmentResponse,
+  AppointmentsSetRequest,
   ControllerResponse,
   DistrictResponse,
   TotalAppointmentCounterResponse,
@@ -69,3 +70,8 @@ export const individualSealControllersQuery = createQuery<
 >({
   handler: () => axios.get('IndividualSeal/Controllers'),
 });
+
+export const setAppointmentsToControllerMutation = createMutation<
+  AppointmentsSetRequest,
+  void
+>({ handler: (data) => axios.post('IndividualSeal/Appointments/Set', data) });

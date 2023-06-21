@@ -1,4 +1,4 @@
-import { ControllerResponse } from 'myApi';
+import { AppointmentsSetRequest, ControllerResponse } from 'myApi';
 
 export type Props = {
   isModalOpen: boolean;
@@ -6,4 +6,7 @@ export type Props = {
   appointmentDate: string | null;
   controllers: ControllerResponse[] | null;
   openCreateControllerModal: () => void;
+  setAppointmentsToController: (payload: AppointmentsSetRequest) => void;
+  selectedAppointmentsIds: string[];
+  isLoadingDistributeAppointments: boolean;
 };

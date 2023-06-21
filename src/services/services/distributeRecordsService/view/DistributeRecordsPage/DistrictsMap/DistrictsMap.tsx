@@ -68,21 +68,27 @@ export const DistrictsMap: FC<Props> = ({
 
   const preparedAppointments = useMemo(
     () =>
-      prepareAppointments(appointmentsInDistrict || []).map((elem) => ({
-        placemarkIconLink:
+      prepareAppointments(appointmentsInDistrict || []).map((elem) => {
+        const isIntersection =
           intersection(
             elem.appointments.map((elem) => elem.id),
             selectedAppointmentsIds,
-          ).length !== 0
-            ? warningPlacemark
-            : warningInactivePlacemark,
-        coords: [elem.address.latitude || 0, elem.address.longitude || 0] as [
-          number,
-          number,
-        ],
-        onClick: () => handleSelectHousingStock(elem),
-        count: elem.appointments.length,
-      })),
+          ).length !== 0;
+
+        const placemarkIconLink = isIntersection
+          ? warningPlacemark
+          : warningInactivePlacemark;
+
+        return {
+          placemarkIconLink,
+          coords: [elem.address.latitude || 0, elem.address.longitude || 0] as [
+            number,
+            number,
+          ],
+          onClick: () => handleSelectHousingStock(elem),
+          count: elem.appointments.length,
+        };
+      }),
     [appointmentsInDistrict, handleSelectHousingStock, selectedAppointmentsIds],
   );
 

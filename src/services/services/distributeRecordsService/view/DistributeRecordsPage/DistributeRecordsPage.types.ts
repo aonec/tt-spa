@@ -1,5 +1,6 @@
 import {
   AppointmentResponse,
+  AppointmentsSetRequest,
   ControllerResponse,
   DistrictResponse,
 } from 'myApi';
@@ -25,4 +26,6 @@ export type Props = {
   isDistributeAppointmentsModalOpen: boolean;
   controllers: ControllerResponse[] | null;
   openCreateControllerModal: () => void;
+  setAppointmentsToController: (payload: AppointmentsSetRequest) => void;
+  isLoadingDistributeAppointments: boolean;
 };

@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useCallback, useState } from 'react';
 import moment from 'moment';
 import { Props } from './DistributeAppointmentsModal.types';
 import { FormModal } from 'ui-kit/Modals/FormModal';
@@ -18,23 +18,44 @@ export const DistributeAppointmentsModal: FC<Props> = ({
   appointmentDate,
   controllers,
   openCreateControllerModal,
+  setAppointmentsToController,
+  selectedAppointmentsIds,
+  isLoadingDistributeAppointments,
 }) => {
+  const [controllerId, setControllerId] = useState<string | null>(null);
+
+  const handleSubmit = useCallback(() => {
+    if (!controllerId) return;
+
+    setAppointmentsToController({
+      controllerId,
+      appointmentIds: selectedAppointmentsIds,
+    });
+  }, [controllerId, selectedAppointmentsIds, setAppointmentsToController]);
+
   return (
     <>
       <CreateControllerContainer />
       <FormModal
-        title="Распределение записей опломбировки"
-        visible={isModalOpen}
         formId="distribute-appointmets-form"
-        onCancel={handleCloseModal}
+        title="Распределение записей опломбировки"
         submitBtnText="Выдать задание"
+        visible={isModalOpen}
+        disabled={!controllerId}
+        onCancel={handleCloseModal}
+        onSubmit={handleSubmit}
+        loading={isLoadingDistributeAppointments}
         form={
           <Wrapper>
             <FormItem label="Контролёр">
-              <Select placeholder="Выберите">
+              <Select
+                placeholder="Выберите"
+                value={controllerId || undefined}
+                onChange={(value) => setControllerId(value as string)}
+              >
                 {controllers?.map((elem) => (
                   <Select.Option key={elem.id} value={elem.id}>
-                    {elem.firstName} {elem.lastName}
+                    {elem.firstName} {elem.lastName} {elem.middleName}
                   </Select.Option>
                 ))}
               </Select>

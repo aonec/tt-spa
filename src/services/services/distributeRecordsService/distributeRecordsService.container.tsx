@@ -1,15 +1,16 @@
 import React, { useCallback } from 'react';
 import { useUnit } from 'effector-react';
-import { DistributeRecordsPage } from './view/DistributeRecordsPage';
+import { intersection } from 'lodash';
 import {
   appointmentsCountingQuery,
   districtAppointmentsQuery,
   districtsQuery,
   individualSealControllersQuery,
+  setAppointmentsToControllerMutation,
 } from './distributeRecordsService.api';
 import { distributeRecordsService } from './distributeRecordsService.models';
+import { DistributeRecordsPage } from './view/DistributeRecordsPage';
 import { AppointmentsByHousingStocks } from './view/DistributeRecordsPage/DistrictsMap/DistrictsMap.types';
-import { intersection } from 'lodash';
 
 const {
   inputs,
@@ -27,6 +28,11 @@ export const DistributeRecordsContainer = () => {
   const { data: appointmentsCounting } = useUnit(appointmentsCountingQuery);
 
   const { data: controllers } = useUnit(individualSealControllersQuery);
+
+  const {
+    start: setAppointmentsToController,
+    pending: isLoadingDistributeAppointments,
+  } = useUnit(setAppointmentsToControllerMutation);
 
   const handleSelectDistrict = useUnit(inputs.handleSelectDistrict);
   const handleUnselectDistrict = useUnit(inputs.handleUnselectDistrict);
@@ -99,6 +105,8 @@ export const DistributeRecordsContainer = () => {
         isDistributeAppointmentsModalOpen={isDistributeAppointmentsModalOpen}
         controllers={controllers}
         openCreateControllerModal={openCreateControllerModal}
+        setAppointmentsToController={setAppointmentsToController}
+        isLoadingDistributeAppointments={isLoadingDistributeAppointments}
       />
     </>
   );
