@@ -14,6 +14,7 @@ import { findPolygonCenter } from 'utils/findPolygonCenter';
 import { prepareAppointments } from './DistrictsMap.utils';
 import warningPlacemark from 'hooks/ymaps/placemarks/warningPlacemark.svg';
 import warningInactivePlacemark from 'hooks/ymaps/placemarks/warningInactivePlacemark.svg';
+import warningAvtivePlacemark from 'hooks/ymaps/placemarks/warningActivePlacemark.svg';
 
 import { DistributeAppointmentsPanel } from '../DistributeAppointmentsPanel';
 
@@ -75,8 +76,14 @@ export const DistrictsMap: FC<Props> = ({
             selectedAppointmentsIds,
           ).length !== 0;
 
+        const isHouseActive = elem.appointments.some((elem) =>
+          Boolean(elem.controllerId),
+        );
+
         const placemarkIconLink = isIntersection
           ? warningPlacemark
+          : isHouseActive
+          ? warningAvtivePlacemark
           : warningInactivePlacemark;
 
         return {

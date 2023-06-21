@@ -74,6 +74,14 @@ setAppointmentsToControllerMutation.finished.success.watch(() =>
   message.success('Записи успешно распределены'),
 );
 
+sample({
+  clock: setAppointmentsToControllerMutation.finished.success,
+  source: $getAppointmentsRequestPayload,
+  filter: (data): data is GetDistrictAppointmentsRequestPayload =>
+    Boolean(data.districtId),
+  target: districtAppointmentsQuery.start,
+});
+
 const $getDistrictsAppointmnetsCounting = combine(
   districtsQuery.$data,
   $appointmentDate,

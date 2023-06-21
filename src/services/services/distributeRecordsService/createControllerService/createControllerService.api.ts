@@ -4,7 +4,7 @@ import { ControllerCreateRequest } from 'myApi';
 
 export const createIndividualSealControllerMutation = createMutation<
   ControllerCreateRequest,
-  void
+  string
 >({
   handler: (data) => axios.post('IndividualSeal/Controllers', data),
 });

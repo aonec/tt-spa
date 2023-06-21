@@ -1,4 +1,4 @@
-import React, { FC, useCallback, useState } from 'react';
+import React, { FC, useCallback, useEffect, useState } from 'react';
 import moment from 'moment';
 import { Props } from './DistributeAppointmentsModal.types';
 import { FormModal } from 'ui-kit/Modals/FormModal';
@@ -10,7 +10,10 @@ import {
 } from './DistributeAppointmentsModal.styled';
 import { DatePicker } from 'ui-kit/DatePicker';
 import { LinkButton } from 'ui-kit/shared_components/LinkButton';
-import { CreateControllerContainer } from 'services/services/distributeRecordsService/createControllerService';
+import {
+  CreateControllerContainer,
+  createIndividualSealControllerMutation,
+} from 'services/services/distributeRecordsService/createControllerService';
 
 export const DistributeAppointmentsModal: FC<Props> = ({
   isModalOpen,
@@ -23,6 +26,12 @@ export const DistributeAppointmentsModal: FC<Props> = ({
   isLoadingDistributeAppointments,
 }) => {
   const [controllerId, setControllerId] = useState<string | null>(null);
+
+  useEffect(() => {
+    return createIndividualSealControllerMutation.finished.success.watch(
+      ({ result }) => setControllerId(result),
+    ).unsubscribe;
+  }, []);
 
   const handleSubmit = useCallback(() => {
     if (!controllerId) return;
