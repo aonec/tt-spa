@@ -38,6 +38,7 @@ export const DistributeRecordsContainer = () => {
   const closeDistributeAppointmentsModal = useUnit(
     inputs.closeDistributeAppointmentsModal,
   );
+  const openCreateControllerModal = useUnit(inputs.openCreateControllerModal);
 
   const selectedDistrict = useUnit(outputs.$selectedDistrict);
   const appointmentDate = useUnit(outputs.$appointmentDate);
@@ -97,6 +98,7 @@ export const DistributeRecordsContainer = () => {
         closeDistributeAppointmentsModal={closeDistributeAppointmentsModal}
         isDistributeAppointmentsModalOpen={isDistributeAppointmentsModalOpen}
         controllers={controllers}
+        openCreateControllerModal={openCreateControllerModal}
       />
     </>
   );

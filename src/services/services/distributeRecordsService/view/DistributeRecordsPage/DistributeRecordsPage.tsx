@@ -26,6 +26,7 @@ export const DistributeRecordsPage: FC<Props> = ({
   openDistributeAppointmentsModal,
   closeDistributeAppointmentsModal,
   controllers,
+  openCreateControllerModal,
 }) => {
   return (
     <Wrapper>
@@ -34,6 +35,7 @@ export const DistributeRecordsPage: FC<Props> = ({
         handleCloseModal={closeDistributeAppointmentsModal}
         appointmentDate={appointmentDate}
         controllers={controllers}
+        openCreateControllerModal={openCreateControllerModal}
       />
       <FiltrationWrapper>
         <AddressSearchContainer fields={[SearchFieldType.City]} />

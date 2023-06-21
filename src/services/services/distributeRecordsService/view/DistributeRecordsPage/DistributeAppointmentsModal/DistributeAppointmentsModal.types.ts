@@ -5,4 +5,5 @@ export type Props = {
   handleCloseModal: () => void;
   appointmentDate: string | null;
   controllers: ControllerResponse[] | null;
+  openCreateControllerModal: () => void;
 };

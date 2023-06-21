@@ -12,6 +12,10 @@ import {
   GetDistrictAppointmentsRequestPayload,
   GetDistrictsAppointmentsCountingRequestPayload,
 } from './distributeRecordsService.types';
+import {
+  createControllerService,
+  createIndividualSealControllerMutation,
+} from './createControllerService';
 
 const domain = createDomain('distributeRecords');
 
@@ -85,6 +89,11 @@ forward({
 });
 
 forward({
+  from: createIndividualSealControllerMutation.finished.success,
+  to: individualSealControllersQuery.start,
+});
+
+forward({
   from: [DistributeRecordsGate.close, handleUnselectDistrict],
   to: districtAppointmentsQuery.reset,
 });
@@ -97,6 +106,8 @@ export const distributeRecordsService = {
     selectAppointments,
     openDistributeAppointmentsModal,
     closeDistributeAppointmentsModal,
+    openCreateControllerModal:
+      createControllerService.inputs.openCreateControllerModal,
   },
   outputs: {
     $selectedDistrict,

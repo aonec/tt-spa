@@ -24,4 +24,5 @@ export type Props = {
   closeDistributeAppointmentsModal: () => void;
   isDistributeAppointmentsModalOpen: boolean;
   controllers: ControllerResponse[] | null;
+  openCreateControllerModal: () => void;
 };
