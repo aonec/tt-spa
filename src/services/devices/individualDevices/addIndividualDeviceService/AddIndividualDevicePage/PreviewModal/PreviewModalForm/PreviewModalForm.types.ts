@@ -15,3 +15,9 @@ export type ILine = {
   name: string;
   value: ReactNode;
 };
+
+export enum EIndividualDeviceDocumentType {
+  DeviceAcceptanceAct = 'completedWorks',
+  DevicePassport = 'devicePassport',
+  DeviceTestCertificates = 'deviceCheck',
+}

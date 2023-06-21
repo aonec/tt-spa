@@ -19,6 +19,7 @@ export const PreviewModal: FC<PreviewModalProps> = ({
       formId={formId}
       visible={isModalOpen}
       onCancel={handleCloseModal}
+      submitBtnText="Создать прибор"
       loading={isLoading}
       form={
         <PreviewModalForm

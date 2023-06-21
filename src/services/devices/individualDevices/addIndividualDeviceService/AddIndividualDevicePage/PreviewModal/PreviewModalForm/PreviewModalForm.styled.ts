@@ -41,20 +41,24 @@ export const Line = styled.div`
 export const StyledFile = styled.div`
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  gap: 16px;
   background-color: #272f5a08;
-  border-radius: 4px;
+  border-radius: 6px;
   margin-bottom: 6px;
   padding: 15px;
-
-  .File__name {
-    font-size: 15px;
-    font-weight: 600;
-    letter-spacing: 0em;
-    color: #272f5ab2;
-  }
 `;
 
 export const Title = styled.h3`
   margin-bottom: 15px;
+`;
+
+export const DocumentTitle = styled.h3`
+  margin-top: 30px;
+  margin-bottom: 16px;
+`;
+
+export const DocName = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 6px;
 `;

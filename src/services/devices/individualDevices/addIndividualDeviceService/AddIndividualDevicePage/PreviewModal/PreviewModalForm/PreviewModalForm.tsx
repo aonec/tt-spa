@@ -1,20 +1,27 @@
 import React, { FC } from 'react';
 import {
+  DocName,
+  DocumentTitle,
   LeftValue,
+  Line,
   ReadingValue,
   RightValue,
   StyledFile,
   StyledReadingsValues,
   Title,
 } from './PreviewModalForm.styled';
-import { ILine, PreviewModalFormProps } from './PreviewModalForm.types';
+import {
+  EIndividualDeviceDocumentType,
+  ILine,
+  PreviewModalFormProps,
+} from './PreviewModalForm.types';
 import { ResourceInfo } from 'ui-kit/shared_components/ResourceInfo';
 import { getDate, getMountPlaceById, toArray } from './PreviewModalForm.utils';
 import { getInputBorderColor } from 'services/meters/individualDeviceMetersInputService/view/MetersInputsBlock/MetersInputsBlock.styled';
 import { BaseIndividualDeviceReadingsCreateRequest } from 'myApi';
-import { Line } from 'victory';
 import { Document } from 'ui-kit/DocumentsService';
 import { FileIcon } from 'ui-kit/icons';
+import { IndividualDeviceDocumentsDisctionary } from './PreviewModalForm.constants';
 
 export const PreviewModalForm: FC<PreviewModalFormProps> = ({
   documents,
@@ -46,8 +53,6 @@ export const PreviewModalForm: FC<PreviewModalFormProps> = ({
       </StyledReadingsValues>
     );
   };
-
-  const res = { value1: formData.startupReadings.value1 };
 
   const lines: ILine[] = [
     {
@@ -115,12 +120,23 @@ export const PreviewModalForm: FC<PreviewModalFormProps> = ({
     </Line>
   );
 
-  const renderFile = (document: Document[]) => (
+  const renderFile = (doc: [EIndividualDeviceDocumentType, Document[]]) => (
     <StyledFile>
-      <FileIcon />
-      {document[0].name}
+      {IndividualDeviceDocumentsDisctionary[doc[0]]} :
+      <DocName>
+        <FileIcon />
+        {doc[1][0].name}
+      </DocName>
     </StyledFile>
   );
+
+  const documentsArr =
+    documents &&
+    ((Object.entries(documents).filter((doc) => Boolean(doc[1])) || []) as
+      | [EIndividualDeviceDocumentType, Document[]][]
+      | null);
+
+  const isHaveDocument = Boolean(documentsArr?.length);
 
   return (
     <>
@@ -128,9 +144,13 @@ export const PreviewModalForm: FC<PreviewModalFormProps> = ({
 
       {lines.map(renderLine)}
 
-      {/* { documents?.length && <Title>2. Документы</Title>}
+      {isHaveDocument && (
+        <>
+          <DocumentTitle>2. Документы</DocumentTitle>
 
-      {files.map(renderFile)} */}
+          {documentsArr?.map(renderFile)}
+        </>
+      )}
     </>
   );
 };
