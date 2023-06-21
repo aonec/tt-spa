@@ -3,7 +3,6 @@ import { useEvent, useStore } from 'effector-react';
 import { useParams } from 'react-router-dom';
 import { ETaskEngineeringElement, TaskGroupingFilter } from 'myApi';
 import { exportTasksListService } from '../exportTasksListService';
-import { TaskTypesGate } from '../taskTypesService/taskTypesService.model';
 import { tasksProfileService } from './tasksProfileService.model';
 import {
   getAddressObject,
@@ -14,6 +13,7 @@ import { TaskType } from './view/TasksListItem/TasksListItem.types';
 import { TasksProfile } from './view/TasksProfile';
 import queryString from 'query-string';
 import { addressSearchService } from 'services/addressSearchService/addressSearchService.models';
+import { TaskTypesGate } from '../taskTypesService/taskTypesService.model';
 
 const { ExistingCitiesGate } = addressSearchService.gates;
 const { inputs, outputs, gates } = tasksProfileService;
@@ -145,8 +145,8 @@ export const TasksProfileContainer = () => {
           deviceId={preparedDeviceId}
         />
       )}
-      <TaskTypesGate />
       <ExistingCitiesGate />
+      <TaskTypesGate />
       <TasksProfile
         handleExportTasksList={() => handleExportTasksList()}
         grouptype={grouptype}
