@@ -21,6 +21,7 @@ export const DocumentsUploadContainer: FC<DocumentsUploadContainerProps> = ({
   label,
   type,
   componentType = DocumentsUploadComponentType.DragAndDrop,
+  setIsLoading2
 }) => {
   if (!documents) {
     documents = [];
@@ -36,6 +37,7 @@ export const DocumentsUploadContainer: FC<DocumentsUploadContainerProps> = ({
   const { handleFile, isLoading, removeDocument } = useDocumentsUpload(
     documents,
     onChange,
+    setIsLoading2
   );
 
   const isMaxDocuments = documents.length >= max;

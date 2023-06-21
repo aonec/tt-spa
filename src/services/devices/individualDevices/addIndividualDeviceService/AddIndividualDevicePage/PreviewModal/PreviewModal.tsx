@@ -12,6 +12,7 @@ export const PreviewModal: FC<PreviewModalProps> = ({
   documents,
   formData,
   mountPlaces,
+  handleCreateDevice,
 }) => {
   return (
     <FormModal
@@ -20,6 +21,7 @@ export const PreviewModal: FC<PreviewModalProps> = ({
       visible={isModalOpen}
       onCancel={handleCloseModal}
       submitBtnText="Создать прибор"
+      onSubmit={handleCreateDevice}
       loading={isLoading}
       form={
         <PreviewModalForm

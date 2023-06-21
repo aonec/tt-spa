@@ -1,6 +1,6 @@
 import { message } from 'antd';
 import { EDocumentType } from 'myApi';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { uploadDocument } from './DocumentsService.api';
 import { Document } from './DocumentsService.types';
 import { EffectFailDataAxiosError } from 'types';
@@ -8,8 +8,11 @@ import { EffectFailDataAxiosError } from 'types';
 export function useDocumentsUpload(
   documents: Document[],
   onChange: (documents: Document[]) => void,
+  setIsLoading2?: React.Dispatch<React.SetStateAction<boolean>>,
 ) {
   const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => setIsLoading2 && setIsLoading2(isLoading), [isLoading]);
 
   async function handleFile(file: File, type?: EDocumentType) {
     setIsLoading(true);

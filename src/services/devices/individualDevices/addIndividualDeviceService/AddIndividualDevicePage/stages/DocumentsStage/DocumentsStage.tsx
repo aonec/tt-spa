@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useState } from 'react';
 import { DocumentStageForm, DocumentsStageProps } from './DocumentsStage.types';
 import {
   DocumentsUploadWrapper,
@@ -6,10 +6,9 @@ import {
   FormHeader,
 } from './DocumentsStage.styled';
 import { Document, DocumentsUploadContainer } from 'ui-kit/DocumentsService';
-import { CreateIndividualDeviceRequest, EDocumentType } from 'myApi';
+import { EDocumentType } from 'myApi';
 import { Button } from 'ui-kit/Button';
 import { useFormik } from 'formik';
-import _ from 'lodash';
 
 export const DocumentsStage: FC<DocumentsStageProps> = ({
   handleGoPrevStage,
@@ -26,11 +25,13 @@ export const DocumentsStage: FC<DocumentsStageProps> = ({
     validateOnChange: false,
     enableReinitialize: true,
     onSubmit: (data) => {
-   
-
       handleSubmitDocumentStage(data);
     },
   });
+
+  const [isLoading, setIsLoading] = useState(false);
+
+  console.log(isLoading);
 
   return (
     <>
@@ -44,6 +45,7 @@ export const DocumentsStage: FC<DocumentsStageProps> = ({
           documents={values.completedWorks}
           onChange={(value) => setFieldValue('completedWorks', value)}
           type={EDocumentType.DeviceAcceptanceAct}
+          setIsLoading2={setIsLoading}
         />
         <DocumentsUploadContainer
           uniqId="create-individual-device-passport"
@@ -52,6 +54,7 @@ export const DocumentsStage: FC<DocumentsStageProps> = ({
           documents={values.devicePassport}
           onChange={(value) => setFieldValue('devicePassport', value)}
           type={EDocumentType.DevicePassport}
+          setIsLoading2={setIsLoading}
         />
         <DocumentsUploadContainer
           uniqId="create-individual-device-check"
@@ -60,6 +63,7 @@ export const DocumentsStage: FC<DocumentsStageProps> = ({
           documents={values.deviceCheck}
           onChange={(value) => setFieldValue('deviceCheck', value)}
           type={EDocumentType.DeviceTestCertificates}
+          setIsLoading2={setIsLoading}
         />
       </DocumentsUploadWrapper>
 
@@ -67,7 +71,9 @@ export const DocumentsStage: FC<DocumentsStageProps> = ({
         <Button type="ghost" onClick={handleGoPrevStage}>
           Назад
         </Button>
-        <Button onClick={() => handleSubmit()}>Сохранить изменения</Button>
+        <Button disabled={isLoading} onClick={() => handleSubmit()}>
+          Сохранить изменения
+        </Button>
       </Footer>
     </>
   );

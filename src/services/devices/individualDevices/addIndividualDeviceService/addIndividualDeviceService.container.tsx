@@ -61,6 +61,7 @@ export const AddIndividualDeviceContainer = () => {
         formData={formData}
         documents={documents}
         mountPlaces={mountPlaces}
+        handleCreateDevice={handleCreateDevice}
       />
       <AddIndividualDevicePage
         stageNumber={stageNumber}

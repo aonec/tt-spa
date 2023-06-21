@@ -11,4 +11,5 @@ export type PreviewModalProps = {
   formData: CreateIndividualDeviceRequest | null;
   documents: DocumentStageForm | null;
   mountPlaces: IndividualDeviceMountPlaceListResponse[] | null;
+  handleCreateDevice: () => void;
 };
