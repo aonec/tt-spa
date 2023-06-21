@@ -4,6 +4,7 @@ import { SealActionType } from './sealService.types';
 import { ApartmentSealContainer } from '../apartmentSealService';
 import { SealActionSelectContainer } from '../sealActionSelectService';
 import { DistributeRecordsContainer } from '../distributeRecordsService';
+import { AppointmentsJournalContainer } from '../appointmentsJournal';
 
 export const SealContainer = () => {
   const { section } = useParams<{ section: SealActionType }>();
@@ -12,6 +13,7 @@ export const SealContainer = () => {
     [SealActionType.Select]: SealActionSelectContainer,
     [SealActionType.Apartment]: ApartmentSealContainer,
     [SealActionType.DistributeRecords]: DistributeRecordsContainer,
+    [SealActionType.AppointmentsJournal]: AppointmentsJournalContainer,
   };
 
   const Component = componentsDictionary[section];
