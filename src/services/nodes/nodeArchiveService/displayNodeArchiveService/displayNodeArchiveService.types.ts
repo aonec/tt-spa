@@ -5,7 +5,7 @@ export type NodeArchiveDataRow = {
   dateTime: string;
   values: {
     text: string;
-    doubleValue: number;
+    doubleValue: number | null;
   }[];
 };
 
@@ -15,6 +15,18 @@ export type NodeArchiveData = {
     group: string;
   }[];
   rows: NodeArchiveDataRow[];
+};
+
+export type NodeArchivePreparedDataRow = NodeArchiveDataRow & {
+  isFault: boolean;
+};
+
+export type NodeArchivePreparedData = {
+  columns: {
+    text: string;
+    group: string;
+  }[];
+  rows: NodeArchivePreparedDataRow[];
 };
 
 export type GetNodeArchiveDataRequestParams = {

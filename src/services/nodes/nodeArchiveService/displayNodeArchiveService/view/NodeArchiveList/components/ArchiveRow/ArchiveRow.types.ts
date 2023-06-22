@@ -1,6 +1,6 @@
-import { NodeArchiveDataRow } from '../../../../displayNodeArchiveService.types';
+import { NodeArchivePreparedDataRow } from '../../../../displayNodeArchiveService.types';
 
 export type ArchiveRowProps = {
-  row: NodeArchiveDataRow;
+  row: NodeArchivePreparedDataRow;
   columnsCount: number;
 };
