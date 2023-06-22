@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { FC } from 'react';
 import { DocumentStageForm, DocumentsStageProps } from './DocumentsStage.types';
 import {
   DocumentsUploadWrapper,
@@ -14,6 +14,7 @@ export const DocumentsStage: FC<DocumentsStageProps> = ({
   handleGoPrevStage,
   documents,
   handleSubmitDocumentStage,
+  isDocumentUploadLoading,
 }) => {
   const { values, setFieldValue, handleSubmit } = useFormik<DocumentStageForm>({
     initialValues: {
@@ -29,10 +30,6 @@ export const DocumentsStage: FC<DocumentsStageProps> = ({
     },
   });
 
-  const [isLoading, setIsLoading] = useState(false);
-
-  console.log(isLoading);
-
   return (
     <>
       <FormHeader>Документы</FormHeader>
@@ -45,7 +42,6 @@ export const DocumentsStage: FC<DocumentsStageProps> = ({
           documents={values.completedWorks}
           onChange={(value) => setFieldValue('completedWorks', value)}
           type={EDocumentType.DeviceAcceptanceAct}
-          setIsLoading2={setIsLoading}
         />
         <DocumentsUploadContainer
           uniqId="create-individual-device-passport"
@@ -54,7 +50,6 @@ export const DocumentsStage: FC<DocumentsStageProps> = ({
           documents={values.devicePassport}
           onChange={(value) => setFieldValue('devicePassport', value)}
           type={EDocumentType.DevicePassport}
-          setIsLoading2={setIsLoading}
         />
         <DocumentsUploadContainer
           uniqId="create-individual-device-check"
@@ -63,7 +58,6 @@ export const DocumentsStage: FC<DocumentsStageProps> = ({
           documents={values.deviceCheck}
           onChange={(value) => setFieldValue('deviceCheck', value)}
           type={EDocumentType.DeviceTestCertificates}
-          setIsLoading2={setIsLoading}
         />
       </DocumentsUploadWrapper>
 
@@ -71,7 +65,10 @@ export const DocumentsStage: FC<DocumentsStageProps> = ({
         <Button type="ghost" onClick={handleGoPrevStage}>
           Назад
         </Button>
-        <Button disabled={isLoading} onClick={() => handleSubmit()}>
+        <Button
+          disabled={isDocumentUploadLoading}
+          onClick={() => handleSubmit()}
+        >
           Сохранить изменения
         </Button>
       </Footer>

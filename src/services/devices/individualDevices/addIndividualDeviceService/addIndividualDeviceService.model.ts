@@ -8,6 +8,8 @@ import { EffectFailDataAxiosError } from 'types';
 import { CreateIndividualDeviceRequest, MeteringDeviceResponse } from 'myApi';
 import { DocumentStageForm } from './AddIndividualDevicePage/stages/DocumentsStage/DocumentsStage.types';
 import { createGate } from 'effector-react';
+import { documentService } from 'ui-kit/DocumentsService/DocumentsService.model';
+import { message } from 'antd';
 
 const domain = createDomain('addIndividualDeviceService');
 
@@ -68,6 +70,20 @@ sample({
 
 const $isLoading = createIndividualDeviceFx.pending;
 
+const successCreateIndividualDevice = createIndividualDeviceFx.doneData;
+
+createIndividualDeviceFx.failData.watch((error) => {
+  message.error(
+    error.response.data.error.Text ||
+      error.response.data.error.Message ||
+      'Произошла ошибка',
+  );
+});
+
+successCreateIndividualDevice.watch((data) => {
+  message.success(`ИПУ (${data.serialNumber}) ${data.model} успешно создан`);
+});
+
 export const addIndividualDeviceService = {
   inputs: {
     handleGoPrevStage,
@@ -78,6 +94,7 @@ export const addIndividualDeviceService = {
     handleSubmitForm,
     handleSubmitDocumentStage,
     handleCloseModal,
+    successCreateIndividualDevice,
   },
   outputs: {
     $stageNumber,
@@ -96,6 +113,7 @@ export const addIndividualDeviceService = {
     $documents,
     $isModalOpen,
     $isLoading,
+    $isDocumentUploadLoading: documentService.outputs.$isLoading,
   },
   gates: {
     ApartmentGate: apartmentService.gates.ApartmentGate,
@@ -104,5 +122,6 @@ export const addIndividualDeviceService = {
       displayIndividualDeviceAndNamesService.gates.IndividualDevicecModelsGate,
     IndividualDeviceMountPlacesGate:
       individualDeviceMountPlacesService.gates.IndividualDeviceMountPlacesGate,
+    PageGate,
   },
 };

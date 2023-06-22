@@ -21,4 +21,5 @@ export type AddIndividualDevicePageProps = {
   formData: CreateIndividualDeviceRequest | null;
   documents: DocumentStageForm | null;
   handleSubmitDocumentStage: (payload: DocumentStageForm) => void;
+  isDocumentUploadLoading: boolean;
 };

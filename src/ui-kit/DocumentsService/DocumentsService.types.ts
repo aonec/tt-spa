@@ -10,7 +10,6 @@ export type DocumentsUploadContainerProps = {
   type?: EDocumentType;
   label?: string;
   componentType?: DocumentsUploadComponentType;
-  setIsLoading2?: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 export enum DocumentsUploadComponentType {

@@ -1,15 +1,16 @@
 import { useUnit } from 'effector-react';
-import React from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { addIndividualDeviceService } from './addIndividualDeviceService.model';
 import { AddIndividualDevicePage } from './AddIndividualDevicePage';
-import { useParams } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 import { PreviewModal } from './AddIndividualDevicePage/PreviewModal/PreviewModal';
 
 const { inputs, outputs, gates } = addIndividualDeviceService;
-const { ApartmentGate } = gates;
+const { ApartmentGate, PageGate } = gates;
 
 export const AddIndividualDeviceContainer = () => {
   const { id } = useParams<{ id: string }>();
+  const history = useHistory();
 
   const [stageNumber, handleGoPrevStage] = useUnit([
     outputs.$stageNumber,
@@ -40,6 +41,7 @@ export const AddIndividualDeviceContainer = () => {
     outputs.$isFetchSerialNumberLoading,
   );
   const isLoading = useUnit(outputs.$isLoading);
+  const isDocumentUploadLoading = useUnit(outputs.$isDocumentUploadLoading);
 
   const handleFetchSerialNumberForCheck = useUnit(
     inputs.handleFetchSerialNumberForCheck,
@@ -49,11 +51,19 @@ export const AddIndividualDeviceContainer = () => {
   const currentFetchedApartmentId = apartment?.id;
   const idFromParams = Number(id);
 
-  const isNeedToFetch = currentFetchedApartmentId === idFromParams;
+  const isNeedToFetch = useMemo(
+    () => (currentFetchedApartmentId !== idFromParams ? true : false),
+    [idFromParams],
+  );
+  useEffect(() => {
+    return inputs.successCreateIndividualDevice.watch(history.goBack)
+      .unsubscribe;
+  }, [history.goBack]);
 
   return (
     <>
-      {<ApartmentGate id={idFromParams} />}
+      <PageGate />
+      {isNeedToFetch ? <ApartmentGate id={idFromParams} /> : null}
       <PreviewModal
         isModalOpen={isModalOpen}
         handleCloseModal={handleCloseModal}
@@ -77,6 +87,7 @@ export const AddIndividualDeviceContainer = () => {
         formData={formData}
         documents={documents}
         handleSubmitDocumentStage={handleSubmitDocumentStage}
+        isDocumentUploadLoading={isDocumentUploadLoading}
       />
     </>
   );

@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import { AddIndividualDevicePageProps } from './AddIndividualDevicePage.types';
 import { GoBack } from 'ui-kit/shared_components/GoBack';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { Steps } from 'antd';
 import {
   Address,
@@ -28,12 +28,14 @@ export const AddIndividualDevicePage: FC<AddIndividualDevicePageProps> = ({
   formData,
   documents,
   handleSubmitDocumentStage,
+  isDocumentUploadLoading,
 }) => {
+  const { id } = useParams<{ id: string }>();
   const { Step } = Steps;
   const stepTitles = ['Общие данные о приборе', 'Документы'];
 
   const address = apartment && getApartmentAddressString(apartment, true);
-  const apartmentId = apartment?.id;
+  const apartmentId = apartment?.id || Number(id);
 
   return (
     <>
@@ -63,6 +65,7 @@ export const AddIndividualDevicePage: FC<AddIndividualDevicePageProps> = ({
               handleGoPrevStage={handleGoPrevStage}
               documents={documents}
               handleSubmitDocumentStage={handleSubmitDocumentStage}
+              isDocumentUploadLoading={isDocumentUploadLoading}
             />
           )}
         </Forms>

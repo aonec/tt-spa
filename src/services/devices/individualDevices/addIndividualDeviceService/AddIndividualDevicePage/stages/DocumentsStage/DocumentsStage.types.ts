@@ -4,6 +4,7 @@ export type DocumentsStageProps = {
   handleGoPrevStage: () => void;
   documents: DocumentStageForm | null;
   handleSubmitDocumentStage: (payload: DocumentStageForm) => void;
+  isDocumentUploadLoading: boolean;
 };
 
 export type DocumentStageForm = {
