@@ -18,7 +18,6 @@ export const EditPersonalNumberPage: FC<EditPersonalNumberPageProps> = ({
     <PersonalNumberPageContainer
       titleText="Редактирование лицевого счета"
       apartment={apartment}
-      type={PersonalNumberActions.Edit}
       isLoading={isLoading}
       formId={formId}
     >
