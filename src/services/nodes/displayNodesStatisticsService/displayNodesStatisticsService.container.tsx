@@ -21,16 +21,30 @@ const wrapperId = 'nodeConsumptionGraphWrapper';
 export const DisplayNodesStatisticsContainer: FC<
   DisplayNodesStatisticsContainerProps
 > = ({ nodeId, pipeCount }) => {
-  const currentArhiveFilter = useUnit(outputs.$archiveFilter);
-  const graphType = useUnit(outputs.$graphType);
-  const archiveData = useUnit(outputs.$archiveReadings);
-  const isLoading = useUnit(outputs.$isLoading);
-  const taskStatistics = useUnit(outputs.$taskStatistics);
-  const withFault = useUnit(outputs.$withFault);
+  const {
+    graphType,
+    currentArhiveFilter,
+    archiveData,
+    isLoading,
+    taskStatistics,
+    withFault,
+  } = useUnit({
+    graphType: outputs.$graphType,
+    currentArhiveFilter: outputs.$archiveFilter,
+    archiveData: outputs.$archiveReadings,
+    isLoading: outputs.$isLoading,
+    taskStatistics: outputs.$taskStatistics,
+    withFault: outputs.$withFault,
+    setGraphType: inputs.setGraphType,
+    setArchiveFilter: inputs.setArchiveFilter,
+    setWithFault: inputs.setWithFault,
+  });
 
-  const setGraphType = useUnit(inputs.setGraphType);
-  const setArchiveFilter = useUnit(inputs.setArchiveFilter);
-  const setWithFault = useUnit(inputs.setWithFault);
+  const { setArchiveFilter, setGraphType, setWithFault } = useUnit({
+    setGraphType: inputs.setGraphType,
+    setArchiveFilter: inputs.setArchiveFilter,
+    setWithFault: inputs.setWithFault,
+  });
 
   const archive = useMemo(() => archiveData?.data || [], [archiveData]);
   const paramsList = useMemo(
