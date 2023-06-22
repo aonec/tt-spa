@@ -1,3 +1,3 @@
-import { HousingStockShortResponse } from 'myApi';
+import { BuildingShortResponse } from 'myApi';
 
-export type StreetWithHousingStocks = [string, HousingStockShortResponse[]];
+export type StreetWithHousingStocks = [string, BuildingShortResponse[]];

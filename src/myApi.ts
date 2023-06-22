@@ -366,7 +366,7 @@ export interface ApartmentListResponse {
   /** @format float */
   square: number | null;
   comment: string | null;
-  housingStock: HousingStockListResponse | null;
+  housingStock: BuildingListResponse | null;
 }
 
 export interface ApartmentListResponsePagedList {
@@ -600,6 +600,15 @@ export interface AppointmentsSetRequest {
   controllerId: string;
 }
 
+export interface AppointmentsSetResponse {
+  /** @format uuid */
+  assignmentId: string;
+}
+
+export interface AppointmentsSetResponseSuccessApiResponse {
+  successResponse: AppointmentsSetResponse | null;
+}
+
 export interface ArchivesDataGroup {
   header?: string | null;
   measure?: string | null;
@@ -621,6 +630,7 @@ export interface ArchivesDataGroupValue {
 
   /** @format double */
   value?: number;
+  hasFault?: boolean;
 }
 
 export interface ArchivesDataModel {
@@ -638,6 +648,32 @@ export interface ArchivesDataModel {
   data?: ArchivesDataGroup[] | null;
 }
 
+export interface AssingmentResponse {
+  /** @format uuid */
+  id: string;
+
+  /** @format date-time */
+  date: string;
+
+  /** @format date-time */
+  createDateTimeUtc: string;
+
+  /** @format uuid */
+  controllerId: string;
+
+  /** @format int32 */
+  appointmentsCount: number;
+  creatingUser: CreatingUser | null;
+}
+
+export interface AssingmentResponseListSuccessApiResponse {
+  successResponse: AssingmentResponse[] | null;
+}
+
+export interface AssingmentResponseSuccessApiResponse {
+  successResponse: AssingmentResponse | null;
+}
+
 export interface BaseIndividualDeviceReadingsCreateRequest {
   /** @format date-time */
   readingDate?: string | null;
@@ -653,6 +689,57 @@ export interface BaseIndividualDeviceReadingsCreateRequest {
 
   /** @format double */
   value4?: number | null;
+}
+
+export interface BuildingListResponse {
+  /** @format int32 */
+  id: number;
+
+  /** @format int32 */
+  managingFirmId: number;
+
+  /** @format int32 */
+  numberOfTasks: number | null;
+  houseCategory: EHouseCategory;
+  managementFirm: ManagementFirmLiteResponse | null;
+  address: HousingStockAddressResponse | null;
+  coordinates: PointResponse | null;
+}
+
+export interface BuildingListResponsePagedList {
+  /** @format int32 */
+  totalItems: number;
+
+  /** @format int32 */
+  pageNumber: number;
+
+  /** @format int32 */
+  pageSize: number;
+
+  /** @format int32 */
+  totalPages: number;
+  hasPreviousPage: boolean;
+  hasNextPage: boolean;
+
+  /** @format int32 */
+  nextPageNumber: number;
+
+  /** @format int32 */
+  previousPageNumber: number;
+  items: BuildingListResponse[] | null;
+}
+
+export interface BuildingListResponsePagedListSuccessApiResponse {
+  successResponse: BuildingListResponsePagedList | null;
+}
+
+export interface BuildingShortResponse {
+  /** @format int32 */
+  id: number;
+
+  /** @format int32 */
+  managingFirmId: number;
+  address: HousingStockAddressResponse | null;
 }
 
 export interface CalculatorCommentBaseRequest {
@@ -753,7 +840,7 @@ export interface CalculatorIntoNodeResponse {
   scaleFactor: number | null;
   connection: MeteringDeviceConnection | null;
   isConnected: boolean | null;
-  address: HousingStockShortResponse | null;
+  address: BuildingShortResponse | null;
 
   /** @format int32 */
   infoId: number | null;
@@ -789,7 +876,7 @@ export interface CalculatorListResponse {
   scaleFactor: number | null;
   connection: MeteringDeviceConnection | null;
   isConnected: boolean | null;
-  address: HousingStockShortResponse | null;
+  address: BuildingShortResponse | null;
   nodes: PipeNodeIntoCalculatorResponse[] | null;
   documents: DocumentLiteResponse[] | null;
 
@@ -860,7 +947,7 @@ export interface CalculatorResponse {
   scaleFactor: number | null;
   connection: MeteringDeviceConnection | null;
   isConnected: boolean | null;
-  address: HousingStockShortResponse | null;
+  address: BuildingShortResponse | null;
 
   /** @format int32 */
   infoId: number | null;
@@ -1492,6 +1579,14 @@ export interface CreatePipeNodeRequest {
   communicationPipes?: CreateCommunicationPipeRequest[] | null;
 }
 
+export interface CreatingUser {
+  /** @format int32 */
+  id?: number;
+  firstName?: string | null;
+  lastName?: string | null;
+  middleName?: string | null;
+}
+
 export interface CurrentTransformerResponse {
   /** @format uuid */
   id: string;
@@ -1788,11 +1883,6 @@ export enum EHousingStockOrderRule {
   TaskCount = 'TaskCount',
 }
 
-export enum EImportedEntityType {
-  IndividualDeviceReadings = 'IndividualDeviceReadings',
-  PersonalAccountNumber = 'PersonalAccountNumber',
-}
-
 export enum EIndividualDeviceOrderRule {
   Resource = 'Resource',
   ApartmentNumber = 'ApartmentNumber',
@@ -1827,7 +1917,6 @@ export enum EIndividualDeviceReportOption {
 }
 
 export enum ELivingHouseType {
-  None = 'None',
   ApartmentHouse = 'ApartmentHouse',
   Townhouse = 'Townhouse',
   Private = 'Private',
@@ -2359,7 +2448,7 @@ export interface ElectricHousingMeteringDeviceResponse {
   scaleFactor: number | null;
   resource: EResourceType;
   housingMeteringDeviceType: EHousingMeteringDeviceType;
-  address: HousingStockShortResponse | null;
+  address: BuildingShortResponse | null;
   comment: HousingMeteringDeviceCommentResponse | null;
 
   /** @format int32 */
@@ -2406,7 +2495,7 @@ export interface ElectricNodeResponse {
 
   /** @format int32 */
   housingStockId: number;
-  address: HousingStockShortResponse | null;
+  address: BuildingShortResponse | null;
   documents: DocumentLiteResponse[] | null;
   locationName: string | null;
   counter: ElectricHousingMeteringDeviceResponse | null;
@@ -2571,7 +2660,7 @@ export interface HeatingSeasonHouseManagementListItemAdjustmentResponse {
   houseCategory: EHouseCategory | null;
   livingHouseType: ELivingHouseType | null;
   nonResidentialHouseType: ENonResidentialHouseType | null;
-  housingStocks: HousingStockShortResponse[] | null;
+  housingStocks: BuildingShortResponse[] | null;
 }
 
 export interface HeatingSeasonHouseManagementListItemResponse {
@@ -2629,7 +2718,7 @@ export interface HeatingStationResponse {
   name: string | null;
   isThermalChamber: boolean;
   address: AddressResponse | null;
-  housingStocks: HousingStockShortResponse[] | null;
+  housingStocks: BuildingShortResponse[] | null;
 }
 
 export interface HeatingStationResponsePagedList {
@@ -3041,7 +3130,7 @@ export interface HousingMeteringDeviceIncludingReadingsResponse {
   scaleFactor: number | null;
   resource: EResourceType;
   housingMeteringDeviceType: EHousingMeteringDeviceType;
-  address: HousingStockShortResponse | null;
+  address: BuildingShortResponse | null;
   comment: HousingMeteringDeviceCommentResponse | null;
   readings: HousingMeteringDeviceReadingsResponse[] | null;
 }
@@ -3326,21 +3415,18 @@ export interface HousingStockListResponse {
 
   /** @format int32 */
   managingFirmId: number;
-  houseCategory: EHouseCategory;
-  livingHouseType: ELivingHouseType;
-  nonResidentialHouseType: ENonResidentialHouseType;
-  houseCategoryString: string | null;
-  houseTypeString: string | null;
 
   /** @format int32 */
   numberOfTasks: number | null;
+  managementFirm: ManagementFirmLiteResponse | null;
+  address: HousingStockAddressResponse | null;
+  coordinates: PointResponse | null;
+  livingHouseType: ELivingHouseType;
+  houseTypeString: string | null;
 
   /** @format int32 */
   numberOfApartments: number;
   houseManagement: HouseManagementResponse | null;
-  address: HousingStockAddressResponse | null;
-  coordinates: PointResponse | null;
-  managementFirm: ManagementFirmLiteResponse | null;
 }
 
 export interface HousingStockListResponsePagedList {
@@ -3381,10 +3467,7 @@ export interface HousingStockResponse {
   fiasId: string | null;
   index: string | null;
   coordinates: PointResponse | null;
-  houseCategory: EHouseCategory;
   livingHouseType: ELivingHouseType | null;
-  nonResidentialHouseType: ENonResidentialHouseType | null;
-  houseCategoryString: string | null;
   houseTypeString: string | null;
 
   /** @format int32 */
@@ -3432,15 +3515,6 @@ export interface HousingStockResponseSuccessApiResponse {
   successResponse: HousingStockResponse | null;
 }
 
-export interface HousingStockShortResponse {
-  /** @format int32 */
-  id: number;
-
-  /** @format int32 */
-  managingFirmId: number;
-  address: HousingStockAddressResponse | null;
-}
-
 export interface HousingStockUpdateRequest {
   /** @format uuid */
   heatingStationId?: string | null;
@@ -3449,8 +3523,6 @@ export interface HousingStockUpdateRequest {
 
   /** @format uuid */
   houseManagementId?: string | null;
-  livingHouseType?: ELivingHouseType | null;
-  nonResidentialHouseType?: ENonResidentialHouseType | null;
 
   /** @format int32 */
   numberOfEntrances?: number | null;
@@ -3500,51 +3572,6 @@ export interface HousingStockWithTasksResponse {
 
 export interface HousingStockWithTasksResponseIEnumerableSuccessApiResponse {
   successResponse: HousingStockWithTasksResponse[] | null;
-}
-
-export interface ImportLogListResponse {
-  importLogs: ImportLogResponse[] | null;
-}
-
-export interface ImportLogListResponseSuccessApiResponse {
-  successResponse: ImportLogListResponse | null;
-}
-
-export interface ImportLogResponse {
-  /** @format uuid */
-  id: string;
-  entityType: EImportedEntityType;
-  document: DocumentResponse | null;
-  parseResult: ParseResultResponse | null;
-  importResult: ImportResultResponse | null;
-}
-
-export interface ImportLogResponseArraySuccessApiResponse {
-  successResponse: ImportLogResponse[] | null;
-}
-
-export interface ImportLogResponseSuccessApiResponse {
-  successResponse: ImportLogResponse | null;
-}
-
-export interface ImportResultResponse {
-  isValid: boolean;
-  importLogs: string[] | null;
-  importWarnings: string[] | null;
-  importErrors: string[] | null;
-}
-
-export interface ImportResultServiceModel {
-  importLogs?: string[] | null;
-  importWarnings?: string[] | null;
-  importErrors?: string[] | null;
-  isValid?: boolean;
-  wasSaved?: boolean;
-  isSuccess?: boolean;
-}
-
-export interface ImportResultServiceModelSuccessApiResponse {
-  successResponse: ImportResultServiceModel | null;
 }
 
 export interface IndividualDeviceConsumption {
@@ -4170,12 +4197,6 @@ export interface InvalidCheckingDatesConstructedReportResponse {
 
   /** @format date-time */
   futureCheckingDate: string;
-}
-
-export interface InvalidRowResponse {
-  /** @format int32 */
-  index: number;
-  errorMessage: string | null;
 }
 
 export interface LastModifiedUserResponse {
@@ -4831,7 +4852,7 @@ export interface OrganizationUserResponse {
   status: UserStatusResponse | null;
   competences: UserCompetenceResponse[] | null;
   roles: ESecuredIdentityRoleNameStringDictionaryItem[] | null;
-  housingStocks: HousingStockShortResponse[] | null;
+  housingStocks: BuildingShortResponse[] | null;
 }
 
 export interface OrganizationUserResponseSuccessApiResponse {
@@ -4905,11 +4926,6 @@ export interface OrganizationUserWorkingStatusResponse {
 
 export interface OrganizationUserWorkingStatusResponseSuccessApiResponse {
   successResponse: OrganizationUserWorkingStatusResponse | null;
-}
-
-export interface ParseResultResponse {
-  isValid: boolean;
-  invalidRows: InvalidRowResponse[] | null;
 }
 
 export interface PipeHousingMeteringDeviceConnectionResponse {
@@ -5019,7 +5035,7 @@ export interface PipeHousingMeteringDeviceResponse {
   scaleFactor: number | null;
   resource: EResourceType;
   housingMeteringDeviceType: EHousingMeteringDeviceType;
-  address: HousingStockShortResponse | null;
+  address: BuildingShortResponse | null;
   comment: HousingMeteringDeviceCommentResponse | null;
 
   /** @format int32 */
@@ -5104,7 +5120,7 @@ export interface PipeNodeResponse {
 
   /** @format int32 */
   housingStockId: number;
-  address: HousingStockShortResponse | null;
+  address: BuildingShortResponse | null;
   documents: DocumentLiteResponse[] | null;
   heatingSeason: PipeNodeHeatingSeasonListResponse | null;
 
@@ -5330,7 +5346,7 @@ export interface ResourceDisconnectingResponse {
 
   /** @format int32 */
   managementFirmId: number;
-  housingStocks: HousingStockShortResponse[] | null;
+  housingStocks: BuildingShortResponse[] | null;
   document: DocumentResponse | null;
 }
 
@@ -7139,13 +7155,12 @@ export class Api<
       data: AppointmentUpdateRequest,
       params: RequestParams = {},
     ) =>
-      this.request<AppointmentResponseSuccessApiResponse, ErrorApiResponse>({
+      this.request<void, ErrorApiResponse>({
         path: `/api/IndividualSeal/Appointments/${appointmentId}`,
         method: 'PUT',
         body: data,
         secure: true,
         type: ContentType.Json,
-        format: 'json',
         ...params,
       }),
 
@@ -7162,11 +7177,10 @@ export class Api<
       appointmentId: string,
       params: RequestParams = {},
     ) =>
-      this.request<AppointmentResponseSuccessApiResponse, ErrorApiResponse>({
+      this.request<void, ErrorApiResponse>({
         path: `/api/IndividualSeal/Appointments/${appointmentId}`,
         method: 'DELETE',
         secure: true,
-        format: 'json',
         ...params,
       }),
 
@@ -7254,12 +7268,58 @@ export class Api<
       data: AppointmentsSetRequest,
       params: RequestParams = {},
     ) =>
-      this.request<void, ErrorApiResponse>({
-        path: `/api/IndividualSeal/Appointments/Set`,
-        method: 'POST',
-        body: data,
+      this.request<AppointmentsSetResponseSuccessApiResponse, ErrorApiResponse>(
+        {
+          path: `/api/IndividualSeal/Appointments/Set`,
+          method: 'POST',
+          body: data,
+          secure: true,
+          type: ContentType.Json,
+          format: 'json',
+          ...params,
+        },
+      ),
+
+    /**
+     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li>
+     *
+     * @tags Assignments
+     * @name IndividualSealAssignmentsList
+     * @summary IndividualSealRead
+     * @request GET:/api/IndividualSeal/Assignments
+     * @secure
+     */
+    individualSealAssignmentsList: (
+      query: { from: string; to?: string },
+      params: RequestParams = {},
+    ) =>
+      this.request<AssingmentResponseListSuccessApiResponse, ErrorApiResponse>({
+        path: `/api/IndividualSeal/Assignments`,
+        method: 'GET',
+        query: query,
         secure: true,
-        type: ContentType.Json,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li>
+     *
+     * @tags Assignments
+     * @name IndividualSealAssignmentsDetail
+     * @summary IndividualSealRead
+     * @request GET:/api/IndividualSeal/Assignments/{assingmentId}
+     * @secure
+     */
+    individualSealAssignmentsDetail: (
+      assingmentId: string,
+      params: RequestParams = {},
+    ) =>
+      this.request<AssingmentResponseSuccessApiResponse, ErrorApiResponse>({
+        path: `/api/IndividualSeal/Assignments/${assingmentId}`,
+        method: 'GET',
+        secure: true,
+        format: 'json',
         ...params,
       }),
 
@@ -7376,6 +7436,46 @@ export class Api<
         body: data,
         secure: true,
         type: ContentType.Json,
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
+     *
+     * @tags Buildings
+     * @name BuildingsList
+     * @summary HousingStocksRead
+     * @request GET:/api/Buildings
+     * @secure
+     */
+    buildingsList: (
+      query?: {
+        OrderRule?: EHousingStockOrderRule;
+        City?: string;
+        Street?: string;
+        HousingStockNumber?: string;
+        Corpus?: string;
+        HeatingStationId?: string;
+        'TotalArea.MaxValue'?: number;
+        'TotalArea.MinValue'?: number;
+        'TotalArea.MeasurableUnit'?: string;
+        PageNumber?: number;
+        PageSize?: number;
+        OrderBy?: EOrderByRule;
+        Skip?: number;
+        Take?: number;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<
+        BuildingListResponsePagedListSuccessApiResponse,
+        ErrorApiResponse
+      >({
+        path: `/api/Buildings`,
+        method: 'GET',
+        query: query,
+        secure: true,
+        format: 'json',
         ...params,
       }),
 
@@ -8496,7 +8596,7 @@ export class Api<
       query?: { startDate?: string; endDate?: string },
       params: RequestParams = {},
     ) =>
-      this.request<ImportLogResponseSuccessApiResponse, ErrorApiResponse>({
+      this.request<FileContentResultSuccessApiResponse, ErrorApiResponse>({
         path: `/api/Exports/MilurDevices`,
         method: 'GET',
         query: query,
@@ -8518,7 +8618,7 @@ export class Api<
       query?: { year?: number; month?: number },
       params: RequestParams = {},
     ) =>
-      this.request<ImportLogResponseSuccessApiResponse, ErrorApiResponse>({
+      this.request<FileContentResultSuccessApiResponse, ErrorApiResponse>({
         path: `/api/Exports/IndividualDeviceReadings`,
         method: 'GET',
         query: query,
@@ -8540,7 +8640,7 @@ export class Api<
       query?: { year?: number; month?: number },
       params: RequestParams = {},
     ) =>
-      this.request<ImportLogResponseSuccessApiResponse, ErrorApiResponse>({
+      this.request<FileContentResultSuccessApiResponse, ErrorApiResponse>({
         path: `/api/Exports/HousingDeviceReadings`,
         method: 'GET',
         query: query,
@@ -9351,14 +9451,12 @@ export class Api<
         Street?: string;
         HousingStockNumber?: string;
         Corpus?: string;
-        HouseCategory?: EHouseCategory;
-        HouseManagementId?: string;
         HeatingStationId?: string;
         'TotalArea.MaxValue'?: number;
         'TotalArea.MinValue'?: number;
         'TotalArea.MeasurableUnit'?: string;
+        HouseManagementId?: string;
         LivingHouseType?: ELivingHouseType;
-        NonResidentialHouseType?: ENonResidentialHouseType;
         PageNumber?: number;
         PageSize?: number;
         OrderBy?: EOrderByRule;
@@ -10019,144 +10117,6 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Контролёр</li>
-     *
-     * @tags ImportLogs
-     * @name ImportLogsList
-     * @summary IndividualDeviceReadingsRead
-     * @request GET:/api/ImportLogs
-     * @secure
-     */
-    importLogsList: (params: RequestParams = {}) =>
-      this.request<ImportLogListResponseSuccessApiResponse, ErrorApiResponse>({
-        path: `/api/ImportLogs`,
-        method: 'GET',
-        secure: true,
-        format: 'json',
-        ...params,
-      }),
-
-    /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Контролёр</li>
-     *
-     * @tags ImportLogs
-     * @name ImportLogsDetail
-     * @summary IndividualDeviceReadingsRead
-     * @request GET:/api/ImportLogs/{id}
-     * @secure
-     */
-    importLogsDetail: (id: string, params: RequestParams = {}) =>
-      this.request<ImportLogResponseSuccessApiResponse, ErrorApiResponse>({
-        path: `/api/ImportLogs/${id}`,
-        method: 'GET',
-        secure: true,
-        format: 'json',
-        ...params,
-      }),
-
-    /**
-     * @description Роли:<li>Старший оператор</li><li>Оператор</li><li>Сервис ЕРЦ</li>
-     *
-     * @tags Imports
-     * @name ImportsReadingsFromErcMultipleCreate
-     * @summary IndividualDeviceReadingsCreate
-     * @request POST:/api/Imports/ReadingsFromErcMultiple
-     * @secure
-     */
-    importsReadingsFromErcMultipleCreate: (
-      data: {
-        files: File[];
-        isCreateAndCloseDevice?: boolean;
-        isIgnoreErrors?: boolean;
-        isSphere?: boolean;
-        isSave?: boolean;
-      },
-      params: RequestParams = {},
-    ) =>
-      this.request<ImportLogResponseArraySuccessApiResponse, ErrorApiResponse>({
-        path: `/api/Imports/ReadingsFromErcMultiple`,
-        method: 'POST',
-        body: data,
-        secure: true,
-        type: ContentType.FormData,
-        format: 'json',
-        ...params,
-      }),
-
-    /**
-     * @description Роли:<li>Старший оператор</li><li>Оператор</li><li>Сервис ЕРЦ</li>
-     *
-     * @tags Imports
-     * @name ImportsReadingsFromErcCreate
-     * @summary IndividualDeviceReadingsCreate
-     * @request POST:/api/Imports/ReadingsFromErc
-     * @secure
-     */
-    importsReadingsFromErcCreate: (
-      data: {
-        ContentType?: string;
-        ContentDisposition?: string;
-        Headers?: Record<string, string[]>;
-        Length?: number;
-        Name?: string;
-        FileName?: string;
-        isCreateAndCloseDevice?: boolean;
-        isIgnoreErrors?: boolean;
-        isSphere?: boolean;
-        isSave?: boolean;
-      },
-      params: RequestParams = {},
-    ) =>
-      this.request<ImportLogResponseSuccessApiResponse, ErrorApiResponse>({
-        path: `/api/Imports/ReadingsFromErc`,
-        method: 'POST',
-        body: data,
-        secure: true,
-        type: ContentType.FormData,
-        format: 'json',
-        ...params,
-      }),
-
-    /**
-     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li>
-     *
-     * @tags Imports
-     * @name ImportsPersonalAccountNumbersCreate
-     * @summary HomeownersCreate
-     * @request POST:/api/Imports/PersonalAccountNumbers
-     * @secure
-     */
-    importsPersonalAccountNumbersCreate: (
-      data: {
-        ContentType?: string;
-        ContentDisposition?: string;
-        Headers?: Record<string, string[]>;
-        Length?: number;
-        Name?: string;
-        FileName?: string;
-      },
-      query?: {
-        save?: boolean;
-        createApartment?: boolean;
-        dateOfImport?: string;
-      },
-      params: RequestParams = {},
-    ) =>
-      this.request<
-        ImportResultServiceModelSuccessApiResponse,
-        ErrorApiResponse
-      >({
-        path: `/api/Imports/PersonalAccountNumbers`,
-        method: 'POST',
-        query: query,
-        body: data,
-        secure: true,
-        type: ContentType.FormData,
-        format: 'json',
-        ...params,
-      }),
-
-    /**
      * @description Роли:<li>Администратор системы</li>
      *
      * @tags Imports
@@ -10233,37 +10193,6 @@ export class Api<
       this.request<void, any>({
         path: `/api/Imports/ImportOrganizationWithoutNodes`,
         method: 'POST',
-        body: data,
-        secure: true,
-        type: ContentType.FormData,
-        ...params,
-      }),
-
-    /**
-     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li>
-     *
-     * @tags Imports
-     * @name ImportsImportHouseManagementsCreate
-     * @summary HouseManagementUpdate
-     * @request POST:/api/Imports/ImportHouseManagements
-     * @secure
-     */
-    importsImportHouseManagementsCreate: (
-      data: {
-        ContentType?: string;
-        ContentDisposition?: string;
-        Headers?: Record<string, string[]>;
-        Length?: number;
-        Name?: string;
-        FileName?: string;
-      },
-      query?: { managementFirmId?: number },
-      params: RequestParams = {},
-    ) =>
-      this.request<void, any>({
-        path: `/api/Imports/ImportHouseManagements`,
-        method: 'POST',
-        query: query,
         body: data,
         secure: true,
         type: ContentType.FormData,

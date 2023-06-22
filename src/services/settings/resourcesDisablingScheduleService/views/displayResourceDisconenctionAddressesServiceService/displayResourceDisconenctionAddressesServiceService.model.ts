@@ -1,9 +1,6 @@
 import { createDomain } from 'effector';
 import { groupBy } from 'lodash';
-import {
-  HousingStockShortResponse,
-  ResourceDisconnectingResponse,
-} from 'myApi';
+import { BuildingShortResponse, ResourceDisconnectingResponse } from 'myApi';
 
 const domain = createDomain(
   'displayResourceDisconenctionAddressesServiceService',
@@ -18,7 +15,7 @@ const $disconnection = domain
   .reset(closeModal);
 
 const $addresses = domain
-  .createStore<[string, HousingStockShortResponse[]][]>([])
+  .createStore<[string, BuildingShortResponse[]][]>([])
   .on(openModal, (_, disconnection) => {
     if (!disconnection) {
       return [];
