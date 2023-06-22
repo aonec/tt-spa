@@ -110,7 +110,7 @@ export const AccountingNodeReadingsLine: FC<
           ''
         }
         inputIndex={deviceIndex}
-        dataKey="previuos"
+        dataKey="previous-accounting-node-block"
       />
 
       <AccountingNodeReadingsInputBlock
@@ -132,7 +132,7 @@ export const AccountingNodeReadingsLine: FC<
             previousReadingTooltipTitle) ||
           ''
         }
-        dataKey="current"
+        dataKey="current-accounting-node-block"
       />
       <div>{consumption}</div>
       {currentReading ? (
@@ -147,7 +147,7 @@ export const AccountingNodeReadingsLine: FC<
           sliderIndex={-1}
           status={deviceNonResConsumptionInputStatuses[currentReading.id]}
           withoutDate
-          dataKey="nonResidentialRoomConsumption"
+          dataKey="nonResidentialRoomConsumption-accounting-node-block"
         />
       ) : (
         <div />

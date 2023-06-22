@@ -8,8 +8,9 @@ import {
 import { differenceInDays, differenceInHours, format } from 'date-fns';
 
 export function prepareDataForNodeStatistic(
-  unsortedData: PreparedArchiveValues[],
+  unsortedData: (PreparedArchiveValues & { hasFault: boolean })[],
   reportType: ReportType,
+  withFault: boolean,
 ) {
   const data = sortArchiveArray(unsortedData);
 
@@ -27,7 +28,12 @@ export function prepareDataForNodeStatistic(
   const result = [];
 
   for (let iterator = 0, index = 0; iterator < elemsCount; iterator++) {
-    const elem = data[index];
+    let elem = { ...data[index] };
+
+    if (elem.hasFault && !withFault) {
+      elem.value = 0;
+    }
+
     let diff = 0;
 
     if (reportType === 'daily') {
@@ -75,7 +81,7 @@ const getTaskXPos = (payload: GetTaskXPosPayload) => {
   return moment(currentData).utc(true).diff(minDataMoment, 'd') + 1;
 };
 
-export const getPreparedData = ({
+export const getPreparedTaskData = ({
   tasksByDate,
   maxValue,
   minDate,
@@ -138,7 +144,7 @@ const isDayMultiplyFive = (timeStamp: string): boolean => {
   return day % 5 === 0;
 };
 
-export const sortArchiveArray = (archiveArr: PreparedArchiveValues[]) => {
+export function sortArchiveArray<T>(archiveArr: (PreparedArchiveValues & T)[]) {
   const sortedArchive = archiveArr.sort((first, second) => {
     const firstDate = moment(first.time);
     const secondDate = moment(second.time);
@@ -146,7 +152,7 @@ export const sortArchiveArray = (archiveArr: PreparedArchiveValues[]) => {
   });
 
   return sortedArchive;
-};
+}
 
 const formHourlyTicks = (
   archiveArr: PreparedArchiveValues[],

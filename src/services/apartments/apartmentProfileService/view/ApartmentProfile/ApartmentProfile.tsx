@@ -144,7 +144,7 @@ export const ApartmentProfile: FC<ApartmentProfileProps> = ({
                 </AdditionalAddressWrapper>
               ))}
             </>
-            <>ДУ "{apartment?.housingStock?.houseManagement?.name}"</>
+            <>ДУ "{houseManagement?.name}"</>
           </HeaderInfoString>
           <TabsWrapper>
             <Tabs
