@@ -2,6 +2,8 @@ import React, { FC, useCallback, useMemo, useState } from 'react';
 import {
   CancelAllText,
   ContentWrapper,
+  ControllerInfoTitle,
+  ControllerWrapper,
   CountWrapper,
   Footer,
   HeaderWrapper,
@@ -28,6 +30,7 @@ import { Button } from 'ui-kit/Button';
 import { getCountText } from 'utils/getCountText';
 import { AppointmentsCountTexts } from './DistributeAppointmentsPanel.constants';
 import _ from 'lodash';
+import { InfoIcon } from 'ui-kit/icons';
 
 export const DistributeAppointmentsPanel: FC<
   DistributeAppointmentsPanelProps
@@ -47,7 +50,18 @@ export const DistributeAppointmentsPanel: FC<
   const isAppointmentsExist = appointmentsInDistrict.length !== 0;
 
   const preparedTreeDataByControllers = useMemo(
-    () => prepareAppointmentsToTree(appointmentsInDistrict),
+    () =>
+      prepareAppointmentsToTree(appointmentsInDistrict).sort(
+        (first, second) => {
+          if (first.controllerId === null) {
+            return -1;
+          }
+          if (second.controllerId === null) {
+            return 1;
+          }
+          return 0;
+        },
+      ),
     [appointmentsInDistrict],
   );
 
@@ -86,70 +100,83 @@ export const DistributeAppointmentsPanel: FC<
 
   const treeList = useMemo(
     () =>
-      Object.entries(preparedTreeDataByControllers).map(
-        ([controllerId, data]) => {
-          const expKeys = getKeysByControllerId(expandedKeys, controllerId);
-          const checkedKeys = getKeysByControllerId(
-            selectedAppointmentsIds,
-            controllerId,
-          );
+      preparedTreeDataByControllers.map(({ controllerId, data }) => {
+        const expKeys = getKeysByControllerId(expandedKeys, controllerId);
+        const checkedKeys = getKeysByControllerId(
+          selectedAppointmentsIds,
+          controllerId,
+        );
+        const controller = (controllers || []).find(
+          (elem) => elem.id === controllerId,
+        );
 
-          return (
-            <>
-              {controllerId}
-              <TreeSC
-                selectable={false}
-                checkable={true}
-                treeData={data}
-                titleRender={(elem) => {
-                  if (elem.key !== elem.title) {
-                    return elem.title;
-                  }
-                  return (
-                    <RootWrapperTitle>
-                      {elem.title}
-                      <CountWrapper>
-                        Заявки: {(elem.children || []).length}
-                      </CountWrapper>
-                    </RootWrapperTitle>
-                  );
-                }}
-                onCheck={(_, info) => {
-                  const { checkedNodes } = info;
-                  const filteredNodes = checkedNodes.filter((elem) =>
-                    Boolean(elem.key !== elem.title),
-                  );
-
-                  handleSelectAppointments([
-                    ...selectedAppointmentsIds.filter(
-                      (elem) => elem.controllerId !== controllerId,
-                    ),
-                    ...filteredNodes.map((elem) => ({
-                      id: String(elem.key),
-                      controllerId,
-                    })),
-                  ]);
-                }}
-                onExpand={(keys) =>
-                  setExpandedKeys((prev) => [
-                    ...prev.filter(
-                      (elem) => elem.controllerId !== controllerId,
-                    ),
-                    ...keys.map((id) => ({ id, controllerId })),
-                  ])
+        return (
+          <>
+            {controllerId && (
+              <ControllerWrapper>
+                <div>
+                  <InfoIcon />
+                </div>
+                <div>
+                  <ControllerInfoTitle>
+                    Уже есть ранее распределенные заявки
+                  </ControllerInfoTitle>
+                  Контролер:
+                  {controller?.lastName || ''} {controller?.firstName || ''}
+                </div>
+              </ControllerWrapper>
+            )}
+            <TreeSC
+              selectable={false}
+              checkable={true}
+              treeData={data}
+              titleRender={(elem) => {
+                if (elem.key !== elem.title) {
+                  return elem.title;
                 }
-                expandedKeys={expKeys}
-                checkedKeys={checkedKeys}
-              />
-            </>
-          );
-        },
-      ),
+                return (
+                  <RootWrapperTitle>
+                    {elem.title}
+                    <CountWrapper>
+                      Заявки: {(elem.children || []).length}
+                    </CountWrapper>
+                  </RootWrapperTitle>
+                );
+              }}
+              onCheck={(_, info) => {
+                const { checkedNodes } = info;
+                const filteredNodes = checkedNodes.filter((elem) =>
+                  Boolean(elem.key !== elem.title),
+                );
+
+                handleSelectAppointments([
+                  ...selectedAppointmentsIds.filter(
+                    (elem) => elem.controllerId !== controllerId,
+                  ),
+                  ...filteredNodes.map((elem) => ({
+                    id: String(elem.key),
+                    controllerId,
+                  })),
+                ]);
+              }}
+              onExpand={(keys) =>
+                setExpandedKeys((prev) => [
+                  ...prev.filter((elem) => elem.controllerId !== controllerId),
+                  ...keys.map((id) => ({ id, controllerId })),
+                ])
+              }
+              expandedKeys={expKeys}
+              checkedKeys={checkedKeys}
+            />
+          </>
+        );
+      }),
     [
       preparedTreeDataByControllers,
       expandedKeys,
       handleSelectAppointments,
       selectedAppointmentsIds,
+      controllers,
     ],
   );
 

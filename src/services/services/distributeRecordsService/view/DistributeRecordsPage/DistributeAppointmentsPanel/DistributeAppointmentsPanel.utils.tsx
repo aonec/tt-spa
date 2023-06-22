@@ -69,16 +69,19 @@ export const prepareAppointmentsToTree = (
         }),
       );
 
-      return { ...acc, [controllerId]: data };
+      return [
+        ...acc,
+        { data, controllerId: controllerId === 'null' ? null : controllerId },
+      ];
     },
-    {} as { [key: string]: DataNode[] },
+    [] as { data: DataNode[]; controllerId: string | null }[],
   );
 };
 
 export const getKeysByControllerId = (
   ids: AppointmentsIdWithController[],
-  controllerId: string,
+  controllerId: string | null,
 ) =>
   ids
-    .filter((elem) => String(elem.controllerId) === controllerId)
+    .filter((elem) => elem.controllerId === controllerId)
     .map((elem) => elem.id);
