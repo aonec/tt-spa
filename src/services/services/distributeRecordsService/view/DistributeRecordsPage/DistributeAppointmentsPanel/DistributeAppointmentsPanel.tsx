@@ -215,36 +215,32 @@ export const DistributeAppointmentsPanel: FC<
                 </ListHeaderWrapper>
               </HeaderWrapper>
               <ContentWrapper>{treeList}</ContentWrapper>
-              <Footer>
-                <Button
-                  type="ghost"
-                  size="small"
-                  onClick={handleUnselectDistrict}
-                >
-                  Назад
-                </Button>
-                <Button
-                  onClick={openDistributeAppointmentsModal}
-                  size="small"
-                  disabled={!selectedAppointmentsIds.length}
-                >
-                  Распределить{' '}
-                  {Boolean(selectedAppointmentsIds.length) &&
-                    `${selectedAppointmentsIds.length} 
-                      ${getCountText(
-                        selectedAppointmentsIds.length,
-                        AppointmentsCountTexts,
-                      )}`}
-                </Button>
-              </Footer>
             </>
           )}
           {!isAppointmentsExist && (
             <Empty
               image={Empty.PRESENTED_IMAGE_SIMPLE}
-              description="Нет записей на опломбировке на выбранную дату"
+              description="Нет записей на опломбировку на выбранную дату"
             />
           )}
+          <Footer>
+            <Button type="ghost" size="small" onClick={handleUnselectDistrict}>
+              Назад
+            </Button>
+            <Button
+              onClick={openDistributeAppointmentsModal}
+              size="small"
+              disabled={!selectedAppointmentsIds.length}
+            >
+              Распределить
+              {Boolean(selectedAppointmentsIds.length) &&
+                `${selectedAppointmentsIds.length} 
+                      ${getCountText(
+                        selectedAppointmentsIds.length,
+                        AppointmentsCountTexts,
+                      )}`}
+            </Button>
+          </Footer>
         </>
       )}
     </Wrapper>
