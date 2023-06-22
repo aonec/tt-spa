@@ -1,0 +1,1 @@
+export { DistributeRecordsPage } from './DistributeRecordsPage';

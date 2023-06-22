@@ -15,8 +15,6 @@ import { useHistory, useParams } from 'react-router-dom';
 import confirm from 'antd/lib/modal/confirm';
 import { TypeAddressToStart } from 'ui-kit/shared_components/TypeToStart';
 import { EApartmentStatus } from 'myApi';
-import { useEvent } from 'effector-react';
-import { apartmentInfoService } from './ApartmentInfo/ApartmentInfo.model';
 
 const { gates } = apartmentReadingsService;
 const { ApartmentGate } = gates;
@@ -32,12 +30,10 @@ export const ApartmentProfile: FC<ApartmentProfileProps> = ({
   setSelectedHomeownerName,
   selectedHomeownerName,
   isPermitionToApartmentStatusPatch,
+  printIssueCertificate,
 }) => {
   const { id } = useParams<{ id: string }>();
   const history = useHistory();
-  const printIssueCertificate = useEvent(
-    apartmentInfoService.inputs.printIssueCertificate,
-  );
 
   const isPaused = apartment
     ? apartment.status === EApartmentStatus.Pause

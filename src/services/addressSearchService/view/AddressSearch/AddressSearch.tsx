@@ -51,6 +51,7 @@ export const AddressSearch: FC<AddressSearchProps> = ({
         handleSubmit();
       }}
       value={values.city}
+      style={{ minWidth: 180 }}
       disabled={isDisabled || !cities.length}
     >
       {cities?.map((elem, index) => (
