@@ -37,7 +37,6 @@ const $isIndividualDeviceNamesLoading = fetchIndividualDeviceNamesFx.pending;
 sample({
   clock: IndividualDeviceGate.open,
   source: IndividualDeviceGate.state.map((state) => state.id),
-  filter: Boolean,
   target: fetchIndividualDeviceFx,
 });
 
@@ -47,10 +46,11 @@ forward({
 });
 
 sample({
-  clock: IndividualDevicecModelsGate.state.map((value) => ({
-    Text: value.model,
-  })),
-  filter: ({ Text }) => Boolean(Text),
+  clock: IndividualDevicecModelsGate.state,
+  filter: (state) => Boolean(state.model),
+  fn: (state) => ({
+    Text: state.model,
+  }),
   target: fetchIndividualDeviceNamesFx,
 });
 
