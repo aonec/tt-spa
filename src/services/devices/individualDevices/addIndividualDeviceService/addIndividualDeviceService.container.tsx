@@ -52,7 +52,8 @@ export const AddIndividualDeviceContainer = () => {
   const idFromParams = Number(id);
 
   const isNeedToFetch = useMemo(
-    () => (currentFetchedApartmentId !== idFromParams ? true : false),
+    () => currentFetchedApartmentId !== idFromParams,
+    // eslint-disable-next-line
     [idFromParams],
   );
   useEffect(() => {
