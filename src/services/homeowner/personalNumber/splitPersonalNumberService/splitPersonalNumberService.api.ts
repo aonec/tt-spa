@@ -1,5 +1,9 @@
 import { axios } from '01/axios';
-import { HomeownerAccountSplitRequest } from 'myApi';
+import {
+  HomeownerAccountSplitRequest,
+  IndividualDeviceListItemResponsePagedList,
+} from 'myApi';
+import { GetIndividualDeviceRequestParams } from './splitPersonalNumberService.types';
 
 export const splitHomeownerAccount = (payload: {
   data: HomeownerAccountSplitRequest;
@@ -24,4 +28,15 @@ export const doesApartmentExist = async ({
   if (typeof res === 'number') return res;
 
   return res?.successResponse;
+};
+
+export const getIndividualDevices = async (
+  params: GetIndividualDeviceRequestParams,
+) => {
+  const res: IndividualDeviceListItemResponsePagedList = await axios.get(
+    'IndividualDevices',
+    { params },
+  );
+
+  return { items: res?.items || [] };
 };
