@@ -13,7 +13,7 @@ import {
   combine,
   guard,
 } from 'effector';
-import { createForm } from 'effector-forms/dist';
+import { createForm } from 'effector-forms';
 import { checkIndividualDevice } from '01/_api/individualDevices';
 import { CheckIndividualDevicePayload } from '../switchIndividualDevice.types';
 import { $individualDevice } from '../../displayIndividualDevice/models';

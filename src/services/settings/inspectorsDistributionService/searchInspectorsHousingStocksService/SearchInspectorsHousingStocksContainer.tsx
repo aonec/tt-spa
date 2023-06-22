@@ -1,4 +1,4 @@
-import { useForm } from 'effector-forms/dist';
+import { useForm } from 'effector-forms';
 import { useEvent, useStore } from 'effector-react';
 import React from 'react';
 import { searchInspectorsHousingStockService } from './searchInspectorsHousingStockService.models';

@@ -7,5 +7,5 @@ export const individualSealAssignmentsQuery = createQuery<
   GetAssigmentsRequestPayload,
   AssingmentResponse[]
 >({
-  handler: () => axios.get('IndividualSeal/Assignments'),
+  handler: (params) => axios.get('IndividualSeal/Assignments', { params }),
 });

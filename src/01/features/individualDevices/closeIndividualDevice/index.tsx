@@ -2,7 +2,7 @@ import { Flex } from '01/shared/ui/Layout/Flex';
 import { Header, StyledModal } from '01/shared/ui/Modal/Modal';
 import { Form } from 'antd';
 import { Footer } from 'antd/lib/layout/layout';
-import { useForm } from 'effector-forms/dist';
+import { useForm } from 'effector-forms';
 import { useStore } from 'effector-react';
 import moment from 'moment';
 import React from 'react';

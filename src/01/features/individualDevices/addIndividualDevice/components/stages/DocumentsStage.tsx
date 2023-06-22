@@ -1,4 +1,4 @@
-import { useForm } from 'effector-forms/dist';
+import { useForm } from 'effector-forms';
 import React from 'react';
 import { addIndividualDeviceForm } from '../../models';
 import { FormHeader } from '../Header';

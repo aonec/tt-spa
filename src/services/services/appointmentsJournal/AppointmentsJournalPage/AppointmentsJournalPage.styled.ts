@@ -10,3 +10,7 @@ export const SearchWrapper = styled.div`
   grid-template-columns: 300px 300px;
   gap: 16px;
 `;
+
+export const TableWrapper = styled.div`
+  margin-top: 32px;
+`;
