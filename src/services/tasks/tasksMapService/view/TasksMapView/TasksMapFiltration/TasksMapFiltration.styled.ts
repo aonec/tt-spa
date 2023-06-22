@@ -13,6 +13,10 @@ export const Wrapper = styled.div`
   z-index: 1;
   box-shadow: 0px 4px 4px rgba(78, 93, 146, 0.16),
     0px 8px 16px rgba(78, 93, 146, 0.08);
+
+  max-height: calc(84vh - 64px);
+  overflow-y: scroll;
+  overflow-x: hidden;
 `;
 
 export const FilterHeader = styled.div`
@@ -21,6 +25,11 @@ export const FilterHeader = styled.div`
   justify-content: space-between;
   gap: 16px;
   padding: 16px;
+
+  position: sticky;
+  top: 0px;
+  background-color: white;
+  z-index: 1;
 `;
 
 export const SearchInput = styled(Input)`
@@ -57,4 +66,7 @@ export const Footer = styled.div`
   display: flex;
   gap: 12px;
   justify-content: flex-end;
+
+  position: sticky;
+  bottom: 0px;
 `;

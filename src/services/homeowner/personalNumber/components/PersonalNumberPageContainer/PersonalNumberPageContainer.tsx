@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useMemo } from 'react';
 import {
   Address,
   FlexContainer,
@@ -9,26 +9,70 @@ import { PersonalNumberPageContainerProps } from './PersonalNumberPageContainer.
 import { GoBack } from 'ui-kit/shared_components/GoBack';
 import { Button } from 'ui-kit/Button';
 import { Link, useHistory } from 'react-router-dom';
-import { PersonalNumberActions } from '../../selectPersonalNumberActionService/selectPersonalNumberActionService.types';
 import { getApartmentAddressString } from 'utils/getApartmentAddress';
 
 export const PersonalNumberPageContainer: FC<
   PersonalNumberPageContainerProps
 > = ({
   children,
-  type,
   apartment,
   titleText,
   isLoading,
-  cancelButtonText,
-  saveButtonText,
   formId,
+  onCancelHandler,
+  isLastStage,
+  isFirstStage,
+  handleCheckApartmentExist,
+  isCheckApartLoading,
 }) => {
   const history = useHistory();
 
   const address = apartment && getApartmentAddressString(apartment);
 
-  const isSplit = type === PersonalNumberActions.Split;
+  const getFirstButton = useMemo(() => {
+    if (isFirstStage || isFirstStage === undefined) {
+      return (
+        <Button type="ghost" onClick={history.goBack}>
+          Отмена
+        </Button>
+      );
+    } else {
+      return (
+        <Button type="ghost" onClick={onCancelHandler}>
+          Назад
+        </Button>
+      );
+    }
+  }, [isFirstStage, history.goBack, onCancelHandler]);
+
+  const getSecondButton = useMemo(() => {
+    if (isLastStage || isLastStage === undefined) {
+      return (
+        <Button
+          htmlType="submit"
+          htmlForm={formId}
+          onClick={() =>
+            handleCheckApartmentExist && handleCheckApartmentExist()
+          }
+          isLoading={isCheckApartLoading}
+        >
+          Сохранить изменения
+        </Button>
+      );
+    } else {
+      return (
+        <Button htmlType="submit" htmlForm={formId} isLoading={isLoading}>
+          Далее
+        </Button>
+      );
+    }
+  }, [
+    isLastStage,
+    formId,
+    isLoading,
+    isCheckApartLoading,
+    handleCheckApartmentExist,
+  ]);
 
   return (
     <Wrapper>
@@ -41,12 +85,8 @@ export const PersonalNumberPageContainer: FC<
       {children}
 
       <FlexContainer>
-        <Button type="ghost" onClick={history.goBack}>
-          {cancelButtonText || 'Отмена'}
-        </Button>
-        <Button htmlType="submit" htmlForm={formId} isLoading={isLoading}>
-          {isSplit ? saveButtonText || 'Далее' : 'Сохранить изменения'}
-        </Button>
+        {getFirstButton}
+        {getSecondButton}
       </FlexContainer>
     </Wrapper>
   );
