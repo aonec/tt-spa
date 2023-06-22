@@ -110,6 +110,10 @@ export const DistributeAppointmentsPanel: FC<
           (elem) => elem.id === controllerId,
         );
 
+        const controllerInfo = ` ${controller?.lastName || ''} ${
+          controller?.firstName || ''
+        }`;
+
         return (
           <>
             {controllerId && (
@@ -122,7 +126,7 @@ export const DistributeAppointmentsPanel: FC<
                     Уже есть ранее распределенные заявки
                   </ControllerInfoTitle>
                   Контролер:
-                  {controller?.lastName || ''} {controller?.firstName || ''}
+                  {controllerInfo}
                 </div>
               </ControllerWrapper>
             )}
