@@ -232,7 +232,7 @@ export const DistributeAppointmentsPanel: FC<
               size="small"
               disabled={!selectedAppointmentsIds.length}
             >
-              Распределить
+              Распределить{' '}
               {Boolean(selectedAppointmentsIds.length) &&
                 `${selectedAppointmentsIds.length} 
                       ${getCountText(
