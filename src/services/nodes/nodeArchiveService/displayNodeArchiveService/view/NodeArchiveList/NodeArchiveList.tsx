@@ -16,6 +16,13 @@ export const NodeArchiveList: FC<NodeArchiveListProps> = ({
   setWithFaultReadings,
 }) => {
   const isReadingsExist = data?.rows.length !== 0;
+  const filteredColumns = (data?.columns || []).filter(
+    (column) => column.text !== 'Н.C.',
+  );
+  const filteredRows = (data?.rows || []).map((row) => ({
+    ...row,
+    values: row.values.filter((elem) => elem.doubleValue !== null),
+  }));
 
   return (
     <Wrapper>
@@ -37,14 +44,11 @@ export const NodeArchiveList: FC<NodeArchiveListProps> = ({
           {isReadingsExist && (
             <ListWrapper>
               <Header columnsCount={data.columns.length - 1}>
-                {data.columns.map((column, index) => {
-                  if (column.text === 'Н.C.') {
-                    return null;
-                  }
-                  return <div key={index}>{column.text}</div>;
-                })}
+                {filteredColumns.map((column, index) => (
+                  <div key={index}>{column.text}</div>
+                ))}
               </Header>
-              {data.rows.map((row, index) => (
+              {filteredRows.map((row, index) => (
                 <ArchiveRow
                   columnsCount={data.columns.length - 1}
                   row={row}

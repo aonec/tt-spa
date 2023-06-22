@@ -6,12 +6,9 @@ export const ArchiveRow: FC<ArchiveRowProps> = ({ row, columnsCount }) => {
   return (
     <Row columnsCount={columnsCount} isFault={row.isFault}>
       <DateWrapper>{row.dateTimeText}</DateWrapper>
-      {row.values.map((value, index) => {
-        if (value.doubleValue === null) {
-          return null;
-        }
-        return <div key={index}>{value.text}</div>;
-      })}
+      {row.values.map((value, index) => (
+        <div key={index}>{value.text}</div>
+      ))}
     </Row>
   );
 };
