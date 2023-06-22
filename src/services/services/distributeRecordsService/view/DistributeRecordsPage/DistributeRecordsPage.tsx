@@ -6,7 +6,7 @@ import { SearchFieldType } from 'services/addressSearchService/view/AddressSearc
 import { Select } from 'ui-kit/Select';
 import { DatePicker } from 'ui-kit/DatePicker';
 import { DistrictsMap } from './DistrictsMap';
-import moment from 'moment';
+import { getDatePickerValue } from 'utils/getDatePickerValue';
 
 export const DistributeRecordsPage: FC<Props> = ({
   districtsList,
@@ -17,6 +17,10 @@ export const DistributeRecordsPage: FC<Props> = ({
   handleSetAppointmentDate,
   appointmentsInDistrict,
   handleSelectHousingStock,
+  isLoadingAppointments,
+  isLoadingDistricts,
+  selectedAppointmentsIds,
+  handleSelectAppointments,
 }) => {
   return (
     <Wrapper>
@@ -42,13 +46,15 @@ export const DistributeRecordsPage: FC<Props> = ({
           })}
         </Select>
         <DatePicker
-          value={moment(appointmentDate)}
+          disabled={!appointmentDate}
+          value={getDatePickerValue(appointmentDate)}
           onChange={(date) =>
             date && handleSetAppointmentDate(date.format('YYYY-MM-DD'))
           }
           small
           style={{ width: 240 }}
           format="DD.MM.YYYY"
+          allowClear={false}
         />
       </FiltrationWrapper>
       <DistrictsMap
@@ -57,6 +63,10 @@ export const DistributeRecordsPage: FC<Props> = ({
         selectedDistrict={selectedDistrict}
         appointmentsInDistrict={appointmentsInDistrict}
         handleSelectHousingStock={handleSelectHousingStock}
+        selectedAppointmentsIds={selectedAppointmentsIds}
+        handleSelectAppointments={handleSelectAppointments}
+        isLoadingAppointments={isLoadingAppointments}
+        handleUnselectDistrict={handleUnselectDistrict}
       />
     </Wrapper>
   );

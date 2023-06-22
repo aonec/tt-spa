@@ -1,6 +1,10 @@
 import { axios } from '01/axios';
 import { createQuery } from '@farfetched/core';
-import { AppointmentResponse, DistrictResponse } from 'myApi';
+import {
+  AppointmentResponse,
+  DistrictResponse,
+  TotalAppointmentCounterResponse,
+} from 'myApi';
 import { GetDistrictAppointmentsRequestPayload } from './distributeRecordsService.types';
 
 export const districtsQuery = createQuery<void, DistrictResponse[]>({
@@ -19,3 +23,8 @@ export const districtAppointmentsQuery = createQuery<
       },
     }),
 });
+
+export const getNearestAppointmentsDate = createQuery<
+  void,
+  TotalAppointmentCounterResponse
+>({ handler: () => axios.get('IndividualSeal/Appointments/Nearest') });

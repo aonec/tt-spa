@@ -8,8 +8,10 @@ export type Props = {
   handleUnselectDistrict: () => void;
   selectedDistrict: string | null;
   handleSetAppointmentDate: (date: string) => void;
-  appointmentDate: string;
+  appointmentDate: string | null;
   appointmentsInDistrict: AppointmentResponse[] | null;
   isLoadingAppointments: boolean;
   handleSelectHousingStock?: (data: AppointmentsByHousingStocks) => void;
+  selectedAppointmentsIds: string[];
+  handleSelectAppointments: (ids: string[]) => void;
 };

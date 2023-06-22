@@ -1,19 +1,15 @@
-import { countSimilarityPoints } from "utils/countSimilarityPoints";
+import { countSimilarityPoints } from 'utils/countSimilarityPoints';
 
 export function getPreparedStreetsOptions(
   addressSearch: string,
-  streets: string[]
+  streets: string[],
 ) {
   return streets
     .sort((a, b) => {
       const aPoints = countSimilarityPoints(addressSearch, a);
       const bPoints = countSimilarityPoints(addressSearch, b);
 
-      if (aPoints < bPoints) return 1;
-
-      if (aPoints > bPoints) return -1;
-
-      return 0;
+      return bPoints - aPoints;
     })
     .map((street) => ({
       value: street,

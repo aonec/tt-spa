@@ -3,6 +3,7 @@ import { createGate } from 'effector-react';
 import {
   districtAppointmentsQuery,
   districtsQuery,
+  getNearestAppointmentsDate,
 } from './distributeRecordsService.api';
 import moment from 'moment';
 import { GetDistrictAppointmentsRequestPayload } from './distributeRecordsService.types';
@@ -13,18 +14,23 @@ const DistributeRecordsGate = createGate();
 
 const handleUnselectDistrict = domain.createEvent();
 const handleSelectDistrict = domain.createEvent<string>();
-
-const setAppointmentDate = domain.createEvent<string>();
-
 const $selectedDistrict = domain
   .createStore<string | null>(null)
   .on(handleSelectDistrict, (_, id) => id)
   .reset(DistributeRecordsGate.close, handleUnselectDistrict);
 
+const setAppointmentDate = domain.createEvent<string>();
 const $appointmentDate = domain
-  .createStore<string>(moment().format('YYYY-MM-DD'))
+  .createStore<string | null>(moment().format('YYYY-MM-DD'))
   .on(setAppointmentDate, (_, date) => date)
+  .on(getNearestAppointmentsDate.$data, (_, res) => res?.date)
   .reset();
+
+const selectAppointments = domain.createEvent<string[]>();
+const $selectedAppointmentsIds = domain
+  .createStore<string[]>([])
+  .on(selectAppointments, (_, ids) => ids)
+  .reset(districtAppointmentsQuery.$data);
 
 const $getAppointmentsRequestPayload = combine(
   $selectedDistrict,
@@ -41,7 +47,7 @@ sample({
 
 forward({
   from: DistributeRecordsGate.open,
-  to: districtsQuery.start,
+  to: [districtsQuery.start, getNearestAppointmentsDate.start],
 });
 
 forward({
@@ -50,7 +56,12 @@ forward({
 });
 
 export const distributeRecordsService = {
-  inputs: { handleSelectDistrict, handleUnselectDistrict, setAppointmentDate },
-  outputs: { $selectedDistrict, $appointmentDate },
+  inputs: {
+    handleSelectDistrict,
+    handleUnselectDistrict,
+    setAppointmentDate,
+    selectAppointments,
+  },
+  outputs: { $selectedDistrict, $appointmentDate, $selectedAppointmentsIds },
   gates: { DistributeRecordsGate },
 };
