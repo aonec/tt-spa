@@ -17,9 +17,15 @@ export type FilterType = {
   corpus?: string;
 };
 
-export type CheckedHousingStocksIdType = {
+export type CheckedHousingStocksIdWithStreets = {
   street: string;
-  housingStocksId: number[];
+  housingStocksId: number[] | [];
+};
+
+export type CheckedHousingStocksIdWithStreetsHandler = {
+  street: string | null;
+  housingStocksId: number[] | number;
+  isToAdd: boolean;
 };
 
 export type HousingStocksIdsWithCoordinates = {
@@ -28,4 +34,9 @@ export type HousingStocksIdsWithCoordinates = {
     latitude: number;
     longitude: number;
   } | null;
+};
+
+export type Coordinate = {
+  latitude: number;
+  longitude: number;
 };
