@@ -552,6 +552,9 @@ export interface AppointmentResponse {
 
   /** @format uuid */
   controllerId: string | null;
+
+  /** @format uuid */
+  assignmentId: string | null;
   homeownerFullName: string | null;
   homeownerPhone: string | null;
 
@@ -2626,6 +2629,11 @@ export interface GuidStringDictionaryItem {
   /** @format uuid */
   key?: string;
   value?: string | null;
+}
+
+export interface GuidSuccessApiResponse {
+  /** @format uuid */
+  successResponse: string;
 }
 
 export interface HeatingSeasonAdjustmentResponse {
@@ -7324,6 +7332,26 @@ export class Api<
       }),
 
     /**
+     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li>
+     *
+     * @tags Assignments
+     * @name IndividualSealAssignmentsDelete
+     * @summary IndividualSealReadWrite
+     * @request DELETE:/api/IndividualSeal/Assignments/{assingmentId}
+     * @secure
+     */
+    individualSealAssignmentsDelete: (
+      assingmentId: string,
+      params: RequestParams = {},
+    ) =>
+      this.request<void, ErrorApiResponse>({
+        path: `/api/IndividualSeal/Assignments/${assingmentId}`,
+        method: 'DELETE',
+        secure: true,
+        ...params,
+      }),
+
+    /**
      * No description
      *
      * @tags Auth
@@ -7915,12 +7943,13 @@ export class Api<
       data: ControllerCreateRequest,
       params: RequestParams = {},
     ) =>
-      this.request<void, ErrorApiResponse>({
+      this.request<GuidSuccessApiResponse, ErrorApiResponse>({
         path: `/api/IndividualSeal/Controllers`,
         method: 'POST',
         body: data,
         secure: true,
         type: ContentType.Json,
+        format: 'json',
         ...params,
       }),
 
