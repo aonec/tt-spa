@@ -26,7 +26,7 @@ export const RemoveAssignmentContainer = () => {
       isLoading={isLoading}
       onSubmit={removeAssignment}
       submitText="Расформировать"
-      description="После расформирования заявки снова станут нераспределенными."
+      description="После расформирования задания заявки снова станут нераспределенными."
       title="Вы действительно хотите расформировать задание?"
     />
   );
