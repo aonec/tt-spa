@@ -18,6 +18,7 @@ import {
   createIndividualSealControllerMutation,
 } from './createControllerService';
 import { message } from 'antd';
+import { AppointmentsIdWithController } from './view/DistributeRecordsPage/DistributeAppointmentsPanel/DistributeAppointmentsPanel.types';
 
 const domain = createDomain('distributeRecords');
 
@@ -26,7 +27,7 @@ const DistributeRecordsGate = createGate();
 const handleUnselectDistrict = domain.createEvent();
 const handleSelectDistrict = domain.createEvent<string>();
 const setAppointmentDate = domain.createEvent<string>();
-const selectAppointments = domain.createEvent<string[]>();
+const selectAppointments = domain.createEvent<AppointmentsIdWithController[]>();
 
 const openDistributeAppointmentsModal = domain.createEvent();
 const closeDistributeAppointmentsModal = domain.createEvent();
@@ -43,7 +44,7 @@ const $appointmentDate = domain
   .reset();
 
 const $selectedAppointmentsIds = domain
-  .createStore<string[]>([])
+  .createStore<AppointmentsIdWithController[]>([])
   .on(selectAppointments, (_, ids) => ids)
   .reset(districtAppointmentsQuery.$data);
 
@@ -115,6 +116,14 @@ forward({
 forward({
   from: [DistributeRecordsGate.close, handleUnselectDistrict],
   to: districtAppointmentsQuery.reset,
+});
+
+setAppointmentsToControllerMutation.finished.failure.watch(({ error }) => {
+  return message.error(
+    error.response.data.error.Text ||
+      error.response.data.error.Message ||
+      'Произошла ошибка',
+  );
 });
 
 export const distributeRecordsService = {

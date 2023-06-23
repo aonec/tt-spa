@@ -16,5 +16,7 @@ export const SealContainer = () => {
 
   const Component = componentsDictionary[section];
 
+  if (!Component) return null;
+
   return <Component />;
 };

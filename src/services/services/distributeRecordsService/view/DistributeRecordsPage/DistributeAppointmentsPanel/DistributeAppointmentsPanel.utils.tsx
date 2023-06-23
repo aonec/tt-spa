@@ -2,54 +2,86 @@ import type { DataNode } from 'antd/es/tree';
 import { AppointmentResponse } from 'myApi';
 import { ChevronSC } from './DistributeAppointmentsPanel.styled';
 import _ from 'lodash';
-import React from 'react'
+import React from 'react';
+import { countSimilarityPoints } from 'utils/countSimilarityPoints';
+import { AppointmentsIdWithController } from './DistributeAppointmentsPanel.types';
 
-export const getParentNode = (
-  key: React.Key,
-  tree: DataNode[],
-): null | DataNode =>
-  tree.reduce((acc, node) => {
-    if (acc) {
-      return acc;
-    }
+const getParentTitle = (appointment: AppointmentResponse) =>
+  `ул. ${appointment.address?.street} ${appointment.address?.houseNumber}`;
 
-    if (node.children) {
-      if (node.children.some((item) => item.key === key)) {
-        acc = node;
-      } else if (getParentNode(key, node.children)) {
-        acc = getParentNode(key, node.children);
-      }
-    }
+const getAppointmentChildTitle = (apartmentNumber: string) =>
+  `кв. ${apartmentNumber}`;
 
-    return acc;
-  }, null as null | DataNode);
+export const countSimilarityPointsForAppointment = (
+  searchString: string,
+  appointment: AppointmentResponse,
+) => {
+  const parentTitle = getParentTitle(appointment);
+  const childTitle = appointment.address?.apartmentNumber
+    ? getAppointmentChildTitle(appointment.address?.apartmentNumber)
+    : '';
 
-  export const prepareAppointmentsToTree = (appointments:AppointmentResponse[]) => {
-    const appointmentsGroupedByAddress = _.groupBy(
-      appointments,
-      (appointment) =>
-        `ул. ${appointment.address?.street} ${appointment.address?.houseNumber}`,
-    );
+  const similarityPoints = countSimilarityPoints(
+    searchString,
+    `${parentTitle} ${childTitle}`,
+  );
 
-    const data: DataNode[] = Object.entries(appointmentsGroupedByAddress).map(
-      ([key, children]) => ({
-        key,
-        title: key,
-        className: 'treeRoot',
-        switcherIcon: ({ expanded }) => (
-          <ChevronSC expanded={expanded || false} />
-        ),
-        children: children.reduce((acc, appointment) => {
-          const apartmentNumber = appointment.address?.apartmentNumber;
-          
-          if (!apartmentNumber) {
-            return acc;
-          }
-          const title = `кв. ${apartmentNumber}`;
-          return [...acc, { title, key: appointment.id }];
-        }, [] as DataNode[]),
-      }),
-    );
+  return { ...appointment, similarityPoints, id: parentTitle };
+};
 
-    return data;
-  }
+export const prepareAppointmentsToTree = (
+  initialAppointmentsArr: AppointmentResponse[],
+) => {
+  const appointmentsByControllers = _.groupBy(
+    initialAppointmentsArr,
+    'controllerId',
+  );
+
+  return Object.entries(appointmentsByControllers).reduce(
+    (acc, [controllerId, appointments]) => {
+      const appointmentsGroupedByAddress = _.groupBy(
+        appointments,
+        (appointment) => getParentTitle(appointment),
+      );
+
+      const data: DataNode[] = Object.entries(appointmentsGroupedByAddress).map(
+        ([key, children]) => ({
+          key,
+          title: key,
+          className: 'treeRoot',
+          switcherIcon: ({ expanded }) => (
+            <ChevronSC expanded={expanded || false} />
+          ),
+          children: children.reduce((acc, appointment) => {
+            const apartmentNumber = appointment.address?.apartmentNumber;
+
+            if (!apartmentNumber) {
+              return acc;
+            }
+            return [
+              ...acc,
+              {
+                title: getAppointmentChildTitle(apartmentNumber),
+                key: appointment.id,
+              },
+            ];
+          }, [] as DataNode[]),
+        }),
+      );
+
+      return [
+        ...acc,
+        { data, controllerId: controllerId === 'null' ? null : controllerId },
+      ];
+    },
+    [] as { data: DataNode[]; controllerId: string | null }[],
+  );
+};
+
+export const getKeysByControllerId = (
+  ids: AppointmentsIdWithController[],
+  controllerId: string | null,
+) =>
+  ids
+    .filter((elem) => elem.controllerId === controllerId)
+    .map((elem) => elem.id);

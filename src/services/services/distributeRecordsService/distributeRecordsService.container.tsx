@@ -34,38 +34,50 @@ export const DistributeRecordsContainer = () => {
     pending: isLoadingDistributeAppointments,
   } = useUnit(setAppointmentsToControllerMutation);
 
-  const handleSelectDistrict = useUnit(inputs.handleSelectDistrict);
-  const handleUnselectDistrict = useUnit(inputs.handleUnselectDistrict);
-  const handleSetAppointmentDate = useUnit(inputs.setAppointmentDate);
-  const handleSelectAppointments = useUnit(inputs.selectAppointments);
-  const openDistributeAppointmentsModal = useUnit(
-    inputs.openDistributeAppointmentsModal,
-  );
-  const closeDistributeAppointmentsModal = useUnit(
-    inputs.closeDistributeAppointmentsModal,
-  );
-  const openCreateControllerModal = useUnit(inputs.openCreateControllerModal);
+  const {
+    handleSelectDistrict,
+    handleSetAppointmentDate,
+    handleUnselectDistrict,
+    closeDistributeAppointmentsModal,
+    handleSelectAppointments,
+    openCreateControllerModal,
+    openDistributeAppointmentsModal,
+  } = useUnit({
+    handleSelectDistrict: inputs.handleSelectDistrict,
+    handleUnselectDistrict: inputs.handleUnselectDistrict,
+    handleSetAppointmentDate: inputs.setAppointmentDate,
+    handleSelectAppointments: inputs.selectAppointments,
+    openDistributeAppointmentsModal: inputs.openDistributeAppointmentsModal,
+    closeDistributeAppointmentsModal: inputs.closeDistributeAppointmentsModal,
+    openCreateControllerModal: inputs.openCreateControllerModal,
+  });
 
-  const selectedDistrict = useUnit(outputs.$selectedDistrict);
-  const appointmentDate = useUnit(outputs.$appointmentDate);
-  const selectedAppointmentsIds = useUnit(outputs.$selectedAppointmentsIds);
-  const isDistributeAppointmentsModalOpen = useUnit(
-    outputs.$isDistributeAppointmentsModalOpen,
-  );
+  const {
+    selectedDistrict,
+    appointmentDate,
+    isDistributeAppointmentsModalOpen,
+    selectedAppointmentsIds,
+  } = useUnit({
+    selectedDistrict: outputs.$selectedDistrict,
+    appointmentDate: outputs.$appointmentDate,
+    selectedAppointmentsIds: outputs.$selectedAppointmentsIds,
+    isDistributeAppointmentsModalOpen:
+      outputs.$isDistributeAppointmentsModalOpen,
+  });
 
   const handleSelectHousingStock = useCallback(
     (data: AppointmentsByHousingStocks) => {
       const isHouseSelected = Boolean(
         intersection(
           data.appointments.map((elem) => elem.id),
-          selectedAppointmentsIds,
+          selectedAppointmentsIds.map((elem) => String(elem.id)),
         ).length,
       );
 
       if (!isHouseSelected) {
         handleSelectAppointments([
           ...selectedAppointmentsIds,
-          ...data.appointments.map((elem) => elem.id),
+          ...data.appointments,
         ]);
       }
 
@@ -75,7 +87,7 @@ export const DistributeRecordsContainer = () => {
             (elem) =>
               !data.appointments
                 .map((appointment) => appointment.id)
-                .includes(elem),
+                .includes(String(elem.id)),
           ),
         );
       }

@@ -13,6 +13,8 @@ import {
   GetDistrictAppointmentsRequestPayload,
   GetDistrictsAppointmentsCountingRequestPayload,
 } from './distributeRecordsService.types';
+import { EffectFailDataAxiosError } from 'types';
+import { createEffect } from 'effector';
 
 export const districtsQuery = createQuery<void, DistrictResponse[]>({
   handler: async () => {
@@ -71,7 +73,8 @@ export const individualSealControllersQuery = createQuery<
   handler: () => axios.get('IndividualSeal/Controllers'),
 });
 
-export const setAppointmentsToControllerMutation = createMutation<
-  AppointmentsSetRequest,
-  void
->({ handler: (data) => axios.post('IndividualSeal/Appointments/Set', data) });
+export const setAppointmentsToControllerMutation = createMutation({
+  effect: createEffect<AppointmentsSetRequest, void, EffectFailDataAxiosError>(
+    (data) => axios.post('IndividualSeal/Appointments/Set', data),
+  ),
+});
