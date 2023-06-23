@@ -7,6 +7,10 @@ export const useSwitchInputOnEnter = (name: string, focusOnFirst: boolean) => {
         `[data-reading-input="${name}"]`,
       );
 
+      if (!inputList.length) {
+        return null;
+      }
+
       const nextNode = inputList[index + 1];
 
       if (!nextNode) {

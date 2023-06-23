@@ -1,4 +1,4 @@
-import { createDomain, forward } from 'effector';
+import { createDomain, sample, forward } from 'effector';
 import {
   DistrictCreateRequest,
   DistrictResponse,
@@ -17,6 +17,17 @@ import { message } from 'antd';
 const domain = createDomain('createDistrictBorderByMapService');
 
 const HousingStocksListGate = createGate();
+const CreateDistrictBorderMapPageGate = createGate();
+
+const handleCloseDistrictEditer = domain.createEvent();
+
+const setSelectedHousingStocksIds = domain.createEvent<{
+  housingStockIds: number[];
+  polygon: number[][];
+}>();
+
+const handleFetchHousingStocksList =
+  domain.createEvent<GetHousingStocksRequestParams>();
 
 const fetchHousingStocksListFx = domain.createEffect<
   GetHousingStocksRequestParams,
@@ -42,6 +53,20 @@ const $housingStocks = domain
     (_, housingStocksPagedList) => housingStocksPagedList,
   );
 
+const $selectedHousingStockIdsAndPoligon = domain
+  .createStore<{
+    housingStockIds: number[];
+    polygon: number[][];
+  }>({ housingStockIds: [], polygon: [] })
+  .on(setSelectedHousingStocksIds, (_, data) => data)
+  .reset(CreateDistrictBorderMapPageGate.close);
+
+sample({
+  clock: [HousingStocksListGate.open, handleFetchHousingStocksList],
+  source: $housingStocks,
+  filter: (housingStocks) => !Boolean(housingStocks),
+  target: fetchHousingStocksListFx.prepend(() => ({})),
+});
 const $existingDistricts = domain
   .createStore<DistrictResponse[]>([])
   .on(fetchExistingDistrictsFx.doneData, (_, districts) => {
@@ -71,14 +96,18 @@ districtCreated.watch(() => {
 
 export const CreateDistrictBorderByMapService = {
   inputs: {
+    setSelectedHousingStocksIds,
+    handleCloseDistrictEditer,
+    handleFetchHousingStocksList,
     handleCreateDistrict,
     districtCreated,
   },
   outputs: {
     $housingStocks,
     $isLoadingHousingStocks,
+    $selectedHousingStockIdsAndPoligon,
     $isLoadingCreatingDistrict,
     $existingDistricts,
   },
-  gates: { HousingStocksListGate },
+  gates: { HousingStocksListGate, CreateDistrictBorderMapPageGate },
 };
