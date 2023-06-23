@@ -132,3 +132,21 @@ export const ListHeaderWrapper = styled.div`
   padding-top: 16px;
   border-top: 1px solid #f3f5f6;
 `;
+
+export const ControllerWrapper = styled.div`
+  padding: 8px 12px 8px 12px;
+  border-radius: 4px;
+  background-color: #189ee929;
+  color: #272f5a;
+
+  display: flex;
+  align-items: flex-start;
+  gap: 4px;
+  margin-top: 16px;
+`;
+
+export const ControllerInfoTitle = styled.div`
+  user-select: none;
+  font-weight: 500;
+  color: #189ee9;
+`;

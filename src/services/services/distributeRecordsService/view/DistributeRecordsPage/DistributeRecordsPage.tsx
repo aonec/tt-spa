@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useMemo } from 'react';
 import { FiltrationWrapper, Wrapper } from './DistributeRecordsPage.styled';
 import { Props } from './DistributeRecordsPage.types';
 import { AddressSearchContainer } from 'services/addressSearchService';
@@ -30,6 +30,11 @@ export const DistributeRecordsPage: FC<Props> = ({
   setAppointmentsToController,
   isLoadingDistributeAppointments,
 }) => {
+  const selectedIdsArr = useMemo(
+    () => selectedAppointmentsIds.map((elem) => String(elem.id)),
+    [selectedAppointmentsIds],
+  );
+
   return (
     <Wrapper>
       <DistributeAppointmentsModal
@@ -39,7 +44,7 @@ export const DistributeRecordsPage: FC<Props> = ({
         controllers={controllers}
         openCreateControllerModal={openCreateControllerModal}
         setAppointmentsToController={setAppointmentsToController}
-        selectedAppointmentsIds={selectedAppointmentsIds}
+        selectedAppointmentsIds={selectedIdsArr}
         isLoadingDistributeAppointments={isLoadingDistributeAppointments}
       />
       <FiltrationWrapper>
@@ -87,6 +92,7 @@ export const DistributeRecordsPage: FC<Props> = ({
         handleUnselectDistrict={handleUnselectDistrict}
         appointmentsCounting={appointmentsCounting}
         openDistributeAppointmentsModal={openDistributeAppointmentsModal}
+        controllers={controllers}
       />
     </Wrapper>
   );

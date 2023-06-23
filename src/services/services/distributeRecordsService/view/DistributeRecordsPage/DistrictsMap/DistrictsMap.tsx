@@ -30,6 +30,7 @@ export const DistrictsMap: FC<Props> = ({
   handleUnselectDistrict,
   appointmentsCounting,
   openDistributeAppointmentsModal,
+  controllers,
 }) => {
   const { mapRef, map } = useYMaps();
 
@@ -73,7 +74,7 @@ export const DistrictsMap: FC<Props> = ({
         const isIntersection =
           intersection(
             elem.appointments.map((elem) => elem.id),
-            selectedAppointmentsIds,
+            selectedAppointmentsIds.map((elem) => elem.id),
           ).length !== 0;
 
         const isHouseActive = elem.appointments.some((elem) =>
@@ -111,6 +112,7 @@ export const DistrictsMap: FC<Props> = ({
           isLoadingAppointments={isLoadingAppointments}
           handleUnselectDistrict={handleUnselectDistrict}
           openDistributeAppointmentsModal={openDistributeAppointmentsModal}
+          controllers={controllers}
         />
       )}
       <div ref={mapRef} style={{ width: '100%', height: '86vh' }} />
