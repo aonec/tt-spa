@@ -3,6 +3,7 @@ import {
   CancelAllText,
   ContentWrapper,
   ControllerInfoTitle,
+  ControllerInfoWrapper,
   ControllerWrapper,
   CountWrapper,
   Footer,
@@ -11,6 +12,7 @@ import {
   LoaderWrapper,
   RootWrapperTitle,
   SelectAllText,
+  TrashIconSC,
   TreeSC,
   Wrapper,
 } from './DistributeAppointmentsPanel.styled';
@@ -91,14 +93,24 @@ export const DistributeAppointmentsPanel: FC<
     [appointmentsInDistrict],
   );
 
+  const handleSelectAllAppointments = useCallback(
+    () =>
+      handleSelectAppointments(
+        appointmentsInDistrict.reduce((acc, elem) => {
+          if (!elem.controllerId) {
+            return [...acc, elem.id];
+          }
+          return acc;
+        }, [] as string[]),
+      ),
+    [appointmentsInDistrict, handleSelectAppointments],
+  );
+
   const treeList = useMemo(
     () =>
       preparedTreeDataByControllers.map(({ controllerId, data }) => {
         const expKeys = getKeysByControllerId(expandedKeys, controllerId);
-        const checkedKeys = getKeysByControllerId(
-          selectedAppointmentsIds,
-          controllerId,
-        );
+        const checkedKeys = controllerId ? [] : selectedAppointmentsIds;
         const controller = (controllers || []).find(
           (elem) => elem.id === controllerId,
         );
@@ -118,12 +130,16 @@ export const DistributeAppointmentsPanel: FC<
                   <ControllerInfoTitle>
                     Уже есть ранее распределенные заявки
                   </ControllerInfoTitle>
-                  Контролер:
-                  {controllerInfo}
+                  <ControllerInfoWrapper>
+                    Контролер:
+                    {controllerInfo}
+                    <TrashIconSC />
+                  </ControllerInfoWrapper>
                 </div>
               </ControllerWrapper>
             )}
             <TreeSC
+              disabled={Boolean(controllerId)}
               selectable={false}
               checkable={true}
               treeData={data}
@@ -146,15 +162,9 @@ export const DistributeAppointmentsPanel: FC<
                   Boolean(elem.key !== elem.title),
                 );
 
-                handleSelectAppointments([
-                  ...selectedAppointmentsIds.filter(
-                    (elem) => elem.controllerId !== controllerId,
-                  ),
-                  ...filteredNodes.map((elem) => ({
-                    id: String(elem.key),
-                    controllerId,
-                  })),
-                ]);
+                handleSelectAppointments(
+                  filteredNodes.map((elem) => String(elem.key)),
+                );
               }}
               onExpand={(keys) =>
                 setExpandedKeys((prev) => [
@@ -195,11 +205,7 @@ export const DistributeAppointmentsPanel: FC<
                   onChange={(e) => handleChangeInputValue(e.target.value)}
                 />
                 <ListHeaderWrapper>
-                  <SelectAllText
-                    onClick={() =>
-                      handleSelectAppointments(appointmentsInDistrict)
-                    }
-                  >
+                  <SelectAllText onClick={handleSelectAllAppointments}>
                     Выбрать все ({appointmentsInDistrict.length})
                   </SelectAllText>
                   <CancelAllText onClick={() => handleSelectAppointments([])}>

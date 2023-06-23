@@ -74,7 +74,7 @@ export const DistrictsMap: FC<Props> = ({
         const isIntersection =
           intersection(
             elem.appointments.map((elem) => elem.id),
-            selectedAppointmentsIds.map((elem) => elem.id),
+            selectedAppointmentsIds,
           ).length !== 0;
 
         const isHouseActive = elem.appointments.some((elem) =>
@@ -94,7 +94,7 @@ export const DistrictsMap: FC<Props> = ({
             number,
           ],
           onClick: () => handleSelectHousingStock(elem),
-          count: elem.appointments.length,
+          count: elem.appointments.filter((elem) => !elem.controllerId).length,
         };
       }),
     [appointmentsInDistrict, handleSelectHousingStock, selectedAppointmentsIds],

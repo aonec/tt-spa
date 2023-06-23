@@ -2,8 +2,8 @@ import { AppointmentResponse, ControllerResponse } from 'myApi';
 
 export type DistributeAppointmentsPanelProps = {
   appointmentsInDistrict: AppointmentResponse[];
-  selectedAppointmentsIds: AppointmentsIdWithController[];
-  handleSelectAppointments: (ids: AppointmentsIdWithController[]) => void;
+  selectedAppointmentsIds: string[];
+  handleSelectAppointments: (ids: string[]) => void;
   isLoadingAppointments: boolean;
   handleUnselectDistrict: () => void;
   openDistributeAppointmentsModal: () => void;

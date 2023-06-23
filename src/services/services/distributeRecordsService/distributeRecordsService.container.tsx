@@ -70,14 +70,19 @@ export const DistributeRecordsContainer = () => {
       const isHouseSelected = Boolean(
         intersection(
           data.appointments.map((elem) => elem.id),
-          selectedAppointmentsIds.map((elem) => String(elem.id)),
+          selectedAppointmentsIds,
         ).length,
       );
 
       if (!isHouseSelected) {
         handleSelectAppointments([
           ...selectedAppointmentsIds,
-          ...data.appointments,
+          ...data.appointments.reduce((acc, elem) => {
+            if (!elem.controllerId) {
+              return [...acc, elem.id];
+            }
+            return acc;
+          }, [] as string[]),
         ]);
       }
 
@@ -87,7 +92,7 @@ export const DistributeRecordsContainer = () => {
             (elem) =>
               !data.appointments
                 .map((appointment) => appointment.id)
-                .includes(String(elem.id)),
+                .includes(elem),
           ),
         );
       }
