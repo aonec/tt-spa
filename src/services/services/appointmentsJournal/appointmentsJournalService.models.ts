@@ -1,8 +1,9 @@
-import { sample } from 'effector';
+import { forward, sample } from 'effector';
 import { createForm } from 'effector-forms';
 import moment from 'moment';
 import { individualSealAssignmentsQuery } from './appointmentsJournalService.api';
 import { createGate } from 'effector-react';
+import { individualSealControllersQuery } from '../distributeRecordsService/distributeRecordsService.api';
 
 const AssignmentsJournalGate = createGate();
 
@@ -21,6 +22,11 @@ sample({
     to: to?.format('YYYY-MM-DD'),
   }),
   target: individualSealAssignmentsQuery.start,
+});
+
+forward({
+  from: AssignmentsJournalGate.open,
+  to: individualSealControllersQuery.start,
 });
 
 export const appointmentsJournalService = {

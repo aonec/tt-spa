@@ -1,5 +1,6 @@
-import React, { FC } from 'react';
+import React, { FC, useMemo } from 'react';
 import {
+  DownloadButtonWrapper,
   PageHeaderWrapper,
   SearchWrapper,
   TableWrapper,
@@ -11,12 +12,23 @@ import { DatePicker } from 'ui-kit/DatePicker';
 import { useForm } from 'effector-forms';
 import { Table } from 'ui-kit/Table';
 import moment from 'moment';
+import { DownloadBlueIcon } from 'ui-kit/icons';
+import { ControllerResponse } from 'myApi';
+import { WithLoader } from 'ui-kit/shared_components/WithLoader';
 
 export const AppointmentsJournalPage: FC<Props> = ({
   form,
   assignmentslist,
+  controllersList,
+  isLoadingAssygnments,
 }) => {
   const { fields } = useForm(form);
+
+  const controllersMap = useMemo(() => {
+    return controllersList.reduce((acc, controller) => {
+      return { ...acc, [controller.id]: controller };
+    }, {} as { [key: string]: ControllerResponse });
+  }, [controllersList]);
 
   return (
     <div>
@@ -27,7 +39,7 @@ export const AppointmentsJournalPage: FC<Props> = ({
       <SearchWrapper>
         <DatePicker
           value={fields.from.value || undefined}
-          onChange={(value) => value && fields.from.onChange(value)}
+          onChange={(value) => fields.from.onChange(value || moment())}
           small
           format="DD.MM.YYYY"
           placeholder="От"
@@ -40,61 +52,77 @@ export const AppointmentsJournalPage: FC<Props> = ({
           placeholder="До"
         />
       </SearchWrapper>
-      <TableWrapper>
-        {assignmentslist && (
-          <Table
-            elements={assignmentslist}
-            columns={[
-              {
-                label: 'Дата заявки',
-                size: '140px',
-                render: (assignment) => (
-                  <b>{moment(assignment.date).format('DD.MM.YYYY')}</b>
-                ),
-              },
-              {
-                label: 'ФИО исполнителя',
-                size: '188px',
-                render: (assignment) => {
-                  const user = assignment.creatingUser;
-
-                  const lastName = user?.lastName?.[0];
-                  const middleName = user?.middleName?.[0];
-
-                  return `${user?.firstName} ${
-                    lastName ? lastName + '.' : ''
-                  } ${middleName ? middleName + '.' : ''}`;
+      <WithLoader isLoading={isLoadingAssygnments}>
+        <TableWrapper>
+          {assignmentslist && (
+            <Table
+              elements={assignmentslist}
+              columns={[
+                {
+                  label: 'Дата заявки',
+                  size: '140px',
+                  render: (assignment) => (
+                    <b>{moment(assignment.date).format('DD.MM.YYYY')}</b>
+                  ),
                 },
-              },
-              {
-                label: 'Количество адресов',
-                size: '140px',
-                render: (assignment) => assignment.appointmentsCount,
-              },
-              {
-                label: 'Дата формирования',
-                size: '140px',
-                render: (assignment) =>
-                  moment(assignment.createDateTimeUtc).format('DD.MM.YYYY'),
-              },
-              {
-                label: 'ФИО оператора',
-                size: '188px',
-                render: (assignment) => {
-                  const user = assignment.creatingUser;
+                {
+                  label: 'ФИО исполнителя',
+                  size: '200px',
+                  render: (assignment) => {
+                    const user = controllersMap[assignment.controllerId];
 
-                  const lastName = user?.lastName?.[0];
-                  const middleName = user?.middleName?.[0];
+                    if (!user) return '-';
 
-                  return `${user?.firstName} ${
-                    lastName ? lastName + '.' : ''
-                  } ${middleName ? middleName + '.' : ''}`;
+                    const lastName = user?.lastName?.[0];
+                    const middleName = user?.middleName?.[0];
+
+                    console.log(lastName, middleName);
+
+                    return `${user?.firstName} ${
+                      lastName ? lastName + '.' : ''
+                    } ${middleName ? middleName + '.' : ''}`;
+                  },
                 },
-              },
-            ]}
-          />
-        )}
-      </TableWrapper>
+                {
+                  label: 'Количество адресов',
+                  size: '140px',
+                  render: (assignment) => assignment.appointmentsCount,
+                },
+                {
+                  label: 'Дата формирования',
+                  size: '140px',
+                  render: (assignment) =>
+                    moment(assignment.createDateTimeUtc).format('DD.MM.YYYY'),
+                },
+                {
+                  label: 'ФИО оператора',
+                  size: '200px',
+                  render: (assignment) => {
+                    const user = assignment.creatingUser;
+
+                    const lastName = user?.lastName?.[0];
+                    const middleName = user?.middleName?.[0];
+
+                    return `${user?.firstName} ${
+                      lastName ? lastName + '.' : ''
+                    } ${middleName ? middleName + '.' : ''}`;
+                  },
+                },
+                {
+                  label: '',
+                  size: '180px',
+                  render: () => (
+                    <DownloadButtonWrapper>
+                      <DownloadBlueIcon />
+                      <div>Скачать задание</div>
+                    </DownloadButtonWrapper>
+                  ),
+                },
+              ]}
+            />
+          )}
+        </TableWrapper>
+      </WithLoader>
     </div>
   );
 };

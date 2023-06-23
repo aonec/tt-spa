@@ -14,3 +14,24 @@ export const SearchWrapper = styled.div`
 export const TableWrapper = styled.div`
   margin-top: 32px;
 `;
+
+export const DownloadButtonWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #189ee9;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: 0.2s;
+
+  &:hover {
+    color: #186ce9ff;
+
+    svg {
+      path {
+        fill: #186ce9ff;
+      }
+    }
+  }
+`;
