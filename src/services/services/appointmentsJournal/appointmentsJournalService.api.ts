@@ -20,7 +20,7 @@ export const downloadСontrollerWorkFileQuery = createQuery<
 >({
   handler: async ({ controllerId, ...params }) => {
     const res: string = await axios.get(
-      `/api/IndividualSeal/Controllers/${controllerId}/WorkFile`,
+      `IndividualSeal/Controllers/${controllerId}/WorkFile`,
       {
         params,
         responseType: 'blob',

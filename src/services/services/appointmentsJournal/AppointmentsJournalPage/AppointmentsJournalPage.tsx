@@ -38,7 +38,7 @@ export const AppointmentsJournalPage: FC<Props> = ({
     (controllerId: string, date: string) => () => {
       downloadWorkFile({
         controllerId,
-        date: moment(date).format('DD.MM.YYYY'),
+        date: moment(date).format('YYYY-MM-DD'),
       });
     },
     [downloadWorkFile],
@@ -127,7 +127,7 @@ export const AppointmentsJournalPage: FC<Props> = ({
                     <DownloadButtonWrapper
                       onClick={handleDownloadFile(
                         assignment.controllerId,
-                        assignment.createDateTimeUtc,
+                        assignment.date,
                       )}
                     >
                       <DownloadBlueIcon />
