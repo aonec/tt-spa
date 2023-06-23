@@ -40,21 +40,24 @@ export const DistrictBordersByAddressContainer = () => {
 
   const isAllowedToEditer = checkedhousingStockIds.length > 2;
 
-  const checkedHousingStockCoordinates =
-    housingStocksWithCoordinates?.items
-      ?.filter((housingStock) =>
-        checkedhousingStockIds.includes(housingStock.id),
-      )
-      .flatMap((housingStock) =>
-        housingStock.coordinates
-          ? [
-              {
-                latitude: housingStock.coordinates.latitude,
-                longitude: housingStock.coordinates.longitude,
-              },
-            ]
-          : [],
-      ) || [];
+  const checkedHousingStockCoordinates = useMemo(
+    () =>
+      housingStocksWithCoordinates?.items
+        ?.filter((housingStock) =>
+          checkedhousingStockIds.includes(housingStock.id),
+        )
+        .flatMap((housingStock) =>
+          housingStock.coordinates
+            ? [
+                {
+                  latitude: housingStock.coordinates.latitude,
+                  longitude: housingStock.coordinates.longitude,
+                },
+              ]
+            : [],
+        ) || [],
+    [housingStocksWithCoordinates, checkedhousingStockIds],
+  );
 
   useEffect(() => {
     const borderCoordinates = getConvexHull(checkedHousingStockCoordinates).map(
