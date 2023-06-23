@@ -35,3 +35,26 @@ export const DownloadButtonWrapper = styled.div`
     }
   }
 `;
+
+export const EmptyWrapper = styled.div`
+  height: 60vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+`;
+
+export const EmptyTitle = styled.div`
+  margin-top: 16px;
+  color: rgba(39, 47, 90, 0.32);
+  font-size: 24px;
+  font-weight: 500;
+`;
+
+export const EmptyDescription = styled.div`
+  margin-top: 16px;
+  color: rgba(39, 47, 90, 0.32);
+  text-align: center;
+  font-size: 16px;
+  max-width: 500px;
+`;

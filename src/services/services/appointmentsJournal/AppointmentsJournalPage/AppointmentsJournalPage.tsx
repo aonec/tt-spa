@@ -1,6 +1,9 @@
 import React, { FC, useMemo } from 'react';
 import {
   DownloadButtonWrapper,
+  EmptyDescription,
+  EmptyTitle,
+  EmptyWrapper,
   PageHeaderWrapper,
   SearchWrapper,
   TableWrapper,
@@ -12,7 +15,7 @@ import { DatePicker } from 'ui-kit/DatePicker';
 import { useForm } from 'effector-forms';
 import { Table } from 'ui-kit/Table';
 import moment from 'moment';
-import { DownloadBlueIcon } from 'ui-kit/icons';
+import { DocumentLargeIcon, DownloadBlueIcon } from 'ui-kit/icons';
 import { ControllerResponse } from 'myApi';
 import { WithLoader } from 'ui-kit/shared_components/WithLoader';
 
@@ -120,6 +123,16 @@ export const AppointmentsJournalPage: FC<Props> = ({
                 },
               ]}
             />
+          )}
+          {!assignmentslist && (
+            <EmptyWrapper>
+              <DocumentLargeIcon />
+              <EmptyTitle>Журнал записей пуст</EmptyTitle>
+              <EmptyDescription>
+                Перейдите в раздел “Распределить записи между контролерами”,
+                чтобы добавить новые задания в журнал записей
+              </EmptyDescription>
+            </EmptyWrapper>
           )}
         </TableWrapper>
       </WithLoader>
