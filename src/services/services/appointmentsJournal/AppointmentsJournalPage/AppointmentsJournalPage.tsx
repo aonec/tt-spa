@@ -1,4 +1,4 @@
-import React, { FC, useMemo } from 'react';
+import React, { FC, useCallback, useMemo } from 'react';
 import {
   DownloadButtonWrapper,
   EmptyDescription,
@@ -24,6 +24,7 @@ export const AppointmentsJournalPage: FC<Props> = ({
   assignmentslist,
   controllersList,
   isLoadingAssygnments,
+  downloadWorkFile,
 }) => {
   const { fields } = useForm(form);
 
@@ -32,6 +33,16 @@ export const AppointmentsJournalPage: FC<Props> = ({
       return { ...acc, [controller.id]: controller };
     }, {} as { [key: string]: ControllerResponse });
   }, [controllersList]);
+
+  const handleDownloadFile = useCallback(
+    (controllerId: string, date: string) => () => {
+      downloadWorkFile({
+        controllerId,
+        date: moment(date).format('DD.MM.YYYY'),
+      });
+    },
+    [downloadWorkFile],
+  );
 
   return (
     <div>
@@ -79,8 +90,6 @@ export const AppointmentsJournalPage: FC<Props> = ({
                     const lastName = user?.lastName?.[0];
                     const middleName = user?.middleName?.[0];
 
-                    console.log(lastName, middleName);
-
                     return `${user?.firstName} ${
                       lastName ? lastName + '.' : ''
                     } ${middleName ? middleName + '.' : ''}`;
@@ -114,8 +123,13 @@ export const AppointmentsJournalPage: FC<Props> = ({
                 {
                   label: '',
                   size: '180px',
-                  render: () => (
-                    <DownloadButtonWrapper>
+                  render: (assignment) => (
+                    <DownloadButtonWrapper
+                      onClick={handleDownloadFile(
+                        assignment.controllerId,
+                        assignment.createDateTimeUtc,
+                      )}
+                    >
                       <DownloadBlueIcon />
                       <div>Скачать задание</div>
                     </DownloadButtonWrapper>

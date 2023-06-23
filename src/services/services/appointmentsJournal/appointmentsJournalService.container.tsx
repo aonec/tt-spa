@@ -2,7 +2,10 @@ import React from 'react';
 import { AppointmentsJournalPage } from './AppointmentsJournalPage';
 import { appointmentsJournalService } from './appointmentsJournalService.models';
 import { useUnit } from 'effector-react';
-import { individualSealAssignmentsQuery } from './appointmentsJournalService.api';
+import {
+  downloadСontrollerWorkFileQuery,
+  individualSealAssignmentsQuery,
+} from './appointmentsJournalService.api';
 import { individualSealControllersQuery } from '../distributeRecordsService/distributeRecordsService.api';
 
 const {
@@ -19,6 +22,8 @@ export const AppointmentsJournalContainer = () => {
     individualSealControllersQuery,
   );
 
+  const { start: downloadWorkFile } = useUnit(downloadСontrollerWorkFileQuery);
+
   return (
     <>
       <AssignmentsJournalGate />
@@ -27,6 +32,7 @@ export const AppointmentsJournalContainer = () => {
         form={forms.searchForm}
         assignmentslist={assignmentslist}
         isLoadingAssygnments={isLoadingAssygnments || isLoadingControllers}
+        downloadWorkFile={downloadWorkFile}
       />
     </>
   );
