@@ -1,10 +1,12 @@
 import { EResourceType } from 'myApi';
 import styled from 'styled-components';
 import { GraphColorLookup } from 'utils/Graph.utils';
+import { Checkbox } from 'antd';
 
 export const LegendWrapper = styled.div`
   display: flex;
   width: 100%;
+  gap: 32px;
   position: absolute;
   left: 75px;
 
@@ -34,7 +36,6 @@ export const LegendLine = styled.div<{
   color?: string;
 }>`
   color: var(--main-70);
-  margin-right: 64px;
   position: relative;
 
   &:before {
@@ -80,4 +81,9 @@ export const TaskLegendGroupWrapper = styled.div`
   gap: 16px;
 
   color: #272f5ab2;
+`;
+
+export const CheckboxSC = styled(Checkbox)`
+  color: #272f5ae5;
+  user-select: none;
 `;
