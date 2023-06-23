@@ -26,8 +26,6 @@ export const AddIndividualDeviceContainer = () => {
     inputs.handleSubmitDocumentStage,
   ]);
 
-  console.log(documents)
-
   const apartment = useUnit(outputs.$apartment);
   const mountPlaces = useUnit(outputs.$individualDeviceMountPlaces);
   const modelNames = useUnit(outputs.$individualDevicesNames);
