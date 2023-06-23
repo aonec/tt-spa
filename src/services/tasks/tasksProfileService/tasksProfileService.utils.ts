@@ -12,7 +12,7 @@ import { TimerClosingStatus } from 'ui-kit/shared_components/Timer/Timer.types';
 import { getTimeStringByUTC } from 'utils/getTimeStringByUTC';
 
 export const getAddressObject = (
-  object: HousingStockListResponse | HousingStockResponse | null,
+  object: HousingStockResponse | HousingStockListResponse | null,
 ) => {
   const address = object?.address?.mainAddress;
   const City = address?.city || '';

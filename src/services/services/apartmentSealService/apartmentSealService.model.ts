@@ -1,8 +1,8 @@
 import { createDomain, forward, sample } from 'effector';
 import {
   ApartmentResponse,
-  AppointmentResponse,
   IndividualDeviceListItemResponse,
+  AppointmentResponse,
 } from 'myApi';
 import { EffectFailDataAxiosError } from 'types';
 import { message } from 'antd';

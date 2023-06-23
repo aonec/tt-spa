@@ -7,6 +7,10 @@ import {
 export type CreateDistrictBorderMapPageProps = {
   isLoadingHousingStocks: boolean;
   housingStocksList: HousingStockListResponse[];
+  selectedByAddressHousingStockIds: number[];
+  selectedByAddressPoligon: number[][];
+  poligonCenter: [number, number];
+  handleCloseDistrictEditer: () => void;
   handleCreateDistrict: (payload: DistrictCreateRequest) => void;
   isLoadingCreatingDistrict: boolean;
   existingDistricts: DistrictResponse[];

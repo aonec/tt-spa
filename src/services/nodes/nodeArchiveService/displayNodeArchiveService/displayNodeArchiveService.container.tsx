@@ -1,21 +1,30 @@
-import { useStore } from 'effector-react';
+import { useUnit } from 'effector-react';
 import React from 'react';
 import { displayNodeArchiveService } from './displayNodeArchiveService.models';
 import { NodeArchiveList } from './view/NodeArchiveList';
 import './displayNodeArchiveService.relations';
+import { WithLoader } from 'ui-kit/shared_components/WithLoader';
+
+const { inputs, outputs } = displayNodeArchiveService;
+const { NodeArchiveGate } = displayNodeArchiveService.inputs;
 
 export const NodeArchiveContainer = () => {
-  const nodeArchiveData = useStore(
-    displayNodeArchiveService.outputs.$nodeArchiveData,
-  );
-  const loading = useStore(displayNodeArchiveService.outputs.$loading);
+  const nodeArchiveData = useUnit(outputs.$preparedReadings);
+  const loading = useUnit(outputs.$loading);
+  const withFaultReadings = useUnit(outputs.$withFaultReadings);
 
-  const { NodeArchiveGate } = displayNodeArchiveService.inputs;
+  const setWithFaultReadings = useUnit(inputs.setWithFaultReadings);
 
   return (
     <>
       <NodeArchiveGate />
-      <NodeArchiveList data={nodeArchiveData} loading={loading} />
+      <WithLoader isLoading={loading}>
+        <NodeArchiveList
+          data={nodeArchiveData}
+          withFaultReadings={withFaultReadings}
+          setWithFaultReadings={setWithFaultReadings}
+        />
+      </WithLoader>
     </>
   );
 };

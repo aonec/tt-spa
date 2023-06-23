@@ -68,7 +68,7 @@ export const CreateDistrictFormPanel: FC<CreateDistrictFormPanelProps> = ({
           const address = elem.address?.mainAddress;
           return `${address?.street}${address?.number}${address?.corpus || ''}`;
         }).map((elem) => (
-          <AddressItem>
+          <AddressItem key={elem.id}>
             <Checkbox
               onChange={() => handleClickHousingStock(elem.id)}
               checked={selectedHousingStocks.includes(elem.id)}
