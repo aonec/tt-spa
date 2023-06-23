@@ -1,5 +1,5 @@
 import { useUnit } from 'effector-react';
-import React, { useEffect, useMemo } from 'react';
+import React, { useEffect } from 'react';
 import { addIndividualDeviceService } from './addIndividualDeviceService.model';
 import { AddIndividualDevicePage } from './AddIndividualDevicePage';
 import { useHistory, useParams } from 'react-router-dom';
@@ -48,14 +48,8 @@ export const AddIndividualDeviceContainer = () => {
   );
   const handleCreateDevice = useUnit(inputs.handleCreateDevice);
 
-  const currentFetchedApartmentId = apartment?.id;
   const idFromParams = Number(id);
 
-  const isNeedToFetch = useMemo(
-    () => currentFetchedApartmentId !== idFromParams,
-    // eslint-disable-next-line
-    [idFromParams],
-  );
   useEffect(() => {
     return inputs.successCreateIndividualDevice.watch(history.goBack)
       .unsubscribe;
@@ -64,7 +58,7 @@ export const AddIndividualDeviceContainer = () => {
   return (
     <>
       <PageGate />
-      {isNeedToFetch ? <ApartmentGate id={idFromParams} /> : null}
+      <ApartmentGate id={idFromParams} />
       <PreviewModal
         isModalOpen={isModalOpen}
         handleCloseModal={handleCloseModal}
