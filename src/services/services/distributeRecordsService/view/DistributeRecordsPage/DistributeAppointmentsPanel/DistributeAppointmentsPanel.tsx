@@ -94,17 +94,15 @@ export const DistributeAppointmentsPanel: FC<
     [appointmentsInDistrict],
   );
 
-  const handleSelectAllAppointments = useCallback(
+  const notDistributedAppointments = useMemo(
     () =>
-      handleSelectAppointments(
-        appointmentsInDistrict.reduce((acc, elem) => {
-          if (!elem.controllerId) {
-            return [...acc, elem.id];
-          }
-          return acc;
-        }, [] as string[]),
-      ),
-    [appointmentsInDistrict, handleSelectAppointments],
+      appointmentsInDistrict.reduce((acc, elem) => {
+        if (!elem.controllerId) {
+          return [...acc, elem.id];
+        }
+        return acc;
+      }, [] as string[]),
+    [appointmentsInDistrict],
   );
 
   const treeList = useMemo(
@@ -218,8 +216,12 @@ export const DistributeAppointmentsPanel: FC<
                   onChange={(e) => handleChangeInputValue(e.target.value)}
                 />
                 <ListHeaderWrapper>
-                  <SelectAllText onClick={handleSelectAllAppointments}>
-                    Выбрать все ({appointmentsInDistrict.length})
+                  <SelectAllText
+                    onClick={() =>
+                      handleSelectAppointments(notDistributedAppointments)
+                    }
+                  >
+                    Выбрать все ({notDistributedAppointments.length})
                   </SelectAllText>
                   <CancelAllText onClick={() => handleSelectAppointments([])}>
                     Отменить выбор
