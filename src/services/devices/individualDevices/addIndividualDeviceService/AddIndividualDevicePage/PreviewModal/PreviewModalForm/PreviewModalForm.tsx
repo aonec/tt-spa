@@ -16,7 +16,7 @@ import {
   PreviewModalFormProps,
 } from './PreviewModalForm.types';
 import { ResourceInfo } from 'ui-kit/shared_components/ResourceInfo';
-import { getDate, getMountPlaceById, toArray } from './PreviewModalForm.utils';
+import { getDate, getMountPlaceById } from './PreviewModalForm.utils';
 import { getInputBorderColor } from 'services/meters/individualDeviceMetersInputService/view/MetersInputsBlock/MetersInputsBlock.styled';
 import { BaseIndividualDeviceReadingsCreateRequest } from 'myApi';
 import { Document } from 'ui-kit/DocumentsService';
@@ -34,17 +34,19 @@ export const PreviewModalForm: FC<PreviewModalFormProps> = ({
     value: BaseIndividualDeviceReadingsCreateRequest,
     color?: string | null,
   ) => {
-    const values = toArray(value, false);
+    const valuesArr = Object.values(value).filter(
+      (data) => typeof data === 'number',
+    ) as number[];
 
-    const filteredValues = values.filter(Boolean);
+    const filteredValues = valuesArr.filter(Boolean);
 
     if (!filteredValues.length) return null;
 
     return (
       <StyledReadingsValues colorText={color || null}>
-        {values.map((elem, index) =>
+        {valuesArr.map((elem, index) =>
           elem ? (
-            <ReadingValue colorText={color || null}>
+            <ReadingValue colorText={color || null} key={index}>
               <LeftValue>{index + 1}:</LeftValue>
               <RightValue>{elem}</RightValue>
             </ReadingValue>

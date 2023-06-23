@@ -28,7 +28,7 @@ export const LeftValue = styled.div`
 `;
 
 export const RightValue = styled.div`
-  margin-right: 0 10px 0 30px;
+  margin-right: 10px;
 `;
 
 export const Line = styled.div`
