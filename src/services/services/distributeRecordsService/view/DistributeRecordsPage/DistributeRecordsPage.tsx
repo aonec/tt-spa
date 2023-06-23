@@ -7,6 +7,7 @@ import { Select } from 'ui-kit/Select';
 import { DatePicker } from 'ui-kit/DatePicker';
 import { DistrictsMap } from './DistrictsMap';
 import { getDatePickerValue } from 'utils/getDatePickerValue';
+import { DistributeAppointmentsModal } from './DistributeAppointmentsModal';
 
 export const DistributeRecordsPage: FC<Props> = ({
   districtsList,
@@ -21,9 +22,26 @@ export const DistributeRecordsPage: FC<Props> = ({
   selectedAppointmentsIds,
   handleSelectAppointments,
   appointmentsCounting,
+  isDistributeAppointmentsModalOpen,
+  openDistributeAppointmentsModal,
+  closeDistributeAppointmentsModal,
+  controllers,
+  openCreateControllerModal,
+  setAppointmentsToController,
+  isLoadingDistributeAppointments,
 }) => {
   return (
     <Wrapper>
+      <DistributeAppointmentsModal
+        isModalOpen={isDistributeAppointmentsModalOpen}
+        handleCloseModal={closeDistributeAppointmentsModal}
+        appointmentDate={appointmentDate}
+        controllers={controllers}
+        openCreateControllerModal={openCreateControllerModal}
+        setAppointmentsToController={setAppointmentsToController}
+        selectedAppointmentsIds={selectedAppointmentsIds}
+        isLoadingDistributeAppointments={isLoadingDistributeAppointments}
+      />
       <FiltrationWrapper>
         <AddressSearchContainer fields={[SearchFieldType.City]} />
         <Select
@@ -68,6 +86,7 @@ export const DistributeRecordsPage: FC<Props> = ({
         isLoadingAppointments={isLoadingAppointments}
         handleUnselectDistrict={handleUnselectDistrict}
         appointmentsCounting={appointmentsCounting}
+        openDistributeAppointmentsModal={openDistributeAppointmentsModal}
       />
     </Wrapper>
   );

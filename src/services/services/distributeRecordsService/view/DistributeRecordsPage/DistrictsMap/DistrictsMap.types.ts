@@ -16,6 +16,7 @@ export type Props = {
   isLoadingAppointments: boolean;
   handleUnselectDistrict: () => void;
   appointmentsCounting: AppointmentsCountingByDistrictsResponse | null;
+  openDistributeAppointmentsModal: () => void;
 };
 
 export type AppointmentsByHousingStocks = {

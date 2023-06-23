@@ -6,4 +6,5 @@ export type DistributeAppointmentsPanelProps = {
   handleSelectAppointments: (ids: string[]) => void;
   isLoadingAppointments: boolean;
   handleUnselectDistrict: () => void;
+  openDistributeAppointmentsModal: () => void;
 };

@@ -1,4 +1,9 @@
-import { AppointmentResponse, DistrictResponse } from 'myApi';
+import {
+  AppointmentResponse,
+  AppointmentsSetRequest,
+  ControllerResponse,
+  DistrictResponse,
+} from 'myApi';
 import { AppointmentsByHousingStocks } from './DistrictsMap/DistrictsMap.types';
 import { AppointmentsCountingByDistrictsResponse } from '../../distributeRecordsService.types';
 
@@ -16,4 +21,11 @@ export type Props = {
   selectedAppointmentsIds: string[];
   handleSelectAppointments: (ids: string[]) => void;
   appointmentsCounting: AppointmentsCountingByDistrictsResponse | null;
+  openDistributeAppointmentsModal: () => void;
+  closeDistributeAppointmentsModal: () => void;
+  isDistributeAppointmentsModalOpen: boolean;
+  controllers: ControllerResponse[] | null;
+  openCreateControllerModal: () => void;
+  setAppointmentsToController: (payload: AppointmentsSetRequest) => void;
+  isLoadingDistributeAppointments: boolean;
 };

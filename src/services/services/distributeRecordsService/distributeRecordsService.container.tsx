@@ -1,14 +1,16 @@
 import React, { useCallback } from 'react';
 import { useUnit } from 'effector-react';
-import { DistributeRecordsPage } from './view/DistributeRecordsPage';
+import { intersection } from 'lodash';
 import {
   appointmentsCountingQuery,
   districtAppointmentsQuery,
   districtsQuery,
+  individualSealControllersQuery,
+  setAppointmentsToControllerMutation,
 } from './distributeRecordsService.api';
 import { distributeRecordsService } from './distributeRecordsService.models';
+import { DistributeRecordsPage } from './view/DistributeRecordsPage';
 import { AppointmentsByHousingStocks } from './view/DistributeRecordsPage/DistrictsMap/DistrictsMap.types';
-import { intersection } from 'lodash';
 
 const {
   inputs,
@@ -25,14 +27,31 @@ export const DistributeRecordsContainer = () => {
 
   const { data: appointmentsCounting } = useUnit(appointmentsCountingQuery);
 
+  const { data: controllers } = useUnit(individualSealControllersQuery);
+
+  const {
+    start: setAppointmentsToController,
+    pending: isLoadingDistributeAppointments,
+  } = useUnit(setAppointmentsToControllerMutation);
+
   const handleSelectDistrict = useUnit(inputs.handleSelectDistrict);
   const handleUnselectDistrict = useUnit(inputs.handleUnselectDistrict);
   const handleSetAppointmentDate = useUnit(inputs.setAppointmentDate);
   const handleSelectAppointments = useUnit(inputs.selectAppointments);
+  const openDistributeAppointmentsModal = useUnit(
+    inputs.openDistributeAppointmentsModal,
+  );
+  const closeDistributeAppointmentsModal = useUnit(
+    inputs.closeDistributeAppointmentsModal,
+  );
+  const openCreateControllerModal = useUnit(inputs.openCreateControllerModal);
 
   const selectedDistrict = useUnit(outputs.$selectedDistrict);
   const appointmentDate = useUnit(outputs.$appointmentDate);
   const selectedAppointmentsIds = useUnit(outputs.$selectedAppointmentsIds);
+  const isDistributeAppointmentsModalOpen = useUnit(
+    outputs.$isDistributeAppointmentsModalOpen,
+  );
 
   const handleSelectHousingStock = useCallback(
     (data: AppointmentsByHousingStocks) => {
@@ -81,6 +100,13 @@ export const DistributeRecordsContainer = () => {
         selectedAppointmentsIds={selectedAppointmentsIds}
         handleSelectAppointments={handleSelectAppointments}
         appointmentsCounting={appointmentsCounting}
+        openDistributeAppointmentsModal={openDistributeAppointmentsModal}
+        closeDistributeAppointmentsModal={closeDistributeAppointmentsModal}
+        isDistributeAppointmentsModalOpen={isDistributeAppointmentsModalOpen}
+        controllers={controllers}
+        openCreateControllerModal={openCreateControllerModal}
+        setAppointmentsToController={setAppointmentsToController}
+        isLoadingDistributeAppointments={isLoadingDistributeAppointments}
       />
     </>
   );

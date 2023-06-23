@@ -14,6 +14,7 @@ import { findPolygonCenter } from 'utils/findPolygonCenter';
 import { prepareAppointments } from './DistrictsMap.utils';
 import warningPlacemark from 'hooks/ymaps/placemarks/warningPlacemark.svg';
 import warningInactivePlacemark from 'hooks/ymaps/placemarks/warningInactivePlacemark.svg';
+import warningAvtivePlacemark from 'hooks/ymaps/placemarks/warningActivePlacemark.svg';
 
 import { DistributeAppointmentsPanel } from '../DistributeAppointmentsPanel';
 
@@ -28,6 +29,7 @@ export const DistrictsMap: FC<Props> = ({
   isLoadingAppointments,
   handleUnselectDistrict,
   appointmentsCounting,
+  openDistributeAppointmentsModal,
 }) => {
   const { mapRef, map } = useYMaps();
 
@@ -67,21 +69,33 @@ export const DistrictsMap: FC<Props> = ({
 
   const preparedAppointments = useMemo(
     () =>
-      prepareAppointments(appointmentsInDistrict || []).map((elem) => ({
-        placemarkIconLink:
+      prepareAppointments(appointmentsInDistrict || []).map((elem) => {
+        const isIntersection =
           intersection(
             elem.appointments.map((elem) => elem.id),
             selectedAppointmentsIds,
-          ).length !== 0
-            ? warningPlacemark
-            : warningInactivePlacemark,
-        coords: [elem.address.latitude || 0, elem.address.longitude || 0] as [
-          number,
-          number,
-        ],
-        onClick: () => handleSelectHousingStock(elem),
-        count: elem.appointments.length,
-      })),
+          ).length !== 0;
+
+        const isHouseActive = elem.appointments.some((elem) =>
+          Boolean(elem.controllerId),
+        );
+
+        const placemarkIconLink = isIntersection
+          ? warningPlacemark
+          : isHouseActive
+          ? warningAvtivePlacemark
+          : warningInactivePlacemark;
+
+        return {
+          placemarkIconLink,
+          coords: [elem.address.latitude || 0, elem.address.longitude || 0] as [
+            number,
+            number,
+          ],
+          onClick: () => handleSelectHousingStock(elem),
+          count: elem.appointments.length,
+        };
+      }),
     [appointmentsInDistrict, handleSelectHousingStock, selectedAppointmentsIds],
   );
 
@@ -96,6 +110,7 @@ export const DistrictsMap: FC<Props> = ({
           handleSelectAppointments={handleSelectAppointments}
           isLoadingAppointments={isLoadingAppointments}
           handleUnselectDistrict={handleUnselectDistrict}
+          openDistributeAppointmentsModal={openDistributeAppointmentsModal}
         />
       )}
       <div ref={mapRef} style={{ width: '100%', height: '86vh' }} />

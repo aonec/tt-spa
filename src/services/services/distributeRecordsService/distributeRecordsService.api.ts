@@ -1,8 +1,10 @@
 import { axios } from '01/axios';
-import { createQuery } from '@farfetched/core';
+import { createMutation, createQuery } from '@farfetched/core';
 import {
   AppointmentCounterResponse,
   AppointmentResponse,
+  AppointmentsSetRequest,
+  ControllerResponse,
   DistrictResponse,
   TotalAppointmentCounterResponse,
 } from 'myApi';
@@ -57,7 +59,19 @@ export const districtAppointmentsQuery = createQuery<
     }),
 });
 
-export const getNearestAppointmentsDate = createQuery<
+export const nearestAppointmentsDateQuery = createQuery<
   void,
   TotalAppointmentCounterResponse
 >({ handler: () => axios.get('IndividualSeal/Appointments/Nearest') });
+
+export const individualSealControllersQuery = createQuery<
+  void,
+  ControllerResponse[]
+>({
+  handler: () => axios.get('IndividualSeal/Controllers'),
+});
+
+export const setAppointmentsToControllerMutation = createMutation<
+  AppointmentsSetRequest,
+  void
+>({ handler: (data) => axios.post('IndividualSeal/Appointments/Set', data) });
