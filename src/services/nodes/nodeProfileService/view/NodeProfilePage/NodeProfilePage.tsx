@@ -18,6 +18,7 @@ import {
   NodeNumberWrapper,
   PageHeaderSC,
   TabsSC,
+  GraphWrapper,
 } from './NodeProfilePage.styled';
 import {
   NodeProfilePageProps,
@@ -82,7 +83,15 @@ export const NodeProfilePage: FC<NodeProfilePageProps> = ({
     return dictionary;
   }, [pipeNode]);
 
-  const contentComponent = contentComponents && contentComponents[section];
+  const contentComponent = useMemo(() => {
+    if (!contentComponents) {
+      return null;
+    }
+    if (section !== PipeNodeProfileSection.Stats) {
+      <ContentWrapper>{contentComponents[section]}</ContentWrapper>;
+    }
+    return <GraphWrapper>{contentComponents[section]}</GraphWrapper>;
+  }, [contentComponents, section]);
 
   const isShowReadingsTab =
     pipeNode?.calculator === null ||
@@ -190,7 +199,7 @@ export const NodeProfilePage: FC<NodeProfilePageProps> = ({
             />
           </TabsSC>
           <Wrapper>
-            <ContentWrapper>{contentComponent}</ContentWrapper>
+            {contentComponent}
             <div>
               <LinkCard
                 text="Архив"
