@@ -10,14 +10,17 @@ import {
   ContentWrapper,
   Wrapper,
   HeaderWrapper,
+  HeaderContainer,
+  Flex,
 } from './TasksProfile.styled';
 import { TasksPageSegment, TasksProfileProps } from './TasksProfile.types';
 import { Segmented } from 'ui-kit/Segmented';
-import { ListIcon, MapIcon } from 'ui-kit/icons';
+import { ListIcon, MapIcon, PlusIcon, PlusSmallIcon } from 'ui-kit/icons';
 import { TasksMapContainer } from 'services/tasks/tasksMapService';
 import { Empty } from 'antd';
 import { WithLoader } from 'ui-kit/shared_components/WithLoader';
 import { TaskGroupingFilter } from 'myApi';
+import { Button } from 'ui-kit/Button';
 
 const { TabPane } = TabsSC;
 
@@ -101,7 +104,15 @@ export const TasksProfile: FC<TasksProfileProps> = ({
       {tasksPageSegment === 'list' && (
         <div>
           <FiltrationWrapper>
-            {header}
+            <HeaderContainer>
+              {header}
+              <Flex>
+                <Button size="small" type="ghost" floating>
+                  <PlusSmallIcon />
+                </Button>
+              </Flex>
+            </HeaderContainer>
+
             <ContentWrapper>
               <TabsSC activeKey={grouptype} onChange={history.push}>
                 {!isSpectator && (

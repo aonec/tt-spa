@@ -34,3 +34,17 @@ export const HeaderWrapper = styled.div<{ isList?: boolean }>`
   padding-top: 16px;
   width: ${({ isList }) => (isList ? 'calc(100% + 32px)' : '100%')};
 `;
+
+export const HeaderContainer = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 16px;
+`;
+
+
+export const Flex = styled.div`
+  display: flex;
+  align-items: center;
+  padding-top: 16px;
+  width: 36px;
+`;
