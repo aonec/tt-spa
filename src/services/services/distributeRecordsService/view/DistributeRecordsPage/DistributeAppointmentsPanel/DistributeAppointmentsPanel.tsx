@@ -6,6 +6,7 @@ import {
   Footer,
   HeaderWrapper,
   ListHeaderWrapper,
+  LoaderWrapper,
   RootWrapperTitle,
   SelectAllText,
   TreeSC,
@@ -95,82 +96,89 @@ export const DistributeAppointmentsPanel: FC<
 
   return (
     <Wrapper>
-      <WithLoader isLoading={isLoadingAppointments}>
-        {isAppointmentsExist && (
-          <>
-            <HeaderWrapper>
-              <Input
-                small
-                placeholder="Введите адрес"
-                onChange={(e) => handleChangeInputValue(e.target.value)}
-              />
-              <ListHeaderWrapper>
-                <SelectAllText
-                  onClick={() =>
-                    handleSelectAppointments(
-                      appointmentsList.map((elem) => String(elem.key)),
-                    )
-                  }
-                >
-                  Выбрать все ({appointmentsInDistrict.length})
-                </SelectAllText>
-                <CancelAllText onClick={() => handleSelectAppointments([])}>
-                  Отменить выбор
-                </CancelAllText>
-              </ListHeaderWrapper>
-            </HeaderWrapper>
-            <ContentWrapper>
-              <TreeSC
-                selectable={false}
-                checkable={true}
-                treeData={preparedTreeData}
-                titleRender={(elem) => {
-                  if (elem.key !== elem.title) {
-                    return elem.title;
-                  }
-                  return (
-                    <RootWrapperTitle>
-                      {elem.title}
-                      <CountWrapper>
-                        Заявки: {(elem.children || []).length}
-                      </CountWrapper>
-                    </RootWrapperTitle>
-                  );
-                }}
-                onCheck={(_, info) => {
-                  const { checkedNodes } = info;
-                  const filteredNodes = checkedNodes.filter((elem) =>
-                    Boolean(elem.key !== elem.title),
-                  );
+      {isLoadingAppointments && (
+        <LoaderWrapper>
+          <WithLoader isLoading />
+        </LoaderWrapper>
+      )}
+      {!isLoadingAppointments && (
+        <>
+          {isAppointmentsExist && (
+            <>
+              <HeaderWrapper>
+                <Input
+                  small
+                  placeholder="Введите адрес"
+                  onChange={(e) => handleChangeInputValue(e.target.value)}
+                />
+                <ListHeaderWrapper>
+                  <SelectAllText
+                    onClick={() =>
+                      handleSelectAppointments(
+                        appointmentsList.map((elem) => String(elem.key)),
+                      )
+                    }
+                  >
+                    Выбрать все ({appointmentsInDistrict.length})
+                  </SelectAllText>
+                  <CancelAllText onClick={() => handleSelectAppointments([])}>
+                    Отменить выбор
+                  </CancelAllText>
+                </ListHeaderWrapper>
+              </HeaderWrapper>
+              <ContentWrapper>
+                <TreeSC
+                  selectable={false}
+                  checkable={true}
+                  treeData={preparedTreeData}
+                  titleRender={(elem) => {
+                    if (elem.key !== elem.title) {
+                      return elem.title;
+                    }
+                    return (
+                      <RootWrapperTitle>
+                        {elem.title}
+                        <CountWrapper>
+                          Заявки: {(elem.children || []).length}
+                        </CountWrapper>
+                      </RootWrapperTitle>
+                    );
+                  }}
+                  onCheck={(_, info) => {
+                    const { checkedNodes } = info;
+                    const filteredNodes = checkedNodes.filter((elem) =>
+                      Boolean(elem.key !== elem.title),
+                    );
 
-                  handleSelectAppointments(
-                    filteredNodes.map((elem) => String(elem.key)),
-                  );
-                }}
-                onExpand={setExpandedKeys}
-                expandedKeys={expandedKeys}
-                checkedKeys={selectedAppointmentsIds}
-              />
-            </ContentWrapper>
-            <Footer>
-              <Button
-                type="ghost"
-                size="small"
-                onClick={handleUnselectDistrict}
-              >
-                Назад
-              </Button>
-              <Button size="small">Распределить</Button>
-            </Footer>
-          </>
-        )}
-        {!isAppointmentsExist && (
-          <Empty
-            image={Empty.PRESENTED_IMAGE_SIMPLE}
-            description="Нет записей на опломбировке на выбранную дату"
-          />
-        )}
-      </WithLoader>
+                    handleSelectAppointments(
+                      filteredNodes.map((elem) => String(elem.key)),
+                    );
+                  }}
+                  onExpand={setExpandedKeys}
+                  expandedKeys={expandedKeys}
+                  checkedKeys={selectedAppointmentsIds}
+                />
+              </ContentWrapper>
+              <Footer>
+                <Button
+                  type="ghost"
+                  size="small"
+                  onClick={handleUnselectDistrict}
+                >
+                  Назад
+                </Button>
+                <Button size="small">Распределить</Button>
+              </Footer>
+            </>
+          )}
+          {!isAppointmentsExist && (
+            <Empty
+              image={Empty.PRESENTED_IMAGE_SIMPLE}
+              description="Нет записей на опломбировке на выбранную дату"
+            />
+          )}
+        </>
+      )}
     </Wrapper>
   );
 };

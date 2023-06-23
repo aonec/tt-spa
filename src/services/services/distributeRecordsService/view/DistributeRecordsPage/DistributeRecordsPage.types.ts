@@ -1,5 +1,6 @@
 import { AppointmentResponse, DistrictResponse } from 'myApi';
 import { AppointmentsByHousingStocks } from './DistrictsMap/DistrictsMap.types';
+import { AppointmentsCountingByDistrictsResponse } from '../../distributeRecordsService.types';
 
 export type Props = {
   districtsList: DistrictResponse[];
@@ -11,7 +12,8 @@ export type Props = {
   appointmentDate: string | null;
   appointmentsInDistrict: AppointmentResponse[] | null;
   isLoadingAppointments: boolean;
-  handleSelectHousingStock?: (data: AppointmentsByHousingStocks) => void;
+  handleSelectHousingStock: (data: AppointmentsByHousingStocks) => void;
   selectedAppointmentsIds: string[];
   handleSelectAppointments: (ids: string[]) => void;
+  appointmentsCounting: AppointmentsCountingByDistrictsResponse | null;
 };

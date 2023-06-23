@@ -2,11 +2,13 @@ import React, { useCallback } from 'react';
 import { useUnit } from 'effector-react';
 import { DistributeRecordsPage } from './view/DistributeRecordsPage';
 import {
+  appointmentsCountingQuery,
   districtAppointmentsQuery,
   districtsQuery,
 } from './distributeRecordsService.api';
 import { distributeRecordsService } from './distributeRecordsService.models';
 import { AppointmentsByHousingStocks } from './view/DistributeRecordsPage/DistrictsMap/DistrictsMap.types';
+import { intersection } from 'lodash';
 
 const {
   inputs,
@@ -20,7 +22,9 @@ export const DistributeRecordsContainer = () => {
 
   const { data: appointmentsInDistrict, pending: isLoadingAppointments } =
     useUnit(districtAppointmentsQuery);
-    
+
+  const { data: appointmentsCounting } = useUnit(appointmentsCountingQuery);
+
   const handleSelectDistrict = useUnit(inputs.handleSelectDistrict);
   const handleUnselectDistrict = useUnit(inputs.handleUnselectDistrict);
   const handleSetAppointmentDate = useUnit(inputs.setAppointmentDate);
@@ -31,11 +35,32 @@ export const DistributeRecordsContainer = () => {
   const selectedAppointmentsIds = useUnit(outputs.$selectedAppointmentsIds);
 
   const handleSelectHousingStock = useCallback(
-    (data: AppointmentsByHousingStocks) =>
-      handleSelectAppointments([
-        ...selectedAppointmentsIds,
-        ...data.appointments.map((elem) => elem.id),
-      ]),
+    (data: AppointmentsByHousingStocks) => {
+      const isHouseSelected = Boolean(
+        intersection(
+          data.appointments.map((elem) => elem.id),
+          selectedAppointmentsIds,
+        ).length,
+      );
+
+      if (!isHouseSelected) {
+        handleSelectAppointments([
+          ...selectedAppointmentsIds,
+          ...data.appointments.map((elem) => elem.id),
+        ]);
+      }
+
+      if (isHouseSelected) {
+        handleSelectAppointments(
+          selectedAppointmentsIds.filter(
+            (elem) =>
+              !data.appointments
+                .map((appointment) => appointment.id)
+                .includes(elem),
+          ),
+        );
+      }
+    },
     [selectedAppointmentsIds, handleSelectAppointments],
   );
 
@@ -55,6 +80,7 @@ export const DistributeRecordsContainer = () => {
         handleSelectHousingStock={handleSelectHousingStock}
         selectedAppointmentsIds={selectedAppointmentsIds}
         handleSelectAppointments={handleSelectAppointments}
+        appointmentsCounting={appointmentsCounting}
       />
     </>
   );

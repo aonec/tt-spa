@@ -1,4 +1,6 @@
 import React, { FC, useMemo } from 'react';
+import { intersection } from 'lodash';
+import { DistrictData } from 'types';
 import { MapWrapper } from './DistrictsMap.styled';
 import { Props } from './DistrictsMap.types';
 import { useYMaps } from 'hooks/ymaps/useYMaps';
@@ -8,14 +10,12 @@ import {
   useRenderTextPlacemarks,
 } from 'hooks/ymaps/utils';
 import { getPayloadFromDistricts } from 'utils/districtsData';
-import { DistrictData } from 'types';
 import { findPolygonCenter } from 'utils/findPolygonCenter';
 import { prepareAppointments } from './DistrictsMap.utils';
 import warningPlacemark from 'hooks/ymaps/placemarks/warningPlacemark.svg';
 import warningInactivePlacemark from 'hooks/ymaps/placemarks/warningInactivePlacemark.svg';
 
 import { DistributeAppointmentsPanel } from '../DistributeAppointmentsPanel';
-import _ from 'lodash';
 
 export const DistrictsMap: FC<Props> = ({
   districtsList,
@@ -27,6 +27,7 @@ export const DistrictsMap: FC<Props> = ({
   handleSelectAppointments,
   isLoadingAppointments,
   handleUnselectDistrict,
+  appointmentsCounting,
 }) => {
   const { mapRef, map } = useYMaps();
 
@@ -48,11 +49,19 @@ export const DistrictsMap: FC<Props> = ({
   const districtTitles = useMemo(() => {
     if (selectedDistrict) return [];
 
-    return getPayloadFromDistricts(filteredDistrictsList).map((elem) => ({
-      text: elem.name,
-      coords: findPolygonCenter(elem.coordinates[0]),
-    }));
-  }, [filteredDistrictsList, selectedDistrict]);
+    return getPayloadFromDistricts(filteredDistrictsList).map((elem) => {
+      const districtAppointmentsCounting = appointmentsCounting?.[elem.id];
+
+      const count =
+        (districtAppointmentsCounting?.distributed || 0) +
+        (districtAppointmentsCounting?.notDistributed || 0);
+
+      return {
+        text: `${elem.name} ${count ? `(${count})` : ''}`,
+        coords: findPolygonCenter(elem.coordinates[0]),
+      };
+    });
+  }, [filteredDistrictsList, selectedDistrict, appointmentsCounting]);
 
   useRenderTextPlacemarks(map, districtTitles);
 
@@ -60,7 +69,7 @@ export const DistrictsMap: FC<Props> = ({
     () =>
       prepareAppointments(appointmentsInDistrict || []).map((elem) => ({
         placemarkIconLink:
-          _.intersection(
+          intersection(
             elem.appointments.map((elem) => elem.id),
             selectedAppointmentsIds,
           ).length !== 0
@@ -70,7 +79,8 @@ export const DistrictsMap: FC<Props> = ({
           number,
           number,
         ],
-        onClick: () => handleSelectHousingStock?.(elem),
+        onClick: () => handleSelectHousingStock(elem),
+        count: elem.appointments.length,
       })),
     [appointmentsInDistrict, handleSelectHousingStock, selectedAppointmentsIds],
   );
