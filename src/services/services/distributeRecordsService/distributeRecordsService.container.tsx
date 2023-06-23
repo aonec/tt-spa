@@ -11,6 +11,10 @@ import {
 import { distributeRecordsService } from './distributeRecordsService.models';
 import { DistributeRecordsPage } from './view/DistributeRecordsPage';
 import { AppointmentsByHousingStocks } from './view/DistributeRecordsPage/DistrictsMap/DistrictsMap.types';
+import {
+  RemoveAssignmentContainer,
+  removeAssignmentService,
+} from '../removeAssignmentService';
 
 const {
   inputs,
@@ -42,6 +46,7 @@ export const DistributeRecordsContainer = () => {
     openDistributeAppointmentsModal,
     closeDistributeAppointmentsModal,
     openCreateControllerModal,
+    openRemoveAssignmentModal,
   } = useUnit({
     handleSelectDistrict: inputs.handleSelectDistrict,
     handleUnselectDistrict: inputs.handleUnselectDistrict,
@@ -50,6 +55,7 @@ export const DistributeRecordsContainer = () => {
     openDistributeAppointmentsModal: inputs.openDistributeAppointmentsModal,
     closeDistributeAppointmentsModal: inputs.closeDistributeAppointmentsModal,
     openCreateControllerModal: inputs.openCreateControllerModal,
+    openRemoveAssignmentModal: removeAssignmentService.inputs.openModal,
   });
 
   const {
@@ -103,6 +109,7 @@ export const DistributeRecordsContainer = () => {
   return (
     <>
       <DistributeRecordsGate />
+      <RemoveAssignmentContainer />
       <DistributeRecordsPage
         districtsList={districtsList || []}
         isLoadingDistricts={isLoadingDistricts}
@@ -124,6 +131,7 @@ export const DistributeRecordsContainer = () => {
         openCreateControllerModal={openCreateControllerModal}
         setAppointmentsToController={setAppointmentsToController}
         isLoadingDistributeAppointments={isLoadingDistributeAppointments}
+        openRemoveAssignmentModal={openRemoveAssignmentModal}
       />
     </>
   );

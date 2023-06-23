@@ -28,4 +28,5 @@ export type Props = {
   openCreateControllerModal: () => void;
   setAppointmentsToController: (payload: AppointmentsSetRequest) => void;
   isLoadingDistributeAppointments: boolean;
+  openRemoveAssignmentModal: (id: string) => void;
 };

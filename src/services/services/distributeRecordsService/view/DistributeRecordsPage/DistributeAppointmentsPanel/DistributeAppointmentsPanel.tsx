@@ -44,6 +44,7 @@ export const DistributeAppointmentsPanel: FC<
   handleUnselectDistrict,
   openDistributeAppointmentsModal,
   controllers,
+  openRemoveAssignmentModal,
 }) => {
   const [expandedKeys, setExpandedKeys] = useState<
     AppointmentsIdWithController[]
@@ -118,6 +119,10 @@ export const DistributeAppointmentsPanel: FC<
         const controllerInfo = ` ${controller?.lastName || ''} ${
           controller?.firstName || ''
         }`;
+        const assignmentId =
+          appointmentsInDistrict.find(
+            (elem) => elem.controllerId === controllerId,
+          )?.assignmentId || null;
 
         return (
           <>
@@ -133,7 +138,13 @@ export const DistributeAppointmentsPanel: FC<
                   <ControllerInfoWrapper>
                     Контролер:
                     {controllerInfo}
-                    <TrashIconSC />
+                    {assignmentId && (
+                      <TrashIconSC
+                        onClick={() =>
+                          openRemoveAssignmentModal(String(assignmentId))
+                        }
+                      />
+                    )}
                   </ControllerInfoWrapper>
                 </div>
               </ControllerWrapper>
@@ -184,6 +195,8 @@ export const DistributeAppointmentsPanel: FC<
       handleSelectAppointments,
       selectedAppointmentsIds,
       controllers,
+      openRemoveAssignmentModal,
+      appointmentsInDistrict,
     ],
   );
 

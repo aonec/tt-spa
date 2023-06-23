@@ -29,6 +29,8 @@ export const DistributeRecordsPage: FC<Props> = ({
   openCreateControllerModal,
   setAppointmentsToController,
   isLoadingDistributeAppointments,
+  isLoadingDistricts,
+  openRemoveAssignmentModal,
 }) => {
   return (
     <Wrapper>
@@ -88,6 +90,7 @@ export const DistributeRecordsPage: FC<Props> = ({
         appointmentsCounting={appointmentsCounting}
         openDistributeAppointmentsModal={openDistributeAppointmentsModal}
         controllers={controllers}
+        openRemoveAssignmentModal={openRemoveAssignmentModal}
       />
     </Wrapper>
   );

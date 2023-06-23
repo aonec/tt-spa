@@ -19,6 +19,7 @@ export type Props = {
   appointmentsCounting: AppointmentsCountingByDistrictsResponse | null;
   openDistributeAppointmentsModal: () => void;
   controllers: ControllerResponse[] | null;
+  openRemoveAssignmentModal: (id: string) => void;
 };
 
 export type AppointmentsByHousingStocks = {

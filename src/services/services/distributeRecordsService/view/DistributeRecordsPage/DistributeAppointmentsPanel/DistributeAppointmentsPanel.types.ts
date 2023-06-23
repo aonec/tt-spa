@@ -8,6 +8,7 @@ export type DistributeAppointmentsPanelProps = {
   handleUnselectDistrict: () => void;
   openDistributeAppointmentsModal: () => void;
   controllers: ControllerResponse[] | null;
+  openRemoveAssignmentModal: (id: string) => void;
 };
 
 export type AppointmentsIdWithController = {
