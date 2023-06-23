@@ -88,6 +88,7 @@ sample({
   target: handleFetchHousingStocksList,
 });
 
+
 sample({
   clock: DistrictBordersByAddressPageGate.close,
   source: $onEditingInMap,
