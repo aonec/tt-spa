@@ -1,13 +1,13 @@
-import { ApartmentResponse, HomeownerAccountListResponse } from 'myApi';
-import { PersonalNumberActions } from '../../selectPersonalNumberActionService/selectPersonalNumberActionService.types';
+import { ApartmentResponse } from 'myApi';
 
 export type PersonalNumberPageContainerProps = {
-  type: PersonalNumberActions;
   isLoading?: boolean;
   titleText: string;
   formId: string;
   apartment?: ApartmentResponse | null;
-  homeowner?: HomeownerAccountListResponse | null;
-  cancelButtonText?: string;
-  saveButtonText?: string;
+  onCancelHandler?(): void;
+  isFirstStage?: boolean;
+  isLastStage?: boolean;
+  handleCheckApartmentExist?: () => void;
+  isCheckApartLoading?: boolean;
 };

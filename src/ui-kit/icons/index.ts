@@ -70,6 +70,7 @@ import { ReactComponent as SortingIcon } from './svg/sorting.svg';
 import { ReactComponent as PlusIcon } from './svg/plus.svg';
 import { ReactComponent as ApartmentIcon } from './svg/apartment.svg';
 import { ReactComponent as PencilBigIcon } from './svg/pencilBig.svg';
+import { ReactComponent as WrenchIcon } from './svg/wrench.svg';
 import { ReactComponent as CheckMark } from './svg/checkMark.svg';
 import { ReactComponent as FileIcon } from './svg/file.svg';
 
@@ -146,6 +147,7 @@ export {
   PlusIcon,
   ApartmentIcon,
   PencilBigIcon,
+  WrenchIcon,
   CheckMark,
   FileIcon,
 };

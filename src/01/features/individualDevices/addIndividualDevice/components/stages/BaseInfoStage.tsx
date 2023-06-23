@@ -396,16 +396,16 @@ export const BaseInfoStage = () => {
         <FormItem label="Пломба">
           <Input
             placeholder="Номер пломбы"
-            value={fields.magneticSealTypeName.value || undefined}
+            value={fields.sealNumber.value || undefined}
             onChange={onChange}
-            name="magneticSealTypeName"
+            name="sealNumber"
           />
         </FormItem>
 
         <FormItem label="Дата установки пломбы">
           <DatePickerNative
-            onChange={fields.magneticSealInstallationDate.onChange}
-            value={fields.magneticSealInstallationDate.value}
+            onChange={fields.sealInstallationDate.onChange}
+            value={fields.sealInstallationDate.value}
           />
         </FormItem>
       </FormWrap>

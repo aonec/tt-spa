@@ -4,6 +4,7 @@ import { Link, useParams } from 'react-router-dom';
 import { Radio } from 'antd';
 import { DisplayStatisticsListByManagingFirmContainer } from './displayStatisticsListByManagingFirmService';
 import { DisplayStatisticsListByHousesContainer } from './displayStatisticsListByHousesService';
+import { ContentWrapper } from './subscribersConsumptionService.styled';
 
 export const SubscribersConsumptionContainer = () => {
   const { searchType } = useParams<{
@@ -37,7 +38,9 @@ export const SubscribersConsumptionContainer = () => {
           </Radio>
         </Link>
       </Radio.Group>
-      {subscribersConsumptionListComponentsLookup[searchType]}
+      <ContentWrapper>
+        {subscribersConsumptionListComponentsLookup[searchType]}
+      </ContentWrapper>
     </>
   );
 };

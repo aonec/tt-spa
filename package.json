@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@farfetched/core": "^0.8.12",
     "@pbe/react-yandex-maps": "^1.2.2",
     "@types/react": "^17.0.0",
     "@types/react-dom": "^17.0.0",

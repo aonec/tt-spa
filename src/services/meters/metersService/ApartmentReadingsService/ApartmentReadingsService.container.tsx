@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { ApartmentsReadings } from './view/ApartmentsReadings';
 import { apartmentReadingsService } from './ApartmentReadingsService.model';
-import { useEvent, useStore } from 'effector-react';
+import { useEvent, useStore, useUnit } from 'effector-react';
 import { useHistory, useParams } from 'react-router-dom';
 import { ESecuredIdentityRoleName } from 'myApi';
 import { usePermission } from 'hooks/usePermission';
@@ -33,6 +33,7 @@ export const ApartmentReadingsContainer = () => {
   const allIndividualDeviceMountPlaces = useStore(
     outputs.$allIndividualDeviceMountPlaces,
   );
+  const printIssueCertificate = useUnit(inputs.printIssueCertificate);
 
   const isPermitionToApartmentStatusPatch = usePermission([
     ESecuredIdentityRoleName.Administrator,
@@ -47,6 +48,10 @@ export const ApartmentReadingsContainer = () => {
       history.push(`/meters/apartments/${apartment.id}`);
     }).unsubscribe;
   }, [history, id]);
+
+  const handlePrintIssueCertificate = () => {
+    printIssueCertificate(Number(id));
+  };
 
   return (
     <>
@@ -68,6 +73,7 @@ export const ApartmentReadingsContainer = () => {
         selectedHomeownerName={selectedHomeownerName}
         isPermitionToApartmentStatusPatch={isPermitionToApartmentStatusPatch}
         allIndividualDeviceMountPlaces={allIndividualDeviceMountPlaces}
+        printIssueCertificate={handlePrintIssueCertificate}
       />
     </>
   );

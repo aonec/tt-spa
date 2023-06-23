@@ -1,4 +1,5 @@
 import {
+  ArchivesDataGroupValue,
   ArchivesDataModel,
   DateTimeTaskStatisticsItemArrayDictionaryItem,
 } from 'myApi';
@@ -11,6 +12,11 @@ export type GraphViewProps = {
   reportType: ReportType;
   taskStatistics: DateTimeTaskStatisticsItemArrayDictionaryItem[];
   wrapperId: string;
+  withFault: boolean;
+};
+
+export type ArchiveDataGroupValuesWithMark = ArchivesDataGroupValue & {
+  hasFault: boolean;
 };
 
 export type PreparedArchiveValues = {
