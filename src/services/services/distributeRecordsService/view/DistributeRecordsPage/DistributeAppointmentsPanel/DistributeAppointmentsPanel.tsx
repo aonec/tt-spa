@@ -51,16 +51,9 @@ export const DistributeAppointmentsPanel: FC<
 
   const preparedTreeDataByControllers = useMemo(
     () =>
-      prepareAppointmentsToTree(appointmentsInDistrict).sort(
-        (first, second) => {
-          if (first.controllerId === null) {
-            return -1;
-          }
-          if (second.controllerId === null) {
-            return 1;
-          }
-          return 0;
-        },
+      _.sortBy(
+        prepareAppointmentsToTree(appointmentsInDistrict),
+        ({ controllerId }) => controllerId || '',
       ),
     [appointmentsInDistrict],
   );
