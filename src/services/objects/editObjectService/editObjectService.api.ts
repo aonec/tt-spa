@@ -1,7 +1,7 @@
 import { axios } from '01/axios';
 import {
-  HousingStockAddressCreateRequest,
-  HousingStockAddressUpdateRequest,
+  BuildingAddressCreateRequest,
+  BuildingAddressUpdateRequest,
   HousingStockResponse,
   HousingStockUpdateRequest,
 } from 'myApi';
@@ -14,14 +14,14 @@ export const updateHousingStock = (payload: {
 
 export const createHousingStockAddress = (payload: {
   housingStockId: number;
-  data: HousingStockAddressCreateRequest;
+  data: BuildingAddressCreateRequest;
 }): Promise<HousingStockResponse> =>
   axios.post(`HousingStocks/${payload.housingStockId}/Addresses`, payload.data);
 
 export const updateHousingStockAddress = (payload: {
   housingStockId: number;
   addressId: number;
-  data: HousingStockAddressUpdateRequest;
+  data: BuildingAddressUpdateRequest;
 }): Promise<HousingStockResponse> =>
   axios.put(
     `HousingStocks/${payload.housingStockId}/Addresses/${payload.addressId}`,

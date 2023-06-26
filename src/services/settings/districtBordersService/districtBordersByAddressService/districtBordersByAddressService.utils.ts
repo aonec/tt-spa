@@ -1,4 +1,4 @@
-import { StreetWithHousingStockNumbersResponse } from 'myApi';
+import { StreetWithBuildingNumbersResponse } from 'myApi';
 import {
   CheckedHousingStocksIdWithStreets,
   CheckedHousingStocksIdWithStreetsHandler,
@@ -80,7 +80,7 @@ export const findPolygonCenter = (polygon: Polygon): [number, number] => {
 };
 
 export const getFilteredAddresses = (
-  addresses: StreetWithHousingStockNumbersResponse[] | null,
+  addresses: StreetWithBuildingNumbersResponse[] | null,
   filterData: FilterType | null,
 ) => {
   if (!addresses) return [];
@@ -118,7 +118,7 @@ export const getFilteredAddresses = (
         street: filteredByStreetAddress[0].street,
         addresses: filteredHouses,
       },
-    ] as StreetWithHousingStockNumbersResponse[];
+    ] as StreetWithBuildingNumbersResponse[];
   }
 };
 

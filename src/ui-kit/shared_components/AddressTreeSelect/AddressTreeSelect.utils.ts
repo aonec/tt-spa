@@ -1,12 +1,12 @@
 import {
   HeatingStationWithStreetsResponse,
   HouseManagementWithStreetsResponse,
-  StreetWithHousingStockNumbersResponse,
+  StreetWithBuildingNumbersResponse,
 } from 'myApi';
 import { TreeSelectElement } from './AddressTreeSelect.types';
 
 type PrepareAddressesParams = {
-  items: StreetWithHousingStockNumbersResponse[];
+  items: StreetWithBuildingNumbersResponse[];
   parentId?: string;
   isSelectableStreetNode?: boolean;
 };

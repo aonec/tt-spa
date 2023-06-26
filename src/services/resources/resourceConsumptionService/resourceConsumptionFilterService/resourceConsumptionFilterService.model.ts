@@ -2,7 +2,7 @@ import { combine, createDomain, sample } from 'effector';
 import {
   EResourceType,
   HouseManagementWithStreetsResponse,
-  StreetWithHousingStockNumbersResponse,
+  StreetWithBuildingNumbersResponse,
 } from 'myApi';
 import {
   prepareAddressesForTreeSelect,
@@ -67,7 +67,7 @@ const $addressesList = combine(
     if (!selectedHouseManagement) {
       const streets = houseManagements.reduce(
         (acc, houseManagement) => [...acc, ...(houseManagement.streets || [])],
-        [] as StreetWithHousingStockNumbersResponse[],
+        [] as StreetWithBuildingNumbersResponse[],
       );
 
       return getAddressSearchData(streets);

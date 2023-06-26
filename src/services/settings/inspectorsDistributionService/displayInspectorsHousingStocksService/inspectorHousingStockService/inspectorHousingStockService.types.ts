@@ -1,15 +1,15 @@
 import {
-  InspectorOnHousingStockResponse,
-  UpdateInspectorOnHousingStockRequest,
+  InspectorOnBuildingResponse,
+  UpdateInspectorOnBuildingRequest,
 } from 'myApi';
 
 export type HousingStockItemContainerProps = {
-  housingStock: InspectorOnHousingStockResponse;
+  housingStock: InspectorOnBuildingResponse;
 };
 
 export type PatchHousingStockInspectorInfoPayload = {
   housingStockId: number;
-  data: UpdateInspectorOnHousingStockRequest;
+  data: UpdateInspectorOnBuildingRequest;
 };
 
 export type CurrentHousingStockUpdate = {

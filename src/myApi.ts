@@ -60,7 +60,7 @@ export interface AddOrUpdateNodeWorkingRangeRequest {
   typeWorkingRange: ENodeWorkingRangeType;
 
   /** @format int32 */
-  housingStockId?: number | null;
+  buildingId?: number | null;
 
   /** @format uuid */
   housingManagementId?: string | null;
@@ -125,13 +125,19 @@ export interface AddressResponse {
   city: string | null;
   street: string | null;
   housingStockNumber: string | null;
+  buildingNumber: string | null;
 }
 
 export interface AddressShortResponse {
   /** @format int32 */
   housingStockId: number;
+
+  /** @format int32 */
+  buildingId: number;
   housingStockNumber: string | null;
+  number: string | null;
   housingStockCorpus: string | null;
+  corpus: string | null;
 }
 
 export interface AllNodeWorkingRangeResponse {
@@ -552,6 +558,9 @@ export interface AppointmentResponse {
 
   /** @format uuid */
   controllerId: string | null;
+
+  /** @format uuid */
+  assignmentId: string | null;
   homeownerFullName: string | null;
   homeownerPhone: string | null;
 
@@ -691,6 +700,40 @@ export interface BaseIndividualDeviceReadingsCreateRequest {
   value4?: number | null;
 }
 
+export interface BuildingAddressCreateRequest {
+  district?: string | null;
+  city?: string | null;
+  street: string;
+  number: string;
+  corpus?: string | null;
+}
+
+export interface BuildingAddressItemResponse {
+  /** @format int32 */
+  id: number;
+
+  /** @format int32 */
+  housingStockId: number;
+  municipalDistrict: string | null;
+  region: string | null;
+  city: string | null;
+  district: string | null;
+  street: string | null;
+  number: string | null;
+  corpus: string | null;
+}
+
+export interface BuildingAddressResponse {
+  mainAddress: BuildingAddressItemResponse | null;
+  additionalAddresses: BuildingAddressItemResponse[] | null;
+}
+
+export interface BuildingAddressUpdateRequest {
+  district?: string | null;
+  number?: string | null;
+  corpus?: string | null;
+}
+
 export interface BuildingListResponse {
   /** @format int32 */
   id: number;
@@ -702,7 +745,7 @@ export interface BuildingListResponse {
   numberOfTasks: number | null;
   houseCategory: EHouseCategory;
   managementFirm: ManagementFirmLiteResponse | null;
-  address: HousingStockAddressResponse | null;
+  address: BuildingAddressResponse | null;
   coordinates: PointResponse | null;
 }
 
@@ -739,7 +782,7 @@ export interface BuildingShortResponse {
 
   /** @format int32 */
   managingFirmId: number;
-  address: HousingStockAddressResponse | null;
+  address: BuildingAddressResponse | null;
 }
 
 export interface CalculatorCommentBaseRequest {
@@ -1379,6 +1422,9 @@ export interface CreateElectricHousingMeteringDeviceRequest {
 
 export interface CreateElectricNodeRequest {
   /** @format int32 */
+  buildingId?: number;
+
+  /** @format int32 */
   housingStockId?: number;
 
   /** @format int32 */
@@ -1559,6 +1605,9 @@ export interface CreatePipeHousingMeteringDeviceRequest {
 
 export interface CreatePipeNodeRequest {
   /** @format int32 */
+  buildingId?: number;
+
+  /** @format int32 */
   housingStockId?: number;
 
   /** @format int32 */
@@ -1678,7 +1727,7 @@ export interface DisableNodeWorkingRangeRequest {
   typeWorkingRange: ENodeWorkingRangeType;
 
   /** @format int32 */
-  housingStockId?: number | null;
+  buildingId?: number | null;
 
   /** @format uuid */
   housingManagementId?: string | null;
@@ -2359,7 +2408,7 @@ export enum ETaskTargetObjectRequestType {
   Apartment = 'Apartment',
   MeteringDevice = 'MeteringDevice',
   Node = 'Node',
-  HousingStock = 'HousingStock',
+  Building = 'Building',
   Reading = 'Reading',
   IndividualDevice = 'IndividualDevice',
 }
@@ -2382,7 +2431,7 @@ export enum EValueNodeWorkingRangeRelation {
   Self = 'Self',
   ManagementFirm = 'ManagementFirm',
   HouseManagement = 'HouseManagement',
-  HousingStock = 'HousingStock',
+  Building = 'Building',
 }
 
 export enum EYearQuarter {
@@ -2495,6 +2544,9 @@ export interface ElectricNodeResponse {
 
   /** @format int32 */
   housingStockId: number;
+
+  /** @format int32 */
+  buildingId: number;
   address: BuildingShortResponse | null;
   documents: DocumentLiteResponse[] | null;
   locationName: string | null;
@@ -2532,6 +2584,7 @@ export interface FullAddressResponse {
   /** @format int32 */
   id: number;
   housingStockNumber: string | null;
+  buildingNumber: string | null;
   corpus: string | null;
   street: string | null;
   city: string | null;
@@ -2628,6 +2681,11 @@ export interface GuidStringDictionaryItem {
   value?: string | null;
 }
 
+export interface GuidSuccessApiResponse {
+  /** @format uuid */
+  successResponse: string;
+}
+
 export interface HeatingSeasonAdjustmentResponse {
   /** @format uuid */
   heatingSeasonId: string;
@@ -2646,6 +2704,7 @@ export interface HeatingSeasonAdjustmentResponse {
 
   /** @format uuid */
   houseManagementId: string | null;
+  buildingIds: number[] | null;
   housingStockIds: number[] | null;
 }
 
@@ -2763,7 +2822,7 @@ export interface HeatingStationWithStreetsResponse {
   /** @format uuid */
   id: string;
   name: string | null;
-  streets: StreetWithHousingStockNumbersResponse[] | null;
+  streets: StreetWithBuildingNumbersResponse[] | null;
 }
 
 export interface HeatingStationWithStreetsResponseIEnumerableSuccessApiResponse {
@@ -3023,7 +3082,7 @@ export interface HouseManagementWithStreetsResponse {
   /** @format uuid */
   id: string;
   name: string | null;
-  streets: StreetWithHousingStockNumbersResponse[] | null;
+  streets: StreetWithBuildingNumbersResponse[] | null;
 }
 
 export interface HouseManagementWithStreetsResponseIEnumerableSuccessApiResponse {
@@ -3295,43 +3354,9 @@ export interface HousingStock {
   address?: HouseAddress | null;
 }
 
-export interface HousingStockAddressCreateRequest {
-  district?: string | null;
-  city?: string | null;
-  street: string;
-  number: string;
-  corpus?: string | null;
-}
-
-export interface HousingStockAddressItemResponse {
-  /** @format int32 */
-  id: number;
-
-  /** @format int32 */
-  housingStockId: number;
-  municipalDistrict: string | null;
-  region: string | null;
-  city: string | null;
-  district: string | null;
-  street: string | null;
-  number: string | null;
-  corpus: string | null;
-}
-
-export interface HousingStockAddressResponse {
-  mainAddress: HousingStockAddressItemResponse | null;
-  additionalAddresses: HousingStockAddressItemResponse[] | null;
-}
-
-export interface HousingStockAddressUpdateRequest {
-  district?: string | null;
-  number?: string | null;
-  corpus?: string | null;
-}
-
 export interface HousingStockCreateRequest {
-  mainAddress: HousingStockAddressCreateRequest;
-  otherAddresses?: HousingStockAddressCreateRequest[] | null;
+  mainAddress: BuildingAddressCreateRequest;
+  otherAddresses?: BuildingAddressCreateRequest[] | null;
 
   /** @format uuid */
   heatingStationId: string;
@@ -3419,7 +3444,7 @@ export interface HousingStockListResponse {
   /** @format int32 */
   numberOfTasks: number | null;
   managementFirm: ManagementFirmLiteResponse | null;
-  address: HousingStockAddressResponse | null;
+  address: BuildingAddressResponse | null;
   coordinates: PointResponse | null;
   livingHouseType: ELivingHouseType;
   houseTypeString: string | null;
@@ -3502,7 +3527,7 @@ export interface HousingStockResponse {
 
   /** @format int32 */
   inspectedDay: number | null;
-  address: HousingStockAddressResponse | null;
+  address: BuildingAddressResponse | null;
 
   /** @format int32 */
   numberOfTasks: number;
@@ -3561,7 +3586,7 @@ export interface HousingStockWithCoordinatesResponse {
 
   /** @format int32 */
   managingFirmId: number;
-  address: HousingStockAddressResponse | null;
+  address: BuildingAddressResponse | null;
   coordinates: PointResponse | null;
 }
 
@@ -4091,7 +4116,10 @@ export interface InspectorCreateRequest {
   readoutPlan: number;
 }
 
-export interface InspectorOnHousingStockResponse {
+export interface InspectorOnBuildingResponse {
+  /** @format int32 */
+  buildingId: number;
+
   /** @format int32 */
   housingStockId: number;
   street: string | null;
@@ -4099,8 +4127,9 @@ export interface InspectorOnHousingStockResponse {
   number: string | null;
 
   /** @format uuid */
-  houseManagementId: string;
+  houseManagementId: string | null;
   houseManagement: string | null;
+  houseManagementName: string | null;
 
   /** @format int32 */
   inspectedDay: number | null;
@@ -4109,8 +4138,8 @@ export interface InspectorOnHousingStockResponse {
   inspectorId: number | null;
 }
 
-export interface InspectorOnHousingStockResponseListSuccessApiResponse {
-  successResponse: InspectorOnHousingStockResponse[] | null;
+export interface InspectorOnBuildingResponseListSuccessApiResponse {
+  successResponse: InspectorOnBuildingResponse[] | null;
 }
 
 export interface InspectorReassignAllAddressesRequest {
@@ -4852,6 +4881,7 @@ export interface OrganizationUserResponse {
   status: UserStatusResponse | null;
   competences: UserCompetenceResponse[] | null;
   roles: ESecuredIdentityRoleNameStringDictionaryItem[] | null;
+  buildings: BuildingShortResponse[] | null;
   housingStocks: BuildingShortResponse[] | null;
 }
 
@@ -5120,6 +5150,9 @@ export interface PipeNodeResponse {
 
   /** @format int32 */
   housingStockId: number;
+
+  /** @format int32 */
+  buildingId: number;
   address: BuildingShortResponse | null;
   documents: DocumentLiteResponse[] | null;
   heatingSeason: PipeNodeHeatingSeasonListResponse | null;
@@ -5346,6 +5379,7 @@ export interface ResourceDisconnectingResponse {
 
   /** @format int32 */
   managementFirmId: number;
+  buildings: BuildingShortResponse[] | null;
   housingStocks: BuildingShortResponse[] | null;
   document: DocumentResponse | null;
 }
@@ -5525,12 +5559,12 @@ export enum StatusType {
   NotClosed = 'NotClosed',
 }
 
-export interface StreetWithHousingStockNumbersResponse {
+export interface StreetWithBuildingNumbersResponse {
   street: string | null;
   addresses: AddressShortResponse[] | null;
 }
 
-export interface StreetWithHousingStockNumbersResponsePagedList {
+export interface StreetWithBuildingNumbersResponsePagedList {
   /** @format int32 */
   totalItems: number;
 
@@ -5550,11 +5584,11 @@ export interface StreetWithHousingStockNumbersResponsePagedList {
 
   /** @format int32 */
   previousPageNumber: number;
-  items: StreetWithHousingStockNumbersResponse[] | null;
+  items: StreetWithBuildingNumbersResponse[] | null;
 }
 
-export interface StreetWithHousingStockNumbersResponsePagedListSuccessApiResponse {
-  successResponse: StreetWithHousingStockNumbersResponsePagedList | null;
+export interface StreetWithBuildingNumbersResponsePagedListSuccessApiResponse {
+  successResponse: StreetWithBuildingNumbersResponsePagedList | null;
 }
 
 export interface StringPagedList {
@@ -5945,6 +5979,7 @@ export interface TaskListResponse {
   /** @format int32 */
   totalHomeownersCount: number;
   housingStockCoordinates: PointResponse | null;
+  buildingCoordinates: PointResponse | null;
   taskConfirmation: TaskConfirmationResponse | null;
 }
 
@@ -5955,6 +5990,9 @@ export interface TaskResponse {
   type: EManagingFirmTaskType;
   creationReason: string | null;
   address: string | null;
+
+  /** @format int32 */
+  buildingId: number;
 
   /** @format int32 */
   housingStockId: number;
@@ -5983,6 +6021,7 @@ export interface TaskResponse {
   allowableConfirmationTypes:
     | ETaskConfirmationTypeStringDictionaryItem[]
     | null;
+  buildingCoordinates: PointResponse | null;
   housingStockCoordinates: PointResponse | null;
   canBeReverted: boolean;
 }
@@ -6251,7 +6290,7 @@ export interface UpdateIndividualDeviceRequest {
   isConnected?: boolean;
 }
 
-export interface UpdateInspectorOnHousingStockRequest {
+export interface UpdateInspectorOnBuildingRequest {
   /** @format int32 */
   inspectorId: number;
 
@@ -7324,6 +7363,26 @@ export class Api<
       }),
 
     /**
+     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li>
+     *
+     * @tags Assignments
+     * @name IndividualSealAssignmentsDelete
+     * @summary IndividualSealReadWrite
+     * @request DELETE:/api/IndividualSeal/Assignments/{assingmentId}
+     * @secure
+     */
+    individualSealAssignmentsDelete: (
+      assingmentId: string,
+      params: RequestParams = {},
+    ) =>
+      this.request<void, ErrorApiResponse>({
+        path: `/api/IndividualSeal/Assignments/${assingmentId}`,
+        method: 'DELETE',
+        secure: true,
+        ...params,
+      }),
+
+    /**
      * No description
      *
      * @tags Auth
@@ -7443,6 +7502,168 @@ export class Api<
      * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
      *
      * @tags Buildings
+     * @name BuildingsExistingCitiesList
+     * @summary HousingStocksRead
+     * @request GET:/api/Buildings/ExistingCities
+     * @secure
+     */
+    buildingsExistingCitiesList: (
+      query?: {
+        City?: string;
+        PageNumber?: number;
+        PageSize?: number;
+        OrderBy?: EOrderByRule;
+        Skip?: number;
+        Take?: number;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<StringPagedListSuccessApiResponse, ErrorApiResponse>({
+        path: `/api/Buildings/ExistingCities`,
+        method: 'GET',
+        query: query,
+        secure: true,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
+     *
+     * @tags Buildings
+     * @name BuildingsExistingStreetsList
+     * @summary HousingStocksRead
+     * @request GET:/api/Buildings/ExistingStreets
+     * @secure
+     */
+    buildingsExistingStreetsList: (
+      query: {
+        City: string;
+        Street?: string;
+        PageNumber?: number;
+        PageSize?: number;
+        OrderBy?: EOrderByRule;
+        Skip?: number;
+        Take?: number;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<StringPagedListSuccessApiResponse, ErrorApiResponse>({
+        path: `/api/Buildings/ExistingStreets`,
+        method: 'GET',
+        query: query,
+        secure: true,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
+     *
+     * @tags Buildings
+     * @name BuildingsExistingBuildingNumbersList
+     * @summary HousingStocksRead
+     * @request GET:/api/Buildings/ExistingBuildingNumbers
+     * @secure
+     */
+    buildingsExistingBuildingNumbersList: (
+      query: { city: string; street: string },
+      params: RequestParams = {},
+    ) =>
+      this.request<NumberIdResponseArraySuccessApiResponse, ErrorApiResponse>({
+        path: `/api/Buildings/ExistingBuildingNumbers`,
+        method: 'GET',
+        query: query,
+        secure: true,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
+     *
+     * @tags Buildings
+     * @name BuildingsExistingStreetsWithBuildingNumbersList
+     * @summary HousingStocksRead
+     * @request GET:/api/Buildings/ExistingStreetsWithBuildingNumbers
+     * @secure
+     */
+    buildingsExistingStreetsWithBuildingNumbersList: (
+      query: {
+        City: string;
+        Street?: string;
+        PageNumber?: number;
+        PageSize?: number;
+        OrderBy?: EOrderByRule;
+        Skip?: number;
+        Take?: number;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<
+        StreetWithBuildingNumbersResponsePagedListSuccessApiResponse,
+        ErrorApiResponse
+      >({
+        path: `/api/Buildings/ExistingStreetsWithBuildingNumbers`,
+        method: 'GET',
+        query: query,
+        secure: true,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
+     *
+     * @tags Buildings
+     * @name BuildingsExistingStreetsWithBuildingNumbersWithHouseManagementList
+     * @summary HousingStocksRead
+     * @request GET:/api/Buildings/ExistingStreetsWithBuildingNumbersWithHouseManagement
+     * @secure
+     */
+    buildingsExistingStreetsWithBuildingNumbersWithHouseManagementList: (
+      query?: { city?: string },
+      params: RequestParams = {},
+    ) =>
+      this.request<
+        HouseManagementWithStreetsResponseIEnumerableSuccessApiResponse,
+        ErrorApiResponse
+      >({
+        path: `/api/Buildings/ExistingStreetsWithBuildingNumbersWithHouseManagement`,
+        method: 'GET',
+        query: query,
+        secure: true,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
+     *
+     * @tags Buildings
+     * @name BuildingsExistingStreetsWithBuildingNumbersWithHeatingStationList
+     * @summary HousingStocksRead
+     * @request GET:/api/Buildings/ExistingStreetsWithBuildingNumbersWithHeatingStation
+     * @secure
+     */
+    buildingsExistingStreetsWithBuildingNumbersWithHeatingStationList: (
+      params: RequestParams = {},
+    ) =>
+      this.request<
+        HeatingStationWithStreetsResponseIEnumerableSuccessApiResponse,
+        ErrorApiResponse
+      >({
+        path: `/api/Buildings/ExistingStreetsWithBuildingNumbersWithHeatingStation`,
+        method: 'GET',
+        secure: true,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
+     *
+     * @tags Buildings
      * @name BuildingsList
      * @summary HousingStocksRead
      * @request GET:/api/Buildings
@@ -7453,7 +7674,7 @@ export class Api<
         OrderRule?: EHousingStockOrderRule;
         City?: string;
         Street?: string;
-        HousingStockNumber?: string;
+        BuildingNumber?: string;
         Corpus?: string;
         HeatingStationId?: string;
         'TotalArea.MaxValue'?: number;
@@ -7476,6 +7697,82 @@ export class Api<
         query: query,
         secure: true,
         format: 'json',
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
+     *
+     * @tags Buildings
+     * @name BuildingsInspectorsList
+     * @summary HousingStocksRead
+     * @request GET:/api/Buildings/inspectors
+     * @secure
+     */
+    buildingsInspectorsList: (
+      query?: {
+        City?: string;
+        Street?: string;
+        BuildingNumber?: string;
+        HousingStockNumber?: string;
+        HouseManagement?: string;
+        HouseManagementName?: string;
+        InspectorId?: number;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<
+        InspectorOnBuildingResponseListSuccessApiResponse,
+        ErrorApiResponse
+      >({
+        path: `/api/Buildings/inspectors`,
+        method: 'GET',
+        query: query,
+        secure: true,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li>
+     *
+     * @tags Buildings
+     * @name BuildingsInspectorPartialUpdate
+     * @summary HousingStocksUpdate
+     * @request PATCH:/api/Buildings/{buildingId}/inspector
+     * @secure
+     */
+    buildingsInspectorPartialUpdate: (
+      buildingId: number,
+      data: UpdateInspectorOnBuildingRequest,
+      params: RequestParams = {},
+    ) =>
+      this.request<void, ErrorApiResponse>({
+        path: `/api/Buildings/${buildingId}/inspector`,
+        method: 'PATCH',
+        body: data,
+        secure: true,
+        type: ContentType.Json,
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li>
+     *
+     * @tags Buildings
+     * @name BuildingsInspectorDelete
+     * @summary HousingStocksUpdate
+     * @request DELETE:/api/Buildings/{buildingId}/inspector
+     * @secure
+     */
+    buildingsInspectorDelete: (
+      buildingId: number,
+      params: RequestParams = {},
+    ) =>
+      this.request<void, ErrorApiResponse>({
+        path: `/api/Buildings/${buildingId}/inspector`,
+        method: 'DELETE',
+        secure: true,
         ...params,
       }),
 
@@ -7915,12 +8212,13 @@ export class Api<
       data: ControllerCreateRequest,
       params: RequestParams = {},
     ) =>
-      this.request<void, ErrorApiResponse>({
+      this.request<GuidSuccessApiResponse, ErrorApiResponse>({
         path: `/api/IndividualSeal/Controllers`,
         method: 'POST',
         body: data,
         secure: true,
         type: ContentType.Json,
+        format: 'json',
         ...params,
       }),
 
@@ -9530,7 +9828,7 @@ export class Api<
      */
     housingStocksAddressesCreate: (
       housingStockId: number,
-      data: HousingStockAddressCreateRequest,
+      data: BuildingAddressCreateRequest,
       params: RequestParams = {},
     ) =>
       this.request<HousingStockResponseSuccessApiResponse, ErrorApiResponse>({
@@ -9555,7 +9853,7 @@ export class Api<
     housingStocksAddressesUpdate: (
       housingStockId: number,
       addressId: number,
-      data: HousingStockAddressUpdateRequest,
+      data: BuildingAddressUpdateRequest,
       params: RequestParams = {},
     ) =>
       this.request<HousingStockResponseSuccessApiResponse, ErrorApiResponse>({
@@ -9909,7 +10207,7 @@ export class Api<
       params: RequestParams = {},
     ) =>
       this.request<
-        StreetWithHousingStockNumbersResponsePagedListSuccessApiResponse,
+        StreetWithBuildingNumbersResponsePagedListSuccessApiResponse,
         ErrorApiResponse
       >({
         path: `/api/HousingStocks/ExistingStreetsWithHousingStockNumbers`,
@@ -10000,14 +10298,16 @@ export class Api<
       query?: {
         City?: string;
         Street?: string;
+        BuildingNumber?: string;
         HousingStockNumber?: string;
         HouseManagement?: string;
+        HouseManagementName?: string;
         InspectorId?: number;
       },
       params: RequestParams = {},
     ) =>
       this.request<
-        InspectorOnHousingStockResponseListSuccessApiResponse,
+        InspectorOnBuildingResponseListSuccessApiResponse,
         ErrorApiResponse
       >({
         path: `/api/HousingStocks/inspectors`,
@@ -10029,7 +10329,7 @@ export class Api<
      */
     housingStocksInspectorPartialUpdate: (
       housingStockId: number,
-      data: UpdateInspectorOnHousingStockRequest,
+      data: UpdateInspectorOnBuildingRequest,
       params: RequestParams = {},
     ) =>
       this.request<HousingStockResponseSuccessApiResponse, ErrorApiResponse>({
@@ -11295,6 +11595,7 @@ export class Api<
       query?: {
         CalculatorId?: number;
         IsConnected?: boolean;
+        BuildingId?: number;
         HousingStockId?: number;
         'Address.City'?: string;
         'Address.Street'?: string;
@@ -11517,7 +11818,8 @@ export class Api<
      */
     nodesDataForHousingConsumptionPlotList: (
       query: {
-        HousingStockIds: number[];
+        BuildingIds?: number[];
+        HousingStockIds?: number[];
         ResourceType: EResourceType;
         From: string;
         To: string;
@@ -11546,7 +11848,12 @@ export class Api<
      * @secure
      */
     nodesSummaryHousingConsumptionsByResourcesList: (
-      query: { HousingStockIds: number[]; From: string; To: string },
+      query: {
+        HousingStockIds?: number[];
+        BuildingIds?: number[];
+        From: string;
+        To: string;
+      },
       params: RequestParams = {},
     ) =>
       this.request<

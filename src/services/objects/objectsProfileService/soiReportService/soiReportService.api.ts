@@ -4,7 +4,7 @@ import { GetAddressesWithCityRequestPayload } from 'services/workingRanges/uniqu
 import { omit } from 'lodash';
 import {
   HouseManagementResponse,
-  StreetWithHousingStockNumbersResponsePagedList,
+  StreetWithBuildingNumbersResponsePagedList,
 } from 'myApi';
 import {
   CreateSoiReportRequestPayload,
@@ -33,7 +33,7 @@ export const getHouseManagements = (
 
 export const getAdresses = (
   payload: GetAddressesWithCityRequestPayload,
-): Promise<StreetWithHousingStockNumbersResponsePagedList> => {
+): Promise<StreetWithBuildingNumbersResponsePagedList> => {
   return axios.get('HousingStocks/ExistingStreetsWithHousingStockNumbers', {
     params: payload,
   });
