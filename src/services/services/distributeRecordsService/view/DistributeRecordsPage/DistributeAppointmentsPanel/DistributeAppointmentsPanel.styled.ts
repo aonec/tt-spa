@@ -20,6 +20,10 @@ export const Wrapper = styled.div`
     0px 8px 16px rgba(78, 93, 146, 0.08);
 `;
 
+export const LoaderWrapper = styled.div`
+  padding: 12px 16px 16px;
+`;
+
 const slideDown = keyframes`
   from {
     opacity: 0;
@@ -58,8 +62,6 @@ export const Footer = styled.div`
   gap: 12px;
   justify-content: flex-end;
 `;
-
-
 
 export const TreeSC = styled(Tree)`
   width: 100%;
@@ -129,4 +131,22 @@ export const ListHeaderWrapper = styled.div`
   margin-top: 16px;
   padding-top: 16px;
   border-top: 1px solid #f3f5f6;
+`;
+
+export const ControllerWrapper = styled.div`
+  padding: 8px 12px 8px 12px;
+  border-radius: 4px;
+  background-color: #189ee929;
+  color: #272f5a;
+
+  display: flex;
+  align-items: flex-start;
+  gap: 4px;
+  margin-top: 16px;
+`;
+
+export const ControllerInfoTitle = styled.div`
+  user-select: none;
+  font-weight: 500;
+  color: #189ee9;
 `;

@@ -1,7 +1,7 @@
 import {
   ApartmentResponse,
-  AppointmentResponse,
   IndividualDeviceListItemResponse,
+  AppointmentResponse,
 } from 'myApi';
 import {
   GetApartmentsRequestPayload,

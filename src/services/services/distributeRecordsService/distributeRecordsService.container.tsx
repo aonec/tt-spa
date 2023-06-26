@@ -1,11 +1,15 @@
 import React, { useCallback } from 'react';
 import { useUnit } from 'effector-react';
-import { DistributeRecordsPage } from './view/DistributeRecordsPage';
+import { intersection } from 'lodash';
 import {
+  appointmentsCountingQuery,
   districtAppointmentsQuery,
   districtsQuery,
+  individualSealControllersQuery,
+  setAppointmentsToControllerMutation,
 } from './distributeRecordsService.api';
 import { distributeRecordsService } from './distributeRecordsService.models';
+import { DistributeRecordsPage } from './view/DistributeRecordsPage';
 import { AppointmentsByHousingStocks } from './view/DistributeRecordsPage/DistrictsMap/DistrictsMap.types';
 
 const {
@@ -20,22 +24,74 @@ export const DistributeRecordsContainer = () => {
 
   const { data: appointmentsInDistrict, pending: isLoadingAppointments } =
     useUnit(districtAppointmentsQuery);
-    
-  const handleSelectDistrict = useUnit(inputs.handleSelectDistrict);
-  const handleUnselectDistrict = useUnit(inputs.handleUnselectDistrict);
-  const handleSetAppointmentDate = useUnit(inputs.setAppointmentDate);
-  const handleSelectAppointments = useUnit(inputs.selectAppointments);
 
-  const selectedDistrict = useUnit(outputs.$selectedDistrict);
-  const appointmentDate = useUnit(outputs.$appointmentDate);
-  const selectedAppointmentsIds = useUnit(outputs.$selectedAppointmentsIds);
+  const { data: appointmentsCounting } = useUnit(appointmentsCountingQuery);
+
+  const { data: controllers } = useUnit(individualSealControllersQuery);
+
+  const {
+    start: setAppointmentsToController,
+    pending: isLoadingDistributeAppointments,
+  } = useUnit(setAppointmentsToControllerMutation);
+
+  const {
+    handleSelectDistrict,
+    handleSetAppointmentDate,
+    handleUnselectDistrict,
+    closeDistributeAppointmentsModal,
+    handleSelectAppointments,
+    openCreateControllerModal,
+    openDistributeAppointmentsModal,
+  } = useUnit({
+    handleSelectDistrict: inputs.handleSelectDistrict,
+    handleUnselectDistrict: inputs.handleUnselectDistrict,
+    handleSetAppointmentDate: inputs.setAppointmentDate,
+    handleSelectAppointments: inputs.selectAppointments,
+    openDistributeAppointmentsModal: inputs.openDistributeAppointmentsModal,
+    closeDistributeAppointmentsModal: inputs.closeDistributeAppointmentsModal,
+    openCreateControllerModal: inputs.openCreateControllerModal,
+  });
+
+  const {
+    selectedDistrict,
+    appointmentDate,
+    isDistributeAppointmentsModalOpen,
+    selectedAppointmentsIds,
+  } = useUnit({
+    selectedDistrict: outputs.$selectedDistrict,
+    appointmentDate: outputs.$appointmentDate,
+    selectedAppointmentsIds: outputs.$selectedAppointmentsIds,
+    isDistributeAppointmentsModalOpen:
+      outputs.$isDistributeAppointmentsModalOpen,
+  });
 
   const handleSelectHousingStock = useCallback(
-    (data: AppointmentsByHousingStocks) =>
-      handleSelectAppointments([
-        ...selectedAppointmentsIds,
-        ...data.appointments.map((elem) => elem.id),
-      ]),
+    (data: AppointmentsByHousingStocks) => {
+      const isHouseSelected = Boolean(
+        intersection(
+          data.appointments.map((elem) => elem.id),
+          selectedAppointmentsIds.map((elem) => String(elem.id)),
+        ).length,
+      );
+
+      if (!isHouseSelected) {
+        handleSelectAppointments([
+          ...selectedAppointmentsIds,
+          ...data.appointments,
+        ]);
+      }
+
+      if (isHouseSelected) {
+        handleSelectAppointments(
+          selectedAppointmentsIds.filter(
+            (elem) =>
+              !data.appointments
+                .map((appointment) => appointment.id)
+                .includes(String(elem.id)),
+          ),
+        );
+      }
+    },
     [selectedAppointmentsIds, handleSelectAppointments],
   );
 
@@ -55,6 +111,14 @@ export const DistributeRecordsContainer = () => {
         handleSelectHousingStock={handleSelectHousingStock}
         selectedAppointmentsIds={selectedAppointmentsIds}
         handleSelectAppointments={handleSelectAppointments}
+        appointmentsCounting={appointmentsCounting}
+        openDistributeAppointmentsModal={openDistributeAppointmentsModal}
+        closeDistributeAppointmentsModal={closeDistributeAppointmentsModal}
+        isDistributeAppointmentsModalOpen={isDistributeAppointmentsModalOpen}
+        controllers={controllers}
+        openCreateControllerModal={openCreateControllerModal}
+        setAppointmentsToController={setAppointmentsToController}
+        isLoadingDistributeAppointments={isLoadingDistributeAppointments}
       />
     </>
   );

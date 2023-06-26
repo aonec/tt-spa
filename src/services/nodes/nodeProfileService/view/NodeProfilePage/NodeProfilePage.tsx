@@ -82,7 +82,15 @@ export const NodeProfilePage: FC<NodeProfilePageProps> = ({
     return dictionary;
   }, [pipeNode]);
 
-  const contentComponent = contentComponents && contentComponents[section];
+  const contentComponent = useMemo(() => {
+    if (!contentComponents) {
+      return null;
+    }
+    if (section !== PipeNodeProfileSection.Stats) {
+      return <ContentWrapper>{contentComponents[section]}</ContentWrapper>;
+    }
+    return contentComponents[section];
+  }, [section, contentComponents]);
 
   const isShowReadingsTab =
     pipeNode?.calculator === null ||
@@ -190,7 +198,7 @@ export const NodeProfilePage: FC<NodeProfilePageProps> = ({
             />
           </TabsSC>
           <Wrapper>
-            <ContentWrapper>{contentComponent}</ContentWrapper>
+            {contentComponent}
             <div>
               <LinkCard
                 text="Архив"

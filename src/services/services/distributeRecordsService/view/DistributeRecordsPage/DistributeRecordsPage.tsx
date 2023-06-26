@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useMemo } from 'react';
 import { FiltrationWrapper, Wrapper } from './DistributeRecordsPage.styled';
 import { Props } from './DistributeRecordsPage.types';
 import { AddressSearchContainer } from 'services/addressSearchService';
@@ -7,6 +7,7 @@ import { Select } from 'ui-kit/Select';
 import { DatePicker } from 'ui-kit/DatePicker';
 import { DistrictsMap } from './DistrictsMap';
 import { getDatePickerValue } from 'utils/getDatePickerValue';
+import { DistributeAppointmentsModal } from './DistributeAppointmentsModal';
 
 export const DistributeRecordsPage: FC<Props> = ({
   districtsList,
@@ -18,12 +19,34 @@ export const DistributeRecordsPage: FC<Props> = ({
   appointmentsInDistrict,
   handleSelectHousingStock,
   isLoadingAppointments,
-  isLoadingDistricts,
   selectedAppointmentsIds,
   handleSelectAppointments,
+  appointmentsCounting,
+  isDistributeAppointmentsModalOpen,
+  openDistributeAppointmentsModal,
+  closeDistributeAppointmentsModal,
+  controllers,
+  openCreateControllerModal,
+  setAppointmentsToController,
+  isLoadingDistributeAppointments,
 }) => {
+  const selectedIdsArr = useMemo(
+    () => selectedAppointmentsIds.map((elem) => String(elem.id)),
+    [selectedAppointmentsIds],
+  );
+
   return (
     <Wrapper>
+      <DistributeAppointmentsModal
+        isModalOpen={isDistributeAppointmentsModalOpen}
+        handleCloseModal={closeDistributeAppointmentsModal}
+        appointmentDate={appointmentDate}
+        controllers={controllers}
+        openCreateControllerModal={openCreateControllerModal}
+        setAppointmentsToController={setAppointmentsToController}
+        selectedAppointmentsIds={selectedIdsArr}
+        isLoadingDistributeAppointments={isLoadingDistributeAppointments}
+      />
       <FiltrationWrapper>
         <AddressSearchContainer fields={[SearchFieldType.City]} />
         <Select
@@ -67,6 +90,9 @@ export const DistributeRecordsPage: FC<Props> = ({
         handleSelectAppointments={handleSelectAppointments}
         isLoadingAppointments={isLoadingAppointments}
         handleUnselectDistrict={handleUnselectDistrict}
+        appointmentsCounting={appointmentsCounting}
+        openDistributeAppointmentsModal={openDistributeAppointmentsModal}
+        controllers={controllers}
       />
     </Wrapper>
   );

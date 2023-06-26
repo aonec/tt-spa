@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useEffect, useMemo, useState } from 'react';
 import { useEvent, useStore } from 'effector-react';
 import { Tooltip } from 'antd';
 import {
@@ -101,7 +101,16 @@ export const ApartmentInfo: FC<ApartmentInfoProps> = ({
 
   const houseManagementName = `Домоуправление «${houseManagement?.name}»`;
 
-  const houseManagementInfo = `${houseManagement?.phone}; ${houseManagement?.comment}`;
+  const houseManagementInfo = useMemo(() => {
+    const phoneNumber = houseManagement?.phone
+      ? `${houseManagement?.phone};`
+      : '';
+    const information = houseManagement?.comment
+      ? `${houseManagement?.comment}`
+      : '';
+
+    return `${phoneNumber} ${information}`;
+  }, [houseManagement]);
 
   const accountingOpeningDate = `открыт с ${moment(
     selectedHomeowner?.openAt,

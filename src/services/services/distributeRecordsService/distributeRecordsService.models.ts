@@ -1,12 +1,24 @@
 import { combine, createDomain, forward, sample } from 'effector';
 import { createGate } from 'effector-react';
 import {
+  appointmentsCountingQuery,
   districtAppointmentsQuery,
   districtsQuery,
-  getNearestAppointmentsDate,
+  individualSealControllersQuery,
+  nearestAppointmentsDateQuery,
+  setAppointmentsToControllerMutation,
 } from './distributeRecordsService.api';
 import moment from 'moment';
-import { GetDistrictAppointmentsRequestPayload } from './distributeRecordsService.types';
+import {
+  GetDistrictAppointmentsRequestPayload,
+  GetDistrictsAppointmentsCountingRequestPayload,
+} from './distributeRecordsService.types';
+import {
+  createControllerService,
+  createIndividualSealControllerMutation,
+} from './createControllerService';
+import { message } from 'antd';
+import { AppointmentsIdWithController } from './view/DistributeRecordsPage/DistributeAppointmentsPanel/DistributeAppointmentsPanel.types';
 
 const domain = createDomain('distributeRecords');
 
@@ -14,23 +26,32 @@ const DistributeRecordsGate = createGate();
 
 const handleUnselectDistrict = domain.createEvent();
 const handleSelectDistrict = domain.createEvent<string>();
+const setAppointmentDate = domain.createEvent<string>();
+const selectAppointments = domain.createEvent<AppointmentsIdWithController[]>();
+
+const openDistributeAppointmentsModal = domain.createEvent();
+const closeDistributeAppointmentsModal = domain.createEvent();
+
 const $selectedDistrict = domain
   .createStore<string | null>(null)
   .on(handleSelectDistrict, (_, id) => id)
   .reset(DistributeRecordsGate.close, handleUnselectDistrict);
 
-const setAppointmentDate = domain.createEvent<string>();
 const $appointmentDate = domain
   .createStore<string | null>(moment().format('YYYY-MM-DD'))
   .on(setAppointmentDate, (_, date) => date)
-  .on(getNearestAppointmentsDate.$data, (_, res) => res?.date)
+  .on(nearestAppointmentsDateQuery.$data, (_, res) => res?.date)
   .reset();
 
-const selectAppointments = domain.createEvent<string[]>();
 const $selectedAppointmentsIds = domain
-  .createStore<string[]>([])
+  .createStore<AppointmentsIdWithController[]>([])
   .on(selectAppointments, (_, ids) => ids)
   .reset(districtAppointmentsQuery.$data);
+
+const $isDistributeAppointmentsModalOpen = domain
+  .createStore(false)
+  .on(openDistributeAppointmentsModal, () => true)
+  .on(closeDistributeAppointmentsModal, () => false);
 
 const $getAppointmentsRequestPayload = combine(
   $selectedDistrict,
@@ -46,13 +67,63 @@ sample({
 });
 
 forward({
+  from: setAppointmentsToControllerMutation.finished.success,
+  to: [closeDistributeAppointmentsModal],
+});
+
+setAppointmentsToControllerMutation.finished.success.watch(() =>
+  message.success('Записи успешно распределены'),
+);
+
+sample({
+  clock: setAppointmentsToControllerMutation.finished.success,
+  source: $getAppointmentsRequestPayload,
+  filter: (data): data is GetDistrictAppointmentsRequestPayload =>
+    Boolean(data.districtId),
+  target: districtAppointmentsQuery.start,
+});
+
+const $getDistrictsAppointmnetsCounting = combine(
+  districtsQuery.$data,
+  $appointmentDate,
+  (districts, date) => ({
+    districtIds: districts?.map((elem) => elem.id) || [],
+    date,
+  }),
+);
+
+sample({
+  source: $getDistrictsAppointmnetsCounting,
+  filter: (data): data is GetDistrictsAppointmentsCountingRequestPayload =>
+    Boolean(data.date),
+  target: appointmentsCountingQuery.start,
+});
+
+forward({
   from: DistributeRecordsGate.open,
-  to: [districtsQuery.start, getNearestAppointmentsDate.start],
+  to: [
+    districtsQuery.start,
+    nearestAppointmentsDateQuery.start,
+    individualSealControllersQuery.start,
+  ],
+});
+
+forward({
+  from: createIndividualSealControllerMutation.finished.success,
+  to: individualSealControllersQuery.start,
 });
 
 forward({
   from: [DistributeRecordsGate.close, handleUnselectDistrict],
   to: districtAppointmentsQuery.reset,
+});
+
+setAppointmentsToControllerMutation.finished.failure.watch(({ error }) => {
+  return message.error(
+    error.response.data.error.Text ||
+      error.response.data.error.Message ||
+      'Произошла ошибка',
+  );
 });
 
 export const distributeRecordsService = {
@@ -61,7 +132,16 @@ export const distributeRecordsService = {
     handleUnselectDistrict,
     setAppointmentDate,
     selectAppointments,
+    openDistributeAppointmentsModal,
+    closeDistributeAppointmentsModal,
+    openCreateControllerModal:
+      createControllerService.inputs.openCreateControllerModal,
   },
-  outputs: { $selectedDistrict, $appointmentDate, $selectedAppointmentsIds },
+  outputs: {
+    $selectedDistrict,
+    $appointmentDate,
+    $selectedAppointmentsIds,
+    $isDistributeAppointmentsModalOpen,
+  },
   gates: { DistributeRecordsGate },
 };
