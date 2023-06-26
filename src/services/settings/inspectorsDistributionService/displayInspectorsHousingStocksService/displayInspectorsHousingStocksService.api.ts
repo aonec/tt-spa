@@ -1,9 +1,9 @@
 import { axios } from '01/axios';
 import { GetInspectorsHousingStocksRequestParams } from './types';
-import { InspectorOnHousingStockResponse } from 'myApi';
+import { InspectorOnBuildingResponse } from 'myApi';
 
 export const getInspectorsHousingStocks = (
   params: GetInspectorsHousingStocksRequestParams,
-): Promise<InspectorOnHousingStockResponse[] | null> => {
+): Promise<InspectorOnBuildingResponse[] | null> => {
   return axios.get('HousingStocks/inspectors', { params });
 };

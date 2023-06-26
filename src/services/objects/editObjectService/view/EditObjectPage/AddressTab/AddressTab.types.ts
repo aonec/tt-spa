@@ -1,21 +1,21 @@
 import {
-  HousingStockAddressCreateRequest,
-  HousingStockAddressResponse,
-  HousingStockAddressUpdateRequest,
+  BuildingAddressCreateRequest,
+  BuildingAddressResponse,
+  BuildingAddressUpdateRequest,
 } from 'myApi';
 
 export type AddressTabProps = {
-  address: HousingStockAddressResponse;
+  address: BuildingAddressResponse;
   existingCities: string[] | null;
   existingStreets: string[];
   onPageCancel: () => void;
   handleCreateHousingStockAddress: (
-    payload: HousingStockAddressCreateRequest,
+    payload: BuildingAddressCreateRequest,
   ) => void;
   handleDeleteHousingStockAddress: (payload: { addressId: number }) => void;
   handleUpdateHousingStockAddress: (payload: {
     addressId: number;
-    data: HousingStockAddressUpdateRequest;
+    data: BuildingAddressUpdateRequest;
   }) => void;
   isCreateLoading: boolean;
   isUpdateLoading: boolean;

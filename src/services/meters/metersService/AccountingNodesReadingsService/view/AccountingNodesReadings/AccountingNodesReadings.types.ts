@@ -1,9 +1,9 @@
 import { GetElectricNodesByAddress } from '../../AccountingNodesReadingsService.types';
-import { ElectricNodeResponse, HousingStockAddressItemResponse } from 'myApi';
+import { ElectricNodeResponse, BuildingAddressItemResponse } from 'myApi';
 
 export type AccountingNodesReadingsProps = {
   handleGetElectricNodes: (address: GetElectricNodesByAddress) => void;
-  address: HousingStockAddressItemResponse | null;
+  address: BuildingAddressItemResponse | null;
   electricNodes: ElectricNodeResponse[];
   isLoading: boolean;
   sliderIndex: number;
