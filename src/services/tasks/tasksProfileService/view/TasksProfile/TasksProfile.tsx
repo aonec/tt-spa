@@ -12,6 +12,7 @@ import {
   HeaderWrapper,
   HeaderContainer,
   Flex,
+  ButtonSC,
 } from './TasksProfile.styled';
 import { TasksPageSegment, TasksProfileProps } from './TasksProfile.types';
 import { Segmented } from 'ui-kit/Segmented';
@@ -44,6 +45,7 @@ export const TasksProfile: FC<TasksProfileProps> = ({
   isSpectator,
   tasksPageSegment,
   setTasksPageSegment,
+  handleOpenAddTaskModal,
 }) => {
   const history = useHistory();
   const { executingTasksCount, observingTasksCount, totalItems } =
@@ -107,9 +109,13 @@ export const TasksProfile: FC<TasksProfileProps> = ({
             <HeaderContainer>
               {header}
               <Flex>
-                <Button size="small" type="ghost" floating>
+                <ButtonSC
+                  size="small"
+                  type="ghost"
+                  onClick={handleOpenAddTaskModal}
+                >
                   <PlusSmallIcon />
-                </Button>
+                </ButtonSC>
               </Flex>
             </HeaderContainer>
 
