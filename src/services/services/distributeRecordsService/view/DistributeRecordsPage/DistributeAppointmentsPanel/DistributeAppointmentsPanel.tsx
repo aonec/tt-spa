@@ -3,6 +3,7 @@ import {
   CancelAllText,
   ContentWrapper,
   ControllerInfoTitle,
+  ControllerInfoWrapper,
   ControllerWrapper,
   CountWrapper,
   Footer,
@@ -11,6 +12,7 @@ import {
   LoaderWrapper,
   RootWrapperTitle,
   SelectAllText,
+  TrashIconSC,
   TreeSC,
   Wrapper,
 } from './DistributeAppointmentsPanel.styled';
@@ -42,6 +44,7 @@ export const DistributeAppointmentsPanel: FC<
   handleUnselectDistrict,
   openDistributeAppointmentsModal,
   controllers,
+  openRemoveAssignmentModal,
 }) => {
   const [expandedKeys, setExpandedKeys] = useState<
     AppointmentsIdWithController[]
@@ -91,14 +94,22 @@ export const DistributeAppointmentsPanel: FC<
     [appointmentsInDistrict],
   );
 
+  const notDistributedAppointments = useMemo(
+    () =>
+      appointmentsInDistrict.reduce((acc, elem) => {
+        if (!elem.controllerId) {
+          return [...acc, elem.id];
+        }
+        return acc;
+      }, [] as string[]),
+    [appointmentsInDistrict],
+  );
+
   const treeList = useMemo(
     () =>
       preparedTreeDataByControllers.map(({ controllerId, data }) => {
         const expKeys = getKeysByControllerId(expandedKeys, controllerId);
-        const checkedKeys = getKeysByControllerId(
-          selectedAppointmentsIds,
-          controllerId,
-        );
+        const checkedKeys = controllerId ? [] : selectedAppointmentsIds;
         const controller = (controllers || []).find(
           (elem) => elem.id === controllerId,
         );
@@ -106,6 +117,10 @@ export const DistributeAppointmentsPanel: FC<
         const controllerInfo = ` ${controller?.lastName || ''} ${
           controller?.firstName || ''
         }`;
+        const assignmentId =
+          appointmentsInDistrict.find(
+            (elem) => elem.controllerId === controllerId,
+          )?.assignmentId || null;
 
         return (
           <>
@@ -118,12 +133,22 @@ export const DistributeAppointmentsPanel: FC<
                   <ControllerInfoTitle>
                     Уже есть ранее распределенные заявки
                   </ControllerInfoTitle>
-                  Контролер:
-                  {controllerInfo}
+                  <ControllerInfoWrapper>
+                    Контролер:
+                    {controllerInfo}
+                    {assignmentId && (
+                      <TrashIconSC
+                        onClick={() =>
+                          openRemoveAssignmentModal(String(assignmentId))
+                        }
+                      />
+                    )}
+                  </ControllerInfoWrapper>
                 </div>
               </ControllerWrapper>
             )}
             <TreeSC
+              disabled={Boolean(controllerId)}
               selectable={false}
               checkable={true}
               treeData={data}
@@ -146,15 +171,9 @@ export const DistributeAppointmentsPanel: FC<
                   Boolean(elem.key !== elem.title),
                 );
 
-                handleSelectAppointments([
-                  ...selectedAppointmentsIds.filter(
-                    (elem) => elem.controllerId !== controllerId,
-                  ),
-                  ...filteredNodes.map((elem) => ({
-                    id: String(elem.key),
-                    controllerId,
-                  })),
-                ]);
+                handleSelectAppointments(
+                  filteredNodes.map((elem) => String(elem.key)),
+                );
               }}
               onExpand={(keys) =>
                 setExpandedKeys((prev) => [
@@ -174,6 +193,8 @@ export const DistributeAppointmentsPanel: FC<
       handleSelectAppointments,
       selectedAppointmentsIds,
       controllers,
+      openRemoveAssignmentModal,
+      appointmentsInDistrict,
     ],
   );
 
@@ -197,10 +218,10 @@ export const DistributeAppointmentsPanel: FC<
                 <ListHeaderWrapper>
                   <SelectAllText
                     onClick={() =>
-                      handleSelectAppointments(appointmentsInDistrict)
+                      handleSelectAppointments(notDistributedAppointments)
                     }
                   >
-                    Выбрать все ({appointmentsInDistrict.length})
+                    Выбрать все ({notDistributedAppointments.length})
                   </SelectAllText>
                   <CancelAllText onClick={() => handleSelectAppointments([])}>
                     Отменить выбор

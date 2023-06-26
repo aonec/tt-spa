@@ -31,6 +31,7 @@ export const DistrictsMap: FC<Props> = ({
   appointmentsCounting,
   openDistributeAppointmentsModal,
   controllers,
+  openRemoveAssignmentModal,
 }) => {
   const { mapRef, map } = useYMaps();
 
@@ -55,9 +56,7 @@ export const DistrictsMap: FC<Props> = ({
     return getPayloadFromDistricts(filteredDistrictsList).map((elem) => {
       const districtAppointmentsCounting = appointmentsCounting?.[elem.id];
 
-      const count =
-        (districtAppointmentsCounting?.distributed || 0) +
-        (districtAppointmentsCounting?.notDistributed || 0);
+      const count = districtAppointmentsCounting?.notDistributed || 0;
 
       return {
         text: `${elem.name} ${count ? `(${count})` : ''}`,
@@ -74,7 +73,7 @@ export const DistrictsMap: FC<Props> = ({
         const isIntersection =
           intersection(
             elem.appointments.map((elem) => elem.id),
-            selectedAppointmentsIds.map((elem) => elem.id),
+            selectedAppointmentsIds,
           ).length !== 0;
 
         const isHouseActive = elem.appointments.some((elem) =>
@@ -94,7 +93,7 @@ export const DistrictsMap: FC<Props> = ({
             number,
           ],
           onClick: () => handleSelectHousingStock(elem),
-          count: elem.appointments.length,
+          count: elem.appointments.filter((elem) => !elem.controllerId).length,
         };
       }),
     [appointmentsInDistrict, handleSelectHousingStock, selectedAppointmentsIds],
@@ -113,6 +112,7 @@ export const DistrictsMap: FC<Props> = ({
           handleUnselectDistrict={handleUnselectDistrict}
           openDistributeAppointmentsModal={openDistributeAppointmentsModal}
           controllers={controllers}
+          openRemoveAssignmentModal={openRemoveAssignmentModal}
         />
       )}
       <div ref={mapRef} style={{ width: '100%', height: '86vh' }} />

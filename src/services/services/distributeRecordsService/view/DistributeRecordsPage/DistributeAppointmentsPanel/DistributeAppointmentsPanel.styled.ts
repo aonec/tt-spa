@@ -1,6 +1,6 @@
 import { Tree } from 'antd';
 import styled, { keyframes } from 'styled-components';
-import { ChevronIcon } from 'ui-kit/icons';
+import { ChevronIcon, TrashIcon } from 'ui-kit/icons';
 
 export const Wrapper = styled.div`
   background-color: white;
@@ -149,4 +149,17 @@ export const ControllerInfoTitle = styled.div`
   user-select: none;
   font-weight: 500;
   color: #189ee9;
+`;
+
+export const ControllerInfoWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+`;
+
+export const TrashIconSC = styled(TrashIcon)`
+  cursor: pointer;
+  width: 12px;
+  height: 12px;
 `;
