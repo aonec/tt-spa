@@ -12,25 +12,25 @@ export const AddIndividualDeviceContainer = () => {
   const { id } = useParams<{ id: string }>();
   const history = useHistory();
 
-  const [stageNumber, handleGoPrevStage] = useUnit([
-    outputs.$stageNumber,
-    inputs.handleGoPrevStage,
-  ]);
+  const { stageNumber, handleGoPrevStage } = useUnit({
+    stageNumber: outputs.$stageNumber,
+    handleGoPrevStage: inputs.handleGoPrevStage,
+  });
 
-  const [formData, handleSubmitForm] = useUnit([
-    outputs.$formData,
-    inputs.handleSubmitForm,
-  ]);
+  const { formData, handleSubmitForm } = useUnit({
+    formData: outputs.$formData,
+    handleSubmitForm: inputs.handleSubmitForm,
+  });
 
-  const [documents, handleSubmitDocumentStage] = useUnit([
-    outputs.$documents,
-    inputs.handleSubmitDocumentStage,
-  ]);
+  const { documents, handleSubmitDocumentStage } = useUnit({
+    documents: outputs.$documents,
+    handleSubmitDocumentStage: inputs.handleSubmitDocumentStage,
+  });
 
-  const [isModalOpen, handleCloseModal] = useUnit([
-    outputs.$isModalOpen,
-    inputs.handleCloseModal,
-  ]);
+  const { isModalOpen, handleCloseModal } = useUnit({
+    isModalOpen: outputs.$isModalOpen,
+    handleCloseModal: inputs.handleCloseModal,
+  });
 
   const apartment = useUnit(outputs.$apartment);
   const mountPlaces = useUnit(outputs.$individualDeviceMountPlaces);
