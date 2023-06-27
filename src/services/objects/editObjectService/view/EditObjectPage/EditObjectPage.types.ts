@@ -2,8 +2,8 @@ import {
   HeatingStationResponse,
   HeatingStationResponsePagedList,
   HouseManagementResponse,
-  HousingStockAddressCreateRequest,
-  HousingStockAddressUpdateRequest,
+  BuildingAddressCreateRequest,
+  BuildingAddressUpdateRequest,
   HousingStockResponse,
   HousingStockUpdateRequest,
 } from 'myApi';
@@ -22,11 +22,11 @@ export type EditObjectPageProps = {
   isHouseManagementsLoading: boolean;
   isHeatingStationsLoading: boolean;
   handleCreateHousingStockAddress: (
-    payload: HousingStockAddressCreateRequest,
+    payload: BuildingAddressCreateRequest,
   ) => void;
   handleUpdateHousingStockAddress: (payload: {
     addressId: number;
-    data: HousingStockAddressUpdateRequest;
+    data: BuildingAddressUpdateRequest;
   }) => void;
   handleDeleteHousingStockAddress: (payload: { addressId: number }) => void;
   isDeleteLoading: boolean;

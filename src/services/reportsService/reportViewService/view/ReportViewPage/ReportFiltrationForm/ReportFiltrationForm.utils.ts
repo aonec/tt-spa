@@ -1,6 +1,6 @@
 import {
   HouseManagementWithStreetsResponse,
-  StreetWithHousingStockNumbersResponse,
+  StreetWithBuildingNumbersResponse,
 } from 'myApi';
 import { getAddressSearchData } from 'services/resources/resourceConsumptionService/resourceConsumptionService.utils';
 import { Address } from './ReportFiltrationForm.types';
@@ -12,7 +12,7 @@ export const getAddresses = (
   if (!selectedHouseManagement) {
     const streets = houseManagements.reduce(
       (acc, houseManagement) => [...acc, ...(houseManagement.streets || [])],
-      [] as StreetWithHousingStockNumbersResponse[],
+      [] as StreetWithBuildingNumbersResponse[],
     );
 
     return getAddressSearchData(streets);

@@ -1,5 +1,5 @@
 import { createDomain, forward, sample } from 'effector';
-import { StreetWithHousingStockNumbersResponsePagedList } from 'myApi';
+import { StreetWithBuildingNumbersResponsePagedList } from 'myApi';
 import { TreeSelectElement } from 'ui-kit/shared_components/AddressTreeSelect/AddressTreeSelect.types';
 import { prepareAddressesForTreeSelect } from 'ui-kit/shared_components/AddressTreeSelect/AddressTreeSelect.utils';
 import {
@@ -35,7 +35,7 @@ const $selectedCity = domain
 
 const getAddressesFx = domain.createEffect<
   string,
-  StreetWithHousingStockNumbersResponsePagedList
+  StreetWithBuildingNumbersResponsePagedList
 >(fetchAddresses);
 
 const $treeData = domain

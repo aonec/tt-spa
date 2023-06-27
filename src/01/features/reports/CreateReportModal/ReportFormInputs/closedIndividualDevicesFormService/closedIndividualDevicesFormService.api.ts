@@ -2,12 +2,12 @@ import { axios } from '01/axios';
 import {
   HouseManagementResponse,
   OrganizationResponsePagedList,
-  StreetWithHousingStockNumbersResponsePagedList,
+  StreetWithBuildingNumbersResponsePagedList,
 } from 'myApi';
 
 export const getAdresses = (
   city: string,
-): Promise<StreetWithHousingStockNumbersResponsePagedList> => {
+): Promise<StreetWithBuildingNumbersResponsePagedList> => {
   return axios.get('HousingStocks/ExistingStreetsWithHousingStockNumbers', {
     params: { city },
   });

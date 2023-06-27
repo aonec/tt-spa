@@ -1,8 +1,8 @@
 import { createDomain, sample } from 'effector';
 import { getAddresses } from './districtBordersByAddressService.api';
 import {
-  StreetWithHousingStockNumbersResponse,
-  StreetWithHousingStockNumbersResponsePagedList,
+  StreetWithBuildingNumbersResponse,
+  StreetWithBuildingNumbersResponsePagedList,
 } from 'myApi';
 import {
   CheckedHousingStocksIdWithStreets,
@@ -43,11 +43,11 @@ const setHousingStockIdsWithStreet =
 
 const fetchAddressFx = domain.createEffect<
   FetchAddressQueryType,
-  StreetWithHousingStockNumbersResponsePagedList
+  StreetWithBuildingNumbersResponsePagedList
 >(getAddresses);
 
 const $addresses = domain
-  .createStore<StreetWithHousingStockNumbersResponse[] | null>(null)
+  .createStore<StreetWithBuildingNumbersResponse[] | null>(null)
   .on(fetchAddressFx.doneData, (_, addresses) => addresses.items);
 
 const $filter = domain

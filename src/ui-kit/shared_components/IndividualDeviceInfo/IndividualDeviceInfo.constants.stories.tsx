@@ -8,6 +8,7 @@ import {
 
 export const Device: IndividualDeviceResponse = {
   address: {
+    buildingNumber: '5',
     id: 372,
     housingStockNumber: '94',
     corpus: null,
