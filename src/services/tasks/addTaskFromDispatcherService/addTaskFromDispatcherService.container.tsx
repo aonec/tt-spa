@@ -10,11 +10,12 @@ export const AddTaskFromDispatcherContainer = () => {
     isModalOpen: outputs.$isModalOpen,
     handleCloseModal: inputs.handleCloseModal,
   });
-
   const ERPSources = useUnit(outputs.$ERPSources);
   const ErpObjects = useUnit(outputs.$ErpObjects);
   const leadExecutors = useUnit(outputs.$leadExecutors);
   const workCategories = useUnit(outputs.$workCategories);
+
+  const handleCreateTask = useUnit(inputs.handleCreateTask);
 
   return (
     <>
@@ -25,6 +26,7 @@ export const AddTaskFromDispatcherContainer = () => {
         ErpObjects={ErpObjects}
         leadExecutors={leadExecutors}
         workCategories={workCategories}
+        handleCreateTask={handleCreateTask}
       />
     </>
   );

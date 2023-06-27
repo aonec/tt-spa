@@ -3,6 +3,7 @@ import {
   SourceGrpcModel,
   WorkCategoryGrpcModel,
 } from 'myApi';
+import { AddTask } from './AddTaskForm/AddTaskForm.types';
 
 export type AddTaskModalProps = {
   isModalOpen: boolean;
@@ -11,4 +12,5 @@ export type AddTaskModalProps = {
   ErpObjects: ExecutorGrpcModel[];
   leadExecutors: ExecutorGrpcModel[];
   workCategories: WorkCategoryGrpcModel[];
+  handleCreateTask: (payload: AddTask) => void;
 };

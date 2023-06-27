@@ -1,4 +1,4 @@
-import { createDomain, forward } from 'effector';
+import { createDomain, forward, sample } from 'effector';
 import {
   createTask,
   getERPSources,
@@ -14,6 +14,7 @@ import {
 } from 'myApi';
 import { createGate } from 'effector-react';
 import { EffectFailDataAxiosError } from 'types';
+import { AddTask } from './view/AddTaskModal/AddTaskForm/AddTaskForm.types';
 
 const domain = createDomain('addTaskFromDispatcherService');
 
@@ -21,6 +22,8 @@ const PageGate = createGate();
 
 const handleOpenModal = domain.createEvent();
 const handleCloseModal = domain.createEvent();
+
+const handleCreateTask = domain.createEvent<AddTask>();
 
 const createTaskFx = domain.createEffect<
   CreateErpTaskRequest,
@@ -65,6 +68,32 @@ const $ErpObjects = domain
   .createStore<ExecutorGrpcModel[]>([])
   .on(getErpObjectsFx.doneData, (_, data) => data);
 
+sample({
+  clock: handleCreateTask,
+  source: $ErpObjects,
+  fn: (ErpObjects, data) => {
+    const object = ErpObjects.find(
+      (object) => object.name === data.selectedObjectAddress,
+    );
+
+    const sourceDateTime = data.requestDate
+      ?.format('YYYY-MM-DD')
+      .concat('T', data.requestTime || '');
+
+    return {
+      leadId: data.leadId,
+      objectId: object?.id,
+      sourceDateTime: sourceDateTime,
+      sourceId: data.sourceId,
+      sourceNumber: data.requestNumber,
+      taskDescription: data.taskDescription,
+      taskType: data.taskType,
+      workCategoryId: data.workTypeId,
+    } as CreateErpTaskRequest;
+  },
+  target: createTaskFx,
+});
+
 forward({
   from: PageGate.open,
   to: getERPSourcesFx,
@@ -86,7 +115,7 @@ forward({
 });
 
 export const addTaskFromDispatcherService = {
-  inputs: { handleOpenModal, handleCloseModal },
+  inputs: { handleOpenModal, handleCloseModal, handleCreateTask },
   outputs: {
     $isModalOpen,
     $ERPSources,

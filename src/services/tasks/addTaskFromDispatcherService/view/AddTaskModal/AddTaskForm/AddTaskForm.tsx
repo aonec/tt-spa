@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useEffect, useMemo } from 'react';
 import {
   ContainerWithOutline,
   GridContainer,
@@ -6,7 +6,7 @@ import {
   GridContainerAsymmetricRight,
   TextareaSC,
 } from './AddTaskForm.styled';
-import { AddTaskFormProps } from './AddTaskForm.types';
+import { AddTask, AddTaskFormProps } from './AddTaskForm.types';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 import { Form } from 'antd';
@@ -31,8 +31,10 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
   leadExecutors,
   workCategories: workTypes,
   ErpObjects,
+  handleCreateTask,
+  setDisableSubmit,
 }) => {
-  const { values, handleSubmit, setFieldValue, errors } = useFormik({
+  const { values, handleSubmit, setFieldValue, errors } = useFormik<AddTask>({
     initialValues: {
       sourceId: null,
       requestNumber: null,
@@ -44,6 +46,8 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
       requestTime: null,
 
       addressSearch: '',
+      selectedObjectAddress: null,
+
       apartmentNumber: null,
       subscriberName: null,
       phoneNumber: null,
@@ -54,18 +58,35 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
       taskDescription: null,
     },
     enableReinitialize: true,
-    validateOnChange: false,
-    // validationSchema: yup.object().shape({
-    //   sourceId: yup.string().nullable().required('Обязательное поле'),
-    //   requestNumber: yup.string().nullable().required('Обязательное поле'),
-    //   taskType: yup.string().nullable().required('Обязательное поле'),
-    //   // categoryId: yup.string().nullable().required('Обязательное поле'),
-    //   workTypeId: yup.string().nullable().required('Обязательное поле'),
-    // }),
+    // validateOnChange: true,
+    validateOnBlur: true,
+    validateOnMount: true,
+
+    validationSchema: yup.object().shape({
+      sourceId: yup.string().nullable().required('Обязательное поле'),
+      requestNumber: yup.string().nullable().required('Обязательное поле'),
+      taskType: yup.string().nullable().required('Обязательное поле'),
+      // categoryId: yup.string().nullable().required('Обязательное поле'),
+      workTypeId: yup.string().nullable().required('Обязательное поле'),
+      leadId: yup.string().nullable().required('Обязательное поле'),
+      selectedObjectAddress: yup
+        .string()
+        .nullable()
+        .required('Обязательное поле'),
+    }),
     onSubmit: (data) => {
-      console.log(data);
+      handleCreateTask(data);
     },
   });
+
+  const isHaveValidationErrors = useMemo(
+    () => Boolean(Object.keys(errors).length),
+    [errors],
+  );
+
+  useEffect(() => {
+    setDisableSubmit(isHaveValidationErrors);
+  }, [isHaveValidationErrors]);
 
   const ErpObjectsString = ErpObjects.map((object) => object.address).filter(
     Boolean,
@@ -203,6 +224,9 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
               placeholder="Улица"
               value={values.addressSearch}
               onChange={(value) => setFieldValue('addressSearch', value)}
+              onSelect={(value) =>
+                setFieldValue('selectedObjectAddress', value)
+              }
               options={preparedErpObjects}
             />
           </FormItem>
