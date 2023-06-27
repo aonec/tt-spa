@@ -7,6 +7,7 @@ import {
   ENodeRegistrationType,
   EResourceType,
   ETaskEngineeringElement,
+  EisTaskType,
 } from 'myApi';
 
 export const MagistralsDisctionary: { [key in EMagistralType]: string } = {
@@ -97,4 +98,10 @@ export const ActTypesNamesLookup: { [key in EActType]: string } = {
   [EActType.HomeownerAccountCertificate]: 'Справка о лицевом счете',
   [EActType.Admission]: 'Акт допуска',
   [EActType.NonAdmission]: 'Акт недопуска',
+};
+
+export const TaskTypeDictionary: { [key in EisTaskType]: string } = {
+  [EisTaskType.Current]: 'Текущая',
+  [EisTaskType.Planned]: 'Плановая',
+  [EisTaskType.Emergency]: 'Аварийная',
 };

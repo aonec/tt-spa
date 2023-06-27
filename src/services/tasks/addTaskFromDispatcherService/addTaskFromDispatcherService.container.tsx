@@ -11,11 +11,20 @@ export const AddTaskFromDispatcherContainer = () => {
     handleCloseModal: inputs.handleCloseModal,
   });
 
+  const ERPSources = useUnit(outputs.$ERPSources);
+  const ErpObjects = useUnit(outputs.$ErpObjects);
+  const leadExecutors = useUnit(outputs.$leadExecutors);
+  const workCategories = useUnit(outputs.$workCategories);
+
   return (
     <>
       <AddTaskModal
         isModalOpen={isModalOpen}
         handleCloseModal={handleCloseModal}
+        ERPSources={ERPSources}
+        ErpObjects={ErpObjects}
+        leadExecutors={leadExecutors}
+        workCategories={workCategories}
       />
     </>
   );
