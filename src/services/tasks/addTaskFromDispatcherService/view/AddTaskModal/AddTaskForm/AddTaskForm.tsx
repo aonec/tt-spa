@@ -19,7 +19,7 @@ import { SelectTime } from 'ui-kit/SelectTime';
 import { addTaskFromDispatcherService } from 'services/tasks/addTaskFromDispatcherService/addTaskFromDispatcherService.models';
 import { TaskTypeDictionary } from 'dictionaries';
 import { AutoComplete } from 'ui-kit/AutoComplete';
-import { getPreparedStreetsOptions } from 'services/objects/createObjectService/view/CreateObjectPage/CreateObjectAddressStage/CreateObjectAddressStage.utils';
+import { autocompleteAddress } from './AddTaskForm.utils';
 
 const {
   gates: { PageGate },
@@ -50,16 +50,18 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
 
       leadId: null,
       executorId: null,
+
+      taskDescription: null,
     },
     enableReinitialize: true,
     validateOnChange: false,
-    validationSchema: yup.object().shape({
-      sourceId: yup.string().nullable().required('Обязательное поле'),
-      requestNumber: yup.string().nullable().required('Обязательное поле'),
-      taskType: yup.string().nullable().required('Обязательное поле'),
-      // categoryId: yup.string().nullable().required('Обязательное поле'),
-      workTypeId: yup.string().nullable().required('Обязательное поле'),
-    }),
+    // validationSchema: yup.object().shape({
+    //   sourceId: yup.string().nullable().required('Обязательное поле'),
+    //   requestNumber: yup.string().nullable().required('Обязательное поле'),
+    //   taskType: yup.string().nullable().required('Обязательное поле'),
+    //   // categoryId: yup.string().nullable().required('Обязательное поле'),
+    //   workTypeId: yup.string().nullable().required('Обязательное поле'),
+    // }),
     onSubmit: (data) => {
       console.log(data);
     },
@@ -69,7 +71,7 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
     Boolean,
   ) as string[];
 
-  const preparedErpObjects = getPreparedStreetsOptions(
+  const preparedErpObjects = autocompleteAddress(
     values.addressSearch,
     ErpObjectsString || [],
   );
@@ -179,6 +181,7 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
                 <DatePicker disabled />
 
                 <Select
+                  disabled
                   placeholder="Время"
                   // value={values.isThermalChamber || undefined}
                   onChange={(value) => setFieldValue('isThermalChamber', value)}
@@ -248,21 +251,24 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
           <FormItem label="Ответственный исполнитель">
             <Select
               placeholder="Время"
-              // value={values.isThermalChamber || undefined}
-              onChange={(value) => setFieldValue('isThermalChamber', value)}
+              value={values.leadId || undefined}
+              onChange={(value) => setFieldValue('leadId', value)}
             >
-              {/* {Object.values(HeatingStationType).map((e) => (
-              <Select.Option value={e} key={e}>
-                {HeatingStationTypeDictionary[e]}
-              </Select.Option>
-            ))} */}
+              {leadExecutors.map((leadExecutor, index) => (
+                <Select.Option
+                  value={leadExecutor.id || index}
+                  key={leadExecutor.id || index}
+                >
+                  {leadExecutor.name}
+                </Select.Option>
+              ))}
             </Select>
           </FormItem>
           <FormItem label="Исполнитель">
             <Select
               placeholder="Время"
-              // value={values.isThermalChamber || undefined}
-              onChange={(value) => setFieldValue('isThermalChamber', value)}
+              value={values.executorId || undefined}
+              onChange={(value) => setFieldValue('executorId', value)}
             >
               {/* {Object.values(HeatingStationType).map((e) => (
               <Select.Option value={e} key={e}>
@@ -274,7 +280,13 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
         </GridContainer>
 
         <FormItem label="Описание проблемы">
-          <TextareaSC placeholder="Кратко опишите проблему" />
+          <TextareaSC
+            placeholder="Кратко опишите проблему"
+            value={values.taskDescription || undefined}
+            onChange={(value) =>
+              setFieldValue('taskDescription', value.target.value)
+            }
+          />
         </FormItem>
       </Form>
     </>
