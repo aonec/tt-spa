@@ -2,7 +2,6 @@ import React, { FC } from 'react';
 import { AddTaskModalProps } from './AddTaskModal.types';
 import { AddTaskForm } from './AddTaskForm/AddTaskForm';
 import { FormModal } from 'ui-kit/Modals/FormModal/FormModal';
-import { getPreparedStreetsOptions } from 'services/objects/createObjectService/view/CreateObjectPage/CreateObjectAddressStage/CreateObjectAddressStage.utils';
 
 const formId = 'add-task-dispatcher-form';
 

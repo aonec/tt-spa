@@ -9,5 +9,8 @@ export type AddTaskFormProps = {
   ERPSources: SourceGrpcModel[];
   leadExecutors: ExecutorGrpcModel[];
   workCategories: WorkCategoryGrpcModel[];
-  ErpObjects: ExecutorGrpcModel[];
+  ErpObjects: {
+    id?: string | null;
+    address?: string | null;
+  }[];
 };

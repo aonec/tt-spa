@@ -44,29 +44,33 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
       requestTime: null,
 
       addressSearch: '',
+      apartmentNumber: null,
+      subscriberName: null,
+      phoneNumber: null,
+
+      leadId: null,
+      executorId: null,
     },
     enableReinitialize: true,
     validateOnChange: false,
-    // validationSchema: yup.object().shape({
-    //   sourceId: yup.string().nullable().required('Обязательное поле'),
-    //   requestNumber: yup.string().nullable().required('Обязательное поле'),
-    //   taskType: yup.string().nullable().required('Обязательное поле'),
-    //   // categoryId: yup.string().nullable().required('Обязательное поле'),
-    //   workTypeId: yup.string().nullable().required('Обязательное поле'),
-    // }),
+    validationSchema: yup.object().shape({
+      sourceId: yup.string().nullable().required('Обязательное поле'),
+      requestNumber: yup.string().nullable().required('Обязательное поле'),
+      taskType: yup.string().nullable().required('Обязательное поле'),
+      // categoryId: yup.string().nullable().required('Обязательное поле'),
+      workTypeId: yup.string().nullable().required('Обязательное поле'),
+    }),
     onSubmit: (data) => {
       console.log(data);
     },
   });
 
-  const ErpObjectsString = ErpObjects.map((object) => object.name).filter(
+  const ErpObjectsString = ErpObjects.map((object) => object.address).filter(
     Boolean,
   ) as string[];
 
-  const addressSearch = values.addressSearch;
-
   const preparedErpObjects = getPreparedStreetsOptions(
-    addressSearch,
+    values.addressSearch,
     ErpObjectsString || [],
   );
 
@@ -202,10 +206,17 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
 
           <GridContainerAsymmetricRight>
             <FormItem label="Номер квартиры">
-              <Input />
+              <Input
+                placeholder="Введите"
+                value={values.apartmentNumber || undefined}
+                onChange={(value) =>
+                  setFieldValue('apartmentNumber', value.target.value)
+                }
+              />
             </FormItem>
+
             <FormItem label="УК">
-              <Input />
+              <Input placeholder="???" disabled />
             </FormItem>
           </GridContainerAsymmetricRight>
         </GridContainer>
@@ -213,10 +224,22 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
         <ContainerWithOutline>
           <GridContainer>
             <FormItem label="ФИО абонента">
-              <Input />
+              <Input
+                placeholder="Введите"
+                value={values.subscriberName || undefined}
+                onChange={(value) =>
+                  setFieldValue('subscriberName', value.target.value)
+                }
+              />
             </FormItem>
             <FormItem label="Номер телефона">
-              <Input />
+              <Input
+                placeholder="Введите"
+                value={values.phoneNumber || undefined}
+                onChange={(value) =>
+                  setFieldValue('phoneNumber', value.target.value)
+                }
+              />
             </FormItem>
           </GridContainer>
         </ContainerWithOutline>
