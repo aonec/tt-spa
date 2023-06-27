@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { FiltrationWrapper, Wrapper } from './DistributeRecordsPage.styled';
+import { FiltrationWrapper } from './DistributeRecordsPage.styled';
 import { Props } from './DistributeRecordsPage.types';
 import { AddressSearchContainer } from 'services/addressSearchService';
 import { SearchFieldType } from 'services/addressSearchService/view/AddressSearch/AddressSearch.types';
@@ -33,7 +33,7 @@ export const DistributeRecordsPage: FC<Props> = ({
   openRemoveAssignmentModal,
 }) => {
   return (
-    <Wrapper>
+    <>
       <DistributeAppointmentsModal
         isModalOpen={isDistributeAppointmentsModalOpen}
         handleCloseModal={closeDistributeAppointmentsModal}
@@ -92,6 +92,6 @@ export const DistributeRecordsPage: FC<Props> = ({
         controllers={controllers}
         openRemoveAssignmentModal={openRemoveAssignmentModal}
       />
-    </Wrapper>
+    </>
   );
 };
