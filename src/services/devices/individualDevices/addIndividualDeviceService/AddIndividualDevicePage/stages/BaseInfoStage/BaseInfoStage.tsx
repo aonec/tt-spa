@@ -244,7 +244,7 @@ export const BaseInfoStage: FC<BaseInfoStageProps> = ({
       </FormItem>
 
       {rateNum >= 2 && (
-        <FormItem label="Первичные текущие прибора (Ночь)">
+        <FormItem label="Текущие показания прибора (Ночь)">
           <Input
             type="number"
             placeholder="Введите текущие показания"

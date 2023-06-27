@@ -1,4 +1,4 @@
-import { ApartmentResponse, EResourceType } from './../../../../myApi';
+import { ApartmentResponse } from './../../../../myApi';
 
 export function getAddress(apartment: ApartmentResponse | null) {
   if (!apartment) return;
