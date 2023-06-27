@@ -14,10 +14,15 @@ import { FormItem } from 'ui-kit/FormItem';
 import { Select } from 'ui-kit/Select';
 import { Input } from 'ui-kit/Input';
 import { DatePicker } from 'ui-kit/DatePicker';
+import { EisTaskType } from 'myApi';
+import { SelectTime } from 'ui-kit/SelectTime';
 
 export const AddTaskForm: FC<AddTaskFormProps> = ({ formId }) => {
   const { values, handleSubmit, setFieldValue, errors } = useFormik({
-    initialValues: {},
+    initialValues: {
+      workCategoryId: null as null | string,
+      taskType: EisTaskType,
+    },
     enableReinitialize: true,
     onSubmit: (data) => {},
     validateOnChange: false,
@@ -106,21 +111,11 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({ formId }) => {
       <ContainerWithOutline>
         <GridContainer>
           <FormItem label="Дата заявки">
-            <GridContainerAsymmetricRight>
+            <GridContainerAsymmetricLeft>
               <DatePicker />
 
-              <Select
-                placeholder="Время"
-                // value={values.isThermalChamber || undefined}
-                onChange={(value) => setFieldValue('isThermalChamber', value)}
-              >
-                {/* {Object.values(HeatingStationType).map((e) => (
-              <Select.Option value={e} key={e}>
-                {HeatingStationTypeDictionary[e]}
-              </Select.Option>
-            ))} */}
-              </Select>
-            </GridContainerAsymmetricRight>
+              <SelectTime />
+            </GridContainerAsymmetricLeft>
           </FormItem>
           <FormItem label="Нормативный срок">
             <GridContainerAsymmetricLeft>
@@ -198,7 +193,7 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({ formId }) => {
       </GridContainer>
 
       <FormItem label="Описание проблемы">
-        <TextareaSC placeholder="Кратко опишите проблему"    />
+        <TextareaSC placeholder="Кратко опишите проблему" />
       </FormItem>
     </Form>
   );
