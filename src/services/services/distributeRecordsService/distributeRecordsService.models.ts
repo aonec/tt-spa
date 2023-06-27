@@ -18,7 +18,7 @@ import {
   createIndividualSealControllerMutation,
 } from './createControllerService';
 import { message } from 'antd';
-import { AppointmentsIdWithController } from './view/DistributeRecordsPage/DistributeAppointmentsPanel/DistributeAppointmentsPanel.types';
+import { removeAssignmentService } from '../removeAssignmentService';
 
 const domain = createDomain('distributeRecords');
 
@@ -27,7 +27,7 @@ const DistributeRecordsGate = createGate();
 const handleUnselectDistrict = domain.createEvent();
 const handleSelectDistrict = domain.createEvent<string>();
 const setAppointmentDate = domain.createEvent<string>();
-const selectAppointments = domain.createEvent<AppointmentsIdWithController[]>();
+const selectAppointments = domain.createEvent<string[]>();
 
 const openDistributeAppointmentsModal = domain.createEvent();
 const closeDistributeAppointmentsModal = domain.createEvent();
@@ -44,9 +44,9 @@ const $appointmentDate = domain
   .reset();
 
 const $selectedAppointmentsIds = domain
-  .createStore<AppointmentsIdWithController[]>([])
+  .createStore<string[]>([])
   .on(selectAppointments, (_, ids) => ids)
-  .reset(districtAppointmentsQuery.$data);
+  .reset(districtAppointmentsQuery.$data, DistributeRecordsGate.close);
 
 const $isDistributeAppointmentsModalOpen = domain
   .createStore(false)
@@ -71,12 +71,11 @@ forward({
   to: [closeDistributeAppointmentsModal],
 });
 
-setAppointmentsToControllerMutation.finished.success.watch(() =>
-  message.success('Записи успешно распределены'),
-);
-
 sample({
-  clock: setAppointmentsToControllerMutation.finished.success,
+  clock: [
+    setAppointmentsToControllerMutation.finished.success,
+    removeAssignmentService.inputs.assignmentRemoved,
+  ],
   source: $getAppointmentsRequestPayload,
   filter: (data): data is GetDistrictAppointmentsRequestPayload =>
     Boolean(data.districtId),
@@ -125,6 +124,10 @@ setAppointmentsToControllerMutation.finished.failure.watch(({ error }) => {
       'Произошла ошибка',
   );
 });
+
+setAppointmentsToControllerMutation.finished.success.watch(() =>
+  message.success('Записи успешно распределены!'),
+);
 
 export const distributeRecordsService = {
   inputs: {

@@ -1,6 +1,6 @@
 import { displayInspectorsService } from 'services/inspectors/displayInspectorsService/displayInspectorsService.models';
 import { createDomain } from 'effector';
-import { createForm } from 'effector-forms/dist';
+import { createForm } from 'effector-forms';
 import { reassingHousingStockInspector } from './inspectorReassignmentService.api';
 import { PatchInspectorPayload } from './inspectorReassignmentService.types';
 

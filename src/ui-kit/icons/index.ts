@@ -72,6 +72,8 @@ import { ReactComponent as ApartmentIcon } from './svg/apartment.svg';
 import { ReactComponent as PencilBigIcon } from './svg/pencilBig.svg';
 import { ReactComponent as WrenchIcon } from './svg/wrench.svg';
 import { ReactComponent as CheckMark } from './svg/checkMark.svg';
+import { ReactComponent as DownloadBlueIcon } from './svg/downloadBlue.svg';
+import { ReactComponent as DocumentLargeIcon } from './svg/documentLarge.svg';
 
 export {
   FinishIcon,
@@ -148,4 +150,6 @@ export {
   PencilBigIcon,
   WrenchIcon,
   CheckMark,
+  DownloadBlueIcon,
+  DocumentLargeIcon,
 };
