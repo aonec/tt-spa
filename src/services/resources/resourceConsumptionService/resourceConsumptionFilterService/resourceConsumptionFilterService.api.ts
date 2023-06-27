@@ -4,11 +4,8 @@ import { HouseManagementWithStreetsResponse } from 'myApi';
 export const fetchAddresses = (
   City: string,
 ): Promise<HouseManagementWithStreetsResponse[]> =>
-  axios.get(
-    'HousingStocks/ExistingStreetsWithHousingStockNumbersWithHouseManagement',
-    {
-      params: {
-        City,
-      },
+  axios.get('Buildings/ExistingStreetsWithBuildingNumbersWithHouseManagement', {
+    params: {
+      City,
     },
-  );
+  });

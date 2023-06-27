@@ -1,8 +1,8 @@
 import { combine, createDomain, sample } from 'effector';
 import { createGate } from 'effector-react';
 import {
+  BuildingListResponsePagedList,
   HouseManagementWithStreetsResponse,
-  HousingStockListResponsePagedList,
   SubscriberStatisticsСonsumptionResponse,
 } from 'myApi';
 import {
@@ -60,7 +60,7 @@ const getStatisticFx = domain.createEffect<
 
 const getHousingStocksFx = domain.createEffect<
   string,
-  HousingStockListResponsePagedList
+  BuildingListResponsePagedList
 >(fetchHousingStocksByManagingFirm);
 const $housingStocks = domain
   .createStore<HousingStockWithApartmentStatistic[]>([])

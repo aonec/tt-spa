@@ -3,7 +3,6 @@ import React, { FC, useCallback, useEffect, useMemo, useState } from 'react';
 import { getHousingStockAddress } from 'utils/getHousingStockAddress';
 import {
   AddressWrapper,
-  AppartmentNumberText,
   DownloadIconSC,
   DownloadIconWrapper,
   GroupWrapper,
@@ -21,7 +20,7 @@ export const HousingStocksListItem: FC<HousingStocksListItemProps> = ({
   selectedHousingStock,
   setFileName,
 }) => {
-  const { numberOfApartments, apartmentsStatistic, id, address } = housingStock;
+  const { apartmentsStatistic, id, address } = housingStock;
 
   const [isActive, setIsActive] = useState(false);
   const toggle = () => setIsActive((prev) => !prev);
@@ -84,9 +83,9 @@ export const HousingStocksListItem: FC<HousingStocksListItemProps> = ({
           <AddressWrapper isActive={isActive}>{addressString}</AddressWrapper>
         </GroupWrapper>
         <GroupWrapper>
-          <AppartmentNumberText>
+          {/* <AppartmentNumberText>
             Количество квартир: {numberOfApartments}
-          </AppartmentNumberText>
+          </AppartmentNumberText> */}
           <Tooltip title="Выгрузить список квартир">
             <DownloadIconWrapper onClick={handleChooseHousingStock}>
               <DownloadIconSC />
