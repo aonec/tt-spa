@@ -90,9 +90,10 @@ export function useRenderPlacemarks(
   map: ymaps.Map | null,
   placemarks: {
     placemarkIconLink: string;
-    coords: [number, number];
+    coords: number[];
     onClick?: () => void;
     count?: number;
+    size?: number[];
   }[],
 ) {
   const placemarksGroup = useMapGroup(map);
@@ -102,40 +103,42 @@ export function useRenderPlacemarks(
 
     placemarksGroup.removeAll();
 
-    placemarks.forEach(({ placemarkIconLink, coords, onClick, count }) => {
-      const placemark = new ymaps.Placemark(
-        coords,
-        {},
-        {
-          iconLayout: 'default#image',
-          iconImageHref: placemarkIconLink,
-          iconImageSize: [51, 51],
-          zIndex: 100,
-          zIndexHover: 100,
-        },
-      );
-
-      if (onClick) placemark.events.add('click', onClick);
-
-      placemarksGroup.add(placemark);
-
-      if (count) {
-        const code = getCountPlacemarkCode(count);
-
-        const polygonLayout = ymaps.templateLayoutFactory.createClass(code);
-
-        const countPlacemark = new ymaps.Placemark(
+    placemarks.forEach(
+      ({ placemarkIconLink, coords, onClick, count, size }) => {
+        const placemark = new ymaps.Placemark(
           coords,
           {},
           {
-            iconLayout: polygonLayout,
+            iconLayout: 'default#image',
+            iconImageHref: placemarkIconLink,
+            iconImageSize: size || [51, 51],
             zIndex: 100,
+            zIndexHover: 100,
           },
         );
 
-        placemarksGroup.add(countPlacemark);
-      }
-    });
+        if (onClick) placemark.events.add('click', onClick);
+
+        placemarksGroup.add(placemark);
+
+        if (count) {
+          const code = getCountPlacemarkCode(count);
+
+          const polygonLayout = ymaps.templateLayoutFactory.createClass(code);
+
+          const countPlacemark = new ymaps.Placemark(
+            coords,
+            {},
+            {
+              iconLayout: polygonLayout,
+              zIndex: 100,
+            },
+          );
+
+          placemarksGroup.add(countPlacemark);
+        }
+      },
+    );
 
     return () => void placemarksGroup.removeAll();
   }, [placemarks, placemarksGroup]);
