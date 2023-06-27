@@ -1,4 +1,5 @@
 import React, { FC, useEffect, useState } from 'react';
+import { Checkbox } from 'antd';
 import {
   ChevronSC,
   ChevronWrapper,
@@ -11,12 +12,11 @@ import {
 } from './AddressStreetGroup.styled';
 import { AddressStreetGroupProps } from './AddressStreetGroup.types';
 import { HousingStockNumber } from './HousingStockNumber';
-import { Checkbox } from 'antd';
 
 export const AddressStreetGroup: FC<AddressStreetGroupProps> = ({
   address,
-  checkedhousingStockIds,
-  setHousingStockIds,
+  checkedhousingStockIdsWithStreet,
+  setHousingStockIdsWithStreet,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -28,18 +28,21 @@ export const AddressStreetGroup: FC<AddressStreetGroupProps> = ({
     address.addresses?.map((address) => address.housingStockId) || [];
 
   const currentStreetCheckedHousingStockIds =
-    checkedhousingStockIds.find((data) => data.street === street)
+    checkedhousingStockIdsWithStreet.find((data) => data.street === street)
       ?.housingStocksId || [];
 
   useEffect(() => {
+    const isEqualIdsLength =
+      housingStockIds.length === currentStreetCheckedHousingStockIds.length;
     if (
-      housingStockIds?.length === currentStreetCheckedHousingStockIds.length
+      isEqualIdsLength &&
+      Boolean(currentStreetCheckedHousingStockIds.length)
     ) {
       setCheck(true);
     } else {
       setCheck(false);
     }
-  }, [currentStreetCheckedHousingStockIds]);
+  }, [currentStreetCheckedHousingStockIds.length, housingStockIds.length]);
 
   return (
     <Wrapper>
@@ -49,25 +52,18 @@ export const AddressStreetGroup: FC<AddressStreetGroupProps> = ({
             setIsOpen((isOpen) => !isOpen);
 
             if (isChecked) {
-              setHousingStockIds(
-                checkedhousingStockIds.map((housingStock) => {
-                  return housingStock.street !== street
-                    ? housingStock
-                    : { ...housingStock, housingStocksId: [] };
-                }),
-              );
+              setHousingStockIdsWithStreet({
+                street,
+                housingStocksId: [],
+                isToAdd: false,
+              });
               setCheck(false);
             } else {
-              setHousingStockIds(
-                checkedhousingStockIds.map((housingStock) => {
-                  return housingStock.street !== street
-                    ? housingStock
-                    : {
-                        ...housingStock,
-                        housingStocksId: [...housingStockIds],
-                      };
-                }),
-              );
+              setHousingStockIdsWithStreet({
+                street,
+                housingStocksId: housingStockIds,
+                isToAdd: true,
+              });
               setCheck(true);
             }
           }}
@@ -96,11 +92,13 @@ export const AddressStreetGroup: FC<AddressStreetGroupProps> = ({
             <HousingStockNumber
               key={housingStock.housingStockId}
               housingStock={housingStock}
-              checkedhousingStockIds={checkedhousingStockIds}
+              checkedhousingStockIdsWithStreet={
+                checkedhousingStockIdsWithStreet
+              }
               currentStreetCheckedHousingStockIds={
                 currentStreetCheckedHousingStockIds
               }
-              setHousingStockIds={setHousingStockIds}
+              setHousingStockIdsWithStreet={setHousingStockIdsWithStreet}
               street={street}
             />
           ))}

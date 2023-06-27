@@ -48,6 +48,7 @@ import { SwitchPersonalNumberContainer } from 'services/homeowner/personalNumber
 import { SplitPersonalNumberContainer } from 'services/homeowner/personalNumber/splitPersonalNumberService';
 import { SettingsPageContainer } from 'services/settings/settingsPageService';
 import { ActsJournalContainer } from 'services/actsJournalService';
+import { ServicesContainer } from 'services/services/servicesService';
 import { NodeArchivePageContainer } from 'services/nodes/nodeArchiveService';
 import { EditNodeContainer } from 'services/nodes/editNodeService';
 import { CreateDistrictBorderByMapContainer } from 'services/settings/districtBordersService/CreateDistrictBorderByMapService';
@@ -381,6 +382,13 @@ export const Router: FC<RouterProps> = ({ roles, isRolesLoadded }) => {
 
                   {isAnyRole && (
                     <Route
+                      path="/services/:service/:section/:id?"
+                      component={ServicesContainer}
+                    />
+                  )}
+
+                  {isAnyRole && (
+                    <Route
                       path="/nodeArchive/:nodeId"
                       component={NodeArchivePageContainer}
                       exact
@@ -433,7 +441,7 @@ export const Router: FC<RouterProps> = ({ roles, isRolesLoadded }) => {
                     />
                   )}
 
-                  {isSeniorOperator && (
+                  {(isSeniorOperator || isAdministrator) && (
                     <Route
                       path="/districtBordersSettings/createByMap"
                       component={CreateDistrictBorderByMapContainer}
@@ -556,6 +564,13 @@ export const Router: FC<RouterProps> = ({ roles, isRolesLoadded }) => {
                   <Route path="/access-denied/">
                     <AccessDeniedPage />
                   </Route>
+                  <Redirect from="/services" to="/services/seal" exact />
+                  <Redirect
+                    from="/services/seal"
+                    to="/services/seal/select"
+                    exact
+                  />
+
                   <Redirect from="/meters" to="/meters/apartments" exact />
                   <Route path="*" component={AccessDeniedPage} exact />
                 </Switch>

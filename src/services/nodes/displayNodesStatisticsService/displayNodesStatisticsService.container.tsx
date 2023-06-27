@@ -1,4 +1,4 @@
-import { useEvent, useStore } from 'effector-react';
+import { useUnit } from 'effector-react';
 import React, { FC, useMemo } from 'react';
 import { WithLoader } from 'ui-kit/shared_components/WithLoader';
 import { displayNodesStatisticsService } from './displayNodesStatisticsService.model';
@@ -12,6 +12,7 @@ import { GraphEmptyData } from './view/GraphEmptyData';
 import { NodeStatisticsTable } from './view/NodeStatisticsTable';
 import { GraphFilterForm } from './view/StatisticsGraph/GraphFilterForm';
 import { GraphView } from './view/StatisticsGraph';
+import { GraphLegend } from './view/StatisticsGraph/GraphLegend';
 
 const { inputs, outputs, gates } = displayNodesStatisticsService;
 const { NodeInfoGate } = gates;
@@ -20,14 +21,30 @@ const wrapperId = 'nodeConsumptionGraphWrapper';
 export const DisplayNodesStatisticsContainer: FC<
   DisplayNodesStatisticsContainerProps
 > = ({ nodeId, pipeCount }) => {
-  const currentArhiveFilter = useStore(outputs.$archiveFilter);
-  const graphType = useStore(outputs.$graphType);
-  const archiveData = useStore(outputs.$archiveReadings);
-  const isLoading = useStore(outputs.$isLoading);
-  const taskStatistics = useStore(outputs.$taskStatistics);
+  const {
+    graphType,
+    currentArhiveFilter,
+    archiveData,
+    isLoading,
+    taskStatistics,
+    withFault,
+  } = useUnit({
+    graphType: outputs.$graphType,
+    currentArhiveFilter: outputs.$archiveFilter,
+    archiveData: outputs.$archiveReadings,
+    isLoading: outputs.$isLoading,
+    taskStatistics: outputs.$taskStatistics,
+    withFault: outputs.$withFault,
+    setGraphType: inputs.setGraphType,
+    setArchiveFilter: inputs.setArchiveFilter,
+    setWithFault: inputs.setWithFault,
+  });
 
-  const setGraphType = useEvent(inputs.setGraphType);
-  const setArchiveFilter = useEvent(inputs.setArchiveFilter);
+  const { setArchiveFilter, setGraphType, setWithFault } = useUnit({
+    setGraphType: inputs.setGraphType,
+    setArchiveFilter: inputs.setArchiveFilter,
+    setWithFault: inputs.setWithFault,
+  });
 
   const archive = useMemo(() => archiveData?.data || [], [archiveData]);
   const paramsList = useMemo(
@@ -67,6 +84,16 @@ export const DisplayNodesStatisticsContainer: FC<
                   reportType={currentArhiveFilter.ReportType}
                   taskStatistics={taskStatistics}
                   wrapperId={wrapperId}
+                  withFault={withFault}
+                />
+                <GraphLegend
+                  graphParam={graphType}
+                  isTasksExist={taskStatistics.length !== 0}
+                  resource={archiveData.resource}
+                  averageDeltaMass={archiveData.averageDeltaMass}
+                  deltaMassAccuracy={archiveData.deltaMassAccuracy}
+                  withFault={withFault}
+                  setWithFault={setWithFault}
                 />
               </Wrapper>
               <NodeStatisticsTable

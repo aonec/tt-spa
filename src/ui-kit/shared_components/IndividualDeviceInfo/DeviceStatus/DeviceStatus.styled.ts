@@ -22,6 +22,7 @@ export const StatusText = styled.div`
 `;
 
 export const ClosingReasonText = styled.span`
+  white-space: nowrap;
   &::before {
     content: '(';
   }

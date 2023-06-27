@@ -1,7 +1,7 @@
 import { individualDeviceMountPlacesService } from 'services/devices/individualDeviceMountPlacesService/individualDeviceMountPlacesService.model';
 import { Flex } from '01/shared/ui/Layout/Flex';
 import { AutoComplete, Form, Switch } from 'antd';
-import { useForm } from 'effector-forms/dist';
+import { useForm } from 'effector-forms';
 import { useEvent, useStore } from 'effector-react';
 import moment from 'moment';
 import React, { useCallback, useEffect, useMemo } from 'react';
@@ -25,7 +25,7 @@ import {
 } from 'ui-kit/shared_components/DatePickerNative';
 import { Loader } from 'ui-kit/Loader';
 import { SwitchWrapper, TextWrapper } from './BaseInfoStage.styled';
-import { useSwitchInputOnEnter } from './BaseInfoStage.hook';
+import { useSwitchInputOnEnter } from 'hooks/useSwitchInputOnEnter';
 import {
   $isFetchSerialNumberLoading,
   $serialNumberForChecking,

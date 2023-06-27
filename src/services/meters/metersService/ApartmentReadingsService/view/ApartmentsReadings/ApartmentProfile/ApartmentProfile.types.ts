@@ -15,4 +15,5 @@ export type ApartmentProfileProps = {
   setSelectedHomeownerName: (payload: string) => void;
   selectedHomeownerName: string | null;
   isPermitionToApartmentStatusPatch: boolean;
+  printIssueCertificate: () => void;
 };

@@ -11,9 +11,10 @@ import { ApartmentIndividualDevicesMetersContainer } from 'services/meters/apart
 import { ApartmentInfo } from './ApartmentInfo';
 import { ApartmentAlerts } from './ApartmentAlerts';
 import { apartmentReadingsService } from '../../../ApartmentReadingsService.model';
-import { useParams } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 import confirm from 'antd/lib/modal/confirm';
 import { TypeAddressToStart } from 'ui-kit/shared_components/TypeToStart';
+import { EApartmentStatus } from 'myApi';
 
 const { gates } = apartmentReadingsService;
 const { ApartmentGate } = gates;
@@ -29,8 +30,14 @@ export const ApartmentProfile: FC<ApartmentProfileProps> = ({
   setSelectedHomeownerName,
   selectedHomeownerName,
   isPermitionToApartmentStatusPatch,
+  printIssueCertificate,
 }) => {
   const { id } = useParams<{ id: string }>();
+  const history = useHistory();
+
+  const isPaused = apartment
+    ? apartment.status === EApartmentStatus.Pause
+    : false;
 
   const handleSubmit = useCallback(
     (values: AddressSearchValues) => {
@@ -104,13 +111,34 @@ export const ApartmentProfile: FC<ApartmentProfileProps> = ({
               <ApartmentInfo
                 apartment={apartment}
                 handleUpdateApartment={handleUpdateApartment}
-                handlePauseApartment={handlePauseApartment}
-                handleCancelPauseApartment={cancelPauseApartment}
-                openEditPersonalNumberModal={openEditPersonalNumberModal}
                 setSelectedHomeownerName={setSelectedHomeownerName}
-                isPermitionToApartmentStatusPatch={
-                  isPermitionToApartmentStatusPatch
-                }
+                menuButtons={[
+                  {
+                    title: 'Поставить на паузу',
+                    hidden: isPaused || !isPermitionToApartmentStatusPatch,
+                    onClick: handlePauseApartment,
+                  },
+                  {
+                    title: 'Снять с паузы',
+                    hidden: !isPaused || !isPermitionToApartmentStatusPatch,
+                    onClick: handleCancelPauseApartment,
+                  },
+                  {
+                    title: 'Изменить лицевой счет',
+                    onClick: () => openEditPersonalNumberModal(true),
+                  },
+                  {
+                    title: 'Добавить новый прибор',
+                    onClick: () =>
+                      history.push(
+                        `/apartment/${apartment.id}/addIndividualDevice`,
+                      ),
+                  },
+                  {
+                    title: 'Выдать справку',
+                    onClick: () => printIssueCertificate(),
+                  },
+                ]}
               />
               <ApartmentAlerts
                 apartment={apartment}

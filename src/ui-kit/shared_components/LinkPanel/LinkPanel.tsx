@@ -8,14 +8,22 @@ import {
 } from './LinkPanel.styled';
 import { LinkPanelProps } from './LinkPanel.types';
 
-export const LinkPanel: FC<LinkPanelProps> = ({ text, link, icon }) => {
+export const LinkPanel: FC<LinkPanelProps> = ({
+  text,
+  link,
+  icon,
+  additionalInfo,
+}) => {
   return (
     <PanelWrapper to={link}>
       <GroupWrrapper>
         <IconWrapper>{icon}</IconWrapper>
         <TextWrapper>{text}</TextWrapper>
       </GroupWrrapper>
-      <ChevronIconSC />
+      <GroupWrrapper>
+        {additionalInfo}
+        <ChevronIconSC />
+      </GroupWrrapper>
     </PanelWrapper>
   );
 };

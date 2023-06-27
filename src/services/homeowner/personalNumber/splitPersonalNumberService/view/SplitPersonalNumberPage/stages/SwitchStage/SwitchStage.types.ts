@@ -5,4 +5,5 @@ export type SwitchStageProps = {
   homeowner: HomeownerAccountListResponse | undefined;
   formId: string;
   handleSubmitSwitchStage: (payload: SwitchStage) => void;
+  switchStageData: SwitchStage | null;
 };

@@ -1,7 +1,7 @@
 import { Flex } from '01/shared/ui/Layout/Flex';
 import { Space } from '01/shared/ui/Layout/Space/Space';
 import { Footer, Header, StyledModal } from '01/shared/ui/Modal/Modal';
-import { useForm } from 'effector-forms/dist';
+import { useForm } from 'effector-forms';
 import { useStore } from 'effector-react';
 import moment from 'moment';
 import { IndividualDeviceMountPlaceListResponse } from 'myApi';
@@ -98,11 +98,11 @@ export const CheckFormValuesModal = () => {
     },
     {
       name: 'Пломба',
-      value: fields.magneticSealTypeName.value,
+      value: fields.sealNumber.value,
     },
     {
       name: 'Дата установки пломбы',
-      value: getDate(fields.magneticSealInstallationDate.value),
+      value: getDate(fields.sealInstallationDate.value),
     },
   ];
 

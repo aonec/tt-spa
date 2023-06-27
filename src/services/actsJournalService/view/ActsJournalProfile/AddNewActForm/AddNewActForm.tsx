@@ -20,7 +20,7 @@ import { Select } from 'ui-kit/Select';
 import { Input } from 'ui-kit/Input';
 import { ActTypesNamesLookup } from 'dictionaries';
 import { actResourceNamesLookup } from 'ui-kit/shared_components/ResourceInfo/ResourceInfo.utils';
-import { useSwitchInputOnEnter } from '01/features/individualDevices/switchIndividualDevice/components/stages/BaseInfoStage.hook';
+import { useSwitchInputOnEnter } from 'hooks/useSwitchInputOnEnter';
 import { AddressIdSearchContainer } from 'services/actsJournalService/addressIdSearchService';
 
 const dataKey = 'add-new-act';

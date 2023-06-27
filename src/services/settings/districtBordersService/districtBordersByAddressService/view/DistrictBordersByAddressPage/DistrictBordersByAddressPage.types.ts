@@ -1,14 +1,20 @@
-import { StreetWithHousingStockNumbersResponse } from 'myApi';
+import { StreetWithBuildingNumbersResponse } from 'myApi';
 import {
-  CheckedHousingStocksIdType,
+  CheckedHousingStocksIdWithStreets,
+  CheckedHousingStocksIdWithStreetsHandler,
   FetchAddressQueryType,
   FilterType,
 } from '../../districtBordersByAddressService.types';
 
 export type DistrictBordersByAddressPageProps = {
   handleFetchAddress: (payload: FetchAddressQueryType) => void;
-  addresses: StreetWithHousingStockNumbersResponse[] | null;
+  addresses: StreetWithBuildingNumbersResponse[] | null;
   setFilter: (payload: FilterType) => void;
-  setHousingStockIds: (payload: CheckedHousingStocksIdType[]) => void;
-  checkedhousingStockIds: CheckedHousingStocksIdType[];
+  setHousingStockIdsWithStreet: (
+    payload: CheckedHousingStocksIdWithStreetsHandler,
+  ) => void;
+  checkedhousingStockIdsWithStreet: CheckedHousingStocksIdWithStreets[];
+  handleOpenDistrictEditer: () => void;
+  isAllowedToEditer: boolean;
+  cityInFilter: string | undefined;
 };

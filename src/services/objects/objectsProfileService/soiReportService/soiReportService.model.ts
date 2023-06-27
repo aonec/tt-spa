@@ -1,7 +1,7 @@
 import { combine, createDomain, forward, guard, sample } from 'effector';
 import {
   HouseManagementResponse,
-  StreetWithHousingStockNumbersResponsePagedList,
+  StreetWithBuildingNumbersResponsePagedList,
 } from 'myApi';
 import {
   getAdresses,
@@ -33,7 +33,7 @@ const fetchHouseManagementFx = domain.createEffect<
 
 const fetchAdressesFx = domain.createEffect<
   GetAddressesWithCityRequestPayload,
-  StreetWithHousingStockNumbersResponsePagedList
+  StreetWithBuildingNumbersResponsePagedList
 >(getAdresses);
 
 const createSoiReportFx = domain.createEffect<
@@ -43,7 +43,7 @@ const createSoiReportFx = domain.createEffect<
 >(getSoiReport);
 
 const $addressesPagedList = domain
-  .createStore<StreetWithHousingStockNumbersResponsePagedList | null>(null)
+  .createStore<StreetWithBuildingNumbersResponsePagedList | null>(null)
   .on(fetchAdressesFx.doneData, (_, data) => data)
   .reset(closeSoiReportModal);
 

@@ -1,5 +1,5 @@
 import { AutoComplete, Form, Switch } from 'antd';
-import { useForm } from 'effector-forms/dist';
+import { useForm } from 'effector-forms';
 import { useEvent, useStore } from 'effector-react';
 import moment from 'moment';
 import React from 'react';
@@ -396,16 +396,16 @@ export const BaseInfoStage = () => {
         <FormItem label="Пломба">
           <Input
             placeholder="Номер пломбы"
-            value={fields.magneticSealTypeName.value || undefined}
+            value={fields.sealNumber.value || undefined}
             onChange={onChange}
-            name="magneticSealTypeName"
+            name="sealNumber"
           />
         </FormItem>
 
         <FormItem label="Дата установки пломбы">
           <DatePickerNative
-            onChange={fields.magneticSealInstallationDate.onChange}
-            value={fields.magneticSealInstallationDate.value}
+            onChange={fields.sealInstallationDate.onChange}
+            value={fields.sealInstallationDate.value}
           />
         </FormItem>
       </FormWrap>

@@ -2,7 +2,7 @@ import { createDomain, guard, sample } from 'effector';
 import {
   HouseManagementResponse,
   OrganizationResponsePagedList,
-  StreetWithHousingStockNumbersResponsePagedList,
+  StreetWithBuildingNumbersResponsePagedList,
 } from 'myApi';
 import {
   getAdresses,
@@ -22,7 +22,7 @@ const $unloadSelectType = domain
 
 const fetchAdressesFx = domain.createEffect<
   string,
-  StreetWithHousingStockNumbersResponsePagedList
+  StreetWithBuildingNumbersResponsePagedList
 >(getAdresses);
 
 const selectCity = domain.createEvent<string>();
@@ -74,7 +74,7 @@ guard({
 });
 
 const $addressesPagedList = domain
-  .createStore<StreetWithHousingStockNumbersResponsePagedList | null>(null)
+  .createStore<StreetWithBuildingNumbersResponsePagedList | null>(null)
   .on(fetchAdressesFx.doneData, (_, data) => data);
 
 const $organizationPagedList = domain

@@ -100,7 +100,4 @@ export const tasksMapService = {
     $isLoadingTask,
     $organizationUsers: tasksProfileService.outputs.$organizationUsers,
   },
-  gates: {
-    TaskTypesGate,
-  },
 };

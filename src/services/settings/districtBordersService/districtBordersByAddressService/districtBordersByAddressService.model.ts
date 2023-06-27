@@ -1,68 +1,80 @@
 import { createDomain, sample } from 'effector';
+import { getAddresses } from './districtBordersByAddressService.api';
 import {
-  getAddresses,
-  getHousingStocksWithCoordinates,
-} from './districtBordersByAddressService.api';
-import {
-  HousingStockListResponsePagedList,
-  StreetWithHousingStockNumbersResponse,
-  StreetWithHousingStockNumbersResponsePagedList,
+  StreetWithBuildingNumbersResponse,
+  StreetWithBuildingNumbersResponsePagedList,
 } from 'myApi';
 import {
-  CheckedHousingStocksIdType,
+  CheckedHousingStocksIdWithStreets,
+  CheckedHousingStocksIdWithStreetsHandler,
   FetchAddressQueryType,
   FilterType,
-  HousingStocksIdsWithCoordinates,
 } from './districtBordersByAddressService.types';
+import { CreateDistrictBorderByMapService } from '../CreateDistrictBorderByMapService';
+import { createGate } from 'effector-react';
+import { addHousingStocksToChecked } from './districtBordersByAddressService.utils';
 
 const domain = createDomain('districtBordersByAddressService');
 
+const DistrictBordersByAddressPageGate = createGate();
+
+const pageResetter = domain.createEvent();
+
+const handleOpenDistrictEditer = domain.createEvent();
+const handleCloseDistrictEditer =
+  CreateDistrictBorderByMapService.inputs.handleCloseDistrictEditer;
+
+const handleCallEditByMap =
+  CreateDistrictBorderByMapService.inputs.setSelectedHousingStocksIds;
+
+const setPoligon = domain.createEvent<{
+  housingStockIds: number[];
+  polygon: number[][];
+}>();
+
 const handleFetchAddress = domain.createEvent<FetchAddressQueryType>();
+const handleFetchHousingStocksList =
+  CreateDistrictBorderByMapService.inputs.handleFetchHousingStocksList;
 
 const setFilter = domain.createEvent<FilterType>();
 
-const setHousingStockIds = domain.createEvent<CheckedHousingStocksIdType[]>();
+const setHousingStockIdsWithStreet =
+  domain.createEvent<CheckedHousingStocksIdWithStreetsHandler>();
 
 const fetchAddressFx = domain.createEffect<
   FetchAddressQueryType,
-  StreetWithHousingStockNumbersResponsePagedList
+  StreetWithBuildingNumbersResponsePagedList
 >(getAddresses);
 
-const fetchHousingStocksWithCoordinatesFx = domain.createEffect<
-  {
-    City?: string;
-  },
-  HousingStockListResponsePagedList
->(getHousingStocksWithCoordinates);
-
 const $addresses = domain
-  .createStore<StreetWithHousingStockNumbersResponse[] | null>(null)
+  .createStore<StreetWithBuildingNumbersResponse[] | null>(null)
   .on(fetchAddressFx.doneData, (_, addresses) => addresses.items);
 
 const $filter = domain
   .createStore<FilterType | null>(null)
-  .on(setFilter, (_, data) => data);
+  .on(setFilter, (_, data) => data)
+  .reset(pageResetter);
 
-const $housingStocksWithCoordinates = domain
-  .createStore<HousingStocksIdsWithCoordinates[]>([])
-  .on(fetchHousingStocksWithCoordinatesFx.doneData, (_, housingStocks) =>
-    housingStocks.items?.map((data) => ({
-      id: data.id,
-      coordinates: data.coordinates,
-    })),
-  );
+const $checkedhousingStockIdsWithStreet = domain
+  .createStore<CheckedHousingStocksIdWithStreets[]>([])
+  .on(setHousingStockIdsWithStreet, (prevIdsWithStreet, commingIdsWithStreet) =>
+    addHousingStocksToChecked(prevIdsWithStreet, commingIdsWithStreet),
+  )
+  .reset(pageResetter);
 
-const $checkedhousingStockIds = $addresses
-  .map<CheckedHousingStocksIdType[]>((address) => {
-    if (!address) {
-      return [];
-    }
-    return address.map((data) => ({
-      street: data.street!,
-      housingStocksId: [],
-    }));
-  })
-  .on(setHousingStockIds, (_, ids) => ids);
+const $checkedHousingStockIdsAndPoligon = domain
+  .createStore<{
+    housingStockIds: number[];
+    polygon: number[][];
+  }>({ housingStockIds: [], polygon: [] })
+  .on(setPoligon, (_, data) => data)
+  .reset(pageResetter);
+
+const $onEditingInMap = domain
+  .createStore<boolean>(false)
+  .on(handleOpenDistrictEditer, () => true)
+  .on(handleCloseDistrictEditer, () => false)
+  .reset(pageResetter);
 
 sample({
   clock: handleFetchAddress,
@@ -73,15 +85,38 @@ sample({
   clock: fetchAddressFx.doneData,
   source: $filter,
   fn: (data) => ({ City: data?.city }),
-  target: fetchHousingStocksWithCoordinatesFx,
+  target: handleFetchHousingStocksList,
+});
+
+sample({
+  clock: DistrictBordersByAddressPageGate.close,
+  source: $onEditingInMap,
+  filter: (inMap) => {
+    return !inMap;
+  },
+  target: pageResetter,
+});
+
+sample({
+  clock: handleOpenDistrictEditer,
+  source: $checkedHousingStockIdsAndPoligon,
+  target: handleCallEditByMap,
 });
 
 export const districtBordersByAddressService = {
-  inputs: { handleFetchAddress, setFilter, setHousingStockIds },
+  inputs: {
+    handleFetchAddress,
+    setFilter,
+    setHousingStockIdsWithStreet,
+    handleOpenDistrictEditer,
+    setPoligon,
+  },
   outputs: {
     $addresses,
     $filter,
-    $housingStocksWithCoordinates,
-    $checkedhousingStockIds,
+    $housingStocksWithCoordinates:
+      CreateDistrictBorderByMapService.outputs.$housingStocks,
+    $checkedhousingStockIdsWithStreet,
   },
+  gates: { DistrictBordersByAddressPageGate },
 };

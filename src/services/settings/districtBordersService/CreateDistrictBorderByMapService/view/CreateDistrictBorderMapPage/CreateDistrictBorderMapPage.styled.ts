@@ -15,3 +15,9 @@ export const MapWrapper = styled.div`
   overflow: hidden;
   position: relative;
 `;
+
+export const ControlButtonsWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 16px;
+`;

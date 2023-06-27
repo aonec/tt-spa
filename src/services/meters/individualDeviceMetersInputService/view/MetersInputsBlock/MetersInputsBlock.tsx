@@ -20,7 +20,7 @@ import {
   getReadingLite,
   getReadingValueKey,
 } from '../../individualDeviceMetersInputService.utils';
-import { useSwitchInputOnEnter } from './MetersInputBlock.hook';
+import { useSwitchInputOnEnter } from 'hooks/useSwitchInputOnEnter';
 import {
   Input,
   InputWrapper,

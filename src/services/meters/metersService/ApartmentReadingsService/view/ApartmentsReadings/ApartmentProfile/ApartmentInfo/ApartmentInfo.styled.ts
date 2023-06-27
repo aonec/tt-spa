@@ -178,3 +178,9 @@ export const AccountOpeningDate = styled.span`
   color: rgba(39, 47, 90, 0.9);
   font-weight: 400;
 `;
+
+export const AdditionalHeaderInfoWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 8px;
+`;

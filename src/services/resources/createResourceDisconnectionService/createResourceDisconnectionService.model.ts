@@ -3,8 +3,8 @@ import { message } from 'antd';
 import { combine, createDomain, forward, sample, split } from 'effector';
 import {
   ResourceDisconnectingCreateRequest,
-  StreetWithHousingStockNumbersResponsePagedList,
-  StreetWithHousingStockNumbersResponse,
+  StreetWithBuildingNumbersResponsePagedList,
+  StreetWithBuildingNumbersResponse,
   EResourceDisconnectingType,
   HeatingStationWithStreetsResponse,
   HouseManagementWithStreetsResponse,
@@ -73,11 +73,11 @@ const $selectedCity = domain
 
 const getExistingHousingStocksFx = domain.createEffect<
   string,
-  StreetWithHousingStockNumbersResponsePagedList
+  StreetWithBuildingNumbersResponsePagedList
 >(fetchExistingHousingStocks);
 
 const $existingHousingStocks = domain
-  .createStore<StreetWithHousingStockNumbersResponse[]>([])
+  .createStore<StreetWithBuildingNumbersResponse[]>([])
   .on(
     getExistingHousingStocksFx.doneData,
     (_, housingStocks) => housingStocks.items || [],

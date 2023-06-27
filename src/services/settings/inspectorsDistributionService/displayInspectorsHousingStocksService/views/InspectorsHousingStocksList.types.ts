@@ -1,11 +1,11 @@
-import { InspectorOnHousingStockResponse, InspectorResponse } from 'myApi';
+import { InspectorOnBuildingResponse, InspectorResponse } from 'myApi';
 import {
   CurrentHousingStockUpdate,
   PatchHousingStockInspectorInfoPayload,
 } from '../inspectorHousingStockService/inspectorHousingStockService.types';
 
 export type InspectorsHosuingsStocksListProps = {
-  housingStocks: InspectorOnHousingStockResponse[] | null;
+  housingStocks: InspectorOnBuildingResponse[] | null;
   inspectors: InspectorResponse[] | null;
   days: number[];
   loading: boolean;

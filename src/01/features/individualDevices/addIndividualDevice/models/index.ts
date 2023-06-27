@@ -5,7 +5,7 @@ import {
   CreateIndividualDeviceRequest,
 } from './../../../../../myApi';
 import { createEvent, createStore, createEffect } from 'effector';
-import { createForm } from 'effector-forms/dist';
+import { createForm } from 'effector-forms';
 import { getIndividualDeviceRateNumByName } from 'utils/getIndividualDeviceRateNumByName';
 import { createGate } from 'effector-react';
 import { Document } from 'ui-kit/DocumentsService';
@@ -107,10 +107,10 @@ export const addIndividualDeviceForm = createForm({
       init: null as EResourceType | null,
       rules: [{ name: 'required', validator: Boolean }],
     },
-    magneticSealInstallationDate: {
+    sealInstallationDate: {
       init: null as null | string,
     },
-    magneticSealTypeName: {
+    sealNumber: {
       init: null as null | string,
     },
     contractorId: {

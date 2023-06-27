@@ -4,7 +4,7 @@ import {
   IndividualDeviceResponse,
 } from './../../../../../myApi';
 import { createEffect, createEvent, createStore } from 'effector';
-import { createForm } from 'effector-forms/dist';
+import { createForm } from 'effector-forms';
 import { CloseIndividualDeviceRequestBody } from '01/_api/individualDevices';
 import { EffectFailDataAxiosError } from 'types';
 import { Document } from 'ui-kit/DocumentsService';

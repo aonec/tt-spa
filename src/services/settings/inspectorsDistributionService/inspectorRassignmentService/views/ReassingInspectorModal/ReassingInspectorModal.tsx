@@ -2,7 +2,7 @@ import { ModalTT } from '01/shared/ui/ModalTT';
 import React, { FC } from 'react';
 import { ReassingInspectorModalProps } from './ReassingInspectorModal.types';
 import { FormWrap, ModalDescription } from './ReassingInspectorModal.styled';
-import { useForm } from 'effector-forms/dist';
+import { useForm } from 'effector-forms';
 import { Form } from 'antd';
 import { ErrorMessage } from 'ui-kit/ErrorMessage';
 import { Select } from 'ui-kit/Select';

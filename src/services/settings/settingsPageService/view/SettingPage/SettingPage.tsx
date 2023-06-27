@@ -59,6 +59,11 @@ export const SettingPage: FC<SettingPageProps> = ({
               <WorkingRangeTab />
             </TabsSC.TabPane>
           )}
+          {featureToggles.districtsManage && (
+            <TabsSC.TabPane tab="Границы районов" key="districtBorder">
+              <DistrictBordersContainer />
+            </TabsSC.TabPane>
+          )}
         </>
       );
     }
@@ -71,9 +76,11 @@ export const SettingPage: FC<SettingPageProps> = ({
         <TabsSC.TabPane tab="Распределение инспекторов" key="inspectors">
           <InspectorsDistributionPage />
         </TabsSC.TabPane>
-        <TabsSC.TabPane tab="Границы районов" key="districtBorder">
-          <DistrictBordersContainer />
-        </TabsSC.TabPane>
+        {featureToggles.districtsManage && (
+          <TabsSC.TabPane tab="Границы районов" key="districtBorder">
+            <DistrictBordersContainer />
+          </TabsSC.TabPane>
+        )}
       </>
     );
   }, [adminSettings]);

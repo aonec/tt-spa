@@ -12,6 +12,7 @@ import { EffectFailDataAxiosError } from 'types';
 import { individualDeviceMountPlacesService } from 'services/devices/individualDeviceMountPlacesService/individualDeviceMountPlacesService.model';
 import { selectPersonalNumberActionService } from 'services/homeowner/personalNumber/selectPersonalNumberActionService';
 import { pauseApartmentService } from 'services/apartments/pauseApartmentService/pauseApartmentService.models';
+import { printApartmentDevicesCertificateService } from 'services/apartments/printApartmentDevicesCertificateService/printApartmentDevicesCertificateService.models';
 
 const domain = createDomain('apartmentReadingsService');
 
@@ -112,6 +113,9 @@ export const apartmentReadingsService = {
       selectPersonalNumberActionService.inputs.setSelectActionModalOpen,
     handleApartmentLoaded,
     setSelectedHomeownerName,
+    printIssueCertificate:
+      printApartmentDevicesCertificateService.inputs
+        .printIssueSertificateButtonClicked,
   },
   outputs: {
     $searchMode,

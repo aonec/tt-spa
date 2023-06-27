@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { FC } from 'react';
 import {
   AddressSortWrapper,
   ButtonSC,
@@ -13,6 +13,7 @@ import { SearchFieldType } from 'services/addressSearchService/view/AddressSearc
 import { GoBack } from 'ui-kit/shared_components/GoBack';
 import { Button } from 'ui-kit/Button';
 import { AddressStreetGroup } from './AddressStreetGroup';
+import { useHistory } from 'react-router-dom';
 
 export const DistrictBordersByAddressPage: FC<
   DistrictBordersByAddressPageProps
@@ -20,10 +21,13 @@ export const DistrictBordersByAddressPage: FC<
   handleFetchAddress,
   addresses,
   setFilter,
-  checkedhousingStockIds,
-  setHousingStockIds,
+  checkedhousingStockIdsWithStreet,
+  handleOpenDistrictEditer,
+  isAllowedToEditer,
+  cityInFilter,
+  setHousingStockIdsWithStreet,
 }) => {
-  const [prevCity, setPrevCity] = useState<string | undefined>(undefined);
+  const history = useHistory();
 
   return (
     <Wrapper>
@@ -39,14 +43,14 @@ export const DistrictBordersByAddressPage: FC<
             SearchFieldType.House,
             SearchFieldType.Corpus,
           ]}
+          initialValues={{ city: cityInFilter }}
           handleSubmit={(data) => {
             setFilter(data);
 
-            if (data.city && prevCity !== data.city) {
+            if (data.city && cityInFilter !== data.city) {
               handleFetchAddress({
                 City: data.city,
               });
-              setPrevCity(data.city);
             }
           }}
         />
@@ -56,15 +60,25 @@ export const DistrictBordersByAddressPage: FC<
         <AddressStreetGroup
           address={address}
           key={address.street}
-          checkedhousingStockIds={checkedhousingStockIds}
-          setHousingStockIds={setHousingStockIds}
+          checkedhousingStockIdsWithStreet={checkedhousingStockIdsWithStreet}
+          setHousingStockIdsWithStreet={setHousingStockIdsWithStreet}
         />
       ))}
 
       <FooterWrapper>
         <Panel>
-          <Button type="ghost"> Отмена</Button>
-          <ButtonSC>Продолжить</ButtonSC>
+          <Button type="ghost" onClick={history.goBack}>
+            Отмена
+          </Button>
+          <ButtonSC
+            disabled={!isAllowedToEditer}
+            onClick={() => {
+              handleOpenDistrictEditer();
+              history.push('/districtBordersSettings/createByMap');
+            }}
+          >
+            Продолжить
+          </ButtonSC>
         </Panel>
       </FooterWrapper>
     </Wrapper>

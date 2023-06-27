@@ -1,8 +1,13 @@
-import { StreetWithHousingStockNumbersResponse } from 'myApi';
-import { CheckedHousingStocksIdType } from '../../../districtBordersByAddressService.types';
+import { StreetWithBuildingNumbersResponse } from 'myApi';
+import {
+  CheckedHousingStocksIdWithStreets,
+  CheckedHousingStocksIdWithStreetsHandler,
+} from '../../../districtBordersByAddressService.types';
 
 export type AddressStreetGroupProps = {
-  address: StreetWithHousingStockNumbersResponse;
-  checkedhousingStockIds: CheckedHousingStocksIdType[];
-  setHousingStockIds: (payload: CheckedHousingStocksIdType[]) => void;
+  address: StreetWithBuildingNumbersResponse;
+  checkedhousingStockIdsWithStreet: CheckedHousingStocksIdWithStreets[];
+  setHousingStockIdsWithStreet: (
+    payload: CheckedHousingStocksIdWithStreetsHandler,
+  ) => void;
 };

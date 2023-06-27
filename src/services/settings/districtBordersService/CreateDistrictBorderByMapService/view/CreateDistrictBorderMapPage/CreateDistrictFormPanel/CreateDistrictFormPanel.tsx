@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useCallback } from 'react';
 import {
   AddressItem,
   ColorCircle,
@@ -11,7 +11,7 @@ import {
   Wrapper,
 } from './CreateDistrictFormPanel.styled';
 import { CreateDistrictFormPanelProps } from './CreateDistrictFormPanel.types';
-import { Checkbox, Empty } from 'antd';
+import { Checkbox, Empty, message } from 'antd';
 import { Button } from 'ui-kit/Button';
 import { sortBy } from 'lodash';
 import { FormItem } from 'ui-kit/FormItem';
@@ -19,6 +19,7 @@ import { Input } from 'ui-kit/Input';
 import { Select } from 'ui-kit/Select';
 import { DistrictColorsList } from '../CreateDistrictBorderMapPage.constants';
 import { DistrictColor } from '../CreateDistrictBorderMapPage.types';
+import { combinePayloadForCreateDistrict } from 'utils/districtsData';
 
 export const CreateDistrictFormPanel: FC<CreateDistrictFormPanelProps> = ({
   housingStocksInDistrict,
@@ -29,7 +30,34 @@ export const CreateDistrictFormPanel: FC<CreateDistrictFormPanelProps> = ({
   setDistrictColor,
   formSection,
   setFormSection,
+  handleCreateDistrict,
+  isLoadingCreatingDistrict,
+  districtName,
+  setDistrictName,
+  districtPolygonCoordinates,
 }) => {
+  const handleSubmit = useCallback(() => {
+    if (!districtName) {
+      message.error('Введите название района');
+      return;
+    }
+
+    const payload = combinePayloadForCreateDistrict(
+      districtName,
+      selectedHousingStocks,
+      districtPolygonCoordinates,
+      districtColor,
+    );
+
+    handleCreateDistrict(payload);
+  }, [
+    districtColor,
+    districtName,
+    districtPolygonCoordinates,
+    handleCreateDistrict,
+    selectedHousingStocks,
+  ]);
+
   const housingStocksListSection = (
     <>
       <Header>
@@ -40,7 +68,7 @@ export const CreateDistrictFormPanel: FC<CreateDistrictFormPanelProps> = ({
           const address = elem.address?.mainAddress;
           return `${address?.street}${address?.number}${address?.corpus || ''}`;
         }).map((elem) => (
-          <AddressItem>
+          <AddressItem key={elem.id}>
             <Checkbox
               onChange={() => handleClickHousingStock(elem.id)}
               checked={selectedHousingStocks.includes(elem.id)}
@@ -70,7 +98,12 @@ export const CreateDistrictFormPanel: FC<CreateDistrictFormPanelProps> = ({
     <>
       <FormWrapper>
         <FormItem label="Название района">
-          <Input small placeholder="Введите название" />
+          <Input
+            value={districtName}
+            onChange={(e) => setDistrictName(e.target.value)}
+            small
+            placeholder="Введите название"
+          />
         </FormItem>
         <FormItem label="Цвет">
           <Select
@@ -94,11 +127,18 @@ export const CreateDistrictFormPanel: FC<CreateDistrictFormPanelProps> = ({
         <Button
           size="small"
           type="ghost"
+          disabled={isLoadingCreatingDistrict}
           onClick={() => setFormSection(formSection - 1)}
         >
           Назад
         </Button>
-        <Button size="small">Сохранить</Button>
+        <Button
+          size="small"
+          isLoading={isLoadingCreatingDistrict}
+          onClick={handleSubmit}
+        >
+          Сохранить
+        </Button>
       </Footer>
     </>
   );

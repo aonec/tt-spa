@@ -8,6 +8,7 @@ import {
 import { TreeData } from './AddressTreeSelect.constants.stories';
 import { Wrapper } from './AddressTreeSelect.styled.stories';
 import { FormItem } from 'ui-kit/FormItem';
+import { StreetWithBuildingNumbersResponse } from 'myApi';
 
 export default {
   title: 'AddressTreeSelect',
@@ -24,7 +25,7 @@ export const Form = () => {
           selectedHousingStockIds={selectedIds}
           onChange={(ids) => setSelectedIds(ids)}
           treeData={prepareAddressesForTreeSelect({
-            items: TreeData[0].streets,
+            items: TreeData[0].streets as StreetWithBuildingNumbersResponse[],
           })}
         />
       </FormItem>
