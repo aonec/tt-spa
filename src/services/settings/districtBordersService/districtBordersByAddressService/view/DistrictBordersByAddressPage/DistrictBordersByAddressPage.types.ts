@@ -1,4 +1,4 @@
-import { StreetWithHousingStockNumbersResponse } from 'myApi';
+import { StreetWithBuildingNumbersResponse } from 'myApi';
 import {
   CheckedHousingStocksIdWithStreets,
   CheckedHousingStocksIdWithStreetsHandler,
@@ -8,7 +8,7 @@ import {
 
 export type DistrictBordersByAddressPageProps = {
   handleFetchAddress: (payload: FetchAddressQueryType) => void;
-  addresses: StreetWithHousingStockNumbersResponse[] | null;
+  addresses: StreetWithBuildingNumbersResponse[] | null;
   setFilter: (payload: FilterType) => void;
   setHousingStockIdsWithStreet: (
     payload: CheckedHousingStocksIdWithStreetsHandler,

@@ -4,7 +4,7 @@ import {
   ENodeWorkingRangeSeason,
   EResourceType,
   NodeOnHousingStockResponse,
-  StreetWithHousingStockNumbersResponsePagedList,
+  StreetWithBuildingNumbersResponsePagedList,
 } from 'myApi';
 import { GetAddressesWithCityRequestPayload } from './uniqueWorkingRangeService.types';
 
@@ -29,7 +29,7 @@ export const getNodeUniqueWorkingRange = (query: {
 
 export const getAdresses = (
   payload: GetAddressesWithCityRequestPayload,
-): Promise<StreetWithHousingStockNumbersResponsePagedList | null> => {
+): Promise<StreetWithBuildingNumbersResponsePagedList | null> => {
   return axios.get('HousingStocks/ExistingStreetsWithHousingStockNumbers', {
     params: payload,
   });

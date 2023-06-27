@@ -1,4 +1,4 @@
-import { useForm } from 'effector-forms/dist';
+import { useForm } from 'effector-forms';
 import React from 'react';
 import { form } from '../models';
 import { CreateReportForm } from './CreateReportForm';

@@ -10,8 +10,8 @@ import {
   updateHousingStockAddress,
 } from './editObjectService.api';
 import {
-  HousingStockAddressCreateRequest,
-  HousingStockAddressUpdateRequest,
+  BuildingAddressCreateRequest,
+  BuildingAddressUpdateRequest,
   HousingStockResponse,
   HousingStockUpdateRequest,
 } from 'myApi';
@@ -29,11 +29,11 @@ const handleUpdateHousingStock =
   domain.createEvent<HousingStockUpdateRequest>();
 
 const handleCreateHousingStockAddress =
-  domain.createEvent<HousingStockAddressCreateRequest>();
+  domain.createEvent<BuildingAddressCreateRequest>();
 
 const handleUpdateHousingStockAddress = domain.createEvent<{
   addressId: number;
-  data: HousingStockAddressUpdateRequest;
+  data: BuildingAddressUpdateRequest;
 }>();
 
 const handleDeleteHousingStockAddress = domain.createEvent<{
@@ -56,7 +56,7 @@ const updateHousingStockFx = domain.createEffect<
 const createHousingStockAddressFx = domain.createEffect<
   {
     housingStockId: number;
-    data: HousingStockAddressCreateRequest;
+    data: BuildingAddressCreateRequest;
   },
   HousingStockResponse,
   EffectFailDataAxiosError
@@ -66,7 +66,7 @@ const updateHousingStockAddressFx = domain.createEffect<
   {
     housingStockId: number;
     addressId: number;
-    data: HousingStockAddressUpdateRequest;
+    data: BuildingAddressUpdateRequest;
   },
   HousingStockResponse,
   EffectFailDataAxiosError

@@ -3,7 +3,7 @@ import {
   HeatingStationWithStreetsResponse,
   HouseManagementWithStreetsResponse,
   ResourceDisconnectingCreateRequest,
-  StreetWithHousingStockNumbersResponsePagedList,
+  StreetWithBuildingNumbersResponsePagedList,
 } from 'myApi';
 
 export const fetchCreateResourceDisconnection = (
@@ -12,7 +12,7 @@ export const fetchCreateResourceDisconnection = (
 
 export const fetchExistingHousingStocks = (
   city: string,
-): Promise<StreetWithHousingStockNumbersResponsePagedList> =>
+): Promise<StreetWithBuildingNumbersResponsePagedList> =>
   axios.get('HousingStocks/ExistingStreetsWithHousingStockNumbers', {
     params: { city },
   });

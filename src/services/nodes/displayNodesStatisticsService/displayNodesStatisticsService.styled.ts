@@ -6,6 +6,7 @@ export const Wrapper = styled.div`
   padding-bottom: 100px;
 
   width: 100%;
+  max-width: 1280px;
 `;
 
 export const Title = styled.div`

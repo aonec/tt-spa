@@ -70,13 +70,46 @@ export const CreateDistrictBorderMapPage: FC<
 
   const [formSection, setFormSection] = useState<number>(0);
 
+  const afterMovingByAddress = useCallback(() => {
+    if (!map) return;
+
+    const polygonCoordinatesByAddress = [selectedByAddressPoligon];
+
+    const { color, strokeColor } = getDistrictColorData(districtColor);
+
+    const byAddressDistrict = new ymaps.Polygon(
+      (Boolean(polygonCoordinatesByAddress[0].length) &&
+        polygonCoordinatesByAddress) ||
+        [],
+      {},
+      {
+        editorDrawingCursor: 'crosshair',
+        fillColor: color,
+        strokeColor: strokeColor,
+        strokeWidth: 3,
+      } as any,
+    );
+
+    district && map.geoObjects.remove(district);
+
+    map.geoObjects.add(byAddressDistrict);
+
+    setDistrict(byAddressDistrict);
+  }, [district, districtColor, map, selectedByAddressPoligon]);
+
   useEffect(() => {
     if (!byAddressList) return;
     if (!map) return;
 
     setSelectedHousingStocks(selectedByAddressHousingStockIds);
     afterMovingByAddress();
-  }, [selectedByAddressHousingStockIds, map, byAddressList]);
+    // eslint-disable-next-line @typescript-eslint/no-use-before-define
+  }, [
+    selectedByAddressHousingStockIds,
+    map,
+    byAddressList,
+    afterMovingByAddress,
+  ]);
 
   const handleClickHousingStock = useCallback(
     (id: number) => {
@@ -148,33 +181,6 @@ export const CreateDistrictBorderMapPage: FC<
   useEffect(() => {
     ymaps.ready(initMaps);
   }, [mapRef, initMaps]);
-
-  const afterMovingByAddress = useCallback(() => {
-    if (!map) return;
-
-    const polygonCoordinatesByAddress = [selectedByAddressPoligon];
-
-    const { color, strokeColor } = getDistrictColorData(districtColor);
-
-    const byAddressDistrict = new ymaps.Polygon(
-      (Boolean(polygonCoordinatesByAddress[0].length) &&
-        polygonCoordinatesByAddress) ||
-        [],
-      {},
-      {
-        editorDrawingCursor: 'crosshair',
-        fillColor: color,
-        strokeColor: strokeColor,
-        strokeWidth: 3,
-      } as any,
-    );
-
-    district && map.geoObjects.remove(district);
-
-    map.geoObjects.add(byAddressDistrict);
-
-    setDistrict(byAddressDistrict);
-  }, [district, districtColor, map, selectedByAddressPoligon]);
 
   const startEditing = useCallback(() => {
     if (!map) return;

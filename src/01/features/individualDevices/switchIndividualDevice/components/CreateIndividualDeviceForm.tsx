@@ -1,7 +1,7 @@
 import { RightAlign } from '01/shared/ui/Layout/RightAlign';
 import { Space, Spaces } from '01/shared/ui/Layout/Space/Space';
 import { message } from 'antd';
-import { useForm } from 'effector-forms/dist';
+import { useForm } from 'effector-forms';
 import { useStore } from 'effector-react';
 import React, { useEffect } from 'react';
 import { useHistory, useParams } from 'react-router-dom';

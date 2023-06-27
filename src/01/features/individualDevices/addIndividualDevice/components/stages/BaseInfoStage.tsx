@@ -1,5 +1,5 @@
 import { AutoComplete, Form, Switch } from 'antd';
-import { useForm } from 'effector-forms/dist';
+import { useForm } from 'effector-forms';
 import { useEvent, useStore } from 'effector-react';
 import moment from 'moment';
 import React from 'react';

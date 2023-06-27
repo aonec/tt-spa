@@ -1,6 +1,6 @@
 import { axios } from '01/axios';
 import { downloadURI } from '01/features/reports/CreateReportModal/utils';
-import { StreetWithHousingStockNumbersResponsePagedList } from 'myApi';
+import { StreetWithBuildingNumbersResponsePagedList } from 'myApi';
 import queryString from 'query-string';
 import { HeatIndividualDevicesReportPayload } from './heatIndividualDevicesReportService.types';
 
@@ -21,7 +21,7 @@ export const fetchDownloadHeatIndividualDeviceReport = async ({
 
 export const fetchAddresses = (
   City: string,
-): Promise<StreetWithHousingStockNumbersResponsePagedList> =>
+): Promise<StreetWithBuildingNumbersResponsePagedList> =>
   axios.get('HousingStocks/ExistingStreetsWithHousingStockNumbers', {
     params: {
       City,
