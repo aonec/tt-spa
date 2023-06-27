@@ -25,24 +25,37 @@ export function useRenderDistricts(
   districts: (DistrictData & { onClick?: (id: string) => void })[],
 ) {
   const districtsGroup = useMapGroup(map);
+  const [savedDistricts, setSavedDistricts] = useState<{
+    [key: string]: ymaps.Polygon;
+  }>({});
 
   useEffect(() => {
     if (!districtsGroup || !districts.length) return;
 
     districtsGroup.removeAll();
 
+    setSavedDistricts({});
+
     districts.forEach((district) => {
       const color = DistrictColorsList.find(
         (elem) => elem.type === district.type,
       );
 
-      const polygon = new ymaps.Polygon(district.coordinates || [], {}, {
-        editorDrawingCursor: 'crosshair',
-        fillColor: color?.color,
-        strokeColor: color?.strokeColor,
-        strokeWidth: 3,
-        zIndex: 10,
-      } as any);
+      const savedDistrict = savedDistricts[district.id];
+
+      const coordinates = savedDistrict?.geometry?.getCoordinates();
+
+      const polygon = new ymaps.Polygon(
+        coordinates || district.coordinates || [],
+        {},
+        {
+          editorDrawingCursor: 'crosshair',
+          fillColor: color?.color,
+          strokeColor: color?.strokeColor,
+          strokeWidth: 3,
+          zIndex: 10,
+        } as any,
+      );
 
       if (district.onClick) {
         polygon.events.add('click', () => district.onClick?.(district.id));
@@ -50,8 +63,13 @@ export function useRenderDistricts(
 
       districtsGroup.add(polygon);
 
+      setSavedDistricts((prev) => ({ ...prev, [district.id]: polygon }));
+
+      if (district.isEditing) (polygon.editor as any).startDrawing();
+
       return () => districtsGroup.removeAll();
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [districtsGroup, districts]);
 }
 

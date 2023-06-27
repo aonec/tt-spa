@@ -98,6 +98,7 @@ export type DistrictData = {
   type: DistrictColor;
   coordinates: number[][][];
   name: string;
+  isEditing?: boolean;
 };
 
 export type BlobResponseErrorType = {
