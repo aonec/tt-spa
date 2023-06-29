@@ -1,8 +1,9 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { DistrictColorsList } from 'services/settings/districtBordersService/CreateDistrictBorderByMapService/view/CreateDistrictBorderMapPage/CreateDistrictBorderMapPage.constants';
 import { DistrictData, ymaps } from 'types';
 import { getTextPlacemarkCode } from './placemarks/textPlacemark';
 import { getCountPlacemarkCode } from './placemarks/countPlacemark';
+import { findPolygonCenter } from 'utils/findPolygonCenter';
 
 export function useMapGroup(map: ymaps.Map | null) {
   const [group, setGroup] = useState<ymaps.GeoObjectCollection | null>(null);
@@ -20,6 +21,37 @@ export function useMapGroup(map: ymaps.Map | null) {
   return group;
 }
 
+export function useRenderTextPlacemarks(
+  map: ymaps.Map | null,
+  texts: { text: string; coords: [number, number] }[],
+) {
+  const textGroup = useMapGroup(map);
+
+  useEffect(() => {
+    if (!textGroup) return;
+
+    textGroup.removeAll();
+
+    texts.forEach(({ text, coords }) => {
+      const code = getTextPlacemarkCode(text);
+
+      const polygonLayout = ymaps.templateLayoutFactory.createClass(code);
+
+      const placemark = new ymaps.Placemark(
+        coords,
+        {},
+        {
+          iconLayout: polygonLayout,
+        },
+      );
+
+      textGroup.add(placemark);
+    });
+
+    return () => void textGroup.removeAll();
+  }, [textGroup, texts]);
+}
+
 export function useRenderDistricts(
   map: ymaps.Map | null,
   districts: (DistrictData & { onClick?: (id: string) => void })[],
@@ -28,6 +60,23 @@ export function useRenderDistricts(
   const [savedDistricts, setSavedDistricts] = useState<{
     [key: string]: ymaps.Polygon;
   }>({});
+
+  const districtTitles = useMemo(() => {
+    return Object.entries(savedDistricts)
+      .map(([id, elem]) => {
+        const name = districts.find((elem) => elem.id)?.name;
+        return {
+          text: name,
+          coords: findPolygonCenter(elem.geometry?.getCoordinates()?.[0] || []),
+        };
+      })
+      .filter((elem) => Boolean(elem.text));
+  }, [savedDistricts, districts]);
+
+  useRenderTextPlacemarks(
+    map,
+    districtTitles as { text: string; coords: [number, number] }[],
+  );
 
   useEffect(() => {
     if (!districtsGroup || !districts.length) return;
@@ -73,37 +122,6 @@ export function useRenderDistricts(
   }, [districtsGroup, districts]);
 
   return { savedDistricts };
-}
-
-export function useRenderTextPlacemarks(
-  map: ymaps.Map | null,
-  texts: { text: string; coords: [number, number] }[],
-) {
-  const textGroup = useMapGroup(map);
-
-  useEffect(() => {
-    if (!textGroup) return;
-
-    textGroup.removeAll();
-
-    texts.forEach(({ text, coords }) => {
-      const code = getTextPlacemarkCode(text);
-
-      const polygonLayout = ymaps.templateLayoutFactory.createClass(code);
-
-      const placemark = new ymaps.Placemark(
-        coords,
-        {},
-        {
-          iconLayout: polygonLayout,
-        },
-      );
-
-      textGroup.add(placemark);
-    });
-
-    return () => void textGroup.removeAll();
-  }, [textGroup, texts]);
 }
 
 export function useRenderPlacemarks(

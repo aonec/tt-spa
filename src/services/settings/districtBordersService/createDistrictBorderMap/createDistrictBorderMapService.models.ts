@@ -18,7 +18,10 @@ const createDistrictForm = createForm({
       init: [] as number[],
     },
     name: { init: '' },
-    color: { init: null as null | DistrictColor },
+    color: { init: DistrictColor.Blue },
+    formSection: {
+      init: 0,
+    },
   },
 });
 
