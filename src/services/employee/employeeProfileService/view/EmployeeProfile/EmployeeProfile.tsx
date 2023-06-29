@@ -140,7 +140,7 @@ export const EmployeeProfile: FC<EmployeeProfileProps> = ({
             <GridContainer>
               <FieldTitle>Объекты на обслуживании</FieldTitle>
               <FieldHousingStocksNumber>
-                Выбрано {userData?.housingStocks?.length} адресов
+                Выбрано {userData?.buildings?.length} адресов
               </FieldHousingStocksNumber>
             </GridContainer>
             <SpaceLine />

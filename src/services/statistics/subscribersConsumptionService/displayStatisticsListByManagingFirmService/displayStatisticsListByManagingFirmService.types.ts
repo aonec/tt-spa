@@ -5,6 +5,7 @@ import {
 
 export type HousingStockWithApartmentStatistic = BuildingListResponse & {
   apartmentsStatistic: SubscriberStatisticsСonsumptionResponse[];
+  numberOfApartments: number;
 };
 
 export type SubscriberStatisticsFilter = {

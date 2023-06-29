@@ -213,9 +213,7 @@ export const ReportFiltrationForm: FC<ReportFiltrationFormProps> = ({
                 ).reduce(
                   (acc, street) => [
                     ...acc,
-                    ...(street.addresses || []).map(
-                      (elem) => elem.housingStockId,
-                    ),
+                    ...(street.addresses || []).map((elem) => elem.buildingId),
                   ],
                   [] as number[],
                 );

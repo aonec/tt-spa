@@ -1,6 +1,7 @@
 import { combine, createDomain, sample } from 'effector';
 import { createGate } from 'effector-react';
 import {
+  BuildingListResponse,
   BuildingListResponsePagedList,
   HouseManagementWithStreetsResponse,
   SubscriberStatisticsСonsumptionResponse,
@@ -69,7 +70,9 @@ const $housingStocks = domain
       return [];
     }
     const preparedHousingStocks = pagedResponse.items.map((housingStock) => ({
-      ...housingStock,
+      ...(housingStock as BuildingListResponse & {
+        numberOfApartments: number;
+      }),
       apartmentsStatistic: [],
     }));
     return preparedHousingStocks;

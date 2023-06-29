@@ -8,7 +8,7 @@ const { outputs, inputs, gates } = apartmentsListService;
 const { ApartmentsListGate } = gates;
 
 export const ApartmentsListContainer = () => {
-  const { housingStockId } = useParams<{ housingStockId: string }>();
+  const { buildingId } = useParams<{ buildingId: string }>();
 
   const apartmentsPagedList = useStore(outputs.$apartmentsPagedList);
   const isLoading = useStore(outputs.$isLoading);
@@ -21,9 +21,9 @@ export const ApartmentsListContainer = () => {
 
   return (
     <>
-      <ApartmentsListGate housingStockId={Number(housingStockId)} />
+      <ApartmentsListGate housingStockId={Number(buildingId)} />
       <ApartmentsView
-        hosuingStockId={Number(housingStockId)}
+        hosuingStockId={Number(buildingId)}
         isLoading={isLoading}
         apartmentsPagedList={apartmentsPagedList}
         setCurrentSegment={setCurrentSegment}
