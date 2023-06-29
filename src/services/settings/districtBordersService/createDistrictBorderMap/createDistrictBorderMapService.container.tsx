@@ -3,6 +3,7 @@ import { createDistrictBorderMapService } from './createDistrictBorderMapService
 import { CreateDistrictBorderMapPage } from './view/CreateDistrictBorderMapPage';
 import { useUnit } from 'effector-react';
 import {
+  createDistrictMutation,
   existingDistrictsQuery,
   existingHousingStocksQuery,
 } from './createDistrictBorderMapService.api';
@@ -19,6 +20,8 @@ export const CreateDistrictBorderMapContainer = () => {
     existingDistrictsQuery,
   );
 
+  const { start: handleCreateDistrict } = useUnit(createDistrictMutation);
+
   return (
     <>
       <CreateDistrictGate />
@@ -26,6 +29,7 @@ export const CreateDistrictBorderMapContainer = () => {
         existingHousingStocks={existingHousingStocks}
         existingDistricts={existingDistricts}
         isLoading={isLoadingHousingStocks || isLoadingDistricts}
+        handleCreateDistrict={handleCreateDistrict}
       />
     </>
   );

@@ -1,4 +1,4 @@
-import React, { FC, useMemo, useState } from 'react';
+import React, { FC, useEffect, useMemo } from 'react';
 import { Button } from 'ui-kit/Button';
 import { PencilIcon } from 'ui-kit/icons';
 import { useYMaps } from 'hooks/ymaps/useYMaps';
@@ -12,30 +12,49 @@ import {
 } from './CreateDistrictBorderMapPage.styled';
 import {
   getBuildingPlacmearks,
+  getSelectedHouseIds,
   getWorkingDistrict,
 } from './CreateDistrictBorderMapPage.utils';
 import { Props } from './CreateDistrictBorderMapPage.types';
+import { useForm } from 'effector-forms';
+import { createDistrictBorderMapService } from '../../createDistrictBorderMapService.models';
+
+const { forms } = createDistrictBorderMapService;
 
 export const CreateDistrictBorderMapPage: FC<Props> = ({
   existingHousingStocks,
+  handleCreateDistrict,
 }) => {
   const { map, mapRef } = useYMaps();
 
-  const [isEditing, setIsEditing] = useState(true);
+  const { fields } = useForm(forms.createDistrictForm);
+
+  const workingDistrictArray = useMemo(
+    () => getWorkingDistrict(fields.isEditing.value),
+    [fields.isEditing.value],
+  );
+
+  const { savedDistricts } = useRenderDistricts(map, workingDistrictArray);
+
+  const workingDistrict = useMemo(
+    () => savedDistricts['working-district'] || null,
+    [savedDistricts],
+  );
+
+  useEffect(() => {
+    fields.selectedHouses.onChange(
+      getSelectedHouseIds(workingDistrict, existingHousingStocks),
+    );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [existingHousingStocks, workingDistrict]);
 
   const buildingsPlacemarks = useMemo(
-    () => getBuildingPlacmearks(existingHousingStocks),
-    [existingHousingStocks],
+    () =>
+      getBuildingPlacmearks(existingHousingStocks, fields.selectedHouses.value),
+    [existingHousingStocks, fields.selectedHouses.value],
   );
 
   useRenderPlacemarks(map, buildingsPlacemarks);
-
-  const workingDistrict = useMemo(
-    () => getWorkingDistrict(isEditing),
-    [isEditing],
-  );
-
-  useRenderDistricts(map, workingDistrict);
 
   return (
     <Wrapper>
@@ -44,11 +63,16 @@ export const CreateDistrictBorderMapPage: FC<Props> = ({
           <GoBack />
         </div>
         <ControlButtonsWrapper>
-          {isEditing && (
-            <Button onClick={() => setIsEditing(false)}>Создать район</Button>
+          {fields.isEditing.value && (
+            <Button onClick={() => fields.isEditing.onChange(false)}>
+              Создать район
+            </Button>
           )}
-          {!isEditing && (
-            <Button onClick={() => setIsEditing(true)} icon={<PencilIcon />}>
+          {!fields.isEditing.value && (
+            <Button
+              onClick={() => fields.isEditing.onChange(true)}
+              icon={<PencilIcon />}
+            >
               Редактировать
             </Button>
           )}

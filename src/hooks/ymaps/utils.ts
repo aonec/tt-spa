@@ -71,6 +71,8 @@ export function useRenderDistricts(
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [districtsGroup, districts]);
+
+  return { savedDistricts };
 }
 
 export function useRenderTextPlacemarks(

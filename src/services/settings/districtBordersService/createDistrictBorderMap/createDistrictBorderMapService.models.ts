@@ -4,10 +4,23 @@ import {
   existingDistrictsQuery,
   existingHousingStocksQuery,
 } from './createDistrictBorderMapService.api';
-
-// const domain = createDomain('createDistrictBorderMapService');
+import { createForm } from 'effector-forms/dist';
+import { DistrictColor } from 'types';
 
 const CreateDistrictGate = createGate();
+
+const createDistrictForm = createForm({
+  fields: {
+    isEditing: {
+      init: true,
+    },
+    selectedHouses: {
+      init: [] as number[],
+    },
+    name: { init: '' },
+    color: { init: null as null | DistrictColor },
+  },
+});
 
 forward({
   from: CreateDistrictGate.open,
@@ -15,7 +28,6 @@ forward({
 });
 
 export const createDistrictBorderMapService = {
-  inputs: {},
-  outputs: {},
   gates: { CreateDistrictGate },
+  forms: { createDistrictForm },
 };
