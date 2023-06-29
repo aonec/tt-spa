@@ -11,6 +11,7 @@ const domain = createDomain('closeIndividualDeviceService');
 
 const closeModal = domain.createEvent();
 const openModal = domain.createEvent<IndividualDeviceListItemResponse>();
+
 const $closingDevice = domain
   .createStore<IndividualDeviceListItemResponse | null>(null)
   .on(openModal, (_, device) => device)

@@ -8,13 +8,10 @@ const { forms, inputs, outputs } = closeIndividualDeviceService;
 const formId = 'close-individual-device-form';
 
 export const CloseIndividualDeviceContainer = () => {
-  const { device, isOpen, isLoading } = useUnit({
+  const { device, isOpen, isLoading, closeModal } = useUnit({
     device: outputs.$closingDevice,
     isOpen: outputs.$isOpen,
     isLoading: outputs.$isLoading,
-  });
-
-  const { closeModal } = useUnit({
     closeModal: inputs.closeModal,
   });
 
