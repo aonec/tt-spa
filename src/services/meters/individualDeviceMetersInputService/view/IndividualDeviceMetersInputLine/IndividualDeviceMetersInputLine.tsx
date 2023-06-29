@@ -6,7 +6,7 @@ import { useHistory } from 'react-router-dom';
 import { ESecuredIdentityRoleName } from 'myApi';
 import { HistoryIcon, StarIcon } from 'ui-kit/icons';
 import { closingIndividualDeviceButtonClicked } from '01/features/individualDevices/closeIndividualDevice/models';
-import { deleteIndividualDeviceService } from '01/features/individualDevices/deleteIndividualDevice/deleteIndividualDeviceService.models';
+import { deleteIndividualDeviceService } from 'services/devices/individualDevices/deleteIndividualDevice/deleteIndividualDeviceService.models';
 import { ContextMenuButton } from 'ui-kit/ContextMenuButton/ContextMenuButton';
 import { reopenIndividualDevice } from '01/_api/individualDevices';
 import { getMeasurementUnit } from '../../individualDeviceMetersInputService.utils';
@@ -47,7 +47,7 @@ export const IndividualDeviceMetersInputLine: FC<
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const onDeleteIndividualDevice = useEvent(
-    deleteIndividualDeviceService.inputs.deleteDeviceModalOpened,
+    deleteIndividualDeviceService.inputs.openModal,
   );
 
   const openEditReadingsHistoryModal = useEvent(

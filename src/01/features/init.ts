@@ -2,7 +2,6 @@ import './individualDevices/closeIndividualDevice/models/init';
 import './individualDevices/switchIndividualDevice/models/init';
 import './readings/displayReadingHistory/models/init';
 import './readings/readingsInput/confirmInputReadingModal/models/init';
-import './individualDevices/deleteIndividualDevice/deleteIndividualDeviceService.init';
 import '../../services/settings/inspectorsDistributionService/searchInspectorsHousingStocksService/searchInspectorsHousingStockService.init';
 import '../../services/settings/inspectorsDistributionService/displayInspectorsHousingStocksService/displayInspectorsHousingStocksService.init';
 import '../../services/settings/inspectorsDistributionService/displayInspectorsHousingStocksService/inspectorHousingStockService/inspectorHousingStockService.init';
