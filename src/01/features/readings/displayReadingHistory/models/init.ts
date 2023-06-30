@@ -1,4 +1,3 @@
-import { fetchIndividualDeviceFx } from '01/features/individualDevices/displayIndividualDevice/models';
 import { getReadingsHistory } from './../../../../_api/readings';
 import {
   ReadingHistoryGate,
@@ -11,6 +10,7 @@ import {
 } from './index';
 import { forward, sample } from 'effector';
 import { apartmentIndividualDevicesMetersService } from 'services/meters/apartmentIndividualDevicesMetersService';
+import { displayIndividualDeviceAndNamesService } from 'services/devices/individualDevices/displayIndividualDeviceAndNamesService/displayIndividualDeviceAndNamesService.model';
 
 fetchReadingHistoryFx.use(getReadingsHistory);
 
@@ -33,9 +33,11 @@ $readingsHistoryModalDeviceId
   .on(openReadingsHistoryModal, (_, deviceId) => deviceId)
   .reset(closeReadingsHistoryModal);
 
-forward({
-  from: $readingsHistoryModalDeviceId as any,
-  to: fetchIndividualDeviceFx,
+sample({
+  source: $readingsHistoryModalDeviceId,
+  filter: Boolean,
+  target:
+    displayIndividualDeviceAndNamesService.inputs.handleFetchIndividualDevice,
 });
 
 forward({

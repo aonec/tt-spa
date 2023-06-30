@@ -1,0 +1,1 @@
+export { DocumentsStage } from './DocumentsStage';
