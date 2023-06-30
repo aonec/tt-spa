@@ -19,11 +19,13 @@ import { Props } from './CreateDistrictBorderMapPage.types';
 import { useForm } from 'effector-forms';
 import { createDistrictBorderMapService } from '../../createDistrictBorderMapService.models';
 import { CreateDistrictFormPanel } from './CreateDistrictFormPanel';
+import { getPayloadFromDistricts } from 'utils/districtsData';
 
 const { forms } = createDistrictBorderMapService;
 
 export const CreateDistrictBorderMapPage: FC<Props> = ({
   existingHousingStocks,
+  existingDistricts,
   handleCreateDistrict,
 }) => {
   const { map, mapRef } = useYMaps();
@@ -54,6 +56,14 @@ export const CreateDistrictBorderMapPage: FC<Props> = ({
   );
 
   const { savedDistricts } = useRenderDistricts(map, workingDistrictArray);
+
+  const preparedExistingDistricts = useMemo(() => {
+    if (!existingDistricts) return [];
+
+    return getPayloadFromDistricts(existingDistricts);
+  }, [existingDistricts]);
+
+  useRenderDistricts(map, preparedExistingDistricts);
 
   const workingDistrict = useMemo(
     () => savedDistricts['working-district'] || null,
