@@ -3,6 +3,7 @@ import {
   createTask,
   getERPSources,
   getErpExecutorsForLead,
+  getErpTaskDeadline,
   getLeadExecutors,
   getTasksErpObjects,
   getWorkCategories,
@@ -10,6 +11,8 @@ import {
 import {
   CreateErpTaskRequest,
   ExecutorGrpcModel,
+  GetTaskDeadlineGrpcResponse,
+  GetTaskDeadlineRequest,
   SourceGrpcModel,
   WorkCategoryGrpcModel,
 } from 'myApi';
@@ -25,6 +28,8 @@ const handleOpenModal = domain.createEvent();
 const handleCloseModal = domain.createEvent();
 
 const choоseLeadExecutor = domain.createEvent<string>();
+
+const handleTaskDeadlineRequest = domain.createEvent<GetTaskDeadlineRequest>();
 
 const handleCreateTask = domain.createEvent<AddTask>();
 
@@ -55,6 +60,11 @@ const getErpExecutorsForLeadFx = domain.createEffect<
   ExecutorGrpcModel[]
 >(getErpExecutorsForLead);
 
+const getErpTaskDeadlineFx = domain.createEffect<
+  GetTaskDeadlineRequest,
+  GetTaskDeadlineGrpcResponse[]
+>(getErpTaskDeadline);
+
 const $isModalOpen = domain
   .createStore<boolean>(false)
   .on(handleOpenModal, () => true)
@@ -81,6 +91,14 @@ const $ErpObjects = domain
   .on(getErpObjectsFx.doneData, (_, data) => data);
 
 const $chosenLeadExecutorId = domain.createStore<string | null>(null);
+
+const $taskDeadlineRequest = domain
+  .createStore<GetTaskDeadlineRequest | null>(null)
+  .on(handleTaskDeadlineRequest, (prev, data) => ({ ...prev, ...data }));
+
+const $taskDeadline = domain
+  .createStore<GetTaskDeadlineGrpcResponse[]>([])
+  .on(getErpTaskDeadlineFx.doneData, (_, data) => data);
 
 sample({
   clock: handleCreateTask,
@@ -129,12 +147,31 @@ sample({
   target: getErpExecutorsForLeadFx,
 });
 
+sample({
+  clock: $taskDeadlineRequest.updates,
+  source: $taskDeadlineRequest,
+  filter: (request) => {
+    if (!Boolean(request)) {
+      return false;
+    }
+    if (!Boolean(request?.taskType)) {
+      return false;
+    }
+    if (!Boolean(request?.workCategoryId)) {
+      return false;
+    }
+    return true;
+  },
+  target: getErpTaskDeadlineFx as any,
+});
+
 export const addTaskFromDispatcherService = {
   inputs: {
     handleOpenModal,
     handleCloseModal,
     handleCreateTask,
     choоseLeadExecutor,
+    handleTaskDeadlineRequest,
   },
   outputs: {
     $isModalOpen,
@@ -143,6 +180,8 @@ export const addTaskFromDispatcherService = {
     $leadExecutors,
     $ErpObjects,
     $executors,
+    $taskDeadlineRequest,
+    $taskDeadline
   },
   gates: { PageGate },
 };

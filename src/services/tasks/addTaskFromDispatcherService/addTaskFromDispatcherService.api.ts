@@ -29,7 +29,7 @@ export const getLeadExecutors = (): Promise<ExecutorGrpcModel[]> => {
 };
 
 export const getTasksErpObjects = (): Promise<ObjectGrpcModel[]> => {
-  return axios.get('Tasks/ErpObjects'); // поправят тип
+  return axios.get('Tasks/ErpObjects');
 };
 
 export const getErpExecutorsForLead = (params: {
@@ -42,7 +42,10 @@ export const getErpExecutorsForLead = (params: {
 };
 
 export const getErpTaskDeadline = (
-  data: GetTaskDeadlineRequest,
+  params: GetTaskDeadlineRequest,
 ): Promise<GetTaskDeadlineGrpcResponse[]> => {
-  return axios.get('Tasks/ErpTaskDeadline', { data });
+  return axios.get('Tasks/ErpTaskDeadline', {
+    params,
+    paramsSerializer: queryString.stringify,
+  });
 };

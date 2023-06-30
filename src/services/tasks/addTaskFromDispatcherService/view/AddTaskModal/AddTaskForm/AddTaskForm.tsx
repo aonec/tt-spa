@@ -35,6 +35,7 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
   setDisableSubmit,
   choоseLeadExecutor,
   executors,
+  handleTaskDeadlineRequest,
 }) => {
   const { values, handleSubmit, setFieldValue, errors } = useFormik<AddTask>({
     initialValues: {
@@ -137,7 +138,10 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
             <Select
               placeholder="Выберите из списка"
               value={values.taskType || undefined}
-              onChange={(value) => setFieldValue('taskType', value)}
+              onChange={(value) => {
+                setFieldValue('taskType', value);
+                handleTaskDeadlineRequest({ taskType: value as EisTaskType });
+              }}
             >
               {Object.values(EisTaskType).map((e) => (
                 <Select.Option value={e} key={e}>
@@ -170,7 +174,10 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
             <Select
               placeholder="Выберите из списка"
               value={values.workTypeId || undefined}
-              onChange={(value) => setFieldValue('workTypeId', value)}
+              onChange={(value) => {
+                setFieldValue('workTypeId', value);
+                handleTaskDeadlineRequest({ workCategoryId: value as string });
+              }}
             >
               {workTypes.map((workType, index) => (
                 <Select.Option

@@ -1,6 +1,7 @@
 import {
   EisTaskType,
   ExecutorGrpcModel,
+  GetTaskDeadlineRequest,
   SourceGrpcModel,
   WorkCategoryGrpcModel,
 } from 'myApi';
@@ -41,4 +42,5 @@ export type AddTaskFormProps = {
   setDisableSubmit: React.Dispatch<React.SetStateAction<boolean>>;
   choоseLeadExecutor: (payload: string) => void;
   executors: ExecutorGrpcModel[];
+  handleTaskDeadlineRequest: (payload: GetTaskDeadlineRequest) => void;
 };

@@ -15,9 +15,13 @@ export const AddTaskFromDispatcherContainer = () => {
   const leadExecutors = useUnit(outputs.$leadExecutors);
   const workCategories = useUnit(outputs.$workCategories);
   const executors = useUnit(outputs.$executors);
+  const taskDeadlineRequest = useUnit(outputs.$taskDeadlineRequest);
+  const taskDeadline = useUnit(outputs.$taskDeadline);
+  console.log(taskDeadline)
 
   const handleCreateTask = useUnit(inputs.handleCreateTask);
   const choоseLeadExecutor = useUnit(inputs.choоseLeadExecutor);
+  const handleTaskDeadlineRequest = useUnit(inputs.handleTaskDeadlineRequest);
 
   return (
     <>
@@ -31,6 +35,7 @@ export const AddTaskFromDispatcherContainer = () => {
         handleCreateTask={handleCreateTask}
         choоseLeadExecutor={choоseLeadExecutor}
         executors={executors}
+        handleTaskDeadlineRequest={handleTaskDeadlineRequest}
       />
     </>
   );
