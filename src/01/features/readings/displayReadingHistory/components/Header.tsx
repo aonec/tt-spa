@@ -1,4 +1,3 @@
-import { $individualDevice } from '01/features/individualDevices/displayIndividualDevice/models';
 import { DeviceDataString } from '01/features/individualDevices/switchIndividualDevice/components/DeviceDataString';
 import { Spaces } from '01/shared/ui/Layout/Space/Space';
 import { useStore } from 'effector-react';
@@ -8,6 +7,11 @@ import { GoBack } from 'ui-kit/shared_components/GoBack';
 import { getApartmentFromFullAddress } from 'utils/getApartmentFromFullAddress';
 import { DeviceStatus } from 'ui-kit/shared_components/IndividualDeviceInfo/DeviceStatus';
 import styled from 'styled-components';
+import { displayIndividualDeviceAndNamesService } from 'services/devices/individualDevices/displayIndividualDeviceAndNamesService/displayIndividualDeviceAndNamesService.model';
+
+const {
+  outputs: { $individualDevice },
+} = displayIndividualDeviceAndNamesService;
 
 interface Props {
   isModal?: boolean;

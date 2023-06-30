@@ -23,7 +23,7 @@ import { message } from 'antd';
 const domain = createDomain('editObjectService');
 
 const FetchObjectGate = objectProfileService.gates.FetchObjectGate;
-const CatchHousingStockId = createGate<{ housingStockId: number }>();
+const CatchHousingStockId = createGate<{ buildingId: number }>();
 
 const handleUpdateHousingStock =
   domain.createEvent<HousingStockUpdateRequest>();
@@ -85,7 +85,7 @@ sample({
   clock: handleUpdateHousingStock,
   source: CatchHousingStockId.state,
   fn: (gateState, clockPayload) => {
-    return { housingStockId: gateState.housingStockId, data: clockPayload };
+    return { housingStockId: gateState.buildingId, data: clockPayload };
   },
   target: updateHousingStockFx,
 });
@@ -94,7 +94,7 @@ sample({
   clock: handleCreateHousingStockAddress,
   source: CatchHousingStockId.state,
   fn: (gateState, clockPayload) => {
-    return { housingStockId: gateState.housingStockId, data: clockPayload };
+    return { housingStockId: gateState.buildingId, data: clockPayload };
   },
   target: createHousingStockAddressFx,
 });
@@ -104,7 +104,7 @@ sample({
   source: CatchHousingStockId.state,
   fn: (gateState, clockPayload) => {
     return {
-      housingStockId: gateState.housingStockId,
+      housingStockId: gateState.buildingId,
       addressId: clockPayload.addressId,
       data: clockPayload.data,
     };
@@ -117,7 +117,7 @@ sample({
   source: CatchHousingStockId.state,
   fn: (gateState, clockPayload) => {
     return {
-      housingStockId: gateState.housingStockId,
+      housingStockId: gateState.buildingId,
       addressId: clockPayload.addressId,
     };
   },
@@ -151,7 +151,7 @@ sample({
   clock: handleRefetchHousingStock,
   source: CatchHousingStockId.state,
   fn: (gateState) => {
-    return gateState.housingStockId;
+    return gateState.buildingId;
   },
   target: objectProfileService.inputs.handleFetchHousingStock,
 });

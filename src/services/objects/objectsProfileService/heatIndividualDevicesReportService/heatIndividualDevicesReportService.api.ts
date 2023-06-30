@@ -22,7 +22,7 @@ export const fetchDownloadHeatIndividualDeviceReport = async ({
 export const fetchAddresses = (
   City: string,
 ): Promise<StreetWithBuildingNumbersResponsePagedList> =>
-  axios.get('HousingStocks/ExistingStreetsWithHousingStockNumbers', {
+  axios.get('Buildings/ExistingStreetsWithBuildingNumbers', {
     params: {
       City,
     },

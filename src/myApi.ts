@@ -657,7 +657,7 @@ export interface ArchivesDataModel {
   data?: ArchivesDataGroup[] | null;
 }
 
-export interface AssingmentResponse {
+export interface AssignmentResponse {
   /** @format uuid */
   id: string;
 
@@ -675,12 +675,12 @@ export interface AssingmentResponse {
   creatingUser: CreatingUser | null;
 }
 
-export interface AssingmentResponseListSuccessApiResponse {
-  successResponse: AssingmentResponse[] | null;
+export interface AssignmentResponseListSuccessApiResponse {
+  successResponse: AssignmentResponse[] | null;
 }
 
-export interface AssingmentResponseSuccessApiResponse {
-  successResponse: AssingmentResponse | null;
+export interface AssignmentResponseSuccessApiResponse {
+  successResponse: AssignmentResponse | null;
 }
 
 export interface BaseIndividualDeviceReadingsCreateRequest {
@@ -734,6 +734,20 @@ export interface BuildingAddressUpdateRequest {
   corpus?: string | null;
 }
 
+export interface BuildingFiltersResponse {
+  houseManagements: GuidStringDictionaryItem[] | null;
+  houseCategories: EHouseCategoryStringDictionaryItem[] | null;
+  totalAreaIntervals: MeasurableIntervalResponse[] | null;
+  livingHouseTypes: ELivingHouseTypeStringDictionaryItem[] | null;
+  nonResidentialHouseTypes:
+    | ENonResidentialHouseTypeStringDictionaryItem[]
+    | null;
+}
+
+export interface BuildingFiltersResponseSuccessApiResponse {
+  successResponse: BuildingFiltersResponse | null;
+}
+
 export interface BuildingListResponse {
   /** @format int32 */
   id: number;
@@ -743,6 +757,9 @@ export interface BuildingListResponse {
 
   /** @format int32 */
   numberOfTasks: number | null;
+
+  /** @format int32 */
+  numberOfApartments: number;
   houseCategory: EHouseCategory;
   managementFirm: ManagementFirmLiteResponse | null;
   address: BuildingAddressResponse | null;
@@ -1456,11 +1473,16 @@ export interface CreateErpTaskRequest {
   /** @format date-time */
   sourceDateTime?: string;
 
+  /** @format date-time */
+  taskDeadline?: string;
+
   /** @format uuid */
   leadId?: string;
 
   /** @format uuid */
   workerId?: string;
+  subscriberPhoneNumber?: string | null;
+  subscriberFullName?: string | null;
 }
 
 export interface CreateGroupReportRequest {
@@ -2629,6 +2651,17 @@ export interface GetSummaryHousingConsumptionsByResourcesResponseSuccessApiRespo
   successResponse: GetSummaryHousingConsumptionsByResourcesResponse | null;
 }
 
+export interface GetTaskDeadlineGrpcResponse {
+  /** @format int32 */
+  deadlineInHours: number;
+}
+
+export interface GetTaskDeadlineRequest {
+  /** @format uuid */
+  workCategoryId?: string;
+  taskType?: EisTaskType;
+}
+
 export interface GroupReportContractorResponse {
   /** @format int32 */
   id: number;
@@ -3418,20 +3451,6 @@ export interface HousingStockDeviceResponse {
 
 export interface HousingStockDeviceResponseSuccessApiResponse {
   successResponse: HousingStockDeviceResponse | null;
-}
-
-export interface HousingStockFilterResponse {
-  houseManagements: GuidStringDictionaryItem[] | null;
-  houseCategories: EHouseCategoryStringDictionaryItem[] | null;
-  totalAreaIntervals: MeasurableIntervalResponse[] | null;
-  livingHouseTypes: ELivingHouseTypeStringDictionaryItem[] | null;
-  nonResidentialHouseTypes:
-    | ENonResidentialHouseTypeStringDictionaryItem[]
-    | null;
-}
-
-export interface HousingStockFilterResponseSuccessApiResponse {
-  successResponse: HousingStockFilterResponse | null;
 }
 
 export interface HousingStockListResponse {
@@ -4696,6 +4715,11 @@ export interface NumberIdResponse {
 
 export interface NumberIdResponseArraySuccessApiResponse {
   successResponse: NumberIdResponse[] | null;
+}
+
+export interface ObjectGrpcModel {
+  id?: string | null;
+  address?: string | null;
 }
 
 export interface OperatorsConstructedReportResponse {
@@ -7332,7 +7356,7 @@ export class Api<
       query: { from: string; to?: string },
       params: RequestParams = {},
     ) =>
-      this.request<AssingmentResponseListSuccessApiResponse, ErrorApiResponse>({
+      this.request<AssignmentResponseListSuccessApiResponse, ErrorApiResponse>({
         path: `/api/IndividualSeal/Assignments`,
         method: 'GET',
         query: query,
@@ -7347,15 +7371,15 @@ export class Api<
      * @tags Assignments
      * @name IndividualSealAssignmentsDetail
      * @summary IndividualSealRead
-     * @request GET:/api/IndividualSeal/Assignments/{assingmentId}
+     * @request GET:/api/IndividualSeal/Assignments/{assignmentId}
      * @secure
      */
     individualSealAssignmentsDetail: (
-      assingmentId: string,
+      assignmentId: string,
       params: RequestParams = {},
     ) =>
-      this.request<AssingmentResponseSuccessApiResponse, ErrorApiResponse>({
-        path: `/api/IndividualSeal/Assignments/${assingmentId}`,
+      this.request<AssignmentResponseSuccessApiResponse, ErrorApiResponse>({
+        path: `/api/IndividualSeal/Assignments/${assignmentId}`,
         method: 'GET',
         secure: true,
         format: 'json',
@@ -7368,15 +7392,15 @@ export class Api<
      * @tags Assignments
      * @name IndividualSealAssignmentsDelete
      * @summary IndividualSealReadWrite
-     * @request DELETE:/api/IndividualSeal/Assignments/{assingmentId}
+     * @request DELETE:/api/IndividualSeal/Assignments/{assignmentId}
      * @secure
      */
     individualSealAssignmentsDelete: (
-      assingmentId: string,
+      assignmentId: string,
       params: RequestParams = {},
     ) =>
       this.request<void, ErrorApiResponse>({
-        path: `/api/IndividualSeal/Assignments/${assingmentId}`,
+        path: `/api/IndividualSeal/Assignments/${assignmentId}`,
         method: 'DELETE',
         secure: true,
         ...params,
@@ -7680,6 +7704,7 @@ export class Api<
         'TotalArea.MaxValue'?: number;
         'TotalArea.MinValue'?: number;
         'TotalArea.MeasurableUnit'?: string;
+        HouseManagementId?: string;
         PageNumber?: number;
         PageSize?: number;
         OrderBy?: EOrderByRule;
@@ -7773,6 +7798,75 @@ export class Api<
         path: `/api/Buildings/${buildingId}/inspector`,
         method: 'DELETE',
         secure: true,
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
+     *
+     * @tags Buildings
+     * @name BuildingsFiltersList
+     * @summary HousingStocksRead
+     * @request GET:/api/Buildings/filters
+     * @secure
+     */
+    buildingsFiltersList: (params: RequestParams = {}) =>
+      this.request<BuildingFiltersResponseSuccessApiResponse, ErrorApiResponse>(
+        {
+          path: `/api/Buildings/filters`,
+          method: 'GET',
+          secure: true,
+          format: 'json',
+          ...params,
+        },
+      ),
+
+    /**
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
+     *
+     * @tags Buildings
+     * @name BuildingsControllerDetail
+     * @summary HousingStocksRead
+     * @request GET:/api/Buildings/{buildingId}/Controller
+     * @secure
+     */
+    buildingsControllerDetail: (
+      buildingId: number,
+      params: RequestParams = {},
+    ) =>
+      this.request<
+        OrganizationUserShortResponseSuccessApiResponse,
+        ErrorApiResponse
+      >({
+        path: `/api/Buildings/${buildingId}/Controller`,
+        method: 'GET',
+        secure: true,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Администратор</li><li>Старший оператор</li>
+     *
+     * @tags Buildings
+     * @name BuildingsReassignControllerCreate
+     * @summary ControllerUpdate
+     * @request POST:/api/Buildings/{buildingId}/ReassignController/{controllerId}
+     * @secure
+     */
+    buildingsReassignControllerCreate: (
+      buildingId: number,
+      controllerId: number,
+      params: RequestParams = {},
+    ) =>
+      this.request<
+        OrganizationUserShortResponseSuccessApiResponse,
+        ErrorApiResponse
+      >({
+        path: `/api/Buildings/${buildingId}/ReassignController/${controllerId}`,
+        method: 'POST',
+        secure: true,
+        format: 'json',
         ...params,
       }),
 
@@ -10093,16 +10187,15 @@ export class Api<
      * @secure
      */
     housingStocksFiltersList: (params: RequestParams = {}) =>
-      this.request<
-        HousingStockFilterResponseSuccessApiResponse,
-        ErrorApiResponse
-      >({
-        path: `/api/HousingStocks/filters`,
-        method: 'GET',
-        secure: true,
-        format: 'json',
-        ...params,
-      }),
+      this.request<BuildingFiltersResponseSuccessApiResponse, ErrorApiResponse>(
+        {
+          path: `/api/HousingStocks/filters`,
+          method: 'GET',
+          secure: true,
+          format: 'json',
+          ...params,
+        },
+      ),
 
     /**
      * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
@@ -14538,10 +14631,33 @@ export class Api<
      * @secure
      */
     tasksErpObjectsList: (params: RequestParams = {}) =>
-      this.request<ExecutorGrpcModel[], ErrorApiResponse>({
+      this.request<ObjectGrpcModel[], ErrorApiResponse>({
         path: `/api/Tasks/ErpObjects`,
         method: 'GET',
         secure: true,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
+     *
+     * @tags Tasks
+     * @name TasksErpTaskDeadlineList
+     * @summary TasksRead
+     * @request GET:/api/Tasks/ErpTaskDeadline
+     * @secure
+     */
+    tasksErpTaskDeadlineList: (
+      data: GetTaskDeadlineRequest,
+      params: RequestParams = {},
+    ) =>
+      this.request<GetTaskDeadlineGrpcResponse[], ErrorApiResponse>({
+        path: `/api/Tasks/ErpTaskDeadline`,
+        method: 'GET',
+        body: data,
+        secure: true,
+        type: ContentType.Json,
         format: 'json',
         ...params,
       }),

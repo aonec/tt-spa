@@ -1,7 +1,7 @@
 import { axios } from '01/axios';
 import {
+  BuildingListResponsePagedList,
   HouseManagementWithStreetsResponse,
-  HousingStockListResponsePagedList,
   SubscriberStatisticsСonsumptionResponse,
 } from 'myApi';
 import { SubscriberStatisticsFilter } from './displayStatisticsListByManagingFirmService.types';
@@ -9,15 +9,14 @@ import { SubscriberStatisticsFilter } from './displayStatisticsListByManagingFir
 export const fetchManagingFirm = async (
   city: string,
 ): Promise<HouseManagementWithStreetsResponse[]> =>
-  axios.get(
-    '/HousingStocks/ExistingStreetsWithHousingStockNumbersWithhouseManagement',
-    { params: { city } },
-  );
+  axios.get('Buildings/ExistingStreetsWithBuildingNumbersWithHouseManagement', {
+    params: { city },
+  });
 
 export const fetchHousingStocksByManagingFirm = (
   HouseManagementId: string,
-): Promise<HousingStockListResponsePagedList> =>
-  axios.get('HousingStocks', { params: { HouseManagementId } });
+): Promise<BuildingListResponsePagedList> =>
+  axios.get('Buildings', { params: { HouseManagementId } });
 
 export const fetchSubscribersStatistic = (
   filter: SubscriberStatisticsFilter,

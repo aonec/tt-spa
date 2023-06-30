@@ -12,7 +12,7 @@ const { inputs, outputs, gates } = objectProfileService;
 const { ObjectProfileIdGate } = gates;
 
 export const ObjectProfileContainer = () => {
-  const { housingStockId } = useParams<{ housingStockId: string }>();
+  const { buildingId } = useParams<{ buildingId: string }>();
 
   const housingStock = useStore(outputs.$housingStock);
   const isLoading = useStore(outputs.$isLoading);
@@ -39,7 +39,7 @@ export const ObjectProfileContainer = () => {
 
   return (
     <>
-      <ObjectProfileIdGate objectId={Number(housingStockId)} />
+      <ObjectProfileIdGate objectId={Number(buildingId)} />
       {housingStock && (
         <ConsolidatedReportContainer housingStock={housingStock} />
       )}

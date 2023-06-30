@@ -166,7 +166,7 @@ export const CreateResourceDisconnectionForm: FC<
     if (!resourceDisconnection || treeData.length === 0) {
       return;
     }
-    const housingStocks = resourceDisconnection.housingStocks || [];
+    const housingStocks = resourceDisconnection.buildings || [];
     const housingStockIds = housingStocks.map(
       (housingstock) => housingstock.id,
     );

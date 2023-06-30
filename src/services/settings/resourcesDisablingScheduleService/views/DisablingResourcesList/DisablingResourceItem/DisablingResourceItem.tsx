@@ -28,7 +28,7 @@ export const DisablingResourceItem: React.FC<RenderApartmentProps> = ({
     disconnectingType,
     endDate,
     heatingStation,
-    housingStocks,
+    buildings,
     resource,
     sender,
     startDate,
@@ -62,8 +62,8 @@ export const DisablingResourceItem: React.FC<RenderApartmentProps> = ({
       </GroupWrapper>
 
       <StyledLinkTypeElement onClick={() => openModal(disconnection)}>
-        {(housingStocks &&
-          declOfNum(housingStocks?.length, ['адрес', 'адреса', 'адресов'])) ||
+        {(buildings &&
+          declOfNum(buildings?.length, ['адрес', 'адреса', 'адресов'])) ||
           'Не указан'}{' '}
       </StyledLinkTypeElement>
 

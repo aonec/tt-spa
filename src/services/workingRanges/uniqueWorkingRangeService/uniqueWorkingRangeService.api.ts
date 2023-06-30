@@ -30,7 +30,7 @@ export const getNodeUniqueWorkingRange = (query: {
 export const getAdresses = (
   payload: GetAddressesWithCityRequestPayload,
 ): Promise<StreetWithBuildingNumbersResponsePagedList | null> => {
-  return axios.get('HousingStocks/ExistingStreetsWithHousingStockNumbers', {
+  return axios.get('Buildings/ExistingStreetsWithBuildingNumbers', {
     params: payload,
   });
 };
