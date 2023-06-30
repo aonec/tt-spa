@@ -16,7 +16,7 @@ export const fetchManagingFirm = async (
 export const fetchHousingStocksByManagingFirm = (
   HouseManagementId: string,
 ): Promise<BuildingListResponsePagedList> =>
-  axios.get('HousingStocks', { params: { HouseManagementId } });
+  axios.get('Buildings', { params: { HouseManagementId } });
 
 export const fetchSubscribersStatistic = (
   filter: SubscriberStatisticsFilter,
