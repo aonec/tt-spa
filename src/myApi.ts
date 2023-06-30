@@ -2441,6 +2441,17 @@ export enum EYearQuarter {
   Forth = 'Forth',
 }
 
+export interface GetTaskDeadlineGrpcResponse {
+  /** @format int32 */
+  deadlineInHours: number;
+}
+
+export interface GetTaskDeadlineRequest {
+  /** @format uuid */
+  workCategoryId?: string;
+  taskType?: EisTaskType;
+}
+
 export interface EditApartmentCheckRequest {
   /** @format date-time */
   checkingDate?: string | null;
@@ -4486,6 +4497,11 @@ export interface MeteringDeviceResponse {
 
 export interface MeteringDeviceResponseSuccessApiResponse {
   successResponse: MeteringDeviceResponse | null;
+}
+
+export interface ObjectGrpcModel {
+  id?: string | null;
+  address?: string | null;
 }
 
 export interface MeteringDeviceSearchListResponse {
@@ -13228,6 +13244,20 @@ export class Api<
         method: 'GET',
         query: query,
         secure: true,
+        format: 'json',
+        ...params,
+      }),
+
+    tasksErpTaskDeadlineList: (
+      data: GetTaskDeadlineRequest,
+      params: RequestParams = {},
+    ) =>
+      this.request<GetTaskDeadlineGrpcResponse[], ErrorApiResponse>({
+        path: `/api/Tasks/ErpTaskDeadline`,
+        method: 'GET',
+        body: data,
+        secure: true,
+        type: ContentType.Json,
         format: 'json',
         ...params,
       }),
