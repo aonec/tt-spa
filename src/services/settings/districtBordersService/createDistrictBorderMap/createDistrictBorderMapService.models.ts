@@ -5,7 +5,7 @@ import {
   existingDistrictsQuery,
   existingHousingStocksQuery,
 } from './createDistrictBorderMapService.api';
-import { createForm } from 'effector-forms/dist';
+import { createForm } from 'effector-forms';
 import { DistrictColor } from 'types';
 import { message } from 'antd';
 
