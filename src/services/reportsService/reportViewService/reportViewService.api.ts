@@ -28,9 +28,7 @@ import moment from 'moment';
 export const getAddressesWithHouseManagements = (): Promise<
   HouseManagementWithStreetsResponse[]
 > =>
-  axios.get(
-    'HousingStocks/ExistingStreetsWithHousingStockNumbersWithHouseManagement',
-  );
+  axios.get('Buildings/ExistingStreetsWithBuildingNumbersWithHouseManagement');
 
 export const getIndividualDevicesReport = (
   payload: IndividualDeviceReportRequestPaload,

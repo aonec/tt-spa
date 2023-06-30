@@ -73,8 +73,8 @@ export const getAddressSearchData = (
     (data || []).reduce((acc, elem) => {
       const addresses =
         elem.addresses?.map((address) => ({
-          id: address.housingStockId,
-          addressString: `ул. ${elem.street}, д. ${address.housingStockNumber}`,
+          id: address.buildingId,
+          addressString: `ул. ${elem.street}, д. ${address.number}`,
         })) || [];
 
       return [...acc, ...addresses];

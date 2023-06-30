@@ -47,7 +47,7 @@ const fetchNodeServiceZonesFx = domain.createEffect<
   NodeServiceZoneListResponse | null
 >(getNodeServiceZones);
 
-const CreateNodeGate = createGate<{ housingStockId: number }>();
+const CreateNodeGate = createGate<{ buildingId: number }>();
 
 const updateRequestPayload = domain.createEvent<CreateNodeFormPayload>();
 
@@ -114,17 +114,17 @@ const $nodeServiceZones = domain
   .reset(CreateNodeGate.close);
 
 guard({
-  clock: CreateNodeGate.open.map(({ housingStockId }) => housingStockId),
+  clock: CreateNodeGate.open.map(({ buildingId }) => buildingId),
   filter: Boolean,
   target: fetchHousingStockFx,
 });
 
 guard({
-  source: $requestPayload.map(({ housingStockId }) => housingStockId),
+  source: $requestPayload.map(({ buildingId }) => buildingId),
   clock: guard({
     source: CreateNodeGate.state,
-    clock: $requestPayload.map(({ housingStockId }) => housingStockId),
-    filter: ({ housingStockId }) => !housingStockId,
+    clock: $requestPayload.map(({ buildingId }) => buildingId),
+    filter: ({ buildingId }) => !buildingId,
   }),
   filter: Boolean,
   target: fetchHousingStockFx,
@@ -138,7 +138,7 @@ guard({
 });
 
 guard({
-  source: $requestPayload.map(({ housingStockId }) => housingStockId || null),
+  source: $requestPayload.map(({ buildingId }) => buildingId || null),
   clock: $requestPayload,
   filter: (id): id is number => Boolean(id),
   target: fetchCalculatorsListFx,

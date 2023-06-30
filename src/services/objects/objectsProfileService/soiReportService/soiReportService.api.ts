@@ -34,7 +34,7 @@ export const getHouseManagements = (
 export const getAdresses = (
   payload: GetAddressesWithCityRequestPayload,
 ): Promise<StreetWithBuildingNumbersResponsePagedList> => {
-  return axios.get('HousingStocks/ExistingStreetsWithHousingStockNumbers', {
+  return axios.get('Buildings/ExistingStreetsWithBuildingNumbers', {
     params: payload,
   });
 };

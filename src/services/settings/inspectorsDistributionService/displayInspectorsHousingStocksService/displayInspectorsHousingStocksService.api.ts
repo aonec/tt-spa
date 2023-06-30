@@ -5,5 +5,5 @@ import { InspectorOnBuildingResponse } from 'myApi';
 export const getInspectorsHousingStocks = (
   params: GetInspectorsHousingStocksRequestParams,
 ): Promise<InspectorOnBuildingResponse[] | null> => {
-  return axios.get('HousingStocks/inspectors', { params });
+  return axios.get('Buildings/inspectors', { params });
 };

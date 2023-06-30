@@ -19,7 +19,7 @@ export const HousingStockItem: FC<HousingStockItemProps> = ({
       <Address>{`ул. ${housingStock.street} ${housingStock.number}${
         housingStock.corpus || ''
       }`}</Address>
-      <div>{housingStock.houseManagement}</div>
+      <div>{housingStock.houseManagementName}</div>
       <Select
         ref={inspectedDatSelectRef}
         placeholder="Число"

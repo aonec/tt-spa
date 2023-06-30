@@ -1,6 +1,6 @@
 import { axios } from '01/axios';
 import { createQuery } from '@farfetched/core';
-import { AssingmentResponse } from 'myApi';
+import { AssignmentResponse } from 'myApi';
 import {
   DownloadControllerWorkFileRequestPayload,
   GetAssigmentsRequestPayload,
@@ -9,7 +9,7 @@ import { downloadURI } from 'utils/downloadByURL';
 
 export const individualSealAssignmentsQuery = createQuery<
   GetAssigmentsRequestPayload,
-  AssingmentResponse[]
+  AssignmentResponse[]
 >({
   handler: (params) => axios.get('IndividualSeal/Assignments', { params }),
 });

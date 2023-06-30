@@ -6,7 +6,7 @@ import { Props } from './Certificate.types';
 
 export const Certificate: FC<Props> = ({ certificate }) => {
   const { fullName: name, address, individualDevices: devices } = certificate;
-  const { city, street, housingStockNumber, apartmentNumber } = address || {};
+  const { city, street, buildingNumber, apartmentNumber } = address || {};
 
   const [fullName, setFullName] = useState(name);
 
@@ -76,7 +76,7 @@ export const Certificate: FC<Props> = ({ certificate }) => {
           <span style={{ textDecoration: 'underline' }}> {street} </span>, д.
           <span style={{ textDecoration: 'underline' }}>
             {' '}
-            {housingStockNumber}{' '}
+            {buildingNumber}{' '}
           </span>
           , кв.
           <span style={{ textDecoration: 'underline' }}>
