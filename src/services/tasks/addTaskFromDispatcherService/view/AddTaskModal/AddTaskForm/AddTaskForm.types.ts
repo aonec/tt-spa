@@ -39,4 +39,6 @@ export type AddTaskFormProps = {
   }[];
   handleCreateTask: (payload: AddTask) => void;
   setDisableSubmit: React.Dispatch<React.SetStateAction<boolean>>;
+  choоseLeadExecutor: (payload: string) => void;
+  executors: ExecutorGrpcModel[];
 };

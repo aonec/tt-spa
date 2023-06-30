@@ -5,6 +5,7 @@ import {
   SourceGrpcModel,
   WorkCategoryGrpcModel,
 } from 'myApi';
+import queryString from 'query-string';
 
 export const createTask = (
   requestPayload: CreateErpTaskRequest,
@@ -26,4 +27,13 @@ export const getLeadExecutors = (): Promise<ExecutorGrpcModel[]> => {
 
 export const getTasksErpObjects = (): Promise<ExecutorGrpcModel[]> => {
   return axios.get('Tasks/ErpObjects'); // поправят тип
+};
+
+export const getErpExecutorsForLead = (params: {
+  leadId: string;
+}): Promise<ExecutorGrpcModel[]> => {
+  return axios.get('Tasks/ErpExecutorsForLead', {
+    params,
+    paramsSerializer: queryString.stringify,
+  });
 };

@@ -14,8 +14,10 @@ export const AddTaskFromDispatcherContainer = () => {
   const ErpObjects = useUnit(outputs.$ErpObjects);
   const leadExecutors = useUnit(outputs.$leadExecutors);
   const workCategories = useUnit(outputs.$workCategories);
+  const executors = useUnit(outputs.$executors);
 
   const handleCreateTask = useUnit(inputs.handleCreateTask);
+  const choоseLeadExecutor = useUnit(inputs.choоseLeadExecutor);
 
   return (
     <>
@@ -27,6 +29,8 @@ export const AddTaskFromDispatcherContainer = () => {
         leadExecutors={leadExecutors}
         workCategories={workCategories}
         handleCreateTask={handleCreateTask}
+        choоseLeadExecutor={choоseLeadExecutor}
+        executors={executors}
       />
     </>
   );

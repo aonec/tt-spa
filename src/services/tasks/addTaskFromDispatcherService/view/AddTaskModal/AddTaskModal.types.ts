@@ -13,4 +13,6 @@ export type AddTaskModalProps = {
   leadExecutors: ExecutorGrpcModel[];
   workCategories: WorkCategoryGrpcModel[];
   handleCreateTask: (payload: AddTask) => void;
+  choоseLeadExecutor: (payload: string) => void;
+  executors: ExecutorGrpcModel[];
 };

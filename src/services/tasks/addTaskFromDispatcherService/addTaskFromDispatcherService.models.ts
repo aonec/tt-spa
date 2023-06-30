@@ -2,6 +2,7 @@ import { createDomain, forward, sample } from 'effector';
 import {
   createTask,
   getERPSources,
+  getErpExecutorsForLead,
   getLeadExecutors,
   getTasksErpObjects,
   getWorkCategories,
@@ -22,6 +23,8 @@ const PageGate = createGate();
 
 const handleOpenModal = domain.createEvent();
 const handleCloseModal = domain.createEvent();
+
+const choоseLeadExecutor = domain.createEvent<string>();
 
 const handleCreateTask = domain.createEvent<AddTask>();
 
@@ -47,6 +50,11 @@ const getErpObjectsFx = domain.createEffect<void, ExecutorGrpcModel[]>(
   getTasksErpObjects,
 );
 
+const getErpExecutorsForLeadFx = domain.createEffect<
+  { leadId: string },
+  ExecutorGrpcModel[]
+>(getErpExecutorsForLead);
+
 const $isModalOpen = domain
   .createStore<boolean>(false)
   .on(handleOpenModal, () => true)
@@ -64,9 +72,15 @@ const $leadExecutors = domain
   .createStore<ExecutorGrpcModel[]>([])
   .on(getLeadExecutorsFx.doneData, (_, data) => data);
 
+const $executors = domain
+  .createStore<ExecutorGrpcModel[]>([])
+  .on(getErpExecutorsForLeadFx.doneData, (_, data) => data);
+
 const $ErpObjects = domain
   .createStore<ExecutorGrpcModel[]>([])
   .on(getErpObjectsFx.doneData, (_, data) => data);
+
+const $chosenLeadExecutorId = domain.createStore<string | null>(null);
 
 sample({
   clock: handleCreateTask,
@@ -96,32 +110,39 @@ sample({
 
 forward({
   from: PageGate.open,
-  to: getERPSourcesFx,
+  to: [
+    getERPSourcesFx,
+    getWorkCategoriesFx,
+    getLeadExecutorsFx,
+    getErpObjectsFx,
+  ],
 });
 
-forward({
-  from: PageGate.open,
-  to: getWorkCategoriesFx,
-});
-
-forward({
-  from: PageGate.open,
-  to: getLeadExecutorsFx,
-});
-
-forward({
-  from: PageGate.open,
-  to: getErpObjectsFx,
+sample({
+  clock: choоseLeadExecutor,
+  filter: Boolean,
+  fn: (data) => {
+    return {
+      leadId: data,
+    };
+  },
+  target: getErpExecutorsForLeadFx,
 });
 
 export const addTaskFromDispatcherService = {
-  inputs: { handleOpenModal, handleCloseModal, handleCreateTask },
+  inputs: {
+    handleOpenModal,
+    handleCloseModal,
+    handleCreateTask,
+    choоseLeadExecutor,
+  },
   outputs: {
     $isModalOpen,
     $ERPSources,
     $workCategories,
     $leadExecutors,
     $ErpObjects,
+    $executors,
   },
   gates: { PageGate },
 };

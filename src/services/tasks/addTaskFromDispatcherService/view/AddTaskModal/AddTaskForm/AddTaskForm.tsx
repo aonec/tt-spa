@@ -33,6 +33,8 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
   ErpObjects,
   handleCreateTask,
   setDisableSubmit,
+  choоseLeadExecutor,
+  executors,
 }) => {
   const { values, handleSubmit, setFieldValue, errors } = useFormik<AddTask>({
     initialValues: {
@@ -274,9 +276,12 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
         <GridContainer>
           <FormItem label="Ответственный исполнитель">
             <Select
-              placeholder="Время"
+              placeholder="Выберите из списка"
               value={values.leadId || undefined}
-              onChange={(value) => setFieldValue('leadId', value)}
+              onChange={(value) => {
+                setFieldValue('leadId', value);
+                choоseLeadExecutor(value as string);
+              }}
             >
               {leadExecutors.map((leadExecutor, index) => (
                 <Select.Option
@@ -290,15 +295,19 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
           </FormItem>
           <FormItem label="Исполнитель">
             <Select
-              placeholder="Время"
+              placeholder="Выберите из списка"
               value={values.executorId || undefined}
               onChange={(value) => setFieldValue('executorId', value)}
+              disabled={!Boolean(values.leadId)}
             >
-              {/* {Object.values(HeatingStationType).map((e) => (
-              <Select.Option value={e} key={e}>
-                {HeatingStationTypeDictionary[e]}
-              </Select.Option>
-            ))} */}
+              {executors.map((executor, index) => (
+                <Select.Option
+                  value={executor.id || index}
+                  key={executor.id || index}
+                >
+                  {executor.name}
+                </Select.Option>
+              ))}
             </Select>
           </FormItem>
         </GridContainer>
