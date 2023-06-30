@@ -9,6 +9,8 @@ export type WorkWithIndividualDeviceFormProps = {
   form: WorkWithIndividualDeviceFormType;
   contractors: ContractorListResponse[] | null;
   handleFetchSerialNumberForCheck: (serialNumber: string) => void;
+  handleFetchModels: (model: string) => void;
   isSerialNumberLoading: boolean;
   isSerialNumberAllreadyExist: boolean;
+  models: string[] | null;
 };

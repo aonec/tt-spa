@@ -7,6 +7,7 @@ import { WithLoader } from 'ui-kit/shared_components/WithLoader';
 import { WorkWithIndividualDevicePage } from './view/WorkWithIndividualDevicePage';
 import { displayContractorsService } from 'services/contractors/displayContractorsService';
 import { getSerialNumberQuery } from './workWithIndividualDeviceService.api';
+import { displayIndividualDeviceAndNamesService } from '../displayIndividualDeviceAndNamesService';
 
 const { gates, inputs, outputs, forms } = workWithIndividualDeviceService;
 const { WorkWithIndividualDeviceGate, IndividualDeviceGate } = gates;
@@ -22,11 +23,17 @@ export const WorkWithIndividualDeviceContainer: FC<
     isDeviceLoading,
     contractors,
     handleFetchSerialNumberForCheck,
+    handleFetchModels,
+    models,
   } = useUnit({
     individualDevice: outputs.$individualDevice,
     isDeviceLoading: outputs.$isDeviceLoading,
     contractors: displayContractorsService.outputs.$contractors,
     handleFetchSerialNumberForCheck: inputs.fetchSerialNumberForCheck,
+    handleFetchModels:
+      displayIndividualDeviceAndNamesService.inputs.handleFetchModels,
+    models:
+      displayIndividualDeviceAndNamesService.outputs.$individualDevicesNames,
   });
 
   const { data: isSerialNumberAllreadyExist, pending: isSerialNumberLoading } =
@@ -44,8 +51,10 @@ export const WorkWithIndividualDeviceContainer: FC<
           form={forms.deviceInfoForm}
           contractors={contractors}
           handleFetchSerialNumberForCheck={handleFetchSerialNumberForCheck}
+          handleFetchModels={handleFetchModels}
           isSerialNumberAllreadyExist={isSerialNumberAllreadyExist || false}
           isSerialNumberLoading={isSerialNumberLoading}
+          models={models}
         />
       </WithLoader>
     </>

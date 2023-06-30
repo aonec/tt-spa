@@ -15,4 +15,5 @@ export type BaseInfoStageProps = {
   handleSubmitForm: (payload: CreateIndividualDeviceRequest) => void;
   apartmentId: number | undefined;
   formData: CreateIndividualDeviceRequest | null;
+  handleFetchModels: (model: string) => void;
 };

@@ -12,21 +12,16 @@ import { Space } from '01/shared/ui/Layout/Space/Space';
 import { Loader } from 'ui-kit/Loader';
 import { displayIndividualDeviceAndNamesService } from 'services/devices/individualDevices/displayIndividualDeviceAndNamesService/displayIndividualDeviceAndNamesService.model';
 
-
 const {
   outputs: {
     $individualDevice,
     $isIndividualDeviceLoading,
-    $individualDevicesNames,
   },
-  gates: { IndividualDevicecModelsGate },
 } = displayIndividualDeviceAndNamesService;
 
 export const BaseInfoStage = () => {
-
-  const modelNames = useStore($individualDevicesNames);
   const device = useStore($individualDevice);
-  const { fields, set } = useForm(addIndividualDeviceForm);
+  const { fields } = useForm(addIndividualDeviceForm);
   const type = useStore(
     SwitchIndividualDeviceGate.state.map(({ type }) => type),
   );
@@ -35,8 +30,6 @@ export const BaseInfoStage = () => {
   const isSwitch = type === 'switch';
 
   const pending = useStore($isIndividualDeviceLoading);
-
-  const modelNameDebounced = fields.model.value;
 
   const titleOfInput = useMemo(() => {
     if (isSwitch) {
@@ -96,8 +89,6 @@ export const BaseInfoStage = () => {
 
   return (
     <Wrap>
-      <IndividualDevicecModelsGate model={modelNameDebounced} />
-
       {/* {!isCheck && <FormHeader>Общие данные о приборе</FormHeader>} */}
 
       {pending ? <Loader show size={32} /> : form}

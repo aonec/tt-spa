@@ -42,6 +42,8 @@ export const WorkWithIndividualDeviceForm: FC<
   handleFetchSerialNumberForCheck,
   isSerialNumberAllreadyExist,
   isSerialNumberLoading,
+  handleFetchModels,
+  models,
 }) => {
   const { id } = useParams<{ id: string }>();
 
@@ -134,8 +136,11 @@ export const WorkWithIndividualDeviceForm: FC<
                 disabled={!isSwitch}
                 value={fields.model.value}
                 placeholder="Введите модель прибора"
-                onChange={fields.model.onChange}
-                // options={modelNames?.map((elem) => ({ value: elem })) || []}
+                onChange={(value) => {
+                  fields.model.onChange(value);
+                  handleFetchModels(value);
+                }}
+                options={(models || []).map((elem) => ({ value: elem })) || []}
                 onKeyDown={enterKeyDownHandler(1)}
               />
               <ErrorMessage>

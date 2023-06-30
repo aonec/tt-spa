@@ -24,6 +24,8 @@ export const WorkWithIndividualDevicePage: FC<
   handleFetchSerialNumberForCheck,
   isSerialNumberAllreadyExist,
   isSerialNumberLoading,
+  handleFetchModels,
+  models,
 }) => {
   return (
     <>
@@ -55,6 +57,8 @@ export const WorkWithIndividualDevicePage: FC<
               handleFetchSerialNumberForCheck={handleFetchSerialNumberForCheck}
               isSerialNumberAllreadyExist={isSerialNumberAllreadyExist}
               isSerialNumberLoading={isSerialNumberLoading}
+              handleFetchModels={handleFetchModels}
+              models={models}
             />
           </ContentWrapper>
         </>
