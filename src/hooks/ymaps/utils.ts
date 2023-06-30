@@ -64,7 +64,7 @@ export function useRenderDistricts(
   const districtTitles = useMemo(() => {
     return Object.entries(savedDistricts)
       .map(([id, elem]) => {
-        const name = districts.find((elem) => elem.id)?.name;
+        const name = districts.find((elem) => elem.id === id)?.name;
         return {
           text: name,
           coords: findPolygonCenter(elem.geometry?.getCoordinates()?.[0] || []),

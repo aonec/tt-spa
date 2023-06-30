@@ -1,11 +1,13 @@
 import { forward } from 'effector';
 import { createGate } from 'effector-react';
 import {
+  createDistrictMutation,
   existingDistrictsQuery,
   existingHousingStocksQuery,
 } from './createDistrictBorderMapService.api';
 import { createForm } from 'effector-forms/dist';
 import { DistrictColor } from 'types';
+import { message } from 'antd';
 
 const CreateDistrictGate = createGate();
 
@@ -26,8 +28,23 @@ const createDistrictForm = createForm({
 });
 
 forward({
+  from: createDistrictMutation.finished.success,
+  to: createDistrictForm.resetValues,
+});
+
+forward({
   from: CreateDistrictGate.open,
   to: [existingDistrictsQuery.start, existingHousingStocksQuery.start],
+});
+
+createDistrictMutation.finished.success.watch(() => {
+  message.success('Район успешно создан');
+});
+
+createDistrictMutation.finished.failure.watch((e) => {
+  const error = e.error.response.data.error;
+
+  message.error(error.Text || error.Message);
 });
 
 export const createDistrictBorderMapService = {

@@ -17,7 +17,7 @@ function isPointOnLine(point: number[], x: number, y: number) {
 
 export function isPointInsidePolygon(
   point: number[],
-  polygonVertices: number[][],
+  polygonVertices: number[][] = [],
 ) {
   const numberOfVertices = polygonVertices.length;
   let isInside = false;
