@@ -25,7 +25,7 @@ export const AddressStreetGroup: FC<AddressStreetGroupProps> = ({
   const street = address.street;
 
   const housingStockIds =
-    address.addresses?.map((address) => address.housingStockId) || [];
+    address.addresses?.map((address) => address.buildingId) || [];
 
   const currentStreetCheckedHousingStockIds =
     checkedhousingStockIdsWithStreet.find((data) => data.street === street)
@@ -90,7 +90,7 @@ export const AddressStreetGroup: FC<AddressStreetGroupProps> = ({
         <div>
           {address?.addresses?.map((housingStock) => (
             <HousingStockNumber
-              key={housingStock.housingStockId}
+              key={housingStock.buildingId}
               housingStock={housingStock}
               checkedhousingStockIdsWithStreet={
                 checkedhousingStockIdsWithStreet
