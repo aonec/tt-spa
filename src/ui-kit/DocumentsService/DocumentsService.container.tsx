@@ -1,5 +1,5 @@
 import { DragAndDrop } from 'ui-kit/DragAndDrop';
-import React, { FC } from 'react';
+import React, { FC, useEffect } from 'react';
 import { useDocumentsUpload } from './DocumentsService.hook';
 import {
   DocumentsUploadComponentType,
@@ -9,9 +9,13 @@ import { DocumentsLineUpload } from './view/DocumentsLineUpload';
 import { DocumentsList } from './view/DocumentsList';
 import { ESecuredIdentityRoleName } from 'myApi';
 import { usePermission } from 'hooks/usePermission';
+import { documentService } from './DocumentsService.model';
+import { useEvent } from 'effector-react';
 
 const accept =
   'application/msword, application/vnd.ms-excel, application/pdf, image/*';
+
+const { inputs } = documentService;
 
 export const DocumentsUploadContainer: FC<DocumentsUploadContainerProps> = ({
   uniqId,
@@ -37,6 +41,12 @@ export const DocumentsUploadContainer: FC<DocumentsUploadContainerProps> = ({
     documents,
     onChange,
   );
+
+  const setIsLoading = useEvent(inputs.setIsLoading);
+
+  useEffect(() => {
+    setIsLoading(isLoading);
+  }, [isLoading, setIsLoading]);
 
   const isMaxDocuments = documents.length >= max;
 

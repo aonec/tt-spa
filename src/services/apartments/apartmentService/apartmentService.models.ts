@@ -31,7 +31,7 @@ const $apartment = domain
   .reset(resetApartment);
 
 sample({
-  clock: ApartmentGate.state,
+  clock: ApartmentGate.open,
   source: ApartmentGate.state.map((state) => state.id),
   target: fetchApartmentFx,
 });

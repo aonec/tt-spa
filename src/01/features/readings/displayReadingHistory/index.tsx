@@ -1,16 +1,20 @@
 import React from 'react';
-import { IndividualDeviceGate } from '01/features/individualDevices/displayIndividualDevice/models';
 import { useParams } from 'react-router-dom';
 import { ReadingHistoryHeader } from './components/Header';
 import { ReadingsHistoryList } from './components/ReadingsHistoryList';
 import { $isReadingsHstoryModalOpen, ReadingHistoryGate } from './models';
 import { useStore } from 'effector-react';
+import { displayIndividualDeviceAndNamesService } from 'services/devices/individualDevices/displayIndividualDeviceAndNamesService/displayIndividualDeviceAndNamesService.model';
 
 interface Props {
   deviceId?: number;
   isModal?: boolean;
   readonly?: boolean;
 }
+
+const {
+  gates: { IndividualDeviceGate },
+} = displayIndividualDeviceAndNamesService;
 
 export const ReadingHistoryPage: React.FC<Props> = ({
   deviceId: deviceIdFromProps,
