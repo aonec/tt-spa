@@ -28,7 +28,7 @@ const createDistrictForm = createForm({
 });
 
 forward({
-  from: createDistrictMutation.finished.success,
+  from: [createDistrictMutation.finished.success, CreateDistrictGate.close],
   to: createDistrictForm.resetValues,
 });
 
