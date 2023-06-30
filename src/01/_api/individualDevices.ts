@@ -15,14 +15,6 @@ export interface CloseIndividualDeviceRequestBody {
   closingReason: string | null;
 }
 
-export const closeIndividualDevice = (props: {
-  deviceId: number;
-  requestBody: CloseIndividualDeviceRequestBody;
-}): Promise<IndividualDeviceResponse | null> => {
-  const { deviceId, requestBody } = props;
-  return axios.post(`IndividualDevices/${deviceId}/close`, requestBody);
-};
-
 export const createIndividualDevice = async (
   payload: CreateIndividualDeviceRequest,
 ): Promise<MeteringDeviceResponse> => {
