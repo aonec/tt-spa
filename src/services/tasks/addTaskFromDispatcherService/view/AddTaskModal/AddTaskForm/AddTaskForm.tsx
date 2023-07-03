@@ -49,6 +49,10 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
 
       requestDate: null,
       requestTime: null,
+
+      manualDeadlineDate: null,
+      manualDeadlineTime: null,
+
       taskDeadline: null,
 
       addressSearch: '',
@@ -85,9 +89,16 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
     },
   });
 
+  const isPermittedToChangeDeadline =
+    values.workTypeId ===
+    ('48eb4f62-15a1-11e9-8176-001dd8b88b72' ||
+      '6373ec3b-302b-11e9-8184-001dd8b88b72');
+
   const calculatedDeadlineDateArr = useMemo(() => {
     if (!taskDeadline || !values.requestDate || !values.requestTime)
       return null;
+
+    if (isPermittedToChangeDeadline) return null;
 
     const sourceDateTime = moment(
       values.requestDate
@@ -106,7 +117,7 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
     const dateArr = deadlineDateFormatted.split('T');
 
     return dateArr;
-  }, [taskDeadline, values.requestDate, values.requestTime]);
+  }, [taskDeadline, values.requestDate, values.requestTime, values.workTypeId]);
 
   const sortedLeadExecutors = useMemo(() => {
     return sortByAlphabet(leadExecutors);
@@ -242,17 +253,36 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
 
             <FormItem label="Нормативный срок">
               <GridContainerAsymmetricLeft>
-                <Input
-                  disabled
-                  placeholder="Выберите дату заявки"
-                  value={calculatedDeadlineDateArr?.[0]}
-                />
+                {!isPermittedToChangeDeadline ? (
+                  <>
+                    <Input
+                      disabled
+                      placeholder="Выберите дату заявки"
+                      value={calculatedDeadlineDateArr?.[0]}
+                    />
+                    <Input
+                      disabled
+                      placeholder="Время"
+                      value={calculatedDeadlineDateArr?.[1]}
+                    />
+                  </>
+                ) : (
+                  <>
+                    <DatePicker
+                      value={values.manualDeadlineDate}
+                      onChange={(value) =>
+                        setFieldValue('manualDeadlineDate', value)
+                      }
+                    />
 
-                <Input
-                  disabled
-                  placeholder="Время"
-                  value={calculatedDeadlineDateArr?.[1]}
-                />
+                    <SelectTime
+                      value={values.manualDeadlineTime || undefined}
+                      onChange={(value) =>
+                        setFieldValue('manualDeadlineTime', value)
+                      }
+                    />
+                  </>
+                )}
               </GridContainerAsymmetricLeft>
             </FormItem>
           </GridContainer>

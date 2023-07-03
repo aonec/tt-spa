@@ -17,6 +17,9 @@ export type AddTask = {
   requestDate: moment.Moment | null;
   requestTime: string | null;
 
+  manualDeadlineDate: moment.Moment | null;
+  manualDeadlineTime: string | null;
+
   addressSearch: string;
   selectedObjectAddress: string | null;
 

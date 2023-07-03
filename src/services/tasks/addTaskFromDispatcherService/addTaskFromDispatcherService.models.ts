@@ -30,6 +30,7 @@ const handleCloseModal = domain.createEvent();
 const choоseLeadExecutor = domain.createEvent<string>();
 
 const handleTaskDeadlineRequest = domain.createEvent<GetTaskDeadlineRequest>();
+const resetDeadline = domain.createEvent();
 
 const handleCreateTask = domain.createEvent<AddTask>();
 
@@ -96,7 +97,8 @@ const $taskDeadlineRequest = domain
 
 const $taskDeadline = domain
   .createStore<GetTaskDeadlineGrpcResponse | null>(null)
-  .on(getErpTaskDeadlineFx.doneData, (_, data) => data);
+  .on(getErpTaskDeadlineFx.doneData, (_, data) => data)
+  .reset(resetDeadline);
 
 sample({
   clock: handleCreateTask,
@@ -110,6 +112,10 @@ sample({
       ?.format('YYYY-MM-DD')
       .concat('T', data.requestTime || '');
 
+    const manualTaskDeadline = data.manualDeadlineDate
+      ?.format('YYYY-MM-DD')
+      .concat('T', data.manualDeadlineTime || '');
+
     return {
       leadId: data.leadId,
       objectId: object?.id,
@@ -122,7 +128,7 @@ sample({
       subscriberFullName: data.subscriberName,
       subscriberPhoneNumber: data.phoneNumber,
       workerId: data.executorId,
-      taskDeadline: data.taskDeadline,
+      taskDeadline: data.taskDeadline || manualTaskDeadline,
     } as CreateErpTaskRequest;
   },
   target: createTaskFx,
@@ -153,18 +159,38 @@ sample({
   clock: $taskDeadlineRequest.updates,
   source: $taskDeadlineRequest,
   filter: (request) => {
-    if (!Boolean(request)) {
+    if (!request) {
       return false;
     }
-    if (!Boolean(request?.TaskType)) {
+    if (!Boolean(request.TaskType)) {
       return false;
     }
-    if (!Boolean(request?.WorkCategoryId)) {
+    if (!Boolean(request.WorkCategoryId)) {
+      return false;
+    }
+    if (
+      request.WorkCategoryId ===
+      ('48eb4f62-15a1-11e9-8176-001dd8b88b72' ||
+        '6373ec3b-302b-11e9-8184-001dd8b88b72')
+    ) {
       return false;
     }
     return true;
   },
   target: getErpTaskDeadlineFx as any,
+});
+
+sample({
+  clock: $taskDeadlineRequest.updates,
+  source: $taskDeadlineRequest,
+  filter: (data) => {
+    return (
+      data?.WorkCategoryId ===
+      ('48eb4f62-15a1-11e9-8176-001dd8b88b72' ||
+        '6373ec3b-302b-11e9-8184-001dd8b88b72')
+    );
+  },
+  target: resetDeadline,
 });
 
 export const addTaskFromDispatcherService = {
