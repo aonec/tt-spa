@@ -16,6 +16,7 @@ export const AddTaskModal: FC<AddTaskModalProps> = ({
   choоseLeadExecutor,
   executors,
   handleTaskDeadlineRequest,
+  taskDeadline,
 }) => {
   const [disableSubmit, setDisableSubmit] = useState(true);
 
@@ -38,6 +39,7 @@ export const AddTaskModal: FC<AddTaskModalProps> = ({
           choоseLeadExecutor={choоseLeadExecutor}
           executors={executors}
           handleTaskDeadlineRequest={handleTaskDeadlineRequest}
+          taskDeadline={taskDeadline}
         />
       }
       formId={formId}

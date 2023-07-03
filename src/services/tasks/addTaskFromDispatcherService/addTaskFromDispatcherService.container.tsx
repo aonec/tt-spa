@@ -15,9 +15,7 @@ export const AddTaskFromDispatcherContainer = () => {
   const leadExecutors = useUnit(outputs.$leadExecutors);
   const workCategories = useUnit(outputs.$workCategories);
   const executors = useUnit(outputs.$executors);
-  const taskDeadlineRequest = useUnit(outputs.$taskDeadlineRequest);
   const taskDeadline = useUnit(outputs.$taskDeadline);
-  console.log(taskDeadline)
 
   const handleCreateTask = useUnit(inputs.handleCreateTask);
   const choоseLeadExecutor = useUnit(inputs.choоseLeadExecutor);
@@ -36,6 +34,7 @@ export const AddTaskFromDispatcherContainer = () => {
         choоseLeadExecutor={choоseLeadExecutor}
         executors={executors}
         handleTaskDeadlineRequest={handleTaskDeadlineRequest}
+        taskDeadline={taskDeadline}
       />
     </>
   );

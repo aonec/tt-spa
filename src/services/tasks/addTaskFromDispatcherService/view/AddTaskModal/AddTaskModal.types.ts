@@ -1,5 +1,6 @@
 import {
   ExecutorGrpcModel,
+  GetTaskDeadlineGrpcResponse,
   GetTaskDeadlineRequest,
   SourceGrpcModel,
   WorkCategoryGrpcModel,
@@ -17,4 +18,5 @@ export type AddTaskModalProps = {
   choоseLeadExecutor: (payload: string) => void;
   executors: ExecutorGrpcModel[];
   handleTaskDeadlineRequest: (payload: GetTaskDeadlineRequest) => void;
+  taskDeadline: GetTaskDeadlineGrpcResponse | null;
 };

@@ -20,6 +20,7 @@ import { addTaskFromDispatcherService } from 'services/tasks/addTaskFromDispatch
 import { TaskTypeDictionary } from 'dictionaries';
 import { AutoComplete } from 'ui-kit/AutoComplete';
 import { autocompleteAddress } from './AddTaskForm.utils';
+import moment from 'moment';
 
 const {
   gates: { PageGate },
@@ -36,13 +37,14 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
   choоseLeadExecutor,
   executors,
   handleTaskDeadlineRequest,
+  taskDeadline,
 }) => {
   const { values, handleSubmit, setFieldValue, errors } = useFormik<AddTask>({
     initialValues: {
       sourceId: null,
       requestNumber: null,
       taskType: null as null | EisTaskType,
-      categoryId: null as null | string,
+      // categoryId: null as null | string,
       workTypeId: null,
 
       requestDate: null,
@@ -81,6 +83,28 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
       handleCreateTask(data);
     },
   });
+
+  const calculatedDeadlineDateArr = useMemo(() => {
+    if (!taskDeadline || !values.requestDate || !values.requestTime)
+      return null;
+
+    const sourceDateTime = moment(
+      values.requestDate
+        .format('YYYY-MM-DD')
+        .concat('T', values.requestTime || ''),
+    );
+
+    const deadlineDate = sourceDateTime.add(
+      taskDeadline.deadlineInHours,
+      'hours',
+    );
+
+    const deadlineDateFormatted = deadlineDate.format('YYYY-MM-DDTHH:mm');
+
+    const dateArr = deadlineDateFormatted.split('T');
+
+    return dateArr;
+  }, [taskDeadline, values.requestDate, values.requestTime]);
 
   const isHaveValidationErrors = useMemo(
     () => Boolean(Object.keys(errors).length),
@@ -133,25 +157,25 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
             />
           </FormItem>
         </GridContainer>
-        <GridContainer>
-          <FormItem label="Тип заявки">
-            <Select
-              placeholder="Выберите из списка"
-              value={values.taskType || undefined}
-              onChange={(value) => {
-                setFieldValue('taskType', value);
-                handleTaskDeadlineRequest({ taskType: value as EisTaskType });
-              }}
-            >
-              {Object.values(EisTaskType).map((e) => (
-                <Select.Option value={e} key={e}>
-                  {TaskTypeDictionary[e]}
-                </Select.Option>
-              ))}
-            </Select>
-          </FormItem>
 
-          <FormItem label="Категория">
+        <FormItem label="Тип заявки">
+          <Select
+            placeholder="Выберите из списка"
+            value={values.taskType || undefined}
+            onChange={(value) => {
+              setFieldValue('taskType', value);
+              handleTaskDeadlineRequest({ taskType: value as EisTaskType });
+            }}
+          >
+            {Object.values(EisTaskType).map((e) => (
+              <Select.Option value={e} key={e}>
+                {TaskTypeDictionary[e]}
+              </Select.Option>
+            ))}
+          </Select>
+        </FormItem>
+
+        {/* <FormItem label="Категория">
             <Select
               placeholder="Выберите из списка"
               value={values.categoryId || undefined}
@@ -165,9 +189,8 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
                   {category.name}
                 </Select.Option>
               ))} */}
-            </Select>
-          </FormItem>
-        </GridContainer>
+        {/* </Select>
+          </FormItem> */}
 
         <ContainerWithOutline>
           <FormItem label="Вид работ">
@@ -206,22 +229,20 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
                 />
               </GridContainerAsymmetricLeft>
             </FormItem>
+
             <FormItem label="Нормативный срок">
               <GridContainerAsymmetricLeft>
-                <DatePicker disabled />
+                <Input
+                  disabled
+                  placeholder="Выберите дату заявки"
+                  value={calculatedDeadlineDateArr?.[0]}
+                />
 
-                <Select
+                <Input
                   disabled
                   placeholder="Время"
-                  // value={values.isThermalChamber || undefined}
-                  onChange={(value) => setFieldValue('isThermalChamber', value)}
-                >
-                  {/* {Object.values(HeatingStationType).map((e) => (
-              <Select.Option value={e} key={e}>
-                {HeatingStationTypeDictionary[e]}
-              </Select.Option>
-            ))} */}
-                </Select>
+                  value={calculatedDeadlineDateArr?.[1]}
+                />
               </GridContainerAsymmetricLeft>
             </FormItem>
           </GridContainer>
@@ -241,7 +262,7 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
           </FormItem>
 
           <GridContainerAsymmetricRight>
-            <FormItem label="Номер квартиры">
+            {/* <FormItem label="Номер квартиры">
               <Input
                 placeholder="Введите"
                 value={values.apartmentNumber || undefined}
@@ -249,7 +270,7 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
                   setFieldValue('apartmentNumber', value.target.value)
                 }
               />
-            </FormItem>
+            </FormItem> */}
 
             <FormItem label="УК">
               <Input placeholder="???" disabled />

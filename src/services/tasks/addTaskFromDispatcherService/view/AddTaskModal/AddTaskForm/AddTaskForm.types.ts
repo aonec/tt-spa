@@ -1,6 +1,7 @@
 import {
   EisTaskType,
   ExecutorGrpcModel,
+  GetTaskDeadlineGrpcResponse,
   GetTaskDeadlineRequest,
   SourceGrpcModel,
   WorkCategoryGrpcModel,
@@ -10,7 +11,7 @@ export type AddTask = {
   sourceId: string | null;
   requestNumber: string | null;
   taskType: null | EisTaskType;
-  categoryId: string | null;
+  // categoryId: string | null;
   workTypeId: string | null;
 
   requestDate: moment.Moment | null;
@@ -43,4 +44,5 @@ export type AddTaskFormProps = {
   choоseLeadExecutor: (payload: string) => void;
   executors: ExecutorGrpcModel[];
   handleTaskDeadlineRequest: (payload: GetTaskDeadlineRequest) => void;
+  taskDeadline: GetTaskDeadlineGrpcResponse | null;
 };

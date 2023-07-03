@@ -62,7 +62,7 @@ const getErpExecutorsForLeadFx = domain.createEffect<
 
 const getErpTaskDeadlineFx = domain.createEffect<
   GetTaskDeadlineRequest,
-  GetTaskDeadlineGrpcResponse[]
+  GetTaskDeadlineGrpcResponse
 >(getErpTaskDeadline);
 
 const $isModalOpen = domain
@@ -97,7 +97,7 @@ const $taskDeadlineRequest = domain
   .on(handleTaskDeadlineRequest, (prev, data) => ({ ...prev, ...data }));
 
 const $taskDeadline = domain
-  .createStore<GetTaskDeadlineGrpcResponse[]>([])
+  .createStore<GetTaskDeadlineGrpcResponse | null>(null)
   .on(getErpTaskDeadlineFx.doneData, (_, data) => data);
 
 sample({

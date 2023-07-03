@@ -43,7 +43,7 @@ export const getErpExecutorsForLead = (params: {
 
 export const getErpTaskDeadline = (
   params: GetTaskDeadlineRequest,
-): Promise<GetTaskDeadlineGrpcResponse[]> => {
+): Promise<GetTaskDeadlineGrpcResponse> => {
   return axios.get('Tasks/ErpTaskDeadline', {
     params,
     paramsSerializer: queryString.stringify,
