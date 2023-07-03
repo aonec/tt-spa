@@ -12,13 +12,13 @@ import {
   CreateErpTaskRequest,
   ExecutorGrpcModel,
   GetTaskDeadlineGrpcResponse,
-  GetTaskDeadlineRequest,
   SourceGrpcModel,
   WorkCategoryGrpcModel,
 } from 'myApi';
 import { createGate } from 'effector-react';
 import { EffectFailDataAxiosError } from 'types';
 import { AddTask } from './view/AddTaskModal/AddTaskForm/AddTaskForm.types';
+import { GetTaskDeadlineRequest } from './addTaskFromDispatcherService.types';
 
 const domain = createDomain('addTaskFromDispatcherService');
 
@@ -90,8 +90,6 @@ const $ErpObjects = domain
   .createStore<ExecutorGrpcModel[]>([])
   .on(getErpObjectsFx.doneData, (_, data) => data);
 
-const $chosenLeadExecutorId = domain.createStore<string | null>(null);
-
 const $taskDeadlineRequest = domain
   .createStore<GetTaskDeadlineRequest | null>(null)
   .on(handleTaskDeadlineRequest, (prev, data) => ({ ...prev, ...data }));
@@ -121,6 +119,10 @@ sample({
       taskDescription: data.taskDescription,
       taskType: data.taskType,
       workCategoryId: data.workTypeId,
+      subscriberFullName: data.subscriberName,
+      subscriberPhoneNumber: data.phoneNumber,
+      workerId: data.executorId,
+      taskDeadline: data.taskDeadline,
     } as CreateErpTaskRequest;
   },
   target: createTaskFx,
@@ -154,10 +156,10 @@ sample({
     if (!Boolean(request)) {
       return false;
     }
-    if (!Boolean(request?.taskType)) {
+    if (!Boolean(request?.TaskType)) {
       return false;
     }
-    if (!Boolean(request?.workCategoryId)) {
+    if (!Boolean(request?.WorkCategoryId)) {
       return false;
     }
     return true;
@@ -181,7 +183,7 @@ export const addTaskFromDispatcherService = {
     $ErpObjects,
     $executors,
     $taskDeadlineRequest,
-    $taskDeadline
+    $taskDeadline,
   },
   gates: { PageGate },
 };

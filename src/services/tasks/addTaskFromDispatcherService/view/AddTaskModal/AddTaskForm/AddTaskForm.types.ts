@@ -2,10 +2,10 @@ import {
   EisTaskType,
   ExecutorGrpcModel,
   GetTaskDeadlineGrpcResponse,
-  GetTaskDeadlineRequest,
   SourceGrpcModel,
   WorkCategoryGrpcModel,
 } from 'myApi';
+import { GetTaskDeadlineRequest } from 'services/tasks/addTaskFromDispatcherService/addTaskFromDispatcherService.types';
 
 export type AddTask = {
   sourceId: string | null;
@@ -26,6 +26,8 @@ export type AddTask = {
 
   leadId: string | null;
   executorId: string | null;
+
+  taskDeadline: string | null;
 
   taskDescription: string | null;
 };

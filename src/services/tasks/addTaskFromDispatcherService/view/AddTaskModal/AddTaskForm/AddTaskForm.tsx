@@ -14,12 +14,12 @@ import { FormItem } from 'ui-kit/FormItem';
 import { Select } from 'ui-kit/Select';
 import { Input } from 'ui-kit/Input';
 import { DatePicker } from 'ui-kit/DatePicker';
-import { EisTaskType, SourceGrpcModel } from 'myApi';
+import { EisTaskType } from 'myApi';
 import { SelectTime } from 'ui-kit/SelectTime';
 import { addTaskFromDispatcherService } from 'services/tasks/addTaskFromDispatcherService/addTaskFromDispatcherService.models';
 import { TaskTypeDictionary } from 'dictionaries';
 import { AutoComplete } from 'ui-kit/AutoComplete';
-import { autocompleteAddress } from './AddTaskForm.utils';
+import { autocompleteAddress, sortByAlphabet } from './AddTaskForm.utils';
 import moment from 'moment';
 
 const {
@@ -49,6 +49,7 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
 
       requestDate: null,
       requestTime: null,
+      taskDeadline: null,
 
       addressSearch: '',
       selectedObjectAddress: null,
@@ -100,11 +101,20 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
     );
 
     const deadlineDateFormatted = deadlineDate.format('YYYY-MM-DDTHH:mm');
+    setFieldValue('taskDeadline', deadlineDateFormatted);
 
     const dateArr = deadlineDateFormatted.split('T');
 
     return dateArr;
   }, [taskDeadline, values.requestDate, values.requestTime]);
+
+  const sortedLeadExecutors = useMemo(() => {
+    return sortByAlphabet(leadExecutors);
+  }, [leadExecutors]);
+
+  const sortedExecutors = useMemo(() => {
+    return sortByAlphabet(executors);
+  }, [executors]);
 
   const isHaveValidationErrors = useMemo(
     () => Boolean(Object.keys(errors).length),
@@ -164,7 +174,7 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
             value={values.taskType || undefined}
             onChange={(value) => {
               setFieldValue('taskType', value);
-              handleTaskDeadlineRequest({ taskType: value as EisTaskType });
+              handleTaskDeadlineRequest({ TaskType: value as EisTaskType });
             }}
           >
             {Object.values(EisTaskType).map((e) => (
@@ -199,7 +209,7 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
               value={values.workTypeId || undefined}
               onChange={(value) => {
                 setFieldValue('workTypeId', value);
-                handleTaskDeadlineRequest({ workCategoryId: value as string });
+                handleTaskDeadlineRequest({ WorkCategoryId: value as string });
               }}
             >
               {workTypes.map((workType, index) => (
@@ -272,9 +282,9 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
               />
             </FormItem> */}
 
-            <FormItem label="УК">
+            {/* <FormItem label="УК">
               <Input placeholder="???" disabled />
-            </FormItem>
+            </FormItem> */}
           </GridContainerAsymmetricRight>
         </GridContainer>
 
@@ -311,7 +321,7 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
                 choоseLeadExecutor(value as string);
               }}
             >
-              {leadExecutors.map((leadExecutor, index) => (
+              {sortedLeadExecutors.map((leadExecutor, index) => (
                 <Select.Option
                   value={leadExecutor.id || index}
                   key={leadExecutor.id || index}
@@ -328,7 +338,7 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
               onChange={(value) => setFieldValue('executorId', value)}
               disabled={!Boolean(values.leadId)}
             >
-              {executors.map((executor, index) => (
+              {sortedExecutors.map((executor, index) => (
                 <Select.Option
                   value={executor.id || index}
                   key={executor.id || index}

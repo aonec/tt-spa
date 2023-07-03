@@ -3,17 +3,17 @@ import {
   CreateErpTaskRequest,
   ExecutorGrpcModel,
   GetTaskDeadlineGrpcResponse,
-  GetTaskDeadlineRequest,
   ObjectGrpcModel,
   SourceGrpcModel,
   WorkCategoryGrpcModel,
 } from 'myApi';
 import queryString from 'query-string';
+import { GetTaskDeadlineRequest } from './addTaskFromDispatcherService.types';
 
 export const createTask = (
   requestPayload: CreateErpTaskRequest,
 ): Promise<File | null> => {
-  return axios.post('Tasks/ErpCreateTask', { requestPayload });
+  return axios.post('Tasks/ErpCreateTask', requestPayload);
 };
 
 export const getERPSources = (): Promise<SourceGrpcModel[]> => {

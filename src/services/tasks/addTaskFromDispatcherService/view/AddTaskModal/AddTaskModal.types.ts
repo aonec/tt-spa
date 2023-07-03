@@ -1,11 +1,11 @@
 import {
   ExecutorGrpcModel,
   GetTaskDeadlineGrpcResponse,
-  GetTaskDeadlineRequest,
   SourceGrpcModel,
   WorkCategoryGrpcModel,
 } from 'myApi';
 import { AddTask } from './AddTaskForm/AddTaskForm.types';
+import { GetTaskDeadlineRequest } from '../../addTaskFromDispatcherService.types';
 
 export type AddTaskModalProps = {
   isModalOpen: boolean;

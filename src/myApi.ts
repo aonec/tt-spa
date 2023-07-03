@@ -1456,11 +1456,16 @@ export interface CreateErpTaskRequest {
   /** @format date-time */
   sourceDateTime?: string;
 
+  /** @format date-time */
+  taskDeadline?: string;
+
   /** @format uuid */
   leadId?: string;
 
   /** @format uuid */
   workerId?: string;
+  subscriberPhoneNumber?: string | null;
+  subscriberFullName?: string | null;
 }
 
 export interface CreateGroupReportRequest {
@@ -13249,15 +13254,14 @@ export class Api<
       }),
 
     tasksErpTaskDeadlineList: (
-      data: GetTaskDeadlineRequest,
+      query?: { WorkCategoryId?: string; TaskType?: EisTaskType },
       params: RequestParams = {},
     ) =>
       this.request<GetTaskDeadlineGrpcResponse[], ErrorApiResponse>({
         path: `/api/Tasks/ErpTaskDeadline`,
         method: 'GET',
-        body: data,
+        query: query,
         secure: true,
-        type: ContentType.Json,
         format: 'json',
         ...params,
       }),
