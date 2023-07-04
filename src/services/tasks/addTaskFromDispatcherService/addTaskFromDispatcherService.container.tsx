@@ -6,20 +6,31 @@ import { useUnit } from 'effector-react';
 const { inputs, outputs } = addTaskFromDispatcherService;
 
 export const AddTaskFromDispatcherContainer = () => {
-  const { isModalOpen, handleCloseModal } = useUnit({
+  const {
+    isModalOpen,
+    handleCloseModal,
+    ERPSources,
+    ErpObjects,
+    choоseLeadExecutor,
+    executors,
+    handleCreateTask,
+    handleTaskDeadlineRequest,
+    leadExecutors,
+    taskDeadline,
+    workCategories,
+  } = useUnit({
     isModalOpen: outputs.$isModalOpen,
     handleCloseModal: inputs.handleCloseModal,
+    ERPSources: outputs.$ERPSources,
+    ErpObjects: outputs.$ErpObjects,
+    leadExecutors: outputs.$leadExecutors,
+    workCategories: outputs.$workCategories,
+    executors: outputs.$executors,
+    taskDeadline: outputs.$taskDeadline,
+    handleCreateTask: inputs.handleCreateTask,
+    choоseLeadExecutor: inputs.choоseLeadExecutor,
+    handleTaskDeadlineRequest: inputs.handleTaskDeadlineRequest,
   });
-  const ERPSources = useUnit(outputs.$ERPSources);
-  const ErpObjects = useUnit(outputs.$ErpObjects);
-  const leadExecutors = useUnit(outputs.$leadExecutors);
-  const workCategories = useUnit(outputs.$workCategories);
-  const executors = useUnit(outputs.$executors);
-  const taskDeadline = useUnit(outputs.$taskDeadline);
-
-  const handleCreateTask = useUnit(inputs.handleCreateTask);
-  const choоseLeadExecutor = useUnit(inputs.choоseLeadExecutor);
-  const handleTaskDeadlineRequest = useUnit(inputs.handleTaskDeadlineRequest);
 
   return (
     <>
