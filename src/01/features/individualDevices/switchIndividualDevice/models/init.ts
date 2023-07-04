@@ -4,27 +4,19 @@ import {
   sample,
   combine,
   guard,
-  createEffect,
-  createEvent,
-  createStore,
 } from 'effector';
 import { toArray } from '../components/CheckFormValuesModal';
 import {
-  $creationDeviceStage,
   $isCheckCreationDeviceFormDataModalOpen,
   addIndividualDeviceForm,
   cancelCheckingButtonClicked,
   checkBeforSavingButtonClicked,
   createIndividualDeviceFx,
-  goNextStage,
   switchStageButtonClicked,
   confirmCreationNewDeviceButtonClicked,
-  $isCreateIndividualDeviceSuccess,
-  resetCreationRequestStatus,
   SwitchIndividualDeviceGate,
   $typeOfIndividualDeviceForm,
   checkIndividualDeviceFx,
-  ApartmentIdGate,
 } from './index';
 import {
   EIndividualDeviceRateType,
@@ -36,17 +28,14 @@ import {
 import moment from 'moment';
 import { getReadingValuesArray } from '../components/ReadingsInput';
 import { getIndividualDeviceRateNumByName } from 'utils/getIndividualDeviceRateNumByName';
-import { axios } from '01/axios';
 import { getFilledArray } from 'utils/getFilledArray';
 import { message } from 'antd';
 import { FileData } from 'ui-kit/DocumentsService/DocumentsService.types';
 import { individualDeviceMountPlacesService } from 'services/devices/individualDeviceMountPlacesService';
-import { getBitDepthAndScaleFactor } from 'utils/getBitDepthAndScaleFactor';
 import { displayIndividualDeviceAndNamesService } from 'services/devices/individualDevices/displayIndividualDeviceAndNamesService/displayIndividualDeviceAndNamesService.model';
 
 const {
   outputs: { $individualDevice },
-  gates: { IndividualDeviceGate },
 } = displayIndividualDeviceAndNamesService;
 
 createIndividualDeviceFx.use(switchIndividualDevice);
@@ -57,21 +46,6 @@ createIndividualDeviceFx.failData.watch((error) => {
       error.response.data.error.Message ||
       'Произошла ошибка',
   );
-});
-
-$creationDeviceStage
-  .on(switchStageButtonClicked, (_, stageNumber) => stageNumber)
-  .reset([createIndividualDeviceFx.doneData, checkIndividualDeviceFx.doneData]);
-
-forward({
-  from: ApartmentIdGate.open.map(({ apartmentId }) => apartmentId),
-  to: addIndividualDeviceForm.fields.apartmentId.onChange,
-});
-
-sample({
-  source: $creationDeviceStage.map((): 0 | 1 => 1),
-  clock: goNextStage,
-  target: switchStageButtonClicked,
 });
 
 $isCheckCreationDeviceFormDataModalOpen
@@ -86,11 +60,6 @@ forward({
   from: [createIndividualDeviceFx.doneData, checkIndividualDeviceFx.doneData],
   to: addIndividualDeviceForm.reset,
 });
-
-$isCreateIndividualDeviceSuccess
-  .on(checkIndividualDeviceFx.doneData, () => true)
-  .on(createIndividualDeviceFx.doneData, () => true)
-  .reset(resetCreationRequestStatus);
 
 forward({
   from: $individualDevice.map(
@@ -111,44 +80,6 @@ forward({
       ) || [],
   ),
   to: addIndividualDeviceForm.fields.oldDeviceReadings.$value,
-});
-
-forward({
-  from: $individualDevice.map((values) => {
-    if (!values) return;
-    
-    const { bitDepth, scaleFactor } = getBitDepthAndScaleFactor(
-      values.resource,
-    );
-
-    const type = SwitchIndividualDeviceGate.state
-      .map(({ type }) => type)
-      .getState();
-
-    const isCheck = type === 'check';
-    const isSwitch = type === 'switch';
-
-    const serialNumberAfterString = getSerialNumberAfterString(type);
-
-    return {
-      ...values,
-      bitDepth: values.bitDepth || bitDepth,
-      scaleFactor: values.scaleFactor || scaleFactor,
-      mountPlaceId: values.deviceMountPlace?.id,
-      serialNumber: `${values.serialNumber}${serialNumberAfterString}`,
-      ...(isCheck || isSwitch
-        ? { lastCheckingDate: null, futureCheckingDate: null }
-        : {}),
-
-      ...(isSwitch ? { model: '', serialNumber: '' } : {}),
-    } as any;
-  }),
-  to: addIndividualDeviceForm.setForm,
-});
-
-forward({
-  from: IndividualDeviceGate.close,
-  to: addIndividualDeviceForm.reset,
 });
 
 sample({
@@ -308,41 +239,3 @@ export function getChangedReadings(
 
 export const compareArrays = <T>(array1: T[], array2: T[]) =>
   array1.reduce((acc, elem, index) => acc && elem === array2[index], true);
-
-export const getSerialNumberAfterString = (
-  type: 'switch' | 'check' | 'reopen',
-) => {
-  return {
-    switch: '',
-    check: '',
-    reopen: '*',
-  }[type];
-};
-
-const getSerialNumberForCheck = (
-  serialNumber: string,
-): Promise<IndividualDeviceListResponseFromDevicePagePagedList> =>
-  axios.get('devices/individual', {
-    params: {
-      serialNumber,
-    },
-  });
-
-const fetchSerialNumberForCheckFx = createEffect<
-  string,
-  IndividualDeviceListResponseFromDevicePagePagedList
->(getSerialNumberForCheck);
-
-export const handleFetchSerialNumberForCheck = createEvent<string>();
-
-forward({
-  from: handleFetchSerialNumberForCheck,
-  to: fetchSerialNumberForCheckFx,
-});
-
-export const $serialNumberForChecking =
-  createStore<IndividualDeviceListResponseFromDevicePagePagedList | null>(null)
-    .on(fetchSerialNumberForCheckFx.doneData, (_, data) => data)
-    .reset(fetchSerialNumberForCheckFx);
-
-export const $isFetchSerialNumberLoading = fetchSerialNumberForCheckFx.pending;
