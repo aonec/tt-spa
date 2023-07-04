@@ -115,8 +115,9 @@ forward({
 
 forward({
   from: $individualDevice.map((values) => {
+    // eslint-disable-next-line array-callback-return
     if (!values) return;
-    
+
     const { bitDepth, scaleFactor } = getBitDepthAndScaleFactor(
       values.resource,
     );
