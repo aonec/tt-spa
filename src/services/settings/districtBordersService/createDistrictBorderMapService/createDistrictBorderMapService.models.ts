@@ -9,7 +9,6 @@ import {
   existingHousingStocksQuery,
 } from './createDistrictBorderMapService.api';
 import { CreatingDistrictPayload } from './createDistrictBorderMapService.types';
-import { delay } from 'patronum';
 
 const domain = createDomain('createDistrictBorderMap');
 
@@ -33,20 +32,10 @@ const createDistrictForm = createForm({
 
 const setDistrictPayload = domain.createEvent<CreatingDistrictPayload>();
 
-const clearDistrictPayload = domain.createEvent();
-
-const resetDistrictPayload = domain.createEvent();
-
 const $preselectedDistrictPayload = domain
   .createStore<CreatingDistrictPayload | null>(null)
   .on(setDistrictPayload, (_, data) => data)
-  .reset(CreateDistrictGate.close, resetDistrictPayload);
-
-delay({
-  source: clearDistrictPayload,
-  timeout: 1000,
-  target: resetDistrictPayload,
-});
+  .reset(CreateDistrictGate.close);
 
 sample({
   clock: setDistrictPayload,
@@ -81,7 +70,7 @@ createDistrictMutation.finished.failure.watch((e) => {
 });
 
 export const createDistrictBorderMapService = {
-  inputs: { setDistrictPayload, clearDistrictPayload },
+  inputs: { setDistrictPayload },
   outputs: { $preselectedDistrictPayload },
   gates: { CreateDistrictGate },
   forms: { createDistrictForm },

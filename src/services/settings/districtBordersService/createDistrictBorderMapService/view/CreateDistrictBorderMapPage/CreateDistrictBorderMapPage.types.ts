@@ -11,5 +11,4 @@ export type Props = {
   isLoading: boolean;
   handleCreateDistrict: (payload: DistrictCreateRequest) => void;
   preselectedDistrictPayload: CreatingDistrictPayload | null;
-  clearDistrictPayload: () => void;
 };
