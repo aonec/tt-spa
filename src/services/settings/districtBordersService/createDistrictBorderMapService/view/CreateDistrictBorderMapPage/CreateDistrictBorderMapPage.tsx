@@ -27,6 +27,8 @@ export const CreateDistrictBorderMapPage: FC<Props> = ({
   existingHousingStocks,
   existingDistricts,
   handleCreateDistrict,
+  preselectedDistrictPayload,
+  clearDistrictPayload,
 }) => {
   const { map, mapRef } = useYMaps();
 
@@ -70,12 +72,24 @@ export const CreateDistrictBorderMapPage: FC<Props> = ({
     [savedDistricts],
   );
 
+  useMemo(() => {
+    if (!preselectedDistrictPayload || !workingDistrict) return;
+
+    workingDistrict.geometry?.setCoordinates([
+      preselectedDistrictPayload.polygon,
+    ]);
+
+    clearDistrictPayload();
+  }, [workingDistrict, preselectedDistrictPayload, clearDistrictPayload]);
+
   const housesInDistrict = useMemo(
     () => getSelectedHouses(workingDistrict, existingHousingStocks),
     [existingHousingStocks, workingDistrict],
   );
 
   useEffect(() => {
+    if (preselectedDistrictPayload) return;
+
     fields.selectedHouses.onChange(housesInDistrict.map(({ id }) => id));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [housesInDistrict]);
