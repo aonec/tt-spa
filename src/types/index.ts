@@ -109,3 +109,10 @@ export type DistrictAdditionalInfo = {
   districtPolygonCoordinates: number[][];
   districtColor: DistrictColor;
 };
+
+export type DistrictColorData = {
+  type: DistrictColor;
+  name: string;
+  color: string;
+  strokeColor: string;
+};
