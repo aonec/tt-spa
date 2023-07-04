@@ -1,8 +1,8 @@
 import { createDomain, sample, forward } from 'effector';
 import {
+  BuildingListResponsePagedList,
   DistrictCreateRequest,
   DistrictResponse,
-  HousingStockListResponsePagedList,
 } from 'myApi';
 import {
   createDistrict,
@@ -31,7 +31,7 @@ const handleFetchHousingStocksList =
 
 const fetchHousingStocksListFx = domain.createEffect<
   GetHousingStocksRequestParams,
-  HousingStockListResponsePagedList
+  BuildingListResponsePagedList
 >(getHousingStocks);
 
 const createDistrictFx = domain.createEffect<
@@ -47,7 +47,7 @@ const fetchExistingDistrictsFx = domain.createEffect<void, DistrictResponse[]>(
 const handleCreateDistrict = domain.createEvent<DistrictCreateRequest>();
 
 const $housingStocks = domain
-  .createStore<HousingStockListResponsePagedList | null>(null)
+  .createStore<BuildingListResponsePagedList | null>(null)
   .on(
     fetchHousingStocksListFx.doneData,
     (_, housingStocksPagedList) => housingStocksPagedList,

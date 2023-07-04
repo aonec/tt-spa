@@ -98,15 +98,15 @@ export const getFilteredAddresses = (
     const filteredHouses = filteredByStreetAddress[0].addresses?.filter(
       (address) => {
         if (!filterData.corpus) {
-          return address.housingStockNumber === filterData.house;
+          return address.number === filterData.house;
         }
         if (!filterData.house) {
-          return address.housingStockCorpus === filterData.corpus;
+          return address.corpus === filterData.corpus;
         }
         if (filterData.house && filterData.corpus) {
           return (
-            address.housingStockCorpus === filterData.corpus &&
-            address.housingStockNumber === filterData.house
+            address.corpus === filterData.corpus &&
+            address.number === filterData.house
           );
         }
         return true;

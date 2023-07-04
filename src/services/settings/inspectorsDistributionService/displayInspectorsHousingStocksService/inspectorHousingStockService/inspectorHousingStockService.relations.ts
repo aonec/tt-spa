@@ -37,7 +37,7 @@ displayInspectorsHousingStocksService.outputs.$inspectorsHousingStocksList.on(
     .doneData,
   (hosuingStocks, updatedHosuingStock) => {
     const updatedHousingStocks = hosuingStocks?.map((housingStock) => {
-      if (housingStock.housingStockId !== updatedHosuingStock?.id) {
+      if (housingStock.buildingId !== updatedHosuingStock?.id) {
         return housingStock;
       }
 

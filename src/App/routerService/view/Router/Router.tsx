@@ -139,13 +139,13 @@ export const Router: FC<RouterProps> = ({ roles, isRolesLoadded }) => {
                   )}
                   {isAdministrator ? (
                     <Route
-                      path="/objects/:housingStockId/edit"
+                      path="/objects/:buildingId/edit"
                       component={EditObjectContainer}
                       exact
                     />
                   ) : (
                     <Redirect
-                      from="/objects/:housingStockId/edit"
+                      from="/objects/:buildingId/edit"
                       to="/access-denied/"
                       exact
                     />
@@ -153,13 +153,13 @@ export const Router: FC<RouterProps> = ({ roles, isRolesLoadded }) => {
 
                   {isAdministrator || isExecutor ? (
                     <Route
-                      path="/objects/:housingStockId/addNode"
+                      path="/objects/:buildingId/addNode"
                       component={CreateNodeContainer}
                       exact
                     />
                   ) : (
                     <Route
-                      path="/objects/:housingStockId/addNode"
+                      path="/objects/:buildingId/addNode"
                       component={AccessDeniedPage}
                       exact
                     />
@@ -199,7 +199,7 @@ export const Router: FC<RouterProps> = ({ roles, isRolesLoadded }) => {
                     <Route path="/objects">
                       <ObjectGroupIsOpen />
                       <Route
-                        path="/objects/profile/:housingStockId"
+                        path="/objects/profile/:buildingId"
                         component={ObjectProfileContainer}
                         exact
                       />

@@ -1,6 +1,5 @@
 import React, { FC } from 'react';
 import { useEvent, useStore } from 'effector-react';
-import { CloseIndividualDeviceModal } from '01/features/individualDevices/closeIndividualDevice';
 import { DeleteIndividualDeviceModalContainer } from 'services/devices/individualDevices/deleteIndividualDevice/DeleteIndividualDeviceModalContainer';
 import { ReadingsHistoryModal } from '01/features/readings/displayReadingHistory/ReadingsHistoryModal';
 import { ConfirmReadingValueModal } from '01/features/readings/readingsInput/confirmInputReadingModal';
@@ -9,6 +8,7 @@ import { ApartmentIndividualDevicesMeters } from './view/ApartmentIndividualDevi
 import { useManagingFirmConsumptionRates } from '../managementFirmConsumptionRatesService';
 import { Params } from './apartmentIndividualDevicesMetersService.types';
 import { EditReadingsHistoryContainer } from '../editReadingsHistoryService';
+import { CloseIndividualDeviceContainer } from 'services/devices/individualDevices/closeIndividualDeviceService';
 
 const {
   inputs,
@@ -50,7 +50,7 @@ export const ApartmentIndividualDevicesMetersContainer: FC<Params> = ({
         <IndividualDevicesGate ApartmentId={Number(apartmentId)} />
       )}
       <ReadingsHistoryModal />
-      <CloseIndividualDeviceModal />
+      <CloseIndividualDeviceContainer />
       <ConfirmReadingValueModal />
       <EditReadingsHistoryContainer />
       <DeleteIndividualDeviceModalContainer />
