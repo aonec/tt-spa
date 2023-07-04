@@ -90,9 +90,8 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
   });
 
   const isPermittedToChangeDeadline =
-    values.workTypeId ===
-    ('48eb4f62-15a1-11e9-8176-001dd8b88b72' ||
-      '6373ec3b-302b-11e9-8184-001dd8b88b72');
+    values.workTypeId === '48eb4f62-15a1-11e9-8176-001dd8b88b72' ||
+    values.workTypeId === '6373ec3b-302b-11e9-8184-001dd8b88b72';
 
   const calculatedDeadlineDateArr = useMemo(() => {
     if (!taskDeadline || !values.requestDate || !values.requestTime)
@@ -117,7 +116,13 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
     const dateArr = deadlineDateFormatted.split('T');
 
     return dateArr;
-  }, [taskDeadline, values.requestDate, values.requestTime, values.workTypeId]);
+  }, [
+    taskDeadline,
+    values.requestDate,
+    values.requestTime,
+    isPermittedToChangeDeadline,
+    setFieldValue,
+  ]);
 
   const sortedLeadExecutors = useMemo(() => {
     return sortByAlphabet(leadExecutors);
@@ -134,7 +139,7 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
 
   useEffect(() => {
     setDisableSubmit(isHaveValidationErrors);
-  }, [isHaveValidationErrors]);
+  }, [isHaveValidationErrors, setDisableSubmit]);
 
   const ErpObjectsString = ErpObjects.map((object) => object.address).filter(
     Boolean,

@@ -170,9 +170,8 @@ sample({
       return false;
     }
     if (
-      request.WorkCategoryId ===
-      ('48eb4f62-15a1-11e9-8176-001dd8b88b72' ||
-        '6373ec3b-302b-11e9-8184-001dd8b88b72')
+      request.WorkCategoryId === '48eb4f62-15a1-11e9-8176-001dd8b88b72' ||
+      request.WorkCategoryId === '6373ec3b-302b-11e9-8184-001dd8b88b72'
     ) {
       return false;
     }
