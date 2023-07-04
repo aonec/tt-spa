@@ -17,8 +17,6 @@ const slideDown = keyframes`
 export const HousingStockWrapper = styled.div`
   border-top: 1px solid #f3f5f6;
   padding: 16px 16px 0 16px;
-  max-height: 572px;
-  overflow-y: auto;
   animation-name: ${slideDown};
   animation-duration: 0.2s;
 `;

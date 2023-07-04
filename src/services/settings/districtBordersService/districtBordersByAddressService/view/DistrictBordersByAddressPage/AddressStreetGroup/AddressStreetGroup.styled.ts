@@ -14,24 +14,28 @@ export const Wrapper = styled.div`
 `;
 
 export const GroupHeader = styled.div`
-  min-height: 64px;
+  height: 80px;
   padding: 0 24px;
   display: flex;
   align-items: center;
   justify-content: space-between;
 `;
 
-export const Street = styled.div`
-  font-weight: 500;
+export const Street = styled.div<{ isChecked: boolean }>`
   font-size: 16px;
   line-height: 32px;
   color: rgba(39, 47, 90, 0.9);
+  user-select: none;
+
+  font-weight: ${({ isChecked }) => (isChecked ? '500' : '400')};
 `;
 
 export const LeftBlock = styled.div`
   display: flex;
   align-items: center;
   gap: 16px;
+
+  cursor: pointer;
 `;
 
 export const RightBlock = styled.div`
@@ -49,6 +53,8 @@ export const SelectedAddressCount = styled.div`
   color: #686d8c;
   font-weight: 400;
   font-size: 16px;
+
+  user-select: none;
 `;
 
 export const ChevronWrapper = styled.div`

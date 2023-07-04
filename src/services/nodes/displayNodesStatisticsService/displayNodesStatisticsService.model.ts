@@ -16,6 +16,8 @@ import {
   TasksStatisticPayload,
 } from './displayNodesStatisticsService.types';
 
+const NodeInfoGate = createGate<{ nodeId: number; pipeCount: number }>();
+
 const domain = createDomain('displayNodesStatisticsService');
 
 const clearStores = domain.createEvent();
@@ -56,9 +58,12 @@ const $taskStatistics = domain
   .createStore<DateTimeTaskStatisticsItemArrayDictionaryItem[]>([])
   .on(getTaskStatisticsFx.doneData, (_, data) => data.tasks || []);
 
-const $isLoading = getArchiveDataFx.pending;
+const setWithFault = domain.createEvent<boolean>();
+const $withFault = domain
+  .createStore(false)
+  .on(setWithFault, (_, withFault) => withFault);
 
-const NodeInfoGate = createGate<{ nodeId: number; pipeCount: number }>();
+const $isLoading = getArchiveDataFx.pending;
 
 sample({
   source: NodeInfoGate.state,
@@ -83,6 +88,7 @@ export const displayNodesStatisticsService = {
   inputs: {
     setArchiveFilter,
     setGraphType,
+    setWithFault,
   },
   outputs: {
     $archiveFilter,
@@ -90,6 +96,7 @@ export const displayNodesStatisticsService = {
     $archiveReadings,
     $isLoading,
     $taskStatistics,
+    $withFault,
   },
   gates: { NodeInfoGate },
 };

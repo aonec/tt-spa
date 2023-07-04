@@ -13,6 +13,7 @@ import { Select } from 'ui-kit/Select';
 const urls = [
   'https://stage.k8s.transparent-technology.ru/api/',
   'http://localhost:5001/api/',
+  'https://fop.k8s.transparent-technology.ru/api/',
 ];
 
 export const DevelopmentSettingsModal: FC<DevelopmentSettingsModalProps> = ({

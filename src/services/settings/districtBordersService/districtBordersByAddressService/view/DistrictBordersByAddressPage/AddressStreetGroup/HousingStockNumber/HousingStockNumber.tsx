@@ -1,47 +1,55 @@
 import React, { FC, useEffect, useState } from 'react';
 import { HousingStockNumberProps } from './HousingStockNumber.types';
 import { Checkbox } from 'antd';
+import { HousingStockNumberWrapper, Number } from './HousingStockNumber.styled';
 
 export const HousingStockNumber: FC<HousingStockNumberProps> = ({
   housingStock,
-  setHousingStockIds,
-  housingStockIds,
+  setHousingStockIdsWithStreet,
+  currentStreetCheckedHousingStockIds,
+  checkedhousingStockIdsWithStreet,
+  street,
 }) => {
   const [isChecked, setCheck] = useState(false);
+
+  const currentHousingStockId = housingStock.buildingId;
 
   useEffect(
     () =>
       setCheck(
-        housingStockIds.some(
-          (housingStockId) => housingStockId === housingStock.housingStockId,
+        currentStreetCheckedHousingStockIds.some(
+          (streetCheckedId) => streetCheckedId === currentHousingStockId,
         ),
       ),
-    [housingStock, housingStockIds],
+    [currentHousingStockId, currentStreetCheckedHousingStockIds],
   );
 
   return (
-    <>
-      <Checkbox
-        checked={isChecked}
-        onChange={() => {
-          if (isChecked) {
-            setHousingStockIds((prev) =>
-              prev.filter(
-                (housingStockId) =>
-                  housingStockId !== housingStock.housingStockId,
-              ),
-            );
-            setCheck(false);
-          } else {
-            setHousingStockIds((prev) => [
-              ...prev,
-              housingStock.housingStockId,
-            ]);
-            setCheck(true);
-          }
-        }}
-      />
-      <div>{housingStock.housingStockNumber}</div>
-    </>
+    <HousingStockNumberWrapper
+      onClick={() => {
+        if (isChecked) {
+          setHousingStockIdsWithStreet({
+            street,
+            housingStocksId: currentHousingStockId,
+            isToAdd: false,
+          });
+
+          setCheck(false);
+        } else {
+          setHousingStockIdsWithStreet({
+            street,
+            housingStocksId: currentHousingStockId,
+            isToAdd: true,
+          });
+
+          setCheck(true);
+        }
+      }}
+    >
+      <Checkbox checked={isChecked} />
+      <Number isChecked={isChecked}>
+        {housingStock.number} {housingStock.corpus}
+      </Number>
+    </HousingStockNumberWrapper>
   );
 };

@@ -1,26 +1,40 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { EditObjectPage } from './view/EditObjectPage';
-import { useParams } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 import { editObjectService } from './editObjectService.model';
 import { useEvent, useStore } from 'effector-react';
 import { addressSearchService } from 'services/addressSearchService/addressSearchService.models';
+import { createObjectService } from '../createObjectService';
 
-const { outputs, gates, inputs } = editObjectService;
-const { FetchObjectGate } = gates;
+const { inputs, outputs, gates } = editObjectService;
+const { FetchObjectGate, CatchHousingStockId } = gates;
+
+const {
+  gates: { HeatingStationsFetchGate, HouseManagementsFetchGate },
+} = createObjectService;
 
 export const EditObjectContainer = () => {
-  const { housingStockId } = useParams<{ housingStockId: string }>();
+  const { buildingId } = useParams<{ buildingId: string }>();
+  const history = useHistory();
 
-  const housingStockIdNumber = Number(housingStockId);
-
-  const housingStock = useStore(outputs.$housingStock);
-  const houseManagements = useStore(outputs.$houseManagements);
-  const heatingStations = useStore(outputs.$heatingStations);
+  const buildingIdNumber = Number(buildingId);
 
   const existingCities = useStore(addressSearchService.outputs.$existingCities);
   const existingStreets = useStore(
     addressSearchService.outputs.$existingStreets,
   );
+
+  const housingStock = useStore(outputs.$housingStock);
+  const houseManagements = useStore(outputs.$houseManagements);
+  const isHouseManagementsLoading = useStore(
+    outputs.$isHouseManagementsLoading,
+  );
+  const heatingStations = useStore(outputs.$heatingStations);
+  const isHeatingStationsLoading = useStore(outputs.$isHeatingStationsLoading);
+
+  const isDeleteLoading = useStore(outputs.$isDeleteLoading);
+  const isUpdateLoading = useStore(outputs.$isUpdateLoading);
+  const isCreateLoading = useStore(outputs.$isCreateLoading);
 
   const openCreateHeatingStationModal = useEvent(
     inputs.openCreateHeatingStationModal,
@@ -30,14 +44,38 @@ export const EditObjectContainer = () => {
   );
   const heatingStationCapture = useEvent(inputs.heatingStationCapture);
 
+  const onPageCancel = useEvent(inputs.onPageCancel);
+  const handleUpdateHousingStock = useEvent(inputs.handleUpdateHousingStock);
+
+  const handleCreateHousingStockAddress = useEvent(
+    inputs.handleCreateHousingStockAddress,
+  );
+  const handleUpdateHousingStockAddress = useEvent(
+    inputs.handleUpdateHousingStockAddress,
+  );
+  const handleDeleteHousingStockAddress = useEvent(
+    inputs.handleDeleteHousingStockAddress,
+  );
+
+  const handleRefetchHousingStock = useEvent(inputs.handleRefetchHousingStock);
+
   const isReasonToFetchHousingStock =
-    !housingStock || housingStock.id !== housingStockIdNumber;
+    !housingStock || housingStock.id !== buildingIdNumber;
+
+  useEffect(() => {
+    return inputs.onPageCancel.watch(() =>
+      history.push(`/objects/profile/${buildingId}`),
+    ).unsubscribe;
+  }, [history, buildingId]);
 
   return (
     <>
+      <CatchHousingStockId buildingId={buildingIdNumber} />
       {isReasonToFetchHousingStock && (
-        <FetchObjectGate objectId={housingStockIdNumber} />
+        <FetchObjectGate objectId={buildingIdNumber} />
       )}
+      <HouseManagementsFetchGate />
+      <HeatingStationsFetchGate />
       {housingStock && (
         <EditObjectPage
           housingStock={housingStock}
@@ -48,6 +86,17 @@ export const EditObjectContainer = () => {
           openEditHeatingStationModal={() => openEditHeatingStationModal()}
           heatingStations={heatingStations}
           heatingStationCapture={heatingStationCapture}
+          onPageCancel={onPageCancel}
+          handleUpdateHousingStock={handleUpdateHousingStock}
+          isHouseManagementsLoading={isHouseManagementsLoading}
+          isHeatingStationsLoading={isHeatingStationsLoading}
+          handleCreateHousingStockAddress={handleCreateHousingStockAddress}
+          handleUpdateHousingStockAddress={handleUpdateHousingStockAddress}
+          handleDeleteHousingStockAddress={handleDeleteHousingStockAddress}
+          isDeleteLoading={isDeleteLoading}
+          isCreateLoading={isCreateLoading}
+          isUpdateLoading={isUpdateLoading}
+          handleRefetchHousingStock={handleRefetchHousingStock}
         />
       )}
     </>

@@ -1,3 +1,25 @@
+import { DistrictColorsList } from './CreateDistrictBorderMapPage.constants';
+import { DistrictColor } from './CreateDistrictBorderMapPage.types';
+import housingStockPlacemark from './placemarks/housingStockPlacemark.svg';
+import inactiveHousingStockPlacemark from './placemarks/inactiveHousingStockPlacemark.svg';
+
+function isPointOnLeftOfLine(
+  point: number[],
+  xi: number,
+  yi: number,
+  xj: number,
+  yj: number,
+) {
+  return (
+    yi > point[1] !== yj > point[1] &&
+    point[0] < ((xj - xi) * (point[1] - yi)) / (yj - yi) + xi
+  );
+}
+
+function isPointOnLine(point: number[], x: number, y: number) {
+  return point[0] === x && point[1] === y;
+}
+
 export function isPointInsidePolygon(
   point: number[],
   polygonVertices: number[][],
@@ -26,19 +48,13 @@ export function isPointInsidePolygon(
   return isInside;
 }
 
-function isPointOnLeftOfLine(
-  point: number[],
-  xi: number,
-  yi: number,
-  xj: number,
-  yj: number,
-) {
-  return (
-    yi > point[1] !== yj > point[1] &&
-    point[0] < ((xj - xi) * (point[1] - yi)) / (yj - yi) + xi
-  );
+export function getHousingStockItemLink(active: boolean) {
+  return active ? housingStockPlacemark : inactiveHousingStockPlacemark;
 }
 
-function isPointOnLine(point: number[], x: number, y: number) {
-  return point[0] === x && point[1] === y;
+export function getDistrictColorData(districtColor: DistrictColor) {
+  return (
+    DistrictColorsList.find((elem) => elem.type === districtColor) ||
+    DistrictColorsList[0]
+  );
 }

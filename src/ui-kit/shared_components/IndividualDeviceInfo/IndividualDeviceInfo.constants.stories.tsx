@@ -9,7 +9,8 @@ import {
 export const Device: IndividualDeviceResponse = {
   address: {
     id: 372,
-    housingStockNumber: '94',
+    buildingNumber: '94',
+    housingStockNumber: '5',
     corpus: null,
     street: 'Химиков',
     city: 'Нижнекамск',

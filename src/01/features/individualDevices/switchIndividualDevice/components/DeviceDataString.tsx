@@ -1,11 +1,11 @@
 import React from 'react';
 import { useStore } from 'effector-react';
-import { $individualDevice } from '../../displayIndividualDevice/models';
 import { EIndividualDeviceRateType, EResourceType } from 'myApi';
 import styled from 'styled-components';
 import { Spaces } from '01/shared/ui/Layout/Space/Space';
 import { ResourceIconLookup } from 'ui-kit/shared_components/ResourceIconLookup';
 import { getInputBorderColor } from 'services/meters/individualDeviceMetersInputService/view/MetersInputsBlock/MetersInputsBlock.styled';
+import { displayIndividualDeviceAndNamesService } from 'services/devices/individualDevices/displayIndividualDeviceAndNamesService/displayIndividualDeviceAndNamesService.model';
 
 export interface DataStringDevice {
   resource: EResourceType | null;
@@ -18,6 +18,10 @@ export interface DataStringDevice {
 interface Props {
   device?: DataStringDevice;
 }
+
+const {
+  outputs: { $individualDevice },
+} = displayIndividualDeviceAndNamesService;
 
 export const DeviceDataString: React.FC<Props> = ({
   device: deviceFromProps,

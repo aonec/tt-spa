@@ -1,12 +1,12 @@
 import {
   HeatingStationWithStreetsResponse,
   HouseManagementWithStreetsResponse,
-  StreetWithHousingStockNumbersResponse,
+  StreetWithBuildingNumbersResponse,
 } from 'myApi';
 import { TreeSelectElement } from './AddressTreeSelect.types';
 
 type PrepareAddressesParams = {
-  items: StreetWithHousingStockNumbersResponse[];
+  items: StreetWithBuildingNumbersResponse[];
   parentId?: string;
   isSelectableStreetNode?: boolean;
 };
@@ -22,15 +22,14 @@ export const prepareAddressesForTreeSelect = ({
     const childrenAddresses = addresses || [];
 
     const children = childrenAddresses.map((address) => {
-      const { housingStockCorpus, housingStockId, housingStockNumber } =
-        address;
+      const { corpus, buildingId, number } = address;
 
-      const corpusText = housingStockCorpus ? `, к. ${housingStockCorpus}` : '';
+      const corpusText = corpus ? `, к. ${corpus}` : '';
 
       return {
-        title: `${street}, ${housingStockNumber}${corpusText}`,
-        value: housingStockId,
-        key: housingStockId,
+        title: `${street}, ${number}${corpusText}`,
+        value: buildingId,
+        key: buildingId,
       };
     });
 

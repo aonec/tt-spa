@@ -1,7 +1,7 @@
-import { HousingStockAddressItemResponse } from 'myApi';
+import { BuildingAddressItemResponse } from 'myApi';
 
 export const getHousingStockItemAddress = (
-  address: HousingStockAddressItemResponse
+  address: BuildingAddressItemResponse,
 ) => {
   const { street, number, corpus } = address;
   const corpusText = corpus ? `, корпус ${corpus}` : '';

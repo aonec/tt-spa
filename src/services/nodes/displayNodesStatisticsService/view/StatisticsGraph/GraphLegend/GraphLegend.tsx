@@ -10,6 +10,7 @@ import {
   Percents,
   TaskLegendGroupWrapper,
   LegendColumnWrapper,
+  CheckboxSC,
 } from './GraphLegend.styled';
 import { GraphLegendProps } from './GraphLegend.types';
 import { renderForHeatAndDeltaMass } from './GraphLegend.utils';
@@ -21,6 +22,8 @@ export const GraphLegend: FC<GraphLegendProps> = ({
   resource,
   deltaMassAccuracy,
   averageDeltaMass,
+  setWithFault,
+  withFault,
 }) => {
   const isDeltaMass = renderForHeatAndDeltaMass(
     resource as EResourceType,
@@ -105,6 +108,14 @@ export const GraphLegend: FC<GraphLegendProps> = ({
             </TaskLegendGroupWrapper>
           </>
         )}
+      </LegendColumnWrapper>
+      <LegendColumnWrapper>
+        <CheckboxSC
+          checked={withFault}
+          onChange={(e) => setWithFault(e.target.checked)}
+        >
+          Нештатные ситуации
+        </CheckboxSC>
       </LegendColumnWrapper>
     </LegendWrapper>
   );

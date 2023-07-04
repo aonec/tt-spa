@@ -5,4 +5,5 @@ export type DevicesPageProfileProps = {
   setDevicesType: (type: DevicesProfileTabsType) => void;
   handleAddNode: () => void;
   isPermitionToAddNode: boolean;
+  openDownloadDevicesReportModal: () => void;
 };

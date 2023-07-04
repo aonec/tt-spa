@@ -1,9 +1,9 @@
-import React, { FC, useState } from 'react';
+import React, { FC } from 'react';
 import {
   AddressSortWrapper,
   ButtonSC,
-  Footerwrapper,
-  LabelWrapper,
+  FooterWrapper,
+  GoBackWrapper,
   Panel,
   Wrapper,
 } from './DistrictBordersByAddressPage.styled';
@@ -11,19 +11,30 @@ import { DistrictBordersByAddressPageProps } from './DistrictBordersByAddressPag
 import { AddressSearchContainer } from 'services/addressSearchService';
 import { SearchFieldType } from 'services/addressSearchService/view/AddressSearch/AddressSearch.types';
 import { GoBack } from 'ui-kit/shared_components/GoBack';
-import { Select } from 'ui-kit/Select';
-import { EOrderByRule } from 'myApi';
 import { Button } from 'ui-kit/Button';
 import { AddressStreetGroup } from './AddressStreetGroup';
+import { useHistory } from 'react-router-dom';
 
 export const DistrictBordersByAddressPage: FC<
   DistrictBordersByAddressPageProps
-> = ({ handleFetchAddress, addresses }) => {
-  const [orderBy] = useState<EOrderByRule | null>(null);
+> = ({
+  handleFetchAddress,
+  addresses,
+  setFilter,
+  checkedhousingStockIdsWithStreet,
+  handleOpenDistrictEditer,
+  isAllowedToEditer,
+  cityInFilter,
+  setHousingStockIdsWithStreet,
+}) => {
+  const history = useHistory();
 
   return (
     <Wrapper>
-      <GoBack />
+      <GoBackWrapper>
+        <GoBack />
+      </GoBackWrapper>
+
       <AddressSortWrapper>
         <AddressSearchContainer
           fields={[
@@ -32,45 +43,44 @@ export const DistrictBordersByAddressPage: FC<
             SearchFieldType.House,
             SearchFieldType.Corpus,
           ]}
-          handleSubmit={(data) =>
-            data.city &&
-            handleFetchAddress({
-              City: data.city,
-              Street: data.street,
-              OrderBy: orderBy || undefined,
-            })
-          }
+          initialValues={{ city: cityInFilter }}
+          handleSubmit={(data) => {
+            setFilter(data);
+
+            if (data.city && cityInFilter !== data.city) {
+              handleFetchAddress({
+                City: data.city,
+              });
+            }
+          }}
         />
-        <LabelWrapper>
-          <div>Сортировать по:</div>
-          <Select
-            small
-            placeholder="Выберите"
-            value={orderBy || undefined}
-            onChange={(value) => {
-              // setOrderBy(value);
-            }}
-          >
-            <Select.Option value={EOrderByRule.Descending}>
-              Улице (уб.)
-            </Select.Option>
-            <Select.Option value={EOrderByRule.Ascending}>
-              Улице (возр.)
-            </Select.Option>
-          </Select>
-        </LabelWrapper>
       </AddressSortWrapper>
 
       {addresses?.map((address) => (
-        <AddressStreetGroup address={address} />
+        <AddressStreetGroup
+          address={address}
+          key={address.street}
+          checkedhousingStockIdsWithStreet={checkedhousingStockIdsWithStreet}
+          setHousingStockIdsWithStreet={setHousingStockIdsWithStreet}
+        />
       ))}
 
-      <Footerwrapper>
+      <FooterWrapper>
         <Panel>
-          <Button type="ghost"> Отмена</Button>
-          <ButtonSC>Продолжить</ButtonSC>
+          <Button type="ghost" onClick={history.goBack}>
+            Отмена
+          </Button>
+          <ButtonSC
+            disabled={!isAllowedToEditer}
+            onClick={() => {
+              handleOpenDistrictEditer();
+              history.push('/districtBordersSettings/createByMap');
+            }}
+          >
+            Продолжить
+          </ButtonSC>
         </Panel>
-      </Footerwrapper>
+      </FooterWrapper>
     </Wrapper>
   );
 };

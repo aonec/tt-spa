@@ -1,7 +1,15 @@
 import { AddressShortResponse } from 'myApi';
+import {
+  CheckedHousingStocksIdWithStreets,
+  CheckedHousingStocksIdWithStreetsHandler,
+} from 'services/settings/districtBordersService/districtBordersByAddressService/districtBordersByAddressService.types';
 
 export type HousingStockNumberProps = {
   housingStock: AddressShortResponse;
-  setHousingStockIds: React.Dispatch<React.SetStateAction<number[]>>;
-  housingStockIds: number[];
+  currentStreetCheckedHousingStockIds: number[];
+  checkedhousingStockIdsWithStreet: CheckedHousingStocksIdWithStreets[];
+  setHousingStockIdsWithStreet: (
+    payload: CheckedHousingStocksIdWithStreetsHandler,
+  ) => void;
+  street: string | null;
 };

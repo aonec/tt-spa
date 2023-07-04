@@ -3,8 +3,7 @@ import { useEvent, useStore } from 'effector-react';
 import { tasksMapService } from './tasksMapService.model';
 import { TasksMapView } from './view/TasksMapView';
 
-const { inputs, outputs, gates } = tasksMapService;
-const { TaskTypesGate } = gates;
+const { inputs, outputs } = tasksMapService;
 
 export const TasksMapContainer = () => {
   const housingStocksWithTasks = useStore(outputs.$housingStocksWithTasks);
@@ -26,24 +25,21 @@ export const TasksMapContainer = () => {
   const clearTask = useEvent(inputs.clearTask);
 
   return (
-    <>
-      <TaskTypesGate />
-      <TasksMapView
-        taskTypes={taskTypes}
-        housingStocksWithTasks={housingStocksWithTasks}
-        applyFilters={applyFilters}
-        filtrationValues={filtrationValues}
-        resetFilters={resetFilters}
-        isLoadingHousingStocksWithTasks={isLoadingHousingStocksWithTasks}
-        selectedHousingStock={selectedHousingStock}
-        handleClickMarker={handleClickMarker}
-        clearSelectedHousingStock={clearSelectedHousingStock}
-        task={task}
-        isLoadingTask={isLoadingTask}
-        handleClickTask={handleClickTask}
-        clearTask={clearTask}
-        organizationUsers={organizationUsers}
-      />
-    </>
+    <TasksMapView
+      taskTypes={taskTypes}
+      housingStocksWithTasks={housingStocksWithTasks}
+      applyFilters={applyFilters}
+      filtrationValues={filtrationValues}
+      resetFilters={resetFilters}
+      isLoadingHousingStocksWithTasks={isLoadingHousingStocksWithTasks}
+      selectedHousingStock={selectedHousingStock}
+      handleClickMarker={handleClickMarker}
+      clearSelectedHousingStock={clearSelectedHousingStock}
+      task={task}
+      isLoadingTask={isLoadingTask}
+      handleClickTask={handleClickTask}
+      clearTask={clearTask}
+      organizationUsers={organizationUsers}
+    />
   );
 };

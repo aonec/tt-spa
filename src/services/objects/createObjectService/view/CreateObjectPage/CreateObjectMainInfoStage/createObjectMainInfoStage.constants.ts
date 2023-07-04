@@ -36,7 +36,6 @@ export const HouseCategoryDictionary: { [key in EHouseCategory]: string } = {
 export const LivingHouseTypeDictionary: {
   [key in ELivingHouseType]: string;
 } = {
-  [ELivingHouseType.None]: 'Не выбрано',
   [ELivingHouseType.ApartmentHouse]: 'Многоквартирный дом',
   [ELivingHouseType.Private]: 'Частный дом',
   [ELivingHouseType.Townhouse]: 'Таунхаус',

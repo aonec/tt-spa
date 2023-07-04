@@ -1,4 +1,4 @@
-import { useForm } from 'effector-forms/dist';
+import { useForm } from 'effector-forms';
 import { useStore, useEvent } from 'effector-react';
 import React from 'react';
 import { CreateReportModal } from './CreateReportsModal';

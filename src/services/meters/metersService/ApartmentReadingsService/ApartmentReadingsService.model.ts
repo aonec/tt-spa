@@ -8,14 +8,11 @@ import {
 } from './ApartmentReadingsService.types';
 import { getApartment, putApartment } from './ApartmentReadingsService.api';
 import { message } from 'antd';
-import {
-  pauseApartmentButtonClicked,
-  cancelPauseApartmentButtonClicked,
-  pauseApartmentStatusFx,
-} from '01/features/apartments/pauseApartment/models';
 import { EffectFailDataAxiosError } from 'types';
 import { individualDeviceMountPlacesService } from 'services/devices/individualDeviceMountPlacesService/individualDeviceMountPlacesService.model';
 import { selectPersonalNumberActionService } from 'services/homeowner/personalNumber/selectPersonalNumberActionService';
+import { pauseApartmentService } from 'services/apartments/pauseApartmentService/pauseApartmentService.models';
+import { printApartmentDevicesCertificateService } from 'services/apartments/printApartmentDevicesCertificateService/printApartmentDevicesCertificateService.models';
 
 const domain = createDomain('apartmentReadingsService');
 
@@ -71,7 +68,7 @@ sample({
       clock: ApartmentGate.state,
       filter: (apartment, { id }) => Boolean(id && id !== apartment?.id),
     }),
-    pauseApartmentStatusFx.doneData,
+    pauseApartmentService.inputs.pauseApartmentStatusFx.doneData,
   ],
   target: fetchApartmentFx,
 });
@@ -108,12 +105,17 @@ export const apartmentReadingsService = {
     setSearchMode,
     handleSearchApartment,
     handleUpdateApartment,
-    handlePauseApartment: pauseApartmentButtonClicked,
-    handleCancelPauseApartment: cancelPauseApartmentButtonClicked,
+    handlePauseApartment:
+      pauseApartmentService.inputs.pauseApartmentButtonClicked,
+    handleCancelPauseApartment:
+      pauseApartmentService.inputs.cancelPauseApartmentButtonClicked,
     openEditPersonalNumberModal:
       selectPersonalNumberActionService.inputs.setSelectActionModalOpen,
     handleApartmentLoaded,
     setSelectedHomeownerName,
+    printIssueCertificate:
+      printApartmentDevicesCertificateService.inputs
+        .printIssueSertificateButtonClicked,
   },
   outputs: {
     $searchMode,

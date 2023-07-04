@@ -27,7 +27,9 @@ forward({
   to: fetchHeatingStationsFx,
 });
 
+const $isHeatingStationsLoading = fetchHeatingStationsFx.pending;
+
 export const displayHeatingStationsService = {
-  outputs: { $heatingStations },
+  outputs: { $heatingStations, $isHeatingStationsLoading },
   gates: { HeatingStationsFetchGate },
 };

@@ -4,7 +4,7 @@ import {
   ENodeWorkingRangeSeason,
   EResourceType,
   NodeOnHousingStockResponse,
-  StreetWithHousingStockNumbersResponsePagedList,
+  StreetWithBuildingNumbersResponsePagedList,
 } from 'myApi';
 import { EffectFailDataAxiosError } from 'types';
 import {
@@ -54,7 +54,7 @@ const getNodeUniqueWorkingRangeFx = domain.createEffect<
 
 const fetchAdressesFx = domain.createEffect<
   GetAddressesWithCityRequestPayload,
-  StreetWithHousingStockNumbersResponsePagedList | null
+  StreetWithBuildingNumbersResponsePagedList | null
 >(getAdresses);
 
 const getNodesFx = domain.createEffect<
@@ -73,7 +73,7 @@ const $selectedCity = domain
   .on(setSelectedCity, (_, city) => city);
 
 const $addressesPagedList = domain
-  .createStore<StreetWithHousingStockNumbersResponsePagedList | null>(null)
+  .createStore<StreetWithBuildingNumbersResponsePagedList | null>(null)
   .on(fetchAdressesFx.doneData, (_, addresses) => addresses);
 
 const $nodes = domain

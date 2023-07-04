@@ -1,4 +1,3 @@
-import { useOnEnterSwitch } from '01/features/readings/accountingNodesReadings/components/Filter';
 import { ExtendedSearch } from 'ui-kit/ExtendedSearch';
 import { Grid } from '01/shared/ui/Layout/Grid';
 import { useAutocomplete } from '01/hooks/useFilter';
@@ -10,6 +9,9 @@ import { Select } from 'ui-kit/Select';
 import { Input } from 'ui-kit/Input';
 import { AutoComplete } from 'ui-kit/AutoComplete';
 import { fromEnter } from 'ui-kit/shared_components/DatePickerNative';
+import { useSwitchInputOnEnter } from 'hooks/useSwitchInputOnEnter';
+
+const dataKey = 'search-inspectors-housing-stocks-input';
 
 export const SearchInspectorsHousingStocks: FC<
   SearchInspectorsHousingStocksProps
@@ -33,10 +35,7 @@ export const SearchInspectorsHousingStocks: FC<
     existingStreets,
   );
 
-  const {
-    keyDownEnterGuardedHandler,
-    refs: [cityRef, streetRef, homeNumberRef],
-  } = useOnEnterSwitch(3);
+  const next = useSwitchInputOnEnter(dataKey, false);
 
   const fieldsArray = [
     form.fields.City,
@@ -112,11 +111,12 @@ export const SearchInspectorsHousingStocks: FC<
           <Grid temp="0.5fr 1fr 0.25fr" gap="15px" style={{ width: '100%' }}>
             <Select
               small
-              onKeyDown={(e) => {
-                keyDownEnterGuardedHandler(0)(e);
-                fromEnter(handleSearch)(e);
-              }}
-              ref={cityRef}
+              data-reading-input={dataKey}
+              onKeyDown={fromEnter(() => {
+                next(0);
+                handleSearch();
+              })}
+              showAction={['focus']}
               placeholder="Город"
               value={form.fields.City.value || undefined}
               onChange={form.fields.City.onChange}
@@ -131,7 +131,7 @@ export const SearchInspectorsHousingStocks: FC<
             </Select>
             <AutoComplete
               small
-              ref={streetRef}
+              data-reading-input={dataKey}
               value={form.fields.Street.value}
               onChange={form.fields.Street.onChange}
               onKeyDown={(e) => {
@@ -140,8 +140,10 @@ export const SearchInspectorsHousingStocks: FC<
                     form.fields.Street.value ? streetMatch : '',
                   ),
                 )(e);
-                keyDownEnterGuardedHandler(1)(e);
-                fromEnter(handleSearch)(e);
+                fromEnter(() => {
+                  next(1);
+                  handleSearch();
+                })(e);
               }}
               onFocus={() => clearValuesOnFocus(1)}
               options={options}
@@ -149,17 +151,17 @@ export const SearchInspectorsHousingStocks: FC<
             />
             <Input
               small
-              ref={homeNumberRef}
               placeholder="Дом"
               value={form.fields.HousingStockNumber.value}
               onChange={(e) =>
                 form.fields.HousingStockNumber.onChange(e.target.value)
               }
               onFocus={() => clearValuesOnFocus(2)}
-              onKeyDown={(e) => {
-                keyDownEnterGuardedHandler(2)(e);
-                fromEnter(handleSearch)(e);
-              }}
+              data-reading-input={dataKey}
+              onKeyDown={fromEnter(() => {
+                next(2);
+                handleSearch();
+              })}
             />
           </Grid>
         </ExtendedSearch>

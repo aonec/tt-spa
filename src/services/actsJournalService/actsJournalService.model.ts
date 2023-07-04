@@ -1,4 +1,4 @@
-import { createDomain, sample } from 'effector';
+import { combine, createDomain, sample } from 'effector';
 import { addAct, fetchActs } from './actsJournalService.api';
 import { AddApartmentActRequest, ApartmentActResponsePagedList } from 'myApi';
 import { message } from 'antd';
@@ -15,11 +15,13 @@ const updateActsFilter = domain.createEvent<ActsJournalRequestParams>();
 const setPageNumber = domain.createEvent<number>();
 const $actsFilter = domain
   .createStore<ActsJournalRequestParams>({ PageSize: 20, PageNumber: 1 })
-  .on(updateActsFilter, (oldFilter, newFilter) => ({
-    ...oldFilter,
-    ...newFilter,
-    PageNumber: 1,
-  }))
+  .on(updateActsFilter, (oldFilter, newFilter) => {
+    return {
+      ...oldFilter,
+      ...newFilter,
+      PageNumber: 1,
+    };
+  })
   .on(setPageNumber, (oldFilter, PageNumber) => ({ ...oldFilter, PageNumber }));
 
 const getActs = domain.createEvent();
@@ -67,14 +69,25 @@ sample({
 });
 
 sample({
-  clock: [ActsJournalGate.open, $actsFilter, actCreated],
+  clock: [ActsJournalGate.open, updateActsFilter, actCreated],
   target: getActs,
 });
 
 sample({
-  source: $actsFilter,
-  filter: (filter) => Boolean(filter.City),
   clock: getActs,
+  source: combine(
+    $actsFilter,
+    ActsJournalGate.status,
+    (actsFilter, gateStatus) => ({
+      actsFilter,
+      gateStatus,
+    }),
+  ),
+
+  filter: ({ actsFilter, gateStatus }) => {
+    return Boolean(actsFilter.City) && gateStatus;
+  },
+  fn: ({ actsFilter }) => actsFilter,
   target: getActsFx,
 });
 

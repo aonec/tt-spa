@@ -1,5 +1,5 @@
 import { createDomain } from 'effector';
-import { InspectorOnHousingStockResponse } from 'myApi';
+import { InspectorOnBuildingResponse } from 'myApi';
 import { getInspectorsHousingStocks } from './displayInspectorsHousingStocksService.api';
 import { GetInspectorsHousingStocksRequestParams } from './types';
 
@@ -9,13 +9,13 @@ const displayInspectorsHousingStocksServiceDomain = createDomain(
 
 const $inspectorsHousingStocksList =
   displayInspectorsHousingStocksServiceDomain.createStore<
-    InspectorOnHousingStockResponse[] | null
+    InspectorOnBuildingResponse[] | null
   >(null);
 
 const fetchInspectorsHousingStocksListFx =
   displayInspectorsHousingStocksServiceDomain.createEffect<
     GetInspectorsHousingStocksRequestParams,
-    InspectorOnHousingStockResponse[] | null
+    InspectorOnBuildingResponse[] | null
   >(getInspectorsHousingStocks);
 
 const $loading = fetchInspectorsHousingStocksListFx.pending;

@@ -10,6 +10,7 @@ import {
   Wrapper,
 } from './HousingStockItem.styled';
 import { HousingStockItemProps } from './HousingStockItem.types';
+import { HouseCategoryDictionary } from 'services/objects/createObjectService/view/CreateObjectPage/CreateObjectMainInfoStage/createObjectMainInfoStage.constants';
 
 export const HousingStockItem: FC<HousingStockItemProps> = ({
   housingStock,
@@ -47,7 +48,7 @@ export const HousingStockItem: FC<HousingStockItemProps> = ({
         </Tooltip>
       </div>
       <div>{mainAddress?.city}</div>
-      <div>{housingStock.houseTypeString}</div>
+      <div>{HouseCategoryDictionary[housingStock.houseCategory]}</div>
       <ContextMenuButton size="small" />
     </Wrapper>
   );

@@ -1,0 +1,1 @@
+export { ApartmentSealProfile } from './ApartmentSealProfile';

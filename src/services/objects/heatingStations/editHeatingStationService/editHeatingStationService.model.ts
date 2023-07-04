@@ -1,10 +1,6 @@
 import { message } from 'antd';
 import { createDomain, forward, guard, sample } from 'effector';
-import {
-  CreateAddressRequest,
-  HeatingStationResponse,
-  UpdateHeatingStationRequest,
-} from 'myApi';
+import { HeatingStationResponse, UpdateHeatingStationRequest } from 'myApi';
 import { addressSearchService } from 'services/addressSearchService/addressSearchService.models';
 import { EffectFailDataAxiosError } from 'types';
 import { HeatingStationTypeRequestDictionary } from '../NewHeatingStationForm/newHeatingStationForm.constants';
@@ -45,12 +41,6 @@ guard({
         isThermalChamber: data.isThermalChamber
           ? HeatingStationTypeRequestDictionary[data.isThermalChamber]
           : undefined,
-
-        address: {
-          city: data.address.city,
-          street: data.address.street,
-          number: data.address.number,
-        } as CreateAddressRequest,
       };
 
       return { id, data: payload };

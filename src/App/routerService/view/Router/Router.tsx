@@ -12,7 +12,6 @@ import {
 import { DevicesPageContainer } from 'services/devices/devicesPageService';
 import { ChangeODPUContainer } from 'services/devices/сhangeODPUService';
 import { EditElectricNodeContainer } from 'services/devices/editElectricNodeService';
-import { StatisticsPage } from '01/features/statistics';
 import { Panel } from 'App/Panel';
 import { CreateObjectContainer } from 'services/objects/createObjectService';
 import { EditApartmentProfileContainer } from 'services/apartments/editApartmentProfileService';
@@ -35,7 +34,6 @@ import { EditCompanyContainer } from 'services/company/editCompanyService';
 import { ReportsPageContainer } from '01/features/reports';
 import { featureToggles } from 'featureToggles';
 import { ReportsContainer } from 'services/reportsService';
-import { AddIndividualDevice } from '01/features/individualDevices/addIndividualDevice';
 import { SwitchIndividualDevice } from '01/features/individualDevices/switchIndividualDevice';
 import { ReadingHistoryPage } from '01/features/readings/displayReadingHistory';
 import { AccessDeniedPage } from 'services/authorizations/AccessDeniedPage';
@@ -49,10 +47,13 @@ import { SwitchPersonalNumberContainer } from 'services/homeowner/personalNumber
 import { SplitPersonalNumberContainer } from 'services/homeowner/personalNumber/splitPersonalNumberService';
 import { SettingsPageContainer } from 'services/settings/settingsPageService';
 import { ActsJournalContainer } from 'services/actsJournalService';
+import { ServicesContainer } from 'services/services/servicesService';
 import { NodeArchivePageContainer } from 'services/nodes/nodeArchiveService';
 import { EditNodeContainer } from 'services/nodes/editNodeService';
 import { CreateDistrictBorderByMapContainer } from 'services/settings/districtBordersService/CreateDistrictBorderByMapService';
 import { DistrictBordersByAddressContainer } from 'services/settings/districtBordersService/districtBordersByAddressService';
+import { StatisticsProfileContainer } from 'services/statistics/statisticsProfileService';
+import { AddIndividualDeviceContainer } from 'services/devices/individualDevices/addIndividualDeviceService';
 
 const { gates } = objectProfileService;
 
@@ -137,13 +138,13 @@ export const Router: FC<RouterProps> = ({ roles, isRolesLoadded }) => {
                   )}
                   {isAdministrator ? (
                     <Route
-                      path="/objects/:housingStockId/edit"
+                      path="/objects/:buildingId/edit"
                       component={EditObjectContainer}
                       exact
                     />
                   ) : (
                     <Redirect
-                      from="/objects/:housingStockId/edit"
+                      from="/objects/:buildingId/edit"
                       to="/access-denied/"
                       exact
                     />
@@ -151,13 +152,13 @@ export const Router: FC<RouterProps> = ({ roles, isRolesLoadded }) => {
 
                   {isAdministrator || isExecutor ? (
                     <Route
-                      path="/objects/:housingStockId/addNode"
+                      path="/objects/:buildingId/addNode"
                       component={CreateNodeContainer}
                       exact
                     />
                   ) : (
                     <Route
-                      path="/objects/:housingStockId/addNode"
+                      path="/objects/:buildingId/addNode"
                       component={AccessDeniedPage}
                       exact
                     />
@@ -197,7 +198,7 @@ export const Router: FC<RouterProps> = ({ roles, isRolesLoadded }) => {
                     <Route path="/objects">
                       <ObjectGroupIsOpen />
                       <Route
-                        path="/objects/profile/:housingStockId"
+                        path="/objects/profile/:buildingId"
                         component={ObjectProfileContainer}
                         exact
                       />
@@ -380,6 +381,13 @@ export const Router: FC<RouterProps> = ({ roles, isRolesLoadded }) => {
 
                   {isAnyRole && (
                     <Route
+                      path="/services/:service/:section/:id?"
+                      component={ServicesContainer}
+                    />
+                  )}
+
+                  {isAnyRole && (
+                    <Route
                       path="/nodeArchive/:nodeId"
                       component={NodeArchivePageContainer}
                       exact
@@ -432,7 +440,7 @@ export const Router: FC<RouterProps> = ({ roles, isRolesLoadded }) => {
                     />
                   )}
 
-                  {isSeniorOperator && (
+                  {(isSeniorOperator || isAdministrator) && (
                     <Route
                       path="/districtBordersSettings/createByMap"
                       component={CreateDistrictBorderByMapContainer}
@@ -453,7 +461,7 @@ export const Router: FC<RouterProps> = ({ roles, isRolesLoadded }) => {
                   />
                   {isAnyRole && (
                     <Route path="/statistics/:grouptype/:searchType?">
-                      <StatisticsPage />
+                      <StatisticsProfileContainer />
                     </Route>
                   )}
 
@@ -478,7 +486,7 @@ export const Router: FC<RouterProps> = ({ roles, isRolesLoadded }) => {
 
                   {(isAdministrator || isSeniorOperator || isOperator) && (
                     <Route path="/apartment/:id/addIndividualDevice" exact>
-                      <AddIndividualDevice />
+                      <AddIndividualDeviceContainer />
                     </Route>
                   )}
 
@@ -555,6 +563,13 @@ export const Router: FC<RouterProps> = ({ roles, isRolesLoadded }) => {
                   <Route path="/access-denied/">
                     <AccessDeniedPage />
                   </Route>
+                  <Redirect from="/services" to="/services/seal" exact />
+                  <Redirect
+                    from="/services/seal"
+                    to="/services/seal/select"
+                    exact
+                  />
+
                   <Redirect from="/meters" to="/meters/apartments" exact />
                   <Route path="*" component={AccessDeniedPage} exact />
                 </Switch>

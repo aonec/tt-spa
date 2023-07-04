@@ -2,7 +2,7 @@ import _ from 'lodash';
 import moment from 'moment';
 import {
   DateTimeDoubleDictionaryItem,
-  StreetWithHousingStockNumbersResponse,
+  StreetWithBuildingNumbersResponse,
 } from 'myApi';
 import { getFilledArray } from 'utils/getFilledArray';
 
@@ -67,14 +67,14 @@ export const prepareDataForConsumptionGraph = (
 };
 
 export const getAddressSearchData = (
-  data: StreetWithHousingStockNumbersResponse[] | null,
+  data: StreetWithBuildingNumbersResponse[] | null,
 ) =>
   _.uniqBy(
     (data || []).reduce((acc, elem) => {
       const addresses =
         elem.addresses?.map((address) => ({
-          id: address.housingStockId,
-          addressString: `ул. ${elem.street}, д. ${address.housingStockNumber}`,
+          id: address.buildingId,
+          addressString: `ул. ${elem.street}, д. ${address.number}`,
         })) || [];
 
       return [...acc, ...addresses];

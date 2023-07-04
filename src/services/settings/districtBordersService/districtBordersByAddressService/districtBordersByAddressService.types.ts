@@ -9,3 +9,34 @@ export type FetchAddressQueryType = {
   Skip?: number;
   Take?: number;
 };
+
+export type FilterType = {
+  city?: string;
+  street?: string;
+  house?: string;
+  corpus?: string;
+};
+
+export type CheckedHousingStocksIdWithStreets = {
+  street: string;
+  housingStocksId: number[] | [];
+};
+
+export type CheckedHousingStocksIdWithStreetsHandler = {
+  street: string | null;
+  housingStocksId: number[] | number;
+  isToAdd: boolean;
+};
+
+export type HousingStocksIdsWithCoordinates = {
+  id: number;
+  coordinates: {
+    latitude: number;
+    longitude: number;
+  } | null;
+};
+
+export type Coordinate = {
+  latitude: number;
+  longitude: number;
+};
