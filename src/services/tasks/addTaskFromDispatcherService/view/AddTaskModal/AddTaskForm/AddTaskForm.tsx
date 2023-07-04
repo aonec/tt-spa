@@ -44,7 +44,6 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
       sourceId: null,
       requestNumber: null,
       taskType: null as null | EisTaskType,
-      // categoryId: null as null | string,
       workTypeId: null,
 
       requestDate: null,
@@ -76,7 +75,6 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
       sourceId: yup.string().nullable().required('Обязательное поле'),
       requestNumber: yup.string().nullable().required('Обязательное поле'),
       taskType: yup.string().nullable().required('Обязательное поле'),
-      // categoryId: yup.string().nullable().required('Обязательное поле'),
       workTypeId: yup.string().nullable().required('Обязательное поле'),
       leadId: yup.string().nullable().required('Обязательное поле'),
       selectedObjectAddress: yup

@@ -19,4 +19,5 @@ export type AddTaskModalProps = {
   executors: ExecutorGrpcModel[];
   handleTaskDeadlineRequest: (payload: GetTaskDeadlineRequest) => void;
   taskDeadline: GetTaskDeadlineGrpcResponse | null;
+  isCreatePending: boolean;
 };

@@ -17,6 +17,7 @@ export const AddTaskModal: FC<AddTaskModalProps> = ({
   executors,
   handleTaskDeadlineRequest,
   taskDeadline,
+  isCreatePending,
 }) => {
   const [disableSubmit, setDisableSubmit] = useState(true);
 
@@ -27,6 +28,7 @@ export const AddTaskModal: FC<AddTaskModalProps> = ({
       visible={isModalOpen}
       onCancel={handleCloseModal}
       disabled={disableSubmit}
+      loading={isCreatePending}
       form={
         <AddTaskForm
           formId={formId}
