@@ -1,16 +1,19 @@
 import { combine, createDomain, sample } from 'effector';
 import { createGate } from 'effector-react';
-import { WorkWithIndividualDeviceType } from './workWithIndividualDeviceService.types';
+import {
+  PreparedForFormReadings,
+  WorkWithIndividualDeviceType,
+} from './workWithIndividualDeviceService.types';
 import { displayIndividualDeviceAndNamesService } from '../displayIndividualDeviceAndNamesService';
 import { createForm } from 'effector-forms';
 import {
   EClosingReason,
   EIndividualDeviceRateType,
   EResourceType,
-  SwitchIndividualDeviceReadingsCreateRequest,
 } from 'myApi';
 import { getBitDepthAndScaleFactor } from 'utils/getBitDepthAndScaleFactor';
 import { getSerialNumberQuery } from './workWithIndividualDeviceService.api';
+import { prepareDeviceReadings } from './workWithIndividualDeviceService.utils';
 
 const WorkWithIndividualDeviceGate = createGate<{
   type: WorkWithIndividualDeviceType;
@@ -88,14 +91,14 @@ const deviceInfoForm = createForm({
     },
 
     oldDeviceReadings: {
-      init: [] as (SwitchIndividualDeviceReadingsCreateRequest & {
-        id?: number;
-      })[],
+      init: prepareDeviceReadings([]) as {
+        [key: number]: PreparedForFormReadings;
+      },
     },
     newDeviceReadings: {
-      init: [] as (SwitchIndividualDeviceReadingsCreateRequest & {
-        id?: number;
-      })[],
+      init: prepareDeviceReadings([]) as {
+        [key: number]: PreparedForFormReadings;
+      },
       rules: [
         {
           name: 'required',
@@ -104,7 +107,7 @@ const deviceInfoForm = createForm({
             if (type === 'check') {
               return true;
             }
-            return Boolean(value.length);
+            return Boolean(Object.values(value).length);
           },
         },
       ],
@@ -144,6 +147,7 @@ sample({
     const { bitDepth, scaleFactor } = getBitDepthAndScaleFactor(
       values.resource,
     );
+    const oldDeviceReadings = prepareDeviceReadings(values.readings || []);
 
     const isCheck = gate.type === WorkWithIndividualDeviceType.check;
     const isSwitch = gate.type === WorkWithIndividualDeviceType.switch;
@@ -156,13 +160,14 @@ sample({
       bitDepth: values.bitDepth || bitDepth,
       scaleFactor: values.scaleFactor || scaleFactor,
       mountPlaceId: values.deviceMountPlace?.id,
+      oldDeviceReadings,
       serialNumber: `${values.serialNumber}${serialNumberAfterString}`,
       ...(isCheck || isSwitch
         ? { lastCheckingDate: null, futureCheckingDate: null }
         : {}),
 
       ...(isSwitch ? { model: '', serialNumber: '' } : {}),
-    } as any;
+    };
   },
   target: deviceInfoForm.set,
 });

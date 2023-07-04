@@ -29,6 +29,7 @@ import { ClosingReasonsDictionary } from 'dictionaries';
 import { ResourceSelect } from 'ui-kit/shared_components/ResourceSelect';
 import { Loader } from 'ui-kit/Loader';
 import { AutoComplete } from 'ui-kit/AutoComplete';
+import { WorkWithIndividualDeviceInputs } from './WorkWithIndividualDeviceInputs';
 
 const { IndividualDeviceMountPlacesGate } =
   individualDeviceMountPlacesService.gates;
@@ -325,6 +326,44 @@ export const WorkWithIndividualDeviceForm: FC<
           </ErrorMessage>
         </FormItem>
       </FormWrapper>
+
+      {!isCheck && (
+        <WorkWithIndividualDeviceInputs
+          model={fields.model.value}
+          resource={fields.resource.value}
+          serialNumber={fields.serialNumber.value}
+          rateType={fields.rateType.value}
+          readings={fields.oldDeviceReadings.value}
+          onChange={(readings) => {
+            fields.oldDeviceReadings.onChange(readings);
+          }}
+          title={
+            isSwitch
+              ? 'Заменяемый прибор'
+              : isReopen
+              ? 'Прибор до переоткрытия'
+              : ''
+          }
+        />
+      )}
+
+      <WorkWithIndividualDeviceInputs
+        model={fields.model.value}
+        resource={fields.resource.value}
+        serialNumber={fields.serialNumber.value}
+        rateType={fields.rateType.value}
+        readings={fields.newDeviceReadings.value}
+        onChange={(readings) => fields.newDeviceReadings.onChange(readings)}
+        title={
+          isSwitch
+            ? 'Новый прибор'
+            : isCheck
+            ? 'Прибор после поверки'
+            : isReopen
+            ? 'Прибор после переоткрытия'
+            : ''
+        }
+      />
 
       <FormWrapper>
         <FormItem label="Пломба">

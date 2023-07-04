@@ -17,13 +17,11 @@ import {
 } from '../models';
 import { FileIcon, TrashIcon } from '../icons';
 import { Loader } from 'ui-kit/Loader';
-import { ReadingsInput } from './ReadingsInput';
 import { Button } from 'ui-kit/Button';
 import { displayContractorsService } from 'services/contractors/displayContractorsService';
 import { FileData } from 'ui-kit/DocumentsService/DocumentsService.types';
 import { ResourceInfo } from 'ui-kit/shared_components/ResourceInfo';
 import { individualDeviceMountPlacesService } from 'services/devices/individualDeviceMountPlacesService';
-import { displayIndividualDeviceAndNamesService } from 'services/devices/individualDevices/displayIndividualDeviceAndNamesService/displayIndividualDeviceAndNamesService.model';
 
 interface ILine {
   name: string;
@@ -33,10 +31,6 @@ interface ILine {
 interface RemoveFile {
   removeFile: () => void;
 }
-
-const {
-  outputs: { $individualDevice },
-} = displayIndividualDeviceAndNamesService;
 
 export const CheckFormValuesModal = () => {
   const { fields } = useForm(addIndividualDeviceForm);
@@ -50,7 +44,6 @@ export const CheckFormValuesModal = () => {
   const onCancel = () => cancelCheckingButtonClicked();
   const contractors = useStore(displayContractorsService.outputs.$contractors);
 
-  const device = useStore($individualDevice);
   const type = useStore(
     SwitchIndividualDeviceGate.state.map(({ type }) => type),
   );
@@ -126,31 +119,31 @@ export const CheckFormValuesModal = () => {
       },
     }));
 
-  const readings = (
-    <>
-      {!isCheck && (
-        <>
-          <ReadingsInput
-            title="Закрываемый прибор"
-            readings={fields.oldDeviceReadings.value}
-            device={device!}
-          />
-          <Space />
-        </>
-      )}
-      <ReadingsInput
-        title={isCheck ? 'Поверенный прибор' : 'Новый прибор'}
-        readings={fields.newDeviceReadings.value}
-        device={{
-          resource: fields.resource.value!,
-          model: fields.model.value,
-          serialNumber: fields.serialNumber.value,
-          measurableUnitString: device?.measurableUnitString,
-          rateType: fields.rateType.value,
-        }}
-      />
-    </>
-  );
+  // const readings = (
+  //   <>
+  //     {!isCheck && (
+  //       <>
+  //         <ReadingsInput
+  //           title="Закрываемый прибор"
+  //           readings={fields.oldDeviceReadings.value}
+  //           device={device!}
+  //         />
+  //         <Space />
+  //       </>
+  //     )}
+  //     <ReadingsInput
+  //       title={isCheck ? 'Поверенный прибор' : 'Новый прибор'}
+  //       readings={fields.newDeviceReadings.value}
+  //       device={{
+  //         resource: fields.resource.value!,
+  //         model: fields.model.value,
+  //         serialNumber: fields.serialNumber.value,
+  //         measurableUnitString: device?.measurableUnitString,
+  //         rateType: fields.rateType.value,
+  //       }}
+  //     />
+  //   </>
+  // );
 
   return (
     <StyledModal
@@ -186,7 +179,7 @@ export const CheckFormValuesModal = () => {
 
       <Title>2. Показания по приборам</Title>
 
-      {readings}
+      {/* {readings} */}
 
       {!!files.length && (
         <>

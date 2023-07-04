@@ -12,3 +12,11 @@ export enum WorkWithIndividualDeviceType {
 
 export type WorkWithIndividualDeviceFormType =
   typeof workWithIndividualDeviceService.forms.deviceInfoForm;
+
+export type PreparedForFormReadings = {
+  value1: string;
+  value2: string;
+  value3: string;
+  value4: string;
+  readingDate: string | null;
+};

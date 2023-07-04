@@ -9,7 +9,7 @@ export const MetersInputsBlockPure: FC<{
   rateNum: number;
   bufferedReadingValues: BufferedReadingValues;
   isDisabled?: boolean;
-  resource: EResourceType;
+  resource?: EResourceType;
   handleReadingInputChange: (e: ChangeEvent<HTMLInputElement>) => void;
 }> = ({
   rateNum,

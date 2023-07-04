@@ -1,10 +1,5 @@
 import { switchIndividualDevice } from './../../../../_api/individualDevices';
-import {
-  forward,
-  sample,
-  combine,
-  guard,
-} from 'effector';
+import { forward, sample, combine, guard } from 'effector';
 import { toArray } from '../components/CheckFormValuesModal';
 import {
   $isCheckCreationDeviceFormDataModalOpen,
@@ -12,27 +7,27 @@ import {
   cancelCheckingButtonClicked,
   checkBeforSavingButtonClicked,
   createIndividualDeviceFx,
-  switchStageButtonClicked,
   confirmCreationNewDeviceButtonClicked,
-  SwitchIndividualDeviceGate,
   $typeOfIndividualDeviceForm,
   checkIndividualDeviceFx,
 } from './index';
 import {
   EIndividualDeviceRateType,
-  IndividualDeviceListResponseFromDevicePagePagedList,
   IndividualDeviceReadingsResponse,
   SwitchIndividualDeviceReadingsCreateRequest,
   SwitchIndividualDeviceRequest,
 } from 'myApi';
 import moment from 'moment';
-import { getReadingValuesArray } from '../components/ReadingsInput';
 import { getIndividualDeviceRateNumByName } from 'utils/getIndividualDeviceRateNumByName';
 import { getFilledArray } from 'utils/getFilledArray';
 import { message } from 'antd';
 import { FileData } from 'ui-kit/DocumentsService/DocumentsService.types';
 import { individualDeviceMountPlacesService } from 'services/devices/individualDeviceMountPlacesService';
 import { displayIndividualDeviceAndNamesService } from 'services/devices/individualDevices/displayIndividualDeviceAndNamesService/displayIndividualDeviceAndNamesService.model';
+
+const getReadingValuesArray = (a: any, b: any): { value: string[] } => ({
+  value: [],
+});
 
 const {
   outputs: { $individualDevice },
@@ -59,27 +54,6 @@ $isCheckCreationDeviceFormDataModalOpen
 forward({
   from: [createIndividualDeviceFx.doneData, checkIndividualDeviceFx.doneData],
   to: addIndividualDeviceForm.reset,
-});
-
-forward({
-  from: $individualDevice.map(
-    (
-      device,
-    ): (SwitchIndividualDeviceReadingsCreateRequest & { id: number })[] =>
-      device?.readings?.map(
-        (
-          elem,
-        ): SwitchIndividualDeviceReadingsCreateRequest & { id: number } => ({
-          id: elem.id,
-          value1: Number(elem.value1),
-          value2: Number(elem.value2),
-          value3: Number(elem.value3),
-          value4: Number(elem.value4),
-          readingDate: elem.readingDateTime,
-        }),
-      ) || [],
-  ),
-  to: addIndividualDeviceForm.fields.oldDeviceReadings.$value,
 });
 
 sample({
