@@ -46,10 +46,10 @@ export const prepareAddressesTreeData = (
           key: `${street.street} ${houseManagement.id}`,
           children:
             street.addresses?.map((address) => ({
-              value: address.housingStockId,
-              key: address.housingStockId,
-              title: address.housingStockNumber
-                ? `${street.street}, ${address.housingStockNumber}`
+              value: address.buildingId,
+              key: address.buildingId,
+              title: address.number
+                ? `${street.street}, ${address.number}`
                 : '',
             })) || [],
         })) || [],

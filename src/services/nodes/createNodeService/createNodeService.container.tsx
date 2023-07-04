@@ -13,7 +13,7 @@ const { CreateNodeGate } = gates;
 const { ExistingCitiesGate } = addressSearchService.gates;
 
 export const CreateNodeContainer = () => {
-  const { housingStockId } = useParams<{ housingStockId: string }>();
+  const { buildingId } = useParams<{ buildingId: string }>();
   const history = useHistory();
 
   const housingStock = useStore(outputs.$housingStock);
@@ -49,7 +49,7 @@ export const CreateNodeContainer = () => {
 
   return (
     <>
-      <CreateNodeGate housingStockId={Number(housingStockId)} />
+      <CreateNodeGate buildingId={Number(buildingId)} />
       <ExistingCitiesGate />
       <CreateNodeServiceZoneContainer />
       <CreateCalculatorModalContainer />
@@ -76,10 +76,10 @@ export const CreateNodeContainer = () => {
         stepNumber={stepNumber}
         calculatorsList={calculatorsList}
         openCreateCalculatorModal={() =>
-          requestPayload.housingStockId &&
-          openCreateCalculatorModal(requestPayload.housingStockId)
+          requestPayload.buildingId &&
+          openCreateCalculatorModal(requestPayload.buildingId)
         }
-        isDisabledAddress={Boolean(housingStockId)}
+        isDisabledAddress={Boolean(buildingId)}
         isValidationLoading={isValidationLoading}
         requestPayload={requestPayload}
         nodeServiceZones={nodeServiceZones}

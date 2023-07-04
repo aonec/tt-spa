@@ -1,10 +1,11 @@
 import {
-  HousingStockListResponse,
+  BuildingListResponse,
   SubscriberStatisticsСonsumptionResponse,
 } from 'myApi';
 
-export type HousingStockWithApartmentStatistic = HousingStockListResponse & {
+export type HousingStockWithApartmentStatistic = BuildingListResponse & {
   apartmentsStatistic: SubscriberStatisticsСonsumptionResponse[];
+  numberOfApartments: number;
 };
 
 export type SubscriberStatisticsFilter = {

@@ -14,10 +14,10 @@ const {
 } = createObjectService;
 
 export const EditObjectContainer = () => {
-  const { housingStockId } = useParams<{ housingStockId: string }>();
+  const { buildingId } = useParams<{ buildingId: string }>();
   const history = useHistory();
 
-  const housingStockIdNumber = Number(housingStockId);
+  const buildingIdNumber = Number(buildingId);
 
   const existingCities = useStore(addressSearchService.outputs.$existingCities);
   const existingStreets = useStore(
@@ -60,19 +60,19 @@ export const EditObjectContainer = () => {
   const handleRefetchHousingStock = useEvent(inputs.handleRefetchHousingStock);
 
   const isReasonToFetchHousingStock =
-    !housingStock || housingStock.id !== housingStockIdNumber;
+    !housingStock || housingStock.id !== buildingIdNumber;
 
   useEffect(() => {
     return inputs.onPageCancel.watch(() =>
-      history.push(`/objects/profile/${housingStockId}`),
+      history.push(`/objects/profile/${buildingId}`),
     ).unsubscribe;
-  }, [history, housingStockId]);
+  }, [history, buildingId]);
 
   return (
     <>
-      <CatchHousingStockId housingStockId={housingStockIdNumber} />
+      <CatchHousingStockId buildingId={buildingIdNumber} />
       {isReasonToFetchHousingStock && (
-        <FetchObjectGate objectId={housingStockIdNumber} />
+        <FetchObjectGate objectId={buildingIdNumber} />
       )}
       <HouseManagementsFetchGate />
       <HeatingStationsFetchGate />

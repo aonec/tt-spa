@@ -1,4 +1,4 @@
-import { AssingmentResponse, ControllerResponse } from 'myApi';
+import { AssignmentResponse, ControllerResponse } from 'myApi';
 import {
   DownloadControllerWorkFileRequestPayload,
   SearchFormType,
@@ -6,7 +6,7 @@ import {
 
 export type Props = {
   form: SearchFormType;
-  assignmentslist: AssingmentResponse[] | null;
+  assignmentslist: AssignmentResponse[] | null;
   isLoadingAssygnments: boolean;
   controllersList: ControllerResponse[];
   downloadWorkFile: (payload: DownloadControllerWorkFileRequestPayload) => void;

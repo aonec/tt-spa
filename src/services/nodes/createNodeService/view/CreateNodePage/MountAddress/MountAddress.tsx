@@ -58,7 +58,7 @@ export const MountAddress: FC<MountAddressProps> = ({
     initialValues: initialValues,
     onSubmit: async (values) => {
       if (housingStock && isFieldsDisabled) {
-        updateRequestPayload({ housingStockId: housingStock.id });
+        updateRequestPayload({ buildingId: housingStock.id });
 
         return;
       }
@@ -76,7 +76,7 @@ export const MountAddress: FC<MountAddressProps> = ({
 
       if (!housingStockResponse) return;
 
-      updateRequestPayload({ housingStockId: housingStockResponse.id });
+      updateRequestPayload({ buildingId: housingStockResponse.id });
     },
     validationSchema,
     validateOnChange: false,
