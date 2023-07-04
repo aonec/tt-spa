@@ -12,6 +12,7 @@ import {
   CreateErpTaskRequest,
   ExecutorGrpcModel,
   GetTaskDeadlineGrpcResponse,
+  ObjectGrpcModel,
   SourceGrpcModel,
   WorkCategoryGrpcModel,
 } from 'myApi';
@@ -52,7 +53,7 @@ const getLeadExecutorsFx = domain.createEffect<void, ExecutorGrpcModel[]>(
   getLeadExecutors,
 );
 
-const getErpObjectsFx = domain.createEffect<void, ExecutorGrpcModel[]>(
+const getErpObjectsFx = domain.createEffect<void, ObjectGrpcModel[]>(
   getTasksErpObjects,
 );
 
@@ -88,7 +89,7 @@ const $executors = domain
   .on(getErpExecutorsForLeadFx.doneData, (_, data) => data);
 
 const $ErpObjects = domain
-  .createStore<ExecutorGrpcModel[]>([])
+  .createStore<ObjectGrpcModel[]>([])
   .on(getErpObjectsFx.doneData, (_, data) => data);
 
 const $taskDeadlineRequest = domain
@@ -105,7 +106,7 @@ sample({
   source: $ErpObjects,
   fn: (ErpObjects, data) => {
     const object = ErpObjects.find(
-      (object) => object.name === data.selectedObjectAddress,
+      (object) => object.address === data.selectedObjectAddress,
     );
 
     const sourceDateTime = data.requestDate
