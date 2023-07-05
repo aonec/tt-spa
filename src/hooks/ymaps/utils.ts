@@ -83,9 +83,7 @@ export function useRenderDistricts(
 
     districtsGroup.removeAll();
 
-    setSavedDistricts({});
-
-    districts.forEach((district) => {
+    const districtPolygons = districts.reduce((acc, district) => {
       const color = DistrictColorsList.find(
         (elem) => elem.type === district.type,
       );
@@ -112,12 +110,16 @@ export function useRenderDistricts(
 
       districtsGroup.add(polygon);
 
-      setSavedDistricts((prev) => ({ ...prev, [district.id]: polygon }));
-
       if (district.isEditing) (polygon.editor as any).startDrawing();
 
-      return () => districtsGroup.removeAll();
-    });
+      return { ...acc, [district.id]: polygon };
+    }, {});
+
+    setSavedDistricts(districtPolygons);
+
+    return () => {
+      districtsGroup.removeAll();
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [districtsGroup, districts]);
 
