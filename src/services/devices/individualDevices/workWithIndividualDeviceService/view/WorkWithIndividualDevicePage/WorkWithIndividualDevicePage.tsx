@@ -29,7 +29,6 @@ export const WorkWithIndividualDevicePage: FC<
   isSerialNumberLoading,
   handleFetchModels,
   models,
-  handleSubmitAction,
 }) => {
   const history = useHistory();
 

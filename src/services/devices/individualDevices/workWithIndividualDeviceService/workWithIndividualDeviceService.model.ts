@@ -317,6 +317,7 @@ export const workWithIndividualDeviceService = {
   inputs: {
     fetchSerialNumberForCheck,
     submitAction,
+    actionSucceed,
   },
   outputs: {
     $individualDevice,
