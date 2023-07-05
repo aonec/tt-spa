@@ -49,7 +49,7 @@ const updateHousingStockFx = domain.createEffect<
     housingStockId: number;
     data: HousingStockUpdateRequest;
   },
-  HousingStockResponse,
+  void,
   EffectFailDataAxiosError
 >(updateHousingStock);
 
@@ -58,7 +58,7 @@ const createHousingStockAddressFx = domain.createEffect<
     housingStockId: number;
     data: BuildingAddressCreateRequest;
   },
-  HousingStockResponse,
+  void,
   EffectFailDataAxiosError
 >(createHousingStockAddress);
 
@@ -77,7 +77,7 @@ const deleteHousingStockAddressFx = domain.createEffect<
     housingStockId: number;
     addressId: number;
   },
-  HousingStockResponse,
+  void,
   EffectFailDataAxiosError
 >(deleteHousingStockAddress);
 
