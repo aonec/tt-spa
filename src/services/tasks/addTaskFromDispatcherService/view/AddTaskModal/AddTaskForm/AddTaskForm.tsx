@@ -67,7 +67,6 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
       taskDescription: null,
     },
     enableReinitialize: true,
-    // validateOnChange: true,
     validateOnBlur: true,
     validateOnMount: true,
 
@@ -76,6 +75,47 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
       requestNumber: yup.string().nullable().required('Обязательное поле'),
       taskType: yup.string().nullable().required('Обязательное поле'),
       workTypeId: yup.string().nullable().required('Обязательное поле'),
+      subscriberName: yup.string().nullable().required('Обязательное поле'),
+      phoneNumber: yup.string().nullable().required('Обязательное поле'),
+      requestDate: yup.string().nullable().required('Обязательное поле'),
+      requestTime: yup.string().nullable().required('Обязательное поле'),
+      taskDeadline: yup
+        .string()
+        .nullable()
+        .required('Обязательное поле')
+        .when('workTypeId', {
+          is: '48eb4f62-15a1-11e9-8176-001dd8b88b72',
+          then: yup.string().nullable(),
+        })
+        .when('rateType', {
+          is: '6373ec3b-302b-11e9-8184-001dd8b88b72',
+          then: yup.string().nullable(),
+        }),
+
+      manualDeadlineDate: yup
+        .string()
+        .nullable()
+        .when('workTypeId', {
+          is: '48eb4f62-15a1-11e9-8176-001dd8b88b72',
+          then: yup.string().required('Это поле обязательно'),
+        })
+        .when('rateType', {
+          is: '6373ec3b-302b-11e9-8184-001dd8b88b72',
+          then: yup.string().required('Это поле обязательно'),
+        }),
+      manualDeadlineTime: yup
+        .string()
+        .nullable()
+        .when('workTypeId', {
+          is: '48eb4f62-15a1-11e9-8176-001dd8b88b72',
+          then: yup.string().required('Это поле обязательно'),
+        })
+        .when('rateType', {
+          is: '6373ec3b-302b-11e9-8184-001dd8b88b72',
+          then: yup.string().required('Это поле обязательно'),
+        }),
+
+      executorId: yup.string().nullable().required('Обязательное поле'),
       leadId: yup.string().nullable().required('Обязательное поле'),
       selectedObjectAddress: yup
         .string()
@@ -160,11 +200,8 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
               value={values.sourceId || undefined}
               onChange={(value) => setFieldValue('sourceId', value)}
             >
-              {ERPSources.map((source, index) => (
-                <Select.Option
-                  value={source.id || index}
-                  key={source.id || index}
-                >
+              {ERPSources.map((source) => (
+                <Select.Option value={source.id} key={source.id}>
                   {source.name}
                 </Select.Option>
               ))}
@@ -226,11 +263,8 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
                 handleTaskDeadlineRequest({ WorkCategoryId: value as string });
               }}
             >
-              {workTypes.map((workType, index) => (
-                <Select.Option
-                  value={workType.id || index}
-                  key={workType.id || index}
-                >
+              {workTypes.map((workType) => (
+                <Select.Option value={workType.id} key={workType.id}>
                   {workType.name}
                 </Select.Option>
               ))}
@@ -354,11 +388,8 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
                 choоseLeadExecutor(value as string);
               }}
             >
-              {sortedLeadExecutors.map((leadExecutor, index) => (
-                <Select.Option
-                  value={leadExecutor.id || index}
-                  key={leadExecutor.id || index}
-                >
+              {sortedLeadExecutors.map((leadExecutor) => (
+                <Select.Option value={leadExecutor.id} key={leadExecutor.id}>
                   {leadExecutor.name}
                 </Select.Option>
               ))}
@@ -371,11 +402,8 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
               onChange={(value) => setFieldValue('executorId', value)}
               disabled={!Boolean(values.leadId)}
             >
-              {sortedExecutors.map((executor, index) => (
-                <Select.Option
-                  value={executor.id || index}
-                  key={executor.id || index}
-                >
+              {sortedExecutors.map((executor) => (
+                <Select.Option value={executor.id} key={executor.id}>
                   {executor.name}
                 </Select.Option>
               ))}
