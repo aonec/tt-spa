@@ -13341,19 +13341,6 @@ export class Api<
         ...params,
       }),
 
-    tasksErpTaskDeadlineList: (
-      query?: { WorkCategoryId?: string; TaskType?: EisTaskType },
-      params: RequestParams = {},
-    ) =>
-      this.request<GetTaskDeadlineGrpcResponse[], ErrorApiResponse>({
-        path: `/api/Tasks/ErpTaskDeadline`,
-        method: 'GET',
-        query: query,
-        secure: true,
-        format: 'json',
-        ...params,
-      }),
-
     /**
      * @description Роли:<li>Администратор</li><li>Наблюдатель УК</li>
      *
