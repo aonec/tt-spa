@@ -21,6 +21,8 @@ export const existingDistrictsQuery = createQuery<
 
 export const deleteDistrictMutation = createMutation({
   effect: createEffect<string, void, EffectFailDataAxiosError>((id) =>
-    axios.delete(`IndividualSeal/Districts/${id}`),
+    axios.delete(`IndividualSeal/Districts/${id}`, {
+      params: { forced: true },
+    }),
   ),
 });

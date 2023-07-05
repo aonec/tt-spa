@@ -58,6 +58,11 @@ deleteDistrictMutation.finished.failure.watch((e) =>
   message.error(e.error.response.data.error.Text),
 );
 
+sample({
+  clock: deleteDistrictMutation.finished.success,
+  target: existingDistrictsQuery.start,
+});
+
 export const manageDistrictsMapService = {
   inputs: {
     handleOpenDeleteDistrictModal,

@@ -2656,12 +2656,6 @@ export interface GetTaskDeadlineGrpcResponse {
   deadlineInHours: number;
 }
 
-export interface GetTaskDeadlineRequest {
-  /** @format uuid */
-  workCategoryId?: string;
-  taskType?: EisTaskType;
-}
-
 export interface GroupReportContractorResponse {
   /** @format int32 */
   id: number;
@@ -8624,11 +8618,13 @@ export class Api<
      */
     individualSealDistrictsDelete: (
       districtId: string,
+      query?: { forced?: boolean },
       params: RequestParams = {},
     ) =>
       this.request<void, ErrorApiResponse>({
         path: `/api/IndividualSeal/Districts/${districtId}`,
         method: 'DELETE',
+        query: query,
         secure: true,
         ...params,
       }),
@@ -14649,15 +14645,14 @@ export class Api<
      * @secure
      */
     tasksErpTaskDeadlineList: (
-      data: GetTaskDeadlineRequest,
+      query?: { WorkCategoryId?: string; TaskType?: EisTaskType },
       params: RequestParams = {},
     ) =>
       this.request<GetTaskDeadlineGrpcResponse[], ErrorApiResponse>({
         path: `/api/Tasks/ErpTaskDeadline`,
         method: 'GET',
-        body: data,
+        query: query,
         secure: true,
-        type: ContentType.Json,
         format: 'json',
         ...params,
       }),
