@@ -1,7 +1,6 @@
 import React from 'react';
 import { ArrowRight } from 'react-bootstrap-icons';
 import styled from 'styled-components';
-import { Grid } from '../Layout/Grid';
 
 interface INumberRange {
   from: number | null;
@@ -17,7 +16,7 @@ interface Props {
 export const NumberRange: React.FC<Props> = (props) => {
   const { value, onChange, disabled } = props;
   return (
-    <Wrap temp="0.5fr 20px 0.5fr" gap="10px" disabled={disabled}>
+    <Wrap disabled={disabled}>
       <Input
         placeholder="Введите значение"
         type="number"
@@ -55,7 +54,10 @@ interface WrapProps {
   disabled?: boolean;
 }
 
-const Wrap = styled(Grid)`
+const Wrap = styled.div`
+  display: grid;
+  grid-template-columns: 0.5fr 20px 0.5fr;
+  grid-gap: 10px;
   align-items: center;
   border: 1px solid lightgray;
   transition: 0.2s;

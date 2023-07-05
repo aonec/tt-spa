@@ -1,8 +1,6 @@
 import { ExtendedSearch } from 'ui-kit/ExtendedSearch';
-import { Grid } from '01/shared/ui/Layout/Grid';
 import { Form } from 'antd';
 import React, { FC } from 'react';
-import { ExtendedSearchWrap, Wrap } from './components';
 import { SearchInspectorsHousingStocksProps } from './types';
 import { Select } from 'ui-kit/Select';
 import { Input } from 'ui-kit/Input';
@@ -10,6 +8,11 @@ import { AutoComplete } from 'ui-kit/AutoComplete';
 import { fromEnter } from 'ui-kit/shared_components/DatePickerNative';
 import { useSwitchInputOnEnter } from 'hooks/useSwitchInputOnEnter';
 import { useAutocomplete } from 'hooks/useAutocomplete';
+import {
+  ExtendedSearchWrap,
+  GridContainer,
+  Wrap,
+} from './SearchInspectorsHousingStocks.styled';
 
 const dataKey = 'search-inspectors-housing-stocks-input';
 
@@ -107,7 +110,7 @@ export const SearchInspectorsHousingStocks: FC<
             </ExtendedSearchWrap>
           }
         >
-          <Grid temp="0.5fr 1fr 0.25fr" gap="15px" style={{ width: '100%' }}>
+          <GridContainer>
             <Select
               small
               data-reading-input={dataKey}
@@ -162,7 +165,7 @@ export const SearchInspectorsHousingStocks: FC<
                 handleSearch();
               })}
             />
-          </Grid>
+          </GridContainer>
         </ExtendedSearch>
       </Wrap>
     </>
