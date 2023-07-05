@@ -1,5 +1,8 @@
 import moment from 'moment';
-import { IndividualDeviceReadingsResponse } from 'myApi';
+import {
+  IndividualDeviceReadingsResponse,
+  SwitchIndividualDeviceReadingsCreateRequest,
+} from 'myApi';
 import { getFilledArray } from 'utils/getFilledArray';
 import { PreparedForFormReadings } from './workWithIndividualDeviceService.types';
 
@@ -63,4 +66,52 @@ export const prepareDeviceReadings = (
 
     return acc;
   }, {} as { [key: number]: PreparedForFormReadings });
+};
+
+export const compareReadingsArrWithSameIndex = (
+  afterEditingArr: PreparedForFormReadings[],
+  beforeEditiningArr: PreparedForFormReadings[],
+) =>
+  afterEditingArr.length
+    ? afterEditingArr.reduce((acc, readings, index) => {
+        const { value1, value2, value3, value4 } = readings;
+
+        const oldReadings = beforeEditiningArr[index];
+
+        const {
+          value1: oldValue1,
+          value2: oldValue2,
+          value3: oldValue3,
+          value4: oldValue4,
+        } = oldReadings;
+
+        const isDifferent =
+          oldValue1 !== value1 ||
+          oldValue2 !== value2 ||
+          oldValue3 !== value3 ||
+          oldValue4 !== value4;
+
+        if (!isDifferent) {
+          return acc;
+        }
+
+        return [...acc, getPreparedReadingsOfIndividualDevice(readings)];
+      }, [] as SwitchIndividualDeviceReadingsCreateRequest[])
+    : null;
+
+const getPreparedReadingsOfIndividualDevice = (
+  item: PreparedForFormReadings,
+) => {
+  const { readingDate, value1, value2, value3, value4 } = item;
+
+  return {
+    readingDate: moment(readingDate)
+      .add(1, 'month')
+      .utcOffset(0, true)
+      .toISOString(),
+    value1: Number(value1),
+    value2: value2 ? Number(value2) : null,
+    value3: value3 ? Number(value3) : null,
+    value4: value4 ? Number(value4) : null,
+  };
 };

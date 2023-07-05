@@ -25,6 +25,7 @@ export const WorkWithIndividualDeviceContainer: FC<
     handleFetchSerialNumberForCheck,
     handleFetchModels,
     models,
+    handleSubmitAction,
   } = useUnit({
     individualDevice: outputs.$individualDevice,
     isDeviceLoading: outputs.$isDeviceLoading,
@@ -34,6 +35,7 @@ export const WorkWithIndividualDeviceContainer: FC<
       displayIndividualDeviceAndNamesService.inputs.handleFetchModels,
     models:
       displayIndividualDeviceAndNamesService.outputs.$individualDevicesNames,
+    handleSubmitAction: inputs.submitAction,
   });
 
   const { data: isSerialNumberAllreadyExist, pending: isSerialNumberLoading } =
@@ -55,6 +57,7 @@ export const WorkWithIndividualDeviceContainer: FC<
           isSerialNumberAllreadyExist={isSerialNumberAllreadyExist || false}
           isSerialNumberLoading={isSerialNumberLoading}
           models={models}
+          handleSubmitAction={handleSubmitAction}
         />
       </WithLoader>
     </>

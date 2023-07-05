@@ -1,7 +1,9 @@
-import { combine, createDomain, sample } from 'effector';
+import { combine, createDomain, sample, split } from 'effector';
 import { createGate } from 'effector-react';
 import {
+  CheckIndividualDevicePayload,
   PreparedForFormReadings,
+  SwitchIndividualDevicePayload,
   WorkWithIndividualDeviceType,
 } from './workWithIndividualDeviceService.types';
 import { displayIndividualDeviceAndNamesService } from '../displayIndividualDeviceAndNamesService';
@@ -12,8 +14,17 @@ import {
   EResourceType,
 } from 'myApi';
 import { getBitDepthAndScaleFactor } from 'utils/getBitDepthAndScaleFactor';
-import { getSerialNumberQuery } from './workWithIndividualDeviceService.api';
-import { prepareDeviceReadings } from './workWithIndividualDeviceService.utils';
+import {
+  checkIndividualDeviceMutation,
+  getSerialNumberQuery,
+  switchIndividualDeviceMutation,
+} from './workWithIndividualDeviceService.api';
+import {
+  compareReadingsArrWithSameIndex,
+  prepareDeviceReadings,
+} from './workWithIndividualDeviceService.utils';
+import { message } from 'antd';
+import moment from 'moment';
 
 const WorkWithIndividualDeviceGate = createGate<{
   type: WorkWithIndividualDeviceType;
@@ -76,11 +87,7 @@ const deviceInfoForm = createForm({
       init: null as string | null,
     },
     documentsIds: {
-      init: {
-        completedWorks: null as Document | null,
-        devicePassport: null as Document | null,
-        deviceCheck: null as Document | null,
-      },
+      init: [] as number[],
     },
     isPolling: {
       init: false,
@@ -107,7 +114,12 @@ const deviceInfoForm = createForm({
             if (type === 'check') {
               return true;
             }
-            return Boolean(Object.values(value).length);
+            return Boolean(
+              compareReadingsArrWithSameIndex(
+                Object.values(value),
+                Object.values(prepareDeviceReadings([])),
+              )?.length,
+            );
           },
         },
       ],
@@ -123,7 +135,108 @@ const deviceInfoForm = createForm({
 const $individualDevice =
   displayIndividualDeviceAndNamesService.outputs.$individualDevice;
 
+const deviceChecked = checkIndividualDeviceMutation.finished.success;
+const deviceSwitched = switchIndividualDeviceMutation.finished.success;
+const actionSucceed = domain.createEvent<WorkWithIndividualDeviceType>();
+
 const fetchSerialNumberForCheck = domain.createEvent<string>();
+
+const submitAction = domain.createEvent();
+const switchIndividualDevice = domain.createEvent();
+const checkIndividualDevice = domain.createEvent();
+
+split({
+  source: WorkWithIndividualDeviceGate.state.map(({ type }) => type),
+  clock: submitAction,
+  match: (type: WorkWithIndividualDeviceType): WorkWithIndividualDeviceType =>
+    type,
+  cases: {
+    [WorkWithIndividualDeviceType.check]: checkIndividualDevice,
+    [WorkWithIndividualDeviceType.reopen]: switchIndividualDevice,
+    [WorkWithIndividualDeviceType.switch]: switchIndividualDevice,
+  },
+});
+
+sample({
+  source: WorkWithIndividualDeviceGate.state.map(({ type }) => type),
+  clock: [deviceChecked, deviceSwitched],
+  target: actionSucceed,
+});
+
+sample({
+  source: combine(deviceInfoForm.$values, $individualDevice, (info, device) => {
+    const {
+      lastCheckingDate,
+      futureCheckingDate,
+      newDeviceReadings,
+      oldDeviceReadings,
+    } = info;
+
+    const oldDeviceReadingsArr = Object.values(oldDeviceReadings);
+    const newDeviceReadingsArr = Object.values(newDeviceReadings);
+
+    const readingsAfterCheck = compareReadingsArrWithSameIndex(
+      newDeviceReadingsArr,
+      oldDeviceReadingsArr,
+    );
+
+    return {
+      currentCheckingDate: lastCheckingDate,
+      futureCheckingDate,
+      readingsAfterCheck,
+      deviceId: device?.id || null,
+    };
+  }),
+  clock: checkIndividualDevice,
+  filter: (payload): payload is CheckIndividualDevicePayload =>
+    Boolean(
+      payload.currentCheckingDate &&
+        payload.futureCheckingDate &&
+        payload.deviceId,
+    ),
+  target: checkIndividualDeviceMutation.start,
+});
+
+const checkIndividualDevicePayload = combine(
+  deviceInfoForm.$values,
+  $individualDevice,
+  (info, device) => ({
+    serialNumber: info.serialNumber,
+    rateType: info.rateType,
+    model: info.model,
+    contractorId: info.contractorId,
+    sealInstallationDate: info.sealInstallationDate,
+    sealNumber: info.sealNumber,
+    oldDeviceClosingReason: info.oldDeviceClosingReason || undefined,
+    isPolling: info.isPolling,
+
+    lastCheckingDate: moment(info.lastCheckingDate)
+      .utcOffset(0, true)
+      .toISOString(true),
+    futureCheckingDate: moment(info.futureCheckingDate)
+      .utcOffset(0, true)
+      .toISOString(),
+    bitDepth: Number(info.bitDepth),
+    scaleFactor: Number(info.scaleFactor),
+    oldDeviceReadings: compareReadingsArrWithSameIndex(
+      Object.values(info.oldDeviceReadings),
+      Object.values(prepareDeviceReadings(device?.readings || [])),
+    ),
+    newDeviceReadings: compareReadingsArrWithSameIndex(
+      Object.values(info.newDeviceReadings),
+      Object.values(prepareDeviceReadings([])),
+    ),
+    deviceId: device?.id,
+  }),
+);
+
+sample({
+  source: checkIndividualDevicePayload,
+  filter: (payload): payload is SwitchIndividualDevicePayload =>
+    Boolean(payload.deviceId),
+  clock: switchIndividualDevice,
+  target: switchIndividualDeviceMutation.start,
+});
 
 sample({
   clock: fetchSerialNumberForCheck,
@@ -172,9 +285,38 @@ sample({
   target: deviceInfoForm.set,
 });
 
+switchIndividualDeviceMutation.finished.failure.watch(({ error }) => {
+  return message.error(
+    error.response.data.error.Text ||
+      error.response.data.error.Message ||
+      'Произошла ошибка',
+  );
+});
+
+checkIndividualDeviceMutation.finished.failure.watch(({ error }) => {
+  return message.error(
+    error.response.data.error.Text ||
+      error.response.data.error.Message ||
+      'Произошла ошибка',
+  );
+});
+
+actionSucceed.watch((type) => {
+  if (type === WorkWithIndividualDeviceType.check) {
+    return message.success('Прибор успешно поверен!');
+  }
+  if (type === WorkWithIndividualDeviceType.reopen) {
+    return message.success('Прибор успешно переоткрыт!');
+  }
+  if (type === WorkWithIndividualDeviceType.switch) {
+    return message.success('Прибор успешно заменён!');
+  }
+});
+
 export const workWithIndividualDeviceService = {
   inputs: {
     fetchSerialNumberForCheck,
+    submitAction,
   },
   outputs: {
     $individualDevice,

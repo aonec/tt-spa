@@ -1,3 +1,10 @@
+import {
+  CheckIndividualDeviceRequest,
+  EClosingReason,
+  EIndividualDeviceRateType,
+  SwitchIndividualDeviceReadingsCreateRequest,
+  SwitchIndividualDeviceRequest,
+} from 'myApi';
 import { workWithIndividualDeviceService } from './workWithIndividualDeviceService.model';
 
 export type WorkWithIndividualDeviceContainerProps = {
@@ -20,3 +27,21 @@ export type PreparedForFormReadings = {
   value4: string;
   readingDate: string | null;
 };
+
+export type CheckIndividualDevicePayload = {
+  deviceId: number;
+  currentCheckingDate: string;
+  futureCheckingDate: string;
+  readingsAfterCheck: SwitchIndividualDeviceReadingsCreateRequest[] | null;
+} & CheckIndividualDeviceRequest;
+
+export type SwitchIndividualDevicePayload = {
+  deviceId: number;
+  rateType: EIndividualDeviceRateType;
+  contractorId: string | null;
+  sealInstallationDate: string | null;
+  sealNumber: string | null;
+  oldDeviceClosingReason: EClosingReason | undefined;
+  isPolling: boolean;
+  oldDeviceReadings: SwitchIndividualDeviceReadingsCreateRequest[] | null;
+} & SwitchIndividualDeviceRequest;

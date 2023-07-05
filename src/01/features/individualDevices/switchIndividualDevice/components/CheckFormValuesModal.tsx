@@ -119,32 +119,6 @@ export const CheckFormValuesModal = () => {
       },
     }));
 
-  // const readings = (
-  //   <>
-  //     {!isCheck && (
-  //       <>
-  //         <ReadingsInput
-  //           title="Закрываемый прибор"
-  //           readings={fields.oldDeviceReadings.value}
-  //           device={device!}
-  //         />
-  //         <Space />
-  //       </>
-  //     )}
-  //     <ReadingsInput
-  //       title={isCheck ? 'Поверенный прибор' : 'Новый прибор'}
-  //       readings={fields.newDeviceReadings.value}
-  //       device={{
-  //         resource: fields.resource.value!,
-  //         model: fields.model.value,
-  //         serialNumber: fields.serialNumber.value,
-  //         measurableUnitString: device?.measurableUnitString,
-  //         rateType: fields.rateType.value,
-  //       }}
-  //     />
-  //   </>
-  // );
-
   return (
     <StyledModal
       width={800}

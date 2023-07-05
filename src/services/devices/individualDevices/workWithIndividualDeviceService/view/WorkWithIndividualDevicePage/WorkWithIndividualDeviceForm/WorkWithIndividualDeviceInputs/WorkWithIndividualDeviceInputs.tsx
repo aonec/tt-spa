@@ -82,8 +82,7 @@ export const WorkWithIndividualDeviceInputs: FC<
                 ...readings,
                 [sliderIndex]: {
                   ...readings?.[sliderIndex],
-                  [e.target.name]:
-                    e.target.value !== '' ? Number(e.target.value) : null,
+                  [e.target.name]: e.target.value,
                 },
               })
             }

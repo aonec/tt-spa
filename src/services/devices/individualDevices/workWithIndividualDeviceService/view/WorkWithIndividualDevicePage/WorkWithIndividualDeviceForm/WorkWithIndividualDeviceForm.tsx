@@ -1,6 +1,5 @@
 import React, { FC, useCallback, useEffect } from 'react';
 import {
-  FormSC,
   FormWrapper,
   InputWrapper,
   SwitchWrapper,
@@ -30,6 +29,7 @@ import { ResourceSelect } from 'ui-kit/shared_components/ResourceSelect';
 import { Loader } from 'ui-kit/Loader';
 import { AutoComplete } from 'ui-kit/AutoComplete';
 import { WorkWithIndividualDeviceInputs } from './WorkWithIndividualDeviceInputs';
+import { Form } from 'antd';
 
 const { IndividualDeviceMountPlacesGate } =
   individualDeviceMountPlacesService.gates;
@@ -74,7 +74,7 @@ export const WorkWithIndividualDeviceForm: FC<
   }, [isCheck, fields.oldDeviceReadings.value, set]);
 
   return (
-    <FormSC>
+    <Form>
       {!isCheck && (
         <>
           <IndividualDeviceMountPlacesGate apartmentId={Number(id)} />
@@ -364,6 +364,11 @@ export const WorkWithIndividualDeviceForm: FC<
             : ''
         }
       />
+      <ErrorMessage>
+        {fields.newDeviceReadings.errorText({
+          required: 'Введите хотя бы одно показание',
+        })}
+      </ErrorMessage>
 
       <FormWrapper>
         <FormItem label="Пломба">
@@ -408,6 +413,6 @@ export const WorkWithIndividualDeviceForm: FC<
           ))}
         </Select>
       </FormItem>
-    </FormSC>
+    </Form>
   );
 };
