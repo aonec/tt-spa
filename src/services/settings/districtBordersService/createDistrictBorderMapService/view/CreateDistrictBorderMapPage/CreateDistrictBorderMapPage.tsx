@@ -8,7 +8,6 @@ import {
   ControlButtonsWrapper,
   Header,
   MapWrapper,
-  Wrapper,
 } from './CreateDistrictBorderMapPage.styled';
 import {
   getBuildingPlacmearks,
@@ -114,7 +113,7 @@ export const CreateDistrictBorderMapPage: FC<Props> = ({
   useRenderPlacemarks(map, buildingsPlacemarks);
 
   return (
-    <Wrapper>
+    <div>
       <Header>
         <div>
           <GoBack />
@@ -158,6 +157,6 @@ export const CreateDistrictBorderMapPage: FC<Props> = ({
         )}
         <div ref={mapRef} style={{ width: '100%', height: '86vh' }} />
       </MapWrapper>
-    </Wrapper>
+    </div>
   );
 };
