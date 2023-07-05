@@ -7,12 +7,9 @@ import { deleteIndividualDeviceMutation } from './deleteIndividualDeviceService.
 const { inputs, outputs } = deleteIndividualDeviceService;
 
 export const DeleteIndividualDeviceModalContainer = () => {
-  const { isOpen, individualDevice } = useUnit({
+  const { isOpen, individualDevice, closeModal, handleDelete } = useUnit({
     isOpen: outputs.$isModalOpen,
     individualDevice: outputs.$currentIndividualDevice,
-  });
-
-  const { closeModal, handleDelete } = useUnit({
     closeModal: inputs.closeModal,
     handleDelete: inputs.deleteIndividualDevice,
   });
