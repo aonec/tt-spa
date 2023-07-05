@@ -2,21 +2,48 @@ import React from 'react';
 import { manageDistrictsMapService } from './manageDistrictsMapService.models';
 import { useUnit } from 'effector-react';
 import { ManageDistrictPage } from './ManageDistrictPage';
-import { existingDistrictsQuery } from './manageDistrictsMapService.api';
+import {
+  deleteDistrictMutation,
+  existingDistrictsQuery,
+} from './manageDistrictsMapService.api';
+import { DeleteDistrictModal } from './DeleteDistrictModal';
 
 const {
+  inputs,
+  outputs,
   gates: { ManageDistrictsGate },
 } = manageDistrictsMapService;
 
 export const ManageDistrictsMapContainer = () => {
-  const { existingDistricts } = useUnit({
+  const {
+    existingDistricts,
+    isDeleteDistrictModalOpen,
+    handleCloseDeleteDistrictModal,
+    handleOpenDeleteDistrictModal,
+    handleDeleteDistrict,
+    isDeletingDistrictLoading,
+  } = useUnit({
     existingDistricts: existingDistrictsQuery.$data,
+    isDeleteDistrictModalOpen: outputs.$isDeleteDistrictModalOpen,
+    handleOpenDeleteDistrictModal: inputs.handleOpenDeleteDistrictModal,
+    handleCloseDeleteDistrictModal: inputs.handleCloseDeleteDistrictModal,
+    handleDeleteDistrict: inputs.handleDeleteDistrict,
+    isDeletingDistrictLoading: deleteDistrictMutation.$pending,
   });
 
   return (
     <>
       <ManageDistrictsGate />
-      <ManageDistrictPage existingDistricts={existingDistricts} />
+      <DeleteDistrictModal
+        isDeleteDistrictModalOpen={isDeleteDistrictModalOpen}
+        handleCloseDeleteDistrictModal={handleCloseDeleteDistrictModal}
+        handleDeleteDistrict={handleDeleteDistrict}
+        isDeletingDistrictLoading={isDeletingDistrictLoading}
+      />
+      <ManageDistrictPage
+        existingDistricts={existingDistricts}
+        handleDeleteDistrict={handleOpenDeleteDistrictModal}
+      />
     </>
   );
 };

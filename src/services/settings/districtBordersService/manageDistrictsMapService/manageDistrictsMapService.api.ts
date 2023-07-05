@@ -1,6 +1,8 @@
 import { axios } from '01/axios';
-import { createQuery } from '@farfetched/core';
+import { createMutation, createQuery } from '@farfetched/core';
+import { createEffect } from 'effector';
 import { DistrictResponse } from 'myApi';
+import { EffectFailDataAxiosError } from 'types';
 
 export const existingDistrictsQuery = createQuery<
   void,
@@ -15,4 +17,10 @@ export const existingDistrictsQuery = createQuery<
 
     return districts.reverse();
   },
+});
+
+export const deleteDistrictMutation = createMutation({
+  effect: createEffect<string, void, EffectFailDataAxiosError>((id) =>
+    axios.delete(`IndividualSeal/Districts/${id}`),
+  ),
 });

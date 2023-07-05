@@ -1,4 +1,4 @@
-import React, { FC, useMemo, useState } from 'react';
+import React, { FC, useMemo } from 'react';
 import {
   ControlButtonsWrapper,
   DistrictSelectWrapper,
@@ -13,15 +13,22 @@ import { useYMaps } from 'hooks/ymaps/useYMaps';
 import { getPayloadFromDistricts } from 'utils/districtsData';
 import { useRenderDistricts } from 'hooks/ymaps/utils';
 import { Select } from 'ui-kit/Select';
-import { ColorCircle } from '../../createDistrictBorderMapService/view/CreateDistrictBorderMapPage/CreateDistrictFormPanel/CreateDistrictFormPanel.styled';
 import { DistrictColorsList } from 'dictionaries';
+import { manageDistrictsMapService } from '../manageDistrictsMapService.models';
+import { useForm } from 'effector-forms';
+import { ColorCircle } from '../../createDistrictBorderMapService/view/CreateDistrictBorderMapPage/CreateDistrictFormPanel/CreateDistrictFormPanel.styled';
 
-export const ManageDistrictPage: FC<Props> = ({ existingDistricts }) => {
+const { forms } = manageDistrictsMapService;
+
+export const ManageDistrictPage: FC<Props> = ({
+  existingDistricts,
+  handleDeleteDistrict,
+}) => {
+  const { fields } = useForm(forms.manageDistrictsForm);
+
   const { map, mapRef } = useYMaps();
 
-  const [selectedDistrictId, setSelectedDistrictId] = useState<string | null>(
-    null,
-  );
+  const setSelectedDistrictId = fields.selectedDistrictId.onChange;
 
   const preparedExistingDistricts = useMemo(() => {
     if (!existingDistricts) return [];
@@ -30,17 +37,17 @@ export const ManageDistrictPage: FC<Props> = ({ existingDistricts }) => {
       ...elem,
       onClick: () => setSelectedDistrictId(elem.id),
     }));
-  }, [existingDistricts]);
+  }, [existingDistricts, setSelectedDistrictId]);
 
   const mapDistricts = useMemo(() => {
-    if (!selectedDistrictId) {
+    if (!fields.selectedDistrictId.value) {
       return preparedExistingDistricts;
     }
 
     return preparedExistingDistricts.filter(
-      (elem) => elem.id === selectedDistrictId,
+      (elem) => elem.id === fields.selectedDistrictId.value,
     );
-  }, [preparedExistingDistricts, selectedDistrictId]);
+  }, [preparedExistingDistricts, fields.selectedDistrictId.value]);
 
   useRenderDistricts(map, mapDistricts);
 
@@ -54,9 +61,9 @@ export const ManageDistrictPage: FC<Props> = ({ existingDistricts }) => {
           <Select
             placeholder="Выберите район"
             small
-            value={selectedDistrictId || undefined}
+            value={fields.selectedDistrictId.value || undefined}
             onChange={(value) =>
-              setSelectedDistrictId((value as string) || null)
+              fields.selectedDistrictId.onChange((value as string) || null)
             }
             allowClear
           >
@@ -81,16 +88,21 @@ export const ManageDistrictPage: FC<Props> = ({ existingDistricts }) => {
           </Select>
         </DistrictSelectWrapper>
         <ControlButtonsWrapper>
-          {selectedDistrictId && (
+          {fields.selectedDistrictId.value && (
             <Button
-              onClick={() => setSelectedDistrictId(null)}
+              onClick={() => fields.selectedDistrictId.onChange(null)}
               type="ghost"
               size="small"
             >
               Отмена
             </Button>
           )}
-          <Button disabled={!selectedDistrictId} type="danger" size="small">
+          <Button
+            disabled={!fields.selectedDistrictId.value}
+            type="danger"
+            size="small"
+            onClick={() => handleDeleteDistrict()}
+          >
             Удалить
           </Button>
         </ControlButtonsWrapper>
