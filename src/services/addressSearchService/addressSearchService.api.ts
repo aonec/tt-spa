@@ -1,7 +1,7 @@
-import { GetExistingSteetRequestParams } from '01/_api/existingStreets';
 import { axios } from '01/axios';
 import { StringPagedList } from 'myApi';
 import queryString from 'query-string';
+import { GetExistingSteetRequestParams } from './addressSearchService.types';
 
 export const getExistingCities = async () => {
   const res: StringPagedList = await axios.get('Buildings/ExistingCities');
