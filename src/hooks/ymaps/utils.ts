@@ -83,8 +83,6 @@ export function useRenderDistricts(
 
     districtsGroup.removeAll();
 
-    setSavedDistricts({});
-
     districts.forEach((district) => {
       const color = DistrictColorsList.find(
         (elem) => elem.type === district.type,

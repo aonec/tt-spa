@@ -2,5 +2,5 @@ export const featureToggles = {
   reportsConstructor: false,
   workingRanges: false,
   services: false,
-  districtsManage: false,
+  districtsManage: true,
 };

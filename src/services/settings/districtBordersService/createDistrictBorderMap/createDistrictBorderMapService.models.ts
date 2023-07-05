@@ -1,4 +1,4 @@
-import { forward } from 'effector';
+import { sample } from 'effector';
 import { createGate } from 'effector-react';
 import {
   createDistrictMutation,
@@ -27,14 +27,14 @@ const createDistrictForm = createForm({
   },
 });
 
-forward({
-  from: createDistrictMutation.finished.success,
-  to: createDistrictForm.resetValues,
+sample({
+  clock: createDistrictMutation.finished.success,
+  target: createDistrictForm.resetValues,
 });
 
-forward({
-  from: CreateDistrictGate.open,
-  to: [existingDistrictsQuery.start, existingHousingStocksQuery.start],
+sample({
+  clock: CreateDistrictGate.open,
+  target: [existingDistrictsQuery.start, existingHousingStocksQuery.start],
 });
 
 createDistrictMutation.finished.success.watch(() => {
