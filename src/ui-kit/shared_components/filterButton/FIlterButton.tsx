@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import React from 'react';
 import { ReactComponent as FilterIcon } from './assets/filterIcon.svg';
 import { ReactComponent as FilterIconBlue } from './assets/filterIconBlue.svg';
+import { ReactComponent as FilterIconTransparent } from './assets/filterIconTransparent.svg';
 import { ActiveFiltersIcon } from 'ui-kit/icons';
 import { Loader } from 'ui-kit/Loader';
 import { StyledSquareButton } from './FilterButton.styled';
@@ -65,7 +66,7 @@ export const FilterButtonForMap = styled(
       <div>
         {isLoading && <Loader show />}
         {!isLoading &&
-          (isActiveFilters ? <ActiveFiltersIcon /> : <FilterIcon />)}
+          (isActiveFilters ? <ActiveFiltersIcon /> : <FilterIconTransparent />)}
       </div>
     </StyledSquareButton>
   ),
