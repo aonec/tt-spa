@@ -1,6 +1,5 @@
 import { ExtendedSearch } from 'ui-kit/ExtendedSearch';
 import { Grid } from '01/shared/ui/Layout/Grid';
-import { useAutocomplete } from '01/hooks/useFilter';
 import { Form } from 'antd';
 import React, { FC } from 'react';
 import { ExtendedSearchWrap, Wrap } from './components';
@@ -10,6 +9,7 @@ import { Input } from 'ui-kit/Input';
 import { AutoComplete } from 'ui-kit/AutoComplete';
 import { fromEnter } from 'ui-kit/shared_components/DatePickerNative';
 import { useSwitchInputOnEnter } from 'hooks/useSwitchInputOnEnter';
+import { useAutocomplete } from 'hooks/useAutocomplete';
 
 const dataKey = 'search-inspectors-housing-stocks-input';
 
@@ -30,10 +30,9 @@ export const SearchInspectorsHousingStocks: FC<
 }) => {
   const street = form.fields.Street.value;
 
-  const { match: streetMatch, options } = useAutocomplete(
-    street,
-    existingStreets,
-  );
+  const autocomplete = useAutocomplete(street, existingStreets || []);
+  const streetMatch = autocomplete?.bestMatch;
+  const options = autocomplete?.options;
 
   const next = useSwitchInputOnEnter(dataKey, false);
 

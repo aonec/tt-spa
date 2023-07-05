@@ -1,5 +1,4 @@
 import { fromEnter } from 'ui-kit/shared_components/DatePickerNative';
-import { useAutocomplete } from '01/hooks/useFilter';
 import React, { FC, ReactElement } from 'react';
 import { FormItem } from 'ui-kit/FormItem';
 import { SearchFieldsLabels } from './AddressSearch.constants';
@@ -9,6 +8,7 @@ import { Select } from 'ui-kit/Select';
 import { Input } from 'ui-kit/Input';
 import { AutoComplete } from 'ui-kit/AutoComplete';
 import { useSwitchInputOnEnter } from 'hooks/useSwitchInputOnEnter';
+import { useAutocomplete } from 'hooks/useAutocomplete';
 
 const dataKey = 'search-address-inputs';
 
@@ -25,10 +25,9 @@ export const AddressSearch: FC<AddressSearchProps> = ({
 }) => {
   const next = useSwitchInputOnEnter(dataKey, false);
 
-  const { match: streetMatch, options } = useAutocomplete(
-    values.street,
-    streets,
-  );
+  const autocomplete = useAutocomplete(values.street, streets);
+  const streetMatch = autocomplete?.bestMatch;
+  const options = autocomplete?.options;
 
   function clearFields(index: number) {
     const clearingFieldsTypes = fields.slice(index, fields.length);
@@ -72,13 +71,15 @@ export const AddressSearch: FC<AddressSearchProps> = ({
         handleChange(SearchFieldType.Street, value.toString());
       }}
       onKeyDown={fromEnter(() => {
-        if (values.street) handleChange(SearchFieldType.Street, streetMatch);
+        if (values.street && streetMatch)
+          handleChange(SearchFieldType.Street, streetMatch);
         handleSubmit();
         next(index);
       })}
       options={options}
       onSelect={() => {
-        if (values.street) handleChange(SearchFieldType.Street, streetMatch);
+        if (values.street && streetMatch)
+          handleChange(SearchFieldType.Street, streetMatch);
         handleSubmit();
       }}
       onFocus={() => {
