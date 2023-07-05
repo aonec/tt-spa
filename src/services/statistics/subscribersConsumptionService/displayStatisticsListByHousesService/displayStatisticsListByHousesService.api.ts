@@ -1,7 +1,7 @@
 import { axios } from '01/axios';
 import { SubscriberStatisticsFilter } from '../displayStatisticsListByManagingFirmService/displayStatisticsListByManagingFirmService.types';
 import {
-  HousingStockListResponsePagedList,
+  BuildingListResponsePagedList,
   SubscriberStatisticsСonsumptionResponse,
 } from 'myApi';
 import { HousingStockAddressForm } from './displayStatisticsListByHousesService.types';
@@ -16,16 +16,13 @@ export const fetchStatisticsByHouse = (
 export const fetchHousingStockId = async (
   address: HousingStockAddressForm,
 ): Promise<number | null> => {
-  const res: HousingStockListResponsePagedList = await axios.get(
-    'HousingStocks',
-    {
-      params: {
-        ...address,
-        PageSize: 1,
-        PageNumber: 1,
-      },
+  const res: BuildingListResponsePagedList = await axios.get('Buildings', {
+    params: {
+      ...address,
+      PageSize: 1,
+      PageNumber: 1,
     },
-  );
+  });
 
   return res.items?.[0].id || null;
 };

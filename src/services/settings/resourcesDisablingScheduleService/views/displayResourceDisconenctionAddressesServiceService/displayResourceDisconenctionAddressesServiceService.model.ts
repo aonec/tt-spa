@@ -21,9 +21,9 @@ const $addresses = domain
       return [];
     }
 
-    const housingStocks = disconnection.housingStocks || [];
+    const buildings = disconnection.buildings || [];
     const preparedHousingStocks = groupBy(
-      housingStocks,
+      buildings,
       'address.mainAddress.street',
     );
     return Object.entries(preparedHousingStocks);

@@ -133,8 +133,7 @@ sample({
   clock: sample({
     clock: editResourceDisconnectionService.outputs.$resourceDisconnection,
     fn: (disconnection) =>
-      (disconnection?.housingStocks || [])[0]?.address?.mainAddress?.city ||
-      null,
+      (disconnection?.buildings || [])[0]?.address?.mainAddress?.city || null,
   }),
   filter: Boolean,
   target: selectCity,

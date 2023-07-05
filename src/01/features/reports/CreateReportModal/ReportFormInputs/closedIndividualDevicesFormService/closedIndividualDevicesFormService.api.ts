@@ -8,7 +8,7 @@ import {
 export const getAdresses = (
   city: string,
 ): Promise<StreetWithBuildingNumbersResponsePagedList> => {
-  return axios.get('HousingStocks/ExistingStreetsWithHousingStockNumbers', {
+  return axios.get('Buildings/ExistingStreetsWithBuildingNumbers', {
     params: { city },
   });
 };

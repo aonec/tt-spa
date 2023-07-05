@@ -1,12 +1,12 @@
 import {
+  BuildingListResponse,
   DistrictCreateRequest,
   DistrictResponse,
-  HousingStockListResponse,
 } from 'myApi';
 
 export type CreateDistrictBorderMapPageProps = {
   isLoadingHousingStocks: boolean;
-  housingStocksList: HousingStockListResponse[];
+  housingStocksList: BuildingListResponse[];
   selectedByAddressHousingStockIds: number[];
   selectedByAddressPoligon: number[][];
   poligonCenter: [number, number];

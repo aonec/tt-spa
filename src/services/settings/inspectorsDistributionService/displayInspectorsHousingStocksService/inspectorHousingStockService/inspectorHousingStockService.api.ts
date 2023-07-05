@@ -6,7 +6,7 @@ export const patchHousingStockInspectorInfo = async (
   payload: PatchHousingStockInspectorInfoPayload,
 ): Promise<HousingStockResponse | null> => {
   return axios.patch(
-    `HousingStocks/${payload.housingStockId}/inspector`,
+    `Buildings/${payload.housingStockId}/inspector`,
     payload.data,
   );
 };
