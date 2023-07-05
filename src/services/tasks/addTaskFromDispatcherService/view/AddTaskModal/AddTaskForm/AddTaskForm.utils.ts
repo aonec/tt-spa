@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import { ExecutorGrpcModel } from 'myApi';
+import { ErpExecutorResponse } from 'myApi';
 
 type Address = {
   value: string;
@@ -15,6 +15,6 @@ export function autocompleteAddress(
   return filteredStreets.map((street) => ({ value: street }));
 }
 
-export const sortByAlphabet = (leadExecutors: ExecutorGrpcModel[]) => {
+export const sortByAlphabet = (leadExecutors: ErpExecutorResponse[]) => {
   return _.sortBy(leadExecutors, [(o) => o.name]);
 };

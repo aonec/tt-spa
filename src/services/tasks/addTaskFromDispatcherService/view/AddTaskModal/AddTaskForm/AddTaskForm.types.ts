@@ -1,9 +1,10 @@
 import {
   EisTaskType,
-  ExecutorGrpcModel,
+  ErpExecutorResponse,
   GetTaskDeadlineGrpcResponse,
-  SourceGrpcModel,
-  WorkCategoryGrpcModel,
+  ErpSourceResponse,
+  ErpWorkCategoryResponse,
+  ErpObjectResponse,
 } from 'myApi';
 import { GetTaskDeadlineRequest } from 'services/tasks/addTaskFromDispatcherService/addTaskFromDispatcherService.types';
 
@@ -37,17 +38,14 @@ export type AddTask = {
 
 export type AddTaskFormProps = {
   formId: string;
-  ERPSources: SourceGrpcModel[];
-  leadExecutors: ExecutorGrpcModel[];
-  workCategories: WorkCategoryGrpcModel[];
-  ErpObjects: {
-    id?: string | null;
-    address?: string | null;
-  }[];
+  ERPSources: ErpSourceResponse[];
+  leadExecutors: ErpExecutorResponse[];
+  workCategories: ErpWorkCategoryResponse[];
+  ErpObjects: ErpObjectResponse[];
   handleCreateTask: (payload: AddTask) => void;
   setDisableSubmit: React.Dispatch<React.SetStateAction<boolean>>;
   choоseLeadExecutor: (payload: string) => void;
-  executors: ExecutorGrpcModel[];
+  executors: ErpExecutorResponse[];
   handleTaskDeadlineRequest: (payload: GetTaskDeadlineRequest) => void;
   taskDeadline: GetTaskDeadlineGrpcResponse | null;
 };

@@ -1457,7 +1457,7 @@ export interface CreateElectricNodeRequest {
   currentTransformers?: CreateCurrentTransformerRequest[] | null;
 }
 
-export interface CreateErpTaskRequest {
+export interface ErpCreateTaskRequest {
   /** @format uuid */
   workCategoryId?: string;
   taskType?: EisTaskType;
@@ -2603,9 +2603,10 @@ export interface ErrorResponse {
   requestId: string | null;
 }
 
-export interface ExecutorGrpcModel {
-  id?: string | null;
-  name?: string | null;
+export interface ErpExecutorResponse {
+  /** @format uuid */
+  id: string;
+  name: string | null;
 }
 
 export interface FileContentResultSuccessApiResponse {
@@ -2662,7 +2663,7 @@ export interface GetSummaryHousingConsumptionsByResourcesResponseSuccessApiRespo
   successResponse: GetSummaryHousingConsumptionsByResourcesResponse | null;
 }
 
-export interface GetTaskDeadlineGrpcResponse {
+export interface ErpTaskDeadlineResponse {
   /** @format int32 */
   deadlineInHours: number;
 }
@@ -4733,9 +4734,10 @@ export interface NumberIdResponseArraySuccessApiResponse {
   successResponse: NumberIdResponse[] | null;
 }
 
-export interface ObjectGrpcModel {
-  id?: string | null;
-  address?: string | null;
+export interface ErpObjectResponse {
+  /** @format uuid */
+  id: string;
+  address: string | null;
 }
 
 export interface OperatorsConstructedReportResponse {
@@ -5498,9 +5500,10 @@ export interface SkippedReadingOnOneOfRisersConstructedReportResponse {
   reading: ReadingOnRiserResponse | null;
 }
 
-export interface SourceGrpcModel {
-  id?: string | null;
-  name?: string | null;
+export interface ErpSourceResponse {
+  /** @format uuid */
+  id: string;
+  name: string | null;
 }
 
 export interface StageEmailNotifyRequest {
@@ -6436,9 +6439,10 @@ export interface ValueNodeWorkingRangeResponseSuccessApiResponse {
   successResponse: ValueNodeWorkingRangeResponse | null;
 }
 
-export interface WorkCategoryGrpcModel {
-  id?: string | null;
-  name?: string | null;
+export interface ErpWorkCategoryResponse {
+  /** @format uuid */
+  id: string;
+  name: string | null;
 }
 
 export enum YearRangeType {
@@ -14571,7 +14575,7 @@ export class Api<
      * @secure
      */
     tasksErpSourcesList: (params: RequestParams = {}) =>
-      this.request<SourceGrpcModel[], ErrorApiResponse>({
+      this.request<ErpSourceResponse[], ErrorApiResponse>({
         path: `/api/Tasks/ErpSources`,
         method: 'GET',
         secure: true,
@@ -14589,14 +14593,13 @@ export class Api<
      * @secure
      */
     tasksErpWorkCategoriesList: (params: RequestParams = {}) =>
-      this.request<WorkCategoryGrpcModel[], ErrorApiResponse>({
+      this.request<ErpWorkCategoryResponse[], ErrorApiResponse>({
         path: `/api/Tasks/ErpWorkCategories`,
         method: 'GET',
         secure: true,
         format: 'json',
         ...params,
       }),
-
     /**
      * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
      *
@@ -14607,7 +14610,7 @@ export class Api<
      * @secure
      */
     tasksErpLeadsList: (params: RequestParams = {}) =>
-      this.request<ExecutorGrpcModel[], ErrorApiResponse>({
+      this.request<ErpExecutorResponse[], ErrorApiResponse>({
         path: `/api/Tasks/ErpLeads`,
         method: 'GET',
         secure: true,
@@ -14628,28 +14631,10 @@ export class Api<
       query?: { leadId?: string },
       params: RequestParams = {},
     ) =>
-      this.request<ExecutorGrpcModel[], ErrorApiResponse>({
+      this.request<ErpExecutorResponse[], ErrorApiResponse>({
         path: `/api/Tasks/ErpExecutorsForLead`,
         method: 'GET',
         query: query,
-        secure: true,
-        format: 'json',
-        ...params,
-      }),
-
-    /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
-     *
-     * @tags Tasks
-     * @name TasksErpObjectsList
-     * @summary TasksRead
-     * @request GET:/api/Tasks/ErpObjects
-     * @secure
-     */
-    tasksErpObjectsList: (params: RequestParams = {}) =>
-      this.request<ObjectGrpcModel[], ErrorApiResponse>({
-        path: `/api/Tasks/ErpObjects`,
-        method: 'GET',
         secure: true,
         format: 'json',
         ...params,
@@ -14665,15 +14650,14 @@ export class Api<
      * @secure
      */
     tasksErpTaskDeadlineList: (
-      data: GetTaskDeadlineRequest,
+      query?: { WorkCategoryId?: string; TaskType?: EisTaskType },
       params: RequestParams = {},
     ) =>
-      this.request<GetTaskDeadlineGrpcResponse[], ErrorApiResponse>({
+      this.request<ErpTaskDeadlineResponse[], ErrorApiResponse>({
         path: `/api/Tasks/ErpTaskDeadline`,
         method: 'GET',
-        body: data,
+        query: query,
         secure: true,
-        type: ContentType.Json,
         format: 'json',
         ...params,
       }),
@@ -14688,7 +14672,7 @@ export class Api<
      * @secure
      */
     tasksErpCreateTaskCreate: (
-      data: CreateErpTaskRequest,
+      data: ErpCreateTaskRequest,
       params: RequestParams = {},
     ) =>
       this.request<File, ErrorApiResponse>({

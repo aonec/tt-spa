@@ -9,12 +9,12 @@ import {
   getWorkCategories,
 } from './addTaskFromDispatcherService.api';
 import {
-  CreateErpTaskRequest,
-  ExecutorGrpcModel,
-  GetTaskDeadlineGrpcResponse,
-  ObjectGrpcModel,
-  SourceGrpcModel,
-  WorkCategoryGrpcModel,
+  ErpCreateTaskRequest,
+  ErpExecutorResponse,
+  ErpObjectResponse,
+  ErpSourceResponse,
+  ErpTaskDeadlineResponse,
+  ErpWorkCategoryResponse,
 } from 'myApi';
 import { createGate } from 'effector-react';
 import { EffectFailDataAxiosError } from 'types';
@@ -39,35 +39,36 @@ const handleCreateTask = domain.createEvent<AddTask>();
 const handleReset = domain.createEvent();
 
 const createTaskFx = domain.createEffect<
-  CreateErpTaskRequest,
+  ErpCreateTaskRequest,
   File | null,
   EffectFailDataAxiosError
 >(createTask);
 
-const getERPSourcesFx = domain.createEffect<void, SourceGrpcModel[]>(
+const getERPSourcesFx = domain.createEffect<void, ErpSourceResponse[]>(
   getERPSources,
 );
 
-const getWorkCategoriesFx = domain.createEffect<void, WorkCategoryGrpcModel[]>(
-  getWorkCategories,
-);
+const getWorkCategoriesFx = domain.createEffect<
+  void,
+  ErpWorkCategoryResponse[]
+>(getWorkCategories);
 
-const getLeadExecutorsFx = domain.createEffect<void, ExecutorGrpcModel[]>(
+const getLeadExecutorsFx = domain.createEffect<void, ErpExecutorResponse[]>(
   getLeadExecutors,
 );
 
-const getErpObjectsFx = domain.createEffect<void, ObjectGrpcModel[]>(
+const getErpObjectsFx = domain.createEffect<void, ErpObjectResponse[]>(
   getTasksErpObjects,
 );
 
 const getErpExecutorsForLeadFx = domain.createEffect<
   { leadId: string },
-  ExecutorGrpcModel[]
+  ErpExecutorResponse[]
 >(getErpExecutorsForLead);
 
 const getErpTaskDeadlineFx = domain.createEffect<
   GetTaskDeadlineRequest,
-  GetTaskDeadlineGrpcResponse
+  ErpTaskDeadlineResponse
 >(getErpTaskDeadline);
 
 const $isModalOpen = domain
@@ -77,27 +78,27 @@ const $isModalOpen = domain
   .reset(handleReset);
 
 const $ERPSources = domain
-  .createStore<SourceGrpcModel[]>([])
+  .createStore<ErpSourceResponse[]>([])
   .on(getERPSourcesFx.doneData, (_, data) => data)
   .reset(handleReset);
 
 const $workCategories = domain
-  .createStore<WorkCategoryGrpcModel[]>([])
+  .createStore<ErpWorkCategoryResponse[]>([])
   .on(getWorkCategoriesFx.doneData, (_, data) => data)
   .reset(handleReset);
 
 const $leadExecutors = domain
-  .createStore<ExecutorGrpcModel[]>([])
+  .createStore<ErpExecutorResponse[]>([])
   .on(getLeadExecutorsFx.doneData, (_, data) => data)
   .reset(handleReset);
 
 const $executors = domain
-  .createStore<ExecutorGrpcModel[]>([])
+  .createStore<ErpExecutorResponse[]>([])
   .on(getErpExecutorsForLeadFx.doneData, (_, data) => data)
   .reset(handleReset);
 
 const $ErpObjects = domain
-  .createStore<ObjectGrpcModel[]>([])
+  .createStore<ErpObjectResponse[]>([])
   .on(getErpObjectsFx.doneData, (_, data) => data)
   .reset(handleReset);
 
@@ -107,7 +108,7 @@ const $taskDeadlineRequest = domain
   .reset(handleReset);
 
 const $taskDeadline = domain
-  .createStore<GetTaskDeadlineGrpcResponse | null>(null)
+  .createStore<ErpTaskDeadlineResponse | null>(null)
   .on(getErpTaskDeadlineFx.doneData, (_, data) => data)
   .reset(resetDeadline)
   .reset(handleReset);
@@ -141,7 +142,7 @@ sample({
       subscriberPhoneNumber: data.phoneNumber,
       workerId: data.executorId,
       taskDeadline: data.taskDeadline || manualTaskDeadline,
-    } as CreateErpTaskRequest;
+    } as ErpCreateTaskRequest;
   },
   target: createTaskFx,
 });
