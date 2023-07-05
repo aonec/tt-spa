@@ -9,13 +9,13 @@ import {
 export const updateHousingStock = (payload: {
   housingStockId: number;
   data: HousingStockUpdateRequest;
-}): Promise<HousingStockResponse> =>
+}): Promise<void> =>
   axios.put(`HousingStocks/${payload.housingStockId}`, payload.data);
 
 export const createHousingStockAddress = (payload: {
   housingStockId: number;
   data: BuildingAddressCreateRequest;
-}): Promise<HousingStockResponse> =>
+}): Promise<void> =>
   axios.post(`HousingStocks/${payload.housingStockId}/Addresses`, payload.data);
 
 export const updateHousingStockAddress = (payload: {
@@ -31,7 +31,7 @@ export const updateHousingStockAddress = (payload: {
 export const deleteHousingStockAddress = (payload: {
   housingStockId: number;
   addressId: number;
-}): Promise<HousingStockResponse> =>
+}): Promise<void> =>
   axios.delete(
     `HousingStocks/${payload.housingStockId}/Addresses/${payload.addressId}`,
   );
