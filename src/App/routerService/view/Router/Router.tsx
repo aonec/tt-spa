@@ -34,7 +34,6 @@ import { EditCompanyContainer } from 'services/company/editCompanyService';
 import { ReportsPageContainer } from '01/features/reports';
 import { featureToggles } from 'featureToggles';
 import { ReportsContainer } from 'services/reportsService';
-import { AddIndividualDevice } from '01/features/individualDevices/addIndividualDevice';
 import { SwitchIndividualDevice } from '01/features/individualDevices/switchIndividualDevice';
 import { ReadingHistoryPage } from '01/features/readings/displayReadingHistory';
 import { AccessDeniedPage } from 'services/authorizations/AccessDeniedPage';
@@ -54,6 +53,7 @@ import { EditNodeContainer } from 'services/nodes/editNodeService';
 import { CreateDistrictBorderByMapContainer } from 'services/settings/districtBordersService/CreateDistrictBorderByMapService';
 import { DistrictBordersByAddressContainer } from 'services/settings/districtBordersService/districtBordersByAddressService';
 import { StatisticsProfileContainer } from 'services/statistics/statisticsProfileService';
+import { AddIndividualDeviceContainer } from 'services/devices/individualDevices/addIndividualDeviceService';
 
 const { gates } = objectProfileService;
 
@@ -138,13 +138,13 @@ export const Router: FC<RouterProps> = ({ roles, isRolesLoadded }) => {
                   )}
                   {isAdministrator ? (
                     <Route
-                      path="/objects/:housingStockId/edit"
+                      path="/objects/:buildingId/edit"
                       component={EditObjectContainer}
                       exact
                     />
                   ) : (
                     <Redirect
-                      from="/objects/:housingStockId/edit"
+                      from="/objects/:buildingId/edit"
                       to="/access-denied/"
                       exact
                     />
@@ -152,13 +152,13 @@ export const Router: FC<RouterProps> = ({ roles, isRolesLoadded }) => {
 
                   {isAdministrator || isExecutor ? (
                     <Route
-                      path="/objects/:housingStockId/addNode"
+                      path="/objects/:buildingId/addNode"
                       component={CreateNodeContainer}
                       exact
                     />
                   ) : (
                     <Route
-                      path="/objects/:housingStockId/addNode"
+                      path="/objects/:buildingId/addNode"
                       component={AccessDeniedPage}
                       exact
                     />
@@ -198,7 +198,7 @@ export const Router: FC<RouterProps> = ({ roles, isRolesLoadded }) => {
                     <Route path="/objects">
                       <ObjectGroupIsOpen />
                       <Route
-                        path="/objects/profile/:housingStockId"
+                        path="/objects/profile/:buildingId"
                         component={ObjectProfileContainer}
                         exact
                       />
@@ -486,7 +486,7 @@ export const Router: FC<RouterProps> = ({ roles, isRolesLoadded }) => {
 
                   {(isAdministrator || isSeniorOperator || isOperator) && (
                     <Route path="/apartment/:id/addIndividualDevice" exact>
-                      <AddIndividualDevice />
+                      <AddIndividualDeviceContainer />
                     </Route>
                   )}
 

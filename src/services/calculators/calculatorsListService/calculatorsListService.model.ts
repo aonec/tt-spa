@@ -5,7 +5,7 @@ import { getCalculatorsList } from './calculatorsListService.api';
 
 const domain = createDomain('calculatorsListService');
 
-const CalculatorsGate = createGate<{ housingStockId: number }>();
+const CalculatorsGate = createGate<{ buildingId: number }>();
 
 const refetchCalculators = domain.createEvent();
 
@@ -22,19 +22,19 @@ const $calculatorsList = domain
 const $loading = fetchCalculatorsFx.pending;
 
 sample({
-  clock: CalculatorsGate.open.map(({ housingStockId }) => housingStockId),
+  clock: CalculatorsGate.open.map(({ buildingId }) => buildingId),
   target: fetchCalculatorsFx,
 });
 
 sample({
   clock: refetchCalculators,
-  source: CalculatorsGate.state.map(({ housingStockId }) => housingStockId),
-  filter: (housingStockId) => Boolean(housingStockId),
+  source: CalculatorsGate.state.map(({ buildingId }) => buildingId),
+  filter: (buildingId) => Boolean(buildingId),
   target: fetchCalculatorsFx,
 });
 
 forward({
-  from: CalculatorsGate.state.map(({ housingStockId }) => housingStockId),
+  from: CalculatorsGate.state.map(({ buildingId }) => buildingId),
   to: fetchCalculatorsFx,
 });
 

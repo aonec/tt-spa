@@ -19,16 +19,11 @@ export const getAllHousingStocks = (items: TreeSelectElement[]): number[] =>
 export const getFormValues = (
   resourceDisconnection: ResourceDisconnectingResponse,
 ) => {
-  const {
-    heatingStation,
-    disconnectingType,
-    housingStocks,
-    startDate,
-    endDate,
-  } = resourceDisconnection;
+  const { heatingStation, disconnectingType, buildings, startDate, endDate } =
+    resourceDisconnection;
 
   const heatingStationId = heatingStation?.id;
-  const housingStockIds = (housingStocks || []).map(
+  const housingStockIds = (buildings || []).map(
     (housingStock) => housingStock.id,
   );
 
