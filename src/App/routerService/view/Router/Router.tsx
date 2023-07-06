@@ -35,7 +35,6 @@ import { ReportsPageContainer } from '01/features/reports';
 import { featureToggles } from 'featureToggles';
 import { ReportsContainer } from 'services/reportsService';
 import { SwitchIndividualDevice } from '01/features/individualDevices/switchIndividualDevice';
-import { ReadingHistoryPage } from 'services/meters/readingsHistoryService';
 import { AccessDeniedPage } from 'services/authorizations/AccessDeniedPage';
 import { EditObjectContainer } from 'services/objects/editObjectService';
 import { EditIndividualDeviceContainer } from 'services/meters/editIndividualDeviceService';
@@ -490,22 +489,6 @@ export const Router: FC<RouterProps> = ({ roles, isRolesLoadded }) => {
                     </Route>
                   )}
 
-                  {(isAdministrator || isSeniorOperator || isOperator) && (
-                    <Route
-                      path="/apartment/:id/individualDevice/:deviceId/readingHistory"
-                      exact
-                    >
-                      <ReadingHistoryPage />
-                    </Route>
-                  )}
-                  {(isAdministrator || isSeniorOperator || isOperator) && (
-                    <Route
-                      path="/houses/individualDevice/:deviceId/readingHistory"
-                      exact
-                    >
-                      <ReadingHistoryPage />
-                    </Route>
-                  )}
                   {(isAdministrator || isSeniorOperator || isOperator) && (
                     <Route
                       path="/apartment/:id/individualDevice/:deviceId/switch"

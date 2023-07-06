@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import { useEvent, useStore } from 'effector-react';
 import { DeleteIndividualDeviceModalContainer } from '01/features/individualDevices/deleteIndividualDevice/DeleteIndividualDeviceModalContainer';
-import { ReadingsHistoryModal } from 'services/meters/readingsHistoryService/ReadingsHistoryModal';
+import { ReadingsHistoryContainer } from 'services/meters/readingsHistoryService/readingsHistoryService.container';
 import { ConfirmReadingValueModal } from '01/features/readings/readingsInput/confirmInputReadingModal';
 import { apartmentIndividualDevicesMetersService } from './apartmentIndividualDevicesMetersService.model';
 import { ApartmentIndividualDevicesMeters } from './view/ApartmentIndividualDevicesMeters';
@@ -49,7 +49,7 @@ export const ApartmentIndividualDevicesMetersContainer: FC<Params> = ({
       {apartmentId && (
         <IndividualDevicesGate ApartmentId={Number(apartmentId)} />
       )}
-      <ReadingsHistoryModal />
+      <ReadingsHistoryContainer />
       <CloseIndividualDeviceContainer />
       <ConfirmReadingValueModal />
       <EditReadingsHistoryContainer />

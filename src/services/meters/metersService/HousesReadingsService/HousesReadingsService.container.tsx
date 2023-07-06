@@ -3,7 +3,7 @@ import { useEvent, useStore } from 'effector-react';
 import { useHistory, useParams } from 'react-router-dom';
 import { HousesReadingsPage } from './view/HousesReadingsPage';
 import { housesReadingsService } from './HousesReadingsService.model';
-import { ReadingsHistoryModal } from 'services/meters/readingsHistoryService/ReadingsHistoryModal';
+import { ReadingsHistoryContainer } from 'services/meters/readingsHistoryService/readingsHistoryService.container';
 import { useManagingFirmConsumptionRates } from 'services/meters/managementFirmConsumptionRatesService';
 import { ConfirmReadingValueModal } from '01/features/readings/readingsInput/confirmInputReadingModal';
 
@@ -77,7 +77,7 @@ export const HousesReadingsContainer = () => {
       {housingStock?.inspectorId && (
         <InspectorGate id={housingStock.inspectorId} />
       )}
-      <ReadingsHistoryModal />
+      <ReadingsHistoryContainer />
       <ConfirmReadingValueModal />
       <HousesReadingsPage
         housingStock={housingStock}

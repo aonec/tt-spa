@@ -1,4 +1,4 @@
-import { ReadingsHistoryModal } from 'services/meters/readingsHistoryService/ReadingsHistoryModal';
+import { ReadingsHistoryContainer } from 'services/meters/readingsHistoryService/readingsHistoryService.container';
 import { Skeleton } from 'antd';
 import { useEvent, useStore } from 'effector-react';
 import React from 'react';
@@ -47,7 +47,7 @@ export const TaskProfileContainer = () => {
   return (
     <>
       {nodeId && <RelatedNodeIdGate nodeId={nodeId} />}
-      <ReadingsHistoryModal readonly />
+      <ReadingsHistoryContainer readonly />
       <TaskIdGate taskId={Number(taskId)} />
 
       {isLoading && !task && <Skeleton active />}

@@ -33,7 +33,6 @@ export const getSourceName = (
     [EIndividualDeviceReadingsSource.Archive]: 'Архив',
     [EIndividualDeviceReadingsSource.Bank]: 'Банк',
     [EIndividualDeviceReadingsSource.GosUslugi]: 'Госуслуги',
-    [EIndividualDeviceReadingsSource.Duplicated]: 'Архив (Повторные показания)',
     [EIndividualDeviceReadingsSource.Erc]: 'ЕРЦ',
     [EIndividualDeviceReadingsSource.Ttm]: userName || 'TTM',
     [EIndividualDeviceReadingsSource.TtmFromErc]: 'ЕРЦ (TTM)',
