@@ -30,6 +30,7 @@ import { Loader } from 'ui-kit/Loader';
 import { AutoComplete } from 'ui-kit/AutoComplete';
 import { WorkWithIndividualDeviceInputs } from './WorkWithIndividualDeviceInputs';
 import { Form } from 'antd';
+import { SpaceLine } from '01/shared/ui/Layout/Space/Space';
 
 const { IndividualDeviceMountPlacesGate } =
   individualDeviceMountPlacesService.gates;
@@ -45,6 +46,7 @@ export const WorkWithIndividualDeviceForm: FC<
   isSerialNumberLoading,
   handleFetchModels,
   models,
+  individualDevice,
 }) => {
   const { id } = useParams<{ id: string }>();
 
@@ -291,6 +293,8 @@ export const WorkWithIndividualDeviceForm: FC<
         </>
       )}
 
+      {!isCheck && <SpaceLine />}
+
       <FormWrapper>
         <FormItem label="Дата последней поверки прибора">
           <DatePickerNative
@@ -347,12 +351,14 @@ export const WorkWithIndividualDeviceForm: FC<
         </FormItem>
       </FormWrapper>
 
+      <SpaceLine />
+
       {!isCheck && (
         <WorkWithIndividualDeviceInputs
-          model={fields.model.value}
-          resource={fields.resource.value}
-          serialNumber={fields.serialNumber.value}
-          rateType={fields.rateType.value}
+          model={individualDevice.model || ''}
+          resource={individualDevice.resource}
+          serialNumber={individualDevice.serialNumber || ''}
+          rateType={individualDevice.rateType}
           readings={fields.oldDeviceReadings.value}
           onChange={(readings) => {
             fields.oldDeviceReadings.onChange(readings);
@@ -375,6 +381,8 @@ export const WorkWithIndividualDeviceForm: FC<
           required: 'Введите хотя бы одно показание',
         })}
       </ErrorMessage>
+
+      <SpaceLine />
 
       <FormWrapper>
         <FormItem label="Пломба">

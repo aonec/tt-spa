@@ -10,5 +10,6 @@ export type WorkWithIndividualDeviceInputsProps = {
   readings: {
     [key: number]: PreparedForFormReadings;
   };
-  onChange: (readings: { [key: number]: PreparedForFormReadings }) => void;
+  onChange?: (readings: { [key: number]: PreparedForFormReadings }) => void;
+  disabled?: boolean;
 };

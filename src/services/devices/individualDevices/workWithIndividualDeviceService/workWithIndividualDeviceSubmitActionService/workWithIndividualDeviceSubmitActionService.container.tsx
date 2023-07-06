@@ -17,9 +17,11 @@ export const WorkWithIndividualDeviceSubmitActionContainer = () => {
     typeOfAction,
     contractors,
     mountPlaces,
+    individualDevice,
   } = useUnit({
     isOpen: outputs.$isOpen,
     typeOfAction: outputs.$typeOfAction,
+    individualDevice: outputs.$individualDevice,
     closeModal: inputs.closeModal,
     handleSubmit: inputs.submit,
     contractors: displayContractorsService.outputs.$contractors,
@@ -52,11 +54,17 @@ export const WorkWithIndividualDeviceSubmitActionContainer = () => {
   return (
     <FormModal
       form={
-        <WorkWithIndividualDeviceSubmitActionForm
-          form={forms.deviceInfoForm}
-          contractors={contractors}
-          mountPlaces={mountPlaces}
-        />
+        <>
+          {individualDevice && (
+            <WorkWithIndividualDeviceSubmitActionForm
+              form={forms.deviceInfoForm}
+              contractors={contractors}
+              mountPlaces={mountPlaces}
+              typeOfAction={typeOfAction}
+              individualDevice={individualDevice}
+            />
+          )}
+        </>
       }
       formId="work-with-individual-device-submit-action"
       title={title}

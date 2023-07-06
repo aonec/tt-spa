@@ -1,5 +1,6 @@
 import { createDomain, sample } from 'effector';
 import { workWithIndividualDeviceService } from '../workWithIndividualDeviceService.model';
+import { displayIndividualDeviceAndNamesService } from '../../displayIndividualDeviceAndNamesService';
 
 const domain = createDomain('workWithIndividualDeviceSubmitActionService');
 
@@ -41,6 +42,8 @@ export const workWithIndividualDeviceSubmitActionService = {
   outputs: {
     $isOpen,
     $typeOfAction,
+    $individualDevice:
+      displayIndividualDeviceAndNamesService.outputs.$individualDevice,
   },
   forms: {
     deviceInfoForm: workWithIndividualDeviceService.forms.deviceInfoForm,

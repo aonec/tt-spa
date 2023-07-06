@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useEffect } from 'react';
 import { WorkWithIndividualDeviceContainerProps } from './workWithIndividualDeviceService.types';
 import { useParams } from 'react-router';
 import { workWithIndividualDeviceService } from './workWithIndividualDeviceService.model';
@@ -9,6 +9,7 @@ import { displayContractorsService } from 'services/contractors/displayContracto
 import { getSerialNumberQuery } from './workWithIndividualDeviceService.api';
 import { displayIndividualDeviceAndNamesService } from '../displayIndividualDeviceAndNamesService';
 import { WorkWithIndividualDeviceSubmitActionContainer } from './workWithIndividualDeviceSubmitActionService';
+import { useHistory } from 'react-router-dom';
 
 const { gates, inputs, outputs, forms } = workWithIndividualDeviceService;
 const { WorkWithIndividualDeviceGate, IndividualDeviceGate } = gates;
@@ -18,6 +19,7 @@ export const WorkWithIndividualDeviceContainer: FC<
   WorkWithIndividualDeviceContainerProps
 > = ({ type }) => {
   const { deviceId } = useParams<{ deviceId: string }>();
+  const history = useHistory();
 
   const {
     individualDevice,
@@ -39,6 +41,10 @@ export const WorkWithIndividualDeviceContainer: FC<
 
   const { data: isSerialNumberAllreadyExist, pending: isSerialNumberLoading } =
     useUnit(getSerialNumberQuery);
+
+  useEffect(() => {
+    return inputs.actionSucceed.watch(history.goBack).unsubscribe;
+  }, [history]);
 
   return (
     <>

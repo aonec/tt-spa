@@ -1,15 +1,41 @@
-import React, { FC } from 'react';
+import React, { FC, useMemo } from 'react';
 import { WorkWithIndividualDeviceSubmitActionFormProps } from './WorkWithIndividualDeviceSubmitActionForm.types';
 import { useForm } from 'effector-forms';
 import { Title } from './WorkWithIndividualDeviceSubmitActionForm.styled';
 import { CommonInfo } from 'ui-kit/shared_components/CommonInfo';
 import { getTimeStringByUTC } from 'utils/getTimeStringByUTC';
 import { ResourceInfo } from 'ui-kit/shared_components/ResourceInfo';
+import { WorkWithIndividualDeviceType } from '../../../workWithIndividualDeviceService.types';
+import { WorkWithIndividualDeviceInputs } from '../../../view/WorkWithIndividualDevicePage/WorkWithIndividualDeviceForm/WorkWithIndividualDeviceInputs';
 
 export const WorkWithIndividualDeviceSubmitActionForm: FC<
   WorkWithIndividualDeviceSubmitActionFormProps
-> = ({ form, contractors, mountPlaces }) => {
+> = ({ form, contractors, mountPlaces, typeOfAction, individualDevice }) => {
   const { fields } = useForm(form);
+
+  const isCheck = typeOfAction === WorkWithIndividualDeviceType.check;
+  const isSwitch = typeOfAction === WorkWithIndividualDeviceType.switch;
+  const isReopen = typeOfAction === WorkWithIndividualDeviceType.reopen;
+
+  const oldDeviceInputTitle = useMemo(() => {
+    if (isSwitch) {
+      return 'Заменяемый прибор';
+    } else if (isReopen) {
+      return 'Прибор до переоткрытия';
+    }
+    return '';
+  }, [isSwitch, isReopen]);
+
+  const newDeviceInputTitle = useMemo(() => {
+    if (isSwitch) {
+      return 'Новый прибор';
+    } else if (isCheck) {
+      return 'Прибор после поверки';
+    } else if (isReopen) {
+      return 'Прибор после переоткрытия';
+    }
+    return '';
+  }, [isReopen, isSwitch, isCheck]);
 
   return (
     <>
@@ -51,7 +77,10 @@ export const WorkWithIndividualDeviceSubmitActionForm: FC<
             key: 'Дата ввода в эксплуатацию',
             value:
               fields.lastCommercialAccountingDate.value &&
-              getTimeStringByUTC(fields.lastCommercialAccountingDate.value),
+              getTimeStringByUTC(
+                fields.lastCommercialAccountingDate.value,
+                'DD.MM.YYYY',
+              ),
           },
           {
             key: 'Диспетчеризация',
@@ -61,13 +90,13 @@ export const WorkWithIndividualDeviceSubmitActionForm: FC<
             key: 'Дата последней поверки прибора',
             value:
               fields.lastCheckingDate.value &&
-              getTimeStringByUTC(fields.lastCheckingDate.value),
+              getTimeStringByUTC(fields.lastCheckingDate.value, 'DD.MM.YYYY'),
           },
           {
             key: 'Дата следующей поверки прибора',
             value:
               fields.futureCheckingDate.value &&
-              getTimeStringByUTC(fields.futureCheckingDate.value),
+              getTimeStringByUTC(fields.futureCheckingDate.value, 'DD.MM.YYYY'),
           },
           {
             key: 'Пломба',
@@ -77,7 +106,10 @@ export const WorkWithIndividualDeviceSubmitActionForm: FC<
             key: 'Дата установки пломбы',
             value:
               fields.sealInstallationDate.value &&
-              getTimeStringByUTC(fields.sealInstallationDate.value),
+              getTimeStringByUTC(
+                fields.sealInstallationDate.value,
+                'DD.MM.YYYY',
+              ),
           },
           {
             key: 'Монтажная организация',
@@ -86,6 +118,29 @@ export const WorkWithIndividualDeviceSubmitActionForm: FC<
             )?.name,
           },
         ]}
+      />
+
+      <Title>2. Показания по приборам</Title>
+      {!isCheck && (
+        <WorkWithIndividualDeviceInputs
+          model={individualDevice.model || ''}
+          resource={individualDevice.resource}
+          serialNumber={individualDevice.serialNumber || ''}
+          rateType={individualDevice.rateType}
+          readings={fields.oldDeviceReadings.value}
+          title={oldDeviceInputTitle}
+          disabled
+        />
+      )}
+
+      <WorkWithIndividualDeviceInputs
+        model={fields.model.value}
+        resource={fields.resource.value}
+        serialNumber={fields.serialNumber.value}
+        rateType={fields.rateType.value}
+        readings={fields.newDeviceReadings.value}
+        title={newDeviceInputTitle}
+        disabled
       />
     </>
   );
