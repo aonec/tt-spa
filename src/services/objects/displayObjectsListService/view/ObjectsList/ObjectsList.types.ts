@@ -1,6 +1,6 @@
-import { HousingStockListResponse } from 'myApi';
+import { BuildingListResponse } from 'myApi';
 
 export type ObjectsListProps = {
   isLoading: boolean;
-  housingStocks?: HousingStockListResponse[] | null;
+  housingStocks?: BuildingListResponse[] | null;
 };

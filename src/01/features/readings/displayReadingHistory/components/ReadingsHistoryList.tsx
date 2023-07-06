@@ -16,7 +16,6 @@ import {
   getReadingValuesArray,
   getReadingValuesObject,
 } from '../utils';
-import { $individualDevice } from '01/features/individualDevices/displayIndividualDevice/models';
 import { useReadingHistoryValues } from '../hooks/useReadingValues';
 import { fetchReadingHistoryFx } from '../models';
 import { ConfirmReadingValueModal } from '../../readingsInput/confirmInputReadingModal';
@@ -51,7 +50,11 @@ import _ from 'lodash';
 import { getMeasurementUnit } from 'services/meters/individualDeviceMetersInputService/individualDeviceMetersInputService.utils';
 import { getFilledArray } from 'utils/getFilledArray';
 import { apartmentService } from 'services/apartments/apartmentService/apartmentService.models';
+import { displayIndividualDeviceAndNamesService } from 'services/devices/individualDevices/displayIndividualDeviceAndNamesService/displayIndividualDeviceAndNamesService.model';
 
+const {
+  outputs: { $individualDevice },
+} = displayIndividualDeviceAndNamesService;
 interface Props {
   isModal?: boolean;
   readonly?: boolean;

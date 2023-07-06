@@ -12,7 +12,7 @@ export const HousingStockNumber: FC<HousingStockNumberProps> = ({
 }) => {
   const [isChecked, setCheck] = useState(false);
 
-  const currentHousingStockId = housingStock.housingStockId;
+  const currentHousingStockId = housingStock.buildingId;
 
   useEffect(
     () =>
@@ -48,7 +48,7 @@ export const HousingStockNumber: FC<HousingStockNumberProps> = ({
     >
       <Checkbox checked={isChecked} />
       <Number isChecked={isChecked}>
-        {housingStock.housingStockNumber} {housingStock.housingStockCorpus}
+        {housingStock.number} {housingStock.corpus}
       </Number>
     </HousingStockNumberWrapper>
   );

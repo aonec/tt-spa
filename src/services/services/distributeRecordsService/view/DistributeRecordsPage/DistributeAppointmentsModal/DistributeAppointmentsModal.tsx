@@ -33,6 +33,12 @@ export const DistributeAppointmentsModal: FC<Props> = ({
     ).unsubscribe;
   }, []);
 
+  useEffect(() => {
+    if (!isModalOpen) {
+      setControllerId(null);
+    }
+  }, [isModalOpen]);
+
   const handleSubmit = useCallback(() => {
     if (!controllerId) return;
 

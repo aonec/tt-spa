@@ -13,20 +13,16 @@ export const fetchCreateResourceDisconnection = (
 export const fetchExistingHousingStocks = (
   city: string,
 ): Promise<StreetWithBuildingNumbersResponsePagedList> =>
-  axios.get('HousingStocks/ExistingStreetsWithHousingStockNumbers', {
+  axios.get('Buildings/ExistingStreetsWithBuildingNumbers', {
     params: { city },
   });
 
 export const fetchExistingHousingStocksWithHouseManagement = (): Promise<
   HouseManagementWithStreetsResponse[]
 > =>
-  axios.get(
-    'HousingStocks/ExistingStreetsWithHousingStockNumbersWithHouseManagement',
-  );
+  axios.get('Buildings/ExistingStreetsWithBuildingNumbersWithHouseManagement');
 
 export const fetchExistingHousingStocksWithHeatingStation = (): Promise<
   HeatingStationWithStreetsResponse[]
 > =>
-  axios.get(
-    'HousingStocks/ExistingStreetsWithHousingStockNumbersWithHeatingStation',
-  );
+  axios.get('Buildings/ExistingStreetsWithBuildingNumbersWithHeatingStation');

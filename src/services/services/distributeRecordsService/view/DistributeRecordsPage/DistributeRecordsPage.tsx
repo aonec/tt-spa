@@ -1,5 +1,5 @@
-import React, { FC, useMemo } from 'react';
-import { FiltrationWrapper, Wrapper } from './DistributeRecordsPage.styled';
+import React, { FC } from 'react';
+import { FiltrationWrapper } from './DistributeRecordsPage.styled';
 import { Props } from './DistributeRecordsPage.types';
 import { AddressSearchContainer } from 'services/addressSearchService';
 import { SearchFieldType } from 'services/addressSearchService/view/AddressSearch/AddressSearch.types';
@@ -29,14 +29,11 @@ export const DistributeRecordsPage: FC<Props> = ({
   openCreateControllerModal,
   setAppointmentsToController,
   isLoadingDistributeAppointments,
+  isLoadingDistricts,
+  openRemoveAssignmentModal,
 }) => {
-  const selectedIdsArr = useMemo(
-    () => selectedAppointmentsIds.map((elem) => String(elem.id)),
-    [selectedAppointmentsIds],
-  );
-
   return (
-    <Wrapper>
+    <>
       <DistributeAppointmentsModal
         isModalOpen={isDistributeAppointmentsModalOpen}
         handleCloseModal={closeDistributeAppointmentsModal}
@@ -44,7 +41,7 @@ export const DistributeRecordsPage: FC<Props> = ({
         controllers={controllers}
         openCreateControllerModal={openCreateControllerModal}
         setAppointmentsToController={setAppointmentsToController}
-        selectedAppointmentsIds={selectedIdsArr}
+        selectedAppointmentsIds={selectedAppointmentsIds}
         isLoadingDistributeAppointments={isLoadingDistributeAppointments}
       />
       <FiltrationWrapper>
@@ -93,7 +90,8 @@ export const DistributeRecordsPage: FC<Props> = ({
         appointmentsCounting={appointmentsCounting}
         openDistributeAppointmentsModal={openDistributeAppointmentsModal}
         controllers={controllers}
+        openRemoveAssignmentModal={openRemoveAssignmentModal}
       />
-    </Wrapper>
+    </>
   );
 };

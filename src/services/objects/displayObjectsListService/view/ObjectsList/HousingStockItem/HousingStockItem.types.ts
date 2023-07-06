@@ -1,5 +1,5 @@
-import { HousingStockListResponse } from 'myApi';
+import { BuildingListResponse } from 'myApi';
 
 export type HousingStockItemProps = {
-  housingStock: HousingStockListResponse;
+  housingStock: BuildingListResponse;
 };
