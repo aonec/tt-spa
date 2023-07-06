@@ -1,7 +1,3 @@
-import {
-  closeReadingsHistoryModal,
-  openReadingsHistoryModal,
-} from '../readingsHistoryService/models/index';
 import { combine, createDomain, forward, guard } from 'effector';
 import { createGate } from 'effector-react';
 import {
@@ -12,6 +8,7 @@ import { getIndividualDevices } from './apartmentIndividualDevicesMetersService.
 import { PREVIOUS_READING_INDEX_LIMIT } from './apartmentIndividualDevicesMetersService.constants';
 import { GetIndividualDevicesParams } from './apartmentIndividualDevicesMetersService.types';
 import { managementFirmConsumptionRatesService } from '../managementFirmConsumptionRatesService';
+import { readingsHistoryService } from '../readingsHistoryService/readingsHistoryService.model';
 
 const domain = createDomain('apartmentIndividualDevicesMetersService');
 
@@ -78,7 +75,7 @@ guard({
 });
 
 forward({
-  from: closeReadingsHistoryModal,
+  from: readingsHistoryService.inputs.closeReadingsHistoryModal,
   to: refetchIndividualDevices,
 });
 
@@ -102,7 +99,8 @@ export const apartmentIndividualDevicesMetersService = {
     setIsShowClosedDevices,
     upSliderIndex,
     downSliderIndex,
-    openReadingsHistoryModal,
+    openReadingsHistoryModal:
+      readingsHistoryService.inputs.openReadingsHistoryModal,
     loadConsumptionRates:
       managementFirmConsumptionRatesService.inputs
         .loadManagemenFirmConsumptionRates,

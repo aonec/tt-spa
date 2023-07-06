@@ -1,19 +1,19 @@
-import { useStore } from 'effector-react';
 import React from 'react';
-import {
-  $isReadingsHstoryModalOpen,
-  $readingsHistoryModalDeviceId,
-  closeReadingsHistoryModal,
-} from './models';
-import { ReadingHistoryModal } from './view/ReadingsHistoryModal/ReadingsHistoryModal';
+import { useUnit } from 'effector-react';
+import { ReadingHistoryModal } from './view/ReadingsHistoryModal';
+import { ReadingsHistoryServiceProps } from './readingsHistoryService.types';
+import { readingsHistoryService } from './readingsHistoryService.model';
 
-interface Props {
-  readonly?: boolean;
-}
+const { inputs, outputs } = readingsHistoryService;
 
-export const ReadingsHistoryContainer: React.FC<Props> = ({ readonly }) => {
-  const isOpen = useStore($isReadingsHstoryModalOpen);
-  const deviceId = useStore($readingsHistoryModalDeviceId);
+export const ReadingsHistoryContainer: React.FC<
+  ReadingsHistoryServiceProps
+> = ({ readonly }) => {
+  const { isOpen, deviceId, closeReadingsHistoryModal } = useUnit({
+    isOpen: outputs.$isReadingsHstoryModalOpen,
+    deviceId: outputs.$readingsHistoryModalDeviceId,
+    closeReadingsHistoryModal: inputs.closeReadingsHistoryModal,
+  });
 
   return (
     <>

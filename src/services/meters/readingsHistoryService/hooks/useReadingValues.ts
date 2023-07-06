@@ -1,5 +1,4 @@
 import { useParams } from 'react-router-dom';
-import { fetchReadingHistoryFx, refetchReadingHistory } from '../models/index';
 import { createReading } from '../../../../01/_api/readings';
 import {
   IndividualDeviceReadingsHistoryResponse,
@@ -7,12 +6,12 @@ import {
 } from '../../../../myApi';
 import { useStore } from 'effector-react';
 import { useCallback, useEffect, useState } from 'react';
-import { $readingHistory } from '../models';
 import axios from '01/axios';
 import moment from 'moment';
 import _ from 'lodash/fp';
 import { EffectFailDataAxiosError } from 'types';
 import { message } from 'antd';
+import { readingsHistoryService } from '../readingsHistoryService.model';
 
 export type RequestStatusShared = 'pending' | 'done' | 'failed' | null;
 
@@ -26,7 +25,9 @@ export function useReadingHistoryValues() {
     [date: string]: RequestStatusShared;
   }>({});
 
-  const initialValues = useStore($readingHistory);
+  const initialValues = useStore(
+    readingsHistoryService.outputs.$readingHistory,
+  );
 
   useEffect(() => {
     setBufferedValues(initialValues);
@@ -36,7 +37,7 @@ export function useReadingHistoryValues() {
     async (id: number) => {
       try {
         await axios.post(`IndividualDeviceReadings/${id}/remove`);
-        refetchReadingHistory(Number(deviceId));
+        readingsHistoryService.inputs.refetchReadingHistory(Number(deviceId));
       } catch (error) {}
     },
     [deviceId],
@@ -134,7 +135,7 @@ export function useReadingHistoryValues() {
       }));
       try {
         await createReading(reading);
-        refetchReadingHistory(Number(deviceId));
+        readingsHistoryService.inputs.refetchReadingHistory(Number(deviceId));
 
         setUploadingReadingsStatuses((prev) => ({
           ...prev,
@@ -157,7 +158,9 @@ export function useReadingHistoryValues() {
     [deviceId],
   );
 
-  const pendingHistory = useStore(fetchReadingHistoryFx.pending);
+  const pendingHistory = useStore(
+    readingsHistoryService.outputs.fetchReadingHistoryFx.pending,
+  );
 
   useEffect(() => {
     if (!pendingHistory) return;

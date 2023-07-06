@@ -2,15 +2,20 @@ import React from 'react';
 import { useParams } from 'react-router-dom';
 import { ReadingHistoryHeader } from '../../components/Header';
 import { ReadingsHistoryList } from '../../components/ReadingsHistoryList';
-import { $isReadingsHstoryModalOpen, ReadingHistoryGate } from '../../models';
-import { useStore } from 'effector-react';
+import { useUnit } from 'effector-react';
 import { displayIndividualDeviceAndNamesService } from 'services/devices/individualDevices/displayIndividualDeviceAndNamesService/displayIndividualDeviceAndNamesService.model';
 import { FormModal } from 'ui-kit/Modals/FormModal';
 import { ReadingsHistoryModalProps } from './ReadingsHistoryModal.types';
+import { readingsHistoryService } from '../../readingsHistoryService.model';
 
 const {
   gates: { IndividualDeviceGate },
 } = displayIndividualDeviceAndNamesService;
+
+const {
+  outputs,
+  gates: { ReadingHistoryGate },
+} = readingsHistoryService;
 
 export const ReadingHistoryModal: React.FC<ReadingsHistoryModalProps> = ({
   deviceId: deviceIdFromProps,
@@ -23,7 +28,7 @@ export const ReadingHistoryModal: React.FC<ReadingsHistoryModalProps> = ({
 
   const deviceId = deviceIdFromProps || deviceIdFromUrlParams;
 
-  const showModal = useStore($isReadingsHstoryModalOpen);
+  const showModal = useUnit({ showModal: outputs.$isReadingsHstoryModalOpen });
 
   const isNeedUseGate = isModal ? showModal : true;
 

@@ -18,8 +18,8 @@ import {
   getIndividualDevicesList,
 } from './HousesReadingsService.api';
 import { managementFirmConsumptionRatesService } from 'services/meters/managementFirmConsumptionRatesService';
-import { openReadingsHistoryModal } from 'services/meters/readingsHistoryService/models/index';
 import { inspectorService } from 'services/inspectors/inspectorService';
+import { readingsHistoryService } from 'services/meters/readingsHistoryService/readingsHistoryService.model';
 
 const domain = createDomain('housesReadingsService');
 
@@ -153,7 +153,8 @@ export const housesReadingsService = {
     loadManagemenFirmConsumptionRates:
       managementFirmConsumptionRatesService.inputs
         .loadManagemenFirmConsumptionRates,
-    openReadingsHistoryModal,
+    openReadingsHistoryModal:
+      readingsHistoryService.inputs.openReadingsHistoryModal,
     handleHousingStockLoaded,
   },
   outputs: {

@@ -15,7 +15,6 @@ import {
   getReadingValuesObject,
 } from '../utils';
 import { useReadingHistoryValues } from '../hooks/useReadingValues';
-import { fetchReadingHistoryFx } from '../models';
 import { ConfirmReadingValueModal } from '../../../../01/features/readings/readingsInput/confirmInputReadingModal';
 import {
   confirmReading,
@@ -50,6 +49,7 @@ import { getFilledArray } from 'utils/getFilledArray';
 import { apartmentService } from 'services/apartments/apartmentService/apartmentService.models';
 import { displayIndividualDeviceAndNamesService } from 'services/devices/individualDevices/displayIndividualDeviceAndNamesService/displayIndividualDeviceAndNamesService.model';
 import { ArrowBottom, ArrowIconTop } from 'ui-kit/icons';
+import { readingsHistoryService } from '../readingsHistoryService.model';
 
 const {
   outputs: { $individualDevice },
@@ -75,7 +75,9 @@ export const ReadingsHistoryList: React.FC<Props> = ({ isModal, readonly }) => {
 
   const readingsHistory = values;
 
-  const pendingHistory = useStore(fetchReadingHistoryFx.pending);
+  const pendingHistory = useStore(
+    readingsHistoryService.outputs.fetchReadingHistoryFx.pending,
+  );
 
   const consumptionRates = useStore(outputs.$consumptionRates);
   const loadConsumptionRates = useEvent(
