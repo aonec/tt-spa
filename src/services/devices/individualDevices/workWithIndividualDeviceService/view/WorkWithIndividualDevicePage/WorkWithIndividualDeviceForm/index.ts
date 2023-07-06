@@ -1,1 +1,1 @@
-export { WorkWithIndividualDeviceForm } from './WorkWithIndividualDeviceForm'
+export { WorkWithIndividualDeviceForm } from './WorkWithIndividualDeviceForm';
