@@ -113,8 +113,8 @@ forward({
   to: addIndividualDeviceForm.fields.oldDeviceReadings.$value,
 });
 
-forward({
-  from: $individualDevice.map((values) => {
+sample({
+  clock: $individualDevice.map((values) => {
     // eslint-disable-next-line array-callback-return
     if (!values) return null;
 
@@ -144,12 +144,12 @@ forward({
       ...(isSwitch ? { model: '', serialNumber: '' } : {}),
     } as any;
   }),
-  to: addIndividualDeviceForm.setForm,
+  target: addIndividualDeviceForm.setForm,
 });
 
-forward({
-  from: IndividualDeviceGate.close,
-  to: addIndividualDeviceForm.reset,
+sample({
+  clock: IndividualDeviceGate.close,
+  target: addIndividualDeviceForm.reset,
 });
 
 sample({

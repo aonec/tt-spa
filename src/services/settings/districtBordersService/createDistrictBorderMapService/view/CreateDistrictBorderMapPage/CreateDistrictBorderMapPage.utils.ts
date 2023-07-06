@@ -26,7 +26,7 @@ export const getBuildingPlacmearks = (
       coords: [
         elem.coordinates?.latitude || 0,
         elem.coordinates?.longitude || 0,
-      ],
+      ] as [number, number],
       onClick: () => toggleHouse(elem.id),
       size: isHouseInsideDistrict ? [51, 51] : [24, 24],
     };

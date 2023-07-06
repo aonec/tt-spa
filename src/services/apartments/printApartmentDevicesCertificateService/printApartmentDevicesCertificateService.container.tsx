@@ -25,7 +25,7 @@ export const PrintApartmentDevicesCertificateContainer: FC<Props> = ({
 
   return (
     <>
-      {isOpen && <HomeownerCerificateGate id={homeownerId} />}
+      <HomeownerCerificateGate id={homeownerId} />
       <FormModal
         formId="apartment-devivces-issue-certificate"
         onCancel={closeIssueCertificateModalButtonClicked}

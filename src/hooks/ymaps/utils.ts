@@ -83,8 +83,6 @@ export function useRenderDistricts(
 
     districtsGroup.removeAll();
 
-    setSavedDistricts({});
-
     districts.forEach((district) => {
       const color = DistrictColorsList.find(
         (elem) => elem.type === district.type,
@@ -114,7 +112,10 @@ export function useRenderDistricts(
 
       setSavedDistricts((prev) => ({ ...prev, [district.id]: polygon }));
 
-      if (district.isEditing) (polygon.editor as any).startDrawing();
+      if (district.isEditing)
+        (
+          polygon.editor as unknown as { startDrawing: () => void }
+        ).startDrawing();
 
       return () => districtsGroup.removeAll();
     });
@@ -128,7 +129,7 @@ export function useRenderPlacemarks(
   map: ymaps.Map | null,
   placemarks: {
     placemarkIconLink: string;
-    coords: number[];
+    coords: [number, number];
     onClick?: () => void;
     count?: number;
     size?: number[];
