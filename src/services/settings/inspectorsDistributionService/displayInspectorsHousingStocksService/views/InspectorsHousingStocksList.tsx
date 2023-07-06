@@ -23,18 +23,18 @@ export const InspectorsHousingStocksList: FC<
 
   const list = housingStocks?.map((housingStock) => {
     const update = updateInfo.find(
-      (elem) => elem.housingStockId === housingStock.housingStockId,
+      (elem) => elem.housingStockId === housingStock.buildingId,
     );
     return (
       <HousingStockItem
-        key={housingStock.housingStockId}
+        key={housingStock.buildingId}
         housingStock={housingStock}
         inspectors={inspectors}
         days={days}
         updateInfo={update}
         updateHousingStock={(data) =>
           updateHousingStock({
-            housingStockId: housingStock.housingStockId!,
+            housingStockId: housingStock.buildingId!,
             data,
           })
         }

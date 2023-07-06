@@ -21,7 +21,7 @@ export const HousingStocksListItem: FC<HousingStocksListItemProps> = ({
   selectedHousingStock,
   setFileName,
 }) => {
-  const { numberOfApartments, apartmentsStatistic, id, address } = housingStock;
+  const { apartmentsStatistic, id, address, numberOfApartments } = housingStock;
 
   const [isActive, setIsActive] = useState(false);
   const toggle = () => setIsActive((prev) => !prev);

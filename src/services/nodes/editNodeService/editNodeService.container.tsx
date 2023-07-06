@@ -46,7 +46,7 @@ export const EditNodeContainer = () => {
   return (
     <>
       <NodeIdGate nodeId={nodeId} />
-      {node && <CalculatorsGate housingStockId={node.housingStockId} />}
+      {node && <CalculatorsGate buildingId={node.buildingId} />}
       <CreateNodeServiceZoneContainer />
       <CreateCalculatorModalContainer />
 
@@ -63,7 +63,7 @@ export const EditNodeContainer = () => {
               refetchNode={() => refetchNode()}
               updateNode={updateNode}
               handleOpenCreateCalculatorModal={() =>
-                openCreateCalculatorModal(node.housingStockId)
+                openCreateCalculatorModal(node.buildingId)
               }
               calculators={calculators || []}
               isUpdateLoading={isUpdateLoading}

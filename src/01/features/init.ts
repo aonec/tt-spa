@@ -1,8 +1,4 @@
-import './individualDevices/closeIndividualDevice/models/init';
-import './individualDevices/addIndividualDevice/models/init';
-import './individualDevices/displayIndividualDevicesNames/models/init.ts';
 import './individualDevices/switchIndividualDevice/models/init';
-import './individualDevices/displayIndividualDevice/models/init';
 import './readings/displayReadingHistory/models/init';
 import './readings/readingsInput/confirmInputReadingModal/models/init';
 import './individualDevices/deleteIndividualDevice/deleteIndividualDeviceService.init';

@@ -44,7 +44,6 @@ export const TaskProfile: FC<TaskProfileProps> = ({
     name: taskName,
     stages,
     apartment,
-    housingStockId,
     pipeNode,
     comments,
     canBeReverted,
@@ -118,7 +117,6 @@ export const TaskProfile: FC<TaskProfileProps> = ({
                 <TaskIndividualDevicesList
                   devices={individualDevices}
                   apartmentId={apartmemtId}
-                  housingStockId={housingStockId}
                 />
               )}
               {device && <TaskDeviceInfo device={device} />}

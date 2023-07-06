@@ -12,7 +12,7 @@ const fetchNodesFx = domain.createEffect<
   NodeOnHousingStockResponse[] | null
 >(getNodes);
 
-const NodesGate = createGate<{ housingStockId: number }>();
+const NodesGate = createGate<{ buildingId: number }>();
 
 const $nodes = domain
   .createStore<NodeOnHousingStockResponse[] | null>(null)
@@ -26,7 +26,7 @@ const $nodes = domain
   .reset(NodesGate.close);
 
 forward({
-  from: NodesGate.open.map(({ housingStockId }) => housingStockId),
+  from: NodesGate.open.map(({ buildingId }) => buildingId),
   to: fetchNodesFx,
 });
 

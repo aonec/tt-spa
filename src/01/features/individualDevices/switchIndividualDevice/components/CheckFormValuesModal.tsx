@@ -1,7 +1,7 @@
 import { Flex } from '01/shared/ui/Layout/Flex';
 import { Space } from '01/shared/ui/Layout/Space/Space';
 import { Footer, Header, StyledModal } from '01/shared/ui/Modal/Modal';
-import { useForm } from 'effector-forms/dist';
+import { useForm } from 'effector-forms';
 import { useStore } from 'effector-react';
 import moment from 'moment';
 import { IndividualDeviceMountPlaceListResponse } from 'myApi';
@@ -18,12 +18,12 @@ import {
 import { FileIcon, TrashIcon } from '../icons';
 import { Loader } from 'ui-kit/Loader';
 import { ReadingsInput } from './ReadingsInput';
-import { $individualDevice } from '../../displayIndividualDevice/models';
 import { Button } from 'ui-kit/Button';
 import { displayContractorsService } from 'services/contractors/displayContractorsService';
 import { FileData } from 'ui-kit/DocumentsService/DocumentsService.types';
 import { ResourceInfo } from 'ui-kit/shared_components/ResourceInfo';
 import { individualDeviceMountPlacesService } from 'services/devices/individualDeviceMountPlacesService';
+import { displayIndividualDeviceAndNamesService } from 'services/devices/individualDevices/displayIndividualDeviceAndNamesService/displayIndividualDeviceAndNamesService.model';
 
 interface ILine {
   name: string;
@@ -33,6 +33,10 @@ interface ILine {
 interface RemoveFile {
   removeFile: () => void;
 }
+
+const {
+  outputs: { $individualDevice },
+} = displayIndividualDeviceAndNamesService;
 
 export const CheckFormValuesModal = () => {
   const { fields } = useForm(addIndividualDeviceForm);

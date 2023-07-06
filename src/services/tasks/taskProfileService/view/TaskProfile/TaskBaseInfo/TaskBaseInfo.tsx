@@ -14,12 +14,12 @@ export const TaskBaseInfo: FC<TaskBaseInfoProps> = ({ task }) => {
     task;
 
   const apartmentId = apartment?.id;
-  const housingStockId = task.housingStockId;
+  const buildingId = task.buildingId;
   const apartmentComment = apartment?.comment || '';
 
   const linkPath = apartment
     ? `/apartments/${apartmentId}`
-    : `/objects/profile/${housingStockId}`;
+    : `/objects/profile/${buildingId}`;
 
   const preparedCreationTime = creationTime
     ? getTimeStringByUTC(creationTime)

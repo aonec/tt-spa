@@ -1,6 +1,6 @@
 import { ModalTT } from '01/shared/ui/ModalTT';
 import { Form } from 'antd';
-import { useForm } from 'effector-forms/dist';
+import { useForm } from 'effector-forms';
 import React, { FC } from 'react';
 import { FormWrap } from './components';
 import { InspectorAddressesResetModalProps } from './types';

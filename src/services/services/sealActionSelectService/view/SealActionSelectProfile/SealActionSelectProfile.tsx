@@ -8,7 +8,7 @@ import {
 } from './SealActionSelectProfile.styled';
 import { SealProfileProps } from './SealActionSelectProfile.types';
 import { PageHeader } from 'ui-kit/shared_components/PageHeader';
-import { PlusIcon } from 'ui-kit/icons';
+import { CheckIcon, PlusIcon } from 'ui-kit/icons';
 import { SealActionType } from '../../../sealService/sealService.types';
 import moment from 'moment';
 import { LinkPanel } from 'ui-kit/shared_components/LinkPanel';
@@ -55,6 +55,12 @@ export const SealActionSelectProfile: FC<SealProfileProps> = ({
                 )}
             </AppointmentsInfoWrapper>
           }
+        />
+
+        <LinkPanel
+          link={`/services/seal/${SealActionType.AppointmentsJournal}`}
+          icon={<CheckIcon />}
+          text="Журнал распределенных записей"
         />
       </Wrapper>
     </>

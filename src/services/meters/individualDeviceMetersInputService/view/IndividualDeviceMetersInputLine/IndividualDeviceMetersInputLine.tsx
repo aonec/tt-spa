@@ -5,7 +5,6 @@ import confirm from 'antd/lib/modal/confirm';
 import { useHistory } from 'react-router-dom';
 import { ESecuredIdentityRoleName } from 'myApi';
 import { HistoryIcon, StarIcon } from 'ui-kit/icons';
-import { closingIndividualDeviceButtonClicked } from '01/features/individualDevices/closeIndividualDevice/models';
 import { deleteIndividualDeviceService } from '01/features/individualDevices/deleteIndividualDevice/deleteIndividualDeviceService.models';
 import { ContextMenuButton } from 'ui-kit/ContextMenuButton/ContextMenuButton';
 import { reopenIndividualDevice } from '01/_api/individualDevices';
@@ -27,6 +26,7 @@ import {
   ContextMenuButtonColor,
   ContextMenuElement,
 } from 'ui-kit/ContextMenuButton/ContextMenuButton.types';
+import { closeIndividualDeviceService } from 'services/devices/individualDevices/closeIndividualDeviceService';
 
 export const IndividualDeviceMetersInputLine: FC<
   IndividualDeviceMetersInputLineProps
@@ -52,6 +52,9 @@ export const IndividualDeviceMetersInputLine: FC<
 
   const openEditReadingsHistoryModal = useEvent(
     editReadingsHistoryService.inputs.openModal,
+  );
+  const openCloseIndividualDeviceModal = useEvent(
+    closeIndividualDeviceService.inputs.openModal,
   );
 
   const managementFirmUser = useStore(currentUserService.outputs.$currentUser);
@@ -80,6 +83,10 @@ export const IndividualDeviceMetersInputLine: FC<
         onClick: () => setIsModalOpen(true),
       },
       {
+        title: 'Ввести показание за произвольный период',
+        onClick: () => openEditReadingsHistoryModal(device),
+      },
+      {
         title: 'Открыть прибор',
         hidden: !isDeviceClosed,
         onClick: () =>
@@ -104,17 +111,13 @@ export const IndividualDeviceMetersInputLine: FC<
         title: 'Закрытие прибора',
         hidden: isDeviceClosed,
         color: ContextMenuButtonColor.danger,
-        onClick: () => closingIndividualDeviceButtonClicked(device),
+        onClick: () => openCloseIndividualDeviceModal(device),
       },
       {
         title: 'Удалить прибор',
         hidden: !isSeniorOperator,
         color: ContextMenuButtonColor.danger,
         onClick: () => onDeleteIndividualDevice(device),
-      },
-      {
-        title: 'Ввести показание за произвольный период',
-        onClick: () => openEditReadingsHistoryModal(device),
       },
     ],
     [
@@ -124,6 +127,7 @@ export const IndividualDeviceMetersInputLine: FC<
       onDeleteIndividualDevice,
       isDeviceClosed,
       openEditReadingsHistoryModal,
+      openCloseIndividualDeviceModal,
     ],
   );
 
