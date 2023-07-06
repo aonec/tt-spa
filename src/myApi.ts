@@ -14669,29 +14669,6 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
-     *
-     * @tags Tasks
-     * @name TasksErpTaskDeadlineList
-     * @summary TasksRead
-     * @request GET:/api/Tasks/ErpTaskDeadline
-     * @secure
-     */
-    tasksErpTaskDeadlineList: (
-      data: GetTaskDeadlineRequest,
-      params: RequestParams = {},
-    ) =>
-      this.request<GetTaskDeadlineGrpcResponse[], ErrorApiResponse>({
-        path: `/api/Tasks/ErpTaskDeadline`,
-        method: 'GET',
-        body: data,
-        secure: true,
-        type: ContentType.Json,
-        format: 'json',
-        ...params,
-      }),
-
-    /**
      * @description Роли:<li>Диспетчер УК</li>
      *
      * @tags Tasks
