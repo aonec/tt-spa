@@ -12,7 +12,6 @@ import { WorkWithIndividualDevicePageTitle } from './WorkWithIndividualDevicePag
 import { Empty } from 'antd';
 import { getApartmentFromFullAddress } from 'utils/getApartmentFromFullAddress';
 import { ResourceIconLookup } from 'ui-kit/shared_components/ResourceIconLookup';
-import { WorkWithIndividualDeviceForm } from './WorkWithIndividualDeviceForm';
 
 export const WorkWithIndividualDevicePage: FC<
   WorkWithIndividualDevicePageProps
@@ -49,18 +48,7 @@ export const WorkWithIndividualDevicePage: FC<
             </SerialNumberWrapper>
             <ModelWrapper>{individualDevice.model}</ModelWrapper>
           </DeviceInfoWrapper>
-          <ContentWrapper>
-            <WorkWithIndividualDeviceForm
-              type={type}
-              form={form}
-              contractors={contractors}
-              handleFetchSerialNumberForCheck={handleFetchSerialNumberForCheck}
-              isSerialNumberAllreadyExist={isSerialNumberAllreadyExist}
-              isSerialNumberLoading={isSerialNumberLoading}
-              handleFetchModels={handleFetchModels}
-              models={models}
-            />
-          </ContentWrapper>
+          <ContentWrapper></ContentWrapper>
         </>
       )}
     </>
