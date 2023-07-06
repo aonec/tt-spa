@@ -16,20 +16,14 @@ const fetchHomeownerCertificateFx = domain.createEffect<
 
 const HomeownerCerificateGate = createGate<{ id: string | null }>();
 
-const $homeownerCertificate =
-  domain.createStore<HomeownerCertificateResponse | null>(null);
-const $isPrintIssueCertificateModalOpen = domain.createStore(false);
-
-fetchHomeownerCertificateFx.use(getHomeownerCertificate);
-
-$isPrintIssueCertificateModalOpen
-  .on(getIssueCertificateButtonClicked, () => true)
+const $isPrintIssueCertificateModalOpen = domain
+  .createStore(false)
+  .on(printIssueSertificateButtonClicked, () => true)
   .reset(closeIssueCertificateModalButtonClicked);
 
-$homeownerCertificate.on(
-  fetchHomeownerCertificateFx.doneData,
-  (_, certificate) => certificate,
-);
+const $homeownerCertificate = domain
+  .createStore<HomeownerCertificateResponse | null>(null)
+  .on(fetchHomeownerCertificateFx.doneData, (_, certificate) => certificate);
 
 guard({
   source: HomeownerCerificateGate.state.map((values) => values.id),
