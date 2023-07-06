@@ -1,4 +1,4 @@
-import { createDomain, forward, sample } from 'effector';
+import { createDomain, sample } from 'effector';
 import { IndividualDeviceListItemResponse } from 'myApi';
 import { apartmentIndividualDevicesMetersService } from 'services/meters/apartmentIndividualDevicesMetersService';
 import { message } from 'antd';
@@ -19,9 +19,10 @@ const $currentIndividualDevice = domain
 
 const $isModalOpen = $currentIndividualDevice.map(Boolean);
 
-forward({
-  from: individualDeviceDeleted,
-  to: apartmentIndividualDevicesMetersService.inputs.refetchIndividualDevices,
+sample({
+  clock: individualDeviceDeleted,
+  target:
+    apartmentIndividualDevicesMetersService.inputs.refetchIndividualDevices,
 });
 
 sample({
