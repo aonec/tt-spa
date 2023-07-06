@@ -1,5 +1,5 @@
 export type ConsumptionDataFilter = {
-  HousingStockIds: number[];
+  BuildingIds: number[];
   AdditionalHousingStockIds: number[];
   From: string;
   To: string;
