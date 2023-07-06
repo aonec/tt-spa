@@ -7,8 +7,6 @@ import {
 } from 'myApi';
 import React, { useCallback, useMemo } from 'react';
 import { useOpenedYears } from '../hooks/useOpenedYears';
-import { ReactComponent as ArrowIconTop } from '../icons/arrow.svg';
-import { ReactComponent as ArrowBottom } from '../icons/arrowBottom.svg';
 import { RenderReadingFields } from './ReadingFields';
 import { SourceName } from './SourceIcon';
 import {
@@ -51,6 +49,7 @@ import { getMeasurementUnit } from 'services/meters/individualDeviceMetersInputS
 import { getFilledArray } from 'utils/getFilledArray';
 import { apartmentService } from 'services/apartments/apartmentService/apartmentService.models';
 import { displayIndividualDeviceAndNamesService } from 'services/devices/individualDevices/displayIndividualDeviceAndNamesService/displayIndividualDeviceAndNamesService.model';
+import { ArrowBottom, ArrowIconTop } from 'ui-kit/icons';
 
 const {
   outputs: { $individualDevice },

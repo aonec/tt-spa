@@ -4,13 +4,17 @@ import {
   EIndividualDeviceReadingsSource,
   OrganizationUserShortResponse,
 } from 'myApi';
-import { ReactComponent as UserIcon } from '../icons/userIcon.svg';
-import { ReactComponent as ErcIcon } from '../icons/erc.svg';
-import { ReactComponent as GosUslugiIcon } from '../icons/gosuslugi.svg';
-import { ReactComponent as BankIcon } from '../icons/bank.svg';
-import { ReactComponent as ArchiveIcon } from '../icons/archive.svg';
 import { Space } from '01/shared/ui/Layout/Space/Space';
-import { TelegramIcon, DeviceIcon, DubbedIcon } from 'ui-kit/icons';
+import {
+  TelegramIcon,
+  DeviceIcon,
+  DubbedIcon,
+  ArchiveIcon,
+  BankIcon,
+  GosUslugiIcon,
+  ErcIcon,
+  UserIcon,
+} from 'ui-kit/icons';
 
 export const getSourceIcon = (sourceType: EIndividualDeviceReadingsSource) =>
   ({
