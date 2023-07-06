@@ -52,7 +52,8 @@ const fetchAppointmentFx = domain.createEffect<number, AppointmentResponse[]>(
 );
 const $apartmentAppointment = domain
   .createStore<AppointmentResponse | null>(null)
-  .on(fetchAppointmentFx.doneData, (_, appointments) => appointments[0]);
+  .on(fetchAppointmentFx.doneData, (_, appointments) => appointments[0] || null)
+  .reset(ApartmentGate.close);
 
 const handleApartmentLoaded = fetchApartmentFx.doneData;
 const $isApartmentLoading = fetchApartmentFx.pending;
