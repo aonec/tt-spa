@@ -9,7 +9,7 @@ export function useAutocomplete(street: string | undefined, streets: string[]) {
 
   return {
     bestMatch: sortedAddress[0]?.value || '',
-    options: street ? sortedAddress : [],
+    options: street ? [sortedAddress[0]] : [],
   };
 }
 
