@@ -22,7 +22,7 @@ const searchForm = createForm({
     Street: {
       init: '',
     },
-    HousingStockNumber: {
+    BuildingNumber: {
       init: '',
     },
     HouseManagement: {

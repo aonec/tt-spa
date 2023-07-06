@@ -46,7 +46,7 @@ export const ResourceConsumptionFilter: FC<ResourceConsumptionFilterProps> = ({
     Omit<ConsumptionDataFilter, 'To'>
   >({
     initialValues: {
-      HousingStockIds: filter.HousingStockIds || [],
+      BuildingIds: filter.BuildingIds || [],
       AdditionalHousingStockIds: filter.AdditionalHousingStockIds || [],
       From: filter.From,
     },
@@ -55,9 +55,9 @@ export const ResourceConsumptionFilter: FC<ResourceConsumptionFilterProps> = ({
     validateOnChange: false,
     validateOnBlur: false,
     onSubmit: (values) => {
-      const { HousingStockIds, AdditionalHousingStockIds } = values;
+      const { BuildingIds, AdditionalHousingStockIds } = values;
 
-      if (!HousingStockIds.length) {
+      if (!BuildingIds.length) {
         return;
       }
 
@@ -67,7 +67,7 @@ export const ResourceConsumptionFilter: FC<ResourceConsumptionFilterProps> = ({
 
       setFilter({
         ...values,
-        HousingStockIds,
+        BuildingIds,
         To: moment(values.From).endOf('month').utcOffset(0, true).format(),
       });
     },
@@ -78,7 +78,7 @@ export const ResourceConsumptionFilter: FC<ResourceConsumptionFilterProps> = ({
       resourceConsumptionFilterService.outputs.$selectedHouseManagement.watch(
         (houseManagement) => {
           if (houseManagement) {
-            setFieldValue('HousingStockIds', []);
+            setFieldValue('BuildingIds', []);
             setFieldValue('AdditionalHousingStockIds', []);
           }
         },
@@ -96,7 +96,7 @@ export const ResourceConsumptionFilter: FC<ResourceConsumptionFilterProps> = ({
 
   useEffect(() => {
     if (selectedCity) {
-      setFieldValue('HousingStockIds', []);
+      setFieldValue('BuildingIds', []);
       setFieldValue('AdditionalHousingStockIds', []);
     }
   }, [selectedCity, setFieldValue]);
@@ -180,10 +180,10 @@ export const ResourceConsumptionFilter: FC<ResourceConsumptionFilterProps> = ({
             disabled={!treeData.length}
             treeData={treeData}
             placeholder="Выберите из списка"
-            onChange={(ids) => setFieldValue('HousingStockIds', ids)}
-            selectedHousingStockIds={values.HousingStockIds}
+            onChange={(ids) => setFieldValue('BuildingIds', ids)}
+            selectedHousingStockIds={values.BuildingIds}
           />
-          <ErrorMessage>{errors.HousingStockIds}</ErrorMessage>
+          <ErrorMessage>{errors.BuildingIds}</ErrorMessage>
         </FormItem>
         {!isAdditionalAddress && (
           <AdditionalAddressWrapper
