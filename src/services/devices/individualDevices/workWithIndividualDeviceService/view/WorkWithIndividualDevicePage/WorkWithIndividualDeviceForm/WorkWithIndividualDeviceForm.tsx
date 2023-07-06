@@ -1,4 +1,4 @@
-import React, { FC, useCallback, useEffect } from 'react';
+import React, { FC, useCallback, useEffect, useMemo } from 'react';
 import {
   FormWrapper,
   InputWrapper,
@@ -72,6 +72,26 @@ export const WorkWithIndividualDeviceForm: FC<
       set({ newDeviceReadings: oldDeviceReadings });
     }
   }, [isCheck, fields.oldDeviceReadings.value, set]);
+
+  const oldDeviceInputTitle = useMemo(() => {
+    if (isSwitch) {
+      return 'Заменяемый прибор';
+    } else if (isReopen) {
+      return 'Прибор до переоткрытия';
+    }
+    return '';
+  }, [isSwitch, isReopen]);
+
+  const newDeviceInputTitle = useMemo(() => {
+    if (isSwitch) {
+      return 'Новый прибор';
+    } else if (isCheck) {
+      return 'Прибор после поверки';
+    } else if (isReopen) {
+      return 'Прибор после переоткрытия';
+    }
+    return '';
+  }, [isReopen, isSwitch, isCheck]);
 
   return (
     <Form>
@@ -337,13 +357,7 @@ export const WorkWithIndividualDeviceForm: FC<
           onChange={(readings) => {
             fields.oldDeviceReadings.onChange(readings);
           }}
-          title={
-            isSwitch
-              ? 'Заменяемый прибор'
-              : isReopen
-              ? 'Прибор до переоткрытия'
-              : ''
-          }
+          title={oldDeviceInputTitle}
         />
       )}
 
@@ -354,15 +368,7 @@ export const WorkWithIndividualDeviceForm: FC<
         rateType={fields.rateType.value}
         readings={fields.newDeviceReadings.value}
         onChange={(readings) => fields.newDeviceReadings.onChange(readings)}
-        title={
-          isSwitch
-            ? 'Новый прибор'
-            : isCheck
-            ? 'Прибор после поверки'
-            : isReopen
-            ? 'Прибор после переоткрытия'
-            : ''
-        }
+        title={newDeviceInputTitle}
       />
       <ErrorMessage>
         {fields.newDeviceReadings.errorText({
