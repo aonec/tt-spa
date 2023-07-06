@@ -1,7 +1,7 @@
 import {
   closeReadingsHistoryModal,
   openReadingsHistoryModal,
-} from './../../../01/features/readings/displayReadingHistory/models/index';
+} from '../readingsHistoryService/models/index';
 import { combine, createDomain, forward, guard } from 'effector';
 import { createGate } from 'effector-react';
 import {

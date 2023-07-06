@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import { useEvent, useStore } from 'effector-react';
 import { DeleteIndividualDeviceModalContainer } from '01/features/individualDevices/deleteIndividualDevice/DeleteIndividualDeviceModalContainer';
-import { ReadingsHistoryModal } from '01/features/readings/displayReadingHistory/ReadingsHistoryModal';
+import { ReadingsHistoryModal } from 'services/meters/readingsHistoryService/ReadingsHistoryModal';
 import { ConfirmReadingValueModal } from '01/features/readings/readingsInput/confirmInputReadingModal';
 import { apartmentIndividualDevicesMetersService } from './apartmentIndividualDevicesMetersService.model';
 import { ApartmentIndividualDevicesMeters } from './view/ApartmentIndividualDevicesMeters';

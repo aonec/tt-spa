@@ -1,10 +1,10 @@
 import moment from 'moment';
-import { IndividualDeviceReadingsItemHistoryResponse } from './../../../../myApi';
+import { IndividualDeviceReadingsItemHistoryResponse } from '../../../myApi';
 
 export const getReadingValuesArray = (
   reading: IndividualDeviceReadingsItemHistoryResponse,
   type: 'consumption' | 'value' | 'averageConsumption',
-  rateNum: number
+  rateNum: number,
 ) => {
   const res: (string | null)[] = [];
 
@@ -21,7 +21,7 @@ export const getMonthName = (month: number) =>
 
 export const getReadingValuesObject = (
   values: (number | null)[],
-  rateNum: number
+  rateNum: number,
 ) => {
   const res: { [key: string]: number } = {};
 

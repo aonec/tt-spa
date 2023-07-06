@@ -1,4 +1,4 @@
-import { RequestStatusShared } from '01/features/readings/displayReadingHistory/hooks/useReadingValues';
+import { RequestStatusShared } from 'services/meters/readingsHistoryService/hooks/useReadingValues';
 import { Flex } from '01/shared/ui/Layout/Flex';
 import { Space } from '01/shared/ui/Layout/Space/Space';
 import { Input } from 'antd';
@@ -34,7 +34,7 @@ export const RenderReadingFields: React.FC<Props> = (props) => {
 
   const onChangeHandeler = (
     e: React.ChangeEvent<HTMLInputElement>,
-    index: number
+    index: number,
   ) => {
     e.preventDefault();
 
@@ -50,7 +50,7 @@ export const RenderReadingFields: React.FC<Props> = (props) => {
   const renderField = (
     elem: string | null,
     index: number,
-    isOnlyOne?: boolean
+    isOnlyOne?: boolean,
   ) => {
     const value = (clearValue ? elem : Number(elem?.split(' ')[0])) || '';
     const suffix = globalSuffix || elem?.split(' ')[1];
@@ -97,7 +97,7 @@ export const RenderReadingFields: React.FC<Props> = (props) => {
         <>
           <div>
             {[values[0], values[1]].map((elem, index) =>
-              renderField(elem, index, false)
+              renderField(elem, index, false),
             )}
           </div>
           <Space h={6} />

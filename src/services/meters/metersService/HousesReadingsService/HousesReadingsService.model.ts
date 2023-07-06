@@ -18,7 +18,7 @@ import {
   getIndividualDevicesList,
 } from './HousesReadingsService.api';
 import { managementFirmConsumptionRatesService } from 'services/meters/managementFirmConsumptionRatesService';
-import { openReadingsHistoryModal } from '01/features/readings/displayReadingHistory/models/index';
+import { openReadingsHistoryModal } from 'services/meters/readingsHistoryService/models/index';
 import { inspectorService } from 'services/inspectors/inspectorService';
 
 const domain = createDomain('housesReadingsService');

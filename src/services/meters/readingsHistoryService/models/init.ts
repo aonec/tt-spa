@@ -1,4 +1,4 @@
-import { getReadingsHistory } from './../../../../_api/readings';
+import { getReadingsHistory } from '../../../../01/_api/readings';
 import {
   ReadingHistoryGate,
   fetchReadingHistoryFx,

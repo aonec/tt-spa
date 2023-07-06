@@ -18,7 +18,7 @@ import {
 } from '../utils';
 import { useReadingHistoryValues } from '../hooks/useReadingValues';
 import { fetchReadingHistoryFx } from '../models';
-import { ConfirmReadingValueModal } from '../../readingsInput/confirmInputReadingModal';
+import { ConfirmReadingValueModal } from '../../../../01/features/readings/readingsInput/confirmInputReadingModal';
 import {
   confirmReading,
   getActiveReadings,

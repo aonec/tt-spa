@@ -1,5 +1,5 @@
 import { createGate } from 'effector-react';
-import { IndividualDeviceReadingsHistoryResponse } from './../../../../../myApi';
+import { IndividualDeviceReadingsHistoryResponse } from '../../../../myApi';
 import { createStore, createEffect, createEvent } from 'effector';
 import { EffectFailDataAxiosError } from 'types';
 

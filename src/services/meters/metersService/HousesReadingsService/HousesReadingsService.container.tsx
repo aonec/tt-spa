@@ -3,7 +3,7 @@ import { useEvent, useStore } from 'effector-react';
 import { useHistory, useParams } from 'react-router-dom';
 import { HousesReadingsPage } from './view/HousesReadingsPage';
 import { housesReadingsService } from './HousesReadingsService.model';
-import { ReadingsHistoryModal } from '01/features/readings/displayReadingHistory/ReadingsHistoryModal';
+import { ReadingsHistoryModal } from 'services/meters/readingsHistoryService/ReadingsHistoryModal';
 import { useManagingFirmConsumptionRates } from 'services/meters/managementFirmConsumptionRatesService';
 import { ConfirmReadingValueModal } from '01/features/readings/readingsInput/confirmInputReadingModal';
 

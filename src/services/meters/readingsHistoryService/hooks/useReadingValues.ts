@@ -1,13 +1,10 @@
 import { useParams } from 'react-router-dom';
-import {
-  fetchReadingHistoryFx,
-  refetchReadingHistory,
-} from './../models/index';
-import { createReading } from './../../../../_api/readings';
+import { fetchReadingHistoryFx, refetchReadingHistory } from '../models/index';
+import { createReading } from '../../../../01/_api/readings';
 import {
   IndividualDeviceReadingsHistoryResponse,
   IndividualDeviceReadingsCreateRequest,
-} from './../../../../../myApi';
+} from '../../../../myApi';
 import { useStore } from 'effector-react';
 import { useCallback, useEffect, useState } from 'react';
 import { $readingHistory } from '../models';

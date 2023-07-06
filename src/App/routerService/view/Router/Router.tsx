@@ -35,7 +35,7 @@ import { ReportsPageContainer } from '01/features/reports';
 import { featureToggles } from 'featureToggles';
 import { ReportsContainer } from 'services/reportsService';
 import { SwitchIndividualDevice } from '01/features/individualDevices/switchIndividualDevice';
-import { ReadingHistoryPage } from '01/features/readings/displayReadingHistory';
+import { ReadingHistoryPage } from 'services/meters/readingsHistoryService';
 import { AccessDeniedPage } from 'services/authorizations/AccessDeniedPage';
 import { EditObjectContainer } from 'services/objects/editObjectService';
 import { EditIndividualDeviceContainer } from 'services/meters/editIndividualDeviceService';
