@@ -1,6 +1,7 @@
 import { axios } from '01/axios';
 import {
   AddHeatingStationRequest,
+  EHouseCategory,
   HeatingStationResponse,
   HeatingStationResponsePagedList,
   HouseManagementResponse,
@@ -29,11 +30,10 @@ export const postHeatingStation = (
 export const postCreateObject = async (
   requestPayload: HousingStockCreateRequest,
 ): Promise<CreateBuildingResponse> => {
-  const { houseCategory } = requestPayload;
   const res: HousingStockResponse | null = await axios.post(
     'HousingStocks',
     requestPayload,
   );
 
-  return { houseCategory, id: res?.id };
+  return { houseCategory: EHouseCategory.Living, id: res?.id };
 };

@@ -119,7 +119,6 @@ guard({
         houseManagement,
         objectCategory,
         livingHouseType,
-        nonResidentialHouseType,
         floors,
         entrances,
         elevator,
@@ -149,9 +148,7 @@ guard({
           }) || null,
         heatingStationId,
         houseManagementId: houseManagement,
-        houseCategory: objectCategory,
         livingHouseType: livingHouseType || null,
-        nonResidentialHouseType: nonResidentialHouseType || null,
         numberOfFloors: Number(floors) || null,
         numberOfEntrances: Number(entrances) || null,
         isThereElevator: elevator

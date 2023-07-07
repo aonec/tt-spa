@@ -1,6 +1,6 @@
 import {
   ErpExecutorResponse,
-  GetTaskDeadlineGrpcResponse,
+  ErpTaskDeadlineResponse,
   ErpSourceResponse,
   ErpWorkCategoryResponse,
   ErpObjectResponse,
@@ -19,6 +19,6 @@ export type AddTaskModalProps = {
   choоseLeadExecutor: (payload: string) => void;
   executors: ErpExecutorResponse[];
   handleTaskDeadlineRequest: (payload: GetTaskDeadlineRequest) => void;
-  taskDeadline: GetTaskDeadlineGrpcResponse | null;
+  taskDeadline: ErpTaskDeadlineResponse | null;
   isCreatePending: boolean;
 };

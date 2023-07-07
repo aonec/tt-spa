@@ -1,5 +1,11 @@
 import { AutoComplete as AutoCompleteAntD } from 'antd';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
+
+const FormAutoCompleteStyles = css`
+  .ant-select-selection-placeholder {
+    line-height: 38px !important;
+  }
+`;
 
 export const AutoComplete = styled(AutoCompleteAntD)<{ small?: boolean }>`
   height: ${({ small }) => (small ? '32px' : '48px')} !important;
@@ -14,5 +20,7 @@ export const AutoComplete = styled(AutoCompleteAntD)<{ small?: boolean }>`
       padding: 0px;
       margin: ${({ small }) => (small ? '0px' : '8px')} 4px !important;
     }
+
+    ${({ small }) => !small && FormAutoCompleteStyles}
   }
 `;

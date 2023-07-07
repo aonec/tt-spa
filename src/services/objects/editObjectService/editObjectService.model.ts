@@ -12,7 +12,6 @@ import {
 import {
   BuildingAddressCreateRequest,
   BuildingAddressUpdateRequest,
-  HousingStockResponse,
   HousingStockUpdateRequest,
 } from 'myApi';
 import { EffectFailDataAxiosError } from 'types';
@@ -68,7 +67,7 @@ const updateHousingStockAddressFx = domain.createEffect<
     addressId: number;
     data: BuildingAddressUpdateRequest;
   },
-  HousingStockResponse,
+  void,
   EffectFailDataAxiosError
 >(updateHousingStockAddress);
 
