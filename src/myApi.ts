@@ -490,129 +490,6 @@ export interface ApartmentUpdateRequest {
   hotWaterRiserCount?: number | null;
 }
 
-export interface AppointmentAddress {
-  /** @format int32 */
-  houseId?: number;
-
-  /** @format int32 */
-  apartmentId?: number;
-
-  /** @format double */
-  latitude?: number | null;
-
-  /** @format double */
-  longitude?: number | null;
-  city?: string | null;
-  street?: string | null;
-  houseNumber?: string | null;
-  corpus?: string | null;
-  apartmentNumber?: string | null;
-}
-
-export interface AppointmentCounterResponse {
-  /** @format date-time */
-  date: string;
-
-  /** @format int32 */
-  distributed: number;
-
-  /** @format int32 */
-  notDistributed: number;
-}
-
-export interface AppointmentCounterResponseListSuccessApiResponse {
-  successResponse: AppointmentCounterResponse[] | null;
-}
-
-export interface AppointmentCounterResponseSuccessApiResponse {
-  successResponse: AppointmentCounterResponse | null;
-}
-
-export interface AppointmentCreateRequest {
-  /** @format int32 */
-  apartmentId: number;
-  homeownerFullName: string;
-  homeownerPhone: string;
-
-  /** @format date-time */
-  date: string;
-
-  /**
-   * @format int32
-   * @min 1
-   * @max 99
-   */
-  sealCountPlan: number;
-  comment?: string | null;
-}
-
-export interface AppointmentResponse {
-  /** @format uuid */
-  id: string;
-  address: AppointmentAddress | null;
-
-  /** @format uuid */
-  controllerId: string | null;
-
-  /** @format uuid */
-  assignmentId: string | null;
-  homeownerFullName: string | null;
-  homeownerPhone: string | null;
-
-  /** @format date-time */
-  date: string;
-
-  /** @format int32 */
-  sealCountPlan: number;
-  comment: string | null;
-
-  /** @format date-time */
-  createDateTimeUtc: string;
-
-  /** @format date-time */
-  modifiedDateTimeUtc: string | null;
-}
-
-export interface AppointmentResponseListSuccessApiResponse {
-  successResponse: AppointmentResponse[] | null;
-}
-
-export interface AppointmentResponseSuccessApiResponse {
-  successResponse: AppointmentResponse | null;
-}
-
-export interface AppointmentUpdateRequest {
-  homeownerFullName?: string | null;
-  homeownerPhone?: string | null;
-
-  /** @format date-time */
-  date?: string | null;
-
-  /**
-   * @format int32
-   * @min 1
-   * @max 99
-   */
-  sealCountPlan?: number | null;
-  comment?: string | null;
-}
-
-export interface AppointmentsSetRequest {
-  appointmentIds: string[];
-
-  /** @format uuid */
-  controllerId: string;
-}
-
-export interface AppointmentsSetResponse {
-  /** @format uuid */
-  assignmentId: string;
-}
-
-export interface AppointmentsSetResponseSuccessApiResponse {
-  successResponse: AppointmentsSetResponse | null;
-}
-
 export interface ArchivesDataGroup {
   header?: string | null;
   measure?: string | null;
@@ -650,32 +527,6 @@ export interface ArchivesDataModel {
   /** @format double */
   averageDeltaMass?: number | null;
   data?: ArchivesDataGroup[] | null;
-}
-
-export interface AssignmentResponse {
-  /** @format uuid */
-  id: string;
-
-  /** @format date-time */
-  date: string;
-
-  /** @format date-time */
-  createDateTimeUtc: string;
-
-  /** @format uuid */
-  controllerId: string;
-
-  /** @format int32 */
-  appointmentsCount: number;
-  creatingUser: CreatingUser | null;
-}
-
-export interface AssignmentResponseListSuccessApiResponse {
-  successResponse: AssignmentResponse[] | null;
-}
-
-export interface AssignmentResponseSuccessApiResponse {
-  successResponse: AssignmentResponse | null;
 }
 
 export interface BaseIndividualDeviceReadingsCreateRequest {
@@ -1278,30 +1129,6 @@ export interface ContractorUpdateRequest {
   email?: string | null;
 }
 
-export interface ControllerCreateRequest {
-  firstName: string;
-  lastName: string;
-  middleName?: string | null;
-}
-
-export interface ControllerResponse {
-  /** @format uuid */
-  id: string;
-  firstName: string | null;
-  lastName: string | null;
-  middleName: string | null;
-}
-
-export interface ControllerResponseListSuccessApiResponse {
-  successResponse: ControllerResponse[] | null;
-}
-
-export interface ControllerUpdateRequest {
-  firstName?: string | null;
-  lastName?: string | null;
-  middleName?: string | null;
-}
-
 export interface CreateAddressRequest {
   city: string;
   street: string;
@@ -1631,14 +1458,6 @@ export interface CreatePipeNodeRequest {
   communicationPipes?: CreateCommunicationPipeRequest[] | null;
 }
 
-export interface CreatingUser {
-  /** @format int32 */
-  id?: number;
-  firstName?: string | null;
-  lastName?: string | null;
-  middleName?: string | null;
-}
-
 export interface CurrentTransformerResponse {
   /** @format uuid */
   id: string;
@@ -1737,28 +1556,6 @@ export interface DisableNodeWorkingRangeRequest {
 
   /** @format int32 */
   nodeId?: number | null;
-}
-
-export interface DistrictCreateRequest {
-  title?: string | null;
-  additionalInfo?: string | null;
-  houseIds?: number[] | null;
-}
-
-export interface DistrictResponse {
-  /** @format uuid */
-  id: string;
-  title: string | null;
-  additionalInfo: string | null;
-}
-
-export interface DistrictResponseListSuccessApiResponse {
-  successResponse: DistrictResponse[] | null;
-}
-
-export interface DistrictUpdateRequest {
-  title?: string | null;
-  additionalInfo?: string | null;
 }
 
 export interface DocumentLiteResponse {
@@ -2730,11 +2527,6 @@ export interface GuidStringDictionaryItem {
   /** @format uuid */
   key?: string;
   value?: string | null;
-}
-
-export interface GuidSuccessApiResponse {
-  /** @format uuid */
-  successResponse: string;
 }
 
 export interface HeatingSeasonAdjustmentResponse {
@@ -4020,10 +3812,6 @@ export interface IndividualDeviceResponseFromDevicePage {
   sealInstallationDate?: string | null;
 }
 
-export interface IndividualDeviceResponseFromDevicePageListSuccessApiResponse {
-  successResponse: IndividualDeviceResponseFromDevicePage[] | null;
-}
-
 export interface IndividualDeviceResponseFromDevicePageSuccessApiResponse {
   successResponse: IndividualDeviceResponseFromDevicePage | null;
 }
@@ -5303,6 +5091,14 @@ export interface ReadingOnRiserResponse {
   readingDate: string;
 }
 
+export interface RefreshOrganizationApiKeyRequest {
+  canWrite?: boolean;
+  name?: string | null;
+
+  /** @format int32 */
+  organizationId?: number;
+}
+
 export interface RefreshResponse {
   token: string | null;
   refreshToken: string | null;
@@ -6202,22 +5998,6 @@ export interface TokenResponse {
 
 export interface TokenResponseSuccessApiResponse {
   successResponse: TokenResponse | null;
-}
-
-export interface TotalAppointmentCounterResponse {
-  /** @format date-time */
-  date: string;
-
-  /** @format int32 */
-  distributed: number;
-
-  /** @format int32 */
-  notDistributed: number;
-  districtIds: string[] | null;
-}
-
-export interface TotalAppointmentCounterResponseSuccessApiResponse {
-  successResponse: TotalAppointmentCounterResponse | null;
 }
 
 export interface UpdateApartmentActRequest {
@@ -7161,279 +6941,6 @@ export class Api<
         method: 'GET',
         secure: true,
         format: 'json',
-        ...params,
-      }),
-
-    /**
-     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li>
-     *
-     * @tags Appointments
-     * @name IndividualSealAppointmentsList
-     * @summary IndividualSealRead
-     * @request GET:/api/IndividualSeal/Appointments
-     * @secure
-     */
-    individualSealAppointmentsList: (
-      query: {
-        ApartmentId?: number;
-        'DistrictFilter.DistrictId': string;
-        'DistrictFilter.Date': string;
-      },
-      params: RequestParams = {},
-    ) =>
-      this.request<AppointmentResponseListSuccessApiResponse, ErrorApiResponse>(
-        {
-          path: `/api/IndividualSeal/Appointments`,
-          method: 'GET',
-          query: query,
-          secure: true,
-          format: 'json',
-          ...params,
-        },
-      ),
-
-    /**
-     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li>
-     *
-     * @tags Appointments
-     * @name IndividualSealAppointmentsCreate
-     * @summary IndividualSealReadWrite
-     * @request POST:/api/IndividualSeal/Appointments
-     * @secure
-     */
-    individualSealAppointmentsCreate: (
-      data: AppointmentCreateRequest,
-      params: RequestParams = {},
-    ) =>
-      this.request<void, ErrorApiResponse>({
-        path: `/api/IndividualSeal/Appointments`,
-        method: 'POST',
-        body: data,
-        secure: true,
-        type: ContentType.Json,
-        ...params,
-      }),
-
-    /**
-     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li>
-     *
-     * @tags Appointments
-     * @name IndividualSealAppointmentsDetail
-     * @summary IndividualSealRead
-     * @request GET:/api/IndividualSeal/Appointments/{appointmentId}
-     * @secure
-     */
-    individualSealAppointmentsDetail: (
-      appointmentId: string,
-      params: RequestParams = {},
-    ) =>
-      this.request<AppointmentResponseSuccessApiResponse, ErrorApiResponse>({
-        path: `/api/IndividualSeal/Appointments/${appointmentId}`,
-        method: 'GET',
-        secure: true,
-        format: 'json',
-        ...params,
-      }),
-
-    /**
-     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li>
-     *
-     * @tags Appointments
-     * @name IndividualSealAppointmentsUpdate
-     * @summary IndividualSealRead
-     * @request PUT:/api/IndividualSeal/Appointments/{appointmentId}
-     * @secure
-     */
-    individualSealAppointmentsUpdate: (
-      appointmentId: string,
-      data: AppointmentUpdateRequest,
-      params: RequestParams = {},
-    ) =>
-      this.request<void, ErrorApiResponse>({
-        path: `/api/IndividualSeal/Appointments/${appointmentId}`,
-        method: 'PUT',
-        body: data,
-        secure: true,
-        type: ContentType.Json,
-        ...params,
-      }),
-
-    /**
-     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li>
-     *
-     * @tags Appointments
-     * @name IndividualSealAppointmentsDelete
-     * @summary IndividualSealRead
-     * @request DELETE:/api/IndividualSeal/Appointments/{appointmentId}
-     * @secure
-     */
-    individualSealAppointmentsDelete: (
-      appointmentId: string,
-      params: RequestParams = {},
-    ) =>
-      this.request<void, ErrorApiResponse>({
-        path: `/api/IndividualSeal/Appointments/${appointmentId}`,
-        method: 'DELETE',
-        secure: true,
-        ...params,
-      }),
-
-    /**
-     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li>
-     *
-     * @tags Appointments
-     * @name IndividualSealAppointmentsPlanningList
-     * @summary IndividualSealRead
-     * @request GET:/api/IndividualSeal/Appointments/Planning
-     * @secure
-     */
-    individualSealAppointmentsPlanningList: (
-      query: { districtId: string; from: string; to: string },
-      params: RequestParams = {},
-    ) =>
-      this.request<
-        AppointmentCounterResponseListSuccessApiResponse,
-        ErrorApiResponse
-      >({
-        path: `/api/IndividualSeal/Appointments/Planning`,
-        method: 'GET',
-        query: query,
-        secure: true,
-        format: 'json',
-        ...params,
-      }),
-
-    /**
-     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li>
-     *
-     * @tags Appointments
-     * @name IndividualSealAppointmentsNearestList
-     * @summary IndividualSealRead
-     * @request GET:/api/IndividualSeal/Appointments/Nearest
-     * @secure
-     */
-    individualSealAppointmentsNearestList: (params: RequestParams = {}) =>
-      this.request<
-        TotalAppointmentCounterResponseSuccessApiResponse,
-        ErrorApiResponse
-      >({
-        path: `/api/IndividualSeal/Appointments/Nearest`,
-        method: 'GET',
-        secure: true,
-        format: 'json',
-        ...params,
-      }),
-
-    /**
-     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li>
-     *
-     * @tags Appointments
-     * @name IndividualSealAppointmentsCountingList
-     * @summary IndividualSealRead
-     * @request GET:/api/IndividualSeal/Appointments/Counting
-     * @secure
-     */
-    individualSealAppointmentsCountingList: (
-      query: { districtId: string; date: string },
-      params: RequestParams = {},
-    ) =>
-      this.request<
-        AppointmentCounterResponseSuccessApiResponse,
-        ErrorApiResponse
-      >({
-        path: `/api/IndividualSeal/Appointments/Counting`,
-        method: 'GET',
-        query: query,
-        secure: true,
-        format: 'json',
-        ...params,
-      }),
-
-    /**
-     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li>
-     *
-     * @tags Appointments
-     * @name IndividualSealAppointmentsSetCreate
-     * @summary IndividualSealReadWrite
-     * @request POST:/api/IndividualSeal/Appointments/Set
-     * @secure
-     */
-    individualSealAppointmentsSetCreate: (
-      data: AppointmentsSetRequest,
-      params: RequestParams = {},
-    ) =>
-      this.request<AppointmentsSetResponseSuccessApiResponse, ErrorApiResponse>(
-        {
-          path: `/api/IndividualSeal/Appointments/Set`,
-          method: 'POST',
-          body: data,
-          secure: true,
-          type: ContentType.Json,
-          format: 'json',
-          ...params,
-        },
-      ),
-
-    /**
-     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li>
-     *
-     * @tags Assignments
-     * @name IndividualSealAssignmentsList
-     * @summary IndividualSealRead
-     * @request GET:/api/IndividualSeal/Assignments
-     * @secure
-     */
-    individualSealAssignmentsList: (
-      query: { from: string; to?: string },
-      params: RequestParams = {},
-    ) =>
-      this.request<AssignmentResponseListSuccessApiResponse, ErrorApiResponse>({
-        path: `/api/IndividualSeal/Assignments`,
-        method: 'GET',
-        query: query,
-        secure: true,
-        format: 'json',
-        ...params,
-      }),
-
-    /**
-     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li>
-     *
-     * @tags Assignments
-     * @name IndividualSealAssignmentsDetail
-     * @summary IndividualSealRead
-     * @request GET:/api/IndividualSeal/Assignments/{assignmentId}
-     * @secure
-     */
-    individualSealAssignmentsDetail: (
-      assignmentId: string,
-      params: RequestParams = {},
-    ) =>
-      this.request<AssignmentResponseSuccessApiResponse, ErrorApiResponse>({
-        path: `/api/IndividualSeal/Assignments/${assignmentId}`,
-        method: 'GET',
-        secure: true,
-        format: 'json',
-        ...params,
-      }),
-
-    /**
-     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li>
-     *
-     * @tags Assignments
-     * @name IndividualSealAssignmentsDelete
-     * @summary IndividualSealReadWrite
-     * @request DELETE:/api/IndividualSeal/Assignments/{assignmentId}
-     * @secure
-     */
-    individualSealAssignmentsDelete: (
-      assignmentId: string,
-      params: RequestParams = {},
-    ) =>
-      this.request<void, ErrorApiResponse>({
-        path: `/api/IndividualSeal/Assignments/${assignmentId}`,
-        method: 'DELETE',
-        secure: true,
         ...params,
       }),
 
@@ -8469,137 +7976,6 @@ export class Api<
     /**
      * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li>
      *
-     * @tags Controllers
-     * @name IndividualSealControllersCreate
-     * @summary IndividualSealReadWrite
-     * @request POST:/api/IndividualSeal/Controllers
-     * @secure
-     */
-    individualSealControllersCreate: (
-      data: ControllerCreateRequest,
-      params: RequestParams = {},
-    ) =>
-      this.request<GuidSuccessApiResponse, ErrorApiResponse>({
-        path: `/api/IndividualSeal/Controllers`,
-        method: 'POST',
-        body: data,
-        secure: true,
-        type: ContentType.Json,
-        format: 'json',
-        ...params,
-      }),
-
-    /**
-     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li>
-     *
-     * @tags Controllers
-     * @name IndividualSealControllersList
-     * @summary IndividualSealRead
-     * @request GET:/api/IndividualSeal/Controllers
-     * @secure
-     */
-    individualSealControllersList: (params: RequestParams = {}) =>
-      this.request<ControllerResponseListSuccessApiResponse, ErrorApiResponse>({
-        path: `/api/IndividualSeal/Controllers`,
-        method: 'GET',
-        secure: true,
-        format: 'json',
-        ...params,
-      }),
-
-    /**
-     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li>
-     *
-     * @tags Controllers
-     * @name IndividualSealControllersUpdate
-     * @summary IndividualSealReadWrite
-     * @request PUT:/api/IndividualSeal/Controllers/{controllerId}
-     * @secure
-     */
-    individualSealControllersUpdate: (
-      controllerId: string,
-      data: ControllerUpdateRequest,
-      params: RequestParams = {},
-    ) =>
-      this.request<void, ErrorApiResponse>({
-        path: `/api/IndividualSeal/Controllers/${controllerId}`,
-        method: 'PUT',
-        body: data,
-        secure: true,
-        type: ContentType.Json,
-        ...params,
-      }),
-
-    /**
-     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li>
-     *
-     * @tags Controllers
-     * @name IndividualSealControllersDelete
-     * @summary IndividualSealReadWrite
-     * @request DELETE:/api/IndividualSeal/Controllers/{controllerId}
-     * @secure
-     */
-    individualSealControllersDelete: (
-      controllerId: string,
-      params: RequestParams = {},
-    ) =>
-      this.request<void, ErrorApiResponse>({
-        path: `/api/IndividualSeal/Controllers/${controllerId}`,
-        method: 'DELETE',
-        secure: true,
-        ...params,
-      }),
-
-    /**
-     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li>
-     *
-     * @tags Controllers
-     * @name IndividualSealControllersWorkDetail
-     * @summary IndividualSealRead
-     * @request GET:/api/IndividualSeal/Controllers/{controllerId}/Work
-     * @secure
-     */
-    individualSealControllersWorkDetail: (
-      controllerId: string,
-      query: { date: string },
-      params: RequestParams = {},
-    ) =>
-      this.request<AppointmentResponseListSuccessApiResponse, ErrorApiResponse>(
-        {
-          path: `/api/IndividualSeal/Controllers/${controllerId}/Work`,
-          method: 'GET',
-          query: query,
-          secure: true,
-          format: 'json',
-          ...params,
-        },
-      ),
-
-    /**
-     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li>
-     *
-     * @tags Controllers
-     * @name IndividualSealControllersWorkFileDetail
-     * @summary IndividualSealRead
-     * @request GET:/api/IndividualSeal/Controllers/{controllerId}/WorkFile
-     * @secure
-     */
-    individualSealControllersWorkFileDetail: (
-      controllerId: string,
-      query: { date: string },
-      params: RequestParams = {},
-    ) =>
-      this.request<void, ErrorApiResponse>({
-        path: `/api/IndividualSeal/Controllers/${controllerId}/WorkFile`,
-        method: 'GET',
-        query: query,
-        secure: true,
-        ...params,
-      }),
-
-    /**
-     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li>
-     *
      * @tags CurrentTransformers
      * @name CurrentTransformersDetail
      * @summary CurrentTransformerRead
@@ -8743,42 +8119,246 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li>
+     * @description Роли:<li>Администратор системы</li>
      *
-     * @tags Districts
-     * @name IndividualSealDistrictsList
-     * @summary IndividualSealRead
-     * @request GET:/api/IndividualSeal/Districts
+     * @tags DataMigrations
+     * @name DataMigrationsDisableIndividualDevicesMaintenanceCreate
+     * @summary DataMigration
+     * @request POST:/api/DataMigrations/DisableIndividualDevicesMaintenance
      * @secure
      */
-    individualSealDistrictsList: (
-      query?: { HouseId?: number },
+    dataMigrationsDisableIndividualDevicesMaintenanceCreate: (
       params: RequestParams = {},
     ) =>
-      this.request<DistrictResponseListSuccessApiResponse, ErrorApiResponse>({
-        path: `/api/IndividualSeal/Districts`,
+      this.request<void, any>({
+        path: `/api/DataMigrations/DisableIndividualDevicesMaintenance`,
+        method: 'POST',
+        secure: true,
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Администратор системы</li>
+     *
+     * @tags DataMigrations
+     * @name DataMigrationsChangeHousingStockManagingFirmCreate
+     * @summary DataMigration
+     * @request POST:/api/DataMigrations/ChangeHousingStockManagingFirm
+     * @secure
+     */
+    dataMigrationsChangeHousingStockManagingFirmCreate: (
+      params: RequestParams = {},
+    ) =>
+      this.request<void, any>({
+        path: `/api/DataMigrations/ChangeHousingStockManagingFirm`,
+        method: 'POST',
+        secure: true,
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags DataMigrations
+     * @name DataMigrationsCreateAdminCreate
+     * @request POST:/api/DataMigrations/CreateAdmin
+     * @secure
+     */
+    dataMigrationsCreateAdminCreate: (params: RequestParams = {}) =>
+      this.request<void, any>({
+        path: `/api/DataMigrations/CreateAdmin`,
+        method: 'POST',
+        secure: true,
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Администратор системы</li>
+     *
+     * @tags DataMigrations
+     * @name DataMigrationsHousingStockAddFiasIdCreate
+     * @summary DataMigration
+     * @request POST:/api/DataMigrations/HousingStockAddFiasId
+     * @secure
+     */
+    dataMigrationsHousingStockAddFiasIdCreate: (params: RequestParams = {}) =>
+      this.request<void, any>({
+        path: `/api/DataMigrations/HousingStockAddFiasId`,
+        method: 'POST',
+        secure: true,
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Администратор системы</li>
+     *
+     * @tags DataMigrations
+     * @name DataMigrationsRolesReportList
+     * @summary DataMigration
+     * @request GET:/api/DataMigrations/RolesReport
+     * @secure
+     */
+    dataMigrationsRolesReportList: (params: RequestParams = {}) =>
+      this.request<void, any>({
+        path: `/api/DataMigrations/RolesReport`,
         method: 'GET',
-        query: query,
         secure: true,
-        format: 'json',
         ...params,
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li>
+     * No description
      *
-     * @tags Districts
-     * @name IndividualSealDistrictsCreate
-     * @summary IndividualSealReadWrite
-     * @request POST:/api/IndividualSeal/Districts
+     * @tags DataMigrations
+     * @name DataMigrationsMakeDemoCreate
+     * @request POST:/api/DataMigrations/MakeDemo
      * @secure
      */
-    individualSealDistrictsCreate: (
-      data: DistrictCreateRequest,
+    dataMigrationsMakeDemoCreate: (params: RequestParams = {}) =>
+      this.request<void, any>({
+        path: `/api/DataMigrations/MakeDemo`,
+        method: 'POST',
+        secure: true,
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Администратор системы</li>
+     *
+     * @tags DataMigrations
+     * @name DataMigrationsCheckReadingsHistoryCreate
+     * @summary DataMigration
+     * @request POST:/api/DataMigrations/CheckReadingsHistory
+     * @secure
+     */
+    dataMigrationsCheckReadingsHistoryCreate: (params: RequestParams = {}) =>
+      this.request<void, any>({
+        path: `/api/DataMigrations/CheckReadingsHistory`,
+        method: 'POST',
+        secure: true,
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Администратор системы</li>
+     *
+     * @tags DataMigrations
+     * @name DataMigrationsImportHousingStockInfoCreate
+     * @summary DataMigration
+     * @request POST:/api/DataMigrations/ImportHousingStockInfo
+     * @secure
+     */
+    dataMigrationsImportHousingStockInfoCreate: (
+      data: {
+        ContentType?: string;
+        ContentDisposition?: string;
+        Headers?: Record<string, string[]>;
+        Length?: number;
+        Name?: string;
+        FileName?: string;
+      },
       params: RequestParams = {},
     ) =>
-      this.request<void, ErrorApiResponse>({
-        path: `/api/IndividualSeal/Districts`,
+      this.request<void, any>({
+        path: `/api/DataMigrations/ImportHousingStockInfo`,
+        method: 'POST',
+        body: data,
+        secure: true,
+        type: ContentType.FormData,
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Администратор системы</li>
+     *
+     * @tags DataMigrations
+     * @name DataMigrationsImportNumberOfLivingCreate
+     * @summary DataMigration
+     * @request POST:/api/DataMigrations/ImportNumberOfLiving
+     * @secure
+     */
+    dataMigrationsImportNumberOfLivingCreate: (
+      data: {
+        ContentType?: string;
+        ContentDisposition?: string;
+        Headers?: Record<string, string[]>;
+        Length?: number;
+        Name?: string;
+        FileName?: string;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<void, any>({
+        path: `/api/DataMigrations/ImportNumberOfLiving`,
+        method: 'POST',
+        body: data,
+        secure: true,
+        type: ContentType.FormData,
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags DataMigrations
+     * @name DataMigrationsUpdateFiltersConfigurationsCreate
+     * @request POST:/api/DataMigrations/UpdateFiltersConfigurations
+     * @secure
+     */
+    dataMigrationsUpdateFiltersConfigurationsCreate: (
+      params: RequestParams = {},
+    ) =>
+      this.request<void, any>({
+        path: `/api/DataMigrations/UpdateFiltersConfigurations`,
+        method: 'POST',
+        secure: true,
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Администратор системы</li>
+     *
+     * @tags DataMigrations
+     * @name DataMigrationsImportTemperatureNormativesCreate
+     * @summary DataMigration
+     * @request POST:/api/DataMigrations/ImportTemperatureNormatives
+     * @secure
+     */
+    dataMigrationsImportTemperatureNormativesCreate: (
+      data: {
+        ContentType?: string;
+        ContentDisposition?: string;
+        Headers?: Record<string, string[]>;
+        Length?: number;
+        Name?: string;
+        FileName?: string;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<void, any>({
+        path: `/api/DataMigrations/ImportTemperatureNormatives`,
+        method: 'POST',
+        body: data,
+        secure: true,
+        type: ContentType.FormData,
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Администратор системы</li>
+     *
+     * @tags DataMigrations
+     * @name DataMigrationsRefreshOrganizationApiKeyCreate
+     * @summary DataMigration
+     * @request POST:/api/DataMigrations/RefreshOrganizationApiKey
+     * @secure
+     */
+    dataMigrationsRefreshOrganizationApiKeyCreate: (
+      data: RefreshOrganizationApiKeyRequest,
+      params: RequestParams = {},
+    ) =>
+      this.request<void, any>({
+        path: `/api/DataMigrations/RefreshOrganizationApiKey`,
         method: 'POST',
         body: data,
         secure: true,
@@ -8787,70 +8367,21 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li>
+     * @description Роли:<li>Администратор системы</li>
      *
-     * @tags Districts
-     * @name IndividualSealDistrictsDelete
-     * @summary IndividualSealReadWrite
-     * @request DELETE:/api/IndividualSeal/Districts/{districtId}
+     * @tags DataMigrations
+     * @name DataMigrationsUpdateCoordinatesForHousesList
+     * @summary DataMigration
+     * @request GET:/api/DataMigrations/UpdateCoordinatesForHouses
      * @secure
      */
-    individualSealDistrictsDelete: (
-      districtId: string,
-      query?: { forced?: boolean },
+    dataMigrationsUpdateCoordinatesForHousesList: (
       params: RequestParams = {},
     ) =>
-      this.request<void, ErrorApiResponse>({
-        path: `/api/IndividualSeal/Districts/${districtId}`,
-        method: 'DELETE',
-        query: query,
+      this.request<void, any>({
+        path: `/api/DataMigrations/UpdateCoordinatesForHouses`,
+        method: 'GET',
         secure: true,
-        ...params,
-      }),
-
-    /**
-     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li>
-     *
-     * @tags Districts
-     * @name IndividualSealDistrictsUpdate
-     * @summary IndividualSealReadWrite
-     * @request PUT:/api/IndividualSeal/Districts/{districtId}
-     * @secure
-     */
-    individualSealDistrictsUpdate: (
-      districtId: string,
-      data: DistrictUpdateRequest,
-      params: RequestParams = {},
-    ) =>
-      this.request<void, ErrorApiResponse>({
-        path: `/api/IndividualSeal/Districts/${districtId}`,
-        method: 'PUT',
-        body: data,
-        secure: true,
-        type: ContentType.Json,
-        ...params,
-      }),
-
-    /**
-     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li>
-     *
-     * @tags Districts
-     * @name IndividualSealDistrictsAddHouseCreate
-     * @summary IndividualSealReadWrite
-     * @request POST:/api/IndividualSeal/Districts/{districtId}/AddHouse
-     * @secure
-     */
-    individualSealDistrictsAddHouseCreate: (
-      districtId: string,
-      data: number,
-      params: RequestParams = {},
-    ) =>
-      this.request<void, ErrorApiResponse>({
-        path: `/api/IndividualSeal/Districts/${districtId}/AddHouse`,
-        method: 'POST',
-        body: data,
-        secure: true,
-        type: ContentType.Json,
         ...params,
       }),
 
@@ -10376,30 +9907,6 @@ export class Api<
         path: `/api/Devices/Individual/Apartments`,
         method: 'GET',
         query: query,
-        secure: true,
-        format: 'json',
-        ...params,
-      }),
-
-    /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Сервис ЕРЦ</li><li>Контролёр</li>
-     *
-     * @tags Individual
-     * @name DevicesIndividualApartmentsDevicesDetail
-     * @summary MeteringDevicesRead
-     * @request GET:/api/Devices/Individual/Apartments/{apartmentId}/Devices
-     * @secure
-     */
-    devicesIndividualApartmentsDevicesDetail: (
-      apartmentId: number,
-      params: RequestParams = {},
-    ) =>
-      this.request<
-        IndividualDeviceResponseFromDevicePageListSuccessApiResponse,
-        ErrorApiResponse
-      >({
-        path: `/api/Devices/Individual/Apartments/${apartmentId}/Devices`,
-        method: 'GET',
         secure: true,
         format: 'json',
         ...params,

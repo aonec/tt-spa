@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useEffect, useMemo } from 'react';
 import {
   ContainerWithOutline,
   GridContainer,
@@ -6,7 +6,7 @@ import {
   GridContainerAsymmetricRight,
   TextareaSC,
 } from './AddTaskForm.styled';
-import { AddTaskFormProps } from './AddTaskForm.types';
+import { AddTask, AddTaskFormProps } from './AddTaskForm.types';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 import { Form } from 'antd';
@@ -14,12 +14,13 @@ import { FormItem } from 'ui-kit/FormItem';
 import { Select } from 'ui-kit/Select';
 import { Input } from 'ui-kit/Input';
 import { DatePicker } from 'ui-kit/DatePicker';
-import { EisTaskType, SourceGrpcModel } from 'myApi';
+import { EisTaskType } from 'myApi';
 import { SelectTime } from 'ui-kit/SelectTime';
 import { addTaskFromDispatcherService } from 'services/tasks/addTaskFromDispatcherService/addTaskFromDispatcherService.models';
 import { TaskTypeDictionary } from 'dictionaries';
 import { AutoComplete } from 'ui-kit/AutoComplete';
-import { getPreparedStreetsOptions } from 'services/objects/createObjectService/view/CreateObjectPage/CreateObjectAddressStage/CreateObjectAddressStage.utils';
+import { autocompleteAddress, sortByAlphabet } from './AddTaskForm.utils';
+import moment from 'moment';
 
 const {
   gates: { PageGate },
@@ -31,45 +32,158 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
   leadExecutors,
   workCategories: workTypes,
   ErpObjects,
+  handleCreateTask,
+  setDisableSubmit,
+  choоseLeadExecutor,
+  executors,
+  handleTaskDeadlineRequest,
+  taskDeadline,
 }) => {
-  const { values, handleSubmit, setFieldValue, errors } = useFormik({
+  const { values, handleSubmit, setFieldValue, errors } = useFormik<AddTask>({
     initialValues: {
       sourceId: null,
       requestNumber: null,
       taskType: null as null | EisTaskType,
-      categoryId: null as null | string,
       workTypeId: null,
 
       requestDate: null,
       requestTime: null,
 
+      manualDeadlineDate: null,
+      manualDeadlineTime: null,
+
+      taskDeadline: null,
+
       addressSearch: '',
+      selectedObjectAddress: null,
+
       apartmentNumber: null,
       subscriberName: null,
       phoneNumber: null,
 
       leadId: null,
       executorId: null,
+
+      taskDescription: null,
     },
     enableReinitialize: true,
-    validateOnChange: false,
+    validateOnBlur: true,
+    validateOnMount: true,
+
     validationSchema: yup.object().shape({
       sourceId: yup.string().nullable().required('Обязательное поле'),
       requestNumber: yup.string().nullable().required('Обязательное поле'),
       taskType: yup.string().nullable().required('Обязательное поле'),
-      // categoryId: yup.string().nullable().required('Обязательное поле'),
       workTypeId: yup.string().nullable().required('Обязательное поле'),
+      subscriberName: yup.string().nullable().required('Обязательное поле'),
+      phoneNumber: yup.string().nullable().required('Обязательное поле'),
+      requestDate: yup.string().nullable().required('Обязательное поле'),
+      requestTime: yup.string().nullable().required('Обязательное поле'),
+      taskDeadline: yup
+        .string()
+        .nullable()
+        .required('Обязательное поле')
+        .when('workTypeId', {
+          is: '48eb4f62-15a1-11e9-8176-001dd8b88b72',
+          then: yup.string().nullable(),
+        })
+        .when('rateType', {
+          is: '6373ec3b-302b-11e9-8184-001dd8b88b72',
+          then: yup.string().nullable(),
+        }),
+
+      manualDeadlineDate: yup
+        .string()
+        .nullable()
+        .when('workTypeId', {
+          is: '48eb4f62-15a1-11e9-8176-001dd8b88b72',
+          then: yup.string().required('Это поле обязательно'),
+        })
+        .when('rateType', {
+          is: '6373ec3b-302b-11e9-8184-001dd8b88b72',
+          then: yup.string().required('Это поле обязательно'),
+        }),
+      manualDeadlineTime: yup
+        .string()
+        .nullable()
+        .when('workTypeId', {
+          is: '48eb4f62-15a1-11e9-8176-001dd8b88b72',
+          then: yup.string().required('Это поле обязательно'),
+        })
+        .when('rateType', {
+          is: '6373ec3b-302b-11e9-8184-001dd8b88b72',
+          then: yup.string().required('Это поле обязательно'),
+        }),
+
+      executorId: yup.string().nullable().required('Обязательное поле'),
+      leadId: yup.string().nullable().required('Обязательное поле'),
+      selectedObjectAddress: yup
+        .string()
+        .nullable()
+        .required('Обязательное поле'),
     }),
     onSubmit: (data) => {
-      console.log(data);
+      handleCreateTask(data);
     },
   });
+
+  const isPermittedToChangeDeadline =
+    values.workTypeId === '48eb4f62-15a1-11e9-8176-001dd8b88b72' ||
+    values.workTypeId === '6373ec3b-302b-11e9-8184-001dd8b88b72';
+
+  const calculatedDeadlineDateArr = useMemo(() => {
+    if (!taskDeadline || !values.requestDate || !values.requestTime)
+      return null;
+
+    if (isPermittedToChangeDeadline) return null;
+
+    const sourceDateTime = moment(
+      values.requestDate
+        .format('YYYY-MM-DD')
+        .concat('T', values.requestTime || ''),
+    );
+
+    const deadlineDate = sourceDateTime.add(
+      taskDeadline.deadlineInHours,
+      'hours',
+    );
+
+    const deadlineDateFormatted = deadlineDate.format('YYYY-MM-DDTHH:mm');
+    setFieldValue('taskDeadline', deadlineDateFormatted);
+
+    const dateArr = deadlineDateFormatted.split('T');
+
+    return dateArr;
+  }, [
+    taskDeadline,
+    values.requestDate,
+    values.requestTime,
+    isPermittedToChangeDeadline,
+    setFieldValue,
+  ]);
+
+  const sortedLeadExecutors = useMemo(() => {
+    return sortByAlphabet(leadExecutors);
+  }, [leadExecutors]);
+
+  const sortedExecutors = useMemo(() => {
+    return sortByAlphabet(executors);
+  }, [executors]);
+
+  const isHaveValidationErrors = useMemo(
+    () => Boolean(Object.keys(errors).length),
+    [errors],
+  );
+
+  useEffect(() => {
+    setDisableSubmit(isHaveValidationErrors);
+  }, [isHaveValidationErrors, setDisableSubmit]);
 
   const ErpObjectsString = ErpObjects.map((object) => object.address).filter(
     Boolean,
   ) as string[];
 
-  const preparedErpObjects = getPreparedStreetsOptions(
+  const preparedErpObjects = autocompleteAddress(
     values.addressSearch,
     ErpObjectsString || [],
   );
@@ -86,11 +200,8 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
               value={values.sourceId || undefined}
               onChange={(value) => setFieldValue('sourceId', value)}
             >
-              {ERPSources.map((source, index) => (
-                <Select.Option
-                  value={source.id || index}
-                  key={source.id || index}
-                >
+              {ERPSources.map((source) => (
+                <Select.Option value={source.id} key={source.id}>
                   {source.name}
                 </Select.Option>
               ))}
@@ -107,22 +218,25 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
             />
           </FormItem>
         </GridContainer>
-        <GridContainer>
-          <FormItem label="Тип заявки">
-            <Select
-              placeholder="Выберите из списка"
-              value={values.taskType || undefined}
-              onChange={(value) => setFieldValue('taskType', value)}
-            >
-              {Object.values(EisTaskType).map((e) => (
-                <Select.Option value={e} key={e}>
-                  {TaskTypeDictionary[e]}
-                </Select.Option>
-              ))}
-            </Select>
-          </FormItem>
 
-          <FormItem label="Категория">
+        <FormItem label="Тип заявки">
+          <Select
+            placeholder="Выберите из списка"
+            value={values.taskType || undefined}
+            onChange={(value) => {
+              setFieldValue('taskType', value);
+              handleTaskDeadlineRequest({ TaskType: value as EisTaskType });
+            }}
+          >
+            {Object.values(EisTaskType).map((e) => (
+              <Select.Option value={e} key={e}>
+                {TaskTypeDictionary[e]}
+              </Select.Option>
+            ))}
+          </Select>
+        </FormItem>
+
+        {/* <FormItem label="Категория">
             <Select
               placeholder="Выберите из списка"
               value={values.categoryId || undefined}
@@ -136,22 +250,21 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
                   {category.name}
                 </Select.Option>
               ))} */}
-            </Select>
-          </FormItem>
-        </GridContainer>
+        {/* </Select>
+          </FormItem> */}
 
         <ContainerWithOutline>
           <FormItem label="Вид работ">
             <Select
               placeholder="Выберите из списка"
               value={values.workTypeId || undefined}
-              onChange={(value) => setFieldValue('workTypeId', value)}
+              onChange={(value) => {
+                setFieldValue('workTypeId', value);
+                handleTaskDeadlineRequest({ WorkCategoryId: value as string });
+              }}
             >
-              {workTypes.map((workType, index) => (
-                <Select.Option
-                  value={workType.id || index}
-                  key={workType.id || index}
-                >
+              {workTypes.map((workType) => (
+                <Select.Option value={workType.id} key={workType.id}>
                   {workType.name}
                 </Select.Option>
               ))}
@@ -174,21 +287,39 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
                 />
               </GridContainerAsymmetricLeft>
             </FormItem>
+
             <FormItem label="Нормативный срок">
               <GridContainerAsymmetricLeft>
-                <DatePicker disabled />
+                {!isPermittedToChangeDeadline ? (
+                  <>
+                    <Input
+                      disabled
+                      placeholder="Выберите дату заявки"
+                      value={calculatedDeadlineDateArr?.[0]}
+                    />
+                    <Input
+                      disabled
+                      placeholder="Время"
+                      value={calculatedDeadlineDateArr?.[1]}
+                    />
+                  </>
+                ) : (
+                  <>
+                    <DatePicker
+                      value={values.manualDeadlineDate}
+                      onChange={(value) =>
+                        setFieldValue('manualDeadlineDate', value)
+                      }
+                    />
 
-                <Select
-                  placeholder="Время"
-                  // value={values.isThermalChamber || undefined}
-                  onChange={(value) => setFieldValue('isThermalChamber', value)}
-                >
-                  {/* {Object.values(HeatingStationType).map((e) => (
-              <Select.Option value={e} key={e}>
-                {HeatingStationTypeDictionary[e]}
-              </Select.Option>
-            ))} */}
-                </Select>
+                    <SelectTime
+                      value={values.manualDeadlineTime || undefined}
+                      onChange={(value) =>
+                        setFieldValue('manualDeadlineTime', value)
+                      }
+                    />
+                  </>
+                )}
               </GridContainerAsymmetricLeft>
             </FormItem>
           </GridContainer>
@@ -200,12 +331,15 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
               placeholder="Улица"
               value={values.addressSearch}
               onChange={(value) => setFieldValue('addressSearch', value)}
+              onSelect={(value) =>
+                setFieldValue('selectedObjectAddress', value)
+              }
               options={preparedErpObjects}
             />
           </FormItem>
 
           <GridContainerAsymmetricRight>
-            <FormItem label="Номер квартиры">
+            {/* <FormItem label="Номер квартиры">
               <Input
                 placeholder="Введите"
                 value={values.apartmentNumber || undefined}
@@ -213,11 +347,11 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
                   setFieldValue('apartmentNumber', value.target.value)
                 }
               />
-            </FormItem>
+            </FormItem> */}
 
-            <FormItem label="УК">
+            {/* <FormItem label="УК">
               <Input placeholder="???" disabled />
-            </FormItem>
+            </FormItem> */}
           </GridContainerAsymmetricRight>
         </GridContainer>
 
@@ -247,34 +381,44 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
         <GridContainer>
           <FormItem label="Ответственный исполнитель">
             <Select
-              placeholder="Время"
-              // value={values.isThermalChamber || undefined}
-              onChange={(value) => setFieldValue('isThermalChamber', value)}
+              placeholder="Выберите из списка"
+              value={values.leadId || undefined}
+              onChange={(value) => {
+                setFieldValue('leadId', value);
+                choоseLeadExecutor(value as string);
+              }}
             >
-              {/* {Object.values(HeatingStationType).map((e) => (
-              <Select.Option value={e} key={e}>
-                {HeatingStationTypeDictionary[e]}
-              </Select.Option>
-            ))} */}
+              {sortedLeadExecutors.map((leadExecutor) => (
+                <Select.Option value={leadExecutor.id} key={leadExecutor.id}>
+                  {leadExecutor.name}
+                </Select.Option>
+              ))}
             </Select>
           </FormItem>
           <FormItem label="Исполнитель">
             <Select
-              placeholder="Время"
-              // value={values.isThermalChamber || undefined}
-              onChange={(value) => setFieldValue('isThermalChamber', value)}
+              placeholder="Выберите из списка"
+              value={values.executorId || undefined}
+              onChange={(value) => setFieldValue('executorId', value)}
+              disabled={!Boolean(values.leadId)}
             >
-              {/* {Object.values(HeatingStationType).map((e) => (
-              <Select.Option value={e} key={e}>
-                {HeatingStationTypeDictionary[e]}
-              </Select.Option>
-            ))} */}
+              {sortedExecutors.map((executor) => (
+                <Select.Option value={executor.id} key={executor.id}>
+                  {executor.name}
+                </Select.Option>
+              ))}
             </Select>
           </FormItem>
         </GridContainer>
 
         <FormItem label="Описание проблемы">
-          <TextareaSC placeholder="Кратко опишите проблему" />
+          <TextareaSC
+            placeholder="Кратко опишите проблему"
+            value={values.taskDescription || undefined}
+            onChange={(value) =>
+              setFieldValue('taskDescription', value.target.value)
+            }
+          />
         </FormItem>
       </Form>
     </>
