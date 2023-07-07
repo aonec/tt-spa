@@ -111,6 +111,12 @@ export const menuItems: MenuItem[] = [
     icon: SettingsIcon,
     type: MenuType.SettingsAdministrator,
   },
+  {
+    title: 'Отключения ресурсов',
+    path: '/disabledResources',
+    icon: SettingsIcon,
+    type: MenuType.DisabledResourcesDispatcher,
+  },
 ];
 
 export const privates: MenuFiltrationConfig = {
@@ -121,6 +127,9 @@ export const privates: MenuFiltrationConfig = {
   [MenuType.Settings]: [ESecuredIdentityRoleName.SeniorOperator],
   [MenuType.CompanyProfile]: [ESecuredIdentityRoleName.Administrator],
   [MenuType.SettingsAdministrator]: [ESecuredIdentityRoleName.Administrator],
+  [MenuType.DisabledResourcesDispatcher]: [
+    ESecuredIdentityRoleName.ManagingFirmDispatcher,
+  ],
 };
 
 export const hidden: MenuFiltrationConfig = {

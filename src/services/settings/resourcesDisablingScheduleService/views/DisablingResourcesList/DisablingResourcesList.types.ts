@@ -17,4 +17,5 @@ export type DisablingListProps = {
     endDate: string;
   }) => void;
   handleOpenEditDisconnectionModal: (id: string) => void;
+  isPermitionToChangeResourceDisabling: boolean;
 };

@@ -54,6 +54,7 @@ import { CreateDistrictBorderByMapContainer } from 'services/settings/districtBo
 import { DistrictBordersByAddressContainer } from 'services/settings/districtBordersService/districtBordersByAddressService';
 import { StatisticsProfileContainer } from 'services/statistics/statisticsProfileService';
 import { AddIndividualDeviceContainer } from 'services/devices/individualDevices/addIndividualDeviceService';
+import { ResourceDisablingScheduleContainer } from 'services/settings/resourcesDisablingScheduleService/ResourceDisablingScheduleContainer';
 
 const { gates } = objectProfileService;
 
@@ -557,6 +558,11 @@ export const Router: FC<RouterProps> = ({ roles, isRolesLoadded }) => {
                       exact
                     >
                       <SwitchPersonalNumberContainer />
+                    </Route>
+                  )}
+                  {isDispatcher && (
+                    <Route path="/disabledResources" exact>
+                      <ResourceDisablingScheduleContainer />
                     </Route>
                   )}
 
