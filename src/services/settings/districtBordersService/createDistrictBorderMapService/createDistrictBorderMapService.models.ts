@@ -1,13 +1,16 @@
-import { sample } from 'effector';
+import { createDomain, sample } from 'effector';
 import { createGate } from 'effector-react';
+import { createForm } from 'effector-forms';
+import { message } from 'antd';
+import { DistrictColor } from 'types';
 import {
   createDistrictMutation,
   existingDistrictsQuery,
   existingHousingStocksQuery,
 } from './createDistrictBorderMapService.api';
-import { createForm } from 'effector-forms';
-import { DistrictColor } from 'types';
-import { message } from 'antd';
+import { CreatingDistrictPayload } from './createDistrictBorderMapService.types';
+
+const domain = createDomain('createDistrictBorderMap');
 
 const CreateDistrictGate = createGate();
 
@@ -27,8 +30,27 @@ const createDistrictForm = createForm({
   },
 });
 
+const setDistrictPayload = domain.createEvent<CreatingDistrictPayload>();
+
+const $preselectedDistrictPayload = domain
+  .createStore<CreatingDistrictPayload | null>(null)
+  .on(setDistrictPayload, (_, data) => data)
+  .reset(CreateDistrictGate.close);
+
 sample({
-  clock: createDistrictMutation.finished.success,
+  clock: setDistrictPayload,
+  fn: ({ housingStockIds }) => housingStockIds,
+  target: createDistrictForm.fields.selectedHouses.set,
+});
+
+sample({
+  clock: setDistrictPayload,
+  fn: () => false,
+  target: createDistrictForm.fields.isEditing.set,
+});
+
+sample({
+  clock: [createDistrictMutation.finished.success, CreateDistrictGate.close],
   target: createDistrictForm.resetValues,
 });
 
@@ -48,6 +70,8 @@ createDistrictMutation.finished.failure.watch((e) => {
 });
 
 export const createDistrictBorderMapService = {
+  inputs: { setDistrictPayload },
+  outputs: { $preselectedDistrictPayload },
   gates: { CreateDistrictGate },
   forms: { createDistrictForm },
 };

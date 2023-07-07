@@ -10,6 +10,7 @@ import {
 import { useHistory } from 'react-router-dom';
 
 const {
+  outputs,
   gates: { CreateDistrictGate },
 } = createDistrictBorderMapService;
 
@@ -18,6 +19,10 @@ export const CreateDistrictBorderMapContainer = () => {
 
   const { data: existingHousingStocks, pending: isLoadingHousingStocks } =
     useUnit(existingHousingStocksQuery);
+
+  const { preselectedDistrictPayload } = useUnit({
+    preselectedDistrictPayload: outputs.$preselectedDistrictPayload,
+  });
 
   const { data: existingDistricts, pending: isLoadingDistricts } = useUnit(
     existingDistrictsQuery,
@@ -39,6 +44,7 @@ export const CreateDistrictBorderMapContainer = () => {
         existingDistricts={existingDistricts}
         isLoading={isLoadingHousingStocks || isLoadingDistricts}
         handleCreateDistrict={handleCreateDistrict}
+        preselectedDistrictPayload={preselectedDistrictPayload}
       />
     </>
   );

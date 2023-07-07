@@ -1,9 +1,9 @@
 import { useEffect, useMemo, useState } from 'react';
-import { DistrictColorsList } from 'services/settings/districtBordersService/CreateDistrictBorderByMapService/view/CreateDistrictBorderMapPage/CreateDistrictBorderMapPage.constants';
 import { DistrictData, ymaps } from 'types';
 import { getTextPlacemarkCode } from './placemarks/textPlacemark';
 import { getCountPlacemarkCode } from './placemarks/countPlacemark';
 import { findPolygonCenter } from 'utils/findPolygonCenter';
+import { DistrictColorsList } from 'dictionaries';
 
 export function useMapGroup(map: ymaps.Map | null) {
   const [group, setGroup] = useState<ymaps.GeoObjectCollection | null>(null);

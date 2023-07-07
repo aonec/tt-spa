@@ -18,8 +18,8 @@ import { FormItem } from 'ui-kit/FormItem';
 import { Input } from 'ui-kit/Input';
 import { Select } from 'ui-kit/Select';
 import { combinePayloadForCreateDistrict } from 'utils/districtsData';
-import { DistrictColorsList } from 'services/settings/districtBordersService/CreateDistrictBorderByMapService/view/CreateDistrictBorderMapPage/CreateDistrictBorderMapPage.constants';
 import { DistrictColor } from 'types';
+import { DistrictColorsList } from 'dictionaries';
 
 export const CreateDistrictFormPanel: FC<CreateDistrictFormPanelProps> = ({
   housingStocksInDistrict,
