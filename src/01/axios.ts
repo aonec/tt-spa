@@ -3,7 +3,7 @@ import { createEvent, createStore } from 'effector';
 import { forbiddenList } from './403handling';
 import { message } from 'antd';
 
-export const devUrl = 'https://stage.k8s.transparent-technology.ru/api/';
+export const devUrl = 'https://fop.k8s.transparent-technology.ru/api/';
 
 export const baseURL = process.env.REACT_APP_API_URL || devUrl;
 

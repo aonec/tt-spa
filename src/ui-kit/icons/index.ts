@@ -76,6 +76,7 @@ import { ReactComponent as PlusSmallIcon } from './svg/plusSmall.svg';
 import { ReactComponent as FileIcon } from './svg/file.svg';
 import { ReactComponent as DownloadBlueIcon } from './svg/downloadBlue.svg';
 import { ReactComponent as DocumentLargeIcon } from './svg/documentLarge.svg';
+import { ReactComponent as MapPaperIcon } from './svg/mapPaper.svg';
 
 export {
   FinishIcon,
@@ -156,4 +157,5 @@ export {
   FileIcon,
   DownloadBlueIcon,
   DocumentLargeIcon,
+  MapPaperIcon,
 };

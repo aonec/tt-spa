@@ -21,3 +21,13 @@ export const ControlButtonsWrapper = styled.div`
   align-items: center;
   gap: 16px;
 `;
+
+export const DistrictSelectWrapper = styled.div`
+  width: 600px;
+`;
+
+export const SelectColorOptionWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 8px;
+`;
