@@ -1,4 +1,4 @@
-import React, { FC, useCallback, useEffect, useMemo } from 'react';
+import React, { FC, useCallback, useEffect } from 'react';
 import {
   FormWrapper,
   InputWrapper,
@@ -31,6 +31,10 @@ import { AutoComplete } from 'ui-kit/AutoComplete';
 import { WorkWithIndividualDeviceInputs } from './WorkWithIndividualDeviceInputs';
 import { Form } from 'antd';
 import { SpaceLine } from '01/shared/ui/Layout/Space/Space';
+import {
+  NewIndividualDeviceTitleLookup,
+  OldIndividualDeviceTitleLookup,
+} from './WorkWithIndividualDeviceForm.constants';
 
 const { IndividualDeviceMountPlacesGate } =
   individualDeviceMountPlacesService.gates;
@@ -74,26 +78,6 @@ export const WorkWithIndividualDeviceForm: FC<
       set({ newDeviceReadings: oldDeviceReadings });
     }
   }, [isCheck, fields.oldDeviceReadings.value, set]);
-
-  const oldDeviceInputTitle = useMemo(() => {
-    if (isSwitch) {
-      return 'Заменяемый прибор';
-    } else if (isReopen) {
-      return 'Прибор до переоткрытия';
-    }
-    return '';
-  }, [isSwitch, isReopen]);
-
-  const newDeviceInputTitle = useMemo(() => {
-    if (isSwitch) {
-      return 'Новый прибор';
-    } else if (isCheck) {
-      return 'Прибор после поверки';
-    } else if (isReopen) {
-      return 'Прибор после переоткрытия';
-    }
-    return '';
-  }, [isReopen, isSwitch, isCheck]);
 
   return (
     <Form>
@@ -363,7 +347,7 @@ export const WorkWithIndividualDeviceForm: FC<
           onChange={(readings) => {
             fields.oldDeviceReadings.onChange(readings);
           }}
-          title={oldDeviceInputTitle}
+          title={OldIndividualDeviceTitleLookup[type]}
         />
       )}
 
@@ -374,7 +358,7 @@ export const WorkWithIndividualDeviceForm: FC<
         rateType={fields.rateType.value}
         readings={fields.newDeviceReadings.value}
         onChange={(readings) => fields.newDeviceReadings.onChange(readings)}
-        title={newDeviceInputTitle}
+        title={NewIndividualDeviceTitleLookup[type]}
       />
       <ErrorMessage>
         {fields.newDeviceReadings.errorText({

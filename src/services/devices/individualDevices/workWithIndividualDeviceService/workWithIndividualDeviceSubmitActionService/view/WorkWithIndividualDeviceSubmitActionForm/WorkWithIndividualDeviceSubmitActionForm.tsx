@@ -1,4 +1,4 @@
-import React, { FC, useMemo } from 'react';
+import React, { FC } from 'react';
 import { WorkWithIndividualDeviceSubmitActionFormProps } from './WorkWithIndividualDeviceSubmitActionForm.types';
 import { useForm } from 'effector-forms';
 import { Title } from './WorkWithIndividualDeviceSubmitActionForm.styled';
@@ -7,6 +7,10 @@ import { getTimeStringByUTC } from 'utils/getTimeStringByUTC';
 import { ResourceInfo } from 'ui-kit/shared_components/ResourceInfo';
 import { WorkWithIndividualDeviceType } from '../../../workWithIndividualDeviceService.types';
 import { WorkWithIndividualDeviceInputs } from '../../../view/WorkWithIndividualDevicePage/WorkWithIndividualDeviceForm/WorkWithIndividualDeviceInputs';
+import {
+  NewIndividualDeviceTitleLookup,
+  OldIndividualDeviceTitleLookup,
+} from '../../../view/WorkWithIndividualDevicePage/WorkWithIndividualDeviceForm/WorkWithIndividualDeviceForm.constants';
 
 export const WorkWithIndividualDeviceSubmitActionForm: FC<
   WorkWithIndividualDeviceSubmitActionFormProps
@@ -14,28 +18,6 @@ export const WorkWithIndividualDeviceSubmitActionForm: FC<
   const { fields } = useForm(form);
 
   const isCheck = typeOfAction === WorkWithIndividualDeviceType.check;
-  const isSwitch = typeOfAction === WorkWithIndividualDeviceType.switch;
-  const isReopen = typeOfAction === WorkWithIndividualDeviceType.reopen;
-
-  const oldDeviceInputTitle = useMemo(() => {
-    if (isSwitch) {
-      return 'Заменяемый прибор';
-    } else if (isReopen) {
-      return 'Прибор до переоткрытия';
-    }
-    return '';
-  }, [isSwitch, isReopen]);
-
-  const newDeviceInputTitle = useMemo(() => {
-    if (isSwitch) {
-      return 'Новый прибор';
-    } else if (isCheck) {
-      return 'Прибор после поверки';
-    } else if (isReopen) {
-      return 'Прибор после переоткрытия';
-    }
-    return '';
-  }, [isReopen, isSwitch, isCheck]);
 
   return (
     <>
@@ -128,7 +110,7 @@ export const WorkWithIndividualDeviceSubmitActionForm: FC<
           serialNumber={individualDevice.serialNumber || ''}
           rateType={individualDevice.rateType}
           readings={fields.oldDeviceReadings.value}
-          title={oldDeviceInputTitle}
+          title={OldIndividualDeviceTitleLookup[typeOfAction]}
           disabled
         />
       )}
@@ -139,7 +121,7 @@ export const WorkWithIndividualDeviceSubmitActionForm: FC<
         serialNumber={fields.serialNumber.value}
         rateType={fields.rateType.value}
         readings={fields.newDeviceReadings.value}
-        title={newDeviceInputTitle}
+        title={NewIndividualDeviceTitleLookup[typeOfAction]}
         disabled
       />
     </>

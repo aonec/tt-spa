@@ -43,9 +43,11 @@ export const WorkWithIndividualDeviceSubmitActionContainer = () => {
   const title = useMemo(() => {
     if (typeOfAction === WorkWithIndividualDeviceType.check) {
       return 'Поверка прибора';
-    } else if (typeOfAction === WorkWithIndividualDeviceType.reopen) {
+    }
+    if (typeOfAction === WorkWithIndividualDeviceType.reopen) {
       return 'Переоткрытие прибора';
-    } else if (typeOfAction === WorkWithIndividualDeviceType.switch) {
+    }
+    if (typeOfAction === WorkWithIndividualDeviceType.switch) {
       return 'Замена прибора';
     }
     return 'Проверка введеных данных';
