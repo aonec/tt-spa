@@ -52,7 +52,7 @@ const $resourceConsumptionFilter = domain
     From: moment().startOf('month').utcOffset(0, true).format(),
     To: moment().endOf('month').utcOffset(0, true).format(),
     AdditionalHousingStockIds: [],
-    HousingStockIds: [],
+    BuildingIds: [],
   })
   .on(setFilter, (oldFilter, filter) => ({
     ...oldFilter,

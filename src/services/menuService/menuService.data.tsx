@@ -123,4 +123,7 @@ export const privates: MenuFiltrationConfig = {
   [MenuType.SettingsAdministrator]: [ESecuredIdentityRoleName.Administrator],
 };
 
-export const hidden: MenuFiltrationConfig = {};
+export const hidden: MenuFiltrationConfig = {
+  [MenuType.Devices]: [ESecuredIdentityRoleName.ManagingFirmDispatcher],
+  [MenuType.Statistics]: [ESecuredIdentityRoleName.ManagingFirmDispatcher],
+};

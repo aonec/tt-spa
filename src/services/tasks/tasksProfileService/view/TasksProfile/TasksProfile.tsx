@@ -10,10 +10,13 @@ import {
   ContentWrapper,
   Wrapper,
   HeaderWrapper,
+  HeaderContainer,
+  Flex,
+  ButtonSC,
 } from './TasksProfile.styled';
 import { TasksPageSegment, TasksProfileProps } from './TasksProfile.types';
 import { Segmented } from 'ui-kit/Segmented';
-import { ListIcon, MapIcon } from 'ui-kit/icons';
+import { ListIcon, MapIcon, PlusSmallIcon } from 'ui-kit/icons';
 import { TasksMapContainer } from 'services/tasks/tasksMapService';
 import { Empty } from 'antd';
 import { WithLoader } from 'ui-kit/shared_components/WithLoader';
@@ -41,6 +44,7 @@ export const TasksProfile: FC<TasksProfileProps> = ({
   isSpectator,
   tasksPageSegment,
   setTasksPageSegment,
+  handleOpenAddTaskModal,
 }) => {
   const history = useHistory();
   const { executingTasksCount, observingTasksCount, totalItems } =
@@ -101,7 +105,19 @@ export const TasksProfile: FC<TasksProfileProps> = ({
       {tasksPageSegment === 'list' && (
         <div>
           <FiltrationWrapper>
-            {header}
+            <HeaderContainer>
+              {header}
+              <Flex>
+                <ButtonSC
+                  size="small"
+                  type="ghost"
+                  onClick={handleOpenAddTaskModal}
+                >
+                  <PlusSmallIcon />
+                </ButtonSC>
+              </Flex>
+            </HeaderContainer>
+
             <ContentWrapper>
               <TabsSC activeKey={grouptype} onChange={history.push}>
                 {!isSpectator && (

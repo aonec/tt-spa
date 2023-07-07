@@ -110,7 +110,12 @@ export function useRenderDistricts(
 
       districtsGroup.add(polygon);
 
-      if (district.isEditing) (polygon.editor as any).startDrawing();
+      setSavedDistricts((prev) => ({ ...prev, [district.id]: polygon }));
+
+      if (district.isEditing)
+        (
+          polygon.editor as unknown as { startDrawing: () => void }
+        ).startDrawing();
 
       return { ...acc, [district.id]: polygon };
     }, {});
@@ -130,7 +135,7 @@ export function useRenderPlacemarks(
   map: ymaps.Map | null,
   placemarks: {
     placemarkIconLink: string;
-    coords: number[];
+    coords: [number, number];
     onClick?: () => void;
     count?: number;
     size?: number[];

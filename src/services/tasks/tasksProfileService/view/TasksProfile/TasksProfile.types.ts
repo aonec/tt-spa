@@ -28,6 +28,7 @@ export type TasksProfileProps = {
   isSpectator: boolean;
   tasksPageSegment: TasksPageSegment;
   setTasksPageSegment: (segment: TasksPageSegment) => void;
+  handleOpenAddTaskModal: () => void;
 };
 
 export type TasksPageSegment = 'list' | 'map';

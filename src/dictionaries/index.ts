@@ -7,6 +7,7 @@ import {
   ENodeRegistrationType,
   EResourceType,
   ETaskEngineeringElement,
+  EisTaskType,
 } from 'myApi';
 import { DistrictColor, DistrictColorData } from 'types';
 
@@ -132,3 +133,9 @@ export const DistrictColorsList: DistrictColorData[] = [
     strokeColor: '#17B45A',
   },
 ];
+
+export const TaskTypeDictionary: { [key in EisTaskType]: string } = {
+  [EisTaskType.Current]: 'Текущая',
+  [EisTaskType.Planned]: 'Плановая',
+  [EisTaskType.Emergency]: 'Аварийная',
+};
