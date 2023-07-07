@@ -22,6 +22,7 @@ import { IncorrectConfigAlert } from './IncorrectConfigAlert';
 import { NodeRegistrationTypeLookup } from 'dictionaries';
 import { EditCalculatorConnection } from './EditCalculatorConnection/EditCalculatorConnection';
 const { TabPane } = TabsSC;
+const formId = 'edit-node-page';
 
 export const EditNodePage: FC<EditNodePageProps> = ({
   node,
@@ -37,8 +38,6 @@ export const EditNodePage: FC<EditNodePageProps> = ({
   openRemoveConnectionModal,
 }) => {
   const { number, address, resource, registrationType } = node;
-
-  const formId = 'edit-node-page';
 
   const isIncorrectConfig =
     node?.validationResult?.errors?.length !== 0 ||
@@ -65,7 +64,8 @@ export const EditNodePage: FC<EditNodePageProps> = ({
           </>
         }
       />
-      <AddressWrapper to={`/objects/profile/${address?.id}`}>
+      {/* Дождаться правок */}
+      <AddressWrapper to={`/buildings/LivingProfile/${address?.id}`}>
         <HeaderInfoString>
           <>{getHousingStockAddress(address, true)}</>
           <>{NodeRegistrationTypeLookup[registrationType]} узел</>

@@ -64,7 +64,8 @@ export const EditObjectContainer = () => {
 
   useEffect(() => {
     return inputs.onPageCancel.watch(() =>
-      history.push(`/objects/profile/${buildingId}`),
+      // Дождаться правок
+      history.push(`/buildings/LivingProfile/${buildingId}`),
     ).unsubscribe;
   }, [history, buildingId]);
 

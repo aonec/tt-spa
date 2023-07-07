@@ -55,7 +55,7 @@ export const ObjectProfile: FC<ObjectProfileProps> = ({
             {
               title: 'Добавить узел',
               onClick: () =>
-                history.push(`/objects/${housingStock.id}/addNode`),
+                history.push(`/buildings/${housingStock.id}/addNode`),
               hidden: !isPermitionToAddNode,
             },
             {
@@ -65,7 +65,7 @@ export const ObjectProfile: FC<ObjectProfileProps> = ({
             },
             {
               title: 'Редактировать',
-              onClick: () => history.push(`/objects/${housingStock.id}/edit`),
+              onClick: () => history.push(`/buildings/${housingStock.id}/edit`),
               hidden: !isPermissionToEditHousingStock,
             },
           ],

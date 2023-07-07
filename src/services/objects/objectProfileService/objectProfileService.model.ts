@@ -14,6 +14,8 @@ import { tasksProfileService } from '../../tasks/tasksProfileService';
 import { consolidatedReportService } from './consolidatedReportService';
 
 const domain = createDomain('objectProfileService');
+const ObjectGroupIsOpen = createGate();
+const ObjectProfileIdGate = createGate<{ objectId: number }>();
 
 const handleFetchHousingStock = domain.createEvent<number>();
 
@@ -22,7 +24,8 @@ const getHousingStockFx = domain.createEffect<number, HousingStockResponse>(
 );
 const $housingStock = domain
   .createStore<HousingStockResponse | null>(null)
-  .on(getHousingStockFx.doneData, (_, housingStock) => housingStock);
+  .on(getHousingStockFx.doneData, (_, housingStock) => housingStock)
+  .reset(ObjectGroupIsOpen.close);
 
 const $taskCount = $housingStock.map((housingStock) => {
   return housingStock?.numberOfTasks || 0;
@@ -59,8 +62,6 @@ const $currentGrouptype = domain
 
 const $isLoading = getHousingStockFx.pending;
 
-const ObjectProfileIdGate = createGate<{ objectId: number }>();
-const ObjectGroupIsOpen = createGate();
 const FetchObjectGate = createGate<{ objectId: number }>();
 
 forward({

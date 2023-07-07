@@ -64,9 +64,10 @@ export const CalculatorProfile: FC<CalculatorProfileProps> = ({
             key: 'Адрес',
             value: (
               <>
+                {/* Дождаться правок */}
                 {calculator?.address && (
                   <AddressLinkWrapper
-                    to={`/objects/profile/${calculator.address?.id}`}
+                    to={`/buildings/LivingProfile/${calculator.address?.id}`}
                   >
                     {getHousingStockAddress(calculator.address, true)}
                   </AddressLinkWrapper>

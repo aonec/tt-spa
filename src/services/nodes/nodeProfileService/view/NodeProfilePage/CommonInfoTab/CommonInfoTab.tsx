@@ -27,7 +27,10 @@ export const CommonInfoTab: FC<CommonInfoTabProps> = ({ pipeNode }) => {
           key: 'Адрес',
           value: (
             <Tooltip title={additionalAdress}>
-              <AddressWrapper to={`/objects/profile/${pipeNode?.address?.id}`}>
+              {/* Дождаться правок */}
+              <AddressWrapper
+                to={`/buildings/LivingProfile/${pipeNode?.address?.id}`}
+              >
                 {pipeNode?.address &&
                   getHousingStockAddress(pipeNode?.address, true)}
               </AddressWrapper>

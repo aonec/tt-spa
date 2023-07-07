@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
 import { Layout, PageWrapper, Wrapper } from './Router.styled';
 import { RouterProps } from './Router.types';
-import { ESecuredIdentityRoleName } from 'myApi';
+import { EHouseCategory, ESecuredIdentityRoleName } from 'myApi';
 import { TasksRouter } from 'services/tasks/tasks.router';
 import { ObjectsProfileContainer } from 'services/objects/objectsProfileService';
 import {
@@ -125,26 +125,26 @@ export const Router: FC<RouterProps> = ({ roles, isRolesLoadded }) => {
 
                   {isAdministrator ? (
                     <Route
-                      path="/objects/create"
+                      path="/buildings/create"
                       component={CreateObjectContainer}
                       exact
                     />
                   ) : (
                     <Route
-                      path="/objects/create"
+                      path="/buildings/create"
                       component={AccessDeniedPage}
                       exact
                     />
                   )}
                   {isAdministrator ? (
                     <Route
-                      path="/objects/:buildingId/edit"
+                      path="/buildings/:buildingId/edit"
                       component={EditObjectContainer}
                       exact
                     />
                   ) : (
                     <Redirect
-                      from="/objects/:buildingId/edit"
+                      from="/buildings/:buildingId/edit"
                       to="/access-denied/"
                       exact
                     />
@@ -152,13 +152,13 @@ export const Router: FC<RouterProps> = ({ roles, isRolesLoadded }) => {
 
                   {isAdministrator || isExecutor ? (
                     <Route
-                      path="/objects/:buildingId/addNode"
+                      path="/buildings/:buildingId/addNode"
                       component={CreateNodeContainer}
                       exact
                     />
                   ) : (
                     <Route
-                      path="/objects/:buildingId/addNode"
+                      path="/buildings/:buildingId/addNode"
                       component={AccessDeniedPage}
                       exact
                     />
@@ -166,7 +166,7 @@ export const Router: FC<RouterProps> = ({ roles, isRolesLoadded }) => {
 
                   {isAnyRole && (
                     <Route
-                      path="/objects/:searchType?"
+                      path="/buildings/:searchType?"
                       component={ObjectsProfileContainer}
                       exact
                     />
@@ -195,10 +195,15 @@ export const Router: FC<RouterProps> = ({ roles, isRolesLoadded }) => {
                   )}
 
                   {isAnyRole && (
-                    <Route path="/objects">
+                    <Route path="/buildings">
                       <ObjectGroupIsOpen />
                       <Route
-                        path="/objects/profile/:buildingId"
+                        path={`/buildings/${EHouseCategory.Living}Profile/:buildingId`}
+                        component={ObjectProfileContainer}
+                        exact
+                      />
+                      <Route
+                        path={`/buildings/${EHouseCategory.NonResidential}Profile/:buildingId`}
                         component={ObjectProfileContainer}
                         exact
                       />

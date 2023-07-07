@@ -19,7 +19,7 @@ export const TaskBaseInfo: FC<TaskBaseInfoProps> = ({ task }) => {
 
   const linkPath = apartment
     ? `/apartments/${apartmentId}`
-    : `/objects/profile/${buildingId}`;
+    : `/buildings/LivingProfile/${buildingId}`;
 
   const preparedCreationTime = creationTime
     ? getTimeStringByUTC(creationTime)

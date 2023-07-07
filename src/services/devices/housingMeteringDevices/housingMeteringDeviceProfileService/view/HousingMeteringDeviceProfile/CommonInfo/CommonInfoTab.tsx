@@ -23,7 +23,8 @@ export const CommonInfoTab: FC<CommonInfoProps> = ({
     {
       key: 'Адрес',
       value: (
-        <Address to={`/objects/profile/${address?.id}`}>
+        // Дождаться правок
+        <Address to={`/buildings/LivingProfile/${address?.id}`}>
           {addressString}
         </Address>
       ),

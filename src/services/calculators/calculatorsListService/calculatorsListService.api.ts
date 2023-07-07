@@ -3,5 +3,6 @@ import { CalculatorIntoHousingStockResponse } from 'myApi';
 
 export const getCalculatorsList = (
   housingStockId: number,
+  //Дождаться правок
 ): Promise<CalculatorIntoHousingStockResponse[]> =>
-  axios.get(`HousingStocks/${housingStockId}/Calculators`);
+  axios.get(`Buildings/${housingStockId}/Calculators`);

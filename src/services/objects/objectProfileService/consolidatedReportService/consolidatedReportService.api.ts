@@ -10,7 +10,8 @@ export const getConsolidatedReport = async ({
   ...params
 }: GetConsolidatedReport) => {
   const calculators: CalculatorIntoHousingStockResponse[] = await axios.get(
-    `HousingStocks/${HousingStockId}/Calculators`
+    //Дождаться правок
+    `Buildings/${HousingStockId}/Calculators`,
   );
 
   const calculatorsIds = calculators.map((calculator) => calculator.id);

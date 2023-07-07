@@ -16,7 +16,8 @@ export const getHousingStock = (
 export const getCalculatorsList = (
   housingStockId: number,
 ): Promise<CalculatorIntoHousingStockResponse[] | null> =>
-  axios.get(`HousingStocks/${housingStockId}/Calculators`);
+  //Дождаться правок
+  axios.get(`Buildings/${housingStockId}/Calculators`);
 
 export const getNodeServiceZones =
   (): Promise<NodeServiceZoneListResponse | null> =>
