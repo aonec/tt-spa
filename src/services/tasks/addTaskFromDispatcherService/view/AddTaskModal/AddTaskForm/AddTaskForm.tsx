@@ -19,8 +19,9 @@ import { SelectTime } from 'ui-kit/SelectTime';
 import { addTaskFromDispatcherService } from 'services/tasks/addTaskFromDispatcherService/addTaskFromDispatcherService.models';
 import { TaskTypeDictionary } from 'dictionaries';
 import { AutoComplete } from 'ui-kit/AutoComplete';
-import { autocompleteAddress, sortByAlphabet } from './AddTaskForm.utils';
+import { autocompleteAddress } from './AddTaskForm.utils';
 import moment from 'moment';
+import _ from 'lodash';
 
 const {
   gates: { PageGate },
@@ -125,11 +126,11 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
   ]);
 
   const sortedLeadExecutors = useMemo(() => {
-    return sortByAlphabet(leadExecutors);
+    return _.sortBy(leadExecutors, [(o) => o.name]);
   }, [leadExecutors]);
 
   const sortedExecutors = useMemo(() => {
-    return sortByAlphabet(executors);
+    return _.sortBy(executors, [(o) => o.name]);
   }, [executors]);
 
   const isHaveValidationErrors = useMemo(

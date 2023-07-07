@@ -20,6 +20,7 @@ import { createGate } from 'effector-react';
 import { EffectFailDataAxiosError } from 'types';
 import { AddTask } from './view/AddTaskModal/AddTaskForm/AddTaskForm.types';
 import { GetTaskDeadlineRequest } from './addTaskFromDispatcherService.types';
+import { prepareDataForCreateTask } from './addTaskFromDispatcherService.utils';
 
 const domain = createDomain('addTaskFromDispatcherService');
 
@@ -104,34 +105,7 @@ const $taskDeadline = domain
 sample({
   clock: handleCreateTask,
   source: $ErpObjects,
-  fn: (ErpObjects, data) => {
-    const object = ErpObjects.find(
-      (object) => object.address === data.selectedObjectAddress,
-    );
-
-    const sourceDateTime = data.requestDate
-      ?.format('YYYY-MM-DD')
-      .concat('T', data.requestTime || '');
-
-    const manualTaskDeadline = data.manualDeadlineDate
-      ?.format('YYYY-MM-DD')
-      .concat('T', data.manualDeadlineTime || '');
-
-    return {
-      leadId: data.leadId,
-      objectId: object?.id,
-      sourceDateTime: sourceDateTime,
-      sourceId: data.sourceId,
-      sourceNumber: data.requestNumber,
-      taskDescription: data.taskDescription,
-      taskType: data.taskType,
-      workCategoryId: data.workTypeId,
-      subscriberFullName: data.subscriberName,
-      subscriberPhoneNumber: data.phoneNumber,
-      workerId: data.executorId,
-      taskDeadline: data.taskDeadline || manualTaskDeadline,
-    } as CreateErpTaskRequest;
-  },
+  fn: (ErpObjects, data) => prepareDataForCreateTask(ErpObjects, data),
   target: createTaskFx,
 });
 
