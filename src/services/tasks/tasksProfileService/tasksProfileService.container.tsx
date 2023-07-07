@@ -1,7 +1,11 @@
 import React, { useEffect, useMemo, useRef } from 'react';
 import { useEvent, useStore } from 'effector-react';
 import { useParams } from 'react-router-dom';
-import { ETaskEngineeringElement, TaskGroupingFilter } from 'myApi';
+import {
+  ESecuredIdentityRoleName,
+  ETaskEngineeringElement,
+  TaskGroupingFilter,
+} from 'myApi';
 import { exportTasksListService } from '../exportTasksListService';
 import { tasksProfileService } from './tasksProfileService.model';
 import {
@@ -15,6 +19,7 @@ import queryString from 'query-string';
 import { addressSearchService } from 'services/addressSearchService/addressSearchService.models';
 import { TaskTypesGate } from '../taskTypesService/taskTypesService.model';
 import { AddTaskFromDispatcherContainer } from '../addTaskFromDispatcherService';
+import { usePermission } from 'hooks/usePermission';
 
 const { ExistingCitiesGate } = addressSearchService.gates;
 const { inputs, outputs, gates } = tasksProfileService;
@@ -131,6 +136,10 @@ export const TasksProfileContainer = () => {
     }
   }, [apartment, housingStock, handleSearch, grouptype]);
 
+  const isDispacher = usePermission([
+    ESecuredIdentityRoleName.ManagingFirmDispatcher,
+  ]);
+
   return (
     <>
       {[
@@ -171,6 +180,7 @@ export const TasksProfileContainer = () => {
         tasksPageSegment={tasksPageSegment}
         setTasksPageSegment={setTasksPageSegment}
         handleOpenAddTaskModal={handleOpenAddTaskModal}
+        isDispacher={isDispacher}
       />
     </>
   );

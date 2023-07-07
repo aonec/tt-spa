@@ -46,12 +46,15 @@ export const TasksProfile: FC<TasksProfileProps> = ({
   tasksPageSegment,
   setTasksPageSegment,
   handleOpenAddTaskModal,
+  isDispacher,
 }) => {
   const history = useHistory();
   const { executingTasksCount, observingTasksCount, totalItems } =
     pagedTasks || {};
 
-  const executingTabText = executingTasksCount
+  const isHaveExecutingTasks = Boolean(executingTasksCount);
+
+  const executingTabText = isHaveExecutingTasks
     ? `К исполнению (${executingTasksCount})`
     : 'К исполнению';
   const observingTabText = observingTasksCount
@@ -120,22 +123,41 @@ export const TasksProfile: FC<TasksProfileProps> = ({
             </HeaderContainer>
 
             <ContentWrapper>
-              <TabsSC activeKey={grouptype} onChange={history.push}>
-                {!isSpectator && (
+              {!isDispacher ? (
+                <TabsSC activeKey={grouptype} onChange={history.push}>
+                  {!isSpectator && (
+                    <TabPane
+                      tab={executingTabText}
+                      key={TaskGroupingFilter.Executing}
+                    ></TabPane>
+                  )}
                   <TabPane
-                    tab={executingTabText}
-                    key={TaskGroupingFilter.Executing}
+                    tab={observingTabText}
+                    key={TaskGroupingFilter.Observing}
                   ></TabPane>
-                )}
-                <TabPane
-                  tab={observingTabText}
-                  key={TaskGroupingFilter.Observing}
-                ></TabPane>
-                <TabPane
-                  tab="Архив"
-                  key={TaskGroupingFilter.Archived}
-                ></TabPane>
-              </TabsSC>
+                  <TabPane
+                    tab="Архив"
+                    key={TaskGroupingFilter.Archived}
+                  ></TabPane>
+                </TabsSC>
+              ) : (
+                <TabsSC activeKey={grouptype} onChange={history.push}>
+                  <TabPane
+                    tab={observingTabText}
+                    key={TaskGroupingFilter.Observing}
+                  ></TabPane>
+                  <TabPane
+                    tab="Закрытые"
+                    key={TaskGroupingFilter.Archived}
+                  ></TabPane>
+                  {!isSpectator && isHaveExecutingTasks && (
+                    <TabPane
+                      tab={executingTabText}
+                      key={TaskGroupingFilter.Executing}
+                    ></TabPane>
+                  )}
+                </TabsSC>
+              )}
               <SearchTasks
                 onSubmit={handleSearch}
                 taskTypes={taskTypes}

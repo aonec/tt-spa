@@ -42,6 +42,12 @@ export const menuItems: MenuItem[] = [
     type: MenuType.ActsJournal,
   },
   {
+    title: 'Отключения ресурсов',
+    path: '/disabledResources',
+    icon: SettingsIcon,
+    type: MenuType.DisabledResourcesDispatcher,
+  },
+  {
     title: 'Объекты',
     path: '/objects',
     icon: ObjectsIcon,
@@ -110,12 +116,6 @@ export const menuItems: MenuItem[] = [
     path: '/adminSettings/disabledResources',
     icon: SettingsIcon,
     type: MenuType.SettingsAdministrator,
-  },
-  {
-    title: 'Отключения ресурсов',
-    path: '/disabledResources',
-    icon: SettingsIcon,
-    type: MenuType.DisabledResourcesDispatcher,
   },
 ];
 
