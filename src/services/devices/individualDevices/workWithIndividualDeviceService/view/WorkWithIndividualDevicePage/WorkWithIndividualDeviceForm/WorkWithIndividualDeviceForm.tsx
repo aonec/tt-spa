@@ -363,6 +363,7 @@ export const WorkWithIndividualDeviceForm: FC<
       <ErrorMessage>
         {fields.newDeviceReadings.errorText({
           required: 'Введите хотя бы одно показание',
+          validReadings: 'Введенное показание не может быть меньше предыдущего',
         })}
       </ErrorMessage>
 
