@@ -16,12 +16,11 @@ import {
 } from './TasksProfile.styled';
 import { TasksPageSegment, TasksProfileProps } from './TasksProfile.types';
 import { Segmented } from 'ui-kit/Segmented';
-import { ListIcon, MapIcon, PlusIcon, PlusSmallIcon } from 'ui-kit/icons';
+import { ListIcon, MapIcon, PlusSmallIcon } from 'ui-kit/icons';
 import { TasksMapContainer } from 'services/tasks/tasksMapService';
 import { Empty } from 'antd';
 import { WithLoader } from 'ui-kit/shared_components/WithLoader';
 import { TaskGroupingFilter } from 'myApi';
-import { Button } from 'ui-kit/Button';
 
 const { TabPane } = TabsSC;
 
