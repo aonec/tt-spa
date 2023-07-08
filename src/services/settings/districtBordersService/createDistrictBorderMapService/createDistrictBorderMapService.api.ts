@@ -12,7 +12,7 @@ export const existingHousingStocksQuery = createQuery<
   void,
   HousingStockListResponsePagedList
 >({
-  handler: () => axios.get('HousingStocks'),
+  handler: () => axios.get('Buildings'),
 });
 
 export const existingDistrictsQuery = createQuery<
