@@ -65,6 +65,8 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
       executorId: null,
 
       taskDescription: null,
+
+      isPermittedToChangeDeadline: false,
     },
     enableReinitialize: true,
     validateOnBlur: true,
@@ -83,38 +85,25 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
         .string()
         .nullable()
         .required('Обязательное поле')
-        .when('workTypeId', {
-          is: '48eb4f62-15a1-11e9-8176-001dd8b88b72',
-          then: yup.string().nullable(),
-        })
-        .when('rateType', {
-          is: '6373ec3b-302b-11e9-8184-001dd8b88b72',
+        .when('isPermittedToChangeDeadline', {
+          is: true,
           then: yup.string().nullable(),
         }),
-
       manualDeadlineDate: yup
         .string()
         .nullable()
-        .when('workTypeId', {
-          is: '48eb4f62-15a1-11e9-8176-001dd8b88b72',
-          then: yup.string().required('Это поле обязательно'),
-        })
-        .when('rateType', {
-          is: '6373ec3b-302b-11e9-8184-001dd8b88b72',
-          then: yup.string().required('Это поле обязательно'),
-        }),
-      manualDeadlineTime: yup
-        .string()
-        .nullable()
-        .when('workTypeId', {
-          is: '48eb4f62-15a1-11e9-8176-001dd8b88b72',
-          then: yup.string().required('Это поле обязательно'),
-        })
-        .when('rateType', {
-          is: '6373ec3b-302b-11e9-8184-001dd8b88b72',
+        .when('isPermittedToChangeDeadline', {
+          is: true,
           then: yup.string().required('Это поле обязательно'),
         }),
 
+      manualDeadlineTime: yup
+        .string()
+        .nullable()
+        .when('isPermittedToChangeDeadline', {
+          is: true,
+          then: yup.string().required('Это поле обязательно'),
+        }),
       executorId: yup.string().nullable().required('Обязательное поле'),
       leadId: yup.string().nullable().required('Обязательное поле'),
       selectedObjectAddress: yup
@@ -127,15 +116,19 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
     },
   });
 
-  const isPermittedToChangeDeadline =
-    values.workTypeId === '48eb4f62-15a1-11e9-8176-001dd8b88b72' ||
-    values.workTypeId === '6373ec3b-302b-11e9-8184-001dd8b88b72';
+  useEffect(() => {
+    const isPermitted =
+      workTypes.find((workType) => workType.id === values.workTypeId)
+        ?.isDeadlineChangingPermitted || false;
+
+    setFieldValue('isPermittedToChangeDeadline', isPermitted);
+  }, [values.workTypeId, setFieldValue, workTypes]);
 
   const calculatedDeadlineDateArr = useMemo(() => {
     if (!taskDeadline || !values.requestDate || !values.requestTime)
       return null;
 
-    if (isPermittedToChangeDeadline) return null;
+    if (values.isPermittedToChangeDeadline) return null;
 
     const sourceDateTime = moment(
       values.requestDate
@@ -158,7 +151,7 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
     taskDeadline,
     values.requestDate,
     values.requestTime,
-    isPermittedToChangeDeadline,
+    values.isPermittedToChangeDeadline,
     setFieldValue,
   ]);
 
@@ -225,7 +218,15 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
             value={values.taskType || undefined}
             onChange={(value) => {
               setFieldValue('taskType', value);
-              handleTaskDeadlineRequest({ TaskType: value as EisTaskType });
+
+              const isPermitted =
+                workTypes.find((workType) => workType.id === values.workTypeId)
+                  ?.isDeadlineChangingPermitted || false;
+
+              handleTaskDeadlineRequest({
+                TaskType: value as EisTaskType,
+                isPermittedToRequest: isPermitted,
+              });
             }}
           >
             {Object.values(EisTaskType).map((e) => (
@@ -260,7 +261,16 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
               value={values.workTypeId || undefined}
               onChange={(value) => {
                 setFieldValue('workTypeId', value);
-                handleTaskDeadlineRequest({ WorkCategoryId: value as string });
+
+                const isPermitted =
+                  workTypes.find(
+                    (workType) => workType.id === values.workTypeId,
+                  )?.isDeadlineChangingPermitted || false;
+
+                handleTaskDeadlineRequest({
+                  WorkCategoryId: value as string,
+                  isPermittedToRequest: isPermitted,
+                });
               }}
             >
               {workTypes.map((workType) => (
@@ -290,7 +300,7 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
 
             <FormItem label="Нормативный срок">
               <GridContainerAsymmetricLeft>
-                {!isPermittedToChangeDeadline ? (
+                {!values.isPermittedToChangeDeadline ? (
                   <>
                     <Input
                       disabled

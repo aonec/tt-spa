@@ -6443,6 +6443,7 @@ export interface ErpWorkCategoryResponse {
   /** @format uuid */
   id: string;
   name: string | null;
+  isDeadlineChangingPermitted: boolean;
 }
 
 export enum YearRangeType {

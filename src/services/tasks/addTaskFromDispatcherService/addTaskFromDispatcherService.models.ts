@@ -169,8 +169,8 @@ sample({
 });
 
 sample({
-  clock: $taskDeadlineRequest.updates,
-  source: $taskDeadlineRequest,
+  clock: $taskDeadlineRequest,
+  fn: (request) => request!,
   filter: (request) => {
     if (!request) {
       return false;
@@ -181,27 +181,17 @@ sample({
     if (!Boolean(request.WorkCategoryId)) {
       return false;
     }
-    if (
-      request.WorkCategoryId === '48eb4f62-15a1-11e9-8176-001dd8b88b72' ||
-      request.WorkCategoryId === '6373ec3b-302b-11e9-8184-001dd8b88b72'
-    ) {
+    if (!request.isPermittedToRequest) {
       return false;
     }
     return true;
   },
-  target: getErpTaskDeadlineFx as any,
+  target: getErpTaskDeadlineFx,
 });
 
 sample({
-  clock: $taskDeadlineRequest.updates,
-  source: $taskDeadlineRequest,
-  filter: (data) => {
-    return (
-      data?.WorkCategoryId ===
-      ('48eb4f62-15a1-11e9-8176-001dd8b88b72' ||
-        '6373ec3b-302b-11e9-8184-001dd8b88b72')
-    );
-  },
+  clock: $taskDeadlineRequest,
+  filter: (request) => request?.isPermittedToRequest || false,
   target: resetDeadline,
 });
 

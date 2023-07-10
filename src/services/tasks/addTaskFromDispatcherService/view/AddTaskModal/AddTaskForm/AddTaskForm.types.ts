@@ -34,6 +34,8 @@ export type AddTask = {
   taskDeadline: string | null;
 
   taskDescription: string | null;
+
+  isPermittedToChangeDeadline: boolean;
 };
 
 export type AddTaskFormProps = {
