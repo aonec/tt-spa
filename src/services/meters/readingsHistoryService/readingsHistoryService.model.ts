@@ -61,6 +61,12 @@ export const readingsHistoryService = {
     $readingsHistoryModalDeviceId,
     $readingHistory,
     fetchReadingHistoryFx,
+    $individualDevice:
+      displayIndividualDeviceAndNamesService.outputs.$individualDevice,
   },
-  gates: { ReadingHistoryGate },
+  gates: {
+    ReadingHistoryGate,
+    IndividualDeviceGate:
+      displayIndividualDeviceAndNamesService.gates.IndividualDeviceGate,
+  },
 };

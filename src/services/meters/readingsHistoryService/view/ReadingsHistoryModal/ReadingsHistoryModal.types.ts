@@ -1,7 +1,8 @@
+import { IndividualDeviceResponse } from 'myApi';
+
 export type ReadingsHistoryModalProps = {
-  deviceId?: number;
-  isModal?: boolean;
   readonly?: boolean;
-  isOpen: boolean;
+  isModalOpen: boolean;
   closeReadingsHistoryModal: () => void;
+  individualDevice: IndividualDeviceResponse | null;
 };

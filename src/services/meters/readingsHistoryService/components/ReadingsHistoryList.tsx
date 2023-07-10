@@ -61,7 +61,10 @@ interface Props {
 
 const { outputs, inputs } = managementFirmConsumptionRatesService;
 
-export const ReadingsHistoryList: React.FC<Props> = ({ isModal, readonly }) => {
+export const ReadingsHistoryList: React.FC<Props> = ({
+  isModal = true,
+  readonly,
+}) => {
   const {
     values,
     setFieldValue,
