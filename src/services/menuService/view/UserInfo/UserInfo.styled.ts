@@ -1,5 +1,4 @@
 import { UserIcon } from 'ui-kit/icons';
-import { NavLink } from 'react-router-dom';
 import styled from 'styled-components';
 import { Skeleton } from 'antd';
 
