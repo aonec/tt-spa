@@ -1,5 +1,4 @@
 import React, { FC } from 'react';
-import { Wrapper } from './SelectTime.styled';
 import { SelectTimeProps } from './SelectTime.types';
 import { Select } from 'ui-kit/Select/Select.styled';
 

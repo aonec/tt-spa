@@ -1,19 +1,16 @@
 import { createDomain, forward } from 'effector';
 import {
-  createTask,
   getERPSources,
   getLeadExecutors,
   getTasksErpObjects,
   getWorkCategories,
 } from './addTaskFromDispatcherService.api';
 import {
-  CreateErpTaskRequest,
   ExecutorGrpcModel,
   SourceGrpcModel,
   WorkCategoryGrpcModel,
 } from 'myApi';
 import { createGate } from 'effector-react';
-import { EffectFailDataAxiosError } from 'types';
 
 const domain = createDomain('addTaskFromDispatcherService');
 
@@ -21,12 +18,6 @@ const PageGate = createGate();
 
 const handleOpenModal = domain.createEvent();
 const handleCloseModal = domain.createEvent();
-
-const createTaskFx = domain.createEffect<
-  CreateErpTaskRequest,
-  File | null,
-  EffectFailDataAxiosError
->(createTask);
 
 const getERPSourcesFx = domain.createEffect<void, SourceGrpcModel[]>(
   getERPSources,

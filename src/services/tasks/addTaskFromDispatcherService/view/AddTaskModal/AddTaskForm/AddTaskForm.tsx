@@ -14,7 +14,7 @@ import { FormItem } from 'ui-kit/FormItem';
 import { Select } from 'ui-kit/Select';
 import { Input } from 'ui-kit/Input';
 import { DatePicker } from 'ui-kit/DatePicker';
-import { EisTaskType, SourceGrpcModel } from 'myApi';
+import { EisTaskType } from 'myApi';
 import { SelectTime } from 'ui-kit/SelectTime';
 import { addTaskFromDispatcherService } from 'services/tasks/addTaskFromDispatcherService/addTaskFromDispatcherService.models';
 import { TaskTypeDictionary } from 'dictionaries';
@@ -28,11 +28,10 @@ const {
 export const AddTaskForm: FC<AddTaskFormProps> = ({
   formId,
   ERPSources,
-  leadExecutors,
   workCategories: workTypes,
   ErpObjects,
 }) => {
-  const { values, handleSubmit, setFieldValue, errors } = useFormik({
+  const { values, handleSubmit, setFieldValue } = useFormik({
     initialValues: {
       sourceId: null,
       requestNumber: null,
