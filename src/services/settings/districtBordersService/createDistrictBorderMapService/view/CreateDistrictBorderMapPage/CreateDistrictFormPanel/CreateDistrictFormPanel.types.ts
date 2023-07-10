@@ -1,5 +1,5 @@
 import { DistrictCreateRequest, HousingStockListResponse } from 'myApi';
-import { DistrictColor } from '../CreateDistrictBorderMapPage.types';
+import { DistrictColor } from 'types';
 
 export type CreateDistrictFormPanelProps = {
   isLoadingHousingStocks: boolean;

@@ -72,6 +72,7 @@ import { ReactComponent as ApartmentIcon } from './svg/apartment.svg';
 import { ReactComponent as PencilBigIcon } from './svg/pencilBig.svg';
 import { ReactComponent as WrenchIcon } from './svg/wrench.svg';
 import { ReactComponent as CheckMark } from './svg/checkMark.svg';
+import { ReactComponent as PlusSmallIcon } from './svg/plusSmall.svg';
 import { ReactComponent as FileIcon } from './svg/file.svg';
 import { ReactComponent as DownloadBlueIcon } from './svg/downloadBlue.svg';
 import { ReactComponent as DocumentLargeIcon } from './svg/documentLarge.svg';
@@ -81,6 +82,7 @@ import { ReactComponent as BankIcon } from './svg/bank.svg';
 import { ReactComponent as ArchiveIcon } from './svg/archive.svg';
 import { ReactComponent as ArrowIconTop } from './svg/arrow.svg';
 import { ReactComponent as ArrowBottom } from './svg/arrowBottom.svg';
+import { ReactComponent as MapPaperIcon } from './svg/mapPaper.svg';
 
 export {
   FinishIcon,
@@ -157,6 +159,7 @@ export {
   PencilBigIcon,
   WrenchIcon,
   CheckMark,
+  PlusSmallIcon,
   FileIcon,
   DownloadBlueIcon,
   DocumentLargeIcon,
@@ -166,4 +169,5 @@ export {
   ArchiveIcon,
   ArrowIconTop,
   ArrowBottom,
+  MapPaperIcon,
 };

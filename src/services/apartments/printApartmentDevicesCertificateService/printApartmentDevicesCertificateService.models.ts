@@ -1,4 +1,4 @@
-import { createDomain, guard } from 'effector';
+import { createDomain, sample } from 'effector';
 import { createGate } from 'effector-react';
 import { HomeownerCertificateResponse } from 'myApi';
 import { getHomeownerCertificate } from './printApartmentDevicesCertificateService.api';
@@ -25,7 +25,7 @@ const $homeownerCertificate = domain
   .createStore<HomeownerCertificateResponse | null>(null)
   .on(fetchHomeownerCertificateFx.doneData, (_, certificate) => certificate);
 
-guard({
+sample({
   source: HomeownerCerificateGate.state.map((values) => values.id),
   clock: HomeownerCerificateGate.open,
   filter: Boolean,

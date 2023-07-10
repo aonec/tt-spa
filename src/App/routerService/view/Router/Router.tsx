@@ -49,10 +49,11 @@ import { ActsJournalContainer } from 'services/actsJournalService';
 import { ServicesContainer } from 'services/services/servicesService';
 import { NodeArchivePageContainer } from 'services/nodes/nodeArchiveService';
 import { EditNodeContainer } from 'services/nodes/editNodeService';
-import { CreateDistrictBorderByMapContainer } from 'services/settings/districtBordersService/CreateDistrictBorderByMapService';
 import { DistrictBordersByAddressContainer } from 'services/settings/districtBordersService/districtBordersByAddressService';
 import { StatisticsProfileContainer } from 'services/statistics/statisticsProfileService';
 import { AddIndividualDeviceContainer } from 'services/devices/individualDevices/addIndividualDeviceService';
+import { CreateDistrictBorderMapContainer } from 'services/settings/districtBordersService/createDistrictBorderMapService';
+import { ManageDistrictsMapContainer } from 'services/settings/districtBordersService/manageDistrictsMapService';
 
 const { gates } = objectProfileService;
 
@@ -442,7 +443,15 @@ export const Router: FC<RouterProps> = ({ roles, isRolesLoadded }) => {
                   {(isSeniorOperator || isAdministrator) && (
                     <Route
                       path="/districtBordersSettings/createByMap"
-                      component={CreateDistrictBorderByMapContainer}
+                      component={CreateDistrictBorderMapContainer}
+                      exact
+                    />
+                  )}
+
+                  {(isSeniorOperator || isAdministrator) && (
+                    <Route
+                      path="/districtBordersSettings/manageDistricts"
+                      component={ManageDistrictsMapContainer}
                       exact
                     />
                   )}

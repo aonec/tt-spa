@@ -1,11 +1,12 @@
 import React, { useEffect, useMemo } from 'react';
-import { useEvent, useStore } from 'effector-react';
+import { useEvent, useStore, useUnit } from 'effector-react';
 import { DistrictBordersByAddressPage } from './view/DistrictBordersByAddressPage/DistrictBordersByAddressPage';
 import { districtBordersByAddressService } from './districtBordersByAddressService.model';
 import {
   getConvexHull,
   getFilteredAddresses,
 } from './districtBordersByAddressService.utils';
+import { existingHousingStocksQuery } from '../createDistrictBorderMapService/createDistrictBorderMapService.api';
 
 const {
   inputs,
@@ -27,8 +28,8 @@ export const DistrictBordersByAddressContainer = () => {
   const checkedhousingStockIdsWithStreet = useStore(
     outputs.$checkedhousingStockIdsWithStreet,
   );
-  const housingStocksWithCoordinates = useStore(
-    outputs.$housingStocksWithCoordinates,
+  const { data: housingStocksWithCoordinates } = useUnit(
+    existingHousingStocksQuery,
   );
 
   const cityInFilter = filterData?.city;

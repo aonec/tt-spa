@@ -40,7 +40,7 @@ export const SearchInspectorsHousingStocks: FC<
   const fieldsArray = [
     form.fields.City,
     form.fields.Street,
-    form.fields.HousingStockNumber,
+    form.fields.BuildingNumber,
   ];
 
   function clearValuesOnFocus(index: number) {
@@ -152,9 +152,9 @@ export const SearchInspectorsHousingStocks: FC<
             <Input
               small
               placeholder="Дом"
-              value={form.fields.HousingStockNumber.value}
+              value={form.fields.BuildingNumber.value}
               onChange={(e) =>
-                form.fields.HousingStockNumber.onChange(e.target.value)
+                form.fields.BuildingNumber.onChange(e.target.value)
               }
               onFocus={() => clearValuesOnFocus(2)}
               data-reading-input={dataKey}

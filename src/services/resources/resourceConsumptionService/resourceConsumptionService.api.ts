@@ -80,7 +80,12 @@ export const fetchNormativeConsumptionData = (
   axios.get(
     'IndividualDeviceReadings/DataForSubscriberAndNormativeConsumptionPlot',
     {
-      params,
+      params: {
+        HousingStockIds: params.BuildingIds,
+        From: params.From,
+        To: params.To,
+        ResourceType: params.ResourceType,
+      },
       paramsSerializer: (params) => {
         return queryString.stringify(params);
       },

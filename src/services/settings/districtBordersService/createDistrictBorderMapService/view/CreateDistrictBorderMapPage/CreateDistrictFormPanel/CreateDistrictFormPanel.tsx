@@ -17,9 +17,9 @@ import { sortBy } from 'lodash';
 import { FormItem } from 'ui-kit/FormItem';
 import { Input } from 'ui-kit/Input';
 import { Select } from 'ui-kit/Select';
-import { DistrictColorsList } from '../CreateDistrictBorderMapPage.constants';
-import { DistrictColor } from '../CreateDistrictBorderMapPage.types';
 import { combinePayloadForCreateDistrict } from 'utils/districtsData';
+import { DistrictColor } from 'types';
+import { DistrictColorsList } from 'dictionaries';
 
 export const CreateDistrictFormPanel: FC<CreateDistrictFormPanelProps> = ({
   housingStocksInDistrict,

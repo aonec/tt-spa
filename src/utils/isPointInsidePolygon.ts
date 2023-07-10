@@ -1,8 +1,3 @@
-import { DistrictColorsList } from './CreateDistrictBorderMapPage.constants';
-import { DistrictColor } from './CreateDistrictBorderMapPage.types';
-import housingStockPlacemark from './placemarks/housingStockPlacemark.svg';
-import inactiveHousingStockPlacemark from './placemarks/inactiveHousingStockPlacemark.svg';
-
 function isPointOnLeftOfLine(
   point: number[],
   xi: number,
@@ -22,7 +17,7 @@ function isPointOnLine(point: number[], x: number, y: number) {
 
 export function isPointInsidePolygon(
   point: number[],
-  polygonVertices: number[][],
+  polygonVertices: number[][] = [],
 ) {
   const numberOfVertices = polygonVertices.length;
   let isInside = false;
@@ -46,15 +41,4 @@ export function isPointInsidePolygon(
 
   // Возвращаем, находится ли точка внутри многоугольника
   return isInside;
-}
-
-export function getHousingStockItemLink(active: boolean) {
-  return active ? housingStockPlacemark : inactiveHousingStockPlacemark;
-}
-
-export function getDistrictColorData(districtColor: DistrictColor) {
-  return (
-    DistrictColorsList.find((elem) => elem.type === districtColor) ||
-    DistrictColorsList[0]
-  );
 }
