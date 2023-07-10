@@ -1,5 +1,5 @@
 import { message } from 'antd';
-import { createReading } from './../../../../_api/readings';
+import { createReading } from '../../../../../../../01/_api/readings';
 import { createReadingFx, readingFieldButtonClicked } from './index';
 import { forward } from 'effector';
 

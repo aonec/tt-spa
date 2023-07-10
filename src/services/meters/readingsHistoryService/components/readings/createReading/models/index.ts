@@ -1,9 +1,9 @@
+import { createEffect, createEvent } from 'effector';
 import { EffectFailDataAxiosError } from 'types';
 import {
   IndividualDeviceReadingsCreateListResponse,
   IndividualDeviceReadingsCreateRequest,
-} from './../../../../../myApi';
-import { createEffect, createEvent } from 'effector';
+} from 'myApi';
 
 export const readingFieldButtonClicked =
   createEvent<IndividualDeviceReadingsCreateRequest>();

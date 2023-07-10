@@ -16,7 +16,7 @@ import {
   NodeReadingsStatusesByDevices,
   UpdateHousingMeteringDeviceReadingsPayload,
 } from './accountingNodesReadingsInputService.types';
-import { openConfirmReadingModal } from '01/features/readings/readingsInput/confirmInputReadingModal/models';
+import { openConfirmReadingModal } from 'services/meters/readingsHistoryService/components/readings/readingsInput/confirmInputReadingModal/models';
 import { MetersInputBlockStatus } from '../individualDeviceMetersInputService/view/MetersInputsBlock/MetersInputsBlock.types';
 import moment from 'moment';
 import { EffectFailDataAxiosError } from 'types';
