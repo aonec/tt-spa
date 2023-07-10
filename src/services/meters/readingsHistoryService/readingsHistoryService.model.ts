@@ -3,7 +3,6 @@ import { sample, createDomain } from 'effector';
 import { IndividualDeviceReadingsHistoryResponse } from 'myApi';
 import { EffectFailDataAxiosError } from 'types';
 import { displayIndividualDeviceAndNamesService } from 'services/devices/individualDevices/displayIndividualDeviceAndNamesService';
-import { apartmentIndividualDevicesMetersService } from '../apartmentIndividualDevicesMetersService';
 import { getReadingsHistory } from './readingsHistoryService.api';
 
 const domain = createDomain('readingsHistory');
@@ -49,12 +48,6 @@ sample({
   filter: Boolean,
   target:
     displayIndividualDeviceAndNamesService.inputs.handleFetchIndividualDevice,
-});
-
-sample({
-  clock: ReadingHistoryGate.close,
-  target:
-    apartmentIndividualDevicesMetersService.inputs.refetchIndividualDevices,
 });
 
 export const readingsHistoryService = {

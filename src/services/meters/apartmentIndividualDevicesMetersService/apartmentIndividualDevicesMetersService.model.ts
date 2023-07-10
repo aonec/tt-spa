@@ -1,4 +1,4 @@
-import { combine, createDomain, forward, guard } from 'effector';
+import { combine, createDomain, guard, sample } from 'effector';
 import { createGate } from 'effector-react';
 import {
   IndividualDeviceListItemResponse,
@@ -74,11 +74,6 @@ guard({
   target: fetchIndividualDevicesFx,
 });
 
-forward({
-  from: readingsHistoryService.inputs.closeReadingsHistoryModal,
-  to: refetchIndividualDevices,
-});
-
 $isShowClosedIndividualDevices.on(setIsShowClosedDevices, (_, value) => value);
 
 $sliderIndex
@@ -92,6 +87,16 @@ $sliderIndex
 
     return --index;
   });
+
+sample({
+  clock: readingsHistoryService.gates.ReadingHistoryGate.close,
+  target: refetchIndividualDevices,
+});
+
+sample({
+  clock: readingsHistoryService.inputs.closeReadingsHistoryModal,
+  target: refetchIndividualDevices,
+});
 
 export const apartmentIndividualDevicesMetersService = {
   inputs: {
