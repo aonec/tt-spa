@@ -21,6 +21,7 @@ import { TasksMapContainer } from 'services/tasks/tasksMapService';
 import { Empty } from 'antd';
 import { WithLoader } from 'ui-kit/shared_components/WithLoader';
 import { TaskGroupingFilter } from 'myApi';
+import { featureToggles } from 'featureToggles';
 
 const { TabPane } = TabsSC;
 
@@ -107,15 +108,17 @@ export const TasksProfile: FC<TasksProfileProps> = ({
           <FiltrationWrapper>
             <HeaderContainer>
               {header}
-              <Flex>
-                <ButtonSC
-                  size="small"
-                  type="ghost"
-                  onClick={handleOpenAddTaskModal}
-                >
-                  <PlusSmallIcon />
-                </ButtonSC>
-              </Flex>
+              {featureToggles.dispatcherAddTask && (
+                <Flex>
+                  <ButtonSC
+                    size="small"
+                    type="ghost"
+                    onClick={handleOpenAddTaskModal}
+                  >
+                    <PlusSmallIcon />
+                  </ButtonSC>
+                </Flex>
+              )}
             </HeaderContainer>
 
             <ContentWrapper>

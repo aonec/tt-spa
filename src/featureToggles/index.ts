@@ -3,4 +3,5 @@ export const featureToggles = {
   workingRanges: false,
   services: true,
   districtsManage: true,
+  dispatcherAddTask: false,
 };
