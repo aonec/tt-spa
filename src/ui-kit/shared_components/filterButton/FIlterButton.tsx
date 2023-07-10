@@ -2,10 +2,12 @@ import { SpaceLine } from '01/shared/ui/Layout/Space/Space';
 import { Popover } from 'antd';
 import styled from 'styled-components';
 import React from 'react';
-import { ReactComponent as FilterIcon } from './assets/filterIcon.svg';
-import { ReactComponent as FilterIconBlue } from './assets/filterIconBlue.svg';
-import { ReactComponent as FilterIconTransparent } from './assets/filterIconTransparent.svg';
-import { ActiveFiltersIcon } from 'ui-kit/icons';
+import {
+  ActiveFiltersIcon,
+  FilterIcon,
+  FilterIconBlue,
+  FilterIconTransparent,
+} from 'ui-kit/icons';
 import { Loader } from 'ui-kit/Loader';
 import { StyledSquareButton } from './FilterButton.styled';
 
@@ -64,7 +66,7 @@ export const FilterButtonForMap = styled(
   }) => (
     <StyledSquareButton onClick={onClick}>
       <div>
-        {isLoading && <Loader show />}
+        <Loader show={isLoading} />
         {!isLoading &&
           (isActiveFilters ? <ActiveFiltersIcon /> : <FilterIconTransparent />)}
       </div>

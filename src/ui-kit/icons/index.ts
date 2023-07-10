@@ -75,6 +75,9 @@ import { ReactComponent as CheckMark } from './svg/checkMark.svg';
 import { ReactComponent as FileIcon } from './svg/file.svg';
 import { ReactComponent as DownloadBlueIcon } from './svg/downloadBlue.svg';
 import { ReactComponent as DocumentLargeIcon } from './svg/documentLarge.svg';
+import { ReactComponent as FilterIcon } from './svg/filterIcon.svg';
+import { ReactComponent as FilterIconBlue } from './svg/filterIconBlue.svg';
+import { ReactComponent as FilterIconTransparent } from './svg/filterIconTransparent.svg';
 
 export {
   FinishIcon,
@@ -154,4 +157,7 @@ export {
   FileIcon,
   DownloadBlueIcon,
   DocumentLargeIcon,
+  FilterIcon,
+  FilterIconBlue,
+  FilterIconTransparent,
 };
