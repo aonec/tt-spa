@@ -159,7 +159,7 @@ export function useReadingHistoryValues() {
   );
 
   const pendingHistory = useStore(
-    readingsHistoryService.outputs.fetchReadingHistoryFx.pending,
+    readingsHistoryService.outputs.$isReadingsHistoryLoading,
   );
 
   useEffect(() => {

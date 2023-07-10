@@ -79,7 +79,7 @@ export const ReadingsHistoryList: React.FC<Props> = ({
   const readingsHistory = values;
 
   const pendingHistory = useStore(
-    readingsHistoryService.outputs.fetchReadingHistoryFx.pending,
+    readingsHistoryService.outputs.$isReadingsHistoryLoading,
   );
 
   const consumptionRates = useStore(outputs.$consumptionRates);

@@ -50,6 +50,8 @@ sample({
     displayIndividualDeviceAndNamesService.inputs.handleFetchIndividualDevice,
 });
 
+const $isReadingsHistoryLoading = fetchReadingHistoryFx.pending;
+
 export const readingsHistoryService = {
   inputs: {
     openReadingsHistoryModal,
@@ -60,7 +62,7 @@ export const readingsHistoryService = {
     $isReadingsHstoryModalOpen,
     $readingsHistoryModalDeviceId,
     $readingHistory,
-    fetchReadingHistoryFx,
+    $isReadingsHistoryLoading,
     $individualDevice:
       displayIndividualDeviceAndNamesService.outputs.$individualDevice,
   },

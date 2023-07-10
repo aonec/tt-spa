@@ -1,7 +1,6 @@
 import React from 'react';
 import { getApartmentFromFullAddress } from 'utils/getApartmentFromFullAddress';
-import { DeviceDataString } from '01/features/individualDevices/switchIndividualDevice/components/DeviceDataString';
-import { DeviceStatus } from 'ui-kit/shared_components/IndividualDeviceInfo/DeviceStatus';
+import { IndividualDeviceInfo } from 'ui-kit/shared_components/IndividualDeviceInfo';
 import { HeaderProps } from './ReadingsHistoryHeader.types';
 import { Header } from './ReadingsHistoryHeader.styled';
 import { useDeviceCheckingDates } from './ReadingsHistoryHeader.utils';
@@ -17,8 +16,7 @@ export const ReadingHistoryHeader: React.FC<HeaderProps> = ({
 
   return (
     <Header>
-      <DeviceDataString />
-      <DeviceStatus isActive={individualDevice?.closingDate === null} />
+      {individualDevice && <IndividualDeviceInfo device={individualDevice} />}
       <div>{address}</div>
       <b>{checkingDates}</b>
     </Header>
