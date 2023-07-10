@@ -25,9 +25,9 @@ export const AddressSearch: FC<AddressSearchProps> = ({
 }) => {
   const next = useSwitchInputOnEnter(dataKey, false);
 
-  const autocomplete = useAutocomplete(values.street, streets);
-  const streetMatch = autocomplete?.bestMatch;
-  const options = autocomplete?.options;
+  const autocomplete = useAutocomplete(values.street || null, streets);
+  const streetMatch = autocomplete ? autocomplete.bestMatch : null;
+  const options = autocomplete ? autocomplete.options : [];
 
   function clearFields(index: number) {
     const clearingFieldsTypes = fields.slice(index, fields.length);

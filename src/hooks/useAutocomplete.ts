@@ -1,7 +1,7 @@
 import { countSimilarityPoints } from 'utils/countSimilarityPoints';
 
-export function useAutocomplete(street: string | undefined, streets: string[]) {
-  if (street === undefined) {
+export function useAutocomplete(street: string | null, streets: string[]) {
+  if (street === null) {
     return null;
   }
 

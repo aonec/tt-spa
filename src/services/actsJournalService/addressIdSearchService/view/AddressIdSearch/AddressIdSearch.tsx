@@ -33,8 +33,11 @@ export const AddressIdSearch: FC<AddressIdSearchProps> = ({
   const focusedIndex = useFocusedIndex(addressIdSearchKey);
   const isFirstFocused = focusedIndex === 0;
 
-  const autocomplete = useAutocomplete(addressFilter.Street, existingStreets);
-  const bestStreetMatch = autocomplete?.bestMatch;
+  const autocomplete = useAutocomplete(
+    addressFilter.Street || null,
+    existingStreets,
+  );
+  const bestStreetMatch = autocomplete ? autocomplete.bestMatch : null;
 
   const Popover: React.FC<{ children: string }> = ({ children }) => {
     return children ? (
@@ -73,7 +76,7 @@ export const AddressIdSearch: FC<AddressIdSearchProps> = ({
           onKeyDown={(e) => {
             fromEnter(() => {
               onEnter && onEnter(0);
-              setAddress({ Street: bestStreetMatch });
+              bestStreetMatch && setAddress({ Street: bestStreetMatch });
             })(e);
           }}
           placeholder="Улица"

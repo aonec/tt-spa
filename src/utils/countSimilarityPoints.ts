@@ -11,7 +11,7 @@ export function countSimilarityPoints(
 
   let points = 0;
 
-  if (street.indexOf(addressSearch) === 0) {
+  if (street.indexOf(addressSearch.toLowerCase()) === 0) {
     points += 1;
   }
 

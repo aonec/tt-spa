@@ -71,7 +71,7 @@ export const SearchInspectorsHousingStocks: FC<
                     if (!value) {
                       form.fields.InspectorId.reset();
                     } else {
-                      form.fields.InspectorId.onChange(value);
+                      form.fields.InspectorId.onChange(value as number);
                     }
                   }}
                   allowClear
@@ -91,7 +91,7 @@ export const SearchInspectorsHousingStocks: FC<
                     if (!value) {
                       form.fields.HouseManagement.reset();
                     } else {
-                      form.fields.HouseManagement.onChange(value);
+                      form.fields.HouseManagement.onChange(value as string);
                     }
                   }}
                   allowClear
@@ -121,7 +121,7 @@ export const SearchInspectorsHousingStocks: FC<
               showAction={['focus']}
               placeholder="Город"
               value={form.fields.City.value || undefined}
-              onChange={form.fields.City.onChange}
+              onChange={(value) => form.fields.City.onChange(value as string)}
               onFocus={() => clearValuesOnFocus(0)}
             >
               {cities &&
@@ -139,7 +139,7 @@ export const SearchInspectorsHousingStocks: FC<
               onKeyDown={(e) => {
                 fromEnter(() =>
                   form.fields.Street.onChange(
-                    form.fields.Street.value ? streetMatch : '',
+                    form.fields.Street.value ? streetMatch || '' : '',
                   ),
                 )(e);
                 fromEnter(() => {
