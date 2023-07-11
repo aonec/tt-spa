@@ -54,8 +54,8 @@ import { StatisticsProfileContainer } from 'services/statistics/statisticsProfil
 import { AddIndividualDeviceContainer } from 'services/devices/individualDevices/addIndividualDeviceService';
 import { WorkWithIndividualDeviceContainer } from 'services/devices/individualDevices/workWithIndividualDeviceService';
 import { WorkWithIndividualDeviceType } from 'services/devices/individualDevices/workWithIndividualDeviceService/workWithIndividualDeviceService.types';
-import { CreateDistrictBorderMapContainer } from 'services/settings/districtBordersService/createDistrictBorderMapService';
 import { ManageDistrictsMapContainer } from 'services/settings/districtBordersService/manageDistrictsMapService';
+import { CreateDistrictBorderMapContainer } from 'services/settings/districtBordersService/createDistrictBorderMapService';
 
 const { gates } = objectProfileService;
 
