@@ -4,7 +4,7 @@ import {
   OrganizationUserShortResponse,
 } from 'myApi';
 import { Wrapper } from './SourceName.styled';
-import { getSourceIcon, getSourceName } from './SourceName.utils';
+import { getSourceIcon, getSourceName } from '../../../../../utils/sourceIcon';
 
 export const SourceName = ({
   sourceType,

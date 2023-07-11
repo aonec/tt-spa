@@ -1,5 +1,5 @@
 import { createGate } from 'effector-react';
-import { sample, createDomain } from 'effector';
+import { sample, createDomain, combine } from 'effector';
 import { IndividualDeviceReadingsHistoryResponse } from 'myApi';
 import { EffectFailDataAxiosError } from 'types';
 import { displayIndividualDeviceAndNamesService } from 'services/devices/individualDevices/displayIndividualDeviceAndNamesService';
@@ -50,7 +50,11 @@ sample({
     displayIndividualDeviceAndNamesService.inputs.handleFetchIndividualDevice,
 });
 
-const $isReadingsHistoryLoading = fetchReadingHistoryFx.pending;
+const $isReadingsHistoryLoading = combine(
+  fetchReadingHistoryFx.pending,
+  $readingHistory,
+  (isLoading, history) => isLoading && !history,
+);
 
 export const readingsHistoryService = {
   inputs: {

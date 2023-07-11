@@ -9,7 +9,7 @@ import {
 } from './OperatorsWorkingReportTable.styled';
 import { OperatorsWorkingReportTableProps } from './OperatorsWorkingReportTable.types';
 import { sum } from 'lodash';
-import { getSourceIcon } from 'services/meters/readingsHistoryService/readingsHistoryListService/SourceName/SourceName.utils';
+import { getSourceIcon } from 'utils/sourceIcon';
 
 export const OperatorsWorkingReportTable: FC<
   OperatorsWorkingReportTableProps

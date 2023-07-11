@@ -35,10 +35,7 @@ import {
   getDateByReadingMonthSlider,
   getRateNum,
 } from './MetersInputsBlock.utils';
-import {
-  getSourceIcon,
-  getSourceName,
-} from 'services/meters/readingsHistoryService/readingsHistoryListService/SourceName/SourceName.utils';
+import { getSourceIcon, getSourceName } from 'utils/sourceIcon';
 
 export const MetersInputsBlock: FC<MetersInputsBlockProps> = ({
   resource,
