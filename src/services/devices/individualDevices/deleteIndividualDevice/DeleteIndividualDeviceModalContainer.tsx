@@ -7,17 +7,14 @@ import { deleteIndividualDeviceMutation } from './deleteIndividualDeviceService.
 const { inputs, outputs } = deleteIndividualDeviceService;
 
 export const DeleteIndividualDeviceModalContainer = () => {
-  const { isOpen, individualDevice } = useUnit({
-    isOpen: outputs.$isModalOpen,
-    individualDevice: outputs.$currentIndividualDevice,
-  });
-
-  const { closeModal, handleDelete } = useUnit({
-    closeModal: inputs.closeModal,
-    handleDelete: inputs.deleteIndividualDevice,
-  });
-
-  const { pending: isLoading } = useUnit(deleteIndividualDeviceMutation);
+  const { isOpen, individualDevice, closeModal, handleDelete, isLoading } =
+    useUnit({
+      isOpen: outputs.$isModalOpen,
+      individualDevice: outputs.$currentIndividualDevice,
+      closeModal: inputs.closeModal,
+      handleDelete: inputs.deleteIndividualDevice,
+      isLoading: deleteIndividualDeviceMutation.$pending,
+    });
 
   return (
     <Dialog

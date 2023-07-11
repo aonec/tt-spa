@@ -32,9 +32,11 @@ export const WorkWithIndividualDeviceSubmitActionContainer = () => {
   const submitBtnText = useMemo(() => {
     if (typeOfAction === WorkWithIndividualDeviceType.check) {
       return 'Поверить прибор';
-    } else if (typeOfAction === WorkWithIndividualDeviceType.reopen) {
+    }
+    if (typeOfAction === WorkWithIndividualDeviceType.reopen) {
       return 'Переоткрыть прибор';
-    } else if (typeOfAction === WorkWithIndividualDeviceType.switch) {
+    }
+    if (typeOfAction === WorkWithIndividualDeviceType.switch) {
       return 'Заменить прибор';
     }
     return 'Подвтердить';
