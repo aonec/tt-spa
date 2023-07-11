@@ -113,10 +113,10 @@ forward({
   to: addIndividualDeviceForm.fields.oldDeviceReadings.$value,
 });
 
-forward({
-  from: $individualDevice.map((values) => {
+sample({
+  clock: $individualDevice.map((values) => {
     // eslint-disable-next-line array-callback-return
-    if (!values) return;
+    if (!values) return null;
 
     const { bitDepth, scaleFactor } = getBitDepthAndScaleFactor(
       values.resource,
@@ -144,12 +144,12 @@ forward({
       ...(isSwitch ? { model: '', serialNumber: '' } : {}),
     } as any;
   }),
-  to: addIndividualDeviceForm.setForm,
+  target: addIndividualDeviceForm.setForm,
 });
 
-forward({
-  from: IndividualDeviceGate.close,
-  to: addIndividualDeviceForm.reset,
+sample({
+  clock: IndividualDeviceGate.close,
+  target: addIndividualDeviceForm.reset,
 });
 
 sample({

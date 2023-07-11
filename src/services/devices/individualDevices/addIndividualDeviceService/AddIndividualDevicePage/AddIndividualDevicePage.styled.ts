@@ -12,8 +12,6 @@ export const Title = styled.div`
   line-height: 48px;
 `;
 
-
-
 export const PageGridContainer = styled.div`
   margin-top: 20px;
   max-width: 960px;

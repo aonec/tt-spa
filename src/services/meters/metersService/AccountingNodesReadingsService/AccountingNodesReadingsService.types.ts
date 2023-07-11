@@ -2,7 +2,7 @@ import { HousingMeteringDeviceReadingsIncludingPlacementResponse } from 'myApi';
 
 export type GetElectricNodesRequestParams =
   Partial<GetElectricNodesByAddress> & {
-    HousingStockId?: number;
+    BuildingId?: number;
   };
 
 export type GetElectricNodesByAddress = {
