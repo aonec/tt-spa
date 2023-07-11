@@ -15,7 +15,7 @@ export type SearchInspectorsHousingStocksProps = {
   form: Result<{
     City: string;
     Street: string;
-    HousingStockNumber: string;
+    BuildingNumber: string;
     HouseManagement: string;
     InspectorId: number | null;
   }>;
