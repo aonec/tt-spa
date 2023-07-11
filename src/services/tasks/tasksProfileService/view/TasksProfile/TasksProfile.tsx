@@ -46,6 +46,7 @@ export const TasksProfile: FC<TasksProfileProps> = ({
   tasksPageSegment,
   setTasksPageSegment,
   handleOpenAddTaskModal,
+  isPermissionToAddTask,
 }) => {
   const history = useHistory();
   const { executingTasksCount, observingTasksCount, totalItems } =
@@ -108,7 +109,7 @@ export const TasksProfile: FC<TasksProfileProps> = ({
           <FiltrationWrapper>
             <HeaderContainer>
               {header}
-              {featureToggles.dispatcherAddTask && (
+              {featureToggles.dispatcherAddTask && isPermissionToAddTask && (
                 <Flex>
                   <ButtonSC
                     size="small"
