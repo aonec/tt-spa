@@ -84,7 +84,7 @@ const $sumOfReadings = $readingsList.map((readings) =>
 const $isLoading = fetchElectricNodesFx.pending;
 
 sample({
-  source: HousingStockIdGate.state.map(({ id }) => ({ HousingStockId: id })),
+  source: HousingStockIdGate.state.map(({ id }) => ({ BuildingId: id })),
   clock: sample({
     source: $housingStockAddress,
     clock: HousingStockIdGate.state,

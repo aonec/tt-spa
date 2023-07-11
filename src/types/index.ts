@@ -98,6 +98,7 @@ export type DistrictData = {
   type: DistrictColor;
   coordinates: number[][][];
   name: string;
+  isEditing?: boolean;
 };
 
 export type BlobResponseErrorType = {
@@ -107,4 +108,11 @@ export type BlobResponseErrorType = {
 export type DistrictAdditionalInfo = {
   districtPolygonCoordinates: number[][];
   districtColor: DistrictColor;
+};
+
+export type DistrictColorData = {
+  type: DistrictColor;
+  name: string;
+  color: string;
+  strokeColor: string;
 };

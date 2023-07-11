@@ -1,4 +1,3 @@
-import { NumberRange } from '01/shared/ui/Fields/NumberRange';
 import { Checkbox } from 'antd';
 import moment from 'moment';
 import React, { FC, useCallback, useEffect } from 'react';
@@ -12,6 +11,7 @@ import { SubscribersConsumptionExtendedSearchProps } from './SubscribersConsumpt
 import { prepareConsumptionForInput } from './SubscribersConsumptionExtendedSearch.utils';
 import { RangePicker } from 'ui-kit/RangePicker';
 import { DatePicker } from 'ui-kit/DatePicker';
+import { NumberRange } from './NumberRange';
 
 export const SubscribersConsumptionExtendedSearch: FC<
   SubscribersConsumptionExtendedSearchProps

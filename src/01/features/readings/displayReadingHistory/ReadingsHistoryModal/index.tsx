@@ -1,4 +1,3 @@
-import { ModalTT } from '01/shared/ui/ModalTT';
 import { useStore } from 'effector-react';
 import React from 'react';
 import { ReadingHistoryPage } from '..';
@@ -7,6 +6,7 @@ import {
   $readingsHistoryModalDeviceId,
   closeReadingsHistoryModal,
 } from '../models';
+import { FormModal } from 'ui-kit/Modals/FormModal';
 
 interface Props {
   readonly?: boolean;
@@ -17,17 +17,25 @@ export const ReadingsHistoryModal: React.FC<Props> = ({ readonly }) => {
   const deviceId = useStore($readingsHistoryModalDeviceId);
 
   return (
-    <ModalTT
-      width={1080}
+    <FormModal
+      formId="readings-history-modal"
+      innerModalProps={{ width: '1080' }}
       visible={open}
       title="История показаний"
       onCancel={closeReadingsHistoryModal}
       centered
-      footer={<></>}
-    >
-      {deviceId && (
-        <ReadingHistoryPage deviceId={deviceId} isModal readonly={readonly} />
-      )}
-    </ModalTT>
+      customFooter={<></>}
+      form={
+        <>
+          {deviceId && (
+            <ReadingHistoryPage
+              deviceId={deviceId}
+              isModal
+              readonly={readonly}
+            />
+          )}
+        </>
+      }
+    />
   );
 };

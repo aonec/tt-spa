@@ -32,7 +32,6 @@
     "react-router-dom": "5.2.0",
     "react-scripts": "^5.0.1",
     "react-to-print": "^2.13.0",
-    "string-similarity": "^4.0.4",
     "styled-components": "^5.2.0",
     "swagger-typescript-api": "^6.1.1",
     "typescript": "^4.9.5",
@@ -45,7 +44,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "updateTypes": "npx swagger-typescript-api -p https://fop.k8s.transparent-technology.ru/openapi/site/ttm_api.json -o ./src -n myApi.ts --axios",
+    "updateTypes": "npx swagger-typescript-api -p https://stage.k8s.transparent-technology.ru/openapi/site/ttm_api.json -o ./src -n myApi.ts --axios",
     "prepare": "husky install",
     "storybook": "start-storybook -p 6006 -s public",
     "build-storybook": "build-storybook -s public"
