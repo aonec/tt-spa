@@ -1,7 +1,6 @@
 import { createDomain, forward } from 'effector';
 import { managementFirmConsumptionRatesService } from '../managementFirmConsumptionRatesService';
 import { apartmentIndividualDevicesMetersService } from '../apartmentIndividualDevicesMetersService/apartmentIndividualDevicesMetersService.model';
-import { openConfirmReadingModal } from 'services/meters/readingsHistoryService/confirmReadingService/models';
 import {
   removeReading,
   uploadReading,
@@ -15,6 +14,7 @@ import { IndividualDeviceReadingsResponse } from 'myApi';
 import { message } from 'antd';
 import moment from 'moment';
 import { EffectFailDataAxiosError } from 'types';
+import { confirmReadingService } from '../readingsHistoryService/confirmReadingService/confirmReadingService.model';
 
 const domain = createDomain('individualDeviceMetersInputService');
 
@@ -150,7 +150,8 @@ deleteMeterFx.done.watch(({ params: { deviceId, readingDate } }) => {
 
 export const individualDeviceMetersInputService = {
   inputs: {
-    openConfirmReadingModal,
+    openConfirmReadingModal:
+      confirmReadingService.inputs.openConfirmReadingModal,
     uploadMeter,
     deleteMeter,
     uploadMeterFx,

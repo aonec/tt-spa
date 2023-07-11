@@ -5,7 +5,7 @@ import { HousesReadingsPage } from './view/HousesReadingsPage';
 import { housesReadingsService } from './HousesReadingsService.model';
 import { ReadingsHistoryContainer } from 'services/meters/readingsHistoryService/readingsHistoryService.container';
 import { useManagingFirmConsumptionRates } from 'services/meters/managementFirmConsumptionRatesService';
-import { ConfirmReadingValueModal } from 'services/meters/readingsHistoryService/confirmReadingService';
+import { ConfirmReadingValueContainer } from 'services/meters/readingsHistoryService/confirmReadingService';
 
 const { inputs, outputs, gates } = housesReadingsService;
 const { HousingStockGate, InspectorGate } = gates;
@@ -78,7 +78,7 @@ export const HousesReadingsContainer = () => {
         <InspectorGate id={housingStock.inspectorId} />
       )}
       <ReadingsHistoryContainer />
-      <ConfirmReadingValueModal />
+      <ConfirmReadingValueContainer />
       <HousesReadingsPage
         housingStock={housingStock}
         handleSearchHousingStock={handleSearchHousingStock}

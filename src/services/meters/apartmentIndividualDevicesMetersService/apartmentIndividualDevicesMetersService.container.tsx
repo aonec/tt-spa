@@ -8,7 +8,7 @@ import { useManagingFirmConsumptionRates } from '../managementFirmConsumptionRat
 import { Params } from './apartmentIndividualDevicesMetersService.types';
 import { EditReadingsHistoryContainer } from '../editReadingsHistoryService';
 import { CloseIndividualDeviceContainer } from 'services/devices/individualDevices/closeIndividualDeviceService';
-import { ConfirmReadingValueModal } from '../readingsHistoryService/confirmReadingService';
+import { ConfirmReadingValueContainer } from '../readingsHistoryService/confirmReadingService';
 
 const {
   inputs,
@@ -51,7 +51,7 @@ export const ApartmentIndividualDevicesMetersContainer: FC<Params> = ({
       )}
       <ReadingsHistoryContainer />
       <CloseIndividualDeviceContainer />
-      <ConfirmReadingValueModal />
+      <ConfirmReadingValueContainer />
       <EditReadingsHistoryContainer />
       <DeleteIndividualDeviceModalContainer />
       <ApartmentIndividualDevicesMeters

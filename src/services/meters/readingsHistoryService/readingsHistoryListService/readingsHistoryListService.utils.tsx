@@ -8,10 +8,10 @@ import {
   IndividualDeviceResponse,
 } from 'myApi';
 import moment from 'moment';
-import { openConfirmReadingModal } from '../confirmReadingService/models';
 import _, { round } from 'lodash';
 import { getMeasurementUnit } from 'services/meters/individualDeviceMetersInputService/individualDeviceMetersInputService.utils';
 import { CorrectReadingValuesValidationResult } from './readingsHistoryListService.types';
+import { confirmReadingService } from '../confirmReadingService/confirmReadingService.model';
 
 export function getNewReadingDate(month: number, year: number) {
   const date = moment(`${15}.${month}.${year}`, 'DD.MM.YYYY');
@@ -93,7 +93,7 @@ export function confirmReading(
       (elem) => !elem.validated,
     );
 
-    openConfirmReadingModal({
+    confirmReadingService.inputs.openConfirmReadingModal({
       title: (
         <>
           Введенное показание по прибору <b>{device.serialNumber}</b> (
@@ -109,7 +109,7 @@ export function confirmReading(
     return;
   }
 
-  openConfirmReadingModal({
+  confirmReadingService.inputs.openConfirmReadingModal({
     title: `${
       valueWarning?.type === 'up'
         ? `Расход ${round(

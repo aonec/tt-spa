@@ -49,7 +49,7 @@ import { apartmentService } from 'services/apartments/apartmentService/apartment
 import { displayIndividualDeviceAndNamesService } from 'services/devices/individualDevices/displayIndividualDeviceAndNamesService/displayIndividualDeviceAndNamesService.model';
 import { ArrowBottom, ArrowIconTop } from 'ui-kit/icons';
 import { readingsHistoryService } from '../readingsHistoryService.model';
-import { ConfirmReadingValueModal } from '../confirmReadingService';
+import { ConfirmReadingValueContainer } from '../confirmReadingService';
 
 const {
   outputs: { $individualDevice },
@@ -399,7 +399,7 @@ export const ReadingsHistoryList: React.FC<Props> = ({
   return (
     <Wrapper isModal={isModal}>
       <GradientLoader loading={pendingHistory} />
-      <ConfirmReadingValueModal />
+      <ConfirmReadingValueContainer />
       <TableHeader>
         {columnsNames.map((elem) => (
           <div>{elem}</div>
