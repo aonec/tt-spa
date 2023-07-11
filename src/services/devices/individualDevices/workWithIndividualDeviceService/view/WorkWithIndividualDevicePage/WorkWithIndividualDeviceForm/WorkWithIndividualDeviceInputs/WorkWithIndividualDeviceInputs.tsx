@@ -30,6 +30,7 @@ export const WorkWithIndividualDeviceInputs: FC<
   serialNumber,
   readings,
   onChange,
+  disabled = false,
 }) => {
   const [sliderIndex, setSliderIndex] = useState(0);
 
@@ -78,17 +79,18 @@ export const WorkWithIndividualDeviceInputs: FC<
           </HeaderWrapper>
           <MetersInputsBlockPure
             handleReadingInputChange={(e) =>
+              onChange &&
               onChange({
                 ...readings,
                 [sliderIndex]: {
                   ...readings?.[sliderIndex],
-                  [e.target.name]:
-                    e.target.value !== '' ? Number(e.target.value) : null,
+                  [e.target.name]: e.target.value,
                 },
               })
             }
             rateNum={getIndividualDeviceRateNumByName(rateType)}
             bufferedReadingValues={readings[sliderIndex]}
+            isDisabled={disabled}
           />
         </div>
         <div>
@@ -97,6 +99,7 @@ export const WorkWithIndividualDeviceInputs: FC<
           </MonthWrapperWithMargin>
           <MetersInputsBlockPure
             handleReadingInputChange={(e) =>
+              onChange &&
               onChange({
                 ...readings,
                 [-1]: {
@@ -109,6 +112,7 @@ export const WorkWithIndividualDeviceInputs: FC<
             rateNum={getIndividualDeviceRateNumByName(rateType)}
             bufferedReadingValues={readings[-1]}
             resource={resource || undefined}
+            isDisabled={disabled}
           />
         </div>
       </InputsWrapper>

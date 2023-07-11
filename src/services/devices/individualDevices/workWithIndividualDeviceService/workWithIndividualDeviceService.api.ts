@@ -1,6 +1,15 @@
 import { axios } from '01/axios';
-import { createQuery } from '@farfetched/core';
-import { IndividualDeviceListResponseFromDevicePagePagedList } from 'myApi';
+import { createMutation, createQuery } from '@farfetched/core';
+import { createEffect } from 'effector';
+import {
+  IndividualDeviceListResponseFromDevicePagePagedList,
+  IndividualDeviceResponse,
+} from 'myApi';
+import { EffectFailDataAxiosError } from 'types';
+import {
+  CheckIndividualDevicePayload,
+  SwitchIndividualDevicePayload,
+} from './workWithIndividualDeviceService.types';
 
 export const getSerialNumberQuery = createQuery<string, boolean>({
   handler: async (serialNumber) => {
@@ -13,4 +22,24 @@ export const getSerialNumberQuery = createQuery<string, boolean>({
 
     return Boolean((res.items || []).length);
   },
+});
+
+export const switchIndividualDeviceMutation = createMutation({
+  effect: createEffect<
+    SwitchIndividualDevicePayload,
+    IndividualDeviceResponse,
+    EffectFailDataAxiosError
+  >(({ deviceId, ...payload }) =>
+    axios.post(`IndividualDevices/${deviceId}/switch`, payload),
+  ),
+});
+
+export const checkIndividualDeviceMutation = createMutation({
+  effect: createEffect<
+    CheckIndividualDevicePayload,
+    IndividualDeviceResponse,
+    EffectFailDataAxiosError
+  >(({ deviceId, ...payload }) =>
+    axios.post(`IndividualDevices/${deviceId}/check`, payload),
+  ),
 });

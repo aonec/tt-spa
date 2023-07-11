@@ -1,4 +1,3 @@
-import './individualDevices/switchIndividualDevice/models/init';
 import './readings/displayReadingHistory/models/init';
 import './readings/readingsInput/confirmInputReadingModal/models/init';
 import '../../services/settings/inspectorsDistributionService/searchInspectorsHousingStocksService/searchInspectorsHousingStockService.init';

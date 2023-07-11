@@ -1,4 +1,3 @@
-import { Form } from 'antd';
 import styled from 'styled-components';
 
 export const FormWrapper = styled.div`
@@ -27,8 +26,4 @@ export const TextWrapper = styled.label`
   font-weight: 500;
   margin-left: 16px;
   cursor: pointer;
-`;
-
-export const FormSC = styled(Form)`
-  max-width: 800px;
 `;

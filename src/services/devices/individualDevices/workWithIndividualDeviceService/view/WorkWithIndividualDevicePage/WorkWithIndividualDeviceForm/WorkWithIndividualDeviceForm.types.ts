@@ -1,4 +1,4 @@
-import { ContractorListResponse } from 'myApi';
+import { ContractorListResponse, IndividualDeviceResponse } from 'myApi';
 import {
   WorkWithIndividualDeviceFormType,
   WorkWithIndividualDeviceType,
@@ -13,4 +13,5 @@ export type WorkWithIndividualDeviceFormProps = {
   isSerialNumberLoading: boolean;
   isSerialNumberAllreadyExist: boolean;
   models: string[] | null;
+  individualDevice: IndividualDeviceResponse;
 };

@@ -21,4 +21,14 @@ export const ModelWrapper = styled.span`
 
 export const ContentWrapper = styled.div`
   margin-top: 16px;
+  max-width: 800px;
+`;
+
+export const FooterWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 16px;
+
+  margin-top: 24px;
 `;
