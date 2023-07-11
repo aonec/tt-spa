@@ -1,0 +1,1 @@
+export { WorkWithIndividualDeviceInputs } from './WorkWithIndividualDeviceInputs';
