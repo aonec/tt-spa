@@ -22,4 +22,5 @@ export type AddIndividualDevicePageProps = {
   documents: DocumentStageForm | null;
   handleSubmitDocumentStage: (payload: DocumentStageForm) => void;
   isDocumentUploadLoading: boolean;
+  handleFetchModels: (model: string) => void;
 };

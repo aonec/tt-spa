@@ -90,6 +90,8 @@ export const addIndividualDeviceService = {
     handleFetchSerialNumberForCheck:
       displayIndividualDeviceAndNamesService.inputs
         .handleFetchSerialNumberForCheck,
+    handleFetchModels:
+      displayIndividualDeviceAndNamesService.inputs.handleFetchModels,
     handleCreateDevice,
     handleSubmitForm,
     handleSubmitDocumentStage,
@@ -118,8 +120,6 @@ export const addIndividualDeviceService = {
   gates: {
     ApartmentGate: apartmentService.gates.ApartmentGate,
     ContractorsGate: displayContractorsService.gates.ContractorsGate,
-    IndividualDevicecModelsGate:
-      displayIndividualDeviceAndNamesService.gates.IndividualDevicecModelsGate,
     IndividualDeviceMountPlacesGate:
       individualDeviceMountPlacesService.gates.IndividualDeviceMountPlacesGate,
     PageGate,

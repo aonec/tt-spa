@@ -32,11 +32,7 @@ import { useHistory, useParams } from 'react-router-dom';
 import { Button } from 'ui-kit/Button';
 
 const {
-  gates: {
-    ContractorsGate,
-    IndividualDeviceMountPlacesGate,
-    IndividualDevicecModelsGate,
-  },
+  gates: { ContractorsGate, IndividualDeviceMountPlacesGate },
 } = addIndividualDeviceService;
 
 export const BaseInfoStage: FC<BaseInfoStageProps> = ({
@@ -49,6 +45,7 @@ export const BaseInfoStage: FC<BaseInfoStageProps> = ({
   handleSubmitForm,
   apartmentId,
   formData,
+  handleFetchModels,
 }) => {
   const { values, setFieldValue, errors, handleSubmit } = useFormik({
     initialValues: {
@@ -179,8 +176,6 @@ export const BaseInfoStage: FC<BaseInfoStageProps> = ({
   const isSerialNumberAllreadyExist =
     serialNumberForChecking?.items?.[0]?.serialNumber === values.serialNumber;
 
-  const modelNameDebounced = values.model;
-
   const onChangeStartupReadings = (valueNumber: 1 | 2 | 3) => (e: any) =>
     setFieldValue(
       `startupReadings${valueNumber}`,
@@ -270,7 +265,6 @@ export const BaseInfoStage: FC<BaseInfoStageProps> = ({
 
   return (
     <Wrap>
-      <IndividualDevicecModelsGate model={modelNameDebounced} />
       <IndividualDeviceMountPlacesGate apartmentId={Number(id)} />
       <ContractorsGate />
 
@@ -300,7 +294,10 @@ export const BaseInfoStage: FC<BaseInfoStageProps> = ({
             size="large"
             value={values.model}
             placeholder="Введите модель прибора"
-            onChange={(value) => setFieldValue('model', value)}
+            onChange={(value) => {
+              setFieldValue('model', value);
+              handleFetchModels(value);
+            }}
             options={modelNames?.map((elem) => ({ value: elem })) || []}
           />
           <ErrorMessage>{errors.model}</ErrorMessage>
