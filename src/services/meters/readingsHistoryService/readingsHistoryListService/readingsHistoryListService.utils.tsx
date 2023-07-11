@@ -8,7 +8,7 @@ import {
   IndividualDeviceResponse,
 } from 'myApi';
 import moment from 'moment';
-import { openConfirmReadingModal } from '../readings/readingsInput/confirmInputReadingModal/models';
+import { openConfirmReadingModal } from '../confirmReadingService/models';
 import _, { round } from 'lodash';
 import { getMeasurementUnit } from 'services/meters/individualDeviceMetersInputService/individualDeviceMetersInputService.utils';
 import { CorrectReadingValuesValidationResult } from './readingsHistoryListService.types';

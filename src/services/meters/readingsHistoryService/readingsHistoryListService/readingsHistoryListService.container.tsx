@@ -15,7 +15,6 @@ import {
   getReadingValuesObject,
 } from '../utils';
 import { useReadingHistoryValues } from './hooks/useReadingValues';
-import { ConfirmReadingValueModal } from '../readings/readingsInput/confirmInputReadingModal';
 import {
   confirmReading,
   getActiveReadings,
@@ -50,6 +49,7 @@ import { apartmentService } from 'services/apartments/apartmentService/apartment
 import { displayIndividualDeviceAndNamesService } from 'services/devices/individualDevices/displayIndividualDeviceAndNamesService/displayIndividualDeviceAndNamesService.model';
 import { ArrowBottom, ArrowIconTop } from 'ui-kit/icons';
 import { readingsHistoryService } from '../readingsHistoryService.model';
+import { ConfirmReadingValueModal } from '../confirmReadingService';
 
 const {
   outputs: { $individualDevice },

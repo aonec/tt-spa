@@ -1,7 +1,7 @@
 import { createDomain, forward } from 'effector';
 import { managementFirmConsumptionRatesService } from '../managementFirmConsumptionRatesService';
 import { apartmentIndividualDevicesMetersService } from '../apartmentIndividualDevicesMetersService/apartmentIndividualDevicesMetersService.model';
-import { openConfirmReadingModal } from 'services/meters/readingsHistoryService/readings/readingsInput/confirmInputReadingModal/models';
+import { openConfirmReadingModal } from 'services/meters/readingsHistoryService/confirmReadingService/models';
 import {
   removeReading,
   uploadReading,

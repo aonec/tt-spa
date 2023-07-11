@@ -2,13 +2,13 @@ import React, { FC } from 'react';
 import { useEvent, useStore } from 'effector-react';
 import { DeleteIndividualDeviceModalContainer } from '01/features/individualDevices/deleteIndividualDevice/DeleteIndividualDeviceModalContainer';
 import { ReadingsHistoryContainer } from 'services/meters/readingsHistoryService/readingsHistoryService.container';
-import { ConfirmReadingValueModal } from 'services/meters/readingsHistoryService/readings/readingsInput/confirmInputReadingModal';
 import { apartmentIndividualDevicesMetersService } from './apartmentIndividualDevicesMetersService.model';
 import { ApartmentIndividualDevicesMeters } from './view/ApartmentIndividualDevicesMeters';
 import { useManagingFirmConsumptionRates } from '../managementFirmConsumptionRatesService';
 import { Params } from './apartmentIndividualDevicesMetersService.types';
 import { EditReadingsHistoryContainer } from '../editReadingsHistoryService';
 import { CloseIndividualDeviceContainer } from 'services/devices/individualDevices/closeIndividualDeviceService';
+import { ConfirmReadingValueModal } from '../readingsHistoryService/confirmReadingService';
 
 const {
   inputs,
