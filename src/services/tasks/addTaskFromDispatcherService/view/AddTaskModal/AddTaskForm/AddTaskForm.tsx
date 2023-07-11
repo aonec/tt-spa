@@ -29,7 +29,6 @@ const {
 export const AddTaskForm: FC<AddTaskFormProps> = ({
   formId,
   ERPSources,
-  leadExecutors,
   workCategories: workTypes,
   ErpObjects,
   handleCreateTask,
@@ -38,6 +37,7 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
   executors,
   handleTaskDeadlineRequest,
   taskDeadline,
+  leadExecutors,
 }) => {
   const { values, handleSubmit, setFieldValue, errors } = useFormik<AddTask>({
     initialValues: {

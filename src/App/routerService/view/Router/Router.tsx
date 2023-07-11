@@ -55,6 +55,7 @@ import { AddIndividualDeviceContainer } from 'services/devices/individualDevices
 import { CreateDistrictBorderMapContainer } from 'services/settings/districtBordersService/createDistrictBorderMap';
 import { WorkWithIndividualDeviceContainer } from 'services/devices/individualDevices/workWithIndividualDeviceService';
 import { WorkWithIndividualDeviceType } from 'services/devices/individualDevices/workWithIndividualDeviceService/workWithIndividualDeviceService.types';
+import { ManageDistrictsMapContainer } from 'services/settings/districtBordersService/manageDistrictsMapService';
 
 const { gates } = objectProfileService;
 
@@ -450,6 +451,14 @@ export const Router: FC<RouterProps> = ({ roles, isRolesLoadded }) => {
                     <Route
                       path="/districtBordersSettings/createByMap"
                       component={CreateDistrictBorderMapContainer}
+                      exact
+                    />
+                  )}
+
+                  {(isSeniorOperator || isAdministrator) && (
+                    <Route
+                      path="/districtBordersSettings/manageDistricts"
+                      component={ManageDistrictsMapContainer}
                       exact
                     />
                   )}

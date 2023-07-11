@@ -1,4 +1,3 @@
-import { ModalTT } from '01/shared/ui/ModalTT';
 import moment from 'moment';
 import React, { FC, useCallback, useMemo, useState } from 'react';
 import { MetersInputsBlockPure } from 'services/meters/individualDeviceMetersInputService/view/MetersInputsBlock/MeterInputsBlockPure';
@@ -14,6 +13,7 @@ import {
   Wrapper,
 } from './EditReadingsHistoryModal.styled';
 import { EditReadingsHistoryModalProps } from './EditReadingsHistoryModal.types';
+import { FormModal } from 'ui-kit/Modals/FormModal';
 
 export const EditReadingsHistoryModal: FC<EditReadingsHistoryModalProps> = ({
   handleCloseModal,
@@ -54,59 +54,61 @@ export const EditReadingsHistoryModal: FC<EditReadingsHistoryModalProps> = ({
     });
 
   return (
-    <ModalTT
+    <FormModal
+      formId="edit-readings-history-modal"
       title="Ввод показаний за произвольный период"
-      saveBtnText="Сохранить показание"
       onCancel={handleCloseModal}
+      submitBtnText="Сохранить показание"
       onSubmit={editReadings}
       visible={isOpen}
-    >
-      <>
-        <Header>
-          <div className="device-info">Информация о приборе</div>
-          <MonthSliderWrapper>
-            <ArrowContainer onClick={downMonth}>
-              <ChevronIcon />
-            </ArrowContainer>
-            <DatePickerSC
-              value={moment(readingDate, ReadingDateFormat)}
-              format="MMMM YYYY"
-              picker="month"
-              isActive={isActive}
-              onOpenChange={(isOpen) => setIsActive(isOpen)}
-              inputReadOnly
-              bordered={false}
-              onChange={(date) => {
-                const selectedMonth = date
-                  ?.startOf('month')
-                  .format(ReadingDateFormat);
-                const currentDate = moment()
-                  .startOf('month')
-                  .format(ReadingDateFormat);
-                setReadingDate(selectedMonth || currentDate);
-              }}
-              disabledDate={(month) => {
-                const currentMonth = moment().startOf('month');
-                const selectedMonth = month.startOf('month');
-                const diff = currentMonth.diff(selectedMonth, 'month');
-                return diff < 0;
-              }}
+      form={
+        <>
+          <Header>
+            <div className="device-info">Информация о приборе</div>
+            <MonthSliderWrapper>
+              <ArrowContainer onClick={downMonth}>
+                <ChevronIcon />
+              </ArrowContainer>
+              <DatePickerSC
+                value={moment(readingDate, ReadingDateFormat)}
+                format="MMMM YYYY"
+                picker="month"
+                isActive={isActive}
+                onOpenChange={(isOpen) => setIsActive(isOpen)}
+                inputReadOnly
+                bordered={false}
+                onChange={(date) => {
+                  const selectedMonth = date
+                    ?.startOf('month')
+                    .format(ReadingDateFormat);
+                  const currentDate = moment()
+                    .startOf('month')
+                    .format(ReadingDateFormat);
+                  setReadingDate(selectedMonth || currentDate);
+                }}
+                disabledDate={(month) => {
+                  const currentMonth = moment().startOf('month');
+                  const selectedMonth = month.startOf('month');
+                  const diff = currentMonth.diff(selectedMonth, 'month');
+                  return diff < 0;
+                }}
+              />
+              <ArrowContainer onClick={upMonth} isDisabled={!isCanUp}>
+                <ChevronIcon className="right-chevron" />
+              </ArrowContainer>
+            </MonthSliderWrapper>
+          </Header>
+          <Wrapper>
+            <IndividualDeviceInfoExtended device={device} />
+            <MetersInputsBlockPure
+              resource={resource}
+              rateNum={rateNum}
+              bufferedReadingValues={readings}
+              handleReadingInputChange={handleChangeReadingValues}
             />
-            <ArrowContainer onClick={upMonth} isDisabled={!isCanUp}>
-              <ChevronIcon className="right-chevron" />
-            </ArrowContainer>
-          </MonthSliderWrapper>
-        </Header>
-        <Wrapper>
-          <IndividualDeviceInfoExtended device={device} />
-          <MetersInputsBlockPure
-            resource={resource}
-            rateNum={rateNum}
-            bufferedReadingValues={readings}
-            handleReadingInputChange={handleChangeReadingValues}
-          />
-        </Wrapper>
-      </>
-    </ModalTT>
+          </Wrapper>
+        </>
+      }
+    />
   );
 };
