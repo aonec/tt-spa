@@ -1,5 +1,5 @@
 import './individualDevices/switchIndividualDevice/models/init';
-import '../../services/meters/readingsHistoryService/readingsHistoryListService/readings/readingsInput/confirmInputReadingModal/models/init';
+import '../../services/meters/readingsHistoryService/readings/readingsInput/confirmInputReadingModal/models/init';
 import './individualDevices/deleteIndividualDevice/deleteIndividualDeviceService.init';
 import '../../services/settings/inspectorsDistributionService/searchInspectorsHousingStocksService/searchInspectorsHousingStockService.init';
 import '../../services/settings/inspectorsDistributionService/displayInspectorsHousingStocksService/displayInspectorsHousingStocksService.init';

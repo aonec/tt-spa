@@ -3,7 +3,7 @@ import { Input } from 'antd';
 import React, { useRef, useEffect, useState, useMemo } from 'react';
 import styled from 'styled-components';
 import { getFilledArray } from 'utils/getFilledArray';
-import { RequestStatusShared } from '../hooks/useReadingValues';
+import { RequestStatusShared } from './hooks/useReadingValues';
 
 interface Props {
   values?: (string | null)[];

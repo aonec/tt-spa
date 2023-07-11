@@ -1,9 +1,9 @@
 import { useParams } from 'react-router-dom';
-import { createReading } from '../../../../01/_api/readings';
+import { createReading } from '../../../../../01/_api/readings';
 import {
   IndividualDeviceReadingsHistoryResponse,
   IndividualDeviceReadingsCreateRequest,
-} from '../../../../myApi';
+} from '../../../../../myApi';
 import { useStore } from 'effector-react';
 import { useCallback, useEffect, useState } from 'react';
 import axios from '01/axios';
@@ -11,7 +11,7 @@ import moment from 'moment';
 import _ from 'lodash/fp';
 import { EffectFailDataAxiosError } from 'types';
 import { message } from 'antd';
-import { readingsHistoryService } from '../readingsHistoryService.model';
+import { readingsHistoryService } from '../../readingsHistoryService.model';
 
 export type RequestStatusShared = 'pending' | 'done' | 'failed' | null;
 

@@ -6,7 +6,7 @@ import {
   IndividualDeviceReadingsCreateRequest,
 } from 'myApi';
 import React, { useCallback, useMemo } from 'react';
-import { useOpenedYears } from '../hooks/useOpenedYears';
+import { useOpenedYears } from './hooks/useOpenedYears';
 import { RenderReadingFields } from './ReadingFields';
 import { SourceName } from './SourceIcon';
 import {
@@ -14,8 +14,8 @@ import {
   getReadingValuesArray,
   getReadingValuesObject,
 } from '../utils';
-import { useReadingHistoryValues } from '../hooks/useReadingValues';
-import { ConfirmReadingValueModal } from './readings/readingsInput/confirmInputReadingModal';
+import { useReadingHistoryValues } from './hooks/useReadingValues';
+import { ConfirmReadingValueModal } from '../readings/readingsInput/confirmInputReadingModal';
 import {
   confirmReading,
   getActiveReadings,
