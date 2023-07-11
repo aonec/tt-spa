@@ -1,10 +1,5 @@
 import React from 'react';
-import { Flex } from '01/shared/ui/Layout/Flex';
-import {
-  EIndividualDeviceReadingsSource,
-  OrganizationUserShortResponse,
-} from 'myApi';
-import { Space } from '01/shared/ui/Layout/Space/Space';
+import { EIndividualDeviceReadingsSource } from 'myApi';
 import {
   TelegramIcon,
   DeviceIcon,
@@ -47,29 +42,4 @@ export const getSourceName = (
   }[source];
 
   return name;
-};
-
-export const SourceName = ({
-  sourceType,
-  user,
-}: {
-  sourceType: EIndividualDeviceReadingsSource;
-  user?: OrganizationUserShortResponse | null;
-}) => {
-  const userName = user?.name;
-
-  const icon = getSourceIcon(sourceType);
-  const name = getSourceName(sourceType, userName);
-
-  return (
-    <Flex>
-      {icon && (
-        <>
-          {icon}
-          <Space />
-        </>
-      )}
-      {name}
-    </Flex>
-  );
 };

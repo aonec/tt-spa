@@ -8,7 +8,7 @@ import {
 import React, { useCallback, useMemo } from 'react';
 import { useOpenedYears } from './hooks/useOpenedYears';
 import { RenderReadingFields } from './ReadingFields';
-import { SourceName } from './SourceIcon';
+import { SourceName } from './SourceName/SourceName';
 import {
   getMonthName,
   getReadingValuesArray,
@@ -26,7 +26,6 @@ import {
 import {
   ArrowButton,
   ArrowButtonBlock,
-  GradientLoader,
   Month,
   PreviousReading,
   TableHeader,
@@ -50,6 +49,7 @@ import { displayIndividualDeviceAndNamesService } from 'services/devices/individ
 import { ArrowBottom, ArrowIconTop } from 'ui-kit/icons';
 import { readingsHistoryService } from '../readingsHistoryService.model';
 import { ConfirmReadingValueContainer } from '../confirmReadingService';
+import { WithLoader } from 'ui-kit/shared_components/WithLoader';
 
 const {
   outputs: { $individualDevice },
@@ -397,23 +397,24 @@ export const ReadingsHistoryList: React.FC<Props> = ({
   );
 
   return (
-    <Wrapper isModal={isModal}>
-      <GradientLoader loading={pendingHistory} />
-      <ConfirmReadingValueContainer />
-      <TableHeader>
-        {columnsNames.map((elem) => (
-          <div>{elem}</div>
-        ))}
-      </TableHeader>
-      {values?.yearReadings?.map((yearReading, index) =>
-        renderYear({
-          ...yearReading,
-          prevMonths:
-            values?.yearReadings &&
-            values?.yearReadings[index + 1]?.monthReadings,
-        }),
-      )}
-    </Wrapper>
+    <WithLoader isLoading={pendingHistory}>
+      <Wrapper isModal={isModal}>
+        <ConfirmReadingValueContainer />
+        <TableHeader>
+          {columnsNames.map((elem) => (
+            <div>{elem}</div>
+          ))}
+        </TableHeader>
+        {values?.yearReadings?.map((yearReading, index) =>
+          renderYear({
+            ...yearReading,
+            prevMonths:
+              values?.yearReadings &&
+              values?.yearReadings[index + 1]?.monthReadings,
+          }),
+        )}
+      </Wrapper>
+    </WithLoader>
   );
 };
 

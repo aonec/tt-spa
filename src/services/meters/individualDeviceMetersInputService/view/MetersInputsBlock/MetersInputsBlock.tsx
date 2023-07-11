@@ -1,7 +1,3 @@
-import {
-  getSourceIcon,
-  getSourceName,
-} from 'services/meters/readingsHistoryService/readingsHistoryListService/SourceIcon';
 import { fromEnter } from 'ui-kit/shared_components/DatePickerNative';
 import { Tooltip } from 'antd';
 import React, {
@@ -39,6 +35,10 @@ import {
   getDateByReadingMonthSlider,
   getRateNum,
 } from './MetersInputsBlock.utils';
+import {
+  getSourceIcon,
+  getSourceName,
+} from 'services/meters/readingsHistoryService/readingsHistoryListService/SourceName/SourceName.utils';
 
 export const MetersInputsBlock: FC<MetersInputsBlockProps> = ({
   resource,
