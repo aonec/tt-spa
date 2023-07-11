@@ -1,5 +1,4 @@
 import { UserIcon } from 'ui-kit/icons';
-import { NavLink } from 'react-router-dom';
 import styled from 'styled-components';
 import { Skeleton } from 'antd';
 
@@ -18,7 +17,7 @@ export const UserEmailWrapper = styled.div`
   align-items: center;
 `;
 
-export const UserEmail = styled(NavLink)`
+export const UserEmail = styled.div`
   margin-left: 15px;
   font-weight: bold;
   width: 145px;
@@ -27,10 +26,6 @@ export const UserEmail = styled(NavLink)`
   white-space: nowrap;
   color: #272f5a;
   transition: 0.2s;
-
-  &:hover {
-    color: #189ee9;
-  }
 `;
 
 export const UserManagingFirmName = styled.div`
