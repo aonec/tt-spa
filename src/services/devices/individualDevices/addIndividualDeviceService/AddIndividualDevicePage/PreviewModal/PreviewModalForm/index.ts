@@ -1,1 +1,1 @@
-export { PreviewModalForm } from './PreviewModalForm'
+export { PreviewModalForm } from './PreviewModalForm';

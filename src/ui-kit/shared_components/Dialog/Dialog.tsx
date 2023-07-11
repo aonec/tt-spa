@@ -39,6 +39,7 @@ export const Dialog: FC<DialogProps> = ({
       onCancel={onCancel}
       width={800}
       zIndex={zIndex}
+      centered
       footer={
         footer || (
           <FooterWrapper>

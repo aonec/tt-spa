@@ -1,5 +1,4 @@
 import { Flex } from '01/shared/ui/Layout/Flex';
-import { ModalTT } from '01/shared/ui/ModalTT';
 import { useStore } from 'effector-react';
 import React from 'react';
 import {
@@ -11,6 +10,7 @@ import {
 import { ExclamationCircle } from 'react-bootstrap-icons';
 import { Space } from '01/shared/ui/Layout/Space/Space';
 import styled from 'styled-components';
+import { FormModal } from 'ui-kit/Modals/FormModal';
 
 export const ConfirmReadingValueModal: React.FC = () => {
   const visible = useStore($isConfirmReadingInputModalOpen);
@@ -25,15 +25,15 @@ export const ConfirmReadingValueModal: React.FC = () => {
   );
 
   return (
-    <ModalTT
+    <FormModal
+      formId="confirm-reading-value-modal"
       visible={visible}
       title={header}
       centered
       onCancel={executeCancelReadingCallback}
       onSubmit={executeConfirmReadingCallback}
-    >
-      <TextWrap>{title}</TextWrap>
-    </ModalTT>
+      form={<TextWrap>{title}</TextWrap>}
+    />
   );
 };
 

@@ -6,6 +6,7 @@ import { Props } from './printApartmentDevicesCertificateService.types';
 import { FormModal } from 'ui-kit/Modals/FormModal';
 import ReactToPrint from 'react-to-print';
 import { Button } from 'ui-kit/Button';
+import { WithLoader } from 'ui-kit/shared_components/WithLoader';
 
 const { inputs, outputs, gates } = printApartmentDevicesCertificateService;
 const { HomeownerCerificateGate } = gates;
@@ -43,13 +44,13 @@ export const PrintApartmentDevicesCertificateContainer: FC<Props> = ({
           />
         }
         form={
-          <>
+          <WithLoader isLoading={isLoading}>
             {homeownerCertificate && !isLoading && (
               <div style={{ marginBottom: 70 }} ref={certificateRef}>
                 <Certificate certificate={homeownerCertificate} />
               </div>
             )}
-          </>
+          </WithLoader>
         }
       />
     </>
