@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 import { useEvent, useStore } from 'effector-react';
 import { DeleteIndividualDeviceModalContainer } from '01/features/individualDevices/deleteIndividualDevice/DeleteIndividualDeviceModalContainer';
 import { ReadingsHistoryContainer } from 'services/meters/readingsHistoryService/readingsHistoryService.container';
-import { ConfirmReadingValueModal } from 'services/meters/readingsHistoryService/components/readings/readingsInput/confirmInputReadingModal';
+import { ConfirmReadingValueModal } from 'services/meters/readingsHistoryService/readingsHistoryListService/readings/readingsInput/confirmInputReadingModal';
 import { apartmentIndividualDevicesMetersService } from './apartmentIndividualDevicesMetersService.model';
 import { ApartmentIndividualDevicesMeters } from './view/ApartmentIndividualDevicesMeters';
 import { useManagingFirmConsumptionRates } from '../managementFirmConsumptionRatesService';

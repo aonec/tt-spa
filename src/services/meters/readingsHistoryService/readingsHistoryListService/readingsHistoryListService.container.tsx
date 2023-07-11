@@ -23,7 +23,7 @@ import {
   getPreviousReadingByHistory,
   getRecentlyReplacedAccount,
   validateReadings,
-} from './displayReadingHistory.utils';
+} from './readingsHistoryListService.utils';
 import {
   ArrowButton,
   ArrowButtonBlock,
@@ -33,8 +33,8 @@ import {
   TableHeader,
   Wrapper,
   Year,
-} from './displayReadingHistory.styled';
-import { RenderReading } from './displayReadingHistory.types';
+} from './readingsHistoryListService.styled';
+import { RenderReading } from './readingsHistoryListService.types';
 import {
   managementFirmConsumptionRatesService,
   useManagingFirmConsumptionRates,

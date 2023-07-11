@@ -3,7 +3,7 @@ import { useHistory, useParams } from 'react-router-dom';
 import { AccountingNodesReadings } from './view/AccountingNodesReadings';
 import { AccountingNodesReadingsService } from './AccountingNodesReadingsService.model';
 import { useUnit } from 'effector-react';
-import { ConfirmReadingValueModal } from 'services/meters/readingsHistoryService/components/readings/readingsInput/confirmInputReadingModal';
+import { ConfirmReadingValueModal } from 'services/meters/readingsHistoryService/readingsHistoryListService/readings/readingsInput/confirmInputReadingModal';
 
 const { inputs, outputs, gates } = AccountingNodesReadingsService;
 const { HousingStockIdGate } = gates;

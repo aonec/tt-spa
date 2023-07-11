@@ -11,7 +11,7 @@ import moment from 'moment';
 import { openConfirmReadingModal } from './readings/readingsInput/confirmInputReadingModal/models';
 import _, { round } from 'lodash';
 import { getMeasurementUnit } from 'services/meters/individualDeviceMetersInputService/individualDeviceMetersInputService.utils';
-import { CorrectReadingValuesValidationResult } from './displayReadingHistory.types';
+import { CorrectReadingValuesValidationResult } from './readingsHistoryListService.types';
 
 export function getNewReadingDate(month: number, year: number) {
   const date = moment(`${15}.${month}.${year}`, 'DD.MM.YYYY');
