@@ -1,10 +1,10 @@
-import { ModalTT } from '01/shared/ui/ModalTT';
 import { useEvent, useStore } from 'effector-react';
 import React, { FC, useEffect } from 'react';
 import { exportSubscribersConsumptionService } from './exportSubscribersConsumptionService.model';
 import { TextWrapper } from './exportSubscribersConsumptionService.styled';
 import { ExportSubscribersConsumptionContainerProps } from './exportSubscribersConsumptionService.types';
 import { Input } from 'ui-kit/Input';
+import { FormModal } from 'ui-kit/Modals/FormModal';
 
 const { inputs, outputs } = exportSubscribersConsumptionService;
 
@@ -29,20 +29,24 @@ export const ExportSubscribersConsumptionContainer: FC<
   }, [filter, setFilter]);
 
   return (
-    <ModalTT
+    <FormModal
+      formId="export-subscribers-consumption-container"
       visible={isOpen}
       title="Выгрузить список квартир"
       onCancel={() => closeModal()}
-      saveBtnText={buttonText}
+      submitBtnText={buttonText}
       onSubmit={() => handleExportStatistic()}
       disabled={isButtonDisabled}
-    >
-      <TextWrapper>Название списка</TextWrapper>
-      <Input
-        small
-        value={fileName || undefined}
-        onChange={(e) => setFileName(e.target.value)}
-      />
-    </ModalTT>
+      form={
+        <>
+          <TextWrapper>Название списка</TextWrapper>
+          <Input
+            small
+            value={fileName || undefined}
+            onChange={(e) => setFileName(e.target.value)}
+          />
+        </>
+      }
+    />
   );
 };

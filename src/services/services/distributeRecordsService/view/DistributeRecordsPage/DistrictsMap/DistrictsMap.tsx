@@ -4,13 +4,8 @@ import { DistrictData } from 'types';
 import { MapWrapper } from './DistrictsMap.styled';
 import { Props } from './DistrictsMap.types';
 import { useYMaps } from 'hooks/ymaps/useYMaps';
-import {
-  useRenderDistricts,
-  useRenderPlacemarks,
-  useRenderTextPlacemarks,
-} from 'hooks/ymaps/utils';
+import { useRenderDistricts, useRenderPlacemarks } from 'hooks/ymaps/utils';
 import { getPayloadFromDistricts } from 'utils/districtsData';
-import { findPolygonCenter } from 'utils/findPolygonCenter';
 import { prepareAppointments } from './DistrictsMap.utils';
 import warningPlacemark from 'hooks/ymaps/placemarks/warningPlacemark.svg';
 import warningInactivePlacemark from 'hooks/ymaps/placemarks/warningInactivePlacemark.svg';
@@ -42,30 +37,30 @@ export const DistrictsMap: FC<Props> = ({
   }, [districtsList, selectedDistrict]);
 
   const districtsDataList: DistrictData[] = useMemo(() => {
-    return getPayloadFromDistricts(filteredDistrictsList).map((elem) => ({
-      ...elem,
-      onClick: handleSelectDistrict,
-    }));
-  }, [filteredDistrictsList, handleSelectDistrict]);
-
-  useRenderDistricts(map, districtsDataList);
-
-  const districtTitles = useMemo(() => {
-    if (selectedDistrict) return [];
-
     return getPayloadFromDistricts(filteredDistrictsList).map((elem) => {
       const districtAppointmentsCounting = appointmentsCounting?.[elem.id];
-
       const count = districtAppointmentsCounting?.notDistributed || 0;
 
+      const isShowName = selectedDistrict !== elem.id;
+
+      const name = isShowName
+        ? `${elem.name} ${count ? `(${count})` : ''}`
+        : '';
+
       return {
-        text: `${elem.name} ${count ? `(${count})` : ''}`,
-        coords: findPolygonCenter(elem.coordinates[0]),
+        ...elem,
+        name,
+        onClick: handleSelectDistrict,
       };
     });
-  }, [filteredDistrictsList, selectedDistrict, appointmentsCounting]);
+  }, [
+    appointmentsCounting,
+    filteredDistrictsList,
+    handleSelectDistrict,
+    selectedDistrict,
+  ]);
 
-  useRenderTextPlacemarks(map, districtTitles);
+  useRenderDistricts(map, districtsDataList);
 
   const preparedAppointments = useMemo(
     () =>

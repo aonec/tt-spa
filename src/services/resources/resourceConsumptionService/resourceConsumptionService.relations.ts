@@ -16,7 +16,7 @@ sample({
   fn: (oldFilter, addresses) => {
     return {
       ...oldFilter,
-      HousingStockIds: (addresses || []).map((address) => address.id),
+      BuildingIds: (addresses || []).map((address) => address.id),
     };
   },
   target: resourceConsumptionFilterService.inputs.setFilter,
@@ -62,7 +62,7 @@ sample({
     Boolean(
       filter?.From &&
         filter?.To &&
-        filter?.HousingStockIds?.length &&
+        filter?.BuildingIds?.length &&
         filter?.ResourceType,
     ),
   target: resourceConsumptionService.inputs.getSummaryConsumptions,
@@ -75,7 +75,7 @@ sample({
     (filter, ResourceType) => ({ ...filter, ResourceType }),
   ),
   filter: (filter): filter is ConsumptionDataPayload =>
-    Boolean(filter?.From && filter?.To && filter?.HousingStockIds?.length),
+    Boolean(filter?.From && filter?.To && filter?.BuildingIds?.length),
   target: resourceConsumptionService.inputs.getConsumptionData,
 });
 
@@ -86,14 +86,14 @@ sample({
     (filter, ResourceType) => ({
       ...filter,
       ResourceType,
-      HousingStockIds: filter?.AdditionalHousingStockIds,
+      BuildingIds: filter?.AdditionalHousingStockIds,
     }),
   ),
   filter: (filter): filter is ConsumptionDataPayload =>
     Boolean(
       filter?.From &&
         filter?.To &&
-        filter?.HousingStockIds?.length &&
+        filter?.BuildingIds?.length &&
         filter?.ResourceType,
     ),
   target: resourceConsumptionService.inputs.getAdditionalConsumptionData,

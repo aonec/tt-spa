@@ -1,7 +1,7 @@
 import React from 'react';
 import { useEvent, useStore } from 'effector-react';
-import { ModalTT } from '01/shared/ui/ModalTT';
 import { removeNodeCalculatorConnectionService } from './removeConnectionService.models';
+import { FormModal } from 'ui-kit/Modals/FormModal';
 
 const { inputs, outputs } = removeNodeCalculatorConnectionService;
 
@@ -13,17 +13,22 @@ export const RemoveConnectionConfirmModalContainer = () => {
   const removeConnection = useEvent(inputs.removeConnection);
 
   return (
-    <ModalTT
+    <FormModal
+      formId=""
       visible={isConfirmModalOpen}
       title="Вы действительно хотите удалить вычислитель?"
-      saveBtnText="Удалить"
-      saveButtonType="danger"
+      submitBtnText="Удалить"
+      submitButtonType="danger"
       onCancel={() => closeConfirmationModal()}
       loading={isLoading}
       onSubmit={() => removeConnection()}
-    >
-      Вчислитель останется в системе, но будет отключен от узла. Без вычислителя
-      приборы узла не будут опрашиваться в автоматическом режиме.
-    </ModalTT>
+      form={
+        <>
+          Вычислитель останется в системе, но будет отключен от узла. Без
+          вычислителя приборы узла не будут опрашиваться в автоматическом
+          режиме.
+        </>
+      }
+    />
   );
 };
