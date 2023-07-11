@@ -16,13 +16,15 @@ import {
 import { EffectFailDataAxiosError } from 'types';
 import { createEffect } from 'effector';
 
-export const districtsQuery = createQuery<void, DistrictResponse[]>({
+export const districtsQuery = createQuery<void, DistrictResponse[] | null>({
   handler: async () => {
     const districts: DistrictResponse[] = await axios.get(
       'IndividualSeal/Districts',
     );
 
-    return districts;
+    if (!districts) return null;
+
+    return districts.reverse();
   },
 });
 

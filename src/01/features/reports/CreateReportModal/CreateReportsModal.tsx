@@ -1,6 +1,6 @@
-import { ModalTT } from '01/shared/ui/ModalTT';
 import React, { FC } from 'react';
 import { CreateReportFormContainer } from './CreateReportForm/CreateReportFormContainer';
+import { FormModal } from 'ui-kit/Modals/FormModal';
 
 interface Props {
   isOpen: boolean;
@@ -16,14 +16,14 @@ export const CreateReportModal: FC<Props> = ({
   loading,
 }) => {
   return (
-    <ModalTT
+    <FormModal
+      formId="create-report-modal"
       title="Создание отчёта"
       visible={isOpen}
       onCancel={onHide}
       onSubmit={onSave}
       loading={loading}
-    >
-      <CreateReportFormContainer />
-    </ModalTT>
+      form={<CreateReportFormContainer />}
+    />
   );
 };

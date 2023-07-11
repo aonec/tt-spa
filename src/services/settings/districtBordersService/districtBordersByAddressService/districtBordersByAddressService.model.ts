@@ -10,9 +10,10 @@ import {
   FetchAddressQueryType,
   FilterType,
 } from './districtBordersByAddressService.types';
-import { CreateDistrictBorderByMapService } from '../CreateDistrictBorderByMapService';
 import { createGate } from 'effector-react';
 import { addHousingStocksToChecked } from './districtBordersByAddressService.utils';
+import { createDistrictBorderMapService } from '../createDistrictBorderMapService/createDistrictBorderMapService.models';
+import { existingHousingStocksQuery } from '../createDistrictBorderMapService/createDistrictBorderMapService.api';
 
 const domain = createDomain('districtBordersByAddressService');
 
@@ -21,11 +22,9 @@ const DistrictBordersByAddressPageGate = createGate();
 const pageResetter = domain.createEvent();
 
 const handleOpenDistrictEditer = domain.createEvent();
-const handleCloseDistrictEditer =
-  CreateDistrictBorderByMapService.inputs.handleCloseDistrictEditer;
 
-const handleCallEditByMap =
-  CreateDistrictBorderByMapService.inputs.setSelectedHousingStocksIds;
+// fix
+const handleCloseDistrictEditer = domain.createEvent();
 
 const setPoligon = domain.createEvent<{
   housingStockIds: number[];
@@ -33,8 +32,6 @@ const setPoligon = domain.createEvent<{
 }>();
 
 const handleFetchAddress = domain.createEvent<FetchAddressQueryType>();
-const handleFetchHousingStocksList =
-  CreateDistrictBorderByMapService.inputs.handleFetchHousingStocksList;
 
 const setFilter = domain.createEvent<FilterType>();
 
@@ -82,13 +79,6 @@ sample({
 });
 
 sample({
-  clock: fetchAddressFx.doneData,
-  source: $filter,
-  fn: (data) => ({ City: data?.city }),
-  target: handleFetchHousingStocksList,
-});
-
-sample({
   clock: DistrictBordersByAddressPageGate.close,
   source: $onEditingInMap,
   filter: (inMap) => {
@@ -98,9 +88,14 @@ sample({
 });
 
 sample({
+  clock: DistrictBordersByAddressPageGate.open,
+  target: existingHousingStocksQuery.start,
+});
+
+sample({
   clock: handleOpenDistrictEditer,
   source: $checkedHousingStockIdsAndPoligon,
-  target: handleCallEditByMap,
+  target: createDistrictBorderMapService.inputs.setDistrictPayload,
 });
 
 export const districtBordersByAddressService = {
@@ -114,8 +109,6 @@ export const districtBordersByAddressService = {
   outputs: {
     $addresses,
     $filter,
-    $housingStocksWithCoordinates:
-      CreateDistrictBorderByMapService.outputs.$housingStocks,
     $checkedhousingStockIdsWithStreet,
   },
   gates: { DistrictBordersByAddressPageGate },

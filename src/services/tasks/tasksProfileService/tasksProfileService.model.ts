@@ -24,6 +24,7 @@ import {
 } from './tasksProfileService.types';
 import { TasksPageSegment } from './view/TasksProfile/TasksProfile.types';
 import { addressSearchService } from 'services/addressSearchService/addressSearchService.models';
+import { addTaskFromDispatcherService } from '../addTaskFromDispatcherService';
 
 const domain = createDomain('tasksProfileService');
 
@@ -191,6 +192,7 @@ export const tasksProfileService = {
     clearFilters,
     clearAddress,
     setTasksPageSegment,
+    handleOpenAddTaskModal: addTaskFromDispatcherService.inputs.handleOpenModal,
   },
   outputs: {
     $taskTypes,

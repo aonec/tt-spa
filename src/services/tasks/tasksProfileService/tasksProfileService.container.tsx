@@ -14,6 +14,7 @@ import { TasksProfile } from './view/TasksProfile';
 import queryString from 'query-string';
 import { addressSearchService } from 'services/addressSearchService/addressSearchService.models';
 import { TaskTypesGate } from '../taskTypesService/taskTypesService.model';
+import { AddTaskFromDispatcherContainer } from '../addTaskFromDispatcherService';
 
 const { ExistingCitiesGate } = addressSearchService.gates;
 const { inputs, outputs, gates } = tasksProfileService;
@@ -46,6 +47,7 @@ export const TasksProfileContainer = () => {
   const clearFilters = useEvent(inputs.clearFilters);
   const clearAddress = useEvent(inputs.clearAddress);
   const setTasksPageSegment = useEvent(inputs.setTasksPageSegment);
+  const handleOpenAddTaskModal = useEvent(inputs.handleOpenAddTaskModal);
 
   const {
     apartmentId,
@@ -147,6 +149,7 @@ export const TasksProfileContainer = () => {
       )}
       <ExistingCitiesGate />
       <TaskTypesGate />
+      <AddTaskFromDispatcherContainer />
       <TasksProfile
         handleExportTasksList={() => handleExportTasksList()}
         grouptype={grouptype}
@@ -167,6 +170,7 @@ export const TasksProfileContainer = () => {
         isSpectator={isSpectator}
         tasksPageSegment={tasksPageSegment}
         setTasksPageSegment={setTasksPageSegment}
+        handleOpenAddTaskModal={handleOpenAddTaskModal}
       />
     </>
   );
