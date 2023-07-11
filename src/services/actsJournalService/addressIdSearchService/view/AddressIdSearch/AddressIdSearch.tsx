@@ -1,4 +1,3 @@
-import { useAutocomplete } from '01/hooks/useFilter';
 import { useStore } from 'effector-react';
 import React, { FC } from 'react';
 import { CheckLg, XLg } from 'react-bootstrap-icons';
@@ -14,6 +13,7 @@ import { useFocusedIndex } from './AddressIdSearch.hooks';
 import { fromEnter } from 'ui-kit/shared_components/DatePickerNative';
 import { SearchIcon } from 'ui-kit/icons';
 import { addressSearchService } from 'services/addressSearchService/addressSearchService.models';
+import { useAutocomplete } from 'hooks/useAutocomplete';
 
 const addressIdSearchKey = 'address-id-search';
 
@@ -33,10 +33,11 @@ export const AddressIdSearch: FC<AddressIdSearchProps> = ({
   const focusedIndex = useFocusedIndex(addressIdSearchKey);
   const isFirstFocused = focusedIndex === 0;
 
-  const { bestMatch: bestStreetMatch } = useAutocomplete(
-    addressFilter.Street,
+  const autocomplete = useAutocomplete(
+    addressFilter.Street || null,
     existingStreets,
   );
+  const bestStreetMatch = autocomplete ? autocomplete.bestMatch : null;
 
   const Popover: React.FC<{ children: string }> = ({ children }) => {
     return children ? (
@@ -75,12 +76,14 @@ export const AddressIdSearch: FC<AddressIdSearchProps> = ({
           onKeyDown={(e) => {
             fromEnter(() => {
               onEnter && onEnter(0);
-              setAddress({ Street: bestStreetMatch });
+              bestStreetMatch && setAddress({ Street: bestStreetMatch });
             })(e);
           }}
           placeholder="Улица"
         />
-        {isFirstFocused && <Popover>{bestStreetMatch}</Popover>}
+        {isFirstFocused && bestStreetMatch && (
+          <Popover>{bestStreetMatch}</Popover>
+        )}
       </PopoverWrapper>
 
       <PopoverWrapper>

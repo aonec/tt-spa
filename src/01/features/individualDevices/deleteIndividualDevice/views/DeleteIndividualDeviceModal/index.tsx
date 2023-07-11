@@ -1,6 +1,6 @@
 import React from 'react';
-import { ModalTT } from '01/shared/ui/ModalTT';
 import { IndividualDeviceListItemResponse } from 'myApi';
+import { FormModal } from 'ui-kit/Modals/FormModal';
 
 type Props = {
   visible: boolean;
@@ -18,17 +18,21 @@ export const DeleteIndividualDeviceModal: React.FC<Props> = ({
   loading,
 }) => {
   return (
-    <ModalTT
+    <FormModal
+      formId="delete-individual-device-modal"
       title={`Вы действительно хотите удалить прибор ${device?.serialNumber} (${device?.model})?`}
       visible={visible}
-      saveButtonType="danger"
-      saveBtnText="Удалить прибор"
+      submitButtonType="danger"
+      submitBtnText="Удалить прибор"
       onCancel={handleClose}
       onSubmit={handleDelete}
       loading={loading}
-    >
-      Прибор будет навсегда удален из системы. Показания по прибору не будут
-      приниматься.
-    </ModalTT>
+      form={
+        <>
+          Прибор будет навсегда удален из системы. Показания по прибору не будут
+          приниматься.
+        </>
+      }
+    />
   );
 };
