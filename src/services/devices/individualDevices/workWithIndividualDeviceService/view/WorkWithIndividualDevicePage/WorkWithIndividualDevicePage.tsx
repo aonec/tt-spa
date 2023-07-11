@@ -29,7 +29,6 @@ export const WorkWithIndividualDevicePage: FC<
   isSerialNumberLoading,
   handleFetchModels,
   models,
-  handleSubmitAction,
 }) => {
   const history = useHistory();
 
@@ -65,6 +64,7 @@ export const WorkWithIndividualDevicePage: FC<
               isSerialNumberLoading={isSerialNumberLoading}
               handleFetchModels={handleFetchModels}
               models={models}
+              individualDevice={individualDevice}
             />
             <FooterWrapper>
               <Button type="ghost" onClick={history.goBack}>

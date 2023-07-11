@@ -14,5 +14,4 @@ export type WorkWithIndividualDevicePageProps = {
   isSerialNumberLoading: boolean;
   isSerialNumberAllreadyExist: boolean;
   models: string[] | null;
-  handleSubmitAction: () => void;
 };

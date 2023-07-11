@@ -30,6 +30,11 @@ import { Loader } from 'ui-kit/Loader';
 import { AutoComplete } from 'ui-kit/AutoComplete';
 import { WorkWithIndividualDeviceInputs } from './WorkWithIndividualDeviceInputs';
 import { Form } from 'antd';
+import { SpaceLine } from '01/shared/ui/Layout/Space/Space';
+import {
+  NewIndividualDeviceTitleLookup,
+  OldIndividualDeviceTitleLookup,
+} from './WorkWithIndividualDeviceForm.constants';
 
 const { IndividualDeviceMountPlacesGate } =
   individualDeviceMountPlacesService.gates;
@@ -45,6 +50,7 @@ export const WorkWithIndividualDeviceForm: FC<
   isSerialNumberLoading,
   handleFetchModels,
   models,
+  individualDevice,
 }) => {
   const { id } = useParams<{ id: string }>();
 
@@ -271,6 +277,8 @@ export const WorkWithIndividualDeviceForm: FC<
         </>
       )}
 
+      {!isCheck && <SpaceLine />}
+
       <FormWrapper>
         <FormItem label="Дата последней поверки прибора">
           <DatePickerNative
@@ -327,23 +335,19 @@ export const WorkWithIndividualDeviceForm: FC<
         </FormItem>
       </FormWrapper>
 
+      <SpaceLine />
+
       {!isCheck && (
         <WorkWithIndividualDeviceInputs
-          model={fields.model.value}
-          resource={fields.resource.value}
-          serialNumber={fields.serialNumber.value}
-          rateType={fields.rateType.value}
+          model={individualDevice.model || ''}
+          resource={individualDevice.resource}
+          serialNumber={individualDevice.serialNumber || ''}
+          rateType={individualDevice.rateType}
           readings={fields.oldDeviceReadings.value}
           onChange={(readings) => {
             fields.oldDeviceReadings.onChange(readings);
           }}
-          title={
-            isSwitch
-              ? 'Заменяемый прибор'
-              : isReopen
-              ? 'Прибор до переоткрытия'
-              : ''
-          }
+          title={OldIndividualDeviceTitleLookup[type]}
         />
       )}
 
@@ -354,21 +358,16 @@ export const WorkWithIndividualDeviceForm: FC<
         rateType={fields.rateType.value}
         readings={fields.newDeviceReadings.value}
         onChange={(readings) => fields.newDeviceReadings.onChange(readings)}
-        title={
-          isSwitch
-            ? 'Новый прибор'
-            : isCheck
-            ? 'Прибор после поверки'
-            : isReopen
-            ? 'Прибор после переоткрытия'
-            : ''
-        }
+        title={NewIndividualDeviceTitleLookup[type]}
       />
       <ErrorMessage>
         {fields.newDeviceReadings.errorText({
           required: 'Введите хотя бы одно показание',
+          validReadings: 'Введенное показание не может быть меньше предыдущего',
         })}
       </ErrorMessage>
+
+      <SpaceLine />
 
       <FormWrapper>
         <FormItem label="Пломба">

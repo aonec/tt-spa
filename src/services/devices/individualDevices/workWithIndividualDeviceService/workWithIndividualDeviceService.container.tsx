@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useEffect } from 'react';
 import { WorkWithIndividualDeviceContainerProps } from './workWithIndividualDeviceService.types';
 import { useParams } from 'react-router';
 import { workWithIndividualDeviceService } from './workWithIndividualDeviceService.model';
@@ -8,6 +8,8 @@ import { WorkWithIndividualDevicePage } from './view/WorkWithIndividualDevicePag
 import { displayContractorsService } from 'services/contractors/displayContractorsService';
 import { getSerialNumberQuery } from './workWithIndividualDeviceService.api';
 import { displayIndividualDeviceAndNamesService } from '../displayIndividualDeviceAndNamesService';
+import { WorkWithIndividualDeviceSubmitActionContainer } from './workWithIndividualDeviceSubmitActionService';
+import { useHistory } from 'react-router-dom';
 
 const { gates, inputs, outputs, forms } = workWithIndividualDeviceService;
 const { WorkWithIndividualDeviceGate, IndividualDeviceGate } = gates;
@@ -17,6 +19,7 @@ export const WorkWithIndividualDeviceContainer: FC<
   WorkWithIndividualDeviceContainerProps
 > = ({ type }) => {
   const { deviceId } = useParams<{ deviceId: string }>();
+  const history = useHistory();
 
   const {
     individualDevice,
@@ -25,7 +28,6 @@ export const WorkWithIndividualDeviceContainer: FC<
     handleFetchSerialNumberForCheck,
     handleFetchModels,
     models,
-    handleSubmitAction,
   } = useUnit({
     individualDevice: outputs.$individualDevice,
     isDeviceLoading: outputs.$isDeviceLoading,
@@ -35,17 +37,21 @@ export const WorkWithIndividualDeviceContainer: FC<
       displayIndividualDeviceAndNamesService.inputs.handleFetchModels,
     models:
       displayIndividualDeviceAndNamesService.outputs.$individualDevicesNames,
-    handleSubmitAction: inputs.submitAction,
   });
 
   const { data: isSerialNumberAllreadyExist, pending: isSerialNumberLoading } =
     useUnit(getSerialNumberQuery);
+
+  useEffect(() => {
+    return inputs.actionSucceed.watch(history.goBack).unsubscribe;
+  }, [history]);
 
   return (
     <>
       <WorkWithIndividualDeviceGate type={type} />
       <IndividualDeviceGate id={Number(deviceId)} />
       <ContractorsGate />
+      <WorkWithIndividualDeviceSubmitActionContainer />
       <WithLoader isLoading={isDeviceLoading}>
         <WorkWithIndividualDevicePage
           individualDevice={individualDevice}
@@ -57,7 +63,6 @@ export const WorkWithIndividualDeviceContainer: FC<
           isSerialNumberAllreadyExist={isSerialNumberAllreadyExist || false}
           isSerialNumberLoading={isSerialNumberLoading}
           models={models}
-          handleSubmitAction={handleSubmitAction}
         />
       </WithLoader>
     </>
