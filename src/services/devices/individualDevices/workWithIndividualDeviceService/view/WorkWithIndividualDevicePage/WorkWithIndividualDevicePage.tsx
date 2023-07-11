@@ -4,6 +4,7 @@ import { GoBack } from 'ui-kit/shared_components/GoBack';
 import {
   ContentWrapper,
   DeviceInfoWrapper,
+  FooterWrapper,
   ModelWrapper,
   PageHeaderSC,
   SerialNumberWrapper,
@@ -13,6 +14,8 @@ import { Empty } from 'antd';
 import { getApartmentFromFullAddress } from 'utils/getApartmentFromFullAddress';
 import { ResourceIconLookup } from 'ui-kit/shared_components/ResourceIconLookup';
 import { WorkWithIndividualDeviceForm } from './WorkWithIndividualDeviceForm';
+import { useHistory } from 'react-router-dom';
+import { Button } from 'ui-kit/Button';
 
 export const WorkWithIndividualDevicePage: FC<
   WorkWithIndividualDevicePageProps
@@ -27,6 +30,8 @@ export const WorkWithIndividualDevicePage: FC<
   handleFetchModels,
   models,
 }) => {
+  const history = useHistory();
+
   return (
     <>
       <GoBack />
@@ -59,7 +64,14 @@ export const WorkWithIndividualDevicePage: FC<
               isSerialNumberLoading={isSerialNumberLoading}
               handleFetchModels={handleFetchModels}
               models={models}
+              individualDevice={individualDevice}
             />
+            <FooterWrapper>
+              <Button type="ghost" onClick={history.goBack}>
+                Отмена
+              </Button>
+              <Button onClick={() => form.submit()}>Далее</Button>
+            </FooterWrapper>
           </ContentWrapper>
         </>
       )}
