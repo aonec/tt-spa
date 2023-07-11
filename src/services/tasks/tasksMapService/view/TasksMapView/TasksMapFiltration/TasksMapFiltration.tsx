@@ -1,7 +1,6 @@
 import React, { FC, useState } from 'react';
 import { ChevronUp } from 'react-bootstrap-icons';
 import { SearchIcon } from 'ui-kit/icons';
-import { FilterButton } from '01/shared/ui/Fields';
 import {
   CloseIconSC,
   ExtendedFiltration,
@@ -29,6 +28,7 @@ import { Radio, Space } from 'antd';
 import { HousingStockTasks } from './HousingStockTasks';
 import { Select } from 'ui-kit/Select';
 import { HideExtendedSearchButton } from 'ui-kit/ExtendedSearch/ExtendedSearch.styled';
+import { FilterButtonForMap } from 'ui-kit/shared_components/filterButton/FIlterButton';
 
 export const TasksMapFiltration: FC<TasksMapFiltrationProps> = ({
   taskTypes,
@@ -70,7 +70,7 @@ export const TasksMapFiltration: FC<TasksMapFiltrationProps> = ({
       {!isOpen && (
         <>
           <FilterHeader>
-            <FilterButton
+            <FilterButtonForMap
               isLoading={isLoadingHousingStocksWithTasks}
               onClick={() => setIsOpen(true)}
               isActiveFilters={[

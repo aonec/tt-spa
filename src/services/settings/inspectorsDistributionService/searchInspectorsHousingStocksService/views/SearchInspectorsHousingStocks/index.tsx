@@ -1,15 +1,18 @@
 import { ExtendedSearch } from 'ui-kit/ExtendedSearch';
-import { Grid } from '01/shared/ui/Layout/Grid';
-import { useAutocomplete } from '01/hooks/useFilter';
 import { Form } from 'antd';
 import React, { FC } from 'react';
-import { ExtendedSearchWrap, Wrap } from './components';
 import { SearchInspectorsHousingStocksProps } from './types';
 import { Select } from 'ui-kit/Select';
 import { Input } from 'ui-kit/Input';
 import { AutoComplete } from 'ui-kit/AutoComplete';
 import { fromEnter } from 'ui-kit/shared_components/DatePickerNative';
 import { useSwitchInputOnEnter } from 'hooks/useSwitchInputOnEnter';
+import { useAutocomplete } from 'hooks/useAutocomplete';
+import {
+  ExtendedSearchWrap,
+  GridContainer,
+  Wrap,
+} from './SearchInspectorsHousingStocks.styled';
 
 const dataKey = 'search-inspectors-housing-stocks-input';
 
@@ -30,10 +33,9 @@ export const SearchInspectorsHousingStocks: FC<
 }) => {
   const street = form.fields.Street.value;
 
-  const { match: streetMatch, options } = useAutocomplete(
-    street,
-    existingStreets,
-  );
+  const autocomplete = useAutocomplete(street, existingStreets || []);
+  const streetMatch = autocomplete?.bestMatch;
+  const options = autocomplete?.options;
 
   const next = useSwitchInputOnEnter(dataKey, false);
 
@@ -69,7 +71,7 @@ export const SearchInspectorsHousingStocks: FC<
                     if (!value) {
                       form.fields.InspectorId.reset();
                     } else {
-                      form.fields.InspectorId.onChange(value);
+                      form.fields.InspectorId.onChange(value as number);
                     }
                   }}
                   allowClear
@@ -89,7 +91,7 @@ export const SearchInspectorsHousingStocks: FC<
                     if (!value) {
                       form.fields.HouseManagement.reset();
                     } else {
-                      form.fields.HouseManagement.onChange(value);
+                      form.fields.HouseManagement.onChange(value as string);
                     }
                   }}
                   allowClear
@@ -108,7 +110,7 @@ export const SearchInspectorsHousingStocks: FC<
             </ExtendedSearchWrap>
           }
         >
-          <Grid temp="0.5fr 1fr 0.25fr" gap="15px" style={{ width: '100%' }}>
+          <GridContainer>
             <Select
               small
               data-reading-input={dataKey}
@@ -119,7 +121,7 @@ export const SearchInspectorsHousingStocks: FC<
               showAction={['focus']}
               placeholder="Город"
               value={form.fields.City.value || undefined}
-              onChange={form.fields.City.onChange}
+              onChange={(value) => form.fields.City.onChange(value as string)}
               onFocus={() => clearValuesOnFocus(0)}
             >
               {cities &&
@@ -137,7 +139,7 @@ export const SearchInspectorsHousingStocks: FC<
               onKeyDown={(e) => {
                 fromEnter(() =>
                   form.fields.Street.onChange(
-                    form.fields.Street.value ? streetMatch : '',
+                    form.fields.Street.value ? streetMatch || '' : '',
                   ),
                 )(e);
                 fromEnter(() => {
@@ -163,7 +165,7 @@ export const SearchInspectorsHousingStocks: FC<
                 handleSearch();
               })}
             />
-          </Grid>
+          </GridContainer>
         </ExtendedSearch>
       </Wrap>
     </>

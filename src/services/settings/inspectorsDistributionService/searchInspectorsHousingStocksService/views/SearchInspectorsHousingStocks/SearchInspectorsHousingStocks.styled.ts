@@ -10,3 +10,10 @@ export const ExtendedSearchWrap = styled.div`
   max-width: 600px;
   grid-gap: 15px;
 `;
+
+export const GridContainer = styled.div`
+  display: grid;
+  grid-template-columns: 0.5fr 1fr 0.25fr;
+  grid-gap: 15px;
+  width: 100%;
+`;

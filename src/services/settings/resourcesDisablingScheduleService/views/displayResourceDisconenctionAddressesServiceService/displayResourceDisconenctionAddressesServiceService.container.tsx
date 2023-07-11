@@ -1,9 +1,9 @@
-import { ModalTT } from '01/shared/ui/ModalTT';
 import { useEvent, useStore } from 'effector-react';
 import React, { useMemo } from 'react';
 import { displayResourceDisconenctionAddressesServiceService } from './displayResourceDisconenctionAddressesServiceService.model';
 import { AddressesList } from './views/AddressesList';
 import { DisconnectionAddressesModalTitle } from './views/DisconnectionAddressesModalTitle';
+import { FormModal } from 'ui-kit/Modals/FormModal';
 
 const { inputs, outputs } = displayResourceDisconenctionAddressesServiceService;
 
@@ -23,13 +23,13 @@ export const DisplayResourceDisconenctionAddressesServiceContainer = () => {
   }, [disconnection]);
 
   return (
-    <ModalTT
+    <FormModal
+      formId="display-resource-disconenction-addresses-service"
       title={titleComponent}
       visible={isModalOpen}
       onCancel={() => closeModal()}
-      footer={null}
-    >
-      <AddressesList streets={streets} />
-    </ModalTT>
+      customFooter={<></>}
+      form={<AddressesList streets={streets} />}
+    />
   );
 };

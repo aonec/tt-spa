@@ -4,7 +4,7 @@ import {
 } from './addressSearchService.api';
 import { createDomain, sample } from 'effector';
 import { createGate } from 'effector-react';
-import { GetExistingSteetRequestParams } from '01/_api/existingStreets';
+import { GetExistingSteetRequestParams } from './addressSearchService.types';
 
 const domain = createDomain('addressSearchService');
 

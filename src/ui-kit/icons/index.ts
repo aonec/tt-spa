@@ -76,6 +76,9 @@ import { ReactComponent as PlusSmallIcon } from './svg/plusSmall.svg';
 import { ReactComponent as FileIcon } from './svg/file.svg';
 import { ReactComponent as DownloadBlueIcon } from './svg/downloadBlue.svg';
 import { ReactComponent as DocumentLargeIcon } from './svg/documentLarge.svg';
+import { ReactComponent as FilterIcon } from './svg/filterIcon.svg';
+import { ReactComponent as FilterIconBlue } from './svg/filterIconBlue.svg';
+import { ReactComponent as FilterIconTransparent } from './svg/filterIconTransparent.svg';
 import { ReactComponent as MapPaperIcon } from './svg/mapPaper.svg';
 
 export {
@@ -157,5 +160,8 @@ export {
   FileIcon,
   DownloadBlueIcon,
   DocumentLargeIcon,
+  FilterIcon,
+  FilterIconBlue,
+  FilterIconTransparent,
   MapPaperIcon,
 };
