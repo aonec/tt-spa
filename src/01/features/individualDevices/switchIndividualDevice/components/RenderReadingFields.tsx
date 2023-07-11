@@ -1,8 +1,8 @@
-import { RequestStatusShared } from 'services/meters/readingsHistoryService/readingsHistoryListService/hooks/useReadingValues';
 import { Flex } from '01/shared/ui/Layout/Flex';
 import { Space } from '01/shared/ui/Layout/Space/Space';
 import { Input } from 'antd';
 import React, { useRef } from 'react';
+import { RequestStatusShared } from 'services/meters/readingsHistoryService/readingsHistoryListService/readingsHistoryListService.types';
 import styled from 'styled-components';
 
 interface Props {

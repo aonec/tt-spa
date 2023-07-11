@@ -1,6 +1,10 @@
 import { ReactElement } from 'react';
 import { IndividualDeviceReadingsItemHistoryResponse } from 'myApi';
 
+export type ReadingsHistoryContainerProps = {
+  readonly?: boolean;
+};
+
 export type RenderReading = {
   reading?: IndividualDeviceReadingsItemHistoryResponse;
   isFirst?: boolean;
@@ -11,7 +15,8 @@ export type RenderReading = {
   isHasArchived: boolean;
   prevReading?: IndividualDeviceReadingsItemHistoryResponse | null;
 };
-export interface CorrectReadingValuesValidationResult {
+
+export type CorrectReadingValuesValidationResult = {
   validated: boolean;
   valuesValidationResults?: {
     type: 'up' | 'down' | null;
@@ -22,4 +27,6 @@ export interface CorrectReadingValuesValidationResult {
     prevValue: number;
   }[];
   limit?: number;
-}
+};
+
+export type RequestStatusShared = 'pending' | 'done' | 'failed' | null;

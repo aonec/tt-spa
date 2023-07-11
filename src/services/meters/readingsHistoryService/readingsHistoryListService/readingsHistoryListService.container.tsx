@@ -6,7 +6,6 @@ import {
   IndividualDeviceReadingsCreateRequest,
 } from 'myApi';
 import React, { useCallback, useMemo } from 'react';
-import { useOpenedYears } from './hooks/useOpenedYears';
 import { RenderReadingFields } from './ReadingFields';
 import { SourceName } from './SourceName/SourceName';
 import {
@@ -14,7 +13,6 @@ import {
   getReadingValuesArray,
   getReadingValuesObject,
 } from '../utils';
-import { useReadingHistoryValues } from './hooks/useReadingValues';
 import {
   confirmReading,
   getActiveReadings,
@@ -32,7 +30,10 @@ import {
   Wrapper,
   Year,
 } from './readingsHistoryListService.styled';
-import { RenderReading } from './readingsHistoryListService.types';
+import {
+  ReadingsHistoryContainerProps,
+  RenderReading,
+} from './readingsHistoryListService.types';
 import {
   managementFirmConsumptionRatesService,
   useManagingFirmConsumptionRates,
@@ -50,21 +51,20 @@ import { ArrowBottom, ArrowIconTop } from 'ui-kit/icons';
 import { readingsHistoryService } from '../readingsHistoryService.model';
 import { ConfirmReadingValueContainer } from '../confirmReadingService';
 import { WithLoader } from 'ui-kit/shared_components/WithLoader';
+import {
+  useOpenedYears,
+  useReadingHistoryValues,
+} from './readingsHistoryListService.hook';
 
 const {
   outputs: { $individualDevice },
 } = displayIndividualDeviceAndNamesService;
-interface Props {
-  isModal?: boolean;
-  readonly?: boolean;
-}
 
 const { outputs, inputs } = managementFirmConsumptionRatesService;
 
-export const ReadingsHistoryList: React.FC<Props> = ({
-  isModal = true,
-  readonly,
-}) => {
+type NewType = React.FC<ReadingsHistoryContainerProps>;
+
+export const ReadingsHistoryList: NewType = ({ readonly }) => {
   const {
     values,
     setFieldValue,
@@ -398,7 +398,7 @@ export const ReadingsHistoryList: React.FC<Props> = ({
 
   return (
     <WithLoader isLoading={pendingHistory}>
-      <Wrapper isModal={isModal}>
+      <Wrapper>
         <ConfirmReadingValueContainer />
         <TableHeader>
           {columnsNames.map((elem) => (

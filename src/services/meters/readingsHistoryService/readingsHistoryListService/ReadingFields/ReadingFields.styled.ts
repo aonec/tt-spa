@@ -1,6 +1,6 @@
-import styled from 'styled-components';
-import { RequestStatusShared } from '../hooks/useReadingValues';
 import { Input } from 'antd';
+import styled from 'styled-components';
+import { RequestStatusShared } from '../readingsHistoryListService.types';
 
 export const Prefix = styled.span`
   color: lightgray;

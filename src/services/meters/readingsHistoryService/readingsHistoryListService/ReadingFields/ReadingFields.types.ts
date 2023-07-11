@@ -1,4 +1,4 @@
-import { RequestStatusShared } from '../hooks/useReadingValues';
+import { RequestStatusShared } from '../readingsHistoryListService.types';
 
 export type ReadingFieldsProps = {
   values?: (string | null)[];
