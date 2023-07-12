@@ -12,6 +12,10 @@ import {
 } from './AddressStreetGroup.styled';
 import { AddressStreetGroupProps } from './AddressStreetGroup.types';
 import { HousingStockNumber } from './HousingStockNumber';
+import {
+  sortStickyBodyAddress,
+  splitStringByLetter,
+} from './AddressStreetGroup.utils';
 
 export const AddressStreetGroup: FC<AddressStreetGroupProps> = ({
   address,
@@ -23,6 +27,9 @@ export const AddressStreetGroup: FC<AddressStreetGroupProps> = ({
   const [isChecked, setCheck] = useState(false);
 
   const street = address.street;
+
+  // const sortedAddresses = sortStickyBodyAddress(address.addresses);
+  console.log(address.addresses)
 
   const housingStockIds =
     address.addresses?.map((address) => address.buildingId) || [];
