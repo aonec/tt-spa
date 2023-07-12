@@ -8,9 +8,6 @@ export const ObjectsList: FC<ObjectsListProps> = ({
   isLoading,
   housingStocks,
 }) => {
-
-  console.log(housingStocks)
-
   const housingStocksList = useMemo(() => {
     return housingStocks?.map((housingStock) => (
       <HousingStockItem key={housingStock.id} housingStock={housingStock} />

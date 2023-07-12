@@ -43,7 +43,6 @@ export const AddressSearch: FC<AddressSearchProps> = ({
       placeholder="Город"
       onKeyDown={fromEnter(() => next(index))}
       data-reading-input={dataKey}
-      // showAction={['focus']}
       onChange={(value) => {
         handleChange(SearchFieldType.City, value.toString());
 
