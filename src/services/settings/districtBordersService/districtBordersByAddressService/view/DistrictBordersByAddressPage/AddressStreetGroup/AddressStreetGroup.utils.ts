@@ -1,7 +1,8 @@
 import { AddressShortResponse } from 'myApi';
 import { ModifiedAddressShortResponse } from './AddressStreetGroup.types';
 
-export function splitStringByLetter(address: AddressShortResponse) {
+//разбивает строку на число и буквы
+function splitStringByLetter(address: AddressShortResponse) {
   const string = address.number;
 
   if (string === null) {
@@ -19,6 +20,7 @@ export function splitStringByLetter(address: AddressShortResponse) {
   return { ...address, number: [number, letter] };
 }
 
+// сортирует по номеру и буквам, потом обратно "склеевает" в одну строку
 function sortArray(addresses: ModifiedAddressShortResponse) {
   addresses.sort((a, b) => {
     const numComparison = parseInt(a.number[0]) - parseInt(b.number[0]);
@@ -34,6 +36,7 @@ function sortArray(addresses: ModifiedAddressShortResponse) {
   });
 }
 
+// возвращает отсортированный массив адресов путем очерёдного вызова вышепредставленных функций
 export const sortStickyBodyAddress = (
   addresses: AddressShortResponse[] | null,
 ) => {
