@@ -1,9 +1,13 @@
-import _ from 'lodash';
 import { AddressShortResponse } from 'myApi';
+import { ModifiedAddressShortResponse } from './AddressStreetGroup.types';
 
 export function splitStringByLetter(address: AddressShortResponse) {
   const string = address.number;
-  
+
+  if (string === null) {
+    return null;
+  }
+
   const regex = /[а-яА-Яa-zA-Z]+/;
   const startLetterIndex = string.search(regex);
   if (startLetterIndex === -1) {
@@ -15,23 +19,19 @@ export function splitStringByLetter(address: AddressShortResponse) {
   return { ...address, number: [number, letter] };
 }
 
-function sortArray(
-  addresses: ({
-    number: string[];
-    housingStockId: number;
-    buildingId: number;
-    housingStockNumber: string | null;
-    housingStockCorpus: string | null;
-    corpus: string | null;
-  })[],
-) {
-        addresses.sort((a, b) => {
-    const numComparison = parseInt(a?.number[0]) - parseInt(b?.number[0]);
-    const letterComparison = (a?.number[1] || '').localeCompare(b?.number[1] || '');
+function sortArray(addresses: ModifiedAddressShortResponse) {
+  addresses.sort((a, b) => {
+    const numComparison = parseInt(a.number[0]) - parseInt(b.number[0]);
+    const letterComparison = (a.number[1] || '').localeCompare(
+      b.number[1] || '',
+    );
     return numComparison !== 0 ? numComparison : letterComparison;
   });
 
-  return arr.map((subarray) => subarray.join(''));
+  return addresses.map((address) => {
+    const joinedNumber = address.number.join('');
+    return { ...address, number: joinedNumber };
+  });
 }
 
 export const sortStickyBodyAddress = (
@@ -41,11 +41,15 @@ export const sortStickyBodyAddress = (
     return [];
   }
 
-  const splitedAddressesArr = addresses.map((address) => {
-    return splitStringByLetter(address);
-  });
+  const filteredAddresses = addresses.filter(Boolean);
+
+  const splitedAddressesArr = filteredAddresses
+    .map((address) => {
+      return splitStringByLetter(address);
+    })
+    .filter(Boolean) as ModifiedAddressShortResponse;
 
   const sortedFlatArray = sortArray(splitedAddressesArr);
 
-  //   return sortedFlatArray;
+  return sortedFlatArray;
 };
