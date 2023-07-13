@@ -1,5 +1,3 @@
-import './individualDevices/switchIndividualDevice/models/init';
-import './individualDevices/deleteIndividualDevice/deleteIndividualDeviceService.init';
 import '../../services/settings/inspectorsDistributionService/searchInspectorsHousingStocksService/searchInspectorsHousingStockService.init';
 import '../../services/settings/inspectorsDistributionService/displayInspectorsHousingStocksService/displayInspectorsHousingStocksService.init';
 import '../../services/settings/inspectorsDistributionService/displayInspectorsHousingStocksService/inspectorHousingStockService/inspectorHousingStockService.init';

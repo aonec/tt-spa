@@ -26,7 +26,7 @@ export const StatisticProfile: FC<StatisticProfileProps> = ({
           hidden: !Boolean(housingStockId),
           title: 'Выгрузить список квартир',
           onClick: () => {
-            const { HousingStockNumber, Street } = housingStockAddress;
+            const { BuildingNumber, Street } = housingStockAddress;
 
             if (!housingStockId) {
               return null;
@@ -34,8 +34,8 @@ export const StatisticProfile: FC<StatisticProfileProps> = ({
 
             handleOpenExportStatisticModal(housingStockId);
 
-            if (HousingStockNumber && Street) {
-              setFileName(`${Street}_${HousingStockNumber}`);
+            if (BuildingNumber && Street) {
+              setFileName(`${Street}_${BuildingNumber}`);
             } else {
               setFileName('');
             }

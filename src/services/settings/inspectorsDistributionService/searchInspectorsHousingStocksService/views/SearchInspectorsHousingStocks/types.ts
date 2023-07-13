@@ -1,7 +1,7 @@
+import { Result } from 'effector-forms';
 import { GuidStringDictionaryItem, InspectorResponse } from 'myApi';
 
 export type SearchInspectorsHousingStocksProps = {
-  form: any;
   cities: string[] | null;
   existingStreets: string[] | null;
   isExtendedSearchOpen: boolean;
@@ -12,4 +12,11 @@ export type SearchInspectorsHousingStocksProps = {
   handleSearch: () => void;
   handleApplyFilters: () => void;
   handleClearExtendedSearchValues: () => void;
+  form: Result<{
+    City: string;
+    Street: string;
+    BuildingNumber: string;
+    HouseManagement: string;
+    InspectorId: number | null;
+  }>;
 };

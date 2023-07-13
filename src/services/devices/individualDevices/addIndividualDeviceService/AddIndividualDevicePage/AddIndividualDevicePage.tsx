@@ -29,6 +29,7 @@ export const AddIndividualDevicePage: FC<AddIndividualDevicePageProps> = ({
   documents,
   handleSubmitDocumentStage,
   isDocumentUploadLoading,
+  handleFetchModels,
 }) => {
   const { id } = useParams<{ id: string }>();
   const { Step } = Steps;
@@ -58,6 +59,7 @@ export const AddIndividualDevicePage: FC<AddIndividualDevicePageProps> = ({
               handleSubmitForm={handleSubmitForm}
               apartmentId={apartmentId}
               formData={formData}
+              handleFetchModels={handleFetchModels}
             />
           )}
           {stageNumber === 2 && (

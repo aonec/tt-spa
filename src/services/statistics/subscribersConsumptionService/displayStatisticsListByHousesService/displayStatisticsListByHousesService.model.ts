@@ -69,7 +69,7 @@ sample({
 sample({
   clock: $housingStockAddress,
   filter: (address): address is HousingStockAddressForm =>
-    Boolean(address.City && address.Street && address.HousingStockNumber),
+    Boolean(address.City && address.Street && address.BuildingNumber),
   target: getHousingStockIdFx,
 });
 

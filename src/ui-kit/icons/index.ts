@@ -82,6 +82,9 @@ import { ReactComponent as BankIcon } from './svg/bank.svg';
 import { ReactComponent as ArchiveIcon } from './svg/archive.svg';
 import { ReactComponent as ArrowIconTop } from './svg/arrow.svg';
 import { ReactComponent as ArrowBottom } from './svg/arrowBottom.svg';
+import { ReactComponent as FilterIcon } from './svg/filterIcon.svg';
+import { ReactComponent as FilterIconBlue } from './svg/filterIconBlue.svg';
+import { ReactComponent as FilterIconTransparent } from './svg/filterIconTransparent.svg';
 import { ReactComponent as MapPaperIcon } from './svg/mapPaper.svg';
 
 export {
@@ -169,5 +172,8 @@ export {
   ArchiveIcon,
   ArrowIconTop,
   ArrowBottom,
+  FilterIcon,
+  FilterIconBlue,
+  FilterIconTransparent,
   MapPaperIcon,
 };

@@ -3,6 +3,7 @@ import {
   CustomTemplateType,
   SearchFieldType,
 } from './view/AddressSearch/AddressSearch.types';
+import { EOrderByRule } from 'myApi';
 
 export type AddressSearchContainerProps = {
   fields: SearchFieldType[];
@@ -12,4 +13,12 @@ export type AddressSearchContainerProps = {
   showLabels?: boolean;
   disabledFields?: SearchFieldType[];
   onChange?: (key: string, value: string) => void;
+};
+
+export type GetExistingSteetRequestParams = {
+  Street?: string | null;
+  City?: string | null;
+  PageNumber?: number;
+  PageSize?: number;
+  OrderBy?: EOrderByRule;
 };
