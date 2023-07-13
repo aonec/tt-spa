@@ -61,7 +61,7 @@ export const SearchHousingStock: FC<SearchHousingStockProps> = ({
           initialValues={{
             city: housingStockAddress.City,
             street: housingStockAddress.Street,
-            house: housingStockAddress.HousingStockNumber,
+            house: housingStockAddress.BuildingNumber,
             corpus: housingStockAddress.Corpus,
           }}
           fields={[
@@ -78,7 +78,7 @@ export const SearchHousingStock: FC<SearchHousingStockProps> = ({
 
             setHousingStockAddress({
               City: city,
-              HousingStockNumber: house,
+              BuildingNumber: house,
               Street: street,
               Corpus: corpus,
             });

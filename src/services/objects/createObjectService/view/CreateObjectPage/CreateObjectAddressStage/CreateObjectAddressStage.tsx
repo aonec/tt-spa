@@ -113,7 +113,6 @@ export const CreateObjectAddressStage: FC<CreateObjectAddressStageProps> = ({
           <ItemGridWrapper>
             <FormItem label="Номер дома">
               <Input
-                type="number"
                 placeholder="Введите"
                 value={values.house || undefined}
                 onChange={(value) => setFieldValue('house', value.target.value)}
@@ -169,7 +168,6 @@ export const CreateObjectAddressStage: FC<CreateObjectAddressStageProps> = ({
               <ItemGridWrapper>
                 <FormItem label="Номер дома">
                   <Input
-                    type="number"
                     placeholder="Введите"
                     value={elem.house}
                     onChange={(value) =>

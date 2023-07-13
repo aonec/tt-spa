@@ -29,7 +29,7 @@ export type TasksProfileProps = {
   tasksPageSegment: TasksPageSegment;
   setTasksPageSegment: (segment: TasksPageSegment) => void;
   handleOpenAddTaskModal: () => void;
-  isDispacher: boolean;
+  isPermissionToAddTask: boolean;
 };
 
 export type TasksPageSegment = 'list' | 'map';

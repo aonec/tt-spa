@@ -136,7 +136,7 @@ export const TasksProfileContainer = () => {
     }
   }, [apartment, housingStock, handleSearch, grouptype]);
 
-  const isDispacher = usePermission([
+  const isPermissionToAddTask = usePermission([
     ESecuredIdentityRoleName.ManagingFirmDispatcher,
   ]);
 
@@ -180,7 +180,7 @@ export const TasksProfileContainer = () => {
         tasksPageSegment={tasksPageSegment}
         setTasksPageSegment={setTasksPageSegment}
         handleOpenAddTaskModal={handleOpenAddTaskModal}
-        isDispacher={isDispacher}
+        isPermissionToAddTask={isPermissionToAddTask}
       />
     </>
   );

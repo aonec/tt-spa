@@ -34,7 +34,6 @@ import { EditCompanyContainer } from 'services/company/editCompanyService';
 import { ReportsPageContainer } from '01/features/reports';
 import { featureToggles } from 'featureToggles';
 import { ReportsContainer } from 'services/reportsService';
-import { SwitchIndividualDevice } from '01/features/individualDevices/switchIndividualDevice';
 import { ReadingHistoryPage } from '01/features/readings/displayReadingHistory';
 import { AccessDeniedPage } from 'services/authorizations/AccessDeniedPage';
 import { EditObjectContainer } from 'services/objects/editObjectService';
@@ -54,8 +53,10 @@ import { DistrictBordersByAddressContainer } from 'services/settings/districtBor
 import { StatisticsProfileContainer } from 'services/statistics/statisticsProfileService';
 import { AddIndividualDeviceContainer } from 'services/devices/individualDevices/addIndividualDeviceService';
 import { ResourceDisablingScheduleContainer } from 'services/settings/resourcesDisablingScheduleService/ResourceDisablingScheduleContainer';
-import { CreateDistrictBorderMapContainer } from 'services/settings/districtBordersService/createDistrictBorderMapService';
+import { WorkWithIndividualDeviceContainer } from 'services/devices/individualDevices/workWithIndividualDeviceService';
+import { WorkWithIndividualDeviceType } from 'services/devices/individualDevices/workWithIndividualDeviceService/workWithIndividualDeviceService.types';
 import { ManageDistrictsMapContainer } from 'services/settings/districtBordersService/manageDistrictsMapService';
+import { CreateDistrictBorderMapContainer } from 'services/settings/districtBordersService/createDistrictBorderMapService';
 
 const { gates } = objectProfileService;
 
@@ -521,7 +522,9 @@ export const Router: FC<RouterProps> = ({ roles, isRolesLoadded }) => {
                       path="/apartment/:id/individualDevice/:deviceId/switch"
                       exact
                     >
-                      <SwitchIndividualDevice type="switch" />
+                      <WorkWithIndividualDeviceContainer
+                        type={WorkWithIndividualDeviceType.switch}
+                      />
                     </Route>
                   )}
                   {(isAdministrator || isSeniorOperator || isOperator) && (
@@ -529,7 +532,9 @@ export const Router: FC<RouterProps> = ({ roles, isRolesLoadded }) => {
                       path="/apartment/:id/individualDevice/:deviceId/check"
                       exact
                     >
-                      <SwitchIndividualDevice type="check" />
+                      <WorkWithIndividualDeviceContainer
+                        type={WorkWithIndividualDeviceType.check}
+                      />
                     </Route>
                   )}
                   {(isSeniorOperator || isOperator) && (
@@ -537,7 +542,9 @@ export const Router: FC<RouterProps> = ({ roles, isRolesLoadded }) => {
                       path="/apartment/:id/individualDevice/:deviceId/reopen"
                       exact
                     >
-                      <SwitchIndividualDevice type="reopen" />
+                      <WorkWithIndividualDeviceContainer
+                        type={WorkWithIndividualDeviceType.reopen}
+                      />
                     </Route>
                   )}
                   {(isAdministrator || isSeniorOperator || isOperator) && (

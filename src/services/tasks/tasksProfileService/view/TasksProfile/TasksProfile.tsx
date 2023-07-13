@@ -46,7 +46,7 @@ export const TasksProfile: FC<TasksProfileProps> = ({
   tasksPageSegment,
   setTasksPageSegment,
   handleOpenAddTaskModal,
-  isDispacher,
+  isPermissionToAddTask,
 }) => {
   const history = useHistory();
   const { executingTasksCount, observingTasksCount, totalItems } =
@@ -111,7 +111,7 @@ export const TasksProfile: FC<TasksProfileProps> = ({
           <FiltrationWrapper>
             <HeaderContainer>
               {header}
-              {featureToggles.dispatcherAddTask && (
+              {featureToggles.dispatcherAddTask && isPermissionToAddTask && (
                 <Flex>
                   <ButtonSC
                     size="small"
@@ -125,7 +125,7 @@ export const TasksProfile: FC<TasksProfileProps> = ({
             </HeaderContainer>
 
             <ContentWrapper>
-              {!isDispacher ? (
+              {!isPermissionToAddTask ? (
                 <TabsSC activeKey={grouptype} onChange={history.push}>
                   {!isSpectator && (
                     <TabPane
