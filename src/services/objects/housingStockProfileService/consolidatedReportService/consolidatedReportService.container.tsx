@@ -9,7 +9,7 @@ const { inputs, outputs } = consolidatedReportService;
 
 const formId = 'consolidated-report-form';
 
-export const ConsolidatedReportContainer: FC<Props> = ({ housingStock }) => {
+export const ConsolidatedReportContainer: FC<Props> = ({ building }) => {
   const closeModal = useEvent(inputs.closeConsolidatedReportModal);
   const handleSubmit = useEvent(inputs.handleSubmit);
 
@@ -27,7 +27,7 @@ export const ConsolidatedReportContainer: FC<Props> = ({ housingStock }) => {
       form={
         <ConsolidatedReportForm
           handleSubmit={handleSubmit}
-          housingStock={housingStock}
+          building={building}
           formId={formId}
         />
       }

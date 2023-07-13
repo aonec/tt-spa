@@ -26,3 +26,9 @@ export const TabsSC = styled(Tabs)`
 export const ContentWrapper = styled.div`
   min-width: 850px;
 `;
+
+export const Wrapper = styled.div`
+  display: flex;
+  gap: 16px;
+  justify-content: space-between;
+`;

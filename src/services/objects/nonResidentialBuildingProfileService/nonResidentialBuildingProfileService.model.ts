@@ -2,6 +2,7 @@ import { createDomain, sample } from 'effector';
 import { createGate } from 'effector-react';
 import { getNonResidentialBuildingQuery } from './nonResidentialBuildingProfileService.api';
 import { NonResidentialBuildingProfileGrouptype } from './nonResidentialBuildingProfileService.constants';
+import { consolidatedReportService } from '../housingStockProfileService/consolidatedReportService';
 
 const domain = createDomain('nonResidentialBuildingProfileService');
 
@@ -31,6 +32,8 @@ sample({
 export const nonResidentialBuildingProfileService = {
   inputs: {
     setCurrentGroutype,
+    openConsolidatedReportModal:
+      consolidatedReportService.inputs.openConsolidatedReportModal,
   },
   outputs: {
     $currentGrouptype,

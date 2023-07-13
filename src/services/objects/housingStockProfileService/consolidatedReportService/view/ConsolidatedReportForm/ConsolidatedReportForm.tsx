@@ -19,11 +19,11 @@ import { ErrorMessage } from 'ui-kit/ErrorMessage';
 
 export const ConsolidatedReportForm: FC<ConsolidatedReportFormProps> = ({
   formId,
-  housingStock,
+  building,
   handleSubmit,
 }) => {
-  const address = housingStock.address?.mainAddress;
-  const addressString = getBuildingAddress(housingStock, true);
+  const address = building.address?.mainAddress;
+  const addressString = getBuildingAddress(building, true);
 
   const {
     values,
@@ -53,7 +53,7 @@ export const ConsolidatedReportForm: FC<ConsolidatedReportFormProps> = ({
 
       handleSubmit({
         Name: values.name,
-        HousingStockId: housingStock.id,
+        BuildingId: building.id,
         ReportType: values.reportType,
         From,
         To,

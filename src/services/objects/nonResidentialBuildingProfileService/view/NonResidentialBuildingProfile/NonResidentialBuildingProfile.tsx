@@ -4,6 +4,7 @@ import {
   ContentWrapper,
   PageHeaderSC,
   TabsSC,
+  Wrapper,
 } from './NonResidentialBuildingProfile.styled';
 import { NonResidentialBuildingProfileProps } from './NonResidentialBuildingProfile.types';
 import { Empty } from 'antd';
@@ -12,12 +13,25 @@ import { GoBack } from 'ui-kit/shared_components/GoBack';
 import { NonResidentialBuildingProfileGrouptype } from '../../nonResidentialBuildingProfileService.constants';
 import { NonResidentialBuildingInfo } from '../NonResidentialBuildingInfo';
 import { ResourceAccountingSystemsContainer } from 'services/devices/resourceAccountingSystemsService';
+import { LinkCard } from 'ui-kit/shared_components/LinkCard';
+import { stringifyUrl } from 'query-string';
+import { useHistory } from 'react-router-dom';
 
 const { TabPane } = TabsSC;
 
 export const NonResidentialBuildingProfile: FC<
   NonResidentialBuildingProfileProps
-> = ({ currentGrouptype, setGrouptype, nonResidentialBuilding }) => {
+> = ({
+  currentGrouptype,
+  setGrouptype,
+  nonResidentialBuilding,
+  isPermissionToEditHousingStock,
+  isPermitionToAddNode,
+  isPermitionToDownloadConsolidatedReport,
+  openConsolidatedReportModal,
+}) => {
+  const history = useHistory();
+
   const content: {
     [key in NonResidentialBuildingProfileGrouptype]: ReactNode;
   } = useMemo(
@@ -46,14 +60,37 @@ export const NonResidentialBuildingProfile: FC<
     );
   }
 
-  const { address } = nonResidentialBuilding;
+  const { address, numberOfTasks } = nonResidentialBuilding;
   const addressString = getBuildingAddress(nonResidentialBuilding);
   const city = address?.mainAddress?.city || '';
 
   return (
     <>
       <GoBack />
-      <PageHeaderSC title={`${addressString}`} />
+      <PageHeaderSC
+        title={`${addressString}`}
+        contextMenu={{
+          menuButtons: [
+            {
+              title: 'Добавить узел',
+              onClick: () =>
+                history.push(`/buildings/${nonResidentialBuilding.id}/addNode`),
+              hidden: !isPermitionToAddNode,
+            },
+            {
+              title: 'Выгрузка сводного отчёта',
+              onClick: () => openConsolidatedReportModal(),
+              hidden: !isPermitionToDownloadConsolidatedReport,
+            },
+            {
+              title: 'Редактировать',
+              onClick: () =>
+                history.push(`/buildings/${nonResidentialBuilding.id}/edit`),
+              hidden: !isPermissionToEditHousingStock,
+            },
+          ],
+        }}
+      />
       <CityWrappper>{city}</CityWrappper>
       <TabsSC
         onChange={(grouptype) =>
@@ -70,9 +107,19 @@ export const NonResidentialBuildingProfile: FC<
           key={NonResidentialBuildingProfileGrouptype.Devices}
         />
       </TabsSC>
-      <>
+      <Wrapper>
         <ContentWrapper>{content[currentGrouptype]}</ContentWrapper>
-      </>
+        <div>
+          <LinkCard
+            text={`Задачи: ${numberOfTasks}`}
+            link={stringifyUrl({
+              url: '/tasks/list/Executing',
+              query: { housingStockId: nonResidentialBuilding.id },
+            })}
+            showLink={Boolean(numberOfTasks)}
+          />
+        </div>
+      </Wrapper>
     </>
   );
 };

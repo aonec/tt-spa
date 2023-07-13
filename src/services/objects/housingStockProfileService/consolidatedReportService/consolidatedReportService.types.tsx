@@ -1,12 +1,16 @@
-import { EReportType, HousingStockResponse } from 'myApi';
+import {
+  EReportType,
+  HousingStockResponse,
+  NonResidentialBuildingResponse,
+} from 'myApi';
 
 export type Props = {
-  housingStock: HousingStockResponse;
+  building: HousingStockResponse | NonResidentialBuildingResponse;
 };
 
 export type GetConsolidatedReport = {
   Name: string;
-  HousingStockId: number;
+  BuildingId: number;
   ReportType: EReportType;
   From: string;
   To: string;

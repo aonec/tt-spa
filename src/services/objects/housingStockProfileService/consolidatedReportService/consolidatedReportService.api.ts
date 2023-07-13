@@ -6,11 +6,11 @@ import { downloadURI } from '01/features/reports/CreateReportModal/utils';
 
 export const getConsolidatedReport = async ({
   Name,
-  HousingStockId,
+  BuildingId,
   ...params
 }: GetConsolidatedReport) => {
   const calculators: CalculatorIntoHousingStockResponse[] = await axios.get(
-    `Buildings/${HousingStockId}/Calculators`,
+    `Buildings/${BuildingId}/Calculators`,
   );
 
   const calculatorsIds = calculators.map((calculator) => calculator.id);

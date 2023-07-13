@@ -1,10 +1,10 @@
-import { HousingStockResponse } from 'myApi';
+import { HousingStockResponse, NonResidentialBuildingResponse } from 'myApi';
 import { GetConsolidatedReport } from '../../consolidatedReportService.types';
 import moment from 'moment';
 
 export type ConsolidatedReportFormProps = {
   formId: string;
-  housingStock: HousingStockResponse;
+  building: HousingStockResponse | NonResidentialBuildingResponse;
   handleSubmit: (payload: GetConsolidatedReport) => void;
 };
 

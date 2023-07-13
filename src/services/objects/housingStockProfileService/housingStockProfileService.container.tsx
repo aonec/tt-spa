@@ -40,9 +40,7 @@ export const HousingStockProfileContainer = () => {
   return (
     <>
       <ObjectProfileIdGate objectId={Number(buildingId)} />
-      {housingStock && (
-        <ConsolidatedReportContainer housingStock={housingStock} />
-      )}
+      {housingStock && <ConsolidatedReportContainer building={housingStock} />}
       {isLoading && <Skeleton active />}
       {!isLoading && housingStock && (
         <HousingStockProfile
