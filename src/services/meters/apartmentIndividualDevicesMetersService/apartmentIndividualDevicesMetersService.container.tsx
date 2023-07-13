@@ -49,7 +49,7 @@ export const ApartmentIndividualDevicesMetersContainer: FC<Params> = ({
       {apartmentId && (
         <IndividualDevicesGate ApartmentId={Number(apartmentId)} />
       )}
-      <ReadingsHistoryContainer />
+      <ReadingsHistoryContainer readonly={!editable} />
       <CloseIndividualDeviceContainer />
       <ConfirmReadingValueContainer />
       <EditReadingsHistoryContainer />

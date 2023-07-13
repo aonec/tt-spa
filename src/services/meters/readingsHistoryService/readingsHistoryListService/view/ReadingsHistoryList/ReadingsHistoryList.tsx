@@ -1,11 +1,12 @@
-import { useEvent, useStore } from 'effector-react';
+import React, { FC, useCallback } from 'react';
+import moment from 'moment';
+import _ from 'lodash';
 import {
   IndividualDeviceReadingsItemHistoryResponse,
   IndividualDeviceReadingsMonthHistoryResponse,
   IndividualDeviceReadingsYearHistoryResponse,
   IndividualDeviceReadingsCreateRequest,
 } from 'myApi';
-import React, { useCallback, useMemo } from 'react';
 import { RenderReadingFields } from './ReadingFields';
 import { SourceName } from './SourceName/SourceName';
 import {
@@ -30,85 +31,37 @@ import {
   Wrapper,
   Year,
 } from './ReadingsHistoryList.styled';
-import {
-  ReadingsHistoryContainerProps,
-  RenderReading,
-} from '../../readingsHistoryListService.types';
-import {
-  managementFirmConsumptionRatesService,
-  useManagingFirmConsumptionRates,
-} from 'services/meters/managementFirmConsumptionRatesService';
+import { RenderReading } from '../../readingsHistoryListService.types';
 import { getTimeStringByUTC } from 'utils/getTimeStringByUTC';
 import { getIndividualDeviceRateNumByName } from 'utils/getIndividualDeviceRateNumByName';
-import moment from 'moment';
 import { ReplacedAccountAlert } from './ReplacedAccountAlert';
-import _ from 'lodash';
 import { getMeasurementUnit } from 'services/meters/individualDeviceMetersInputService/individualDeviceMetersInputService.utils';
 import { getFilledArray } from 'utils/getFilledArray';
-import { apartmentService } from 'services/apartments/apartmentService/apartmentService.models';
-import { displayIndividualDeviceAndNamesService } from 'services/devices/individualDevices/displayIndividualDeviceAndNamesService/displayIndividualDeviceAndNamesService.model';
 import { ArrowBottom, ArrowIconTop } from 'ui-kit/icons';
-import { readingsHistoryService } from '../../../readingsHistoryService.model';
 import { ConfirmReadingValueContainer } from '../../../confirmReadingService';
 import { WithLoader } from 'ui-kit/shared_components/WithLoader';
-import {
-  useOpenedYears,
-  useReadingHistoryValues,
-} from '../../readingsHistoryListService.hook';
+import { ReadingsHistoryListProps } from './ReadingsHistoryList.types';
 
-const {
-  outputs: { $individualDevice },
-} = displayIndividualDeviceAndNamesService;
-
-const { outputs, inputs } = managementFirmConsumptionRatesService;
-
-type NewType = React.FC<ReadingsHistoryContainerProps>;
-
-export const ReadingsHistoryList: NewType = ({ readonly }) => {
-  const {
-    values,
-    setFieldValue,
-    uploadingReadingsStatuses,
-    uploadReading,
-    deleteReading,
-    resetValue,
-  } = useReadingHistoryValues();
-
-  const device = useStore($individualDevice);
-
-  const readingsHistory = values;
-
-  const pendingHistory = useStore(
-    readingsHistoryService.outputs.$isReadingsHistoryLoading,
-  );
-
-  const consumptionRates = useStore(outputs.$consumptionRates);
-  const loadConsumptionRates = useEvent(
-    inputs.loadManagemenFirmConsumptionRates,
-  );
-
-  const { managementFirmConsumptionRates } = useManagingFirmConsumptionRates(
-    consumptionRates,
-    loadConsumptionRates,
-    device?.managementFirmId,
-  );
-
-  const {
-    isYearOpen,
-    openYear,
-    closeYear,
-    openMonth,
-    closeMonth,
-    isMonthOpen,
-  } = useOpenedYears(values?.yearReadings || []);
-
-  const rateNum = useMemo(
-    () => device && getIndividualDeviceRateNumByName(device.rateType),
-    [device],
-  );
-
-  const apartment = useStore(apartmentService.outputs.$apartment);
-
+export const ReadingsHistoryList: FC<ReadingsHistoryListProps> = ({
+  readonly,
+  device,
+  apartment,
+  readingsHistory,
+  setFieldValue,
+  uploadingReadingsStatuses,
+  uploadReading,
+  deleteReading,
+  resetValue,
+  pendingHistory,
+  rateNum,
+  managementFirmConsumptionRates,
+  isYearOpen,
+  openYear,
+  closeYear,
+  openMonth,
+  closeMonth,
+  isMonthOpen,
+}) => {
   const renderReading = useCallback(
     ({
       year,
@@ -405,12 +358,12 @@ export const ReadingsHistoryList: NewType = ({ readonly }) => {
             <div>{elem}</div>
           ))}
         </TableHeader>
-        {values?.yearReadings?.map((yearReading, index) =>
+        {readingsHistory?.yearReadings?.map((yearReading, index) =>
           renderYear({
             ...yearReading,
             prevMonths:
-              values?.yearReadings &&
-              values?.yearReadings[index + 1]?.monthReadings,
+              readingsHistory?.yearReadings &&
+              readingsHistory?.yearReadings[index + 1]?.monthReadings,
           }),
         )}
       </Wrapper>
