@@ -1,0 +1,1 @@
+export { WorkWithIndividualDevicePage } from './WorkWithIndividualDevicePage';

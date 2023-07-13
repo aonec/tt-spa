@@ -14,8 +14,8 @@ import { GetMeteringDevicesModelsRequest } from './displayIndividualDeviceAndNam
 const domain = createDomain('displayIndividualDeviceAndNamesService');
 
 const IndividualDeviceGate = createGate<{ id: number }>();
-const IndividualDevicecModelsGate = createGate<{ model: string }>();
 
+const handleFetchModels = domain.createEvent<string>();
 const handleFetchIndividualDevice = domain.createEvent<number>();
 const handleFetchSerialNumberForCheck = domain.createEvent<string>();
 
@@ -65,10 +65,9 @@ forward({
 });
 
 sample({
-  clock: IndividualDevicecModelsGate.state.map((value) => ({
-    Text: value.model,
-  })),
-  filter: ({ Text }) => Boolean(Text),
+  clock: handleFetchModels,
+  filter: Boolean,
+  fn: (Text) => ({ Text }),
   target: fetchIndividualDeviceNamesFx,
 });
 
@@ -78,7 +77,11 @@ forward({
 });
 
 export const displayIndividualDeviceAndNamesService = {
-  inputs: { handleFetchIndividualDevice, handleFetchSerialNumberForCheck },
+  inputs: {
+    handleFetchIndividualDevice,
+    handleFetchSerialNumberForCheck,
+    handleFetchModels,
+  },
   outputs: {
     $isIndividualDeviceLoading,
     $individualDevice,
@@ -87,5 +90,5 @@ export const displayIndividualDeviceAndNamesService = {
     $serialNumberForChecking,
     $isFetchSerialNumberLoading,
   },
-  gates: { IndividualDeviceGate, IndividualDevicecModelsGate },
+  gates: { IndividualDeviceGate },
 };

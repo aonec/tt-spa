@@ -177,7 +177,7 @@ export const MetersInputsBlock: FC<MetersInputsBlockProps> = ({
         const readingValue = bufferedReadingValues[valueKey] || '';
 
         return (
-          <InputWrapper>
+          <InputWrapper key={index}>
             <Input
               type="number"
               status={status}
@@ -186,7 +186,6 @@ export const MetersInputsBlock: FC<MetersInputsBlockProps> = ({
               value={readingValue}
               name={valueKey}
               placeholder={`T${index + 1}`}
-              key={index}
               onFocus={handleReadingInputFocus}
               onChange={handleReadingInputChange}
               {...inputDataAttr}

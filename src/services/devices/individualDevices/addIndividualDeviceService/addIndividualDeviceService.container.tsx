@@ -46,6 +46,7 @@ export const AddIndividualDeviceContainer = () => {
   const handleFetchSerialNumberForCheck = useUnit(
     inputs.handleFetchSerialNumberForCheck,
   );
+  const handleFetchModels = useUnit(inputs.handleFetchModels);
   const handleCreateDevice = useUnit(inputs.handleCreateDevice);
 
   const idFromParams = Number(id);
@@ -83,6 +84,7 @@ export const AddIndividualDeviceContainer = () => {
         documents={documents}
         handleSubmitDocumentStage={handleSubmitDocumentStage}
         isDocumentUploadLoading={isDocumentUploadLoading}
+        handleFetchModels={handleFetchModels}
       />
     </>
   );
