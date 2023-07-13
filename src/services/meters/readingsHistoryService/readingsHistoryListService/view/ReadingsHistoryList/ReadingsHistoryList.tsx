@@ -37,10 +37,11 @@ import { getIndividualDeviceRateNumByName } from 'utils/getIndividualDeviceRateN
 import { ReplacedAccountAlert } from './ReplacedAccountAlert';
 import { getMeasurementUnit } from 'services/meters/individualDeviceMetersInputService/individualDeviceMetersInputService.utils';
 import { getFilledArray } from 'utils/getFilledArray';
-import { ArrowBottom, ArrowIconTop } from 'ui-kit/icons';
 import { ConfirmReadingValueContainer } from '../../../confirmReadingService';
 import { WithLoader } from 'ui-kit/shared_components/WithLoader';
 import { ReadingsHistoryListProps } from './ReadingsHistoryList.types';
+import { columnsNames } from './ReadingsHistoryList.constants';
+import { Arrow } from './Arrow';
 
 export const ReadingsHistoryList: FC<ReadingsHistoryListProps> = ({
   readonly,
@@ -331,7 +332,7 @@ export const ReadingsHistoryList: FC<ReadingsHistoryListProps> = ({
         <>
           <Year onClick={() => (isOpen ? closeYear : openYear)(year)}>
             <div>{year} год</div>
-            <Arrow open={isOpen} />
+            <Arrow open={isOpen || false} />
           </Year>
           {isOpen &&
             monthReadings?.map((month, index) =>
@@ -370,15 +371,3 @@ export const ReadingsHistoryList: FC<ReadingsHistoryListProps> = ({
     </WithLoader>
   );
 };
-
-const Arrow = ({ open }: { open?: boolean }) =>
-  open ? <ArrowIconTop /> : <ArrowBottom />;
-
-const columnsNames = [
-  'Период',
-  'Показания',
-  'Потребление',
-  'Ср. потребление',
-  'Источник',
-  'Последние показания',
-];
