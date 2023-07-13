@@ -23,6 +23,7 @@ export const DisablingResourceItem: React.FC<RenderApartmentProps> = ({
   handleOpenCompleteDisconnectionModal,
   handleOpenDeleteDisconnectionModal,
   handleOpenEditDisconnectionModal,
+  isPermitionToChangeResourceDisabling,
 }) => {
   const {
     disconnectingType,
@@ -76,34 +77,36 @@ export const DisablingResourceItem: React.FC<RenderApartmentProps> = ({
         <Popover content={sender}>
           <SenderWrapper>{sender}</SenderWrapper>
         </Popover>
-        <div onClick={(e: React.SyntheticEvent) => e.stopPropagation()}>
-          <ContextMenuButton
-            menuButtons={[
-              {
-                title: 'Редактировать отключение',
-                onClick: () => handleOpenEditDisconnectionModal(id),
-              },
-              {
-                title: 'Завершить отключение',
-                onClick: () =>
-                  handleOpenCompleteDisconnectionModal({
-                    id,
-                    endDate: endDate || '',
-                  }),
-              },
-              {
-                title: 'Удалить отключение',
-                onClick: () =>
-                  handleOpenDeleteDisconnectionModal({
-                    id,
-                    endDate: endDate || '',
-                  }),
-                color: ContextMenuButtonColor.danger,
-              },
-            ]}
-            size="small"
-          />
-        </div>
+        {isPermitionToChangeResourceDisabling && (
+          <div onClick={(e: React.SyntheticEvent) => e.stopPropagation()}>
+            <ContextMenuButton
+              menuButtons={[
+                {
+                  title: 'Редактировать отключение',
+                  onClick: () => handleOpenEditDisconnectionModal(id),
+                },
+                {
+                  title: 'Завершить отключение',
+                  onClick: () =>
+                    handleOpenCompleteDisconnectionModal({
+                      id,
+                      endDate: endDate || '',
+                    }),
+                },
+                {
+                  title: 'Удалить отключение',
+                  onClick: () =>
+                    handleOpenDeleteDisconnectionModal({
+                      id,
+                      endDate: endDate || '',
+                    }),
+                  color: ContextMenuButtonColor.danger,
+                },
+              ]}
+              size="small"
+            />
+          </div>
+        )}
       </SenderColumn>
     </StyledGridTableBody>
   );
