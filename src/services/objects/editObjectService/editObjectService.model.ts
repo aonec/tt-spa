@@ -1,5 +1,5 @@
 import { createDomain, merge, sample } from 'effector';
-import { objectProfileService } from '../objectProfileService';
+import { housingStockProfileService } from '../housingStockProfileService';
 import { createObjectService } from '../createObjectService';
 import { createHeatingStationService } from '../heatingStations/createHeatingStationService';
 import { editHeatingStationService } from '../heatingStations/editHeatingStationService';
@@ -21,7 +21,7 @@ import { message } from 'antd';
 
 const domain = createDomain('editObjectService');
 
-const FetchObjectGate = objectProfileService.gates.FetchObjectGate;
+const FetchObjectGate = housingStockProfileService.gates.FetchObjectGate;
 const CatchHousingStockId = createGate<{ buildingId: number }>();
 
 const handleUpdateHousingStock =
@@ -141,7 +141,7 @@ const successDeleteAddress = deleteHousingStockAddressFx.doneData;
 const successUpdateAddress = updateHousingStockAddressFx.doneData;
 const successCreateAddress = createHousingStockAddressFx.doneData;
 
-const $housingStock = objectProfileService.outputs.$housingStock.on(
+const $housingStock = housingStockProfileService.outputs.$housingStock.on(
   successDeleteAddress,
   (_, housingStock) => housingStock,
 );
@@ -152,7 +152,7 @@ sample({
   fn: (gateState) => {
     return gateState.buildingId;
   },
-  target: objectProfileService.inputs.handleFetchHousingStock,
+  target: housingStockProfileService.inputs.handleFetchHousingStock,
 });
 
 const handleMessage = merge([successCreateAddress, successUpdateAddress]);

@@ -5,7 +5,7 @@ import { CommonInfo } from 'ui-kit/shared_components/CommonInfo';
 import { GoBack } from 'ui-kit/shared_components/GoBack';
 import { LinkCard } from 'ui-kit/shared_components/LinkCard';
 import { Tabs } from 'ui-kit/Tabs';
-import { getHousingStockAddress } from 'utils/getHousingStockAddress';
+import { getBuildingAddress } from 'utils/getBuildingAddress';
 import { getTimeStringByUTC } from 'utils/getTimeStringByUTC';
 import { CalculatorProfileGrouptype } from '../calculatorProfileService.constants';
 import { CalculatorCommentContainer } from './calculatorCommentService';
@@ -64,12 +64,11 @@ export const CalculatorProfile: FC<CalculatorProfileProps> = ({
             key: 'Адрес',
             value: (
               <>
-                {/* Дождаться правок */}
                 {calculator?.address && (
                   <AddressLinkWrapper
-                    to={`/buildings/LivingProfile/${calculator.address?.id}`}
+                    to={`/buildings/${calculator.address.houseCategory}Profile/${calculator.address?.id}`}
                   >
-                    {getHousingStockAddress(calculator.address, true)}
+                    {getBuildingAddress(calculator.address, true)}
                   </AddressLinkWrapper>
                 )}
               </>
@@ -168,7 +167,7 @@ export const CalculatorProfile: FC<CalculatorProfileProps> = ({
         contextMenu={menuButtons}
       />
       <AdditionalInfoWrapper>
-        <>{getHousingStockAddress(address, true)}</>
+        <>{getBuildingAddress(address, true)}</>
       </AdditionalInfoWrapper>
       <TabsSC
         activeKey={currentGrouptype}

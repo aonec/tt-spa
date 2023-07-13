@@ -10,8 +10,15 @@ import {
 import { TaskBaseInfoProps } from './TaskBaseInfo.types';
 
 export const TaskBaseInfo: FC<TaskBaseInfoProps> = ({ task }) => {
-  const { id, address, creationTime, apartment, creationReason, perpetrator } =
-    task;
+  const {
+    id,
+    address,
+    creationTime,
+    apartment,
+    creationReason,
+    perpetrator,
+    houseCategory,
+  } = task;
 
   const apartmentId = apartment?.id;
   const buildingId = task.buildingId;
@@ -19,7 +26,7 @@ export const TaskBaseInfo: FC<TaskBaseInfoProps> = ({ task }) => {
 
   const linkPath = apartment
     ? `/apartments/${apartmentId}`
-    : `/buildings/LivingProfile/${buildingId}`;
+    : `/buildings/${houseCategory}Profile/${buildingId}`;
 
   const preparedCreationTime = creationTime
     ? getTimeStringByUTC(creationTime)

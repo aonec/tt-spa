@@ -794,6 +794,7 @@ export interface BuildingShortResponse {
 
   /** @format int32 */
   managingFirmId: number;
+  houseCategory: EHouseCategory;
   address: BuildingAddressResponse | null;
 }
 
@@ -2560,30 +2561,30 @@ export interface ElectricNodeResponseSuccessApiResponse {
 
 export interface ErpCreateTaskRequest {
   /** @format uuid */
-  workCategoryId?: string;
-  taskType?: EisTaskType;
+  workCategoryId: string;
+  taskType: EisTaskType;
 
   /** @format uuid */
-  objectId?: string;
+  objectId: string;
+
+  /** @format uuid */
+  sourceId: string;
+  sourceNumber: string;
+
+  /** @format date-time */
+  sourceDateTime: string;
+
+  /** @format date-time */
+  taskDeadline: string;
+
+  /** @format uuid */
+  leadId: string;
+
+  /** @format uuid */
+  workerId: string;
+  subscriberPhoneNumber: string;
+  subscriberFullName: string;
   taskDescription?: string | null;
-
-  /** @format uuid */
-  sourceId?: string;
-  sourceNumber?: string | null;
-
-  /** @format date-time */
-  sourceDateTime?: string;
-
-  /** @format date-time */
-  taskDeadline?: string;
-
-  /** @format uuid */
-  leadId?: string;
-
-  /** @format uuid */
-  workerId?: string;
-  subscriberPhoneNumber?: string | null;
-  subscriberFullName?: string | null;
 }
 
 export interface ErpExecutorResponse {
@@ -4828,6 +4829,12 @@ export interface OrganizationResponse {
   workingTime: string | null;
   address: OrganizationAddressResponse | null;
   filtersConfiguration: ManagementFirmFiltersConfigurationResponse | null;
+
+  /** @format double */
+  latitude: number | null;
+
+  /** @format double */
+  longitude: number | null;
 }
 
 export interface OrganizationResponsePagedList {
@@ -6058,6 +6065,7 @@ export interface TaskResponse {
 
   /** @format int32 */
   buildingId: number;
+  houseCategory: EHouseCategory;
   isPerpetrator: boolean;
   perpetrator: OrganizationUserShortResponse | null;
 
@@ -14435,7 +14443,7 @@ export class Api<
      * @secure
      */
     tasksErpExecutorsForLeadList: (
-      query?: { LeadId?: string },
+      query: { LeadId: string },
       params: RequestParams = {},
     ) =>
       this.request<ErpExecutorResponse[], ErrorApiResponse>({
@@ -14475,7 +14483,7 @@ export class Api<
      * @secure
      */
     tasksErpTaskDeadlineList: (
-      query?: { WorkCategoryId?: string; TaskType?: EisTaskType },
+      query: { WorkCategoryId: string; TaskType: EisTaskType },
       params: RequestParams = {},
     ) =>
       this.request<ErpTaskDeadlineResponse[], ErrorApiResponse>({

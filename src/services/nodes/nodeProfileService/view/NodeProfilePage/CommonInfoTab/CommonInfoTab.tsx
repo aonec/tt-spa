@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 import moment from 'moment';
 import { NodeStatusIconsDictionary } from 'services/devices/resourceAccountingSystemsService/view/ResourceAccountingSystems/NodesGroup/NodeItem/NodeStatus/NodeStatus.constants';
 import { CommonInfo } from 'ui-kit/shared_components/CommonInfo';
-import { getHousingStockAddress } from 'utils/getHousingStockAddress';
+import { getBuildingAddress } from 'utils/getBuildingAddress';
 import { AddressWrapper, NodeStatusWrapper } from './CommonInfoTab.styled';
 import { CommonInfoTabProps } from './CommonInfoTab.types';
 import { additionalAddressesString } from 'utils/additionalAddressesString';
@@ -27,12 +27,11 @@ export const CommonInfoTab: FC<CommonInfoTabProps> = ({ pipeNode }) => {
           key: 'Адрес',
           value: (
             <Tooltip title={additionalAdress}>
-              {/* Дождаться правок */}
               <AddressWrapper
-                to={`/buildings/LivingProfile/${pipeNode?.address?.id}`}
+                to={`/buildings/${pipeNode.address?.houseCategory}Profile/${pipeNode?.address?.id}`}
               >
                 {pipeNode?.address &&
-                  getHousingStockAddress(pipeNode?.address, true)}
+                  getBuildingAddress(pipeNode?.address, true)}
               </AddressWrapper>
             </Tooltip>
           ),

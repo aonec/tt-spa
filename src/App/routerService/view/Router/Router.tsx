@@ -5,10 +5,7 @@ import { RouterProps } from './Router.types';
 import { EHouseCategory, ESecuredIdentityRoleName } from 'myApi';
 import { TasksRouter } from 'services/tasks/tasks.router';
 import { ObjectsProfileContainer } from 'services/objects/objectsProfileService';
-import {
-  ObjectProfileContainer,
-  objectProfileService,
-} from 'services/objects/objectProfileService';
+import { HousingStockProfileContainer } from 'services/objects/housingStockProfileService';
 import { DevicesPageContainer } from 'services/devices/devicesPageService';
 import { ChangeODPUContainer } from 'services/devices/сhangeODPUService';
 import { EditElectricNodeContainer } from 'services/devices/editElectricNodeService';
@@ -56,10 +53,7 @@ import { WorkWithIndividualDeviceContainer } from 'services/devices/individualDe
 import { WorkWithIndividualDeviceType } from 'services/devices/individualDevices/workWithIndividualDeviceService/workWithIndividualDeviceService.types';
 import { ManageDistrictsMapContainer } from 'services/settings/districtBordersService/manageDistrictsMapService';
 import { CreateDistrictBorderMapContainer } from 'services/settings/districtBordersService/createDistrictBorderMapService';
-
-const { gates } = objectProfileService;
-
-const { ObjectGroupIsOpen } = gates;
+import { NonResidentialBuildingProfileContainer } from 'services/objects/nonResidentialBuildingProfileService';
 
 export const Router: FC<RouterProps> = ({ roles, isRolesLoadded }) => {
   const redirectRoute = roles.length
@@ -198,15 +192,14 @@ export const Router: FC<RouterProps> = ({ roles, isRolesLoadded }) => {
 
                   {isAnyRole && (
                     <Route path="/buildings">
-                      <ObjectGroupIsOpen />
                       <Route
                         path={`/buildings/${EHouseCategory.Living}Profile/:buildingId`}
-                        component={ObjectProfileContainer}
+                        component={HousingStockProfileContainer}
                         exact
                       />
                       <Route
                         path={`/buildings/${EHouseCategory.NonResidential}Profile/:buildingId`}
-                        component={ObjectProfileContainer}
+                        component={NonResidentialBuildingProfileContainer}
                         exact
                       />
                     </Route>

@@ -2,7 +2,7 @@ import { ContextMenuButton } from 'ui-kit/ContextMenuButton/ContextMenuButton';
 import { Tooltip } from 'antd';
 import React, { FC, useMemo } from 'react';
 import { WarningIcon } from 'ui-kit/icons';
-import { getHousingStockAddress } from 'utils/getHousingStockAddress';
+import { getBuildingAddress } from 'utils/getBuildingAddress';
 import {
   AdditionalAddress,
   Address,
@@ -15,7 +15,7 @@ import { HouseCategoryDictionary } from 'services/objects/createObjectService/vi
 export const HousingStockItem: FC<HousingStockItemProps> = ({
   housingStock,
 }) => {
-  const address = getHousingStockAddress(housingStock);
+  const address = getBuildingAddress(housingStock);
   const mainAddress = housingStock.address?.mainAddress;
 
   const additionalAddressesString = useMemo(() => {

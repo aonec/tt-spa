@@ -63,11 +63,8 @@ export const EditObjectContainer = () => {
     !housingStock || housingStock.id !== buildingIdNumber;
 
   useEffect(() => {
-    return inputs.onPageCancel.watch(() =>
-      // Дождаться правок
-      history.push(`/buildings/LivingProfile/${buildingId}`),
-    ).unsubscribe;
-  }, [history, buildingId]);
+    return inputs.onPageCancel.watch(() => history.goBack()).unsubscribe;
+  }, [history]);
 
   return (
     <>

@@ -2,7 +2,7 @@ import React, { FC, useMemo } from 'react';
 import { GoBack } from 'ui-kit/shared_components/GoBack';
 import { HeaderInfoString } from 'ui-kit/shared_components/HeaderInfoString';
 import { ResourceIconLookup } from 'ui-kit/shared_components/ResourceIconLookup';
-import { getHousingStockAddress } from 'utils/getHousingStockAddress';
+import { getBuildingAddress } from 'utils/getBuildingAddress';
 import { NodeEditGrouptype } from '../../editNodeService.constants';
 import { EditNodeCommonInfo } from './EditNodeCommonInfo';
 import {
@@ -64,10 +64,11 @@ export const EditNodePage: FC<EditNodePageProps> = ({
           </>
         }
       />
-      {/* Дождаться правок */}
-      <AddressWrapper to={`/buildings/LivingProfile/${address?.id}`}>
+      <AddressWrapper
+        to={`/buildings/${address?.houseCategory}Profile/${address?.id}`}
+      >
         <HeaderInfoString>
-          <>{getHousingStockAddress(address, true)}</>
+          <>{getBuildingAddress(address, true)}</>
           <>{NodeRegistrationTypeLookup[registrationType]} узел</>
         </HeaderInfoString>
       </AddressWrapper>

@@ -69,9 +69,8 @@ export const HousingStockTasks: FC<HousingStockTasksProps> = ({
     <HousingStockWrapper>
       <Header>
         <ChevronIconSC onClick={task ? clearTask : clearSelectedHousingStock} />
-        {/* Дождаться правок */}
         <Address
-          to={`/buildings/LivingProfile/${selectedHousingStock?.building?.id}`}
+          to={`/buildings/${selectedHousingStock?.building?.houseCategory}Profile/${selectedHousingStock?.building?.id}`}
         >
           {addressString}
           <City>{`${address?.city}`}</City>
