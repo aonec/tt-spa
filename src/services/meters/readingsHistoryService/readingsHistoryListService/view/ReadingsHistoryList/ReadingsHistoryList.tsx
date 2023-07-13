@@ -12,7 +12,7 @@ import {
   getMonthName,
   getReadingValuesArray,
   getReadingValuesObject,
-} from '../utils';
+} from '../../../utils';
 import {
   confirmReading,
   getActiveReadings,
@@ -20,7 +20,7 @@ import {
   getPreviousReadingByHistory,
   getRecentlyReplacedAccount,
   validateReadings,
-} from './readingsHistoryListService.utils';
+} from '../../readingsHistoryListService.utils';
 import {
   ArrowButton,
   ArrowButtonBlock,
@@ -29,11 +29,11 @@ import {
   TableHeader,
   Wrapper,
   Year,
-} from './readingsHistoryListService.styled';
+} from './ReadingsHistoryList.styled';
 import {
   ReadingsHistoryContainerProps,
   RenderReading,
-} from './readingsHistoryListService.types';
+} from '../../readingsHistoryListService.types';
 import {
   managementFirmConsumptionRatesService,
   useManagingFirmConsumptionRates,
@@ -48,13 +48,13 @@ import { getFilledArray } from 'utils/getFilledArray';
 import { apartmentService } from 'services/apartments/apartmentService/apartmentService.models';
 import { displayIndividualDeviceAndNamesService } from 'services/devices/individualDevices/displayIndividualDeviceAndNamesService/displayIndividualDeviceAndNamesService.model';
 import { ArrowBottom, ArrowIconTop } from 'ui-kit/icons';
-import { readingsHistoryService } from '../readingsHistoryService.model';
-import { ConfirmReadingValueContainer } from '../confirmReadingService';
+import { readingsHistoryService } from '../../../readingsHistoryService.model';
+import { ConfirmReadingValueContainer } from '../../../confirmReadingService';
 import { WithLoader } from 'ui-kit/shared_components/WithLoader';
 import {
   useOpenedYears,
   useReadingHistoryValues,
-} from './readingsHistoryListService.hook';
+} from '../../readingsHistoryListService.hook';
 
 const {
   outputs: { $individualDevice },

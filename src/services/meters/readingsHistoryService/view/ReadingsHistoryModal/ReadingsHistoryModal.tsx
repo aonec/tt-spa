@@ -2,7 +2,7 @@ import React from 'react';
 import { FormModal } from 'ui-kit/Modals/FormModal';
 import { ReadingsHistoryModalProps } from './ReadingsHistoryModal.types';
 import { ReadingHistoryHeader } from './ReadingsHistoryHeader/ReadingsHistoryHeader';
-import { ReadingsHistoryList } from '../../readingsHistoryListService/readingsHistoryListService.container';
+import { ReadingsHistoryList } from '../../readingsHistoryListService/view/ReadingsHistoryList/ReadingsHistoryList';
 
 export const ReadingHistoryModal: React.FC<ReadingsHistoryModalProps> = ({
   isModalOpen,
