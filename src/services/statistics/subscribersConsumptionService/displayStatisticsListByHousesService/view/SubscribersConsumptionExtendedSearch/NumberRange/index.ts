@@ -1,1 +1,1 @@
-export { NumberRange } from './NumberRange'
+export { NumberRange } from './NumberRange';

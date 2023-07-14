@@ -49,9 +49,9 @@ export const menuItems: MenuItem[] = [
   },
   {
     title: 'Объекты',
-    path: '/objects',
+    path: '/buildings',
     icon: ObjectsIcon,
-    type: MenuType.Objects,
+    type: MenuType.Buildings,
   },
   {
     title: 'Приборы',

@@ -17,11 +17,7 @@ export const UserInfo: FC<UserInfoProps> = ({ isLoading, currentUser }) => {
         <UserIconSC />
         <Tooltip title={currentUser?.email}>
           {!currentUser && <UserLoader active={isLoading} />}
-          {currentUser && (
-            <UserEmail>
-              {currentUser?.email}
-            </UserEmail>
-          )}
+          {currentUser && <UserEmail>{currentUser?.email}</UserEmail>}
         </Tooltip>
       </UserEmailWrapper>
       <UserManagingFirmName>

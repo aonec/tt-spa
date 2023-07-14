@@ -1,7 +1,7 @@
 import {
   EisTaskType,
   ErpExecutorResponse,
-  GetTaskDeadlineGrpcResponse,
+  ErpTaskDeadlineResponse,
   ErpSourceResponse,
   ErpWorkCategoryResponse,
   ErpObjectResponse,
@@ -49,5 +49,5 @@ export type AddTaskFormProps = {
   choоseLeadExecutor: (payload: string) => void;
   executors: ErpExecutorResponse[];
   handleTaskDeadlineRequest: (payload: GetTaskDeadlineRequest) => void;
-  taskDeadline: GetTaskDeadlineGrpcResponse | null;
+  taskDeadline: ErpTaskDeadlineResponse | null;
 };

@@ -1,1 +1,0 @@
-export { ObjectProfile } from './ObjectProfile'

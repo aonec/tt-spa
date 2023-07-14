@@ -3,7 +3,7 @@ import React, { FC, ReactNode } from 'react';
 import { GoBack } from 'ui-kit/shared_components/GoBack';
 import { WithLoader } from 'ui-kit/shared_components/WithLoader';
 import { Title } from 'ui-kit/Title';
-import { getHousingStockAddress } from 'utils/getHousingStockAddress';
+import { getBuildingAddress } from 'utils/getBuildingAddress';
 import { CommonData } from './CommonData';
 import { ConnectedDevices } from './ConnectedDevices';
 import { ConnectionSettings } from './ConnectionSettings';
@@ -75,7 +75,7 @@ export const CreateNodePage: FC<CreateNodePageProps> = ({
       <PageHeaderSC title="Добавление нового узла" isGhost />
       {housingStock && (
         <AddressWrapper>
-          {getHousingStockAddress(housingStock, true)}
+          {getBuildingAddress(housingStock, true)}
         </AddressWrapper>
       )}
       <Wrapper>

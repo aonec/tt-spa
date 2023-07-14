@@ -1,0 +1,1 @@
+export { ApartmentStatusLegend } from './ApartmentStatusLegend';

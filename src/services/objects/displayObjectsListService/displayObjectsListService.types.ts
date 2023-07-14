@@ -11,7 +11,7 @@ export type GetHousingStocksRequestPayload = {
   OrderRule?: EHousingStockOrderRule;
   City?: string;
   Street?: string;
-  HousingStockNumber?: string;
+  BuildingNumber?: string;
   Corpus?: string;
   HouseCategory?: EHouseCategory;
   HouseManagementId?: string;

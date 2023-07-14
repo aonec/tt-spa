@@ -128,7 +128,7 @@ const deviceInfoForm = createForm({
             return !Object.entries(value)
               .map(([index, elem]) => {
                 let isValid: boolean = true;
-                
+
                 for (let i = Number(index) + 1; i < 8; ++i) {
                   const prev = value[i];
                   if (!prev) {

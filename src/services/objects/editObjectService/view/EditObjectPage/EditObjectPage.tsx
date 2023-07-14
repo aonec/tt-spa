@@ -9,7 +9,7 @@ import { Tabs } from 'ui-kit/Tabs';
 import { AdditionalInfoTab } from './AdditionalInfoTab';
 import { AddressTab } from './AddressTab';
 import { MainInfoTab } from './MainInfoTab';
-import { getHousingStockAddress } from 'utils/getHousingStockAddress';
+import { getBuildingAddress } from 'utils/getBuildingAddress';
 
 export const EditObjectPage: FC<EditObjectPageProps> = ({
   housingStock,
@@ -34,7 +34,7 @@ export const EditObjectPage: FC<EditObjectPageProps> = ({
   const [activeTab, setTab] = useState(EditObjectPageTabs.Address);
 
   const { address } = housingStock;
-  const addressString = getHousingStockAddress(housingStock);
+  const addressString = getBuildingAddress(housingStock);
   const city = address?.mainAddress?.city || '';
 
   return (
