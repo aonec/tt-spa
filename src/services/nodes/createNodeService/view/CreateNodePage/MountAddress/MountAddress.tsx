@@ -68,7 +68,7 @@ export const MountAddress: FC<MountAddressProps> = ({
       const housingStockResponse = await effects.fetchHousingStockFx({
         City: values.city,
         Street: values.street,
-        BuildingNumber : values.number,
+        BuildingNumber: values.number,
         Corpus: values.corpus,
         PageNumber: 1,
         PageSize: 1,

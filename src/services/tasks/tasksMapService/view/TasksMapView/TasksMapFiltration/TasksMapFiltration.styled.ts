@@ -70,4 +70,3 @@ export const Footer = styled.div`
   position: sticky;
   bottom: 0px;
 `;
-

@@ -9,7 +9,7 @@ export const MetersInputsBlockPure: FC<{
   rateNum: number;
   bufferedReadingValues: BufferedReadingValues;
   isDisabled?: boolean;
-  resource: EResourceType;
+  resource?: EResourceType;
   handleReadingInputChange: (e: ChangeEvent<HTMLInputElement>) => void;
 }> = ({
   rateNum,
@@ -26,14 +26,13 @@ export const MetersInputsBlockPure: FC<{
         const readingValue = bufferedReadingValues[valueKey] || '';
 
         return (
-          <InputWrapper>
+          <InputWrapper key={index}>
             <Input
               type="number"
               disabled={isDisabled}
               value={readingValue}
               name={valueKey}
               placeholder={`T${index + 1}`}
-              key={index}
               onChange={handleReadingInputChange}
             />
           </InputWrapper>

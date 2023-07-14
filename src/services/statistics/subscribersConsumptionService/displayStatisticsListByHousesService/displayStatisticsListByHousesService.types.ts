@@ -1,6 +1,6 @@
 export type HousingStockAddressForm = {
   City: string;
   Street: string;
-  HousingStockNumber: string;
+  BuildingNumber: string;
   Corpus?: string;
 };

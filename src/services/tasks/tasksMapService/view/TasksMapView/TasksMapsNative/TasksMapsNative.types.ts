@@ -1,4 +1,7 @@
-import { HousingStockWithTasksResponse } from 'myApi';
+import {
+  BuildingWithTasksResponse,
+  HousingStockWithTasksResponse,
+} from 'myApi';
 
 export type TasksMapProps = {
   housingStocksWithTasks: HousingStockWithTasksResponse[];
@@ -26,8 +29,8 @@ export type GetPlacemarkerLayoutLinkResponse = {
 };
 
 export type TasksMapsNativeProps = {
-  housingStocksWithTasks: HousingStockWithTasksResponse[];
-  handleClickMarker: (payload: HousingStockWithTasksResponse) => void;
+  buildingsWithTasks: BuildingWithTasksResponse[];
+  handleClickMarker: (payload: BuildingWithTasksResponse) => void;
   selectedHousingStockId: number | undefined;
 };
 

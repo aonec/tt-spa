@@ -1,11 +1,7 @@
 import { message } from 'antd';
 import { createDomain, forward, guard, sample } from 'effector';
 import { createGate } from 'effector-react';
-import {
-  HouseManagementResponse,
-  HousingStockCreateRequest,
-  HousingStockResponse,
-} from 'myApi';
+import { HouseManagementResponse, HousingStockCreateRequest } from 'myApi';
 import { EffectFailDataAxiosError } from 'types';
 import { createHeatingStationService } from '../heatingStations/createHeatingStationService';
 import { displayHeatingStationsService } from '../heatingStations/displayHeatingStationsService';
@@ -14,7 +10,10 @@ import {
   getHouseManagements,
   postCreateObject,
 } from './createObjectService.api';
-import { ObjectCreateSubmitData } from './createObjectService.types';
+import {
+  CreateBuildingResponse,
+  ObjectCreateSubmitData,
+} from './createObjectService.types';
 import { IsElevatorDictionaryBoolean } from './view/CreateObjectPage/CreateObjectFinalStageModal/CreateObjectFinalStageModal.constants';
 
 const domain = createDomain('createObjectService');
@@ -54,7 +53,7 @@ const fetchHouseManagementsFx = domain.createEffect<
 
 const createObjectFx = domain.createEffect<
   HousingStockCreateRequest,
-  HousingStockResponse | null,
+  CreateBuildingResponse,
   EffectFailDataAxiosError
 >(postCreateObject);
 
@@ -120,7 +119,6 @@ guard({
         houseManagement,
         objectCategory,
         livingHouseType,
-        nonResidentialHouseType,
         floors,
         entrances,
         elevator,
@@ -150,9 +148,7 @@ guard({
           }) || null,
         heatingStationId,
         houseManagementId: houseManagement,
-        houseCategory: objectCategory,
         livingHouseType: livingHouseType || null,
-        nonResidentialHouseType: nonResidentialHouseType || null,
         numberOfFloors: Number(floors) || null,
         numberOfEntrances: Number(entrances) || null,
         isThereElevator: elevator

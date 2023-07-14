@@ -2,13 +2,10 @@ import React, { FC } from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
 import { Layout, PageWrapper, Wrapper } from './Router.styled';
 import { RouterProps } from './Router.types';
-import { ESecuredIdentityRoleName } from 'myApi';
+import { EHouseCategory, ESecuredIdentityRoleName } from 'myApi';
 import { TasksRouter } from 'services/tasks/tasks.router';
 import { ObjectsProfileContainer } from 'services/objects/objectsProfileService';
-import {
-  ObjectProfileContainer,
-  objectProfileService,
-} from 'services/objects/objectProfileService';
+import { HousingStockProfileContainer } from 'services/objects/housingStockProfileService';
 import { DevicesPageContainer } from 'services/devices/devicesPageService';
 import { ChangeODPUContainer } from 'services/devices/сhangeODPUService';
 import { EditElectricNodeContainer } from 'services/devices/editElectricNodeService';
@@ -34,7 +31,6 @@ import { EditCompanyContainer } from 'services/company/editCompanyService';
 import { ReportsPageContainer } from '01/features/reports';
 import { featureToggles } from 'featureToggles';
 import { ReportsContainer } from 'services/reportsService';
-import { SwitchIndividualDevice } from '01/features/individualDevices/switchIndividualDevice';
 import { ReadingHistoryPage } from '01/features/readings/displayReadingHistory';
 import { AccessDeniedPage } from 'services/authorizations/AccessDeniedPage';
 import { EditObjectContainer } from 'services/objects/editObjectService';
@@ -53,12 +49,12 @@ import { EditNodeContainer } from 'services/nodes/editNodeService';
 import { DistrictBordersByAddressContainer } from 'services/settings/districtBordersService/districtBordersByAddressService';
 import { StatisticsProfileContainer } from 'services/statistics/statisticsProfileService';
 import { AddIndividualDeviceContainer } from 'services/devices/individualDevices/addIndividualDeviceService';
-import { CreateDistrictBorderMapContainer } from 'services/settings/districtBordersService/createDistrictBorderMapService';
+import { ResourceDisablingScheduleContainer } from 'services/settings/resourcesDisablingScheduleService/ResourceDisablingScheduleContainer';
+import { WorkWithIndividualDeviceContainer } from 'services/devices/individualDevices/workWithIndividualDeviceService';
+import { WorkWithIndividualDeviceType } from 'services/devices/individualDevices/workWithIndividualDeviceService/workWithIndividualDeviceService.types';
 import { ManageDistrictsMapContainer } from 'services/settings/districtBordersService/manageDistrictsMapService';
-
-const { gates } = objectProfileService;
-
-const { ObjectGroupIsOpen } = gates;
+import { CreateDistrictBorderMapContainer } from 'services/settings/districtBordersService/createDistrictBorderMapService';
+import { NonResidentialBuildingProfileContainer } from 'services/objects/nonResidentialBuildingProfileService';
 
 export const Router: FC<RouterProps> = ({ roles, isRolesLoadded }) => {
   const redirectRoute = roles.length
@@ -126,26 +122,26 @@ export const Router: FC<RouterProps> = ({ roles, isRolesLoadded }) => {
 
                   {isAdministrator ? (
                     <Route
-                      path="/objects/create"
+                      path="/buildings/create"
                       component={CreateObjectContainer}
                       exact
                     />
                   ) : (
                     <Route
-                      path="/objects/create"
+                      path="/buildings/create"
                       component={AccessDeniedPage}
                       exact
                     />
                   )}
                   {isAdministrator ? (
                     <Route
-                      path="/objects/:buildingId/edit"
+                      path="/buildings/:buildingId/edit"
                       component={EditObjectContainer}
                       exact
                     />
                   ) : (
                     <Redirect
-                      from="/objects/:buildingId/edit"
+                      from="/buildings/:buildingId/edit"
                       to="/access-denied/"
                       exact
                     />
@@ -153,13 +149,13 @@ export const Router: FC<RouterProps> = ({ roles, isRolesLoadded }) => {
 
                   {isAdministrator || isExecutor ? (
                     <Route
-                      path="/objects/:buildingId/addNode"
+                      path="/buildings/:buildingId/addNode"
                       component={CreateNodeContainer}
                       exact
                     />
                   ) : (
                     <Route
-                      path="/objects/:buildingId/addNode"
+                      path="/buildings/:buildingId/addNode"
                       component={AccessDeniedPage}
                       exact
                     />
@@ -167,7 +163,7 @@ export const Router: FC<RouterProps> = ({ roles, isRolesLoadded }) => {
 
                   {isAnyRole && (
                     <Route
-                      path="/objects/:searchType?"
+                      path="/buildings/:searchType?"
                       component={ObjectsProfileContainer}
                       exact
                     />
@@ -196,11 +192,15 @@ export const Router: FC<RouterProps> = ({ roles, isRolesLoadded }) => {
                   )}
 
                   {isAnyRole && (
-                    <Route path="/objects">
-                      <ObjectGroupIsOpen />
+                    <Route path="/buildings">
                       <Route
-                        path="/objects/profile/:buildingId"
-                        component={ObjectProfileContainer}
+                        path={`/buildings/${EHouseCategory.Living}Profile/:buildingId`}
+                        component={HousingStockProfileContainer}
+                        exact
+                      />
+                      <Route
+                        path={`/buildings/${EHouseCategory.NonResidential}Profile/:buildingId`}
+                        component={NonResidentialBuildingProfileContainer}
                         exact
                       />
                     </Route>
@@ -520,7 +520,9 @@ export const Router: FC<RouterProps> = ({ roles, isRolesLoadded }) => {
                       path="/apartment/:id/individualDevice/:deviceId/switch"
                       exact
                     >
-                      <SwitchIndividualDevice type="switch" />
+                      <WorkWithIndividualDeviceContainer
+                        type={WorkWithIndividualDeviceType.switch}
+                      />
                     </Route>
                   )}
                   {(isAdministrator || isSeniorOperator || isOperator) && (
@@ -528,7 +530,9 @@ export const Router: FC<RouterProps> = ({ roles, isRolesLoadded }) => {
                       path="/apartment/:id/individualDevice/:deviceId/check"
                       exact
                     >
-                      <SwitchIndividualDevice type="check" />
+                      <WorkWithIndividualDeviceContainer
+                        type={WorkWithIndividualDeviceType.check}
+                      />
                     </Route>
                   )}
                   {(isSeniorOperator || isOperator) && (
@@ -536,7 +540,9 @@ export const Router: FC<RouterProps> = ({ roles, isRolesLoadded }) => {
                       path="/apartment/:id/individualDevice/:deviceId/reopen"
                       exact
                     >
-                      <SwitchIndividualDevice type="reopen" />
+                      <WorkWithIndividualDeviceContainer
+                        type={WorkWithIndividualDeviceType.reopen}
+                      />
                     </Route>
                   )}
                   {(isAdministrator || isSeniorOperator || isOperator) && (
@@ -566,6 +572,11 @@ export const Router: FC<RouterProps> = ({ roles, isRolesLoadded }) => {
                       exact
                     >
                       <SwitchPersonalNumberContainer />
+                    </Route>
+                  )}
+                  {isDispatcher && (
+                    <Route path="/disabledResources" exact>
+                      <ResourceDisablingScheduleContainer />
                     </Route>
                   )}
 

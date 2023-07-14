@@ -6,13 +6,13 @@ import {
   Title,
 } from './HousingStockInfoPanel.styled';
 import { HousingStockInfoPanelProps } from './HousingStockInfoPanel.types';
-import { getHousingStockAddress } from 'utils/getHousingStockAddress';
+import { getBuildingAddress } from 'utils/getBuildingAddress';
 
 export const HousingStockInfoPanel: FC<HousingStockInfoPanelProps> = ({
   housingStock,
   inspector,
 }) => {
-  const addressString = getHousingStockAddress(housingStock, true);
+  const addressString = getBuildingAddress(housingStock, true);
 
   return (
     <div>

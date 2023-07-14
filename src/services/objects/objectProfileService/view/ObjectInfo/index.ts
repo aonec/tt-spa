@@ -1,1 +1,0 @@
-export { ObjectInfo } from './ObjectInfo'

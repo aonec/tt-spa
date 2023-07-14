@@ -1,5 +1,5 @@
 import { createDomain, forward, sample } from 'effector';
-import { HousingStockWithTasksResponse, TaskResponse } from 'myApi';
+import { BuildingWithTasksResponse, TaskResponse } from 'myApi';
 import { tasksProfileService } from '../tasksProfileService';
 import {
   $taskTypes,
@@ -19,7 +19,7 @@ const applyFilters =
 
 const resetFilters = domain.createEvent();
 
-const handleClickMarker = domain.createEvent<HousingStockWithTasksResponse>();
+const handleClickMarker = domain.createEvent<BuildingWithTasksResponse>();
 
 const clearSelectedHousingStock = domain.createEvent();
 
@@ -29,11 +29,11 @@ const clearTask = domain.createEvent();
 
 const fetchHousingStocksWithTasksFx = domain.createEffect<
   GetHousingStocksWithTasksRequestPayload,
-  HousingStockWithTasksResponse[]
+  BuildingWithTasksResponse[]
 >(getHousingStocksWithTasks);
 
 const $housingStocksWithTasks = domain
-  .createStore<HousingStockWithTasksResponse[]>([])
+  .createStore<BuildingWithTasksResponse[]>([])
   .on(fetchHousingStocksWithTasksFx.doneData, (_, data = []) => [...data]);
 
 const fetchTaskFx = domain.createEffect<number, TaskResponse>(getTask);
@@ -50,7 +50,7 @@ const $filtrationValues = domain
   .reset(resetFilters);
 
 const $selectedHousingStock = domain
-  .createStore<HousingStockWithTasksResponse | null>(null)
+  .createStore<BuildingWithTasksResponse | null>(null)
   .on(handleClickMarker, (_, housingStock) => housingStock)
   .reset(clearSelectedHousingStock);
 

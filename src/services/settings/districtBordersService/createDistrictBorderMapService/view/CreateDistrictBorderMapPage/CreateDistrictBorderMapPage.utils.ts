@@ -1,4 +1,4 @@
-import { HousingStockListResponsePagedList } from 'myApi';
+import { BuildingListResponsePagedList } from 'myApi';
 import { DistrictColor, DistrictData } from 'types';
 import housingStockMiniPlacemark from 'hooks/ymaps/placemarks/housingStockMiniPlacemark.svg';
 import housingStockPlacemark from 'hooks/ymaps/placemarks/housingStockPlacemark.svg';
@@ -6,7 +6,7 @@ import inactiveHousingStockPlacemark from 'hooks/ymaps/placemarks/inactiveHousin
 import { isPointInsidePolygon } from 'utils/isPointInsidePolygon';
 
 export const getBuildingPlacmearks = (
-  housingStocks: HousingStockListResponsePagedList | null,
+  housingStocks: BuildingListResponsePagedList | null,
   housesInDistrict: number[],
   selectedHouses: number[],
   toggleHouse: (id: number) => void,
@@ -35,7 +35,7 @@ export const getBuildingPlacmearks = (
 
 export const getSelectedHouses = (
   workingDistrict: ymaps.Polygon | null,
-  existingHousingStocks: HousingStockListResponsePagedList | null,
+  existingHousingStocks: BuildingListResponsePagedList | null,
 ) => {
   const coordinates = workingDistrict?.geometry?.getCoordinates();
 

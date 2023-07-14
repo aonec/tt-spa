@@ -1,7 +1,7 @@
 import { ContextMenuButton } from 'ui-kit/ContextMenuButton/ContextMenuButton';
 import React, { FC, useMemo } from 'react';
 import { WarningIcon } from 'ui-kit/icons';
-import { getHousingStockAddress } from 'utils/getHousingStockAddress';
+import { getBuildingAddress } from 'utils/getBuildingAddress';
 import {
   AccountNumber,
   Address,
@@ -14,7 +14,7 @@ import { PersonalNumberItemProps } from './PersonalNumberItem.types';
 export const PersonalNumberItem: FC<PersonalNumberItemProps> = ({
   apartment,
 }) => {
-  const address = getHousingStockAddress(apartment.housingStock);
+  const address = getBuildingAddress(apartment.housingStock);
   const apartmentAddress = apartment.apartmentNumber;
   const addressText = `${address}, кв ${apartmentAddress}`;
 
