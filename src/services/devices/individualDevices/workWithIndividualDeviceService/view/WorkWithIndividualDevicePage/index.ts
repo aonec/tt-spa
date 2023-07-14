@@ -1,1 +1,1 @@
-export { WorkWithIndividualDevicePage } from './WorkWithIndividualDevicePage'
+export { WorkWithIndividualDevicePage } from './WorkWithIndividualDevicePage';

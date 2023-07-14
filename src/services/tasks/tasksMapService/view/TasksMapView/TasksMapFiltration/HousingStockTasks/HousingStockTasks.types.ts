@@ -1,7 +1,7 @@
-import { HousingStockWithTasksResponse, TaskResponse } from 'myApi';
+import { BuildingWithTasksResponse, TaskResponse } from 'myApi';
 
 export type HousingStockTasksProps = {
-  selectedHousingStock: HousingStockWithTasksResponse | null;
+  selectedHousingStock: BuildingWithTasksResponse | null;
   clearSelectedHousingStock: () => void;
   task: TaskResponse | null;
   isLoadingTask: boolean;

@@ -5,7 +5,7 @@ export enum MenuType {
   Reports = 'Reports',
   ActsJournal = 'ActsJournal',
   Tasks = 'Tasks',
-  Objects = 'Objects',
+  Buildings = 'Buildings',
   Devices = 'Devices',
   CompanyProfile = 'CompanyProfile',
   Owners = 'Owners',

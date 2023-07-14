@@ -56,7 +56,7 @@ sample({
     return {
       City: payload?.city,
       Street: payload?.street,
-      HousingStockNumber: payload?.house,
+      BuildingNumber: payload?.house,
       Corpus: payload?.corpus,
       PageSize: 30,
       PageNumber: payload?.pageNumber,
