@@ -77,15 +77,12 @@ displayInspectorsHousingStocksService.outputs.$inspectorsHousingStocksList.on(
       }
 
       const { inspectorId, inspectedDay } = updatedHosuingStock.params.data;
-      console.log(hosuingStocks, updatedHosuingStock);
 
       const res = {
         ...housingStock,
-        inspectedDay: inspectedDay as any,
+        inspectedDay: inspectedDay || housingStock.inspectedDay,
         inspectorId: inspectorId,
       };
-
-      console.log(res);
 
       return res;
     });
