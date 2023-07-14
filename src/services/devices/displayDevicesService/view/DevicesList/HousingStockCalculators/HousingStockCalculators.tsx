@@ -8,7 +8,7 @@ import {
   HousingStockAddressHeaderWrapper,
 } from './HousingStockCalculators.styled';
 import { Switcher } from 'ui-kit/shared_components/Switcher';
-import { getHousingStockAddressString } from 'utils/getHousingStockAddress';
+import { getHousingStockAddressString } from 'utils/getBuildingAddress';
 import { CalculatorNodes } from './CalculatorNodes';
 
 export const HousingStockCalculators: FC<HousingStockCalculatorsProps> = ({
@@ -47,8 +47,9 @@ export const HousingStockCalculators: FC<HousingStockCalculatorsProps> = ({
     <>
       {address ? (
         <HousingStockAddressHeaderWrapper>
+          {/* Дождаться правок */}
           <HousingStockAddress
-            to={`/objects/profile/${housingStocksAddressForSwitcher?.current?.id}`}
+            to={`/buildings/LivingProfile/${housingStocksAddressForSwitcher?.current?.id}`}
           >
             {getHousingStockAddressString(address)}
           </HousingStockAddress>

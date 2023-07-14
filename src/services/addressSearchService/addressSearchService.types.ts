@@ -15,14 +15,6 @@ export type AddressSearchContainerProps = {
   onChange?: (key: string, value: string) => void;
 };
 
-interface Params {
-  Street?: string | null;
-  City?: string | null;
-  PageNumber?: number;
-  PageSize?: number;
-  OrderBy?: EOrderByRule;
-}
-
 export type GetExistingSteetRequestParams = {
   Street?: string | null;
   City?: string | null;

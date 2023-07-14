@@ -52,7 +52,7 @@ export const ObjectsProfileContainer = () => {
     inputs.openFlowTemperatureDeviationReportModal,
   );
 
-  const handleCreateObject = () => history.push('/objects/create');
+  const handleCreateObject = () => history.push('/buildings/create');
 
   const isPermitionToDownloadGroupReport = usePermission([
     ESecuredIdentityRoleName.Administrator,
@@ -86,7 +86,7 @@ export const ObjectsProfileContainer = () => {
 
   useEffect(() => {
     if (!searchType) {
-      history.push(`/objects/${SearchType.Houses}`);
+      history.push(`/buildings/${SearchType.Houses}`);
     }
   }, [searchType, history]);
 

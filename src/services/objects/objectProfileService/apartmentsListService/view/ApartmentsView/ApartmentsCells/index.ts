@@ -1,1 +1,0 @@
-export { ApartmentsCells } from './ApartmentsCells'

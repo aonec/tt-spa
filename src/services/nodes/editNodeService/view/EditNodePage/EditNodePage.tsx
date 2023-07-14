@@ -2,7 +2,7 @@ import React, { FC, useMemo } from 'react';
 import { GoBack } from 'ui-kit/shared_components/GoBack';
 import { HeaderInfoString } from 'ui-kit/shared_components/HeaderInfoString';
 import { ResourceIconLookup } from 'ui-kit/shared_components/ResourceIconLookup';
-import { getHousingStockAddress } from 'utils/getHousingStockAddress';
+import { getBuildingAddress } from 'utils/getBuildingAddress';
 import { NodeEditGrouptype } from '../../editNodeService.constants';
 import { EditNodeCommonInfo } from './EditNodeCommonInfo';
 import {
@@ -22,6 +22,7 @@ import { IncorrectConfigAlert } from './IncorrectConfigAlert';
 import { NodeRegistrationTypeLookup } from 'dictionaries';
 import { EditCalculatorConnection } from './EditCalculatorConnection/EditCalculatorConnection';
 const { TabPane } = TabsSC;
+const formId = 'edit-node-page';
 
 export const EditNodePage: FC<EditNodePageProps> = ({
   node,
@@ -37,8 +38,6 @@ export const EditNodePage: FC<EditNodePageProps> = ({
   openRemoveConnectionModal,
 }) => {
   const { number, address, resource, registrationType } = node;
-
-  const formId = 'edit-node-page';
 
   const isIncorrectConfig =
     node?.validationResult?.errors?.length !== 0 ||
@@ -65,9 +64,11 @@ export const EditNodePage: FC<EditNodePageProps> = ({
           </>
         }
       />
-      <AddressWrapper to={`/objects/profile/${address?.id}`}>
+      <AddressWrapper
+        to={`/buildings/${address?.houseCategory}Profile/${address?.id}`}
+      >
         <HeaderInfoString>
-          <>{getHousingStockAddress(address, true)}</>
+          <>{getBuildingAddress(address, true)}</>
           <>{NodeRegistrationTypeLookup[registrationType]} узел</>
         </HeaderInfoString>
       </AddressWrapper>

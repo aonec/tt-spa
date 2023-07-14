@@ -1,0 +1,1 @@
+export { ApartmentsCells } from './ApartmentsCells';

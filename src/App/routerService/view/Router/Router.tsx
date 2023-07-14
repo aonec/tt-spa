@@ -2,13 +2,10 @@ import React, { FC } from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
 import { Layout, PageWrapper, Wrapper } from './Router.styled';
 import { RouterProps } from './Router.types';
-import { ESecuredIdentityRoleName } from 'myApi';
+import { EHouseCategory, ESecuredIdentityRoleName } from 'myApi';
 import { TasksRouter } from 'services/tasks/tasks.router';
 import { ObjectsProfileContainer } from 'services/objects/objectsProfileService';
-import {
-  ObjectProfileContainer,
-  objectProfileService,
-} from 'services/objects/objectProfileService';
+import { HousingStockProfileContainer } from 'services/objects/housingStockProfileService';
 import { DevicesPageContainer } from 'services/devices/devicesPageService';
 import { ChangeODPUContainer } from 'services/devices/сhangeODPUService';
 import { EditElectricNodeContainer } from 'services/devices/editElectricNodeService';
@@ -56,10 +53,7 @@ import { WorkWithIndividualDeviceContainer } from 'services/devices/individualDe
 import { WorkWithIndividualDeviceType } from 'services/devices/individualDevices/workWithIndividualDeviceService/workWithIndividualDeviceService.types';
 import { ManageDistrictsMapContainer } from 'services/settings/districtBordersService/manageDistrictsMapService';
 import { CreateDistrictBorderMapContainer } from 'services/settings/districtBordersService/createDistrictBorderMapService';
-
-const { gates } = objectProfileService;
-
-const { ObjectGroupIsOpen } = gates;
+import { NonResidentialBuildingProfileContainer } from 'services/objects/nonResidentialBuildingProfileService';
 
 export const Router: FC<RouterProps> = ({ roles, isRolesLoadded }) => {
   const redirectRoute = roles.length
@@ -127,26 +121,26 @@ export const Router: FC<RouterProps> = ({ roles, isRolesLoadded }) => {
 
                   {isAdministrator ? (
                     <Route
-                      path="/objects/create"
+                      path="/buildings/create"
                       component={CreateObjectContainer}
                       exact
                     />
                   ) : (
                     <Route
-                      path="/objects/create"
+                      path="/buildings/create"
                       component={AccessDeniedPage}
                       exact
                     />
                   )}
                   {isAdministrator ? (
                     <Route
-                      path="/objects/:buildingId/edit"
+                      path="/buildings/:buildingId/edit"
                       component={EditObjectContainer}
                       exact
                     />
                   ) : (
                     <Redirect
-                      from="/objects/:buildingId/edit"
+                      from="/buildings/:buildingId/edit"
                       to="/access-denied/"
                       exact
                     />
@@ -154,13 +148,13 @@ export const Router: FC<RouterProps> = ({ roles, isRolesLoadded }) => {
 
                   {isAdministrator || isExecutor ? (
                     <Route
-                      path="/objects/:buildingId/addNode"
+                      path="/buildings/:buildingId/addNode"
                       component={CreateNodeContainer}
                       exact
                     />
                   ) : (
                     <Route
-                      path="/objects/:buildingId/addNode"
+                      path="/buildings/:buildingId/addNode"
                       component={AccessDeniedPage}
                       exact
                     />
@@ -168,7 +162,7 @@ export const Router: FC<RouterProps> = ({ roles, isRolesLoadded }) => {
 
                   {isAnyRole && (
                     <Route
-                      path="/objects/:searchType?"
+                      path="/buildings/:searchType?"
                       component={ObjectsProfileContainer}
                       exact
                     />
@@ -197,11 +191,15 @@ export const Router: FC<RouterProps> = ({ roles, isRolesLoadded }) => {
                   )}
 
                   {isAnyRole && (
-                    <Route path="/objects">
-                      <ObjectGroupIsOpen />
+                    <Route path="/buildings">
                       <Route
-                        path="/objects/profile/:buildingId"
-                        component={ObjectProfileContainer}
+                        path={`/buildings/${EHouseCategory.Living}Profile/:buildingId`}
+                        component={HousingStockProfileContainer}
+                        exact
+                      />
+                      <Route
+                        path={`/buildings/${EHouseCategory.NonResidential}Profile/:buildingId`}
+                        component={NonResidentialBuildingProfileContainer}
                         exact
                       />
                     </Route>

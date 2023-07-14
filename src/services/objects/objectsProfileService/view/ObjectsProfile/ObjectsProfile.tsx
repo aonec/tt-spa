@@ -108,13 +108,13 @@ export const ObjectsProfile: FC<ObjectsProfileProps> = ({
           <SizeWrapper>
             <SearchTypesWrapper>
               <Radio.Group value={searchType}>
-                <Link to={`/objects/${SearchType.Houses}`}>
+                <Link to={`/buildings/${SearchType.Houses}`}>
                   <Radio value={SearchType.Houses}>Поиск по адресу</Radio>
                 </Link>
-                <Link to={`/objects/${SearchType.Apartments}`}>
+                <Link to={`/buildings/${SearchType.Apartments}`}>
                   <Radio value={SearchType.Apartments}>Поиск по квартире</Radio>
                 </Link>
-                <Link to={`/objects/${SearchType.PersonaNumbers}`}>
+                <Link to={`/buildings/${SearchType.PersonaNumbers}`}>
                   <Radio value={SearchType.PersonaNumbers}>
                     Поиск по лицевому счету
                   </Radio>
