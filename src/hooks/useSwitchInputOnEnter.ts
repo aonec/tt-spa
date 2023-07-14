@@ -19,16 +19,18 @@ export const useSwitchInputOnEnter = (
 
       const currentNode = inputList[index];
 
-      if (!nextNode && isCyclical) {
+      if (nextNode) {
+        handleFocus(nextNode);
+        return;
+      }
+
+      if (isCyclical) {
         const firstNode = inputList[0];
 
-        return handleFocus(firstNode);
+        handleFocus(firstNode);
+      } else {
+        handleBlur(currentNode);
       }
-      if (!nextNode && !isCyclical) {
-        return handleBlur(currentNode);
-      }
-      
-      return handleFocus(nextNode);
     },
     [name, isCyclical],
   );
