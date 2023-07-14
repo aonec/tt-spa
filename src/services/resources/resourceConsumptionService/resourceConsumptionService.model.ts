@@ -15,12 +15,15 @@ import {
 import { BooleanTypesOfResourceConsumptionGraphForTwoMonth } from './view/ResourceConsumptionProfile/ResourceConsumptionProfile.types';
 import { message } from 'antd';
 import { EffectFailDataAxiosError } from 'types';
+import { addressSearchService } from 'services/addressSearchService/addressSearchService.models';
 
 const domain = createDomain('resourceConsumptionService');
 
 const clearData = domain.createEvent();
 
 const getConsumptionData = domain.createEvent<ConsumptionDataPayload>();
+
+const setResourceConsumptionAddressLoading = domain.createEvent<boolean>();
 
 const getHousingConsumptionFx = domain.createEffect<
   ConsumptionDataPayload,
@@ -66,11 +69,20 @@ const $summaryConsumption = domain
   .on(getSummaryConsumptionsFx.doneData, (_, consumptions) => consumptions)
   .reset(clearSummary);
 
+const $isExistingCitiesLoading =
+  addressSearchService.outputs.$isExistingCitiesLoading;
+
+const $isResourceConsumptionAddressLoading = domain
+  .createStore<boolean>(false)
+  .on(setResourceConsumptionAddressLoading, (_, data) => data);
+
 const ResourceConsumptionGate = createGate();
 
 const $isLoading = combine(
   getHousingConsumptionFx.pending,
   getAdditionalConsumptionFx.pending,
+  $isExistingCitiesLoading,
+  $isResourceConsumptionAddressLoading,
   (...loadings) => loadings.includes(true),
 );
 
@@ -115,6 +127,7 @@ export const resourceConsumptionService = {
     setSelectedGraphTypes,
     clearAdditionalAddressData,
     getSummaryConsumptions,
+    setResourceConsumptionAddressLoading,
   },
   outputs: {
     $housingConsumptionData,
