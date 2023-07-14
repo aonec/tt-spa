@@ -58,6 +58,7 @@ sample({
       City: payload?.city,
       Street: payload?.street,
       BuildingNumber: payload?.house,
+      Corpus: payload?.corpus,
       PageSize: 30,
       PageNumber: payload?.pageNumber,
     };
