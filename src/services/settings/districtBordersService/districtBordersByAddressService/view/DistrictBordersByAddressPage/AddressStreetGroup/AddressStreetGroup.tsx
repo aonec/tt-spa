@@ -47,6 +47,10 @@ export const AddressStreetGroup: FC<AddressStreetGroupProps> = ({
     }
   }, [currentStreetCheckedHousingStockIds.length, housingStockIds.length]);
 
+  const checkedHousesCountString = `Выбрано: ${
+    isChecked ? 'Все' : currentStreetCheckedHousingStockIds.length
+  } `;
+
   return (
     <Wrapper>
       <GroupHeader onClick={() => setIsOpen((isOpen) => !isOpen)}>
@@ -77,11 +81,7 @@ export const AddressStreetGroup: FC<AddressStreetGroupProps> = ({
 
         <RightBlock>
           <SelectedAddressCount>
-            {sortedAddresses.length
-              ? isChecked
-                ? 'Выбрано: Все'
-                : `Выбрано: ${currentStreetCheckedHousingStockIds.length} `
-              : ''}
+            {Boolean(sortedAddresses.length) && checkedHousesCountString}
           </SelectedAddressCount>
 
           <ChevronWrapper>
