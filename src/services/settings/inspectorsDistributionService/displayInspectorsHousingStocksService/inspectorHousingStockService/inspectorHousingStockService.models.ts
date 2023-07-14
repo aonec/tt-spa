@@ -67,18 +67,27 @@ $currentHousingStockUpdates.reset(
 );
 
 displayInspectorsHousingStocksService.outputs.$inspectorsHousingStocksList.on(
-  updateHousingStockInspectorInfoFx.doneData,
+  updateHousingStockInspectorInfoFx.done,
   (hosuingStocks, updatedHosuingStock) => {
     const updatedHousingStocks = hosuingStocks?.map((housingStock) => {
-      if (housingStock.buildingId !== updatedHosuingStock?.id) {
+      if (
+        housingStock.buildingId !== updatedHosuingStock.params.housingStockId
+      ) {
         return housingStock;
       }
 
-      return {
+      const { inspectorId, inspectedDay } = updatedHosuingStock.params.data;
+      console.log(hosuingStocks, updatedHosuingStock);
+
+      const res = {
         ...housingStock,
-        inspectedDay: updatedHosuingStock.inspectedDay,
-        inspectorId: updatedHosuingStock.inspectorId,
+        inspectedDay: inspectedDay as any,
+        inspectorId: inspectorId,
       };
+
+      console.log(res);
+
+      return res;
     });
 
     return updatedHousingStocks;
