@@ -10,6 +10,7 @@ import { Tooltip } from 'antd';
 import { ENodeRegistrationType } from 'myApi';
 import { configNamesLookup } from 'utils/configNamesLookup';
 import { NodeRegistrationTypeLookup } from 'dictionaries';
+import { objectRouteFromCategory } from 'services/objects/objects.router';
 
 export const CommonInfoTab: FC<CommonInfoTabProps> = ({ pipeNode }) => {
   const NodeStatusIcon =
@@ -25,15 +26,18 @@ export const CommonInfoTab: FC<CommonInfoTabProps> = ({ pipeNode }) => {
       items={[
         {
           key: 'Адрес',
-          value: (
+          value: pipeNode.address ? (
             <Tooltip title={additionalAdress}>
               <AddressWrapper
-                to={`/buildings/${pipeNode.address?.houseCategory}Profile/${pipeNode?.address?.id}`}
+                to={`/buildings/${
+                  objectRouteFromCategory[pipeNode.address?.houseCategory]
+                }Profile/${pipeNode?.address?.id}`}
               >
-                {pipeNode?.address &&
-                  getBuildingAddress(pipeNode?.address, true)}
+                {getBuildingAddress(pipeNode.address, true)}
               </AddressWrapper>
             </Tooltip>
+          ) : (
+            '-'
           ),
         },
         {

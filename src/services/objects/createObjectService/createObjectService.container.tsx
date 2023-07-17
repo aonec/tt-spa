@@ -6,6 +6,7 @@ import { CreateHeatingStationContainer } from '../heatingStations/createHeatingS
 import { EditHeatingStationContainer } from '../heatingStations/editHeatingStationService';
 import { createObjectService } from './createObjectService.model';
 import { CreateObjectPage } from './view/CreateObjectPage';
+import { objectRouteFromCategory } from '../objects.router';
 
 const { inputs, outputs, gates } = createObjectService;
 const { HouseManagementsFetchGate, PageCloseGate, HeatingStationsFetchGate } =
@@ -50,7 +51,9 @@ export const CreateObjectContainer = () => {
     return inputs.handleCreateObjectSuccessDone.watch((data) => {
       const type = data.houseCategory;
       if (data?.id) {
-        history.push(`/buildings/${type}Profile/${data.id}`);
+        history.push(
+          `/buildings/${objectRouteFromCategory[type]}Profile/${data.id}`,
+        );
       }
     }).unsubscribe;
   }, [history]);

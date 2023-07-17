@@ -11,6 +11,7 @@ import {
 } from './HousingStockItem.styled';
 import { HousingStockItemProps } from './HousingStockItem.types';
 import { HouseCategoryDictionary } from 'services/objects/createObjectService/view/CreateObjectPage/CreateObjectMainInfoStage/createObjectMainInfoStage.constants';
+import { objectRouteFromCategory } from 'services/objects/objects.router';
 
 export const HousingStockItem: FC<HousingStockItemProps> = ({
   housingStock,
@@ -38,7 +39,9 @@ export const HousingStockItem: FC<HousingStockItemProps> = ({
 
   return (
     <Wrapper
-      to={`/buildings/${housingStock.houseCategory}Profile/${housingStock.id}`}
+      to={`/buildings/${
+        objectRouteFromCategory[housingStock.houseCategory]
+      }Profile/${housingStock.id}`}
     >
       <div>
         <Address>

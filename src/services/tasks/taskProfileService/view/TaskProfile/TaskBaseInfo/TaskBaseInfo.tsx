@@ -8,6 +8,7 @@ import {
   TitleWrapper,
 } from './TaskBaseInfo.styled';
 import { TaskBaseInfoProps } from './TaskBaseInfo.types';
+import { objectRouteFromCategory } from 'services/objects/objects.router';
 
 export const TaskBaseInfo: FC<TaskBaseInfoProps> = ({ task }) => {
   const {
@@ -26,7 +27,7 @@ export const TaskBaseInfo: FC<TaskBaseInfoProps> = ({ task }) => {
 
   const linkPath = apartment
     ? `/apartments/${apartmentId}`
-    : `/buildings/${houseCategory}Profile/${buildingId}`;
+    : `/buildings/${objectRouteFromCategory[houseCategory]}Profile/${buildingId}`;
 
   const preparedCreationTime = creationTime
     ? getTimeStringByUTC(creationTime)

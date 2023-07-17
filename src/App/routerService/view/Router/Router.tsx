@@ -54,6 +54,7 @@ import { WorkWithIndividualDeviceType } from 'services/devices/individualDevices
 import { ManageDistrictsMapContainer } from 'services/settings/districtBordersService/manageDistrictsMapService';
 import { CreateDistrictBorderMapContainer } from 'services/settings/districtBordersService/createDistrictBorderMapService';
 import { NonResidentialBuildingProfileContainer } from 'services/objects/nonResidentialBuildingProfileService';
+import { objectRouteFromCategory } from 'services/objects/objects.router';
 
 export const Router: FC<RouterProps> = ({ roles, isRolesLoadded }) => {
   const redirectRoute = roles.length
@@ -193,12 +194,16 @@ export const Router: FC<RouterProps> = ({ roles, isRolesLoadded }) => {
                   {isAnyRole && (
                     <Route path="/buildings">
                       <Route
-                        path={`/buildings/${EHouseCategory.Living}Profile/:buildingId`}
+                        path={`/buildings/${
+                          objectRouteFromCategory[EHouseCategory.Living]
+                        }Profile/:buildingId`}
                         component={HousingStockProfileContainer}
                         exact
                       />
                       <Route
-                        path={`/buildings/${EHouseCategory.NonResidential}Profile/:buildingId`}
+                        path={`/buildings/${
+                          objectRouteFromCategory[EHouseCategory.NonResidential]
+                        }Profile/:buildingId`}
                         component={NonResidentialBuildingProfileContainer}
                         exact
                       />

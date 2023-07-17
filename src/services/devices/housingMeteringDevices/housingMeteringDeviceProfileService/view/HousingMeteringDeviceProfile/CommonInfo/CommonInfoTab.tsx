@@ -6,6 +6,7 @@ import { CommonInfo } from 'ui-kit/shared_components/CommonInfo';
 import { getBuildingAddress } from 'utils/getBuildingAddress';
 import { Address } from './CommonInfoTab.styled';
 import { CommonInfoProps } from './CommonInfoTab.types';
+import { objectRouteFromCategory } from 'services/objects/objects.router';
 
 export const CommonInfoTab: FC<CommonInfoProps> = ({
   housingMeteringDevice,
@@ -22,12 +23,16 @@ export const CommonInfoTab: FC<CommonInfoProps> = ({
   const items = [
     {
       key: 'Адрес',
-      value: (
+      value: address ? (
         <Address
-          to={`/buildings/${address?.houseCategory}Profile/${address?.id}`}
+          to={`/buildings/${
+            objectRouteFromCategory[address.houseCategory]
+          }Profile/${address?.id}`}
         >
           {addressString}
         </Address>
+      ) : (
+        '-'
       ),
     },
     {

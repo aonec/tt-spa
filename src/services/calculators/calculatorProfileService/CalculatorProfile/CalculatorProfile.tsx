@@ -26,6 +26,7 @@ import { NodeDocumentsList } from './NodeDocumentsList';
 import { RelatedNodesList } from './RelatedNodesList';
 import { ContextMenuButtonColor } from 'ui-kit/ContextMenuButton/ContextMenuButton.types';
 import { TaskGroupingFilter } from 'myApi';
+import { objectRouteFromCategory } from 'services/objects/objects.router';
 
 const { TabPane } = Tabs;
 
@@ -66,7 +67,9 @@ export const CalculatorProfile: FC<CalculatorProfileProps> = ({
               <>
                 {calculator?.address && (
                   <AddressLinkWrapper
-                    to={`/buildings/${calculator.address.houseCategory}Profile/${calculator.address?.id}`}
+                    to={`/buildings/${
+                      objectRouteFromCategory[calculator.address.houseCategory]
+                    }Profile/${calculator.address?.id}`}
                   >
                     {getBuildingAddress(calculator.address, true)}
                   </AddressLinkWrapper>
