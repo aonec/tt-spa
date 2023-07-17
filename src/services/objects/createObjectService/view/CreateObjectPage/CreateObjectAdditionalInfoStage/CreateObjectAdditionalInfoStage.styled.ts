@@ -1,3 +1,4 @@
+import { EHouseCategory } from 'myApi';
 import styled from 'styled-components';
 import { Button } from 'ui-kit/Button';
 
@@ -18,9 +19,10 @@ export const RightButtonBlock = styled.div`
   align-items: center;
 `;
 
-export const GridContainer = styled.div`
+export const GridContainer = styled.div<{ category?: string }>`
   display: grid;
-  grid-template-columns: 1fr 1fr 3fr;
+  grid-template-columns: ${({ category }) =>
+    category === EHouseCategory.NonResidential ? '2fr 3fr' : '1fr 1fr 3fr'};
   grid-gap: 4px 20px;
 `;
 

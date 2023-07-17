@@ -1,25 +1,30 @@
 import React, { useEffect } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
-import { useEvent, useStore } from 'effector-react';
+import { useEvent, useStore, useUnit } from 'effector-react';
 import { createNodeService } from './createNodeService.model';
 import { CreateNodePage } from './view/CreateNodePage';
 import { CreateNodeServiceZoneContainer } from '../createNodeServiceZoneService';
 import { CreateNodeConfirmationModal } from './view/CreateNodeConfirmationModal';
 import { CreateCalculatorModalContainer } from 'services/calculators/createCalculatorModalService';
 import { addressSearchService } from 'services/addressSearchService/addressSearchService.models';
+import { EHouseCategory } from 'myApi';
 
 const { inputs, outputs, gates } = createNodeService;
 const { CreateNodeGate } = gates;
 const { ExistingCitiesGate } = addressSearchService.gates;
 
 export const CreateNodeContainer = () => {
-  const { buildingId } = useParams<{ buildingId: string }>();
+  const { buildingId, houseCategory } = useParams<{
+    buildingId: string;
+    houseCategory?: EHouseCategory;
+  }>();
+
   const history = useHistory();
 
-  const housingStock = useStore(outputs.$housingStock);
+  const isBuildingLoading = useUnit(outputs.$isLoadingBuilding);
+  const building = useStore(outputs.$building);
   const existingCities = useStore(outputs.$existingCities);
   const existingStreets = useStore(outputs.$existingStreets);
-  const isLoadingHousingStock = useStore(outputs.$isLoadingHousingStock);
   const stepNumber = useStore(outputs.$stepNumber);
   const calculatorsList = useStore(outputs.$calculatorsList);
   const requestPayload = useStore(outputs.$requestPayload);
@@ -49,16 +54,19 @@ export const CreateNodeContainer = () => {
 
   return (
     <>
-      <CreateNodeGate buildingId={Number(buildingId)} />
+      <CreateNodeGate
+        buildingId={Number(buildingId)}
+        houseCategory={houseCategory}
+      />
       <ExistingCitiesGate />
       <CreateNodeServiceZoneContainer />
       <CreateCalculatorModalContainer />
-      {housingStock && selectedServiceZone && (
+      {building && selectedServiceZone && (
         <CreateNodeConfirmationModal
           isOpen={isConfirmationModalOpen}
           handleClose={() => closeConfiramtionModal()}
           requestPayload={requestPayload}
-          housingStock={housingStock}
+          building={building}
           calculator={selectedCalculator}
           serviceZone={selectedServiceZone}
           handleSubmitForm={() => handleSubmitForm()}
@@ -67,10 +75,10 @@ export const CreateNodeContainer = () => {
         />
       )}
       <CreateNodePage
-        housingStock={housingStock}
+        building={building}
         existingCities={existingCities}
         existingStreets={existingStreets}
-        isLoadingHousingStock={isLoadingHousingStock}
+        isBuildingLoading={isBuildingLoading}
         updateRequestPayload={updateRequestPayload}
         goPrevStep={() => goPrevStep()}
         stepNumber={stepNumber}

@@ -7,8 +7,13 @@ import {
   HouseManagementResponse,
   HousingStockCreateRequest,
   HousingStockResponse,
+  NonResidentialBuildingCreateRequest,
+  NonResidentialBuildingResponse,
 } from 'myApi';
-import { CreateBuildingResponse } from './createObjectService.types';
+import {
+  CreateBuildingRequest,
+  CreateBuildingResponse,
+} from './createObjectService.types';
 
 export const getHouseManagements = (): Promise<
   HouseManagementResponse[] | null
@@ -27,7 +32,17 @@ export const postHeatingStation = (
   return axios.post('HeatingStation', requestPayload);
 };
 
-export const postCreateObject = async (
+export const createObject = async ({
+  objectCategory,
+  ...payload
+}: CreateBuildingRequest) => {
+  if (objectCategory === EHouseCategory.Living) {
+    return await createHousingStock(payload);
+  }
+  return await createNonResidentialBuilding(payload);
+};
+
+const createHousingStock = async (
   requestPayload: HousingStockCreateRequest,
 ): Promise<CreateBuildingResponse> => {
   const res: HousingStockResponse | null = await axios.post(
@@ -36,4 +51,15 @@ export const postCreateObject = async (
   );
 
   return { houseCategory: EHouseCategory.Living, id: res?.id };
+};
+
+const createNonResidentialBuilding = async (
+  requestPayload: NonResidentialBuildingCreateRequest,
+): Promise<CreateBuildingResponse> => {
+  const res: NonResidentialBuildingResponse | null = await axios.post(
+    'NonResidentialBuildings',
+    requestPayload,
+  );
+
+  return { houseCategory: EHouseCategory.NonResidential, id: res?.id };
 };

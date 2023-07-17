@@ -16,6 +16,7 @@ import { ResourceAccountingSystemsContainer } from 'services/devices/resourceAcc
 import { LinkCard } from 'ui-kit/shared_components/LinkCard';
 import { stringifyUrl } from 'query-string';
 import { useHistory } from 'react-router-dom';
+import { EHouseCategory } from 'myApi';
 
 const { TabPane } = TabsSC;
 
@@ -74,7 +75,9 @@ export const NonResidentialBuildingProfile: FC<
             {
               title: 'Добавить узел',
               onClick: () =>
-                history.push(`/buildings/${nonResidentialBuilding.id}/addNode`),
+                history.push(
+                  `/buildings/${EHouseCategory.NonResidential}/${nonResidentialBuilding.id}/addNode`,
+                ),
               hidden: !isPermitionToAddNode,
             },
             {

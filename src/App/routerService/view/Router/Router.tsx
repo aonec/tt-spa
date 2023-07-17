@@ -148,7 +148,7 @@ export const Router: FC<RouterProps> = ({ roles, isRolesLoadded }) => {
 
                   {isAdministrator || isExecutor ? (
                     <Route
-                      path="/buildings/:buildingId/addNode"
+                      path="/buildings/:houseCategory/:buildingId/addNode"
                       component={CreateNodeContainer}
                       exact
                     />

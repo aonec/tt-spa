@@ -4,20 +4,25 @@ import { createGate } from 'effector-react';
 import {
   CalculatorIntoHousingStockResponse,
   CreatePipeNodeRequest,
+  EHouseCategory,
   EPipeNodeValidationMessageStringDictionaryItem,
   HousingStockResponse,
   NodeServiceZoneListResponse,
+  NonResidentialBuildingResponse,
   PipeNodeResponse,
   PipeNodeValidationResultResponse,
 } from 'myApi';
 import {
   fetchValidateNode,
+  getBuilding,
   getCalculatorsList,
-  getHousingStock,
   getNodeServiceZones,
   postPipeNode,
 } from './createNodeService.api';
-import { CreateNodeFormPayload } from './createNodeService.types';
+import {
+  CreateNodeFormPayload,
+  GetBuildingPayload,
+} from './createNodeService.types';
 import { EffectFailDataAxiosError } from 'types';
 import { message } from 'antd';
 import { createCalculatorModalService } from 'services/calculators/createCalculatorModalService';
@@ -31,9 +36,10 @@ const createPipeNodeFx = domain.createEffect<
   EffectFailDataAxiosError
 >(postPipeNode);
 
-const fetchHousingStockFx = domain.createEffect<number, HousingStockResponse>(
-  getHousingStock,
-);
+const fetchBuildingFx = domain.createEffect<
+  GetBuildingPayload,
+  HousingStockResponse | NonResidentialBuildingResponse
+>(getBuilding);
 
 const handleSubmitForm = domain.createEvent();
 
@@ -47,7 +53,10 @@ const fetchNodeServiceZonesFx = domain.createEffect<
   NodeServiceZoneListResponse | null
 >(getNodeServiceZones);
 
-const CreateNodeGate = createGate<{ buildingId: number }>();
+const CreateNodeGate = createGate<{
+  buildingId: number;
+  houseCategory?: EHouseCategory;
+}>();
 
 const updateRequestPayload = domain.createEvent<CreateNodeFormPayload>();
 
@@ -81,9 +90,11 @@ const $requestPayload = domain
   .on(updateRequestPayload, (prev, data) => ({ ...prev, ...data }))
   .reset(CreateNodeGate.close);
 
-const $housingStock = domain
-  .createStore<HousingStockResponse | null>(null)
-  .on(fetchHousingStockFx.doneData, (_, housingStock) => housingStock)
+const $building = domain
+  .createStore<HousingStockResponse | NonResidentialBuildingResponse | null>(
+    null,
+  )
+  .on(fetchBuildingFx.doneData, (_, building) => building)
   .reset(CreateNodeGate.close);
 
 const $calculatorsList = domain
@@ -114,20 +125,25 @@ const $nodeServiceZones = domain
   .reset(CreateNodeGate.close);
 
 guard({
-  clock: CreateNodeGate.open.map(({ buildingId }) => buildingId),
-  filter: Boolean,
-  target: fetchHousingStockFx,
+  clock: CreateNodeGate.open,
+  filter: (payload): payload is GetBuildingPayload =>
+    Boolean(payload.buildingId && payload.houseCategory),
+  target: fetchBuildingFx,
 });
 
 guard({
-  source: $requestPayload.map(({ buildingId }) => buildingId),
+  source: $requestPayload.map(({ buildingId, houseCategory }) => ({
+    buildingId,
+    houseCategory,
+  })),
   clock: guard({
     source: CreateNodeGate.state,
     clock: $requestPayload.map(({ buildingId }) => buildingId),
     filter: ({ buildingId }) => !buildingId,
   }),
-  filter: Boolean,
-  target: fetchHousingStockFx,
+  filter: (payload): payload is GetBuildingPayload =>
+    Boolean(payload.houseCategory),
+  target: fetchBuildingFx,
 });
 
 guard({
@@ -186,7 +202,7 @@ const $selectedServiceZone = combine(
     ) || null,
 );
 
-const $isLoadingHousingStock = fetchHousingStockFx.pending;
+const $isLoadingBuilding = fetchBuildingFx.pending;
 const $isCreatePipeNodeLoading = createPipeNodeFx.pending;
 const $isValidationLoading = validateNodeFx.pending;
 
@@ -219,10 +235,10 @@ export const createNodeService = {
     validateNode,
   },
   outputs: {
-    $housingStock,
+    $building,
     $existingCities: addressSearchService.outputs.$existingCities,
     $existingStreets: addressSearchService.outputs.$existingStreets,
-    $isLoadingHousingStock,
+    $isLoadingBuilding,
     $stepNumber,
     $calculatorsList,
     $requestPayload,

@@ -22,6 +22,7 @@ import {
 } from './CreateObjectAdditionalInfoStage.types';
 import { DatePicker } from 'ui-kit/DatePicker';
 import moment from 'moment';
+import { EHouseCategory } from 'myApi';
 
 export const CreateObjectAdditionalInfoStage: FC<
   CreateObjectAdditionalInfoStageProps
@@ -51,7 +52,9 @@ export const CreateObjectAdditionalInfoStage: FC<
     <Wrapper>
       <PageTitle>Дополнительная информация </PageTitle>
 
-      <GridContainer>
+      <GridContainer
+        category={createObjectData?.objectCategory || EHouseCategory.Living}
+      >
         <FormItem label="Число этажей">
           <Input
             placeholder="Введите"
@@ -61,14 +64,18 @@ export const CreateObjectAdditionalInfoStage: FC<
           />
         </FormItem>
 
-        <FormItem label="Число подъездов">
-          <Input
-            placeholder="Введите"
-            onChange={(value) => setFieldValue('entrances', value.target.value)}
-            value={values.entrances || undefined}
-            type="number"
-          />
-        </FormItem>
+        {createObjectData?.objectCategory === EHouseCategory.Living && (
+          <FormItem label="Число подъездов">
+            <Input
+              placeholder="Введите"
+              onChange={(value) =>
+                setFieldValue('entrances', value.target.value)
+              }
+              value={values.entrances || undefined}
+              type="number"
+            />
+          </FormItem>
+        )}
 
         <FormItem label="Лифт">
           <Select
