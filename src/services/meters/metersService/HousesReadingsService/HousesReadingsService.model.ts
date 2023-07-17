@@ -76,8 +76,8 @@ const $individualDevicesPageNumber = domain
 
 guard({
   clock: handleSearchHousingStock,
-  filter: ({ City, Street, HousingStockNumber }) => {
-    return [City, Street, HousingStockNumber].every(Boolean);
+  filter: ({ City, Street, BuildingNumber }) => {
+    return [City, Street, BuildingNumber].every(Boolean);
   },
   target: fetchHousingStockFx,
 });
