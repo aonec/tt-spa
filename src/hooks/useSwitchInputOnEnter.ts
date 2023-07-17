@@ -49,9 +49,11 @@ const handleFocus = (node: HTMLInputElement): void => {
 
   if (!isInput) {
     const inputList = node.getElementsByTagName('input');
-    return inputList.item(0)?.focus();
+    inputList.item(0)?.focus();
+    return;
   }
-  return node.focus();
+  node.focus();
+  return;
 };
 
 const handleBlur = (node: HTMLInputElement): void => {
@@ -59,7 +61,9 @@ const handleBlur = (node: HTMLInputElement): void => {
 
   if (!isInput) {
     const inputList = node.getElementsByTagName('input');
-    return inputList.item(0)?.blur();
+    inputList.item(0)?.blur();
+    return;
   }
-  return node.blur();
+  node.blur();
+  return;
 };
