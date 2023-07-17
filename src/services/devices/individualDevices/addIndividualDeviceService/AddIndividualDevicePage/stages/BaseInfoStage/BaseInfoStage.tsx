@@ -152,7 +152,6 @@ export const BaseInfoStage: FC<BaseInfoStageProps> = ({
       startupReadings1,
       startupReadings2,
       startupReadings3,
-
       ...data
     }) => {
       handleSubmitForm({
