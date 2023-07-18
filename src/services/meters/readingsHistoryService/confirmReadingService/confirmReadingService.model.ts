@@ -1,4 +1,4 @@
-import { createEvent, createStore } from 'effector';
+import { createEvent, createStore, sample } from 'effector';
 import { createGate } from 'effector-react';
 import { ConfirmReadingCallbackPayload } from './confirmReadingService.types';
 
@@ -28,23 +28,22 @@ $onConfirmReadingInputCallback
   .on(openConfirmReadingModal, (_, payload) => payload)
   .reset(closeConfirmReadingModal);
 
-executeCancelReadingCallback.watch(() => {
-  const payload = $onConfirmReadingInputCallback.getState();
-  const onCancel = payload?.onCancel;
-  if (onCancel) {
-    onCancel();
-  }
-  closeConfirmReadingModal();
+sample({
+  clock: executeCancelReadingCallback,
+  source: $onConfirmReadingInputCallback,
+  filter: (payload): payload is ConfirmReadingCallbackPayload =>
+    Boolean(payload?.onCancel),
+  fn: (payload) => payload?.onCancel?.(),
+  target: closeConfirmReadingModal,
 });
 
-executeConfirmReadingCallback.watch(() => {
-  const payload = $onConfirmReadingInputCallback.getState();
-  if (!payload) return;
-
-  const { onSubmit } = payload;
-
-  onSubmit();
-  closeConfirmReadingModal();
+sample({
+  clock: executeConfirmReadingCallback,
+  source: $onConfirmReadingInputCallback,
+  filter: (payload): payload is ConfirmReadingCallbackPayload =>
+    Boolean(payload),
+  fn: (payload) => payload?.onSubmit(),
+  target: closeConfirmReadingModal,
 });
 
 $isCancelSwitchInput
