@@ -132,7 +132,7 @@ sample({
   clock: $devices.map((devices) =>
     devices.reduce((acc, device) => {
       const { city, street, corpus, number } =
-        device.address?.mainAddress || {};
+        device.building?.address?.mainAddress || {};
       if (!city || !street || !number) {
         return acc;
       }
