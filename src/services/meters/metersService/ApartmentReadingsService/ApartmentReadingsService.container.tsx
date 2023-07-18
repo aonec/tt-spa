@@ -25,6 +25,7 @@ export const ApartmentReadingsContainer = () => {
     inputs.openEditPersonalNumberModal,
   );
   const setSelectedHomeownerName = useEvent(inputs.setSelectedHomeownerName);
+  const handleUpdatePhoneNumber = useEvent(inputs.handleUpdatePhoneNumber);
 
   const searchMode = useStore(outputs.$searchMode);
   const isLoadingApartment = useStore(outputs.$isLoadingApartment);
@@ -74,6 +75,7 @@ export const ApartmentReadingsContainer = () => {
         isPermitionToApartmentStatusPatch={isPermitionToApartmentStatusPatch}
         allIndividualDeviceMountPlaces={allIndividualDeviceMountPlaces}
         printIssueCertificate={handlePrintIssueCertificate}
+        handleUpdatePhoneNumber={handleUpdatePhoneNumber}
       />
     </>
   );

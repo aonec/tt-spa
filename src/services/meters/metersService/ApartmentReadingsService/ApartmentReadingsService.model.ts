@@ -1,12 +1,20 @@
 import { createDomain, forward, guard, sample } from 'effector';
 import { createGate } from 'effector-react';
-import { ApartmentResponse } from 'myApi';
+import {
+  ApartmentResponse,
+  HomeownerAccountResponse,
+  HomeownerAccountUpdateRequest,
+} from 'myApi';
 import { SearchMode } from './view/ApartmentsReadings/ApartmentsReadings.types';
 import {
   GetApartmentsRequestPayload,
   UpdateApartmentRequestPayload,
 } from './ApartmentReadingsService.types';
-import { getApartment, putApartment } from './ApartmentReadingsService.api';
+import {
+  getApartment,
+  patchOwner,
+  putApartment,
+} from './ApartmentReadingsService.api';
 import { message } from 'antd';
 import { EffectFailDataAxiosError } from 'types';
 import { individualDeviceMountPlacesService } from 'services/devices/individualDeviceMountPlacesService/individualDeviceMountPlacesService.model';
@@ -22,6 +30,11 @@ const handleSearchApartment = domain.createEvent<GetApartmentsRequestPayload>();
 
 const handleUpdateApartment =
   domain.createEvent<UpdateApartmentRequestPayload>();
+
+const handleUpdatePhoneNumber = domain.createEvent<{
+  id: string;
+  data: HomeownerAccountUpdateRequest;
+}>();
 
 const setSelectedHomeownerName = domain.createEvent<string>();
 
@@ -39,6 +52,12 @@ const updateApartmentFx = domain.createEffect<
   EffectFailDataAxiosError
 >(putApartment);
 
+const updateHomeownerFx = domain.createEffect<
+  { id: string; data: HomeownerAccountUpdateRequest },
+  HomeownerAccountResponse,
+  EffectFailDataAxiosError
+>(patchOwner);
+
 const $apartment = domain
   .createStore<ApartmentResponse | null>(null)
   .on(
@@ -54,6 +73,11 @@ const $searchMode = domain
 const $selectedHomeownerName = domain
   .createStore<string | null>(null)
   .on(setSelectedHomeownerName, (_, name) => name);
+
+sample({
+  clock: handleUpdatePhoneNumber,
+  target: updateHomeownerFx,
+});
 
 forward({
   from: handleSearchApartment,
@@ -80,6 +104,8 @@ forward({
 
 updateApartmentFx.doneData.watch(() => message.success('Сохранено успешно!'));
 
+updateHomeownerFx.doneData.watch(() => message.success('Сохранено успешно!'));
+
 const $isLoadingApartment = fetchApartmentFx.pending;
 
 const handleApartmentLoaded = fetchApartmentFx.doneData;
@@ -93,6 +119,14 @@ fetchApartmentFx.failData.watch((error) => {
 });
 
 updateApartmentFx.failData.watch((error) => {
+  return message.error(
+    error.response.data.error.Text ||
+      error.response.data.error.Message ||
+      'Произошла ошибка',
+  );
+});
+
+updateHomeownerFx.failData.watch((error) => {
   return message.error(
     error.response.data.error.Text ||
       error.response.data.error.Message ||
@@ -116,6 +150,7 @@ export const apartmentReadingsService = {
     printIssueCertificate:
       printApartmentDevicesCertificateService.inputs
         .printIssueSertificateButtonClicked,
+        handleUpdatePhoneNumber,
   },
   outputs: {
     $searchMode,

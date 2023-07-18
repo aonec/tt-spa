@@ -1,5 +1,6 @@
 import {
   ApartmentResponse,
+  HomeownerAccountUpdateRequest,
   IndividualDeviceMountPlaceForFilterResponse,
 } from 'myApi';
 import {
@@ -24,6 +25,10 @@ export type ApartmentsReadingsProps = {
     | IndividualDeviceMountPlaceForFilterResponse[]
     | null;
   printIssueCertificate: () => void;
+  handleUpdatePhoneNumber: (payload: {
+    id: string;
+    data: HomeownerAccountUpdateRequest;
+  }) => void;
 };
 
 export enum SearchMode {

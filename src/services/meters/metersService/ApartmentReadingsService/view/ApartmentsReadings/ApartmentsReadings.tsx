@@ -23,6 +23,7 @@ export const ApartmentsReadings: FC<ApartmentsReadingsProps> = ({
   isPermitionToApartmentStatusPatch,
   allIndividualDeviceMountPlaces,
   printIssueCertificate,
+  handleUpdatePhoneNumber,
 }) => {
   const componentsDictionary: { [key in SearchMode]: ReactNode } = {
     [SearchMode.Apartment]: (
@@ -38,6 +39,7 @@ export const ApartmentsReadings: FC<ApartmentsReadingsProps> = ({
         selectedHomeownerName={selectedHomeownerName}
         isPermitionToApartmentStatusPatch={isPermitionToApartmentStatusPatch}
         printIssueCertificate={printIssueCertificate}
+        handleUpdatePhoneNumber={handleUpdatePhoneNumber}
       />
     ),
     [SearchMode.SerialNumber]: (

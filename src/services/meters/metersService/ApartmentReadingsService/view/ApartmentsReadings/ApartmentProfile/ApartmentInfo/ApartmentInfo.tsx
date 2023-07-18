@@ -33,6 +33,7 @@ import { Button } from 'ui-kit/Button';
 import moment from 'moment';
 import { apartmentInfoService } from './ApartmentInfo.model';
 import { PrintApartmentDevicesCertificateContainer } from 'services/apartments/printApartmentDevicesCertificateService';
+import { PhoneNumber } from './PhoneNumber';
 
 const { inputs, outputs } = apartmentInfoService;
 
@@ -42,6 +43,7 @@ export const ApartmentInfo: FC<ApartmentInfoProps> = ({
   setSelectedHomeownerName,
   menuButtons,
   additionalHeaderInfo,
+  handleUpdatePhoneNumber,
 }) => {
   const filteredHomeowners = apartment.homeownerAccounts
     ?.filter((homeowner) => !homeowner.closedAt)
@@ -229,8 +231,11 @@ export const ApartmentInfo: FC<ApartmentInfoProps> = ({
                 <ExtraInfoText>{selectedHomeowner?.paymentCode}</ExtraInfoText>
               </div>
               <div>
-                <InfoPanelLabel>Телефон</InfoPanelLabel>
-                <ExtraInfoText>{selectedHomeowner?.phoneNumber}</ExtraInfoText>
+                <PhoneNumber
+                  phoneNumber={selectedHomeowner?.phoneNumber || null}
+                  homeownerId={activeHomeowner}
+                  handleUpdate={handleUpdatePhoneNumber}
+                />
               </div>
             </ExtraInfoWrapper>
           )}

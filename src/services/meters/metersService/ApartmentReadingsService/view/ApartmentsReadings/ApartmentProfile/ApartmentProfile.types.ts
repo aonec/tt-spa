@@ -1,4 +1,4 @@
-import { ApartmentResponse } from 'myApi';
+import { ApartmentResponse, HomeownerAccountUpdateRequest } from 'myApi';
 import {
   GetApartmentsRequestPayload,
   UpdateApartmentRequestPayload,
@@ -16,4 +16,8 @@ export type ApartmentProfileProps = {
   selectedHomeownerName: string | null;
   isPermitionToApartmentStatusPatch: boolean;
   printIssueCertificate: () => void;
+  handleUpdatePhoneNumber: (payload: {
+    id: string;
+    data: HomeownerAccountUpdateRequest;
+  }) => void;
 };
