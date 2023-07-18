@@ -122,7 +122,6 @@ sample({
 sample({
   clock: $searchState,
   filter: (searchState) => Boolean(searchState.City && searchState.GroupType),
-  fn: (searchState) => searchState,
   target: searchTasksFx,
 });
 
