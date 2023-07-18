@@ -1,6 +1,5 @@
 import React, { FC, useState } from 'react';
 import {
-  ExtraInfoText,
   InfoPanelLabel,
   PhoneNumberFooter,
   PhoneNumberHeader,
@@ -18,7 +17,9 @@ export const PhoneNumber: FC<PhoneNumberProps> = ({
   homeownerId,
 }) => {
   const [isEditing, setIsEditing] = useState(false);
-  const [currentPhoneNumber, setCurrentPhoneNumber] = useState(phoneNumber);
+  const [currentPhoneNumber, setCurrentPhoneNumber] = useState<string | null>(
+    phoneNumber,
+  );
 
   const handleEdit = () => {
     setIsEditing(true);
@@ -43,7 +44,6 @@ export const PhoneNumber: FC<PhoneNumberProps> = ({
   };
 
   return (
-    // <ExtraInfoText>{phoneNumber}</ExtraInfoText>
     <Wrapper>
       <PhoneNumberHeader>
         <InfoPanelLabel>Телефон</InfoPanelLabel>
@@ -58,8 +58,8 @@ export const PhoneNumber: FC<PhoneNumberProps> = ({
 
       {isEditing && (
         <Input
-          value={phoneNumber || ''}
-          onChange={(e) => setCurrentPhoneNumber(e.target.value)}
+          value={currentPhoneNumber || ''}
+          onChange={(value) => setCurrentPhoneNumber(value.target.value)}
         />
       )}
       {isEditing && (

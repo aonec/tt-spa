@@ -54,4 +54,4 @@ export const patchOwner = ({
 }: {
   id: string;
   data: HomeownerAccountUpdateRequest;
-}): Promise<HomeownerAccountResponse> => axios.patch(`HomeownerAccounts/${id}`, data);
+}): Promise<HomeownerAccountResponse> => axios.put(`HomeownerAccounts/${id}`, data);
