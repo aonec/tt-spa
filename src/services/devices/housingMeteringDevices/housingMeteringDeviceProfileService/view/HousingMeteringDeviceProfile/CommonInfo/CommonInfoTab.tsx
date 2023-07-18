@@ -20,20 +20,25 @@ export const CommonInfoTab: FC<CommonInfoProps> = ({
   const magistral = housingMeteringDevice?.hubConnection?.hub
     ?.magistral as EMagistralType;
 
+  const addressComponent = (() => {
+    if (!address) {
+      return '-';
+    }
+    return (
+      <Address
+        to={`/buildings/${
+          objectRouteFromCategory[address.houseCategory]
+        }Profile/${address?.id}`}
+      >
+        {addressString}
+      </Address>
+    );
+  })();
+
   const items = [
     {
       key: 'Адрес',
-      value: address ? (
-        <Address
-          to={`/buildings/${
-            objectRouteFromCategory[address.houseCategory]
-          }Profile/${address?.id}`}
-        >
-          {addressString}
-        </Address>
-      ) : (
-        '-'
-      ),
+      value: addressComponent,
     },
     {
       key: 'Диаметр прибора',

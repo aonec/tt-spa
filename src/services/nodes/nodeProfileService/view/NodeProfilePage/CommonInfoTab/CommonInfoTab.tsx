@@ -21,24 +21,29 @@ export const CommonInfoTab: FC<CommonInfoTabProps> = ({ pipeNode }) => {
   const isNodeCommercial =
     pipeNode.registrationType === ENodeRegistrationType.Commercial;
 
+  const addressComponent = (() => {
+    if (!pipeNode.address) {
+      return '-';
+    }
+    return (
+      <Tooltip title={additionalAdress}>
+        <AddressWrapper
+          to={`/buildings/${
+            objectRouteFromCategory[pipeNode.address.houseCategory]
+          }Profile/${pipeNode.address.id}`}
+        >
+          {getBuildingAddress(pipeNode.address, true)}
+        </AddressWrapper>
+      </Tooltip>
+    );
+  })();
+
   return (
     <CommonInfo
       items={[
         {
           key: 'Адрес',
-          value: pipeNode.address ? (
-            <Tooltip title={additionalAdress}>
-              <AddressWrapper
-                to={`/buildings/${
-                  objectRouteFromCategory[pipeNode.address?.houseCategory]
-                }Profile/${pipeNode?.address?.id}`}
-              >
-                {getBuildingAddress(pipeNode.address, true)}
-              </AddressWrapper>
-            </Tooltip>
-          ) : (
-            '-'
-          ),
+          value: addressComponent,
         },
         {
           key: 'Зона',
