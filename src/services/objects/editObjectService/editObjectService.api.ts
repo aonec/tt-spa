@@ -2,14 +2,22 @@ import { axios } from '01/axios';
 import {
   BuildingAddressCreateRequest,
   BuildingAddressUpdateRequest,
-  HousingStockUpdateRequest,
+  EHouseCategory,
+  HousingStockResponse,
+  NonResidentialBuildingResponse,
 } from 'myApi';
+import { EditObjectPayload } from './editObjectService.types';
 
-export const updateHousingStock = (payload: {
-  housingStockId: number;
-  data: HousingStockUpdateRequest;
-}): Promise<void> =>
-  axios.put(`HousingStocks/${payload.housingStockId}`, payload.data);
+export const updateHousingStock = async ({
+  data,
+  houseCategory,
+  buildingId,
+}: EditObjectPayload): Promise<void> => {
+  if (houseCategory === EHouseCategory.Living)
+    return await axios.put(`HousingStocks/${buildingId}`, data);
+  if (houseCategory === EHouseCategory.NonResidential)
+    return await axios.put(`NonResidentialBuildings/${buildingId}`, data);
+};
 
 export const createHousingStockAddress = (payload: {
   housingStockId: number;
@@ -34,3 +42,16 @@ export const deleteHousingStockAddress = (payload: {
   axios.delete(
     `Buildings/${payload.housingStockId}/Addresses/${payload.addressId}`,
   );
+
+export const getHousingStock = ({
+  buildingId,
+}: {
+  buildingId: number;
+}): Promise<HousingStockResponse> => axios.get(`/HousingStocks/${buildingId}`);
+
+export const getNonResidentialBuilding = ({
+  buildingId,
+}: {
+  buildingId: number;
+}): Promise<NonResidentialBuildingResponse> =>
+  axios.get(`NonResidentialBuildings/${buildingId}`);

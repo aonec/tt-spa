@@ -55,7 +55,7 @@ const fetchNodeServiceZonesFx = domain.createEffect<
 
 const CreateNodeGate = createGate<{
   buildingId: number;
-  houseCategory?: EHouseCategory;
+  houseCategory: EHouseCategory | null;
 }>();
 
 const updateRequestPayload = domain.createEvent<CreateNodeFormPayload>();

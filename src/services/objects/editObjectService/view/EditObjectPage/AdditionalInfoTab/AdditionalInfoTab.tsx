@@ -1,6 +1,5 @@
-import React, { FC } from 'react';
+import React, { FC, useMemo } from 'react';
 import { useFormik } from 'formik';
-import moment from 'moment';
 import {
   ButtonPadding,
   Footer,
@@ -20,23 +19,40 @@ import {
   IsElevatorDictionaryBoolean,
   getElevatorType,
 } from 'services/objects/createObjectService/view/CreateObjectPage/CreateObjectFinalStageModal/CreateObjectFinalStageModal.constants';
+import { EHouseCategory } from 'myApi';
 
 export const AdditionalInfoTab: FC<AdditionalInfoTabProps> = ({
-  housingStock,
   onPageCancel,
   handleUpdateHousingStock,
+  houseCategory,
+  housingStock,
+  nonResidentialBuilding,
 }) => {
-  const constructionYear = moment(housingStock.constructionYear).format('YYYY');
+  const building = useMemo(() => {
+    if (houseCategory === EHouseCategory.Living) {
+      return housingStock;
+    }
+    return nonResidentialBuilding;
+  }, [houseCategory, nonResidentialBuilding, housingStock]);
 
   const { values, handleSubmit, setFieldValue } = useFormik({
     initialValues: {
-      numberOfFloors: housingStock.numberOfFloors,
-      numberOfEntrances: housingStock.numberOfEntrances,
-      isThereElevator: getElevatorType(housingStock.isThereElevator),
-      numberOfApartments: housingStock.numberOfApartments,
-      totalArea: housingStock.totalArea,
-      totalLivingArea: housingStock.totalLivingArea,
-      constructionYear: Number(constructionYear),
+      numberOfFloors: building?.numberOfFloors,
+      numberOfEntrances:
+        houseCategory === EHouseCategory.Living
+          ? housingStock?.numberOfEntrances
+          : null,
+      isThereElevator: getElevatorType(building?.isThereElevator || false),
+      numberOfApartments:
+        houseCategory === EHouseCategory.Living
+          ? housingStock?.numberOfApartments
+          : null,
+      totalArea: building?.totalArea,
+      totalLivingArea:
+        houseCategory === EHouseCategory.Living
+          ? housingStock?.totalLivingArea
+          : null,
+      constructionYear: building?.constructionYear,
     },
     enableReinitialize: true,
     onSubmit: (data) => {
@@ -93,49 +109,53 @@ export const AdditionalInfoTab: FC<AdditionalInfoTabProps> = ({
           </Select>
         </FormItem>
 
-        <FormItem label="Число подъездов">
-          <Input
-            placeholder="Введите"
-            onChange={(value) =>
-              setFieldValue('numberOfEntrances', Number(value.target.value))
-            }
-            value={values.numberOfEntrances || undefined}
-            type="number"
-          />
-        </FormItem>
-
-        <FormItem label="Количество квартир">
-          <Input
-            placeholder="Введите"
-            onChange={(value) =>
-              setFieldValue('numberOfApartments', Number(value.target.value))
-            }
-            value={values.numberOfApartments || undefined}
-            type="number"
-          />
-        </FormItem>
-
-        <FormItem label="Общая площадь жилых помещений">
-          <Input
-            placeholder="Введите"
-            onChange={(value) =>
-              setFieldValue('totalLivingArea', Number(value.target.value))
-            }
-            value={values.totalLivingArea || undefined}
-            type="number"
-          />
-        </FormItem>
-
-        <FormItem label="Общая площадь">
-          <Input
-            placeholder="Введите"
-            onChange={(value) =>
-              setFieldValue('totalArea', Number(value.target.value))
-            }
-            value={values.totalArea || undefined}
-            type="number"
-          />
-        </FormItem>
+        {houseCategory === EHouseCategory.Living && (
+          <>
+            <FormItem label="Число подъездов">
+              <Input
+                placeholder="Введите"
+                onChange={(value) =>
+                  setFieldValue('numberOfEntrances', Number(value.target.value))
+                }
+                value={values.numberOfEntrances || undefined}
+                type="number"
+              />
+            </FormItem>
+            <FormItem label="Количество квартир">
+              <Input
+                placeholder="Введите"
+                onChange={(value) =>
+                  setFieldValue(
+                    'numberOfApartments',
+                    Number(value.target.value),
+                  )
+                }
+                value={values.numberOfApartments || undefined}
+                type="number"
+              />
+            </FormItem>
+            <FormItem label="Общая площадь жилых помещений">
+              <Input
+                placeholder="Введите"
+                onChange={(value) =>
+                  setFieldValue('totalLivingArea', Number(value.target.value))
+                }
+                value={values.totalLivingArea || undefined}
+                type="number"
+              />
+            </FormItem>
+            <FormItem label="Общая площадь">
+              <Input
+                placeholder="Введите"
+                onChange={(value) =>
+                  setFieldValue('totalArea', Number(value.target.value))
+                }
+                value={values.totalArea || undefined}
+                type="number"
+              />
+            </FormItem>
+          </>
+        )}
 
         <FormItem label="Год постройки">
           <Input

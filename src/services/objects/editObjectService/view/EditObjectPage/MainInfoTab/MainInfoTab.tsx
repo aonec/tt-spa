@@ -13,7 +13,7 @@ import { FormItem } from 'ui-kit/FormItem';
 import { Select } from 'ui-kit/Select';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
-import { HousingStockUpdateRequest } from 'myApi';
+import { EHouseCategory, HousingStockUpdateRequest } from 'myApi';
 import { sortBy } from 'lodash';
 import { LinkButton } from 'ui-kit/shared_components/LinkButton';
 import { Button } from 'ui-kit/Button';
@@ -32,7 +32,6 @@ const {
 const withoutHouseMagement = 'withoutHouseMagement';
 
 export const MainInfoTab: FC<MainInfoTabProps> = ({
-  housingStock,
   houseManagements,
   openCreateHeatingStationModal,
   openEditHeatingStationModal,
@@ -42,13 +41,22 @@ export const MainInfoTab: FC<MainInfoTabProps> = ({
   handleUpdateHousingStock,
   isHeatingStationsLoading,
   isHouseManagementsLoading,
+  houseCategory,
+  housingStock,
+  nonResidentialBuilding,
 }) => {
   const initialValues = useMemo(
     () => ({
-      houseManagementId: housingStock.houseManagement?.id || null,
-      heatingStationId: housingStock.heatingStation?.id || null,
+      houseManagementId:
+        houseCategory === EHouseCategory.Living
+          ? housingStock?.houseManagement?.id || null
+          : null,
+      heatingStationId:
+        (houseCategory === EHouseCategory.Living
+          ? housingStock?.heatingStation?.id
+          : nonResidentialBuilding?.heatingStation?.id) || null,
     }),
-    [housingStock],
+    [houseCategory, housingStock, nonResidentialBuilding],
   );
 
   const { values, handleSubmit, setFieldValue, errors } = useFormik({
@@ -84,41 +92,43 @@ export const MainInfoTab: FC<MainInfoTabProps> = ({
       <Wrapper>
         <PageTitle>Основная информация </PageTitle>
 
-        <FormItem label="Домоуправления">
-          <Select
-            placeholder="Выберите из списка"
-            onChange={(value) => {
-              if (value === withoutHouseMagement) {
-                return setFieldValue('houseManagementId', null);
+        {houseCategory === EHouseCategory.Living && (
+          <FormItem label="Домоуправления">
+            <Select
+              placeholder="Выберите из списка"
+              onChange={(value) => {
+                if (value === withoutHouseMagement) {
+                  return setFieldValue('houseManagementId', null);
+                }
+                setFieldValue('houseManagementId', value);
+              }}
+              value={
+                !isHouseManagementsLoading
+                  ? values.houseManagementId === null
+                    ? withoutHouseMagement
+                    : values.houseManagementId
+                  : undefined
               }
-              setFieldValue('houseManagementId', value);
-            }}
-            value={
-              !isHouseManagementsLoading
-                ? values.houseManagementId === null
-                  ? withoutHouseMagement
-                  : values.houseManagementId
-                : undefined
-            }
-            disabled={isHouseManagementsLoading}
-          >
-            <Select.Option value={withoutHouseMagement}>
-              Без домоуправления
-            </Select.Option>
-            {houseManagements?.map(
-              (houseManagement) =>
-                houseManagement.name && (
-                  <Select.Option
-                    value={houseManagement.id}
-                    key={houseManagement.id}
-                  >
-                    {houseManagement.name}
-                  </Select.Option>
-                ),
-            )}
-          </Select>
-          <ErrorMessage>{errors.houseManagementId}</ErrorMessage>
-        </FormItem>
+              disabled={isHouseManagementsLoading}
+            >
+              <Select.Option value={withoutHouseMagement}>
+                Без домоуправления
+              </Select.Option>
+              {houseManagements?.map(
+                (houseManagement) =>
+                  houseManagement.name && (
+                    <Select.Option
+                      value={houseManagement.id}
+                      key={houseManagement.id}
+                    >
+                      {houseManagement.name}
+                    </Select.Option>
+                  ),
+              )}
+            </Select>
+            <ErrorMessage>{errors.houseManagementId}</ErrorMessage>
+          </FormItem>
+        )}
 
         {!values.heatingStationId && (
           <GridContainer>

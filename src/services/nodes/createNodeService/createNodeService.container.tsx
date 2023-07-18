@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 import { useUnit } from 'effector-react';
 import { createNodeService } from './createNodeService.model';
@@ -8,6 +8,7 @@ import { CreateNodeConfirmationModal } from './view/CreateNodeConfirmationModal'
 import { CreateCalculatorModalContainer } from 'services/calculators/createCalculatorModalService';
 import { addressSearchService } from 'services/addressSearchService/addressSearchService.models';
 import { EHouseCategory } from 'myApi';
+import { objectRouteFromCategory } from 'services/objects/objects.router';
 
 const { inputs, outputs, gates } = createNodeService;
 const { CreateNodeGate } = gates;
@@ -16,8 +17,20 @@ const { ExistingCitiesGate } = addressSearchService.gates;
 export const CreateNodeContainer = () => {
   const { buildingId, houseCategory } = useParams<{
     buildingId: string;
-    houseCategory?: EHouseCategory;
+    houseCategory?: string;
   }>();
+
+  const preparedHouseCategory = useMemo(() => {
+    if (houseCategory === objectRouteFromCategory[EHouseCategory.Living]) {
+      return EHouseCategory.Living;
+    }
+    if (
+      houseCategory === objectRouteFromCategory[EHouseCategory.NonResidential]
+    ) {
+      return EHouseCategory.NonResidential;
+    }
+    return null;
+  }, [houseCategory]);
 
   const history = useHistory();
 
@@ -77,7 +90,7 @@ export const CreateNodeContainer = () => {
     <>
       <CreateNodeGate
         buildingId={Number(buildingId)}
-        houseCategory={houseCategory}
+        houseCategory={preparedHouseCategory}
       />
       <ExistingCitiesGate />
       <CreateNodeServiceZoneContainer />

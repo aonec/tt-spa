@@ -135,7 +135,7 @@ export const Router: FC<RouterProps> = ({ roles, isRolesLoadded }) => {
                   )}
                   {isAdministrator ? (
                     <Route
-                      path="/buildings/:buildingId/edit"
+                      path="/buildings/:houseCategory/:buildingId/edit"
                       component={EditObjectContainer}
                       exact
                     />
