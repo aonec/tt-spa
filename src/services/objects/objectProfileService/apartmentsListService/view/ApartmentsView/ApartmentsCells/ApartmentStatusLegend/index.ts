@@ -1,1 +1,0 @@
-export { ApartmentStatusLegend } from './ApartmentStatusLegend'

@@ -1,6 +1,6 @@
 import { Skeleton, Tooltip } from 'antd';
 import React, { FC, useCallback, useEffect, useMemo, useState } from 'react';
-import { getHousingStockAddress } from 'utils/getHousingStockAddress';
+import { getBuildingAddress } from 'utils/getBuildingAddress';
 import {
   AddressWrapper,
   AppartmentNumberText,
@@ -31,7 +31,7 @@ export const HousingStocksListItem: FC<HousingStocksListItemProps> = ({
     [handleOpenModal, id],
   );
 
-  const addressString = getHousingStockAddress(housingStock);
+  const addressString = getBuildingAddress(housingStock);
   const isCurrentHousingStockSelected = selectedHousingStock === id;
 
   const apartmentsStatisticComponent = useMemo(() => {
