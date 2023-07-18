@@ -884,7 +884,6 @@ export interface CalculatorIntoHousingStockResponseArraySuccessApiResponse {
 export interface CalculatorIntoNodeResponse {
   /** @format int32 */
   id: number;
-  transactionType: string | null;
   model: string | null;
   serialNumber: string | null;
   sealNumber: string | null;
@@ -925,7 +924,6 @@ export interface CalculatorIntoNodeResponse {
 export interface CalculatorListResponse {
   /** @format int32 */
   id: number;
-  transactionType: string | null;
   model: string | null;
   serialNumber: string | null;
   sealNumber: string | null;
@@ -991,7 +989,6 @@ export interface CalculatorListResponsePagedListSuccessApiResponse {
 export interface CalculatorResponse {
   /** @format int32 */
   id: number;
-  transactionType: string | null;
   model: string | null;
   serialNumber: string | null;
   sealNumber: string | null;
@@ -2469,7 +2466,6 @@ export enum EisTaskType {
 export interface ElectricHousingMeteringDeviceResponse {
   /** @format int32 */
   id: number;
-  transactionType: string | null;
   model: string | null;
   serialNumber: string | null;
   sealNumber: string | null;
@@ -3209,7 +3205,6 @@ export interface HousingMeteringDeviceCommentResponseSuccessApiResponse {
 export interface HousingMeteringDeviceIncludingReadingsResponse {
   /** @format int32 */
   id: number;
-  transactionType: string | null;
   model: string | null;
   serialNumber: string | null;
   sealNumber: string | null;
@@ -3621,7 +3616,6 @@ export interface IndividualDeviceIntoHomeownerCertificateResponse {
 export interface IndividualDeviceListItemResponse {
   /** @format int32 */
   id: number;
-  transactionType: string | null;
   model: string | null;
   serialNumber: string | null;
   sealNumber: string | null;
@@ -3768,7 +3762,6 @@ export interface IndividualDeviceMountPlaceListWrappedResponseSuccessApiResponse
 export interface IndividualDeviceOnTaskResponse {
   /** @format int32 */
   id: number;
-  transactionType: string | null;
   model: string | null;
   serialNumber: string | null;
   sealNumber: string | null;
@@ -3949,7 +3942,6 @@ export interface IndividualDeviceReadingsYearHistoryResponse {
 export interface IndividualDeviceResponse {
   /** @format int32 */
   id: number;
-  transactionType: string | null;
   model: string | null;
   serialNumber: string | null;
   sealNumber: string | null;
@@ -4045,7 +4037,6 @@ export interface IndividualDeviceWithExpiredCheckingDateListResponseSuccessApiRe
 export interface IndividualDeviceWithExpiredCheckingDateResponse {
   /** @format int32 */
   id: number;
-  transactionType: string | null;
   model: string | null;
   serialNumber: string | null;
   sealNumber: string | null;
@@ -4424,7 +4415,6 @@ export interface MeteringDeviceListResponsePagedListSuccessApiResponse {
 export interface MeteringDeviceResponse {
   /** @format int32 */
   id: number;
-  transactionType: string | null;
   model: string | null;
   serialNumber: string | null;
   sealNumber: string | null;
@@ -5085,7 +5075,6 @@ export interface PipeHousingMeteringDeviceHubConnectionResponse {
 export interface PipeHousingMeteringDeviceListResponse {
   /** @format int32 */
   id: number;
-  transactionType: string | null;
   model: string | null;
   serialNumber: string | null;
   sealNumber: string | null;
@@ -5127,7 +5116,6 @@ export interface PipeHousingMeteringDeviceNodeResponse {
 export interface PipeHousingMeteringDeviceResponse {
   /** @format int32 */
   id: number;
-  transactionType: string | null;
   model: string | null;
   serialNumber: string | null;
   sealNumber: string | null;
@@ -5957,8 +5945,6 @@ export interface TaskConfirmationResponse {
 }
 
 export interface TaskCreateRequest {
-  /** @format int32 */
-  key?: number;
   targetObject?: TaskCreationTargetObject | null;
   creationReason?: string | null;
   taskType?: ETaskCreateType;
@@ -6083,6 +6069,7 @@ export interface TaskResponse {
   device: MeteringDeviceResponse | null;
   apartment: ApartmentResponse | null;
   pipeNode: PipeNodeResponse | null;
+  pipeNodeDevices: MeteringDeviceResponse[] | null;
   individualDevices: IndividualDeviceOnTaskResponse[] | null;
   documents: DocumentResponse[] | null;
   comments: TaskCommentResponse[] | null;
@@ -13088,24 +13075,6 @@ export class Api<
         path: `/api/Reports/RunnerReports`,
         method: 'GET',
         query: query,
-        secure: true,
-        format: 'json',
-        ...params,
-      }),
-
-    /**
-     * @description Роли:<li>Старший оператор</li><li>Оператор</li>
-     *
-     * @tags Reports
-     * @name ReportsMahallyaTasksReportList
-     * @summary ReadingReportForOperator
-     * @request GET:/api/Reports/MahallyaTasksReport
-     * @secure
-     */
-    reportsMahallyaTasksReportList: (params: RequestParams = {}) =>
-      this.request<File, ErrorApiResponse>({
-        path: `/api/Reports/MahallyaTasksReport`,
-        method: 'GET',
         secure: true,
         format: 'json',
         ...params,
