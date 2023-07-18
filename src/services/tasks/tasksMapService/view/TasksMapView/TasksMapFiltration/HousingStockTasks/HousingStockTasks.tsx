@@ -18,6 +18,7 @@ import { HousingStockTasksProps } from './HousingStockTasks.types';
 import { WithLoader } from 'ui-kit/shared_components/WithLoader';
 import { TaskInfoPanel } from './TaskInfoPanel';
 import { getTaskIconByTaskType } from './HousingStockTasks.utils';
+import { objectRouteFromCategory } from 'services/objects/objects.router';
 
 export const HousingStockTasks: FC<HousingStockTasksProps> = ({
   selectedHousingStock,
@@ -69,12 +70,18 @@ export const HousingStockTasks: FC<HousingStockTasksProps> = ({
     <HousingStockWrapper>
       <Header>
         <ChevronIconSC onClick={task ? clearTask : clearSelectedHousingStock} />
-        <Address
-          to={`/buildings/${selectedHousingStock?.building?.houseCategory}Profile/${selectedHousingStock?.building?.id}`}
-        >
-          {addressString}
-          <City>{`${address?.city}`}</City>
-        </Address>
+        {selectedHousingStock?.building && (
+          <Address
+            to={`/buildings/${
+              objectRouteFromCategory[
+                selectedHousingStock.building.houseCategory
+              ]
+            }Profile/${selectedHousingStock?.building?.id}`}
+          >
+            {addressString}
+            <City>{`${address?.city}`}</City>
+          </Address>
+        )}
       </Header>
       <LoaderWrapper isLoading={isLoadingTask}>
         <WithLoader isLoading={isLoadingTask}>

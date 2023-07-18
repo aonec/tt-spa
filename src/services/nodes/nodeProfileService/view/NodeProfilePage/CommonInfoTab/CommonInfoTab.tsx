@@ -10,6 +10,7 @@ import { Tooltip } from 'antd';
 import { ENodeRegistrationType } from 'myApi';
 import { configNamesLookup } from 'utils/configNamesLookup';
 import { NodeRegistrationTypeLookup } from 'dictionaries';
+import { objectRouteFromCategory } from 'services/objects/objects.router';
 
 export const CommonInfoTab: FC<CommonInfoTabProps> = ({ pipeNode }) => {
   const NodeStatusIcon =
@@ -20,21 +21,29 @@ export const CommonInfoTab: FC<CommonInfoTabProps> = ({ pipeNode }) => {
   const isNodeCommercial =
     pipeNode.registrationType === ENodeRegistrationType.Commercial;
 
+  const addressComponent = (() => {
+    if (!pipeNode.address) {
+      return '-';
+    }
+    return (
+      <Tooltip title={additionalAdress}>
+        <AddressWrapper
+          to={`/buildings/${
+            objectRouteFromCategory[pipeNode.address.houseCategory]
+          }Profile/${pipeNode.address.id}`}
+        >
+          {getBuildingAddress(pipeNode.address, true)}
+        </AddressWrapper>
+      </Tooltip>
+    );
+  })();
+
   return (
     <CommonInfo
       items={[
         {
           key: 'Адрес',
-          value: (
-            <Tooltip title={additionalAdress}>
-              <AddressWrapper
-                to={`/buildings/${pipeNode.address?.houseCategory}Profile/${pipeNode?.address?.id}`}
-              >
-                {pipeNode?.address &&
-                  getBuildingAddress(pipeNode?.address, true)}
-              </AddressWrapper>
-            </Tooltip>
-          ),
+          value: addressComponent,
         },
         {
           key: 'Зона',

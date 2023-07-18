@@ -21,6 +21,7 @@ import { EditNodeUploadDocumentsContainer } from './editNodeUploadDocumentsServi
 import { IncorrectConfigAlert } from './IncorrectConfigAlert';
 import { NodeRegistrationTypeLookup } from 'dictionaries';
 import { EditCalculatorConnection } from './EditCalculatorConnection/EditCalculatorConnection';
+import { objectRouteFromCategory } from 'services/objects/objects.router';
 const { TabPane } = TabsSC;
 const formId = 'edit-node-page';
 
@@ -64,14 +65,18 @@ export const EditNodePage: FC<EditNodePageProps> = ({
           </>
         }
       />
-      <AddressWrapper
-        to={`/buildings/${address?.houseCategory}Profile/${address?.id}`}
-      >
-        <HeaderInfoString>
-          <>{getBuildingAddress(address, true)}</>
-          <>{NodeRegistrationTypeLookup[registrationType]} узел</>
-        </HeaderInfoString>
-      </AddressWrapper>
+      {address && (
+        <AddressWrapper
+          to={`/buildings/${
+            objectRouteFromCategory[address.houseCategory]
+          }Profile/${address?.id}`}
+        >
+          <HeaderInfoString>
+            <>{getBuildingAddress(address, true)}</>
+            <>{NodeRegistrationTypeLookup[registrationType]} узел</>
+          </HeaderInfoString>
+        </AddressWrapper>
+      )}
 
       <TabsSC
         activeKey={grouptype}

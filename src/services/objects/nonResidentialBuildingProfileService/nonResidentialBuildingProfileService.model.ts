@@ -8,7 +8,7 @@ const domain = createDomain('nonResidentialBuildingProfileService');
 
 const BuildingIdGate = createGate<{ buildingId: number }>();
 
-const resetGrouptype = domain.createEvent();
+const resetGroupType = domain.createEvent();
 const setCurrentGroutype =
   domain.createEvent<NonResidentialBuildingProfileGrouptype>();
 
@@ -17,7 +17,7 @@ const $currentGrouptype = domain
     NonResidentialBuildingProfileGrouptype.Common,
   )
   .on(setCurrentGroutype, (_, grouptype) => grouptype)
-  .reset(resetGrouptype);
+  .reset(resetGroupType);
 
 sample({
   clock: BuildingIdGate.open.map(({ buildingId }) => buildingId),
@@ -26,7 +26,7 @@ sample({
 
 sample({
   clock: BuildingIdGate.close,
-  target: [nonResidentialBuildingQuery.reset, resetGrouptype],
+  target: [nonResidentialBuildingQuery.reset, resetGroupType],
 });
 
 export const nonResidentialBuildingProfileService = {

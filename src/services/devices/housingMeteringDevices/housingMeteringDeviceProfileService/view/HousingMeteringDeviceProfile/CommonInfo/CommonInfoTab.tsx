@@ -6,6 +6,7 @@ import { CommonInfo } from 'ui-kit/shared_components/CommonInfo';
 import { getBuildingAddress } from 'utils/getBuildingAddress';
 import { Address } from './CommonInfoTab.styled';
 import { CommonInfoProps } from './CommonInfoTab.types';
+import { objectRouteFromCategory } from 'services/objects/objects.router';
 
 export const CommonInfoTab: FC<CommonInfoProps> = ({
   housingMeteringDevice,
@@ -19,16 +20,25 @@ export const CommonInfoTab: FC<CommonInfoProps> = ({
   const magistral = housingMeteringDevice?.hubConnection?.hub
     ?.magistral as EMagistralType;
 
+  const addressComponent = (() => {
+    if (!address) {
+      return '-';
+    }
+    return (
+      <Address
+        to={`/buildings/${
+          objectRouteFromCategory[address.houseCategory]
+        }Profile/${address?.id}`}
+      >
+        {addressString}
+      </Address>
+    );
+  })();
+
   const items = [
     {
       key: 'Адрес',
-      value: (
-        <Address
-          to={`/buildings/${address?.houseCategory}Profile/${address?.id}`}
-        >
-          {addressString}
-        </Address>
-      ),
+      value: addressComponent,
     },
     {
       key: 'Диаметр прибора',

@@ -14,7 +14,6 @@ import { NonResidentialBuildingProfileGrouptype } from '../../nonResidentialBuil
 import { NonResidentialBuildingInfo } from '../NonResidentialBuildingInfo';
 import { ResourceAccountingSystemsContainer } from 'services/devices/resourceAccountingSystemsService';
 import { LinkCard } from 'ui-kit/shared_components/LinkCard';
-import { stringifyUrl } from 'query-string';
 import { useHistory } from 'react-router-dom';
 import { EHouseCategory } from 'myApi';
 
@@ -64,6 +63,9 @@ export const NonResidentialBuildingProfile: FC<
   const { address, numberOfTasks } = nonResidentialBuilding;
   const addressString = getBuildingAddress(nonResidentialBuilding);
   const city = address?.mainAddress?.city || '';
+  const params = new URLSearchParams([
+    ['housingStockId', nonResidentialBuilding.id.toString()],
+  ]);
 
   return (
     <>
@@ -115,10 +117,7 @@ export const NonResidentialBuildingProfile: FC<
         <div>
           <LinkCard
             text={`Задачи: ${numberOfTasks}`}
-            link={stringifyUrl({
-              url: '/tasks/list/Executing',
-              query: { housingStockId: nonResidentialBuilding.id },
-            })}
+            link={`/tasks/list/Executing?${params}`}
             showLink={Boolean(numberOfTasks)}
           />
         </div>

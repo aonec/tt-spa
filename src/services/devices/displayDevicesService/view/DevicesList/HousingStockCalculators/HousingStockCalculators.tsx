@@ -1,4 +1,4 @@
-import React, { FC, useCallback } from 'react';
+import React, { FC, useCallback, useMemo } from 'react';
 import { HousingStockCalculatorsProps } from './HousingStockCalculators.types';
 import { HouseAddress } from 'myApi';
 import { DevicesSearchType } from 'services/devices/devicesPageService/devicesPageService.types';
@@ -8,8 +8,12 @@ import {
   HousingStockAddressHeaderWrapper,
 } from './HousingStockCalculators.styled';
 import { Switcher } from 'ui-kit/shared_components/Switcher';
-import { getHousingStockAddressString } from 'utils/getBuildingAddress';
+import {
+  getBuildingAddress,
+  getHousingStockAddressString,
+} from 'utils/getBuildingAddress';
 import { CalculatorNodes } from './CalculatorNodes';
+import { objectRouteFromCategory } from 'services/objects/objects.router';
 
 export const HousingStockCalculators: FC<HousingStockCalculatorsProps> = ({
   housingStockDevices,
@@ -18,7 +22,6 @@ export const HousingStockCalculators: FC<HousingStockCalculatorsProps> = ({
   mainFilterSearchType,
   setMainFilterSearchType,
 }) => {
-  const address = housingStocksAddressForSwitcher?.current?.address;
   const nextAddress = housingStocksAddressForSwitcher?.next?.address;
   const previousAddress = housingStocksAddressForSwitcher?.previous?.address;
 
@@ -43,26 +46,33 @@ export const HousingStockCalculators: FC<HousingStockCalculatorsProps> = ({
     <CalculatorNodes calculator={calculator} key={calculator.id} />
   ));
 
+  const addressComponent = useMemo(() => {
+    if (!housingStockDevices.building) {
+      return 'У данного прибора не указан адрес';
+    }
+
+    const { address, houseCategory, id } = housingStockDevices.building;
+
+    return (
+      <HousingStockAddressHeaderWrapper>
+        <HousingStockAddress
+          to={`/buildings/${objectRouteFromCategory[houseCategory]}Profile/${id}`}
+        >
+          {getBuildingAddress({ address })}
+        </HousingStockAddress>
+        <Switcher
+          nextValue={nextAddress}
+          previousValue={previousAddress}
+          textConstructor={(address) => getHousingStockAddressString(address)}
+          handleClick={handleClickAddress}
+        />
+      </HousingStockAddressHeaderWrapper>
+    );
+  }, [handleClickAddress, nextAddress, previousAddress, housingStockDevices]);
+
   return (
     <>
-      {address ? (
-        <HousingStockAddressHeaderWrapper>
-          {/* Дождаться правок */}
-          <HousingStockAddress
-            to={`/buildings/LivingProfile/${housingStocksAddressForSwitcher?.current?.id}`}
-          >
-            {getHousingStockAddressString(address)}
-          </HousingStockAddress>
-          <Switcher
-            nextValue={nextAddress}
-            previousValue={previousAddress}
-            textConstructor={(address) => getHousingStockAddressString(address)}
-            handleClick={handleClickAddress}
-          />
-        </HousingStockAddressHeaderWrapper>
-      ) : (
-        'У данного прибора не указан адрес'
-      )}
+      {addressComponent}
       <CalculatorNodesListWrapper>
         {calculatorNodesList}
       </CalculatorNodesListWrapper>

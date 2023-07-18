@@ -21,7 +21,7 @@ export const DevicesList: FC<DevicesListProps> = ({
   const housingStocksDevicesList = housingStocksDevices.map(
     (housingStockDevices) => (
       <HousingStockCalculators
-        key={housingStockDevices.address?.mainAddress?.id}
+        key={housingStockDevices.building?.address?.mainAddress?.id}
         housingStockDevices={housingStockDevices}
         setAddressBySwither={setAddressBySwither}
         housingStocksAddressForSwitcher={housingStocksAddressForSwitcher.find(
