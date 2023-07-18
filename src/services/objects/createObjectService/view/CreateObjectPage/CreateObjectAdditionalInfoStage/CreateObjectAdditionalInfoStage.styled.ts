@@ -1,5 +1,5 @@
-import { EHouseCategory } from 'myApi';
 import styled from 'styled-components';
+import { EHouseCategory } from 'myApi';
 import { Button } from 'ui-kit/Button';
 
 export const Wrapper = styled.div``;

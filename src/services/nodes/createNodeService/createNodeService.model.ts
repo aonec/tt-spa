@@ -1,5 +1,5 @@
-import { createNodeServiceZoneService } from './../createNodeServiceZoneService/createNodeServiceZoneService.model';
-import { combine, createDomain, forward, guard, sample } from 'effector';
+import { combine, createDomain, sample } from 'effector';
+import { message } from 'antd';
 import { createGate } from 'effector-react';
 import {
   CalculatorIntoHousingStockResponse,
@@ -12,6 +12,7 @@ import {
   PipeNodeResponse,
   PipeNodeValidationResultResponse,
 } from 'myApi';
+import { createNodeServiceZoneService } from './../createNodeServiceZoneService/createNodeServiceZoneService.model';
 import {
   fetchValidateNode,
   getBuilding,
@@ -24,7 +25,6 @@ import {
   GetBuildingPayload,
 } from './createNodeService.types';
 import { EffectFailDataAxiosError } from 'types';
-import { message } from 'antd';
 import { createCalculatorModalService } from 'services/calculators/createCalculatorModalService';
 import { addressSearchService } from 'services/addressSearchService/addressSearchService.models';
 
@@ -124,19 +124,19 @@ const $nodeServiceZones = domain
   .on(fetchNodeServiceZonesFx.doneData, (_, zones) => zones)
   .reset(CreateNodeGate.close);
 
-guard({
+sample({
   clock: CreateNodeGate.open,
   filter: (payload): payload is GetBuildingPayload =>
     Boolean(payload.buildingId && payload.houseCategory),
   target: fetchBuildingFx,
 });
 
-guard({
+sample({
   source: $requestPayload.map(({ buildingId, houseCategory }) => ({
     buildingId,
     houseCategory,
   })),
-  clock: guard({
+  clock: sample({
     source: CreateNodeGate.state,
     clock: $requestPayload.map(({ buildingId }) => buildingId),
     filter: ({ buildingId }) => !buildingId,
@@ -146,26 +146,26 @@ guard({
   target: fetchBuildingFx,
 });
 
-guard({
+sample({
   source: $stepNumber,
   clock: updateRequestPayload,
   filter: (stepNumber) => stepNumber < 3,
   target: goNextStep,
 });
 
-guard({
+sample({
   source: $requestPayload.map(({ buildingId }) => buildingId || null),
   clock: $requestPayload,
   filter: (id): id is number => Boolean(id),
   target: fetchCalculatorsListFx,
 });
 
-forward({
-  from: [
+sample({
+  clock: [
     CreateNodeGate.open,
     createNodeServiceZoneService.inputs.handleServiceZoneCreated,
   ],
-  to: fetchNodeServiceZonesFx,
+  target: fetchNodeServiceZonesFx,
 });
 
 sample({
@@ -180,9 +180,9 @@ sample({
   target: validateNodeFx,
 });
 
-forward({
-  from: validateNodeFx.doneData,
-  to: openConfiramtionModal,
+sample({
+  clock: validateNodeFx.doneData,
+  target: openConfiramtionModal,
 });
 
 const $selectedCalculator = combine(
@@ -208,9 +208,9 @@ const $isValidationLoading = validateNodeFx.pending;
 
 const handlePipeNodeCreated = createPipeNodeFx.doneData;
 
-forward({
-  from: handlePipeNodeCreated,
-  to: closeConfiramtionModal,
+sample({
+  clock: handlePipeNodeCreated,
+  target: closeConfiramtionModal,
 });
 
 createPipeNodeFx.failData.watch((error) => {
