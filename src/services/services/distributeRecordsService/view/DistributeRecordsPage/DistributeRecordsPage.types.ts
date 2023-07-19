@@ -6,6 +6,7 @@ import {
 } from 'myApi';
 import { AppointmentsByHousingStocks } from './DistrictsMap/DistrictsMap.types';
 import { AppointmentsCountingByDistrictsResponse } from '../../distributeRecordsService.types';
+import { OrganizationCoordinates } from 'services/currentUserService/currentUserService.types';
 
 export type Props = {
   districtsList: DistrictResponse[];
@@ -29,4 +30,5 @@ export type Props = {
   setAppointmentsToController: (payload: AppointmentsSetRequest) => void;
   isLoadingDistributeAppointments: boolean;
   openRemoveAssignmentModal: (id: string) => void;
+  organizationCoordinates: OrganizationCoordinates | null;
 };
