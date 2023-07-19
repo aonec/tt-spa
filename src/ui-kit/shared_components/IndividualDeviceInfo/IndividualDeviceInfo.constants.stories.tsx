@@ -239,7 +239,6 @@ export const Device: IndividualDeviceResponse = {
   connection: { ipV4: null, port: null, deviceAddress: null },
   isConnected: false,
   id: 11450561,
-  transactionType: null,
   model: 'СГВ',
   serialNumber: '0102060587',
   sealNumber: null,

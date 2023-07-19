@@ -3,7 +3,7 @@ import { EIndividualDeviceOrderRule, EResourceType } from 'myApi';
 export type GetHousingStocksListRequestPayload = {
   City?: string;
   Street?: string;
-  HousingStockNumber?: string;
+  BuildingNumber?: string;
   Corpus?: string;
   PageNumber?: number;
   PageSize?: number;
