@@ -3,6 +3,7 @@ import { createDomain, sample } from 'effector';
 import _ from 'lodash';
 import { OrganizationUserResponse } from 'myApi';
 import { getCurrentUser } from './currentUserService.api';
+import { OrganizationCoordinates } from './currentUserService.types';
 
 const domain = createDomain('currentUserService');
 
@@ -50,16 +51,15 @@ const $userRolesKeys = $currentUserRoles.map((userRoles) =>
   userRoles.map((role) => role.key),
 );
 
-const $coordinates = $currentUser.map((user) => {
-  if (!user?.organization?.latitude || !user?.organization?.longitude) {
-    return null;
-  }
+const $coordinates = $currentUser.map(
+  (user): OrganizationCoordinates | null => {
+    if (!user?.organization?.latitude || !user?.organization?.longitude) {
+      return null;
+    }
 
-  return {
-    latitude: user.organization.latitude,
-    longitude: user.organization.longitude,
-  };
-});
+    return [user.organization.latitude, user.organization.longitude];
+  },
+);
 
 export const currentUserService = {
   outputs: {
@@ -69,7 +69,7 @@ export const currentUserService = {
     $diametersConfig,
     $currentUserRoles,
     $userRolesKeys,
-    $organizationcCoordinates: $coordinates,
+    $organizationCoordinates: $coordinates,
   },
   gates: {
     CurrentUserGate,

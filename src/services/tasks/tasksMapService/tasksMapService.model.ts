@@ -11,6 +11,7 @@ import {
   HousingStocksWithTasksFiltrationValues,
 } from './tasksMapService.types';
 import { getHousingStocksWithTasksRequestPayload } from './tasksMapService.utils';
+import { currentUserService } from 'services/currentUserService';
 
 const domain = createDomain('tasksMap');
 
@@ -99,5 +100,7 @@ export const tasksMapService = {
     $task,
     $isLoadingTask,
     $organizationUsers: tasksProfileService.outputs.$organizationUsers,
+    $organizationCoordinates:
+      currentUserService.outputs.$organizationCoordinates,
   },
 };
