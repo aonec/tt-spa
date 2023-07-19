@@ -1,8 +1,8 @@
-import { getCurrentUser } from './currentUserService.api';
 import { createGate } from 'effector-react';
-import { createDomain, forward } from 'effector';
-import { OrganizationUserResponse } from 'myApi';
+import { createDomain, sample } from 'effector';
 import _ from 'lodash';
+import { OrganizationUserResponse } from 'myApi';
+import { getCurrentUser } from './currentUserService.api';
 
 const domain = createDomain('currentUserService');
 
@@ -43,12 +43,23 @@ const $isLoading = fetchCurrentUserFx.pending;
 
 const CurrentUserGate = createGate();
 
-forward({ from: CurrentUserGate.open, to: fetchCurrentUserFx });
+sample({ clock: CurrentUserGate.open, target: fetchCurrentUserFx });
 
 const $currentUserRoles = $currentUser.map((user) => user?.roles || []);
 const $userRolesKeys = $currentUserRoles.map((userRoles) =>
   userRoles.map((role) => role.key),
 );
+
+const $coordinates = $currentUser.map((user) => {
+  if (!user?.organization?.latitude || !user?.organization?.longitude) {
+    return null;
+  }
+
+  return {
+    latitude: user.organization.latitude,
+    longitude: user.organization.longitude,
+  };
+});
 
 export const currentUserService = {
   outputs: {
@@ -58,6 +69,7 @@ export const currentUserService = {
     $diametersConfig,
     $currentUserRoles,
     $userRolesKeys,
+    $organizationcCoordinates: $coordinates,
   },
   gates: {
     CurrentUserGate,
