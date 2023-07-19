@@ -134,6 +134,9 @@ updateHomeownerFx.failData.watch((error) => {
   );
 });
 
+const $isUpdateHomeownerLoading = updateHomeownerFx.pending;
+const handleHomeownerUpdated = updateHomeownerFx.doneData;
+
 export const apartmentReadingsService = {
   inputs: {
     setSearchMode,
@@ -150,7 +153,8 @@ export const apartmentReadingsService = {
     printIssueCertificate:
       printApartmentDevicesCertificateService.inputs
         .printIssueSertificateButtonClicked,
-        handleUpdatePhoneNumber,
+    handleUpdatePhoneNumber,
+    handleHomeownerUpdated,
   },
   outputs: {
     $searchMode,
@@ -160,6 +164,7 @@ export const apartmentReadingsService = {
     $allIndividualDeviceMountPlaces:
       individualDeviceMountPlacesService.outputs
         .$allIndividualDeviceMountPlaces,
+    $isUpdateHomeownerLoading,
   },
   gates: { ApartmentGate },
 };

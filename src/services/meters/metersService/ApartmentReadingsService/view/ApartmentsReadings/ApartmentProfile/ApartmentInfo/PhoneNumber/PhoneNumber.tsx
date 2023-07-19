@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import {
   InfoPanelLabel,
   PhoneNumberFooter,
@@ -15,6 +15,8 @@ export const PhoneNumber: FC<PhoneNumberProps> = ({
   phoneNumber,
   handleUpdate,
   homeownerId,
+  isUpdateHomeownerLoading,
+  handleHomeownerUpdated,
 }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [currentPhoneNumber, setCurrentPhoneNumber] = useState<string | null>(
@@ -31,9 +33,9 @@ export const PhoneNumber: FC<PhoneNumberProps> = ({
   };
 
   const handleSave = () => {
-    setIsEditing(false);
-
     if (currentPhoneNumber === phoneNumber) return;
+
+    console.log(currentPhoneNumber, phoneNumber);
 
     homeownerId &&
       handleUpdate &&
@@ -42,6 +44,14 @@ export const PhoneNumber: FC<PhoneNumberProps> = ({
         data: { phoneNumber: currentPhoneNumber },
       });
   };
+
+  useEffect(() => {
+    handleHomeownerUpdated?.watch((updatedData) => {
+      setCurrentPhoneNumber(updatedData.phoneNumber);
+      setIsEditing(false);
+    });
+    return;
+  }, [handleHomeownerUpdated, setCurrentPhoneNumber]);
 
   return (
     <Wrapper>
@@ -52,22 +62,32 @@ export const PhoneNumber: FC<PhoneNumberProps> = ({
 
       {!isEditing && (
         <PhoneNumberWrapper onClick={handleEdit}>
-          {phoneNumber}
+          {currentPhoneNumber}
         </PhoneNumberWrapper>
       )}
 
       {isEditing && (
         <Input
+          small
           value={currentPhoneNumber || ''}
           onChange={(value) => setCurrentPhoneNumber(value.target.value)}
         />
       )}
-      {isEditing && (
+      {isEditing &&  (
         <PhoneNumberFooter>
-          <Button type="ghost" size="small" onClick={handleCancelEdit}>
+          <Button
+            type="ghost"
+            size="small"
+            onClick={handleCancelEdit}
+            disabled={isUpdateHomeownerLoading}
+          >
             Отмена
           </Button>
-          <Button size="small" onClick={handleSave}>
+          <Button
+            size="small"
+            onClick={handleSave}
+            isLoading={isUpdateHomeownerLoading}
+          >
             Сохранить
           </Button>
         </PhoneNumberFooter>

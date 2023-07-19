@@ -1,8 +1,13 @@
-import { ApartmentResponse, HomeownerAccountUpdateRequest } from 'myApi';
+import {
+  ApartmentResponse,
+  HomeownerAccountResponse,
+  HomeownerAccountUpdateRequest,
+} from 'myApi';
 import {
   GetApartmentsRequestPayload,
   UpdateApartmentRequestPayload,
 } from '../../../ApartmentReadingsService.types';
+import { Event } from 'effector';
 
 export type ApartmentProfileProps = {
   handleSearchApartment: (payload: GetApartmentsRequestPayload) => void;
@@ -20,4 +25,6 @@ export type ApartmentProfileProps = {
     id: string;
     data: HomeownerAccountUpdateRequest;
   }) => void;
+  isUpdateHomeownerLoading: boolean;
+  handleHomeownerUpdated: Event<HomeownerAccountResponse>;
 };

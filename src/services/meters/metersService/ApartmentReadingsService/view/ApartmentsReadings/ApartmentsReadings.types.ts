@@ -1,5 +1,6 @@
 import {
   ApartmentResponse,
+  HomeownerAccountResponse,
   HomeownerAccountUpdateRequest,
   IndividualDeviceMountPlaceForFilterResponse,
 } from 'myApi';
@@ -7,6 +8,7 @@ import {
   GetApartmentsRequestPayload,
   UpdateApartmentRequestPayload,
 } from '../../ApartmentReadingsService.types';
+import { Event } from 'effector';
 
 export type ApartmentsReadingsProps = {
   searchMode: SearchMode;
@@ -29,6 +31,8 @@ export type ApartmentsReadingsProps = {
     id: string;
     data: HomeownerAccountUpdateRequest;
   }) => void;
+  isUpdateHomeownerLoading: boolean;
+  handleHomeownerUpdated: Event<HomeownerAccountResponse>;
 };
 
 export enum SearchMode {

@@ -34,7 +34,10 @@ export const ApartmentReadingsContainer = () => {
   const allIndividualDeviceMountPlaces = useStore(
     outputs.$allIndividualDeviceMountPlaces,
   );
-  const printIssueCertificate = useUnit(inputs.printIssueCertificate);
+  const { printIssueCertificate, isUpdateHomeownerLoading } = useUnit({
+    printIssueCertificate: inputs.printIssueCertificate,
+    isUpdateHomeownerLoading: outputs.$isUpdateHomeownerLoading,
+  });
 
   const isPermitionToApartmentStatusPatch = usePermission([
     ESecuredIdentityRoleName.Administrator,
@@ -76,6 +79,8 @@ export const ApartmentReadingsContainer = () => {
         allIndividualDeviceMountPlaces={allIndividualDeviceMountPlaces}
         printIssueCertificate={handlePrintIssueCertificate}
         handleUpdatePhoneNumber={handleUpdatePhoneNumber}
+        isUpdateHomeownerLoading={isUpdateHomeownerLoading}
+        handleHomeownerUpdated={inputs.handleHomeownerUpdated}
       />
     </>
   );

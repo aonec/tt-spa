@@ -44,6 +44,8 @@ export const ApartmentInfo: FC<ApartmentInfoProps> = ({
   menuButtons,
   additionalHeaderInfo,
   handleUpdatePhoneNumber,
+  isUpdateHomeownerLoading,
+  handleHomeownerUpdated,
 }) => {
   const filteredHomeowners = apartment.homeownerAccounts
     ?.filter((homeowner) => !homeowner.closedAt)
@@ -235,6 +237,8 @@ export const ApartmentInfo: FC<ApartmentInfoProps> = ({
                   phoneNumber={selectedHomeowner?.phoneNumber || null}
                   homeownerId={activeHomeowner}
                   handleUpdate={handleUpdatePhoneNumber}
+                  isUpdateHomeownerLoading={isUpdateHomeownerLoading}
+                  handleHomeownerUpdated={handleHomeownerUpdated}
                 />
               </div>
             </ExtraInfoWrapper>
