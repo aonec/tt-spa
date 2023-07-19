@@ -54,7 +54,8 @@ sample({
     $createHomeownerPayloadData,
     $isForced,
     (payloadData, isForced): HomeownerAccountCreateRequest | null => {
-      return payloadData && { ...payloadData, isForced };
+      //Правки по isForced
+      return payloadData && { ...payloadData };
     },
   ),
   filter: (payload): payload is HomeownerAccountCreateRequest =>

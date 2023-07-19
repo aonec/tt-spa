@@ -15,14 +15,10 @@ export type GraphViewProps = {
   withFault: boolean;
 };
 
-export type ArchiveDataGroupValuesWithMark = ArchivesDataGroupValue & {
-  hasFault: boolean;
-};
-
 export type PreparedArchiveValues = {
-  time: string;
   value: number;
-};
+  timeUtc: string;
+} & ArchivesDataGroupValue;
 
 export type GetTaskXPosPayload = {
   minDate: string;

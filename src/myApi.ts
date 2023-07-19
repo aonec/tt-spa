@@ -632,6 +632,9 @@ export interface ArchivesDataGroupValue {
   /** @format date-time */
   time?: string;
 
+  /** @format date-time */
+  timeUtc?: string;
+
   /** @format double */
   value?: number;
   hasFault?: boolean;
@@ -2907,7 +2910,6 @@ export interface HomeownerAccountCreateRequest {
 
   /** @format int32 */
   apartmentId: number;
-  isForced?: boolean | null;
 }
 
 export interface HomeownerAccountCreateUnattachedRequest {
@@ -2962,7 +2964,6 @@ export interface HomeownerAccountReplaceRequest {
   /** @format uuid */
   replaceableAccountId: string;
   newHomeownerAccount: HomeownerAccountCreateRequest;
-  isForced?: boolean | null;
 }
 
 export interface HomeownerAccountResponse {
@@ -3045,7 +3046,6 @@ export interface HomeownerAccountUpdateRequest {
   /** @format double */
   ownershipArea?: number | null;
   isMainOnApartment?: boolean | null;
-  isForced?: boolean | null;
 }
 
 export interface HomeownerCertificateResponse {
