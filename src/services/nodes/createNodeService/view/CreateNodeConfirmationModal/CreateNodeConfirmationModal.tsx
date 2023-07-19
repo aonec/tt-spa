@@ -39,7 +39,7 @@ export const CreateNodeConfirmationModal: FC<
 > = ({
   isOpen,
   handleClose,
-  housingStock,
+  building,
   calculator,
   requestPayload,
   serviceZone,
@@ -89,7 +89,7 @@ export const CreateNodeConfirmationModal: FC<
         <StepTitle>1. Адрес установки</StepTitle>
         <AddressWrapper>
           <CitySmallIcon />
-          <AddressText>{getBuildingAddress(housingStock, true)}</AddressText>
+          <AddressText>{getBuildingAddress(building, true)}</AddressText>
         </AddressWrapper>
       </StepWrapper>
 

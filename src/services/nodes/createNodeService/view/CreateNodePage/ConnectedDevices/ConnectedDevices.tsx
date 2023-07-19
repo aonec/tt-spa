@@ -141,7 +141,9 @@ export const ConnectedDevices: FC<ConnectedDevicesProps> = ({
           <Button type="ghost" onClick={goPrevStep}>
             Назад
           </Button>
-          <ButtonSC onClick={validateNode}>Создать узел</ButtonSC>
+          <ButtonSC onClick={validateNode} isLoading={isValidationLoading}>
+            Создать узел
+          </ButtonSC>
         </Footer>
       </div>
     </>
