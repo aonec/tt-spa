@@ -1,10 +1,11 @@
-import { displayInspectorsService } from 'services/inspectors/displayInspectorsService/displayInspectorsService.models';
 import { createDomain, sample } from 'effector';
 import { createForm } from 'effector-forms';
-import { InspectorResponse } from 'myApi';
-import { resetInspectorHousingStocksAddresses } from './inspectorAddressesResetService.api';
-import { searchInspectorsHousingStockService } from '../searchInspectorsHousingStocksService/searchInspectorsHousingStockService.models';
 import { message } from 'antd';
+import { InspectorResponse } from 'myApi';
+import { displayInspectorsService } from 'services/inspectors/displayInspectorsService/displayInspectorsService.models';
+import { searchInspectorsHousingStockService } from '../searchInspectorsHousingStocksService/searchInspectorsHousingStockService.models';
+import { resetInspectorHousingStocksAddresses } from './inspectorAddressesResetService.api';
+import { ResetAddressesFormPayload } from './inspectorAddressesResetService.types';
 
 const inspectorAddressesResetServiceDomain = createDomain(
   'inspectorAddressesResetService',
@@ -26,7 +27,10 @@ const $loading = resetAddressesFx.pending;
 
 const resetAddressesForm = createForm({
   fields: {
-    inspectorId: { init: null as number | null },
+    inspectorId: {
+      init: null as number | null,
+      rules: [{ name: 'required', validator: Boolean }],
+    },
   },
 });
 
@@ -39,7 +43,9 @@ sample({
 
 sample({
   clock: resetAddressesForm.formValidated,
-  fn: (values) => values.inspectorId!,
+  filter: (values): values is ResetAddressesFormPayload =>
+    Boolean(values.inspectorId),
+  fn: (values: ResetAddressesFormPayload) => values.inspectorId,
   target: resetAddressesFx,
 });
 

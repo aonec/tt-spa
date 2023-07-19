@@ -1,10 +1,10 @@
-import { displayInspectorsService } from 'services/inspectors/displayInspectorsService/displayInspectorsService.models';
 import { createDomain, sample } from 'effector';
 import { createForm } from 'effector-forms';
+import { message } from 'antd';
+import { displayInspectorsService } from 'services/inspectors/displayInspectorsService/displayInspectorsService.models';
 import { reassingHousingStockInspector } from './inspectorReassignmentService.api';
 import { PatchInspectorPayload } from './inspectorReassignmentService.types';
 import { searchInspectorsHousingStockService } from '../searchInspectorsHousingStocksService/searchInspectorsHousingStockService.models';
-import { message } from 'antd';
 
 const domain = createDomain('inspectorrRassignmentService');
 

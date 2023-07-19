@@ -1,14 +1,19 @@
-import { displayInspectorsService } from 'services/inspectors/displayInspectorsService/displayInspectorsService.models';
 import { createDomain, sample } from 'effector';
+import { message } from 'antd';
 import { HousingStockResponse } from 'myApi';
+import { EffectFailDataAxiosError } from 'types';
+import { displayInspectorsService } from 'services/inspectors/displayInspectorsService/displayInspectorsService.models';
 import { displayInspectorsHousingStocksService } from '../displayInspectorsHousingStocksService.models';
 import { patchHousingStockInspectorInfo } from './inspectorHousingStockService.api';
 import {
   CurrentHousingStockUpdate,
   PatchHousingStockInspectorInfoPayload,
 } from './inspectorHousingStockService.types';
-import { EffectFailDataAxiosError } from 'types';
-import { message } from 'antd';
+
+const { $inspectorsList } = displayInspectorsService.outputs;
+
+const { $inspectorsHousingStocksList } =
+  displayInspectorsHousingStocksService.outputs;
 
 const inspectorHousingStockServiceDomain = createDomain(
   'inspectorHousingStockService',
@@ -58,25 +63,25 @@ $currentHousingStockUpdates.on(
 $currentHousingStockUpdates.on(
   updateHousingStockInspectorInfoFx.doneData,
   (prev, data) => {
-    return prev.filter((elem) => elem.housingStockId !== data?.id);
+    if (!data?.id) return prev;
+
+    return prev.filter((elem) => elem.housingStockId !== data.id);
   },
 );
 
-$currentHousingStockUpdates.reset(
-  displayInspectorsHousingStocksService.outputs.$inspectorsHousingStocksList,
-);
+$currentHousingStockUpdates.reset($inspectorsHousingStocksList);
 
-displayInspectorsHousingStocksService.outputs.$inspectorsHousingStocksList.on(
+$inspectorsHousingStocksList.on(
   updateHousingStockInspectorInfoFx.done,
-  (hosuingStocks, updatedHosuingStock) => {
-    const updatedHousingStocks = hosuingStocks?.map((housingStock) => {
+  (housingStocks, updatedHousingStock) => {
+    const updatedHousingStocks = housingStocks?.map((housingStock) => {
       if (
-        housingStock.buildingId !== updatedHosuingStock.params.housingStockId
+        housingStock.buildingId !== updatedHousingStock.params.housingStockId
       ) {
         return housingStock;
       }
 
-      const { inspectorId, inspectedDay } = updatedHosuingStock.params.data;
+      const { inspectorId, inspectedDay } = updatedHousingStock.params.data;
 
       const res = {
         ...housingStock,
@@ -102,10 +107,8 @@ export const inspectorHousingStockService = {
     updateHousingStockInspectorInfoFx,
   },
   outputs: {
-    $inspectors: displayInspectorsService.outputs.$inspectorsList,
-    $housingStocks:
-      displayInspectorsHousingStocksService.outputs
-        .$inspectorsHousingStocksList,
+    $inspectors: $inspectorsList,
+    $housingStocks: $inspectorsHousingStocksList,
     $currentHousingStockUpdates,
   },
 };

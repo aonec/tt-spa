@@ -1,4 +1,4 @@
-import { createDomain, guard, sample } from 'effector';
+import { createDomain, sample } from 'effector';
 import { createForm } from 'effector-forms';
 import { GetInspectorsHousingStocksRequestParams } from '../displayInspectorsHousingStocksService/types';
 import { addressSearchService } from 'services/addressSearchService/addressSearchService.models';
@@ -70,14 +70,11 @@ sample({
 
 sample({
   source: searchForm.$values,
-  clock: guard({
-    source: searchForm.$values,
-    clock: searchForm.submit,
-    filter: (values) =>
-      Boolean(values.HouseManagement || values.InspectorId) ||
-      Boolean(values.City && values.Street),
-  }),
-  fn: (values) => values as GetInspectorsHousingStocksRequestParams,
+  clock: searchForm.submit,
+  filter: (values) =>
+    Boolean(values.HouseManagement || values.InspectorId) ||
+    Boolean(values.City && values.Street),
+  fn: (values) => values,
   target: startSearchInspectorsHousingStocks,
 });
 
