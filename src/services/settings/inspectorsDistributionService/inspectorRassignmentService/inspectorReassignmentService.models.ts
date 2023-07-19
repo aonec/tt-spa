@@ -3,7 +3,10 @@ import { createForm } from 'effector-forms';
 import { message } from 'antd';
 import { displayInspectorsService } from 'services/inspectors/displayInspectorsService/displayInspectorsService.models';
 import { reassingHousingStockInspector } from './inspectorReassignmentService.api';
-import { PatchInspectorPayload } from './inspectorReassignmentService.types';
+import {
+  PatchInspectorFormPayload,
+  PatchInspectorPayload,
+} from './inspectorReassignmentService.types';
 import { searchInspectorsHousingStockService } from '../searchInspectorsHousingStocksService/searchInspectorsHousingStockService.models';
 
 const domain = createDomain('inspectorrRassignmentService');
@@ -54,9 +57,11 @@ sample({
 
 sample({
   clock: reassingmentInspectorsForm.formValidated,
-  fn: ({ currentInspector, newInspector }) => ({
-    inspectorId: currentInspector!,
-    newInspectorId: newInspector!,
+  filter: (values): values is PatchInspectorFormPayload =>
+    Boolean(values.currentInspector && values.newInspector),
+  fn: (values: PatchInspectorFormPayload) => ({
+    inspectorId: values.currentInspector,
+    newInspectorId: values.newInspector,
   }),
   target: reassingInspectorsFx,
 });
