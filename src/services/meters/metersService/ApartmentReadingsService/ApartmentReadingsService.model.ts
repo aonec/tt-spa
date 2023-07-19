@@ -58,12 +58,29 @@ const updateHomeownerFx = domain.createEffect<
   EffectFailDataAxiosError
 >(patchOwner);
 
+const handleHomeownerUpdated = updateHomeownerFx.doneData;
+
 const $apartment = domain
   .createStore<ApartmentResponse | null>(null)
   .on(
     [fetchApartmentFx.doneData, updateApartmentFx.doneData],
     (_, apartment) => apartment,
   )
+  .on(handleHomeownerUpdated, (prevApartment, updatedHomeowner) => {
+    if (!prevApartment) return prevApartment;
+
+    const changedHomeowners = prevApartment.homeownerAccounts?.map(
+      (homeowner) => {
+        if (homeowner.id === updatedHomeowner.id) {
+          return { ...homeowner, phoneNumber: updatedHomeowner.phoneNumber };
+        } else {
+          return homeowner;
+        }
+      },
+    );
+
+    return { ...prevApartment, homeownerAccounts: changedHomeowners || null };
+  })
   .reset(ApartmentGate.close);
 
 const $searchMode = domain
@@ -73,6 +90,8 @@ const $searchMode = domain
 const $selectedHomeownerName = domain
   .createStore<string | null>(null)
   .on(setSelectedHomeownerName, (_, name) => name);
+
+const $isUpdateHomeownerLoading = updateHomeownerFx.pending;
 
 sample({
   clock: handleUpdatePhoneNumber,
@@ -133,9 +152,6 @@ updateHomeownerFx.failData.watch((error) => {
       'Произошла ошибка',
   );
 });
-
-const $isUpdateHomeownerLoading = updateHomeownerFx.pending;
-const handleHomeownerUpdated = updateHomeownerFx.doneData;
 
 export const apartmentReadingsService = {
   inputs: {

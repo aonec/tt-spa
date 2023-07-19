@@ -23,6 +23,10 @@ export const PhoneNumber: FC<PhoneNumberProps> = ({
     phoneNumber,
   );
 
+  useEffect(() => {
+    setCurrentPhoneNumber(phoneNumber);
+  }, [phoneNumber]);
+
   const handleEdit = () => {
     setIsEditing(true);
   };
@@ -33,9 +37,10 @@ export const PhoneNumber: FC<PhoneNumberProps> = ({
   };
 
   const handleSave = () => {
-    if (currentPhoneNumber === phoneNumber) return;
-
-    console.log(currentPhoneNumber, phoneNumber);
+    if (currentPhoneNumber === phoneNumber) {
+      setIsEditing(false);
+      return;
+    }
 
     homeownerId &&
       handleUpdate &&
@@ -73,7 +78,7 @@ export const PhoneNumber: FC<PhoneNumberProps> = ({
           onChange={(value) => setCurrentPhoneNumber(value.target.value)}
         />
       )}
-      {isEditing &&  (
+      {isEditing && (
         <PhoneNumberFooter>
           <Button
             type="ghost"
@@ -87,6 +92,7 @@ export const PhoneNumber: FC<PhoneNumberProps> = ({
             size="small"
             onClick={handleSave}
             isLoading={isUpdateHomeownerLoading}
+            disabled={!Boolean(currentPhoneNumber)}
           >
             Сохранить
           </Button>
