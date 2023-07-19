@@ -1,5 +1,6 @@
 import { combine, createDomain, forward, sample } from 'effector';
 import { createGate } from 'effector-react';
+import { message } from 'antd';
 import { GetSummaryHousingConsumptionsByResourcesResponse } from 'myApi';
 import {
   fetchConsumptionsForMonth,
@@ -13,7 +14,6 @@ import {
   MonthConsumptionData,
 } from './resourceConsumptionService.types';
 import { BooleanTypesOfResourceConsumptionGraphForTwoMonth } from './view/ResourceConsumptionProfile/ResourceConsumptionProfile.types';
-import { message } from 'antd';
 import { EffectFailDataAxiosError } from 'types';
 import { addressSearchService } from 'services/addressSearchService/addressSearchService.models';
 
