@@ -48,8 +48,9 @@ export const CreateObjectContainer = () => {
 
   useEffect(() => {
     return inputs.handleCreateObjectSuccessDone.watch((data) => {
+      const type = data.houseCategory;
       if (data?.id) {
-        history.push(`/objects/profile/${data.id}`);
+        history.push(`/buildings/${type}Profile/${data.id}`);
       }
     }).unsubscribe;
   }, [history]);

@@ -1,1 +1,0 @@
-export { ApartmentsList } from './ApartmentsList'

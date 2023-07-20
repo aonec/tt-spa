@@ -39,7 +39,7 @@ export const HousesReadingsPage: FC<HousesReadingsPageProps> = ({
           handleSearchHousingStock({
             City: values.city,
             Street: values.street,
-            HousingStockNumber: values.house,
+            BuildingNumber: values.house,
           });
         }}
         initialValues={

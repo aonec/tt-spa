@@ -1,6 +1,6 @@
 import { ReadingsHistoryContainer } from 'services/meters/readingsHistoryService/readingsHistoryService.container';
 import { Skeleton } from 'antd';
-import { useEvent, useStore } from 'effector-react';
+import { useUnit } from 'effector-react';
 import React from 'react';
 import { useParams } from 'react-router-dom';
 import { taskProfileService } from '.';
@@ -12,29 +12,45 @@ const { TaskIdGate, RelatedNodeIdGate } = gates;
 export const TaskProfileContainer = () => {
   const { taskId } = useParams<{ taskId: string }>();
 
-  const task = useStore(outputs.$task);
-  const pipeNode = useStore(outputs.$pipeNode);
-  const isLoading = useStore(outputs.$isLoading);
-  const isPerpetrator = useStore(outputs.$isPerpetrator);
-  const commentText = useStore(outputs.$commentText);
-  const currentUser = useStore(outputs.$currentUser);
-  const documents = useStore(outputs.$documents);
-  const isPushStageLoading = useStore(outputs.$isPushStageLoading);
-  const isRevertStageLoading = useStore(outputs.$isRevertStageLoading);
-  const deleteDocumentModalIsOpen = useStore(
-    outputs.$deleteDocumentModalIsOpen,
-  );
-
-  const addComment = useEvent(inputs.addComment);
-  const setComment = useEvent(inputs.setComment);
-  const handleDeleteDocument = useEvent(inputs.deleteDocument);
-  const pushStage = useEvent(inputs.handlePushStage);
-  const handleRevertStage = useEvent(inputs.handleRevertStage);
-  const handleChangePushStagePayload = useEvent(
-    inputs.handleChangePushStagePayload,
-  );
-  const openDeleteDocumentModal = useEvent(inputs.openDeleteDocumentModal);
-  const closeDeleteDocumentModal = useEvent(inputs.closeDeleteDocumentModal);
+  const {
+    task,
+    pipeNode,
+    isLoading,
+    isPerpetrator,
+    commentText,
+    currentUser,
+    documents,
+    isPushStageLoading,
+    isRevertStageLoading,
+    deleteDocumentModalIsOpen,
+    addComment,
+    setComment,
+    handleDeleteDocument,
+    pushStage,
+    handleRevertStage,
+    handleChangePushStagePayload,
+    openDeleteDocumentModal,
+    closeDeleteDocumentModal,
+  } = useUnit({
+    task: outputs.$task,
+    pipeNode: outputs.$pipeNode,
+    isLoading: outputs.$isLoading,
+    isPerpetrator: outputs.$isPerpetrator,
+    commentText: outputs.$commentText,
+    currentUser: outputs.$currentUser,
+    documents: outputs.$documents,
+    isPushStageLoading: outputs.$isPushStageLoading,
+    isRevertStageLoading: outputs.$isRevertStageLoading,
+    deleteDocumentModalIsOpen: outputs.$deleteDocumentModalIsOpen,
+    addComment: inputs.addComment,
+    setComment: inputs.setComment,
+    handleDeleteDocument: inputs.deleteDocument,
+    pushStage: inputs.handlePushStage,
+    handleRevertStage: inputs.handleRevertStage,
+    handleChangePushStagePayload: inputs.handleChangePushStagePayload,
+    openDeleteDocumentModal: inputs.openDeleteDocumentModal,
+    closeDeleteDocumentModal: inputs.closeDeleteDocumentModal,
+  });
 
   const device = task && task.device;
   const nodeId = device?.nodeId;

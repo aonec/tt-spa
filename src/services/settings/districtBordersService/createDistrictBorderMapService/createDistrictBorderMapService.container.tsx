@@ -17,12 +17,13 @@ const {
 export const CreateDistrictBorderMapContainer = () => {
   const history = useHistory();
 
+  const { preselectedDistrictPayload, organizationCoordinates } = useUnit({
+    preselectedDistrictPayload: outputs.$preselectedDistrictPayload,
+    organizationCoordinates: outputs.$organizationCoordinates,
+  });
+
   const { data: existingHousingStocks, pending: isLoadingHousingStocks } =
     useUnit(existingHousingStocksQuery);
-
-  const { preselectedDistrictPayload } = useUnit({
-    preselectedDistrictPayload: outputs.$preselectedDistrictPayload,
-  });
 
   const { data: existingDistricts, pending: isLoadingDistricts } = useUnit(
     existingDistrictsQuery,
@@ -45,6 +46,7 @@ export const CreateDistrictBorderMapContainer = () => {
         isLoading={isLoadingHousingStocks || isLoadingDistricts}
         handleCreateDistrict={handleCreateDistrict}
         preselectedDistrictPayload={preselectedDistrictPayload}
+        organizationCoordinates={organizationCoordinates}
       />
     </>
   );

@@ -2,9 +2,9 @@ import React, { FC } from 'react';
 import { KeyWrapper, ValueWrapper, Wrapper } from './CommonInfo.styled';
 import { CommonInfoProps } from './CommonInfo.types';
 
-export const CommonInfo: FC<CommonInfoProps> = ({ items }) => {
+export const CommonInfo: FC<CommonInfoProps> = ({ items, className }) => {
   return (
-    <div>
+    <div className={className}>
       {items.map(({ key, value, hidden }) => {
         if (hidden) {
           return null;

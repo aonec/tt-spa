@@ -3,18 +3,18 @@ import moment from 'moment';
 import { EMagistralType } from 'myApi';
 import React, { FC } from 'react';
 import { CommonInfo } from 'ui-kit/shared_components/CommonInfo';
-import { getHousingStockAddress } from 'utils/getHousingStockAddress';
+import { getBuildingAddress } from 'utils/getBuildingAddress';
 import { Address } from './CommonInfoTab.styled';
 import { CommonInfoProps } from './CommonInfoTab.types';
 
 export const CommonInfoTab: FC<CommonInfoProps> = ({
   housingMeteringDevice,
 }) => {
-  const address = housingMeteringDevice?.address?.address?.mainAddress;
+  const address = housingMeteringDevice?.address;
 
   const addressString =
     housingMeteringDevice?.address &&
-    getHousingStockAddress(housingMeteringDevice?.address, true);
+    getBuildingAddress(housingMeteringDevice?.address, true);
 
   const magistral = housingMeteringDevice?.hubConnection?.hub
     ?.magistral as EMagistralType;
@@ -23,7 +23,9 @@ export const CommonInfoTab: FC<CommonInfoProps> = ({
     {
       key: 'Адрес',
       value: (
-        <Address to={`/objects/profile/${address?.id}`}>
+        <Address
+          to={`/buildings/${address?.houseCategory}Profile/${address?.id}`}
+        >
           {addressString}
         </Address>
       ),

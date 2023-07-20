@@ -37,7 +37,7 @@ export const SearchInspectorsHousingStocks: FC<
   const streetMatch = autocomplete?.bestMatch;
   const options = autocomplete?.options;
 
-  const next = useSwitchInputOnEnter(dataKey, false);
+  const next = useSwitchInputOnEnter(dataKey, false, false);
 
   const fieldsArray = [
     form.fields.City,

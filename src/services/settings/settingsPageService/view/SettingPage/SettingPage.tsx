@@ -69,10 +69,12 @@ export const SettingPage: FC<SettingPageProps> = ({
     }
     return (
       <>
-        <TabsSC.TabPane
-          tab="Распределение контролеров"
-          key="controllers"
-        ></TabsSC.TabPane>
+        {featureToggles.controllersDistribution && (
+          <TabsSC.TabPane
+            tab="Распределение контролеров"
+            key="controllers"
+          ></TabsSC.TabPane>
+        )}
         <TabsSC.TabPane tab="Распределение инспекторов" key="inspectors">
           <InspectorsDistributionPage />
         </TabsSC.TabPane>

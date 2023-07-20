@@ -30,7 +30,6 @@ export const TextareaSC = styled(Input.TextArea)`
   resize: none;
   border: 1px solid #dcdee4;
   border-radius: 4px;
-
   font-weight: 400;
   font-size: 16px;
   line-height: 32px;

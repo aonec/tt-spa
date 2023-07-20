@@ -1,7 +1,7 @@
 import { HouseAddress } from 'myApi';
 import React, { FC } from 'react';
 import { Switcher } from 'ui-kit/shared_components/Switcher';
-import { getHousingStockAddressString } from 'utils/getHousingStockAddress';
+import { getHousingStockAddressString } from 'utils/getBuildingAddress';
 import { CurrentHousingStock, Wrapper } from './AddressHeader.styled';
 import { AddressHeaderProps } from './AddressHeader.types';
 

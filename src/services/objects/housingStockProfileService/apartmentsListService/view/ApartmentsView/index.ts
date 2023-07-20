@@ -1,0 +1,1 @@
+export { ApartmentsView } from './ApartmentsView';

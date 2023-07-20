@@ -2,7 +2,6 @@ import { axios } from '01/axios';
 import {
   BuildingAddressCreateRequest,
   BuildingAddressUpdateRequest,
-  HousingStockResponse,
   HousingStockUpdateRequest,
 } from 'myApi';
 
@@ -16,15 +15,15 @@ export const createHousingStockAddress = (payload: {
   housingStockId: number;
   data: BuildingAddressCreateRequest;
 }): Promise<void> =>
-  axios.post(`HousingStocks/${payload.housingStockId}/Addresses`, payload.data);
+  axios.post(`Buildings/${payload.housingStockId}/Addresses`, payload.data);
 
 export const updateHousingStockAddress = (payload: {
   housingStockId: number;
   addressId: number;
   data: BuildingAddressUpdateRequest;
-}): Promise<HousingStockResponse> =>
+}): Promise<void> =>
   axios.put(
-    `HousingStocks/${payload.housingStockId}/Addresses/${payload.addressId}`,
+    `Buildings/${payload.housingStockId}/Addresses/${payload.addressId}`,
     payload.data,
   );
 
@@ -33,5 +32,5 @@ export const deleteHousingStockAddress = (payload: {
   addressId: number;
 }): Promise<void> =>
   axios.delete(
-    `HousingStocks/${payload.housingStockId}/Addresses/${payload.addressId}`,
+    `Buildings/${payload.housingStockId}/Addresses/${payload.addressId}`,
   );

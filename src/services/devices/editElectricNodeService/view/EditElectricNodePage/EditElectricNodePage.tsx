@@ -2,7 +2,7 @@ import { PageHeader } from 'ui-kit/shared_components/PageHeader';
 import { Skeleton } from 'antd';
 import React, { FC, useState } from 'react';
 import { GoBack } from 'ui-kit/shared_components/GoBack';
-import { getHousingStockAddress } from 'utils/getHousingStockAddress';
+import { getBuildingAddress } from 'utils/getBuildingAddress';
 import { EditElectricNodeForm } from './EditElectricNodeForm';
 import {
   AddressWrapper,
@@ -40,7 +40,7 @@ export const EditElectricNodePage: FC<EditElectricNodePageProps> = ({
         <>
           <InfoWrapper>
             <AddressWrapper>
-              {getHousingStockAddress(device?.address, true)}
+              {getBuildingAddress(device?.address, true)}
             </AddressWrapper>
 
             <DeviceStatus isActive={!device.closingDate} />
