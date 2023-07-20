@@ -1,10 +1,11 @@
 import { useStore } from 'effector-react';
 import React, { useMemo } from 'react';
-import { hidden, menuItems, privates } from './menuService.data';
+import { useMenuItems } from './menuService.hook';
 import { menuService } from './menuService.model';
 import { filterMenuItems } from './menuService.utils';
 import { Menu } from './view/Menu';
 import { UserInfo } from './view/UserInfo';
+import { hidden, privates } from './menuService.constants';
 
 const { outputs, gates } = menuService;
 const { UserRolesGate, CurrentUserGate } = gates;
@@ -16,6 +17,8 @@ export const MenuContainer = () => {
 
   const isCurrentUserLoading = useStore(outputs.$isCurrentUserLoading);
 
+  const menuItems = useMenuItems();
+
   const filteredMenuItems = useMemo(() => {
     if (!userRoles) return [];
 
@@ -25,7 +28,7 @@ export const MenuContainer = () => {
       hidden,
       userRoles.map((elem) => elem.key!),
     );
-  }, [userRoles]);
+  }, [menuItems, userRoles]);
 
   return (
     <>

@@ -1,15 +1,16 @@
 import React, { FC } from 'react';
+import { useUnit } from 'effector-react';
 import { Redirect, Route, Switch } from 'react-router-dom';
+import { EHouseCategory, ESecuredIdentityRoleName } from 'myApi';
+import { Panel } from 'App/Panel';
 import { Layout, PageWrapper, Wrapper } from './Router.styled';
 import { RouterProps } from './Router.types';
-import { EHouseCategory, ESecuredIdentityRoleName } from 'myApi';
 import { TasksRouter } from 'services/tasks/tasks.router';
 import { ObjectsProfileContainer } from 'services/objects/objectsProfileService';
 import { HousingStockProfileContainer } from 'services/objects/housingStockProfileService';
 import { DevicesPageContainer } from 'services/devices/devicesPageService';
 import { ChangeODPUContainer } from 'services/devices/сhangeODPUService';
 import { EditElectricNodeContainer } from 'services/devices/editElectricNodeService';
-import { Panel } from 'App/Panel';
 import { CreateObjectContainer } from 'services/objects/createObjectService';
 import { EditApartmentProfileContainer } from 'services/apartments/editApartmentProfileService';
 import { EmployeeProfileContainer } from 'services/employee/employeeProfileService';
@@ -29,7 +30,6 @@ import { GroupWorkingRangeContainer } from 'services/workingRanges/groupWorkingR
 import { UniqueWorkingRangeContainer } from 'services/workingRanges/uniqueWorkingRangeService';
 import { EditCompanyContainer } from 'services/company/editCompanyService';
 import { ReportsPageContainer } from '01/features/reports';
-import { featureToggles } from 'featureToggles';
 import { ReportsContainer } from 'services/reportsService';
 import { AccessDeniedPage } from 'services/authorizations/AccessDeniedPage';
 import { EditObjectContainer } from 'services/objects/editObjectService';
@@ -54,8 +54,13 @@ import { WorkWithIndividualDeviceType } from 'services/devices/individualDevices
 import { ManageDistrictsMapContainer } from 'services/settings/districtBordersService/manageDistrictsMapService';
 import { CreateDistrictBorderMapContainer } from 'services/settings/districtBordersService/createDistrictBorderMapService';
 import { NonResidentialBuildingProfileContainer } from 'services/objects/nonResidentialBuildingProfileService';
+import { developmentSettingsService } from 'services/developmentSettings/developmentSettings.models';
 
 export const Router: FC<RouterProps> = ({ roles, isRolesLoadded }) => {
+  const { featureToggles } = useUnit({
+    featureToggles: developmentSettingsService.outputs.$featureToggles,
+  });
+
   const redirectRoute = roles.length
     ? roles?.includes(
         ESecuredIdentityRoleName.SeniorOperator ||
