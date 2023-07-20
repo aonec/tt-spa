@@ -9,9 +9,10 @@ export type GetHousingStocksListRequestPayload = {
   PageSize?: number;
 };
 
-export type GetHousingStocksRequestPayload = GetHousingStocksListRequestPayload & {
-  HousingStockId?: number | null;
-};
+export type GetHousingStocksRequestPayload =
+  GetHousingStocksListRequestPayload & {
+    HousingStockId?: number | null;
+  };
 
 export type GetIndividualDevicesListRequestPayload = {
   HousingStockId: number;
