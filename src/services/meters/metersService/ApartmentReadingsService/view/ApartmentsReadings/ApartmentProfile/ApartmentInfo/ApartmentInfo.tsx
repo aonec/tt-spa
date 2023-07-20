@@ -33,7 +33,8 @@ import { Button } from 'ui-kit/Button';
 import moment from 'moment';
 import { apartmentInfoService } from './ApartmentInfo.model';
 import { PrintApartmentDevicesCertificateContainer } from 'services/apartments/printApartmentDevicesCertificateService';
-import { PhoneNumber } from './PhoneNumber';
+import { EditHomeownerField } from './EditHomeownerField';
+import { FieldType } from './EditHomeownerField/EditHomeownerField.types';
 
 const { inputs, outputs } = apartmentInfoService;
 
@@ -215,10 +216,15 @@ export const ApartmentInfo: FC<ApartmentInfoProps> = ({
           </BaseInfoWrapper>
           {isPanelOpen && (
             <ExtraInfoWrapper>
-              <div>
-                <InfoPanelLabel>Собственник</InfoPanelLabel>
-                <ExtraInfoText>{selectedHomeowner?.name}</ExtraInfoText>
-              </div>
+              <EditHomeownerField
+                fieldType={FieldType.Name}
+                name={selectedHomeowner?.name}
+                phoneNumber={selectedHomeowner?.phoneNumber}
+                homeownerId={activeHomeowner}
+                handleUpdate={handleUpdatePhoneNumber}
+                isUpdateHomeownerLoading={isUpdateHomeownerLoading}
+                handleHomeownerUpdated={handleHomeownerUpdated}
+              />
               <div>
                 <InfoPanelLabel>Лицевой счет</InfoPanelLabel>
                 <ExtraInfoText>
@@ -232,15 +238,14 @@ export const ApartmentInfo: FC<ApartmentInfoProps> = ({
                 <InfoPanelLabel>Платежный код</InfoPanelLabel>
                 <ExtraInfoText>{selectedHomeowner?.paymentCode}</ExtraInfoText>
               </div>
-              <div>
-                <PhoneNumber
-                  phoneNumber={selectedHomeowner?.phoneNumber || null}
-                  homeownerId={activeHomeowner}
-                  handleUpdate={handleUpdatePhoneNumber}
-                  isUpdateHomeownerLoading={isUpdateHomeownerLoading}
-                  handleHomeownerUpdated={handleHomeownerUpdated}
-                />
-              </div>
+              <EditHomeownerField
+                fieldType={FieldType.PhoneNumber}
+                phoneNumber={selectedHomeowner?.phoneNumber || null}
+                homeownerId={activeHomeowner}
+                handleUpdate={handleUpdatePhoneNumber}
+                isUpdateHomeownerLoading={isUpdateHomeownerLoading}
+                handleHomeownerUpdated={handleHomeownerUpdated}
+              />
             </ExtraInfoWrapper>
           )}
         </InfoPanel>

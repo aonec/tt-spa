@@ -73,7 +73,11 @@ const $apartment = domain
     const changedHomeowners = prevApartment.homeownerAccounts?.map(
       (homeowner) => {
         if (homeowner.id === updatedHomeowner.id) {
-          return { ...homeowner, phoneNumber: updatedHomeowner.phoneNumber };
+          return {
+            ...homeowner,
+            phoneNumber: updatedHomeowner.phoneNumber,
+            name: updatedHomeowner.name,
+          };
         } else {
           return homeowner;
         }
