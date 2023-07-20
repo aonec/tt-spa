@@ -1,4 +1,4 @@
-import { useEvent, useStore } from 'effector-react';
+import { useUnit } from 'effector-react';
 import React from 'react';
 import { developmentSettingsService } from './developmentSettings.models';
 import { DevelopmentSettingsModal } from './view/DevelopmentSettingsModal';
@@ -6,11 +6,21 @@ import { DevelopmentSettingsModal } from './view/DevelopmentSettingsModal';
 const { inputs, outputs } = developmentSettingsService;
 
 export const DevSettingsModal = () => {
-  const visible = useStore(outputs.$isDevSettingsModalOpen);
-  const devUrl = useStore(outputs.$devUrl);
-
-  const closeDevSettingsModal = useEvent(inputs.closeDevSettingsModal);
-  const setDevUrl = useEvent(inputs.setDevUrl);
+  const {
+    visible,
+    devUrl,
+    closeDevSettingsModal,
+    setDevUrl,
+    featureToggles,
+    toggleFeature,
+  } = useUnit({
+    visible: outputs.$isDevSettingsModalOpen,
+    devUrl: outputs.$devUrl,
+    featureToggles: outputs.$featureToggles,
+    closeDevSettingsModal: inputs.closeDevSettingsModal,
+    setDevUrl: inputs.setDevUrl,
+    toggleFeature: inputs.toggleFeature,
+  });
 
   return (
     <DevelopmentSettingsModal
@@ -18,6 +28,8 @@ export const DevSettingsModal = () => {
       closeDevSettingsModal={closeDevSettingsModal}
       devUrl={devUrl}
       setDevUrl={setDevUrl}
+      featureToggles={featureToggles}
+      toggleFeature={toggleFeature}
     />
   );
 };

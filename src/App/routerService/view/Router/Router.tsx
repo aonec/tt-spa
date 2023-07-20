@@ -1,5 +1,4 @@
 import React, { FC } from 'react';
-import { useUnit } from 'effector-react';
 import { Redirect, Route, Switch } from 'react-router-dom';
 import { EHouseCategory, ESecuredIdentityRoleName } from 'myApi';
 import { Panel } from 'App/Panel';
@@ -54,13 +53,12 @@ import { WorkWithIndividualDeviceType } from 'services/devices/individualDevices
 import { ManageDistrictsMapContainer } from 'services/settings/districtBordersService/manageDistrictsMapService';
 import { CreateDistrictBorderMapContainer } from 'services/settings/districtBordersService/createDistrictBorderMapService';
 import { NonResidentialBuildingProfileContainer } from 'services/objects/nonResidentialBuildingProfileService';
-import { developmentSettingsService } from 'services/developmentSettings/developmentSettings.models';
 
-export const Router: FC<RouterProps> = ({ roles, isRolesLoadded }) => {
-  const { featureToggles } = useUnit({
-    featureToggles: developmentSettingsService.outputs.$featureToggles,
-  });
-
+export const Router: FC<RouterProps> = ({
+  roles,
+  isRolesLoadded,
+  featureToggles,
+}) => {
   const redirectRoute = roles.length
     ? roles?.includes(
         ESecuredIdentityRoleName.SeniorOperator ||

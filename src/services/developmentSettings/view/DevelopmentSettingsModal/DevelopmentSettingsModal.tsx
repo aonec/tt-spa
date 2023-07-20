@@ -1,26 +1,23 @@
 import React, { FC } from 'react';
-import { DevelopmentSettingsModalProps } from './DevelopmentSettingsModal.types';
+import moment from 'moment';
+import { baseURL } from '01/axios';
 import { FormModal } from 'ui-kit/Modals/FormModal';
 import { SettingsIcon } from 'ui-kit/icons';
-import moment from 'moment';
 import { Input } from 'ui-kit/Input';
 import { Button } from 'ui-kit/Button';
-import { Badge, DevUrlInputWrapper } from './DevelopmentSettingsModal.styled';
-import { baseURL } from '01/axios';
 import { FormItem } from 'ui-kit/FormItem';
 import { Select } from 'ui-kit/Select';
-
-const urls = [
-  'https://stage.k8s.transparent-technology.ru/api/',
-  'http://localhost:5001/api/',
-  'https://fop.k8s.transparent-technology.ru/api/',
-];
+import { Badge, DevUrlInputWrapper } from './DevelopmentSettingsModal.styled';
+import { DevelopmentSettingsModalProps } from './DevelopmentSettingsModal.types';
+import { urls } from './DevelopmentSettingsModal.constants';
 
 export const DevelopmentSettingsModal: FC<DevelopmentSettingsModalProps> = ({
   visible,
   closeDevSettingsModal,
   devUrl,
   setDevUrl,
+  featureToggles,
+  toggleFeature,
 }) => {
   return (
     <FormModal
