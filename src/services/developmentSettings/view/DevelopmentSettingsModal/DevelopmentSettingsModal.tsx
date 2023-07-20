@@ -82,7 +82,7 @@ export const DevelopmentSettingsModal: FC<DevelopmentSettingsModalProps> = ({
               })}
             </FeatureTogglesWrapper>
           </FormItem>
-          <Badge>TT frontend team {moment().format('YYYY')} [ver: 1.1.7]</Badge>
+          <Badge>TT frontend team {moment().format('YYYY')} [ver: 1.1.0]</Badge>
         </>
       }
       centered

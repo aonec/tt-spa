@@ -1,6 +1,7 @@
-import axios from '01/axios';
 import { createDomain, createEvent } from 'effector';
+import { persist } from 'effector-storage/local';
 import { featureToggles } from 'featureToggles';
+import axios from '01/axios';
 import { FeatureToggles } from './developmentSettings.types';
 
 const domain = createDomain('developmentSettings');
@@ -28,6 +29,8 @@ const $featureToggles = domain
     ...prev,
     [feature]: !prev[feature],
   }));
+
+persist({ store: $featureToggles, key: 'featureToggles' });
 
 const $devUrl = domain
   .createStore(apiURL || '')

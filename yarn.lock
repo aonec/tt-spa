@@ -7075,6 +7075,11 @@ effector-react@^22.4.0:
   dependencies:
     use-sync-external-store "^1.0.0"
 
+effector-storage@^6.1.1:
+  version "6.1.1"
+  resolved "https://registry.yarnpkg.com/effector-storage/-/effector-storage-6.1.1.tgz#82448fa33626d62ae550de4577cd0948066fa642"
+  integrity sha512-xSzat/P7v8PTF9NQcoN6fmPD7gTJhPyp5+T1EaDKSfokseq7WG0cv4t05gYNF6RF6hWY2OCEo3gD/V9KlhmyZQ==
+
 effector@^22.5.0:
   version "22.5.0"
   resolved "https://registry.yarnpkg.com/effector/-/effector-22.5.0.tgz#be024d5145fb648c797e58f73b28b9bdef20563a"
@@ -8251,11 +8256,6 @@ fs.realpath@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/fs.realpath/-/fs.realpath-1.0.0.tgz#1504ad2523158caa40db4a2787cb01411994ea4f"
   integrity sha1-FQStJSMVjKpA20onh8sBQRmU6k8=
-
-fs@^0.0.1-security:
-  version "0.0.1-security"
-  resolved "https://registry.yarnpkg.com/fs/-/fs-0.0.1-security.tgz#8a7bd37186b6dddf3813f23858b57ecaaf5e41d4"
-  integrity sha1-invTcYa23d84E/I4WLV+yq9eQdQ=
 
 fsevents@^1.2.7:
   version "1.2.13"
@@ -11235,14 +11235,7 @@ mkdirp@~0.5.1:
   dependencies:
     minimist "^1.2.5"
 
-moment-timezone@^0.5.33:
-  version "0.5.33"
-  resolved "https://registry.yarnpkg.com/moment-timezone/-/moment-timezone-0.5.33.tgz#b252fd6bb57f341c9b59a5ab61a8e51a73bbd22c"
-  integrity sha512-PTc2vcT8K9J5/9rDEPe5czSIKgLoGsH8UNpA4qZTVw0Vd/Uz19geE9abbIOQKaAQFcnQ3v5YEXrbSc5BpshH+w==
-  dependencies:
-    moment ">= 2.9.0"
-
-"moment@>= 2.9.0", moment@^2.24.0, moment@^2.25.3, moment@^2.29.1:
+moment@^2.24.0, moment@^2.25.3, moment@^2.29.1:
   version "2.29.1"
   resolved "https://registry.yarnpkg.com/moment/-/moment-2.29.1.tgz#b2be769fa31940be9eeea6469c075e35006fa3d3"
   integrity sha512-kHmoybcPV8Sqy59DwNDY3Jefr64lK/by/da0ViFcuA4DH0vQg5Q6Ze5VimxkfQNSC+Mls/Kx53s7TjP1RhFEDQ==

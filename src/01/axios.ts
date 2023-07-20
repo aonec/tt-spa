@@ -61,7 +61,8 @@ axios.interceptors.response.use(
     }
 
     if (status === 401 && checkUrl('refresh', error.config.url)) {
-      localStorage.clear();
+      localStorage.removeItem('token');
+      localStorage.removeItem('refreshToken');
       window.location.replace('/login');
       return;
     }
