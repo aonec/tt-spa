@@ -20,10 +20,10 @@ import {
   EResourceType,
 } from 'api/types';
 import { useFormik } from 'formik';
-import { GoBack } from 'ui-kit/shared_components/GoBack';
-import { WithLoader } from 'ui-kit/shared_components/WithLoader';
+import { GoBack } from 'ui-kit/sharedComponents/GoBack';
+import { WithLoader } from 'ui-kit/sharedComponents/WithLoader';
 import { Select } from 'ui-kit/Select';
-import { ResourceSelectSC } from 'ui-kit/shared_components/ResourceSelectSC';
+import { ResourceSelectSC } from 'ui-kit/sharedComponents/ResourceSelectSC';
 
 const { TabPane } = TabsSC;
 

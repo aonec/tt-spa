@@ -5,7 +5,7 @@ import {
   Wrapper,
 } from './IndividualDevicesSealListItem.styled';
 import { IndividualDevicesSealListItemProps } from './IndividualDevicesSealListItem.types';
-import { IndividualDeviceInfoExtended } from 'ui-kit/shared_components/IndividualDeviceInfoExtended';
+import { IndividualDeviceInfoExtended } from 'ui-kit/sharedComponents/IndividualDeviceInfoExtended';
 import moment from 'moment';
 
 export const IndividualDevicesSealListItem: FC<

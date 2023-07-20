@@ -8,7 +8,7 @@ import {
 } from './TasksListPanel.styled';
 import { TasksListPanelProps } from './TasksListPanel.types';
 import { TimerIcon } from 'ui-kit/icons';
-import { ListOpeningChevron } from 'ui-kit/shared_components/ListOpeningChevron';
+import { ListOpeningChevron } from 'ui-kit/sharedComponents/ListOpeningChevron';
 import { prepareData } from 'services/tasks/tasksProfileService/tasksProfileService.utils';
 import { TaskGroupingFilter } from 'api/types';
 import { TasksList } from 'services/tasks/tasksProfileService/view/TasksList';

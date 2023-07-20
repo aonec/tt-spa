@@ -1,7 +1,7 @@
 import React from 'react';
 import { removeAssignmentService } from './removeAssignmentService.model';
 import { useUnit } from 'effector-react';
-import { Dialog } from 'ui-kit/shared_components/Dialog/Dialog';
+import { Dialog } from 'ui-kit/sharedComponents/Dialog/Dialog';
 import { removeAssignmentMutation } from './removeAssignmentService.api';
 
 const { inputs, outputs } = removeAssignmentService;

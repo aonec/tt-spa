@@ -1,7 +1,7 @@
 import React, { FC, useMemo } from 'react';
 import { useForm } from 'effector-forms';
 import { DistrictColorsList } from 'dictionaries';
-import { GoBack } from 'ui-kit/shared_components/GoBack';
+import { GoBack } from 'ui-kit/sharedComponents/GoBack';
 import { Button } from 'ui-kit/Button';
 import { useYMaps } from 'hooks/ymaps/useYMaps';
 import { getPayloadFromDistricts } from 'utils/districtsData';

@@ -1,7 +1,7 @@
 import { useEvent, useStore } from 'effector-react';
 import React from 'react';
 import { useParams } from 'react-router-dom';
-import { WithLoader } from 'ui-kit/shared_components/WithLoader';
+import { WithLoader } from 'ui-kit/sharedComponents/WithLoader';
 import { editHousingMeteringDeviceService } from './editHousingMeteringDeviceService.model';
 import { EditHousingMeteringDevicePage } from './view/EditHousingMeteringDevicePage';
 

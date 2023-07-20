@@ -1,6 +1,6 @@
 import { Empty } from 'antd';
 import React, { FC } from 'react';
-import { GoBack } from 'ui-kit/shared_components/GoBack';
+import { GoBack } from 'ui-kit/sharedComponents/GoBack';
 import { EditCompanyForm } from '../EditCompanyForm';
 import { PageHeaderSC } from './EditCompanyPage.styled';
 import { EditCompanyPageProps } from './EditCompanyPage.types';

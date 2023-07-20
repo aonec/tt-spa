@@ -1,4 +1,4 @@
-import { TimerClosingStatus } from 'ui-kit/shared_components/Timer/Timer.types';
+import { TimerClosingStatus } from 'ui-kit/sharedComponents/Timer/Timer.types';
 
 export const LineColors: {
   [key in keyof typeof TimerClosingStatus]: string;

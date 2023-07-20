@@ -14,7 +14,7 @@ import { StyledFontLarge, TimeElement } from '../DisablingResoucesList.styles';
 import { declOfNum } from '../DisablingResourcesList.utils';
 import { ResourceDisconnectingClassLookUp } from '../../DisablingResourcesSearchHeader/DisablingResourcesSearchHeader.utils';
 import { RenderApartmentProps } from './DisablingResourceItem.types';
-import { ResourceInfo } from 'ui-kit/shared_components/ResourceInfo';
+import { ResourceInfo } from 'ui-kit/sharedComponents/ResourceInfo';
 import { ContextMenuButtonColor } from 'ui-kit/ContextMenuButton/ContextMenuButton.types';
 
 export const DisablingResourceItem: React.FC<RenderApartmentProps> = ({

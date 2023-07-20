@@ -12,13 +12,13 @@ import {
 import { TasksMapFiltrationProps } from './TasksMapFiltration.types';
 import { Button } from 'ui-kit/Button';
 import { FormItem } from 'ui-kit/FormItem';
-import { ItemPanelsSelect } from 'ui-kit/shared_components/ItemPanelsSelect';
+import { ItemPanelsSelect } from 'ui-kit/sharedComponents/ItemPanelsSelect';
 import {
   EResourceType,
   EStageTimeStatus,
   ETaskEngineeringElement,
 } from 'api/types';
-import { ResourceIconLookup } from 'ui-kit/shared_components/ResourceIconLookup';
+import { ResourceIconLookup } from 'ui-kit/sharedComponents/ResourceIconLookup';
 import {
   ResourceMapNamesDictionary,
   EngineeringElementLookUp,
@@ -28,7 +28,7 @@ import { Radio, Space } from 'antd';
 import { HousingStockTasks } from './HousingStockTasks';
 import { Select } from 'ui-kit/Select';
 import { HideExtendedSearchButton } from 'ui-kit/ExtendedSearch/ExtendedSearch.styled';
-import { FilterButtonForMap } from 'ui-kit/shared_components/filterButton/FIlterButton';
+import { FilterButtonForMap } from 'ui-kit/sharedComponents/filterButton/FIlterButton';
 
 export const TasksMapFiltration: FC<TasksMapFiltrationProps> = ({
   taskTypes,

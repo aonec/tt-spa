@@ -24,9 +24,9 @@ import {
   EResourceType,
 } from 'api/types';
 import { useFormik } from 'formik';
-import { GoBack } from 'ui-kit/shared_components/GoBack';
-import { WithLoader } from 'ui-kit/shared_components/WithLoader';
-import { ResourceSelectSC } from 'ui-kit/shared_components/ResourceSelectSC';
+import { GoBack } from 'ui-kit/sharedComponents/GoBack';
+import { WithLoader } from 'ui-kit/sharedComponents/WithLoader';
+import { ResourceSelectSC } from 'ui-kit/sharedComponents/ResourceSelectSC';
 import { Select } from 'ui-kit/Select';
 
 const { TabPane } = TabsSC;

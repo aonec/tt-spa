@@ -7,7 +7,7 @@ import { FormItem } from 'ui-kit/FormItem';
 import { ErrorMessage } from 'ui-kit/ErrorMessage';
 import { RangePicker } from 'ui-kit/RangePicker';
 import { DatePeriod } from 'services/objects/housingStockProfileService/consolidatedReportService/view/ConsolidatedReportForm/ConsolidatedReportForm.types';
-import { StaffStatus } from 'ui-kit/shared_components/StaffStatus/StaffStatus';
+import { StaffStatus } from 'ui-kit/sharedComponents/StaffStatus/StaffStatus';
 import { Select } from 'ui-kit/Select';
 import { ChangeStatusEmployeeFormProps } from './ChangeStatusEmployeeForm.types';
 import { GridContainer } from './ChangeStatusEmployeeForm.styled';

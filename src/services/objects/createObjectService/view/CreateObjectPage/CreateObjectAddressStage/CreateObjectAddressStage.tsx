@@ -24,7 +24,7 @@ import {
 import { ErrorMessage } from 'ui-kit/ErrorMessage';
 import { validationSchema } from './createObjectAddressStage.constants';
 import { Select } from 'ui-kit/Select';
-import { LinkButton } from 'ui-kit/shared_components/LinkButton';
+import { LinkButton } from 'ui-kit/sharedComponents/LinkButton';
 import { getPreparedStreetsOptions } from './CreateObjectAddressStage.utils';
 import { addressSearchService } from 'services/addressSearchService/addressSearchService.models';
 

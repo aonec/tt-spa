@@ -4,7 +4,7 @@ import {
   EditObjectPageProps,
   EditObjectPageTabs,
 } from './EditObjectPage.types';
-import { GoBack } from 'ui-kit/shared_components/GoBack';
+import { GoBack } from 'ui-kit/sharedComponents/GoBack';
 import { Tabs } from 'ui-kit/Tabs';
 import { AdditionalInfoTab } from './AdditionalInfoTab';
 import { AddressTab } from './AddressTab';

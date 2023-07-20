@@ -18,7 +18,7 @@ import {
 } from 'services/meters/individualDeviceMetersInputService/view/MetersInputsBlock/MetersInputsBlock.styled';
 import { MetersInputBlockStatus } from 'services/meters/individualDeviceMetersInputService/view/MetersInputsBlock/MetersInputsBlock.types';
 import { Tooltip } from 'antd';
-import { fromEnter } from 'ui-kit/shared_components/DatePickerNative';
+import { fromEnter } from 'ui-kit/sharedComponents/DatePickerNative';
 import { getTimeStringByUTC } from 'utils/getTimeStringByUTC';
 import moment from 'moment';
 import { isNumber } from 'lodash';

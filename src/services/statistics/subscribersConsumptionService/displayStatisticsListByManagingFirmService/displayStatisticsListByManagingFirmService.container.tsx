@@ -8,7 +8,7 @@ import {
 import { displayStatisticsListByManagingFirmService } from './displayStatisticsListByManagingFirmService.model';
 import { HousingStocksList } from './view/HousingStocksList';
 import { ManagingFirmSearch } from './view/ManagingFirmSearch';
-import { WithLoader } from 'ui-kit/shared_components/WithLoader';
+import { WithLoader } from 'ui-kit/sharedComponents/WithLoader';
 import { addressSearchService } from 'services/addressSearchService/addressSearchService.models';
 
 const { gates, outputs, inputs } = displayStatisticsListByManagingFirmService;

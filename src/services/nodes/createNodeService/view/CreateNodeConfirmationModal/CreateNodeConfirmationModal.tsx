@@ -21,8 +21,8 @@ import { CreateNodeConfirmationModalProps } from './CreateNodeConfirmationModal.
 import { Button } from 'ui-kit/Button';
 import { CalculatorIcon, CitySmallIcon } from 'ui-kit/icons';
 import { getBuildingAddress } from 'utils/getBuildingAddress';
-import { CommonInfo } from 'ui-kit/shared_components/CommonInfo';
-import { ResourceIconLookup } from 'ui-kit/shared_components/ResourceIconLookup';
+import { CommonInfo } from 'ui-kit/sharedComponents/CommonInfo';
+import { ResourceIconLookup } from 'ui-kit/sharedComponents/ResourceIconLookup';
 import { CommunicationPipeListItem } from '../CreateNodePage/ConnectedDevices/CommunicationPipeListItem';
 import { Empty } from 'antd';
 import { resourceFromConfig } from 'utils/resourceFromConfigLookup';

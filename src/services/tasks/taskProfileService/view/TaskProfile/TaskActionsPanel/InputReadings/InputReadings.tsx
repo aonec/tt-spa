@@ -9,7 +9,7 @@ import { MonthWrapper, ReadingInputSC } from './InputReadings.styled';
 import { taskProfileService } from 'services/tasks/taskProfileService/taskProfileService.model';
 import { getIndividualDeviceRateNumByName } from 'utils/getIndividualDeviceRateNumByName';
 import { getFilledArray } from 'utils/getFilledArray';
-import { IndividualDeviceInfoExtended } from 'ui-kit/shared_components/IndividualDeviceInfoExtended';
+import { IndividualDeviceInfoExtended } from 'ui-kit/sharedComponents/IndividualDeviceInfoExtended';
 
 export const InputReadings: FC<InputReadingsProps> = ({ handleChange }) => {
   const [readings, setReadings] = useState<Reading[]>([]);

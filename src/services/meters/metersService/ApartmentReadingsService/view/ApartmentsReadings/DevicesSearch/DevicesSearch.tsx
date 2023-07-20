@@ -8,10 +8,10 @@ import { DeviceDataString } from '01/features/individualDevices/switchIndividual
 import { Flex } from '01/shared/ui/Layout/Flex';
 import { Space } from '01/shared/ui/Layout/Space/Space';
 import { CancelTokenSource } from 'axios';
-import { DeviceStatus } from 'ui-kit/shared_components/IndividualDeviceInfo/DeviceStatus';
-import { WithLoader } from 'ui-kit/shared_components/WithLoader';
+import { DeviceStatus } from 'ui-kit/sharedComponents/IndividualDeviceInfo/DeviceStatus';
+import { WithLoader } from 'ui-kit/sharedComponents/WithLoader';
 import { AutoComplete } from 'ui-kit/AutoComplete';
-import { DateRange } from 'ui-kit/shared_components/DateRange';
+import { DateRange } from 'ui-kit/sharedComponents/DateRange';
 import { individualDeviceMountPlacesService } from 'services/devices/individualDeviceMountPlacesService/individualDeviceMountPlacesService.model';
 
 const { AllIndividualDeviceMountPlacesGate } =

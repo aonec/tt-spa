@@ -4,7 +4,7 @@ import { ActsListItemProps } from './ActsListItem.types';
 import moment from 'moment';
 import { ActTypesNamesLookup } from 'dictionaries';
 import { getApartmentFromFullAddress } from 'utils/getApartmentFromFullAddress';
-import { ResourceInfo } from 'ui-kit/shared_components/ResourceInfo';
+import { ResourceInfo } from 'ui-kit/sharedComponents/ResourceInfo';
 
 export const ActsListItem: FC<ActsListItemProps> = ({ act }) => {
   const actAddress = getApartmentFromFullAddress(act.apartment, false);

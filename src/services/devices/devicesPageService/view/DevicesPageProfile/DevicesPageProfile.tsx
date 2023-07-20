@@ -1,5 +1,5 @@
 import React, { FC, ReactNode, useCallback, useMemo } from 'react';
-import { PageHeader } from 'ui-kit/shared_components/PageHeader';
+import { PageHeader } from 'ui-kit/sharedComponents/PageHeader';
 import {
   ContentWrapper,
   FiltrationWrapper,

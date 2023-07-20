@@ -32,10 +32,10 @@ import {
   ENonResidentialHouseType,
 } from 'api/types';
 import { sortBy } from 'lodash';
-import { LinkButton } from 'ui-kit/shared_components/LinkButton';
+import { LinkButton } from 'ui-kit/sharedComponents/LinkButton';
 import { createHeatingStationService } from 'services/objects/heatingStations/createHeatingStationService';
 import { editHeatingStationService } from 'services/objects/heatingStations/editHeatingStationService';
-import { SelectedEntityPanel } from 'ui-kit/shared_components/SelectedEntityPanel';
+import { SelectedEntityPanel } from 'ui-kit/sharedComponents/SelectedEntityPanel';
 
 const {
   inputs: { handleHeatingStationCreated },

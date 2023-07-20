@@ -1,4 +1,4 @@
-import { PageHeader } from 'ui-kit/shared_components/PageHeader';
+import { PageHeader } from 'ui-kit/sharedComponents/PageHeader';
 import styled from 'styled-components';
 import { Tabs } from 'ui-kit/Tabs';
 import { IncorrectConfigurationIcon } from 'ui-kit/icons';

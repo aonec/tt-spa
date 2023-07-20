@@ -26,7 +26,7 @@ import {
   getKeysByControllerId,
   prepareAppointmentsToTree,
 } from './DistributeAppointmentsPanel.utils';
-import { WithLoader } from 'ui-kit/shared_components/WithLoader';
+import { WithLoader } from 'ui-kit/sharedComponents/WithLoader';
 import { Empty } from 'antd';
 import { Button } from 'ui-kit/Button';
 import { getCountText } from 'utils/getCountText';

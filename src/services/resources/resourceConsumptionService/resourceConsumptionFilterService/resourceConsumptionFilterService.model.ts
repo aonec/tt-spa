@@ -7,7 +7,7 @@ import {
 import {
   prepareAddressesForTreeSelect,
   prepareAddressesWithParentsForTreeSelect,
-} from 'ui-kit/shared_components/AddressTreeSelect/AddressTreeSelect.utils';
+} from 'ui-kit/sharedComponents/AddressTreeSelect/AddressTreeSelect.utils';
 import { getAddressSearchData } from '../resourceConsumptionService.utils';
 import { fetchAddresses } from './resourceConsumptionFilterService.api';
 import moment from 'moment';

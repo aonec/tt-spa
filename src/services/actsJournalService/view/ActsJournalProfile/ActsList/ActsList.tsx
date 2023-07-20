@@ -1,6 +1,6 @@
 import React, { FC, useMemo } from 'react';
 import { ActsListProps } from './ActsList.types';
-import { WithLoader } from 'ui-kit/shared_components/WithLoader';
+import { WithLoader } from 'ui-kit/sharedComponents/WithLoader';
 import { Empty } from 'antd';
 import { ActsListItem } from './ActsListItem';
 import { PaginationSC } from './ActsList.styled';

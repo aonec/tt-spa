@@ -14,7 +14,7 @@ import {
   Wrapper,
 } from './Comment.styled';
 import { CommentProps } from './Comment.types';
-import { PencilIconSC } from 'ui-kit/shared_components/SelectedEntityPanel/SelectedEntityPanel.styled';
+import { PencilIconSC } from 'ui-kit/sharedComponents/SelectedEntityPanel/SelectedEntityPanel.styled';
 import { TrashIconSC } from 'ui-kit/DocumentsService/view/DocumentsLineUpload/DocumentsLineUpload.styled';
 import { Button } from 'ui-kit/Button';
 import confirm from 'antd/es/modal/confirm';

@@ -1,6 +1,6 @@
 import { isNull, round } from 'lodash';
 import React, { FC } from 'react';
-import { ResourceIconLookup } from 'ui-kit/shared_components/ResourceIconLookup';
+import { ResourceIconLookup } from 'ui-kit/sharedComponents/ResourceIconLookup';
 import { ResourceTypeNamesLookup } from '../SelectResource.constants';
 import { resourceSummaryUnits } from './SelectResourcePanel.constants';
 import {

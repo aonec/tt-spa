@@ -2,9 +2,9 @@ import React, { FC } from 'react';
 import { WorkWithIndividualDeviceSubmitActionFormProps } from './WorkWithIndividualDeviceSubmitActionForm.types';
 import { useForm } from 'effector-forms';
 import { Title } from './WorkWithIndividualDeviceSubmitActionForm.styled';
-import { CommonInfo } from 'ui-kit/shared_components/CommonInfo';
+import { CommonInfo } from 'ui-kit/sharedComponents/CommonInfo';
 import { getTimeStringByUTC } from 'utils/getTimeStringByUTC';
-import { ResourceInfo } from 'ui-kit/shared_components/ResourceInfo';
+import { ResourceInfo } from 'ui-kit/sharedComponents/ResourceInfo';
 import { WorkWithIndividualDeviceType } from '../../../workWithIndividualDeviceService.types';
 import { WorkWithIndividualDeviceInputs } from '../../../view/WorkWithIndividualDevicePage/WorkWithIndividualDeviceForm/WorkWithIndividualDeviceInputs';
 import {

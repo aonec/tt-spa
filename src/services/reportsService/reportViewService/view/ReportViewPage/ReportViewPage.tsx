@@ -10,8 +10,8 @@ import {
   Wrapper,
 } from './ReportViewPage.styled';
 import { ReportViewPageProps } from './ReportViewPage.types';
-import { GoBack } from 'ui-kit/shared_components/GoBack';
-import { PageHeader } from 'ui-kit/shared_components/PageHeader';
+import { GoBack } from 'ui-kit/sharedComponents/GoBack';
+import { PageHeader } from 'ui-kit/sharedComponents/PageHeader';
 import {
   ReportIconsDictionary,
   ReportNamesDictionary,
@@ -20,7 +20,7 @@ import { ExtendedSearch } from 'ui-kit/ExtendedSearch';
 import { ReportFiltrationForm } from './ReportFiltrationForm';
 import { getFiltersList } from './ReportViewPage.utils';
 import { ReportViewTable } from './ReportViewTable';
-import { WithLoader } from 'ui-kit/shared_components/WithLoader';
+import { WithLoader } from 'ui-kit/sharedComponents/WithLoader';
 
 const formId = 'report-form-id';
 

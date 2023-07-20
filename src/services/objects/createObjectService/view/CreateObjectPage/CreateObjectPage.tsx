@@ -1,6 +1,6 @@
 import { Steps } from 'antd';
 import React, { FC } from 'react';
-import { GoBack } from 'ui-kit/shared_components/GoBack';
+import { GoBack } from 'ui-kit/sharedComponents/GoBack';
 import { Title } from 'ui-kit/Title';
 import { CreateObjectAdditionalInfoStage } from './CreateObjectAdditionalInfoStage';
 import { CreateObjectAddressStage } from './CreateObjectAddressStage';

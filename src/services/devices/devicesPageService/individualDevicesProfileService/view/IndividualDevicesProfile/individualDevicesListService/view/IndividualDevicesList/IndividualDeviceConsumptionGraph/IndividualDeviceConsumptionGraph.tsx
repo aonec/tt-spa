@@ -13,7 +13,7 @@ import { Wrapper } from './IndividualDeviceConsumptionGraph.styled';
 import { IndividualDeviceConsumptionGraphProps } from './IndividualDeviceConsumptionGraph.types';
 import _ from 'lodash';
 import { DeviceGraphTick } from './DeviceGraphTick';
-import { GraphGradient } from 'ui-kit/shared_components/GraphComponents/GraphGradient';
+import { GraphGradient } from 'ui-kit/sharedComponents/GraphComponents/GraphGradient';
 
 const height = 50;
 const width = 180;

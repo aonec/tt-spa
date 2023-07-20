@@ -15,7 +15,7 @@ import {
   TaskTitle,
 } from './HousingStockTasks.styled';
 import { HousingStockTasksProps } from './HousingStockTasks.types';
-import { WithLoader } from 'ui-kit/shared_components/WithLoader';
+import { WithLoader } from 'ui-kit/sharedComponents/WithLoader';
 import { TaskInfoPanel } from './TaskInfoPanel';
 import { getTaskIconByTaskType } from './HousingStockTasks.utils';
 

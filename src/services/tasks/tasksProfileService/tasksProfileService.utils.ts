@@ -7,8 +7,8 @@ import {
   TaskListResponse,
   TaskResponse,
 } from 'api/types';
-import { Timeline } from 'ui-kit/shared_components/TimeLine/TimeLine.types';
-import { TimerClosingStatus } from 'ui-kit/shared_components/Timer/Timer.types';
+import { Timeline } from 'ui-kit/sharedComponents/TimeLine/TimeLine.types';
+import { TimerClosingStatus } from 'ui-kit/sharedComponents/Timer/Timer.types';
 import { getTimeStringByUTC } from 'utils/getTimeStringByUTC';
 
 export const getAddressObject = (

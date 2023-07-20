@@ -1,4 +1,4 @@
-import { PageHeader } from 'ui-kit/shared_components/PageHeader';
+import { PageHeader } from 'ui-kit/sharedComponents/PageHeader';
 import styled from 'styled-components';
 
 export const Wrap = styled.div`

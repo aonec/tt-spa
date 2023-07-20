@@ -1,6 +1,6 @@
 import React, { FC, useState } from 'react';
-import { IndividualDeviceInfo } from 'ui-kit/shared_components/IndividualDeviceInfo';
-import { ReadingsHistoryButton } from 'ui-kit/shared_components/reading_history_button';
+import { IndividualDeviceInfo } from 'ui-kit/sharedComponents/IndividualDeviceInfo';
+import { ReadingsHistoryButton } from 'ui-kit/sharedComponents/reading_history_button';
 import { DeviceInfo } from '../DeviceInfo';
 import {
   ArrowSC,

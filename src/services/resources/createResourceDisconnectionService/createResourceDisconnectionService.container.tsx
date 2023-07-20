@@ -12,7 +12,7 @@ import { EAddressDetails } from './createResourceDisconnectionService.types';
 import {
   prepareAddressesForTreeSelect,
   prepareAddressesWithParentsForTreeSelect,
-} from 'ui-kit/shared_components/AddressTreeSelect/AddressTreeSelect.utils';
+} from 'ui-kit/sharedComponents/AddressTreeSelect/AddressTreeSelect.utils';
 import { addressSearchService } from 'services/addressSearchService/addressSearchService.models';
 
 const { inputs, outputs } = createResourceDisconnectionService;

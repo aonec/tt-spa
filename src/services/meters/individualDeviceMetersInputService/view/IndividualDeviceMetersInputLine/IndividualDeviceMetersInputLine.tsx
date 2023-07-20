@@ -20,7 +20,7 @@ import { getPreviousMeterTooltipTitle } from './individualDeviceMetersInputLine.
 import { apartmentIndividualDevicesMetersService } from 'services/meters/apartmentIndividualDevicesMetersService';
 import { editReadingsHistoryService } from 'services/meters/editReadingsHistoryService';
 import { SelectSwitchDeviceTypeModal } from './SelectSwitchDeviceTypeModal';
-import { IndividualDeviceInfoExtended } from 'ui-kit/shared_components/IndividualDeviceInfoExtended';
+import { IndividualDeviceInfoExtended } from 'ui-kit/sharedComponents/IndividualDeviceInfoExtended';
 import { currentUserService } from 'services/currentUserService';
 import {
   ContextMenuButtonColor,

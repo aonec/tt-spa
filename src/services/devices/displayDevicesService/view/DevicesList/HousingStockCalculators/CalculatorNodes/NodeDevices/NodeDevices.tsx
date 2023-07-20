@@ -10,8 +10,8 @@ import {
   TitleWrapper,
 } from './NodeDevices.styled';
 import { DeviceLink, SerialNumber } from '../CalculatorNodes.styled';
-import { DateRange } from 'ui-kit/shared_components/DateRange';
-import { ResourceIconLookup } from 'ui-kit/shared_components/ResourceIconLookup';
+import { DateRange } from 'ui-kit/sharedComponents/DateRange';
+import { ResourceIconLookup } from 'ui-kit/sharedComponents/ResourceIconLookup';
 
 export const NodeDevices: FC<NodeDevicesProps> = ({ node }) => {
   const housingMeteringDevices = node.communicationPipes?.map((pipe) => {

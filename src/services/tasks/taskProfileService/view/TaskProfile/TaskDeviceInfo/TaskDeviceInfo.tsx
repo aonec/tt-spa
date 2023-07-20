@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import { CalculatorIcon } from 'ui-kit/icons';
-import { ResourceIconLookup } from 'ui-kit/shared_components/ResourceIconLookup';
+import { ResourceIconLookup } from 'ui-kit/sharedComponents/ResourceIconLookup';
 import { getPreparedDate } from '../TaskIndividualDevicesList/DeviceInfo/DeviceInfo.utils';
 import {
   Model,

@@ -14,7 +14,7 @@ import { CREATE_SOI_REPORT_FORM_ID } from '../SoiReportModal.constants';
 import { formInitialValues, validationSchema } from './SoiReportForm.constants';
 import { FormGrid } from './SoiReportForm.styled';
 import { SoiReportFormProps } from './SoiReportForm.types';
-import { ResourceSelect } from 'ui-kit/shared_components/ResourceSelect';
+import { ResourceSelect } from 'ui-kit/sharedComponents/ResourceSelect';
 
 const withoutHouseMagement = 'withoutHouseMagement';
 

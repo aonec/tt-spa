@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import { KeysIcon } from 'ui-kit/icons';
-import { CommonInfo } from 'ui-kit/shared_components/CommonInfo';
+import { CommonInfo } from 'ui-kit/sharedComponents/CommonInfo';
 import { Title } from 'ui-kit/Title';
 import { CommonInfoWrapper } from '../ApartmentProfile.styled';
 import { PersonTypeDictionary } from './HomeownersList.constants';

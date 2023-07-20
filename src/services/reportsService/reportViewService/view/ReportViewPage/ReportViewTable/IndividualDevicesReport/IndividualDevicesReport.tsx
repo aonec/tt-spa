@@ -6,7 +6,7 @@ import {
   ResourceWrapper,
 } from './IndividualDevicesReport.styled';
 import { IndividualDevicesReportProps } from './IndividualDevicesReport.types';
-import { ResourceIconLookup } from 'ui-kit/shared_components/ResourceIconLookup';
+import { ResourceIconLookup } from 'ui-kit/sharedComponents/ResourceIconLookup';
 import {
   ClosingReasonsDictionary,
   ResourceShortNamesDictionary,

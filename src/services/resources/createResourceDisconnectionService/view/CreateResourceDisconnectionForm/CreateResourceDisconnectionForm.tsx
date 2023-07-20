@@ -12,7 +12,7 @@ import { DatePicker } from 'ui-kit/DatePicker';
 import { Document, DocumentsUploadContainer } from 'ui-kit/DocumentsService';
 import { FormItem } from 'ui-kit/FormItem';
 import { Select } from 'ui-kit/Select';
-import { AddressTreeSelect } from 'ui-kit/shared_components/AddressTreeSelect';
+import { AddressTreeSelect } from 'ui-kit/sharedComponents/AddressTreeSelect';
 import { getDatePickerValue } from 'utils/getDatePickerValue';
 import { EAddressDetails } from '../../createResourceDisconnectionService.types';
 import {

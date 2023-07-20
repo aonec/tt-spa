@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import { Wrapper } from './DistrictBorderCreationTypeSelect.styled';
 import { DistrictBorderCreationTypeSelectProps } from './DistrictBorderCreationTypeSelect.types';
-import { LinkPanel } from 'ui-kit/shared_components/LinkPanel';
+import { LinkPanel } from 'ui-kit/sharedComponents/LinkPanel';
 import { ListIcon, MapIcon, MapPaperIcon } from 'ui-kit/icons';
 
 export const DistrictBorderCreationTypeSelect: FC<

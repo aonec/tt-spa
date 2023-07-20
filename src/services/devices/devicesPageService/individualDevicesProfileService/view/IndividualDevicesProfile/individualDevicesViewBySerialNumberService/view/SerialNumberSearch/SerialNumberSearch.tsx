@@ -1,11 +1,11 @@
 import { useSwitchInputOnEnter } from 'hooks/useSwitchInputOnEnter';
-import { fromEnter } from 'ui-kit/shared_components/DatePickerNative';
+import { fromEnter } from 'ui-kit/sharedComponents/DatePickerNative';
 import { useFormik } from 'formik';
 import { EActResourceType, EApartmentStatus } from 'api/types';
 import React, { FC, useCallback } from 'react';
 import { DevicesSearchType } from 'services/devices/devicesPageService/devicesPageService.types';
 import { SearchIcon } from 'ui-kit/icons';
-import { ResourceInfo } from 'ui-kit/shared_components/ResourceInfo';
+import { ResourceInfo } from 'ui-kit/sharedComponents/ResourceInfo';
 import { IndividualDevicesExtendedSearch } from '../../../IndividualDevicesExtendedSearch';
 import { apartmentStatusesLookup } from '../../../IndividualDevicesExtendedSearch/IndividualDevicesExtendedSearch.constants';
 import { IndividualDeviceSearchbySerialNumberPayload } from '../../individualDevicesViesBySerialNumberService.types';

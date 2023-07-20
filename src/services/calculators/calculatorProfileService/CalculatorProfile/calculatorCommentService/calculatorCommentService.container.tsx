@@ -1,6 +1,6 @@
 import { useEvent, useStore } from 'effector-react';
 import React, { FC } from 'react';
-import { CommentPanel } from 'ui-kit/shared_components/CommentPanel';
+import { CommentPanel } from 'ui-kit/sharedComponents/CommentPanel';
 import { calculatorCommentService } from './calculatorCommentService.model';
 import { CalculatorCommentContainerProps } from './calculatorCommentService.types';
 import { ESecuredIdentityRoleName } from 'api/types';

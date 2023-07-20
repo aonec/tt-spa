@@ -1,7 +1,7 @@
 import { Empty } from 'antd';
 import moment from 'moment';
 import React, { FC } from 'react';
-import { ResourceIconLookup } from 'ui-kit/shared_components/ResourceIconLookup';
+import { ResourceIconLookup } from 'ui-kit/sharedComponents/ResourceIconLookup';
 import { Table } from 'ui-kit/Table';
 import { actResourceNamesLookup } from 'utils/actResourceNamesLookup';
 import {

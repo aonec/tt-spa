@@ -15,9 +15,9 @@ import { useFormik } from 'formik';
 import * as yup from 'yup';
 import { HousingStockUpdateRequest } from 'api/types';
 import { sortBy } from 'lodash';
-import { LinkButton } from 'ui-kit/shared_components/LinkButton';
+import { LinkButton } from 'ui-kit/sharedComponents/LinkButton';
 import { Button } from 'ui-kit/Button';
-import { SelectedEntityPanel } from 'ui-kit/shared_components/SelectedEntityPanel';
+import { SelectedEntityPanel } from 'ui-kit/sharedComponents/SelectedEntityPanel';
 import {
   CreateHeatingStationContainer,
   createHeatingStationService,

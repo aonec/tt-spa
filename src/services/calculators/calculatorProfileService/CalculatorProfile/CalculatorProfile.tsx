@@ -1,9 +1,9 @@
 import { stringifyUrl } from 'query-string';
 import React, { FC, ReactElement, useMemo } from 'react';
 import { useHistory } from 'react-router-dom';
-import { CommonInfo } from 'ui-kit/shared_components/CommonInfo';
-import { GoBack } from 'ui-kit/shared_components/GoBack';
-import { LinkCard } from 'ui-kit/shared_components/LinkCard';
+import { CommonInfo } from 'ui-kit/sharedComponents/CommonInfo';
+import { GoBack } from 'ui-kit/sharedComponents/GoBack';
+import { LinkCard } from 'ui-kit/sharedComponents/LinkCard';
 import { Tabs } from 'ui-kit/Tabs';
 import { getBuildingAddress } from 'utils/getBuildingAddress';
 import { getTimeStringByUTC } from 'utils/getTimeStringByUTC';

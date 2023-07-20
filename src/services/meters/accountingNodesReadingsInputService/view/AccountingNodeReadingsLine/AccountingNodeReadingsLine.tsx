@@ -8,7 +8,7 @@ import {
   Wrapper,
 } from './AccountingNodeReadingsLine.styled';
 import { AccountingNodeReadingsLineProps } from './AccountingNodeReadingsLine.types';
-import { ResourceIconLookup } from 'ui-kit/shared_components/ResourceIconLookup';
+import { ResourceIconLookup } from 'ui-kit/sharedComponents/ResourceIconLookup';
 import { useHistory } from 'react-router-dom';
 import { ContextMenuButton } from 'ui-kit/ContextMenuButton';
 import moment from 'moment';

@@ -16,12 +16,12 @@ import { Select } from 'ui-kit/Select';
 import { UpdateIndividualDeviceRequest } from 'api/types';
 import moment from 'moment';
 import { ResourceNamesDictionary } from 'dictionaries';
-import { ResourceIconLookup } from 'ui-kit/shared_components/ResourceIconLookup';
+import { ResourceIconLookup } from 'ui-kit/sharedComponents/ResourceIconLookup';
 import { Input } from 'ui-kit/Input';
 import { DatePicker } from 'ui-kit/DatePicker';
 import { Button } from 'ui-kit/Button';
 import { useSwitchInputOnEnter } from 'hooks/useSwitchInputOnEnter';
-import { fromEnter } from 'ui-kit/shared_components/DatePickerNative';
+import { fromEnter } from 'ui-kit/sharedComponents/DatePickerNative';
 
 const dataKey = 'edit-individual-device-main-info';
 

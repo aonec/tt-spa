@@ -3,7 +3,7 @@ import { useStore } from 'effector-react';
 import { EIndividualDeviceRateType, EResourceType } from 'api/types';
 import styled from 'styled-components';
 import { Spaces } from '01/shared/ui/Layout/Space/Space';
-import { ResourceIconLookup } from 'ui-kit/shared_components/ResourceIconLookup';
+import { ResourceIconLookup } from 'ui-kit/sharedComponents/ResourceIconLookup';
 import { getInputBorderColor } from 'services/meters/individualDeviceMetersInputService/view/MetersInputsBlock/MetersInputsBlock.styled';
 import { displayIndividualDeviceAndNamesService } from 'services/devices/individualDevices/displayIndividualDeviceAndNamesService/displayIndividualDeviceAndNamesService.model';
 

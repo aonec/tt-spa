@@ -7,7 +7,7 @@ import {
   HousingStockAddress,
   HousingStockAddressHeaderWrapper,
 } from './HousingStockCalculators.styled';
-import { Switcher } from 'ui-kit/shared_components/Switcher';
+import { Switcher } from 'ui-kit/sharedComponents/Switcher';
 import { getHousingStockAddressString } from 'utils/getBuildingAddress';
 import { CalculatorNodes } from './CalculatorNodes';
 

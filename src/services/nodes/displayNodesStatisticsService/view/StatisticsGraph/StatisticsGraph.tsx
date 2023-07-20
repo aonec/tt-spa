@@ -30,10 +30,10 @@ import {
 } from './StatisticsGraph.utils';
 import { EResourceType } from 'api/types';
 import { renderForHeatAndDeltaMass } from './GraphLegend/GraphLegend.utils';
-import { GraphGradient } from 'ui-kit/shared_components/GraphComponents/GraphGradient';
-import { TickComponent } from 'ui-kit/shared_components/GraphComponents/TickComponent';
+import { GraphGradient } from 'ui-kit/sharedComponents/GraphComponents/GraphGradient';
+import { TickComponent } from 'ui-kit/sharedComponents/GraphComponents/TickComponent';
 import { TaskPoint } from './TaskPoint';
-import { CustomTooltip } from 'ui-kit/shared_components/GraphComponents/CustomTooltip';
+import { CustomTooltip } from 'ui-kit/sharedComponents/GraphComponents/CustomTooltip';
 import { GraphTooltip } from './GraphTooltip';
 
 const minDelta = 0.01;

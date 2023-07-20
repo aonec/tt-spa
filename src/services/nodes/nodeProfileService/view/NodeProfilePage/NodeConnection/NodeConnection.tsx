@@ -11,7 +11,7 @@ import {
 import { NodeConnectionProps } from './NodeConnection.types';
 import moment from 'moment';
 import { CalculatorIcon } from 'ui-kit/icons';
-import { DeviceStatus } from 'ui-kit/shared_components/IndividualDeviceInfo/DeviceStatus';
+import { DeviceStatus } from 'ui-kit/sharedComponents/IndividualDeviceInfo/DeviceStatus';
 
 export const NodeConnection: FC<NodeConnectionProps> = ({
   node,

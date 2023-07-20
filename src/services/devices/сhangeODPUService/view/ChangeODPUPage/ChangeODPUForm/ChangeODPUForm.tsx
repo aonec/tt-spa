@@ -3,7 +3,7 @@ import {
   EResourceType,
   SwitchHousingDeviceReadingsCreateRequest,
 } from 'api/types';
-import { ResourceIconLookup } from 'ui-kit/shared_components/ResourceIconLookup';
+import { ResourceIconLookup } from 'ui-kit/sharedComponents/ResourceIconLookup';
 import {
   BaseInfoWrapper,
   ButtonsWrapper,
@@ -19,7 +19,7 @@ import {
   checkIsDateNotFuture,
   getDatePickerValue,
 } from './ChangeODPUForm.utils';
-import { DatePickerNative } from 'ui-kit/shared_components/DatePickerNative';
+import { DatePickerNative } from 'ui-kit/sharedComponents/DatePickerNative';
 import { useFormik } from 'formik';
 import { FormItem } from 'ui-kit/FormItem';
 import { Select } from 'ui-kit/Select';

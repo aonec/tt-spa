@@ -3,7 +3,7 @@ import React from 'react';
 import { closedIndividualDevicesFormService } from './closedIndividualDevicesFormService.model';
 import { ClosedIndividualDevicesForm } from './view/ClosedIndividualDevicesForm';
 import './closedIndividualDevicesFormService.relations';
-import { prepareAddressesForTreeSelect } from 'ui-kit/shared_components/AddressTreeSelect/AddressTreeSelect.utils';
+import { prepareAddressesForTreeSelect } from 'ui-kit/sharedComponents/AddressTreeSelect/AddressTreeSelect.utils';
 import { addressSearchService } from 'services/addressSearchService/addressSearchService.models';
 
 const { ExistingCitiesGate } = addressSearchService.gates;

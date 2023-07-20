@@ -1,11 +1,11 @@
 import React, { FC, useCallback, useMemo } from 'react';
 import { ApartmentSealProfileProps } from './ApartmentSealProfile.types';
-import { WithLoader } from 'ui-kit/shared_components/WithLoader';
+import { WithLoader } from 'ui-kit/sharedComponents/WithLoader';
 import {
   AppointmentTextWrapper,
   ContentWrapper,
 } from './ApartmentSealProfile.styled';
-import { TypeAddressToStart } from 'ui-kit/shared_components/TypeToStart';
+import { TypeAddressToStart } from 'ui-kit/sharedComponents/TypeToStart';
 import { ApartmentInfo } from 'services/meters/metersService/ApartmentReadingsService/view/ApartmentsReadings/ApartmentProfile/ApartmentInfo';
 import {
   AddressSearchValues,

@@ -1,7 +1,7 @@
 import React, { FC, useMemo } from 'react';
 import { FormItem } from 'ui-kit/FormItem';
 import { Select } from 'ui-kit/Select';
-import { ResourceSelect } from 'ui-kit/shared_components/ResourceSelect';
+import { ResourceSelect } from 'ui-kit/sharedComponents/ResourceSelect';
 import { LineWrapper } from './CommonDataStep.styled';
 import { CommonDataStepProps } from './CommonDataStep.types';
 import { EHousingMeteringDeviceType, EPipeNodeConfig } from 'api/types';

@@ -3,7 +3,7 @@ import { EResourceType } from 'api/types';
 import React, { FC } from 'react';
 import { FormItem } from 'ui-kit/FormItem';
 import { Select } from 'ui-kit/Select';
-import { ResourceIconLookup } from 'ui-kit/shared_components/ResourceIconLookup';
+import { ResourceIconLookup } from 'ui-kit/sharedComponents/ResourceIconLookup';
 import { ResourceOptionWrapper } from './CreateResourceDisconnectionSelectResource.styled';
 import { CreateResourceDisconnectionSelectResourceProps } from './CreateResourceDisconnectionSelectResource.types';
 

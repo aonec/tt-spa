@@ -7,9 +7,9 @@ import {
 } from './IndividualDeviceItem.styled';
 import { IndividualDeviceItemProps } from './IndividualDeviceItem.types';
 import { Checkbox } from 'antd';
-import { ResourceIconLookup } from 'ui-kit/shared_components/ResourceIconLookup';
-import { DateRange } from 'ui-kit/shared_components/DateRange';
-import { DeviceStatus } from 'ui-kit/shared_components/IndividualDeviceInfo/DeviceStatus';
+import { ResourceIconLookup } from 'ui-kit/sharedComponents/ResourceIconLookup';
+import { DateRange } from 'ui-kit/sharedComponents/DateRange';
+import { DeviceStatus } from 'ui-kit/sharedComponents/IndividualDeviceInfo/DeviceStatus';
 import { useStore } from 'effector-react';
 import { individualDeviceMountPlacesService } from 'services/devices/individualDeviceMountPlacesService';
 

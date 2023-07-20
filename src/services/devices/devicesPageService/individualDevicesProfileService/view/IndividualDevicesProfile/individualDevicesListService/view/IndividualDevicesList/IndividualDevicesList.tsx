@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
-import { FilterExtendedSearch } from 'ui-kit/shared_components/FilterExtendedSearch';
-import { WithLoader } from 'ui-kit/shared_components/WithLoader';
+import { FilterExtendedSearch } from 'ui-kit/sharedComponents/FilterExtendedSearch';
+import { WithLoader } from 'ui-kit/sharedComponents/WithLoader';
 import {
   IndividualDeviceConsumptionGraphLookup,
   IndividualDeviceConsumptionGraphType,

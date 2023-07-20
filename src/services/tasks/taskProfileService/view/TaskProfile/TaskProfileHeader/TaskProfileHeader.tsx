@@ -2,9 +2,9 @@ import _ from 'lodash';
 import { EActResourceType } from 'api/types';
 import React, { FC, useMemo } from 'react';
 import { CalculatorIcon } from 'ui-kit/icons';
-import { ResourceIconLookup } from 'ui-kit/shared_components/ResourceIconLookup';
-import { TimeLine } from 'ui-kit/shared_components/TimeLine';
-import { Timer } from 'ui-kit/shared_components/Timer';
+import { ResourceIconLookup } from 'ui-kit/sharedComponents/ResourceIconLookup';
+import { TimeLine } from 'ui-kit/sharedComponents/TimeLine';
+import { Timer } from 'ui-kit/sharedComponents/Timer';
 import { LineColors } from './TaskProfileHeader.constants';
 import {
   DeviceIconWrapper,

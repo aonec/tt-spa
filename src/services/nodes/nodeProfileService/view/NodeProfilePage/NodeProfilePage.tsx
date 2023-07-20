@@ -1,11 +1,11 @@
 import React, { FC, ReactNode, useCallback, useMemo } from 'react';
 import { stringifyUrl } from 'query-string';
 import { Empty, Tooltip, message } from 'antd';
-import { GoBack } from 'ui-kit/shared_components/GoBack';
-import { HeaderInfoString } from 'ui-kit/shared_components/HeaderInfoString';
-import { ResourceIconLookup } from 'ui-kit/shared_components/ResourceIconLookup';
-import { LinkCard } from 'ui-kit/shared_components/LinkCard';
-import { WithLoader } from 'ui-kit/shared_components/WithLoader';
+import { GoBack } from 'ui-kit/sharedComponents/GoBack';
+import { HeaderInfoString } from 'ui-kit/sharedComponents/HeaderInfoString';
+import { ResourceIconLookup } from 'ui-kit/sharedComponents/ResourceIconLookup';
+import { LinkCard } from 'ui-kit/sharedComponents/LinkCard';
+import { WithLoader } from 'ui-kit/sharedComponents/WithLoader';
 import { ENodeRegistrationType, TaskGroupingFilter } from 'api/types';
 import { DisplayNodesStatisticsContainer } from 'services/nodes/displayNodesStatisticsService';
 import {

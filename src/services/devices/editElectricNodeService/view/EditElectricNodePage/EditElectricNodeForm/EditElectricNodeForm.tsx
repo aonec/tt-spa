@@ -1,4 +1,4 @@
-import { DatePickerNative } from 'ui-kit/shared_components/DatePickerNative';
+import { DatePickerNative } from 'ui-kit/sharedComponents/DatePickerNative';
 import { useFormik } from 'formik';
 import { EResourceType } from 'api/types';
 import React, { FC } from 'react';
@@ -7,7 +7,7 @@ import { DatePicker } from 'ui-kit/DatePicker';
 import { FormItem } from 'ui-kit/FormItem';
 import { Input } from 'ui-kit/Input';
 import { Select } from 'ui-kit/Select';
-import { ResourceIconLookup } from 'ui-kit/shared_components/ResourceIconLookup';
+import { ResourceIconLookup } from 'ui-kit/sharedComponents/ResourceIconLookup';
 import { UpdateElectricHousingMeteringDevice } from '../EditElectricNodePage.types';
 import {
   ElectricNodePhaseDictionary,

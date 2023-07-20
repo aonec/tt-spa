@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 import { StaffProps } from './Staff.types';
 import { StaffItem } from './StaffItem';
 import { companyProfileService } from 'services/company/companyProfileService/companyProfileService.model';
-import { WithLoader } from 'ui-kit/shared_components/WithLoader';
+import { WithLoader } from 'ui-kit/sharedComponents/WithLoader';
 import { LoaderWrapper } from '../../CompanyProfile.styled';
 import { ChangeStatusEmployeeContainer } from 'services/employee/changeStatusEmployeeService';
 import { DeleteEmployeeContainer } from 'services/employee/deleteEmployeeService';

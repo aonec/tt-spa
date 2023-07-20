@@ -14,15 +14,15 @@ import {
   Value,
 } from './StandartWorkingRange.styled';
 import { StandartWorkingRangeProps } from './StandartWorkingRange.types';
-import { GoBack } from 'ui-kit/shared_components/GoBack';
+import { GoBack } from 'ui-kit/sharedComponents/GoBack';
 import { useFormik } from 'formik';
 import {
   ENodeWorkingRangeSeason,
   ENodeWorkingRangeType,
   EResourceType,
 } from 'api/types';
-import { WithLoader } from 'ui-kit/shared_components/WithLoader';
-import { ResourceSelectSC } from 'ui-kit/shared_components/ResourceSelectSC';
+import { WithLoader } from 'ui-kit/sharedComponents/WithLoader';
+import { ResourceSelectSC } from 'ui-kit/sharedComponents/ResourceSelectSC';
 
 const { TabPane } = TabsSC;
 

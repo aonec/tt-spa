@@ -1,9 +1,9 @@
 import React from 'react';
-import { WithLoader } from 'ui-kit/shared_components/WithLoader';
+import { WithLoader } from 'ui-kit/sharedComponents/WithLoader';
 import { displayStatisticsListByHousesService } from './displayStatisticsListByHousesService.model';
 import { useUnit } from 'effector-react';
 import { Empty } from 'antd';
-import { TypeAddressToStart } from 'ui-kit/shared_components/TypeToStart';
+import { TypeAddressToStart } from 'ui-kit/sharedComponents/TypeToStart';
 import { ExportSubscribersConsumptionContainer } from '../exportSubscribersConsumptionService';
 import { StatisticsList } from './view/StatisticsList';
 import { SearchHousingStock } from './view/SearchHousingStock';

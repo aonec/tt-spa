@@ -19,7 +19,7 @@ import {
   EReportType,
   EResourceType,
 } from 'api/types';
-import { ResourceIconLookup } from 'ui-kit/shared_components/ResourceIconLookup';
+import { ResourceIconLookup } from 'ui-kit/sharedComponents/ResourceIconLookup';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 import { FormItem } from 'ui-kit/FormItem';

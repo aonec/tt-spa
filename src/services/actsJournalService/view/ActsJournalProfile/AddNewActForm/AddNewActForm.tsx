@@ -1,7 +1,7 @@
 import {
   DatePickerNative,
   fromEnter,
-} from 'ui-kit/shared_components/DatePickerNative';
+} from 'ui-kit/sharedComponents/DatePickerNative';
 import { useFormik } from 'formik';
 import moment from 'moment';
 import React, { ChangeEvent, FC, useCallback, useEffect } from 'react';
@@ -19,7 +19,7 @@ import {
 import { Select } from 'ui-kit/Select';
 import { Input } from 'ui-kit/Input';
 import { ActTypesNamesLookup } from 'dictionaries';
-import { actResourceNamesLookup } from 'ui-kit/shared_components/ResourceInfo/ResourceInfo.utils';
+import { actResourceNamesLookup } from 'ui-kit/sharedComponents/ResourceInfo/ResourceInfo.utils';
 import { useSwitchInputOnEnter } from 'hooks/useSwitchInputOnEnter';
 import { AddressIdSearchContainer } from 'services/actsJournalService/addressIdSearchService';
 

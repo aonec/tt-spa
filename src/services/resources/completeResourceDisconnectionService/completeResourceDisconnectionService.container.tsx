@@ -1,7 +1,7 @@
 import { useEvent, useStore } from 'effector-react';
 import moment from 'moment';
 import React from 'react';
-import { Dialog } from 'ui-kit/shared_components/Dialog/Dialog';
+import { Dialog } from 'ui-kit/sharedComponents/Dialog/Dialog';
 import { completeResourceDisconnectionService } from './completeResourceDisconnectionService.model';
 
 const { inputs, outputs } = completeResourceDisconnectionService;

@@ -4,7 +4,7 @@ import moment from 'moment';
 import React, { FC, useCallback, useEffect, useState } from 'react';
 import { Button } from 'ui-kit/Button';
 import { FormItem } from 'ui-kit/FormItem';
-import { AddressTreeSelect } from '../../../../../../ui-kit/shared_components/AddressTreeSelect';
+import { AddressTreeSelect } from '../../../../../../ui-kit/sharedComponents/AddressTreeSelect';
 import { resourceConsumptionFilterValidationSchema } from './ResourceConsumptionFilter.constants';
 import {
   AdditionalAddressWrapper,
