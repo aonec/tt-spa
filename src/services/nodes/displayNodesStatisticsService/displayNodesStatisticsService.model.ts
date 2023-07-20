@@ -60,7 +60,7 @@ const $taskStatistics = domain
 
 const setWithFault = domain.createEvent<boolean>();
 const $withFault = domain
-  .createStore(false)
+  .createStore(true)
   .on(setWithFault, (_, withFault) => withFault);
 
 const $isLoading = getArchiveDataFx.pending;
