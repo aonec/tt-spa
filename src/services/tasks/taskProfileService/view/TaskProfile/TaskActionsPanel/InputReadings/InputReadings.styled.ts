@@ -8,6 +8,18 @@ export const MonthWrapper = styled.div`
   margin-bottom: 5px;
 `;
 
+export const InputWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+`;
+
+export const ReadingValuesWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+`;
+
 export const ReadingInputSC = styled.input<{
   resource: EResourceType;
   index?: number;

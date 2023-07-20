@@ -1,6 +1,5 @@
-import { Flex } from '01/shared/ui/Layout/Flex';
-import { Input } from 'antd';
 import React, { useRef, useEffect, useState, useMemo } from 'react';
+import { Input } from 'antd';
 import styled from 'styled-components';
 import { getFilledArray } from 'utils/getFilledArray';
 import { RequestStatusShared } from './hooks/useReadingValues';
@@ -139,7 +138,9 @@ const FieldsWrap = styled.div`
   ${({ removed }: { removed?: boolean }) => (removed ? 'color: red;' : '')}
 `;
 
-const ValueLine = styled(Flex)`
+const ValueLine = styled.div`
+  display: flex;
+  align-items: center;
   height: 30px;
 
   ${(props: { isReading?: boolean }) =>

@@ -3,13 +3,17 @@ import { InputReadingsProps, Reading } from './InputReadings.types';
 import { useStore } from 'effector-react';
 import { IndividualDeviceOnTaskResponse } from 'api/types';
 import { SpaceLine } from 'ui-kit/SpaceLine';
-import { Flex } from '01/shared/ui/Layout/Flex';
 import { getReadingMonth } from './InputReadings.utils';
-import { MonthWrapper, ReadingInputSC } from './InputReadings.styled';
 import { taskProfileService } from 'services/tasks/taskProfileService/taskProfileService.model';
 import { getIndividualDeviceRateNumByName } from 'utils/getIndividualDeviceRateNumByName';
 import { getFilledArray } from 'utils/getFilledArray';
 import { IndividualDeviceInfoExtended } from 'ui-kit/shared/IndividualDeviceInfoExtended';
+import {
+  InputWrapper,
+  MonthWrapper,
+  ReadingInputSC,
+  ReadingValuesWrapper,
+} from './InputReadings.styled';
 
 export const InputReadings: FC<InputReadingsProps> = ({ handleChange }) => {
   const [readings, setReadings] = useState<Reading[]>([]);
@@ -107,9 +111,9 @@ const ReadingLine = ({
     : [];
   return (
     <div>
-      <Flex style={{ justifyContent: 'space-between' }}>
+      <InputWrapper>
         <IndividualDeviceInfoExtended device={device} />
-        <Flex style={{ flexDirection: 'column' }}>
+        <ReadingValuesWrapper>
           {readingValues.map((value, index) => (
             <>
               <MonthWrapper>
@@ -125,8 +129,8 @@ const ReadingLine = ({
               />
             </>
           ))}
-        </Flex>
-      </Flex>
+        </ReadingValuesWrapper>
+      </InputWrapper>
       <SpaceLine />
     </div>
   );
