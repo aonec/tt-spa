@@ -23,7 +23,7 @@ export const StatisticsList: React.FC<StatisticsListProps> = ({
       rowStyles={RowStyle}
       headerStyles={HeaderStyles}
       onClick={(apartment) =>
-        history.push(`/apartments/${apartment.apartmentId}`)
+        history.push(`/apartments/${apartment.apartmentId}/testimony`)
       }
       columns={[
         {
