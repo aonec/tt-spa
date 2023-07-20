@@ -5,6 +5,7 @@ import 'moment/locale/ru';
 import '01/features/init';
 import '01/css/index.scss';
 import '01/css/styles.css';
+import '@vercel/analytics';
 
 export const App: FC = () => {
   return (
