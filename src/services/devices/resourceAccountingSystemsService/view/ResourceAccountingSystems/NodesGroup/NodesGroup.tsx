@@ -11,7 +11,7 @@ import {
   Wrapper,
 } from './NodesGroup.styled';
 import { NodesGroupProps } from './NodesGroup.types';
-import { ResourceIconLookup } from 'ui-kit/sharedComponents/ResourceIconLookup';
+import { ResourceIconLookup } from 'ui-kit/shared/ResourceIconLookup';
 import { EResourceType } from 'api/types';
 import { getSystemText } from './NodesGroup.utils';
 import { NodeItem } from './NodeItem';

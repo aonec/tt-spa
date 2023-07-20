@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import { NoConnectionIcon } from 'ui-kit/icons';
-import { CommonInfo } from 'ui-kit/sharedComponents/CommonInfo';
+import { CommonInfo } from 'ui-kit/shared/CommonInfo';
 import { NoConnection } from './ConnectionInfo.styled';
 import { ConnectionInfoProps } from './ConnectionInfo.types';
 

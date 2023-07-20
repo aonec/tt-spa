@@ -2,7 +2,7 @@ import { Tooltip } from 'antd';
 import React, { FC, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { DeviceIcon } from 'ui-kit/icons';
-import { ResourceIconLookup } from 'ui-kit/sharedComponents/ResourceIconLookup';
+import { ResourceIconLookup } from 'ui-kit/shared/ResourceIconLookup';
 import { CalculatorInfo } from '../CalculatorInfo';
 import {
   BaseNodeInfo,

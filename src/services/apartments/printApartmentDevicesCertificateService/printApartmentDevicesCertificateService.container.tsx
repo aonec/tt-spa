@@ -6,7 +6,7 @@ import { Props } from './printApartmentDevicesCertificateService.types';
 import { FormModal } from 'ui-kit/Modals/FormModal';
 import ReactToPrint from 'react-to-print';
 import { Button } from 'ui-kit/Button';
-import { WithLoader } from 'ui-kit/sharedComponents/WithLoader';
+import { WithLoader } from 'ui-kit/shared/WithLoader';
 
 const { inputs, outputs, gates } = printApartmentDevicesCertificateService;
 const { HomeownerCerificateGate } = gates;

@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import { Tooltip } from 'antd';
 import { ConfirmUsingExistingApartmentFormProps } from './ConfirmUsingExistingApartmentForm.types';
-import { WithLoader } from 'ui-kit/sharedComponents/WithLoader';
+import { WithLoader } from 'ui-kit/shared/WithLoader';
 import { getApartmentAddressString } from 'utils/getApartmentAddress';
 import { IndividualDeviceItem } from 'services/homeowner/personalNumber/splitPersonalNumberService/view/SplitPersonalNumberPage/stages/TransferDevicesStage/IndividualDeviceItem';
 import {

@@ -1,7 +1,7 @@
 import { useEvent, useStore } from 'effector-react';
 import React from 'react';
 import { useParams } from 'react-router-dom';
-import { WithLoader } from 'ui-kit/sharedComponents/WithLoader';
+import { WithLoader } from 'ui-kit/shared/WithLoader';
 import { housingMeteringDeviceProfileService } from './housingMeteringDeviceProfileService.model';
 import { HousingMeteringDeviceProfile } from './view/HousingMeteringDeviceProfile';
 import { ESecuredIdentityRoleName } from 'api/types';

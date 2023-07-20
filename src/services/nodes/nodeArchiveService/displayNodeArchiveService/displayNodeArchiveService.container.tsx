@@ -3,7 +3,7 @@ import React from 'react';
 import { displayNodeArchiveService } from './displayNodeArchiveService.models';
 import { NodeArchiveList } from './view/NodeArchiveList';
 import './displayNodeArchiveService.relations';
-import { WithLoader } from 'ui-kit/sharedComponents/WithLoader';
+import { WithLoader } from 'ui-kit/shared/WithLoader';
 
 const { inputs, outputs } = displayNodeArchiveService;
 const { NodeArchiveGate } = displayNodeArchiveService.inputs;

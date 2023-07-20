@@ -3,9 +3,9 @@ import { EActResourceType, EManagingFirmTaskType } from 'api/types';
 import React, { FC, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { CalculatorIcon, NumberIcon } from 'ui-kit/icons';
-import { ResourceIconLookup } from 'ui-kit/sharedComponents/ResourceIconLookup';
-import { TimeLine } from 'ui-kit/sharedComponents/TimeLine';
-import { Timer } from 'ui-kit/sharedComponents/Timer';
+import { ResourceIconLookup } from 'ui-kit/shared/ResourceIconLookup';
+import { TimeLine } from 'ui-kit/shared/TimeLine';
+import { Timer } from 'ui-kit/shared/Timer';
 import { getApartmentFromFullAddress } from 'utils/getApartmentFromFullAddress';
 import { PipeRuptureConclusion } from './PipeRuptureConclusion';
 import {

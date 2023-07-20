@@ -9,8 +9,8 @@ import {
   getBufferedValuesFromReading,
 } from 'services/meters/individualDeviceMetersInputService/view/MetersInputsBlock/MetersInputsBlock.utils';
 import { FormItem } from 'ui-kit/FormItem';
-import { IndividualDeviceInfo } from 'ui-kit/sharedComponents/IndividualDeviceInfo';
-import { ReadingsHistoryButton } from 'ui-kit/sharedComponents/reading_history_button';
+import { IndividualDeviceInfo } from 'ui-kit/shared/IndividualDeviceInfo';
+import { ReadingsHistoryButton } from 'ui-kit/shared/reading_history_button';
 import {
   DeviceInfoWrapper,
   Header,

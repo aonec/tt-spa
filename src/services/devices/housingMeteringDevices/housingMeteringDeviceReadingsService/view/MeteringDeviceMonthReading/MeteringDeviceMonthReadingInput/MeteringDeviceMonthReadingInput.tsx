@@ -1,4 +1,4 @@
-import { fromEnter } from 'ui-kit/sharedComponents/DatePickerNative';
+import { fromEnter } from 'ui-kit/shared/DatePickerNative';
 import React, { FC } from 'react';
 import { InputSC } from './MeteringDeviceMonthReadingInput.styled';
 import { MeteringDeviceMonthReadingInputProps } from './MeteringDeviceMonthReadingInput.types';

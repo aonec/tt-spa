@@ -1,9 +1,9 @@
-import { PageHeader } from 'ui-kit/sharedComponents/PageHeader';
+import { PageHeader } from 'ui-kit/shared/PageHeader';
 import React, { FC } from 'react';
 import { useHistory } from 'react-router-dom';
-import { GoBack } from 'ui-kit/sharedComponents/GoBack';
-import { HeaderInfoString } from 'ui-kit/sharedComponents/HeaderInfoString';
-import { DeviceStatus } from 'ui-kit/sharedComponents/IndividualDeviceInfo/DeviceStatus';
+import { GoBack } from 'ui-kit/shared/GoBack';
+import { HeaderInfoString } from 'ui-kit/shared/HeaderInfoString';
+import { DeviceStatus } from 'ui-kit/shared/IndividualDeviceInfo/DeviceStatus';
 import { Tabs } from 'ui-kit/Tabs';
 import { getHousingStockItemAddress } from 'utils/getHousingStockItemAddress';
 import { EditHousingMeteringDeviceTabs } from '../../editHousingMeteringDeviceService.types';

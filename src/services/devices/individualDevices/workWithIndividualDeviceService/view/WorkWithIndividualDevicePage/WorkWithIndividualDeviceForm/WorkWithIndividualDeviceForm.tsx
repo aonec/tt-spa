@@ -8,10 +8,7 @@ import {
 import { WorkWithIndividualDeviceFormProps } from './WorkWithIndividualDeviceForm.types';
 import { useSwitchInputOnEnter } from 'hooks/useSwitchInputOnEnter';
 import { Switch } from 'antd';
-import {
-  DatePickerNative,
-  fromEnter,
-} from 'ui-kit/sharedComponents/DatePickerNative';
+import { DatePickerNative, fromEnter } from 'ui-kit/shared/DatePickerNative';
 import { WorkWithIndividualDeviceType } from '../../../workWithIndividualDeviceService.types';
 import { dataKey, getDataKey } from './WorkWithIndividualDeviceForm.utils';
 import { useForm } from 'effector-forms';
@@ -25,7 +22,7 @@ import { useParams } from 'react-router';
 import { useUnit } from 'effector-react';
 import { individualDeviceMountPlacesService } from 'services/devices/individualDeviceMountPlacesService';
 import { ClosingReasonsDictionary } from 'dictionaries';
-import { ResourceSelect } from 'ui-kit/sharedComponents/ResourceSelect';
+import { ResourceSelect } from 'ui-kit/shared/ResourceSelect';
 import { Loader } from 'ui-kit/Loader';
 import { AutoComplete } from 'ui-kit/AutoComplete';
 import { WorkWithIndividualDeviceInputs } from './WorkWithIndividualDeviceInputs';

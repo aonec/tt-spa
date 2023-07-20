@@ -10,7 +10,7 @@ import { DatePicker } from 'ui-kit/DatePicker';
 import { FormItem } from 'ui-kit/FormItem';
 import { Input } from 'ui-kit/Input';
 import { Select } from 'ui-kit/Select';
-import { ResourceSelect } from 'ui-kit/sharedComponents/ResourceSelect';
+import { ResourceSelect } from 'ui-kit/shared/ResourceSelect';
 import {
   ButtonSC,
   Footer,

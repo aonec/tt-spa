@@ -9,11 +9,11 @@ import {
 import { NonResidentialBuildingProfileProps } from './NonResidentialBuildingProfile.types';
 import { Empty } from 'antd';
 import { getBuildingAddress } from 'utils/getBuildingAddress';
-import { GoBack } from 'ui-kit/sharedComponents/GoBack';
+import { GoBack } from 'ui-kit/shared/GoBack';
 import { NonResidentialBuildingProfileGrouptype } from '../../nonResidentialBuildingProfileService.constants';
 import { NonResidentialBuildingInfo } from '../NonResidentialBuildingInfo';
 import { ResourceAccountingSystemsContainer } from 'services/devices/resourceAccountingSystemsService';
-import { LinkCard } from 'ui-kit/sharedComponents/LinkCard';
+import { LinkCard } from 'ui-kit/shared/LinkCard';
 import { stringifyUrl } from 'query-string';
 import { useHistory } from 'react-router-dom';
 

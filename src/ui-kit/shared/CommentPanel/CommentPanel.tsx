@@ -15,7 +15,7 @@ import {
   TextareaSC,
   UserName,
 } from './CommentPanel.styled';
-import { PencilIconSC } from 'ui-kit/sharedComponents/SelectedEntityPanel/SelectedEntityPanel.styled';
+import { PencilIconSC } from 'ui-kit/shared/SelectedEntityPanel/SelectedEntityPanel.styled';
 import { CommentPanelProps } from './CommentPanel.types';
 import { Button } from 'ui-kit/Button';
 import { getTimeStringByUTC } from 'utils/getTimeStringByUTC';

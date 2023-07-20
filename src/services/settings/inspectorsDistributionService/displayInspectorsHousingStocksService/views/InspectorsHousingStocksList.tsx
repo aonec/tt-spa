@@ -3,7 +3,7 @@ import React, { FC, useMemo } from 'react';
 import { HousingStockItem } from '../inspectorHousingStockService/views/HousingStockItem/HousingStockItem';
 import { LoaderWrap, Wrap } from './InspectorsHousingStocksList.styled';
 import { InspectorsHosuingsStocksListProps } from './InspectorsHousingStocksList.types';
-import { TypeAddressToStart } from 'ui-kit/sharedComponents/TypeToStart';
+import { TypeAddressToStart } from 'ui-kit/shared/TypeToStart';
 
 export const InspectorsHousingStocksList: FC<
   InspectorsHosuingsStocksListProps

@@ -1,5 +1,5 @@
 import React, { FC, useCallback, useMemo } from 'react';
-import { ResourceIconLookup } from 'ui-kit/sharedComponents/ResourceIconLookup';
+import { ResourceIconLookup } from 'ui-kit/shared/ResourceIconLookup';
 import { Slider } from '../Slider';
 import { oldDeviceReadingsInputsConfig } from './ChangeODPUReadings.inputs.constants';
 import {

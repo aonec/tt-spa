@@ -1,4 +1,4 @@
-import { PageHeader } from 'ui-kit/sharedComponents/PageHeader';
+import { PageHeader } from 'ui-kit/shared/PageHeader';
 import { TreeSelect } from 'antd';
 import styled from 'styled-components';
 import { Tabs } from 'ui-kit/Tabs';

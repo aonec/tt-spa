@@ -5,7 +5,7 @@ import {
   CreateNodeServiceZoneContainer,
   createNodeServiceZoneService,
 } from 'services/nodes/createNodeServiceZoneService';
-import { WithLoader } from 'ui-kit/sharedComponents/WithLoader';
+import { WithLoader } from 'ui-kit/shared/WithLoader';
 import { editNodeService } from './editNodeService.model';
 import { EditNodePage } from './view/EditNodePage';
 import { calculatorsListService } from 'services/calculators/calculatorsListService';

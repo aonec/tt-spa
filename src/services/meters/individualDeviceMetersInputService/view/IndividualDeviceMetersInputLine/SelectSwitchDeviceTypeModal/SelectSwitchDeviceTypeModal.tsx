@@ -1,7 +1,7 @@
 import React, { FC, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { CheckIcon, SwitchIcon } from 'ui-kit/icons';
-import { ActionButton } from 'ui-kit/sharedComponents/ActionButton';
+import { ActionButton } from 'ui-kit/shared/ActionButton';
 import { ButtonsWrapper } from './SelectSwitchDeviceTypeModal.styled';
 import {
   SelectSwitchDeviceType,

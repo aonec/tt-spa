@@ -1,6 +1,6 @@
 import React, { FC, useEffect, useState } from 'react';
 import { Button } from 'ui-kit/Button';
-import { LinkButton } from 'ui-kit/sharedComponents/LinkButton';
+import { LinkButton } from 'ui-kit/shared/LinkButton';
 import { Title } from 'ui-kit/Title';
 import { Footer } from '../CreateNodePage.styled';
 import { ConnectedDevicesProps } from './ConnectedDevices.types';

@@ -1,4 +1,4 @@
-import { PageHeader } from 'ui-kit/sharedComponents/PageHeader';
+import { PageHeader } from 'ui-kit/shared/PageHeader';
 import { Tabs } from 'antd';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';

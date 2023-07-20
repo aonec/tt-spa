@@ -2,7 +2,7 @@ import { SpaceLine } from '01/shared/ui/Layout/Space/Space';
 import { Tooltip } from 'antd';
 import moment from 'moment';
 import React, { FC, useState } from 'react';
-import { GoBack } from 'ui-kit/sharedComponents/GoBack';
+import { GoBack } from 'ui-kit/shared/GoBack';
 import {
   BlockTitle,
   CompetenciesContainer,
@@ -21,7 +21,7 @@ import { EmployeeProfileProps } from './EmployeeProfile.types';
 import { useHistory } from 'react-router-dom';
 import { sortUserRoles } from 'services/company/companyProfileService/view/CompanyProfile/Tabs/Staff/Staff.utils';
 import { usePhoneMask } from 'hooks/usePhoneMask';
-import { StaffStatus } from 'ui-kit/sharedComponents/StaffStatus/StaffStatus';
+import { StaffStatus } from 'ui-kit/shared/StaffStatus/StaffStatus';
 import { ContextMenuButtonColor } from 'ui-kit/ContextMenuButton/ContextMenuButton.types';
 
 const { TabPane } = TabsSC;

@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import { Props } from './DeleteDistrictModal.types';
-import { Dialog } from 'ui-kit/sharedComponents/Dialog/Dialog';
+import { Dialog } from 'ui-kit/shared/Dialog/Dialog';
 
 export const DeleteDistrictModal: FC<Props> = ({
   isDeleteDistrictModalOpen,

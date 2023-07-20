@@ -7,11 +7,11 @@ import {
   Wrapper,
 } from './SealActionSelectProfile.styled';
 import { SealProfileProps } from './SealActionSelectProfile.types';
-import { PageHeader } from 'ui-kit/sharedComponents/PageHeader';
+import { PageHeader } from 'ui-kit/shared/PageHeader';
 import { CheckIcon, PlusIcon } from 'ui-kit/icons';
 import { SealActionType } from '../../../sealService/sealService.types';
 import moment from 'moment';
-import { LinkPanel } from 'ui-kit/sharedComponents/LinkPanel';
+import { LinkPanel } from 'ui-kit/shared/LinkPanel';
 import { getCountText } from 'utils/getCountText';
 import { appointmentsText } from './SealActionSelectProfile.constants';
 

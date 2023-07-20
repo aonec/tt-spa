@@ -1,4 +1,4 @@
-import { PageHeader } from 'ui-kit/sharedComponents/PageHeader';
+import { PageHeader } from 'ui-kit/shared/PageHeader';
 import { Radio } from 'antd';
 import React, { FC, ReactNode, useCallback, useMemo } from 'react';
 import { Link } from 'react-router-dom';

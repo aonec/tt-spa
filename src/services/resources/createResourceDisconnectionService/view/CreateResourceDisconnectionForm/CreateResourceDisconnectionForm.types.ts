@@ -7,7 +7,7 @@ import {
   ResourceDisconnectingResponse,
   ResourceDisconnectingUpdateRequest,
 } from 'api/types';
-import { TreeSelectElement } from 'ui-kit/sharedComponents/AddressTreeSelect/AddressTreeSelect.types';
+import { TreeSelectElement } from 'ui-kit/shared/AddressTreeSelect/AddressTreeSelect.types';
 import { EAddressDetails } from '../../createResourceDisconnectionService.types';
 
 export type CreateResourceDisconnectionFormProps = {

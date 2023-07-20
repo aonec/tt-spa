@@ -19,7 +19,7 @@ import {
 import { EditApartmentActFormProps } from './EditApartmentActForm.types';
 import * as yup from 'yup';
 import moment from 'moment';
-import { ResourceInfo } from 'ui-kit/sharedComponents/ResourceInfo';
+import { ResourceInfo } from 'ui-kit/shared/ResourceInfo';
 import { DocumentsUploadContainer, Document } from 'ui-kit/DocumentsService';
 import { Input } from 'ui-kit/Input';
 import { Select } from 'ui-kit/Select';

@@ -1,8 +1,8 @@
 import React, { FC, useMemo } from 'react';
 import { ApartmentItem } from './ApartmentItem';
 import { ApartmentsListProps } from './ApartmentsList.types';
-import { TypeAddressToStart } from 'ui-kit/sharedComponents/TypeToStart';
-import { WithLoader } from 'ui-kit/sharedComponents/WithLoader';
+import { TypeAddressToStart } from 'ui-kit/shared/TypeToStart';
+import { WithLoader } from 'ui-kit/shared/WithLoader';
 
 export const ApartmentsList: FC<ApartmentsListProps> = ({
   apartments,

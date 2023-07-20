@@ -19,7 +19,7 @@ import { FormItem } from 'ui-kit/FormItem';
 import { Select } from 'ui-kit/Select';
 import { Input } from 'ui-kit/Input';
 import { SpaceLine } from '01/shared/ui/Layout/Space/Space';
-import { LinkButton } from 'ui-kit/sharedComponents/LinkButton';
+import { LinkButton } from 'ui-kit/shared/LinkButton';
 import { Button } from 'ui-kit/Button';
 import { ErrorMessage } from 'ui-kit/ErrorMessage';
 import _ from 'lodash';

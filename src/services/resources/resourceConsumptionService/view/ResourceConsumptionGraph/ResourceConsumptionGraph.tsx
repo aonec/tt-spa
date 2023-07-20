@@ -26,13 +26,13 @@ import {
   getMinAndMaxForResourceConsumptionGraph,
 } from './ResourceConsumptionGraph.utils';
 import { ResourceConsumptionGraphTooltip } from './ResourceConsumptionGraphTooltip';
-import { GraphGradient } from 'ui-kit/sharedComponents/GraphComponents/GraphGradient';
-import { TickComponent } from 'ui-kit/sharedComponents/GraphComponents/TickComponent';
+import { GraphGradient } from 'ui-kit/shared/GraphComponents/GraphGradient';
+import { TickComponent } from 'ui-kit/shared/GraphComponents/TickComponent';
 import {
   horizontalAxisStyle,
   verticalAxisStyle,
 } from 'services/nodes/displayNodesStatisticsService/view/StatisticsGraph/StatisticsGraph.styled';
-import { CustomTooltip } from 'ui-kit/sharedComponents/GraphComponents/CustomTooltip';
+import { CustomTooltip } from 'ui-kit/shared/GraphComponents/CustomTooltip';
 
 const height = 360;
 

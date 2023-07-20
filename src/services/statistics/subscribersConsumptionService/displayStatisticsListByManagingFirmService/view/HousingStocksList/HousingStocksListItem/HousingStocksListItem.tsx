@@ -11,7 +11,7 @@ import {
 } from './HousingStocksListItem.styled';
 import { HousingStocksListItemProps } from './HousingStocksListItem.types';
 import { StatisticsList } from 'services/statistics/subscribersConsumptionService/displayStatisticsListByHousesService/view/StatisticsList';
-import { ListOpeningChevron } from 'ui-kit/sharedComponents/ListOpeningChevron';
+import { ListOpeningChevron } from 'ui-kit/shared/ListOpeningChevron';
 
 export const HousingStocksListItem: FC<HousingStocksListItemProps> = ({
   housingStock,

@@ -3,10 +3,10 @@ import { useHistory } from 'react-router-dom';
 import { ActsCardContainer } from 'services/apartments/actsCardService';
 import { ApartmentActsListContainer } from 'services/apartments/apartmentActsListService';
 import { ApartmentIndividualDevicesMetersContainer } from 'services/meters/apartmentIndividualDevicesMetersService';
-import { CommonInfo } from 'ui-kit/sharedComponents/CommonInfo';
-import { GoBack } from 'ui-kit/sharedComponents/GoBack';
-import { HeaderInfoString } from 'ui-kit/sharedComponents/HeaderInfoString';
-import { WithLoader } from 'ui-kit/sharedComponents/WithLoader';
+import { CommonInfo } from 'ui-kit/shared/CommonInfo';
+import { GoBack } from 'ui-kit/shared/GoBack';
+import { HeaderInfoString } from 'ui-kit/shared/HeaderInfoString';
+import { WithLoader } from 'ui-kit/shared/WithLoader';
 import { Tabs } from 'ui-kit/Tabs';
 import { Title } from 'ui-kit/Title';
 import { getHousingStockItemAddress } from 'utils/getHousingStockItemAddress';
@@ -26,7 +26,7 @@ import {
   ApartmentSection,
 } from './ApartmentProfile.types';
 import { HomeownersList } from './HomeownersList';
-import { LinkCard } from 'ui-kit/sharedComponents/LinkCard';
+import { LinkCard } from 'ui-kit/shared/LinkCard';
 import { stringifyUrl } from 'query-string';
 import { TaskGroupingFilter } from 'api/types';
 

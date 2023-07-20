@@ -1,6 +1,6 @@
 import React from 'react';
 import { FC } from 'react';
-import { WithLoader } from 'ui-kit/sharedComponents/WithLoader';
+import { WithLoader } from 'ui-kit/shared/WithLoader';
 import { NodeChecksProps } from './NodeChecks.types';
 import {
   Button,

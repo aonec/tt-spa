@@ -9,15 +9,15 @@ import {
   TableWrapper,
 } from './AppointmentsJournalPage.styled';
 import { Props } from './AppointmentsJournalPage.types';
-import { GoBack } from 'ui-kit/sharedComponents/GoBack';
-import { PageHeader } from 'ui-kit/sharedComponents/PageHeader';
+import { GoBack } from 'ui-kit/shared/GoBack';
+import { PageHeader } from 'ui-kit/shared/PageHeader';
 import { DatePicker } from 'ui-kit/DatePicker';
 import { useForm } from 'effector-forms';
 import { Table } from 'ui-kit/Table';
 import moment from 'moment';
 import { DocumentLargeIcon, DownloadBlueIcon } from 'ui-kit/icons';
 import { ControllerResponse } from 'api/types';
-import { WithLoader } from 'ui-kit/sharedComponents/WithLoader';
+import { WithLoader } from 'ui-kit/shared/WithLoader';
 
 export const AppointmentsJournalPage: FC<Props> = ({
   form,

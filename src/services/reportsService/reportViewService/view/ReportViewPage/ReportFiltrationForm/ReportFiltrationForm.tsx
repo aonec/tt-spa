@@ -23,7 +23,7 @@ import {
   EIndividualDeviceReportOption,
   EResourceType,
 } from 'api/types';
-import { ResourceIconLookup } from 'ui-kit/sharedComponents/ResourceIconLookup';
+import { ResourceIconLookup } from 'ui-kit/shared/ResourceIconLookup';
 import {
   ClosingReasonsDictionary,
   ReportOptionsDictionary,

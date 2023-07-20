@@ -6,14 +6,14 @@ import {
   AddressSearchValues,
   SearchFieldType,
 } from 'services/addressSearchService/view/AddressSearch/AddressSearch.types';
-import { WithLoader } from 'ui-kit/sharedComponents/WithLoader';
+import { WithLoader } from 'ui-kit/shared/WithLoader';
 import { ApartmentIndividualDevicesMetersContainer } from 'services/meters/apartmentIndividualDevicesMetersService';
 import { ApartmentInfo } from './ApartmentInfo';
 import { ApartmentAlerts } from './ApartmentAlerts';
 import { apartmentReadingsService } from '../../../ApartmentReadingsService.model';
 import { useHistory, useParams } from 'react-router-dom';
 import confirm from 'antd/lib/modal/confirm';
-import { TypeAddressToStart } from 'ui-kit/sharedComponents/TypeToStart';
+import { TypeAddressToStart } from 'ui-kit/shared/TypeToStart';
 import { EApartmentStatus } from 'api/types';
 
 const { gates } = apartmentReadingsService;

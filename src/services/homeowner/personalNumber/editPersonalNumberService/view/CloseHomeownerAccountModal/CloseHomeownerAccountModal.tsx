@@ -4,7 +4,7 @@ import * as yup from 'yup';
 import { CloseHomeownerAccountModalProps } from './CloseHomeownerAccountModal.types';
 import { FormModal } from 'ui-kit/Modals/FormModal';
 import { FormItem } from 'ui-kit/FormItem';
-import { DatePickerNative } from 'ui-kit/sharedComponents/DatePickerNative';
+import { DatePickerNative } from 'ui-kit/shared/DatePickerNative';
 import { ErrorMessage } from 'ui-kit/ErrorMessage';
 import {
   AccountNumber,

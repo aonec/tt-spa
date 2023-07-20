@@ -3,7 +3,7 @@ import { Button } from 'ui-kit/Button';
 import { FormItem } from 'ui-kit/FormItem';
 import { Input } from 'ui-kit/Input';
 import { Select } from 'ui-kit/Select';
-import { LinkButton } from 'ui-kit/sharedComponents/LinkButton';
+import { LinkButton } from 'ui-kit/shared/LinkButton';
 import { Title } from 'ui-kit/Title';
 import { Footer } from '../CreateNodePage.styled';
 import { validationSchema } from './CommonData.constants';

@@ -1,6 +1,6 @@
 import { useEvent, useStore } from 'effector-react';
 import React, { useState } from 'react';
-import { Dialog } from 'ui-kit/sharedComponents/Dialog/Dialog';
+import { Dialog } from 'ui-kit/shared/Dialog/Dialog';
 import { deletePipeHousingMeteringDeviceService } from './deletePipeHousingMeteringDeviceService.model';
 import { FormItem } from 'ui-kit/FormItem';
 import { Input } from 'ui-kit/Input';

@@ -2,7 +2,7 @@ import React from 'react';
 import { ComponentMeta, ComponentStory } from '@storybook/react';
 import { SelectMultiple } from '.';
 import { EResourceType } from 'api/types';
-import { ResourceIconLookup } from 'ui-kit/sharedComponents/ResourceIconLookup';
+import { ResourceIconLookup } from 'ui-kit/shared/ResourceIconLookup';
 import { ResourceShortNamesDictionary } from 'dictionaries';
 import { ResourceOption } from './SelectMultiple.styled.story';
 

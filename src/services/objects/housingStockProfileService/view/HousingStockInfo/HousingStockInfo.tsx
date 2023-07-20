@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import { Wrapper } from './HousingStockInfo.styled';
 import { HousingStockInfoProps } from './HousingStockInfo.types';
-import { CommonInfo } from 'ui-kit/sharedComponents/CommonInfo';
+import { CommonInfo } from 'ui-kit/shared/CommonInfo';
 import {
   ElevatorDictionary,
   getElevatorType,

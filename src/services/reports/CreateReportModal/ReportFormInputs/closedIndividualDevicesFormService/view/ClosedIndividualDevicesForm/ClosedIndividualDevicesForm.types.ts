@@ -2,7 +2,7 @@ import {
   HouseManagementResponse,
   OrganizationResponsePagedList,
 } from 'api/types';
-import { TreeSelectElement } from 'ui-kit/sharedComponents/AddressTreeSelect/AddressTreeSelect.types';
+import { TreeSelectElement } from 'ui-kit/shared/AddressTreeSelect/AddressTreeSelect.types';
 import { UnloadingType } from '../../closedIndividualDevicesFormService.types';
 
 export type ClosedIndividualDevicesFormProps = {

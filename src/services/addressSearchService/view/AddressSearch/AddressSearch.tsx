@@ -1,4 +1,4 @@
-import { fromEnter } from 'ui-kit/sharedComponents/DatePickerNative';
+import { fromEnter } from 'ui-kit/shared/DatePickerNative';
 import React, { FC, ReactElement } from 'react';
 import { FormItem } from 'ui-kit/FormItem';
 import { SearchFieldsLabels } from './AddressSearch.constants';

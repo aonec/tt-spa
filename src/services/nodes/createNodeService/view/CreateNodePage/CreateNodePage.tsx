@@ -1,7 +1,7 @@
 import { Steps } from 'antd';
 import React, { FC, ReactNode } from 'react';
-import { GoBack } from 'ui-kit/sharedComponents/GoBack';
-import { WithLoader } from 'ui-kit/sharedComponents/WithLoader';
+import { GoBack } from 'ui-kit/shared/GoBack';
+import { WithLoader } from 'ui-kit/shared/WithLoader';
 import { Title } from 'ui-kit/Title';
 import { getBuildingAddress } from 'utils/getBuildingAddress';
 import { CommonData } from './CommonData';

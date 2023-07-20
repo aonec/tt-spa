@@ -5,7 +5,7 @@ import {
   SerialNumberWrapper,
 } from './ODPUInfoString.styled';
 import { ODPUInfoStringProps } from './ODPUInfoString.types';
-import { ResourceIconLookup } from 'ui-kit/sharedComponents/ResourceIconLookup';
+import { ResourceIconLookup } from 'ui-kit/shared/ResourceIconLookup';
 
 export const ODPUInfoString: FC<ODPUInfoStringProps> = ({ device }) => {
   const { resource, serialNumber, model } = device;

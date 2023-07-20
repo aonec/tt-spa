@@ -1,4 +1,4 @@
-import { FilterButton } from 'ui-kit/sharedComponents/filterButton/FIlterButton';
+import { FilterButton } from 'ui-kit/shared/filterButton/FIlterButton';
 import React, { useCallback } from 'react';
 import { CheckboxSC } from './FilterExtendedSearch.styled';
 import {

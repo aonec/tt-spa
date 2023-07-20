@@ -1,7 +1,7 @@
 import { useUnit } from 'effector-react';
 import React from 'react';
 import { deleteIndividualDeviceService } from './deleteIndividualDeviceService.models';
-import { Dialog } from 'ui-kit/sharedComponents/Dialog/Dialog';
+import { Dialog } from 'ui-kit/shared/Dialog/Dialog';
 import { deleteIndividualDeviceMutation } from './deleteIndividualDeviceService.api';
 
 const { inputs, outputs } = deleteIndividualDeviceService;

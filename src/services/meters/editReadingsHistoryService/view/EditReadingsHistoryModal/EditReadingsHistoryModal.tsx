@@ -3,7 +3,7 @@ import React, { FC, useCallback, useMemo, useState } from 'react';
 import { MetersInputsBlockPure } from 'services/meters/individualDeviceMetersInputService/view/MetersInputsBlock/MeterInputsBlockPure';
 import { getRateNum } from 'services/meters/individualDeviceMetersInputService/view/MetersInputsBlock/MetersInputsBlock.utils';
 import { ChevronIcon } from 'ui-kit/icons';
-import { IndividualDeviceInfoExtended } from 'ui-kit/sharedComponents/IndividualDeviceInfoExtended';
+import { IndividualDeviceInfoExtended } from 'ui-kit/shared/IndividualDeviceInfoExtended';
 import { ReadingDateFormat } from '../../editReadingsHistoryService.constants';
 import {
   ArrowContainer,

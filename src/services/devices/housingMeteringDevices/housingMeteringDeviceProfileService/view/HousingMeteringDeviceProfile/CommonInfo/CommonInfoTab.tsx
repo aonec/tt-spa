@@ -2,7 +2,7 @@ import { MagistralsDisctionary } from 'dictionaries';
 import moment from 'moment';
 import { EMagistralType } from 'api/types';
 import React, { FC } from 'react';
-import { CommonInfo } from 'ui-kit/sharedComponents/CommonInfo';
+import { CommonInfo } from 'ui-kit/shared/CommonInfo';
 import { getBuildingAddress } from 'utils/getBuildingAddress';
 import { Address } from './CommonInfoTab.styled';
 import { CommonInfoProps } from './CommonInfoTab.types';

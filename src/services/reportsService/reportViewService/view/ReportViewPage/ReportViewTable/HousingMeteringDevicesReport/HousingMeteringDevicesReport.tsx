@@ -1,7 +1,7 @@
 import { Empty } from 'antd';
 import moment from 'moment';
 import React, { FC } from 'react';
-import { ResourceIconLookup } from 'ui-kit/sharedComponents/ResourceIconLookup';
+import { ResourceIconLookup } from 'ui-kit/shared/ResourceIconLookup';
 import { Table } from 'ui-kit/Table';
 import { ApartmentNumber } from '../IndividualDevicesReport/IndividualDevicesReport.styled';
 import { getReportElemAddress } from '../ReportViewTable.utils';

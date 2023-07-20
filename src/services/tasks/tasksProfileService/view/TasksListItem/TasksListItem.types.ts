@@ -1,6 +1,6 @@
 import { TaskListResponse } from 'api/types';
-import { Timeline } from 'ui-kit/sharedComponents/TimeLine/TimeLine.types';
-import { Timer } from 'ui-kit/sharedComponents/Timer/Timer.types';
+import { Timeline } from 'ui-kit/shared/TimeLine/TimeLine.types';
+import { Timer } from 'ui-kit/shared/Timer/Timer.types';
 
 export type TasksListItemProps = {
   task: TaskType;

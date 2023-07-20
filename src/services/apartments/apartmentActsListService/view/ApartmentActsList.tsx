@@ -1,8 +1,8 @@
 import { Empty } from 'antd';
 import { EActResourceType, EActType } from 'api/types';
 import React, { FC, useMemo } from 'react';
-import { FilterExtendedSearch } from 'ui-kit/sharedComponents/FilterExtendedSearch';
-import { actResourceNamesLookup } from 'ui-kit/sharedComponents/ResourceInfo/ResourceInfo.utils';
+import { FilterExtendedSearch } from 'ui-kit/shared/FilterExtendedSearch';
+import { actResourceNamesLookup } from 'ui-kit/shared/ResourceInfo/ResourceInfo.utils';
 import { ApartmentActItem } from './ApartmentActItem';
 import {
   AddButton,
@@ -12,7 +12,7 @@ import {
   Wrapper,
 } from './ApartmentActsList.styled';
 import { ApartmentActsListProps } from './ApartmentActsList.types';
-import { WithLoader } from 'ui-kit/sharedComponents/WithLoader';
+import { WithLoader } from 'ui-kit/shared/WithLoader';
 import { ActTypesNamesLookup } from 'dictionaries';
 
 export const ApartmentActsList: FC<ApartmentActsListProps> = ({

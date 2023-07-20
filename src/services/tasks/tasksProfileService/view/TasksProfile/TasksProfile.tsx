@@ -1,6 +1,6 @@
 import React, { FC, useEffect, useMemo } from 'react';
 import { useHistory } from 'react-router-dom';
-import { PageHeader } from 'ui-kit/sharedComponents/PageHeader';
+import { PageHeader } from 'ui-kit/shared/PageHeader';
 import { SearchTasks } from '../SearchTasks';
 import { TasksList } from '../TasksList';
 import {
@@ -20,7 +20,7 @@ import { TaskGroupingFilter } from 'api/types';
 import { Segmented } from 'ui-kit/Segmented';
 import { ListIcon, MapIcon, PlusSmallIcon } from 'ui-kit/icons';
 import { TasksMapContainer } from 'services/tasks/tasksMapService';
-import { WithLoader } from 'ui-kit/sharedComponents/WithLoader';
+import { WithLoader } from 'ui-kit/shared/WithLoader';
 import { developmentSettingsService } from 'services/developmentSettings/developmentSettings.models';
 import { TasksPageSegment, TasksProfileProps } from './TasksProfile.types';
 

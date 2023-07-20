@@ -2,7 +2,7 @@ import { useEvent, useStore } from 'effector-react';
 import React from 'react';
 import { uniqueWorkingRangeService } from './uniqueWorkingRangeService.model';
 import { UniqueWorkingRange } from './view/UniqueWorkingRange/UniqueWorkingRange';
-import { prepareAddressesForTreeSelect } from 'ui-kit/sharedComponents/AddressTreeSelect/AddressTreeSelect.utils';
+import { prepareAddressesForTreeSelect } from 'ui-kit/shared/AddressTreeSelect/AddressTreeSelect.utils';
 import { addressSearchService } from 'services/addressSearchService/addressSearchService.models';
 
 const { inputs, outputs } = uniqueWorkingRangeService;

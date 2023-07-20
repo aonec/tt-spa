@@ -15,7 +15,7 @@ import {
   ILine,
   PreviewModalFormProps,
 } from './PreviewModalForm.types';
-import { ResourceInfo } from 'ui-kit/sharedComponents/ResourceInfo';
+import { ResourceInfo } from 'ui-kit/shared/ResourceInfo';
 import { getDate, getMountPlaceById } from './PreviewModalForm.utils';
 import { getInputBorderColor } from 'services/meters/individualDeviceMetersInputService/view/MetersInputsBlock/MetersInputsBlock.styled';
 import { BaseIndividualDeviceReadingsCreateRequest } from 'api/types';

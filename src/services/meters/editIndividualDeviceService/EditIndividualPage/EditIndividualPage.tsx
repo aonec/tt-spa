@@ -14,15 +14,15 @@ import {
   EditIndividualDeviceTabs,
   EditIndividualPageProps,
 } from './EditIndividualPage.types';
-import { GoBack } from 'ui-kit/sharedComponents/GoBack';
-import { WithLoader } from 'ui-kit/sharedComponents/WithLoader';
+import { GoBack } from 'ui-kit/shared/GoBack';
+import { WithLoader } from 'ui-kit/shared/WithLoader';
 import { Tabs } from 'ui-kit/Tabs';
 import { MainInfo } from './Tabs/MainInfo';
 import { Documents } from './Tabs/Documents';
 import { getApartmentFromFullAddress } from 'utils/getApartmentFromFullAddress';
-import { ResourceIconLookup } from 'ui-kit/sharedComponents/ResourceIconLookup';
-import { DeviceStatus } from 'ui-kit/sharedComponents/IndividualDeviceInfo/DeviceStatus';
-import { PageHeader } from 'ui-kit/sharedComponents/PageHeader';
+import { ResourceIconLookup } from 'ui-kit/shared/ResourceIconLookup';
+import { DeviceStatus } from 'ui-kit/shared/IndividualDeviceInfo/DeviceStatus';
+import { PageHeader } from 'ui-kit/shared/PageHeader';
 
 export const EditIndividualPage: FC<EditIndividualPageProps> = ({
   currentTab,

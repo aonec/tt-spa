@@ -14,7 +14,7 @@ import {
   NoConnectionIcon,
 } from 'ui-kit/icons';
 import { NodeDevices } from './NodeDevices';
-import { DateRange } from 'ui-kit/sharedComponents/DateRange';
+import { DateRange } from 'ui-kit/shared/DateRange';
 
 export const CalculatorNodes: FC<CalculatorNodesProps> = ({ calculator }) => {
   const { isConnected } = calculator;

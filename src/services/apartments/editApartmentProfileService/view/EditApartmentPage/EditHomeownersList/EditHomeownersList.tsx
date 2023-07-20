@@ -1,7 +1,7 @@
 import { useEvent } from 'effector-react';
 import React, { FC } from 'react';
 import { List } from 'ui-kit/List';
-import { LinkButton } from 'ui-kit/sharedComponents/LinkButton';
+import { LinkButton } from 'ui-kit/shared/LinkButton';
 import {
   CreateHomeownerContainer,
   createHomeownerService,

@@ -2,7 +2,7 @@ import React, { FC, useEffect, useState } from 'react';
 import { ExtendedSearch } from 'ui-kit/ExtendedSearch';
 import { Wrapper } from './SearchReports.styled';
 import { SearchReportsProps } from './SearchReports.types';
-import { fromEnter } from 'ui-kit/sharedComponents/DatePickerNative';
+import { fromEnter } from 'ui-kit/shared/DatePickerNative';
 import { SearchIcon } from 'ui-kit/icons';
 import { Input } from 'ui-kit/Input';
 

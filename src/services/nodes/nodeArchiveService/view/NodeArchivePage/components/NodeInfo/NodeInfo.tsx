@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 import { Wrap } from './NodeInfo.styled';
 import { NodeInfoProps } from './NodeInfo.types';
 import { getBuildingAddress } from 'utils/getBuildingAddress';
-import { ResourceIconLookup } from 'ui-kit/sharedComponents/ResourceIconLookup';
+import { ResourceIconLookup } from 'ui-kit/shared/ResourceIconLookup';
 
 export const NodeInfo: FC<NodeInfoProps> = ({ node }) => {
   const address = node?.address && getBuildingAddress(node.address, true);

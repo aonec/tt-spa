@@ -3,8 +3,8 @@ import {
   createTimeline,
   createTimer,
 } from 'services/tasks/tasksProfileService/tasksProfileService.utils';
-import { Dialog } from 'ui-kit/sharedComponents/Dialog/Dialog';
-import { GoBack } from 'ui-kit/sharedComponents/GoBack';
+import { Dialog } from 'ui-kit/shared/Dialog/Dialog';
+import { GoBack } from 'ui-kit/shared/GoBack';
 import { TaskActionsPanel } from './TaskActionsPanel';
 import { TaskBaseInfo } from './TaskBaseInfo';
 import { TaskComments } from './TaskComments';

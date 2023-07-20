@@ -1,6 +1,6 @@
 import React from 'react';
 import { getApartmentFromFullAddress } from 'utils/getApartmentFromFullAddress';
-import { IndividualDeviceInfo } from 'ui-kit/sharedComponents/IndividualDeviceInfo';
+import { IndividualDeviceInfo } from 'ui-kit/shared/IndividualDeviceInfo';
 import { HeaderProps } from './ReadingsHistoryHeader.types';
 import { Header } from './ReadingsHistoryHeader.styled';
 import { useDeviceCheckingDates } from './ReadingsHistoryHeader.utils';

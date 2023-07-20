@@ -20,7 +20,7 @@ import { DevelopmentSettingsContainer } from 'services/developmentSettings/devel
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 import { ErrorMessage } from 'ui-kit/ErrorMessage';
-import { fromEnter } from 'ui-kit/sharedComponents/DatePickerNative';
+import { fromEnter } from 'ui-kit/shared/DatePickerNative';
 import { useSwitchInputOnEnter } from 'hooks/useSwitchInputOnEnter';
 
 export const LoginPage: FC<LoginPageProps> = ({

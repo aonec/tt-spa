@@ -7,7 +7,7 @@ import { FormItem } from 'ui-kit/FormItem';
 import { Input, InputWithAddon } from 'ui-kit/Input';
 import { ErrorMessage } from 'ui-kit/ErrorMessage';
 import { Select } from 'ui-kit/Select';
-import { ResourceSelect } from 'ui-kit/sharedComponents/ResourceSelect';
+import { ResourceSelect } from 'ui-kit/shared/ResourceSelect';
 import { flowTemperatureDeviationReportService } from '../../flowTemperatureDeviationReportService.models';
 import { LineWrapper } from './FeedFlowTemperatureReportForm.styled';
 import { Props } from './FeedFlowTemperatureReportForm.types';

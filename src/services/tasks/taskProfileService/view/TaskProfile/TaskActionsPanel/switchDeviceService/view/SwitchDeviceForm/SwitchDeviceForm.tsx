@@ -12,7 +12,7 @@ import {
   SwitchDeviceFormProps,
   SwitchDeviceFormValues,
 } from './SwitchDeviceForm.types';
-import { ResourceSelect } from 'ui-kit/sharedComponents/ResourceSelect';
+import { ResourceSelect } from 'ui-kit/shared/ResourceSelect';
 
 export const SwitchDeviceForm: FC<SwitchDeviceFormProps> = ({
   device,

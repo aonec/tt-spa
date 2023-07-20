@@ -16,7 +16,7 @@ import {
 import { MeteringDeviceListItem } from './MeteringDeviceListItem';
 import { PipeIcon } from 'ui-kit/icons';
 import { getDevicesCountText } from './CommunicationPipeListItem.utils';
-import { ListOpeningChevron } from 'ui-kit/sharedComponents/ListOpeningChevron';
+import { ListOpeningChevron } from 'ui-kit/shared/ListOpeningChevron';
 import { resourceFromConfig } from 'utils/resourceFromConfigLookup';
 
 export const CommunicationPipeListItem: FC<CommunicationPipeListItemProps> = ({

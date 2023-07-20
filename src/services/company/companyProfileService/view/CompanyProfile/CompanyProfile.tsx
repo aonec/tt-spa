@@ -3,7 +3,7 @@ import {
   CompanyProfileProps,
   CompanyProfileSection,
 } from './CompanyProfile.types';
-import { PageHeader } from 'ui-kit/sharedComponents/PageHeader';
+import { PageHeader } from 'ui-kit/shared/PageHeader';
 import { Route, useHistory, useParams } from 'react-router-dom';
 import { CommonInfoTab } from './Tabs/CommonInfoTab';
 import { Staff } from './Tabs/Staff';

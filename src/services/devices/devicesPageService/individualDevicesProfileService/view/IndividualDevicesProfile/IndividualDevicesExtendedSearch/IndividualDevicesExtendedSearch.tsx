@@ -21,7 +21,7 @@ import {
   formTranslateLookup,
   resourcesNamesLookup,
 } from './IndividualDevicesExtendedSearch.constants';
-import { ResourceIconLookup } from 'ui-kit/sharedComponents/ResourceIconLookup';
+import { ResourceIconLookup } from 'ui-kit/shared/ResourceIconLookup';
 import { DevicesSearchType } from 'services/devices/devicesPageService/devicesPageService.types';
 import { Select } from 'ui-kit/Select';
 import { Input } from 'ui-kit/Input';

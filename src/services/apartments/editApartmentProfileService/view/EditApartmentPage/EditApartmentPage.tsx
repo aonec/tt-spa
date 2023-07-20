@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
-import { GoBack } from 'ui-kit/sharedComponents/GoBack';
-import { HeaderInfoString } from 'ui-kit/sharedComponents/HeaderInfoString';
+import { GoBack } from 'ui-kit/shared/GoBack';
+import { HeaderInfoString } from 'ui-kit/shared/HeaderInfoString';
 import {
   AdditionalAddressWrapper,
   PageHeaderSC,
@@ -9,7 +9,7 @@ import {
 import { EditApartmentPageProps } from './EditApartmentPage.types';
 import { TabsSection } from '../../editApartmentProfileService.types';
 import { EditCommonDataForm } from './EditCommonDataForm';
-import { WithLoader } from 'ui-kit/sharedComponents/WithLoader';
+import { WithLoader } from 'ui-kit/shared/WithLoader';
 import { getHousingStockItemAddress } from 'utils/getHousingStockItemAddress';
 import { EditHomeownersList } from './EditHomeownersList';
 import { ApartmentActsListContainer } from 'services/apartments/apartmentActsListService';

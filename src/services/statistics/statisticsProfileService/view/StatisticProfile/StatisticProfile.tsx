@@ -1,7 +1,7 @@
 import React, { FC, useMemo } from 'react';
 import { TabsSC } from './StatisticProfile.styled';
 import { StatisticProfileProps } from './StatisticProfile.types';
-import { PageHeader } from 'ui-kit/sharedComponents/PageHeader';
+import { PageHeader } from 'ui-kit/shared/PageHeader';
 import { ResourceConsumptionContainer } from 'services/resources/resourceConsumptionService';
 import { StatisticProfileGrouptype } from '../../statisticsProfileService.types';
 import { SubscribersConsumptionSearchType } from 'services/statistics/subscribersConsumptionService/subscribersConsumptionService.types';

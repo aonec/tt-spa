@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import moment from 'moment';
-import { ResourceIconLookup } from 'ui-kit/sharedComponents/ResourceIconLookup';
-import { DeviceStatus } from 'ui-kit/sharedComponents/IndividualDeviceInfo/DeviceStatus';
+import { ResourceIconLookup } from 'ui-kit/shared/ResourceIconLookup';
+import { DeviceStatus } from 'ui-kit/shared/IndividualDeviceInfo/DeviceStatus';
 import { IndividualDeviceInfoExtendedProps } from './IndividualDeviceInfoExtended.types';
 import {
   ApartmentInfo,

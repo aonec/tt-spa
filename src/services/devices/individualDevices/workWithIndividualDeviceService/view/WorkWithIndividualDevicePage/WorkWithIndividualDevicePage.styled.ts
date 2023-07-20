@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { PageHeader } from 'ui-kit/sharedComponents/PageHeader';
+import { PageHeader } from 'ui-kit/shared/PageHeader';
 
 export const PageHeaderSC = styled(PageHeader)`
   margin-top: 16px;

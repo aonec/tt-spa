@@ -7,7 +7,7 @@ import {
   TitleContainer,
 } from './NodesInfo.styled';
 import { NodesInfoProps } from './NodesInfo.types';
-import { ResourceIconLookup } from 'ui-kit/sharedComponents/ResourceIconLookup';
+import { ResourceIconLookup } from 'ui-kit/shared/ResourceIconLookup';
 
 export const NodesInfo: FC<NodesInfoProps> = ({ nodesTinyData }) => {
   return (

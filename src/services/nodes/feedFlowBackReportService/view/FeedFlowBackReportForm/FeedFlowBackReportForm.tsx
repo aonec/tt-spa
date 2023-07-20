@@ -7,7 +7,7 @@ import React, { FC } from 'react';
 import { FormItem } from 'ui-kit/FormItem';
 import { Input, InputWithAddon } from 'ui-kit/Input';
 import { Select } from 'ui-kit/Select';
-import { ResourceSelect } from 'ui-kit/sharedComponents/ResourceSelect';
+import { ResourceSelect } from 'ui-kit/shared/ResourceSelect';
 import { feedFlowBackReportService } from '../../feedFlowBackReportService.model';
 import { validationSchema } from './FeedFlowBackReportForm.constants';
 import { LineWrapper } from './FeedFlowBackReportForm.styled';

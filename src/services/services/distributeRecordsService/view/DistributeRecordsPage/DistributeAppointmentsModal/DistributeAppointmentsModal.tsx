@@ -9,7 +9,7 @@ import {
   Wrapper,
 } from './DistributeAppointmentsModal.styled';
 import { DatePicker } from 'ui-kit/DatePicker';
-import { LinkButton } from 'ui-kit/sharedComponents/LinkButton';
+import { LinkButton } from 'ui-kit/shared/LinkButton';
 import {
   CreateControllerContainer,
   createIndividualSealControllerMutation,

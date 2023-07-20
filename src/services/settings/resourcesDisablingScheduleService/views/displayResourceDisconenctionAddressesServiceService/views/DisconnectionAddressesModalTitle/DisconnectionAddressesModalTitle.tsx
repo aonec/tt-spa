@@ -1,6 +1,6 @@
 import moment from 'moment';
 import React, { FC } from 'react';
-import { ResourceInfo } from 'ui-kit/sharedComponents/ResourceInfo';
+import { ResourceInfo } from 'ui-kit/shared/ResourceInfo';
 import {
   DateWrapper,
   GroupWrapper,

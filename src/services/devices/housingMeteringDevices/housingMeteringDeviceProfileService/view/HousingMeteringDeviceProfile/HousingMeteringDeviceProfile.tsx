@@ -2,11 +2,11 @@ import React, { FC } from 'react';
 import { useHistory } from 'react-router-dom';
 import { stringifyUrl } from 'query-string';
 
-import { GoBack } from 'ui-kit/sharedComponents/GoBack';
-import { HeaderInfoString } from 'ui-kit/sharedComponents/HeaderInfoString';
-import { DeviceStatus } from 'ui-kit/sharedComponents/IndividualDeviceInfo/DeviceStatus';
-import { ResourceIconLookup } from 'ui-kit/sharedComponents/ResourceIconLookup';
-import { LinkCard } from 'ui-kit/sharedComponents/LinkCard';
+import { GoBack } from 'ui-kit/shared/GoBack';
+import { HeaderInfoString } from 'ui-kit/shared/HeaderInfoString';
+import { DeviceStatus } from 'ui-kit/shared/IndividualDeviceInfo/DeviceStatus';
+import { ResourceIconLookup } from 'ui-kit/shared/ResourceIconLookup';
+import { LinkCard } from 'ui-kit/shared/LinkCard';
 import { getHousingStockItemAddress } from 'utils/getHousingStockItemAddress';
 import { CheckHousingMeteringDeviceContainer } from 'services/devices/housingMeteringDevices/checkHousingMeteringDeviceService';
 import { CloseHousingMeteringDeviceContainer } from 'services/devices/housingMeteringDevices/closeHousingMeteringDeviceService';

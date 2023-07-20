@@ -1,4 +1,4 @@
-import { ResourceInfo } from 'ui-kit/sharedComponents/ResourceInfo';
+import { ResourceInfo } from 'ui-kit/shared/ResourceInfo';
 import moment from 'moment';
 import React, { FC } from 'react';
 import { DocumentIcon, PencilIcon, TrashIcon, UploadIcon } from 'ui-kit/icons';
