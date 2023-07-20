@@ -1,4 +1,4 @@
-import { ContractorListResponsePagedList } from 'api/myApi';
+import { ContractorListResponsePagedList } from 'api/types';
 import { ContractorDataType } from 'services/contractors/editContractorService/editContractorService.types';
 
 export type ContractorsProps = {

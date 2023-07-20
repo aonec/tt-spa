@@ -5,7 +5,7 @@ import { omit } from 'lodash';
 import {
   HouseManagementResponse,
   StreetWithBuildingNumbersResponsePagedList,
-} from 'api/myApi';
+} from 'api/types';
 import {
   CreateSoiReportRequestPayload,
   GetHouseManagementsRequestPayload,

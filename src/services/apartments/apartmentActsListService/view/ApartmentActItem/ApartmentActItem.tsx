@@ -16,7 +16,7 @@ import {
   NoDocumentText,
 } from './ApartmentActItem.styled';
 import { ApartmentActItemProps } from './ApartmentActItem.types';
-import { DocumentResponse } from 'api/myApi';
+import { DocumentResponse } from 'api/types';
 import { ActTypesNamesLookup } from 'dictionaries';
 
 export const ApartmentActItem: FC<ApartmentActItemProps> = ({

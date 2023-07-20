@@ -4,7 +4,7 @@ import {
   HousingStockResponse,
   ResourceDisconnectingResponse,
   ResourceDisconnectingResponsePagedList,
-} from 'api/myApi';
+} from 'api/types';
 import {
   fetchHousingStock,
   fetchResourceDisconnectionOnHousingStock,

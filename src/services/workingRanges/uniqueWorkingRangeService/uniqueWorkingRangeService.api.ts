@@ -5,7 +5,7 @@ import {
   EResourceType,
   NodeOnHousingStockResponse,
   StreetWithBuildingNumbersResponsePagedList,
-} from 'api/myApi';
+} from 'api/types';
 import { GetAddressesWithCityRequestPayload } from './uniqueWorkingRangeService.types';
 
 export const getHousingStockUniqueWorkingRange = (query: {

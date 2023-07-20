@@ -1,4 +1,4 @@
-import { EEmailSubscriptionType, EReportType, EResourceType } from 'api/myApi';
+import { EEmailSubscriptionType, EReportType, EResourceType } from 'api/types';
 import * as Yup from 'yup';
 
 export const validationSchema = Yup.object().shape({

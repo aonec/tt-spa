@@ -6,7 +6,7 @@ import {
   GetElectricNodesRequestParams,
   UpdateAccountingNodesSumPayload,
 } from './AccountingNodesReadingsService.types';
-import { ElectricNodeResponse } from 'api/myApi';
+import { ElectricNodeResponse } from 'api/types';
 import { createGate } from 'effector-react';
 import { PREVIOUS_READING_INDEX_LIMIT } from './AccountingNodesReadingsService.constants';
 import { round } from 'utils/round';

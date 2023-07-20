@@ -4,7 +4,7 @@ import { useForm } from 'effector-forms';
 import { Form } from 'antd';
 import { FormItem } from 'ui-kit/FormItem';
 import { DocumentsUploadContainer } from 'ui-kit/DocumentsService';
-import { EClosingReason, EDocumentType } from 'api/myApi';
+import { EClosingReason, EDocumentType } from 'api/types';
 import { ErrorMessage } from 'ui-kit/ErrorMessage';
 import { Select } from 'ui-kit/Select';
 import { ClosingReasonsDictionary } from 'dictionaries';

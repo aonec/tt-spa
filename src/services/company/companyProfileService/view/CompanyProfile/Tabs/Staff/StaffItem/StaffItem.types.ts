@@ -1,4 +1,4 @@
-import { OrganizationUserListResponse, UserStatusResponse } from 'api/myApi';
+import { OrganizationUserListResponse, UserStatusResponse } from 'api/types';
 
 export type StaffItemProps = {
   staff: OrganizationUserListResponse;

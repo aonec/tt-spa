@@ -1,4 +1,4 @@
-import { TotalAppointmentCounterResponse } from 'api/myApi';
+import { TotalAppointmentCounterResponse } from 'api/types';
 
 export type SealProfileProps = {
   isNearestTotalAppointmentsLoading: boolean;

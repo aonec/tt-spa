@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { IndividualDeviceReadingsHistoryResponse } from 'api/myApi';
+import { IndividualDeviceReadingsHistoryResponse } from 'api/types';
 
 export const getReadingsHistory = (
   deviceId: number,

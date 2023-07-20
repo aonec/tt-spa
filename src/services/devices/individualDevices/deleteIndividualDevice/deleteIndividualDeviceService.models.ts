@@ -1,5 +1,5 @@
 import { createDomain, sample } from 'effector';
-import { IndividualDeviceListItemResponse } from 'api/myApi';
+import { IndividualDeviceListItemResponse } from 'api/types';
 import { apartmentIndividualDevicesMetersService } from 'services/meters/apartmentIndividualDevicesMetersService';
 import { message } from 'antd';
 import { deleteIndividualDeviceMutation } from './deleteIndividualDeviceService.api';

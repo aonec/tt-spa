@@ -7,7 +7,7 @@ import {
   ControllerResponse,
   DistrictResponse,
   TotalAppointmentCounterResponse,
-} from 'api/myApi';
+} from 'api/types';
 import {
   AppointmentsCountingByDistrictsResponse,
   GetDistrictAppointmentsRequestPayload,

@@ -5,7 +5,7 @@ import {
   GuidStringDictionaryItem,
   OrganizationUserListResponse,
   TaskGroupingFilter,
-} from 'api/myApi';
+} from 'api/types';
 import { GetTasksListRequestPayload } from '../../tasksProfileService.types';
 
 export type SearchTasksProps = {

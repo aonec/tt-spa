@@ -6,7 +6,7 @@ import {
   HousingStockResponse,
   TaskListResponse,
   TaskResponse,
-} from 'api/myApi';
+} from 'api/types';
 import { Timeline } from 'ui-kit/shared_components/TimeLine/TimeLine.types';
 import { TimerClosingStatus } from 'ui-kit/shared_components/Timer/Timer.types';
 import { getTimeStringByUTC } from 'utils/getTimeStringByUTC';

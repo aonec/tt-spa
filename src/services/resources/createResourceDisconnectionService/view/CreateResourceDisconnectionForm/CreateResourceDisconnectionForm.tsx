@@ -6,7 +6,7 @@ import {
   EDocumentType,
   EResourceDisconnectingType,
   EResourceType,
-} from 'api/myApi';
+} from 'api/types';
 import React, { FC, useCallback, useEffect, useMemo, useState } from 'react';
 import { DatePicker } from 'ui-kit/DatePicker';
 import { Document, DocumentsUploadContainer } from 'ui-kit/DocumentsService';

@@ -1,7 +1,7 @@
 import {
   NodeOnHousingStockResponse,
   PipeNodeIntoCalculatorResponse,
-} from 'api/myApi';
+} from 'api/types';
 
 export type PipeNodeInfoProps = {
   pipeNode: NodeOnHousingStockResponse | PipeNodeIntoCalculatorResponse;

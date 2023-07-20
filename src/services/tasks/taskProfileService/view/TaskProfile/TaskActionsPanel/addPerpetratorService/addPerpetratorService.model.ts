@@ -3,7 +3,7 @@ import { createGate } from 'effector-react';
 import {
   OrganizationUserListResponse,
   OrganizationUserListResponsePagedList,
-} from 'api/myApi';
+} from 'api/types';
 import { taskProfileService } from 'services/tasks/taskProfileService/taskProfileService.model';
 import { getOrganizationUsers } from './addPerpetratorService.api';
 

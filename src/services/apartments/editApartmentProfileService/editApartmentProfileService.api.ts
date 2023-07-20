@@ -1,5 +1,5 @@
 import { axios } from 'api/axios';
-import { ApartmentResponse } from 'api/myApi';
+import { ApartmentResponse } from 'api/types';
 import { PutApartment } from './editApartmentProfileService.types';
 
 export const getApartment = (apartmentId: number): Promise<ApartmentResponse> =>

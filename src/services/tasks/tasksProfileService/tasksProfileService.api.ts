@@ -3,7 +3,7 @@ import {
   ApartmentResponse,
   HousingStockResponse,
   TasksPagedList,
-} from 'api/myApi';
+} from 'api/types';
 import {
   FiltersGatePayload,
   GetTasksListRequestPayload,

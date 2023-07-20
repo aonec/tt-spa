@@ -2,7 +2,7 @@ import {
   CreateHousingMeteringDeviceReadingsRequest,
   ElectricHousingMeteringDeviceResponse,
   HousingMeteringDeviceReadingsIncludingPlacementResponse,
-} from 'api/myApi';
+} from 'api/types';
 import { MetersInputBlockStatus } from '../individualDeviceMetersInputService/view/MetersInputsBlock/MetersInputsBlock.types';
 
 export type AccountingNodesReadingsInputContainerProps = {

@@ -1,4 +1,4 @@
-import { ApartmentListResponse } from 'api/myApi';
+import { ApartmentListResponse } from 'api/types';
 
 export type ApartmentsListProps = {
   apartments: ApartmentListResponse[];

@@ -1,4 +1,4 @@
-import { ApartmentAddress, HomeownerAccount } from 'api/myApi';
+import { ApartmentAddress, HomeownerAccount } from 'api/types';
 
 export const getApartmentAddressForList = (
   apartment: ApartmentAddress | null | undefined,

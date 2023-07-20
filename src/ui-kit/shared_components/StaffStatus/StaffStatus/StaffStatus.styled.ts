@@ -1,4 +1,4 @@
-import { EOrganizationUserWorkingStatusType } from 'api/myApi';
+import { EOrganizationUserWorkingStatusType } from 'api/types';
 import styled from 'styled-components';
 
 const staffStatusColors = {

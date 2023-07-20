@@ -1,7 +1,7 @@
 import { createDomain, sample } from 'effector';
 import { createGate } from 'effector-react';
 import { getNearestTotalAppointments } from './sealActionSelectService.api';
-import { TotalAppointmentCounterResponse } from 'api/myApi';
+import { TotalAppointmentCounterResponse } from 'api/types';
 
 const domain = createDomain('sealActionSelectService');
 

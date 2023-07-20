@@ -1,4 +1,4 @@
-import { EPipeNodeConfig } from 'api/myApi';
+import { EPipeNodeConfig } from 'api/types';
 import {
   CommunicationPipePayload,
   CreateCommonDevicePartitial,

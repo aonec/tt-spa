@@ -1,7 +1,7 @@
 import {
   ApartmentResponse,
   IndividualDeviceMountPlaceForFilterResponse,
-} from 'api/myApi';
+} from 'api/types';
 import {
   GetApartmentsRequestPayload,
   UpdateApartmentRequestPayload,

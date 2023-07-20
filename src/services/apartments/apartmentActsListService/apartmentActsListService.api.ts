@@ -1,7 +1,7 @@
 import { saveAs } from 'file-saver';
 
 import { axios } from 'api/axios';
-import { ApartmentActResponse, DocumentResponse } from 'api/myApi';
+import { ApartmentActResponse, DocumentResponse } from 'api/types';
 
 export const getapartmentActsList = async (
   apartmentId: number,

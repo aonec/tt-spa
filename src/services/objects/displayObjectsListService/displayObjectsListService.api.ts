@@ -1,5 +1,5 @@
 import { axios } from 'api/axios';
-import { BuildingListResponsePagedList } from 'api/myApi';
+import { BuildingListResponsePagedList } from 'api/types';
 import { GetHousingStocksRequestPayload } from './displayObjectsListService.types';
 
 export const getHousuingStocks = (

@@ -1,4 +1,4 @@
-import { EResourceType } from 'api/myApi';
+import { EResourceType } from 'api/types';
 
 export type ResourceSelectProps = {
   onChange: (resources: EResourceType[]) => void;

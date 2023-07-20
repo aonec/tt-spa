@@ -3,7 +3,7 @@ import { SubscriberStatisticsFilter } from '../displayStatisticsListByManagingFi
 import {
   BuildingListResponsePagedList,
   SubscriberStatisticsСonsumptionResponse,
-} from 'api/myApi';
+} from 'api/types';
 import { HousingStockAddressForm } from './displayStatisticsListByHousesService.types';
 
 export const fetchStatisticsByHouse = (

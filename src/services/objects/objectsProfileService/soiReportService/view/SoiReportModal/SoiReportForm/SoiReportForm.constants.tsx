@@ -1,5 +1,5 @@
 import moment from 'moment';
-import { EResourceType } from 'api/myApi';
+import { EResourceType } from 'api/types';
 import * as Yup from 'yup';
 
 export const formInitialValues = {

@@ -2,7 +2,7 @@ import React, { FC, useMemo } from 'react';
 import { Stage } from './Stage';
 import { TitleWrapper, Wrapper } from './TaskStages.styled';
 import { TaskStagesProps } from './TaskStages.types';
-import { EStageStatus } from 'api/myApi';
+import { EStageStatus } from 'api/types';
 
 export const TaskStages: FC<TaskStagesProps> = ({
   stages,

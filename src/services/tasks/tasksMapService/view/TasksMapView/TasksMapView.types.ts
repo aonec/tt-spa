@@ -3,7 +3,7 @@ import {
   EManagingFirmTaskFilterTypeNullableStringDictionaryItem,
   OrganizationUserListResponse,
   TaskResponse,
-} from 'api/myApi';
+} from 'api/types';
 import { HousingStocksWithTasksFiltrationValues } from '../../tasksMapService.types';
 import { OrganizationCoordinates } from 'services/currentUserService/currentUserService.types';
 

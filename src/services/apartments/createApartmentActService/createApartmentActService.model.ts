@@ -1,5 +1,5 @@
 import { createDomain, forward, sample } from 'effector';
-import { AddApartmentActRequest } from 'api/myApi';
+import { AddApartmentActRequest } from 'api/types';
 import { apartmentActsListService } from '../apartmentActsListService';
 import { postApartmentAct } from './createApartmentActService.api';
 import { CreateActFormPayload } from './createApartmentActService.types';

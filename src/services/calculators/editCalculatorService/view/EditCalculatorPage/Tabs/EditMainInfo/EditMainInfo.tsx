@@ -8,7 +8,7 @@ import { DatePicker } from 'ui-kit/DatePicker';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 import { Button } from 'ui-kit/Button';
-import { UpdateCalculatorRequest } from 'api/myApi';
+import { UpdateCalculatorRequest } from 'api/types';
 import moment from 'moment';
 import { NodesInfo } from './NodesInfo';
 import { ErrorMessage } from 'ui-kit/ErrorMessage';

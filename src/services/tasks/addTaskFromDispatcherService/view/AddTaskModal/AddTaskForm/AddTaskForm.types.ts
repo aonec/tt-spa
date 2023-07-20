@@ -5,7 +5,7 @@ import {
   ErpSourceResponse,
   ErpWorkCategoryResponse,
   ErpObjectResponse,
-} from 'api/myApi';
+} from 'api/types';
 import { GetTaskDeadlineRequest } from 'services/tasks/addTaskFromDispatcherService/addTaskFromDispatcherService.types';
 
 export type AddTask = {

@@ -4,7 +4,7 @@ import {
   EExpiresCheckingDateAt,
   EOrderByRule,
   EResourceType,
-} from 'api/myApi';
+} from 'api/types';
 import { SearchIndividualDevicesParams } from '../../../individualDevicesProfileService.types';
 
 export type SearchIndividualDevicesRequestPayload =

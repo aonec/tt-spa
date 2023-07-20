@@ -5,7 +5,7 @@ import { useParams } from 'react-router-dom';
 import { housingStockProfileService } from './housingStockProfileService.model';
 import { HousingStockProfile } from './view/HousingStockProfile';
 import { ConsolidatedReportContainer } from './consolidatedReportService';
-import { ESecuredIdentityRoleName } from 'api/myApi';
+import { ESecuredIdentityRoleName } from 'api/types';
 import { usePermission } from 'hooks/usePermission';
 
 const { inputs, outputs, gates } = housingStockProfileService;

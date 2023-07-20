@@ -1,4 +1,4 @@
-import { ApartmentListResponse, ApartmentResponse } from 'api/myApi';
+import { ApartmentListResponse, ApartmentResponse } from 'api/types';
 
 export const getApartmentAddressString = (
   apartment: ApartmentResponse | ApartmentListResponse | null,

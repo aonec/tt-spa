@@ -1,4 +1,4 @@
-import { EResourceDisconnectingType } from 'api/myApi';
+import { EResourceDisconnectingType } from 'api/types';
 
 export const ResourceDisconnectingClassLookUp: {
   [key in EResourceDisconnectingType]: string;

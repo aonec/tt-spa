@@ -1,4 +1,4 @@
-import { EResourceTypeConsumptionRateResponseDictionaryItem } from 'api/myApi';
+import { EResourceTypeConsumptionRateResponseDictionaryItem } from 'api/types';
 import { axios } from 'api/axios';
 
 export const getConsuptionRates = (

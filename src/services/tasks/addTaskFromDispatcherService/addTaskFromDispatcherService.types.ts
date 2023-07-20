@@ -1,4 +1,4 @@
-import { EisTaskType } from 'api/myApi';
+import { EisTaskType } from 'api/types';
 
 export type GetTaskDeadlineRequest = {
   WorkCategoryId?: string;

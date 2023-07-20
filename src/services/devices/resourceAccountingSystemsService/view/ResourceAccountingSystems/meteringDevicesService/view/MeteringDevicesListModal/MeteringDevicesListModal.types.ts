@@ -2,7 +2,7 @@ import {
   NodeOnHousingStockResponse,
   PipeNodeIntoCalculatorResponse,
   PipeNodeMeteringDeviceResponse,
-} from 'api/myApi';
+} from 'api/types';
 
 export type MeteringDevicesListModalProps = {
   isModalOpen: boolean;

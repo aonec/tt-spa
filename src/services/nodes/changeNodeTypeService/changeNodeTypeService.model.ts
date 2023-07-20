@@ -1,6 +1,6 @@
 import { message } from 'antd';
 import { createDomain, forward, guard } from 'effector';
-import { NodeSetRegistrationTypeRequest, PipeNodeResponse } from 'api/myApi';
+import { NodeSetRegistrationTypeRequest, PipeNodeResponse } from 'api/types';
 import { EffectFailDataAxiosError } from 'types';
 import { fetchChangeNodeType } from './changeNodeTypeService.api';
 import { ChangeNodeTypePayload } from './changeNodeTypeService.types';

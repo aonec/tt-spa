@@ -1,4 +1,4 @@
-import { IndividualDeviceMountPlaceForFilterResponse } from 'api/myApi';
+import { IndividualDeviceMountPlaceForFilterResponse } from 'api/types';
 import { SearchIndividualDevicesRequestPayload } from '../../individualDevicesViewByAddressService.types';
 
 export type IndividualDevicesAddressSearchProps = {

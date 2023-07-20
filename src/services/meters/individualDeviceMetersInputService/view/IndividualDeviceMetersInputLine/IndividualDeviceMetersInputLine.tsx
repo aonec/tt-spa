@@ -3,7 +3,7 @@ import { useEvent, useStore } from 'effector-react';
 import { message, Tooltip } from 'antd';
 import confirm from 'antd/lib/modal/confirm';
 import { useHistory } from 'react-router-dom';
-import { ESecuredIdentityRoleName } from 'api/myApi';
+import { ESecuredIdentityRoleName } from 'api/types';
 import { HistoryIcon, StarIcon } from 'ui-kit/icons';
 import { deleteIndividualDeviceService } from 'services/devices/individualDevices/deleteIndividualDevice/deleteIndividualDeviceService.models';
 import { ContextMenuButton } from 'ui-kit/ContextMenuButton/ContextMenuButton';

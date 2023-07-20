@@ -1,5 +1,5 @@
 import { axios } from 'api/axios';
-import { IndividualDeviceListResponseFromDevicePagePagedList } from 'api/myApi';
+import { IndividualDeviceListResponseFromDevicePagePagedList } from 'api/types';
 import { IndividualDeviceSearchbySerialNumberPayload } from './individualDevicesViesBySerialNumberService.types';
 
 export const fetchIndividualDevices = (

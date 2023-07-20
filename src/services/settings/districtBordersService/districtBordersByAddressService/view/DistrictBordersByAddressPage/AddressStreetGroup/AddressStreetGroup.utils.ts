@@ -1,4 +1,4 @@
-import { AddressShortResponse } from 'api/myApi';
+import { AddressShortResponse } from 'api/types';
 import { ModifiedAddressShortResponse } from './AddressStreetGroup.types';
 
 //разбивает строку на число и буквы

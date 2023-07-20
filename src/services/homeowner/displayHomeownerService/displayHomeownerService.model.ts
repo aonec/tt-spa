@@ -1,6 +1,6 @@
 import { createDomain } from 'effector';
 import { createGate } from 'effector-react';
-import { HomeownerAccountResponse } from 'api/myApi';
+import { HomeownerAccountResponse } from 'api/types';
 import { getHomeownerAccount } from './displayHomeownerService.api';
 
 const domain = createDomain('displayHomeownerService');

@@ -2,7 +2,7 @@ import {
   IndividualDeviceListItemResponse,
   IndividualDeviceOnTaskResponse,
   IndividualDeviceResponse,
-} from 'api/myApi';
+} from 'api/types';
 
 export type IndividualDeviceInfoExtendedProps = {
   device:

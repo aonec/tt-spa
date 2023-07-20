@@ -1,6 +1,6 @@
 import { combine, createDomain, guard, sample } from 'effector';
 import { createGate } from 'effector-react';
-import { PipeHousingMeteringDeviceResponse, TasksPagedList } from 'api/myApi';
+import { PipeHousingMeteringDeviceResponse, TasksPagedList } from 'api/types';
 import {
   getDeviceTasks,
   getHousingMeteringDevice,

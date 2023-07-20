@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
-import { IndividualDeviceReadingsYearHistoryResponse } from '../../../../../api/myApi';
+import { IndividualDeviceReadingsYearHistoryResponse } from '../../../../../api/types';
 export function useOpenedYears(
   years: IndividualDeviceReadingsYearHistoryResponse[],
 ) {

@@ -1,5 +1,5 @@
 import { axios } from 'api/axios';
-import { TotalAppointmentCounterResponse } from 'api/myApi';
+import { TotalAppointmentCounterResponse } from 'api/types';
 
 export const getNearestTotalAppointments =
   (): Promise<TotalAppointmentCounterResponse> =>

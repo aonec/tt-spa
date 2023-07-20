@@ -23,7 +23,7 @@ import {
 } from './EditHomeownersList.styled';
 import { EditHomeownersListProps } from './EditHomeownersList.types';
 import moment from 'moment';
-import { EPersonType } from 'api/myApi';
+import { EPersonType } from 'api/types';
 import { EditHomeownerFormPayload } from './editHomeownerService/editHomeownerService.types';
 import {
   CloseHomeownerAccountContainer,

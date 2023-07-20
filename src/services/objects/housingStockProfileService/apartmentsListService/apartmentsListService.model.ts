@@ -1,6 +1,6 @@
 import { combine, createDomain, guard, sample } from 'effector';
 import { createGate } from 'effector-react';
-import { ApartmentListResponsePagedList } from 'api/myApi';
+import { ApartmentListResponsePagedList } from 'api/types';
 import { getApartmentsList } from './apartmentsListService.api';
 import { SegmentType } from './view/ApartmentsView/ApartmentsView.types';
 

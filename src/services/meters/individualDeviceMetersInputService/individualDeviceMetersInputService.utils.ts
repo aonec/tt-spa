@@ -1,10 +1,10 @@
-import { EResourceType } from '../../../api/myApi';
+import { EResourceType } from '../../../api/types';
 import moment from 'moment';
 import {
   IndividualDeviceReadingsResponse,
   IndividualDeviceListItemResponse,
   ConsumptionRateResponse,
-} from 'api/myApi';
+} from 'api/types';
 import { getFilledArray } from 'utils/getFilledArray';
 import {
   CompareReadingsStatus,

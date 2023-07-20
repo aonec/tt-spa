@@ -1,5 +1,5 @@
-import { StagePushRequest } from '../../../../../api/myApi';
-import { DocumentResponse, PipeNodeResponse, TaskResponse } from 'api/myApi';
+import { StagePushRequest } from '../../../../../api/types';
+import { DocumentResponse, PipeNodeResponse, TaskResponse } from 'api/types';
 
 export type TaskProfileProps = {
   task: TaskResponse;

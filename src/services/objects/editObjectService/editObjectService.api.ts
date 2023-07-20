@@ -3,7 +3,7 @@ import {
   BuildingAddressCreateRequest,
   BuildingAddressUpdateRequest,
   HousingStockUpdateRequest,
-} from 'api/myApi';
+} from 'api/types';
 
 export const updateHousingStock = (payload: {
   housingStockId: number;

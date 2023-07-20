@@ -3,7 +3,7 @@ import {
   ENodeWorkingRangeSeason,
   EResourceType,
   NodeOnHousingStockResponse,
-} from 'api/myApi';
+} from 'api/types';
 import { TreeSelectElement } from 'ui-kit/shared_components/AddressTreeSelect/AddressTreeSelect.types';
 
 export type UniqueWorkingRangeProps = {

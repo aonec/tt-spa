@@ -1,5 +1,5 @@
 import moment from 'moment';
-import { DateTimeTaskStatisticsItemArrayDictionaryItem } from 'api/myApi';
+import { DateTimeTaskStatisticsItemArrayDictionaryItem } from 'api/types';
 import {
   GetTaskXPosPayload,
   ReportType,

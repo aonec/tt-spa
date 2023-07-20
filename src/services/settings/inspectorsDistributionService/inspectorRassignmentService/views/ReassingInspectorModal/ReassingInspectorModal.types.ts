@@ -1,4 +1,4 @@
-import { InspectorResponse } from 'api/myApi';
+import { InspectorResponse } from 'api/types';
 import { InspectorsReassignmentForm } from '../../inspectorReassignmentService.types';
 
 export type ReassingInspectorModalProps = {

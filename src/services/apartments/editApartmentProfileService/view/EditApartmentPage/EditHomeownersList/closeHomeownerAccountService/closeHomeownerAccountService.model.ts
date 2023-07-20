@@ -1,5 +1,5 @@
 import { createDomain, forward, sample } from 'effector';
-import { HomeownerAccountCloseRequest } from 'api/myApi';
+import { HomeownerAccountCloseRequest } from 'api/types';
 import { editApartmentProfileService } from 'services/apartments/editApartmentProfileService/editApartmentProfileService.model';
 import { postCloseHomeownerApartment } from './closeHomeownerAccountService.api';
 import { message } from 'antd';

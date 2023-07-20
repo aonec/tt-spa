@@ -1,4 +1,4 @@
-import { ArchivesDataGroup } from 'api/myApi';
+import { ArchivesDataGroup } from 'api/types';
 import { ReportType } from '../StatisticsGraph/StatisticsGraph.types';
 
 export type NodeStatisticsTableProps = {

@@ -1,5 +1,5 @@
 import { axios } from 'api/axios';
-import { HomeownerAccountCreateRequest } from 'api/myApi';
+import { HomeownerAccountCreateRequest } from 'api/types';
 
 export const addHomeowner = (
   reqestPayload: HomeownerAccountCreateRequest,

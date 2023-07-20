@@ -3,7 +3,7 @@ import {
   OrganizationResponse,
   OrganizationUserListResponsePagedList,
   UserStatusResponse,
-} from 'api/myApi';
+} from 'api/types';
 import { ContractorDataType } from 'services/contractors/editContractorService/editContractorService.types';
 
 export type CompanyProfileProps = {

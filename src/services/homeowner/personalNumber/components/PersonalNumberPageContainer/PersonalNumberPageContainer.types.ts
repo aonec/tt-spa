@@ -1,4 +1,4 @@
-import { ApartmentResponse } from 'api/myApi';
+import { ApartmentResponse } from 'api/types';
 
 export type PersonalNumberPageContainerProps = {
   isLoading?: boolean;

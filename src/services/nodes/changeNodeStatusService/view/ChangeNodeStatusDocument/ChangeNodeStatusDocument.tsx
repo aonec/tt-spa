@@ -1,4 +1,4 @@
-import { EDocumentType } from 'api/myApi';
+import { EDocumentType } from 'api/types';
 import React, { FC, useState } from 'react';
 import { Document, DocumentsUploadContainer } from 'ui-kit/DocumentsService';
 import { ChangeNodeStatusDocumentProps } from './ChangeNodeStatusDocument.types';

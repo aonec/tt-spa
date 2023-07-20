@@ -2,7 +2,7 @@ import { combine, createDomain, forward, guard, sample } from 'effector';
 import {
   HouseManagementResponse,
   StreetWithBuildingNumbersResponsePagedList,
-} from 'api/myApi';
+} from 'api/types';
 import {
   getAdresses,
   getHouseManagements,

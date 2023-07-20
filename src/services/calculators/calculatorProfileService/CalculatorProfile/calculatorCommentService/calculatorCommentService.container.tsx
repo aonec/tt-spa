@@ -3,7 +3,7 @@ import React, { FC } from 'react';
 import { CommentPanel } from 'ui-kit/shared_components/CommentPanel';
 import { calculatorCommentService } from './calculatorCommentService.model';
 import { CalculatorCommentContainerProps } from './calculatorCommentService.types';
-import { ESecuredIdentityRoleName } from 'api/myApi';
+import { ESecuredIdentityRoleName } from 'api/types';
 import { usePermission } from 'hooks/usePermission';
 
 const { outputs, inputs, gates } = calculatorCommentService;

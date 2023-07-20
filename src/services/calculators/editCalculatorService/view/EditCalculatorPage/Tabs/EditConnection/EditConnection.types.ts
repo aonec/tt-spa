@@ -1,4 +1,4 @@
-import { CalculatorResponse, UpdateCalculatorRequest } from 'api/myApi';
+import { CalculatorResponse, UpdateCalculatorRequest } from 'api/types';
 
 export type EditConnectionProps = {
   calculator: CalculatorResponse | null;

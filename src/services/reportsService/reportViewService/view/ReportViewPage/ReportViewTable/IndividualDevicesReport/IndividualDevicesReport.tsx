@@ -15,7 +15,7 @@ import { Table } from 'ui-kit/Table';
 import {
   EConstructedReportDeviceStatus,
   EIndividualDeviceReportOption,
-} from 'api/myApi';
+} from 'api/types';
 import moment from 'moment';
 import { Empty } from 'antd';
 import { getReportElemAddress } from '../ReportViewTable.utils';

@@ -3,7 +3,7 @@ import { Form, Radio, Space, message } from 'antd';
 import { FormItem } from 'ui-kit/FormItem';
 import { Input } from 'ui-kit/Input';
 import { useFormik } from 'formik';
-import { EReportType } from 'api/myApi';
+import { EReportType } from 'api/types';
 import {
   ArchiveType,
   ConsolidatedReportFormProps,

@@ -1,4 +1,4 @@
-import { IndividualDeviceMountPlaceForFilterResponse } from 'api/myApi';
+import { IndividualDeviceMountPlaceForFilterResponse } from 'api/types';
 import { DevicesSearchType } from 'services/devices/devicesPageService/devicesPageService.types';
 import { SearchIndividualDevicesParams } from '../../../individualDevicesProfileService.types';
 

@@ -1,6 +1,6 @@
 import { Form } from 'antd';
 import { useFormik } from 'formik';
-import { EActResourceType, EActType, EDocumentType } from 'api/myApi';
+import { EActResourceType, EActType, EDocumentType } from 'api/types';
 import React, {
   FC,
   SyntheticEvent,

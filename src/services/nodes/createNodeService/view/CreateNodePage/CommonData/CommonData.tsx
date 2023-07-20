@@ -20,7 +20,7 @@ import { CommonDataProps } from './CommonData.types';
 import { useFormik } from 'formik';
 import { ErrorMessage } from 'ui-kit/ErrorMessage';
 import { configNamesLookup } from 'utils/configNamesLookup';
-import { ENodeRegistrationType } from 'api/myApi';
+import { ENodeRegistrationType } from 'api/types';
 import { ChangeNodeStatusForm } from 'services/nodes/changeNodeStatusService/view/ChangeNodeStatusForm';
 import { getChangeNodeStatusPayload } from 'services/nodes/changeNodeStatusService/changeNodeStatusService.utils';
 import { ChangeNodeStatusFormPayload } from 'services/nodes/changeNodeStatusService/changeNodeStatusService.types';

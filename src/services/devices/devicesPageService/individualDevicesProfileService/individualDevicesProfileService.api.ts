@@ -1,5 +1,5 @@
 import { axios } from 'api/axios';
-import { IndividualDeviceMountPlaceForFilterResponse } from 'api/myApi';
+import { IndividualDeviceMountPlaceForFilterResponse } from 'api/types';
 
 export const fetchMouintPlaces = (): Promise<
   IndividualDeviceMountPlaceForFilterResponse[]

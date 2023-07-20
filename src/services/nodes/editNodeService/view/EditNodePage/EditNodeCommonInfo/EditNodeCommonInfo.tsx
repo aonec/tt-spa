@@ -19,7 +19,7 @@ import { Button } from 'ui-kit/Button';
 import { useHistory } from 'react-router-dom';
 import { configNamesLookup } from 'utils/configNamesLookup';
 import { ConfiguratePipe } from 'services/nodes/createNodeService/view/CreateNodePage/CommonData/ConfiguratePipe';
-import { CommunicationPipeResponse, EMagistralType } from 'api/myApi';
+import { CommunicationPipeResponse, EMagistralType } from 'api/types';
 import { validationSchema } from './EditNodeCommonInfo.constants';
 import { ErrorMessage } from 'ui-kit/ErrorMessage';
 import { filterCommunicationPipes } from './EditNodeCommonInfo.utils';

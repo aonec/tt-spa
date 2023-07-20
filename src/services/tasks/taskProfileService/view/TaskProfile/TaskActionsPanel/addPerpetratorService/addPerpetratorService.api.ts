@@ -1,6 +1,6 @@
 import queryString from 'query-string';
 import { axios } from 'api/axios';
-import { OrganizationUserListResponsePagedList } from 'api/myApi';
+import { OrganizationUserListResponsePagedList } from 'api/types';
 
 export const getOrganizationUsers = (
   RoleNames: string[] | null,

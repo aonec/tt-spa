@@ -2,7 +2,7 @@ import { axios } from 'api/axios';
 import {
   ManagementFirmCompetenceResponse,
   ManagementFirmCompetencesListResponse,
-} from 'api/myApi';
+} from 'api/types';
 
 export const getCompetencesCatalog = async (): Promise<
   ManagementFirmCompetenceResponse[] | null

@@ -1,5 +1,5 @@
 import { axios } from 'api/axios';
-import { AppointmentCreateRequest } from 'api/myApi';
+import { AppointmentCreateRequest } from 'api/types';
 
 export const fetchCreateSeal = (
   payload: AppointmentCreateRequest,

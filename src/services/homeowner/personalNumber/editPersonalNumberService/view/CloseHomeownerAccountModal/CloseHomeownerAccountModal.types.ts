@@ -1,7 +1,7 @@
 import {
   HomeownerAccountCloseRequest,
   HomeownerAccountListResponse,
-} from 'api/myApi';
+} from 'api/types';
 
 export type CloseHomeownerAccountModalProps = {
   isLoading: boolean;

@@ -15,7 +15,7 @@ import { ErrorMessage } from 'ui-kit/ErrorMessage';
 import { Button } from 'ui-kit/Button';
 import { Alert } from 'ui-kit/Alert';
 import { validationSchema } from './EditCalculatorConnection.constants';
-import { UpdatePipeNodeRequest } from 'api/myApi';
+import { UpdatePipeNodeRequest } from 'api/types';
 import { useHistory } from 'react-router-dom';
 import { RemoveConnectionConfirmModalContainer } from '../removeConnectionService';
 

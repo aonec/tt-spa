@@ -2,7 +2,7 @@ import {
   TaskActionsComponent,
   TaskPanelComponentsGroupsName,
 } from './TaskActionsPanel.types';
-import { EStageActionType } from 'api/myApi';
+import { EStageActionType } from 'api/types';
 import { useMemo } from 'react';
 import {
   actionComponentPositionNamesDictionary,

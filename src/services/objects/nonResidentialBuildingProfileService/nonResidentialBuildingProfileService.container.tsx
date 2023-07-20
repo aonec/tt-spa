@@ -6,7 +6,7 @@ import { useUnit } from 'effector-react';
 import { WithLoader } from 'ui-kit/shared_components/WithLoader';
 import { NonResidentialBuildingProfile } from './view/NonResidentialBuildingProfile';
 import { usePermission } from 'hooks/usePermission';
-import { ESecuredIdentityRoleName } from 'api/myApi';
+import { ESecuredIdentityRoleName } from 'api/types';
 import { ConsolidatedReportContainer } from '../housingStockProfileService/consolidatedReportService';
 
 const { inputs, outputs, gates } = nonResidentialBuildingProfileService;

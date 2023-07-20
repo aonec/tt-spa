@@ -1,4 +1,4 @@
-import { IndividualDeviceListItemResponse } from 'api/myApi';
+import { IndividualDeviceListItemResponse } from 'api/types';
 import { BufferedReadingValues } from 'services/meters/individualDeviceMetersInputService/view/MetersInputsBlock/MetersInputsBlock.types';
 
 export type EditReadingsHistoryModalProps = {

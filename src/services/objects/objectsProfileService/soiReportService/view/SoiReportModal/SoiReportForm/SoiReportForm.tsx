@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 import { Form, Radio, Space } from 'antd';
 import { useFormik } from 'formik';
 import moment from 'moment';
-import { ESoiReportPeriod } from 'api/myApi';
+import { ESoiReportPeriod } from 'api/types';
 import { ErrorMessage } from 'ui-kit/ErrorMessage';
 import { TreeSelectSC } from 'services/resources/createResourceDisconnectionService/view/CreateResourceDisconnectionForm/CreateResourceDisconnectionForm.styled';
 import { DatePicker } from 'ui-kit/DatePicker';

@@ -1,5 +1,5 @@
 import { axios } from 'api/axios';
-import { OrganizationResponse } from 'api/myApi';
+import { OrganizationResponse } from 'api/types';
 import { OrganizationUpdatePayload } from './editCompanyService.types';
 
 export const fetchUpdateOrganization = ({

@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import { EActResourceType, EManagingFirmTaskType } from 'api/myApi';
+import { EActResourceType, EManagingFirmTaskType } from 'api/types';
 import React, { FC, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { CalculatorIcon, NumberIcon } from 'ui-kit/icons';

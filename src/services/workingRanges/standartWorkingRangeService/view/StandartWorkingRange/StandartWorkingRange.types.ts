@@ -2,7 +2,7 @@ import {
   AllNodeWorkingRangeResponse,
   ENodeWorkingRangeSeason,
   EResourceType,
-} from 'api/myApi';
+} from 'api/types';
 
 export type StandartWorkingRangeProps = {
   standartWorkingRange: AllNodeWorkingRangeResponse | null;

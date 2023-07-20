@@ -3,7 +3,7 @@ import { createGate } from 'effector-react';
 import {
   StageListResponse,
   StageListResponseWrappedListResponse,
-} from 'api/myApi';
+} from 'api/types';
 import { getNextStages } from './switchStageSelectService.api';
 
 const domain = createDomain('switchStageSelectService');

@@ -1,4 +1,4 @@
-import { EResourceDisconnectingType } from 'api/myApi';
+import { EResourceDisconnectingType } from 'api/types';
 import { getFilledArray } from 'utils/getFilledArray';
 import * as yup from 'yup';
 

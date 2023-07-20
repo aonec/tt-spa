@@ -6,7 +6,7 @@ import {
   EResourceType,
   ETaskTargetObject,
   EManagingFirmTaskType,
-} from 'api/myApi';
+} from 'api/types';
 import { round } from 'utils/round';
 import {
   GetPlacemarkerLayoutLinkResponse,

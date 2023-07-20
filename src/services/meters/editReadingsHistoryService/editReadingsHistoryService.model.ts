@@ -1,7 +1,7 @@
 import { message } from 'antd';
 import { combine, createDomain, forward, guard, sample } from 'effector';
 import moment from 'moment';
-import { IndividualDeviceListItemResponse } from 'api/myApi';
+import { IndividualDeviceListItemResponse } from 'api/types';
 import { EffectFailDataAxiosError } from 'types';
 import { apartmentIndividualDevicesMetersService } from '../apartmentIndividualDevicesMetersService';
 import { BufferedReadingValues } from '../individualDeviceMetersInputService/view/MetersInputsBlock/MetersInputsBlock.types';

@@ -1,4 +1,4 @@
-import { IndividualDeviceReadingsResponse } from 'api/myApi';
+import { IndividualDeviceReadingsResponse } from 'api/types';
 import { getReadingLite } from '../../individualDeviceMetersInputService.utils';
 
 export function getReadingValuesArray(

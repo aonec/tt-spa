@@ -2,7 +2,7 @@ import { createDomain, forward } from 'effector';
 import { deleteTaskComment, updateTaskComment } from './taskCommentService.api';
 import { EffectFailDataAxiosError } from 'types';
 import { message } from 'antd';
-import { TaskCommentRequest, TaskCommentResponse } from 'api/myApi';
+import { TaskCommentRequest, TaskCommentResponse } from 'api/types';
 import { taskProfileService } from 'services/tasks/taskProfileService/taskProfileService.model';
 
 const domain = createDomain('taskCommentService');

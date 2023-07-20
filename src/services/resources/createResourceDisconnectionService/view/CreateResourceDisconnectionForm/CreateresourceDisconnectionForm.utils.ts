@@ -1,5 +1,5 @@
 import moment from 'moment';
-import { ResourceDisconnectingResponse } from 'api/myApi';
+import { ResourceDisconnectingResponse } from 'api/types';
 import { TreeSelectElement } from 'ui-kit/shared_components/AddressTreeSelect/AddressTreeSelect.types';
 import { hours } from './CreateResourceDisconnectionForm.constants';
 

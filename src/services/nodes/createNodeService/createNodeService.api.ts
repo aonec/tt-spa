@@ -6,7 +6,7 @@ import {
   NodeServiceZoneListResponse,
   PipeNodeResponse,
   PipeNodeValidationResultResponse,
-} from 'api/myApi';
+} from 'api/types';
 
 export const getHousingStock = (
   housingStockId: number,

@@ -1,4 +1,4 @@
-import { EResourceType } from 'api/myApi';
+import { EResourceType } from 'api/types';
 import { MetersInputBlockStatus } from 'services/meters/individualDeviceMetersInputService/view/MetersInputsBlock/MetersInputsBlock.types';
 
 export type AccountingNodeReadingsInputBlockProps = {

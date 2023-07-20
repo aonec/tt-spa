@@ -3,7 +3,7 @@ import {
   IndividualDeviceResponse,
   MeteringDeviceResponse,
   UpdateIndividualDeviceRequest,
-} from 'api/myApi';
+} from 'api/types';
 
 export const getIndividualDevice = (
   id: number,

@@ -12,7 +12,7 @@ import {
   EClosingReason,
   EIndividualDeviceRateType,
   EResourceType,
-} from 'api/myApi';
+} from 'api/types';
 import { getBitDepthAndScaleFactor } from 'utils/getBitDepthAndScaleFactor';
 import {
   checkIndividualDeviceMutation,

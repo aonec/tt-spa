@@ -2,7 +2,7 @@ import { axios } from 'api/axios';
 import {
   HomeownerAccountCloseRequest,
   HomeownerAccountUpdateRequest,
-} from 'api/myApi';
+} from 'api/types';
 
 export const putHomeownerAccount = ({
   id,

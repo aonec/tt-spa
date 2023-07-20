@@ -1,7 +1,7 @@
 import {
   EIndividualDeviceReportOption,
   IndividualDevicesConstructedReportResponse,
-} from 'api/myApi';
+} from 'api/types';
 
 export type IndividualDevicesReportProps = {
   individualDevicesReportData:

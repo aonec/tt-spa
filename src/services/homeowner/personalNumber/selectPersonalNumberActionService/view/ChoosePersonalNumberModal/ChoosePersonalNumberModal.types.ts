@@ -1,4 +1,4 @@
-import { ApartmentResponse } from 'api/myApi';
+import { ApartmentResponse } from 'api/types';
 import { PersonalNumberActions } from '../../selectPersonalNumberActionService.types';
 
 export type ChoosePersonalNumberModalProps = {

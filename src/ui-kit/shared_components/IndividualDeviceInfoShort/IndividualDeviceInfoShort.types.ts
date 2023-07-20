@@ -1,7 +1,7 @@
 import {
   IndividualDeviceResponse,
   IndividualDeviceResponseFromDevicePage,
-} from 'api/myApi';
+} from 'api/types';
 
 export type IndividualDeviceInfoShortProps = {
   device: IndividualDeviceResponseFromDevicePage | IndividualDeviceResponse;

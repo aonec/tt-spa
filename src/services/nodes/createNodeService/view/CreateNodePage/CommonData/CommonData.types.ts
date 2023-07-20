@@ -2,7 +2,7 @@ import {
   ENodeCommercialAccountStatus,
   EPipeNodeConfig,
   NodeServiceZoneListResponse,
-} from 'api/myApi';
+} from 'api/types';
 import { FC } from 'react';
 import {
   CreateNodeFormPayload,

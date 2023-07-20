@@ -3,7 +3,7 @@ import {
   BuildingWithTasksResponse,
   TaskResponse,
   TasksPagedList,
-} from 'api/myApi';
+} from 'api/types';
 import { GetHousingStocksWithTasksRequestPayload } from './tasksMapService.types';
 import queryString from 'query-string';
 

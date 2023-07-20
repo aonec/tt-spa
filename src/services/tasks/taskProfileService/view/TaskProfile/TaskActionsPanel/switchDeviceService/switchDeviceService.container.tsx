@@ -1,6 +1,6 @@
 import React, { FC, useCallback } from 'react';
 import { useStore } from 'effector-react';
-import { SwitchHousingMeteringDeviceRequest } from 'api/myApi';
+import { SwitchHousingMeteringDeviceRequest } from 'api/types';
 import { ActionComponentProps } from '../TaskActionsPanel.types';
 import { switchDeviceService } from './switchDeviceService.model';
 import { SwitchDeviceForm } from './view/SwitchDeviceForm';

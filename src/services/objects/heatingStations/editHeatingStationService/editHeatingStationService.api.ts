@@ -1,5 +1,5 @@
 import { axios } from 'api/axios';
-import { HeatingStationResponse } from 'api/myApi';
+import { HeatingStationResponse } from 'api/types';
 import { requestParams } from './editHeatingStationService.types';
 
 export const editHeatingStation = (

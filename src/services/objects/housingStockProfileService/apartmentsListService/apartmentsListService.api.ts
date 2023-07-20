@@ -1,5 +1,5 @@
 import { axios } from 'api/axios';
-import { ApartmentListResponsePagedList } from 'api/myApi';
+import { ApartmentListResponsePagedList } from 'api/types';
 
 export const getApartmentsList = (
   housingStockId: number,

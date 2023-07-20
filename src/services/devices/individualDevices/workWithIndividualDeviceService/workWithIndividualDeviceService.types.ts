@@ -4,7 +4,7 @@ import {
   EIndividualDeviceRateType,
   SwitchIndividualDeviceReadingsCreateRequest,
   SwitchIndividualDeviceRequest,
-} from 'api/myApi';
+} from 'api/types';
 import { workWithIndividualDeviceService } from './workWithIndividualDeviceService.model';
 
 export type WorkWithIndividualDeviceContainerProps = {

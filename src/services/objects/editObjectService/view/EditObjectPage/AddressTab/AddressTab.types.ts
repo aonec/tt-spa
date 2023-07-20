@@ -2,7 +2,7 @@ import {
   BuildingAddressCreateRequest,
   BuildingAddressResponse,
   BuildingAddressUpdateRequest,
-} from 'api/myApi';
+} from 'api/types';
 
 export type AddressTabProps = {
   address: BuildingAddressResponse;

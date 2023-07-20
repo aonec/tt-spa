@@ -1,4 +1,4 @@
-import { ENodeCheckType } from 'api/myApi';
+import { ENodeCheckType } from 'api/types';
 
 export const CheckingActDocumentType: { [key in ENodeCheckType]: string } = {
   [ENodeCheckType.PlannedCheck]: 'Плановая',

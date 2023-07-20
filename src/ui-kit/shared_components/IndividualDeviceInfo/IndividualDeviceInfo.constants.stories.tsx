@@ -4,7 +4,7 @@ import {
   EIndividualDeviceReadingsSource,
   EResourceType,
   IndividualDeviceResponse,
-} from 'api/myApi';
+} from 'api/types';
 
 export const Device: IndividualDeviceResponse = {
   address: {

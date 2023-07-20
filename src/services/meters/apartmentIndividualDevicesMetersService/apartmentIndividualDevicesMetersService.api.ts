@@ -1,5 +1,5 @@
 import { axios } from 'api/axios';
-import { IndividualDeviceListItemResponsePagedList } from 'api/myApi';
+import { IndividualDeviceListItemResponsePagedList } from 'api/types';
 import { GetIndividualDevicesParams } from './apartmentIndividualDevicesMetersService.types';
 
 export const getIndividualDevices = (

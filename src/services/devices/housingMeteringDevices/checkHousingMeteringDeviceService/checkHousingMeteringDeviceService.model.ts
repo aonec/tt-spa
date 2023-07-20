@@ -1,6 +1,6 @@
 import { createDomain, forward } from 'effector';
 import { postCheckDevice } from './checkHousingMeteringDeviceService.api';
-import { CheckDeviceRequest } from 'api/myApi';
+import { CheckDeviceRequest } from 'api/types';
 import { EffectFailDataAxiosError } from 'types';
 import { message } from 'antd';
 

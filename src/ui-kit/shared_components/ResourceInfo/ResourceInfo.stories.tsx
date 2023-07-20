@@ -1,7 +1,7 @@
 import React from 'react';
 import { ComponentMeta } from '@storybook/react';
 import { ResourceInfo } from '.';
-import { EActResourceType } from 'api/myApi';
+import { EActResourceType } from 'api/types';
 
 export default {
   title: 'ResourceInfo',

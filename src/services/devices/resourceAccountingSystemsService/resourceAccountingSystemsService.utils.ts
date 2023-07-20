@@ -1,4 +1,4 @@
-import { NodeOnHousingStockResponse } from 'api/myApi';
+import { NodeOnHousingStockResponse } from 'api/types';
 import { ResourcesPriorityDictionary } from './view/ResourceAccountingSystems/ResourceAccountingSystems.constants';
 
 export function sortNodes(nodes: NodeOnHousingStockResponse[]) {

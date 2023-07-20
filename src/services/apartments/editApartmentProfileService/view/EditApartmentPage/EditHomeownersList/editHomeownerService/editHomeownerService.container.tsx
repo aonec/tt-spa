@@ -1,5 +1,5 @@
 import { useEvent, useStore } from 'effector-react';
-import { EPersonType } from 'api/myApi';
+import { EPersonType } from 'api/types';
 import React from 'react';
 import { FormModal } from 'ui-kit/Modals/FormModal/FormModal';
 import { EditHomeownerForm } from '../HomeownerForm';

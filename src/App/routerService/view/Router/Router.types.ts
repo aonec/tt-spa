@@ -1,4 +1,4 @@
-import { ESecuredIdentityRoleName } from 'api/myApi';
+import { ESecuredIdentityRoleName } from 'api/types';
 import { FeatureToggles } from 'services/developmentSettings/developmentSettings.types';
 
 export type RouterProps = {

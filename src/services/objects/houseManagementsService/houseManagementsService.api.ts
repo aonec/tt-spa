@@ -1,5 +1,5 @@
 import { axios } from 'api/axios';
-import { HouseManagementResponse } from 'api/myApi';
+import { HouseManagementResponse } from 'api/types';
 import { GetHouseManagementsRequestPayload } from './houseManagementsService.types';
 
 export const getHouseManagements = (

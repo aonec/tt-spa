@@ -1,5 +1,5 @@
 import { axios } from 'api/axios';
-import { NodeServiceZoneRequest, NodeServiceZoneResponse } from 'api/myApi';
+import { NodeServiceZoneRequest, NodeServiceZoneResponse } from 'api/types';
 
 export const postNodeServiceZone = (
   payload: NodeServiceZoneRequest,

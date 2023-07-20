@@ -6,7 +6,7 @@ import { HeaderInfoString } from 'ui-kit/shared_components/HeaderInfoString';
 import { ResourceIconLookup } from 'ui-kit/shared_components/ResourceIconLookup';
 import { LinkCard } from 'ui-kit/shared_components/LinkCard';
 import { WithLoader } from 'ui-kit/shared_components/WithLoader';
-import { ENodeRegistrationType, TaskGroupingFilter } from 'api/myApi';
+import { ENodeRegistrationType, TaskGroupingFilter } from 'api/types';
 import { DisplayNodesStatisticsContainer } from 'services/nodes/displayNodesStatisticsService';
 import {
   Title,

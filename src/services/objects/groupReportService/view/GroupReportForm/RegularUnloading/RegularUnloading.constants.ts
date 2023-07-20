@@ -1,4 +1,4 @@
-import { EEmailSubscriptionType } from 'api/myApi';
+import { EEmailSubscriptionType } from 'api/types';
 
 export const SubsTypeRadioOptions = [
   { value: EEmailSubscriptionType.OncePerTwoWeeks, label: '1 раз в 2 недели' },

@@ -22,7 +22,7 @@ import {
   EClosingReason,
   EIndividualDeviceReportOption,
   EResourceType,
-} from 'api/myApi';
+} from 'api/types';
 import { ResourceIconLookup } from 'ui-kit/shared_components/ResourceIconLookup';
 import {
   ClosingReasonsDictionary,

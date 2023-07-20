@@ -3,7 +3,7 @@ import {
   EStageActionType,
   StagePushRequest,
   EManagingFirmTaskType,
-} from 'api/myApi';
+} from 'api/types';
 
 export type TaskActionsPanelProps = {
   actions: EStageActionType[];

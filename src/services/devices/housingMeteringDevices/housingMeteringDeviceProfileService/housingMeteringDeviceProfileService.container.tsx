@@ -4,7 +4,7 @@ import { useParams } from 'react-router-dom';
 import { WithLoader } from 'ui-kit/shared_components/WithLoader';
 import { housingMeteringDeviceProfileService } from './housingMeteringDeviceProfileService.model';
 import { HousingMeteringDeviceProfile } from './view/HousingMeteringDeviceProfile';
-import { ESecuredIdentityRoleName } from 'api/myApi';
+import { ESecuredIdentityRoleName } from 'api/types';
 import { usePermission } from 'hooks/usePermission';
 
 const { inputs, outputs, gates } = housingMeteringDeviceProfileService;

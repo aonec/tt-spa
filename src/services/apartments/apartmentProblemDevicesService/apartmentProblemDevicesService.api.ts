@@ -1,6 +1,6 @@
 import { axios } from 'api/axios';
 import { GetProblemDevicesRequestPayload } from './apartmentProblemDevicesService.types';
-import { IndividualDeviceWithExpiredCheckingDateResponse } from 'api/myApi';
+import { IndividualDeviceWithExpiredCheckingDateResponse } from 'api/types';
 import queryString from 'query-string';
 
 export const getProblemDevices = async ({

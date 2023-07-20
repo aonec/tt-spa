@@ -1,4 +1,4 @@
-import { HouseManagementResponse } from 'api/myApi';
+import { HouseManagementResponse } from 'api/types';
 import { FeedFlowTemperatureRequestPayload } from '../../flowTemperatureDeviationReportService.types';
 
 export type Props = {

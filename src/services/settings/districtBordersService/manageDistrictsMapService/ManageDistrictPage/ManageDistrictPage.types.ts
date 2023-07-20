@@ -1,4 +1,4 @@
-import { DistrictResponse } from 'api/myApi';
+import { DistrictResponse } from 'api/types';
 import { OrganizationCoordinates } from 'services/currentUserService/currentUserService.types';
 
 export type Props = {

@@ -1,4 +1,4 @@
-import { EResourceType } from 'api/myApi';
+import { EResourceType } from 'api/types';
 import styled from 'styled-components';
 import { MetersInputBlockStatus } from './MetersInputsBlock.types';
 

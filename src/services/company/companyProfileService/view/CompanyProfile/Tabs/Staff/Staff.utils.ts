@@ -1,7 +1,7 @@
 import {
   ESecuredIdentityRoleName,
   ESecuredIdentityRoleNameStringDictionaryItem,
-} from 'api/myApi';
+} from 'api/types';
 
 const UserRolesPriorityDictionary: {
   [key in ESecuredIdentityRoleName]: number;

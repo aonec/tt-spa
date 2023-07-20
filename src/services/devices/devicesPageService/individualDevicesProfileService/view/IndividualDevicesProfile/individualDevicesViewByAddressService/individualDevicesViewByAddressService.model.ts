@@ -3,7 +3,7 @@ import { createGate } from 'effector-react';
 import {
   ApartmentByAddressFilterResponsePagedList,
   HousingByFilterResponse,
-} from 'api/myApi';
+} from 'api/types';
 import { individualDevicesProfileService } from '../../../individualDevicesProfileService.model';
 import {
   getHousingsByFilter,

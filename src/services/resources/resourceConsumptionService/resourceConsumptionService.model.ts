@@ -1,6 +1,6 @@
 import { combine, createDomain, forward, sample } from 'effector';
 import { createGate } from 'effector-react';
-import { GetSummaryHousingConsumptionsByResourcesResponse } from 'api/myApi';
+import { GetSummaryHousingConsumptionsByResourcesResponse } from 'api/types';
 import {
   fetchConsumptionsForMonth,
   fetchConsumptionsForTwoMonth,

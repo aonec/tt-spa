@@ -3,7 +3,7 @@ import {
   NodeOnHousingStockResponse,
   PipeNodeIntoCalculatorResponse,
   PipeNodeMeteringDeviceResponse,
-} from 'api/myApi';
+} from 'api/types';
 import { getMeteringDevices } from './meteringDevicesService.api';
 
 const domain = createDomain('meteringDevicesService');

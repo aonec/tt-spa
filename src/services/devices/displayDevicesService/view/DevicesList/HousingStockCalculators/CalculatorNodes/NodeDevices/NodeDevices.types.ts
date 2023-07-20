@@ -1,4 +1,4 @@
-import { PipeNodeIntoCalculatorResponse } from 'api/myApi';
+import { PipeNodeIntoCalculatorResponse } from 'api/types';
 
 export type NodeDevicesProps = {
   node: PipeNodeIntoCalculatorResponse;

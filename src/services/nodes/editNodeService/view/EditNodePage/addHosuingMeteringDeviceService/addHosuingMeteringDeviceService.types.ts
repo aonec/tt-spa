@@ -1,4 +1,4 @@
-import { CreatePipeHousingMeteringDeviceRequest } from 'api/myApi';
+import { CreatePipeHousingMeteringDeviceRequest } from 'api/types';
 
 export type CreatePipeHousingMeteringDevicePayload =
   CreatePipeHousingMeteringDeviceRequest & { pipeId: number };

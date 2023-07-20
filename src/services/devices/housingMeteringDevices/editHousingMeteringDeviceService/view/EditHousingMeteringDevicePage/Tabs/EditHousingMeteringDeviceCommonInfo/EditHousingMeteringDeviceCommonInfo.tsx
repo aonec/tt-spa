@@ -2,7 +2,7 @@ import { ErrorMessage } from 'ui-kit/ErrorMessage';
 import { MagistralsDisctionary } from 'dictionaries';
 import { useFormik } from 'formik';
 import moment from 'moment';
-import { EHousingMeteringDeviceType, EMagistralType } from 'api/myApi';
+import { EHousingMeteringDeviceType, EMagistralType } from 'api/types';
 import React, { FC } from 'react';
 import { HousingMeteringDeviceDictionary } from 'services/nodes/addPipeNodeCommonDeviceService/view/AddCommonDeviceForm/CommonDataStep/CommonDataStep.constants';
 import { Button } from 'ui-kit/Button';

@@ -1,4 +1,4 @@
-import { CheckDeviceRequest } from 'api/myApi';
+import { CheckDeviceRequest } from 'api/types';
 
 export type CheckHousingMeteringDeviceFormProps = {
   deviceId: number;

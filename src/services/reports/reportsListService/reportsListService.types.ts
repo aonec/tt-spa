@@ -1,4 +1,4 @@
-import { EOrderByRule, EReportName } from 'api/myApi';
+import { EOrderByRule, EReportName } from 'api/types';
 
 export type GetReportsHistoryListRequestPayload = {
   ReportNameText?: string;

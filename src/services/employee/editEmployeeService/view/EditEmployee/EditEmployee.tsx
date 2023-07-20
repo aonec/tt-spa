@@ -12,7 +12,7 @@ import { Loader } from 'ui-kit/Loader';
 import {
   ESecuredIdentityRoleName,
   OrganizationUserUpdateRequest,
-} from 'api/myApi';
+} from 'api/types';
 import { usePhoneMask } from 'hooks/usePhoneMask';
 import * as yup from 'yup';
 import { SelectMultiple } from 'ui-kit/SelectMultiple';

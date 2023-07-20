@@ -1,4 +1,4 @@
-import { EResourceType, IndividualDeviceConsumptionResponse } from 'api/myApi';
+import { EResourceType, IndividualDeviceConsumptionResponse } from 'api/types';
 
 export type IndividualDeviceConsumptionGraphProps = {
   resource?: EResourceType;

@@ -13,7 +13,7 @@ import { FormItem } from 'ui-kit/FormItem';
 import { Select } from 'ui-kit/Select';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
-import { HousingStockUpdateRequest } from 'api/myApi';
+import { HousingStockUpdateRequest } from 'api/types';
 import { sortBy } from 'lodash';
 import { LinkButton } from 'ui-kit/shared_components/LinkButton';
 import { Button } from 'ui-kit/Button';

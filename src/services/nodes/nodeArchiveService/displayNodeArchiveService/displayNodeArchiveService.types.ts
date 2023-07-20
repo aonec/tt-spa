@@ -1,4 +1,4 @@
-import { EReportFormat, EReportType } from 'api/myApi';
+import { EReportFormat, EReportType } from 'api/types';
 
 export type NodeArchiveDataRow = {
   dateTimeText: string;

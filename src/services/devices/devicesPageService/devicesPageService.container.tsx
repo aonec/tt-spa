@@ -2,7 +2,7 @@ import React, { useCallback, useEffect } from 'react';
 import { useHistory, useParams } from 'react-router';
 import { DevicesProfileTabsType } from './devicesPageService.types';
 import { DevicesPageProfile } from './view/DevicesPageProfile';
-import { ESecuredIdentityRoleName } from 'api/myApi';
+import { ESecuredIdentityRoleName } from 'api/types';
 import { usePermission } from 'hooks/usePermission';
 import { useEvent } from 'effector-react';
 import {

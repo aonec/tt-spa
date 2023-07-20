@@ -12,7 +12,7 @@ import {
   HousingStockResponse,
   IndividualDeviceListItemResponse,
   IndividualDeviceListItemResponsePagedList,
-} from 'api/myApi';
+} from 'api/types';
 import {
   getHousingStock,
   getIndividualDevicesList,

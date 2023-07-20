@@ -2,7 +2,7 @@ import { axios } from 'api/axios';
 import {
   CreateIndividualDeviceRequest,
   MeteringDeviceResponse,
-} from 'api/myApi';
+} from 'api/types';
 
 export const createIndividualDevice = async (
   payload: CreateIndividualDeviceRequest,

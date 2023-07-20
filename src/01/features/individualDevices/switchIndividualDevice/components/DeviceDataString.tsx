@@ -1,6 +1,6 @@
 import React from 'react';
 import { useStore } from 'effector-react';
-import { EIndividualDeviceRateType, EResourceType } from 'api/myApi';
+import { EIndividualDeviceRateType, EResourceType } from 'api/types';
 import styled from 'styled-components';
 import { Spaces } from '01/shared/ui/Layout/Space/Space';
 import { ResourceIconLookup } from 'ui-kit/shared_components/ResourceIconLookup';

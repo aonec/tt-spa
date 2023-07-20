@@ -1,4 +1,4 @@
-import { IndividualDeviceListItemResponse } from 'api/myApi';
+import { IndividualDeviceListItemResponse } from 'api/types';
 import { TransferStage } from 'services/homeowner/personalNumber/splitPersonalNumberService/splitPersonalNumberService.types';
 
 export type TransferDevicesStageProps = {

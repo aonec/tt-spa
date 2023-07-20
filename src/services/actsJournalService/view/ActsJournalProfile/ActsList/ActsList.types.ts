@@ -1,4 +1,4 @@
-import { ApartmentActResponsePagedList } from 'api/myApi';
+import { ApartmentActResponsePagedList } from 'api/types';
 
 export type ActsListProps = {
   actsPagedData: ApartmentActResponsePagedList | null;

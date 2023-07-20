@@ -1,6 +1,6 @@
 import { useFormik } from 'formik';
 import { round } from 'lodash';
-import { EMagistralType } from 'api/myApi';
+import { EMagistralType } from 'api/types';
 import React, { FC, useEffect, useMemo } from 'react';
 import { MonthWrapper, Wrapper } from './MeteringDeviceMonthReading.styled';
 import { MeteringDeviceMonthReadingProps } from './MeteringDeviceMonthReading.types';

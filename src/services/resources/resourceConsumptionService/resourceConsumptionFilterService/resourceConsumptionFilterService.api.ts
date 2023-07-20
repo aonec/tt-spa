@@ -1,5 +1,5 @@
 import { axios } from 'api/axios';
-import { HouseManagementWithStreetsResponse } from 'api/myApi';
+import { HouseManagementWithStreetsResponse } from 'api/types';
 
 export const fetchAddresses = (
   City: string,

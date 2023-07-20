@@ -1,4 +1,4 @@
-import { EResourceType } from 'api/myApi';
+import { EResourceType } from 'api/types';
 import React, { FC } from 'react';
 import { Select } from 'ui-kit/Select';
 import { ResourceIconLookup } from '../ResourceIconLookup';

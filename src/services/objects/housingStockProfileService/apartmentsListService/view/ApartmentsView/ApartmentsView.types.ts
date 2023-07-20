@@ -1,7 +1,7 @@
 import {
   ApartmentListResponse,
   ApartmentListResponsePagedList,
-} from 'api/myApi';
+} from 'api/types';
 import { FC } from 'react';
 
 export type SegmentType = 'list' | 'cells';

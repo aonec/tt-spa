@@ -1,4 +1,4 @@
-import { ApartmentStatusSetRequest } from 'api/myApi';
+import { ApartmentStatusSetRequest } from 'api/types';
 
 export interface GetProblemDevicesRequestPayload {
   apartmentId: number;

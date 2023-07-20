@@ -1,7 +1,7 @@
 import { createDomain, forward } from 'effector';
 import { EffectFailDataAxiosError } from 'types';
 import { closeDevice } from './closeHousingMeteringDeviceService.api';
-import { CloseDeviceRequest } from 'api/myApi';
+import { CloseDeviceRequest } from 'api/types';
 import { message } from 'antd';
 
 const domain = createDomain('closeHousingMeteringDeviceService');

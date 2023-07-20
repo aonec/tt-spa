@@ -3,7 +3,7 @@ import { addAct, fetchActs } from './actsJournalService.api';
 import {
   AddApartmentActRequest,
   ApartmentActResponsePagedList,
-} from 'api/myApi';
+} from 'api/types';
 import { message } from 'antd';
 import { createGate } from 'effector-react';
 import { ActsJournalRequestParams } from './actsJournalService.types';

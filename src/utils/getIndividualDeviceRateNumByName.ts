@@ -1,4 +1,4 @@
-import { EIndividualDeviceRateType } from 'api/myApi';
+import { EIndividualDeviceRateType } from 'api/types';
 
 export const getIndividualDeviceRateNumByName = (
   rateType: EIndividualDeviceRateType,

@@ -1,4 +1,4 @@
-import { IndividualDeviceListResponseFromDevicePage } from 'api/myApi';
+import { IndividualDeviceListResponseFromDevicePage } from 'api/types';
 
 export type IndividualDeviceListItemBySerialNumberProps = {
   device: IndividualDeviceListResponseFromDevicePage;

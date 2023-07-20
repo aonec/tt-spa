@@ -28,7 +28,7 @@ import {
 import { HomeownersList } from './HomeownersList';
 import { LinkCard } from 'ui-kit/shared_components/LinkCard';
 import { stringifyUrl } from 'query-string';
-import { TaskGroupingFilter } from 'api/myApi';
+import { TaskGroupingFilter } from 'api/types';
 
 export const ApartmentProfile: FC<ApartmentProfileProps> = ({
   apartment,

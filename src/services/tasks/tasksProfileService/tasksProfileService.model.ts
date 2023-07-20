@@ -6,7 +6,7 @@ import {
   HousingStockResponse,
   TaskGroupingFilter,
   TasksPagedList,
-} from 'api/myApi';
+} from 'api/types';
 import { currentUserService } from 'services/currentUserService';
 import {
   $taskTypes,

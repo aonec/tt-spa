@@ -1,4 +1,4 @@
-import { StagePushRequest } from 'api/myApi';
+import { StagePushRequest } from 'api/types';
 
 export type AddCommentRequest = {
   taskId: number;

@@ -3,7 +3,7 @@ import { createGate } from 'effector-react';
 import {
   ContractorListResponse,
   ContractorListResponsePagedList,
-} from 'api/myApi';
+} from 'api/types';
 import { getContractors } from './emailNotifyService.api';
 
 const domain = createDomain('emailNotifyService');

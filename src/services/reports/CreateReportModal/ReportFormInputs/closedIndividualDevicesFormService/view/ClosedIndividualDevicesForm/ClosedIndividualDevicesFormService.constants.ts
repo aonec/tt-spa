@@ -1,4 +1,4 @@
-import { EClosingReason } from 'api/myApi';
+import { EClosingReason } from 'api/types';
 import { UnloadingType } from '../../closedIndividualDevicesFormService.types';
 
 export const unloadingTypesDictionary: { [key in UnloadingType]: string } = {

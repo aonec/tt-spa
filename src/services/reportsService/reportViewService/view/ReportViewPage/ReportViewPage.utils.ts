@@ -2,7 +2,7 @@ import {
   ResourceShortNamesDictionary,
   ReportOptionsDictionary,
 } from 'dictionaries';
-import { HouseManagementResponse, EResourceType } from 'api/myApi';
+import { HouseManagementResponse, EResourceType } from 'api/types';
 import {
   addressesCountTexts,
   EmployeeReportTypesDictionary,

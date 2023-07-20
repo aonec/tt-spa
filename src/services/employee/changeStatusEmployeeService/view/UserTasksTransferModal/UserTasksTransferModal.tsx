@@ -2,7 +2,7 @@ import React, { FC, useCallback, useEffect, useMemo, useState } from 'react';
 import {
   ESecuredIdentityRoleName,
   OrganizationUserTaskReassignment,
-} from 'api/myApi';
+} from 'api/types';
 import { FormModal } from 'ui-kit/Modals/FormModal';
 import { Select } from 'ui-kit/Select';
 import { TasksListPanel } from './TasksListPanel';

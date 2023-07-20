@@ -1,4 +1,4 @@
-import { IndividualDeviceResponseFromDevicePage } from 'api/myApi';
+import { IndividualDeviceResponseFromDevicePage } from 'api/types';
 import { IndividualDeviceConsumptionGraphType } from '../../individualDevicesListService.constants';
 import { IndividualDeviceConsumptionForGraph } from '../../individualDevicesListService.types';
 

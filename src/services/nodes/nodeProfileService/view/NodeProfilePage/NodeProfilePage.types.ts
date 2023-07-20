@@ -1,4 +1,4 @@
-import { PipeNodeResponse } from 'api/myApi';
+import { PipeNodeResponse } from 'api/types';
 
 export type NodeProfilePageProps = {
   pipeNode: PipeNodeResponse | null;

@@ -1,7 +1,7 @@
 import {
   ApartmentByAddressFilterResponse,
   HousingByFilterResponse,
-} from 'api/myApi';
+} from 'api/types';
 import { SearchIndividualDevicesRequestPayload } from '../../individualDevicesViewByAddressService.types';
 
 export type IndividualDevicesApartmentsListProps = {

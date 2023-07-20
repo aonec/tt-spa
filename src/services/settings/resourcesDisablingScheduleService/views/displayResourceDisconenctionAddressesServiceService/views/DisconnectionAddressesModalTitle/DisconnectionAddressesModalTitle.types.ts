@@ -1,4 +1,4 @@
-import { ResourceDisconnectingResponse } from 'api/myApi';
+import { ResourceDisconnectingResponse } from 'api/types';
 
 export type DisconnectionAddressesModalTitleProps = {
   disconnection: ResourceDisconnectingResponse;

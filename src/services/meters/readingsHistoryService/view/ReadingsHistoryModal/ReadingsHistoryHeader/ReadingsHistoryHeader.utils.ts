@@ -1,5 +1,5 @@
 import moment from 'moment';
-import { IndividualDeviceResponse } from 'api/myApi';
+import { IndividualDeviceResponse } from 'api/types';
 
 export function useDeviceCheckingDates(
   individualDevice: IndividualDeviceResponse | null,

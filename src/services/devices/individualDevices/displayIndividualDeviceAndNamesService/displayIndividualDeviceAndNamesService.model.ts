@@ -3,7 +3,7 @@ import { createGate } from 'effector-react';
 import {
   IndividualDeviceListResponseFromDevicePagePagedList,
   IndividualDeviceResponse,
-} from 'api/myApi';
+} from 'api/types';
 import {
   getIndividualDevice,
   getIndividualDevicesModels,

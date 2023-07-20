@@ -1,5 +1,5 @@
 import moment from 'moment';
-import { IndividualDeviceReadingsResponse } from 'api/myApi';
+import { IndividualDeviceReadingsResponse } from 'api/types';
 import { getFilledArray } from 'utils/getFilledArray';
 import { getReadingValueKey } from '../../individualDeviceMetersInputService.utils';
 

@@ -8,7 +8,7 @@ import {
   OrganizationUserResponse,
   OrganizationUserWorkingStatusResponse,
   TasksPagedList,
-} from 'api/myApi';
+} from 'api/types';
 import {
   GetOrganizationUserTasksByRolesRequestParams,
   GetOrganizationUserTasksRequestParams,

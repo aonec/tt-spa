@@ -1,5 +1,5 @@
 import { axios } from 'api/axios';
-import { ContractorCreateRequest, ContractorResponse } from 'api/myApi';
+import { ContractorCreateRequest, ContractorResponse } from 'api/types';
 
 export const createContractor = (
   request: ContractorCreateRequest,

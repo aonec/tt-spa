@@ -5,7 +5,7 @@ import {
   ArchivesDataModel,
   DateTimeTaskStatisticsItemArrayDictionaryItem,
   TaskStatisticsResponse,
-} from 'api/myApi';
+} from 'api/types';
 import {
   requestNodeReadings,
   requestTaskStatistics,

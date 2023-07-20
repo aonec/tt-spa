@@ -1,5 +1,5 @@
 import { Empty } from 'antd';
-import { EActResourceType, EActType } from 'api/myApi';
+import { EActResourceType, EActType } from 'api/types';
 import React, { FC, useMemo } from 'react';
 import { FilterExtendedSearch } from 'ui-kit/shared_components/FilterExtendedSearch';
 import { actResourceNamesLookup } from 'ui-kit/shared_components/ResourceInfo/ResourceInfo.utils';

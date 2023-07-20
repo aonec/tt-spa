@@ -5,7 +5,7 @@ import {
   deleteNodeReading,
   fetchReadingsOfElectricNode,
 } from './accountingNodesReadingsInputService.api';
-import { HousingMeteringDeviceReadingsIncludingPlacementResponse } from 'api/myApi';
+import { HousingMeteringDeviceReadingsIncludingPlacementResponse } from 'api/types';
 import { createGate } from 'effector-react';
 import { getELectricNodeInputStatuses } from './accountingNodesReadingsInputService.utils';
 import {

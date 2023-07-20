@@ -2,7 +2,7 @@ import React, { FC, useCallback } from 'react';
 import {
   EResourceType,
   SwitchHousingDeviceReadingsCreateRequest,
-} from 'api/myApi';
+} from 'api/types';
 import { ResourceIconLookup } from 'ui-kit/shared_components/ResourceIconLookup';
 import {
   BaseInfoWrapper,

@@ -1,5 +1,5 @@
 import { message } from 'antd';
-import { ApartmentResponse } from 'api/myApi';
+import { ApartmentResponse } from 'api/types';
 import { createDomain, forward, sample } from 'effector';
 import { createGate } from 'effector-react';
 import { PutApartment, TabsSection } from './editApartmentProfileService.types';

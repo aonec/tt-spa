@@ -1,4 +1,4 @@
-import { BuildingWithTasksResponse } from 'api/myApi';
+import { BuildingWithTasksResponse } from 'api/types';
 import { OrganizationCoordinates } from 'services/currentUserService/currentUserService.types';
 
 export enum HousingStockTaskMarkerType {

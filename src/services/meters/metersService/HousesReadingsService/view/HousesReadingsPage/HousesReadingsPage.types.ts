@@ -2,7 +2,7 @@ import {
   HousingStockResponse,
   IndividualDeviceListItemResponse,
   InspectorResponse,
-} from 'api/myApi';
+} from 'api/types';
 import { ConsumptionRatesDictionary } from 'services/meters/managementFirmConsumptionRatesService/managementFirmConsumptionRatesService.types';
 import { GetHousingStocksListRequestPayload } from '../../HousesReadingsService.types';
 

@@ -1,4 +1,4 @@
-import { CalculatorIntoHousingStockResponse } from 'api/myApi';
+import { CalculatorIntoHousingStockResponse } from 'api/types';
 import {
   CreateNodeFormPayload,
   UpdateNodeFormPayloadCallback,

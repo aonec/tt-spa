@@ -1,5 +1,5 @@
 import { axios } from 'api/axios';
-import { HomeownerAccountReplaceRequest } from 'api/myApi';
+import { HomeownerAccountReplaceRequest } from 'api/types';
 
 export const replaceHomeownerAccount = (
   requestPayload: HomeownerAccountReplaceRequest,

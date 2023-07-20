@@ -1,4 +1,4 @@
-import { ESecuredIdentityRoleName } from 'api/myApi';
+import { ESecuredIdentityRoleName } from 'api/types';
 import { MenuFiltrationConfig, MenuType } from './menuService.types';
 
 export const privates: MenuFiltrationConfig = {

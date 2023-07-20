@@ -1,4 +1,4 @@
-import { ElectricNodeResponse } from 'api/myApi';
+import { ElectricNodeResponse } from 'api/types';
 
 export type AccountingNodesListProps = {
   electricNodes: ElectricNodeResponse[];

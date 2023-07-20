@@ -1,4 +1,4 @@
-import { EMeteringDeviceType, EOrderByRule } from 'api/myApi';
+import { EMeteringDeviceType, EOrderByRule } from 'api/types';
 
 export interface GetMeteringDevicesModelsRequest {
   Type?: EMeteringDeviceType;

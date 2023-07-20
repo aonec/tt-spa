@@ -3,7 +3,7 @@ import {
   CreateHousingMeteringDeviceReadingsRequest,
   GetHousingMeteringDeviceReadingsResponse,
   HousingMeteringDeviceReadingsIncludingPlacementResponse,
-} from 'api/myApi';
+} from 'api/types';
 
 export const fetchHousingMeteringDeviceReadings = (
   nodeId: number,

@@ -1,4 +1,4 @@
-import { ENodeRegistrationType } from 'api/myApi';
+import { ENodeRegistrationType } from 'api/types';
 import * as Yup from 'yup';
 
 export const validationSchema = Yup.object().shape({

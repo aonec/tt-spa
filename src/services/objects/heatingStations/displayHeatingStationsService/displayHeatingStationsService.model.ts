@@ -1,6 +1,6 @@
 import { createDomain, forward } from 'effector';
 import { createGate } from 'effector-react';
-import { HeatingStationResponsePagedList } from 'api/myApi';
+import { HeatingStationResponsePagedList } from 'api/types';
 import { createHeatingStationService } from '../createHeatingStationService';
 import { editHeatingStationService } from '../editHeatingStationService';
 import { getHeatingStations } from './displayHeatingStationsService.api';

@@ -1,5 +1,5 @@
 import moment from 'moment';
-import { IndividualDeviceReadingsItemHistoryResponse } from 'api/myApi';
+import { IndividualDeviceReadingsItemHistoryResponse } from 'api/types';
 import React, { FC, useEffect, useState } from 'react';
 import { getReadingValuesArray } from 'services/meters/individualDeviceMetersInputService/view/ApartmentIndividualDeviceMetersInputLine/ApartmentIndividualDeviceMetersInputLine.utils';
 import { MetersInputsBlockPure } from 'services/meters/individualDeviceMetersInputService/view/MetersInputsBlock/MeterInputsBlockPure';

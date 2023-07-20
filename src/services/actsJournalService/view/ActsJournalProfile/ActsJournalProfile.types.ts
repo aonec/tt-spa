@@ -2,7 +2,7 @@ import { Event } from 'effector';
 import {
   AddApartmentActRequest,
   ApartmentActResponsePagedList,
-} from 'api/myApi';
+} from 'api/types';
 import { ActsJournalRequestParams } from 'services/actsJournalService/actsJournalService.types';
 
 export type ActsJournalProfileProps = {

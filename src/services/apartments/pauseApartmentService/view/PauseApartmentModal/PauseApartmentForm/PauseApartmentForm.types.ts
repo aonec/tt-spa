@@ -1,4 +1,4 @@
-import { IndividualDeviceWithExpiredCheckingDateResponse } from 'api/myApi';
+import { IndividualDeviceWithExpiredCheckingDateResponse } from 'api/types';
 import { SetApartmentStatusRequest } from 'services/apartments/pauseApartmentService/pauseApartmentService.types';
 
 export type Props = {

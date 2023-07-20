@@ -1,7 +1,7 @@
 import { Form } from 'antd';
 import { useFormik } from 'formik';
 import moment from 'moment';
-import { EResourceType } from 'api/myApi';
+import { EResourceType } from 'api/types';
 import React, { FC } from 'react';
 import { FormItem } from 'ui-kit/FormItem';
 import { Input } from 'ui-kit/Input';

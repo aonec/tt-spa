@@ -2,7 +2,7 @@ import { message } from 'antd';
 import { combine, createDomain, forward, guard } from 'effector';
 import { createGate } from 'effector-react';
 import moment from 'moment';
-import { EReportType, GroupReportFormResponse } from 'api/myApi';
+import { EReportType, GroupReportFormResponse } from 'api/types';
 import {
   downloadGroupReportRequest,
   fetchFilters,

@@ -1,7 +1,7 @@
 import {
   ElectricHousingMeteringDeviceResponse,
   SwitchElectricHousingDeviceRequest,
-} from 'api/myApi';
+} from 'api/types';
 import { axios } from 'api/axios';
 
 export const fetchHousingMeteringDevice = (

@@ -20,7 +20,7 @@ import { FormItem } from 'ui-kit/FormItem';
 import { ErrorMessage } from 'ui-kit/ErrorMessage';
 import { Input } from 'ui-kit/Input';
 import moment from 'moment';
-import { EIndividualDeviceRateType, EResourceType } from 'api/myApi';
+import { EIndividualDeviceRateType, EResourceType } from 'api/types';
 import { useParams } from 'react-router';
 import { useUnit } from 'effector-react';
 import { individualDeviceMountPlacesService } from 'services/devices/individualDeviceMountPlacesService';

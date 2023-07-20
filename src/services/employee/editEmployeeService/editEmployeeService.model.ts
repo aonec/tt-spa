@@ -3,7 +3,7 @@ import { editEmployee } from './editEmployeeService.api';
 import {
   OrganizationUserResponse,
   OrganizationUserUpdateRequest,
-} from 'api/myApi';
+} from 'api/types';
 import { competencesService } from '../competencesService';
 import { rolesService } from '../rolesService';
 import { employeeProfileService } from 'services/employee/employeeProfileService';

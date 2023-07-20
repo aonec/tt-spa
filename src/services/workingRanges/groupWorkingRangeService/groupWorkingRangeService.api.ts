@@ -4,7 +4,7 @@ import {
   ENodeWorkingRangeSeason,
   EResourceType,
   HouseManagementResponse,
-} from 'api/myApi';
+} from 'api/types';
 
 export const getGroupWorkingRange = (query: {
   nodeResourceType: EResourceType;

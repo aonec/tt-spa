@@ -1,5 +1,5 @@
 import { createDomain, forward } from 'effector';
-import { EResourceDisconnectingType } from 'api/myApi';
+import { EResourceDisconnectingType } from 'api/types';
 import { editResourceDisconnectionService } from '../editResourceDisconnectionService';
 
 const domain = createDomain('chooseTypeOfResourceDisconnectionModalService');

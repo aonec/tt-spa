@@ -1,4 +1,4 @@
-import { EOrderByRule, EResourceType, ESoiReportPeriod } from 'api/myApi';
+import { EOrderByRule, EResourceType, ESoiReportPeriod } from 'api/types';
 
 export enum SoiReportType {
   HouseManagement = 'HouseManagement',

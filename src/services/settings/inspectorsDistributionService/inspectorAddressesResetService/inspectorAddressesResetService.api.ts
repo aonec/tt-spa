@@ -1,5 +1,5 @@
 import { axios } from 'api/axios';
-import { InspectorResponse } from 'api/myApi';
+import { InspectorResponse } from 'api/types';
 
 export const resetInspectorHousingStocksAddresses = (
   inspectorId: number,

@@ -5,7 +5,7 @@ import { addStaff } from './createEmployeeService.api';
 import {
   OrganizationUserCreateRequest,
   OrganizationUserResponse,
-} from 'api/myApi';
+} from 'api/types';
 import { EffectFailDataAxiosError } from 'types';
 import { message } from 'antd';
 

@@ -1,7 +1,7 @@
 import {
   ESecuredIdentityRoleName,
   OrganizationUserCreateRequest,
-} from 'api/myApi';
+} from 'api/types';
 
 export type CreateEmployeeModalProps = {
   isModalOpen: boolean;

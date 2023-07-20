@@ -1,6 +1,6 @@
 import moment from 'moment';
-import { IndividualDeviceReadingsResponse } from 'api/myApi';
-import { EIndividualDeviceRateType } from 'api/myApi';
+import { IndividualDeviceReadingsResponse } from 'api/types';
+import { EIndividualDeviceRateType } from 'api/types';
 import { rateNums } from './MetersInputsBlock.constants';
 import { BufferedReadingValues } from './MetersInputsBlock.types';
 

@@ -1,4 +1,4 @@
-import { EApartmentStatus, EResourceType } from 'api/myApi';
+import { EApartmentStatus, EResourceType } from 'api/types';
 import { SearchIndividualDevicesParams } from '../../../individualDevicesProfileService.types';
 
 export type IndividualDeviceSearchbySerialNumberPayload =

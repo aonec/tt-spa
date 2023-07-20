@@ -1,7 +1,7 @@
 import {
   CloseDeviceRequest,
   PipeHousingMeteringDeviceResponse,
-} from 'api/myApi';
+} from 'api/types';
 
 export type CloseHousingMeteringDeviceModalProps = {
   housingMeteringDevice: PipeHousingMeteringDeviceResponse | null;

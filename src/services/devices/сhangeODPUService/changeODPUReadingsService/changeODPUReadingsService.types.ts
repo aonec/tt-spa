@@ -2,7 +2,7 @@ import {
   ElectricHousingMeteringDeviceResponse,
   HousingMeteringDeviceReadingsIncludingPlacementResponse,
   SwitchHousingDeviceReadingsCreateRequest,
-} from 'api/myApi';
+} from 'api/types';
 
 export type ChangeODPUReadingsProps = {
   device: ElectricHousingMeteringDeviceResponse | null;

@@ -1,6 +1,6 @@
 import { MagistralsDisctionary } from 'dictionaries';
 import moment from 'moment';
-import { EMagistralType } from 'api/myApi';
+import { EMagistralType } from 'api/types';
 import React, { FC } from 'react';
 import { CommonInfo } from 'ui-kit/shared_components/CommonInfo';
 import { getBuildingAddress } from 'utils/getBuildingAddress';

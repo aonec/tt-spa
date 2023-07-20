@@ -1,4 +1,4 @@
-import { EManagingFirmTaskType } from 'api/myApi';
+import { EManagingFirmTaskType } from 'api/types';
 import * as yup from 'yup';
 
 export const completionLabelsDictionary: { [key: string]: string } = {

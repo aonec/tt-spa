@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { EDocumentType } from 'api/myApi';
+import { EDocumentType } from 'api/types';
 import { DocumentsUploadContainer } from 'ui-kit/DocumentsService';
 import { useFormik } from 'formik';
 import {

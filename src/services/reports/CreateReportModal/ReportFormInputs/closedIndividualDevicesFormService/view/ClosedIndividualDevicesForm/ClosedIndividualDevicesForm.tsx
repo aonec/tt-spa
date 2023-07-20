@@ -2,7 +2,7 @@ import { form } from 'services/reports/CreateReportModal/models';
 import { SpaceLine } from '01/shared/ui/Layout/Space/Space';
 import { Checkbox } from 'antd';
 import { useForm } from 'effector-forms';
-import { EClosingReason } from 'api/myApi';
+import { EClosingReason } from 'api/types';
 import React, { FC } from 'react';
 import { TreeSelectSC } from 'services/resources/createResourceDisconnectionService/view/CreateResourceDisconnectionForm/CreateResourceDisconnectionForm.styled';
 import { FormItem } from 'ui-kit/FormItem';

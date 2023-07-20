@@ -1,4 +1,4 @@
-import { HeatingStationResponse } from 'api/myApi';
+import { HeatingStationResponse } from 'api/types';
 import { HeatingStation } from 'services/objects/heatingStations/NewHeatingStationForm/NewHeatingStationForm.types';
 
 export type EditHeatingStationModalProps = {

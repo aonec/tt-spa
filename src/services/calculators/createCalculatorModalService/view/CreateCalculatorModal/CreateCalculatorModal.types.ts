@@ -1,4 +1,4 @@
-import { CreateCalculatorRequest } from 'api/myApi';
+import { CreateCalculatorRequest } from 'api/types';
 import { CreateCalculatorFiles } from './CreateCalculatorModalFilesUploadForm/CreateCalculatorModalFilesUploadForm.types';
 
 export type CreateCalculatorModalProps = {

@@ -30,7 +30,7 @@ import {
   EHouseCategory,
   ELivingHouseType,
   ENonResidentialHouseType,
-} from 'api/myApi';
+} from 'api/types';
 import { sortBy } from 'lodash';
 import { LinkButton } from 'ui-kit/shared_components/LinkButton';
 import { createHeatingStationService } from 'services/objects/heatingStations/createHeatingStationService';

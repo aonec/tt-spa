@@ -2,7 +2,7 @@ import {
   BuildingListResponsePagedList,
   DistrictCreateRequest,
   DistrictResponse,
-} from 'api/myApi';
+} from 'api/types';
 import { CreatingDistrictPayload } from '../../createDistrictBorderMapService.types';
 import { OrganizationCoordinates } from 'services/currentUserService/currentUserService.types';
 

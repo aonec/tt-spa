@@ -12,7 +12,7 @@ import {
   Wrapper,
 } from './DocumentsLineUpload.styled';
 import { DocumentsLineUploadProps } from './DocumentsLineUpload.types';
-import { DocumentResponse } from 'api/myApi';
+import { DocumentResponse } from 'api/types';
 import axios from 'api/axios';
 
 export const DocumentsLineUpload: FC<DocumentsLineUploadProps> = ({

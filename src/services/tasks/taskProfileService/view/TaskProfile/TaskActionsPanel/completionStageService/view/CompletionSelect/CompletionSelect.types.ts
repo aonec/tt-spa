@@ -2,7 +2,7 @@ import {
   EManagingFirmTaskType,
   ETaskConfirmationType,
   ETaskConfirmationTypeStringDictionaryItem,
-} from 'api/myApi';
+} from 'api/types';
 
 export type CompletionSelectProps = {
   taskConfirmationTypes?: ETaskConfirmationTypeStringDictionaryItem[] | null;

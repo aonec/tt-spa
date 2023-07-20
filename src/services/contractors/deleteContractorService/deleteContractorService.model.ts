@@ -1,7 +1,7 @@
 import { message } from 'antd';
 import { createDomain, forward, guard, sample } from 'effector';
 import { deleteContractor } from './deleteContractorService.api';
-import { ContractorResponse } from 'api/myApi';
+import { ContractorResponse } from 'api/types';
 import { EffectFailDataAxiosError } from 'types';
 
 const domain = createDomain('deleteContractorService');

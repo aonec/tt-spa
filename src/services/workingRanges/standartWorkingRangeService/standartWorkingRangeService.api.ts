@@ -3,7 +3,7 @@ import {
   AllNodeWorkingRangeResponse,
   ENodeWorkingRangeSeason,
   EResourceType,
-} from 'api/myApi';
+} from 'api/types';
 
 export const getStandartWorkingRange = (query: {
   nodeResourceType: EResourceType;

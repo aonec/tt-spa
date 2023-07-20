@@ -6,7 +6,7 @@ import {
   getInputValue,
   getReadingValue,
 } from './MeteringDeviceMonthReadingInput.utils';
-import { EMagistralType } from 'api/myApi';
+import { EMagistralType } from 'api/types';
 
 export const MeteringDeviceMonthReadingInput: FC<
   MeteringDeviceMonthReadingInputProps

@@ -7,7 +7,7 @@ import {
   HomeownerAccountChangeDate,
 } from './ApartmentAlerts.styled';
 import { ApartmentAlertsProps } from './ApartmentAlerts.types';
-import { EApartmentStatus } from 'api/myApi';
+import { EApartmentStatus } from 'api/types';
 import { Alert } from 'ui-kit/Alert/Alert';
 import moment from 'moment';
 import { Link } from 'react-router-dom';

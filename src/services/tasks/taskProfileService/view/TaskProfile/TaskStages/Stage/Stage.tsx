@@ -1,4 +1,4 @@
-import { EStageStatus, EStageType } from 'api/myApi';
+import { EStageStatus, EStageType } from 'api/types';
 import React, { FC, useMemo } from 'react';
 import { Button } from 'ui-kit/Button';
 import { ChoiceIcon, FinishIcon, OkIcon } from 'ui-kit/icons';

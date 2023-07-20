@@ -1,4 +1,4 @@
-import { UpdateHeatingStationRequest } from 'api/myApi';
+import { UpdateHeatingStationRequest } from 'api/types';
 
 export type requestParams = {
   id: string;

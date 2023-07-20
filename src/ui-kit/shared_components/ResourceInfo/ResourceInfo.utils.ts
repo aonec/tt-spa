@@ -1,4 +1,4 @@
-import { EActResourceType } from 'api/myApi';
+import { EActResourceType } from 'api/types';
 
 export const actResourceNamesLookup = {
   [EActResourceType.ColdWaterSupply]: 'ХВС',

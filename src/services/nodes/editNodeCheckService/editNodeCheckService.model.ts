@@ -1,5 +1,5 @@
 import { createDomain, sample } from 'effector';
-import { UpdateNodeCheckRequest } from 'api/myApi';
+import { UpdateNodeCheckRequest } from 'api/types';
 import { fetchUpdateNodeCheck } from './editNodeCheckService.api';
 import { message } from 'antd';
 import {

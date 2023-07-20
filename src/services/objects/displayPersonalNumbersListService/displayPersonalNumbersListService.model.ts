@@ -1,6 +1,6 @@
 import { createDomain, forward, guard, sample } from 'effector';
 import { createGate } from 'effector-react';
-import { ApartmentListResponsePagedList } from 'api/myApi';
+import { ApartmentListResponsePagedList } from 'api/types';
 import { GetApartmentsListRequestPayload } from '../displayApartmentsListService/displayApartmentsListService.types';
 import { getApartments } from './displayPersonalNumbersListService.api';
 import { addressSearchService } from 'services/addressSearchService/addressSearchService.models';

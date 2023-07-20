@@ -1,7 +1,7 @@
 import {
   MeteringDeviceResponse,
   SwitchHousingMeteringDeviceRequest,
-} from 'api/myApi';
+} from 'api/types';
 import { CalculatorInfoItem } from 'services/calculators/calculatorsInfoService/calculatorsInfoService.types';
 
 export type SwitchDeviceFormProps = {

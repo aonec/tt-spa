@@ -3,7 +3,7 @@ import {
   EResourceDisconnectingStatus,
   HousingStockResponse,
   ResourceDisconnectingResponsePagedList,
-} from 'api/myApi';
+} from 'api/types';
 
 export const fetchHousingStock = (
   HousingStockId: number,

@@ -1,6 +1,6 @@
 import { createDomain, guard, sample } from 'effector';
 import { createGate } from 'effector-react';
-import { ResourceDisconnectingFilterResponse } from 'api/myApi';
+import { ResourceDisconnectingFilterResponse } from 'api/types';
 import { fetchResourceDisconnectionFilters } from './resourceDisconnectionFiltersService.api';
 import { EffectFailDataAxiosError } from 'types';
 import { message } from 'antd';

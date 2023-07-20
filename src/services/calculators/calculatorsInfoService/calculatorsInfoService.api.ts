@@ -1,5 +1,5 @@
 import { axios } from 'api/axios';
-import { CalculatorInfoListResponse } from 'api/myApi';
+import { CalculatorInfoListResponse } from 'api/types';
 
 export const getCalculatorInfos = async (): Promise<
   CalculatorInfoListResponse[] | null

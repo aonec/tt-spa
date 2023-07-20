@@ -4,7 +4,7 @@ import { IndividualDeviceMetersInputContainer } from '../individualDeviceMetersI
 import { HousesIndividualDevicesHeader } from './view/HousesIndividualDevicesHeader';
 import { getReadingsMonthByShift } from '../apartmentIndividualDevicesMetersService/apartmentIndividualDevicesMetersService.utils';
 import { PREVIOUS_READING_INDEX_LIMIT } from '../apartmentIndividualDevicesMetersService/apartmentIndividualDevicesMetersService.constants';
-import { IndividualDeviceListItemResponse } from 'api/myApi';
+import { IndividualDeviceListItemResponse } from 'api/types';
 
 export const HousesIndividualDevicesMetersContainer: FC<
   HousesIndividualDevicesMetersContainerProps

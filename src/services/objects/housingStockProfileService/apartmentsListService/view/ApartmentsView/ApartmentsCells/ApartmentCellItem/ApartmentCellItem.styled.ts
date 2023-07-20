@@ -1,4 +1,4 @@
-import { ETasksState } from 'api/myApi';
+import { ETasksState } from 'api/types';
 import { ChevronRight } from 'react-bootstrap-icons';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';

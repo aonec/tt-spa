@@ -3,7 +3,7 @@ import { groupBy } from 'lodash';
 import {
   BuildingShortResponse,
   ResourceDisconnectingResponse,
-} from 'api/myApi';
+} from 'api/types';
 
 const domain = createDomain(
   'displayResourceDisconenctionAddressesServiceService',

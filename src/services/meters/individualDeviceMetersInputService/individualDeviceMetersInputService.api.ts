@@ -2,7 +2,7 @@ import { axios } from 'api/axios';
 import {
   IndividualDeviceReadingsCreateRequest,
   IndividualDeviceReadingsResponse,
-} from 'api/myApi';
+} from 'api/types';
 
 export const uploadReading = (
   reading: IndividualDeviceReadingsCreateRequest,

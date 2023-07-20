@@ -18,7 +18,7 @@ import {
   ENodeWorkingRangeSeason,
   ENodeWorkingRangeType,
   EResourceType,
-} from 'api/myApi';
+} from 'api/types';
 import { useFormik } from 'formik';
 import { GoBack } from 'ui-kit/shared_components/GoBack';
 import { WithLoader } from 'ui-kit/shared_components/WithLoader';

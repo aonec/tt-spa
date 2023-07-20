@@ -3,7 +3,7 @@ import {
   EStageTimeStatus,
   ETaskEngineeringElement,
   EManagingFirmTaskType,
-} from 'api/myApi';
+} from 'api/types';
 
 export type GetHousingStocksWithTasksRequestPayload = {
   EngineeringElement?: ETaskEngineeringElement;

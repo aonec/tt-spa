@@ -1,4 +1,4 @@
-import { MeteringDeviceConnection } from 'api/myApi';
+import { MeteringDeviceConnection } from 'api/types';
 
 export type ConnectionInfoProps = {
   connection: MeteringDeviceConnection | null;

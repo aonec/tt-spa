@@ -1,4 +1,4 @@
-import { ETasksState } from 'api/myApi';
+import { ETasksState } from 'api/types';
 import styled from 'styled-components';
 import { TasksStateBackgroundLookup } from './ApartmentStatusLegend.constants';
 

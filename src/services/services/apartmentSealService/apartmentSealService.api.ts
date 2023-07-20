@@ -2,7 +2,7 @@ import { axios } from 'api/axios';
 import {
   IndividualDeviceListItemResponsePagedList,
   AppointmentResponse,
-} from 'api/myApi';
+} from 'api/types';
 
 export const getIndividualDevices = (
   ApartmentId?: number,

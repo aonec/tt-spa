@@ -1,4 +1,4 @@
-import { EOrganizationUserWorkingStatusType } from 'api/myApi';
+import { EOrganizationUserWorkingStatusType } from 'api/types';
 
 export type StaffStatusProps = {
   status: EOrganizationUserWorkingStatusType | null;

@@ -1,4 +1,4 @@
-import { DocumentLiteResponse } from 'api/myApi';
+import { DocumentLiteResponse } from 'api/types';
 
 export type EditNodeUploadDocumentsModalProps = {
   closeModal: () => void;

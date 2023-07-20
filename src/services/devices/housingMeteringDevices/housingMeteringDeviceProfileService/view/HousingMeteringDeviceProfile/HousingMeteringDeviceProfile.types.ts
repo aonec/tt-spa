@@ -1,4 +1,4 @@
-import { PipeHousingMeteringDeviceResponse, TasksPagedList } from 'api/myApi';
+import { PipeHousingMeteringDeviceResponse, TasksPagedList } from 'api/types';
 import { HousingProfileTabs } from '../../housingMeteringDeviceProfileService.types';
 
 export type HousingMeteringDeviceProfileProps = {

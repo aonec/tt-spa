@@ -1,7 +1,7 @@
 import {
   AddOrganizationUserWorkingStatusRequest,
   UserStatusResponse,
-} from 'api/myApi';
+} from 'api/types';
 
 export type ChangeStatusEmployeeFormProps = {
   formId: string;

@@ -1,7 +1,7 @@
 import {
   OrganizationUserListResponsePagedList,
   UserStatusResponse,
-} from 'api/myApi';
+} from 'api/types';
 
 export type StaffProps = {
   staffList: OrganizationUserListResponsePagedList | null;

@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 import { CommonInfoTabProps } from './CommonInfoTab.types';
 import { CommonInfo } from 'ui-kit/shared_components/CommonInfo';
 import { TabTitle, Wrapper } from './CommonInfoTab.styled';
-import { HouseAddress } from 'api/myApi';
+import { HouseAddress } from 'api/types';
 
 export const CommonInfoTab: FC<CommonInfoTabProps> = ({
   currentManagingFirm,

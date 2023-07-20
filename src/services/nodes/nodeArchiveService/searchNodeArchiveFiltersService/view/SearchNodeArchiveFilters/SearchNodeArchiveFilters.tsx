@@ -1,7 +1,7 @@
 import { Form, Select } from 'antd';
 import { useFormik } from 'formik';
 import moment from 'moment';
-import { EReportType } from 'api/myApi';
+import { EReportType } from 'api/types';
 import React, { FC } from 'react';
 import { Button } from 'ui-kit/Button';
 import {

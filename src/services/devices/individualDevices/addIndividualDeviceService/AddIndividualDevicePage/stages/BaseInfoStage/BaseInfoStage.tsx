@@ -22,7 +22,7 @@ import {
   CreateIndividualDeviceRequest,
   EIndividualDeviceRateType,
   EResourceType,
-} from 'api/myApi';
+} from 'api/types';
 import { DatePickerNative } from 'ui-kit/shared_components/DatePickerNative';
 import { getIndividualDeviceRateNumByName } from 'utils/getIndividualDeviceRateNumByName';
 import moment from 'moment';

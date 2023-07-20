@@ -2,7 +2,7 @@ import {
   IndividualDeviceListItemResponse,
   IndividualDeviceReadingsCreateRequest,
   IndividualDeviceReadingsResponse,
-} from 'api/myApi';
+} from 'api/types';
 import { ConsumptionRatesDictionary } from '../managementFirmConsumptionRatesService/managementFirmConsumptionRatesService.types';
 
 export type IndividualDeviceMetersInputContainerProps = {

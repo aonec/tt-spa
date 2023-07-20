@@ -1,4 +1,4 @@
-import { HomeownerCertificateResponse } from 'api/myApi';
+import { HomeownerCertificateResponse } from 'api/types';
 
 export type Props = {
   certificate: HomeownerCertificateResponse;

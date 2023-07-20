@@ -5,7 +5,7 @@ import {
   EMagistralType,
   HousingMeteringDeviceReadingsIncludingPlacementResponse,
   PipeNodeResponse,
-} from 'api/myApi';
+} from 'api/types';
 import { getFilledArray } from 'utils/getFilledArray';
 import { SortedMeteringDeviceReading } from './housingMeteringDeviceReadingsService.types';
 

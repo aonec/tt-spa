@@ -1,5 +1,5 @@
 import { createDomain, sample } from 'effector';
-import { HomeownerAccountCreateRequest } from 'api/myApi';
+import { HomeownerAccountCreateRequest } from 'api/types';
 import { apartmentProfileService } from 'services/apartments/apartmentProfileService';
 import { EffectFailDataAxiosErrorDataApartmentId } from 'types';
 import { addHomeowner } from './addPersonalNumberService.api';

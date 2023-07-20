@@ -1,6 +1,6 @@
 import { message } from 'antd';
 import { createDomain, forward, guard, sample } from 'effector';
-import { HeatingStationResponse, UpdateHeatingStationRequest } from 'api/myApi';
+import { HeatingStationResponse, UpdateHeatingStationRequest } from 'api/types';
 import { addressSearchService } from 'services/addressSearchService/addressSearchService.models';
 import { EffectFailDataAxiosError } from 'types';
 import { HeatingStationTypeRequestDictionary } from '../NewHeatingStationForm/newHeatingStationForm.constants';

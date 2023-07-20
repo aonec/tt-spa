@@ -1,5 +1,5 @@
 import axios from 'api/axios';
-import { CalculatorIntoHousingStockResponse } from 'api/myApi';
+import { CalculatorIntoHousingStockResponse } from 'api/types';
 
 export const getCalculatorsList = (
   housingStockId: number,

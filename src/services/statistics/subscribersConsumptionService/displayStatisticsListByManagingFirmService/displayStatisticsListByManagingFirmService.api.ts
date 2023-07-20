@@ -3,7 +3,7 @@ import {
   BuildingListResponsePagedList,
   HouseManagementWithStreetsResponse,
   SubscriberStatisticsСonsumptionResponse,
-} from 'api/myApi';
+} from 'api/types';
 import { SubscriberStatisticsFilter } from './displayStatisticsListByManagingFirmService.types';
 
 export const fetchManagingFirm = async (

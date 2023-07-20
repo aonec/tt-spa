@@ -2,7 +2,7 @@ import {
   DocumentResponse,
   DocumentLiteResponse,
   EDocumentType,
-} from 'api/myApi';
+} from 'api/types';
 
 export type Document = DocumentResponse | DocumentLiteResponse;
 

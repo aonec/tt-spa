@@ -4,7 +4,7 @@ import {
   CreateIndividualDeviceRequest,
   IndividualDeviceListResponseFromDevicePagePagedList,
   IndividualDeviceMountPlaceListResponse,
-} from 'api/myApi';
+} from 'api/types';
 import { DocumentStageForm } from './stages/DocumentsStage/DocumentsStage.types';
 
 export type AddIndividualDevicePageProps = {

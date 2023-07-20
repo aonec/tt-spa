@@ -7,7 +7,7 @@ import {
   HouseManagementResponse,
   HousingStockCreateRequest,
   HousingStockResponse,
-} from 'api/myApi';
+} from 'api/types';
 import { CreateBuildingResponse } from './createObjectService.types';
 
 export const getHouseManagements = (): Promise<

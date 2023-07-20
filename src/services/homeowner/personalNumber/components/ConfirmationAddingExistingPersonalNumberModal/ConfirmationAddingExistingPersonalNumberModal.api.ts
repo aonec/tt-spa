@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { ApartmentResponse } from 'api/myApi';
+import { ApartmentResponse } from 'api/types';
 
 export const getSamePersonalAccountNumderApartmentData = (
   apartmentId: number,

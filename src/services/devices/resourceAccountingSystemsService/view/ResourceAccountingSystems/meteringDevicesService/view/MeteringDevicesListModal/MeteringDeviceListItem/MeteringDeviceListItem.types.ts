@@ -1,4 +1,4 @@
-import { PipeNodeMeteringDeviceResponse } from 'api/myApi';
+import { PipeNodeMeteringDeviceResponse } from 'api/types';
 
 export type MeteringDeviceListItemProps = {
   device: PipeNodeMeteringDeviceResponse;

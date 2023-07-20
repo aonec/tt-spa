@@ -1,4 +1,4 @@
-import { HousingStockResponse } from 'api/myApi';
+import { HousingStockResponse } from 'api/types';
 import { UpdateNodeFormPayloadCallback } from 'services/nodes/createNodeService/createNodeService.types';
 
 export type MountAddressProps = {

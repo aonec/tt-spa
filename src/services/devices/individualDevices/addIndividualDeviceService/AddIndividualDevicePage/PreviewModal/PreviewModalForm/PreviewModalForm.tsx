@@ -18,7 +18,7 @@ import {
 import { ResourceInfo } from 'ui-kit/shared_components/ResourceInfo';
 import { getDate, getMountPlaceById } from './PreviewModalForm.utils';
 import { getInputBorderColor } from 'services/meters/individualDeviceMetersInputService/view/MetersInputsBlock/MetersInputsBlock.styled';
-import { BaseIndividualDeviceReadingsCreateRequest } from 'api/myApi';
+import { BaseIndividualDeviceReadingsCreateRequest } from 'api/types';
 import { Document } from 'ui-kit/DocumentsService';
 import { FileIcon } from 'ui-kit/icons';
 import { IndividualDeviceDocumentsDisctionary } from './PreviewModalForm.constants';

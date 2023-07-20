@@ -2,7 +2,7 @@ import React from 'react';
 import { useStore, useUnit } from 'effector-react';
 import { Router } from './view/Router';
 import { routerService } from './routerService.model';
-import { ESecuredIdentityRoleName } from 'api/myApi';
+import { ESecuredIdentityRoleName } from 'api/types';
 import { developmentSettingsService } from 'services/developmentSettings/developmentSettings.models';
 
 const { outputs } = routerService;

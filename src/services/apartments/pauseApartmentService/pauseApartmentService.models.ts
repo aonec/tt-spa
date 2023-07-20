@@ -11,7 +11,7 @@ import { EffectFailDataAxiosError } from 'types';
 import {
   EApartmentStatus,
   IndividualDeviceWithExpiredCheckingDateListResponse,
-} from 'api/myApi';
+} from 'api/types';
 import { SetApartmentStatusRequest } from './pauseApartmentService.types';
 import { apartmentService } from '../apartmentService';
 import { apartmentProblemDevicesService } from '../apartmentProblemDevicesService';

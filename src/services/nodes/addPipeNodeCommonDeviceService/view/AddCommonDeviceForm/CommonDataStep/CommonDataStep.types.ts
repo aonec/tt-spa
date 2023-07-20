@@ -1,4 +1,4 @@
-import { EPipeNodeConfig } from 'api/myApi';
+import { EPipeNodeConfig } from 'api/types';
 import { CreateCommonDevicePartitial } from 'services/nodes/addPipeNodeCommonDeviceService/addPipeNodeCommonDeviceService.types';
 
 export type CommonDataStepProps = {

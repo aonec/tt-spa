@@ -1,6 +1,6 @@
 import React from 'react';
 import { useFormik } from 'formik';
-import { EResourceDisconnectingType, EResourceType } from 'api/myApi';
+import { EResourceDisconnectingType, EResourceType } from 'api/types';
 import {
   FormItem,
   StyledDisablingResourcesSearchHeader,

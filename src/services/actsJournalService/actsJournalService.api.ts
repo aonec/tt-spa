@@ -2,7 +2,7 @@ import { axios } from 'api/axios';
 import {
   AddApartmentActRequest,
   ApartmentActResponsePagedList,
-} from 'api/myApi';
+} from 'api/types';
 import { stringify } from 'query-string';
 import { ActsJournalRequestParams } from './actsJournalService.types';
 

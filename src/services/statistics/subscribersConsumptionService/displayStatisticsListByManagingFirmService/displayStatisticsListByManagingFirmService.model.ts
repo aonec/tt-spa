@@ -5,7 +5,7 @@ import {
   BuildingListResponsePagedList,
   HouseManagementWithStreetsResponse,
   SubscriberStatisticsСonsumptionResponse,
-} from 'api/myApi';
+} from 'api/types';
 import {
   fetchHousingStocksByManagingFirm,
   fetchManagingFirm,

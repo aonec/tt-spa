@@ -3,7 +3,7 @@ import {
   EOrderByRule,
   EResourceType,
   ApartmentResponse,
-} from 'api/myApi';
+} from 'api/types';
 
 export type Params = {
   apartment?: ApartmentResponse;

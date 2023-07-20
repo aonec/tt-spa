@@ -1,4 +1,4 @@
-import { EResourceType } from 'api/myApi';
+import { EResourceType } from 'api/types';
 import { CSSProperties } from 'react';
 
 export type GraphGradientProps = {

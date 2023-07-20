@@ -1,4 +1,4 @@
-import { OrganizationUserListResponse } from 'api/myApi';
+import { OrganizationUserListResponse } from 'api/types';
 
 export type UsersListSelectProps = {
   organizationUsersList: OrganizationUserListResponse[] | null;

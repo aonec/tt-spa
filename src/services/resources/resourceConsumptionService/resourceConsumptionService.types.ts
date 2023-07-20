@@ -1,4 +1,4 @@
-import { EResourceType } from 'api/myApi';
+import { EResourceType } from 'api/types';
 import { ConsumptionDataFilter } from './resourceConsumptionFilterService/resourceConsumptionFilterService.types';
 
 export type ResourceConsumptionWithNull = {

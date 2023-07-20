@@ -1,4 +1,4 @@
-import { TaskConfirmationResponse } from 'api/myApi';
+import { TaskConfirmationResponse } from 'api/types';
 
 export type PipeRuptureConclusionProps = {
   taskConfirmation: TaskConfirmationResponse | null;

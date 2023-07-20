@@ -1,5 +1,5 @@
 import { useEvent } from 'effector-react';
-import { ESecuredIdentityRoleName } from 'api/myApi';
+import { ESecuredIdentityRoleName } from 'api/types';
 import React, { useEffect } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 import { FeedFlowBackReportContainer } from 'services/nodes/feedFlowBackReportService';

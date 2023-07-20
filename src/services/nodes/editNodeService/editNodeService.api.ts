@@ -3,7 +3,7 @@ import {
   NodeServiceZoneListResponse,
   PipeNodeResponse,
   UpdatePipeNodeRequest,
-} from 'api/myApi';
+} from 'api/types';
 
 export const fetchNode = (nodeId: string): Promise<PipeNodeResponse> =>
   axios.get(`PipeNodes/${nodeId}`);

@@ -5,7 +5,7 @@ import {
   HouseManagementWithStreetsResponse,
   HousingDevicesConstructedReportResponse,
   HomeownersConstructedReportResponse,
-} from 'api/myApi';
+} from 'api/types';
 import { axios } from 'api/axios';
 import {
   ActsJournalReportRequestPayload,

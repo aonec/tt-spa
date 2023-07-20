@@ -1,4 +1,4 @@
-import { EResourceType } from 'api/myApi';
+import { EResourceType } from 'api/types';
 import React, { ChangeEvent, FC, useMemo } from 'react';
 import { getFilledArray } from 'utils/getFilledArray';
 import { getReadingValueKey } from '../../individualDeviceMetersInputService.utils';

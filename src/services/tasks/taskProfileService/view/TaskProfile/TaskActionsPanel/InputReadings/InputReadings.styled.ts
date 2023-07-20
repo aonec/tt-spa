@@ -1,5 +1,5 @@
 import { getResourceColor } from '01/features/individualDevices/switchIndividualDevice/components/DeviceDataString';
-import { EResourceType } from 'api/myApi';
+import { EResourceType } from 'api/types';
 import styled from 'styled-components';
 
 export const MonthWrapper = styled.div`

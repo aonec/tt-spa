@@ -2,7 +2,7 @@ import {
   HeatingStationWithStreetsResponse,
   HouseManagementWithStreetsResponse,
   StreetWithBuildingNumbersResponse,
-} from 'api/myApi';
+} from 'api/types';
 import { TreeSelectElement } from './AddressTreeSelect.types';
 
 type PrepareAddressesParams = {

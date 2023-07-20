@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import { ErpExecutorResponse } from 'api/myApi';
+import { ErpExecutorResponse } from 'api/types';
 
 type Address = {
   value: string;

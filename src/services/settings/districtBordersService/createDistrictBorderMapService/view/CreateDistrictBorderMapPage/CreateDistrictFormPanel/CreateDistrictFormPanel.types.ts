@@ -1,4 +1,4 @@
-import { BuildingListResponse, DistrictCreateRequest } from 'api/myApi';
+import { BuildingListResponse, DistrictCreateRequest } from 'api/types';
 import { DistrictColor } from 'types';
 
 export type CreateDistrictFormPanelProps = {
