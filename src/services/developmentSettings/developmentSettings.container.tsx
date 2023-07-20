@@ -1,11 +1,14 @@
 import { useUnit } from 'effector-react';
-import React from 'react';
+import React, { FC } from 'react';
 import { developmentSettingsService } from './developmentSettings.models';
 import { DevelopmentSettingsModal } from './view/DevelopmentSettingsModal';
+import { DevelopmentSettingsContainerProps } from './developmentSettings.types';
 
 const { inputs, outputs } = developmentSettingsService;
 
-export const DevSettingsModal = () => {
+export const DevelopmentSettingsContainer: FC<
+  DevelopmentSettingsContainerProps
+> = ({ isAuth = false }) => {
   const {
     visible,
     devUrl,
@@ -33,6 +36,7 @@ export const DevSettingsModal = () => {
       featureToggles={featureToggles}
       toggleFeature={toggleFeature}
       resetFeatureToggles={resetFeatureToggles}
+      isAuth={isAuth}
     />
   );
 };

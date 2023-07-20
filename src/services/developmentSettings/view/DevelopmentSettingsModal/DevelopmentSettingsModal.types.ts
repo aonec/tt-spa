@@ -8,4 +8,5 @@ export type DevelopmentSettingsModalProps = {
   featureToggles: FeatureToggles;
   toggleFeature: (feature: string) => void;
   resetFeatureToggles: () => void;
+  isAuth: boolean;
 };

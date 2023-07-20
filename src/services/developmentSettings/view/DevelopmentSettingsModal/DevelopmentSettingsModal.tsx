@@ -25,6 +25,7 @@ export const DevelopmentSettingsModal: FC<DevelopmentSettingsModalProps> = ({
   featureToggles,
   toggleFeature,
   resetFeatureToggles,
+  isAuth,
 }) => {
   const featuresArray = useMemo(
     () => Object.entries(featureToggles),
@@ -36,36 +37,40 @@ export const DevelopmentSettingsModal: FC<DevelopmentSettingsModalProps> = ({
       formId="dev-settings-form"
       form={
         <>
-          <FormItem label="URL's list">
-            <Select
-              small
-              placeholder="Select url"
-              value={urls.find((elem) => elem === devUrl)}
-              onChange={(value) => setDevUrl(value as string)}
-            >
-              {urls.map((elem) => (
-                <Select.Option key={elem} value={elem}>
-                  {elem}
-                </Select.Option>
-              ))}
-            </Select>
-          </FormItem>
-          <FormItem label="URL">
-            <DevUrlInputWrapper>
-              <Input
-                small
-                value={devUrl}
-                onChange={(e) => setDevUrl(e.target.value)}
-              />
-              <Button
-                size="small"
-                icon={<SettingsIcon />}
-                onClick={() => setDevUrl(baseURL)}
-              >
-                Reset
-              </Button>
-            </DevUrlInputWrapper>
-          </FormItem>
+          {!isAuth && (
+            <>
+              <FormItem label="URL's list">
+                <Select
+                  small
+                  placeholder="Select url"
+                  value={urls.find((elem) => elem === devUrl)}
+                  onChange={(value) => setDevUrl(value as string)}
+                >
+                  {urls.map((elem) => (
+                    <Select.Option key={elem} value={elem}>
+                      {elem}
+                    </Select.Option>
+                  ))}
+                </Select>
+              </FormItem>
+              <FormItem label="URL">
+                <DevUrlInputWrapper>
+                  <Input
+                    small
+                    value={devUrl}
+                    onChange={(e) => setDevUrl(e.target.value)}
+                  />
+                  <Button
+                    size="small"
+                    icon={<SettingsIcon />}
+                    onClick={() => setDevUrl(baseURL)}
+                  >
+                    Reset
+                  </Button>
+                </DevUrlInputWrapper>
+              </FormItem>
+            </>
+          )}
           {Boolean(featuresArray.length) && (
             <FormItem label="Feature toggles">
               <FeatureTogglesWrapper>
@@ -97,7 +102,7 @@ export const DevelopmentSettingsModal: FC<DevelopmentSettingsModalProps> = ({
         </>
       }
       centered
-      title="Development settings"
+      title="🛠️ development settings"
       visible={visible}
       onCancel={closeDevSettingsModal}
       customFooter={<></>}
