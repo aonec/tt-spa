@@ -1,10 +1,10 @@
 import { axios } from '01/axios';
-import { downloadURI } from '01/features/reports/CreateReportModal/utils';
+import { downloadURI } from 'services/reports/CreateReportModal/utils';
 import moment from 'moment';
 import { ExportTasksListRequestPayload } from './exportTasksListService.types';
 
 export const downloadTasksList = async (
-  params: ExportTasksListRequestPayload
+  params: ExportTasksListRequestPayload,
 ) => {
   try {
     const res: string = await axios.get(`Tasks/ExportLite`, {

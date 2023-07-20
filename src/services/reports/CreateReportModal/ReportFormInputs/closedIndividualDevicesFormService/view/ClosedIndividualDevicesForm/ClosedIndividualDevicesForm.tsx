@@ -1,4 +1,4 @@
-import { form } from '01/features/reports/CreateReportModal/models';
+import { form } from 'services/reports/CreateReportModal/models';
 import { SpaceLine } from '01/shared/ui/Layout/Space/Space';
 import { Checkbox } from 'antd';
 import { useForm } from 'effector-forms';

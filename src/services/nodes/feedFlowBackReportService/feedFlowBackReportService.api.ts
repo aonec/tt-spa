@@ -1,4 +1,4 @@
-import { downloadURI } from '01/features/reports/CreateReportModal/utils';
+import { downloadURI } from 'services/reports/CreateReportModal/utils';
 import { axios } from '01/axios';
 import { FeedBackFlowReportPayload } from './feedFlowBackReportService.types';
 import queryString from 'query-string';

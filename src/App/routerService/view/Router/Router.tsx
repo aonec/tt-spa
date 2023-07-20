@@ -28,7 +28,7 @@ import { StandartWorkingRangeContainer } from 'services/workingRanges/standartWo
 import { GroupWorkingRangeContainer } from 'services/workingRanges/groupWorkingRangeService';
 import { UniqueWorkingRangeContainer } from 'services/workingRanges/uniqueWorkingRangeService';
 import { EditCompanyContainer } from 'services/company/editCompanyService';
-import { ReportsPageContainer } from '01/features/reports';
+import { ReportsPageContainer } from 'services/reports';
 import { ReportsContainer } from 'services/reportsService';
 import { AccessDeniedPage } from 'services/authorizations/AccessDeniedPage';
 import { EditObjectContainer } from 'services/objects/editObjectService';

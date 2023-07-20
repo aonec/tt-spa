@@ -1,5 +1,5 @@
 import { axios } from '01/axios';
-import { downloadURI } from '01/features/reports/CreateReportModal/utils';
+import { downloadURI } from 'services/reports/CreateReportModal/utils';
 import { ExportSubscribersConsumptionPayload } from './exportSubscribersConsumptionService.types';
 
 export const downloadSubscribersConsumption = async (

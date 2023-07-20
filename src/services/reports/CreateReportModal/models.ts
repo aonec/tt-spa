@@ -13,7 +13,7 @@ import {
   ZippedReports,
 } from './CreateReport.constants';
 import { reportsListService } from '../reportsListService';
-import { EffectFailDataAxiosError } from './../../../../types/index';
+import { EffectFailDataAxiosError } from '../../../types/index';
 import { closedIndividualDevicesFormService } from './ReportFormInputs/closedIndividualDevicesFormService';
 
 const createReportDomain = createDomain('CreateReport');

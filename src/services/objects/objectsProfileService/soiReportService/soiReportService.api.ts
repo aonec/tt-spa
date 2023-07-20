@@ -1,5 +1,5 @@
 import { axios } from '01/axios';
-import { downloadURI } from '01/features/reports/CreateReportModal/utils';
+import { downloadURI } from 'services/reports/CreateReportModal/utils';
 import { GetAddressesWithCityRequestPayload } from 'services/workingRanges/uniqueWorkingRangeService/uniqueWorkingRangeService.types';
 import { omit } from 'lodash';
 import {

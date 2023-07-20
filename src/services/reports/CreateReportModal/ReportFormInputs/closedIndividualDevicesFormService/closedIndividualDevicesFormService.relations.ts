@@ -1,4 +1,4 @@
-import { reportsListService } from '01/features/reports/reportsListService';
+import { reportsListService } from 'services/reports/reportsListService';
 import { sample } from 'effector';
 import { closedIndividualDevicesFormService } from './closedIndividualDevicesFormService.model';
 import { UnloadingType } from './closedIndividualDevicesFormService.types';
