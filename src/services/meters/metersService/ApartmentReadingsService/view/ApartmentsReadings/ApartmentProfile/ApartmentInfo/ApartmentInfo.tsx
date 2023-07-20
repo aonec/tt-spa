@@ -21,6 +21,8 @@ import {
   InfoPanelLabel,
   ManagementFirmInfo,
   PencilIconSC,
+  PersonalNumberHeader,
+  PersonalNumberHeaderWrapper,
   PersonalNumberPanel,
   PersonalNumbersWrapper,
   TextareaSC,
@@ -28,7 +30,7 @@ import {
 import { ApartmentInfoProps } from './ApartmentInfo.types';
 import { ContextMenuButton } from 'ui-kit/ContextMenuButton/ContextMenuButton';
 import { getApartmentAddressString } from 'utils/getApartmentAddress';
-import { BriefcaseIcon, CrownIcon, HouseIcon } from 'ui-kit/icons';
+import { BriefcaseIcon, CrownIcon, HouseIcon, InfoIcon } from 'ui-kit/icons';
 import { Button } from 'ui-kit/Button';
 import moment from 'moment';
 import { apartmentInfoService } from './ApartmentInfo.model';
@@ -226,7 +228,10 @@ export const ApartmentInfo: FC<ApartmentInfoProps> = ({
                 handleHomeownerUpdated={handleHomeownerUpdated}
               />
               <div>
-                <InfoPanelLabel>Лицевой счет</InfoPanelLabel>
+                <PersonalNumberHeaderWrapper>
+                  <PersonalNumberHeader>Лицевой счет</PersonalNumberHeader>
+                  <InfoIcon />
+                </PersonalNumberHeaderWrapper>
                 <ExtraInfoText>
                   {selectedHomeowner?.personalAccountNumber}{' '}
                   <AccountOpeningDate>

@@ -85,10 +85,12 @@ export const InfoPanelLabel = styled.div`
   font-weight: 500;
   font-size: 14px;
   margin-bottom: 10px;
+`;
 
-  &:after {
-    content: ':';
-  }
+export const PersonalNumberHeader = styled.div`
+  color: #272f5ab2;
+  font-weight: 500;
+  font-size: 14px;
 `;
 
 export const BaseInfoWrapper = styled.div`
@@ -126,6 +128,14 @@ export const ManagementFirmInfo = styled.span`
 export const CommentHeader = styled.div`
   display: flex;
   justify-content: space-between;
+`;
+
+export const PersonalNumberHeaderWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+  gap: 10px;
+
 `;
 
 export const Comment = styled.div`
