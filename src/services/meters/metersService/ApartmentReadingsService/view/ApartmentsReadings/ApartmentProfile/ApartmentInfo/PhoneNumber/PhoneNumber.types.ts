@@ -1,13 +1,11 @@
 import { Event } from 'effector';
-import { HomeownerAccountResponse, HomeownerAccountUpdateRequest } from 'myApi';
+import { HomeownerAccountResponse } from 'myApi';
+import { UpdateHomeownerRequestPayload } from 'services/meters/metersService/ApartmentReadingsService/ApartmentReadingsService.types';
 
 export type PhoneNumberProps = {
   phoneNumber: string | null;
   homeownerId: string | undefined;
-  handleUpdate?: (payload: {
-    id: string;
-    data: HomeownerAccountUpdateRequest;
-  }) => void;
+  handleUpdate?: (payload: UpdateHomeownerRequestPayload) => void;
   isUpdateHomeownerLoading?: boolean;
   handleHomeownerUpdated?: Event<HomeownerAccountResponse>;
 };

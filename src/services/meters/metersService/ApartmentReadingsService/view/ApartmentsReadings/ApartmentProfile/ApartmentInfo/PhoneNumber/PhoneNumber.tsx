@@ -4,7 +4,6 @@ import {
   PhoneNumberFooter,
   PhoneNumberHeader,
   PhoneNumberWrapper,
-  Wrapper,
 } from './PhoneNumber.styled';
 import { PhoneNumberProps } from './PhoneNumber.types';
 import { PencilIconSC } from '../ApartmentInfo.styled';
@@ -42,12 +41,12 @@ export const PhoneNumber: FC<PhoneNumberProps> = ({
       return;
     }
 
-    homeownerId &&
-      handleUpdate &&
+    if (homeownerId && handleUpdate) {
       handleUpdate({
         id: homeownerId,
         data: { phoneNumber: currentPhoneNumber },
       });
+    }
   };
 
   useEffect(() => {
@@ -59,7 +58,7 @@ export const PhoneNumber: FC<PhoneNumberProps> = ({
   }, [handleHomeownerUpdated, setCurrentPhoneNumber]);
 
   return (
-    <Wrapper>
+    <div>
       <PhoneNumberHeader>
         <InfoPanelLabel>Телефон</InfoPanelLabel>
         <PencilIconSC onClick={isEditing ? handleCancelEdit : handleEdit} />
@@ -98,6 +97,6 @@ export const PhoneNumber: FC<PhoneNumberProps> = ({
           </Button>
         </PhoneNumberFooter>
       )}
-    </Wrapper>
+    </div>
   );
 };

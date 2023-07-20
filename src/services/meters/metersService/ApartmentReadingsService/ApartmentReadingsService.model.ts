@@ -9,10 +9,11 @@ import { SearchMode } from './view/ApartmentsReadings/ApartmentsReadings.types';
 import {
   GetApartmentsRequestPayload,
   UpdateApartmentRequestPayload,
+  UpdateHomeownerRequestPayload,
 } from './ApartmentReadingsService.types';
 import {
   getApartment,
-  patchOwner,
+  patchHomeowner,
   putApartment,
 } from './ApartmentReadingsService.api';
 import { message } from 'antd';
@@ -53,10 +54,10 @@ const updateApartmentFx = domain.createEffect<
 >(putApartment);
 
 const updateHomeownerFx = domain.createEffect<
-  { id: string; data: HomeownerAccountUpdateRequest },
+  UpdateHomeownerRequestPayload,
   HomeownerAccountResponse,
   EffectFailDataAxiosError
->(patchOwner);
+>(patchHomeowner);
 
 const handleHomeownerUpdated = updateHomeownerFx.doneData;
 

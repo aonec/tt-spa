@@ -48,10 +48,11 @@ export const putApartment = ({
 }: UpdateApartmentRequestPayload): Promise<ApartmentResponse> =>
   axios.put(`Apartments/${apartmentId}`, data);
 
-export const patchOwner = ({
+export const patchHomeowner = ({
   id,
   data,
 }: {
   id: string;
   data: HomeownerAccountUpdateRequest;
-}): Promise<HomeownerAccountResponse> => axios.put(`HomeownerAccounts/${id}`, data);
+}): Promise<HomeownerAccountResponse> =>
+  axios.put(`HomeownerAccounts/${id}`, data);

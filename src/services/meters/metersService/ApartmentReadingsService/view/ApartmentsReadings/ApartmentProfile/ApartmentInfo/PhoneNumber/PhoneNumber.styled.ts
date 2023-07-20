@@ -1,7 +1,5 @@
 import styled from 'styled-components';
 
-export const Wrapper = styled.div``;
-
 export const InfoPanelLabel = styled.div`
   color: #272f5ab2;
   font-weight: 500;

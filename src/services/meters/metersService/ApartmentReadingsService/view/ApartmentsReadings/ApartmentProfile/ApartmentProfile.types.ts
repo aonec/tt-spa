@@ -1,11 +1,11 @@
 import {
   ApartmentResponse,
   HomeownerAccountResponse,
-  HomeownerAccountUpdateRequest,
 } from 'myApi';
 import {
   GetApartmentsRequestPayload,
   UpdateApartmentRequestPayload,
+  UpdateHomeownerRequestPayload,
 } from '../../../ApartmentReadingsService.types';
 import { Event } from 'effector';
 
@@ -21,10 +21,7 @@ export type ApartmentProfileProps = {
   selectedHomeownerName: string | null;
   isPermitionToApartmentStatusPatch: boolean;
   printIssueCertificate: () => void;
-  handleUpdatePhoneNumber: (payload: {
-    id: string;
-    data: HomeownerAccountUpdateRequest;
-  }) => void;
+  handleUpdatePhoneNumber: (payload: UpdateHomeownerRequestPayload) => void;
   isUpdateHomeownerLoading: boolean;
   handleHomeownerUpdated: Event<HomeownerAccountResponse>;
 };

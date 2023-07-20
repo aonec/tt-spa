@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { ApartmentsReadings } from './view/ApartmentsReadings';
 import { apartmentReadingsService } from './ApartmentReadingsService.model';
-import { useEvent, useStore, useUnit } from 'effector-react';
+import { useUnit } from 'effector-react';
 import { useHistory, useParams } from 'react-router-dom';
 import { ESecuredIdentityRoleName } from 'myApi';
 import { usePermission } from 'hooks/usePermission';
@@ -14,29 +14,38 @@ export const ApartmentReadingsContainer = () => {
   const history = useHistory();
   const { id } = useParams<{ id: string }>();
 
-  const setSearchMode = useEvent(inputs.setSearchMode);
-  const handleSearchApartment = useEvent(inputs.handleSearchApartment);
-  const handleUpdateApartment = useEvent(inputs.handleUpdateApartment);
-  const handlePauseApartment = useEvent(inputs.handlePauseApartment);
-  const handleCancelPauseApartment = useEvent(
-    inputs.handleCancelPauseApartment,
-  );
-  const openEditPersonalNumberModal = useEvent(
-    inputs.openEditPersonalNumberModal,
-  );
-  const setSelectedHomeownerName = useEvent(inputs.setSelectedHomeownerName);
-  const handleUpdatePhoneNumber = useEvent(inputs.handleUpdatePhoneNumber);
-
-  const searchMode = useStore(outputs.$searchMode);
-  const isLoadingApartment = useStore(outputs.$isLoadingApartment);
-  const apartment = useStore(outputs.$apartment);
-  const selectedHomeownerName = useStore(outputs.$selectedHomeownerName);
-  const allIndividualDeviceMountPlaces = useStore(
-    outputs.$allIndividualDeviceMountPlaces,
-  );
-  const { printIssueCertificate, isUpdateHomeownerLoading } = useUnit({
+  const {
+    printIssueCertificate,
+    isUpdateHomeownerLoading,
+    setSearchMode,
+    handleSearchApartment,
+    handleUpdateApartment,
+    handlePauseApartment,
+    handleCancelPauseApartment,
+    openEditPersonalNumberModal,
+    setSelectedHomeownerName,
+    handleUpdatePhoneNumber,
+    searchMode,
+    isLoadingApartment,
+    apartment,
+    selectedHomeownerName,
+    allIndividualDeviceMountPlaces,
+  } = useUnit({
     printIssueCertificate: inputs.printIssueCertificate,
     isUpdateHomeownerLoading: outputs.$isUpdateHomeownerLoading,
+    setSearchMode: inputs.setSearchMode,
+    handleSearchApartment: inputs.handleSearchApartment,
+    handleUpdateApartment: inputs.handleUpdateApartment,
+    handlePauseApartment: inputs.handlePauseApartment,
+    handleCancelPauseApartment: inputs.handleCancelPauseApartment,
+    openEditPersonalNumberModal: inputs.openEditPersonalNumberModal,
+    setSelectedHomeownerName: inputs.setSelectedHomeownerName,
+    handleUpdatePhoneNumber: inputs.handleUpdatePhoneNumber,
+    searchMode: outputs.$searchMode,
+    isLoadingApartment: outputs.$isLoadingApartment,
+    apartment: outputs.$apartment,
+    selectedHomeownerName: outputs.$selectedHomeownerName,
+    allIndividualDeviceMountPlaces: outputs.$allIndividualDeviceMountPlaces,
   });
 
   const isPermitionToApartmentStatusPatch = usePermission([
