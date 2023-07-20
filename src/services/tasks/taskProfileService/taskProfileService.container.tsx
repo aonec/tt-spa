@@ -1,4 +1,4 @@
-import { ReadingsHistoryModal } from '01/features/readings/displayReadingHistory/ReadingsHistoryModal';
+import { ReadingsHistoryContainer } from 'services/meters/readingsHistoryService/readingsHistoryService.container';
 import { Skeleton } from 'antd';
 import { useEvent, useStore } from 'effector-react';
 import React from 'react';
@@ -22,7 +22,7 @@ export const TaskProfileContainer = () => {
   const isPushStageLoading = useStore(outputs.$isPushStageLoading);
   const isRevertStageLoading = useStore(outputs.$isRevertStageLoading);
   const deleteDocumentModalIsOpen = useStore(
-    outputs.$deleteDocumentModalIsOpen
+    outputs.$deleteDocumentModalIsOpen,
   );
 
   const addComment = useEvent(inputs.addComment);
@@ -31,7 +31,7 @@ export const TaskProfileContainer = () => {
   const pushStage = useEvent(inputs.handlePushStage);
   const handleRevertStage = useEvent(inputs.handleRevertStage);
   const handleChangePushStagePayload = useEvent(
-    inputs.handleChangePushStagePayload
+    inputs.handleChangePushStagePayload,
   );
   const openDeleteDocumentModal = useEvent(inputs.openDeleteDocumentModal);
   const closeDeleteDocumentModal = useEvent(inputs.closeDeleteDocumentModal);
@@ -47,7 +47,7 @@ export const TaskProfileContainer = () => {
   return (
     <>
       {nodeId && <RelatedNodeIdGate nodeId={nodeId} />}
-      <ReadingsHistoryModal readonly />
+      <ReadingsHistoryContainer readonly />
       <TaskIdGate taskId={Number(taskId)} />
 
       {isLoading && !task && <Skeleton active />}

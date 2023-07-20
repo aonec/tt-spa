@@ -1,9 +1,9 @@
 import { createDomain, forward, sample } from 'effector';
+import { createGate } from 'effector-react';
 import {
   IndividualDeviceListResponseFromDevicePagePagedList,
   IndividualDeviceResponse,
 } from 'myApi';
-import { createGate } from 'effector-react';
 import {
   getIndividualDevice,
   getIndividualDevicesModels,
