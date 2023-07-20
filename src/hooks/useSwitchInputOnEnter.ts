@@ -36,9 +36,7 @@ export const useSwitchInputOnEnter = (
   );
 
   useEffect(() => {
-    if (focusOnFirst) {
-      next(-1);
-    }
+    if (focusOnFirst) next(-1);
   }, [focusOnFirst, next]);
 
   return next;
