@@ -1,4 +1,7 @@
-import { EEmailSubscriptionType, GroupReportContractorResponse } from 'myApi';
+import {
+  EEmailSubscriptionType,
+  GroupReportContractorResponse,
+} from 'api/myApi';
 import { RegularUnloadSubscription } from 'services/objects/groupReportService/groupReportService.types';
 
 export type RegularUnloadingProps = {

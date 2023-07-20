@@ -1,4 +1,4 @@
-import { EIndividualDeviceRateType, EResourceType } from 'myApi';
+import { EIndividualDeviceRateType, EResourceType } from 'api/myApi';
 import { PreparedForFormReadings } from 'services/devices/individualDevices/workWithIndividualDeviceService/workWithIndividualDeviceService.types';
 
 export type WorkWithIndividualDeviceInputsProps = {

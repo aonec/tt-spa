@@ -1,4 +1,4 @@
-import { EOrderByRule } from 'myApi';
+import { EOrderByRule } from 'api/myApi';
 import { PersonalNumberFormTypes } from '../components/PersonalNumberForm/PersonalNumberForm.types';
 
 export type SwitchStage = {

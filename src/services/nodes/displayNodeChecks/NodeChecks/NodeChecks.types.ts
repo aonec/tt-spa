@@ -1,4 +1,4 @@
-import { NodeCheckResponse } from 'myApi';
+import { NodeCheckResponse } from 'api/myApi';
 
 export type NodeChecksProps = {
   documents: NodeCheckResponse[];

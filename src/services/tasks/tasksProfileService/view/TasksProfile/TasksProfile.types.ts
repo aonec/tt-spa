@@ -4,7 +4,7 @@ import {
   OrganizationUserListResponse,
   TaskGroupingFilter,
   TasksPagedList,
-} from 'myApi';
+} from 'api/myApi';
 import { GetTasksListRequestPayload } from '../../tasksProfileService.types';
 import { TaskType } from '../TasksListItem/TasksListItem.types';
 

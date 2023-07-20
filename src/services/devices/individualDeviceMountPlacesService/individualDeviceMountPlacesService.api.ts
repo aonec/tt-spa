@@ -2,7 +2,7 @@ import { axios } from 'api/axios';
 import {
   IndividualDeviceMountPlaceForFilterResponse,
   IndividualDeviceMountPlaceListResponse,
-} from 'myApi';
+} from 'api/myApi';
 
 export const getIndividualDeviceMountPlaces = async (
   id: number,

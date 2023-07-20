@@ -1,5 +1,5 @@
-import { EResourceType } from 'myApi';
-import { CreatePipeHousingMeteringDeviceInNodeRequest } from 'myApi';
+import { EResourceType } from 'api/myApi';
+import { CreatePipeHousingMeteringDeviceInNodeRequest } from 'api/myApi';
 
 export type MeteringDeviceListItemProps = {
   device: CreatePipeHousingMeteringDeviceInNodeRequest & { id?: number };

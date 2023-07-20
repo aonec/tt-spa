@@ -1,5 +1,5 @@
 import { axios } from 'api/axios';
-import { PipeNodeMeteringDeviceResponse } from 'myApi';
+import { PipeNodeMeteringDeviceResponse } from 'api/myApi';
 
 export const getMeteringDevices = (
   pipeNodeId: number,

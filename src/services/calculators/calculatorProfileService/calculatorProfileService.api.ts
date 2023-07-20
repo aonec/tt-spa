@@ -1,5 +1,5 @@
 import { axios } from 'api/axios';
-import { CalculatorResponse } from 'myApi';
+import { CalculatorResponse } from 'api/myApi';
 
 export const fetchCalculator = (
   calcilatorId: number,

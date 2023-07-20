@@ -1,4 +1,4 @@
-import { IndividualDeviceMountPlaceForFilterResponse } from 'myApi';
+import { IndividualDeviceMountPlaceForFilterResponse } from 'api/myApi';
 
 export type DevicesSearchProps = {
   handleClickDevice: () => void;

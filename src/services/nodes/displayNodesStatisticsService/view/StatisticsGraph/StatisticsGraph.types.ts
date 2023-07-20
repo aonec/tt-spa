@@ -2,7 +2,7 @@ import {
   ArchivesDataGroupValue,
   ArchivesDataModel,
   DateTimeTaskStatisticsItemArrayDictionaryItem,
-} from 'myApi';
+} from 'api/myApi';
 
 export type ReportType = 'hourly' | 'daily' | 'monthly';
 

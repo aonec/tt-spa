@@ -1,7 +1,7 @@
 import { message } from 'antd';
 import { combine, createDomain, forward, guard, sample } from 'effector';
 import moment from 'moment';
-import { IndividualDeviceListItemResponse } from 'myApi';
+import { IndividualDeviceListItemResponse } from 'api/myApi';
 import { EffectFailDataAxiosError } from 'types';
 import { apartmentIndividualDevicesMetersService } from '../apartmentIndividualDevicesMetersService';
 import { BufferedReadingValues } from '../individualDeviceMetersInputService/view/MetersInputsBlock/MetersInputsBlock.types';
@@ -69,11 +69,11 @@ forward({
 });
 
 editReadingsHistoryFx.failData.watch((error) =>
-  message.error(error.response.data.error.Text)
+  message.error(error.response.data.error.Text),
 );
 
 editReadingsHistoryFx.doneData.watch(() =>
-  message.success('Показание успешно сохранено')
+  message.success('Показание успешно сохранено'),
 );
 
 export const editReadingsHistoryService = {

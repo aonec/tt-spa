@@ -1,4 +1,4 @@
-import { ETasksState } from 'myApi';
+import { ETasksState } from 'api/myApi';
 import React, { FC } from 'react';
 import { ApartmentCellItem } from './ApartmentCellItem';
 import { CellsWrapper, LegendWrapper, Wrapper } from './ApartmentsCells.styled';

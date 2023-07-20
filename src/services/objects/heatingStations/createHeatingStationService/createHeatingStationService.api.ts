@@ -1,5 +1,5 @@
 import { axios } from 'api/axios';
-import { AddHeatingStationRequest, HeatingStationResponse } from 'myApi';
+import { AddHeatingStationRequest, HeatingStationResponse } from 'api/myApi';
 
 export const postHeatingStation = (
   requestPayload: AddHeatingStationRequest,

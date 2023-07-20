@@ -1,5 +1,5 @@
 import moment from 'moment';
-import { EResourceType } from 'myApi';
+import { EResourceType } from 'api/myApi';
 import React, { FC } from 'react';
 import { getMinAndMax, GraphColorLookup } from 'utils/Graph.utils';
 import {

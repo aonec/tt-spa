@@ -1,5 +1,5 @@
 import { axios } from 'api/axios';
-import { AddApartmentActRequest } from 'myApi';
+import { AddApartmentActRequest } from 'api/myApi';
 
 export const postApartmentAct = (
   payload: AddApartmentActRequest,

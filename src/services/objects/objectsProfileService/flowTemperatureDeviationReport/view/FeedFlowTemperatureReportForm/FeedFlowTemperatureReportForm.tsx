@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 import { useFormik } from 'formik';
 import moment from 'moment';
 import { Form } from 'antd';
-import { EResourceType } from 'myApi';
+import { EResourceType } from 'api/myApi';
 import { FormItem } from 'ui-kit/FormItem';
 import { Input, InputWithAddon } from 'ui-kit/Input';
 import { ErrorMessage } from 'ui-kit/ErrorMessage';

@@ -4,7 +4,7 @@ import {
   EMeteringDeviceType,
   IndividualDeviceListResponseFromDevicePagePagedList,
   IndividualDeviceResponse,
-} from 'myApi';
+} from 'api/myApi';
 import { GetMeteringDevicesModelsRequest } from './displayIndividualDeviceAndNamesService.types';
 
 export const getIndividualDevice = async (

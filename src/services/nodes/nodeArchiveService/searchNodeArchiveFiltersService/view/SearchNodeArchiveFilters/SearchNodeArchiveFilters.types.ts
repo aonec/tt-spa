@@ -1,5 +1,5 @@
 import moment from 'moment';
-import { EReportType } from 'myApi';
+import { EReportType } from 'api/myApi';
 import { LoadNodeArchiveDataPayload } from '../../../displayNodeArchiveService/displayNodeArchiveService.types';
 
 export type SearchNodeArchiveFiltersProps = {

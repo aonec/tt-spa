@@ -1,5 +1,5 @@
 import moment from 'moment';
-import { IndividualDeviceMountPlaceListResponse } from 'myApi';
+import { IndividualDeviceMountPlaceListResponse } from 'api/myApi';
 
 export const getMountPlaceById = (
   id: number | null,

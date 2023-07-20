@@ -1,6 +1,9 @@
 import { createDomain, forward } from 'effector';
 import { editEmployee } from './editEmployeeService.api';
-import { OrganizationUserResponse, OrganizationUserUpdateRequest } from 'myApi';
+import {
+  OrganizationUserResponse,
+  OrganizationUserUpdateRequest,
+} from 'api/myApi';
 import { competencesService } from '../competencesService';
 import { rolesService } from '../rolesService';
 import { employeeProfileService } from 'services/employee/employeeProfileService';

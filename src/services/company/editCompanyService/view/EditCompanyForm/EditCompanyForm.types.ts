@@ -1,4 +1,4 @@
-import { OrganizationResponse, OrganizationUpdateRequest } from 'myApi';
+import { OrganizationResponse, OrganizationUpdateRequest } from 'api/myApi';
 
 export type EditCompanyFormProps = {
   currentManagingFirm: OrganizationResponse;

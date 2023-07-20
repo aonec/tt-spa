@@ -1,4 +1,4 @@
-import { EHousingMeteringDeviceType } from 'myApi';
+import { EHousingMeteringDeviceType } from 'api/myApi';
 import * as Yup from 'yup';
 
 export const HousingMeteringDeviceDictionary: {

@@ -1,4 +1,4 @@
-import { HousingMeteringDeviceReadingsIncludingPlacementResponse } from 'myApi';
+import { HousingMeteringDeviceReadingsIncludingPlacementResponse } from 'api/myApi';
 import moment from 'moment';
 import {
   NodeReadingsStatuses,

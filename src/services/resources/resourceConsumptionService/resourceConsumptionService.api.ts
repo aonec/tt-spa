@@ -4,7 +4,7 @@ import {
   GetDataForHousingConsumptionPlotResponse,
   GetDataForIndividualDevicesConsumptionPlotResponse,
   GetSummaryHousingConsumptionsByResourcesResponse,
-} from 'myApi';
+} from 'api/myApi';
 import {
   ConsumptionDataForTwoMonth,
   ConsumptionDataPayload,

@@ -1,6 +1,6 @@
 import { createGate } from 'effector-react';
 import { createDomain, forward, sample } from 'effector';
-import { BuildingListResponsePagedList } from 'myApi';
+import { BuildingListResponsePagedList } from 'api/myApi';
 import { getHousuingStocks } from './displayObjectsListService.api';
 import {
   GetHousingStocksRequestPayload,

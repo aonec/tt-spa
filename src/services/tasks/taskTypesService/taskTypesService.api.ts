@@ -5,7 +5,7 @@ import {
   GuidStringDictionaryItem,
   OrganizationUserListResponsePagedList,
   TaskFilterResponse,
-} from 'myApi';
+} from 'api/myApi';
 
 export const getTaskTypes = async (): Promise<
   EManagingFirmTaskFilterTypeNullableStringDictionaryItem[] | null

@@ -1,7 +1,7 @@
 import { createDomain, guard } from 'effector';
 import { deleteManagingFirmUser } from './deleteEmployeeService.api';
 import { message } from 'antd';
-import { OrganizationUserResponse } from 'myApi';
+import { OrganizationUserResponse } from 'api/myApi';
 import { EffectFailDataAxiosError } from 'types';
 
 const domain = createDomain('deleteEmployeeService');

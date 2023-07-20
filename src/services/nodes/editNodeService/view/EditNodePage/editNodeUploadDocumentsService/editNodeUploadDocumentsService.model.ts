@@ -1,5 +1,5 @@
 import { createDomain, guard, sample } from 'effector';
-import { DocumentLiteResponse } from 'myApi';
+import { DocumentLiteResponse } from 'api/myApi';
 import { fetchUpdateDocuments } from './editNodeUploadDocumentsService.api';
 import { UpdateDocumentPayload } from './editNodeUploadDocumentsService.types';
 import { EffectFailDataAxiosError } from 'types';

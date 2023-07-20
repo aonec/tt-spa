@@ -1,5 +1,5 @@
 import { axios } from 'api/axios';
-import { CreatePipeHousingMeteringDeviceRequest } from 'myApi';
+import { CreatePipeHousingMeteringDeviceRequest } from 'api/myApi';
 
 export const fetchAddHousingMeteringDevice = (
   payload: CreatePipeHousingMeteringDeviceRequest,

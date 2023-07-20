@@ -1,4 +1,4 @@
-import { ElectricHousingMeteringDeviceResponse } from 'myApi';
+import { ElectricHousingMeteringDeviceResponse } from 'api/myApi';
 import { EditElectricNodePayload } from 'services/devices/editElectricNodeService/editElectricNodeService.types';
 
 export type EditElectricNodeFormProps = {

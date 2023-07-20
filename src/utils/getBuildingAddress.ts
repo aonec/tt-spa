@@ -4,7 +4,7 @@ import {
   HousingStockListResponse,
   HousingStockResponse,
   NonResidentialBuildingResponse,
-} from 'myApi';
+} from 'api/myApi';
 import { DevicesByAddressInterface } from 'services/devices/displayDevicesService/displayDevicesService.types';
 
 export const getBuildingAddress = (

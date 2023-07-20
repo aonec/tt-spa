@@ -8,7 +8,7 @@ import {
   EResourceType,
   ETaskEngineeringElement,
   EisTaskType,
-} from 'myApi';
+} from 'api/myApi';
 import { DistrictColor, DistrictColorData } from 'types';
 
 export const MagistralsDisctionary: { [key in EMagistralType]: string } = {

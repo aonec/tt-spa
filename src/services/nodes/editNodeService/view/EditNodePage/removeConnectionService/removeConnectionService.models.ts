@@ -1,6 +1,6 @@
 import { message } from 'antd';
 import { createDomain, forward, sample } from 'effector';
-import { PipeNodeResponse, UpdatePipeNodeRequest } from 'myApi';
+import { PipeNodeResponse, UpdatePipeNodeRequest } from 'api/myApi';
 import { editNodeService } from 'services/nodes/editNodeService';
 import { EffectFailDataAxiosError } from 'types';
 import { fetchRemoveConnection } from './removeConnectionService.api';

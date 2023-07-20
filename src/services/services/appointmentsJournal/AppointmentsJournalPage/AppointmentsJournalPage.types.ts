@@ -1,4 +1,4 @@
-import { AssignmentResponse, ControllerResponse } from 'myApi';
+import { AssignmentResponse, ControllerResponse } from 'api/myApi';
 import {
   DownloadControllerWorkFileRequestPayload,
   SearchFormType,

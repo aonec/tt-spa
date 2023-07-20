@@ -1,6 +1,6 @@
 import { axios } from 'api/axios';
 import { createQuery } from '@farfetched/core';
-import { AssignmentResponse } from 'myApi';
+import { AssignmentResponse } from 'api/myApi';
 import {
   DownloadControllerWorkFileRequestPayload,
   GetAssigmentsRequestPayload,

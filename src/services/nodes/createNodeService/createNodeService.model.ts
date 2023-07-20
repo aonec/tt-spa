@@ -9,7 +9,7 @@ import {
   NodeServiceZoneListResponse,
   PipeNodeResponse,
   PipeNodeValidationResultResponse,
-} from 'myApi';
+} from 'api/myApi';
 import {
   fetchValidateNode,
   getCalculatorsList,

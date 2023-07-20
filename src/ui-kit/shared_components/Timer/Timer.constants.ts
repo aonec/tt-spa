@@ -1,4 +1,4 @@
-import { ETaskClosingStatus } from 'myApi';
+import { ETaskClosingStatus } from 'api/myApi';
 import { OkIcon, TimerIcon, CloseIcon } from 'ui-kit/icons';
 import { RedTimerIcon } from '../../../services/tasks/tasksProfileService/view/TasksListItem/TasksListItem.styled';
 

@@ -1,6 +1,6 @@
 import { createGate } from 'effector-react';
 import { sample, createDomain } from 'effector';
-import { IndividualDeviceReadingsHistoryResponse } from 'myApi';
+import { IndividualDeviceReadingsHistoryResponse } from 'api/myApi';
 import { EffectFailDataAxiosError } from 'types';
 import { displayIndividualDeviceAndNamesService } from 'services/devices/individualDevices/displayIndividualDeviceAndNamesService';
 import { getReadingsHistory } from './readingsHistoryService.api';

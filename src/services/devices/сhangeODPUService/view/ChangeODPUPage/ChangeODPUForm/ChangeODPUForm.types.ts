@@ -4,7 +4,7 @@ import {
   EYearQuarter,
   SwitchElectricHousingDeviceRequest,
   SwitchHousingDeviceReadingsCreateRequest,
-} from 'myApi';
+} from 'api/myApi';
 
 export type ChangeODPUFormProps = {
   oldDevice: ElectricHousingMeteringDeviceResponse;

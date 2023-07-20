@@ -1,7 +1,7 @@
 import { message } from 'antd';
 import { useEvent, useStore } from 'effector-react';
 import moment from 'moment';
-import { IndividualDeviceReadingsResponse } from 'myApi';
+import { IndividualDeviceReadingsResponse } from 'api/myApi';
 import React, { FC, useCallback, useMemo } from 'react';
 import { individualDeviceMetersInputService } from './individualDeviceMetersInputService.model';
 import {

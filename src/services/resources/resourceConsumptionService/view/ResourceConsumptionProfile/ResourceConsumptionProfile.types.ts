@@ -1,7 +1,7 @@
 import {
   EResourceType,
   GetSummaryHousingConsumptionsByResourcesResponse,
-} from 'myApi';
+} from 'api/myApi';
 import { ConsumptionDataFilter } from '../../resourceConsumptionFilterService/resourceConsumptionFilterService.types';
 import {
   ConsumptionDataForTwoMonth,

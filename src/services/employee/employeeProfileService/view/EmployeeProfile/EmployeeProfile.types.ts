@@ -1,4 +1,4 @@
-import { OrganizationUserResponse } from 'myApi';
+import { OrganizationUserResponse } from 'api/myApi';
 
 export type EmployeeProfileProps = {
   userData: OrganizationUserResponse | null;

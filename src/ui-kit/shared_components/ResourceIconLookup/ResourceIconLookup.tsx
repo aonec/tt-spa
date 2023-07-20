@@ -1,4 +1,4 @@
-import { EActResourceType, EResourceType } from 'myApi';
+import { EActResourceType, EResourceType } from 'api/myApi';
 import React, { FC } from 'react';
 import {
   AllResourcesIcon,
@@ -7,10 +7,7 @@ import {
   HeatIcon,
   HotWaterSupplyIcon,
 } from 'ui-kit/icons';
-import {
-  Icons,
-  ResourceIconLookupProps,
-} from './ResourceIconLookup.types';
+import { Icons, ResourceIconLookupProps } from './ResourceIconLookup.types';
 
 export const resourceIconLookup: Icons = {
   [EResourceType.ColdWaterSupply]: ColdWaterSupplyIcon,

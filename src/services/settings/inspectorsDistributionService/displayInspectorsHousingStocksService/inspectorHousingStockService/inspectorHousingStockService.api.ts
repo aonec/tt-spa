@@ -1,5 +1,5 @@
 import { axios } from 'api/axios';
-import { HousingStockResponse } from 'myApi';
+import { HousingStockResponse } from 'api/myApi';
 import { PatchHousingStockInspectorInfoPayload } from './inspectorHousingStockService.types';
 
 export const patchHousingStockInspectorInfo = async (

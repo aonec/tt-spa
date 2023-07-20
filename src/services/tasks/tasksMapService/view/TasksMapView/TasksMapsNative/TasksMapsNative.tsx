@@ -2,7 +2,7 @@ import { useYMaps } from '@pbe/react-yandex-maps';
 import {
   BuildingWithTasksResponse,
   HousingStockWithTasksResponse,
-} from 'myApi';
+} from 'api/myApi';
 import React, { FC, useEffect, useRef, useState } from 'react';
 import { MapZoomControl } from './MapZoomControl';
 import { Wrapper } from './TasksMapsNative.styled';

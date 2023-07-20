@@ -6,7 +6,7 @@ import {
   IndividualDeviceReadingsHistoryResponse,
   IndividualDeviceReadingsItemHistoryResponse,
   IndividualDeviceResponse,
-} from 'myApi';
+} from 'api/myApi';
 import moment from 'moment';
 import _, { round } from 'lodash';
 import { getMeasurementUnit } from 'services/meters/individualDeviceMetersInputService/individualDeviceMetersInputService.utils';

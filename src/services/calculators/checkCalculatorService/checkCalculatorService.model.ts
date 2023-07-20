@@ -1,6 +1,6 @@
 import { message } from 'antd';
 import { createDomain, forward, guard, sample } from 'effector';
-import { CalculatorResponse, CheckDeviceRequest } from 'myApi';
+import { CalculatorResponse, CheckDeviceRequest } from 'api/myApi';
 import { calculatorProfileService } from '../calculatorProfileService';
 import { fetchCloseCalculator } from './checkCalculatorService.api';
 import { CheckCalculatorFormik } from './checkCalculatorService.types';

@@ -1,4 +1,8 @@
-import { DocumentResponse, DocumentLiteResponse, EDocumentType } from 'myApi';
+import {
+  DocumentResponse,
+  DocumentLiteResponse,
+  EDocumentType,
+} from 'api/myApi';
 
 export type Document = DocumentResponse | DocumentLiteResponse;
 

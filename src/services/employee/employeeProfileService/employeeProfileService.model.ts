@@ -1,6 +1,6 @@
 import { createDomain, sample } from 'effector';
 import { createGate } from 'effector-react';
-import { OrganizationUserResponse } from 'myApi';
+import { OrganizationUserResponse } from 'api/myApi';
 import { getUserData } from './employeeProfileService.api';
 import { changeStatusEmployeeService } from 'services/employee/changeStatusEmployeeService';
 import { deleteEmployeeService } from 'services/employee/deleteEmployeeService';

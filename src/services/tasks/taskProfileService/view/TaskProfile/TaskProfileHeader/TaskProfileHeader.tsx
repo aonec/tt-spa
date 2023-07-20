@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import { EActResourceType } from 'myApi';
+import { EActResourceType } from 'api/myApi';
 import React, { FC, useMemo } from 'react';
 import { CalculatorIcon } from 'ui-kit/icons';
 import { ResourceIconLookup } from 'ui-kit/shared_components/ResourceIconLookup';

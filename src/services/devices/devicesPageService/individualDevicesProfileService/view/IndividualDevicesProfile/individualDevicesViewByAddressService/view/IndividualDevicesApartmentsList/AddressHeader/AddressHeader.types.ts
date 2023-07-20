@@ -1,4 +1,4 @@
-import { HousingByFilterResponse } from 'myApi';
+import { HousingByFilterResponse } from 'api/myApi';
 import { SearchIndividualDevicesRequestPayload } from '../../../individualDevicesViewByAddressService.types';
 
 export type AddressHeaderProps = {

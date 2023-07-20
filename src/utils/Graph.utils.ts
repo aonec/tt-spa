@@ -1,5 +1,5 @@
 import { maxBy, minBy } from 'lodash';
-import { EResourceType } from 'myApi';
+import { EResourceType } from 'api/myApi';
 import { PreparedArchiveValues } from 'services/nodes/displayNodesStatisticsService/view/StatisticsGraph/StatisticsGraph.types';
 
 const factor = 1.2;

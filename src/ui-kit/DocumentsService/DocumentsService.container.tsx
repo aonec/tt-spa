@@ -7,7 +7,7 @@ import {
 } from './DocumentsService.types';
 import { DocumentsLineUpload } from './view/DocumentsLineUpload';
 import { DocumentsList } from './view/DocumentsList';
-import { ESecuredIdentityRoleName } from 'myApi';
+import { ESecuredIdentityRoleName } from 'api/myApi';
 import { usePermission } from 'hooks/usePermission';
 import { documentService } from './DocumentsService.model';
 import { useEvent } from 'effector-react';

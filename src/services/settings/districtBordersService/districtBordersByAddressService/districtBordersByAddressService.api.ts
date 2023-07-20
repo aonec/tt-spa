@@ -1,5 +1,5 @@
 import { axios } from 'api/axios';
-import { StreetWithBuildingNumbersResponsePagedList } from 'myApi';
+import { StreetWithBuildingNumbersResponsePagedList } from 'api/myApi';
 import { FetchAddressQueryType } from './districtBordersByAddressService.types';
 
 export const getAddresses = (

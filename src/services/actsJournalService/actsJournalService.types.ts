@@ -1,4 +1,4 @@
-import { EActResourceType, EActType, EOrderByRule } from 'myApi';
+import { EActResourceType, EActType, EOrderByRule } from 'api/myApi';
 
 export type ActsJournalRequestParams = {
   City?: string;

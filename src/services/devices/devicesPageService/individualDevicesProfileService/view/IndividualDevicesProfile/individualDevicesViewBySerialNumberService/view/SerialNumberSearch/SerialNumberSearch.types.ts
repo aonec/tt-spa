@@ -1,4 +1,4 @@
-import { IndividualDeviceMountPlaceForFilterResponse } from 'myApi';
+import { IndividualDeviceMountPlaceForFilterResponse } from 'api/myApi';
 import { IndividualDeviceSearchbySerialNumberPayload } from '../../individualDevicesViesBySerialNumberService.types';
 
 export type IndividualDevicesViewBySerialNumberSearchProps = {

@@ -1,6 +1,6 @@
 import { createDomain, forward } from 'effector';
 import { createGate } from 'effector-react';
-import { CalculatorInfoListResponse } from 'myApi';
+import { CalculatorInfoListResponse } from 'api/myApi';
 import { getCalculatorInfos } from './calculatorsInfoService.api';
 
 const domain = createDomain('calculatorsInfoService');

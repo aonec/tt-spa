@@ -1,4 +1,4 @@
-import { NodeOnHousingStockResponse } from 'myApi';
+import { NodeOnHousingStockResponse } from 'api/myApi';
 import { ResourceAccountingSystemsSegment } from '../../ResourceAccountingSystems.types';
 
 export type NodeItemProps = {

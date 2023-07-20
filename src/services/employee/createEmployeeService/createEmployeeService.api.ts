@@ -1,5 +1,8 @@
 import { axios } from 'api/axios';
-import { OrganizationUserCreateRequest, OrganizationUserResponse } from 'myApi';
+import {
+  OrganizationUserCreateRequest,
+  OrganizationUserResponse,
+} from 'api/myApi';
 
 export const addStaff = (
   data: OrganizationUserCreateRequest,

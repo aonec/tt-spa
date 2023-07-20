@@ -3,7 +3,7 @@ import { Flex } from '01/shared/ui/Layout/Flex';
 import {
   EIndividualDeviceReadingsSource,
   OrganizationUserShortResponse,
-} from 'myApi';
+} from 'api/myApi';
 import { Space } from '01/shared/ui/Layout/Space/Space';
 import {
   TelegramIcon,

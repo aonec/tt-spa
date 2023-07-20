@@ -1,5 +1,5 @@
 import { axios } from 'api/axios';
-import { ElectricNodeResponse, NodesPagedList } from 'myApi';
+import { ElectricNodeResponse, NodesPagedList } from 'api/myApi';
 import { GetElectricNodesRequestParams } from './AccountingNodesReadingsService.types';
 
 export const getElectricNodes = async (

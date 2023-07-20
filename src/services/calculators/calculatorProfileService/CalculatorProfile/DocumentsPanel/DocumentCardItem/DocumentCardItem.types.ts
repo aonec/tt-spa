@@ -1,4 +1,4 @@
-import { DocumentResponse } from 'myApi';
+import { DocumentResponse } from 'api/myApi';
 
 export type DocumentCardItemProps = {
   document: DocumentResponse;

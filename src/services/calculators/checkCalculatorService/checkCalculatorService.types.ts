@@ -1,3 +1,3 @@
-import { CheckDeviceRequest } from 'myApi';
+import { CheckDeviceRequest } from 'api/myApi';
 
 export type CheckCalculatorFormik = Omit<CheckDeviceRequest, 'deviceId'>;

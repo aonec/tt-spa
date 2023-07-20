@@ -1,6 +1,6 @@
 import { createDomain, sample } from 'effector';
 import { createGate } from 'effector-react';
-import { ApartmentResponse } from 'myApi';
+import { ApartmentResponse } from 'api/myApi';
 import { getApartment } from './apartmentProfileService.api';
 
 const domain = createDomain('apartmentProfileService');

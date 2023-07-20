@@ -1,6 +1,9 @@
 import { createDomain, guard } from 'effector';
 import { createGate } from 'effector-react';
-import { ContractorListResponse, ContractorListResponsePagedList } from 'myApi';
+import {
+  ContractorListResponse,
+  ContractorListResponsePagedList,
+} from 'api/myApi';
 import { getContractors } from './emailNotifyService.api';
 
 const domain = createDomain('emailNotifyService');

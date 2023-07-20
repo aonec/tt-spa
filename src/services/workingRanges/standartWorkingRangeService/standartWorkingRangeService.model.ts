@@ -4,7 +4,7 @@ import {
   AllNodeWorkingRangeResponse,
   ENodeWorkingRangeSeason,
   EResourceType,
-} from 'myApi';
+} from 'api/myApi';
 import { EffectFailDataAxiosError } from 'types';
 
 const domain = createDomain('standartWorkingRangeService');

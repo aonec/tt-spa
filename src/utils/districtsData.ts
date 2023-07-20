@@ -1,4 +1,4 @@
-import { DistrictCreateRequest, DistrictResponse } from 'myApi';
+import { DistrictCreateRequest, DistrictResponse } from 'api/myApi';
 import { DistrictAdditionalInfo, DistrictColor } from 'types';
 
 export const combinePayloadForCreateDistrict = (

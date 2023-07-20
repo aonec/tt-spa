@@ -4,7 +4,7 @@ import {
   HouseManagementWithStreetsResponse,
   ResourceDisconnectingCreateRequest,
   StreetWithBuildingNumbersResponsePagedList,
-} from 'myApi';
+} from 'api/myApi';
 
 export const fetchCreateResourceDisconnection = (
   payload: ResourceDisconnectingCreateRequest,

@@ -1,6 +1,6 @@
 import { createDomain, forward } from 'effector';
 import { createGate } from 'effector-react';
-import { IndividualDeviceMountPlaceForFilterResponse } from 'myApi';
+import { IndividualDeviceMountPlaceForFilterResponse } from 'api/myApi';
 import { DevicesSearchType } from '../devicesPageService.types';
 import { fetchMouintPlaces } from './individualDevicesProfileService.api';
 

@@ -4,7 +4,7 @@ import {
   ResourceDisconnectingCreateRequest,
   ResourceDisconnectingResponse,
   ResourceDisconnectingUpdateRequest,
-} from 'myApi';
+} from 'api/myApi';
 import { TreeSelectElement } from 'ui-kit/shared_components/AddressTreeSelect/AddressTreeSelect.types';
 import { EAddressDetails } from '../../createResourceDisconnectionService.types';
 

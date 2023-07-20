@@ -1,5 +1,5 @@
 import React from 'react';
-import { IndividualDeviceListItemResponse } from 'myApi';
+import { IndividualDeviceListItemResponse } from 'api/myApi';
 import { FormModal } from 'ui-kit/Modals/FormModal';
 
 type Props = {

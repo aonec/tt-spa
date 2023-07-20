@@ -3,7 +3,7 @@ import { createDomain, forward, guard, sample } from 'effector';
 import {
   CreatePipeHousingMeteringDeviceRequest,
   PipeNodeResponse,
-} from 'myApi';
+} from 'api/myApi';
 import { EffectFailDataAxiosError } from 'types';
 import { fetchAddHousingMeteringDevice } from './addHosuingMeteringDeviceService.api';
 import { EXTREAM_STEP_NUMBER } from './addHosuingMeteringDeviceService.constants';

@@ -2,7 +2,7 @@ import { axios } from 'api/axios';
 import {
   IndividualDeviceConsumptionResponse,
   IndividualDeviceResponseFromDevicePage,
-} from 'myApi';
+} from 'api/myApi';
 import { IndividualDeviceConsumptionForGraph } from './individualDevicesListService.types';
 
 const getIndividualDevice = (

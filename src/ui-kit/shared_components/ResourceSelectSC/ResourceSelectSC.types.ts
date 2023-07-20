@@ -1,4 +1,4 @@
-import { EResourceType } from 'myApi';
+import { EResourceType } from 'api/myApi';
 
 export type ResourceSelectSCProps = {
   resource: EResourceType | null;

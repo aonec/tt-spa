@@ -1,7 +1,7 @@
 import {
   AddOrganizationUserWorkingStatusRequest,
   UserStatusResponse,
-} from 'myApi';
+} from 'api/myApi';
 
 export type ChangeStatusEmployeeModalProps = {
   isModalOpen: boolean;

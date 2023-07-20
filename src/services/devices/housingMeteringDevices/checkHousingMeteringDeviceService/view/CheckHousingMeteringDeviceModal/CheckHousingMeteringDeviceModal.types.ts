@@ -1,4 +1,7 @@
-import { CheckDeviceRequest, PipeHousingMeteringDeviceResponse } from 'myApi';
+import {
+  CheckDeviceRequest,
+  PipeHousingMeteringDeviceResponse,
+} from 'api/myApi';
 
 export type CheckHousingMeteringDeviceModalProps = {
   isModalOpen: boolean;

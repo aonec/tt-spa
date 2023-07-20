@@ -1,6 +1,6 @@
 import { createDomain, sample } from 'effector';
 import { createGate } from 'effector-react';
-import { NodeCheckResponse, NodeCheckResponsePagedList } from 'myApi';
+import { NodeCheckResponse, NodeCheckResponsePagedList } from 'api/myApi';
 import { fetchNodeChecks } from './displayNodeChecksService.api';
 
 const domain = createDomain('displayNodeChecksService');

@@ -25,7 +25,7 @@ import { DocumentsPanel } from './DocumentsPanel';
 import { NodeDocumentsList } from './NodeDocumentsList';
 import { RelatedNodesList } from './RelatedNodesList';
 import { ContextMenuButtonColor } from 'ui-kit/ContextMenuButton/ContextMenuButton.types';
-import { TaskGroupingFilter } from 'myApi';
+import { TaskGroupingFilter } from 'api/myApi';
 
 const { TabPane } = Tabs;
 

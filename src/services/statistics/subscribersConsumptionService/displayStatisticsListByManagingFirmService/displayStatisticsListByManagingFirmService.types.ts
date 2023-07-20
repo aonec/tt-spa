@@ -1,7 +1,7 @@
 import {
   BuildingListResponse,
   SubscriberStatisticsСonsumptionResponse,
-} from 'myApi';
+} from 'api/myApi';
 
 export type HousingStockWithApartmentStatistic = BuildingListResponse & {
   apartmentsStatistic: SubscriberStatisticsСonsumptionResponse[];

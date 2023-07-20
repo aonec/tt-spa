@@ -1,4 +1,4 @@
-import { EResourceType } from 'myApi';
+import { EResourceType } from 'api/myApi';
 import { ResourceConsumptionGraphType } from 'services/resources/resourceConsumptionService/resourceConsumptionService.types';
 
 export const ResourceConsumptionGraphColors: {

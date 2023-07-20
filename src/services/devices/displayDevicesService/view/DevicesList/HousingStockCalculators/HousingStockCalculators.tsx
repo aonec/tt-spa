@@ -1,6 +1,6 @@
 import React, { FC, useCallback } from 'react';
 import { HousingStockCalculatorsProps } from './HousingStockCalculators.types';
-import { HouseAddress } from 'myApi';
+import { HouseAddress } from 'api/myApi';
 import { DevicesSearchType } from 'services/devices/devicesPageService/devicesPageService.types';
 import {
   CalculatorNodesListWrapper,

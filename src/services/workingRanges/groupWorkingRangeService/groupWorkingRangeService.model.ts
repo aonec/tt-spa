@@ -4,7 +4,7 @@ import {
   ENodeWorkingRangeSeason,
   EResourceType,
   HouseManagementResponse,
-} from 'myApi';
+} from 'api/myApi';
 import {
   fetchHouseManagements,
   getGroupWorkingRange,

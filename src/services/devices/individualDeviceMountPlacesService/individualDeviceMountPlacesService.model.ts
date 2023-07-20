@@ -9,7 +9,7 @@ import {
 import {
   IndividualDeviceMountPlaceForFilterResponse,
   IndividualDeviceMountPlaceListResponse,
-} from '../../../myApi';
+} from '../../../api/myApi';
 import {
   getAllIndividualDeviceMountPlaces,
   getIndividualDeviceMountPlaces,

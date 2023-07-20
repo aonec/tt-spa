@@ -1,6 +1,6 @@
-import { HousingStockResponse, InspectorResponse } from 'myApi';
+import { HousingStockResponse, InspectorResponse } from 'api/myApi';
 
 export type HousingStockInfoPanelProps = {
   housingStock: HousingStockResponse;
-  inspector: InspectorResponse | null
+  inspector: InspectorResponse | null;
 };

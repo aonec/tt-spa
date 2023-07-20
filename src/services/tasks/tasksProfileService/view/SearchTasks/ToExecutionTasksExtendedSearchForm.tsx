@@ -15,7 +15,7 @@ import {
   EResourceType,
   ETaskEngineeringElement,
   EStageTimeStatus,
-} from 'myApi';
+} from 'api/myApi';
 import {
   EngineeringElementLookUp,
   ResourceLookUp,

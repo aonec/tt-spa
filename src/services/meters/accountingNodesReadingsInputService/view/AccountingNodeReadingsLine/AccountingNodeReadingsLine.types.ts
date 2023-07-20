@@ -1,7 +1,7 @@
 import {
   ElectricHousingMeteringDeviceResponse,
   HousingMeteringDeviceReadingsIncludingPlacementResponse,
-} from 'myApi';
+} from 'api/myApi';
 import {
   NodeReadingsStatuses,
   UpdateHousingMeteringDeviceReadingsPayload,

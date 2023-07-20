@@ -13,7 +13,7 @@ import {
 import { CalculatorProfile } from './CalculatorProfile/CalculatorProfile';
 import { calculatorProfileService } from './calculatorProfileService.model';
 import { ConsumptionReportCalculatorContainer } from '../consumptionReportCalculatorService';
-import { ESecuredIdentityRoleName } from 'myApi';
+import { ESecuredIdentityRoleName } from 'api/myApi';
 import { usePermission } from 'hooks/usePermission';
 
 const { gates, inputs, outputs } = calculatorProfileService;

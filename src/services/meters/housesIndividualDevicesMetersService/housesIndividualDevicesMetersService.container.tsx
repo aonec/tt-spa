@@ -4,9 +4,11 @@ import { IndividualDeviceMetersInputContainer } from '../individualDeviceMetersI
 import { HousesIndividualDevicesHeader } from './view/HousesIndividualDevicesHeader';
 import { getReadingsMonthByShift } from '../apartmentIndividualDevicesMetersService/apartmentIndividualDevicesMetersService.utils';
 import { PREVIOUS_READING_INDEX_LIMIT } from '../apartmentIndividualDevicesMetersService/apartmentIndividualDevicesMetersService.constants';
-import { IndividualDeviceListItemResponse } from 'myApi';
+import { IndividualDeviceListItemResponse } from 'api/myApi';
 
-export const HousesIndividualDevicesMetersContainer: FC<HousesIndividualDevicesMetersContainerProps> = ({
+export const HousesIndividualDevicesMetersContainer: FC<
+  HousesIndividualDevicesMetersContainerProps
+> = ({
   individualDevicesList,
   openReadingsHistoryModal,
   managementFirmConsumptionRates,
@@ -24,7 +26,7 @@ export const HousesIndividualDevicesMetersContainer: FC<HousesIndividualDevicesM
 
   const renderDevice = (
     device: IndividualDeviceListItemResponse,
-    index: number
+    index: number,
   ) => (
     <IndividualDeviceMetersInputContainer
       key={device.id}

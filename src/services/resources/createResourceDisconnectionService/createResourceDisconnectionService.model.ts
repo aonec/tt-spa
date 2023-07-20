@@ -8,7 +8,7 @@ import {
   EResourceDisconnectingType,
   HeatingStationWithStreetsResponse,
   HouseManagementWithStreetsResponse,
-} from 'myApi';
+} from 'api/myApi';
 import { EffectFailDataAxiosError } from 'types';
 import { chooseTypeOfResourceDisconnectionModalService } from '../chooseTypeOfResourceDisconnectionModalService/chooseTypeOfResourceDisconnectionModalService.model';
 import { editResourceDisconnectionService } from '../editResourceDisconnectionService';

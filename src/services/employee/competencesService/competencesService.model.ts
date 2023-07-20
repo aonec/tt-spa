@@ -1,6 +1,6 @@
 import { createDomain, forward, guard } from 'effector';
 import { createGate } from 'effector-react';
-import { ManagementFirmCompetenceResponse } from 'myApi';
+import { ManagementFirmCompetenceResponse } from 'api/myApi';
 import { getCompetencesCatalog } from './competencesService.api';
 
 const domain = createDomain('competencesService');

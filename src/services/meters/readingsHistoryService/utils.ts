@@ -1,5 +1,5 @@
 import moment from 'moment';
-import { IndividualDeviceReadingsItemHistoryResponse } from '../../../myApi';
+import { IndividualDeviceReadingsItemHistoryResponse } from '../../../api/myApi';
 
 export const getReadingValuesArray = (
   reading: IndividualDeviceReadingsItemHistoryResponse,

@@ -1,7 +1,7 @@
 import { useSwitchInputOnEnter } from 'hooks/useSwitchInputOnEnter';
 import { fromEnter } from 'ui-kit/shared_components/DatePickerNative';
 import { useFormik } from 'formik';
-import { EActResourceType, EApartmentStatus } from 'myApi';
+import { EActResourceType, EApartmentStatus } from 'api/myApi';
 import React, { FC, useCallback } from 'react';
 import { DevicesSearchType } from 'services/devices/devicesPageService/devicesPageService.types';
 import { SearchIcon } from 'ui-kit/icons';

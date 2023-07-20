@@ -3,7 +3,7 @@ import {
   ContractorListResponsePagedList,
   OrganizationResponse,
   OrganizationUserListResponsePagedList,
-} from 'myApi';
+} from 'api/myApi';
 
 export function getCurrentManagingFirm(): Promise<OrganizationResponse | null> {
   return axios.get('Organizations/current');

@@ -1,7 +1,7 @@
 import {
   ENodeCommercialAccountStatus,
   NodeSetCommercialStatusRequest,
-} from 'myApi';
+} from 'api/myApi';
 
 export type ChangeNodeStatusPayload = NodeSetCommercialStatusRequest & {
   nodeId: number;

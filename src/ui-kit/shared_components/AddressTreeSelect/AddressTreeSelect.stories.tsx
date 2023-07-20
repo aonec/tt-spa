@@ -8,7 +8,7 @@ import {
 import { TreeData } from './AddressTreeSelect.constants.stories';
 import { Wrapper } from './AddressTreeSelect.styled.stories';
 import { FormItem } from 'ui-kit/FormItem';
-import { StreetWithBuildingNumbersResponse } from 'myApi';
+import { StreetWithBuildingNumbersResponse } from 'api/myApi';
 
 export default {
   title: 'AddressTreeSelect',

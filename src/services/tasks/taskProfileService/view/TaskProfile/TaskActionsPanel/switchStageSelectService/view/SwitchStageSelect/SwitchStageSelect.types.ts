@@ -1,4 +1,4 @@
-import { StageListResponse } from 'myApi';
+import { StageListResponse } from 'api/myApi';
 
 export type SwitchStageSelectProps = {
   nextStages: StageListResponse[];

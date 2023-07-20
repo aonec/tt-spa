@@ -14,7 +14,7 @@ import {
 } from './GraphLegend.styled';
 import { GraphLegendProps } from './GraphLegend.types';
 import { renderForHeatAndDeltaMass } from './GraphLegend.utils';
-import { EResourceType } from 'myApi';
+import { EResourceType } from 'api/myApi';
 
 export const GraphLegend: FC<GraphLegendProps> = ({
   graphParam,

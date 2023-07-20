@@ -1,5 +1,9 @@
 import { axios } from 'api/axios';
-import { ApartmentResponse, HousingStockResponse, TasksPagedList } from 'myApi';
+import {
+  ApartmentResponse,
+  HousingStockResponse,
+  TasksPagedList,
+} from 'api/myApi';
 import {
   FiltersGatePayload,
   GetTasksListRequestPayload,

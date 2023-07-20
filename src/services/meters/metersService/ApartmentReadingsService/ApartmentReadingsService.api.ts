@@ -1,5 +1,5 @@
 import { axios } from 'api/axios';
-import { ApartmentListResponsePagedList, ApartmentResponse } from 'myApi';
+import { ApartmentListResponsePagedList, ApartmentResponse } from 'api/myApi';
 import {
   GetApartmentsRequestPayload,
   UpdateApartmentRequestPayload,

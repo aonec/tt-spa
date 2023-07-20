@@ -1,4 +1,4 @@
-import { NodeServiceZoneRequest } from 'myApi';
+import { NodeServiceZoneRequest } from 'api/myApi';
 
 export type CreateNodeServiceZoneFormProps = {
   formId: string;

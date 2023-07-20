@@ -1,4 +1,4 @@
-import { BuildingListResponse } from 'myApi';
+import { BuildingListResponse } from 'api/myApi';
 
 export type ObjectsListProps = {
   isLoading: boolean;

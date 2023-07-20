@@ -1,4 +1,4 @@
-import { EPipeNodeValidationMessageStringDictionaryItem } from 'myApi';
+import { EPipeNodeValidationMessageStringDictionaryItem } from 'api/myApi';
 
 export type IncorrectConfigAlertProps = {
   validationResultArray: EPipeNodeValidationMessageStringDictionaryItem[];

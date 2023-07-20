@@ -1,4 +1,4 @@
-import { EOrderByRule } from 'myApi';
+import { EOrderByRule } from 'api/myApi';
 
 export type FetchAddressQueryType = {
   City: string;

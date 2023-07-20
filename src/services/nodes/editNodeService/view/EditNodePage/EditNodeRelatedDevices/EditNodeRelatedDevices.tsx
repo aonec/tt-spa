@@ -12,7 +12,7 @@ import {
 } from '../addHosuingMeteringDeviceService';
 import { CreateDeviceText } from './EditNodeRelatedDevices.styled';
 import { EditNodeRelatedDevicesProps } from './EditNodeRelatedDevices.types';
-import { EPipeNodeConfig } from 'myApi';
+import { EPipeNodeConfig } from 'api/myApi';
 
 export const EditNodeRelatedDevices: FC<EditNodeRelatedDevicesProps> = ({
   node,

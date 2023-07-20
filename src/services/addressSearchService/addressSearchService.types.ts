@@ -3,7 +3,7 @@ import {
   CustomTemplateType,
   SearchFieldType,
 } from './view/AddressSearch/AddressSearch.types';
-import { EOrderByRule } from 'myApi';
+import { EOrderByRule } from 'api/myApi';
 
 export type AddressSearchContainerProps = {
   fields: SearchFieldType[];

@@ -1,5 +1,5 @@
 import { axios } from 'api/axios';
-import { HomeownerAccountCloseRequest } from 'myApi';
+import { HomeownerAccountCloseRequest } from 'api/myApi';
 
 export const postCloseHomeownerApartment = (
   payload: HomeownerAccountCloseRequest,

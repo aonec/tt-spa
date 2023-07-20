@@ -17,7 +17,7 @@ import {
   EResourceType,
   EStageTimeStatus,
   ETaskEngineeringElement,
-} from 'myApi';
+} from 'api/myApi';
 import { ResourceIconLookup } from 'ui-kit/shared_components/ResourceIconLookup';
 import {
   ResourceMapNamesDictionary,

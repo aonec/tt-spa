@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 import * as yup from 'yup';
 import { useFormik } from 'formik';
 import { Form } from 'antd';
-import { EOrganizationUserWorkingStatusType } from 'myApi';
+import { EOrganizationUserWorkingStatusType } from 'api/myApi';
 import { FormItem } from 'ui-kit/FormItem';
 import { ErrorMessage } from 'ui-kit/ErrorMessage';
 import { RangePicker } from 'ui-kit/RangePicker';

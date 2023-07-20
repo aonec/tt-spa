@@ -28,7 +28,7 @@ import {
   getTickFormat,
   prepareDataForNodeStatistic,
 } from './StatisticsGraph.utils';
-import { EResourceType } from 'myApi';
+import { EResourceType } from 'api/myApi';
 import { renderForHeatAndDeltaMass } from './GraphLegend/GraphLegend.utils';
 import { GraphGradient } from 'ui-kit/shared_components/GraphComponents/GraphGradient';
 import { TickComponent } from 'ui-kit/shared_components/GraphComponents/TickComponent';

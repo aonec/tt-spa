@@ -3,7 +3,7 @@ import {
   EPipeNodeValidationMessageStringDictionaryItem,
   HousingStockResponse,
   NodeServiceZoneResponse,
-} from 'myApi';
+} from 'api/myApi';
 import { CreateNodeFormPayload } from '../../createNodeService.types';
 
 export type CreateNodeConfirmationModalProps = {

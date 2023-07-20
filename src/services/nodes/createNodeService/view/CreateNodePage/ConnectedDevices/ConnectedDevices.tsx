@@ -17,7 +17,7 @@ import { omit } from 'lodash';
 import {
   CreatePipeHousingMeteringDeviceInNodeRequest,
   EPipeNodeConfig,
-} from 'myApi';
+} from 'api/myApi';
 import {
   ButtonSC,
   CommunicationPipesListWrapper,

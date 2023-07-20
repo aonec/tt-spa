@@ -2,7 +2,7 @@ import { axios } from 'api/axios';
 import {
   ApartmentResponse,
   IndividualDeviceListItemResponsePagedList,
-} from 'myApi';
+} from 'api/myApi';
 
 export const fetchApartment = (id: number): Promise<ApartmentResponse> =>
   axios.get(`Apartments/${id}`);

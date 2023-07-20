@@ -1,5 +1,5 @@
 import { createDomain, sample } from 'effector';
-import { IndividualDeviceListResponseFromDevicePagePagedList } from 'myApi';
+import { IndividualDeviceListResponseFromDevicePagePagedList } from 'api/myApi';
 import { individualDevicesProfileService } from '../../../individualDevicesProfileService.model';
 import { fetchIndividualDevices } from './individualDevicesViesBySerialNumberService.api';
 import { DEVICES_LIST_BY_SERIAL_NUMBER_SIZE } from './individualDevicesViesBySerialNumberService.constants';

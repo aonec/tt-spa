@@ -1,6 +1,9 @@
 import { createDomain, forward } from 'effector';
 import { createGate } from 'effector-react';
-import { StageListResponse, StageListResponseWrappedListResponse } from 'myApi';
+import {
+  StageListResponse,
+  StageListResponseWrappedListResponse,
+} from 'api/myApi';
 import { getNextStages } from './switchStageSelectService.api';
 
 const domain = createDomain('switchStageSelectService');

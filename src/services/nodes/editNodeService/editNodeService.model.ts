@@ -6,7 +6,7 @@ import {
   NodeServiceZoneResponse,
   PipeNodeResponse,
   UpdatePipeNodeRequest,
-} from 'myApi';
+} from 'api/myApi';
 import { createNodeServiceZoneService } from 'services/nodes/createNodeServiceZoneService';
 import {
   fetchNode,

@@ -1,5 +1,5 @@
 import { combine, createDomain, forward, sample } from 'effector';
-import { HomeownerAccountCreateRequest } from 'myApi';
+import { HomeownerAccountCreateRequest } from 'api/myApi';
 import { editApartmentProfileService } from 'services/apartments/editApartmentProfileService/editApartmentProfileService.model';
 import { postHomeownerAccount } from './createHomeownerService.api';
 import { message } from 'antd';

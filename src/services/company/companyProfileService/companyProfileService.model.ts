@@ -8,7 +8,7 @@ import {
   ContractorListResponsePagedList,
   OrganizationResponse,
   OrganizationUserListResponsePagedList,
-} from 'myApi';
+} from 'api/myApi';
 import { createGate } from 'effector-react';
 import { changeStatusEmployeeService } from 'services/employee/changeStatusEmployeeService';
 import { deleteEmployeeService } from 'services/employee/deleteEmployeeService';

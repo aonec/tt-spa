@@ -1,4 +1,4 @@
-import { ContractorUpdateRequest } from 'myApi';
+import { ContractorUpdateRequest } from 'api/myApi';
 import { ContractorDataType } from '../../editContractorService.types';
 
 export type EditContractorModalProps = {

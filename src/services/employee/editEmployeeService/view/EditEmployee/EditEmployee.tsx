@@ -9,7 +9,10 @@ import { GoBack } from 'ui-kit/shared_components/GoBack';
 import { Button } from 'ui-kit/Button';
 import { useHistory, useParams } from 'react-router-dom';
 import { Loader } from 'ui-kit/Loader';
-import { ESecuredIdentityRoleName, OrganizationUserUpdateRequest } from 'myApi';
+import {
+  ESecuredIdentityRoleName,
+  OrganizationUserUpdateRequest,
+} from 'api/myApi';
 import { usePhoneMask } from 'hooks/usePhoneMask';
 import * as yup from 'yup';
 import { SelectMultiple } from 'ui-kit/SelectMultiple';

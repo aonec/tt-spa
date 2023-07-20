@@ -1,4 +1,4 @@
-import { ContractorListResponse } from 'myApi';
+import { ContractorListResponse } from 'api/myApi';
 
 export type EmailNotifySelectProps = {
   contractors: ContractorListResponse[];

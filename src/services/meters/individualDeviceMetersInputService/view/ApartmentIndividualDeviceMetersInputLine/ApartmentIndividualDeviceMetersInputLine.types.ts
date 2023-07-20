@@ -1,7 +1,7 @@
 import {
   IndividualDeviceListItemResponse,
   IndividualDeviceReadingsResponse,
-} from 'myApi';
+} from 'api/myApi';
 import { UploadReading } from '../../individualDeviceMetersInputService.types';
 import { MetersInputBlockStatus } from '../MetersInputsBlock/MetersInputsBlock.types';
 

@@ -1,6 +1,9 @@
 import { combine, createDomain, sample } from 'effector';
 import { addAct, fetchActs } from './actsJournalService.api';
-import { AddApartmentActRequest, ApartmentActResponsePagedList } from 'myApi';
+import {
+  AddApartmentActRequest,
+  ApartmentActResponsePagedList,
+} from 'api/myApi';
 import { message } from 'antd';
 import { createGate } from 'effector-react';
 import { ActsJournalRequestParams } from './actsJournalService.types';

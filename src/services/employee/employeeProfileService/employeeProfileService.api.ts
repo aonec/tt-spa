@@ -1,5 +1,5 @@
 import { axios } from 'api/axios';
-import { OrganizationUserResponse } from 'myApi';
+import { OrganizationUserResponse } from 'api/myApi';
 
 export const getUserData = (
   userId: string,

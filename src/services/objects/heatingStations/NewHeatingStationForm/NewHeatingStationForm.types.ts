@@ -1,4 +1,4 @@
-import { HeatingStationResponse } from 'myApi';
+import { HeatingStationResponse } from 'api/myApi';
 
 export type NewHeatingStationFormProps = {
   formId: string;

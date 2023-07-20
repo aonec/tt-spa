@@ -1,4 +1,4 @@
-import { ResourceDisconnectingUpdateRequest } from 'myApi';
+import { ResourceDisconnectingUpdateRequest } from 'api/myApi';
 
 export type ResourceDisconnectingUpdatePayload = {
   payload: ResourceDisconnectingUpdateRequest;

@@ -2,7 +2,7 @@ import {
   CalculatorIntoHousingStockResponse,
   PipeNodeResponse,
   UpdatePipeNodeRequest,
-} from 'myApi';
+} from 'api/myApi';
 
 export type AddCalculatorConnectionProps = {
   node: PipeNodeResponse | null;

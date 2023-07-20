@@ -1,5 +1,5 @@
 import { axios } from 'api/axios';
-import { StageListResponseWrappedListResponse } from 'myApi';
+import { StageListResponseWrappedListResponse } from 'api/myApi';
 
 export const getNextStages = (
   taskId: number,

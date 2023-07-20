@@ -2,7 +2,7 @@ import {
   HeatingStationResponse,
   HeatingStationResponsePagedList,
   HouseManagementResponse,
-} from 'myApi';
+} from 'api/myApi';
 import { ObjectCreateSubmitData } from '../../createObjectService.types';
 
 export type CreateObjectPageProps = {

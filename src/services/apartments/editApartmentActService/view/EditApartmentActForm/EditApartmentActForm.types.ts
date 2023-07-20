@@ -1,4 +1,4 @@
-import { ApartmentActResponse } from 'myApi';
+import { ApartmentActResponse } from 'api/myApi';
 
 export type EditApartmentActFormProps = {
   formId: string;

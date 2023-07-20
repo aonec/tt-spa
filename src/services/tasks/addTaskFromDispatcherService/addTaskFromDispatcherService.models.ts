@@ -15,7 +15,7 @@ import {
   ErpSourceResponse,
   ErpTaskDeadlineResponse,
   ErpWorkCategoryResponse,
-} from 'myApi';
+} from 'api/myApi';
 import { createGate } from 'effector-react';
 import { EffectFailDataAxiosError } from 'types';
 import { AddTask } from './view/AddTaskModal/AddTaskForm/AddTaskForm.types';

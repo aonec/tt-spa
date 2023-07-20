@@ -1,4 +1,4 @@
-import { EResourceType } from 'myApi';
+import { EResourceType } from 'api/myApi';
 import {
   BooleanTypesOfResourceConsumptionGraphForTwoMonth,
   SelectedAddresses,
@@ -8,7 +8,7 @@ export type SelectResourceConsumptionTypeProps = {
   disabled: BooleanTypesOfResourceConsumptionGraphForTwoMonth;
   checked: BooleanTypesOfResourceConsumptionGraphForTwoMonth;
   setCheckedGraphTypes: (
-    selected: BooleanTypesOfResourceConsumptionGraphForTwoMonth
+    selected: BooleanTypesOfResourceConsumptionGraphForTwoMonth,
   ) => void;
   resource?: EResourceType;
   isAdditionalAddress: boolean;

@@ -3,7 +3,7 @@ import { createDomain, forward, sample } from 'effector';
 import {
   HomeownerAccountCloseRequest,
   HomeownerAccountUpdateRequest,
-} from 'myApi';
+} from 'api/myApi';
 import {
   EffectFailDataAxiosError,
   EffectFailDataAxiosErrorDataApartmentId,

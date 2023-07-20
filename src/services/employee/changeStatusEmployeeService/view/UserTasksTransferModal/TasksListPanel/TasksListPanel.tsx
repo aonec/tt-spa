@@ -10,7 +10,7 @@ import { TasksListPanelProps } from './TasksListPanel.types';
 import { TimerIcon } from 'ui-kit/icons';
 import { ListOpeningChevron } from 'ui-kit/shared_components/ListOpeningChevron';
 import { prepareData } from 'services/tasks/tasksProfileService/tasksProfileService.utils';
-import { TaskGroupingFilter } from 'myApi';
+import { TaskGroupingFilter } from 'api/myApi';
 import { TasksList } from 'services/tasks/tasksProfileService/view/TasksList';
 import { TaskType } from 'services/tasks/tasksProfileService/view/TasksListItem/TasksListItem.types';
 import { getCountText } from 'utils/getCountText';

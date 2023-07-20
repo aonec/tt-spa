@@ -3,7 +3,7 @@ import {
   HouseManagementResponse,
   OrganizationResponsePagedList,
   StreetWithBuildingNumbersResponsePagedList,
-} from 'myApi';
+} from 'api/myApi';
 
 export const getAdresses = (
   city: string,

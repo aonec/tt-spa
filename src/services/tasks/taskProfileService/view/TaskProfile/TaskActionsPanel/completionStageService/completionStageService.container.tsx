@@ -1,5 +1,5 @@
 import { useStore } from 'effector-react';
-import { ETaskConfirmationType } from 'myApi';
+import { ETaskConfirmationType } from 'api/myApi';
 import React, { FC, useCallback } from 'react';
 import { ActionComponentProps } from '../TaskActionsPanel.types';
 import { completionStageService } from './completionStageService.model';

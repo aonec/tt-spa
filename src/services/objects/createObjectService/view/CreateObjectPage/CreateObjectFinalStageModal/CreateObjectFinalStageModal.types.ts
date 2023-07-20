@@ -1,7 +1,7 @@
 import {
   HeatingStationResponsePagedList,
   HouseManagementResponse,
-} from 'myApi';
+} from 'api/myApi';
 import { ObjectCreateSubmitData } from 'services/objects/createObjectService/createObjectService.types';
 
 export type CreateObjectFinalStageModalProps = {

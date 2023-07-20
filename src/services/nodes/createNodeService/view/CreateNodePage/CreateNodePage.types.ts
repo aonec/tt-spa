@@ -2,7 +2,7 @@ import {
   CalculatorIntoHousingStockResponse,
   HousingStockResponse,
   NodeServiceZoneListResponse,
-} from 'myApi';
+} from 'api/myApi';
 import {
   CreateNodeFormPayload,
   UpdateNodeFormPayloadCallback,

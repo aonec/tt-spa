@@ -2,7 +2,7 @@ import {
   NodeServiceZoneResponse,
   PipeNodeResponse,
   UpdatePipeNodeRequest,
-} from 'myApi';
+} from 'api/myApi';
 
 export type EditNodeCommonInfoProps = {
   node: PipeNodeResponse;

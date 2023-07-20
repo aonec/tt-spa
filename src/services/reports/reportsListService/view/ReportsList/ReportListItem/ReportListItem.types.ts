@@ -1,4 +1,4 @@
-import { ReportRequestHistoryResponse } from 'myApi';
+import { ReportRequestHistoryResponse } from 'api/myApi';
 
 export type ReportListItemProps = {
   report: ReportRequestHistoryResponse;

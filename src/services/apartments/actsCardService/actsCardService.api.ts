@@ -1,7 +1,7 @@
 import { saveAs } from 'file-saver';
 
 import { axios } from 'api/axios';
-import { ApartmentActResponsePagedList, DocumentResponse } from 'myApi';
+import { ApartmentActResponsePagedList, DocumentResponse } from 'api/myApi';
 
 export const fetchPreviousActs = (
   ApartmentId: number,

@@ -4,7 +4,7 @@ import {
   PipeHousingMeteringDeviceResponse,
   PipeNodeResponse,
   UpdatePipeHousingMeteringDeviceRequest,
-} from 'myApi';
+} from 'api/myApi';
 
 export const putHousingMeteringDevice = ({
   deviceId,

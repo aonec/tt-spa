@@ -1,4 +1,4 @@
-import { HousingMeteringDeviceReadingsIncludingPlacementResponse } from 'myApi';
+import { HousingMeteringDeviceReadingsIncludingPlacementResponse } from 'api/myApi';
 
 export type GetElectricNodesRequestParams =
   Partial<GetElectricNodesByAddress> & {

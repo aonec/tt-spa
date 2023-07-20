@@ -1,4 +1,4 @@
-import { NonResidentialBuildingResponse } from 'myApi';
+import { NonResidentialBuildingResponse } from 'api/myApi';
 
 export type NonResidentialBuildingInfoProps = {
   nonResidentialBuilding: NonResidentialBuildingResponse | null;

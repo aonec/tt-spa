@@ -1,5 +1,8 @@
 import { axios } from 'api/axios';
-import { HeatingStationResponse, HeatingStationResponsePagedList } from 'myApi';
+import {
+  HeatingStationResponse,
+  HeatingStationResponsePagedList,
+} from 'api/myApi';
 
 export const getHeatingStations =
   (): Promise<HeatingStationResponsePagedList | null> => {

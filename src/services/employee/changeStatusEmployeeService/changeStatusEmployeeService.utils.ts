@@ -2,7 +2,7 @@ import moment from 'moment';
 import {
   AddOrganizationUserWorkingStatusRequest,
   EOrganizationUserWorkingStatusType,
-} from 'myApi';
+} from 'api/myApi';
 import { UserTasksByRoles } from './changeStatusEmployeeService.types';
 
 export const getTasksCount = (tasksByRoles: UserTasksByRoles) => {

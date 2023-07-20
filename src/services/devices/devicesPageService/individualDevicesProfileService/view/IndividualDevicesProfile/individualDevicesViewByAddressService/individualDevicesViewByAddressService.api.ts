@@ -2,7 +2,7 @@ import { axios } from 'api/axios';
 import {
   ApartmentByAddressFilterResponsePagedList,
   HousingByFilterResponse,
-} from 'myApi';
+} from 'api/myApi';
 import {
   GetHousingByFilterRequestPayload,
   GetIndividualDevicesApartments,

@@ -1,7 +1,7 @@
 import {
   EHousingMeteringDeviceType,
   UpdatePipeHousingMeteringDeviceRequest,
-} from 'myApi';
+} from 'api/myApi';
 import { EditHousingMeteringDeviceCommonInfoFormTypes } from './EditHousingMeteringDeviceCommonInfo.types';
 
 export const getUpdateNodeDataFromFormik = (

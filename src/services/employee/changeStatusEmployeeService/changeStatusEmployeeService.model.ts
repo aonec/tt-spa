@@ -12,7 +12,7 @@ import {
   OrganizationUserTaskReassignment,
   OrganizationUserWorkingStatusResponse,
   UserStatusResponse,
-} from 'myApi';
+} from 'api/myApi';
 import { message } from 'antd';
 import { EffectFailDataAxiosError } from 'types';
 import {

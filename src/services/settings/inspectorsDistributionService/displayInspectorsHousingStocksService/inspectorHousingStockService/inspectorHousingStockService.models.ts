@@ -1,6 +1,6 @@
 import { createDomain, sample } from 'effector';
 import { message } from 'antd';
-import { HousingStockResponse } from 'myApi';
+import { HousingStockResponse } from 'api/myApi';
 import { EffectFailDataAxiosError } from 'types';
 import { displayInspectorsService } from 'services/inspectors/displayInspectorsService/displayInspectorsService.models';
 import { displayInspectorsHousingStocksService } from '../displayInspectorsHousingStocksService.models';

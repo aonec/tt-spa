@@ -1,7 +1,7 @@
 import {
   ElectricHousingMeteringDeviceResponse,
   SwitchElectricHousingDeviceRequest,
-} from 'myApi';
+} from 'api/myApi';
 
 export type ChangeODPUPageProps = {
   oldDevice: ElectricHousingMeteringDeviceResponse | null;

@@ -1,4 +1,4 @@
-import { SwitchIndividualDeviceReadingsCreateRequest } from 'myApi';
+import { SwitchIndividualDeviceReadingsCreateRequest } from 'api/myApi';
 
 export type EditReadingsHistoryPayload = {
   deviceId: number;

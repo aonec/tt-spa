@@ -3,7 +3,7 @@ import {
   ApartmentResponse,
   IndividualDeviceListItemResponse,
   AppointmentResponse,
-} from 'myApi';
+} from 'api/myApi';
 import { EffectFailDataAxiosError } from 'types';
 import { message } from 'antd';
 import { createGate } from 'effector-react';

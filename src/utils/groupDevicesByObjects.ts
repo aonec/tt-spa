@@ -1,5 +1,5 @@
 import { groupBy } from 'lodash';
-import { CalculatorListResponse } from 'myApi';
+import { CalculatorListResponse } from 'api/myApi';
 import { DevicesByAddressInterface } from 'services/devices/displayDevicesService/displayDevicesService.types';
 
 export const groupDevicesByObjects = (

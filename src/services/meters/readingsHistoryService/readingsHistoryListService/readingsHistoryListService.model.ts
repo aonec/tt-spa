@@ -3,7 +3,7 @@ import { EffectFailDataAxiosError } from 'types';
 import {
   IndividualDeviceReadingsCreateListResponse,
   IndividualDeviceReadingsCreateRequest,
-} from 'myApi';
+} from 'api/myApi';
 import { createReading } from './readingsHistoryListService.api';
 import { message } from 'antd';
 

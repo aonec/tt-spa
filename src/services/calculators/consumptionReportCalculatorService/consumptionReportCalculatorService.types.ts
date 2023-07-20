@@ -1,4 +1,4 @@
-import { CalculatorResponse, EReportFormat, EReportType } from 'myApi';
+import { CalculatorResponse, EReportFormat, EReportType } from 'api/myApi';
 
 export type ConsumptionReportCalculatorServiceContainerProps = {
   calculator: CalculatorResponse | null;

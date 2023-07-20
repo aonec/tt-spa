@@ -2,7 +2,7 @@ import axios from 'api/axios';
 import {
   IndividualDeviceReadingsCreateListResponse,
   IndividualDeviceReadingsCreateRequest,
-} from 'myApi';
+} from 'api/myApi';
 
 export const createReading = (
   requestPayload: IndividualDeviceReadingsCreateRequest,

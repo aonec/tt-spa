@@ -2,7 +2,7 @@ import { axios } from 'api/axios';
 import {
   GetHousingMeteringDeviceReadingsResponse,
   HousingMeteringDeviceReadingsIncludingPlacementResponse,
-} from 'myApi';
+} from 'api/myApi';
 import {
   CreateHousingMeteringDeviceReadingsPayload,
   DeleteNodeReading,

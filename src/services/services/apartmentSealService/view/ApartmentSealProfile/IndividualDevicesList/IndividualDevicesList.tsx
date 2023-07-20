@@ -7,7 +7,7 @@ import {
   Wrapper,
 } from './IndividualDevicesList.styled';
 import { IndividualDevicesListProps } from './IndividualDevicesList.types';
-import { IndividualDeviceListItemResponse } from 'myApi';
+import { IndividualDeviceListItemResponse } from 'api/myApi';
 import { IndividualDevicesSealListItem } from './IndividualDevicesSealListItem';
 
 export const IndividualDevicesList: FC<IndividualDevicesListProps> = ({

@@ -1,4 +1,4 @@
-import { ENodeCommercialAccountStatus } from 'myApi';
+import { ENodeCommercialAccountStatus } from 'api/myApi';
 
 export type NodeStatusProps = {
   status: ENodeCommercialAccountStatus;

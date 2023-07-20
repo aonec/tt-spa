@@ -7,7 +7,7 @@ import {
   EResourceType,
   GetHousingMeteringDeviceReadingsResponse,
   HousingMeteringDeviceReadingsIncludingPlacementResponse,
-} from 'myApi';
+} from 'api/myApi';
 import { EffectFailDataAxiosError } from 'types';
 import {
   createHousingMeteringDeviceReading,

@@ -3,7 +3,7 @@ import {
   CreateIndividualDeviceRequest,
   IndividualDeviceListResponseFromDevicePagePagedList,
   IndividualDeviceMountPlaceListResponse,
-} from 'myApi';
+} from 'api/myApi';
 
 export type BaseInfoStageProps = {
   contractors: ContractorListResponse[] | null;

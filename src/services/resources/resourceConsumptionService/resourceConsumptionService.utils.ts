@@ -3,7 +3,7 @@ import moment from 'moment';
 import {
   DateTimeDoubleDictionaryItem,
   StreetWithBuildingNumbersResponse,
-} from 'myApi';
+} from 'api/myApi';
 import { getFilledArray } from 'utils/getFilledArray';
 
 export const prepareDataForConsumptionGraphWithLastValue = (

@@ -1,7 +1,7 @@
 import {
   EResourceType,
   EResourceTypeNullableStringDictionaryItem,
-} from 'myApi';
+} from 'api/myApi';
 
 export type CreateResourceDisconnectionSelectResourceProps = {
   disabled: boolean;

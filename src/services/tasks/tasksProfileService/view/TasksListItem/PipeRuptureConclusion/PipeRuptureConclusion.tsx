@@ -1,4 +1,4 @@
-import { ETaskConfirmationType } from 'myApi';
+import { ETaskConfirmationType } from 'api/myApi';
 import React, { FC } from 'react';
 import { PipeIcon } from 'ui-kit/icons';
 import { Wrapper } from './PipeRuptureConclusion.styled';

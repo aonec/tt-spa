@@ -1,4 +1,4 @@
-import { NodeSetRegistrationTypeRequest } from 'myApi';
+import { NodeSetRegistrationTypeRequest } from 'api/myApi';
 
 export type ChangeNodeTypeFormProps = {
   formId: string;

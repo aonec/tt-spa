@@ -1,6 +1,6 @@
 import { axios } from 'api/axios';
 import { SetApartmentStatusRequest } from './pauseApartmentService.types';
-import { IndividualDeviceWithExpiredCheckingDateListResponse } from 'myApi';
+import { IndividualDeviceWithExpiredCheckingDateListResponse } from 'api/myApi';
 
 export const setApartmentStatus = ({
   apartmentId,

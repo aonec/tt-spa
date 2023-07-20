@@ -1,7 +1,7 @@
 import { axios } from 'api/axios';
 import { createMutation, createQuery } from '@farfetched/core';
 import { createEffect } from 'effector';
-import { DistrictResponse } from 'myApi';
+import { DistrictResponse } from 'api/myApi';
 import { EffectFailDataAxiosError } from 'types';
 
 export const existingDistrictsQuery = createQuery<

@@ -6,7 +6,7 @@ import {
   FormHeader,
 } from './DocumentsStage.styled';
 import { Document, DocumentsUploadContainer } from 'ui-kit/DocumentsService';
-import { EDocumentType } from 'myApi';
+import { EDocumentType } from 'api/myApi';
 import { Button } from 'ui-kit/Button';
 import { useFormik } from 'formik';
 

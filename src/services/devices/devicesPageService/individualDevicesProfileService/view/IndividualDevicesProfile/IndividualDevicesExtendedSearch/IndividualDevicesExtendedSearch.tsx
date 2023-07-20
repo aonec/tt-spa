@@ -13,7 +13,7 @@ import {
 import { FormItem } from 'ui-kit/FormItem';
 import { SearchIcon } from 'ui-kit/icons';
 import { useFormik } from 'formik';
-import { EApartmentStatus, EResourceType } from 'myApi';
+import { EApartmentStatus, EResourceType } from 'api/myApi';
 import {
   apartmentStatusesLookup,
   closingReasonLookup,

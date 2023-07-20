@@ -1,4 +1,4 @@
-import { EManagingFirmTaskType, EStageActionType } from 'myApi';
+import { EManagingFirmTaskType, EStageActionType } from 'api/myApi';
 import {
   TaskActionsComponent,
   TaskPanelComponentsGroupsName,

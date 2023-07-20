@@ -1,7 +1,7 @@
 import {
   NodeOnHousingStockResponse,
   PipeNodeIntoCalculatorResponse,
-} from 'myApi';
+} from 'api/myApi';
 
 export type RelatedNodesListProps = {
   nodes: PipeNodeIntoCalculatorResponse[] | null;

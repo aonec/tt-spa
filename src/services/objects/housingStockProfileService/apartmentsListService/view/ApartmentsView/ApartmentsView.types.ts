@@ -1,4 +1,7 @@
-import { ApartmentListResponse, ApartmentListResponsePagedList } from 'myApi';
+import {
+  ApartmentListResponse,
+  ApartmentListResponsePagedList,
+} from 'api/myApi';
 import { FC } from 'react';
 
 export type SegmentType = 'list' | 'cells';

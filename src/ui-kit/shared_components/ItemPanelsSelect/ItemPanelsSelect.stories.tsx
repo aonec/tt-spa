@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { ComponentMeta } from '@storybook/react';
 import { ItemPanelsSelect } from '.';
 import { ResourceIconLookup } from '../ResourceIconLookup';
-import { EResourceType } from 'myApi';
+import { EResourceType } from 'api/myApi';
 import { ResourceMapNamesDictionary } from 'dictionaries';
 
 export default {

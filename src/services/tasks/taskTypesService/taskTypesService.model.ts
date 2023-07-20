@@ -5,7 +5,7 @@ import {
   GuidStringDictionaryItem,
   OrganizationUserListResponse,
   OrganizationUserListResponsePagedList,
-} from 'myApi';
+} from 'api/myApi';
 import {
   getHousingManagements,
   getPerpetratorIds,

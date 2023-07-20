@@ -1,7 +1,7 @@
 import { createDomain, sample } from 'effector';
 import { createGate } from 'effector-react';
 import { GetProblemDevicesRequestPayload } from './apartmentProblemDevicesService.types';
-import { IndividualDeviceWithExpiredCheckingDateResponse } from 'myApi';
+import { IndividualDeviceWithExpiredCheckingDateResponse } from 'api/myApi';
 import { getProblemDevices } from './apartmentProblemDevicesService.api';
 import { preparedDevicesToFetch } from './apartmentProblemDevicesService.constants';
 

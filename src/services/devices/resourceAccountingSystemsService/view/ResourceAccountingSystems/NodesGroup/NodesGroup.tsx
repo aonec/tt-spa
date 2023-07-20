@@ -12,7 +12,7 @@ import {
 } from './NodesGroup.styled';
 import { NodesGroupProps } from './NodesGroup.types';
 import { ResourceIconLookup } from 'ui-kit/shared_components/ResourceIconLookup';
-import { EResourceType } from 'myApi';
+import { EResourceType } from 'api/myApi';
 import { getSystemText } from './NodesGroup.utils';
 import { NodeItem } from './NodeItem';
 import { CalculatorInfo } from './CalculatorInfo';

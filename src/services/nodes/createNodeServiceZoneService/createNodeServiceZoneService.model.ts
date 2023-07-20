@@ -1,6 +1,6 @@
 import { message } from 'antd';
 import { createDomain, forward } from 'effector';
-import { NodeServiceZoneRequest, NodeServiceZoneResponse } from 'myApi';
+import { NodeServiceZoneRequest, NodeServiceZoneResponse } from 'api/myApi';
 import { EffectFailDataAxiosError } from 'types';
 import { postNodeServiceZone } from './createNodeServiceZoneService.api';
 

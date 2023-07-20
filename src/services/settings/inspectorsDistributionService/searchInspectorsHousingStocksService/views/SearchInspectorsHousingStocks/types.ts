@@ -1,5 +1,5 @@
 import { Result } from 'effector-forms';
-import { GuidStringDictionaryItem, InspectorResponse } from 'myApi';
+import { GuidStringDictionaryItem, InspectorResponse } from 'api/myApi';
 
 export type SearchInspectorsHousingStocksProps = {
   cities: string[] | null;

@@ -1,7 +1,7 @@
 import React, { FC, useEffect, useState } from 'react';
 import { InputReadingsProps, Reading } from './InputReadings.types';
 import { useStore } from 'effector-react';
-import { IndividualDeviceOnTaskResponse } from 'myApi';
+import { IndividualDeviceOnTaskResponse } from 'api/myApi';
 import { SpaceLine } from '01/shared/ui/Layout/Space/Space';
 import { Flex } from '01/shared/ui/Layout/Flex';
 import { getReadingMonth } from './InputReadings.utils';

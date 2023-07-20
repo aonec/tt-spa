@@ -1,5 +1,5 @@
 import { axios } from 'api/axios';
-import { GetHousingMeteringDeviceReadingsResponse } from 'myApi';
+import { GetHousingMeteringDeviceReadingsResponse } from 'api/myApi';
 
 export const fetchOldReadings = (
   nodeId: number,

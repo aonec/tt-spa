@@ -1,4 +1,4 @@
-import { ESecuredIdentityRoleName } from 'myApi';
+import { ESecuredIdentityRoleName } from 'api/myApi';
 
 export enum MenuType {
   Statistics = 'Statistics',

@@ -1,4 +1,4 @@
-import { MeteringDeviceResponse } from 'myApi';
+import { MeteringDeviceResponse } from 'api/myApi';
 
 export type TaskDeviceInfoProps = {
   device: MeteringDeviceResponse;

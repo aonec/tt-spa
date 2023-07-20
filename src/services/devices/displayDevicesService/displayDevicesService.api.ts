@@ -1,7 +1,7 @@
 import {
   CalculatorListResponsePagedList,
   HousingByFilterResponse,
-} from '../../../myApi';
+} from '../../../api/myApi';
 import { axios } from 'api/axios';
 import { CalculatorsListRequestPayload } from 'services/calculators/calculatorsListService/calculatorsListService.types';
 import { GetHousingByFilterRequestPayload } from '../devicesPageService/individualDevicesProfileService/view/IndividualDevicesProfile/individualDevicesViewByAddressService/individualDevicesViewByAddressService.types';

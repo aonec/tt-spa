@@ -1,5 +1,5 @@
 import { Event } from 'effector';
-import { ApartmentResponse, HomeownerAccountListResponse } from 'myApi';
+import { ApartmentResponse, HomeownerAccountListResponse } from 'api/myApi';
 import { PersonalNumberFormTypes } from 'services/homeowner/personalNumber/components/PersonalNumberForm/PersonalNumberForm.types';
 
 export type EditPersonalNumberPageProps = {

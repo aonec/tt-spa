@@ -1,5 +1,5 @@
-import { StagePushRequest } from './../../../../../myApi';
-import { DocumentResponse, PipeNodeResponse, TaskResponse } from 'myApi';
+import { StagePushRequest } from '../../../../../api/myApi';
+import { DocumentResponse, PipeNodeResponse, TaskResponse } from 'api/myApi';
 
 export type TaskProfileProps = {
   task: TaskResponse;
@@ -14,7 +14,7 @@ export type TaskProfileProps = {
   documents: DocumentResponse[];
   pushStage: () => void;
   handleChangePushStagePayload: (
-    payload: StagePushRequest | ((prev: StagePushRequest) => StagePushRequest)
+    payload: StagePushRequest | ((prev: StagePushRequest) => StagePushRequest),
   ) => void;
   isPushStageLoading: boolean;
   handleRevertStage: () => void;

@@ -5,7 +5,7 @@ import {
   BuildingListResponsePagedList,
   DistrictCreateRequest,
   DistrictResponse,
-} from 'myApi';
+} from 'api/myApi';
 import { EffectFailDataAxiosError } from 'types';
 
 export const existingHousingStocksQuery = createQuery<

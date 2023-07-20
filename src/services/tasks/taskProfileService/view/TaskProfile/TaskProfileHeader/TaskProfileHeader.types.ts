@@ -2,7 +2,7 @@ import {
   IndividualDeviceOnTaskResponse,
   MeteringDeviceResponse,
   PipeNodeResponse,
-} from 'myApi';
+} from 'api/myApi';
 import { Timeline } from 'ui-kit/shared_components/TimeLine/TimeLine.types';
 import { Timer } from 'ui-kit/shared_components/Timer/Timer.types';
 

@@ -28,7 +28,7 @@ import {
 } from './HousingMeteringDeviceProfile.styled';
 import { HousingMeteringDeviceProfileProps } from './HousingMeteringDeviceProfile.types';
 import { ContextMenuButtonColor } from 'ui-kit/ContextMenuButton/ContextMenuButton.types';
-import { TaskGroupingFilter } from 'myApi';
+import { TaskGroupingFilter } from 'api/myApi';
 
 const { TabPane } = TabsSC;
 

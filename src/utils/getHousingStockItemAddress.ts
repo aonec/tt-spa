@@ -1,4 +1,4 @@
-import { BuildingAddressItemResponse } from 'myApi';
+import { BuildingAddressItemResponse } from 'api/myApi';
 
 export const getHousingStockItemAddress = (
   address: BuildingAddressItemResponse,

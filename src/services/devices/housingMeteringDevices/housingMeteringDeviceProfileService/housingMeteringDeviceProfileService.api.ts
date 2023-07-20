@@ -1,5 +1,5 @@
 import { axios } from 'api/axios';
-import { PipeHousingMeteringDeviceResponse, TasksPagedList } from 'myApi';
+import { PipeHousingMeteringDeviceResponse, TasksPagedList } from 'api/myApi';
 
 export async function getHousingMeteringDevice(id: number) {
   return await axios.get<number, PipeHousingMeteringDeviceResponse>(

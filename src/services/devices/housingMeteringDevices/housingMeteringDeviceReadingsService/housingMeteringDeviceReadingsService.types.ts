@@ -1,4 +1,4 @@
-import { EMagistralType, EResourceType } from 'myApi';
+import { EMagistralType, EResourceType } from 'api/myApi';
 
 export type HousingMeteringDeviceReadingsContainerProps = {
   nodeId: number;

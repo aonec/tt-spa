@@ -2,7 +2,7 @@ import {
   ESecuredIdentityRoleName,
   OrganizationUserResponse,
   OrganizationUserTaskReassignment,
-} from 'myApi';
+} from 'api/myApi';
 import {
   OrganizationUsersByRolesList,
   UserTasksByRoles,

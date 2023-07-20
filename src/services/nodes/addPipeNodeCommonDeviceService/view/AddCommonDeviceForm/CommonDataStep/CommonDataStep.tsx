@@ -4,7 +4,7 @@ import { Select } from 'ui-kit/Select';
 import { ResourceSelect } from 'ui-kit/shared_components/ResourceSelect';
 import { LineWrapper } from './CommonDataStep.styled';
 import { CommonDataStepProps } from './CommonDataStep.types';
-import { EHousingMeteringDeviceType, EPipeNodeConfig } from 'myApi';
+import { EHousingMeteringDeviceType, EPipeNodeConfig } from 'api/myApi';
 import {
   HousingMeteringDeviceDictionary,
   validationSchema,

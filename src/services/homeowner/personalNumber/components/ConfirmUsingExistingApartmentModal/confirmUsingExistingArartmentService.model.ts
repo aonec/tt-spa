@@ -7,7 +7,7 @@ import {
   ApartmentResponse,
   IndividualDeviceListItemResponse,
   IndividualDeviceListItemResponsePagedList,
-} from 'myApi';
+} from 'api/myApi';
 import { splitPersonalNumberService } from '../../splitPersonalNumberService';
 
 const domain = createDomain('confirmUsingExistingArartmentService');

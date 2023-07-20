@@ -1,6 +1,6 @@
 import { createDomain, sample } from 'effector';
 import { createGate } from 'effector-react';
-import { HomeownerCertificateResponse } from 'myApi';
+import { HomeownerCertificateResponse } from 'api/myApi';
 import { getHomeownerCertificate } from './printApartmentDevicesCertificateService.api';
 
 const domain = createDomain('printApartmentDevicesCertificateService');

@@ -1,4 +1,4 @@
-import { IndividualDeviceConsumptionResponse } from 'myApi';
+import { IndividualDeviceConsumptionResponse } from 'api/myApi';
 
 export type IndividualDevicesListContainerProps = {
   devicesIds: number[];

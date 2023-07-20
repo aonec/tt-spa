@@ -3,7 +3,7 @@ import moment from 'moment';
 import { message } from 'antd';
 import queryString from 'query-string';
 import { combine, createDomain, forward, sample } from 'effector';
-import { EClosingReason, EResourceType } from 'myApi';
+import { EClosingReason, EResourceType } from 'api/myApi';
 import { createForm } from 'effector-forms';
 import { reportsInputs } from '../models';
 import { getReportTypeTitleName, RangePeriod, ReportType } from './types';

@@ -4,7 +4,7 @@ import { createEffect } from 'effector';
 import {
   IndividualDeviceListResponseFromDevicePagePagedList,
   IndividualDeviceResponse,
-} from 'myApi';
+} from 'api/myApi';
 import { EffectFailDataAxiosError } from 'types';
 import {
   CheckIndividualDevicePayload,

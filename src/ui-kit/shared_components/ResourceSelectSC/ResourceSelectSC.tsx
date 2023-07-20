@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import { OptionWrapper } from './ResourceSelectSC.styled';
 import { ResourceSelectSCProps } from './ResourceSelectSC.types';
-import { EResourceType } from 'myApi';
+import { EResourceType } from 'api/myApi';
 import { Select } from 'ui-kit/Select';
 import { ResourceIconLookup } from '../ResourceIconLookup';
 import { resourcesNamesLookup } from '../ResourceSelect/ResourceSelect.constants';

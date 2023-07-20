@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { ComponentMeta } from '@storybook/react';
 import { FilterExtendedSearch } from '.';
 import { actResourceNamesLookup } from 'utils/actResourceNamesLookup';
-import { EActResourceType } from 'myApi';
+import { EActResourceType } from 'api/myApi';
 import {
   IndividualDeviceConsumptionGraphLookup,
   IndividualDeviceConsumptionGraphType,

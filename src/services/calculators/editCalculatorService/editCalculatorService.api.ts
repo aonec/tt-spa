@@ -3,7 +3,7 @@ import {
   CalculatorResponse,
   MeteringDeviceResponse,
   UpdateCalculatorRequest,
-} from 'myApi';
+} from 'api/myApi';
 
 export async function putCalculator(params: {
   deviceId: number;

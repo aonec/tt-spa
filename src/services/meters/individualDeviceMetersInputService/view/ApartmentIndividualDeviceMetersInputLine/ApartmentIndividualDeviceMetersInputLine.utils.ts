@@ -1,9 +1,9 @@
-import { IndividualDeviceReadingsResponse } from 'myApi';
+import { IndividualDeviceReadingsResponse } from 'api/myApi';
 import { getReadingLite } from '../../individualDeviceMetersInputService.utils';
 
 export function getReadingValuesArray(
   reading: IndividualDeviceReadingsResponse,
-  rateNum: number
+  rateNum: number,
 ) {
   const readingLite = getReadingLite(reading, rateNum);
 

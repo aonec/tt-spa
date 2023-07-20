@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { TrashIcon } from 'ui-kit/icons';
-import { EPipeNodeConfig } from 'myApi';
+import { EPipeNodeConfig } from 'api/myApi';
 import { CommunicationPipePayload } from 'services/nodes/addPipeNodeCommonDeviceService/addPipeNodeCommonDeviceService.types';
 
 export type CommunicationPipeListItemProps = {

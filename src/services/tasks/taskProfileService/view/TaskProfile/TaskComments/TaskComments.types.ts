@@ -1,4 +1,4 @@
-import { TaskCommentResponse } from 'myApi';
+import { TaskCommentResponse } from 'api/myApi';
 
 export type TaskCommentsProps = {
   comments: TaskCommentResponse[];
@@ -6,5 +6,4 @@ export type TaskCommentsProps = {
   handleSetComment: (comment: string) => void;
   isPerpetrator: boolean;
   commentText: string;
-
 };

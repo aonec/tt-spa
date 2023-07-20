@@ -5,7 +5,7 @@ import { FormItem } from 'ui-kit/FormItem';
 import { Switch } from 'antd';
 import { Input } from 'ui-kit/Input';
 import { useFormik } from 'formik';
-import { MeteringDeviceConnection, UpdateCalculatorRequest } from 'myApi';
+import { MeteringDeviceConnection, UpdateCalculatorRequest } from 'api/myApi';
 import * as yup from 'yup';
 import { Footer } from '../EditMainInfo/EditMainInfo.styled';
 import { Button } from 'ui-kit/Button';

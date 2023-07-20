@@ -2,7 +2,7 @@ import {
   ApartmentResponse,
   IndividualDeviceListItemResponse,
   AppointmentResponse,
-} from 'myApi';
+} from 'api/myApi';
 import {
   GetApartmentsRequestPayload,
   UpdateApartmentRequestPayload,

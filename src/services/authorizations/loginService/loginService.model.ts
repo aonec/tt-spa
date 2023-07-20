@@ -1,5 +1,5 @@
 import { createDomain, forward } from 'effector';
-import { LoginRequest, TokenResponse } from 'myApi';
+import { LoginRequest, TokenResponse } from 'api/myApi';
 import { EffectFailDataAxiosError } from 'types';
 import { loginPost } from './loginService.api';
 import { message } from 'antd';

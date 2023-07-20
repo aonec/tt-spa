@@ -13,7 +13,7 @@ import {
 import { MainInfoProps } from './MainInfo.types';
 import { FormItem } from 'ui-kit/FormItem';
 import { Select } from 'ui-kit/Select';
-import { UpdateIndividualDeviceRequest } from 'myApi';
+import { UpdateIndividualDeviceRequest } from 'api/myApi';
 import moment from 'moment';
 import { ResourceNamesDictionary } from 'dictionaries';
 import { ResourceIconLookup } from 'ui-kit/shared_components/ResourceIconLookup';

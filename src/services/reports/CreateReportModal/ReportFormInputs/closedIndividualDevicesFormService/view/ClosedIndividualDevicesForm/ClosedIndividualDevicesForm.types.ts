@@ -1,4 +1,7 @@
-import { HouseManagementResponse, OrganizationResponsePagedList } from 'myApi';
+import {
+  HouseManagementResponse,
+  OrganizationResponsePagedList,
+} from 'api/myApi';
 import { TreeSelectElement } from 'ui-kit/shared_components/AddressTreeSelect/AddressTreeSelect.types';
 import { UnloadingType } from '../../closedIndividualDevicesFormService.types';
 

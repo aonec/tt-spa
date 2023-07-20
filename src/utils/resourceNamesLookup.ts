@@ -1,4 +1,4 @@
-import { EResourceType } from 'myApi';
+import { EResourceType } from 'api/myApi';
 
 export const resourceNamesLookup: { [key: string]: string } = {
   [EResourceType.ColdWaterSupply]: 'Холодная вода',

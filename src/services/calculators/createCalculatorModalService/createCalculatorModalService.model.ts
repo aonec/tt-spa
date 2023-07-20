@@ -1,6 +1,6 @@
 import { combine, createDomain, sample } from 'effector';
 import { fetchCreateCalculator } from './createCalculatorModalService.api';
-import { CreateCalculatorRequest, MeteringDeviceResponse } from 'myApi';
+import { CreateCalculatorRequest, MeteringDeviceResponse } from 'api/myApi';
 import { EffectFailDataAxiosError } from 'types';
 import { message } from 'antd';
 import { CreateCalculatorPayload } from './view/CreateCalculatorModal/CreateCalculatorModal.types';

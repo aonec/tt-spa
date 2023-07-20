@@ -2,7 +2,7 @@ import {
   CommunicationPipeResponse,
   EPipeNodeConfig,
   PipeHousingMeteringDeviceListResponse,
-} from 'myApi';
+} from 'api/myApi';
 
 export type HousingMeteringDevicesListProps = {
   communicationPipes: CommunicationPipeResponse[];

@@ -1,6 +1,6 @@
 import { createDomain, forward, sample } from 'effector';
 import { createGate } from 'effector-react';
-import { CalculatorResponse } from 'myApi';
+import { CalculatorResponse } from 'api/myApi';
 import { fetchCalculator } from './calculatorProfileService.api';
 import { CalculatorProfileGrouptype } from './calculatorProfileService.constants';
 import { consumptionReportCalculatorService } from '../consumptionReportCalculatorService';

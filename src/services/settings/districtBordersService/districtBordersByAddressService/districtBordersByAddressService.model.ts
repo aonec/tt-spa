@@ -3,7 +3,7 @@ import { getAddresses } from './districtBordersByAddressService.api';
 import {
   StreetWithBuildingNumbersResponse,
   StreetWithBuildingNumbersResponsePagedList,
-} from 'myApi';
+} from 'api/myApi';
 import {
   CheckedHousingStocksIdWithStreets,
   CheckedHousingStocksIdWithStreetsHandler,

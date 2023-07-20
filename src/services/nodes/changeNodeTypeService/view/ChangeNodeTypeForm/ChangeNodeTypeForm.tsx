@@ -4,7 +4,7 @@ import {
   ENodeRegistrationType,
   NodeSetRegistrationTypeRequest,
   NodeSetTechnicalTypeRequest,
-} from 'myApi';
+} from 'api/myApi';
 import React, { FC } from 'react';
 import { ChangeNodeTypeFormProps } from './ChangeNodeTypeForm.types';
 import { FormItem } from 'ui-kit/FormItem';

@@ -14,7 +14,7 @@ import moment from 'moment';
 import { RowWrapper, SelectSC } from './GroupReportForm.styled';
 import { GroupReportDatesSelect } from './GroupReportDatesSelect';
 import { RadioGroupSC } from './GroupReportDatesSelect/GroupReportDatesSelect.styled';
-import { EEmailSubscriptionType, EReportType } from 'myApi';
+import { EEmailSubscriptionType, EReportType } from 'api/myApi';
 import { LabeledValue } from 'antd/lib/select';
 import { RegularUnloading } from './RegularUnloading';
 import { ErrorMessage } from 'ui-kit/ErrorMessage';

@@ -1,4 +1,4 @@
-import { ApartmentResponse } from 'myApi';
+import { ApartmentResponse } from 'api/myApi';
 
 export type Props = {
   apartment: ApartmentResponse;

@@ -1,5 +1,5 @@
 import { axios } from 'api/axios';
-import { ResourceDisconnectingResponse } from 'myApi';
+import { ResourceDisconnectingResponse } from 'api/myApi';
 import {
   ResourceDisconnectingUpdatePayload,
   UpdateDocumentPayload,

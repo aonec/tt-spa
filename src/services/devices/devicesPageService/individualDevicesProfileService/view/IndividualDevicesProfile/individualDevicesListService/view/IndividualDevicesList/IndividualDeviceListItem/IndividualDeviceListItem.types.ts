@@ -1,7 +1,7 @@
 import {
   IndividualDeviceConsumptionResponse,
   IndividualDeviceResponseFromDevicePage,
-} from 'myApi';
+} from 'api/myApi';
 
 export type IndividualDeviceListItemProps = {
   device: IndividualDeviceResponseFromDevicePage;

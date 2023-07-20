@@ -1,11 +1,11 @@
-import { ESecuredIdentityRoleName } from 'myApi';
+import { ESecuredIdentityRoleName } from 'api/myApi';
 import { MenuFiltrationConfig, MenuItem } from './menuService.types';
 
 export function filterMenuItems(
   menuItems: MenuItem[],
   privates: MenuFiltrationConfig,
   hidden: MenuFiltrationConfig,
-  userRoles: ESecuredIdentityRoleName[]
+  userRoles: ESecuredIdentityRoleName[],
 ): MenuItem[] {
   const filteredMenuItems = menuItems.reduce((acc, item) => {
     const menuType = item.type;
@@ -37,7 +37,7 @@ export function filterMenuItems(
       menuItem.sub,
       privates,
       hidden,
-      userRoles
+      userRoles,
     );
 
     return { ...menuItem, icon: menuItem.icon, sub: filteredSubMenuItems };

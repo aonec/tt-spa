@@ -1,4 +1,4 @@
-import { ControllerCreateRequest } from 'myApi';
+import { ControllerCreateRequest } from 'api/myApi';
 
 export type Props = {
   handleCreateIndividualSeal: (payload: ControllerCreateRequest) => void;

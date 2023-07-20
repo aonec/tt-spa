@@ -1,4 +1,4 @@
-import { EOrderByRule } from 'myApi';
+import { EOrderByRule } from 'api/myApi';
 
 export type SortButtonProps = {
   onChange: (value?: EOrderByRule) => void;

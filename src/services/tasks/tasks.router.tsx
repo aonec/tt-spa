@@ -6,7 +6,7 @@ import {
 } from './tasksProfileService';
 import React from 'react';
 import { useStore } from 'effector-react';
-import { ESecuredIdentityRoleName, TaskGroupingFilter } from 'myApi';
+import { ESecuredIdentityRoleName, TaskGroupingFilter } from 'api/myApi';
 import { usePermission } from 'hooks/usePermission';
 
 export const TasksRouter = () => {

@@ -1,4 +1,4 @@
-import { TaskShortResponse } from 'myApi';
+import { TaskShortResponse } from 'api/myApi';
 import { getHousingStockTaskType } from '../../TasksMapsNative/TasksMapsNative.utils';
 import { HousingStockTaskMarkerType } from '../../TasksMapsNative/TasksMapsNative.types';
 import {

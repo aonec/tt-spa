@@ -6,7 +6,7 @@ import {
   BuildingAddressUpdateRequest,
   HousingStockResponse,
   HousingStockUpdateRequest,
-} from 'myApi';
+} from 'api/myApi';
 
 export type EditObjectPageProps = {
   housingStock: HousingStockResponse;

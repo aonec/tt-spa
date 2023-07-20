@@ -1,5 +1,5 @@
 import { axios } from 'api/axios';
-import { ResourceDisconnectingFilterResponse } from 'myApi';
+import { ResourceDisconnectingFilterResponse } from 'api/myApi';
 
 export const fetchResourceDisconnectionFilters =
   (): Promise<ResourceDisconnectingFilterResponse> =>

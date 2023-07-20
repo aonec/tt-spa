@@ -1,5 +1,5 @@
 import { createDomain, forward } from 'effector';
-import { ApartmentResponse } from 'myApi';
+import { ApartmentResponse } from 'api/myApi';
 import { getSamePersonalAccountNumderApartmentData } from './ConfirmationAddingExistingPersonalNumberModal.api';
 
 const domain = createDomain('ConfirmationAddingExistingPersonalNumberModal');

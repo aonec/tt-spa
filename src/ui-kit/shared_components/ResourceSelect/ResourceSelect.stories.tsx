@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { ComponentMeta, ComponentStory } from '@storybook/react';
 import { ResourceSelect } from '.';
-import { EResourceType } from 'myApi';
+import { EResourceType } from 'api/myApi';
 import { FormItem } from 'ui-kit/FormItem';
 import { ResourceSelectSC } from '../ResourceSelectSC';
 

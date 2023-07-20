@@ -1,4 +1,4 @@
-import { DocumentLiteResponse, EDocumentType } from 'myApi';
+import { DocumentLiteResponse, EDocumentType } from 'api/myApi';
 import React, { FC, useState } from 'react';
 import { DocumentsUploadContainer } from 'ui-kit/DocumentsService';
 import { FormModal } from 'ui-kit/Modals/FormModal/FormModal';

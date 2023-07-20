@@ -1,4 +1,4 @@
-import { EPipeNodeConfig, EResourceType } from 'myApi';
+import { EPipeNodeConfig, EResourceType } from 'api/myApi';
 
 export const resourceFromConfig: {
   [key in EPipeNodeConfig]: EResourceType;

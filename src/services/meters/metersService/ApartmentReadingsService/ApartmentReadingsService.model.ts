@@ -1,6 +1,6 @@
 import { createDomain, forward, guard, sample } from 'effector';
 import { createGate } from 'effector-react';
-import { ApartmentResponse } from 'myApi';
+import { ApartmentResponse } from 'api/myApi';
 import { SearchMode } from './view/ApartmentsReadings/ApartmentsReadings.types';
 import {
   GetApartmentsRequestPayload,

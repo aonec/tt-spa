@@ -2,7 +2,7 @@ import {
   ContractorListResponse,
   IndividualDeviceMountPlaceListResponse,
   IndividualDeviceResponse,
-} from 'myApi';
+} from 'api/myApi';
 import {
   WorkWithIndividualDeviceFormType,
   WorkWithIndividualDeviceType,

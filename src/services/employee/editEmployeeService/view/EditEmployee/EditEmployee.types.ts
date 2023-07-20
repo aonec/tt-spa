@@ -1,4 +1,8 @@
-import { ESecuredIdentityRoleName, OrganizationUserResponse, OrganizationUserUpdateRequest } from 'myApi';
+import {
+  ESecuredIdentityRoleName,
+  OrganizationUserResponse,
+  OrganizationUserUpdateRequest,
+} from 'api/myApi';
 
 export type EditEmployeeProps = {
   isPending: boolean;

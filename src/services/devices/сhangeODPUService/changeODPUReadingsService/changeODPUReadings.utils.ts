@@ -2,7 +2,7 @@ import moment from 'moment';
 import {
   HousingMeteringDeviceReadingsIncludingPlacementResponse,
   SwitchHousingDeviceReadingsCreateRequest,
-} from 'myApi';
+} from 'api/myApi';
 import { getFilledArray } from 'utils/getFilledArray';
 import { PreparedHousingMeteringDeviceReadings } from './changeODPUReadingsService.types';
 import { firstLetterToUpperCase } from 'utils/firstLetterToUpperCase';

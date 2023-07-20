@@ -1,4 +1,4 @@
-import { IndividualDeviceOnTaskResponse } from 'myApi';
+import { IndividualDeviceOnTaskResponse } from 'api/myApi';
 
 export type DevicesListItemProps = {
   device: IndividualDeviceOnTaskResponse;

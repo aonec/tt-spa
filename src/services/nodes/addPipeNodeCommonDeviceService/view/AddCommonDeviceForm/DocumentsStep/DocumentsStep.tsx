@@ -5,7 +5,7 @@ import { DocumentsUploadContainer } from 'ui-kit/DocumentsService';
 import { useFormik } from 'formik';
 import { Document } from 'ui-kit/DocumentsService/DocumentsService.types';
 import { Form } from 'antd';
-import { EDocumentType } from 'myApi';
+import { EDocumentType } from 'api/myApi';
 
 export const DocumentsStep: FC<DocumentsStepProps> = ({
   updateRequestPayload,

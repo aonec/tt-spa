@@ -1,4 +1,4 @@
-import { EActResourceType, EResourceType } from 'myApi';
+import { EActResourceType, EResourceType } from 'api/myApi';
 import { CSSProperties } from 'react';
 
 export type ResourceIconLookupProps = {

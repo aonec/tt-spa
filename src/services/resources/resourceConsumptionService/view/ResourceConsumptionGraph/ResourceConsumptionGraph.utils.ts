@@ -1,4 +1,4 @@
-import { EResourceType } from 'myApi';
+import { EResourceType } from 'api/myApi';
 import { getMinAndMax, GraphColorLookup } from 'utils/Graph.utils';
 import { ResourceConsumptionGraphType } from '../../resourceConsumptionService.types';
 import { ResourceConsumptionGraphColors } from './ResourceConsumptionGraph.constants';

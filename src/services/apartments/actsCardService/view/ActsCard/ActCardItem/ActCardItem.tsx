@@ -1,5 +1,5 @@
 import moment from 'moment';
-import { DocumentResponse } from 'myApi';
+import { DocumentResponse } from 'api/myApi';
 import React, { FC } from 'react';
 import {
   ActWrapper,

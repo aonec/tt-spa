@@ -5,7 +5,7 @@ import {
   HouseManagementWithStreetsResponse,
   HousingDevicesConstructedReportResponse,
   IndividualDevicesConstructedReportResponse,
-} from 'myApi';
+} from 'api/myApi';
 import { ReportType } from '../../../view/ReportsPage/ReportsPage.types';
 import {
   EmployeeReportResponse,

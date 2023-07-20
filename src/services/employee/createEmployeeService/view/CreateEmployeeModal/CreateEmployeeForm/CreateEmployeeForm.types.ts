@@ -1,4 +1,7 @@
-import { ESecuredIdentityRoleName, OrganizationUserCreateRequest } from 'myApi';
+import {
+  ESecuredIdentityRoleName,
+  OrganizationUserCreateRequest,
+} from 'api/myApi';
 
 export type CreateEmployeeFormProps = {
   formId: string;

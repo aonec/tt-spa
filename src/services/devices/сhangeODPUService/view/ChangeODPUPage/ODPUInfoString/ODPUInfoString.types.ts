@@ -1,4 +1,4 @@
-import { ElectricHousingMeteringDeviceResponse } from 'myApi';
+import { ElectricHousingMeteringDeviceResponse } from 'api/myApi';
 
 export type ODPUInfoStringProps = {
   device: ElectricHousingMeteringDeviceResponse;

@@ -2,7 +2,7 @@ import {
   EReportType,
   HousingStockResponse,
   NonResidentialBuildingResponse,
-} from 'myApi';
+} from 'api/myApi';
 
 export type Props = {
   building: HousingStockResponse | NonResidentialBuildingResponse;

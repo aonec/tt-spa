@@ -1,7 +1,7 @@
 import {
   CreateIndividualDeviceRequest,
   IndividualDeviceMountPlaceListResponse,
-} from 'myApi';
+} from 'api/myApi';
 import { DocumentStageForm } from '../stages/DocumentsStage/DocumentsStage.types';
 
 export type PreviewModalProps = {

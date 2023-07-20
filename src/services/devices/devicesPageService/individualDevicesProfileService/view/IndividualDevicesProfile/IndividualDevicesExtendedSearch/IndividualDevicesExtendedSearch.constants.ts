@@ -3,7 +3,7 @@ import {
   EClosingReason,
   EExpiresCheckingDateAt,
   EResourceType,
-} from 'myApi';
+} from 'api/myApi';
 
 export const resourcesNamesLookup: { [key in EResourceType]: string } = {
   [EResourceType.ColdWaterSupply]: 'ХВС',

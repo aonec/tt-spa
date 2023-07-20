@@ -7,7 +7,7 @@ import {
   ETaskTargetType,
   EStageTimeStatus,
   TaskGroupingFilter,
-} from 'myApi';
+} from 'api/myApi';
 
 export type ExportTasksListRequestPayload = {
   TargetType?: ETaskTargetType;

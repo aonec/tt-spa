@@ -1,7 +1,7 @@
 import {
   IndividualDeviceResponse,
   IndividualDeviceOnTaskResponse,
-} from 'myApi';
+} from 'api/myApi';
 
 export type IndividualDeviceInfoProps = {
   device: IndividualDeviceResponse | IndividualDeviceOnTaskResponse;

@@ -1,6 +1,6 @@
 import { sample } from 'effector';
 import moment from 'moment';
-import { EReportFormat, EReportType } from 'myApi';
+import { EReportFormat, EReportType } from 'api/myApi';
 import { displayNodeArchiveService } from './displayNodeArchiveService.models';
 
 displayNodeArchiveService.outputs.$nodeArchiveData

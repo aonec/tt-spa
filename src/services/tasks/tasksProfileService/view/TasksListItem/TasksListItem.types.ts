@@ -1,4 +1,4 @@
-import { TaskListResponse } from 'myApi';
+import { TaskListResponse } from 'api/myApi';
 import { Timeline } from 'ui-kit/shared_components/TimeLine/TimeLine.types';
 import { Timer } from 'ui-kit/shared_components/Timer/Timer.types';
 

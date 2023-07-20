@@ -1,5 +1,5 @@
 import { createDomain, sample } from 'effector';
-import { InspectorOnBuildingResponse } from 'myApi';
+import { InspectorOnBuildingResponse } from 'api/myApi';
 import { getInspectorsHousingStocks } from './displayInspectorsHousingStocksService.api';
 import { GetInspectorsHousingStocksRequestParams } from './types';
 import { searchInspectorsHousingStockService } from '../searchInspectorsHousingStocksService/searchInspectorsHousingStockService.models';

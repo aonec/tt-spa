@@ -7,7 +7,7 @@ import {
   CalculatorListResponsePagedList,
   EOrderByRule,
   HousingByFilterResponse,
-} from 'myApi';
+} from 'api/myApi';
 import { CalculatorsListRequestPayload } from 'services/calculators/calculatorsListService/calculatorsListService.types';
 import { createGate } from 'effector-react';
 import { GetHousingByFilterRequestPayload } from '../devicesPageService/individualDevicesProfileService/view/IndividualDevicesProfile/individualDevicesViewByAddressService/individualDevicesViewByAddressService.types';

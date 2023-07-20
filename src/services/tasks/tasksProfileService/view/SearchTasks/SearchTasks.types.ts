@@ -5,7 +5,7 @@ import {
   GuidStringDictionaryItem,
   OrganizationUserListResponse,
   TaskGroupingFilter,
-} from 'myApi';
+} from 'api/myApi';
 import { GetTasksListRequestPayload } from '../../tasksProfileService.types';
 
 export type SearchTasksProps = {
@@ -28,7 +28,7 @@ export type ExtendedSearchTypes = {
   setFieldValue: (
     field: string,
     value: any,
-    shouldValidate?: boolean | undefined
+    shouldValidate?: boolean | undefined,
   ) => Promise<void> | Promise<FormikErrors<GetTasksListRequestPayload>>;
   taskTypes: EManagingFirmTaskFilterTypeNullableStringDictionaryItem[] | null;
   housingManagments?: GuidStringDictionaryItem[] | null;

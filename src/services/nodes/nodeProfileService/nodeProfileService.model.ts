@@ -1,6 +1,6 @@
 import { createDomain, forward, sample } from 'effector';
 import { createGate } from 'effector-react';
-import { PipeNodeResponse } from 'myApi';
+import { PipeNodeResponse } from 'api/myApi';
 import { changeNodeStatusService } from '../changeNodeStatusService';
 import { changeNodeTypeService } from '../changeNodeTypeService';
 import { getPipeNode } from './nodeProfileService.api';

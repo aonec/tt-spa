@@ -1,4 +1,4 @@
-import { ETasksState } from 'myApi';
+import { ETasksState } from 'api/myApi';
 
 export const TasksStateColorsLookup: {
   [key in ETasksState]: string;

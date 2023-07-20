@@ -1,4 +1,4 @@
-import { EManagingFirmTaskFilterType } from 'myApi';
+import { EManagingFirmTaskFilterType } from 'api/myApi';
 import { taskCategotiesProps } from './SearchTasks.types';
 
 export const taskCategories: taskCategotiesProps = {

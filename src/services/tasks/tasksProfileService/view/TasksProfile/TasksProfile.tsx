@@ -16,7 +16,7 @@ import {
 } from './TasksProfile.styled';
 import { useUnit } from 'effector-react';
 import { Empty } from 'antd';
-import { TaskGroupingFilter } from 'myApi';
+import { TaskGroupingFilter } from 'api/myApi';
 import { Segmented } from 'ui-kit/Segmented';
 import { ListIcon, MapIcon, PlusSmallIcon } from 'ui-kit/icons';
 import { TasksMapContainer } from 'services/tasks/tasksMapService';

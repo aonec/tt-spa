@@ -1,4 +1,4 @@
-import { CreateNodeCheckRequest } from 'myApi';
+import { CreateNodeCheckRequest } from 'api/myApi';
 
 export type CreateNodeCheckPayload = {
   nodeId: number;

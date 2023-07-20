@@ -1,7 +1,7 @@
 import {
   HouseManagementWithStreetsResponse,
   StreetWithBuildingNumbersResponse,
-} from 'myApi';
+} from 'api/myApi';
 import { getAddressSearchData } from 'services/resources/resourceConsumptionService/resourceConsumptionService.utils';
 import { Address } from './ReportFiltrationForm.types';
 

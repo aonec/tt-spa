@@ -2,7 +2,7 @@ import {
   CalculatorResponse,
   NodeOnHousingStockResponse,
   PipeNodeIntoCalculatorResponse,
-} from 'myApi';
+} from 'api/myApi';
 import { CalculatorProfileGrouptype } from '../calculatorProfileService.constants';
 
 export type CalculatorProfileProps = {

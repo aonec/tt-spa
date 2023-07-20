@@ -1,5 +1,5 @@
 import { axios } from 'api/axios';
-import { TaskCommentRequest, TaskCommentResponse } from 'myApi';
+import { TaskCommentRequest, TaskCommentResponse } from 'api/myApi';
 
 export const deleteTaskComment = (params: {
   taskId: number;

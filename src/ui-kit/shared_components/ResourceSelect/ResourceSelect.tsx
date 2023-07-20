@@ -1,4 +1,4 @@
-import { EResourceType } from 'myApi';
+import { EResourceType } from 'api/myApi';
 import React, { FC } from 'react';
 import { Select } from 'ui-kit/Select';
 import { ResourceIconLookup } from '../ResourceIconLookup';
@@ -13,7 +13,7 @@ export const ResourceSelect: FC<ResourceSelectProps> = ({
   onChange,
 }) => {
   const resources = Object.values(EResourceType).filter(
-    (resource) => !exclude.includes(resource)
+    (resource) => !exclude.includes(resource),
   );
 
   return (

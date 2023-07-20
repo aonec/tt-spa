@@ -6,7 +6,7 @@ import { ChangeNodeTypeContainer } from '../changeNodeTypeService';
 import { nodeProfileService } from './nodeProfileService.model';
 import { NodeProfilePage } from './view/NodeProfilePage';
 import { PipeNodeProfileSection } from './view/NodeProfilePage/NodeProfilePage.types';
-import { ESecuredIdentityRoleName } from 'myApi';
+import { ESecuredIdentityRoleName } from 'api/myApi';
 import { usePermission } from 'hooks/usePermission';
 
 const { inputs, outputs, gates } = nodeProfileService;

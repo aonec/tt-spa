@@ -1,5 +1,5 @@
 import { axios } from 'api/axios';
-import { BuildingFiltersResponse } from 'myApi';
+import { BuildingFiltersResponse } from 'api/myApi';
 
 export const getHosuingStockFilters = (): Promise<BuildingFiltersResponse> =>
   axios.get('Buildings/filters');

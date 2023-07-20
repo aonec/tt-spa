@@ -8,7 +8,7 @@ import { useFormik } from 'formik';
 import { ErrorMessage } from 'ui-kit/ErrorMessage';
 import moment from 'moment';
 import * as yup from 'yup';
-import { CheckDeviceRequest } from 'myApi';
+import { CheckDeviceRequest } from 'api/myApi';
 import { FormItem } from 'ui-kit/FormItem';
 import { DatePicker } from 'ui-kit/DatePicker';
 import { Form } from 'antd';

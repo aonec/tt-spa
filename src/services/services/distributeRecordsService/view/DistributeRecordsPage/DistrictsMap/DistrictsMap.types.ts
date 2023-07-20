@@ -3,7 +3,7 @@ import {
   AppointmentResponse,
   ControllerResponse,
   DistrictResponse,
-} from 'myApi';
+} from 'api/myApi';
 import { OrganizationCoordinates } from 'services/currentUserService/currentUserService.types';
 import { AppointmentsCountingByDistrictsResponse } from 'services/services/distributeRecordsService/distributeRecordsService.types';
 

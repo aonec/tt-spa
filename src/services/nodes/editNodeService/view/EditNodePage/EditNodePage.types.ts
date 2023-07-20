@@ -3,7 +3,7 @@ import {
   NodeServiceZoneResponse,
   PipeNodeResponse,
   UpdatePipeNodeRequest,
-} from 'myApi';
+} from 'api/myApi';
 import { NodeEditGrouptype } from '../../editNodeService.constants';
 
 export type EditNodePageProps = {

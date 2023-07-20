@@ -14,7 +14,7 @@ import { apartmentReadingsService } from '../../../ApartmentReadingsService.mode
 import { useHistory, useParams } from 'react-router-dom';
 import confirm from 'antd/lib/modal/confirm';
 import { TypeAddressToStart } from 'ui-kit/shared_components/TypeToStart';
-import { EApartmentStatus } from 'myApi';
+import { EApartmentStatus } from 'api/myApi';
 
 const { gates } = apartmentReadingsService;
 const { ApartmentGate } = gates;

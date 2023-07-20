@@ -1,4 +1,4 @@
-import { ConfirmRequest } from 'myApi';
+import { ConfirmRequest } from 'api/myApi';
 
 export type RegistrationPageProps = {
   isLoading: boolean;

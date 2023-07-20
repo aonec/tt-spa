@@ -1,4 +1,4 @@
-import { HouseManagementWithStreetsResponse } from 'myApi';
+import { HouseManagementWithStreetsResponse } from 'api/myApi';
 import { SubscriberStatisticsFilter } from '../../displayStatisticsListByManagingFirmService.types';
 
 export type ManagingFirmSearchProps = {

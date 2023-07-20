@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { ApartmentResponse } from 'myApi';
+import { ApartmentResponse } from 'api/myApi';
 
 export const getSamePersonalAccountNumderApartmentData = (
   apartmentId: number,

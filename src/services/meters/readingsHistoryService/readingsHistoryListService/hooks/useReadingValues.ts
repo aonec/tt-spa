@@ -3,7 +3,7 @@ import { createReading } from '../../../../../01/_api/readings';
 import {
   IndividualDeviceReadingsHistoryResponse,
   IndividualDeviceReadingsCreateRequest,
-} from '../../../../../myApi';
+} from '../../../../../api/myApi';
 import { useStore } from 'effector-react';
 import { useCallback, useEffect, useState } from 'react';
 import axios from 'api/axios';

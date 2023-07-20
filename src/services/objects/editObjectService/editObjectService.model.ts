@@ -13,7 +13,7 @@ import {
   BuildingAddressCreateRequest,
   BuildingAddressUpdateRequest,
   HousingStockUpdateRequest,
-} from 'myApi';
+} from 'api/myApi';
 import { EffectFailDataAxiosError } from 'types';
 import { createGate } from 'effector-react';
 import { displayHeatingStationsService } from '../heatingStations/displayHeatingStationsService';

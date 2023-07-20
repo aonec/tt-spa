@@ -1,5 +1,5 @@
 import { axios } from 'api/axios';
-import { ContractorResponse, ContractorUpdateRequest } from 'myApi';
+import { ContractorResponse, ContractorUpdateRequest } from 'api/myApi';
 
 export const patchContractor = (payload: {
   contractorId: number;

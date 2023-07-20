@@ -2,7 +2,7 @@ import {
   IndividualDeviceMountPlaceListResponse,
   IndividualDeviceResponse,
   UpdateIndividualDeviceRequest,
-} from 'myApi';
+} from 'api/myApi';
 
 export type EditIndividualPageProps = {
   handleChangeTab: (payload: EditIndividualDeviceTabs) => void;

@@ -15,7 +15,7 @@ import {
   HouseManagementWithStreetsResponse,
   HousingDevicesConstructedReportResponse,
   IndividualDevicesConstructedReportResponse,
-} from 'myApi';
+} from 'api/myApi';
 import { houseManagementsService } from 'services/objects/houseManagementsService';
 import {
   downloadReportFile,

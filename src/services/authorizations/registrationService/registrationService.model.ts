@@ -1,6 +1,6 @@
 import { createDomain, forward } from 'effector';
 import { confirmRegistration } from './registrationService.api';
-import { ConfirmRequest } from 'myApi';
+import { ConfirmRequest } from 'api/myApi';
 import { EffectFailDataAxiosError } from 'types';
 import { message } from 'antd';
 

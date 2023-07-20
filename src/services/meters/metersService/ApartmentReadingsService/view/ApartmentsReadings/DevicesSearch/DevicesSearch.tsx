@@ -2,7 +2,7 @@ import React, { FC, useState } from 'react';
 import { DateRangeContainer, Device } from './DevicesSearch.styled';
 import { DevicesSearchProps } from './DevicesSearch.types';
 import { NavLink } from 'react-router-dom';
-import { IndividualDeviceListItemResponse } from 'myApi';
+import { IndividualDeviceListItemResponse } from 'api/myApi';
 import axios from 'api/axios';
 import { DeviceDataString } from '01/features/individualDevices/switchIndividualDevice/components/DeviceDataString';
 import { Flex } from '01/shared/ui/Layout/Flex';

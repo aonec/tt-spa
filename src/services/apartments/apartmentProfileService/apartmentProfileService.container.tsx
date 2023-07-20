@@ -4,7 +4,7 @@ import { Redirect, useParams } from 'react-router-dom';
 import { apartmentProfileService } from './apartmentProfileService.model';
 import { ApartmentProfile } from './view/ApartmentProfile';
 import { ApartmentSection } from './view/ApartmentProfile/ApartmentProfile.types';
-import { ESecuredIdentityRoleName } from 'myApi';
+import { ESecuredIdentityRoleName } from 'api/myApi';
 import { usePermission } from 'hooks/usePermission';
 
 const { gates, outputs } = apartmentProfileService;

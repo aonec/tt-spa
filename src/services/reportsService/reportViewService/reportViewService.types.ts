@@ -7,7 +7,7 @@ import {
   HouseManagementConstructedReportResponse,
   InspectorsConstructedReportResponse,
   OperatorsConstructedReportResponse,
-} from 'myApi';
+} from 'api/myApi';
 import { ReportType } from '../view/ReportsPage/ReportsPage.types';
 import {
   EmployeeReportDatePeriodType,

@@ -1,7 +1,7 @@
 import {
   ResourceDisconnectingResponse,
   ResourceDisconnectingResponsePagedList,
-} from 'myApi';
+} from 'api/myApi';
 
 export type DisablingListProps = {
   resources: ResourceDisconnectingResponsePagedList | null;

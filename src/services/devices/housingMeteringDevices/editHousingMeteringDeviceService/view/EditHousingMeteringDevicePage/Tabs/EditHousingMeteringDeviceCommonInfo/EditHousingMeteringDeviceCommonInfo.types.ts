@@ -5,7 +5,7 @@ import {
   EResourceType,
   PipeHousingMeteringDeviceResponse,
   UpdatePipeHousingMeteringDeviceRequest,
-} from 'myApi';
+} from 'api/myApi';
 
 export type EditHousingMeteringDeviceCommonInfoProps = {
   housingMeteringDevice: PipeHousingMeteringDeviceResponse | null;

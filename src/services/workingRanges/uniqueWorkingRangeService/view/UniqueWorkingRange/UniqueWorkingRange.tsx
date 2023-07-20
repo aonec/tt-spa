@@ -22,7 +22,7 @@ import {
   ENodeWorkingRangeSeason,
   ENodeWorkingRangeType,
   EResourceType,
-} from 'myApi';
+} from 'api/myApi';
 import { useFormik } from 'formik';
 import { GoBack } from 'ui-kit/shared_components/GoBack';
 import { WithLoader } from 'ui-kit/shared_components/WithLoader';

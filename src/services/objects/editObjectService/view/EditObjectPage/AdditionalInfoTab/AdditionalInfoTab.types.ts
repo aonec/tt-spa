@@ -1,4 +1,4 @@
-import { HousingStockResponse, HousingStockUpdateRequest } from 'myApi';
+import { HousingStockResponse, HousingStockUpdateRequest } from 'api/myApi';
 
 export type AdditionalInfoTabProps = {
   housingStock: HousingStockResponse;

@@ -4,7 +4,7 @@ import {
   AddHeatingStationRequest,
   CreateAddressRequest,
   HeatingStationResponse,
-} from 'myApi';
+} from 'api/myApi';
 import { addressSearchService } from 'services/addressSearchService/addressSearchService.models';
 import { EffectFailDataAxiosError } from 'types';
 import { HeatingStationTypeRequestDictionary } from '../NewHeatingStationForm/newHeatingStationForm.constants';

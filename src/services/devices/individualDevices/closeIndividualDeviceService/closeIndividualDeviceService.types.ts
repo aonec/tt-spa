@@ -1,4 +1,4 @@
-import { CloseIndividualDeviceRequest } from 'myApi';
+import { CloseIndividualDeviceRequest } from 'api/myApi';
 import { closeIndividualDeviceService } from './closeIndividualDeviceService.model';
 
 export type CloseIndividualDevicePayload = {

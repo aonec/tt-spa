@@ -20,7 +20,7 @@ import {
   ENodeWorkingRangeSeason,
   ENodeWorkingRangeType,
   EResourceType,
-} from 'myApi';
+} from 'api/myApi';
 import { WithLoader } from 'ui-kit/shared_components/WithLoader';
 import { ResourceSelectSC } from 'ui-kit/shared_components/ResourceSelectSC';
 

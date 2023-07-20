@@ -1,4 +1,4 @@
-import { ApartmentByAddressFilterResponse } from 'myApi';
+import { ApartmentByAddressFilterResponse } from 'api/myApi';
 
 export type IndividualDevicesApartmentItemProps = {
   individualDevicesApartment: ApartmentByAddressFilterResponse;

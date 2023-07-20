@@ -1,4 +1,4 @@
-import { ApartmentResponse, AppointmentCreateRequest } from 'myApi';
+import { ApartmentResponse, AppointmentCreateRequest } from 'api/myApi';
 
 export type CreateSealAppointmentFormProps = {
   formId: string;

@@ -1,4 +1,4 @@
-import { LoginRequest } from 'myApi';
+import { LoginRequest } from 'api/myApi';
 
 export type LoginPageProps = {
   isDevMode: boolean;

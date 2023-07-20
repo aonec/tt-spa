@@ -5,7 +5,7 @@ import {
   ENodeCommercialAccountStatus,
   EOrderByRule,
   EResourceType,
-} from 'myApi';
+} from 'api/myApi';
 
 export interface CalculatorsListRequestPayload {
   'Filter.DiameterRange.From'?: number;

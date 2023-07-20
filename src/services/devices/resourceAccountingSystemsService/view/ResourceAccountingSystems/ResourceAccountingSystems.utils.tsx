@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import { NodeOnHousingStockResponse } from 'myApi';
+import { NodeOnHousingStockResponse } from 'api/myApi';
 import { NO_CALCULATOR_KEY } from './ResourceAccountingSystems.constants';
 import { ResourceAccountingSystemsSegment } from './ResourceAccountingSystems.types';
 

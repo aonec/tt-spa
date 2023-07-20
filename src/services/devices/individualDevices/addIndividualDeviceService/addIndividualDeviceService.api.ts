@@ -1,5 +1,8 @@
 import { axios } from 'api/axios';
-import { CreateIndividualDeviceRequest, MeteringDeviceResponse } from 'myApi';
+import {
+  CreateIndividualDeviceRequest,
+  MeteringDeviceResponse,
+} from 'api/myApi';
 
 export const createIndividualDevice = async (
   payload: CreateIndividualDeviceRequest,

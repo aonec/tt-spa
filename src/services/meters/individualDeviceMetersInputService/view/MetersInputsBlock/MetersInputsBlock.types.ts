@@ -2,7 +2,7 @@ import {
   EIndividualDeviceRateType,
   EResourceType,
   IndividualDeviceReadingsResponse,
-} from 'myApi';
+} from 'api/myApi';
 import { UploadReading } from '../../individualDeviceMetersInputService.types';
 
 export type MetersInputsBlockProps = {

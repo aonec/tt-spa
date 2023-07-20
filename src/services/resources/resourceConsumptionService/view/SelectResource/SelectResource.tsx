@@ -1,4 +1,4 @@
-import { EResourceType } from 'myApi';
+import { EResourceType } from 'api/myApi';
 import React, { FC } from 'react';
 import { ResourceTypeNamesLookup } from './SelectResource.constants';
 import { Wrapper } from './SelectResource.styled';

@@ -1,5 +1,5 @@
 import { axios } from 'api/axios';
-import { CheckDeviceRequest } from 'myApi';
+import { CheckDeviceRequest } from 'api/myApi';
 
 export const fetchCloseCalculator = (
   payload: CheckDeviceRequest,

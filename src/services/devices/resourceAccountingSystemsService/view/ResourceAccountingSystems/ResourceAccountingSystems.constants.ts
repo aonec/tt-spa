@@ -1,4 +1,4 @@
-import { EResourceType } from 'myApi';
+import { EResourceType } from 'api/myApi';
 export const NO_CALCULATOR_KEY = 'NO_CALCULATOR';
 
 export const ResourcesPriorityDictionary: { [key in EResourceType]: number } = {

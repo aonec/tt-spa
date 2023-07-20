@@ -1,4 +1,4 @@
-import { HouseAddress } from 'myApi';
+import { HouseAddress } from 'api/myApi';
 import React, { FC } from 'react';
 import { Switcher } from 'ui-kit/shared_components/Switcher';
 import { getHousingStockAddressString } from 'utils/getBuildingAddress';

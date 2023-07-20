@@ -1,5 +1,5 @@
 import { combine, createDomain, forward, guard, sample } from 'effector';
-import { ApartmentActResponse } from 'myApi';
+import { ApartmentActResponse } from 'api/myApi';
 import { apartmentActsListService } from '../apartmentActsListService';
 import {
   fetchDeleteActDocument,

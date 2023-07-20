@@ -1,4 +1,4 @@
-import { HouseManagementResponse } from 'myApi';
+import { HouseManagementResponse } from 'api/myApi';
 import { TreeSelectElement } from 'ui-kit/shared_components/AddressTreeSelect/AddressTreeSelect.types';
 import {
   CreateSoiReportRequestPayload,

@@ -2,7 +2,7 @@ import {
   CreateCommunicationPipeRequest,
   CreatePipeHousingMeteringDeviceInNodeRequest,
   EPipeNodeConfig,
-} from 'myApi';
+} from 'api/myApi';
 
 export type Props = {
   configuration: EPipeNodeConfig;

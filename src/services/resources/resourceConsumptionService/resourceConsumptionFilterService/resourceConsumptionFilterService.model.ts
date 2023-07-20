@@ -3,7 +3,7 @@ import {
   EResourceType,
   HouseManagementWithStreetsResponse,
   StreetWithBuildingNumbersResponse,
-} from 'myApi';
+} from 'api/myApi';
 import {
   prepareAddressesForTreeSelect,
   prepareAddressesWithParentsForTreeSelect,

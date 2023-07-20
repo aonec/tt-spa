@@ -1,5 +1,5 @@
 import { axios } from 'api/axios';
-import { HomeownerCertificateResponse } from 'myApi';
+import { HomeownerCertificateResponse } from 'api/myApi';
 
 export const getHomeownerCertificate = (
   id: string,

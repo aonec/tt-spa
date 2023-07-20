@@ -8,7 +8,7 @@ import {
   BuildingListResponsePagedList,
   HousingStockResponse,
   IndividualDeviceListItemResponsePagedList,
-} from 'myApi';
+} from 'api/myApi';
 
 const getHousingStockId = async (
   params: GetHousingStocksListRequestPayload,
