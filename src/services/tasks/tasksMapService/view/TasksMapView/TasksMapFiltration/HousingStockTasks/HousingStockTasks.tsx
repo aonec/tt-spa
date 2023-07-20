@@ -27,7 +27,7 @@ export const HousingStockTasks: FC<HousingStockTasksProps> = ({
   isLoadingTask,
   clearTask,
 }) => {
-  const address = selectedHousingStock?.housingStock?.address?.mainAddress;
+  const address = selectedHousingStock?.building?.address?.mainAddress;
 
   const tasks = selectedHousingStock?.tasks || [];
 
@@ -70,7 +70,7 @@ export const HousingStockTasks: FC<HousingStockTasksProps> = ({
       <Header>
         <ChevronIconSC onClick={task ? clearTask : clearSelectedHousingStock} />
         <Address
-          to={`/objects/profile/${selectedHousingStock?.housingStock?.id}`}
+          to={`/buildings/${selectedHousingStock?.building?.houseCategory}Profile/${selectedHousingStock?.building?.id}`}
         >
           {addressString}
           <City>{`${address?.city}`}</City>

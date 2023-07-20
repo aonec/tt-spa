@@ -1,6 +1,6 @@
 import {
+  BuildingWithTasksResponse,
   EManagingFirmTaskFilterTypeNullableStringDictionaryItem,
-  HousingStockWithTasksResponse,
   OrganizationUserListResponse,
   TaskResponse,
 } from 'myApi';
@@ -12,7 +12,7 @@ export type TasksMapFiltrationProps = {
   filtrationValues: HousingStocksWithTasksFiltrationValues;
   resetFilters: () => void;
   isLoadingHousingStocksWithTasks: boolean;
-  selectedHousingStock: HousingStockWithTasksResponse | null;
+  selectedHousingStock: BuildingWithTasksResponse | null;
   clearSelectedHousingStock: () => void;
   task: TaskResponse | null;
   isLoadingTask: boolean;

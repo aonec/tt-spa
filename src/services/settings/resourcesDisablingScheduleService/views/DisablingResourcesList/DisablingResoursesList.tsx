@@ -16,6 +16,7 @@ export const DisablingResourcesList: React.FC<DisablingListProps> = ({
   handleOpenCompleteDisconnectionModal,
   handleOpenDeleteDisconnectionModal,
   handleOpenEditDisconnectionModal,
+  isPermitionToChangeResourceDisabling,
 }) => {
   const items = useMemo(() => resources?.items || [], [resources]);
 
@@ -41,6 +42,9 @@ export const DisablingResourcesList: React.FC<DisablingListProps> = ({
                 handleOpenEditDisconnectionModal={
                   handleOpenEditDisconnectionModal
                 }
+                isPermitionToChangeResourceDisabling={
+                  isPermitionToChangeResourceDisabling
+                }
               />
             );
           })}
@@ -65,6 +69,7 @@ export const DisablingResourcesList: React.FC<DisablingListProps> = ({
     handleOpenEditDisconnectionModal,
     handleOpenDeleteDisconnectionModal,
     items,
+    isPermitionToChangeResourceDisabling,
   ]);
 
   return (

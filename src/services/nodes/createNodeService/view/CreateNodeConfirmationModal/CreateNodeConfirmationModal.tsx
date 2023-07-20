@@ -20,7 +20,7 @@ import {
 import { CreateNodeConfirmationModalProps } from './CreateNodeConfirmationModal.types';
 import { Button } from 'ui-kit/Button';
 import { CalculatorIcon, CitySmallIcon } from 'ui-kit/icons';
-import { getHousingStockAddress } from 'utils/getHousingStockAddress';
+import { getBuildingAddress } from 'utils/getBuildingAddress';
 import { CommonInfo } from 'ui-kit/shared_components/CommonInfo';
 import { ResourceIconLookup } from 'ui-kit/shared_components/ResourceIconLookup';
 import { CommunicationPipeListItem } from '../CreateNodePage/ConnectedDevices/CommunicationPipeListItem';
@@ -89,9 +89,7 @@ export const CreateNodeConfirmationModal: FC<
         <StepTitle>1. Адрес установки</StepTitle>
         <AddressWrapper>
           <CitySmallIcon />
-          <AddressText>
-            {getHousingStockAddress(housingStock, true)}
-          </AddressText>
+          <AddressText>{getBuildingAddress(housingStock, true)}</AddressText>
         </AddressWrapper>
       </StepWrapper>
 

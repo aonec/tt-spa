@@ -1,16 +1,12 @@
 import axios from 'axios';
-import {
-  HousingStockWithTasksResponse,
-  TaskResponse,
-  TasksPagedList,
-} from 'myApi';
+import { BuildingWithTasksResponse, TaskResponse, TasksPagedList } from 'myApi';
 import { GetHousingStocksWithTasksRequestPayload } from './tasksMapService.types';
 import queryString from 'query-string';
 
 export const getHousingStocksWithTasks = (
   params: GetHousingStocksWithTasksRequestPayload,
-): Promise<HousingStockWithTasksResponse[]> => {
-  return axios.get('HousingStocks/HousingStockWithTasks', {
+): Promise<BuildingWithTasksResponse[]> => {
+  return axios.get('Buildings/BuildingsWithTasks', {
     params,
     paramsSerializer: queryString.stringify,
   });

@@ -30,18 +30,18 @@ export const ReadingsHistoryContainer: React.FC<
 
   const deviceId = deviceIdFromStore || deviceIdFromUrlParams;
 
+  if (!deviceId) return null;
+
   return (
     <>
-      {deviceId && <IndividualDeviceGate id={Number(deviceId)} />}
-      {isModalOpen && <ReadingHistoryGate deviceId={Number(deviceId)} />}
-      {deviceId && (
-        <ReadingHistoryModal
-          closeReadingsHistoryModal={closeReadingsHistoryModal}
-          isModalOpen={isModalOpen}
-          readonly={readonly}
-          individualDevice={individualDevice}
-        />
-      )}
+      <IndividualDeviceGate id={Number(deviceId)} />
+      <ReadingHistoryGate deviceId={Number(deviceId)} />
+      <ReadingHistoryModal
+        closeReadingsHistoryModal={closeReadingsHistoryModal}
+        isModalOpen={isModalOpen}
+        readonly={readonly}
+        individualDevice={individualDevice}
+      />
     </>
   );
 };

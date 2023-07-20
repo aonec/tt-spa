@@ -19,6 +19,7 @@ import {
 } from './createControllerService';
 import { message } from 'antd';
 import { removeAssignmentService } from '../removeAssignmentService';
+import { currentUserService } from 'services/currentUserService';
 
 const domain = createDomain('distributeRecords');
 
@@ -145,6 +146,8 @@ export const distributeRecordsService = {
     $appointmentDate,
     $selectedAppointmentsIds,
     $isDistributeAppointmentsModalOpen,
+    $organizationCoordinates:
+      currentUserService.outputs.$organizationCoordinates,
   },
   gates: { DistributeRecordsGate },
 };

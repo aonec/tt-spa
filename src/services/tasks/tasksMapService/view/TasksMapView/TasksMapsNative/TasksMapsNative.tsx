@@ -1,5 +1,8 @@
 import { useYMaps } from '@pbe/react-yandex-maps';
-import { HousingStockWithTasksResponse } from 'myApi';
+import {
+  BuildingWithTasksResponse,
+  HousingStockWithTasksResponse,
+} from 'myApi';
 import React, { FC, useEffect, useRef, useState } from 'react';
 import { MapZoomControl } from './MapZoomControl';
 import { Wrapper } from './TasksMapsNative.styled';
@@ -12,9 +15,10 @@ import {
 import { EXTENDED_PLACEMARK_ZOOM_LIMIT } from './TasksMapsNative.constants';
 
 export const TasksMapsNative: FC<TasksMapsNativeProps> = ({
-  housingStocksWithTasks,
+  buildingsWithTasks,
   handleClickMarker,
   selectedHousingStockId,
+  organizationCoordinates,
 }) => {
   const mapRef = useRef<HTMLDivElement | null>(null);
   const ymaps = useYMaps(['Map', 'Placemark', 'Clusterer']);
@@ -30,7 +34,7 @@ export const TasksMapsNative: FC<TasksMapsNativeProps> = ({
     }
 
     const map = new ymaps.Map(mapRef.current, {
-      center: [55.6366, 51.8245],
+      center: organizationCoordinates || [55.6366, 51.8245],
       zoom: 15,
     });
 
@@ -75,25 +79,25 @@ export const TasksMapsNative: FC<TasksMapsNativeProps> = ({
     setClusterer(clusterer);
 
     map.geoObjects.add(clusterer as unknown as ymaps.ObjectManager);
-  }, [ymaps, mapRef]);
+  }, [ymaps, mapRef, organizationCoordinates]);
 
   useEffect(() => {
     if (!ymaps?.Placemark || !clusterer) return;
 
     clusterer.removeAll();
 
-    const placemarks = housingStocksWithTasks.map((housingStockWithTasks) => {
+    const placemarks = buildingsWithTasks.map((buildingWithTasks) => {
       const isSelected =
-        selectedHousingStockId === housingStockWithTasks.housingStock?.id;
+        selectedHousingStockId === buildingWithTasks.building?.id;
 
       const { iconHrev, size, isExtended } =
         isExtendedPlacemark || isSelected
-          ? getExtendedMapMarkerlayoutLink(housingStockWithTasks.tasks || [])
-          : getTaskPlacemarkerLink(housingStockWithTasks.tasks || []);
+          ? getExtendedMapMarkerlayoutLink(buildingWithTasks.tasks || [])
+          : getTaskPlacemarkerLink(buildingWithTasks.tasks || []);
 
       const center = [
-        housingStockWithTasks.housingStock?.coordinates?.latitude || 0,
-        housingStockWithTasks.housingStock?.coordinates?.longitude || 0,
+        buildingWithTasks.building?.coordinates?.latitude || 0,
+        buildingWithTasks.building?.coordinates?.longitude || 0,
       ];
 
       const placemark = new ymaps.Placemark(
@@ -112,11 +116,11 @@ export const TasksMapsNative: FC<TasksMapsNativeProps> = ({
       );
 
       (
-        placemark.state as { housingStockData?: HousingStockWithTasksResponse }
-      ).housingStockData = housingStockWithTasks;
+        placemark.state as { housingStockData?: BuildingWithTasksResponse }
+      ).housingStockData = buildingWithTasks;
 
       placemark.events.add('click', () => {
-        handleClickMarker(housingStockWithTasks);
+        handleClickMarker(buildingWithTasks);
         map?.setCenter(center, map.getZoom(), { duration: 200 });
       });
 
@@ -126,7 +130,7 @@ export const TasksMapsNative: FC<TasksMapsNativeProps> = ({
     clusterer.add(placemarks);
   }, [
     clusterer,
-    housingStocksWithTasks,
+    buildingsWithTasks,
     map,
     ymaps,
     handleClickMarker,
@@ -137,10 +141,12 @@ export const TasksMapsNative: FC<TasksMapsNativeProps> = ({
   useEffect(() => {
     if (isCentered || !map) return;
 
-    const coordinates = housingStocksWithTasks?.[0]?.housingStock?.coordinates;
+    const buildingWithCoordinates = buildingsWithTasks?.find((elem) =>
+      Boolean(elem.building?.coordinates),
+    );
 
-    const latitude = coordinates?.latitude;
-    const longitude = coordinates?.longitude;
+    const { latitude, longitude } =
+      buildingWithCoordinates?.building?.coordinates || {};
 
     if (!latitude || !longitude) return;
 
@@ -149,7 +155,7 @@ export const TasksMapsNative: FC<TasksMapsNativeProps> = ({
     map.setCenter(center, map.getZoom());
 
     setIsCentered(true);
-  }, [housingStocksWithTasks, map, isCentered]);
+  }, [buildingsWithTasks, map, isCentered]);
 
   return (
     <Wrapper>

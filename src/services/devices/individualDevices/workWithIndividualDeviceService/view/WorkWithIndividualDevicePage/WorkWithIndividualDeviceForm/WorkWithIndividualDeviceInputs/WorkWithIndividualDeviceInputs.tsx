@@ -104,8 +104,7 @@ export const WorkWithIndividualDeviceInputs: FC<
                 ...readings,
                 [-1]: {
                   ...readings?.[-1],
-                  [e.target.name]:
-                    e.target.value !== '' ? Number(e.target.value) : null,
+                  [e.target.name]: e.target.value,
                 },
               })
             }

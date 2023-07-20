@@ -1,7 +1,10 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { ymaps } from 'types';
 
-export function useYMaps(callback?: (map: ymaps.Map) => void) {
+export function useYMaps(
+  defaultCoordinates?: [number, number] | null,
+  callback?: (map: ymaps.Map) => void,
+) {
   const mapRef = useRef<HTMLDivElement | null>(null);
 
   const [map, setMap] = useState<ymaps.Map | null>(null);
@@ -12,7 +15,7 @@ export function useYMaps(callback?: (map: ymaps.Map) => void) {
     }
 
     const map = new ymaps.Map(mapRef.current, {
-      center: [55.6366, 51.8245],
+      center: defaultCoordinates || [55.6366, 51.8245],
       zoom: 15,
       controls: [],
     });
@@ -23,7 +26,7 @@ export function useYMaps(callback?: (map: ymaps.Map) => void) {
 
     return () => map.geoObjects.removeAll();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [defaultCoordinates]);
 
   useEffect(() => {
     ymaps.ready(initMaps);

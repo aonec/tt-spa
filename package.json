@@ -10,6 +10,7 @@
     "@types/react-router-dom": "^5.1.6",
     "@types/react-virtualized": "^9.21.14",
     "@types/victory": "^33.1.4",
+    "@vercel/analytics": "^1.0.1",
     "antd": "^4.7.0",
     "axios": "^0.21.1",
     "date-fns": "^2.16.1",
@@ -44,7 +45,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "updateTypes": "npx swagger-typescript-api -p https://stage.k8s.transparent-technology.ru/openapi/site/ttm_api.json -o ./src -n myApi.ts --axios",
+    "updateTypes": "npx swagger-typescript-api -p https://fop.k8s.transparent-technology.ru/openapi/site/ttm_api.json -o ./src -n myApi.ts --axios",
     "prepare": "husky install",
     "storybook": "start-storybook -p 6006 -s public",
     "build-storybook": "build-storybook -s public"

@@ -1,1 +1,0 @@
-export { ApartmentItem } from './ApartmentItem'

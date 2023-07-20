@@ -1,6 +1,10 @@
 import { useCallback, useEffect } from 'react';
 
-export const useSwitchInputOnEnter = (name: string, focusOnFirst: boolean) => {
+export const useSwitchInputOnEnter = (
+  name: string,
+  focusOnFirst: boolean,
+  isCyclical = true,
+) => {
   const next = useCallback(
     (index: number) => {
       const inputList: NodeListOf<HTMLInputElement> = document.querySelectorAll(
@@ -13,20 +17,26 @@ export const useSwitchInputOnEnter = (name: string, focusOnFirst: boolean) => {
 
       const nextNode = inputList[index + 1];
 
-      if (!nextNode) {
+      const currentNode = inputList[index];
+
+      if (nextNode) {
+        handleFocus(nextNode);
+        return;
+      }
+
+      if (isCyclical) {
         const firstNode = inputList[0];
 
-        return handleFocus(firstNode);
+        handleFocus(firstNode);
+      } else {
+        handleBlur(currentNode);
       }
-      return handleFocus(nextNode);
     },
-    [name],
+    [name, isCyclical],
   );
 
   useEffect(() => {
-    if (focusOnFirst) {
-      next(-1);
-    }
+    if (focusOnFirst) next(-1);
   }, [focusOnFirst, next]);
 
   return next;
@@ -37,7 +47,21 @@ const handleFocus = (node: HTMLInputElement): void => {
 
   if (!isInput) {
     const inputList = node.getElementsByTagName('input');
-    return inputList.item(0)?.focus();
+    inputList.item(0)?.focus();
+    return;
   }
-  return node.focus();
+  node.focus();
+  return;
+};
+
+const handleBlur = (node: HTMLInputElement): void => {
+  const isInput = node.tagName === 'INPUT';
+
+  if (!isInput) {
+    const inputList = node.getElementsByTagName('input');
+    inputList.item(0)?.blur();
+    return;
+  }
+  node.blur();
+  return;
 };

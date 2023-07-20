@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useState } from 'react';
 import { AddTaskModalProps } from './AddTaskModal.types';
 import { AddTaskForm } from './AddTaskForm/AddTaskForm';
 import { FormModal } from 'ui-kit/Modals/FormModal/FormModal';
@@ -12,13 +12,23 @@ export const AddTaskModal: FC<AddTaskModalProps> = ({
   ErpObjects,
   leadExecutors,
   workCategories,
+  handleCreateTask,
+  choоseLeadExecutor,
+  executors,
+  handleTaskDeadlineRequest,
+  taskDeadline,
+  isCreatePending,
 }) => {
+  const [disableSubmit, setDisableSubmit] = useState(true);
+
   return (
     <FormModal
       title="Создание новой задачи"
       submitBtnText="Создать задачу"
       visible={isModalOpen}
       onCancel={handleCloseModal}
+      disabled={disableSubmit}
+      loading={isCreatePending}
       form={
         <AddTaskForm
           formId={formId}
@@ -26,6 +36,12 @@ export const AddTaskModal: FC<AddTaskModalProps> = ({
           leadExecutors={leadExecutors}
           workCategories={workCategories}
           ErpObjects={ErpObjects}
+          handleCreateTask={handleCreateTask}
+          setDisableSubmit={setDisableSubmit}
+          choоseLeadExecutor={choоseLeadExecutor}
+          executors={executors}
+          handleTaskDeadlineRequest={handleTaskDeadlineRequest}
+          taskDeadline={taskDeadline}
         />
       }
       formId={formId}

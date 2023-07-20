@@ -1,11 +1,11 @@
 import React, { FC } from 'react';
 import { Wrap } from './NodeInfo.styled';
 import { NodeInfoProps } from './NodeInfo.types';
-import { getHousingStockAddress } from 'utils/getHousingStockAddress';
+import { getBuildingAddress } from 'utils/getBuildingAddress';
 import { ResourceIconLookup } from 'ui-kit/shared_components/ResourceIconLookup';
 
 export const NodeInfo: FC<NodeInfoProps> = ({ node }) => {
-  const address = node?.address && getHousingStockAddress(node.address, true);
+  const address = node?.address && getBuildingAddress(node.address, true);
 
   if (!node) {
     return null;

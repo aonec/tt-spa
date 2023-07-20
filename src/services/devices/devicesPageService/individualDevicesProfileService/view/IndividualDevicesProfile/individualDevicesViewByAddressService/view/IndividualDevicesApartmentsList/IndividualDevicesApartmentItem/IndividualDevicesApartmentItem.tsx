@@ -5,7 +5,7 @@ import {
   AdditionalHomeownersCountTextWrapper,
   AdditionalHomeownersCountWrapper,
   HomeownerNameWrapper,
-} from 'services/objects/objectProfileService/apartmentsListService/view/ApartmentsView/ApartmentsList/ApartmentItem/ApartmentItem.styled';
+} from 'services/objects/housingStockProfileService/apartmentsListService/view/ApartmentsView/ApartmentsList/ApartmentItem/ApartmentItem.styled';
 import {
   IndividualDevicesListContainer,
   individualDevicesListService,

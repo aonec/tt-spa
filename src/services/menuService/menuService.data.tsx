@@ -42,10 +42,16 @@ export const menuItems: MenuItem[] = [
     type: MenuType.ActsJournal,
   },
   {
+    title: 'Отключения ресурсов',
+    path: '/disabledResources',
+    icon: SettingsIcon,
+    type: MenuType.DisabledResourcesDispatcher,
+  },
+  {
     title: 'Объекты',
-    path: '/objects',
+    path: '/buildings',
     icon: ObjectsIcon,
-    type: MenuType.Objects,
+    type: MenuType.Buildings,
   },
   {
     title: 'Приборы',
@@ -101,7 +107,7 @@ export const menuItems: MenuItem[] = [
     : ([] as MenuItem[])),
   {
     title: 'Настройки',
-    path: '/settings/controllers',
+    path: '/settings/inspectors',
     icon: SettingsIcon,
     type: MenuType.Settings,
   },
@@ -121,6 +127,9 @@ export const privates: MenuFiltrationConfig = {
   [MenuType.Settings]: [ESecuredIdentityRoleName.SeniorOperator],
   [MenuType.CompanyProfile]: [ESecuredIdentityRoleName.Administrator],
   [MenuType.SettingsAdministrator]: [ESecuredIdentityRoleName.Administrator],
+  [MenuType.DisabledResourcesDispatcher]: [
+    ESecuredIdentityRoleName.ManagingFirmDispatcher,
+  ],
 };
 
 export const hidden: MenuFiltrationConfig = {
