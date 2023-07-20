@@ -1,4 +1,4 @@
-import { axios } from '01/axios';
+import { axios } from 'api/axios';
 import { CloseDeviceRequest } from 'myApi';
 
 export const closeDevice = (request: CloseDeviceRequest): Promise<void> => {

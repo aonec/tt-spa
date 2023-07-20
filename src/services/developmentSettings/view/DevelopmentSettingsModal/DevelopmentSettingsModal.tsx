@@ -1,7 +1,7 @@
 import React, { FC, useMemo } from 'react';
 import moment from 'moment';
 import stc from 'string-to-color';
-import { baseURL } from '01/axios';
+import { baseURL } from 'api/axios';
 import { FormModal } from 'ui-kit/Modals/FormModal';
 import { SettingsIcon } from 'ui-kit/icons';
 import { Input } from 'ui-kit/Input';

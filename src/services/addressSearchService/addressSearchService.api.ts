@@ -1,4 +1,4 @@
-import { axios } from '01/axios';
+import { axios } from 'api/axios';
 import { StringPagedList } from 'myApi';
 import queryString from 'query-string';
 import { GetExistingSteetRequestParams } from './addressSearchService.types';

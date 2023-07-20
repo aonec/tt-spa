@@ -3,7 +3,7 @@ import {
   IndividualDeviceReadingsCreateRequest,
   IndividualDeviceReadingsCreateListResponse,
 } from './../../myApi';
-import axios from '01/axios';
+import axios from 'api/axios';
 
 export const getReadingsHistory = (
   deviceId: number,

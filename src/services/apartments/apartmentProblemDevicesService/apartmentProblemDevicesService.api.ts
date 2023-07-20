@@ -1,4 +1,4 @@
-import { axios } from '01/axios';
+import { axios } from 'api/axios';
 import { GetProblemDevicesRequestPayload } from './apartmentProblemDevicesService.types';
 import { IndividualDeviceWithExpiredCheckingDateResponse } from 'myApi';
 import queryString from 'query-string';

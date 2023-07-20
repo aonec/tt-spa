@@ -1,4 +1,4 @@
-import { axios } from '01/axios';
+import { axios } from 'api/axios';
 import { downloadURI } from 'services/reports/CreateReportModal/utils';
 import { ExportSubscribersConsumptionPayload } from './exportSubscribersConsumptionService.types';
 

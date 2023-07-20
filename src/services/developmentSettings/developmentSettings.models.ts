@@ -1,7 +1,7 @@
 import { createDomain, createEvent } from 'effector';
 import { persist } from 'effector-storage/local';
 import { featureToggles } from 'featureToggles';
-import axios from '01/axios';
+import axios from 'api/axios';
 import { FeatureToggles } from './developmentSettings.types';
 
 const domain = createDomain('developmentSettings');

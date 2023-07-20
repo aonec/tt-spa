@@ -1,7 +1,7 @@
 import { EResourceTypeConsumptionRateResponseDictionaryItem } from 'myApi';
-import { axios } from '01/axios';
+import { axios } from 'api/axios';
 
 export const getConsuptionRates = (
-  managementFirmId: number
+  managementFirmId: number,
 ): Promise<EResourceTypeConsumptionRateResponseDictionaryItem[]> =>
   axios.get(`ManagingFirms/${managementFirmId}/ConsumptionRates`);

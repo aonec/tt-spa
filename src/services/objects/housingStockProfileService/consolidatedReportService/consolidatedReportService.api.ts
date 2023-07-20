@@ -1,5 +1,5 @@
 import queryString from 'query-string';
-import { axios } from '01/axios';
+import { axios } from 'api/axios';
 import { CalculatorIntoHousingStockResponse } from 'myApi';
 import { GetConsolidatedReport } from './consolidatedReportService.types';
 import { downloadURI } from 'services/reports/CreateReportModal/utils';

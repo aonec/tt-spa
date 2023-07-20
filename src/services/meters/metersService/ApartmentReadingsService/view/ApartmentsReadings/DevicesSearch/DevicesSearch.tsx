@@ -3,7 +3,7 @@ import { DateRangeContainer, Device } from './DevicesSearch.styled';
 import { DevicesSearchProps } from './DevicesSearch.types';
 import { NavLink } from 'react-router-dom';
 import { IndividualDeviceListItemResponse } from 'myApi';
-import axios from '01/axios';
+import axios from 'api/axios';
 import { DeviceDataString } from '01/features/individualDevices/switchIndividualDevice/components/DeviceDataString';
 import { Flex } from '01/shared/ui/Layout/Flex';
 import { Space } from '01/shared/ui/Layout/Space/Space';

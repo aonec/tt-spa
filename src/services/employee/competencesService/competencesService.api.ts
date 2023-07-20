@@ -1,4 +1,4 @@
-import { axios } from '01/axios';
+import { axios } from 'api/axios';
 import {
   ManagementFirmCompetenceResponse,
   ManagementFirmCompetencesListResponse,
@@ -8,7 +8,7 @@ export const getCompetencesCatalog = async (): Promise<
   ManagementFirmCompetenceResponse[] | null
 > => {
   const res: ManagementFirmCompetencesListResponse = await axios.get(
-    'OrganizationCompetences'
+    'OrganizationCompetences',
   );
   return res.competences;
 };

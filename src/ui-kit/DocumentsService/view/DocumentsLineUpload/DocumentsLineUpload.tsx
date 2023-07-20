@@ -13,7 +13,7 @@ import {
 } from './DocumentsLineUpload.styled';
 import { DocumentsLineUploadProps } from './DocumentsLineUpload.types';
 import { DocumentResponse } from 'myApi';
-import axios from '01/axios';
+import axios from 'api/axios';
 
 export const DocumentsLineUpload: FC<DocumentsLineUploadProps> = ({
   fileHandler,

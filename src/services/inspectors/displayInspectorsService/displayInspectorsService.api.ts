@@ -1,4 +1,4 @@
-import { axios } from '01/axios';
+import { axios } from 'api/axios';
 import { InspectorResponse } from 'myApi';
 
 export const getInspectors = (): Promise<InspectorResponse[] | null> =>

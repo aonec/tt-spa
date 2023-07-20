@@ -1,4 +1,4 @@
-import { axios } from '01/axios';
+import { axios } from 'api/axios';
 import { OrganizationResponse } from 'myApi';
 import { OrganizationUpdatePayload } from './editCompanyService.types';
 

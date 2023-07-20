@@ -1,4 +1,4 @@
-import { axios } from '01/axios';
+import { axios } from 'api/axios';
 import { CheckDeviceRequest } from 'myApi';
 
 export const postCheckDevice = (request: CheckDeviceRequest): Promise<void> => {

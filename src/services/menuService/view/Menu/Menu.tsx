@@ -3,7 +3,7 @@ import { ExitButton } from './ExitButton';
 import { MenuProps } from './Menu.types';
 import { MenuItemComponent } from './MenuItemComponent';
 import { DevSettingsButton, Footer } from './Menu.styled';
-import { isDevMode } from '01/axios';
+import { isDevMode } from 'api/axios';
 
 export const Menu: FC<MenuProps> = ({ menuItems, openDevSettingsModal }) => {
   return (

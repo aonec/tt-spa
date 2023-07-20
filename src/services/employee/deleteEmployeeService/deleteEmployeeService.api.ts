@@ -1,7 +1,7 @@
-import { axios } from '01/axios';
+import { axios } from 'api/axios';
 import { OrganizationUserResponse } from 'myApi';
 
 export const deleteManagingFirmUser = (
-  id: number
+  id: number,
 ): Promise<OrganizationUserResponse | null> =>
   axios.post(`OrganizationUsers/${id}/suspend`);

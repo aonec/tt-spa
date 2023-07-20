@@ -4,7 +4,7 @@ import { loginService } from './loginService.model';
 import { useEvent, useStore } from 'effector-react';
 import { useHistory, useLocation } from 'react-router-dom';
 import { parse } from 'query-string';
-import { isDevMode } from '01/axios';
+import { isDevMode } from 'api/axios';
 
 const { inputs, outputs } = loginService;
 
