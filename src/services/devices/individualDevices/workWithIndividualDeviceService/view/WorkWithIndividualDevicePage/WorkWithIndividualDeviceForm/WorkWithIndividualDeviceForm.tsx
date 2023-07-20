@@ -27,7 +27,7 @@ import { Loader } from 'ui-kit/Loader';
 import { AutoComplete } from 'ui-kit/AutoComplete';
 import { WorkWithIndividualDeviceInputs } from './WorkWithIndividualDeviceInputs';
 import { Form } from 'antd';
-import { SpaceLine } from '01/shared/ui/Layout/Space/Space';
+import { SpaceLine } from 'ui-kit/SpaceLine';
 import {
   NewIndividualDeviceTitleLookup,
   OldIndividualDeviceTitleLookup,

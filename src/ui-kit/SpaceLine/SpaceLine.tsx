@@ -1,6 +1,6 @@
 import React, { ReactNode } from 'react';
 import styled from 'styled-components';
-import { Flex } from '../Flex';
+import { Flex } from '../../01/shared/ui/Layout/Flex';
 
 interface Props {
   w?: number;

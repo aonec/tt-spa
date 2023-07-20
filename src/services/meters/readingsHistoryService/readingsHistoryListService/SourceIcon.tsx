@@ -1,10 +1,8 @@
 import React from 'react';
-import { Flex } from '01/shared/ui/Layout/Flex';
 import {
   EIndividualDeviceReadingsSource,
   OrganizationUserShortResponse,
 } from 'api/types';
-import { Space } from '01/shared/ui/Layout/Space/Space';
 import {
   TelegramIcon,
   DeviceIcon,
@@ -62,14 +60,9 @@ export const SourceName = ({
   const name = getSourceName(sourceType, userName);
 
   return (
-    <Flex>
-      {icon && (
-        <>
-          {icon}
-          <Space />
-        </>
-      )}
+    <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+      {icon}
       {name}
-    </Flex>
+    </div>
   );
 };

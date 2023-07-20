@@ -26,7 +26,7 @@ import { FormItem } from 'ui-kit/FormItem';
 import { Input } from 'ui-kit/Input';
 import { Select } from 'ui-kit/Select';
 import { RangePicker } from 'ui-kit/RangePicker';
-import { SpaceLine } from '01/shared/ui/Layout/Space/Space';
+import { SpaceLine } from 'ui-kit/SpaceLine';
 import { getDatePeriod } from './ConsumptionReportCalculatorForm.utils';
 import { ErrorMessage } from 'ui-kit/ErrorMessage';
 import { GetCalculatorReportParams } from 'services/calculators/consumptionReportCalculatorService/consumptionReportCalculatorService.types';

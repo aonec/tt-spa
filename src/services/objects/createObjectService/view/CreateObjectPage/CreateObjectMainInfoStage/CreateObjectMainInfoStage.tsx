@@ -1,4 +1,4 @@
-import { SpaceLine } from '01/shared/ui/Layout/Space/Space';
+import { SpaceLine } from 'ui-kit/SpaceLine';
 import React, { FC, useEffect, useMemo } from 'react';
 import { Button } from 'ui-kit/Button';
 import { FormItem } from 'ui-kit/FormItem';

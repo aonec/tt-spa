@@ -2,7 +2,7 @@ import React, { FC, useEffect, useState } from 'react';
 import { InputReadingsProps, Reading } from './InputReadings.types';
 import { useStore } from 'effector-react';
 import { IndividualDeviceOnTaskResponse } from 'api/types';
-import { SpaceLine } from '01/shared/ui/Layout/Space/Space';
+import { SpaceLine } from 'ui-kit/SpaceLine';
 import { Flex } from '01/shared/ui/Layout/Flex';
 import { getReadingMonth } from './InputReadings.utils';
 import { MonthWrapper, ReadingInputSC } from './InputReadings.styled';

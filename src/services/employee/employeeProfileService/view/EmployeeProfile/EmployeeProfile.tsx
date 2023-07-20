@@ -1,4 +1,4 @@
-import { SpaceLine } from '01/shared/ui/Layout/Space/Space';
+import { SpaceLine } from 'ui-kit/SpaceLine';
 import { Tooltip } from 'antd';
 import moment from 'moment';
 import React, { FC, useState } from 'react';

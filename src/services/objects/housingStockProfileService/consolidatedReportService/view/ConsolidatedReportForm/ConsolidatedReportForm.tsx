@@ -10,7 +10,7 @@ import {
   DatePeriod,
 } from './ConsolidatedReportForm.types';
 import { PeriodSelection } from './ConsolidatedReportForm.styled';
-import { SpaceLine } from '01/shared/ui/Layout/Space/Space';
+import { SpaceLine } from 'ui-kit/SpaceLine';
 import { RangePicker } from 'ui-kit/RangePicker';
 import { getBuildingAddress } from 'utils/getBuildingAddress';
 import { getDatePeriod } from './ConsolidatedReportForm.utils';

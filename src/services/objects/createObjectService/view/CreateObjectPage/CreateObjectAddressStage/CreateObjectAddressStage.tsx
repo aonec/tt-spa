@@ -1,4 +1,4 @@
-import { SpaceLine } from '01/shared/ui/Layout/Space/Space';
+import { SpaceLine } from 'ui-kit/SpaceLine';
 import { useFormik } from 'formik';
 import React, { FC } from 'react';
 import { AutoComplete } from 'ui-kit/AutoComplete';

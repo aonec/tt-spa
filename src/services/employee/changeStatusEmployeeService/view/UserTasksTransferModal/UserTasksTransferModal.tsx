@@ -6,7 +6,7 @@ import {
 import { FormModal } from 'ui-kit/Modals/FormModal';
 import { Select } from 'ui-kit/Select';
 import { TasksListPanel } from './TasksListPanel';
-import { SpaceLine } from '01/shared/ui/Layout/Space/Space';
+import { SpaceLine } from 'ui-kit/SpaceLine';
 import { Input } from 'ui-kit/Input';
 import { SearchIcon } from 'ui-kit/icons';
 import {

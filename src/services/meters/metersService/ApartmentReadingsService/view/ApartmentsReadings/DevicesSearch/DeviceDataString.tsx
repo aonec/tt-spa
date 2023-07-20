@@ -2,7 +2,6 @@ import React from 'react';
 import { useStore } from 'effector-react';
 import { EIndividualDeviceRateType, EResourceType } from 'api/types';
 import styled from 'styled-components';
-import { Spaces } from '01/shared/ui/Layout/Space/Space';
 import { ResourceIconLookup } from 'ui-kit/shared/ResourceIconLookup';
 import { getInputBorderColor } from 'services/meters/individualDeviceMetersInputService/view/MetersInputsBlock/MetersInputsBlock.styled';
 import { displayIndividualDeviceAndNamesService } from 'services/devices/individualDevices/displayIndividualDeviceAndNamesService/displayIndividualDeviceAndNamesService.model';
@@ -33,13 +32,13 @@ export const DeviceDataString: React.FC<Props> = ({
   if (!device) return null;
 
   return (
-    <Spaces flex spaceStyles={{ width: 4 }}>
+    <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
       {device?.resource && <ResourceIconLookup resource={device?.resource} />}
       {device.serialNumber && (
         <DeviceSerialNumber>{device.serialNumber}</DeviceSerialNumber>
       )}
       <DeviceName>{device.model}</DeviceName>
-    </Spaces>
+    </div>
   );
 };
 

@@ -5,7 +5,6 @@ import {
   StopIcon,
   WarningIcon,
 } from 'ui-kit/icons';
-import { Space } from '../../01/shared/ui/Layout/Space/Space';
 import { AlertWrap, IconWrapper, Wide } from './Alert.styled';
 import {
   AlertColorLookup,
@@ -34,7 +33,6 @@ export const Alert: React.FC<AlertProps> = ({
       <IconWrapper color={color}>
         <Icon />
       </IconWrapper>
-      <Space />
       <Wide>{children}</Wide>
     </AlertWrap>
   );

@@ -1,4 +1,4 @@
-import { SpaceLine } from '01/shared/ui/Layout/Space/Space';
+import { SpaceLine } from 'ui-kit/SpaceLine';
 import { Popover } from 'antd';
 import styled from 'styled-components';
 import React from 'react';

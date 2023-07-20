@@ -1,5 +1,5 @@
 import { form } from 'services/reports/CreateReportModal/models';
-import { SpaceLine } from '01/shared/ui/Layout/Space/Space';
+import { SpaceLine } from 'ui-kit/SpaceLine';
 import { Checkbox } from 'antd';
 import { useForm } from 'effector-forms';
 import { EClosingReason } from 'api/types';

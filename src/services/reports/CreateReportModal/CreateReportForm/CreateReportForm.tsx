@@ -1,4 +1,3 @@
-import { Space } from '01/shared/ui/Layout/Space/Space';
 import FormItem from 'antd/lib/form/FormItem';
 import { SelectValue } from 'antd/lib/select';
 import React, { FC, useCallback } from 'react';
@@ -30,8 +29,9 @@ export const CreateReportForm: FC<Props> = ({ type, setType }) => {
             </Select.Option>
           ))}
         </Select>
-        <Space />
-        <ReportFormInputsContainer />
+        <div style={{ marginTop: '16px' }}>
+          <ReportFormInputsContainer />
+        </div>
       </FormItem>
     </>
   );

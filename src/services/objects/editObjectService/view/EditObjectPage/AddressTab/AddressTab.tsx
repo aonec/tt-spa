@@ -18,7 +18,7 @@ import { getPreparedStreetsOptions } from 'services/objects/createObjectService/
 import { FormItem } from 'ui-kit/FormItem';
 import { Select } from 'ui-kit/Select';
 import { Input } from 'ui-kit/Input';
-import { SpaceLine } from '01/shared/ui/Layout/Space/Space';
+import { SpaceLine } from 'ui-kit/SpaceLine';
 import { LinkButton } from 'ui-kit/shared/LinkButton';
 import { Button } from 'ui-kit/Button';
 import { ErrorMessage } from 'ui-kit/ErrorMessage';
