@@ -7,7 +7,6 @@ import { ESecuredIdentityRoleName } from 'api/types';
 import { HistoryIcon, StarIcon } from 'ui-kit/icons';
 import { deleteIndividualDeviceService } from 'services/devices/individualDevices/deleteIndividualDevice/deleteIndividualDeviceService.models';
 import { ContextMenuButton } from 'ui-kit/ContextMenuButton/ContextMenuButton';
-import { reopenIndividualDevice } from '01/_api/individualDevices';
 import { getMeasurementUnit } from '../../individualDeviceMetersInputService.utils';
 import { MetersInputsBlock } from '../MetersInputsBlock';
 import { getRateNum } from '../MetersInputsBlock/MetersInputsBlock.utils';
@@ -27,6 +26,7 @@ import {
   ContextMenuElement,
 } from 'ui-kit/ContextMenuButton/ContextMenuButton.types';
 import { closeIndividualDeviceService } from 'services/devices/individualDevices/closeIndividualDeviceService';
+import { reopenIndividualDevice } from '../../individualDeviceMetersInputService.api';
 
 export const IndividualDeviceMetersInputLine: FC<
   IndividualDeviceMetersInputLineProps

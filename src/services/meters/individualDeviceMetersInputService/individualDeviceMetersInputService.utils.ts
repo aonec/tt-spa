@@ -1,4 +1,4 @@
-import { EResourceType } from '../../../api/types';
+import { EResourceType } from 'api/types';
 import moment from 'moment';
 import {
   IndividualDeviceReadingsResponse,
