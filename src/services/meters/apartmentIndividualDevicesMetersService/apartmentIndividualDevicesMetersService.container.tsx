@@ -1,14 +1,14 @@
 import React, { FC } from 'react';
 import { useEvent, useStore } from 'effector-react';
+import { ReadingsHistoryContainer } from 'services/meters/readingsHistoryService/readingsHistoryService.container';
 import { DeleteIndividualDeviceModalContainer } from 'services/devices/individualDevices/deleteIndividualDevice/DeleteIndividualDeviceModalContainer';
-import { ReadingsHistoryModal } from '01/features/readings/displayReadingHistory/ReadingsHistoryModal';
-import { ConfirmReadingValueModal } from '01/features/readings/readingsInput/confirmInputReadingModal';
 import { apartmentIndividualDevicesMetersService } from './apartmentIndividualDevicesMetersService.model';
 import { ApartmentIndividualDevicesMeters } from './view/ApartmentIndividualDevicesMeters';
 import { useManagingFirmConsumptionRates } from '../managementFirmConsumptionRatesService';
 import { Params } from './apartmentIndividualDevicesMetersService.types';
 import { EditReadingsHistoryContainer } from '../editReadingsHistoryService';
 import { CloseIndividualDeviceContainer } from 'services/devices/individualDevices/closeIndividualDeviceService';
+import { ConfirmReadingValueContainer } from '../readingsHistoryService/confirmReadingService';
 
 const {
   inputs,
@@ -49,9 +49,9 @@ export const ApartmentIndividualDevicesMetersContainer: FC<Params> = ({
       {apartmentId && (
         <IndividualDevicesGate ApartmentId={Number(apartmentId)} />
       )}
-      <ReadingsHistoryModal />
+      <ReadingsHistoryContainer />
       <CloseIndividualDeviceContainer />
-      <ConfirmReadingValueModal />
+      <ConfirmReadingValueContainer />
       <EditReadingsHistoryContainer />
       <DeleteIndividualDeviceModalContainer />
       <ApartmentIndividualDevicesMeters

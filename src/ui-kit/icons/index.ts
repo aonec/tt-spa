@@ -76,6 +76,12 @@ import { ReactComponent as PlusSmallIcon } from './svg/plusSmall.svg';
 import { ReactComponent as FileIcon } from './svg/file.svg';
 import { ReactComponent as DownloadBlueIcon } from './svg/downloadBlue.svg';
 import { ReactComponent as DocumentLargeIcon } from './svg/documentLarge.svg';
+import { ReactComponent as ErcIcon } from './svg/erc.svg';
+import { ReactComponent as GosUslugiIcon } from './svg/gosuslugi.svg';
+import { ReactComponent as BankIcon } from './svg/bank.svg';
+import { ReactComponent as ArchiveIcon } from './svg/archive.svg';
+import { ReactComponent as ArrowIconTop } from './svg/arrow.svg';
+import { ReactComponent as ArrowBottom } from './svg/arrowBottom.svg';
 import { ReactComponent as FilterIcon } from './svg/filterIcon.svg';
 import { ReactComponent as FilterIconBlue } from './svg/filterIconBlue.svg';
 import { ReactComponent as FilterIconTransparent } from './svg/filterIconTransparent.svg';
@@ -160,6 +166,12 @@ export {
   FileIcon,
   DownloadBlueIcon,
   DocumentLargeIcon,
+  ErcIcon,
+  GosUslugiIcon,
+  BankIcon,
+  ArchiveIcon,
+  ArrowIconTop,
+  ArrowBottom,
   FilterIcon,
   FilterIconBlue,
   FilterIconTransparent,

@@ -1,8 +1,4 @@
-import {
-  closeReadingsHistoryModal,
-  openReadingsHistoryModal,
-} from './../../../01/features/readings/displayReadingHistory/models/index';
-import { combine, createDomain, forward, guard } from 'effector';
+import { combine, createDomain, guard, sample } from 'effector';
 import { createGate } from 'effector-react';
 import {
   IndividualDeviceListItemResponse,
@@ -12,6 +8,7 @@ import { getIndividualDevices } from './apartmentIndividualDevicesMetersService.
 import { PREVIOUS_READING_INDEX_LIMIT } from './apartmentIndividualDevicesMetersService.constants';
 import { GetIndividualDevicesParams } from './apartmentIndividualDevicesMetersService.types';
 import { managementFirmConsumptionRatesService } from '../managementFirmConsumptionRatesService';
+import { readingsHistoryService } from '../readingsHistoryService/readingsHistoryService.model';
 
 const domain = createDomain('apartmentIndividualDevicesMetersService');
 
@@ -77,11 +74,6 @@ guard({
   target: fetchIndividualDevicesFx,
 });
 
-forward({
-  from: closeReadingsHistoryModal,
-  to: refetchIndividualDevices,
-});
-
 $isShowClosedIndividualDevices.on(setIsShowClosedDevices, (_, value) => value);
 
 $sliderIndex
@@ -96,13 +88,24 @@ $sliderIndex
     return --index;
   });
 
+sample({
+  clock: readingsHistoryService.gates.ReadingHistoryGate.close,
+  target: refetchIndividualDevices,
+});
+
+sample({
+  clock: readingsHistoryService.inputs.closeReadingsHistoryModal,
+  target: refetchIndividualDevices,
+});
+
 export const apartmentIndividualDevicesMetersService = {
   inputs: {
     refetchIndividualDevices,
     setIsShowClosedDevices,
     upSliderIndex,
     downSliderIndex,
-    openReadingsHistoryModal,
+    openReadingsHistoryModal:
+      readingsHistoryService.inputs.openReadingsHistoryModal,
     loadConsumptionRates:
       managementFirmConsumptionRatesService.inputs
         .loadManagemenFirmConsumptionRates,
