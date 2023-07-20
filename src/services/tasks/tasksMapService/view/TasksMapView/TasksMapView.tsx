@@ -19,6 +19,7 @@ export const TasksMapView: FC<TasksMapViewProps> = ({
   isLoadingTask,
   clearTask,
   organizationUsers,
+  organizationCoordinates,
 }) => {
   return (
     <Wrapper>
@@ -40,6 +41,7 @@ export const TasksMapView: FC<TasksMapViewProps> = ({
         buildingsWithTasks={housingStocksWithTasks}
         handleClickMarker={handleClickMarker}
         selectedHousingStockId={selectedHousingStock?.building?.id}
+        organizationCoordinates={organizationCoordinates}
       />
     </Wrapper>
   );

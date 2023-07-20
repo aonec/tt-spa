@@ -27,8 +27,9 @@ export const CreateDistrictBorderMapPage: FC<Props> = ({
   existingDistricts,
   handleCreateDistrict,
   preselectedDistrictPayload,
+  organizationCoordinates,
 }) => {
-  const { map, mapRef } = useYMaps();
+  const { map, mapRef } = useYMaps(organizationCoordinates);
 
   const { fields } = useForm(forms.createDistrictForm);
 
