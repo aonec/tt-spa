@@ -103,3 +103,11 @@ sample({
   clock: resourceConsumptionService.gates.ResourceConsumptionGate.close,
   target: resourceConsumptionFilterService.inputs.clearFilter,
 });
+
+sample({
+  clock:
+    resourceConsumptionFilterService.outputs
+      .$isResourceConsumptionAddressLoading,
+  target:
+    resourceConsumptionService.inputs.setResourceConsumptionAddressLoading,
+});

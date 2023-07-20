@@ -18,9 +18,6 @@ const domain = createDomain('resourceConsumptionFilterService');
 
 const clearFilter = domain.createEvent();
 
-const setResourceConsumptionAddressLoading =
-  resourceConsumptionService.inputs.setResourceConsumptionAddressLoading;
-
 const getAddressesFx = domain.createEffect<
   string,
   HouseManagementWithStreetsResponse[]
@@ -107,11 +104,6 @@ sample({
 });
 
 const $isResourceConsumptionAddressLoading = getAddressesFx.pending;
-
-sample({
-  clock: $isResourceConsumptionAddressLoading,
-  target: setResourceConsumptionAddressLoading,
-});
 
 export const resourceConsumptionFilterService = {
   inputs: {
