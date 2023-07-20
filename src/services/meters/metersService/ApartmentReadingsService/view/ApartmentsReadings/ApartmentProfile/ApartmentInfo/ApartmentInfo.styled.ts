@@ -135,7 +135,6 @@ export const PersonalNumberHeaderWrapper = styled.div`
   align-items: center;
   margin-bottom: 10px;
   gap: 10px;
-
 `;
 
 export const Comment = styled.div`
@@ -193,4 +192,25 @@ export const AdditionalHeaderInfoWrapper = styled.div`
   display: flex;
   align-items: center;
   gap: 8px;
+`;
+
+export const MainText = styled.div`
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 22px;
+`;
+
+export const HomeownerNumber = styled.span`
+  padding-right: 4px;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 22px;
+`;
+
+export const SubText = styled.div`
+  font-size: 14px;
+  font-weight: 300;
+  line-height: 22px;
+
+  margin-top: 10px;
 `;

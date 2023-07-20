@@ -17,14 +17,17 @@ import {
   FirmWrapper,
   FirmsLine,
   Header,
+  HomeownerNumber,
   InfoPanel,
   InfoPanelLabel,
+  MainText,
   ManagementFirmInfo,
   PencilIconSC,
   PersonalNumberHeader,
   PersonalNumberHeaderWrapper,
   PersonalNumberPanel,
   PersonalNumbersWrapper,
+  SubText,
   TextareaSC,
 } from './ApartmentInfo.styled';
 import { ApartmentInfoProps } from './ApartmentInfo.types';
@@ -230,7 +233,32 @@ export const ApartmentInfo: FC<ApartmentInfoProps> = ({
               <div>
                 <PersonalNumberHeaderWrapper>
                   <PersonalNumberHeader>Лицевой счет</PersonalNumberHeader>
-                  <InfoIcon />
+                  {Boolean(selectedHomeowner?.editedAt) && (
+                    <Tooltip
+                      title={
+                        <div>
+                          <MainText>
+                            {selectedHomeowner?.isMainPersonalAccountNumber
+                              ? ' Основной лицевой счёт '
+                              : 'Лицевой счёт '}
+                            <HomeownerNumber>
+                              {selectedHomeowner?.personalAccountNumber}
+                            </HomeownerNumber>
+                            ({selectedHomeowner?.name}) был отредактирован.
+                          </MainText>
+
+                          <SubText>
+                            Дата изменения:{' '}
+                            {moment(selectedHomeowner?.editedAt).format(
+                              'DD.MM.YYYY',
+                            )}
+                          </SubText>
+                        </div>
+                      }
+                    >
+                      <InfoIcon />
+                    </Tooltip>
+                  )}
                 </PersonalNumberHeaderWrapper>
                 <ExtraInfoText>
                   {selectedHomeowner?.personalAccountNumber}{' '}
