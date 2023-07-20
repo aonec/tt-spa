@@ -20,6 +20,7 @@ const openDevSettingsModal = domain.createEvent();
 const closeDevSettingsModal = createEvent();
 
 const toggleFeature = domain.createEvent<string>();
+const resetFeatureToggles = domain.createEvent();
 
 const setDevUrl = domain.createEvent<string>();
 
@@ -28,7 +29,8 @@ const $featureToggles = domain
   .on(toggleFeature, (prev, feature) => ({
     ...prev,
     [feature]: !prev[feature],
-  }));
+  }))
+  .on(resetFeatureToggles, () => ({ ...featureToggles }));
 
 persist({ store: $featureToggles, key: 'featureToggles' });
 
@@ -52,6 +54,7 @@ export const developmentSettingsService = {
     closeDevSettingsModal,
     setDevUrl,
     toggleFeature,
+    resetFeatureToggles,
   },
   outputs: {
     $isDevSettingsModalOpen,

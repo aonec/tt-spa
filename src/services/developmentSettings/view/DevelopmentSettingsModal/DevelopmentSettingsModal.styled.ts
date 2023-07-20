@@ -18,11 +18,25 @@ export const FeatureTogglesWrapper = styled.div`
 `;
 
 export const FeatureToggle = styled.div<{ color: string; isActive: boolean }>`
+  display: flex;
+  align-items: center;
+  gap: 8px;
   cursor: pointer;
   border: 1px solid ${({ color }) => color};
-  background: ${({ isActive, color }) => (isActive ? color : 'white')};
+  background: ${({ isActive, color }) => `${color}${isActive ? 'cc' : '22'}`};
   color: ${({ isActive, color }) => (!isActive ? color : 'white')};
   padding: 2px 16px;
-  border-radius: 16px;
+  border-radius: 4px;
   font-weight: bold;
+  transition: 0.2s;
+
+  svg {
+    path {
+      fill: ${({ isActive, color }) => (!isActive ? color : 'white')};
+    }
+  }
+
+  &:hover {
+    background: ${({ color, isActive }) => (isActive ? color : 'white')};
+  }
 `;

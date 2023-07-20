@@ -24,6 +24,7 @@ export const DevelopmentSettingsModal: FC<DevelopmentSettingsModalProps> = ({
   setDevUrl,
   featureToggles,
   toggleFeature,
+  resetFeatureToggles,
 }) => {
   const featuresArray = useMemo(
     () => Object.entries(featureToggles),
@@ -65,23 +66,33 @@ export const DevelopmentSettingsModal: FC<DevelopmentSettingsModalProps> = ({
               </Button>
             </DevUrlInputWrapper>
           </FormItem>
-          <FormItem label="Feature toggles">
-            <FeatureTogglesWrapper>
-              {featuresArray.map(([key, isActive]) => {
-                const color = stc(key);
+          {Boolean(featuresArray.length) && (
+            <FormItem label="Feature toggles">
+              <FeatureTogglesWrapper>
+                {featuresArray.map(([key, isActive]) => {
+                  const color = stc(key + 'c');
 
-                return (
-                  <FeatureToggle
-                    onClick={() => toggleFeature(key)}
-                    color={color}
-                    isActive={isActive}
-                  >
-                    {key}
-                  </FeatureToggle>
-                );
-              })}
-            </FeatureTogglesWrapper>
-          </FormItem>
+                  return (
+                    <FeatureToggle
+                      onClick={() => toggleFeature(key)}
+                      color={color}
+                      isActive={isActive}
+                    >
+                      {key}
+                    </FeatureToggle>
+                  );
+                })}
+                <FeatureToggle
+                  onClick={resetFeatureToggles}
+                  isActive
+                  color="#000000"
+                >
+                  <SettingsIcon />
+                  reset
+                </FeatureToggle>
+              </FeatureTogglesWrapper>
+            </FormItem>
+          )}
           <Badge>TT frontend team {moment().format('YYYY')} [ver: 1.1.0]</Badge>
         </>
       }

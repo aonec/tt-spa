@@ -13,6 +13,7 @@ export const DevSettingsModal = () => {
     setDevUrl,
     featureToggles,
     toggleFeature,
+    resetFeatureToggles,
   } = useUnit({
     visible: outputs.$isDevSettingsModalOpen,
     devUrl: outputs.$devUrl,
@@ -20,6 +21,7 @@ export const DevSettingsModal = () => {
     closeDevSettingsModal: inputs.closeDevSettingsModal,
     setDevUrl: inputs.setDevUrl,
     toggleFeature: inputs.toggleFeature,
+    resetFeatureToggles: inputs.resetFeatureToggles,
   });
 
   return (
@@ -30,6 +32,7 @@ export const DevSettingsModal = () => {
       setDevUrl={setDevUrl}
       featureToggles={featureToggles}
       toggleFeature={toggleFeature}
+      resetFeatureToggles={resetFeatureToggles}
     />
   );
 };

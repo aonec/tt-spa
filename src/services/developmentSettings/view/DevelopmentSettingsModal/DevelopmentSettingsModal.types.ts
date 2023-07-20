@@ -7,4 +7,5 @@ export type DevelopmentSettingsModalProps = {
   devUrl: string;
   featureToggles: FeatureToggles;
   toggleFeature: (feature: string) => void;
+  resetFeatureToggles: () => void;
 };
