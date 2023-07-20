@@ -4,7 +4,6 @@ import { DevicesSearchProps } from './DevicesSearch.types';
 import { NavLink } from 'react-router-dom';
 import { IndividualDeviceListItemResponse } from 'api/types';
 import axios from 'api/axios';
-import { DeviceDataString } from '01/features/individualDevices/switchIndividualDevice/components/DeviceDataString';
 import { Flex } from '01/shared/ui/Layout/Flex';
 import { Space } from '01/shared/ui/Layout/Space/Space';
 import { CancelTokenSource } from 'axios';
@@ -13,6 +12,7 @@ import { WithLoader } from 'ui-kit/shared/WithLoader';
 import { AutoComplete } from 'ui-kit/AutoComplete';
 import { DateRange } from 'ui-kit/shared/DateRange';
 import { individualDeviceMountPlacesService } from 'services/devices/individualDeviceMountPlacesService/individualDeviceMountPlacesService.model';
+import { DeviceDataString } from './DeviceDataString';
 
 const { AllIndividualDeviceMountPlacesGate } =
   individualDeviceMountPlacesService.gates;

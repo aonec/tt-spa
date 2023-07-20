@@ -1,4 +1,4 @@
-import { getResourceColor } from '01/features/individualDevices/switchIndividualDevice/components/DeviceDataString';
+import { getResourceColor } from 'services/meters/metersService/ApartmentReadingsService/view/ApartmentsReadings/DevicesSearch/DeviceDataString';
 import { EResourceType } from 'api/types';
 import styled from 'styled-components';
 

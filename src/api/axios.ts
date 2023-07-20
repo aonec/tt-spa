@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { createEvent, createStore } from 'effector';
-import { forbiddenList } from '../01/403handling';
+import { forbiddenList } from '../utils/403handling';
 import { message } from 'antd';
 
 export const devUrl = 'https://stage.k8s.transparent-technology.ru/api/';

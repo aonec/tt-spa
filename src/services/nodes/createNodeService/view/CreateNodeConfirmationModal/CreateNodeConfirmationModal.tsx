@@ -1,5 +1,4 @@
 import React, { FC, useMemo } from 'react';
-import { StyledModal } from '01/shared/ui/Modal/Modal';
 import { Header } from 'ui-kit/Modals/FormModal/FormModal.styled';
 import {
   AddressText,
@@ -16,6 +15,7 @@ import {
   NodeResourceInfo,
   StepTitle,
   StepWrapper,
+  StyledModal,
 } from './CreateNodeConfirmationModal.styled';
 import { CreateNodeConfirmationModalProps } from './CreateNodeConfirmationModal.types';
 import { Button } from 'ui-kit/Button';
