@@ -65,13 +65,13 @@ export const EditHomeownerField: FC<EditHomeownerFieldProps> = ({
   };
 
   useEffect(() => {
-    if ((fieldType = FieldType.Name)) {
+    if ((fieldType === FieldType.Name)) {
       handleHomeownerUpdated?.watch((updatedData) => {
         setFieldCurrentValue(updatedData.name);
         setIsEditing(false);
       });
     }
-    if ((fieldType = FieldType.PhoneNumber)) {
+    if ((fieldType === FieldType.PhoneNumber)) {
       handleHomeownerUpdated?.watch((updatedData) => {
         setFieldCurrentValue(updatedData.phoneNumber);
         setIsEditing(false);
