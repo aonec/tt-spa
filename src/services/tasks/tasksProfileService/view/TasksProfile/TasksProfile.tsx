@@ -14,14 +14,15 @@ import {
   Flex,
   ButtonSC,
 } from './TasksProfile.styled';
-import { TasksPageSegment, TasksProfileProps } from './TasksProfile.types';
+import { useUnit } from 'effector-react';
+import { Empty } from 'antd';
+import { TaskGroupingFilter } from 'myApi';
 import { Segmented } from 'ui-kit/Segmented';
 import { ListIcon, MapIcon, PlusSmallIcon } from 'ui-kit/icons';
 import { TasksMapContainer } from 'services/tasks/tasksMapService';
-import { Empty } from 'antd';
 import { WithLoader } from 'ui-kit/shared_components/WithLoader';
-import { TaskGroupingFilter } from 'myApi';
-import { featureToggles } from 'featureToggles';
+import { developmentSettingsService } from 'services/developmentSettings/developmentSettings.models';
+import { TasksPageSegment, TasksProfileProps } from './TasksProfile.types';
 
 const { TabPane } = TabsSC;
 
@@ -48,6 +49,10 @@ export const TasksProfile: FC<TasksProfileProps> = ({
   handleOpenAddTaskModal,
   isPermissionToAddTask,
 }) => {
+  const { featureToggles } = useUnit({
+    featureToggles: developmentSettingsService.outputs.$featureToggles,
+  });
+
   const history = useHistory();
   const { executingTasksCount, observingTasksCount, totalItems } =
     pagedTasks || {};

@@ -1,16 +1,12 @@
-import { devUrl } from '01/axios';
 import React, { useEffect } from 'react';
 import { LoginPage } from './view/LoginPage';
 import { loginService } from './loginService.model';
 import { useEvent, useStore } from 'effector-react';
 import { useHistory, useLocation } from 'react-router-dom';
 import { parse } from 'query-string';
+import { isDevMode } from '01/axios';
 
 const { inputs, outputs } = loginService;
-
-const isDevMode =
-  process.env.NODE_ENV === 'development' ||
-  process.env.REACT_APP_API_URL === devUrl;
 
 export const LoginContainer = () => {
   const handlePostLogin = useEvent(inputs.handlePostLogin);

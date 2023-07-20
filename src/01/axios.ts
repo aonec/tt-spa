@@ -7,6 +7,10 @@ export const devUrl = 'https://stage.k8s.transparent-technology.ru/api/';
 
 export const baseURL = process.env.REACT_APP_API_URL || devUrl;
 
+export const isDevMode =
+  process.env.NODE_ENV === 'development' ||
+  process.env.REACT_APP_API_URL === devUrl;
+
 axios.defaults.baseURL = baseURL;
 
 axios.interceptors.request.use((req) => {
@@ -61,7 +65,8 @@ axios.interceptors.response.use(
     }
 
     if (status === 401 && checkUrl('refresh', error.config.url)) {
-      localStorage.clear();
+      localStorage.removeItem('token');
+      localStorage.removeItem('refreshToken');
       window.location.replace('/login');
       return;
     }
