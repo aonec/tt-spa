@@ -107,7 +107,7 @@ export const menuItems: MenuItem[] = [
     : ([] as MenuItem[])),
   {
     title: 'Настройки',
-    path: '/settings/controllers',
+    path: '/settings/inspectors',
     icon: SettingsIcon,
     type: MenuType.Settings,
   },
