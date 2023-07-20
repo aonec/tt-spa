@@ -3,6 +3,7 @@ import { ExitButton } from './ExitButton';
 import { MenuProps } from './Menu.types';
 import { MenuItemComponent } from './MenuItemComponent';
 import { DevSettingsButton, Footer } from './Menu.styled';
+import { isDevMode } from '01/axios';
 
 export const Menu: FC<MenuProps> = ({ menuItems, openDevSettingsModal }) => {
   return (
@@ -14,9 +15,11 @@ export const Menu: FC<MenuProps> = ({ menuItems, openDevSettingsModal }) => {
       </div>
       <Footer>
         <ExitButton />
-        <DevSettingsButton onClick={openDevSettingsModal}>
-          🛠️ dev
-        </DevSettingsButton>
+        {isDevMode && (
+          <DevSettingsButton onClick={openDevSettingsModal}>
+            🛠️ dev
+          </DevSettingsButton>
+        )}
       </Footer>
     </div>
   );
