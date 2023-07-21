@@ -38,39 +38,39 @@ export const DevelopmentSettingsModal: FC<DevelopmentSettingsModalProps> = ({
       form={
         <>
           {!isAuth && (
-            <>
-              <FormItem label="URL's list">
-                <Select
-                  small
-                  placeholder="Select url"
-                  value={urls.find((elem) => elem === devUrl)}
-                  onChange={(value) => setDevUrl(value as string)}
-                >
-                  {urls.map((elem) => (
-                    <Select.Option key={elem} value={elem}>
-                      {elem}
-                    </Select.Option>
-                  ))}
-                </Select>
-              </FormItem>
-              <FormItem label="URL">
-                <DevUrlInputWrapper>
-                  <Input
-                    small
-                    value={devUrl}
-                    onChange={(e) => setDevUrl(e.target.value)}
-                  />
-                  <Button
-                    size="small"
-                    icon={<SettingsIcon />}
-                    onClick={() => setDevUrl(baseURL)}
-                  >
-                    Reset
-                  </Button>
-                </DevUrlInputWrapper>
-              </FormItem>
-            </>
+            <FormItem label="URL's list">
+              <Select
+                small
+                placeholder="Select url"
+                value={urls.find((elem) => elem === devUrl)}
+                onChange={(value) => setDevUrl(value as string)}
+              >
+                {urls.map((elem) => (
+                  <Select.Option key={elem} value={elem}>
+                    {elem}
+                  </Select.Option>
+                ))}
+              </Select>
+            </FormItem>
           )}
+          <FormItem label="URL">
+            <DevUrlInputWrapper>
+              <Input
+                small
+                value={devUrl}
+                onChange={(e) => setDevUrl(e.target.value)}
+                disabled={isAuth}
+              />
+              <Button
+                size="small"
+                icon={<SettingsIcon />}
+                onClick={() => setDevUrl(baseURL)}
+                disabled={isAuth}
+              >
+                Reset
+              </Button>
+            </DevUrlInputWrapper>
+          </FormItem>
           {Boolean(featuresArray.length) && (
             <FormItem label="Feature toggles">
               <FeatureTogglesWrapper>
