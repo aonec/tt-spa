@@ -32,10 +32,8 @@ const handleSearchApartment = domain.createEvent<GetApartmentsRequestPayload>();
 const handleUpdateApartment =
   domain.createEvent<UpdateApartmentRequestPayload>();
 
-const handleUpdatePhoneNumber = domain.createEvent<{
-  id: string;
-  data: HomeownerAccountUpdateRequest;
-}>();
+const handleUpdateHomeowner =
+  domain.createEvent<UpdateHomeownerRequestPayload>();
 
 const setSelectedHomeownerName = domain.createEvent<string>();
 
@@ -68,19 +66,18 @@ const $apartment = domain
     (_, apartment) => apartment,
   )
   .on(handleHomeownerUpdated, (prevApartment, updatedHomeowner) => {
-    if (!prevApartment) return prevApartment;
+    if (!prevApartment) return null;
 
     const changedHomeowners = prevApartment.homeownerAccounts?.map(
       (homeowner) => {
-        if (homeowner.id === updatedHomeowner.id) {
-          return {
-            ...homeowner,
-            phoneNumber: updatedHomeowner.phoneNumber,
-            name: updatedHomeowner.name,
-          };
-        } else {
+        if (homeowner.id !== updatedHomeowner.id) {
           return homeowner;
         }
+        return {
+          ...homeowner,
+          phoneNumber: updatedHomeowner.phoneNumber,
+          name: updatedHomeowner.name,
+        };
       },
     );
 
@@ -99,7 +96,7 @@ const $selectedHomeownerName = domain
 const $isUpdateHomeownerLoading = updateHomeownerFx.pending;
 
 sample({
-  clock: handleUpdatePhoneNumber,
+  clock: handleUpdateHomeowner,
   target: updateHomeownerFx,
 });
 
@@ -174,7 +171,7 @@ export const apartmentReadingsService = {
     printIssueCertificate:
       printApartmentDevicesCertificateService.inputs
         .printIssueSertificateButtonClicked,
-    handleUpdatePhoneNumber,
+    handleUpdateHomeowner,
     handleHomeownerUpdated,
   },
   outputs: {

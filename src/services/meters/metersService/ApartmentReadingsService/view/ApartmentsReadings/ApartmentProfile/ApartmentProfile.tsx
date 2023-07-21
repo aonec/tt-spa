@@ -31,7 +31,7 @@ export const ApartmentProfile: FC<ApartmentProfileProps> = ({
   selectedHomeownerName,
   isPermitionToApartmentStatusPatch,
   printIssueCertificate,
-  handleUpdatePhoneNumber,
+  handleUpdateHomeowner,
   isUpdateHomeownerLoading,
   handleHomeownerUpdated,
 }) => {
@@ -142,7 +142,7 @@ export const ApartmentProfile: FC<ApartmentProfileProps> = ({
                     onClick: () => printIssueCertificate(),
                   },
                 ]}
-                handleUpdatePhoneNumber={handleUpdatePhoneNumber}
+                handleUpdateHomeowner={handleUpdateHomeowner}
                 isUpdateHomeownerLoading={isUpdateHomeownerLoading}
                 handleHomeownerUpdated={handleHomeownerUpdated}
               />

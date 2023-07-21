@@ -44,8 +44,8 @@ export const ApartmentInfo: FC<ApartmentInfoProps> = ({
   setSelectedHomeownerName,
   menuButtons,
   additionalHeaderInfo,
-  handleUpdatePhoneNumber,
   isUpdateHomeownerLoading,
+  handleUpdateHomeowner,
   handleHomeownerUpdated,
 }) => {
   const filteredHomeowners = apartment.homeownerAccounts
@@ -218,10 +218,12 @@ export const ApartmentInfo: FC<ApartmentInfoProps> = ({
             <ExtraInfoWrapper>
               <EditHomeownerField
                 fieldType={FieldType.Name}
-                name={selectedHomeowner?.name}
-                phoneNumber={selectedHomeowner?.phoneNumber}
+                value={selectedHomeowner?.name || null}
+                title="Собственник"
+
                 homeownerId={activeHomeowner}
-                handleUpdate={handleUpdatePhoneNumber}
+
+                handleUpdate={handleUpdateHomeowner}
                 isUpdateHomeownerLoading={isUpdateHomeownerLoading}
                 handleHomeownerUpdated={handleHomeownerUpdated}
               />
@@ -240,9 +242,12 @@ export const ApartmentInfo: FC<ApartmentInfoProps> = ({
               </div>
               <EditHomeownerField
                 fieldType={FieldType.PhoneNumber}
-                phoneNumber={selectedHomeowner?.phoneNumber || null}
+                value={selectedHomeowner?.phoneNumber || null}
+                title="Телефон"
+
                 homeownerId={activeHomeowner}
-                handleUpdate={handleUpdatePhoneNumber}
+
+                handleUpdate={handleUpdateHomeowner}
                 isUpdateHomeownerLoading={isUpdateHomeownerLoading}
                 handleHomeownerUpdated={handleHomeownerUpdated}
               />

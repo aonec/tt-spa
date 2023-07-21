@@ -16,7 +16,7 @@ export type ApartmentInfoProps = {
   setSelectedHomeownerName: (payload: string) => void;
   menuButtons?: ContextMenuElement[];
   additionalHeaderInfo?: ReactNode;
-  handleUpdatePhoneNumber?: (payload: UpdateHomeownerRequestPayload) => void;
+  handleUpdateHomeowner?: (payload: UpdateHomeownerRequestPayload) => void;
   isUpdateHomeownerLoading?: boolean;
   handleHomeownerUpdated?: Event<HomeownerAccountResponse>;
 };

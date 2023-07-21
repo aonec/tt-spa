@@ -27,7 +27,7 @@ export type ApartmentsReadingsProps = {
     | IndividualDeviceMountPlaceForFilterResponse[]
     | null;
   printIssueCertificate: () => void;
-  handleUpdatePhoneNumber: (payload: UpdateHomeownerRequestPayload) => void;
+  handleUpdateHomeowner: (payload: UpdateHomeownerRequestPayload) => void;
   isUpdateHomeownerLoading: boolean;
   handleHomeownerUpdated: Event<HomeownerAccountResponse>;
 };
