@@ -1,13 +1,13 @@
-import React, { FC, useEffect, useMemo, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import {
   InputSC,
   FieldName,
   Footer,
   Header,
   ValueWrapper,
+  PencilIconSC,
 } from './EditHomeownerField.styled';
 import { EditHomeownerFieldProps, FieldType } from './EditHomeownerField.types';
-import { PencilIconSC } from '../ApartmentInfo.styled';
 import { Button } from 'ui-kit/Button';
 import { FieldTypeDictionary } from './EditHomeownerField.constants';
 

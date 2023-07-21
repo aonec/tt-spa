@@ -9,9 +9,6 @@ import {
   BaseInfoWrapper,
   ChevronIconSC,
   ChevronWraper,
-  Comment,
-  CommentFooter,
-  CommentHeader,
   ExtraInfoText,
   ExtraInfoWrapper,
   FirmWrapper,
@@ -20,10 +17,8 @@ import {
   InfoPanel,
   InfoPanelLabel,
   ManagementFirmInfo,
-  PencilIconSC,
   PersonalNumberPanel,
   PersonalNumbersWrapper,
-  TextareaSC,
 } from './ApartmentInfo.styled';
 import { ApartmentInfoProps } from './ApartmentInfo.types';
 import { ContextMenuButton } from 'ui-kit/ContextMenuButton/ContextMenuButton';
@@ -35,6 +30,7 @@ import { apartmentInfoService } from './ApartmentInfo.model';
 import { PrintApartmentDevicesCertificateContainer } from 'services/apartments/printApartmentDevicesCertificateService';
 import { EditHomeownerField } from './EditHomeownerField';
 import { FieldType } from './EditHomeownerField/EditHomeownerField.types';
+import { CommentField } from './CommentField';
 
 const { inputs, outputs } = apartmentInfoService;
 
@@ -177,42 +173,12 @@ export const ApartmentInfo: FC<ApartmentInfoProps> = ({
                 <div>{housingStock?.managementFirm?.name}</div>
               </FirmWrapper>
             </div>
-            <div>
-              <CommentHeader>
-                <InfoPanelLabel>Комментарий</InfoPanelLabel>
-                <PencilIconSC
-                  onClick={
-                    isEditing ? handleCancelEditComment : handleEditComment
-                  }
-                />
-              </CommentHeader>
-              {!isEditing && (
-                <Comment onClick={handleEditComment}>
-                  {apartment.comment || 'Нет комментария'}
-                </Comment>
-              )}
-              {isEditing && (
-                <TextareaSC
-                  value={comment || ''}
-                  onChange={(e) => setComment(e.target.value)}
-                  placeholder="Введите комментарий"
-                />
-              )}
-              {isEditing && (
-                <CommentFooter>
-                  <Button
-                    type="ghost"
-                    size="small"
-                    onClick={handleCancelEditComment}
-                  >
-                    Отмена
-                  </Button>
-                  <Button size="small" onClick={handleSaveComment}>
-                    Сохранить
-                  </Button>
-                </CommentFooter>
-              )}
-            </div>
+
+            <CommentField
+              apartmentId={apartment.id}
+              comment={apartment.comment}
+              handleUpdateApartment={handleUpdateApartment}
+            />
           </BaseInfoWrapper>
           {isPanelOpen && (
             <ExtraInfoWrapper>
@@ -220,9 +186,7 @@ export const ApartmentInfo: FC<ApartmentInfoProps> = ({
                 fieldType={FieldType.Name}
                 value={selectedHomeowner?.name || null}
                 title="Собственник"
-
                 homeownerId={activeHomeowner}
-
                 handleUpdate={handleUpdateHomeowner}
                 isUpdateHomeownerLoading={isUpdateHomeownerLoading}
                 handleHomeownerUpdated={handleHomeownerUpdated}
@@ -244,9 +208,7 @@ export const ApartmentInfo: FC<ApartmentInfoProps> = ({
                 fieldType={FieldType.PhoneNumber}
                 value={selectedHomeowner?.phoneNumber || null}
                 title="Телефон"
-
                 homeownerId={activeHomeowner}
-
                 handleUpdate={handleUpdateHomeowner}
                 isUpdateHomeownerLoading={isUpdateHomeownerLoading}
                 handleHomeownerUpdated={handleHomeownerUpdated}
