@@ -2,9 +2,9 @@ import React from 'react';
 import {
   EIndividualDeviceReadingsSource,
   OrganizationUserShortResponse,
-} from 'myApi';
+} from 'api/types';
 import { Wrapper } from './SourceName.styled';
-import { getSourceIcon, getSourceName } from '../../../../../utils/sourceIcon';
+import { getSourceIcon, getSourceName } from 'utils/sourceIcon';
 
 export const SourceName = ({
   sourceType,

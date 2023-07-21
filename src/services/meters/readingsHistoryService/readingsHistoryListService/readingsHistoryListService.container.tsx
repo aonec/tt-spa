@@ -50,11 +50,11 @@ import { displayIndividualDeviceAndNamesService } from 'services/devices/individ
 import { ArrowBottom, ArrowIconTop } from 'ui-kit/icons';
 import { readingsHistoryService } from '../readingsHistoryService.model';
 import { ConfirmReadingValueContainer } from '../confirmReadingService';
-import { WithLoader } from 'ui-kit/shared_components/WithLoader';
 import {
   useOpenedYears,
   useReadingHistoryValues,
 } from './readingsHistoryListService.hook';
+import { WithLoader } from 'ui-kit/shared/WithLoader';
 
 const {
   outputs: { $individualDevice },
