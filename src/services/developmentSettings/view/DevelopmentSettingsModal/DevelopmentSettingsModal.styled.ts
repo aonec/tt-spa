@@ -23,7 +23,7 @@ export const FeatureToggle = styled.div<{ color: string; isActive: boolean }>`
   gap: 8px;
   cursor: pointer;
   border: 1px solid ${({ color }) => color};
-  background: ${({ isActive, color }) => `${color}${isActive ? 'cc' : '22'}`};
+  background: ${({ isActive, color }) => `${color}${isActive ? '' : '22'}`};
   color: ${({ isActive, color }) => (!isActive ? color : 'white')};
   padding: 2px 16px;
   border-radius: 4px;
@@ -37,6 +37,6 @@ export const FeatureToggle = styled.div<{ color: string; isActive: boolean }>`
   }
 
   &:hover {
-    background: ${({ color, isActive }) => (isActive ? color : 'white')};
+    background: ${({ color, isActive }) => (isActive ? color + 'cc' : 'white')};
   }
 `;
