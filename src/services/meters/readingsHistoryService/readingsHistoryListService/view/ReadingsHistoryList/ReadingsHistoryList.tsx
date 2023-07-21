@@ -6,7 +6,7 @@ import {
   IndividualDeviceReadingsMonthHistoryResponse,
   IndividualDeviceReadingsYearHistoryResponse,
   IndividualDeviceReadingsCreateRequest,
-} from 'myApi';
+} from 'api/types';
 import { RenderReadingFields } from './ReadingFields';
 import { SourceName } from './SourceName/SourceName';
 import {
@@ -38,10 +38,10 @@ import { ReplacedAccountAlert } from './ReplacedAccountAlert';
 import { getMeasurementUnit } from 'services/meters/individualDeviceMetersInputService/individualDeviceMetersInputService.utils';
 import { getFilledArray } from 'utils/getFilledArray';
 import { ConfirmReadingValueContainer } from '../../../confirmReadingService';
-import { WithLoader } from 'ui-kit/shared_components/WithLoader';
 import { ReadingsHistoryListProps } from './ReadingsHistoryList.types';
 import { columnsNames } from './ReadingsHistoryList.constants';
 import { Arrow } from './Arrow';
+import { WithLoader } from 'ui-kit/shared/WithLoader';
 
 export const ReadingsHistoryList: FC<ReadingsHistoryListProps> = ({
   readonly,

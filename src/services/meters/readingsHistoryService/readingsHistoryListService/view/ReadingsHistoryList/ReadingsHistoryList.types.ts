@@ -3,7 +3,7 @@ import {
   IndividualDeviceReadingsCreateRequest,
   IndividualDeviceReadingsHistoryResponse,
   IndividualDeviceResponse,
-} from 'myApi';
+} from 'api/types';
 import { RequestStatusShared } from '../../readingsHistoryListService.types';
 import { ConsumptionRatesDictionary } from 'services/meters/managementFirmConsumptionRatesService/managementFirmConsumptionRatesService.types';
 
