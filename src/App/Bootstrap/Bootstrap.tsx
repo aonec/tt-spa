@@ -3,14 +3,12 @@ import { ConfigProvider } from 'antd';
 import ruRu from 'antd/es/locale/ru_RU';
 import { useApp } from './Bootstrap.hook';
 import { YMaps } from '@pbe/react-yandex-maps';
-import { Analytics } from '@vercel/analytics/react';
 
 export const Bootstrap: FC = ({ children }) => {
   useApp();
 
   return (
     <>
-      <Analytics />
       <ConfigProvider locale={ruRu}>
         <YMaps
           query={{
