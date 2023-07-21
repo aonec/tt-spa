@@ -1,5 +1,5 @@
 import moment from 'moment';
-import { IndividualDeviceReadingsItemHistoryResponse } from 'myApi';
+import { IndividualDeviceReadingsItemHistoryResponse } from 'api/types';
 import React, { FC, useEffect, useState } from 'react';
 import { getReadingValuesArray } from 'services/meters/individualDeviceMetersInputService/view/ApartmentIndividualDeviceMetersInputLine/ApartmentIndividualDeviceMetersInputLine.utils';
 import { MetersInputsBlockPure } from 'services/meters/individualDeviceMetersInputService/view/MetersInputsBlock/MeterInputsBlockPure';
@@ -9,8 +9,8 @@ import {
   getBufferedValuesFromReading,
 } from 'services/meters/individualDeviceMetersInputService/view/MetersInputsBlock/MetersInputsBlock.utils';
 import { FormItem } from 'ui-kit/FormItem';
-import { IndividualDeviceInfo } from 'ui-kit/shared_components/IndividualDeviceInfo';
-import { ReadingsHistoryButton } from 'ui-kit/shared_components/reading_history_button';
+import { IndividualDeviceInfo } from 'ui-kit/shared/IndividualDeviceInfo';
+import { ReadingsHistoryButton } from 'ui-kit/shared/reading_history_button';
 import {
   DeviceInfoWrapper,
   Header,

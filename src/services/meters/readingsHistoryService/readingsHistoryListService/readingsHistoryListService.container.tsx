@@ -1,5 +1,6 @@
 import React, { FC, useMemo } from 'react';
-import { ReadingsHistoryContainerProps } from './readingsHistoryListService.types';
+import { useEvent, useStore } from 'effector-react';
+import { apartmentService } from 'services/apartments/apartmentService';
 import { displayIndividualDeviceAndNamesService } from 'services/devices/individualDevices/displayIndividualDeviceAndNamesService';
 import {
   managementFirmConsumptionRatesService,
@@ -9,9 +10,8 @@ import {
   useOpenedYears,
   useReadingHistoryValues,
 } from './readingsHistoryListService.hook';
-import { useEvent, useStore } from 'effector-react';
+import { ReadingsHistoryContainerProps } from './readingsHistoryListService.types';
 import { getIndividualDeviceRateNumByName } from 'utils/getIndividualDeviceRateNumByName';
-import { apartmentService } from 'services/apartments/apartmentService';
 import { readingsHistoryService } from '../readingsHistoryService.model';
 import { ReadingsHistoryList } from './view/ReadingsHistoryList';
 

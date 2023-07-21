@@ -5,7 +5,7 @@ import { ErrorMessage } from 'ui-kit/ErrorMessage';
 import { Button } from 'ui-kit/Button';
 import { FormItem } from 'ui-kit/FormItem';
 import { Select } from 'ui-kit/Select';
-import { LinkButton } from 'ui-kit/shared_components/LinkButton';
+import { LinkButton } from 'ui-kit/shared/LinkButton';
 import { Title } from 'ui-kit/Title';
 import { Footer } from '../CreateNodePage.styled';
 import {
@@ -26,7 +26,7 @@ import {
   ConnectionSettingsProps,
 } from './ConnectionSettings.types';
 import { SelectValue } from 'antd/lib/select';
-import { SelectedEntityPanel } from 'ui-kit/shared_components/SelectedEntityPanel';
+import { SelectedEntityPanel } from 'ui-kit/shared/SelectedEntityPanel';
 import { CalculatorIcon } from 'ui-kit/icons';
 
 const { inputs, outputs } = connectionSettingsService;

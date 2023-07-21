@@ -1,4 +1,4 @@
-import { NonResidentialBuildingResponse } from 'myApi';
+import { NonResidentialBuildingResponse } from 'api/types';
 import { NonResidentialBuildingProfileGrouptype } from '../../nonResidentialBuildingProfileService.constants';
 
 export type NonResidentialBuildingProfileProps = {

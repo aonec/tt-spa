@@ -6,7 +6,7 @@ import { sortUserRoles } from '../Staff.utils';
 import { Tooltip } from 'antd';
 import { ContextMenuButton } from 'ui-kit/ContextMenuButton/ContextMenuButton';
 import { usePhoneMask } from 'hooks/usePhoneMask';
-import { StaffStatus } from 'ui-kit/shared_components/StaffStatus/StaffStatus';
+import { StaffStatus } from 'ui-kit/shared/StaffStatus/StaffStatus';
 import { ContextMenuButtonColor } from 'ui-kit/ContextMenuButton/ContextMenuButton.types';
 
 export const StaffItem: FC<StaffItemProps> = ({

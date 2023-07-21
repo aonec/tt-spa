@@ -1,9 +1,9 @@
-import { axios } from '01/axios';
+import { axios } from 'api/axios';
 import {
   IndividualDeviceResponse,
   MeteringDeviceResponse,
   UpdateIndividualDeviceRequest,
-} from 'myApi';
+} from 'api/types';
 
 export const getIndividualDevice = (
   id: number,

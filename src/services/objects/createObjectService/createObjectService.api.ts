@@ -1,4 +1,4 @@
-import { axios } from '01/axios';
+import { axios } from 'api/axios';
 import {
   AddHeatingStationRequest,
   EHouseCategory,
@@ -7,7 +7,7 @@ import {
   HouseManagementResponse,
   HousingStockCreateRequest,
   HousingStockResponse,
-} from 'myApi';
+} from 'api/types';
 import { CreateBuildingResponse } from './createObjectService.types';
 
 export const getHouseManagements = (): Promise<

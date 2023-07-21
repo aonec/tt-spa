@@ -3,7 +3,7 @@ import {
   ENodeWorkingRangeSeason,
   EResourceType,
   HouseManagementResponse,
-} from 'myApi';
+} from 'api/types';
 
 export type GroupWorkingRangeProps = {
   groupWorkingRange: AllNodeWorkingRangeResponse | null;

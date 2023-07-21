@@ -1,5 +1,5 @@
 import { CalculatorsListRequestPayload } from 'services/calculators/calculatorsListService/calculatorsListService.types';
-import { HousingByFilterResponse } from 'myApi';
+import { HousingByFilterResponse } from 'api/types';
 import { DevicesSearchType } from 'services/devices/devicesPageService/devicesPageService.types';
 import { DevicesByAddressInterface } from '../../displayDevicesService.types';
 

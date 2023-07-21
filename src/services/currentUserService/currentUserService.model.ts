@@ -1,7 +1,7 @@
 import { createGate } from 'effector-react';
 import { createDomain, sample } from 'effector';
 import _ from 'lodash';
-import { OrganizationUserResponse } from 'myApi';
+import { OrganizationUserResponse } from 'api/types';
 import { getCurrentUser } from './currentUserService.api';
 import { OrganizationCoordinates } from './currentUserService.types';
 

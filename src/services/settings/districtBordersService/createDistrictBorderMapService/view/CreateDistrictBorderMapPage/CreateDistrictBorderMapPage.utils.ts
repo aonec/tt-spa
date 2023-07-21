@@ -1,4 +1,4 @@
-import { BuildingListResponsePagedList } from 'myApi';
+import { BuildingListResponsePagedList } from 'api/types';
 import { DistrictColor, DistrictData } from 'types';
 import housingStockMiniPlacemark from 'hooks/ymaps/placemarks/housingStockMiniPlacemark.svg';
 import housingStockPlacemark from 'hooks/ymaps/placemarks/housingStockPlacemark.svg';

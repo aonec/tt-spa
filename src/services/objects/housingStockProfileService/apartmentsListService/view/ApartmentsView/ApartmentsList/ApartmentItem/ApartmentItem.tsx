@@ -1,4 +1,4 @@
-import { EApartmentStatus, ETasksState } from 'myApi';
+import { EApartmentStatus, ETasksState } from 'api/types';
 import React, { FC } from 'react';
 import { PauseIcon, WarningIcon } from 'ui-kit/icons';
 import {

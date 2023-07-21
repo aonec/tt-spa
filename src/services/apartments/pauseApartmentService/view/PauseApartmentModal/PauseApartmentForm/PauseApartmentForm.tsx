@@ -17,7 +17,7 @@ import {
   ApartmentStatusSetRequest,
   EApartmentStatus,
   EDocumentType,
-} from 'myApi';
+} from 'api/types';
 import { pauseApartmentService } from 'services/apartments/pauseApartmentService/pauseApartmentService.models';
 import { Form } from 'antd';
 

@@ -1,5 +1,5 @@
-import { axios } from '01/axios';
-import { ArchivesDataModel, TaskStatisticsResponse } from 'myApi';
+import { axios } from 'api/axios';
+import { ArchivesDataModel, TaskStatisticsResponse } from 'api/types';
 import {
   TasksStatisticPayload,
   FetchArchiveReadingsPayload,

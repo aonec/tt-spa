@@ -1,6 +1,6 @@
-import { axios } from '01/axios';
-import { CalculatorResponse } from 'myApi';
+import { axios } from 'api/axios';
+import { CalculatorResponse } from 'api/types';
 
 export const fetchCalculator = (
-  calcilatorId: number
+  calcilatorId: number,
 ): Promise<CalculatorResponse> => axios.get(`Calculators/${calcilatorId}`);

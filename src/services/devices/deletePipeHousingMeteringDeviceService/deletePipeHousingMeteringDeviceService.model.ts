@@ -1,5 +1,5 @@
 import { createDomain, forward, sample } from 'effector';
-import { PipeHousingMeteringDeviceListResponse } from 'myApi';
+import { PipeHousingMeteringDeviceListResponse } from 'api/types';
 import { message } from 'antd';
 import { fetchDeletePipeDevice } from './deletePipeHousingMeteringDeviceService.api';
 import { editNodeService } from 'services/nodes/editNodeService';

@@ -1,4 +1,4 @@
-import { CalculatorResponse } from 'myApi';
+import { CalculatorResponse } from 'api/types';
 import { GetCalculatorReportParams } from '../../consumptionReportCalculatorService.types';
 
 export type ConsumptionReportCalculatorModalProps = {

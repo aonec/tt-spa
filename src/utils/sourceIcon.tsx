@@ -1,5 +1,5 @@
 import React from 'react';
-import { EIndividualDeviceReadingsSource } from 'myApi';
+import { EIndividualDeviceReadingsSource } from 'api/types';
 import {
   TelegramIcon,
   DeviceIcon,

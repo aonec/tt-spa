@@ -5,7 +5,7 @@ import {
   ESecuredIdentityRoleName,
   ETaskEngineeringElement,
   TaskGroupingFilter,
-} from 'myApi';
+} from 'api/types';
 import { tasksProfileService } from './tasksProfileService.model';
 import {
   getAddressObject,

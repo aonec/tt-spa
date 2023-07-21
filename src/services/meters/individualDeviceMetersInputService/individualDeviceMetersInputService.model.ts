@@ -10,7 +10,7 @@ import {
   UploadMeterPayload,
 } from './individualDeviceMetersInputService.types';
 import { MetersInputBlockStatus } from './view/MetersInputsBlock/MetersInputsBlock.types';
-import { IndividualDeviceReadingsResponse } from 'myApi';
+import { IndividualDeviceReadingsResponse } from 'api/types';
 import { message } from 'antd';
 import moment from 'moment';
 import { EffectFailDataAxiosError } from 'types';

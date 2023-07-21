@@ -7,10 +7,10 @@ import {
 } from 'services/tasks/tasksProfileService/tasksProfileService.utils';
 import { Button } from 'ui-kit/Button';
 import { CalculatorIcon } from 'ui-kit/icons';
-import { CommonInfo } from 'ui-kit/shared_components/CommonInfo';
-import { ResourceIconLookup } from 'ui-kit/shared_components/ResourceIconLookup';
-import { TimeLine } from 'ui-kit/shared_components/TimeLine';
-import { Timer } from 'ui-kit/shared_components/Timer';
+import { CommonInfo } from 'ui-kit/shared/CommonInfo';
+import { ResourceIconLookup } from 'ui-kit/shared/ResourceIconLookup';
+import { TimeLine } from 'ui-kit/shared/TimeLine';
+import { Timer } from 'ui-kit/shared/Timer';
 import {
   Description,
   DeviceNumber,

@@ -41,7 +41,7 @@ export const RenderReadingFields: React.FC<ReadingFieldsProps> = (props) => {
 
   useEffect(() => setValuesArray(preparedValuesArray), [preparedValuesArray]);
 
-  const onChangeHandeler = (
+  const onChangeHandler = (
     e: React.ChangeEvent<HTMLInputElement>,
     index: number,
   ) => {
@@ -95,7 +95,7 @@ export const RenderReadingFields: React.FC<ReadingFieldsProps> = (props) => {
           value={String(value)}
           suffix={globalSuffix}
           prefix={<Prefix>{prefix}</Prefix>}
-          onChange={(e) => onChangeHandeler(e, index)}
+          onChange={(e) => onChangeHandler(e, index)}
         />
       </EditableFieldWrap>
     );

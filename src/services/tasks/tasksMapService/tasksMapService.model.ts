@@ -1,5 +1,5 @@
 import { createDomain, forward, sample } from 'effector';
-import { BuildingWithTasksResponse, TaskResponse } from 'myApi';
+import { BuildingWithTasksResponse, TaskResponse } from 'api/types';
 import { tasksProfileService } from '../tasksProfileService';
 import {
   $taskTypes,

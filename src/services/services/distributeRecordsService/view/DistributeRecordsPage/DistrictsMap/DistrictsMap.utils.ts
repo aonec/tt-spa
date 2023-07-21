@@ -1,4 +1,4 @@
-import { AppointmentResponse } from 'myApi';
+import { AppointmentResponse } from 'api/types';
 import { AppointmentsByHousingStocks } from './DistrictsMap.types';
 
 export const prepareAppointments = (

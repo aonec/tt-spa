@@ -1,7 +1,7 @@
 import {
   EResourceType,
   GetSummaryHousingConsumptionsByResourcesResponse,
-} from 'myApi';
+} from 'api/types';
 
 export type SelectResourceProps = {
   selectedResource: EResourceType | null;

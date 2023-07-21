@@ -1,5 +1,5 @@
-import { axios } from '01/axios';
-import { ESecuredIdentityRoleNameStringDictionaryItem } from 'myApi';
+import { axios } from 'api/axios';
+import { ESecuredIdentityRoleNameStringDictionaryItem } from 'api/types';
 
 export const fetchUserRoles = (): Promise<
   ESecuredIdentityRoleNameStringDictionaryItem[] | null

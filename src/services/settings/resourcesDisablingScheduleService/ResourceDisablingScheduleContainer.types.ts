@@ -4,7 +4,7 @@ import {
   EResourceDisconnectingStatus,
   EResourceDisconnectingType,
   EResourceType,
-} from 'myApi';
+} from 'api/types';
 
 export type DisablingResourcesProps = {
   City?: string;

@@ -3,7 +3,7 @@ import { EditEmployee } from './view/EditEmployee';
 import { editEmployeeService } from './editEmployeeService.model';
 import { useEvent, useStore } from 'effector-react';
 import { useHistory, useParams } from 'react-router-dom';
-import { WithLoader } from 'ui-kit/shared_components/WithLoader';
+import { WithLoader } from 'ui-kit/shared/WithLoader';
 import { LoaderWrapper } from './view/EditEmployee/EditEmployee.styled';
 
 const { inputs, outputs, gates } = editEmployeeService;

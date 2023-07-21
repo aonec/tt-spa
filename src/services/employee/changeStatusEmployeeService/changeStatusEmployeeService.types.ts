@@ -6,7 +6,7 @@ import {
   OrganizationUserListResponse,
   TaskListResponse,
   UserStatusResponse,
-} from 'myApi';
+} from 'api/types';
 
 export type GetOrganizationUserTasksRequestParams = {
   CurrentStageRequiredUserRole?: ESecuredIdentityRoleName;

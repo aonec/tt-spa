@@ -4,7 +4,7 @@ import {
   HouseManagementResponse,
   HousingStockResponse,
   HousingStockUpdateRequest,
-} from 'myApi';
+} from 'api/types';
 
 export type MainInfoTabProps = {
   housingStock: HousingStockResponse;

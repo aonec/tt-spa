@@ -1,5 +1,5 @@
 import { createDomain, forward } from 'effector';
-import { ContractorCreateRequest, ContractorResponse } from 'myApi';
+import { ContractorCreateRequest, ContractorResponse } from 'api/types';
 import { createContractor } from './addContractorService.api';
 import { message } from 'antd';
 import { EffectFailDataAxiosError } from 'types';
@@ -31,11 +31,11 @@ forward({
 });
 
 addContractorFx.failData.watch((error) =>
-  message.error(error.response.data.error.Text)
+  message.error(error.response.data.error.Text),
 );
 
 addContractorSuccess.watch(() =>
-  message.success('Подрядчик успешно добавлен!')
+  message.success('Подрядчик успешно добавлен!'),
 );
 
 export const addContractorService = {

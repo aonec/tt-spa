@@ -1,7 +1,7 @@
 import { createDomain, sample } from 'effector';
 import { createForm } from 'effector-forms';
 import { message } from 'antd';
-import { InspectorResponse } from 'myApi';
+import { InspectorResponse } from 'api/types';
 import { displayInspectorsService } from 'services/inspectors/displayInspectorsService/displayInspectorsService.models';
 import { searchInspectorsHousingStockService } from '../searchInspectorsHousingStocksService/searchInspectorsHousingStockService.models';
 import { resetInspectorHousingStocksAddresses } from './inspectorAddressesResetService.api';

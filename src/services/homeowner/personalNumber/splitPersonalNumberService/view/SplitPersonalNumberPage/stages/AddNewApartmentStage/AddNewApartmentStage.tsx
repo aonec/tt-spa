@@ -13,7 +13,7 @@ import { Form } from 'antd';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 import { ErrorMessage } from 'ui-kit/ErrorMessage';
-import { DatePickerNative } from 'ui-kit/shared_components/DatePickerNative';
+import { DatePickerNative } from 'ui-kit/shared/DatePickerNative';
 import { Switch } from 'antd';
 import moment from 'moment';
 

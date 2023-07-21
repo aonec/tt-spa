@@ -17,7 +17,7 @@ import { AddressSearchContainer } from 'services/addressSearchService';
 import { SearchFieldType } from 'services/addressSearchService/view/AddressSearch/AddressSearch.types';
 import { SearchDevicesFormikFieldsLookup } from './SearchDevices.constants';
 import { DevicesSearchType } from 'services/devices/devicesPageService/devicesPageService.types';
-import { fromEnter } from 'ui-kit/shared_components/DatePickerNative';
+import { fromEnter } from 'ui-kit/shared/DatePickerNative';
 import { FormItem } from 'ui-kit/FormItem';
 import { SearchIcon } from 'ui-kit/icons';
 import { Select } from 'ui-kit/Select';

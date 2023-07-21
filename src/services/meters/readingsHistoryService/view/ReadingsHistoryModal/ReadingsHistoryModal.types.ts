@@ -1,4 +1,4 @@
-import { IndividualDeviceResponse } from 'myApi';
+import { IndividualDeviceResponse } from 'api/types';
 
 export type ReadingsHistoryModalProps = {
   readonly?: boolean;

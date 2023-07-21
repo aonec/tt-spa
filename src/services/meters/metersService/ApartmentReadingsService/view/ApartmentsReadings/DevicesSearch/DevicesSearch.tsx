@@ -1,18 +1,16 @@
 import React, { FC, useState } from 'react';
+import { NavLink } from 'react-router-dom';
+import { CancelTokenSource } from 'axios';
+import axios from 'api/axios';
+import { IndividualDeviceListItemResponse } from 'api/types';
 import { DateRangeContainer, Device } from './DevicesSearch.styled';
 import { DevicesSearchProps } from './DevicesSearch.types';
-import { NavLink } from 'react-router-dom';
-import { IndividualDeviceListItemResponse } from 'myApi';
-import axios from '01/axios';
-import { DeviceDataString } from '01/features/individualDevices/switchIndividualDevice/components/DeviceDataString';
-import { Flex } from '01/shared/ui/Layout/Flex';
-import { Space } from '01/shared/ui/Layout/Space/Space';
-import { CancelTokenSource } from 'axios';
-import { DeviceStatus } from 'ui-kit/shared_components/IndividualDeviceInfo/DeviceStatus';
-import { WithLoader } from 'ui-kit/shared_components/WithLoader';
+import { DeviceStatus } from 'ui-kit/shared/IndividualDeviceInfo/DeviceStatus';
+import { WithLoader } from 'ui-kit/shared/WithLoader';
 import { AutoComplete } from 'ui-kit/AutoComplete';
-import { DateRange } from 'ui-kit/shared_components/DateRange';
+import { DateRange } from 'ui-kit/shared/DateRange';
 import { individualDeviceMountPlacesService } from 'services/devices/individualDeviceMountPlacesService/individualDeviceMountPlacesService.model';
+import { DeviceDataString } from './DeviceDataString';
 
 const { AllIndividualDeviceMountPlacesGate } =
   individualDeviceMountPlacesService.gates;
@@ -71,30 +69,26 @@ export const DevicesSearch: FC<DevicesSearchProps> = ({
       key={device.id}
     >
       <Device key={index}>
-        <Flex>
-          <DeviceDataString device={device} />
-          <Space />
-          <DeviceStatus
-            isActive={device.closingDate === null}
-            closingReason={device.closingReason}
+        <DeviceDataString device={device} />
+        <DeviceStatus
+          isActive={device.closingDate === null}
+          closingReason={device.closingReason}
+        />
+        <DateRangeContainer>
+          <DateRange
+            firstDate={device.lastCheckingDate}
+            lastDate={device.futureCheckingDate}
+            bold
           />
-          <DateRangeContainer>
-            <DateRange
-              firstDate={device.lastCheckingDate}
-              lastDate={device.futureCheckingDate}
-              bold
-            />
-          </DateRangeContainer>
-          <Space />
-          <div>
-            {allIndividualDeviceMountPlaces &&
-              device.mountPlace &&
-              allIndividualDeviceMountPlaces.find(
-                (mountPlaceFromServer) =>
-                  mountPlaceFromServer.name === device.mountPlace,
-              )?.description}
-          </div>
-        </Flex>
+        </DateRangeContainer>
+        <div>
+          {allIndividualDeviceMountPlaces &&
+            device.mountPlace &&
+            allIndividualDeviceMountPlaces.find(
+              (mountPlaceFromServer) =>
+                mountPlaceFromServer.name === device.mountPlace,
+            )?.description}
+        </div>
       </Device>
     </NavLink>
   );

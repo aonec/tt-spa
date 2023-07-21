@@ -1,4 +1,4 @@
-import { CloseDeviceRequest } from 'myApi';
+import { CloseDeviceRequest } from 'api/types';
 
 export type CloseHousingMeteringDeviceFormProps = {
   deviceId: number;

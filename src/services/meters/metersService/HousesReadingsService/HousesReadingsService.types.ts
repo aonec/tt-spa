@@ -1,4 +1,4 @@
-import { EIndividualDeviceOrderRule, EResourceType } from 'myApi';
+import { EIndividualDeviceOrderRule, EResourceType } from 'api/types';
 
 export type GetHousingStocksListRequestPayload = {
   City?: string;

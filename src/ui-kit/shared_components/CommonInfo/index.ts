@@ -1,1 +1,0 @@
-export { CommonInfo } from './CommonInfo'

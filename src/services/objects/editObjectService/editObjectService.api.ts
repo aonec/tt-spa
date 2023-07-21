@@ -1,9 +1,9 @@
-import { axios } from '01/axios';
+import { axios } from 'api/axios';
 import {
   BuildingAddressCreateRequest,
   BuildingAddressUpdateRequest,
   HousingStockUpdateRequest,
-} from 'myApi';
+} from 'api/types';
 
 export const updateHousingStock = (payload: {
   housingStockId: number;

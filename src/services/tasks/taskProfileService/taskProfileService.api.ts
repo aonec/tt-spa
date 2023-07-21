@@ -1,9 +1,9 @@
-import { axios } from '01/axios';
+import { axios } from 'api/axios';
 import {
   AddCommentRequest,
   PushStageRequestPayload,
 } from './taskProfileService.types';
-import { PipeNodeResponse, TaskResponse, TaskCommentResponse } from 'myApi';
+import { PipeNodeResponse, TaskResponse, TaskCommentResponse } from 'api/types';
 
 export const fetchTask = (taskId: number): Promise<TaskResponse> =>
   axios.get(`Tasks/${taskId}`);
