@@ -10,7 +10,7 @@ import {
   PopoverTitle,
 } from './ApartmentCellItem.styled';
 import { ApartmentCellItemProps } from './ApartmentCellItem.types';
-import { EApartmentStatus, ETasksState } from 'myApi';
+import { EApartmentStatus, ETasksState } from 'api/types';
 import {
   AdditionalHomeownersCountTextWrapper,
   AdditionalHomeownersCountWrapper,

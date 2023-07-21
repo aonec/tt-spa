@@ -1,1 +1,0 @@
-export { IndividualDeviceInfoShort } from './IndividualDeviceInfoShort'

@@ -5,7 +5,10 @@ import { individualDeviceMountPlacesService } from 'services/devices/individualD
 import { displayIndividualDeviceAndNamesService } from '../displayIndividualDeviceAndNamesService';
 import { createIndividualDevice } from './addIndividualDeviceService.api';
 import { EffectFailDataAxiosError } from 'types';
-import { CreateIndividualDeviceRequest, MeteringDeviceResponse } from 'myApi';
+import {
+  CreateIndividualDeviceRequest,
+  MeteringDeviceResponse,
+} from 'api/types';
 import { DocumentStageForm } from './AddIndividualDevicePage/stages/DocumentsStage/DocumentsStage.types';
 import { createGate } from 'effector-react';
 import { documentService } from 'ui-kit/DocumentsService/DocumentsService.model';

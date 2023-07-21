@@ -2,7 +2,7 @@ import {
   InspectorOnBuildingResponse,
   InspectorResponse,
   UpdateInspectorOnBuildingRequest,
-} from 'myApi';
+} from 'api/types';
 import { CurrentHousingStockUpdate } from '../../inspectorHousingStockService.types';
 
 export type HousingStockItemProps = {

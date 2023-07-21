@@ -1,5 +1,5 @@
 import moment from 'moment';
-import { EPersonType } from 'myApi';
+import { EPersonType } from 'api/types';
 import * as Yup from 'yup';
 
 export const formInitialValues = {

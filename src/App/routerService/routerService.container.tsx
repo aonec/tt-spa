@@ -1,12 +1,17 @@
 import React from 'react';
-import { useStore } from 'effector-react';
+import { useStore, useUnit } from 'effector-react';
 import { Router } from './view/Router';
 import { routerService } from './routerService.model';
-import { ESecuredIdentityRoleName } from 'myApi';
+import { ESecuredIdentityRoleName } from 'api/types';
+import { developmentSettingsService } from 'services/developmentSettings/developmentSettings.models';
 
 const { outputs } = routerService;
 
 export const RouterContainer = () => {
+  const { featureToggles } = useUnit({
+    featureToggles: developmentSettingsService.outputs.$featureToggles,
+  });
+
   const currentUserRoles = useStore(outputs.$currentUserRoles);
 
   const isRolesLoadded = useStore(outputs.$isCurrentUserLoading);
@@ -19,5 +24,11 @@ export const RouterContainer = () => {
       return [...acc, key];
     }, [] as ESecuredIdentityRoleName[]) || [];
 
-  return <Router roles={roles} isRolesLoadded={isRolesLoadded} />;
+  return (
+    <Router
+      roles={roles}
+      isRolesLoadded={isRolesLoadded}
+      featureToggles={featureToggles}
+    />
+  );
 };

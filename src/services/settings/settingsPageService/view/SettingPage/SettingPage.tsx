@@ -1,7 +1,8 @@
 import React, { FC, useMemo } from 'react';
+import { useUnit } from 'effector-react';
+import { useHistory, useLocation, useParams } from 'react-router-dom';
 import { TabsSC } from './SettingPage.styled';
 import { SettingPageProps } from './SettingPage.types';
-import { useHistory, useLocation, useParams } from 'react-router-dom';
 import { chooseTypeOfResourceDisconnectionModalService } from 'services/resources/chooseTypeOfResourceDisconnectionModalService';
 import { inspectorAddressesResetService } from 'services/settings/inspectorsDistributionService/inspectorAddressesResetService/inspectorAddressesResetService.models';
 import { ResourceDisablingScheduleContainer } from 'services/settings/resourcesDisablingScheduleService/ResourceDisablingScheduleContainer';
@@ -9,14 +10,18 @@ import { InspectorsDistributionPage } from 'services/settings/inspectorsDistribu
 import { InspectorAddressesResetModalContainer } from 'services/settings/inspectorsDistributionService/inspectorAddressesResetService/InspectorAddressesResetModalContainer';
 import { CreateResourceDisconnectionContainer } from 'services/resources/createResourceDisconnectionService';
 import { ChooseTypeOfResourceDisconnectionModalContainer } from 'services/resources/chooseTypeOfResourceDisconnectionModalService/chooseTypeOfResourceDisconnectionModalService.container';
-import { PageHeader } from 'ui-kit/shared_components/PageHeader';
-import { featureToggles } from 'featureToggles';
+import { PageHeader } from 'ui-kit/shared/PageHeader';
 import { WorkingRangeTab } from 'services/workingRanges/WorkingRangeTab';
 import { DistrictBordersContainer } from 'services/settings/districtBordersService';
+import { developmentSettingsService } from 'services/developmentSettings/developmentSettings.models';
 
 export const SettingPage: FC<SettingPageProps> = ({
   handleReassingInspector,
 }) => {
+  const { featureToggles } = useUnit({
+    featureToggles: developmentSettingsService.outputs.$featureToggles,
+  });
+
   const { section } = useParams<{ section: string }>();
   const history = useHistory();
   const { pathname } = useLocation();
@@ -85,7 +90,12 @@ export const SettingPage: FC<SettingPageProps> = ({
         )}
       </>
     );
-  }, [adminSettings]);
+  }, [
+    adminSettings,
+    featureToggles.controllersDistribution,
+    featureToggles.districtsManage,
+    featureToggles.workingRanges,
+  ]);
 
   return (
     <>

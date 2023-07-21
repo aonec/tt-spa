@@ -1,9 +1,9 @@
-import { axios } from '01/axios';
+import { axios } from 'api/axios';
 import {
   ContractorListResponsePagedList,
   OrganizationResponse,
   OrganizationUserListResponsePagedList,
-} from 'myApi';
+} from 'api/types';
 
 export function getCurrentManagingFirm(): Promise<OrganizationResponse | null> {
   return axios.get('Organizations/current');

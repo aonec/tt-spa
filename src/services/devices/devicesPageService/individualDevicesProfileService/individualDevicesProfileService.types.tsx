@@ -4,7 +4,7 @@ import {
   EExpiresCheckingDateAt,
   EOrderByRule,
   EResourceType,
-} from 'myApi';
+} from 'api/types';
 
 export type SearchIndividualDevicesParams = {
   City?: string;

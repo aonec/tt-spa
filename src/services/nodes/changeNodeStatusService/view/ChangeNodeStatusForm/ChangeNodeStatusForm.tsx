@@ -2,7 +2,7 @@ import { ErrorMessage } from 'ui-kit/ErrorMessage';
 import { Form } from 'antd';
 import { SelectValue } from 'antd/lib/select';
 import { useFormik } from 'formik';
-import { ENodeCommercialAccountStatus } from 'myApi';
+import { ENodeCommercialAccountStatus } from 'api/types';
 import React, { FC, useCallback, useEffect } from 'react';
 import { commercialNodeStatuses } from 'services/nodes/createNodeService/view/CreateNodePage/CommonData/CommonData.constants';
 import { DatePicker } from 'ui-kit/DatePicker';

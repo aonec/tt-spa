@@ -2,7 +2,7 @@ import { createDomain, guard, sample } from 'effector';
 import {
   ResourceDisconnectingResponse,
   ResourceDisconnectingUpdateRequest,
-} from 'myApi';
+} from 'api/types';
 import {
   fetchEditResourceDisconnection,
   fetchResourceDisconnection,

@@ -1,6 +1,6 @@
 import { createDomain, forward, guard } from 'effector';
 import { createGate } from 'effector-react';
-import { ESecuredIdentityRoleNameStringDictionaryItem } from 'myApi';
+import { ESecuredIdentityRoleNameStringDictionaryItem } from 'api/types';
 import { fetchUserRoles } from './rolesService.api';
 
 const domain = createDomain('rolesService');

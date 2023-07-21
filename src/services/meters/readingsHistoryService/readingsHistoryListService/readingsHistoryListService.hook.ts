@@ -1,13 +1,13 @@
 import { useCallback, useEffect, useState } from 'react';
-import { IndividualDeviceReadingsYearHistoryResponse } from 'myApi';
+import { IndividualDeviceReadingsYearHistoryResponse } from 'api/types';
 
 import { useParams } from 'react-router-dom';
 import {
   IndividualDeviceReadingsHistoryResponse,
   IndividualDeviceReadingsCreateRequest,
-} from 'myApi';
+} from 'api/types';
 import { useStore } from 'effector-react';
-import axios from '01/axios';
+import axios from 'api/axios';
 import moment from 'moment';
 import _ from 'lodash/fp';
 import { EffectFailDataAxiosError } from 'types';

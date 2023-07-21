@@ -2,7 +2,7 @@ import {
   ApartmentResponse,
   HomeownerAccountListResponse,
   IndividualDeviceListItemResponse,
-} from 'myApi';
+} from 'api/types';
 import {
   AddNewApartmentStage,
   SwitchStage,

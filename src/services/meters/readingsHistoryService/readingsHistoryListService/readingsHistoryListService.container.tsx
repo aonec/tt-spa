@@ -4,7 +4,7 @@ import {
   IndividualDeviceReadingsMonthHistoryResponse,
   IndividualDeviceReadingsYearHistoryResponse,
   IndividualDeviceReadingsCreateRequest,
-} from 'myApi';
+} from 'api/types';
 import React, { useCallback, useMemo } from 'react';
 import { RenderReadingFields } from './ReadingFields';
 import { SourceName } from './SourceName/SourceName';

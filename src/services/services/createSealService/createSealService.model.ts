@@ -1,5 +1,5 @@
 import { createDomain, sample } from 'effector';
-import { ApartmentResponse, AppointmentCreateRequest } from 'myApi';
+import { ApartmentResponse, AppointmentCreateRequest } from 'api/types';
 import { message } from 'antd';
 import { fetchCreateSeal } from './createSealService.api';
 import { EffectFailDataAxiosError } from 'types';

@@ -1,6 +1,6 @@
 import { useUnit } from 'effector-react';
 import React, { FC, useMemo } from 'react';
-import { WithLoader } from 'ui-kit/shared_components/WithLoader';
+import { WithLoader } from 'ui-kit/shared/WithLoader';
 import { displayNodesStatisticsService } from './displayNodesStatisticsService.model';
 import {
   PageWrapper,

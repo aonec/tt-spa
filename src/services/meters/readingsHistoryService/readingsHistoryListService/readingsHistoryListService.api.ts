@@ -1,8 +1,8 @@
-import axios from '01/axios';
+import axios from 'api/axios';
 import {
   IndividualDeviceReadingsCreateListResponse,
   IndividualDeviceReadingsCreateRequest,
-} from 'myApi';
+} from 'api/types';
 
 export const createReading = (
   requestPayload: IndividualDeviceReadingsCreateRequest,

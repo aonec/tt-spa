@@ -1,6 +1,6 @@
 import { createDomain, forward } from 'effector';
 import { createGate } from 'effector-react';
-import { EResourceType, NodeOnHousingStockResponse } from 'myApi';
+import { EResourceType, NodeOnHousingStockResponse } from 'api/types';
 import { getNodes } from './resourceAccountingSystemsService.api';
 import { sortNodes } from './resourceAccountingSystemsService.utils';
 import { meteringDevicesService } from './view/ResourceAccountingSystems/meteringDevicesService';

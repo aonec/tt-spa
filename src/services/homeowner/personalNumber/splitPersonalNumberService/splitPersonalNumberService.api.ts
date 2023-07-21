@@ -1,8 +1,8 @@
-import { axios } from '01/axios';
+import { axios } from 'api/axios';
 import {
   HomeownerAccountSplitRequest,
   IndividualDeviceListItemResponsePagedList,
-} from 'myApi';
+} from 'api/types';
 import { GetIndividualDeviceRequestParams } from './splitPersonalNumberService.types';
 
 export const splitHomeownerAccount = (payload: {

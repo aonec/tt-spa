@@ -2,7 +2,7 @@ import React, { FC, useCallback, useEffect, useMemo } from 'react';
 import { Button } from 'ui-kit/Button';
 import { PencilIcon } from 'ui-kit/icons';
 import { useYMaps } from 'hooks/ymaps/useYMaps';
-import { GoBack } from 'ui-kit/shared_components/GoBack';
+import { GoBack } from 'ui-kit/shared/GoBack';
 import { useRenderDistricts, useRenderPlacemarks } from 'hooks/ymaps/utils';
 import {
   ControlButtonsWrapper,

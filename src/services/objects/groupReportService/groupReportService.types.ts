@@ -3,7 +3,7 @@ import {
   ENodeCommercialAccountStatus,
   EReportType,
   EResourceType,
-} from 'myApi';
+} from 'api/types';
 
 export type GroupReportRequestPayload = RegularUnloadSubscription & {
   To: string;

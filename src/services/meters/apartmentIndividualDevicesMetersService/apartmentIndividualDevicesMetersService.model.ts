@@ -3,7 +3,7 @@ import { createGate } from 'effector-react';
 import {
   IndividualDeviceListItemResponse,
   IndividualDeviceListItemResponsePagedList,
-} from 'myApi';
+} from 'api/types';
 import { getIndividualDevices } from './apartmentIndividualDevicesMetersService.api';
 import { PREVIOUS_READING_INDEX_LIMIT } from './apartmentIndividualDevicesMetersService.constants';
 import { GetIndividualDevicesParams } from './apartmentIndividualDevicesMetersService.types';

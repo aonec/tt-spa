@@ -1,4 +1,4 @@
-import { ApartmentResponse } from 'myApi';
+import { ApartmentResponse } from 'api/types';
 import { PutApartment } from 'services/apartments/editApartmentProfileService/editApartmentProfileService.types';
 
 export type EditCommonDataFormProps = {

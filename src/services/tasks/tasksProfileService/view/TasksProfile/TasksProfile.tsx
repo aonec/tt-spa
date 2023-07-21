@@ -1,6 +1,6 @@
 import React, { FC, useEffect, useMemo } from 'react';
 import { useHistory } from 'react-router-dom';
-import { PageHeader } from 'ui-kit/shared_components/PageHeader';
+import { PageHeader } from 'ui-kit/shared/PageHeader';
 import { SearchTasks } from '../SearchTasks';
 import { TasksList } from '../TasksList';
 import {
@@ -14,14 +14,15 @@ import {
   Flex,
   ButtonSC,
 } from './TasksProfile.styled';
-import { TasksPageSegment, TasksProfileProps } from './TasksProfile.types';
+import { useUnit } from 'effector-react';
+import { Empty } from 'antd';
+import { TaskGroupingFilter } from 'api/types';
 import { Segmented } from 'ui-kit/Segmented';
 import { ListIcon, MapIcon, PlusSmallIcon } from 'ui-kit/icons';
 import { TasksMapContainer } from 'services/tasks/tasksMapService';
-import { Empty } from 'antd';
-import { WithLoader } from 'ui-kit/shared_components/WithLoader';
-import { TaskGroupingFilter } from 'myApi';
-import { featureToggles } from 'featureToggles';
+import { WithLoader } from 'ui-kit/shared/WithLoader';
+import { developmentSettingsService } from 'services/developmentSettings/developmentSettings.models';
+import { TasksPageSegment, TasksProfileProps } from './TasksProfile.types';
 
 const { TabPane } = TabsSC;
 
@@ -48,6 +49,10 @@ export const TasksProfile: FC<TasksProfileProps> = ({
   handleOpenAddTaskModal,
   isPermissionToAddTask,
 }) => {
+  const { featureToggles } = useUnit({
+    featureToggles: developmentSettingsService.outputs.$featureToggles,
+  });
+
   const history = useHistory();
   const { executingTasksCount, observingTasksCount, totalItems } =
     pagedTasks || {};

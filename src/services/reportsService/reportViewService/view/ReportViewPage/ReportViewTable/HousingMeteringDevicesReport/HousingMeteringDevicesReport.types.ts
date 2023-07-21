@@ -1,4 +1,4 @@
-import { HousingDevicesConstructedReportResponse } from 'myApi';
+import { HousingDevicesConstructedReportResponse } from 'api/types';
 
 export type HousingMeteringDevicesReportProps = {
   housingMeteringDevicesReportData:

@@ -1,7 +1,7 @@
 import React from 'react';
 import { removeNodeCheckService } from './removeNodeCheckService.model';
 import { useEvent, useStore } from 'effector-react';
-import { Dialog } from 'ui-kit/shared_components/Dialog/Dialog';
+import { Dialog } from 'ui-kit/shared/Dialog/Dialog';
 
 const { inputs, outputs } = removeNodeCheckService;
 

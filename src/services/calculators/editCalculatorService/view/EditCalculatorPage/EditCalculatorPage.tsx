@@ -12,14 +12,14 @@ import {
   EditCalculatorTabs,
 } from './EditCalculatorPage.types';
 import { useHistory } from 'react-router-dom';
-import { GoBack } from 'ui-kit/shared_components/GoBack';
-import { PageHeader } from 'ui-kit/shared_components/PageHeader';
-import { HeaderInfoString } from 'ui-kit/shared_components/HeaderInfoString';
+import { GoBack } from 'ui-kit/shared/GoBack';
+import { PageHeader } from 'ui-kit/shared/PageHeader';
+import { HeaderInfoString } from 'ui-kit/shared/HeaderInfoString';
 import { getHousingStockItemAddress } from 'utils/getHousingStockItemAddress';
 import { Tabs } from 'ui-kit/Tabs';
 import { EditMainInfo } from './Tabs/EditMainInfo';
 import { EditConnection } from './Tabs/EditConnection';
-import { WithLoader } from 'ui-kit/shared_components/WithLoader';
+import { WithLoader } from 'ui-kit/shared/WithLoader';
 
 export const EditCalculatorPage: FC<EditCalculatorPageProps> = ({
   calculator,

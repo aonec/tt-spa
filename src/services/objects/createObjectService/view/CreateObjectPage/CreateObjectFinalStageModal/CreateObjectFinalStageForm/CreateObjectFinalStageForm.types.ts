@@ -1,11 +1,14 @@
-import { HeatingStationResponsePagedList, HouseManagementResponse } from 'myApi';
+import {
+  HeatingStationResponsePagedList,
+  HouseManagementResponse,
+} from 'api/types';
 import { ObjectCreateSubmitData } from 'services/objects/createObjectService/createObjectService.types';
 
 export type CreateObjectFinalStageFormProps = {
   formId: string;
   createObjectData: ObjectCreateSubmitData | null;
   houseManagements: HouseManagementResponse[] | null;
-  heatingStations: HeatingStationResponsePagedList | null
+  heatingStations: HeatingStationResponsePagedList | null;
 };
 
 export enum ElevatorExistingType {

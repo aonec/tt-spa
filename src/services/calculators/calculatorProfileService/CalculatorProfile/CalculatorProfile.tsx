@@ -1,9 +1,9 @@
 import { stringifyUrl } from 'query-string';
 import React, { FC, ReactElement, useMemo } from 'react';
 import { useHistory } from 'react-router-dom';
-import { CommonInfo } from 'ui-kit/shared_components/CommonInfo';
-import { GoBack } from 'ui-kit/shared_components/GoBack';
-import { LinkCard } from 'ui-kit/shared_components/LinkCard';
+import { CommonInfo } from 'ui-kit/shared/CommonInfo';
+import { GoBack } from 'ui-kit/shared/GoBack';
+import { LinkCard } from 'ui-kit/shared/LinkCard';
 import { Tabs } from 'ui-kit/Tabs';
 import { getBuildingAddress } from 'utils/getBuildingAddress';
 import { getTimeStringByUTC } from 'utils/getTimeStringByUTC';
@@ -25,7 +25,7 @@ import { DocumentsPanel } from './DocumentsPanel';
 import { NodeDocumentsList } from './NodeDocumentsList';
 import { RelatedNodesList } from './RelatedNodesList';
 import { ContextMenuButtonColor } from 'ui-kit/ContextMenuButton/ContextMenuButton.types';
-import { TaskGroupingFilter } from 'myApi';
+import { TaskGroupingFilter } from 'api/types';
 
 const { TabPane } = Tabs;
 

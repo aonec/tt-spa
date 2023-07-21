@@ -4,7 +4,7 @@ import {
   ApartmentActResponse,
   ApartmentActResponsePagedList,
   DocumentResponse,
-} from 'myApi';
+} from 'api/types';
 import { fetchPreviousActs, fetchSaveFile } from './actsCardService.api';
 
 const domain = createDomain('actsCardService');

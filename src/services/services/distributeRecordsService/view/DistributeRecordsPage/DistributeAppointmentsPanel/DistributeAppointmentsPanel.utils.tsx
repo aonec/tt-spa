@@ -1,5 +1,5 @@
 import type { DataNode } from 'antd/es/tree';
-import { AppointmentResponse } from 'myApi';
+import { AppointmentResponse } from 'api/types';
 import { ChevronSC } from './DistributeAppointmentsPanel.styled';
 import _ from 'lodash';
 import React from 'react';

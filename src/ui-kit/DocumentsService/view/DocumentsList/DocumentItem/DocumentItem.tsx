@@ -14,7 +14,7 @@ import {
   Wrapper,
 } from './DocumentItem.styled';
 import { DocumentItemProps } from './DocumentItem.types';
-import axios from '01/axios';
+import axios from 'api/axios';
 
 export const DocumentItem: FC<DocumentItemProps> = ({
   document,

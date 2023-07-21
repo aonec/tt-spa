@@ -1,7 +1,7 @@
-import { PageHeader } from 'ui-kit/shared_components/PageHeader';
+import { PageHeader } from 'ui-kit/shared/PageHeader';
 import { Skeleton } from 'antd';
 import React, { FC, useState } from 'react';
-import { GoBack } from 'ui-kit/shared_components/GoBack';
+import { GoBack } from 'ui-kit/shared/GoBack';
 import { getBuildingAddress } from 'utils/getBuildingAddress';
 import { EditElectricNodeForm } from './EditElectricNodeForm';
 import {
@@ -15,7 +15,7 @@ import {
   EditElectricNodeGrouptype,
   EditElectricNodePageProps,
 } from './EditElectricNodePage.types';
-import { DeviceStatus } from 'ui-kit/shared_components/IndividualDeviceInfo/DeviceStatus';
+import { DeviceStatus } from 'ui-kit/shared/IndividualDeviceInfo/DeviceStatus';
 const { TabPane } = TabsSC;
 
 export const EditElectricNodePage: FC<EditElectricNodePageProps> = ({

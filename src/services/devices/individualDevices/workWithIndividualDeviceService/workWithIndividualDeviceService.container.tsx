@@ -3,7 +3,7 @@ import { WorkWithIndividualDeviceContainerProps } from './workWithIndividualDevi
 import { useParams } from 'react-router';
 import { workWithIndividualDeviceService } from './workWithIndividualDeviceService.model';
 import { useUnit } from 'effector-react';
-import { WithLoader } from 'ui-kit/shared_components/WithLoader';
+import { WithLoader } from 'ui-kit/shared/WithLoader';
 import { WorkWithIndividualDevicePage } from './view/WorkWithIndividualDevicePage';
 import { displayContractorsService } from 'services/contractors/displayContractorsService';
 import { getSerialNumberQuery } from './workWithIndividualDeviceService.api';

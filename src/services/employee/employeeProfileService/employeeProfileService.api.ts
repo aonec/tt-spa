@@ -1,5 +1,5 @@
-import { axios } from '01/axios';
-import { OrganizationUserResponse } from 'myApi';
+import { axios } from 'api/axios';
+import { OrganizationUserResponse } from 'api/types';
 
 export const getUserData = (
   userId: string,

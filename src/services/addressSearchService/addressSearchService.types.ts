@@ -1,4 +1,4 @@
-import { EOrderByRule } from 'myApi';
+import { EOrderByRule } from 'api/types';
 import {
   AddressSearchValues,
   CustomTemplateType,
