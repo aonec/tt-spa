@@ -16,8 +16,6 @@ import {
 import { HousingStockProfileProps } from './HousingStockProfile.types';
 import { LinkCard } from 'ui-kit/shared_components/LinkCard';
 import { stringifyUrl } from 'query-string';
-import { EHouseCategory } from 'myApi';
-import { objectRouteFromCategory } from 'services/objects/objects.router';
 const { TabPane } = TabsSC;
 
 export const HousingStockProfile: FC<HousingStockProfileProps> = ({
@@ -60,9 +58,7 @@ export const HousingStockProfile: FC<HousingStockProfileProps> = ({
               title: 'Добавить узел',
               onClick: () =>
                 history.push(
-                  `/buildings/${
-                    objectRouteFromCategory[EHouseCategory.Living]
-                  }/${housingStock.id}/addNode`,
+                  `/buildings/livingProfile/${housingStock.id}/addNode`,
                 ),
               hidden: !isPermitionToAddNode,
             },
@@ -75,9 +71,7 @@ export const HousingStockProfile: FC<HousingStockProfileProps> = ({
               title: 'Редактировать',
               onClick: () =>
                 history.push(
-                  `/buildings/${
-                    objectRouteFromCategory[EHouseCategory.Living]
-                  }/${housingStock.id}/edit`,
+                  `/buildings/livingProfile/${housingStock.id}/edit`,
                 ),
               hidden: !isPermissionToEditHousingStock,
             },

@@ -1,12 +1,11 @@
 import { MagistralsDisctionary } from 'dictionaries';
 import moment from 'moment';
-import { EMagistralType } from 'myApi';
-import React, { FC } from 'react';
+import { EHouseCategory, EMagistralType } from 'myApi';
+import React, { FC, useMemo } from 'react';
 import { CommonInfo } from 'ui-kit/shared_components/CommonInfo';
 import { getBuildingAddress } from 'utils/getBuildingAddress';
 import { Address } from './CommonInfoTab.styled';
 import { CommonInfoProps } from './CommonInfoTab.types';
-import { objectRouteFromCategory } from 'services/objects/objects.router';
 
 export const CommonInfoTab: FC<CommonInfoProps> = ({
   housingMeteringDevice,
@@ -20,16 +19,19 @@ export const CommonInfoTab: FC<CommonInfoProps> = ({
   const magistral = housingMeteringDevice?.hubConnection?.hub
     ?.magistral as EMagistralType;
 
+  const buildingProfilePath = useMemo(() => {
+    if (address?.houseCategory === EHouseCategory.Living) {
+      return 'livingProfile';
+    }
+    return 'nonResidentialProfile';
+  }, [address]);
+
   const addressComponent = (() => {
     if (!address) {
       return '-';
     }
     return (
-      <Address
-        to={`/buildings/${
-          objectRouteFromCategory[address.houseCategory]
-        }Profile/${address?.id}`}
-      >
+      <Address to={`/buildings/${buildingProfilePath}/${address?.id}`}>
         {addressString}
       </Address>
     );

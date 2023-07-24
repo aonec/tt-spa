@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useMemo } from 'react';
 import _ from 'lodash';
 import { Tooltip } from 'antd';
 import {
@@ -18,7 +18,7 @@ import { HousingStockTasksProps } from './HousingStockTasks.types';
 import { WithLoader } from 'ui-kit/shared_components/WithLoader';
 import { TaskInfoPanel } from './TaskInfoPanel';
 import { getTaskIconByTaskType } from './HousingStockTasks.utils';
-import { objectRouteFromCategory } from 'services/objects/objects.router';
+import { EHouseCategory } from 'myApi';
 
 export const HousingStockTasks: FC<HousingStockTasksProps> = ({
   selectedHousingStock,
@@ -66,17 +66,22 @@ export const HousingStockTasks: FC<HousingStockTasksProps> = ({
     address?.corpus || ''
   }${apartmentNumber ? `, кв. ${apartmentNumber}` : ''}`;
 
+  const buildingProfilePath = useMemo(() => {
+    if (
+      selectedHousingStock?.building?.houseCategory === EHouseCategory.Living
+    ) {
+      return 'livingProfile';
+    }
+    return 'nonResidentialProfile';
+  }, [selectedHousingStock]);
+
   return (
     <HousingStockWrapper>
       <Header>
         <ChevronIconSC onClick={task ? clearTask : clearSelectedHousingStock} />
         {selectedHousingStock?.building && (
           <Address
-            to={`/buildings/${
-              objectRouteFromCategory[
-                selectedHousingStock.building.houseCategory
-              ]
-            }Profile/${selectedHousingStock?.building?.id}`}
+            to={`/buildings/${buildingProfilePath}/${selectedHousingStock?.building?.id}`}
           >
             {addressString}
             <City>{`${address?.city}`}</City>

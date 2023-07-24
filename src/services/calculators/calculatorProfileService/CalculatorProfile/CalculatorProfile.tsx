@@ -25,8 +25,7 @@ import { DocumentsPanel } from './DocumentsPanel';
 import { NodeDocumentsList } from './NodeDocumentsList';
 import { RelatedNodesList } from './RelatedNodesList';
 import { ContextMenuButtonColor } from 'ui-kit/ContextMenuButton/ContextMenuButton.types';
-import { TaskGroupingFilter } from 'myApi';
-import { objectRouteFromCategory } from 'services/objects/objects.router';
+import { EHouseCategory, TaskGroupingFilter } from 'myApi';
 
 const { TabPane } = Tabs;
 
@@ -57,6 +56,13 @@ export const CalculatorProfile: FC<CalculatorProfileProps> = ({
     [model, serialNumber],
   );
 
+  const buildingProfilePath = useMemo(() => {
+    if (calculator?.address?.houseCategory === EHouseCategory.Living) {
+      return 'livingProfile';
+    }
+    return 'nonResidentialProfile';
+  }, [calculator]);
+
   const commonInfo = useMemo(
     () => (
       <CommonInfo
@@ -67,9 +73,7 @@ export const CalculatorProfile: FC<CalculatorProfileProps> = ({
               <>
                 {calculator?.address && (
                   <AddressLinkWrapper
-                    to={`/buildings/${
-                      objectRouteFromCategory[calculator.address.houseCategory]
-                    }Profile/${calculator.address?.id}`}
+                    to={`/buildings/${buildingProfilePath}/${calculator.address?.id}`}
                   >
                     {getBuildingAddress(calculator.address, true)}
                   </AddressLinkWrapper>
@@ -92,7 +96,7 @@ export const CalculatorProfile: FC<CalculatorProfileProps> = ({
         ]}
       />
     ),
-    [calculator],
+    [calculator, buildingProfilePath],
   );
 
   const menuButtons = useMemo(

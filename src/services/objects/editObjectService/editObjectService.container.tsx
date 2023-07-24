@@ -6,7 +6,6 @@ import { useUnit } from 'effector-react';
 import { addressSearchService } from 'services/addressSearchService/addressSearchService.models';
 import { createObjectService } from '../createObjectService';
 import { EHouseCategory } from 'myApi';
-import { objectRouteFromCategory } from '../objects.router';
 
 const { inputs, outputs, gates } = editObjectService;
 const { ObjectIdGate } = gates;
@@ -18,17 +17,15 @@ const {
 export const EditObjectContainer = () => {
   const { buildingId, houseCategory } = useParams<{
     buildingId: string;
-    houseCategory: EHouseCategory;
+    houseCategory: string;
   }>();
   const history = useHistory();
 
   const preparedHouseCategory = useMemo(() => {
-    if (houseCategory === objectRouteFromCategory[EHouseCategory.Living]) {
+    if (houseCategory === 'livingProfile') {
       return EHouseCategory.Living;
     }
-    if (
-      houseCategory === objectRouteFromCategory[EHouseCategory.NonResidential]
-    ) {
+    if (houseCategory === 'nonResidentialProfile') {
       return EHouseCategory.NonResidential;
     }
     return null;

@@ -8,7 +8,6 @@ import { CreateNodeConfirmationModal } from './view/CreateNodeConfirmationModal'
 import { CreateCalculatorModalContainer } from 'services/calculators/createCalculatorModalService';
 import { addressSearchService } from 'services/addressSearchService/addressSearchService.models';
 import { EHouseCategory } from 'myApi';
-import { objectRouteFromCategory } from 'services/objects/objects.router';
 
 const { inputs, outputs, gates } = createNodeService;
 const { CreateNodeGate } = gates;
@@ -21,12 +20,10 @@ export const CreateNodeContainer = () => {
   }>();
 
   const preparedHouseCategory = useMemo(() => {
-    if (houseCategory === objectRouteFromCategory[EHouseCategory.Living]) {
+    if (houseCategory === 'livingProfile') {
       return EHouseCategory.Living;
     }
-    if (
-      houseCategory === objectRouteFromCategory[EHouseCategory.NonResidential]
-    ) {
+    if (houseCategory === 'nonResidential') {
       return EHouseCategory.NonResidential;
     }
     return null;
