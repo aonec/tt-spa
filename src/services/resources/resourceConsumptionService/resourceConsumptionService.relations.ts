@@ -104,10 +104,3 @@ sample({
   target: resourceConsumptionFilterService.inputs.clearFilter,
 });
 
-sample({
-  clock:
-    resourceConsumptionFilterService.outputs
-      .$isResourceConsumptionAddressLoading,
-  target:
-    resourceConsumptionService.inputs.setResourceConsumptionAddressLoading,
-});

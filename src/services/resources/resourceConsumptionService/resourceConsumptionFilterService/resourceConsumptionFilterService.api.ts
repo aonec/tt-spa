@@ -1,4 +1,5 @@
 import { axios } from '01/axios';
+import { createEffect } from 'effector';
 import { HouseManagementWithStreetsResponse } from 'myApi';
 
 export const fetchAddresses = (
@@ -9,3 +10,8 @@ export const fetchAddresses = (
       City,
     },
   });
+
+export const getAddressesFx = createEffect<
+  string,
+  HouseManagementWithStreetsResponse[]
+>(fetchAddresses);

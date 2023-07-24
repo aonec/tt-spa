@@ -9,7 +9,7 @@ import {
   prepareAddressesWithParentsForTreeSelect,
 } from 'ui-kit/shared_components/AddressTreeSelect/AddressTreeSelect.utils';
 import { getAddressSearchData } from '../resourceConsumptionService.utils';
-import { fetchAddresses } from './resourceConsumptionFilterService.api';
+import { getAddressesFx } from './resourceConsumptionFilterService.api';
 import moment from 'moment';
 import { resourceConsumptionService } from '../resourceConsumptionService.model';
 import { ConsumptionDataFilter } from './resourceConsumptionFilterService.types';
@@ -17,11 +17,6 @@ import { ConsumptionDataFilter } from './resourceConsumptionFilterService.types'
 const domain = createDomain('resourceConsumptionFilterService');
 
 const clearFilter = domain.createEvent();
-
-const getAddressesFx = domain.createEffect<
-  string,
-  HouseManagementWithStreetsResponse[]
->(fetchAddresses);
 
 const selectCity = domain.createEvent<string>();
 const $selectedCity = domain
@@ -103,8 +98,6 @@ sample({
   target: getAddressesFx,
 });
 
-const $isResourceConsumptionAddressLoading = getAddressesFx.pending;
-
 export const resourceConsumptionFilterService = {
   inputs: {
     selectCity,
@@ -121,6 +114,5 @@ export const resourceConsumptionFilterService = {
     $houseManagements,
     $resourceConsumptionFilter,
     $selectedResource,
-    $isResourceConsumptionAddressLoading,
   },
 };

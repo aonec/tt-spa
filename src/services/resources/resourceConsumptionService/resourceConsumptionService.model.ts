@@ -16,14 +16,13 @@ import {
 import { BooleanTypesOfResourceConsumptionGraphForTwoMonth } from './view/ResourceConsumptionProfile/ResourceConsumptionProfile.types';
 import { EffectFailDataAxiosError } from 'types';
 import { addressSearchService } from 'services/addressSearchService/addressSearchService.models';
+import { getAddressesFx } from './resourceConsumptionFilterService/resourceConsumptionFilterService.api';
 
 const domain = createDomain('resourceConsumptionService');
 
 const clearData = domain.createEvent();
 
 const getConsumptionData = domain.createEvent<ConsumptionDataPayload>();
-
-const setResourceConsumptionAddressLoading = domain.createEvent<boolean>();
 
 const getHousingConsumptionFx = domain.createEffect<
   ConsumptionDataPayload,
@@ -72,19 +71,19 @@ const $summaryConsumption = domain
 const $isExistingCitiesLoading =
   addressSearchService.outputs.$isExistingCitiesLoading;
 
-const $isResourceConsumptionAddressLoading = domain
-  .createStore<boolean>(false)
-  .on(setResourceConsumptionAddressLoading, (_, data) => data);
-
 const ResourceConsumptionGate = createGate();
 
-const $isLoading = combine(
+const $isLoadingFromApi = combine(
   getHousingConsumptionFx.pending,
   getAdditionalConsumptionFx.pending,
   $isExistingCitiesLoading,
-  $isResourceConsumptionAddressLoading,
+  getAddressesFx.pending,
   (...loadings) => loadings.includes(true),
 );
+
+const $isLoading = domain
+  .createStore(true)
+  .on($isLoadingFromApi, (_, isLoading) => isLoading);
 
 sample({
   clock: getAdditionalConsumptionData,
@@ -127,7 +126,6 @@ export const resourceConsumptionService = {
     setSelectedGraphTypes,
     clearAdditionalAddressData,
     getSummaryConsumptions,
-    setResourceConsumptionAddressLoading,
   },
   outputs: {
     $housingConsumptionData,
