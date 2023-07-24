@@ -1,4 +1,4 @@
-import { EHouseCategory, HousingStockUpdateRequest } from 'myApi';
+import { EHouseCategory, HousingStockUpdateRequest } from 'api/types';
 
 export type EditObjectPayload = {
   buildingId: number;

@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
-import {  ESecuredIdentityRoleName } from 'api/types';
+import { ESecuredIdentityRoleName } from 'api/types';
 import { Panel } from 'App/Panel';
 import { Layout, PageWrapper, Wrapper } from './Router.styled';
 import { RouterProps } from './Router.types';

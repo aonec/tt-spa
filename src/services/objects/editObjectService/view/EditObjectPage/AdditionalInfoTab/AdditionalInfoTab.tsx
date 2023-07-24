@@ -19,7 +19,7 @@ import {
   IsElevatorDictionaryBoolean,
   getElevatorType,
 } from 'services/objects/createObjectService/view/CreateObjectPage/CreateObjectFinalStageModal/CreateObjectFinalStageModal.constants';
-import { EHouseCategory } from 'myApi';
+import { EHouseCategory } from 'api/types';
 
 export const AdditionalInfoTab: FC<AdditionalInfoTabProps> = ({
   onPageCancel,

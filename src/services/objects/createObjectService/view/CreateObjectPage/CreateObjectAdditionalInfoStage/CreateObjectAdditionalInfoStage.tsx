@@ -22,7 +22,7 @@ import {
   CreateObjectAdditionalInfoStageProps,
 } from './CreateObjectAdditionalInfoStage.types';
 import { DatePicker } from 'ui-kit/DatePicker';
-import { EHouseCategory } from 'myApi';
+import { EHouseCategory } from 'api/types';
 
 export const CreateObjectAdditionalInfoStage: FC<
   CreateObjectAdditionalInfoStageProps

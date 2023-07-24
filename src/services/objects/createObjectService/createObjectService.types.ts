@@ -1,4 +1,8 @@
-import { EHouseCategory, HousingStockCreateRequest, NonResidentialBuildingCreateRequest } from 'api/types';
+import {
+  EHouseCategory,
+  HousingStockCreateRequest,
+  NonResidentialBuildingCreateRequest,
+} from 'api/types';
 import { AdditionalInfo } from './view/CreateObjectPage/CreateObjectAdditionalInfoStage/CreateObjectAdditionalInfoStage.types';
 import { ObjectAddressValues } from './view/CreateObjectPage/CreateObjectAddressStage/CreateObjectAddressStage.types';
 import { ObjectMainInfoValues } from './view/CreateObjectPage/CreateObjectMainInfoStage/CreateObjectMainInfoStage.types';

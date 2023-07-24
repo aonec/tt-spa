@@ -7,7 +7,7 @@ import { CreateNodeServiceZoneContainer } from '../createNodeServiceZoneService'
 import { CreateNodeConfirmationModal } from './view/CreateNodeConfirmationModal';
 import { CreateCalculatorModalContainer } from 'services/calculators/createCalculatorModalService';
 import { addressSearchService } from 'services/addressSearchService/addressSearchService.models';
-import { EHouseCategory } from 'myApi';
+import { EHouseCategory } from 'api/types';
 
 const { inputs, outputs, gates } = createNodeService;
 const { CreateNodeGate } = gates;

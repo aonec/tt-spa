@@ -11,7 +11,7 @@ import {
 } from './HousingStockItem.styled';
 import { HousingStockItemProps } from './HousingStockItem.types';
 import { HouseCategoryDictionary } from 'services/objects/createObjectService/view/CreateObjectPage/CreateObjectMainInfoStage/createObjectMainInfoStage.constants';
-import { EHouseCategory } from 'myApi';
+import { EHouseCategory } from 'api/types';
 
 export const HousingStockItem: FC<HousingStockItemProps> = ({
   housingStock,

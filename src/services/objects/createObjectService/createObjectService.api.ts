@@ -10,7 +10,10 @@ import {
   NonResidentialBuildingCreateRequest,
   NonResidentialBuildingResponse,
 } from 'api/types';
-import { CreateBuildingRequest, CreateBuildingResponse } from './createObjectService.types';
+import {
+  CreateBuildingRequest,
+  CreateBuildingResponse,
+} from './createObjectService.types';
 
 export const getHouseManagements = (): Promise<
   HouseManagementResponse[] | null

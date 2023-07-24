@@ -5,7 +5,7 @@ import { editObjectService } from './editObjectService.model';
 import { useUnit } from 'effector-react';
 import { addressSearchService } from 'services/addressSearchService/addressSearchService.models';
 import { createObjectService } from '../createObjectService';
-import { EHouseCategory } from 'myApi';
+import { EHouseCategory } from 'api/types';
 
 const { inputs, outputs, gates } = editObjectService;
 const { ObjectIdGate } = gates;

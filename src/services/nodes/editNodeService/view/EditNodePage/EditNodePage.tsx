@@ -21,7 +21,7 @@ import { EditNodeUploadDocumentsContainer } from './editNodeUploadDocumentsServi
 import { IncorrectConfigAlert } from './IncorrectConfigAlert';
 import { NodeRegistrationTypeLookup } from 'dictionaries';
 import { EditCalculatorConnection } from './EditCalculatorConnection/EditCalculatorConnection';
-import { EHouseCategory } from 'myApi';
+import { EHouseCategory } from 'api/types';
 const { TabPane } = TabsSC;
 const formId = 'edit-node-page';
 

@@ -18,7 +18,7 @@ import { HousingStockTasksProps } from './HousingStockTasks.types';
 import { WithLoader } from 'ui-kit/shared/WithLoader';
 import { TaskInfoPanel } from './TaskInfoPanel';
 import { getTaskIconByTaskType } from './HousingStockTasks.utils';
-import { EHouseCategory } from 'myApi';
+import { EHouseCategory } from 'api/types';
 
 export const HousingStockTasks: FC<HousingStockTasksProps> = ({
   selectedHousingStock,
