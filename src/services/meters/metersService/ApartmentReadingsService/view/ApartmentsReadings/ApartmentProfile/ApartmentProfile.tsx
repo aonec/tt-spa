@@ -33,7 +33,6 @@ export const ApartmentProfile: FC<ApartmentProfileProps> = ({
   printIssueCertificate,
   handleUpdateHomeowner,
   isUpdateHomeownerLoading,
-  handleHomeownerUpdated,
 }) => {
   const { id } = useParams<{ id: string }>();
   const history = useHistory();
@@ -144,7 +143,6 @@ export const ApartmentProfile: FC<ApartmentProfileProps> = ({
                 ]}
                 handleUpdateHomeowner={handleUpdateHomeowner}
                 isUpdateHomeownerLoading={isUpdateHomeownerLoading}
-                handleHomeownerUpdated={handleHomeownerUpdated}
               />
               <ApartmentAlerts
                 apartment={apartment}

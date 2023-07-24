@@ -3,7 +3,6 @@ import { createGate } from 'effector-react';
 import {
   ApartmentResponse,
   HomeownerAccountResponse,
-  HomeownerAccountUpdateRequest,
 } from 'myApi';
 import { SearchMode } from './view/ApartmentsReadings/ApartmentsReadings.types';
 import {
@@ -172,7 +171,6 @@ export const apartmentReadingsService = {
       printApartmentDevicesCertificateService.inputs
         .printIssueSertificateButtonClicked,
     handleUpdateHomeowner,
-    handleHomeownerUpdated,
   },
   outputs: {
     $searchMode,

@@ -89,7 +89,6 @@ export const ApartmentReadingsContainer = () => {
         printIssueCertificate={handlePrintIssueCertificate}
         handleUpdateHomeowner={handleUpdateHomeowner}
         isUpdateHomeownerLoading={isUpdateHomeownerLoading}
-        handleHomeownerUpdated={inputs.handleHomeownerUpdated}
       />
     </>
   );

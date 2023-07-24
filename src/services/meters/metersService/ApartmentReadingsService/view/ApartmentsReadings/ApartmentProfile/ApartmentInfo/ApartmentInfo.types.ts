@@ -18,5 +18,4 @@ export type ApartmentInfoProps = {
   additionalHeaderInfo?: ReactNode;
   handleUpdateHomeowner?: (payload: UpdateHomeownerRequestPayload) => void;
   isUpdateHomeownerLoading?: boolean;
-  handleHomeownerUpdated?: Event<HomeownerAccountResponse>;
 };

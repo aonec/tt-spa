@@ -1,7 +1,5 @@
-import { Event } from 'effector';
 import {
   ApartmentResponse,
-  HomeownerAccountResponse,
   IndividualDeviceMountPlaceForFilterResponse,
 } from 'myApi';
 import {
@@ -29,7 +27,6 @@ export type ApartmentsReadingsProps = {
   printIssueCertificate: () => void;
   handleUpdateHomeowner: (payload: UpdateHomeownerRequestPayload) => void;
   isUpdateHomeownerLoading: boolean;
-  handleHomeownerUpdated: Event<HomeownerAccountResponse>;
 };
 
 export enum SearchMode {

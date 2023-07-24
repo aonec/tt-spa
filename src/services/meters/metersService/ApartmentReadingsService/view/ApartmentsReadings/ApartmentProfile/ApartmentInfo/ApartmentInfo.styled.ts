@@ -1,6 +1,5 @@
 import styled from 'styled-components';
-import { Input } from 'ui-kit/Input';
-import { ChevronIcon, PencilIcon } from 'ui-kit/icons';
+import { ChevronIcon } from 'ui-kit/icons';
 
 export const Header = styled.div`
   display: flex;
@@ -122,8 +121,6 @@ export const ManagementFirmInfo = styled.span`
   font-size: 12px;
   color: #272f5ae5;
 `;
-
-
 
 export const ExtraInfoWrapper = styled.div`
   margin-top: 12px;

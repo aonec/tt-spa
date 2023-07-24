@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useMemo, useState } from 'react';
+import React, { FC, useCallback, useEffect, useMemo, useState } from 'react';
 import { useEvent, useStore } from 'effector-react';
 import { Tooltip } from 'antd';
 import {
@@ -24,12 +24,10 @@ import { ApartmentInfoProps } from './ApartmentInfo.types';
 import { ContextMenuButton } from 'ui-kit/ContextMenuButton/ContextMenuButton';
 import { getApartmentAddressString } from 'utils/getApartmentAddress';
 import { BriefcaseIcon, CrownIcon, HouseIcon } from 'ui-kit/icons';
-import { Button } from 'ui-kit/Button';
 import moment from 'moment';
 import { apartmentInfoService } from './ApartmentInfo.model';
 import { PrintApartmentDevicesCertificateContainer } from 'services/apartments/printApartmentDevicesCertificateService';
 import { EditHomeownerField } from './EditHomeownerField';
-import { FieldType } from './EditHomeownerField/EditHomeownerField.types';
 import { CommentField } from './CommentField';
 
 const { inputs, outputs } = apartmentInfoService;
@@ -42,7 +40,6 @@ export const ApartmentInfo: FC<ApartmentInfoProps> = ({
   additionalHeaderInfo,
   isUpdateHomeownerLoading,
   handleUpdateHomeowner,
-  handleHomeownerUpdated,
 }) => {
   const filteredHomeowners = apartment.homeownerAccounts
     ?.filter((homeowner) => !homeowner.closedAt)
@@ -56,9 +53,7 @@ export const ApartmentInfo: FC<ApartmentInfoProps> = ({
 
   const initialHomeownerId = filteredHomeowners?.[0]?.id;
 
-  const [isEditing, setIsEditing] = useState(false);
   const [activeHomeowner, setActiveHomeowner] = useState(initialHomeownerId);
-  const [comment, setComment] = useState(apartment.comment);
 
   const togglePanel = useEvent(inputs.togglePanel);
 
@@ -67,27 +62,6 @@ export const ApartmentInfo: FC<ApartmentInfoProps> = ({
   const addressString = getApartmentAddressString(apartment);
 
   const housingStock = apartment.housingStock;
-
-  const handleEditComment = () => {
-    setIsEditing(true);
-  };
-
-  const handleCancelEditComment = () => {
-    setComment(apartment.comment);
-    setIsEditing(false);
-  };
-
-  const handleSaveComment = () => {
-    setIsEditing(false);
-
-    if (comment === apartment.comment) return;
-
-    handleUpdateApartment({ apartmentId: apartment.id, comment });
-  };
-
-  useEffect(() => {
-    setComment(apartment.comment);
-  }, [apartment.comment]);
 
   const selectedHomeowner = apartment.homeownerAccounts?.find(
     (homeowner) => homeowner.id === activeHomeowner,
@@ -116,6 +90,16 @@ export const ApartmentInfo: FC<ApartmentInfoProps> = ({
   const accountingOpeningDate = `открыт с ${moment(
     selectedHomeowner?.openAt,
   ).format('DD.MM.YYYY')}`;
+
+  const updateHomeowner = useCallback(
+    (value: string, fieldName: string) =>
+      activeHomeowner &&
+      handleUpdateHomeowner?.({
+        id: activeHomeowner,
+        data: { [fieldName]: value },
+      }),
+    [activeHomeowner, handleUpdateHomeowner],
+  );
 
   return (
     <>
@@ -183,18 +167,15 @@ export const ApartmentInfo: FC<ApartmentInfoProps> = ({
           {isPanelOpen && (
             <ExtraInfoWrapper>
               <EditHomeownerField
-                fieldType={FieldType.Name}
-                value={selectedHomeowner?.name || null}
                 title="Собственник"
-                homeownerId={activeHomeowner}
-                handleUpdate={handleUpdateHomeowner}
+                value={selectedHomeowner?.name || null}
+                handleUpdate={(value) => updateHomeowner(value, 'name')}
                 isUpdateHomeownerLoading={isUpdateHomeownerLoading}
-                handleHomeownerUpdated={handleHomeownerUpdated}
               />
               <div>
                 <InfoPanelLabel>Лицевой счет</InfoPanelLabel>
                 <ExtraInfoText>
-                  {selectedHomeowner?.personalAccountNumber}{' '}
+                  {selectedHomeowner?.personalAccountNumber}
                   <AccountOpeningDate>
                     {accountingOpeningDate}
                   </AccountOpeningDate>
@@ -205,13 +186,10 @@ export const ApartmentInfo: FC<ApartmentInfoProps> = ({
                 <ExtraInfoText>{selectedHomeowner?.paymentCode}</ExtraInfoText>
               </div>
               <EditHomeownerField
-                fieldType={FieldType.PhoneNumber}
-                value={selectedHomeowner?.phoneNumber || null}
                 title="Телефон"
-                homeownerId={activeHomeowner}
-                handleUpdate={handleUpdateHomeowner}
+                value={selectedHomeowner?.phoneNumber || null}
+                handleUpdate={(value) => updateHomeowner(value, 'phoneNumber')}
                 isUpdateHomeownerLoading={isUpdateHomeownerLoading}
-                handleHomeownerUpdated={handleHomeownerUpdated}
               />
             </ExtraInfoWrapper>
           )}
