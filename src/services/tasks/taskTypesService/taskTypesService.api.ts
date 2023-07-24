@@ -1,11 +1,11 @@
-import { axios } from '01/axios';
+import { axios } from 'api/axios';
 import {
   BuildingFiltersResponse,
   EManagingFirmTaskFilterTypeNullableStringDictionaryItem,
   GuidStringDictionaryItem,
   OrganizationUserListResponsePagedList,
   TaskFilterResponse,
-} from 'myApi';
+} from 'api/types';
 
 export const getTaskTypes = async (): Promise<
   EManagingFirmTaskFilterTypeNullableStringDictionaryItem[] | null

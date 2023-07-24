@@ -1,9 +1,9 @@
 import queryString from 'query-string';
-import { axios } from '01/axios';
-import { OrganizationUserListResponsePagedList } from 'myApi';
+import { axios } from 'api/axios';
+import { OrganizationUserListResponsePagedList } from 'api/types';
 
 export const getOrganizationUsers = (
-  RoleNames: string[] | null
+  RoleNames: string[] | null,
 ): Promise<OrganizationUserListResponsePagedList> =>
   axios.get('OrganizationUsers', {
     params: RoleNames && { RoleNames },

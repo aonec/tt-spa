@@ -1,10 +1,10 @@
-import { axios } from '01/axios';
+import { axios } from 'api/axios';
 import {
   AllNodeWorkingRangeResponse,
   ENodeWorkingRangeSeason,
   EResourceType,
   HouseManagementResponse,
-} from 'myApi';
+} from 'api/types';
 
 export const getGroupWorkingRange = (query: {
   nodeResourceType: EResourceType;

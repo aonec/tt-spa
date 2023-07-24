@@ -1,4 +1,4 @@
-import { EStageStatus } from 'myApi';
+import { EStageStatus } from 'api/types';
 
 export const StageIconColorLookup: { [key in EStageStatus]: string } = {
   Done: '#189ee9',

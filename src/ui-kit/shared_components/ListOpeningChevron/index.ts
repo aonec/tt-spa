@@ -1,1 +1,0 @@
-export { ListOpeningChevron } from './ListOpeningChevron'

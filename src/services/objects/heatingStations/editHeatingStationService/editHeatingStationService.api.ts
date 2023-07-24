@@ -1,9 +1,9 @@
-import { axios } from '01/axios';
-import { HeatingStationResponse } from 'myApi';
+import { axios } from 'api/axios';
+import { HeatingStationResponse } from 'api/types';
 import { requestParams } from './editHeatingStationService.types';
 
 export const editHeatingStation = (
-  params: requestParams
+  params: requestParams,
 ): Promise<HeatingStationResponse | null> => {
   return axios.put(`HeatingStation/${params.id}`, params.data);
 };

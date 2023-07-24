@@ -1,4 +1,4 @@
-import { TaskCommentRequest, TaskCommentResponse } from 'myApi';
+import { TaskCommentRequest, TaskCommentResponse } from 'api/types';
 
 export type CommentProps = {
   comment: TaskCommentResponse;

@@ -1,6 +1,6 @@
 import { createDomain, merge, sample } from 'effector';
 import { createGate } from 'effector-react';
-import { CalculatorCommentResponse } from 'myApi';
+import { CalculatorCommentResponse } from 'api/types';
 import {
   fetchCreateComment,
   fetchRemoveComment,

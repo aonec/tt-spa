@@ -1,13 +1,13 @@
 import React, { FC } from 'react';
 import moment from 'moment';
 import { NodeStatusIconsDictionary } from 'services/devices/resourceAccountingSystemsService/view/ResourceAccountingSystems/NodesGroup/NodeItem/NodeStatus/NodeStatus.constants';
-import { CommonInfo } from 'ui-kit/shared_components/CommonInfo';
+import { CommonInfo } from 'ui-kit/shared/CommonInfo';
 import { getBuildingAddress } from 'utils/getBuildingAddress';
 import { AddressWrapper, NodeStatusWrapper } from './CommonInfoTab.styled';
 import { CommonInfoTabProps } from './CommonInfoTab.types';
 import { additionalAddressesString } from 'utils/additionalAddressesString';
 import { Tooltip } from 'antd';
-import { ENodeRegistrationType } from 'myApi';
+import { ENodeRegistrationType } from 'api/types';
 import { configNamesLookup } from 'utils/configNamesLookup';
 import { NodeRegistrationTypeLookup } from 'dictionaries';
 

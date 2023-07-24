@@ -1,8 +1,8 @@
-import { axios } from '01/axios';
+import { axios } from 'api/axios';
 import {
   ApartmentResponse,
   IndividualDeviceListItemResponsePagedList,
-} from 'myApi';
+} from 'api/types';
 
 export const fetchApartment = (id: number): Promise<ApartmentResponse> =>
   axios.get(`Apartments/${id}`);

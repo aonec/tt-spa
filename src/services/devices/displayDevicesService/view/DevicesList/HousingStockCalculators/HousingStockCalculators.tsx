@@ -1,13 +1,13 @@
 import React, { FC, useCallback } from 'react';
 import { HousingStockCalculatorsProps } from './HousingStockCalculators.types';
-import { HouseAddress } from 'myApi';
+import { HouseAddress } from 'api/types';
 import { DevicesSearchType } from 'services/devices/devicesPageService/devicesPageService.types';
 import {
   CalculatorNodesListWrapper,
   HousingStockAddress,
   HousingStockAddressHeaderWrapper,
 } from './HousingStockCalculators.styled';
-import { Switcher } from 'ui-kit/shared_components/Switcher';
+import { Switcher } from 'ui-kit/shared/Switcher';
 import { getHousingStockAddressString } from 'utils/getBuildingAddress';
 import { CalculatorNodes } from './CalculatorNodes';
 

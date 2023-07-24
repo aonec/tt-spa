@@ -1,4 +1,4 @@
-import { ENodeCommercialAccountStatus } from 'myApi';
+import { ENodeCommercialAccountStatus } from 'api/types';
 import { ChangeNodeStatusFormPayload } from '../../changeNodeStatusService.types';
 
 export type ChangeNodeStatusFormProps = {

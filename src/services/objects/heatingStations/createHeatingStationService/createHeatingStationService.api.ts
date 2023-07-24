@@ -1,12 +1,8 @@
-import { axios } from '01/axios';
-import {
-  AddHeatingStationRequest,
-  HeatingStationResponse,
-} from 'myApi';
-
+import { axios } from 'api/axios';
+import { AddHeatingStationRequest, HeatingStationResponse } from 'api/types';
 
 export const postHeatingStation = (
-  requestPayload: AddHeatingStationRequest
+  requestPayload: AddHeatingStationRequest,
 ): Promise<HeatingStationResponse | null> => {
   return axios.post('HeatingStation', requestPayload);
 };

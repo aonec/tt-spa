@@ -3,11 +3,10 @@ import { useEvent, useStore } from 'effector-react';
 import { message, Tooltip } from 'antd';
 import confirm from 'antd/lib/modal/confirm';
 import { useHistory } from 'react-router-dom';
-import { ESecuredIdentityRoleName } from 'myApi';
+import { ESecuredIdentityRoleName } from 'api/types';
 import { HistoryIcon, StarIcon } from 'ui-kit/icons';
 import { deleteIndividualDeviceService } from 'services/devices/individualDevices/deleteIndividualDevice/deleteIndividualDeviceService.models';
 import { ContextMenuButton } from 'ui-kit/ContextMenuButton/ContextMenuButton';
-import { reopenIndividualDevice } from '01/_api/individualDevices';
 import { getMeasurementUnit } from '../../individualDeviceMetersInputService.utils';
 import { MetersInputsBlock } from '../MetersInputsBlock';
 import { getRateNum } from '../MetersInputsBlock/MetersInputsBlock.utils';
@@ -20,13 +19,14 @@ import { getPreviousMeterTooltipTitle } from './individualDeviceMetersInputLine.
 import { apartmentIndividualDevicesMetersService } from 'services/meters/apartmentIndividualDevicesMetersService';
 import { editReadingsHistoryService } from 'services/meters/editReadingsHistoryService';
 import { SelectSwitchDeviceTypeModal } from './SelectSwitchDeviceTypeModal';
-import { IndividualDeviceInfoExtended } from 'ui-kit/shared_components/IndividualDeviceInfoExtended';
+import { IndividualDeviceInfoExtended } from 'ui-kit/shared/IndividualDeviceInfoExtended';
 import { currentUserService } from 'services/currentUserService';
 import {
   ContextMenuButtonColor,
   ContextMenuElement,
 } from 'ui-kit/ContextMenuButton/ContextMenuButton.types';
 import { closeIndividualDeviceService } from 'services/devices/individualDevices/closeIndividualDeviceService';
+import { reopenIndividualDevice } from '../../individualDeviceMetersInputService.api';
 
 export const IndividualDeviceMetersInputLine: FC<
   IndividualDeviceMetersInputLineProps

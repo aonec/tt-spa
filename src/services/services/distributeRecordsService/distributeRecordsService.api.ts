@@ -1,4 +1,4 @@
-import { axios } from '01/axios';
+import { axios } from 'api/axios';
 import { createMutation, createQuery } from '@farfetched/core';
 import {
   AppointmentCounterResponse,
@@ -7,7 +7,7 @@ import {
   ControllerResponse,
   DistrictResponse,
   TotalAppointmentCounterResponse,
-} from 'myApi';
+} from 'api/types';
 import {
   AppointmentsCountingByDistrictsResponse,
   GetDistrictAppointmentsRequestPayload,

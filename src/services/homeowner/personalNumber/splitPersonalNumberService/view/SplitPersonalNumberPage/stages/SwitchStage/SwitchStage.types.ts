@@ -1,4 +1,4 @@
-import { HomeownerAccountListResponse } from 'myApi';
+import { HomeownerAccountListResponse } from 'api/types';
 import { SwitchStage } from 'services/homeowner/personalNumber/splitPersonalNumberService/splitPersonalNumberService.types';
 
 export type SwitchStageProps = {

@@ -13,7 +13,7 @@ import {
   CalculatorResponse,
   MeteringDeviceResponse,
   UpdateCalculatorRequest,
-} from 'myApi';
+} from 'api/types';
 import { createGate } from 'effector-react';
 import { message } from 'antd';
 import { calculatorsInfoService } from '../calculatorsInfoService';

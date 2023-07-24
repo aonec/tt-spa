@@ -15,7 +15,7 @@ import {
 } from '../editApartmentActService';
 import { apartmentActsListService } from './apartmentActsListService.model';
 import { ApartmentActsList } from './view/ApartmentActsList';
-import { ESecuredIdentityRoleName } from 'myApi';
+import { ESecuredIdentityRoleName } from 'api/types';
 import { usePermission } from 'hooks/usePermission';
 
 const { outputs, inputs, gates } = apartmentActsListService;

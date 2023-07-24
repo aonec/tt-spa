@@ -1,0 +1,1 @@
+export { IndividualDeviceInfoShort } from './IndividualDeviceInfoShort';

@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 import { Form, Radio, Space } from 'antd';
 import { useFormik } from 'formik';
 import moment from 'moment';
-import { ESoiReportPeriod } from 'myApi';
+import { ESoiReportPeriod } from 'api/types';
 import { ErrorMessage } from 'ui-kit/ErrorMessage';
 import { TreeSelectSC } from 'services/resources/createResourceDisconnectionService/view/CreateResourceDisconnectionForm/CreateResourceDisconnectionForm.styled';
 import { DatePicker } from 'ui-kit/DatePicker';
@@ -14,7 +14,7 @@ import { CREATE_SOI_REPORT_FORM_ID } from '../SoiReportModal.constants';
 import { formInitialValues, validationSchema } from './SoiReportForm.constants';
 import { FormGrid } from './SoiReportForm.styled';
 import { SoiReportFormProps } from './SoiReportForm.types';
-import { ResourceSelect } from 'ui-kit/shared_components/ResourceSelect';
+import { ResourceSelect } from 'ui-kit/shared/ResourceSelect';
 
 const withoutHouseMagement = 'withoutHouseMagement';
 

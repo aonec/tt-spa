@@ -1,7 +1,7 @@
 import { createNodeService } from './../../../createNodeService.model';
 import { message } from 'antd';
 import { createDomain } from 'effector';
-import { BuildingListResponse } from 'myApi';
+import { BuildingListResponse } from 'api/types';
 import { GetHousingStocksRequestPayload } from 'services/objects/displayObjectsListService/displayObjectsListService.types';
 import { EffectFailDataAxiosError } from 'types';
 import { getHousingStock } from './MountAddress.api';

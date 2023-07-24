@@ -1,4 +1,4 @@
-import { fromEnter } from 'ui-kit/shared_components/DatePickerNative';
+import { fromEnter } from 'ui-kit/shared/DatePickerNative';
 import React, { FC, ReactElement } from 'react';
 import { FormItem } from 'ui-kit/FormItem';
 import { SearchFieldsLabels } from './AddressSearch.constants';
@@ -23,7 +23,7 @@ export const AddressSearch: FC<AddressSearchProps> = ({
   showLabels,
   disabledFields,
 }) => {
-  const next = useSwitchInputOnEnter(dataKey, false);
+  const next = useSwitchInputOnEnter(dataKey, false, false);
 
   const autocomplete = useAutocomplete(values.street || null, streets);
   const streetMatch = autocomplete ? autocomplete.bestMatch : null;
@@ -43,7 +43,6 @@ export const AddressSearch: FC<AddressSearchProps> = ({
       placeholder="Город"
       onKeyDown={fromEnter(() => next(index))}
       data-reading-input={dataKey}
-      showAction={['focus']}
       onChange={(value) => {
         handleChange(SearchFieldType.City, value.toString());
 

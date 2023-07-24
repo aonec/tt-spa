@@ -1,4 +1,4 @@
-import { ApartmentResponse } from 'myApi';
+import { ApartmentResponse } from 'api/types';
 import { ReactNode } from 'react';
 import {
   UpdateApartmentRequestPayload,

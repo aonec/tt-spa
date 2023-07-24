@@ -9,6 +9,7 @@ import {
   existingHousingStocksQuery,
 } from './createDistrictBorderMapService.api';
 import { CreatingDistrictPayload } from './createDistrictBorderMapService.types';
+import { currentUserService } from 'services/currentUserService';
 
 const domain = createDomain('createDistrictBorderMap');
 
@@ -71,7 +72,11 @@ createDistrictMutation.finished.failure.watch((e) => {
 
 export const createDistrictBorderMapService = {
   inputs: { setDistrictPayload },
-  outputs: { $preselectedDistrictPayload },
+  outputs: {
+    $preselectedDistrictPayload,
+    $organizationCoordinates:
+      currentUserService.outputs.$organizationCoordinates,
+  },
   gates: { CreateDistrictGate },
   forms: { createDistrictForm },
 };

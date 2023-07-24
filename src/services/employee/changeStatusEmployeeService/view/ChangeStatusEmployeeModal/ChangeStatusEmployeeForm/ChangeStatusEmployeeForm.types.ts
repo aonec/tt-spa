@@ -1,12 +1,12 @@
 import {
   AddOrganizationUserWorkingStatusRequest,
   UserStatusResponse,
-} from 'myApi';
+} from 'api/types';
 
 export type ChangeStatusEmployeeFormProps = {
   formId: string;
   handleUpdateStatus: (
-    payload: AddOrganizationUserWorkingStatusRequest
+    payload: AddOrganizationUserWorkingStatusRequest,
   ) => void;
   employeeStatus: {
     id: number;

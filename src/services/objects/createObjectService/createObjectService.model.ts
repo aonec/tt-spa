@@ -1,7 +1,7 @@
 import { message } from 'antd';
 import { createDomain, forward, guard, sample } from 'effector';
 import { createGate } from 'effector-react';
-import { HouseManagementResponse, HousingStockCreateRequest } from 'myApi';
+import { HouseManagementResponse, HousingStockCreateRequest } from 'api/types';
 import { EffectFailDataAxiosError } from 'types';
 import { createHeatingStationService } from '../heatingStations/createHeatingStationService';
 import { displayHeatingStationsService } from '../heatingStations/displayHeatingStationsService';

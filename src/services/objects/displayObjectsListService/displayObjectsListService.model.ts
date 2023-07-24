@@ -1,6 +1,6 @@
 import { createGate } from 'effector-react';
-import { createDomain, forward, guard, sample } from 'effector';
-import { BuildingListResponsePagedList } from 'myApi';
+import { createDomain, forward, sample } from 'effector';
+import { BuildingListResponsePagedList } from 'api/types';
 import { getHousuingStocks } from './displayObjectsListService.api';
 import {
   GetHousingStocksRequestPayload,
@@ -51,7 +51,8 @@ $searchPayload
   .reset(clearSearchState);
 
 sample({
-  clock: [guard({ clock: $searchPayload, filter: Boolean })],
+  clock: $searchPayload,
+  filter: (searchPayload) => Boolean(searchPayload),
   fn: (payload) => {
     return {
       City: payload?.city,

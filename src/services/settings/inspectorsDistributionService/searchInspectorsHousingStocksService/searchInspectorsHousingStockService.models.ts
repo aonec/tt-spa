@@ -1,6 +1,7 @@
-import { createDomain } from 'effector';
+import { createDomain, sample } from 'effector';
 import { createForm } from 'effector-forms';
 import { GetInspectorsHousingStocksRequestParams } from '../displayInspectorsHousingStocksService/types';
+import { addressSearchService } from 'services/addressSearchService/addressSearchService.models';
 
 const searchInspectorsHousingStockServiceDomain = createDomain(
   'searchInspectorsHousingStockService',
@@ -42,6 +43,40 @@ const startSearchInspectorsHousingStocks =
 
 const applyExtendedFilters =
   searchInspectorsHousingStockServiceDomain.createEvent();
+
+sample({
+  clock: addressSearchService.outputs.$existingCities.map((cities) =>
+    cities ? cities[cities.length - 1] : '',
+  ),
+  target: searchForm.fields.City.set,
+});
+
+$isExtendedSearchOpen
+  .on(extendedSearchOpened, () => true)
+  .reset(extendedSearchClosed);
+
+sample({
+  clock: clearExtendedSearch,
+  target: [
+    searchForm.fields.HouseManagement.resetValue,
+    searchForm.fields.InspectorId.resetValue,
+  ],
+});
+
+sample({
+  clock: applyExtendedFilters,
+  target: [searchForm.submit, extendedSearchClosed],
+});
+
+sample({
+  source: searchForm.$values,
+  clock: searchForm.submit,
+  filter: (values) =>
+    Boolean(values.HouseManagement || values.InspectorId) ||
+    Boolean(values.City && values.Street),
+  fn: (values) => values,
+  target: startSearchInspectorsHousingStocks,
+});
 
 export const searchInspectorsHousingStockService = {
   forms: {

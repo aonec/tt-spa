@@ -1,4 +1,4 @@
-import { HomeownerAccountCreateRequest } from 'myApi';
+import { HomeownerAccountCreateRequest } from 'api/types';
 import { EditHomeownerRequestPayload } from '../editHomeownerService/editHomeownerService.types';
 import { formInitialValues } from './EditHomeownerForm.constants';
 

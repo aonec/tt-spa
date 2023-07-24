@@ -2,7 +2,7 @@ import { useYMaps } from '@pbe/react-yandex-maps';
 import {
   BuildingWithTasksResponse,
   HousingStockWithTasksResponse,
-} from 'myApi';
+} from 'api/types';
 import React, { FC, useEffect, useRef, useState } from 'react';
 import { MapZoomControl } from './MapZoomControl';
 import { Wrapper } from './TasksMapsNative.styled';
@@ -18,6 +18,7 @@ export const TasksMapsNative: FC<TasksMapsNativeProps> = ({
   buildingsWithTasks,
   handleClickMarker,
   selectedHousingStockId,
+  organizationCoordinates,
 }) => {
   const mapRef = useRef<HTMLDivElement | null>(null);
   const ymaps = useYMaps(['Map', 'Placemark', 'Clusterer']);
@@ -33,7 +34,7 @@ export const TasksMapsNative: FC<TasksMapsNativeProps> = ({
     }
 
     const map = new ymaps.Map(mapRef.current, {
-      center: [55.6366, 51.8245],
+      center: organizationCoordinates || [55.6366, 51.8245],
       zoom: 15,
     });
 
@@ -78,7 +79,7 @@ export const TasksMapsNative: FC<TasksMapsNativeProps> = ({
     setClusterer(clusterer);
 
     map.geoObjects.add(clusterer as unknown as ymaps.ObjectManager);
-  }, [ymaps, mapRef]);
+  }, [ymaps, mapRef, organizationCoordinates]);
 
   useEffect(() => {
     if (!ymaps?.Placemark || !clusterer) return;
@@ -140,10 +141,12 @@ export const TasksMapsNative: FC<TasksMapsNativeProps> = ({
   useEffect(() => {
     if (isCentered || !map) return;
 
-    const coordinates = buildingsWithTasks?.[0]?.building?.coordinates;
+    const buildingWithCoordinates = buildingsWithTasks?.find((elem) =>
+      Boolean(elem.building?.coordinates),
+    );
 
-    const latitude = coordinates?.latitude;
-    const longitude = coordinates?.longitude;
+    const { latitude, longitude } =
+      buildingWithCoordinates?.building?.coordinates || {};
 
     if (!latitude || !longitude) return;
 

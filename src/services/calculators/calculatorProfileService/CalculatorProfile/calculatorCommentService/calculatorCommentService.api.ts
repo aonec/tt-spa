@@ -1,5 +1,5 @@
-import { axios } from '01/axios';
-import { CalculatorCommentResponse } from 'myApi';
+import { axios } from 'api/axios';
+import { CalculatorCommentResponse } from 'api/types';
 import { CalculatorCommentPayload } from './calculatorCommentService.types';
 
 export const fetchRemoveComment = (deviceId: number): Promise<void> =>

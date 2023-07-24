@@ -1,8 +1,8 @@
-import { axios } from '01/axios';
+import { axios } from 'api/axios';
 import {
   IndividualDeviceMountPlaceForFilterResponse,
   IndividualDeviceMountPlaceListResponse,
-} from 'myApi';
+} from 'api/types';
 
 export const getIndividualDeviceMountPlaces = async (
   id: number,

@@ -1,4 +1,4 @@
-import { AddressShortResponse } from 'myApi';
+import { AddressShortResponse } from 'api/types';
 import {
   CheckedHousingStocksIdWithStreets,
   CheckedHousingStocksIdWithStreetsHandler,

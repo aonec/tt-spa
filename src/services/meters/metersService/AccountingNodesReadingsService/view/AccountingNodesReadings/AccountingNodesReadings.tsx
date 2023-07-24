@@ -4,8 +4,8 @@ import { AccountingNodesReadingsProps } from './AccountingNodesReadings.types';
 import { AddressSearchContainer } from 'services/addressSearchService';
 import { SearchFieldType } from 'services/addressSearchService/view/AddressSearch/AddressSearch.types';
 import { Empty } from 'antd';
-import { TypeAddressToStart } from 'ui-kit/shared_components/TypeToStart';
-import { WithLoader } from 'ui-kit/shared_components/WithLoader';
+import { TypeAddressToStart } from 'ui-kit/shared/TypeToStart';
+import { WithLoader } from 'ui-kit/shared/WithLoader';
 import { AccountingNodesList } from '../AccountingNodesList';
 
 export const AccountingNodesReadings: FC<AccountingNodesReadingsProps> = ({

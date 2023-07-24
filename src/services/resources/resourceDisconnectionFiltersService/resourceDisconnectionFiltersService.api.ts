@@ -1,5 +1,6 @@
-import { axios } from '01/axios';
-import { ResourceDisconnectingFilterResponse } from 'myApi';
+import { axios } from 'api/axios';
+import { ResourceDisconnectingFilterResponse } from 'api/types';
 
-export const fetchResourceDisconnectionFilters = (): Promise<ResourceDisconnectingFilterResponse> =>
-  axios.get('ResourceDisconnecting/Filters');
+export const fetchResourceDisconnectionFilters =
+  (): Promise<ResourceDisconnectingFilterResponse> =>
+    axios.get('ResourceDisconnecting/Filters');

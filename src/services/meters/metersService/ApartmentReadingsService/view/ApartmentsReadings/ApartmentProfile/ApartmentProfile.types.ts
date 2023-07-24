@@ -1,6 +1,4 @@
-import {
-  ApartmentResponse,
-} from 'myApi';
+import { ApartmentResponse } from 'api/types';
 import {
   GetApartmentsRequestPayload,
   UpdateApartmentRequestPayload,

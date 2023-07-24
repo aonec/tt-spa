@@ -1,9 +1,9 @@
-import { axios } from '01/axios';
+import { axios } from 'api/axios';
 import { SubscriberStatisticsFilter } from '../displayStatisticsListByManagingFirmService/displayStatisticsListByManagingFirmService.types';
 import {
   BuildingListResponsePagedList,
   SubscriberStatisticsСonsumptionResponse,
-} from 'myApi';
+} from 'api/types';
 import { HousingStockAddressForm } from './displayStatisticsListByHousesService.types';
 
 export const fetchStatisticsByHouse = (

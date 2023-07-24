@@ -1,5 +1,5 @@
 import { createDomain, sample } from 'effector';
-import { EClosingReason, IndividualDeviceListItemResponse } from 'myApi';
+import { EClosingReason, IndividualDeviceListItemResponse } from 'api/types';
 import { closeIndivididualDeviceMutation } from './closeIndividualDeviceService.api';
 import { message } from 'antd';
 import { createForm } from 'effector-forms';

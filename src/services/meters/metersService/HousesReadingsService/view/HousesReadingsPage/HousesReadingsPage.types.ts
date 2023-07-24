@@ -2,14 +2,14 @@ import {
   HousingStockResponse,
   IndividualDeviceListItemResponse,
   InspectorResponse,
-} from 'myApi';
+} from 'api/types';
 import { ConsumptionRatesDictionary } from 'services/meters/managementFirmConsumptionRatesService/managementFirmConsumptionRatesService.types';
 import { GetHousingStocksListRequestPayload } from '../../HousesReadingsService.types';
 
 export type HousesReadingsPageProps = {
   housingStock: HousingStockResponse | null;
   handleSearchHousingStock: (
-    payload: GetHousingStocksListRequestPayload
+    payload: GetHousingStocksListRequestPayload,
   ) => void;
   isLoadingHousingStock: boolean;
   inspector: InspectorResponse | null;

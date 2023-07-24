@@ -1,8 +1,8 @@
 import { MagistralsDisctionary } from 'dictionaries';
 import moment from 'moment';
-import { EMagistralType } from 'myApi';
+import { EMagistralType } from 'api/types';
 import React, { FC } from 'react';
-import { CommonInfo } from 'ui-kit/shared_components/CommonInfo';
+import { CommonInfo } from 'ui-kit/shared/CommonInfo';
 import { getBuildingAddress } from 'utils/getBuildingAddress';
 import { Address } from './CommonInfoTab.styled';
 import { CommonInfoProps } from './CommonInfoTab.types';

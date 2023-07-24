@@ -27,8 +27,9 @@ export const DistrictsMap: FC<Props> = ({
   openDistributeAppointmentsModal,
   controllers,
   openRemoveAssignmentModal,
+  organizationCoordinates,
 }) => {
-  const { mapRef, map } = useYMaps();
+  const { mapRef, map } = useYMaps(organizationCoordinates);
 
   const filteredDistrictsList = useMemo(() => {
     if (!selectedDistrict) return districtsList;

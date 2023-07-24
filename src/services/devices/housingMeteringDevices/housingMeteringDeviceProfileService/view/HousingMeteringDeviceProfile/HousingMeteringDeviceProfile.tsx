@@ -2,11 +2,11 @@ import React, { FC } from 'react';
 import { useHistory } from 'react-router-dom';
 import { stringifyUrl } from 'query-string';
 
-import { GoBack } from 'ui-kit/shared_components/GoBack';
-import { HeaderInfoString } from 'ui-kit/shared_components/HeaderInfoString';
-import { DeviceStatus } from 'ui-kit/shared_components/IndividualDeviceInfo/DeviceStatus';
-import { ResourceIconLookup } from 'ui-kit/shared_components/ResourceIconLookup';
-import { LinkCard } from 'ui-kit/shared_components/LinkCard';
+import { GoBack } from 'ui-kit/shared/GoBack';
+import { HeaderInfoString } from 'ui-kit/shared/HeaderInfoString';
+import { DeviceStatus } from 'ui-kit/shared/IndividualDeviceInfo/DeviceStatus';
+import { ResourceIconLookup } from 'ui-kit/shared/ResourceIconLookup';
+import { LinkCard } from 'ui-kit/shared/LinkCard';
 import { getHousingStockItemAddress } from 'utils/getHousingStockItemAddress';
 import { CheckHousingMeteringDeviceContainer } from 'services/devices/housingMeteringDevices/checkHousingMeteringDeviceService';
 import { CloseHousingMeteringDeviceContainer } from 'services/devices/housingMeteringDevices/closeHousingMeteringDeviceService';
@@ -28,7 +28,7 @@ import {
 } from './HousingMeteringDeviceProfile.styled';
 import { HousingMeteringDeviceProfileProps } from './HousingMeteringDeviceProfile.types';
 import { ContextMenuButtonColor } from 'ui-kit/ContextMenuButton/ContextMenuButton.types';
-import { TaskGroupingFilter } from 'myApi';
+import { TaskGroupingFilter } from 'api/types';
 
 const { TabPane } = TabsSC;
 

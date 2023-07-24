@@ -1,7 +1,7 @@
 import { useEvent, useStore } from 'effector-react';
 import React, { useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
-import { WithLoader } from 'ui-kit/shared_components/WithLoader';
+import { WithLoader } from 'ui-kit/shared/WithLoader';
 import { editCompanyService } from './editCompanyService.model';
 import { EditCompanyPage } from './view/EditCompanyPage';
 import { addressSearchService } from 'services/addressSearchService/addressSearchService.models';

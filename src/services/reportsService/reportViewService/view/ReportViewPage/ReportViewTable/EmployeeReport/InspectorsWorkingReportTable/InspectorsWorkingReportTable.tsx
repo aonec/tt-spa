@@ -1,4 +1,4 @@
-import { InspectorsConstructedReportResponse } from 'myApi';
+import { InspectorsConstructedReportResponse } from 'api/types';
 import React, { FC } from 'react';
 import { Table } from 'ui-kit/Table';
 import { getFilledArray } from 'utils/getFilledArray';

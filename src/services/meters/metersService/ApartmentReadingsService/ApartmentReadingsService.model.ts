@@ -1,9 +1,6 @@
 import { createDomain, forward, guard, sample } from 'effector';
 import { createGate } from 'effector-react';
-import {
-  ApartmentResponse,
-  HomeownerAccountResponse,
-} from 'myApi';
+import { ApartmentResponse, HomeownerAccountResponse } from 'api/types';
 import { SearchMode } from './view/ApartmentsReadings/ApartmentsReadings.types';
 import {
   GetApartmentsRequestPayload,

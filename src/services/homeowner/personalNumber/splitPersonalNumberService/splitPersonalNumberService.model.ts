@@ -15,7 +15,7 @@ import {
 import {
   HomeownerAccountSplitRequest,
   IndividualDeviceListItemResponse,
-} from 'myApi';
+} from 'api/types';
 import { EffectFailDataAxiosErrorDataApartmentId } from 'types';
 import moment from 'moment';
 import { createGate } from 'effector-react';

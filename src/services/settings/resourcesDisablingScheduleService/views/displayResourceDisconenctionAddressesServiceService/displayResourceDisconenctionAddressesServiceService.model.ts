@@ -1,6 +1,9 @@
 import { createDomain } from 'effector';
 import { groupBy } from 'lodash';
-import { BuildingShortResponse, ResourceDisconnectingResponse } from 'myApi';
+import {
+  BuildingShortResponse,
+  ResourceDisconnectingResponse,
+} from 'api/types';
 
 const domain = createDomain(
   'displayResourceDisconenctionAddressesServiceService',

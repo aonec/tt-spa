@@ -1,10 +1,10 @@
 import React, { FC } from 'react';
 import { SortButtonSC, Title, Wrapper } from './ActsListHeader.styled';
 import { ActsListHeaderProps } from './ActsListHeader.types';
-import { FilterExtendedSearch } from 'ui-kit/shared_components/FilterExtendedSearch';
-import { EActResourceType, EActType } from 'myApi';
+import { FilterExtendedSearch } from 'ui-kit/shared/FilterExtendedSearch';
+import { EActResourceType, EActType } from 'api/types';
 import { ActTypesNamesLookup } from 'dictionaries';
-import { actResourceNamesLookup } from 'ui-kit/shared_components/ResourceInfo/ResourceInfo.utils';
+import { actResourceNamesLookup } from 'ui-kit/shared/ResourceInfo/ResourceInfo.utils';
 import { SortButton } from './SortButton';
 
 export const ActsListHeader: FC<ActsListHeaderProps> = ({

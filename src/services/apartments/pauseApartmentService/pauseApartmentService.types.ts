@@ -1,4 +1,4 @@
-import { ApartmentStatusSetRequest } from 'myApi';
+import { ApartmentStatusSetRequest } from 'api/types';
 
 export type Props = {
   apartmentId: number;

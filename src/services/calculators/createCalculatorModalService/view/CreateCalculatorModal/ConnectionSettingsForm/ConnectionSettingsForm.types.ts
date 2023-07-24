@@ -1,4 +1,4 @@
-import { CreateCalculatorRequest } from 'myApi';
+import { CreateCalculatorRequest } from 'api/types';
 
 export type ConnectionSettingsFormProps = {
   formId: string;
