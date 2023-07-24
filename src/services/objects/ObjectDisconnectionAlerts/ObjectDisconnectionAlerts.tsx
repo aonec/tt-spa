@@ -4,7 +4,6 @@ import React, { FC } from 'react';
 import { actResourceNamesLookup } from 'utils/actResourceNamesLookup';
 import { AlertContent, AlertWrapper } from './ObjectDisconnectionAlerts.styled';
 import { ObjectDisconnectionAlertsProps } from './ObjectDisconnectionAlerts.types';
-import { ContextMenuButton } from 'ui-kit/ContextMenuButton/ContextMenuButton';
 import { AlertIconType, AlertType } from 'ui-kit/Alert/Alert.types';
 
 export const ObjectDisconnectionAlerts: FC<ObjectDisconnectionAlertsProps> = ({
@@ -29,11 +28,11 @@ export const ObjectDisconnectionAlerts: FC<ObjectDisconnectionAlertsProps> = ({
               На объекте отключение ресурса {resourceName}, тип:
               {disconnectionTypeDescription}, до {entDate}
             </div>
-            <ContextMenuButton size="small" />
           </AlertContent>
         </Alert>
       </AlertWrapper>
     );
   });
+
   return <>{disconnectionsAlert}</>;
 };

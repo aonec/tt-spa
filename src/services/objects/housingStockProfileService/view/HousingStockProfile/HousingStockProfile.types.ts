@@ -1,4 +1,4 @@
-import { HousingStockResponse } from 'myApi';
+import { HousingStockResponse, ResourceDisconnectingResponse } from 'myApi';
 import { HousingStockProfileGrouptype } from '../../housingStockProfileService.constants';
 
 export type HousingStockProfileProps = {
@@ -9,4 +9,5 @@ export type HousingStockProfileProps = {
   isPermitionToAddNode: boolean;
   isPermitionToDownloadConsolidatedReport: boolean;
   isPermissionToEditHousingStock: boolean;
+  resourceDisconnections: ResourceDisconnectingResponse[];
 };

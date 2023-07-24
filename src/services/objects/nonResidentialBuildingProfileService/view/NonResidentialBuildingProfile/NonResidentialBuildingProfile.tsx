@@ -28,6 +28,7 @@ export const NonResidentialBuildingProfile: FC<
   isPermitionToAddNode,
   isPermitionToDownloadConsolidatedReport,
   openConsolidatedReportModal,
+  resourceDisconnections,
 }) => {
   const history = useHistory();
 
@@ -38,13 +39,14 @@ export const NonResidentialBuildingProfile: FC<
       [NonResidentialBuildingProfileGrouptype.Common]: (
         <NonResidentialBuildingInfo
           nonResidentialBuilding={nonResidentialBuilding}
+          resourceDisconnections={resourceDisconnections}
         />
       ),
       [NonResidentialBuildingProfileGrouptype.Devices]: (
         <ResourceAccountingSystemsContainer />
       ),
     }),
-    [nonResidentialBuilding],
+    [nonResidentialBuilding, resourceDisconnections],
   );
 
   if (!nonResidentialBuilding) {

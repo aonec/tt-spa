@@ -1,7 +1,10 @@
 import React from 'react';
 import { nonResidentialBuildingProfileService } from './nonResidentialBuildingProfileService.model';
 import { useParams } from 'react-router-dom';
-import { nonResidentialBuildingQuery } from './nonResidentialBuildingProfileService.api';
+import {
+  nonResidentialBuildingQuery,
+  resourceDisconnectionQuery,
+} from './nonResidentialBuildingProfileService.api';
 import { useUnit } from 'effector-react';
 import { WithLoader } from 'ui-kit/shared_components/WithLoader';
 import { NonResidentialBuildingProfile } from './view/NonResidentialBuildingProfile';
@@ -21,9 +24,11 @@ export const NonResidentialBuildingProfileContainer = () => {
     nonResidentialBuilding,
     setGrouptype,
     openConsolidatedReportModal,
+    resourceDisconnections,
   } = useUnit({
     isLoading: nonResidentialBuildingQuery.$pending,
     nonResidentialBuilding: nonResidentialBuildingQuery.$data,
+    resourceDisconnections: resourceDisconnectionQuery.$data,
     currentGrouptype: outputs.$currentGrouptype,
     setGrouptype: inputs.setCurrentGroutype,
     openConsolidatedReportModal: inputs.openConsolidatedReportModal,
@@ -61,6 +66,7 @@ export const NonResidentialBuildingProfileContainer = () => {
           }
           isPermissionToEditHousingStock={isPermissionToEditHousingStock}
           openConsolidatedReportModal={openConsolidatedReportModal}
+          resourceDisconnections={resourceDisconnections?.items || []}
         />
       </WithLoader>
     </>

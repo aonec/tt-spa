@@ -96,6 +96,7 @@ export const housingStockProfileService = {
     $taskCount,
     $housingStockId,
     $isAdministrator,
+    $resourceDisconnections,
   },
   gates: {
     ObjectProfileIdGate,
