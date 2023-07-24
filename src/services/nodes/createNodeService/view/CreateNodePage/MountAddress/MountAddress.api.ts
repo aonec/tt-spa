@@ -1,12 +1,10 @@
-import { getHousuingStocks } from 'services/objects/displayObjectsListService/displayObjectsListService.api';
+import { getBuildings } from 'services/objects/displayObjectsListService/displayObjectsListService.api';
 import { GetHousingStocksRequestPayload } from 'services/objects/displayObjectsListService/displayObjectsListService.types';
 
-export const getHousingStock = async (
-  values: GetHousingStocksRequestPayload
-) => {
-  const housingStocks = await getHousuingStocks(values);
+export const getBuilding = async (values: GetHousingStocksRequestPayload) => {
+  const buildings = await getBuildings(values);
 
-  const housingStock = housingStocks.items?.[0];
+  const building = buildings.items?.[0];
 
-  return housingStock || null;
+  return building || null;
 };

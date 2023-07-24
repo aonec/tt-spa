@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useMemo } from 'react';
 import { getTimeStringByUTC } from 'utils/getTimeStringByUTC';
 import {
   InfoWrapper,
@@ -8,6 +8,7 @@ import {
   TitleWrapper,
 } from './TaskBaseInfo.styled';
 import { TaskBaseInfoProps } from './TaskBaseInfo.types';
+import { EHouseCategory } from 'api/types';
 
 export const TaskBaseInfo: FC<TaskBaseInfoProps> = ({ task }) => {
   const {
@@ -24,9 +25,16 @@ export const TaskBaseInfo: FC<TaskBaseInfoProps> = ({ task }) => {
   const buildingId = task.buildingId;
   const apartmentComment = apartment?.comment || '';
 
+  const buildingProfilePath = useMemo(() => {
+    if (houseCategory === EHouseCategory.Living) {
+      return 'livingProfile';
+    }
+    return 'nonResidentialProfile';
+  }, [houseCategory]);
+
   const linkPath = apartment
     ? `/apartments/${apartmentId}`
-    : `/buildings/${houseCategory}Profile/${buildingId}`;
+    : `/buildings/${buildingProfilePath}/${buildingId}`;
 
   const preparedCreationTime = creationTime
     ? getTimeStringByUTC(creationTime)

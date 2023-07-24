@@ -26,4 +26,5 @@ export type ObjectMainInfoValues = {
   livingHouseType: ELivingHouseType | null;
   nonResidentialHouseType: ENonResidentialHouseType | null;
   heatingStationId: string | null;
+  hasIndividualHeatingStation: boolean;
 };

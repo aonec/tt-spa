@@ -69,6 +69,8 @@ export const CreateObjectMainInfoStage: FC<CreateObjectMainInfoStageProps> = ({
       nonResidentialHouseType:
         createObjectData?.nonResidentialHouseType || null,
       heatingStationId: createObjectData?.heatingStationId || null,
+      hasIndividualHeatingStation:
+        createObjectData?.hasIndividualHeatingStation || false,
     }),
     [createObjectData],
   );
@@ -108,41 +110,6 @@ export const CreateObjectMainInfoStage: FC<CreateObjectMainInfoStageProps> = ({
       <HeatingStationsFetchGate />
       <>
         <PageTitle>Основная информация </PageTitle>
-
-        <FormItem label="Домоуправления">
-          <Select
-            placeholder="Выберите из списка"
-            onChange={(value) => {
-              if (value === withoutHouseMagement) {
-                return setFieldValue('houseManagement', null);
-              }
-              setFieldValue('houseManagement', value);
-            }}
-            value={
-              values.houseManagement === null
-                ? withoutHouseMagement
-                : values.houseManagement || undefined
-            }
-          >
-            <Select.Option value={withoutHouseMagement}>
-              Без домоуправления
-            </Select.Option>
-            {houseManagements?.map(
-              (houseManagement) =>
-                houseManagement.name && (
-                  <Select.Option
-                    value={houseManagement.id}
-                    key={houseManagement.id}
-                  >
-                    {houseManagement.name}
-                  </Select.Option>
-                ),
-            )}
-          </Select>
-          <ErrorMessage>{errors.houseManagement}</ErrorMessage>
-        </FormItem>
-
-        <SpaceLine />
 
         <GridContainer>
           <FormItem label="Категория объекта">
@@ -206,6 +173,44 @@ export const CreateObjectMainInfoStage: FC<CreateObjectMainInfoStageProps> = ({
           </FormItem>
         </GridContainer>
 
+        {values.objectCategory === EHouseCategory.Living && (
+          <>
+            <SpaceLine />
+            <FormItem label="Домоуправления">
+              <Select
+                placeholder="Выберите из списка"
+                onChange={(value) => {
+                  if (value === withoutHouseMagement) {
+                    return setFieldValue('houseManagement', null);
+                  }
+                  setFieldValue('houseManagement', value);
+                }}
+                value={
+                  values.houseManagement === null
+                    ? withoutHouseMagement
+                    : values.houseManagement || undefined
+                }
+              >
+                <Select.Option value={withoutHouseMagement}>
+                  Без домоуправления
+                </Select.Option>
+                {houseManagements?.map(
+                  (houseManagement) =>
+                    houseManagement.name && (
+                      <Select.Option
+                        value={houseManagement.id}
+                        key={houseManagement.id}
+                      >
+                        {houseManagement.name}
+                      </Select.Option>
+                    ),
+                )}
+              </Select>
+              <ErrorMessage>{errors.houseManagement}</ErrorMessage>
+            </FormItem>
+          </>
+        )}
+
         <SpaceLine />
 
         {!values.heatingStationId && (
@@ -255,6 +260,20 @@ export const CreateObjectMainInfoStage: FC<CreateObjectMainInfoStageProps> = ({
             />
           </FormItem>
         )}
+        <GridContainer>
+          <FormItem label="Индивидуальный тепловой пункт">
+            <Select
+              placeholder="Выберите из списка"
+              onChange={(value) =>
+                setFieldValue('hasIndividualHeatingStation', Boolean(value))
+              }
+              value={values.hasIndividualHeatingStation ? 1 : 0}
+            >
+              <Select.Option value={1}>Есть</Select.Option>
+              <Select.Option value={0}>Нет</Select.Option>
+            </Select>
+          </FormItem>
+        </GridContainer>
 
         <Footer>
           <Button type="ghost" onClick={() => goBackStage()}>
