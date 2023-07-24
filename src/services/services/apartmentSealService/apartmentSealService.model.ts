@@ -47,6 +47,7 @@ const $apartment = domain
   )
   .reset(ApartmentGate.close);
 
+const refetchAppointment = domain.createEvent();
 const fetchAppointmentFx = domain.createEffect<number, AppointmentResponse[]>(
   getNearestAppointmentForApartment,
 );
@@ -57,6 +58,7 @@ const $apartmentAppointment = domain
 
 const handleApartmentLoaded = fetchApartmentFx.doneData;
 const $isApartmentLoading = fetchApartmentFx.pending;
+const $isSealAppointmentLoading = fetchAppointmentFx.pending;
 
 const setSelectedHomeownerName = domain.createEvent<string>();
 const $selectedHomeownerName = domain
@@ -93,7 +95,8 @@ forward({
 });
 
 sample({
-  clock: $apartment,
+  source: $apartment,
+  clock: [$apartment, refetchAppointment],
   fn: (apartment) => apartment.id,
   filter: Boolean,
   target: fetchAppointmentFx,
@@ -120,6 +123,7 @@ export const apartmentSealService = {
     handleSearchApartment,
     setSelectedHomeownerName,
     handleUpdateApartment,
+    refetchAppointment,
   },
   outputs: {
     $isApartmentLoading,
@@ -127,6 +131,7 @@ export const apartmentSealService = {
     $selectedHomeownerName,
     $individualDevices,
     $apartmentAppointment,
+    $isSealAppointmentLoading,
   },
   gates: { ApartmentGate },
 };

@@ -13,6 +13,7 @@ export type AddressSearchContainerProps = {
   showLabels?: boolean;
   disabledFields?: SearchFieldType[];
   onChange?: (key: string, value: string) => void;
+  className?: string;
 };
 
 export type GetExistingSteetRequestParams = {

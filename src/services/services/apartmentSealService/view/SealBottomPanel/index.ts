@@ -1,0 +1,1 @@
+export { SealBottomPanel } from './SealBottomPanel';
