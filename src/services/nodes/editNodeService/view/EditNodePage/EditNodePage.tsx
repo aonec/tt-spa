@@ -21,7 +21,7 @@ import { EditNodeUploadDocumentsContainer } from './editNodeUploadDocumentsServi
 import { IncorrectConfigAlert } from './IncorrectConfigAlert';
 import { NodeRegistrationTypeLookup } from 'dictionaries';
 import { EditCalculatorConnection } from './EditCalculatorConnection/EditCalculatorConnection';
-import { objectRouteFromCategory } from 'services/objects/objects.router';
+import { EHouseCategory } from 'myApi';
 const { TabPane } = TabsSC;
 const formId = 'edit-node-page';
 
@@ -52,6 +52,13 @@ export const EditNodePage: FC<EditNodePageProps> = ({
     ];
   }, [node]);
 
+  const buildingProfilePath = useMemo(() => {
+    if (address?.houseCategory === EHouseCategory.Living) {
+      return 'livingProfile';
+    }
+    return 'nonResidentialProfile';
+  }, [address]);
+
   return (
     <>
       <GoBack />
@@ -66,11 +73,7 @@ export const EditNodePage: FC<EditNodePageProps> = ({
         }
       />
       {address && (
-        <AddressWrapper
-          to={`/buildings/${
-            objectRouteFromCategory[address.houseCategory]
-          }Profile/${address?.id}`}
-        >
+        <AddressWrapper to={`/buildings/${buildingProfilePath}/${address?.id}`}>
           <HeaderInfoString>
             <>{getBuildingAddress(address, true)}</>
             <>{NodeRegistrationTypeLookup[registrationType]} узел</>

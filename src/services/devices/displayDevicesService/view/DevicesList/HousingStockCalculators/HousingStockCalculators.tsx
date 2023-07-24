@@ -1,6 +1,6 @@
 import React, { FC, useCallback, useMemo } from 'react';
 import { HousingStockCalculatorsProps } from './HousingStockCalculators.types';
-import { HouseAddress } from 'myApi';
+import { EHouseCategory, HouseAddress } from 'myApi';
 import { DevicesSearchType } from 'services/devices/devicesPageService/devicesPageService.types';
 import {
   CalculatorNodesListWrapper,
@@ -13,7 +13,6 @@ import {
   getHousingStockAddressString,
 } from 'utils/getBuildingAddress';
 import { CalculatorNodes } from './CalculatorNodes';
-import { objectRouteFromCategory } from 'services/objects/objects.router';
 
 export const HousingStockCalculators: FC<HousingStockCalculatorsProps> = ({
   housingStockDevices,
@@ -46,18 +45,23 @@ export const HousingStockCalculators: FC<HousingStockCalculatorsProps> = ({
     <CalculatorNodes calculator={calculator} key={calculator.id} />
   ));
 
+  const buildingProfilePath = useMemo(() => {
+    if (housingStockDevices.building?.houseCategory === EHouseCategory.Living) {
+      return 'livingProfile';
+    }
+    return 'nonResidentialProfile';
+  }, [housingStockDevices]);
+
   const addressComponent = useMemo(() => {
     if (!housingStockDevices.building) {
       return 'У данного прибора не указан адрес';
     }
 
-    const { address, houseCategory, id } = housingStockDevices.building;
+    const { address, id } = housingStockDevices.building;
 
     return (
       <HousingStockAddressHeaderWrapper>
-        <HousingStockAddress
-          to={`/buildings/${objectRouteFromCategory[houseCategory]}Profile/${id}`}
-        >
+        <HousingStockAddress to={`/buildings/${buildingProfilePath}/${id}`}>
           {getBuildingAddress({ address })}
         </HousingStockAddress>
         <Switcher
@@ -68,7 +72,13 @@ export const HousingStockCalculators: FC<HousingStockCalculatorsProps> = ({
         />
       </HousingStockAddressHeaderWrapper>
     );
-  }, [handleClickAddress, nextAddress, previousAddress, housingStockDevices]);
+  }, [
+    handleClickAddress,
+    buildingProfilePath,
+    nextAddress,
+    previousAddress,
+    housingStockDevices,
+  ]);
 
   return (
     <>

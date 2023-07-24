@@ -11,7 +11,7 @@ import {
 } from './HousingStockItem.styled';
 import { HousingStockItemProps } from './HousingStockItem.types';
 import { HouseCategoryDictionary } from 'services/objects/createObjectService/view/CreateObjectPage/CreateObjectMainInfoStage/createObjectMainInfoStage.constants';
-import { objectRouteFromCategory } from 'services/objects/objects.router';
+import { EHouseCategory } from 'myApi';
 
 export const HousingStockItem: FC<HousingStockItemProps> = ({
   housingStock,
@@ -37,12 +37,15 @@ export const HousingStockItem: FC<HousingStockItemProps> = ({
     );
   }, [housingStock.numberOfTasks]);
 
+  const buildingProfilePath = useMemo(() => {
+    if (housingStock.houseCategory === EHouseCategory.Living) {
+      return 'livingProfile';
+    }
+    return 'nonResidentialProfile';
+  }, [housingStock]);
+
   return (
-    <Wrapper
-      to={`/buildings/${
-        objectRouteFromCategory[housingStock.houseCategory]
-      }Profile/${housingStock.id}`}
-    >
+    <Wrapper to={`/buildings/${buildingProfilePath}/${housingStock.id}`}>
       <div>
         <Address>
           {address}

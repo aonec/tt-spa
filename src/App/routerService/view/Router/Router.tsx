@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
 import { Layout, PageWrapper, Wrapper } from './Router.styled';
 import { RouterProps } from './Router.types';
-import { EHouseCategory, ESecuredIdentityRoleName } from 'myApi';
+import { ESecuredIdentityRoleName } from 'myApi';
 import { TasksRouter } from 'services/tasks/tasks.router';
 import { ObjectsProfileContainer } from 'services/objects/objectsProfileService';
 import { HousingStockProfileContainer } from 'services/objects/housingStockProfileService';
@@ -54,7 +54,6 @@ import { WorkWithIndividualDeviceType } from 'services/devices/individualDevices
 import { ManageDistrictsMapContainer } from 'services/settings/districtBordersService/manageDistrictsMapService';
 import { CreateDistrictBorderMapContainer } from 'services/settings/districtBordersService/createDistrictBorderMapService';
 import { NonResidentialBuildingProfileContainer } from 'services/objects/nonResidentialBuildingProfileService';
-import { objectRouteFromCategory } from 'services/objects/objects.router';
 
 export const Router: FC<RouterProps> = ({ roles, isRolesLoadded }) => {
   const redirectRoute = roles.length
@@ -135,7 +134,7 @@ export const Router: FC<RouterProps> = ({ roles, isRolesLoadded }) => {
                   )}
                   {isAdministrator ? (
                     <Route
-                      path="/buildings/:buildingId/edit"
+                      path="/buildings/:houseCategory/:buildingId/edit"
                       component={EditObjectContainer}
                       exact
                     />
@@ -194,16 +193,12 @@ export const Router: FC<RouterProps> = ({ roles, isRolesLoadded }) => {
                   {isAnyRole && (
                     <Route path="/buildings">
                       <Route
-                        path={`/buildings/${
-                          objectRouteFromCategory[EHouseCategory.Living]
-                        }Profile/:buildingId`}
+                        path={`/buildings/livingProfile/:buildingId`}
                         component={HousingStockProfileContainer}
                         exact
                       />
                       <Route
-                        path={`/buildings/${
-                          objectRouteFromCategory[EHouseCategory.NonResidential]
-                        }Profile/:buildingId`}
+                        path={`/buildings/nonResidentialProfile/:buildingId`}
                         component={NonResidentialBuildingProfileContainer}
                         exact
                       />

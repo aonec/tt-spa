@@ -6,10 +6,13 @@ import {
   BuildingAddressUpdateRequest,
   HousingStockResponse,
   HousingStockUpdateRequest,
+  NonResidentialBuildingResponse,
+  EHouseCategory,
 } from 'myApi';
 
 export type EditObjectPageProps = {
-  housingStock: HousingStockResponse;
+  housingStock: HousingStockResponse | null;
+  nonResidentialBuilding: NonResidentialBuildingResponse | null;
   existingCities: string[] | null;
   existingStreets: string[];
   houseManagements: HouseManagementResponse[] | null;
@@ -33,6 +36,7 @@ export type EditObjectPageProps = {
   isCreateLoading: boolean;
   isUpdateLoading: boolean;
   handleRefetchHousingStock: () => void;
+  houseCategory: EHouseCategory | null;
 };
 
 export enum EditObjectPageTabs {

@@ -1,66 +1,81 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { EditObjectPage } from './view/EditObjectPage';
 import { useHistory, useParams } from 'react-router-dom';
 import { editObjectService } from './editObjectService.model';
-import { useEvent, useStore } from 'effector-react';
+import { useUnit } from 'effector-react';
 import { addressSearchService } from 'services/addressSearchService/addressSearchService.models';
 import { createObjectService } from '../createObjectService';
+import { EHouseCategory } from 'myApi';
 
 const { inputs, outputs, gates } = editObjectService;
-const { FetchObjectGate, CatchHousingStockId } = gates;
+const { ObjectIdGate } = gates;
 
 const {
   gates: { HeatingStationsFetchGate, HouseManagementsFetchGate },
 } = createObjectService;
 
 export const EditObjectContainer = () => {
-  const { buildingId } = useParams<{ buildingId: string }>();
+  const { buildingId, houseCategory } = useParams<{
+    buildingId: string;
+    houseCategory: string;
+  }>();
   const history = useHistory();
+
+  const preparedHouseCategory = useMemo(() => {
+    if (houseCategory === 'livingProfile') {
+      return EHouseCategory.Living;
+    }
+    if (houseCategory === 'nonResidentialProfile') {
+      return EHouseCategory.NonResidential;
+    }
+    return null;
+  }, [houseCategory]);
 
   const buildingIdNumber = Number(buildingId);
 
-  const existingCities = useStore(addressSearchService.outputs.$existingCities);
-  const existingStreets = useStore(
-    addressSearchService.outputs.$existingStreets,
-  );
-
-  const housingStock = useStore(outputs.$housingStock);
-  const houseManagements = useStore(outputs.$houseManagements);
-  const isHouseManagementsLoading = useStore(
-    outputs.$isHouseManagementsLoading,
-  );
-  const heatingStations = useStore(outputs.$heatingStations);
-  const isHeatingStationsLoading = useStore(outputs.$isHeatingStationsLoading);
-
-  const isDeleteLoading = useStore(outputs.$isDeleteLoading);
-  const isUpdateLoading = useStore(outputs.$isUpdateLoading);
-  const isCreateLoading = useStore(outputs.$isCreateLoading);
-
-  const openCreateHeatingStationModal = useEvent(
-    inputs.openCreateHeatingStationModal,
-  );
-  const openEditHeatingStationModal = useEvent(
-    inputs.openEditHeatingStationModal,
-  );
-  const heatingStationCapture = useEvent(inputs.heatingStationCapture);
-
-  const onPageCancel = useEvent(inputs.onPageCancel);
-  const handleUpdateHousingStock = useEvent(inputs.handleUpdateHousingStock);
-
-  const handleCreateHousingStockAddress = useEvent(
-    inputs.handleCreateHousingStockAddress,
-  );
-  const handleUpdateHousingStockAddress = useEvent(
-    inputs.handleUpdateHousingStockAddress,
-  );
-  const handleDeleteHousingStockAddress = useEvent(
-    inputs.handleDeleteHousingStockAddress,
-  );
-
-  const handleRefetchHousingStock = useEvent(inputs.handleRefetchHousingStock);
-
-  const isReasonToFetchHousingStock =
-    !housingStock || housingStock.id !== buildingIdNumber;
+  const {
+    existingCities,
+    existingStreets,
+    handleCreateHousingStockAddress,
+    handleDeleteHousingStockAddress,
+    handleRefetchHousingStock,
+    handleUpdateHousingStock,
+    handleUpdateHousingStockAddress,
+    heatingStationCapture,
+    heatingStations,
+    houseManagements,
+    housingStock,
+    isCreateLoading,
+    isDeleteLoading,
+    isHeatingStationsLoading,
+    isHouseManagementsLoading,
+    isUpdateLoading,
+    nonResidentialBuilding,
+    onPageCancel,
+    openCreateHeatingStationModal,
+    openEditHeatingStationModal,
+  } = useUnit({
+    existingCities: addressSearchService.outputs.$existingCities,
+    housingStock: outputs.$housingStock,
+    nonResidentialBuilding: outputs.$nonResidentialBuilding,
+    houseManagements: outputs.$houseManagements,
+    heatingStations: outputs.$heatingStations,
+    isHeatingStationsLoading: outputs.$isHeatingStationsLoading,
+    isDeleteLoading: outputs.$isDeleteLoading,
+    isUpdateLoading: outputs.$isUpdateLoading,
+    isCreateLoading: outputs.$isCreateLoading,
+    isHouseManagementsLoading: outputs.$isHouseManagementsLoading,
+    existingStreets: addressSearchService.outputs.$existingStreets,
+    openCreateHeatingStationModal: inputs.openCreateHeatingStationModal,
+    openEditHeatingStationModal: inputs.openEditHeatingStationModal,
+    heatingStationCapture: inputs.heatingStationCapture,
+    onPageCancel: inputs.onPageCancel,
+    handleUpdateHousingStock: inputs.handleUpdateHousingStock,
+    handleCreateHousingStockAddress: inputs.handleCreateHousingStockAddress,
+    handleUpdateHousingStockAddress: inputs.handleUpdateHousingStockAddress,
+    handleDeleteHousingStockAddress: inputs.handleDeleteHousingStockAddress,
+    handleRefetchHousingStock: inputs.handleRefetchBuilding,
+  });
 
   useEffect(() => {
     return inputs.onPageCancel.watch(() => history.goBack()).unsubscribe;
@@ -68,15 +83,16 @@ export const EditObjectContainer = () => {
 
   return (
     <>
-      <CatchHousingStockId buildingId={buildingIdNumber} />
-      {isReasonToFetchHousingStock && (
-        <FetchObjectGate objectId={buildingIdNumber} />
-      )}
+      <ObjectIdGate
+        buildingId={buildingIdNumber}
+        houseCategory={preparedHouseCategory}
+      />
       <HouseManagementsFetchGate />
       <HeatingStationsFetchGate />
-      {housingStock && (
+      {(housingStock || nonResidentialBuilding) && (
         <EditObjectPage
           housingStock={housingStock}
+          nonResidentialBuilding={nonResidentialBuilding}
           existingCities={existingCities}
           existingStreets={existingStreets}
           houseManagements={houseManagements}
@@ -95,6 +111,7 @@ export const EditObjectContainer = () => {
           isCreateLoading={isCreateLoading}
           isUpdateLoading={isUpdateLoading}
           handleRefetchHousingStock={handleRefetchHousingStock}
+          houseCategory={preparedHouseCategory}
         />
       )}
     </>

@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useMemo } from 'react';
 import moment from 'moment';
 import { NodeStatusIconsDictionary } from 'services/devices/resourceAccountingSystemsService/view/ResourceAccountingSystems/NodesGroup/NodeItem/NodeStatus/NodeStatus.constants';
 import { CommonInfo } from 'ui-kit/shared_components/CommonInfo';
@@ -7,10 +7,9 @@ import { AddressWrapper, NodeStatusWrapper } from './CommonInfoTab.styled';
 import { CommonInfoTabProps } from './CommonInfoTab.types';
 import { additionalAddressesString } from 'utils/additionalAddressesString';
 import { Tooltip } from 'antd';
-import { ENodeRegistrationType } from 'myApi';
+import { EHouseCategory, ENodeRegistrationType } from 'myApi';
 import { configNamesLookup } from 'utils/configNamesLookup';
 import { NodeRegistrationTypeLookup } from 'dictionaries';
-import { objectRouteFromCategory } from 'services/objects/objects.router';
 
 export const CommonInfoTab: FC<CommonInfoTabProps> = ({ pipeNode }) => {
   const NodeStatusIcon =
@@ -21,6 +20,13 @@ export const CommonInfoTab: FC<CommonInfoTabProps> = ({ pipeNode }) => {
   const isNodeCommercial =
     pipeNode.registrationType === ENodeRegistrationType.Commercial;
 
+  const buildingProfilePath = useMemo(() => {
+    if (pipeNode?.address?.houseCategory === EHouseCategory.Living) {
+      return 'livingProfile';
+    }
+    return 'nonResidentialProfile';
+  }, [pipeNode]);
+
   const addressComponent = (() => {
     if (!pipeNode.address) {
       return '-';
@@ -28,9 +34,7 @@ export const CommonInfoTab: FC<CommonInfoTabProps> = ({ pipeNode }) => {
     return (
       <Tooltip title={additionalAdress}>
         <AddressWrapper
-          to={`/buildings/${
-            objectRouteFromCategory[pipeNode.address.houseCategory]
-          }Profile/${pipeNode.address.id}`}
+          to={`/buildings/${buildingProfilePath}/${pipeNode.address.id}`}
         >
           {getBuildingAddress(pipeNode.address, true)}
         </AddressWrapper>
