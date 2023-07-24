@@ -1,5 +1,5 @@
-import { axios } from '01/axios';
-import { NodeCheckResponsePagedList } from 'myApi';
+import { axios } from 'api/axios';
+import { NodeCheckResponsePagedList } from 'api/types';
 
 export const fetchNodeChecks = (
   nodeId: number,

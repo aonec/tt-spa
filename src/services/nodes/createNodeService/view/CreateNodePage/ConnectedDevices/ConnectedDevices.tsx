@@ -1,10 +1,10 @@
 import React, { FC, useEffect, useState } from 'react';
 import { Button } from 'ui-kit/Button';
-import { LinkButton } from 'ui-kit/shared_components/LinkButton';
+import { LinkButton } from 'ui-kit/shared/LinkButton';
 import { Title } from 'ui-kit/Title';
 import { Footer } from '../CreateNodePage.styled';
 import { ConnectedDevicesProps } from './ConnectedDevices.types';
-import { SpaceLine } from '01/shared/ui/Layout/Space/Space';
+import { SpaceLine } from 'ui-kit/SpaceLine';
 import { Empty } from 'antd';
 import { addConnectedCommonDevicesService } from './ConnectedDevices.models';
 import { useEvent } from 'effector-react';
@@ -17,7 +17,7 @@ import { omit } from 'lodash';
 import {
   CreatePipeHousingMeteringDeviceInNodeRequest,
   EPipeNodeConfig,
-} from 'myApi';
+} from 'api/types';
 import {
   ButtonSC,
   CommunicationPipesListWrapper,

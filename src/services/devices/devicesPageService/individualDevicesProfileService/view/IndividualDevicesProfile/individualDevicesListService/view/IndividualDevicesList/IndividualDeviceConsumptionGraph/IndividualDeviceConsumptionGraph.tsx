@@ -1,5 +1,5 @@
 import moment from 'moment';
-import { EResourceType } from 'myApi';
+import { EResourceType } from 'api/types';
 import React, { FC } from 'react';
 import { getMinAndMax, GraphColorLookup } from 'utils/Graph.utils';
 import {
@@ -13,7 +13,7 @@ import { Wrapper } from './IndividualDeviceConsumptionGraph.styled';
 import { IndividualDeviceConsumptionGraphProps } from './IndividualDeviceConsumptionGraph.types';
 import _ from 'lodash';
 import { DeviceGraphTick } from './DeviceGraphTick';
-import { GraphGradient } from 'ui-kit/shared_components/GraphComponents/GraphGradient';
+import { GraphGradient } from 'ui-kit/shared/GraphComponents/GraphGradient';
 
 const height = 50;
 const width = 180;

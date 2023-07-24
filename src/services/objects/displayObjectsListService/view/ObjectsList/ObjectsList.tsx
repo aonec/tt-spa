@@ -1,8 +1,8 @@
 import React, { FC, useMemo } from 'react';
 import { HousingStockItem } from './HousingStockItem';
 import { ObjectsListProps } from './ObjectsList.types';
-import { TypeAddressToStart } from 'ui-kit/shared_components/TypeToStart';
-import { WithLoader } from 'ui-kit/shared_components/WithLoader';
+import { TypeAddressToStart } from 'ui-kit/shared/TypeToStart';
+import { WithLoader } from 'ui-kit/shared/WithLoader';
 
 export const ObjectsList: FC<ObjectsListProps> = ({
   isLoading,

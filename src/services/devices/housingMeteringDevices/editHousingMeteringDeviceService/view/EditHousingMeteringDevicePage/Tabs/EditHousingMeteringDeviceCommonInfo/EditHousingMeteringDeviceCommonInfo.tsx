@@ -2,7 +2,7 @@ import { ErrorMessage } from 'ui-kit/ErrorMessage';
 import { MagistralsDisctionary } from 'dictionaries';
 import { useFormik } from 'formik';
 import moment from 'moment';
-import { EHousingMeteringDeviceType, EMagistralType } from 'myApi';
+import { EHousingMeteringDeviceType, EMagistralType } from 'api/types';
 import React, { FC } from 'react';
 import { HousingMeteringDeviceDictionary } from 'services/nodes/addPipeNodeCommonDeviceService/view/AddCommonDeviceForm/CommonDataStep/CommonDataStep.constants';
 import { Button } from 'ui-kit/Button';
@@ -10,7 +10,7 @@ import { DatePicker } from 'ui-kit/DatePicker';
 import { FormItem } from 'ui-kit/FormItem';
 import { Input } from 'ui-kit/Input';
 import { Select } from 'ui-kit/Select';
-import { ResourceSelect } from 'ui-kit/shared_components/ResourceSelect';
+import { ResourceSelect } from 'ui-kit/shared/ResourceSelect';
 import {
   ButtonSC,
   Footer,

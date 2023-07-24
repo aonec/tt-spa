@@ -1,28 +1,44 @@
 import React from 'react';
-import { useEvent, useStore } from 'effector-react';
+import { useUnit } from 'effector-react';
 import { tasksMapService } from './tasksMapService.model';
 import { TasksMapView } from './view/TasksMapView';
 
 const { inputs, outputs } = tasksMapService;
 
 export const TasksMapContainer = () => {
-  const housingStocksWithTasks = useStore(outputs.$housingStocksWithTasks);
-  const taskTypes = useStore(outputs.$taskTypes);
-  const filtrationValues = useStore(outputs.$filtrationValues);
-  const isLoadingHousingStocksWithTasks = useStore(
-    outputs.$isLoadingHousingStocksWithTasks,
-  );
-  const selectedHousingStock = useStore(outputs.$selectedHousingStock);
-  const task = useStore(outputs.$task);
-  const isLoadingTask = useStore(outputs.$isLoadingTask);
-  const organizationUsers = useStore(outputs.$organizationUsers);
-
-  const applyFilters = useEvent(inputs.applyFilters);
-  const resetFilters = useEvent(inputs.resetFilters);
-  const handleClickMarker = useEvent(inputs.handleClickMarker);
-  const clearSelectedHousingStock = useEvent(inputs.clearSelectedHousingStock);
-  const handleClickTask = useEvent(inputs.handleClickTask);
-  const clearTask = useEvent(inputs.clearTask);
+  const {
+    housingStocksWithTasks,
+    taskTypes,
+    filtrationValues,
+    isLoadingHousingStocksWithTasks,
+    selectedHousingStock,
+    task,
+    isLoadingTask,
+    organizationUsers,
+    applyFilters,
+    resetFilters,
+    handleClickMarker,
+    clearSelectedHousingStock,
+    handleClickTask,
+    clearTask,
+    organizationCoordinates,
+  } = useUnit({
+    housingStocksWithTasks: outputs.$housingStocksWithTasks,
+    taskTypes: outputs.$taskTypes,
+    filtrationValues: outputs.$filtrationValues,
+    isLoadingHousingStocksWithTasks: outputs.$isLoadingHousingStocksWithTasks,
+    selectedHousingStock: outputs.$selectedHousingStock,
+    task: outputs.$task,
+    isLoadingTask: outputs.$isLoadingTask,
+    organizationUsers: outputs.$organizationUsers,
+    applyFilters: inputs.applyFilters,
+    resetFilters: inputs.resetFilters,
+    handleClickMarker: inputs.handleClickMarker,
+    clearSelectedHousingStock: inputs.clearSelectedHousingStock,
+    handleClickTask: inputs.handleClickTask,
+    clearTask: inputs.clearTask,
+    organizationCoordinates: outputs.$organizationCoordinates,
+  });
 
   return (
     <TasksMapView
@@ -40,6 +56,7 @@ export const TasksMapContainer = () => {
       handleClickTask={handleClickTask}
       clearTask={clearTask}
       organizationUsers={organizationUsers}
+      organizationCoordinates={organizationCoordinates}
     />
   );
 };

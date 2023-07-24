@@ -1,5 +1,8 @@
-import { axios } from '01/axios';
-import { AddApartmentActRequest, ApartmentActResponsePagedList } from 'myApi';
+import { axios } from 'api/axios';
+import {
+  AddApartmentActRequest,
+  ApartmentActResponsePagedList,
+} from 'api/types';
 import { stringify } from 'query-string';
 import { ActsJournalRequestParams } from './actsJournalService.types';
 

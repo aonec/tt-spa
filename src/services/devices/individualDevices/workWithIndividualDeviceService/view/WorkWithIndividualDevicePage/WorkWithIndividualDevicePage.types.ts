@@ -1,4 +1,4 @@
-import { ContractorListResponse, IndividualDeviceResponse } from 'myApi';
+import { ContractorListResponse, IndividualDeviceResponse } from 'api/types';
 import {
   WorkWithIndividualDeviceFormType,
   WorkWithIndividualDeviceType,

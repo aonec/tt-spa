@@ -9,7 +9,7 @@ import {
   Wrapper,
 } from './WorkWithIndividualDeviceInputs.styled';
 import { WorkWithIndividualDeviceInputsProps } from './WorkWithIndividualDeviceInputs.types';
-import { ResourceIconLookup } from 'ui-kit/shared_components/ResourceIconLookup';
+import { ResourceIconLookup } from 'ui-kit/shared/ResourceIconLookup';
 import { MetersInputsBlockPure } from 'services/meters/individualDeviceMetersInputService/view/MetersInputsBlock/MeterInputsBlockPure';
 import { getIndividualDeviceRateNumByName } from 'utils/getIndividualDeviceRateNumByName';
 import { getReadingsMonthByShift } from 'services/meters/apartmentIndividualDevicesMetersService/apartmentIndividualDevicesMetersService.utils';
@@ -104,8 +104,7 @@ export const WorkWithIndividualDeviceInputs: FC<
                 ...readings,
                 [-1]: {
                   ...readings?.[-1],
-                  [e.target.name]:
-                    e.target.value !== '' ? Number(e.target.value) : null,
+                  [e.target.name]: e.target.value,
                 },
               })
             }

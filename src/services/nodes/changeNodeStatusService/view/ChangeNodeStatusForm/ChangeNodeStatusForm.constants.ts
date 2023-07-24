@@ -1,4 +1,4 @@
-import { ENodeCommercialAccountStatus } from 'myApi';
+import { ENodeCommercialAccountStatus } from 'api/types';
 import * as Yup from 'yup';
 
 export const validationSchema = Yup.object().shape({

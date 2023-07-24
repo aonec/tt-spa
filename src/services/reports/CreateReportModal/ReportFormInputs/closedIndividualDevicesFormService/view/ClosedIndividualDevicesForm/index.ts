@@ -1,0 +1,1 @@
+export { ClosedIndividualDevicesForm } from './ClosedIndividualDevicesForm';

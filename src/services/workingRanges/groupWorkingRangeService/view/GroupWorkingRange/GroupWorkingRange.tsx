@@ -18,12 +18,12 @@ import {
   ENodeWorkingRangeSeason,
   ENodeWorkingRangeType,
   EResourceType,
-} from 'myApi';
+} from 'api/types';
 import { useFormik } from 'formik';
-import { GoBack } from 'ui-kit/shared_components/GoBack';
-import { WithLoader } from 'ui-kit/shared_components/WithLoader';
+import { GoBack } from 'ui-kit/shared/GoBack';
+import { WithLoader } from 'ui-kit/shared/WithLoader';
 import { Select } from 'ui-kit/Select';
-import { ResourceSelectSC } from 'ui-kit/shared_components/ResourceSelectSC';
+import { ResourceSelectSC } from 'ui-kit/shared/ResourceSelectSC';
 
 const { TabPane } = TabsSC;
 

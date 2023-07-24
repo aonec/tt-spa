@@ -1,10 +1,10 @@
-import { axios } from '01/axios';
+import { axios } from 'api/axios';
 import {
   MeteringDeviceResponse,
   PipeHousingMeteringDeviceResponse,
   PipeNodeResponse,
   UpdatePipeHousingMeteringDeviceRequest,
-} from 'myApi';
+} from 'api/types';
 
 export const putHousingMeteringDevice = ({
   deviceId,

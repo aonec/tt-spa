@@ -6,8 +6,8 @@ import {
   Wrapper,
 } from './ChangeODPUPage.styled';
 import { ChangeODPUPageProps } from './ChangeODPUPage.types';
-import { PageHeader } from 'ui-kit/shared_components/PageHeader';
-import { GoBack } from 'ui-kit/shared_components/GoBack';
+import { PageHeader } from 'ui-kit/shared/PageHeader';
+import { GoBack } from 'ui-kit/shared/GoBack';
 import { getBuildingAddress } from 'utils/getBuildingAddress';
 import { ODPUInfoString } from './ODPUInfoString';
 import { ChangeODPUForm } from './ChangeODPUForm';

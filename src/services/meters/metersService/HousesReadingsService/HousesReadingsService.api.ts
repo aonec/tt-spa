@@ -1,4 +1,4 @@
-import { axios } from '01/axios';
+import { axios } from 'api/axios';
 import {
   GetHousingStocksListRequestPayload,
   GetHousingStocksRequestPayload,
@@ -8,7 +8,7 @@ import {
   BuildingListResponsePagedList,
   HousingStockResponse,
   IndividualDeviceListItemResponsePagedList,
-} from 'myApi';
+} from 'api/types';
 
 const getHousingStockId = async (
   params: GetHousingStocksListRequestPayload,

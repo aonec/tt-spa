@@ -1,16 +1,31 @@
-import { useEvent, useStore } from 'effector-react';
-import React from 'react';
+import { useUnit } from 'effector-react';
+import React, { FC } from 'react';
 import { developmentSettingsService } from './developmentSettings.models';
 import { DevelopmentSettingsModal } from './view/DevelopmentSettingsModal';
+import { DevelopmentSettingsContainerProps } from './developmentSettings.types';
 
 const { inputs, outputs } = developmentSettingsService;
 
-export const DevSettingsModal = () => {
-  const visible = useStore(outputs.$isDevSettingsModalOpen);
-  const devUrl = useStore(outputs.$devUrl);
-
-  const closeDevSettingsModal = useEvent(inputs.closeDevSettingsModal);
-  const setDevUrl = useEvent(inputs.setDevUrl);
+export const DevelopmentSettingsContainer: FC<
+  DevelopmentSettingsContainerProps
+> = ({ isAuth = false }) => {
+  const {
+    visible,
+    devUrl,
+    closeDevSettingsModal,
+    setDevUrl,
+    featureToggles,
+    toggleFeature,
+    resetFeatureToggles,
+  } = useUnit({
+    visible: outputs.$isDevSettingsModalOpen,
+    devUrl: outputs.$devUrl,
+    featureToggles: outputs.$featureToggles,
+    closeDevSettingsModal: inputs.closeDevSettingsModal,
+    setDevUrl: inputs.setDevUrl,
+    toggleFeature: inputs.toggleFeature,
+    resetFeatureToggles: inputs.resetFeatureToggles,
+  });
 
   return (
     <DevelopmentSettingsModal
@@ -18,6 +33,10 @@ export const DevSettingsModal = () => {
       closeDevSettingsModal={closeDevSettingsModal}
       devUrl={devUrl}
       setDevUrl={setDevUrl}
+      featureToggles={featureToggles}
+      toggleFeature={toggleFeature}
+      resetFeatureToggles={resetFeatureToggles}
+      isAuth={isAuth}
     />
   );
 };

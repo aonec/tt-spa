@@ -1,6 +1,6 @@
 import moment from 'moment';
-import { ResourceDisconnectingResponse } from 'myApi';
-import { TreeSelectElement } from 'ui-kit/shared_components/AddressTreeSelect/AddressTreeSelect.types';
+import { ResourceDisconnectingResponse } from 'api/types';
+import { TreeSelectElement } from 'ui-kit/shared/AddressTreeSelect/AddressTreeSelect.types';
 import { hours } from './CreateResourceDisconnectionForm.constants';
 
 export const getDate = (date: string, hour: string) =>

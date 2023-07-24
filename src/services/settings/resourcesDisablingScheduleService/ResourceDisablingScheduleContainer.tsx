@@ -18,6 +18,8 @@ import {
   displayResourceDisconenctionAddressesServiceService,
 } from './views/displayResourceDisconenctionAddressesServiceService';
 import { addressSearchService } from 'services/addressSearchService/addressSearchService.models';
+import { usePermission } from 'hooks/usePermission';
+import { ESecuredIdentityRoleName } from 'api/types';
 
 const { inputs, outputs, gates } = resourceDisablingScheduleServiceService;
 const { ExistingCitiesGate } = addressSearchService.gates;
@@ -45,6 +47,10 @@ export const ResourceDisablingScheduleContainer = () => {
     displayResourceDisconenctionAddressesServiceService.inputs.openModal,
   );
 
+  const isPermitionToChangeResourceDisabling = usePermission([
+    ESecuredIdentityRoleName.Administrator,
+  ]);
+
   return (
     <DisablingResourceWrapperContainer>
       <ExistingCitiesGate />
@@ -66,6 +72,9 @@ export const ResourceDisablingScheduleContainer = () => {
         handleOpenCompleteDisconnectionModal={openCompleteDisconnectionModal}
         handleOpenDeleteDisconnectionModal={openDeleteDisconnectionModal}
         handleOpenEditDisconnectionModal={openEditDisconnectionModal}
+        isPermitionToChangeResourceDisabling={
+          isPermitionToChangeResourceDisabling
+        }
       />
     </DisablingResourceWrapperContainer>
   );

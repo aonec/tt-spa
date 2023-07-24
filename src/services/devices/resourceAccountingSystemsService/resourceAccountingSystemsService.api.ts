@@ -1,5 +1,5 @@
-import { axios } from '01/axios';
-import { NodeOnHousingStockResponse } from 'myApi';
+import { axios } from 'api/axios';
+import { NodeOnHousingStockResponse } from 'api/types';
 
 export const getNodes = (
   housingStockId: number,

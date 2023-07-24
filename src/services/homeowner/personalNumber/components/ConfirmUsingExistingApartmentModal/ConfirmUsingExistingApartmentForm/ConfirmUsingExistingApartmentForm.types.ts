@@ -1,4 +1,4 @@
-import { ApartmentResponse, IndividualDeviceListItemResponse } from 'myApi';
+import { ApartmentResponse, IndividualDeviceListItemResponse } from 'api/types';
 
 export type ConfirmUsingExistingApartmentFormProps = {
   devices: IndividualDeviceListItemResponse[];

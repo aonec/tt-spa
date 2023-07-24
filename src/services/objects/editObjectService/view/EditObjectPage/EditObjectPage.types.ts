@@ -8,7 +8,7 @@ import {
   HousingStockUpdateRequest,
   NonResidentialBuildingResponse,
   EHouseCategory,
-} from 'myApi';
+} from 'api/types';
 
 export type EditObjectPageProps = {
   housingStock: HousingStockResponse | null;

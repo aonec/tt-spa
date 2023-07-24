@@ -1,4 +1,4 @@
-import { ResourceDisconnectingResponse } from 'myApi';
+import { ResourceDisconnectingResponse } from 'api/types';
 
 export type RenderApartmentProps = {
   openModal: (disconnecion: ResourceDisconnectingResponse) => void;
@@ -12,4 +12,5 @@ export type RenderApartmentProps = {
     endDate: string;
   }) => void;
   handleOpenEditDisconnectionModal: (id: string) => void;
+  isPermitionToChangeResourceDisabling: boolean;
 };

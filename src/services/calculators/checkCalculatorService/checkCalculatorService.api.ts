@@ -1,6 +1,6 @@
-import { axios } from '01/axios';
-import { CheckDeviceRequest } from 'myApi';
+import { axios } from 'api/axios';
+import { CheckDeviceRequest } from 'api/types';
 
 export const fetchCloseCalculator = (
-  payload: CheckDeviceRequest
+  payload: CheckDeviceRequest,
 ): Promise<void> => axios.post('MeteringDevices/check', payload);

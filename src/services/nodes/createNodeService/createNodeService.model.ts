@@ -11,8 +11,7 @@ import {
   NonResidentialBuildingResponse,
   PipeNodeResponse,
   PipeNodeValidationResultResponse,
-} from 'myApi';
-import { createNodeServiceZoneService } from './../createNodeServiceZoneService/createNodeServiceZoneService.model';
+} from 'api/types';
 import {
   fetchValidateNode,
   getBuilding,
@@ -27,6 +26,7 @@ import {
 import { EffectFailDataAxiosError } from 'types';
 import { createCalculatorModalService } from 'services/calculators/createCalculatorModalService';
 import { addressSearchService } from 'services/addressSearchService/addressSearchService.models';
+import { createNodeServiceZoneService } from '../createNodeServiceZoneService';
 
 const domain = createDomain('createNodeService');
 

@@ -1,4 +1,4 @@
-import { EIndividualDeviceReadingsSource } from 'myApi';
+import { EIndividualDeviceReadingsSource } from 'api/types';
 
 export const ReadingNameToSourceDictionary: {
   [key: string]: EIndividualDeviceReadingsSource;

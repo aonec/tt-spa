@@ -1,5 +1,4 @@
 import React, { FC, useMemo } from 'react';
-import { StyledModal } from '01/shared/ui/Modal/Modal';
 import { Header } from 'ui-kit/Modals/FormModal/FormModal.styled';
 import {
   AddressText,
@@ -16,13 +15,14 @@ import {
   NodeResourceInfo,
   StepTitle,
   StepWrapper,
+  StyledModal,
 } from './CreateNodeConfirmationModal.styled';
 import { CreateNodeConfirmationModalProps } from './CreateNodeConfirmationModal.types';
 import { Button } from 'ui-kit/Button';
 import { CalculatorIcon, CitySmallIcon } from 'ui-kit/icons';
 import { getBuildingAddress } from 'utils/getBuildingAddress';
-import { CommonInfo } from 'ui-kit/shared_components/CommonInfo';
-import { ResourceIconLookup } from 'ui-kit/shared_components/ResourceIconLookup';
+import { CommonInfo } from 'ui-kit/shared/CommonInfo';
+import { ResourceIconLookup } from 'ui-kit/shared/ResourceIconLookup';
 import { CommunicationPipeListItem } from '../CreateNodePage/ConnectedDevices/CommunicationPipeListItem';
 import { Empty } from 'antd';
 import { resourceFromConfig } from 'utils/resourceFromConfigLookup';

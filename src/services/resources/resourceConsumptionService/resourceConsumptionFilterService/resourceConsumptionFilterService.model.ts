@@ -3,11 +3,11 @@ import {
   EResourceType,
   HouseManagementWithStreetsResponse,
   StreetWithBuildingNumbersResponse,
-} from 'myApi';
+} from 'api/types';
 import {
   prepareAddressesForTreeSelect,
   prepareAddressesWithParentsForTreeSelect,
-} from 'ui-kit/shared_components/AddressTreeSelect/AddressTreeSelect.utils';
+} from 'ui-kit/shared/AddressTreeSelect/AddressTreeSelect.utils';
 import { getAddressSearchData } from '../resourceConsumptionService.utils';
 import { fetchAddresses } from './resourceConsumptionFilterService.api';
 import moment from 'moment';

@@ -1,11 +1,11 @@
-import { axios } from '01/axios';
+import { axios } from 'api/axios';
 import {
   BuildingAddressCreateRequest,
   BuildingAddressUpdateRequest,
   EHouseCategory,
   HousingStockResponse,
   NonResidentialBuildingResponse,
-} from 'myApi';
+} from 'api/types';
 import { EditObjectPayload } from './editObjectService.types';
 
 export const updateHousingStock = async ({

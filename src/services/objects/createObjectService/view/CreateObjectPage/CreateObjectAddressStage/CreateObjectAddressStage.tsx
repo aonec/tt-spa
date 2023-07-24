@@ -1,4 +1,4 @@
-import { SpaceLine } from '01/shared/ui/Layout/Space/Space';
+import { SpaceLine } from 'ui-kit/SpaceLine';
 import { useFormik } from 'formik';
 import React, { FC } from 'react';
 import { AutoComplete } from 'ui-kit/AutoComplete';
@@ -24,7 +24,7 @@ import {
 import { ErrorMessage } from 'ui-kit/ErrorMessage';
 import { validationSchema } from './createObjectAddressStage.constants';
 import { Select } from 'ui-kit/Select';
-import { LinkButton } from 'ui-kit/shared_components/LinkButton';
+import { LinkButton } from 'ui-kit/shared/LinkButton';
 import { getPreparedStreetsOptions } from './CreateObjectAddressStage.utils';
 import { addressSearchService } from 'services/addressSearchService/addressSearchService.models';
 
@@ -113,7 +113,6 @@ export const CreateObjectAddressStage: FC<CreateObjectAddressStageProps> = ({
           <ItemGridWrapper>
             <FormItem label="Номер дома">
               <Input
-                type="number"
                 placeholder="Введите"
                 value={values.house || undefined}
                 onChange={(value) => setFieldValue('house', value.target.value)}
@@ -169,7 +168,6 @@ export const CreateObjectAddressStage: FC<CreateObjectAddressStageProps> = ({
               <ItemGridWrapper>
                 <FormItem label="Номер дома">
                   <Input
-                    type="number"
                     placeholder="Введите"
                     value={elem.house}
                     onChange={(value) =>

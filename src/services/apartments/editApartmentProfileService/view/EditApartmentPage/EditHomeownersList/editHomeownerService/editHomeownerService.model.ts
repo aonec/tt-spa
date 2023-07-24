@@ -60,7 +60,9 @@ sample({
     $editHomeownerFormData,
     $isForced,
     (payloadData, isForced): EditHomeownerRequestPayload | null => {
-      return payloadData && { ...payloadData, isForced };
+      //Правки по isForced
+
+      return payloadData && { ...payloadData };
     },
   ),
   filter: (payload): payload is EditHomeownerRequestPayload => Boolean(payload),

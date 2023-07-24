@@ -1,5 +1,5 @@
-import { UpdatePipeNodeRequest } from 'myApi';
-import { axios } from '01/axios';
+import { UpdatePipeNodeRequest } from 'api/types';
+import { axios } from 'api/axios';
 
 export const fetchRemoveConnection = (
   payload: UpdatePipeNodeRequest & { nodeId: number },

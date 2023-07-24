@@ -4,6 +4,7 @@ import { apartmentSealService } from './apartmentSealService.model';
 import { useUnit } from 'effector-react';
 import { ApartmentSealProfile } from './view/ApartmentSealProfile';
 import { CreateSealContainer, createSealService } from '../createSealService';
+import './apartmentSealService.relations';
 
 const { inputs, outputs, gates } = apartmentSealService;
 const { ApartmentGate } = gates;
@@ -12,18 +13,29 @@ export const ApartmentSealContainer = () => {
   const history = useHistory();
   const { id } = useParams<{ id: string }>();
 
-  const isApartmentLoading = useUnit(outputs.$isApartmentLoading);
-  const apartment = useUnit(outputs.$apartment);
-  const selectedHomeownerName = useUnit(outputs.$selectedHomeownerName);
-  const individualDevices = useUnit(outputs.$individualDevices);
-  const nearestAppointment = useUnit(outputs.$apartmentAppointment);
-
-  const searchApartment = useUnit(inputs.handleSearchApartment);
-  const setSelectedHomeownerName = useUnit(inputs.setSelectedHomeownerName);
-  const updateApartment = useUnit(inputs.handleUpdateApartment);
-  const openCreateSealAppointmentModal = useUnit(
-    createSealService.inputs.openModal,
-  );
+  const {
+    apartment,
+    individualDevices,
+    isApartmentLoading,
+    isAppointmentLoading,
+    nearestAppointment,
+    searchApartment,
+    selectedHomeownerName,
+    setSelectedHomeownerName,
+    updateApartment,
+    openCreateSealAppointmentModal,
+  } = useUnit({
+    isApartmentLoading: outputs.$isApartmentLoading,
+    isAppointmentLoading: outputs.$isSealAppointmentLoading,
+    apartment: outputs.$apartment,
+    selectedHomeownerName: outputs.$selectedHomeownerName,
+    individualDevices: outputs.$individualDevices,
+    nearestAppointment: outputs.$apartmentAppointment,
+    searchApartment: inputs.handleSearchApartment,
+    setSelectedHomeownerName: inputs.setSelectedHomeownerName,
+    updateApartment: inputs.handleUpdateApartment,
+    openCreateSealAppointmentModal: createSealService.inputs.openModal,
+  });
 
   useEffect(() => {
     return inputs.handleApartmentLoaded.watch((apartment) => {
@@ -47,6 +59,7 @@ export const ApartmentSealContainer = () => {
         individualDevices={individualDevices}
         openCreateSealAppointmentModal={openCreateSealAppointmentModal}
         nearestAppointment={nearestAppointment}
+        isAppointmentLoading={isAppointmentLoading}
       />
     </>
   );

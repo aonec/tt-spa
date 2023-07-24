@@ -1,5 +1,8 @@
 import { Event } from 'effector';
-import { AddApartmentActRequest, ApartmentActResponsePagedList } from 'myApi';
+import {
+  AddApartmentActRequest,
+  ApartmentActResponsePagedList,
+} from 'api/types';
 import { ActsJournalRequestParams } from 'services/actsJournalService/actsJournalService.types';
 
 export type ActsJournalProfileProps = {

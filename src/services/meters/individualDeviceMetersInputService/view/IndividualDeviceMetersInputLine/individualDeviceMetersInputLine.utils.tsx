@@ -1,19 +1,20 @@
 import moment from 'moment';
-import { IndividualDeviceReadingsResponse } from 'myApi';
+import { IndividualDeviceReadingsResponse } from 'api/types';
 import { getFilledArray } from 'utils/getFilledArray';
 import { getReadingValueKey } from '../../individualDeviceMetersInputService.utils';
 
 export function getPreviousMeterTooltipTitle(
   reading: IndividualDeviceReadingsResponse,
   rateNum: number,
-  unit: string
+  unit: string,
 ) {
   const valuesString = getFilledArray(
     rateNum,
-    (index) => reading[getReadingValueKey(index)]
+    (index) => reading[getReadingValueKey(index)],
   )
     .map(
-      (elem, index) => `${rateNum === 1 ? '' : `T${index + 1}:`} ${elem}${unit}`
+      (elem, index) =>
+        `${rateNum === 1 ? '' : `T${index + 1}:`} ${elem}${unit}`,
     )
     .join(', ');
 

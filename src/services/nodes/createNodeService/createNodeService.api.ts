@@ -1,4 +1,4 @@
-import { axios } from '01/axios';
+import { axios } from 'api/axios';
 import {
   CalculatorIntoHousingStockResponse,
   CreatePipeNodeRequest,
@@ -8,7 +8,7 @@ import {
   NonResidentialBuildingResponse,
   PipeNodeResponse,
   PipeNodeValidationResultResponse,
-} from 'myApi';
+} from 'api/types';
 import { GetBuildingPayload } from './createNodeService.types';
 
 export const getBuilding = async ({

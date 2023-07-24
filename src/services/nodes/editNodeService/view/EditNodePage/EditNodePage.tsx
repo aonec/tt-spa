@@ -1,7 +1,7 @@
 import React, { FC, useMemo } from 'react';
-import { GoBack } from 'ui-kit/shared_components/GoBack';
-import { HeaderInfoString } from 'ui-kit/shared_components/HeaderInfoString';
-import { ResourceIconLookup } from 'ui-kit/shared_components/ResourceIconLookup';
+import { GoBack } from 'ui-kit/shared/GoBack';
+import { HeaderInfoString } from 'ui-kit/shared/HeaderInfoString';
+import { ResourceIconLookup } from 'ui-kit/shared/ResourceIconLookup';
 import { getBuildingAddress } from 'utils/getBuildingAddress';
 import { NodeEditGrouptype } from '../../editNodeService.constants';
 import { EditNodeCommonInfo } from './EditNodeCommonInfo';

@@ -1,5 +1,5 @@
-import { axios } from '01/axios';
-import { CreateCalculatorRequest, MeteringDeviceResponse } from 'myApi';
+import { axios } from 'api/axios';
+import { CreateCalculatorRequest, MeteringDeviceResponse } from 'api/types';
 
 export const fetchCreateCalculator = (
   payload: CreateCalculatorRequest,

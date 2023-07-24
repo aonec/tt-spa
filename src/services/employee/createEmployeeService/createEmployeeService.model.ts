@@ -2,7 +2,10 @@ import { createDomain, forward } from 'effector';
 import { competencesService } from '../competencesService';
 import { rolesService } from '../rolesService';
 import { addStaff } from './createEmployeeService.api';
-import { OrganizationUserCreateRequest, OrganizationUserResponse } from 'myApi';
+import {
+  OrganizationUserCreateRequest,
+  OrganizationUserResponse,
+} from 'api/types';
 import { EffectFailDataAxiosError } from 'types';
 import { message } from 'antd';
 

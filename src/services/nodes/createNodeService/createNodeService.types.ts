@@ -1,4 +1,4 @@
-import { CreatePipeNodeRequest, EHouseCategory } from 'myApi';
+import { CreatePipeNodeRequest, EHouseCategory } from 'api/types';
 import { CommunicationPipePayload } from '../addPipeNodeCommonDeviceService/addPipeNodeCommonDeviceService.types';
 
 export type CreateNodeFormPayload = Omit<
