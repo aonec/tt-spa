@@ -1,11 +1,11 @@
 import { createDomain, createStore, sample } from 'effector';
 import { createGate } from 'effector-react';
+import { createForm } from 'effector-forms';
+import { message } from 'antd';
 import {
   deleteDistrictMutation,
   existingDistrictsQuery,
 } from './manageDistrictsMapService.api';
-import { createForm } from 'effector-forms';
-import { message } from 'antd';
 import { currentUserService } from 'services/currentUserService';
 
 const domain = createDomain('manageDistrictsMapService');
