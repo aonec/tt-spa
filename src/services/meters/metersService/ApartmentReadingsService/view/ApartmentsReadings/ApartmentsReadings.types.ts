@@ -1,10 +1,13 @@
+import { Event } from 'effector';
 import {
   ApartmentResponse,
+  HomeownerAccountResponse,
   IndividualDeviceMountPlaceForFilterResponse,
 } from 'api/types';
 import {
   GetApartmentsRequestPayload,
   UpdateApartmentRequestPayload,
+  UpdateHomeownerRequestPayload,
 } from '../../ApartmentReadingsService.types';
 
 export type ApartmentsReadingsProps = {
@@ -24,6 +27,9 @@ export type ApartmentsReadingsProps = {
     | IndividualDeviceMountPlaceForFilterResponse[]
     | null;
   printIssueCertificate: () => void;
+  handleUpdatePhoneNumber: (payload: UpdateHomeownerRequestPayload) => void;
+  isUpdateHomeownerLoading: boolean;
+  handleHomeownerUpdated: Event<HomeownerAccountResponse>;
 };
 
 export enum SearchMode {

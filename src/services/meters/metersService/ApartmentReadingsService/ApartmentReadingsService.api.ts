@@ -1,5 +1,10 @@
 import { axios } from 'api/axios';
-import { ApartmentListResponsePagedList, ApartmentResponse } from 'api/types';
+import {
+  ApartmentListResponsePagedList,
+  ApartmentResponse,
+  HomeownerAccountResponse,
+  HomeownerAccountUpdateRequest,
+} from 'api/types';
 import {
   GetApartmentsRequestPayload,
   UpdateApartmentRequestPayload,
@@ -42,3 +47,12 @@ export const putApartment = ({
   ...data
 }: UpdateApartmentRequestPayload): Promise<ApartmentResponse> =>
   axios.put(`Apartments/${apartmentId}`, data);
+
+export const patchHomeowner = ({
+  id,
+  data,
+}: {
+  id: string;
+  data: HomeownerAccountUpdateRequest;
+}): Promise<HomeownerAccountResponse> =>
+  axios.put(`HomeownerAccounts/${id}`, data);
