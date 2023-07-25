@@ -1,5 +1,5 @@
-import { axios } from '01/axios';
-import { GroupReportFormResponse } from 'myApi';
+import { axios } from 'api/axios';
+import { GroupReportFormResponse } from 'api/types';
 import { GroupReportRequestPayload } from './groupReportService.types';
 import queryString from 'query-string';
 

@@ -1,4 +1,4 @@
-import { AppointmentResponse, ControllerResponse } from 'myApi';
+import { AppointmentResponse, ControllerResponse } from 'api/types';
 
 export type DistributeAppointmentsPanelProps = {
   appointmentsInDistrict: AppointmentResponse[];

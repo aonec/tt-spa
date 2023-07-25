@@ -1,7 +1,7 @@
 import { useEvent, useStore } from 'effector-react';
 import React from 'react';
 import { useParams } from 'react-router-dom';
-import { WithLoader } from 'ui-kit/shared_components/WithLoader';
+import { WithLoader } from 'ui-kit/shared/WithLoader';
 import {
   CheckCalculatorContainer,
   checkCalculatorService,
@@ -13,7 +13,7 @@ import {
 import { CalculatorProfile } from './CalculatorProfile/CalculatorProfile';
 import { calculatorProfileService } from './calculatorProfileService.model';
 import { ConsumptionReportCalculatorContainer } from '../consumptionReportCalculatorService';
-import { ESecuredIdentityRoleName } from 'myApi';
+import { ESecuredIdentityRoleName } from 'api/types';
 import { usePermission } from 'hooks/usePermission';
 
 const { gates, inputs, outputs } = calculatorProfileService;

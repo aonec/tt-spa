@@ -1,4 +1,4 @@
-import { AppointmentCounterResponse } from 'myApi';
+import { AppointmentCounterResponse } from 'api/types';
 
 export type GetDistrictAppointmentsRequestPayload = {
   districtId: string;

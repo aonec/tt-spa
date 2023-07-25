@@ -1,4 +1,4 @@
-import { BuildingListResponse, BuildingShortResponse } from 'myApi';
+import { BuildingListResponse, BuildingShortResponse } from 'api/types';
 
 export const fullAddressesString = (address: BuildingListResponse | null) => {
   const additionalAddresses = address?.address?.additionalAddresses || [];

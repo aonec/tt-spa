@@ -16,11 +16,11 @@ import {
 import { ReactComponent as Emblem } from './assets/emblem.svg';
 import { ReactComponent as LoginPageBackground } from './assets/loginPageBackground.svg';
 import { Input } from 'ui-kit/Input';
-import { DevSettingsModal } from 'services/developmentSettings/developmentSettings.container';
+import { DevelopmentSettingsContainer } from 'services/developmentSettings/developmentSettings.container';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 import { ErrorMessage } from 'ui-kit/ErrorMessage';
-import { fromEnter } from 'ui-kit/shared_components/DatePickerNative';
+import { fromEnter } from 'ui-kit/shared/DatePickerNative';
 import { useSwitchInputOnEnter } from 'hooks/useSwitchInputOnEnter';
 
 export const LoginPage: FC<LoginPageProps> = ({
@@ -105,7 +105,7 @@ export const LoginPage: FC<LoginPageProps> = ({
         </Form>
         {isDevMode && (
           <>
-            <DevSettingsModal />
+            <DevelopmentSettingsContainer />
             <ButtonDevSettings onClick={openDevSettingsModal}>
               Development settings
             </ButtonDevSettings>

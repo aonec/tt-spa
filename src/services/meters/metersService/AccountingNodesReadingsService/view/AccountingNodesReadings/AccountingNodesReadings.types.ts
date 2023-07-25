@@ -1,5 +1,5 @@
 import { GetElectricNodesByAddress } from '../../AccountingNodesReadingsService.types';
-import { ElectricNodeResponse, BuildingAddressItemResponse } from 'myApi';
+import { ElectricNodeResponse, BuildingAddressItemResponse } from 'api/types';
 
 export type AccountingNodesReadingsProps = {
   handleGetElectricNodes: (address: GetElectricNodesByAddress) => void;

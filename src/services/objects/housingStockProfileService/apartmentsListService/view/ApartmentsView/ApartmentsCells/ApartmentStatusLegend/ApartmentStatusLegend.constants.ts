@@ -1,4 +1,4 @@
-import { ETasksState } from 'myApi';
+import { ETasksState } from 'api/types';
 
 export const TasksStateBackgroundLookup: {
   [key in ETasksState]: string;

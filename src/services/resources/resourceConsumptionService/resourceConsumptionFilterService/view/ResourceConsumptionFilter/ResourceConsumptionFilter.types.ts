@@ -1,4 +1,4 @@
-import { TreeSelectElement } from 'ui-kit/shared_components/AddressTreeSelect/AddressTreeSelect.types';
+import { TreeSelectElement } from 'ui-kit/shared/AddressTreeSelect/AddressTreeSelect.types';
 import { PreparedHouseManagements } from '../../../resourceConsumptionService.types';
 import { ConsumptionDataFilter } from '../../resourceConsumptionFilterService.types';
 

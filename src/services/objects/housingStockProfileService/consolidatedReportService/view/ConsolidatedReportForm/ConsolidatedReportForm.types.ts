@@ -1,4 +1,7 @@
-import { HousingStockResponse, NonResidentialBuildingResponse } from 'myApi';
+import {
+  HousingStockResponse,
+  NonResidentialBuildingResponse,
+} from 'api/types';
 import { GetConsolidatedReport } from '../../consolidatedReportService.types';
 import moment from 'moment';
 

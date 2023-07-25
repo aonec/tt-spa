@@ -1,4 +1,4 @@
-import { NodeCheckResponse, UpdateNodeCheckRequest } from 'myApi';
+import { NodeCheckResponse, UpdateNodeCheckRequest } from 'api/types';
 
 export type UpdateNodeCheckPayload = {
   nodeId: number;

@@ -1,10 +1,10 @@
-import { axios } from '01/axios';
+import { axios } from 'api/axios';
 import queryString from 'query-string';
 import {
   EMeteringDeviceType,
   IndividualDeviceListResponseFromDevicePagePagedList,
   IndividualDeviceResponse,
-} from 'myApi';
+} from 'api/types';
 import { GetMeteringDevicesModelsRequest } from './displayIndividualDeviceAndNamesService.types';
 
 export const getIndividualDevice = async (

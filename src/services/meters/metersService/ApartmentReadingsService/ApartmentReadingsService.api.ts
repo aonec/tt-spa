@@ -1,10 +1,10 @@
-import { axios } from '01/axios';
+import { axios } from 'api/axios';
 import {
   ApartmentListResponsePagedList,
   ApartmentResponse,
   HomeownerAccountResponse,
   HomeownerAccountUpdateRequest,
-} from 'myApi';
+} from 'api/types';
 import {
   GetApartmentsRequestPayload,
   UpdateApartmentRequestPayload,

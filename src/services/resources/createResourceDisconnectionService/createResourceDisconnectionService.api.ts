@@ -1,10 +1,10 @@
-import { axios } from '01/axios';
+import { axios } from 'api/axios';
 import {
   HeatingStationWithStreetsResponse,
   HouseManagementWithStreetsResponse,
   ResourceDisconnectingCreateRequest,
   StreetWithBuildingNumbersResponsePagedList,
-} from 'myApi';
+} from 'api/types';
 
 export const fetchCreateResourceDisconnection = (
   payload: ResourceDisconnectingCreateRequest,

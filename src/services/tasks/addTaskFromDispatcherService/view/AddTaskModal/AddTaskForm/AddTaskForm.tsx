@@ -14,7 +14,7 @@ import { FormItem } from 'ui-kit/FormItem';
 import { Select } from 'ui-kit/Select';
 import { Input } from 'ui-kit/Input';
 import { DatePicker } from 'ui-kit/DatePicker';
-import { EisTaskType } from 'myApi';
+import { EisTaskType } from 'api/types';
 import { SelectTime } from 'ui-kit/SelectTime';
 import { addTaskFromDispatcherService } from 'services/tasks/addTaskFromDispatcherService/addTaskFromDispatcherService.models';
 import { TaskTypeDictionary } from 'dictionaries';

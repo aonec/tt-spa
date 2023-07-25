@@ -2,8 +2,9 @@ import {
   BuildingListResponsePagedList,
   DistrictCreateRequest,
   DistrictResponse,
-} from 'myApi';
+} from 'api/types';
 import { CreatingDistrictPayload } from '../../createDistrictBorderMapService.types';
+import { OrganizationCoordinates } from 'services/currentUserService/currentUserService.types';
 
 export type Props = {
   existingHousingStocks: BuildingListResponsePagedList | null;
@@ -11,4 +12,5 @@ export type Props = {
   isLoading: boolean;
   handleCreateDistrict: (payload: DistrictCreateRequest) => void;
   preselectedDistrictPayload: CreatingDistrictPayload | null;
+  organizationCoordinates: OrganizationCoordinates | null;
 };

@@ -10,7 +10,7 @@ import { MessageWrapper } from './CloseCalculatorForm.styled';
 import { CloseCalculatorFormProps } from './CloseCalculatorForm.types';
 import * as yup from 'yup';
 import { ErrorMessage } from 'ui-kit/ErrorMessage';
-import { EDocumentType } from 'myApi';
+import { EDocumentType } from 'api/types';
 
 export const CloseCalculatorForm: FC<CloseCalculatorFormProps> = ({
   formId,

@@ -1,11 +1,11 @@
-import { axios } from '01/axios';
+import { axios } from 'api/axios';
 import {
   AllNodeWorkingRangeResponse,
   ENodeWorkingRangeSeason,
   EResourceType,
   NodeOnHousingStockResponse,
   StreetWithBuildingNumbersResponsePagedList,
-} from 'myApi';
+} from 'api/types';
 import { GetAddressesWithCityRequestPayload } from './uniqueWorkingRangeService.types';
 
 export const getHousingStockUniqueWorkingRange = (query: {

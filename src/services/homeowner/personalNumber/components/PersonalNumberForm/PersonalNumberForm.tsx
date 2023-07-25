@@ -15,7 +15,7 @@ import {
   PersonalNumberFormTypes,
 } from './PersonalNumberForm.types';
 import { FormItem } from 'ui-kit/FormItem';
-import { DatePickerNative } from 'ui-kit/shared_components/DatePickerNative';
+import { DatePickerNative } from 'ui-kit/shared/DatePickerNative';
 import { ErrorMessage } from 'ui-kit/ErrorMessage';
 import { Input } from 'ui-kit/Input';
 import { TrashIcon } from 'ui-kit/icons';

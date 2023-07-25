@@ -1,7 +1,7 @@
 import { Steps } from 'antd';
 import React, { FC, ReactNode } from 'react';
-import { GoBack } from 'ui-kit/shared_components/GoBack';
-import { WithLoader } from 'ui-kit/shared_components/WithLoader';
+import { GoBack } from 'ui-kit/shared/GoBack';
+import { WithLoader } from 'ui-kit/shared/WithLoader';
 import { Title } from 'ui-kit/Title';
 import { getBuildingAddress } from 'utils/getBuildingAddress';
 import { CommonData } from './CommonData';
@@ -14,9 +14,9 @@ import { MountAddress } from './MountAddress';
 const { Step } = Steps;
 
 export const CreateNodePage: FC<CreateNodePageProps> = ({
-  housingStock,
+  building,
   existingCities,
-  isLoadingHousingStock,
+  isBuildingLoading,
   existingStreets,
   updateRequestPayload,
   goPrevStep,
@@ -33,7 +33,7 @@ export const CreateNodePage: FC<CreateNodePageProps> = ({
   const stepComponentDictionary: { [key: number]: ReactNode } = {
     0: (
       <MountAddress
-        housingStock={housingStock}
+        building={building}
         existingCities={existingCities}
         existingStreets={existingStreets}
         updateRequestPayload={updateRequestPayload}
@@ -73,14 +73,12 @@ export const CreateNodePage: FC<CreateNodePageProps> = ({
     <div>
       <GoBack />
       <PageHeaderSC title="Добавление нового узла" isGhost />
-      {housingStock && (
-        <AddressWrapper>
-          {getBuildingAddress(housingStock, true)}
-        </AddressWrapper>
+      {building && (
+        <AddressWrapper>{getBuildingAddress(building, true)}</AddressWrapper>
       )}
       <Wrapper>
         <div>
-          <WithLoader isLoading={isLoadingHousingStock}>
+          <WithLoader isLoading={isBuildingLoading}>
             {stepComponentDictionary[stepNumber]}
           </WithLoader>
         </div>

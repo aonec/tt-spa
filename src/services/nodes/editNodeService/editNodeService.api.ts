@@ -1,9 +1,9 @@
-import { axios } from '01/axios';
+import { axios } from 'api/axios';
 import {
   NodeServiceZoneListResponse,
   PipeNodeResponse,
   UpdatePipeNodeRequest,
-} from 'myApi';
+} from 'api/types';
 
 export const fetchNode = (nodeId: string): Promise<PipeNodeResponse> =>
   axios.get(`PipeNodes/${nodeId}`);

@@ -3,7 +3,7 @@ import {
   ApartmentResponse,
   HomeownerAccountResponse,
   IndividualDeviceMountPlaceForFilterResponse,
-} from 'myApi';
+} from 'api/types';
 import {
   GetApartmentsRequestPayload,
   UpdateApartmentRequestPayload,

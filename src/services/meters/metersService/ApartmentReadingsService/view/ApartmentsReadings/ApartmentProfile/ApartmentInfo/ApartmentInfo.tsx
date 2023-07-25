@@ -157,7 +157,9 @@ export const ApartmentInfo: FC<ApartmentInfoProps> = ({
           </AddressWrapper>
           <AdditionalHeaderInfoWrapper>
             {additionalHeaderInfo}
-            <ContextMenuButton size="small" menuButtons={menuButtons} />
+            {menuButtons?.length && (
+              <ContextMenuButton size="small" menuButtons={menuButtons} />
+            )}
           </AdditionalHeaderInfoWrapper>
         </Header>
         <InfoPanel>

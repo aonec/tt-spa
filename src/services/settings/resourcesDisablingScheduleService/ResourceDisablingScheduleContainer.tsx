@@ -19,7 +19,7 @@ import {
 } from './views/displayResourceDisconenctionAddressesServiceService';
 import { addressSearchService } from 'services/addressSearchService/addressSearchService.models';
 import { usePermission } from 'hooks/usePermission';
-import { ESecuredIdentityRoleName } from 'myApi';
+import { ESecuredIdentityRoleName } from 'api/types';
 
 const { inputs, outputs, gates } = resourceDisablingScheduleServiceService;
 const { ExistingCitiesGate } = addressSearchService.gates;

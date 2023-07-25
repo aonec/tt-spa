@@ -1,7 +1,7 @@
 import { useSwitchInputOnEnter } from 'hooks/useSwitchInputOnEnter';
-import { fromEnter } from 'ui-kit/shared_components/DatePickerNative';
+import { fromEnter } from 'ui-kit/shared/DatePickerNative';
 import { useFormik } from 'formik';
-import { OrganizationUpdateRequest } from 'myApi';
+import { OrganizationUpdateRequest } from 'api/types';
 import React, { FC, useCallback } from 'react';
 import { useHistory } from 'react-router-dom';
 import { Button } from 'ui-kit/Button';

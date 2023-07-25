@@ -1,4 +1,4 @@
-import { HouseManagementResponse } from 'myApi';
+import { HouseManagementResponse } from 'api/types';
 import { FeedBackFlowReportPayload } from '../../feedFlowBackReportService.types';
 
 export type FeedFlowBackReportFormProps = {

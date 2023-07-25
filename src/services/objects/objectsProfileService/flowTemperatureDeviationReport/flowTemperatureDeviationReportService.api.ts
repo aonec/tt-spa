@@ -1,4 +1,4 @@
-import { axios } from '01/axios';
+import { axios } from 'api/axios';
 import queryString from 'query-string';
 import { FeedFlowTemperatureRequestPayload } from './flowTemperatureDeviationReportService.types';
 import { downloadURI } from 'utils/downloadByURL';

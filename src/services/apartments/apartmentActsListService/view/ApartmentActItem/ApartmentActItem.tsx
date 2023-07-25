@@ -1,4 +1,4 @@
-import { ResourceInfo } from 'ui-kit/shared_components/ResourceInfo';
+import { ResourceInfo } from 'ui-kit/shared/ResourceInfo';
 import moment from 'moment';
 import React, { FC } from 'react';
 import { DocumentIcon, PencilIcon, TrashIcon, UploadIcon } from 'ui-kit/icons';
@@ -16,7 +16,7 @@ import {
   NoDocumentText,
 } from './ApartmentActItem.styled';
 import { ApartmentActItemProps } from './ApartmentActItem.types';
-import { DocumentResponse } from 'myApi';
+import { DocumentResponse } from 'api/types';
 import { ActTypesNamesLookup } from 'dictionaries';
 
 export const ApartmentActItem: FC<ApartmentActItemProps> = ({

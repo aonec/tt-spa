@@ -4,7 +4,7 @@ import {
   ApartmentResponse,
   HomeownerAccountResponse,
   HomeownerAccountUpdateRequest,
-} from 'myApi';
+} from 'api/types';
 import { SearchMode } from './view/ApartmentsReadings/ApartmentsReadings.types';
 import {
   GetApartmentsRequestPayload,

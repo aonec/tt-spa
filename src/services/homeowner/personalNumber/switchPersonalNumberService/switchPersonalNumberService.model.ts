@@ -1,7 +1,7 @@
 import { createDomain, sample } from 'effector';
 import { replaceHomeownerAccount } from './switchPersonalNumberService.api';
 import { EffectFailDataAxiosErrorDataApartmentId } from 'types';
-import { HomeownerAccountReplaceRequest } from 'myApi';
+import { HomeownerAccountReplaceRequest } from 'api/types';
 import { PersonalNumberFormTypes } from '../components/PersonalNumberForm/PersonalNumberForm.types';
 import { message } from 'antd';
 import { apartmentProfileService } from 'services/apartments/apartmentProfileService';

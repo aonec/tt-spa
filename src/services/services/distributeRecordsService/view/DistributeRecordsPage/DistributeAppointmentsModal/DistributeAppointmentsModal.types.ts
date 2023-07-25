@@ -1,4 +1,4 @@
-import { AppointmentsSetRequest, ControllerResponse } from 'myApi';
+import { AppointmentsSetRequest, ControllerResponse } from 'api/types';
 
 export type Props = {
   isModalOpen: boolean;

@@ -1,27 +1,32 @@
-import { createDomain } from 'effector';
-import { InspectorOnBuildingResponse } from 'myApi';
+import { createDomain, sample } from 'effector';
+import { InspectorOnBuildingResponse } from 'api/types';
 import { getInspectorsHousingStocks } from './displayInspectorsHousingStocksService.api';
 import { GetInspectorsHousingStocksRequestParams } from './types';
+import { searchInspectorsHousingStockService } from '../searchInspectorsHousingStocksService/searchInspectorsHousingStockService.models';
 
-const displayInspectorsHousingStocksServiceDomain = createDomain(
-  'displayInspectorsHousingStocksService',
-);
+const { startSearchInspectorsHousingStocks } =
+  searchInspectorsHousingStockService.inputs;
 
-const $inspectorsHousingStocksList =
-  displayInspectorsHousingStocksServiceDomain.createStore<
-    InspectorOnBuildingResponse[] | null
-  >(null);
+const domain = createDomain('displayInspectorsHousingStocksService');
 
-const fetchInspectorsHousingStocksListFx =
-  displayInspectorsHousingStocksServiceDomain.createEffect<
-    GetInspectorsHousingStocksRequestParams,
-    InspectorOnBuildingResponse[] | null
-  >(getInspectorsHousingStocks);
+const fetchInspectorsHousingStocksListFx = domain.createEffect<
+  GetInspectorsHousingStocksRequestParams,
+  InspectorOnBuildingResponse[] | null
+>(getInspectorsHousingStocks);
 
 const $loading = fetchInspectorsHousingStocksListFx.pending;
 
 const handleGetInspectorsHousingStocks =
-  displayInspectorsHousingStocksServiceDomain.createEvent<GetInspectorsHousingStocksRequestParams>();
+  domain.createEvent<GetInspectorsHousingStocksRequestParams>();
+
+const $inspectorsHousingStocksList = domain
+  .createStore<InspectorOnBuildingResponse[] | null>(null)
+  .on(fetchInspectorsHousingStocksListFx.doneData, (_, list) => list);
+
+sample({
+  clock: startSearchInspectorsHousingStocks,
+  target: fetchInspectorsHousingStocksListFx,
+});
 
 export const displayInspectorsHousingStocksService = {
   inputs: {

@@ -1,4 +1,14 @@
 import React, { FC, useMemo } from 'react';
+import { useForm } from 'effector-forms';
+import { DistrictColorsList } from 'dictionaries';
+import { GoBack } from 'ui-kit/shared/GoBack';
+import { Button } from 'ui-kit/Button';
+import { useYMaps } from 'hooks/ymaps/useYMaps';
+import { getPayloadFromDistricts } from 'utils/districtsData';
+import { useRenderDistricts } from 'hooks/ymaps/utils';
+import { Select } from 'ui-kit/Select';
+import { manageDistrictsMapService } from '../manageDistrictsMapService.models';
+import { ColorCircle } from '../../createDistrictBorderMapService/view/CreateDistrictBorderMapPage/CreateDistrictFormPanel/CreateDistrictFormPanel.styled';
 import {
   ControlButtonsWrapper,
   DistrictSelectWrapper,
@@ -7,26 +17,17 @@ import {
   SelectColorOptionWrapper,
 } from './ManageDistrictPage.styled';
 import { Props } from './ManageDistrictPage.types';
-import { GoBack } from 'ui-kit/shared_components/GoBack';
-import { Button } from 'ui-kit/Button';
-import { useYMaps } from 'hooks/ymaps/useYMaps';
-import { getPayloadFromDistricts } from 'utils/districtsData';
-import { useRenderDistricts } from 'hooks/ymaps/utils';
-import { Select } from 'ui-kit/Select';
-import { DistrictColorsList } from 'dictionaries';
-import { manageDistrictsMapService } from '../manageDistrictsMapService.models';
-import { useForm } from 'effector-forms';
-import { ColorCircle } from '../../createDistrictBorderMapService/view/CreateDistrictBorderMapPage/CreateDistrictFormPanel/CreateDistrictFormPanel.styled';
 
 const { forms } = manageDistrictsMapService;
 
 export const ManageDistrictPage: FC<Props> = ({
   existingDistricts,
   handleDeleteDistrict,
+  organizationCoordinates,
 }) => {
   const { fields } = useForm(forms.manageDistrictsForm);
 
-  const { map, mapRef } = useYMaps();
+  const { map, mapRef } = useYMaps(organizationCoordinates);
 
   const setSelectedDistrictId = fields.selectedDistrictId.onChange;
 

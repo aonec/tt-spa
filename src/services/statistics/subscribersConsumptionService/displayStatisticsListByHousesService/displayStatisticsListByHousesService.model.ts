@@ -6,7 +6,7 @@ import {
   fetchStatisticsByHouse,
 } from './displayStatisticsListByHousesService.api';
 import { SubscriberStatisticsFilter } from '../displayStatisticsListByManagingFirmService/displayStatisticsListByManagingFirmService.types';
-import { SubscriberStatisticsСonsumptionResponse } from 'myApi';
+import { SubscriberStatisticsСonsumptionResponse } from 'api/types';
 import { HousingStockAddressForm } from './displayStatisticsListByHousesService.types';
 
 const domain = createDomain('displayStatisticsListByHousesService');

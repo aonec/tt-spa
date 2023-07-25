@@ -2,7 +2,7 @@ import moment from 'moment';
 import {
   IndividualDeviceReadingsResponse,
   SwitchIndividualDeviceReadingsCreateRequest,
-} from 'myApi';
+} from 'api/types';
 import { getFilledArray } from 'utils/getFilledArray';
 import { PreparedForFormReadings } from './workWithIndividualDeviceService.types';
 
