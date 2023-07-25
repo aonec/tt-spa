@@ -1,7 +1,7 @@
 import React from 'react';
 import { nonResidentialBuildingProfileService } from './nonResidentialBuildingProfileService.model';
 import { useParams } from 'react-router-dom';
-import { getNonResidentialBuildingQuery } from './nonResidentialBuildingProfileService.api';
+import { nonResidentialBuildingQuery } from './nonResidentialBuildingProfileService.api';
 import { useUnit } from 'effector-react';
 import { WithLoader } from 'ui-kit/shared/WithLoader';
 import { NonResidentialBuildingProfile } from './view/NonResidentialBuildingProfile';
@@ -22,8 +22,8 @@ export const NonResidentialBuildingProfileContainer = () => {
     setGrouptype,
     openConsolidatedReportModal,
   } = useUnit({
-    isLoading: getNonResidentialBuildingQuery.$pending,
-    nonResidentialBuilding: getNonResidentialBuildingQuery.$data,
+    isLoading: nonResidentialBuildingQuery.$pending,
+    nonResidentialBuilding: nonResidentialBuildingQuery.$data,
     currentGrouptype: outputs.$currentGrouptype,
     setGrouptype: inputs.setCurrentGroutype,
     openConsolidatedReportModal: inputs.openConsolidatedReportModal,

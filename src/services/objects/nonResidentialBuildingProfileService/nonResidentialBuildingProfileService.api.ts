@@ -2,7 +2,7 @@ import { axios } from 'api/axios';
 import { createQuery } from '@farfetched/core';
 import { NonResidentialBuildingResponse } from 'api/types';
 
-export const getNonResidentialBuildingQuery = createQuery<
+export const nonResidentialBuildingQuery = createQuery<
   number,
   NonResidentialBuildingResponse
 >({

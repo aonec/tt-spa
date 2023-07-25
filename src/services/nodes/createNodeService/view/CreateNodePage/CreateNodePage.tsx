@@ -14,9 +14,9 @@ import { MountAddress } from './MountAddress';
 const { Step } = Steps;
 
 export const CreateNodePage: FC<CreateNodePageProps> = ({
-  housingStock,
+  building,
   existingCities,
-  isLoadingHousingStock,
+  isBuildingLoading,
   existingStreets,
   updateRequestPayload,
   goPrevStep,
@@ -33,7 +33,7 @@ export const CreateNodePage: FC<CreateNodePageProps> = ({
   const stepComponentDictionary: { [key: number]: ReactNode } = {
     0: (
       <MountAddress
-        housingStock={housingStock}
+        building={building}
         existingCities={existingCities}
         existingStreets={existingStreets}
         updateRequestPayload={updateRequestPayload}
@@ -73,14 +73,12 @@ export const CreateNodePage: FC<CreateNodePageProps> = ({
     <div>
       <GoBack />
       <PageHeaderSC title="Добавление нового узла" isGhost />
-      {housingStock && (
-        <AddressWrapper>
-          {getBuildingAddress(housingStock, true)}
-        </AddressWrapper>
+      {building && (
+        <AddressWrapper>{getBuildingAddress(building, true)}</AddressWrapper>
       )}
       <Wrapper>
         <div>
-          <WithLoader isLoading={isLoadingHousingStock}>
+          <WithLoader isLoading={isBuildingLoading}>
             {stepComponentDictionary[stepNumber]}
           </WithLoader>
         </div>

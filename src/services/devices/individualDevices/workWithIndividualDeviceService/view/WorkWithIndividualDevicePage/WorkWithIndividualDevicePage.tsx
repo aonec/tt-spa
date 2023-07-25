@@ -25,7 +25,7 @@ export const WorkWithIndividualDevicePage: FC<
   form,
   contractors,
   handleFetchSerialNumberForCheck,
-  isSerialNumberAllreadyExist,
+  serialNumberForChecking,
   isSerialNumberLoading,
   handleFetchModels,
   models,
@@ -60,7 +60,7 @@ export const WorkWithIndividualDevicePage: FC<
               form={form}
               contractors={contractors}
               handleFetchSerialNumberForCheck={handleFetchSerialNumberForCheck}
-              isSerialNumberAllreadyExist={isSerialNumberAllreadyExist}
+              serialNumberForChecking={serialNumberForChecking}
               isSerialNumberLoading={isSerialNumberLoading}
               handleFetchModels={handleFetchModels}
               models={models}
