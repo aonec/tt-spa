@@ -1,4 +1,8 @@
-import { ContractorListResponse, IndividualDeviceResponse } from 'api/types';
+import {
+  ContractorListResponse,
+  IndividualDeviceListResponseFromDevicePage,
+  IndividualDeviceResponse,
+} from 'api/types';
 import {
   WorkWithIndividualDeviceFormType,
   WorkWithIndividualDeviceType,
@@ -11,7 +15,7 @@ export type WorkWithIndividualDeviceFormProps = {
   handleFetchSerialNumberForCheck: (serialNumber: string) => void;
   handleFetchModels: (model: string) => void;
   isSerialNumberLoading: boolean;
-  isSerialNumberAllreadyExist: boolean;
   models: string[] | null;
   individualDevice: IndividualDeviceResponse;
+  serialNumberForChecking: IndividualDeviceListResponseFromDevicePage[];
 };
