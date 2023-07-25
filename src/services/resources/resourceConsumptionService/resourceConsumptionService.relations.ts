@@ -103,3 +103,4 @@ sample({
   clock: resourceConsumptionService.gates.ResourceConsumptionGate.close,
   target: resourceConsumptionFilterService.inputs.clearFilter,
 });
+
