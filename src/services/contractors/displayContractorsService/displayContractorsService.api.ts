@@ -1,5 +1,8 @@
-import { axios } from '01/axios';
-import { ContractorListResponse, ContractorListResponsePagedList } from 'myApi';
+import { axios } from 'api/axios';
+import {
+  ContractorListResponse,
+  ContractorListResponsePagedList,
+} from 'api/types';
 
 export const getContractors = async (): Promise<ContractorListResponse[]> => {
   const response: ContractorListResponsePagedList = await axios.get(

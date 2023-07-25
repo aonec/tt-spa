@@ -1,11 +1,23 @@
-import { getResourceColor } from '01/features/individualDevices/switchIndividualDevice/components/DeviceDataString';
-import { EResourceType } from 'myApi';
+import { getResourceColor } from 'services/meters/metersService/ApartmentReadingsService/view/ApartmentsReadings/DevicesSearch/DeviceDataString';
+import { EResourceType } from 'api/types';
 import styled from 'styled-components';
 
 export const MonthWrapper = styled.div`
   font-weight: 400;
   color: #272f5ae5;
   margin-bottom: 5px;
+`;
+
+export const InputWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+`;
+
+export const ReadingValuesWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  flex-direction: column;
 `;
 
 export const ReadingInputSC = styled.input<{

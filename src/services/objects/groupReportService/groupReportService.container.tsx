@@ -1,7 +1,7 @@
 import { useEvent, useStore } from 'effector-react';
 import React from 'react';
 import { FormModal } from 'ui-kit/Modals/FormModal';
-import { WithLoader } from 'ui-kit/shared_components/WithLoader';
+import { WithLoader } from 'ui-kit/shared/WithLoader';
 import { groupReportFormId } from './groupReportService.constants';
 import { groupReportService } from './groupReportService.model';
 import { SendReportToEmailContainer } from './sendReportToEmailService';

@@ -9,7 +9,7 @@ import {
   IndividualDeviceResponse,
   MeteringDeviceResponse,
   UpdateIndividualDeviceRequest,
-} from 'myApi';
+} from 'api/types';
 import { EffectFailDataAxiosError } from 'types';
 import { message } from 'antd';
 import { individualDeviceMountPlacesService } from 'services/devices/individualDeviceMountPlacesService/individualDeviceMountPlacesService.model';

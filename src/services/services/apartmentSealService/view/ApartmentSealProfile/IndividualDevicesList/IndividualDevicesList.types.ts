@@ -1,4 +1,4 @@
-import { IndividualDeviceListItemResponse } from 'myApi';
+import { IndividualDeviceListItemResponse } from 'api/types';
 
 export type IndividualDevicesListProps = {
   individualDevices: IndividualDeviceListItemResponse[];

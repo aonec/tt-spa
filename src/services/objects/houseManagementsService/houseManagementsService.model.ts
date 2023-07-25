@@ -1,6 +1,6 @@
 import { createDomain, forward } from 'effector';
 import { createGate } from 'effector-react';
-import { HouseManagementResponse } from 'myApi';
+import { HouseManagementResponse } from 'api/types';
 import { getHouseManagements } from './houseManagementsService.api';
 import { GetHouseManagementsRequestPayload } from './houseManagementsService.types';
 

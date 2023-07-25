@@ -1,6 +1,6 @@
 import { useStore } from 'effector-react';
 import _ from 'lodash';
-import { ESecuredIdentityRoleName } from 'myApi';
+import { ESecuredIdentityRoleName } from 'api/types';
 import { currentUserService } from 'services/currentUserService';
 
 export const usePermission = (permitedRoles: ESecuredIdentityRoleName[]) => {

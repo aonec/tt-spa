@@ -1,6 +1,6 @@
-import { axios } from '01/axios';
-import { downloadURI } from '01/features/reports/CreateReportModal/utils';
-import { StreetWithBuildingNumbersResponsePagedList } from 'myApi';
+import { axios } from 'api/axios';
+import { downloadURI } from 'services/reports/CreateReportModal/utils';
+import { StreetWithBuildingNumbersResponsePagedList } from 'api/types';
 import queryString from 'query-string';
 import { HeatIndividualDevicesReportPayload } from './heatIndividualDevicesReportService.types';
 

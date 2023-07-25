@@ -1,9 +1,9 @@
-import { axios } from '01/axios';
+import { axios } from 'api/axios';
 import {
   AllNodeWorkingRangeResponse,
   ENodeWorkingRangeSeason,
   EResourceType,
-} from 'myApi';
+} from 'api/types';
 
 export const getStandartWorkingRange = (query: {
   nodeResourceType: EResourceType;

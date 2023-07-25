@@ -1,7 +1,7 @@
 import { createDomain, guard, sample } from 'effector';
 import { createGate } from 'effector-react';
 
-import { ResourceDisconnectingResponsePagedList } from 'myApi';
+import { ResourceDisconnectingResponsePagedList } from 'api/types';
 import { DisablingResourcesProps } from './ResourceDisablingScheduleContainer.types';
 import { fetchDisablingResources } from './ResourcesDisablingScheduleService.api';
 

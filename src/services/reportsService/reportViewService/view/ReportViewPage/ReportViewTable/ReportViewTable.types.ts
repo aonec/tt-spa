@@ -4,7 +4,7 @@ import {
   HomeownersConstructedReportResponse,
   HousingDevicesConstructedReportResponse,
   IndividualDevicesConstructedReportResponse,
-} from 'myApi';
+} from 'api/types';
 import { EmployeeReportResponse } from 'services/reportsService/reportViewService/reportViewService.types';
 import { ReportType } from 'services/reportsService/view/ReportsPage/ReportsPage.types';
 import { EmployeeReportType } from '../ReportFiltrationForm/ReportFiltrationForm.types';

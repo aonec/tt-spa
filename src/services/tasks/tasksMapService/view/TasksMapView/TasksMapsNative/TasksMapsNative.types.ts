@@ -1,13 +1,5 @@
-import {
-  BuildingWithTasksResponse,
-  HousingStockWithTasksResponse,
-} from 'myApi';
-
-export type TasksMapProps = {
-  housingStocksWithTasks: HousingStockWithTasksResponse[];
-  handleClickMarker: (payload: HousingStockWithTasksResponse) => void;
-  selectedHousingStockId: number | undefined;
-};
+import { BuildingWithTasksResponse } from 'api/types';
+import { OrganizationCoordinates } from 'services/currentUserService/currentUserService.types';
 
 export enum HousingStockTaskMarkerType {
   Calculator = 'Calculator',
@@ -32,6 +24,7 @@ export type TasksMapsNativeProps = {
   buildingsWithTasks: BuildingWithTasksResponse[];
   handleClickMarker: (payload: BuildingWithTasksResponse) => void;
   selectedHousingStockId: number | undefined;
+  organizationCoordinates: OrganizationCoordinates | null;
 };
 
 export type DiagramData = {

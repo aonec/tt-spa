@@ -1,4 +1,4 @@
-import { BuildingWithTasksResponse, TaskResponse } from 'myApi';
+import { BuildingWithTasksResponse, TaskResponse } from 'api/types';
 
 export type HousingStockTasksProps = {
   selectedHousingStock: BuildingWithTasksResponse | null;

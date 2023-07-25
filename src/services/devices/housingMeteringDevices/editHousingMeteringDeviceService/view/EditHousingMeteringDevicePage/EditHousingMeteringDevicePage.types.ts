@@ -2,7 +2,7 @@ import {
   CommunicationPipeResponse,
   PipeHousingMeteringDeviceResponse,
   UpdatePipeHousingMeteringDeviceRequest,
-} from 'myApi';
+} from 'api/types';
 import { EditHousingMeteringDeviceTabs } from '../../editHousingMeteringDeviceService.types';
 
 export type EditHousingMeteringDevicePageProps = {

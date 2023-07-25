@@ -22,9 +22,11 @@ export const ManageDistrictsMapContainer = () => {
     handleOpenDeleteDistrictModal,
     handleDeleteDistrict,
     isDeletingDistrictLoading,
+    organizationCoordinates,
   } = useUnit({
     existingDistricts: existingDistrictsQuery.$data,
     isDeleteDistrictModalOpen: outputs.$isDeleteDistrictModalOpen,
+    organizationCoordinates: outputs.$organizationCoordinates,
     handleOpenDeleteDistrictModal: inputs.handleOpenDeleteDistrictModal,
     handleCloseDeleteDistrictModal: inputs.handleCloseDeleteDistrictModal,
     handleDeleteDistrict: inputs.handleDeleteDistrict,
@@ -43,6 +45,7 @@ export const ManageDistrictsMapContainer = () => {
       <ManageDistrictPage
         existingDistricts={existingDistricts}
         handleDeleteDistrict={handleOpenDeleteDistrictModal}
+        organizationCoordinates={organizationCoordinates}
       />
     </>
   );

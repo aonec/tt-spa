@@ -3,7 +3,7 @@ import { ContractorsProps } from './Contractors.types';
 import { ContractorItem } from './ContractorItem';
 import { companyProfileService } from 'services/company/companyProfileService/companyProfileService.model';
 import { LoaderWrapper } from '../../CompanyProfile.styled';
-import { WithLoader } from 'ui-kit/shared_components/WithLoader';
+import { WithLoader } from 'ui-kit/shared/WithLoader';
 import { AddContractorContainer } from 'services/contractors/addContractorService';
 import { DeleteContractorContainer } from 'services/contractors/deleteContractorService';
 import { EditContractorContainer } from 'services/contractors/editContractorService';

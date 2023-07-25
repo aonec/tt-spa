@@ -1,6 +1,6 @@
 import { createDomain, forward } from 'effector';
 import { patchContractor } from './editContractorService.api';
-import { ContractorResponse, ContractorUpdateRequest } from 'myApi';
+import { ContractorResponse, ContractorUpdateRequest } from 'api/types';
 import { EffectFailDataAxiosError } from 'types';
 import { ContractorDataType } from './editContractorService.types';
 import { message } from 'antd';

@@ -1,6 +1,6 @@
 import moment from 'moment';
-import { IndividualDeviceReadingsResponse } from 'myApi';
-import { EIndividualDeviceRateType } from 'myApi';
+import { IndividualDeviceReadingsResponse } from 'api/types';
+import { EIndividualDeviceRateType } from 'api/types';
 import { rateNums } from './MetersInputsBlock.constants';
 import { BufferedReadingValues } from './MetersInputsBlock.types';
 
@@ -9,7 +9,7 @@ export function getRateNum(rateType: EIndividualDeviceRateType) {
 }
 
 export function getBufferedValuesFromReading(
-  reading?: IndividualDeviceReadingsResponse
+  reading?: IndividualDeviceReadingsResponse,
 ): BufferedReadingValues {
   const { value1, value2, value3 } = reading || {};
 

@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import { CommunicationPipeResponse } from 'myApi';
+import { CommunicationPipeResponse } from 'api/types';
 
 export const filterCommunicationPipes = ({
   newPipe,

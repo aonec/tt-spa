@@ -1,17 +1,18 @@
-import { EIndividualDeviceOrderRule, EResourceType } from 'myApi';
+import { EIndividualDeviceOrderRule, EResourceType } from 'api/types';
 
 export type GetHousingStocksListRequestPayload = {
   City?: string;
   Street?: string;
-  HousingStockNumber?: string;
+  BuildingNumber?: string;
   Corpus?: string;
   PageNumber?: number;
   PageSize?: number;
 };
 
-export type GetHousingStocksRequestPayload = GetHousingStocksListRequestPayload & {
-  HousingStockId?: number | null;
-};
+export type GetHousingStocksRequestPayload =
+  GetHousingStocksListRequestPayload & {
+    HousingStockId?: number | null;
+  };
 
 export type GetIndividualDevicesListRequestPayload = {
   HousingStockId: number;

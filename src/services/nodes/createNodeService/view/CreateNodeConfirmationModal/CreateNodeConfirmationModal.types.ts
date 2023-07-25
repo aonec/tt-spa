@@ -3,14 +3,15 @@ import {
   EPipeNodeValidationMessageStringDictionaryItem,
   HousingStockResponse,
   NodeServiceZoneResponse,
-} from 'myApi';
+  NonResidentialBuildingResponse,
+} from 'api/types';
 import { CreateNodeFormPayload } from '../../createNodeService.types';
 
 export type CreateNodeConfirmationModalProps = {
   isOpen: boolean;
   handleClose: () => void;
   requestPayload: CreateNodeFormPayload;
-  housingStock: HousingStockResponse;
+  building: HousingStockResponse | NonResidentialBuildingResponse;
   calculator: CalculatorIntoHousingStockResponse | null;
   serviceZone: NodeServiceZoneResponse;
   isLoading: boolean;

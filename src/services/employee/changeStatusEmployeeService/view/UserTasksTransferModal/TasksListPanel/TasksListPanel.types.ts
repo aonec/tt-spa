@@ -1,4 +1,4 @@
-import { ESecuredIdentityRoleName, TaskListResponse } from 'myApi';
+import { ESecuredIdentityRoleName, TaskListResponse } from 'api/types';
 
 export type TasksListPanelProps = {
   filteredTasks: TaskListResponse[];

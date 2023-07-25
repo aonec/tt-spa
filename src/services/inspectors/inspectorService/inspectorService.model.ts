@@ -1,6 +1,6 @@
 import { createDomain, forward } from 'effector';
 import { createGate } from 'effector-react';
-import { InspectorResponse } from 'myApi';
+import { InspectorResponse } from 'api/types';
 import { getInspector } from './inspectorService.api';
 
 const domain = createDomain('inspectorService');

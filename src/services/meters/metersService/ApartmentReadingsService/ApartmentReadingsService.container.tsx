@@ -3,7 +3,7 @@ import { ApartmentsReadings } from './view/ApartmentsReadings';
 import { apartmentReadingsService } from './ApartmentReadingsService.model';
 import { useEvent, useStore, useUnit } from 'effector-react';
 import { useHistory, useParams } from 'react-router-dom';
-import { ESecuredIdentityRoleName } from 'myApi';
+import { ESecuredIdentityRoleName } from 'api/types';
 import { usePermission } from 'hooks/usePermission';
 import { SelectPersonalNumberActionContainer } from 'services/homeowner/personalNumber/selectPersonalNumberActionService';
 import { PauseApartmentContainer } from 'services/apartments/pauseApartmentService';

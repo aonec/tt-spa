@@ -3,7 +3,7 @@ import React from 'react';
 import { useParams } from 'react-router-dom';
 import { employeeProfileService } from './employeeProfileService.model';
 import { EmployeeProfile } from './view/EmployeeProfile';
-import { WithLoader } from 'ui-kit/shared_components/WithLoader';
+import { WithLoader } from 'ui-kit/shared/WithLoader';
 import { ChangeStatusEmployeeContainer } from 'services/employee/changeStatusEmployeeService';
 import { DeleteEmployeeContainer } from 'services/employee/deleteEmployeeService';
 

@@ -1,4 +1,4 @@
-import { ApartmentResponse } from 'myApi';
+import { ApartmentResponse } from 'api/types';
 import { AddNewApartmentStage } from 'services/homeowner/personalNumber/splitPersonalNumberService/splitPersonalNumberService.types';
 
 export type AddNewApartmentStageProps = {

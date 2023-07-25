@@ -1,4 +1,4 @@
-import { InspectorOnBuildingResponse, InspectorResponse } from 'myApi';
+import { InspectorOnBuildingResponse, InspectorResponse } from 'api/types';
 import {
   CurrentHousingStockUpdate,
   PatchHousingStockInspectorInfoPayload,

@@ -1,8 +1,8 @@
-import { axios } from '01/axios';
+import { axios } from 'api/axios';
 import {
   ApartmentByAddressFilterResponsePagedList,
   HousingByFilterResponse,
-} from 'myApi';
+} from 'api/types';
 import {
   GetHousingByFilterRequestPayload,
   GetIndividualDevicesApartments,

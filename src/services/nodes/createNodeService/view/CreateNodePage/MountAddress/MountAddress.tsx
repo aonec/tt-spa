@@ -21,16 +21,16 @@ const { outputs, effects } = mountAddressService;
 const { ExistingStreetsGate } = addressSearchService.gates;
 
 export const MountAddress: FC<MountAddressProps> = ({
-  housingStock,
+  building,
   existingCities,
   existingStreets,
   updateRequestPayload,
   isDisabledAddress,
 }) => {
-  const savedHousingStock = useStore(outputs.$housingStockListItem);
+  const savedHousingStock = useStore(outputs.$buildingListItem);
   const isLoading = useStore(outputs.$isLoading);
 
-  const address = housingStock?.address?.mainAddress;
+  const address = building?.address?.mainAddress;
 
   const history = useHistory();
 
@@ -46,7 +46,7 @@ export const MountAddress: FC<MountAddressProps> = ({
   }, [savedHousingStock, address]);
 
   const isFieldsDisabled =
-    (Boolean(housingStock) && isDisabledAddress) || isLoading;
+    (Boolean(building) && isDisabledAddress) || isLoading;
 
   const {
     values,
@@ -57,15 +57,15 @@ export const MountAddress: FC<MountAddressProps> = ({
   } = useFormik({
     initialValues: initialValues,
     onSubmit: async (values) => {
-      if (housingStock && isFieldsDisabled) {
-        updateRequestPayload({ buildingId: housingStock.id });
+      if (building && isFieldsDisabled) {
+        updateRequestPayload({ buildingId: building.id });
 
         return;
       }
 
       if (!values.city) return;
 
-      const housingStockResponse = await effects.fetchHousingStockFx({
+      const housingStockResponse = await effects.fetchBuildingFx({
         City: values.city,
         Street: values.street,
         BuildingNumber: values.number,

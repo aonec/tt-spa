@@ -1,5 +1,5 @@
 import { Alert } from 'ui-kit/Alert';
-import { EApartmentStatus } from 'myApi';
+import { EApartmentStatus } from 'api/types';
 import React, { FC } from 'react';
 import { ApartmentOnPauseAlertProps } from './ApartmentOnPauseAlert.types';
 import moment from 'moment';

@@ -1,4 +1,4 @@
-import { fromEnter } from 'ui-kit/shared_components/DatePickerNative';
+import { fromEnter } from 'ui-kit/shared/DatePickerNative';
 import React, { FC } from 'react';
 import { InputSC } from './MeteringDeviceMonthReadingInput.styled';
 import { MeteringDeviceMonthReadingInputProps } from './MeteringDeviceMonthReadingInput.types';
@@ -6,7 +6,7 @@ import {
   getInputValue,
   getReadingValue,
 } from './MeteringDeviceMonthReadingInput.utils';
-import { EMagistralType } from 'myApi';
+import { EMagistralType } from 'api/types';
 
 export const MeteringDeviceMonthReadingInput: FC<
   MeteringDeviceMonthReadingInputProps

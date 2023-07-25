@@ -1,6 +1,6 @@
 import { message } from 'antd';
 import { createDomain, forward, guard, sample } from 'effector';
-import { CalculatorResponse, CloseDeviceRequest } from 'myApi';
+import { CalculatorResponse, CloseDeviceRequest } from 'api/types';
 import { calculatorProfileService } from '../calculatorProfileService';
 import { fetchCloseCalculator } from './closeCalculatorService.api';
 import { CloseCalculatorFormik } from './closeCalculatorService.types';

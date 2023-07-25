@@ -1,5 +1,5 @@
 import queryString from 'query-string';
-import { axios } from '01/axios';
+import { axios } from 'api/axios';
 import {
   AddOrganizationUserWorkingStatusRequest,
   EOrganizationUserWorkingStatusType,
@@ -8,7 +8,7 @@ import {
   OrganizationUserResponse,
   OrganizationUserWorkingStatusResponse,
   TasksPagedList,
-} from 'myApi';
+} from 'api/types';
 import {
   GetOrganizationUserTasksByRolesRequestParams,
   GetOrganizationUserTasksRequestParams,

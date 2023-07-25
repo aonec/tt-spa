@@ -1,7 +1,7 @@
 import React, { FC, ReactNode, useMemo } from 'react';
 import { useHistory } from 'react-router-dom';
 import { ResourceAccountingSystemsContainer } from 'services/devices/resourceAccountingSystemsService';
-import { GoBack } from 'ui-kit/shared_components/GoBack';
+import { GoBack } from 'ui-kit/shared/GoBack';
 import { getBuildingAddress } from 'utils/getBuildingAddress';
 import { ApartmentsListContainer } from '../../apartmentsListService';
 import { HousingStockProfileGrouptype } from '../../housingStockProfileService.constants';
@@ -14,7 +14,7 @@ import {
   Wrapper,
 } from './HousingStockProfile.styled';
 import { HousingStockProfileProps } from './HousingStockProfile.types';
-import { LinkCard } from 'ui-kit/shared_components/LinkCard';
+import { LinkCard } from 'ui-kit/shared/LinkCard';
 import { stringifyUrl } from 'query-string';
 const { TabPane } = TabsSC;
 
@@ -57,7 +57,9 @@ export const HousingStockProfile: FC<HousingStockProfileProps> = ({
             {
               title: 'Добавить узел',
               onClick: () =>
-                history.push(`/buildings/${housingStock.id}/addNode`),
+                history.push(
+                  `/buildings/livingProfile/${housingStock.id}/addNode`,
+                ),
               hidden: !isPermitionToAddNode,
             },
             {
@@ -67,7 +69,10 @@ export const HousingStockProfile: FC<HousingStockProfileProps> = ({
             },
             {
               title: 'Редактировать',
-              onClick: () => history.push(`/buildings/${housingStock.id}/edit`),
+              onClick: () =>
+                history.push(
+                  `/buildings/livingProfile/${housingStock.id}/edit`,
+                ),
               hidden: !isPermissionToEditHousingStock,
             },
           ],

@@ -1,5 +1,5 @@
 import { sum } from 'lodash';
-import { CallCenterWorkingConstructedReportResponse } from 'myApi';
+import { CallCenterWorkingConstructedReportResponse } from 'api/types';
 import React, { FC, useMemo } from 'react';
 import { Table } from 'ui-kit/Table';
 import { getNameColumnCSS } from '../InspectorsWorkingReportTable/InspectorsWorkingReportTable.styled';

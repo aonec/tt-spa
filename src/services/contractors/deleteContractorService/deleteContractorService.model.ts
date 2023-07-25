@@ -1,7 +1,7 @@
 import { message } from 'antd';
 import { createDomain, forward, guard, sample } from 'effector';
 import { deleteContractor } from './deleteContractorService.api';
-import { ContractorResponse } from 'myApi';
+import { ContractorResponse } from 'api/types';
 import { EffectFailDataAxiosError } from 'types';
 
 const domain = createDomain('deleteContractorService');
@@ -46,11 +46,11 @@ guard({
 });
 
 deleteContractorFx.failData.watch((error) =>
-  message.error(error.response.data.error.Text)
+  message.error(error.response.data.error.Text),
 );
 
 deleteContractorSuccess.watch(() =>
-  message.success('Подрядчик успешно удален!')
+  message.success('Подрядчик успешно удален!'),
 );
 
 export const deleteContractorService = {

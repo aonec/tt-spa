@@ -8,10 +8,7 @@ import {
 import { WorkWithIndividualDeviceFormProps } from './WorkWithIndividualDeviceForm.types';
 import { useSwitchInputOnEnter } from 'hooks/useSwitchInputOnEnter';
 import { Switch } from 'antd';
-import {
-  DatePickerNative,
-  fromEnter,
-} from 'ui-kit/shared_components/DatePickerNative';
+import { DatePickerNative, fromEnter } from 'ui-kit/shared/DatePickerNative';
 import { WorkWithIndividualDeviceType } from '../../../workWithIndividualDeviceService.types';
 import { dataKey, getDataKey } from './WorkWithIndividualDeviceForm.utils';
 import { useForm } from 'effector-forms';
@@ -20,17 +17,17 @@ import { FormItem } from 'ui-kit/FormItem';
 import { ErrorMessage } from 'ui-kit/ErrorMessage';
 import { Input } from 'ui-kit/Input';
 import moment from 'moment';
-import { EIndividualDeviceRateType, EResourceType } from 'myApi';
+import { EIndividualDeviceRateType, EResourceType } from 'api/types';
 import { useParams } from 'react-router';
 import { useUnit } from 'effector-react';
 import { individualDeviceMountPlacesService } from 'services/devices/individualDeviceMountPlacesService';
 import { ClosingReasonsDictionary } from 'dictionaries';
-import { ResourceSelect } from 'ui-kit/shared_components/ResourceSelect';
+import { ResourceSelect } from 'ui-kit/shared/ResourceSelect';
 import { Loader } from 'ui-kit/Loader';
 import { AutoComplete } from 'ui-kit/AutoComplete';
 import { WorkWithIndividualDeviceInputs } from './WorkWithIndividualDeviceInputs';
 import { Form } from 'antd';
-import { SpaceLine } from '01/shared/ui/Layout/Space/Space';
+import { SpaceLine } from 'ui-kit/SpaceLine';
 import {
   NewIndividualDeviceTitleLookup,
   OldIndividualDeviceTitleLookup,
