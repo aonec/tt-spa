@@ -2,16 +2,17 @@ import {
   CalculatorIntoHousingStockResponse,
   HousingStockResponse,
   NodeServiceZoneListResponse,
-} from 'myApi';
+  NonResidentialBuildingResponse,
+} from 'api/types';
 import {
   CreateNodeFormPayload,
   UpdateNodeFormPayloadCallback,
 } from '../../createNodeService.types';
 
 export type CreateNodePageProps = {
-  housingStock: HousingStockResponse | null;
+  building: HousingStockResponse | NonResidentialBuildingResponse | null;
   existingCities: string[] | null;
-  isLoadingHousingStock: boolean;
+  isBuildingLoading: boolean;
   existingStreets: string[];
   stepNumber: number;
   updateRequestPayload: UpdateNodeFormPayloadCallback;

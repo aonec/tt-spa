@@ -3,7 +3,7 @@ import { EditCalculatorPage } from './view/EditCalculatorPage';
 import { editCalculatorService } from './editCalculatorService.model';
 import { useEvent, useStore } from 'effector-react';
 import { useHistory, useParams } from 'react-router-dom';
-import { MeteringDeviceResponse } from 'myApi';
+import { MeteringDeviceResponse } from 'api/types';
 
 const { inputs, outputs, gates } = editCalculatorService;
 const { CalculatorInfosGate, SaveDeviceIdGate } = gates;

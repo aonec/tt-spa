@@ -12,7 +12,7 @@ import {
 } from './SwitchStage.styled';
 import { SwitchStageProps } from './SwitchStage.types';
 import { FormItem } from 'ui-kit/FormItem';
-import { DatePickerNative } from 'ui-kit/shared_components/DatePickerNative';
+import { DatePickerNative } from 'ui-kit/shared/DatePickerNative';
 import { ErrorMessage } from 'ui-kit/ErrorMessage';
 import { Input } from 'ui-kit/Input';
 import { Switch } from 'antd';
@@ -60,7 +60,7 @@ export const SwitchStage: FC<SwitchStageProps> = ({
     },
   });
 
-return (
+  return (
     <Wrapper onSubmitCapture={handleSubmit} id={formId}>
       <PersonalNumberWrapper>
         <InputSC

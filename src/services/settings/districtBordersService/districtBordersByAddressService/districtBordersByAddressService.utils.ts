@@ -1,4 +1,4 @@
-import { StreetWithBuildingNumbersResponse } from 'myApi';
+import { StreetWithBuildingNumbersResponse } from 'api/types';
 import {
   CheckedHousingStocksIdWithStreets,
   CheckedHousingStocksIdWithStreetsHandler,

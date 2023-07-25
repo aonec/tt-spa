@@ -5,7 +5,7 @@ import {
   HousingStockResponse,
   TaskGroupingFilter,
   TasksPagedList,
-} from 'myApi';
+} from 'api/types';
 import {
   $taskTypes,
   $housingManagments,

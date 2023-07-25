@@ -17,5 +17,6 @@ export const AlertWrap = styled.div<{ color?: string }>`
 `;
 
 export const Wide = styled.div`
+  margin-left: 16px;
   width: 100%;
 `;

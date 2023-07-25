@@ -1,4 +1,4 @@
-import { HousingMeteringDeviceReadingsIncludingPlacementResponse } from 'myApi';
+import { HousingMeteringDeviceReadingsIncludingPlacementResponse } from 'api/types';
 import { SortedMeteringDeviceReading } from '../../housingMeteringDeviceReadingsService.types';
 import { EffectFailDataAxiosError } from 'types';
 import { Event } from 'effector';

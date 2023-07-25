@@ -3,7 +3,8 @@ import { ExitIconSC, Text, Wrapper } from './ExitButton.styled';
 
 export const ExitButton: FC = () => {
   const handleExit = useCallback(() => {
-    localStorage.clear();
+    localStorage.removeItem('token');
+    localStorage.removeItem('refreshToken');
     window.location.replace('/login');
   }, []);
 

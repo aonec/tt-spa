@@ -6,3 +6,5 @@ export type DiamtersConfig = {
   minValue: number;
   diameters: number[];
 };
+
+export type OrganizationCoordinates = [number, number];

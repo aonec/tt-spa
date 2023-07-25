@@ -7,7 +7,7 @@ import {
   PipeHousingMeteringDeviceResponse,
   PipeNodeResponse,
   UpdatePipeHousingMeteringDeviceRequest,
-} from 'myApi';
+} from 'api/types';
 import { EffectFailDataAxiosError } from 'types';
 import { housingMeteringDeviceProfileService } from '../housingMeteringDeviceProfileService';
 import {

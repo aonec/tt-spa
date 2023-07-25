@@ -31,4 +31,5 @@ export type AddressSearchProps = {
   customTemplate?: CustomTemplateType;
   showLabels?: boolean;
   disabledFields?: SearchFieldType[];
+  className?: string;
 };

@@ -1,6 +1,9 @@
-import { axios } from '01/axios';
-import { OrganizationUserCreateRequest, OrganizationUserResponse } from 'myApi';
+import { axios } from 'api/axios';
+import {
+  OrganizationUserCreateRequest,
+  OrganizationUserResponse,
+} from 'api/types';
 
 export const addStaff = (
-  data: OrganizationUserCreateRequest
+  data: OrganizationUserCreateRequest,
 ): Promise<OrganizationUserResponse> => axios.post('OrganizationUsers', data);

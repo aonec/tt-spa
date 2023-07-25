@@ -6,9 +6,9 @@ import {
   HousingStockResponse,
   TaskListResponse,
   TaskResponse,
-} from 'myApi';
-import { Timeline } from 'ui-kit/shared_components/TimeLine/TimeLine.types';
-import { TimerClosingStatus } from 'ui-kit/shared_components/Timer/Timer.types';
+} from 'api/types';
+import { Timeline } from 'ui-kit/shared/TimeLine/TimeLine.types';
+import { TimerClosingStatus } from 'ui-kit/shared/Timer/Timer.types';
 import { getTimeStringByUTC } from 'utils/getTimeStringByUTC';
 
 export const getAddressObject = (

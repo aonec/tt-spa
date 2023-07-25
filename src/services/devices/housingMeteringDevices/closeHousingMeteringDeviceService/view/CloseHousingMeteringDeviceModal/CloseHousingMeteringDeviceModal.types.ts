@@ -1,4 +1,7 @@
-import { CloseDeviceRequest, PipeHousingMeteringDeviceResponse } from 'myApi';
+import {
+  CloseDeviceRequest,
+  PipeHousingMeteringDeviceResponse,
+} from 'api/types';
 
 export type CloseHousingMeteringDeviceModalProps = {
   housingMeteringDevice: PipeHousingMeteringDeviceResponse | null;

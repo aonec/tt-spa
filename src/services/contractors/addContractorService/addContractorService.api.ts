@@ -1,8 +1,8 @@
-import { axios } from '01/axios';
-import { ContractorCreateRequest, ContractorResponse } from 'myApi';
+import { axios } from 'api/axios';
+import { ContractorCreateRequest, ContractorResponse } from 'api/types';
 
 export const createContractor = (
-  request: ContractorCreateRequest
+  request: ContractorCreateRequest,
 ): Promise<ContractorResponse> => {
   return axios.post('Contractors', request);
 };

@@ -1,4 +1,4 @@
-import { ENodeCommercialAccountStatus } from 'myApi';
+import { ENodeCommercialAccountStatus } from 'api/types';
 import { FC } from 'react';
 import {
   NotRegisteredIcon,

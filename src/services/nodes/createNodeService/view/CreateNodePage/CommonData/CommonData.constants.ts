@@ -1,4 +1,4 @@
-import { ENodeCommercialAccountStatus, ENodeRegistrationType } from 'myApi';
+import { ENodeCommercialAccountStatus, ENodeRegistrationType } from 'api/types';
 import { NodeStatusIconsDictionary } from 'services/devices/resourceAccountingSystemsService/view/ResourceAccountingSystems/NodesGroup/NodeItem/NodeStatus/NodeStatus.constants';
 import { NodeStatusesList } from './CommonData.types';
 import * as Yup from 'yup';

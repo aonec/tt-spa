@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import { Table } from 'ui-kit/Table';
-import { EIndividualDeviceReadingsSource } from 'myApi';
-import { getSourceIcon } from '01/features/readings/displayReadingHistory/components/SourceIcon';
+import { EIndividualDeviceReadingsSource } from 'api/types';
+import { getSourceIcon } from 'services/meters/readingsHistoryService/readingsHistoryListService/SourceIcon';
 import { getNameColumnCSS } from '../InspectorsWorkingReportTable/InspectorsWorkingReportTable.styled';
 import { ReadingNameToSourceDictionary } from './OperatorsWorkingReportTable.constants';
 import {

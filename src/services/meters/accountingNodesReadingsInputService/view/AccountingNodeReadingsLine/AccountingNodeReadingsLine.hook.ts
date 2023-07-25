@@ -1,4 +1,4 @@
-import { HousingMeteringDeviceReadingsIncludingPlacementResponse } from 'myApi';
+import { HousingMeteringDeviceReadingsIncludingPlacementResponse } from 'api/types';
 import { useMemo } from 'react';
 import {
   getPreparedNodeReadingsDictionary,

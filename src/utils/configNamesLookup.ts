@@ -1,4 +1,4 @@
-import { EPipeNodeConfig } from 'myApi';
+import { EPipeNodeConfig } from 'api/types';
 
 export const configNamesLookup: { [key in EPipeNodeConfig]: string } = {
   [EPipeNodeConfig.ColdWaterSupply]: 'УХВС',

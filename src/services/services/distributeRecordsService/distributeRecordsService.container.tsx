@@ -47,6 +47,11 @@ export const DistributeRecordsContainer = () => {
     closeDistributeAppointmentsModal,
     openCreateControllerModal,
     openRemoveAssignmentModal,
+    selectedDistrict,
+    appointmentDate,
+    selectedAppointmentsIds,
+    isDistributeAppointmentsModalOpen,
+    organizationCoordinates,
   } = useUnit({
     handleSelectDistrict: inputs.handleSelectDistrict,
     handleUnselectDistrict: inputs.handleUnselectDistrict,
@@ -56,19 +61,12 @@ export const DistributeRecordsContainer = () => {
     closeDistributeAppointmentsModal: inputs.closeDistributeAppointmentsModal,
     openCreateControllerModal: inputs.openCreateControllerModal,
     openRemoveAssignmentModal: removeAssignmentService.inputs.openModal,
-  });
-
-  const {
-    selectedDistrict,
-    appointmentDate,
-    selectedAppointmentsIds,
-    isDistributeAppointmentsModalOpen,
-  } = useUnit({
     selectedDistrict: outputs.$selectedDistrict,
     appointmentDate: outputs.$appointmentDate,
     selectedAppointmentsIds: outputs.$selectedAppointmentsIds,
     isDistributeAppointmentsModalOpen:
       outputs.$isDistributeAppointmentsModalOpen,
+    organizationCoordinates: outputs.$organizationCoordinates,
   });
 
   const handleSelectHousingStock = useCallback(
@@ -132,6 +130,7 @@ export const DistributeRecordsContainer = () => {
         setAppointmentsToController={setAppointmentsToController}
         isLoadingDistributeAppointments={isLoadingDistributeAppointments}
         openRemoveAssignmentModal={openRemoveAssignmentModal}
+        organizationCoordinates={organizationCoordinates}
       />
     </>
   );

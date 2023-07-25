@@ -2,9 +2,9 @@ import {
   IndividualDeviceOnTaskResponse,
   MeteringDeviceResponse,
   PipeNodeResponse,
-} from 'myApi';
-import { Timeline } from 'ui-kit/shared_components/TimeLine/TimeLine.types';
-import { Timer } from 'ui-kit/shared_components/Timer/Timer.types';
+} from 'api/types';
+import { Timeline } from 'ui-kit/shared/TimeLine/TimeLine.types';
+import { Timer } from 'ui-kit/shared/Timer/Timer.types';
 
 export type TaskProfileHeaderProps = {
   name: string;

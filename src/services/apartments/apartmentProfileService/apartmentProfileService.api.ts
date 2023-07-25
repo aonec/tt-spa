@@ -1,5 +1,5 @@
-import { axios } from '01/axios';
-import { ApartmentResponse } from 'myApi';
+import { axios } from 'api/axios';
+import { ApartmentResponse } from 'api/types';
 
 export const getApartment = (apartmentId: number): Promise<ApartmentResponse> =>
   axios.get(`Apartments/${apartmentId}`);

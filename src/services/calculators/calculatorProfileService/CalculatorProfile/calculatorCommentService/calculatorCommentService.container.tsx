@@ -1,9 +1,9 @@
 import { useEvent, useStore } from 'effector-react';
 import React, { FC } from 'react';
-import { CommentPanel } from 'ui-kit/shared_components/CommentPanel';
+import { CommentPanel } from 'ui-kit/shared/CommentPanel';
 import { calculatorCommentService } from './calculatorCommentService.model';
 import { CalculatorCommentContainerProps } from './calculatorCommentService.types';
-import { ESecuredIdentityRoleName } from 'myApi';
+import { ESecuredIdentityRoleName } from 'api/types';
 import { usePermission } from 'hooks/usePermission';
 
 const { outputs, inputs, gates } = calculatorCommentService;

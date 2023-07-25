@@ -10,10 +10,7 @@ import {
 } from 'victory';
 import React, { useEffect, useMemo, useState } from 'react';
 import 'antd/es/date-picker/style/index';
-import {
-  ArchiveDataGroupValuesWithMark,
-  GraphViewProps,
-} from './StatisticsGraph.types';
+import { GraphViewProps } from './StatisticsGraph.types';
 import {
   GraphWrapper,
   horizontalAxisStyle,
@@ -31,12 +28,12 @@ import {
   getTickFormat,
   prepareDataForNodeStatistic,
 } from './StatisticsGraph.utils';
-import { EResourceType } from 'myApi';
+import { EResourceType } from 'api/types';
 import { renderForHeatAndDeltaMass } from './GraphLegend/GraphLegend.utils';
-import { GraphGradient } from 'ui-kit/shared_components/GraphComponents/GraphGradient';
-import { TickComponent } from 'ui-kit/shared_components/GraphComponents/TickComponent';
+import { GraphGradient } from 'ui-kit/shared/GraphComponents/GraphGradient';
+import { TickComponent } from 'ui-kit/shared/GraphComponents/TickComponent';
 import { TaskPoint } from './TaskPoint';
-import { CustomTooltip } from 'ui-kit/shared_components/GraphComponents/CustomTooltip';
+import { CustomTooltip } from 'ui-kit/shared/GraphComponents/CustomTooltip';
 import { GraphTooltip } from './GraphTooltip';
 
 const minDelta = 0.01;
@@ -82,9 +79,7 @@ export const GraphView: React.FC<GraphViewProps> = ({
     if (!archiveValues || archiveValues.length === 0) {
       return null;
     }
-    const firstlyPreparedData = prepareData(
-      archiveValues as ArchiveDataGroupValuesWithMark[],
-    );
+    const firstlyPreparedData = prepareData(archiveValues);
     const finallyData = prepareDataForNodeStatistic(
       firstlyPreparedData,
       reportType,
@@ -101,7 +96,7 @@ export const GraphView: React.FC<GraphViewProps> = ({
   const archiveLength = preparedArchiveValues.length;
 
   const tickValues = formTicks(preparedArchiveValues, reportType);
-  const ticksData = tickValues.map((tick) => tick.time);
+  const ticksData = tickValues.map((tick) => tick.timeUtc);
 
   const measure = requiredArchiveValues?.measure;
 
@@ -175,7 +170,7 @@ export const GraphView: React.FC<GraphViewProps> = ({
 
         <VictoryArea
           name="graph"
-          sortKey="time"
+          sortKey="timeUtc"
           interpolation="monotoneX"
           labelComponent={
             <CustomTooltip
@@ -196,7 +191,7 @@ export const GraphView: React.FC<GraphViewProps> = ({
           labels={() => ''}
           style={tooltipStyle}
           data={preparedArchiveValues}
-          x="time"
+          x="timeUtc"
           y="value"
         />
         {isAverageLineRendered && Number.isFinite(averageDeltaMass) ? (

@@ -4,8 +4,8 @@ import { FiltersWrap, PageHeaderSC, Wrap } from './NodeArchivePage.styled';
 import { NodeInfo } from './components/NodeInfo/';
 import { SearchNodeArchiveFiltersContainer } from '../../searchNodeArchiveFiltersService';
 import { NodeArchiveContainer } from '../../displayNodeArchiveService';
-import { GoBack } from 'ui-kit/shared_components/GoBack';
-import { WithLoader } from 'ui-kit/shared_components/WithLoader';
+import { GoBack } from 'ui-kit/shared/GoBack';
+import { WithLoader } from 'ui-kit/shared/WithLoader';
 
 export const NodeArchivePage: FC<NodeArchivePageProps> = ({
   node,
