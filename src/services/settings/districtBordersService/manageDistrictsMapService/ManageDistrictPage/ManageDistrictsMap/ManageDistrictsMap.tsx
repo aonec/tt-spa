@@ -1,4 +1,4 @@
-import React, { FC, useMemo } from 'react';
+import React, { FC, useMemo, useState } from 'react';
 import { MapWrapper } from './ManageDistrictsMap.styled';
 import { Props } from './ManageDistrictsMap.types';
 import { useRenderDistricts } from 'hooks/ymaps/utils';
@@ -8,9 +8,9 @@ import { getPayloadFromDistricts } from 'utils/districtsData';
 export const ManageDistrictsMap: FC<Props> = ({
   organizationCoordinates,
   existingDistricts,
-  setSelectedDistrictId,
-  selectedDistrictId,
 }) => {
+  const [, setSelectedDistrictId] = useState<string | null>(null);
+
   const { map, mapRef } = useYMaps(organizationCoordinates);
 
   const preparedExistingDistricts = useMemo(() => {
@@ -22,17 +22,7 @@ export const ManageDistrictsMap: FC<Props> = ({
     }));
   }, [existingDistricts, setSelectedDistrictId]);
 
-  const mapDistricts = useMemo(() => {
-    if (!selectedDistrictId) {
-      return preparedExistingDistricts;
-    }
-
-    return preparedExistingDistricts.filter(
-      (elem) => elem.id === selectedDistrictId,
-    );
-  }, [preparedExistingDistricts, selectedDistrictId]);
-
-  useRenderDistricts(map, mapDistricts);
+  useRenderDistricts(map, preparedExistingDistricts);
 
   return (
     <MapWrapper>

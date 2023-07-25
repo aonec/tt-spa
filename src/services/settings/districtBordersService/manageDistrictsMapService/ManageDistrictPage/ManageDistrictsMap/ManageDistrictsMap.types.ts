@@ -4,6 +4,5 @@ import { OrganizationCoordinates } from 'services/currentUserService/currentUser
 export type Props = {
   organizationCoordinates: OrganizationCoordinates | null;
   existingDistricts: DistrictResponse[] | null;
-  setSelectedDistrictId: (id: string) => void;
-  selectedDistrictId: string | null;
+  handleDeleteDistrict: (id: string) => void;
 };

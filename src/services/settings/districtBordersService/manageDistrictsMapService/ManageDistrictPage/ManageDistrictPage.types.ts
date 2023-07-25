@@ -3,7 +3,7 @@ import { OrganizationCoordinates } from 'services/currentUserService/currentUser
 
 export type Props = {
   existingDistricts: DistrictResponse[] | null;
-  handleDeleteDistrict: () => void;
+  handleDeleteDistrict: (id: string) => void;
   organizationCoordinates: OrganizationCoordinates | null;
 };
 

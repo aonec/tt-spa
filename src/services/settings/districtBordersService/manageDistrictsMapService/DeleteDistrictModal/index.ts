@@ -1,1 +1,0 @@
-export { DeleteDistrictModal } from './DeleteDistrictModal';
