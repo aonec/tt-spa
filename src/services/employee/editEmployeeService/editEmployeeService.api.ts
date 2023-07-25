@@ -1,8 +1,8 @@
-import { axios } from '01/axios';
+import { axios } from 'api/axios';
 import {
   OrganizationUserResponse,
   OrganizationUserUpdateRequest,
-} from '../../../myApi';
+} from 'api/types';
 
 export function editEmployee(params: {
   userId: number;

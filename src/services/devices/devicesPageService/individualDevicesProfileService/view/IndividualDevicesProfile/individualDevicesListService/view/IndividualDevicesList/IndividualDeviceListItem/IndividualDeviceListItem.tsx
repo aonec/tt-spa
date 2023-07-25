@@ -3,8 +3,8 @@ import moment from 'moment';
 import React, { FC, useCallback } from 'react';
 import { useHistory } from 'react-router-dom';
 import { SearchIcon } from 'ui-kit/icons';
-import { DeviceStatus } from 'ui-kit/shared_components/IndividualDeviceInfo/DeviceStatus';
-import { IndividualDeviceInfoShort } from 'ui-kit/shared_components/IndividualDeviceInfoShort';
+import { DeviceStatus } from 'ui-kit/shared/IndividualDeviceInfo/DeviceStatus';
+import { IndividualDeviceInfoShort } from 'ui-kit/shared/IndividualDeviceInfoShort';
 import { IndividualDeviceConsumptionGraph } from '../IndividualDeviceConsumptionGraph';
 import {
   Consumption,

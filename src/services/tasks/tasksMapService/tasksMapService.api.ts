@@ -1,5 +1,9 @@
 import axios from 'axios';
-import { BuildingWithTasksResponse, TaskResponse, TasksPagedList } from 'myApi';
+import {
+  BuildingWithTasksResponse,
+  TaskResponse,
+  TasksPagedList,
+} from 'api/types';
 import { GetHousingStocksWithTasksRequestPayload } from './tasksMapService.types';
 import queryString from 'query-string';
 

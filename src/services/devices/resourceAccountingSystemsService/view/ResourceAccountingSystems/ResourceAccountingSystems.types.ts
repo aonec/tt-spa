@@ -1,4 +1,4 @@
-import { NodeOnHousingStockResponse } from 'myApi';
+import { NodeOnHousingStockResponse } from 'api/types';
 
 export type ResourceAccountingSystemsProps = {
   nodes: NodeOnHousingStockResponse[] | null;

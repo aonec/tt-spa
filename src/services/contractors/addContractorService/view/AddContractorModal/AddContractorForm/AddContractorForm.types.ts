@@ -1,4 +1,4 @@
-import { ContractorCreateRequest, ContractorUpdateRequest } from 'myApi';
+import { ContractorCreateRequest, ContractorUpdateRequest } from 'api/types';
 import { ContractorDataType } from 'services/contractors/editContractorService/editContractorService.types';
 
 export type AddContractorFormProps = {

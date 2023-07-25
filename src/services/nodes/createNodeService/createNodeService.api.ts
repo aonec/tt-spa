@@ -1,17 +1,37 @@
-import { axios } from '01/axios';
+import { axios } from 'api/axios';
 import {
   CalculatorIntoHousingStockResponse,
   CreatePipeNodeRequest,
+  EHouseCategory,
   HousingStockResponse,
   NodeServiceZoneListResponse,
+  NonResidentialBuildingResponse,
   PipeNodeResponse,
   PipeNodeValidationResultResponse,
-} from 'myApi';
+} from 'api/types';
+import { GetBuildingPayload } from './createNodeService.types';
 
-export const getHousingStock = (
+export const getBuilding = async ({
+  buildingId,
+  houseCategory,
+}: GetBuildingPayload): Promise<
+  HousingStockResponse | NonResidentialBuildingResponse
+> => {
+  if (houseCategory === EHouseCategory.Living) {
+    return await getHousingStock(buildingId);
+  }
+  return await getNonResidentialBuilding(buildingId);
+};
+
+const getHousingStock = (
   housingStockId: number,
 ): Promise<HousingStockResponse> =>
   axios.get(`/HousingStocks/${housingStockId}`);
+
+const getNonResidentialBuilding = (
+  buildingId: number,
+): Promise<NonResidentialBuildingResponse> =>
+  axios.get(`NonResidentialBuildings/${buildingId}`);
 
 export const getCalculatorsList = (
   housingStockId: number,

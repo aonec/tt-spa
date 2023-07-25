@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import { WorkWithIndividualDevicePageProps } from './WorkWithIndividualDevicePage.types';
-import { GoBack } from 'ui-kit/shared_components/GoBack';
+import { GoBack } from 'ui-kit/shared/GoBack';
 import {
   ContentWrapper,
   DeviceInfoWrapper,
@@ -12,7 +12,7 @@ import {
 import { WorkWithIndividualDevicePageTitle } from './WorkWithIndividualDevicePage.constants';
 import { Empty } from 'antd';
 import { getApartmentFromFullAddress } from 'utils/getApartmentFromFullAddress';
-import { ResourceIconLookup } from 'ui-kit/shared_components/ResourceIconLookup';
+import { ResourceIconLookup } from 'ui-kit/shared/ResourceIconLookup';
 import { WorkWithIndividualDeviceForm } from './WorkWithIndividualDeviceForm';
 import { useHistory } from 'react-router-dom';
 import { Button } from 'ui-kit/Button';
@@ -25,7 +25,7 @@ export const WorkWithIndividualDevicePage: FC<
   form,
   contractors,
   handleFetchSerialNumberForCheck,
-  isSerialNumberAllreadyExist,
+  serialNumberForChecking,
   isSerialNumberLoading,
   handleFetchModels,
   models,
@@ -60,7 +60,7 @@ export const WorkWithIndividualDevicePage: FC<
               form={form}
               contractors={contractors}
               handleFetchSerialNumberForCheck={handleFetchSerialNumberForCheck}
-              isSerialNumberAllreadyExist={isSerialNumberAllreadyExist}
+              serialNumberForChecking={serialNumberForChecking}
               isSerialNumberLoading={isSerialNumberLoading}
               handleFetchModels={handleFetchModels}
               models={models}

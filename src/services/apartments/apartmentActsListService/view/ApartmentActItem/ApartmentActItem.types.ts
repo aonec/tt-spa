@@ -1,4 +1,4 @@
-import { ApartmentActResponse, DocumentResponse } from 'myApi';
+import { ApartmentActResponse, DocumentResponse } from 'api/types';
 
 export type ApartmentActItemProps = {
   act: ApartmentActResponse;

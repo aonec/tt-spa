@@ -1,7 +1,7 @@
 import { useEvent } from 'effector-react';
 import React, { FC } from 'react';
 import { List } from 'ui-kit/List';
-import { LinkButton } from 'ui-kit/shared_components/LinkButton';
+import { LinkButton } from 'ui-kit/shared/LinkButton';
 import {
   CreateHomeownerContainer,
   createHomeownerService,
@@ -23,7 +23,7 @@ import {
 } from './EditHomeownersList.styled';
 import { EditHomeownersListProps } from './EditHomeownersList.types';
 import moment from 'moment';
-import { EPersonType } from 'myApi';
+import { EPersonType } from 'api/types';
 import { EditHomeownerFormPayload } from './editHomeownerService/editHomeownerService.types';
 import {
   CloseHomeownerAccountContainer,

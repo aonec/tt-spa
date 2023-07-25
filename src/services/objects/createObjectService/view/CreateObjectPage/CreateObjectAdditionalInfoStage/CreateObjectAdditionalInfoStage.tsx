@@ -1,5 +1,6 @@
 import { useFormik } from 'formik';
 import React, { FC } from 'react';
+import moment from 'moment';
 import { Button } from 'ui-kit/Button';
 import { FormItem } from 'ui-kit/FormItem';
 import { Input } from 'ui-kit/Input';
@@ -21,7 +22,7 @@ import {
   CreateObjectAdditionalInfoStageProps,
 } from './CreateObjectAdditionalInfoStage.types';
 import { DatePicker } from 'ui-kit/DatePicker';
-import moment from 'moment';
+import { EHouseCategory } from 'api/types';
 
 export const CreateObjectAdditionalInfoStage: FC<
   CreateObjectAdditionalInfoStageProps
@@ -32,26 +33,29 @@ export const CreateObjectAdditionalInfoStage: FC<
   createObjectData,
   openPreviewModal,
 }) => {
-  const { values, handleSubmit, setFieldValue } = useFormik<AdditionalInfo>({
-    initialValues: {
-      floors: createObjectData?.floors || null,
-      entrances: createObjectData?.entrances || null,
-      elevator: createObjectData?.elevator || null,
-      constructionYear: createObjectData?.constructionYear || '',
-    },
-    enableReinitialize: true,
-    onSubmit: (data) => {
-      handleSubmitCreateObject(data);
-      openPreviewModal();
-    },
-    validateOnChange: false,
-  });
+  const { values, handleSubmit, setFieldValue, handleChange } =
+    useFormik<AdditionalInfo>({
+      initialValues: {
+        floors: createObjectData?.floors || null,
+        entrances: createObjectData?.entrances || null,
+        elevator: createObjectData?.elevator || null,
+        constructionYear: createObjectData?.constructionYear || '',
+      },
+      enableReinitialize: true,
+      onSubmit: (data) => {
+        handleSubmitCreateObject(data);
+        openPreviewModal();
+      },
+      validateOnChange: false,
+    });
 
   return (
     <Wrapper>
       <PageTitle>Дополнительная информация </PageTitle>
 
-      <GridContainer>
+      <GridContainer
+        category={createObjectData?.objectCategory || EHouseCategory.Living}
+      >
         <FormItem label="Число этажей">
           <Input
             placeholder="Введите"
@@ -61,14 +65,17 @@ export const CreateObjectAdditionalInfoStage: FC<
           />
         </FormItem>
 
-        <FormItem label="Число подъездов">
-          <Input
-            placeholder="Введите"
-            onChange={(value) => setFieldValue('entrances', value.target.value)}
-            value={values.entrances || undefined}
-            type="number"
-          />
-        </FormItem>
+        {createObjectData?.objectCategory === EHouseCategory.Living && (
+          <FormItem label="Число подъездов">
+            <Input
+              placeholder="Введите"
+              name="entrances"
+              onChange={handleChange}
+              value={values.entrances || undefined}
+              type="number"
+            />
+          </FormItem>
+        )}
 
         <FormItem label="Лифт">
           <Select

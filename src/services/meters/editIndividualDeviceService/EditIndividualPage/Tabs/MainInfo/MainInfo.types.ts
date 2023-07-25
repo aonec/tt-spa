@@ -2,7 +2,7 @@ import {
   IndividualDeviceMountPlaceListResponse,
   IndividualDeviceResponse,
   UpdateIndividualDeviceRequest,
-} from 'myApi';
+} from 'api/types';
 
 export type MainInfoProps = {
   individualDevice: IndividualDeviceResponse;

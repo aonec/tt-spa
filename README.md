@@ -35,7 +35,7 @@
 Объявляются базовые компоненты сервиса, описывются связи внутри сервиса, экспортится объект модели с полями inputs и outputs 
 ```ts
 import { createDomain, guard } from 'effector';
-import { IndividualDeviceListItemResponse } from 'myApi';
+import { IndividualDeviceListItemResponse } from 'api/types';
 import { deleteDevice } from './deleteIndividualDeviceService.api';
 
 const domain = createDomain(

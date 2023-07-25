@@ -1,5 +1,5 @@
 import { Event } from 'effector';
-import { HomeownerAccountResponse } from 'myApi';
+import { HomeownerAccountResponse } from 'api/types';
 import { UpdateHomeownerRequestPayload } from 'services/meters/metersService/ApartmentReadingsService/ApartmentReadingsService.types';
 
 export type EditHomeownerFieldProps = {

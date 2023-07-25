@@ -1,5 +1,8 @@
-import { axios } from '01/axios';
-import { CreateIndividualDeviceRequest, MeteringDeviceResponse } from 'myApi';
+import { axios } from 'api/axios';
+import {
+  CreateIndividualDeviceRequest,
+  MeteringDeviceResponse,
+} from 'api/types';
 
 export const createIndividualDevice = async (
   payload: CreateIndividualDeviceRequest,

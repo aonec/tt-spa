@@ -1,20 +1,7 @@
-import {
-  BuildingShortResponse,
-  HouseAddress,
-  HousingStockListResponse,
-  HousingStockResponse,
-  NonResidentialBuildingResponse,
-} from 'myApi';
-import { DevicesByAddressInterface } from 'services/devices/displayDevicesService/displayDevicesService.types';
+import { BuildingAddressResponse, HouseAddress } from 'api/types';
 
 export const getBuildingAddress = (
-  housingStock:
-    | HousingStockListResponse
-    | DevicesByAddressInterface
-    | HousingStockResponse
-    | NonResidentialBuildingResponse
-    | BuildingShortResponse
-    | null,
+  housingStock: { address: BuildingAddressResponse | null } | null,
   isCityNeeded?: boolean,
 ) => {
   if (!housingStock) return null;

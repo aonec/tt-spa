@@ -10,8 +10,8 @@ import {
   Wrapper,
 } from './ReportsPage.styled';
 import { ReportsPageProps } from './ReportsPage.types';
-import { PageHeader } from 'ui-kit/shared_components/PageHeader';
-import { ReportsListContainer } from '01/features/reports/reportsListService';
+import { PageHeader } from 'ui-kit/shared/PageHeader';
+import { ReportsListContainer } from 'services/reports/reportsListService';
 import {
   ReportIconsDictionary,
   ReportNamesDictionary,

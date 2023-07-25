@@ -1,9 +1,9 @@
-import { axios } from '01/axios';
+import { axios } from 'api/axios';
 import {
   CreateHousingMeteringDeviceReadingsRequest,
   GetHousingMeteringDeviceReadingsResponse,
   HousingMeteringDeviceReadingsIncludingPlacementResponse,
-} from 'myApi';
+} from 'api/types';
 
 export const fetchHousingMeteringDeviceReadings = (
   nodeId: number,

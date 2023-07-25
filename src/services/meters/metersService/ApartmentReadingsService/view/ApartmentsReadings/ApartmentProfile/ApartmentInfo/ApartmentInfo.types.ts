@@ -1,8 +1,5 @@
 import { Event } from 'effector';
-import {
-  ApartmentResponse,
-  HomeownerAccountResponse,
-} from 'myApi';
+import { ApartmentResponse, HomeownerAccountResponse } from 'api/types';
 import { ReactNode } from 'react';
 import {
   UpdateApartmentRequestPayload,

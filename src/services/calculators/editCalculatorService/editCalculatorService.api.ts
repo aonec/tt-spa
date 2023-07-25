@@ -1,9 +1,9 @@
-import { axios } from '01/axios';
+import { axios } from 'api/axios';
 import {
   CalculatorResponse,
   MeteringDeviceResponse,
   UpdateCalculatorRequest,
-} from 'myApi';
+} from 'api/types';
 
 export async function putCalculator(params: {
   deviceId: number;

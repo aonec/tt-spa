@@ -1,7 +1,7 @@
 import { createDomain, forward, sample } from 'effector';
-import { StreetWithBuildingNumbersResponsePagedList } from 'myApi';
-import { TreeSelectElement } from 'ui-kit/shared_components/AddressTreeSelect/AddressTreeSelect.types';
-import { prepareAddressesForTreeSelect } from 'ui-kit/shared_components/AddressTreeSelect/AddressTreeSelect.utils';
+import { StreetWithBuildingNumbersResponsePagedList } from 'api/types';
+import { TreeSelectElement } from 'ui-kit/shared/AddressTreeSelect/AddressTreeSelect.types';
+import { prepareAddressesForTreeSelect } from 'ui-kit/shared/AddressTreeSelect/AddressTreeSelect.utils';
 import {
   fetchAddresses,
   fetchDownloadHeatIndividualDeviceReport,

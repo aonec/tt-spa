@@ -1,4 +1,4 @@
-import { SubscriberStatisticsСonsumptionResponse } from 'myApi';
+import { SubscriberStatisticsСonsumptionResponse } from 'api/types';
 
 export type StatisticsListProps = {
   statistics: SubscriberStatisticsСonsumptionResponse[];

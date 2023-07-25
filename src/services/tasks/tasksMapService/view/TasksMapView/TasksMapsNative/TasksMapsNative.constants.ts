@@ -1,4 +1,4 @@
-import { EActResourceType, EResourceType } from 'myApi';
+import { EActResourceType, EResourceType } from 'api/types';
 import { HousingStockTaskMarkerType } from './TasksMapsNative.types';
 
 export const EXTENDED_PLACEMARK_ZOOM_LIMIT = 18;

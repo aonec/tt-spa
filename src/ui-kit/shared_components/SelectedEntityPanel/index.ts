@@ -1,1 +1,0 @@
-export { SelectedEntityPanel } from './SelectedEntityPanel'

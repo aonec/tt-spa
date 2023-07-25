@@ -1,4 +1,4 @@
-import { axios } from '01/axios';
+import { axios } from 'api/axios';
 import {
   ErpCreateTaskRequest,
   ErpExecutorResponse,
@@ -6,7 +6,7 @@ import {
   ErpSourceResponse,
   ErpTaskDeadlineResponse,
   ErpWorkCategoryResponse,
-} from 'myApi';
+} from 'api/types';
 import queryString from 'query-string';
 import { GetTaskDeadlineRequest } from './addTaskFromDispatcherService.types';
 

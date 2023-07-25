@@ -1,5 +1,5 @@
 import { CalculatorsListRequestPayload } from 'services/calculators/calculatorsListService/calculatorsListService.types';
-import { CalculatorListResponse, BuildingAddressResponse } from 'myApi';
+import { BuildingShortResponse, CalculatorListResponse } from 'api/types';
 
 export type DevicesListContainerProps = {
   setAddress: (address: CalculatorsListRequestPayload) => void;
@@ -7,5 +7,5 @@ export type DevicesListContainerProps = {
 
 export interface DevicesByAddressInterface {
   devices: CalculatorListResponse[];
-  address?: BuildingAddressResponse | null;
+  building: BuildingShortResponse | null;
 }

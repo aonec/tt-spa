@@ -1,7 +1,7 @@
 import React, { FC, useMemo } from 'react';
 import { Wrapper } from './SortButton.styled';
 import { SortButtonProps } from './SortButton.types';
-import { EOrderByRule } from 'myApi';
+import { EOrderByRule } from 'api/types';
 import { ReactComponent as SortIcon } from './assets/sortArrows.svg';
 import { ReactComponent as SortIconTop } from './assets/sortArrowsTop.svg';
 import { ReactComponent as SortIconBottom } from './assets/sortArrowsBottom.svg';

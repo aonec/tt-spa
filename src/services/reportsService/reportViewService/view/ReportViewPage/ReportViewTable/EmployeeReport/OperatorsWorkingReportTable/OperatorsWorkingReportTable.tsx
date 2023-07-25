@@ -1,7 +1,6 @@
 import React, { FC } from 'react';
 import { Table } from 'ui-kit/Table';
-import { EIndividualDeviceReadingsSource } from 'myApi';
-import { getSourceIcon } from '01/features/readings/displayReadingHistory/components/SourceIcon';
+import { EIndividualDeviceReadingsSource } from 'api/types';
 import { getNameColumnCSS } from '../InspectorsWorkingReportTable/InspectorsWorkingReportTable.styled';
 import { ReadingNameToSourceDictionary } from './OperatorsWorkingReportTable.constants';
 import {
@@ -10,6 +9,7 @@ import {
 } from './OperatorsWorkingReportTable.styled';
 import { OperatorsWorkingReportTableProps } from './OperatorsWorkingReportTable.types';
 import { sum } from 'lodash';
+import { getSourceIcon } from 'utils/sourceIcon';
 
 export const OperatorsWorkingReportTable: FC<
   OperatorsWorkingReportTableProps

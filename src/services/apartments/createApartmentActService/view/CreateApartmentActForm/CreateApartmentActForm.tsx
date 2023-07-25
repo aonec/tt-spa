@@ -1,9 +1,9 @@
 import { Form } from 'antd';
 import { useFormik } from 'formik';
 import moment from 'moment';
-import { EActResourceType, EActType, EDocumentType } from 'myApi';
+import { EActResourceType, EActType, EDocumentType } from 'api/types';
 import React, { FC, SyntheticEvent, useState } from 'react';
-import { ResourceInfo } from 'ui-kit/shared_components/ResourceInfo';
+import { ResourceInfo } from 'ui-kit/shared/ResourceInfo';
 import {
   DatePickerSC,
   ErrorMessage,

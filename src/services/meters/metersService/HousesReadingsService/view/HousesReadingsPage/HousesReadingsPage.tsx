@@ -6,11 +6,11 @@ import {
 import { HousesReadingsPageProps } from './HousesReadingsPage.types';
 import { AddressSearchContainer } from 'services/addressSearchService';
 import { SearchFieldType } from 'services/addressSearchService/view/AddressSearch/AddressSearch.types';
-import { WithLoader } from 'ui-kit/shared_components/WithLoader';
+import { WithLoader } from 'ui-kit/shared/WithLoader';
 import { HousingStockInfoPanel } from './HousingStockInfoPanel';
 import { IndividualDevicesList } from './IndividualDevicesList';
 import { TopButton } from './IndividualDevicesList/TopButton';
-import { TypeAddressToStart } from 'ui-kit/shared_components/TypeToStart';
+import { TypeAddressToStart } from 'ui-kit/shared/TypeToStart';
 
 export const HousesReadingsPage: FC<HousesReadingsPageProps> = ({
   housingStock,

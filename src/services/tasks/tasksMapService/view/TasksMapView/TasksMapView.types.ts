@@ -3,8 +3,9 @@ import {
   EManagingFirmTaskFilterTypeNullableStringDictionaryItem,
   OrganizationUserListResponse,
   TaskResponse,
-} from 'myApi';
+} from 'api/types';
 import { HousingStocksWithTasksFiltrationValues } from '../../tasksMapService.types';
+import { OrganizationCoordinates } from 'services/currentUserService/currentUserService.types';
 
 export type TasksMapViewProps = {
   taskTypes: EManagingFirmTaskFilterTypeNullableStringDictionaryItem[] | null;
@@ -21,4 +22,5 @@ export type TasksMapViewProps = {
   handleClickTask: (taskId: number) => void;
   clearTask: () => void;
   organizationUsers: OrganizationUserListResponse[];
+  organizationCoordinates: OrganizationCoordinates | null;
 };

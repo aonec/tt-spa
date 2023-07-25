@@ -1,7 +1,7 @@
 import { createDomain, forward } from 'effector';
 import { createGate } from 'effector-react';
 import _ from 'lodash';
-import { BuildingFiltersResponse } from 'myApi';
+import { BuildingFiltersResponse } from 'api/types';
 import { getHosuingStockFilters } from './displayHosuingStockFiltersService.api';
 
 const displayHosuingStockFiltersServiceDomain = createDomain(

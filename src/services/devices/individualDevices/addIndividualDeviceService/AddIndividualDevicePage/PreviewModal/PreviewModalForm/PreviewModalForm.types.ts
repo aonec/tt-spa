@@ -1,7 +1,7 @@
 import {
   CreateIndividualDeviceRequest,
   IndividualDeviceMountPlaceListResponse,
-} from 'myApi';
+} from 'api/types';
 import { DocumentStageForm } from '../../stages/DocumentsStage/DocumentsStage.types';
 import { ReactNode } from 'react';
 

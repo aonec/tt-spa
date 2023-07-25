@@ -18,15 +18,15 @@ import {
   EReportFormat,
   EReportType,
   EResourceType,
-} from 'myApi';
-import { ResourceIconLookup } from 'ui-kit/shared_components/ResourceIconLookup';
+} from 'api/types';
+import { ResourceIconLookup } from 'ui-kit/shared/ResourceIconLookup';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 import { FormItem } from 'ui-kit/FormItem';
 import { Input } from 'ui-kit/Input';
 import { Select } from 'ui-kit/Select';
 import { RangePicker } from 'ui-kit/RangePicker';
-import { SpaceLine } from '01/shared/ui/Layout/Space/Space';
+import { SpaceLine } from 'ui-kit/SpaceLine';
 import { getDatePeriod } from './ConsumptionReportCalculatorForm.utils';
 import { ErrorMessage } from 'ui-kit/ErrorMessage';
 import { GetCalculatorReportParams } from 'services/calculators/consumptionReportCalculatorService/consumptionReportCalculatorService.types';

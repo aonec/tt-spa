@@ -3,7 +3,7 @@ import { createGate } from 'effector-react';
 import {
   OrganizationUserListResponse,
   OrganizationUserListResponsePagedList,
-} from 'myApi';
+} from 'api/types';
 import { taskProfileService } from 'services/tasks/taskProfileService/taskProfileService.model';
 import { getOrganizationUsers } from './addPerpetratorService.api';
 
@@ -36,7 +36,7 @@ sample({
     if (!potentialNextStageId) return null;
 
     const nextStage = task.stages?.find(
-      (elem) => elem.id === potentialNextStageId
+      (elem) => elem.id === potentialNextStageId,
     );
 
     if (!nextStage) return null;
