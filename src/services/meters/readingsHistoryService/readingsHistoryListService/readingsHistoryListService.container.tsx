@@ -6,15 +6,13 @@ import {
   IndividualDeviceReadingsCreateRequest,
 } from 'api/types';
 import React, { useCallback, useMemo } from 'react';
-import { useOpenedYears } from './hooks/useOpenedYears';
 import { RenderReadingFields } from './ReadingFields';
-import { SourceName } from './SourceIcon';
+import { SourceName } from './SourceName/SourceName';
 import {
   getMonthName,
   getReadingValuesArray,
   getReadingValuesObject,
 } from '../utils';
-import { useReadingHistoryValues } from './hooks/useReadingValues';
 import {
   confirmReading,
   getActiveReadings,
@@ -26,14 +24,16 @@ import {
 import {
   ArrowButton,
   ArrowButtonBlock,
-  GradientLoader,
   Month,
   PreviousReading,
   TableHeader,
   Wrapper,
   Year,
 } from './readingsHistoryListService.styled';
-import { RenderReading } from './readingsHistoryListService.types';
+import {
+  ReadingsHistoryContainerProps,
+  RenderReading,
+} from './readingsHistoryListService.types';
 import {
   managementFirmConsumptionRatesService,
   useManagingFirmConsumptionRates,
@@ -50,21 +50,21 @@ import { displayIndividualDeviceAndNamesService } from 'services/devices/individ
 import { ArrowBottom, ArrowIconTop } from 'ui-kit/icons';
 import { readingsHistoryService } from '../readingsHistoryService.model';
 import { ConfirmReadingValueContainer } from '../confirmReadingService';
+import {
+  useOpenedYears,
+  useReadingHistoryValues,
+} from './readingsHistoryListService.hook';
+import { WithLoader } from 'ui-kit/shared/WithLoader';
 
 const {
   outputs: { $individualDevice },
 } = displayIndividualDeviceAndNamesService;
-interface Props {
-  isModal?: boolean;
-  readonly?: boolean;
-}
 
 const { outputs, inputs } = managementFirmConsumptionRatesService;
 
-export const ReadingsHistoryList: React.FC<Props> = ({
-  isModal = true,
-  readonly,
-}) => {
+type NewType = React.FC<ReadingsHistoryContainerProps>;
+
+export const ReadingsHistoryList: NewType = ({ readonly }) => {
   const {
     values,
     setFieldValue,
@@ -397,23 +397,24 @@ export const ReadingsHistoryList: React.FC<Props> = ({
   );
 
   return (
-    <Wrapper isModal={isModal}>
-      <GradientLoader loading={pendingHistory} />
-      <ConfirmReadingValueContainer />
-      <TableHeader>
-        {columnsNames.map((elem) => (
-          <div>{elem}</div>
-        ))}
-      </TableHeader>
-      {values?.yearReadings?.map((yearReading, index) =>
-        renderYear({
-          ...yearReading,
-          prevMonths:
-            values?.yearReadings &&
-            values?.yearReadings[index + 1]?.monthReadings,
-        }),
-      )}
-    </Wrapper>
+    <WithLoader isLoading={pendingHistory}>
+      <Wrapper>
+        <ConfirmReadingValueContainer />
+        <TableHeader>
+          {columnsNames.map((elem) => (
+            <div>{elem}</div>
+          ))}
+        </TableHeader>
+        {values?.yearReadings?.map((yearReading, index) =>
+          renderYear({
+            ...yearReading,
+            prevMonths:
+              values?.yearReadings &&
+              values?.yearReadings[index + 1]?.monthReadings,
+          }),
+        )}
+      </Wrapper>
+    </WithLoader>
   );
 };
 

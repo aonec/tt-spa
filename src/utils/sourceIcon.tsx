@@ -1,8 +1,5 @@
 import React from 'react';
-import {
-  EIndividualDeviceReadingsSource,
-  OrganizationUserShortResponse,
-} from 'api/types';
+import { EIndividualDeviceReadingsSource } from 'api/types';
 import {
   TelegramIcon,
   DeviceIcon,
@@ -45,24 +42,4 @@ export const getSourceName = (
   }[source];
 
   return name;
-};
-
-export const SourceName = ({
-  sourceType,
-  user,
-}: {
-  sourceType: EIndividualDeviceReadingsSource;
-  user?: OrganizationUserShortResponse | null;
-}) => {
-  const userName = user?.name;
-
-  const icon = getSourceIcon(sourceType);
-  const name = getSourceName(sourceType, userName);
-
-  return (
-    <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-      {icon}
-      {name}
-    </div>
-  );
 };
