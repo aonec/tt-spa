@@ -47,10 +47,12 @@ const getResourceDisconnectionsFx = domain.createEffect<
   ResourceDisconnectingResponsePagedList
 >(fetchResourceDisconnectionOnHousingStock);
 
-$resourceDisconnections.on(
-  getResourceDisconnectionsFx.doneData,
-  (_, disconnectionPagedData) => disconnectionPagedData.items || [],
-);
+$resourceDisconnections
+  .on(
+    getResourceDisconnectionsFx.doneData,
+    (_, disconnectionPagedData) => disconnectionPagedData.items || [],
+  )
+  .reset(ObjectProfileIdGate.close);
 
 const resetGrouptype = domain.createEvent();
 const setCurrentGroutype = domain.createEvent<HousingStockProfileGrouptype>();

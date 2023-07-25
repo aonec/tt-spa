@@ -29,7 +29,11 @@ sample({
 
 sample({
   clock: BuildingIdGate.close,
-  target: [nonResidentialBuildingQuery.reset, resetGroupType],
+  target: [
+    nonResidentialBuildingQuery.reset,
+    resetGroupType,
+    resourceDisconnectionQuery.reset,
+  ],
 });
 
 export const nonResidentialBuildingProfileService = {

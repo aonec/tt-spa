@@ -11,7 +11,9 @@ export const ObjectDisconnectionAlerts: FC<ObjectDisconnectionAlertsProps> = ({
 }) => {
   const disconnectionsAlert = disconnections.map((disconnection) => {
     const resourceName = actResourceNamesLookup[disconnection.resource];
-    const entDate = moment(disconnection.endDate).format('DD.MM.YYYY');
+    const endDate = moment(disconnection.endDate).format('DD.MM.YYYY');
+
+    const dateText = disconnection.endDate ? ` до ${endDate}` : '';
 
     const disconnectionType = disconnection.disconnectingType;
     const disconnectionTypeDescription = disconnectionType?.description;
@@ -25,8 +27,8 @@ export const ObjectDisconnectionAlerts: FC<ObjectDisconnectionAlertsProps> = ({
         <Alert type={AlertType.default} icon={AlertIconType.stop}>
           <AlertContent>
             <div>
-              На объекте отключение ресурса {resourceName}, тип:
-              {disconnectionTypeDescription}, до {entDate}
+              На объекте отключение ресурса {resourceName}
+              {dateText}, тип: {disconnectionTypeDescription}
             </div>
           </AlertContent>
         </Alert>
