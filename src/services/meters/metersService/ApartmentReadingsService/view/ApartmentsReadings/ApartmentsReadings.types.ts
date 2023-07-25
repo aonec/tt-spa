@@ -30,6 +30,7 @@ export type ApartmentsReadingsProps = {
   handleUpdatePhoneNumber: (payload: UpdateHomeownerRequestPayload) => void;
   isUpdateHomeownerLoading: boolean;
   handleHomeownerUpdated: Event<HomeownerAccountResponse>;
+  isApartmentFetched: boolean;
 };
 
 export enum SearchMode {

@@ -2,11 +2,9 @@ import { fromEnter } from 'ui-kit/shared/DatePickerNative';
 import React, { FC, ReactElement } from 'react';
 import { FormItem } from 'ui-kit/FormItem';
 import { SearchFieldsLabels } from './AddressSearch.constants';
-import { Wrapper } from './AddressSearch.styled';
+import { Wrapper, InputSC, AutoCompleteSC } from './AddressSearch.styled';
 import { AddressSearchProps, SearchFieldType } from './AddressSearch.types';
 import { Select } from 'ui-kit/Select';
-import { Input } from 'ui-kit/Input';
-import { AutoComplete } from 'ui-kit/AutoComplete';
 import { useSwitchInputOnEnter } from 'hooks/useSwitchInputOnEnter';
 import { useAutocomplete } from 'hooks/useAutocomplete';
 
@@ -23,6 +21,7 @@ export const AddressSearch: FC<AddressSearchProps> = ({
   showLabels,
   disabledFields,
   className,
+  isError,
 }) => {
   const next = useSwitchInputOnEnter(dataKey, false, false);
 
@@ -62,7 +61,7 @@ export const AddressSearch: FC<AddressSearchProps> = ({
   );
 
   const streetSearch = (index: number, isDisabled?: boolean) => (
-    <AutoComplete
+    <AutoCompleteSC
       small
       placeholder="Улица"
       data-reading-input={dataKey}
@@ -86,11 +85,12 @@ export const AddressSearch: FC<AddressSearchProps> = ({
         clearFields(index);
       }}
       disabled={isDisabled}
+      error={isError}
     />
   );
 
   const homeNumberSearch = (index: number, isDisabled?: boolean) => (
-    <Input
+    <InputSC
       small
       placeholder="Дом"
       value={values.house}
@@ -104,11 +104,12 @@ export const AddressSearch: FC<AddressSearchProps> = ({
         next(index);
       })}
       disabled={isDisabled}
+      error={isError}
     />
   );
 
   const corpusSearch = (index: number, isDisabled?: boolean) => (
-    <Input
+    <InputSC
       small
       placeholder="Корпус"
       value={values.corpus}
@@ -122,11 +123,12 @@ export const AddressSearch: FC<AddressSearchProps> = ({
         next(index);
       })}
       disabled={isDisabled}
+      error={isError}
     />
   );
 
   const apartmentSearch = (index: number, isDisabled?: boolean) => (
-    <Input
+    <InputSC
       small
       placeholder="Квартирa"
       value={values.apartment}
@@ -140,11 +142,12 @@ export const AddressSearch: FC<AddressSearchProps> = ({
         next(index);
       })}
       disabled={isDisabled}
+      error={isError}
     />
   );
 
   const questionSearch = (index: number, isDisabled?: boolean) => (
-    <Input
+    <InputSC
       small
       placeholder="Л/С или ФИО"
       value={values.question}
@@ -158,6 +161,7 @@ export const AddressSearch: FC<AddressSearchProps> = ({
         next(index);
       })}
       disabled={isDisabled}
+      error={isError}
     />
   );
 

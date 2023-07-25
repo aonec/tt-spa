@@ -32,4 +32,5 @@ export type AddressSearchProps = {
   showLabels?: boolean;
   disabledFields?: SearchFieldType[];
   className?: string;
+  isError: boolean;
 };

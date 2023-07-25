@@ -21,4 +21,5 @@ export type ApartmentProfileProps = {
   handleUpdatePhoneNumber: (payload: UpdateHomeownerRequestPayload) => void;
   isUpdateHomeownerLoading: boolean;
   handleHomeownerUpdated: Event<HomeownerAccountResponse>;
+  isApartmentFetched: boolean;
 };

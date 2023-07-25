@@ -15,6 +15,7 @@ import { useHistory, useParams } from 'react-router-dom';
 import confirm from 'antd/lib/modal/confirm';
 import { TypeAddressToStart } from 'ui-kit/shared/TypeToStart';
 import { EApartmentStatus } from 'api/types';
+import { NothingFound } from 'ui-kit/shared/NothingFound';
 
 const { gates } = apartmentReadingsService;
 const { ApartmentGate } = gates;
@@ -34,6 +35,7 @@ export const ApartmentProfile: FC<ApartmentProfileProps> = ({
   handleUpdatePhoneNumber,
   isUpdateHomeownerLoading,
   handleHomeownerUpdated,
+  isApartmentFetched,
 }) => {
   const { id } = useParams<{ id: string }>();
   const history = useHistory();
@@ -106,9 +108,11 @@ export const ApartmentProfile: FC<ApartmentProfileProps> = ({
               question: selectedHomeownerName || undefined,
             }
           }
+          isError={!apartment && isApartmentFetched}
         />
         <WithLoader isLoading={isLoadingApartment}>
-          {!apartment && <TypeAddressToStart />}
+          {!apartment && !isApartmentFetched && <TypeAddressToStart />}
+          {!apartment && isApartmentFetched && <NothingFound />}
           {apartment && (
             <ContentWrapper>
               <ApartmentInfo
