@@ -1,9 +1,6 @@
 import { message } from 'antd';
 import { createDomain, forward, sample } from 'effector';
-import {
-  HomeownerAccountCloseRequest,
-  HomeownerAccountUpdateRequest,
-} from 'api/types';
+import { HomeownerAccountCloseRequest } from 'api/types';
 import {
   EffectFailDataAxiosError,
   EffectFailDataAxiosErrorDataApartmentId,
@@ -14,6 +11,7 @@ import {
 } from './editPersonalNumberService.api';
 import { PersonalNumberFormTypes } from '../components/PersonalNumberForm/PersonalNumberForm.types';
 import { apartmentProfileService } from 'services/apartments/apartmentProfileService';
+import { EditHomeownerRequestPayload } from './editPersonalNumberService.types';
 
 const domain = createDomain('editPersonalNumberService');
 
@@ -46,7 +44,7 @@ const $isForced = domain
   .reset(handleConfirmationModalClose);
 
 const editHomeownerAccountFx = domain.createEffect<
-  { id: string; data: HomeownerAccountUpdateRequest },
+  EditHomeownerRequestPayload,
   void,
   EffectFailDataAxiosErrorDataApartmentId
 >(putHomeownerAccount);
@@ -76,12 +74,9 @@ sample({
         name: formData.name,
         phoneNumber: formData.phoneNumber,
         IsMainOnApartment: formData.isMainOnApartment,
-        isForced: isForced,
       },
-    } as {
-      id: string;
-      data: HomeownerAccountUpdateRequest;
-    }),
+      isForced: isForced,
+    } as EditHomeownerRequestPayload),
   target: editHomeownerAccountFx,
 });
 
