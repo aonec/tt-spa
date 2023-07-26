@@ -1,35 +1,21 @@
-import React, { FC, useEffect, useMemo, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import {
-  EditingField,
+  InputSC,
   FieldName,
   Footer,
   Header,
   ValueWrapper,
+  PencilIconSC,
 } from './EditHomeownerField.styled';
-import { EditHomeownerFieldProps, FieldType } from './EditHomeownerField.types';
-import { PencilIconSC } from '../ApartmentInfo.styled';
+import { EditHomeownerFieldProps } from './EditHomeownerField.types';
 import { Button } from 'ui-kit/Button';
-import { FieldTypeDictionary } from './EditHomeownerField.constants';
 
 export const EditHomeownerField: FC<EditHomeownerFieldProps> = ({
-  phoneNumber,
   handleUpdate,
-  homeownerId,
   isUpdateHomeownerLoading,
-  handleHomeownerUpdated,
-  fieldType,
-  name,
+  title,
+  value: initialValue,
 }) => {
-  const initialValue = useMemo(() => {
-    if (fieldType === FieldType.Name) {
-      return name || null;
-    }
-    if (fieldType === FieldType.PhoneNumber) {
-      return phoneNumber || null;
-    }
-    return null;
-  }, [fieldType, name, phoneNumber]);
-
   const [isEditing, setIsEditing] = useState(false);
   const [fieldCurrentValue, setFieldCurrentValue] = useState<string | null>(
     initialValue,
@@ -37,6 +23,8 @@ export const EditHomeownerField: FC<EditHomeownerFieldProps> = ({
 
   useEffect(() => {
     setFieldCurrentValue(initialValue);
+
+    setIsEditing(false);
   }, [initialValue]);
 
   const handleEdit = () => {
@@ -54,37 +42,15 @@ export const EditHomeownerField: FC<EditHomeownerFieldProps> = ({
       return;
     }
 
-    if (homeownerId && handleUpdate) {
-      const editedField = FieldTypeDictionary[fieldType];
-
-      handleUpdate({
-        id: homeownerId,
-        data: { [editedField]: fieldCurrentValue },
-      });
+    if (handleUpdate && fieldCurrentValue) {
+      handleUpdate(fieldCurrentValue);
     }
   };
-
-  useEffect(() => {
-    if ((fieldType === FieldType.Name)) {
-      handleHomeownerUpdated?.watch((updatedData) => {
-        setFieldCurrentValue(updatedData.name);
-        setIsEditing(false);
-      });
-    }
-    if ((fieldType === FieldType.PhoneNumber)) {
-      handleHomeownerUpdated?.watch((updatedData) => {
-        setFieldCurrentValue(updatedData.phoneNumber);
-        setIsEditing(false);
-      });
-    }
-    return;
-  }, [handleHomeownerUpdated, setFieldCurrentValue, fieldType]);
 
   return (
     <div>
       <Header>
-        {fieldType === FieldType.PhoneNumber && <FieldName>Телефон</FieldName>}
-        {fieldType === FieldType.Name && <FieldName>Собственник</FieldName>}
+        <FieldName>{title}</FieldName>
         <PencilIconSC onClick={isEditing ? handleCancelEdit : handleEdit} />
       </Header>
 
@@ -93,7 +59,7 @@ export const EditHomeownerField: FC<EditHomeownerFieldProps> = ({
       )}
 
       {isEditing && (
-        <EditingField
+        <InputSC
           small
           value={fieldCurrentValue || ''}
           onChange={(value) => setFieldCurrentValue(value.target.value)}

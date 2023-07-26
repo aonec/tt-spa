@@ -1,5 +1,8 @@
-import { EOrderByRule, HomeownerAccountUpdateRequest } from 'api/types';
-import { ApartmentUpdateRequest } from 'api/types';
+import {
+  EOrderByRule,
+  HomeownerAccountUpdateRequest,
+  ApartmentUpdateRequest,
+} from 'api/types';
 
 export type GetApartmentsRequestPayload = {
   ApartmentId?: number;

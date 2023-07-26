@@ -3,11 +3,11 @@ import {
   ApartmentListResponsePagedList,
   ApartmentResponse,
   HomeownerAccountResponse,
-  HomeownerAccountUpdateRequest,
 } from 'api/types';
 import {
   GetApartmentsRequestPayload,
   UpdateApartmentRequestPayload,
+  UpdateHomeownerRequestPayload,
 } from './ApartmentReadingsService.types';
 
 const getApartmentId = async (
@@ -51,8 +51,5 @@ export const putApartment = ({
 export const patchHomeowner = ({
   id,
   data,
-}: {
-  id: string;
-  data: HomeownerAccountUpdateRequest;
-}): Promise<HomeownerAccountResponse> =>
+}: UpdateHomeownerRequestPayload): Promise<HomeownerAccountResponse> =>
   axios.put(`HomeownerAccounts/${id}`, data);
