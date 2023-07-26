@@ -84,10 +84,12 @@ export const InfoPanelLabel = styled.div`
   font-weight: 500;
   font-size: 14px;
   margin-bottom: 10px;
+`;
 
-  &:after {
-    content: ':';
-  }
+export const PersonalNumberHeader = styled.div`
+  color: #272f5ab2;
+  font-weight: 500;
+  font-size: 14px;
 `;
 
 export const BaseInfoWrapper = styled.div`
@@ -122,6 +124,13 @@ export const ManagementFirmInfo = styled.span`
   color: #272f5ae5;
 `;
 
+export const PersonalNumberHeaderWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+  gap: 10px;
+`;
+
 export const ExtraInfoWrapper = styled.div`
   margin-top: 12px;
   border-top: 1px solid #dcdee4;
@@ -146,4 +155,25 @@ export const AdditionalHeaderInfoWrapper = styled.div`
   display: flex;
   align-items: center;
   gap: 8px;
+`;
+
+export const MainText = styled.div`
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 22px;
+`;
+
+export const HomeownerNumber = styled.span`
+  padding-right: 4px;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 22px;
+`;
+
+export const SubText = styled.div`
+  font-size: 14px;
+  font-weight: 300;
+  line-height: 22px;
+
+  margin-top: 10px;
 `;
