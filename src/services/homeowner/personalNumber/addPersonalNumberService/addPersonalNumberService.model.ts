@@ -1,8 +1,8 @@
 import { createDomain, sample } from 'effector';
+import { message } from 'antd';
 import { apartmentProfileService } from 'services/apartments/apartmentProfileService';
 import { EffectFailDataAxiosErrorDataApartmentId } from 'types';
 import { addHomeowner } from './addPersonalNumberService.api';
-import { message } from 'antd';
 import { PersonalNumberFormTypes } from '../components/PersonalNumberForm/PersonalNumberForm.types';
 import { AddHomeownerRequestPayload } from './addPersonalNumberService.types';
 
