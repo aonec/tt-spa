@@ -1,4 +1,4 @@
-import { StageListResponse } from 'myApi';
+import { StageListResponse } from 'api/types';
 
 export type TaskStagesProps = {
   stages: StageListResponse[];

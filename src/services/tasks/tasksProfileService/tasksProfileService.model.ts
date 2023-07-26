@@ -1,13 +1,11 @@
-import { createDomain, forward, guard, sample, split } from 'effector';
+import { createDomain, sample, split } from 'effector';
 import { createGate } from 'effector-react';
 import {
   ApartmentResponse,
-  ESecuredIdentityRoleName,
   HousingStockResponse,
   TaskGroupingFilter,
   TasksPagedList,
-} from 'myApi';
-import { currentUserService } from 'services/currentUserService';
+} from 'api/types';
 import {
   $taskTypes,
   $housingManagments,
@@ -25,16 +23,35 @@ import {
 import { TasksPageSegment } from './view/TasksProfile/TasksProfile.types';
 import { addressSearchService } from 'services/addressSearchService/addressSearchService.models';
 import { addTaskFromDispatcherService } from '../addTaskFromDispatcherService';
+import { getAcceptableSearchParams } from './tasksProfileService.utils';
 
 const domain = createDomain('tasksProfileService');
 
+const TasksIsOpen = createGate();
+const InitialGate = createGate();
+
 const clearAddress = domain.createEvent();
 const clearFilters = domain.createEvent();
+const setPipeNodeId = domain.createEvent<{ pipeNodeId: string }>();
+const setTasksPageSegment = domain.createEvent<TasksPageSegment>();
+const setDeviceId = domain.createEvent<{ deviceId: string }>();
+const extendedSearchOpened = domain.createEvent();
+const extendedSearchClosed = domain.createEvent();
+const changeFiltersByGroupType = domain.createEvent<TaskGroupingFilter>();
+const changeGroupType = domain.createEvent<TaskGroupingFilter>();
+const changePageNumber = domain.createEvent<number>();
+const searchTasks = domain.createEvent<GetTasksListRequestPayload>();
+
+const searchTasksFx = domain.createEffect<
+  GetTasksListRequestPayload | null,
+  TasksPagedList
+>(getTasks);
 
 const getApartmentFx = domain.createEffect<
   FiltersGatePayload,
   ApartmentResponse
 >(fetchApartment);
+
 const $apartment = domain
   .createStore<ApartmentResponse | null>(null)
   .on(getApartmentFx.doneData, (_, apartment) => apartment)
@@ -44,17 +61,11 @@ const getHousingStockFx = domain.createEffect<
   FiltersGatePayload,
   HousingStockResponse
 >(fetchHousingStock);
+
 const $housingStock = domain
   .createStore<HousingStockResponse | null>(null)
   .on(getHousingStockFx.doneData, (_, housingStock) => housingStock)
   .reset(clearAddress);
-
-const setPipeNodeId = domain.createEvent<{ pipeNodeId: string }>();
-const setDeviceId = domain.createEvent<{
-  deviceId: string;
-}>();
-
-const setTasksPageSegment = domain.createEvent<TasksPageSegment>();
 
 const $searchState = domain
   .createStore<GetTasksListRequestPayload>({})
@@ -65,62 +76,7 @@ const $searchState = domain
   .on(setDeviceId, (prev, { deviceId }) => ({
     ...prev,
     DeviceId: Number(deviceId),
-  }));
-
-const $tasksPagedData = domain.createStore<TasksPagedList | null>(null);
-const $isExtendedSearchOpen = domain.createStore(false);
-const $tasksPageSegment = domain
-  .createStore<TasksPageSegment>('list')
-  .on(setTasksPageSegment, (_, segment) => segment);
-
-const extendedSearchOpened = domain.createEvent();
-const extendedSearchClosed = domain.createEvent();
-
-const changeFiltersByGroupType = domain.createEvent<TaskGroupingFilter>();
-const changeGroupType = domain.createEvent<TaskGroupingFilter>();
-const changePageNumber = domain.createEvent<number>();
-
-const searchTasks = domain.createEvent<GetTasksListRequestPayload>();
-
-const searchTasksFx = domain.createEffect<
-  GetTasksListRequestPayload | null,
-  TasksPagedList
->(getTasks);
-
-const $isLoading = searchTasksFx.pending;
-
-const $isSpectator = currentUserService.outputs.$currentUser.map((user) => {
-  const roles = user?.roles || [];
-  const rolesKeys = roles.map(({ key }) => key);
-  const isSpectator =
-    rolesKeys.includes(ESecuredIdentityRoleName.ManagingFirmSpectator) ||
-    rolesKeys.includes(
-      ESecuredIdentityRoleName.ManagingFirmSpectatorRestricted,
-    );
-
-  return isSpectator;
-});
-
-const $isAdministrator = currentUserService.outputs.$currentUser.map((user) => {
-  const roles = user?.roles || [];
-  const rolesKeys = roles.map(({ key }) => key);
-  const isAdministrator = rolesKeys.includes(
-    ESecuredIdentityRoleName.Administrator,
-  );
-
-  return isAdministrator;
-});
-
-const TasksIsOpen = createGate();
-const FiltersGate = createGate<FiltersGatePayload>();
-
-$tasksPagedData.on(searchTasksFx.doneData, (_, tasksPaged) => tasksPaged);
-
-$isExtendedSearchOpen
-  .on(extendedSearchOpened, () => true)
-  .reset(extendedSearchClosed);
-
-$searchState
+  }))
   .on(searchTasks, (oldFilters, filters) => ({
     ...oldFilters,
     ...filters,
@@ -143,35 +99,39 @@ $searchState
   }))
   .reset(clearFilters);
 
-forward({
-  from: TasksIsOpen.close,
-  to: clearFilters,
+const $tasksPagedData = domain
+  .createStore<TasksPagedList | null>(null)
+  .on(searchTasksFx.doneData, (_, tasksPaged) => tasksPaged);
+
+const $isExtendedSearchOpen = domain
+  .createStore(false)
+  .on(extendedSearchOpened, () => true)
+  .reset(extendedSearchClosed);
+
+const $tasksPageSegment = domain
+  .createStore<TasksPageSegment>('list')
+  .on(setTasksPageSegment, (_, segment) => segment);
+
+const $isLoading = searchTasksFx.pending;
+
+sample({
+  clock: TasksIsOpen.close,
+  target: clearFilters,
 });
 
 sample({
-  source: guard({
-    source: addressSearchService.outputs.$existingCities,
-    filter: (cities) => Boolean(cities),
-  }),
-  clock: guard({
-    clock: $searchState,
-    filter: (filter) => Boolean(filter.GroupType),
-  }),
-  fn: (_, filter) => filter,
+  clock: $searchState,
+  filter: (searchState) => Boolean(searchState.City && searchState.GroupType),
   target: searchTasksFx,
 });
 
 split({
-  source: guard({
-    clock: FiltersGate.state,
-    filter: ({ apartmentId, housingStockId, pipeNodeId, deviceId }) =>
-      [apartmentId, housingStockId, pipeNodeId, deviceId].some(Boolean),
-  }),
+  source: sample({ clock: InitialGate.open, fn: getAcceptableSearchParams }),
   match: {
-    housingStock: (ids) => Boolean(ids.housingStockId),
-    apartmentId: (ids) => Boolean(ids.apartmentId),
-    pipeNodeId: (ids) => Boolean(ids.pipeNodeId),
-    deviceId: (ids) => Boolean(ids.deviceId),
+    housingStock: (searchParams) => Boolean(searchParams.housingStockId),
+    apartmentId: (searchParams) => Boolean(searchParams.apartmentId),
+    pipeNodeId: (searchParams) => Boolean(searchParams.pipeNodeId),
+    deviceId: (searchParams) => Boolean(searchParams.deviceId),
   },
   cases: {
     housingStock: getHousingStockFx,
@@ -202,14 +162,12 @@ export const tasksProfileService = {
     $isExtendedSearchOpen,
     $housingManagments,
     $organizationUsers,
-    $isSpectator,
-    $isAdministrator,
     $apartment,
     $housingStock,
     $tasksPageSegment,
   },
   gates: {
     TasksIsOpen,
-    ApartmentIdGate: FiltersGate,
+    InitialGate,
   },
 };

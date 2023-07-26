@@ -1,4 +1,4 @@
-import { GroupReportFormResponse } from 'myApi';
+import { GroupReportFormResponse } from 'api/types';
 import { GroupReportRequestPayload } from '../../groupReportService.types';
 
 export type GroupReportFormProps = {

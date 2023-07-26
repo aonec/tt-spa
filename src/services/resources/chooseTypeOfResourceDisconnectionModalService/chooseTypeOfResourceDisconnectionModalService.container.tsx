@@ -1,6 +1,6 @@
 import { useEvent, useStore } from 'effector-react';
 import React from 'react';
-import { ActionButton } from 'ui-kit/shared_components/ActionButton';
+import { ActionButton } from 'ui-kit/shared/ActionButton';
 import { chooseTypeOfResourceDisconnectionModalService } from './chooseTypeOfResourceDisconnectionModalService.model';
 import {
   ButtonsWrapper,

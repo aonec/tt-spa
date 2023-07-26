@@ -13,10 +13,14 @@ export const getDatePeriod = (
     period = [moment().startOf('month'), moment()];
   }
 
+  console.log(isSono);
+
   if (archiveType === ArchiveType.PreviousMonth) {
     period = [
       moment().subtract(1, 'months').startOf('month'),
-      moment().subtract(1, 'months').endOf('month'),
+      isSono
+        ? moment().subtract(0, 'months').startOf('month')
+        : moment().subtract(1, 'months').endOf('month'),
     ];
   }
   if (archiveType === ArchiveType.LastSevenDays) {
@@ -28,7 +32,9 @@ export const getDatePeriod = (
   const format = isSono ? 'month' : 'day';
 
   const From = period[0].startOf(format).format('YYYY-MM-DDTHH:mm:ss');
-  const To = period[1].endOf(format).format('YYYY-MM-DDTHH:mm:ss');
+  const To = isSono
+    ? period[1].startOf(format).format('YYYY-MM-DDTHH:mm:ss')
+    : period[1].endOf(format).format('YYYY-MM-DDTHH:mm:ss');
 
   return { From, To };
 };

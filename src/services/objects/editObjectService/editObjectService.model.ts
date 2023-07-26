@@ -1,28 +1,36 @@
-import { createDomain, merge, sample } from 'effector';
-import { housingStockProfileService } from '../housingStockProfileService';
+import { createDomain, merge, sample, split } from 'effector';
 import { createObjectService } from '../createObjectService';
 import { createHeatingStationService } from '../heatingStations/createHeatingStationService';
 import { editHeatingStationService } from '../heatingStations/editHeatingStationService';
 import {
   createHousingStockAddress,
   deleteHousingStockAddress,
+  getHousingStock,
+  getNonResidentialBuilding,
   updateHousingStock,
   updateHousingStockAddress,
 } from './editObjectService.api';
 import {
   BuildingAddressCreateRequest,
   BuildingAddressUpdateRequest,
+  EHouseCategory,
+  HousingStockResponse,
   HousingStockUpdateRequest,
-} from 'myApi';
+  NonResidentialBuildingResponse,
+} from 'api/types';
 import { EffectFailDataAxiosError } from 'types';
 import { createGate } from 'effector-react';
 import { displayHeatingStationsService } from '../heatingStations/displayHeatingStationsService';
 import { message } from 'antd';
+import { GetBuildingPayload } from 'services/nodes/createNodeService/createNodeService.types';
+import { EditObjectPayload } from './editObjectService.types';
 
 const domain = createDomain('editObjectService');
 
-const FetchObjectGate = housingStockProfileService.gates.FetchObjectGate;
-const CatchHousingStockId = createGate<{ buildingId: number }>();
+const ObjectIdGate = createGate<{
+  buildingId: number;
+  houseCategory: EHouseCategory | null;
+}>();
 
 const handleUpdateHousingStock =
   domain.createEvent<HousingStockUpdateRequest>();
@@ -41,13 +49,10 @@ const handleDeleteHousingStockAddress = domain.createEvent<{
 
 const onPageCancel = domain.createEvent();
 
-const handleRefetchHousingStock = domain.createEvent();
+const handleRefetchBuilding = domain.createEvent();
 
-const updateHousingStockFx = domain.createEffect<
-  {
-    housingStockId: number;
-    data: HousingStockUpdateRequest;
-  },
+const updateBuildingFx = domain.createEffect<
+  EditObjectPayload,
   void,
   EffectFailDataAxiosError
 >(updateHousingStock);
@@ -81,17 +86,20 @@ const deleteHousingStockAddressFx = domain.createEffect<
 >(deleteHousingStockAddress);
 
 sample({
-  clock: handleUpdateHousingStock,
-  source: CatchHousingStockId.state,
-  fn: (gateState, clockPayload) => {
-    return { housingStockId: gateState.buildingId, data: clockPayload };
-  },
-  target: updateHousingStockFx,
+  clock: sample({
+    clock: handleUpdateHousingStock,
+    source: ObjectIdGate.state,
+    fn: (gateState, clockPayload) => {
+      return { ...gateState, data: clockPayload };
+    },
+  }),
+  filter: (state): state is EditObjectPayload => Boolean(state.houseCategory),
+  target: updateBuildingFx,
 });
 
 sample({
   clock: handleCreateHousingStockAddress,
-  source: CatchHousingStockId.state,
+  source: ObjectIdGate.state,
   fn: (gateState, clockPayload) => {
     return { housingStockId: gateState.buildingId, data: clockPayload };
   },
@@ -100,7 +108,7 @@ sample({
 
 sample({
   clock: handleUpdateHousingStockAddress,
-  source: CatchHousingStockId.state,
+  source: ObjectIdGate.state,
   fn: (gateState, clockPayload) => {
     return {
       housingStockId: gateState.buildingId,
@@ -113,7 +121,7 @@ sample({
 
 sample({
   clock: handleDeleteHousingStockAddress,
-  source: CatchHousingStockId.state,
+  source: ObjectIdGate.state,
   fn: (gateState, clockPayload) => {
     return {
       housingStockId: gateState.buildingId,
@@ -123,9 +131,9 @@ sample({
   target: deleteHousingStockAddressFx,
 });
 
-const successUpdate = updateHousingStockFx.doneData;
+const successUpdate = updateBuildingFx.doneData;
 
-updateHousingStockFx.failData.watch((error) => {
+updateBuildingFx.failData.watch((error) => {
   message.error(
     error.response.data.error.Text || error.response.data.error.Message,
   );
@@ -141,21 +149,51 @@ const successDeleteAddress = deleteHousingStockAddressFx.doneData;
 const successUpdateAddress = updateHousingStockAddressFx.doneData;
 const successCreateAddress = createHousingStockAddressFx.doneData;
 
-const $housingStock = housingStockProfileService.outputs.$housingStock.on(
-  successDeleteAddress,
-  (_, housingStock) => housingStock,
-);
+const fetchBuilding = domain.createEvent<GetBuildingPayload>();
+const fetchHousingStockFx = domain.createEffect<
+  { buildingId: number },
+  HousingStockResponse
+>(getHousingStock);
+const $housingStock = domain
+  .createStore<HousingStockResponse | null>(null)
+  .on(fetchHousingStockFx.doneData, (_, building) => building)
+  .reset(ObjectIdGate.close);
+
+const fetchNonResidentialBuildingFx = domain.createEffect<
+  { buildingId: number },
+  NonResidentialBuildingResponse
+>(getNonResidentialBuilding);
+const $nonResidentialBuilding = domain
+  .createStore<NonResidentialBuildingResponse | null>(null)
+  .on(fetchNonResidentialBuildingFx.doneData, (_, building) => building)
+  .reset(ObjectIdGate.close);
 
 sample({
-  clock: handleRefetchHousingStock,
-  source: CatchHousingStockId.state,
-  fn: (gateState) => {
-    return gateState.buildingId;
-  },
-  target: housingStockProfileService.inputs.handleFetchHousingStock,
+  clock: [handleRefetchBuilding, ObjectIdGate.state],
+  source: ObjectIdGate.state,
+  filter: (state): state is GetBuildingPayload => Boolean(state.houseCategory),
+  target: fetchBuilding,
 });
 
-const handleMessage = merge([successCreateAddress, successUpdateAddress]);
+split({
+  source: fetchBuilding,
+  match: (clock: GetBuildingPayload): EHouseCategory => clock.houseCategory,
+  cases: {
+    [EHouseCategory.Living]: fetchHousingStockFx,
+    [EHouseCategory.NonResidential]: fetchNonResidentialBuildingFx,
+  },
+});
+
+const handleMessage = merge([
+  successCreateAddress,
+  successUpdateAddress,
+  successDeleteAddress,
+]);
+
+sample({
+  clock: handleMessage,
+  target: handleRefetchBuilding,
+});
 
 handleMessage.watch(() => {
   message.destroy();
@@ -191,10 +229,11 @@ export const editObjectService = {
     handleCreateHousingStockAddress,
     handleUpdateHousingStockAddress,
     handleDeleteHousingStockAddress,
-    handleRefetchHousingStock,
+    handleRefetchBuilding,
   },
   outputs: {
     $housingStock,
+    $nonResidentialBuilding,
     $houseManagements: createObjectService.outputs.$houseManagements,
     $isHouseManagementsLoading:
       createObjectService.outputs.$isHouseManagementsLoading,
@@ -206,8 +245,7 @@ export const editObjectService = {
     $isCreateLoading,
   },
   gates: {
-    FetchObjectGate,
-    CatchHousingStockId,
+    ObjectIdGate,
     HouseManagementsFetchGate:
       createObjectService.gates.HouseManagementsFetchGate,
   },

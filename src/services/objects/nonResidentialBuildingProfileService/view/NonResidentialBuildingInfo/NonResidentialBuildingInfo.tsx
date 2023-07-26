@@ -16,7 +16,7 @@ export const NonResidentialBuildingInfo: FC<
     <CommonInfoSC
       items={[
         {
-          key: 'Домоуправление',
+          key: 'Управляющая компания',
           value: nonResidentialBuilding.managementFirmName,
         },
         {
@@ -45,6 +45,10 @@ export const NonResidentialBuildingInfo: FC<
           value: nonResidentialBuilding.houseArea
             ? `${nonResidentialBuilding.houseArea} м²`
             : '-',
+        },
+        {
+          key: 'Год постройки',
+          value: nonResidentialBuilding.constructionYear,
         },
         {
           key: 'Количество этажей',

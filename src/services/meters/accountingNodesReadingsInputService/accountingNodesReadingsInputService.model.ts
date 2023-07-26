@@ -5,7 +5,7 @@ import {
   deleteNodeReading,
   fetchReadingsOfElectricNode,
 } from './accountingNodesReadingsInputService.api';
-import { HousingMeteringDeviceReadingsIncludingPlacementResponse } from 'myApi';
+import { HousingMeteringDeviceReadingsIncludingPlacementResponse } from 'api/types';
 import { createGate } from 'effector-react';
 import { getELectricNodeInputStatuses } from './accountingNodesReadingsInputService.utils';
 import {
@@ -16,11 +16,11 @@ import {
   NodeReadingsStatusesByDevices,
   UpdateHousingMeteringDeviceReadingsPayload,
 } from './accountingNodesReadingsInputService.types';
-import { openConfirmReadingModal } from '01/features/readings/readingsInput/confirmInputReadingModal/models';
 import { MetersInputBlockStatus } from '../individualDeviceMetersInputService/view/MetersInputsBlock/MetersInputsBlock.types';
 import moment from 'moment';
 import { EffectFailDataAxiosError } from 'types';
 import { message } from 'antd';
+import { confirmReadingService } from '../readingsHistoryService/confirmReadingService/confirmReadingService.model';
 
 const domain = createDomain('accountingNodesReadingsInputService');
 
@@ -208,7 +208,8 @@ export const accountingNodesReadingsInputService = {
     sendReading,
     sendNonResConsumptionReading,
     removeReading,
-    openConfirmReadingModal,
+    openConfirmReadingModal:
+      confirmReadingService.inputs.openConfirmReadingModal,
   },
   outputs: {
     $readings,

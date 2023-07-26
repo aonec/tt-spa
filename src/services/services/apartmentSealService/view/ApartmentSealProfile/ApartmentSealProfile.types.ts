@@ -2,11 +2,12 @@ import {
   ApartmentResponse,
   IndividualDeviceListItemResponse,
   AppointmentResponse,
-} from 'myApi';
+} from 'api/types';
 import {
   GetApartmentsRequestPayload,
   UpdateApartmentRequestPayload,
 } from 'services/meters/metersService/ApartmentReadingsService/ApartmentReadingsService.types';
+import { OpenCreateSealModalPayload } from 'services/services/createSealService/createSealService.types';
 
 export type ApartmentSealProfileProps = {
   apartment: ApartmentResponse | null;
@@ -16,6 +17,7 @@ export type ApartmentSealProfileProps = {
   selectedHomeownerName: string | null;
   updateApartment: (payload: UpdateApartmentRequestPayload) => void;
   individualDevices: IndividualDeviceListItemResponse[];
-  openCreateSealAppointmentModal: (apartment: ApartmentResponse) => void;
+  openCreateSealAppointmentModal: (payload: OpenCreateSealModalPayload) => void;
   nearestAppointment: AppointmentResponse | null;
+  isAppointmentLoading: boolean;
 };

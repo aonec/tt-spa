@@ -1,15 +1,15 @@
 import { Form } from 'antd';
 import { useFormik } from 'formik';
 import moment from 'moment';
-import { EResourceType } from 'myApi';
+import { EResourceType } from 'api/types';
 import React, { FC } from 'react';
 import { FormItem } from 'ui-kit/FormItem';
 import { Input } from 'ui-kit/Input';
 import { HeatIndividualDevicesReportFormProps } from './HeatIndividualDevicesReportForm.types';
 import { GroupWrapper } from './HeatIndividualDevicesReportForm.styled';
-import { ResourceSelect } from 'ui-kit/shared_components/ResourceSelect';
+import { ResourceSelect } from 'ui-kit/shared/ResourceSelect';
 import { DatePicker } from 'ui-kit/DatePicker';
-import { AddressTreeSelect } from 'ui-kit/shared_components/AddressTreeSelect';
+import { AddressTreeSelect } from 'ui-kit/shared/AddressTreeSelect';
 import { Select } from 'ui-kit/Select';
 import { useStore } from 'effector-react';
 import { validationSchema } from './HeatIndividualDevicesReportForm.constants';

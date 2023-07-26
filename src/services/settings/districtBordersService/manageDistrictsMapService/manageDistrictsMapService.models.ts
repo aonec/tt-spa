@@ -6,6 +6,7 @@ import {
 } from './manageDistrictsMapService.api';
 import { createForm } from 'effector-forms';
 import { message } from 'antd';
+import { currentUserService } from 'services/currentUserService';
 
 const domain = createDomain('manageDistrictsMapService');
 
@@ -69,7 +70,11 @@ export const manageDistrictsMapService = {
     handleCloseDeleteDistrictModal,
     handleDeleteDistrict,
   },
-  outputs: { $isDeleteDistrictModalOpen },
+  outputs: {
+    $isDeleteDistrictModalOpen,
+    $organizationCoordinates:
+      currentUserService.outputs.$organizationCoordinates,
+  },
   gates: { ManageDistrictsGate },
   forms: { manageDistrictsForm },
 };

@@ -1,4 +1,4 @@
-import { CalculatorCommentResponse } from 'myApi';
+import { CalculatorCommentResponse } from 'api/types';
 
 export type CalculatorCommentContainerProps = {
   comment: CalculatorCommentResponse | null;

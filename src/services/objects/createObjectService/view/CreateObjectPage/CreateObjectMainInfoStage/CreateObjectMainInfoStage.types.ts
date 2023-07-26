@@ -5,7 +5,7 @@ import {
   HeatingStationResponse,
   HeatingStationResponsePagedList,
   HouseManagementResponse,
-} from 'myApi';
+} from 'api/types';
 import { ObjectCreateSubmitData } from 'services/objects/createObjectService/createObjectService.types';
 
 export type CreateObjectMainInfoStageProps = {
@@ -16,8 +16,8 @@ export type CreateObjectMainInfoStageProps = {
   createObjectData: ObjectCreateSubmitData | null;
   heatingStations: HeatingStationResponsePagedList | null;
   openCreateHeatingStationModal: () => void;
-  openEditHeatingStationModal: () => void
-  heatingStationCapture: (payload: HeatingStationResponse) => void
+  openEditHeatingStationModal: () => void;
+  heatingStationCapture: (payload: HeatingStationResponse) => void;
 };
 
 export type ObjectMainInfoValues = {
@@ -26,4 +26,5 @@ export type ObjectMainInfoValues = {
   livingHouseType: ELivingHouseType | null;
   nonResidentialHouseType: ENonResidentialHouseType | null;
   heatingStationId: string | null;
+  hasIndividualHeatingStation: boolean;
 };

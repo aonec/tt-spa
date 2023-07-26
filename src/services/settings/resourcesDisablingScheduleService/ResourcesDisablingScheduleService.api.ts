@@ -1,5 +1,5 @@
-import { axios } from '01/axios';
-import { ResourceDisconnectingResponsePagedList } from 'myApi';
+import { axios } from 'api/axios';
+import { ResourceDisconnectingResponsePagedList } from 'api/types';
 import { DisablingResourcesProps } from './ResourceDisablingScheduleContainer.types';
 
 export const fetchDisablingResources = (

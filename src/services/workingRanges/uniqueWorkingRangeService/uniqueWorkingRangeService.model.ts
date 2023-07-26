@@ -5,7 +5,7 @@ import {
   EResourceType,
   NodeOnHousingStockResponse,
   StreetWithBuildingNumbersResponsePagedList,
-} from 'myApi';
+} from 'api/types';
 import { EffectFailDataAxiosError } from 'types';
 import {
   getAdresses,

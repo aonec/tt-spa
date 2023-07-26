@@ -12,7 +12,7 @@ import {
   Wrap,
 } from './BaseInfoStage.styled';
 import { FormItem } from 'ui-kit/FormItem';
-import { ResourceSelect } from 'ui-kit/shared_components/ResourceSelect';
+import { ResourceSelect } from 'ui-kit/shared/ResourceSelect';
 import { ErrorMessage } from 'ui-kit/ErrorMessage';
 import { AutoComplete } from 'ui-kit/AutoComplete';
 import { Input } from 'ui-kit/Input';
@@ -22,8 +22,8 @@ import {
   CreateIndividualDeviceRequest,
   EIndividualDeviceRateType,
   EResourceType,
-} from 'myApi';
-import { DatePickerNative } from 'ui-kit/shared_components/DatePickerNative';
+} from 'api/types';
+import { DatePickerNative } from 'ui-kit/shared/DatePickerNative';
 import { getIndividualDeviceRateNumByName } from 'utils/getIndividualDeviceRateNumByName';
 import moment from 'moment';
 import { getBitDepthAndScaleFactor } from 'utils/getBitDepthAndScaleFactor';

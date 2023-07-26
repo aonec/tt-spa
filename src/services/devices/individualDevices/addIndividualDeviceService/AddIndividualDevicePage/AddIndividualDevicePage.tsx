@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import { AddIndividualDevicePageProps } from './AddIndividualDevicePage.types';
-import { GoBack } from 'ui-kit/shared_components/GoBack';
+import { GoBack } from 'ui-kit/shared/GoBack';
 import { Link, useParams } from 'react-router-dom';
 import { Steps } from 'antd';
 import {

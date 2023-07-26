@@ -1,16 +1,14 @@
 import { message } from 'antd';
 import { createDomain, forward, guard, sample } from 'effector';
 import { createGate } from 'effector-react';
-import { HouseManagementResponse, HousingStockCreateRequest } from 'myApi';
+import { HouseManagementResponse } from 'api/types';
 import { EffectFailDataAxiosError } from 'types';
 import { createHeatingStationService } from '../heatingStations/createHeatingStationService';
 import { displayHeatingStationsService } from '../heatingStations/displayHeatingStationsService';
 import { editHeatingStationService } from '../heatingStations/editHeatingStationService';
+import { createObject, getHouseManagements } from './createObjectService.api';
 import {
-  getHouseManagements,
-  postCreateObject,
-} from './createObjectService.api';
-import {
+  CreateBuildingRequest,
   CreateBuildingResponse,
   ObjectCreateSubmitData,
 } from './createObjectService.types';
@@ -52,10 +50,10 @@ const fetchHouseManagementsFx = domain.createEffect<
 >(getHouseManagements);
 
 const createObjectFx = domain.createEffect<
-  HousingStockCreateRequest,
+  CreateBuildingRequest,
   CreateBuildingResponse,
   EffectFailDataAxiosError
->(postCreateObject);
+>(createObject);
 
 const handleCreateObjectSuccessDone = createObjectFx.doneData;
 
@@ -123,12 +121,14 @@ guard({
         entrances,
         elevator,
         constructionYear,
+        hasIndividualHeatingStation,
+        nonResidentialHouseType,
       } = data;
 
       if (!city || !street || !house || !heatingStationId || !objectCategory)
         return null;
 
-      const payload: HousingStockCreateRequest = {
+      const payload: CreateBuildingRequest = {
         city,
         mainAddress: {
           city,
@@ -149,18 +149,21 @@ guard({
         heatingStationId,
         houseManagementId: houseManagement,
         livingHouseType: livingHouseType || null,
+        nonResidentialHouseType: nonResidentialHouseType || null,
         numberOfFloors: Number(floors) || null,
         numberOfEntrances: Number(entrances) || null,
         isThereElevator: elevator
           ? IsElevatorDictionaryBoolean[elevator]
           : null,
         constructionYear: Number(constructionYear) || null,
+        hasIndividualHeatingStation: hasIndividualHeatingStation,
+        objectCategory,
       };
 
       return payload;
     },
   }),
-  filter: (data): data is HousingStockCreateRequest => Boolean(data),
+  filter: (data): data is CreateBuildingRequest => Boolean(data),
   target: createObjectFx,
 });
 

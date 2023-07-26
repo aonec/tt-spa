@@ -3,7 +3,7 @@ import {
   CreateHousingMeteringDeviceReadingsRequest,
   EMagistralType,
   HousingMeteringDeviceReadingsIncludingPlacementResponse,
-} from 'myApi';
+} from 'api/types';
 import { EffectFailDataAxiosError } from 'types';
 
 export type MeteringDeviceReadingsTableProps = {

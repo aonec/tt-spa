@@ -1,1 +1,0 @@
-import './inspectorReassignmentService.relations';

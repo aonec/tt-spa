@@ -1,4 +1,4 @@
-import { ContractorListResponse } from 'myApi';
+import { ContractorListResponse } from 'api/types';
 import { ContractorDataType } from 'services/contractors/editContractorService/editContractorService.types';
 
 export type ContractorItemProps = {

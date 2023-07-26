@@ -7,7 +7,7 @@ import {
   CalculatorListResponsePagedList,
   EOrderByRule,
   HousingByFilterResponse,
-} from 'myApi';
+} from 'api/types';
 import { CalculatorsListRequestPayload } from 'services/calculators/calculatorsListService/calculatorsListService.types';
 import { createGate } from 'effector-react';
 import { GetHousingByFilterRequestPayload } from '../devicesPageService/individualDevicesProfileService/view/IndividualDevicesProfile/individualDevicesViewByAddressService/individualDevicesViewByAddressService.types';
@@ -132,7 +132,7 @@ sample({
   clock: $devices.map((devices) =>
     devices.reduce((acc, device) => {
       const { city, street, corpus, number } =
-        device.address?.mainAddress || {};
+        device.building?.address?.mainAddress || {};
       if (!city || !street || !number) {
         return acc;
       }

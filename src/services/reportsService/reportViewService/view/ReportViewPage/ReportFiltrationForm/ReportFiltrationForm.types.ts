@@ -1,7 +1,7 @@
 import {
   HouseManagementResponse,
   HouseManagementWithStreetsResponse,
-} from 'myApi';
+} from 'api/types';
 import { ReportFiltrationFormValues } from 'services/reportsService/reportViewService/reportViewService.types';
 import { ReportType } from 'services/reportsService/view/ReportsPage/ReportsPage.types';
 

@@ -4,7 +4,7 @@ import {
   EditObjectPageProps,
   EditObjectPageTabs,
 } from './EditObjectPage.types';
-import { GoBack } from 'ui-kit/shared_components/GoBack';
+import { GoBack } from 'ui-kit/shared/GoBack';
 import { Tabs } from 'ui-kit/Tabs';
 import { AdditionalInfoTab } from './AdditionalInfoTab';
 import { AddressTab } from './AddressTab';
@@ -12,7 +12,6 @@ import { MainInfoTab } from './MainInfoTab';
 import { getBuildingAddress } from 'utils/getBuildingAddress';
 
 export const EditObjectPage: FC<EditObjectPageProps> = ({
-  housingStock,
   existingCities,
   existingStreets,
   houseManagements,
@@ -30,11 +29,16 @@ export const EditObjectPage: FC<EditObjectPageProps> = ({
   isCreateLoading,
   isUpdateLoading,
   handleRefetchHousingStock,
+  houseCategory,
+  housingStock,
+  nonResidentialBuilding,
 }) => {
   const [activeTab, setTab] = useState(EditObjectPageTabs.Address);
 
-  const { address } = housingStock;
-  const addressString = getBuildingAddress(housingStock);
+  const { address } = housingStock || nonResidentialBuilding || {};
+  const addressString = getBuildingAddress(
+    housingStock || nonResidentialBuilding,
+  );
   const city = address?.mainAddress?.city || '';
 
   return (
@@ -50,9 +54,9 @@ export const EditObjectPage: FC<EditObjectPageProps> = ({
         activeKey={activeTab}
       >
         <Tabs.TabPane tab="Адрес объекта" key={EditObjectPageTabs.Address}>
-          {housingStock.address && (
+          {address && (
             <AddressTab
-              address={housingStock.address}
+              address={address}
               existingCities={existingCities}
               existingStreets={existingStreets}
               onPageCancel={onPageCancel}
@@ -69,28 +73,36 @@ export const EditObjectPage: FC<EditObjectPageProps> = ({
           tab="Основная информация"
           key={EditObjectPageTabs.MainInfo}
         >
-          <MainInfoTab
-            housingStock={housingStock}
-            houseManagements={houseManagements}
-            openCreateHeatingStationModal={openCreateHeatingStationModal}
-            openEditHeatingStationModal={openEditHeatingStationModal}
-            heatingStations={heatingStations}
-            heatingStationCapture={heatingStationCapture}
-            onPageCancel={onPageCancel}
-            handleUpdateHousingStock={handleUpdateHousingStock}
-            isHeatingStationsLoading={isHeatingStationsLoading}
-            isHouseManagementsLoading={isHouseManagementsLoading}
-          />
+          {houseCategory && (
+            <MainInfoTab
+              housingStock={housingStock}
+              nonResidentialBuilding={nonResidentialBuilding}
+              houseManagements={houseManagements}
+              openCreateHeatingStationModal={openCreateHeatingStationModal}
+              openEditHeatingStationModal={openEditHeatingStationModal}
+              heatingStations={heatingStations}
+              heatingStationCapture={heatingStationCapture}
+              onPageCancel={onPageCancel}
+              handleUpdateHousingStock={handleUpdateHousingStock}
+              isHeatingStationsLoading={isHeatingStationsLoading}
+              isHouseManagementsLoading={isHouseManagementsLoading}
+              houseCategory={houseCategory}
+            />
+          )}
         </Tabs.TabPane>
         <Tabs.TabPane
           tab="Дополнительная информация"
           key={EditObjectPageTabs.AdditionalInfo}
         >
-          <AdditionalInfoTab
-            housingStock={housingStock}
-            onPageCancel={onPageCancel}
-            handleUpdateHousingStock={handleUpdateHousingStock}
-          />
+          {houseCategory && (
+            <AdditionalInfoTab
+              housingStock={housingStock}
+              nonResidentialBuilding={nonResidentialBuilding}
+              onPageCancel={onPageCancel}
+              handleUpdateHousingStock={handleUpdateHousingStock}
+              houseCategory={houseCategory}
+            />
+          )}
         </Tabs.TabPane>
       </Tabs>
     </>

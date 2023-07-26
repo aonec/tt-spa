@@ -22,8 +22,8 @@ import {
   EClosingReason,
   EIndividualDeviceReportOption,
   EResourceType,
-} from 'myApi';
-import { ResourceIconLookup } from 'ui-kit/shared_components/ResourceIconLookup';
+} from 'api/types';
+import { ResourceIconLookup } from 'ui-kit/shared/ResourceIconLookup';
 import {
   ClosingReasonsDictionary,
   ReportOptionsDictionary,

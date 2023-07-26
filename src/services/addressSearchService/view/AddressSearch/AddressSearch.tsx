@@ -1,4 +1,4 @@
-import { fromEnter } from 'ui-kit/shared_components/DatePickerNative';
+import { fromEnter } from 'ui-kit/shared/DatePickerNative';
 import React, { FC, ReactElement } from 'react';
 import { FormItem } from 'ui-kit/FormItem';
 import { SearchFieldsLabels } from './AddressSearch.constants';
@@ -22,6 +22,7 @@ export const AddressSearch: FC<AddressSearchProps> = ({
   customTemplate,
   showLabels,
   disabledFields,
+  className,
 }) => {
   const next = useSwitchInputOnEnter(dataKey, false, false);
 
@@ -188,7 +189,11 @@ export const AddressSearch: FC<AddressSearchProps> = ({
   });
 
   return (
-    <Wrapper fields={fields} customTemplate={customTemplate}>
+    <Wrapper
+      fields={fields}
+      customTemplate={customTemplate}
+      className={className}
+    >
       {searchFields}
     </Wrapper>
   );

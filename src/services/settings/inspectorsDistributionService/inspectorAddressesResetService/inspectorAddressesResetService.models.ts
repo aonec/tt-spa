@@ -1,8 +1,11 @@
-import { displayInspectorsService } from 'services/inspectors/displayInspectorsService/displayInspectorsService.models';
-import { createDomain } from 'effector';
+import { createDomain, sample } from 'effector';
 import { createForm } from 'effector-forms';
-import { InspectorResponse } from 'myApi';
+import { message } from 'antd';
+import { InspectorResponse } from 'api/types';
+import { displayInspectorsService } from 'services/inspectors/displayInspectorsService/displayInspectorsService.models';
+import { searchInspectorsHousingStockService } from '../searchInspectorsHousingStocksService/searchInspectorsHousingStockService.models';
 import { resetInspectorHousingStocksAddresses } from './inspectorAddressesResetService.api';
+import { ResetAddressesFormPayload } from './inspectorAddressesResetService.types';
 
 const inspectorAddressesResetServiceDomain = createDomain(
   'inspectorAddressesResetService',
@@ -24,9 +27,43 @@ const $loading = resetAddressesFx.pending;
 
 const resetAddressesForm = createForm({
   fields: {
-    inspectorId: { init: null as number | null },
+    inspectorId: {
+      init: null as number | null,
+      rules: [{ name: 'required', validator: Boolean }],
+    },
   },
 });
+
+$isModalOpen.on(openModal, () => true).reset(closeModal);
+
+sample({
+  clock: closeModal,
+  target: resetAddressesForm.reset,
+});
+
+sample({
+  clock: resetAddressesForm.formValidated,
+  filter: (values): values is ResetAddressesFormPayload =>
+    Boolean(values.inspectorId),
+  fn: (values: ResetAddressesFormPayload) => values.inspectorId,
+  target: resetAddressesFx,
+});
+
+sample({
+  clock: resetAddressesFx.doneData,
+  to: [closeModal, searchInspectorsHousingStockService.forms.searchForm.submit],
+});
+
+sample({
+  clock: resetAddresses,
+  target: resetAddressesForm.validate,
+});
+
+resetAddressesFx.doneData.watch(() =>
+  message.success('Адреса успешно сброшены!'),
+);
+
+resetAddressesFx.failData.watch(() => message.error('Ошибка сброса адресов'));
 
 export const inspectorAddressesResetService = {
   inputs: {

@@ -1,7 +1,8 @@
-import { ApartmentResponse } from 'myApi';
+import { ApartmentResponse } from 'api/types';
 import {
   GetApartmentsRequestPayload,
   UpdateApartmentRequestPayload,
+  UpdateHomeownerRequestPayload,
 } from '../../../ApartmentReadingsService.types';
 
 export type ApartmentProfileProps = {
@@ -16,4 +17,6 @@ export type ApartmentProfileProps = {
   selectedHomeownerName: string | null;
   isPermitionToApartmentStatusPatch: boolean;
   printIssueCertificate: () => void;
+  handleUpdateHomeowner: (payload: UpdateHomeownerRequestPayload) => void;
+  isUpdateHomeownerLoading: boolean;
 };

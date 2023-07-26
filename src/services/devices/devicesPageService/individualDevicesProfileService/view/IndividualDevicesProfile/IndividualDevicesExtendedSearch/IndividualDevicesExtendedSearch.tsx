@@ -13,7 +13,7 @@ import {
 import { FormItem } from 'ui-kit/FormItem';
 import { SearchIcon } from 'ui-kit/icons';
 import { useFormik } from 'formik';
-import { EApartmentStatus, EResourceType } from 'myApi';
+import { EApartmentStatus, EResourceType } from 'api/types';
 import {
   apartmentStatusesLookup,
   closingReasonLookup,
@@ -21,7 +21,7 @@ import {
   formTranslateLookup,
   resourcesNamesLookup,
 } from './IndividualDevicesExtendedSearch.constants';
-import { ResourceIconLookup } from 'ui-kit/shared_components/ResourceIconLookup';
+import { ResourceIconLookup } from 'ui-kit/shared/ResourceIconLookup';
 import { DevicesSearchType } from 'services/devices/devicesPageService/devicesPageService.types';
 import { Select } from 'ui-kit/Select';
 import { Input } from 'ui-kit/Input';

@@ -5,11 +5,14 @@ import { FormItem } from 'ui-kit/FormItem';
 import { Input } from 'ui-kit/Input';
 import { ErrorMessage } from 'ui-kit/ErrorMessage';
 import { useFormik } from 'formik';
-import { GoBack } from 'ui-kit/shared_components/GoBack';
+import { GoBack } from 'ui-kit/shared/GoBack';
 import { Button } from 'ui-kit/Button';
 import { useHistory, useParams } from 'react-router-dom';
 import { Loader } from 'ui-kit/Loader';
-import { ESecuredIdentityRoleName, OrganizationUserUpdateRequest } from 'myApi';
+import {
+  ESecuredIdentityRoleName,
+  OrganizationUserUpdateRequest,
+} from 'api/types';
 import { usePhoneMask } from 'hooks/usePhoneMask';
 import * as yup from 'yup';
 import { SelectMultiple } from 'ui-kit/SelectMultiple';

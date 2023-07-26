@@ -1,5 +1,5 @@
 import { groupBy } from 'lodash';
-import { CalculatorListResponse } from 'myApi';
+import { CalculatorListResponse } from 'api/types';
 import { DevicesByAddressInterface } from 'services/devices/displayDevicesService/displayDevicesService.types';
 
 export const groupDevicesByObjects = (
@@ -12,7 +12,7 @@ export const groupDevicesByObjects = (
     }),
   ).map((devices) => ({
     devices,
-    address: devices[0].address?.address,
+    building: devices[0].address,
   }));
 
   return devicesByAddresses;

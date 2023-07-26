@@ -1,6 +1,6 @@
 import { useEvent, useStore } from 'effector-react';
 import React from 'react';
-import { prepareAddressesForTreeSelect } from 'ui-kit/shared_components/AddressTreeSelect/AddressTreeSelect.utils';
+import { prepareAddressesForTreeSelect } from 'ui-kit/shared/AddressTreeSelect/AddressTreeSelect.utils';
 import { soiReportService } from './soiReportService.model';
 import { SoiReportModal } from './view/SoiReportModal';
 
