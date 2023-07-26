@@ -154,6 +154,7 @@ export const ApartmentProfile: FC<ApartmentProfileProps> = ({
               <ReadingsWrapper>
                 <ApartmentIndividualDevicesMetersContainer
                   apartment={apartment}
+                  editable
                 />
               </ReadingsWrapper>
             </ContentWrapper>

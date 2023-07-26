@@ -39,7 +39,7 @@ export const WorkWithIndividualDeviceContainer: FC<
       displayIndividualDeviceAndNamesService.outputs.$individualDevicesNames,
   });
 
-  const { data: isSerialNumberAllreadyExist, pending: isSerialNumberLoading } =
+  const { data: serialNumberForChecking, pending: isSerialNumberLoading } =
     useUnit(getSerialNumberQuery);
 
   useEffect(() => {
@@ -60,7 +60,7 @@ export const WorkWithIndividualDeviceContainer: FC<
           contractors={contractors}
           handleFetchSerialNumberForCheck={handleFetchSerialNumberForCheck}
           handleFetchModels={handleFetchModels}
-          isSerialNumberAllreadyExist={isSerialNumberAllreadyExist || false}
+          serialNumberForChecking={serialNumberForChecking || []}
           isSerialNumberLoading={isSerialNumberLoading}
           models={models}
         />

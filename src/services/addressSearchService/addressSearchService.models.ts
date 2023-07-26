@@ -39,10 +39,13 @@ sample({
   target: fetchExistingStreets,
 });
 
+const $isExistingCitiesLoading = fetchExistingStreets.pending;
+
 export const addressSearchService = {
   outputs: {
     $existingCities,
     $existingStreets,
+    $isExistingCitiesLoading,
   },
   gates: {
     ExistingCitiesGate,

@@ -1,11 +1,11 @@
 import { createGate } from 'effector-react';
 import { createDomain, forward, sample } from 'effector';
 import { BuildingListResponsePagedList } from 'api/types';
-import { getHousuingStocks } from './displayObjectsListService.api';
 import {
   GetHousingStocksRequestPayload,
   SearchHousingStocksPayload,
 } from './displayObjectsListService.types';
+import { getBuildings } from './displayObjectsListService.api';
 
 const domain = createDomain('displayObjectsListService');
 
@@ -16,7 +16,7 @@ const $housingStocks = domain.createStore<BuildingListResponsePagedList | null>(
 const fetchHousingStocksFx = domain.createEffect<
   GetHousingStocksRequestPayload,
   BuildingListResponsePagedList
->(getHousuingStocks);
+>(getBuildings);
 
 const $isLoading = fetchHousingStocksFx.pending;
 

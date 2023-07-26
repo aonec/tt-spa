@@ -1,5 +1,6 @@
 import { combine, createDomain, forward, sample } from 'effector';
 import { createGate } from 'effector-react';
+import { message } from 'antd';
 import { GetSummaryHousingConsumptionsByResourcesResponse } from 'api/types';
 import {
   fetchConsumptionsForMonth,
@@ -13,8 +14,9 @@ import {
   MonthConsumptionData,
 } from './resourceConsumptionService.types';
 import { BooleanTypesOfResourceConsumptionGraphForTwoMonth } from './view/ResourceConsumptionProfile/ResourceConsumptionProfile.types';
-import { message } from 'antd';
 import { EffectFailDataAxiosError } from 'types';
+import { addressSearchService } from 'services/addressSearchService/addressSearchService.models';
+import { getAddressesFx } from './resourceConsumptionFilterService/resourceConsumptionFilterService.api';
 
 const domain = createDomain('resourceConsumptionService');
 
@@ -66,13 +68,22 @@ const $summaryConsumption = domain
   .on(getSummaryConsumptionsFx.doneData, (_, consumptions) => consumptions)
   .reset(clearSummary);
 
+const $isExistingCitiesLoading =
+  addressSearchService.outputs.$isExistingCitiesLoading;
+
 const ResourceConsumptionGate = createGate();
 
-const $isLoading = combine(
+const $isLoadingFromApi = combine(
   getHousingConsumptionFx.pending,
   getAdditionalConsumptionFx.pending,
+  $isExistingCitiesLoading,
+  getAddressesFx.pending,
   (...loadings) => loadings.includes(true),
 );
+
+const $isLoading = domain
+  .createStore(true)
+  .on($isLoadingFromApi, (_, isLoading) => isLoading);
 
 sample({
   clock: getAdditionalConsumptionData,

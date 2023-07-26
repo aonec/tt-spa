@@ -2,7 +2,7 @@ import React from 'react';
 import { FormModal } from 'ui-kit/Modals/FormModal';
 import { ReadingsHistoryModalProps } from './ReadingsHistoryModal.types';
 import { ReadingHistoryHeader } from './ReadingsHistoryHeader/ReadingsHistoryHeader';
-import { ReadingsHistoryList } from '../../readingsHistoryListService/readingsHistoryListService.container';
+import { ReadingsHistoryListContainer } from '../../readingsHistoryListService/readingsHistoryListService.container';
 
 export const ReadingHistoryModal: React.FC<ReadingsHistoryModalProps> = ({
   isModalOpen,
@@ -21,7 +21,7 @@ export const ReadingHistoryModal: React.FC<ReadingsHistoryModalProps> = ({
       form={
         <div style={{ width: '100%' }}>
           <ReadingHistoryHeader individualDevice={individualDevice} />
-          <ReadingsHistoryList readonly={readonly} />
+          <ReadingsHistoryListContainer readonly={readonly} />
         </div>
       }
     />

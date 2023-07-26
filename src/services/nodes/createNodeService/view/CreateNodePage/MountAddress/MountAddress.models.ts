@@ -4,35 +4,32 @@ import { createDomain } from 'effector';
 import { BuildingListResponse } from 'api/types';
 import { GetHousingStocksRequestPayload } from 'services/objects/displayObjectsListService/displayObjectsListService.types';
 import { EffectFailDataAxiosError } from 'types';
-import { getHousingStock } from './MountAddress.api';
+import { getBuilding } from './MountAddress.api';
 
 const domain = createDomain('mountAddressService');
 
-const fetchHousingStockFx = domain.createEffect<
+const fetchBuildingFx = domain.createEffect<
   GetHousingStocksRequestPayload,
   BuildingListResponse | null,
   EffectFailDataAxiosError
->(getHousingStock);
+>(getBuilding);
 
-const $housingStockListItem = domain
+const $buildingListItem = domain
   .createStore<BuildingListResponse | null>(null)
-  .on(
-    fetchHousingStockFx.doneData,
-    (prev, housingStock) => housingStock || prev,
-  )
+  .on(fetchBuildingFx.doneData, (prev, housingStock) => housingStock || prev)
   .reset(createNodeService.gates.CreateNodeGate.close);
 
-const $isLoading = fetchHousingStockFx.pending;
+const $isLoading = fetchBuildingFx.pending;
 
-fetchHousingStockFx.failData.watch((error) =>
+fetchBuildingFx.failData.watch((error) =>
   message.error(error.response.data.error.Text),
 );
 
-fetchHousingStockFx.doneData.watch((housingStock) => {
+fetchBuildingFx.doneData.watch((housingStock) => {
   if (!housingStock) message.warning('Адрес отсутствует');
 });
 
 export const mountAddressService = {
-  outputs: { $isLoading, $housingStockListItem },
-  effects: { fetchHousingStockFx },
+  outputs: { $isLoading, $buildingListItem },
+  effects: { fetchBuildingFx },
 };
