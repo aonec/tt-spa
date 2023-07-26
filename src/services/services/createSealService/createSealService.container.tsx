@@ -1,30 +1,49 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { FormModal } from 'ui-kit/Modals/FormModal';
 import { createSealService } from './createSealService.model';
-import { useEvent, useStore } from 'effector-react';
+import { useUnit } from 'effector-react';
 import { CreateSealAppointmentForm } from './view/CreateSealAppointmentForm';
+import { WorkWithAppointmentType } from './createSealService.types';
 
 const { inputs, outputs } = createSealService;
 const fromId = 'create-seal-appointment';
 
 export const CreateSealContainer = () => {
-  const isOpen = useStore(outputs.$isOpen);
-  const apartment = useStore(outputs.$apartment);
+  const {
+    apartment,
+    closeModal,
+    handleWorkWithAppointment,
+    isOpen,
+    appointment,
+    actionType,
+  } = useUnit({
+    isOpen: outputs.$isOpen,
+    apartment: outputs.$apartment,
+    appointment: outputs.$appointment,
+    closeModal: inputs.closeModal,
+    handleWorkWithAppointment: inputs.workWithAppointment,
+    actionType: outputs.$actionType,
+  });
 
-  const closeModal = useEvent(inputs.closeModal);
-  const handleCreateAppointment = useEvent(inputs.createSealAppointment);
+  const submitText = useMemo(() => {
+    if (actionType === WorkWithAppointmentType.create) {
+      return 'Создать запись';
+    }
+    return 'Редактировать запись';
+  }, [actionType]);
 
   return (
     <FormModal
       visible={isOpen}
       title="Запись на опломбировку"
-      submitBtnText="Создать запись"
+      submitBtnText={submitText}
       form={
         apartment && (
           <CreateSealAppointmentForm
             formId={fromId}
-            handleCreateAppointment={handleCreateAppointment}
+            handleWorkWithAppointment={handleWorkWithAppointment}
             apartment={apartment}
+            appointment={appointment}
           />
         )
       }

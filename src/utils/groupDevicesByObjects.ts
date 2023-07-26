@@ -12,7 +12,7 @@ export const groupDevicesByObjects = (
     }),
   ).map((devices) => ({
     devices,
-    address: devices[0].address?.address,
+    building: devices[0].address,
   }));
 
   return devicesByAddresses;

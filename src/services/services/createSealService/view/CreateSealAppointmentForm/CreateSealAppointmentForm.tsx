@@ -15,11 +15,13 @@ import { getDatePickerValue } from 'utils/getDatePickerValue';
 import { DatePicker } from 'ui-kit/DatePicker';
 import { validationSchema } from './CreateSealAppointmentForm.constants';
 import { ErrorMessage } from 'ui-kit/ErrorMessage';
+import moment from 'moment';
 
 export const CreateSealAppointmentForm: FC<CreateSealAppointmentFormProps> = ({
   formId,
-  handleCreateAppointment,
+  handleWorkWithAppointment,
   apartment,
+  appointment,
 }) => {
   const mainHomeowner = useMemo(
     () =>
@@ -34,8 +36,15 @@ export const CreateSealAppointmentForm: FC<CreateSealAppointmentFormProps> = ({
   const { values, setFieldValue, submitForm, errors } =
     useFormik<AppointmentCreateFormik>({
       initialValues: {
-        homeownerFullName: mainHomeowner?.name || undefined,
-        homeownerPhone: mainHomeowner?.phoneNumber || undefined,
+        homeownerFullName:
+          appointment?.homeownerFullName || mainHomeowner?.name || undefined,
+        homeownerPhone:
+          appointment?.homeownerPhone ||
+          mainHomeowner?.phoneNumber ||
+          undefined,
+        comment: appointment?.comment || undefined,
+        date: appointment?.date || undefined,
+        sealCountPlan: appointment?.sealCountPlan || undefined,
       },
       validationSchema,
       validateOnBlur: false,
@@ -47,7 +56,7 @@ export const CreateSealAppointmentForm: FC<CreateSealAppointmentFormProps> = ({
         if (!date || !sealCountPlan || !homeownerPhone || !homeownerFullName) {
           return;
         }
-        handleCreateAppointment({
+        handleWorkWithAppointment({
           ...values,
           date,
           sealCountPlan,
@@ -105,6 +114,7 @@ export const CreateSealAppointmentForm: FC<CreateSealAppointmentFormProps> = ({
         <FormItem label="Дата записи на опломбировку">
           <DatePicker
             format="DD.MM.YYYY"
+            disabledDate={(date) => moment().diff(date, 'd') > 0}
             value={getDatePickerValue(values.date)}
             onChange={(date) =>
               setFieldValue('date', date?.format('YYYY-MM-DD'))

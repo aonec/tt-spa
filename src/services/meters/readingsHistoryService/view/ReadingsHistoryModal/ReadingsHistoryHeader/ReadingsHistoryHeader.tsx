@@ -4,6 +4,7 @@ import { IndividualDeviceInfo } from 'ui-kit/shared/IndividualDeviceInfo';
 import { HeaderProps } from './ReadingsHistoryHeader.types';
 import { Header } from './ReadingsHistoryHeader.styled';
 import { useDeviceCheckingDates } from './ReadingsHistoryHeader.utils';
+import { Skeleton } from 'antd';
 
 export const ReadingHistoryHeader: React.FC<HeaderProps> = ({
   individualDevice,
@@ -13,6 +14,8 @@ export const ReadingHistoryHeader: React.FC<HeaderProps> = ({
   );
 
   const checkingDates = useDeviceCheckingDates(individualDevice);
+
+  if (!individualDevice) return <Skeleton.Input />;
 
   return (
     <Header>

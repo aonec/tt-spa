@@ -111,7 +111,7 @@ export const DistrictsMap: FC<Props> = ({
           openRemoveAssignmentModal={openRemoveAssignmentModal}
         />
       )}
-      <div ref={mapRef} style={{ width: '100%', height: '86vh' }} />
+      <div ref={mapRef} style={{ width: '100%', height: '83vh' }} />
     </MapWrapper>
   );
 };

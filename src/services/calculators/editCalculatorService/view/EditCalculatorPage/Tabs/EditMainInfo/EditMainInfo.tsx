@@ -43,9 +43,15 @@ export const EditMainInfo: FC<EditMainInfoProps> = ({
         futureCheckingDate: calculator?.futureCheckingDate,
       },
       validationSchema: yup.object().shape({
-        serialNumber: yup.string().required('Это поле обязательно'),
-        lastCheckingDate: yup.string().required('Это поле обязательно'),
-        futureCheckingDate: yup.string().required('Это поле обязательно'),
+        serialNumber: yup.string().nullable().required('Это поле обязательно'),
+        lastCheckingDate: yup
+          .string()
+          .nullable()
+          .required('Это поле обязательно'),
+        futureCheckingDate: yup
+          .string()
+          .nullable()
+          .required('Это поле обязательно'),
       }),
       validateOnBlur: false,
       validateOnChange: false,
@@ -90,7 +96,11 @@ export const EditMainInfo: FC<EditMainInfoProps> = ({
                 moment(date).add(4, 'years').format('YYYY-MM-DDTHH:mm:ss'),
               );
             }}
-            value={moment(values.lastCheckingDate)}
+            value={
+              values.lastCheckingDate
+                ? moment(values.lastCheckingDate)
+                : undefined
+            }
             format="DD.MM.YYYY"
           />
           <ErrorMessage>{errors.lastCheckingDate}</ErrorMessage>
@@ -104,7 +114,11 @@ export const EditMainInfo: FC<EditMainInfoProps> = ({
                 moment(date).format('YYYY-MM-DDTHH:mm:ss'),
               );
             }}
-            value={moment(values.futureCheckingDate)}
+            value={
+              values.futureCheckingDate
+                ? moment(values.futureCheckingDate)
+                : undefined
+            }
             format="DD.MM.YYYY"
           />
           <ErrorMessage>{errors.futureCheckingDate}</ErrorMessage>

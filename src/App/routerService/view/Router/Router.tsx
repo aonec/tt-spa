@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
-import { EHouseCategory, ESecuredIdentityRoleName } from 'api/types';
+import { ESecuredIdentityRoleName } from 'api/types';
 import { Panel } from 'App/Panel';
 import { Layout, PageWrapper, Wrapper } from './Router.styled';
 import { RouterProps } from './Router.types';
@@ -137,7 +137,7 @@ export const Router: FC<RouterProps> = ({
                   )}
                   {isAdministrator ? (
                     <Route
-                      path="/buildings/:buildingId/edit"
+                      path="/buildings/:houseCategory/:buildingId/edit"
                       component={EditObjectContainer}
                       exact
                     />
@@ -151,7 +151,7 @@ export const Router: FC<RouterProps> = ({
 
                   {isAdministrator || isExecutor ? (
                     <Route
-                      path="/buildings/:buildingId/addNode"
+                      path="/buildings/:houseCategory/:buildingId/addNode"
                       component={CreateNodeContainer}
                       exact
                     />
@@ -196,12 +196,12 @@ export const Router: FC<RouterProps> = ({
                   {isAnyRole && (
                     <Route path="/buildings">
                       <Route
-                        path={`/buildings/${EHouseCategory.Living}Profile/:buildingId`}
+                        path={`/buildings/livingProfile/:buildingId`}
                         component={HousingStockProfileContainer}
                         exact
                       />
                       <Route
-                        path={`/buildings/${EHouseCategory.NonResidential}Profile/:buildingId`}
+                        path={`/buildings/nonResidentialProfile/:buildingId`}
                         component={NonResidentialBuildingProfileContainer}
                         exact
                       />
