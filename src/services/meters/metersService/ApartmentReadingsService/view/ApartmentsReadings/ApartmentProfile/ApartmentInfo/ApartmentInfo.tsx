@@ -14,16 +14,21 @@ import {
   FirmWrapper,
   FirmsLine,
   Header,
+  HomeownerNumber,
   InfoPanel,
   InfoPanelLabel,
+  MainText,
   ManagementFirmInfo,
+  PersonalNumberHeader,
+  PersonalNumberHeaderWrapper,
   PersonalNumberPanel,
   PersonalNumbersWrapper,
+  SubText,
 } from './ApartmentInfo.styled';
 import { ApartmentInfoProps } from './ApartmentInfo.types';
 import { ContextMenuButton } from 'ui-kit/ContextMenuButton/ContextMenuButton';
 import { getApartmentAddressString } from 'utils/getApartmentAddress';
-import { BriefcaseIcon, CrownIcon, HouseIcon } from 'ui-kit/icons';
+import { BriefcaseIcon, CrownIcon, HouseIcon, InfoIcon } from 'ui-kit/icons';
 import moment from 'moment';
 import { apartmentInfoService } from './ApartmentInfo.model';
 import { PrintApartmentDevicesCertificateContainer } from 'services/apartments/printApartmentDevicesCertificateService';
@@ -175,7 +180,35 @@ export const ApartmentInfo: FC<ApartmentInfoProps> = ({
                 isUpdateHomeownerLoading={isUpdateHomeownerLoading}
               />
               <div>
-                <InfoPanelLabel>Лицевой счет</InfoPanelLabel>
+                <PersonalNumberHeaderWrapper>
+                  <PersonalNumberHeader>Лицевой счет</PersonalNumberHeader>
+                  {Boolean(selectedHomeowner?.editedAt) && (
+                    <Tooltip
+                      title={
+                        <div>
+                          <MainText>
+                            {selectedHomeowner?.isMainPersonalAccountNumber
+                              ? ' Основной лицевой счёт '
+                              : 'Лицевой счёт '}
+                            <HomeownerNumber>
+                              {selectedHomeowner?.personalAccountNumber}
+                            </HomeownerNumber>
+                            ({selectedHomeowner?.name}) был отредактирован.
+                          </MainText>
+
+                          <SubText>
+                            Дата изменения:{' '}
+                            {moment(selectedHomeowner?.editedAt).format(
+                              'DD.MM.YYYY',
+                            )}
+                          </SubText>
+                        </div>
+                      }
+                    >
+                      <InfoIcon />
+                    </Tooltip>
+                  )}
+                </PersonalNumberHeaderWrapper>
                 <ExtraInfoText>
                   {selectedHomeowner?.personalAccountNumber}
                   <AccountOpeningDate>
