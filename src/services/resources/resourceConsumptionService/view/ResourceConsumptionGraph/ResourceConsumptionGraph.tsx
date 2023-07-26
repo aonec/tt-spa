@@ -53,6 +53,7 @@ export const ResourceConsumptionGraph: FC<ResourceConsumptionGraphProps> = ({
           (additionalConsumptionData &&
             typeOfData === ResourceConsumptionGraphDataType.prevMonthData) ||
           !selectedAddresses.addditionalAddress;
+
         const hideCurrentMonthData =
           typeOfData === ResourceConsumptionGraphDataType.currentMonthData &&
           !selectedAddresses.currentAddress;
@@ -67,6 +68,8 @@ export const ResourceConsumptionGraph: FC<ResourceConsumptionGraphProps> = ({
         }
 
         const monthData = consumptionData?.[typeOfData];
+
+        console.log(monthData);
 
         const typeOfChecked =
           typeOfData === ResourceConsumptionGraphDataType.additionalAddress
@@ -84,6 +87,7 @@ export const ResourceConsumptionGraph: FC<ResourceConsumptionGraphProps> = ({
             typeOfData === ResourceConsumptionGraphDataType.currentMonthData &&
             key === ResourceConsumptionGraphType.Housing;
 
+          console.log(isCurrentMonthHousingData);
           if (
             monthChecked[key as ResourceConsumptionGraphType] &&
             !isCurrentMonthHousingData

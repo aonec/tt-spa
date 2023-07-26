@@ -40,7 +40,7 @@ export const fetchConsumptionsForMonth = async (
   const housingMonthData = await fetchHousingConsumptionData(params);
   const housingConsumptionArr = housingMonthData.housingConsumption || [];
 
-  const normativeAndSubscriberData = await fetchNormativeConsumptionData(
+  const normativeAndSubscriberData = await fetchNormativeAndSubscriberConsumptionData(
     params,
   );
 
@@ -74,7 +74,7 @@ export const fetchHousingConsumptionData = (
     },
   });
 
-export const fetchNormativeConsumptionData = (
+export const fetchNormativeAndSubscriberConsumptionData = (
   params: ConsumptionDataPayload,
 ): Promise<GetDataForIndividualDevicesConsumptionPlotResponse> =>
   axios.get(

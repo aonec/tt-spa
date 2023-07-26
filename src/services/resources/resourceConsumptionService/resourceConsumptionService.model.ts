@@ -48,6 +48,8 @@ const $additionalConsumption = domain
   .on(getAdditionalConsumptionFx.doneData, (_, data) => data)
   .reset(clearAdditionalAddressData);
 
+$additionalConsumption.watch((data) => console.log(data));
+
 const setSelectedGraphTypes =
   domain.createEvent<BooleanTypesOfResourceConsumptionGraphForTwoMonth>();
 const $selectedGraphTypes = domain
@@ -73,17 +75,17 @@ const $isExistingCitiesLoading =
 
 const ResourceConsumptionGate = createGate();
 
-const $isLoadingFromApi = combine(
+const $isLoading = combine(
   getHousingConsumptionFx.pending,
-  getAdditionalConsumptionFx.pending,
+  // getAdditionalConsumptionFx.pending,
   $isExistingCitiesLoading,
   getAddressesFx.pending,
   (...loadings) => loadings.includes(true),
 );
 
-const $isLoading = domain
-  .createStore(true)
-  .on($isLoadingFromApi, (_, isLoading) => isLoading);
+// const $isLoading = domain
+//   .createStore(true)
+//   .on($isLoadingFromApi, (_, isLoading) => isLoading);
 
 sample({
   clock: getAdditionalConsumptionData,
