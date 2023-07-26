@@ -74,26 +74,7 @@ export const fetchHousingConsumptionData = (
     },
   });
 
-export const fetchNormativeConsumptionData = (
-  params: ConsumptionDataPayload,
-): Promise<GetDataForIndividualDevicesConsumptionPlotResponse> =>
-  axios.get(
-    'IndividualDeviceReadings/DataForSubscriberAndNormativeConsumptionPlot',
-    {
-      params: {
-        HousingStockIds: params.BuildingIds,
-        From: params.From,
-        To: params.To,
-        ResourceType: params.ResourceType,
-      },
-      paramsSerializer: (params) => {
-        return queryString.stringify(params);
-      },
-      headers: {
-        'api-version': 2,
-      },
-    },
-  );
+addPersonalNumberService/addPersonalNumberService.model.ts
 
 export const fetchSummaryConsumption = (
   params: ConsumptionDataPayload,
