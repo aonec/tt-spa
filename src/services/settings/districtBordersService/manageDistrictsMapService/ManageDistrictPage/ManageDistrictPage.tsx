@@ -5,6 +5,8 @@ import { DistrictsPageSegment, Props } from './ManageDistrictPage.types';
 import { Segmented } from 'ui-kit/Segmented';
 import { ListIcon, MapIcon } from 'ui-kit/icons';
 import { ManageDistrictsMap } from './ManageDistrictsMap';
+import { ContextMenuButton } from 'ui-kit/ContextMenuButton';
+import { useHistory } from 'react-router-dom';
 
 export const ManageDistrictPage: FC<Props> = ({
   existingDistricts,
@@ -13,6 +15,8 @@ export const ManageDistrictPage: FC<Props> = ({
 }) => {
   const [districtsPageSegment, setDistrictsPageSegment] =
     useState<DistrictsPageSegment>('map');
+
+  const history = useHistory();
 
   return (
     <div>
@@ -34,6 +38,23 @@ export const ManageDistrictPage: FC<Props> = ({
               },
             ]}
             onChange={setDistrictsPageSegment}
+          />
+          <ContextMenuButton
+            size="small"
+            menuButtons={[
+              {
+                title: 'Задать границы нового района на карте',
+                onClick: () =>
+                  history.push('/districtBordersSettings/createByMap'),
+              },
+              {
+                title: 'Задать границы нового района по адресам',
+                onClick: () =>
+                  history.push(
+                    '/districtBordersSettings/createByHousingStocksList',
+                  ),
+              },
+            ]}
           />
         </ControlButtonsWrapper>
       </Header>
