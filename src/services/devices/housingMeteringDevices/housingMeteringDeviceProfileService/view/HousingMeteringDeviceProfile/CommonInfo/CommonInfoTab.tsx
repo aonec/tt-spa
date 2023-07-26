@@ -1,7 +1,7 @@
 import { MagistralsDisctionary } from 'dictionaries';
 import moment from 'moment';
-import { EMagistralType } from 'api/types';
-import React, { FC } from 'react';
+import { EHouseCategory, EMagistralType } from 'api/types';
+import React, { FC, useMemo } from 'react';
 import { CommonInfo } from 'ui-kit/shared/CommonInfo';
 import { getBuildingAddress } from 'utils/getBuildingAddress';
 import { Address } from './CommonInfoTab.styled';
@@ -19,16 +19,28 @@ export const CommonInfoTab: FC<CommonInfoProps> = ({
   const magistral = housingMeteringDevice?.hubConnection?.hub
     ?.magistral as EMagistralType;
 
+  const buildingProfilePath = useMemo(() => {
+    if (address?.houseCategory === EHouseCategory.Living) {
+      return 'livingProfile';
+    }
+    return 'nonResidentialProfile';
+  }, [address]);
+
+  const addressComponent = (() => {
+    if (!address) {
+      return '-';
+    }
+    return (
+      <Address to={`/buildings/${buildingProfilePath}/${address?.id}`}>
+        {addressString}
+      </Address>
+    );
+  })();
+
   const items = [
     {
       key: 'Адрес',
-      value: (
-        <Address
-          to={`/buildings/${address?.houseCategory}Profile/${address?.id}`}
-        >
-          {addressString}
-        </Address>
-      ),
+      value: addressComponent,
     },
     {
       key: 'Диаметр прибора',

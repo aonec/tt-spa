@@ -7,10 +7,6 @@ export const FieldName = styled.div`
   font-weight: 500;
   font-size: 14px;
   margin-bottom: 6px;
-
-  &:after {
-    content: ':';
-  }
 `;
 
 export const Header = styled.div`

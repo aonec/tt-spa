@@ -6,6 +6,7 @@ import { CreateHeatingStationContainer } from '../heatingStations/createHeatingS
 import { EditHeatingStationContainer } from '../heatingStations/editHeatingStationService';
 import { createObjectService } from './createObjectService.model';
 import { CreateObjectPage } from './view/CreateObjectPage';
+import { EHouseCategory } from 'api/types';
 
 const { inputs, outputs, gates } = createObjectService;
 const { HouseManagementsFetchGate, PageCloseGate, HeatingStationsFetchGate } =
@@ -49,8 +50,14 @@ export const CreateObjectContainer = () => {
   useEffect(() => {
     return inputs.handleCreateObjectSuccessDone.watch((data) => {
       const type = data.houseCategory;
+      let buildingProfilePath = '';
+      if (type === EHouseCategory.Living) {
+        buildingProfilePath = 'livingProfile';
+      }
+      buildingProfilePath = 'nonResidentialProfile';
+
       if (data?.id) {
-        history.push(`/buildings/${type}Profile/${data.id}`);
+        history.push(`/buildings/${buildingProfilePath}/${data.id}`);
       }
     }).unsubscribe;
   }, [history]);

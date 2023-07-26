@@ -1,9 +1,9 @@
+import { EOrderByRule } from 'api/types';
 import {
   AddressSearchValues,
   CustomTemplateType,
   SearchFieldType,
 } from './view/AddressSearch/AddressSearch.types';
-import { EOrderByRule } from 'api/types';
 
 export type AddressSearchContainerProps = {
   fields: SearchFieldType[];
@@ -13,6 +13,7 @@ export type AddressSearchContainerProps = {
   showLabels?: boolean;
   disabledFields?: SearchFieldType[];
   onChange?: (key: string, value: string) => void;
+  className?: string;
 };
 
 export type GetExistingSteetRequestParams = {

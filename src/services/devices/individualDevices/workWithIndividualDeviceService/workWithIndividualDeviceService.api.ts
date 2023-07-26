@@ -2,6 +2,7 @@ import { axios } from 'api/axios';
 import { createMutation, createQuery } from '@farfetched/core';
 import { createEffect } from 'effector';
 import {
+  IndividualDeviceListResponseFromDevicePage,
   IndividualDeviceListResponseFromDevicePagePagedList,
   IndividualDeviceResponse,
 } from 'api/types';
@@ -11,16 +12,21 @@ import {
   SwitchIndividualDevicePayload,
 } from './workWithIndividualDeviceService.types';
 
-export const getSerialNumberQuery = createQuery<string, boolean>({
+export const getSerialNumberQuery = createQuery<
+  string,
+  IndividualDeviceListResponseFromDevicePage[]
+>({
   handler: async (serialNumber) => {
     const res: IndividualDeviceListResponseFromDevicePagePagedList =
       await axios.get('devices/individual', {
         params: {
           serialNumber,
+          PageSize: 1,
+          PageNumber: 1,
         },
       });
 
-    return Boolean((res.items || []).length);
+    return res.items || [];
   },
 });
 

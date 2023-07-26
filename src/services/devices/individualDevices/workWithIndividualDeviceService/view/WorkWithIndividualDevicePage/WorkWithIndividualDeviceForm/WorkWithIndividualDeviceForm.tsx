@@ -43,11 +43,11 @@ export const WorkWithIndividualDeviceForm: FC<
   form,
   contractors,
   handleFetchSerialNumberForCheck,
-  isSerialNumberAllreadyExist,
   isSerialNumberLoading,
   handleFetchModels,
   models,
   individualDevice,
+  serialNumberForChecking,
 }) => {
   const { id } = useParams<{ id: string }>();
 
@@ -60,6 +60,9 @@ export const WorkWithIndividualDeviceForm: FC<
   );
 
   const { fields, set } = useForm(form);
+
+  const isSerialNumberAllreadyExist =
+    serialNumberForChecking[0]?.serialNumber === fields.serialNumber.value;
 
   const next = useSwitchInputOnEnter(dataKey, true);
 

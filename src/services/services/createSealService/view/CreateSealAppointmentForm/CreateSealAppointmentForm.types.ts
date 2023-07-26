@@ -1,11 +1,16 @@
-import { ApartmentResponse, AppointmentCreateRequest } from 'api/types';
+import {
+  ApartmentResponse,
+  AppointmentCreateRequest,
+  AppointmentResponse,
+} from 'api/types';
 
 export type CreateSealAppointmentFormProps = {
   formId: string;
-  handleCreateAppointment: (
+  handleWorkWithAppointment: (
     payload: Omit<AppointmentCreateRequest, 'apartmentId'>,
   ) => void;
   apartment: ApartmentResponse;
+  appointment: AppointmentResponse | null;
 };
 
 export type AppointmentCreateFormik = {

@@ -57,7 +57,9 @@ export const HousingStockProfile: FC<HousingStockProfileProps> = ({
             {
               title: 'Добавить узел',
               onClick: () =>
-                history.push(`/buildings/${housingStock.id}/addNode`),
+                history.push(
+                  `/buildings/livingProfile/${housingStock.id}/addNode`,
+                ),
               hidden: !isPermitionToAddNode,
             },
             {
@@ -67,7 +69,10 @@ export const HousingStockProfile: FC<HousingStockProfileProps> = ({
             },
             {
               title: 'Редактировать',
-              onClick: () => history.push(`/buildings/${housingStock.id}/edit`),
+              onClick: () =>
+                history.push(
+                  `/buildings/livingProfile/${housingStock.id}/edit`,
+                ),
               hidden: !isPermissionToEditHousingStock,
             },
           ],

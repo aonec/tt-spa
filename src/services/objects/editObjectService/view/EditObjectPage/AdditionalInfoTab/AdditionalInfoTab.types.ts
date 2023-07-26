@@ -1,7 +1,14 @@
-import { HousingStockResponse, HousingStockUpdateRequest } from 'api/types';
+import {
+  EHouseCategory,
+  HousingStockResponse,
+  HousingStockUpdateRequest,
+  NonResidentialBuildingResponse,
+} from 'api/types';
 
 export type AdditionalInfoTabProps = {
-  housingStock: HousingStockResponse;
+  housingStock: HousingStockResponse | null;
+  nonResidentialBuilding: NonResidentialBuildingResponse | null;
   onPageCancel: () => void;
   handleUpdateHousingStock: (payload: HousingStockUpdateRequest) => void;
+  houseCategory: EHouseCategory;
 };

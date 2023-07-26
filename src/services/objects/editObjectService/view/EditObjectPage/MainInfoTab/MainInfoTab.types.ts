@@ -1,13 +1,16 @@
 import {
+  EHouseCategory,
   HeatingStationResponse,
   HeatingStationResponsePagedList,
   HouseManagementResponse,
   HousingStockResponse,
   HousingStockUpdateRequest,
+  NonResidentialBuildingResponse,
 } from 'api/types';
 
 export type MainInfoTabProps = {
-  housingStock: HousingStockResponse;
+  housingStock: HousingStockResponse | null;
+  nonResidentialBuilding: NonResidentialBuildingResponse | null;
   houseManagements: HouseManagementResponse[] | null;
   openCreateHeatingStationModal: () => void;
   openEditHeatingStationModal: () => void;
@@ -17,4 +20,5 @@ export type MainInfoTabProps = {
   handleUpdateHousingStock: (payload: HousingStockUpdateRequest) => void;
   isHeatingStationsLoading: boolean;
   isHouseManagementsLoading: boolean;
+  houseCategory: EHouseCategory;
 };
