@@ -24,7 +24,7 @@ export const ApartmentReadingsContainer = () => {
     handleCancelPauseApartment,
     openEditPersonalNumberModal,
     setSelectedHomeownerName,
-    handleUpdatePhoneNumber,
+    handleUpdateHomeowner,
     searchMode,
     isLoadingApartment,
     apartment,
@@ -40,7 +40,7 @@ export const ApartmentReadingsContainer = () => {
     handleCancelPauseApartment: inputs.handleCancelPauseApartment,
     openEditPersonalNumberModal: inputs.openEditPersonalNumberModal,
     setSelectedHomeownerName: inputs.setSelectedHomeownerName,
-    handleUpdatePhoneNumber: inputs.handleUpdatePhoneNumber,
+    handleUpdateHomeowner: inputs.handleUpdateHomeowner,
     searchMode: outputs.$searchMode,
     isLoadingApartment: outputs.$isLoadingApartment,
     apartment: outputs.$apartment,
@@ -87,9 +87,8 @@ export const ApartmentReadingsContainer = () => {
         isPermitionToApartmentStatusPatch={isPermitionToApartmentStatusPatch}
         allIndividualDeviceMountPlaces={allIndividualDeviceMountPlaces}
         printIssueCertificate={handlePrintIssueCertificate}
-        handleUpdatePhoneNumber={handleUpdatePhoneNumber}
+        handleUpdateHomeowner={handleUpdateHomeowner}
         isUpdateHomeownerLoading={isUpdateHomeownerLoading}
-        handleHomeownerUpdated={inputs.handleHomeownerUpdated}
       />
     </>
   );
