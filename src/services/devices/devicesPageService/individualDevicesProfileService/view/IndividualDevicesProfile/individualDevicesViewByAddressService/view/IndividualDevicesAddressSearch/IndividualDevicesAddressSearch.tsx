@@ -14,7 +14,7 @@ import {
 import { IndividualDevicesAddressSearchProps } from './IndividualDevicesAddressSearch.types';
 import { ClearIconSC } from 'ui-kit/ExtendedSearch/ExtendedSearch.styled';
 import { Button } from 'ui-kit/Button';
-
+//Подумать
 export const IndividualDevicesAddressSearch: FC<
   IndividualDevicesAddressSearchProps
 > = ({

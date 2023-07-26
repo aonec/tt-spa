@@ -1,11 +1,12 @@
 import React, { useEffect } from 'react';
-import { useEvent, useStore } from 'effector-react';
+import { useEvent, useStore, useUnit } from 'effector-react';
 import { useHistory, useParams } from 'react-router-dom';
 import { HousesReadingsPage } from './view/HousesReadingsPage';
 import { housesReadingsService } from './HousesReadingsService.model';
 import { ReadingsHistoryContainer } from 'services/meters/readingsHistoryService/readingsHistoryService.container';
 import { useManagingFirmConsumptionRates } from 'services/meters/managementFirmConsumptionRatesService';
 import { ConfirmReadingValueContainer } from 'services/meters/readingsHistoryService/confirmReadingService';
+import { getHousingStockQuery } from './HousesReadingsService.api';
 
 const { inputs, outputs, gates } = housesReadingsService;
 const { HousingStockGate, InspectorGate } = gates;
@@ -17,6 +18,7 @@ export const HousesReadingsContainer = () => {
   const housingStockId = Number(id) || null;
 
   const housingStock = useStore(outputs.$housingStock);
+  const isHousingStockFetched = useUnit(getHousingStockQuery.$succeeded);
   const isLoadingHousingStock = useStore(outputs.$isLoadingHousingStock);
   const inspector = useStore(outputs.$inspector);
   const individualDevicesList = useStore(outputs.$individualDevices);
@@ -64,7 +66,7 @@ export const HousesReadingsContainer = () => {
   ]);
 
   useEffect(() => {
-    return inputs.handleHousingStockLoaded.watch((housingStock) => {
+    return inputs.handleHousingStockLoaded.watch(({ result: housingStock }) => {
       if (!housingStock || Number(id) === housingStock?.id) return;
 
       history.push(`/meters/houses/${housingStock.id}`);
@@ -92,6 +94,7 @@ export const HousesReadingsContainer = () => {
         managementFirmConsumptionRates={managementFirmConsumptionRates}
         openReadingsHistoryModal={openReadingsHistoryModal}
         isAllDevicesLoaded={isAllDevicesLoaded}
+        isHousingStockFetched={isHousingStockFetched}
       />
     </>
   );

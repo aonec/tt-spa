@@ -2,7 +2,7 @@ import { combine, createDomain, sample } from 'effector';
 import { prepareFilterBeforeSenging } from '../displayStatisticsListByManagingFirmService/displayStatisticsListByManagingFirmService.utils';
 import { SubscriberStatisticsForm } from '../displayStatisticsListByManagingFirmService/view/ManagingFirmSearch/ManagingFirmSearch.types';
 import {
-  fetchHousingStockId,
+  fetchHousingStockIdQuery,
   fetchStatisticsByHouse,
 } from './displayStatisticsListByHousesService.api';
 import { SubscriberStatisticsFilter } from '../displayStatisticsListByManagingFirmService/displayStatisticsListByManagingFirmService.types';
@@ -17,13 +17,7 @@ const $housingStockAddress = domain
   .createStore<Partial<HousingStockAddressForm>>({})
   .on(setHousingStockAddress, (_, address) => address);
 
-const getHousingStockIdFx = domain.createEffect<
-  HousingStockAddressForm,
-  number | null
->(fetchHousingStockId);
-const $selectedHousingStockId = domain
-  .createStore<number | null>(null)
-  .on(getHousingStockIdFx.doneData, (_, id) => id);
+const $selectedHousingStockId = fetchHousingStockIdQuery.$data;
 
 const getConsumptionStatisticsByHouseFx = domain.createEffect<
   SubscriberStatisticsFilter,
@@ -70,7 +64,7 @@ sample({
   clock: $housingStockAddress,
   filter: (address): address is HousingStockAddressForm =>
     Boolean(address.City && address.Street && address.BuildingNumber),
-  target: getHousingStockIdFx,
+  target: fetchHousingStockIdQuery.start,
 });
 
 export const displayStatisticsListByHousesService = {

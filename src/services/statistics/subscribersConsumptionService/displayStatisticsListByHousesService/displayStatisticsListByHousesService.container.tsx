@@ -9,16 +9,25 @@ import { StatisticsList } from './view/StatisticsList';
 import { SearchHousingStock } from './view/SearchHousingStock';
 
 const { inputs, outputs } = displayStatisticsListByHousesService;
-
+//Подумать
 export const DisplayStatisticsListByHousesContainer = () => {
-  const isLoading = useUnit(outputs.$isLoading);
-  const filter = useUnit(outputs.$subscriberStatisticsByHouseFilter);
-  const statistics = useUnit(outputs.$consumptionStatisticsByHouse);
-  const housingStockId = useUnit(outputs.$selectedHousingStockId);
-  const housingStockAddress = useUnit(outputs.$housingStockAddress);
-
-  const setFilter = useUnit(inputs.setSubscriberStatisticsFilter);
-  const setHousingStockAddress = useUnit(inputs.setHousingStockAddress);
+  const {
+    filter,
+    housingStockAddress,
+    housingStockId,
+    isLoading,
+    setFilter,
+    setHousingStockAddress,
+    statistics,
+  } = useUnit({
+    isLoading: outputs.$isLoading,
+    filter: outputs.$subscriberStatisticsByHouseFilter,
+    statistics: outputs.$consumptionStatisticsByHouse,
+    housingStockId: outputs.$selectedHousingStockId,
+    housingStockAddress: outputs.$housingStockAddress,
+    setFilter: inputs.setSubscriberStatisticsFilter,
+    setHousingStockAddress: inputs.setHousingStockAddress,
+  });
 
   const isStatisticsExist = Boolean(statistics.length);
   const isHousingStockExist = Boolean(housingStockId);
@@ -33,11 +42,13 @@ export const DisplayStatisticsListByHousesContainer = () => {
         setHousingStockAddress={setHousingStockAddress}
       />
       <WithLoader isLoading={isLoading}>
-        {isStatisticsExist && isHousingStockExist && (
-          <StatisticsList statistics={statistics} />
-        )}
-        {!isStatisticsExist && isHousingStockExist && (
-          <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
+        {isHousingStockExist && (
+          <>
+            {isStatisticsExist && <StatisticsList statistics={statistics} />}
+            {!isStatisticsExist && (
+              <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
+            )}
+          </>
         )}
         {!isHousingStockExist && <TypeAddressToStart />}
       </WithLoader>

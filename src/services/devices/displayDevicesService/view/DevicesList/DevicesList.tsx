@@ -1,8 +1,9 @@
-import { Pagination, Skeleton } from 'antd';
+import { Pagination } from 'antd';
 import { Empty } from 'antd';
 import React, { FC } from 'react';
 import { DevicesListProps } from './DevicesList.types';
 import { HousingStockCalculators } from './HousingStockCalculators/HousingStockCalculators';
+import { WithLoader } from 'ui-kit/shared/WithLoader';
 
 export const DevicesList: FC<DevicesListProps> = ({
   housingStocksDevices,
@@ -36,15 +37,11 @@ export const DevicesList: FC<DevicesListProps> = ({
   );
   return (
     <div>
-      {isLoading ? (
-        <Skeleton active />
-      ) : (
+      <WithLoader isLoading={isLoading}>
         <>
-          {!isHousingStocksDevicesListEmpty ? (
-            housingStocksDevicesList
-          ) : (
-            <Empty />
-          )}
+          {!isHousingStocksDevicesListEmpty && housingStocksDevicesList}
+          {isHousingStocksDevicesListEmpty && <Empty />}
+
           {!isHousingStocksDevicesListEmpty && (
             <Pagination
               total={total}
@@ -56,7 +53,7 @@ export const DevicesList: FC<DevicesListProps> = ({
             />
           )}
         </>
-      )}
+      </WithLoader>
     </div>
   );
 };
