@@ -1,10 +1,15 @@
 import { combine, createDomain, forward, sample } from 'effector';
 import { createGate } from 'effector-react';
 import { message } from 'antd';
-import { GetSummaryHousingConsumptionsByResourcesResponse } from 'api/types';
+import {
+  GetDataForHousingConsumptionPlotResponse,
+  GetDataForIndividualDevicesConsumptionPlotResponse,
+  GetSummaryHousingConsumptionsByResourcesResponse,
+} from 'api/types';
 import {
   fetchConsumptionsForMonth,
   fetchConsumptionsForTwoMonth,
+  fetchNormativeAndSubscriberConsumptionData,
   fetchSummaryConsumption,
 } from './resourceConsumptionService.api';
 import { initialSelectedGraphTypes } from './resourceConsumptionService.constants';
@@ -17,12 +22,34 @@ import { BooleanTypesOfResourceConsumptionGraphForTwoMonth } from './view/Resour
 import { EffectFailDataAxiosError } from 'types';
 import { addressSearchService } from 'services/addressSearchService/addressSearchService.models';
 import { getAddressesFx } from './resourceConsumptionFilterService/resourceConsumptionFilterService.api';
+import {
+  fetchHousingConsumptionPlot,
+  fetchSummaryHousingConsumptions,
+} from './resourceConsumptionService.api2';
 
 const domain = createDomain('resourceConsumptionService');
 
 const clearData = domain.createEvent();
 
 const getConsumptionData = domain.createEvent<ConsumptionDataPayload>();
+
+const getSummaryHousingConsumptionsFx = domain.createEffect<
+  ConsumptionDataPayload,
+  GetSummaryHousingConsumptionsByResourcesResponse,
+  EffectFailDataAxiosError
+>(fetchSummaryHousingConsumptions); // общий расход сверху
+
+const getHousingConsumptionPlotFx = domain.createEffect<
+  ConsumptionDataPayload,
+  GetDataForHousingConsumptionPlotResponse,
+  EffectFailDataAxiosError
+>(fetchHousingConsumptionPlot); // одпу
+
+const getNormativeAndSubscriberConsumptionDataFx = domain.createEffect<
+  ConsumptionDataPayload,
+  GetDataForIndividualDevicesConsumptionPlotResponse,
+  EffectFailDataAxiosError
+>(fetchNormativeAndSubscriberConsumptionData); // норматив и 
 
 const getHousingConsumptionFx = domain.createEffect<
   ConsumptionDataPayload,
