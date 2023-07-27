@@ -12,6 +12,7 @@ const { ExistingCitiesGate } = addressSearchService.gates;
 
 export const ResourceConsumptionContainer = () => {
   const isLoading = useStore(outputs.$isLoading);
+  const isSummaryLoading = useStore(outputs.$isSummaryLoading);
 
   const resourceConsumptionFilter = useStore(
     resourceConsumptionFilterService.outputs.$resourceConsumptionFilter,
@@ -42,6 +43,7 @@ export const ResourceConsumptionContainer = () => {
         setSelectedGraphTypes={setSelectedGraphTypes}
         additionalConsumptionData={additionalConsumptionData}
         summaryConsumption={summaryConsumption}
+        isSummaryLoading={isSummaryLoading}
         resource={resource}
       />
     </>

@@ -170,6 +170,8 @@ const $isExistingCitiesLoading =
 
 const ResourceConsumptionGate = createGate();
 
+const $isSummaryLoading = getSummaryHousingConsumptionsFx.pending;
+
 const $isLoading = combine(
   // getHousingConsumptionFx.pending,
   // getAdditionalConsumptionFx.pending,
@@ -252,6 +254,7 @@ export const resourceConsumptionService = {
     $selectedGraphTypes,
     $additionalConsumption,
     $summaryConsumption,
+    $isSummaryLoading,
   },
   gates: { ResourceConsumptionGate },
 };

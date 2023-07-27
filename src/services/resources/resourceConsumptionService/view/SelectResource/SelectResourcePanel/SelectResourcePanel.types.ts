@@ -5,4 +5,5 @@ export type SelectResourcePanelProps = {
   active: boolean;
   setResource: (resource: EResourceType) => void;
   summary: number | null;
+  isSummaryLoading: boolean;
 };

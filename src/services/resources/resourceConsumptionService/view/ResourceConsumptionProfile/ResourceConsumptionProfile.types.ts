@@ -22,6 +22,7 @@ export type ResourceConsumptionProfileProps = {
   additionalConsumptionData: MonthConsumptionData | null;
   summaryConsumption: GetSummaryHousingConsumptionsByResourcesResponse | null;
   resource: EResourceType;
+  isSummaryLoading: boolean;
 };
 
 export type BooleanTypesOfResourceConsumptionGraphForTwoMonth = {

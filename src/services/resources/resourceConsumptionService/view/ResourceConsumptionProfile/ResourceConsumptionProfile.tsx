@@ -24,6 +24,7 @@ export const ResourceConsumptionProfile: FC<
   setSelectedGraphTypes,
   additionalConsumptionData,
   summaryConsumption,
+  isSummaryLoading,
   resource,
 }) => {
   const [selectedAddresses, setSelectedAddresses] = useState<SelectedAddresses>(
@@ -53,6 +54,7 @@ export const ResourceConsumptionProfile: FC<
           selectedResource={resource}
           setResource={setResource}
           summaryConsumption={summaryConsumption}
+          isSummaryLoading={isSummaryLoading}
         />
 
         <WithLoader isLoading={isLoading}>
