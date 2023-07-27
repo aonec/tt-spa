@@ -8,7 +8,7 @@ const minDelta = 0.01;
 export function getMinAndMaxForResourceConsumptionGraph<T>(
   dataArr: (T & { value: number }[])[],
 ) {
-  return getMinAndMax(dataArr.flat(), minDelta);
+  return getMinAndMax(dataArr?.flat(), minDelta);
 }
 
 export const getGraphTypeColors = ({

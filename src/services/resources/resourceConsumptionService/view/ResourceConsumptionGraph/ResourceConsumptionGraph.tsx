@@ -143,7 +143,7 @@ export const ResourceConsumptionGraph: FC<ResourceConsumptionGraphProps> = ({
 
   if (
     !consumptionData ||
-    consumptionData.currentMonthData.housing.length === 0 ||
+    consumptionData?.currentMonthData?.housing?.length === 0 ||
     !resource
   ) {
     return <GraphEmptyData />;
@@ -152,8 +152,8 @@ export const ResourceConsumptionGraph: FC<ResourceConsumptionGraphProps> = ({
 
   const { maxValue, minValue } = getMinAndMaxForResourceConsumptionGraph(
     [
-      ...Object.values(currentMonthData),
-      ...Object.values(prevMonthData),
+      ...Object.values(currentMonthData || []),
+      ...Object.values(prevMonthData || []),
       ...Object.values(additionalConsumptionData || {}),
     ].map(prepareData),
   );
@@ -202,7 +202,7 @@ export const ResourceConsumptionGraph: FC<ResourceConsumptionGraphProps> = ({
         {checked.currentMonthData.housing &&
           selectedAddresses.currentAddress && (
             <VictoryArea
-              data={currentMonthData.housing}
+              data={currentMonthData?.housing}
               x="key"
               y="value"
               interpolation="monotoneX"

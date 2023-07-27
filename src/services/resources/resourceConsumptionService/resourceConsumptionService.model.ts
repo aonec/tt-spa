@@ -9,7 +9,6 @@ import {
 import {
   fetchConsumptionsForMonth,
   fetchConsumptionsForTwoMonth,
-  fetchNormativeAndSubscriberConsumptionData,
   fetchSummaryConsumption,
 } from './resourceConsumptionService.api';
 import { initialSelectedGraphTypes } from './resourceConsumptionService.constants';
@@ -17,6 +16,7 @@ import {
   ConsumptionDataForTwoMonth,
   ConsumptionDataPayload,
   MonthConsumptionData,
+  ResourceConsumptionWithNull,
 } from './resourceConsumptionService.types';
 import { BooleanTypesOfResourceConsumptionGraphForTwoMonth } from './view/ResourceConsumptionProfile/ResourceConsumptionProfile.types';
 import { EffectFailDataAxiosError } from 'types';
@@ -24,6 +24,7 @@ import { addressSearchService } from 'services/addressSearchService/addressSearc
 import { getAddressesFx } from './resourceConsumptionFilterService/resourceConsumptionFilterService.api';
 import {
   fetchHousingConsumptionPlot,
+  fetchNormativeAndSubscriberConsumptionData,
   fetchSummaryHousingConsumptions,
 } from './resourceConsumptionService.api2';
 
@@ -41,25 +42,42 @@ const getSummaryHousingConsumptionsFx = domain.createEffect<
 
 const getHousingConsumptionPlotFx = domain.createEffect<
   ConsumptionDataPayload,
-  GetDataForHousingConsumptionPlotResponse,
+  { housing: ResourceConsumptionWithNull[] },
   EffectFailDataAxiosError
 >(fetchHousingConsumptionPlot); // одпу
 
 const getNormativeAndSubscriberConsumptionDataFx = domain.createEffect<
   ConsumptionDataPayload,
-  GetDataForIndividualDevicesConsumptionPlotResponse,
+  {
+    normative: ResourceConsumptionWithNull[];
+    subscriber: ResourceConsumptionWithNull[];
+  },
   EffectFailDataAxiosError
->(fetchNormativeAndSubscriberConsumptionData); // норматив и 
+>(fetchNormativeAndSubscriberConsumptionData); // норматив и абонентское
 
-const getHousingConsumptionFx = domain.createEffect<
-  ConsumptionDataPayload,
-  ConsumptionDataForTwoMonth,
-  EffectFailDataAxiosError
->(fetchConsumptionsForTwoMonth);
+// const getHousingConsumptionFx = domain.createEffect<
+//   ConsumptionDataPayload,
+//   ConsumptionDataForTwoMonth,
+//   EffectFailDataAxiosError
+// >(fetchConsumptionsForTwoMonth);
 
 const $housingConsumptionData = domain
   .createStore<ConsumptionDataForTwoMonth | null>(null)
-  .on(getHousingConsumptionFx.doneData, (_, data) => data)
+  .on(getHousingConsumptionPlotFx.doneData, (prev, data) => {
+    const { housing } = data;
+    if (!prev) {
+      return { currentMonthData: { housing } };
+    }
+    return {
+      ...prev,
+      currentMonthData: {
+        housing,
+        normative: prev?.currentMonthData?.normative,
+        subscriber: prev?.currentMonthData?.subscriber,
+      },
+    };
+  })
+
   .reset(clearData);
 
 const getAdditionalConsumptionData =
@@ -103,7 +121,7 @@ const $isExistingCitiesLoading =
 const ResourceConsumptionGate = createGate();
 
 const $isLoading = combine(
-  getHousingConsumptionFx.pending,
+  // getHousingConsumptionFx.pending,
   // getAdditionalConsumptionFx.pending,
   $isExistingCitiesLoading,
   getAddressesFx.pending,
@@ -119,14 +137,25 @@ sample({
   target: getAdditionalConsumptionFx,
 });
 
+// sample({
+//   clock: getConsumptionData,
+//   target: getHousingConsumptionFx,
+// });
 sample({
   clock: getConsumptionData,
-  target: getHousingConsumptionFx,
+  target: [
+    getHousingConsumptionPlotFx,
+    getNormativeAndSubscriberConsumptionDataFx,
+  ],
 });
 
+// sample({
+//   clock: getSummaryConsumptions,
+//   target: getSummaryConsumptionsFx,
+// });
 sample({
   clock: getSummaryConsumptions,
-  target: getSummaryConsumptionsFx,
+  target: getSummaryHousingConsumptionsFx,
 });
 
 forward({
@@ -134,17 +163,19 @@ forward({
   to: [clearData, clearAdditionalAddressData, clearSummary],
 });
 
-forward({
-  from: getHousingConsumptionFx.failData,
-  to: [clearData, clearAdditionalAddressData],
-});
+// forward({
+//   from: getHousingConsumptionFx.failData,
+//   to: [clearData, clearAdditionalAddressData],
+// });
 
-getHousingConsumptionFx.failData.watch((error) => {
-  const errorText =
-    error.response?.data.error.Text || error.response?.data.error.Message;
+// getHousingConsumptionFx.failData.watch((error) => {
+//   const errorText =
+//     error.response.data.error.Text ||
+//     error.response.data.error.Message ||
+//     'Произошла ошибка';
 
-  return errorText && message.error(errorText);
-});
+//   message.error(errorText);
+// });
 
 export const resourceConsumptionService = {
   inputs: {

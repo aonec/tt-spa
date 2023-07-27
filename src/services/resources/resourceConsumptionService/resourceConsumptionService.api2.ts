@@ -1,12 +1,19 @@
 import { axios } from 'api/axios';
 import moment from 'moment';
 import queryString from 'query-string';
-import { ConsumptionDataPayload } from './resourceConsumptionService.types';
+import {
+  ConsumptionDataPayload,
+  ResourceConsumptionWithNull,
+} from './resourceConsumptionService.types';
 import {
   GetDataForHousingConsumptionPlotResponse,
   GetDataForIndividualDevicesConsumptionPlotResponse,
   GetSummaryHousingConsumptionsByResourcesResponse,
 } from 'api/types';
+import {
+  prepareDataForConsumptionGraph,
+  prepareDataForConsumptionGraphWithLastValue,
+} from './resourceConsumptionService.utils';
 
 export const fetchSummaryHousingConsumptions = (
   params: ConsumptionDataPayload,
@@ -18,33 +25,60 @@ export const fetchSummaryHousingConsumptions = (
     },
   });
 
-export const fetchHousingConsumptionPlot = (
+export const fetchHousingConsumptionPlot = async (
   params: ConsumptionDataPayload,
-): Promise<GetDataForHousingConsumptionPlotResponse> =>
-  axios.get('Nodes/DataForHousingConsumptionPlot', {
-    params,
-    paramsSerializer: (params) => {
-      return queryString.stringify(params);
-    },
-  });
-
-export const fetchNormativeAndSubscriberConsumptionData = (
-  params: ConsumptionDataPayload,
-): Promise<GetDataForIndividualDevicesConsumptionPlotResponse> =>
-  axios.get(
-    'IndividualDeviceReadings/DataForSubscriberAndNormativeConsumptionPlot',
+): Promise<{ housing: ResourceConsumptionWithNull[] }> => {
+  const res: GetDataForHousingConsumptionPlotResponse = await axios.get(
+    'Nodes/DataForHousingConsumptionPlot',
     {
-      params: {
-        HousingStockIds: params.BuildingIds,
-        From: params.From,
-        To: params.To,
-        ResourceType: params.ResourceType,
-      },
-      paramsSerializer: (params) => {
-        return queryString.stringify(params);
-      },
-      headers: {
-        'api-version': 2,
-      },
+      params,
+      paramsSerializer: (params) => queryString.stringify(params),
     },
   );
+  const housingConsumptionArr = res.housingConsumption || [];
+
+  const housing: ResourceConsumptionWithNull[] = prepareDataForConsumptionGraph(
+    housingConsumptionArr,
+  );
+
+  return { housing };
+};
+
+export const fetchNormativeAndSubscriberConsumptionData = async (
+  params: ConsumptionDataPayload,
+): Promise<{
+  normative: ResourceConsumptionWithNull[];
+  subscriber: ResourceConsumptionWithNull[];
+}> => {
+  const normativeAndSubscriberData: GetDataForIndividualDevicesConsumptionPlotResponse =
+    await axios.get(
+      'IndividualDeviceReadings/DataForSubscriberAndNormativeConsumptionPlot',
+      {
+        params: {
+          HousingStockIds: params.BuildingIds,
+          From: params.From,
+          To: params.To,
+          ResourceType: params.ResourceType,
+        },
+        paramsSerializer: (params) => {
+          return queryString.stringify(params);
+        },
+        headers: {
+          'api-version': 2,
+        },
+      },
+    );
+
+  const normative: ResourceConsumptionWithNull[] =
+    prepareDataForConsumptionGraphWithLastValue(
+      normativeAndSubscriberData.normativeConsumption || [],
+      // housingConsumptionArr[housingConsumptionArr.length - 1]?.key,
+    );
+  const subscriber: ResourceConsumptionWithNull[] =
+    prepareDataForConsumptionGraphWithLastValue(
+      normativeAndSubscriberData.subscriberConsumption || [],
+      // housingConsumptionArr[housingConsumptionArr.length - 1]?.key,
+    );
+
+  return { normative, subscriber };
+};

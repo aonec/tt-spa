@@ -35,9 +35,9 @@ export const ResourceConsumptionProfile: FC<
   }, [additionalConsumptionData]);
 
   const consumptionData = useMemo(() => {
-    if (!housingConsumptionData) {
-      return null;
-    }
+    // if (!housingConsumptionData) {
+    //   return null;
+    // }
     return {
       ...housingConsumptionData,
       [ResourceConsumptionGraphDataType.additionalAddress]:
@@ -67,7 +67,7 @@ export const ResourceConsumptionProfile: FC<
           />
           {housingConsumptionData &&
             Boolean(
-              housingConsumptionData?.currentMonthData.housing.length,
+              housingConsumptionData?.currentMonthData?.housing?.length,
             ) && (
               <SelectResourceConsumptionType
                 disabled={getDisabledGraphTypes(housingConsumptionData)}
