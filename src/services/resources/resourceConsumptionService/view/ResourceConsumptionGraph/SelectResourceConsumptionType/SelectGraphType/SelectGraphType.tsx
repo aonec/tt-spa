@@ -11,26 +11,46 @@ export const SelectGraphType: FC<SelectGraphTypeProps> = ({
   checked,
   handleSetChecked,
   colorConstructor,
+  isHousingLoading,
+  isNormativeAndSubscriberLoading,
+  isPrevHousingLoading,
+  isPrevNormativeAndSubscriberLoading,
 }) => {
   const setChecked = useCallback(
     (key: ResourceConsumptionGraphType, newChecked: boolean) =>
       handleSetChecked({ ...checked, [key]: newChecked }),
-    [checked, handleSetChecked]
+    [checked, handleSetChecked],
   );
 
   return (
     <Wrapper>
       <SelectTitle>{title}</SelectTitle>
-      {Object.values(ResourceConsumptionGraphType).map((type) => (
-        <SelectGraphTypeItem
-          disabled={disabled[type]}
-          checked={checked[type]}
-          setChecked={(checked) => setChecked(type, checked)}
-          color={colorConstructor(type)}
-          text={TypeNameLookup[type]}
-          key={type}
-        />
-      ))}
+      {Object.values(ResourceConsumptionGraphType).map((type) => {
+        const isLoading =
+          (type === ResourceConsumptionGraphType.Housing && isHousingLoading) ||
+          (type === ResourceConsumptionGraphType.Normative &&
+            isNormativeAndSubscriberLoading) ||
+          (type === ResourceConsumptionGraphType.Subscriber &&
+            isNormativeAndSubscriberLoading) ||
+          (type === ResourceConsumptionGraphType.Housing &&
+            isPrevHousingLoading) ||
+          (type === ResourceConsumptionGraphType.Normative &&
+            isPrevNormativeAndSubscriberLoading) ||
+          (type === ResourceConsumptionGraphType.Subscriber &&
+            isPrevNormativeAndSubscriberLoading);
+
+        return (
+          <SelectGraphTypeItem
+            disabled={ isLoading || disabled[type]}
+            checked={checked[type]}
+            setChecked={(checked) => setChecked(type, checked)}
+            color={colorConstructor(type)}
+            text={TypeNameLookup[type]}
+            key={type}
+            isLoading={isLoading}
+          />
+        );
+      })}
     </Wrapper>
   );
 };

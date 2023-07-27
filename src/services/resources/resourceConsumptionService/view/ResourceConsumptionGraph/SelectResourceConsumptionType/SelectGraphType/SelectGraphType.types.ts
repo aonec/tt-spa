@@ -7,4 +7,8 @@ export type SelectGraphTypeProps = {
   checked: BooleanTypesOfResourceConsumptionGraph;
   handleSetChecked: (checked: BooleanTypesOfResourceConsumptionGraph) => void;
   colorConstructor: (type: ResourceConsumptionGraphType) => string;
+  isHousingLoading?: boolean;
+  isNormativeAndSubscriberLoading?: boolean;
+  isPrevHousingLoading?: boolean;
+  isPrevNormativeAndSubscriberLoading?: boolean;
 };

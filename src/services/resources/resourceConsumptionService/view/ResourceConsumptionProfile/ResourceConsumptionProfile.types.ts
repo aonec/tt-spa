@@ -23,6 +23,10 @@ export type ResourceConsumptionProfileProps = {
   summaryConsumption: GetSummaryHousingConsumptionsByResourcesResponse | null;
   resource: EResourceType;
   isSummaryLoading: boolean;
+  isPrevNormativeAndSubscriberLoading: boolean;
+  isPrevHousingLoading: boolean;
+  isNormativeAndSubscriberLoading: boolean;
+  isHousingLoading: boolean;
 };
 
 export type BooleanTypesOfResourceConsumptionGraphForTwoMonth = {

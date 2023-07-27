@@ -16,4 +16,8 @@ export type SelectResourceConsumptionTypeProps = {
   currentAddress: string;
   selectedAddresses: SelectedAddresses;
   setSelectedAddresses: (payload: SelectedAddresses) => void;
+  isHousingLoading: boolean;
+  isNormativeAndSubscriberLoading: boolean;
+  isPrevHousingLoading: boolean;
+  isPrevNormativeAndSubscriberLoading: boolean;
 };

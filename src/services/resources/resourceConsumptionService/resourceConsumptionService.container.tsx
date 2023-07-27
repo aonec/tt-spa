@@ -13,6 +13,14 @@ const { ExistingCitiesGate } = addressSearchService.gates;
 export const ResourceConsumptionContainer = () => {
   const isLoading = useStore(outputs.$isLoading);
   const isSummaryLoading = useStore(outputs.$isSummaryLoading);
+  const isHousingLoading = useStore(outputs.$isHousingLoading);
+  const isNormativeAndSubscriberLoading = useStore(
+    outputs.$isNormativeAndSubscriberLoading,
+  );
+  const isPrevHousingLoading = useStore(outputs.$isPrevHousingLoading);
+  const isPrevNormativeAndSubscriberLoading = useStore(
+    outputs.$isPrevNormativeAndSubscriberLoading,
+  );
 
   const resourceConsumptionFilter = useStore(
     resourceConsumptionFilterService.outputs.$resourceConsumptionFilter,
@@ -45,6 +53,12 @@ export const ResourceConsumptionContainer = () => {
         summaryConsumption={summaryConsumption}
         isSummaryLoading={isSummaryLoading}
         resource={resource}
+        isPrevNormativeAndSubscriberLoading={
+          isPrevNormativeAndSubscriberLoading
+        }
+        isPrevHousingLoading={isPrevHousingLoading}
+        isNormativeAndSubscriberLoading={isNormativeAndSubscriberLoading}
+        isHousingLoading={isHousingLoading}
       />
     </>
   );

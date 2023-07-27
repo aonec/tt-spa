@@ -171,6 +171,12 @@ const $isExistingCitiesLoading =
 const ResourceConsumptionGate = createGate();
 
 const $isSummaryLoading = getSummaryHousingConsumptionsFx.pending;
+const $isHousingLoading = getHousingConsumptionPlotFx.pending;
+const $isNormativeAndSubscriberLoading =
+  getNormativeAndSubscriberConsumptionDataFx.pending;
+const $isPrevHousingLoading = getPrevHousingConsumptionPlotFx.pending;
+const $isPrevNormativeAndSubscriberLoading =
+  getPrevNormativeAndSubscriberConsumptionDataFx.pending;
 
 const $isLoading = combine(
   // getHousingConsumptionFx.pending,
@@ -255,6 +261,10 @@ export const resourceConsumptionService = {
     $additionalConsumption,
     $summaryConsumption,
     $isSummaryLoading,
+    $isHousingLoading,
+    $isNormativeAndSubscriberLoading,
+    $isPrevHousingLoading,
+    $isPrevNormativeAndSubscriberLoading,
   },
   gates: { ResourceConsumptionGate },
 };

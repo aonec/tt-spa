@@ -26,6 +26,10 @@ export const ResourceConsumptionProfile: FC<
   summaryConsumption,
   isSummaryLoading,
   resource,
+  isHousingLoading,
+  isNormativeAndSubscriberLoading,
+  isPrevHousingLoading,
+  isPrevNormativeAndSubscriberLoading,
 }) => {
   const [selectedAddresses, setSelectedAddresses] = useState<SelectedAddresses>(
     initialSelectedAddresses,
@@ -36,16 +40,12 @@ export const ResourceConsumptionProfile: FC<
   }, [additionalConsumptionData]);
 
   const consumptionData = useMemo(() => {
-    // if (!housingConsumptionData) {
-    //   return null;
-    // }
     return {
       ...housingConsumptionData,
       [ResourceConsumptionGraphDataType.additionalAddress]:
         additionalConsumptionData,
     };
   }, [housingConsumptionData, additionalConsumptionData]);
-
 
   return (
     <Wrapper>
@@ -81,6 +81,14 @@ export const ResourceConsumptionProfile: FC<
                 selectedAddresses={selectedAddresses}
                 setSelectedAddresses={(selected) =>
                   setSelectedAddresses(selected)
+                }
+                isHousingLoading={isHousingLoading}
+                isNormativeAndSubscriberLoading={
+                  isNormativeAndSubscriberLoading
+                }
+                isPrevHousingLoading={isPrevHousingLoading}
+                isPrevNormativeAndSubscriberLoading={
+                  isPrevNormativeAndSubscriberLoading
                 }
               />
             )}

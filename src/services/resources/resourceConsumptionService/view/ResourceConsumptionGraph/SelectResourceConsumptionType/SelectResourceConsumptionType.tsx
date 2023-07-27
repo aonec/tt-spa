@@ -20,6 +20,10 @@ export const SelectResourceConsumptionType: FC<
   currentAddress,
   selectedAddresses,
   setSelectedAddresses,
+  isHousingLoading,
+  isNormativeAndSubscriberLoading,
+  isPrevHousingLoading,
+  isPrevNormativeAndSubscriberLoading,
 }) => {
   const handleSetChecked = useCallback(
     (key: string, newChecked: BooleanTypesOfResourceConsumptionGraph) =>
@@ -41,6 +45,8 @@ export const SelectResourceConsumptionType: FC<
           handleSetChecked('currentMonthData', checked)
         }
         colorConstructor={(type) => getGraphTypeColors({ resource, type })}
+        isHousingLoading={isHousingLoading}
+        isNormativeAndSubscriberLoading={isNormativeAndSubscriberLoading}
       />
       {!isAdditionalAddress && (
         <SelectGraphType
@@ -52,6 +58,10 @@ export const SelectResourceConsumptionType: FC<
           }
           colorConstructor={(type) =>
             getGraphTypeColors({ resource, type, isOpacityNeed: true })
+          }
+          isPrevHousingLoading={isPrevHousingLoading}
+          isPrevNormativeAndSubscriberLoading={
+            isPrevNormativeAndSubscriberLoading
           }
         />
       )}

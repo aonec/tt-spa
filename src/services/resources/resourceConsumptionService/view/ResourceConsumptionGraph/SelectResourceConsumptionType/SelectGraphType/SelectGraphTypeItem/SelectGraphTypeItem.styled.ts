@@ -1,6 +1,9 @@
 import styled from 'styled-components';
 
-export const GroupWrapper = styled.div<{ disabled: boolean }>`
+export const GroupWrapper = styled.div<{
+  disabled: boolean;
+  isLoading?: boolean;
+}>`
   display: flex;
   align-items: center;
   margin-top: 12px;
@@ -10,7 +13,8 @@ export const GroupWrapper = styled.div<{ disabled: boolean }>`
   color: #272f5ae5;
 
   user-select: none;
-  cursor: ${({ disabled }) => (disabled ? 'no-drop' : 'pointer')};
+  opacity: ${({ isLoading }) => (isLoading ? '0.7' : '1')};
+  cursor: ${({ disabled }) => (disabled ? 'wait' : 'pointer')};
 `;
 
 export const Circle = styled.div<{ color: string }>`
