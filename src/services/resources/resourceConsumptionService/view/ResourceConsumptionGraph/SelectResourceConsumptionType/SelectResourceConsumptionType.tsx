@@ -8,7 +8,9 @@ import { SelectGraphTypeItem } from './SelectGraphType/SelectGraphTypeItem';
 import { Wrapper } from './SelectResourceConsumptionType.styled';
 import { SelectResourceConsumptionTypeProps } from './SelectResourceConsumptionType.types';
 
-export const SelectResourceConsumptionType: FC<SelectResourceConsumptionTypeProps> = ({
+export const SelectResourceConsumptionType: FC<
+  SelectResourceConsumptionTypeProps
+> = ({
   disabled,
   checked,
   setCheckedGraphTypes,
@@ -22,7 +24,7 @@ export const SelectResourceConsumptionType: FC<SelectResourceConsumptionTypeProp
   const handleSetChecked = useCallback(
     (key: string, newChecked: BooleanTypesOfResourceConsumptionGraph) =>
       setCheckedGraphTypes({ ...checked, [key]: newChecked }),
-    [checked, setCheckedGraphTypes]
+    [checked, setCheckedGraphTypes],
   );
 
   if (!resource) {

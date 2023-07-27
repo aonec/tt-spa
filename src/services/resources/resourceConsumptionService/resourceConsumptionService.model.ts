@@ -27,6 +27,7 @@ import {
   fetchNormativeAndSubscriberConsumptionData,
   fetchSummaryHousingConsumptions,
 } from './resourceConsumptionService.api2';
+import moment from 'moment';
 
 const domain = createDomain('resourceConsumptionService');
 
@@ -34,17 +35,17 @@ const clearData = domain.createEvent();
 
 const getConsumptionData = domain.createEvent<ConsumptionDataPayload>();
 
-const getSummaryHousingConsumptionsFx = domain.createEffect<
-  ConsumptionDataPayload,
-  GetSummaryHousingConsumptionsByResourcesResponse,
-  EffectFailDataAxiosError
->(fetchSummaryHousingConsumptions); // общий расход сверху
-
 const getHousingConsumptionPlotFx = domain.createEffect<
   ConsumptionDataPayload,
   { housing: ResourceConsumptionWithNull[] },
   EffectFailDataAxiosError
 >(fetchHousingConsumptionPlot); // одпу
+
+const getPrevHousingConsumptionPlotFx = domain.createEffect<
+  ConsumptionDataPayload,
+  { housing: ResourceConsumptionWithNull[] },
+  EffectFailDataAxiosError
+>(fetchHousingConsumptionPlot); // одпу за прошлый период
 
 const getNormativeAndSubscriberConsumptionDataFx = domain.createEffect<
   ConsumptionDataPayload,
@@ -55,11 +56,14 @@ const getNormativeAndSubscriberConsumptionDataFx = domain.createEffect<
   EffectFailDataAxiosError
 >(fetchNormativeAndSubscriberConsumptionData); // норматив и абонентское
 
-// const getHousingConsumptionFx = domain.createEffect<
-//   ConsumptionDataPayload,
-//   ConsumptionDataForTwoMonth,
-//   EffectFailDataAxiosError
-// >(fetchConsumptionsForTwoMonth);
+const getPrevNormativeAndSubscriberConsumptionDataFx = domain.createEffect<
+  ConsumptionDataPayload,
+  {
+    normative: ResourceConsumptionWithNull[];
+    subscriber: ResourceConsumptionWithNull[];
+  },
+  EffectFailDataAxiosError
+>(fetchNormativeAndSubscriberConsumptionData); // норматив и абонентское за прошлый период
 
 const $housingConsumptionData = domain
   .createStore<ConsumptionDataForTwoMonth | null>(null)
@@ -77,8 +81,49 @@ const $housingConsumptionData = domain
       },
     };
   })
-
-  .reset(clearData);
+  .on(getPrevHousingConsumptionPlotFx.doneData, (prev, data) => {
+    const { housing } = data;
+    if (!prev) {
+      return { prevMonthData: { housing } };
+    }
+    return {
+      ...prev,
+      prevMonthData: {
+        housing,
+        normative: prev?.prevMonthData?.normative,
+        subscriber: prev?.prevMonthData?.subscriber,
+      },
+    };
+  })
+  .on(getNormativeAndSubscriberConsumptionDataFx.doneData, (prev, data) => {
+    const { normative, subscriber } = data;
+    if (!prev) {
+      return { currentMonthData: { normative, subscriber } };
+    }
+    return {
+      ...prev,
+      currentMonthData: {
+        housing: prev?.currentMonthData?.housing,
+        normative,
+        subscriber,
+      },
+    };
+  })
+  .on(getPrevNormativeAndSubscriberConsumptionDataFx.doneData, (prev, data) => {
+    const { normative, subscriber } = data;
+    if (!prev) {
+      return { prevMonthData: { normative, subscriber } };
+    }
+    return {
+      ...prev,
+      prevMonthData: {
+        housing: prev?.prevMonthData?.housing,
+        normative,
+        subscriber,
+      },
+    };
+  });
+// .reset(clearData);
 
 const getAdditionalConsumptionData =
   domain.createEvent<ConsumptionDataPayload>();
@@ -93,8 +138,6 @@ const $additionalConsumption = domain
   .on(getAdditionalConsumptionFx.doneData, (_, data) => data)
   .reset(clearAdditionalAddressData);
 
-$additionalConsumption.watch((data) => console.log(data));
-
 const setSelectedGraphTypes =
   domain.createEvent<BooleanTypesOfResourceConsumptionGraphForTwoMonth>();
 const $selectedGraphTypes = domain
@@ -105,14 +148,21 @@ const $selectedGraphTypes = domain
   .reset(clearData);
 
 const clearSummary = domain.createEvent();
+
 const getSummaryConsumptions = domain.createEvent<ConsumptionDataPayload>();
-const getSummaryConsumptionsFx = domain.createEffect<
+
+const getSummaryHousingConsumptionsFx = domain.createEffect<
   ConsumptionDataPayload,
-  GetSummaryHousingConsumptionsByResourcesResponse
->(fetchSummaryConsumption);
+  GetSummaryHousingConsumptionsByResourcesResponse,
+  EffectFailDataAxiosError
+>(fetchSummaryHousingConsumptions); // общий расход сверху
+
 const $summaryConsumption = domain
   .createStore<GetSummaryHousingConsumptionsByResourcesResponse | null>(null)
-  .on(getSummaryConsumptionsFx.doneData, (_, consumptions) => consumptions)
+  .on(
+    getSummaryHousingConsumptionsFx.doneData,
+    (_, consumptions) => consumptions,
+  )
   .reset(clearSummary);
 
 const $isExistingCitiesLoading =
@@ -137,10 +187,6 @@ sample({
   target: getAdditionalConsumptionFx,
 });
 
-// sample({
-//   clock: getConsumptionData,
-//   target: getHousingConsumptionFx,
-// });
 sample({
   clock: getConsumptionData,
   target: [
@@ -149,10 +195,23 @@ sample({
   ],
 });
 
-// sample({
-//   clock: getSummaryConsumptions,
-//   target: getSummaryConsumptionsFx,
-// });
+sample({
+  clock: getConsumptionData,
+  fn: (params) => {
+    const prevMonth = moment(params.From).subtract(1, 'month');
+    const paramsForPrevMonthRequest = {
+      ...params,
+      From: prevMonth.startOf('month').utcOffset(0, true).format(),
+      To: prevMonth.endOf('month').utcOffset(0, true).format(),
+    };
+    return paramsForPrevMonthRequest;
+  },
+  target: [
+    getPrevHousingConsumptionPlotFx,
+    getPrevNormativeAndSubscriberConsumptionDataFx,
+  ],
+});
+
 sample({
   clock: getSummaryConsumptions,
   target: getSummaryHousingConsumptionsFx,

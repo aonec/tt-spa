@@ -13,8 +13,6 @@ export const getDatePeriod = (
     period = [moment().startOf('month'), moment()];
   }
 
-  console.log(isSono);
-
   if (archiveType === ArchiveType.PreviousMonth) {
     period = [
       moment().subtract(1, 'months').startOf('month'),

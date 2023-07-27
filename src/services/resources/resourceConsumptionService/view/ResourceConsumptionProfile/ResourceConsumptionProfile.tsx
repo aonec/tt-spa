@@ -45,7 +45,6 @@ export const ResourceConsumptionProfile: FC<
     };
   }, [housingConsumptionData, additionalConsumptionData]);
 
-  console.log(consumptionData);
 
   return (
     <Wrapper>

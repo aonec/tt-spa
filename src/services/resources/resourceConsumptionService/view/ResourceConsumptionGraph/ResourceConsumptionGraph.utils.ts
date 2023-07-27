@@ -6,9 +6,12 @@ import { ResourceConsumptionGraphColors } from './ResourceConsumptionGraph.const
 const minDelta = 0.01;
 
 export function getMinAndMaxForResourceConsumptionGraph<T>(
-  dataArr: (T & { value: number }[])[],
+  dataArr: ((T & { value: number }[]) | null)[],
 ) {
-  return getMinAndMax(dataArr?.flat(), minDelta);
+  const filteredDataArr = dataArr.filter((data) => Boolean(data)) as (T &
+    { value: number }[])[];
+
+  return getMinAndMax(filteredDataArr?.flat(), minDelta);
 }
 
 export const getGraphTypeColors = ({
