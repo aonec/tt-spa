@@ -3,6 +3,7 @@ import {
   BooleanTypesOfResourceConsumptionGraphForTwoMonth,
   SelectedAddresses,
 } from '../../ResourceConsumptionProfile/ResourceConsumptionProfile.types';
+import { MonthConsumptionData } from 'services/resources/resourceConsumptionService/resourceConsumptionService.types';
 
 export type SelectResourceConsumptionTypeProps = {
   disabled: BooleanTypesOfResourceConsumptionGraphForTwoMonth;
@@ -20,4 +21,9 @@ export type SelectResourceConsumptionTypeProps = {
   isNormativeAndSubscriberLoading: boolean;
   isPrevHousingLoading: boolean;
   isPrevNormativeAndSubscriberLoading: boolean;
+  consumptionData: {
+    additionalAddress: MonthConsumptionData | null;
+    currentMonthData?: MonthConsumptionData | undefined;
+    prevMonthData?: MonthConsumptionData | undefined;
+  };
 };

@@ -1,4 +1,7 @@
-import { ResourceConsumptionGraphType } from 'services/resources/resourceConsumptionService/resourceConsumptionService.types';
+import {
+  MonthConsumptionData,
+  ResourceConsumptionGraphType,
+} from 'services/resources/resourceConsumptionService/resourceConsumptionService.types';
 import { BooleanTypesOfResourceConsumptionGraph } from '../../../ResourceConsumptionProfile/ResourceConsumptionProfile.types';
 
 export type SelectGraphTypeProps = {
@@ -11,4 +14,5 @@ export type SelectGraphTypeProps = {
   isNormativeAndSubscriberLoading?: boolean;
   isPrevHousingLoading?: boolean;
   isPrevNormativeAndSubscriberLoading?: boolean;
+  consumptionData?: MonthConsumptionData;
 };

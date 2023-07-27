@@ -24,6 +24,7 @@ export const SelectResourceConsumptionType: FC<
   isNormativeAndSubscriberLoading,
   isPrevHousingLoading,
   isPrevNormativeAndSubscriberLoading,
+  consumptionData,
 }) => {
   const handleSetChecked = useCallback(
     (key: string, newChecked: BooleanTypesOfResourceConsumptionGraph) =>
@@ -34,6 +35,8 @@ export const SelectResourceConsumptionType: FC<
   if (!resource) {
     return null;
   }
+
+  // console.log(JSON.stringify(consumptionData.currentMonthData));
 
   return (
     <Wrapper>
@@ -47,6 +50,7 @@ export const SelectResourceConsumptionType: FC<
         colorConstructor={(type) => getGraphTypeColors({ resource, type })}
         isHousingLoading={isHousingLoading}
         isNormativeAndSubscriberLoading={isNormativeAndSubscriberLoading}
+        consumptionData={consumptionData.currentMonthData}
       />
       {!isAdditionalAddress && (
         <SelectGraphType
@@ -63,6 +67,7 @@ export const SelectResourceConsumptionType: FC<
           isPrevNormativeAndSubscriberLoading={
             isPrevNormativeAndSubscriberLoading
           }
+          consumptionData={consumptionData.prevMonthData}
         />
       )}
       {isAdditionalAddress && (

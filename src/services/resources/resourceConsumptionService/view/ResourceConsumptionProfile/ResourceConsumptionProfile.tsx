@@ -90,6 +90,7 @@ export const ResourceConsumptionProfile: FC<
                 isPrevNormativeAndSubscriberLoading={
                   isPrevNormativeAndSubscriberLoading
                 }
+                consumptionData={consumptionData}
               />
             )}
         </WithLoader>

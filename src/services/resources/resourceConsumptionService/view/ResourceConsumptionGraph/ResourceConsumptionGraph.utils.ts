@@ -34,3 +34,20 @@ export const getGraphTypeColors = ({
   }
   return color;
 };
+
+export function hasNoConsecutiveNumbers(
+  arr: { key?: string; value?: number | null | undefined }[],
+): boolean {
+  let count = 0;
+  for (let i = 0; i < arr.length; i++) {
+    if (typeof arr[i].value === 'number') {
+      count++;
+      if (count >= 3) {
+        return false;
+      }
+    } else {
+      count = 0;
+    }
+  }
+  return true;
+}

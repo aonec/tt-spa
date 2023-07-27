@@ -5,4 +5,5 @@ export type SelectGraphTypeItemProps = {
   color: string;
   text: string;
   isLoading?: boolean;
+  isConsumptionDataEmpty?: boolean;
 };

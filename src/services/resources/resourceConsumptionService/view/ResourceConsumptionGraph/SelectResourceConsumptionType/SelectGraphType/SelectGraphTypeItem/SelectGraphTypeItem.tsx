@@ -11,7 +11,10 @@ export const SelectGraphTypeItem: FC<SelectGraphTypeItemProps> = ({
   color,
   text,
   isLoading,
+  isConsumptionDataEmpty,
 }) => {
+  if (isConsumptionDataEmpty) return null;
+
   return (
     <GroupWrapper
       onClick={() => !disabled && setChecked(!checked)}
