@@ -8,6 +8,7 @@ import { EffectFailDataAxiosError } from 'types';
 import { message } from 'antd';
 import { createGate } from 'effector-react';
 import {
+  getApartmentIdQuery,
   getApartmentQuery,
   putApartment,
 } from 'services/meters/metersService/ApartmentReadingsService/ApartmentReadingsService.api';
@@ -81,12 +82,12 @@ sample({
       filter: (apartment, { id }) => Boolean(id && id !== apartment?.id),
     }),
   ],
-  target: getApartmentQuery.start,
+  target: getApartmentIdQuery.start,
 });
 
 sample({
   clock: handleSearchApartment,
-  target: getApartmentQuery.start,
+  target: getApartmentIdQuery.start,
 });
 
 sample({
@@ -99,7 +100,7 @@ sample({
 
 sample({
   clock: ApartmentGate.close,
-  target: getApartmentQuery.reset,
+  target: [getApartmentQuery.reset, getApartmentIdQuery.reset],
 });
 
 sample({
@@ -107,13 +108,13 @@ sample({
   target: updateApartmentFx,
 });
 
-getApartmentQuery.finished.failure.watch(({ error }) => {
-  return message.error(
-    error.response.data.error.Text ||
-      error.response.data.error.Message ||
-      'Произошла ошибка',
-  );
-});
+// getApartmentQuery.finished.failure.watch(({ error }) => {
+//   return message.error(
+//     error.response.data.error.Text ||
+//       error.response.data.error.Message ||
+//       'Произошла ошибка',
+//   );
+// });
 
 updateApartmentFx.doneData.watch(() => message.success('Сохранено успешно!'));
 

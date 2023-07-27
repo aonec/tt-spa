@@ -12,6 +12,7 @@ import {
   UpdateHomeownerRequestPayload,
 } from './ApartmentReadingsService.types';
 import {
+  getApartmentIdQuery,
   getApartmentQuery,
   patchHomeowner,
   putApartment,
@@ -95,12 +96,12 @@ sample({
 
 forward({
   from: handleSearchApartment,
-  to: getApartmentQuery.start,
+  to: getApartmentIdQuery.start,
 });
 
 sample({
   clock: ApartmentGate.close,
-  target: getApartmentQuery.reset,
+  target: [getApartmentQuery.reset, getApartmentIdQuery.reset],
 });
 
 sample({
@@ -113,7 +114,7 @@ sample({
     }),
     pauseApartmentService.inputs.pauseApartmentStatusFx.doneData,
   ],
-  target: getApartmentQuery.start,
+  target: getApartmentIdQuery.start,
 });
 
 forward({
@@ -129,13 +130,13 @@ const $isLoadingApartment = getApartmentQuery.$pending;
 
 const handleApartmentLoaded = getApartmentQuery.finished.success;
 
-getApartmentQuery.finished.failure.watch(({ error }) => {
-  return message.error(
-    error.response.data.error.Text ||
-      error.response.data.error.Message ||
-      'Произошла ошибка',
-  );
-});
+// getApartmentQuery.finished.failure.watch(({ error }) => {
+//   return message.error(
+//     error.response.data.error.Text ||
+//       error.response.data.error.Message ||
+//       'Произошла ошибка',
+//   );
+// });
 
 updateApartmentFx.failData.watch((error) => {
   return message.error(

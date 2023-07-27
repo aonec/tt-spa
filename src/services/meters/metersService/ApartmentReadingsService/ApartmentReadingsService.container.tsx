@@ -7,7 +7,7 @@ import { ESecuredIdentityRoleName } from 'api/types';
 import { usePermission } from 'hooks/usePermission';
 import { SelectPersonalNumberActionContainer } from 'services/homeowner/personalNumber/selectPersonalNumberActionService';
 import { PauseApartmentContainer } from 'services/apartments/pauseApartmentService';
-import { getApartmentQuery } from './ApartmentReadingsService.api';
+import { getApartmentIdQuery } from './ApartmentReadingsService.api';
 
 const { inputs, outputs } = apartmentReadingsService;
 
@@ -48,7 +48,7 @@ export const ApartmentReadingsContainer = () => {
     apartment: outputs.$apartment,
     selectedHomeownerName: outputs.$selectedHomeownerName,
     allIndividualDeviceMountPlaces: outputs.$allIndividualDeviceMountPlaces,
-    isApartmentFetched: getApartmentQuery.$succeeded,
+    isApartmentFetched: getApartmentIdQuery.$succeeded,
   });
 
   const isPermitionToApartmentStatusPatch = usePermission([
