@@ -164,6 +164,8 @@ export const ResourceConsumptionGraph: FC<ResourceConsumptionGraphProps> = ({
                         ResourceConsumptionGraphDataType.currentMonthData,
                     }),
                     strokeWidth: 2,
+                    background: '#e12323',
+                    backgroundColor: '#e12323',
                   },
                 }}
               />
@@ -221,6 +223,11 @@ export const ResourceConsumptionGraph: FC<ResourceConsumptionGraphProps> = ({
         width={width}
         theme={VictoryTheme.material}
         containerComponent={<VictoryVoronoiContainer />}
+        animate={{
+          duration: 500,
+          onLoad: { duration: 1000 },
+          easing: 'linear',
+        }}
       >
         <VictoryAxis
           tickComponent={<TickComponent />}
