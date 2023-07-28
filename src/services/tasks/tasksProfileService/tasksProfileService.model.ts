@@ -42,6 +42,8 @@ const changeGroupType = domain.createEvent<TaskGroupingFilter>();
 const changePageNumber = domain.createEvent<number>();
 const searchTasks = domain.createEvent<GetTasksListRequestPayload>();
 
+const SetCityGate = createGate<{ cities: string[] | null }>();
+
 const searchTasksFx = domain.createEffect<
   GetTasksListRequestPayload | null,
   TasksPagedList
@@ -93,7 +95,7 @@ const $searchState = domain
     PageNumber: 1,
   }))
   .on(changePageNumber, (filters, PageNumber) => ({ ...filters, PageNumber }))
-  .on(addressSearchService.outputs.$existingCities, (prev, cities) => ({
+  .on(SetCityGate.state, (prev, { cities }) => ({
     ...prev,
     City: cities?.length ? cities[cities.length - 1] : undefined,
   }))
@@ -165,9 +167,11 @@ export const tasksProfileService = {
     $apartment,
     $housingStock,
     $tasksPageSegment,
+    $existingCities: addressSearchService.outputs.$existingCities,
   },
   gates: {
     TasksIsOpen,
     InitialGate,
+    SetCityGate,
   },
 };
