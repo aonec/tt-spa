@@ -36,9 +36,6 @@ export const SelectResourceConsumptionType: FC<
     return null;
   }
 
-  // console.log(JSON.stringify(consumptionData.currentMonthData));
-  console.log(selectedAddresses)
-
   return (
     <Wrapper>
       <SelectGraphType

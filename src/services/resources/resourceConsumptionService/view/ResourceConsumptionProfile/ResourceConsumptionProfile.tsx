@@ -55,7 +55,9 @@ export const ResourceConsumptionProfile: FC<
             startOfMonth={resourceConsumptionFilter?.From || ''}
             checked={selectedGraphTypes}
             selectedAddresses={selectedAddresses}
+            isAdditionalAddressSelected={isAdditionalAddressSelected}
           />
+
           {housingConsumptionData &&
             Boolean(
               housingConsumptionData?.currentMonthData?.housing?.length,

@@ -11,4 +11,5 @@ export type ResourceConsumptionGraphProps = {
   startOfMonth: string;
   checked: BooleanTypesOfResourceConsumptionGraphForTwoMonth;
   selectedAddresses: SelectedAddresses;
+  isAdditionalAddressSelected: boolean;
 };

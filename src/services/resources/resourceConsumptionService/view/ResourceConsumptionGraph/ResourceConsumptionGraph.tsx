@@ -43,6 +43,7 @@ export const ResourceConsumptionGraph: FC<ResourceConsumptionGraphProps> = ({
   startOfMonth,
   checked,
   selectedAddresses,
+  isAdditionalAddressSelected,
 }) => {
   const [width, setWidth] = useState(0);
 
@@ -66,22 +67,8 @@ export const ResourceConsumptionGraph: FC<ResourceConsumptionGraphProps> = ({
   }, [consumptionData?.currentMonthData, checked.currentMonthData]);
 
   const checkedPrevMonthConsumption = useMemo(() => {
-    const res = {
-      [ResourceConsumptionGraphType.Housing]: checked.prevMonthData.housing
-        ? consumptionData?.prevMonthData?.housing
-        : [],
-      [ResourceConsumptionGraphType.Normative]: checked.prevMonthData.normative
-        ? consumptionData?.prevMonthData?.normative
-        : [],
-      [ResourceConsumptionGraphType.Subscriber]: checked.prevMonthData
-        .subscriber
-        ? consumptionData?.prevMonthData?.subscriber
-        : [],
-    };
-    return res as MonthConsumptionData;
-  }, [consumptionData?.prevMonthData, checked.prevMonthData]);
+    if (isAdditionalAddressSelected) return {};
 
-  const checkedAdditionalAddressConsumption = useMemo(() => {
     const res = {
       [ResourceConsumptionGraphType.Housing]: checked.prevMonthData.housing
         ? consumptionData?.prevMonthData?.housing
@@ -96,21 +83,37 @@ export const ResourceConsumptionGraph: FC<ResourceConsumptionGraphProps> = ({
     };
     return res as MonthConsumptionData;
   }, [
-    consumptionData?.additionalAddress,
-    selectedAddresses.addditionalAddress,
+    consumptionData?.prevMonthData,
+    checked.prevMonthData,
+    isAdditionalAddressSelected,
   ]);
 
   const additionalAddressConsumptionData =
     consumptionData?.additionalAddress || null;
 
-  const dataForMinMaxCalculation = [
-    ...Object.values(checkedCurrentMonthConsumption || {}),
-    ...Object.values(checkedPrevMonthConsumption || {}),
-    ...Object.values(checkedAdditionalAddressConsumption || {}),
-  ].map(prepareData);
+  const checkedAdditionalAddressConsumption = useMemo(() => {
+    if (!isAdditionalAddressSelected || !selectedAddresses.addditionalAddress)
+      return {};
 
-  // console.log(checked) // там нет аддишинал изчек
-  console.log(selectedAddresses); // там нет аддишинал изчек
+    const res = {
+      [ResourceConsumptionGraphType.Housing]:
+        additionalAddressConsumptionData?.housing,
+      [ResourceConsumptionGraphType.Normative]:
+        additionalAddressConsumptionData?.normative,
+      [ResourceConsumptionGraphType.Subscriber]:
+        additionalAddressConsumptionData?.subscriber,
+    };
+    return res as MonthConsumptionData;
+  }, [
+    consumptionData?.additionalAddress,
+    selectedAddresses.addditionalAddress,
+  ]);
+
+  const dataForMinMaxCalculation = [
+    ...Object.values(checkedCurrentMonthConsumption),
+    ...Object.values(checkedPrevMonthConsumption),
+    ...Object.values(checkedAdditionalAddressConsumption),
+  ].map(prepareData);
 
   const isHaveDataForMinMaxCalculation = Boolean(
     dataForMinMaxCalculation?.flat().length,
@@ -136,6 +139,8 @@ export const ResourceConsumptionGraph: FC<ResourceConsumptionGraphProps> = ({
             typeOfData === ResourceConsumptionGraphDataType.prevMonthData) ||
           !selectedAddresses.addditionalAddress;
 
+        console.log(isAdditionalAddress);
+
         const hideCurrentMonthData =
           typeOfData === ResourceConsumptionGraphDataType.currentMonthData &&
           !selectedAddresses.currentAddress;
@@ -143,15 +148,13 @@ export const ResourceConsumptionGraph: FC<ResourceConsumptionGraphProps> = ({
         if (
           !consumptionData ||
           !resource ||
-          // isAdditionalAddress ||
+          isAdditionalAddress ||
           hideCurrentMonthData
         ) {
           return null;
         }
 
-        const monthData = consumptionData?.[typeOfData];
-
-        // console.log(monthData)
+        const monthData = consumptionData[typeOfData];
 
         const typeOfChecked =
           typeOfData === ResourceConsumptionGraphDataType.additionalAddress
@@ -248,7 +251,7 @@ export const ResourceConsumptionGraph: FC<ResourceConsumptionGraphProps> = ({
         theme={VictoryTheme.material}
         containerComponent={<VictoryVoronoiContainer />}
         animate={{
-          duration: 100,
+          duration: 200,
           onLoad: { duration: 600 },
           easing: 'poly',
         }}
