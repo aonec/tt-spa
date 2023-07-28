@@ -4,4 +4,5 @@ export type Props = {
   handleClose: () => void;
   fillColor: string;
   strokeColor: string;
+  openDeleteDistrictModal: () => void;
 };

@@ -1,18 +1,38 @@
-import React, { FC, useMemo, useState } from 'react';
+import React, { FC, useMemo } from 'react';
+import { useUnit } from 'effector-react';
+import { DistrictColorsList } from 'dictionaries';
 import { useRenderDistricts } from 'hooks/ymaps/utils';
 import { useYMaps } from 'hooks/ymaps/useYMaps';
 import { getPayloadFromDistricts } from 'utils/districtsData';
 import { MapWrapper } from './ManageDistrictsMap.styled';
 import { Props } from './ManageDistrictsMap.types';
 import { SelectDistrictActionModal } from './SelectDistrictActionModal';
-import { DistrictColorsList } from 'dictionaries';
+import { manageDistrictMapService } from './ManageDistricsMap.model';
+import { DeleteDistrictModal } from './DeleteDistrictModal';
+import { deleteDistrictMutation } from '../../manageDistrictsMapService.api';
+
+const { outputs, inputs } = manageDistrictMapService;
 
 export const ManageDistrictsMap: FC<Props> = ({
   organizationCoordinates,
   existingDistricts,
 }) => {
-  const [selectedDistrictId, setSelectedDistrictId] = useState<string | null>(
-    null,
+  const {
+    selectedDistrictId,
+    selectDistrict,
+    isDeleteDistrictModalOpen,
+    openDeleteDistrictModal,
+    closeDeleteDistrictModal,
+  } = useUnit({
+    selectedDistrictId: outputs.$selectedDistrict,
+    isDeleteDistrictModalOpen: outputs.$isDeleteDistrictModalOpen,
+    selectDistrict: inputs.selectDistrict,
+    openDeleteDistrictModal: inputs.openDeleteDistrictModal,
+    closeDeleteDistrictModal: inputs.closeDeleteDistrictModal,
+  });
+
+  const { start: deleteDistrict, pending: isDeletingDistrictLoading } = useUnit(
+    deleteDistrictMutation,
   );
 
   const { map, mapRef } = useYMaps(organizationCoordinates);
@@ -22,13 +42,13 @@ export const ManageDistrictsMap: FC<Props> = ({
 
     return getPayloadFromDistricts(existingDistricts).map((elem) => ({
       ...elem,
-      onClick: () => setSelectedDistrictId(elem.id),
+      onClick: () => selectDistrict(elem.id),
     }));
-  }, [existingDistricts, setSelectedDistrictId]);
+  }, [existingDistricts, selectDistrict]);
 
   useRenderDistricts(map, preparedExistingDistricts);
 
-  const selectedDistrict = useMemo(() => {
+  const selectedPreparedDistrict = useMemo(() => {
     if (!selectedDistrictId) return null;
 
     return (
@@ -38,23 +58,41 @@ export const ManageDistrictsMap: FC<Props> = ({
   }, [selectedDistrictId, preparedExistingDistricts]);
 
   const selectedDistrictColors = useMemo(() => {
-    if (!selectedDistrict) return null;
+    if (!selectedPreparedDistrict) return null;
 
     return (
-      DistrictColorsList.find((elem) => elem.type === selectedDistrict.type) ||
-      null
+      DistrictColorsList.find(
+        (elem) => elem.type === selectedPreparedDistrict.type,
+      ) || null
     );
-  }, [selectedDistrict]);
+  }, [selectedPreparedDistrict]);
+
+  const isSelectDistrictModalOpen =
+    selectedPreparedDistrict &&
+    selectedDistrictColors &&
+    !isDeleteDistrictModalOpen;
 
   return (
     <>
-      {selectedDistrict && selectedDistrictColors && (
+      {isSelectDistrictModalOpen && (
         <SelectDistrictActionModal
           strokeColor={selectedDistrictColors.strokeColor}
           fillColor={selectedDistrictColors.color}
           isOpen={Boolean(selectedDistrictId)}
-          districtName={selectedDistrict.name}
-          handleClose={() => setSelectedDistrictId(null)}
+          districtName={selectedPreparedDistrict.name}
+          handleClose={() => selectDistrict(null)}
+          openDeleteDistrictModal={openDeleteDistrictModal}
+        />
+      )}
+      {isDeleteDistrictModalOpen && (
+        <DeleteDistrictModal
+          closeDeleteDistrictModal={closeDeleteDistrictModal}
+          districtName={selectedPreparedDistrict?.name || ''}
+          handleDeleteDistrict={() =>
+            selectedPreparedDistrict?.id &&
+            deleteDistrict(selectedPreparedDistrict?.id)
+          }
+          isLoading={isDeletingDistrictLoading}
         />
       )}
       <MapWrapper>

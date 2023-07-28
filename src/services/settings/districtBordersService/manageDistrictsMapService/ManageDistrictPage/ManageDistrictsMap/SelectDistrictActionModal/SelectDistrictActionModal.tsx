@@ -11,6 +11,8 @@ import {
   TitleWrapper,
   TrashIconSC,
 } from './SelectDistrictActionModal.styled';
+import { useUnit } from 'effector-react';
+import { developmentSettingsService } from 'services/developmentSettings/developmentSettings.models';
 
 export const SelectDistrictActionModal: FC<Props> = ({
   isOpen,
@@ -18,7 +20,12 @@ export const SelectDistrictActionModal: FC<Props> = ({
   handleClose,
   fillColor,
   strokeColor,
+  openDeleteDistrictModal,
 }) => {
+  const featureToggles = useUnit(
+    developmentSettingsService.outputs.$featureToggles,
+  );
+
   return (
     <FormModal
       title={
@@ -32,26 +39,30 @@ export const SelectDistrictActionModal: FC<Props> = ({
       onCancel={handleClose}
       form={
         <div>
-          <ActionPanel
-            icon={<PencilIcon />}
-            onClick={() => {}}
-            text="Редактировать название и цвет района"
-          />
-          <LinkPanel
-            icon={<ListIcon />}
-            text="Изменить список объектов"
-            link=""
-          />
-          <LinkPanel
-            icon={<MapPaperIcon />}
-            text="Изменить границы района на карте"
-            link=""
-          />
-          <SpaceLine />
+          {featureToggles.districtManageActions && (
+            <>
+              <ActionPanel
+                icon={<PencilIcon />}
+                onClick={() => {}}
+                text="Редактировать название и цвет района"
+              />
+              <LinkPanel
+                icon={<ListIcon />}
+                text="Изменить список объектов"
+                link=""
+              />
+              <LinkPanel
+                icon={<MapPaperIcon />}
+                text="Изменить границы района на карте"
+                link=""
+              />
+              <SpaceLine />
+            </>
+          )}
           <ActionPanel
             icon={<TrashIconSC />}
             text={<DeleteDistrictText>Удалить район</DeleteDistrictText>}
-            onClick={() => void 0}
+            onClick={openDeleteDistrictModal}
           />
         </div>
       }
