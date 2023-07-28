@@ -1,21 +1,11 @@
 import { combine, createDomain, forward, sample } from 'effector';
 import { createGate } from 'effector-react';
 import { message } from 'antd';
-import {
-  GetDataForHousingConsumptionPlotResponse,
-  GetDataForIndividualDevicesConsumptionPlotResponse,
-  GetSummaryHousingConsumptionsByResourcesResponse,
-} from 'api/types';
-import {
-  fetchConsumptionsForMonth,
-  fetchConsumptionsForTwoMonth,
-  fetchSummaryConsumption,
-} from './resourceConsumptionService.api';
+import { GetSummaryHousingConsumptionsByResourcesResponse } from 'api/types';
 import { initialSelectedGraphTypes } from './resourceConsumptionService.constants';
 import {
   ConsumptionDataForTwoMonth,
   ConsumptionDataPayload,
-  MonthConsumptionData,
   ResourceConsumptionWithNull,
 } from './resourceConsumptionService.types';
 import { BooleanTypesOfResourceConsumptionGraphForTwoMonth } from './view/ResourceConsumptionProfile/ResourceConsumptionProfile.types';
@@ -26,7 +16,7 @@ import {
   fetchHousingConsumptionPlot,
   fetchNormativeAndSubscriberConsumptionData,
   fetchSummaryHousingConsumptions,
-} from './resourceConsumptionService.api2';
+} from './resourceConsumptionService.api';
 import moment from 'moment';
 
 const domain = createDomain('resourceConsumptionService');
@@ -250,7 +240,6 @@ sample({
   target: [
     getAdditionalHousingConsumptionPlotFx,
     getAdditionalNormativeAndSubscriberConsumptionDataFx,
-    // setAdditionalMode
   ],
 });
 
