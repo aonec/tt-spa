@@ -19,7 +19,7 @@ import { exportTasksListService } from '../exportTasksListService';
 
 const { ExistingCitiesGate } = addressSearchService.gates;
 const { inputs, outputs, gates } = tasksProfileService;
-const { InitialGate } = gates;
+const { InitialGate, SetCityGate } = gates;
 
 export const TasksProfileContainer = () => {
   const { grouptype } = useParams<{ grouptype: TaskGroupingFilter }>();
@@ -46,6 +46,7 @@ export const TasksProfileContainer = () => {
     clearAddress,
     setTasksPageSegment,
     handleOpenAddTaskModal,
+    existingCities,
   } = useUnit({
     taskTypes: outputs.$taskTypes,
     housingManagments: outputs.$housingManagments,
@@ -68,6 +69,7 @@ export const TasksProfileContainer = () => {
     clearAddress: inputs.clearAddress,
     setTasksPageSegment: inputs.setTasksPageSegment,
     handleOpenAddTaskModal: inputs.handleOpenAddTaskModal,
+    existingCities: addressSearchService.outputs.$existingCities,
   });
 
   const isSpectator = usePermission([
@@ -151,6 +153,7 @@ export const TasksProfileContainer = () => {
     <>
       <InitialGate />
       <ExistingCitiesGate />
+      <SetCityGate cities={existingCities} />
       <TaskTypesGate />
       <AddTaskFromDispatcherContainer />
       <TasksProfile

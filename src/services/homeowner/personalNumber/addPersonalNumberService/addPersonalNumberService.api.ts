@@ -1,6 +1,9 @@
 import { axios } from 'api/axios';
-import { HomeownerAccountCreateRequest } from 'api/types';
+import { AddHomeownerRequestPayload } from './addPersonalNumberService.types';
 
 export const addHomeowner = (
-  reqestPayload: HomeownerAccountCreateRequest,
-): Promise<void> => axios.post('HomeownerAccounts', reqestPayload);
+  requestPayload: AddHomeownerRequestPayload,
+): Promise<void> =>
+  axios.post('HomeownerAccounts', requestPayload.body, {
+    params: { isForced: requestPayload.isForced },
+  });
