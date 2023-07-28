@@ -224,9 +224,9 @@ export const ResourceConsumptionGraph: FC<ResourceConsumptionGraphProps> = ({
         theme={VictoryTheme.material}
         containerComponent={<VictoryVoronoiContainer />}
         animate={{
-          duration: 500,
-          onLoad: { duration: 1000 },
-          easing: 'linear',
+          duration: 100,
+          onLoad: { duration: 600 },
+          easing: 'poly',
         }}
       >
         <VictoryAxis

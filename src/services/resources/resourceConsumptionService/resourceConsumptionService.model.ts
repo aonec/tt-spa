@@ -122,8 +122,8 @@ const $housingConsumptionData = domain
         subscriber,
       },
     };
-  });
-// .reset(clearData);
+  })
+  .reset(clearData);
 
 const getAdditionalConsumptionData =
   domain.createEvent<ConsumptionDataPayload>();
@@ -178,17 +178,15 @@ const $isPrevHousingLoading = getPrevHousingConsumptionPlotFx.pending;
 const $isPrevNormativeAndSubscriberLoading =
   getPrevNormativeAndSubscriberConsumptionDataFx.pending;
 
-const $isLoading = combine(
-  // getHousingConsumptionFx.pending,
-  // getAdditionalConsumptionFx.pending,
+const $isLoadingFromApi = combine(
   $isExistingCitiesLoading,
   getAddressesFx.pending,
   (...loadings) => loadings.includes(true),
 );
 
-// const $isLoading = domain
-//   .createStore(true)
-//   .on($isLoadingFromApi, (_, isLoading) => isLoading);
+const $isLoading = domain
+  .createStore(true)
+  .on($isLoadingFromApi, (_, isLoading) => isLoading);
 
 sample({
   clock: getAdditionalConsumptionData,
