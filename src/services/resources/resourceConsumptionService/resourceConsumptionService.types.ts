@@ -15,6 +15,7 @@ export enum ResourceConsumptionGraphDataType {
 export type ConsumptionDataForTwoMonth = {
   [ResourceConsumptionGraphDataType.currentMonthData]?: MonthConsumptionData;
   [ResourceConsumptionGraphDataType.prevMonthData]?: MonthConsumptionData;
+  [ResourceConsumptionGraphDataType.additionalAddress]?: MonthConsumptionData;
 };
 
 export enum ResourceConsumptionGraphType {

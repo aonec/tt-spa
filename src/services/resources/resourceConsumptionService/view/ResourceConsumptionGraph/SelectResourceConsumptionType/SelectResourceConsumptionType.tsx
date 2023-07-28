@@ -37,6 +37,7 @@ export const SelectResourceConsumptionType: FC<
   }
 
   // console.log(JSON.stringify(consumptionData.currentMonthData));
+  console.log(selectedAddresses)
 
   return (
     <Wrapper>

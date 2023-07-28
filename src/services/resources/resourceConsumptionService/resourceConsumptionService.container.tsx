@@ -21,6 +21,9 @@ export const ResourceConsumptionContainer = () => {
   const isPrevNormativeAndSubscriberLoading = useStore(
     outputs.$isPrevNormativeAndSubscriberLoading,
   );
+  const isAdditionalAddressSelected = useStore(
+    outputs.$isAdditionalAddressSelected,
+  );
 
   const resourceConsumptionFilter = useStore(
     resourceConsumptionFilterService.outputs.$resourceConsumptionFilter,
@@ -31,7 +34,6 @@ export const ResourceConsumptionContainer = () => {
   const housingConsumptionData = useStore(outputs.$housingConsumptionData);
   const summaryConsumption = useStore(outputs.$summaryConsumption);
   const selectedGraphTypes = useStore(outputs.$selectedGraphTypes);
-  const additionalConsumptionData = useStore(outputs.$additionalConsumption);
 
   const setResource = useEvent(
     resourceConsumptionFilterService.inputs.setResource,
@@ -49,7 +51,6 @@ export const ResourceConsumptionContainer = () => {
         housingConsumptionData={housingConsumptionData}
         selectedGraphTypes={selectedGraphTypes}
         setSelectedGraphTypes={setSelectedGraphTypes}
-        additionalConsumptionData={additionalConsumptionData}
         summaryConsumption={summaryConsumption}
         isSummaryLoading={isSummaryLoading}
         resource={resource}
@@ -59,6 +60,7 @@ export const ResourceConsumptionContainer = () => {
         isPrevHousingLoading={isPrevHousingLoading}
         isNormativeAndSubscriberLoading={isNormativeAndSubscriberLoading}
         isHousingLoading={isHousingLoading}
+        isAdditionalAddressSelected={isAdditionalAddressSelected}
       />
     </>
   );

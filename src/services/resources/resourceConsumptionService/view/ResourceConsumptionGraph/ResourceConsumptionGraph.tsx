@@ -39,7 +39,6 @@ const height = 360;
 
 export const ResourceConsumptionGraph: FC<ResourceConsumptionGraphProps> = ({
   consumptionData,
-  additionalConsumptionData,
   resource,
   startOfMonth,
   checked,
@@ -82,11 +81,36 @@ export const ResourceConsumptionGraph: FC<ResourceConsumptionGraphProps> = ({
     return res as MonthConsumptionData;
   }, [consumptionData?.prevMonthData, checked.prevMonthData]);
 
+  const checkedAdditionalAddressConsumption = useMemo(() => {
+    const res = {
+      [ResourceConsumptionGraphType.Housing]: checked.prevMonthData.housing
+        ? consumptionData?.prevMonthData?.housing
+        : [],
+      [ResourceConsumptionGraphType.Normative]: checked.prevMonthData.normative
+        ? consumptionData?.prevMonthData?.normative
+        : [],
+      [ResourceConsumptionGraphType.Subscriber]: checked.prevMonthData
+        .subscriber
+        ? consumptionData?.prevMonthData?.subscriber
+        : [],
+    };
+    return res as MonthConsumptionData;
+  }, [
+    consumptionData?.additionalAddress,
+    selectedAddresses.addditionalAddress,
+  ]);
+
+  const additionalAddressConsumptionData =
+    consumptionData?.additionalAddress || null;
+
   const dataForMinMaxCalculation = [
     ...Object.values(checkedCurrentMonthConsumption || {}),
     ...Object.values(checkedPrevMonthConsumption || {}),
-    ...Object.values(additionalConsumptionData || {}),
+    ...Object.values(checkedAdditionalAddressConsumption || {}),
   ].map(prepareData);
+
+  // console.log(checked) // там нет аддишинал изчек
+  console.log(selectedAddresses); // там нет аддишинал изчек
 
   const isHaveDataForMinMaxCalculation = Boolean(
     dataForMinMaxCalculation?.flat().length,
@@ -108,7 +132,7 @@ export const ResourceConsumptionGraph: FC<ResourceConsumptionGraphProps> = ({
     () =>
       Object.values(ResourceConsumptionGraphDataType).map((typeOfData) => {
         const isAdditionalAddress =
-          (additionalConsumptionData &&
+          (additionalAddressConsumptionData &&
             typeOfData === ResourceConsumptionGraphDataType.prevMonthData) ||
           !selectedAddresses.addditionalAddress;
 
@@ -119,13 +143,15 @@ export const ResourceConsumptionGraph: FC<ResourceConsumptionGraphProps> = ({
         if (
           !consumptionData ||
           !resource ||
-          isAdditionalAddress ||
+          // isAdditionalAddress ||
           hideCurrentMonthData
         ) {
           return null;
         }
 
         const monthData = consumptionData?.[typeOfData];
+
+        // console.log(monthData)
 
         const typeOfChecked =
           typeOfData === ResourceConsumptionGraphDataType.additionalAddress
@@ -164,8 +190,6 @@ export const ResourceConsumptionGraph: FC<ResourceConsumptionGraphProps> = ({
                         ResourceConsumptionGraphDataType.currentMonthData,
                     }),
                     strokeWidth: 2,
-                    background: '#e12323',
-                    backgroundColor: '#e12323',
                   },
                 }}
               />
@@ -179,7 +203,7 @@ export const ResourceConsumptionGraph: FC<ResourceConsumptionGraphProps> = ({
       resource,
       checked,
       selectedAddresses,
-      additionalConsumptionData,
+      additionalAddressConsumptionData,
     ],
   );
 

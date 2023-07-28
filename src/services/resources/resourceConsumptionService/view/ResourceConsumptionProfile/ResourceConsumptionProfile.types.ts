@@ -7,7 +7,6 @@ import {
   ConsumptionDataForTwoMonth,
   ResourceConsumptionGraphType,
   ResourceConsumptionGraphDataType,
-  MonthConsumptionData,
 } from '../../resourceConsumptionService.types';
 
 export type ResourceConsumptionProfileProps = {
@@ -19,7 +18,6 @@ export type ResourceConsumptionProfileProps = {
   setSelectedGraphTypes: (
     selected: BooleanTypesOfResourceConsumptionGraphForTwoMonth,
   ) => void;
-  additionalConsumptionData: MonthConsumptionData | null;
   summaryConsumption: GetSummaryHousingConsumptionsByResourcesResponse | null;
   resource: EResourceType;
   isSummaryLoading: boolean;
@@ -27,6 +25,7 @@ export type ResourceConsumptionProfileProps = {
   isPrevHousingLoading: boolean;
   isNormativeAndSubscriberLoading: boolean;
   isHousingLoading: boolean;
+  isAdditionalAddressSelected: boolean;
 };
 
 export type BooleanTypesOfResourceConsumptionGraphForTwoMonth = {
