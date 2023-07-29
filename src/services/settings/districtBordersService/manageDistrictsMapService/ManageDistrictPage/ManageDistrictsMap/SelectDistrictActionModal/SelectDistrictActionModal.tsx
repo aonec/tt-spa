@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useMemo } from 'react';
 import { Props } from './SelectDistrictActionModal.types';
 import { FormModal } from 'ui-kit/Modals/FormModal';
 import { ListIcon, MapPaperIcon, PencilIcon } from 'ui-kit/icons';
@@ -13,13 +13,12 @@ import {
 } from './SelectDistrictActionModal.styled';
 import { useUnit } from 'effector-react';
 import { developmentSettingsService } from 'services/developmentSettings/developmentSettings.models';
+import { getDistrictColor } from 'utils/getDistrictColor';
 
 export const SelectDistrictActionModal: FC<Props> = ({
   isOpen,
-  districtName,
   handleClose,
-  fillColor,
-  strokeColor,
+  districtData,
   openDeleteDistrictModal,
   openEditDistrictModal,
 }) => {
@@ -27,12 +26,22 @@ export const SelectDistrictActionModal: FC<Props> = ({
     developmentSettingsService.outputs.$featureToggles,
   );
 
+  const selectedDistrictColors = useMemo(
+    () => getDistrictColor(districtData.type),
+    [districtData.type],
+  );
+
   return (
     <FormModal
       title={
         <TitleWrapper>
-          <ColorCircle fillColor={fillColor} strokeColor={strokeColor} />
-          {districtName || ''}
+          {selectedDistrictColors && (
+            <ColorCircle
+              fillColor={selectedDistrictColors.color}
+              strokeColor={selectedDistrictColors.strokeColor}
+            />
+          )}
+          {districtData.name}
         </TitleWrapper>
       }
       visible={isOpen}
@@ -55,7 +64,7 @@ export const SelectDistrictActionModal: FC<Props> = ({
               <LinkPanel
                 icon={<MapPaperIcon />}
                 text="Изменить границы района на карте"
-                link=""
+                link={`/districtBordersSettings/editDistrictBorders/${districtData.id}`}
               />
             </>
           )}

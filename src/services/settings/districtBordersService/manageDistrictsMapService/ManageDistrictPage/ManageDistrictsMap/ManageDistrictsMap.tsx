@@ -89,12 +89,10 @@ export const ManageDistrictsMap: FC<Props> = ({
 
   return (
     <>
-      {isSelectDistrictModalOpen && (
+      {isSelectDistrictModalOpen && selectedPreparedDistrict && (
         <SelectDistrictActionModal
-          strokeColor={selectedDistrictColors.strokeColor}
-          fillColor={selectedDistrictColors.color}
+          districtData={selectedPreparedDistrict}
           isOpen={Boolean(selectedDistrictId)}
-          districtName={selectedPreparedDistrict.name}
           handleClose={() => selectDistrict(null)}
           openDeleteDistrictModal={openDeleteDistrictModal}
           openEditDistrictModal={openEditDistrictModal}
