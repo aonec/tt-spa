@@ -5,4 +5,5 @@ export type Props = {
   fillColor: string;
   strokeColor: string;
   openDeleteDistrictModal: () => void;
+  openEditDistrictModal: () => void;
 };

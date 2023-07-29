@@ -10,6 +10,7 @@ import { SelectDistrictActionModal } from './SelectDistrictActionModal';
 import { manageDistrictMapService } from './ManageDistricsMap.model';
 import { DeleteDistrictModal } from './DeleteDistrictModal';
 import { deleteDistrictMutation } from '../../manageDistrictsMapService.api';
+import { EditDistrictInfoModal } from './EditDistrictInfoModal';
 
 const { outputs, inputs } = manageDistrictMapService;
 
@@ -19,16 +20,22 @@ export const ManageDistrictsMap: FC<Props> = ({
 }) => {
   const {
     selectedDistrictId,
-    selectDistrict,
     isDeleteDistrictModalOpen,
+    isEditDistictInfoModalOpen,
+    selectDistrict,
     openDeleteDistrictModal,
     closeDeleteDistrictModal,
+    openEditDistrictModal,
+    closeEditDistrictModal,
   } = useUnit({
     selectedDistrictId: outputs.$selectedDistrict,
     isDeleteDistrictModalOpen: outputs.$isDeleteDistrictModalOpen,
+    isEditDistictInfoModalOpen: outputs.$isEditDistictInfoModalOpen,
     selectDistrict: inputs.selectDistrict,
     openDeleteDistrictModal: inputs.openDeleteDistrictModal,
     closeDeleteDistrictModal: inputs.closeDeleteDistrictModal,
+    openEditDistrictModal: inputs.openEditDistrictModal,
+    closeEditDistrictModal: inputs.closeEditDistrictModal,
   });
 
   const { start: deleteDistrict, pending: isDeletingDistrictLoading } = useUnit(
@@ -70,7 +77,8 @@ export const ManageDistrictsMap: FC<Props> = ({
   const isSelectDistrictModalOpen =
     selectedPreparedDistrict &&
     selectedDistrictColors &&
-    !isDeleteDistrictModalOpen;
+    !isDeleteDistrictModalOpen &&
+    !isEditDistictInfoModalOpen;
 
   return (
     <>
@@ -82,17 +90,25 @@ export const ManageDistrictsMap: FC<Props> = ({
           districtName={selectedPreparedDistrict.name}
           handleClose={() => selectDistrict(null)}
           openDeleteDistrictModal={openDeleteDistrictModal}
+          openEditDistrictModal={openEditDistrictModal}
         />
       )}
-      {isDeleteDistrictModalOpen && (
+      {isDeleteDistrictModalOpen && selectedPreparedDistrict && (
         <DeleteDistrictModal
           closeDeleteDistrictModal={closeDeleteDistrictModal}
-          districtName={selectedPreparedDistrict?.name || ''}
+          districtName={selectedPreparedDistrict.name}
           handleDeleteDistrict={() =>
-            selectedPreparedDistrict?.id &&
-            deleteDistrict(selectedPreparedDistrict?.id)
+            selectedPreparedDistrict.id &&
+            deleteDistrict(selectedPreparedDistrict.id)
           }
           isLoading={isDeletingDistrictLoading}
+        />
+      )}
+      {isEditDistictInfoModalOpen && selectedPreparedDistrict && (
+        <EditDistrictInfoModal
+          closeEditDistrictModal={closeEditDistrictModal}
+          districtName={selectedPreparedDistrict.name}
+          districtColorType={selectedPreparedDistrict.type}
         />
       )}
       <MapWrapper>

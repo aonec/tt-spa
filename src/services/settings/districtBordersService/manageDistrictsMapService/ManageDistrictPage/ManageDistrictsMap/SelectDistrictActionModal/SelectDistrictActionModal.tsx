@@ -21,6 +21,7 @@ export const SelectDistrictActionModal: FC<Props> = ({
   fillColor,
   strokeColor,
   openDeleteDistrictModal,
+  openEditDistrictModal,
 }) => {
   const featureToggles = useUnit(
     developmentSettingsService.outputs.$featureToggles,
@@ -43,7 +44,7 @@ export const SelectDistrictActionModal: FC<Props> = ({
             <>
               <ActionPanel
                 icon={<PencilIcon />}
-                onClick={() => {}}
+                onClick={openEditDistrictModal}
                 text="Редактировать название и цвет района"
               />
               <LinkPanel
