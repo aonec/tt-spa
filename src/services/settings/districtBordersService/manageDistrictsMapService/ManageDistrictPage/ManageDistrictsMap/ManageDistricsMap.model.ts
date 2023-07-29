@@ -1,5 +1,8 @@
 import { createEvent, createStore } from 'effector';
-import { deleteDistrictMutation } from '../../manageDistrictsMapService.api';
+import {
+  deleteDistrictMutation,
+  updateDistrictMutation,
+} from '../../manageDistrictsMapService.api';
 
 const selectDistrict = createEvent<string | null>();
 
@@ -11,7 +14,10 @@ const closeEditDistrictModal = createEvent();
 
 const $selectedDistrict = createStore<string | null>(null)
   .on(selectDistrict, (_, id) => id)
-  .reset(deleteDistrictMutation.finished.success);
+  .reset(
+    deleteDistrictMutation.finished.success,
+    updateDistrictMutation.finished.success,
+  );
 
 const $isDeleteDistrictModalOpen = createStore(false)
   .on(openDeleteDistrictModal, () => true)
@@ -19,7 +25,7 @@ const $isDeleteDistrictModalOpen = createStore(false)
 
 const $isEditDistictInfoModalOpen = createStore(false)
   .on(openEditDistrictModal, () => true)
-  .reset(closeEditDistrictModal);
+  .reset(closeEditDistrictModal, updateDistrictMutation.finished.success);
 
 export const manageDistrictMapService = {
   inputs: {

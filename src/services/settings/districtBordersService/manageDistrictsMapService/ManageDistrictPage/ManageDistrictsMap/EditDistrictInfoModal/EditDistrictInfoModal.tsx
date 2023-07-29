@@ -13,16 +13,32 @@ import {
   Wrapper,
 } from './EditDistrictInfoModal.styled';
 import { Props } from './EditDistrictInfoModal.types';
+import { getDistrictJsonData } from 'utils/districtsData';
 
 export const EditDistrictInfoModal: FC<Props> = ({
   closeEditDistrictModal,
-  districtName,
-  districtColorType,
+  districtData,
+  updateDistrict,
+  isLoading,
 }) => {
   const { values, handleChange, setFieldValue, errors, handleSubmit } =
     useFormik({
-      initialValues: { districtName, districtColorType },
-      onSubmit: () => {},
+      initialValues: {
+        districtName: districtData.name,
+        districtColorType: districtData.type,
+      },
+      onSubmit: (data) => {
+        const payload = {
+          id: districtData.id,
+          title: data.districtName,
+          additionalInfo: getDistrictJsonData({
+            districtColor: data.districtColorType,
+            districtPolygonCoordinates: districtData.coordinates[0],
+          }),
+        };
+
+        updateDistrict(payload);
+      },
       validationSchema: Yup.object().shape({
         districtName: Yup.string().required('Это поле обязательное'),
       }),
@@ -32,6 +48,7 @@ export const EditDistrictInfoModal: FC<Props> = ({
     <FormModal
       title="Редактировать район"
       formId="edit-district-info-form"
+      loading={isLoading}
       form={
         <Wrapper>
           <FormItemSC label="Наазвание района">

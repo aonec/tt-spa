@@ -1,7 +1,9 @@
-import { DistrictColor } from 'types';
+import { DistrictData } from 'types';
+import { UpdateDistrictRequestPayload } from '../../../manageDistrictsMapService.types';
 
 export type Props = {
   closeEditDistrictModal: () => void;
-  districtName: string;
-  districtColorType: DistrictColor;
+  districtData: DistrictData;
+  isLoading: boolean;
+  updateDistrict: (payload: UpdateDistrictRequestPayload) => void;
 };

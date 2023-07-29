@@ -9,7 +9,10 @@ import { Props } from './ManageDistrictsMap.types';
 import { SelectDistrictActionModal } from './SelectDistrictActionModal';
 import { manageDistrictMapService } from './ManageDistricsMap.model';
 import { DeleteDistrictModal } from './DeleteDistrictModal';
-import { deleteDistrictMutation } from '../../manageDistrictsMapService.api';
+import {
+  deleteDistrictMutation,
+  updateDistrictMutation,
+} from '../../manageDistrictsMapService.api';
 import { EditDistrictInfoModal } from './EditDistrictInfoModal';
 
 const { outputs, inputs } = manageDistrictMapService;
@@ -40,6 +43,10 @@ export const ManageDistrictsMap: FC<Props> = ({
 
   const { start: deleteDistrict, pending: isDeletingDistrictLoading } = useUnit(
     deleteDistrictMutation,
+  );
+
+  const { start: updateDistrict, pending: isUpdateDistrictLoading } = useUnit(
+    updateDistrictMutation,
   );
 
   const { map, mapRef } = useYMaps(organizationCoordinates);
@@ -106,9 +113,10 @@ export const ManageDistrictsMap: FC<Props> = ({
       )}
       {isEditDistictInfoModalOpen && selectedPreparedDistrict && (
         <EditDistrictInfoModal
+          updateDistrict={updateDistrict}
           closeEditDistrictModal={closeEditDistrictModal}
-          districtName={selectedPreparedDistrict.name}
-          districtColorType={selectedPreparedDistrict.type}
+          districtData={selectedPreparedDistrict}
+          isLoading={isUpdateDistrictLoading}
         />
       )}
       <MapWrapper>
