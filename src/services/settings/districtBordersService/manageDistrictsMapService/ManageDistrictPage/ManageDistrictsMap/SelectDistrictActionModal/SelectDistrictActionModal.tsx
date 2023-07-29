@@ -40,13 +40,13 @@ export const SelectDistrictActionModal: FC<Props> = ({
       onCancel={handleClose}
       form={
         <div>
+          <ActionPanel
+            icon={<PencilIcon />}
+            onClick={openEditDistrictModal}
+            text="Редактировать название и цвет района"
+          />
           {featureToggles.districtManageActions && (
             <>
-              <ActionPanel
-                icon={<PencilIcon />}
-                onClick={openEditDistrictModal}
-                text="Редактировать название и цвет района"
-              />
               <LinkPanel
                 icon={<ListIcon />}
                 text="Изменить список объектов"
@@ -57,9 +57,9 @@ export const SelectDistrictActionModal: FC<Props> = ({
                 text="Изменить границы района на карте"
                 link=""
               />
-              <SpaceLine />
             </>
           )}
+          <SpaceLine />
           <ActionPanel
             icon={<TrashIconSC />}
             text={<DeleteDistrictText>Удалить район</DeleteDistrictText>}
