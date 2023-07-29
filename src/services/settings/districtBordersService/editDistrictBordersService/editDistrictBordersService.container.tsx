@@ -1,8 +1,40 @@
 import React from 'react';
-// import { editDistrictBordersService } from './editDistrictBordersService.models';
+import { EditDistrictBordersMap } from './EditDistrictBordersMap';
+import { useUnit } from 'effector-react';
+import { currentUserService } from 'services/currentUserService';
+import {
+  existingDistrictsQuery,
+  existingHousingStocksQuery,
+} from './editDistrictBordersService.api';
+import { editDistrictBordersService } from './editDistrictBordersService.models';
 
-// const { inputs, outputs } = editDistrictBordersService;
+const {
+  gates: { DistrictBordersGate },
+} = editDistrictBordersService;
 
 export const EditDistrictBordersContainer = () => {
-  return <></>;
+  const { organizationCoordinates } = useUnit({
+    organizationCoordinates:
+      currentUserService.outputs.$organizationCoordinates,
+  });
+
+  const { data: existingHousingStocks, pending: isLoadingHousingStocks } =
+    useUnit(existingHousingStocksQuery);
+
+  const { data: existingDistricts, pending: isLoadingDistricts } = useUnit(
+    existingDistrictsQuery,
+  );
+
+  return (
+    <>
+      <DistrictBordersGate />
+      <EditDistrictBordersMap
+        existingHousingStocks={existingHousingStocks}
+        existingDistricts={existingDistricts}
+        organizationCoordinates={organizationCoordinates}
+        isLoadingHousingStocks={isLoadingHousingStocks}
+        isLoadingDistricts={isLoadingDistricts}
+      />
+    </>
+  );
 };
