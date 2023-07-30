@@ -3,6 +3,9 @@ import { EditHomeownerRequestPayload } from './editHomeownerService.types';
 
 export const putHomeowner = ({
   id,
-  ...payload
+  isForced,
+  body,
 }: EditHomeownerRequestPayload): Promise<void> =>
-  axios.put(`/HomeownerAccounts/${id}`, payload);
+  axios.put(`/HomeownerAccounts/${id}`, body, {
+    params: { isForced },
+  });

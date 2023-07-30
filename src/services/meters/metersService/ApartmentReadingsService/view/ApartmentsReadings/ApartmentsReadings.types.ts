@@ -5,6 +5,7 @@ import {
 import {
   GetApartmentsRequestPayload,
   UpdateApartmentRequestPayload,
+  UpdateHomeownerRequestPayload,
 } from '../../ApartmentReadingsService.types';
 
 export type ApartmentsReadingsProps = {
@@ -24,6 +25,8 @@ export type ApartmentsReadingsProps = {
     | IndividualDeviceMountPlaceForFilterResponse[]
     | null;
   printIssueCertificate: () => void;
+  handleUpdateHomeowner: (payload: UpdateHomeownerRequestPayload) => void;
+  isUpdateHomeownerLoading: boolean;
 };
 
 export enum SearchMode {

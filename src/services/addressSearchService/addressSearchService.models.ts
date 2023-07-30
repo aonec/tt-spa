@@ -15,6 +15,8 @@ const $existingCities = domain
   .createStore<string[] | null>(null)
   .on(fetchExistingCities.doneData, (_, cities) => cities);
 
+$existingCities.watch((daata) => console.log(daata));
+
 const fetchExistingStreets = domain.createEffect<
   GetExistingSteetRequestParams,
   string[]
@@ -39,10 +41,13 @@ sample({
   target: fetchExistingStreets,
 });
 
+const $isExistingCitiesLoading = fetchExistingStreets.pending;
+
 export const addressSearchService = {
   outputs: {
     $existingCities,
     $existingStreets,
+    $isExistingCitiesLoading,
   },
   gates: {
     ExistingCitiesGate,

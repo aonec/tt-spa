@@ -26,21 +26,10 @@ export const GradientLoader = styled.div`
   transform: scale(1, -1);
 `;
 
-interface WrapProps {
-  isModal?: boolean;
-}
-
 export const Wrapper = styled.div`
   max-width: 1080px;
-  ${({ isModal }: WrapProps) =>
-    isModal
-      ? `
-
-    max-height: 520px;
-    overflow-y: auto;
-  
-  `
-      : ''}
+  max-height: 520px;
+  overflow-y: auto;
 `;
 
 export const Grid = styled.div`
