@@ -7,12 +7,15 @@ import {
   existingHousingStocksQuery,
 } from './editDistrictBordersService.api';
 import { editDistrictBordersService } from './editDistrictBordersService.models';
+import { useParams } from 'react-router-dom';
 
 const {
   gates: { DistrictBordersGate },
 } = editDistrictBordersService;
 
 export const EditDistrictBordersContainer = () => {
+  const { id } = useParams<{ id: string }>();
+
   const { organizationCoordinates } = useUnit({
     organizationCoordinates:
       currentUserService.outputs.$organizationCoordinates,
@@ -34,6 +37,7 @@ export const EditDistrictBordersContainer = () => {
         organizationCoordinates={organizationCoordinates}
         isLoadingHousingStocks={isLoadingHousingStocks}
         isLoadingDistricts={isLoadingDistricts}
+        districtId={id}
       />
     </>
   );

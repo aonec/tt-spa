@@ -11,8 +11,6 @@ import {
   TitleWrapper,
   TrashIconSC,
 } from './SelectDistrictActionModal.styled';
-import { useUnit } from 'effector-react';
-import { developmentSettingsService } from 'services/developmentSettings/developmentSettings.models';
 import { getDistrictColor } from 'utils/getDistrictColor';
 
 export const SelectDistrictActionModal: FC<Props> = ({
@@ -22,10 +20,6 @@ export const SelectDistrictActionModal: FC<Props> = ({
   openDeleteDistrictModal,
   openEditDistrictModal,
 }) => {
-  const featureToggles = useUnit(
-    developmentSettingsService.outputs.$featureToggles,
-  );
-
   const selectedDistrictColors = useMemo(
     () => getDistrictColor(districtData.type),
     [districtData.type],
@@ -54,20 +48,16 @@ export const SelectDistrictActionModal: FC<Props> = ({
             onClick={openEditDistrictModal}
             text="Редактировать название и цвет района"
           />
-          {featureToggles.districtManageActions && (
-            <>
-              <LinkPanel
-                icon={<ListIcon />}
-                text="Изменить список объектов"
-                link=""
-              />
-              <LinkPanel
-                icon={<MapPaperIcon />}
-                text="Изменить границы района на карте"
-                link={`/districtBordersSettings/editDistrictBorders/${districtData.id}`}
-              />
-            </>
-          )}
+          <LinkPanel
+            icon={<ListIcon />}
+            text="Изменить список объектов"
+            link=""
+          />
+          <LinkPanel
+            icon={<MapPaperIcon />}
+            text="Изменить границы района на карте"
+            link={`/districtBordersSettings/editDistrictBorders/${districtData.id}`}
+          />
           <SpaceLine />
           <ActionPanel
             icon={<TrashIconSC />}

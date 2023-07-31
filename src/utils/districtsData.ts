@@ -21,6 +21,7 @@ export const combinePayloadForCreateDistrict = (
 
 export const getPayloadFromDistrict = (
   district: DistrictResponse,
+  isEditing?: boolean,
 ): DistrictData | null => {
   try {
     const additionalInfo = JSON.parse(
@@ -32,6 +33,7 @@ export const getPayloadFromDistrict = (
       name: district.title || 'unknown',
       type: additionalInfo.districtColor,
       coordinates: [additionalInfo.districtPolygonCoordinates || []],
+      isEditing,
     };
   } catch (e) {
     return null;
@@ -44,6 +46,6 @@ export const getDistrictJsonData = (data: DistrictAdditionalInfo) => {
 
 export const getPayloadFromDistricts = (districtsList: DistrictResponse[]) => {
   return districtsList
-    .map(getPayloadFromDistrict)
+    .map((elem) => getPayloadFromDistrict(elem))
     .filter(Boolean) as DistrictData[];
 };

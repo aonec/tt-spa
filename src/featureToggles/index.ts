@@ -5,5 +5,4 @@ export const featureToggles = {
   services: false,
   districtsManage: false,
   controllersDistribution: false,
-  districtManageActions: false,
 };

@@ -7,4 +7,5 @@ export type Props = {
   existingDistricts: DistrictResponse[] | null;
   isLoadingHousingStocks: boolean;
   isLoadingDistricts: boolean;
+  districtId: string;
 };

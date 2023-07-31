@@ -53,7 +53,7 @@ export const getSelectedHouses = (
 };
 
 export const getWorkingDistrict = (
-  isEditing: boolean,
+  isDrawing: boolean,
   name: string,
   color: DistrictColor,
 ) => {
@@ -62,7 +62,7 @@ export const getWorkingDistrict = (
     id: 'working-district',
     type: color,
     name,
-    isEditing,
+    isDrawing,
   };
 
   return [district];
