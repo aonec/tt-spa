@@ -45,6 +45,8 @@ export const ResourceConsumptionGraph: FC<ResourceConsumptionGraphProps> = ({
   selectedAddresses,
   isAdditionalAddressSelected,
 }) => {
+  console.log(selectedAddresses);
+
   const [width, setWidth] = useState(0);
 
   const [minmax, setMinmax] = useState<[number, number]>([0, 0]);
@@ -92,7 +94,7 @@ export const ResourceConsumptionGraph: FC<ResourceConsumptionGraphProps> = ({
     consumptionData?.additionalAddress || null;
 
   const checkedAdditionalAddressConsumption = useMemo(() => {
-    if (!isAdditionalAddressSelected || !selectedAddresses.addditionalAddress)
+    if (!isAdditionalAddressSelected || !selectedAddresses.additionalAddress)
       return {};
 
     const res = {
@@ -104,10 +106,7 @@ export const ResourceConsumptionGraph: FC<ResourceConsumptionGraphProps> = ({
         additionalAddressConsumptionData?.subscriber,
     };
     return res as MonthConsumptionData;
-  }, [
-    consumptionData?.additionalAddress,
-    selectedAddresses.addditionalAddress,
-  ]);
+  }, [consumptionData?.additionalAddress, selectedAddresses.additionalAddress]);
 
   const dataForMinMaxCalculation = [
     ...Object.values(checkedCurrentMonthConsumption),
@@ -137,9 +136,9 @@ export const ResourceConsumptionGraph: FC<ResourceConsumptionGraphProps> = ({
         const isAdditionalAddress =
           (additionalAddressConsumptionData &&
             typeOfData === ResourceConsumptionGraphDataType.prevMonthData) ||
-          !selectedAddresses.addditionalAddress;
+          !selectedAddresses.additionalAddress;
 
-        console.log(isAdditionalAddress);
+        // console.log(isAdditionalAddress);
 
         const hideCurrentMonthData =
           typeOfData === ResourceConsumptionGraphDataType.currentMonthData &&
@@ -148,7 +147,7 @@ export const ResourceConsumptionGraph: FC<ResourceConsumptionGraphProps> = ({
         if (
           !consumptionData ||
           !resource ||
-          isAdditionalAddress ||
+          // isAdditionalAddress ||
           hideCurrentMonthData
         ) {
           return null;
@@ -156,14 +155,24 @@ export const ResourceConsumptionGraph: FC<ResourceConsumptionGraphProps> = ({
 
         const monthData = consumptionData[typeOfData];
 
+        console.log(monthData, typeOfData); // данные приходят
+
         const typeOfChecked =
           typeOfData === ResourceConsumptionGraphDataType.additionalAddress
             ? ResourceConsumptionGraphDataType.currentMonthData
             : typeOfData;
 
-        const monthChecked = checked[typeOfChecked];
+        console.log(typeOfChecked);
+
+        const isLineChecked = !isAdditionalAddress
+          ? checked[typeOfChecked]
+          : selectedAddresses.currentAddress
+          ? checked[typeOfChecked]
+          : checked[typeOfChecked];
+        // console.log(monthChecked);
 
         if (!monthData) {
+          console.log('exit');
           return null;
         }
 
@@ -172,8 +181,10 @@ export const ResourceConsumptionGraph: FC<ResourceConsumptionGraphProps> = ({
             typeOfData === ResourceConsumptionGraphDataType.currentMonthData &&
             key === ResourceConsumptionGraphType.Housing;
 
+          // console.log(monthChecked[key as ResourceConsumptionGraphType])
+
           if (
-            monthChecked[key as ResourceConsumptionGraphType] &&
+            // isLineChecked[key as ResourceConsumptionGraphType] &&
             !isCurrentMonthHousingData
           ) {
             return (
@@ -210,6 +221,8 @@ export const ResourceConsumptionGraph: FC<ResourceConsumptionGraphProps> = ({
     ],
   );
 
+  // console.log(lines);
+
   useEffect(() => {
     const wrapperNode = document.getElementById('graphWrapper');
 
@@ -227,7 +240,7 @@ export const ResourceConsumptionGraph: FC<ResourceConsumptionGraphProps> = ({
 
   if (
     !consumptionData ||
-    consumptionData?.currentMonthData?.housing?.length === 0 ||
+    // consumptionData?.currentMonthData?.housing?.length === 0 ||
     !resource
   ) {
     return <GraphEmptyData />;
@@ -253,7 +266,7 @@ export const ResourceConsumptionGraph: FC<ResourceConsumptionGraphProps> = ({
         animate={{
           duration: 200,
           onLoad: { duration: 600 },
-          easing: 'poly',
+          easing: 'linearInOut',
         }}
       >
         <VictoryAxis

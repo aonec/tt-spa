@@ -92,13 +92,13 @@ export const SelectResourceConsumptionType: FC<
               type: ResourceConsumptionGraphType.Housing,
               isOpacityNeed: true,
             })}
-            checked={selectedAddresses.addditionalAddress}
+            checked={selectedAddresses.additionalAddress}
             disabled={false}
             text={additionalAddress}
             setChecked={(checked) =>
               setSelectedAddresses({
                 ...selectedAddresses,
-                addditionalAddress: checked,
+                additionalAddress: checked,
               })
             }
           />

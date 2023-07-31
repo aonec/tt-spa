@@ -39,5 +39,5 @@ export type BooleanTypesOfResourceConsumptionGraph = {
 
 export type SelectedAddresses = {
   currentAddress: boolean;
-  addditionalAddress: boolean;
+  additionalAddress: boolean;
 };
