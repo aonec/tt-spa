@@ -21,11 +21,15 @@ export const SubscribersConsumptionExtendedSearch: FC<
     HotWaterSupply,
     Electricity,
     Heat,
-    MonthOfLastTransmission,
     ExcludeApartments,
     DateLastCheckFrom,
     DateLastCheckTo,
+    MonthOfLastTransmission,
+    YearOfLastTransmission,
   } = values;
+
+  const lastTransmissionDate = `${YearOfLastTransmission}-${MonthOfLastTransmission}`;
+  console.log(lastTransmissionDate);
 
   const handleChangeDateRange = useCallback(
     (dates: [moment.Moment | null, moment.Moment | null] | null) => {
@@ -178,12 +182,16 @@ export const SubscribersConsumptionExtendedSearch: FC<
           onChange={(value) => {
             setFieldValue(
               'MonthOfLastTransmission',
-              value && value.toISOString(true),
+              value && Number(value.month() + 1),
+            );
+            setFieldValue(
+              'YearOfLastTransmission',
+              value && Number(value.format('yyyy')),
             );
           }}
           value={
-            MonthOfLastTransmission
-              ? moment(MonthOfLastTransmission).startOf('month')
+            MonthOfLastTransmission && YearOfLastTransmission
+              ? moment(lastTransmissionDate)
               : undefined
           }
           picker="month"
