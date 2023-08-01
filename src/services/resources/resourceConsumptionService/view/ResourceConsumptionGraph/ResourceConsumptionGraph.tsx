@@ -147,7 +147,7 @@ export const ResourceConsumptionGraph: FC<ResourceConsumptionGraphProps> = ({
         if (
           !consumptionData ||
           !resource ||
-          // isAdditionalAddress ||
+          isAdditionalAddress ||
           hideCurrentMonthData
         ) {
           return null;
@@ -155,14 +155,14 @@ export const ResourceConsumptionGraph: FC<ResourceConsumptionGraphProps> = ({
 
         const monthData = consumptionData[typeOfData];
 
-        console.log(monthData, typeOfData); // данные приходят
+        // console.log(monthData, typeOfData); // данные приходят
 
         const typeOfChecked =
           typeOfData === ResourceConsumptionGraphDataType.additionalAddress
             ? ResourceConsumptionGraphDataType.currentMonthData
             : typeOfData;
 
-        console.log(typeOfChecked);
+        // console.log(typeOfChecked);
 
         const isLineChecked = !isAdditionalAddress
           ? checked[typeOfChecked]
@@ -172,7 +172,7 @@ export const ResourceConsumptionGraph: FC<ResourceConsumptionGraphProps> = ({
         // console.log(monthChecked);
 
         if (!monthData) {
-          console.log('exit');
+          // console.log('exit');
           return null;
         }
 
@@ -184,7 +184,7 @@ export const ResourceConsumptionGraph: FC<ResourceConsumptionGraphProps> = ({
           // console.log(monthChecked[key as ResourceConsumptionGraphType])
 
           if (
-            // isLineChecked[key as ResourceConsumptionGraphType] &&
+            isLineChecked[key as ResourceConsumptionGraphType] &&
             !isCurrentMonthHousingData
           ) {
             return (
@@ -240,7 +240,7 @@ export const ResourceConsumptionGraph: FC<ResourceConsumptionGraphProps> = ({
 
   if (
     !consumptionData ||
-    // consumptionData?.currentMonthData?.housing?.length === 0 ||
+    consumptionData?.currentMonthData?.housing?.length === 0 ||
     !resource
   ) {
     return <GraphEmptyData />;
@@ -263,11 +263,11 @@ export const ResourceConsumptionGraph: FC<ResourceConsumptionGraphProps> = ({
         width={width}
         theme={VictoryTheme.material}
         containerComponent={<VictoryVoronoiContainer />}
-        animate={{
-          duration: 200,
-          onLoad: { duration: 600 },
-          easing: 'linearInOut',
-        }}
+        // animate={{
+        //   duration: 200,
+        //   onLoad: { duration: 600 },
+        //   easing: 'linearInOut',
+        // }}
       >
         <VictoryAxis
           tickComponent={<TickComponent />}

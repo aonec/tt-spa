@@ -36,7 +36,7 @@ export const ResourceConsumptionProfile: FC<
 
   useEffect(() => {
     setSelectedAddresses(initialSelectedAddresses);
-  }, [housingConsumptionData?.additionalAddress]); // че за хуйня?
+  }, [housingConsumptionData?.additionalAddress]);
 
   return (
     <Wrapper>
