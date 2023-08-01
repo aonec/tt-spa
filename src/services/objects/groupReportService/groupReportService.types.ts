@@ -15,7 +15,6 @@ export type GroupReportRequestPayload = RegularUnloadSubscription & {
   ReportType: EReportType;
   ReportFormat?: EReportFormat;
   NodeStatus?: ENodeCommercialAccountStatus;
-  DelayedEmailTarget?: string;
 };
 
 export type RegularUnloadSubscription = {

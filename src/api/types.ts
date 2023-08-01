@@ -5315,6 +5315,31 @@ export interface RefreshTokenRequest {
   refreshToken: string;
 }
 
+export interface SendGroupReportRequest {
+  /** @format email */
+  email: string;
+  report: ComposeGroupReportRequest;
+}
+
+export interface ComposeGroupReportRequest {
+  reportType?: EReportType;
+
+  /** @format date-time */
+  from?: string | null;
+
+  /** @format date-time */
+  to?: string | null;
+  reportFormat?: EReportFormat;
+
+  /** @format uuid */
+  groupReportId?: string | null;
+
+  /** @format uuid */
+  houseManagementId?: string | null;
+  nodeResourceTypes?: EResourceType[] | null;
+  nodeStatus?: ENodeCommercialAccountStatus | null;
+}
+
 export interface ReplacementAccount {
   /** @format uuid */
   id?: string;
@@ -11903,6 +11928,16 @@ export class Api<
         query: query,
         secure: true,
         format: 'json',
+        ...params,
+      }),
+
+      reportsSendGroupReportCreate: (data: SendGroupReportRequest, params: RequestParams = {}) =>
+      this.request<void, ErrorApiResponse>({
+        path: `/api/Reports/SendGroupReport`,
+        method: "POST",
+        body: data,
+        secure: true,
+        type: ContentType.Json,
         ...params,
       }),
 

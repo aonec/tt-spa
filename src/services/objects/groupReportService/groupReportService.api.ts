@@ -1,5 +1,5 @@
 import { axios } from 'api/axios';
-import { GroupReportFormResponse } from 'api/types';
+import { GroupReportFormResponse, SendGroupReportRequest } from 'api/types';
 import { GroupReportRequestPayload } from './groupReportService.types';
 import queryString from 'query-string';
 
@@ -30,3 +30,6 @@ export const fetchGroupReport = (
 
 export const fetchFilters = (): Promise<GroupReportFormResponse> =>
   axios.get('Reports');
+
+export const sendByEmail = (payload: SendGroupReportRequest): Promise<void> =>
+  axios.post('/Reports/SendGroupReport', payload);

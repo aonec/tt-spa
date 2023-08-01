@@ -2,11 +2,16 @@ import { message } from 'antd';
 import { combine, createDomain, forward, guard } from 'effector';
 import { createGate } from 'effector-react';
 import moment from 'moment';
-import { EReportType, GroupReportFormResponse } from 'api/types';
+import {
+  EReportType,
+  GroupReportFormResponse,
+  SendGroupReportRequest,
+} from 'api/types';
 import {
   downloadGroupReportRequest,
   fetchFilters,
   fetchGroupReport,
+  sendByEmail,
 } from './groupReportService.api';
 import {
   MAX_DAILY_TYPE_DAYS,
@@ -14,7 +19,7 @@ import {
 } from './groupReportService.constants';
 import { GroupReportRequestPayload } from './groupReportService.types';
 import { sendReportToEmailService } from './sendReportToEmailService';
-import { BlobResponseErrorType } from 'types';
+import { BlobResponseErrorType, EffectFailDataAxiosError } from 'types';
 
 const domain = createDomain('groupReportService');
 
@@ -43,6 +48,11 @@ const getGroupReport = domain.createEvent<GroupReportRequestPayload>();
 const getGroupReportFx = domain.createEffect<GroupReportRequestPayload, string>(
   fetchGroupReport,
 );
+const sendByEmailFx = domain.createEffect<
+  SendGroupReportRequest,
+  void,
+  EffectFailDataAxiosError
+>(sendByEmail);
 
 const setGroupReportPayload =
   domain.createEvent<Partial<GroupReportRequestPayload>>();
@@ -122,6 +132,33 @@ forward({
   to: closeModal,
 });
 
+guard({
+  clock: sendReportToEmailService.inputs.submitEmail,
+  source: combine(
+    $downloadReportPayload,
+    sendReportToEmailService.outputs.$defaultEmail,
+    (payload, DelayedEmailTarget) => {
+      if (!payload) {
+        return null;
+      }
+      return {
+        email: DelayedEmailTarget,
+        report: {
+          from: payload.From,
+          to: payload.To,
+          houseManagementId: payload.HouseManagementId,
+          nodeResourceTypes: payload.NodeResourceTypes,
+          nodeStatus: payload.NodeStatus,
+          reportFormat: payload.ReportFormat,
+          reportType: payload.ReportType,
+        },
+      } as SendGroupReportRequest;
+    },
+  ),
+  filter: Boolean,
+  target: sendByEmailFx,
+});
+
 downloadGroupReportFx.failData.watch(async (error) => {
   const jsonData = await error.response.data.text();
   const errObject = JSON.parse(jsonData);
@@ -130,6 +167,14 @@ downloadGroupReportFx.failData.watch(async (error) => {
     errObject.error.Text ||
       errObject.error.Message ||
       'Не удалось выгрузить отчёт',
+  );
+});
+
+sendByEmailFx.failData.watch((error) => {
+  message.error(
+    error.response.data.error.Text ||
+      error.response.data.error.Message ||
+      'Произошла ошибка',
   );
 });
 

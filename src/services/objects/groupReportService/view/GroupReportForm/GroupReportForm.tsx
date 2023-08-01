@@ -17,6 +17,7 @@ import { RadioGroupSC } from './GroupReportDatesSelect/GroupReportDatesSelect.st
 import { LabeledValue } from 'antd/lib/select';
 import { ErrorMessage } from 'ui-kit/ErrorMessage';
 import { EReportFormat, EReportType } from 'api/types';
+import { SelectMultiple } from 'ui-kit/SelectMultiple';
 
 const withoutHouseMagement = 'withoutHouseMagement';
 
@@ -152,11 +153,11 @@ export const GroupReportForm: FC<GroupReportFormProps> = ({
       </FormItem>
       <RowWrapper>
         <FormItem label="Ресурс">
-          <SelectSC
+          <SelectMultiple
             value={values.NodeResourceTypes}
             onChange={(value) => setFieldValue('NodeResourceTypes', value)}
-            mode="multiple"
             options={nodeResourceTypesOptions}
+            placeholder="Выберите из списка"
           />
           <ErrorMessage>{errors.NodeResourceTypes}</ErrorMessage>
         </FormItem>

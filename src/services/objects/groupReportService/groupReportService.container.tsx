@@ -6,7 +6,6 @@ import { groupReportFormId } from './groupReportService.constants';
 import { groupReportService } from './groupReportService.model';
 import { SendReportToEmailContainer } from './sendReportToEmailService';
 import { GroupReportForm } from './view/GroupReportForm';
-import './groupReportService.relations';
 
 const { inputs, outputs, gates } = groupReportService;
 const { GroupReportGate } = gates;
