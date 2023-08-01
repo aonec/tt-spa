@@ -1,21 +1,50 @@
-import React, { FC, useEffect, useMemo } from 'react';
-import { Header, MapWrapper } from './EditDistrictBordersMap.styled';
-import { Props } from './EditDistrictBordersMap.types';
+import React, { FC, useCallback, useEffect, useMemo, useState } from 'react';
 import { GoBack } from 'ui-kit/shared/GoBack';
-import { useYMaps } from 'hooks/ymaps/useYMaps';
+import { Button } from 'ui-kit/Button';
+import { PencilIcon } from 'ui-kit/icons';
+import { findPolygonCenter } from 'utils/findPolygonCenter';
 import {
   getPayloadFromDistrict,
   getPayloadFromDistricts,
 } from 'utils/districtsData';
-import { useRenderDistricts } from 'hooks/ymaps/utils';
-import { findPolygonCenter } from 'utils/findPolygonCenter';
+import { useYMaps } from 'hooks/ymaps/useYMaps';
+import { useRenderDistricts, useRenderPlacemarks } from 'hooks/ymaps/utils';
+import {
+  getBuildingPlacmearks,
+  getSelectedHouses,
+} from '../../createDistrictBorderMapService/view/CreateDistrictBorderMapPage/CreateDistrictBorderMapPage.utils';
+import { Header, MapWrapper } from './EditDistrictBordersMap.styled';
+import { Props } from './EditDistrictBordersMap.types';
+import { SelectedHousingStocksPanel } from './SelectedHousingStocksPanel';
 
 export const EditDistrictBordersMap: FC<Props> = ({
   organizationCoordinates,
   existingDistricts,
   districtId,
+  existingHousingStocks,
 }) => {
   const { map, mapRef } = useYMaps(organizationCoordinates);
+
+  const [selectedHousingStocks, setSelectedHousingStocks] = useState<number[]>(
+    [],
+  );
+
+  const toggleHousingStock = useCallback(
+    (id: number) => {
+      setSelectedHousingStocks((prev) => {
+        if (prev.includes(id)) return prev.filter((elem) => elem !== id);
+
+        return [...prev, id];
+      });
+    },
+    [setSelectedHousingStocks],
+  );
+
+  const [bufferedPolygonCoordinates, setBufferedPolygonCoordinates] = useState<
+    number[][][] | null
+  >(null);
+
+  const [isEditing, setIsEditing] = useState(true);
 
   const preparedExistingDistricts = useMemo(() => {
     if (!existingDistricts) return [];
@@ -34,15 +63,53 @@ export const EditDistrictBordersMap: FC<Props> = ({
 
     if (!district) return null;
 
-    return getPayloadFromDistrict(district, true);
-  }, [districtId, existingDistricts]);
+    const payload = getPayloadFromDistrict(district, isEditing);
+
+    return (
+      payload && {
+        ...payload,
+        coordinates: bufferedPolygonCoordinates || payload.coordinates,
+      }
+    );
+  }, [bufferedPolygonCoordinates, districtId, existingDistricts, isEditing]);
 
   const editindDistrictArray = useMemo(
     () => (editingDistrict ? [editingDistrict] : []),
     [editingDistrict],
   );
 
-  useRenderDistricts(map, editindDistrictArray);
+  const {
+    savedDistricts: {
+      [editingDistrict?.id as string]: editingdDistrictPolygon,
+    },
+  } = useRenderDistricts(map, editindDistrictArray);
+
+  const housesInDistrict = useMemo(
+    () => getSelectedHouses(editingdDistrictPolygon, existingHousingStocks),
+    [editingdDistrictPolygon, existingHousingStocks],
+  );
+
+  useEffect(() => {
+    setSelectedHousingStocks(housesInDistrict.map(({ id }) => id));
+  }, [housesInDistrict, setSelectedHousingStocks]);
+
+  const buildingsPlacemarks = useMemo(
+    () =>
+      getBuildingPlacmearks(
+        existingHousingStocks,
+        housesInDistrict.map(({ id }) => id),
+        selectedHousingStocks,
+        toggleHousingStock,
+      ),
+    [
+      existingHousingStocks,
+      housesInDistrict,
+      selectedHousingStocks,
+      toggleHousingStock,
+    ],
+  );
+
+  useRenderPlacemarks(map, buildingsPlacemarks);
 
   useEffect(() => {
     if (!editingDistrict || !map) return;
@@ -50,12 +117,35 @@ export const EditDistrictBordersMap: FC<Props> = ({
     map.setCenter(findPolygonCenter(editingDistrict.coordinates[0]));
   }, [map, editingDistrict]);
 
+  const handleApply = useCallback(() => {
+    const coordinates = editingdDistrictPolygon?.geometry?.getCoordinates();
+
+    if (!coordinates) return;
+
+    setBufferedPolygonCoordinates(coordinates);
+    setIsEditing(false);
+  }, [editingdDistrictPolygon?.geometry]);
+
   return (
     <div>
       <Header>
         <GoBack />
+        {isEditing && <Button onClick={handleApply}>Подтвердить</Button>}
+        {!isEditing && (
+          <Button onClick={() => setIsEditing(true)} icon={<PencilIcon />}>
+            Редактировать
+          </Button>
+        )}
       </Header>
       <MapWrapper>
+        {!isEditing && (
+          <SelectedHousingStocksPanel
+            housesInDistrict={housesInDistrict}
+            selectedHousingStocks={selectedHousingStocks}
+            toggleHousingStock={toggleHousingStock}
+            handleCancel={() => setIsEditing(true)}
+          />
+        )}
         <div ref={mapRef} style={{ width: '100%', height: '86vh' }} />
       </MapWrapper>
     </div>
