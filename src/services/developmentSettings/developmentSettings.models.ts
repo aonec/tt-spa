@@ -28,7 +28,7 @@ const $featureToggles = domain
   .createStore<FeatureToggles>(featureToggles)
   .on(toggleFeature, (prev, feature) => ({
     ...prev,
-    [feature]: !prev[feature],
+    [feature]: !prev[feature as keyof FeatureToggles],
   }))
   .on(resetFeatureToggles, () => ({ ...featureToggles }));
 

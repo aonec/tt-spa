@@ -1,43 +1,17 @@
-import { createDomain, createStore, sample } from 'effector';
+import { createDomain, sample } from 'effector';
 import { createGate } from 'effector-react';
+import { message } from 'antd';
 import {
   deleteDistrictMutation,
   existingDistrictsQuery,
 } from './manageDistrictsMapService.api';
-import { createForm } from 'effector-forms';
-import { message } from 'antd';
 import { currentUserService } from 'services/currentUserService';
 
 const domain = createDomain('manageDistrictsMapService');
 
 const ManageDistrictsGate = createGate();
 
-const handleOpenDeleteDistrictModal = domain.createEvent();
-const handleCloseDeleteDistrictModal = domain.createEvent();
-
-const handleDeleteDistrict = domain.createEvent();
-
-const manageDistrictsForm = createForm({
-  fields: {
-    selectedDistrictId: {
-      init: null as null | string,
-    },
-  },
-});
-
-const $isDeleteDistrictModalOpen = createStore(false)
-  .on(handleOpenDeleteDistrictModal, () => true)
-  .reset(
-    ManageDistrictsGate.close,
-    deleteDistrictMutation.finished.success,
-    handleCloseDeleteDistrictModal,
-  );
-
-manageDistrictsForm.fields.selectedDistrictId.$value.reset(
-  ManageDistrictsGate.close,
-  deleteDistrictMutation.finished.success,
-  handleCloseDeleteDistrictModal,
-);
+const handleDeleteDistrict = domain.createEvent<string>();
 
 sample({
   clock: ManageDistrictsGate.open,
@@ -46,8 +20,6 @@ sample({
 
 sample({
   clock: handleDeleteDistrict,
-  source: manageDistrictsForm.fields.selectedDistrictId.$value,
-  filter: (id): id is string => Boolean(id),
   target: deleteDistrictMutation.start,
 });
 
@@ -66,15 +38,11 @@ sample({
 
 export const manageDistrictsMapService = {
   inputs: {
-    handleOpenDeleteDistrictModal,
-    handleCloseDeleteDistrictModal,
     handleDeleteDistrict,
   },
   outputs: {
-    $isDeleteDistrictModalOpen,
     $organizationCoordinates:
       currentUserService.outputs.$organizationCoordinates,
   },
   gates: { ManageDistrictsGate },
-  forms: { manageDistrictsForm },
 };
