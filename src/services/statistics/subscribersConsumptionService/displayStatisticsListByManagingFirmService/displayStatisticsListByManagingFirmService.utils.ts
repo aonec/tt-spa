@@ -10,14 +10,16 @@ export const prepareFilterBeforeSenging = (
     Heat,
     DateLastCheckFrom,
     DateLastCheckTo,
-    MonthOfLastTransmission,
     HousingStockId,
+    MonthOfLastTransmission,
+    YearOfLastTransmission,
   } = filter;
 
   let payload: SubscriberStatisticsFilter = {
     DateLastCheckFrom,
     DateLastCheckTo,
     MonthOfLastTransmission,
+    YearOfLastTransmission,
     HousingStockId,
   };
 

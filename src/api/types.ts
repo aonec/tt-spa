@@ -13883,7 +13883,8 @@ export class Api<
     subscriberStatisticsList: (
       query: {
         HousingStockId: number;
-        MonthOfLastTransmission?: string;
+        MonthOfLastTransmission?: number;
+        YearOfLastTransmission?: number;
         DateLastCheckFrom?: string;
         DateLastCheckTo?: string;
         HotWaterSupplyConsumptionFrom?: number;
