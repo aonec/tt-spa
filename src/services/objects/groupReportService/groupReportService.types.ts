@@ -1,6 +1,7 @@
 import {
   EEmailSubscriptionType,
   ENodeCommercialAccountStatus,
+  EReportFormat,
   EReportType,
   EResourceType,
 } from 'api/types';
@@ -12,7 +13,7 @@ export type GroupReportRequestPayload = RegularUnloadSubscription & {
   HouseManagementId: string | null;
   NodeResourceTypes: EResourceType[];
   ReportType: EReportType;
-
+  ReportFormat?: EReportFormat;
   NodeStatus?: ENodeCommercialAccountStatus;
   DelayedEmailTarget?: string;
 };
