@@ -197,7 +197,7 @@ export const GroupReportForm: FC<GroupReportFormProps> = ({
       </RowWrapper>
       <Divider type="horizontal" />
 
-      <RegularUnloading
+      {/* <RegularUnloading
         handleChangeContractorIds={handleChangeContractorIds}
         handleChangeEmail={handleChangeEmail}
         handleChangeSubsType={handleChangeSubsType}
@@ -212,7 +212,7 @@ export const GroupReportForm: FC<GroupReportFormProps> = ({
           isRegular: values.isRegular,
         }}
         errors={errors}
-      />
+      /> */}
     </Form>
   );
 };
