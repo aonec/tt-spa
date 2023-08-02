@@ -8,7 +8,7 @@ import {
 export type GroupReportRequestPayload = RegularUnloadSubscription & {
   To: string;
   From: string;
-  Name: string;
+  FileName: string;
   HouseManagementId: string | null;
   NodeResourceTypes: EResourceType[];
   ReportType: EReportType;

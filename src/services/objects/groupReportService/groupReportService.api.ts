@@ -3,16 +3,15 @@ import { GroupReportFormResponse, SendGroupReportRequest } from 'api/types';
 import { GroupReportRequestPayload } from './groupReportService.types';
 import queryString from 'query-string';
 
-export const downloadGroupReportRequest = async ({
-  Name,
-  ...params
-}: GroupReportRequestPayload): Promise<void> => {
+export const downloadGroupReportRequest = async (
+  params: GroupReportRequestPayload,
+): Promise<void> => {
   const res: string = await fetchGroupReport(params);
   const fileURL = window.URL.createObjectURL(new Blob([res]));
 
   const fileDownloadLink = document.createElement('a');
   fileDownloadLink.href = fileURL;
-  fileDownloadLink.setAttribute('download', `${Name}.zip`);
+  fileDownloadLink.setAttribute('download', `${params.FileName}.zip`);
   document.body.appendChild(fileDownloadLink);
 
   fileDownloadLink.click();
@@ -20,7 +19,7 @@ export const downloadGroupReportRequest = async ({
 };
 
 export const fetchGroupReport = (
-  params: Omit<GroupReportRequestPayload, 'Name'>,
+  params: GroupReportRequestPayload,
 ): Promise<string> =>
   axios.get('Reports/GroupReport', {
     params,

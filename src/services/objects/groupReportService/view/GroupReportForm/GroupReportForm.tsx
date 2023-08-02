@@ -11,7 +11,7 @@ import { FormItem } from 'ui-kit/FormItem';
 import { Select } from 'ui-kit/Select';
 import { Input } from 'ui-kit/Input';
 import moment from 'moment';
-import { RowWrapper, SelectSC } from './GroupReportForm.styled';
+import { RowWrapper } from './GroupReportForm.styled';
 import { GroupReportDatesSelect } from './GroupReportDatesSelect';
 import { RadioGroupSC } from './GroupReportDatesSelect/GroupReportDatesSelect.styled';
 import { LabeledValue } from 'antd/lib/select';
@@ -26,15 +26,19 @@ export const GroupReportForm: FC<GroupReportFormProps> = ({
   handleDownload,
   reportFilters,
 }) => {
-  const { groupReports, nodeResourceTypes, nodeStatuses, contractors } =
-    reportFilters;
+  const {
+    groupReports,
+    nodeResourceTypes,
+    nodeStatuses,
+    // contractors
+  } = reportFilters;
 
   const { values, setFieldValue, handleSubmit, errors } = useFormik<
     Partial<GroupReportRequestPayload>
     //  & { isRegular: boolean } // Бэк дорабатывает функционал по регулярным выгрузкам
   >({
     initialValues: {
-      Name: `Групповой_отчёт_${moment().format('DD.MM.YYYY')}`,
+      FileName: `Групповой_отчёт_${moment().format('DD.MM.YYYY')}`,
       ReportType: EReportType.Hourly,
       From: moment().startOf('month').format(),
       To: moment().endOf('day').format(),
@@ -146,10 +150,10 @@ export const GroupReportForm: FC<GroupReportFormProps> = ({
       </FormItem>
       <FormItem label="Название отчёта">
         <Input
-          value={values.Name}
-          onChange={(e) => setFieldValue('Name', e.currentTarget.value)}
+          value={values.FileName}
+          onChange={(e) => setFieldValue('FileName', e.currentTarget.value)}
         />
-        <ErrorMessage>{errors.Name}</ErrorMessage>
+        <ErrorMessage>{errors.FileName}</ErrorMessage>
       </FormItem>
       <RowWrapper>
         <FormItem label="Ресурс">

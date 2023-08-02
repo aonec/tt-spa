@@ -1,5 +1,5 @@
 import { message } from 'antd';
-import { combine, createDomain, forward, guard } from 'effector';
+import { combine, createDomain, forward, guard, sample } from 'effector';
 import { createGate } from 'effector-react';
 import moment from 'moment';
 import {
@@ -63,6 +63,7 @@ const $isFiltersLoading = getReportFiltersFx.pending;
 const $isDownloading = combine(
   downloadGroupReportFx.pending,
   getGroupReportFx.pending,
+  sendByEmailFx.pending,
   (...isLoading) => isLoading.includes(true),
 );
 
@@ -74,7 +75,7 @@ guard({
     Boolean(
       payload.From &&
         payload.To &&
-        payload.Name &&
+        payload.FileName &&
         payload.NodeResourceTypes &&
         payload.ReportType,
     ),
@@ -127,9 +128,34 @@ guard({
   target: getReportFiltersFx,
 });
 
-forward({
-  from: [downloadGroupReportFx.doneData, getGroupReportFx.doneData],
-  to: closeModal,
+sample({
+  clock: [
+    downloadGroupReportFx.doneData,
+    getGroupReportFx.doneData,
+    sendByEmailFx.doneData,
+  ],
+  target: closeModal,
+});
+
+const delayFx = domain.createEffect<void, void>(
+  () => new Promise((resolve) => setTimeout(resolve, 1000)),
+);
+
+const $isSendByEmailWithError = domain
+  .createStore<boolean>(false)
+  .on(sendByEmailFx.failData, (_, err) => Boolean(err))
+  .reset(closeModal);
+
+sample({
+  clock: sendByEmailFx.pending,
+  target: delayFx,
+});
+
+sample({
+  clock: delayFx.done,
+  source: $isSendByEmailWithError,
+  filter: (isSendByEmailWithError) => !isSendByEmailWithError,
+  target: closeModal,
 });
 
 guard({
@@ -151,6 +177,7 @@ guard({
           nodeStatus: payload.NodeStatus,
           reportFormat: payload.ReportFormat,
           reportType: payload.ReportType,
+          fileName: payload.FileName,
         },
       } as SendGroupReportRequest;
     },
@@ -171,11 +198,20 @@ downloadGroupReportFx.failData.watch(async (error) => {
 });
 
 sendByEmailFx.failData.watch((error) => {
+  message.destroy();
+
   message.error(
     error.response.data.error.Text ||
       error.response.data.error.Message ||
       'Произошла ошибка',
   );
+});
+sendByEmailFx.pending.watch((isPending) => {
+  isPending && message.info('Отчёт формируется для отправки на почту', 60);
+});
+sendByEmailFx.doneData.watch(() => {
+  message.destroy();
+  message.success('Отчёт успешно отправлен на почту');
 });
 
 export const groupReportService = {
