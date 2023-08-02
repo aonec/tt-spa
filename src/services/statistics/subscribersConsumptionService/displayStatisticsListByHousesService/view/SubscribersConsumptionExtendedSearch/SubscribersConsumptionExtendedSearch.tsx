@@ -29,7 +29,6 @@ export const SubscribersConsumptionExtendedSearch: FC<
   } = values;
 
   const lastTransmissionDate = `${YearOfLastTransmission}-${MonthOfLastTransmission}`;
-  console.log(lastTransmissionDate);
 
   const handleChangeDateRange = useCallback(
     (dates: [moment.Moment | null, moment.Moment | null] | null) => {
