@@ -7,12 +7,12 @@ import {
   Title,
   Wrapper,
 } from './SelectedHousingStocksPanel.styled';
-import { Props } from './SelectedHousingStocksPanel.types';
+import { SelectedHousingStocksProps } from './SelectedHousingStocksPanel.types';
 import { Checkbox, Empty } from 'antd';
 import { sortBy } from 'lodash';
 import { Button } from 'ui-kit/Button';
 
-export const SelectedHousingStocksPanel: FC<Props> = ({
+export const SelectedHousingStocksPanel: FC<SelectedHousingStocksProps> = ({
   housesInDistrict,
   selectedHousingStocks,
   toggleHousingStock,

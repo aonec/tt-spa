@@ -1,6 +1,6 @@
 import { BuildingListResponse } from 'api/types';
 
-export type Props = {
+export type SelectedHousingStocksProps = {
   housesInDistrict: BuildingListResponse[];
   selectedHousingStocks: number[];
   toggleHousingStock: (id: number) => void;
