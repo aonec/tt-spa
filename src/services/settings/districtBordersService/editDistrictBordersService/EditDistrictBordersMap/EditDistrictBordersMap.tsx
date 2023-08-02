@@ -22,6 +22,8 @@ export const EditDistrictBordersMap: FC<Props> = ({
   existingDistricts,
   districtId,
   existingHousingStocks,
+  isLoadingUpdateDistrict,
+  handleUpdateDistrictBorder,
 }) => {
   const { map, mapRef } = useYMaps(organizationCoordinates);
 
@@ -99,14 +101,9 @@ export const EditDistrictBordersMap: FC<Props> = ({
         existingHousingStocks,
         housesInDistrict.map(({ id }) => id),
         selectedHousingStocks,
-        toggleHousingStock,
+        () => {},
       ),
-    [
-      existingHousingStocks,
-      housesInDistrict,
-      selectedHousingStocks,
-      toggleHousingStock,
-    ],
+    [existingHousingStocks, housesInDistrict, selectedHousingStocks],
   );
 
   useRenderPlacemarks(map, buildingsPlacemarks);
@@ -126,6 +123,12 @@ export const EditDistrictBordersMap: FC<Props> = ({
     setIsEditing(false);
   }, [editingdDistrictPolygon?.geometry]);
 
+  const handleUpdate = useCallback(() => {
+    if (!bufferedPolygonCoordinates) return;
+
+    handleUpdateDistrictBorder(bufferedPolygonCoordinates[0]);
+  }, [bufferedPolygonCoordinates, handleUpdateDistrictBorder]);
+
   return (
     <div>
       <Header>
@@ -144,6 +147,8 @@ export const EditDistrictBordersMap: FC<Props> = ({
             selectedHousingStocks={selectedHousingStocks}
             toggleHousingStock={toggleHousingStock}
             handleCancel={() => setIsEditing(true)}
+            isLoading={isLoadingUpdateDistrict}
+            handleUpdate={handleUpdate}
           />
         )}
         <div ref={mapRef} style={{ width: '100%', height: '86vh' }} />

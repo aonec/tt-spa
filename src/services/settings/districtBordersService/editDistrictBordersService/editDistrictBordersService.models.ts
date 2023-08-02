@@ -1,13 +1,9 @@
-// import { createDomain } from 'effector';
-
 import { sample } from 'effector';
 import { createGate } from 'effector-react';
 import {
   existingDistrictsQuery,
   existingHousingStocksQuery,
 } from './editDistrictBordersService.api';
-
-// const domain = createDomain('editDistrictBordersService');
 
 const DistrictBordersGate = createGate();
 
@@ -17,7 +13,5 @@ sample({
 });
 
 export const editDistrictBordersService = {
-  inputs: {},
-  outputs: {},
   gates: { DistrictBordersGate },
 };

@@ -8,15 +8,15 @@ import {
   Wrapper,
 } from './SelectedHousingStocksPanel.styled';
 import { Props } from './SelectedHousingStocksPanel.types';
-import { Checkbox, Empty } from 'antd';
+import { Empty } from 'antd';
 import { sortBy } from 'lodash';
 import { Button } from 'ui-kit/Button';
 
 export const SelectedHousingStocksPanel: FC<Props> = ({
   housesInDistrict,
-  selectedHousingStocks,
-  toggleHousingStock,
   handleCancel,
+  isLoading,
+  handleUpdate,
 }) => {
   return (
     <Wrapper>
@@ -29,14 +29,9 @@ export const SelectedHousingStocksPanel: FC<Props> = ({
           return `${address?.street}${address?.number}${address?.corpus || ''}`;
         }).map((elem) => (
           <AddressItem key={elem.id}>
-            <Checkbox
-              onChange={() => toggleHousingStock(elem.id)}
-              checked={selectedHousingStocks.includes(elem.id)}
-            >
-              {elem.address?.mainAddress?.street}
-              {', '}
-              {elem.address?.mainAddress?.number}
-            </Checkbox>
+            {elem.address?.mainAddress?.street}
+            {', '}
+            {elem.address?.mainAddress?.number}
           </AddressItem>
         ))}
         {!housesInDistrict.length && (
@@ -47,7 +42,9 @@ export const SelectedHousingStocksPanel: FC<Props> = ({
         <Button size="small" type="ghost" onClick={handleCancel}>
           Отмена
         </Button>
-        <Button size="small">Сохранить</Button>
+        <Button size="small" isLoading={isLoading} onClick={handleUpdate}>
+          Сохранить
+        </Button>
       </Footer>
     </Wrapper>
   );
