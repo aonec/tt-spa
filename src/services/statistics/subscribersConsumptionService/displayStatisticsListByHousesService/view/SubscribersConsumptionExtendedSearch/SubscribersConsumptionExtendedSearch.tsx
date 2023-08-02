@@ -24,8 +24,6 @@ export const SubscribersConsumptionExtendedSearch: FC<
     ExcludeApartments,
     DateLastCheckFrom,
     DateLastCheckTo,
-    MonthOfLastTransmission,
-    YearOfLastTransmission,
   } = values;
 
   // const lastTransmissionDate = `${YearOfLastTransmission}-${MonthOfLastTransmission}`;
