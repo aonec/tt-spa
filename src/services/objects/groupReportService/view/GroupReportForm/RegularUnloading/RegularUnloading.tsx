@@ -7,9 +7,9 @@ import { DatePicker } from 'ui-kit/DatePicker';
 import { FormItem } from 'ui-kit/FormItem';
 import { Input } from 'ui-kit/Input';
 import { Select } from 'ui-kit/Select';
-import { RadioGroupSC } from '../GroupReportDatesSelect/GroupReportDatesSelect.styled';
+// import { RadioGroupSC } from '../GroupReportDatesSelect/GroupReportDatesSelect.styled';
 import { RowWrapper } from '../GroupReportForm.styled';
-import { SubsTypeRadioOptions } from './RegularUnloading.constants';
+// import { SubsTypeRadioOptions } from './RegularUnloading.constants';
 import { SwitchWrapper, Wrapper } from './RegularUnloading.styled';
 import { RegularUnloadingProps } from './RegularUnloading.types';
 
@@ -17,7 +17,7 @@ export const RegularUnloading: FC<RegularUnloadingProps> = ({
   contractors,
   handleChangeContractorIds,
   handleChangeEmail,
-  handleChangeSubsType,
+  // handleChangeSubsType,
   handleThriggerAt,
   handleChangeIsRegular,
   values,
@@ -39,14 +39,14 @@ export const RegularUnloading: FC<RegularUnloadingProps> = ({
     if (!isRegular) {
       handleChangeContractorIds();
       handleChangeEmail();
-      handleChangeSubsType();
+      // handleChangeSubsType();
       handleThriggerAt();
     }
   }, [
     isRegular,
     handleChangeContractorIds,
     handleChangeEmail,
-    handleChangeSubsType,
+    // handleChangeSubsType,
     handleThriggerAt,
   ]);
 
@@ -106,14 +106,14 @@ export const RegularUnloading: FC<RegularUnloadingProps> = ({
               <ErrorMessage>{errors['Subscription.TriggerAt']}</ErrorMessage>
             </FormItem>
           </RowWrapper>
-          <FormItem label="Период">
+          {/* <FormItem label="Период">
             <RadioGroupSC
               options={SubsTypeRadioOptions}
               onChange={(e) => handleChangeSubsType(e.target.value)}
               value={values['Subscription.Type']}
             />
             <ErrorMessage>{errors['Subscription.Type']}</ErrorMessage>
-          </FormItem>
+          </FormItem> */}
         </>
       )}
     </Wrapper>

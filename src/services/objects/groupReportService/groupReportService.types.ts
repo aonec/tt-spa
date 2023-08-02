@@ -1,5 +1,4 @@
 import {
-  EEmailSubscriptionType,
   ENodeCommercialAccountStatus,
   EReportFormat,
   EReportType,
@@ -21,5 +20,4 @@ export type RegularUnloadSubscription = {
   'Subscription.Email'?: string;
   'Subscription.ContractorIds'?: number[];
   'Subscription.TriggerAt'?: string;
-  'Subscription.Type'?: EEmailSubscriptionType;
 };
