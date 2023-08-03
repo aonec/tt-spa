@@ -42,7 +42,7 @@ export function hasNoConsecutiveNumbers(
   for (let i = 0; i < arr.length; i++) {
     if (typeof arr[i].value === 'number') {
       count++;
-      if (count >= 3) {
+      if (count >= 2) {
         return false;
       }
     } else {

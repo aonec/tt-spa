@@ -45,7 +45,7 @@ export const ResourceConsumptionGraph: FC<ResourceConsumptionGraphProps> = ({
   selectedAddresses,
   isAdditionalAddressSelected,
 }) => {
-  console.log(selectedAddresses);
+  // console.log(selectedAddresses);
 
   const [width, setWidth] = useState(0);
 
@@ -106,7 +106,11 @@ export const ResourceConsumptionGraph: FC<ResourceConsumptionGraphProps> = ({
         additionalAddressConsumptionData?.subscriber,
     };
     return res as MonthConsumptionData;
-  }, [consumptionData?.additionalAddress, selectedAddresses.additionalAddress]);
+  }, [
+    selectedAddresses.additionalAddress,
+    additionalAddressConsumptionData,
+    isAdditionalAddressSelected,
+  ]);
 
   const dataForMinMaxCalculation = [
     ...Object.values(checkedCurrentMonthConsumption),
@@ -226,9 +230,9 @@ export const ResourceConsumptionGraph: FC<ResourceConsumptionGraphProps> = ({
   useEffect(() => {
     const wrapperNode = document.getElementById('graphWrapper');
 
-    if (!wrapperNode) {
-      return;
-    }
+    // if (!wrapperNode) {
+    //   return;
+    // }
 
     const handleResize = () => setWidth(wrapperNode?.clientWidth || 0);
     window.addEventListener('resize', handleResize);

@@ -1,6 +1,5 @@
 import { combine, createDomain, forward, sample } from 'effector';
 import { createGate } from 'effector-react';
-import { message } from 'antd';
 import { GetSummaryHousingConsumptionsByResourcesResponse } from 'api/types';
 import { initialSelectedGraphTypes } from './resourceConsumptionService.constants';
 import {
@@ -171,6 +170,8 @@ const $housingConsumptionData = domain
     },
   )
   .reset(clearData);
+
+$housingConsumptionData.watch((data) => console.log(data));
 
 const getAdditionalConsumptionData =
   domain.createEvent<ConsumptionDataPayload>();
