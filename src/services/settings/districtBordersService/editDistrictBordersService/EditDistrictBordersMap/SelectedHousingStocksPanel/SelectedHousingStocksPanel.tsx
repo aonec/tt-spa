@@ -27,18 +27,23 @@ export const SelectedHousingStocksPanel: FC<SelectedHousingStocksProps> = ({
         {sortBy(housesInDistrict, (elem) => {
           const address = elem.address?.mainAddress;
           return `${address?.street}${address?.number}${address?.corpus || ''}`;
-        }).map((elem) => (
-          <AddressItem key={elem.id}>
-            <Checkbox
-              onChange={() => toggleHousingStock(elem.id)}
-              checked={selectedHousingStocks.includes(elem.id)}
-            >
-              {elem.address?.mainAddress?.street}
-              {', '}
-              {elem.address?.mainAddress?.number}
-            </Checkbox>
-          </AddressItem>
-        ))}
+        }).map((elem) => {
+          const address = elem.address?.mainAddress;
+
+          const addressString =
+            address && [address.street, address.number].join(', ');
+
+          return (
+            <AddressItem key={elem.id}>
+              <Checkbox
+                onChange={() => toggleHousingStock(elem.id)}
+                checked={selectedHousingStocks.includes(elem.id)}
+              >
+                {addressString}
+              </Checkbox>
+            </AddressItem>
+          );
+        })}
         {!housesInDistrict.length && (
           <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
         )}
