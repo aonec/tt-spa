@@ -126,8 +126,8 @@ const createReportFx = createReportDomain.createEffect<
   }) => {
     const res: string = await axios.get(`Reports/${type}Xlsx`, {
       params: {
-        From: date.From && moment(date.From).startOf('day').toISOString(),
-        To: date.To && moment(date.To).endOf('day').toISOString(),
+        From: date.From && moment(date.From).format('YYYY-MM-DD'),
+        To: date.To && moment(date.To).format('YYYY-MM-DD'),
         Resources: resources,
         ClosingReasons: closingReasons,
         HousingStockId: housingStockId,
