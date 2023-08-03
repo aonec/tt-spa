@@ -24,12 +24,10 @@ export const SubscribersConsumptionExtendedSearch: FC<
     ExcludeApartments,
     DateLastCheckFrom,
     DateLastCheckTo,
-    MonthOfLastTransmission,
-    YearOfLastTransmission,
   } = values;
 
-  const lastTransmissionDate = `${YearOfLastTransmission}-${MonthOfLastTransmission}`;
-  console.log(lastTransmissionDate);
+  // const lastTransmissionDate = `${YearOfLastTransmission}-${MonthOfLastTransmission}`;
+  // console.log(lastTransmissionDate);
 
   const handleChangeDateRange = useCallback(
     (dates: [moment.Moment | null, moment.Moment | null] | null) => {
@@ -189,11 +187,12 @@ export const SubscribersConsumptionExtendedSearch: FC<
               value && Number(value.format('yyyy')),
             );
           }}
-          value={
-            MonthOfLastTransmission && YearOfLastTransmission
-              ? moment(lastTransmissionDate)
-              : undefined
-          }
+          // value={
+          //   // MonthOfLastTransmission && YearOfLastTransmission
+          //   //   ? moment(lastTransmissionDate)
+          //   //   :
+          //      undefined
+          // }
           picker="month"
           format="MMMM YYYY"
           disabledDate={(date) => {
