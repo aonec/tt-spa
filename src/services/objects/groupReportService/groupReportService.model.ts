@@ -158,7 +158,7 @@ sample({
   target: closeModal,
 });
 
-guard({
+sample({
   clock: sendReportToEmailService.inputs.submitEmail,
   source: combine(
     $downloadReportPayload,
