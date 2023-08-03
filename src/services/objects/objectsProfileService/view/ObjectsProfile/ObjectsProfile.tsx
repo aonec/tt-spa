@@ -14,7 +14,14 @@ import {
   HeaderCustomContentWrapper,
   SizeWrapper,
 } from './ObjectsProfile.styled';
-import { HeaderInject, ObjectsProfileProps } from './ObjectsProfile.types';
+import {
+  BuildingsPageSegment,
+  HeaderInject,
+  ObjectsProfileProps,
+} from './ObjectsProfile.types';
+import { Segmented } from 'ui-kit/Segmented';
+import { ListIcon, MapIcon } from 'ui-kit/icons';
+import { BuildingsMapContainer } from '../../buildingsMapService';
 
 const objectListComponentsLookup: {
   [key: string]: FC<HeaderInject>;
@@ -39,6 +46,8 @@ export const ObjectsProfile: FC<ObjectsProfileProps> = ({
   isPermitionToCreateFeedFlowPipeTemperatureReport,
   openHeatIndividualDevicesReportModal,
   openFlowTemperatureDeviationReportModal,
+  setSegment,
+  pageSegment,
 }) => {
   const menuButtons = useMemo(
     () => [
@@ -104,32 +113,63 @@ export const ObjectsProfile: FC<ObjectsProfileProps> = ({
             contextMenu={{
               menuButtons,
             }}
-          />
-          <SizeWrapper>
-            <SearchTypesWrapper>
-              <Radio.Group value={searchType}>
-                <Link to={`/buildings/${SearchType.Houses}`}>
-                  <Radio value={SearchType.Houses}>Поиск по адресу</Radio>
-                </Link>
-                <Link to={`/buildings/${SearchType.Apartments}`}>
-                  <Radio value={SearchType.Apartments}>Поиск по квартире</Radio>
-                </Link>
-                <Link to={`/buildings/${SearchType.PersonaNumbers}`}>
-                  <Radio value={SearchType.PersonaNumbers}>
-                    Поиск по лицевому счету
-                  </Radio>
-                </Link>
-              </Radio.Group>
-            </SearchTypesWrapper>
-            <HeaderCustomContentWrapper>{children}</HeaderCustomContentWrapper>
-          </SizeWrapper>
+          >
+            <Segmented<BuildingsPageSegment>
+              active={pageSegment}
+              items={[
+                {
+                  title: 'Список',
+                  name: 'list',
+                  icon: <ListIcon />,
+                },
+                {
+                  title: 'На карте',
+                  name: 'map',
+                  icon: <MapIcon />,
+                },
+              ]}
+              onChange={setSegment}
+            />
+          </PageHeader>
+          {pageSegment === 'map' && children}
+          {pageSegment === 'list' && (
+            <SizeWrapper>
+              <SearchTypesWrapper>
+                <Radio.Group value={searchType}>
+                  <Link to={`/buildings/${SearchType.Houses}`}>
+                    <Radio value={SearchType.Houses}>Поиск по адресу</Radio>
+                  </Link>
+                  <Link to={`/buildings/${SearchType.Apartments}`}>
+                    <Radio value={SearchType.Apartments}>
+                      Поиск по квартире
+                    </Radio>
+                  </Link>
+                  <Link to={`/buildings/${SearchType.PersonaNumbers}`}>
+                    <Radio value={SearchType.PersonaNumbers}>
+                      Поиск по лицевому счету
+                    </Radio>
+                  </Link>
+                </Radio.Group>
+              </SearchTypesWrapper>
+              <HeaderCustomContentWrapper>
+                {children}
+              </HeaderCustomContentWrapper>
+            </SizeWrapper>
+          )}
         </FiltrationWrapper>
       );
     },
-    [menuButtons, searchType],
+    [menuButtons, pageSegment, setSegment, searchType],
   );
 
   const objectsProfileComponent = useMemo(() => {
+    if (pageSegment === 'map')
+      return (
+        <Header>
+          <BuildingsMapContainer />
+        </Header>
+      );
+
     if (!searchType) return null;
 
     const Component = objectListComponentsLookup[searchType];
@@ -137,7 +177,7 @@ export const ObjectsProfile: FC<ObjectsProfileProps> = ({
     if (!Component) return null;
 
     return <Component Header={Header} />;
-  }, [searchType, Header]);
+  }, [pageSegment, Header, searchType]);
 
   return (
     <>
