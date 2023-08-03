@@ -225,7 +225,7 @@ export const ResourceConsumptionGraph: FC<ResourceConsumptionGraphProps> = ({
         containerComponent={<VictoryVoronoiContainer />}
         animate={{
           duration: 100,
-          onLoad: { duration: 600 },
+          onLoad: { duration: 400 },
           easing: 'poly',
         }}
       >
