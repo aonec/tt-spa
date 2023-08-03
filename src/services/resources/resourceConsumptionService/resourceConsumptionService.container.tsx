@@ -5,6 +5,10 @@ import { ResourceConsumptionProfile } from './view/ResourceConsumptionProfile';
 import './resourceConsumptionService.relations';
 import { resourceConsumptionFilterService } from './resourceConsumptionFilterService';
 import { addressSearchService } from 'services/addressSearchService/addressSearchService.models';
+import {
+  MonthConsumptionData,
+  ResourceConsumptionGraphDataType,
+} from './resourceConsumptionService.types';
 
 const { inputs, outputs, gates } = resourceConsumptionService;
 const { ResourceConsumptionGate } = gates;
@@ -31,7 +35,7 @@ export const ResourceConsumptionContainer = () => {
   const resource = useStore(
     resourceConsumptionFilterService.outputs.$selectedResource,
   );
-  const housingConsumptionData = useStore(outputs.$housingConsumptionData);
+  const housingConsumptionData2 = useStore(outputs.$housingConsumptionData);
   const summaryConsumption = useStore(outputs.$summaryConsumption);
   const selectedGraphTypes = useStore(outputs.$selectedGraphTypes);
 
@@ -39,6 +43,18 @@ export const ResourceConsumptionContainer = () => {
     resourceConsumptionFilterService.inputs.setResource,
   );
   const setSelectedGraphTypes = useEvent(inputs.setSelectedGraphTypes);
+
+  const housingConsumptionData: {
+    [ResourceConsumptionGraphDataType.currentMonthData]?: MonthConsumptionData;
+    [ResourceConsumptionGraphDataType.prevMonthData]?: MonthConsumptionData;
+    [ResourceConsumptionGraphDataType.additionalAddress]: MonthConsumptionData | null;
+  } = housingConsumptionData2?.additionalAddress
+    ? (housingConsumptionData2 as {
+        [ResourceConsumptionGraphDataType.currentMonthData]?: MonthConsumptionData;
+        [ResourceConsumptionGraphDataType.prevMonthData]?: MonthConsumptionData;
+        [ResourceConsumptionGraphDataType.additionalAddress]: MonthConsumptionData;
+      })
+    : { ...housingConsumptionData2, additionalAddress: null };
 
   return (
     <>

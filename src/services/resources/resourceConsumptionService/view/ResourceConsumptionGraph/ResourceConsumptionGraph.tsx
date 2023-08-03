@@ -45,8 +45,6 @@ export const ResourceConsumptionGraph: FC<ResourceConsumptionGraphProps> = ({
   selectedAddresses,
   isAdditionalAddressSelected,
 }) => {
-  // console.log(selectedAddresses);
-
   const [width, setWidth] = useState(0);
 
   const [minmax, setMinmax] = useState<[number, number]>([0, 0]);
@@ -142,8 +140,6 @@ export const ResourceConsumptionGraph: FC<ResourceConsumptionGraphProps> = ({
             typeOfData === ResourceConsumptionGraphDataType.prevMonthData) ||
           !selectedAddresses.additionalAddress;
 
-        // console.log(isAdditionalAddress);
-
         const hideCurrentMonthData =
           typeOfData === ResourceConsumptionGraphDataType.currentMonthData &&
           !selectedAddresses.currentAddress;
@@ -159,24 +155,18 @@ export const ResourceConsumptionGraph: FC<ResourceConsumptionGraphProps> = ({
 
         const monthData = consumptionData[typeOfData];
 
-        // console.log(monthData, typeOfData); // данные приходят
-
         const typeOfChecked =
           typeOfData === ResourceConsumptionGraphDataType.additionalAddress
             ? ResourceConsumptionGraphDataType.currentMonthData
             : typeOfData;
-
-        // console.log(typeOfChecked);
 
         const isLineChecked = !isAdditionalAddress
           ? checked[typeOfChecked]
           : selectedAddresses.currentAddress
           ? checked[typeOfChecked]
           : checked[typeOfChecked];
-        // console.log(monthChecked);
 
         if (!monthData) {
-          // console.log('exit');
           return null;
         }
 
@@ -184,8 +174,6 @@ export const ResourceConsumptionGraph: FC<ResourceConsumptionGraphProps> = ({
           const isCurrentMonthHousingData =
             typeOfData === ResourceConsumptionGraphDataType.currentMonthData &&
             key === ResourceConsumptionGraphType.Housing;
-
-          // console.log(monthChecked[key as ResourceConsumptionGraphType])
 
           if (
             isLineChecked[key as ResourceConsumptionGraphType] &&
@@ -225,14 +213,8 @@ export const ResourceConsumptionGraph: FC<ResourceConsumptionGraphProps> = ({
     ],
   );
 
-  // console.log(lines);
-
   useEffect(() => {
     const wrapperNode = document.getElementById('graphWrapper');
-
-    // if (!wrapperNode) {
-    //   return;
-    // }
 
     const handleResize = () => setWidth(wrapperNode?.clientWidth || 0);
     window.addEventListener('resize', handleResize);
@@ -267,11 +249,11 @@ export const ResourceConsumptionGraph: FC<ResourceConsumptionGraphProps> = ({
         width={width}
         theme={VictoryTheme.material}
         containerComponent={<VictoryVoronoiContainer />}
-        // animate={{
-        //   duration: 200,
-        //   onLoad: { duration: 600 },
-        //   easing: 'linearInOut',
-        // }}
+        animate={{
+          duration: 200,
+          onLoad: { duration: 600 },
+          // easing: 'linearInOut',
+        }}
       >
         <VictoryAxis
           tickComponent={<TickComponent />}

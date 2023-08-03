@@ -1,7 +1,14 @@
-import { ConsumptionDataForTwoMonth } from '../../resourceConsumptionService.types';
+import {
+  ConsumptionDataForTwoMonth,
+  MonthConsumptionData,
+} from '../../resourceConsumptionService.types';
 import { BooleanTypesOfResourceConsumptionGraph } from './ResourceConsumptionProfile.types';
 
-export const getDisabledGraphTypes = (data: ConsumptionDataForTwoMonth) => {
+export const getDisabledGraphTypes = (data: {
+  currentMonthData?: MonthConsumptionData | undefined;
+  prevMonthData?: MonthConsumptionData | undefined;
+  additionalAddress: MonthConsumptionData | null;
+}) => {
   return {
     currentMonthData: Object.entries(data.currentMonthData || []).reduce(
       (acc, [key, arr]) => ({ ...acc, [key]: arr?.length === 0 }),

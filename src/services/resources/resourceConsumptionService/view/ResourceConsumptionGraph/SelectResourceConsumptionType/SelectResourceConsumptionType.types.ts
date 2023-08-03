@@ -24,5 +24,9 @@ export type SelectResourceConsumptionTypeProps = {
   isNormativeAndSubscriberLoading: boolean;
   isPrevHousingLoading: boolean;
   isPrevNormativeAndSubscriberLoading: boolean;
-  consumptionData: ConsumptionDataForTwoMonth;
+  consumptionData: {
+    currentMonthData?: MonthConsumptionData | undefined;
+    prevMonthData?: MonthConsumptionData | undefined;
+    additionalAddress: MonthConsumptionData | null;
+  };
 };

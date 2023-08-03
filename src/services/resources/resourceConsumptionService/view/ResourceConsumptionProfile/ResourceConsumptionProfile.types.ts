@@ -7,13 +7,13 @@ import {
   ConsumptionDataForTwoMonth,
   ResourceConsumptionGraphType,
   ResourceConsumptionGraphDataType,
+  MonthConsumptionData,
 } from '../../resourceConsumptionService.types';
 
 export type ResourceConsumptionProfileProps = {
   isLoading: boolean;
   resourceConsumptionFilter: ConsumptionDataFilter;
   setResource: (resource: EResourceType) => void;
-  housingConsumptionData: ConsumptionDataForTwoMonth | null;
   selectedGraphTypes: BooleanTypesOfResourceConsumptionGraphForTwoMonth;
   setSelectedGraphTypes: (
     selected: BooleanTypesOfResourceConsumptionGraphForTwoMonth,
@@ -26,6 +26,11 @@ export type ResourceConsumptionProfileProps = {
   isNormativeAndSubscriberLoading: boolean;
   isHousingLoading: boolean;
   isAdditionalAddressSelected: boolean;
+  housingConsumptionData: {
+    [ResourceConsumptionGraphDataType.currentMonthData]?: MonthConsumptionData;
+    [ResourceConsumptionGraphDataType.prevMonthData]?: MonthConsumptionData;
+    [ResourceConsumptionGraphDataType.additionalAddress]: MonthConsumptionData | null;
+  };
 };
 
 export type BooleanTypesOfResourceConsumptionGraphForTwoMonth = {
