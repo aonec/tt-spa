@@ -15,13 +15,13 @@ export const ContextMenuButton: FC<ContextMenuButtonProps> = (props) => {
 
   const menu = (
     <Menu>
-      {menuButtonsFiltered?.map((button) => {
+      {menuButtonsFiltered?.map((button, index) => {
         const { title, onClick, color } = button;
 
         const currentColor = getButtonColor(color);
 
         return (
-          <MenuItem key={title + color} onClick={onClick} color={currentColor}>
+          <MenuItem key={index} onClick={onClick} color={currentColor}>
             {title}
           </MenuItem>
         );

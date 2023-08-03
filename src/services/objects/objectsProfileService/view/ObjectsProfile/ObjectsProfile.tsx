@@ -1,6 +1,6 @@
 import { PageHeader } from 'ui-kit/shared/PageHeader';
 import { Radio } from 'antd';
-import React, { FC, ReactNode, useCallback, useMemo } from 'react';
+import React, { FC, ReactNode, useCallback, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ApartmentsListContainer } from 'services/objects/displayApartmentsListService';
 import { ObjectsListContainer } from 'services/objects/displayObjectsListService';
@@ -13,8 +13,10 @@ import {
   FiltrationWrapper,
   HeaderCustomContentWrapper,
   SizeWrapper,
+  ReportMenuListItem,
 } from './ObjectsProfile.styled';
 import { HeaderInject, ObjectsProfileProps } from './ObjectsProfile.types';
+import { ContextMenuElement } from 'ui-kit/ContextMenuButton/ContextMenuButton.types';
 
 const objectListComponentsLookup: {
   [key: string]: FC<HeaderInject>;
@@ -40,60 +42,73 @@ export const ObjectsProfile: FC<ObjectsProfileProps> = ({
   openHeatIndividualDevicesReportModal,
   openFlowTemperatureDeviationReportModal,
 }) => {
-  const menuButtons = useMemo(
-    () => [
+  const [isShowReportsList] = useState(true);
+
+  const menuButtons = useMemo(() => {
+    const reportsMenuItems: ContextMenuElement[] = [
+      {
+        title: 'Групповой отчёт',
+        onClick: handleExportGroupReport,
+        hidden: !isPermitionToDownloadGroupReport,
+      },
+      {
+        title: 'Отчёт по СОИ',
+        onClick: openSoiReportModal,
+        hidden: !isPermitionToDownloadSOIReport,
+      },
+      {
+        title: 'Отчёт по обратной магистрали',
+        onClick: openFeedFlowBackReportModal,
+        hidden: !isPermitionToDownloadFeedBackFlowReport,
+      },
+      {
+        title: 'Сводный отчёт по ГВС',
+        onClick: openFlowTemperatureDeviationReportModal,
+        hidden: !isPermitionToCreateFeedFlowPipeTemperatureReport,
+      },
+      {
+        title: 'Сводный отчёт по ИПУ',
+        onClick: openHeatIndividualDevicesReportModal,
+        hidden: !isPermitionToCreateObjectAndIPUReport,
+      },
+    ].map((elem) => ({
+      ...elem,
+      title: <ReportMenuListItem>{elem.title}</ReportMenuListItem>,
+    }));
+
+    return [
       {
         title: 'Создать объект',
         onClick: handleCreateObject,
         hidden: !isPermitionToCreateObjectAndIPUReport,
       },
       {
-        title: 'Выгрузка группового отчёта',
-        onClick: handleExportGroupReport,
-        hidden: !isPermitionToDownloadGroupReport,
+        title: 'Выгрузить отчет',
+        onClick: () => {},
       },
-      {
-        title: 'Выгрузить отчёт по СОИ',
-        onClick: openSoiReportModal,
-        hidden: !isPermitionToDownloadSOIReport,
-      },
-      {
-        title: 'Выгрузить отчёт по обратной магистрали',
-        onClick: openFeedFlowBackReportModal,
-        hidden: !isPermitionToDownloadFeedBackFlowReport,
-      },
-      {
-        title: 'Выгрузить сводный отчёт по ГВС',
-        onClick: openFlowTemperatureDeviationReportModal,
-        hidden: !isPermitionToCreateFeedFlowPipeTemperatureReport,
-      },
+      ...(isShowReportsList ? reportsMenuItems : []),
       {
         title: 'Создать оключение ресурса на объекте',
         onClick: handleOpenChooseResourceDisconnectionModal,
         hidden: !isPermitionToCreateResourceDisconnection,
       },
-      {
-        title: 'Выгрузить сводный отчёт по ИПУ',
-        onClick: openHeatIndividualDevicesReportModal,
-        hidden: !isPermitionToCreateObjectAndIPUReport,
-      },
-    ],
-    [
-      handleCreateObject,
-      isPermitionToCreateObjectAndIPUReport,
-      handleExportGroupReport,
-      isPermitionToDownloadGroupReport,
-      openSoiReportModal,
-      isPermitionToDownloadSOIReport,
-      openFeedFlowBackReportModal,
-      isPermitionToDownloadFeedBackFlowReport,
-      openFlowTemperatureDeviationReportModal,
-      isPermitionToCreateFeedFlowPipeTemperatureReport,
-      handleOpenChooseResourceDisconnectionModal,
-      isPermitionToCreateResourceDisconnection,
-      openHeatIndividualDevicesReportModal,
-    ],
-  );
+    ];
+  }, [
+    handleExportGroupReport,
+    isPermitionToDownloadGroupReport,
+    openSoiReportModal,
+    isPermitionToDownloadSOIReport,
+    openFeedFlowBackReportModal,
+    isPermitionToDownloadFeedBackFlowReport,
+    openFlowTemperatureDeviationReportModal,
+    isPermitionToCreateFeedFlowPipeTemperatureReport,
+    openHeatIndividualDevicesReportModal,
+    isPermitionToCreateObjectAndIPUReport,
+    handleCreateObject,
+    isShowReportsList,
+    handleOpenChooseResourceDisconnectionModal,
+    isPermitionToCreateResourceDisconnection,
+  ]);
 
   const Header = useCallback(
     ({ children }: { children: ReactNode }) => {

@@ -1,4 +1,5 @@
 import { SizeType } from 'antd/lib/config-provider/SizeContext';
+import { ReactNode } from 'react';
 
 export enum ContextMenuButtonColor {
   primary = 'primary',
@@ -19,7 +20,7 @@ export type ContextMenuButtonProps = {
 };
 
 export type ContextMenuElement = {
-  title: string;
+  title: ReactNode;
   onClick(): void;
   hidden?: boolean;
   color?: ContextMenuButtonColor;
