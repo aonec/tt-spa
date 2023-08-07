@@ -71,12 +71,10 @@ export const fetchNormativeAndSubscriberConsumptionData = async (
   const normative: ResourceConsumptionWithNull[] =
     prepareDataForConsumptionGraphWithLastValue(
       normativeAndSubscriberData.normativeConsumption || [],
-      // housingConsumptionArr[housingConsumptionArr.length - 1]?.key,
     );
   const subscriber: ResourceConsumptionWithNull[] =
     prepareDataForConsumptionGraphWithLastValue(
       normativeAndSubscriberData.subscriberConsumption || [],
-      // housingConsumptionArr[housingConsumptionArr.length - 1]?.key,
     );
 
   return { normative, subscriber };

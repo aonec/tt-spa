@@ -268,15 +268,6 @@ forward({
   to: [clearData, clearAdditionalAddressData, clearSummary],
 });
 
-// getHousingConsumptionFx.failData.watch((error) => {
-//   const errorText =
-//     error.response.data.error.Text ||
-//     error.response.data.error.Message ||
-//     'Произошла ошибка';
-
-//   message.error(errorText);
-// });
-
 export const resourceConsumptionService = {
   inputs: {
     getConsumptionData,

@@ -6,6 +6,7 @@ import './resourceConsumptionService.relations';
 import { resourceConsumptionFilterService } from './resourceConsumptionFilterService';
 import { addressSearchService } from 'services/addressSearchService/addressSearchService.models';
 import {
+  AllConsumptionDataWithNullableAdditionalAddress,
   MonthConsumptionData,
   ResourceConsumptionGraphDataType,
 } from './resourceConsumptionService.types';
@@ -44,17 +45,14 @@ export const ResourceConsumptionContainer = () => {
   );
   const setSelectedGraphTypes = useEvent(inputs.setSelectedGraphTypes);
 
-  const housingConsumptionData: {
-    [ResourceConsumptionGraphDataType.currentMonthData]?: MonthConsumptionData;
-    [ResourceConsumptionGraphDataType.prevMonthData]?: MonthConsumptionData;
-    [ResourceConsumptionGraphDataType.additionalAddress]: MonthConsumptionData | null;
-  } = housingConsumptionData2?.additionalAddress
-    ? (housingConsumptionData2 as {
-        [ResourceConsumptionGraphDataType.currentMonthData]?: MonthConsumptionData;
-        [ResourceConsumptionGraphDataType.prevMonthData]?: MonthConsumptionData;
-        [ResourceConsumptionGraphDataType.additionalAddress]: MonthConsumptionData;
-      })
-    : { ...housingConsumptionData2, additionalAddress: null };
+  const housingConsumptionData: AllConsumptionDataWithNullableAdditionalAddress =
+    housingConsumptionData2?.additionalAddress
+      ? (housingConsumptionData2 as {
+          [ResourceConsumptionGraphDataType.currentMonthData]?: MonthConsumptionData;
+          [ResourceConsumptionGraphDataType.prevMonthData]?: MonthConsumptionData;
+          [ResourceConsumptionGraphDataType.additionalAddress]: MonthConsumptionData;
+        })
+      : { ...housingConsumptionData2, additionalAddress: null };
 
   return (
     <>

@@ -30,6 +30,12 @@ export type MonthConsumptionData = {
   [ResourceConsumptionGraphType.Subscriber]?: ResourceConsumptionWithNull[];
 };
 
+export type AllConsumptionDataWithNullableAdditionalAddress = {
+  [ResourceConsumptionGraphDataType.currentMonthData]?: MonthConsumptionData;
+  [ResourceConsumptionGraphDataType.prevMonthData]?: MonthConsumptionData;
+  [ResourceConsumptionGraphDataType.additionalAddress]: MonthConsumptionData | null;
+};
+
 export type ConsumptionDataPayload = ConsumptionDataFilter & {
   ResourceType: EResourceType;
 };
