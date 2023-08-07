@@ -1,5 +1,5 @@
 import {
-  // EEmailSubscriptionType,
+  // EEmailSubscriptionType, //регулярная выгрузка
   EReportType,
   EResourceType,
 } from 'api/types';
@@ -27,7 +27,7 @@ export const validationSchema = Yup.object().shape({
       .email('Корректно введите Email'),
   }),
   'Subscription.TriggerAt': Yup.string(),
-  // 'Subscription.Type': Yup.mixed<EEmailSubscriptionType>().oneOf(
+  // 'Subscription.Type': Yup.mixed<EEmailSubscriptionType>().oneOf(  //регулярная выгрузка
   //   Object.values(EEmailSubscriptionType),
   // ),
   'Subscription.ContractorIds': Yup.array(Yup.number()),

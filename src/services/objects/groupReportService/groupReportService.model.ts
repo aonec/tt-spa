@@ -1,5 +1,6 @@
 import { message } from 'antd';
 import { combine, createDomain, forward, guard, sample } from 'effector';
+import { delay } from 'patronum';
 import { createGate } from 'effector-react';
 import moment from 'moment';
 import {
@@ -137,22 +138,18 @@ sample({
   target: closeModal,
 });
 
-const delayFx = domain.createEffect<void, void>(
-  () => new Promise((resolve) => setTimeout(resolve, 1000)),
-);
+const delayedPendingByEmailFx = delay({
+  source: sendByEmailFx.pending,
+  timeout: 1000,
+});
 
 const $isSendByEmailWithError = domain
   .createStore<boolean>(false)
   .on(sendByEmailFx.failData, (_, err) => Boolean(err))
-  .reset(closeModal);
+  .reset([closeModal, sendByEmailFx]);
 
 sample({
-  clock: sendByEmailFx.pending,
-  target: delayFx,
-});
-
-sample({
-  clock: delayFx.done,
+  clock: delayedPendingByEmailFx,
   source: $isSendByEmailWithError,
   filter: (isSendByEmailWithError) => !isSendByEmailWithError,
   target: closeModal,

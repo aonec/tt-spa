@@ -1,5 +1,5 @@
 export {};
-// Доработывает бэк
+// Доработывает бэк //регулярная выгрузка
 
 // import { EEmailSubscriptionType } from 'api/types';
 
