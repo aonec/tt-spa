@@ -1,7 +1,7 @@
 import React, { FC, useMemo } from 'react';
 import { Props } from './SelectDistrictActionModal.types';
 import { FormModal } from 'ui-kit/Modals/FormModal';
-import { ListIcon, MapPaperIcon, PencilIcon } from 'ui-kit/icons';
+import { MapPaperIcon, PencilIcon } from 'ui-kit/icons';
 import { ActionPanel } from 'ui-kit/shared/ActionPanel';
 import { LinkPanel } from 'ui-kit/shared/LinkPanel';
 import { SpaceLine } from 'ui-kit/SpaceLine';
@@ -48,11 +48,11 @@ export const SelectDistrictActionModal: FC<Props> = ({
             onClick={openEditDistrictModal}
             text="Редактировать название и цвет района"
           />
-          <LinkPanel
+          {/* <LinkPanel
             icon={<ListIcon />}
             text="Изменить список объектов"
             link=""
-          />
+          /> */}
           <LinkPanel
             icon={<MapPaperIcon />}
             text="Изменить границы района на карте"

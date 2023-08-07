@@ -1,0 +1,1 @@
+export { BuildingsMap } from './BuildingsMap';

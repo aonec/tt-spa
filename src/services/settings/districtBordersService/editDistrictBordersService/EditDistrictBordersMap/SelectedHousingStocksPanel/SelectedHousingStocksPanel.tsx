@@ -1,4 +1,5 @@
 import React, { FC } from 'react';
+import { Empty } from 'antd';
 import {
   AddressItem,
   Footer,
@@ -7,12 +8,11 @@ import {
   Title,
   Wrapper,
 } from './SelectedHousingStocksPanel.styled';
-import { Props } from './SelectedHousingStocksPanel.types';
-import { Empty } from 'antd';
+import { SelectedHousingStocksProps } from './SelectedHousingStocksPanel.types';
 import { sortBy } from 'lodash';
 import { Button } from 'ui-kit/Button';
 
-export const SelectedHousingStocksPanel: FC<Props> = ({
+export const SelectedHousingStocksPanel: FC<SelectedHousingStocksProps> = ({
   housesInDistrict,
   handleCancel,
   isLoading,
