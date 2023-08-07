@@ -12,12 +12,15 @@ import {
 import { HousingStockItemProps } from './HousingStockItem.types';
 import { HouseCategoryDictionary } from 'services/objects/createObjectService/view/CreateObjectPage/CreateObjectMainInfoStage/createObjectMainInfoStage.constants';
 import { EHouseCategory } from 'api/types';
+import { ContextMenuButtonColor } from 'ui-kit/ContextMenuButton/ContextMenuButton.types';
+import { useHistory } from 'react-router-dom';
 
 export const HousingStockItem: FC<HousingStockItemProps> = ({
   housingStock,
 }) => {
   const address = getBuildingAddress(housingStock);
   const mainAddress = housingStock.address?.mainAddress;
+  const history = useHistory();
 
   const additionalAddressesString = useMemo(() => {
     const additionalAddresses = housingStock.address?.additionalAddresses || [];
@@ -57,7 +60,35 @@ export const HousingStockItem: FC<HousingStockItemProps> = ({
       </div>
       <div>{mainAddress?.city}</div>
       <div>{HouseCategoryDictionary[housingStock.houseCategory]}</div>
-      <ContextMenuButton size="small" />
+      <ContextMenuButton
+        size="small"
+        menuButtons={[
+          {
+            title: 'Посмотреть информацию',
+            onClick: () =>
+              history.push(
+                `/buildings/${buildingProfilePath}/${housingStock.id}`,
+              ),
+          },
+          {
+            title: 'Выгрузить сводный отчёт по дому',
+            onClick: () => {},
+          },
+          {
+            title: 'Выгрузить сводный отчёт по ИПУ',
+            onClick: () => {},
+          },
+          {
+            title: 'Создать отключение ресурса на объекте',
+            onClick: () => {},
+          },
+          {
+            title: 'Удалить дом',
+            onClick: () => {},
+            color: ContextMenuButtonColor.danger,
+          },
+        ]}
+      />
     </Wrapper>
   );
 };
