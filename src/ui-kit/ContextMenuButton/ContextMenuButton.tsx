@@ -5,7 +5,11 @@ import {
   ContextMenuButtonProps,
   ContextMenuElement,
 } from './ContextMenuButton.types';
-import { MenuItem, StyledMenuButton } from './ContextMenuButton.styled';
+import {
+  ChevronSC,
+  MenuItem,
+  StyledMenuButton,
+} from './ContextMenuButton.styled';
 import { getButtonColor } from './ContextMenuButton.utils';
 
 const getMenuButtons = (props: {
@@ -21,7 +25,7 @@ const getMenuButtons = (props: {
 
     const currentColor = getButtonColor(color);
 
-    const isOpened = id && openedButtons.includes(id);
+    const isOpened = Boolean(id && openedButtons.includes(id));
 
     const children =
       button.children && isOpened
@@ -46,6 +50,7 @@ const getMenuButtons = (props: {
         color={currentColor}
       >
         {title}
+        {button.children && <ChevronSC isOpen={isOpened} />}
       </MenuItem>,
       ...children,
     ];
