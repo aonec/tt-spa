@@ -21,6 +21,9 @@ export const DevicesProfileContainer: FC<HeaderInject> = ({ Header }) => {
   const diametersConfig = useStore(currentUserService.outputs.$diametersConfig);
   const devicesSearchType = useStore(outputs.$devicesSearchType);
   const serialNumber = useStore(outputs.$serialNumber);
+  const housingMeteringDevicesModels = useStore(
+    outputs.$housingMeteringDevicesModels,
+  );
 
   const setSerialNumber = useEvent(inputs.setSerialNumber);
   const setDevicesSearchType = useEvent(inputs.setDevicesSearchType);
@@ -31,6 +34,7 @@ export const DevicesProfileContainer: FC<HeaderInject> = ({ Header }) => {
   const openDownloadDevicesReportModal = useEvent(
     devicesReportService.inputs.openModal,
   );
+  const handleFetchModels = useEvent(inputs.handleFetchModels);
 
   useEffect(() => {
     if (prevSearchType.current === devicesSearchType) {
@@ -66,6 +70,8 @@ export const DevicesProfileContainer: FC<HeaderInject> = ({ Header }) => {
         setDevicesSearchType={setDevicesSearchType}
         serialNumber={serialNumber}
         setSerialNumber={setSerialNumber}
+        housingMeteringDevicesModels={housingMeteringDevicesModels}
+        handleFetchModels={handleFetchModels}
       />
     </>
   );

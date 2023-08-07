@@ -4,27 +4,11 @@ import { DevicesListContainer } from 'services/devices/displayDevicesService/dis
 import { SearchDevices } from '../SearchDevices';
 import { ExtendedSearch } from 'ui-kit/ExtendedSearch';
 import { CalculatorsListRequestPayload } from 'services/calculators/calculatorsListService/calculatorsListService.types';
-import { ExtendedSearchForm } from './ExtendedSearchForm';
+import { ExtendedSearchForm } from './ExtendedSearchForm/ExtendedSearchForm';
 import { Wrapper } from './DevicesProfile.styled';
-import { DiamtersConfig } from 'services/currentUserService/currentUserService.types';
 import { DevicesSearchType } from 'services/devices/devicesPageService/devicesPageService.types';
 import { Radio } from 'antd';
-import { HeaderInject } from 'services/objects/objectsProfileService/view/ObjectsProfile/ObjectsProfile.types';
-
-interface DeviceProfileProps extends HeaderInject {
-  setFilter: (payload: CalculatorsListRequestPayload) => void;
-  isOpen: boolean;
-  open: (payload: void) => void;
-  close: (payload: void) => void;
-  openDownloadDevicesReportModal: () => void;
-  searchState: CalculatorsListRequestPayload | null;
-  clearSearchPayload: (payload: void) => void;
-  diametersConfig: DiamtersConfig;
-  devicesSearchType: DevicesSearchType;
-  setDevicesSearchType: (type: DevicesSearchType) => void;
-  setSerialNumber: (value: string) => void;
-  serialNumber: string;
-}
+import { DeviceProfileProps } from './DevicesProfile.types';
 
 export const DevicesProfile: FC<DeviceProfileProps> = ({
   setFilter,
@@ -39,6 +23,8 @@ export const DevicesProfile: FC<DeviceProfileProps> = ({
   serialNumber,
   setSerialNumber,
   Header,
+  handleFetchModels,
+  housingMeteringDevicesModels,
 }) => {
   const {
     handleSubmit: submitForm,
@@ -127,6 +113,8 @@ export const DevicesProfile: FC<DeviceProfileProps> = ({
                 setFieldValue={setFieldValue}
                 values={values}
                 diametersConfig={diametersConfig}
+                housingMeteringDevicesModels={housingMeteringDevicesModels}
+                handleFetchModels={handleFetchModels}
               />
             }
           />

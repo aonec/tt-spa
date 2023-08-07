@@ -1,11 +1,14 @@
 import {
   CalculatorListResponsePagedList,
+  EMeteringDeviceType,
+  EOrderByRule,
   HousingByFilterResponse,
 } from 'api/types';
 import { axios } from 'api/axios';
 import { CalculatorsListRequestPayload } from 'services/calculators/calculatorsListService/calculatorsListService.types';
 import { GetHousingByFilterRequestPayload } from '../devicesPageService/individualDevicesProfileService/view/IndividualDevicesProfile/individualDevicesViewByAddressService/individualDevicesViewByAddressService.types';
 import queryString from 'query-string';
+import { GetMeteringDevicesModelsRequest } from '../individualDevices/displayIndividualDeviceAndNamesService/displayIndividualDeviceAndNamesService.types';
 
 export const getCalculatorsList = (
   params: CalculatorsListRequestPayload,
@@ -34,4 +37,23 @@ const getHousingByFilter = async (
   } catch {
     return null;
   }
+};
+
+export const getHousingMeteringDevicesModels = async (
+  data: GetMeteringDevicesModelsRequest,
+): Promise<string[]> => {
+  const params = {
+    Type: EMeteringDeviceType.HousingPipe,
+    PageSize: 10,
+    OrderBy: EOrderByRule.Descending,
+    ...data,
+  };
+
+  const path = `MeteringDevices/ExistingModels/`;
+
+  const res: { items: string[] } = await axios.get(path, {
+    params,
+  });
+
+  return res.items;
 };

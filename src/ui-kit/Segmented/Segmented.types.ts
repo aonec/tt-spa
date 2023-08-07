@@ -3,7 +3,7 @@ import { ReactElement } from 'react';
 export type SegmentItem<T> = {
   title?: string;
   name: T;
-  icon: ReactElement;
+  icon?: ReactElement;
 };
 
 export type SegmentedProps<T extends string> = {
