@@ -1,6 +1,6 @@
 import { PageHeader } from 'ui-kit/shared/PageHeader';
 import { Radio } from 'antd';
-import React, { FC, ReactNode, useCallback, useMemo, useState } from 'react';
+import React, { FC, ReactNode, useCallback, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { ApartmentsListContainer } from 'services/objects/displayApartmentsListService';
 import { ObjectsListContainer } from 'services/objects/displayObjectsListService';
@@ -42,31 +42,34 @@ export const ObjectsProfile: FC<ObjectsProfileProps> = ({
   openHeatIndividualDevicesReportModal,
   openFlowTemperatureDeviationReportModal,
 }) => {
-  const [isShowReportsList] = useState(true);
-
   const menuButtons = useMemo(() => {
     const reportsMenuItems: ContextMenuElement[] = [
       {
+        id: 'group-report',
         title: 'Групповой отчёт',
         onClick: handleExportGroupReport,
         hidden: !isPermitionToDownloadGroupReport,
       },
       {
+        id: 'soi-report',
         title: 'Отчёт по СОИ',
         onClick: openSoiReportModal,
         hidden: !isPermitionToDownloadSOIReport,
       },
       {
+        id: 'back-feed-flow-report',
         title: 'Отчёт по обратной магистрали',
         onClick: openFeedFlowBackReportModal,
         hidden: !isPermitionToDownloadFeedBackFlowReport,
       },
       {
+        id: 'hot-water-supply-report',
         title: 'Сводный отчёт по ГВС',
         onClick: openFlowTemperatureDeviationReportModal,
         hidden: !isPermitionToCreateFeedFlowPipeTemperatureReport,
       },
       {
+        id: 'individual-device-report',
         title: 'Сводный отчёт по ИПУ',
         onClick: openHeatIndividualDevicesReportModal,
         hidden: !isPermitionToCreateObjectAndIPUReport,
@@ -78,16 +81,18 @@ export const ObjectsProfile: FC<ObjectsProfileProps> = ({
 
     return [
       {
+        id: 'create-object',
         title: 'Создать объект',
         onClick: handleCreateObject,
         hidden: !isPermitionToCreateObjectAndIPUReport,
       },
       {
+        id: 'reports-export',
         title: 'Выгрузить отчет',
-        onClick: () => {},
+        children: reportsMenuItems,
       },
-      ...(isShowReportsList ? reportsMenuItems : []),
       {
+        id: 'create-resource-disabling',
         title: 'Создать оключение ресурса на объекте',
         onClick: handleOpenChooseResourceDisconnectionModal,
         hidden: !isPermitionToCreateResourceDisconnection,
@@ -105,7 +110,6 @@ export const ObjectsProfile: FC<ObjectsProfileProps> = ({
     openHeatIndividualDevicesReportModal,
     isPermitionToCreateObjectAndIPUReport,
     handleCreateObject,
-    isShowReportsList,
     handleOpenChooseResourceDisconnectionModal,
     isPermitionToCreateResourceDisconnection,
   ]);

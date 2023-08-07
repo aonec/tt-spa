@@ -17,11 +17,14 @@ export type ContextMenuButtonProps = {
   menuButtons?: ContextMenuElement[];
   disabled?: boolean;
   size?: SizeType;
+  isVisible?: boolean;
 };
 
 export type ContextMenuElement = {
   title: ReactNode;
-  onClick(): void;
+  onClick?: () => void;
   hidden?: boolean;
   color?: ContextMenuButtonColor;
+  id?: string;
+  children?: ContextMenuElement[];
 };
