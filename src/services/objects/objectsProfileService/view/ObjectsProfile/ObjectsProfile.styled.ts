@@ -28,3 +28,7 @@ export const FiltrationWrapper = styled.div`
 export const HeaderCustomContentWrapper = styled.div`
   margin-top: 16px;
 `;
+
+export const ReportMenuListItem = styled.div`
+  margin-left: 32px;
+`;

@@ -13,7 +13,9 @@ import {
   FiltrationWrapper,
   HeaderCustomContentWrapper,
   SizeWrapper,
+  ReportMenuListItem,
 } from './ObjectsProfile.styled';
+import { ContextMenuElement } from 'ui-kit/ContextMenuButton/ContextMenuButton.types';
 import {
   BuildingsPageSegment,
   HeaderInject,
@@ -49,60 +51,77 @@ export const ObjectsProfile: FC<ObjectsProfileProps> = ({
   setSegment,
   pageSegment,
 }) => {
-  const menuButtons = useMemo(
-    () => [
+  const menuButtons = useMemo(() => {
+    const reportsMenuItems: ContextMenuElement[] = [
       {
+        id: 'group-report',
+        title: 'Групповой отчёт',
+        onClick: handleExportGroupReport,
+        hidden: !isPermitionToDownloadGroupReport,
+      },
+      {
+        id: 'soi-report',
+        title: 'Отчёт по СОИ',
+        onClick: openSoiReportModal,
+        hidden: !isPermitionToDownloadSOIReport,
+      },
+      {
+        id: 'back-feed-flow-report',
+        title: 'Отчёт по обратной магистрали',
+        onClick: openFeedFlowBackReportModal,
+        hidden: !isPermitionToDownloadFeedBackFlowReport,
+      },
+      {
+        id: 'hot-water-supply-report',
+        title: 'Сводный отчёт по ГВС',
+        onClick: openFlowTemperatureDeviationReportModal,
+        hidden: !isPermitionToCreateFeedFlowPipeTemperatureReport,
+      },
+      {
+        id: 'individual-device-report',
+        title: 'Сводный отчёт по ИПУ',
+        onClick: openHeatIndividualDevicesReportModal,
+        hidden: !isPermitionToCreateObjectAndIPUReport,
+      },
+    ].map((elem) => ({
+      ...elem,
+      title: <ReportMenuListItem>{elem.title}</ReportMenuListItem>,
+    }));
+
+    return [
+      {
+        id: 'create-object',
         title: 'Создать объект',
         onClick: handleCreateObject,
         hidden: !isPermitionToCreateObjectAndIPUReport,
       },
       {
-        title: 'Выгрузка группового отчёта',
-        onClick: handleExportGroupReport,
-        hidden: !isPermitionToDownloadGroupReport,
+        id: 'reports-export',
+        title: 'Выгрузить отчет',
+        children: reportsMenuItems,
       },
       {
-        title: 'Выгрузить отчёт по СОИ',
-        onClick: openSoiReportModal,
-        hidden: !isPermitionToDownloadSOIReport,
-      },
-      {
-        title: 'Выгрузить отчёт по обратной магистрали',
-        onClick: openFeedFlowBackReportModal,
-        hidden: !isPermitionToDownloadFeedBackFlowReport,
-      },
-      {
-        title: 'Выгрузить сводный отчёт по ГВС',
-        onClick: openFlowTemperatureDeviationReportModal,
-        hidden: !isPermitionToCreateFeedFlowPipeTemperatureReport,
-      },
-      {
+        id: 'create-resource-disabling',
         title: 'Создать оключение ресурса на объекте',
         onClick: handleOpenChooseResourceDisconnectionModal,
         hidden: !isPermitionToCreateResourceDisconnection,
       },
-      {
-        title: 'Выгрузить сводный отчёт по ИПУ',
-        onClick: openHeatIndividualDevicesReportModal,
-        hidden: !isPermitionToCreateObjectAndIPUReport,
-      },
-    ],
-    [
-      handleCreateObject,
-      isPermitionToCreateObjectAndIPUReport,
-      handleExportGroupReport,
-      isPermitionToDownloadGroupReport,
-      openSoiReportModal,
-      isPermitionToDownloadSOIReport,
-      openFeedFlowBackReportModal,
-      isPermitionToDownloadFeedBackFlowReport,
-      openFlowTemperatureDeviationReportModal,
-      isPermitionToCreateFeedFlowPipeTemperatureReport,
-      handleOpenChooseResourceDisconnectionModal,
-      isPermitionToCreateResourceDisconnection,
-      openHeatIndividualDevicesReportModal,
-    ],
-  );
+    ];
+  }, [
+    handleExportGroupReport,
+    isPermitionToDownloadGroupReport,
+    openSoiReportModal,
+    isPermitionToDownloadSOIReport,
+    openFeedFlowBackReportModal,
+    isPermitionToDownloadFeedBackFlowReport,
+    openFlowTemperatureDeviationReportModal,
+    isPermitionToCreateFeedFlowPipeTemperatureReport,
+    openHeatIndividualDevicesReportModal,
+    isPermitionToCreateObjectAndIPUReport,
+    handleCreateObject,
+    handleOpenChooseResourceDisconnectionModal,
+    isPermitionToCreateResourceDisconnection,
+  ]);
 
   const Header = useCallback(
     ({ children }: { children: ReactNode }) => {
