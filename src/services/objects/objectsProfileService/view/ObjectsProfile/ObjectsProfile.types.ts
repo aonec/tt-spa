@@ -17,8 +17,12 @@ export type ObjectsProfileProps = {
   handleOpenGroupreportModal: () => void;
   openHeatIndividualDevicesReportModal: () => void;
   openFlowTemperatureDeviationReportModal: () => void;
+  pageSegment: BuildingsPageSegment;
+  setSegment: (payload: BuildingsPageSegment) => void;
 };
 
 export type HeaderInject = {
   Header: (props: { children: ReactNode }) => ReactElement;
 };
+
+export type BuildingsPageSegment = 'list' | 'map';
