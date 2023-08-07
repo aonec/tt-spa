@@ -1,7 +1,7 @@
-import React, { FC } from 'react';
+import React, { FC, useMemo } from 'react';
 import { Props } from './SelectDistrictActionModal.types';
 import { FormModal } from 'ui-kit/Modals/FormModal';
-import { ListIcon, MapPaperIcon, PencilIcon } from 'ui-kit/icons';
+import { MapPaperIcon, PencilIcon } from 'ui-kit/icons';
 import { ActionPanel } from 'ui-kit/shared/ActionPanel';
 import { LinkPanel } from 'ui-kit/shared/LinkPanel';
 import { SpaceLine } from 'ui-kit/SpaceLine';
@@ -11,27 +11,31 @@ import {
   TitleWrapper,
   TrashIconSC,
 } from './SelectDistrictActionModal.styled';
-import { useUnit } from 'effector-react';
-import { developmentSettingsService } from 'services/developmentSettings/developmentSettings.models';
+import { getDistrictColor } from 'utils/getDistrictColor';
 
 export const SelectDistrictActionModal: FC<Props> = ({
   isOpen,
-  districtName,
   handleClose,
-  fillColor,
-  strokeColor,
+  districtData,
   openDeleteDistrictModal,
+  openEditDistrictModal,
 }) => {
-  const featureToggles = useUnit(
-    developmentSettingsService.outputs.$featureToggles,
+  const selectedDistrictColors = useMemo(
+    () => getDistrictColor(districtData.type),
+    [districtData.type],
   );
 
   return (
     <FormModal
       title={
         <TitleWrapper>
-          <ColorCircle fillColor={fillColor} strokeColor={strokeColor} />
-          {districtName || ''}
+          {selectedDistrictColors && (
+            <ColorCircle
+              fillColor={selectedDistrictColors.color}
+              strokeColor={selectedDistrictColors.strokeColor}
+            />
+          )}
+          {districtData.name}
         </TitleWrapper>
       }
       visible={isOpen}
@@ -39,26 +43,22 @@ export const SelectDistrictActionModal: FC<Props> = ({
       onCancel={handleClose}
       form={
         <div>
-          {featureToggles.districtManageActions && (
-            <>
-              <ActionPanel
-                icon={<PencilIcon />}
-                onClick={() => {}}
-                text="Редактировать название и цвет района"
-              />
-              <LinkPanel
-                icon={<ListIcon />}
-                text="Изменить список объектов"
-                link=""
-              />
-              <LinkPanel
-                icon={<MapPaperIcon />}
-                text="Изменить границы района на карте"
-                link=""
-              />
-              <SpaceLine />
-            </>
-          )}
+          <ActionPanel
+            icon={<PencilIcon />}
+            onClick={openEditDistrictModal}
+            text="Редактировать название и цвет района"
+          />
+          {/* <LinkPanel
+            icon={<ListIcon />}
+            text="Изменить список объектов"
+            link=""
+          /> */}
+          <LinkPanel
+            icon={<MapPaperIcon />}
+            text="Изменить границы района на карте"
+            link={`/districtBordersSettings/editDistrictBorders/${districtData.id}`}
+          />
+          <SpaceLine />
           <ActionPanel
             icon={<TrashIconSC />}
             text={<DeleteDistrictText>Удалить район</DeleteDistrictText>}
