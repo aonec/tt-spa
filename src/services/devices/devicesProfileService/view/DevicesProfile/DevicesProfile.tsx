@@ -52,8 +52,10 @@ export const DevicesProfile: FC<DeviceProfileProps> = ({
       'Filter.Address.HousingStockNumber':
         searchState?.['Filter.Address.HousingStockNumber'],
       'Filter.Address.Corpus': searchState?.['Filter.Address.Corpus'],
+
       'Filter.Address.HouseCategory':
         searchState?.['Filter.Address.HouseCategory'],
+
       'Filter.NodeStatus': searchState?.['Filter.NodeStatus'],
       Question: searchState?.Question,
       OrderRule: searchState?.OrderRule,

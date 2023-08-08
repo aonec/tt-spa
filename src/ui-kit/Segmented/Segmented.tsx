@@ -6,6 +6,7 @@ export const Segmented = <T extends string>({
   items,
   onChange,
   active,
+  bold,
 }: SegmentedProps<T>) => {
   return (
     <Wrapper>
@@ -16,7 +17,7 @@ export const Segmented = <T extends string>({
           key={name}
         >
           {icon}
-          {title && <SegmentTitle>{title}</SegmentTitle>}
+          {title && <SegmentTitle bold={bold}>{title}</SegmentTitle>}
         </SegmentItem>
       ))}
     </Wrapper>

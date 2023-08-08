@@ -8,7 +8,11 @@ import { DeviceAddressSearchFieldsNameLookup } from '../DevicesProfile.constants
 import { FormItem } from 'ui-kit/FormItem';
 import { Select } from 'ui-kit/Select';
 import { RangePicker } from 'ui-kit/RangePicker';
-import { EResourceType, EExpiresCheckingDateAt } from 'api/types';
+import {
+  EResourceType,
+  EExpiresCheckingDateAt,
+  EHouseCategory,
+} from 'api/types';
 import { AutoComplete } from 'ui-kit/AutoComplete';
 import {
   ExpiresCheckingPeriodSegmented,
@@ -57,8 +61,6 @@ export const ExtendedSearchForm: FC<ExtendedSearchFormProps> = ({
     },
     [diameters, setFieldValue],
   );
-
-  console.log(values.IsConnected);
 
   return (
     <StyledFormThreeRows>
@@ -205,10 +207,10 @@ export const ExtendedSearchForm: FC<ExtendedSearchFormProps> = ({
           <Select
             small
             placeholder="Выберите из списка"
-            value={values['Filter.ExpiresCheckingDateAt']}
-            onChange={(value) =>
-              setFieldValue("['Filter.ExpiresCheckingDateAt']", value)
-            }
+            // value={values['Filter.ExpiresCheckingDateAt']}
+            // onChange={(value) =>
+            //   setFieldValue("['Filter.ExpiresCheckingDateAt']", value)
+            // }
           >
             <Option value="">Не выбрано</Option>
             <Option value="NextMonth">Окончание поверки</Option>
@@ -218,6 +220,7 @@ export const ExtendedSearchForm: FC<ExtendedSearchFormProps> = ({
 
         <SegmentedContainer>
           <Segmented<ExpiresCheckingPeriodSegmented>
+            bold
             active={values['Filter.ExpiresCheckingDateAt'] || ''}
             items={[
               {
@@ -267,14 +270,14 @@ export const ExtendedSearchForm: FC<ExtendedSearchFormProps> = ({
           <Select
             small
             placeholder="Выберите из списка"
-            value={values['Filter.ExpiresCheckingDateAt']}
-            onChange={(value) =>
-              setFieldValue("['Filter.ExpiresCheckingDateAt']", value)
-            }
+            // value={values['Filter.ExpiresCheckingDateAt']}
+            // onChange={(value) =>
+            //   setFieldValue("['Filter.ExpiresCheckingDateAt']", value)
+            // }
           >
-            <Option value="">Все</Option>
+            {/* <Option value="">Все</Option>
             <Option value="NextMonth">В ближайший месяц</Option>
-            <Option value="NextTwoMonth">В следующие два месяца</Option>
+            <Option value="NextTwoMonth">В следующие два месяца</Option> */}
           </Select>
         </FormItem>
 
@@ -282,14 +285,14 @@ export const ExtendedSearchForm: FC<ExtendedSearchFormProps> = ({
           <Select
             small
             placeholder="Выберите из списка"
-            value={values['Filter.ExpiresCheckingDateAt']}
+            value={values['Filter.Address.HouseCategory'] || ''}
             onChange={(value) =>
-              setFieldValue("['Filter.ExpiresCheckingDateAt']", value)
+              setFieldValue("['Filter.Address.HouseCategory']", value)
             }
           >
             <Option value="">Все</Option>
-            <Option value="NextMonth">В ближайший месяц</Option>
-            <Option value="NextTwoMonth">В следующие два месяца</Option>
+            <Option value={EHouseCategory.Living}>Жилое</Option>
+            <Option value={EHouseCategory.NonResidential}>Не жилое</Option>
           </Select>
         </FormItem>
       </StyledContainerThreeItems>
