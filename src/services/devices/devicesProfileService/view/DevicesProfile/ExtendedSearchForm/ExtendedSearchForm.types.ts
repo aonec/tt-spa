@@ -1,10 +1,10 @@
 import { EExpiresCheckingDateAt } from 'api/types';
 import { Moment } from 'moment';
-import { CalculatorsListRequestPayload } from 'services/calculators/calculatorsListService/calculatorsListService.types';
+import { CalculatorsListRequestForm } from 'services/calculators/calculatorsListService/calculatorsListService.types';
 import { DiamtersConfig } from 'services/currentUserService/currentUserService.types';
 
 export type ExtendedSearchFormProps = {
-  values: CalculatorsListRequestPayload;
+  values: CalculatorsListRequestForm;
   setFieldValue: (field: string, value: any, shouldValidate?: boolean) => void;
   diametersConfig: DiamtersConfig;
   housingMeteringDevicesModels: string[];
@@ -17,4 +17,4 @@ export type ExpiresCheckingPeriodSegmented =
   | EExpiresCheckingDateAt.NextMonth
   | EExpiresCheckingDateAt.NextTwoMonth
   | EExpiresCheckingDateAt.Past
-  | "";
+  | '';

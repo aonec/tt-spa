@@ -6,6 +6,7 @@ import {
   EOrderByRule,
   EResourceType,
 } from 'api/types';
+import { EIsDeviceConnectedType } from 'services/devices/devicesProfileService/view/DevicesProfile/ExtendedSearchForm/ExtendedSearchForm.constants';
 
 export interface CalculatorsListRequestPayload {
   'Filter.DiameterRange.From'?: number;
@@ -21,6 +22,7 @@ export interface CalculatorsListRequestPayload {
   'Filter.Address.HousingStockNumber'?: string;
   'Filter.Address.Corpus'?: string;
   'Filter.Address.HouseCategory'?: EHouseCategory;
+  'Filter.HousingStockId'?: number;
   'Filter.NodeStatus'?: ENodeCommercialAccountStatus;
   Question?: string;
   OrderRule?: ECalculatorOrderRule;
@@ -31,4 +33,13 @@ export interface CalculatorsListRequestPayload {
   PageNumber?: number;
   PageSize?: number;
   OrderBy?: EOrderByRule;
+  Skip?: number;
+  Take?: number;
 }
+
+export type CalculatorsListRequestForm = Omit<
+  CalculatorsListRequestPayload,
+  'IsConnected'
+> & {
+  IsConnected: EIsDeviceConnectedType | undefined;
+};

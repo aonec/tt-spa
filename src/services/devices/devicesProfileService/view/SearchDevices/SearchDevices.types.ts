@@ -1,4 +1,4 @@
-import { CalculatorsListRequestPayload } from 'services/calculators/calculatorsListService/calculatorsListService.types';
+import { CalculatorsListRequestForm } from 'services/calculators/calculatorsListService/calculatorsListService.types';
 import { FormEvent } from 'react';
 import { DiamtersConfig } from 'services/currentUserService/currentUserService.types';
 import { DevicesSearchType } from 'services/devices/devicesPageService/devicesPageService.types';
@@ -11,7 +11,7 @@ export type SearchDevicesProps = {
     value: any,
     shouldValidate?: boolean | undefined,
   ) => void;
-  values: CalculatorsListRequestPayload;
+  values: CalculatorsListRequestForm;
   diametersConfig: DiamtersConfig;
   devicesSearchType: DevicesSearchType;
   setSerialNumber: (value: string) => void;

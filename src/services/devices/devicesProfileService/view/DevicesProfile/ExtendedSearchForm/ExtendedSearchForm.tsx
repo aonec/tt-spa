@@ -23,6 +23,7 @@ import {
   StyledFormThreeRows,
   StyledSlider,
 } from './ExtendedSearchForm.styled';
+import { EIsDeviceConnectedType } from './ExtendedSearchForm.constants';
 
 const { Option } = Select;
 
@@ -56,6 +57,8 @@ export const ExtendedSearchForm: FC<ExtendedSearchFormProps> = ({
     },
     [diameters, setFieldValue],
   );
+
+  console.log(values.IsConnected);
 
   return (
     <StyledFormThreeRows>
@@ -207,9 +210,9 @@ export const ExtendedSearchForm: FC<ExtendedSearchFormProps> = ({
               setFieldValue("['Filter.ExpiresCheckingDateAt']", value)
             }
           >
-            <Option value="">Все</Option>
-            <Option value="NextMonth">В ближайший месяц</Option>
-            <Option value="NextTwoMonth">В следующие два месяца</Option>
+            <Option value="">Не выбрано</Option>
+            <Option value="NextMonth">Окончание поверки</Option>
+            <Option value="NextTwoMonth">Окончание акта-допуска</Option>
           </Select>
         </FormItem>
 
@@ -243,7 +246,24 @@ export const ExtendedSearchForm: FC<ExtendedSearchFormProps> = ({
       </StyledContainerTwoItems>
 
       <StyledContainerThreeItems>
-        <FormItem label="Дата">
+        <FormItem label="Соединение">
+          <Select
+            small
+            placeholder="Выберите из списка"
+            value={values.IsConnected}
+            onChange={(value) => setFieldValue('IsConnected', value)}
+          >
+            <Option value={EIsDeviceConnectedType.All}>Все</Option>
+            <Option value={EIsDeviceConnectedType.Connected}>
+              Прибор опрашивается
+            </Option>
+            <Option value={EIsDeviceConnectedType.NotConnected}>
+              Прибор не опрашивается
+            </Option>
+          </Select>
+        </FormItem>
+
+        <FormItem label="Коммерческий учет показателей прибора">
           <Select
             small
             placeholder="Выберите из списка"
@@ -258,22 +278,7 @@ export const ExtendedSearchForm: FC<ExtendedSearchFormProps> = ({
           </Select>
         </FormItem>
 
-        <FormItem label="Дата">
-          <Select
-            small
-            placeholder="Выберите из списка"
-            value={values['Filter.ExpiresCheckingDateAt']}
-            onChange={(value) =>
-              setFieldValue("['Filter.ExpiresCheckingDateAt']", value)
-            }
-          >
-            <Option value="">Все</Option>
-            <Option value="NextMonth">В ближайший месяц</Option>
-            <Option value="NextTwoMonth">В следующие два месяца</Option>
-          </Select>
-        </FormItem>
-
-        <FormItem label="Дата">
+        <FormItem label="Тип здания">
           <Select
             small
             placeholder="Выберите из списка"

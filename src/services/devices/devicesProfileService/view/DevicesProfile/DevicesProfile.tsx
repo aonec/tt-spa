@@ -3,12 +3,16 @@ import { useFormik } from 'formik';
 import { DevicesListContainer } from 'services/devices/displayDevicesService/displayDevicesService.container';
 import { SearchDevices } from '../SearchDevices';
 import { ExtendedSearch } from 'ui-kit/ExtendedSearch';
-import { CalculatorsListRequestPayload } from 'services/calculators/calculatorsListService/calculatorsListService.types';
+import { CalculatorsListRequestForm } from 'services/calculators/calculatorsListService/calculatorsListService.types';
 import { ExtendedSearchForm } from './ExtendedSearchForm/ExtendedSearchForm';
 import { Wrapper } from './DevicesProfile.styled';
 import { DevicesSearchType } from 'services/devices/devicesPageService/devicesPageService.types';
 import { Radio } from 'antd';
 import { DeviceProfileProps } from './DevicesProfile.types';
+import {
+  EIsDeviceConnectedType,
+  IsConnectedToBooleanDictionary,
+} from './ExtendedSearchForm/ExtendedSearchForm.constants';
 
 export const DevicesProfile: FC<DeviceProfileProps> = ({
   setFilter,
@@ -26,12 +30,13 @@ export const DevicesProfile: FC<DeviceProfileProps> = ({
   handleFetchModels,
   housingMeteringDevicesModels,
 }) => {
+  console.log(searchState);
   const {
     handleSubmit: submitForm,
     setFieldValue,
     values,
     resetForm,
-  } = useFormik<CalculatorsListRequestPayload>({
+  } = useFormik<CalculatorsListRequestForm>({
     initialValues: {
       'Filter.PipeDiameters': searchState?.['Filter.PipeDiameters'],
       'Filter.ExpiresCheckingDateAt':
@@ -52,7 +57,14 @@ export const DevicesProfile: FC<DeviceProfileProps> = ({
       'Filter.NodeStatus': searchState?.['Filter.NodeStatus'],
       Question: searchState?.Question,
       OrderRule: searchState?.OrderRule,
-      IsConnected: searchState?.IsConnected,
+
+      IsConnected:
+        searchState?.IsConnected === undefined
+          ? EIsDeviceConnectedType.All
+          : searchState?.IsConnected
+          ? EIsDeviceConnectedType.Connected
+          : EIsDeviceConnectedType.NotConnected,
+
       CountTasks: searchState?.CountTasks,
       IsClosed: searchState?.IsClosed,
       FileName: searchState?.FileName,
@@ -62,7 +74,12 @@ export const DevicesProfile: FC<DeviceProfileProps> = ({
     },
     enableReinitialize: true,
     onSubmit: (values) => {
-      setFilter(values);
+      setFilter({
+        ...values,
+        IsConnected: values.IsConnected
+          ? IsConnectedToBooleanDictionary[values.IsConnected]
+          : undefined,
+      });
     },
   });
 
