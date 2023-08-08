@@ -13,7 +13,5 @@ sample({
 });
 
 export const editDistrictBordersService = {
-  inputs: {},
-  outputs: {},
   gates: { DistrictBordersGate },
 };

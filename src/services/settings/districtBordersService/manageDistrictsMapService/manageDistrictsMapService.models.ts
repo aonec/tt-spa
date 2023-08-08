@@ -44,6 +44,11 @@ sample({
   target: existingDistrictsQuery.start,
 });
 
+sample({
+  clock: ManageDistrictsGate.close,
+  target: existingDistrictsQuery.reset,
+});
+
 export const manageDistrictsMapService = {
   inputs: {
     handleDeleteDistrict,
