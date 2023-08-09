@@ -7,9 +7,9 @@ import { DatePicker } from 'ui-kit/DatePicker';
 import { FormItem } from 'ui-kit/FormItem';
 import { Input } from 'ui-kit/Input';
 import { Select } from 'ui-kit/Select';
-// import { RadioGroupSC } from '../GroupReportDatesSelect/GroupReportDatesSelect.styled'; //регулярная выгрузка
+// import { RadioGroupSC } from '../GroupReportDatesSelect/GroupReportDatesSelect.styled'; // todo: регулярная выгрузка
 import { RowWrapper } from '../GroupReportForm.styled';
-// import { SubsTypeRadioOptions } from './RegularUnloading.constants'; //регулярная выгрузка
+// import { SubsTypeRadioOptions } from './RegularUnloading.constants'; // todo: регулярная выгрузка
 import { SwitchWrapper, Wrapper } from './RegularUnloading.styled';
 import { RegularUnloadingProps } from './RegularUnloading.types';
 
@@ -17,7 +17,7 @@ export const RegularUnloading: FC<RegularUnloadingProps> = ({
   contractors,
   handleChangeContractorIds,
   handleChangeEmail,
-  // handleChangeSubsType, //регулярная выгрузка
+  // handleChangeSubsType, // todo: регулярная выгрузка
   handleThriggerAt,
   handleChangeIsRegular,
   values,
@@ -39,14 +39,14 @@ export const RegularUnloading: FC<RegularUnloadingProps> = ({
     if (!isRegular) {
       handleChangeContractorIds();
       handleChangeEmail();
-      // handleChangeSubsType(); //регулярная выгрузка
+      // handleChangeSubsType(); // todo: регулярная выгрузка
       handleThriggerAt();
     }
   }, [
     isRegular,
     handleChangeContractorIds,
     handleChangeEmail,
-    // handleChangeSubsType, //регулярная выгрузка
+    // handleChangeSubsType, // todo: регулярная выгрузка
     handleThriggerAt,
   ]);
 
@@ -106,7 +106,7 @@ export const RegularUnloading: FC<RegularUnloadingProps> = ({
               <ErrorMessage>{errors['Subscription.TriggerAt']}</ErrorMessage>
             </FormItem>
           </RowWrapper>
-          {/* <FormItem label="Период"> //регулярная выгрузка
+          {/* <FormItem label="Период"> // todo: регулярная выгрузка
             <RadioGroupSC
               options={SubsTypeRadioOptions}
               onChange={(e) => handleChangeSubsType(e.target.value)}

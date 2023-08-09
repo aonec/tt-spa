@@ -1,7 +1,7 @@
 import { axios } from 'api/axios';
+import queryString from 'query-string';
 import { GroupReportFormResponse, SendGroupReportRequest } from 'api/types';
 import { GroupReportRequestPayload } from './groupReportService.types';
-import queryString from 'query-string';
 
 export const downloadGroupReportRequest = async (
   params: GroupReportRequestPayload,

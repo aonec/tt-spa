@@ -1,6 +1,6 @@
 import { message } from 'antd';
 import { combine, createDomain, forward, guard, sample } from 'effector';
-import { delay } from 'patronum';
+import { delay, not } from 'patronum';
 import { createGate } from 'effector-react';
 import moment from 'moment';
 import {
@@ -151,7 +151,8 @@ const $isSendByEmailWithError = domain
 sample({
   clock: delayedPendingByEmailFx,
   source: $isSendByEmailWithError,
-  filter: (isSendByEmailWithError) => !isSendByEmailWithError,
+  // filter: (isSendByEmailWithError) => !isSendByEmailWithError,
+  filter: not($isSendByEmailWithError),
   target: closeModal,
 });
 

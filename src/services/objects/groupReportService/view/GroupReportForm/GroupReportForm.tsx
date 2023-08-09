@@ -30,19 +30,19 @@ export const GroupReportForm: FC<GroupReportFormProps> = ({
     groupReports,
     nodeResourceTypes,
     nodeStatuses,
-    // contractors //регулярная выгрузка
+    // contractors // todo: регулярная выгрузка
   } = reportFilters;
 
   const { values, setFieldValue, handleSubmit, errors } = useFormik<
     Partial<GroupReportRequestPayload>
-    //  & { isRegular: boolean } // Бэк дорабатывает функционал по регулярным выгрузкам //регулярная выгрузка
+    //  & { isRegular: boolean }  // todo: регулярная выгрузка
   >({
     initialValues: {
       FileName: `Групповой_отчёт_${moment().format('DD.MM.YYYY')}`,
       ReportType: EReportType.Hourly,
       From: moment().startOf('month').format(),
       To: moment().endOf('day').format(),
-      // isRegular: false,  // Бэк дорабатывает функционал по регулярным выгрузкам //регулярная выгрузка
+      // isRegular: false,  // todo: регулярная выгрузка
       HouseManagementId: null,
       ReportFormat: EReportFormat.Consumption,
     },
@@ -51,7 +51,7 @@ export const GroupReportForm: FC<GroupReportFormProps> = ({
     validateOnChange: false,
     onSubmit: (values) => {
       const {
-        //  isRegular, //регулярная выгрузка
+        //  isRegular, // todo: регулярная выгрузка
         ...payload
       } = values;
 
@@ -105,8 +105,7 @@ export const GroupReportForm: FC<GroupReportFormProps> = ({
     [nodeResourceTypes],
   );
 
-  // Функционал на доработке у бэков //регулярная выгрузка
-
+  // todo: регулярная выгрузка
   // const handleChangeContractorIds = useCallback(
   //   (ids?: number[]) => setFieldValue("['Subscription.ContractorIds']", ids),
   //   [setFieldValue],
@@ -209,7 +208,7 @@ export const GroupReportForm: FC<GroupReportFormProps> = ({
 
       <Divider type="horizontal" />
 
-      {/* // Функционал на доработке у бэков //регулярная выгрузка */}
+      {/* // todo: регулярная выгрузка */}
       {/* <RegularUnloading
         handleChangeContractorIds={handleChangeContractorIds}
         handleChangeEmail={handleChangeEmail}
