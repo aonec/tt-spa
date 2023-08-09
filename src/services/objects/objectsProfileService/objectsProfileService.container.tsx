@@ -1,4 +1,4 @@
-import { useEvent } from 'effector-react';
+import { useUnit } from 'effector-react';
 import { ESecuredIdentityRoleName } from 'api/types';
 import React, { useEffect } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
@@ -21,36 +21,37 @@ import {
 } from './heatIndividualDevicesReportService';
 import { FlowTemperatureDeviationReportContainer } from './flowTemperatureDeviationReport';
 
-const { inputs } = objectsProfileService;
+const { inputs, outputs } = objectsProfileService;
 
 export const ObjectsProfileContainer = () => {
   const { searchType } = useParams<{ searchType?: SearchType }>();
 
   const history = useHistory();
 
-  const openSoiReportModal = useEvent(inputs.openSoiReportModal);
-
-  const openFeedFlowBackReportModal = useEvent(
-    inputs.openFeedFlowBackReportModal,
-  );
-
-  const handleExportGroupReport = useEvent(groupReportService.inputs.openModal);
-
-  const handleOpenChooseResourceDisconnectionModal = useEvent(
-    chooseTypeOfResourceDisconnectionModalService.inputs.openModal,
-  );
-
-  const handleOpenGroupreportModal = useEvent(
-    groupReportService.inputs.openModal,
-  );
-
-  const handleOpenHeatIndividualDevicesReportModal = useEvent(
-    heatIndividualDevicesReportService.inputs.openModal,
-  );
-
-  const openFlowTemperatureDeviationReportModal = useEvent(
-    inputs.openFlowTemperatureDeviationReportModal,
-  );
+  const {
+    openSoiReportModal,
+    openFeedFlowBackReportModal,
+    handleExportGroupReport,
+    handleOpenChooseResourceDisconnectionModal,
+    handleOpenGroupreportModal,
+    handleOpenHeatIndividualDevicesReportModal,
+    openFlowTemperatureDeviationReportModal,
+    pageSegment,
+    setSegment,
+  } = useUnit({
+    openSoiReportModal: inputs.openSoiReportModal,
+    openFeedFlowBackReportModal: inputs.openFeedFlowBackReportModal,
+    handleExportGroupReport: groupReportService.inputs.openModal,
+    handleOpenChooseResourceDisconnectionModal:
+      chooseTypeOfResourceDisconnectionModalService.inputs.openModal,
+    handleOpenGroupreportModal: groupReportService.inputs.openModal,
+    handleOpenHeatIndividualDevicesReportModal:
+      heatIndividualDevicesReportService.inputs.openModal,
+    openFlowTemperatureDeviationReportModal:
+      inputs.openFlowTemperatureDeviationReportModal,
+    setSegment: inputs.setSegment,
+    pageSegment: outputs.$pageSegment,
+  });
 
   const handleCreateObject = () => history.push('/buildings/create');
 
@@ -100,6 +101,8 @@ export const ObjectsProfileContainer = () => {
       <GroupReportContainer />
       <FlowTemperatureDeviationReportContainer />
       <ObjectsProfile
+        pageSegment={pageSegment}
+        setSegment={setSegment}
         openSoiReportModal={() => openSoiReportModal()}
         searchType={searchType}
         handleExportGroupReport={() => handleExportGroupReport()}

@@ -10,6 +10,7 @@ export const getBuildingPlacmearks = (
   housesInDistrict: number[],
   selectedHouses: number[],
   toggleHouse: (id: number) => void,
+  renderTasksCount?: boolean,
 ) => {
   if (!housingStocks?.items) return [];
 
@@ -27,6 +28,7 @@ export const getBuildingPlacmearks = (
         elem.coordinates?.latitude || 0,
         elem.coordinates?.longitude || 0,
       ] as [number, number],
+      count: renderTasksCount ? elem.numberOfTasks || undefined : undefined,
       onClick: () => toggleHouse(elem.id),
       size: isHouseInsideDistrict ? [51, 51] : [24, 24],
     };
@@ -53,7 +55,7 @@ export const getSelectedHouses = (
 };
 
 export const getWorkingDistrict = (
-  isEditing: boolean,
+  isDrawing: boolean,
   name: string,
   color: DistrictColor,
 ) => {
@@ -62,7 +64,7 @@ export const getWorkingDistrict = (
     id: 'working-district',
     type: color,
     name,
-    isEditing,
+    isDrawing,
   };
 
   return [district];
