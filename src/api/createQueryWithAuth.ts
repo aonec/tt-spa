@@ -3,12 +3,14 @@ import {
   createJsonQuery,
   declareParams,
   isHttpErrorCode,
+  retry,
 } from '@farfetched/core';
 import { sample, createEvent } from 'effector';
 import { tokensService } from './tokensService';
 import { refreshMutation } from './tokensService/tokensService.api';
 import { forbiddenList } from 'utils/403handling';
 import { message } from 'antd';
+import { developmentSettingsService } from 'services/developmentSettings/developmentSettings.models';
 
 const forbiddenUserError = createEvent();
 forbiddenUserError.watch(() => {
@@ -41,7 +43,7 @@ export function createQueryWithAuth<
       query: (params) =>
         params ? new URLSearchParams(Object.entries(params)).toString() : '',
       url: {
-        source: tokensService.outputs.$baseUrl,
+        source: developmentSettingsService.outputs.$devUrl,
         fn: (params, baseUrl) =>
           new URL(
             typeof url === 'function' ? url(params) : url,
@@ -50,11 +52,9 @@ export function createQueryWithAuth<
       },
       headers: {
         source: tokensService.outputs.$token,
-        fn: (_, token) => {
-          return {
-            Authorization: `Bearer ${token}`,
-          };
-        },
+        fn: (_, token) => ({
+          Authorization: `Bearer ${token}`,
+        }),
       },
     },
     response: {
@@ -65,9 +65,20 @@ export function createQueryWithAuth<
   });
 
   sample({
+    source: refreshMutation.$pending,
     clock: query.finished.failure,
-    filter: isHttpErrorCode(401),
+    filter: (pending, { error }) => !pending && isHttpErrorCode(401)({ error }),
     target: refreshMutation.start,
+  });
+
+  refreshMutation.finished.success.watch(({ result }) => {
+    if (result?.token) {
+      retry(query, {
+        times: 1,
+        delay: '1s',
+        filter: isHttpErrorCode(401),
+      });
+    }
   });
 
   sample({

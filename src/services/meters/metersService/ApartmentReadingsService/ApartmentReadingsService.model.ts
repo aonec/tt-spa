@@ -1,4 +1,4 @@
-import { createDomain, forward, guard, sample } from 'effector';
+import { createDomain, forward, guard, sample, combine, split } from 'effector';
 import { createGate } from 'effector-react';
 import {
   ApartmentResponse,
@@ -94,9 +94,14 @@ sample({
   target: updateHomeownerFx,
 });
 
-forward({
-  from: handleSearchApartment,
-  to: getApartmentIdQuery.start,
+split({
+  source: handleSearchApartment,
+  match: (params: GetApartmentsRequestPayload): 'apartment' | 'id' =>
+    params.ApartmentId ? 'apartment' : 'id',
+  cases: {
+    id: getApartmentIdQuery.start,
+    apartment: getApartmentQuery.start,
+  },
 });
 
 sample({
@@ -114,7 +119,8 @@ sample({
     }),
     pauseApartmentService.inputs.pauseApartmentStatusFx.doneData,
   ],
-  target: getApartmentIdQuery.start,
+  fn: (params) => ({ ...params, PageSize: 1 }),
+  target: handleSearchApartment,
 });
 
 forward({
@@ -126,7 +132,11 @@ updateApartmentFx.doneData.watch(() => message.success('Сохранено ус�
 
 updateHomeownerFx.doneData.watch(() => message.success('Сохранено успешно!'));
 
-const $isLoadingApartment = getApartmentQuery.$pending;
+const $isLoadingApartment = combine(
+  getApartmentQuery.$pending,
+  getApartmentIdQuery.$pending,
+  (...loadings) => loadings.includes(true),
+);
 
 const handleApartmentLoaded = getApartmentQuery.finished.success;
 

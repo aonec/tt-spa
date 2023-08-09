@@ -4,23 +4,20 @@ import { persist } from 'effector-storage/local';
 const domain = createDomain('tokensService');
 
 const deleteToken = domain.createEvent();
-const setToken = domain.createEvent();
+const setToken = domain.createEvent<string>();
 const $token = domain
-  .createStore<string>('')
+  .createStore<string | null>(null)
   .on(setToken, (_, token) => token)
   .reset(deleteToken);
 persist({ store: $token, key: 'token' });
 
 const deleteRefreshToken = domain.createEvent();
-const setRefreshToken = domain.createEvent();
+const setRefreshToken = domain.createEvent<string>();
 const $refreshToken = domain
-  .createStore<string>('')
+  .createStore<string | null>(null)
   .on(setRefreshToken, (_, token) => token)
   .reset(deleteRefreshToken);
 persist({ store: $refreshToken, key: 'refreshToken' });
-
-const devUrl = 'https://stage.k8s.transparent-technology.ru/api/';
-const $baseUrl = domain.createStore(process.env.REACT_APP_API_URL || devUrl);
 
 const redirectToLogin = domain.createEvent();
 redirectToLogin.watch(() => window.location.replace('/login'));
@@ -31,10 +28,10 @@ export const tokensService = {
     setRefreshToken,
     deleteToken,
     deleteRefreshToken,
+    redirectToLogin,
   },
   outputs: {
     $token,
     $refreshToken,
-    $baseUrl,
   },
 };

@@ -7,16 +7,14 @@ import {
 import { EffectFailDataAxiosError } from 'types';
 import { message } from 'antd';
 import { createGate } from 'effector-react';
-import {
-  getApartmentIdQuery,
-  getApartmentQuery,
-  putApartment,
-} from 'services/meters/metersService/ApartmentReadingsService/ApartmentReadingsService.api';
+import { putApartment } from 'services/meters/metersService/ApartmentReadingsService/ApartmentReadingsService.api';
 import {
   GetApartmentsRequestPayload,
   UpdateApartmentRequestPayload,
 } from 'services/meters/metersService/ApartmentReadingsService/ApartmentReadingsService.types';
 import {
+  getApartmentIdQuery,
+  getApartmentQuery,
   getIndividualDevices,
   getNearestAppointmentForApartment,
 } from './apartmentSealService.api';

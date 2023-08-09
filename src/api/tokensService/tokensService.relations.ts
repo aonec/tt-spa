@@ -4,14 +4,16 @@ import { tokensService } from './tokensService.model';
 import { isHttpErrorCode } from '@farfetched/core';
 
 sample({
-  clock: refreshMutation.finished.success,
-  fn: ({ result }) => result.token,
+  clock: refreshMutation.finished.success.map(({ result }) => result?.token),
+  filter: Boolean,
   target: tokensService.inputs.setToken,
 });
 
 sample({
-  clock: refreshMutation.finished.success,
-  fn: ({ result }) => result.refreshToken,
+  clock: refreshMutation.finished.success.map(
+    ({ result }) => result?.refreshToken,
+  ),
+  filter: Boolean,
   target: tokensService.inputs.setRefreshToken,
 });
 
@@ -21,5 +23,6 @@ sample({
   target: [
     tokensService.inputs.deleteToken,
     tokensService.inputs.deleteRefreshToken,
+    tokensService.inputs.redirectToLogin,
   ],
 });

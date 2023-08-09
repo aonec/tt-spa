@@ -11,8 +11,8 @@ import {
   GetApartmentsRequestPayload,
   UpdateApartmentRequestPayload,
 } from './ApartmentReadingsService.types';
-import { Contract, isHttpError } from '@farfetched/core';
-import { sample, createEffect } from 'effector';
+import { Contract } from '@farfetched/core';
+import { sample } from 'effector';
 import { createQueryWithAuth } from 'api/createQueryWithAuth';
 
 const ApartmentIdContract: Contract<
@@ -40,18 +40,18 @@ export const getApartmentIdQuery = createQueryWithAuth<
   response: {
     contract: ApartmentIdContract,
     mapData: ({ result }) => {
-      return (result?.items || [])[0]?.id || null;
+      return (result?.items || [])[0]?.id || 0;
     },
   },
   url: 'Apartments',
 });
 
 export const getApartmentQuery = createQueryWithAuth<
-  { id: number },
+  { ApartmentId: number },
   ApartmentResponse,
   ApartmentResponse | null
 >({
-  url: ({ id }) => `/Apartments/${id}`,
+  url: ({ ApartmentId }) => `Apartments/${ApartmentId}`,
   response: {
     contract: ApartmentContract,
     mapData: ({ result }) => result,
@@ -61,14 +61,14 @@ export const getApartmentQuery = createQueryWithAuth<
 sample({
   clock: getApartmentIdQuery.finished.success.map(({ result }) => result),
   filter: Boolean,
-  fn: (id) => ({ id }),
+  fn: (ApartmentId) => ({ ApartmentId }),
   target: getApartmentQuery.start,
 });
 
 sample({
-  clock: getApartmentQuery.finished.failure,
-  filter: isHttpError,
-  target: createEffect(console.log),
+  clock: getApartmentIdQuery.finished.success.map(({ result }) => result),
+  filter: (result) => !Boolean(result),
+  target: getApartmentQuery.reset,
 });
 
 export const putApartment = ({

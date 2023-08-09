@@ -108,7 +108,7 @@ export const ApartmentProfile: FC<ApartmentProfileProps> = ({
               question: selectedHomeownerName || undefined,
             }
           }
-          isError={!apartment && isApartmentFetched}
+          isError={!isLoadingApartment && !apartment && isApartmentFetched}
         />
         <WithLoader isLoading={isLoadingApartment}>
           {!apartment && !isApartmentFetched && <TypeAddressToStart />}
