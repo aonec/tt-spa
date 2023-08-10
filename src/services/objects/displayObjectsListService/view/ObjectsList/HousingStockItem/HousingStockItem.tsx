@@ -72,7 +72,9 @@ export const HousingStockItem: FC<HousingStockItemProps> = ({
           },
           {
             title: 'Выгрузить сводный отчёт по дому',
-            onClick: () => {},
+            onClick: () => {
+              console.log('Runs');
+            },
           },
           {
             title: 'Выгрузить сводный отчёт по ИПУ',
