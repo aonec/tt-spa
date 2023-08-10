@@ -246,7 +246,10 @@ export const CreateResourceDisconnectionForm: FC<
             <FormItem label="Город">
               <Select
                 placeholder="Выберите из списка"
-                onChange={(type) => selectCity(String(type))}
+                onChange={(type) => {
+                  selectCity(String(type));
+                  setFieldValue('housingStockIds', []);
+                }}
                 value={selectedCity || undefined}
               >
                 {existingCities.map((city) => (

@@ -63,7 +63,10 @@ export const HeatIndividualDevicesReportForm: FC<
         <FormItem label="Город">
           <Select
             disabled={!(existingCities || []).length}
-            onChange={(value) => selectCity(String(value))}
+            onChange={(value) => {
+              selectCity(String(value));
+              setFieldValue('HousingStockIds', []);
+            }}
             value={selectedCity || undefined}
             placeholder="Выберите город"
           >
