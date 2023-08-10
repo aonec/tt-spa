@@ -151,7 +151,7 @@ const $isSendByEmailWithError = domain
 sample({
   clock: delayedPendingByEmailFx,
   source: $isSendByEmailWithError,
-  // filter: (isSendByEmailWithError) => !isSendByEmailWithError,
+  // filter: (isSendByEmailWithError) => !isSendByEmailWithError, //todo: регулярная выгрузка
   filter: not($isSendByEmailWithError),
   target: closeModal,
 });
