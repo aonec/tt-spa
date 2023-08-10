@@ -13,6 +13,7 @@ export const ExportSubscribersConsumptionContainer: FC<
 > = ({ filter }) => {
   const isOpen = useStore(outputs.$isModalOpen);
   const fileName = useStore(outputs.$fileName);
+  const isLoading = useStore(outputs.$isLoading);
 
   const closeModal = useEvent(inputs.closeModal);
   const setFileName = useEvent(inputs.setFileName);
@@ -32,6 +33,7 @@ export const ExportSubscribersConsumptionContainer: FC<
     <FormModal
       formId="export-subscribers-consumption-container"
       visible={isOpen}
+      loading={isLoading}
       title="Выгрузить список квартир"
       onCancel={() => closeModal()}
       submitBtnText={buttonText}
