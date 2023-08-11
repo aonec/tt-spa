@@ -54,8 +54,8 @@ export const form = createForm({
     houseManagementId: {
       init: null as string | null,
     },
-    housingStockId: {
-      init: null as number | null,
+    housingStockIdHash: {
+      init: null as string | null,
     },
     isWithoutApartments: {
       init: false,
@@ -179,11 +179,11 @@ const workingReports = [
 ];
 
 sample({
+  clock: createReport,
   source: combine(
     form.$values,
     closedIndividualDevicesFormService.outputs.$unloadSelectType,
   ),
-  clock: createReport,
   fn: ([
     {
       type,
@@ -191,13 +191,15 @@ sample({
       rangePeriod,
       resources,
       closingReasons,
-      housingStockId,
+      housingStockIdHash,
       houseManagementId,
       managementFirmId,
       isWithoutApartments,
     },
     unloadType,
   ]) => {
+    const housingStockId = Number(String(housingStockIdHash).split('_')[0]);
+
     const unloadPlaceData: { [key: string]: string | null | number } = {
       housingStockId,
       houseManagementId,
