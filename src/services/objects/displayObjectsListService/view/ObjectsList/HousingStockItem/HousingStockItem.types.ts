@@ -4,4 +4,5 @@ export type HousingStockItemProps = {
   housingStock: BuildingListResponse;
   setSelectedBuilding: (building: BuildingListResponse) => void;
   openConsolidatedReportModal: () => void;
+  openHeatIndividualDeviceReportModal: (building: BuildingListResponse) => void;
 };
