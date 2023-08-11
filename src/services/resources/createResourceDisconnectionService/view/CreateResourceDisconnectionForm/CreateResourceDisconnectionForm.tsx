@@ -57,6 +57,7 @@ export const CreateResourceDisconnectionForm: FC<
   existingCities,
   selectCity,
   selectedCity,
+  selectedBuilding,
 }) => {
   const documentInit = useMemo(
     () =>
@@ -70,8 +71,8 @@ export const CreateResourceDisconnectionForm: FC<
     if (!isEdit || !resourceDisconnection) {
       return formInitialValues;
     }
-    return getFormValues(resourceDisconnection);
-  }, [resourceDisconnection, isEdit]);
+    return getFormValues(resourceDisconnection, selectedBuilding);
+  }, [resourceDisconnection, isEdit, selectedBuilding]);
 
   const handleSubmitFormik = useCallback(
     (formValues: CreateResourceDisconnectionFormTypes) => {

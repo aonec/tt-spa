@@ -10,6 +10,7 @@ import {
 import { BuildingListResponse } from 'api/types';
 import { useUnit } from 'effector-react';
 import { heatIndividualDevicesReportService } from 'services/objects/objectsProfileService/heatIndividualDevicesReportService';
+import { chooseTypeOfResourceDisconnectionModalService } from 'services/resources/chooseTypeOfResourceDisconnectionModalService';
 
 export const ObjectsList: FC<ObjectsListProps> = ({
   isLoading,
@@ -18,13 +19,18 @@ export const ObjectsList: FC<ObjectsListProps> = ({
   const [selectedBuilding, setSelectedBuilding] =
     useState<BuildingListResponse | null>();
 
-  const { openConsolidatedReportModal, openHeatIndividualDeviceReportModal } =
-    useUnit({
-      openConsolidatedReportModal:
-        consolidatedReportService.inputs.openConsolidatedReportModal,
-      openHeatIndividualDeviceReportModal:
-        heatIndividualDevicesReportService.inputs.openModal,
-    });
+  const {
+    openConsolidatedReportModal,
+    openHeatIndividualDeviceReportModal,
+    openResourceDisconnectionReportModal,
+  } = useUnit({
+    openConsolidatedReportModal:
+      consolidatedReportService.inputs.openConsolidatedReportModal,
+    openHeatIndividualDeviceReportModal:
+      heatIndividualDevicesReportService.inputs.openModal,
+    openResourceDisconnectionReportModal:
+      chooseTypeOfResourceDisconnectionModalService.inputs.openModal,
+  });
 
   const housingStocksList = useMemo(() => {
     return housingStocks?.map((housingStock) => (
@@ -36,12 +42,16 @@ export const ObjectsList: FC<ObjectsListProps> = ({
         openHeatIndividualDeviceReportModal={
           openHeatIndividualDeviceReportModal
         }
+        openResourceDisconnectionReportModal={
+          openResourceDisconnectionReportModal
+        }
       />
     ));
   }, [
     housingStocks,
     openConsolidatedReportModal,
     openHeatIndividualDeviceReportModal,
+    openResourceDisconnectionReportModal,
   ]);
 
   const isEmpty = useMemo(() => !housingStocks?.length, [housingStocks]);

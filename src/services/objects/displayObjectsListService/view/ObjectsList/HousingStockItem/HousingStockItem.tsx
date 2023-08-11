@@ -19,6 +19,7 @@ export const HousingStockItem: FC<HousingStockItemProps> = ({
   setSelectedBuilding,
   openConsolidatedReportModal,
   openHeatIndividualDeviceReportModal,
+  openResourceDisconnectionReportModal,
 }) => {
   const address = getBuildingAddress(housingStock);
   const mainAddress = housingStock.address?.mainAddress;
@@ -88,7 +89,9 @@ export const HousingStockItem: FC<HousingStockItemProps> = ({
             },
             {
               title: 'Создать отключение ресурса на объекте',
-              onClick: () => {},
+              onClick: () => {
+                openResourceDisconnectionReportModal(housingStock);
+              },
             },
           ]}
         />
