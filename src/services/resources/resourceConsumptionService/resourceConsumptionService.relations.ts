@@ -56,18 +56,8 @@ sample({
     resourceConsumptionFilterService.outputs.$resourceConsumptionFilter,
     resourceConsumptionFilterService.outputs.$selectedResource,
     (filter, ResourceType) => {
-      const BuildingIds = filter.BuildingIdsHashs.map((hash) =>
-        Number(String(hash).split('_')[0]),
-      );
-      const AdditionalHousingStockIds =
-        filter.AdditionalHousingStockIdsHashs.map((hash) =>
-          Number(String(hash).split('_')[0]),
-        );
       return {
-        BuildingIds,
-        AdditionalHousingStockIds,
-        From: filter.From,
-        To: filter.To,
+        ...filter,
         ResourceType,
       };
     },
@@ -88,19 +78,8 @@ sample({
     resourceConsumptionFilterService.outputs.$resourceConsumptionFilter,
     resourceConsumptionFilterService.outputs.$selectedResource,
     (filter, ResourceType) => {
-      const BuildingIds = filter.BuildingIdsHashs.map((hash) =>
-        Number(String(hash).split('_')[0]),
-      );
-      const AdditionalHousingStockIds =
-        filter.AdditionalHousingStockIdsHashs.map((hash) =>
-          Number(String(hash).split('_')[0]),
-        );
-
       return {
-        BuildingIds,
-        AdditionalHousingStockIds,
-        From: filter.From,
-        To: filter.To,
+        ...filter,
         ResourceType,
       };
     },
@@ -115,14 +94,9 @@ sample({
     resourceConsumptionFilterService.outputs.$resourceConsumptionFilter,
     resourceConsumptionFilterService.outputs.$selectedResource,
     (filter, ResourceType) => {
-      const BuildingIds = filter.AdditionalHousingStockIdsHashs.map((hash) =>
-        Number(String(hash).split('_')[0]),
-      );
       return {
-        From: filter.From,
-        To: filter.To,
+        ...filter,
         ResourceType,
-        BuildingIds,
       };
     },
   ),

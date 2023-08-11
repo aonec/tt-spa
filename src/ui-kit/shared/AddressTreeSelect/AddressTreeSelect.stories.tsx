@@ -17,15 +17,16 @@ export default {
 } as ComponentMeta<typeof AddressTreeSelect>;
 
 export const Form = () => {
-  const [selectedIdsHashs, setSelectedIdsHashs] = useState<string[]>([]);
+  const [selectedIds, setSelectedIds] = useState<number[]>([]);
   return (
     <Wrapper>
       <FormItem>
         <AddressTreeSelect
-          selectedHousingStockIdsHashs={selectedIdsHashs}
-          onChange={(idsHashs) => setSelectedIdsHashs(idsHashs)}
+          selectedHousingStockIds={selectedIds}
+          onChange={(ids) => setSelectedIds(ids)}
           treeData={prepareAddressesForTreeSelect({
             items: TreeData[0].streets as StreetWithBuildingNumbersResponse[],
+            isTreeCheckable: true,
           })}
         />
       </FormItem>
@@ -34,15 +35,15 @@ export const Form = () => {
 };
 
 export const Search = () => {
-  const [selectedIdsHashs, setSelectedIdsHashs] = useState<string[]>([]);
+  const [selectedIds, setSelectedIds] = useState<number[]>([]);
 
   return (
     <Wrapper>
       <FormItem>
         <AddressTreeSelect
           small
-          selectedHousingStockIdsHashs={selectedIdsHashs}
-          onChange={(idsHashs) => setSelectedIdsHashs(idsHashs)}
+          selectedHousingStockIds={selectedIds}
+          onChange={(ids) => setSelectedIds(ids)}
           placeholder="Выберите из списка"
           treeData={prepareAddressesWithParentsForTreeSelect(TreeData)}
         />

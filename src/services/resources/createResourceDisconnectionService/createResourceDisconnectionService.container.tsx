@@ -61,7 +61,10 @@ export const CreateResourceDisconnectionContainer = () => {
 
   const preparedExistingHousingStocks = useMemo(() => {
     if (typeOfAddress === EAddressDetails.All) {
-      return prepareAddressesForTreeSelect({ items: existingHousingStocks });
+      return prepareAddressesForTreeSelect({
+        items: existingHousingStocks,
+        isTreeCheckable: true,
+      });
     }
     const housingStocks = housingStockWithHeatingStations.length
       ? housingStockWithHeatingStations

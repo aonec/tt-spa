@@ -46,8 +46,8 @@ const $resourceConsumptionFilter = domain
   .createStore<ConsumptionDataFilter>({
     From: moment().startOf('month').utcOffset(0, true).format(),
     To: moment().endOf('month').utcOffset(0, true).format(),
-    AdditionalHousingStockIdsHashs: [],
-    BuildingIdsHashs: [],
+    AdditionalHousingStockIds: [],
+    BuildingIds: [],
   })
   .on(setFilter, (oldFilter, filter) => ({
     ...oldFilter,
@@ -88,6 +88,7 @@ const $treeData = combine(
     );
     return prepareAddressesForTreeSelect({
       items: requiredHouseManagements?.streets || [],
+      isTreeCheckable: true,
     });
   },
 );

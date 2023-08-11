@@ -46,9 +46,8 @@ export const ResourceConsumptionFilter: FC<ResourceConsumptionFilterProps> = ({
     Omit<ConsumptionDataFilter, 'To'>
   >({
     initialValues: {
-      BuildingIdsHashs: filter.BuildingIdsHashs || [],
-      AdditionalHousingStockIdsHashs:
-        filter.AdditionalHousingStockIdsHashs || [],
+      BuildingIds: filter.BuildingIds || [],
+      AdditionalHousingStockIds: filter.AdditionalHousingStockIds || [],
       From: filter.From,
     },
     validationSchema: resourceConsumptionFilterValidationSchema,
@@ -56,19 +55,19 @@ export const ResourceConsumptionFilter: FC<ResourceConsumptionFilterProps> = ({
     validateOnChange: false,
     validateOnBlur: false,
     onSubmit: (values) => {
-      const { BuildingIdsHashs, AdditionalHousingStockIdsHashs } = values;
+      const { BuildingIds, AdditionalHousingStockIds } = values;
 
-      if (!BuildingIdsHashs.length) {
+      if (!BuildingIds.length) {
         return;
       }
 
-      if (!AdditionalHousingStockIdsHashs.length) {
+      if (!AdditionalHousingStockIds.length) {
         handleClearAdditionalAddressData();
       }
 
       setFilter({
         ...values,
-        BuildingIdsHashs,
+        BuildingIds,
         To: moment(values.From).endOf('month').utcOffset(0, true).format(),
       });
     },
@@ -181,10 +180,10 @@ export const ResourceConsumptionFilter: FC<ResourceConsumptionFilterProps> = ({
             disabled={!treeData.length}
             treeData={treeData}
             placeholder="Выберите из списка"
-            onChange={(idsHashs) => setFieldValue('BuildingIdsHashs', idsHashs)}
-            selectedHousingStockIdsHashs={values.BuildingIdsHashs}
+            onChange={(ids) => setFieldValue('BuildingIds', ids)}
+            selectedHousingStockIds={values.BuildingIds}
           />
-          <ErrorMessage>{errors.BuildingIdsHashs}</ErrorMessage>
+          <ErrorMessage>{errors.BuildingIds}</ErrorMessage>
         </FormItem>
         {!isAdditionalAddress && (
           <AdditionalAddressWrapper
@@ -200,17 +199,15 @@ export const ResourceConsumptionFilter: FC<ResourceConsumptionFilterProps> = ({
                 small
                 treeData={treeData}
                 placeholder="Выберите из списка"
-                onChange={(idsHashs) =>
-                  setFieldValue('AdditionalHousingStockIdsHashs', idsHashs)
+                onChange={(ids) =>
+                  setFieldValue('AdditionalHousingStockIds', ids)
                 }
-                selectedHousingStockIdsHashs={
-                  values.AdditionalHousingStockIdsHashs
-                }
+                selectedHousingStockIds={values.AdditionalHousingStockIds}
               />
               <TrashIconSC
                 onClick={() => {
                   setIsAdditionalAddress(false);
-                  setFieldValue('AdditionalHousingStockIdsHashs', []);
+                  setFieldValue('AdditionalHousingStockIds', []);
                 }}
               />
             </GroupWrapper>

@@ -9,12 +9,14 @@ type PrepareAddressesParams = {
   items: StreetWithBuildingNumbersResponse[];
   parentId?: string;
   isSelectableStreetNode?: boolean;
+  isTreeCheckable: boolean;
 };
 
 export const prepareAddressesForTreeSelect = ({
   items,
   parentId,
   isSelectableStreetNode = true,
+  isTreeCheckable,
 }: PrepareAddressesParams) =>
   items.reduce((acc, { street, addresses }) => {
     if (!street) return acc;
@@ -26,11 +28,19 @@ export const prepareAddressesForTreeSelect = ({
 
       const corpusText = corpus ? `, к. ${corpus}` : '';
 
-      return {
-        title: `${street}, ${number}${corpusText}`,
-        value: `${buildingId}_${street}${number}${corpusText}`,
-        key: `${buildingId}_${street}${number}${corpusText}`,
-      };
+      if (isTreeCheckable === false) {
+        return {
+          title: `${street}, ${number}${corpusText}`,
+          value: `${buildingId}_${street}${number}${corpusText}`,
+          key: `${buildingId}_${street}${number}${corpusText}`,
+        };
+      } else {
+        return {
+          title: `${street}, ${number}${corpusText}`,
+          value: buildingId,
+          key: buildingId,
+        };
+      }
     });
 
     const preparedParent = parentId ? parentId : '';
@@ -59,6 +69,7 @@ export const prepareAddressesWithParentsForTreeSelect = (
     const children = prepareAddressesForTreeSelect({
       items: streets,
       parentId: id,
+      isTreeCheckable: true,
     });
 
     return [...acc, { title: name, value: id, key: id, children }];

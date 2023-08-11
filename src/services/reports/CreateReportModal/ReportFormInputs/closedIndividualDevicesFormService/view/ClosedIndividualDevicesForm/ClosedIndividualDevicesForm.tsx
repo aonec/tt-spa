@@ -105,10 +105,10 @@ export const ClosedIndividualDevicesForm: FC<
               placeholder="Выберите из списка"
               showSearch
               showArrow
-              treeCheckable={false}
               treeData={preparedAddresses}
               value={housingStockId || undefined}
               onChange={(value) => handleChangeHousingStockId(value as number)}
+              treeCheckable={false}
             />
           </FormItem>
         )}

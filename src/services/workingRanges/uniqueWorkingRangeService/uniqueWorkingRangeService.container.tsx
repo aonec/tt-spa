@@ -26,6 +26,7 @@ export const UniqueWorkingRangeContainer = () => {
   const preparedAddresses = prepareAddressesForTreeSelect({
     items: addressesPagedList?.items || [],
     isSelectableStreetNode: false,
+    isTreeCheckable: false,
   });
 
   return (
