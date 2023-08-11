@@ -12,11 +12,12 @@ import {
 import { HousingStockItemProps } from './HousingStockItem.types';
 import { HouseCategoryDictionary } from 'services/objects/createObjectService/view/CreateObjectPage/CreateObjectMainInfoStage/createObjectMainInfoStage.constants';
 import { EHouseCategory } from 'api/types';
-import { ContextMenuButtonColor } from 'ui-kit/ContextMenuButton/ContextMenuButton.types';
 import { useHistory } from 'react-router-dom';
 
 export const HousingStockItem: FC<HousingStockItemProps> = ({
   housingStock,
+  setSelectedBuilding,
+  openConsolidatedReportModal,
 }) => {
   const address = getBuildingAddress(housingStock);
   const mainAddress = housingStock.address?.mainAddress;
@@ -60,37 +61,35 @@ export const HousingStockItem: FC<HousingStockItemProps> = ({
       </div>
       <div>{mainAddress?.city}</div>
       <div>{HouseCategoryDictionary[housingStock.houseCategory]}</div>
-      <ContextMenuButton
-        size="small"
-        menuButtons={[
-          {
-            title: 'Посмотреть информацию',
-            onClick: () =>
-              history.push(
-                `/buildings/${buildingProfilePath}/${housingStock.id}`,
-              ),
-          },
-          {
-            title: 'Выгрузить сводный отчёт по дому',
-            onClick: () => {
-              console.log('Runs');
+      <div>
+        <ContextMenuButton
+          size="small"
+          menuButtons={[
+            {
+              title: 'Посмотреть информацию',
+              onClick: () =>
+                history.push(
+                  `/buildings/${buildingProfilePath}/${housingStock.id}`,
+                ),
             },
-          },
-          {
-            title: 'Выгрузить сводный отчёт по ИПУ',
-            onClick: () => {},
-          },
-          {
-            title: 'Создать отключение ресурса на объекте',
-            onClick: () => {},
-          },
-          {
-            title: 'Удалить дом',
-            onClick: () => {},
-            color: ContextMenuButtonColor.danger,
-          },
-        ]}
-      />
+            {
+              title: 'Выгрузить сводный отчёт по дому',
+              onClick: () => {
+                setSelectedBuilding(housingStock);
+                openConsolidatedReportModal();
+              },
+            },
+            {
+              title: 'Выгрузить сводный отчёт по ИПУ',
+              onClick: () => {},
+            },
+            {
+              title: 'Создать отключение ресурса на объекте',
+              onClick: () => {},
+            },
+          ]}
+        />
+      </div>
     </Wrapper>
   );
 };
