@@ -28,8 +28,8 @@ export const prepareAddressesForTreeSelect = ({
 
       return {
         title: `${street}, ${number}${corpusText}`,
-        value: buildingId,
-        key: buildingId,
+        value: `${buildingId}_${street}${number}${corpusText}`,
+        key: `${buildingId}_${street}${number}${corpusText}`,
       };
     });
 

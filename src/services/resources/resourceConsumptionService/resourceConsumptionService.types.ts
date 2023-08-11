@@ -29,9 +29,15 @@ export type MonthConsumptionData = {
   [ResourceConsumptionGraphType.Subscriber]: ResourceConsumptionWithNull[];
 };
 
-export type ConsumptionDataPayload = ConsumptionDataFilter & {
-  ResourceType: EResourceType;
-};
+export type ConsumptionDataPayload =
+  //  ConsumptionDataFilter &
+  {
+    ResourceType: EResourceType;
+    BuildingIds: number[];
+    AdditionalHousingStockIds: number[];
+    From: string;
+    To: string;
+  };
 
 export type AddressWithSearchString = {
   id: number;

@@ -1,6 +1,6 @@
 export type ConsumptionDataFilter = {
-  BuildingIds: number[];
-  AdditionalHousingStockIds: number[];
+  BuildingIdsHashs: string[];
+  AdditionalHousingStockIdsHashs: string[];
   From: string;
   To: string;
 };

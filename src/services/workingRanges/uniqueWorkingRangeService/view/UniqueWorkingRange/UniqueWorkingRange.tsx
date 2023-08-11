@@ -1,4 +1,4 @@
-import React, { FC, useEffect } from 'react';
+import React, { FC, useEffect, useMemo } from 'react';
 import {
   ErrorBlockGrid,
   ErrorFieldName,
@@ -84,15 +84,17 @@ export const UniqueWorkingRange: FC<UniqueWorkingRangeProps> = ({
       initialValues: {
         nodeResourceType: EResourceType.ColdWaterSupply,
         season: ENodeWorkingRangeSeason.HeatingSeason,
-        housingStockId: null,
+        housingStockIdHash: null,
         nodeId: null,
       },
       enableReinitialize: true,
       onSubmit: (data) => {
-        const { housingStockId, nodeId, nodeResourceType, season } = data;
+        const { housingStockIdHash, nodeId, nodeResourceType, season } = data;
+
+        const housingStockId = Number(String(housingStockIdHash).split('_')[0]);
 
         !nodeId &&
-          housingStockId &&
+          housingStockIdHash &&
           handleOnSearchDataChange({
             nodeResourceType,
             season,
@@ -103,9 +105,14 @@ export const UniqueWorkingRange: FC<UniqueWorkingRangeProps> = ({
       },
     });
 
+  const housingStockId = useMemo(
+    () => Number(String(values.housingStockIdHash).split('_')[0]),
+    [values.housingStockIdHash],
+  );
+
   useEffect(() => {
-    values.housingStockId && handleFetchNodes(values.housingStockId);
-  }, [values.housingStockId, handleFetchNodes]);
+    housingStockId && handleFetchNodes(housingStockId);
+  }, [housingStockId, handleFetchNodes]);
 
   const preparedNodes = nodes?.reduce((acc, node) => {
     if (node.resource === values.nodeResourceType) {
@@ -166,9 +173,9 @@ export const UniqueWorkingRange: FC<UniqueWorkingRangeProps> = ({
 
         <TreeSelectSC
           placeholder="Выберите улицу"
-          value={values.housingStockId || undefined}
+          value={values.housingStockIdHash || undefined}
           onChange={(value) => {
-            setFieldValue('housingStockId', value || null);
+            setFieldValue('housingStockIdHash', value || null);
             handleSubmit();
             setFieldValue('nodeId', null);
           }}

@@ -1,8 +1,8 @@
 export type AddressTreeSelectProps = {
   treeData: TreeSelectElement[];
   small?: boolean;
-  onChange: (ids: number[]) => void;
-  selectedHousingStockIds: number[];
+  onChange: (idsHashs: string[]) => void;
+  selectedHousingStockIdsHashs: string[];
   disabled?: boolean;
   placeholder?: string;
 };

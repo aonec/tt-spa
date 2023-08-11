@@ -55,7 +55,22 @@ sample({
   source: combine(
     resourceConsumptionFilterService.outputs.$resourceConsumptionFilter,
     resourceConsumptionFilterService.outputs.$selectedResource,
-    (filter, ResourceType) => ({ ...filter, ResourceType }),
+    (filter, ResourceType) => {
+      const BuildingIds = filter.BuildingIdsHashs.map((hash) =>
+        Number(String(hash).split('_')[0]),
+      );
+      const AdditionalHousingStockIds =
+        filter.AdditionalHousingStockIdsHashs.map((hash) =>
+          Number(String(hash).split('_')[0]),
+        );
+      return {
+        BuildingIds,
+        AdditionalHousingStockIds,
+        From: filter.From,
+        To: filter.To,
+        ResourceType,
+      };
+    },
   ),
   clock: resourceConsumptionFilterService.outputs.$resourceConsumptionFilter,
   filter: (filter): filter is ConsumptionDataPayload =>
@@ -72,7 +87,23 @@ sample({
   clock: combine(
     resourceConsumptionFilterService.outputs.$resourceConsumptionFilter,
     resourceConsumptionFilterService.outputs.$selectedResource,
-    (filter, ResourceType) => ({ ...filter, ResourceType }),
+    (filter, ResourceType) => {
+      const BuildingIds = filter.BuildingIdsHashs.map((hash) =>
+        Number(String(hash).split('_')[0]),
+      );
+      const AdditionalHousingStockIds =
+        filter.AdditionalHousingStockIdsHashs.map((hash) =>
+          Number(String(hash).split('_')[0]),
+        );
+
+      return {
+        BuildingIds,
+        AdditionalHousingStockIds,
+        From: filter.From,
+        To: filter.To,
+        ResourceType,
+      };
+    },
   ),
   filter: (filter): filter is ConsumptionDataPayload =>
     Boolean(filter?.From && filter?.To && filter?.BuildingIds?.length),
@@ -83,11 +114,17 @@ sample({
   clock: combine(
     resourceConsumptionFilterService.outputs.$resourceConsumptionFilter,
     resourceConsumptionFilterService.outputs.$selectedResource,
-    (filter, ResourceType) => ({
-      ...filter,
-      ResourceType,
-      BuildingIds: filter?.AdditionalHousingStockIds,
-    }),
+    (filter, ResourceType) => {
+      const BuildingIds = filter.AdditionalHousingStockIdsHashs.map((hash) =>
+        Number(String(hash).split('_')[0]),
+      );
+      return {
+        From: filter.From,
+        To: filter.To,
+        ResourceType,
+        BuildingIds,
+      };
+    },
   ),
   filter: (filter): filter is ConsumptionDataPayload =>
     Boolean(

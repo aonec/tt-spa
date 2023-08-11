@@ -12,7 +12,7 @@ import { AddressTreeSelectProps } from './AddressTreeSelect.types';
 export const AddressTreeSelect: FC<AddressTreeSelectProps> = ({
   treeData,
   onChange,
-  selectedHousingStockIds,
+  selectedHousingStockIdsHashs,
   placeholder = 'Выберите адрес',
   disabled = false,
   small = false,
@@ -25,14 +25,18 @@ export const AddressTreeSelect: FC<AddressTreeSelectProps> = ({
   );
 
   const isAllHousingStocksSelected =
-    selectedHousingStockIds.length === allHousingStocks.length;
+    selectedHousingStockIdsHashs.length === allHousingStocks.length;
 
   const treeSelectValues = useMemo(() => {
     if (isAllHousingStocksSelected) {
       return [...allHousingStocks, -1];
     }
-    return selectedHousingStockIds;
-  }, [isAllHousingStocksSelected, allHousingStocks, selectedHousingStockIds]);
+    return selectedHousingStockIdsHashs;
+  }, [
+    isAllHousingStocksSelected,
+    allHousingStocks,
+    selectedHousingStockIdsHashs,
+  ]);
 
   const handleChangeHousingStocks = useCallback(
     (selectedAddresses: TreeSelectValue) => {
@@ -61,7 +65,7 @@ export const AddressTreeSelect: FC<AddressTreeSelectProps> = ({
       onChange(
         selectedAddressesArray
           .filter((elem) => elem !== -1)
-          .map((elem) => Number(elem)),
+          .map((elem) => String(elem)),
       );
     },
     [allHousingStocks, onChange],
@@ -81,16 +85,16 @@ export const AddressTreeSelect: FC<AddressTreeSelectProps> = ({
           return 'Выбраны все адреса';
         }
         const addressesCountText = getCountText(
-          selectedHousingStockIds.length,
+          selectedHousingStockIdsHashs.length,
           addressesCountTexts,
         );
 
         const selectedCountText = getCountText(
-          selectedHousingStockIds.length,
+          selectedHousingStockIdsHashs.length,
           selectedCountTexts,
         );
 
-        return `${selectedCountText} ${selectedHousingStockIds.length} ${addressesCountText}`;
+        return `${selectedCountText} ${selectedHousingStockIdsHashs.length} ${addressesCountText}`;
       }}
       treeData={[{ title: 'Все дома', value: -1, key: -1 }, ...treeData]}
       showCheckedStrategy="SHOW_CHILD"

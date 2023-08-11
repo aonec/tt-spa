@@ -6,15 +6,15 @@ import { hours } from './CreateResourceDisconnectionForm.constants';
 export const getDate = (date: string, hour: string) =>
   moment(`${date} ${hour}`, 'DD.MM.YYYY HH:00').toISOString();
 
-export const getAllHousingStocks = (items: TreeSelectElement[]): number[] =>
+export const getAllHousingStocks = (items: TreeSelectElement[]): string[] =>
   items.reduce((acc, item) => {
     const children = item?.children;
     if (!children) {
-      return [...acc, Number(item.value)];
+      return [...acc, String(item.value)];
     }
     const allHousingStocks = getAllHousingStocks(children);
     return [...acc, ...allHousingStocks];
-  }, [] as number[]);
+  }, [] as string[]);
 
 export const getFormValues = (
   resourceDisconnection: ResourceDisconnectingResponse,

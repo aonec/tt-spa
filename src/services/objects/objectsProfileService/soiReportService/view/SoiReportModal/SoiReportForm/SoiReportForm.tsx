@@ -43,7 +43,9 @@ export const SoiReportForm: FC<SoiReportFormProps> = ({
         createSoiReport({
           ReportName: values.ReportName,
           HouseManagementId: values.HouseManagementId,
-          HousingStockId: values.HousingStockId || undefined,
+          HousingStockId:
+            Number(String(values.HousingStockIdHash).split('_')[0]) ||
+            undefined,
           Resource: values.Resource || undefined,
           NormativePerPerson: normativePerPerson || undefined,
           Period:
@@ -85,10 +87,10 @@ export const SoiReportForm: FC<SoiReportFormProps> = ({
           <FormItem label="Адрес">
             <TreeSelectSC
               placeholder="Выберите из списка"
-              value={values.HousingStockId || undefined}
-              onChange={(value) =>
-                setFieldValue('HousingStockId', value || null)
-              }
+              value={values.HousingStockIdHash || undefined}
+              onChange={(value) => {
+                setFieldValue('HousingStockIdHash', value || null);
+              }}
               showSearch
               showArrow
               treeCheckable={false}
@@ -152,6 +154,7 @@ export const SoiReportForm: FC<SoiReportFormProps> = ({
         </FormItem>
         <FormItem label="Период">
           <DatePicker
+            clearIcon={false}
             value={values.Date}
             onChange={(value) => setFieldValue('Date', value)}
             picker={values.Period}
