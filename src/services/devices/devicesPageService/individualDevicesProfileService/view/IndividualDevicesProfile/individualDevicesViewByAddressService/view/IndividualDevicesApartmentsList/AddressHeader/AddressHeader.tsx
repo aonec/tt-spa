@@ -1,7 +1,7 @@
 import { HouseAddress } from 'api/types';
 import React, { FC } from 'react';
 import { Switcher } from 'ui-kit/shared/Switcher';
-import { getHousingStockAddressString } from 'utils/getBuildingAddress';
+import { getBuildingAddressString } from 'utils/getBuildingAddress';
 import { CurrentHousingStock, Wrapper } from './AddressHeader.styled';
 import { AddressHeaderProps } from './AddressHeader.types';
 
@@ -32,7 +32,7 @@ export const AddressHeader: FC<AddressHeaderProps> = ({
       <Switcher
         nextValue={nextAddress}
         previousValue={previuosAddress}
-        textConstructor={(address) => getHousingStockAddressString(address)}
+        textConstructor={(address) => getBuildingAddressString(address)}
         handleClick={handleClickAddress}
       />
     </Wrapper>

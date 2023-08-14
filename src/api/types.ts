@@ -1197,26 +1197,6 @@ export interface CommunicationPipeResponse {
   devices: PipeHousingMeteringDeviceListResponse[] | null;
 }
 
-export interface ComposeGroupReportRequest {
-  reportType?: EReportType;
-
-  /** @format date-time */
-  from?: string | null;
-
-  /** @format date-time */
-  to?: string | null;
-  reportFormat?: EReportFormat;
-  fileName: string;
-
-  /** @format uuid */
-  groupReportId?: string | null;
-
-  /** @format uuid */
-  houseManagementId?: string | null;
-  nodeResourceTypes?: EResourceType[] | null;
-  nodeStatus?: ENodeCommercialAccountStatus | null;
-}
-
 export interface ConfirmRequest {
   token: string;
   password: string;
@@ -1771,7 +1751,6 @@ export interface DistrictResponse {
   id: string;
   title: string | null;
   additionalInfo: string | null;
-  houses: House[] | null;
 }
 
 export interface DistrictResponseListSuccessApiResponse {
@@ -1919,6 +1898,13 @@ export interface EDocumentTypeStringDictionaryItem {
 
 export interface EDocumentTypeStringDictionaryItemListSuccessApiResponse {
   successResponse: EDocumentTypeStringDictionaryItem[] | null;
+}
+
+export enum EEmailSubscriptionType {
+  Once = 'Once',
+  OncePerTwoWeeks = 'OncePerTwoWeeks',
+  OncePerMonth = 'OncePerMonth',
+  OncePerQuarter = 'OncePerQuarter',
 }
 
 export enum EExpiresCheckingDateAt {
@@ -2307,7 +2293,9 @@ export enum ESecuredIdentityRoleName {
   ManagingFirmExecutor = 'ManagingFirmExecutor',
   Homeowner = 'Homeowner',
   Operator = 'Operator',
+  ErcService = 'ErcService',
   Admin = 'Admin',
+  Worker = 'Worker',
   ManagingFirmSpectator = 'ManagingFirmSpectator',
   ManagingFirmDispatcher = 'ManagingFirmDispatcher',
   Controller = 'Controller',
@@ -2922,6 +2910,7 @@ export interface HomeownerAccountCreateRequest {
 
   /** @format int32 */
   apartmentId: number;
+  isForced?: boolean | null;
 }
 
 export interface HomeownerAccountCreateUnattachedRequest {
@@ -2976,6 +2965,7 @@ export interface HomeownerAccountReplaceRequest {
   /** @format uuid */
   replaceableAccountId: string;
   newHomeownerAccount: HomeownerAccountCreateRequest;
+  isForced?: boolean | null;
 }
 
 export interface HomeownerAccountResponse {
@@ -3058,6 +3048,7 @@ export interface HomeownerAccountUpdateRequest {
   /** @format double */
   ownershipArea?: number | null;
   isMainOnApartment?: boolean | null;
+  isForced?: boolean | null;
 }
 
 export interface HomeownerCertificateResponse {
@@ -3084,12 +3075,6 @@ export interface HomeownersConstructedReportResponse {
 
 export interface HomeownersConstructedReportResponseSuccessApiResponse {
   successResponse: HomeownersConstructedReportResponse | null;
-}
-
-export interface House {
-  /** @format int32 */
-  id?: number;
-  address?: string | null;
 }
 
 export interface HouseAddress {
@@ -5521,18 +5506,14 @@ export enum SecuredIdentityRoleName {
   ManagingFirmExecutor = 'ManagingFirmExecutor',
   Homeowner = 'Homeowner',
   Operator = 'Operator',
+  ErcService = 'ErcService',
   Admin = 'Admin',
+  Worker = 'Worker',
   ManagingFirmSpectator = 'ManagingFirmSpectator',
   ManagingFirmDispatcher = 'ManagingFirmDispatcher',
   Controller = 'Controller',
   SeniorOperator = 'SeniorOperator',
   ManagingFirmSpectatorRestricted = 'ManagingFirmSpectatorRestricted',
-}
-
-export interface SendGroupReportRequest {
-  /** @format email */
-  email: string;
-  report: ComposeGroupReportRequest;
 }
 
 export interface SetMagneticSealRequest {
@@ -6786,7 +6767,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Сервис ЕРЦ</li><li>Контролёр</li>
      *
      * @tags Apartments
      * @name ApartmentsList
@@ -6849,7 +6830,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Сервис ЕРЦ</li><li>Контролёр</li>
      *
      * @tags Apartments
      * @name ApartmentsDetail
@@ -6867,7 +6848,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Сервис ЕРЦ</li><li>Контролёр</li>
      *
      * @tags Apartments
      * @name ApartmentsApartmentStatusList
@@ -6914,7 +6895,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Сервис ЕРЦ</li><li>Контролёр</li>
      *
      * @tags Apartments
      * @name ApartmentsApartmentChecksDetail
@@ -6946,7 +6927,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Сервис ЕРЦ</li><li>Контролёр</li>
      *
      * @tags Apartments
      * @name ApartmentsActsDetail
@@ -7117,7 +7098,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Старший оператор</li><li>Оператор</li>
+     * @description Роли:<li>Старший оператор</li><li>Оператор</li><li>Сервис ЕРЦ</li>
      *
      * @tags Apartments
      * @name ApartmentsDuplicateReadingsCreate
@@ -7134,7 +7115,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Сервис ЕРЦ</li><li>Контролёр</li>
      *
      * @tags Apartments
      * @name ApartmentsFindApartmentIdList
@@ -7162,7 +7143,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Сервис ЕРЦ</li><li>Контролёр</li>
      *
      * @tags Apartments
      * @name ApartmentsCheckTypesList
@@ -8007,7 +7988,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Сервис ЕРЦ</li><li>Контролёр</li>
      *
      * @tags Buildings
      * @name BuildingsCalculatorsDetail
@@ -8083,7 +8064,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Сервис ЕРЦ</li><li>Контролёр</li>
      *
      * @tags Calculators
      * @name CalculatorsExportLiteList
@@ -8101,7 +8082,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Сервис ЕРЦ</li><li>Контролёр</li>
      *
      * @tags Calculators
      * @name CalculatorsExportList
@@ -8150,7 +8131,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Сервис ЕРЦ</li><li>Контролёр</li>
      *
      * @tags Calculators
      * @name CalculatorsList
@@ -8225,7 +8206,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Сервис ЕРЦ</li><li>Контролёр</li>
      *
      * @tags Calculators
      * @name CalculatorsDetail
@@ -8361,7 +8342,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Сервис ЕРЦ</li><li>Контролёр</li>
      *
      * @tags Calculators
      * @name CalculatorsFiltersList
@@ -8955,7 +8936,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Сервис ЕРЦ</li><li>Контролёр</li>
      *
      * @tags ElectricHousingMeteringDevices
      * @name ElectricHousingMeteringDevicesDetail
@@ -9821,7 +9802,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Сервис ЕРЦ</li><li>Контролёр</li>
      *
      * @tags HousingMeteringDevices
      * @name HousingMeteringDevicesList
@@ -9857,7 +9838,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Сервис ЕРЦ</li><li>Контролёр</li>
      *
      * @tags HousingMeteringDevices
      * @name HousingMeteringDevicesCommentDetail
@@ -10155,7 +10136,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Сервис ЕРЦ</li><li>Контролёр</li>
      *
      * @tags HousingStocks
      * @name HousingStocksCalculatorsDetail
@@ -10179,7 +10160,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Сервис ЕРЦ</li><li>Контролёр</li>
      *
      * @tags HousingStocks
      * @name HousingStocksExistingApartmentNumberDetail
@@ -10340,37 +10321,6 @@ export class Api<
      * @description Роли:<li>Администратор системы</li>
      *
      * @tags Imports
-     * @name ImportsImportIndividualDeviceCreate
-     * @summary DataMigration
-     * @request POST:/api/Imports/ImportIndividualDevice
-     * @secure
-     */
-    importsImportIndividualDeviceCreate: (
-      query: { housingStockId: number },
-      data: {
-        ContentType?: string;
-        ContentDisposition?: string;
-        Headers?: Record<string, string[]>;
-        Length?: number;
-        Name?: string;
-        FileName?: string;
-      },
-      params: RequestParams = {},
-    ) =>
-      this.request<void, ErrorApiResponse>({
-        path: `/api/Imports/ImportIndividualDevice`,
-        method: 'POST',
-        query: query,
-        body: data,
-        secure: true,
-        type: ContentType.FormData,
-        ...params,
-      }),
-
-    /**
-     * @description Роли:<li>Администратор системы</li>
-     *
-     * @tags Imports
      * @name ImportsImportOrganizationWithoutNodesCreate
      * @summary DataMigration
      * @request POST:/api/Imports/ImportOrganizationWithoutNodes
@@ -10397,7 +10347,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Сервис ЕРЦ</li><li>Контролёр</li>
      *
      * @tags Individual
      * @name DevicesIndividualHouseList
@@ -10421,7 +10371,7 @@ export class Api<
       ),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Сервис ЕРЦ</li><li>Контролёр</li>
      *
      * @tags Individual
      * @name DevicesIndividualApartmentsList
@@ -10461,7 +10411,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Сервис ЕРЦ</li><li>Контролёр</li>
      *
      * @tags Individual
      * @name DevicesIndividualApartmentsDevicesDetail
@@ -10485,7 +10435,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Сервис ЕРЦ</li><li>Контролёр</li>
      *
      * @tags Individual
      * @name DevicesIndividualDetail
@@ -10506,7 +10456,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Сервис ЕРЦ</li><li>Контролёр</li>
      *
      * @tags Individual
      * @name DevicesIndividualList
@@ -10596,7 +10546,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Старший оператор</li><li>Оператор</li>
+     * @description Роли:<li>Старший оператор</li><li>Оператор</li><li>Сервис ЕРЦ</li>
      *
      * @tags IndividualDeviceReadings
      * @name IndividualDeviceReadingsCreateLiteCreate
@@ -10622,7 +10572,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Старший оператор</li><li>Оператор</li>
+     * @description Роли:<li>Старший оператор</li><li>Оператор</li><li>Сервис ЕРЦ</li>
      *
      * @tags IndividualDeviceReadings
      * @name IndividualDeviceReadingsCreateCreate
@@ -10702,7 +10652,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Сервис ЕРЦ</li><li>Контролёр</li>
      *
      * @tags IndividualDevices
      * @name IndividualDevicesDetail
@@ -10747,7 +10697,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Сервис ЕРЦ</li><li>Контролёр</li>
      *
      * @tags IndividualDevices
      * @name IndividualDevicesList
@@ -10787,7 +10737,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li>
+     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li><li>Сервис ЕРЦ</li>
      *
      * @tags IndividualDevices
      * @name IndividualDevicesCreate
@@ -10915,7 +10865,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li>
+     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li><li>Сервис ЕРЦ</li>
      *
      * @tags IndividualDevices
      * @name IndividualDevicesSwitchCreate
@@ -11291,7 +11241,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Сервис ЕРЦ</li><li>Контролёр</li>
      *
      * @tags MeteringDevices
      * @name MeteringDevicesList
@@ -11330,7 +11280,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Сервис ЕРЦ</li><li>Контролёр</li>
      *
      * @tags MeteringDevices
      * @name MeteringDevicesSearchList
@@ -11360,7 +11310,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Сервис ЕРЦ</li><li>Контролёр</li>
      *
      * @tags MeteringDevices
      * @name MeteringDevicesDetail
@@ -11381,7 +11331,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Сервис ЕРЦ</li><li>Контролёр</li>
      *
      * @tags MeteringDevices
      * @name MeteringDevicesRelatedList
@@ -11406,7 +11356,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Сервис ЕРЦ</li>
      *
      * @tags MeteringDevices
      * @name MeteringDevicesCloseCreate
@@ -11450,7 +11400,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Сервис ЕРЦ</li><li>Контролёр</li>
      *
      * @tags MeteringDevices
      * @name MeteringDevicesExistingModelsList
@@ -11759,7 +11709,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Сервис ЕРЦ</li><li>Контролёр</li>
      *
      * @tags NodeServiceZones
      * @name NodeServiceZonesList
@@ -11805,7 +11755,7 @@ export class Api<
       ),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Сервис ЕРЦ</li><li>Контролёр</li>
      *
      * @tags NodeServiceZones
      * @name NodeServiceZonesDetail
@@ -12538,7 +12488,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Сервис ЕРЦ</li><li>Контролёр</li>
      *
      * @tags PipeHousingMeteringDevices
      * @name PipeHousingMeteringDevicesDetail
@@ -12991,12 +12941,16 @@ export class Api<
      * @secure
      */
     reportsGroupReportList: (
-      query: {
-        FileName: string;
+      query?: {
         GroupReportId?: string;
         HouseManagementId?: string;
         NodeResourceTypes?: EResourceType[];
         NodeStatus?: ENodeCommercialAccountStatus;
+        'Subscription.Email'?: string;
+        'Subscription.ContractorIds'?: number[];
+        'Subscription.TriggerAt'?: string;
+        'Subscription.Type'?: EEmailSubscriptionType;
+        DelayedEmailTarget?: string;
         ReportType?: EReportType;
         From?: string;
         To?: string;
@@ -13004,34 +12958,11 @@ export class Api<
       },
       params: RequestParams = {},
     ) =>
-      this.request<File, ErrorApiResponse>({
+      this.request<void, ErrorApiResponse>({
         path: `/api/Reports/GroupReport`,
         method: 'GET',
         query: query,
         secure: true,
-        format: 'json',
-        ...params,
-      }),
-
-    /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li>
-     *
-     * @tags Reports
-     * @name ReportsSendGroupReportCreate
-     * @summary ReportRead
-     * @request POST:/api/Reports/SendGroupReport
-     * @secure
-     */
-    reportsSendGroupReportCreate: (
-      data: SendGroupReportRequest,
-      params: RequestParams = {},
-    ) =>
-      this.request<void, ErrorApiResponse>({
-        path: `/api/Reports/SendGroupReport`,
-        method: 'POST',
-        body: data,
-        secure: true,
-        type: ContentType.Json,
         ...params,
       }),
 
@@ -13955,8 +13886,7 @@ export class Api<
     subscriberStatisticsList: (
       query: {
         HousingStockId: number;
-        MonthOfLastTransmission?: number;
-        YearOfLastTransmission?: number;
+        MonthOfLastTransmission?: string;
         DateLastCheckFrom?: string;
         DateLastCheckTo?: string;
         HotWaterSupplyConsumptionFrom?: number;
@@ -14000,8 +13930,7 @@ export class Api<
     subscriberStatisticsExportList: (
       query: {
         HousingStockId: number;
-        MonthOfLastTransmission?: number;
-        YearOfLastTransmission?: number;
+        MonthOfLastTransmission?: string;
         DateLastCheckFrom?: string;
         DateLastCheckTo?: string;
         HotWaterSupplyConsumptionFrom?: number;

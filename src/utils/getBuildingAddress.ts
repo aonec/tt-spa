@@ -14,7 +14,7 @@ export const getBuildingAddress = (
   return `${cityText} ${street}, ${number}${corpusText}`;
 };
 
-export const getHousingStockAddressString = (address?: HouseAddress | null) => {
+export const getBuildingAddressString = (address?: HouseAddress | null) => {
   if (!address) {
     return '';
   }

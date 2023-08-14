@@ -23,7 +23,10 @@ export const HousingStockItem: FC<HousingStockItemProps> = ({
     const additionalAddresses = housingStock.address?.additionalAddresses || [];
 
     return additionalAddresses
-      .map((elem) => `${elem.street}, ${elem.number}`)
+      .map((elem) => {
+        const corpusText = elem.corpus ? `, к.${elem.corpus}` : '';
+        return `${elem.street}, ${elem.number}${corpusText}`;
+      })
       .join('; ');
   }, [housingStock.address]);
 
