@@ -1,4 +1,6 @@
 import React, { FC, useCallback, useMemo, useState } from 'react';
+import { ChevronDown } from 'react-bootstrap-icons';
+import { groupBy } from 'lodash';
 import {
   AddressHousesCount,
   AddressNumber,
@@ -16,8 +18,6 @@ import { Props } from './ManageDistrictsList.types';
 import { getPayloadFromDistricts } from 'utils/districtsData';
 import { ContextMenuButton } from 'ui-kit/ContextMenuButton';
 import { getDistrictColor } from 'utils/getDistrictColor';
-import { groupBy } from 'lodash';
-import { ChevronDown } from 'react-bootstrap-icons';
 
 export const ManageDistrictsList: FC<Props> = ({ existingDistricts }) => {
   const [openedDistrict, setOpenedDistrict] = useState<string | null>(null);
