@@ -8,7 +8,7 @@ import {
   TaskResponse,
   PipeNodeResponse,
   DocumentResponse,
-} from 'myApi';
+} from 'api/types';
 import { currentUserService } from 'services/currentUserService';
 import { EffectFailDataAxiosError } from 'types';
 import {

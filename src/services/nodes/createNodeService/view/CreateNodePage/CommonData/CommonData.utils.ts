@@ -5,7 +5,7 @@ import {
   ENodeCommercialAccountStatus,
   EPipeNodeConfig,
   NodeSetCommercialStatusRequest,
-} from 'myApi';
+} from 'api/types';
 import { CommunicationPipePayload } from 'services/nodes/addPipeNodeCommonDeviceService/addPipeNodeCommonDeviceService.types';
 import { ChangeNodeStatusFormik } from 'services/nodes/changeNodeStatusService/view/ChangeNodeStatusForm/ChangeNodeStatusForm.types';
 

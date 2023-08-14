@@ -15,10 +15,10 @@ import {
   TaskTitle,
 } from './HousingStockTasks.styled';
 import { HousingStockTasksProps } from './HousingStockTasks.types';
-import { WithLoader } from 'ui-kit/shared_components/WithLoader';
+import { WithLoader } from 'ui-kit/shared/WithLoader';
 import { TaskInfoPanel } from './TaskInfoPanel';
 import { getTaskIconByTaskType } from './HousingStockTasks.utils';
-import { EHouseCategory } from 'myApi';
+import { getBuildingProfilePath } from 'utils/getBuildingProfilePath';
 
 export const HousingStockTasks: FC<HousingStockTasksProps> = ({
   selectedHousingStock,
@@ -66,14 +66,12 @@ export const HousingStockTasks: FC<HousingStockTasksProps> = ({
     address?.corpus || ''
   }${apartmentNumber ? `, кв. ${apartmentNumber}` : ''}`;
 
-  const buildingProfilePath = useMemo(() => {
-    if (
-      selectedHousingStock?.building?.houseCategory === EHouseCategory.Living
-    ) {
-      return 'livingProfile';
-    }
-    return 'nonResidentialProfile';
-  }, [selectedHousingStock]);
+  const buildingProfilePath = useMemo(
+    () =>
+      selectedHousingStock?.building &&
+      getBuildingProfilePath(selectedHousingStock.building.houseCategory),
+    [selectedHousingStock],
+  );
 
   return (
     <HousingStockWrapper>

@@ -1,7 +1,7 @@
 import {
   ESecuredIdentityRoleName,
   ESecuredIdentityRoleNameStringDictionaryItem,
-} from 'myApi';
+} from 'api/types';
 
 const UserRolesPriorityDictionary: {
   [key in ESecuredIdentityRoleName]: number;
@@ -16,12 +16,10 @@ const UserRolesPriorityDictionary: {
   [ESecuredIdentityRoleName.ManagingFirmSpectator]: 7,
   [ESecuredIdentityRoleName.ManagingFirmSpectatorRestricted]: 8,
   [ESecuredIdentityRoleName.Homeowner]: 9,
-  [ESecuredIdentityRoleName.ErcService]: 10,
-  [ESecuredIdentityRoleName.Worker]: 11,
 };
 
 export const sortUserRoles = (
-  roles: ESecuredIdentityRoleNameStringDictionaryItem[]
+  roles: ESecuredIdentityRoleNameStringDictionaryItem[],
 ) => {
   return roles.sort((a, b) => {
     const roleA = a.key;

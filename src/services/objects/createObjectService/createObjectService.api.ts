@@ -1,4 +1,4 @@
-import { axios } from '01/axios';
+import { axios } from 'api/axios';
 import {
   AddHeatingStationRequest,
   EHouseCategory,
@@ -9,7 +9,7 @@ import {
   HousingStockResponse,
   NonResidentialBuildingCreateRequest,
   NonResidentialBuildingResponse,
-} from 'myApi';
+} from 'api/types';
 import {
   CreateBuildingRequest,
   CreateBuildingResponse,

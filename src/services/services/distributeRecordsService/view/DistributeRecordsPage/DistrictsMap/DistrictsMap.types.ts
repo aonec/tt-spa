@@ -3,7 +3,8 @@ import {
   AppointmentResponse,
   ControllerResponse,
   DistrictResponse,
-} from 'myApi';
+} from 'api/types';
+import { OrganizationCoordinates } from 'services/currentUserService/currentUserService.types';
 import { AppointmentsCountingByDistrictsResponse } from 'services/services/distributeRecordsService/distributeRecordsService.types';
 
 export type Props = {
@@ -20,6 +21,7 @@ export type Props = {
   openDistributeAppointmentsModal: () => void;
   controllers: ControllerResponse[] | null;
   openRemoveAssignmentModal: (id: string) => void;
+  organizationCoordinates: OrganizationCoordinates | null;
 };
 
 export type AppointmentsByHousingStocks = {

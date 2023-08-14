@@ -1,8 +1,12 @@
-import { EEmailSubscriptionType, EReportType, EResourceType } from 'myApi';
+import {
+  // EEmailSubscriptionType, // todo: регулярная выгрузка
+  EReportType,
+  EResourceType,
+} from 'api/types';
 import * as Yup from 'yup';
 
 export const validationSchema = Yup.object().shape({
-  Name: Yup.string().required('Это поле обязательное'),
+  FileName: Yup.string().required('Это поле обязательное'),
   From: Yup.string().required('Это поле обязательное'),
   To: Yup.string().required('Это поле обязательное'),
   HouseManagementId: Yup.string().nullable(),
@@ -23,9 +27,9 @@ export const validationSchema = Yup.object().shape({
       .email('Корректно введите Email'),
   }),
   'Subscription.TriggerAt': Yup.string(),
-  'Subscription.Type': Yup.mixed<EEmailSubscriptionType>().oneOf(
-    Object.values(EEmailSubscriptionType),
-  ),
+  // 'Subscription.Type': Yup.mixed<EEmailSubscriptionType>().oneOf(  // todo: регулярная выгрузка
+  //   Object.values(EEmailSubscriptionType),
+  // ),
   'Subscription.ContractorIds': Yup.array(Yup.number()),
 });
 

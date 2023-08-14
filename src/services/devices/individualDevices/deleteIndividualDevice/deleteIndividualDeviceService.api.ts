@@ -1,4 +1,4 @@
-import { axios } from '01/axios';
+import { axios } from 'api/axios';
 import { createMutation } from '@farfetched/core';
 import { createEffect } from 'effector';
 import { EffectFailDataAxiosError } from 'types';

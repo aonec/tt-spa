@@ -1,4 +1,4 @@
-import { OrganizationResponse, OrganizationUpdateRequest } from 'myApi';
+import { OrganizationResponse, OrganizationUpdateRequest } from 'api/types';
 
 export type EditCompanyPageProps = {
   currentManagingFirm: OrganizationResponse | null;

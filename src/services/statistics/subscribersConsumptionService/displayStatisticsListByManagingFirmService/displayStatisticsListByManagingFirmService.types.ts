@@ -1,7 +1,7 @@
 import {
   BuildingListResponse,
   SubscriberStatisticsСonsumptionResponse,
-} from 'myApi';
+} from 'api/types';
 
 export type HousingStockWithApartmentStatistic = BuildingListResponse & {
   apartmentsStatistic: SubscriberStatisticsСonsumptionResponse[];
@@ -10,7 +10,8 @@ export type HousingStockWithApartmentStatistic = BuildingListResponse & {
 
 export type SubscriberStatisticsFilter = {
   HousingStockId: number;
-  MonthOfLastTransmission?: string;
+  MonthOfLastTransmission?: number;
+  YearOfLastTransmission?: number;
   HotWaterSupply?: boolean;
   ColdWaterSupply?: boolean;
   Electricity?: boolean;

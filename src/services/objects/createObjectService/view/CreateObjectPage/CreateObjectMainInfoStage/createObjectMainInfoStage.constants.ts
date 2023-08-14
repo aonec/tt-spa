@@ -2,7 +2,7 @@ import {
   EHouseCategory,
   ELivingHouseType,
   ENonResidentialHouseType,
-} from 'myApi';
+} from 'api/types';
 import * as yup from 'yup';
 
 export const validationSchema = yup.object().shape({

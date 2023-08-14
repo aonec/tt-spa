@@ -1,5 +1,5 @@
-import { axios } from '01/axios';
-import { HomeownerAccountResponse } from 'myApi';
+import { axios } from 'api/axios';
+import { HomeownerAccountResponse } from 'api/types';
 
 export const getHomeownerAccount = (
   id: string,

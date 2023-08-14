@@ -1,15 +1,15 @@
 import React, { FC } from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
+import { ESecuredIdentityRoleName } from 'api/types';
+import { Panel } from 'App/Panel';
 import { Layout, PageWrapper, Wrapper } from './Router.styled';
 import { RouterProps } from './Router.types';
-import { ESecuredIdentityRoleName } from 'myApi';
 import { TasksRouter } from 'services/tasks/tasks.router';
 import { ObjectsProfileContainer } from 'services/objects/objectsProfileService';
 import { HousingStockProfileContainer } from 'services/objects/housingStockProfileService';
 import { DevicesPageContainer } from 'services/devices/devicesPageService';
 import { ChangeODPUContainer } from 'services/devices/сhangeODPUService';
 import { EditElectricNodeContainer } from 'services/devices/editElectricNodeService';
-import { Panel } from 'App/Panel';
 import { CreateObjectContainer } from 'services/objects/createObjectService';
 import { EditApartmentProfileContainer } from 'services/apartments/editApartmentProfileService';
 import { EmployeeProfileContainer } from 'services/employee/employeeProfileService';
@@ -28,10 +28,8 @@ import { StandartWorkingRangeContainer } from 'services/workingRanges/standartWo
 import { GroupWorkingRangeContainer } from 'services/workingRanges/groupWorkingRangeService';
 import { UniqueWorkingRangeContainer } from 'services/workingRanges/uniqueWorkingRangeService';
 import { EditCompanyContainer } from 'services/company/editCompanyService';
-import { ReportsPageContainer } from '01/features/reports';
-import { featureToggles } from 'featureToggles';
+import { ReportsPageContainer } from 'services/reports';
 import { ReportsContainer } from 'services/reportsService';
-import { ReadingHistoryPage } from '01/features/readings/displayReadingHistory';
 import { AccessDeniedPage } from 'services/authorizations/AccessDeniedPage';
 import { EditObjectContainer } from 'services/objects/editObjectService';
 import { EditIndividualDeviceContainer } from 'services/meters/editIndividualDeviceService';
@@ -49,13 +47,19 @@ import { EditNodeContainer } from 'services/nodes/editNodeService';
 import { DistrictBordersByAddressContainer } from 'services/settings/districtBordersService/districtBordersByAddressService';
 import { StatisticsProfileContainer } from 'services/statistics/statisticsProfileService';
 import { AddIndividualDeviceContainer } from 'services/devices/individualDevices/addIndividualDeviceService';
+import { ResourceDisablingScheduleContainer } from 'services/settings/resourcesDisablingScheduleService/ResourceDisablingScheduleContainer';
 import { WorkWithIndividualDeviceContainer } from 'services/devices/individualDevices/workWithIndividualDeviceService';
 import { WorkWithIndividualDeviceType } from 'services/devices/individualDevices/workWithIndividualDeviceService/workWithIndividualDeviceService.types';
 import { ManageDistrictsMapContainer } from 'services/settings/districtBordersService/manageDistrictsMapService';
 import { CreateDistrictBorderMapContainer } from 'services/settings/districtBordersService/createDistrictBorderMapService';
 import { NonResidentialBuildingProfileContainer } from 'services/objects/nonResidentialBuildingProfileService';
+import { EditDistrictBordersContainer } from 'services/settings/districtBordersService/editDistrictBordersService';
 
-export const Router: FC<RouterProps> = ({ roles, isRolesLoadded }) => {
+export const Router: FC<RouterProps> = ({
+  roles,
+  isRolesLoadded,
+  featureToggles,
+}) => {
   const redirectRoute = roles.length
     ? roles?.includes(
         ESecuredIdentityRoleName.SeniorOperator ||
@@ -410,6 +414,14 @@ export const Router: FC<RouterProps> = ({ roles, isRolesLoadded }) => {
                     />
                   )}
 
+                  {(isSeniorOperator || isOperator) && (
+                    <Route
+                      path="/districtBordersSettings/editDistrictBorders/:id"
+                      component={EditDistrictBordersContainer}
+                      exact
+                    />
+                  )}
+
                   {isAdministrator && (
                     <Route
                       path="/adminSettings/:section"
@@ -500,22 +512,6 @@ export const Router: FC<RouterProps> = ({ roles, isRolesLoadded }) => {
 
                   {(isAdministrator || isSeniorOperator || isOperator) && (
                     <Route
-                      path="/apartment/:id/individualDevice/:deviceId/readingHistory"
-                      exact
-                    >
-                      <ReadingHistoryPage />
-                    </Route>
-                  )}
-                  {(isAdministrator || isSeniorOperator || isOperator) && (
-                    <Route
-                      path="/houses/individualDevice/:deviceId/readingHistory"
-                      exact
-                    >
-                      <ReadingHistoryPage />
-                    </Route>
-                  )}
-                  {(isAdministrator || isSeniorOperator || isOperator) && (
-                    <Route
                       path="/apartment/:id/individualDevice/:deviceId/switch"
                       exact
                     >
@@ -571,6 +567,11 @@ export const Router: FC<RouterProps> = ({ roles, isRolesLoadded }) => {
                       exact
                     >
                       <SwitchPersonalNumberContainer />
+                    </Route>
+                  )}
+                  {isDispatcher && (
+                    <Route path="/disabledResources" exact>
+                      <ResourceDisablingScheduleContainer />
                     </Route>
                   )}
 

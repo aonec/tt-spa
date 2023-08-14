@@ -8,7 +8,7 @@ import {
   TitleWrapper,
 } from './TaskBaseInfo.styled';
 import { TaskBaseInfoProps } from './TaskBaseInfo.types';
-import { EHouseCategory } from 'myApi';
+import { EHouseCategory } from 'api/types';
 
 export const TaskBaseInfo: FC<TaskBaseInfoProps> = ({ task }) => {
   const {

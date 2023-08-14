@@ -1,19 +1,21 @@
 import React, { FC, useCallback, useMemo } from 'react';
 import { ApartmentSealProfileProps } from './ApartmentSealProfile.types';
-import { WithLoader } from 'ui-kit/shared_components/WithLoader';
+import { WithLoader } from 'ui-kit/shared/WithLoader';
 import {
+  AddressSearchContainerSC,
   AppointmentTextWrapper,
   ContentWrapper,
 } from './ApartmentSealProfile.styled';
-import { TypeAddressToStart } from 'ui-kit/shared_components/TypeToStart';
+import { TypeAddressToStart } from 'ui-kit/shared/TypeToStart';
 import { ApartmentInfo } from 'services/meters/metersService/ApartmentReadingsService/view/ApartmentsReadings/ApartmentProfile/ApartmentInfo';
 import {
   AddressSearchValues,
   SearchFieldType,
 } from 'services/addressSearchService/view/AddressSearch/AddressSearch.types';
-import { AddressSearchContainer } from 'services/addressSearchService';
 import { IndividualDevicesList } from './IndividualDevicesList';
 import moment from 'moment';
+import { SealBottomPanel } from '../SealBottomPanel';
+import { GoBack } from 'ui-kit/shared/GoBack';
 
 export const ApartmentSealProfile: FC<ApartmentSealProfileProps> = ({
   apartment,
@@ -25,6 +27,7 @@ export const ApartmentSealProfile: FC<ApartmentSealProfileProps> = ({
   individualDevices,
   openCreateSealAppointmentModal,
   nearestAppointment,
+  isAppointmentLoading,
 }) => {
   const address = apartment?.housingStock?.address?.mainAddress;
   const appointmentDate = useMemo(
@@ -59,9 +62,23 @@ export const ApartmentSealProfile: FC<ApartmentSealProfileProps> = ({
     [searchApartment],
   );
 
+  const handleOpenCreateSealAppointmentModal = useCallback(() => {
+    if (!apartment) {
+      return;
+    }
+    if (nearestAppointment) {
+      return openCreateSealAppointmentModal({
+        apartment,
+        appointment: nearestAppointment,
+      });
+    }
+    return openCreateSealAppointmentModal({ apartment, appointment: null });
+  }, [apartment, openCreateSealAppointmentModal, nearestAppointment]);
+
   return (
     <>
-      <AddressSearchContainer
+      <GoBack path="/services/seal/select" />
+      <AddressSearchContainerSC
         fields={[
           SearchFieldType.City,
           SearchFieldType.Street,
@@ -86,27 +103,32 @@ export const ApartmentSealProfile: FC<ApartmentSealProfileProps> = ({
       <WithLoader isLoading={isLoadingApartment}>
         {!apartment && <TypeAddressToStart />}
         {apartment && (
-          <ContentWrapper>
-            <ApartmentInfo
-              apartment={apartment}
-              handleUpdateApartment={updateApartment}
-              setSelectedHomeownerName={setSelectedHomeownerName}
-              menuButtons={[
-                {
-                  title: 'Запись на опломбировку',
-                  onClick: () => openCreateSealAppointmentModal(apartment),
-                },
-              ]}
-              additionalHeaderInfo={
-                appointmentDate && (
-                  <AppointmentTextWrapper>
-                    Запись на опломбировку: {appointmentDate}
-                  </AppointmentTextWrapper>
-                )
-              }
-            />
-            <IndividualDevicesList individualDevices={individualDevices} />
-          </ContentWrapper>
+          <>
+            <ContentWrapper>
+              <ApartmentInfo
+                apartment={apartment}
+                handleUpdateApartment={updateApartment}
+                setSelectedHomeownerName={setSelectedHomeownerName}
+                additionalHeaderInfo={
+                  appointmentDate && (
+                    <AppointmentTextWrapper>
+                      Запись на опломбировку: {appointmentDate}
+                    </AppointmentTextWrapper>
+                  )
+                }
+              />
+              <IndividualDevicesList individualDevices={individualDevices} />
+            </ContentWrapper>
+            {!isAppointmentLoading && (
+              <SealBottomPanel
+                apartment={apartment}
+                openCreateSealAppointmentModal={
+                  handleOpenCreateSealAppointmentModal
+                }
+                isAppointmentExist={Boolean(nearestAppointment)}
+              />
+            )}
+          </>
         )}
       </WithLoader>
     </>

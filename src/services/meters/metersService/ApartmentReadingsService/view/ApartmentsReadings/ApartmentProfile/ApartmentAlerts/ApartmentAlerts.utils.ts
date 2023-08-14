@@ -1,8 +1,8 @@
 import moment from 'moment';
-import { HomeownerAccountListResponse } from 'myApi';
+import { HomeownerAccountListResponse } from 'api/types';
 
 export const checkIsHomeownerAccountRecentlyModified = (
-  account: HomeownerAccountListResponse
+  account: HomeownerAccountListResponse,
 ) => {
   const changeDate = moment(account.openAtFact);
 

@@ -35,7 +35,7 @@
 Объявляются базовые компоненты сервиса, описывются связи внутри сервиса, экспортится объект модели с полями inputs и outputs 
 ```ts
 import { createDomain, guard } from 'effector';
-import { IndividualDeviceListItemResponse } from 'myApi';
+import { IndividualDeviceListItemResponse } from 'api/types';
 import { deleteDevice } from './deleteIndividualDeviceService.api';
 
 const domain = createDomain(
@@ -138,6 +138,12 @@ export const DeleteIndividualDeviceModalContainer = () => {
 ```cmd
 npm i -g @pronix/ttcodegen
 ```
+
+## Правила оставления коментариев в коде:
+Коментарии на русском языке.
+Если нужно оставить метку в коде о том что будет дорабатыватся, то комент дожн выглядить так:
+ // todo: kek-kek
+Например: // todo: регулярная выгрузка
 
 
 ## Правила загрузки документов:

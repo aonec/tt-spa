@@ -1,18 +1,13 @@
 import React, { useEffect, useMemo, useRef } from 'react';
-import { useEvent, useStore } from 'effector-react';
+import { useUnit } from 'effector-react';
 import { useParams } from 'react-router-dom';
 import {
   ESecuredIdentityRoleName,
   ETaskEngineeringElement,
   TaskGroupingFilter,
-} from 'myApi';
-import { exportTasksListService } from '../exportTasksListService';
+} from 'api/types';
 import { tasksProfileService } from './tasksProfileService.model';
-import {
-  getAddressObject,
-  prepareData,
-  prepareQueryStringParam,
-} from './tasksProfileService.utils';
+import { getAddressObject, prepareData } from './tasksProfileService.utils';
 import { TaskType } from './view/TasksListItem/TasksListItem.types';
 import { TasksProfile } from './view/TasksProfile';
 import queryString from 'query-string';
@@ -20,56 +15,70 @@ import { addressSearchService } from 'services/addressSearchService/addressSearc
 import { TaskTypesGate } from '../taskTypesService/taskTypesService.model';
 import { AddTaskFromDispatcherContainer } from '../addTaskFromDispatcherService';
 import { usePermission } from 'hooks/usePermission';
+import { exportTasksListService } from '../exportTasksListService';
 
 const { ExistingCitiesGate } = addressSearchService.gates;
 const { inputs, outputs, gates } = tasksProfileService;
-const { ApartmentIdGate } = gates;
+const { InitialGate, SetCityGate } = gates;
 
 export const TasksProfileContainer = () => {
   const { grouptype } = useParams<{ grouptype: TaskGroupingFilter }>();
 
-  const taskTypes = useStore(outputs.$taskTypes);
-  const housingManagments = useStore(outputs.$housingManagments);
-  const perpetrators = useStore(outputs.$organizationUsers);
-  const pagedTasks = useStore(outputs.$tasksPagedData);
-  const isLoading = useStore(outputs.$isLoading);
-  const isExtendedSearchOpen = useStore(outputs.$isExtendedSearchOpen);
-  const isSpectator = useStore(outputs.$isSpectator);
-  const apartment = useStore(outputs.$apartment);
-  const housingStock = useStore(outputs.$housingStock);
-  const initialValues = useStore(outputs.$searchState);
-  const tasksPageSegment = useStore(outputs.$tasksPageSegment);
-
-  const handleExportTasksList = useEvent(
-    exportTasksListService.inputs.exportTasksList,
-  );
-  const handleSearch = useEvent(inputs.searchTasks);
-  const changeFiltersByGroupType = useEvent(inputs.changeFiltersByGroupType);
-  const changeGroupType = useEvent(inputs.changeGroupType);
-  const changePageNumber = useEvent(inputs.changePageNumber);
-  const closeExtendedSearch = useEvent(inputs.extendedSearchClosed);
-  const openExtendedSearch = useEvent(inputs.extendedSearchOpened);
-  const clearFilters = useEvent(inputs.clearFilters);
-  const clearAddress = useEvent(inputs.clearAddress);
-  const setTasksPageSegment = useEvent(inputs.setTasksPageSegment);
-  const handleOpenAddTaskModal = useEvent(inputs.handleOpenAddTaskModal);
-
   const {
-    apartmentId,
-    housingStockId,
-    pipeNodeId,
-    housingMeteringDeviceId,
-    calculatorId,
-  } = queryString.parse(window.location.search);
+    taskTypes,
+    housingManagments,
+    perpetrators,
+    pagedTasks,
+    isLoading,
+    isExtendedSearchOpen,
+    apartment,
+    housingStock,
+    initialValues,
+    tasksPageSegment,
+    handleExportTasksList,
+    handleSearch,
+    changeFiltersByGroupType,
+    changeGroupType,
+    changePageNumber,
+    closeExtendedSearch,
+    openExtendedSearch,
+    clearFilters,
+    clearAddress,
+    setTasksPageSegment,
+    handleOpenAddTaskModal,
+    existingCities,
+  } = useUnit({
+    taskTypes: outputs.$taskTypes,
+    housingManagments: outputs.$housingManagments,
+    perpetrators: outputs.$organizationUsers,
+    pagedTasks: outputs.$tasksPagedData,
+    isLoading: outputs.$isLoading,
+    isExtendedSearchOpen: outputs.$isExtendedSearchOpen,
+    apartment: outputs.$apartment,
+    housingStock: outputs.$housingStock,
+    initialValues: outputs.$searchState,
+    tasksPageSegment: outputs.$tasksPageSegment,
+    handleExportTasksList: exportTasksListService.inputs.exportTasksList,
+    handleSearch: inputs.searchTasks,
+    changeFiltersByGroupType: inputs.changeFiltersByGroupType,
+    changeGroupType: inputs.changeGroupType,
+    changePageNumber: inputs.changePageNumber,
+    closeExtendedSearch: inputs.extendedSearchClosed,
+    openExtendedSearch: inputs.extendedSearchOpened,
+    clearFilters: inputs.clearFilters,
+    clearAddress: inputs.clearAddress,
+    setTasksPageSegment: inputs.setTasksPageSegment,
+    handleOpenAddTaskModal: inputs.handleOpenAddTaskModal,
+    existingCities: addressSearchService.outputs.$existingCities,
+  });
 
-  const preparedApartmentId = prepareQueryStringParam(apartmentId);
+  const isSpectator = usePermission([
+    ESecuredIdentityRoleName.ManagingFirmSpectator,
+    ESecuredIdentityRoleName.ManagingFirmSpectatorRestricted,
+  ]);
 
-  const preparedHousingStockId = prepareQueryStringParam(housingStockId);
-
-  const preparedPipeNodeId = prepareQueryStringParam(pipeNodeId);
-
-  const preparedDeviceId = prepareQueryStringParam(
-    housingMeteringDeviceId || calculatorId,
+  const { apartmentId, housingStockId } = queryString.parse(
+    window.location.search,
   );
 
   const lastGroupTypeRef = useRef<TaskGroupingFilter | null>(
@@ -142,21 +151,9 @@ export const TasksProfileContainer = () => {
 
   return (
     <>
-      {[
-        preparedApartmentId,
-        preparedHousingStockId,
-        preparedPipeNodeId,
-        housingMeteringDeviceId,
-        calculatorId,
-      ].some(Boolean) && (
-        <ApartmentIdGate
-          apartmentId={preparedApartmentId}
-          housingStockId={preparedHousingStockId}
-          pipeNodeId={preparedPipeNodeId}
-          deviceId={preparedDeviceId}
-        />
-      )}
+      <InitialGate />
       <ExistingCitiesGate />
+      <SetCityGate cities={existingCities} />
       <TaskTypesGate />
       <AddTaskFromDispatcherContainer />
       <TasksProfile

@@ -1,5 +1,5 @@
 import { CalculatorsListRequestPayload } from 'services/calculators/calculatorsListService/calculatorsListService.types';
-import { CalculatorListResponse, BuildingShortResponse } from 'myApi';
+import { BuildingShortResponse, CalculatorListResponse } from 'api/types';
 
 export type DevicesListContainerProps = {
   setAddress: (address: CalculatorsListRequestPayload) => void;

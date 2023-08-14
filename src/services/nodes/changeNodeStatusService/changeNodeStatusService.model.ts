@@ -1,6 +1,6 @@
 import { message } from 'antd';
 import { createDomain, forward, sample } from 'effector';
-import { PipeNodeResponse } from 'myApi';
+import { PipeNodeResponse } from 'api/types';
 import { EffectFailDataAxiosError } from 'types';
 import { fetchChangeCommercialStatus } from './changeNodeStatusService.api';
 import {

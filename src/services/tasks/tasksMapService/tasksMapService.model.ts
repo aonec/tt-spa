@@ -1,5 +1,5 @@
 import { createDomain, forward, sample } from 'effector';
-import { BuildingWithTasksResponse, TaskResponse } from 'myApi';
+import { BuildingWithTasksResponse, TaskResponse } from 'api/types';
 import { tasksProfileService } from '../tasksProfileService';
 import {
   $taskTypes,
@@ -11,6 +11,7 @@ import {
   HousingStocksWithTasksFiltrationValues,
 } from './tasksMapService.types';
 import { getHousingStocksWithTasksRequestPayload } from './tasksMapService.utils';
+import { currentUserService } from 'services/currentUserService';
 
 const domain = createDomain('tasksMap');
 
@@ -99,5 +100,7 @@ export const tasksMapService = {
     $task,
     $isLoadingTask,
     $organizationUsers: tasksProfileService.outputs.$organizationUsers,
+    $organizationCoordinates:
+      currentUserService.outputs.$organizationCoordinates,
   },
 };

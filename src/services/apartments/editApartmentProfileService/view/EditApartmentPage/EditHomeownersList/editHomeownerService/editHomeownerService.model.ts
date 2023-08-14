@@ -10,7 +10,7 @@ import { message } from 'antd';
 
 const domain = createDomain('editHomeownerService');
 
-const handleEditHomeowner = domain.createEvent<EditHomeownerRequestPayload>();
+const handleEditHomeowner = domain.createEvent<EditHomeownerFormPayload>();
 
 const editHomeownerFx = domain.createEffect<
   EditHomeownerRequestPayload,
@@ -32,7 +32,7 @@ const $housingStockPayload = domain
 const $isModalOpen = $housingStockPayload.map(Boolean);
 
 const $editHomeownerFormData = domain
-  .createStore<EditHomeownerRequestPayload | null>(null)
+  .createStore<EditHomeownerFormPayload | null>(null)
   .on(handleEditHomeowner, (_, data) => data);
 
 const $samePersonalAccountNumderId = domain
@@ -59,8 +59,32 @@ sample({
   source: combine(
     $editHomeownerFormData,
     $isForced,
-    (payloadData, isForced): EditHomeownerRequestPayload | null => {
-      return payloadData && { ...payloadData, isForced };
+    (payloadData, isForced) => {
+      if (!payloadData) return null;
+
+      const {
+        isMainOnApartment,
+        name,
+        paymentCode,
+        personType,
+        personalAccountNumber,
+        phoneNumber,
+      } = payloadData;
+
+      const res: EditHomeownerRequestPayload = {
+        id: payloadData.id,
+        body: {
+          isMainOnApartment,
+          name,
+          paymentCode,
+          personType,
+          personalAccountNumber,
+          phoneNumber,
+        },
+        isForced: isForced,
+      };
+
+      return res;
     },
   ),
   filter: (payload): payload is EditHomeownerRequestPayload => Boolean(payload),

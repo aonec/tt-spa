@@ -1,9 +1,10 @@
 import { combine, createDomain, forward, sample } from 'effector';
-import { HomeownerAccountCreateRequest } from 'myApi';
+import { HomeownerAccountCreateRequest } from 'api/types';
 import { editApartmentProfileService } from 'services/apartments/editApartmentProfileService/editApartmentProfileService.model';
 import { postHomeownerAccount } from './createHomeownerService.api';
 import { message } from 'antd';
 import { EffectFailDataAxiosErrorDataApartmentId } from 'types';
+import { CreateHomeownerPayload } from './createHomeownerService.types';
 
 const domain = createDomain('createHomeownerService');
 
@@ -13,7 +14,7 @@ const handleConfirmationModalClose = domain.createEvent();
 const onForced = domain.createEvent();
 
 const createHomeownerFx = domain.createEffect<
-  HomeownerAccountCreateRequest,
+  CreateHomeownerPayload,
   void,
   EffectFailDataAxiosErrorDataApartmentId
 >(postHomeownerAccount);
@@ -53,12 +54,11 @@ sample({
   source: combine(
     $createHomeownerPayloadData,
     $isForced,
-    (payloadData, isForced): HomeownerAccountCreateRequest | null => {
-      return payloadData && { ...payloadData, isForced };
+    (payloadData, isForced) => {
+      return { body: payloadData, isForced };
     },
   ),
-  filter: (payload): payload is HomeownerAccountCreateRequest =>
-    Boolean(payload),
+  filter: (payload): payload is CreateHomeownerPayload => Boolean(payload),
   target: createHomeownerFx,
 });
 

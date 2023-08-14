@@ -1,17 +1,18 @@
 import { createDomain, forward } from 'effector';
 import { createGate } from 'effector-react';
 import {
+  ESecuredIdentityRoleName,
   HousingStockResponse,
   ResourceDisconnectingResponse,
   ResourceDisconnectingResponsePagedList,
-} from 'myApi';
+} from 'api/types';
 import {
   fetchHousingStock,
   fetchResourceDisconnectionOnHousingStock,
 } from './housingStockProfileService.api';
 import { HousingStockProfileGrouptype } from './housingStockProfileService.constants';
-import { tasksProfileService } from '../../tasks/tasksProfileService';
 import { consolidatedReportService } from './consolidatedReportService';
+import { currentUserService } from 'services/currentUserService';
 
 const domain = createDomain('objectProfileService');
 const ObjectProfileIdGate = createGate<{ objectId: number }>();
@@ -34,9 +35,15 @@ const $housingStockId = $housingStock.map((housingStock) => {
   return housingStock?.id || null;
 });
 
-const $isAdministrator = tasksProfileService.outputs.$isAdministrator.map(
-  (isAdministrator) => isAdministrator,
-);
+const $isAdministrator = currentUserService.outputs.$currentUser.map((user) => {
+  const roles = user?.roles || [];
+  const rolesKeys = roles.map(({ key }) => key);
+  const isAdministrator = rolesKeys.includes(
+    ESecuredIdentityRoleName.Administrator,
+  );
+
+  return isAdministrator;
+});
 
 const $resourceDisconnections = domain.createStore<
   ResourceDisconnectingResponse[]

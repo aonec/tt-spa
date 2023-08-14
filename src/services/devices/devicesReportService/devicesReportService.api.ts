@@ -1,4 +1,4 @@
-import { axios } from '01/axios';
+import { axios } from 'api/axios';
 import { stringify } from 'query-string';
 import { downloadURI } from 'utils/downloadByURL';
 import { DevicesReportPayload } from './devicesReportService.types';

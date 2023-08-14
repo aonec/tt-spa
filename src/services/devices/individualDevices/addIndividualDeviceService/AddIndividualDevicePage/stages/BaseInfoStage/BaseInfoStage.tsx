@@ -12,7 +12,7 @@ import {
   Wrap,
 } from './BaseInfoStage.styled';
 import { FormItem } from 'ui-kit/FormItem';
-import { ResourceSelect } from 'ui-kit/shared_components/ResourceSelect';
+import { ResourceSelect } from 'ui-kit/shared/ResourceSelect';
 import { ErrorMessage } from 'ui-kit/ErrorMessage';
 import { AutoComplete } from 'ui-kit/AutoComplete';
 import { Input } from 'ui-kit/Input';
@@ -22,8 +22,8 @@ import {
   CreateIndividualDeviceRequest,
   EIndividualDeviceRateType,
   EResourceType,
-} from 'myApi';
-import { DatePickerNative } from 'ui-kit/shared_components/DatePickerNative';
+} from 'api/types';
+import { DatePickerNative } from 'ui-kit/shared/DatePickerNative';
 import { getIndividualDeviceRateNumByName } from 'utils/getIndividualDeviceRateNumByName';
 import moment from 'moment';
 import { getBitDepthAndScaleFactor } from 'utils/getBitDepthAndScaleFactor';
@@ -196,9 +196,11 @@ export const BaseInfoStage: FC<BaseInfoStageProps> = ({
           onChange={(incomingValue: string) => {
             const value = moment(incomingValue);
 
-            setFieldValue('lastCheckingDate', incomingValue);
+            const formattedDate = value.format('YYYY-MM-DD');
 
-            const nextCheckingDate = moment(value);
+            setFieldValue('lastCheckingDate', formattedDate);
+
+            const nextCheckingDate = moment(formattedDate);
 
             if (!values.resource) return;
 
@@ -208,7 +210,10 @@ export const BaseInfoStage: FC<BaseInfoStageProps> = ({
 
             nextCheckingDate.set('year', nextYear);
 
-            setFieldValue('futureCheckingDate', nextCheckingDate.format());
+            const formattedNextCheckingDate =
+              nextCheckingDate.format('YYYY-MM-DD');
+
+            setFieldValue('futureCheckingDate', formattedNextCheckingDate);
           }}
           value={values.lastCheckingDate}
         />
@@ -216,7 +221,12 @@ export const BaseInfoStage: FC<BaseInfoStageProps> = ({
       </FormItem>
       <FormItem label="Дата следующей поверки прибора">
         <DatePickerNative
-          onChange={(value) => setFieldValue('futureCheckingDate', value)}
+          onChange={(value) =>
+            setFieldValue(
+              'futureCheckingDate',
+              moment(value).format('YYYY-MM-DD'),
+            )
+          }
           value={values.futureCheckingDate}
         />
         <ErrorMessage>{errors.futureCheckingDate}</ErrorMessage>
@@ -425,7 +435,9 @@ export const BaseInfoStage: FC<BaseInfoStageProps> = ({
 
       <FormItem label="Дата ввода в эксплуатацию">
         <DatePickerNative
-          onChange={(value) => setFieldValue('openingDate', value)}
+          onChange={(value) =>
+            setFieldValue('openingDate', moment(value).format('YYYY-MM-DD'))
+          }
           value={values.openingDate}
         />
         <ErrorMessage>{errors.openingDate}</ErrorMessage>
@@ -455,7 +467,12 @@ export const BaseInfoStage: FC<BaseInfoStageProps> = ({
 
         <FormItem label="Дата установки пломбы">
           <DatePickerNative
-            onChange={(value) => setFieldValue('sealInstallationDate', value)}
+            onChange={(value) =>
+              setFieldValue(
+                'sealInstallationDate',
+                moment(value).format('YYYY-MM-DD'),
+              )
+            }
             value={values.sealInstallationDate}
           />
         </FormItem>

@@ -1,4 +1,4 @@
-import { HousingStockResponse, ResourceDisconnectingResponse } from 'myApi';
+import { HousingStockResponse, ResourceDisconnectingResponse } from 'api/types';
 import { HousingStockProfileGrouptype } from '../../housingStockProfileService.constants';
 
 export type HousingStockProfileProps = {

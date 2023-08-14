@@ -1,16 +1,15 @@
-import { axios } from '01/axios';
-import {
-  HomeownerAccountCloseRequest,
-  HomeownerAccountUpdateRequest,
-} from 'myApi';
+import { axios } from 'api/axios';
+import { HomeownerAccountCloseRequest } from 'api/types';
+import { EditHomeownerRequestPayload } from './editPersonalNumberService.types';
 
 export const putHomeownerAccount = ({
-  id,
   data,
-}: {
-  id: string;
-  data: HomeownerAccountUpdateRequest;
-}): Promise<void> => axios.put(`HomeownerAccounts/${id}`, data);
+  id,
+  isForced,
+}: EditHomeownerRequestPayload): Promise<void> =>
+  axios.put(`HomeownerAccounts/${id}`, data, {
+    params: { isForced },
+  });
 
 export const closeHomeownerAccount = (
   payload: HomeownerAccountCloseRequest,

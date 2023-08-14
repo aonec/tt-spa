@@ -1,10 +1,10 @@
 import { createDomain, sample } from 'effector';
-import { HomeownerAccountCreateRequest } from 'myApi';
+import { message } from 'antd';
 import { apartmentProfileService } from 'services/apartments/apartmentProfileService';
 import { EffectFailDataAxiosErrorDataApartmentId } from 'types';
 import { addHomeowner } from './addPersonalNumberService.api';
-import { message } from 'antd';
 import { PersonalNumberFormTypes } from '../components/PersonalNumberForm/PersonalNumberForm.types';
+import { AddHomeownerRequestPayload } from './addPersonalNumberService.types';
 
 const domain = createDomain('addPersonalNumberService');
 
@@ -18,7 +18,7 @@ const $isForced = domain
   .reset(handleConfirmationModalClose);
 
 const addPersonalNumberFx = domain.createEffect<
-  HomeownerAccountCreateRequest,
+  AddHomeownerRequestPayload,
   void,
   EffectFailDataAxiosErrorDataApartmentId
 >(addHomeowner);
@@ -41,15 +41,17 @@ sample({
   filter: (_, formData) => Boolean(formData.apartmentId),
   fn: (isForced, formData) =>
     ({
-      apartmentId: formData.apartmentId,
-      name: formData.name,
-      openAt: formData.openAt,
-      personalAccountNumber: formData.personalAccountNumber,
-      isMainOnApartment: formData.isMainOnApartment,
-      paymentCode: formData.paymentCode,
-      phoneNumber: formData.phoneNumber,
+      body: {
+        apartmentId: formData.apartmentId,
+        name: formData.name,
+        openAt: formData.openAt,
+        personalAccountNumber: formData.personalAccountNumber,
+        isMainOnApartment: formData.isMainOnApartment,
+        paymentCode: formData.paymentCode,
+        phoneNumber: formData.phoneNumber,
+      },
       isForced,
-    } as HomeownerAccountCreateRequest),
+    } as AddHomeownerRequestPayload),
   target: addPersonalNumberFx,
 });
 

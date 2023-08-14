@@ -3,7 +3,7 @@ import { Wrapper } from './NodeCheckForm.styled';
 import { NodeCheckFormProps } from './NodeCheckForm.types';
 import { Form } from 'antd';
 import { useFormik } from 'formik';
-import { EDocumentType, UpdateNodeCheckRequest } from 'myApi';
+import { EDocumentType, UpdateNodeCheckRequest } from 'api/types';
 import { FormItem } from 'ui-kit/FormItem';
 import { DatePicker } from 'ui-kit/DatePicker';
 import moment from 'moment';

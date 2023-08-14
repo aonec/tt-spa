@@ -1,19 +1,15 @@
 import React, { FC } from 'react';
 import { Wrapper } from './DistrictBorderCreationTypeSelect.styled';
 import { DistrictBorderCreationTypeSelectProps } from './DistrictBorderCreationTypeSelect.types';
-import { LinkPanel } from 'ui-kit/shared_components/LinkPanel';
+import { LinkPanel } from 'ui-kit/shared/LinkPanel';
 import { ListIcon, MapIcon, MapPaperIcon } from 'ui-kit/icons';
+import { SpaceLine } from 'ui-kit/SpaceLine';
 
 export const DistrictBorderCreationTypeSelect: FC<
   DistrictBorderCreationTypeSelectProps
 > = () => {
   return (
     <Wrapper>
-      <LinkPanel
-        text="Просмотреть районы на карте"
-        link="/districtBordersSettings/manageDistricts"
-        icon={<MapPaperIcon />}
-      />
       <LinkPanel
         text="Задать границы районов на карте"
         link="/districtBordersSettings/createByMap"
@@ -23,6 +19,12 @@ export const DistrictBorderCreationTypeSelect: FC<
         text="Задать границы районов по адресам"
         link="/districtBordersSettings/createByHousingStocksList"
         icon={<ListIcon />}
+      />
+      <SpaceLine />
+      <LinkPanel
+        text="Все районы"
+        link="/districtBordersSettings/manageDistricts"
+        icon={<MapPaperIcon />}
       />
     </Wrapper>
   );

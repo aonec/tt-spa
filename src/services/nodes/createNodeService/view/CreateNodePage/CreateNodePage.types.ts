@@ -3,7 +3,7 @@ import {
   HousingStockResponse,
   NodeServiceZoneListResponse,
   NonResidentialBuildingResponse,
-} from 'myApi';
+} from 'api/types';
 import {
   CreateNodeFormPayload,
   UpdateNodeFormPayloadCallback,

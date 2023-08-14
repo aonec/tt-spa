@@ -17,7 +17,7 @@ import {
   HousingStockResponse,
   HousingStockUpdateRequest,
   NonResidentialBuildingResponse,
-} from 'myApi';
+} from 'api/types';
 import { EffectFailDataAxiosError } from 'types';
 import { createGate } from 'effector-react';
 import { displayHeatingStationsService } from '../heatingStations/displayHeatingStationsService';

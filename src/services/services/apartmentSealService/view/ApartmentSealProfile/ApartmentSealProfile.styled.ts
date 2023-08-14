@@ -1,3 +1,4 @@
+import { AddressSearchContainer } from 'services/addressSearchService';
 import styled from 'styled-components';
 
 export const ContentWrapper = styled.div`
@@ -12,4 +13,8 @@ export const AppointmentTextWrapper = styled.div`
 
   display: flex;
   align-items: center;
+`;
+
+export const AddressSearchContainerSC = styled(AddressSearchContainer)`
+  margin-top: 16px;
 `;

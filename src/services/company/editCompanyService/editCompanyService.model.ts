@@ -1,7 +1,7 @@
 import { message } from 'antd';
 import { createDomain, forward, sample } from 'effector';
 import { createGate } from 'effector-react';
-import { OrganizationResponse, OrganizationUpdateRequest } from 'myApi';
+import { OrganizationResponse, OrganizationUpdateRequest } from 'api/types';
 import { EffectFailDataAxiosError } from 'types';
 import {
   fetchCurrentManagingFirm,

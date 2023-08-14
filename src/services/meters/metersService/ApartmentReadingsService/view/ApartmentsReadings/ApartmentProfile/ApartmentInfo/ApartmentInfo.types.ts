@@ -1,6 +1,9 @@
-import { ApartmentResponse } from 'myApi';
+import { ApartmentResponse } from 'api/types';
 import { ReactNode } from 'react';
-import { UpdateApartmentRequestPayload } from 'services/meters/metersService/ApartmentReadingsService/ApartmentReadingsService.types';
+import {
+  UpdateApartmentRequestPayload,
+  UpdateHomeownerRequestPayload,
+} from 'services/meters/metersService/ApartmentReadingsService/ApartmentReadingsService.types';
 import { ContextMenuElement } from 'ui-kit/ContextMenuButton/ContextMenuButton.types';
 
 export type ApartmentInfoProps = {
@@ -9,4 +12,6 @@ export type ApartmentInfoProps = {
   setSelectedHomeownerName: (payload: string) => void;
   menuButtons?: ContextMenuElement[];
   additionalHeaderInfo?: ReactNode;
+  handleUpdateHomeowner?: (payload: UpdateHomeownerRequestPayload) => void;
+  isUpdateHomeownerLoading?: boolean;
 };

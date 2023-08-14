@@ -6,9 +6,9 @@ import {
   HousingStockResponse,
   TaskListResponse,
   TaskResponse,
-} from 'myApi';
-import { Timeline } from 'ui-kit/shared_components/TimeLine/TimeLine.types';
-import { TimerClosingStatus } from 'ui-kit/shared_components/Timer/Timer.types';
+} from 'api/types';
+import { Timeline } from 'ui-kit/shared/TimeLine/TimeLine.types';
+import { TimerClosingStatus } from 'ui-kit/shared/Timer/Timer.types';
 import { getTimeStringByUTC } from 'utils/getTimeStringByUTC';
 
 export const getAddressObject = (
@@ -150,6 +150,17 @@ const ColorLookup = {
   [EStageTimeStatus.Expired]: 'var(--error)',
 };
 
-export const prepareQueryStringParam = (param: string | string[] | null) => {
-  return Array.isArray(param) ? param[0] : param;
+export const getAcceptableSearchParams = () => {
+  const { searchParams } = new URL(window.location.href);
+
+  const params = {
+    apartmentId: searchParams.get('apartmentId'),
+    housingStockId: searchParams.get('housingStockId'),
+    pipeNodeId: searchParams.get('pipeNodeId'),
+    deviceId:
+      searchParams.get('calculatorId') ||
+      searchParams.get('housingMeteringDeviceId'),
+  };
+
+  return params;
 };

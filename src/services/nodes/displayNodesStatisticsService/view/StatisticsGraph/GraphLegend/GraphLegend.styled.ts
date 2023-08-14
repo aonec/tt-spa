@@ -1,4 +1,4 @@
-import { EResourceType } from 'myApi';
+import { EResourceType } from 'api/types';
 import styled from 'styled-components';
 import { GraphColorLookup } from 'utils/Graph.utils';
 import { Checkbox } from 'antd';

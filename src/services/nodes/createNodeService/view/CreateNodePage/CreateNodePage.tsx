@@ -1,6 +1,7 @@
 import { Steps } from 'antd';
 import React, { FC, ReactNode } from 'react';
-import { GoBack } from 'ui-kit/shared_components/GoBack';
+import { GoBack } from 'ui-kit/shared/GoBack';
+import { WithLoader } from 'ui-kit/shared/WithLoader';
 import { Title } from 'ui-kit/Title';
 import { getBuildingAddress } from 'utils/getBuildingAddress';
 import { CommonData } from './CommonData';
@@ -9,7 +10,6 @@ import { ConnectionSettings } from './ConnectionSettings';
 import { AddressWrapper, PageHeaderSC, Wrapper } from './CreateNodePage.styled';
 import { CreateNodePageProps } from './CreateNodePage.types';
 import { MountAddress } from './MountAddress';
-import { WithLoader } from 'ui-kit/shared_components/WithLoader';
 
 const { Step } = Steps;
 

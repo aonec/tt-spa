@@ -6,7 +6,7 @@ import {
   ResourceWrapper,
 } from './IndividualDevicesReport.styled';
 import { IndividualDevicesReportProps } from './IndividualDevicesReport.types';
-import { ResourceIconLookup } from 'ui-kit/shared_components/ResourceIconLookup';
+import { ResourceIconLookup } from 'ui-kit/shared/ResourceIconLookup';
 import {
   ClosingReasonsDictionary,
   ResourceShortNamesDictionary,
@@ -15,7 +15,7 @@ import { Table } from 'ui-kit/Table';
 import {
   EConstructedReportDeviceStatus,
   EIndividualDeviceReportOption,
-} from 'myApi';
+} from 'api/types';
 import moment from 'moment';
 import { Empty } from 'antd';
 import { getReportElemAddress } from '../ReportViewTable.utils';

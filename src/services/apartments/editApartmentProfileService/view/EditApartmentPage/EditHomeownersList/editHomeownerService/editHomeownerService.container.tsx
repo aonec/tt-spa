@@ -1,11 +1,11 @@
 import { useEvent, useStore } from 'effector-react';
-import { EPersonType } from 'myApi';
+import { EPersonType } from 'api/types';
 import React from 'react';
 import { FormModal } from 'ui-kit/Modals/FormModal/FormModal';
 import { EditHomeownerForm } from '../HomeownerForm';
 import { editHomeownerService } from './editHomeownerService.model';
-import { EditHomeownerRequestPayload } from './editHomeownerService.types';
 import { ConfirmationAddingExistingPersonalNumber } from 'services/homeowner/personalNumber/components/ConfirmationAddingExistingPersonalNumberModal';
+import { EditHomeownerPayload } from '../HomeownerForm/EditHomeownerForm.types';
 
 const { inputs, outputs } = editHomeownerService;
 
@@ -25,19 +25,18 @@ export const EditHomeownerContainer = () => {
   const confirmationModalClose = useEvent(inputs.handleConfirmationModalClose);
   const handleForced = useEvent(inputs.onForced);
 
-  const handleEditHomeownerPreparation = (
-    payload: EditHomeownerRequestPayload,
-  ) => {
+  const handleEditHomeownerPreparation = (payload: EditHomeownerPayload) => {
     if (!housingStockPayload?.id) return;
 
     handleEditHomeowner({
       id: housingStockPayload?.id,
-      personalAccountNumber: payload.personalAccountNumber,
       name: payload.name,
+      personalAccountNumber: payload.personalAccountNumber,
       phoneNumber: payload.phoneNumber,
       paymentCode: payload.paymentCode,
       personType: String(payload.personType) as EPersonType,
       isMainOnApartment: payload.isMainOnApartment,
+      openAt: payload.openAt,
     });
   };
 

@@ -1,10 +1,9 @@
 import { saveAs } from 'file-saver';
-
-import { axios } from '01/axios';
-import { ApartmentActResponsePagedList, DocumentResponse } from 'myApi';
+import { axios } from 'api/axios';
+import { ApartmentActResponsePagedList, DocumentResponse } from 'api/types';
 
 export const fetchPreviousActs = (
-  ApartmentId: number
+  ApartmentId: number,
 ): Promise<ApartmentActResponsePagedList> =>
   axios.get('ApartmentActs', {
     params: {

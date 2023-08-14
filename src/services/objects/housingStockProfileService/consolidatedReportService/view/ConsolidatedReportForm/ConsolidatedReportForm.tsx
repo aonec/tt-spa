@@ -3,14 +3,14 @@ import { Form, Radio, Space, message } from 'antd';
 import { FormItem } from 'ui-kit/FormItem';
 import { Input } from 'ui-kit/Input';
 import { useFormik } from 'formik';
-import { EReportType } from 'myApi';
+import { EReportType } from 'api/types';
 import {
   ArchiveType,
   ConsolidatedReportFormProps,
   DatePeriod,
 } from './ConsolidatedReportForm.types';
 import { PeriodSelection } from './ConsolidatedReportForm.styled';
-import { SpaceLine } from '01/shared/ui/Layout/Space/Space';
+import { SpaceLine } from 'ui-kit/SpaceLine';
 import { RangePicker } from 'ui-kit/RangePicker';
 import { getBuildingAddress } from 'utils/getBuildingAddress';
 import { getDatePeriod } from './ConsolidatedReportForm.utils';

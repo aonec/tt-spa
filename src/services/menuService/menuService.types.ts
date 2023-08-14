@@ -1,4 +1,4 @@
-import { ESecuredIdentityRoleName } from 'myApi';
+import { ESecuredIdentityRoleName } from 'api/types';
 
 export enum MenuType {
   Statistics = 'Statistics',
@@ -16,6 +16,7 @@ export enum MenuType {
   Log = 'Log',
   Services = 'Services',
   ServicesSeal = 'ServicesSeal',
+  DisabledResourcesDispatcher = 'DisabledResourcesDispatcher',
 }
 
 type Icon = React.FunctionComponent<

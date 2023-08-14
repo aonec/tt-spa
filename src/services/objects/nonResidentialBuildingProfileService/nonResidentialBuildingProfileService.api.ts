@@ -1,10 +1,6 @@
-import { axios } from '01/axios';
+import { axios } from 'api/axios';
 import { createQuery } from '@farfetched/core';
-import {
-  EResourceDisconnectingStatus,
-  NonResidentialBuildingResponse,
-  ResourceDisconnectingResponsePagedList,
-} from 'myApi';
+import { EResourceDisconnectingStatus, NonResidentialBuildingResponse, ResourceDisconnectingResponsePagedList } from 'api/types';
 
 export const nonResidentialBuildingQuery = createQuery<
   number,

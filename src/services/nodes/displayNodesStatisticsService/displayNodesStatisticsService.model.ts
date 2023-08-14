@@ -5,7 +5,7 @@ import {
   ArchivesDataModel,
   DateTimeTaskStatisticsItemArrayDictionaryItem,
   TaskStatisticsResponse,
-} from 'myApi';
+} from 'api/types';
 import {
   requestNodeReadings,
   requestTaskStatistics,
@@ -60,7 +60,7 @@ const $taskStatistics = domain
 
 const setWithFault = domain.createEvent<boolean>();
 const $withFault = domain
-  .createStore(false)
+  .createStore(true)
   .on(setWithFault, (_, withFault) => withFault);
 
 const $isLoading = getArchiveDataFx.pending;

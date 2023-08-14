@@ -1,115 +1,71 @@
-import React, { FC, useMemo } from 'react';
-import {
-  ControlButtonsWrapper,
-  DistrictSelectWrapper,
-  Header,
-  MapWrapper,
-  SelectColorOptionWrapper,
-} from './ManageDistrictPage.styled';
-import { Props } from './ManageDistrictPage.types';
-import { GoBack } from 'ui-kit/shared_components/GoBack';
-import { Button } from 'ui-kit/Button';
-import { useYMaps } from 'hooks/ymaps/useYMaps';
-import { getPayloadFromDistricts } from 'utils/districtsData';
-import { useRenderDistricts } from 'hooks/ymaps/utils';
-import { Select } from 'ui-kit/Select';
-import { DistrictColorsList } from 'dictionaries';
-import { manageDistrictsMapService } from '../manageDistrictsMapService.models';
-import { useForm } from 'effector-forms';
-import { ColorCircle } from '../../createDistrictBorderMapService/view/CreateDistrictBorderMapPage/CreateDistrictFormPanel/CreateDistrictFormPanel.styled';
-
-const { forms } = manageDistrictsMapService;
+import React, { FC, useState } from 'react';
+import { GoBack } from 'ui-kit/shared/GoBack';
+import { ControlButtonsWrapper, Header } from './ManageDistrictPage.styled';
+import { DistrictsPageSegment, Props } from './ManageDistrictPage.types';
+import { Segmented } from 'ui-kit/Segmented';
+import { ListIcon, MapIcon } from 'ui-kit/icons';
+import { ManageDistrictsMap } from './ManageDistrictsMap';
+import { ContextMenuButton } from 'ui-kit/ContextMenuButton';
+import { useHistory } from 'react-router-dom';
 
 export const ManageDistrictPage: FC<Props> = ({
   existingDistricts,
   handleDeleteDistrict,
+  organizationCoordinates,
 }) => {
-  const { fields } = useForm(forms.manageDistrictsForm);
+  const [districtsPageSegment, setDistrictsPageSegment] =
+    useState<DistrictsPageSegment>('map');
 
-  const { map, mapRef } = useYMaps();
-
-  const setSelectedDistrictId = fields.selectedDistrictId.onChange;
-
-  const preparedExistingDistricts = useMemo(() => {
-    if (!existingDistricts) return [];
-
-    return getPayloadFromDistricts(existingDistricts).map((elem) => ({
-      ...elem,
-      onClick: () => setSelectedDistrictId(elem.id),
-    }));
-  }, [existingDistricts, setSelectedDistrictId]);
-
-  const mapDistricts = useMemo(() => {
-    if (!fields.selectedDistrictId.value) {
-      return preparedExistingDistricts;
-    }
-
-    return preparedExistingDistricts.filter(
-      (elem) => elem.id === fields.selectedDistrictId.value,
-    );
-  }, [preparedExistingDistricts, fields.selectedDistrictId.value]);
-
-  useRenderDistricts(map, mapDistricts);
+  const history = useHistory();
 
   return (
     <div>
       <Header>
-        <div>
-          <GoBack />
-        </div>
-        <DistrictSelectWrapper>
-          <Select
-            placeholder="Выберите район"
-            small
-            value={fields.selectedDistrictId.value || undefined}
-            onChange={(value) =>
-              fields.selectedDistrictId.onChange((value as string) || null)
-            }
-            allowClear
-          >
-            {preparedExistingDistricts.map(({ id, name, type }) => {
-              const colorPayload = DistrictColorsList.find(
-                (elem) => elem.type === type,
-              );
-              return (
-                <Select.Option key={id} value={id}>
-                  <SelectColorOptionWrapper>
-                    {colorPayload && (
-                      <ColorCircle
-                        color={colorPayload.color}
-                        strokeColor={colorPayload.strokeColor}
-                      />
-                    )}
-                    <div>{name}</div>
-                  </SelectColorOptionWrapper>
-                </Select.Option>
-              );
-            })}
-          </Select>
-        </DistrictSelectWrapper>
+        <GoBack />
         <ControlButtonsWrapper>
-          {fields.selectedDistrictId.value && (
-            <Button
-              onClick={() => fields.selectedDistrictId.onChange(null)}
-              type="ghost"
-              size="small"
-            >
-              Отмена
-            </Button>
-          )}
-          <Button
-            disabled={!fields.selectedDistrictId.value}
-            type="danger"
+          <Segmented<DistrictsPageSegment>
+            active={districtsPageSegment}
+            items={[
+              {
+                title: 'Список',
+                name: 'list',
+                icon: <ListIcon />,
+              },
+              {
+                title: 'На карте',
+                name: 'map',
+                icon: <MapIcon />,
+              },
+            ]}
+            onChange={setDistrictsPageSegment}
+          />
+          <ContextMenuButton
             size="small"
-            onClick={() => handleDeleteDistrict()}
-          >
-            Удалить
-          </Button>
+            menuButtons={[
+              {
+                title: 'Задать границы нового района на карте',
+                onClick: () =>
+                  history.push('/districtBordersSettings/createByMap'),
+              },
+              {
+                title: 'Задать границы нового района по адресам',
+                onClick: () =>
+                  history.push(
+                    '/districtBordersSettings/createByHousingStocksList',
+                  ),
+              },
+            ]}
+          />
         </ControlButtonsWrapper>
       </Header>
-      <MapWrapper>
-        <div ref={mapRef} style={{ width: '100%', height: '86vh' }} />
-      </MapWrapper>
+      {districtsPageSegment === 'list' && <>list</>}
+      {districtsPageSegment === 'map' && (
+        <ManageDistrictsMap
+          existingDistricts={existingDistricts}
+          organizationCoordinates={organizationCoordinates}
+          handleDeleteDistrict={handleDeleteDistrict}
+        />
+      )}
     </div>
   );
 };

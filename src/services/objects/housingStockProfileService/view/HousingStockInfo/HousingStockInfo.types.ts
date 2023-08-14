@@ -1,4 +1,4 @@
-import { HousingStockResponse, ResourceDisconnectingResponse } from 'myApi';
+import { HousingStockResponse, ResourceDisconnectingResponse } from 'api/types';
 
 export type HousingStockInfoProps = {
   housingStock: HousingStockResponse;

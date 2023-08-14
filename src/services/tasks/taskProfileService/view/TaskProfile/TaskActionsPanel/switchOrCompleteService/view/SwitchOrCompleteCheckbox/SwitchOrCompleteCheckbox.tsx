@@ -1,4 +1,4 @@
-import { SpaceLine } from '01/shared/ui/Layout/Space/Space';
+import { SpaceLine } from 'ui-kit/SpaceLine';
 import { Checkbox } from 'antd';
 import React, { FC, useEffect, useState } from 'react';
 import { Wrapper } from './SwitchOrCompleteCheckbox.styled';

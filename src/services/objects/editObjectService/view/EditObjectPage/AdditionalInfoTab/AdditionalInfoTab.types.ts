@@ -3,7 +3,7 @@ import {
   HousingStockResponse,
   HousingStockUpdateRequest,
   NonResidentialBuildingResponse,
-} from 'myApi';
+} from 'api/types';
 
 export type AdditionalInfoTabProps = {
   housingStock: HousingStockResponse | null;

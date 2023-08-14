@@ -1,5 +1,5 @@
 import { useEvent, useStore } from 'effector-react';
-import { EMagistralType } from 'myApi';
+import { EMagistralType } from 'api/types';
 import React from 'react';
 import { AddCommonDeviceForm } from 'services/nodes/addPipeNodeCommonDeviceService/view/AddCommonDeviceForm';
 import { FormModal } from 'ui-kit/Modals/FormModal';

@@ -4,7 +4,7 @@ import {
   HousingStockResponse,
   NodeServiceZoneResponse,
   NonResidentialBuildingResponse,
-} from 'myApi';
+} from 'api/types';
 import { CreateNodeFormPayload } from '../../createNodeService.types';
 
 export type CreateNodeConfirmationModalProps = {
