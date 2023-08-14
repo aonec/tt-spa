@@ -50,9 +50,9 @@ export const ClosedIndividualDevicesForm: FC<
         value: houseManagementId,
         onChange: handleChangeHouseManagementId,
       },
-      housingStockIdHash: {
-        value: housingStockIdHash,
-        onChange: handleChangeHousingStockIdHash,
+      housingStockId: {
+        value: housingStockId,
+        onChange: handleChangeHousingStockId,
       },
       isWithoutApartments: {
         value: isWithoutApartments,
@@ -106,10 +106,8 @@ export const ClosedIndividualDevicesForm: FC<
               showSearch
               showArrow
               treeData={preparedAddresses}
-              value={housingStockIdHash || undefined}
-              onChange={(value) =>
-                handleChangeHousingStockIdHash(value as string)
-              }
+              value={Number(housingStockId) || undefined}
+              onChange={(value) => handleChangeHousingStockId(value as string)}
               treeCheckable={false}
             />
           </FormItem>

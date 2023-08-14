@@ -54,7 +54,7 @@ export const form = createForm({
     houseManagementId: {
       init: null as string | null,
     },
-    housingStockIdHash: {
+    housingStockId: {
       init: null as string | null,
     },
     isWithoutApartments: {
@@ -89,7 +89,7 @@ sample({
       houseManagementId:
         values.houseManagementId !== 'null' ? values.houseManagementId : null,
       housingStockId:
-        values.housingStockId !== 'null' ? Number(values.housingStockId) : null,
+        values.housingStockId !== 'null' ? values.housingStockId : null,
     };
 
     return formValues;
@@ -191,14 +191,14 @@ sample({
       rangePeriod,
       resources,
       closingReasons,
-      housingStockIdHash,
+      housingStockId,
       houseManagementId,
       managementFirmId,
       isWithoutApartments,
     },
     unloadType,
   ]) => {
-    const housingStockId = Number(String(housingStockIdHash).split('_')[0]);
+    // const housingStockId = Number(String(housingStockIdHash).split('_')[0]);
 
     const unloadPlaceData: { [key: string]: string | null | number } = {
       housingStockId,
