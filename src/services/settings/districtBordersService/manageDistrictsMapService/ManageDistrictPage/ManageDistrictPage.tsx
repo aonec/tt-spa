@@ -7,6 +7,7 @@ import { ListIcon, MapIcon } from 'ui-kit/icons';
 import { ManageDistrictsMap } from './ManageDistrictsMap';
 import { ContextMenuButton } from 'ui-kit/ContextMenuButton';
 import { useHistory } from 'react-router-dom';
+import { ManageDistrictsList } from './ManageDistrictsList';
 
 export const ManageDistrictPage: FC<Props> = ({
   existingDistricts,
@@ -14,7 +15,7 @@ export const ManageDistrictPage: FC<Props> = ({
   organizationCoordinates,
 }) => {
   const [districtsPageSegment, setDistrictsPageSegment] =
-    useState<DistrictsPageSegment>('map');
+    useState<DistrictsPageSegment>('list');
 
   const history = useHistory();
 
@@ -58,7 +59,9 @@ export const ManageDistrictPage: FC<Props> = ({
           />
         </ControlButtonsWrapper>
       </Header>
-      {districtsPageSegment === 'list' && <>list</>}
+      {districtsPageSegment === 'list' && (
+        <ManageDistrictsList existingDistricts={existingDistricts} />
+      )}
       {districtsPageSegment === 'map' && (
         <ManageDistrictsMap
           existingDistricts={existingDistricts}
