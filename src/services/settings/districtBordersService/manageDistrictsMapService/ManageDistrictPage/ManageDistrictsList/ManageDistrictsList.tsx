@@ -1,9 +1,15 @@
-import React, { FC, useMemo, useState } from 'react';
+import React, { FC, useCallback, useMemo, useState } from 'react';
 import {
+  AddressHousesCount,
+  AddressNumber,
+  AddressWrapper,
   ColorCircle,
+  DistrictAddressesList,
   DistrictListItem,
   DistrictListItemHeader,
   DistrictListItemInfo,
+  Line,
+  StreetWrapper,
   Wrapper,
 } from './ManageDistrictsList.styled';
 import { Props } from './ManageDistrictsList.types';
@@ -11,9 +17,19 @@ import { getPayloadFromDistricts } from 'utils/districtsData';
 import { ContextMenuButton } from 'ui-kit/ContextMenuButton';
 import { getDistrictColor } from 'utils/getDistrictColor';
 import { groupBy } from 'lodash';
+import { ChevronDown } from 'react-bootstrap-icons';
 
 export const ManageDistrictsList: FC<Props> = ({ existingDistricts }) => {
   const [openedDistrict, setOpenedDistrict] = useState<string | null>(null);
+  const [openedStreets, setOpenedStreets] = useState<string[]>([]);
+
+  const clickStreet = useCallback((street: string) => {
+    setOpenedStreets((prev) =>
+      prev?.includes(street)
+        ? prev.filter((elem) => elem !== street)
+        : [...prev, street],
+    );
+  }, []);
 
   const preparedExistingDistricts = useMemo(() => {
     if (!existingDistricts) return [];
@@ -32,14 +48,13 @@ export const ManageDistrictsList: FC<Props> = ({ existingDistricts }) => {
           return arr?.slice(1, arr.length - 2).join(' ');
         });
 
-        console.log(elem);
-
         return (
-          <DistrictListItem
-            key={elem.id}
-            onClick={() => setOpenedDistrict(elem.id)}
-          >
-            <DistrictListItemHeader>
+          <DistrictListItem key={elem.id}>
+            <DistrictListItemHeader
+              onClick={() =>
+                setOpenedDistrict((prev) => (prev === elem.id ? null : elem.id))
+              }
+            >
               <DistrictListItemInfo>
                 {color && (
                   <ColorCircle
@@ -51,15 +66,32 @@ export const ManageDistrictsList: FC<Props> = ({ existingDistricts }) => {
               </DistrictListItemInfo>
               <ContextMenuButton size="small" />
             </DistrictListItemHeader>
-            {openedDistrict === elem.id &&
-              Object.entries(groupedAddresses).map(([key, value]) => (
-                <div>
-                  <b>{key}</b>
-                  {value.map((elem) => (
-                    <div>{elem.address}</div>
-                  ))}
-                </div>
-              ))}
+            {openedDistrict === elem.id && Boolean(elem.houses?.length) && (
+              <DistrictAddressesList>
+                {Object.entries(groupedAddresses).map(([key, value]) => {
+                  const isOpen = openedStreets.includes(key);
+
+                  return (
+                    <React.Fragment key={key}>
+                      <AddressWrapper onClick={() => clickStreet(key)}>
+                        <StreetWrapper isOpen={isOpen}>{key}</StreetWrapper>
+                        <AddressHousesCount>
+                          {value.length} объектов
+                          <ChevronDown />
+                        </AddressHousesCount>
+                      </AddressWrapper>
+                      {isOpen &&
+                        value.map((elem) => {
+                          const arr = elem.address?.split(' ');
+                          const number = arr && arr[arr?.length - 2];
+                          return <AddressNumber>{number}</AddressNumber>;
+                        })}
+                      <Line />
+                    </React.Fragment>
+                  );
+                })}
+              </DistrictAddressesList>
+            )}
           </DistrictListItem>
         );
       })}
