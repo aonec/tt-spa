@@ -1,18 +1,21 @@
 import { createDomain, guard, sample } from 'effector';
 import {
   HouseManagementResponse,
+  HousingStockResponse,
   OrganizationResponsePagedList,
   StreetWithBuildingNumbersResponsePagedList,
 } from 'api/types';
 import {
   getAdresses,
   getHouseManagements,
+  getHousingStockData,
   getOrganizations,
 } from './closedIndividualDevicesFormService.api';
 import { UnloadingType } from './closedIndividualDevicesFormService.types';
-import { addressSearchService } from 'services/addressSearchService/addressSearchService.models';
 
 const domain = createDomain('closedIndividualDevicesFormService');
+
+const handleFetchHousingStockData = domain.createEvent<number>();
 
 const setUnloadSelectType = domain.createEvent<UnloadingType>();
 
@@ -31,6 +34,23 @@ const $selectedCity = domain
   .createStore<string | null>(null)
   .on(selectCity, (_, city) => city);
 
+const fetchHousingStockDataFx = domain.createEffect<
+  number,
+  HousingStockResponse
+>(getHousingStockData);
+
+sample({
+  clock: handleFetchHousingStockData,
+  target: fetchHousingStockDataFx,
+});
+
+const $reopenReportsHousingStockCity = domain
+  .createStore<string | null>(null)
+  .on(
+    fetchHousingStockDataFx.doneData,
+    (_, data) => data.address?.mainAddress?.city,
+  );
+
 sample({
   clock: $selectedCity,
   filter: Boolean,
@@ -38,16 +58,8 @@ sample({
 });
 
 sample({
-  source: sample({
-    source: addressSearchService.outputs.$existingCities,
-    filter: (cities): cities is string[] =>
-      Boolean(cities && cities.length === 1),
-  }),
-  clock: sample({
-    clock: setUnloadSelectType,
-    filter: (value) => value === UnloadingType.ByAddress,
-  }),
-  fn: (cities) => cities[0],
+  clock: $reopenReportsHousingStockCity,
+  filter: Boolean,
   target: selectCity,
 });
 
@@ -89,7 +101,7 @@ const $houseManagementList = domain
   );
 
 export const closedIndividualDevicesFormService = {
-  inputs: { setUnloadSelectType, selectCity },
+  inputs: { setUnloadSelectType, selectCity, handleFetchHousingStockData },
   outputs: {
     $unloadSelectType,
     $addressesPagedList,

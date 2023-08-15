@@ -19,6 +19,9 @@ export const ClosedIndividualDevicesFormContainer = () => {
 
   const setUnloadSelectType = useEvent(inputs.setUnloadSelectType);
   const selectCity = useEvent(inputs.selectCity);
+  const handleFetchHousingStockData = useEvent(
+    inputs.handleFetchHousingStockData,
+  );
 
   const addressesPagedList = useStore(outputs.$addressesPagedList);
   const organizationPagedList = useStore(outputs.$organizationPagedList);
@@ -41,6 +44,7 @@ export const ClosedIndividualDevicesFormContainer = () => {
         selectedCity={selectedCity}
         existingCities={exisitingCities || []}
         selectCity={selectCity}
+        handleFetchHousingStockData={handleFetchHousingStockData}
       />
     </>
   );
