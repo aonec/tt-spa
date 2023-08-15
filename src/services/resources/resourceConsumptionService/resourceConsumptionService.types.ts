@@ -1,5 +1,4 @@
 import { EResourceType } from 'api/types';
-import { ConsumptionDataFilter } from './resourceConsumptionFilterService/resourceConsumptionFilterService.types';
 
 export type ResourceConsumptionWithNull = {
   value?: number | null;
@@ -29,15 +28,13 @@ export type MonthConsumptionData = {
   [ResourceConsumptionGraphType.Subscriber]: ResourceConsumptionWithNull[];
 };
 
-export type ConsumptionDataPayload =
-  //  ConsumptionDataFilter &
-  {
-    ResourceType: EResourceType;
-    BuildingIds: number[];
-    AdditionalHousingStockIds: number[];
-    From: string;
-    To: string;
-  };
+export type ConsumptionDataPayload = {
+  ResourceType: EResourceType;
+  BuildingIds: number[];
+  AdditionalHousingStockIds: number[];
+  From: string;
+  To: string;
+};
 
 export type AddressWithSearchString = {
   id: number;

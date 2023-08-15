@@ -198,8 +198,6 @@ sample({
     },
     unloadType,
   ]) => {
-    // const housingStockId = Number(String(housingStockIdHash).split('_')[0]);
-
     const unloadPlaceData: { [key: string]: string | null | number } = {
       housingStockId,
       houseManagementId,
