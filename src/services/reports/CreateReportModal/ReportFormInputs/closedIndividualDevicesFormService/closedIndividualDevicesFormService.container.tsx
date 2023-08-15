@@ -1,4 +1,4 @@
-import { useEvent, useStore } from 'effector-react';
+import { useUnit } from 'effector-react';
 import React from 'react';
 import { closedIndividualDevicesFormService } from './closedIndividualDevicesFormService.model';
 import { ClosedIndividualDevicesForm } from './view/ClosedIndividualDevicesForm';
@@ -7,25 +7,30 @@ import { prepareAddressesForTreeSelect } from 'ui-kit/shared/AddressTreeSelect/A
 import { addressSearchService } from 'services/addressSearchService/addressSearchService.models';
 
 const { ExistingCitiesGate } = addressSearchService.gates;
+const { inputs, outputs } = closedIndividualDevicesFormService;
 
 export const ClosedIndividualDevicesFormContainer = () => {
-  const { inputs, outputs } = closedIndividualDevicesFormService;
-
-  const unloadSelectType = useStore(outputs.$unloadSelectType);
-  const selectedCity = useStore(outputs.$selectedCity);
-  const exisitingCities = useStore(
-    addressSearchService.outputs.$existingCities,
-  );
-
-  const setUnloadSelectType = useEvent(inputs.setUnloadSelectType);
-  const selectCity = useEvent(inputs.selectCity);
-  const handleFetchHousingStockData = useEvent(
-    inputs.handleFetchHousingStockData,
-  );
-
-  const addressesPagedList = useStore(outputs.$addressesPagedList);
-  const organizationPagedList = useStore(outputs.$organizationPagedList);
-  const houseManagementList = useStore(outputs.$houseManagementList);
+  const {
+    houseManagementList,
+    addressesPagedList,
+    organizationPagedList,
+    handleFetchHousingStockData,
+    selectCity,
+    setUnloadSelectType,
+    exisitingCities,
+    selectedCity,
+    unloadSelectType,
+  } = useUnit({
+    houseManagementList: outputs.$houseManagementList,
+    organizationPagedList: outputs.$organizationPagedList,
+    addressesPagedList: outputs.$addressesPagedList,
+    handleFetchHousingStockData: inputs.handleFetchHousingStockData,
+    selectCity: inputs.selectCity,
+    setUnloadSelectType: inputs.setUnloadSelectType,
+    exisitingCities: addressSearchService.outputs.$existingCities,
+    selectedCity: outputs.$selectedCity,
+    unloadSelectType: outputs.$unloadSelectType,
+  });
 
   const preparedAddresses = prepareAddressesForTreeSelect({
     items: addressesPagedList?.items || [],
