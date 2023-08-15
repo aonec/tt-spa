@@ -3,10 +3,12 @@ import { HousingStockItem } from './HousingStockItem';
 import { ObjectsListProps } from './ObjectsList.types';
 import { TypeAddressToStart } from 'ui-kit/shared/TypeToStart';
 import { WithLoader } from 'ui-kit/shared/WithLoader';
+import { NothingFound } from 'ui-kit/shared/NothingFound';
 
 export const ObjectsList: FC<ObjectsListProps> = ({
   isLoading,
   housingStocks,
+  isBuildingFetched,
 }) => {
   const housingStocksList = useMemo(() => {
     return housingStocks?.map((housingStock) => (
@@ -14,13 +16,14 @@ export const ObjectsList: FC<ObjectsListProps> = ({
     ));
   }, [housingStocks]);
 
-  const isEmpty = useMemo(() => !housingStocks?.length, [housingStocks]);
+  const isEmpty = !housingStocks?.length;
 
   return (
     <div>
       <WithLoader isLoading={isLoading}>
         {housingStocksList}
-        {isEmpty && <TypeAddressToStart />}
+        {isEmpty && !isBuildingFetched && <TypeAddressToStart />}
+        {isEmpty && isBuildingFetched && <NothingFound />}
       </WithLoader>
     </div>
   );

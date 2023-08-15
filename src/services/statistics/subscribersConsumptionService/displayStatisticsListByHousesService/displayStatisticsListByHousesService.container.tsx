@@ -7,9 +7,12 @@ import { TypeAddressToStart } from 'ui-kit/shared/TypeToStart';
 import { ExportSubscribersConsumptionContainer } from '../exportSubscribersConsumptionService';
 import { StatisticsList } from './view/StatisticsList';
 import { SearchHousingStock } from './view/SearchHousingStock';
+import { fetchHousingStockIdQuery } from './displayStatisticsListByHousesService.api';
+import { NothingFound } from 'ui-kit/shared/NothingFound';
 
-const { inputs, outputs } = displayStatisticsListByHousesService;
-//Подумать
+const { inputs, outputs, gates } = displayStatisticsListByHousesService;
+const { StatisticsByHouseGate } = gates;
+
 export const DisplayStatisticsListByHousesContainer = () => {
   const {
     filter,
@@ -19,6 +22,7 @@ export const DisplayStatisticsListByHousesContainer = () => {
     setFilter,
     setHousingStockAddress,
     statistics,
+    isBuildingFetched,
   } = useUnit({
     isLoading: outputs.$isLoading,
     filter: outputs.$subscriberStatisticsByHouseFilter,
@@ -27,6 +31,7 @@ export const DisplayStatisticsListByHousesContainer = () => {
     housingStockAddress: outputs.$housingStockAddress,
     setFilter: inputs.setSubscriberStatisticsFilter,
     setHousingStockAddress: inputs.setHousingStockAddress,
+    isBuildingFetched: fetchHousingStockIdQuery.$succeeded,
   });
 
   const isStatisticsExist = Boolean(statistics.length);
@@ -34,14 +39,18 @@ export const DisplayStatisticsListByHousesContainer = () => {
 
   return (
     <>
+      <StatisticsByHouseGate />
       <ExportSubscribersConsumptionContainer filter={filter} />
       <SearchHousingStock
         filter={filter}
         setFilter={setFilter}
         housingStockAddress={housingStockAddress}
         setHousingStockAddress={setHousingStockAddress}
+        isNothingFound={isBuildingFetched && !isHousingStockExist}
       />
       <WithLoader isLoading={isLoading}>
+        {isBuildingFetched && !isHousingStockExist && <NothingFound />}
+        {!isBuildingFetched && !isHousingStockExist && <TypeAddressToStart />}
         {isHousingStockExist && (
           <>
             {isStatisticsExist && <StatisticsList statistics={statistics} />}
@@ -50,7 +59,6 @@ export const DisplayStatisticsListByHousesContainer = () => {
             )}
           </>
         )}
-        {!isHousingStockExist && <TypeAddressToStart />}
       </WithLoader>
     </>
   );

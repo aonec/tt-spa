@@ -6,4 +6,5 @@ export type SearchHousingStockProps = {
   setFilter: (filter: SubscriberStatisticsForm) => void;
   housingStockAddress: Partial<HousingStockAddressForm>;
   setHousingStockAddress: (address: HousingStockAddressForm) => void;
+  isNothingFound: boolean;
 };

@@ -1,6 +1,6 @@
 import { combine, createDomain, forward, guard, sample } from 'effector';
 import {
-  getCalculatorsList,
+  getCalculatorsListQuery,
   getHousingsByFilter,
 } from './displayDevicesService.api';
 import {
@@ -41,16 +41,11 @@ const $devices = $calculatorsPagedData.map((data) =>
   groupDevicesByObjects(data?.items || []),
 );
 
-const fetchCalculatorsFx = domain.createEffect<
-  CalculatorsListRequestPayload,
-  CalculatorListResponsePagedList
->(getCalculatorsList);
-
 const setDevicesProfileFilter =
   domain.createEvent<CalculatorsListRequestPayload>();
 
 const $loading = combine(
-  fetchCalculatorsFx.pending,
+  getCalculatorsListQuery.$pending,
   fetchHousingsByFilterFx.pending,
   (...loadings) => loadings.includes(true),
 );
@@ -80,8 +75,8 @@ const extendedSearchClosed = domain.createEvent();
 const clearCalculators = domain.createEvent();
 
 $calculatorsPagedData
-  .on(fetchCalculatorsFx.doneData, (_, data) => data)
-  .reset([fetchCalculatorsFx.failData, clearCalculators]);
+  .on(getCalculatorsListQuery.$data, (_, data) => data)
+  .reset([getCalculatorsListQuery.finished.failure, clearCalculators]);
 
 const $total = $calculatorsPagedData.map((state) => state?.totalItems);
 const $pageNumber = $calculatorsPagedData.map((state) => state?.pageNumber);
@@ -99,7 +94,7 @@ forward({
 sample({
   source: $searchPayload,
   clock: CalculatorsGate.open,
-  target: fetchCalculatorsFx,
+  target: getCalculatorsListQuery.start,
 });
 
 $searchPayload
@@ -120,12 +115,12 @@ sample({
     filter: Boolean,
   }),
   fn: (Question, payload) => ({ ...payload, PageSize: 10, Question }),
-  target: fetchCalculatorsFx,
+  target: getCalculatorsListQuery.start,
 });
 
-forward({
-  from: CalculatorsGate.close,
-  to: clearSearchPayload,
+sample({
+  clock: CalculatorsGate.close,
+  target: [clearSearchPayload, getCalculatorsListQuery.reset],
 });
 
 sample({

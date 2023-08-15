@@ -26,7 +26,11 @@ export const fetchHousingStockIdQuery = createQuery({
         },
       });
 
-      return res.items?.[0].id || null;
+      const id = res.items?.[0]?.id;
+
+      if (!id) return 0;
+
+      return id;
     },
   ),
 });

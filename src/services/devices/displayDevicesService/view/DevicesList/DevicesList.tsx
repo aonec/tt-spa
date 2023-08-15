@@ -39,19 +39,20 @@ export const DevicesList: FC<DevicesListProps> = ({
     <div>
       <WithLoader isLoading={isLoading}>
         <>
-          {!isHousingStocksDevicesListEmpty && housingStocksDevicesList}
-          {isHousingStocksDevicesListEmpty && <Empty />}
-
           {!isHousingStocksDevicesListEmpty && (
-            <Pagination
-              total={total}
-              showSizeChanger={false}
-              current={Number(pageNumber)}
-              pageSize={Number(pageSize)}
-              onChange={setPageNumber}
-              hideOnSinglePage
-            />
+            <>
+              {housingStocksDevicesList}
+              <Pagination
+                total={total}
+                showSizeChanger={false}
+                current={Number(pageNumber)}
+                pageSize={Number(pageSize)}
+                onChange={setPageNumber}
+                hideOnSinglePage
+              />
+            </>
           )}
+          {isHousingStocksDevicesListEmpty && <Empty />}
         </>
       </WithLoader>
     </div>

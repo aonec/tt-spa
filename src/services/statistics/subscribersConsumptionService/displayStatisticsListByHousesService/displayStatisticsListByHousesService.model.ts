@@ -8,8 +8,11 @@ import {
 import { SubscriberStatisticsFilter } from '../displayStatisticsListByManagingFirmService/displayStatisticsListByManagingFirmService.types';
 import { SubscriberStatisticsСonsumptionResponse } from 'api/types';
 import { HousingStockAddressForm } from './displayStatisticsListByHousesService.types';
+import { createGate } from 'effector-react';
 
 const domain = createDomain('displayStatisticsListByHousesService');
+
+const StatisticsByHouseGate = createGate();
 
 const setHousingStockAddress =
   domain.createEvent<Partial<HousingStockAddressForm>>();
@@ -67,6 +70,11 @@ sample({
   target: fetchHousingStockIdQuery.start,
 });
 
+sample({
+  clock: StatisticsByHouseGate.close,
+  target: fetchHousingStockIdQuery.reset,
+});
+
 export const displayStatisticsListByHousesService = {
   inputs: {
     setSubscriberStatisticsFilter,
@@ -79,4 +87,5 @@ export const displayStatisticsListByHousesService = {
     $selectedHousingStockId,
     $housingStockAddress,
   },
+  gates: { StatisticsByHouseGate },
 };

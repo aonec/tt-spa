@@ -24,6 +24,7 @@ interface DeviceProfileProps extends HeaderInject {
   setDevicesSearchType: (type: DevicesSearchType) => void;
   setSerialNumber: (value: string) => void;
   serialNumber: string;
+  isSearchError: boolean;
 }
 
 export const DevicesProfile: FC<DeviceProfileProps> = ({
@@ -39,6 +40,7 @@ export const DevicesProfile: FC<DeviceProfileProps> = ({
   serialNumber,
   setSerialNumber,
   Header,
+  isSearchError,
 }) => {
   const {
     handleSubmit: submitForm,
@@ -108,6 +110,7 @@ export const DevicesProfile: FC<DeviceProfileProps> = ({
             resetForm();
             clearSearchPayload();
           }}
+          isSearchError={isSearchError}
         >
           <ExtendedSearch
             isOpen={isOpen}

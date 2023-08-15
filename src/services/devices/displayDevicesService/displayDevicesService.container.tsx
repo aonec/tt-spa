@@ -3,9 +3,9 @@ import React from 'react';
 import { displayDevicesService } from './displayDevicesService.models';
 import { DevicesList } from './view/DevicesList';
 
-export const DevicesListContainer = () => {
-  const { outputs, inputs } = displayDevicesService;
+const { outputs, inputs } = displayDevicesService;
 
+export const DevicesListContainer = () => {
   const housingStocksDevices = useStore(outputs.$devices);
   const housingStocksAddressForSwitcher = useStore(outputs.$housingsByFilter);
 
