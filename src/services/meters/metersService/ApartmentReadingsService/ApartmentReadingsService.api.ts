@@ -1,9 +1,7 @@
 import { axios } from 'api/axios';
 import {
   ApartmentListResponsePagedList,
-  ApartmentListResponsePagedListSuccessApiResponse,
   ApartmentResponse,
-  ApartmentResponseSuccessApiResponse,
   HomeownerAccountResponse,
   HomeownerAccountUpdateRequest,
 } from 'api/types';
@@ -11,64 +9,43 @@ import {
   GetApartmentsRequestPayload,
   UpdateApartmentRequestPayload,
 } from './ApartmentReadingsService.types';
-import { Contract } from '@farfetched/core';
-import { sample } from 'effector';
-import { createQueryWithAuth } from 'api/createQueryWithAuth';
+import { createQuery } from '@farfetched/core';
+import { createEffect } from 'effector';
+import { EffectFailDataAxiosError } from 'types';
 
-const ApartmentIdContract: Contract<
-  unknown,
-  ApartmentListResponsePagedListSuccessApiResponse
-> = {
-  isData: (res): res is ApartmentListResponsePagedListSuccessApiResponse =>
-    Boolean(res),
-  getErrorMessages: () => [`Invalid data`],
+const getApartmentId = async (
+  params: Omit<GetApartmentsRequestPayload, 'ApartmentId'>,
+) => {
+  const apartments: ApartmentListResponsePagedList | null = await axios.get(
+    'Apartments',
+    { params: { ...params, PageSize: 1, PageNumber: 1 } },
+  );
+
+  const apartmentItem = apartments?.items?.[0];
+
+  if (!apartmentItem) return null;
+
+  const { id } = apartmentItem;
+
+  return id;
 };
 
-const ApartmentContract: Contract<
-  unknown,
-  ApartmentResponseSuccessApiResponse
-> = {
-  isData: (res): res is ApartmentResponseSuccessApiResponse => Boolean(res),
-  getErrorMessages: () => [`Invalid data`],
-};
+export const getApartmentQuery = createQuery({
+  effect: createEffect<
+    GetApartmentsRequestPayload,
+    ApartmentResponse | null,
+    EffectFailDataAxiosError
+  >(async ({ ApartmentId, ...params }) => {
+    const id = ApartmentId || (await getApartmentId(params));
 
-export const getApartmentIdQuery = createQueryWithAuth<
-  GetApartmentsRequestPayload,
-  ApartmentListResponsePagedList,
-  number | null
->({
-  response: {
-    contract: ApartmentIdContract,
-    mapData: ({ result }) => {
-      return (result?.items || [])[0]?.id || 0;
-    },
-  },
-  url: 'Apartments',
-});
+    if (!id) return null;
 
-export const getApartmentQuery = createQueryWithAuth<
-  { ApartmentId: number },
-  ApartmentResponse,
-  ApartmentResponse | null
->({
-  url: ({ ApartmentId }) => `Apartments/${ApartmentId}`,
-  response: {
-    contract: ApartmentContract,
-    mapData: ({ result }) => result,
-  },
-});
+    const apartment: ApartmentResponse | null = await axios.get(
+      `/Apartments/${id}`,
+    );
 
-sample({
-  clock: getApartmentIdQuery.finished.success.map(({ result }) => result),
-  filter: Boolean,
-  fn: (ApartmentId) => ({ ApartmentId }),
-  target: getApartmentQuery.start,
-});
-
-sample({
-  clock: getApartmentIdQuery.finished.success.map(({ result }) => result),
-  filter: (result) => !Boolean(result),
-  target: getApartmentQuery.reset,
+    return apartment;
+  }),
 });
 
 export const putApartment = ({

@@ -2,7 +2,6 @@ import axios from 'axios';
 import { createEvent, createStore } from 'effector';
 import { forbiddenList } from '../utils/403handling';
 import { message } from 'antd';
-import { tokensService } from './tokensService';
 
 export const devUrl = 'https://stage.k8s.transparent-technology.ru/api/';
 
@@ -33,9 +32,8 @@ axios.interceptors.response.use(
     if (url && checkUrl('(login|refresh)', url)) {
       const { token, refreshToken, roles, permissions } = data.successResponse;
 
-      tokensService.inputs.setToken(token);
-      tokensService.inputs.setRefreshToken(refreshToken);
-
+      saveToLocalStorage('token', token);
+      saveToLocalStorage('refreshToken', refreshToken);
       saveToLocalStorage('permissions', permissions);
       checkUrl('login', url) && saveToLocalStorage('roles', roles);
     }
@@ -67,9 +65,8 @@ axios.interceptors.response.use(
     }
 
     if (status === 401 && checkUrl('refresh', error.config.url)) {
-      tokensService.inputs.deleteToken();
-      tokensService.inputs.deleteRefreshToken();
-
+      localStorage.removeItem('token');
+      localStorage.removeItem('refreshToken');
       window.location.replace('/login');
       return;
     }

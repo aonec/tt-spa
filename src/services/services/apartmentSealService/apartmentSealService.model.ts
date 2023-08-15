@@ -7,14 +7,15 @@ import {
 import { EffectFailDataAxiosError } from 'types';
 import { message } from 'antd';
 import { createGate } from 'effector-react';
-import { putApartment } from 'services/meters/metersService/ApartmentReadingsService/ApartmentReadingsService.api';
+import {
+  getApartmentQuery,
+  putApartment,
+} from 'services/meters/metersService/ApartmentReadingsService/ApartmentReadingsService.api';
 import {
   GetApartmentsRequestPayload,
   UpdateApartmentRequestPayload,
 } from 'services/meters/metersService/ApartmentReadingsService/ApartmentReadingsService.types';
 import {
-  getApartmentIdQuery,
-  getApartmentQuery,
   getIndividualDevices,
   getNearestAppointmentForApartment,
 } from './apartmentSealService.api';
@@ -80,12 +81,12 @@ sample({
       filter: (apartment, { id }) => Boolean(id && id !== apartment?.id),
     }),
   ],
-  target: getApartmentIdQuery.start,
+  target: getApartmentQuery.start,
 });
 
 sample({
   clock: handleSearchApartment,
-  target: getApartmentIdQuery.start,
+  target: getApartmentQuery.start,
 });
 
 sample({
@@ -98,7 +99,7 @@ sample({
 
 sample({
   clock: ApartmentGate.close,
-  target: [getApartmentQuery.reset, getApartmentIdQuery.reset],
+  target: getApartmentQuery.reset,
 });
 
 sample({
@@ -106,13 +107,13 @@ sample({
   target: updateApartmentFx,
 });
 
-// getApartmentQuery.finished.failure.watch(({ error }) => {
-//   return message.error(
-//     error.response.data.error.Text ||
-//       error.response.data.error.Message ||
-//       'Произошла ошибка',
-//   );
-// });
+getApartmentQuery.finished.failure.watch(({ error }) => {
+  return message.error(
+    error.response.data.error.Text ||
+      error.response.data.error.Message ||
+      'Произошла ошибка',
+  );
+});
 
 updateApartmentFx.doneData.watch(() => message.success('Сохранено успешно!'));
 

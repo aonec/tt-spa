@@ -1,4 +1,4 @@
-import { createDomain, forward, guard, sample, combine, split } from 'effector';
+import { createDomain, forward, guard, sample } from 'effector';
 import { createGate } from 'effector-react';
 import {
   ApartmentResponse,
@@ -12,7 +12,6 @@ import {
   UpdateHomeownerRequestPayload,
 } from './ApartmentReadingsService.types';
 import {
-  getApartmentIdQuery,
   getApartmentQuery,
   patchHomeowner,
   putApartment,
@@ -94,19 +93,14 @@ sample({
   target: updateHomeownerFx,
 });
 
-split({
-  source: handleSearchApartment,
-  match: (params: GetApartmentsRequestPayload): 'apartment' | 'id' =>
-    params.ApartmentId ? 'apartment' : 'id',
-  cases: {
-    id: getApartmentIdQuery.start,
-    apartment: getApartmentQuery.start,
-  },
+forward({
+  from: handleSearchApartment,
+  to: getApartmentQuery.start,
 });
 
 sample({
   clock: ApartmentGate.close,
-  target: [getApartmentQuery.reset, getApartmentIdQuery.reset],
+  target: getApartmentQuery.reset,
 });
 
 sample({
@@ -119,8 +113,7 @@ sample({
     }),
     pauseApartmentService.inputs.pauseApartmentStatusFx.doneData,
   ],
-  fn: (params) => ({ ...params, PageSize: 1 }),
-  target: handleSearchApartment,
+  target: getApartmentQuery.start,
 });
 
 forward({
@@ -132,21 +125,17 @@ updateApartmentFx.doneData.watch(() => message.success('Сохранено ус�
 
 updateHomeownerFx.doneData.watch(() => message.success('Сохранено успешно!'));
 
-const $isLoadingApartment = combine(
-  getApartmentQuery.$pending,
-  getApartmentIdQuery.$pending,
-  (...loadings) => loadings.includes(true),
-);
+const $isLoadingApartment = getApartmentQuery.$pending;
 
 const handleApartmentLoaded = getApartmentQuery.finished.success;
 
-// getApartmentQuery.finished.failure.watch(({ error }) => {
-//   return message.error(
-//     error.response.data.error.Text ||
-//       error.response.data.error.Message ||
-//       'Произошла ошибка',
-//   );
-// });
+getApartmentQuery.finished.failure.watch(({ error }) => {
+  return message.error(
+    error.response.data.error.Text ||
+      error.response.data.error.Message ||
+      'Произошла ошибка',
+  );
+});
 
 updateApartmentFx.failData.watch((error) => {
   return message.error(
