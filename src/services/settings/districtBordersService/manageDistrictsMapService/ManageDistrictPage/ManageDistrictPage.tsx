@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { FC } from 'react';
 import { GoBack } from 'ui-kit/shared/GoBack';
 import { ControlButtonsWrapper, Header } from './ManageDistrictPage.styled';
 import { DistrictsPageSegment, Props } from './ManageDistrictPage.types';
@@ -13,10 +13,9 @@ export const ManageDistrictPage: FC<Props> = ({
   existingDistricts,
   handleDeleteDistrict,
   organizationCoordinates,
+  districtsPageSegment,
+  setDistrictsPageSegment,
 }) => {
-  const [districtsPageSegment, setDistrictsPageSegment] =
-    useState<DistrictsPageSegment>('list');
-
   const history = useHistory();
 
   return (
