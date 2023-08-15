@@ -56,6 +56,7 @@ export type DistrictData = {
   coordinates: number[][][];
   name: string;
   isEditing?: boolean;
+  isDrawing?: boolean;
 };
 
 export type BlobResponseErrorType = {

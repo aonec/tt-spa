@@ -35,6 +35,7 @@ const $consumptionStatisticsByHouse = domain
 
 const setSubscriberStatisticsFilter =
   domain.createEvent<SubscriberStatisticsForm>();
+
 const $subscriberStatisticsByHouseFilter = domain
   .createStore<SubscriberStatisticsForm | null>(null)
   .on(setSubscriberStatisticsFilter, (_, filter) => filter);

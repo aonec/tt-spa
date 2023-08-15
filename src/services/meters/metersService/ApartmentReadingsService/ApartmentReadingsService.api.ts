@@ -3,11 +3,11 @@ import {
   ApartmentListResponsePagedList,
   ApartmentResponse,
   HomeownerAccountResponse,
-  HomeownerAccountUpdateRequest,
 } from 'api/types';
 import {
   GetApartmentsRequestPayload,
   UpdateApartmentRequestPayload,
+  UpdateHomeownerRequestPayload,
 } from './ApartmentReadingsService.types';
 import { createQuery } from '@farfetched/core';
 import { createEffect } from 'effector';
@@ -57,8 +57,5 @@ export const putApartment = ({
 export const patchHomeowner = ({
   id,
   data,
-}: {
-  id: string;
-  data: HomeownerAccountUpdateRequest;
-}): Promise<HomeownerAccountResponse> =>
+}: UpdateHomeownerRequestPayload): Promise<HomeownerAccountResponse> =>
   axios.put(`HomeownerAccounts/${id}`, data);

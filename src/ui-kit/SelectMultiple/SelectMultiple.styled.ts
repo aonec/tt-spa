@@ -13,6 +13,8 @@ export const SelectMultiple = styled(AntSelect).attrs({ mode: 'multiple' })`
 
   .ant-select-selection-item-content {
     line-height: initial;
+    display: flex;
+    align-items: center;
   }
 
   .ant-select-selection-item-remove {

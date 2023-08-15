@@ -112,10 +112,15 @@ export function useRenderDistricts(
 
       setSavedDistricts((prev) => ({ ...prev, [district.id]: polygon }));
 
-      if (district.isEditing)
+      if (district.isEditing) {
+        polygon.editor.startEditing();
+      }
+
+      if (district.isDrawing) {
         (
           polygon.editor as unknown as { startDrawing: () => void }
         ).startDrawing();
+      }
 
       return { ...acc, [district.id]: polygon };
     }, {});

@@ -31,13 +31,13 @@ export const EditHomeownerForm: FC<EditHomeownerFormProps> = ({
         isEdit &&
           handleEditHomeownerPreparation &&
           handleEditHomeownerPreparation({
-            id: apartmentId,
             personalAccountNumber: values.personalAccountNumber,
             name: values.name,
             phoneNumber: values.phoneNumber,
-            personType: values.personType || undefined,
-            paymentCode: values.paymentCode || null,
+            personType: values.personType,
+            paymentCode: values.paymentCode,
             isMainOnApartment: values.isMainOnApartment,
+            openAt: values.openAt,
           });
 
         handleCreateHomeowner &&

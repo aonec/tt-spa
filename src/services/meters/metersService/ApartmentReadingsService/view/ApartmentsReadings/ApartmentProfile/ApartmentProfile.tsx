@@ -32,9 +32,8 @@ export const ApartmentProfile: FC<ApartmentProfileProps> = ({
   selectedHomeownerName,
   isPermitionToApartmentStatusPatch,
   printIssueCertificate,
-  handleUpdatePhoneNumber,
+  handleUpdateHomeowner,
   isUpdateHomeownerLoading,
-  handleHomeownerUpdated,
   isApartmentFetched,
 }) => {
   const { id } = useParams<{ id: string }>();
@@ -146,9 +145,8 @@ export const ApartmentProfile: FC<ApartmentProfileProps> = ({
                     onClick: () => printIssueCertificate(),
                   },
                 ]}
-                handleUpdatePhoneNumber={handleUpdatePhoneNumber}
+                handleUpdateHomeowner={handleUpdateHomeowner}
                 isUpdateHomeownerLoading={isUpdateHomeownerLoading}
-                handleHomeownerUpdated={handleHomeownerUpdated}
               />
               <ApartmentAlerts
                 apartment={apartment}

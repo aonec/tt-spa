@@ -7,9 +7,7 @@ export const devUrl = 'https://stage.k8s.transparent-technology.ru/api/';
 
 export const baseURL = process.env.REACT_APP_API_URL || devUrl;
 
-export const isDevMode =
-  process.env.NODE_ENV === 'development' ||
-  process.env.REACT_APP_API_URL === devUrl;
+export const isDevMode = process.env.DEV_SETTINGS !== 'DISABLED';
 
 axios.defaults.baseURL = baseURL;
 

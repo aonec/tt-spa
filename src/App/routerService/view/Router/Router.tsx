@@ -53,6 +53,7 @@ import { WorkWithIndividualDeviceType } from 'services/devices/individualDevices
 import { ManageDistrictsMapContainer } from 'services/settings/districtBordersService/manageDistrictsMapService';
 import { CreateDistrictBorderMapContainer } from 'services/settings/districtBordersService/createDistrictBorderMapService';
 import { NonResidentialBuildingProfileContainer } from 'services/objects/nonResidentialBuildingProfileService';
+import { EditDistrictBordersContainer } from 'services/settings/districtBordersService/editDistrictBordersService';
 
 export const Router: FC<RouterProps> = ({
   roles,
@@ -409,6 +410,14 @@ export const Router: FC<RouterProps> = ({
                     <Route
                       path="/districtBordersSettings/createByHousingStocksList"
                       component={DistrictBordersByAddressContainer}
+                      exact
+                    />
+                  )}
+
+                  {(isSeniorOperator || isOperator) && (
+                    <Route
+                      path="/districtBordersSettings/editDistrictBorders/:id"
+                      component={EditDistrictBordersContainer}
                       exact
                     />
                   )}
