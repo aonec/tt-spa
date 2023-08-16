@@ -21,7 +21,7 @@ export const WrapperUnderscore = styled.div`
 
 export const WrapperTime = styled.div`
   display: grid;
+  width: 260px;
   padding-left: 16px;
   grid-template-columns: 1fr 1fr;
 `;
-

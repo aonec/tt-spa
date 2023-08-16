@@ -6175,6 +6175,53 @@ export interface TasksPagedListSuccessApiResponse {
   successResponse: TasksPagedList | null;
 }
 
+export interface TemperatureNormativeResponse {
+  /** @format int32 */
+  id: number;
+
+  /** @format double */
+  outdoorTemperature: number;
+
+  /** @format double */
+  dayFeedFlowTemperature: number;
+
+  /** @format double */
+  nightFeedFlowTemperature: number;
+
+  /** @format double */
+  dayFeedBackFlowTemperature: number;
+
+  /** @format double */
+  nightFeedBackFlowTemperature: number;
+
+  /** @format double */
+  heatFeedFlowTemperature: number;
+}
+
+export interface TemperatureNormativeUpdateRequest {
+  /** @format int32 */
+  id?: number;
+
+  /** @format double */
+  dayFeedFlowTemperature: number;
+
+  /** @format double */
+  nightFeedFlowTemperature: number;
+
+  /** @format double */
+  dayFeedBackFlowTemperature: number;
+
+  /** @format double */
+  nightFeedBackFlowTemperature: number;
+
+  /** @format double */
+  heatFeedFlowTemperature: number;
+}
+
+export interface TemperatureNormativeResponseIEnumerableSuccessApiResponse {
+  successResponse: TemperatureNormativeResponse[] | null;
+}
+
 export interface TimeSpan {
   /** @format int64 */
   ticks?: number;
@@ -14558,6 +14605,49 @@ export class Api<
         secure: true,
         type: ContentType.Json,
         format: 'json',
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li>
+     *
+     * @tags TemperatureNormative
+     * @name TemperatureNormativeList
+     * @summary ResourceDisconnectingRead
+     * @request GET:/api/TemperatureNormative
+     * @secure
+     */
+    temperatureNormativeList: (params: RequestParams = {}) =>
+      this.request<
+        TemperatureNormativeResponseIEnumerableSuccessApiResponse,
+        any
+      >({
+        path: `/api/TemperatureNormative`,
+        method: 'GET',
+        secure: true,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Администратор</li>
+     *
+     * @tags TemperatureNormative
+     * @name TemperatureNormativeUpdate
+     * @summary ResourceDisconnectingUpdate
+     * @request PUT:/api/TemperatureNormative
+     * @secure
+     */
+    temperatureNormativeUpdate: (
+      data: TemperatureNormativeUpdateRequest,
+      params: RequestParams = {},
+    ) =>
+      this.request<any, ErrorApiResponse>({
+        path: `/api/TemperatureNormative`,
+        method: 'PUT',
+        body: data,
+        secure: true,
+        type: ContentType.Json,
         ...params,
       }),
   };

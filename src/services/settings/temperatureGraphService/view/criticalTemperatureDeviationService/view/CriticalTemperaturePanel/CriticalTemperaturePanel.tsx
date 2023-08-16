@@ -7,7 +7,6 @@ import {
 } from './CriticalTemperaturePanel.styled';
 import { CriticalTemperaturePanelProps } from './CriticalTemperaturePanel.types';
 import { PencilIcon, TemperatureIcon } from 'ui-kit/icons';
-import { Button } from 'ui-kit/Button';
 
 export const CriticalTemperaturePanel: FC<
   CriticalTemperaturePanelProps

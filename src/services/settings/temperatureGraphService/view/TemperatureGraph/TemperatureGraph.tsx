@@ -10,7 +10,9 @@ import {
 } from './TemperatureGraph.styled';
 import { CriticalTemperaturePanel } from '../criticalTemperatureDeviationService/view/CriticalTemperaturePanel';
 
-export const TemperatureGraph: FC<TemperatureGraphProps> = ({}) => {
+export const TemperatureGraph: FC<TemperatureGraphProps> = ({
+  temperatureNormative,
+}) => {
   return (
     <PageWrapper>
       <CriticalTemperaturePanel />
@@ -19,7 +21,7 @@ export const TemperatureGraph: FC<TemperatureGraphProps> = ({}) => {
           {
             label: 'Т наружного воздуха',
             size: '190px',
-            render: (elem) => {},
+            render: (data) => data.outdoorTemperature,
           },
           {
             label: (
@@ -35,7 +37,12 @@ export const TemperatureGraph: FC<TemperatureGraphProps> = ({}) => {
               </WrapperMultiHeader>
             ),
             size: '280px',
-            render: (elem) => {},
+            render: (data) => (
+              <WrapperTime>
+                <div>{data.dayFeedFlowTemperature}</div>
+                <div>{data.nightFeedFlowTemperature}</div>
+              </WrapperTime>
+            ),
           },
           {
             label: (
@@ -44,7 +51,7 @@ export const TemperatureGraph: FC<TemperatureGraphProps> = ({}) => {
               </WrapperT3>
             ),
             size: '160px',
-            render: (elem) => {},
+            render: (data) => data.heatFeedFlowTemperature,
           },
 
           {
@@ -61,10 +68,15 @@ export const TemperatureGraph: FC<TemperatureGraphProps> = ({}) => {
               </WrapperMultiHeader>
             ),
             size: '280px',
-            render: (elem) => {},
+            render: (data) => (
+              <WrapperTime>
+                <div>{data.dayFeedBackFlowTemperature}</div>
+                <div>{data.nightFeedBackFlowTemperature}</div>
+              </WrapperTime>
+            ),
           },
         ]}
-        elements={[]}
+        elements={temperatureNormative}
       />
     </PageWrapper>
   );
