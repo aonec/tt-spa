@@ -75,7 +75,7 @@ export const StatisticsList: React.FC<StatisticsListProps> = ({
         },
         {
           label: 'Абонент',
-          size: '190px',
+          size: '290px',
           render: (apartment) => (
             <div style={{ overflow: 'hidden' }}>
               <HomeownerNameWrapper>
