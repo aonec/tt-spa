@@ -16,6 +16,6 @@ export enum AlertType {
 }
 
 export const AlertColorLookup: { [key in AlertType]: string } = {
-  [AlertType.default]: '189ee9',
-  [AlertType.danger]: 'FC525B',
+  [AlertType.default]: '#189ee9',
+  [AlertType.danger]: '#FC525B',
 };
