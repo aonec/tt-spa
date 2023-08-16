@@ -14,6 +14,7 @@ import { PageHeader } from 'ui-kit/shared/PageHeader';
 import { WorkingRangeTab } from 'services/workingRanges/WorkingRangeTab';
 import { DistrictBordersContainer } from 'services/settings/districtBordersService';
 import { developmentSettingsService } from 'services/developmentSettings/developmentSettings.models';
+import { TemperatureGraphContainer } from 'services/settings/temperatureGraphService';
 
 export const SettingPage: FC<SettingPageProps> = ({
   handleReassingInspector,
@@ -69,6 +70,11 @@ export const SettingPage: FC<SettingPageProps> = ({
               <DistrictBordersContainer />
             </TabsSC.TabPane>
           )}
+          {featureToggles.temperatureGraph && (
+            <TabsSC.TabPane tab="Температурный график" key="temperatureGraph">
+              <TemperatureGraphContainer />
+            </TabsSC.TabPane>
+          )}
         </>
       );
     }
@@ -95,6 +101,7 @@ export const SettingPage: FC<SettingPageProps> = ({
     featureToggles.controllersDistribution,
     featureToggles.districtsManage,
     featureToggles.workingRanges,
+    featureToggles.temperatureGraph,
   ]);
 
   return (
