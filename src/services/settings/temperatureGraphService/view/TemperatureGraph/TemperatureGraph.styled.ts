@@ -1,5 +1,10 @@
 import styled from 'styled-components';
 
+export const PageWrapper = styled.div`
+  width: 960px;
+  margin: 10px;
+`;
+
 export const WrapperMultiHeader = styled.div`
   margin: 10px 0px;
 `;
@@ -19,3 +24,4 @@ export const WrapperTime = styled.div`
   padding-left: 16px;
   grid-template-columns: 1fr 1fr;
 `;
+
