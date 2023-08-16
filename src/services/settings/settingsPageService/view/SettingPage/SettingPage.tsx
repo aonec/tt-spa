@@ -18,6 +18,7 @@ import { TemperatureGraphContainer } from 'services/settings/temperatureGraphSer
 
 export const SettingPage: FC<SettingPageProps> = ({
   handleReassingInspector,
+  handleEditTemperatureNormative,
 }) => {
   const { featureToggles } = useUnit({
     featureToggles: developmentSettingsService.outputs.$featureToggles,
@@ -27,6 +28,8 @@ export const SettingPage: FC<SettingPageProps> = ({
   const history = useHistory();
   const { pathname } = useLocation();
   const adminSettings = pathname.split('/')[1] === 'adminSettings';
+  const isDisabledResourcesTab = pathname.split('/')[2] === 'disabledResources';
+  const isTemperatureGraphTab = pathname.split('/')[2] === 'temperatureGraph';
 
   const menuButtons = useMemo(() => {
     if (adminSettings) {
@@ -35,6 +38,12 @@ export const SettingPage: FC<SettingPageProps> = ({
           title: 'Создать отключение ресурса',
           onClick:
             chooseTypeOfResourceDisconnectionModalService.inputs.openModal,
+          hidden: !isDisabledResourcesTab,
+        },
+        {
+          title: 'Редактировать температурный график',
+          onClick: handleEditTemperatureNormative,
+          hidden: !isTemperatureGraphTab,
         },
       ];
     }

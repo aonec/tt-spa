@@ -8,6 +8,8 @@ const domain = createDomain('temperatureGraphService');
 
 const TemperatureGraphGate = createGate();
 
+const handleEditTemperatureNormative = domain.createEvent();
+
 const getTemperatureNormativeFx = domain.createEffect<
   void,
   TemperatureNormativeResponse[]
@@ -22,7 +24,7 @@ const $temperatureNormative = domain
 sample({ clock: TemperatureGraphGate.open, target: getTemperatureNormativeFx });
 
 export const temperatureGraphService = {
-  inputs: {},
+  inputs: { handleEditTemperatureNormative },
   outputs: { $temperatureNormative },
   gates: { TemperatureGraphGate },
 };
