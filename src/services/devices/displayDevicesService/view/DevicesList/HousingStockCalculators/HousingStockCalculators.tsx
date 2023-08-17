@@ -1,6 +1,6 @@
 import React, { FC, useCallback, useMemo } from 'react';
 import { HousingStockCalculatorsProps } from './HousingStockCalculators.types';
-import { EHouseCategory, HouseAddress } from 'api/types';
+import { EHouseCategory, BuildingAddress } from 'api/types';
 import { DevicesSearchType } from 'services/devices/devicesPageService/devicesPageService.types';
 import {
   CalculatorNodesListWrapper,
@@ -10,7 +10,7 @@ import {
 import { Switcher } from 'ui-kit/shared/Switcher';
 import {
   getBuildingAddress,
-  getHousingStockAddressString,
+  getBuildingAddressString,
 } from 'utils/getBuildingAddress';
 import { CalculatorNodes } from './CalculatorNodes';
 
@@ -25,7 +25,7 @@ export const HousingStockCalculators: FC<HousingStockCalculatorsProps> = ({
   const previousAddress = housingStocksAddressForSwitcher?.previous?.address;
 
   const handleClickAddress = useCallback(
-    (address: HouseAddress) => {
+    (address: BuildingAddress) => {
       if (mainFilterSearchType !== DevicesSearchType.Address) {
         setMainFilterSearchType(DevicesSearchType.Address);
       }
@@ -67,7 +67,7 @@ export const HousingStockCalculators: FC<HousingStockCalculatorsProps> = ({
         <Switcher
           nextValue={nextAddress}
           previousValue={previousAddress}
-          textConstructor={(address) => getHousingStockAddressString(address)}
+          textConstructor={(address) => getBuildingAddressString(address)}
           handleClick={handleClickAddress}
         />
       </HousingStockAddressHeaderWrapper>

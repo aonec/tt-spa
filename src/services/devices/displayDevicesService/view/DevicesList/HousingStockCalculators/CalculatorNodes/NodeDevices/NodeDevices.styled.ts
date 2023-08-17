@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { IncorrectConfigurationIcon } from 'ui-kit/icons';
 
 export const MeteringDeviceWrapper = styled.div`
   display: grid;
@@ -39,4 +40,13 @@ export const ResourceIconWrapper = styled.div`
 
 export const NodeDevicesWrapper = styled.div`
   margin-bottom: 24px;
+`;
+
+export const IncorrectConfigurationIconSC = styled(IncorrectConfigurationIcon)`
+  margin-left: 4px;
+`;
+
+export const NodeTitleWrapper = styled.div`
+  display: flex;
+  align-items: center;
 `;

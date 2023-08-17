@@ -1,7 +1,7 @@
 import {
   EApartmentStatus,
   EClosingReason,
-  EExpiresCheckingDateAt,
+  EExpiresDateAt,
   EOrderByRule,
   EResourceType,
 } from 'api/types';
@@ -27,7 +27,7 @@ export type GetIndividualDevicesApartments = {
   'DeviceFilter.ClosingReason'?: EClosingReason;
   'DeviceFilter.MountPlace'?: string;
   'DeviceFilter.ApartmentStatus'?: EApartmentStatus;
-  'DeviceFilter.ExpiresCheckingDateAt'?: EExpiresCheckingDateAt;
+  'DeviceFilter.ExpiresCheckingDateAt'?: EExpiresDateAt;
   'DeviceFilter.IsAlsoClosing'?: boolean;
   PageNumber?: number;
   PageSize?: number;
