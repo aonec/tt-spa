@@ -34,8 +34,6 @@ export const ApartmentsListContainer: FC<HeaderInject> = ({ Header }) => {
 
   const isShowPagination = !isEmpty && !isLoading;
 
-  console.log(isApartmentFetched, isEmpty);
-
   return (
     <>
       <ApartmentsListGate />
