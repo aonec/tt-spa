@@ -1,5 +1,5 @@
 import moment from 'moment';
-import { ResourceDisconnectingResponse } from 'api/types';
+import { BuildingListResponse, ResourceDisconnectingResponse } from 'api/types';
 import { TreeSelectElement } from 'ui-kit/shared/AddressTreeSelect/AddressTreeSelect.types';
 import { hours } from './CreateResourceDisconnectionForm.constants';
 
@@ -18,6 +18,7 @@ export const getAllHousingStocks = (items: TreeSelectElement[]): number[] =>
 
 export const getFormValues = (
   resourceDisconnection: ResourceDisconnectingResponse,
+  selectedBuilding: BuildingListResponse | null,
 ) => {
   const { heatingStation, disconnectingType, buildings, startDate, endDate } =
     resourceDisconnection;
@@ -30,7 +31,9 @@ export const getFormValues = (
   return {
     ...resourceDisconnection,
     documentId: resourceDisconnection.document?.id || null,
-    housingStockIds,
+    housingStockIds: selectedBuilding
+      ? [...housingStockIds, selectedBuilding.id]
+      : housingStockIds,
     startDate: moment(startDate).format('DD.MM.YYYY'),
     startHour: moment(startDate).format('HH:mm'),
     endDate: endDate ? moment(endDate).format('DD.MM.YYYY') : '',

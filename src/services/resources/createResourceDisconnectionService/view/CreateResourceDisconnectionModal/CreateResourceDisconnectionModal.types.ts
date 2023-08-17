@@ -1,4 +1,5 @@
 import {
+  BuildingListResponse,
   EResourceDisconnectingTypeNullableStringDictionaryItem,
   EResourceTypeNullableStringDictionaryItem,
   ResourceDisconnectingCreateRequest,
@@ -31,4 +32,5 @@ export type CreateResourceDisconnectionModalProps = {
   existingCities: string[];
   selectedCity: string | null;
   selectCity: (city: string) => void;
+  selectedBuilding: BuildingListResponse | null;
 };
