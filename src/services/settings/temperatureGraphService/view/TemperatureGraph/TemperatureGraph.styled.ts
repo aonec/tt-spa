@@ -23,6 +23,10 @@ export const WrapperCelsius = styled.div`
   color: rgba(39, 47, 90, 0.32);
 `;
 
+export const WrapperValue = styled.div`
+  padding: 0 0 0 17px;
+`;
+
 export const WrapperUnderscore = styled.div`
   border-bottom: 1px solid rgba(0, 0, 0, 0.06);
   padding: 0 26px 6px 6px;
@@ -33,11 +37,20 @@ export const WrapperTime = styled.div`
   display: grid;
   width: 260px;
   padding-left: 16px;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1.55fr 1fr;
 `;
 
 export const InputSc = styled(Input)`
   height: 32px;
+`;
+
+export const InputScShort = styled(Input)`
+  height: 32px;
+`;
+
+export const InputsContainer = styled.div`
+  display: flex;
+  gap: 32px;
 `;
 
 export const Footer = styled.div`

@@ -10,7 +10,7 @@ import { PencilIcon, TemperatureIcon } from 'ui-kit/icons';
 
 export const CriticalTemperaturePanel: FC<
   CriticalTemperaturePanelProps
-> = ({}) => {
+> = () => {
   return (
     <Wrapper>
       <Block>
