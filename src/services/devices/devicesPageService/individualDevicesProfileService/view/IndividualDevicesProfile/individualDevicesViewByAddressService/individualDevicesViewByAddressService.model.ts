@@ -2,7 +2,7 @@ import { combine, createDomain, guard, Store } from 'effector';
 import { createGate } from 'effector-react';
 import {
   ApartmentByAddressFilterResponsePagedList,
-  HousingByFilterResponse,
+  BuildingByFilterResponse,
 } from 'api/types';
 import { individualDevicesProfileService } from '../../../individualDevicesProfileService.model';
 import {
@@ -37,7 +37,7 @@ const setPageNumber = domain.createEvent<number>();
 
 const fetchHousingsByFilterFx = domain.createEffect<
   GetHousingByFilterRequestPayload,
-  HousingByFilterResponse | null,
+  BuildingByFilterResponse | null,
   EffectFailDataAxiosError
 >(getHousingsByFilter);
 
@@ -53,7 +53,7 @@ const $individualDeviceSearchRequestPayload = domain
   .reset(clearSearchPayload);
 
 const $housingsByFilter = domain
-  .createStore<HousingByFilterResponse | null>(null)
+  .createStore<BuildingByFilterResponse | null>(null)
   .on(fetchHousingsByFilterFx.doneData, (_, data) => data)
   .reset(clearSearchPayload);
 
