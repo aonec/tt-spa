@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import styled, { css } from 'styled-components';
 
 export const ClosingDate = styled.div`
@@ -20,7 +21,7 @@ const clickableStyles = css`
   color: #189ee9 !important;
 `;
 
-export const LinkWrapper = styled.div<{ clickable: boolean }>`
+export const LinkWrapper = styled(Link)<{ clickable: boolean }>`
   display: flex;
   align-items: center;
 
