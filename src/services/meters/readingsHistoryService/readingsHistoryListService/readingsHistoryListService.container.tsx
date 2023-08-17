@@ -23,7 +23,7 @@ const { outputs, inputs } = managementFirmConsumptionRatesService;
 
 export const ReadingsHistoryListContainer: FC<
   ReadingsHistoryContainerProps
-> = ({ readonly = false }) => {
+> = ({ readonly = false, isModal }) => {
   const {
     values,
     setFieldValue,
@@ -88,6 +88,7 @@ export const ReadingsHistoryListContainer: FC<
       openMonth={openMonth}
       closeMonth={closeMonth}
       isMonthOpen={isMonthOpen}
+      isModal={isModal}
     />
   );
 };

@@ -27,3 +27,7 @@ export const Content = styled.div`
 export const CommonInfoWrapper = styled.div`
   width: 618px;
 `;
+
+export const ReadingsHistoryWrapper = styled.div`
+  width: 1000px;
+`;

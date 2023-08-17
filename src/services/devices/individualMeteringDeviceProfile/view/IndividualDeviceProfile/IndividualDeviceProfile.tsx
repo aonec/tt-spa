@@ -5,6 +5,7 @@ import {
   Content,
   DeviceTitle,
   HeaderWrapper,
+  ReadingsHistoryWrapper,
   SerialNumber,
 } from './IndividualDeviceProfile.styled';
 import {
@@ -15,12 +16,12 @@ import { GoBack } from 'ui-kit/shared/GoBack';
 import { PageHeader } from 'ui-kit/shared/PageHeader';
 import { ResourceIconLookup } from 'ui-kit/shared/ResourceIconLookup';
 import { getApartmentFromFullAddress } from 'utils/getApartmentFromFullAddress';
-import { ContextMenuButtonColor } from 'ui-kit/ContextMenuButton/ContextMenuButton.types';
 import { Tabs } from 'ui-kit/Tabs';
 import { CommonInfo } from 'ui-kit/shared/CommonInfo';
 import { resourceNamesLookup } from 'utils/resourceNamesLookup';
 import moment from 'moment';
 import { DeviceStatus } from 'ui-kit/shared/IndividualDeviceInfo/DeviceStatus';
+import { ReadingsHistoryContainer } from 'services/meters/readingsHistoryService/readingsHistoryService.container';
 
 export const IndividualDeviceProfile: FC<Props> = ({ device }) => {
   const [currentTab, setCurrentTab] = useState<IndividualDeviceProfileTab>(
@@ -48,16 +49,6 @@ export const IndividualDeviceProfile: FC<Props> = ({ device }) => {
             menuButtons: [
               {
                 title: 'Редактировать',
-              },
-              {
-                title: 'Открыть историю показаний',
-              },
-              {
-                title: 'Поверить прибор',
-              },
-              {
-                title: 'Закрыть прибор',
-                color: ContextMenuButtonColor.danger,
               },
             ],
           }}
@@ -87,7 +78,7 @@ export const IndividualDeviceProfile: FC<Props> = ({ device }) => {
                     },
                     {
                       key: 'Место установки',
-                      value: device.deviceMountPlace?.name,
+                      value: device.deviceMountPlace?.description,
                     },
                     {
                       key: 'Разрядность',
@@ -132,7 +123,16 @@ export const IndividualDeviceProfile: FC<Props> = ({ device }) => {
             <Tabs.TabPane
               tab="История показаний"
               key={IndividualDeviceProfileTab.ReadingsHistory}
-            ></Tabs.TabPane>
+            >
+              <ReadingsHistoryWrapper>
+                <ReadingsHistoryContainer
+                  readonly
+                  deviceId={device.id}
+                  isModal={false}
+                  showDeviceInfo={false}
+                />
+              </ReadingsHistoryWrapper>
+            </Tabs.TabPane>
           </Tabs>
         </Content>
       </HeaderWrapper>
