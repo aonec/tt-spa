@@ -6,7 +6,7 @@ import { EffectFailDataAxiosError } from 'types';
 
 const domain = createDomain('deleteResourceDisconnectionService');
 
-const openModal = domain.createEvent<{ id: string; endDate: string }>();
+const openModal = domain.createEvent<{ id: string; endDate: string | null }>();
 const closeModal = domain.createEvent();
 
 const $resourceDisconnectionId = domain
@@ -15,7 +15,7 @@ const $resourceDisconnectionId = domain
   .reset(closeModal);
 
 const $endDate = domain
-  .createStore('')
+  .createStore<string | null>(null)
   .on(openModal, (_, payload) => payload.endDate)
   .reset(closeModal);
 

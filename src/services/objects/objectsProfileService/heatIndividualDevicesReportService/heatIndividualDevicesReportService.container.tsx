@@ -1,5 +1,5 @@
-import { useEvent, useStore } from 'effector-react';
 import React from 'react';
+import { useUnit } from 'effector-react';
 import { FormModal } from 'ui-kit/Modals/FormModal';
 import { heatIndividualDevicesReportService } from './heatIndividualDevicesReportService.model';
 import { HeatIndividualDevicesReportForm } from './view/HeatIndividualDevicesReportForm';
@@ -8,14 +8,25 @@ const { inputs, outputs } = heatIndividualDevicesReportService;
 const formId = 'heat-individual-devices-report';
 
 export const HeatIndividualDevicesReportContainer = () => {
-  const isOpen = useStore(outputs.$isOpen);
-  const selectedCity = useStore(outputs.$selectedCity);
-  const treeData = useStore(outputs.$treeData);
-  const isLoading = useStore(outputs.$isLoading);
-
-  const closeModal = useEvent(inputs.closeModal);
-  const handleDownloadModal = useEvent(inputs.downloadReport);
-  const selectCity = useEvent(inputs.selectCity);
+  const {
+    isOpen,
+    selectedCity,
+    treeData,
+    isLoading,
+    selectedBuilding,
+    closeModal,
+    handleDownloadModal,
+    selectCity,
+  } = useUnit({
+    isOpen: outputs.$isOpen,
+    selectedCity: outputs.$selectedCity,
+    treeData: outputs.$treeData,
+    isLoading: outputs.$isLoading,
+    selectedBuilding: outputs.$selectedBuilding,
+    closeModal: inputs.closeModal,
+    handleDownloadModal: inputs.downloadReport,
+    selectCity: inputs.selectCity,
+  });
 
   return (
     <FormModal
@@ -32,6 +43,7 @@ export const HeatIndividualDevicesReportContainer = () => {
           selectedCity={selectedCity}
           formId={formId}
           treeData={treeData}
+          selectedBuilding={selectedBuilding}
         />
       }
     />

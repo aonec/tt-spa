@@ -11,8 +11,8 @@ export const fetchHousingStock = (
   axios.get(`HousingStocks/${HousingStockId}`);
 
 export const fetchResourceDisconnectionOnHousingStock = (
-  HousingStockId: number,
+  BuildingId: number,
 ): Promise<ResourceDisconnectingResponsePagedList> =>
   axios.get('ResourceDisconnecting', {
-    params: { HousingStockId, Status: EResourceDisconnectingStatus.Active },
+    params: { BuildingId, Status: EResourceDisconnectingStatus.Active },
   });
