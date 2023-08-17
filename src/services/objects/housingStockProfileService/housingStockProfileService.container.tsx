@@ -1,6 +1,6 @@
 import React from 'react';
 import { Skeleton } from 'antd';
-import { useEvent, useStore } from 'effector-react';
+import { useUnit } from 'effector-react';
 import { useParams } from 'react-router-dom';
 import { housingStockProfileService } from './housingStockProfileService.model';
 import { HousingStockProfile } from './view/HousingStockProfile';
@@ -14,14 +14,21 @@ const { ObjectProfileIdGate } = gates;
 export const HousingStockProfileContainer = () => {
   const { buildingId } = useParams<{ buildingId: string }>();
 
-  const housingStock = useStore(outputs.$housingStock);
-  const isLoading = useStore(outputs.$isLoading);
-  const currentGrouptype = useStore(outputs.$currentGrouptype);
-
-  const setCurrentGrouptype = useEvent(inputs.setCurrentGroutype);
-  const openConsolidatedReportModal = useEvent(
-    inputs.openConsolidatedReportModal,
-  );
+  const {
+    currentGrouptype,
+    housingStock,
+    isLoading,
+    openConsolidatedReportModal,
+    setCurrentGrouptype,
+    resourceDisconnections,
+  } = useUnit({
+    housingStock: outputs.$housingStock,
+    resourceDisconnections: outputs.$resourceDisconnections,
+    isLoading: outputs.$isLoading,
+    currentGrouptype: outputs.$currentGrouptype,
+    setCurrentGrouptype: inputs.setCurrentGroutype,
+    openConsolidatedReportModal: inputs.openConsolidatedReportModal,
+  });
 
   const isPermitionToAddNode = usePermission([
     ESecuredIdentityRoleName.Administrator,
@@ -53,6 +60,7 @@ export const HousingStockProfileContainer = () => {
             isPermitionToDownloadConsolidatedReport
           }
           isPermissionToEditHousingStock={isPermissionToEditHousingStock}
+          resourceDisconnections={resourceDisconnections}
         />
       )}
     </>

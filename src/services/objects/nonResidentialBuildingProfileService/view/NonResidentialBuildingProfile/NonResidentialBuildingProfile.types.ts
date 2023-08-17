@@ -1,4 +1,7 @@
-import { NonResidentialBuildingResponse } from 'api/types';
+import {
+  NonResidentialBuildingResponse,
+  ResourceDisconnectingResponse,
+} from 'api/types';
 import { NonResidentialBuildingProfileGrouptype } from '../../nonResidentialBuildingProfileService.constants';
 
 export type NonResidentialBuildingProfileProps = {
@@ -9,4 +12,5 @@ export type NonResidentialBuildingProfileProps = {
   isPermitionToDownloadConsolidatedReport: boolean;
   isPermissionToEditHousingStock: boolean;
   openConsolidatedReportModal: () => void;
+  resourceDisconnections: ResourceDisconnectingResponse[];
 };
