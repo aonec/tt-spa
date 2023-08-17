@@ -1,10 +1,9 @@
-import React, { FC } from 'react';
+import React, { ChangeEvent, FC } from 'react';
 import { TemperatureGraphProps } from './TemperatureGraph.types';
 import { Table } from '../../../../../ui-kit/Table/Table';
 import {
   Footer,
   InputSc,
-  InputScShort,
   InputsContainer,
   PageWrapper,
   WrapperCelsius,
@@ -18,6 +17,7 @@ import { CriticalTemperaturePanel } from '../criticalTemperatureDeviationService
 import { Button } from 'ui-kit/Button';
 import { TemperatureNormativeResponse } from 'api/types';
 import { useFormik } from 'formik';
+import { message } from 'antd';
 
 export const TemperatureGraph: FC<TemperatureGraphProps> = ({
   temperatureNormative: initialTemperatureNormatives,
@@ -33,6 +33,8 @@ export const TemperatureGraph: FC<TemperatureGraphProps> = ({
       console.log(data);
     },
   });
+
+  
 
   return (
     <PageWrapper>
@@ -61,7 +63,8 @@ export const TemperatureGraph: FC<TemperatureGraphProps> = ({
             render: (data) =>
               isEditing ? (
                 <InputsContainer>
-                  <InputScShort
+                  <InputSc
+                    isError={true}
                     type="number"
                     suffix={<WrapperCelsius>°C</WrapperCelsius>}
                     value={data.dayFeedFlowTemperature}
@@ -84,11 +87,11 @@ export const TemperatureGraph: FC<TemperatureGraphProps> = ({
                       setFieldValue('temperatureNormativesArr', updatedValues);
                     }}
                   />
-                  <InputScShort
+                  <InputSc
                     type="number"
                     suffix={<WrapperCelsius>°C</WrapperCelsius>}
                     value={data.nightFeedFlowTemperature}
-                    onChange={(inputValue) => {
+                    onChange={(inputValue: ChangeEvent<HTMLInputElement>) => {
                       const updatedValues = values.temperatureNormativesArr.map(
                         (temperatureNormative) => {
                           if (temperatureNormative.id !== data.id) {
@@ -105,6 +108,20 @@ export const TemperatureGraph: FC<TemperatureGraphProps> = ({
                       );
 
                       setFieldValue('temperatureNormativesArr', updatedValues);
+                    }}
+                    onBlur={(onBlurData: ChangeEvent<HTMLInputElement>) => {
+                      const currentTemperatureNormative =
+                        values.temperatureNormativesArr.find(
+                          (temperatureNormative) =>
+                            temperatureNormative.id === data.id,
+                        )!;
+
+                      if (
+                        currentTemperatureNormative.dayFeedFlowTemperature <
+                        Number(onBlurData.target.value)
+                      ) {
+                        return message.error('AAAA');
+                      }
                     }}
                   />
                 </InputsContainer>
@@ -169,7 +186,7 @@ export const TemperatureGraph: FC<TemperatureGraphProps> = ({
             render: (data) =>
               isEditing ? (
                 <InputsContainer>
-                  <InputScShort
+                  <InputSc
                     type="number"
                     suffix={<WrapperCelsius>°C</WrapperCelsius>}
                     value={data.dayFeedBackFlowTemperature}
@@ -192,7 +209,7 @@ export const TemperatureGraph: FC<TemperatureGraphProps> = ({
                       setFieldValue('temperatureNormativesArr', updatedValues);
                     }}
                   />
-                  <InputScShort
+                  <InputSc
                     type="number"
                     suffix={<WrapperCelsius>°C</WrapperCelsius>}
                     value={data.nightFeedBackFlowTemperature}

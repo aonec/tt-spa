@@ -40,12 +40,14 @@ export const WrapperTime = styled.div`
   grid-template-columns: 1.55fr 1fr;
 `;
 
-export const InputSc = styled(Input)`
+export const InputSc = styled(Input)<{ isError?: boolean }>`
   height: 32px;
-`;
 
-export const InputScShort = styled(Input)`
-  height: 32px;
+  .ant-input {
+    background-color: ${({ isError }) => (isError ? '#ff002140' : 'none')};
+    margin-top: 6px;
+    height: 20px;
+  }
 `;
 
 export const InputsContainer = styled.div`
