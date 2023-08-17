@@ -8,6 +8,7 @@ import {
   EResourceDisconnectingType,
   HeatingStationWithStreetsResponse,
   HouseManagementWithStreetsResponse,
+  BuildingListResponse,
 } from 'api/types';
 import { EffectFailDataAxiosError } from 'types';
 import { chooseTypeOfResourceDisconnectionModalService } from '../chooseTypeOfResourceDisconnectionModalService/chooseTypeOfResourceDisconnectionModalService.model';
@@ -53,6 +54,14 @@ const closeModal = domain.createEvent();
 const clearHousingStocks = domain.createEvent();
 const clearTypeOfAddress = domain.createEvent();
 
+const $selectedBuilding = domain
+  .createStore<BuildingListResponse | null>(null)
+  .on(
+    chooseTypeOfResourceDisconnectionModalService.inputs.openModal,
+    (_, Building) => Building || null,
+  )
+  .reset(closeModal);
+
 const $isModalOpen = domain
   .createStore(false)
   .on(openModal, () => true)
@@ -69,6 +78,14 @@ const selectCity = domain.createEvent<string>();
 const $selectedCity = domain
   .createStore<string | null>(null)
   .on(selectCity, (_, city) => city)
+  .on(
+    chooseTypeOfResourceDisconnectionModalService.inputs.openModal,
+    (prev, building) => {
+      if (!building) return prev;
+
+      return building.address?.mainAddress?.city || prev;
+    },
+  )
   .reset(closeModal);
 
 const getExistingHousingStocksFx = domain.createEffect<
@@ -119,14 +136,15 @@ const createResourceDisconnectionFx = domain.createEffect<
   EffectFailDataAxiosError
 >(fetchCreateResourceDisconnection);
 
-forward({
-  from: setTypeOfAddress,
-  to: clearHousingStocks,
+sample({
+  clock: setTypeOfAddress,
+  target: clearHousingStocks,
 });
 
-forward({
-  from: editResourceDisconnectionService.inputs.openEditModal,
-  to: openModal,
+sample({
+  clock: editResourceDisconnectionService.inputs.openEditModal,
+  fn: () => undefined,
+  target: openModal,
 });
 
 sample({
@@ -219,5 +237,6 @@ export const createResourceDisconnectionService = {
     $typeOfAddress,
     $isHousingStocksLoading,
     $selectedCity,
+    $selectedBuilding,
   },
 };

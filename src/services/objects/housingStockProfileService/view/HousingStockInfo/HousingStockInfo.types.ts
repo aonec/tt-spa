@@ -1,5 +1,6 @@
-import { HousingStockResponse } from 'api/types';
+import { HousingStockResponse, ResourceDisconnectingResponse } from 'api/types';
 
 export type HousingStockInfoProps = {
   housingStock: HousingStockResponse;
+  resourceDisconnections: ResourceDisconnectingResponse[];
 };

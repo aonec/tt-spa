@@ -2,7 +2,7 @@ import { Form } from 'antd';
 import { useFormik } from 'formik';
 import moment from 'moment';
 import { EResourceType } from 'api/types';
-import React, { FC } from 'react';
+import React, { FC, useEffect } from 'react';
 import { FormItem } from 'ui-kit/FormItem';
 import { Input } from 'ui-kit/Input';
 import { HeatIndividualDevicesReportFormProps } from './HeatIndividualDevicesReportForm.types';
@@ -18,7 +18,14 @@ import { addressSearchService } from 'services/addressSearchService/addressSearc
 
 export const HeatIndividualDevicesReportForm: FC<
   HeatIndividualDevicesReportFormProps
-> = ({ handleDownloadModal, formId, selectCity, selectedCity, treeData }) => {
+> = ({
+  handleDownloadModal,
+  formId,
+  selectCity,
+  selectedCity,
+  treeData,
+  selectedBuilding,
+}) => {
   const existingCities = useStore(addressSearchService.outputs.$existingCities);
 
   const { values, handleSubmit, setFieldValue, errors } = useFormik({
@@ -47,6 +54,14 @@ export const HeatIndividualDevicesReportForm: FC<
     },
   });
 
+  useEffect(() => {
+    if (!selectedBuilding) return;
+
+    console.log(selectedBuilding);
+
+    setFieldValue('HousingStockIds', [selectedBuilding.id]);
+  }, [selectedBuilding, setFieldValue]);
+
   return (
     <Form id={formId} onSubmitCapture={handleSubmit}>
       <FormItem label="Название отчёта">
@@ -63,7 +78,10 @@ export const HeatIndividualDevicesReportForm: FC<
         <FormItem label="Город">
           <Select
             disabled={!(existingCities || []).length}
-            onChange={(value) => selectCity(String(value))}
+            onChange={(value) => {
+              selectCity(String(value));
+              setFieldValue('HousingStockIds', []);
+            }}
             value={selectedCity || undefined}
             placeholder="Выберите город"
           >
