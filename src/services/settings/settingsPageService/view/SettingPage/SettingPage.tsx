@@ -42,7 +42,7 @@ export const SettingPage: FC<SettingPageProps> = ({
         },
         {
           title: 'Редактировать температурный график',
-          onClick: handleEditTemperatureNormative,
+          onClick: () => handleEditTemperatureNormative(true),
           hidden: !isTemperatureGraphTab,
         },
       ];
@@ -57,7 +57,13 @@ export const SettingPage: FC<SettingPageProps> = ({
         onClick: handleReassingInspector,
       },
     ];
-  }, [adminSettings, handleReassingInspector]);
+  }, [
+    adminSettings,
+    handleReassingInspector,
+    handleEditTemperatureNormative,
+    isDisabledResourcesTab,
+    isTemperatureGraphTab,
+  ]);
 
   const settingsComponent = useMemo(() => {
     if (adminSettings) {

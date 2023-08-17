@@ -1,4 +1,4 @@
 export type SettingPageProps = {
   handleReassingInspector: () => void;
-  handleEditTemperatureNormative: () => void;
+  handleEditTemperatureNormative: (payload: boolean) => void;
 };

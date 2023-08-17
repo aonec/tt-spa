@@ -2,17 +2,33 @@ import React, { FC } from 'react';
 import { TemperatureGraphProps } from './TemperatureGraph.types';
 import { Table } from '../../../../../ui-kit/Table/Table';
 import {
+  Footer,
+  InputSc,
   PageWrapper,
+  WrapperCelsius,
   WrapperMultiHeader,
   WrapperT3,
   WrapperTime,
   WrapperUnderscore,
 } from './TemperatureGraph.styled';
 import { CriticalTemperaturePanel } from '../criticalTemperatureDeviationService/view/CriticalTemperaturePanel';
+import { Button } from 'ui-kit/Button';
+import { TemperatureNormativeResponse } from 'api/types';
+import { useFormik } from 'formik';
 
 export const TemperatureGraph: FC<TemperatureGraphProps> = ({
-  temperatureNormative,
+  temperatureNormative: temperatureNormatives,
+  isEditing,
+  handleEditTemperatureNormative,
 }) => {
+  const { values, setFieldValue, handleSubmit, handleReset } = useFormik<
+    TemperatureNormativeResponse[]
+  >({
+    initialValues: temperatureNormatives,
+    enableReinitialize: true,
+    onSubmit: () => {},
+  });
+
   return (
     <PageWrapper>
       <CriticalTemperaturePanel />
@@ -51,7 +67,32 @@ export const TemperatureGraph: FC<TemperatureGraphProps> = ({
               </WrapperT3>
             ),
             size: '160px',
-            render: (data) => data.heatFeedFlowTemperature,
+            render: (data) =>
+              isEditing ? (
+                <InputSc
+                  type="number"
+                  suffix={<WrapperCelsius>°C</WrapperCelsius>}
+                  value={data.heatFeedFlowTemperature}
+                  onChange={(inputValue) => {
+                    const updatedValues = values.map((temperatureNormative) => {
+                      if (temperatureNormative.id !== data.id) {
+                        return temperatureNormative;
+                      } else {
+                        return {
+                          ...temperatureNormative,
+                          heatFeedFlowTemperature: Number(
+                            inputValue.target.value,
+                          ),
+                        };
+                      }
+                    });
+
+                    setFieldValue('temperatureNormatives', updatedValues);
+                  }}
+                />
+              ) : (
+                data.heatFeedFlowTemperature
+              ),
           },
 
           {
@@ -76,8 +117,25 @@ export const TemperatureGraph: FC<TemperatureGraphProps> = ({
             ),
           },
         ]}
-        elements={temperatureNormative}
+        elements={values}
       />
+
+      {isEditing && (
+        <Footer>
+          <Button
+            type="ghost"
+            onClick={() => {
+              // handleReset('F');
+              handleEditTemperatureNormative(false);
+            }}
+          >
+            Отмена
+          </Button>
+          <Button type="primary" onClick={() => handleSubmit()}>
+            Сохранить
+          </Button>
+        </Footer>
+      )}
     </PageWrapper>
   );
 };

@@ -8,7 +8,7 @@ const domain = createDomain('temperatureGraphService');
 
 const TemperatureGraphGate = createGate();
 
-const handleEditTemperatureNormative = domain.createEvent();
+const handleEditTemperatureNormative = domain.createEvent<boolean>();
 
 const getTemperatureNormativeFx = domain.createEffect<
   void,
@@ -21,10 +21,15 @@ const $temperatureNormative = domain
     sortBy(normativeData, (data) => data.outdoorTemperature * -1),
   );
 
+const $isEditing = domain
+  .createStore<boolean>(false)
+  .on(handleEditTemperatureNormative, (_, isEdit) => isEdit)
+  .reset(TemperatureGraphGate.close);
+
 sample({ clock: TemperatureGraphGate.open, target: getTemperatureNormativeFx });
 
 export const temperatureGraphService = {
   inputs: { handleEditTemperatureNormative },
-  outputs: { $temperatureNormative },
+  outputs: { $temperatureNormative, $isEditing },
   gates: { TemperatureGraphGate },
 };
