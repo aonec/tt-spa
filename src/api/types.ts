@@ -5214,6 +5214,7 @@ export interface PipeNodeIntoCalculatorResponse {
   /** @format date-time */
   futureCommercialAccountingDate: string | null;
   communicationPipes: CommunicationPipeResponse[] | null;
+  validationResult: PipeNodeValidationResultResponse | null;
 }
 
 export interface PipeNodeMeteringDeviceResponse {
