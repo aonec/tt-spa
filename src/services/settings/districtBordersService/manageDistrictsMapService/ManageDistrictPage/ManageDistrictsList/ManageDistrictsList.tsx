@@ -1,6 +1,6 @@
 import React, { FC, useCallback, useMemo, useState } from 'react';
 import { ChevronDown } from 'react-bootstrap-icons';
-import { groupBy } from 'lodash';
+import { groupBy, sortBy } from 'lodash';
 import {
   AddressHousesCount,
   AddressNumber,
@@ -181,7 +181,7 @@ export const ManageDistrictsList: FC<Props> = ({ existingDistricts }) => {
                           </AddressHousesCount>
                         </AddressWrapper>
                         {isOpen &&
-                          value.map((elem) => {
+                          sortBy(value, (elem) => elem.address).map((elem) => {
                             const arr = elem.address?.split(' ');
                             const number = arr && arr[arr?.length - 2];
                             return <AddressNumber>{number}</AddressNumber>;
