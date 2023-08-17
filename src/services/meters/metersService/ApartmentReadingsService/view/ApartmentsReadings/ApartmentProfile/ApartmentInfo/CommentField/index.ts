@@ -1,1 +1,1 @@
-export { CommentField } from './CommentField'
+export { CommentField } from './CommentField';
