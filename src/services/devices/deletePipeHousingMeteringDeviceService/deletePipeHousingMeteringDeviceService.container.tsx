@@ -17,8 +17,6 @@ export const DeletePipeHousingMeteringDeviceContainer = () => {
   const closeModal = useEvent(inputs.closeModal);
   const handleDeleteDevice = useEvent(inputs.deleteDevice);
 
-  console.log('dsdasdas');
-
   return (
     <Dialog
       isOpen={isOpen}
