@@ -20,4 +20,5 @@ export type ApartmentSealProfileProps = {
   openCreateSealAppointmentModal: (payload: OpenCreateSealModalPayload) => void;
   nearestAppointment: AppointmentResponse | null;
   isAppointmentLoading: boolean;
+  isApartmentFetched: boolean;
 };

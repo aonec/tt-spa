@@ -15,6 +15,7 @@ const fields = [
 
 export const ApartmentsSearch: FC<ApartmentsSearchProps> = ({
   handleSearch,
+  isSearchError,
 }) => {
   return (
     <Wrapper>
@@ -27,7 +28,11 @@ export const ApartmentsSearch: FC<ApartmentsSearchProps> = ({
         extendedSearchContent={<></>}
         disabled
       >
-        <AddressSearchContainer fields={fields} handleSubmit={handleSearch} />
+        <AddressSearchContainer
+          isError={isSearchError}
+          fields={fields}
+          handleSubmit={handleSearch}
+        />
       </ExtendedSearch>
     </Wrapper>
   );

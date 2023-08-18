@@ -776,6 +776,8 @@ export interface BuildingListResponse {
 
   /** @format int32 */
   managingFirmId: number;
+  inspectorId: number | null;
+  inspectedDay: string | null;
 
   /** @format int32 */
   numberOfTasks: number | null;

@@ -27,6 +27,7 @@ export type ApartmentsReadingsProps = {
   printIssueCertificate: () => void;
   handleUpdateHomeowner: (payload: UpdateHomeownerRequestPayload) => void;
   isUpdateHomeownerLoading: boolean;
+  isApartmentFetched: boolean;
 };
 
 export enum SearchMode {

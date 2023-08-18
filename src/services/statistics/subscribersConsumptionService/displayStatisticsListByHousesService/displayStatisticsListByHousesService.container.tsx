@@ -7,39 +7,58 @@ import { TypeAddressToStart } from 'ui-kit/shared/TypeToStart';
 import { ExportSubscribersConsumptionContainer } from '../exportSubscribersConsumptionService';
 import { StatisticsList } from './view/StatisticsList';
 import { SearchHousingStock } from './view/SearchHousingStock';
+import { fetchHousingStockIdQuery } from './displayStatisticsListByHousesService.api';
+import { NothingFound } from 'ui-kit/shared/NothingFound';
 
-const { inputs, outputs } = displayStatisticsListByHousesService;
+const { inputs, outputs, gates } = displayStatisticsListByHousesService;
+const { StatisticsByHouseGate } = gates;
 
 export const DisplayStatisticsListByHousesContainer = () => {
-  const isLoading = useUnit(outputs.$isLoading);
-  const filter = useUnit(outputs.$subscriberStatisticsByHouseFilter);
-  const statistics = useUnit(outputs.$consumptionStatisticsByHouse);
-  const housingStockId = useUnit(outputs.$selectedHousingStockId);
-  const housingStockAddress = useUnit(outputs.$housingStockAddress);
-
-  const setFilter = useUnit(inputs.setSubscriberStatisticsFilter);
-  const setHousingStockAddress = useUnit(inputs.setHousingStockAddress);
+  const {
+    filter,
+    housingStockAddress,
+    housingStockId,
+    isLoading,
+    setFilter,
+    setHousingStockAddress,
+    statistics,
+    isBuildingFetched,
+  } = useUnit({
+    isLoading: outputs.$isLoading,
+    filter: outputs.$subscriberStatisticsByHouseFilter,
+    statistics: outputs.$consumptionStatisticsByHouse,
+    housingStockId: outputs.$selectedHousingStockId,
+    housingStockAddress: outputs.$housingStockAddress,
+    setFilter: inputs.setSubscriberStatisticsFilter,
+    setHousingStockAddress: inputs.setHousingStockAddress,
+    isBuildingFetched: fetchHousingStockIdQuery.$succeeded,
+  });
 
   const isStatisticsExist = Boolean(statistics.length);
   const isHousingStockExist = Boolean(housingStockId);
 
   return (
     <>
+      <StatisticsByHouseGate />
       <ExportSubscribersConsumptionContainer filter={filter} />
       <SearchHousingStock
         filter={filter}
         setFilter={setFilter}
         housingStockAddress={housingStockAddress}
         setHousingStockAddress={setHousingStockAddress}
+        isNothingFound={isBuildingFetched && !isHousingStockExist}
       />
       <WithLoader isLoading={isLoading}>
-        {isStatisticsExist && isHousingStockExist && (
-          <StatisticsList statistics={statistics} />
+        {isBuildingFetched && !isHousingStockExist && <NothingFound />}
+        {!isBuildingFetched && !isHousingStockExist && <TypeAddressToStart />}
+        {isHousingStockExist && (
+          <>
+            {isStatisticsExist && <StatisticsList statistics={statistics} />}
+            {!isStatisticsExist && (
+              <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
+            )}
+          </>
         )}
-        {!isStatisticsExist && isHousingStockExist && (
-          <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
-        )}
-        {!isHousingStockExist && <TypeAddressToStart />}
       </WithLoader>
     </>
   );

@@ -11,10 +11,12 @@ import { BuildingListResponse } from 'api/types';
 import { useUnit } from 'effector-react';
 import { heatIndividualDevicesReportService } from 'services/objects/objectsProfileService/heatIndividualDevicesReportService';
 import { chooseTypeOfResourceDisconnectionModalService } from 'services/resources/chooseTypeOfResourceDisconnectionModalService';
+import { NothingFound } from 'ui-kit/shared/NothingFound';
 
 export const ObjectsList: FC<ObjectsListProps> = ({
   isLoading,
   housingStocks,
+  isBuildingFetched,
 }) => {
   const [selectedBuilding, setSelectedBuilding] =
     useState<BuildingListResponse | null>();
@@ -54,7 +56,7 @@ export const ObjectsList: FC<ObjectsListProps> = ({
     openResourceDisconnectionReportModal,
   ]);
 
-  const isEmpty = useMemo(() => !housingStocks?.length, [housingStocks]);
+  const isEmpty = !housingStocks?.length;
 
   return (
     <div>
@@ -63,7 +65,8 @@ export const ObjectsList: FC<ObjectsListProps> = ({
       )}
       <WithLoader isLoading={isLoading}>
         {housingStocksList}
-        {isEmpty && <TypeAddressToStart />}
+        {isEmpty && !isBuildingFetched && <TypeAddressToStart />}
+        {isEmpty && isBuildingFetched && <NothingFound />}
       </WithLoader>
     </div>
   );

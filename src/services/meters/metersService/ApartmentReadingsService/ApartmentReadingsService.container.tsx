@@ -7,6 +7,7 @@ import { ESecuredIdentityRoleName } from 'api/types';
 import { usePermission } from 'hooks/usePermission';
 import { SelectPersonalNumberActionContainer } from 'services/homeowner/personalNumber/selectPersonalNumberActionService';
 import { PauseApartmentContainer } from 'services/apartments/pauseApartmentService';
+import { getApartmentQuery } from './ApartmentReadingsService.api';
 
 const { inputs, outputs } = apartmentReadingsService;
 
@@ -30,6 +31,7 @@ export const ApartmentReadingsContainer = () => {
     apartment,
     selectedHomeownerName,
     allIndividualDeviceMountPlaces,
+    isApartmentFetched,
   } = useUnit({
     printIssueCertificate: inputs.printIssueCertificate,
     isUpdateHomeownerLoading: outputs.$isUpdateHomeownerLoading,
@@ -46,6 +48,7 @@ export const ApartmentReadingsContainer = () => {
     apartment: outputs.$apartment,
     selectedHomeownerName: outputs.$selectedHomeownerName,
     allIndividualDeviceMountPlaces: outputs.$allIndividualDeviceMountPlaces,
+    isApartmentFetched: getApartmentQuery.$succeeded,
   });
 
   const isPermitionToApartmentStatusPatch = usePermission([
@@ -55,7 +58,7 @@ export const ApartmentReadingsContainer = () => {
   ]);
 
   useEffect(() => {
-    return inputs.handleApartmentLoaded.watch((apartment) => {
+    return inputs.handleApartmentLoaded.watch(({ result: apartment }) => {
       if (!apartment || apartment.id === Number(id)) return;
 
       history.push(`/meters/apartments/${apartment.id}`);
@@ -89,6 +92,7 @@ export const ApartmentReadingsContainer = () => {
         printIssueCertificate={handlePrintIssueCertificate}
         handleUpdateHomeowner={handleUpdateHomeowner}
         isUpdateHomeownerLoading={isUpdateHomeownerLoading}
+        isApartmentFetched={isApartmentFetched}
       />
     </>
   );

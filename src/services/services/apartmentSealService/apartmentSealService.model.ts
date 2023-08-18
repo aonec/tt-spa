@@ -1,4 +1,4 @@
-import { createDomain, forward, sample } from 'effector';
+import { createDomain, sample } from 'effector';
 import {
   ApartmentResponse,
   IndividualDeviceListItemResponse,
@@ -8,7 +8,7 @@ import { EffectFailDataAxiosError } from 'types';
 import { message } from 'antd';
 import { createGate } from 'effector-react';
 import {
-  getApartment,
+  getApartmentQuery,
   putApartment,
 } from 'services/meters/metersService/ApartmentReadingsService/ApartmentReadingsService.api';
 import {
@@ -33,16 +33,11 @@ const updateApartmentFx = domain.createEffect<
 >(putApartment);
 
 const handleSearchApartment = domain.createEvent<GetApartmentsRequestPayload>();
-const fetchApartmentFx = domain.createEffect<
-  GetApartmentsRequestPayload,
-  ApartmentResponse | null,
-  EffectFailDataAxiosError
->(getApartment);
 
 const $apartment = domain
   .createStore<ApartmentResponse | null>(null)
   .on(
-    [fetchApartmentFx.doneData, updateApartmentFx.doneData],
+    [getApartmentQuery.$data, updateApartmentFx.doneData],
     (_, apartment) => apartment,
   )
   .reset(ApartmentGate.close);
@@ -56,8 +51,8 @@ const $apartmentAppointment = domain
   .on(fetchAppointmentFx.doneData, (_, appointments) => appointments[0] || null)
   .reset(ApartmentGate.close);
 
-const handleApartmentLoaded = fetchApartmentFx.doneData;
-const $isApartmentLoading = fetchApartmentFx.pending;
+const handleApartmentLoaded = getApartmentQuery.finished.success;
+const $isApartmentLoading = getApartmentQuery.$pending;
 const $isSealAppointmentLoading = fetchAppointmentFx.pending;
 
 const setSelectedHomeownerName = domain.createEvent<string>();
@@ -86,12 +81,12 @@ sample({
       filter: (apartment, { id }) => Boolean(id && id !== apartment?.id),
     }),
   ],
-  target: fetchApartmentFx,
+  target: getApartmentQuery.start,
 });
 
-forward({
-  from: handleSearchApartment,
-  to: fetchApartmentFx,
+sample({
+  clock: handleSearchApartment,
+  target: getApartmentQuery.start,
 });
 
 sample({
@@ -102,12 +97,17 @@ sample({
   target: fetchAppointmentFx,
 });
 
-forward({
-  from: handleUpdateApartment,
-  to: updateApartmentFx,
+sample({
+  clock: ApartmentGate.close,
+  target: getApartmentQuery.reset,
 });
 
-fetchApartmentFx.failData.watch((error) => {
+sample({
+  clock: handleUpdateApartment,
+  target: updateApartmentFx,
+});
+
+getApartmentQuery.finished.failure.watch(({ error }) => {
   return message.error(
     error.response.data.error.Text ||
       error.response.data.error.Message ||
