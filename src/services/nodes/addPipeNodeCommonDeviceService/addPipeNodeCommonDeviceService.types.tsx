@@ -18,4 +18,5 @@ export type CreateCommonDevicePartitial = Partial<
 
 export type CommunicationPipePayload = CreateCommunicationPipeRequest & {
   id: string;
+  entryNumber?: number;
 };
