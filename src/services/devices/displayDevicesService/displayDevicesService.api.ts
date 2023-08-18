@@ -34,7 +34,7 @@ const getHousingByFilter = async (
 ): Promise<BuildingByFilterResponse | null> => {
   try {
     const res: BuildingByFilterResponse = await axios.get(
-      'Devices/Individual/House',
+      'Buildings/BuildingsByAddress',
       { params },
     );
     return res;

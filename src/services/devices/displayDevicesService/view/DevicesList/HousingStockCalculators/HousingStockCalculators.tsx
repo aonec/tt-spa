@@ -1,4 +1,5 @@
 import React, { FC, useCallback, useMemo } from 'react';
+import { Tooltip } from 'antd';
 import { HousingStockCalculatorsProps } from './HousingStockCalculators.types';
 import { EHouseCategory, BuildingAddress } from 'api/types';
 import { DevicesSearchType } from 'services/devices/devicesPageService/devicesPageService.types';
@@ -56,14 +57,30 @@ export const HousingStockCalculators: FC<HousingStockCalculatorsProps> = ({
     if (!housingStockDevices.building) {
       return 'У данного прибора не указан адрес';
     }
-
     const { address, id } = housingStockDevices.building;
+
+    const additionalAddressesString = (address?.additionalAddresses || [])
+      .map((elem) => {
+        const corpusText = elem.corpus ? `, к.${elem.corpus}` : '';
+        return `${elem.street}, ${elem.number}${corpusText}`;
+      })
+      .join('; ');
+
+    const fullAddress = additionalAddressesString
+      ? `${getBuildingAddress({
+          address,
+        })}; ${additionalAddressesString}`
+      : getBuildingAddress({
+          address,
+        });
 
     return (
       <HousingStockAddressHeaderWrapper>
-        <HousingStockAddress to={`/buildings/${buildingProfilePath}/${id}`}>
-          {getBuildingAddress({ address })}
-        </HousingStockAddress>
+        <Tooltip title={fullAddress}>
+          <HousingStockAddress to={`/buildings/${buildingProfilePath}/${id}`}>
+            {fullAddress}
+          </HousingStockAddress>
+        </Tooltip>
         <Switcher
           nextValue={nextAddress}
           previousValue={previousAddress}

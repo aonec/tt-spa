@@ -124,10 +124,21 @@ sample({
 });
 
 sample({
-  clock: $devices.map((devices) =>
+  source: $searchPayload,
+  clock: $devices,
+  fn: (filter, devices) =>
     devices.reduce((acc, device) => {
-      const { city, street, corpus, number } =
-        device.building?.address?.mainAddress || {};
+      const address = device.building?.address;
+      let currentAddress = address?.mainAddress;
+
+      if (filter['Filter.Address.Street']) {
+        currentAddress =
+          [address?.mainAddress, ...(address?.additionalAddresses || [])].find(
+            (address) => address?.street === filter['Filter.Address.Street'],
+          ) || currentAddress;
+      }
+      const { city, street, corpus, number } = currentAddress || {};
+
       if (!city || !street || !number) {
         return acc;
       }
@@ -141,7 +152,6 @@ sample({
         },
       ];
     }, [] as GetHousingByFilterRequestPayload[]),
-  ),
   target: fetchHousingsByFilterFx,
 });
 

@@ -1,30 +1,7 @@
-import { BuildingListResponse, BuildingShortResponse } from 'api/types';
-
-export const fullAddressesString = (address: BuildingListResponse | null) => {
-  const additionalAddresses = address?.address?.additionalAddresses || [];
-
-  const mainAddress = address?.address?.mainAddress;
-  const corpusText = mainAddress?.corpus ? `, к.${mainAddress.corpus}` : '';
-  const mainAddressText = `${mainAddress?.city} ${String.fromCharCode(
-    8226,
-  )} ${`ул. ${mainAddress?.street}`}, ${mainAddress?.number}${corpusText}`;
-
-  const additionalAddressesText = additionalAddresses
-    .map((elem) => {
-      return `${elem?.street}, ${elem.number}${
-        elem.corpus ? `, к.${elem.corpus}` : ''
-      }`;
-    })
-    .join('; ');
-
-  return {
-    mainAddress: mainAddressText,
-    additionalAddress: additionalAddressesText,
-  };
-};
+import { BuildingAddressResponse } from 'api/types';
 
 export const additionalAddressesString = (
-  address: BuildingShortResponse | null,
+  address: { address: BuildingAddressResponse | null } | null,
 ) => {
   const additionalAddresses = address?.address?.additionalAddresses || [];
 
