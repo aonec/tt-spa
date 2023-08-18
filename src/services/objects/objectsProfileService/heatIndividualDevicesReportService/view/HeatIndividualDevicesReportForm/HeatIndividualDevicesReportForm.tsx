@@ -57,8 +57,6 @@ export const HeatIndividualDevicesReportForm: FC<
   useEffect(() => {
     if (!selectedBuilding) return;
 
-    console.log(selectedBuilding);
-
     setFieldValue('HousingStockIds', [selectedBuilding.id]);
   }, [selectedBuilding, setFieldValue]);
 

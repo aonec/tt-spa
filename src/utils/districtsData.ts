@@ -34,6 +34,7 @@ export const getPayloadFromDistrict = (
       type: additionalInfo.districtColor,
       coordinates: [additionalInfo.districtPolygonCoordinates || []],
       isEditing,
+      houses: district.houses || [],
     };
   } catch (e) {
     return null;

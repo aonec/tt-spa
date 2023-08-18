@@ -19,4 +19,5 @@ export type HousesReadingsPageProps = {
   managementFirmConsumptionRates: ConsumptionRatesDictionary | null;
   openReadingsHistoryModal: (deviceId: number) => void;
   isAllDevicesLoaded: boolean;
+  isHousingStockFetched: boolean;
 };

@@ -1,7 +1,7 @@
-import { HousingByFilterResponse } from 'api/types';
+import { BuildingByFilterResponse } from 'api/types';
 import { SearchIndividualDevicesRequestPayload } from '../../../individualDevicesViewByAddressService.types';
 
 export type AddressHeaderProps = {
-  housingsByFilter: HousingByFilterResponse;
+  housingsByFilter: BuildingByFilterResponse;
   updateSearchPayload: (payload: SearchIndividualDevicesRequestPayload) => void;
 };
