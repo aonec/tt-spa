@@ -62,7 +62,9 @@
         ],
         "rules": {
           "import/no-anonymous-default-export": "off",
-          "no-console": "error"
+          "no-console": [
+            "error"
+          ]
         }
       }
     ]
