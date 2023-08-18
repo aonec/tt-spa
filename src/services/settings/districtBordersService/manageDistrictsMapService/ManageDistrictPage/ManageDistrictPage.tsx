@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { FC } from 'react';
 import { GoBack } from 'ui-kit/shared/GoBack';
 import { ControlButtonsWrapper, Header } from './ManageDistrictPage.styled';
 import { DistrictsPageSegment, Props } from './ManageDistrictPage.types';
@@ -7,15 +7,15 @@ import { ListIcon, MapIcon } from 'ui-kit/icons';
 import { ManageDistrictsMap } from './ManageDistrictsMap';
 import { ContextMenuButton } from 'ui-kit/ContextMenuButton';
 import { useHistory } from 'react-router-dom';
+import { ManageDistrictsList } from './ManageDistrictsList';
 
 export const ManageDistrictPage: FC<Props> = ({
   existingDistricts,
   handleDeleteDistrict,
   organizationCoordinates,
+  districtsPageSegment,
+  setDistrictsPageSegment,
 }) => {
-  const [districtsPageSegment, setDistrictsPageSegment] =
-    useState<DistrictsPageSegment>('map');
-
   const history = useHistory();
 
   return (
@@ -58,7 +58,9 @@ export const ManageDistrictPage: FC<Props> = ({
           />
         </ControlButtonsWrapper>
       </Header>
-      {districtsPageSegment === 'list' && <>list</>}
+      {districtsPageSegment === 'list' && (
+        <ManageDistrictsList existingDistricts={existingDistricts} />
+      )}
       {districtsPageSegment === 'map' && (
         <ManageDistrictsMap
           existingDistricts={existingDistricts}

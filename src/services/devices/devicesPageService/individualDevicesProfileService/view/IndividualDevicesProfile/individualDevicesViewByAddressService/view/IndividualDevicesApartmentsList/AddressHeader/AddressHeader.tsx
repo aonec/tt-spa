@@ -1,4 +1,4 @@
-import { HouseAddress } from 'api/types';
+import { BuildingAddress } from 'api/types';
 import React, { FC } from 'react';
 import { Switcher } from 'ui-kit/shared/Switcher';
 import { getBuildingAddressString } from 'utils/getBuildingAddress';
@@ -14,7 +14,7 @@ export const AddressHeader: FC<AddressHeaderProps> = ({
   const previuosAddress = housingsByFilter?.previous?.address;
   const nextAddress = housingsByFilter?.next?.address;
 
-  const handleClickAddress = (address: HouseAddress) => {
+  const handleClickAddress = (address: BuildingAddress) => {
     updateSearchPayload({
       City: address.city || undefined,
       Street: address.street || undefined,

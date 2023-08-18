@@ -1,7 +1,7 @@
 import React, { FC, useCallback, useMemo } from 'react';
 import { Tooltip } from 'antd';
 import { HousingStockCalculatorsProps } from './HousingStockCalculators.types';
-import { EHouseCategory, HouseAddress } from 'api/types';
+import { EHouseCategory, BuildingAddress } from 'api/types';
 import { DevicesSearchType } from 'services/devices/devicesPageService/devicesPageService.types';
 import {
   CalculatorNodesListWrapper,
@@ -26,7 +26,7 @@ export const HousingStockCalculators: FC<HousingStockCalculatorsProps> = ({
   const previousAddress = housingStocksAddressForSwitcher?.previous?.address;
 
   const handleClickAddress = useCallback(
-    (address: HouseAddress) => {
+    (address: BuildingAddress) => {
       if (mainFilterSearchType !== DevicesSearchType.Address) {
         setMainFilterSearchType(DevicesSearchType.Address);
       }

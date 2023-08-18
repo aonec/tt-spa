@@ -4,9 +4,9 @@ import {
   getHousingsByFilter,
 } from './displayDevicesService.api';
 import {
+  BuildingByFilterResponse,
   CalculatorListResponsePagedList,
   EOrderByRule,
-  HousingByFilterResponse,
 } from 'api/types';
 import { CalculatorsListRequestPayload } from 'services/calculators/calculatorsListService/calculatorsListService.types';
 import { createGate } from 'effector-react';
@@ -23,18 +23,18 @@ const $calculatorsPagedData =
 
 const fetchHousingsByFilterFx = domain.createEffect<
   GetHousingByFilterRequestPayload[],
-  (HousingByFilterResponse | null)[],
+  (BuildingByFilterResponse | null)[],
   EffectFailDataAxiosError
 >(getHousingsByFilter);
 const $housingsByFilter = domain
-  .createStore<HousingByFilterResponse[]>([])
+  .createStore<BuildingByFilterResponse[]>([])
   .on(fetchHousingsByFilterFx.doneData, (_, addresses) =>
     addresses.reduce((acc, elem) => {
       if (!elem) {
         return acc;
       }
       return [...acc, elem];
-    }, [] as HousingByFilterResponse[]),
+    }, [] as BuildingByFilterResponse[]),
   );
 
 const $devices = $calculatorsPagedData.map((data) =>

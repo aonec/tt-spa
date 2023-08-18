@@ -1,6 +1,6 @@
 import {
+  BuildingByFilterResponse,
   CalculatorListResponsePagedList,
-  HousingByFilterResponse,
 } from 'api/types';
 import { axios } from 'api/axios';
 import { CalculatorsListRequestPayload } from 'services/calculators/calculatorsListService/calculatorsListService.types';
@@ -19,14 +19,14 @@ export const getCalculatorsList = (
 
 export const getHousingsByFilter = async (
   housingsParams: GetHousingByFilterRequestPayload[],
-): Promise<(HousingByFilterResponse | null)[]> =>
+): Promise<(BuildingByFilterResponse | null)[]> =>
   Promise.all(housingsParams.map((params) => getHousingByFilter(params)));
 
 const getHousingByFilter = async (
   params: GetHousingByFilterRequestPayload,
-): Promise<HousingByFilterResponse | null> => {
+): Promise<BuildingByFilterResponse | null> => {
   try {
-    const res: HousingByFilterResponse = await axios.get(
+    const res: BuildingByFilterResponse = await axios.get(
       'Buildings/BuildingsByAddress',
       { params },
     );

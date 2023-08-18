@@ -1,4 +1,4 @@
-import { BuildingAddressResponse, HouseAddress } from 'api/types';
+import { BuildingAddressResponse, BuildingAddress } from 'api/types';
 
 export const getBuildingAddress = (
   housingStock: { address: BuildingAddressResponse | null } | null,
@@ -14,7 +14,7 @@ export const getBuildingAddress = (
   return `${cityText} ${street}, ${number}${corpusText}`;
 };
 
-export const getBuildingAddressString = (address?: HouseAddress | null) => {
+export const getBuildingAddressString = (address?: BuildingAddress | null) => {
   if (!address) {
     return '';
   }
