@@ -62,6 +62,7 @@ export const ReadingsHistoryList: FC<ReadingsHistoryListProps> = ({
   openMonth,
   closeMonth,
   isMonthOpen,
+  isModal,
 }) => {
   const renderReading = useCallback(
     ({
@@ -352,7 +353,7 @@ export const ReadingsHistoryList: FC<ReadingsHistoryListProps> = ({
 
   return (
     <WithLoader isLoading={pendingHistory}>
-      <Wrapper>
+      <Wrapper isModal={isModal}>
         <ConfirmReadingValueContainer />
         <TableHeader>
           {columnsNames.map((elem) => (

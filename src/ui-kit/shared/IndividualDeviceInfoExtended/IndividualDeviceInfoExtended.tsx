@@ -45,7 +45,11 @@ export const IndividualDeviceInfoExtended: FC<
       {!allIndividualDeviceMountPlaces && (
         <AllIndividualDeviceMountPlacesGate />
       )}
-      <LinkWrapper onClick={onClick} clickable={Boolean(onClick)}>
+      <LinkWrapper
+        to={`/individualDeviceProfile/${device.id}`}
+        onClick={onClick}
+        clickable={Boolean(onClick)}
+      >
         <ResourceIconLookup resource={device.resource} />
         <SerialNumberWrapper>{device.serialNumber}</SerialNumberWrapper>
         <ModelWrapper>
