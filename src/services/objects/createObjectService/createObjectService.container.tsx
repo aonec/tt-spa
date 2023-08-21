@@ -53,8 +53,9 @@ export const CreateObjectContainer = () => {
       let buildingProfilePath = '';
       if (type === EHouseCategory.Living) {
         buildingProfilePath = 'livingProfile';
+      } else {
+        buildingProfilePath = 'nonResidentialProfile';
       }
-      buildingProfilePath = 'nonResidentialProfile';
 
       if (data?.id) {
         history.push(`/buildings/${buildingProfilePath}/${data.id}`);

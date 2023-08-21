@@ -3,6 +3,8 @@ import { NodeDevicesProps } from './NodeDevices.types';
 import {
   CommercialAct,
   Diameter,
+  NodeTitleWrapper,
+  IncorrectConfigurationIconSC,
   MeteringDeviceWrapper,
   NodeDevicesWrapper,
   ResourceIconWrapper,
@@ -39,6 +41,10 @@ export const NodeDevices: FC<NodeDevicesProps> = ({ node }) => {
     return devices;
   });
 
+  const isIncorrectConfig =
+    (node?.validationResult?.errors || []).length !== 0 ||
+    (node?.validationResult?.warnings || []).length !== 0;
+
   return (
     <>
       <NodeDevicesWrapper>
@@ -47,7 +53,11 @@ export const NodeDevices: FC<NodeDevicesProps> = ({ node }) => {
             <ResourceIconWrapper>
               <ResourceIconLookup resource={node.resource} />
             </ResourceIconWrapper>
-            <span>{`Узел ${node.number}`}</span>
+
+            <NodeTitleWrapper>
+              <span>{`Узел ${node.number}`}</span>
+              {isIncorrectConfig && <IncorrectConfigurationIconSC />}
+            </NodeTitleWrapper>
           </DeviceLink>
           <ServiceZone>{node.nodeServiceZone?.name}</ServiceZone>
         </TitleWrapper>

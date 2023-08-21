@@ -16,8 +16,6 @@ const UserRolesPriorityDictionary: {
   [ESecuredIdentityRoleName.ManagingFirmSpectator]: 7,
   [ESecuredIdentityRoleName.ManagingFirmSpectatorRestricted]: 8,
   [ESecuredIdentityRoleName.Homeowner]: 9,
-  [ESecuredIdentityRoleName.ErcService]: 10,
-  [ESecuredIdentityRoleName.Worker]: 11,
 };
 
 export const sortUserRoles = (

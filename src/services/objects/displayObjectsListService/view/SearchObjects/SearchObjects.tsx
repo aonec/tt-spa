@@ -12,7 +12,10 @@ const fields = [
   SearchFieldType.Corpus,
 ];
 
-export const SearchObjects: FC<SearchObjectsProps> = ({ handleSearch }) => {
+export const SearchObjects: FC<SearchObjectsProps> = ({
+  handleSearch,
+  isSearchError,
+}) => {
   return (
     <Wrapper>
       <ExtendedSearch
@@ -24,7 +27,11 @@ export const SearchObjects: FC<SearchObjectsProps> = ({ handleSearch }) => {
         extendedSearchContent={<></>}
         disabled
       >
-        <AddressSearchContainer handleSubmit={handleSearch} fields={fields} />
+        <AddressSearchContainer
+          isError={isSearchError}
+          handleSubmit={handleSearch}
+          fields={fields}
+        />
       </ExtendedSearch>
     </Wrapper>
   );

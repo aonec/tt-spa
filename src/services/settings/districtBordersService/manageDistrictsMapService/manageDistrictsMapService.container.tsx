@@ -6,7 +6,6 @@ import {
   deleteDistrictMutation,
   existingDistrictsQuery,
 } from './manageDistrictsMapService.api';
-import { DeleteDistrictModal } from './DeleteDistrictModal';
 
 const {
   inputs,
@@ -17,35 +16,28 @@ const {
 export const ManageDistrictsMapContainer = () => {
   const {
     existingDistricts,
-    isDeleteDistrictModalOpen,
-    handleCloseDeleteDistrictModal,
-    handleOpenDeleteDistrictModal,
     handleDeleteDistrict,
-    isDeletingDistrictLoading,
     organizationCoordinates,
+    districtsPageSegment,
+    setDistrictsPageSegment,
   } = useUnit({
     existingDistricts: existingDistrictsQuery.$data,
-    isDeleteDistrictModalOpen: outputs.$isDeleteDistrictModalOpen,
     organizationCoordinates: outputs.$organizationCoordinates,
-    handleOpenDeleteDistrictModal: inputs.handleOpenDeleteDistrictModal,
-    handleCloseDeleteDistrictModal: inputs.handleCloseDeleteDistrictModal,
     handleDeleteDistrict: inputs.handleDeleteDistrict,
     isDeletingDistrictLoading: deleteDistrictMutation.$pending,
+    districtsPageSegment: outputs.$districtsPageSegment,
+    setDistrictsPageSegment: inputs.setDistrictsPageSegment,
   });
 
   return (
     <>
       <ManageDistrictsGate />
-      <DeleteDistrictModal
-        isDeleteDistrictModalOpen={isDeleteDistrictModalOpen}
-        handleCloseDeleteDistrictModal={handleCloseDeleteDistrictModal}
-        handleDeleteDistrict={handleDeleteDistrict}
-        isDeletingDistrictLoading={isDeletingDistrictLoading}
-      />
       <ManageDistrictPage
         existingDistricts={existingDistricts}
-        handleDeleteDistrict={handleOpenDeleteDistrictModal}
+        handleDeleteDistrict={handleDeleteDistrict}
         organizationCoordinates={organizationCoordinates}
+        districtsPageSegment={districtsPageSegment}
+        setDistrictsPageSegment={setDistrictsPageSegment}
       />
     </>
   );

@@ -10,4 +10,5 @@ export type AccountingNodesReadingsProps = {
   upSliderIndex: () => void;
   downSliderIndex: () => void;
   sum: number;
+  isElectricNodesFetched: boolean;
 };

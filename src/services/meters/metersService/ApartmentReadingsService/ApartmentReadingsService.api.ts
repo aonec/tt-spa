@@ -9,6 +9,9 @@ import {
   UpdateApartmentRequestPayload,
   UpdateHomeownerRequestPayload,
 } from './ApartmentReadingsService.types';
+import { createQuery } from '@farfetched/core';
+import { createEffect } from 'effector';
+import { EffectFailDataAxiosError } from 'types';
 
 const getApartmentId = async (
   params: Omit<GetApartmentsRequestPayload, 'ApartmentId'>,
@@ -27,20 +30,23 @@ const getApartmentId = async (
   return id;
 };
 
-export const getApartment = async ({
-  ApartmentId,
-  ...params
-}: GetApartmentsRequestPayload): Promise<ApartmentResponse | null> => {
-  const id = ApartmentId || (await getApartmentId(params));
+export const getApartmentQuery = createQuery({
+  effect: createEffect<
+    GetApartmentsRequestPayload,
+    ApartmentResponse | null,
+    EffectFailDataAxiosError
+  >(async ({ ApartmentId, ...params }) => {
+    const id = ApartmentId || (await getApartmentId(params));
 
-  if (!id) return null;
+    if (!id) return null;
 
-  const apartment: ApartmentResponse | null = await axios.get(
-    `/Apartments/${id}`,
-  );
+    const apartment: ApartmentResponse | null = await axios.get(
+      `/Apartments/${id}`,
+    );
 
-  return apartment;
-};
+    return apartment;
+  }),
+});
 
 export const putApartment = ({
   apartmentId,

@@ -38,6 +38,7 @@ export const SearchDevices: FC<SearchDevicesProps> = ({
   serialNumber,
   setSerialNumber,
   handleClear,
+  isSearchError,
 }) => {
   const { marks, maxValue, minValue, diameters } = diametersConfig;
 
@@ -74,6 +75,7 @@ export const SearchDevices: FC<SearchDevicesProps> = ({
               SearchFieldType.House,
               SearchFieldType.Corpus,
             ]}
+            isError={isSearchError}
             initialValues={{
               city: values['Filter.Address.City'],
               street: values['Filter.Address.Street'],
@@ -113,6 +115,7 @@ export const SearchDevices: FC<SearchDevicesProps> = ({
     submitForm,
     serialNumber,
     setSerialNumber,
+    isSearchError,
   ]);
 
   return (

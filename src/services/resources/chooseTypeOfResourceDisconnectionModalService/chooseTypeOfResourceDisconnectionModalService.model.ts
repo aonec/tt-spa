@@ -1,10 +1,10 @@
-import { createDomain, forward } from 'effector';
-import { EResourceDisconnectingType } from 'api/types';
+import { createDomain, sample } from 'effector';
+import { BuildingListResponse, EResourceDisconnectingType } from 'api/types';
 import { editResourceDisconnectionService } from '../editResourceDisconnectionService';
 
 const domain = createDomain('chooseTypeOfResourceDisconnectionModalService');
 
-const openModal = domain.createEvent();
+const openModal = domain.createEvent<BuildingListResponse | void>();
 const closeModal = domain.createEvent();
 const submitModal = domain.createEvent();
 
@@ -32,9 +32,9 @@ const $isInterHeatingSeason = domain
   .on(setInterHeatingSeason, () => true)
   .reset(clearInterHeatingSeason);
 
-forward({
-  from: submitModal,
-  to: closeModal,
+sample({
+  clock: submitModal,
+  target: closeModal,
 });
 
 export const chooseTypeOfResourceDisconnectionModalService = {

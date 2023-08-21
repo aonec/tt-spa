@@ -11,6 +11,7 @@ import { HousingStockInfoPanel } from './HousingStockInfoPanel';
 import { IndividualDevicesList } from './IndividualDevicesList';
 import { TopButton } from './IndividualDevicesList/TopButton';
 import { TypeAddressToStart } from 'ui-kit/shared/TypeToStart';
+import { NothingFound } from 'ui-kit/shared/NothingFound';
 
 export const HousesReadingsPage: FC<HousesReadingsPageProps> = ({
   housingStock,
@@ -23,6 +24,7 @@ export const HousesReadingsPage: FC<HousesReadingsPageProps> = ({
   managementFirmConsumptionRates,
   openReadingsHistoryModal,
   isAllDevicesLoaded,
+  isHousingStockFetched,
 }) => {
   const address = housingStock?.address?.mainAddress;
 
@@ -49,9 +51,11 @@ export const HousesReadingsPage: FC<HousesReadingsPageProps> = ({
             house: address.number || undefined,
           }
         }
+        isError={!housingStock && isHousingStockFetched}
       />
       <WithLoader isLoading={isLoadingHousingStock}>
-        {!housingStock && <TypeAddressToStart />}
+        {!housingStock && !isHousingStockFetched && <TypeAddressToStart />}
+        {!housingStock && isHousingStockFetched && <NothingFound />}
         {housingStock && (
           <>
             <HousingStockInfoPanel

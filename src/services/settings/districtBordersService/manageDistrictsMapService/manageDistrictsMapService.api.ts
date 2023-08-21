@@ -1,8 +1,9 @@
-import { axios } from 'api/axios';
-import { createMutation, createQuery } from '@farfetched/core';
 import { createEffect } from 'effector';
-import { DistrictResponse } from 'api/types';
+import { createMutation, createQuery } from '@farfetched/core';
+import { axios } from 'api/axios';
 import { EffectFailDataAxiosError } from 'types';
+import { DistrictResponse } from 'api/types';
+import { UpdateDistrictRequestPayload } from './manageDistrictsMapService.types';
 
 export const existingDistrictsQuery = createQuery<
   void,
@@ -25,4 +26,12 @@ export const deleteDistrictMutation = createMutation({
       params: { forced: true },
     }),
   ),
+});
+
+export const updateDistrictMutation = createMutation({
+  effect: createEffect<
+    UpdateDistrictRequestPayload,
+    void,
+    EffectFailDataAxiosError
+  >(({ id, ...data }) => axios.put(`IndividualSeal/Districts/${id}`, data)),
 });
