@@ -49,3 +49,9 @@ export type PreparedHouseManagements = {
   id: string;
   name: string | null;
 };
+
+export type SetConsumptionDataType = {
+  housing?: ResourceConsumptionWithNull[];
+  normative?: ResourceConsumptionWithNull[];
+  subscriber?: ResourceConsumptionWithNull[];
+};

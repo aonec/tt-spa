@@ -1,7 +1,4 @@
-import {
-  ConsumptionDataForTwoMonth,
-  MonthConsumptionData,
-} from '../../resourceConsumptionService.types';
+import { MonthConsumptionData } from '../../resourceConsumptionService.types';
 import { BooleanTypesOfResourceConsumptionGraph } from './ResourceConsumptionProfile.types';
 
 export const getDisabledGraphTypes = (data: {

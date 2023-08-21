@@ -5,6 +5,11 @@ import {
   StreetWithBuildingNumbersResponse,
 } from 'api/types';
 import { getFilledArray } from 'utils/getFilledArray';
+import {
+  ConsumptionDataForTwoMonth,
+  ResourceConsumptionGraphDataType,
+  SetConsumptionDataType,
+} from './resourceConsumptionService.types';
 
 export const prepareDataForConsumptionGraphWithLastValue = (
   dataArr: DateTimeDoubleDictionaryItem[],
@@ -81,3 +86,17 @@ export const getAddressSearchData = (
     }, [] as { id: number; addressString: string }[]),
     'addressString',
   );
+
+export const setConsumptionData = (
+  prev: ConsumptionDataForTwoMonth | null,
+  fieldName: ResourceConsumptionGraphDataType,
+  data: SetConsumptionDataType,
+) => {
+  return {
+    ...(prev || {}),
+    [fieldName]: {
+      ...(prev?.[fieldName] || {}),
+      ...(data || {}),
+    },
+  };
+};

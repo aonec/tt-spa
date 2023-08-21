@@ -5,6 +5,7 @@ import { initialSelectedGraphTypes } from './resourceConsumptionService.constant
 import {
   ConsumptionDataForTwoMonth,
   ConsumptionDataPayload,
+  ResourceConsumptionGraphDataType,
   ResourceConsumptionWithNull,
 } from './resourceConsumptionService.types';
 import { BooleanTypesOfResourceConsumptionGraphForTwoMonth } from './view/ResourceConsumptionProfile/ResourceConsumptionProfile.types';
@@ -17,6 +18,7 @@ import {
   fetchSummaryHousingConsumptions,
 } from './resourceConsumptionService.api';
 import moment from 'moment';
+import { setConsumptionData } from './resourceConsumptionService.utils';
 
 const domain = createDomain('resourceConsumptionService');
 
@@ -82,62 +84,34 @@ const getAdditionalNormativeAndSubscriberConsumptionDataFx =
 
 const $housingConsumptionData = domain
   .createStore<ConsumptionDataForTwoMonth | null>(null)
-  .on(getHousingConsumptionPlotFx.doneData, (prev, data) => {
-    const { housing } = data;
-    if (!prev) {
-      return { currentMonthData: { housing } };
-    }
-    return {
-      ...prev,
-      currentMonthData: {
-        housing,
-        normative: prev?.currentMonthData?.normative,
-        subscriber: prev?.currentMonthData?.subscriber,
-      },
-    };
-  })
-  .on(getPrevHousingConsumptionPlotFx.doneData, (prev, data) => {
-    const { housing } = data;
-    if (!prev) {
-      return { prevMonthData: { housing } };
-    }
-    return {
-      ...prev,
-      prevMonthData: {
-        housing,
-        normative: prev?.prevMonthData?.normative,
-        subscriber: prev?.prevMonthData?.subscriber,
-      },
-    };
-  })
-  .on(getNormativeAndSubscriberConsumptionDataFx.doneData, (prev, data) => {
-    const { normative, subscriber } = data;
-    if (!prev) {
-      return { currentMonthData: { normative, subscriber } };
-    }
-    return {
-      ...prev,
-      currentMonthData: {
-        housing: prev?.currentMonthData?.housing,
-        normative,
-        subscriber,
-      },
-    };
-  })
-  .on(getPrevNormativeAndSubscriberConsumptionDataFx.doneData, (prev, data) => {
-    const { normative, subscriber } = data;
-    if (!prev) {
-      return { prevMonthData: { normative, subscriber } };
-    }
-    return {
-      ...prev,
-      prevMonthData: {
-        housing: prev?.prevMonthData?.housing,
-        normative,
-        subscriber,
-      },
-    };
-  })
+  .on(getPrevHousingConsumptionPlotFx.doneData, (prev, data) =>
+    setConsumptionData(
+      prev,
+      ResourceConsumptionGraphDataType.prevMonthData,
+      data,
+    ),
+  )
+  .on(getPrevNormativeAndSubscriberConsumptionDataFx.doneData, (prev, data) =>
+    setConsumptionData(
+      prev,
+      ResourceConsumptionGraphDataType.prevMonthData,
+      data,
+    ),
+  )
+  .on(getHousingConsumptionPlotFx.doneData, (prev, data) =>
+    setConsumptionData(
+      prev,
+      ResourceConsumptionGraphDataType.currentMonthData,
+      data,
+    ),
+  )
+  .on(getNormativeAndSubscriberConsumptionDataFx.doneData, (prev, data) =>
+    setConsumptionData(
+      prev,
+      ResourceConsumptionGraphDataType.currentMonthData,
+      data,
+    ),
+  )
   .on(getAdditionalHousingConsumptionPlotFx.doneData, (prev, data) => {
     const { housing } = data;
     if (!prev) {
