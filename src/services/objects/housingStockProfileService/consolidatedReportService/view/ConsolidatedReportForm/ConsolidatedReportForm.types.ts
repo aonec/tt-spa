@@ -1,4 +1,5 @@
 import {
+  BuildingListResponse,
   HousingStockResponse,
   NonResidentialBuildingResponse,
 } from 'api/types';
@@ -7,7 +8,10 @@ import moment from 'moment';
 
 export type ConsolidatedReportFormProps = {
   formId: string;
-  building: HousingStockResponse | NonResidentialBuildingResponse;
+  building:
+    | HousingStockResponse
+    | NonResidentialBuildingResponse
+    | BuildingListResponse;
   handleSubmit: (payload: GetConsolidatedReport) => void;
 };
 

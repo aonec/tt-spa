@@ -1,43 +1,25 @@
-import { createDomain, createStore, sample } from 'effector';
+import { createDomain, sample } from 'effector';
 import { createGate } from 'effector-react';
+import { message } from 'antd';
 import {
   deleteDistrictMutation,
   existingDistrictsQuery,
+  updateDistrictMutation,
 } from './manageDistrictsMapService.api';
-import { createForm } from 'effector-forms';
-import { message } from 'antd';
 import { currentUserService } from 'services/currentUserService';
+import { DistrictsPageSegment } from './ManageDistrictPage/ManageDistrictPage.types';
 
 const domain = createDomain('manageDistrictsMapService');
 
 const ManageDistrictsGate = createGate();
 
-const handleOpenDeleteDistrictModal = domain.createEvent();
-const handleCloseDeleteDistrictModal = domain.createEvent();
+const handleDeleteDistrict = domain.createEvent<string>();
 
-const handleDeleteDistrict = domain.createEvent();
+const setDistrictsPageSegment = domain.createEvent<DistrictsPageSegment>();
 
-const manageDistrictsForm = createForm({
-  fields: {
-    selectedDistrictId: {
-      init: null as null | string,
-    },
-  },
-});
-
-const $isDeleteDistrictModalOpen = createStore(false)
-  .on(handleOpenDeleteDistrictModal, () => true)
-  .reset(
-    ManageDistrictsGate.close,
-    deleteDistrictMutation.finished.success,
-    handleCloseDeleteDistrictModal,
-  );
-
-manageDistrictsForm.fields.selectedDistrictId.$value.reset(
-  ManageDistrictsGate.close,
-  deleteDistrictMutation.finished.success,
-  handleCloseDeleteDistrictModal,
-);
+const $districtsPageSegment = domain
+  .createStore<DistrictsPageSegment>('list')
+  .on(setDistrictsPageSegment, (_, segment) => segment);
 
 sample({
   clock: ManageDistrictsGate.open,
@@ -46,8 +28,6 @@ sample({
 
 sample({
   clock: handleDeleteDistrict,
-  source: manageDistrictsForm.fields.selectedDistrictId.$value,
-  filter: (id): id is string => Boolean(id),
   target: deleteDistrictMutation.start,
 });
 
@@ -55,26 +35,36 @@ deleteDistrictMutation.finished.success.watch(() =>
   message.success('Район успешно удален'),
 );
 
+updateDistrictMutation.finished.success.watch(() => {
+  message.success('Район успешно изменен');
+});
+
 deleteDistrictMutation.finished.failure.watch((e) =>
   message.error(e.error.response.data.error.Text),
 );
 
 sample({
-  clock: deleteDistrictMutation.finished.success,
+  clock: [
+    deleteDistrictMutation.finished.success,
+    updateDistrictMutation.finished.success,
+  ],
   target: existingDistrictsQuery.start,
+});
+
+sample({
+  clock: ManageDistrictsGate.close,
+  target: existingDistrictsQuery.reset,
 });
 
 export const manageDistrictsMapService = {
   inputs: {
-    handleOpenDeleteDistrictModal,
-    handleCloseDeleteDistrictModal,
     handleDeleteDistrict,
+    setDistrictsPageSegment,
   },
   outputs: {
-    $isDeleteDistrictModalOpen,
     $organizationCoordinates:
       currentUserService.outputs.$organizationCoordinates,
+    $districtsPageSegment,
   },
   gates: { ManageDistrictsGate },
-  forms: { manageDistrictsForm },
 };

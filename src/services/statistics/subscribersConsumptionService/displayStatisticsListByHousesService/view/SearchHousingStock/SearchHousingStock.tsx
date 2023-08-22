@@ -13,6 +13,7 @@ export const SearchHousingStock: FC<SearchHousingStockProps> = ({
   setFilter,
   housingStockAddress,
   setHousingStockAddress,
+  isNothingFound,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const open = () => setIsOpen(true);
@@ -83,6 +84,7 @@ export const SearchHousingStock: FC<SearchHousingStockProps> = ({
               Corpus: corpus,
             });
           }}
+          isError={isNothingFound}
         />
       </ExtendedSearch>
     </Wrapper>

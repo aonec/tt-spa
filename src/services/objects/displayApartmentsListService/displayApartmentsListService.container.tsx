@@ -1,24 +1,34 @@
 import { Pagination } from 'antd';
-import { useEvent, useStore } from 'effector-react';
+import { useUnit } from 'effector-react';
 import React, { FC } from 'react';
 import { displayApartmentsListService } from './displayApartmentsListService.model';
 import { ApartmentsList } from './view/ApartmentsList';
 import { ApartmentsSearch } from './view/ApartmentsSearch';
 import { HeaderInject } from '../objectsProfileService/view/ObjectsProfile/ObjectsProfile.types';
 import { SizeWrapper } from '../objectsProfileService/view/ObjectsProfile/ObjectsProfile.styled';
+import { getApartmentsQuery } from './displayApartmentsListService.api';
+
+const { inputs, outputs, gates } = displayApartmentsListService;
+const { ApartmentsListGate } = gates;
 
 export const ApartmentsListContainer: FC<HeaderInject> = ({ Header }) => {
-  const { inputs, outputs } = displayApartmentsListService;
+  const {
+    apartments,
+    handleSearch,
+    pagedInfo,
+    setPageNumber,
+    isLoading,
+    isApartmentFetched,
+  } = useUnit({
+    handleSearch: inputs.searchApartments,
+    setPageNumber: inputs.setPageNumber,
+    apartments: outputs.$apartmentsList,
+    pagedInfo: outputs.$pagedInfo,
+    isLoading: outputs.$isLoading,
+    isApartmentFetched: getApartmentsQuery.$succeeded,
+  });
 
-  const handleSearch = useEvent(inputs.searchApartments);
-  const setPageNumber = useEvent(inputs.setPageNumber);
-
-  const apartments = useStore(outputs.$apartmentsList);
-  const { pageNumber, pageSize, totalItems } = useStore(outputs.$pagedInfo);
-
-  const isLoading = useStore(outputs.$isLoading);
-
-  const { ApartmentsListGate } = displayApartmentsListService.gates;
+  const { pageNumber, pageSize, totalItems } = pagedInfo;
 
   const isEmpty = !apartments?.length;
 
@@ -28,10 +38,18 @@ export const ApartmentsListContainer: FC<HeaderInject> = ({ Header }) => {
     <>
       <ApartmentsListGate />
       <Header>
-        <ApartmentsSearch handleSearch={handleSearch} />
+        <ApartmentsSearch
+          handleSearch={handleSearch}
+          isSearchError={isApartmentFetched && isEmpty}
+        />
       </Header>
       <SizeWrapper>
-        <ApartmentsList apartments={apartments} isLoading={isLoading} />
+        <ApartmentsList
+          apartments={apartments}
+          isLoading={isLoading}
+          isEmpty={isEmpty}
+          isApartmentFetched={isApartmentFetched}
+        />
       </SizeWrapper>
       {isShowPagination && (
         <Pagination

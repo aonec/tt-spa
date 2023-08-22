@@ -25,6 +25,7 @@ export const CreateResourceDisconnectionModal: FC<
   existingCities,
   selectCity,
   selectedCity,
+  selectedBuilding,
 }) => {
   const buttonPlaceholder = isEdit
     ? 'Сохранить изменения'
@@ -62,6 +63,7 @@ export const CreateResourceDisconnectionModal: FC<
               existingCities={existingCities}
               selectCity={selectCity}
               selectedCity={selectedCity}
+              selectedBuilding={selectedBuilding}
             />
           )}
         </>

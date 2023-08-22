@@ -1,67 +1,104 @@
-import React, { FC } from 'react';
-import { Menu, Dropdown, Button } from 'antd';
-import styled from 'styled-components';
+import { Menu, Dropdown } from 'antd';
+import React, { FC, ReactNode, useState } from 'react';
 import { MoreIcon } from 'ui-kit/icons';
 import {
-  ContextMenuButtonColor,
-  ContextMenuButtonColorsLookup,
   ContextMenuButtonProps,
+  ContextMenuElement,
 } from './ContextMenuButton.types';
+import {
+  ChevronSC,
+  MenuItem,
+  StyledMenuButton,
+} from './ContextMenuButton.styled';
+import { getButtonColor } from './ContextMenuButton.utils';
+
+const getMenuButtons = (props: {
+  menuButtons: ContextMenuElement[];
+  handleClose: () => void;
+  openedButtons: string[];
+  toggle: (id: string) => void;
+}): ReactNode[] => {
+  const { menuButtons, handleClose, openedButtons, toggle } = props;
+
+  return menuButtons.map((button, index) => {
+    const { title, onClick, color, id = '' } = button;
+
+    const currentColor = getButtonColor(color);
+
+    const isOpened = Boolean(id && openedButtons.includes(id));
+
+    const children =
+      button.children && isOpened
+        ? getMenuButtons({
+            ...props,
+            menuButtons: button.children,
+          })
+        : [];
+
+    return [
+      <MenuItem
+        key={index + id}
+        onClick={() => {
+          if (button.children) {
+            id && toggle(id);
+          } else {
+            handleClose();
+          }
+
+          onClick && onClick();
+        }}
+        color={currentColor}
+      >
+        {title}
+        {button.children && <ChevronSC isOpen={isOpened} />}
+      </MenuItem>,
+      ...children,
+    ];
+  });
+};
 
 export const ContextMenuButton: FC<ContextMenuButtonProps> = (props) => {
   const { menuButtons, disabled, size } = props;
 
+  const [isVisible, setIsVisible] = useState(false);
+
+  const [openedButtons, setOpenedButtons] = useState<string[]>([]);
+
   const menuButtonsFiltered = menuButtons?.filter(({ hidden }) => !hidden);
 
   const menu = (
-    <Menu>
-      {menuButtonsFiltered?.map((button) => {
-        const { title, onClick, color } = button;
+    <Menu onClick={(e) => e.domEvent.stopPropagation()}>
+      {menuButtonsFiltered &&
+        getMenuButtons({
+          menuButtons: menuButtonsFiltered,
+          handleClose: () => setIsVisible(false),
+          openedButtons,
+          toggle: (id: string) => {
+            setOpenedButtons((prev) => {
+              if (prev.includes(id)) {
+                return prev.filter((elem) => elem !== id);
+              }
 
-        const currentColor = getButtonColor(color);
-
-        return (
-          <MenuItem key={title + color} onClick={onClick} color={currentColor}>
-            {title}
-          </MenuItem>
-        );
-      })}
+              return [...prev, id];
+            });
+          },
+        })}
     </Menu>
   );
 
   return (
     <div onClick={(e) => e.stopPropagation()}>
-      <Dropdown overlay={menu} trigger={['click']} disabled={disabled}>
-        <StyledMenuButton size={size}>
+      <Dropdown
+        overlay={menu}
+        disabled={disabled}
+        visible={isVisible}
+        trigger={['click']}
+        onVisibleChange={(visible) => setIsVisible(visible)}
+      >
+        <StyledMenuButton size={size} onClick={() => setIsVisible(true)}>
           <MoreIcon />
         </StyledMenuButton>
       </Dropdown>
     </div>
   );
 };
-
-const StyledMenuButton = styled(Button)`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: gray !important;
-  width: ${({ size }) => (size === 'small' ? '32px' : '48px')};
-  height: ${({ size }) => (size === 'small' ? '32px' : '48px')};
-  border-radius: 4px;
-`;
-
-const MenuItem = styled(Menu.Item)<{ color?: string }>`
-  min-width: 408px;
-  color: ${({ color = ContextMenuButtonColorsLookup.primary }) =>
-    color} !important;
-
-  &:hover {
-    color: white !important;
-  }
-`;
-
-function getButtonColor(color?: ContextMenuButtonColor) {
-  if (!color) return ContextMenuButtonColorsLookup.primary;
-
-  return ContextMenuButtonColorsLookup[color];
-}

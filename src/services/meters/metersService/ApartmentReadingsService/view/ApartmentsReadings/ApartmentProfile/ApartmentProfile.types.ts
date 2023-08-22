@@ -19,4 +19,5 @@ export type ApartmentProfileProps = {
   printIssueCertificate: () => void;
   handleUpdateHomeowner: (payload: UpdateHomeownerRequestPayload) => void;
   isUpdateHomeownerLoading: boolean;
+  isApartmentFetched: boolean;
 };

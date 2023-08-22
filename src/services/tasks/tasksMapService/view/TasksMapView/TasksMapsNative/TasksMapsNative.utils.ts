@@ -60,17 +60,21 @@ const getPlacemarkSvgCodeText = (tasks: TaskShortResponse[]) => {
 export const getTaskPlacemarkerLink = (
   tasks: TaskShortResponse[],
 ): GetPlacemarkerLayoutLinkResponse => {
-  const textPosition = String(tasks.length).length === 2 ? 24.5 : 27.3;
+  const count = tasks.length;
+
+  const textPosition = String(count).length === 1 ? 25.5 : 23;
+  const difference = String(count).length - 2;
+  const width = difference <= 0 ? 16 : 19 + difference * 3.7;
 
   const placemarkSvgCodeText = getPlacemarkSvgCodeText(tasks);
 
   const svgCodeText = `
-            <svg width="36" height="48" viewBox="0 0 36 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <svg width="36" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
               ${placemarkSvgCodeText}
               ${
-                (tasks?.length || 0) > 1 &&
-                `<path d="M22.3147 8.5C22.3147 4.35786 25.6726 1 29.8147 1V1C33.9569 1 37.3147 4.35786 37.3147 8.5V8.5C37.3147 12.6421 33.9569 16 29.8147 16V16C25.6726 16 22.3147 12.6421 22.3147 8.5V8.5Z" fill="#272F5A" stroke="white"/>
-                   <text x="${textPosition}px" y="11.4px" font-family="PTRootUIWeb" fill="white" style="font: 9px sans-serif;">${tasks.length}</text>      
+                (count || 0) > 1 &&
+                `<rect x="20" y='2' width="${width}" height="16" rx="8" ry='8' fill='rgba(39, 47, 90)' stroke='white' strokeWidth='1' />
+                   <text x="${textPosition}px" y="13px" font-family="PTRootUIWeb" fill="white" style="font: 9px sans-serif;">${count}</text>      
                 `
               }
             </svg>`;

@@ -20,6 +20,7 @@ import {
   unloadingTypesDictionary,
   unloadingTypesForLabelDictionary,
 } from './ClosedIndividualDevicesFormService.constants';
+import { SelectMultiple } from 'ui-kit/SelectMultiple';
 
 export const ClosedIndividualDevicesForm: FC<
   ClosedIndividualDevicesFormProps
@@ -85,7 +86,10 @@ export const ClosedIndividualDevicesForm: FC<
             <FormItem label="Город">
               <Select
                 placeholder="Выберите из списка"
-                onChange={(type) => selectCity(String(type))}
+                onChange={(type) => {
+                  selectCity(String(type));
+                  handleChangeHousingStockId(null);
+                }}
                 value={selectedCity || undefined}
               >
                 {existingCities.map((city) => (
@@ -154,8 +158,7 @@ export const ClosedIndividualDevicesForm: FC<
       />
 
       <FormItem label="Причина закрытия">
-        <Select
-          mode="multiple"
+        <SelectMultiple
           placeholder="Выберите из спика"
           value={closingReasons}
           onChange={(value) =>
@@ -167,7 +170,7 @@ export const ClosedIndividualDevicesForm: FC<
               {elem}
             </Select.Option>
           ))}
-        </Select>
+        </SelectMultiple>
       </FormItem>
 
       <RangeDatePicker

@@ -10,7 +10,8 @@ export type HousingStockWithApartmentStatistic = BuildingListResponse & {
 
 export type SubscriberStatisticsFilter = {
   HousingStockId: number;
-  MonthOfLastTransmission?: string;
+  MonthOfLastTransmission?: number;
+  YearOfLastTransmission?: number;
   HotWaterSupply?: boolean;
   ColdWaterSupply?: boolean;
   Electricity?: boolean;

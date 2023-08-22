@@ -1,7 +1,7 @@
 import {
   EApartmentStatus,
   EClosingReason,
-  EExpiresCheckingDateAt,
+  EExpiresDateAt,
   EResourceType,
 } from 'api/types';
 
@@ -25,11 +25,11 @@ export const closingReasonLookup: { [key: string]: string | null } = {
 };
 
 export const expiresCheckingDateAtLookup: {
-  [key in EExpiresCheckingDateAt]: string | null;
+  [key in EExpiresDateAt]: string | null;
 } = {
-  [EExpiresCheckingDateAt.NextMonth]: 'В ближайший месяц',
-  [EExpiresCheckingDateAt.NextTwoMonth]: 'В следующие два месяца',
-  [EExpiresCheckingDateAt.Past]: 'Истекла',
+  [EExpiresDateAt.NextMonth]: 'В ближайший месяц',
+  [EExpiresDateAt.NextTwoMonth]: 'В следующие два месяца',
+  [EExpiresDateAt.Past]: 'Истекла',
 };
 
 export const formTranslateLookup: { [key: string]: string } = {

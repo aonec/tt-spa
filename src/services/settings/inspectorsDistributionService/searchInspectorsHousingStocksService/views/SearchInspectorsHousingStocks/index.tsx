@@ -3,25 +3,17 @@ import { Form } from 'antd';
 import React, { FC } from 'react';
 import { SearchInspectorsHousingStocksProps } from './types';
 import { Select } from 'ui-kit/Select';
-import { Input } from 'ui-kit/Input';
-import { AutoComplete } from 'ui-kit/AutoComplete';
-import { fromEnter } from 'ui-kit/shared/DatePickerNative';
-import { useSwitchInputOnEnter } from 'hooks/useSwitchInputOnEnter';
-import { useAutocomplete } from 'hooks/useAutocomplete';
 import {
   ExtendedSearchWrap,
-  GridContainer,
   Wrap,
 } from './SearchInspectorsHousingStocks.styled';
-
-const dataKey = 'search-inspectors-housing-stocks-input';
+import { AddressSearchContainer } from 'services/addressSearchService';
+import { SearchFieldType } from 'services/addressSearchService/view/AddressSearch/AddressSearch.types';
 
 export const SearchInspectorsHousingStocks: FC<
   SearchInspectorsHousingStocksProps
 > = ({
   form,
-  cities,
-  existingStreets,
   isExtendedSearchOpen,
   handelExtendedSearchOpen,
   handleExtendedSearchClose,
@@ -30,27 +22,8 @@ export const SearchInspectorsHousingStocks: FC<
   handleSearch,
   handleApplyFilters,
   handleClearExtendedSearchValues,
+  isSearchError,
 }) => {
-  const street = form.fields.Street.value;
-
-  const autocomplete = useAutocomplete(street, existingStreets || []);
-  const streetMatch = autocomplete?.bestMatch;
-  const options = autocomplete?.options;
-
-  const next = useSwitchInputOnEnter(dataKey, false, false);
-
-  const fieldsArray = [
-    form.fields.City,
-    form.fields.Street,
-    form.fields.BuildingNumber,
-  ];
-
-  function clearValuesOnFocus(index: number) {
-    const subFieldsArray = fieldsArray.slice(index, fieldsArray.length);
-
-    subFieldsArray.forEach((field) => field.onChange(''));
-  }
-
   return (
     <>
       <Wrap>
@@ -110,62 +83,31 @@ export const SearchInspectorsHousingStocks: FC<
             </ExtendedSearchWrap>
           }
         >
-          <GridContainer>
-            <Select
-              small
-              data-reading-input={dataKey}
-              onKeyDown={fromEnter(() => {
-                next(0);
-                handleSearch();
-              })}
-              showAction={['focus']}
-              placeholder="Город"
-              value={form.fields.City.value || undefined}
-              onChange={(value) => form.fields.City.onChange(value as string)}
-              onFocus={() => clearValuesOnFocus(0)}
-            >
-              {cities &&
-                cities.map((city) => (
-                  <Select.Option key={city} value={city}>
-                    {city}
-                  </Select.Option>
-                ))}
-            </Select>
-            <AutoComplete
-              small
-              data-reading-input={dataKey}
-              value={form.fields.Street.value}
-              onChange={form.fields.Street.onChange}
-              onKeyDown={(e) => {
-                fromEnter(() =>
-                  form.fields.Street.onChange(
-                    form.fields.Street.value ? streetMatch || '' : '',
-                  ),
-                )(e);
-                fromEnter(() => {
-                  next(1);
-                  handleSearch();
-                })(e);
-              }}
-              onFocus={() => clearValuesOnFocus(1)}
-              options={options}
-              placeholder="Улица"
-            />
-            <Input
-              small
-              placeholder="Дом"
-              value={form.fields.BuildingNumber.value}
-              onChange={(e) =>
-                form.fields.BuildingNumber.onChange(e.target.value)
-              }
-              onFocus={() => clearValuesOnFocus(2)}
-              data-reading-input={dataKey}
-              onKeyDown={fromEnter(() => {
-                next(2);
-                handleSearch();
-              })}
-            />
-          </GridContainer>
+          <AddressSearchContainer
+            fields={[
+              SearchFieldType.City,
+              SearchFieldType.Street,
+              SearchFieldType.House,
+            ]}
+            customTemplate={[
+              { fieldType: SearchFieldType.City, templateValue: '0.5fr' },
+              { fieldType: SearchFieldType.Street, templateValue: '1fr' },
+              { fieldType: SearchFieldType.House, templateValue: '0.25fr' },
+            ]}
+            initialValues={{
+              city: form.fields.City.value,
+              street: form.fields.Street.value,
+              house: form.fields.BuildingNumber.value,
+            }}
+            handleSubmit={(values) => {
+              form.fields.City.onChange(values.city as string);
+              form.fields.Street.onChange(values.street as string);
+              form.fields.BuildingNumber.onChange(values.house as string);
+
+              handleSearch();
+            }}
+            isError={isSearchError}
+          />
         </ExtendedSearch>
       </Wrap>
     </>
