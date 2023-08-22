@@ -1,5 +1,8 @@
-import React, { FC } from 'react';
-import { TemperatureGraphProps } from './TemperatureGraph.types';
+import React, { FC, useCallback } from 'react';
+import {
+  ETemteratureTypes,
+  TemperatureGraphProps,
+} from './TemperatureGraph.types';
 import { Table } from '../../../../../ui-kit/Table/Table';
 import {
   Footer,
@@ -29,10 +32,62 @@ export const TemperatureGraph: FC<TemperatureGraphProps> = ({
   }>({
     initialValues: { temperatureNormativesArr: initialTemperatureNormatives },
     enableReinitialize: true,
-    onSubmit: (data) => {
-      console.log(data);
-    },
+    onSubmit: (data) => {},
   });
+
+  const handleChangeInput = useCallback(
+    (inputValue, data, fieldName: ETemteratureTypes) => {
+      const updatedValues = values.temperatureNormativesArr.map(
+        (temperatureNormative) => {
+          if (temperatureNormative.id !== data.id) {
+            return temperatureNormative;
+          } else {
+            return {
+              ...temperatureNormative,
+              [fieldName]: Number(inputValue.target.value),
+            };
+          }
+        },
+      );
+
+      setFieldValue('temperatureNormativesArr', updatedValues);
+    },
+    [setFieldValue, values.temperatureNormativesArr],
+  );
+
+  const renderDoubledColumns = useCallback(
+    (
+      data: TemperatureNormativeResponse,
+      firstInputFieldName: ETemteratureTypes,
+      secondInputFieldName: ETemteratureTypes,
+    ) =>
+      isEditing ? (
+        <InputsContainer>
+          <InputScShort
+            type="number"
+            suffix={<WrapperCelsius>°C</WrapperCelsius>}
+            value={data[firstInputFieldName]}
+            onChange={(inputValue) =>
+              handleChangeInput(inputValue, data, firstInputFieldName)
+            }
+          />
+          <InputScShort
+            type="number"
+            suffix={<WrapperCelsius>°C</WrapperCelsius>}
+            value={data[secondInputFieldName]}
+            onChange={(inputValue) =>
+              handleChangeInput(inputValue, data, secondInputFieldName)
+            }
+          />
+        </InputsContainer>
+      ) : (
+        <WrapperTime>
+          <div>{data[firstInputFieldName]}</div>
+          <div>{data[secondInputFieldName]}</div>
+        </WrapperTime>
+      ),
+    [handleChangeInput, isEditing],
+  );
 
   return (
     <PageWrapper>
@@ -59,60 +114,10 @@ export const TemperatureGraph: FC<TemperatureGraphProps> = ({
             ),
             size: '280px',
             render: (data) =>
-              isEditing ? (
-                <InputsContainer>
-                  <InputScShort
-                    type="number"
-                    suffix={<WrapperCelsius>°C</WrapperCelsius>}
-                    value={data.dayFeedFlowTemperature}
-                    onChange={(inputValue) => {
-                      const updatedValues = values.temperatureNormativesArr.map(
-                        (temperatureNormative) => {
-                          if (temperatureNormative.id !== data.id) {
-                            return temperatureNormative;
-                          } else {
-                            return {
-                              ...temperatureNormative,
-                              dayFeedFlowTemperature: Number(
-                                inputValue.target.value,
-                              ),
-                            };
-                          }
-                        },
-                      );
-
-                      setFieldValue('temperatureNormativesArr', updatedValues);
-                    }}
-                  />
-                  <InputScShort
-                    type="number"
-                    suffix={<WrapperCelsius>°C</WrapperCelsius>}
-                    value={data.nightFeedFlowTemperature}
-                    onChange={(inputValue) => {
-                      const updatedValues = values.temperatureNormativesArr.map(
-                        (temperatureNormative) => {
-                          if (temperatureNormative.id !== data.id) {
-                            return temperatureNormative;
-                          } else {
-                            return {
-                              ...temperatureNormative,
-                              nightFeedFlowTemperature: Number(
-                                inputValue.target.value,
-                              ),
-                            };
-                          }
-                        },
-                      );
-
-                      setFieldValue('temperatureNormativesArr', updatedValues);
-                    }}
-                  />
-                </InputsContainer>
-              ) : (
-                <WrapperTime>
-                  <div>{data.dayFeedFlowTemperature}</div>
-                  <div>{data.nightFeedFlowTemperature}</div>
-                </WrapperTime>
+              renderDoubledColumns(
+                data,
+                ETemteratureTypes.dayFeedFlowTemperature,
+                ETemteratureTypes.nightFeedFlowTemperature,
               ),
           },
           {
