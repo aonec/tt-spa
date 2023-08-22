@@ -60,14 +60,12 @@ export const Footer = styled.div`
   align-items: center;
   justify-content: flex-end;
   gap: 16px;
-  height: 60px;
   padding: 0 50px;
+  height: 80px;
+  width: 320px;
+  background-color: white;
 
   position: fixed;
-  bottom: 0px;
-
-  width: calc(100% - 570px);
-
-  background: transparent;
-  z-index: 10;
+  right: 16.5vw;
+  bottom: 0vh;
 `;

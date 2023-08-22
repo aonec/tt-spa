@@ -11,7 +11,7 @@ import {
   TemperatureNormativeRow,
   TemperatureNormativeUpdateRequest,
 } from 'api/types';
-import { EffectFailDataAxiosError } from 'types';
+import { EffectFailDataAxiosErrorDataTemperatureGraph } from 'types';
 
 const TemperatureGraphGate = createGate();
 
@@ -28,7 +28,7 @@ const getTemperatureNormativeFx = createEffect<
 const putTemperatureNormativeFx = createEffect<
   TemperatureNormativeUpdateRequest,
   TemperatureNormativeResponse,
-  EffectFailDataAxiosError
+  EffectFailDataAxiosErrorDataTemperatureGraph
 >(putTemperatureNormative);
 
 const $temperatureNormative = createStore<TemperatureNormativeRow[]>([])
@@ -80,6 +80,8 @@ putTemperatureNormativeFx.failData.watch((error) => {
       error.response.data.error.Message ||
       'Произошла ошибка',
   );
+
+  console.log(error.response.data.error.Data);
 });
 
 export const temperatureGraphService = {

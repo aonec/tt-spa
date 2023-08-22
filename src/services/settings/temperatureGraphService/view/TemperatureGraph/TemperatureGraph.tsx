@@ -1,7 +1,8 @@
-import React, { ChangeEvent, FC, useCallback } from 'react';
+import React, { ChangeEvent, FC, useCallback, useState } from 'react';
 import { useFormik } from 'formik';
 import { message } from 'antd';
 import {
+  EDayPartError,
   ETemteratureTypes,
   TemperatureGraphProps,
 } from './TemperatureGraph.types';
@@ -38,7 +39,6 @@ export const TemperatureGraph: FC<TemperatureGraphProps> = ({
     initialValues: { temperatureNormativesArr: initialTemperatureNormatives },
     enableReinitialize: true,
     onSubmit: (data) => {
-      console.log(data);
       const { temperatureNormativesArr } = data;
       const requestData = {
         updateRows: temperatureNormativesArr,
@@ -46,6 +46,12 @@ export const TemperatureGraph: FC<TemperatureGraphProps> = ({
       setEditedTemperatureNormative(requestData);
     },
   });
+
+  const [columnError, setColumnError] = useState<
+    { [outdoorTemperature: number]: EDayPartError[] }[]
+  >([]);
+
+  console.log(columnError);
 
   const handleChangeInput = useCallback(
     (
@@ -105,12 +111,27 @@ export const TemperatureGraph: FC<TemperatureGraphProps> = ({
                 )!;
 
               if (
-                currentTemperatureNormative.dayFeedFlowTemperature! <
-                Number(onBlurData.target.value)
+                currentTemperatureNormative.nightFeedBackFlowTemperature &&
+                currentTemperatureNormative.nightFeedBackFlowTemperature >
+                  Number(onBlurData.target.value)
               ) {
+                setColumnError([
+                  ...columnError,
+                  {
+                    [data.outdoorTemperature!]: [EDayPartError.night],
+                  },
+                ]);
                 return message.error('AAAA');
               }
             }}
+            // isError={() => {
+            //   data.outdoorTemperature;
+
+            //   columnError.find(
+            //     (err) =>
+            //       Number(Object.keys(err)[0]) === data.outdoorTemperature!,
+            //   );
+            // }}
           />
         </InputsContainer>
       ) : (

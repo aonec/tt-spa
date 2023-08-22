@@ -20,3 +20,7 @@ export enum ETemteratureTypes {
   nightFeedBackFlowTemperature = 'nightFeedBackFlowTemperature',
   heatFeedFlowTemperature = 'heatFeedFlowTemperature',
 }
+export enum EDayPartError {
+  day = 'day',
+  night = 'night',
+}
