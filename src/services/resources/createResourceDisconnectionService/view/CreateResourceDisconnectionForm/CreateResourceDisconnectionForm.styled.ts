@@ -6,7 +6,7 @@ import { Select } from 'ui-kit/Select';
 export const BaseInfoWrapper = styled.div`
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  grid-column-gap: 15px;
+  grid-column-gap: 16px;
   .ant-select-focused {
     .ant-select-selection-item {
       color: #bfbfbf;
@@ -33,13 +33,13 @@ export const InputSC = styled(Input)`
 export const TimeWrapper = styled.div`
   display: grid;
   grid-template-columns: 2fr 1fr;
-  grid-gap: 15px;
+  grid-gap: 16px;
 `;
 
 export const CitySelectWrapper = styled.div<{ showCity: boolean }>`
   display: grid;
   grid-template-columns: ${({ showCity }) => (showCity ? '1fr 1fr ' : '1fr')};
-  grid-gap: 15px;
+  grid-gap: 16px;
 `;
 
 export const SelectSC = styled(Select)`

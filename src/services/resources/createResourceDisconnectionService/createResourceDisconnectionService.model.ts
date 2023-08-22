@@ -16,9 +16,9 @@ import { editResourceDisconnectionService } from '../editResourceDisconnectionSe
 import { resourceDisconnectionFiltersService } from '../resourceDisconnectionFiltersService';
 import {
   fetchCreateResourceDisconnection,
-  fetchExistingHousingStocks,
-  fetchExistingHousingStocksWithHeatingStation,
-  fetchExistingHousingStocksWithHouseManagement,
+  fetchExistingBuildings,
+  fetchExistingBuildingsWithHeatingStation,
+  fetchExistingBuildingsWithHouseManagement,
 } from './createResourceDisconnectionService.api';
 import { EAddressDetails } from './createResourceDisconnectionService.types';
 import { addressSearchService } from 'services/addressSearchService/addressSearchService.models';
@@ -88,15 +88,16 @@ const $selectedCity = domain
   )
   .reset(closeModal);
 
-const getExistingHousingStocksFx = domain.createEffect<
+const getBuildings = domain.createEvent();
+const getExistingBuildingsFx = domain.createEffect<
   string,
   StreetWithBuildingNumbersResponsePagedList
->(fetchExistingHousingStocks);
+>(fetchExistingBuildings);
 
-const $existingHousingStocks = domain
+const $existingBuildings = domain
   .createStore<StreetWithBuildingNumbersResponse[]>([])
   .on(
-    getExistingHousingStocksFx.doneData,
+    getExistingBuildingsFx.doneData,
     (_, housingStocks) => housingStocks.items || [],
   )
   .reset(clearHousingStocks);
@@ -104,9 +105,9 @@ const $existingHousingStocks = domain
 const getHeatingStationFx = domain.createEffect<
   void,
   HeatingStationWithStreetsResponse[]
->(fetchExistingHousingStocksWithHeatingStation);
+>(fetchExistingBuildingsWithHeatingStation);
 
-const $housingStockWithHeatingStations = domain
+const $buildingWithHeatingStations = domain
   .createStore<HeatingStationWithStreetsResponse[]>([])
   .on(getHeatingStationFx.doneData, (_, housingStocks) => housingStocks)
   .reset(clearHousingStocks);
@@ -114,9 +115,9 @@ const $housingStockWithHeatingStations = domain
 const getHouseManagementsFx = domain.createEffect<
   void,
   HouseManagementWithStreetsResponse[]
->(fetchExistingHousingStocksWithHouseManagement);
+>(fetchExistingBuildingsWithHouseManagement);
 
-const $housingStockWithHouseManagements = domain
+const $buildingWithHouseManagements = domain
   .createStore<HouseManagementWithStreetsResponse[]>([])
   .on(getHouseManagementsFx.doneData, (_, housingStocks) => housingStocks)
   .reset(clearHousingStocks);
@@ -124,7 +125,7 @@ const $housingStockWithHouseManagements = domain
 const $isHousingStocksLoading = combine(
   getHouseManagementsFx.pending,
   getHeatingStationFx.pending,
-  getExistingHousingStocksFx.pending,
+  getExistingBuildingsFx.pending,
   (...isLoading) => isLoading.includes(true),
 );
 
@@ -173,9 +174,11 @@ forward({
 });
 
 sample({
-  clock: $selectedCity,
+  source: $selectedCity,
+  clock: [$selectedCity, getBuildings],
   filter: Boolean,
-  target: getExistingHousingStocksFx,
+  fn: (city) => city,
+  target: getExistingBuildingsFx,
 });
 
 sample({
@@ -199,7 +202,7 @@ split({
       type === EAddressDetails.HouseManagements,
   },
   cases: {
-    [EAddressDetails.All]: getExistingHousingStocksFx,
+    [EAddressDetails.All]: getBuildings,
     [EAddressDetails.HeatingStation]: getHeatingStationFx,
     [EAddressDetails.HouseManagements]: getHouseManagementsFx,
   },
@@ -231,9 +234,9 @@ export const createResourceDisconnectionService = {
     $isModalOpen,
     $resourceTypes,
     $disconnectingTypes,
-    $existingHousingStocks,
-    $housingStockWithHeatingStations,
-    $housingStockWithHouseManagements,
+    $existingBuildings,
+    $buildingWithHeatingStations,
+    $buildingWithHouseManagements,
     $typeOfAddress,
     $isHousingStocksLoading,
     $selectedCity,
