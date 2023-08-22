@@ -48,7 +48,7 @@ const $reopenReportsHousingStockCity = domain
   .createStore<string | null>(null)
   .on(
     fetchHousingStockDataFx.doneData,
-    (_, data) => data.address?.mainAddress?.city,
+    (_, data) => data.address?.mainAddress?.city || null,
   );
 
 sample({
