@@ -48,7 +48,7 @@ export const SearchDevices: FC<SearchDevicesProps> = ({
       const secondIndex = diameters.findIndex((elem) => elem === value[1]) + 1;
 
       setFieldValue(
-        "['Filter.PipeDiameters']",
+        "['DevicesFilter.PipeDiameters']",
         diameters.slice(firstIndex, secondIndex),
       );
 
@@ -58,8 +58,8 @@ export const SearchDevices: FC<SearchDevicesProps> = ({
   );
 
   const rangeValues: [number, number] = useMemo(() => {
-    const first = _.first(values['Filter.PipeDiameters']);
-    const last = _.last(values['Filter.PipeDiameters']);
+    const first = _.first(values['DevicesFilter.PipeDiameters']);
+    const last = _.last(values['DevicesFilter.PipeDiameters']);
 
     return [first || minValue, last || maxValue];
   }, [values, minValue, maxValue]);
@@ -77,14 +77,14 @@ export const SearchDevices: FC<SearchDevicesProps> = ({
             ]}
             isError={isSearchError}
             initialValues={{
-              city: values['Filter.Address.City'],
-              street: values['Filter.Address.Street'],
-              house: values['Filter.Address.HousingStockNumber'],
-              corpus: values['Filter.Address.Corpus'],
+              city: values['Address.City'],
+              street: values['Address.Street'],
+              house: values['Address.HousingStockNumber'],
+              corpus: values['Address.Corpus'],
             }}
             onChange={(key, value) =>
               setFieldValue(
-                `['Filter.Address.${SearchDevicesFormikFieldsLookup[key]}']`,
+                `['Address.${SearchDevicesFormikFieldsLookup[key]}']`,
                 value,
               )
             }
@@ -163,9 +163,12 @@ export const SearchDevices: FC<SearchDevicesProps> = ({
                   small
                   placeholder="Выберите"
                   style={{ width: '65%' }}
-                  value={values['Filter.ExpiresCheckingDateAt']}
+                  value={values['DevicesFilter.ExpiresCheckingDateAt']}
                   onChange={(value) =>
-                    setFieldValue("['Filter.ExpiresCheckingDateAt']", value)
+                    setFieldValue(
+                      "['DevicesFilter.ExpiresCheckingDateAt']",
+                      value,
+                    )
                   }
                   onSelect={() => submitForm()}
                 >

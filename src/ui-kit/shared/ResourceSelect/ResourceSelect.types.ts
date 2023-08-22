@@ -5,4 +5,5 @@ export type ResourceSelectProps = {
   exclude?: EResourceType[];
   disabled?: boolean;
   onChange?: (resource: EResourceType | null) => void;
+  small?: boolean;
 };

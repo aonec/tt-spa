@@ -1,25 +1,24 @@
 import { combine, createDomain, forward, guard, sample } from 'effector';
 import {
-  getCalculatorsListQuery,
+  getNodesListQuery,
   getHousingsByFilter,
 } from './displayDevicesService.api';
 import {
   BuildingByFilterResponse,
-  CalculatorListResponsePagedList,
   EOrderByRule,
+  NodesPagedList,
 } from 'api/types';
-import { CalculatorsListRequestPayload } from 'services/calculators/calculatorsListService/calculatorsListService.types';
 import { createGate } from 'effector-react';
 import { GetHousingByFilterRequestPayload } from '../devicesPageService/individualDevicesProfileService/view/IndividualDevicesProfile/individualDevicesViewByAddressService/individualDevicesViewByAddressService.types';
 import { DevicesSearchType } from '../devicesPageService/devicesPageService.types';
 import { EffectFailDataAxiosError } from 'types';
 import { message } from 'antd';
 import { groupDevicesByObjects } from 'utils/groupDevicesByObjects';
+import { NodesListRequestPayload } from './displayDevicesService.types';
 
 const domain = createDomain('displayDevicesService');
 
-const $calculatorsPagedData =
-  domain.createStore<CalculatorListResponsePagedList | null>(null);
+const $nodesPagedData = domain.createStore<NodesPagedList | null>(null);
 
 const fetchHousingsByFilterFx = domain.createEffect<
   GetHousingByFilterRequestPayload[],
@@ -37,22 +36,21 @@ const $housingsByFilter = domain
     }, [] as BuildingByFilterResponse[]),
   );
 
-const $devices = $calculatorsPagedData.map((data) =>
-  groupDevicesByObjects(data?.items || []),
+const $devices = $nodesPagedData.map((data) =>
+  groupDevicesByObjects(data?.pipeNodes || []),
 );
 
-const setDevicesProfileFilter =
-  domain.createEvent<CalculatorsListRequestPayload>();
+const setDevicesProfileFilter = domain.createEvent<NodesListRequestPayload>();
 
 const $loading = combine(
-  getCalculatorsListQuery.$pending,
+  getNodesListQuery.$pending,
   fetchHousingsByFilterFx.pending,
   (...loadings) => loadings.includes(true),
 );
 
-const $searchPayload = domain.createStore<CalculatorsListRequestPayload>({
+const $searchPayload = domain.createStore<NodesListRequestPayload>({
   PageNumber: 1,
-  PageSize: 10,
+  PageSize: 20,
   OrderBy: EOrderByRule.Ascending,
 });
 
@@ -74,13 +72,13 @@ const extendedSearchClosed = domain.createEvent();
 
 const clearCalculators = domain.createEvent();
 
-$calculatorsPagedData
-  .on(getCalculatorsListQuery.$data, (_, data) => data)
-  .reset([getCalculatorsListQuery.finished.failure, clearCalculators]);
+$nodesPagedData
+  .on(getNodesListQuery.$data, (_, data) => data)
+  .reset([getNodesListQuery.finished.failure, clearCalculators]);
 
-const $total = $calculatorsPagedData.map((state) => state?.totalItems);
-const $pageNumber = $calculatorsPagedData.map((state) => state?.pageNumber);
-const $pageSize = $calculatorsPagedData.map((state) => state?.pageSize);
+const $total = $nodesPagedData.map((state) => state?.totalItems);
+const $pageNumber = $nodesPagedData.map((state) => state?.pageNumber);
+const $pageSize = $nodesPagedData.map((state) => state?.pageSize);
 
 const setPageNumber = domain.createEvent<number>();
 
@@ -94,7 +92,7 @@ forward({
 sample({
   source: $searchPayload,
   clock: CalculatorsGate.open,
-  target: getCalculatorsListQuery.start,
+  target: getNodesListQuery.start,
 });
 
 $searchPayload
@@ -114,13 +112,17 @@ sample({
     clock: $searchPayload,
     filter: Boolean,
   }),
-  fn: (Question, payload) => ({ ...payload, PageSize: 10, Question }),
-  target: getCalculatorsListQuery.start,
+  fn: (Question, payload) => ({
+    ...payload,
+    PageSize: 20,
+    'DevicesFilter.Question': Question,
+  }),
+  target: getNodesListQuery.start,
 });
 
 sample({
   clock: CalculatorsGate.close,
-  target: [clearSearchPayload, getCalculatorsListQuery.reset],
+  target: [clearSearchPayload, getNodesListQuery.reset],
 });
 
 sample({
@@ -131,10 +133,10 @@ sample({
       const address = device.building?.address;
       let currentAddress = address?.mainAddress;
 
-      if (filter['Filter.Address.Street']) {
+      if (filter['Address.Street']) {
         currentAddress =
           [address?.mainAddress, ...(address?.additionalAddresses || [])].find(
-            (address) => address?.street === filter['Filter.Address.Street'],
+            (address) => address?.street === filter['Address.Street'],
           ) || currentAddress;
       }
       const { city, street, corpus, number } = currentAddress || {};

@@ -1,8 +1,8 @@
 export const DeviceAddressSearchFieldsNameLookup: {
   [key: string]: string;
 } = {
-  city: '["Filter.Address.City"]',
-  street: '["Filter.Address.Street"]',
-  corpus: '["Filter.Address.Corpus"]',
-  house: '["Filter.Address.HousingStockNumber"]',
+  city: '["Address.City"]',
+  street: '["Address.Street"]',
+  corpus: '["Address.Corpus"]',
+  house: '["Address.HousingStockNumber"]',
 };

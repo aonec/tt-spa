@@ -1,6 +1,5 @@
 import React, { FC, useCallback, useMemo } from 'react';
 import { ConfigProvider } from 'antd';
-import { CalculatorsListRequestPayload } from 'services/calculators/calculatorsListService/calculatorsListService.types';
 import {
   StyledContainerThreeItems,
   StyledSlider,
@@ -16,11 +15,13 @@ import { DiamtersConfig } from 'services/currentUserService/currentUserService.t
 import { FormItem } from 'ui-kit/FormItem';
 import { Select } from 'ui-kit/Select';
 import { RangePicker } from 'ui-kit/RangePicker';
+import { NodesListRequestPayload } from 'services/devices/displayDevicesService/displayDevicesService.types';
+import { ResourceSelect } from 'ui-kit/shared/ResourceSelect';
 
 const { Option } = Select;
 
 export const ExtendedSearchForm: FC<{
-  values: CalculatorsListRequestPayload;
+  values: NodesListRequestPayload;
   setFieldValue: (field: string, value: any, shouldValidate?: boolean) => void;
   diametersConfig: DiamtersConfig;
 }> = ({ values, setFieldValue, diametersConfig }) => {
@@ -31,9 +32,9 @@ export const ExtendedSearchForm: FC<{
   const dateFormat = 'YYYY-MM-DD';
 
   const rangeValues: [number, number] = useMemo(() => {
-    const first = _.first(values['Filter.PipeDiameters']);
+    const first = _.first(values['DevicesFilter.PipeDiameters']);
 
-    const last = _.last(values['Filter.PipeDiameters']);
+    const last = _.last(values['DevicesFilter.PipeDiameters']);
 
     return [first || minValue, last || maxValue];
   }, [values, maxValue, minValue]);
@@ -43,7 +44,7 @@ export const ExtendedSearchForm: FC<{
       const firstIndex = diameters.findIndex((elem) => elem === value[0]);
       const secondIndex = diameters.findIndex((elem) => elem === value[1]) + 1;
       setFieldValue(
-        "['Filter.PipeDiameters']",
+        "['DevicesFilter.PipeDiameters']",
         diameters.slice(firstIndex, secondIndex),
       );
     },
@@ -64,10 +65,10 @@ export const ExtendedSearchForm: FC<{
         ]}
         showLabels
         initialValues={{
-          city: values['Filter.Address.City'],
-          street: values['Filter.Address.Street'],
-          house: values['Filter.Address.HousingStockNumber'],
-          corpus: values['Filter.Address.Corpus'],
+          city: values['Address.City'],
+          street: values['Address.Street'],
+          house: values['Address.HousingStockNumber'],
+          corpus: values['Address.Corpus'],
         }}
         customTemplate={[
           { fieldType: SearchFieldType.City, templateValue: '300px' },
@@ -78,19 +79,11 @@ export const ExtendedSearchForm: FC<{
       />
       <StyledContainerThreeItems>
         <FormItem label="Тип ресурса">
-          <Select
+          <ResourceSelect
             small
-            id="Resource"
-            value={values['Filter.Resource']}
-            placeholder="Все ресурсы"
-            onChange={(value) => setFieldValue("['Filter.Resource']", value)}
-          >
-            <Option value="">Все ресурсы</Option>
-            <Option value="Heat">Тепло</Option>
-            <Option value="HotWaterSupply">Горячая вода</Option>
-            <Option value="ColdWaterSupply">Холодная вода</Option>
-            <Option value="Electricity">Электричество</Option>
-          </Select>
+            resource={values.Resource || null}
+            onChange={(value) => setFieldValue('Resource', value)}
+          />
         </FormItem>
 
         <FormItem label="Статус Узла">
@@ -98,8 +91,8 @@ export const ExtendedSearchForm: FC<{
             small
             id="NodeStatus"
             placeholder="Любой статус"
-            value={values['Filter.NodeStatus']}
-            onChange={(value) => setFieldValue("['Filter.NodeStatus']", value)}
+            value={values.CommercialStatus}
+            onChange={(value) => setFieldValue('CommercialStatus', value)}
           >
             <Option value="">Любой статус</Option>
             <Option value="NotRegistered">Не на коммерческом учете</Option>
@@ -113,9 +106,9 @@ export const ExtendedSearchForm: FC<{
             small
             id="expirationDate"
             placeholder="Все"
-            value={values['Filter.ExpiresCheckingDateAt']}
+            value={values['DevicesFilter.ExpiresCheckingDateAt']}
             onChange={(value) =>
-              setFieldValue("['Filter.ExpiresCheckingDateAt']", value)
+              setFieldValue("['DevicesFilter.ExpiresCheckingDateAt']", value)
             }
           >
             <Option value="">Все</Option>
@@ -146,23 +139,20 @@ export const ExtendedSearchForm: FC<{
             <RangePicker
               small
               value={[
-                values['Filter.CommercialDateRange.From']
-                  ? moment(
-                      values['Filter.CommercialDateRange.From'],
-                      dateFormat,
-                    )
+                values['CommercialDateRange.From']
+                  ? moment(values['CommercialDateRange.From'], dateFormat)
                   : null,
-                values['Filter.CommercialDateRange.To']
-                  ? moment(values['Filter.CommercialDateRange.To'], dateFormat)
+                values['CommercialDateRange.To']
+                  ? moment(values['CommercialDateRange.To'], dateFormat)
                   : null,
               ]}
               onChange={(value: RangeValue): void => {
                 setFieldValue(
-                  "['Filter.CommercialDateRange.From']",
+                  "['CommercialDateRange.From']",
                   value?.length && value[0]?.format('YYYY-MM-DD'),
                 );
                 setFieldValue(
-                  "['Filter.CommercialDateRange.To']",
+                  "['CommercialDateRange.To']",
                   value?.length && value[1]?.format('YYYY-MM-DD'),
                 );
               }}
