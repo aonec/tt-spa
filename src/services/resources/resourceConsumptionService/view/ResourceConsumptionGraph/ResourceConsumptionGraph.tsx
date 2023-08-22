@@ -252,7 +252,7 @@ export const ResourceConsumptionGraph: FC<ResourceConsumptionGraphProps> = ({
         animate={{
           duration: 200,
           onLoad: { duration: 600 },
-          // easing: 'linearInOut',
+          // easing: 'linearInOut', //пока этот атрибут не может работать, оставил на будущие доработки
         }}
       >
         <VictoryAxis

@@ -112,40 +112,23 @@ const $housingConsumptionData = domain
       data,
     ),
   )
-  .on(getAdditionalHousingConsumptionPlotFx.doneData, (prev, data) => {
-    const { housing } = data;
-    if (!prev) {
-      return { additionalAddress: { housing } };
-    }
-    return {
-      ...prev,
-      additionalAddress: {
-        housing,
-        normative: prev?.prevMonthData?.normative,
-        subscriber: prev?.prevMonthData?.subscriber,
-      },
-    };
-  })
+  .on(getAdditionalHousingConsumptionPlotFx.doneData, (prev, data) =>
+    setConsumptionData(
+      prev,
+      ResourceConsumptionGraphDataType.additionalAddress,
+      data,
+    ),
+  )
   .on(
     getAdditionalNormativeAndSubscriberConsumptionDataFx.doneData,
-    (prev, data) => {
-      const { normative, subscriber } = data;
-      if (!prev) {
-        return { additionalAddress: { normative, subscriber } };
-      }
-      return {
-        ...prev,
-        additionalAddress: {
-          housing: prev?.prevMonthData?.housing,
-          normative,
-          subscriber,
-        },
-      };
-    },
+    (prev, data) =>
+      setConsumptionData(
+        prev,
+        ResourceConsumptionGraphDataType.additionalAddress,
+        data,
+      ),
   )
   .reset(clearData);
-
-$housingConsumptionData.watch((data) => console.log(data));
 
 const getAdditionalConsumptionData =
   domain.createEvent<ConsumptionDataPayload>();
