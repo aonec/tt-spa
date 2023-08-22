@@ -13,7 +13,12 @@ const {
 
 export const ReadingsHistoryContainer: React.FC<
   ReadingsHistoryServiceProps
-> = ({ readonly }) => {
+> = ({
+  readonly,
+  deviceId: deviceIdFromProps,
+  isModal = true,
+  showDeviceInfo = true,
+}) => {
   const { deviceId: deviceIdFromUrlParams } = useParams<{ deviceId: string }>();
 
   const {
@@ -28,7 +33,8 @@ export const ReadingsHistoryContainer: React.FC<
     closeReadingsHistoryModal: inputs.closeReadingsHistoryModal,
   });
 
-  const deviceId = deviceIdFromStore || deviceIdFromUrlParams;
+  const deviceId =
+    deviceIdFromProps || deviceIdFromStore || deviceIdFromUrlParams;
 
   if (!deviceId) return null;
 
@@ -41,6 +47,8 @@ export const ReadingsHistoryContainer: React.FC<
         isModalOpen={isModalOpen}
         readonly={readonly}
         individualDevice={individualDevice}
+        isModal={isModal}
+        showDeviceInfo={showDeviceInfo}
       />
     </>
   );

@@ -5,6 +5,8 @@ import {
   SubscriberStatisticsСonsumptionResponse,
 } from 'api/types';
 import { HousingStockAddressForm } from './displayStatisticsListByHousesService.types';
+import { createQuery } from '@farfetched/core';
+import { createEffect } from 'effector';
 
 export const fetchStatisticsByHouse = (
   params: SubscriberStatisticsFilter,
@@ -13,16 +15,18 @@ export const fetchStatisticsByHouse = (
     params,
   });
 
-export const fetchHousingStockId = async (
-  address: HousingStockAddressForm,
-): Promise<number | null> => {
-  const res: BuildingListResponsePagedList = await axios.get('Buildings', {
-    params: {
-      ...address,
-      PageSize: 1,
-      PageNumber: 1,
-    },
-  });
+export const fetchHousingStockIdQuery = createQuery({
+  effect: createEffect<HousingStockAddressForm, number | null>(
+    async (address) => {
+      const res: BuildingListResponsePagedList = await axios.get('Buildings', {
+        params: {
+          ...address,
+          PageSize: 1,
+          PageNumber: 1,
+        },
+      });
 
-  return res.items?.[0].id || null;
-};
+      return res.items?.[0]?.id || 0;
+    },
+  ),
+});

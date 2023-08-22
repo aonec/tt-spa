@@ -23,6 +23,7 @@ export const AddressSearchContainer: FC<AddressSearchContainerProps> = ({
   disabledFields,
   onChange,
   className,
+  isError = false,
 }) => {
   const { values, handleSubmit, setFieldValue } =
     useFormik<AddressSearchValues>({
@@ -87,6 +88,7 @@ export const AddressSearchContainer: FC<AddressSearchContainerProps> = ({
         showLabels={showLabels}
         disabledFields={disabledFields}
         className={className}
+        isError={isError}
       />
     </>
   );

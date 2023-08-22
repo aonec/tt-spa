@@ -42,4 +42,5 @@ export type ReadingsHistoryListProps = {
   openMonth: (year: number, month: number) => void;
   closeMonth: (year: number, month: number) => void;
   isMonthOpen: (year: number, month: number) => boolean;
+  isModal: boolean;
 };

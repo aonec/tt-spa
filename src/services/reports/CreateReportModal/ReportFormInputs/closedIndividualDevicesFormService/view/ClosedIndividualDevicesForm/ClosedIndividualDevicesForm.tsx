@@ -91,8 +91,9 @@ export const ClosedIndividualDevicesForm: FC<
             <FormItem label="Город">
               <Select
                 placeholder="Выберите из списка"
-                onChange={(cityName) => {
-                  selectCity(String(cityName));
+                onChange={(type) => {
+                  selectCity(String(type));
+                  handleChangeHousingStockId(null);
                 }}
                 value={selectedCity || undefined}
               >

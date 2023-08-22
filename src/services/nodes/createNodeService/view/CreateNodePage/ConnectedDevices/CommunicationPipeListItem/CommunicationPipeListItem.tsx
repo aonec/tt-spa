@@ -3,6 +3,7 @@ import { MagistralsDisctionary } from 'dictionaries';
 import {
   DevicesAmount,
   InfoWrapper,
+  PipeEntryNumber,
   PipeIconWrapper,
   PipeInfo,
   PipeNumber,
@@ -44,7 +45,12 @@ export const CommunicationPipeListItem: FC<CommunicationPipeListItemProps> = ({
         <PipeIconWrapper>
           <PipeIcon />
           <div>
-            <PipeNumber>Труба №{pipe.number}</PipeNumber>
+            <PipeNumber>
+              Труба №{pipe.number}{' '}
+              {pipe.entryNumber && (
+                <PipeEntryNumber>Ввод {pipe.entryNumber}</PipeEntryNumber>
+              )}
+            </PipeNumber>
             <PipeInfo>
               {pipe.magistral && MagistralsDisctionary[pipe.magistral]}
               {typeof pipe.diameter === 'number' && `, ${pipe.diameter}мм`}

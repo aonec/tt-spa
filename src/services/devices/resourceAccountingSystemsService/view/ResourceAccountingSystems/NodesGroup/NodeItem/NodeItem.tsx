@@ -16,6 +16,7 @@ import {
   NodeStatusWrapper,
   ResourceIconWrapper,
   Wrapper,
+  ZoneWrapper,
 } from './NodeItem.styled';
 import { NodeItemProps } from './NodeItem.types';
 import { NodeStatus } from './NodeStatus';
@@ -38,7 +39,10 @@ export const NodeItem: FC<NodeItemProps> = ({
             {isIncorrectConfig && <IncorrectConfigurationIconSC />}
           </NodeName>
           <NodeServiceZone isZoneExist={Boolean(node.serviceZone?.name)}>
-            {node.serviceZone?.name || 'Зона не указана'}
+            <div>{node.entryNumber && `Ввод ${node.entryNumber}, `}</div>
+            <ZoneWrapper>
+              {node.serviceZone?.name || 'Зона не указана'}
+            </ZoneWrapper>
           </NodeServiceZone>
         </Link>
         <Tooltip title="Показать приборы">

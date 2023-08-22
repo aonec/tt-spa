@@ -6,7 +6,7 @@ import { fetchCompleteResourceDisconnecting } from './completeResourceDisconnect
 
 const domain = createDomain('completeResourceDisconnectionService');
 
-const openModal = domain.createEvent<{ id: string; endDate: string }>();
+const openModal = domain.createEvent<{ id: string; endDate: string | null }>();
 const closeModal = domain.createEvent();
 
 const $resourceDisconnectionId = domain
@@ -15,7 +15,7 @@ const $resourceDisconnectionId = domain
   .reset(closeModal);
 
 const $endDate = domain
-  .createStore('')
+  .createStore<null | string>(null)
   .on(openModal, (_, payload) => payload.endDate)
   .reset(closeModal);
 

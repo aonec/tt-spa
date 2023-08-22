@@ -1,11 +1,15 @@
 import {
+  BuildingListResponse,
   EReportType,
   HousingStockResponse,
   NonResidentialBuildingResponse,
 } from 'api/types';
 
 export type Props = {
-  building: HousingStockResponse | NonResidentialBuildingResponse;
+  building:
+    | HousingStockResponse
+    | NonResidentialBuildingResponse
+    | BuildingListResponse;
 };
 
 export type GetConsolidatedReport = {

@@ -3,7 +3,6 @@ import { combine, createDomain, forward, guard, sample } from 'effector';
 import { createGate } from 'effector-react';
 import {
   GetHousingStocksListRequestPayload,
-  GetHousingStocksRequestPayload,
   GetIndividualDevicesListRequestPayload,
 } from './HousesReadingsService.types';
 import {
@@ -14,7 +13,7 @@ import {
   IndividualDeviceListItemResponsePagedList,
 } from 'api/types';
 import {
-  getHousingStock,
+  getHousingStockQuery,
   getIndividualDevicesList,
 } from './HousesReadingsService.api';
 import { managementFirmConsumptionRatesService } from 'services/meters/managementFirmConsumptionRatesService';
@@ -30,20 +29,12 @@ const handleSearchHousingStock =
 
 const loadNextPageOfIndividualDevicesList = domain.createEvent();
 
-const fetchHousingStockFx = domain.createEffect<
-  GetHousingStocksRequestPayload,
-  HousingStockResponse | null
->(getHousingStock);
-
 const fetchIndividualDevicesFx = domain.createEffect<
   GetIndividualDevicesListRequestPayload,
   IndividualDeviceListItemResponsePagedList
 >(getIndividualDevicesList);
 
-const $housingStock = domain
-  .createStore<HousingStockResponse | null>(null)
-  .on(fetchHousingStockFx.doneData, (_, housingStock) => housingStock)
-  .reset(HousingStockGate.close);
+const $housingStock = getHousingStockQuery.$data;
 
 const $individualDevicesPagedList = domain
   .createStore<IndividualDeviceListItemResponsePagedList | null>(null)
@@ -79,7 +70,7 @@ guard({
   filter: ({ City, Street, BuildingNumber }) => {
     return [City, Street, BuildingNumber].every(Boolean);
   },
-  target: fetchHousingStockFx,
+  target: getHousingStockQuery.start,
 });
 
 sample({
@@ -92,7 +83,7 @@ sample({
     filter: (housingStock, { housingStockId }) =>
       Boolean(housingStockId && housingStockId !== housingStock?.id),
   }),
-  target: fetchHousingStockFx,
+  target: getHousingStockQuery.start,
 });
 
 sample({
@@ -133,7 +124,12 @@ forward({
   to: loadNextPageOfIndividualDevicesList,
 });
 
-const $isLoadingHousingStock = fetchHousingStockFx.pending;
+sample({
+  clock: HousingStockGate.close,
+  target: getHousingStockQuery.reset,
+});
+
+const $isLoadingHousingStock = getHousingStockQuery.$pending;
 
 const $isLoadingIndividualDevices = fetchIndividualDevicesFx.pending;
 
@@ -144,7 +140,7 @@ const $isAllDevicesLoaded = combine(
     typeof data?.totalItems === 'number' && data.totalItems === devices.length,
 );
 
-const handleHousingStockLoaded = fetchHousingStockFx.doneData;
+const handleHousingStockLoaded = getHousingStockQuery.finished.success;
 
 export const housesReadingsService = {
   inputs: {

@@ -4,6 +4,7 @@ import { HousingStockItem } from '../inspectorHousingStockService/views/HousingS
 import { LoaderWrap, Wrap } from './InspectorsHousingStocksList.styled';
 import { InspectorsHosuingsStocksListProps } from './InspectorsHousingStocksList.types';
 import { TypeAddressToStart } from 'ui-kit/shared/TypeToStart';
+import { NothingFound } from 'ui-kit/shared/NothingFound';
 
 export const InspectorsHousingStocksList: FC<
   InspectorsHosuingsStocksListProps
@@ -14,6 +15,7 @@ export const InspectorsHousingStocksList: FC<
   updateHousingStock,
   updateInfo,
   loading,
+  isInspectorsFetched,
 }) => {
   const loader = (
     <LoaderWrap>
@@ -46,8 +48,12 @@ export const InspectorsHousingStocksList: FC<
     const isHousingStocksListExist = Boolean(housingStocks);
     const isHousingStocksListContainsElems = Boolean(housingStocks?.length);
 
-    if (!isHousingStocksListExist) {
+    if (!isHousingStocksListExist && !isInspectorsFetched) {
       return <TypeAddressToStart />;
+    }
+
+    if (!isHousingStocksListContainsElems && isInspectorsFetched) {
+      return <NothingFound />;
     }
 
     if (!isHousingStocksListContainsElems) {
@@ -55,7 +61,7 @@ export const InspectorsHousingStocksList: FC<
     }
 
     return list;
-  }, [housingStocks, list]);
+  }, [housingStocks, list, isInspectorsFetched]);
 
   return (
     <Wrap>

@@ -4,6 +4,7 @@ import { AccountingNodesReadings } from './view/AccountingNodesReadings';
 import { AccountingNodesReadingsService } from './AccountingNodesReadingsService.model';
 import { useUnit } from 'effector-react';
 import { ConfirmReadingValueContainer } from 'services/meters/readingsHistoryService/confirmReadingService';
+import { getElectricNodesQuery } from './AccountingNodesReadingsService.api';
 
 const { inputs, outputs, gates } = AccountingNodesReadingsService;
 const { HousingStockIdGate } = gates;
@@ -12,15 +13,27 @@ export const AccountingNodesReadingsContainer = () => {
   const history = useHistory();
   const { id } = useParams<{ id: string }>();
 
-  const address = useUnit(outputs.$housingStockAddress);
-  const electricNodes = useUnit(outputs.$electricNodes);
-  const isLoading = useUnit(outputs.$isLoading);
-  const sliderIndex = useUnit(outputs.$sliderIndex);
-  const sum = useUnit(outputs.$sumOfReadings);
-
-  const handleGetElectricNodes = useUnit(inputs.fetchElectricNodes);
-  const upSliderIndex = useUnit(inputs.upSliderIndex);
-  const downSliderIndex = useUnit(inputs.downSliderIndex);
+  const {
+    address,
+    downSliderIndex,
+    electricNodes,
+    handleGetElectricNodes,
+    isLoading,
+    sliderIndex,
+    sum,
+    upSliderIndex,
+    isElectricNodesFetched,
+  } = useUnit({
+    address: outputs.$housingStockAddress,
+    electricNodes: getElectricNodesQuery.$data,
+    isElectricNodesFetched: getElectricNodesQuery.$succeeded,
+    isLoading: outputs.$isLoading,
+    sliderIndex: outputs.$sliderIndex,
+    sum: outputs.$sumOfReadings,
+    handleGetElectricNodes: inputs.fetchElectricNodes,
+    upSliderIndex: inputs.upSliderIndex,
+    downSliderIndex: inputs.downSliderIndex,
+  });
 
   useEffect(() => {
     return outputs.$housingStockAddress.watch((address) => {
@@ -38,12 +51,13 @@ export const AccountingNodesReadingsContainer = () => {
       <AccountingNodesReadings
         handleGetElectricNodes={handleGetElectricNodes}
         address={address}
-        electricNodes={electricNodes}
+        electricNodes={electricNodes || []}
         isLoading={isLoading}
         sliderIndex={sliderIndex}
         upSliderIndex={upSliderIndex}
         downSliderIndex={downSliderIndex}
         sum={sum}
+        isElectricNodesFetched={isElectricNodesFetched}
       />
     </>
   );

@@ -154,6 +154,7 @@ export const UniqueWorkingRange: FC<UniqueWorkingRangeProps> = ({
           value={selectedCity || undefined}
           onChange={(city) => {
             setSelectedCity(city as string);
+            setFieldValue('housingStockId', null);
             setFieldValue('nodeId', null);
           }}
         >
