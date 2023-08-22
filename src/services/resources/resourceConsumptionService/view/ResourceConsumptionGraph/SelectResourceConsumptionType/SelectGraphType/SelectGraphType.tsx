@@ -28,29 +28,30 @@ export const SelectGraphType: FC<SelectGraphTypeProps> = ({
     <Wrapper>
       <SelectTitle>{title}</SelectTitle>
       {Object.values(ResourceConsumptionGraphType).map((type) => {
-        const isLoading =
-          (type === ResourceConsumptionGraphType.Housing && isHousingLoading) ||
-          (type === ResourceConsumptionGraphType.Normative &&
-            isNormativeAndSubscriberLoading) ||
-          (type === ResourceConsumptionGraphType.Subscriber &&
-            isNormativeAndSubscriberLoading) ||
-          (type === ResourceConsumptionGraphType.Housing &&
-            isPrevHousingLoading) ||
-          (type === ResourceConsumptionGraphType.Normative &&
-            isPrevNormativeAndSubscriberLoading) ||
-          (type === ResourceConsumptionGraphType.Subscriber &&
-            isPrevNormativeAndSubscriberLoading);
+        const isLoading = [
+          type === ResourceConsumptionGraphType.Housing && isHousingLoading,
+          type === ResourceConsumptionGraphType.Normative &&
+            isNormativeAndSubscriberLoading,
+          type === ResourceConsumptionGraphType.Subscriber &&
+            isNormativeAndSubscriberLoading,
+          type === ResourceConsumptionGraphType.Housing && isPrevHousingLoading,
+          type === ResourceConsumptionGraphType.Normative &&
+            isPrevNormativeAndSubscriberLoading,
+          type === ResourceConsumptionGraphType.Subscriber &&
+            isPrevNormativeAndSubscriberLoading,
+        ].some(Boolean);
 
-        const isConsumptionDataEmpty =
-          (type === ResourceConsumptionGraphType.Normative &&
+        const isConsumptionDataEmpty = [
+          type === ResourceConsumptionGraphType.Normative &&
             consumptionData?.normative &&
-            hasNoConsecutiveNumbers(consumptionData.normative)) ||
-          (type === ResourceConsumptionGraphType.Subscriber &&
+            hasNoConsecutiveNumbers(consumptionData.normative),
+          type === ResourceConsumptionGraphType.Subscriber &&
             consumptionData?.subscriber &&
-            hasNoConsecutiveNumbers(consumptionData.subscriber)) ||
-          (type === ResourceConsumptionGraphType.Housing &&
+            hasNoConsecutiveNumbers(consumptionData.subscriber),
+          type === ResourceConsumptionGraphType.Housing &&
             consumptionData?.housing &&
-            hasNoConsecutiveNumbers(consumptionData.housing));
+            hasNoConsecutiveNumbers(consumptionData.housing),
+        ].some(Boolean);
 
         return (
           <SelectGraphTypeItem
