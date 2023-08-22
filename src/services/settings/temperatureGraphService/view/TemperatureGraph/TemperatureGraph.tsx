@@ -1,5 +1,10 @@
-import React, { ChangeEvent, FC } from 'react';
-import { TemperatureGraphProps } from './TemperatureGraph.types';
+import React, { ChangeEvent, FC, useCallback } from 'react';
+import { useFormik } from 'formik';
+import { message } from 'antd';
+import {
+  ETemteratureTypes,
+  TemperatureGraphProps,
+} from './TemperatureGraph.types';
 import { Table } from '../../../../../ui-kit/Table/Table';
 import {
   Footer,
@@ -15,9 +20,7 @@ import {
 } from './TemperatureGraph.styled';
 import { CriticalTemperaturePanel } from '../criticalTemperatureDeviationService/view/CriticalTemperaturePanel';
 import { Button } from 'ui-kit/Button';
-import { TemperatureNormativeResponse } from 'api/types';
-import { useFormik } from 'formik';
-import { message } from 'antd';
+import { TemperatureNormativeRow } from 'api/types';
 
 export const TemperatureGraph: FC<TemperatureGraphProps> = ({
   temperatureNormative: initialTemperatureNormatives,
@@ -25,7 +28,7 @@ export const TemperatureGraph: FC<TemperatureGraphProps> = ({
   handleEditTemperatureNormative,
 }) => {
   const { values, setFieldValue, handleSubmit, handleReset } = useFormik<{
-    temperatureNormativesArr: TemperatureNormativeResponse[];
+    temperatureNormativesArr: TemperatureNormativeRow[];
   }>({
     initialValues: { temperatureNormativesArr: initialTemperatureNormatives },
     enableReinitialize: true,
@@ -34,7 +37,80 @@ export const TemperatureGraph: FC<TemperatureGraphProps> = ({
     },
   });
 
-  
+  const handleChangeInput = useCallback(
+    (
+      inputValue,
+      data: TemperatureNormativeRow,
+      fieldName: ETemteratureTypes,
+    ) => {
+      const updatedValues = values.temperatureNormativesArr.map(
+        (temperatureNormative) => {
+          if (
+            temperatureNormative.outdoorTemperature !== data.outdoorTemperature
+          ) {
+            return temperatureNormative;
+          } else {
+            return {
+              ...temperatureNormative,
+              [fieldName]: Number(inputValue.target.value),
+            };
+          }
+        },
+      );
+
+      setFieldValue('temperatureNormativesArr', updatedValues);
+    },
+    [setFieldValue, values.temperatureNormativesArr],
+  );
+
+  const renderDoubledColumns = useCallback(
+    (
+      data: TemperatureNormativeRow,
+      firstInputFieldName: ETemteratureTypes,
+      secondInputFieldName: ETemteratureTypes,
+    ) =>
+      isEditing ? (
+        <InputsContainer>
+          <InputSc
+            type="number"
+            suffix={<WrapperCelsius>°C</WrapperCelsius>}
+            value={data[firstInputFieldName]}
+            onChange={(inputValue) =>
+              handleChangeInput(inputValue, data, firstInputFieldName)
+            }
+          />
+          <InputSc
+            type="number"
+            suffix={<WrapperCelsius>°C</WrapperCelsius>}
+            value={data[secondInputFieldName]}
+            onChange={(inputValue) =>
+              handleChangeInput(inputValue, data, secondInputFieldName)
+            }
+            onBlur={(onBlurData: ChangeEvent<HTMLInputElement>) => {
+              const currentTemperatureNormative =
+                values.temperatureNormativesArr.find(
+                  (temperatureNormative) =>
+                    temperatureNormative.outdoorTemperature ===
+                    data.outdoorTemperature,
+                )!;
+
+              if (
+                currentTemperatureNormative.dayFeedFlowTemperature! <
+                Number(onBlurData.target.value)
+              ) {
+                return message.error('AAAA');
+              }
+            }}
+          />
+        </InputsContainer>
+      ) : (
+        <WrapperTime>
+          <div>{data[firstInputFieldName]}</div>
+          <div>{data[secondInputFieldName]}</div>
+        </WrapperTime>
+      ),
+    [handleChangeInput, isEditing, values.temperatureNormativesArr],
+  );
 
   return (
     <PageWrapper>
@@ -61,75 +137,10 @@ export const TemperatureGraph: FC<TemperatureGraphProps> = ({
             ),
             size: '280px',
             render: (data) =>
-              isEditing ? (
-                <InputsContainer>
-                  <InputSc
-                    isError={true}
-                    type="number"
-                    suffix={<WrapperCelsius>°C</WrapperCelsius>}
-                    value={data.dayFeedFlowTemperature}
-                    onChange={(inputValue) => {
-                      const updatedValues = values.temperatureNormativesArr.map(
-                        (temperatureNormative) => {
-                          if (temperatureNormative.id !== data.id) {
-                            return temperatureNormative;
-                          } else {
-                            return {
-                              ...temperatureNormative,
-                              dayFeedFlowTemperature: Number(
-                                inputValue.target.value,
-                              ),
-                            };
-                          }
-                        },
-                      );
-
-                      setFieldValue('temperatureNormativesArr', updatedValues);
-                    }}
-                  />
-                  <InputSc
-                    type="number"
-                    suffix={<WrapperCelsius>°C</WrapperCelsius>}
-                    value={data.nightFeedFlowTemperature}
-                    onChange={(inputValue: ChangeEvent<HTMLInputElement>) => {
-                      const updatedValues = values.temperatureNormativesArr.map(
-                        (temperatureNormative) => {
-                          if (temperatureNormative.id !== data.id) {
-                            return temperatureNormative;
-                          } else {
-                            return {
-                              ...temperatureNormative,
-                              nightFeedFlowTemperature: Number(
-                                inputValue.target.value,
-                              ),
-                            };
-                          }
-                        },
-                      );
-
-                      setFieldValue('temperatureNormativesArr', updatedValues);
-                    }}
-                    onBlur={(onBlurData: ChangeEvent<HTMLInputElement>) => {
-                      const currentTemperatureNormative =
-                        values.temperatureNormativesArr.find(
-                          (temperatureNormative) =>
-                            temperatureNormative.id === data.id,
-                        )!;
-
-                      if (
-                        currentTemperatureNormative.dayFeedFlowTemperature <
-                        Number(onBlurData.target.value)
-                      ) {
-                        return message.error('AAAA');
-                      }
-                    }}
-                  />
-                </InputsContainer>
-              ) : (
-                <WrapperTime>
-                  <div>{data.dayFeedFlowTemperature}</div>
-                  <div>{data.nightFeedFlowTemperature}</div>
-                </WrapperTime>
+              renderDoubledColumns(
+                data,
+                ETemteratureTypes.dayFeedFlowTemperature,
+                ETemteratureTypes.nightFeedFlowTemperature,
               ),
           },
           {
@@ -145,24 +156,13 @@ export const TemperatureGraph: FC<TemperatureGraphProps> = ({
                   type="number"
                   suffix={<WrapperCelsius>°C</WrapperCelsius>}
                   value={data.heatFeedFlowTemperature}
-                  onChange={(inputValue) => {
-                    const updatedValues = values.temperatureNormativesArr.map(
-                      (temperatureNormative) => {
-                        if (temperatureNormative.id !== data.id) {
-                          return temperatureNormative;
-                        } else {
-                          return {
-                            ...temperatureNormative,
-                            heatFeedFlowTemperature: Number(
-                              inputValue.target.value,
-                            ),
-                          };
-                        }
-                      },
-                    );
-
-                    setFieldValue('temperatureNormativesArr', updatedValues);
-                  }}
+                  onChange={(inputValue) =>
+                    handleChangeInput(
+                      inputValue,
+                      data,
+                      ETemteratureTypes.heatFeedFlowTemperature,
+                    )
+                  }
                 />
               ) : (
                 <WrapperValue>{data.heatFeedFlowTemperature}</WrapperValue>
@@ -184,60 +184,10 @@ export const TemperatureGraph: FC<TemperatureGraphProps> = ({
             ),
             size: '280px',
             render: (data) =>
-              isEditing ? (
-                <InputsContainer>
-                  <InputSc
-                    type="number"
-                    suffix={<WrapperCelsius>°C</WrapperCelsius>}
-                    value={data.dayFeedBackFlowTemperature}
-                    onChange={(inputValue) => {
-                      const updatedValues = values.temperatureNormativesArr.map(
-                        (temperatureNormative) => {
-                          if (temperatureNormative.id !== data.id) {
-                            return temperatureNormative;
-                          } else {
-                            return {
-                              ...temperatureNormative,
-                              dayFeedBackFlowTemperature: Number(
-                                inputValue.target.value,
-                              ),
-                            };
-                          }
-                        },
-                      );
-
-                      setFieldValue('temperatureNormativesArr', updatedValues);
-                    }}
-                  />
-                  <InputSc
-                    type="number"
-                    suffix={<WrapperCelsius>°C</WrapperCelsius>}
-                    value={data.nightFeedBackFlowTemperature}
-                    onChange={(inputValue) => {
-                      const updatedValues = values.temperatureNormativesArr.map(
-                        (temperatureNormative) => {
-                          if (temperatureNormative.id !== data.id) {
-                            return temperatureNormative;
-                          } else {
-                            return {
-                              ...temperatureNormative,
-                              nightFeedBackFlowTemperature: Number(
-                                inputValue.target.value,
-                              ),
-                            };
-                          }
-                        },
-                      );
-
-                      setFieldValue('temperatureNormativesArr', updatedValues);
-                    }}
-                  />
-                </InputsContainer>
-              ) : (
-                <WrapperTime>
-                  <div>{data.dayFeedBackFlowTemperature}</div>
-                  <div>{data.nightFeedBackFlowTemperature}</div>
-                </WrapperTime>
+              renderDoubledColumns(
+                data,
+                ETemteratureTypes.dayFeedBackFlowTemperature,
+                ETemteratureTypes.nightFeedBackFlowTemperature,
               ),
           },
         ]}

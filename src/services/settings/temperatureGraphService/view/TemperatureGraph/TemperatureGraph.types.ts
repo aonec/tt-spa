@@ -1,7 +1,15 @@
-import { TemperatureNormativeResponse } from 'api/types';
+import { TemperatureNormativeRow } from 'api/types';
 
 export type TemperatureGraphProps = {
-  temperatureNormative: TemperatureNormativeResponse[];
+  temperatureNormative: TemperatureNormativeRow[];
   isEditing: boolean;
   handleEditTemperatureNormative: (payload: boolean) => void;
 };
+
+export enum ETemteratureTypes {
+  dayFeedFlowTemperature = 'dayFeedFlowTemperature',
+  nightFeedFlowTemperature = 'nightFeedFlowTemperature',
+  dayFeedBackFlowTemperature = 'dayFeedBackFlowTemperature',
+  nightFeedBackFlowTemperature = 'nightFeedBackFlowTemperature',
+  heatFeedFlowTemperature = 'heatFeedFlowTemperature',
+}

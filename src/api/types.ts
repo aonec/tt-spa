@@ -6175,10 +6175,27 @@ export interface TasksPagedListSuccessApiResponse {
   successResponse: TasksPagedList | null;
 }
 
-export interface TemperatureNormativeResponse {
-  /** @format int32 */
-  id: number;
+export interface TemperatureNormativeRow {
+  /** @format double */
+  outdoorTemperature?: number;
 
+  /** @format double */
+  dayFeedFlowTemperature?: number;
+
+  /** @format double */
+  nightFeedFlowTemperature?: number;
+
+  /** @format double */
+  dayFeedBackFlowTemperature?: number;
+
+  /** @format double */
+  nightFeedBackFlowTemperature?: number;
+
+  /** @format double */
+  heatFeedFlowTemperature?: number;
+}
+
+export interface TemperatureNormativeRowUpdate {
   /** @format double */
   outdoorTemperature: number;
 
@@ -6198,28 +6215,16 @@ export interface TemperatureNormativeResponse {
   heatFeedFlowTemperature: number;
 }
 
-export interface TemperatureNormativeUpdateRequest {
-  /** @format int32 */
-  id?: number;
-
-  /** @format double */
-  dayFeedFlowTemperature: number;
-
-  /** @format double */
-  nightFeedFlowTemperature: number;
-
-  /** @format double */
-  dayFeedBackFlowTemperature: number;
-
-  /** @format double */
-  nightFeedBackFlowTemperature: number;
-
-  /** @format double */
-  heatFeedFlowTemperature: number;
+export interface TemperatureNormativeResponse {
+  rows: TemperatureNormativeRow[] | null;
 }
 
-export interface TemperatureNormativeResponseIEnumerableSuccessApiResponse {
-  successResponse: TemperatureNormativeResponse[] | null;
+export interface TemperatureNormativeResponseSuccessApiResponse {
+  successResponse: TemperatureNormativeResponse | null;
+}
+
+export interface TemperatureNormativeUpdateRequest {
+  updateRows?: TemperatureNormativeRowUpdate[] | null;
 }
 
 export interface TimeSpan {
@@ -14609,19 +14614,16 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li>
+     * @description Роли:<li>Администратор</li>
      *
      * @tags TemperatureNormative
      * @name TemperatureNormativeList
-     * @summary ResourceDisconnectingRead
+     * @summary TemperatureNormativeRead
      * @request GET:/api/TemperatureNormative
      * @secure
      */
     temperatureNormativeList: (params: RequestParams = {}) =>
-      this.request<
-        TemperatureNormativeResponseIEnumerableSuccessApiResponse,
-        any
-      >({
+      this.request<TemperatureNormativeResponseSuccessApiResponse, any>({
         path: `/api/TemperatureNormative`,
         method: 'GET',
         secure: true,
@@ -14634,7 +14636,7 @@ export class Api<
      *
      * @tags TemperatureNormative
      * @name TemperatureNormativeUpdate
-     * @summary ResourceDisconnectingUpdate
+     * @summary TemperatureNormativeWrite
      * @request PUT:/api/TemperatureNormative
      * @secure
      */
@@ -14642,12 +14644,16 @@ export class Api<
       data: TemperatureNormativeUpdateRequest,
       params: RequestParams = {},
     ) =>
-      this.request<any, ErrorApiResponse>({
+      this.request<
+        TemperatureNormativeResponseSuccessApiResponse,
+        ErrorApiResponse
+      >({
         path: `/api/TemperatureNormative`,
         method: 'PUT',
         body: data,
         secure: true,
         type: ContentType.Json,
+        format: 'json',
         ...params,
       }),
   };
