@@ -111,13 +111,13 @@ export const IndividualDeviceProfile: FC<Props> = ({ device }) => {
                     },
                     {
                       key: 'Магнитная пломба',
-                      value: device.magneticSealTypeName,
+                      value: device.sealNumber,
                     },
                     {
                       key: 'Дата установки пломбы',
                       value:
-                        device.magneticSealInstallationDate &&
-                        moment(device.magneticSealInstallationDate).format(
+                        device.sealInstallationDate &&
+                        moment(device.sealInstallationDate).format(
                           'DD.MM.YYYY',
                         ),
                     },
