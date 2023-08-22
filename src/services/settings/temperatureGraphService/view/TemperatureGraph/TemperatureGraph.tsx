@@ -20,12 +20,17 @@ import {
 } from './TemperatureGraph.styled';
 import { CriticalTemperaturePanel } from '../criticalTemperatureDeviationService/view/CriticalTemperaturePanel';
 import { Button } from 'ui-kit/Button';
-import { TemperatureNormativeRow } from 'api/types';
+import {
+  TemperatureNormativeRow,
+  TemperatureNormativeUpdateRequest,
+} from 'api/types';
 
 export const TemperatureGraph: FC<TemperatureGraphProps> = ({
   temperatureNormative: initialTemperatureNormatives,
   isEditing,
   handleEditTemperatureNormative,
+  setEditedTemperatureNormative,
+  isLoading,
 }) => {
   const { values, setFieldValue, handleSubmit, handleReset } = useFormik<{
     temperatureNormativesArr: TemperatureNormativeRow[];
@@ -34,6 +39,11 @@ export const TemperatureGraph: FC<TemperatureGraphProps> = ({
     enableReinitialize: true,
     onSubmit: (data) => {
       console.log(data);
+      const { temperatureNormativesArr } = data;
+      const requestData = {
+        updateRows: temperatureNormativesArr,
+      } as TemperatureNormativeUpdateRequest;
+      setEditedTemperatureNormative(requestData);
     },
   });
 
@@ -205,7 +215,11 @@ export const TemperatureGraph: FC<TemperatureGraphProps> = ({
           >
             Отмена
           </Button>
-          <Button type="primary" onClick={() => handleSubmit()}>
+          <Button
+            type="primary"
+            isLoading={isLoading}
+            onClick={() => handleSubmit()}
+          >
             Сохранить
           </Button>
         </Footer>

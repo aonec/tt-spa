@@ -10,4 +10,5 @@ export const getTemperatureNormative =
 
 export const putTemperatureNormative = (
   data: TemperatureNormativeUpdateRequest,
-): Promise<any> => axios.put('/TemperatureNormative', data);
+): Promise<TemperatureNormativeResponse> =>
+  axios.put('/TemperatureNormative', data);

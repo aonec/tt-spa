@@ -1,9 +1,16 @@
-import { TemperatureNormativeRow } from 'api/types';
+import {
+  TemperatureNormativeRow,
+  TemperatureNormativeUpdateRequest,
+} from 'api/types';
 
 export type TemperatureGraphProps = {
   temperatureNormative: TemperatureNormativeRow[];
   isEditing: boolean;
   handleEditTemperatureNormative: (payload: boolean) => void;
+  setEditedTemperatureNormative: (
+    payload: TemperatureNormativeUpdateRequest,
+  ) => void;
+  isLoading: boolean;
 };
 
 export enum ETemteratureTypes {
