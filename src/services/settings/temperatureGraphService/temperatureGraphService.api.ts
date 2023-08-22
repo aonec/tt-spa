@@ -4,9 +4,9 @@ import {
   TemperatureNormativeUpdateRequest,
 } from 'api/types';
 
-export const getTemperatureNormative = (): Promise<
-  TemperatureNormativeResponse[]
-> => axios.get('/TemperatureNormative');
+export const getTemperatureNormative =
+  (): Promise<TemperatureNormativeResponse> =>
+    axios.get('/TemperatureNormative');
 
 export const putTemperatureNormative = (
   data: TemperatureNormativeUpdateRequest,

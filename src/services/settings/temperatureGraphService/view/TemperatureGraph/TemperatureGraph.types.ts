@@ -1,7 +1,7 @@
-import { TemperatureNormativeResponse } from 'api/types';
+import { TemperatureNormativeRow } from 'api/types';
 
 export type TemperatureGraphProps = {
-  temperatureNormative: TemperatureNormativeResponse[];
+  temperatureNormative: TemperatureNormativeRow[];
   isEditing: boolean;
   handleEditTemperatureNormative: (payload: boolean) => void;
 };
