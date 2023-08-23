@@ -9,7 +9,7 @@ import { NodesListRequestPayload } from './displayDevicesService.types';
 export const getNodesListQuery = createQuery({
   effect: createEffect<NodesListRequestPayload, NodesPagedList>(
     async (params) =>
-      await axios.get(`Nodes`, {
+      await axios.get('Nodes', {
         params,
         paramsSerializer: (params) => {
           return queryString.stringify(params);

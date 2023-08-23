@@ -1,6 +1,5 @@
 import React, { FC, useCallback, useMemo } from 'react';
 import styles from './DeviceSearchForm.module.scss';
-import _ from 'lodash';
 import {
   FlexCenterRow,
   StyledForm,
@@ -40,26 +39,21 @@ export const SearchDevices: FC<SearchDevicesProps> = ({
   handleClear,
   isSearchError,
 }) => {
-  const { marks, maxValue, minValue, diameters } = diametersConfig;
+  const { marks, maxValue, minValue } = diametersConfig;
 
   const handleChangeRange = useCallback(
     (value: [number, number]) => {
-      const firstIndex = diameters.findIndex((elem) => elem === value[0]);
-      const secondIndex = diameters.findIndex((elem) => elem === value[1]) + 1;
-
-      setFieldValue(
-        "['DevicesFilter.PipeDiameters']",
-        diameters.slice(firstIndex, secondIndex),
-      );
+      setFieldValue("['DevicesFilter.DiameterRange.From']", value[0]);
+      setFieldValue("['DevicesFilter.DiameterRange.To']", value[1]);
 
       setTimeout(() => submitForm(), 1000);
     },
-    [setFieldValue, diameters, submitForm],
+    [setFieldValue, submitForm],
   );
 
   const rangeValues: [number, number] = useMemo(() => {
-    const first = _.first(values['DevicesFilter.PipeDiameters']);
-    const last = _.last(values['DevicesFilter.PipeDiameters']);
+    const first = values['DevicesFilter.DiameterRange.From'];
+    const last = values['DevicesFilter.DiameterRange.To'];
 
     return [first || minValue, last || maxValue];
   }, [values, minValue, maxValue]);

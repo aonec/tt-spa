@@ -5,7 +5,6 @@ import {
   StyledSlider,
   StyledFormThreeRows,
 } from './DevicesProfile.styled';
-import _ from 'lodash';
 import type { Moment } from 'moment';
 import moment from 'moment';
 import { AddressSearchContainer } from 'services/addressSearchService';
@@ -25,30 +24,25 @@ export const ExtendedSearchForm: FC<{
   setFieldValue: (field: string, value: any, shouldValidate?: boolean) => void;
   diametersConfig: DiamtersConfig;
 }> = ({ values, setFieldValue, diametersConfig }) => {
-  const { marks, maxValue, minValue, diameters } = diametersConfig;
+  const { marks, maxValue, minValue } = diametersConfig;
 
   type RangeValue = [Moment | null, Moment | null] | null;
 
   const dateFormat = 'YYYY-MM-DD';
 
   const rangeValues: [number, number] = useMemo(() => {
-    const first = _.first(values['DevicesFilter.PipeDiameters']);
-
-    const last = _.last(values['DevicesFilter.PipeDiameters']);
+    const first = values['DevicesFilter.DiameterRange.From'];
+    const last = values['DevicesFilter.DiameterRange.To'];
 
     return [first || minValue, last || maxValue];
   }, [values, maxValue, minValue]);
 
   const handleChangeRange = useCallback(
     (value: [number, number]) => {
-      const firstIndex = diameters.findIndex((elem) => elem === value[0]);
-      const secondIndex = diameters.findIndex((elem) => elem === value[1]) + 1;
-      setFieldValue(
-        "['DevicesFilter.PipeDiameters']",
-        diameters.slice(firstIndex, secondIndex),
-      );
+      setFieldValue("['DevicesFilter.DiameterRange.From']", value[0]);
+      setFieldValue("['DevicesFilter.DiameterRange.To']", value[1]);
     },
-    [diameters, setFieldValue],
+    [setFieldValue],
   );
 
   return (
