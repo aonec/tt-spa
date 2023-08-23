@@ -110,7 +110,7 @@ export const IndividualDeviceProfile: FC<Props> = ({ device }) => {
                       ),
                     },
                     {
-                      key: 'Магнитная пломба',
+                      key: 'Пломба',
                       value: device.sealNumber,
                     },
                     {
