@@ -3,13 +3,9 @@ import { useUnit } from 'effector-react';
 import { useHistory, useLocation, useParams } from 'react-router-dom';
 import { TabsSC } from './SettingPage.styled';
 import { SettingPageProps } from './SettingPage.types';
-import { chooseTypeOfResourceDisconnectionModalService } from 'services/resources/chooseTypeOfResourceDisconnectionModalService';
 import { inspectorAddressesResetService } from 'services/settings/inspectorsDistributionService/inspectorAddressesResetService/inspectorAddressesResetService.models';
-import { ResourceDisablingScheduleContainer } from 'services/settings/resourcesDisablingScheduleService/ResourceDisablingScheduleContainer';
 import { InspectorsDistributionPage } from 'services/settings/inspectorsDistributionService/views/InspectorsDistributionPage';
 import { InspectorAddressesResetModalContainer } from 'services/settings/inspectorsDistributionService/inspectorAddressesResetService/InspectorAddressesResetModalContainer';
-import { CreateResourceDisconnectionContainer } from 'services/resources/createResourceDisconnectionService';
-import { ChooseTypeOfResourceDisconnectionModalContainer } from 'services/resources/chooseTypeOfResourceDisconnectionModalService/chooseTypeOfResourceDisconnectionModalService.container';
 import { PageHeader } from 'ui-kit/shared/PageHeader';
 import { WorkingRangeTab } from 'services/workingRanges/WorkingRangeTab';
 import { DistrictBordersContainer } from 'services/settings/districtBordersService';
@@ -29,13 +25,7 @@ export const SettingPage: FC<SettingPageProps> = ({
 
   const menuButtons = useMemo(() => {
     if (adminSettings) {
-      return [
-        {
-          title: 'Создать отключение ресурса',
-          onClick:
-            chooseTypeOfResourceDisconnectionModalService.inputs.openModal,
-        },
-      ];
+      return [];
     }
     return [
       {
@@ -53,12 +43,6 @@ export const SettingPage: FC<SettingPageProps> = ({
     if (adminSettings) {
       return (
         <>
-          <TabsSC.TabPane
-            tab="График отключения ресурсов"
-            key="disabledResources"
-          >
-            <ResourceDisablingScheduleContainer />
-          </TabsSC.TabPane>
           {featureToggles.workingRanges && (
             <TabsSC.TabPane tab="Рабочие диапазоны узлов" key="operatingRanges">
               <WorkingRangeTab />
@@ -100,8 +84,6 @@ export const SettingPage: FC<SettingPageProps> = ({
   return (
     <>
       <InspectorAddressesResetModalContainer />
-      <CreateResourceDisconnectionContainer />
-      <ChooseTypeOfResourceDisconnectionModalContainer />
 
       <PageHeader
         title="Настройки"
