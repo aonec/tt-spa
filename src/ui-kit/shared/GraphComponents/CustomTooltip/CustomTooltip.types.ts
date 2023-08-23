@@ -5,4 +5,7 @@ export type CustomTooltipProps = VictoryTooltipProps & {
   maxValue: number;
   height: number;
   datum?: { value: number | null };
+  scale?: {
+    y: (y: number) => number;
+  };
 };
