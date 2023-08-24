@@ -7,14 +7,7 @@ export const devUrl = 'https://stage.k8s.transparent-technology.ru/api/';
 
 export const baseURL = process.env.REACT_APP_API_URL || devUrl;
 
-// eslint-disable-next-line no-console
-console.log(
-  process.env.DEV_SETTINGS,
-  process.env,
-  process.env.DEV_SETTINGS !== 'DISABLED',
-);
-
-export const isDevMode = process.env.DEV_SETTINGS !== 'DISABLED';
+export const isDevMode = false;
 
 axios.defaults.baseURL = baseURL;
 
