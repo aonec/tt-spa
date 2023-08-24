@@ -4,12 +4,14 @@ import { createGate } from 'effector-react';
 import { ResourceDisconnectingResponsePagedList } from 'api/types';
 import { DisablingResourcesProps } from './ResourceDisablingScheduleContainer.types';
 import { fetchDisablingResources } from './ResourcesDisablingScheduleService.api';
+import { addressSearchService } from 'services/addressSearchService/addressSearchService.models';
+import _ from 'lodash';
 
 const domain = createDomain('ResourceDisablingScheduleService');
 
 const resourceDisablingGate = createGate<DisablingResourcesProps>();
 
-const applyFilters = domain.createEvent<DisablingResourcesProps>();
+const setFilters = domain.createEvent<DisablingResourcesProps>();
 const setPage = domain.createEvent<number>();
 
 const refetchResourceDisconnections = domain.createEvent();
@@ -24,9 +26,8 @@ const $disablingResources = domain
 
 const $filters = domain
   .createStore<DisablingResourcesProps>({ PageSize: 12 })
-  .on(applyFilters, (oldFilters, filters) => {
+  .on(setFilters, (_, filters) => {
     return {
-      ...oldFilters,
       ...filters,
       PageNumber: 1,
     };
@@ -40,7 +41,15 @@ sample({
   source: $filters,
   clock: [resourceDisablingGate.open, $filters, refetchResourceDisconnections],
   fn: (filters) => filters,
+  filter: (filters) => Boolean(filters.City),
   target: getResourceDisconnectionsFx,
+});
+
+sample({
+  clock: addressSearchService.outputs.$existingCities,
+  filter: Boolean,
+  fn: (cities) => ({ City: _.last(cities) }),
+  target: setFilters,
 });
 
 sample({
@@ -58,7 +67,7 @@ const $loading = getResourceDisconnectionsFx.pending;
 
 export const resourceDisablingScheduleServiceService = {
   inputs: {
-    applyFilters,
+    setFilters,
     setPage,
     refetchResourceDisconnections,
   },
