@@ -14,4 +14,5 @@ export type ClosedIndividualDevicesFormProps = {
   selectedCity: string | null;
   selectCity: (city: string) => void;
   existingCities: string[];
+  handleFetchHousingStockData: (payload: number) => void;
 };
