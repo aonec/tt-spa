@@ -1,6 +1,7 @@
 import { axios } from 'api/axios';
 import {
   HouseManagementResponse,
+  HousingStockResponse,
   OrganizationResponsePagedList,
   StreetWithBuildingNumbersResponsePagedList,
 } from 'api/types';
@@ -11,6 +12,12 @@ export const getAdresses = (
   return axios.get('Buildings/ExistingStreetsWithBuildingNumbers', {
     params: { city },
   });
+};
+
+export const getHousingStockData = (
+  housingStockId: number,
+): Promise<HousingStockResponse> => {
+  return axios.get(`HousingStocks/${housingStockId}`);
 };
 
 export const getOrganizations = (): Promise<OrganizationResponsePagedList> => {

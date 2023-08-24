@@ -67,7 +67,11 @@ export const AddressIdSearch: FC<AddressIdSearchProps> = ({
           data-search-input={addressIdSearchKey}
           data-reading-input={dataKey}
           autoComplete="off"
-          onChange={(e) => setAddress({ Street: e.currentTarget.value })}
+          onChange={(e) =>
+            setAddress({
+              Street: e.currentTarget.value,
+            })
+          }
           value={addressFilter.Street || ''}
           style={{
             borderLeft: 'none',

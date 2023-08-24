@@ -63,6 +63,8 @@ export const form = createForm({
   },
 });
 
+sample({ clock: openModalButtonClicked, target: form.reset });
+
 sample({
   clock: reportsListService.inputs.openExistedReport,
   fn: (values) => {
