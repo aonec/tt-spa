@@ -23,6 +23,7 @@ import { Select } from 'ui-kit/Select';
 import { Input } from 'ui-kit/Input';
 import { ClearIconSC } from 'ui-kit/ExtendedSearch/ExtendedSearch.styled';
 import { Button } from 'ui-kit/Button';
+import _ from 'lodash';
 
 const { Option } = Select;
 
@@ -39,21 +40,26 @@ export const SearchDevices: FC<SearchDevicesProps> = ({
   handleClear,
   isSearchError,
 }) => {
-  const { marks, maxValue, minValue } = diametersConfig;
+  const { marks, maxValue, minValue, diameters } = diametersConfig;
 
   const handleChangeRange = useCallback(
     (value: [number, number]) => {
-      setFieldValue("['DevicesFilter.DiameterRange.From']", value[0]);
-      setFieldValue("['DevicesFilter.DiameterRange.To']", value[1]);
+      const firstIndex = diameters.findIndex((elem) => elem === value[0]);
+      const secondIndex = diameters.findIndex((elem) => elem === value[1]) + 1;
+
+      setFieldValue(
+        "['DevicesFilter.PipeDiameters']",
+        diameters.slice(firstIndex, secondIndex),
+      );
 
       setTimeout(() => submitForm(), 1000);
     },
-    [setFieldValue, submitForm],
+    [setFieldValue, submitForm, diameters],
   );
 
   const rangeValues: [number, number] = useMemo(() => {
-    const first = values['DevicesFilter.DiameterRange.From'];
-    const last = values['DevicesFilter.DiameterRange.To'];
+    const first = _.first(values['DevicesFilter.PipeDiameters']);
+    const last = _.last(values['DevicesFilter.PipeDiameters']);
 
     return [first || minValue, last || maxValue];
   }, [values, minValue, maxValue]);
