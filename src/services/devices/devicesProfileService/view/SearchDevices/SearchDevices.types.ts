@@ -1,5 +1,5 @@
 import { CalculatorsListRequestPayload } from 'services/calculators/calculatorsListService/calculatorsListService.types';
-import { FormEvent } from 'react';
+import { FormEvent, ReactNode } from 'react';
 import { DiamtersConfig } from 'services/currentUserService/currentUserService.types';
 import { DevicesSearchType } from 'services/devices/devicesPageService/devicesPageService.types';
 
@@ -18,4 +18,5 @@ export type SearchDevicesProps = {
   serialNumber: string;
   handleClear: () => void;
   isSearchError: boolean;
+  children?: ReactNode;
 };

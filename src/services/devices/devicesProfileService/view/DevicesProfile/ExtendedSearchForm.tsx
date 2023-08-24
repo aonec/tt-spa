@@ -7,8 +7,7 @@ import {
   StyledFormThreeRows,
 } from './DevicesProfile.styled';
 import _ from 'lodash';
-import type { Moment } from 'moment';
-import moment from 'moment';
+import dayjs from 'api/dayjs';
 import { AddressSearchContainer } from 'services/addressSearchService';
 import { SearchFieldType } from 'services/addressSearchService/view/AddressSearch/AddressSearch.types';
 import { DeviceAddressSearchFieldsNameLookup } from './DevicesProfile.constants';
@@ -16,6 +15,7 @@ import { DiamtersConfig } from 'services/currentUserService/currentUserService.t
 import { FormItem } from 'ui-kit/FormItem';
 import { Select } from 'ui-kit/Select';
 import { RangePicker } from 'ui-kit/RangePicker';
+import { Dayjs } from 'dayjs';
 
 const { Option } = Select;
 
@@ -26,7 +26,7 @@ export const ExtendedSearchForm: FC<{
 }> = ({ values, setFieldValue, diametersConfig }) => {
   const { marks, maxValue, minValue, diameters } = diametersConfig;
 
-  type RangeValue = [Moment | null, Moment | null] | null;
+  type RangeValue = [Dayjs | null, Dayjs | null] | null;
 
   const dateFormat = 'YYYY-MM-DD';
 
@@ -147,13 +147,10 @@ export const ExtendedSearchForm: FC<{
               small
               value={[
                 values['Filter.CommercialDateRange.From']
-                  ? moment(
-                      values['Filter.CommercialDateRange.From'],
-                      dateFormat,
-                    )
+                  ? dayjs(values['Filter.CommercialDateRange.From'], dateFormat)
                   : null,
                 values['Filter.CommercialDateRange.To']
-                  ? moment(values['Filter.CommercialDateRange.To'], dateFormat)
+                  ? dayjs(values['Filter.CommercialDateRange.To'], dateFormat)
                   : null,
               ]}
               onChange={(value: RangeValue): void => {

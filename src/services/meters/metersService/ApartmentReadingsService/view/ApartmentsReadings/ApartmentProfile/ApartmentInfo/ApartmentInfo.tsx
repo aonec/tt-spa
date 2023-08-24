@@ -29,7 +29,7 @@ import { ApartmentInfoProps } from './ApartmentInfo.types';
 import { ContextMenuButton } from 'ui-kit/ContextMenuButton/ContextMenuButton';
 import { getApartmentAddressString } from 'utils/getApartmentAddress';
 import { BriefcaseIcon, CrownIcon, HouseIcon, InfoIcon } from 'ui-kit/icons';
-import moment from 'moment';
+import dayjs from 'api/dayjs';
 import { apartmentInfoService } from './ApartmentInfo.model';
 import { PrintApartmentDevicesCertificateContainer } from 'services/apartments/printApartmentDevicesCertificateService';
 import { EditHomeownerField } from './EditHomeownerField';
@@ -92,7 +92,7 @@ export const ApartmentInfo: FC<ApartmentInfoProps> = ({
     return `${phoneNumber} ${information}`;
   }, [houseManagement]);
 
-  const accountingOpeningDate = `открыт с ${moment(
+  const accountingOpeningDate = `открыт с ${dayjs(
     selectedHomeowner?.openAt,
   ).format('DD.MM.YYYY')}`;
 
@@ -198,7 +198,7 @@ export const ApartmentInfo: FC<ApartmentInfoProps> = ({
 
                           <SubText>
                             Дата изменения:{' '}
-                            {moment(selectedHomeowner?.editedAt).format(
+                            {dayjs(selectedHomeowner?.editedAt).format(
                               'DD.MM.YYYY',
                             )}
                           </SubText>

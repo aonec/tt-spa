@@ -1,4 +1,4 @@
-import { ReactElement } from 'react';
+import { ReactElement, ReactNode } from 'react';
 
 export type ExtendedSearchProps = {
   isOpen?: boolean;
@@ -10,4 +10,5 @@ export type ExtendedSearchProps = {
   disabled?: boolean;
   isShowClearButton?: boolean;
   title?: string;
+  children?: ReactNode;
 };

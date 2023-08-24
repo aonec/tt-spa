@@ -1,8 +1,8 @@
-import moment from 'moment';
+import dayjs from 'api/dayjs';
 import { firstLetterToUpperCase } from 'utils/firstLetterToUpperCase';
 
 export const getReadingMonth = (readingDate: string) => {
-  const month = moment(readingDate).subtract(-1, 'months').format('MMMM');
+  const month = dayjs(readingDate).subtract(-1, 'months').format('MMMM');
 
   return firstLetterToUpperCase(month);
 };

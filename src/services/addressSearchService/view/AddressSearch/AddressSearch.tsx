@@ -44,7 +44,7 @@ export const AddressSearch: FC<AddressSearchProps> = ({
       onKeyDown={fromEnter(() => next(index))}
       data-reading-input={dataKey}
       onChange={(value) => {
-        handleChange(SearchFieldType.City, value.toString());
+        handleChange(SearchFieldType.City, String(value));
 
         handleSubmit();
       }}
@@ -67,7 +67,7 @@ export const AddressSearch: FC<AddressSearchProps> = ({
       data-reading-input={dataKey}
       value={values.street || ''}
       onChange={(value) => {
-        handleChange(SearchFieldType.Street, value.toString());
+        handleChange(SearchFieldType.Street, String(value));
       }}
       onKeyDown={fromEnter(() => {
         if (values.street && streetMatch)

@@ -1,5 +1,5 @@
 import { Tooltip } from 'antd';
-import moment from 'moment';
+import dayjs from 'api/dayjs';
 import React, { FC } from 'react';
 import { LineSegment } from 'victory';
 import { TickWrapper } from './DeviceGraphTick.styled';
@@ -41,7 +41,7 @@ export const DeviceGraphTick: FC<DeviceGraphTickProps> = ({
 
   return (
     <g>
-      <Tooltip title={moment(currentMonth).format('MMMM')}>
+      <Tooltip title={dayjs(currentMonth).format('MMMM')}>
         <g>
           {tick}
           <TickWrapper

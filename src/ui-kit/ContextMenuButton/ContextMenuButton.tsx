@@ -91,9 +91,9 @@ export const ContextMenuButton: FC<ContextMenuButtonProps> = (props) => {
       <Dropdown
         overlay={menu}
         disabled={disabled}
-        visible={isVisible}
+        open={isVisible}
         trigger={['click']}
-        onVisibleChange={(visible) => setIsVisible(visible)}
+        onOpenChange={(visible) => setIsVisible(visible)}
       >
         <StyledMenuButton size={size} onClick={() => setIsVisible(true)}>
           <MoreIcon />

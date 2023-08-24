@@ -1,6 +1,6 @@
 import { Form } from 'antd';
 import { useFormik } from 'formik';
-import moment from 'moment';
+import dayjs from 'api/dayjs';
 import { EActResourceType, EActType, EDocumentType } from 'api/types';
 import React, { FC, SyntheticEvent, useState } from 'react';
 import { ResourceInfo } from 'ui-kit/shared/ResourceInfo';
@@ -57,8 +57,8 @@ export const CreateApartmentActForm: FC<CreateApartmentActFormProps> = ({
         <Form.Item label="Дата">
           <DatePickerSC
             format="DD.MM.YYYY"
-            onChange={(e) => setFieldValue('actJobDate', e?.toISOString(true))}
-            value={values.actJobDate ? moment(values.actJobDate) : null}
+            onChange={(e) => setFieldValue('actJobDate', e?.format())}
+            value={values.actJobDate ? dayjs(values.actJobDate) : null}
           />
           <ErrorMessage>{errors.actJobDate}</ErrorMessage>
         </Form.Item>

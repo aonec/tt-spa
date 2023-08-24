@@ -1,4 +1,4 @@
-import moment from 'moment';
+import dayjs from 'api/dayjs';
 import { IndividualDeviceReadingsResponse } from 'api/types';
 import { EIndividualDeviceRateType } from 'api/types';
 import { rateNums } from './MetersInputsBlock.constants';
@@ -25,8 +25,8 @@ export function getBufferedValuesValueKey(index: number) {
 }
 
 export const getDateByReadingMonthSlider = (sliderIndex: number) => {
-  return moment()
+  return dayjs()
     .subtract(sliderIndex + 1, 'months')
     .set('D', 15)
-    .toISOString(true);
+    .format();
 };

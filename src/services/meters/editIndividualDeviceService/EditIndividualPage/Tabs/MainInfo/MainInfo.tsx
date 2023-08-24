@@ -14,7 +14,7 @@ import { MainInfoProps } from './MainInfo.types';
 import { FormItem } from 'ui-kit/FormItem';
 import { Select } from 'ui-kit/Select';
 import { UpdateIndividualDeviceRequest } from 'api/types';
-import moment from 'moment';
+import dayjs from 'api/dayjs';
 import { ResourceNamesDictionary } from 'dictionaries';
 import { ResourceIconLookup } from 'ui-kit/shared/ResourceIconLookup';
 import { Input } from 'ui-kit/Input';
@@ -55,13 +55,11 @@ export const MainInfo: FC<MainInfoProps> = ({
       bitDepth: bitDepth,
       scaleFactor: scaleFactor,
       isPolling: isPolling,
-      lastCheckingDate: lastCheckingDate ? moment(lastCheckingDate) : null,
-      futureCheckingDate: futureCheckingDate
-        ? moment(futureCheckingDate)
-        : null,
+      lastCheckingDate: lastCheckingDate ? dayjs(lastCheckingDate) : null,
+      futureCheckingDate: futureCheckingDate ? dayjs(futureCheckingDate) : null,
       sealNumber: sealNumber,
       sealInstallationDate: sealInstallationDate
-        ? moment(sealInstallationDate)
+        ? dayjs(sealInstallationDate)
         : null,
     },
     enableReinitialize: true,
@@ -73,10 +71,10 @@ export const MainInfo: FC<MainInfoProps> = ({
         bitDepth: Number(data.bitDepth),
         scaleFactor: Number(data.scaleFactor),
         sealNumber: data.sealNumber,
-        sealInstallationDate: moment(
+        sealInstallationDate: dayjs(
           values.sealInstallationDate,
           'DD.MM.YYYY',
-        ).toISOString(true),
+        ).format(),
         mountPlaceId: data.mountPlaceId,
         isPolling: data.isPolling,
       };
@@ -179,14 +177,14 @@ export const MainInfo: FC<MainInfoProps> = ({
       <FormItem label="Дата поверки">
         <DatePicker
           disabled
-          value={moment(values.lastCheckingDate)}
+          value={dayjs(values.lastCheckingDate)}
           format="DD.MM.YYYY"
         />
       </FormItem>
       <FormItem label="Дата Следующей поверки">
         <DatePicker
           disabled
-          value={moment(values.futureCheckingDate)}
+          value={dayjs(values.futureCheckingDate)}
           format="DD.MM.YYYY"
         />
       </FormItem>

@@ -69,7 +69,7 @@ export const FormModal: React.FC<FormModalProps> = ({
   return (
     <StyledModal
       {...innerProps}
-      visible={visible}
+      open={visible}
       onCancel={onCancel}
       title={<Header>{title}</Header>}
       footer={customFooter || DefaultModalFooter}

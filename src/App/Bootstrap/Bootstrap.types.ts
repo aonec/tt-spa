@@ -1,6 +1,5 @@
 import { ReactNode } from 'react';
 
-export type WithLoaderProps = {
-  isLoading: boolean;
+export type BootstrapProps = {
   children?: ReactNode;
 };

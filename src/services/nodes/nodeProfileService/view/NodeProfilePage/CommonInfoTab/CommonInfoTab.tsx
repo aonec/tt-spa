@@ -1,5 +1,5 @@
 import React, { FC, useMemo } from 'react';
-import moment from 'moment';
+import dayjs from 'api/dayjs';
 import { NodeStatusIconsDictionary } from 'services/devices/resourceAccountingSystemsService/view/ResourceAccountingSystems/NodesGroup/NodeItem/NodeStatus/NodeStatus.constants';
 import { CommonInfo } from 'ui-kit/shared/CommonInfo';
 import { getBuildingAddress } from 'utils/getBuildingAddress';
@@ -80,14 +80,14 @@ export const CommonInfoTab: FC<CommonInfoTabProps> = ({ pipeNode }) => {
           hidden: !isNodeCommercial,
           value:
             pipeNode?.lastCommercialAccountingDate &&
-            moment(pipeNode?.lastCommercialAccountingDate).format('DD.MM.YYYY'),
+            dayjs(pipeNode?.lastCommercialAccountingDate).format('DD.MM.YYYY'),
         },
         {
           key: 'Дата окончания действия акта-допуска',
           hidden: !isNodeCommercial,
           value:
             pipeNode?.futureCommercialAccountingDate &&
-            moment(pipeNode?.futureCommercialAccountingDate).format(
+            dayjs(pipeNode?.futureCommercialAccountingDate).format(
               'DD.MM.YYYY',
             ),
         },

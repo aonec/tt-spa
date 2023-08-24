@@ -1,4 +1,4 @@
-import moment from 'moment';
+import dayjs from 'api/dayjs';
 import { EPersonType } from 'api/types';
 import * as Yup from 'yup';
 
@@ -8,7 +8,7 @@ export const formInitialValues = {
   phoneNumber: '',
   paymentCode: '',
   personType: null as null | EPersonType,
-  openAt: null as null | moment.Moment,
+  openAt: null as null | dayjs.Dayjs,
   isMainOnApartment: false,
 };
 

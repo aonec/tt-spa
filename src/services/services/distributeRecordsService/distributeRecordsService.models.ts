@@ -8,7 +8,7 @@ import {
   nearestAppointmentsDateQuery,
   setAppointmentsToControllerMutation,
 } from './distributeRecordsService.api';
-import moment from 'moment';
+import dayjs from 'api/dayjs';
 import {
   GetDistrictAppointmentsRequestPayload,
   GetDistrictsAppointmentsCountingRequestPayload,
@@ -39,7 +39,7 @@ const $selectedDistrict = domain
   .reset(DistributeRecordsGate.close, handleUnselectDistrict);
 
 const $appointmentDate = domain
-  .createStore<string | null>(moment().format('YYYY-MM-DD'))
+  .createStore<string | null>(dayjs().format('YYYY-MM-DD'))
   .on(setAppointmentDate, (_, date) => date)
   .on(nearestAppointmentsDateQuery.$data, (_, res) => res?.date)
   .reset();

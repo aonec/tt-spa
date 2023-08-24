@@ -8,7 +8,7 @@ import {
   Wrapper,
 } from './NodeDocumentsItem.styled';
 import { NodeDocumentsItemProps } from './NodeDocumentsItem.types';
-import moment from 'moment';
+import dayjs from 'api/dayjs';
 import { DocumentIcon } from 'ui-kit/icons';
 import { saveAs } from 'file-saver';
 
@@ -23,7 +23,7 @@ export const NodeDocumentsItem: FC<NodeDocumentsItemProps> = ({ document }) => {
 
   return (
     <Wrapper>
-      <DateWrapper>{moment(uploadingTime).format('DD.MM.YYYY')}</DateWrapper>
+      <DateWrapper>{dayjs(uploadingTime).format('DD.MM.YYYY')}</DateWrapper>
       <ColumnWrapper>
         <GroupWrapper>
           <DocumentIcon />

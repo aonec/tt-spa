@@ -1,4 +1,4 @@
-import moment from 'moment';
+import dayjs from 'api/dayjs';
 import React, { FC } from 'react';
 import { ResourceInfo } from 'ui-kit/shared/ResourceInfo';
 import {
@@ -17,11 +17,11 @@ export const DisconnectionAddressesModalTitle: FC<
 > = ({ disconnection }) => {
   const { startDate, endDate, resource, disconnectingType } = disconnection;
 
-  const startDateString = moment(startDate).format('DD.MM.YYYY');
-  const startTimeString = moment(startDate).format('HH:mm');
+  const startDateString = dayjs(startDate).format('DD.MM.YYYY');
+  const startTimeString = dayjs(startDate).format('HH:mm');
 
-  const endDateString = moment(endDate).format('DD.MM.YYYY');
-  const endTimeString = moment(endDate).format('HH:mm');
+  const endDateString = dayjs(endDate).format('DD.MM.YYYY');
+  const endTimeString = dayjs(endDate).format('HH:mm');
 
   return (
     <Wrapper>

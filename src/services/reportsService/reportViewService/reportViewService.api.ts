@@ -23,7 +23,7 @@ import {
   PrepareReportRequestFunctionsDictionary,
 } from './reportViewService.constants';
 import { ReportNamesDictionary } from '../view/ReportsPage/ReportsPage.constants';
-import moment from 'moment';
+import dayjs from 'api/dayjs';
 
 export const getAddressesWithHouseManagements = (): Promise<
   HouseManagementWithStreetsResponse[]
@@ -96,7 +96,7 @@ export const downloadReportFile = async ({
   const reportDatesString =
     payload?.From &&
     payload.To &&
-    `${moment(payload.From).format('DD.MM.YYYY')} — ${moment(payload.To).format(
+    `${dayjs(payload.From).format('DD.MM.YYYY')} — ${dayjs(payload.To).format(
       'DD.MM.YYYY',
     )}`;
 

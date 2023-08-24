@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import moment from 'moment';
+import dayjs from 'api/dayjs';
 import { ResourceIconLookup } from 'ui-kit/shared/ResourceIconLookup';
 import { DeviceStatus } from 'ui-kit/shared/IndividualDeviceInfo/DeviceStatus';
 import { IndividualDeviceInfoExtendedProps } from './IndividualDeviceInfoExtended.types';
@@ -77,7 +77,7 @@ export const IndividualDeviceInfoExtended: FC<
       </ApartmentInfo>
       {device.closingDate && (
         <ClosingDate>
-          {moment(device.closingDate).format('DD.MM.YYYY')}
+          {dayjs(device.closingDate).format('DD.MM.YYYY')}
         </ClosingDate>
       )}
     </Wrapper>

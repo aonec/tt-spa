@@ -8,7 +8,7 @@ import { message } from 'antd';
 import { createGate } from 'effector-react';
 import { ActsJournalRequestParams } from './actsJournalService.types';
 import { last } from 'lodash';
-import moment from 'moment';
+import dayjs from 'api/dayjs';
 import { addressIdSearchService } from './addressIdSearchService';
 import { addressSearchService } from 'services/addressSearchService/addressSearchService.models';
 
@@ -66,7 +66,7 @@ sample({
   fn: (apartmentId, payload) => ({
     ...payload,
     apartmentId,
-    actJobDate: moment(payload.actJobDate).format('YYYY-MM-DD'),
+    actJobDate: dayjs(payload.actJobDate).format('YYYY-MM-DD'),
   }),
   target: createActFx,
 });

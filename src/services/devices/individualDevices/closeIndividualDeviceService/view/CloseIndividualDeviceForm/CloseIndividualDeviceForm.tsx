@@ -8,7 +8,7 @@ import { EClosingReason, EDocumentType } from 'api/types';
 import { ErrorMessage } from 'ui-kit/ErrorMessage';
 import { Select } from 'ui-kit/Select';
 import { ClosingReasonsDictionary } from 'dictionaries';
-import moment from 'moment';
+import dayjs from 'api/dayjs';
 import { DatePicker } from 'ui-kit/DatePicker';
 import { GroupWrapper } from './CloseIndividualDeviceForm.styled';
 
@@ -27,7 +27,7 @@ export const CloseIndividualDeviceForm: FC<CloseIndividualDeviceFormProps> = ({
             onChange={(date) => fields.closingDate.onChange(date)}
             format="DD.MM.YYYY"
             disabledDate={(current) => {
-              return current && current > moment().endOf('day');
+              return current && current > dayjs().endOf('day');
             }}
           />
           <ErrorMessage>{errorText('closingDate')}</ErrorMessage>

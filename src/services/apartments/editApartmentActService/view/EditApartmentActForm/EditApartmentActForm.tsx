@@ -18,7 +18,7 @@ import {
 } from './EditApartmentActForm.styled';
 import { EditApartmentActFormProps } from './EditApartmentActForm.types';
 import * as yup from 'yup';
-import moment from 'moment';
+import dayjs from 'api/dayjs';
 import { ResourceInfo } from 'ui-kit/shared/ResourceInfo';
 import { DocumentsUploadContainer, Document } from 'ui-kit/DocumentsService';
 import { Input } from 'ui-kit/Input';
@@ -80,8 +80,8 @@ export const EditApartmentActForm: FC<EditApartmentActFormProps> = ({
         <Form.Item label="Дата">
           <DatePickerSC
             format="DD.MM.YYYY"
-            onChange={(e) => setFieldValue('actJobDate', e?.toISOString(true))}
-            value={values.actJobDate ? moment(values.actJobDate) : null}
+            onChange={(e) => setFieldValue('actJobDate', e?.format())}
+            value={values.actJobDate ? dayjs(values.actJobDate) : null}
           />
           <ErrorMessage>{errors.actJobDate}</ErrorMessage>
         </Form.Item>

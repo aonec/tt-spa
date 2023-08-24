@@ -1,6 +1,6 @@
 import { ExtendedSearch } from 'ui-kit/ExtendedSearch';
 import { useFormik } from 'formik';
-import moment from 'moment';
+import dayjs from 'api/dayjs';
 import React, { FC, useState } from 'react';
 import {
   SearchFieldsWrapper,
@@ -30,7 +30,7 @@ export const ManagingFirmSearch: FC<ManagingFirmSearchProps> = ({
   const close = () => setIsOpen(false);
 
   const isExcluded =
-    moment().diff(moment(filter?.DateLastCheckFrom), 'month') >= 3;
+    dayjs().diff(dayjs(filter?.DateLastCheckFrom), 'month') >= 3;
 
   const { values, setFieldValue, resetForm, submitForm } =
     useFormik<SubscriberStatisticsFormik>({

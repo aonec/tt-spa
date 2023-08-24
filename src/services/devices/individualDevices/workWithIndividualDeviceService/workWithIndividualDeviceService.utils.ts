@@ -1,4 +1,4 @@
-import moment from 'moment';
+import dayjs from 'api/dayjs';
 import {
   IndividualDeviceReadingsResponse,
   SwitchIndividualDeviceReadingsCreateRequest,
@@ -13,9 +13,9 @@ export const prepareDeviceReadings = (
 
   const sortedReadings = filteredReadings
     .sort((first, second) =>
-      moment(second.readingDate)
+      dayjs(second.readingDate)
         .startOf('month')
-        .diff(moment(first.readingDate).startOf('month'), 'month'),
+        .diff(dayjs(first.readingDate).startOf('month'), 'month'),
     )
     .slice(0, 8);
 
@@ -23,7 +23,7 @@ export const prepareDeviceReadings = (
   const dateFormat = 'YYYY-MM';
 
   return getFilledArray(8, (index) => index).reduce((acc, _, index) => {
-    const currentMonthDate = moment(moment().format(dateFormat), dateFormat);
+    const currentMonthDate = dayjs(dayjs().format(dateFormat), dateFormat);
     const foundReading = sortedReadings?.[readingsIndex];
     const readingMonthDate = foundReading?.readingDate;
 
@@ -41,7 +41,7 @@ export const prepareDeviceReadings = (
       return acc;
     }
 
-    const diff = currentMonthDate.diff(moment(readingMonthDate), 'months');
+    const diff = currentMonthDate.diff(dayjs(readingMonthDate), 'months');
 
     if (diff !== index) {
       acc[index - 1] = {
@@ -105,7 +105,7 @@ const getPreparedReadingsOfIndividualDevice = (
   const { readingDate, value1, value2, value3, value4 } = item;
 
   return {
-    readingDate: moment(readingDate)
+    readingDate: dayjs(readingDate)
       .add(1, 'month')
       .utcOffset(0, true)
       .toISOString(),

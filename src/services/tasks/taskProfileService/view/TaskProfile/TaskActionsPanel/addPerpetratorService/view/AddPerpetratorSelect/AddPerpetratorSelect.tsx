@@ -26,7 +26,7 @@ export const AddPerpetratorSelect: FC<AddPerpetratorSelectProps> = ({
       <Select
         placeholder="Выберите исполнителя"
         value={perpetratorId || undefined}
-        onChange={handleChange}
+        onChange={(value) => handleChange(value as SelectValue)}
       >
         {users.map((user) => (
           <Select.Option key={user.id} value={user.id}>

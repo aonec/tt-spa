@@ -6,12 +6,12 @@ import {
 } from './IndividualDevicesSealListItem.styled';
 import { IndividualDevicesSealListItemProps } from './IndividualDevicesSealListItem.types';
 import { IndividualDeviceInfoExtended } from 'ui-kit/shared/IndividualDeviceInfoExtended';
-import moment from 'moment';
+import dayjs from 'api/dayjs';
 
 export const IndividualDevicesSealListItem: FC<
   IndividualDevicesSealListItemProps
 > = ({ device }) => {
-  const formatedDate = moment(device.sealInstallationDate).format('DD.MM.YYYY');
+  const formatedDate = dayjs(device.sealInstallationDate).format('DD.MM.YYYY');
 
   return (
     <Wrapper>

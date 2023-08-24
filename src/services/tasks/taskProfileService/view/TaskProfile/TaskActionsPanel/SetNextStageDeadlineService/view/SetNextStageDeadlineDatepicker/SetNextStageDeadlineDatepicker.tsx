@@ -1,4 +1,4 @@
-import moment from 'moment';
+import dayjs from 'api/dayjs';
 import React, { FC, useEffect, useState } from 'react';
 import { DatePicker } from 'ui-kit/DatePicker';
 import { FormItem } from 'ui-kit/FormItem';
@@ -7,7 +7,7 @@ import { SetNextStageDeadlineDatepickerProps } from './SetNextStageDeadlineDatep
 export const SetNextStageDeadlineDatepicker: FC<
   SetNextStageDeadlineDatepickerProps
 > = ({ handleDateChange }) => {
-  const [date, setDate] = useState<moment.Moment | null>(null);
+  const [date, setDate] = useState<dayjs.Dayjs | null>(null);
 
   useEffect(() => {
     const formattedDate = date?.format('YYYY-MM-DD');
@@ -18,7 +18,7 @@ export const SetNextStageDeadlineDatepicker: FC<
   return (
     <FormItem label="Дата">
       <DatePicker
-        value={date && moment(date)}
+        value={date && dayjs(date)}
         onChange={(date) => setDate(date || null)}
         allowClear
         placeholder="Выберите дату"

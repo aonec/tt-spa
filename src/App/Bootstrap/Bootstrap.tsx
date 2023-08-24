@@ -3,8 +3,9 @@ import { ConfigProvider } from 'antd';
 import ruRu from 'antd/es/locale/ru_RU';
 import { useApp } from './Bootstrap.hook';
 import { YMaps } from '@pbe/react-yandex-maps';
+import { BootstrapProps } from './Bootstrap.types';
 
-export const Bootstrap: FC = ({ children }) => {
+export const Bootstrap: FC<BootstrapProps> = ({ children }) => {
   useApp();
 
   return (
