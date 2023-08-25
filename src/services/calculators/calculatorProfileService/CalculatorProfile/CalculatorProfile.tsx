@@ -1,12 +1,11 @@
-import { PageHeader } from '01/shared/ui/PageHeader';
 import { stringifyUrl } from 'query-string';
 import React, { FC, ReactElement, useMemo } from 'react';
 import { useHistory } from 'react-router-dom';
-import { CommonInfo } from 'ui-kit/shared_components/CommonInfo';
-import { GoBack } from 'ui-kit/shared_components/GoBack';
-import { LinkCard } from 'ui-kit/shared_components/LinkCard';
+import { CommonInfo } from 'ui-kit/shared/CommonInfo';
+import { GoBack } from 'ui-kit/shared/GoBack';
+import { LinkCard } from 'ui-kit/shared/LinkCard';
 import { Tabs } from 'ui-kit/Tabs';
-import { getHousingStockAddress } from 'utils/getHousingStockAddress';
+import { getBuildingAddress } from 'utils/getBuildingAddress';
 import { getTimeStringByUTC } from 'utils/getTimeStringByUTC';
 import { CalculatorProfileGrouptype } from '../calculatorProfileService.constants';
 import { CalculatorCommentContainer } from './calculatorCommentService';
@@ -16,16 +15,17 @@ import {
   Content,
   ContentWrapper,
   CalculatorIconSC,
-  HeaderTitleWrapper,
-  HeaderWrapper,
   TabsSC,
   PanelsWrapper,
+  PageHeaderSC,
 } from './CalculatorProfile.styled';
 import { CalculatorProfileProps } from './CalculatorProfile.types';
 import { ConnectionInfo } from './ConnectionInfo';
 import { DocumentsPanel } from './DocumentsPanel';
 import { NodeDocumentsList } from './NodeDocumentsList';
 import { RelatedNodesList } from './RelatedNodesList';
+import { ContextMenuButtonColor } from 'ui-kit/ContextMenuButton/ContextMenuButton.types';
+import { EHouseCategory, TaskGroupingFilter } from 'api/types';
 
 const { TabPane } = Tabs;
 
@@ -37,6 +37,7 @@ export const CalculatorProfile: FC<CalculatorProfileProps> = ({
   handleOpenCheckCalculatorModal,
   handleOpenConsumptionReportModal,
   openDevicesListModal,
+  isPermitionToCalculatorActions,
 }) => {
   const history = useHistory();
 
@@ -55,6 +56,13 @@ export const CalculatorProfile: FC<CalculatorProfileProps> = ({
     [model, serialNumber],
   );
 
+  const buildingProfilePath = useMemo(() => {
+    if (calculator?.address?.houseCategory === EHouseCategory.Living) {
+      return 'livingProfile';
+    }
+    return 'nonResidentialProfile';
+  }, [calculator]);
+
   const commonInfo = useMemo(
     () => (
       <CommonInfo
@@ -65,9 +73,9 @@ export const CalculatorProfile: FC<CalculatorProfileProps> = ({
               <>
                 {calculator?.address && (
                   <AddressLinkWrapper
-                    to={`/objects/profile/${calculator.address?.id}`}
+                    to={`/buildings/${buildingProfilePath}/${calculator.address?.id}`}
                   >
-                    {getHousingStockAddress(calculator.address, true)}
+                    {getBuildingAddress(calculator.address, true)}
                   </AddressLinkWrapper>
                 )}
               </>
@@ -88,7 +96,7 @@ export const CalculatorProfile: FC<CalculatorProfileProps> = ({
         ]}
       />
     ),
-    [calculator],
+    [calculator, buildingProfilePath],
   );
 
   const menuButtons = useMemo(
@@ -97,19 +105,23 @@ export const CalculatorProfile: FC<CalculatorProfileProps> = ({
         {
           title: 'Редактировать вычислитель',
           onClick: () => history.push(`/calculators/${calculator.id}/edit`),
+          hidden: !isPermitionToCalculatorActions,
         },
         {
           title: 'Поверить вычислитель',
           onClick: () => handleOpenCheckCalculatorModal(calculator),
+          hidden: !isPermitionToCalculatorActions,
         },
         {
           title: 'Выгрузить отчёт об общедомовом потреблении',
           onClick: () => handleOpenConsumptionReportModal(),
+          hidden: !isPermitionToCalculatorActions,
         },
         {
           title: 'Снять вычислитель с учёта',
           onClick: () => handleOpenCloseCalculatorModal(calculator),
-          color: 'danger',
+          color: ContextMenuButtonColor.danger,
+          hidden: !isPermitionToCalculatorActions,
         },
       ],
     }),
@@ -119,6 +131,7 @@ export const CalculatorProfile: FC<CalculatorProfileProps> = ({
       calculator,
       history,
       handleOpenConsumptionReportModal,
+      isPermitionToCalculatorActions,
     ],
   );
 
@@ -151,14 +164,17 @@ export const CalculatorProfile: FC<CalculatorProfileProps> = ({
   return (
     <div>
       <GoBack />
-      <HeaderWrapper>
-        <CalculatorIconSC />
-        <HeaderTitleWrapper>
-          <PageHeader title={headerTitle} contextMenu={menuButtons} />
-        </HeaderTitleWrapper>
-      </HeaderWrapper>
+      <PageHeaderSC
+        title={
+          <>
+            <CalculatorIconSC />
+            {headerTitle}
+          </>
+        }
+        contextMenu={menuButtons}
+      />
       <AdditionalInfoWrapper>
-        <>{getHousingStockAddress(address, true)}</>
+        <>{getBuildingAddress(address, true)}</>
       </AdditionalInfoWrapper>
       <TabsSC
         activeKey={currentGrouptype}
@@ -181,7 +197,7 @@ export const CalculatorProfile: FC<CalculatorProfileProps> = ({
           <LinkCard
             text={`Задачи: ${numberOfTasks}`}
             link={stringifyUrl({
-              url: '/tasks/list/Observing',
+              url: `/tasks/list/${TaskGroupingFilter.Executing}`,
               query: { calculatorId: id },
             })}
             showLink={Boolean(numberOfTasks)}

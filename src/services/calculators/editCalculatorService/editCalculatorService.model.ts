@@ -2,21 +2,21 @@ import { createDomain, guard, sample } from 'effector';
 import { EditCalculatorTabs } from './view/EditCalculatorPage/EditCalculatorPage.types';
 import { calculatorProfileService } from '../calculatorProfileService';
 import {
-  $calculatorTypesSelectItems,
-  CalculatorInfosGate,
-} from '01/features/carlculators/calculatorsInfo/models';
-import {
   getAlreadyExistingConnectionCalculator,
   putCalculator,
 } from './editCalculatorService.api';
-import { EffectFailDataAxiosError } from 'types';
+import {
+  EffectFailDataAxiosError,
+  EffectFailDataAxiosErrorDataId,
+} from 'types';
 import {
   CalculatorResponse,
   MeteringDeviceResponse,
   UpdateCalculatorRequest,
-} from 'myApi';
+} from 'api/types';
 import { createGate } from 'effector-react';
 import { message } from 'antd';
+import { calculatorsInfoService } from '../calculatorsInfoService';
 
 const domain = createDomain('editCalculatorService');
 
@@ -33,7 +33,7 @@ const SaveDeviceIdGate = createGate<{ deviceId: number }>();
 const editCalculatorFx = domain.createEffect<
   { deviceId: number; form: UpdateCalculatorRequest },
   MeteringDeviceResponse | null,
-  EffectFailDataAxiosError
+  EffectFailDataAxiosErrorDataId
 >(putCalculator);
 
 const getSameConnectionCalculatorFx = domain.createEffect<
@@ -82,11 +82,6 @@ sample({
 });
 
 editCalculatorFailData.watch((error) => {
-  if (error.response.status === 403) {
-    return message.error(
-      'У вашего аккаунта нет доступа к выбранному действию. Уточните свои права у Администратора',
-    );
-  }
   message.error(error.response.data.error.Text);
 });
 
@@ -108,12 +103,13 @@ export const editCalculatorService = {
     $calculator: calculatorProfileService.outputs.$calculator,
     $isLoading: calculatorProfileService.outputs.$isLoading,
     $currentTab,
-    $calculatorTypesSelectItems,
+    $calculatorTypesSelectItems:
+      calculatorsInfoService.outputs.$calculatorTypesSelectItems,
     $sameConnectionCalculator,
     $isModalOpen,
   },
   gates: {
-    CalculatorInfosGate,
+    CalculatorInfosGate: calculatorsInfoService.gates.CalculatorInfosGate,
     SaveDeviceIdGate,
   },
 };

@@ -1,0 +1,1 @@
+export { AdditionalInfoTab } from './AdditionalInfoTab';

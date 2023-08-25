@@ -1,8 +1,6 @@
-import { axios } from '01/axios';
-import { CloseDeviceRequest } from 'myApi';
+import { axios } from 'api/axios';
+import { CloseDeviceRequest } from 'api/types';
 
-export const closeDevice = (
-  request: CloseDeviceRequest
-): Promise<void> => {
+export const closeDevice = (request: CloseDeviceRequest): Promise<void> => {
   return axios.post('MeteringDevices/close', request);
 };

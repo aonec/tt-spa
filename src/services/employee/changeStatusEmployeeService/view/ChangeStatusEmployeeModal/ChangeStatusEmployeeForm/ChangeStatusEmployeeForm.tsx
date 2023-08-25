@@ -1,16 +1,16 @@
 import React, { FC } from 'react';
-import { GridContainer } from './ChangeStatusEmployeeForm.styled';
-import { ChangeStatusEmployeeFormProps } from './ChangeStatusEmployeeForm.types';
-import { Form } from 'antd';
-import { FormItem } from 'ui-kit/FormItem';
-import { ErrorMessage } from '01/shared/ui/ErrorMessage';
-import { useFormik } from 'formik';
 import * as yup from 'yup';
-import { EOrganizationUserWorkingStatusType } from 'myApi';
-import { StaffStatus } from '01/features/staff/displayStaff/models/components/StaffStatus';
+import { useFormik } from 'formik';
+import { Form } from 'antd';
+import { EOrganizationUserWorkingStatusType } from 'api/types';
+import { FormItem } from 'ui-kit/FormItem';
+import { ErrorMessage } from 'ui-kit/ErrorMessage';
 import { RangePicker } from 'ui-kit/RangePicker';
-import { DatePeriod } from 'services/objects/objectProfileService/consolidatedReportService/view/ConsolidatedReportForm/ConsolidatedReportForm.types';
-import { Select } from '01/shared/ui/Select';
+import { DatePeriod } from 'services/objects/housingStockProfileService/consolidatedReportService/view/ConsolidatedReportForm/ConsolidatedReportForm.types';
+import { StaffStatus } from 'ui-kit/shared/StaffStatus/StaffStatus';
+import { Select } from 'ui-kit/Select';
+import { ChangeStatusEmployeeFormProps } from './ChangeStatusEmployeeForm.types';
+import { GridContainer } from './ChangeStatusEmployeeForm.styled';
 
 export const ChangeStatusEmployeeForm: FC<ChangeStatusEmployeeFormProps> = ({
   formId,
@@ -30,9 +30,8 @@ export const ChangeStatusEmployeeForm: FC<ChangeStatusEmployeeFormProps> = ({
       const payload = {
         userId: data.userId || undefined,
         type: data.type || undefined,
-        startDate:
-          (data.period[0] && data.period[0].toISOString()) || undefined,
-        endDate: (data.period[1] && data.period[1].toISOString()) || undefined,
+        startDate: (data.period[0] && data.period[0].toISOString()) || null,
+        endDate: (data.period[1] && data.period[1].toISOString()) || null,
       };
 
       handleUpdateStatus(payload);
@@ -40,6 +39,28 @@ export const ChangeStatusEmployeeForm: FC<ChangeStatusEmployeeFormProps> = ({
     validateOnChange: false,
     validationSchema: yup.object({
       type: yup.string().nullable().required('Выберите Статус'),
+      period: yup
+        .array()
+        .when(
+          [
+            EOrganizationUserWorkingStatusType.OnDuty,
+            EOrganizationUserWorkingStatusType.OnVacation,
+            EOrganizationUserWorkingStatusType.Sick,
+          ],
+          {
+            is: true,
+            then: yup
+              .array()
+              .of(
+                yup
+                  .date()
+                  .required('Укажите период')
+                  .typeError('Укажите период'),
+              )
+              .typeError('Укажите период')
+              .required('Укажите период'),
+          },
+        ),
     }),
   });
 
@@ -73,7 +94,11 @@ export const ChangeStatusEmployeeForm: FC<ChangeStatusEmployeeFormProps> = ({
               setFieldValue('period', value);
             }}
           />
-          <ErrorMessage>{errors?.period}</ErrorMessage>
+          <ErrorMessage>
+            {typeof errors?.period === 'string'
+              ? errors.period
+              : errors?.period?.[0]}
+          </ErrorMessage>
         </FormItem>
       </GridContainer>
     </Form>

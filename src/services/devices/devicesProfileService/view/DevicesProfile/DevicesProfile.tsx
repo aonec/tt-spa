@@ -1,22 +1,22 @@
 import React, { FC } from 'react';
 import { useFormik } from 'formik';
-import { searchStateChanged } from '01/features/devicesReport/models';
 import { DevicesListContainer } from 'services/devices/displayDevicesService/displayDevicesService.container';
 import { SearchDevices } from '../SearchDevices';
-import { ExtendedSearch } from '01/shared/ui/ExtendedSearch';
-import { CalculatorsListRequestPayload } from '01/features/carlculators/calculatorsIntoHousingStockService/calculatorsIntoHousingStockService.types';
+import { ExtendedSearch } from 'ui-kit/ExtendedSearch';
+import { CalculatorsListRequestPayload } from 'services/calculators/calculatorsListService/calculatorsListService.types';
 import { ExtendedSearchForm } from './ExtendedSearchForm';
 import { Wrapper } from './DevicesProfile.styled';
 import { DiamtersConfig } from 'services/currentUserService/currentUserService.types';
 import { DevicesSearchType } from 'services/devices/devicesPageService/devicesPageService.types';
 import { Radio } from 'antd';
+import { HeaderInject } from 'services/objects/objectsProfileService/view/ObjectsProfile/ObjectsProfile.types';
 
-interface DeviceProfileProps {
+interface DeviceProfileProps extends HeaderInject {
   setFilter: (payload: CalculatorsListRequestPayload) => void;
   isOpen: boolean;
   open: (payload: void) => void;
   close: (payload: void) => void;
-  showDownloadDeviceReportButtonClicked: (payload: void) => void;
+  openDownloadDevicesReportModal: () => void;
   searchState: CalculatorsListRequestPayload | null;
   clearSearchPayload: (payload: void) => void;
   diametersConfig: DiamtersConfig;
@@ -24,6 +24,7 @@ interface DeviceProfileProps {
   setDevicesSearchType: (type: DevicesSearchType) => void;
   setSerialNumber: (value: string) => void;
   serialNumber: string;
+  isSearchError: boolean;
 }
 
 export const DevicesProfile: FC<DeviceProfileProps> = ({
@@ -38,6 +39,8 @@ export const DevicesProfile: FC<DeviceProfileProps> = ({
   setDevicesSearchType,
   serialNumber,
   setSerialNumber,
+  Header,
+  isSearchError,
 }) => {
   const {
     handleSubmit: submitForm,
@@ -76,55 +79,62 @@ export const DevicesProfile: FC<DeviceProfileProps> = ({
     enableReinitialize: true,
     onSubmit: (values) => {
       setFilter(values);
-      searchStateChanged(values);
     },
   });
 
   return (
     <Wrapper>
-      <Radio.Group
-        value={devicesSearchType}
-        onChange={(value) =>
-          setDevicesSearchType(value.target.value as DevicesSearchType)
-        }
-      >
-        <Radio value={DevicesSearchType.SearialNumber}>Поиск по прибору</Radio>
-        <Radio value={DevicesSearchType.Address}>Поиск по адресу</Radio>
-      </Radio.Group>
+      <Header>
+        <Radio.Group
+          value={devicesSearchType}
+          onChange={(value) =>
+            setDevicesSearchType(value.target.value as DevicesSearchType)
+          }
+        >
+          <Radio value={DevicesSearchType.SearialNumber}>
+            Поиск по прибору
+          </Radio>
+          <Radio value={DevicesSearchType.Address}>Поиск по адресу</Radio>
+        </Radio.Group>
 
-      <SearchDevices
-        isExtendedSearchOpen={isOpen}
-        submitForm={submitForm}
-        setFieldValue={setFieldValue}
-        values={values}
-        diametersConfig={diametersConfig}
-        devicesSearchType={devicesSearchType}
-        serialNumber={serialNumber}
-        setSerialNumber={setSerialNumber}
-      >
-        <ExtendedSearch
-          isOpen={isOpen}
-          handleClose={() => {
-            close();
-          }}
-          handleOpen={() => open()}
-          handleApply={() => {
-            submitForm();
-            searchStateChanged(values);
-          }}
+        <SearchDevices
+          isExtendedSearchOpen={isOpen}
+          submitForm={submitForm}
+          setFieldValue={setFieldValue}
+          values={values}
+          diametersConfig={diametersConfig}
+          devicesSearchType={devicesSearchType}
+          serialNumber={serialNumber}
+          setSerialNumber={setSerialNumber}
           handleClear={() => {
             resetForm();
             clearSearchPayload();
           }}
-          extendedSearchContent={
-            <ExtendedSearchForm
-              setFieldValue={setFieldValue}
-              values={values}
-              diametersConfig={diametersConfig}
-            />
-          }
-        />
-      </SearchDevices>
+          isSearchError={isSearchError}
+        >
+          <ExtendedSearch
+            isOpen={isOpen}
+            handleClose={() => {
+              close();
+            }}
+            handleOpen={() => open()}
+            handleApply={() => {
+              submitForm();
+            }}
+            handleClear={() => {
+              resetForm();
+              clearSearchPayload();
+            }}
+            extendedSearchContent={
+              <ExtendedSearchForm
+                setFieldValue={setFieldValue}
+                values={values}
+                diametersConfig={diametersConfig}
+              />
+            }
+          />
+        </SearchDevices>
+      </Header>
       <DevicesListContainer />
     </Wrapper>
   );

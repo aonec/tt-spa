@@ -1,12 +1,19 @@
-import { axios } from '01/axios';
+import { axios } from 'api/axios';
 import {
   AddHeatingStationRequest,
+  EHouseCategory,
   HeatingStationResponse,
   HeatingStationResponsePagedList,
   HouseManagementResponse,
   HousingStockCreateRequest,
   HousingStockResponse,
-} from 'myApi';
+  NonResidentialBuildingCreateRequest,
+  NonResidentialBuildingResponse,
+} from 'api/types';
+import {
+  CreateBuildingRequest,
+  CreateBuildingResponse,
+} from './createObjectService.types';
 
 export const getHouseManagements = (): Promise<
   HouseManagementResponse[] | null
@@ -14,18 +21,45 @@ export const getHouseManagements = (): Promise<
   return axios.get('HouseManagements');
 };
 
-export const getHeatingStations = (): Promise<HeatingStationResponsePagedList | null> => {
-  return axios.get('HeatingStation');
-};
+export const getHeatingStations =
+  (): Promise<HeatingStationResponsePagedList | null> => {
+    return axios.get('HeatingStation');
+  };
 
 export const postHeatingStation = (
-  requestPayload: AddHeatingStationRequest
+  requestPayload: AddHeatingStationRequest,
 ): Promise<HeatingStationResponse | null> => {
   return axios.post('HeatingStation', requestPayload);
 };
 
-export const postCreateObject = (
-  requestPayload: HousingStockCreateRequest
-): Promise<HousingStockResponse | null> => {
-  return axios.post('HousingStocks', requestPayload);
+export const createObject = async ({
+  objectCategory,
+  ...payload
+}: CreateBuildingRequest) => {
+  if (objectCategory === EHouseCategory.Living) {
+    return await createHousingStock(payload);
+  }
+  return await createNonResidentialBuilding(payload);
+};
+
+const createHousingStock = async (
+  requestPayload: HousingStockCreateRequest,
+): Promise<CreateBuildingResponse> => {
+  const res: HousingStockResponse | null = await axios.post(
+    'HousingStocks',
+    requestPayload,
+  );
+
+  return { houseCategory: EHouseCategory.Living, id: res?.id };
+};
+
+const createNonResidentialBuilding = async (
+  requestPayload: NonResidentialBuildingCreateRequest,
+): Promise<CreateBuildingResponse> => {
+  const res: NonResidentialBuildingResponse | null = await axios.post(
+    'NonResidentialBuildings',
+    requestPayload,
+  );
+
+  return { houseCategory: EHouseCategory.NonResidential, id: res?.id };
 };

@@ -1,28 +1,44 @@
 import {
+  BuildingByFilterResponse,
   CalculatorListResponsePagedList,
-  HousingByFilterResponse,
-} from './../../../myApi';
-import { axios } from '01/axios';
-import { CalculatorsListRequestPayload } from '01/features/carlculators/calculatorsIntoHousingStockService/calculatorsIntoHousingStockService.types';
+} from 'api/types';
+import { axios } from 'api/axios';
+import { CalculatorsListRequestPayload } from 'services/calculators/calculatorsListService/calculatorsListService.types';
 import { GetHousingByFilterRequestPayload } from '../devicesPageService/individualDevicesProfileService/view/IndividualDevicesProfile/individualDevicesViewByAddressService/individualDevicesViewByAddressService.types';
 import queryString from 'query-string';
+import { createQuery } from '@farfetched/core';
+import { createEffect } from 'effector';
 
-export const getCalculatorsList = (
-  params: CalculatorsListRequestPayload
-): Promise<CalculatorListResponsePagedList> =>
-  axios.get(`Calculators`, {
-    params,
-    paramsSerializer: (params) => {
-      return queryString.stringify(params);
-    },
-  });
+export const getCalculatorsListQuery = createQuery({
+  effect: createEffect<
+    CalculatorsListRequestPayload,
+    CalculatorListResponsePagedList
+  >(
+    async (params) =>
+      await axios.get(`Calculators`, {
+        params,
+        paramsSerializer: (params) => {
+          return queryString.stringify(params);
+        },
+      }),
+  ),
+});
 
-export const getHousingsByFilter = (
-  housingsParams: GetHousingByFilterRequestPayload[]
-): Promise<HousingByFilterResponse[]> =>
+export const getHousingsByFilter = async (
+  housingsParams: GetHousingByFilterRequestPayload[],
+): Promise<(BuildingByFilterResponse | null)[]> =>
   Promise.all(housingsParams.map((params) => getHousingByFilter(params)));
 
-const getHousingByFilter = (
-  params: GetHousingByFilterRequestPayload
-): Promise<HousingByFilterResponse> =>
-  axios.get('Devices/Individual/House', { params });
+const getHousingByFilter = async (
+  params: GetHousingByFilterRequestPayload,
+): Promise<BuildingByFilterResponse | null> => {
+  try {
+    const res: BuildingByFilterResponse = await axios.get(
+      'Buildings/BuildingsByAddress',
+      { params },
+    );
+    return res;
+  } catch {
+    return null;
+  }
+};

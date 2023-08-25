@@ -1,4 +1,4 @@
-import { EManagingFirmTaskFilterType } from 'myApi';
+import { EManagingFirmTaskFilterType } from 'api/types';
 import { taskCategotiesProps } from './SearchTasks.types';
 
 export const taskCategories: taskCategotiesProps = {
@@ -15,6 +15,7 @@ export const taskCategories: taskCategotiesProps = {
     EManagingFirmTaskFilterType.IndividualDeviceCheck,
     EManagingFirmTaskFilterType.IndividualDeviceReadingsCheck,
     EManagingFirmTaskFilterType.IndividualDeviceCheckNoReadings,
+    EManagingFirmTaskFilterType.RiserNoReadings,
   ],
   HouseNetwork: [EManagingFirmTaskFilterType.PipeRupture],
 };

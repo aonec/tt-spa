@@ -2,19 +2,23 @@ import {
   ElectricHousingMeteringDeviceResponse,
   HousingMeteringDeviceReadingsIncludingPlacementResponse,
   SwitchHousingDeviceReadingsCreateRequest,
-} from 'myApi';
+} from 'api/types';
 
 export type ChangeODPUReadingsProps = {
   device: ElectricHousingMeteringDeviceResponse | null;
   onChangeNewReadings: (
-    payload: SwitchHousingDeviceReadingsCreateRequest[]
+    payload: SwitchHousingDeviceReadingsCreateRequest[],
   ) => void;
   onChangeOldReadings: (
-    payload: SwitchHousingDeviceReadingsCreateRequest[]
+    payload: SwitchHousingDeviceReadingsCreateRequest[],
   ) => void;
 };
 
 export type PreparedHousingMeteringDeviceReadings = Pick<
   HousingMeteringDeviceReadingsIncludingPlacementResponse,
   'readingDate' | 'id'
-> & { text: string; value: string | null, nonResidentialRoomConsumption: string| null };
+> & {
+  text: string;
+  value: string | null;
+  nonResidentialRoomConsumption: string | null;
+};

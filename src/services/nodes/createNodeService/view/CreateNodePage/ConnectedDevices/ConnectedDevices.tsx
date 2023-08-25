@@ -1,10 +1,10 @@
 import React, { FC, useEffect, useState } from 'react';
 import { Button } from 'ui-kit/Button';
-import { LinkButton } from 'ui-kit/shared_components/LinkButton';
+import { LinkButton } from 'ui-kit/shared/LinkButton';
 import { Title } from 'ui-kit/Title';
 import { Footer } from '../CreateNodePage.styled';
 import { ConnectedDevicesProps } from './ConnectedDevices.types';
-import { SpaceLine } from '01/shared/ui/Layout/Space/Space';
+import { SpaceLine } from 'ui-kit/SpaceLine';
 import { Empty } from 'antd';
 import { addConnectedCommonDevicesService } from './ConnectedDevices.models';
 import { useEvent } from 'effector-react';
@@ -14,8 +14,14 @@ import {
   CreateCommonDevicePartitial,
 } from 'services/nodes/addPipeNodeCommonDeviceService/addPipeNodeCommonDeviceService.types';
 import { omit } from 'lodash';
-import { CreatePipeHousingMeteringDeviceInNodeRequest } from 'myApi';
-import { CommunicationPipesListWrapper } from './ConnectedDevices.styled';
+import {
+  CreatePipeHousingMeteringDeviceInNodeRequest,
+  EPipeNodeConfig,
+} from 'api/types';
+import {
+  ButtonSC,
+  CommunicationPipesListWrapper,
+} from './ConnectedDevices.styled';
 import { CommunicationPipeListItem } from './CommunicationPipeListItem';
 
 const { inputs } = addConnectedCommonDevicesService;
@@ -24,7 +30,8 @@ export const ConnectedDevices: FC<ConnectedDevicesProps> = ({
   goPrevStep,
   requestPayload,
   updateRequestPayload,
-  openConfiramtionModal,
+  validateNode,
+  isValidationLoading,
 }) => {
   const openAddCommonDeviceModal = useEvent(inputs.openAddCommonDeviceModal);
 
@@ -34,6 +41,9 @@ export const ConnectedDevices: FC<ConnectedDevicesProps> = ({
 
   const { configuration } = requestPayload;
 
+  const isNodeConfigWithoutODPU =
+    configuration === EPipeNodeConfig.HeatNoHousingMeteringDevice;
+
   const handleAddCommunicationPipe = (
     communicationPipe: CommunicationPipePayload,
   ) => {
@@ -41,7 +51,7 @@ export const ConnectedDevices: FC<ConnectedDevicesProps> = ({
   };
 
   const handleAddDevice = (device: CreateCommonDevicePartitial) => {
-    const pipeId = device.pipeId;
+    const pipeId = String(device.pipeId);
 
     const newDevice = omit(
       device,
@@ -71,11 +81,11 @@ export const ConnectedDevices: FC<ConnectedDevicesProps> = ({
     updateRequestPayload({ communicationPipes });
   }, [communicationPipes, updateRequestPayload]);
 
-  const handleDeletePipe = (pipeId: number) => {
+  const handleDeletePipe = (pipeId: string) => {
     setCommunicationPipes((prev) => prev.filter((elem) => elem.id !== pipeId));
   };
 
-  const handleDeleteDevice = (pipeId: number, deviceIndex: number) => {
+  const handleDeleteDevice = (pipeId: string, deviceIndex: number) => {
     setCommunicationPipes((prev) =>
       prev.map((pipe) => {
         if (pipe.id !== pipeId) return pipe;
@@ -117,20 +127,23 @@ export const ConnectedDevices: FC<ConnectedDevicesProps> = ({
                 pipe={pipe}
                 handleDeletePipe={handleDeletePipe}
                 handleDeleteDevice={handleDeleteDevice}
+                isNodeConfigWithoutODPU={isNodeConfigWithoutODPU}
               />
             ))}
           </CommunicationPipesListWrapper>
         )}
-        <LinkButton onClick={() => openAddCommonDeviceModal()}>
-          + Добавить прибор
-        </LinkButton>
+        {!isNodeConfigWithoutODPU && (
+          <LinkButton onClick={() => openAddCommonDeviceModal()}>
+            + Добавить прибор
+          </LinkButton>
+        )}
         <Footer>
           <Button type="ghost" onClick={goPrevStep}>
             Назад
           </Button>
-          <Button sidePadding={20} onClick={openConfiramtionModal}>
+          <ButtonSC onClick={validateNode} isLoading={isValidationLoading}>
             Создать узел
-          </Button>
+          </ButtonSC>
         </Footer>
       </div>
     </>

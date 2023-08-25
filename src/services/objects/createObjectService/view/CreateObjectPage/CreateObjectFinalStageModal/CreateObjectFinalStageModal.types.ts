@@ -1,7 +1,7 @@
 import {
   HeatingStationResponsePagedList,
   HouseManagementResponse,
-} from 'myApi';
+} from 'api/types';
 import { ObjectCreateSubmitData } from 'services/objects/createObjectService/createObjectService.types';
 
 export type CreateObjectFinalStageModalProps = {
@@ -11,4 +11,5 @@ export type CreateObjectFinalStageModalProps = {
   heatingStations: HeatingStationResponsePagedList | null;
   closePreviewModal: () => void;
   isPreviewModalOpen: boolean;
+  isCreateLoading: boolean;
 };

@@ -1,7 +1,7 @@
-import { axios } from '01/axios';
-import { NodeOnHousingStockResponse } from 'myApi';
+import { axios } from 'api/axios';
+import { NodeOnHousingStockResponse } from 'api/types';
 
 export const getNodes = (
-  housingStockId: number
+  housingStockId: number,
 ): Promise<NodeOnHousingStockResponse[] | null> =>
-  axios.get(`HousingStocks/${housingStockId}/Nodes`);
+  axios.get(`Buildings/${housingStockId}/Nodes`);

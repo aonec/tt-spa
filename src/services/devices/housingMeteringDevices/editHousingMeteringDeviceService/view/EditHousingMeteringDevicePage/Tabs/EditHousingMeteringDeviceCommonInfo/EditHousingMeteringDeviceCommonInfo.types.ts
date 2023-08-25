@@ -1,19 +1,18 @@
 import { Moment } from 'moment';
 import {
+  CommunicationPipeResponse,
   EHousingMeteringDeviceType,
   EResourceType,
   PipeHousingMeteringDeviceResponse,
   UpdatePipeHousingMeteringDeviceRequest,
-} from 'myApi';
+} from 'api/types';
 
 export type EditHousingMeteringDeviceCommonInfoProps = {
   housingMeteringDevice: PipeHousingMeteringDeviceResponse | null;
-  handleSubmitForm: (payload: {
-    deviceId: number;
-    request: UpdatePipeHousingMeteringDeviceRequest;
-  }) => void;
+  handleSubmitForm: (payload: UpdatePipeHousingMeteringDeviceRequest) => void;
   deviceId: string;
   onCancel: () => void;
+  communicationPipes: CommunicationPipeResponse[];
 };
 
 export type EditHousingMeteringDeviceCommonInfoFormTypes = {
@@ -23,11 +22,5 @@ export type EditHousingMeteringDeviceCommonInfoFormTypes = {
   serialNumber: string | null;
   lastCheckingDate: Moment | null;
   futureCheckingDate: Moment | null;
-  diameter: number | null;
-  pipeNumber: number | null;
-  magistral: string | null;
-  city: string | null;
-  street: string | null;
-  housingStockNumber: string | null;
-  corpus: string | null;
+  communicationPipeId: number | null;
 };

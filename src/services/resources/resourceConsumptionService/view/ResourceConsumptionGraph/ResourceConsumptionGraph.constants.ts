@@ -1,4 +1,4 @@
-import { EResourceType } from 'myApi';
+import { EResourceType } from 'api/types';
 import { ResourceConsumptionGraphType } from 'services/resources/resourceConsumptionService/resourceConsumptionService.types';
 
 export const ResourceConsumptionGraphColors: {
@@ -14,6 +14,6 @@ export const ResourceConsumptionGraphColorsMeasure: {
 } = {
   [EResourceType.ColdWaterSupply]: 'м³',
   [EResourceType.HotWaterSupply]: 'м³',
-  [EResourceType.Electricity]: 'кВт⋅ч',
+  [EResourceType.Electricity]: 'кВт/ч',
   [EResourceType.Heat]: 'Гкал',
 };

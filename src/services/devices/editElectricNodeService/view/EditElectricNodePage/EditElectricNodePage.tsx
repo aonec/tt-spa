@@ -1,9 +1,8 @@
-import { PageHeader } from '01/shared/ui/PageHeader';
-import IsActive from '01/tt-components/IsActive';
+import { PageHeader } from 'ui-kit/shared/PageHeader';
 import { Skeleton } from 'antd';
 import React, { FC, useState } from 'react';
-import { GoBack } from 'ui-kit/shared_components/GoBack';
-import { getHousingStockAddress } from 'utils/getHousingStockAddress';
+import { GoBack } from 'ui-kit/shared/GoBack';
+import { getBuildingAddress } from 'utils/getBuildingAddress';
 import { EditElectricNodeForm } from './EditElectricNodeForm';
 import {
   AddressWrapper,
@@ -16,6 +15,7 @@ import {
   EditElectricNodeGrouptype,
   EditElectricNodePageProps,
 } from './EditElectricNodePage.types';
+import { DeviceStatus } from 'ui-kit/shared/IndividualDeviceInfo/DeviceStatus';
 const { TabPane } = TabsSC;
 
 export const EditElectricNodePage: FC<EditElectricNodePageProps> = ({
@@ -26,7 +26,7 @@ export const EditElectricNodePage: FC<EditElectricNodePageProps> = ({
 }) => {
   const deviceTitle = device ? `${device.model} (${device.serialNumber}).` : '';
   const [grouptype, setGrouptype] = useState<EditElectricNodeGrouptype>(
-    EditElectricNodeGrouptype.edit
+    EditElectricNodeGrouptype.edit,
   );
   return (
     <div>
@@ -40,10 +40,10 @@ export const EditElectricNodePage: FC<EditElectricNodePageProps> = ({
         <>
           <InfoWrapper>
             <AddressWrapper>
-              {getHousingStockAddress(device?.address, true)}
+              {getBuildingAddress(device?.address, true)}
             </AddressWrapper>
 
-            <IsActive closingdate={device.closingDate} />
+            <DeviceStatus isActive={!device.closingDate} />
           </InfoWrapper>
 
           <TabsSC

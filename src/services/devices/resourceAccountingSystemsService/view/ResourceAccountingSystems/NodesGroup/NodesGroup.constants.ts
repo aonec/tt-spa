@@ -1,11 +1,4 @@
-import { EResourceType } from 'myApi';
-
-export const ResourceNamesDictionary: { [key in EResourceType]: string } = {
-  [EResourceType.ColdWaterSupply]: 'Холодное водоснабжение',
-  [EResourceType.HotWaterSupply]: 'Горячее водоснабжение',
-  [EResourceType.Electricity]: 'Электроснабжение',
-  [EResourceType.Heat]: 'Теплоснабжение',
-};
+import { EResourceType } from 'api/types';
 
 export const ResourceShortNamesDictionary: {
   [key in EResourceType]: string;

@@ -1,21 +1,17 @@
 import { message } from 'antd';
 import { createDomain, forward, guard, sample } from 'effector';
 import { createGate } from 'effector-react';
-import {
-  AddHeatingStationRequest,
-  HouseManagementResponse,
-  HousingStockCreateRequest,
-  HousingStockResponse,
-} from 'myApi';
+import { HouseManagementResponse } from 'api/types';
 import { EffectFailDataAxiosError } from 'types';
 import { createHeatingStationService } from '../heatingStations/createHeatingStationService';
 import { displayHeatingStationsService } from '../heatingStations/displayHeatingStationsService';
 import { editHeatingStationService } from '../heatingStations/editHeatingStationService';
+import { createObject, getHouseManagements } from './createObjectService.api';
 import {
-  getHouseManagements,
-  postCreateObject,
-} from './createObjectService.api';
-import { ObjectCreateSubmitData } from './createObjectService.types';
+  CreateBuildingRequest,
+  CreateBuildingResponse,
+  ObjectCreateSubmitData,
+} from './createObjectService.types';
 import { IsElevatorDictionaryBoolean } from './view/CreateObjectPage/CreateObjectFinalStageModal/CreateObjectFinalStageModal.constants';
 
 const domain = createDomain('createObjectService');
@@ -26,15 +22,10 @@ const goNextStage = domain.createEvent();
 
 const handleSubmitCreateObject = domain.createEvent<ObjectCreateSubmitData>();
 
-const handleCreateHeatingStation = domain.createEvent<AddHeatingStationRequest>();
-
 const handlePostCreateObject = domain.createEvent();
 
 const closePreviewModal = domain.createEvent();
 const openPreviewModal = domain.createEvent();
-
-const openCreateHeatingStationModal =
-  createHeatingStationService.inputs.handleOpenModal;
 
 const openEditHeatingStationModal =
   editHeatingStationService.inputs.handleOpenModal;
@@ -59,10 +50,10 @@ const fetchHouseManagementsFx = domain.createEffect<
 >(getHouseManagements);
 
 const createObjectFx = domain.createEffect<
-  HousingStockCreateRequest,
-  HousingStockResponse | null,
+  CreateBuildingRequest,
+  CreateBuildingResponse,
   EffectFailDataAxiosError
->(postCreateObject);
+>(createObject);
 
 const handleCreateObjectSuccessDone = createObjectFx.doneData;
 
@@ -93,8 +84,8 @@ const $houseManagements = domain
 
 const $isPreviewModalOpen = domain
   .createStore<boolean>(false)
-  .on(closePreviewModal, () => false)
-  .on(openPreviewModal, () => true);
+  .on(openPreviewModal, () => true)
+  .reset(resetter, closePreviewModal);
 
 const $heatingStations = displayHeatingStationsService.outputs.$heatingStations;
 
@@ -126,23 +117,19 @@ guard({
         houseManagement,
         objectCategory,
         livingHouseType,
-        nonResidentialHouseType,
         floors,
         entrances,
         elevator,
+        constructionYear,
+        hasIndividualHeatingStation,
+        nonResidentialHouseType,
       } = data;
 
-      if (
-        !city ||
-        !street ||
-        !house ||
-        !heatingStationId ||
-        !houseManagement ||
-        !objectCategory
-      )
+      if (!city || !street || !house || !heatingStationId || !objectCategory)
         return null;
 
-      const payload: HousingStockCreateRequest = {
+      const payload: CreateBuildingRequest = {
+        city,
         mainAddress: {
           city,
           street,
@@ -161,7 +148,6 @@ guard({
           }) || null,
         heatingStationId,
         houseManagementId: houseManagement,
-        houseCategory: objectCategory,
         livingHouseType: livingHouseType || null,
         nonResidentialHouseType: nonResidentialHouseType || null,
         numberOfFloors: Number(floors) || null,
@@ -169,31 +155,37 @@ guard({
         isThereElevator: elevator
           ? IsElevatorDictionaryBoolean[elevator]
           : null,
+        constructionYear: Number(constructionYear) || null,
+        hasIndividualHeatingStation: hasIndividualHeatingStation,
+        objectCategory,
       };
 
       return payload;
     },
   }),
-  filter: (data): data is HousingStockCreateRequest => Boolean(data),
+  filter: (data): data is CreateBuildingRequest => Boolean(data),
   target: createObjectFx,
 });
 
-createObjectFx.failData.watch((error) =>
-  message.error(error.response.data.error.Text)
-);
+createObjectFx.failData.watch((error) => {
+  message.error(
+    error.response.data.error.Text || error.response.data.error.Message,
+  );
+});
 
 createObjectFx.doneData.watch(() => message.success('Дом успешно создан!'));
+
+const $isHouseManagementsLoading = fetchHouseManagementsFx.pending;
+const $isCreateLoading = createObjectFx.pending;
 
 export const createObjectService = {
   inputs: {
     goBackStage,
     handleSubmitCreateObject,
-    handleCreateHeatingStation,
     handlePostCreateObject,
     openPreviewModal,
     closePreviewModal,
     handleCreateObjectSuccessDone,
-    openCreateHeatingStationModal,
     openEditHeatingStationModal,
     heatingStationCapture,
     handleHeatindStationModalOpen,
@@ -204,6 +196,8 @@ export const createObjectService = {
     $houseManagements,
     $isPreviewModalOpen,
     $heatingStations,
+    $isHouseManagementsLoading,
+    $isCreateLoading,
   },
   gates: { HouseManagementsFetchGate, PageCloseGate, HeatingStationsFetchGate },
 };

@@ -4,7 +4,7 @@ import {
   OrganizationUserListResponse,
   TaskGroupingFilter,
   TasksPagedList,
-} from 'myApi';
+} from 'api/types';
 import { GetTasksListRequestPayload } from '../../tasksProfileService.types';
 import { TaskType } from '../TasksListItem/TasksListItem.types';
 
@@ -26,4 +26,10 @@ export type TasksProfileProps = {
   housingManagments: GuidStringDictionaryItem[] | null;
   perpetrators: OrganizationUserListResponse[];
   isSpectator: boolean;
+  tasksPageSegment: TasksPageSegment;
+  setTasksPageSegment: (segment: TasksPageSegment) => void;
+  handleOpenAddTaskModal: () => void;
+  isPermissionToAddTask: boolean;
 };
+
+export type TasksPageSegment = 'list' | 'map';

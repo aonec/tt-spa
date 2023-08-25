@@ -5,31 +5,32 @@ import { Select } from 'ui-kit/Select';
 import { Title } from 'ui-kit/Title';
 import { Button } from 'ui-kit/Button';
 import { Footer } from '../CreateNodePage.styled';
-import { FormWrapper } from './MountAddress.styled';
+import { ButtonSC, FormWrapper } from './MountAddress.styled';
 import { MountAddressProps } from './MountAddress.types';
 import { useFormik } from 'formik';
 import { validationSchema } from './MountAddress.constants';
-import { ErrorMessage } from '01/shared/ui/ErrorMessage';
-import { ExistingStreetsGate } from '01/features/housingStocks/displayHousingStockStreets/model';
+import { ErrorMessage } from 'ui-kit/ErrorMessage';
 import { AutoComplete } from 'ui-kit/AutoComplete';
 import { getPreparedStreetsOptions } from 'services/objects/createObjectService/view/CreateObjectPage/CreateObjectAddressStage/CreateObjectAddressStage.utils';
 import { useHistory } from 'react-router-dom';
 import { mountAddressService } from './MountAddress.models';
 import { useStore } from 'effector-react';
+import { addressSearchService } from 'services/addressSearchService/addressSearchService.models';
 
 const { outputs, effects } = mountAddressService;
+const { ExistingStreetsGate } = addressSearchService.gates;
 
 export const MountAddress: FC<MountAddressProps> = ({
-  housingStock,
+  building,
   existingCities,
   existingStreets,
   updateRequestPayload,
   isDisabledAddress,
 }) => {
-  const savedHousingStock = useStore(outputs.$housingStockListItem);
+  const savedHousingStock = useStore(outputs.$buildingListItem);
   const isLoading = useStore(outputs.$isLoading);
 
-  const address = housingStock?.address?.mainAddress;
+  const address = building?.address?.mainAddress;
 
   const history = useHistory();
 
@@ -45,7 +46,7 @@ export const MountAddress: FC<MountAddressProps> = ({
   }, [savedHousingStock, address]);
 
   const isFieldsDisabled =
-    (Boolean(housingStock) && isDisabledAddress) || isLoading;
+    (Boolean(building) && isDisabledAddress) || isLoading;
 
   const {
     values,
@@ -56,18 +57,18 @@ export const MountAddress: FC<MountAddressProps> = ({
   } = useFormik({
     initialValues: initialValues,
     onSubmit: async (values) => {
-      if (housingStock && isFieldsDisabled) {
-        updateRequestPayload({ housingStockId: housingStock.id });
+      if (building && isFieldsDisabled) {
+        updateRequestPayload({ buildingId: building.id });
 
         return;
       }
 
       if (!values.city) return;
 
-      const housingStockResponse = await effects.fetchHousingStockFx({
+      const housingStockResponse = await effects.fetchBuildingFx({
         City: values.city,
         Street: values.street,
-        HousingStockNumber: values.number,
+        BuildingNumber: values.number,
         Corpus: values.corpus,
         PageNumber: 1,
         PageSize: 1,
@@ -75,7 +76,7 @@ export const MountAddress: FC<MountAddressProps> = ({
 
       if (!housingStockResponse) return;
 
-      updateRequestPayload({ housingStockId: housingStockResponse.id });
+      updateRequestPayload({ buildingId: housingStockResponse.id });
     },
     validationSchema,
     validateOnChange: false,
@@ -143,9 +144,7 @@ export const MountAddress: FC<MountAddressProps> = ({
           <Button type="ghost" onClick={() => history.goBack()}>
             Отмена
           </Button>
-          <Button sidePadding={20} onClick={() => handleSubmitForm()}>
-            Далее
-          </Button>
+          <ButtonSC onClick={() => handleSubmitForm()}>Далее</ButtonSC>
         </Footer>
       </div>
     </>

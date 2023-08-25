@@ -1,13 +1,13 @@
 import {
   MeteringDeviceResponse,
   SwitchHousingMeteringDeviceRequest,
-} from 'myApi';
-import { CalculatorInfoItem } from '01/features/carlculators/calculatorsInfo/models/types';
+} from 'api/types';
+import { CalculatorInfoItem } from 'services/calculators/calculatorsInfoService/calculatorsInfoService.types';
 
 export type SwitchDeviceFormProps = {
   device: MeteringDeviceResponse;
   handleChangeSwitchDevicePayload: (
-    payload: Omit<SwitchHousingMeteringDeviceRequest, 'deviceId'>
+    payload: Omit<SwitchHousingMeteringDeviceRequest, 'deviceId'>,
   ) => void;
   isCalculator: boolean;
   calculatorInfos: CalculatorInfoItem[];

@@ -1,5 +1,3 @@
-import { ExistingCitiesGate } from '01/features/housingStocks/displayHousingStockCities/models';
-import { ExistingStreetsGate } from '01/features/housingStocks/displayHousingStockStreets/model';
 import { useStore } from 'effector-react';
 import { useFormik } from 'formik';
 import { last } from 'lodash';
@@ -13,16 +11,20 @@ import {
   SearchFieldType,
 } from './view/AddressSearch/AddressSearch.types';
 
+const { gates, outputs } = addressSearchService;
+const { ExistingCitiesGate, ExistingStreetsGate } = gates;
+
 export const AddressSearchContainer: FC<AddressSearchContainerProps> = ({
   fields,
-  handleSubmit: onSubmit = () => {},
+  handleSubmit: onSubmit,
   initialValues,
   customTemplate,
   showLabels,
   disabledFields,
   onChange,
+  className,
+  isError = false,
 }) => {
-  const { outputs } = addressSearchService;
   const { values, handleSubmit, setFieldValue } =
     useFormik<AddressSearchValues>({
       initialValues: initialValues || {
@@ -34,11 +36,13 @@ export const AddressSearchContainer: FC<AddressSearchContainerProps> = ({
         question: '',
       },
       enableReinitialize: true,
-      onSubmit,
+      onSubmit: (values) => {
+        onSubmit?.(values);
+      },
     });
 
-  const cities = useStore(outputs.cities);
-  const streets = useStore(outputs.streets);
+  const cities = useStore(outputs.$existingCities);
+  const streets = useStore(outputs.$existingStreets);
   const hasCorpuses = useStore(currentUserService.outputs.$hasCorpuses);
 
   const preparedFields = useMemo(
@@ -58,11 +62,15 @@ export const AddressSearchContainer: FC<AddressSearchContainerProps> = ({
     setFieldValue('city', last(cities));
 
     if (onChange) onChange('city', last(cities) || '');
-  }, [cities, initialValues, setFieldValue, onChange]);
+
+    handleSubmit();
+  }, [cities, initialValues, setFieldValue, onChange, handleSubmit]);
 
   const handleChange = (key: string, value: string) => {
     setFieldValue(key, value);
-    if (onChange) onChange(key, value);
+    if (onChange) {
+      return onChange(key, value);
+    }
   };
 
   return (
@@ -79,6 +87,8 @@ export const AddressSearchContainer: FC<AddressSearchContainerProps> = ({
         customTemplate={customTemplate}
         showLabels={showLabels}
         disabledFields={disabledFields}
+        className={className}
+        isError={isError}
       />
     </>
   );

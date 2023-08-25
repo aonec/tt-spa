@@ -1,10 +1,10 @@
 import { createDomain, forward } from 'effector';
 import { FeedBackFlowReportPayload } from './feedFlowBackReportService.types';
 import { getFeedBackFlowReport } from './feedFlowBackReportService.api';
-import { $existingCities } from '01/features/housingStocks/displayHousingStockCities/models';
 import { houseManagementsService } from 'services/objects/houseManagementsService';
-import { EffectFailDataAxiosError } from 'types';
+import { BlobResponseErrorType } from 'types';
 import { message } from 'antd';
+import { addressSearchService } from 'services/addressSearchService/addressSearchService.models';
 
 const domain = createDomain('feedFlowBackReportService');
 
@@ -16,7 +16,7 @@ const handleExportReport = domain.createEvent<FeedBackFlowReportPayload>();
 const exportFeedBackFlowReportFx = domain.createEffect<
   FeedBackFlowReportPayload,
   void,
-  EffectFailDataAxiosError
+  BlobResponseErrorType
 >(getFeedBackFlowReport);
 
 const $isModalOpen = domain
@@ -29,9 +29,12 @@ forward({
   to: exportFeedBackFlowReportFx,
 });
 
-exportFeedBackFlowReportFx.failData.watch((error) =>
-  message.error(error.response.data.error.Text)
-);
+exportFeedBackFlowReportFx.failData.watch(async (error) => {
+  const jsonData = await error.response.data.text();
+  const errObject = JSON.parse(jsonData);
+
+  return message.error(errObject.error.Text || errObject.error.Message);
+});
 
 const $isLoading = exportFeedBackFlowReportFx.pending;
 
@@ -43,7 +46,7 @@ export const feedFlowBackReportService = {
   },
   outputs: {
     $isModalOpen,
-    $existingCities,
+    $existingCities: addressSearchService.outputs.$existingCities,
     $houseManagements: houseManagementsService.outputs.$houseManagements,
     $isLoading,
   },

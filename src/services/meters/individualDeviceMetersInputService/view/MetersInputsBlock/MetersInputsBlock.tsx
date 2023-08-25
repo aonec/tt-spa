@@ -1,8 +1,4 @@
-import {
-  getSourceIcon,
-  getSourceName,
-} from '01/features/readings/displayReadingHistory/components/SourceIcon';
-import { fromEnter } from '01/shared/ui/DatePickerNative';
+import { fromEnter } from 'ui-kit/shared/DatePickerNative';
 import { Tooltip } from 'antd';
 import React, {
   ChangeEvent,
@@ -20,7 +16,7 @@ import {
   getReadingLite,
   getReadingValueKey,
 } from '../../individualDeviceMetersInputService.utils';
-import { useSwitchInputOnEnter } from './MetersInputBlock.hook';
+import { useSwitchInputOnEnter } from 'hooks/useSwitchInputOnEnter';
 import {
   Input,
   InputWrapper,
@@ -39,6 +35,7 @@ import {
   getDateByReadingMonthSlider,
   getRateNum,
 } from './MetersInputsBlock.utils';
+import { getSourceIcon, getSourceName } from 'utils/sourceIcon';
 
 export const MetersInputsBlock: FC<MetersInputsBlockProps> = ({
   resource,
@@ -180,7 +177,7 @@ export const MetersInputsBlock: FC<MetersInputsBlockProps> = ({
         const readingValue = bufferedReadingValues[valueKey] || '';
 
         return (
-          <InputWrapper>
+          <InputWrapper key={index}>
             <Input
               type="number"
               status={status}
@@ -189,7 +186,6 @@ export const MetersInputsBlock: FC<MetersInputsBlockProps> = ({
               value={readingValue}
               name={valueKey}
               placeholder={`T${index + 1}`}
-              key={index}
               onFocus={handleReadingInputFocus}
               onChange={handleReadingInputChange}
               {...inputDataAttr}

@@ -1,6 +1,6 @@
 import { useStore } from 'effector-react';
-import { ETaskConfirmationType } from 'myApi';
-import React, { FC } from 'react';
+import { ETaskConfirmationType } from 'api/types';
+import React, { FC, useCallback } from 'react';
 import { ActionComponentProps } from '../TaskActionsPanel.types';
 import { completionStageService } from './completionStageService.model';
 import { CompletionSelect } from './view/CompletionSelect';
@@ -19,7 +19,7 @@ export const CompletionStageContainer: FC<ActionComponentProps> = ({
   const payload = useStore(taskProfileService.outputs.$pushStageRequestPayload);
 
   function handleChangeConfirmationType(
-    confirmationType: ETaskConfirmationType
+    confirmationType: ETaskConfirmationType,
   ) {
     handleChange((prev) => ({
       ...prev,
@@ -30,18 +30,21 @@ export const CompletionStageContainer: FC<ActionComponentProps> = ({
     }));
   }
 
-  function handleChangeComment(comment: string) {
-    handleChange((prev) => {
-      if (!prev.taskConfirmation) {
-        return {};
-      }
+  const handleChangeComment = useCallback(
+    (comment: string) => {
+      handleChange((prev) => {
+        if (!prev.taskConfirmation) {
+          return {};
+        }
 
-      return {
-        ...prev,
-        taskConfirmation: { ...(prev.taskConfirmation || {}), comment },
-      };
-    });
-  }
+        return {
+          ...prev,
+          taskConfirmation: { ...(prev.taskConfirmation || {}), comment },
+        };
+      });
+    },
+    [handleChange],
+  );
 
   if (!taskConfirmationTypes?.length) return null;
 

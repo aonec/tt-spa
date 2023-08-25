@@ -1,10 +1,10 @@
-import { EResourceType } from 'myApi';
 import {
-  ConsumptionDataFilter,
+  EResourceType,
+  GetSummaryHousingConsumptionsByResourcesResponse,
+} from 'api/types';
+import { ConsumptionDataFilter } from '../../resourceConsumptionFilterService/resourceConsumptionFilterService.types';
+import {
   ConsumptionDataForTwoMonth,
-  AddressWithSearchString,
-  PreparedHouseManagements,
-  GetConsumptionDataFilter,
   ResourceConsumptionGraphType,
   ResourceConsumptionGraphDataType,
   MonthConsumptionData,
@@ -12,22 +12,16 @@ import {
 
 export type ResourceConsumptionProfileProps = {
   isLoading: boolean;
-  resourceConsumptionFilter: Partial<ConsumptionDataFilter> | null;
-  setFilter: (filter: GetConsumptionDataFilter) => void;
+  resourceConsumptionFilter: ConsumptionDataFilter;
   setResource: (resource: EResourceType) => void;
   housingConsumptionData: ConsumptionDataForTwoMonth | null;
-  streetsList: AddressWithSearchString[];
-  selectedHouseManagement: string | null;
-  setHouseManagement: (houseManagement: string | null) => void;
-  houseManagements: PreparedHouseManagements[];
-  handleClearData: () => void;
-  handleClearFilter: () => void;
   selectedGraphTypes: BooleanTypesOfResourceConsumptionGraphForTwoMonth;
   setSelectedGraphTypes: (
-    selected: BooleanTypesOfResourceConsumptionGraphForTwoMonth
+    selected: BooleanTypesOfResourceConsumptionGraphForTwoMonth,
   ) => void;
   additionalConsumptionData: MonthConsumptionData | null;
-  handleClearAdditionalAddress: () => void;
+  summaryConsumption: GetSummaryHousingConsumptionsByResourcesResponse | null;
+  resource: EResourceType;
 };
 
 export type BooleanTypesOfResourceConsumptionGraphForTwoMonth = {

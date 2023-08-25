@@ -2,7 +2,7 @@ import {
   CalculatorResponse,
   NodeOnHousingStockResponse,
   PipeNodeIntoCalculatorResponse,
-} from 'myApi';
+} from 'api/types';
 import { CalculatorProfileGrouptype } from '../calculatorProfileService.constants';
 
 export type CalculatorProfileProps = {
@@ -15,4 +15,5 @@ export type CalculatorProfileProps = {
   openDevicesListModal: (
     payload: NodeOnHousingStockResponse | PipeNodeIntoCalculatorResponse,
   ) => void;
+  isPermitionToCalculatorActions: boolean;
 };

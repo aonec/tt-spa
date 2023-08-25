@@ -6,14 +6,16 @@ import {
   AddressSearchValues,
   SearchFieldType,
 } from 'services/addressSearchService/view/AddressSearch/AddressSearch.types';
-import { WithLoader } from 'ui-kit/shared_components/WithLoader';
-import { TypeAddressToStart } from '01/shared/ui/TypeToStart';
+import { WithLoader } from 'ui-kit/shared/WithLoader';
 import { ApartmentIndividualDevicesMetersContainer } from 'services/meters/apartmentIndividualDevicesMetersService';
 import { ApartmentInfo } from './ApartmentInfo';
 import { ApartmentAlerts } from './ApartmentAlerts';
 import { apartmentReadingsService } from '../../../ApartmentReadingsService.model';
-import { useParams } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 import confirm from 'antd/lib/modal/confirm';
+import { TypeAddressToStart } from 'ui-kit/shared/TypeToStart';
+import { EApartmentStatus } from 'api/types';
+import { NothingFound } from 'ui-kit/shared/NothingFound';
 
 const { gates } = apartmentReadingsService;
 const { ApartmentGate } = gates;
@@ -28,8 +30,18 @@ export const ApartmentProfile: FC<ApartmentProfileProps> = ({
   openEditPersonalNumberModal,
   setSelectedHomeownerName,
   selectedHomeownerName,
+  isPermitionToApartmentStatusPatch,
+  printIssueCertificate,
+  handleUpdateHomeowner,
+  isUpdateHomeownerLoading,
+  isApartmentFetched,
 }) => {
   const { id } = useParams<{ id: string }>();
+  const history = useHistory();
+
+  const isPaused = apartment
+    ? apartment.status === EApartmentStatus.Pause
+    : false;
 
   const handleSubmit = useCallback(
     (values: AddressSearchValues) => {
@@ -95,26 +107,58 @@ export const ApartmentProfile: FC<ApartmentProfileProps> = ({
               question: selectedHomeownerName || undefined,
             }
           }
+          isError={!isLoadingApartment && !apartment && isApartmentFetched}
         />
         <WithLoader isLoading={isLoadingApartment}>
-          {!apartment && <TypeAddressToStart />}
+          {!apartment && !isApartmentFetched && <TypeAddressToStart />}
+          {!apartment && isApartmentFetched && <NothingFound />}
           {apartment && (
             <ContentWrapper>
               <ApartmentInfo
                 apartment={apartment}
                 handleUpdateApartment={handleUpdateApartment}
-                handlePauseApartment={handlePauseApartment}
-                handleCancelPauseApartment={cancelPauseApartment}
-                openEditPersonalNumberModal={openEditPersonalNumberModal}
                 setSelectedHomeownerName={setSelectedHomeownerName}
+                menuButtons={[
+                  {
+                    title: 'Поставить на паузу',
+                    hidden: isPaused || !isPermitionToApartmentStatusPatch,
+                    onClick: handlePauseApartment,
+                  },
+                  {
+                    title: 'Снять с паузы',
+                    hidden: !isPaused || !isPermitionToApartmentStatusPatch,
+                    onClick: handleCancelPauseApartment,
+                  },
+                  {
+                    title: 'Изменить лицевой счет',
+                    onClick: () => openEditPersonalNumberModal(true),
+                  },
+                  {
+                    title: 'Добавить новый прибор',
+                    onClick: () =>
+                      history.push(
+                        `/apartment/${apartment.id}/addIndividualDevice`,
+                      ),
+                  },
+                  {
+                    title: 'Выдать справку',
+                    onClick: () => printIssueCertificate(),
+                  },
+                ]}
+                handleUpdateHomeowner={handleUpdateHomeowner}
+                isUpdateHomeownerLoading={isUpdateHomeownerLoading}
               />
               <ApartmentAlerts
                 apartment={apartment}
                 handleCancelPauseApartment={cancelPauseApartment}
+                isPermitionToApartmentStatusPatch={
+                  isPermitionToApartmentStatusPatch
+                }
               />
               <ReadingsWrapper>
                 <ApartmentIndividualDevicesMetersContainer
                   apartment={apartment}
+                  editable
                 />
               </ReadingsWrapper>
             </ContentWrapper>

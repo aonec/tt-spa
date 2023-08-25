@@ -1,19 +1,13 @@
 import { createGate } from 'effector-react';
-import { getApartments } from './displayApartmentsListService.api';
+import { getApartmentsQuery } from './displayApartmentsListService.api';
 import { createDomain, sample, guard, forward } from 'effector';
-import { ApartmentListResponsePagedList } from 'myApi';
-import {
-  GetApartmentsListRequestPayload,
-  SearchApartmentsPayload,
-} from './displayApartmentsListService.types';
+import { ApartmentListResponsePagedList } from 'api/types';
+import { SearchApartmentsPayload } from './displayApartmentsListService.types';
 
-const domain = createDomain(
-  'displayApartmentsListService'
-);
+const domain = createDomain('displayApartmentsListService');
 
-const $apartmentsPagedList = domain.store<ApartmentListResponsePagedList | null>(
-  null
-);
+const $apartmentsPagedList =
+  domain.store<ApartmentListResponsePagedList | null>(null);
 
 const $apartmentsList = $apartmentsPagedList.map((data) => data?.items || []);
 const $pagedInfo = $apartmentsPagedList.map((data) => ({
@@ -22,18 +16,12 @@ const $pagedInfo = $apartmentsPagedList.map((data) => ({
   pageSize: data?.pageSize,
 }));
 
-const fetchApartmentsFx = domain.createEffect<
-  GetApartmentsListRequestPayload,
-  ApartmentListResponsePagedList
->(getApartments);
-
 const searchApartments = domain.createEvent<SearchApartmentsPayload>();
 
-const $searchApartmentsPayload = domain.createStore<SearchApartmentsPayload | null>(
-  null
-);
+const $searchApartmentsPayload =
+  domain.createStore<SearchApartmentsPayload | null>(null);
 
-const $isLoading = fetchApartmentsFx.pending;
+const $isLoading = getApartmentsQuery.$pending;
 
 const setPageNumber = domain.createEvent<number>();
 
@@ -56,7 +44,7 @@ $searchApartmentsPayload
   .reset(clearSearchPayload);
 
 $apartmentsPagedList
-  .on(fetchApartmentsFx.doneData, (_, data) => data)
+  .on(getApartmentsQuery.$data, (_, data) => data)
   .reset(clearSearchPayload);
 
 sample({
@@ -75,7 +63,12 @@ sample({
       PageSize: 30,
     };
   },
-  target: fetchApartmentsFx,
+  target: getApartmentsQuery.start,
+});
+
+sample({
+  clock: ApartmentsListGate.close,
+  target: getApartmentsQuery.reset,
 });
 
 export const displayApartmentsListService = {

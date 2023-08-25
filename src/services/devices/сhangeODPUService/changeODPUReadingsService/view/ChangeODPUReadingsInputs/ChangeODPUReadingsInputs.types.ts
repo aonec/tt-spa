@@ -1,6 +1,4 @@
-import {
-  EResourceType,
-} from 'myApi';
+import { EResourceType } from 'api/types';
 import { PreparedHousingMeteringDeviceReadings } from '../../changeODPUReadingsService.types';
 
 export type ChangeODPUReadingsInputsProps = {

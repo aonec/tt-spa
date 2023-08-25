@@ -1,7 +1,7 @@
 import { createDomain, forward } from 'effector';
 import { EffectFailDataAxiosError } from 'types';
 import { closeDevice } from './closeHousingMeteringDeviceService.api';
-import { CloseDeviceRequest } from 'myApi';
+import { CloseDeviceRequest } from 'api/types';
 import { message } from 'antd';
 
 const domain = createDomain('closeHousingMeteringDeviceService');
@@ -23,11 +23,6 @@ closeHousingMeteringDeviceFx.doneData.watch(() => {
 });
 
 closeHousingMeteringDeviceFx.failData.watch((error) => {
-  if (error.response.status === 403) {
-    return message.error(
-      'У вашего аккаунта нет доступа к выбранному действию. Уточните свои права у Администратора',
-    );
-  }
   return message.error(
     error.response.data.error.Text || error.response.data.error.Message,
   );

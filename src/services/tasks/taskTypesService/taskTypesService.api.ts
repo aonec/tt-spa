@@ -1,11 +1,11 @@
-import { axios } from '01/axios';
+import { axios } from 'api/axios';
 import {
+  BuildingFiltersResponse,
   EManagingFirmTaskFilterTypeNullableStringDictionaryItem,
   GuidStringDictionaryItem,
-  HousingStockFilterResponse,
   OrganizationUserListResponsePagedList,
   TaskFilterResponse,
-} from 'myApi';
+} from 'api/types';
 
 export const getTaskTypes = async (): Promise<
   EManagingFirmTaskFilterTypeNullableStringDictionaryItem[] | null
@@ -18,11 +18,12 @@ export const getTaskTypes = async (): Promise<
 export const getHousingManagements = async (): Promise<
   GuidStringDictionaryItem[] | null
 > => {
-  const res = await axios.get<any, HousingStockFilterResponse>(
-    '/HousingStocks/filters'
+  const res = await axios.get<any, BuildingFiltersResponse>(
+    'Buildings/filters',
   );
   return res?.houseManagements;
 };
 
-export const getPerpetratorIds = (): Promise<OrganizationUserListResponsePagedList> =>
-  axios.get('OrganizationUsers');
+export const getPerpetratorIds =
+  (): Promise<OrganizationUserListResponsePagedList> =>
+    axios.get('OrganizationUsers');

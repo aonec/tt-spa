@@ -1,15 +1,16 @@
 import {
   EApartmentStatus,
   EClosingReason,
-  EExpiresCheckingDateAt,
+  EExpiresDateAt,
   EOrderByRule,
   EResourceType,
-} from 'myApi';
+} from 'api/types';
 import { SearchIndividualDevicesParams } from '../../../individualDevicesProfileService.types';
 
-export type SearchIndividualDevicesRequestPayload = SearchIndividualDevicesParams & {
-  Apartment?: string;
-};
+export type SearchIndividualDevicesRequestPayload =
+  SearchIndividualDevicesParams & {
+    Apartment?: string;
+  };
 
 export type GetHousingByFilterRequestPayload = {
   City: string;
@@ -26,7 +27,7 @@ export type GetIndividualDevicesApartments = {
   'DeviceFilter.ClosingReason'?: EClosingReason;
   'DeviceFilter.MountPlace'?: string;
   'DeviceFilter.ApartmentStatus'?: EApartmentStatus;
-  'DeviceFilter.ExpiresCheckingDateAt'?: EExpiresCheckingDateAt;
+  'DeviceFilter.ExpiresCheckingDateAt'?: EExpiresDateAt;
   'DeviceFilter.IsAlsoClosing'?: boolean;
   PageNumber?: number;
   PageSize?: number;

@@ -1,8 +1,8 @@
-import Arrow from '01/_components/Arrow/Arrow';
 import React, { FC, useCallback, useState } from 'react';
 import { CustomInput } from '../CustomInput';
 import { ArrowContainer, TextWrapper, Wrapper } from './Slider.styled';
 import { SliderProps } from './Slider.types';
+import { ChevronBoldIcon } from 'ui-kit/icons';
 
 export const Slider: FC<SliderProps> = ({ values, onChange, inputs }) => {
   const limit = values.length - 1;
@@ -23,7 +23,7 @@ export const Slider: FC<SliderProps> = ({ values, onChange, inputs }) => {
         id: values[sliderIndex].id!,
       });
     },
-    [onChange, sliderIndex, values]
+    [onChange, sliderIndex, values],
   );
 
   return (
@@ -31,7 +31,7 @@ export const Slider: FC<SliderProps> = ({ values, onChange, inputs }) => {
       <Wrapper>
         {Boolean(limit) && (
           <ArrowContainer onClick={up} isDisabled={!canUp}>
-            <Arrow />
+            <ChevronBoldIcon />
           </ArrowContainer>
         )}
         <TextWrapper>{values[sliderIndex]?.text}</TextWrapper>
@@ -41,7 +41,7 @@ export const Slider: FC<SliderProps> = ({ values, onChange, inputs }) => {
             isDisabled={!canDown}
             style={{ transform: 'rotate(180deg)' }}
           >
-            <Arrow />
+            <ChevronBoldIcon />
           </ArrowContainer>
         )}
       </Wrapper>

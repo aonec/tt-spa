@@ -1,4 +1,7 @@
-import { ESecuredIdentityRoleName, OrganizationUserCreateRequest } from 'myApi';
+import {
+  ESecuredIdentityRoleName,
+  OrganizationUserCreateRequest,
+} from 'api/types';
 
 export type CreateEmployeeModalProps = {
   isModalOpen: boolean;
@@ -16,4 +19,5 @@ export type CreateEmployeeModalProps = {
       }[]
     | null;
   handleCreateEmloyee: (payload: OrganizationUserCreateRequest) => void;
+  isLoading: boolean;
 };

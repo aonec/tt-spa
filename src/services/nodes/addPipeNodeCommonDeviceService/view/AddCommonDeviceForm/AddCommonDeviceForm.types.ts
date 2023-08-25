@@ -1,4 +1,4 @@
-import { EPipeNodeConfig } from 'myApi';
+import { EPipeNodeConfig } from 'api/types';
 import {
   CommunicationPipePayload,
   CreateCommonDevicePartitial,
@@ -10,7 +10,6 @@ export type AddCommonDeviceFormProps = {
   updateRequestPayload: (payload: CreateCommonDevicePartitial) => void;
   configuration: EPipeNodeConfig;
   requestPayload: CreateCommonDevicePartitial;
-  openAddPipeModal: () => void;
   communicationPipes: CommunicationPipePayload[];
   handleFormComplete: () => void;
 };

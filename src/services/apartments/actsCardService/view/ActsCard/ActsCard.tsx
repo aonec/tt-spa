@@ -10,30 +10,22 @@ import { ActsCardProps } from './ActsCard.types';
 
 export const ActsCard: FC<ActsCardProps> = ({
   acts,
-  actTypes,
   handleSaveFile,
   apartmentid,
 }) => {
   const cards = useMemo(
     () =>
       acts.map((act) => (
-        <ActCardItem
-          key={act.id}
-          act={act}
-          actTypes={actTypes}
-          handleSaveFile={handleSaveFile}
-        />
+        <ActCardItem key={act.id} act={act} handleSaveFile={handleSaveFile} />
       )),
-    [acts, actTypes, handleSaveFile]
+    [acts, handleSaveFile],
   );
 
   return (
     <Wrapper>
       <TitleWrapper>Журнал актов</TitleWrapper>
       {cards}
-      <MoreDocumentsLink
-        to={`/apartments/${apartmentid}/actsJournal`}
-      >
+      <MoreDocumentsLink to={`/apartments/${apartmentid}/actsJournal`}>
         <DocumentIconSC />
         Показать все акты
       </MoreDocumentsLink>

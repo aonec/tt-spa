@@ -1,6 +1,6 @@
-import { SpaceLine } from '01/shared/ui/Layout/Space/Space';
+import { SpaceLine } from 'ui-kit/SpaceLine';
 import { Form } from 'antd';
-import React, { FC } from 'react';
+import React, { FC, useMemo } from 'react';
 import {
   Field,
   FieldDescrition,
@@ -23,9 +23,14 @@ import { AddressField } from './AddressField';
 export const CreateObjectFinalStageForm: FC<
   CreateObjectFinalStageFormProps
 > = ({ formId, createObjectData, houseManagements, heatingStations }) => {
-  const houseManagrmentName = houseManagements?.find(
-    (elem) => elem.id === createObjectData?.houseManagement,
-  )?.name;
+  const houseManagrmentName = useMemo(() => {
+    if (createObjectData?.houseManagement === null) {
+      return 'Без домоуправления';
+    }
+    return houseManagements?.find(
+      (elem) => elem.id === createObjectData?.houseManagement,
+    )?.name;
+  }, [houseManagements, createObjectData]);
 
   const objectCategory = createObjectData?.objectCategory;
 
@@ -128,6 +133,11 @@ export const CreateObjectFinalStageForm: FC<
               ? ElevatorDictionary[createObjectData?.elevator]
               : '-'}
           </Field>
+        </GridContainer>
+        <SpaceLine />
+        <GridContainer>
+          <FieldDescrition> Год постройки </FieldDescrition>
+          <Field>{createObjectData?.constructionYear || '-'}</Field>
         </GridContainer>
         <SpaceLine />
       </Wrapper>

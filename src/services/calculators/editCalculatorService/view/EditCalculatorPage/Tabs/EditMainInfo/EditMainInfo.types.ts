@@ -1,9 +1,15 @@
-import { ItemInterface } from '01/tt-components/localBases';
-import { CalculatorResponse, UpdateCalculatorRequest } from 'myApi';
+import { CalculatorResponse, UpdateCalculatorRequest } from 'api/types';
+
+interface ItemInterface {
+  id: number;
+  value: number;
+  model: string;
+  label: string;
+}
 
 export type EditMainInfoProps = {
   calculator: CalculatorResponse | null;
   onCancel: () => void;
   calculatorTypesSelectItems: ItemInterface[];
-  onSubmit: (payload: UpdateCalculatorRequest) => void
+  onSubmit: (payload: UpdateCalculatorRequest) => void;
 };

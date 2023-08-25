@@ -1,5 +1,5 @@
-import { DragAndDrop } from '01/shared/ui/DragAndDrop';
-import React, { FC } from 'react';
+import { DragAndDrop } from 'ui-kit/DragAndDrop';
+import React, { FC, useEffect } from 'react';
 import { useDocumentsUpload } from './DocumentsService.hook';
 import {
   DocumentsUploadComponentType,
@@ -7,9 +7,15 @@ import {
 } from './DocumentsService.types';
 import { DocumentsLineUpload } from './view/DocumentsLineUpload';
 import { DocumentsList } from './view/DocumentsList';
+import { ESecuredIdentityRoleName } from 'api/types';
+import { usePermission } from 'hooks/usePermission';
+import { documentService } from './DocumentsService.model';
+import { useEvent } from 'effector-react';
 
 const accept =
   'application/msword, application/vnd.ms-excel, application/pdf, image/*';
+
+const { inputs } = documentService;
 
 export const DocumentsUploadContainer: FC<DocumentsUploadContainerProps> = ({
   uniqId,
@@ -24,10 +30,23 @@ export const DocumentsUploadContainer: FC<DocumentsUploadContainerProps> = ({
     documents = [];
   }
 
+  const isPermitionToDeleteExistedDocument = usePermission([
+    ESecuredIdentityRoleName.Administrator,
+    ESecuredIdentityRoleName.ManagingFirmExecutor,
+    ESecuredIdentityRoleName.ManagingFirmDispatcher,
+    ESecuredIdentityRoleName.Controller,
+  ]);
+
   const { handleFile, isLoading, removeDocument } = useDocumentsUpload(
     documents,
-    onChange
+    onChange,
   );
+
+  const setIsLoading = useEvent(inputs.setIsLoading);
+
+  useEffect(() => {
+    setIsLoading(isLoading);
+  }, [isLoading, setIsLoading]);
 
   const isMaxDocuments = documents.length >= max;
 
@@ -37,7 +56,7 @@ export const DocumentsUploadContainer: FC<DocumentsUploadContainerProps> = ({
         <DragAndDrop
           disabled={isLoading}
           accept={accept}
-          fileHandler={(files) => handleFile(files[0], type)}
+          fileHandler={(files: FileList) => handleFile(files[0], type)}
           uniqId={uniqId}
           text={label}
           style={{
@@ -50,6 +69,9 @@ export const DocumentsUploadContainer: FC<DocumentsUploadContainerProps> = ({
           isLoading={isLoading}
           removeDocument={removeDocument}
           documents={documents}
+          isPermitionToDeleteExistedDocument={
+            isPermitionToDeleteExistedDocument
+          }
         />
       )}
     </div>

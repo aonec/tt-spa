@@ -1,20 +1,18 @@
-import { ErrorMessage } from '01/shared/ui/ErrorMessage';
+import { ErrorMessage } from 'ui-kit/ErrorMessage';
 import { Form } from 'antd';
 import { useFormik } from 'formik';
 import moment from 'moment';
-import { EResourceDisconnectingType, EResourceType } from 'myApi';
-import React, {
-  FC,
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from 'react';
+import {
+  EDocumentType,
+  EResourceDisconnectingType,
+  EResourceType,
+} from 'api/types';
+import React, { FC, useCallback, useEffect, useMemo, useState } from 'react';
 import { DatePicker } from 'ui-kit/DatePicker';
 import { Document, DocumentsUploadContainer } from 'ui-kit/DocumentsService';
 import { FormItem } from 'ui-kit/FormItem';
 import { Select } from 'ui-kit/Select';
+import { AddressTreeSelect } from 'ui-kit/shared/AddressTreeSelect';
 import { getDatePickerValue } from 'utils/getDatePickerValue';
 import { EAddressDetails } from '../../createResourceDisconnectionService.types';
 import {
@@ -26,18 +24,14 @@ import {
   BaseInfoWrapper,
   CitySelectWrapper,
   InputSC,
-  TagPlaceholder,
   TimeWrapper,
-  TreeSelectSC,
 } from './CreateResourceDisconnectionForm.styled';
 import {
   CreateResourceDisconnectionFormTypes,
   CreateResourceDisconnectionFormProps,
   DetailsSelectLookup,
-  TreeSelectValue,
 } from './CreateResourceDisconnectionForm.types';
 import {
-  getAllHousingStocks,
   getDate,
   getFormValues,
   prepareEndHours,
@@ -63,6 +57,7 @@ export const CreateResourceDisconnectionForm: FC<
   existingCities,
   selectCity,
   selectedCity,
+  selectedBuilding,
 }) => {
   const documentInit = useMemo(
     () =>
@@ -76,8 +71,8 @@ export const CreateResourceDisconnectionForm: FC<
     if (!isEdit || !resourceDisconnection) {
       return formInitialValues;
     }
-    return getFormValues(resourceDisconnection);
-  }, [resourceDisconnection, isEdit]);
+    return getFormValues(resourceDisconnection, selectedBuilding);
+  }, [resourceDisconnection, isEdit, selectedBuilding]);
 
   const handleSubmitFormik = useCallback(
     (formValues: CreateResourceDisconnectionFormTypes) => {
@@ -142,61 +137,8 @@ export const CreateResourceDisconnectionForm: FC<
       onSubmit: handleSubmitFormik,
     });
 
-  const isAllPrevious = useRef(false);
-  const isAllHousingStocksSelected = values.housingStockIds.includes(-1);
-
   const isCityShow =
     existingCities.length > 1 && typeOfAddress === EAddressDetails.All;
-
-  const allHousingStocks = useMemo(
-    () => getAllHousingStocks(treeData),
-    [treeData],
-  );
-
-  const handleChangeHousingStocks = useCallback(
-    (selectedAddresses: TreeSelectValue) => {
-      const selectedAddressesArray = [selectedAddresses].flat();
-
-      const allHousingStocksVariantClicked =
-        selectedAddressesArray.includes(-1);
-      const allHousingStocksChosen =
-        selectedAddressesArray.length === allHousingStocks.length &&
-        !isAllPrevious.current;
-
-      const isAllSelected =
-        allHousingStocksVariantClicked || allHousingStocksChosen;
-
-      if (isAllSelected && !isAllPrevious.current) {
-        isAllPrevious.current = true;
-        return setFieldValue('housingStockIds', [...allHousingStocks, -1]);
-      }
-
-      if (!isAllSelected && isAllPrevious.current) {
-        isAllPrevious.current = false;
-        return setFieldValue('housingStockIds', []);
-      }
-      isAllPrevious.current = false;
-
-      setFieldValue(
-        'housingStockIds',
-        selectedAddressesArray.filter((elem) => elem !== -1),
-      );
-    },
-    [allHousingStocks, setFieldValue],
-  );
-
-  const housingStocksPlaceholderText = isAllHousingStocksSelected
-    ? 'Выбраны все адреса'
-    : `Выбрано ${values.housingStockIds.length} адреса(-ов)`;
-
-  const tagPlaceholder = useMemo(
-    () => (
-      <TagPlaceholder className="tag-placeholder">
-        {housingStocksPlaceholderText}
-      </TagPlaceholder>
-    ),
-    [housingStocksPlaceholderText],
-  );
 
   const preparedEndHours = prepareEndHours(values.startHour);
 
@@ -212,8 +154,11 @@ export const CreateResourceDisconnectionForm: FC<
   );
 
   useEffect(() => {
-    setFieldValue('housingStockIds', []);
-  }, [treeData, setFieldValue]);
+    setFieldValue(
+      'housingStockIds',
+      selectedBuilding ? [selectedBuilding.id] : [],
+    );
+  }, [treeData, setFieldValue, selectedBuilding]);
 
   useEffect(() => {
     if (!values.startDate) {
@@ -225,13 +170,13 @@ export const CreateResourceDisconnectionForm: FC<
     if (!resourceDisconnection || treeData.length === 0) {
       return;
     }
-    const housingStocks = resourceDisconnection.housingStocks || [];
+    const housingStocks = resourceDisconnection.buildings || [];
     const housingStockIds = housingStocks.map(
       (housingstock) => housingstock.id,
     );
 
-    handleChangeHousingStocks(housingStockIds);
-  }, [treeData, handleChangeHousingStocks, resourceDisconnection]);
+    setFieldValue('housingStockIds', housingStockIds);
+  }, [treeData, setFieldValue, resourceDisconnection]);
 
   useEffect(() => {
     if (!isInterHeatingSeason) {
@@ -304,8 +249,11 @@ export const CreateResourceDisconnectionForm: FC<
           {isCityShow && (
             <FormItem label="Город">
               <Select
-                placeholder="Выберите из списка"
-                onChange={(type) => selectCity(String(type))}
+                placeholder="Выберите город"
+                onChange={(type) => {
+                  selectCity(String(type));
+                  setFieldValue('housingStockIds', []);
+                }}
                 value={selectedCity || undefined}
               >
                 {existingCities.map((city) => (
@@ -319,20 +267,11 @@ export const CreateResourceDisconnectionForm: FC<
         </CitySelectWrapper>
 
         <FormItem label="Адрес">
-          <TreeSelectSC
-            showSearch
-            showArrow
-            value={values.housingStockIds}
+          <AddressTreeSelect
+            selectedHousingStockIds={values.housingStockIds}
             disabled={isHousingStocksLoading || (isCityShow && !selectedCity)}
-            treeCheckable
-            maxTagCount={0}
-            maxTagPlaceholder={() => {
-              return tagPlaceholder;
-            }}
-            treeData={[{ title: 'Все дома', value: -1, key: -1 }, ...treeData]}
-            showCheckedStrategy="SHOW_CHILD"
-            onChange={(values) => handleChangeHousingStocks(values)}
-            placeholder="Выберите адрес"
+            treeData={treeData}
+            onChange={(values) => setFieldValue('housingStockIds', values)}
           />
           <ErrorMessage>{errors.housingStockIds}</ErrorMessage>
         </FormItem>
@@ -409,6 +348,7 @@ export const CreateResourceDisconnectionForm: FC<
               setFieldValue('documentId', files[0]?.id || null);
             }}
             max={1}
+            type={EDocumentType.Common}
           />
           <ErrorMessage>{errors.documentId}</ErrorMessage>
         </FormItem>

@@ -1,29 +1,22 @@
 import { Empty } from 'antd';
-import { useStore } from 'effector-react';
-import { last } from 'lodash';
 import moment from 'moment';
-import { EApartmentActType } from 'myApi';
 import React, { FC } from 'react';
-import { ResourceIconLookup } from 'ui-kit/shared_components/ResourceIconLookup';
+import { ResourceIconLookup } from 'ui-kit/shared/ResourceIconLookup';
 import { Table } from 'ui-kit/Table';
 import { actResourceNamesLookup } from 'utils/actResourceNamesLookup';
 import {
   ApartmentNumber,
   ResourceWrapper,
 } from '../IndividualDevicesReport/IndividualDevicesReport.styled';
-import { actsJournalReportService } from './ActsJournalReport.model';
+import { getReportElemAddress } from '../ReportViewTable.utils';
+import { ActsCountPanel } from './ActsCountPanel';
 import { ActDate } from './ActsJournalReport.styled';
 import { ActsJournalReportProps } from './ActsJournalReport.types';
-
-const { outputs, gates } = actsJournalReportService;
-const { ApartmentActTypesGate } = gates;
+import { ActTypesNamesLookup } from 'dictionaries';
 
 export const ActsJournalReport: FC<ActsJournalReportProps> = ({
   actJournalReportData,
-  city,
 }) => {
-  const apartmentActTypes = useStore(outputs.$actTypes);
-
   if (!actJournalReportData) {
     return (
       <Empty
@@ -35,7 +28,6 @@ export const ActsJournalReport: FC<ActsJournalReportProps> = ({
 
   return (
     <>
-      <ApartmentActTypesGate />
       <Table
         columns={[
           {
@@ -45,21 +37,14 @@ export const ActsJournalReport: FC<ActsJournalReportProps> = ({
           },
           {
             label: 'Адрес',
-            size: '0.5fr',
+            size: '270px',
             render: (elem) => {
-              const addressSplit = elem.address?.split(' ');
-
-              const apartmentNumber = last(addressSplit);
-
-              const address = addressSplit
-                ?.slice(0, addressSplit.length - 1)
-                .join(' ');
+              const { addressString, number } = getReportElemAddress(elem);
 
               return (
                 <div>
-                  <ApartmentNumber>Кв. №{apartmentNumber}</ApartmentNumber>
-                  {city && `${city}, `}
-                  {address}
+                  <ApartmentNumber>Кв. №{number}</ApartmentNumber>
+                  {addressString}
                 </div>
               );
             },
@@ -79,15 +64,11 @@ export const ActsJournalReport: FC<ActsJournalReportProps> = ({
           {
             label: 'Тип документа',
             size: '190px',
-            render: (act) =>
-              apartmentActTypes?.find(
-                // дождаться правки по апи с бэка
-                (elem) => (elem.key as any) === act.actType,
-              )?.value,
+            render: (act) => ActTypesNamesLookup[act.actType],
           },
           {
             label: 'Ресурс',
-            size: '0.35fr',
+            size: '150px',
             render: (elem) => (
               <ResourceWrapper>
                 <ResourceIconLookup resource={elem.resourceType} />
@@ -96,13 +77,17 @@ export const ActsJournalReport: FC<ActsJournalReportProps> = ({
             ),
           },
           {
-            label: 'Дата раброт',
+            label: 'Дата работ',
             size: '100px',
             render: (elem) => moment(elem.actJobDate).format('DD.MM.YYYY'),
           },
         ]}
-        elements={actJournalReportData?.rows?.slice(0, 50) || []}
+        elements={actJournalReportData?.rows || []}
+        pagination={{ pageSize: 50 }}
       />
+      {actJournalReportData.rows && (
+        <ActsCountPanel count={actJournalReportData.rows.length} />
+      )}
     </>
   );
 };

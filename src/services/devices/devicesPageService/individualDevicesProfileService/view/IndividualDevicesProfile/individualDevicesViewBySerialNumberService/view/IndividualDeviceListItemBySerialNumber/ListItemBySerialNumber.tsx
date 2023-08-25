@@ -1,11 +1,11 @@
-import { ContextMenuButton } from '01/shared/ui/ContextMenuButton';
+import { ContextMenuButton } from 'ui-kit/ContextMenuButton/ContextMenuButton';
 import { Tooltip } from 'antd';
 import { useEvent, useStore } from 'effector-react';
 import React, { FC } from 'react';
 import {
   AdditionalHomeownersCountTextWrapper,
   AdditionalHomeownersCountWrapper,
-} from 'services/objects/objectProfileService/apartmentsListService/view/ApartmentsView/ApartmentsList/ApartmentItem/ApartmentItem.styled';
+} from 'services/objects/housingStockProfileService/apartmentsListService/view/ApartmentsView/ApartmentsList/ApartmentItem/ApartmentItem.styled';
 import {
   IndividualDevicesListContainer,
   individualDevicesListService,
@@ -28,9 +28,9 @@ import {
 
 const { inputs, outputs } = individualDevicesListService;
 
-export const IndividualDeviceListItemBySerialNumber: FC<IndividualDeviceListItemBySerialNumberProps> = ({
-  device,
-}) => {
+export const IndividualDeviceListItemBySerialNumber: FC<
+  IndividualDeviceListItemBySerialNumberProps
+> = ({ device }) => {
   const { serialNumber, address, homeowners } = device;
 
   const openedDeviceId = useStore(outputs.$openedBlockId);

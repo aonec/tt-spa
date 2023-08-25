@@ -3,6 +3,7 @@ import { MagistralsDisctionary } from 'dictionaries';
 import {
   DevicesAmount,
   InfoWrapper,
+  PipeEntryNumber,
   PipeIconWrapper,
   PipeInfo,
   PipeNumber,
@@ -16,7 +17,7 @@ import {
 import { MeteringDeviceListItem } from './MeteringDeviceListItem';
 import { PipeIcon } from 'ui-kit/icons';
 import { getDevicesCountText } from './CommunicationPipeListItem.utils';
-import { ListOpeningChevron } from 'ui-kit/shared_components/ListOpeningChevron';
+import { ListOpeningChevron } from 'ui-kit/shared/ListOpeningChevron';
 import { resourceFromConfig } from 'utils/resourceFromConfigLookup';
 
 export const CommunicationPipeListItem: FC<CommunicationPipeListItemProps> = ({
@@ -24,6 +25,8 @@ export const CommunicationPipeListItem: FC<CommunicationPipeListItemProps> = ({
   configuration,
   handleDeletePipe,
   handleDeleteDevice,
+  isNodeConfigWithoutODPU,
+  handleEditDevice,
 }) => {
   const [isOpen, setIsOpen] = useState(true);
 
@@ -31,9 +34,10 @@ export const CommunicationPipeListItem: FC<CommunicationPipeListItemProps> = ({
 
   const devicesCountText = getDevicesCountText(devicesCount);
 
-  const resource = useMemo(() => resourceFromConfig[configuration], [
-    configuration,
-  ]);
+  const resource = useMemo(
+    () => resourceFromConfig[configuration],
+    [configuration],
+  );
 
   return (
     <Wrapper>
@@ -41,7 +45,12 @@ export const CommunicationPipeListItem: FC<CommunicationPipeListItemProps> = ({
         <PipeIconWrapper>
           <PipeIcon />
           <div>
-            <PipeNumber>Труба №{pipe.number}</PipeNumber>
+            <PipeNumber>
+              Труба №{pipe.number}{' '}
+              {pipe.entryNumber && (
+                <PipeEntryNumber>Ввод {pipe.entryNumber}</PipeEntryNumber>
+              )}
+            </PipeNumber>
             <PipeInfo>
               {pipe.magistral && MagistralsDisctionary[pipe.magistral]}
               {typeof pipe.diameter === 'number' && `, ${pipe.diameter}мм`}
@@ -56,7 +65,7 @@ export const CommunicationPipeListItem: FC<CommunicationPipeListItemProps> = ({
             isOpen={isOpen}
             onClick={() => setIsOpen((prev) => !prev)}
           />
-          {handleDeletePipe && (
+          {handleDeletePipe && !isNodeConfigWithoutODPU && (
             <TrashIconSC onClick={() => handleDeletePipe(pipe.id)} />
           )}
         </RighContentWrapper>
@@ -71,6 +80,7 @@ export const CommunicationPipeListItem: FC<CommunicationPipeListItemProps> = ({
               handleDeleteDevice={
                 handleDeleteDevice && (() => handleDeleteDevice(pipe.id, index))
               }
+              handleEditDevice={handleEditDevice}
             />
           ))}
         </div>

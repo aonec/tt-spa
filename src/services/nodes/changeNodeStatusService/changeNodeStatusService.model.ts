@@ -1,6 +1,6 @@
 import { message } from 'antd';
-import { createDomain, forward, guard, sample } from 'effector';
-import { PipeNodeResponse } from 'myApi';
+import { createDomain, forward, sample } from 'effector';
+import { PipeNodeResponse } from 'api/types';
 import { EffectFailDataAxiosError } from 'types';
 import { fetchChangeCommercialStatus } from './changeNodeStatusService.api';
 import {
@@ -29,12 +29,14 @@ const changeNodeStatusFx = domain.createEffect<
 >(fetchChangeCommercialStatus);
 
 changeNodeStatusFx.doneData.watch(() =>
-  message.success('Статус успешно изменён')
+  message.success('Статус успешно изменён'),
 );
 
-changeNodeStatusFx.failData.watch((error) =>
-  message.error(error.response.data.error.Text)
-);
+changeNodeStatusFx.failData.watch((error) => {
+  return message.error(
+    error.response.data.error.Text || error.response.data.error.Message,
+  );
+});
 
 forward({
   from: changeNodeStatusFx.doneData,
@@ -42,7 +44,7 @@ forward({
 });
 
 sample({
-  source: guard({
+  source: sample({
     source: $node.map((node) => node?.id),
     filter: Boolean,
   }),

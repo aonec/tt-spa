@@ -1,59 +1,71 @@
 import React, { FC, useMemo } from 'react';
-import { StyledModal } from '01/shared/ui/Modal/Modal';
 import { Header } from 'ui-kit/Modals/FormModal/FormModal.styled';
 import {
   AddressText,
   AddressWrapper,
+  ButtonSC,
   CalculatorBaseInfo,
   CalculatorEntryNumber,
   CalculatorModel,
   CalculatorSerialNumber,
   CalculatorWrapper,
   Footer,
+  ListWrapper,
   NoCalculatorText,
   NodeResourceInfo,
   StepTitle,
   StepWrapper,
+  StyledModal,
 } from './CreateNodeConfirmationModal.styled';
 import { CreateNodeConfirmationModalProps } from './CreateNodeConfirmationModal.types';
 import { Button } from 'ui-kit/Button';
 import { CalculatorIcon, CitySmallIcon } from 'ui-kit/icons';
-import { getHousingStockAddress } from 'utils/getHousingStockAddress';
-import { CommonInfo } from 'ui-kit/shared_components/CommonInfo';
-import { NodeStatusTextDictionary } from 'services/devices/resourceAccountingSystemsService/view/ResourceAccountingSystems/NodesGroup/NodeItem/NodeStatus/NodeStatus.constants';
-import moment from 'moment';
-import { ResourceIconLookup } from 'ui-kit/shared_components/ResourceIconLookup';
+import { getBuildingAddress } from 'utils/getBuildingAddress';
+import { CommonInfo } from 'ui-kit/shared/CommonInfo';
+import { ResourceIconLookup } from 'ui-kit/shared/ResourceIconLookup';
 import { CommunicationPipeListItem } from '../CreateNodePage/ConnectedDevices/CommunicationPipeListItem';
 import { Empty } from 'antd';
 import { resourceFromConfig } from 'utils/resourceFromConfigLookup';
 import { configNamesLookup } from 'utils/configNamesLookup';
+import {
+  NodeRegistrationTypeLookup,
+  NodeStatusTextDictionary,
+} from 'dictionaries';
+import moment from 'moment';
+import { IncorrectConfigAlert } from 'services/nodes/editNodeService/view/EditNodePage/IncorrectConfigAlert';
 
-export const CreateNodeConfirmationModal: FC<CreateNodeConfirmationModalProps> = ({
+export const CreateNodeConfirmationModal: FC<
+  CreateNodeConfirmationModalProps
+> = ({
   isOpen,
   handleClose,
-  housingStock,
+  building,
   calculator,
   requestPayload,
   serviceZone,
   isLoading,
   handleSubmitForm,
+  validationResult,
 }) => {
   const commercialAccountingDatesString = useMemo(() => {
     if (
-      !requestPayload.startCommercialAccountingDate ||
-      !requestPayload.endCommercialAccountingDate
+      !requestPayload.commercialStatusRequest?.startCommercialAccountingDate ||
+      !requestPayload.commercialStatusRequest?.endCommercialAccountingDate
     ) {
       return '—';
     }
 
-    const start = moment(requestPayload.startCommercialAccountingDate);
-    const end = moment(requestPayload.endCommercialAccountingDate);
+    const start = moment(
+      requestPayload.commercialStatusRequest.startCommercialAccountingDate,
+    );
+    const end = moment(
+      requestPayload.commercialStatusRequest.endCommercialAccountingDate,
+    );
 
     return `${start.format('DD.MM.YYYY')} — ${end.format('DD.MM.YYYY')}`;
-  }, [
-    requestPayload.startCommercialAccountingDate,
-    requestPayload.endCommercialAccountingDate,
-  ]);
+  }, [requestPayload.commercialStatusRequest]);
+
+  const isValidationMessage = Boolean(validationResult.length);
 
   return (
     <StyledModal
@@ -66,13 +78,9 @@ export const CreateNodeConfirmationModal: FC<CreateNodeConfirmationModalProps> =
           <Button type="ghost" onClick={handleClose}>
             Отмена
           </Button>
-          <Button
-            isLoading={isLoading}
-            sidePadding={20}
-            onClick={handleSubmitForm}
-          >
+          <ButtonSC isLoading={isLoading} onClick={handleSubmitForm}>
             Создать узел
-          </Button>
+          </ButtonSC>
         </Footer>
       }
       title={<Header>Добавление нового узла</Header>}
@@ -81,9 +89,7 @@ export const CreateNodeConfirmationModal: FC<CreateNodeConfirmationModalProps> =
         <StepTitle>1. Адрес установки</StepTitle>
         <AddressWrapper>
           <CitySmallIcon />
-          <AddressText>
-            {getHousingStockAddress(housingStock, true)}
-          </AddressText>
+          <AddressText>{getBuildingAddress(building, true)}</AddressText>
         </AddressWrapper>
       </StepWrapper>
 
@@ -125,12 +131,21 @@ export const CreateNodeConfirmationModal: FC<CreateNodeConfirmationModalProps> =
                 </NodeResourceInfo>
               ),
             },
+            {
+              key: 'Тип узла',
+              value: requestPayload.registrationType
+                ? NodeRegistrationTypeLookup[requestPayload.registrationType]
+                : '',
+            },
             { key: 'Номер узла', value: requestPayload.number },
             { key: 'Зона', value: serviceZone.name },
             {
+              hidden: !requestPayload.commercialStatusRequest?.commercialStatus,
               key: 'Коммерческий учет показателей приборов',
-              value: requestPayload.nodeStatus
-                ? NodeStatusTextDictionary[requestPayload.nodeStatus]
+              value: requestPayload.commercialStatusRequest?.commercialStatus
+                ? NodeStatusTextDictionary[
+                    requestPayload.commercialStatusRequest.commercialStatus
+                  ]
                 : '',
             },
             {
@@ -142,8 +157,16 @@ export const CreateNodeConfirmationModal: FC<CreateNodeConfirmationModalProps> =
       </StepWrapper>
 
       <StepWrapper>
-        <StepTitle>3. Подключенные приборы</StepTitle>
-        <div>
+        <StepTitle>4. Подключенные приборы</StepTitle>
+        {isValidationMessage && (
+          <IncorrectConfigAlert
+            description="Узел не соответствует
+                выбранной конфигурации. Присутствуют следующие ошибки:"
+            validationResultArray={validationResult}
+          />
+        )}
+
+        <ListWrapper>
           {requestPayload.configuration &&
             requestPayload.communicationPipes?.map((pipe) => (
               <CommunicationPipeListItem
@@ -158,7 +181,7 @@ export const CreateNodeConfirmationModal: FC<CreateNodeConfirmationModalProps> =
               description="Нет подключённых приборов"
             />
           )}
-        </div>
+        </ListWrapper>
       </StepWrapper>
     </StyledModal>
   );

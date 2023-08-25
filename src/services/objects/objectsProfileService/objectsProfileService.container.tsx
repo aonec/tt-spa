@@ -1,8 +1,7 @@
-import { useEvent, useStore } from 'effector-react';
-import { ESecuredIdentityRoleName } from 'myApi';
+import { useUnit } from 'effector-react';
+import { ESecuredIdentityRoleName } from 'api/types';
 import React, { useEffect } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
-import { currentUserService } from 'services/currentUserService';
 import { FeedFlowBackReportContainer } from 'services/nodes/feedFlowBackReportService';
 import { ChooseTypeOfResourceDisconnectionModalContainer } from 'services/resources/chooseTypeOfResourceDisconnectionModalService/chooseTypeOfResourceDisconnectionModalService.container';
 import { chooseTypeOfResourceDisconnectionModalService } from 'services/resources/chooseTypeOfResourceDisconnectionModalService/chooseTypeOfResourceDisconnectionModalService.model';
@@ -15,52 +14,95 @@ import { objectsProfileService } from './objectsProfileService.model';
 import { SearchType } from './objectsProfileService.types';
 import { SoiReportContainer } from './soiReportService';
 import { ObjectsProfile } from './view/ObjectsProfile';
+import { usePermission } from 'hooks/usePermission';
+import {
+  HeatIndividualDevicesReportContainer,
+  heatIndividualDevicesReportService,
+} from './heatIndividualDevicesReportService';
+import { FlowTemperatureDeviationReportContainer } from './flowTemperatureDeviationReport';
 
-const { inputs } = objectsProfileService;
+const { inputs, outputs } = objectsProfileService;
 
 export const ObjectsProfileContainer = () => {
   const { searchType } = useParams<{ searchType?: SearchType }>();
 
   const history = useHistory();
 
-  const openSoiReportModal = useEvent(inputs.openSoiReportModal);
+  const {
+    openSoiReportModal,
+    openFeedFlowBackReportModal,
+    handleExportGroupReport,
+    handleOpenChooseResourceDisconnectionModal,
+    handleOpenGroupreportModal,
+    handleOpenHeatIndividualDevicesReportModal,
+    openFlowTemperatureDeviationReportModal,
+    pageSegment,
+    setSegment,
+  } = useUnit({
+    openSoiReportModal: inputs.openSoiReportModal,
+    openFeedFlowBackReportModal: inputs.openFeedFlowBackReportModal,
+    handleExportGroupReport: groupReportService.inputs.openModal,
+    handleOpenChooseResourceDisconnectionModal:
+      chooseTypeOfResourceDisconnectionModalService.inputs.openModal,
+    handleOpenGroupreportModal: groupReportService.inputs.openModal,
+    handleOpenHeatIndividualDevicesReportModal:
+      heatIndividualDevicesReportService.inputs.openModal,
+    openFlowTemperatureDeviationReportModal:
+      inputs.openFlowTemperatureDeviationReportModal,
+    setSegment: inputs.setSegment,
+    pageSegment: outputs.$pageSegment,
+  });
 
-  const openFeedFlowBackReportModal = useEvent(
-    inputs.openFeedFlowBackReportModal
-  );
+  const handleCreateObject = () => history.push('/buildings/create');
 
-  const handleExportGroupReport = useEvent(groupReportService.inputs.openModal);
-
-  const handleOpenChooseResourceDisconnectionModal = useEvent(
-    chooseTypeOfResourceDisconnectionModalService.inputs.openModal
-  );
-
-  const handleOpenGroupreportModal = useEvent(
-    groupReportService.inputs.openModal
-  );
-
-  const handleCreateObject = () => history.push('/objects/create');
-
-  const userRoles = useStore(currentUserService.outputs.$currentUserRoles);
-
-  const isAdministrator = userRoles
-    .map((e) => e.key)
-    .includes(ESecuredIdentityRoleName.Administrator);
+  const isPermitionToDownloadGroupReport = usePermission([
+    ESecuredIdentityRoleName.Administrator,
+    ESecuredIdentityRoleName.ManagingFirmExecutor,
+    ESecuredIdentityRoleName.ManagingFirmSpectator,
+    ESecuredIdentityRoleName.ManagingFirmSpectatorRestricted,
+  ]);
+  const isPermitionToDownloadSOIReport = usePermission([
+    ESecuredIdentityRoleName.Administrator,
+    ESecuredIdentityRoleName.ManagingFirmExecutor,
+    ESecuredIdentityRoleName.SeniorOperator,
+    ESecuredIdentityRoleName.Operator,
+    ESecuredIdentityRoleName.ManagingFirmSpectator,
+    ESecuredIdentityRoleName.ManagingFirmSpectatorRestricted,
+    ESecuredIdentityRoleName.ManagingFirmDispatcher,
+  ]);
+  const isPermitionToDownloadFeedBackFlowReport = usePermission([
+    ESecuredIdentityRoleName.Administrator,
+    ESecuredIdentityRoleName.ManagingFirmExecutor,
+  ]);
+  const isPermitionToCreateResourceDisconnection = usePermission([
+    ESecuredIdentityRoleName.Administrator,
+  ]);
+  const isPermitionToCreateObjectAndIPUReport = usePermission([
+    ESecuredIdentityRoleName.Administrator,
+  ]);
+  const isPermitionToCreateFeedFlowPipeTemperatureReport = usePermission([
+    ESecuredIdentityRoleName.Administrator,
+    ESecuredIdentityRoleName.ManagingFirmSpectator,
+  ]);
 
   useEffect(() => {
     if (!searchType) {
-      history.push(`/objects/${SearchType.Houses}`);
+      history.push(`/buildings/${SearchType.Houses}`);
     }
   }, [searchType, history]);
 
   return (
     <>
+      <HeatIndividualDevicesReportContainer />
       <SoiReportContainer />
       <CreateResourceDisconnectionContainer />
       <ChooseTypeOfResourceDisconnectionModalContainer />
       <FeedFlowBackReportContainer />
       <GroupReportContainer />
+      <FlowTemperatureDeviationReportContainer />
       <ObjectsProfile
+        pageSegment={pageSegment}
+        setSegment={setSegment}
         openSoiReportModal={() => openSoiReportModal()}
         searchType={searchType}
         handleExportGroupReport={() => handleExportGroupReport()}
@@ -68,9 +110,28 @@ export const ObjectsProfileContainer = () => {
           handleOpenChooseResourceDisconnectionModal()
         }
         handleCreateObject={handleCreateObject}
-        isAdministrator={isAdministrator}
         openFeedFlowBackReportModal={() => openFeedFlowBackReportModal()}
+        isPermitionToCreateObjectAndIPUReport={
+          isPermitionToCreateObjectAndIPUReport
+        }
+        isPermitionToCreateResourceDisconnection={
+          isPermitionToCreateResourceDisconnection
+        }
+        isPermitionToDownloadFeedBackFlowReport={
+          isPermitionToDownloadFeedBackFlowReport
+        }
+        isPermitionToDownloadSOIReport={isPermitionToDownloadSOIReport}
+        isPermitionToDownloadGroupReport={isPermitionToDownloadGroupReport}
+        isPermitionToCreateFeedFlowPipeTemperatureReport={
+          isPermitionToCreateFeedFlowPipeTemperatureReport
+        }
         handleOpenGroupreportModal={() => handleOpenGroupreportModal()}
+        openHeatIndividualDevicesReportModal={() =>
+          handleOpenHeatIndividualDevicesReportModal()
+        }
+        openFlowTemperatureDeviationReportModal={
+          openFlowTemperatureDeviationReportModal
+        }
       />
     </>
   );

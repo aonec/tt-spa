@@ -2,7 +2,7 @@ import {
   HeatingStationResponse,
   HeatingStationResponsePagedList,
   HouseManagementResponse,
-} from 'myApi';
+} from 'api/types';
 import { ObjectCreateSubmitData } from '../../createObjectService.types';
 
 export type CreateObjectPageProps = {
@@ -22,4 +22,5 @@ export type CreateObjectPageProps = {
   openCreateHeatingStationModal: () => void;
   openEditHeatingStationModal: () => void;
   heatingStationCapture: (payload: HeatingStationResponse) => void;
+  isCreateLoading: boolean;
 };

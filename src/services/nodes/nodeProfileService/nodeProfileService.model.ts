@@ -1,6 +1,6 @@
 import { createDomain, forward, sample } from 'effector';
 import { createGate } from 'effector-react';
-import { PipeNodeResponse } from 'myApi';
+import { PipeNodeResponse } from 'api/types';
 import { changeNodeStatusService } from '../changeNodeStatusService';
 import { changeNodeTypeService } from '../changeNodeTypeService';
 import { getPipeNode } from './nodeProfileService.api';
@@ -10,7 +10,7 @@ const domain = createDomain('nodeProfileService');
 const PipeNodeGate = createGate<{ pipeNodeId: number }>();
 
 const fetchPipeNodeFx = domain.createEffect<number, PipeNodeResponse>(
-  getPipeNode
+  getPipeNode,
 );
 
 const $pipeNode = domain

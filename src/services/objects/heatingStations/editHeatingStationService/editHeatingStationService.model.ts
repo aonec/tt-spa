@@ -1,10 +1,6 @@
 import { message } from 'antd';
 import { createDomain, forward, guard, sample } from 'effector';
-import {
-  CreateAddressRequest,
-  HeatingStationResponse,
-  UpdateHeatingStationRequest,
-} from 'myApi';
+import { HeatingStationResponse, UpdateHeatingStationRequest } from 'api/types';
 import { addressSearchService } from 'services/addressSearchService/addressSearchService.models';
 import { EffectFailDataAxiosError } from 'types';
 import { HeatingStationTypeRequestDictionary } from '../NewHeatingStationForm/newHeatingStationForm.constants';
@@ -22,7 +18,8 @@ const handleEditHeatingStation = domain.createEvent<{
 const handleOpenModal = domain.createEvent();
 const handleCloseModal = domain.createEvent();
 
-const currentHeatingStatitonDataCapture = domain.createEvent<HeatingStationResponse>();
+const currentHeatingStatitonDataCapture =
+  domain.createEvent<HeatingStationResponse>();
 
 const editHeatingStationFx = domain.createEffect<
   requestParams,
@@ -44,12 +41,6 @@ guard({
         isThermalChamber: data.isThermalChamber
           ? HeatingStationTypeRequestDictionary[data.isThermalChamber]
           : undefined,
-
-        address: {
-          city: data.address.city,
-          street: data.address.street,
-          number: data.address.number,
-        } as CreateAddressRequest,
       };
 
       return { id, data: payload };
@@ -60,7 +51,7 @@ guard({
 });
 
 editHeatingStationFx.failData.watch((error) =>
-  message.error(error.response.data.error.Text)
+  message.error(error.response.data.error.Text),
 );
 
 forward({
@@ -68,8 +59,8 @@ forward({
   to: handleCloseModal,
 });
 
-const $existingCities = addressSearchService.outputs.cities;
-const $existingStreets = addressSearchService.outputs.streets;
+const $existingCities = addressSearchService.outputs.$existingCities;
+const $existingStreets = addressSearchService.outputs.$existingStreets;
 
 const $isModalOpen = domain
   .createStore<boolean>(false)

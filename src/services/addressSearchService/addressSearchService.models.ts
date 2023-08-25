@@ -1,9 +1,54 @@
-import { $existingCities } from '01/features/housingStocks/displayHousingStockCities/models';
-import { $existingStreets } from '01/features/housingStocks/displayHousingStockStreets/model';
+import {
+  getExistingCities,
+  getExistingStreets,
+} from './addressSearchService.api';
+import { createDomain, sample } from 'effector';
+import { createGate } from 'effector-react';
+import { GetExistingSteetRequestParams } from './addressSearchService.types';
+
+const domain = createDomain('addressSearchService');
+
+const fetchExistingCities = domain.createEffect<void, string[] | null>(
+  getExistingCities,
+);
+const $existingCities = domain
+  .createStore<string[] | null>(null)
+  .on(fetchExistingCities.doneData, (_, cities) => cities);
+
+const fetchExistingStreets = domain.createEffect<
+  GetExistingSteetRequestParams,
+  string[]
+>(getExistingStreets);
+const $existingStreets = domain
+  .createStore<string[]>([])
+  .on(fetchExistingStreets.doneData, (_, payload) => payload);
+
+const ExistingCitiesGate = createGate();
+const ExistingStreetsGate = createGate<GetExistingSteetRequestParams>();
+
+sample({
+  source: $existingCities,
+  clock: ExistingCitiesGate.open,
+  filter: (cities) => !cities,
+  target: fetchExistingCities,
+});
+
+sample({
+  clock: ExistingStreetsGate.state.map((values) => values),
+  filter: (payload) => Boolean(payload.City),
+  target: fetchExistingStreets,
+});
+
+const $isExistingCitiesLoading = fetchExistingStreets.pending;
 
 export const addressSearchService = {
   outputs: {
-    cities: $existingCities,
-    streets: $existingStreets,
+    $existingCities,
+    $existingStreets,
+    $isExistingCitiesLoading,
+  },
+  gates: {
+    ExistingCitiesGate,
+    ExistingStreetsGate,
   },
 };

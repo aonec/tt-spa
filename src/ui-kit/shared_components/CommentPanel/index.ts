@@ -1,1 +1,0 @@
-export { CommentPanel } from './CommentPanel'

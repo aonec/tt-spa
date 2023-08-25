@@ -25,7 +25,7 @@ export const ModelWrapper = styled(Link)`
 
   &:hover {
     span {
-       color: #189EE9;
+      color: #189ee9;
     }
   }
 `;

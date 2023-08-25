@@ -1,24 +1,24 @@
-import { PageHeader } from '01/shared/ui/PageHeader';
 import React, { FC, ReactNode } from 'react';
 import { useHistory } from 'react-router-dom';
 import { ActsCardContainer } from 'services/apartments/actsCardService';
 import { ApartmentActsListContainer } from 'services/apartments/apartmentActsListService';
-import { TasksCardContainer } from 'services/apartments/tasksCardService';
 import { ApartmentIndividualDevicesMetersContainer } from 'services/meters/apartmentIndividualDevicesMetersService';
-import { CommonInfo } from 'ui-kit/shared_components/CommonInfo';
-import { GoBack } from 'ui-kit/shared_components/GoBack';
-import { HeaderInfoString } from 'ui-kit/shared_components/HeaderInfoString';
-import { WithLoader } from 'ui-kit/shared_components/WithLoader';
+import { CommonInfo } from 'ui-kit/shared/CommonInfo';
+import { GoBack } from 'ui-kit/shared/GoBack';
+import { HeaderInfoString } from 'ui-kit/shared/HeaderInfoString';
+import { WithLoader } from 'ui-kit/shared/WithLoader';
 import { Tabs } from 'ui-kit/Tabs';
 import { Title } from 'ui-kit/Title';
 import { getHousingStockItemAddress } from 'utils/getHousingStockItemAddress';
+import { ApartmentOnPauseAlert } from './ApartmentOnPauseAlert';
 import {
   AdditionalAddressWrapper,
   BaseContentWrapper,
   CardsWrapper,
   CommonInfoWrapper,
   ContentWrapper,
-  HeaderWrapper,
+  Deviceswrapper,
+  PageHeaderSC,
   TabsWrapper,
 } from './ApartmentProfile.styled';
 import {
@@ -26,19 +26,27 @@ import {
   ApartmentSection,
 } from './ApartmentProfile.types';
 import { HomeownersList } from './HomeownersList';
+import { LinkCard } from 'ui-kit/shared/LinkCard';
+import { stringifyUrl } from 'query-string';
+import { TaskGroupingFilter } from 'api/types';
 
 export const ApartmentProfile: FC<ApartmentProfileProps> = ({
   apartment,
   isApartmentLoading,
   tabSection,
+  isPermitionToEditApartment,
 }) => {
   const history = useHistory();
 
   const address = apartment?.housingStock?.address?.mainAddress;
   const additionalAddresses =
     apartment?.housingStock?.address?.additionalAddresses;
+  const tasksCount = apartment?.activeTaskIds?.length || 0;
 
   const homeowner = apartment?.homeownerAccounts?.[0];
+
+  const filteredHomeownerAccounts =
+    apartment?.homeownerAccounts?.filter((elem) => !elem.closedAt) || [];
 
   const houseManagement = apartment?.housingStock?.houseManagement;
 
@@ -52,6 +60,8 @@ export const ApartmentProfile: FC<ApartmentProfileProps> = ({
   } = {
     [ApartmentSection.CommonData]: (
       <CommonInfoWrapper>
+        <ApartmentOnPauseAlert apartment={apartment} />
+
         <Title>Информация</Title>
         {apartment && (
           <CommonInfo
@@ -90,14 +100,18 @@ export const ApartmentProfile: FC<ApartmentProfileProps> = ({
       </CommonInfoWrapper>
     ),
     [ApartmentSection.Homeowners]: apartment?.homeownerAccounts && (
-      <HomeownersList homeowners={apartment?.homeownerAccounts} />
+      <HomeownersList homeowners={filteredHomeownerAccounts} />
     ),
     [ApartmentSection.Testimony]: apartment && (
-      <ApartmentIndividualDevicesMetersContainer
-        maxWidth={860}
-        apartment={apartment}
-        editable={false}
-      />
+      <Deviceswrapper>
+        <ApartmentOnPauseAlert apartment={apartment} />
+
+        <ApartmentIndividualDevicesMetersContainer
+          maxWidth={860}
+          apartment={apartment}
+          editable={false}
+        />
+      </Deviceswrapper>
     ),
     [ApartmentSection.ActsJournal]: <ApartmentActsListContainer />,
   };
@@ -107,38 +121,39 @@ export const ApartmentProfile: FC<ApartmentProfileProps> = ({
       {apartment && (
         <div>
           <GoBack />
-          <HeaderWrapper>
-            <PageHeader
-              title={`Кв. №${apartment.apartmentNumber}`}
-              contextMenu={{
-                menuButtons: [
-                  {
-                    title: 'Редактировать квартиру',
-                    onClick: () =>
-                      history.push(`/apartments/${apartment.id}/edit`),
-                  },
-                ],
-              }}
-            />
-            <HeaderInfoString>
-              <>{address?.city}</>
-              <>
-                {`${address && getHousingStockItemAddress(address)} `}
-                {additionalAddresses?.map((elem) => (
-                  <AdditionalAddressWrapper>
-                    {getHousingStockItemAddress(elem)}
-                  </AdditionalAddressWrapper>
-                ))}
-              </>
-              <>ДУ "{apartment?.housingStock?.houseManagement?.name}"</>
-            </HeaderInfoString>
-          </HeaderWrapper>
+          <PageHeaderSC
+            title={`Кв. №${apartment.apartmentNumber}`}
+            contextMenu={{
+              menuButtons: [
+                {
+                  title: 'Редактировать квартиру',
+                  onClick: () =>
+                    history.push(`/apartments/${apartment.id}/edit`),
+                  hidden: !isPermitionToEditApartment,
+                },
+              ],
+            }}
+          />
+          <HeaderInfoString>
+            <>{address?.city}</>
+            <>
+              {`${address && getHousingStockItemAddress(address)} `}
+              {additionalAddresses?.map((elem) => (
+                <AdditionalAddressWrapper>
+                  {getHousingStockItemAddress(elem)}
+                </AdditionalAddressWrapper>
+              ))}
+            </>
+            <>ДУ "{houseManagement?.name}"</>
+          </HeaderInfoString>
           <TabsWrapper>
             <Tabs
               activeKey={tabSection}
               onChange={(activeKey) =>
                 history.push(
-                  `/apartments/${apartment.id}/${activeKey as ApartmentSection}`
+                  `/apartments/${apartment.id}/${
+                    activeKey as ApartmentSection
+                  }`,
                 )
               }
             >
@@ -165,13 +180,15 @@ export const ApartmentProfile: FC<ApartmentProfileProps> = ({
               {tabSection && ContentComponentsDictionary[tabSection]}
             </BaseContentWrapper>
             <CardsWrapper>
-              <TasksCardContainer
-                apartmentId={String(apartment.id)}
-                tasksNumber={apartment.activeTaskIds?.length || 0}
+              <LinkCard
+                text={`Задачи: ${tasksCount}`}
+                link={stringifyUrl({
+                  url: `/tasks/list/${TaskGroupingFilter.Executing}`,
+                  query: { apartmentId: apartment.id },
+                })}
+                showLink={Boolean(tasksCount)}
               />
-              <ActsCardContainer
-                apartmentId={String(apartment.id)}
-              />
+              <ActsCardContainer apartmentId={String(apartment.id)} />
             </CardsWrapper>
           </ContentWrapper>
         </div>

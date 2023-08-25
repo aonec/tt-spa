@@ -14,10 +14,12 @@ import {
   Wrapper,
 } from './DocumentItem.styled';
 import { DocumentItemProps } from './DocumentItem.types';
+import axios from 'api/axios';
 
 export const DocumentItem: FC<DocumentItemProps> = ({
   document,
   removeDocument,
+  isPermitionToDeleteExistedDocument,
 }) => {
   const documentDate = useMemo(
     () => getTimeStringByUTC(document.uploadingTime),
@@ -45,7 +47,16 @@ export const DocumentItem: FC<DocumentItemProps> = ({
       </DocumentDateWrapper>
       <ManageButtonsWrapper>
         <DownloadIconSC onClick={handleSaveDocument} />
-        {removeDocument && <TrashIconSC onClick={handleRemoveDocument} />}
+        {removeDocument && isPermitionToDeleteExistedDocument && (
+          <TrashIconSC
+            onClick={async () => {
+              try {
+                await axios.delete(`Documents/${document.id}`);
+              } catch (error) {}
+              handleRemoveDocument();
+            }}
+          />
+        )}
       </ManageButtonsWrapper>
     </Wrapper>
   );

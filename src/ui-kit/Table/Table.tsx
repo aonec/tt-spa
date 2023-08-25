@@ -1,31 +1,70 @@
-import React, { PropsWithChildren } from 'react';
-import { Header, Row, Wrapper } from './Table.styled';
+import React, { PropsWithChildren, useState } from 'react';
+import {
+  Header,
+  PaginationWrapper,
+  Row,
+  TableElement,
+  Wrapper,
+} from './Table.styled';
 import { TableProps } from './Table.types';
-import { Empty } from 'antd';
+import { Empty, Pagination } from 'antd';
 
 export function Table<T>({
   columns,
   elements,
+  pagination,
+  rowStyles,
+  headerStyles,
+  onClick,
 }: PropsWithChildren<TableProps<T>>) {
+  const pageSize = pagination?.pageSize || Infinity;
+
+  const [pageNumber, setPageNumber] = useState(1);
+
+  const start = pageSize * (pageNumber - 1);
+  const end = pageSize * pageNumber;
+
   const filteredColumns = columns.filter((elem) => !elem.hidden);
 
   const temp = filteredColumns.map((column) => column.size).join(' ');
 
   return (
     <Wrapper>
-      <Header temp={temp}>
-        {filteredColumns.map((elem) => (
-          <div key={elem.label}>{elem.label}</div>
+      <Header temp={temp} css={headerStyles}>
+        {filteredColumns.map((column, columnIndex) => (
+          <TableElement key={columnIndex} css={column.css?.(true)}>
+            {column.label}
+          </TableElement>
         ))}
       </Header>
-      {elements.map((elem, index) => (
-        <Row key={index} temp={temp}>
-          {filteredColumns.map((column) => (
-            <div key={column.label}>{column.render(elem, index)}</div>
-          ))}
-        </Row>
-      ))}
+      <div>
+        {elements.slice(start, end).map((elem, rowIndex) => (
+          <Row
+            key={rowIndex}
+            temp={temp}
+            css={rowStyles}
+            onClick={() => onClick && onClick(elem)}
+          >
+            {filteredColumns.map((column, columnIndex) => (
+              <TableElement key={columnIndex} css={column.css?.(false)}>
+                {column.render(elem, rowIndex)}
+              </TableElement>
+            ))}
+          </Row>
+        ))}
+      </div>
       {!elements.length && <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />}
+      {Boolean(elements.length) && pagination && (
+        <PaginationWrapper>
+          <Pagination
+            pageSize={pageSize}
+            total={elements.length}
+            current={pageNumber}
+            onChange={(pageNumber) => setPageNumber(pageNumber)}
+            showSizeChanger={false}
+          />
+        </PaginationWrapper>
+      )}
     </Wrapper>
   );
 }

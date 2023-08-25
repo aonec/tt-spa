@@ -1,13 +1,14 @@
-import { getCurrentUser } from './currentUserService.api';
 import { createGate } from 'effector-react';
-import { createDomain, forward } from 'effector';
-import { OrganizationUserResponse } from 'myApi';
+import { createDomain, sample } from 'effector';
 import _ from 'lodash';
+import { OrganizationUserResponse } from 'api/types';
+import { getCurrentUser } from './currentUserService.api';
+import { OrganizationCoordinates } from './currentUserService.types';
 
 const domain = createDomain('currentUserService');
 
 const fetchCurrentUserFx = domain.createEffect<void, OrganizationUserResponse>(
-  getCurrentUser
+  getCurrentUser,
 );
 const $currentUser = domain
   .createStore<OrganizationUserResponse | null>(null)
@@ -15,7 +16,7 @@ const $currentUser = domain
 
 const $hasCorpuses = $currentUser.map(
   (user) =>
-    user?.organization?.filtersConfiguration?.hasHousingStockCorpuses || false
+    user?.organization?.filtersConfiguration?.hasHousingStockCorpuses || false,
 );
 
 const $diametersConfig = $currentUser.map((user) => {
@@ -43,11 +44,22 @@ const $isLoading = fetchCurrentUserFx.pending;
 
 const CurrentUserGate = createGate();
 
-forward({ from: CurrentUserGate.open, to: fetchCurrentUserFx });
-
-$currentUser.on(fetchCurrentUserFx.doneData, (_, user) => user);
+sample({ clock: CurrentUserGate.open, target: fetchCurrentUserFx });
 
 const $currentUserRoles = $currentUser.map((user) => user?.roles || []);
+const $userRolesKeys = $currentUserRoles.map((userRoles) =>
+  userRoles.map((role) => role.key),
+);
+
+const $coordinates = $currentUser.map(
+  (user): OrganizationCoordinates | null => {
+    if (!user?.organization?.latitude || !user?.organization?.longitude) {
+      return null;
+    }
+
+    return [user.organization.latitude, user.organization.longitude];
+  },
+);
 
 export const currentUserService = {
   outputs: {
@@ -55,7 +67,9 @@ export const currentUserService = {
     $isLoading,
     $hasCorpuses,
     $diametersConfig,
-    $currentUserRoles
+    $currentUserRoles,
+    $userRolesKeys,
+    $organizationCoordinates: $coordinates,
   },
   gates: {
     CurrentUserGate,

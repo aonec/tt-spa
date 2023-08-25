@@ -1,4 +1,4 @@
-import { ExtendedSearch } from '01/shared/ui/ExtendedSearch';
+import { ExtendedSearch } from 'ui-kit/ExtendedSearch';
 import React, { FC } from 'react';
 import { AddressSearchContainer } from 'services/addressSearchService';
 import { SearchFieldType } from 'services/addressSearchService/view/AddressSearch/AddressSearch.types';
@@ -15,6 +15,7 @@ const fields = [
 
 export const ApartmentsSearch: FC<ApartmentsSearchProps> = ({
   handleSearch,
+  isSearchError,
 }) => {
   return (
     <Wrapper>
@@ -27,7 +28,11 @@ export const ApartmentsSearch: FC<ApartmentsSearchProps> = ({
         extendedSearchContent={<></>}
         disabled
       >
-        <AddressSearchContainer fields={fields} handleSubmit={handleSearch} />
+        <AddressSearchContainer
+          isError={isSearchError}
+          fields={fields}
+          handleSubmit={handleSearch}
+        />
       </ExtendedSearch>
     </Wrapper>
   );

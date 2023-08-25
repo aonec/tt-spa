@@ -1,17 +1,12 @@
 import { Steps } from 'antd';
 import React, { FC } from 'react';
-import { GoBack } from 'ui-kit/shared_components/GoBack';
+import { GoBack } from 'ui-kit/shared/GoBack';
 import { Title } from 'ui-kit/Title';
 import { CreateObjectAdditionalInfoStage } from './CreateObjectAdditionalInfoStage';
 import { CreateObjectAddressStage } from './CreateObjectAddressStage';
 import { CreateObjectFinalStageModal } from './CreateObjectFinalStageModal';
 import { CreateObjectMainInfoStage } from './CreateObjectMainInfoStage';
-import {
-  GridWrapper,
-  Header,
-  HeaderTitle,
-  Wrapper,
-} from './CreateObjectPage.styled';
+import { GridWrapper, PageHeaderSC, Wrapper } from './CreateObjectPage.styled';
 import { CreateObjectPageProps } from './CreateObjectPage.types';
 
 export const CreateObjectPage: FC<CreateObjectPageProps> = ({
@@ -31,6 +26,7 @@ export const CreateObjectPage: FC<CreateObjectPageProps> = ({
   openCreateHeatingStationModal,
   openEditHeatingStationModal,
   heatingStationCapture,
+  isCreateLoading,
 }) => {
   const { Step } = Steps;
   const stepTitles = [
@@ -41,10 +37,8 @@ export const CreateObjectPage: FC<CreateObjectPageProps> = ({
 
   return (
     <Wrapper>
-      <Header>
-        <GoBack />
-        <HeaderTitle>Добавление нового объекта</HeaderTitle>
-      </Header>
+      <GoBack />
+      <PageHeaderSC isGhost title="Добавление нового объекта" />
 
       <GridWrapper>
         <div>
@@ -89,6 +83,7 @@ export const CreateObjectPage: FC<CreateObjectPageProps> = ({
             heatingStations={heatingStations}
             closePreviewModal={closePreviewModal}
             isPreviewModalOpen={isPreviewModalOpen}
+            isCreateLoading={isCreateLoading}
           />
         </div>
         <div>

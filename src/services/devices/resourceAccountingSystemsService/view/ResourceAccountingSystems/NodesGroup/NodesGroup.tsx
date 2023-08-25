@@ -11,12 +11,12 @@ import {
   Wrapper,
 } from './NodesGroup.styled';
 import { NodesGroupProps } from './NodesGroup.types';
-import { ResourceIconLookup } from 'ui-kit/shared_components/ResourceIconLookup';
-import { EResourceType } from 'myApi';
-import { ResourceNamesDictionary } from './NodesGroup.constants';
+import { ResourceIconLookup } from 'ui-kit/shared/ResourceIconLookup';
+import { EResourceType } from 'api/types';
 import { getSystemText } from './NodesGroup.utils';
 import { NodeItem } from './NodeItem';
 import { CalculatorInfo } from './CalculatorInfo';
+import { ResourceNamesDictionary } from 'dictionaries';
 
 export const NodesGroup: FC<NodesGroupProps> = ({
   nodes,

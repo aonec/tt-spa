@@ -1,4 +1,4 @@
-import { EIndividualDeviceRateType } from 'myApi';
+import { EIndividualDeviceRateType } from 'api/types';
 
 export const rateNums: {
   [key in EIndividualDeviceRateType]: number;

@@ -1,32 +1,35 @@
 import { Pagination } from 'antd';
 import { useEvent, useStore } from 'effector-react';
-import React from 'react';
+import React, { FC } from 'react';
 import { APARTMENTS_LIST_PAGE_SIZE } from './individualDevicesViewByAddressService.constatnts';
 import { individualDevicesViewByAddressService } from './individualDevicesViewByAddressService.model';
 import { IndividualDevicesAddressSearch } from './view/IndividualDevicesAddressSearch';
 import { IndividualDevicesApartmentsList } from './view/IndividualDevicesApartmentsList';
 import { Wrapper } from './individualDevicesViewByAddressService.styled';
+import { HeaderInject } from 'services/objects/objectsProfileService/view/ObjectsProfile/ObjectsProfile.types';
 
 const { inputs, outputs, gates } = individualDevicesViewByAddressService;
 const { IndividualDevicesSearchGate } = gates;
 
-export const IndividualDevicesViewByAddressContainer = () => {
+export const IndividualDevicesViewByAddressContainer: FC<HeaderInject> = ({
+  Header,
+}) => {
   const housingsByFilter = useStore(outputs.$housingsByFilter);
   const isHousingsByFilterLoading = useStore(
-    outputs.$isHousingsByFilterLoading
+    outputs.$isHousingsByFilterLoading,
   );
   const individualDevicesApartmentsPagedData = useStore(
-    outputs.$individualDevicesApartmentsPagedData
+    outputs.$individualDevicesApartmentsPagedData,
   );
   const isIndividualDevicesApartmentsLoading = useStore(
-    outputs.$isIndividualDevicesApartmentsLoading
+    outputs.$isIndividualDevicesApartmentsLoading,
   );
   const filters = useStore(outputs.$individualDeviceSearchRequestPayload);
   const pageNumber = useStore(outputs.$pageNumber);
   const mountPlaces = useStore(outputs.$mountPlaces);
 
   const setIndividualDeviceSearchRequestPayload = useEvent(
-    inputs.setIndividualDeviceSearchRequestPayload
+    inputs.setIndividualDeviceSearchRequestPayload,
   );
   const updateSearchPayload = useEvent(inputs.updateSearchPayload);
   const clearSearchPayload = useEvent(inputs.clearSearchPayload);
@@ -35,14 +38,18 @@ export const IndividualDevicesViewByAddressContainer = () => {
   return (
     <Wrapper>
       <IndividualDevicesSearchGate />
-      <IndividualDevicesAddressSearch
-        clearSearchPayload={() => clearSearchPayload()}
-        filters={filters}
-        setIndividualDeviceSearchRequestPayload={
-          setIndividualDeviceSearchRequestPayload
-        }
-        mountPlaces={mountPlaces}
-      />
+      <Header>
+        <IndividualDevicesAddressSearch
+          clearSearchPayload={() => {
+            clearSearchPayload();
+          }}
+          filters={filters}
+          setIndividualDeviceSearchRequestPayload={
+            setIndividualDeviceSearchRequestPayload
+          }
+          mountPlaces={mountPlaces}
+        />
+      </Header>
       <IndividualDevicesApartmentsList
         housingsByFilter={housingsByFilter}
         isLoading={

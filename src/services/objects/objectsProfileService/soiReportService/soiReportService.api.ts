@@ -1,21 +1,23 @@
-import { axios } from '01/axios';
-import { downloadURI } from '01/features/reports/CreateReportModal/utils';
-import { GetAddressesWithCityRequestPayload } from '01/features/settings/uniqueWorkingRangeService/uniqueWorkingRangeService.types';
+import { axios } from 'api/axios';
+import { downloadURI } from 'services/reports/CreateReportModal/utils';
+import { GetAddressesWithCityRequestPayload } from 'services/workingRanges/uniqueWorkingRangeService/uniqueWorkingRangeService.types';
 import { omit } from 'lodash';
 import {
   HouseManagementResponse,
-  StreetWithHousingStockNumbersResponsePagedList,
-} from 'myApi';
+  StreetWithBuildingNumbersResponsePagedList,
+} from 'api/types';
 import {
   CreateSoiReportRequestPayload,
   GetHouseManagementsRequestPayload,
 } from './soiReportService.types';
+import queryString from 'query-string';
 
 export const getSoiReport = async (
   params: CreateSoiReportRequestPayload,
 ): Promise<void> => {
   const res: string = await axios.get('Reports/SoiReport', {
     params: omit(params, ['ReportName']),
+    paramsSerializer: (params) => queryString.stringify(params),
     responseType: 'blob',
   });
 
@@ -31,8 +33,8 @@ export const getHouseManagements = (
 
 export const getAdresses = (
   payload: GetAddressesWithCityRequestPayload,
-): Promise<StreetWithHousingStockNumbersResponsePagedList> => {
-  return axios.get('HousingStocks/ExistingStreetsWithHousingStockNumbers', {
+): Promise<StreetWithBuildingNumbersResponsePagedList> => {
+  return axios.get('Buildings/ExistingStreetsWithBuildingNumbers', {
     params: payload,
   });
 };

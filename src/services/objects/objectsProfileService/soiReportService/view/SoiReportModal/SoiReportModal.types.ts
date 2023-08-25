@@ -1,5 +1,5 @@
-import { HouseManagementResponse } from 'myApi';
-import { TreeSelectElement } from 'services/resources/createResourceDisconnectionService/view/CreateResourceDisconnectionModal/CreateResourceDisconnectionModal.types';
+import { HouseManagementResponse } from 'api/types';
+import { TreeSelectElement } from 'ui-kit/shared/AddressTreeSelect/AddressTreeSelect.types';
 import {
   CreateSoiReportRequestPayload,
   SoiReportType,

@@ -1,6 +1,6 @@
 import { createDomain, forward } from 'effector';
 import { postCheckDevice } from './checkHousingMeteringDeviceService.api';
-import { CheckDeviceRequest } from 'myApi';
+import { CheckDeviceRequest } from 'api/types';
 import { EffectFailDataAxiosError } from 'types';
 import { message } from 'antd';
 
@@ -26,11 +26,6 @@ editCheckDateFx.doneData.watch(() => {
 });
 
 editCheckDateFx.failData.watch((error) => {
-  if (error.response.status === 403) {
-    return message.error(
-      'У вашего аккаунта нет доступа к выбранному действию. Уточните свои права у Администратора',
-    );
-  }
   return message.error(
     error.response.data.error.Text || error.response.data.error.Message,
   );

@@ -1,6 +1,6 @@
 import { createDomain, forward } from 'effector';
 import { createGate } from 'effector-react';
-import { HeatingStationResponsePagedList } from 'myApi';
+import { HeatingStationResponsePagedList } from 'api/types';
 import { createHeatingStationService } from '../createHeatingStationService';
 import { editHeatingStationService } from '../editHeatingStationService';
 import { getHeatingStations } from './displayHeatingStationsService.api';
@@ -27,7 +27,9 @@ forward({
   to: fetchHeatingStationsFx,
 });
 
+const $isHeatingStationsLoading = fetchHeatingStationsFx.pending;
+
 export const displayHeatingStationsService = {
-  outputs: { $heatingStations },
+  outputs: { $heatingStations, $isHeatingStationsLoading },
   gates: { HeatingStationsFetchGate },
 };

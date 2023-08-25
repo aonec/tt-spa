@@ -1,4 +1,4 @@
-import { PipeNodeResponse } from 'myApi';
+import { PipeNodeResponse } from 'api/types';
 
 export type NodeProfilePageProps = {
   pipeNode: PipeNodeResponse | null;
@@ -8,6 +8,7 @@ export type NodeProfilePageProps = {
   handleEditNode: () => void;
   openChangeNodeStatusModal: (node: PipeNodeResponse) => void;
   openChangeNodeTypeModal: (node: PipeNodeResponse) => void;
+  isPermitionToEditsNode: boolean;
 };
 
 export enum PipeNodeProfileSection {

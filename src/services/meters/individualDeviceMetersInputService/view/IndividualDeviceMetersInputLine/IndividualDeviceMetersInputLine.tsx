@@ -3,14 +3,10 @@ import { useEvent, useStore } from 'effector-react';
 import { message, Tooltip } from 'antd';
 import confirm from 'antd/lib/modal/confirm';
 import { useHistory } from 'react-router-dom';
-import { ESecuredIdentityRoleName } from 'myApi';
+import { ESecuredIdentityRoleName } from 'api/types';
 import { HistoryIcon, StarIcon } from 'ui-kit/icons';
-import { closingIndividualDeviceButtonClicked } from '01/features/individualDevices/closeIndividualDevice/models';
-import { deleteIndividualDeviceService } from '01/features/individualDevices/deleteIndividualDevice/deleteIndividualDeviceService.models';
-import { $currentManagingFirmUser } from '01/features/managementFirmUsers/displayCurrentUser/models';
-import { ContextMenuButton } from '01/shared/ui/ContextMenuButton';
-import { reopenIndividualDevice } from '01/_api/individualDevices';
-import DeviceInfo from '01/_pages/MetersPage/components/MeterDevices/components/DeviceInfo';
+import { deleteIndividualDeviceService } from 'services/devices/individualDevices/deleteIndividualDevice/deleteIndividualDeviceService.models';
+import { ContextMenuButton } from 'ui-kit/ContextMenuButton/ContextMenuButton';
 import { getMeasurementUnit } from '../../individualDeviceMetersInputService.utils';
 import { MetersInputsBlock } from '../MetersInputsBlock';
 import { getRateNum } from '../MetersInputsBlock/MetersInputsBlock.utils';
@@ -20,12 +16,21 @@ import {
 } from './IndividualDeviceMetersInputLine.styled';
 import { IndividualDeviceMetersInputLineProps } from './IndividualDeviceMetersInputLine.types';
 import { getPreviousMeterTooltipTitle } from './individualDeviceMetersInputLine.utils';
-import { ContextMenuElement, Color } from '01/shared/ui/ContextMenuButton';
-import { SelectSwitchDeviceTypeModal } from '01/_pages/MetersPage/components/MeterDevices/components/SelectSwitchDeviceTypeModal';
 import { apartmentIndividualDevicesMetersService } from 'services/meters/apartmentIndividualDevicesMetersService';
 import { editReadingsHistoryService } from 'services/meters/editReadingsHistoryService';
+import { SelectSwitchDeviceTypeModal } from './SelectSwitchDeviceTypeModal';
+import { IndividualDeviceInfoExtended } from 'ui-kit/shared/IndividualDeviceInfoExtended';
+import { currentUserService } from 'services/currentUserService';
+import {
+  ContextMenuButtonColor,
+  ContextMenuElement,
+} from 'ui-kit/ContextMenuButton/ContextMenuButton.types';
+import { closeIndividualDeviceService } from 'services/devices/individualDevices/closeIndividualDeviceService';
+import { reopenIndividualDevice } from '../../individualDeviceMetersInputService.api';
 
-export const IndividualDeviceMetersInputLine: FC<IndividualDeviceMetersInputLineProps> = ({
+export const IndividualDeviceMetersInputLine: FC<
+  IndividualDeviceMetersInputLineProps
+> = ({
   device,
   sliderIndex,
   openReadingsHistoryModal,
@@ -42,14 +47,17 @@ export const IndividualDeviceMetersInputLine: FC<IndividualDeviceMetersInputLine
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const onDeleteIndividualDevice = useEvent(
-    deleteIndividualDeviceService.inputs.deleteDeviceModalOpened
+    deleteIndividualDeviceService.inputs.openModal,
   );
 
   const openEditReadingsHistoryModal = useEvent(
-    editReadingsHistoryService.inputs.openModal
+    editReadingsHistoryService.inputs.openModal,
+  );
+  const openCloseIndividualDeviceModal = useEvent(
+    closeIndividualDeviceService.inputs.openModal,
   );
 
-  const managementFirmUser = useStore($currentManagingFirmUser);
+  const managementFirmUser = useStore(currentUserService.outputs.$currentUser);
 
   const isDeviceClosed = Boolean(device.closingDate);
 
@@ -58,10 +66,10 @@ export const IndividualDeviceMetersInputLine: FC<IndividualDeviceMetersInputLine
       Boolean(managementFirmUser?.roles) &&
       Boolean(
         managementFirmUser?.roles?.find(
-          (elem) => elem.key === ESecuredIdentityRoleName.SeniorOperator
-        )
+          (elem) => elem.key === ESecuredIdentityRoleName.SeniorOperator,
+        ),
       ),
-    [managementFirmUser]
+    [managementFirmUser],
   );
 
   const menuButtonArr: ContextMenuElement[] = useMemo(
@@ -73,6 +81,10 @@ export const IndividualDeviceMetersInputLine: FC<IndividualDeviceMetersInputLine
       {
         title: 'Замена или поверка прибора',
         onClick: () => setIsModalOpen(true),
+      },
+      {
+        title: 'Ввести показание за произвольный период',
+        onClick: () => openEditReadingsHistoryModal(device),
       },
       {
         title: 'Открыть прибор',
@@ -98,18 +110,14 @@ export const IndividualDeviceMetersInputLine: FC<IndividualDeviceMetersInputLine
       {
         title: 'Закрытие прибора',
         hidden: isDeviceClosed,
-        color: Color.danger,
-        onClick: () => closingIndividualDeviceButtonClicked(device),
+        color: ContextMenuButtonColor.danger,
+        onClick: () => openCloseIndividualDeviceModal(device),
       },
       {
         title: 'Удалить прибор',
         hidden: !isSeniorOperator,
-        color: Color.danger,
+        color: ContextMenuButtonColor.danger,
         onClick: () => onDeleteIndividualDevice(device),
-      },
-      {
-        title: 'Ввести показание за произвольный период',
-        onClick: () => openEditReadingsHistoryModal(device),
       },
     ],
     [
@@ -119,7 +127,8 @@ export const IndividualDeviceMetersInputLine: FC<IndividualDeviceMetersInputLine
       onDeleteIndividualDevice,
       isDeviceClosed,
       openEditReadingsHistoryModal,
-    ]
+      openCloseIndividualDeviceModal,
+    ],
   );
 
   const previousReadingTooltipTitle = useMemo(
@@ -128,9 +137,9 @@ export const IndividualDeviceMetersInputLine: FC<IndividualDeviceMetersInputLine
       getPreviousMeterTooltipTitle(
         previousReadingByCurrentSliderIndex,
         getRateNum(device.rateType),
-        getMeasurementUnit(device.resource)
+        getMeasurementUnit(device.resource),
       ),
-    [previousReadingByCurrentSliderIndex, device]
+    [previousReadingByCurrentSliderIndex, device],
   );
 
   return (
@@ -141,7 +150,7 @@ export const IndividualDeviceMetersInputLine: FC<IndividualDeviceMetersInputLine
         close={() => setIsModalOpen(false)}
         deviceId={device.id}
       />
-      <DeviceInfo device={device} />
+      <IndividualDeviceInfoExtended device={device} />
       <MetersInputsBlock
         handleUploadReading={handleUploadReading}
         reading={previousReading}
@@ -174,7 +183,7 @@ export const IndividualDeviceMetersInputLine: FC<IndividualDeviceMetersInputLine
           <StarIcon
             onClick={() =>
               history.push(
-                `/apartment/${apartmentId}/individualDevice/${device.id}/reopen`
+                `/apartment/${apartmentId}/individualDevice/${device.id}/reopen`,
               )
             }
             style={{ cursor: 'pointer' }}

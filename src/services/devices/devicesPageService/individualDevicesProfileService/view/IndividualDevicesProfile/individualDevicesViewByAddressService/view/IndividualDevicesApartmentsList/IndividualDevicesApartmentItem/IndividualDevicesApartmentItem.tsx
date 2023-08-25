@@ -1,11 +1,11 @@
-import { ContextMenuButton } from '01/shared/ui/ContextMenuButton';
+import { ContextMenuButton } from 'ui-kit/ContextMenuButton/ContextMenuButton';
 import { useEvent, useStore } from 'effector-react';
 import React, { FC } from 'react';
 import {
   AdditionalHomeownersCountTextWrapper,
   AdditionalHomeownersCountWrapper,
   HomeownerNameWrapper,
-} from 'services/objects/objectProfileService/apartmentsListService/view/ApartmentsView/ApartmentsList/ApartmentItem/ApartmentItem.styled';
+} from 'services/objects/housingStockProfileService/apartmentsListService/view/ApartmentsView/ApartmentsList/ApartmentItem/ApartmentItem.styled';
 import {
   IndividualDevicesListContainer,
   individualDevicesListService,
@@ -20,10 +20,9 @@ import { IndividualDevicesApartmentItemProps } from './IndividualDevicesApartmen
 
 const { inputs, outputs } = individualDevicesListService;
 
-export const IndividualDevicesApartmentItem: FC<IndividualDevicesApartmentItemProps> = ({
-  individualDevicesApartment,
-  housingStockId,
-}) => {
+export const IndividualDevicesApartmentItem: FC<
+  IndividualDevicesApartmentItemProps
+> = ({ individualDevicesApartment, housingStockId }) => {
   const openedApartmentId = useStore(outputs.$openedBlockId);
 
   const toggleApartment = useEvent(inputs.toggleBlock);

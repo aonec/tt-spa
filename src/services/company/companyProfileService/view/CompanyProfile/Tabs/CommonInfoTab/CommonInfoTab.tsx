@@ -1,13 +1,13 @@
 import React, { FC } from 'react';
 import { CommonInfoTabProps } from './CommonInfoTab.types';
-import { CommonInfo } from 'ui-kit/shared_components/CommonInfo';
+import { CommonInfo } from 'ui-kit/shared/CommonInfo';
 import { TabTitle, Wrapper } from './CommonInfoTab.styled';
-import { HouseAddress } from 'myApi';
+import { BuildingAddress } from 'api/types';
 
 export const CommonInfoTab: FC<CommonInfoTabProps> = ({
   currentManagingFirm,
 }) => {
-  const getHousingStockAddress = (address: HouseAddress | null) => {
+  const getHousingStockAddress = (address: BuildingAddress | null) => {
     if (!address) return null;
 
     const { city, houseCorpus, street, houseNumber } = address || {};

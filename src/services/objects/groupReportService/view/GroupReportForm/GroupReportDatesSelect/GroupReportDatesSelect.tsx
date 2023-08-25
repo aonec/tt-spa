@@ -1,6 +1,5 @@
-import { StyledRangePicker } from '01/shared/ui/Fields';
 import moment from 'moment';
-import React, { FC, useCallback, useEffect, useState } from 'react';
+import React, { FC, useCallback, useState } from 'react';
 import {
   GroupReportRangeLookup,
   GroupReportRangeOptions,
@@ -10,6 +9,7 @@ import {
   RadioGroupSC,
 } from './GroupReportDatesSelect.styled';
 import { GroupReportDatesSelectProps } from './GroupReportDatesSelect.types';
+import { RangePicker } from 'ui-kit/RangePicker';
 
 export const GroupReportDatesSelect: FC<GroupReportDatesSelectProps> = ({
   value,
@@ -44,10 +44,6 @@ export const GroupReportDatesSelect: FC<GroupReportDatesSelectProps> = ({
     [setValue],
   );
 
-  useEffect(() => {
-    handleRangeTypeChange(GroupReportRangeOptions.ThisMonth);
-  }, [handleRangeTypeChange]);
-
   return (
     <div>
       <RadioGroupSC
@@ -60,7 +56,8 @@ export const GroupReportDatesSelect: FC<GroupReportDatesSelectProps> = ({
       />
       <DatePickerWrapper>
         <label>Выберите дату</label>
-        <StyledRangePicker
+        <RangePicker
+          small
           disabled={currentRange !== GroupReportRangeOptions.CustomRange}
           disabledDate={(date) => {
             const currentDay = moment().startOf('day');

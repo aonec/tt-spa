@@ -3,17 +3,27 @@ import { CommunicationPipePayload } from 'services/nodes/addPipeNodeCommonDevice
 import { CommunicationPipeListItem } from 'services/nodes/createNodeService/view/CreateNodePage/ConnectedDevices/CommunicationPipeListItem';
 import { HousingMeteringDevicesListProps } from './HousingMeteringDevicesList.types';
 
-export const HousingMeteringDevicesList: FC<HousingMeteringDevicesListProps> = ({
+export const HousingMeteringDevicesList: FC<
+  HousingMeteringDevicesListProps
+> = ({
   communicationPipes,
-  configuration
+  configuration,
+  handleEditDevice,
+  handleDeleteDevice,
 }) => {
   return (
     <div>
       {communicationPipes.map((pipe) => (
         <CommunicationPipeListItem
           configuration={configuration}
-          pipe={pipe as CommunicationPipePayload}
+          pipe={{ ...pipe, id: String(pipe.id) } as CommunicationPipePayload}
           key={pipe.id}
+          handleEditDevice={handleEditDevice}
+          handleDeleteDevice={
+            handleDeleteDevice &&
+            ((_, deviceIndex) =>
+              handleDeleteDevice((pipe.devices || [])?.[deviceIndex]))
+          }
         />
       ))}
     </div>

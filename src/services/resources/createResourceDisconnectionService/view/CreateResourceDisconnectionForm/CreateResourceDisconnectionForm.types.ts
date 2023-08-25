@@ -1,4 +1,5 @@
 import {
+  BuildingListResponse,
   EResourceDisconnectingType,
   EResourceDisconnectingTypeNullableStringDictionaryItem,
   EResourceType,
@@ -6,9 +7,9 @@ import {
   ResourceDisconnectingCreateRequest,
   ResourceDisconnectingResponse,
   ResourceDisconnectingUpdateRequest,
-} from 'myApi';
+} from 'api/types';
+import { TreeSelectElement } from 'ui-kit/shared/AddressTreeSelect/AddressTreeSelect.types';
 import { EAddressDetails } from '../../createResourceDisconnectionService.types';
-import { TreeSelectElement } from '../CreateResourceDisconnectionModal/CreateResourceDisconnectionModal.types';
 
 export type CreateResourceDisconnectionFormProps = {
   resourceTypes: EResourceTypeNullableStringDictionaryItem[];
@@ -31,6 +32,7 @@ export type CreateResourceDisconnectionFormProps = {
   existingCities: string[];
   selectedCity: string | null;
   selectCity: (city: string) => void;
+  selectedBuilding: BuildingListResponse | null;
 };
 
 export type CreateResourceDisconnectionFormTypes = {

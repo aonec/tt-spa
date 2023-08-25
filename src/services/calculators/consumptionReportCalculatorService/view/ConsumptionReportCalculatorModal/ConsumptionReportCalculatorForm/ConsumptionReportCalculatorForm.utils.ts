@@ -6,7 +6,8 @@ import {
 
 export const getDatePeriod = (
   archiveType: ArchiveType,
-  period: DatePeriod
+  period: DatePeriod,
+  isSono?: boolean,
 ): { From: string; To: string } | null => {
   if (archiveType === ArchiveType.StartOfMonth) {
     period = [moment().startOf('month'), moment()];
@@ -15,7 +16,9 @@ export const getDatePeriod = (
   if (archiveType === ArchiveType.PreviousMonth) {
     period = [
       moment().subtract(1, 'months').startOf('month'),
-      moment().startOf('month'),
+      isSono
+        ? moment().subtract(0, 'months').startOf('month')
+        : moment().subtract(1, 'months').endOf('month'),
     ];
   }
   if (archiveType === ArchiveType.LastSevenDays) {
@@ -24,8 +27,12 @@ export const getDatePeriod = (
 
   if (!period[0] || !period[1]) return null;
 
-  const From = period[0].startOf('day').format('YYYY-MM-DDTHH:mm:ss');
-  const To = period[1].endOf('day').format('YYYY-MM-DDTHH:mm:ss');
+  const format = isSono ? 'month' : 'day';
+
+  const From = period[0].startOf(format).format('YYYY-MM-DDTHH:mm:ss');
+  const To = isSono
+    ? period[1].startOf(format).format('YYYY-MM-DDTHH:mm:ss')
+    : period[1].endOf(format).format('YYYY-MM-DDTHH:mm:ss');
 
   return { From, To };
 };

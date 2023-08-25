@@ -1,9 +1,12 @@
 import { createDomain, forward } from 'effector';
 import { editEmployee } from './editEmployeeService.api';
-import { OrganizationUserResponse, OrganizationUserUpdateRequest } from 'myApi';
+import {
+  OrganizationUserResponse,
+  OrganizationUserUpdateRequest,
+} from 'api/types';
 import { competencesService } from '../competencesService';
 import { rolesService } from '../rolesService';
-import { employeeProfileService } from 'services/employeeProfileService';
+import { employeeProfileService } from 'services/employee/employeeProfileService';
 import { message } from 'antd';
 import { EffectFailDataAxiosError } from 'types';
 
@@ -27,16 +30,16 @@ forward({ from: handleSubmit, to: updateEmployeeFx });
 
 const $pending = updateEmployeeFx.pending;
 
+const successUpdate = updateEmployeeFx.doneData;
+
 updateEmployeeFx.failData.watch((error) =>
-  message.error(error.response.data.error.Text)
+  message.error(error.response.data.error.Text),
 );
 
-updateEmployeeFx.doneData.watch(() =>
-  message.success('Информация успешно обновлена!')
-);
+successUpdate.watch(() => message.success('Информация успешно обновлена!'));
 
 export const editEmployeeService = {
-  inputs: { handleSubmit },
+  inputs: { handleSubmit, successUpdate },
   outputs: {
     $pending,
     $competencesCatalog: competencesService.outputs.$competencesCatalog,

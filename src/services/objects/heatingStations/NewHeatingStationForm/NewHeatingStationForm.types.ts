@@ -1,4 +1,4 @@
-import { HeatingStationResponse } from "myApi";
+import { HeatingStationResponse } from 'api/types';
 
 export type NewHeatingStationFormProps = {
   formId: string;
@@ -10,7 +10,8 @@ export type NewHeatingStationFormProps = {
   existingCities: string[] | null;
   existingStreets: string[];
   currentHeatingStationId?: string | null;
-  openedHeatingStationData?: HeatingStationResponse | null
+  openedHeatingStationData?: HeatingStationResponse | null;
+  isEdit?: boolean;
 };
 
 export type HeatingStation = {

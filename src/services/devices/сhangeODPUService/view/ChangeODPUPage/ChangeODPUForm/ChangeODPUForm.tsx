@@ -1,6 +1,9 @@
 import React, { FC, useCallback } from 'react';
-import { EResourceType, SwitchHousingDeviceReadingsCreateRequest } from 'myApi';
-import { ResourceIconLookup } from 'ui-kit/shared_components/ResourceIconLookup';
+import {
+  EResourceType,
+  SwitchHousingDeviceReadingsCreateRequest,
+} from 'api/types';
+import { ResourceIconLookup } from 'ui-kit/shared/ResourceIconLookup';
 import {
   BaseInfoWrapper,
   ButtonsWrapper,
@@ -16,7 +19,7 @@ import {
   checkIsDateNotFuture,
   getDatePickerValue,
 } from './ChangeODPUForm.utils';
-import { DatePickerNative } from '01/shared/ui/DatePickerNative';
+import { DatePickerNative } from 'ui-kit/shared/DatePickerNative';
 import { useFormik } from 'formik';
 import { FormItem } from 'ui-kit/FormItem';
 import { Select } from 'ui-kit/Select';
@@ -29,8 +32,8 @@ import {
   switchDeviceValidationSchema,
   yearQuarterDictionary,
 } from './ChangeODPUForm.constants';
-import { ButtonTT } from '01/tt-components';
-import { ErrorMessage } from '01/shared/ui/ErrorMessage';
+import { ErrorMessage } from 'ui-kit/ErrorMessage';
+import { Button } from 'ui-kit/Button';
 import { ChangeODPUReadingsContainer } from 'services/devices/сhangeODPUService/changeODPUReadingsService';
 
 export const ChangeODPUForm: FC<ChangeODPUFormProps> = ({
@@ -146,6 +149,7 @@ export const ChangeODPUForm: FC<ChangeODPUFormProps> = ({
               picker="year"
               placeholder="Введите год"
             />
+            <ErrorMessage>{errors.manufactureYear}</ErrorMessage>
           </FormItem>
         </div>
         <div id="deviceInstallationDate">
@@ -193,6 +197,7 @@ export const ChangeODPUForm: FC<ChangeODPUFormProps> = ({
             picker="year"
             placeholder="Введите год посл. поверки"
           />
+          <ErrorMessage>{errors.stateVerificationYear}</ErrorMessage>
         </FormItem>
         <FormItem label="Год след. поверки">
           <DatePicker
@@ -203,6 +208,7 @@ export const ChangeODPUForm: FC<ChangeODPUFormProps> = ({
             picker="year"
             placeholder="Введите год след. поверки"
           />
+          <ErrorMessage>{errors.nextStateVerificationYear}</ErrorMessage>
         </FormItem>
         <FormItem label="Квартал">
           <Select
@@ -218,6 +224,7 @@ export const ChangeODPUForm: FC<ChangeODPUFormProps> = ({
               </Select.Option>
             ))}
           </Select>
+          <ErrorMessage>{errors.stateVerificationQuarter}</ErrorMessage>
         </FormItem>
         <FormItem label="Интервал">
           <Input
@@ -274,10 +281,10 @@ export const ChangeODPUForm: FC<ChangeODPUFormProps> = ({
         </FormItem>
       </SealInfoWrapper>
       <ButtonsWrapper>
-        <ButtonTT color="blue" type="submit" disabled={isLoading}>
+        <Button disabled={isLoading}>
           {isLoading && 'Загрузка...'}
           {!isLoading && 'Сохранить'}
-        </ButtonTT>
+        </Button>
       </ButtonsWrapper>
     </FormSC>
   );

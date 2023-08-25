@@ -2,7 +2,7 @@ import { Tooltip } from 'antd';
 import React, { FC, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { DeviceIcon } from 'ui-kit/icons';
-import { ResourceIconLookup } from 'ui-kit/shared_components/ResourceIconLookup';
+import { ResourceIconLookup } from 'ui-kit/shared/ResourceIconLookup';
 import { CalculatorInfo } from '../CalculatorInfo';
 import {
   BaseNodeInfo,
@@ -16,6 +16,7 @@ import {
   NodeStatusWrapper,
   ResourceIconWrapper,
   Wrapper,
+  ZoneWrapper,
 } from './NodeItem.styled';
 import { NodeItemProps } from './NodeItem.types';
 import { NodeStatus } from './NodeStatus';
@@ -27,7 +28,7 @@ export const NodeItem: FC<NodeItemProps> = ({
 }) => {
   const content = useMemo(() => {
     const isIncorrectConfig =
-      node?.pipeNodeValidationStatus?.validationResult?.errors?.length!== 0 ||
+      node?.pipeNodeValidationStatus?.validationResult?.errors?.length !== 0 ||
       node?.pipeNodeValidationStatus?.validationResult?.warnings?.length !== 0;
 
     const nodeInfo = (
@@ -38,7 +39,10 @@ export const NodeItem: FC<NodeItemProps> = ({
             {isIncorrectConfig && <IncorrectConfigurationIconSC />}
           </NodeName>
           <NodeServiceZone isZoneExist={Boolean(node.serviceZone?.name)}>
-            {node.serviceZone?.name || 'Зона не указана'}
+            <div>{node.entryNumber && `Ввод ${node.entryNumber}, `}</div>
+            <ZoneWrapper>
+              {node.serviceZone?.name || 'Зона не указана'}
+            </ZoneWrapper>
           </NodeServiceZone>
         </Link>
         <Tooltip title="Показать приборы">

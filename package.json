@@ -3,6 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@farfetched/core": "^0.8.12",
+    "@pbe/react-yandex-maps": "^1.2.2",
     "@types/react": "^17.0.0",
     "@types/react-dom": "^17.0.0",
     "@types/react-router-dom": "^5.1.6",
@@ -12,18 +14,17 @@
     "axios": "^0.21.1",
     "date-fns": "^2.16.1",
     "effector": "^22.5.0",
-    "effector-forms": "^0.0.21",
+    "effector-forms": "1.3.2",
     "effector-react": "^22.4.0",
+    "effector-storage": "^6.1.1",
     "file-saver": "^2.0.5",
     "formik": "^2.2.0",
     "formik-antd": "^2.0.1",
-    "fs": "^0.0.1-security",
-    "husky": "^8.0.3",
     "imask": "^6.0.7",
     "lint-staged": "^13.1.0",
     "lodash": "^4.17.20",
     "moment": "^2.29.1",
-    "moment-timezone": "^0.5.33",
+    "patronum": "^1.19.1",
     "query-string": "^6.13.8",
     "react": "^17.0.1",
     "react-bootstrap-icons": "^1.5.0",
@@ -31,11 +32,12 @@
     "react-router-dom": "5.2.0",
     "react-scripts": "^5.0.1",
     "react-to-print": "^2.13.0",
-    "string-similarity": "^4.0.4",
+    "string-to-color": "^2.2.2",
     "styled-components": "^5.2.0",
     "swagger-typescript-api": "^6.1.1",
     "typescript": "^4.9.5",
     "victory": "^35.4.6",
+    "yandex-maps": "^0.0.1",
     "yup": "^0.29.3"
   },
   "scripts": {
@@ -43,12 +45,33 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "updateTypes": "npx swagger-typescript-api -p https://staging.transparent-technology.ru/openapi/v1/ttm_api.json -o ./src -n myApi.ts --axios"
+    "updateTypes": "npx swagger-typescript-api -p https://fop.k8s.transparent-technology.ru/openapi/site/ttm_api.json -o ./src/api -n types.ts --axios",
+    "prepare": "husky install",
+    "storybook": "start-storybook -p 6006 -s public",
+    "build-storybook": "build-storybook -s public"
   },
   "eslintConfig": {
     "extends": [
       "react-app",
       "prettier"
+    ],
+    "overrides": [
+      {
+        "files": [
+          "**/*.stories.*"
+        ],
+        "rules": {
+          "import/no-anonymous-default-export": "off"
+        }
+      },
+      {
+        "files": [
+          "**/*.{js,jsx,ts,tsx}"
+        ],
+        "rules": {
+          "no-console": "warn"
+        }
+      }
     ]
   },
   "husky": {
@@ -57,8 +80,9 @@
     }
   },
   "lint-staged": {
-    "src/**/*.{js,jsx,ts,tsx,json,css,scss,md}": [
-      "prettier --write"
+    "src/**/*.{js,jsx,ts,tsx,json,md}": [
+      "prettier --write",
+      "eslint --max-warnings 0"
     ]
   },
   "browserslist": {
@@ -75,12 +99,27 @@
   },
   "devDependencies": {
     "@babel/helper-define-map": "^7.13.12",
+    "@storybook/addon-actions": "^6.5.16",
+    "@storybook/addon-essentials": "^6.5.16",
+    "@storybook/addon-interactions": "^6.5.16",
+    "@storybook/addon-links": "^6.5.16",
+    "@storybook/builder-webpack5": "^6.5.16",
+    "@storybook/manager-webpack5": "^6.5.16",
+    "@storybook/node-logger": "^6.5.16",
+    "@storybook/preset-create-react-app": "^4.1.2",
+    "@storybook/react": "^6.5.16",
+    "@storybook/testing-library": "^0.0.13",
     "@types/file-saver": "^2.0.5",
     "@types/lodash": "^4.14.191",
     "@types/styled-components": "^5.1.7",
     "@types/yup": "^0.29.11",
+    "babel-plugin-named-exports-order": "^0.0.2",
     "eslint-config-prettier": "^8.6.0",
+    "husky": "^8.0.3",
     "prettier": "^2.8.3",
-    "sass": "^1.57.1"
+    "prop-types": "^15.8.1",
+    "sass": "^1.60.0",
+    "tsconfig-paths-webpack-plugin": "^4.0.1",
+    "webpack": "^5.75.0"
   }
 }

@@ -1,9 +1,11 @@
 import { useEvent, useStore } from 'effector-react';
-import { EPersonType, HomeownerAccountCreateRequest } from 'myApi';
+import { EPersonType } from 'api/types';
 import React from 'react';
 import { FormModal } from 'ui-kit/Modals/FormModal/FormModal';
-import { EditHomeownerForm } from '../EditHomeownerForm';
+import { EditHomeownerForm } from '../HomeownerForm';
 import { editHomeownerService } from './editHomeownerService.model';
+import { ConfirmationAddingExistingPersonalNumber } from 'services/homeowner/personalNumber/components/ConfirmationAddingExistingPersonalNumberModal';
+import { EditHomeownerPayload } from '../HomeownerForm/EditHomeownerForm.types';
 
 const { inputs, outputs } = editHomeownerService;
 
@@ -13,39 +15,57 @@ export const EditHomeownerContainer = () => {
   const isModalOpen = useStore(outputs.$isModalOpen);
   const isLoading = useStore(outputs.$isLoading);
   const housingStockPayload = useStore(outputs.$housingStockPayload);
+  const samePersonalAccountNumderId = useStore(
+    outputs.$samePersonalAccountNumderId,
+  );
+  const isConfirmationModalOpen = useStore(outputs.$isConfirmationModalOpen);
 
   const handleCloseModal = useEvent(inputs.closeEditHomeownerModal);
   const handleEditHomeowner = useEvent(inputs.handleEditHomeowner);
+  const confirmationModalClose = useEvent(inputs.handleConfirmationModalClose);
+  const handleForced = useEvent(inputs.onForced);
 
-  const handleSubmit = (payload: HomeownerAccountCreateRequest) => {
+  const handleEditHomeownerPreparation = (payload: EditHomeownerPayload) => {
     if (!housingStockPayload?.id) return;
 
     handleEditHomeowner({
       id: housingStockPayload?.id,
-      personalAccountNumber: payload.personalAccountNumber,
       name: payload.name,
+      personalAccountNumber: payload.personalAccountNumber,
       phoneNumber: payload.phoneNumber,
+      paymentCode: payload.paymentCode,
       personType: String(payload.personType) as EPersonType,
+      isMainOnApartment: payload.isMainOnApartment,
+      openAt: payload.openAt,
     });
   };
 
   return (
-    <FormModal
-      visible={isModalOpen}
-      onCancel={() => handleCloseModal()}
-      title="Редактирование собственника"
-      submitBtnText="Сохранить"
-      formId={formId}
-      loading={isLoading}
-      form={
-        housingStockPayload && (
-          <EditHomeownerForm
-            formId={formId}
-            handleSubmit={handleSubmit}
-            initialValues={housingStockPayload}
-          />
-        )
-      }
-    />
+    <>
+      <FormModal
+        visible={isModalOpen}
+        onCancel={() => handleCloseModal()}
+        title="Редактирование собственника"
+        submitBtnText="Сохранить"
+        formId={formId}
+        loading={isLoading}
+        form={
+          housingStockPayload && (
+            <EditHomeownerForm
+              formId={formId}
+              handleEditHomeownerPreparation={handleEditHomeownerPreparation}
+              initialValues={housingStockPayload}
+              isEdit={isModalOpen}
+            />
+          )
+        }
+      />
+      <ConfirmationAddingExistingPersonalNumber
+        confirmationModalClose={confirmationModalClose}
+        handleForced={handleForced}
+        isConfirmationModalOpen={isConfirmationModalOpen}
+        samePersonalAccountNumderId={samePersonalAccountNumderId}
+      />
+    </>
   );
 };

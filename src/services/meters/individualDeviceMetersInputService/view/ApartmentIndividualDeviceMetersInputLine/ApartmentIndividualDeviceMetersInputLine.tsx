@@ -1,7 +1,7 @@
 import { Tooltip } from 'antd';
 import React, { FC, useMemo } from 'react';
 import { HistoryIcon } from 'ui-kit/icons';
-import { ResourceIconLookup } from 'ui-kit/shared_components/ResourceIconLookup';
+import { ResourceIconLookup } from 'ui-kit/shared/ResourceIconLookup';
 import { getMeasurementUnit } from '../../individualDeviceMetersInputService.utils';
 import { getPreviousMeterTooltipTitle } from '../IndividualDeviceMetersInputLine/individualDeviceMetersInputLine.utils';
 import { MetersInputsBlock } from '../MetersInputsBlock';
@@ -13,9 +13,11 @@ import {
 } from './ApartmentIndividualDeviceMetersInputLine.styled';
 import { ApartmentIndividualDeviceMetersInputLineProps } from './ApartmentIndividualDeviceMetersInputLine.types';
 import { getReadingValuesArray } from './ApartmentIndividualDeviceMetersInputLine.utils';
-import { ContextMenuButton } from '01/shared/ui/ContextMenuButton';
+import { ContextMenuButton } from 'ui-kit/ContextMenuButton/ContextMenuButton';
 
-export const ApartmentIndividualDeviceMetersInputLine: FC<ApartmentIndividualDeviceMetersInputLineProps> = ({
+export const ApartmentIndividualDeviceMetersInputLine: FC<
+  ApartmentIndividualDeviceMetersInputLineProps
+> = ({
   device,
   sliderIndex,
   openReadingsHistoryModal,
@@ -26,7 +28,6 @@ export const ApartmentIndividualDeviceMetersInputLine: FC<ApartmentIndividualDev
   uploadingMetersStatuses,
   previousReadingByCurrentSliderIndex,
 }) => {
-
   const isDeviceClosed = Boolean(device.closingDate);
 
   const previousReadingTooltipTitle = useMemo(
@@ -35,9 +36,9 @@ export const ApartmentIndividualDeviceMetersInputLine: FC<ApartmentIndividualDev
       getPreviousMeterTooltipTitle(
         previousReadingByCurrentSliderIndex,
         getRateNum(device.rateType),
-        getMeasurementUnit(device.resource)
+        getMeasurementUnit(device.resource),
       ),
-    [previousReadingByCurrentSliderIndex, device]
+    [previousReadingByCurrentSliderIndex, device],
   );
 
   const rateNum = getRateNum(device.rateType);

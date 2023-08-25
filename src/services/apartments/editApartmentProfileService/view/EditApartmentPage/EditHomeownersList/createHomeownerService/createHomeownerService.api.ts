@@ -1,6 +1,10 @@
-import { axios } from '01/axios';
-import { HomeownerAccountCreateRequest } from 'myApi';
+import { axios } from 'api/axios';
+import { CreateHomeownerPayload } from './createHomeownerService.types';
 
-export const postHomeownerAccount = (
-  payload: HomeownerAccountCreateRequest
-): Promise<void> => axios.post('HomeownerAccounts', payload);
+export const postHomeownerAccount = ({
+  body,
+  isForced,
+}: CreateHomeownerPayload): Promise<void> =>
+  axios.post('HomeownerAccounts', body, {
+    params: { isForced },
+  });

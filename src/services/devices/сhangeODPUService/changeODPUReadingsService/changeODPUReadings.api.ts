@@ -1,8 +1,8 @@
-import { axios } from '01/axios';
-import { GetHousingMeteringDeviceReadingsResponse } from 'myApi';
+import { axios } from 'api/axios';
+import { GetHousingMeteringDeviceReadingsResponse } from 'api/types';
 
 export const fetchOldReadings = (
-  nodeId: number
+  nodeId: number,
 ): Promise<GetHousingMeteringDeviceReadingsResponse> =>
   axios.get('HousingMeteringDeviceReadings', {
     params: {

@@ -9,7 +9,8 @@ import { CloseCalculatorFormik } from '../../closeCalculatorService.types';
 import { MessageWrapper } from './CloseCalculatorForm.styled';
 import { CloseCalculatorFormProps } from './CloseCalculatorForm.types';
 import * as yup from 'yup';
-import { ErrorMessage } from '01/shared/ui/ErrorMessage';
+import { ErrorMessage } from 'ui-kit/ErrorMessage';
+import { EDocumentType } from 'api/types';
 
 export const CloseCalculatorForm: FC<CloseCalculatorFormProps> = ({
   formId,
@@ -17,22 +18,19 @@ export const CloseCalculatorForm: FC<CloseCalculatorFormProps> = ({
 }) => {
   const [documents, setDocuments] = useState<Document[]>([]);
 
-  const {
-    submitForm,
-    setFieldValue,
-    values,
-    errors,
-  } = useFormik<CloseCalculatorFormik>({
-    initialValues: {
-      closingDate: moment().format(),
-    },
-    validationSchema: yup.object().shape({
-      closingDate: yup.string().required('Это поле обязательно'),
-    }),
-    validateOnBlur: false,
-    validateOnChange: false,
-    onSubmit: handleSubmit,
-  });
+  const { submitForm, setFieldValue, values, errors } =
+    useFormik<CloseCalculatorFormik>({
+      initialValues: {
+        closingDate: moment().format(),
+        documentsIds: [],
+      },
+      validationSchema: yup.object().shape({
+        closingDate: yup.string().required('Это поле обязательно'),
+      }),
+      validateOnBlur: false,
+      validateOnChange: false,
+      onSubmit: handleSubmit,
+    });
 
   return (
     <Form id={formId} onSubmitCapture={submitForm}>
@@ -58,9 +56,13 @@ export const CloseCalculatorForm: FC<CloseCalculatorFormProps> = ({
         uniqId={formId}
         onChange={(files) => {
           setDocuments(files);
+          if (files.length === 0) {
+            return setFieldValue('documentsIds', []);
+          }
           setFieldValue('documentsIds', [files[0]?.id]);
         }}
         max={1}
+        type={EDocumentType.DeviceClosingAct}
       />
     </Form>
   );

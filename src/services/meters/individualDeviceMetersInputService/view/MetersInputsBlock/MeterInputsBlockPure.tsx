@@ -1,4 +1,4 @@
-import { EResourceType } from 'myApi';
+import { EResourceType } from 'api/types';
 import React, { ChangeEvent, FC, useMemo } from 'react';
 import { getFilledArray } from 'utils/getFilledArray';
 import { getReadingValueKey } from '../../individualDeviceMetersInputService.utils';
@@ -9,7 +9,7 @@ export const MetersInputsBlockPure: FC<{
   rateNum: number;
   bufferedReadingValues: BufferedReadingValues;
   isDisabled?: boolean;
-  resource: EResourceType;
+  resource?: EResourceType;
   handleReadingInputChange: (e: ChangeEvent<HTMLInputElement>) => void;
 }> = ({
   rateNum,
@@ -26,20 +26,19 @@ export const MetersInputsBlockPure: FC<{
         const readingValue = bufferedReadingValues[valueKey] || '';
 
         return (
-          <InputWrapper>
+          <InputWrapper key={index}>
             <Input
               type="number"
               disabled={isDisabled}
               value={readingValue}
               name={valueKey}
               placeholder={`T${index + 1}`}
-              key={index}
               onChange={handleReadingInputChange}
             />
           </InputWrapper>
         );
       }),
-    [bufferedReadingValues, rateNum, isDisabled, handleReadingInputChange]
+    [bufferedReadingValues, rateNum, isDisabled, handleReadingInputChange],
   );
 
   return <Wrapper resource={resource}>{inputsArray}</Wrapper>;

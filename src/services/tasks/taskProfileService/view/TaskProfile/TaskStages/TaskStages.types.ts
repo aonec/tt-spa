@@ -1,8 +1,8 @@
-import { StageListResponse } from 'myApi';
+import { StageListResponse } from 'api/types';
 
 export type TaskStagesProps = {
   stages: StageListResponse[];
   handleRevertStage: () => void;
   isRevertStageLoading: boolean;
-  isPerpetrator: boolean;
+  isStageCanBeReverted: boolean;
 };

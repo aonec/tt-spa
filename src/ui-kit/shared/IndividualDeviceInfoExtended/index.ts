@@ -1,0 +1,1 @@
+export { IndividualDeviceInfoExtended } from './IndividualDeviceInfoExtended';

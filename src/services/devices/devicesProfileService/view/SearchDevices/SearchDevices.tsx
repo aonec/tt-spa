@@ -1,6 +1,5 @@
 import React, { FC, useCallback, useMemo } from 'react';
 import styles from './DeviceSearchForm.module.scss';
-import { Select } from 'antd';
 import _ from 'lodash';
 import {
   FlexCenterRow,
@@ -14,14 +13,17 @@ import {
   StyledExpirationDate,
 } from './SearchDevices.styled';
 import { SearchDevicesProps } from './SearchDevices.types';
-import { Icon } from '01/components';
-import { InputSC, SelectSC } from '01/shared/ui/Fields';
 import { AddressSearchContainer } from 'services/addressSearchService';
 import { SearchFieldType } from 'services/addressSearchService/view/AddressSearch/AddressSearch.types';
 import { SearchDevicesFormikFieldsLookup } from './SearchDevices.constants';
 import { DevicesSearchType } from 'services/devices/devicesPageService/devicesPageService.types';
-import { fromEnter } from '01/shared/ui/DatePickerNative';
+import { fromEnter } from 'ui-kit/shared/DatePickerNative';
 import { FormItem } from 'ui-kit/FormItem';
+import { SearchIcon } from 'ui-kit/icons';
+import { Select } from 'ui-kit/Select';
+import { Input } from 'ui-kit/Input';
+import { ClearIconSC } from 'ui-kit/ExtendedSearch/ExtendedSearch.styled';
+import { Button } from 'ui-kit/Button';
 
 const { Option } = Select;
 
@@ -35,6 +37,8 @@ export const SearchDevices: FC<SearchDevicesProps> = ({
   devicesSearchType,
   serialNumber,
   setSerialNumber,
+  handleClear,
+  isSearchError,
 }) => {
   const { marks, maxValue, minValue, diameters } = diametersConfig;
 
@@ -45,15 +49,16 @@ export const SearchDevices: FC<SearchDevicesProps> = ({
 
       setFieldValue(
         "['Filter.PipeDiameters']",
-        diameters.slice(firstIndex, secondIndex)
+        diameters.slice(firstIndex, secondIndex),
       );
+
+      setTimeout(() => submitForm(), 1000);
     },
-    [setFieldValue, diameters]
+    [setFieldValue, diameters, submitForm],
   );
 
   const rangeValues: [number, number] = useMemo(() => {
     const first = _.first(values['Filter.PipeDiameters']);
-
     const last = _.last(values['Filter.PipeDiameters']);
 
     return [first || minValue, last || maxValue];
@@ -70,6 +75,7 @@ export const SearchDevices: FC<SearchDevicesProps> = ({
               SearchFieldType.House,
               SearchFieldType.Corpus,
             ]}
+            isError={isSearchError}
             initialValues={{
               city: values['Filter.Address.City'],
               street: values['Filter.Address.Street'],
@@ -79,7 +85,7 @@ export const SearchDevices: FC<SearchDevicesProps> = ({
             onChange={(key, value) =>
               setFieldValue(
                 `['Filter.Address.${SearchDevicesFormikFieldsLookup[key]}']`,
-                value
+                value,
               )
             }
             handleSubmit={() => submitForm()}
@@ -89,14 +95,15 @@ export const SearchDevices: FC<SearchDevicesProps> = ({
     }
     return (
       <FormItem>
-        <InputSC
+        <Input
+          small
           onChange={(value) => {
             setSerialNumber(value.target.value);
           }}
           className={styles.input}
           value={serialNumber}
           placeholder="Введите серийный номер прибора"
-          prefix={<Icon icon="search" />}
+          prefix={<SearchIcon />}
           onKeyDown={fromEnter(submitForm)}
         />
       </FormItem>
@@ -108,6 +115,7 @@ export const SearchDevices: FC<SearchDevicesProps> = ({
     submitForm,
     serialNumber,
     setSerialNumber,
+    isSearchError,
   ]);
 
   return (
@@ -122,7 +130,8 @@ export const SearchDevices: FC<SearchDevicesProps> = ({
                 <StyledLabelSimple htmlFor="sortBy">
                   Сортировать по:
                 </StyledLabelSimple>
-                <SelectSC
+                <Select
+                  small
                   style={{ width: '65%' }}
                   value={values?.OrderBy}
                   placeholder="Дате проверки"
@@ -131,18 +140,28 @@ export const SearchDevices: FC<SearchDevicesProps> = ({
                 >
                   <Option value="Descending">Улице (уб.)</Option>
                   <Option value="Ascending">Улице (возр.)</Option>
-                </SelectSC>
+                </Select>
               </FlexCenterRow>
             </FormItem>
+            <Button
+              type="ghost"
+              onClick={handleClear}
+              size="small"
+              icon={<ClearIconSC />}
+            >
+              Сбросить
+            </Button>
           </StyledGrid>
 
           <Grid>
             <FormItem>
               <StyledExpirationDate>
                 <StyledLabelSimple htmlFor="expirationDate">
-                  Истекает дата поверки:{' '}
+                  Истекает дата поверки:
                 </StyledLabelSimple>
-                <SelectSC
+                <Select
+                  small
+                  placeholder="Выберите"
                   style={{ width: '65%' }}
                   value={values['Filter.ExpiresCheckingDateAt']}
                   onChange={(value) =>
@@ -150,10 +169,10 @@ export const SearchDevices: FC<SearchDevicesProps> = ({
                   }
                   onSelect={() => submitForm()}
                 >
-                  <Option value="NextMonth">Ближайший месяц</Option>
+                  <Option value="NextMonth">В ближайший месяц</Option>
                   <Option value="NextTwoMonth">В следующие два месяца</Option>
                   <Option value="Past">Истекла</Option>
-                </SelectSC>
+                </Select>
               </StyledExpirationDate>
             </FormItem>
 

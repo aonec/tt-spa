@@ -1,7 +1,7 @@
 import {
   HouseManagementResponse,
   HouseManagementWithStreetsResponse,
-} from 'myApi';
+} from 'api/types';
 import { ReportFiltrationFormValues } from 'services/reportsService/reportViewService/reportViewService.types';
 import { ReportType } from 'services/reportsService/view/ReportsPage/ReportsPage.types';
 
@@ -19,3 +19,15 @@ export type Address = {
   id: number;
   addressString: string;
 };
+
+export enum EmployeeReportType {
+  OperatorsWorkingReport = 'OperatorsWorkingReport',
+  HouseManagementsReport = 'HouseManagementsReport',
+  CallCenterWorkingReport = 'CallCenterWorkingReport',
+  InspectorsWorkingReport = 'InspectorsWorkingReport',
+}
+
+export enum EmployeeReportDatePeriodType {
+  Month = 'Month',
+  Year = 'Year',
+}

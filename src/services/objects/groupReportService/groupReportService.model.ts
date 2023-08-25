@@ -1,12 +1,18 @@
 import { message } from 'antd';
-import { combine, createDomain, forward, guard } from 'effector';
+import { combine, createDomain, forward, guard, sample } from 'effector';
+import { delay, not } from 'patronum';
 import { createGate } from 'effector-react';
 import moment from 'moment';
-import { EReportType, GroupReportFormResponse } from 'myApi';
+import {
+  EReportType,
+  GroupReportFormResponse,
+  SendGroupReportRequest,
+} from 'api/types';
 import {
   downloadGroupReportRequest,
   fetchFilters,
   fetchGroupReport,
+  sendByEmail,
 } from './groupReportService.api';
 import {
   MAX_DAILY_TYPE_DAYS,
@@ -14,6 +20,7 @@ import {
 } from './groupReportService.constants';
 import { GroupReportRequestPayload } from './groupReportService.types';
 import { sendReportToEmailService } from './sendReportToEmailService';
+import { BlobResponseErrorType, EffectFailDataAxiosError } from 'types';
 
 const domain = createDomain('groupReportService');
 
@@ -34,13 +41,19 @@ const $reportFilters = domain
 
 const downloadGroupReportFx = domain.createEffect<
   GroupReportRequestPayload,
-  void
+  void,
+  BlobResponseErrorType
 >(downloadGroupReportRequest);
 
 const getGroupReport = domain.createEvent<GroupReportRequestPayload>();
 const getGroupReportFx = domain.createEffect<GroupReportRequestPayload, string>(
   fetchGroupReport,
 );
+const sendByEmailFx = domain.createEffect<
+  SendGroupReportRequest,
+  void,
+  EffectFailDataAxiosError
+>(sendByEmail);
 
 const setGroupReportPayload =
   domain.createEvent<Partial<GroupReportRequestPayload>>();
@@ -51,6 +64,7 @@ const $isFiltersLoading = getReportFiltersFx.pending;
 const $isDownloading = combine(
   downloadGroupReportFx.pending,
   getGroupReportFx.pending,
+  sendByEmailFx.pending,
   (...isLoading) => isLoading.includes(true),
 );
 
@@ -62,8 +76,7 @@ guard({
     Boolean(
       payload.From &&
         payload.To &&
-        payload.Name &&
-        payload.HouseManagementId &&
+        payload.FileName &&
         payload.NodeResourceTypes &&
         payload.ReportType,
     ),
@@ -116,14 +129,88 @@ guard({
   target: getReportFiltersFx,
 });
 
-forward({
-  from: [downloadGroupReportFx.doneData, getGroupReportFx.doneData],
-  to: closeModal,
+sample({
+  clock: [
+    downloadGroupReportFx.doneData,
+    getGroupReportFx.doneData,
+    sendByEmailFx.doneData,
+  ],
+  target: closeModal,
 });
 
-downloadGroupReportFx.failData.watch(() =>
-  message.error('Не удалось скачать отчёт'),
-);
+const delayedPendingByEmailFx = delay({
+  source: sendByEmailFx.pending,
+  timeout: 1000,
+});
+
+const $isSendByEmailWithError = domain
+  .createStore<boolean>(false)
+  .on(sendByEmailFx.failData, (_, err) => Boolean(err))
+  .reset([closeModal, sendByEmailFx]);
+
+sample({
+  clock: delayedPendingByEmailFx,
+  source: $isSendByEmailWithError,
+  // filter: (isSendByEmailWithError) => !isSendByEmailWithError, //todo: регулярная выгрузка
+  filter: not($isSendByEmailWithError),
+  target: closeModal,
+});
+
+sample({
+  clock: sendReportToEmailService.inputs.submitEmail,
+  source: combine(
+    $downloadReportPayload,
+    sendReportToEmailService.outputs.$defaultEmail,
+    (payload, DelayedEmailTarget) => {
+      if (!payload) {
+        return null;
+      }
+      return {
+        email: DelayedEmailTarget,
+        report: {
+          from: payload.From,
+          to: payload.To,
+          houseManagementId: payload.HouseManagementId,
+          nodeResourceTypes: payload.NodeResourceTypes,
+          nodeStatus: payload.NodeStatus,
+          reportFormat: payload.ReportFormat,
+          reportType: payload.ReportType,
+          fileName: payload.FileName,
+        },
+      } as SendGroupReportRequest;
+    },
+  ),
+  filter: Boolean,
+  target: sendByEmailFx,
+});
+
+downloadGroupReportFx.failData.watch(async (error) => {
+  const jsonData = await error.response.data.text();
+  const errObject = JSON.parse(jsonData);
+
+  return message.error(
+    errObject.error.Text ||
+      errObject.error.Message ||
+      'Не удалось выгрузить отчёт',
+  );
+});
+
+sendByEmailFx.failData.watch((error) => {
+  message.destroy();
+
+  message.error(
+    error.response.data.error.Text ||
+      error.response.data.error.Message ||
+      'Произошла ошибка',
+  );
+});
+sendByEmailFx.pending.watch((isPending) => {
+  isPending && message.info('Отчёт формируется для отправки на почту', 60);
+});
+sendByEmailFx.doneData.watch(() => {
+  message.destroy();
+  message.success('Отчёт успешно отправлен на почту');
+});
 
 export const groupReportService = {
   inputs: {

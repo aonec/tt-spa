@@ -1,22 +1,39 @@
-import { useEvent } from 'effector-react';
+import { useEvent, useStore } from 'effector-react';
 import React, { FC } from 'react';
-import { CommentPanel } from 'ui-kit/shared_components/CommentPanel';
+import { CommentPanel } from 'ui-kit/shared/CommentPanel';
 import { calculatorCommentService } from './calculatorCommentService.model';
 import { CalculatorCommentContainerProps } from './calculatorCommentService.types';
+import { ESecuredIdentityRoleName } from 'api/types';
+import { usePermission } from 'hooks/usePermission';
 
-const { inputs, gates } = calculatorCommentService;
+const { outputs, inputs, gates } = calculatorCommentService;
 const { CalculatorIdGate } = gates;
 
 export const CalculatorCommentContainer: FC<
   CalculatorCommentContainerProps
 > = ({ comment, calculatorId }) => {
-  const { lastModifiedDateTime, lastModifiedUser } = comment || {};
+  const lastModifiedDateTimeFromCalculatorData = comment?.lastModifiedDateTime;
+  const lastModifiedUserFromCalculatorData = comment?.lastModifiedUser;
 
   const handleRemoveComment = useEvent(inputs.removeComment);
   const handleCreateComment = useEvent(inputs.createComment);
   const handleEditComment = useEvent(inputs.editComment);
 
+  const commentResponseData = useStore(outputs.$commentResponseData);
+
   const isCommentExist = Boolean(comment);
+
+  const lastModifiedDateTime =
+    commentResponseData?.lastModifiedDateTime ||
+    lastModifiedDateTimeFromCalculatorData;
+
+  const lastModifiedUser =
+    commentResponseData?.lastModifiedUser || lastModifiedUserFromCalculatorData;
+
+  const isPermitionToChangeComment = usePermission([
+    ESecuredIdentityRoleName.Administrator,
+    ESecuredIdentityRoleName.ManagingFirmExecutor,
+  ]);
 
   return (
     <>
@@ -36,6 +53,7 @@ export const CalculatorCommentContainer: FC<
           return handleCreateComment(text);
         }}
         onRemove={() => handleRemoveComment()}
+        isHavePermission={isPermitionToChangeComment}
       />
     </>
   );

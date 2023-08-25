@@ -1,6 +1,6 @@
-import { ResourceInfo } from 'ui-kit/shared_components/ResourceInfo';
+import { ResourceInfo } from 'ui-kit/shared/ResourceInfo';
 import moment from 'moment';
-import React, { FC, useMemo } from 'react';
+import React, { FC } from 'react';
 import { DocumentIcon, PencilIcon, TrashIcon, UploadIcon } from 'ui-kit/icons';
 import {
   ActNumber,
@@ -16,28 +16,20 @@ import {
   NoDocumentText,
 } from './ApartmentActItem.styled';
 import { ApartmentActItemProps } from './ApartmentActItem.types';
-import { DocumentResponse } from 'myApi';
+import { DocumentResponse } from 'api/types';
+import { ActTypesNamesLookup } from 'dictionaries';
 
 export const ApartmentActItem: FC<ApartmentActItemProps> = ({
   act,
   openDeleteActModal,
   openEditActModal,
   saveFile,
-  actTypes,
+  isPermitionToChangeApartmentAct,
 }) => {
-  const {
-    actJobDate,
-    id,
-    actType,
-    actResourceType,
-    registryNumber,
-    document,
-  } = act;
+  const { actJobDate, id, actType, actResourceType, registryNumber, document } =
+    act;
 
-  const actTypeText = useMemo(
-    () => actTypes?.find(({ key }) => key === actType)?.value || actType,
-    [actType, actTypes]
-  );
+  const actTypeText = ActTypesNamesLookup[actType];
 
   const documentName = document?.name || (
     <NoDocumentText>Нет документа</NoDocumentText>
@@ -61,13 +53,17 @@ export const ApartmentActItem: FC<ApartmentActItemProps> = ({
       <DocumentType>
         <DocumentTypeText>{actTypeText}</DocumentTypeText>
         <ManageIconsWrapper>
-          <DocumentIconSC onClick={() => openEditActModal(act)}>
-            <PencilIcon />
-          </DocumentIconSC>
+          {isPermitionToChangeApartmentAct && (
+            <DocumentIconSC onClick={() => openEditActModal(act)}>
+              <PencilIcon />
+            </DocumentIconSC>
+          )}
 
-          <DocumentIconSC onClick={() => openDeleteActModal(id)}>
-            <TrashIcon />
-          </DocumentIconSC>
+          {isPermitionToChangeApartmentAct && (
+            <DocumentIconSC onClick={() => openDeleteActModal(id)}>
+              <TrashIcon />
+            </DocumentIconSC>
+          )}
           <DocumentIconSC
             onClick={() => saveFile(document as DocumentResponse)}
           >

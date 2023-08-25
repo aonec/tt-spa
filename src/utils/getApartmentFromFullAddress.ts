@@ -1,8 +1,8 @@
-import { FullAddressResponse } from 'myApi';
+import { FullAddressResponse } from 'api/types';
 
 export const getApartmentFromFullAddress = (
   address: FullAddressResponse | null,
-  isCityNeeded?: boolean
+  isCityNeeded?: boolean,
 ) => {
   if (!address) return null;
 
@@ -12,5 +12,5 @@ export const getApartmentFromFullAddress = (
     ? `, кв. ${address.apartmentNumber}`
     : '';
 
-  return `${cityText} ул. ${address.street}, д. ${address.housingStockNumber}${corpusText}${apartmentNumberText}`;
+  return `${cityText} ул. ${address.street}, д. ${address.buildingNumber}${corpusText}${apartmentNumberText}`;
 };

@@ -1,4 +1,4 @@
-import { SpaceLine } from '01/shared/ui/Layout/Space/Space';
+import { SpaceLine } from 'ui-kit/SpaceLine';
 import { useFormik } from 'formik';
 import React, { FC } from 'react';
 import { Button } from 'ui-kit/Button';
@@ -12,6 +12,7 @@ import {
   Wrapper,
 } from './EditCommonDataForm.styled';
 import { EditCommonDataFormProps } from './EditCommonDataForm.types';
+import { useHistory } from 'react-router-dom';
 
 export const EditCommonDataForm: FC<EditCommonDataFormProps> = ({
   apartment,
@@ -40,10 +41,13 @@ export const EditCommonDataForm: FC<EditCommonDataFormProps> = ({
     enableReinitialize: true,
   });
 
+  const history = useHistory();
+
   return (
     <Wrapper>
       <FormItem label="Площадь жилого помещения">
         <InputWithAddon
+          type="number"
           placeholder="Введите площадь"
           value={values.Square || undefined}
           onChange={handleChange}
@@ -58,6 +62,7 @@ export const EditCommonDataForm: FC<EditCommonDataFormProps> = ({
       <FieldsWrapper>
         <FormItem label="Количество стояков ХВС">
           <Input
+            type="number"
             placeholder="Введите количество"
             value={values.ColdWaterRiserCount || undefined}
             onChange={handleChange}
@@ -66,6 +71,7 @@ export const EditCommonDataForm: FC<EditCommonDataFormProps> = ({
         </FormItem>
         <FormItem label="Количество стояков ГВС">
           <Input
+            type="number"
             placeholder="Введите количество"
             value={values.HotWaterRiserCount || undefined}
             onChange={handleChange}
@@ -74,6 +80,7 @@ export const EditCommonDataForm: FC<EditCommonDataFormProps> = ({
         </FormItem>
         <FormItem label="Количество проживающих">
           <Input
+            type="number"
             placeholder="Введите количество"
             value={values.NumberOfLiving || undefined}
             onChange={handleChange}
@@ -82,6 +89,7 @@ export const EditCommonDataForm: FC<EditCommonDataFormProps> = ({
         </FormItem>
         <FormItem label="Нормативное количество проживающих">
           <Input
+            type="number"
             placeholder="Введите количество"
             value={values.NormativeNumberOfLiving || undefined}
             onChange={handleChange}
@@ -91,7 +99,9 @@ export const EditCommonDataForm: FC<EditCommonDataFormProps> = ({
       </FieldsWrapper>
       <SpaceLine />
       <Footer>
-        <Button type="ghost">Отмена</Button>
+        <Button type="ghost" onClick={() => history.goBack()}>
+          Отмена
+        </Button>
         <SaveButtonWrapper>
           <Button
             onClick={() => handleSubmit()}

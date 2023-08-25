@@ -1,14 +1,15 @@
+import { ErrorMessage } from 'ui-kit/ErrorMessage';
 import { Switch } from 'antd';
 import { LabeledValue } from 'antd/lib/select';
 import moment from 'moment';
-import React, { FC, useEffect, useMemo, useState } from 'react';
+import React, { FC, useEffect, useMemo } from 'react';
 import { DatePicker } from 'ui-kit/DatePicker';
 import { FormItem } from 'ui-kit/FormItem';
 import { Input } from 'ui-kit/Input';
 import { Select } from 'ui-kit/Select';
-import { RadioGroupSC } from '../GroupReportDatesSelect/GroupReportDatesSelect.styled';
+// import { RadioGroupSC } from '../GroupReportDatesSelect/GroupReportDatesSelect.styled'; // todo: регулярная выгрузка
 import { RowWrapper } from '../GroupReportForm.styled';
-import { SubsTypeRadioOptions } from './RegularUnloading.constants';
+// import { SubsTypeRadioOptions } from './RegularUnloading.constants'; // todo: регулярная выгрузка
 import { SwitchWrapper, Wrapper } from './RegularUnloading.styled';
 import { RegularUnloadingProps } from './RegularUnloading.types';
 
@@ -16,11 +17,13 @@ export const RegularUnloading: FC<RegularUnloadingProps> = ({
   contractors,
   handleChangeContractorIds,
   handleChangeEmail,
-  handleChangeSubsType,
+  // handleChangeSubsType, // todo: регулярная выгрузка
   handleThriggerAt,
+  handleChangeIsRegular,
   values,
+  errors,
 }) => {
-  const [isRegular, setIsRegular] = useState(false);
+  const { isRegular } = values;
 
   const contractorsOptions: LabeledValue[] = useMemo(
     () =>
@@ -29,21 +32,21 @@ export const RegularUnloading: FC<RegularUnloadingProps> = ({
         value: String(elem.id),
         label: elem.title,
       })),
-    [contractors]
+    [contractors],
   );
 
   useEffect(() => {
     if (!isRegular) {
       handleChangeContractorIds();
       handleChangeEmail();
-      handleChangeSubsType();
+      // handleChangeSubsType(); // todo: регулярная выгрузка
       handleThriggerAt();
     }
   }, [
     isRegular,
     handleChangeContractorIds,
     handleChangeEmail,
-    handleChangeSubsType,
+    // handleChangeSubsType, // todo: регулярная выгрузка
     handleThriggerAt,
   ]);
 
@@ -57,7 +60,7 @@ export const RegularUnloading: FC<RegularUnloadingProps> = ({
 
   return (
     <Wrapper>
-      <SwitchWrapper onClick={() => setIsRegular((prev) => !prev)}>
+      <SwitchWrapper onClick={() => handleChangeIsRegular(!isRegular)}>
         <Switch checked={isRegular} />
         <div>
           <label>Регулярная выгрузка отчёта</label>
@@ -75,6 +78,7 @@ export const RegularUnloading: FC<RegularUnloadingProps> = ({
                 value={values['Subscription.Email']}
                 onChange={(e) => handleChangeEmail(e.target.value)}
               />
+              <ErrorMessage>{errors['Subscription.Email']}</ErrorMessage>
             </FormItem>
             <FormItem label="Подрядчики">
               <Select
@@ -87,22 +91,29 @@ export const RegularUnloading: FC<RegularUnloadingProps> = ({
           <RowWrapper>
             <FormItem label="Дата следующей выгрузки отчёта">
               <DatePicker
-                value={moment(values['Subscription.TriggerAt'])}
+                value={
+                  values['Subscription.TriggerAt']
+                    ? moment(values['Subscription.TriggerAt'])
+                    : undefined
+                }
+                placeholder={'Введите дату'}
                 onChange={(date) =>
                   handleThriggerAt(date?.format('YYYY-MM-DD'))
                 }
                 allowClear={false}
                 format={'DD.MM.YYYY'}
               />
+              <ErrorMessage>{errors['Subscription.TriggerAt']}</ErrorMessage>
             </FormItem>
           </RowWrapper>
-          <FormItem label="Период">
+          {/* <FormItem label="Период"> // todo: регулярная выгрузка
             <RadioGroupSC
               options={SubsTypeRadioOptions}
               onChange={(e) => handleChangeSubsType(e.target.value)}
               value={values['Subscription.Type']}
             />
-          </FormItem>
+            <ErrorMessage>{errors['Subscription.Type']}</ErrorMessage>
+          </FormItem> */}
         </>
       )}
     </Wrapper>

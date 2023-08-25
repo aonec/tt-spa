@@ -1,6 +1,4 @@
-import { ExistingCitiesGate } from '01/features/housingStocks/displayHousingStockCities/models';
-import { ExistingStreetsGate } from '01/features/housingStocks/displayHousingStockStreets/model';
-import { SpaceLine } from '01/shared/ui/Layout/Space/Space';
+import { SpaceLine } from 'ui-kit/SpaceLine';
 import { useFormik } from 'formik';
 import React, { FC } from 'react';
 import { AutoComplete } from 'ui-kit/AutoComplete';
@@ -11,6 +9,7 @@ import { BlockTitle, PageTitle } from '../CreateObjectPage.styled';
 import {
   AddButtonWrapper,
   ButtonPadding,
+  ButtonSC,
   DeleteButton,
   Footer,
   GridWrapper,
@@ -22,12 +21,14 @@ import {
   CreateObjectAddressStageProps,
   ObjectAddressValues,
 } from './CreateObjectAddressStage.types';
-import { ErrorMessage } from '01/shared/ui/ErrorMessage';
+import { ErrorMessage } from 'ui-kit/ErrorMessage';
 import { validationSchema } from './createObjectAddressStage.constants';
-import { StyledSelect } from '01/shared/ui/Select/components';
 import { Select } from 'ui-kit/Select';
-import { LinkButton } from 'ui-kit/shared_components/LinkButton';
+import { LinkButton } from 'ui-kit/shared/LinkButton';
 import { getPreparedStreetsOptions } from './CreateObjectAddressStage.utils';
+import { addressSearchService } from 'services/addressSearchService/addressSearchService.models';
+
+const { ExistingCitiesGate, ExistingStreetsGate } = addressSearchService.gates;
 
 export const CreateObjectAddressStage: FC<CreateObjectAddressStageProps> = ({
   existingStreets,
@@ -36,46 +37,47 @@ export const CreateObjectAddressStage: FC<CreateObjectAddressStageProps> = ({
   createObjectData,
   handleSubmitCreateObject,
 }) => {
-  const {
-    values,
-    handleSubmit,
-    setFieldValue,
-    errors,
-  } = useFormik<ObjectAddressValues>({
-    initialValues: {
-      city: createObjectData?.city || null,
-      street: createObjectData?.street || '',
-      house: createObjectData?.house || null,
-      corpus: createObjectData?.corpus || null,
-      index: createObjectData?.index || null,
-      additionalAddresses: createObjectData?.additionalAddresses || [],
-    },
-    enableReinitialize: true,
-    onSubmit: (data) => {
-      handleSubmitCreateObject(data);
-    },
-    validateOnChange: false,
-    validationSchema,
-  });
+  const { values, handleSubmit, setFieldValue, errors } =
+    useFormik<ObjectAddressValues>({
+      initialValues: {
+        city: createObjectData?.city || '',
+        street: createObjectData?.street || '',
+        house: createObjectData?.house || null,
+        corpus: createObjectData?.corpus || null,
+        index: createObjectData?.index || null,
+        additionalAddresses: createObjectData?.additionalAddresses || [],
+      },
+      enableReinitialize: true,
+      onSubmit: (data) => {
+        handleSubmitCreateObject(data);
+      },
+      validateOnChange: false,
+      validationSchema,
+    });
 
   const additionalAddressesFieldOnChange = (
     index: number,
     fieldName: string,
-    value: string
+    value: string,
   ) =>
     setFieldValue(
       'additionalAddresses',
       values.additionalAddresses.map((el, i) => {
         if (index !== i) return el;
         return { ...el, [fieldName]: value };
-      })
+      }),
     );
 
   const addressSearch = values.street;
+  const citySearch = values.city;
 
   const preparedExistingStreets = getPreparedStreetsOptions(
     addressSearch,
-    existingStreets || []
+    existingStreets || [],
+  );
+  const preparedExistingCities = getPreparedStreetsOptions(
+    citySearch || '',
+    existingCities || [],
   );
 
   return (
@@ -89,17 +91,12 @@ export const CreateObjectAddressStage: FC<CreateObjectAddressStageProps> = ({
         <BlockTitle>Основной адрес объекта</BlockTitle>
         <GridWrapper>
           <FormItem label="Город">
-            <Select
+            <AutoComplete
               onChange={(value) => setFieldValue('city', value)}
               value={values.city || undefined}
               placeholder="Выберите из списка"
-            >
-              {existingCities?.map((city) => (
-                <Select.Option value={city} key={city}>
-                  {city}
-                </Select.Option>
-              ))}
-            </Select>
+              options={preparedExistingCities}
+            />
             <ErrorMessage> {errors.city} </ErrorMessage>
           </FormItem>
 
@@ -108,7 +105,7 @@ export const CreateObjectAddressStage: FC<CreateObjectAddressStageProps> = ({
               placeholder="Улица"
               value={values.street}
               onChange={(value) => setFieldValue('street', value)}
-              options={preparedExistingStreets || undefined}
+              options={preparedExistingStreets}
             />
             <ErrorMessage> {errors.street} </ErrorMessage>
           </FormItem>
@@ -150,7 +147,7 @@ export const CreateObjectAddressStage: FC<CreateObjectAddressStageProps> = ({
           <>
             <GridWrapper key={index}>
               <FormItem label="Город">
-                <StyledSelect value={values.city || undefined} disabled />
+                <Select value={values.city || undefined} disabled />
               </FormItem>
 
               <FormItem label="Улица">
@@ -160,7 +157,7 @@ export const CreateObjectAddressStage: FC<CreateObjectAddressStageProps> = ({
                     additionalAddressesFieldOnChange(
                       index,
                       'street',
-                      value as string
+                      value as string,
                     )
                   }
                   value={elem.street}
@@ -177,7 +174,7 @@ export const CreateObjectAddressStage: FC<CreateObjectAddressStageProps> = ({
                       additionalAddressesFieldOnChange(
                         index,
                         'house',
-                        value.target.value as string
+                        value.target.value as string,
                       )
                     }
                   />
@@ -191,7 +188,7 @@ export const CreateObjectAddressStage: FC<CreateObjectAddressStageProps> = ({
                       additionalAddressesFieldOnChange(
                         index,
                         'corpus',
-                        value.target.value as string
+                        value.target.value as string,
                       )
                     }
                   />
@@ -203,7 +200,7 @@ export const CreateObjectAddressStage: FC<CreateObjectAddressStageProps> = ({
               onClick={() =>
                 setFieldValue(
                   'additionalAddresses',
-                  values.additionalAddresses.filter((el, i) => index !== i)
+                  values.additionalAddresses.filter((el, i) => index !== i),
                 )
               }
             >
@@ -232,14 +229,14 @@ export const CreateObjectAddressStage: FC<CreateObjectAddressStageProps> = ({
                 Отмена
               </Button>
             </ButtonPadding>
-            <Button
-              sidePadding={25}
+
+            <ButtonSC
               onClick={() => {
                 handleSubmit();
               }}
             >
               Далее
-            </Button>
+            </ButtonSC>
           </NextCancelBlock>
         </Footer>
       </Wrapper>

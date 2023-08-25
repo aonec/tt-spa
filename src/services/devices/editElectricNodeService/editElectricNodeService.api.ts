@@ -1,9 +1,9 @@
-import { axios } from '01/axios';
-import { ElectricHousingMeteringDeviceResponse } from 'myApi';
+import { axios } from 'api/axios';
+import { ElectricHousingMeteringDeviceResponse } from 'api/types';
 import { EditElectricNodePayload } from './editElectricNodeService.types';
 
 export const fetchElectricNode = (
-  nodeId: number
+  nodeId: number,
 ): Promise<ElectricHousingMeteringDeviceResponse> =>
   axios.get(`ElectricHousingMeteringDevices/${nodeId}`);
 

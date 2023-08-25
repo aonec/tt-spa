@@ -2,7 +2,7 @@ import { createDomain, guard, sample } from 'effector';
 import {
   ResourceDisconnectingResponse,
   ResourceDisconnectingUpdateRequest,
-} from 'myApi';
+} from 'api/types';
 import {
   fetchEditResourceDisconnection,
   fetchResourceDisconnection,
@@ -12,6 +12,8 @@ import {
   ResourceDisconnectingUpdatePayload,
   UpdateDocumentPayload,
 } from './editResourceDisconnectionService.types';
+import { EffectFailDataAxiosError } from 'types';
+import { message } from 'antd';
 
 const domain = createDomain('editResourceDisconnectionService');
 
@@ -20,17 +22,20 @@ const clearDisconnectionId = domain.createEvent();
 
 const updateDocument = domain.createEvent<number>();
 const updateDocumentFx = domain.createEffect<UpdateDocumentPayload, void>(
-  fetchUpdateResourceDisconnectingDocument
+  fetchUpdateResourceDisconnectingDocument,
 );
 
-const editResourceDisconnection = domain.createEvent<ResourceDisconnectingUpdateRequest>();
+const editResourceDisconnection =
+  domain.createEvent<ResourceDisconnectingUpdateRequest>();
+
 const editResourceDisconnectionFx = domain.createEffect<
   ResourceDisconnectingUpdatePayload,
-  void
+  void,
+  EffectFailDataAxiosError
 >(fetchEditResourceDisconnection);
 
 const getResourceDisconnectionFx = domain.createEffect(
-  fetchResourceDisconnection
+  fetchResourceDisconnection,
 );
 
 const $editedResourceDisconnectionId = domain
@@ -49,7 +54,8 @@ const $resourceDisconnection = domain
 
 const $isDisconectionLoading = getResourceDisconnectionFx.pending;
 
-const setEditResourceDisconnectionPayload = domain.createEvent<ResourceDisconnectingUpdatePayload>();
+const setEditResourceDisconnectionPayload =
+  domain.createEvent<ResourceDisconnectingUpdatePayload>();
 const $editResourceDisconnectionPayload = domain
   .createStore<ResourceDisconnectingUpdatePayload | null>(null)
   .on(setEditResourceDisconnectionPayload, (_, data) => {
@@ -91,6 +97,14 @@ sample({
   clock: updateDocument,
   fn: (disconnection, documentId) => ({ id: disconnection.id, documentId }),
   target: updateDocumentFx,
+});
+
+editResourceDisconnectionFx.failData.watch((error) => {
+  return message.error(
+    error.response.data.error.Text ||
+      error.response.data.error.Message ||
+      'Произошла ошибка',
+  );
 });
 
 export const editResourceDisconnectionService = {

@@ -1,18 +1,23 @@
-import { axios } from '01/axios';
+import { axios } from 'api/axios';
 import {
   MeteringDeviceResponse,
+  PipeHousingMeteringDeviceResponse,
+  PipeNodeResponse,
   UpdatePipeHousingMeteringDeviceRequest,
-} from 'myApi';
+} from 'api/types';
 
-export async function putHousingMeteringDevice(params: {
+export const putHousingMeteringDevice = ({
+  deviceId,
+  ...payload
+}: {
   deviceId: number;
-  request: UpdatePipeHousingMeteringDeviceRequest;
-}) {
-  return await axios.put<
-    {
-      deviceId: number;
-      request: UpdatePipeHousingMeteringDeviceRequest;
-    },
-    MeteringDeviceResponse
-  >(`PipeHousingMeteringDevices/${params.deviceId}`, params.request);
-}
+} & UpdatePipeHousingMeteringDeviceRequest): Promise<MeteringDeviceResponse> =>
+  axios.put(`PipeHousingMeteringDevices/${deviceId}`, payload);
+
+export const fetchHousingMeteringDevice = (
+  id: number,
+): Promise<PipeHousingMeteringDeviceResponse> =>
+  axios.get(`PipeHousingMeteringDevices/${id}`);
+
+export const fetchPipeNode = (id: number): Promise<PipeNodeResponse> =>
+  axios.get(`PipeNodes/${id}`);

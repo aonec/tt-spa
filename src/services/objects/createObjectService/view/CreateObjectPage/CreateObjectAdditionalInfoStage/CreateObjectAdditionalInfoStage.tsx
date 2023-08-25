@@ -1,6 +1,6 @@
-import { StyledSelect } from '01/shared/ui/Select/components';
 import { useFormik } from 'formik';
 import React, { FC } from 'react';
+import moment from 'moment';
 import { Button } from 'ui-kit/Button';
 import { FormItem } from 'ui-kit/FormItem';
 import { Input } from 'ui-kit/Input';
@@ -10,6 +10,8 @@ import { ElevatorDictionary } from '../CreateObjectFinalStageModal/CreateObjectF
 import { PageTitle } from '../CreateObjectPage.styled';
 import {
   ButtonPadding,
+  ButtonSC,
+  ConstrutionYearWrapper,
   Footer,
   GridContainer,
   RightButtonBlock,
@@ -19,33 +21,41 @@ import {
   AdditionalInfo,
   CreateObjectAdditionalInfoStageProps,
 } from './CreateObjectAdditionalInfoStage.types';
+import { DatePicker } from 'ui-kit/DatePicker';
+import { EHouseCategory } from 'api/types';
 
-export const CreateObjectAdditionalInfoStage: FC<CreateObjectAdditionalInfoStageProps> = ({
+export const CreateObjectAdditionalInfoStage: FC<
+  CreateObjectAdditionalInfoStageProps
+> = ({
   goBackStage,
   onPageCancel,
   handleSubmitCreateObject,
   createObjectData,
   openPreviewModal,
 }) => {
-  const { values, handleSubmit, setFieldValue } = useFormik<AdditionalInfo>({
-    initialValues: {
-      floors: createObjectData?.floors || null,
-      entrances: createObjectData?.entrances || null,
-      elevator: createObjectData?.elevator || null,
-    },
-    enableReinitialize: true,
-    onSubmit: (data) => {
-      handleSubmitCreateObject(data);
-      openPreviewModal();
-    },
-    validateOnChange: false,
-  });
+  const { values, handleSubmit, setFieldValue, handleChange } =
+    useFormik<AdditionalInfo>({
+      initialValues: {
+        floors: createObjectData?.floors || null,
+        entrances: createObjectData?.entrances || null,
+        elevator: createObjectData?.elevator || null,
+        constructionYear: createObjectData?.constructionYear || '',
+      },
+      enableReinitialize: true,
+      onSubmit: (data) => {
+        handleSubmitCreateObject(data);
+        openPreviewModal();
+      },
+      validateOnChange: false,
+    });
 
   return (
     <Wrapper>
       <PageTitle>Дополнительная информация </PageTitle>
 
-      <GridContainer>
+      <GridContainer
+        category={createObjectData?.objectCategory || EHouseCategory.Living}
+      >
         <FormItem label="Число этажей">
           <Input
             placeholder="Введите"
@@ -55,17 +65,20 @@ export const CreateObjectAdditionalInfoStage: FC<CreateObjectAdditionalInfoStage
           />
         </FormItem>
 
-        <FormItem label="Число подъездов">
-          <Input
-            placeholder="Введите"
-            onChange={(value) => setFieldValue('entrances', value.target.value)}
-            value={values.entrances || undefined}
-            type="number"
-          />
-        </FormItem>
+        {createObjectData?.objectCategory === EHouseCategory.Living && (
+          <FormItem label="Число подъездов">
+            <Input
+              placeholder="Введите"
+              name="entrances"
+              onChange={handleChange}
+              value={values.entrances || undefined}
+              type="number"
+            />
+          </FormItem>
+        )}
 
         <FormItem label="Лифт">
-          <StyledSelect
+          <Select
             placeholder="Выберите из списка"
             onChange={(value) => setFieldValue('elevator', value)}
             value={values.elevator || undefined}
@@ -75,9 +88,25 @@ export const CreateObjectAdditionalInfoStage: FC<CreateObjectAdditionalInfoStage
                 {ElevatorDictionary[e]}
               </Select.Option>
             ))}
-          </StyledSelect>
+          </Select>
         </FormItem>
       </GridContainer>
+
+      <ConstrutionYearWrapper>
+        <FormItem label="Год постройки">
+          <DatePicker
+            picker="year"
+            onChange={(value, dateString) =>
+              setFieldValue('constructionYear', dateString)
+            }
+            value={
+              values.constructionYear
+                ? moment(values.constructionYear)
+                : undefined
+            }
+          />
+        </FormItem>
+      </ConstrutionYearWrapper>
 
       <Footer>
         <Button type="ghost" onClick={() => goBackStage()}>
@@ -89,9 +118,7 @@ export const CreateObjectAdditionalInfoStage: FC<CreateObjectAdditionalInfoStage
               Отмена
             </Button>
           </ButtonPadding>
-          <Button sidePadding={25} onClick={() => handleSubmit()}>
-            Создать объект
-          </Button>
+          <ButtonSC onClick={() => handleSubmit()}>Создать объект</ButtonSC>
         </RightButtonBlock>
       </Footer>
     </Wrapper>

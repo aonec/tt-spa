@@ -1,11 +1,21 @@
 import moment from 'moment';
-import { ApartmentActsConstructedReportResponse } from 'myApi';
 import {
   IndividualDeviceReportRequestPaload,
   ReportDatePeriod,
   ReportFiltrationFormValues,
   ActsJournalReportRequestPayload,
+  HousingMeteringDevicesReportRequestPayload,
+  HomeownersReportRequestPayload,
+  ReportPayload,
+  EmployeeReportRequestPayload,
 } from './reportViewService.types';
+import { EmployeeReportDatePeriodDictionary } from './view/ReportViewPage/ReportFiltrationForm/ReportFiltrationForm.constants';
+import {
+  EmployeeReportDatePeriodType,
+  EmployeeReportType,
+} from './view/ReportViewPage/ReportFiltrationForm/ReportFiltrationForm.types';
+
+export const getReportPayloadValues = ({ values }: ReportPayload) => values;
 
 const getDatePeriod = (
   reportDatePeriod: ReportDatePeriod | null,
@@ -42,7 +52,18 @@ const getDatePeriod = (
   return { from: from?.format('YYYY-MM-DD'), to: to?.format('YYYY-MM-DD') };
 };
 
-export const prepareIndividualDevicesReportData = (
+const getAddressId = (
+  values: ReportFiltrationFormValues,
+): { HousingStocksIds: number[]; HouseManagementId?: string | undefined } => {
+  return {
+    HousingStocksIds: values.housingStockIds,
+    HouseManagementId: values.housingStockIds.length
+      ? undefined
+      : values.houseManagement || undefined,
+  };
+};
+
+export const prepareIndividualDevicesReportRequestPayload = (
   values: ReportFiltrationFormValues,
 ): IndividualDeviceReportRequestPaload | null => {
   if (!values.reportOption) return null;
@@ -52,20 +73,22 @@ export const prepareIndividualDevicesReportData = (
     to: values.to,
   });
 
+  const { HouseManagementId, HousingStocksIds } = getAddressId(values);
+
   return {
-    HousingStockId: values.housingStockId || undefined,
-    HouseManagementId: values.housingStockId
-      ? undefined
-      : values.houseManagement || undefined,
+    HouseManagementId,
+    HousingStocksIds,
     ReportOption: values.reportOption,
     Resources: values.resources,
     From: dates?.from,
     To: dates?.to,
     ClosingReasons: values.closingReasons,
+    WithoutApartmentsWithOpenDevicesByResources:
+      values.withoutApartmentsWithOpenDevicesByResources,
   };
 };
 
-export const prepareActJournalReportData = (
+export const prepareActJournalReportRequestPayload = (
   values: ReportFiltrationFormValues,
 ): ActsJournalReportRequestPayload | null => {
   const dates = getDatePeriod(values.reportDatePeriod, {
@@ -73,15 +96,100 @@ export const prepareActJournalReportData = (
     to: values.to,
   });
 
-  if (!values.housingStockId && !values.houseManagement) return null;
+  if (!values.housingStockIds.length && !values.houseManagement) return null;
+
+  const { HouseManagementId, HousingStocksIds } = getAddressId(values);
 
   return {
-    HousingStockId: values.housingStockId || undefined,
-    HouseManagementId: values.housingStockId
-      ? undefined
-      : values.houseManagement || undefined,
+    HouseManagementId,
+    HousingStocksIds,
     From: dates?.from,
     To: dates?.to,
     Resources: values.actResources,
+  };
+};
+
+export const prepareHousingMeteringDevicesReportRequestPayload = (
+  values: ReportFiltrationFormValues,
+): HousingMeteringDevicesReportRequestPayload | null => {
+  const dates = getDatePeriod(values.reportDatePeriod, {
+    from: values.from,
+    to: values.to,
+  });
+
+  if (!dates) return null;
+
+  const { HouseManagementId, HousingStocksIds } = getAddressId(values);
+
+  return {
+    HouseManagementId,
+    HousingStocksIds,
+    From: dates.from,
+    To: dates.to,
+    Resources: values.resources,
+  };
+};
+
+export const prepareHomeownersReportRequestPayload = (
+  values: ReportFiltrationFormValues,
+): HomeownersReportRequestPayload | null => {
+  const { HouseManagementId, HousingStocksIds } = getAddressId(values);
+
+  if (!HouseManagementId && !HousingStocksIds.length) return null;
+
+  return {
+    HouseManagementId,
+    HousingStocksIds,
+    ShowOnlyDuplicates: values.showOnlyDuplicates,
+  };
+};
+
+const getCallCenterReportDatePeriod = (
+  from: null | moment.Moment,
+  to: null | moment.Moment,
+) => {
+  return {
+    From: from?.utcOffset(0)?.format('YYYY-MM-DD'),
+    To: to?.utcOffset(0)?.format('YYYY-MM-DD'),
+  };
+};
+
+const getEmployeeReportDatePeriod = (
+  employeeReportDatePeriodType: EmployeeReportDatePeriodType,
+  employeeReportDate: moment.Moment | null,
+) => {
+  if (!employeeReportDate) return null;
+
+  const period =
+    EmployeeReportDatePeriodDictionary[employeeReportDatePeriodType];
+
+  return {
+    From: employeeReportDate.utcOffset(0).startOf(period).format('YYYY-MM-DD'),
+    To: employeeReportDate.utcOffset(0).endOf(period).format('YYYY-MM-DD'),
+  };
+};
+
+export const prepareEmployeeReportRequestPayload = (
+  values: ReportFiltrationFormValues,
+): EmployeeReportRequestPayload | null => {
+  const isCallCenterReport =
+    values.employeeReportType === EmployeeReportType.CallCenterWorkingReport;
+
+  if (!values.employeeReportType) return null;
+
+  const period = isCallCenterReport
+    ? getCallCenterReportDatePeriod(values.from, values.to)
+    : values.employeeReportDatePeriodType &&
+      getEmployeeReportDatePeriod(
+        values.employeeReportDatePeriodType,
+        values.employeeReportDate,
+      );
+
+  if (!period) return null;
+
+  return {
+    employeeReportType: values.employeeReportType,
+    From: period.From,
+    To: period.To,
   };
 };

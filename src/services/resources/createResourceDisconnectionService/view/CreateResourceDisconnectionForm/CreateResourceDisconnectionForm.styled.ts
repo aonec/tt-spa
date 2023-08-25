@@ -6,10 +6,11 @@ import { Select } from 'ui-kit/Select';
 export const BaseInfoWrapper = styled.div`
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  grid-column-gap: 15px;
+  grid-column-gap: 16px;
   .ant-select-focused {
-    .tag-placeholder {
+    .ant-select-selection-item {
       color: #bfbfbf;
+      transition: 0.2s;
     }
   }
   .ant-select-selection-item {
@@ -32,13 +33,13 @@ export const InputSC = styled(Input)`
 export const TimeWrapper = styled.div`
   display: grid;
   grid-template-columns: 2fr 1fr;
-  grid-gap: 15px;
+  grid-gap: 16px;
 `;
 
 export const CitySelectWrapper = styled.div<{ showCity: boolean }>`
   display: grid;
   grid-template-columns: ${({ showCity }) => (showCity ? '1fr 1fr ' : '1fr')};
-  grid-gap: 15px;
+  grid-gap: 16px;
 `;
 
 export const SelectSC = styled(Select)`
@@ -72,13 +73,4 @@ export const TreeSelectSC = styled(TreeSelect)`
   .ant-select-arrow {
     margin-right: 16px;
   }
-`;
-
-export const TagPlaceholder = styled.div`
-  color: #272f5ae5;
-  font-weight: 400;
-  font-size: 16px;
-  line-height: 22px;
-
-  transition: 0.3s;
 `;

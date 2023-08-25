@@ -1,17 +1,17 @@
-import React, { FC } from 'react';
+import React, { FC, useMemo } from 'react';
 import { Footer, GridContainer, Wrapper } from './EditMainInfo.styled';
 import { EditMainInfoProps } from './EditMainInfo.types';
 import { FormItem } from 'ui-kit/FormItem';
 import { Select } from 'ui-kit/Select';
 import { Input } from 'ui-kit/Input';
 import { DatePicker } from 'ui-kit/DatePicker';
-import { ErrorMessage } from '01/shared/ui/ErrorMessage';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 import { Button } from 'ui-kit/Button';
-import { UpdateCalculatorRequest } from 'myApi';
+import { UpdateCalculatorRequest } from 'api/types';
 import moment from 'moment';
 import { NodesInfo } from './NodesInfo';
+import { ErrorMessage } from 'ui-kit/ErrorMessage';
 
 export const EditMainInfo: FC<EditMainInfoProps> = ({
   calculator,
@@ -27,22 +27,31 @@ export const EditMainInfo: FC<EditMainInfoProps> = ({
     entryNumber: node.communicationPipes?.[0]?.entryNumber || null,
   }));
 
-  const getCurrentInfoId = calculatorTypesSelectItems.find(
-    (calculatorType) => calculatorType.id === calculator?.infoId,
-  )?.id;
+  const currentInfoId = useMemo(
+    () =>
+      calculatorTypesSelectItems.find(
+        (calculatorType) => calculatorType.id === calculator?.infoId,
+      )?.id,
+    [calculatorTypesSelectItems, calculator],
+  );
 
   const { values, setFieldValue, errors, handleSubmit } =
     useFormik<UpdateCalculatorRequest>({
       initialValues: {
         serialNumber: calculator?.serialNumber,
-        infoId: getCurrentInfoId,
         lastCheckingDate: calculator?.lastCheckingDate,
         futureCheckingDate: calculator?.futureCheckingDate,
       },
       validationSchema: yup.object().shape({
-        serialNumber: yup.string().required('Это поле обязательно'),
-        lastCheckingDate: yup.string().required('Это поле обязательно'),
-        futureCheckingDate: yup.string().required('Это поле обязательно'),
+        serialNumber: yup.string().nullable().required('Это поле обязательно'),
+        lastCheckingDate: yup
+          .string()
+          .nullable()
+          .required('Это поле обязательно'),
+        futureCheckingDate: yup
+          .string()
+          .nullable()
+          .required('Это поле обязательно'),
       }),
       validateOnBlur: false,
       validateOnChange: false,
@@ -56,18 +65,14 @@ export const EditMainInfo: FC<EditMainInfoProps> = ({
     <Wrapper>
       <FormItem label="Тип вычислителя">
         <Select
-          placeholder="Выберите"
-          value={values.infoId || undefined}
-          onChange={(value) => {
-            setFieldValue('infoId', value);
-          }}
+          value={currentInfoId || undefined}
+          disabled
           options={calculatorTypesSelectItems}
         />
       </FormItem>
 
       <FormItem label="Серийный номер">
         <Input
-          type="number"
           placeholder="Введите"
           value={values.serialNumber || undefined}
           onChange={(value) => {
@@ -91,7 +96,11 @@ export const EditMainInfo: FC<EditMainInfoProps> = ({
                 moment(date).add(4, 'years').format('YYYY-MM-DDTHH:mm:ss'),
               );
             }}
-            value={moment(values.lastCheckingDate)}
+            value={
+              values.lastCheckingDate
+                ? moment(values.lastCheckingDate)
+                : undefined
+            }
             format="DD.MM.YYYY"
           />
           <ErrorMessage>{errors.lastCheckingDate}</ErrorMessage>
@@ -105,7 +114,11 @@ export const EditMainInfo: FC<EditMainInfoProps> = ({
                 moment(date).format('YYYY-MM-DDTHH:mm:ss'),
               );
             }}
-            value={moment(values.futureCheckingDate)}
+            value={
+              values.futureCheckingDate
+                ? moment(values.futureCheckingDate)
+                : undefined
+            }
             format="DD.MM.YYYY"
           />
           <ErrorMessage>{errors.futureCheckingDate}</ErrorMessage>

@@ -1,12 +1,14 @@
-import { useOnEnterSwitch } from '01/features/readings/accountingNodesReadings/components/Filter';
-import { fromEnter } from '01/shared/ui/DatePickerNative';
-import { StyledAutocomplete, InputSC, SelectSC } from '01/shared/ui/Fields';
-import { useAutocomplete } from '01/_pages/MetersPage/hooks/useFilter';
+import { fromEnter } from 'ui-kit/shared/DatePickerNative';
 import React, { FC, ReactElement } from 'react';
 import { FormItem } from 'ui-kit/FormItem';
 import { SearchFieldsLabels } from './AddressSearch.constants';
-import { Wrapper } from './AddressSearch.styled';
+import { Wrapper, InputSC, AutoCompleteSC } from './AddressSearch.styled';
 import { AddressSearchProps, SearchFieldType } from './AddressSearch.types';
+import { Select } from 'ui-kit/Select';
+import { useSwitchInputOnEnter } from 'hooks/useSwitchInputOnEnter';
+import { useAutocomplete } from 'hooks/useAutocomplete';
+
+const dataKey = 'search-address-inputs';
 
 export const AddressSearch: FC<AddressSearchProps> = ({
   streets,
@@ -18,125 +20,150 @@ export const AddressSearch: FC<AddressSearchProps> = ({
   customTemplate,
   showLabels,
   disabledFields,
+  className,
+  isError,
 }) => {
-  const { keyDownEnterGuardedHandler, refs } = useOnEnterSwitch(5);
+  const next = useSwitchInputOnEnter(dataKey, false, false);
 
-  const { match: streetMatch, options } = useAutocomplete(
-    values.street,
-    streets
-  );
+  const autocomplete = useAutocomplete(values.street || null, streets);
+  const streetMatch = autocomplete ? autocomplete.bestMatch : null;
+  const options = autocomplete ? autocomplete.options : [];
 
   function clearFields(index: number) {
     const clearingFieldsTypes = fields.slice(index, fields.length);
 
-    clearingFieldsTypes.forEach((fieldType) => handleChange(fieldType, ''));
+    clearingFieldsTypes
+      .filter((elem) => elem !== SearchFieldType.City)
+      .forEach((fieldType) => handleChange(fieldType, ''));
   }
 
   const citySearch = (index: number, isDisabled?: boolean) => (
-    <SelectSC
+    <Select
+      small
       placeholder="Город"
-      ref={refs[index]}
-      onKeyDown={keyDownEnterGuardedHandler(index)}
-      onChange={(value) => handleChange(SearchFieldType.City, value.toString())}
+      onKeyDown={fromEnter(() => next(index))}
+      data-reading-input={dataKey}
+      onChange={(value) => {
+        handleChange(SearchFieldType.City, value.toString());
+        handleChange(SearchFieldType.Street, '');
+        handleChange(SearchFieldType.House, '');
+        handleChange(SearchFieldType.Corpus, '');
+        handleSubmit();
+      }}
       value={values.city}
-      disabled={isDisabled}
+      style={{ minWidth: 180 }}
+      disabled={isDisabled || !cities.length}
     >
       {cities?.map((elem, index) => (
-        <SelectSC.Option key={index} value={elem}>
+        <Select.Option key={index} value={elem}>
           {elem}
-        </SelectSC.Option>
+        </Select.Option>
       ))}
-    </SelectSC>
+    </Select>
   );
 
   const streetSearch = (index: number, isDisabled?: boolean) => (
-    <StyledAutocomplete
+    <AutoCompleteSC
+      small
       placeholder="Улица"
-      ref={refs[index]}
-      value={values.street}
-      onChange={(value) =>
-        handleChange(SearchFieldType.Street, value.toString())
-      }
-      onKeyDown={(e) => {
-        fromEnter(() => {
-          if (values.street) handleChange(SearchFieldType.Street, streetMatch);
-          handleSubmit();
-        })(e);
-        keyDownEnterGuardedHandler(index)(e);
+      data-reading-input={dataKey}
+      value={values.street || ''}
+      onChange={(value) => {
+        handleChange(SearchFieldType.Street, value.toString());
       }}
+      onKeyDown={fromEnter(() => {
+        if (values.street && streetMatch)
+          handleChange(SearchFieldType.Street, streetMatch);
+        handleSubmit();
+        next(index);
+      })}
       options={options}
-      onClick={() => {
+      onSelect={() => {
+        if (values.street && streetMatch)
+          handleChange(SearchFieldType.Street, streetMatch);
+        handleSubmit();
+      }}
+      onFocus={() => {
         clearFields(index);
       }}
       disabled={isDisabled}
+      error={isError}
     />
   );
 
   const homeNumberSearch = (index: number, isDisabled?: boolean) => (
     <InputSC
+      small
       placeholder="Дом"
       value={values.house}
       onChange={(e) => handleChange(SearchFieldType.House, e.target.value)}
-      ref={refs[index]}
       onClick={() => {
         clearFields(index);
       }}
-      onKeyDown={(e) => {
-        fromEnter(handleSubmit)(e);
-        keyDownEnterGuardedHandler(index)(e);
-      }}
+      data-reading-input={dataKey}
+      onKeyDown={fromEnter(() => {
+        handleSubmit();
+        next(index);
+      })}
       disabled={isDisabled}
+      error={isError}
     />
   );
 
   const corpusSearch = (index: number, isDisabled?: boolean) => (
     <InputSC
+      small
       placeholder="Корпус"
       value={values.corpus}
       onChange={(e) => handleChange(SearchFieldType.Corpus, e.target.value)}
-      ref={refs[index]}
+      data-reading-input={dataKey}
       onClick={() => {
         clearFields(index);
       }}
-      onKeyDown={(e) => {
-        fromEnter(handleSubmit)(e);
-        keyDownEnterGuardedHandler(index)(e);
-      }}
+      onKeyDown={fromEnter(() => {
+        handleSubmit();
+        next(index);
+      })}
       disabled={isDisabled}
+      error={isError}
     />
   );
 
   const apartmentSearch = (index: number, isDisabled?: boolean) => (
     <InputSC
+      small
       placeholder="Квартирa"
       value={values.apartment}
       onChange={(e) => handleChange(SearchFieldType.Apartment, e.target.value)}
-      ref={refs[index]}
+      data-reading-input={dataKey}
       onClick={() => {
         clearFields(index);
       }}
-      onKeyDown={(e) => {
-        fromEnter(handleSubmit)(e);
-        keyDownEnterGuardedHandler(index)(e);
-      }}
+      onKeyDown={fromEnter(() => {
+        handleSubmit();
+        next(index);
+      })}
       disabled={isDisabled}
+      error={isError}
     />
   );
 
   const questionSearch = (index: number, isDisabled?: boolean) => (
     <InputSC
+      small
       placeholder="Л/С или ФИО"
       value={values.question}
       onChange={(e) => handleChange(SearchFieldType.Question, e.target.value)}
-      ref={refs[index]}
+      data-reading-input={dataKey}
       onClick={() => {
         clearFields(index);
       }}
-      onKeyDown={(e) => {
-        fromEnter(handleSubmit)(e);
-        keyDownEnterGuardedHandler(index)(e);
-      }}
+      onKeyDown={fromEnter(() => {
+        handleSubmit();
+        next(index);
+      })}
       disabled={isDisabled}
+      error={isError}
     />
   );
 
@@ -154,7 +181,7 @@ export const AddressSearch: FC<AddressSearchProps> = ({
   const searchFields = fields.map((fieldType, index) => {
     const field = fieldsLookup[fieldType](
       index,
-      disabledFields?.includes(fieldType)
+      disabledFields?.includes(fieldType),
     );
 
     return (
@@ -168,7 +195,11 @@ export const AddressSearch: FC<AddressSearchProps> = ({
   });
 
   return (
-    <Wrapper fields={fields} customTemplate={customTemplate}>
+    <Wrapper
+      fields={fields}
+      customTemplate={customTemplate}
+      className={className}
+    >
       {searchFields}
     </Wrapper>
   );

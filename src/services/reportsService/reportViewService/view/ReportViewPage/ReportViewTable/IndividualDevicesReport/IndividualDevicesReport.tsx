@@ -6,20 +6,22 @@ import {
   ResourceWrapper,
 } from './IndividualDevicesReport.styled';
 import { IndividualDevicesReportProps } from './IndividualDevicesReport.types';
-import { ResourceIconLookup } from 'ui-kit/shared_components/ResourceIconLookup';
-import { ResourceShortNamesDictionary } from 'dictionaries';
+import { ResourceIconLookup } from 'ui-kit/shared/ResourceIconLookup';
+import {
+  ClosingReasonsDictionary,
+  ResourceShortNamesDictionary,
+} from 'dictionaries';
 import { Table } from 'ui-kit/Table';
-import { last } from 'lodash';
 import {
   EConstructedReportDeviceStatus,
   EIndividualDeviceReportOption,
-} from 'myApi';
+} from 'api/types';
 import moment from 'moment';
 import { Empty } from 'antd';
+import { getReportElemAddress } from '../ReportViewTable.utils';
 
 export const IndividualDevicesReport: FC<IndividualDevicesReportProps> = ({
   individualDevicesReportData,
-  city,
   reportOption,
 }) => {
   const isDeviceCheckingDateExpirationOption =
@@ -37,15 +39,11 @@ export const IndividualDevicesReport: FC<IndividualDevicesReportProps> = ({
   const isInvalidCheckingDates =
     reportOption === EIndividualDeviceReportOption.InvalidCheckingDates;
 
-  const emptyComponentDescription = individualDevicesReportData
-    ? 'Нет данных'
-    : 'Выберите фильтры для формирования отчета';
-
-  if (!individualDevicesReportData?.length) {
+  if (!individualDevicesReportData) {
     return (
       <Empty
         image={Empty.PRESENTED_IMAGE_SIMPLE}
-        description={emptyComponentDescription}
+        description={'Выберите фильтры для формирования отчета'}
       />
     );
   }
@@ -57,19 +55,12 @@ export const IndividualDevicesReport: FC<IndividualDevicesReportProps> = ({
           label: 'Адрес',
           size: '230px',
           render: (elem) => {
-            const addressSplit = elem.address?.split(' ');
-
-            const apartmentNumber = last(addressSplit);
-
-            const address = addressSplit
-              ?.slice(0, addressSplit.length - 1)
-              .join(' ');
+            const { addressString, number } = getReportElemAddress(elem);
 
             return (
               <div>
-                <ApartmentNumber>Кв. №{apartmentNumber}</ApartmentNumber>
-                {city && `${city}, `}
-                {address}
+                <ApartmentNumber>Кв. №{number}</ApartmentNumber>
+                {addressString}
               </div>
             );
           },
@@ -91,12 +82,12 @@ export const IndividualDevicesReport: FC<IndividualDevicesReportProps> = ({
         },
         {
           label: 'Модель',
-          size: '150px',
+          size: '180px',
           render: (elem) => elem.model,
         },
         {
           label: 'Дата последней поверки',
-          size: '150px',
+          size: '170px',
           hidden: !isDeviceCheckingDateExpirationOption,
           render: (elem) =>
             moment(
@@ -104,8 +95,8 @@ export const IndividualDevicesReport: FC<IndividualDevicesReportProps> = ({
             ).format('DD.MM.YYYY'),
         },
         {
-          label: 'Дата слудующей поверки',
-          size: '150px',
+          label: 'Дата следующей поверки',
+          size: '170px',
           hidden: !isDeviceCheckingDateExpirationOption,
           render: (elem) =>
             moment(
@@ -114,7 +105,7 @@ export const IndividualDevicesReport: FC<IndividualDevicesReportProps> = ({
         },
         {
           label: 'Номер телефона',
-          size: '150px',
+          size: '400px',
           hidden: !isDeviceCheckingDateExpirationOption,
           render: (elem) => (
             <PhoneNumber>
@@ -133,7 +124,9 @@ export const IndividualDevicesReport: FC<IndividualDevicesReportProps> = ({
 
             return Object.values(reading)
               .filter((readingValue) => typeof readingValue === 'number')
-              .map((readingValue, index) => <div key={index}>{readingValue}</div>);
+              .map((readingValue, index) => (
+                <div key={index}>{readingValue}</div>
+              ));
           },
         },
         {
@@ -146,24 +139,6 @@ export const IndividualDevicesReport: FC<IndividualDevicesReportProps> = ({
             ),
         },
         {
-          label: 'Статус',
-          size: '150px',
-          hidden: !isClosedDeviceOption,
-          render: (elem) => (
-            <>
-              {elem.closedDeviceOnOneOfRisersOption?.status ===
-              EConstructedReportDeviceStatus.Open
-                ? 'Открыт'
-                : 'Закрыт'}
-              <ClosingDate>
-                {moment(elem.closedDevicesOption?.closingDate).format(
-                  'DD.MM.YYYY',
-                )}
-              </ClosingDate>
-            </>
-          ),
-        },
-        {
           label: 'Дата поверки',
           size: '150px',
           hidden: !isClosedDeviceOption,
@@ -172,25 +147,36 @@ export const IndividualDevicesReport: FC<IndividualDevicesReportProps> = ({
         },
         {
           label: 'Статус',
-          size: '150px',
+          size: '300px',
           hidden: !isClosedDeviceOption,
-          render: (elem) => (
-            <>
-              {elem.closedDeviceOnOneOfRisersOption?.status ===
+          render: (elem) => {
+            const closingStatus =
+              elem.closedDevicesOption?.status ===
               EConstructedReportDeviceStatus.Open
                 ? 'Открыт'
-                : 'Закрыт'}
-              <ClosingDate>
-                {moment(elem.closedDevicesOption?.closingDate).format(
-                  'DD.MM.YYYY',
-                )}
-              </ClosingDate>
-            </>
-          ),
+                : 'Закрыт';
+
+            const closingReason =
+              elem.closedDevicesOption?.closingReason &&
+              `(${
+                ClosingReasonsDictionary[elem.closedDevicesOption.closingReason]
+              })`;
+
+            const closingDate = moment(
+              elem.closedDevicesOption?.closingDate,
+            ).format('DD.MM.YYYY');
+
+            return (
+              <div>
+                {`${closingStatus} ${closingReason}`}
+                <ClosingDate>{closingDate}</ClosingDate>
+              </div>
+            );
+          },
         },
         {
           label: 'Дата последней поверки',
-          size: '150px',
+          size: '170px',
           hidden: !isInvalidCheckingDates,
           render: (elem) =>
             moment(elem.invalidCheckingDatesOption?.lastCheckingDate).format(
@@ -198,8 +184,8 @@ export const IndividualDevicesReport: FC<IndividualDevicesReportProps> = ({
             ),
         },
         {
-          label: 'Дата слудующей поверки',
-          size: '150px',
+          label: 'Дата следующей поверки',
+          size: '170px',
           hidden: !isInvalidCheckingDates,
           render: (elem) =>
             moment(elem.invalidCheckingDatesOption?.futureCheckingDate).format(
@@ -207,7 +193,8 @@ export const IndividualDevicesReport: FC<IndividualDevicesReportProps> = ({
             ),
         },
       ]}
-      elements={individualDevicesReportData.slice(0, 50)}
+      elements={individualDevicesReportData}
+      pagination={{ pageSize: 50 }}
     />
   );
 };

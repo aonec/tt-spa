@@ -2,6 +2,7 @@ import React, { FC, useEffect, useState } from 'react';
 import { Document, DocumentsUploadContainer } from 'ui-kit/DocumentsService';
 import { DocumentsUploadComponentType } from 'ui-kit/DocumentsService/DocumentsService.types';
 import { AttachDocumentProps } from './AttachDocument.types';
+import { EDocumentType } from 'api/types';
 
 export const AttachDocument: FC<AttachDocumentProps> = ({
   handleDocumentsChange,
@@ -21,6 +22,7 @@ export const AttachDocument: FC<AttachDocumentProps> = ({
       label={componentData.lable}
       componentType={DocumentsUploadComponentType.Line}
       max={componentData.maxDocuments}
+      type={EDocumentType.AdditionalMaterials}
     />
   );
 };

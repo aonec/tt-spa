@@ -1,10 +1,10 @@
 import {
   EApartmentStatus,
   EClosingReason,
-  EExpiresCheckingDateAt,
+  EExpiresDateAt,
   EOrderByRule,
   EResourceType,
-} from 'myApi';
+} from 'api/types';
 
 export type SearchIndividualDevicesParams = {
   City?: string;
@@ -17,7 +17,7 @@ export type SearchIndividualDevicesParams = {
   Resource?: EResourceType | null;
   ApartmentStatus?: EApartmentStatus | null;
   ClosingReason?: EClosingReason | null;
-  ExpiresCheckingDateAt?: EExpiresCheckingDateAt | null;
+  ExpiresCheckingDateAt?: EExpiresDateAt | null;
   IsAlsoClosing?: boolean;
   PageNumber?: number;
   PageSize?: number;

@@ -1,0 +1,1 @@
+export { WorkWithIndividualDeviceSubmitActionForm } from './WorkWithIndividualDeviceSubmitActionForm';

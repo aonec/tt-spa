@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { DatePicker } from 'ui-kit/DatePicker';
 
-export const RangePicker = styled(DatePicker.RangePicker)`
+export const RangePicker = styled(DatePicker.RangePicker)<{ small?: boolean }>`
   border-radius: 4px;
-  height: 48px;
+  width: 100%;
 `;

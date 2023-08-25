@@ -1,6 +1,6 @@
 import moment from 'moment';
-import { ResourceDisconnectingResponse } from 'myApi';
-import { TreeSelectElement } from '../CreateResourceDisconnectionModal/CreateResourceDisconnectionModal.types';
+import { BuildingListResponse, ResourceDisconnectingResponse } from 'api/types';
+import { TreeSelectElement } from 'ui-kit/shared/AddressTreeSelect/AddressTreeSelect.types';
 import { hours } from './CreateResourceDisconnectionForm.constants';
 
 export const getDate = (date: string, hour: string) =>
@@ -17,25 +17,23 @@ export const getAllHousingStocks = (items: TreeSelectElement[]): number[] =>
   }, [] as number[]);
 
 export const getFormValues = (
-  resourceDisconnection: ResourceDisconnectingResponse
+  resourceDisconnection: ResourceDisconnectingResponse,
+  selectedBuilding: BuildingListResponse | null,
 ) => {
-  const {
-    heatingStation,
-    disconnectingType,
-    housingStocks,
-    startDate,
-    endDate,
-  } = resourceDisconnection;
+  const { heatingStation, disconnectingType, buildings, startDate, endDate } =
+    resourceDisconnection;
 
   const heatingStationId = heatingStation?.id;
-  const housingStockIds = (housingStocks || []).map(
-    (housingStock) => housingStock.id
+  const housingStockIds = (buildings || []).map(
+    (housingStock) => housingStock.id,
   );
 
   return {
     ...resourceDisconnection,
     documentId: resourceDisconnection.document?.id || null,
-    housingStockIds,
+    housingStockIds: selectedBuilding
+      ? [...housingStockIds, selectedBuilding.id]
+      : housingStockIds,
     startDate: moment(startDate).format('DD.MM.YYYY'),
     startHour: moment(startDate).format('HH:mm'),
     endDate: endDate ? moment(endDate).format('DD.MM.YYYY') : '',

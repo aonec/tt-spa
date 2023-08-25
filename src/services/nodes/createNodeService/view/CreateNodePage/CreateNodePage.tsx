@@ -1,27 +1,22 @@
-import { PageHeader } from '01/shared/ui/PageHeader';
 import { Steps } from 'antd';
 import React, { FC, ReactNode } from 'react';
-import { GoBack } from 'ui-kit/shared_components/GoBack';
-import { WithLoader } from 'ui-kit/shared_components/WithLoader';
+import { GoBack } from 'ui-kit/shared/GoBack';
+import { WithLoader } from 'ui-kit/shared/WithLoader';
 import { Title } from 'ui-kit/Title';
-import { getHousingStockAddress } from 'utils/getHousingStockAddress';
+import { getBuildingAddress } from 'utils/getBuildingAddress';
 import { CommonData } from './CommonData';
 import { ConnectedDevices } from './ConnectedDevices';
 import { ConnectionSettings } from './ConnectionSettings';
-import {
-  AddressWrapper,
-  HeaderWrapper,
-  Wrapper,
-} from './CreateNodePage.styled';
+import { AddressWrapper, PageHeaderSC, Wrapper } from './CreateNodePage.styled';
 import { CreateNodePageProps } from './CreateNodePage.types';
 import { MountAddress } from './MountAddress';
 
 const { Step } = Steps;
 
 export const CreateNodePage: FC<CreateNodePageProps> = ({
-  housingStock,
+  building,
   existingCities,
-  isLoadingHousingStock,
+  isBuildingLoading,
   existingStreets,
   updateRequestPayload,
   goPrevStep,
@@ -32,12 +27,13 @@ export const CreateNodePage: FC<CreateNodePageProps> = ({
   requestPayload,
   nodeServiceZones,
   openCreateNodeServiceZoneModal,
-  openConfiramtionModal,
+  validateNode,
+  isValidationLoading,
 }) => {
   const stepComponentDictionary: { [key: number]: ReactNode } = {
     0: (
       <MountAddress
-        housingStock={housingStock}
+        building={building}
         existingCities={existingCities}
         existingStreets={existingStreets}
         updateRequestPayload={updateRequestPayload}
@@ -67,7 +63,8 @@ export const CreateNodePage: FC<CreateNodePageProps> = ({
         goPrevStep={goPrevStep}
         requestPayload={requestPayload}
         updateRequestPayload={updateRequestPayload}
-        openConfiramtionModal={openConfiramtionModal}
+        validateNode={validateNode}
+        isValidationLoading={isValidationLoading}
       />
     ),
   };
@@ -75,17 +72,13 @@ export const CreateNodePage: FC<CreateNodePageProps> = ({
   return (
     <div>
       <GoBack />
-      <HeaderWrapper>
-        <PageHeader title="Добавление нового узла" isGhost />
-      </HeaderWrapper>
-      {housingStock && (
-        <AddressWrapper>
-          {getHousingStockAddress(housingStock, true)}
-        </AddressWrapper>
+      <PageHeaderSC title="Добавление нового узла" isGhost />
+      {building && (
+        <AddressWrapper>{getBuildingAddress(building, true)}</AddressWrapper>
       )}
       <Wrapper>
         <div>
-          <WithLoader isLoading={isLoadingHousingStock}>
+          <WithLoader isLoading={isBuildingLoading}>
             {stepComponentDictionary[stepNumber]}
           </WithLoader>
         </div>

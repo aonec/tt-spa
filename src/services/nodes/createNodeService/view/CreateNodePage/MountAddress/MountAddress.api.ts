@@ -1,12 +1,14 @@
-import { getHousuingStocks } from 'services/objects/displayObjectsListService/displayObjectsListService.api';
 import { GetHousingStocksRequestPayload } from 'services/objects/displayObjectsListService/displayObjectsListService.types';
+import { axios } from 'api/axios';
+import { BuildingListResponsePagedList } from 'api/types';
 
-export const getHousingStock = async (
-  values: GetHousingStocksRequestPayload
-) => {
-  const housingStocks = await getHousuingStocks(values);
+export const getBuilding = async (params: GetHousingStocksRequestPayload) => {
+  const buildings: BuildingListResponsePagedList = await axios.get(
+    'Buildings',
+    { params },
+  );
 
-  const housingStock = housingStocks.items?.[0];
+  const building = buildings.items?.[0];
 
-  return housingStock || null;
+  return building || null;
 };

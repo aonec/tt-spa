@@ -1,8 +1,8 @@
 import { combine, createDomain, forward, guard, sample } from 'effector';
 import {
   HouseManagementResponse,
-  StreetWithHousingStockNumbersResponsePagedList,
-} from 'myApi';
+  StreetWithBuildingNumbersResponsePagedList,
+} from 'api/types';
 import {
   getAdresses,
   getHouseManagements,
@@ -13,10 +13,10 @@ import {
   GetHouseManagementsRequestPayload,
   SoiReportType,
 } from './soiReportService.types';
-import { $existingCities } from '01/features/housingStocks/displayHousingStockCities/models';
-import { EffectFailDataAxiosError } from 'types';
+import { BlobResponseErrorType } from 'types';
 import { message } from 'antd';
-import { GetAddressesWithCityRequestPayload } from '01/features/settings/uniqueWorkingRangeService/uniqueWorkingRangeService.types';
+import { GetAddressesWithCityRequestPayload } from 'services/workingRanges/uniqueWorkingRangeService/uniqueWorkingRangeService.types';
+import { addressSearchService } from 'services/addressSearchService/addressSearchService.models';
 
 const domain = createDomain('soiReportService');
 
@@ -33,17 +33,17 @@ const fetchHouseManagementFx = domain.createEffect<
 
 const fetchAdressesFx = domain.createEffect<
   GetAddressesWithCityRequestPayload,
-  StreetWithHousingStockNumbersResponsePagedList
+  StreetWithBuildingNumbersResponsePagedList
 >(getAdresses);
 
 const createSoiReportFx = domain.createEffect<
   CreateSoiReportRequestPayload,
   void,
-  EffectFailDataAxiosError
+  BlobResponseErrorType
 >(getSoiReport);
 
 const $addressesPagedList = domain
-  .createStore<StreetWithHousingStockNumbersResponsePagedList | null>(null)
+  .createStore<StreetWithBuildingNumbersResponsePagedList | null>(null)
   .on(fetchAdressesFx.doneData, (_, data) => data)
   .reset(closeSoiReportModal);
 
@@ -98,9 +98,16 @@ forward({
   to: createSoiReportFx,
 });
 
-createSoiReportFx.failData.watch((e) =>
-  message.error(e.response.data.error.Text),
-);
+createSoiReportFx.failData.watch(async (error) => {
+  const jsonData = await error.response.data.text();
+  const errObject = JSON.parse(jsonData);
+
+  return message.error(
+    errObject.error.Text ||
+      errObject.error.Message ||
+      'Невозможно выгрузить отчёт',
+  );
+});
 
 const $isCreateReportLoading = createSoiReportFx.pending;
 
@@ -116,7 +123,7 @@ export const soiReportService = {
     $isModalOpen,
     $soiReportType,
     $houseManagements,
-    $existingCities,
+    $existingCities: addressSearchService.outputs.$existingCities,
     $selectedCity,
     $addressesPagedList,
     $isCreateReportLoading,

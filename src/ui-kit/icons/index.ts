@@ -43,7 +43,6 @@ import { ReactComponent as PreparedForDeliveryIcon } from './svg/preparedForDeli
 import { ReactComponent as PendingApprovalIcon } from './svg/pendingApproval.svg';
 import { ReactComponent as RegisteredIcon } from './svg/registered.svg';
 import { ReactComponent as TelegramIcon } from './svg/telegram.svg';
-import { ReactComponent as FallbackGraphIcon } from './svg/fallbackGraph.svg';
 import { ReactComponent as SearchIcon } from './svg/search.svg';
 import { ReactComponent as ListIcon } from './svg/list.svg';
 import { ReactComponent as CellsIcon } from './svg/cells.svg';
@@ -64,6 +63,29 @@ import { ReactComponent as PipeIcon } from './svg/pipe.svg';
 import { ReactComponent as BriefcaseIcon } from './svg/briefcase.svg';
 import { ReactComponent as HouseIcon } from './svg/house.svg';
 import { ReactComponent as IncorrectConfigurationIcon } from './svg/incorrectConfiguration.svg';
+import { ReactComponent as ActiveFiltersIcon } from './svg/activeFilters.svg';
+import { ReactComponent as ChevronBoldIcon } from './svg/chevronBold.svg';
+import { ReactComponent as CheckConnection } from './svg/checkConnection.svg';
+import { ReactComponent as SortingIcon } from './svg/sorting.svg';
+import { ReactComponent as PlusIcon } from './svg/plus.svg';
+import { ReactComponent as ApartmentIcon } from './svg/apartment.svg';
+import { ReactComponent as PencilBigIcon } from './svg/pencilBig.svg';
+import { ReactComponent as WrenchIcon } from './svg/wrench.svg';
+import { ReactComponent as CheckMark } from './svg/checkMark.svg';
+import { ReactComponent as PlusSmallIcon } from './svg/plusSmall.svg';
+import { ReactComponent as FileIcon } from './svg/file.svg';
+import { ReactComponent as DownloadBlueIcon } from './svg/downloadBlue.svg';
+import { ReactComponent as DocumentLargeIcon } from './svg/documentLarge.svg';
+import { ReactComponent as ErcIcon } from './svg/erc.svg';
+import { ReactComponent as GosUslugiIcon } from './svg/gosuslugi.svg';
+import { ReactComponent as BankIcon } from './svg/bank.svg';
+import { ReactComponent as ArchiveIcon } from './svg/archive.svg';
+import { ReactComponent as ArrowIconTop } from './svg/arrow.svg';
+import { ReactComponent as ArrowBottom } from './svg/arrowBottom.svg';
+import { ReactComponent as FilterIcon } from './svg/filterIcon.svg';
+import { ReactComponent as FilterIconBlue } from './svg/filterIconBlue.svg';
+import { ReactComponent as FilterIconTransparent } from './svg/filterIconTransparent.svg';
+import { ReactComponent as MapPaperIcon } from './svg/mapPaper.svg';
 
 export {
   FinishIcon,
@@ -111,7 +133,6 @@ export {
   PendingApprovalIcon,
   RegisteredIcon,
   TelegramIcon,
-  FallbackGraphIcon,
   CellsIcon,
   PauseIcon,
   ListIcon,
@@ -132,4 +153,27 @@ export {
   HouseIcon,
   BriefcaseIcon,
   IncorrectConfigurationIcon,
+  ActiveFiltersIcon,
+  CheckConnection,
+  ChevronBoldIcon,
+  SortingIcon,
+  PlusIcon,
+  ApartmentIcon,
+  PencilBigIcon,
+  WrenchIcon,
+  CheckMark,
+  PlusSmallIcon,
+  FileIcon,
+  DownloadBlueIcon,
+  DocumentLargeIcon,
+  ErcIcon,
+  GosUslugiIcon,
+  BankIcon,
+  ArchiveIcon,
+  ArrowIconTop,
+  ArrowBottom,
+  FilterIcon,
+  FilterIconBlue,
+  FilterIconTransparent,
+  MapPaperIcon,
 };

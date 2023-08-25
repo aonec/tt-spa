@@ -6,7 +6,7 @@ export const Wrapper = styled.div<{
   segmentName: ResourceAccountingSystemsSegment;
 }>`
   height: 60px;
-  padding: 0 25px;
+  padding: 0 24px;
   display: grid;
   grid-gap: 15px;
   grid-template-columns: ${({ segmentName }) =>
@@ -35,11 +35,22 @@ export const NodeName = styled.div`
   }
 `;
 
+export const ZoneWrapper = styled.div`
+  max-width: 90px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+`;
+
 export const NodeServiceZone = styled.div<{ isZoneExist: boolean }>`
+  display: flex;
+  align-items: center;
+
   margin-top: 2px;
   font-weight: 400;
   font-size: 12px;
   line-height: 16px;
+  gap: 4px;
   color: rgba(
     39,
     47,
@@ -67,7 +78,7 @@ export const BaseNodeInfo = styled.div`
   align-items: center;
   justify-content: space-between;
   min-width: 120px;
-  max-width: 120px;
+  max-width: 160px;
 `;
 
 export const NodeInfo = styled.div`
@@ -76,6 +87,7 @@ export const NodeInfo = styled.div`
 
 export const DeviceIconWrapper = styled.div`
   cursor: pointer;
+  margin-left: 16px;
 
   svg {
     width: 21px;

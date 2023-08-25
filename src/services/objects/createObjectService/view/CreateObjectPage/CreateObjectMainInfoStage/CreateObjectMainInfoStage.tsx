@@ -1,29 +1,24 @@
-import { SpaceLine } from '01/shared/ui/Layout/Space/Space';
-import React, { FC, useEffect } from 'react';
+import { SpaceLine } from 'ui-kit/SpaceLine';
+import React, { FC, useEffect, useMemo } from 'react';
 import { Button } from 'ui-kit/Button';
 import { FormItem } from 'ui-kit/FormItem';
 import { Select } from 'ui-kit/Select';
 import { PageTitle } from '../CreateObjectPage.styled';
 import {
   ButtonPadding,
-  FlexEnd,
-  FlexStart,
   Footer,
   GridContainer,
-  InputTypeDisplayingDiv,
-  PencilIconSC,
   RightButtonBlock,
   Title,
-  Wrapper,
   WrapperLinkButton,
-  CloseIconSC,
+  ButtonSC,
 } from './CreateObjectMainInfoStage.styled';
 import {
   CreateObjectMainInfoStageProps,
   ObjectMainInfoValues,
 } from './CreateObjectMainInfoStage.types';
 import { useFormik } from 'formik';
-import { ErrorMessage } from '01/shared/ui/ErrorMessage';
+import { ErrorMessage } from 'ui-kit/ErrorMessage';
 import {
   HouseCategoryDictionary,
   LivingHouseTypeDictionary,
@@ -35,11 +30,12 @@ import {
   EHouseCategory,
   ELivingHouseType,
   ENonResidentialHouseType,
-} from 'myApi';
+} from 'api/types';
 import { sortBy } from 'lodash';
-import { LinkButton } from 'ui-kit/shared_components/LinkButton';
+import { LinkButton } from 'ui-kit/shared/LinkButton';
 import { createHeatingStationService } from 'services/objects/heatingStations/createHeatingStationService';
 import { editHeatingStationService } from 'services/objects/heatingStations/editHeatingStationService';
+import { SelectedEntityPanel } from 'ui-kit/shared/SelectedEntityPanel';
 
 const {
   inputs: { handleHeatingStationCreated },
@@ -47,6 +43,7 @@ const {
 const {
   inputs: { handleHeatingStationEdited },
 } = editHeatingStationService;
+const withoutHouseMagement = 'withoutHouseMagement';
 
 export const CreateObjectMainInfoStage: FC<CreateObjectMainInfoStageProps> = ({
   houseManagements,
@@ -64,13 +61,19 @@ export const CreateObjectMainInfoStage: FC<CreateObjectMainInfoStageProps> = ({
 
   const heatingStationsValues = heatingStations?.items;
 
-  const initialValues = {
-    houseManagement: createObjectData?.houseManagement || null,
-    objectCategory: createObjectData?.objectCategory || null,
-    livingHouseType: createObjectData?.livingHouseType || null,
-    nonResidentialHouseType: createObjectData?.nonResidentialHouseType || null,
-    heatingStationId: createObjectData?.heatingStationId || null,
-  };
+  const initialValues = useMemo(
+    () => ({
+      houseManagement: createObjectData?.houseManagement || null,
+      objectCategory: createObjectData?.objectCategory || null,
+      livingHouseType: createObjectData?.livingHouseType || null,
+      nonResidentialHouseType:
+        createObjectData?.nonResidentialHouseType || null,
+      heatingStationId: createObjectData?.heatingStationId || null,
+      hasIndividualHeatingStation:
+        createObjectData?.hasIndividualHeatingStation || false,
+    }),
+    [createObjectData],
+  );
 
   const { values, handleSubmit, setFieldValue, errors } =
     useFormik<ObjectMainInfoValues>({
@@ -98,38 +101,15 @@ export const CreateObjectMainInfoStage: FC<CreateObjectMainInfoStageProps> = ({
     [setFieldValue],
   );
 
-  const selectedHeatingStation = heatingStations?.items?.find(
+  const selectedHeatingStation = heatingStationsValues?.find(
     (station) => station.id === values.heatingStationId,
   );
 
   return (
     <>
       <HeatingStationsFetchGate />
-      <Wrapper>
+      <>
         <PageTitle>Основная информация </PageTitle>
-
-        <FormItem label="Домоуправления">
-          <Select
-            placeholder="Выберите из списка"
-            onChange={(value) => setFieldValue('houseManagement', value)}
-            value={values.houseManagement || undefined}
-          >
-            {houseManagements?.map(
-              (houseManagement) =>
-                houseManagement.name && (
-                  <Select.Option
-                    value={houseManagement.id}
-                    key={houseManagement.id}
-                  >
-                    {houseManagement.name}
-                  </Select.Option>
-                ),
-            )}
-          </Select>
-          <ErrorMessage>{errors.houseManagement}</ErrorMessage>
-        </FormItem>
-
-        <SpaceLine />
 
         <GridContainer>
           <FormItem label="Категория объекта">
@@ -193,6 +173,44 @@ export const CreateObjectMainInfoStage: FC<CreateObjectMainInfoStageProps> = ({
           </FormItem>
         </GridContainer>
 
+        {values.objectCategory === EHouseCategory.Living && (
+          <>
+            <SpaceLine />
+            <FormItem label="Домоуправления">
+              <Select
+                placeholder="Выберите из списка"
+                onChange={(value) => {
+                  if (value === withoutHouseMagement) {
+                    return setFieldValue('houseManagement', null);
+                  }
+                  setFieldValue('houseManagement', value);
+                }}
+                value={
+                  values.houseManagement === null
+                    ? withoutHouseMagement
+                    : values.houseManagement || undefined
+                }
+              >
+                <Select.Option value={withoutHouseMagement}>
+                  Без домоуправления
+                </Select.Option>
+                {houseManagements?.map(
+                  (houseManagement) =>
+                    houseManagement.name && (
+                      <Select.Option
+                        value={houseManagement.id}
+                        key={houseManagement.id}
+                      >
+                        {houseManagement.name}
+                      </Select.Option>
+                    ),
+                )}
+              </Select>
+              <ErrorMessage>{errors.houseManagement}</ErrorMessage>
+            </FormItem>
+          </>
+        )}
+
         <SpaceLine />
 
         {!values.heatingStationId && (
@@ -229,27 +247,33 @@ export const CreateObjectMainInfoStage: FC<CreateObjectMainInfoStageProps> = ({
 
         {values.heatingStationId && (
           <FormItem label="Тепловой пункт">
-            <InputTypeDisplayingDiv>
-              <FlexStart>
-                <Title>{selectedHeatingStation?.name}</Title>
-              </FlexStart>
-              <FlexEnd>
-                <PencilIconSC
-                  onClick={() => {
-                    openEditHeatingStationModal();
-                    selectedHeatingStation &&
-                      heatingStationCapture(selectedHeatingStation);
-                  }}
-                />
-                <CloseIconSC
-                  onClick={() => {
-                    setFieldValue('heatingStationId', null);
-                  }}
-                />
-              </FlexEnd>
-            </InputTypeDisplayingDiv>
+            <SelectedEntityPanel
+              children={<Title>{selectedHeatingStation?.name}</Title>}
+              onEdit={() => {
+                openEditHeatingStationModal();
+                selectedHeatingStation &&
+                  heatingStationCapture(selectedHeatingStation);
+              }}
+              onRemove={() => {
+                setFieldValue('heatingStationId', null);
+              }}
+            />
           </FormItem>
         )}
+        <GridContainer>
+          <FormItem label="Индивидуальный тепловой пункт">
+            <Select
+              placeholder="Выберите из списка"
+              onChange={(value) =>
+                setFieldValue('hasIndividualHeatingStation', Boolean(value))
+              }
+              value={values.hasIndividualHeatingStation ? 1 : 0}
+            >
+              <Select.Option value={1}>Есть</Select.Option>
+              <Select.Option value={0}>Нет</Select.Option>
+            </Select>
+          </FormItem>
+        </GridContainer>
 
         <Footer>
           <Button type="ghost" onClick={() => goBackStage()}>
@@ -261,12 +285,10 @@ export const CreateObjectMainInfoStage: FC<CreateObjectMainInfoStageProps> = ({
                 Отмена
               </Button>
             </ButtonPadding>
-            <Button sidePadding={25} onClick={() => handleSubmit()}>
-              Далее
-            </Button>
+            <ButtonSC onClick={() => handleSubmit()}>Далее</ButtonSC>
           </RightButtonBlock>
         </Footer>
-      </Wrapper>
+      </>
     </>
   );
 };

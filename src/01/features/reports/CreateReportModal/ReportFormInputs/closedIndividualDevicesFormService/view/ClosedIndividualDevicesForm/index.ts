@@ -1,1 +1,0 @@
-export { ClosedIndividualDevicesForm } from './ClosedIndividualDevicesForm'

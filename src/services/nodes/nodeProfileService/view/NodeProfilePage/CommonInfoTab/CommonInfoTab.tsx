@@ -1,15 +1,15 @@
-import React, { FC } from 'react';
+import React, { FC, useMemo } from 'react';
 import moment from 'moment';
 import { NodeStatusIconsDictionary } from 'services/devices/resourceAccountingSystemsService/view/ResourceAccountingSystems/NodesGroup/NodeItem/NodeStatus/NodeStatus.constants';
-import { CommonInfo } from 'ui-kit/shared_components/CommonInfo';
-import { getHousingStockAddress } from 'utils/getHousingStockAddress';
+import { CommonInfo } from 'ui-kit/shared/CommonInfo';
+import { getBuildingAddress } from 'utils/getBuildingAddress';
 import { AddressWrapper, NodeStatusWrapper } from './CommonInfoTab.styled';
 import { CommonInfoTabProps } from './CommonInfoTab.types';
 import { additionalAddressesString } from 'utils/additionalAddressesString';
 import { Tooltip } from 'antd';
-import { NodeRegistrationTypeLookup } from './CommonInfoTab.constants';
-import { ENodeRegistrationType } from 'myApi';
+import { EHouseCategory, ENodeRegistrationType } from 'api/types';
 import { configNamesLookup } from 'utils/configNamesLookup';
+import { NodeRegistrationTypeLookup } from 'dictionaries';
 
 export const CommonInfoTab: FC<CommonInfoTabProps> = ({ pipeNode }) => {
   const NodeStatusIcon =
@@ -20,19 +20,34 @@ export const CommonInfoTab: FC<CommonInfoTabProps> = ({ pipeNode }) => {
   const isNodeCommercial =
     pipeNode.registrationType === ENodeRegistrationType.Commercial;
 
+  const buildingProfilePath = useMemo(() => {
+    if (pipeNode?.address?.houseCategory === EHouseCategory.Living) {
+      return 'livingProfile';
+    }
+    return 'nonResidentialProfile';
+  }, [pipeNode]);
+
+  const addressComponent = (() => {
+    if (!pipeNode.address) {
+      return '-';
+    }
+    return (
+      <Tooltip title={additionalAdress}>
+        <AddressWrapper
+          to={`/buildings/${buildingProfilePath}/${pipeNode.address.id}`}
+        >
+          {getBuildingAddress(pipeNode.address, true)}
+        </AddressWrapper>
+      </Tooltip>
+    );
+  })();
+
   return (
     <CommonInfo
       items={[
         {
           key: 'Адрес',
-          value: (
-            <Tooltip title={additionalAdress}>
-              <AddressWrapper to={`/objects/profile/${pipeNode?.address?.id}`}>
-                {pipeNode?.address &&
-                  getHousingStockAddress(pipeNode?.address, true)}
-              </AddressWrapper>
-            </Tooltip>
-          ),
+          value: addressComponent,
         },
         {
           key: 'Зона',
@@ -73,7 +88,7 @@ export const CommonInfoTab: FC<CommonInfoTabProps> = ({ pipeNode }) => {
           value:
             pipeNode?.futureCommercialAccountingDate &&
             moment(pipeNode?.futureCommercialAccountingDate).format(
-              'DD.MM.YYYY'
+              'DD.MM.YYYY',
             ),
         },
       ]}

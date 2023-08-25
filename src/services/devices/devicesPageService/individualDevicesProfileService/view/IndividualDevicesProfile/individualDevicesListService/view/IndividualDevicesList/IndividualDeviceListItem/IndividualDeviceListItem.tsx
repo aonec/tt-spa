@@ -3,8 +3,9 @@ import moment from 'moment';
 import React, { FC, useCallback } from 'react';
 import { useHistory } from 'react-router-dom';
 import { SearchIcon } from 'ui-kit/icons';
-import { DeviceStatus } from 'ui-kit/shared_components/IndividualDeviceInfo/DeviceStatus';
-import { IndividualDeviceInfoShort } from 'ui-kit/shared_components/IndividualDeviceInfoShort';
+import { DeviceStatus } from 'ui-kit/shared/IndividualDeviceInfo/DeviceStatus';
+import { IndividualDeviceInfoShort } from 'ui-kit/shared/IndividualDeviceInfoShort';
+import { IndividualDeviceConsumptionGraph } from '../IndividualDeviceConsumptionGraph';
 import {
   Consumption,
   ConsumptionDate,
@@ -15,17 +16,23 @@ import {
   Wrapper,
 } from './IndividualDeviceListItem.styled';
 import { IndividualDeviceListItemProps } from './IndividualDeviceListItem.types';
+import { Loader } from 'ui-kit/Loader';
 
 export const IndividualDeviceListItem: FC<IndividualDeviceListItemProps> = ({
   device,
   apartmentId,
+  consumptionData,
+  isConsumptionsLoading,
 }) => {
   const history = useHistory();
 
   const handleClickDevice = useCallback(
-    () => history.push(`/apartments/${apartmentId}`),
-    [history, apartmentId],
+    (id: number) => history.push(`/individualDeviceProfile/${id}`),
+    [history],
   );
+
+  const isConsumptionExist =
+    consumptionData.filter((elem) => Boolean(elem.consumption)).length !== 0;
 
   return (
     <Wrapper>
@@ -52,10 +59,20 @@ export const IndividualDeviceListItem: FC<IndividualDeviceListItemProps> = ({
           {moment(device.consumption?.readingDate).format('DD.MM.YYYY')}
         </ConsumptionDate>
       </div>
-      <NoData>
-        <SearchIcon />
-        <NoDataText>Нет данных</NoDataText>
-      </NoData>
+      <Loader show={isConsumptionsLoading} size={20}>
+        {isConsumptionExist && (
+          <IndividualDeviceConsumptionGraph
+            resource={device.resource}
+            data={consumptionData}
+          />
+        )}
+        {!isConsumptionExist && (
+          <NoData>
+            <SearchIcon />
+            <NoDataText>Недостаточно данных</NoDataText>
+          </NoData>
+        )}
+      </Loader>
     </Wrapper>
   );
 };

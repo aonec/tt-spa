@@ -1,9 +1,10 @@
+import { PageHeader } from 'ui-kit/shared/PageHeader';
 import styled from 'styled-components';
 
 export const Wrapper = styled.div`
-  margin-top: 36px;
+  margin-top: 16px;
   display: grid;
-  width: 950px;
+  width: 1000px;
   grid-template-columns: 1fr 0.5fr;
   grid-gap: 32px;
 `;
@@ -16,12 +17,11 @@ export const Footer = styled.div`
 `;
 
 export const AddressWrapper = styled.div`
-  margin: 16px 0;
   color: #272f5ae5;
   font-weight: 500;
   font-size: 14px;
 `;
 
-export const HeaderWrapper = styled.div`
-  padding: 25px 0 5px;
+export const PageHeaderSC = styled(PageHeader)`
+  margin-top: 16px;
 `;

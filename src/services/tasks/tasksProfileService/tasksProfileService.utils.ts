@@ -6,12 +6,13 @@ import {
   HousingStockResponse,
   TaskListResponse,
   TaskResponse,
-} from 'myApi';
-import { TimerClosingStatus } from 'ui-kit/shared_components/Timer/Timer.types';
+} from 'api/types';
+import { Timeline } from 'ui-kit/shared/TimeLine/TimeLine.types';
+import { TimerClosingStatus } from 'ui-kit/shared/Timer/Timer.types';
 import { getTimeStringByUTC } from 'utils/getTimeStringByUTC';
 
 export const getAddressObject = (
-  object: HousingStockListResponse | HousingStockResponse | null,
+  object: HousingStockResponse | HousingStockListResponse | null,
 ) => {
   const address = object?.address?.mainAddress;
   const City = address?.city || '';
@@ -37,7 +38,9 @@ export const prepareData = (tasks: TaskListResponse[], grouptype: string) =>
     showExecutor: grouptype === 'Observing',
   }));
 
-export const createTimeline = (task: TaskListResponse | TaskResponse) => {
+export const createTimeline = (
+  task: TaskListResponse | TaskResponse,
+): Timeline | null => {
   const { closingTime, expectedCompletionTime, currentStage } = task;
 
   if (closingTime) return null;
@@ -80,7 +83,7 @@ export const createTimer = (task: TaskListResponse | TaskResponse) => {
         isFailed,
         deadlineDate: `(до ${new Date(ext!).toLocaleDateString()})`,
       },
-      statusDescription: 'Время на этап:',
+      statusDescription: isFailed ? 'Этап просрочен:' : 'Время на этап:',
       icon: 'timer',
     };
   }
@@ -110,7 +113,7 @@ export const createTimer = (task: TaskListResponse | TaskResponse) => {
       stage: null,
       diffTime: diffTimeStr,
       icon: 'redTimer',
-      statusDescription: 'Просрочена на',
+      statusDescription: 'Просрочена на:',
       closingStatus: TimerClosingStatus.Overdue,
     };
   }
@@ -147,6 +150,17 @@ const ColorLookup = {
   [EStageTimeStatus.Expired]: 'var(--error)',
 };
 
-export const prepareQueryStringParam = (param: string | string[] | null) => {
-  return Array.isArray(param) ? param[0] : param;
+export const getAcceptableSearchParams = () => {
+  const { searchParams } = new URL(window.location.href);
+
+  const params = {
+    apartmentId: searchParams.get('apartmentId'),
+    housingStockId: searchParams.get('housingStockId'),
+    pipeNodeId: searchParams.get('pipeNodeId'),
+    deviceId:
+      searchParams.get('calculatorId') ||
+      searchParams.get('housingMeteringDeviceId'),
+  };
+
+  return params;
 };

@@ -1,8 +1,11 @@
-import { CheckDeviceRequest, PipeHousingMeteringDeviceResponse } from 'myApi';
+import {
+  CheckDeviceRequest,
+  PipeHousingMeteringDeviceResponse,
+} from 'api/types';
 
 export type CheckHousingMeteringDeviceModalProps = {
   isModalOpen: boolean;
   handleModalClose: () => void;
   housingMeteringDevice: PipeHousingMeteringDeviceResponse | null;
-  handleOnSubmit: (payload: CheckDeviceRequest) => void
+  handleOnSubmit: (payload: CheckDeviceRequest) => void;
 };

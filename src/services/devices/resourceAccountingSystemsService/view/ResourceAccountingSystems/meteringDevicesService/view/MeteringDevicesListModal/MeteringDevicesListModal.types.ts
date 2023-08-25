@@ -1,4 +1,8 @@
-import { NodeOnHousingStockResponse, PipeNodeIntoCalculatorResponse, PipeNodeMeteringDeviceResponse } from 'myApi';
+import {
+  NodeOnHousingStockResponse,
+  PipeNodeIntoCalculatorResponse,
+  PipeNodeMeteringDeviceResponse,
+} from 'api/types';
 
 export type MeteringDevicesListModalProps = {
   isModalOpen: boolean;

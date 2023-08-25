@@ -4,14 +4,14 @@ import {
   ELivingHouseType,
   ENonResidentialHouseType,
   EOrderByRule,
-} from 'myApi';
+} from 'api/types';
 import { AddressSearchValues } from 'services/addressSearchService/view/AddressSearch/AddressSearch.types';
 
 export type GetHousingStocksRequestPayload = {
   OrderRule?: EHousingStockOrderRule;
   City?: string;
   Street?: string;
-  HousingStockNumber?: string;
+  BuildingNumber?: string;
   Corpus?: string;
   HouseCategory?: EHouseCategory;
   HouseManagementId?: string;

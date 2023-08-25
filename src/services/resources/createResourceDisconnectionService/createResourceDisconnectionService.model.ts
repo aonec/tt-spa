@@ -1,26 +1,27 @@
-import { $existingCities } from '01/features/housingStocks/displayHousingStockCities/models';
-import { resourceDisablingScheduleServiceService } from '01/features/settings/resourcesDisablingScheduleService/ResourceDisablingScheduleService.model';
+import { resourceDisablingScheduleServiceService } from 'services/settings/resourcesDisablingScheduleService/ResourceDisablingScheduleService.model';
 import { message } from 'antd';
 import { combine, createDomain, forward, sample, split } from 'effector';
 import {
   ResourceDisconnectingCreateRequest,
-  StreetWithHousingStockNumbersResponsePagedList,
-  StreetWithHousingStockNumbersResponse,
+  StreetWithBuildingNumbersResponsePagedList,
+  StreetWithBuildingNumbersResponse,
   EResourceDisconnectingType,
   HeatingStationWithStreetsResponse,
   HouseManagementWithStreetsResponse,
-} from 'myApi';
+  BuildingListResponse,
+} from 'api/types';
 import { EffectFailDataAxiosError } from 'types';
 import { chooseTypeOfResourceDisconnectionModalService } from '../chooseTypeOfResourceDisconnectionModalService/chooseTypeOfResourceDisconnectionModalService.model';
 import { editResourceDisconnectionService } from '../editResourceDisconnectionService';
 import { resourceDisconnectionFiltersService } from '../resourceDisconnectionFiltersService';
 import {
   fetchCreateResourceDisconnection,
-  fetchExistingHousingStocks,
-  fetchExistingHousingStocksWithHeatingStation,
-  fetchExistingHousingStocksWithHouseManagement,
+  fetchExistingBuildings,
+  fetchExistingBuildingsWithHeatingStation,
+  fetchExistingBuildingsWithHouseManagement,
 } from './createResourceDisconnectionService.api';
 import { EAddressDetails } from './createResourceDisconnectionService.types';
+import { addressSearchService } from 'services/addressSearchService/addressSearchService.models';
 
 const domain = createDomain('createResourceDisconnectionService');
 
@@ -53,6 +54,14 @@ const closeModal = domain.createEvent();
 const clearHousingStocks = domain.createEvent();
 const clearTypeOfAddress = domain.createEvent();
 
+const $selectedBuilding = domain
+  .createStore<BuildingListResponse | null>(null)
+  .on(
+    chooseTypeOfResourceDisconnectionModalService.inputs.openModal,
+    (_, Building) => Building || null,
+  )
+  .reset(closeModal);
+
 const $isModalOpen = domain
   .createStore(false)
   .on(openModal, () => true)
@@ -69,17 +78,26 @@ const selectCity = domain.createEvent<string>();
 const $selectedCity = domain
   .createStore<string | null>(null)
   .on(selectCity, (_, city) => city)
+  .on(
+    chooseTypeOfResourceDisconnectionModalService.inputs.openModal,
+    (prev, building) => {
+      if (!building) return prev;
+
+      return building.address?.mainAddress?.city || prev;
+    },
+  )
   .reset(closeModal);
 
-const getExistingHousingStocksFx = domain.createEffect<
+const getBuildings = domain.createEvent();
+const getExistingBuildingsFx = domain.createEffect<
   string,
-  StreetWithHousingStockNumbersResponsePagedList
->(fetchExistingHousingStocks);
+  StreetWithBuildingNumbersResponsePagedList
+>(fetchExistingBuildings);
 
-const $existingHousingStocks = domain
-  .createStore<StreetWithHousingStockNumbersResponse[]>([])
+const $existingBuildings = domain
+  .createStore<StreetWithBuildingNumbersResponse[]>([])
   .on(
-    getExistingHousingStocksFx.doneData,
+    getExistingBuildingsFx.doneData,
     (_, housingStocks) => housingStocks.items || [],
   )
   .reset(clearHousingStocks);
@@ -87,9 +105,9 @@ const $existingHousingStocks = domain
 const getHeatingStationFx = domain.createEffect<
   void,
   HeatingStationWithStreetsResponse[]
->(fetchExistingHousingStocksWithHeatingStation);
+>(fetchExistingBuildingsWithHeatingStation);
 
-const $housingStockWithHeatingStations = domain
+const $buildingWithHeatingStations = domain
   .createStore<HeatingStationWithStreetsResponse[]>([])
   .on(getHeatingStationFx.doneData, (_, housingStocks) => housingStocks)
   .reset(clearHousingStocks);
@@ -97,9 +115,9 @@ const $housingStockWithHeatingStations = domain
 const getHouseManagementsFx = domain.createEffect<
   void,
   HouseManagementWithStreetsResponse[]
->(fetchExistingHousingStocksWithHouseManagement);
+>(fetchExistingBuildingsWithHouseManagement);
 
-const $housingStockWithHouseManagements = domain
+const $buildingWithHouseManagements = domain
   .createStore<HouseManagementWithStreetsResponse[]>([])
   .on(getHouseManagementsFx.doneData, (_, housingStocks) => housingStocks)
   .reset(clearHousingStocks);
@@ -107,7 +125,7 @@ const $housingStockWithHouseManagements = domain
 const $isHousingStocksLoading = combine(
   getHouseManagementsFx.pending,
   getHeatingStationFx.pending,
-  getExistingHousingStocksFx.pending,
+  getExistingBuildingsFx.pending,
   (...isLoading) => isLoading.includes(true),
 );
 
@@ -119,14 +137,25 @@ const createResourceDisconnectionFx = domain.createEffect<
   EffectFailDataAxiosError
 >(fetchCreateResourceDisconnection);
 
-forward({
-  from: setTypeOfAddress,
-  to: clearHousingStocks,
+sample({
+  clock: setTypeOfAddress,
+  target: clearHousingStocks,
 });
 
-forward({
-  from: editResourceDisconnectionService.inputs.openEditModal,
-  to: openModal,
+sample({
+  clock: editResourceDisconnectionService.inputs.openEditModal,
+  fn: () => undefined,
+  target: openModal,
+});
+
+sample({
+  clock: sample({
+    clock: editResourceDisconnectionService.outputs.$resourceDisconnection,
+    fn: (disconnection) =>
+      (disconnection?.buildings || [])[0]?.address?.mainAddress?.city || null,
+  }),
+  filter: Boolean,
+  target: selectCity,
 });
 
 forward({
@@ -145,14 +174,16 @@ forward({
 });
 
 sample({
-  clock: $selectedCity,
+  source: $selectedCity,
+  clock: [$selectedCity, getBuildings],
   filter: Boolean,
-  target: getExistingHousingStocksFx,
+  fn: (city) => city,
+  target: getExistingBuildingsFx,
 });
 
 sample({
   source: sample({
-    source: $existingCities,
+    source: addressSearchService.outputs.$existingCities,
     filter: (cities): cities is string[] =>
       Boolean(cities && cities.length === 1),
   }),
@@ -171,7 +202,7 @@ split({
       type === EAddressDetails.HouseManagements,
   },
   cases: {
-    [EAddressDetails.All]: getExistingHousingStocksFx,
+    [EAddressDetails.All]: getBuildings,
     [EAddressDetails.HeatingStation]: getHeatingStationFx,
     [EAddressDetails.HouseManagements]: getHouseManagementsFx,
   },
@@ -183,9 +214,13 @@ forward({
     .refetchResourceDisconnections,
 });
 
-createResourceDisconnectionFx.failData.watch((error) =>
-  message.error(error.response.data.error.Text),
-);
+createResourceDisconnectionFx.failData.watch((error) => {
+  return message.error(
+    error.response.data.error.Text ||
+      error.response.data.error.Message ||
+      'Произошла ошибка',
+  );
+});
 
 export const createResourceDisconnectionService = {
   inputs: {
@@ -199,11 +234,12 @@ export const createResourceDisconnectionService = {
     $isModalOpen,
     $resourceTypes,
     $disconnectingTypes,
-    $existingHousingStocks,
-    $housingStockWithHeatingStations,
-    $housingStockWithHouseManagements,
+    $existingBuildings,
+    $buildingWithHeatingStations,
+    $buildingWithHouseManagements,
     $typeOfAddress,
     $isHousingStocksLoading,
     $selectedCity,
+    $selectedBuilding,
   },
 };

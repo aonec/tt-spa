@@ -1,15 +1,15 @@
 import {
   ElectricHousingMeteringDeviceResponse,
   SwitchElectricHousingDeviceRequest,
-} from 'myApi';
-import { axios } from '01/axios';
+} from 'api/types';
+import { axios } from 'api/axios';
 
 export const fetchHousingMeteringDevice = (
-  deviceId: number
+  deviceId: number,
 ): Promise<ElectricHousingMeteringDeviceResponse> =>
   axios.get(`ElectricHousingMeteringDevices/${deviceId}`);
 
 export const postSwitchHousingMeteringDevice = (
-  payload: SwitchElectricHousingDeviceRequest
+  payload: SwitchElectricHousingDeviceRequest,
 ): Promise<void> =>
   axios.post('ElectricHousingMeteringDevices/switch', payload);

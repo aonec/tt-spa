@@ -6,11 +6,12 @@ import {
 import { HousesReadingsPageProps } from './HousesReadingsPage.types';
 import { AddressSearchContainer } from 'services/addressSearchService';
 import { SearchFieldType } from 'services/addressSearchService/view/AddressSearch/AddressSearch.types';
-import { TypeAddressToStart } from '01/shared/ui/TypeToStart';
-import { WithLoader } from 'ui-kit/shared_components/WithLoader';
+import { WithLoader } from 'ui-kit/shared/WithLoader';
 import { HousingStockInfoPanel } from './HousingStockInfoPanel';
 import { IndividualDevicesList } from './IndividualDevicesList';
 import { TopButton } from './IndividualDevicesList/TopButton';
+import { TypeAddressToStart } from 'ui-kit/shared/TypeToStart';
+import { NothingFound } from 'ui-kit/shared/NothingFound';
 
 export const HousesReadingsPage: FC<HousesReadingsPageProps> = ({
   housingStock,
@@ -23,6 +24,7 @@ export const HousesReadingsPage: FC<HousesReadingsPageProps> = ({
   managementFirmConsumptionRates,
   openReadingsHistoryModal,
   isAllDevicesLoaded,
+  isHousingStockFetched,
 }) => {
   const address = housingStock?.address?.mainAddress;
 
@@ -39,7 +41,7 @@ export const HousesReadingsPage: FC<HousesReadingsPageProps> = ({
           handleSearchHousingStock({
             City: values.city,
             Street: values.street,
-            HousingStockNumber: values.house,
+            BuildingNumber: values.house,
           });
         }}
         initialValues={
@@ -49,9 +51,11 @@ export const HousesReadingsPage: FC<HousesReadingsPageProps> = ({
             house: address.number || undefined,
           }
         }
+        isError={!housingStock && isHousingStockFetched}
       />
       <WithLoader isLoading={isLoadingHousingStock}>
-        {!housingStock && <TypeAddressToStart />}
+        {!housingStock && !isHousingStockFetched && <TypeAddressToStart />}
+        {!housingStock && isHousingStockFetched && <NothingFound />}
         {housingStock && (
           <>
             <HousingStockInfoPanel

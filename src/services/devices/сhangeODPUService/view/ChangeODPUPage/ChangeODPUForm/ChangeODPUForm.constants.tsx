@@ -1,4 +1,4 @@
-import { EClosingReason, EPhaseNumberType, EYearQuarter } from 'myApi';
+import { EClosingReason, EPhaseNumberType, EYearQuarter } from 'api/types';
 import { SwitchElectricHousingDeviceRequestFormPayload } from './ChangeODPUForm.types';
 import * as yup from 'yup';
 
@@ -43,6 +43,19 @@ export const switchDeviceValidationSchema = yup.object().shape({
   bitDepth: yup.string().required('Это поле обязательное'),
   scaleFactor: yup.string().required('Это поле обязательное'),
   openingDate: yup.string().nullable().required('Это поле обязательное'),
+  manufactureYear: yup.number().nullable().required('Это поле обязательное'),
+  stateVerificationYear: yup
+    .number()
+    .nullable()
+    .required('Это поле обязательное'),
+  nextStateVerificationYear: yup
+    .number()
+    .nullable()
+    .required('Это поле обязательное'),
+  stateVerificationQuarter: yup
+    .string()
+    .nullable()
+    .required('Это поле обязательное'),
   oldDeviceClosingReason: yup
     .string()
     .nullable()

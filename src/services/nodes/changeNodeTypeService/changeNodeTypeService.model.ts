@@ -1,6 +1,6 @@
 import { message } from 'antd';
 import { createDomain, forward, guard } from 'effector';
-import { NodeSetRegistrationTypeRequest, PipeNodeResponse } from 'myApi';
+import { NodeSetRegistrationTypeRequest, PipeNodeResponse } from 'api/types';
 import { EffectFailDataAxiosError } from 'types';
 import { fetchChangeNodeType } from './changeNodeTypeService.api';
 import { ChangeNodeTypePayload } from './changeNodeTypeService.types';
@@ -39,9 +39,11 @@ changeNodeTypeFx.doneData.watch(() =>
   message.success('Статус успешно изменён'),
 );
 
-changeNodeTypeFx.failData.watch((error) =>
-  message.error(error.response.data.error.Text),
-);
+changeNodeTypeFx.failData.watch((error) => {
+  return message.error(
+    error.response.data.error.Text || error.response.data.error.Message,
+  );
+});
 
 guard({
   clock: $node,

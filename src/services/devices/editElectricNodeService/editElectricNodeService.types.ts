@@ -1,6 +1,6 @@
-import { UpdateElectricHousingMeteringDeviceRequest } from "myApi";
+import { UpdateElectricHousingMeteringDeviceRequest } from 'api/types';
 
 export type EditElectricNodePayload = {
-    device: UpdateElectricHousingMeteringDeviceRequest;
-    id: number;
-  }
+  device: UpdateElectricHousingMeteringDeviceRequest;
+  id: number;
+};

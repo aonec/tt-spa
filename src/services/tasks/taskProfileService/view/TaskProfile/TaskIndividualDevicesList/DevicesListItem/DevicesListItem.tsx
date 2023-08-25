@@ -1,6 +1,6 @@
 import React, { FC, useState } from 'react';
-import { IndividualDeviceInfo } from 'ui-kit/shared_components/IndividualDeviceInfo';
-import { ReadingsHistoryButton } from 'ui-kit/shared_components/reading_history_button';
+import { IndividualDeviceInfo } from 'ui-kit/shared/IndividualDeviceInfo';
+import { ReadingsHistoryButton } from 'ui-kit/shared/reading_history_button';
 import { DeviceInfo } from '../DeviceInfo';
 import {
   ArrowSC,
@@ -16,7 +16,6 @@ import { DevicesListItemProps } from './DevicesListItem.types';
 export const DevicesListItem: FC<DevicesListItemProps> = ({
   device,
   apartmentId,
-  housingStockId,
 }) => {
   const { id } = device;
 
@@ -24,15 +23,13 @@ export const DevicesListItem: FC<DevicesListItemProps> = ({
   const toggle = () => setIsOpen(!isOpen);
 
   return (
-      <Wrapper>
-        <DeviceTitleWrapper>
+    <Wrapper>
+      <DeviceTitleWrapper>
         <GroupWrapper>
           <IndividualDeviceInfo device={device} />
         </GroupWrapper>
         <GroupWrapper>
-          <LinkSC
-            to={`/apartments/${apartmentId}/testimony`}
-          >
+          <LinkSC to={`/apartments/${apartmentId}/testimony`}>
             Перейти в профиль
           </LinkSC>
           <ReadingsHistoryButtonWrapper>
@@ -43,8 +40,8 @@ export const DevicesListItem: FC<DevicesListItemProps> = ({
             <ArrowSC />
           </ChevronWrapper>
         </GroupWrapper>
-        </DeviceTitleWrapper>
-        {isOpen && <DeviceInfo device={device} />}
-      </Wrapper>
+      </DeviceTitleWrapper>
+      {isOpen && <DeviceInfo device={device} />}
+    </Wrapper>
   );
 };

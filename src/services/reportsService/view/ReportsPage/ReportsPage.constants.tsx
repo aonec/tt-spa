@@ -12,7 +12,7 @@ export const ReportNamesDictionary: {
   [key in ReportType]: string;
 } = {
   [ReportType.IndividualDevices]: 'Отчёт по ИПУ',
-  [ReportType.ActsJournal]: 'Отчёты по журналу акта',
+  [ReportType.ActsJournal]: 'Отчёт по журналу актов',
   [ReportType.HousingDevices]: 'Отчёт по общедомовым приборам',
   [ReportType.Homeowners]: 'Отчёт по собственникам',
   [ReportType.Employee]: 'Отчёт по сотрудникам',
@@ -28,4 +28,10 @@ export const ReportIconsDictionary: {
   [ReportType.Employee]: <UserIcon />,
 };
 
-export const reportsSelectItems: ReportType[] = Object.values(ReportType);
+export const reportsSelectItems: ReportType[] = [
+  ReportType.Employee,
+  ReportType.IndividualDevices,
+  ReportType.HousingDevices,
+  ReportType.ActsJournal,
+  ReportType.Homeowners,
+];

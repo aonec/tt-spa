@@ -1,6 +1,6 @@
-import { getResourceColor } from '01/utils/getResourceColor';
-import { EResourceType } from 'myApi';
+import { EResourceType } from 'api/types';
 import styled from 'styled-components';
+import { GraphColorLookup } from 'utils/Graph.utils';
 
 export const Wrapper = styled.div`
   svg {
@@ -14,7 +14,7 @@ export const getCurrentDataStyle = (resource: EResourceType) => ({
   parent: { overflow: 'visible' },
   data: {
     fill: `url(#${resource})`,
-    stroke: getResourceColor(resource),
+    stroke: GraphColorLookup[resource],
     strokeWidth: 2,
   },
 });

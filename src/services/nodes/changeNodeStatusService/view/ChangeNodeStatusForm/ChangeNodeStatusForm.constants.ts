@@ -1,4 +1,4 @@
-import { ENodeCommercialAccountStatus } from 'myApi';
+import { ENodeCommercialAccountStatus } from 'api/types';
 import * as Yup from 'yup';
 
 export const validationSchema = Yup.object().shape({
@@ -20,6 +20,10 @@ export const validationSchema = Yup.object().shape({
       is: ENodeCommercialAccountStatus.Registered,
       then: Yup.string().nullable().required('Это поле обязательное'),
     }),
+});
+
+export const createNodeStatusValidationSchema = Yup.object().shape({
+  commercialStatus: Yup.string().nullable().required('Это поле обязательное'),
 });
 
 export const DocumentUploaderLabels = {

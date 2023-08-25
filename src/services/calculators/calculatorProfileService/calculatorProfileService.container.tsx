@@ -1,7 +1,7 @@
 import { useEvent, useStore } from 'effector-react';
 import React from 'react';
 import { useParams } from 'react-router-dom';
-import { WithLoader } from 'ui-kit/shared_components/WithLoader';
+import { WithLoader } from 'ui-kit/shared/WithLoader';
 import {
   CheckCalculatorContainer,
   checkCalculatorService,
@@ -13,6 +13,8 @@ import {
 import { CalculatorProfile } from './CalculatorProfile/CalculatorProfile';
 import { calculatorProfileService } from './calculatorProfileService.model';
 import { ConsumptionReportCalculatorContainer } from '../consumptionReportCalculatorService';
+import { ESecuredIdentityRoleName } from 'api/types';
+import { usePermission } from 'hooks/usePermission';
 
 const { gates, inputs, outputs } = calculatorProfileService;
 const { CalculatorIdGate } = gates;
@@ -36,7 +38,10 @@ export const CalculatorProfileContainer = () => {
   );
   const openDevicesListModal = useEvent(inputs.openDevicesListModal);
 
-  
+  const isPermitionToCalculatorActions = usePermission([
+    ESecuredIdentityRoleName.Administrator,
+    ESecuredIdentityRoleName.ManagingFirmExecutor,
+  ]);
 
   return (
     <>
@@ -56,6 +61,7 @@ export const CalculatorProfileContainer = () => {
               handleOpenConsumptionReportModal()
             }
             openDevicesListModal={openDevicesListModal}
+            isPermitionToCalculatorActions={isPermitionToCalculatorActions}
           />
         )}
       </WithLoader>

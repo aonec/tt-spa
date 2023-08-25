@@ -1,21 +1,24 @@
 import { createDomain, guard, sample } from 'effector';
 import { createGate } from 'effector-react';
-import { ResourceDisconnectingFilterResponse } from 'myApi';
+import { ResourceDisconnectingFilterResponse } from 'api/types';
 import { fetchResourceDisconnectionFilters } from './resourceDisconnectionFiltersService.api';
+import { EffectFailDataAxiosError } from 'types';
+import { message } from 'antd';
 
 const domain = createDomain('resourceDisconnectionFiltersService');
 
-const $resourceDisconnectionFilters = domain.createStore<ResourceDisconnectingFilterResponse | null>(
-  null
-);
+const $resourceDisconnectionFilters =
+  domain.createStore<ResourceDisconnectingFilterResponse | null>(null);
+
 const getResourceDisconnectionFiltersFx = domain.createEffect<
   void,
-  ResourceDisconnectingFilterResponse
+  ResourceDisconnectingFilterResponse,
+  EffectFailDataAxiosError
 >(fetchResourceDisconnectionFilters);
 
 $resourceDisconnectionFilters.on(
   getResourceDisconnectionFiltersFx.doneData,
-  (_, filters) => filters
+  (_, filters) => filters,
 );
 
 const ResourceDisconnectigFiltersGate = createGate();
@@ -27,6 +30,14 @@ sample({
     filter: (source) => !source,
   }),
   target: getResourceDisconnectionFiltersFx,
+});
+
+getResourceDisconnectionFiltersFx.failData.watch((error) => {
+  return message.error(
+    error.response.data.error.Text ||
+      error.response.data.error.Message ||
+      'Произошла ошибка',
+  );
 });
 
 export const resourceDisconnectionFiltersService = {

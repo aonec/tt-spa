@@ -12,7 +12,6 @@ import { TaskIndividualDevicesListProps } from './TaskIndividualDevicesList.type
 export const TaskIndividualDevicesList: FC<TaskIndividualDevicesListProps> = ({
   devices,
   apartmentId,
-  housingStockId,
 }) => {
   const devicesList = useMemo(
     () =>
@@ -20,11 +19,10 @@ export const TaskIndividualDevicesList: FC<TaskIndividualDevicesListProps> = ({
         <DevicesListItem
           device={device}
           apartmentId={apartmentId}
-          housingStockId={housingStockId}
           key={device.id}
         />
       )),
-    [devices, apartmentId, housingStockId]
+    [devices, apartmentId],
   );
 
   return (

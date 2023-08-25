@@ -1,9 +1,10 @@
-import { ApartmentResponse } from 'myApi';
+import { ApartmentResponse } from 'api/types';
 
 export type ApartmentProfileProps = {
   apartment: ApartmentResponse | null;
   isApartmentLoading: boolean;
   tabSection?: ApartmentSection;
+  isPermitionToEditApartment: boolean;
 };
 
 export enum ApartmentSection {

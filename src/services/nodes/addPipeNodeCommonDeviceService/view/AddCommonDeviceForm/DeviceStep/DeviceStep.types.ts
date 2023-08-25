@@ -5,7 +5,6 @@ import {
 
 export type DeviceStepProps = {
   formId: string;
-  openAddPipeModal: () => void;
   communicationPipes: CommunicationPipePayload[];
   updateRequestPayload: (payload: CreateCommonDevicePartitial) => void;
   requestPayload: CreateCommonDevicePartitial;

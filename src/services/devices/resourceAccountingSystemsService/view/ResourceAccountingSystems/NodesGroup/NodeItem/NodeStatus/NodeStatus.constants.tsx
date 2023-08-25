@@ -1,4 +1,4 @@
-import { ENodeCommercialAccountStatus } from 'myApi';
+import { ENodeCommercialAccountStatus } from 'api/types';
 import { FC } from 'react';
 import {
   NotRegisteredIcon,
@@ -14,13 +14,4 @@ export const NodeStatusIconsDictionary: {
   [ENodeCommercialAccountStatus.Prepared]: PreparedForDeliveryIcon,
   [ENodeCommercialAccountStatus.OnReview]: PendingApprovalIcon,
   [ENodeCommercialAccountStatus.Registered]: RegisteredIcon,
-};
-
-export const NodeStatusTextDictionary: {
-  [key in ENodeCommercialAccountStatus]: string;
-} = {
-  [ENodeCommercialAccountStatus.NotRegistered]: 'Не на коммерческом учете',
-  [ENodeCommercialAccountStatus.Prepared]: 'Подготовлен к сдаче',
-  [ENodeCommercialAccountStatus.OnReview]: 'На утверждении',
-  [ENodeCommercialAccountStatus.Registered]: 'Сдан на коммерческий учет',
 };

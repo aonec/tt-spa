@@ -1,11 +1,16 @@
 import {
   ApartmentActsConstructedReportResponse,
+  HomeownersConstructedReportResponse,
   HouseManagementResponse,
   HouseManagementWithStreetsResponse,
+  HousingDevicesConstructedReportResponse,
   IndividualDevicesConstructedReportResponse,
-} from 'myApi';
+} from 'api/types';
 import { ReportType } from '../../../view/ReportsPage/ReportsPage.types';
-import { ReportFiltrationFormValues } from '../../reportViewService.types';
+import {
+  EmployeeReportResponse,
+  ReportFiltrationFormValues,
+} from '../../reportViewService.types';
 
 export type ReportViewPageProps = {
   reportType: ReportType;
@@ -19,4 +24,12 @@ export type ReportViewPageProps = {
     | IndividualDevicesConstructedReportResponse[]
     | null;
   actJournalReportData: ApartmentActsConstructedReportResponse | null;
+  housingMeteringDevicesReportData:
+    | HousingDevicesConstructedReportResponse[]
+    | null;
+  homeownersReportData: HomeownersConstructedReportResponse[] | null;
+  downloadReport: () => void;
+  isReportFileDownloading: boolean;
+  clearFiltrationValues: () => void;
+  emloyeeReportData: EmployeeReportResponse | null;
 };

@@ -1,0 +1,1 @@
+export { ExtendedSearch } from './ExtendedSearch';

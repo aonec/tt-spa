@@ -1,7 +1,7 @@
 import { useEvent, useStore } from 'effector-react';
 import moment from 'moment';
 import React from 'react';
-import { Dialog } from 'ui-kit/shared_components/Dialog/Dialog';
+import { Dialog } from 'ui-kit/shared/Dialog/Dialog';
 import { deleteResourceDisconnectionService } from './deleteResourceDisconnectionService.model';
 
 const { inputs, outputs } = deleteResourceDisconnectionService;
@@ -28,7 +28,7 @@ export const DeleteResourceDisconnectionContainer = () => {
           {endDate &&
             `Плановая дата завершения - ${moment(endDate).format('LL')} `}
           Если вы подтверждаете удаление, то отключение ресурса закончится на
-          всех выбранных объектах автоматически после подтверждения.
+          всех объектах автоматически после подтверждения.
         </>
       }
     />

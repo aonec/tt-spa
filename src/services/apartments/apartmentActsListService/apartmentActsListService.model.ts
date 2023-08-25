@@ -1,4 +1,3 @@
-import { $actTypes } from '01/features/actsJournal/displayActTypes/models';
 import { combine, createDomain, forward, sample } from 'effector';
 import { createGate } from 'effector-react';
 import moment from 'moment';
@@ -7,7 +6,7 @@ import {
   DocumentResponse,
   EActResourceType,
   EActType,
-} from 'myApi';
+} from 'api/types';
 import {
   getapartmentActsList,
   saveFileRequest,
@@ -17,10 +16,13 @@ import { ActsFilter } from './apartmentActsListService.types';
 const domain = createDomain('apartmentActsListService');
 
 const $actsList = domain.createStore<ApartmentActResponse[]>([]);
-const $actsFilter = domain.createStore<ActsFilter>({} as ActsFilter);
+const $actsFilter = domain.createStore<ActsFilter>({
+  actTypes: [],
+  resources: [],
+} as ActsFilter);
 
 const fetchActsListFx = domain.createEffect<number, ApartmentActResponse[]>(
-  getapartmentActsList
+  getapartmentActsList,
 );
 
 const ApartmentActsListGate = createGate<{ apartmentId: number }>();
@@ -43,17 +45,17 @@ const $filteredActsList = combine($actsList, $actsFilter, (acts, filters) => {
   const hasActResources = filters.resources?.length;
 
   let filteredActs = acts.sort((first, second) =>
-    moment(second.actJobDate).diff(moment(first.actJobDate))
+    moment(second.actJobDate).diff(moment(first.actJobDate)),
   );
 
   if (hasActTypes) {
     filteredActs = filteredActs.filter((act) =>
-      filters.actTypes.includes(act.actType)
+      filters.actTypes.includes(act.actType),
     );
   }
   if (hasActResources) {
     filteredActs = filteredActs.filter((act) =>
-      filters.resources.includes(act.actResourceType)
+      filters.resources.includes(act.actResourceType),
     );
   }
 
@@ -88,7 +90,6 @@ export const apartmentActsListService = {
   outputs: {
     $filteredActsList,
     $isLoading,
-    $actTypes,
     $actsFilter,
   },
   gates: { ApartmentActsListGate },

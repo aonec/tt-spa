@@ -3,8 +3,8 @@ import {
   createTimeline,
   createTimer,
 } from 'services/tasks/tasksProfileService/tasksProfileService.utils';
-import { Dialog } from 'ui-kit/shared_components/Dialog/Dialog';
-import { GoBack } from 'ui-kit/shared_components/GoBack';
+import { Dialog } from 'ui-kit/shared/Dialog/Dialog';
+import { GoBack } from 'ui-kit/shared/GoBack';
 import { TaskActionsPanel } from './TaskActionsPanel';
 import { TaskBaseInfo } from './TaskBaseInfo';
 import { TaskComments } from './TaskComments';
@@ -44,9 +44,9 @@ export const TaskProfile: FC<TaskProfileProps> = ({
     name: taskName,
     stages,
     apartment,
-    housingStockId,
     pipeNode,
     comments,
+    canBeReverted,
   } = task;
 
   const apartmemtId = apartment?.id || 0;
@@ -117,7 +117,6 @@ export const TaskProfile: FC<TaskProfileProps> = ({
                 <TaskIndividualDevicesList
                   devices={individualDevices}
                   apartmentId={apartmemtId}
-                  housingStockId={housingStockId}
                 />
               )}
               {device && <TaskDeviceInfo device={device} />}
@@ -130,7 +129,7 @@ export const TaskProfile: FC<TaskProfileProps> = ({
               handleRevertStage={handleRevertStage}
               stages={stages || []}
               isRevertStageLoading={isRevertStageLoading}
-              isPerpetrator={isPerpetrator}
+              isStageCanBeReverted={canBeReverted}
             />
           </TaskWrapper>
         </>

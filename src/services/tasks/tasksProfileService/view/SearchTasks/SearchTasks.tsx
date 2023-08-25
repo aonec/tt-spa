@@ -1,18 +1,26 @@
-import React, { ChangeEvent, FC, useCallback, useEffect, useMemo, useRef } from 'react';
-import { Select } from 'antd';
+import React, {
+  ChangeEvent,
+  FC,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+} from 'react';
 import { useFormik } from 'formik';
 import { useParams } from 'react-router-dom';
-import { EManagingFirmTaskFilterType, TaskGroupingFilter } from 'myApi';
-import { ExtendedSearch } from '01/shared/ui/ExtendedSearch';
-import { InputSC } from '01/shared/ui/Fields';
-import { fromEnter } from '01/shared/ui/DatePickerNative';
+import { EManagingFirmTaskFilterType, TaskGroupingFilter } from 'api/types';
+import { ExtendedSearch } from 'ui-kit/ExtendedSearch';
+import { fromEnter } from 'ui-kit/shared/DatePickerNative';
 import { ArchiveTasksExtendedSearchForm } from './ArchiveTasksExtendedSearchForm';
 import { ToExecutionTasksExtendedSearchForm } from './ToExecutionTasksExtendedSearchForm';
-import { SelectSC, Wrapper } from './SearchTasks.styled';
+import { Wrapper } from './SearchTasks.styled';
 import { GetTasksListRequestPayload } from '../../tasksProfileService.types';
 import { SearchTasksProps } from './SearchTasks.types';
-import { ExistingStreetsGate } from '01/features/housingStocks/displayHousingStockStreets/model';
-import { ExistingCitiesGate } from '01/features/housingStocks/displayHousingStockCities/models';
+import { Select } from 'ui-kit/Select';
+import { Input } from 'ui-kit/Input';
+import { addressSearchService } from 'services/addressSearchService/addressSearchService.models';
+
+const { ExistingCitiesGate, ExistingStreetsGate } = addressSearchService.gates;
 
 export const SearchTasks: FC<SearchTasksProps> = ({
   onSubmit,
@@ -65,12 +73,13 @@ export const SearchTasks: FC<SearchTasksProps> = ({
     },
     [setFieldValue],
   );
-  const handleKeyDown = useMemo(()=>
-    fromEnter((e) => {
-      e.currentTarget.blur();
-      setFieldValue(e.target.name, e.target.value);
-      handleSubmit();
-    }),
+  const handleKeyDown = useMemo(
+    () =>
+      fromEnter((e) => {
+        e.currentTarget.blur();
+        setFieldValue(e.target.name, e.target.value);
+        handleSubmit();
+      }),
     [setFieldValue, handleSubmit],
   );
   const clearInput = useCallback(() => {
@@ -131,7 +140,8 @@ export const SearchTasks: FC<SearchTasksProps> = ({
       <ExistingStreetsGate City={values.City} />
       <ExistingCitiesGate />
       <Wrapper>
-        <InputSC
+        <Input
+          small
           placeholder="Номер задачи"
           value={values.TaskId}
           onChange={handleInputChange}
@@ -139,7 +149,8 @@ export const SearchTasks: FC<SearchTasksProps> = ({
           onClick={clearInput}
           name="TaskId"
         />
-        <SelectSC
+        <Select
+          small
           placeholder="Тип задачи"
           value={values.TaskType!}
           onChange={(value) => {
@@ -153,7 +164,7 @@ export const SearchTasks: FC<SearchTasksProps> = ({
                 {value}
               </Select.Option>
             ))}
-        </SelectSC>
+        </Select>
       </Wrapper>
     </ExtendedSearch>
   );

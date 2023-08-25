@@ -1,12 +1,5 @@
-import { CustomTooltip } from '01/_pages/Graph/components/CustomTooltip';
-import Gradient from '01/_pages/Graph/components/Gradient';
-import {
-  horizontalAxisStyle,
-  verticalAxisStyle,
-} from '01/_pages/Graph/components/GraphView/GraphView.styled';
-import { TickComponent } from '01/_pages/Graph/components/TickComponent';
 import React, { FC, useEffect, useMemo, useState } from 'react';
-import { GraphEmptyData } from 'services/displayNodesStatisticsService/view/GraphEmptyData';
+import { GraphEmptyData } from 'services/nodes/displayNodesStatisticsService/view/GraphEmptyData';
 import { prepareData } from 'utils/Graph.utils';
 import {
   VictoryArea,
@@ -33,6 +26,13 @@ import {
   getMinAndMaxForResourceConsumptionGraph,
 } from './ResourceConsumptionGraph.utils';
 import { ResourceConsumptionGraphTooltip } from './ResourceConsumptionGraphTooltip';
+import { GraphGradient } from 'ui-kit/shared/GraphComponents/GraphGradient';
+import { TickComponent } from 'ui-kit/shared/GraphComponents/TickComponent';
+import {
+  horizontalAxisStyle,
+  verticalAxisStyle,
+} from 'services/nodes/displayNodesStatisticsService/view/StatisticsGraph/StatisticsGraph.styled';
+import { CustomTooltip } from 'ui-kit/shared/GraphComponents/CustomTooltip';
 
 const height = 360;
 
@@ -113,7 +113,13 @@ export const ResourceConsumptionGraph: FC<ResourceConsumptionGraphProps> = ({
           return null;
         });
       }),
-    [consumptionData, resource, checked, selectedAddresses, additionalConsumptionData]
+    [
+      consumptionData,
+      resource,
+      checked,
+      selectedAddresses,
+      additionalConsumptionData,
+    ],
   );
 
   useEffect(() => {
@@ -145,12 +151,12 @@ export const ResourceConsumptionGraph: FC<ResourceConsumptionGraphProps> = ({
       ...Object.values(currentMonthData),
       ...Object.values(prevMonthData),
       ...Object.values(additionalConsumptionData || {}),
-    ].map(prepareData)
+    ].map(prepareData),
   );
 
   return (
     <Wrapper id="graphWrapper">
-      <Gradient resource={resource} />
+      <GraphGradient resource={resource} />
 
       <VictoryChart
         padding={{ top: 0, bottom: 0, left: 26, right: 0 }}
@@ -158,6 +164,7 @@ export const ResourceConsumptionGraph: FC<ResourceConsumptionGraphProps> = ({
         style={{
           parent: {
             overflow: 'visible',
+            height,
           },
         }}
         height={height}

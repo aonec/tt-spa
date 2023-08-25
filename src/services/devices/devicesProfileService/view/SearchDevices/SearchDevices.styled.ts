@@ -10,7 +10,7 @@ export const Wrapper = styled.div`
 export const StyledGrid = styled.div<{ isExtendedSearchOpen: boolean }>`
   display: grid;
   grid-template-columns: ${({ isExtendedSearchOpen }) =>
-    isExtendedSearchOpen ? '1fr' : '30px 8fr 3.5fr'};
+    isExtendedSearchOpen ? '1fr' : '30px 8fr 3.5fr 1fr'};
   gap: 15px;
 `;
 
@@ -37,7 +37,6 @@ export const StyledLabelSimple = styled.label`
 export const FlexCenterRow = styled.div`
   display: flex;
   align-items: center;
-  flex-direction: row;
 `;
 
 export const Grid = styled.div`

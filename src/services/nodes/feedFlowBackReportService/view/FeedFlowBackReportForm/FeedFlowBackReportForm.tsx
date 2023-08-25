@@ -1,13 +1,13 @@
-import { ErrorMessage } from '01/shared/ui/ErrorMessage';
+import { ErrorMessage } from 'ui-kit/ErrorMessage';
 import { Form } from 'antd';
 import { useFormik } from 'formik';
 import moment from 'moment';
-import { EResourceType } from 'myApi';
+import { EResourceType } from 'api/types';
 import React, { FC } from 'react';
 import { FormItem } from 'ui-kit/FormItem';
 import { Input, InputWithAddon } from 'ui-kit/Input';
 import { Select } from 'ui-kit/Select';
-import { ResourceSelect } from 'ui-kit/shared_components/ResourceSelect';
+import { ResourceSelect } from 'ui-kit/shared/ResourceSelect';
 import { feedFlowBackReportService } from '../../feedFlowBackReportService.model';
 import { validationSchema } from './FeedFlowBackReportForm.constants';
 import { LineWrapper } from './FeedFlowBackReportForm.styled';
@@ -16,6 +16,7 @@ import { FeedFlowBackReportFormProps } from './FeedFlowBackReportForm.types';
 const {
   gates: { HouseManagementsGate },
 } = feedFlowBackReportService;
+const withoutHouseMagement = 'withoutHouseMagement';
 
 export const FeedFlowBackReportForm: FC<FeedFlowBackReportFormProps> = ({
   existingCities,
@@ -23,35 +24,30 @@ export const FeedFlowBackReportForm: FC<FeedFlowBackReportFormProps> = ({
   formId,
   handleExportReport,
 }) => {
-  const {
-    values,
-    handleChange,
-    setFieldValue,
-    handleSubmit,
-    errors,
-  } = useFormik({
-    initialValues: {
-      name: `Сводный_отчёт_по_обратной_магистрали_${moment().format(
-        'DD.MM.YYYY'
-      )}`,
-      city: null as null | string,
-      houseMangementId: null as null | string,
-      temperature: '',
-    },
-    onSubmit: (values) => {
-      if (!values.name || !values.houseMangementId || !values.temperature) {
-        return;
-      }
+  const { values, handleChange, setFieldValue, handleSubmit, errors } =
+    useFormik({
+      initialValues: {
+        name: `Сводный_отчёт_по_обратной_магистрали_${moment().format(
+          'DD.MM.YYYY',
+        )}`,
+        city: null as null | string,
+        houseMangementId: null as null | string,
+        temperature: '',
+      },
+      onSubmit: (values) => {
+        if (!values.name || !values.temperature) {
+          return;
+        }
 
-      handleExportReport({
-        Name: values.name,
-        HouseManagementId: values.houseMangementId,
-        OutdoorTemperature: Number(values.temperature),
-      });
-    },
-    validationSchema,
-    validateOnChange: false,
-  });
+        handleExportReport({
+          Name: values.name,
+          HouseManagementId: values.houseMangementId,
+          OutdoorTemperature: Number(values.temperature),
+        });
+      },
+      validationSchema,
+      validateOnChange: false,
+    });
 
   return (
     <>
@@ -84,9 +80,21 @@ export const FeedFlowBackReportForm: FC<FeedFlowBackReportFormProps> = ({
           <FormItem label="УК или домоуправление">
             <Select
               placeholder="Выберите домоуправление"
-              value={values.houseMangementId || undefined}
-              onChange={(value) => setFieldValue('houseMangementId', value)}
+              value={
+                values.houseMangementId === null
+                  ? withoutHouseMagement
+                  : values.houseMangementId || undefined
+              }
+              onChange={(value) => {
+                if (value === withoutHouseMagement) {
+                  return setFieldValue('houseMangementId', null);
+                }
+                setFieldValue('houseMangementId', value);
+              }}
             >
+              <Select.Option value={withoutHouseMagement}>
+                Без домоуправления
+              </Select.Option>
               {houseManagements?.map((houseManagement) => (
                 <Select.Option
                   key={houseManagement.id}

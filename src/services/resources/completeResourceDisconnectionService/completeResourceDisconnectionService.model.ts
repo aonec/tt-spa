@@ -1,4 +1,4 @@
-import { resourceDisablingScheduleServiceService } from '01/features/settings/resourcesDisablingScheduleService/ResourceDisablingScheduleService.model';
+import { resourceDisablingScheduleServiceService } from 'services/settings/resourcesDisablingScheduleService/ResourceDisablingScheduleService.model';
 import { message } from 'antd';
 import { createDomain, forward, guard, sample } from 'effector';
 import { EffectFailDataAxiosError } from 'types';
@@ -6,7 +6,7 @@ import { fetchCompleteResourceDisconnecting } from './completeResourceDisconnect
 
 const domain = createDomain('completeResourceDisconnectionService');
 
-const openModal = domain.createEvent<{ id: string; endDate: string }>();
+const openModal = domain.createEvent<{ id: string; endDate: string | null }>();
 const closeModal = domain.createEvent();
 
 const $resourceDisconnectionId = domain
@@ -15,18 +15,20 @@ const $resourceDisconnectionId = domain
   .reset(closeModal);
 
 const $endDate = domain
-  .createStore('')
+  .createStore<null | string>(null)
   .on(openModal, (_, payload) => payload.endDate)
   .reset(closeModal);
 
 const $isModalOpen = $resourceDisconnectionId.map(Boolean);
 
 const completeResourceDisconnection = domain.createEvent();
+
 const completeResourceDisconnectionFx = domain.createEffect<
   string,
   void,
   EffectFailDataAxiosError
 >(fetchCompleteResourceDisconnecting);
+
 const $completeResourceDisconnectionIsLoading =
   completeResourceDisconnectionFx.pending;
 
@@ -48,9 +50,13 @@ forward({
   ],
 });
 
-completeResourceDisconnectionFx.failData.watch((error) =>
-  message.error(error.response.data.error.Text)
-);
+completeResourceDisconnectionFx.failData.watch((error) => {
+  return message.error(
+    error.response.data.error.Text ||
+      error.response.data.error.Message ||
+      'Произошла ошибка',
+  );
+});
 
 export const completeResourceDisconnectionService = {
   inputs: {

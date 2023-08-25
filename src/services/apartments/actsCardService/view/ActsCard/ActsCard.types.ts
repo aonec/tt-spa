@@ -1,12 +1,7 @@
-import {
-  ApartmentActResponse,
-  DocumentResponse,
-  EActTypeStringDictionaryItem,
-} from 'myApi';
+import { ApartmentActResponse, DocumentResponse } from 'api/types';
 
 export type ActsCardProps = {
   acts: ApartmentActResponse[];
-  actTypes: EActTypeStringDictionaryItem[];
   apartmentid: string;
   handleSaveFile: (document: DocumentResponse) => void;
 };

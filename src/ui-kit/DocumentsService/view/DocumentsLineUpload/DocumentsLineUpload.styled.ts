@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { TrashIcon } from 'ui-kit/icons';
 
 export const Wrapper = styled.div`
-  padding-right: 15px;
+  padding-right: 16px;
   display: flex;
   align-items: center;
 `;
@@ -13,7 +13,7 @@ export const DocumentsListWrapper = styled.div`
   height: 42px;
   display: flex;
   align-items: center;
-  overflow-x: hidden;
+  overflow: hidden;
 `;
 
 export const DocumentItemWrapper = styled.div`
@@ -24,7 +24,7 @@ export const DocumentItemWrapper = styled.div`
 
 export const TrashIconSC = styled(TrashIcon)`
   min-width: 15px;
-  margin-left: 15px;
+  margin-left: 16px;
   transition: 0.2s;
   cursor: pointer;
   transform: translateY(1px);
@@ -43,7 +43,7 @@ export const DocumentsListElement = styled.div`
   transition: 0.2s;
   cursor: pointer;
   white-space: nowrap;
-  overflow-x: hidden;
+  overflow: hidden;
   text-overflow: ellipsis;
 
   &:first-child {

@@ -1,4 +1,4 @@
-import { IndividualDeviceListItemResponse } from 'myApi';
+import { IndividualDeviceListItemResponse } from 'api/types';
 import { ConsumptionRatesDictionary } from '../managementFirmConsumptionRatesService/managementFirmConsumptionRatesService.types';
 
 export type HousesIndividualDevicesMetersContainerProps = {

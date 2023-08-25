@@ -1,15 +1,18 @@
-import { PreparedArchiveValues } from '01/_pages/Graph/components/GraphView/GraphView.types';
 import { maxBy, minBy } from 'lodash';
+import { EResourceType } from 'api/types';
+import { PreparedArchiveValues } from 'services/nodes/displayNodesStatisticsService/view/StatisticsGraph/StatisticsGraph.types';
+
+const factor = 1.2;
 
 export function getMinAndMax<T>(
-  data: (T & { value: number })[],
-  minDelta: number
+  data: (T & { value: number | null })[],
+  minDelta: number,
 ) {
   const minElementValue = minBy(data, (obj) => obj.value)?.value || 0;
   const maxElementValue = maxBy(data, (obj) => obj.value)?.value || 0;
 
-  let minValue = minElementValue > 0 ? 0 : 1.5 * minElementValue;
-  let maxValue = maxElementValue < 0 ? 0 : 1.5 * maxElementValue;
+  let minValue = minElementValue > 0 ? 0 : factor * minElementValue;
+  let maxValue = maxElementValue < 0 ? 0 : factor * maxElementValue;
 
   if (maxValue === minValue && minValue === 0) {
     maxValue += minDelta;
@@ -34,3 +37,10 @@ export function prepareData<T>(data: (T & { value?: number | null })[]) {
     return [...acc, reading as T & PreparedArchiveValues];
   }, [] as (T & PreparedArchiveValues)[]);
 }
+
+export const GraphColorLookup: { [key in EResourceType]: string } = {
+  [EResourceType.HotWaterSupply]: '#ff8c68',
+  [EResourceType.ColdWaterSupply]: '#79afff',
+  [EResourceType.Electricity]: '#e2b104',
+  [EResourceType.Heat]: '#9254de',
+};

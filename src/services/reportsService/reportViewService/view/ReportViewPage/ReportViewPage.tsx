@@ -1,5 +1,6 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useCallback, useState } from 'react';
 import {
+  ButtonSC,
   ExtendedSearchWrapper,
   FiltrationInfoItem,
   FiltrationInfoList,
@@ -9,18 +10,17 @@ import {
   Wrapper,
 } from './ReportViewPage.styled';
 import { ReportViewPageProps } from './ReportViewPage.types';
-import { GoBack } from 'ui-kit/shared_components/GoBack';
-import { PageHeader } from '01/shared/ui/PageHeader';
+import { GoBack } from 'ui-kit/shared/GoBack';
+import { PageHeader } from 'ui-kit/shared/PageHeader';
 import {
   ReportIconsDictionary,
   ReportNamesDictionary,
 } from 'services/reportsService/view/ReportsPage/ReportsPage.constants';
-import { ExtendedSearch } from '01/shared/ui/ExtendedSearch';
+import { ExtendedSearch } from 'ui-kit/ExtendedSearch';
 import { ReportFiltrationForm } from './ReportFiltrationForm';
-import { Button } from 'ui-kit/Button';
 import { getFiltersList } from './ReportViewPage.utils';
 import { ReportViewTable } from './ReportViewTable';
-import { WithLoader } from 'ui-kit/shared_components/WithLoader';
+import { WithLoader } from 'ui-kit/shared/WithLoader';
 
 const formId = 'report-form-id';
 
@@ -33,11 +33,17 @@ export const ReportViewPage: FC<ReportViewPageProps> = ({
   setFiltrationValues,
   isLoadingReport,
   individualDevicesReportData,
-  actJournalReportData
+  actJournalReportData,
+  housingMeteringDevicesReportData,
+  homeownersReportData,
+  downloadReport,
+  isReportFileDownloading,
+  clearFiltrationValues,
+  emloyeeReportData,
 }) => {
   const [isOpen, setIsOpen] = useState(true);
 
-  const handleApply = () => {
+  const handleApply = useCallback(() => {
     const form = document.forms.namedItem(formId);
 
     if (!form) return;
@@ -45,7 +51,7 @@ export const ReportViewPage: FC<ReportViewPageProps> = ({
     form.requestSubmit();
 
     setIsOpen(false);
-  };
+  }, [setIsOpen]);
 
   const filtersViewArray = getFiltersList(filtrationValues, houseManagements);
 
@@ -68,6 +74,8 @@ export const ReportViewPage: FC<ReportViewPageProps> = ({
           handleOpen={() => setIsOpen(true)}
           handleClose={() => setIsOpen(false)}
           handleApply={handleApply}
+          handleClear={clearFiltrationValues}
+          isShowClearButton
           extendedSearchContent={
             <ReportFiltrationForm
               existingCities={existingCities}
@@ -90,9 +98,14 @@ export const ReportViewPage: FC<ReportViewPageProps> = ({
                 <FiltrationInfoItem>Фильтры не выбраны</FiltrationInfoItem>
               )}
             </FiltrationInfoList>
-            <Button size="small" sidePadding={16}>
+            <ButtonSC
+              size="small"
+              onClick={downloadReport}
+              disabled={isLoadingReport}
+              isLoading={isReportFileDownloading}
+            >
               Скачать отчет
-            </Button>
+            </ButtonSC>
           </FiltrationInfoWrapper>
         </ExtendedSearch>
       </ExtendedSearchWrapper>
@@ -101,8 +114,11 @@ export const ReportViewPage: FC<ReportViewPageProps> = ({
           reportType={reportType}
           individualDevicesReportData={individualDevicesReportData}
           actJournalReportData={actJournalReportData}
-          city={filtrationValues.city}
           reportOption={filtrationValues.reportOption}
+          housingMeteringDevicesReportData={housingMeteringDevicesReportData}
+          homeownersReportData={homeownersReportData}
+          emloyeeReportData={emloyeeReportData}
+          employeeReportType={filtrationValues.employeeReportType}
         />
       </WithLoader>
     </Wrapper>

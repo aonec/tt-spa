@@ -20,10 +20,17 @@ export const ApartmentsReadings: FC<ApartmentsReadingsProps> = ({
   openEditPersonalNumberModal,
   setSelectedHomeownerName,
   selectedHomeownerName,
+  isPermitionToApartmentStatusPatch,
+  allIndividualDeviceMountPlaces,
+  printIssueCertificate,
+  handleUpdateHomeowner,
+  isUpdateHomeownerLoading,
+  isApartmentFetched,
 }) => {
   const componentsDictionary: { [key in SearchMode]: ReactNode } = {
     [SearchMode.Apartment]: (
       <ApartmentProfile
+        isApartmentFetched={isApartmentFetched}
         handleSearchApartment={handleSearchApartment}
         isLoadingApartment={isLoadingApartment}
         apartment={apartment}
@@ -33,11 +40,17 @@ export const ApartmentsReadings: FC<ApartmentsReadingsProps> = ({
         openEditPersonalNumberModal={openEditPersonalNumberModal}
         setSelectedHomeownerName={setSelectedHomeownerName}
         selectedHomeownerName={selectedHomeownerName}
+        isPermitionToApartmentStatusPatch={isPermitionToApartmentStatusPatch}
+        printIssueCertificate={printIssueCertificate}
+        handleUpdateHomeowner={handleUpdateHomeowner}
+        isUpdateHomeownerLoading={isUpdateHomeownerLoading}
       />
     ),
     [SearchMode.SerialNumber]: (
       <DevicesSearch
         handleClickDevice={() => setSearchMode(SearchMode.Apartment)}
+        apartmentId={apartment?.id}
+        allIndividualDeviceMountPlaces={allIndividualDeviceMountPlaces}
       />
     ),
   };

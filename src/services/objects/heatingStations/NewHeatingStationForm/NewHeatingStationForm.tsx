@@ -8,21 +8,19 @@ import {
   HeatingStationType,
   NewHeatingStationFormProps,
 } from './NewHeatingStationForm.types';
-import { StyledSelect } from '01/shared/ui/Select/components';
 import { FormItem } from 'ui-kit/FormItem';
 import { Select } from 'ui-kit/Select';
 import { useFormik } from 'formik';
+import * as yup from 'yup';
 import { Input } from 'ui-kit/Input';
-import { ErrorMessage } from '01/shared/ui/ErrorMessage';
+import { ErrorMessage } from 'ui-kit/ErrorMessage';
 import { Form } from 'antd';
-import {
-  HeatingStationTypeDictionary,
-  validationSchema,
-} from './newHeatingStationForm.constants';
+import { HeatingStationTypeDictionary } from './newHeatingStationForm.constants';
 import { AutoComplete } from 'ui-kit/AutoComplete';
 import { getPreparedStreetsOptions } from 'services/objects/createObjectService/view/CreateObjectPage/CreateObjectAddressStage/CreateObjectAddressStage.utils';
-import { ExistingCitiesGate } from '01/features/housingStocks/displayHousingStockCities/models';
-import { ExistingStreetsGate } from '01/features/housingStocks/displayHousingStockStreets/model';
+import { addressSearchService } from 'services/addressSearchService/addressSearchService.models';
+
+const { ExistingCitiesGate, ExistingStreetsGate } = addressSearchService.gates;
 
 export const NewHeatingStationForm: FC<NewHeatingStationFormProps> = ({
   formId,
@@ -31,40 +29,45 @@ export const NewHeatingStationForm: FC<NewHeatingStationFormProps> = ({
   existingStreets,
   handleEditHeatingStation,
   openedHeatingStationData,
+  isEdit,
 }) => {
-  const {
-    values,
-    handleSubmit,
-    setFieldValue,
-    errors,
-  } = useFormik<HeatingStation>({
-    initialValues: {
-      isThermalChamber: (openedHeatingStationData?.isThermalChamber
-        ? HeatingStationType.ThermalChamber
-        : HeatingStationType.CentralHeatingStation) || null,
-      name: openedHeatingStationData?.name || null,
-      address: {
-        city: openedHeatingStationData?.address?.city || null,
-        street: openedHeatingStationData?.address?.street || '',
-        number: openedHeatingStationData?.address?.housingStockNumber || null,
+  const { values, handleSubmit, setFieldValue, errors } =
+    useFormik<HeatingStation>({
+      initialValues: {
+        isThermalChamber:
+          (openedHeatingStationData?.isThermalChamber
+            ? HeatingStationType.ThermalChamber
+            : HeatingStationType.CentralHeatingStation) || null,
+        name: openedHeatingStationData?.name || null,
+        address: {
+          city: openedHeatingStationData?.address?.city || null,
+          street: openedHeatingStationData?.address?.street || '',
+          number: openedHeatingStationData?.address?.housingStockNumber || null,
+        },
       },
-    },
-    enableReinitialize: true,
-    onSubmit: (data) => {
-      handleCreateHeatingStation && handleCreateHeatingStation(data);
-      handleEditHeatingStation &&
-        openedHeatingStationData?.id &&
-        handleEditHeatingStation({ id: openedHeatingStationData?.id, data });
-    },
-    validateOnChange: false,
-    validationSchema,
-  });
+      enableReinitialize: true,
+      onSubmit: (data) => {
+        handleCreateHeatingStation && handleCreateHeatingStation(data);
+        handleEditHeatingStation &&
+          openedHeatingStationData?.id &&
+          handleEditHeatingStation({ id: openedHeatingStationData?.id, data });
+      },
+      validateOnChange: false,
+      validationSchema: yup.object().shape({
+        name: yup.string().nullable().required('Обязательное поле'),
+        address: yup.object().shape({
+          city: yup.string().nullable().required('Обязательное поле'),
+          street: yup.string().required('Обязательное поле'),
+          number: yup.string().nullable().required('Обязательное поле'),
+        }),
+      }),
+    });
 
   const addressSearch = values.address.street;
 
   const preparedExistingStreets = getPreparedStreetsOptions(
     addressSearch,
-    existingStreets || []
+    existingStreets || [],
   );
 
   return (
@@ -77,7 +80,7 @@ export const NewHeatingStationForm: FC<NewHeatingStationFormProps> = ({
       <Form id={formId} onSubmitCapture={handleSubmit}>
         <GridContainer>
           <FormItem label="Тип">
-            <StyledSelect
+            <Select
               placeholder="Выберите из списка"
               value={values.isThermalChamber || undefined}
               onChange={(value) => setFieldValue('isThermalChamber', value)}
@@ -87,7 +90,7 @@ export const NewHeatingStationForm: FC<NewHeatingStationFormProps> = ({
                   {HeatingStationTypeDictionary[e]}
                 </Select.Option>
               ))}
-            </StyledSelect>
+            </Select>
             <ErrorMessage>{errors?.isThermalChamber}</ErrorMessage>
           </FormItem>
 
@@ -104,6 +107,7 @@ export const NewHeatingStationForm: FC<NewHeatingStationFormProps> = ({
         <AddressGridWrapper>
           <FormItem label="Город">
             <Select
+              disabled={isEdit ? true : false}
               onChange={(value) =>
                 setFieldValue('address', { ...values.address, city: value })
               }
@@ -121,8 +125,13 @@ export const NewHeatingStationForm: FC<NewHeatingStationFormProps> = ({
 
           <FormItem label="Улица">
             <AutoComplete
+              disabled={isEdit ? true : false}
               placeholder="Улица"
-              value={values.address.street}
+              value={
+                values.address.street === 'Default'
+                  ? 'Не выбрано'
+                  : values.address.street
+              }
               onChange={(value) =>
                 setFieldValue('address', { ...values.address, street: value })
               }
@@ -133,6 +142,7 @@ export const NewHeatingStationForm: FC<NewHeatingStationFormProps> = ({
 
           <FormItem label="Номер">
             <Input
+              disabled={isEdit ? true : false}
               placeholder="Введите"
               value={values.address.number || undefined}
               onChange={(value) =>

@@ -1,8 +1,8 @@
-import { ErrorMessage } from '01/shared/ui/ErrorMessage';
+import { ErrorMessage } from 'ui-kit/ErrorMessage';
 import { Form } from 'antd';
 import { SelectValue } from 'antd/lib/select';
 import { useFormik } from 'formik';
-import { ENodeCommercialAccountStatus } from 'myApi';
+import { ENodeCommercialAccountStatus } from 'api/types';
 import React, { FC, useCallback, useEffect } from 'react';
 import { commercialNodeStatuses } from 'services/nodes/createNodeService/view/CreateNodePage/CommonData/CommonData.constants';
 import { DatePicker } from 'ui-kit/DatePicker';
@@ -11,6 +11,7 @@ import { Select } from 'ui-kit/Select';
 import { getDatePickerValue } from 'utils/getDatePickerValue';
 import { ChangeNodeStatusDocument } from '../ChangeNodeStatusDocument';
 import {
+  createNodeStatusValidationSchema,
   DocumentUploaderLabels,
   NodeStatusDateLabel,
   validationSchema,
@@ -27,20 +28,21 @@ import {
 export const ChangeNodeStatusForm: FC<ChangeNodeStatusFormProps> = ({
   formId,
   handleChangeNodeStatus,
-  initialValues,
+  initialData,
+  createMode = false,
 }) => {
   const handleSubmitForm = useCallback(
     (values: ChangeNodeStatusFormik) => {
       const { commercialStatus, documentId, firstDate, secondDate } = values;
 
-      if (!commercialStatus || !firstDate) {
+      if (!commercialStatus) {
         return;
       }
 
       handleChangeNodeStatus({
         commercialStatus,
         documentId: documentId || undefined,
-        firstDate,
+        firstDate: firstDate || undefined,
         secondDate: secondDate || undefined,
       });
     },
@@ -50,12 +52,14 @@ export const ChangeNodeStatusForm: FC<ChangeNodeStatusFormProps> = ({
   const { handleSubmit, values, setFieldValue, errors } =
     useFormik<ChangeNodeStatusFormik>({
       initialValues: {
-        commercialStatus: initialValues?.commercialStatus?.value || null,
-        documentId: null,
-        firstDate: null,
-        secondDate: null,
+        commercialStatus: initialData?.commercialStatus || null,
+        documentId: initialData?.documentId || null,
+        firstDate: initialData?.firstDate || null,
+        secondDate: initialData?.secondDate || null,
       },
-      validationSchema,
+      validationSchema: createMode
+        ? createNodeStatusValidationSchema
+        : validationSchema,
       validateOnChange: false,
       validateOnBlur: false,
       onSubmit: handleSubmitForm,

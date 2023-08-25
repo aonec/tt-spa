@@ -1,6 +1,6 @@
 import { Skeleton } from 'antd';
 import { useEvent, useStore } from 'effector-react';
-import React from 'react';
+import React, { FC } from 'react';
 import { DEVICES_LIST_BY_SERIAL_NUMBER_SIZE } from './individualDevicesViesBySerialNumberService.constants';
 import { individualDevicesViewBySerialNumberService } from './individualDevicesViesBySerialNumberService.model';
 import {
@@ -9,10 +9,13 @@ import {
 } from './individualDevicesViesBySerialNumberService.styled';
 import { IndividualDeviceListBySerialNumber } from './view/IndividualDeviceListBySerialNumber';
 import { IndividualDevicesViewBySerialNumberSearch } from './view/SerialNumberSearch';
+import { HeaderInject } from 'services/objects/objectsProfileService/view/ObjectsProfile/ObjectsProfile.types';
 
 const { inputs, outputs } = individualDevicesViewBySerialNumberService;
 
-export const IndividualDevicesViewBySerialNumberContainer = () => {
+export const IndividualDevicesViewBySerialNumberContainer: FC<HeaderInject> = ({
+  Header,
+}) => {
   const filter = useStore(outputs.$searchPayload);
   const devices = useStore(outputs.$devices);
   const totalItems = useStore(outputs.$totalItems);
@@ -25,12 +28,16 @@ export const IndividualDevicesViewBySerialNumberContainer = () => {
 
   return (
     <>
-      <IndividualDevicesViewBySerialNumberSearch
-        clearSearchPayload={() => clearSearchPayload()}
-        filter={filter}
-        setFilter={setFilter}
-        mountPlaces={mountPlaces}
-      />
+      <Header>
+        <IndividualDevicesViewBySerialNumberSearch
+          clearSearchPayload={() => {
+            clearSearchPayload();
+          }}
+          filter={filter}
+          setFilter={setFilter}
+          mountPlaces={mountPlaces}
+        />
+      </Header>
       {!isLoading && Boolean(devices.length) && (
         <Wrapper>
           <div>

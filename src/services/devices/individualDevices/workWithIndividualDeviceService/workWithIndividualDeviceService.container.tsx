@@ -1,0 +1,70 @@
+import React, { FC, useEffect } from 'react';
+import { WorkWithIndividualDeviceContainerProps } from './workWithIndividualDeviceService.types';
+import { useParams } from 'react-router';
+import { workWithIndividualDeviceService } from './workWithIndividualDeviceService.model';
+import { useUnit } from 'effector-react';
+import { WithLoader } from 'ui-kit/shared/WithLoader';
+import { WorkWithIndividualDevicePage } from './view/WorkWithIndividualDevicePage';
+import { displayContractorsService } from 'services/contractors/displayContractorsService';
+import { getSerialNumberQuery } from './workWithIndividualDeviceService.api';
+import { displayIndividualDeviceAndNamesService } from '../displayIndividualDeviceAndNamesService';
+import { WorkWithIndividualDeviceSubmitActionContainer } from './workWithIndividualDeviceSubmitActionService';
+import { useHistory } from 'react-router-dom';
+
+const { gates, inputs, outputs, forms } = workWithIndividualDeviceService;
+const { WorkWithIndividualDeviceGate, IndividualDeviceGate } = gates;
+const { ContractorsGate } = displayContractorsService.gates;
+
+export const WorkWithIndividualDeviceContainer: FC<
+  WorkWithIndividualDeviceContainerProps
+> = ({ type }) => {
+  const { deviceId } = useParams<{ deviceId: string }>();
+  const history = useHistory();
+
+  const {
+    individualDevice,
+    isDeviceLoading,
+    contractors,
+    handleFetchSerialNumberForCheck,
+    handleFetchModels,
+    models,
+  } = useUnit({
+    individualDevice: outputs.$individualDevice,
+    isDeviceLoading: outputs.$isDeviceLoading,
+    contractors: displayContractorsService.outputs.$contractors,
+    handleFetchSerialNumberForCheck: inputs.fetchSerialNumberForCheck,
+    handleFetchModels:
+      displayIndividualDeviceAndNamesService.inputs.handleFetchModels,
+    models:
+      displayIndividualDeviceAndNamesService.outputs.$individualDevicesNames,
+  });
+
+  const { data: serialNumberForChecking, pending: isSerialNumberLoading } =
+    useUnit(getSerialNumberQuery);
+
+  useEffect(() => {
+    return inputs.actionSucceed.watch(history.goBack).unsubscribe;
+  }, [history]);
+
+  return (
+    <>
+      <WorkWithIndividualDeviceGate type={type} />
+      <IndividualDeviceGate id={Number(deviceId)} />
+      <ContractorsGate />
+      <WorkWithIndividualDeviceSubmitActionContainer />
+      <WithLoader isLoading={isDeviceLoading}>
+        <WorkWithIndividualDevicePage
+          individualDevice={individualDevice}
+          type={type}
+          form={forms.deviceInfoForm}
+          contractors={contractors}
+          handleFetchSerialNumberForCheck={handleFetchSerialNumberForCheck}
+          handleFetchModels={handleFetchModels}
+          serialNumberForChecking={serialNumberForChecking || []}
+          isSerialNumberLoading={isSerialNumberLoading}
+          models={models}
+        />
+      </WithLoader>
+    </>
+  );
+};

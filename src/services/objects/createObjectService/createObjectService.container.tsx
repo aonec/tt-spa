@@ -6,20 +6,21 @@ import { CreateHeatingStationContainer } from '../heatingStations/createHeatingS
 import { EditHeatingStationContainer } from '../heatingStations/editHeatingStationService';
 import { createObjectService } from './createObjectService.model';
 import { CreateObjectPage } from './view/CreateObjectPage';
+import { EHouseCategory } from 'api/types';
 
 const { inputs, outputs, gates } = createObjectService;
-const {
-  HouseManagementsFetchGate,
-  PageCloseGate,
-  HeatingStationsFetchGate,
-} = gates;
+const { HouseManagementsFetchGate, PageCloseGate, HeatingStationsFetchGate } =
+  gates;
 
 export const CreateObjectContainer = () => {
-  const existingCities = useStore(addressSearchService.outputs.cities);
-  const existingStreets = useStore(addressSearchService.outputs.streets);
+  const existingCities = useStore(addressSearchService.outputs.$existingCities);
+  const existingStreets = useStore(
+    addressSearchService.outputs.$existingStreets,
+  );
 
   const stageNumber = useStore(outputs.$stageNumber);
   const isPreviewModalOpen = useStore(outputs.$isPreviewModalOpen);
+  const isCreateLoading = useStore(outputs.$isCreateLoading);
 
   const houseManagements = useStore(outputs.$houseManagements);
   const createObjectData = useStore(outputs.$createObjectData);
@@ -32,11 +33,11 @@ export const CreateObjectContainer = () => {
   const closePreviewModal = useEvent(inputs.closePreviewModal);
 
   const openCreateHeatingStationModal = useEvent(
-    inputs.handleHeatindStationModalOpen
+    inputs.handleHeatindStationModalOpen,
   );
 
   const openEditHeatingStationModal = useEvent(
-    inputs.openEditHeatingStationModal
+    inputs.openEditHeatingStationModal,
   );
 
   const heatingStationCapture = useEvent(inputs.heatingStationCapture);
@@ -48,8 +49,16 @@ export const CreateObjectContainer = () => {
 
   useEffect(() => {
     return inputs.handleCreateObjectSuccessDone.watch((data) => {
+      const type = data.houseCategory;
+      let buildingProfilePath = '';
+      if (type === EHouseCategory.Living) {
+        buildingProfilePath = 'livingProfile';
+      } else {
+        buildingProfilePath = 'nonResidentialProfile';
+      }
+
       if (data?.id) {
-        history.push(`/objects/profile/${data.id}`);
+        history.push(`/buildings/${buildingProfilePath}/${data.id}`);
       }
     }).unsubscribe;
   }, [history]);
@@ -78,6 +87,7 @@ export const CreateObjectContainer = () => {
         openCreateHeatingStationModal={() => openCreateHeatingStationModal()}
         openEditHeatingStationModal={() => openEditHeatingStationModal()}
         heatingStationCapture={heatingStationCapture}
+        isCreateLoading={isCreateLoading}
       />
     </>
   );

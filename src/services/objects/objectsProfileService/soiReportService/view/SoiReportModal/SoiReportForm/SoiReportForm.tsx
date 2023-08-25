@@ -2,8 +2,8 @@ import React, { FC } from 'react';
 import { Form, Radio, Space } from 'antd';
 import { useFormik } from 'formik';
 import moment from 'moment';
-import { ESoiReportPeriod } from 'myApi';
-import { ErrorMessage } from '01/shared/ui/ErrorMessage';
+import { ESoiReportPeriod } from 'api/types';
+import { ErrorMessage } from 'ui-kit/ErrorMessage';
 import { TreeSelectSC } from 'services/resources/createResourceDisconnectionService/view/CreateResourceDisconnectionForm/CreateResourceDisconnectionForm.styled';
 import { DatePicker } from 'ui-kit/DatePicker';
 import { FormItem } from 'ui-kit/FormItem';
@@ -14,7 +14,9 @@ import { CREATE_SOI_REPORT_FORM_ID } from '../SoiReportModal.constants';
 import { formInitialValues, validationSchema } from './SoiReportForm.constants';
 import { FormGrid } from './SoiReportForm.styled';
 import { SoiReportFormProps } from './SoiReportForm.types';
-import { ResourceSelect } from 'ui-kit/shared_components/ResourceSelect';
+import { ResourceSelect } from 'ui-kit/shared/ResourceSelect';
+
+const withoutHouseMagement = 'withoutHouseMagement';
 
 export const SoiReportForm: FC<SoiReportFormProps> = ({
   soiReportType,
@@ -25,39 +27,34 @@ export const SoiReportForm: FC<SoiReportFormProps> = ({
   preparedAddresses,
   createSoiReport,
 }) => {
-  const {
-    values,
-    handleSubmit,
-    handleChange,
-    setFieldValue,
-    errors,
-  } = useFormik({
-    initialValues: formInitialValues,
-    validationSchema,
-    onSubmit: (values) => {
-      if (!values.Period || !values.Date) return;
+  const { values, handleSubmit, handleChange, setFieldValue, errors } =
+    useFormik({
+      initialValues: formInitialValues,
+      validationSchema,
+      onSubmit: (values) => {
+        if (!values.Period || !values.Date) return;
 
-      const normativePerPerson = values.NormativePerPerson
-        ? Number(values.NormativePerPerson)
-        : null;
+        const normativePerPerson = values.NormativePerPerson
+          ? Number(values.NormativePerPerson)
+          : null;
 
-      const date = values.Date;
+        const date = values.Date;
 
-      createSoiReport({
-        ReportName: values.ReportName,
-        HouseManagementId: values.HouseManagementId || undefined,
-        HousingStockId: values.HousingStockId || undefined,
-        Resource: values.Resource || undefined,
-        NormativePerPerson: normativePerPerson || undefined,
-        Period:
-          values.Period === 'year'
-            ? ESoiReportPeriod.Year
-            : ESoiReportPeriod.Month,
-        Year: date.year(),
-        Month: Number(date.format('MM')),
-      });
-    },
-  });
+        createSoiReport({
+          ReportName: values.ReportName,
+          HouseManagementId: values.HouseManagementId,
+          HousingStockId: values.HousingStockId || undefined,
+          Resource: values.Resource || undefined,
+          NormativePerPerson: normativePerPerson || undefined,
+          Period:
+            values.Period === 'year'
+              ? ESoiReportPeriod.Year
+              : ESoiReportPeriod.Month,
+          Year: date.year(),
+          Month: Number(date.format('MM')),
+        });
+      },
+    });
 
   return (
     <Form id={CREATE_SOI_REPORT_FORM_ID} onSubmitCapture={handleSubmit}>
@@ -74,7 +71,10 @@ export const SoiReportForm: FC<SoiReportFormProps> = ({
         <FormItem label="Город">
           <Select
             value={selectedCity || undefined}
-            onChange={(city) => setSelectedCity(city as string)}
+            onChange={(city) => {
+              setSelectedCity(city as string);
+              setFieldValue('HousingStockId', null);
+            }}
             placeholder="Выберите город"
           >
             {citiesList?.map((city) => (
@@ -102,12 +102,23 @@ export const SoiReportForm: FC<SoiReportFormProps> = ({
         {soiReportType === SoiReportType.HouseManagement && (
           <FormItem label="Домоуправление">
             <Select
-              value={values.HouseManagementId || undefined}
-              onChange={(value) =>
-                setFieldValue('HouseManagementId', value || null)
+              value={
+                values.HouseManagementId === null
+                  ? withoutHouseMagement
+                  : values.HouseManagementId || undefined
               }
+              onChange={(value) => {
+                if (value === withoutHouseMagement) {
+                  return setFieldValue('HouseManagementId', null);
+                }
+                setFieldValue('HouseManagementId', value);
+              }}
               placeholder="Выберите домоуправление из списка"
+              disabled={!houseManagements || houseManagements?.length === 0}
             >
+              <Select.Option value={withoutHouseMagement}>
+                Без домоуправления
+              </Select.Option>
               {houseManagements?.map(({ id, name }) => (
                 <Select.Option key={id} value={id}>
                   {name}

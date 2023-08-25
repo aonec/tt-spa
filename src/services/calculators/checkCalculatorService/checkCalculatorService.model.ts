@@ -1,6 +1,6 @@
 import { message } from 'antd';
 import { createDomain, forward, guard, sample } from 'effector';
-import { CalculatorResponse, CheckDeviceRequest } from 'myApi';
+import { CalculatorResponse, CheckDeviceRequest } from 'api/types';
 import { calculatorProfileService } from '../calculatorProfileService';
 import { fetchCloseCalculator } from './checkCalculatorService.api';
 import { CheckCalculatorFormik } from './checkCalculatorService.types';
@@ -48,12 +48,9 @@ checkCalculatorFx.doneData.watch(() => {
 });
 
 checkCalculatorFx.failData.watch((error) => {
-  if (error.response.status === 403) {
-    return message.error(
-      'У вашего аккаунта нет доступа к выбранному действию. Уточните свои права у Администратора',
-    );
-  }
-  return message.error(error.response.data.error.Text);
+  return message.error(
+    error.response.data.error.Text || error.response.data.error.Message,
+  );
 });
 
 export const checkCalculatorService = {

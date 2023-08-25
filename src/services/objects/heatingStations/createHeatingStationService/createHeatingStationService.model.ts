@@ -4,7 +4,7 @@ import {
   AddHeatingStationRequest,
   CreateAddressRequest,
   HeatingStationResponse,
-} from 'myApi';
+} from 'api/types';
 import { addressSearchService } from 'services/addressSearchService/addressSearchService.models';
 import { EffectFailDataAxiosError } from 'types';
 import { HeatingStationTypeRequestDictionary } from '../NewHeatingStationForm/newHeatingStationForm.constants';
@@ -53,7 +53,7 @@ guard({
 });
 
 createHeatingStationFx.failData.watch((error) =>
-  message.error(error.response.data.error.Text)
+  message.error(error.response.data.error.Text),
 );
 
 forward({
@@ -61,8 +61,8 @@ forward({
   to: handleCloseModal,
 });
 
-const $existingCities = addressSearchService.outputs.cities;
-const $existingStreets = addressSearchService.outputs.streets;
+const $existingCities = addressSearchService.outputs.$existingCities;
+const $existingStreets = addressSearchService.outputs.$existingStreets;
 
 const $isModalOpen = domain
   .createStore<boolean>(false)

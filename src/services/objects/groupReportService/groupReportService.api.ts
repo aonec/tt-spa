@@ -1,18 +1,17 @@
-import { axios } from '01/axios';
-import { GroupReportFormResponse } from 'myApi';
-import { GroupReportRequestPayload } from './groupReportService.types';
+import { axios } from 'api/axios';
 import queryString from 'query-string';
+import { GroupReportFormResponse, SendGroupReportRequest } from 'api/types';
+import { GroupReportRequestPayload } from './groupReportService.types';
 
-export const downloadGroupReportRequest = async ({
-  Name,
-  ...params
-}: GroupReportRequestPayload): Promise<void> => {
+export const downloadGroupReportRequest = async (
+  params: GroupReportRequestPayload,
+): Promise<void> => {
   const res: string = await fetchGroupReport(params);
   const fileURL = window.URL.createObjectURL(new Blob([res]));
 
   const fileDownloadLink = document.createElement('a');
   fileDownloadLink.href = fileURL;
-  fileDownloadLink.setAttribute('download', `${Name}.zip`);
+  fileDownloadLink.setAttribute('download', `${params.FileName}.zip`);
   document.body.appendChild(fileDownloadLink);
 
   fileDownloadLink.click();
@@ -20,7 +19,7 @@ export const downloadGroupReportRequest = async ({
 };
 
 export const fetchGroupReport = (
-  params: Omit<GroupReportRequestPayload, 'Name'>
+  params: GroupReportRequestPayload,
 ): Promise<string> =>
   axios.get('Reports/GroupReport', {
     params,
@@ -30,3 +29,6 @@ export const fetchGroupReport = (
 
 export const fetchFilters = (): Promise<GroupReportFormResponse> =>
   axios.get('Reports');
+
+export const sendByEmail = (payload: SendGroupReportRequest): Promise<void> =>
+  axios.post('/Reports/SendGroupReport', payload);

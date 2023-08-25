@@ -1,15 +1,16 @@
-import { SpaceLine } from '01/shared/ui/Layout/Space/Space';
+import { SpaceLine } from 'ui-kit/SpaceLine';
 import { Checkbox } from 'antd';
 import React, { FC, useEffect, useState } from 'react';
 import { Wrapper } from './SwitchOrCompleteCheckbox.styled';
 import { SwitchOrCompleteCheckboxProps } from './SwitchOrCompleteCheckbox.types';
 
-export const SwitchOrCompleteCheckbox: FC<SwitchOrCompleteCheckboxProps> = ({ handleChange }) => {
-
+export const SwitchOrCompleteCheckbox: FC<SwitchOrCompleteCheckboxProps> = ({
+  handleChange,
+}) => {
   const [checked, setChecked] = useState(false);
 
   useEffect(() => {
-    handleChange(checked)
+    handleChange(checked);
   }, [checked, handleChange]);
 
   return (

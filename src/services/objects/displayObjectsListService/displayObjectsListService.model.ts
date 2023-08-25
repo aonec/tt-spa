@@ -1,27 +1,19 @@
 import { createGate } from 'effector-react';
-import { createDomain, forward, guard, sample } from 'effector';
-import { HousingStockListResponsePagedList } from 'myApi';
-import { getHousuingStocks } from './displayObjectsListService.api';
-import {
-  GetHousingStocksRequestPayload,
-  SearchHousingStocksPayload,
-} from './displayObjectsListService.types';
+import { createDomain, forward, sample } from 'effector';
+import { BuildingListResponsePagedList } from 'api/types';
+import { SearchHousingStocksPayload } from './displayObjectsListService.types';
+import { getBuildingsQuery } from './displayObjectsListService.api';
 
 const domain = createDomain('displayObjectsListService');
 
-const $housingStocks = domain.createStore<HousingStockListResponsePagedList | null>(
-  null
+const $housingStocks = domain.createStore<BuildingListResponsePagedList | null>(
+  null,
 );
 
-const fetchHousingStocksFx = domain.createEffect<
-  GetHousingStocksRequestPayload,
-  HousingStockListResponsePagedList
->(getHousuingStocks);
-
-const $isLoading = fetchHousingStocksFx.pending;
+const $isLoading = getBuildingsQuery.$pending;
 
 const $searchPayload = domain.createStore<SearchHousingStocksPayload | null>(
-  null
+  null,
 );
 
 const searchHosuingStocks = domain.createEvent<SearchHousingStocksPayload>();
@@ -38,7 +30,7 @@ forward({
 });
 
 $housingStocks
-  .on(fetchHousingStocksFx.doneData, (_, result) => result)
+  .on(getBuildingsQuery.$data, (_, result) => result)
   .reset(clearSearchState);
 
 $searchPayload
@@ -51,24 +43,30 @@ $searchPayload
   .reset(clearSearchState);
 
 sample({
-  clock: [guard({ clock: $searchPayload, filter: Boolean })],
+  clock: $searchPayload,
+  filter: (searchPayload) => Boolean(searchPayload),
   fn: (payload) => {
     return {
       City: payload?.city,
       Street: payload?.street,
-      HousingStockNumber: payload?.house,
+      BuildingNumber: payload?.house,
       Corpus: payload?.corpus,
       PageSize: 30,
       PageNumber: payload?.pageNumber,
     };
   },
-  target: fetchHousingStocksFx,
+  target: getBuildingsQuery.start,
 });
 
 sample({
   clock: [HousingStocksGate.open],
   fn: () => ({ PageSize: 30 }),
-  target: fetchHousingStocksFx,
+  target: getBuildingsQuery.start,
+});
+
+sample({
+  clock: HousingStocksGate.close,
+  target: getBuildingsQuery.reset,
 });
 
 export const displayObjectsListService = {

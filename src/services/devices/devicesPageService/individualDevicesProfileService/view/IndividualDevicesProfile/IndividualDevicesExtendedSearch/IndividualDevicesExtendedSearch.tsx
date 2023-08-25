@@ -1,5 +1,5 @@
 import React, { FC, useState } from 'react';
-import { ExtendedSearch } from '01/shared/ui/ExtendedSearch';
+import { ExtendedSearch } from 'ui-kit/ExtendedSearch';
 import { AddressSearchContainer } from 'services/addressSearchService';
 import { SearchFieldType } from 'services/addressSearchService/view/AddressSearch/AddressSearch.types';
 import { IndividualDevicesExtendedSearchProps } from './IndividualDevicesExtendedSearch.types';
@@ -11,10 +11,9 @@ import {
   SecondLineWrapper,
 } from './IndividualDevicesExtendedSearch.styled';
 import { FormItem } from 'ui-kit/FormItem';
-import { InputSC, SelectSC } from '01/shared/ui/Fields';
 import { SearchIcon } from 'ui-kit/icons';
 import { useFormik } from 'formik';
-import { EApartmentStatus, EResourceType } from 'myApi';
+import { EApartmentStatus, EResourceType } from 'api/types';
 import {
   apartmentStatusesLookup,
   closingReasonLookup,
@@ -22,10 +21,14 @@ import {
   formTranslateLookup,
   resourcesNamesLookup,
 } from './IndividualDevicesExtendedSearch.constants';
-import { ResourceIconLookup } from 'ui-kit/shared_components/ResourceIconLookup';
+import { ResourceIconLookup } from 'ui-kit/shared/ResourceIconLookup';
 import { DevicesSearchType } from 'services/devices/devicesPageService/devicesPageService.types';
+import { Select } from 'ui-kit/Select';
+import { Input } from 'ui-kit/Input';
 
-export const IndividualDevicesExtendedSearch: FC<IndividualDevicesExtendedSearchProps> = ({
+export const IndividualDevicesExtendedSearch: FC<
+  IndividualDevicesExtendedSearchProps
+> = ({
   children,
   devicesSearchType,
   handleApply,
@@ -35,15 +38,12 @@ export const IndividualDevicesExtendedSearch: FC<IndividualDevicesExtendedSearch
 }) => {
   const [isOpen, setIsOpen] = useState(false);
 
-  const {
-    values,
-    setFieldValue,
-    handleSubmit,
-  } = useFormik<SearchIndividualDevicesParams>({
-    initialValues: filters,
-    onSubmit: handleApply,
-    enableReinitialize: true,
-  });
+  const { values, setFieldValue, handleSubmit, resetForm } =
+    useFormik<SearchIndividualDevicesParams>({
+      initialValues: filters,
+      onSubmit: handleApply,
+      enableReinitialize: true,
+    });
 
   return (
     <ExtendedSearch
@@ -54,7 +54,10 @@ export const IndividualDevicesExtendedSearch: FC<IndividualDevicesExtendedSearch
         handleSubmit();
         setIsOpen(false);
       }}
-      handleClear={handleClear}
+      handleClear={() => {
+        handleClear && handleClear();
+        resetForm();
+      }}
       extendedSearchContent={
         <>
           <AddressSearchContainer
@@ -95,7 +98,8 @@ export const IndividualDevicesExtendedSearch: FC<IndividualDevicesExtendedSearch
           />
           <FirstLineWrapper>
             <FormItem label="Ресурс">
-              <SelectSC
+              <Select
+                small
                 placeholder="Ресурс"
                 value={values.Resource || undefined}
                 onChange={(value) => {
@@ -104,19 +108,20 @@ export const IndividualDevicesExtendedSearch: FC<IndividualDevicesExtendedSearch
                 allowClear
               >
                 {Object.values(EResourceType).map((resource) => (
-                  <SelectSC key={resource} value={resource}>
+                  <Select key={resource} value={resource}>
                     <ResourceOptionWrapper>
                       <ResourceIconLookup resource={resource} />
                       <ResourceNameWrapper>
                         {resourcesNamesLookup[resource]}
                       </ResourceNameWrapper>
                     </ResourceOptionWrapper>
-                  </SelectSC>
+                  </Select>
                 ))}
-              </SelectSC>
+              </Select>
             </FormItem>
             <FormItem label="Статус кв">
-              <SelectSC
+              <Select
+                small
                 placeholder="Статус кв"
                 value={values.ApartmentStatus || undefined}
                 onChange={(value) =>
@@ -125,14 +130,15 @@ export const IndividualDevicesExtendedSearch: FC<IndividualDevicesExtendedSearch
                 allowClear
               >
                 {[EApartmentStatus.Ok, EApartmentStatus.Pause].map((status) => (
-                  <SelectSC.Option key={status} value={status}>
+                  <Select.Option key={status} value={status}>
                     {apartmentStatusesLookup[status]}
-                  </SelectSC.Option>
+                  </Select.Option>
                 ))}
-              </SelectSC>
+              </Select>
             </FormItem>
             <FormItem label="Модель прибора">
-              <InputSC
+              <Input
+                small
                 value={values.Model || undefined}
                 onChange={(event) => setFieldValue('Model', event.target.value)}
                 placeholder="Модель прибора"
@@ -140,7 +146,8 @@ export const IndividualDevicesExtendedSearch: FC<IndividualDevicesExtendedSearch
               />
             </FormItem>
             <FormItem label="Номер прибора">
-              <InputSC
+              <Input
+                small
                 value={values.SerialNumber || undefined}
                 onChange={(event) =>
                   setFieldValue('SerialNumber', event.target.value)
@@ -152,7 +159,8 @@ export const IndividualDevicesExtendedSearch: FC<IndividualDevicesExtendedSearch
           </FirstLineWrapper>
           <SecondLineWrapper>
             <FormItem label="Место установки прибора">
-              <SelectSC
+              <Select
+                small
                 placeholder="Место установки прибора"
                 value={values.MountPlace || undefined}
                 onChange={(value) => setFieldValue('MountPlace', value || null)}
@@ -163,15 +171,16 @@ export const IndividualDevicesExtendedSearch: FC<IndividualDevicesExtendedSearch
                     return null;
                   }
                   return (
-                    <SelectSC.Option key={name} value={name}>
+                    <Select.Option key={name} value={name}>
                       {description}
-                    </SelectSC.Option>
+                    </Select.Option>
                   );
                 })}
-              </SelectSC>
+              </Select>
             </FormItem>
             <FormItem label="Причина закрытия ИПУ">
-              <SelectSC
+              <Select
+                small
                 placeholder="Причина закрытия ИПУ"
                 value={values.ClosingReason || undefined}
                 onChange={(value) =>
@@ -181,15 +190,16 @@ export const IndividualDevicesExtendedSearch: FC<IndividualDevicesExtendedSearch
               >
                 {Object.entries(closingReasonLookup).map(
                   ([closingReason, text]) => (
-                    <SelectSC key={closingReason} value={closingReason}>
+                    <Select key={closingReason} value={closingReason}>
                       {text}
-                    </SelectSC>
-                  )
+                    </Select>
+                  ),
                 )}
-              </SelectSC>
+              </Select>
             </FormItem>
             <FormItem label="Дата окoнчания поверки">
-              <SelectSC
+              <Select
+                small
                 placeholder="Дата окoнчания поверки"
                 value={values.ExpiresCheckingDateAt || undefined}
                 onChange={(value) =>
@@ -199,12 +209,12 @@ export const IndividualDevicesExtendedSearch: FC<IndividualDevicesExtendedSearch
               >
                 {Object.entries(expiresCheckingDateAtLookup).map(
                   ([key, value]) => (
-                    <SelectSC key={key} value={key}>
+                    <Select key={key} value={key}>
                       {value}
-                    </SelectSC>
-                  )
+                    </Select>
+                  ),
                 )}
-              </SelectSC>
+              </Select>
             </FormItem>
           </SecondLineWrapper>
         </>

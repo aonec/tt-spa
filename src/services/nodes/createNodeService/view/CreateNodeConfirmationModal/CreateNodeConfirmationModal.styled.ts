@@ -1,4 +1,6 @@
+import { Modal } from 'antd';
 import styled from 'styled-components';
+import { Button } from 'ui-kit/Button';
 
 export const StepWrapper = styled.div`
   margin-top: 32px;
@@ -81,4 +83,36 @@ export const NodeResourceInfo = styled.div`
   display: flex;
   align-items: center;
   gap: 8px;
+`;
+
+export const ListWrapper = styled.div`
+  margin-top: 16px;
+`;
+
+export const ButtonSC = styled(Button)`
+  padding: 0 40px;
+`;
+
+export const StyledModal = styled(Modal)`
+  .ant-modal-header {
+    padding: 24px 32px;
+    border: 0;
+  }
+
+  .ant-modal-body {
+    padding: 0 32px 32px 32px;
+  }
+
+  .ant-modal-footer {
+    padding: 0;
+  }
+
+  .ant-modal-close-x {
+    fill: var(--main-100);
+  }
+
+  .ant-modal-footer button + button {
+    margin-bottom: 0;
+    margin-left: 16px;
+  }
 `;

@@ -10,7 +10,7 @@ const { inputs, outputs, gates } = resourceAccountingSystemsService;
 const { NodesGate } = gates;
 
 export const ResourceAccountingSystemsContainer = () => {
-  const { housingStockId } = useParams<{ housingStockId: string }>();
+  const { buildingId } = useParams<{ buildingId: string }>();
 
   const nodes = useStore(outputs.$nodes);
   const isLoading = useStore(outputs.$isLoading);
@@ -20,7 +20,7 @@ export const ResourceAccountingSystemsContainer = () => {
   return (
     <>
       <MeteringDevicesContainer />
-      {housingStockId && <NodesGate housingStockId={Number(housingStockId)} />}
+      {buildingId && <NodesGate buildingId={Number(buildingId)} />}
       <ResourceAccountingSystems
         openDevicesListModal={openDevicesListModal}
         nodes={nodes}

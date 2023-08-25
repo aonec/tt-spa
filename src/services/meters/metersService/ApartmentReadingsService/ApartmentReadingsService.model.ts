@@ -1,19 +1,23 @@
 import { createDomain, forward, guard, sample } from 'effector';
 import { createGate } from 'effector-react';
-import { ApartmentResponse } from 'myApi';
+import { ApartmentResponse, HomeownerAccountResponse } from 'api/types';
 import { SearchMode } from './view/ApartmentsReadings/ApartmentsReadings.types';
 import {
   GetApartmentsRequestPayload,
   UpdateApartmentRequestPayload,
+  UpdateHomeownerRequestPayload,
 } from './ApartmentReadingsService.types';
-import { getApartment, putApartment } from './ApartmentReadingsService.api';
-import { message } from 'antd';
 import {
-  pauseApartmentButtonClicked,
-  cancelPauseApartmentButtonClicked,
-  pauseApartmentStatusFx,
-} from '01/features/apartments/pauseApartment/models';
-import { openEditPersonalNumberTypeModal } from '01/features/homeowner/editPersonalNumber/models';
+  getApartmentQuery,
+  patchHomeowner,
+  putApartment,
+} from './ApartmentReadingsService.api';
+import { message } from 'antd';
+import { EffectFailDataAxiosError } from 'types';
+import { individualDeviceMountPlacesService } from 'services/devices/individualDeviceMountPlacesService/individualDeviceMountPlacesService.model';
+import { selectPersonalNumberActionService } from 'services/homeowner/personalNumber/selectPersonalNumberActionService';
+import { pauseApartmentService } from 'services/apartments/pauseApartmentService/pauseApartmentService.models';
+import { printApartmentDevicesCertificateService } from 'services/apartments/printApartmentDevicesCertificateService/printApartmentDevicesCertificateService.models';
 
 const domain = createDomain('apartmentReadingsService');
 
@@ -24,26 +28,51 @@ const handleSearchApartment = domain.createEvent<GetApartmentsRequestPayload>();
 const handleUpdateApartment =
   domain.createEvent<UpdateApartmentRequestPayload>();
 
+const handleUpdateHomeowner =
+  domain.createEvent<UpdateHomeownerRequestPayload>();
+
 const setSelectedHomeownerName = domain.createEvent<string>();
 
 const ApartmentGate = createGate<{ id?: number }>();
 
-const fetchApartmentFx = domain.createEffect<
-  GetApartmentsRequestPayload,
-  ApartmentResponse | null
->(getApartment);
-
 const updateApartmentFx = domain.createEffect<
   UpdateApartmentRequestPayload,
-  ApartmentResponse
+  ApartmentResponse,
+  EffectFailDataAxiosError
 >(putApartment);
+
+const updateHomeownerFx = domain.createEffect<
+  UpdateHomeownerRequestPayload,
+  HomeownerAccountResponse,
+  EffectFailDataAxiosError
+>(patchHomeowner);
+
+const handleHomeownerUpdated = updateHomeownerFx.doneData;
 
 const $apartment = domain
   .createStore<ApartmentResponse | null>(null)
   .on(
-    [fetchApartmentFx.doneData, updateApartmentFx.doneData],
+    [getApartmentQuery.$data, updateApartmentFx.doneData],
     (_, apartment) => apartment,
   )
+  .on(handleHomeownerUpdated, (prevApartment, updatedHomeowner) => {
+    if (!prevApartment) return null;
+
+    const changedHomeowners = prevApartment.homeownerAccounts?.map(
+      (homeowner) => {
+        if (homeowner.id !== updatedHomeowner.id) {
+          return homeowner;
+        }
+        return {
+          ...homeowner,
+          phoneNumber: updatedHomeowner.phoneNumber,
+          name: updatedHomeowner.name,
+        };
+      },
+    );
+
+    return { ...prevApartment, homeownerAccounts: changedHomeowners || null };
+  })
   .reset(ApartmentGate.close);
 
 const $searchMode = domain
@@ -54,9 +83,21 @@ const $selectedHomeownerName = domain
   .createStore<string | null>(null)
   .on(setSelectedHomeownerName, (_, name) => name);
 
+const $isUpdateHomeownerLoading = updateHomeownerFx.pending;
+
+sample({
+  clock: handleUpdateHomeowner,
+  target: updateHomeownerFx,
+});
+
 forward({
   from: handleSearchApartment,
-  to: fetchApartmentFx,
+  to: getApartmentQuery.start,
+});
+
+sample({
+  clock: ApartmentGate.close,
+  target: getApartmentQuery.reset,
 });
 
 sample({
@@ -67,9 +108,9 @@ sample({
       clock: ApartmentGate.state,
       filter: (apartment, { id }) => Boolean(id && id !== apartment?.id),
     }),
-    pauseApartmentStatusFx.doneData,
+    pauseApartmentService.inputs.pauseApartmentStatusFx.doneData,
   ],
-  target: fetchApartmentFx,
+  target: getApartmentQuery.start,
 });
 
 forward({
@@ -79,26 +120,63 @@ forward({
 
 updateApartmentFx.doneData.watch(() => message.success('Сохранено успешно!'));
 
-const $isLoadingApartment = fetchApartmentFx.pending;
+updateHomeownerFx.doneData.watch(() => message.success('Сохранено успешно!'));
 
-const handleApartmentLoaded = fetchApartmentFx.doneData;
+const $isLoadingApartment = getApartmentQuery.$pending;
+
+const handleApartmentLoaded = getApartmentQuery.finished.success;
+
+getApartmentQuery.finished.failure.watch(({ error }) => {
+  return message.error(
+    error.response.data.error.Text ||
+      error.response.data.error.Message ||
+      'Произошла ошибка',
+  );
+});
+
+updateApartmentFx.failData.watch((error) => {
+  return message.error(
+    error.response.data.error.Text ||
+      error.response.data.error.Message ||
+      'Произошла ошибка',
+  );
+});
+
+updateHomeownerFx.failData.watch((error) => {
+  return message.error(
+    error.response.data.error.Text ||
+      error.response.data.error.Message ||
+      'Произошла ошибка',
+  );
+});
 
 export const apartmentReadingsService = {
   inputs: {
     setSearchMode,
     handleSearchApartment,
     handleUpdateApartment,
-    handlePauseApartment: pauseApartmentButtonClicked,
-    handleCancelPauseApartment: cancelPauseApartmentButtonClicked,
-    openEditPersonalNumberModal: openEditPersonalNumberTypeModal,
+    handlePauseApartment:
+      pauseApartmentService.inputs.pauseApartmentButtonClicked,
+    handleCancelPauseApartment:
+      pauseApartmentService.inputs.cancelPauseApartmentButtonClicked,
+    openEditPersonalNumberModal:
+      selectPersonalNumberActionService.inputs.setSelectActionModalOpen,
     handleApartmentLoaded,
     setSelectedHomeownerName,
+    printIssueCertificate:
+      printApartmentDevicesCertificateService.inputs
+        .printIssueSertificateButtonClicked,
+    handleUpdateHomeowner,
   },
   outputs: {
     $searchMode,
     $apartment,
     $isLoadingApartment,
     $selectedHomeownerName,
+    $allIndividualDeviceMountPlaces:
+      individualDeviceMountPlacesService.outputs
+        .$allIndividualDeviceMountPlaces,
+    $isUpdateHomeownerLoading,
   },
   gates: { ApartmentGate },
 };

@@ -1,9 +1,9 @@
-import { axios } from '01/axios';
+import { axios } from 'api/axios';
 import {
   CalculatorResponse,
   MeteringDeviceResponse,
   UpdateCalculatorRequest,
-} from 'myApi';
+} from 'api/types';
 
 export async function putCalculator(params: {
   deviceId: number;
@@ -11,13 +11,13 @@ export async function putCalculator(params: {
 }): Promise<MeteringDeviceResponse | null> {
   const res: MeteringDeviceResponse = await axios.put(
     `Calculators/${params.deviceId}`,
-    params.form
+    params.form,
   );
   return res;
 }
 
 export const getAlreadyExistingConnectionCalculator = (
-  deviceId: number
+  deviceId: number,
 ): Promise<CalculatorResponse | null> => {
   return axios.get(`/Calculators/${deviceId}`);
 };

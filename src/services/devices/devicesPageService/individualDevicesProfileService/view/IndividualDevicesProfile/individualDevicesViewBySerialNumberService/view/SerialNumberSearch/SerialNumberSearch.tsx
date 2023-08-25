@@ -1,12 +1,11 @@
-import { useSwitchInputOnEnter } from '01/features/individualDevices/switchIndividualDevice/components/stages/BaseInfoStage.hook';
-import { fromEnter } from '01/shared/ui/DatePickerNative';
-import { InputSC, SelectSC } from '01/shared/ui/Fields';
+import { useSwitchInputOnEnter } from 'hooks/useSwitchInputOnEnter';
+import { fromEnter } from 'ui-kit/shared/DatePickerNative';
 import { useFormik } from 'formik';
-import { EActResourceType, EApartmentStatus } from 'myApi';
+import { EActResourceType, EApartmentStatus } from 'api/types';
 import React, { FC, useCallback } from 'react';
 import { DevicesSearchType } from 'services/devices/devicesPageService/devicesPageService.types';
 import { SearchIcon } from 'ui-kit/icons';
-import { ResourceInfo } from 'ui-kit/shared_components/ResourceInfo';
+import { ResourceInfo } from 'ui-kit/shared/ResourceInfo';
 import { IndividualDevicesExtendedSearch } from '../../../IndividualDevicesExtendedSearch';
 import { apartmentStatusesLookup } from '../../../IndividualDevicesExtendedSearch/IndividualDevicesExtendedSearch.constants';
 import { IndividualDeviceSearchbySerialNumberPayload } from '../../individualDevicesViesBySerialNumberService.types';
@@ -16,38 +15,35 @@ import {
   Wrapper,
 } from './SerialNumberSearch.styled';
 import { IndividualDevicesViewBySerialNumberSearchProps } from './SerialNumberSearch.types';
+import { ClearIconSC } from 'ui-kit/ExtendedSearch/ExtendedSearch.styled';
+import { Select } from 'ui-kit/Select';
+import { Input } from 'ui-kit/Input';
+import { Button } from 'ui-kit/Button';
 
-export const IndividualDevicesViewBySerialNumberSearch: FC<IndividualDevicesViewBySerialNumberSearchProps> = ({
-  filter,
-  setFilter,
-  clearSearchPayload,
-  mountPlaces,
-}) => {
+export const IndividualDevicesViewBySerialNumberSearch: FC<
+  IndividualDevicesViewBySerialNumberSearchProps
+> = ({ filter, setFilter, clearSearchPayload, mountPlaces }) => {
   const next = useSwitchInputOnEnter('searchBySerialNumber', true);
 
-  const {
-    values,
-    setFieldValue,
-    handleSubmit,
-    setValues,
-  } = useFormik<IndividualDeviceSearchbySerialNumberPayload>({
-    initialValues: {
-      SerialNumber: filter.SerialNumber,
-      ApartmentStatus: filter.ApartmentStatus || null,
-      Resource: filter.Resource || null,
-      IsAlsoClosing: filter.IsAlsoClosing,
-      Model: filter.Model || '',
-      MountPlace: filter.MountPlace || '',
-      ClosingReason: filter.ClosingReason || null,
-      ExpiresCheckingDateAt: filter.ExpiresCheckingDateAt || null,
-      City: filter.City || '',
-      HouseCorpus: filter.HouseCorpus || '',
-      HouseNumber: filter.HouseNumber || '',
-      Street: filter.Street || '',
-    },
-    enableReinitialize: true,
-    onSubmit: setFilter,
-  });
+  const { values, setFieldValue, handleSubmit, setValues, resetForm } =
+    useFormik<IndividualDeviceSearchbySerialNumberPayload>({
+      initialValues: {
+        SerialNumber: filter.SerialNumber,
+        ApartmentStatus: filter.ApartmentStatus || null,
+        Resource: filter.Resource || null,
+        IsAlsoClosing: filter.IsAlsoClosing,
+        Model: filter.Model || '',
+        MountPlace: filter.MountPlace || '',
+        ClosingReason: filter.ClosingReason || null,
+        ExpiresCheckingDateAt: filter.ExpiresCheckingDateAt || null,
+        City: filter.City || '',
+        HouseCorpus: filter.HouseCorpus || '',
+        HouseNumber: filter.HouseNumber || '',
+        Street: filter.Street || '',
+      },
+      enableReinitialize: true,
+      onSubmit: setFilter,
+    });
 
   const handleEnter = useCallback(
     (index: number) =>
@@ -55,7 +51,7 @@ export const IndividualDevicesViewBySerialNumberSearch: FC<IndividualDevicesView
         next(index);
         handleSubmit();
       }),
-    [next, handleSubmit]
+    [next, handleSubmit],
   );
 
   return (
@@ -71,10 +67,11 @@ export const IndividualDevicesViewBySerialNumberSearch: FC<IndividualDevicesView
         mountPlaces={mountPlaces}
       >
         <SearchFieldsWrapper>
-          <InputSC
+          <Input
+            small
             data-reading-input={'searchBySerialNumber'}
             prefix={<SearchIcon />}
-            type="number"
+            type="text"
             placeholder="Введите серийный номер прибора"
             onChange={(e) => setFieldValue('SerialNumber', e.target.value)}
             value={values.SerialNumber}
@@ -83,7 +80,8 @@ export const IndividualDevicesViewBySerialNumberSearch: FC<IndividualDevicesView
               next(0);
             })}
           />
-          <SelectSC
+          <Select
+            small
             data-reading-input={'searchBySerialNumber'}
             placeholder="Ресурс"
             value={values.Resource || EActResourceType.All}
@@ -96,12 +94,13 @@ export const IndividualDevicesViewBySerialNumberSearch: FC<IndividualDevicesView
             showAction={['focus']}
           >
             {Object.values(EActResourceType).map((elem) => (
-              <SelectSC.Option key={elem} value={elem}>
+              <Select.Option key={elem} value={elem}>
                 <ResourceInfo resource={elem} />
-              </SelectSC.Option>
+              </Select.Option>
             ))}
-          </SelectSC>
-          <SelectSC
+          </Select>
+          <Select
+            small
             data-reading-input={'searchBySerialNumber'}
             placeholder="Статус кв."
             value={values.ApartmentStatus || undefined}
@@ -113,11 +112,11 @@ export const IndividualDevicesViewBySerialNumberSearch: FC<IndividualDevicesView
             showAction={['focus']}
           >
             {[EApartmentStatus.Ok, EApartmentStatus.Pause].map((elem) => (
-              <SelectSC.Option key={elem} value={elem}>
+              <Select.Option key={elem} value={elem}>
                 {apartmentStatusesLookup[elem]}
-              </SelectSC.Option>
+              </Select.Option>
             ))}
-          </SelectSC>
+          </Select>
           <CheckboxSC
             checked={values.IsAlsoClosing}
             onChange={(e) => {
@@ -127,6 +126,17 @@ export const IndividualDevicesViewBySerialNumberSearch: FC<IndividualDevicesView
           >
             Закрытые приборы
           </CheckboxSC>
+          <Button
+            type="ghost"
+            onClick={() => {
+              clearSearchPayload();
+              resetForm();
+            }}
+            size="small"
+            icon={<ClearIconSC />}
+          >
+            Сбросить
+          </Button>
         </SearchFieldsWrapper>
       </IndividualDevicesExtendedSearch>
     </Wrapper>

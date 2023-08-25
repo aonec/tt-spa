@@ -2,11 +2,11 @@ import {
   EHouseCategory,
   ELivingHouseType,
   ENonResidentialHouseType,
-} from 'myApi';
+} from 'api/types';
 import * as yup from 'yup';
 
 export const validationSchema = yup.object().shape({
-  houseManagement: yup.string().nullable().required('Обязательное поле'),
+  houseManagement: yup.string().nullable(true),
   objectCategory: yup.string().nullable().required('Обязательное поле'),
 
   livingHouseType: yup
@@ -36,7 +36,6 @@ export const HouseCategoryDictionary: { [key in EHouseCategory]: string } = {
 export const LivingHouseTypeDictionary: {
   [key in ELivingHouseType]: string;
 } = {
-  [ELivingHouseType.None]: 'Не выбрано',
   [ELivingHouseType.ApartmentHouse]: 'Многоквартирный дом',
   [ELivingHouseType.Private]: 'Частный дом',
   [ELivingHouseType.Townhouse]: 'Таунхаус',
