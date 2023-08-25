@@ -45,7 +45,9 @@ export const AddressSearch: FC<AddressSearchProps> = ({
       data-reading-input={dataKey}
       onChange={(value) => {
         handleChange(SearchFieldType.City, value.toString());
-
+        handleChange(SearchFieldType.Street, '');
+        handleChange(SearchFieldType.House, '');
+        handleChange(SearchFieldType.Corpus, '');
         handleSubmit();
       }}
       value={values.city}
