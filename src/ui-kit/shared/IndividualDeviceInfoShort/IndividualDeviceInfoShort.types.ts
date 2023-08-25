@@ -5,5 +5,5 @@ import {
 
 export type IndividualDeviceInfoShortProps = {
   device: IndividualDeviceResponseFromDevicePage | IndividualDeviceResponse;
-  onClick?: () => void;
+  onClick?: (id: number) => void;
 };
