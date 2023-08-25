@@ -12,6 +12,11 @@ import {
   TemperatureNormativeUpdateRequest,
 } from 'api/types';
 import { EffectFailDataAxiosErrorDataTemperatureGraph } from 'types';
+import { EDayPartError } from './view/TemperatureGraph/TemperatureGraph.types';
+import {
+  ColumnErrDictionary,
+  ErrorColumnsType,
+} from './temperatureGraphService.types';
 
 const TemperatureGraphGate = createGate();
 
@@ -64,6 +69,36 @@ const $isEditing = createStore<boolean>(false)
   .on(putTemperatureNormativeFx.doneData, () => false)
   .reset(TemperatureGraphGate.close);
 
+const $errorColumns = createStore<ErrorColumnsType>([]).on(
+  putTemperatureNormativeFx.failData,
+  (_, error) => {
+    const errorsArr = Object.entries(error.response.data.error.Data);
+    const preparedErrorsArr = errorsArr.map((err) => {
+      const dayPart = err[1].DayPart;
+
+      let dayPartError = [] as EDayPartError[];
+
+      if (dayPart === 'Дневной норматив') {
+        dayPartError = [EDayPartError.day];
+      }
+      if (dayPart === 'Ночной норматив') {
+        dayPartError = [EDayPartError.night];
+      }
+      if (dayPart === 'Дневной и ночной нормативы') {
+        dayPartError = [EDayPartError.day, EDayPartError.night];
+      }
+
+      return {
+        [Number(err[0])]: dayPartError,
+      };
+    });
+
+    return preparedErrorsArr;
+  },
+);
+
+$errorColumns.watch((data) => console.log(data));
+
 const $isLoading = putTemperatureNormativeFx.pending;
 
 sample({ clock: TemperatureGraphGate.open, target: getTemperatureNormativeFx });
@@ -80,12 +115,10 @@ putTemperatureNormativeFx.failData.watch((error) => {
       error.response.data.error.Message ||
       'Произошла ошибка',
   );
-
-  console.log(error.response.data.error.Data);
 });
 
 export const temperatureGraphService = {
   inputs: { handleEditTemperatureNormative, setEditedTemperatureNormative },
-  outputs: { $temperatureNormative, $isEditing, $isLoading },
+  outputs: { $temperatureNormative, $isEditing, $isLoading, $errorColumns },
   gates: { TemperatureGraphGate },
 };

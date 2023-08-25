@@ -16,12 +16,14 @@ export const TemperatureGraphContainer = () => {
     handleEditTemperatureNormative,
     setEditedTemperatureNormative,
     isLoading,
+    errorColumns,
   } = useUnit({
     temperatureNormative: outputs.$temperatureNormative,
     isEditing: outputs.$isEditing,
     handleEditTemperatureNormative: inputs.handleEditTemperatureNormative,
     setEditedTemperatureNormative: inputs.setEditedTemperatureNormative,
     isLoading: outputs.$isLoading,
+    errorColumns: outputs.$errorColumns,
   });
   return (
     <>
@@ -32,6 +34,7 @@ export const TemperatureGraphContainer = () => {
         handleEditTemperatureNormative={handleEditTemperatureNormative}
         setEditedTemperatureNormative={setEditedTemperatureNormative}
         isLoading={isLoading}
+        errorColumns={errorColumns}
       />
     </>
   );

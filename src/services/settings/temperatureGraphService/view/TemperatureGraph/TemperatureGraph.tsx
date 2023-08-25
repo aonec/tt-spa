@@ -1,4 +1,10 @@
-import React, { ChangeEvent, FC, useCallback, useState } from 'react';
+import React, {
+  ChangeEvent,
+  FC,
+  useCallback,
+  useEffect,
+  useState,
+} from 'react';
 import { useFormik } from 'formik';
 import { message } from 'antd';
 import {
@@ -25,6 +31,7 @@ import {
   TemperatureNormativeRow,
   TemperatureNormativeUpdateRequest,
 } from 'api/types';
+import { ErrorColumnsType } from '../../temperatureGraphService.types';
 
 export const TemperatureGraph: FC<TemperatureGraphProps> = ({
   temperatureNormative: initialTemperatureNormatives,
@@ -32,6 +39,7 @@ export const TemperatureGraph: FC<TemperatureGraphProps> = ({
   handleEditTemperatureNormative,
   setEditedTemperatureNormative,
   isLoading,
+  errorColumns,
 }) => {
   const { values, setFieldValue, handleSubmit, handleReset } = useFormik<{
     temperatureNormativesArr: TemperatureNormativeRow[];
@@ -47,9 +55,9 @@ export const TemperatureGraph: FC<TemperatureGraphProps> = ({
     },
   });
 
-  const [columnErrors, setColumnErrors] = useState<
-    { [outdoorTemperature: number]: EDayPartError[] }[]
-  >([]);
+  const [columnErrors, setColumnErrors] = useState<ErrorColumnsType>([]);
+
+  useEffect(() => setColumnErrors(errorColumns), [errorColumns]);
 
   const handleChangeInput = useCallback(
     (
@@ -104,57 +112,57 @@ export const TemperatureGraph: FC<TemperatureGraphProps> = ({
                 (columnError) => columnError[data.outdoorTemperature!],
               );
 
-              if (
-                //главное условие валидации
-                firstInputFieldName === ETemteratureTypes.dayFeedFlowTemperature
-                  ? currentTemperatureNormative.dayFeedBackFlowTemperature &&
-                    currentTemperatureNormative.dayFeedBackFlowTemperature >
-                      Number(onBlurData.target.value)
-                  : currentTemperatureNormative.dayFeedFlowTemperature &&
-                    currentTemperatureNormative.dayFeedFlowTemperature <
-                      Number(onBlurData.target.value)
-              ) {
-                if (currentColumnError) {
-                  currentColumnError[data.outdoorTemperature!].push(
-                    EDayPartError.day,
-                  );
-                  setColumnErrors([...columnErrors, currentColumnError]);
-                } else {
-                  setColumnErrors([
-                    ...columnErrors,
-                    {
-                      [data.outdoorTemperature!]: [EDayPartError.day],
-                    },
-                  ]);
-                }
+              // if (
+              //   // условие валидации
+              //   firstInputFieldName === ETemteratureTypes.dayFeedFlowTemperature
+              //     ? currentTemperatureNormative.dayFeedBackFlowTemperature &&
+              //       currentTemperatureNormative.dayFeedBackFlowTemperature >
+              //         Number(onBlurData.target.value)
+              //     : currentTemperatureNormative.dayFeedFlowTemperature &&
+              //       currentTemperatureNormative.dayFeedFlowTemperature <
+              //         Number(onBlurData.target.value)
+              // ) {
+              //   if (currentColumnError) {
+              //     currentColumnError[data.outdoorTemperature!].push(
+              //       EDayPartError.day,
+              //     );
+              //     setColumnErrors([...columnErrors, currentColumnError]);
+              //   } else {
+              //     setColumnErrors([
+              //       ...columnErrors,
+              //       {
+              //         [data.outdoorTemperature!]: [EDayPartError.day],
+              //       },
+              //     ]);
+              //   }
 
-                message.error(
-                  'Температура на обратной магистрали должна быть меньше, чем на подающей',
-                );
-              } else {
-                if (!currentColumnError) return;
+              //   message.error(
+              //     'Температура на обратной магистрали должна быть меньше, чем на подающей',
+              //   );
+              // } else {
+              //   if (!currentColumnError) return;
 
-                const filteredDayPart = currentColumnError[
-                  data.outdoorTemperature!
-                ].filter((dayPart) => dayPart !== EDayPartError.day);
+              //   const filteredDayPart = currentColumnError[
+              //     data.outdoorTemperature!
+              //   ].filter((dayPart) => dayPart !== EDayPartError.day);
 
-                const filteredColumnErrors = columnErrors.filter(
-                  (columnError) =>
-                    Number(Object.keys(columnError)[0]) !==
-                    data.outdoorTemperature!,
-                );
+              //   const filteredColumnErrors = columnErrors.filter(
+              //     (columnError) =>
+              //       Number(Object.keys(columnError)[0]) !==
+              //       data.outdoorTemperature!,
+              //   );
 
-                if (Boolean(filteredDayPart.length)) {
-                  setColumnErrors([
-                    ...filteredColumnErrors,
-                    {
-                      [data.outdoorTemperature!]: filteredDayPart,
-                    },
-                  ]);
-                } else {
-                  setColumnErrors(filteredColumnErrors);
-                }
-              }
+              //   if (Boolean(filteredDayPart.length)) {
+              //     setColumnErrors([
+              //       ...filteredColumnErrors,
+              //       {
+              //         [data.outdoorTemperature!]: filteredDayPart,
+              //       },
+              //     ]);
+              //   } else {
+              //     setColumnErrors(filteredColumnErrors);
+              //   }
+              // }
             }}
             isErr={(() => {
               const currentColumnErr = columnErrors.find(
@@ -208,7 +216,7 @@ export const TemperatureGraph: FC<TemperatureGraphProps> = ({
               );
 
               if (
-                firstInputFieldName ===
+                secondInputFieldName ===
                 ETemteratureTypes.nightFeedFlowTemperature
                   ? currentTemperatureNormative?.nightFeedBackFlowTemperature &&
                     currentTemperatureNormative.nightFeedBackFlowTemperature >
