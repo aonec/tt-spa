@@ -28,10 +28,14 @@ import {
 import { useUnit } from 'effector-react';
 import { manageDistrictMapService } from '../ManageDistrictsMap/ManageDistricsMap.model';
 import { useHistory } from 'react-router-dom';
+import { WithLoader } from 'ui-kit/shared/WithLoader';
 
 const { outputs, inputs } = manageDistrictMapService;
 
-export const ManageDistrictsList: FC<Props> = ({ existingDistricts }) => {
+export const ManageDistrictsList: FC<Props> = ({
+  existingDistricts,
+  isDistrictLoading,
+}) => {
   const {
     selectedDistrictId,
     isDeleteDistrictModalOpen,
@@ -89,7 +93,7 @@ export const ManageDistrictsList: FC<Props> = ({ existingDistricts }) => {
   }, [selectedDistrictId, preparedExistingDistricts]);
 
   return (
-    <>
+    <WithLoader isLoading={isDistrictLoading}>
       {isDeleteDistrictModalOpen && selectedPreparedDistrict && (
         <DeleteDistrictModal
           closeDeleteDistrictModal={closeDeleteDistrictModal}
@@ -196,6 +200,6 @@ export const ManageDistrictsList: FC<Props> = ({ existingDistricts }) => {
           );
         })}
       </Wrapper>
-    </>
+    </WithLoader>
   );
 };
