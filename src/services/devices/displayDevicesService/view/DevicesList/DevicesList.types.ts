@@ -1,11 +1,11 @@
 import { CalculatorsListRequestPayload } from 'services/calculators/calculatorsListService/calculatorsListService.types';
-import { HousingByFilterResponse } from 'api/types';
+import { BuildingByFilterResponse } from 'api/types';
 import { DevicesSearchType } from 'services/devices/devicesPageService/devicesPageService.types';
 import { DevicesByAddressInterface } from '../../displayDevicesService.types';
 
 export type DevicesListProps = {
   housingStocksDevices: DevicesByAddressInterface[];
-  housingStocksAddressForSwitcher: HousingByFilterResponse[];
+  housingStocksAddressForSwitcher: BuildingByFilterResponse[];
   isLoading: boolean;
   total?: number;
   pageNumber?: number;

@@ -5,4 +5,6 @@ export type ReadingsHistoryModalProps = {
   isModalOpen: boolean;
   closeReadingsHistoryModal: () => void;
   individualDevice: IndividualDeviceResponse | null;
+  isModal: boolean;
+  showDeviceInfo: boolean;
 };

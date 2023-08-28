@@ -3,6 +3,7 @@ import { IndividualDeviceReadingsItemHistoryResponse } from 'api/types';
 
 export type ReadingsHistoryContainerProps = {
   readonly?: boolean;
+  isModal: boolean;
 };
 
 export type RenderReading = {

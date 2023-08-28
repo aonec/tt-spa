@@ -24,7 +24,6 @@ export const SettingPage: FC<SettingPageProps> = ({
   const history = useHistory();
   const { pathname } = useLocation();
   const adminSettings = pathname.split('/')[1] === 'adminSettings';
-  const isDisabledResourcesTab = pathname.split('/')[2] === 'disabledResources';
   const isTemperatureGraphTab = pathname.split('/')[2] === 'temperatureGraph';
 
   const menuButtons = useMemo(() => {
@@ -51,7 +50,6 @@ export const SettingPage: FC<SettingPageProps> = ({
     adminSettings,
     handleReassingInspector,
     handleEditTemperatureNormative,
-    isDisabledResourcesTab,
     isTemperatureGraphTab,
   ]);
 

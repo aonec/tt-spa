@@ -23,7 +23,6 @@ export const SwitchWrapper = styled.div`
   align-items: center;
   margin-top: 16px;
   padding-bottom: 16px;
-  border-bottom: 1px solid #dcdee4;
   width: 100%;
 `;
 

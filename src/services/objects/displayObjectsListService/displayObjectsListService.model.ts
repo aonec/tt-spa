@@ -1,11 +1,8 @@
 import { createGate } from 'effector-react';
 import { createDomain, forward, sample } from 'effector';
 import { BuildingListResponsePagedList } from 'api/types';
-import {
-  GetHousingStocksRequestPayload,
-  SearchHousingStocksPayload,
-} from './displayObjectsListService.types';
-import { getBuildings } from './displayObjectsListService.api';
+import { SearchHousingStocksPayload } from './displayObjectsListService.types';
+import { getBuildingsQuery } from './displayObjectsListService.api';
 
 const domain = createDomain('displayObjectsListService');
 
@@ -13,12 +10,7 @@ const $housingStocks = domain.createStore<BuildingListResponsePagedList | null>(
   null,
 );
 
-const fetchHousingStocksFx = domain.createEffect<
-  GetHousingStocksRequestPayload,
-  BuildingListResponsePagedList
->(getBuildings);
-
-const $isLoading = fetchHousingStocksFx.pending;
+const $isLoading = getBuildingsQuery.$pending;
 
 const $searchPayload = domain.createStore<SearchHousingStocksPayload | null>(
   null,
@@ -38,7 +30,7 @@ forward({
 });
 
 $housingStocks
-  .on(fetchHousingStocksFx.doneData, (_, result) => result)
+  .on(getBuildingsQuery.$data, (_, result) => result)
   .reset(clearSearchState);
 
 $searchPayload
@@ -63,13 +55,18 @@ sample({
       PageNumber: payload?.pageNumber,
     };
   },
-  target: fetchHousingStocksFx,
+  target: getBuildingsQuery.start,
 });
 
 sample({
   clock: [HousingStocksGate.open],
   fn: () => ({ PageSize: 30 }),
-  target: fetchHousingStocksFx,
+  target: getBuildingsQuery.start,
+});
+
+sample({
+  clock: HousingStocksGate.close,
+  target: getBuildingsQuery.reset,
 });
 
 export const displayObjectsListService = {

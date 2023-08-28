@@ -3,6 +3,8 @@ import { prepareFilterBeforeSenging } from '../displayStatisticsListByManagingFi
 import { SubscriberStatisticsForm } from '../displayStatisticsListByManagingFirmService/view/ManagingFirmSearch/ManagingFirmSearch.types';
 import { downloadSubscribersConsumption } from './exportSubscribersConsumptionService.api';
 import { ExportSubscribersConsumptionPayload } from './exportSubscribersConsumptionService.types';
+import { message } from 'antd';
+import { EffectFailDataAxiosError } from 'types';
 
 const domain = createDomain('exportSubscribersConsumptionService');
 
@@ -32,8 +34,16 @@ const $subscriberStatisticsFilter = domain
 const exportStatistic = domain.createEvent();
 const exportStatiscticFx = domain.createEffect<
   ExportSubscribersConsumptionPayload,
-  void
+  void,
+  EffectFailDataAxiosError
 >(downloadSubscribersConsumption);
+
+const $isLoading = exportStatiscticFx.pending;
+
+sample({
+  clock: exportStatiscticFx.doneData,
+  target: closeModal,
+});
 
 sample({
   source: combine(
@@ -55,6 +65,14 @@ sample({
   target: exportStatiscticFx,
 });
 
+exportStatiscticFx.failData.watch((error) => {
+  message.error(
+    error.response.data.error.Text ||
+      error.response.data.error.Message ||
+      'Произошла ошибка',
+  );
+});
+
 export const exportSubscribersConsumptionService = {
   inputs: {
     closeModal,
@@ -66,5 +84,6 @@ export const exportSubscribersConsumptionService = {
   outputs: {
     $isModalOpen,
     $fileName,
+    $isLoading,
   },
 };

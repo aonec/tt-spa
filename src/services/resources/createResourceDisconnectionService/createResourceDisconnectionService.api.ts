@@ -10,19 +10,19 @@ export const fetchCreateResourceDisconnection = (
   payload: ResourceDisconnectingCreateRequest,
 ): Promise<void> => axios.post('ResourceDisconnecting', payload);
 
-export const fetchExistingHousingStocks = (
+export const fetchExistingBuildings = (
   city: string,
 ): Promise<StreetWithBuildingNumbersResponsePagedList> =>
   axios.get('Buildings/ExistingStreetsWithBuildingNumbers', {
     params: { city },
   });
 
-export const fetchExistingHousingStocksWithHouseManagement = (): Promise<
+export const fetchExistingBuildingsWithHouseManagement = (): Promise<
   HouseManagementWithStreetsResponse[]
 > =>
   axios.get('Buildings/ExistingStreetsWithBuildingNumbersWithHouseManagement');
 
-export const fetchExistingHousingStocksWithHeatingStation = (): Promise<
+export const fetchExistingBuildingsWithHeatingStation = (): Promise<
   HeatingStationWithStreetsResponse[]
 > =>
   axios.get('Buildings/ExistingStreetsWithBuildingNumbersWithHeatingStation');

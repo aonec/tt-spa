@@ -5,6 +5,7 @@ import { useUnit } from 'effector-react';
 import { ApartmentSealProfile } from './view/ApartmentSealProfile';
 import { CreateSealContainer, createSealService } from '../createSealService';
 import './apartmentSealService.relations';
+import { getApartmentQuery } from 'services/meters/metersService/ApartmentReadingsService/ApartmentReadingsService.api';
 
 const { inputs, outputs, gates } = apartmentSealService;
 const { ApartmentGate } = gates;
@@ -24,6 +25,7 @@ export const ApartmentSealContainer = () => {
     setSelectedHomeownerName,
     updateApartment,
     openCreateSealAppointmentModal,
+    isApartmentFetched,
   } = useUnit({
     isApartmentLoading: outputs.$isApartmentLoading,
     isAppointmentLoading: outputs.$isSealAppointmentLoading,
@@ -35,10 +37,11 @@ export const ApartmentSealContainer = () => {
     setSelectedHomeownerName: inputs.setSelectedHomeownerName,
     updateApartment: inputs.handleUpdateApartment,
     openCreateSealAppointmentModal: createSealService.inputs.openModal,
+    isApartmentFetched: getApartmentQuery.$succeeded,
   });
 
   useEffect(() => {
-    return inputs.handleApartmentLoaded.watch((apartment) => {
+    return inputs.handleApartmentLoaded.watch(({ result: apartment }) => {
       if (!apartment || apartment.id === Number(id)) return;
 
       history.push(`/services/seal/apartment/${apartment.id}`);
@@ -60,6 +63,7 @@ export const ApartmentSealContainer = () => {
         openCreateSealAppointmentModal={openCreateSealAppointmentModal}
         nearestAppointment={nearestAppointment}
         isAppointmentLoading={isAppointmentLoading}
+        isApartmentFetched={isApartmentFetched}
       />
     </>
   );
