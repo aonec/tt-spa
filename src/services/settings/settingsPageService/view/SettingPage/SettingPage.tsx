@@ -10,9 +10,11 @@ import { PageHeader } from 'ui-kit/shared/PageHeader';
 import { WorkingRangeTab } from 'services/workingRanges/WorkingRangeTab';
 import { DistrictBordersContainer } from 'services/settings/districtBordersService';
 import { developmentSettingsService } from 'services/developmentSettings/developmentSettings.models';
+import { TemperatureGraphContainer } from 'services/settings/temperatureGraphService';
 
 export const SettingPage: FC<SettingPageProps> = ({
   handleReassingInspector,
+  handleEditTemperatureNormative,
 }) => {
   const { featureToggles } = useUnit({
     featureToggles: developmentSettingsService.outputs.$featureToggles,
@@ -22,10 +24,17 @@ export const SettingPage: FC<SettingPageProps> = ({
   const history = useHistory();
   const { pathname } = useLocation();
   const adminSettings = pathname.split('/')[1] === 'adminSettings';
+  const isTemperatureGraphTab = pathname.split('/')[2] === 'temperatureGraph';
 
   const menuButtons = useMemo(() => {
     if (adminSettings) {
-      return [];
+      return [
+        {
+          title: 'Редактировать температурный график',
+          onClick: () => handleEditTemperatureNormative(true),
+          hidden: !isTemperatureGraphTab,
+        },
+      ];
     }
     return [
       {
@@ -37,7 +46,12 @@ export const SettingPage: FC<SettingPageProps> = ({
         onClick: handleReassingInspector,
       },
     ];
-  }, [adminSettings, handleReassingInspector]);
+  }, [
+    adminSettings,
+    handleReassingInspector,
+    handleEditTemperatureNormative,
+    isTemperatureGraphTab,
+  ]);
 
   const settingsComponent = useMemo(() => {
     if (adminSettings) {
@@ -51,6 +65,11 @@ export const SettingPage: FC<SettingPageProps> = ({
           {featureToggles.districtsManage && (
             <TabsSC.TabPane tab="Границы районов" key="districtBorder">
               <DistrictBordersContainer />
+            </TabsSC.TabPane>
+          )}
+          {featureToggles.temperatureGraph && (
+            <TabsSC.TabPane tab="Температурный график" key="temperatureGraph">
+              <TemperatureGraphContainer />
             </TabsSC.TabPane>
           )}
         </>
@@ -79,6 +98,7 @@ export const SettingPage: FC<SettingPageProps> = ({
     featureToggles.controllersDistribution,
     featureToggles.districtsManage,
     featureToggles.workingRanges,
+    featureToggles.temperatureGraph,
   ]);
 
   return (
