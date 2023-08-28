@@ -1,6 +1,7 @@
 import React, { FC, useCallback, useMemo } from 'react';
+import { Tooltip } from 'antd';
 import { HousingStockCalculatorsProps } from './HousingStockCalculators.types';
-import { EHouseCategory, HouseAddress } from 'api/types';
+import { EHouseCategory, BuildingAddress } from 'api/types';
 import { DevicesSearchType } from 'services/devices/devicesPageService/devicesPageService.types';
 import {
   CalculatorNodesListWrapper,
@@ -10,7 +11,7 @@ import {
 import { Switcher } from 'ui-kit/shared/Switcher';
 import {
   getBuildingAddress,
-  getHousingStockAddressString,
+  getBuildingAddressString,
 } from 'utils/getBuildingAddress';
 import { CalculatorNodes } from './CalculatorNodes';
 
@@ -25,7 +26,7 @@ export const HousingStockCalculators: FC<HousingStockCalculatorsProps> = ({
   const previousAddress = housingStocksAddressForSwitcher?.previous?.address;
 
   const handleClickAddress = useCallback(
-    (address: HouseAddress) => {
+    (address: BuildingAddress) => {
       if (mainFilterSearchType !== DevicesSearchType.Address) {
         setMainFilterSearchType(DevicesSearchType.Address);
       }
@@ -56,18 +57,34 @@ export const HousingStockCalculators: FC<HousingStockCalculatorsProps> = ({
     if (!housingStockDevices.building) {
       return 'У данного прибора не указан адрес';
     }
-
     const { address, id } = housingStockDevices.building;
+
+    const additionalAddressesString = (address?.additionalAddresses || [])
+      .map((elem) => {
+        const corpusText = elem.corpus ? `, к.${elem.corpus}` : '';
+        return `${elem.street}, ${elem.number}${corpusText}`;
+      })
+      .join('; ');
+
+    const fullAddress = additionalAddressesString
+      ? `${getBuildingAddress({
+          address,
+        })}; ${additionalAddressesString}`
+      : getBuildingAddress({
+          address,
+        });
 
     return (
       <HousingStockAddressHeaderWrapper>
-        <HousingStockAddress to={`/buildings/${buildingProfilePath}/${id}`}>
-          {getBuildingAddress({ address })}
-        </HousingStockAddress>
+        <Tooltip title={fullAddress}>
+          <HousingStockAddress to={`/buildings/${buildingProfilePath}/${id}`}>
+            {fullAddress}
+          </HousingStockAddress>
+        </Tooltip>
         <Switcher
           nextValue={nextAddress}
           previousValue={previousAddress}
-          textConstructor={(address) => getHousingStockAddressString(address)}
+          textConstructor={(address) => getBuildingAddressString(address)}
           handleClick={handleClickAddress}
         />
       </HousingStockAddressHeaderWrapper>

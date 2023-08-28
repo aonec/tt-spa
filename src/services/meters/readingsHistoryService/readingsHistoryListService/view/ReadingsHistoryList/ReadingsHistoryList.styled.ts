@@ -1,4 +1,4 @@
-import styled, { keyframes } from 'styled-components';
+import styled, { css, keyframes } from 'styled-components';
 
 const slide = keyframes`
   0% {
@@ -26,10 +26,15 @@ export const GradientLoader = styled.div`
   transform: scale(1, -1);
 `;
 
-export const Wrapper = styled.div`
-  max-width: 1080px;
+const modalWrapperStyles = css`
   max-height: 520px;
   overflow-y: auto;
+`;
+
+export const Wrapper = styled.div<{ isModal: boolean }>`
+  max-width: 1080px;
+
+  ${({ isModal }) => (isModal ? modalWrapperStyles : '')}
 `;
 
 export const Grid = styled.div`

@@ -698,6 +698,20 @@ export interface BaseIndividualDeviceReadingsCreateRequest {
   value4?: number | null;
 }
 
+export interface Building {
+  /** @format int32 */
+  id?: number;
+  houseCategory?: EHouseCategory;
+  address?: BuildingAddress | null;
+}
+
+export interface BuildingAddress {
+  city?: string | null;
+  street?: string | null;
+  houseNumber?: string | null;
+  houseCorpus?: string | null;
+}
+
 export interface BuildingAddressCreateRequest {
   district?: string | null;
   city?: string | null;
@@ -732,6 +746,16 @@ export interface BuildingAddressUpdateRequest {
   corpus?: string | null;
 }
 
+export interface BuildingByFilterResponse {
+  previous: Building | null;
+  current: Building | null;
+  next: Building | null;
+}
+
+export interface BuildingByFilterResponseSuccessApiResponse {
+  successResponse: BuildingByFilterResponse | null;
+}
+
 export interface BuildingFiltersResponse {
   houseManagements: GuidStringDictionaryItem[] | null;
   houseCategories: EHouseCategoryStringDictionaryItem[] | null;
@@ -752,6 +776,8 @@ export interface BuildingListResponse {
 
   /** @format int32 */
   managingFirmId: number;
+  inspectorId: number | null;
+  inspectedDay: string | null;
 
   /** @format int32 */
   numberOfTasks: number | null;
@@ -1921,7 +1947,7 @@ export interface EDocumentTypeStringDictionaryItemListSuccessApiResponse {
   successResponse: EDocumentTypeStringDictionaryItem[] | null;
 }
 
-export enum EExpiresCheckingDateAt {
+export enum EExpiresDateAt {
   NextMonth = 'NextMonth',
   NextTwoMonth = 'NextTwoMonth',
   Past = 'Past',
@@ -3092,13 +3118,6 @@ export interface House {
   address?: string | null;
 }
 
-export interface HouseAddress {
-  city?: string | null;
-  street?: string | null;
-  houseNumber?: string | null;
-  houseCorpus?: string | null;
-}
-
 export interface HouseManagementConstructedReportResponse {
   houseManagementName: string | null;
 
@@ -3153,16 +3172,6 @@ export interface HouseManagementWithStreetsResponse {
 
 export interface HouseManagementWithStreetsResponseIEnumerableSuccessApiResponse {
   successResponse: HouseManagementWithStreetsResponse[] | null;
-}
-
-export interface HousingByFilterResponse {
-  previous: HousingStock | null;
-  current: HousingStock | null;
-  next: HousingStock | null;
-}
-
-export interface HousingByFilterResponseSuccessApiResponse {
-  successResponse: HousingByFilterResponse | null;
 }
 
 export interface HousingDeviceReadingOnRiserResponse {
@@ -3411,12 +3420,6 @@ export interface HousingMeteringDeviceUpdateCommentRequest {
   /** @format int32 */
   deviceId?: number;
   text?: string | null;
-}
-
-export interface HousingStock {
-  /** @format int32 */
-  id?: number;
-  address?: HouseAddress | null;
 }
 
 export interface HousingStockCreateRequest {
@@ -5214,6 +5217,7 @@ export interface PipeNodeIntoCalculatorResponse {
   /** @format date-time */
   futureCommercialAccountingDate: string | null;
   communicationPipes: CommunicationPipeResponse[] | null;
+  validationResult: PipeNodeValidationResultResponse | null;
 }
 
 export interface PipeNodeMeteringDeviceResponse {
@@ -8114,6 +8118,31 @@ export class Api<
       }),
 
     /**
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
+     *
+     * @tags Buildings
+     * @name BuildingsBuildingsByAddressList
+     * @summary MeteringDevicesRead
+     * @request GET:/api/Buildings/BuildingsByAddress
+     * @secure
+     */
+    buildingsBuildingsByAddressList: (
+      query: { City: string; Street: string; Number: string; Corpus?: string },
+      params: RequestParams = {},
+    ) =>
+      this.request<
+        BuildingByFilterResponseSuccessApiResponse,
+        ErrorApiResponse
+      >({
+        path: `/api/Buildings/BuildingsByAddress`,
+        method: 'GET',
+        query: query,
+        secure: true,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
      * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Наблюдатель УК</li><li>Диспетчер УК</li>
      *
      * @tags CalculatorInfos
@@ -8166,7 +8195,8 @@ export class Api<
         'Filter.DiameterRange.From'?: number;
         'Filter.DiameterRange.To'?: number;
         'Filter.PipeDiameters'?: number[];
-        'Filter.ExpiresCheckingDateAt'?: EExpiresCheckingDateAt;
+        'Filter.ExpiresCheckingDateAt'?: EExpiresDateAt;
+        'Filter.ExpiresAdmissionActDateAt'?: EExpiresDateAt;
         'Filter.Resource'?: EResourceType;
         'Filter.Model'?: string;
         'Filter.CommercialDateRange.From'?: string;
@@ -8178,6 +8208,7 @@ export class Api<
         'Filter.Address.HouseCategory'?: EHouseCategory;
         'Filter.HousingStockId'?: number;
         'Filter.NodeStatus'?: ENodeCommercialAccountStatus;
+        'Filter.NodeRegistrationType'?: ENodeRegistrationType;
         Question?: string;
         OrderRule?: ECalculatorOrderRule;
         IsConnected?: boolean;
@@ -8215,7 +8246,8 @@ export class Api<
         'Filter.DiameterRange.From'?: number;
         'Filter.DiameterRange.To'?: number;
         'Filter.PipeDiameters'?: number[];
-        'Filter.ExpiresCheckingDateAt'?: EExpiresCheckingDateAt;
+        'Filter.ExpiresCheckingDateAt'?: EExpiresDateAt;
+        'Filter.ExpiresAdmissionActDateAt'?: EExpiresDateAt;
         'Filter.Resource'?: EResourceType;
         'Filter.Model'?: string;
         'Filter.CommercialDateRange.From'?: string;
@@ -8227,6 +8259,7 @@ export class Api<
         'Filter.Address.HouseCategory'?: EHouseCategory;
         'Filter.HousingStockId'?: number;
         'Filter.NodeStatus'?: ENodeCommercialAccountStatus;
+        'Filter.NodeRegistrationType'?: ENodeRegistrationType;
         Question?: string;
         OrderRule?: ECalculatorOrderRule;
         IsConnected?: boolean;
@@ -10461,16 +10494,17 @@ export class Api<
       query: { City: string; Street: string; Number: string; Corpus?: string },
       params: RequestParams = {},
     ) =>
-      this.request<HousingByFilterResponseSuccessApiResponse, ErrorApiResponse>(
-        {
-          path: `/api/Devices/Individual/House`,
-          method: 'GET',
-          query: query,
-          secure: true,
-          format: 'json',
-          ...params,
-        },
-      ),
+      this.request<
+        BuildingByFilterResponseSuccessApiResponse,
+        ErrorApiResponse
+      >({
+        path: `/api/Devices/Individual/House`,
+        method: 'GET',
+        query: query,
+        secure: true,
+        format: 'json',
+        ...params,
+      }),
 
     /**
      * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
@@ -10490,7 +10524,7 @@ export class Api<
         'DeviceFilter.ClosingReason'?: EClosingReason;
         'DeviceFilter.MountPlace'?: string;
         'DeviceFilter.ApartmentStatus'?: EApartmentStatus;
-        'DeviceFilter.ExpiresCheckingDateAt'?: EExpiresCheckingDateAt;
+        'DeviceFilter.ExpiresCheckingDateAt'?: EExpiresDateAt;
         'DeviceFilter.IsAlsoClosing'?: boolean;
         PageNumber?: number;
         PageSize?: number;
@@ -10578,7 +10612,7 @@ export class Api<
         Resource?: EResourceType;
         ApartmentStatus?: EApartmentStatus;
         ClosingReason?: EClosingReason;
-        ExpiresCheckingDateAt?: EExpiresCheckingDateAt;
+        ExpiresCheckingDateAt?: EExpiresDateAt;
         IsAlsoClosing?: boolean;
         OrderRule?: EIndividualDeviceOrderRule;
         PageNumber?: number;
@@ -11553,7 +11587,7 @@ export class Api<
         Resource?: EResourceType;
         RegistrationType?: ENodeRegistrationType;
         CommercialStatus?: ENodeCommercialAccountStatus;
-        'DevicesFilter.ExpiresCheckingDateAt'?: EExpiresCheckingDateAt;
+        'DevicesFilter.ExpiresCheckingDateAt'?: EExpiresDateAt;
         'DevicesFilter.Model'?: string;
         'DevicesFilter.Question'?: string;
         'DevicesFilter.DiameterRange.From'?: number;
@@ -14654,7 +14688,6 @@ export class Api<
         secure: true,
         type: ContentType.Json,
         format: 'json',
-        ...params,
       }),
   };
 }

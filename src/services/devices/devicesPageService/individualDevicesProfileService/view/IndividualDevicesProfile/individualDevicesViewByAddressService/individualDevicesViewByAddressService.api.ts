@@ -1,7 +1,7 @@
 import { axios } from 'api/axios';
 import {
   ApartmentByAddressFilterResponsePagedList,
-  HousingByFilterResponse,
+  BuildingByFilterResponse,
 } from 'api/types';
 import {
   GetHousingByFilterRequestPayload,
@@ -10,7 +10,7 @@ import {
 
 export const getHousingsByFilter = (
   params: GetHousingByFilterRequestPayload,
-): Promise<HousingByFilterResponse | null> =>
+): Promise<BuildingByFilterResponse | null> =>
   axios.get('Devices/Individual/House', { params });
 
 export const getIndividualDevicesApartments = (

@@ -14,6 +14,11 @@ export const HousingStockAddress = styled(Link)`
   padding: 0;
   margin: 0;
   opacity: 0.9;
+
+  max-width: 400px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 `;
 
 export const CalculatorNodesListWrapper = styled.div`

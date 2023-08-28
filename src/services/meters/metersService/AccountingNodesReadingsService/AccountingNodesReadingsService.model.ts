@@ -1,15 +1,13 @@
 import { createDomain, sample } from 'effector';
-import { getElectricNodes } from './AccountingNodesReadingsService.api';
 import {
   AccountingNodesSumReadings,
   GetElectricNodesByAddress,
-  GetElectricNodesRequestParams,
   UpdateAccountingNodesSumPayload,
 } from './AccountingNodesReadingsService.types';
-import { ElectricNodeResponse } from 'api/types';
 import { createGate } from 'effector-react';
 import { PREVIOUS_READING_INDEX_LIMIT } from './AccountingNodesReadingsService.constants';
 import { round } from 'utils/round';
+import { getElectricNodesQuery } from './AccountingNodesReadingsService.api';
 
 const domain = createDomain('AccountingNodesReadingsService');
 
@@ -32,17 +30,9 @@ const $sliderIndex = domain
   });
 
 const fetchElectricNodes = domain.createEvent<GetElectricNodesByAddress>();
-const fetchElectricNodesFx = domain.createEffect<
-  GetElectricNodesRequestParams,
-  ElectricNodeResponse[]
->(getElectricNodes);
-const $electricNodes = domain
-  .createStore<ElectricNodeResponse[]>([])
-  .on(fetchElectricNodesFx.doneData, (_, nodes) => nodes || [])
-  .reset(HousingStockIdGate.close);
 
-const $housingStockAddress = $electricNodes.map((nodes) => {
-  if (nodes.length) {
+const $housingStockAddress = getElectricNodesQuery.$data.map((nodes) => {
+  if (nodes?.length) {
     return nodes[0].address?.address?.mainAddress || null;
   }
   return null;
@@ -81,7 +71,7 @@ const $sumOfReadings = $readingsList.map((readings) =>
   }, 0),
 );
 
-const $isLoading = fetchElectricNodesFx.pending;
+const $isLoading = getElectricNodesQuery.$pending;
 
 sample({
   source: HousingStockIdGate.state.map(({ id }) => ({ BuildingId: id })),
@@ -91,12 +81,17 @@ sample({
     filter: (housingStock, { id }) =>
       Boolean(id && id !== housingStock?.housingStockId),
   }),
-  target: fetchElectricNodesFx,
+  target: getElectricNodesQuery.start,
 });
 
 sample({
   clock: fetchElectricNodes,
-  target: fetchElectricNodesFx,
+  target: getElectricNodesQuery.start,
+});
+
+sample({
+  clock: HousingStockIdGate.close,
+  target: getElectricNodesQuery.reset,
 });
 
 export const AccountingNodesReadingsService = {
@@ -107,7 +102,6 @@ export const AccountingNodesReadingsService = {
     updateNodeReadings,
   },
   outputs: {
-    $electricNodes,
     $housingStockAddress,
     $isLoading,
     $sliderIndex,

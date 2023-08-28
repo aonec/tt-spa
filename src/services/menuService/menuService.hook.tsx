@@ -29,7 +29,7 @@ export const useMenuItems = (): MenuItem[] => {
       type: MenuType.Tasks,
     },
     {
-      title: 'Статистика',
+      title: 'Статистика и данные',
       path: '/statistics',
       icon: StatisticIcon,
       type: MenuType.Statistics,
@@ -118,7 +118,7 @@ export const useMenuItems = (): MenuItem[] => {
     },
     {
       title: 'Настройки',
-      path: '/adminSettings/disabledResources',
+      path: '/adminSettings/operatingRanges',
       icon: SettingsIcon,
       type: MenuType.SettingsAdministrator,
     },

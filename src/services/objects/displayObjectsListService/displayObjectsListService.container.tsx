@@ -1,41 +1,49 @@
 import { Pagination } from 'antd';
-import { useEvent, useStore } from 'effector-react';
+import { useUnit } from 'effector-react';
 import React, { FC } from 'react';
 import { displayObjectsListService } from './displayObjectsListService.model';
 import { ObjectsList } from './view/ObjectsList';
 import { SearchObjects } from './view/SearchObjects';
 import { HeaderInject } from '../objectsProfileService/view/ObjectsProfile/ObjectsProfile.types';
 import { SizeWrapper } from '../objectsProfileService/view/ObjectsProfile/ObjectsProfile.styled';
+import { getBuildingsQuery } from './displayObjectsListService.api';
+
+const { HousingStocksGate } = displayObjectsListService.gates;
 
 export const ObjectsListContainer: FC<HeaderInject> = ({ Header }) => {
-  const pagedHousingStocks = useStore(
-    displayObjectsListService.outputs.$housingStocks,
-  );
+  const {
+    handlePageNumberChanged,
+    handleSearch,
+    isLoading,
+    pagedHousingStocks,
+    isBuildingFetched,
+  } = useUnit({
+    pagedHousingStocks: displayObjectsListService.outputs.$housingStocks,
+    isLoading: displayObjectsListService.outputs.$isLoading,
+    handlePageNumberChanged: displayObjectsListService.inputs.setPageNumber,
+    handleSearch: displayObjectsListService.inputs.searchHosuingStocks,
+    isBuildingFetched: getBuildingsQuery.$succeeded,
+  });
 
   const housingStocks = pagedHousingStocks?.items;
 
   const isNotEmpty = (housingStocks?.length || 0) > 0;
 
-  const handleSearch = useEvent(
-    displayObjectsListService.inputs.searchHosuingStocks,
-  );
-
-  const isLoading = useStore(displayObjectsListService.outputs.$isLoading);
-
-  const handlePageNumberChanged = useEvent(
-    displayObjectsListService.inputs.setPageNumber,
-  );
-
-  const { HousingStocksGate } = displayObjectsListService.gates;
-
   return (
     <div>
       <HousingStocksGate />
       <Header>
-        <SearchObjects handleSearch={handleSearch} />
+        <SearchObjects
+          handleSearch={handleSearch}
+          isSearchError={isBuildingFetched && !housingStocks?.length}
+        />
       </Header>
       <SizeWrapper>
-        <ObjectsList isLoading={isLoading} housingStocks={housingStocks} />
+        <ObjectsList
+          isLoading={isLoading}
+          housingStocks={housingStocks}
+          isBuildingFetched={isBuildingFetched}
+        />
       </SizeWrapper>
       {isNotEmpty && !isLoading && (
         <Pagination

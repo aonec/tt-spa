@@ -14,6 +14,7 @@ export type AddressSearchContainerProps = {
   disabledFields?: SearchFieldType[];
   onChange?: (key: string, value: string) => void;
   className?: string;
+  isError?: boolean;
 };
 
 export type GetExistingSteetRequestParams = {

@@ -1,4 +1,4 @@
-import { useEvent, useStore } from 'effector-react';
+import { useUnit } from 'effector-react';
 import React, { FC, useEffect } from 'react';
 import { exportSubscribersConsumptionService } from './exportSubscribersConsumptionService.model';
 import { TextWrapper } from './exportSubscribersConsumptionService.styled';
@@ -11,13 +11,23 @@ const { inputs, outputs } = exportSubscribersConsumptionService;
 export const ExportSubscribersConsumptionContainer: FC<
   ExportSubscribersConsumptionContainerProps
 > = ({ filter }) => {
-  const isOpen = useStore(outputs.$isModalOpen);
-  const fileName = useStore(outputs.$fileName);
-
-  const closeModal = useEvent(inputs.closeModal);
-  const setFileName = useEvent(inputs.setFileName);
-  const handleExportStatistic = useEvent(inputs.exportStatistic);
-  const setFilter = useEvent(inputs.setSubscriberStatisticsFilter);
+  const {
+    closeModal,
+    handleExportStatistic,
+    fileName,
+    isLoading,
+    isOpen,
+    setFileName,
+    setFilter,
+  } = useUnit({
+    isOpen: outputs.$isModalOpen,
+    fileName: outputs.$fileName,
+    isLoading: outputs.$isLoading,
+    closeModal: inputs.closeModal,
+    setFileName: inputs.setFileName,
+    handleExportStatistic: inputs.exportStatistic,
+    setFilter: inputs.setSubscriberStatisticsFilter,
+  });
 
   const isButtonDisabled = !Boolean(fileName.length);
   const buttonText = isButtonDisabled
@@ -32,6 +42,7 @@ export const ExportSubscribersConsumptionContainer: FC<
     <FormModal
       formId="export-subscribers-consumption-container"
       visible={isOpen}
+      loading={isLoading}
       title="Выгрузить список квартир"
       onCancel={() => closeModal()}
       submitBtnText={buttonText}

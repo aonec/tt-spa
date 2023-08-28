@@ -54,6 +54,7 @@ import { ManageDistrictsMapContainer } from 'services/settings/districtBordersSe
 import { CreateDistrictBorderMapContainer } from 'services/settings/districtBordersService/createDistrictBorderMapService';
 import { NonResidentialBuildingProfileContainer } from 'services/objects/nonResidentialBuildingProfileService';
 import { EditDistrictBordersContainer } from 'services/settings/districtBordersService/editDistrictBordersService';
+import { IndividualMeteringDeviceProfileContainer } from 'services/devices/individualMeteringDeviceProfile';
 
 export const Router: FC<RouterProps> = ({
   roles,
@@ -355,6 +356,17 @@ export const Router: FC<RouterProps> = ({
                     <Route
                       path="/housingMeteringDevices/:deviceId/edit"
                       component={AccessDeniedPage}
+                      exact
+                    />
+                  )}
+
+                  {(isSeniorOperator ||
+                    isExecutor ||
+                    isAdministrator ||
+                    isOperator) && (
+                    <Route
+                      path="/individualDeviceProfile/:id"
+                      component={IndividualMeteringDeviceProfileContainer}
                       exact
                     />
                   )}

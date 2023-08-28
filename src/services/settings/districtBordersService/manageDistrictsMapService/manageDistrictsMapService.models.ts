@@ -7,12 +7,19 @@ import {
   updateDistrictMutation,
 } from './manageDistrictsMapService.api';
 import { currentUserService } from 'services/currentUserService';
+import { DistrictsPageSegment } from './ManageDistrictPage/ManageDistrictPage.types';
 
 const domain = createDomain('manageDistrictsMapService');
 
 const ManageDistrictsGate = createGate();
 
 const handleDeleteDistrict = domain.createEvent<string>();
+
+const setDistrictsPageSegment = domain.createEvent<DistrictsPageSegment>();
+
+const $districtsPageSegment = domain
+  .createStore<DistrictsPageSegment>('list')
+  .on(setDistrictsPageSegment, (_, segment) => segment);
 
 sample({
   clock: ManageDistrictsGate.open,
@@ -52,10 +59,12 @@ sample({
 export const manageDistrictsMapService = {
   inputs: {
     handleDeleteDistrict,
+    setDistrictsPageSegment,
   },
   outputs: {
     $organizationCoordinates:
       currentUserService.outputs.$organizationCoordinates,
+    $districtsPageSegment,
   },
   gates: { ManageDistrictsGate },
 };
