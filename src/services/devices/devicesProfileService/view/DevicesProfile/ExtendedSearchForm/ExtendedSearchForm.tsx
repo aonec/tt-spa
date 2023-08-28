@@ -10,7 +10,7 @@ import { Select } from 'ui-kit/Select';
 import { RangePicker } from 'ui-kit/RangePicker';
 import {
   EResourceType,
-  EExpiresCheckingDateAt,
+  EExpiresDateAt,
   EHouseCategory,
 } from 'api/types';
 import { AutoComplete } from 'ui-kit/AutoComplete';
@@ -229,15 +229,15 @@ export const ExtendedSearchForm: FC<ExtendedSearchFormProps> = ({
               },
               {
                 title: 'В ближайший месяц',
-                name: EExpiresCheckingDateAt.NextMonth,
+                name: EExpiresDateAt.NextMonth,
               },
               {
                 title: 'В ближайшие 2 месяца',
-                name: EExpiresCheckingDateAt.NextTwoMonth,
+                name: EExpiresDateAt.NextTwoMonth,
               },
               {
                 title: 'В прошлом месяце',
-                name: EExpiresCheckingDateAt.Past,
+                name: EExpiresDateAt.Past,
               },
             ]}
             onChange={(segmentValue) => {

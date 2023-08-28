@@ -1,4 +1,4 @@
-import { EExpiresCheckingDateAt } from 'api/types';
+import { EExpiresDateAt } from 'api/types';
 import { Moment } from 'moment';
 import { CalculatorsListRequestForm } from 'services/calculators/calculatorsListService/calculatorsListService.types';
 import { DiamtersConfig } from 'services/currentUserService/currentUserService.types';
@@ -14,7 +14,7 @@ export type ExtendedSearchFormProps = {
 export type RangeValue = [Moment | null, Moment | null] | null;
 
 export type ExpiresCheckingPeriodSegmented =
-  | EExpiresCheckingDateAt.NextMonth
-  | EExpiresCheckingDateAt.NextTwoMonth
-  | EExpiresCheckingDateAt.Past
+  | EExpiresDateAt.NextMonth
+  | EExpiresDateAt.NextTwoMonth
+  | EExpiresDateAt.Past
   | '';
