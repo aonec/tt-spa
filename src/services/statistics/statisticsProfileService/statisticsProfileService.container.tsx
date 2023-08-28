@@ -6,6 +6,8 @@ import { useUnit } from 'effector-react';
 import { StatisticProfileGrouptype } from './statisticsProfileService.types';
 import { SubscribersConsumptionSearchType } from '../subscribersConsumptionService/subscribersConsumptionService.types';
 import { displayStatisticsListByHousesService } from '../subscribersConsumptionService/displayStatisticsListByHousesService';
+import { CreateResourceDisconnectionContainer } from 'services/resources/createResourceDisconnectionService';
+import { ChooseTypeOfResourceDisconnectionModalContainer } from 'services/resources/chooseTypeOfResourceDisconnectionModalService/chooseTypeOfResourceDisconnectionModalService.container';
 
 export const StatisticsProfileContainer = () => {
   const { grouptype, searchType } = useParams<{
@@ -27,13 +29,18 @@ export const StatisticsProfileContainer = () => {
   );
 
   return (
-    <StatisticProfile
-      handleOpenExportStatisticModal={handleOpenExportStatisticModal}
-      setFileName={setFileName}
-      grouptype={grouptype}
-      searchType={searchType}
-      housingStockId={housingStockId}
-      housingStockAddress={housingStockAddress}
-    />
+    <>
+      <CreateResourceDisconnectionContainer />
+      <ChooseTypeOfResourceDisconnectionModalContainer />
+
+      <StatisticProfile
+        handleOpenExportStatisticModal={handleOpenExportStatisticModal}
+        setFileName={setFileName}
+        grouptype={grouptype}
+        searchType={searchType}
+        housingStockId={housingStockId}
+        housingStockAddress={housingStockAddress}
+      />
+    </>
   );
 };

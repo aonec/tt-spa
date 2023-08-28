@@ -20,7 +20,9 @@ export const PageHeader: FC<PageHeaderProps> = ({
       <PageTitle isGhost={isGhost}>{title}</PageTitle>
       <ContentWrapper>
         {children && <div>{children}</div>}
-        {contextMenu && <ContextMenuButton {...contextMenu} size="small" />}
+        {contextMenu && (
+          <ContextMenuButton isVisible {...contextMenu} size="small" />
+        )}
       </ContentWrapper>
     </PageHeaderStyled>
   );

@@ -1,8 +1,9 @@
+import { DistrictData } from 'types';
+
 export type Props = {
   isOpen: boolean;
-  districtName: string;
   handleClose: () => void;
-  fillColor: string;
-  strokeColor: string;
+  districtData: DistrictData;
   openDeleteDistrictModal: () => void;
+  openEditDistrictModal: () => void;
 };

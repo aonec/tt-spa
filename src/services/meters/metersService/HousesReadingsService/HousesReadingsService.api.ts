@@ -9,6 +9,9 @@ import {
   HousingStockResponse,
   IndividualDeviceListItemResponsePagedList,
 } from 'api/types';
+import { createQuery } from '@farfetched/core';
+import { createEffect } from 'effector';
+import { EffectFailDataAxiosError } from 'types';
 
 const getHousingStockId = async (
   params: GetHousingStocksListRequestPayload,
@@ -27,16 +30,19 @@ const getHousingStockId = async (
   return housingStockListItem.id;
 };
 
-export const getHousingStock = async ({
-  HousingStockId,
-  ...params
-}: GetHousingStocksRequestPayload): Promise<HousingStockResponse | null> => {
-  const id = HousingStockId || (await getHousingStockId(params));
+export const getHousingStockQuery = createQuery({
+  effect: createEffect<
+    GetHousingStocksRequestPayload,
+    HousingStockResponse | null,
+    EffectFailDataAxiosError
+  >(async ({ HousingStockId, ...params }) => {
+    const id = HousingStockId || (await getHousingStockId(params));
 
-  if (!id) return null;
+    if (!id) return null;
 
-  return await axios.get(`HousingStocks/${id}`);
-};
+    return await axios.get(`HousingStocks/${id}`);
+  }),
+});
 
 export const getIndividualDevicesList = (
   params: GetIndividualDevicesListRequestPayload,

@@ -14,6 +14,7 @@ const formatDate = (timeStamp: string): Date => {
 
 export const GraphTooltip: React.FC<GraphTooltipProps> = (props) => {
   const { datum, x, y, measure } = props;
+
   return (
     <g style={{ pointerEvents: 'none' }}>
       <foreignObject
@@ -24,7 +25,9 @@ export const GraphTooltip: React.FC<GraphTooltipProps> = (props) => {
         style={{ overflow: 'visible' }}
       >
         <TooltipBlock value={datum!.value}>
-          <DateBlock>{format(formatDate(datum!.time), 'dd.MM.yyyy')}</DateBlock>
+          <DateBlock>
+            {format(formatDate(datum!.timeUtc), 'dd.MM.yyyy')}
+          </DateBlock>
           <Value>
             {datum!.value.toFixed(3)} {measure}
           </Value>

@@ -71,7 +71,10 @@ export const SoiReportForm: FC<SoiReportFormProps> = ({
         <FormItem label="Город">
           <Select
             value={selectedCity || undefined}
-            onChange={(city) => setSelectedCity(city as string)}
+            onChange={(city) => {
+              setSelectedCity(city as string);
+              setFieldValue('HousingStockId', null);
+            }}
             placeholder="Выберите город"
           >
             {citiesList?.map((city) => (

@@ -1,11 +1,12 @@
 import React, { useEffect } from 'react';
-import { useEvent, useStore } from 'effector-react';
+import { useUnit } from 'effector-react';
 import { useHistory, useParams } from 'react-router-dom';
 import { HousesReadingsPage } from './view/HousesReadingsPage';
 import { housesReadingsService } from './HousesReadingsService.model';
 import { ReadingsHistoryContainer } from 'services/meters/readingsHistoryService/readingsHistoryService.container';
 import { useManagingFirmConsumptionRates } from 'services/meters/managementFirmConsumptionRatesService';
 import { ConfirmReadingValueContainer } from 'services/meters/readingsHistoryService/confirmReadingService';
+import { getHousingStockQuery } from './HousesReadingsService.api';
 
 const { inputs, outputs, gates } = housesReadingsService;
 const { HousingStockGate, InspectorGate } = gates;
@@ -15,25 +16,34 @@ export const HousesReadingsContainer = () => {
   const history = useHistory();
 
   const housingStockId = Number(id) || null;
-
-  const housingStock = useStore(outputs.$housingStock);
-  const isLoadingHousingStock = useStore(outputs.$isLoadingHousingStock);
-  const inspector = useStore(outputs.$inspector);
-  const individualDevicesList = useStore(outputs.$individualDevices);
-  const isLoadingIndividualDevices = useStore(
-    outputs.$isLoadingIndividualDevices,
-  );
-  const consumptionRates = useStore(outputs.$consumptionRates);
-  const isAllDevicesLoaded = useStore(outputs.$isAllDevicesLoaded);
-
-  const handleSearchHousingStock = useEvent(inputs.handleSearchHousingStock);
-  const loadNextPageOfIndividualDevicesList = useEvent(
-    inputs.loadNextPageOfIndividualDevicesList,
-  );
-  const loadConsumptionRates = useEvent(
-    inputs.loadManagemenFirmConsumptionRates,
-  );
-  const openReadingsHistoryModal = useEvent(inputs.openReadingsHistoryModal);
+  const {
+    consumptionRates,
+    handleSearchHousingStock,
+    housingStock,
+    individualDevicesList,
+    inspector,
+    isAllDevicesLoaded,
+    isHousingStockFetched,
+    isLoadingHousingStock,
+    isLoadingIndividualDevices,
+    loadConsumptionRates,
+    loadNextPageOfIndividualDevicesList,
+    openReadingsHistoryModal,
+  } = useUnit({
+    housingStock: outputs.$housingStock,
+    isHousingStockFetched: getHousingStockQuery.$succeeded,
+    isLoadingHousingStock: outputs.$isLoadingHousingStock,
+    inspector: outputs.$inspector,
+    individualDevicesList: outputs.$individualDevices,
+    isLoadingIndividualDevices: outputs.$isLoadingIndividualDevices,
+    consumptionRates: outputs.$consumptionRates,
+    isAllDevicesLoaded: outputs.$isAllDevicesLoaded,
+    handleSearchHousingStock: inputs.handleSearchHousingStock,
+    loadNextPageOfIndividualDevicesList:
+      inputs.loadNextPageOfIndividualDevicesList,
+    loadConsumptionRates: inputs.loadManagemenFirmConsumptionRates,
+    openReadingsHistoryModal: inputs.openReadingsHistoryModal,
+  });
 
   const { managementFirmConsumptionRates } = useManagingFirmConsumptionRates(
     consumptionRates,
@@ -57,14 +67,10 @@ export const HousesReadingsContainer = () => {
     return () => {
       window.removeEventListener('scroll', onScrollDown, true);
     };
-  }, [
-    loadNextPageOfIndividualDevicesList,
-    history,
-    isLoadingIndividualDevices,
-  ]);
+  }, [loadNextPageOfIndividualDevicesList, isLoadingIndividualDevices]);
 
   useEffect(() => {
-    return inputs.handleHousingStockLoaded.watch((housingStock) => {
+    return inputs.handleHousingStockLoaded.watch(({ result: housingStock }) => {
       if (!housingStock || Number(id) === housingStock?.id) return;
 
       history.push(`/meters/houses/${housingStock.id}`);
@@ -92,6 +98,7 @@ export const HousesReadingsContainer = () => {
         managementFirmConsumptionRates={managementFirmConsumptionRates}
         openReadingsHistoryModal={openReadingsHistoryModal}
         isAllDevicesLoaded={isAllDevicesLoaded}
+        isHousingStockFetched={isHousingStockFetched}
       />
     </>
   );

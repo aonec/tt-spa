@@ -1,5 +1,8 @@
 import { createDomain, forward, sample } from 'effector';
-import { StreetWithBuildingNumbersResponsePagedList } from 'api/types';
+import {
+  BuildingListResponse,
+  StreetWithBuildingNumbersResponsePagedList,
+} from 'api/types';
 import { TreeSelectElement } from 'ui-kit/shared/AddressTreeSelect/AddressTreeSelect.types';
 import { prepareAddressesForTreeSelect } from 'ui-kit/shared/AddressTreeSelect/AddressTreeSelect.utils';
 import {
@@ -12,7 +15,7 @@ const domain = createDomain('heatIndividualDevicesReportService');
 
 const clearStore = domain.createEvent();
 
-const openModal = domain.createEvent();
+const openModal = domain.createEvent<BuildingListResponse | void>();
 const closeModal = domain.createEvent();
 const $isOpen = domain
   .createStore(false)
@@ -27,10 +30,20 @@ const downloadReport = domain.createEvent<HeatIndividualDevicesReportPayload>();
 
 const $isLoading = downloadReportFx.pending;
 
+const $selectedBuilding = domain
+  .createStore<BuildingListResponse | null>(null)
+  .on(openModal, (_, building) => building || null)
+  .reset(closeModal);
+
 const selectCity = domain.createEvent<string>();
 const $selectedCity = domain
   .createStore<string | null>(null)
   .on(selectCity, (_, city) => city)
+  .on(openModal, (prev, building) => {
+    if (!building) return prev;
+
+    return building.address?.mainAddress?.city || prev;
+  })
   .reset(clearStore);
 
 const getAddressesFx = domain.createEffect<
@@ -75,5 +88,6 @@ export const heatIndividualDevicesReportService = {
     $treeData,
     $selectedCity,
     $isLoading,
+    $selectedBuilding,
   },
 };

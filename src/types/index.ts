@@ -1,3 +1,5 @@
+import { House } from 'api/types';
+
 export type EffectFailDataAxiosError = {
   response: {
     data: {
@@ -56,6 +58,8 @@ export type DistrictData = {
   coordinates: number[][][];
   name: string;
   isEditing?: boolean;
+  isDrawing?: boolean;
+  houses?: House[];
 };
 
 export type BlobResponseErrorType = {

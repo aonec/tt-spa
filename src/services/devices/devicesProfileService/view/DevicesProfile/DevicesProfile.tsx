@@ -29,6 +29,7 @@ export const DevicesProfile: FC<DeviceProfileProps> = ({
   Header,
   handleFetchModels,
   housingMeteringDevicesModels,
+  isSearchError,
 }) => {
   console.log(searchState);
   const {
@@ -113,6 +114,7 @@ export const DevicesProfile: FC<DeviceProfileProps> = ({
             resetForm();
             clearSearchPayload();
           }}
+          isSearchError={isSearchError}
         >
           <ExtendedSearch
             isOpen={isOpen}

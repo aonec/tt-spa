@@ -57,6 +57,7 @@ export const CreateResourceDisconnectionForm: FC<
   existingCities,
   selectCity,
   selectedCity,
+  selectedBuilding,
 }) => {
   const documentInit = useMemo(
     () =>
@@ -70,8 +71,8 @@ export const CreateResourceDisconnectionForm: FC<
     if (!isEdit || !resourceDisconnection) {
       return formInitialValues;
     }
-    return getFormValues(resourceDisconnection);
-  }, [resourceDisconnection, isEdit]);
+    return getFormValues(resourceDisconnection, selectedBuilding);
+  }, [resourceDisconnection, isEdit, selectedBuilding]);
 
   const handleSubmitFormik = useCallback(
     (formValues: CreateResourceDisconnectionFormTypes) => {
@@ -153,8 +154,11 @@ export const CreateResourceDisconnectionForm: FC<
   );
 
   useEffect(() => {
-    setFieldValue('housingStockIds', []);
-  }, [treeData, setFieldValue]);
+    setFieldValue(
+      'housingStockIds',
+      selectedBuilding ? [selectedBuilding.id] : [],
+    );
+  }, [treeData, setFieldValue, selectedBuilding]);
 
   useEffect(() => {
     if (!values.startDate) {
@@ -245,8 +249,11 @@ export const CreateResourceDisconnectionForm: FC<
           {isCityShow && (
             <FormItem label="Город">
               <Select
-                placeholder="Выберите из списка"
-                onChange={(type) => selectCity(String(type))}
+                placeholder="Выберите город"
+                onChange={(type) => {
+                  selectCity(String(type));
+                  setFieldValue('housingStockIds', []);
+                }}
                 value={selectedCity || undefined}
               >
                 {existingCities.map((city) => (

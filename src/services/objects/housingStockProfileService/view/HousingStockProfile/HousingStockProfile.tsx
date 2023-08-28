@@ -26,6 +26,7 @@ export const HousingStockProfile: FC<HousingStockProfileProps> = ({
   isPermitionToAddNode,
   isPermitionToDownloadConsolidatedReport,
   isPermissionToEditHousingStock,
+  resourceDisconnections,
 }) => {
   const history = useHistory();
 
@@ -38,13 +39,16 @@ export const HousingStockProfile: FC<HousingStockProfileProps> = ({
     () => ({
       [HousingStockProfileGrouptype.Apartments]: <ApartmentsListContainer />,
       [HousingStockProfileGrouptype.Common]: (
-        <HousingStockInfo housingStock={housingStock} />
+        <HousingStockInfo
+          housingStock={housingStock}
+          resourceDisconnections={resourceDisconnections}
+        />
       ),
       [HousingStockProfileGrouptype.Devices]: (
         <ResourceAccountingSystemsContainer />
       ),
     }),
-    [housingStock],
+    [housingStock, resourceDisconnections],
   );
 
   return (

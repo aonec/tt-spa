@@ -16,6 +16,7 @@ export interface DeviceProfileProps extends HeaderInject {
   setDevicesSearchType: (type: DevicesSearchType) => void;
   setSerialNumber: (value: string) => void;
   serialNumber: string;
+  isSearchError: boolean;
   housingMeteringDevicesModels: string[];
   handleFetchModels: (payload: string) => void;
 }

@@ -1,6 +1,6 @@
 import {
   ECalculatorOrderRule,
-  EExpiresCheckingDateAt,
+  EExpiresDateAt,
   EHouseCategory,
   ENodeCommercialAccountStatus,
   EOrderByRule,
@@ -12,7 +12,7 @@ export interface CalculatorsListRequestPayload {
   'Filter.DiameterRange.From'?: number;
   'Filter.DiameterRange.To'?: number;
   'Filter.PipeDiameters'?: number[];
-  'Filter.ExpiresCheckingDateAt'?: EExpiresCheckingDateAt;
+  'Filter.ExpiresCheckingDateAt'?: EExpiresDateAt;
   'Filter.Resource'?: EResourceType;
   'Filter.Model'?: string;
   'Filter.CommercialDateRange.From'?: string;

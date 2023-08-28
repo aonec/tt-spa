@@ -1,4 +1,4 @@
-import { useEvent, useStore } from 'effector-react';
+import { useUnit } from 'effector-react';
 import React, { useMemo } from 'react';
 import { resourceDisconnectionFiltersService } from 'services/resources/resourceDisconnectionFiltersService';
 import { createResourceDisconnectionService } from './createResourceDisconnectionService.model';
@@ -20,57 +20,70 @@ const { gates } = resourceDisconnectionFiltersService;
 const { ResourceDisconnectigFiltersGate } = gates;
 
 export const CreateResourceDisconnectionContainer = () => {
-  const isOpen = useStore(outputs.$isModalOpen);
-  const resourceTypes = useStore(outputs.$resourceTypes);
-  const disconnectingTypes = useStore(outputs.$disconnectingTypes);
-  const typeOfAddress = useStore(outputs.$typeOfAddress);
-  const existingHousingStocks = useStore(outputs.$existingHousingStocks);
-  const housingStockWithHeatingStations = useStore(
-    outputs.$housingStockWithHeatingStations,
-  );
-  const housingStockWithHouseManagements = useStore(
-    outputs.$housingStockWithHouseManagements,
-  );
-  const isHousingStocksLoading = useStore(outputs.$isHousingStocksLoading);
-  const selectedCity = useStore(outputs.$selectedCity);
-
-  const isInterHeatingSeason = useStore(
-    chooseTypeOfResourceDisconnectionModalService.outputs.$isInterHeatingSeason,
-  );
-  const isEdit = useStore(editResourceDisconnectionService.outputs.$isEdit);
-  const resourceDisconnection = useStore(
-    editResourceDisconnectionService.outputs.$resourceDisconnection,
-  );
-  const isDisconnectionLoading = useStore(
-    editResourceDisconnectionService.outputs.$isDisconectionLoading,
-  );
-  const existingCities = useStore(addressSearchService.outputs.$existingCities);
-
-  const selectCity = useEvent(inputs.selectCity);
-  const setTypeOfAddress = useEvent(inputs.setTypeOfAddress);
-  const handleCloseModal = useEvent(inputs.closeModal);
-  const handleCreateResourceDisconnection = useEvent(
-    inputs.createResourceDisconnection,
-  );
-  const handleEditResourceDisconnection = useEvent(
-    editResourceDisconnectionService.inputs.editResourceDisconnection,
-  );
-  const handleUpdateDocument = useEvent(
-    editResourceDisconnectionService.inputs.updateDocument,
-  );
+  const {
+    isOpen,
+    resourceTypes,
+    disconnectingTypes,
+    typeOfAddress,
+    existingBuildings,
+    buildingWithHeatingStations,
+    buildingWithHouseManagements,
+    isHousingStocksLoading,
+    isEdit,
+    selectedCity,
+    isInterHeatingSeason,
+    resourceDisconnection,
+    isDisconnectionLoading,
+    existingCities,
+    selectCity,
+    setTypeOfAddress,
+    handleCloseModal,
+    handleCreateResourceDisconnection,
+    handleEditResourceDisconnection,
+    handleUpdateDocument,
+    selectedBuilding,
+  } = useUnit({
+    isOpen: outputs.$isModalOpen,
+    resourceTypes: outputs.$resourceTypes,
+    disconnectingTypes: outputs.$disconnectingTypes,
+    typeOfAddress: outputs.$typeOfAddress,
+    existingBuildings: outputs.$existingBuildings,
+    buildingWithHeatingStations: outputs.$buildingWithHeatingStations,
+    buildingWithHouseManagements: outputs.$buildingWithHouseManagements,
+    isHousingStocksLoading: outputs.$isHousingStocksLoading,
+    selectedCity: outputs.$selectedCity,
+    isInterHeatingSeason:
+      chooseTypeOfResourceDisconnectionModalService.outputs
+        .$isInterHeatingSeason,
+    isEdit: editResourceDisconnectionService.outputs.$isEdit,
+    resourceDisconnection:
+      editResourceDisconnectionService.outputs.$resourceDisconnection,
+    isDisconnectionLoading:
+      editResourceDisconnectionService.outputs.$isDisconectionLoading,
+    existingCities: addressSearchService.outputs.$existingCities,
+    selectCity: inputs.selectCity,
+    setTypeOfAddress: inputs.setTypeOfAddress,
+    handleCloseModal: inputs.closeModal,
+    handleCreateResourceDisconnection: inputs.createResourceDisconnection,
+    handleEditResourceDisconnection:
+      editResourceDisconnectionService.inputs.editResourceDisconnection,
+    handleUpdateDocument:
+      editResourceDisconnectionService.inputs.updateDocument,
+    selectedBuilding: outputs.$selectedBuilding,
+  });
 
   const preparedExistingHousingStocks = useMemo(() => {
     if (typeOfAddress === EAddressDetails.All) {
-      return prepareAddressesForTreeSelect({ items: existingHousingStocks });
+      return prepareAddressesForTreeSelect({ items: existingBuildings });
     }
-    const housingStocks = housingStockWithHeatingStations.length
-      ? housingStockWithHeatingStations
-      : housingStockWithHouseManagements;
+    const housingStocks = buildingWithHeatingStations.length
+      ? buildingWithHeatingStations
+      : buildingWithHouseManagements;
     return prepareAddressesWithParentsForTreeSelect(housingStocks);
   }, [
-    existingHousingStocks,
-    housingStockWithHeatingStations,
-    housingStockWithHouseManagements,
+    existingBuildings,
+    buildingWithHeatingStations,
+    buildingWithHouseManagements,
     typeOfAddress,
   ]);
 
@@ -96,6 +109,7 @@ export const CreateResourceDisconnectionContainer = () => {
         existingCities={existingCities || []}
         selectCity={selectCity}
         selectedCity={selectedCity}
+        selectedBuilding={selectedBuilding}
       />
     </>
   );

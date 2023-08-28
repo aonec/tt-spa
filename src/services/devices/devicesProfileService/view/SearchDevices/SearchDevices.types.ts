@@ -17,4 +17,5 @@ export type SearchDevicesProps = {
   setSerialNumber: (value: string) => void;
   serialNumber: string;
   handleClear: () => void;
+  isSearchError: boolean;
 };

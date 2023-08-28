@@ -2,4 +2,5 @@ import { SearchHousingStocksPayload } from '../../displayObjectsListService.type
 
 export type SearchObjectsProps = {
   handleSearch: (payload: SearchHousingStocksPayload) => void;
+  isSearchError: boolean;
 };
