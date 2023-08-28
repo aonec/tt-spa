@@ -6,7 +6,7 @@ import { currentUserService } from 'services/currentUserService';
 import { DevicesSearchType } from '../devicesPageService/devicesPageService.types';
 import { HeaderInject } from 'services/objects/objectsProfileService/view/ObjectsProfile/ObjectsProfile.types';
 import { devicesReportService } from '../devicesReportService';
-import { getCalculatorsListQuery } from '../displayDevicesService/displayDevicesService.api';
+import { getNodesListQuery } from '../displayDevicesService/displayDevicesService.api';
 
 const { outputs, inputs, gates } = displayDevicesService;
 const CalculatorsGate = gates.CalculatorsGate;
@@ -44,7 +44,7 @@ export const DevicesProfileContainer: FC<HeaderInject> = ({ Header }) => {
     open: inputs.extendedSearchOpened,
     openDownloadDevicesReportModal: devicesReportService.inputs.openModal,
     devices: outputs.$devices,
-    isDevicesFetched: getCalculatorsListQuery.$succeeded,
+    isDevicesFetched: getNodesListQuery.$succeeded,
   });
 
   const isEmpty = Boolean(!devices.length);
@@ -58,9 +58,9 @@ export const DevicesProfileContainer: FC<HeaderInject> = ({ Header }) => {
     }
     if (prevSearchType.current === DevicesSearchType.Address) {
       setDevicesProfileFilter({
-        'Filter.Address.Corpus': undefined,
-        'Filter.Address.HousingStockNumber': undefined,
-        'Filter.Address.Street': undefined,
+        'Address.Corpus': undefined,
+        'Address.HousingStockNumber': undefined,
+        'Address.Street': undefined,
       });
     }
     prevSearchType.current = devicesSearchType;
