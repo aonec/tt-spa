@@ -1,8 +1,9 @@
-import React, { PropsWithChildren, useState } from 'react';
+import React, { PropsWithChildren, useCallback, useState } from 'react';
 import {
   Header,
   PaginationWrapper,
   Row,
+  RowLink,
   TableElement,
   Wrapper,
 } from './Table.styled';
@@ -15,7 +16,7 @@ export function Table<T>({
   pagination,
   rowStyles,
   headerStyles,
-  onClick,
+  link,
 }: PropsWithChildren<TableProps<T>>) {
   const pageSize = pagination?.pageSize || Infinity;
 
@@ -28,6 +29,30 @@ export function Table<T>({
 
   const temp = filteredColumns.map((column) => column.size).join(' ');
 
+  const renderRow = useCallback(
+    (elem: T, rowIndex: number) => {
+      const columns = filteredColumns.map((column, columnIndex) => (
+        <TableElement key={columnIndex} css={column.css?.(false)}>
+          {column.render(elem, rowIndex)}
+        </TableElement>
+      ));
+
+      if (link) {
+        return (
+          <RowLink to={link(elem)} temp={temp} css={rowStyles}>
+            {columns}
+          </RowLink>
+        );
+      }
+      return (
+        <Row temp={temp} css={rowStyles}>
+          {columns}
+        </Row>
+      );
+    },
+    [link, rowStyles, temp, filteredColumns],
+  );
+
   return (
     <Wrapper>
       <Header temp={temp} css={headerStyles}>
@@ -38,20 +63,9 @@ export function Table<T>({
         ))}
       </Header>
       <div>
-        {elements.slice(start, end).map((elem, rowIndex) => (
-          <Row
-            key={rowIndex}
-            temp={temp}
-            css={rowStyles}
-            onClick={() => onClick && onClick(elem)}
-          >
-            {filteredColumns.map((column, columnIndex) => (
-              <TableElement key={columnIndex} css={column.css?.(false)}>
-                {column.render(elem, rowIndex)}
-              </TableElement>
-            ))}
-          </Row>
-        ))}
+        {elements
+          .slice(start, end)
+          .map((elem, rowIndex) => renderRow(elem, rowIndex))}
       </div>
       {!elements.length && <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />}
       {Boolean(elements.length) && pagination && (
