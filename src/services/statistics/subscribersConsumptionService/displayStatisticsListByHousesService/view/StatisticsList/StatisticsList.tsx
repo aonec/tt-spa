@@ -19,6 +19,7 @@ export const StatisticsList: React.FC<StatisticsListProps> = ({
 
   return (
     <Table
+      isSticky
       elements={statistics}
       rowStyles={RowStyle}
       headerStyles={HeaderStyles}
