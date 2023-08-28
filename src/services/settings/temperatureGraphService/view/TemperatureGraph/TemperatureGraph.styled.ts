@@ -4,11 +4,10 @@ import { Input } from 'ui-kit/Input';
 export const PageWrapper = styled.div`
   display: flex;
   flex-direction: column;
-
-  position: relative;
-
-  width: 960px;
-  margin: 10px;
+  width: 980px;
+  height: 78vh;
+  overflow-y: scroll;
+  overflow-x: hidden;
 `;
 
 export const WrapperMultiHeader = styled.div`

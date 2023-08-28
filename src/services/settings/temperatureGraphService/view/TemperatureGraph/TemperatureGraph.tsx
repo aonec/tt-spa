@@ -314,8 +314,8 @@ export const TemperatureGraph: FC<TemperatureGraphProps> = ({
 
   return (
     <PageWrapper>
-      <CriticalTemperaturePanel />
       <Table
+        isSticky
         columns={[
           {
             label: 'Т наружного воздуха',

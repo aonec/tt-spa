@@ -1,11 +1,21 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 export const Wrapper = styled.div`
   max-width: 1200px;
   overflow-x: auto;
 `;
 
-export const Header = styled.div<{ temp: string; css?: string }>`
+const stickyHeaderCss = css`
+  position: sticky;
+  top: 0px;
+  z-index: 10;
+`;
+
+export const Header = styled.div<{
+  temp: string;
+  css?: string;
+  isSticky?: boolean;
+}>`
   width: max-content;
   background: #f3f5f6;
   min-height: 50px;
@@ -17,6 +27,7 @@ export const Header = styled.div<{ temp: string; css?: string }>`
   font-size: 12px;
   align-items: center;
   ${({ css }) => css || ''}
+  ${({ isSticky }) => (isSticky ? stickyHeaderCss : '')}
 `;
 
 export const Row = styled.div<{ temp: string; css?: string }>`
