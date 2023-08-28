@@ -58,7 +58,7 @@ const getMenuButtons = (props: {
 };
 
 export const ContextMenuButton: FC<ContextMenuButtonProps> = (props) => {
-  const { menuButtons, disabled, size } = props;
+  const { menuButtons, disabled, size, children = null } = props;
 
   const [isVisible, setIsVisible] = useState(false);
 
@@ -95,9 +95,19 @@ export const ContextMenuButton: FC<ContextMenuButtonProps> = (props) => {
         trigger={['click']}
         onVisibleChange={(visible) => setIsVisible(visible)}
       >
-        <StyledMenuButton size={size} onClick={() => setIsVisible(true)}>
-          <MoreIcon />
-        </StyledMenuButton>
+        <>
+          {Boolean(children) && (
+            <div onClick={() => setIsVisible((prev) => !prev)}>
+              {children?.(isVisible)}
+            </div>
+          )}
+
+          {!children && (
+            <StyledMenuButton size={size} onClick={() => setIsVisible(true)}>
+              <MoreIcon />
+            </StyledMenuButton>
+          )}
+        </>
       </Dropdown>
     </div>
   );

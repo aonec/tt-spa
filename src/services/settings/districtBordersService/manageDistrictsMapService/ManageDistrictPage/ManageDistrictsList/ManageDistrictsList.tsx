@@ -1,9 +1,10 @@
-import React, { FC, useCallback, useMemo, useState } from 'react';
+import React, { FC, useCallback, useEffect, useMemo, useState } from 'react';
 import { ChevronDown } from 'react-bootstrap-icons';
 import { groupBy, sortBy } from 'lodash';
 import {
   AddressHousesCount,
   AddressNumber,
+  AddressNumbersList,
   AddressWrapper,
   ColorCircle,
   DistrictAddressesList,
@@ -77,6 +78,10 @@ export const ManageDistrictsList: FC<Props> = ({
     );
   }, []);
 
+  useEffect(() => {
+    setOpenedStreets([]);
+  }, [openedDistrict, setOpenedStreets]);
+
   const preparedExistingDistricts = useMemo(() => {
     if (!existingDistricts) return [];
 
@@ -145,6 +150,10 @@ export const ManageDistrictsList: FC<Props> = ({
                   size="small"
                   menuButtons={[
                     {
+                      title: 'Добавить дом',
+                      onClick: () => {},
+                    },
+                    {
                       title: 'Редактировать название и цвет района',
                       onClick: () => {
                         selectDistrict(elem.id);
@@ -184,12 +193,33 @@ export const ManageDistrictsList: FC<Props> = ({
                             <ChevronDown />
                           </AddressHousesCount>
                         </AddressWrapper>
-                        {isOpen &&
-                          sortBy(value, (elem) => elem.address).map((elem) => {
-                            const arr = elem.address?.split(' ');
-                            const number = arr && arr[arr?.length - 2];
-                            return <AddressNumber>{number}</AddressNumber>;
-                          })}
+                        {isOpen && (
+                          <AddressNumbersList>
+                            {sortBy(value, (elem) => elem.address).map(
+                              (elem) => {
+                                const arr = elem.address?.split(' ');
+                                const number = arr && arr[arr?.length - 2];
+                                return (
+                                  <ContextMenuButton
+                                    menuButtons={[
+                                      {
+                                        title: 'Удалить дом',
+                                        color: ContextMenuButtonColor.danger,
+                                        onClick: () => {},
+                                      },
+                                    ]}
+                                  >
+                                    {(isOpen) => (
+                                      <AddressNumber isOpen={isOpen}>
+                                        {number}
+                                      </AddressNumber>
+                                    )}
+                                  </ContextMenuButton>
+                                );
+                              },
+                            )}
+                          </AddressNumbersList>
+                        )}
                         <Line />
                       </React.Fragment>
                     );
