@@ -40,13 +40,27 @@ export const SoiReportForm: FC<SoiReportFormProps> = ({
 
         const date = values.Date;
 
+        const id = preparedAddresses
+          .find((dd) =>
+            dd.children?.find(
+              (preparedAddress) =>
+                preparedAddress.value === values.HousingStockIdHash,
+            ),
+          )
+          ?.children?.find(
+            (preparedAddress) =>
+              preparedAddress.value === values.HousingStockIdHash,
+          );
+
         createSoiReport({
+          //вынести
           ReportName: values.ReportName,
           HouseManagementId: values.HouseManagementId,
           HousingStockId:
-            Number(String(values.HousingStockIdHash).split('_')[0]) ||
-            undefined,
-          Resource: values.Resource || undefined,
+            // Number(String(values.HousingStockIdHash).split('_')[0]) ||
+            // undefined,
+            id?.buildingId,
+          Resource: values.Resource || undefined, //лучше фильтрануть по нулл
           NormativePerPerson: normativePerPerson || undefined,
           Period:
             values.Period === 'year'

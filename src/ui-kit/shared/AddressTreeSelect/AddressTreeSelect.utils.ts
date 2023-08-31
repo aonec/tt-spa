@@ -33,6 +33,7 @@ export const prepareAddressesForTreeSelect = ({
           title: `${street}, ${number}${corpusText}`,
           value: `${buildingId}_${street}${number}${corpusText}`,
           key: `${buildingId}_${street}${number}${corpusText}`,
+          buildingId,
         };
       } else {
         return {

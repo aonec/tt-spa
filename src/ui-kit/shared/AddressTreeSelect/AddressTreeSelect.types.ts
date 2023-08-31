@@ -11,5 +11,6 @@ export type TreeSelectElement = {
   title: string;
   key: string | number;
   value: string | number;
+  buildingId?: number;
   children?: TreeSelectElement[];
 };
