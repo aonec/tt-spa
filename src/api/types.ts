@@ -8025,7 +8025,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         "Filter.DiameterRange.To"?: number;
         "Filter.PipeDiameters"?: number[];
         "Filter.ExpiresCheckingDateAt"?: EExpiresDateAt;
-        
+        "Filter.ExpiresAdmissionActDateAt"?: EExpiresDateAt;
         "Filter.Resource"?: EResourceType;
         "Filter.Model"?: string;
         "Filter.CommercialDateRange.From"?: string;
