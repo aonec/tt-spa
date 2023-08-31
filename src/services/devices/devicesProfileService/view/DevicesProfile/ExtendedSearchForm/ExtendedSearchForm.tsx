@@ -1,4 +1,4 @@
-import React, { FC, useCallback, useMemo } from 'react';
+import React, { FC, useCallback, useMemo, useState } from 'react';
 import { ConfigProvider } from 'antd';
 import _ from 'lodash';
 import moment from 'moment';
@@ -12,9 +12,11 @@ import {
   EResourceType,
   EExpiresDateAt,
   EHouseCategory,
+  ENodeRegistrationType,
 } from 'api/types';
 import { AutoComplete } from 'ui-kit/AutoComplete';
 import {
+  ESelectedDateType,
   ExpiresCheckingPeriodSegmented,
   ExtendedSearchFormProps,
   RangeValue,
@@ -39,6 +41,10 @@ export const ExtendedSearchForm: FC<ExtendedSearchFormProps> = ({
   housingMeteringDevicesModels,
 }) => {
   const { marks, maxValue, minValue, diameters } = diametersConfig;
+
+  const [dateType, setDateType] = useState<ESelectedDateType>(
+    ESelectedDateType.ExpiresCheckingDateAt,
+  );
 
   const dateFormat = 'YYYY-MM-DD';
 
@@ -127,7 +133,7 @@ export const ExtendedSearchForm: FC<ExtendedSearchFormProps> = ({
             value={values['Filter.Model']}
             placeholder="Начните вводить марку прибора"
             onChange={(value) => {
-              setFieldValue('model', value);
+              setFieldValue("['Filter.Model']", value);
               handleFetchModels(value);
             }}
             options={
@@ -171,11 +177,11 @@ export const ExtendedSearchForm: FC<ExtendedSearchFormProps> = ({
               onChange={(value: RangeValue): void => {
                 setFieldValue(
                   "['Filter.CommercialDateRange.From']",
-                  value?.length && value[0]?.format('YYYY-MM-DD'),
+                  (value?.length && value[0]?.format('YYYY-MM-DD')) || '',
                 );
                 setFieldValue(
                   "['Filter.CommercialDateRange.To']",
-                  value?.length && value[1]?.format('YYYY-MM-DD'),
+                  (value?.length && value[1]?.format('YYYY-MM-DD')) || '',
                 );
               }}
               size="middle"
@@ -183,23 +189,6 @@ export const ExtendedSearchForm: FC<ExtendedSearchFormProps> = ({
             />
           </ConfigProvider>
         </FormItem>
-
-        {/* <FormItem label="Истекает дата поверки">
-          <Select
-            small
-            id="expirationDate"
-            placeholder="Все"
-            value={values['Filter.ExpiresCheckingDateAt']}
-            onChange={(value) =>
-              setFieldValue("['Filter.ExpiresCheckingDateAt']", value)
-            }
-          >
-            <Option value="">Все</Option>
-            <Option value="NextMonth">В ближайший месяц</Option>
-            <Option value="NextTwoMonth">В следующие два месяца</Option>
-            <Option value="Past">Истекла</Option>
-          </Select>
-        </FormItem> */}
       </StyledContainerThreeItems>
 
       <StyledContainerTwoItems>
@@ -207,21 +196,29 @@ export const ExtendedSearchForm: FC<ExtendedSearchFormProps> = ({
           <Select
             small
             placeholder="Выберите из списка"
-            // value={values['Filter.ExpiresCheckingDateAt']}
-            // onChange={(value) =>
-            //   setFieldValue("['Filter.ExpiresCheckingDateAt']", value)
-            // }
+            value={dateType}
+            onChange={(value) => {
+              setDateType(value as ESelectedDateType);
+            }}
           >
-            <Option value="">Не выбрано</Option>
-            <Option value="NextMonth">Окончание поверки</Option>
-            <Option value="NextTwoMonth">Окончание акта-допуска</Option>
+            <Option value={ESelectedDateType.NonSelected}>Не выбрано</Option>
+            <Option value={ESelectedDateType.ExpiresCheckingDateAt}>
+              Окончание поверки
+            </Option>
+            <Option value={ESelectedDateType.ExpiresAdmissionActDateAt}>
+              Окончание акта-допуска
+            </Option>
           </Select>
         </FormItem>
 
         <SegmentedContainer>
           <Segmented<ExpiresCheckingPeriodSegmented>
             bold
-            active={values['Filter.ExpiresCheckingDateAt'] || ''}
+            active={
+              values['Filter.ExpiresCheckingDateAt'] ||
+              values['Filter.ExpiresAdmissionActDateAt'] ||
+              ''
+            }
             items={[
               {
                 title: 'Любая',
@@ -241,8 +238,19 @@ export const ExtendedSearchForm: FC<ExtendedSearchFormProps> = ({
               },
             ]}
             onChange={(segmentValue) => {
-              console.log(segmentValue);
-              setFieldValue("['Filter.ExpiresCheckingDateAt']", segmentValue);
+              if (dateType === ESelectedDateType.ExpiresCheckingDateAt) {
+                setFieldValue("['Filter.ExpiresAdmissionActDateAt']", '');
+                setFieldValue("['Filter.ExpiresCheckingDateAt']", segmentValue);
+                return;
+              }
+              if (dateType === ESelectedDateType.ExpiresAdmissionActDateAt) {
+                setFieldValue("['Filter.ExpiresCheckingDateAt']", '');
+                setFieldValue(
+                  "['Filter.ExpiresAdmissionActDateAt']",
+                  segmentValue,
+                );
+                return;
+              }
             }}
           />
         </SegmentedContainer>
@@ -270,14 +278,18 @@ export const ExtendedSearchForm: FC<ExtendedSearchFormProps> = ({
           <Select
             small
             placeholder="Выберите из списка"
-            // value={values['Filter.ExpiresCheckingDateAt']}
-            // onChange={(value) =>
-            //   setFieldValue("['Filter.ExpiresCheckingDateAt']", value)
-            // }
+            value={values['Filter.NodeRegistrationType']}
+            onChange={(value) =>
+              setFieldValue("['Filter.NodeRegistrationType']", value)
+            }
           >
-            {/* <Option value="">Все</Option>
-            <Option value="NextMonth">В ближайший месяц</Option>
-            <Option value="NextTwoMonth">В следующие два месяца</Option> */}
+            <Option value="">Все</Option>
+            <Option value={ENodeRegistrationType.Commercial}>
+              Прибор на коммерческом учете
+            </Option>
+            <Option value={ENodeRegistrationType.Technical}>
+              Прибор не на коммерческом учете
+            </Option>
           </Select>
         </FormItem>
 

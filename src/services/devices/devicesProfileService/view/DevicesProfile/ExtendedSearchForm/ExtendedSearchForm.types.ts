@@ -18,3 +18,9 @@ export type ExpiresCheckingPeriodSegmented =
   | EExpiresDateAt.NextTwoMonth
   | EExpiresDateAt.Past
   | '';
+
+export enum ESelectedDateType {
+  ExpiresCheckingDateAt = 'ExpiresCheckingDate',
+  ExpiresAdmissionActDateAt = 'ExpiresAdmissionActDateAt',
+  NonSelected = 'NonSelected',
+}

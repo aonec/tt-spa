@@ -31,7 +31,6 @@ export const DevicesProfile: FC<DeviceProfileProps> = ({
   housingMeteringDevicesModels,
   isSearchError,
 }) => {
-  console.log(searchState);
   const {
     handleSubmit: submitForm,
     setFieldValue,
@@ -42,6 +41,9 @@ export const DevicesProfile: FC<DeviceProfileProps> = ({
       'Filter.PipeDiameters': searchState?.['Filter.PipeDiameters'],
       'Filter.ExpiresCheckingDateAt':
         searchState?.['Filter.ExpiresCheckingDateAt'],
+      'Filter.ExpiresAdmissionActDateAt':
+        searchState?.['Filter.ExpiresAdmissionActDateAt'],
+
       'Filter.Resource': searchState?.['Filter.Resource'],
       'Filter.Model': searchState?.['Filter.Model'],
       'Filter.CommercialDateRange.From':
@@ -57,6 +59,8 @@ export const DevicesProfile: FC<DeviceProfileProps> = ({
       'Filter.Address.HouseCategory':
         searchState?.['Filter.Address.HouseCategory'],
 
+      'Filter.NodeRegistrationType':
+        searchState?.['Filter.NodeRegistrationType'],
       'Filter.NodeStatus': searchState?.['Filter.NodeStatus'],
       Question: searchState?.Question,
       OrderRule: searchState?.OrderRule,
@@ -77,6 +81,7 @@ export const DevicesProfile: FC<DeviceProfileProps> = ({
     },
     enableReinitialize: true,
     onSubmit: (values) => {
+      console.log(values)
       setFilter({
         ...values,
         IsConnected: values.IsConnected
