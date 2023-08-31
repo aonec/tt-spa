@@ -4,7 +4,7 @@ import { useEvent, useStore } from 'effector-react';
 import { PauseApartmentModal } from './view/PauseApartmentModal';
 import { Props } from './pauseApartmentService.types';
 
-const { inputs, outputs, gates } = pauseApartmentService;
+const { inputs, outputs, gates, forms } = pauseApartmentService;
 const { PauseApartmentGate } = gates;
 
 export const PauseApartmentContainer: FC<Props> = ({ apartmentId }) => {
@@ -15,7 +15,6 @@ export const PauseApartmentContainer: FC<Props> = ({ apartmentId }) => {
   const pauseApartmentModalCancelButtonClicked = useEvent(
     inputs.pauseApartmentModalCancelButtonClicked,
   );
-  const pauseApartment = useEvent(inputs.pauseApartment);
 
   return (
     <>
@@ -24,11 +23,11 @@ export const PauseApartmentContainer: FC<Props> = ({ apartmentId }) => {
         isLoading={isLoading}
         isOpen={isOpen}
         problemDevices={problemDevices}
-        apartmentId={apartmentId}
         pauseApartmentModalCancelButtonClicked={
           pauseApartmentModalCancelButtonClicked
         }
-        pauseApartment={pauseApartment}
+        form={forms.pauseApartmentForm}
+        apartmentId={apartmentId}
       />
     </>
   );

@@ -17,18 +17,55 @@ import {
 import { createGate } from 'effector-react';
 import { message } from 'antd';
 import { calculatorsInfoService } from '../calculatorsInfoService';
+import { createForm } from 'effector-forms';
+import { required } from 'api/formRules';
 
 const domain = createDomain('editCalculatorService');
 
 const handleChangeTab = domain.createEvent<EditCalculatorTabs>();
-
-const handleSubmit = domain.createEvent<UpdateCalculatorRequest>();
 
 const handleAlreadyExistingConnection = domain.createEvent<{ id: number }>();
 const handleExisingConnectionError = domain.createEvent();
 const handleCloseModal = domain.createEvent();
 
 const SaveDeviceIdGate = createGate<{ deviceId: number }>();
+
+const editMainInfoForm = createForm({
+  fields: {
+    serialNumber: { init: null as string | null, rules: [required()] },
+    lastCheckingDate: { init: null as string | null, rules: [required()] },
+    futureCheckingDate: { init: null as string | null, rules: [required()] },
+  },
+  validateOn: ['submit'],
+});
+
+sample({
+  clock: calculatorProfileService.outputs.$calculator,
+  filter: Boolean,
+  target: editMainInfoForm.setInitialForm,
+});
+
+const editConnectionForm = createForm({
+  fields: {
+    ipV4: { init: null as string | null, rules: [required()] },
+    port: { init: null as string | null, rules: [required()] },
+    deviceAddress: { init: null as string | null, rules: [required()] },
+    isConnected: { init: null as boolean | null },
+  },
+  validateOn: ['submit'],
+});
+
+sample({
+  clock: calculatorProfileService.outputs.$calculator,
+  filter: Boolean,
+  fn: ({ connection, isConnected }) => ({
+    ipV4: connection?.ipV4 ? connection.ipV4.trim() : null,
+    port: String(connection?.port).trim(),
+    deviceAddress: String(connection?.deviceAddress).trim(),
+    isConnected,
+  }),
+  target: editConnectionForm.setInitialForm,
+});
 
 const editCalculatorFx = domain.createEffect<
   { deviceId: number; form: UpdateCalculatorRequest },
@@ -59,7 +96,19 @@ const $sameConnectionCalculator = domain
   );
 
 sample({
-  clock: handleSubmit,
+  clock: [
+    editMainInfoForm.formValidated,
+    editConnectionForm.formValidated.map(
+      ({ deviceAddress, ipV4, isConnected, port }) => ({
+        isConnected,
+        connection: {
+          ipV4: ipV4?.trim(),
+          port: Number(port),
+          deviceAddress: Number(deviceAddress),
+        },
+      }),
+    ),
+  ],
   source: SaveDeviceIdGate.state,
   fn: (gateState, submitState) => {
     return { deviceId: gateState.deviceId, form: submitState };
@@ -92,7 +141,6 @@ editCalculatorSuccess.watch(() =>
 export const editCalculatorService = {
   inputs: {
     handleChangeTab,
-    handleSubmit,
     editCalculatorSuccess,
     handleAlreadyExistingConnection,
     handleCloseModal,
@@ -112,4 +160,5 @@ export const editCalculatorService = {
     CalculatorInfosGate: calculatorsInfoService.gates.CalculatorInfosGate,
     SaveDeviceIdGate,
   },
+  forms: { editMainInfoForm, editConnectionForm },
 };

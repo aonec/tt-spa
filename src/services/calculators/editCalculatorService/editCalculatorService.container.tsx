@@ -5,12 +5,11 @@ import { useEvent, useStore } from 'effector-react';
 import { useHistory, useParams } from 'react-router-dom';
 import { MeteringDeviceResponse } from 'api/types';
 
-const { inputs, outputs, gates } = editCalculatorService;
+const { inputs, outputs, gates, forms } = editCalculatorService;
 const { CalculatorInfosGate, SaveDeviceIdGate } = gates;
 
 export const EditCalculatorContainer = () => {
   const handleChangeTab = useEvent(inputs.handleChangeTab);
-  const handleSubmit = useEvent(inputs.handleSubmit);
   const handleCloseModal = useEvent(inputs.handleCloseModal);
   const handleFecthCalculator = useEvent(inputs.handleFecthCalculator);
 
@@ -51,11 +50,12 @@ export const EditCalculatorContainer = () => {
         currentTab={currentTab}
         handleChangeTab={handleChangeTab}
         calculatorTypesSelectItems={calculatorTypesSelectItems}
-        handleSubmit={handleSubmit}
         isCalculatorLoading={isCalculatorLoading}
         sameConnectionCalculator={sameConnectionCalculator}
         handleCloseModal={() => handleCloseModal()}
         isModalOpen={isModalOpen}
+        editMainInfoForm={forms.editMainInfoForm}
+        editConnectionForm={forms.editConnectionForm}
       />
     </>
   );

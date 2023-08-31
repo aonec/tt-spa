@@ -1,7 +1,5 @@
 import React, { FC, useMemo } from 'react';
-import { useFormik } from 'formik';
 import moment from 'moment';
-import { Document } from 'ui-kit/DocumentsService';
 import {
   FilesUploadWrap,
   Grid,
@@ -10,7 +8,6 @@ import {
 import { Props } from './PauseApartmentForm.types';
 import { FormItem } from 'ui-kit/FormItem';
 import { DatePicker } from 'ui-kit/DatePicker';
-import { ErrorMessage } from 'ui-kit/ErrorMessage';
 import { DocumentsUploadContainer } from 'ui-kit/DocumentsService';
 import { Alert } from 'ui-kit/Alert';
 import {
@@ -20,6 +17,8 @@ import {
 } from 'api/types';
 import { pauseApartmentService } from 'services/apartments/pauseApartmentService/pauseApartmentService.models';
 import { Form } from 'antd';
+import { useForm } from 'effector-forms';
+import { getDatePickerValue } from 'utils/getDatePickerValue';
 
 const {
   gates: { ProblemDevicesGate },
@@ -27,31 +26,11 @@ const {
 
 export const PauseApartmentForm: FC<Props> = ({
   problemDevices,
+  form,
+  formId,
   apartmentId,
-  pauseApartment,
 }) => {
-  const { values, setFieldValue, errors, handleSubmit } = useFormik({
-    initialValues: {
-      fromDate: moment().toISOString(true) as string | null,
-      toDate: null as string | null,
-      documents: [] as Document[],
-    },
-    onSubmit: (values) => {
-      const payload = {
-        apartmentId: apartmentId,
-        requestPayload: {
-          fromDate: moment(values.fromDate).format('YYYY-MM-DD'),
-          toDate: moment(values.toDate).format('YYYY-MM-DD'),
-          status: EApartmentStatus.Pause,
-          documentIds: values.documents
-            .map((document) => document.id)
-            .filter((documentId): documentId is number => Boolean(documentId)),
-        },
-      };
-
-      pauseApartment(payload);
-    },
-  });
+  const { fields, submit, values } = useForm(form);
 
   const payload: ApartmentStatusSetRequest = useMemo(() => {
     return {
@@ -61,37 +40,35 @@ export const PauseApartmentForm: FC<Props> = ({
     };
   }, [values]);
 
-  const form = (
+  const formComponent = (
     <Grid>
       <FormItem label="Дата начала">
         <DatePicker
           allowClear
-          value={values.fromDate ? moment(values.fromDate) : undefined}
+          value={getDatePickerValue(values.fromDate)}
           onChange={(value: moment.Moment | null) =>
-            setFieldValue('fromDate', value && value.toISOString(true))
+            value && fields.fromDate.onChange(value.format())
           }
           format="DD.MM.YYYY"
           disabledDate={(value) => value.diff(moment(values.toDate)) > 0}
         />
-        <ErrorMessage>{errors.fromDate}</ErrorMessage>
       </FormItem>
       <FormItem label="Дата окончания">
         <DatePicker
           allowClear
-          value={values.toDate ? moment(values.toDate) : undefined}
+          value={getDatePickerValue(values.toDate)}
           onChange={(value: moment.Moment | null) => {
-            setFieldValue('toDate', value && value.toISOString(true));
+            value && fields.toDate.onChange(value.format());
           }}
           disabledDate={(value) => value.diff(moment(values.fromDate)) < 0}
           format="DD.MM.YYYY"
         />
-        <ErrorMessage>{errors.toDate}</ErrorMessage>
       </FormItem>
     </Grid>
   );
 
   return (
-    <Form id="pause-apartment-form" onSubmitCapture={handleSubmit}>
+    <Form id={formId} onSubmitCapture={() => submit()}>
       <ProblemDevicesGate apartmentId={apartmentId} requestPayload={payload} />
       <HeaderWrapper>
         <div>Максимальный срок поставновки квартиры на паузу - 1 год</div>
@@ -105,14 +82,14 @@ export const PauseApartmentForm: FC<Props> = ({
           </>
         ))}
 
-        {form}
+        {formComponent}
       </HeaderWrapper>
       <FilesUploadWrap>
         <DocumentsUploadContainer
           uniqId="pause-apartment"
           documents={values.documents}
           label="Добавьте заявление абонента о постановке квартиры на паузу"
-          onChange={(documents) => setFieldValue('documents', documents)}
+          onChange={(documents) => fields.documents.onChange(documents)}
           type={EDocumentType.ApartmentStoppingStatement}
         />
       </FilesUploadWrap>

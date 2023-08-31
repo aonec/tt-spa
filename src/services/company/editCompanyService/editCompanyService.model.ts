@@ -8,6 +8,7 @@ import {
   fetchUpdateOrganization,
 } from './editCompanyService.api';
 import { OrganizationUpdatePayload } from './editCompanyService.types';
+import { createForm } from 'effector-forms';
 
 const domain = createDomain('editCompanyService');
 
@@ -21,7 +22,25 @@ const $currentManagingFirm = domain
   .on(getCurrentManagingFirmFx.doneData, (_, firm) => firm)
   .reset(clearCurrentManagingFirm);
 
-const updateOrganization = domain.createEvent<OrganizationUpdateRequest>();
+const editCompanyForm = createForm<OrganizationUpdateRequest>({
+  fields: {
+    city: { init: null as string | null },
+    corpus: { init: null as string | null },
+    street: { init: null as string | null },
+    houseNumber: { init: null as string | null },
+    email: { init: null as string | null },
+    name: { init: null as string | null },
+    phoneNumber: { init: null as string | null },
+  },
+  validateOn: ['submit'],
+});
+
+sample({
+  clock: $currentManagingFirm,
+  filter: Boolean,
+  target: editCompanyForm.setForm,
+});
+
 const updateOrganizationFx = domain.createEffect<
   OrganizationUpdatePayload,
   void,
@@ -40,7 +59,7 @@ sample({
     source: $currentManagingFirm.map((firm) => firm?.id),
     filter: (id): id is number => Boolean(id),
   }),
-  clock: updateOrganization,
+  clock: editCompanyForm.formValidated,
   fn: (managingFirmId, payload) => ({ managingFirmId, ...payload }),
   target: updateOrganizationFx,
 });
@@ -52,7 +71,7 @@ forward({
 
 forward({
   from: EditCompanyGate.close,
-  to: clearCurrentManagingFirm,
+  to: [clearCurrentManagingFirm, editCompanyForm.reset],
 });
 
 updateOrganizationFx.doneData.watch(() =>
@@ -61,7 +80,6 @@ updateOrganizationFx.doneData.watch(() =>
 
 export const editCompanyService = {
   inputs: {
-    updateOrganization,
     organizationUpdated,
   },
   outputs: {
@@ -70,4 +88,5 @@ export const editCompanyService = {
     $isUpdating,
   },
   gates: { EditCompanyGate },
+  forms: { editCompanyForm },
 };
