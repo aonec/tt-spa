@@ -1,24 +1,21 @@
 import {
   BuildingByFilterResponse,
-  CalculatorListResponsePagedList,
+  NodesPagedList,
   EMeteringDeviceType,
   EOrderByRule,
 } from 'api/types';
 import { axios } from 'api/axios';
-import { CalculatorsListRequestPayload } from 'services/calculators/calculatorsListService/calculatorsListService.types';
 import { GetHousingByFilterRequestPayload } from '../devicesPageService/individualDevicesProfileService/view/IndividualDevicesProfile/individualDevicesViewByAddressService/individualDevicesViewByAddressService.types';
 import queryString from 'query-string';
 import { GetMeteringDevicesModelsRequest } from '../individualDevices/displayIndividualDeviceAndNamesService/displayIndividualDeviceAndNamesService.types';
 import { createQuery } from '@farfetched/core';
 import { createEffect } from 'effector';
+import { NodesListRequestPayload } from './displayDevicesService.types';
 
-export const getCalculatorsListQuery = createQuery({
-  effect: createEffect<
-    CalculatorsListRequestPayload,
-    CalculatorListResponsePagedList
-  >(
+export const getNodesListQuery = createQuery({
+  effect: createEffect<NodesListRequestPayload, NodesPagedList>(
     async (params) =>
-      await axios.get(`Calculators`, {
+      await axios.get('Nodes', {
         params,
         paramsSerializer: (params) => {
           return queryString.stringify(params);

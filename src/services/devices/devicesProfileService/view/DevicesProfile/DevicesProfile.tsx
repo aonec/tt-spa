@@ -3,8 +3,6 @@ import { useFormik } from 'formik';
 import { DevicesListContainer } from 'services/devices/displayDevicesService/displayDevicesService.container';
 import { SearchDevices } from '../SearchDevices';
 import { ExtendedSearch } from 'ui-kit/ExtendedSearch';
-import { CalculatorsListRequestForm } from 'services/calculators/calculatorsListService/calculatorsListService.types';
-import { ExtendedSearchForm } from './ExtendedSearchForm/ExtendedSearchForm';
 import { Wrapper } from './DevicesProfile.styled';
 import { DevicesSearchType } from 'services/devices/devicesPageService/devicesPageService.types';
 import { Radio } from 'antd';
@@ -13,6 +11,8 @@ import {
   EIsDeviceConnectedType,
   IsConnectedToBooleanDictionary,
 } from './ExtendedSearchForm/ExtendedSearchForm.constants';
+import { NodesListRequestForm } from 'services/devices/displayDevicesService/displayDevicesService.types';
+import { ExtendedSearchForm } from './ExtendedSearchForm/ExtendedSearchForm';
 
 export const DevicesProfile: FC<DeviceProfileProps> = ({
   setFilter,
@@ -36,34 +36,34 @@ export const DevicesProfile: FC<DeviceProfileProps> = ({
     setFieldValue,
     values,
     resetForm,
-  } = useFormik<CalculatorsListRequestForm>({
+  } = useFormik<NodesListRequestForm>({
     initialValues: {
-      'Filter.PipeDiameters': searchState?.['Filter.PipeDiameters'],
+      'DevicesFilter.PipeDiameters':
+        searchState?.['DevicesFilter.PipeDiameters'],
+      'DevicesFilter.ExpiresCheckingDateAt':
+        searchState?.['DevicesFilter.ExpiresCheckingDateAt'],
+
       'Filter.ExpiresCheckingDateAt':
         searchState?.['Filter.ExpiresCheckingDateAt'],
-      'Filter.ExpiresAdmissionActDateAt':
-        searchState?.['Filter.ExpiresAdmissionActDateAt'],
 
-      'Filter.Resource': searchState?.['Filter.Resource'],
-      'Filter.Model': searchState?.['Filter.Model'],
-      'Filter.CommercialDateRange.From':
-        searchState?.['Filter.CommercialDateRange.From'],
-      'Filter.CommercialDateRange.To':
-        searchState?.['Filter.CommercialDateRange.To'],
-      'Filter.Address.City': searchState?.['Filter.Address.City'],
-      'Filter.Address.Street': searchState?.['Filter.Address.Street'],
-      'Filter.Address.HousingStockNumber':
-        searchState?.['Filter.Address.HousingStockNumber'],
-      'Filter.Address.Corpus': searchState?.['Filter.Address.Corpus'],
+      Resource: searchState?.Resource,
+      'DevicesFilter.Model': searchState?.['DevicesFilter.Model'],
+      'CommercialDateRange.From': searchState?.['CommercialDateRange.From'],
+      'CommercialDateRange.To': searchState?.['CommercialDateRange.To'],
+      'Address.City': searchState?.['Address.City'],
+      'Address.Street': searchState?.['Address.Street'],
+      'Address.HousingStockNumber': searchState?.['Address.HousingStockNumber'],
+      'Address.Corpus': searchState?.['Address.Corpus'],
+      'Address.HouseCategory': searchState?.['Address.HouseCategory'],
 
-      'Filter.Address.HouseCategory':
-        searchState?.['Filter.Address.HouseCategory'],
+      CommercialStatus: searchState?.CommercialStatus,
 
       'Filter.NodeRegistrationType':
         searchState?.['Filter.NodeRegistrationType'],
       'Filter.NodeStatus': searchState?.['Filter.NodeStatus'],
-      Question: searchState?.Question,
-      OrderRule: searchState?.OrderRule,
+
+      'DevicesFilter.Question': searchState?.['DevicesFilter.Question'],
+      OrderBy: searchState?.OrderBy,
 
       IsConnected:
         searchState?.IsConnected === undefined
@@ -74,10 +74,8 @@ export const DevicesProfile: FC<DeviceProfileProps> = ({
 
       CountTasks: searchState?.CountTasks,
       IsClosed: searchState?.IsClosed,
-      FileName: searchState?.FileName,
       PageNumber: searchState?.PageNumber,
       PageSize: searchState?.PageSize,
-      OrderBy: searchState?.OrderBy,
     },
     enableReinitialize: true,
     onSubmit: (values) => {
