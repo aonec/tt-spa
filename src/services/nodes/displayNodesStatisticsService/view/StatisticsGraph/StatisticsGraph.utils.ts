@@ -83,9 +83,7 @@ const getTaskXPos = (payload: GetTaskXPosPayload) => {
     return (
       Math.round(
         differenceInMinutes(new Date(currentData), new Date(minDate)) / 60,
-      ) -
-      new Date().getTimezoneOffset() / 60 +
-      1
+      ) + 1
     );
   }
   return (
