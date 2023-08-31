@@ -13,10 +13,7 @@ import {
 } from 'api/types';
 import { EffectFailDataAxiosErrorDataTemperatureGraph } from 'types';
 import { EDayPartError } from './view/TemperatureGraph/TemperatureGraph.types';
-import {
-  ColumnErrDictionary,
-  ErrorColumnsType,
-} from './temperatureGraphService.types';
+import { ErrorColumnType } from './temperatureGraphService.types';
 
 const TemperatureGraphGate = createGate();
 
@@ -69,7 +66,7 @@ const $isEditing = createStore<boolean>(false)
   .on(putTemperatureNormativeFx.doneData, () => false)
   .reset(TemperatureGraphGate.close);
 
-const $errorColumns = createStore<ErrorColumnsType>([]).on(
+const $errorColumns = createStore<ErrorColumnType[]>([]).on(
   putTemperatureNormativeFx.failData,
   (_, error) => {
     const errorsArr = Object.entries(error.response.data.error.Data);
@@ -96,8 +93,6 @@ const $errorColumns = createStore<ErrorColumnsType>([]).on(
     return preparedErrorsArr;
   },
 );
-
-$errorColumns.watch((data) => console.log(data));
 
 const $isLoading = putTemperatureNormativeFx.pending;
 

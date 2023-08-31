@@ -6,6 +6,6 @@ export const ColumnErrDictionary = {
   'Дневной и ночной нормативы': [EDayPartError.day, EDayPartError.night],
 };
 
-export type ErrorColumnsType = {
+export type ErrorColumnType = {
   [outdoorTemperature: number]: EDayPartError[];
-}[];
+};

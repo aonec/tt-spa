@@ -3,7 +3,6 @@ import React, {
   FC,
   useCallback,
   useEffect,
-  useMemo,
   useState,
 } from 'react';
 import { useFormik } from 'formik';
@@ -31,7 +30,7 @@ import {
   TemperatureNormativeRow,
   TemperatureNormativeUpdateRequest,
 } from 'api/types';
-import { ErrorColumnsType } from '../../temperatureGraphService.types';
+import { ErrorColumnType } from '../../temperatureGraphService.types';
 
 export const TemperatureGraph: FC<TemperatureGraphProps> = ({
   temperatureNormative: initialTemperatureNormatives,
@@ -55,15 +54,109 @@ export const TemperatureGraph: FC<TemperatureGraphProps> = ({
     },
   });
 
-  const [columnErrors, setColumnErrors] = useState<ErrorColumnsType>([]);
+  const [columnErrors, setColumnErrors] = useState<ErrorColumnType[]>([]);
 
   useEffect(() => setColumnErrors(errorColumns), [errorColumns]);
 
-  
+  const getDayTime = (inputFieldName: ETemteratureTypes) => {
+    if (
+      inputFieldName === ETemteratureTypes.dayFeedBackFlowTemperature ||
+      inputFieldName === ETemteratureTypes.dayFeedFlowTemperature
+    ) {
+      return EDayPartError.day;
+    } else return EDayPartError.night;
+  };
+
+  const getValidationPassed = (
+    inputFieldName: ETemteratureTypes,
+    onBlurData: ChangeEvent<HTMLInputElement>,
+    currentTemperatureNormative?: TemperatureNormativeRow,
+  ) => {
+    if (inputFieldName === ETemteratureTypes.dayFeedFlowTemperature) {
+      return Boolean(
+        currentTemperatureNormative?.dayFeedBackFlowTemperature &&
+          currentTemperatureNormative.dayFeedBackFlowTemperature >
+            Number(onBlurData.target.value),
+      );
+    }
+    if (inputFieldName === ETemteratureTypes.dayFeedBackFlowTemperature) {
+      return Boolean(
+        currentTemperatureNormative?.dayFeedFlowTemperature &&
+          currentTemperatureNormative.dayFeedFlowTemperature <
+            Number(onBlurData.target.value),
+      );
+    }
+    if (inputFieldName === ETemteratureTypes.nightFeedFlowTemperature) {
+      return Boolean(
+        currentTemperatureNormative?.nightFeedBackFlowTemperature &&
+          currentTemperatureNormative.nightFeedBackFlowTemperature >
+            Number(onBlurData.target.value),
+      );
+    }
+    if (inputFieldName === ETemteratureTypes.nightFeedBackFlowTemperature) {
+      return Boolean(
+        currentTemperatureNormative?.nightFeedFlowTemperature &&
+          currentTemperatureNormative.nightFeedFlowTemperature <
+            Number(onBlurData.target.value),
+      );
+    }
+  };
+
+  const handlePassValidation = (
+    currentColumnError: ErrorColumnType | undefined,
+    columnErrors: ErrorColumnType[],
+    data: TemperatureNormativeRow,
+    dayTime: EDayPartError,
+  ) => {
+    if (currentColumnError) {
+      currentColumnError[data.outdoorTemperature!].push(dayTime);
+      setColumnErrors([...columnErrors, currentColumnError]);
+    } else {
+      setColumnErrors([
+        ...columnErrors,
+        {
+          [data.outdoorTemperature!]: [dayTime],
+        },
+      ]);
+    }
+
+    message.error(
+      'Температура на обратной магистрали должна быть меньше, чем на подающей',
+    );
+  };
+
+  const handleNoPassValidation = (
+    currentColumnError: ErrorColumnType | undefined,
+    columnErrors: ErrorColumnType[],
+    data: TemperatureNormativeRow,
+    dayTime: EDayPartError,
+  ) => {
+    if (!currentColumnError) return;
+
+    const filteredDayPart = currentColumnError[data.outdoorTemperature!].filter(
+      (dayPart) => dayPart !== dayTime,
+    );
+
+    const filteredColumnErrors = columnErrors.filter(
+      (columnError) =>
+        Number(Object.keys(columnError)[0]) !== data.outdoorTemperature!,
+    );
+
+    if (Boolean(filteredDayPart.length)) {
+      setColumnErrors([
+        ...filteredColumnErrors,
+        {
+          [data.outdoorTemperature!]: filteredDayPart,
+        },
+      ]);
+    } else {
+      setColumnErrors(filteredColumnErrors);
+    }
+  };
 
   const handleOnBlur = useCallback(
     (
-      onBlurData,
+      onBlurData: ChangeEvent<HTMLInputElement>,
       data: TemperatureNormativeRow,
       inputFieldName: ETemteratureTypes,
     ) => {
@@ -76,80 +169,18 @@ export const TemperatureGraph: FC<TemperatureGraphProps> = ({
         (columnError) => columnError[data.outdoorTemperature!],
       );
 
-      let isPassValidation;
-      let dayTime;
+      const dayTime = getDayTime(inputFieldName);
 
-      if (inputFieldName === ETemteratureTypes.dayFeedFlowTemperature) {
-        isPassValidation = Boolean(
-          currentTemperatureNormative?.dayFeedBackFlowTemperature &&
-            currentTemperatureNormative.dayFeedBackFlowTemperature >
-              Number(onBlurData.target.value),
-        );
-        dayTime = EDayPartError.day;
-      }
-      if (inputFieldName === ETemteratureTypes.dayFeedBackFlowTemperature) {
-        isPassValidation = Boolean(
-          currentTemperatureNormative?.dayFeedFlowTemperature &&
-            currentTemperatureNormative.dayFeedFlowTemperature <
-              Number(onBlurData.target.value),
-        );
-        dayTime = EDayPartError.day;
-      }
-      if (inputFieldName === ETemteratureTypes.nightFeedFlowTemperature) {
-        isPassValidation = Boolean(
-          currentTemperatureNormative?.nightFeedBackFlowTemperature &&
-            currentTemperatureNormative.nightFeedBackFlowTemperature >
-              Number(onBlurData.target.value),
-        );
-        dayTime = EDayPartError.night;
-      }
-      if (inputFieldName === ETemteratureTypes.nightFeedBackFlowTemperature) {
-        isPassValidation = Boolean(
-          currentTemperatureNormative?.nightFeedFlowTemperature &&
-            currentTemperatureNormative.nightFeedFlowTemperature <
-              Number(onBlurData.target.value),
-        );
-        dayTime = EDayPartError.night;
-      }
+      const isPassValidation = getValidationPassed(
+        inputFieldName,
+        onBlurData,
+        currentTemperatureNormative,
+      );
 
       if (Boolean(isPassValidation)) {
-        if (currentColumnError) {
-          currentColumnError[data.outdoorTemperature!].push(dayTime);
-          setColumnErrors([...columnErrors, currentColumnError]);
-        } else {
-          setColumnErrors([
-            ...columnErrors,
-            {
-              [data.outdoorTemperature!]: [dayTime],
-            },
-          ]);
-        }
-
-        message.error(
-          'Температура на обратной магистрали должна быть меньше, чем на подающей',
-        );
+        handlePassValidation(currentColumnError, columnErrors, data, dayTime);
       } else {
-        if (!currentColumnError) return;
-
-        const filteredDayPart = currentColumnError[
-          data.outdoorTemperature!
-        ].filter((dayPart) => dayPart !== dayTime);
-
-        const filteredColumnErrors = columnErrors.filter(
-          (columnError) =>
-            Number(Object.keys(columnError)[0]) !== data.outdoorTemperature!,
-        );
-
-        if (Boolean(filteredDayPart.length)) {
-          setColumnErrors([
-            ...filteredColumnErrors,
-            {
-              [data.outdoorTemperature!]: filteredDayPart,
-            },
-          ]);
-        } else {
-          setColumnErrors(filteredColumnErrors);
-        }
+        handleNoPassValidation(currentColumnError, columnErrors, data, dayTime);
       }
     },
     [columnErrors, values.temperatureNormativesArr],
