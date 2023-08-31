@@ -1,5 +1,5 @@
 import React, { FC, useCallback, useMemo } from 'react';
-import { Tooltip } from 'antd';
+import { Tooltip } from 'ui-kit/shared/Tooltip';
 import { HousingStockCalculatorsProps } from './HousingStockCalculators.types';
 import { EHouseCategory, BuildingAddress } from 'api/types';
 import { DevicesSearchType } from 'services/devices/devicesPageService/devicesPageService.types';

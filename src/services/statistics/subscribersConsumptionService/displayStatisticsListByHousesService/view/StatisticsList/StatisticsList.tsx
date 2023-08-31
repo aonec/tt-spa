@@ -1,6 +1,6 @@
 import React from 'react';
 import dayjs from 'api/dayjs';
-import { Tooltip } from 'antd';
+import { Tooltip } from 'ui-kit/shared/Tooltip';
 import {
   HeaderStyles,
   HomeownerNameWrapper,

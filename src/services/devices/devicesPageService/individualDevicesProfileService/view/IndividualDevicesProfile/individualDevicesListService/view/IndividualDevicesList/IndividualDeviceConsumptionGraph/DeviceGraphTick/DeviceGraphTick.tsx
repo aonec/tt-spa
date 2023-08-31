@@ -1,4 +1,4 @@
-import { Tooltip } from 'antd';
+import { Tooltip } from 'ui-kit/shared/Tooltip';
 import dayjs from 'api/dayjs';
 import React, { FC } from 'react';
 import { LineSegment } from 'victory';

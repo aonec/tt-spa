@@ -1,5 +1,5 @@
 import { SpaceLine } from 'ui-kit/SpaceLine';
-import { Tooltip } from 'antd';
+import { Tooltip } from 'ui-kit/shared/Tooltip';
 import dayjs from 'api/dayjs';
 import React, { FC, useState } from 'react';
 import { GoBack } from 'ui-kit/shared/GoBack';

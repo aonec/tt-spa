@@ -17,7 +17,7 @@ import {
   InputWrapper,
 } from 'services/meters/individualDeviceMetersInputService/view/MetersInputsBlock/MetersInputsBlock.styled';
 import { MetersInputBlockStatus } from 'services/meters/individualDeviceMetersInputService/view/MetersInputsBlock/MetersInputsBlock.types';
-import { Tooltip } from 'antd';
+import { Tooltip } from 'ui-kit/shared/Tooltip';
 import { fromEnter } from 'ui-kit/shared/DatePickerNative';
 import { getTimeStringByUTC } from 'utils/getTimeStringByUTC';
 import dayjs from 'api/dayjs';
