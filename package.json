@@ -61,10 +61,15 @@
           "**/*.stories.*"
         ],
         "rules": {
-          "import/no-anonymous-default-export": "off",
-          "no-console": [
-            "error"
-          ]
+          "import/no-anonymous-default-export": "off"
+        }
+      },
+      {
+        "files": [
+          "**/*.{js,jsx,ts,tsx}"
+        ],
+        "rules": {
+          "no-console": "warn"
         }
       }
     ]

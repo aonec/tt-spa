@@ -3,20 +3,18 @@ import { useUnit } from 'effector-react';
 import { useHistory, useLocation, useParams } from 'react-router-dom';
 import { TabsSC } from './SettingPage.styled';
 import { SettingPageProps } from './SettingPage.types';
-import { chooseTypeOfResourceDisconnectionModalService } from 'services/resources/chooseTypeOfResourceDisconnectionModalService';
 import { inspectorAddressesResetService } from 'services/settings/inspectorsDistributionService/inspectorAddressesResetService/inspectorAddressesResetService.models';
-import { ResourceDisablingScheduleContainer } from 'services/settings/resourcesDisablingScheduleService/ResourceDisablingScheduleContainer';
 import { InspectorsDistributionPage } from 'services/settings/inspectorsDistributionService/views/InspectorsDistributionPage';
 import { InspectorAddressesResetModalContainer } from 'services/settings/inspectorsDistributionService/inspectorAddressesResetService/InspectorAddressesResetModalContainer';
-import { CreateResourceDisconnectionContainer } from 'services/resources/createResourceDisconnectionService';
-import { ChooseTypeOfResourceDisconnectionModalContainer } from 'services/resources/chooseTypeOfResourceDisconnectionModalService/chooseTypeOfResourceDisconnectionModalService.container';
 import { PageHeader } from 'ui-kit/shared/PageHeader';
 import { WorkingRangeTab } from 'services/workingRanges/WorkingRangeTab';
 import { DistrictBordersContainer } from 'services/settings/districtBordersService';
 import { developmentSettingsService } from 'services/developmentSettings/developmentSettings.models';
+import { TemperatureGraphContainer } from 'services/settings/temperatureGraphService';
 
 export const SettingPage: FC<SettingPageProps> = ({
   handleReassingInspector,
+  handleEditTemperatureNormative,
 }) => {
   const { featureToggles } = useUnit({
     featureToggles: developmentSettingsService.outputs.$featureToggles,
@@ -26,14 +24,15 @@ export const SettingPage: FC<SettingPageProps> = ({
   const history = useHistory();
   const { pathname } = useLocation();
   const adminSettings = pathname.split('/')[1] === 'adminSettings';
+  const isTemperatureGraphTab = pathname.split('/')[2] === 'temperatureGraph';
 
   const menuButtons = useMemo(() => {
     if (adminSettings) {
       return [
         {
-          title: 'Создать отключение ресурса',
-          onClick:
-            chooseTypeOfResourceDisconnectionModalService.inputs.openModal,
+          title: 'Редактировать температурный график',
+          onClick: () => handleEditTemperatureNormative(true),
+          hidden: !isTemperatureGraphTab,
         },
       ];
     }
@@ -47,18 +46,17 @@ export const SettingPage: FC<SettingPageProps> = ({
         onClick: handleReassingInspector,
       },
     ];
-  }, [adminSettings, handleReassingInspector]);
+  }, [
+    adminSettings,
+    handleReassingInspector,
+    handleEditTemperatureNormative,
+    isTemperatureGraphTab,
+  ]);
 
   const settingsComponent = useMemo(() => {
     if (adminSettings) {
       return (
         <>
-          <TabsSC.TabPane
-            tab="График отключения ресурсов"
-            key="disabledResources"
-          >
-            <ResourceDisablingScheduleContainer />
-          </TabsSC.TabPane>
           {featureToggles.workingRanges && (
             <TabsSC.TabPane tab="Рабочие диапазоны узлов" key="operatingRanges">
               <WorkingRangeTab />
@@ -67,6 +65,11 @@ export const SettingPage: FC<SettingPageProps> = ({
           {featureToggles.districtsManage && (
             <TabsSC.TabPane tab="Границы районов" key="districtBorder">
               <DistrictBordersContainer />
+            </TabsSC.TabPane>
+          )}
+          {featureToggles.temperatureGraph && (
+            <TabsSC.TabPane tab="Температурный график" key="temperatureGraph">
+              <TemperatureGraphContainer />
             </TabsSC.TabPane>
           )}
         </>
@@ -95,13 +98,12 @@ export const SettingPage: FC<SettingPageProps> = ({
     featureToggles.controllersDistribution,
     featureToggles.districtsManage,
     featureToggles.workingRanges,
+    featureToggles.temperatureGraph,
   ]);
 
   return (
     <>
       <InspectorAddressesResetModalContainer />
-      <CreateResourceDisconnectionContainer />
-      <ChooseTypeOfResourceDisconnectionModalContainer />
 
       <PageHeader
         title="Настройки"

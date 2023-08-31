@@ -25,9 +25,9 @@ export const CreateResourceDisconnectionContainer = () => {
     resourceTypes,
     disconnectingTypes,
     typeOfAddress,
-    existingHousingStocks,
-    housingStockWithHeatingStations,
-    housingStockWithHouseManagements,
+    existingBuildings,
+    buildingWithHeatingStations,
+    buildingWithHouseManagements,
     isHousingStocksLoading,
     isEdit,
     selectedCity,
@@ -47,9 +47,9 @@ export const CreateResourceDisconnectionContainer = () => {
     resourceTypes: outputs.$resourceTypes,
     disconnectingTypes: outputs.$disconnectingTypes,
     typeOfAddress: outputs.$typeOfAddress,
-    existingHousingStocks: outputs.$existingHousingStocks,
-    housingStockWithHeatingStations: outputs.$housingStockWithHeatingStations,
-    housingStockWithHouseManagements: outputs.$housingStockWithHouseManagements,
+    existingBuildings: outputs.$existingBuildings,
+    buildingWithHeatingStations: outputs.$buildingWithHeatingStations,
+    buildingWithHouseManagements: outputs.$buildingWithHouseManagements,
     isHousingStocksLoading: outputs.$isHousingStocksLoading,
     selectedCity: outputs.$selectedCity,
     isInterHeatingSeason:
@@ -74,16 +74,16 @@ export const CreateResourceDisconnectionContainer = () => {
 
   const preparedExistingHousingStocks = useMemo(() => {
     if (typeOfAddress === EAddressDetails.All) {
-      return prepareAddressesForTreeSelect({ items: existingHousingStocks });
+      return prepareAddressesForTreeSelect({ items: existingBuildings });
     }
-    const housingStocks = housingStockWithHeatingStations.length
-      ? housingStockWithHeatingStations
-      : housingStockWithHouseManagements;
+    const housingStocks = buildingWithHeatingStations.length
+      ? buildingWithHeatingStations
+      : buildingWithHouseManagements;
     return prepareAddressesWithParentsForTreeSelect(housingStocks);
   }, [
-    existingHousingStocks,
-    housingStockWithHeatingStations,
-    housingStockWithHouseManagements,
+    existingBuildings,
+    buildingWithHeatingStations,
+    buildingWithHouseManagements,
     typeOfAddress,
   ]);
 

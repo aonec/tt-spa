@@ -56,7 +56,7 @@ export const ClosingReasonsDictionary: { [key in EClosingReason]: string } = {
   [EClosingReason.ByLetter]: 'Письмо из УК',
   [EClosingReason.NoReadings]: 'Отсутствие показаний',
   [EClosingReason.MaintainingStopped]: 'Остановлено',
-  [EClosingReason.CheckingDate]: 'Выход даты поверки',
+  [EClosingReason.CheckingDate]: 'Выход поверки',
   [EClosingReason.None]: 'Нет',
 };
 

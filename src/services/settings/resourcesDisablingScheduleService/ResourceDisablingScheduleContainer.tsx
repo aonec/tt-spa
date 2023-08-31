@@ -1,5 +1,5 @@
 import React from 'react';
-import { useEvent, useStore } from 'effector-react';
+import { useUnit } from 'effector-react';
 import { resourceDisablingScheduleServiceService } from './ResourceDisablingScheduleService.model';
 import { DisablingResourceWrapperContainer } from './views/DisablingResourcesList/DisablingResoucesList.styles';
 import { DisablingResourcesList } from './views/DisablingResourcesList/DisablingResoursesList';
@@ -27,25 +27,33 @@ const { ExistingCitiesGate } = addressSearchService.gates;
 export const ResourceDisablingScheduleContainer = () => {
   const DisablingResouresGate = gates.resourceDisablingGate;
 
-  const resources = useStore(outputs.$disablingResources);
-  const loading = useStore(outputs.$loading);
-  const cities = useStore(addressSearchService.outputs.$existingCities);
-  const filters = useStore(outputs.$filters);
-
-  const applyFilters = useEvent(inputs.applyFilters);
-  const setPage = useEvent(inputs.setPage);
-  const openCompleteDisconnectionModal = useEvent(
-    completeResourceDisconnectionService.inputs.openModal,
-  );
-  const openDeleteDisconnectionModal = useEvent(
-    deleteResourceDisconnectionService.inputs.openModal,
-  );
-  const openEditDisconnectionModal = useEvent(
-    editResourceDisconnectionService.inputs.openEditModal,
-  );
-  const openDissconectionAddressesModal = useEvent(
-    displayResourceDisconenctionAddressesServiceService.inputs.openModal,
-  );
+  const {
+    setFilters,
+    filters,
+    loading,
+    openCompleteDisconnectionModal,
+    openDeleteDisconnectionModal,
+    openDissconectionAddressesModal,
+    openEditDisconnectionModal,
+    resources,
+    setPage,
+    cities,
+  } = useUnit({
+    resources: outputs.$disablingResources,
+    loading: outputs.$loading,
+    filters: outputs.$filters,
+    setFilters: inputs.setFilters,
+    setPage: inputs.setPage,
+    openCompleteDisconnectionModal:
+      completeResourceDisconnectionService.inputs.openModal,
+    openDeleteDisconnectionModal:
+      deleteResourceDisconnectionService.inputs.openModal,
+    openEditDisconnectionModal:
+      editResourceDisconnectionService.inputs.openEditModal,
+    openDissconectionAddressesModal:
+      displayResourceDisconenctionAddressesServiceService.inputs.openModal,
+    cities: addressSearchService.outputs.$existingCities,
+  });
 
   const isPermitionToChangeResourceDisabling = usePermission([
     ESecuredIdentityRoleName.Administrator,
@@ -61,7 +69,7 @@ export const ResourceDisablingScheduleContainer = () => {
 
       <DisablingResourcesSearch
         filters={filters}
-        applyFilters={applyFilters}
+        applyFilters={setFilters}
         cities={cities}
       />
       <DisablingResourcesList

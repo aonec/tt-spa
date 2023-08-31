@@ -3,24 +3,21 @@ import { CustomTooltipProps } from './CustomTooltip.types';
 import { VictoryTooltip } from 'victory';
 
 export const CustomTooltip: FC<CustomTooltipProps> = (props) => {
-  const { x, y, active, minValue, maxValue, height, datum } = props;
+  const { x, y, active, datum, scale } = props;
 
-  if (datum?.value === null || datum?.value === undefined) {
+  if (datum?.value === null || datum?.value === undefined || !scale) {
     return null;
   }
-
-  const floor = (Math.abs(maxValue) / (maxValue - minValue)) * height;
 
   return (
     <g style={{ pointerEvents: 'none' }}>
       {active ? (
         <>
           <line
-            transform={`translate(${x}, 0)`}
-            x1={0}
+            x1={x}
+            x2={x}
             y1={y}
-            x2={0}
-            y2={floor}
+            y2={scale.y(0)}
             stroke="#000"
             strokeWidth={0.5}
             strokeDasharray={5}

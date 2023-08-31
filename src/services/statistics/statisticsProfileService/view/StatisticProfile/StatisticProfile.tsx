@@ -7,6 +7,8 @@ import { StatisticProfileGrouptype } from '../../statisticsProfileService.types'
 import { SubscribersConsumptionSearchType } from 'services/statistics/subscribersConsumptionService/subscribersConsumptionService.types';
 import { SubscribersConsumptionContainer } from 'services/statistics/subscribersConsumptionService';
 import { useHistory } from 'react-router-dom';
+import { ResourceDisablingScheduleContainer } from 'services/settings/resourcesDisablingScheduleService/ResourceDisablingScheduleContainer';
+import { chooseTypeOfResourceDisconnectionModalService } from 'services/resources/chooseTypeOfResourceDisconnectionModalService';
 const { TabPane } = TabsSC;
 
 export const StatisticProfile: FC<StatisticProfileProps> = ({
@@ -20,6 +22,15 @@ export const StatisticProfile: FC<StatisticProfileProps> = ({
   const history = useHistory();
 
   const menuButtons = useMemo(() => {
+    if (grouptype === StatisticProfileGrouptype.disabledResources) {
+      return [
+        {
+          title: 'Создать отключение ресурса',
+          onClick:
+            chooseTypeOfResourceDisconnectionModalService.inputs.openModal,
+        },
+      ];
+    }
     if (searchType === SubscribersConsumptionSearchType.Houses) {
       return [
         {
@@ -45,6 +56,7 @@ export const StatisticProfile: FC<StatisticProfileProps> = ({
     }
     return;
   }, [
+    grouptype,
     housingStockId,
     handleOpenExportStatisticModal,
     setFileName,
@@ -54,7 +66,7 @@ export const StatisticProfile: FC<StatisticProfileProps> = ({
 
   return (
     <>
-      <PageHeader title="Статистика" contextMenu={{ menuButtons }} />
+      <PageHeader title="Статистика и данные" contextMenu={{ menuButtons }} />
 
       <TabsSC
         activeKey={grouptype}
@@ -72,6 +84,13 @@ export const StatisticProfile: FC<StatisticProfileProps> = ({
           key={StatisticProfileGrouptype.subscribersConsumption}
         >
           <SubscribersConsumptionContainer />
+        </TabPane>
+
+        <TabPane
+          tab="Отключение ресурсов"
+          key={StatisticProfileGrouptype.disabledResources}
+        >
+          <ResourceDisablingScheduleContainer />
         </TabPane>
       </TabsSC>
     </>

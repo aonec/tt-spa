@@ -22,6 +22,7 @@ import { resourceNamesLookup } from 'utils/resourceNamesLookup';
 import moment from 'moment';
 import { DeviceStatus } from 'ui-kit/shared/IndividualDeviceInfo/DeviceStatus';
 import { ReadingsHistoryContainer } from 'services/meters/readingsHistoryService/readingsHistoryService.container';
+import { useHistory } from 'react-router-dom';
 
 export const IndividualDeviceProfile: FC<Props> = ({ device }) => {
   const [currentTab, setCurrentTab] = useState<IndividualDeviceProfileTab>(
@@ -29,6 +30,8 @@ export const IndividualDeviceProfile: FC<Props> = ({ device }) => {
   );
 
   const isActive = device.closingDate === null;
+
+  const history = useHistory();
 
   return (
     <div>
@@ -49,11 +52,13 @@ export const IndividualDeviceProfile: FC<Props> = ({ device }) => {
             menuButtons: [
               {
                 title: 'Редактировать',
+                onClick: () =>
+                  history.push(`/individualDevices/${device.id}/edit`),
               },
             ],
           }}
         />
-        <AddressWrapper>
+        <AddressWrapper to={`/apartments/${device.address?.apartmentId}`}>
           {getApartmentFromFullAddress(device.address, true)}
           <DeviceStatus
             isActive={isActive}
@@ -105,14 +110,14 @@ export const IndividualDeviceProfile: FC<Props> = ({ device }) => {
                       ),
                     },
                     {
-                      key: 'Магнитная пломба',
-                      value: device.magneticSealTypeName,
+                      key: 'Пломба',
+                      value: device.sealNumber,
                     },
                     {
                       key: 'Дата установки пломбы',
                       value:
-                        device.magneticSealInstallationDate &&
-                        moment(device.magneticSealInstallationDate).format(
+                        device.sealInstallationDate &&
+                        moment(device.sealInstallationDate).format(
                           'DD.MM.YYYY',
                         ),
                     },

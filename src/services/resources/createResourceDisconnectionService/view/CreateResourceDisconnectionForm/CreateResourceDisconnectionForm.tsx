@@ -249,7 +249,7 @@ export const CreateResourceDisconnectionForm: FC<
           {isCityShow && (
             <FormItem label="Город">
               <Select
-                placeholder="Выберите из списка"
+                placeholder="Выберите город"
                 onChange={(type) => {
                   selectCity(String(type));
                   setFieldValue('housingStockIds', []);

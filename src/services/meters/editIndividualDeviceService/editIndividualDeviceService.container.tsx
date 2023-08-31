@@ -28,7 +28,7 @@ export const EditIndividualDeviceContainer = () => {
 
   useEffect(() => {
     return inputs.updateDeviceSuccess.watch(() => {
-      history.push(`/meters/apartments/${apartmentId}`);
+      history.goBack();
     }).unsubscribe;
   }, [history, apartmentId]);
 
