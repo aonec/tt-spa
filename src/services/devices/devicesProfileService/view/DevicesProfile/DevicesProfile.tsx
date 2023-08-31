@@ -28,7 +28,7 @@ export const DevicesProfile: FC<DeviceProfileProps> = ({
   setSerialNumber,
   Header,
   handleFetchModels,
-  housingMeteringDevicesModels,
+  calculatorsModels,
   isSearchError,
 }) => {
   const {
@@ -81,7 +81,6 @@ export const DevicesProfile: FC<DeviceProfileProps> = ({
     },
     enableReinitialize: true,
     onSubmit: (values) => {
-      console.log(values)
       setFilter({
         ...values,
         IsConnected: values.IsConnected
@@ -139,7 +138,7 @@ export const DevicesProfile: FC<DeviceProfileProps> = ({
                 setFieldValue={setFieldValue}
                 values={values}
                 diametersConfig={diametersConfig}
-                housingMeteringDevicesModels={housingMeteringDevicesModels}
+                calculatorsModels={calculatorsModels}
                 handleFetchModels={handleFetchModels}
               />
             }

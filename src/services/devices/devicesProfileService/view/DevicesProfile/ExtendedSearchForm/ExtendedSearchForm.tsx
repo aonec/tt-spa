@@ -38,7 +38,7 @@ export const ExtendedSearchForm: FC<ExtendedSearchFormProps> = ({
   setFieldValue,
   diametersConfig,
   handleFetchModels,
-  housingMeteringDevicesModels,
+  calculatorsModels,
 }) => {
   const { marks, maxValue, minValue, diameters } = diametersConfig;
 
@@ -111,19 +111,23 @@ export const ExtendedSearchForm: FC<ExtendedSearchFormProps> = ({
           </Select>
         </FormItem>
 
-        <FormItem label="Статус Узла">
+        <FormItem label="Коммерческий учет показателей прибора">
           <Select
             small
-            id="NodeStatus"
-            placeholder="Любой статус"
-            value={values['Filter.NodeStatus']}
-            onChange={(value) => setFieldValue("['Filter.NodeStatus']", value)}
+            placeholder="Выберите из списка"
+            value={values['Filter.NodeRegistrationType']}
+            onChange={(value) => {
+              setFieldValue("['Filter.NodeRegistrationType']", value);
+              setFieldValue("['Filter.NodeStatus']", '');
+            }}
           >
-            <Option value="">Любой статус</Option>
-            <Option value="NotRegistered">Не на коммерческом учете</Option>
-            <Option value="Registered">Сдан на коммерческий учет</Option>
-            <Option value="OnReview">На утверждении</Option>
-            <Option value="Prepared">Подговлен к сдаче</Option>
+            <Option value="">Все</Option>
+            <Option value={ENodeRegistrationType.Commercial}>
+              Прибор на коммерческом учете
+            </Option>
+            <Option value={ENodeRegistrationType.Technical}>
+              Прибор не на коммерческом учете
+            </Option>
           </Select>
         </FormItem>
 
@@ -136,10 +140,7 @@ export const ExtendedSearchForm: FC<ExtendedSearchFormProps> = ({
               setFieldValue("['Filter.Model']", value);
               handleFetchModels(value);
             }}
-            options={
-              housingMeteringDevicesModels.map((elem) => ({ value: elem })) ||
-              []
-            }
+            options={calculatorsModels.map((elem) => ({ value: elem })) || []}
           />
         </FormItem>
       </StyledContainerThreeItems>
@@ -274,22 +275,22 @@ export const ExtendedSearchForm: FC<ExtendedSearchFormProps> = ({
           </Select>
         </FormItem>
 
-        <FormItem label="Коммерческий учет показателей прибора">
+        <FormItem label="Статус Узла">
           <Select
             small
-            placeholder="Выберите из списка"
-            value={values['Filter.NodeRegistrationType']}
-            onChange={(value) =>
-              setFieldValue("['Filter.NodeRegistrationType']", value)
-            }
+            id="NodeStatus"
+            placeholder="Любой статус"
+            value={values['Filter.NodeStatus']}
+            onChange={(value) => setFieldValue("['Filter.NodeStatus']", value)}
           >
-            <Option value="">Все</Option>
-            <Option value={ENodeRegistrationType.Commercial}>
-              Прибор на коммерческом учете
-            </Option>
-            <Option value={ENodeRegistrationType.Technical}>
-              Прибор не на коммерческом учете
-            </Option>
+            <Option value="">Любой статус</Option>
+            <Option value="NotRegistered">Не на коммерческом учете</Option>
+            {values['Filter.NodeRegistrationType'] !==
+              ENodeRegistrationType.Technical && (
+              <Option value="Registered">Сдан на коммерческий учет</Option>
+            )}
+            <Option value="OnReview">На утверждении</Option>
+            <Option value="Prepared">Подговлен к сдаче</Option>
           </Select>
         </FormItem>
 

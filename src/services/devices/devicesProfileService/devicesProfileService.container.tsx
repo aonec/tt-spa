@@ -30,7 +30,7 @@ export const DevicesProfileContainer: FC<HeaderInject> = ({ Header }) => {
     setSerialNumber,
     devices,
     isDevicesFetched,
-    housingMeteringDevicesModels,
+    calculatorsModels,
     handleFetchModels,
   } = useUnit({
     isOpen: outputs.$isExtendedSearchOpen,
@@ -47,7 +47,7 @@ export const DevicesProfileContainer: FC<HeaderInject> = ({ Header }) => {
     openDownloadDevicesReportModal: devicesReportService.inputs.openModal,
     devices: outputs.$devices,
     isDevicesFetched: getCalculatorsListQuery.$succeeded,
-    housingMeteringDevicesModels: outputs.$housingMeteringDevicesModels,
+    calculatorsModels: outputs.$calculatorsModels,
     handleFetchModels: inputs.handleFetchModels,
   });
 
@@ -87,7 +87,7 @@ export const DevicesProfileContainer: FC<HeaderInject> = ({ Header }) => {
         setDevicesSearchType={setDevicesSearchType}
         serialNumber={serialNumber}
         setSerialNumber={setSerialNumber}
-        housingMeteringDevicesModels={housingMeteringDevicesModels}
+        calculatorsModels={calculatorsModels}
         handleFetchModels={handleFetchModels}
         isSearchError={isEmpty && isDevicesFetched}
       />

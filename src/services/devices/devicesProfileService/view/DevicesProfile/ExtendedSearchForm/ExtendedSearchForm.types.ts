@@ -7,7 +7,7 @@ export type ExtendedSearchFormProps = {
   values: CalculatorsListRequestForm;
   setFieldValue: (field: string, value: any, shouldValidate?: boolean) => void;
   diametersConfig: DiamtersConfig;
-  housingMeteringDevicesModels: string[];
+  calculatorsModels: string[];
   handleFetchModels: (payload: string) => void;
 };
 

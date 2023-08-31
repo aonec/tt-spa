@@ -46,11 +46,11 @@ const getHousingByFilter = async (
   }
 };
 
-export const getHousingMeteringDevicesModels = async (
+export const getCalculatorsModels = async (
   data: GetMeteringDevicesModelsRequest,
 ): Promise<string[]> => {
   const params = {
-    Type: EMeteringDeviceType.HousingPipe,
+    Type: EMeteringDeviceType.Calculator,
     PageSize: 10,
     OrderBy: EOrderByRule.Descending,
     ...data,

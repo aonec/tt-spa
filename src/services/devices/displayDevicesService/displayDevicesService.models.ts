@@ -1,6 +1,6 @@
 import { combine, createDomain, forward, guard, sample } from 'effector';
 import {
-  getHousingMeteringDevicesModels,
+  getCalculatorsModels,
   getCalculatorsListQuery,
   getHousingsByFilter,
 } from './displayDevicesService.api';
@@ -45,20 +45,20 @@ const $devices = $calculatorsPagedData.map((data) =>
 
 const handleFetchModels = domain.createEvent<string>();
 
-const getHousingMeteringDevicesModelsFx = domain.createEffect<
+const getCalculatorsModelsFx = domain.createEffect<
   GetMeteringDevicesModelsRequest,
   string[]
->(getHousingMeteringDevicesModels);
+>(getCalculatorsModels);
 
-const $housingMeteringDevicesModels = domain
+const $calculatorsModels = domain
   .createStore<string[]>([])
-  .on(getHousingMeteringDevicesModelsFx.doneData, (_, models) => models);
+  .on(getCalculatorsModelsFx.doneData, (_, models) => models);
 
 sample({
   clock: handleFetchModels,
   filter: Boolean,
   fn: (Text) => ({ Text }),
-  target: getHousingMeteringDevicesModelsFx,
+  target: getCalculatorsModelsFx,
 });
 
 const setDevicesProfileFilter =
@@ -209,7 +209,7 @@ export const displayDevicesService = {
     $housingsByFilter,
     $devicesSearchType,
     $serialNumber,
-    $housingMeteringDevicesModels,
+    $calculatorsModels,
   },
   gates: {
     CalculatorsGate,
