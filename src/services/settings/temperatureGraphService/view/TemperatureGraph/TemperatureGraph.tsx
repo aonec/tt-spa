@@ -212,6 +212,22 @@ export const TemperatureGraph: FC<TemperatureGraphProps> = ({
     [setFieldValue, values.temperatureNormativesArr],
   );
 
+  const isError = useCallback(
+    (fieldName: ETemteratureTypes, data: TemperatureNormativeRow) => {
+      const currentColumnErr = columnErrors.find(
+        (err) => Number(Object.keys(err)[0]) === data.outdoorTemperature!,
+      );
+
+      const dayTime = getDayTime(fieldName);
+      const dayParts =
+        currentColumnErr && currentColumnErr[data.outdoorTemperature!];
+      const isCurrentIncludeErr = dayParts?.includes(dayTime);
+
+      return Boolean(isCurrentIncludeErr);
+    },
+    [columnErrors],
+  );
+
   const renderDoubledColumns = useCallback(
     (
       data: TemperatureNormativeRow,
@@ -230,29 +246,7 @@ export const TemperatureGraph: FC<TemperatureGraphProps> = ({
             onBlur={(onBlurData: ChangeEvent<HTMLInputElement>) =>
               handleOnBlur(onBlurData, data, firstInputFieldName)
             }
-            isErr={(() => {
-              const currentColumnErr = columnErrors.find(
-                (err) =>
-                  Number(Object.keys(err)[0]) === data.outdoorTemperature!,
-              );
-
-              if (
-                firstInputFieldName ===
-                  ETemteratureTypes.dayFeedFlowTemperature ||
-                firstInputFieldName ===
-                  ETemteratureTypes.dayFeedBackFlowTemperature
-              ) {
-                const dayParts =
-                  currentColumnErr &&
-                  currentColumnErr[data.outdoorTemperature!];
-
-                const isCurrentIncludeErr = dayParts?.includes(
-                  EDayPartError.day,
-                );
-
-                return Boolean(isCurrentIncludeErr);
-              }
-            })()}
+            isErr={isError(firstInputFieldName, data)}
           />
           <InputSc
             type="number"
@@ -264,32 +258,7 @@ export const TemperatureGraph: FC<TemperatureGraphProps> = ({
             onBlur={(onBlurData: ChangeEvent<HTMLInputElement>) =>
               handleOnBlur(onBlurData, data, secondInputFieldName)
             }
-            isErr={(() => {
-              const currentColumnErr = columnErrors.find(
-                (err) =>
-                  Number(Object.keys(err)[0]) === data.outdoorTemperature!,
-              );
-
-              if (
-                secondInputFieldName ===
-                  ETemteratureTypes.nightFeedFlowTemperature ||
-                secondInputFieldName ===
-                  ETemteratureTypes.nightFeedBackFlowTemperature
-              ) {
-                const dayParts =
-                  currentColumnErr &&
-                  currentColumnErr[data.outdoorTemperature!];
-
-                const isCurrentIncludeErr = dayParts?.includes(
-                  EDayPartError.night,
-                );
-                if (isCurrentIncludeErr) {
-                  return true;
-                } else {
-                  return false;
-                }
-              }
-            })()}
+            isErr={isError(secondInputFieldName, data)}
           />
         </InputsContainer>
       ) : (
@@ -298,7 +267,7 @@ export const TemperatureGraph: FC<TemperatureGraphProps> = ({
           <div>{data[secondInputFieldName]}</div>
         </WrapperTime>
       ),
-    [handleChangeInput, handleOnBlur, isEditing, columnErrors],
+    [handleChangeInput, handleOnBlur, isEditing, isError],
   );
 
   return (
