@@ -35,6 +35,7 @@ const SmallSelectStyles = css`
 
 export const Select = styled(AntSelect)<{ small?: boolean }>`
   height: ${({ small }) => (small ? '32px' : '48px')};
+  width: 100% !important;
 
   .ant-select-selector {
     height: 100% !important;

@@ -38,7 +38,7 @@ const sizesOfButton: {
   };
 } = {
   middle: {
-    height: 48,
+    height: 42,
     padding: 20,
     fontSize: 16,
   },
@@ -63,7 +63,7 @@ export const ButtonSC = styled(ButtonAntd)<Button>`
   display: flex;
   justify-content: center;
   align-items: center;
-  width: ${({ floating }) => (floating ? '100%' : 'min-content')};
+  width: ${({ floating }) => (floating ? '100%' : 'min-content')} !important;
 
   border-radius: 4px;
   font-weight: 600;
@@ -83,9 +83,9 @@ export const ButtonSC = styled(ButtonAntd)<Button>`
       ${({ btnType }) => typesOfButton[btnType].shadowColor};
   }
 
-  padding: 0 ${({ size }) => sizesOfButton[size].padding}px;
-  height: ${({ size }) => sizesOfButton[size].height}px;
-  font-size: ${({ size }) => sizesOfButton[size].fontSize}px;
+  padding: 0 ${({ size }) => sizesOfButton[size].padding}px !important;
+  height: ${({ size }) => sizesOfButton[size].height}px !important;
+  font-size: ${({ size }) => sizesOfButton[size].fontSize}px !important;
 
   &,
   &:hover,
@@ -95,9 +95,10 @@ export const ButtonSC = styled(ButtonAntd)<Button>`
   &[disabled]:hover,
   &[disabled]:active {
     border: none;
-    border: 1px solid ${({ btnType }) => typesOfButton[btnType].borderColor};
-    background-color: ${({ btnType }) => typesOfButton[btnType].mainColor};
-    color: ${({ btnType }) => typesOfButton[btnType].fontColor};
+    border: 1px solid ${({ btnType }) => typesOfButton[btnType].borderColor} !important;
+    background-color: ${({ btnType }) =>
+      typesOfButton[btnType].mainColor} !important;
+    color: ${({ btnType }) => typesOfButton[btnType].fontColor} !important;
 
     svg {
       path {

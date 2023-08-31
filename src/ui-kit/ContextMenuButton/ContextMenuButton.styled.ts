@@ -9,7 +9,7 @@ export const StyledMenuButton = styled(Button)`
   justify-content: center;
   color: gray !important;
   width: ${({ size }) => (size === 'small' ? '32px' : '48px')};
-  height: ${({ size }) => (size === 'small' ? '32px' : '48px')};
+  height: ${({ size }) => (size === 'small' ? '32px' : '48px')} !important;
   border-radius: 4px;
 `;
 

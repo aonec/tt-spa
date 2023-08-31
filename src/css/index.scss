@@ -76,9 +76,12 @@ form {
     0px 4px 4px rgba(78, 93, 146, 0.16);
 }
 
+* {
+  font-family: 'PTRootUIWeb', sans-serif !important;
+}
+
 body {
   margin: 0;
-  font-family: 'PTRootUIWeb', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color: var(--main-100);
@@ -320,5 +323,30 @@ sup {
         color: $white;
       }
     }
+  }
+}
+
+.ant-modal-content {
+  padding: 0 !important;
+}
+
+.ant-modal-header {
+  padding: 20px 32px !important;
+
+  .ant-modal-title {
+    h1 {
+      font-weight: 200 !important;
+      font-size: 32px;
+    }
+  }
+}
+
+.ant-modal-body {
+  padding: 20px 24px;
+}
+
+.ant-modal-footer {
+  div {
+    border-radius: 0 0 8px 8px;
   }
 }
