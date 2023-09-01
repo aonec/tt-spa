@@ -50,6 +50,7 @@ export const ApartmentProfile: FC<ApartmentProfileProps> = ({
         street,
         house,
         apartment: apartmentNumber,
+        corpus,
         question,
       } = values;
 
@@ -62,6 +63,7 @@ export const ApartmentProfile: FC<ApartmentProfileProps> = ({
         Street: street,
         HousingStockNumber: house,
         ApartmentNumber: apartmentNumber,
+        Corpus: corpus,
         Question: question,
       });
     },
@@ -92,6 +94,7 @@ export const ApartmentProfile: FC<ApartmentProfileProps> = ({
             SearchFieldType.Street,
             SearchFieldType.House,
             SearchFieldType.Apartment,
+            SearchFieldType.Corpus,
             SearchFieldType.Question,
           ]}
           customTemplate={[
