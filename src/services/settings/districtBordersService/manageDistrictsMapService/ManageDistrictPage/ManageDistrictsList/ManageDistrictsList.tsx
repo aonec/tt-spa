@@ -30,6 +30,8 @@ import { useUnit } from 'effector-react';
 import { manageDistrictMapService } from '../ManageDistrictsMap/ManageDistricsMap.model';
 import { useHistory } from 'react-router-dom';
 import { WithLoader } from 'ui-kit/shared/WithLoader';
+import { AddHouseToDistrictContainer } from './addHouseToDistrict';
+import { addHouseToDistrictService } from './addHouseToDistrict/addHouseToDistrictService.models';
 
 const { outputs, inputs } = manageDistrictMapService;
 
@@ -46,6 +48,7 @@ export const ManageDistrictsList: FC<Props> = ({
     closeDeleteDistrictModal,
     openEditDistrictModal,
     closeEditDistrictModal,
+    openAddHouseModal,
   } = useUnit({
     selectedDistrictId: outputs.$selectedDistrict,
     isDeleteDistrictModalOpen: outputs.$isDeleteDistrictModalOpen,
@@ -55,6 +58,7 @@ export const ManageDistrictsList: FC<Props> = ({
     closeDeleteDistrictModal: inputs.closeDeleteDistrictModal,
     openEditDistrictModal: inputs.openEditDistrictModal,
     closeEditDistrictModal: inputs.closeEditDistrictModal,
+    openAddHouseModal: addHouseToDistrictService.inputs.openAddHouseModal,
   });
 
   const { start: deleteDistrict, pending: isDeletingDistrictLoading } = useUnit(
@@ -98,138 +102,141 @@ export const ManageDistrictsList: FC<Props> = ({
   }, [selectedDistrictId, preparedExistingDistricts]);
 
   return (
-    <WithLoader isLoading={isDistrictLoading}>
-      {isDeleteDistrictModalOpen && selectedPreparedDistrict && (
-        <DeleteDistrictModal
-          closeDeleteDistrictModal={closeDeleteDistrictModal}
-          districtName={selectedPreparedDistrict.name}
-          handleDeleteDistrict={() =>
-            selectedPreparedDistrict.id &&
-            deleteDistrict(selectedPreparedDistrict.id)
-          }
-          isLoading={isDeletingDistrictLoading}
-        />
-      )}
-      {isEditDistictInfoModalOpen && selectedPreparedDistrict && (
-        <EditDistrictInfoModal
-          updateDistrict={updateDistrict}
-          closeEditDistrictModal={closeEditDistrictModal}
-          districtData={selectedPreparedDistrict}
-          isLoading={isUpdateDistrictLoading}
-        />
-      )}
-      <Wrapper>
-        {preparedExistingDistricts.map((elem) => {
-          const color = getDistrictColor(elem.type);
+    <>
+      <AddHouseToDistrictContainer />
+      <WithLoader isLoading={isDistrictLoading}>
+        {isDeleteDistrictModalOpen && selectedPreparedDistrict && (
+          <DeleteDistrictModal
+            closeDeleteDistrictModal={closeDeleteDistrictModal}
+            districtName={selectedPreparedDistrict.name}
+            handleDeleteDistrict={() =>
+              selectedPreparedDistrict.id &&
+              deleteDistrict(selectedPreparedDistrict.id)
+            }
+            isLoading={isDeletingDistrictLoading}
+          />
+        )}
+        {isEditDistictInfoModalOpen && selectedPreparedDistrict && (
+          <EditDistrictInfoModal
+            updateDistrict={updateDistrict}
+            closeEditDistrictModal={closeEditDistrictModal}
+            districtData={selectedPreparedDistrict}
+            isLoading={isUpdateDistrictLoading}
+          />
+        )}
+        <Wrapper>
+          {preparedExistingDistricts.map((elem) => {
+            const color = getDistrictColor(elem.type);
 
-          const groupedAddresses = groupBy(elem.houses || [], (house) => {
-            const arr = house.address?.split(' ');
+            const groupedAddresses = groupBy(elem.houses || [], (house) => {
+              const arr = house.address?.split(' ');
 
-            return arr?.slice(1, arr.length - 2).join(' ');
-          });
+              return arr?.slice(1, arr.length - 2).join(' ');
+            });
 
-          return (
-            <DistrictListItem key={elem.id}>
-              <DistrictListItemHeader
-                onClick={() =>
-                  setOpenedDistrict((prev) =>
-                    prev === elem.id ? null : elem.id,
-                  )
-                }
-              >
-                <DistrictListItemInfo>
-                  {color && (
-                    <ColorCircle
-                      strokeColor={color.strokeColor}
-                      fillColor={color.color}
-                    />
-                  )}
-                  {`${elem.name} (${elem.houses?.length})`}
-                </DistrictListItemInfo>
-                <ContextMenuButton
-                  size="small"
-                  menuButtons={[
-                    {
-                      title: 'Добавить дом',
-                      onClick: () => {},
-                    },
-                    {
-                      title: 'Редактировать название и цвет района',
-                      onClick: () => {
-                        selectDistrict(elem.id);
-                        openEditDistrictModal();
+            return (
+              <DistrictListItem key={elem.id}>
+                <DistrictListItemHeader
+                  onClick={() =>
+                    setOpenedDistrict((prev) =>
+                      prev === elem.id ? null : elem.id,
+                    )
+                  }
+                >
+                  <DistrictListItemInfo>
+                    {color && (
+                      <ColorCircle
+                        strokeColor={color.strokeColor}
+                        fillColor={color.color}
+                      />
+                    )}
+                    {`${elem.name} (${elem.houses?.length})`}
+                  </DistrictListItemInfo>
+                  <ContextMenuButton
+                    size="small"
+                    menuButtons={[
+                      {
+                        title: 'Добавить дом',
+                        onClick: () => openAddHouseModal(elem),
                       },
-                    },
-                    {
-                      title: 'Изменить границы района на карте',
-                      onClick: () => {
-                        history.push(
-                          `/districtBordersSettings/editDistrictBorders/${elem.id}`,
-                        );
+                      {
+                        title: 'Редактировать название и цвет района',
+                        onClick: () => {
+                          selectDistrict(elem.id);
+                          openEditDistrictModal();
+                        },
                       },
-                    },
-                    {
-                      title: 'Удалить район',
-                      color: ContextMenuButtonColor.danger,
-                      onClick: () => {
-                        selectDistrict(elem.id);
-                        openDeleteDistrictModal();
+                      {
+                        title: 'Изменить границы района на карте',
+                        onClick: () => {
+                          history.push(
+                            `/districtBordersSettings/editDistrictBorders/${elem.id}`,
+                          );
+                        },
                       },
-                    },
-                  ]}
-                />
-              </DistrictListItemHeader>
-              {openedDistrict === elem.id && Boolean(elem.houses?.length) && (
-                <DistrictAddressesList>
-                  {Object.entries(groupedAddresses).map(([key, value]) => {
-                    const isOpen = openedStreets.includes(key);
+                      {
+                        title: 'Удалить район',
+                        color: ContextMenuButtonColor.danger,
+                        onClick: () => {
+                          selectDistrict(elem.id);
+                          openDeleteDistrictModal();
+                        },
+                      },
+                    ]}
+                  />
+                </DistrictListItemHeader>
+                {openedDistrict === elem.id && Boolean(elem.houses?.length) && (
+                  <DistrictAddressesList>
+                    {Object.entries(groupedAddresses).map(([key, value]) => {
+                      const isOpen = openedStreets.includes(key);
 
-                    return (
-                      <React.Fragment key={key}>
-                        <AddressWrapper onClick={() => clickStreet(key)}>
-                          <StreetWrapper isOpen={isOpen}>{key}</StreetWrapper>
-                          <AddressHousesCount>
-                            {value.length} объектов
-                            <ChevronDown />
-                          </AddressHousesCount>
-                        </AddressWrapper>
-                        {isOpen && (
-                          <AddressNumbersList>
-                            {sortBy(value, (elem) => elem.address).map(
-                              (elem) => {
-                                const arr = elem.address?.split(' ');
-                                const number = arr && arr[arr?.length - 2];
-                                return (
-                                  <ContextMenuButton
-                                    menuButtons={[
-                                      {
-                                        title: 'Удалить дом',
-                                        color: ContextMenuButtonColor.danger,
-                                        onClick: () => {},
-                                      },
-                                    ]}
-                                  >
-                                    {(isOpen) => (
-                                      <AddressNumber isOpen={isOpen}>
-                                        {number}
-                                      </AddressNumber>
-                                    )}
-                                  </ContextMenuButton>
-                                );
-                              },
-                            )}
-                          </AddressNumbersList>
-                        )}
-                        <Line />
-                      </React.Fragment>
-                    );
-                  })}
-                </DistrictAddressesList>
-              )}
-            </DistrictListItem>
-          );
-        })}
-      </Wrapper>
-    </WithLoader>
+                      return (
+                        <React.Fragment key={key}>
+                          <AddressWrapper onClick={() => clickStreet(key)}>
+                            <StreetWrapper isOpen={isOpen}>{key}</StreetWrapper>
+                            <AddressHousesCount>
+                              {value.length} объектов
+                              <ChevronDown />
+                            </AddressHousesCount>
+                          </AddressWrapper>
+                          {isOpen && (
+                            <AddressNumbersList>
+                              {sortBy(value, (elem) => elem.address).map(
+                                (elem) => {
+                                  const arr = elem.address?.split(' ');
+                                  const number = arr && arr[arr?.length - 2];
+                                  return (
+                                    <ContextMenuButton
+                                      menuButtons={[
+                                        {
+                                          title: 'Удалить дом',
+                                          color: ContextMenuButtonColor.danger,
+                                          onClick: () => {},
+                                        },
+                                      ]}
+                                    >
+                                      {(isOpen) => (
+                                        <AddressNumber isOpen={isOpen}>
+                                          {number}
+                                        </AddressNumber>
+                                      )}
+                                    </ContextMenuButton>
+                                  );
+                                },
+                              )}
+                            </AddressNumbersList>
+                          )}
+                          <Line />
+                        </React.Fragment>
+                      );
+                    })}
+                  </DistrictAddressesList>
+                )}
+              </DistrictListItem>
+            );
+          })}
+        </Wrapper>
+      </WithLoader>
+    </>
   );
 };
