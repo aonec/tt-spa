@@ -10,14 +10,20 @@ export const AddHouseToDistrictContainer = () => {
   const {
     isOpen,
     openedDistrict,
+    hasError,
+    house,
     closeAddHouseModal,
     organizationCoordinates,
+    handleSearchHouse,
   } = useUnit({
     openedDistrict: outputs.$openedDistrict,
     isOpen: outputs.$isOpen,
+    house: outputs.$house,
+    hasError: outputs.$hasError,
     closeAddHouseModal: inputs.closeAddHouseModal,
     organizationCoordinates:
       currentUserService.outputs.$organizationCoordinates,
+    handleSearchHouse: inputs.handleSearchHouse,
   });
 
   if (!isOpen) return null;
@@ -28,6 +34,9 @@ export const AddHouseToDistrictContainer = () => {
       openedDistrict={openedDistrict}
       closeAddHouseModal={closeAddHouseModal}
       organizationCoordinates={organizationCoordinates}
+      house={house}
+      hasError={hasError}
+      handleSearchHouse={handleSearchHouse}
     />
   );
 };
