@@ -1,7 +1,7 @@
 import { FormEvent } from 'react';
 import { DiamtersConfig } from 'services/currentUserService/currentUserService.types';
 import { DevicesSearchType } from 'services/devices/devicesPageService/devicesPageService.types';
-import { NodesListRequestPayload } from 'services/devices/displayDevicesService/displayDevicesService.types';
+import { NodesListRequestForm, NodesListRequestPayload } from 'services/devices/displayDevicesService/displayDevicesService.types';
 
 export type SearchDevicesProps = {
   isExtendedSearchOpen: boolean;
@@ -11,7 +11,7 @@ export type SearchDevicesProps = {
     value: any,
     shouldValidate?: boolean | undefined,
   ) => void;
-  values: NodesListRequestPayload;
+  values: NodesListRequestForm;
   diametersConfig: DiamtersConfig;
   devicesSearchType: DevicesSearchType;
   setSerialNumber: (value: string) => void;

@@ -42,9 +42,7 @@ export const DevicesProfile: FC<DeviceProfileProps> = ({
         searchState?.['DevicesFilter.PipeDiameters'],
       'DevicesFilter.ExpiresCheckingDateAt':
         searchState?.['DevicesFilter.ExpiresCheckingDateAt'],
-
       ExpiresAdmissionActDateAt: searchState?.ExpiresAdmissionActDateAt,
-
       Resource: searchState?.Resource,
       'DevicesFilter.Model': searchState?.['DevicesFilter.Model'],
       'CommercialDateRange.From': searchState?.['CommercialDateRange.From'],
@@ -54,23 +52,16 @@ export const DevicesProfile: FC<DeviceProfileProps> = ({
       'Address.HousingStockNumber': searchState?.['Address.HousingStockNumber'],
       'Address.Corpus': searchState?.['Address.Corpus'],
       'Address.HouseCategory': searchState?.['Address.HouseCategory'],
-
       CommercialStatus: searchState?.CommercialStatus,
-
-      RegistrationType: searchState?.['Filter.NodeRegistrationType'],
-
-      CommercialStatus: searchState?.['Filter.NodeStatus'],
-
+      RegistrationType: searchState?.RegistrationType,
       'DevicesFilter.Question': searchState?.['DevicesFilter.Question'],
       OrderBy: searchState?.OrderBy,
-
       IsConnected:
         searchState?.IsConnected === undefined
           ? EIsDeviceConnectedType.All
           : searchState?.IsConnected
           ? EIsDeviceConnectedType.Connected
           : EIsDeviceConnectedType.NotConnected,
-
       PageNumber: searchState?.PageNumber,
       PageSize: searchState?.PageSize,
     },

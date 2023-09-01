@@ -117,8 +117,8 @@ export const ExtendedSearchForm: FC<ExtendedSearchFormProps> = ({
             placeholder="Выберите из списка"
             value={values.RegistrationType}
             onChange={(value) => {
-              setFieldValue("['Filter.NodeRegistrationType']", value);
-              setFieldValue("['Filter.NodeStatus']", '');
+              setFieldValue('RegistrationType', value);
+              setFieldValue('CommercialStatus', '');
             }}
           >
             <Option value="">Все</Option>
@@ -134,10 +134,10 @@ export const ExtendedSearchForm: FC<ExtendedSearchFormProps> = ({
         <FormItem label="Марка прибора">
           <AutoComplete
             small
-            value={values['Filter.Model']}
+            value={values['DevicesFilter.Model']}
             placeholder="Начните вводить марку прибора"
             onChange={(value) => {
-              setFieldValue("['Filter.Model']", value);
+              setFieldValue("['DevicesFilter.Model']", value);
               handleFetchModels(value);
             }}
             options={calculatorsModels.map((elem) => ({ value: elem })) || []}
@@ -147,7 +147,7 @@ export const ExtendedSearchForm: FC<ExtendedSearchFormProps> = ({
       <StyledContainerThreeItems>
         <FormItem label="Диаметр трубы, мм">
           <StyledSlider
-            getTooltipPopupContainer={(triggerNode) =>
+            getTooltipPopupContainer={(triggerNode: HTMLElement) =>
               triggerNode.parentNode as HTMLElement
             }
             defaultValue={[0, 255]}
@@ -165,23 +165,20 @@ export const ExtendedSearchForm: FC<ExtendedSearchFormProps> = ({
             <RangePicker
               small
               value={[
-                values['Filter.CommercialDateRange.From']
-                  ? moment(
-                      values['Filter.CommercialDateRange.From'],
-                      dateFormat,
-                    )
+                values['CommercialDateRange.From']
+                  ? moment(values['CommercialDateRange.From'], dateFormat)
                   : null,
-                values['Filter.CommercialDateRange.To']
-                  ? moment(values['Filter.CommercialDateRange.To'], dateFormat)
+                values['CommercialDateRange.To']
+                  ? moment(values['CommercialDateRange.To'], dateFormat)
                   : null,
               ]}
               onChange={(value: RangeValue): void => {
                 setFieldValue(
-                  "['Filter.CommercialDateRange.From']",
+                  "['CommercialDateRange.From']",
                   (value?.length && value[0]?.format('YYYY-MM-DD')) || '',
                 );
                 setFieldValue(
-                  "['Filter.CommercialDateRange.To']",
+                  "['CommercialDateRange.To']",
                   (value?.length && value[1]?.format('YYYY-MM-DD')) || '',
                 );
               }}
@@ -216,8 +213,8 @@ export const ExtendedSearchForm: FC<ExtendedSearchFormProps> = ({
           <Segmented<ExpiresCheckingPeriodSegmented>
             bold
             active={
-              values['Filter.ExpiresCheckingDateAt'] ||
-              values['Filter.ExpiresAdmissionActDateAt'] ||
+              values['DevicesFilter.ExpiresCheckingDateAt'] ||
+              values.ExpiresAdmissionActDateAt ||
               ''
             }
             items={[
@@ -240,16 +237,16 @@ export const ExtendedSearchForm: FC<ExtendedSearchFormProps> = ({
             ]}
             onChange={(segmentValue) => {
               if (dateType === ESelectedDateType.ExpiresCheckingDateAt) {
-                setFieldValue("['Filter.ExpiresAdmissionActDateAt']", '');
-                setFieldValue("['Filter.ExpiresCheckingDateAt']", segmentValue);
+                setFieldValue('ExpiresAdmissionActDateAt', '');
+                setFieldValue(
+                  "['DevicesFilter.ExpiresCheckingDateAt']",
+                  segmentValue,
+                );
                 return;
               }
               if (dateType === ESelectedDateType.ExpiresAdmissionActDateAt) {
-                setFieldValue("['Filter.ExpiresCheckingDateAt']", '');
-                setFieldValue(
-                  "['Filter.ExpiresAdmissionActDateAt']",
-                  segmentValue,
-                );
+                setFieldValue("['DevicesFilter.ExpiresCheckingDateAt']", '');
+                setFieldValue('ExpiresAdmissionActDateAt', segmentValue);
                 return;
               }
             }}
@@ -280,13 +277,12 @@ export const ExtendedSearchForm: FC<ExtendedSearchFormProps> = ({
             small
             id="NodeStatus"
             placeholder="Любой статус"
-            value={values['Filter.NodeStatus']}
-            onChange={(value) => setFieldValue("['Filter.NodeStatus']", value)}
+            value={values.CommercialStatus}
+            onChange={(value) => setFieldValue('CommercialStatus', value)}
           >
             <Option value="">Любой статус</Option>
             <Option value="NotRegistered">Не на коммерческом учете</Option>
-            {values['Filter.NodeRegistrationType'] !==
-              ENodeRegistrationType.Technical && (
+            {values.RegistrationType !== ENodeRegistrationType.Technical && (
               <Option value="Registered">Сдан на коммерческий учет</Option>
             )}
             <Option value="OnReview">На утверждении</Option>
@@ -298,9 +294,9 @@ export const ExtendedSearchForm: FC<ExtendedSearchFormProps> = ({
           <Select
             small
             placeholder="Выберите из списка"
-            value={values['Filter.Address.HouseCategory'] || ''}
+            value={values['Address.HouseCategory'] || ''}
             onChange={(value) =>
-              setFieldValue("['Filter.Address.HouseCategory']", value)
+              setFieldValue("['Address.HouseCategory']", value)
             }
           >
             <Option value="">Все</Option>
