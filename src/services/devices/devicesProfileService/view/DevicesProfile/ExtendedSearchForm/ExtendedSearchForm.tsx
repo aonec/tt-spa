@@ -49,9 +49,9 @@ export const ExtendedSearchForm: FC<ExtendedSearchFormProps> = ({
   const dateFormat = 'YYYY-MM-DD';
 
   const rangeValues: [number, number] = useMemo(() => {
-    const first = _.first(values['Filter.PipeDiameters']);
+    const first = _.first(values['DevicesFilter.PipeDiameters']);
 
-    const last = _.last(values['Filter.PipeDiameters']);
+    const last = _.last(values['DevicesFilter.PipeDiameters']);
 
     return [first || minValue, last || maxValue];
   }, [values, maxValue, minValue]);
@@ -82,10 +82,10 @@ export const ExtendedSearchForm: FC<ExtendedSearchFormProps> = ({
         ]}
         showLabels
         initialValues={{
-          city: values['Filter.Address.City'],
-          street: values['Filter.Address.Street'],
-          house: values['Filter.Address.HousingStockNumber'],
-          corpus: values['Filter.Address.Corpus'],
+          city: values['Address.City'],
+          street: values['Address.Street'],
+          house: values['Address.HousingStockNumber'],
+          corpus: values['Address.Corpus'],
         }}
         customTemplate={[
           { fieldType: SearchFieldType.City, templateValue: '300px' },
@@ -99,9 +99,9 @@ export const ExtendedSearchForm: FC<ExtendedSearchFormProps> = ({
           <Select
             small
             id="Resource"
-            value={values['Filter.Resource']}
+            value={values.Resource}
             placeholder="Все ресурсы"
-            onChange={(value) => setFieldValue("['Filter.Resource']", value)}
+            onChange={(value) => setFieldValue('Resource', value)}
           >
             <Option value="">Все ресурсы</Option>
             <Option value={EResourceType.Heat}>Тепло</Option>
@@ -115,7 +115,7 @@ export const ExtendedSearchForm: FC<ExtendedSearchFormProps> = ({
           <Select
             small
             placeholder="Выберите из списка"
-            value={values['Filter.NodeRegistrationType']}
+            value={values.RegistrationType}
             onChange={(value) => {
               setFieldValue("['Filter.NodeRegistrationType']", value);
               setFieldValue("['Filter.NodeStatus']", '');

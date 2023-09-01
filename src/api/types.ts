@@ -2063,6 +2063,7 @@ export enum EManagingFirmTaskFilterType {
   EmergencyApplication = "EmergencyApplication",
   PlannedApplication = "PlannedApplication",
   CurrentApplication = "CurrentApplication",
+  ResourceDisconnecting = "ResourceDisconnecting",
 }
 
 export interface EManagingFirmTaskFilterTypeNullableStringDictionaryItem {
@@ -2086,6 +2087,7 @@ export enum EManagingFirmTaskType {
   MeasurementErrorNonCommercial = "MeasurementErrorNonCommercial",
   IndividualDeviceCheckNoReadings = "IndividualDeviceCheckNoReadings",
   RiserNoReadings = "RiserNoReadings",
+  ResourceDisconnecting = "ResourceDisconnecting",
 }
 
 export enum EMeteringDeviceType {
@@ -2367,6 +2369,7 @@ export enum EStageActionType {
   CompletionOrSwitch = "CompletionOrSwitch",
   ClearManuallyAttachedParticipants = "ClearManuallyAttachedParticipants",
   CloseIndividualDevices = "CloseIndividualDevices",
+  CreateResourceDisconnecting = "CreateResourceDisconnecting",
 }
 
 export enum EStageStatus {
@@ -2402,6 +2405,7 @@ export enum ETaskConfirmationType {
   PipeRuptureNotConfirmAnomaly = "PipeRuptureNotConfirm_Anomaly",
   PipeRuptureNotConfirmCalculatorMalfunction = "PipeRuptureNotConfirm_CalculatorMalfunction",
   PipeRuptureNotConfirmPowerMalfunction = "PipeRuptureNotConfirm_PowerMalfunction",
+  ResourceDisconnectingNotConfirm = "ResourceDisconnectingNotConfirm",
 }
 
 export interface ETaskConfirmationTypeStringDictionaryItem {
@@ -2422,6 +2426,7 @@ export enum ETaskCreateType {
   EmergencyApplication = "EmergencyApplication",
   PlannedApplication = "PlannedApplication",
   CurrentApplication = "CurrentApplication",
+  ResourceDisconnecting = "ResourceDisconnecting",
 }
 
 export enum ETaskEngineeringElement {
@@ -5587,6 +5592,7 @@ export interface StagePushRequest {
   deviceCloses?: CloseDeviceRequest[] | null;
   calculatorSwitch?: SwitchCalculatorRequest | null;
   housingMeteringDeviceSwitch?: SwitchHousingMeteringDeviceRequest | null;
+  resourceDisconnecting?: ResourceDisconnectingCreateRequest | null;
   readings?: IndividualDeviceReadingsCreateRequest[] | null;
   fixedReading?: IndividualDeviceReadingsCreateRequest | null;
 
@@ -6122,6 +6128,12 @@ export interface TaskStatisticsItem {
 
   /** @format date-time */
   creationTime?: string;
+
+  /** @format date-time */
+  firstTriggerTime?: string;
+
+  /** @format date-time */
+  lastTriggerTime?: string | null;
 }
 
 export interface TaskStatisticsResponse {
@@ -7970,8 +7982,6 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      */
     calculatorsExportList: (
       query?: {
-        "Filter.DiameterRange.From"?: number;
-        "Filter.DiameterRange.To"?: number;
         "Filter.PipeDiameters"?: number[];
         "Filter.ExpiresCheckingDateAt"?: EExpiresDateAt;
         "Filter.ExpiresAdmissionActDateAt"?: EExpiresDateAt;
@@ -8021,8 +8031,6 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      */
     calculatorsList: (
       query?: {
-        "Filter.DiameterRange.From"?: number;
-        "Filter.DiameterRange.To"?: number;
         "Filter.PipeDiameters"?: number[];
         "Filter.ExpiresCheckingDateAt"?: EExpiresDateAt;
         "Filter.ExpiresAdmissionActDateAt"?: EExpiresDateAt;
@@ -10978,11 +10986,10 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         "DevicesFilter.ExpiresCheckingDateAt"?: EExpiresDateAt;
         "DevicesFilter.Model"?: string;
         "DevicesFilter.Question"?: string;
-        "DevicesFilter.DiameterRange.From"?: number;
-        "DevicesFilter.DiameterRange.To"?: number;
         "DevicesFilter.PipeDiameters"?: number[];
         "CommercialDateRange.From"?: string;
         "CommercialDateRange.To"?: string;
+        ExpiresAdmissionActDateAt?: EExpiresDateAt;
         PageNumber?: number;
         PageSize?: number;
         OrderBy?: EOrderByRule;
@@ -12942,7 +12949,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         Resource?: EResourceType;
         DisconnectingType?: EResourceDisconnectingType;
         OrderRule?: EResourceDisconnectingOrderRule;
-        HousingStockId?: number;
+        BuildingId?: number;
         Status?: EResourceDisconnectingStatus;
         PageNumber?: number;
         PageSize?: number;

@@ -1,10 +1,10 @@
 import { EExpiresDateAt } from 'api/types';
 import { Moment } from 'moment';
-import { CalculatorsListRequestForm } from 'services/calculators/calculatorsListService/calculatorsListService.types';
 import { DiamtersConfig } from 'services/currentUserService/currentUserService.types';
+import { NodesListRequestForm } from 'services/devices/displayDevicesService/displayDevicesService.types';
 
 export type ExtendedSearchFormProps = {
-  values: CalculatorsListRequestForm;
+  values: NodesListRequestForm;
   setFieldValue: (field: string, value: any, shouldValidate?: boolean) => void;
   diametersConfig: DiamtersConfig;
   calculatorsModels: string[];

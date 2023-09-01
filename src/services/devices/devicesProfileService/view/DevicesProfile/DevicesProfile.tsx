@@ -43,8 +43,7 @@ export const DevicesProfile: FC<DeviceProfileProps> = ({
       'DevicesFilter.ExpiresCheckingDateAt':
         searchState?.['DevicesFilter.ExpiresCheckingDateAt'],
 
-      'Filter.ExpiresCheckingDateAt':
-        searchState?.['Filter.ExpiresCheckingDateAt'],
+      ExpiresAdmissionActDateAt: searchState?.ExpiresAdmissionActDateAt,
 
       Resource: searchState?.Resource,
       'DevicesFilter.Model': searchState?.['DevicesFilter.Model'],
@@ -58,9 +57,9 @@ export const DevicesProfile: FC<DeviceProfileProps> = ({
 
       CommercialStatus: searchState?.CommercialStatus,
 
-      'Filter.NodeRegistrationType':
-        searchState?.['Filter.NodeRegistrationType'],
-      'Filter.NodeStatus': searchState?.['Filter.NodeStatus'],
+      RegistrationType: searchState?.['Filter.NodeRegistrationType'],
+
+      CommercialStatus: searchState?.['Filter.NodeStatus'],
 
       'DevicesFilter.Question': searchState?.['DevicesFilter.Question'],
       OrderBy: searchState?.OrderBy,
@@ -72,8 +71,6 @@ export const DevicesProfile: FC<DeviceProfileProps> = ({
           ? EIsDeviceConnectedType.Connected
           : EIsDeviceConnectedType.NotConnected,
 
-      CountTasks: searchState?.CountTasks,
-      IsClosed: searchState?.IsClosed,
       PageNumber: searchState?.PageNumber,
       PageSize: searchState?.PageSize,
     },

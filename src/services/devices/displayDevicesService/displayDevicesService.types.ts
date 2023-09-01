@@ -18,6 +18,7 @@ export interface DevicesByAddressInterface {
 export type GroupedByCalculatorPipeNodes = PipeNodeResponse[];
 
 export type NodesListRequestPayload = {
+  CalculatorId?: number;
   IsConnected?: boolean;
   BuildingId?: number;
   'Address.City'?: string;
@@ -31,14 +32,15 @@ export type NodesListRequestPayload = {
   'DevicesFilter.ExpiresCheckingDateAt'?: EExpiresDateAt;
   'DevicesFilter.Model'?: string;
   'DevicesFilter.Question'?: string;
-  'DevicesFilter.DiameterRange.From'?: number;
-  'DevicesFilter.DiameterRange.To'?: number;
   'DevicesFilter.PipeDiameters'?: number[];
   'CommercialDateRange.From'?: string;
   'CommercialDateRange.To'?: string;
+  ExpiresAdmissionActDateAt?: EExpiresDateAt;
   PageNumber?: number;
   PageSize?: number;
   OrderBy?: EOrderByRule;
+  Skip?: number;
+  Take?: number;
 };
 
 export type NodesListRequestForm = Omit<
