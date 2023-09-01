@@ -1,4 +1,4 @@
-import React, { FC, useCallback, useMemo, useState } from 'react';
+import React, { FC, useCallback, useMemo } from 'react';
 import { ConfigProvider } from 'antd';
 import _ from 'lodash';
 import moment from 'moment';
@@ -39,12 +39,10 @@ export const ExtendedSearchForm: FC<ExtendedSearchFormProps> = ({
   diametersConfig,
   handleFetchModels,
   calculatorsModels,
+  dateType,
+  setDateType,
 }) => {
   const { marks, maxValue, minValue, diameters } = diametersConfig;
-
-  const [dateType, setDateType] = useState<ESelectedDateType>(
-    ESelectedDateType.ExpiresCheckingDateAt,
-  );
 
   const dateFormat = 'YYYY-MM-DD';
 

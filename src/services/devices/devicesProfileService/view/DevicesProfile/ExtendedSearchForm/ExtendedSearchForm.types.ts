@@ -9,6 +9,8 @@ export type ExtendedSearchFormProps = {
   diametersConfig: DiamtersConfig;
   calculatorsModels: string[];
   handleFetchModels: (payload: string) => void;
+  dateType: ESelectedDateType;
+  setDateType: React.Dispatch<React.SetStateAction<ESelectedDateType>>;
 };
 
 export type RangeValue = [Moment | null, Moment | null] | null;

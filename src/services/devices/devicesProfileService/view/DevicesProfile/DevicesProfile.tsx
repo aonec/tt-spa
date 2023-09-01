@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useState } from 'react';
 import { useFormik } from 'formik';
 import { DevicesListContainer } from 'services/devices/displayDevicesService/displayDevicesService.container';
 import { SearchDevices } from '../SearchDevices';
@@ -13,6 +13,7 @@ import {
 } from './ExtendedSearchForm/ExtendedSearchForm.constants';
 import { NodesListRequestForm } from 'services/devices/displayDevicesService/displayDevicesService.types';
 import { ExtendedSearchForm } from './ExtendedSearchForm/ExtendedSearchForm';
+import { ESelectedDateType } from './ExtendedSearchForm/ExtendedSearchForm.types';
 
 export const DevicesProfile: FC<DeviceProfileProps> = ({
   setFilter,
@@ -76,6 +77,10 @@ export const DevicesProfile: FC<DeviceProfileProps> = ({
     },
   });
 
+  const [dateType, setDateType] = useState<ESelectedDateType>(
+    ESelectedDateType.ExpiresCheckingDateAt,
+  );
+
   return (
     <Wrapper>
       <Header>
@@ -126,6 +131,8 @@ export const DevicesProfile: FC<DeviceProfileProps> = ({
                 diametersConfig={diametersConfig}
                 calculatorsModels={calculatorsModels}
                 handleFetchModels={handleFetchModels}
+                dateType={dateType}
+                setDateType={setDateType}
               />
             }
           />
