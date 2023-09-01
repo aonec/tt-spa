@@ -3,6 +3,7 @@ import { addHouseToDistrictService } from './addHouseToDistrictService.models';
 import { AddHouseToDistrictModal } from './view/AddHouseToDistrictModal';
 import { useUnit } from 'effector-react';
 import { currentUserService } from 'services/currentUserService';
+import { addHouseToDistrictMutation } from './addHouseToDistrictService.api';
 
 const { inputs, outputs } = addHouseToDistrictService;
 
@@ -26,6 +27,10 @@ export const AddHouseToDistrictContainer = () => {
     handleSearchHouse: inputs.handleSearchHouse,
   });
 
+  const { start: addHouse, pending: isLoading } = useUnit(
+    addHouseToDistrictMutation,
+  );
+
   if (!isOpen) return null;
 
   return (
@@ -37,6 +42,8 @@ export const AddHouseToDistrictContainer = () => {
       house={house}
       hasError={hasError}
       handleSearchHouse={handleSearchHouse}
+      addHouse={addHouse}
+      isLoading={isLoading}
     />
   );
 };

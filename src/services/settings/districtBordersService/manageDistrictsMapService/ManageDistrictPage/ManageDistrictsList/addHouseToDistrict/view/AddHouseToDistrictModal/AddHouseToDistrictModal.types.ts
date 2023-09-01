@@ -1,7 +1,10 @@
 import { HousingStockResponse } from 'api/types';
 import { OrganizationCoordinates } from 'services/currentUserService/currentUserService.types';
 import { DistrictData } from 'types';
-import { GetBuildingFilters } from '../../addHouseToDistrictService.types';
+import {
+  AddHouseToDistrictRequestPayload,
+  GetBuildingFilters,
+} from '../../addHouseToDistrictService.types';
 
 export type Props = {
   isOpen: boolean;
@@ -11,4 +14,6 @@ export type Props = {
   house: HousingStockResponse | null;
   hasError: boolean;
   handleSearchHouse: (payload: GetBuildingFilters) => void;
+  addHouse: (payload: AddHouseToDistrictRequestPayload) => void;
+  isLoading: boolean;
 };

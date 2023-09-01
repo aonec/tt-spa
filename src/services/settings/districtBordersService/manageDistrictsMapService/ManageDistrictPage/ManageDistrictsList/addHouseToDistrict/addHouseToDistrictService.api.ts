@@ -1,6 +1,10 @@
 import { axios } from 'api/axios';
-import { GetBuildingFilters } from './addHouseToDistrictService.types';
+import {
+  AddHouseToDistrictRequestPayload,
+  GetBuildingFilters,
+} from './addHouseToDistrictService.types';
 import { BuildingListResponsePagedList, HousingStockResponse } from 'api/types';
+import { createMutation } from '@farfetched/core';
 
 export const getBuildings = (
   params: GetBuildingFilters,
@@ -21,3 +25,15 @@ export const getBuilding = async (params: GetBuildingFilters) => {
 
   return houseResponse;
 };
+
+export const addHouseToDistrictMutation = createMutation<
+  AddHouseToDistrictRequestPayload,
+  void
+>({
+  handler: (params) =>
+    axios.post(
+      `/IndividualSeal/Districts/${params.districtId}/AddHouse`,
+      params.data,
+      { headers: { 'Content-Type': `application/json` } },
+    ),
+});

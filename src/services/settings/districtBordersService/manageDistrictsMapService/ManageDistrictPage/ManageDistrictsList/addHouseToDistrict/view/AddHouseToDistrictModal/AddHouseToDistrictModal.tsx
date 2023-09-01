@@ -16,6 +16,8 @@ export const AddHouseToDistrictModal: FC<Props> = ({
   house,
   hasError,
   handleSearchHouse,
+  isLoading,
+  addHouse,
 }) => {
   const { mapRef, map } = useYMaps(organizationCoordinates);
 
@@ -51,6 +53,15 @@ export const AddHouseToDistrictModal: FC<Props> = ({
       title="Добавить дом"
       formId="add-house-to-district-form"
       disabled={!house}
+      loading={isLoading}
+      onSubmit={() => {
+        if (!openedDistrict?.id || !house?.id) return;
+
+        addHouse({
+          districtId: openedDistrict.id,
+          data: house.id,
+        });
+      }}
       form={
         <>
           <AddressSearchContainer

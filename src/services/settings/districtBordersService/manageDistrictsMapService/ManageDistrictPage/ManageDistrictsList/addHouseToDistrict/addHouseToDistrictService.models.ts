@@ -1,8 +1,12 @@
 import { createEffect, createEvent, createStore, sample } from 'effector';
 import { DistrictData } from 'types';
-import { getBuilding } from './addHouseToDistrictService.api';
+import {
+  addHouseToDistrictMutation,
+  getBuilding,
+} from './addHouseToDistrictService.api';
 import { GetBuildingFilters } from './addHouseToDistrictService.types';
 import { HousingStockResponse } from 'api/types';
+import { message } from 'antd';
 
 const openAddHouseModal = createEvent<DistrictData>();
 const closeAddHouseModal = createEvent();
@@ -29,6 +33,15 @@ const $openedDistrict = createStore<DistrictData | null>(null)
   .reset(closeAddHouseModal);
 
 const $isOpen = $openedDistrict.map(Boolean);
+
+sample({
+  clock: addHouseToDistrictMutation.finished.success,
+  target: closeAddHouseModal,
+});
+
+addHouseToDistrictMutation.finished.success.watch(() =>
+  message.success('Дом успешно добавлен в район!'),
+);
 
 export const addHouseToDistrictService = {
   inputs: { openAddHouseModal, closeAddHouseModal, handleSearchHouse },

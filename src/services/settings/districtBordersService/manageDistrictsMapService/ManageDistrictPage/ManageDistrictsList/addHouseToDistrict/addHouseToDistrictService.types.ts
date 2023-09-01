@@ -17,3 +17,8 @@ export type GetBuildingFilters = {
   Skip?: number;
   Take?: number;
 };
+
+export type AddHouseToDistrictRequestPayload = {
+  districtId: string;
+  data: number;
+};
