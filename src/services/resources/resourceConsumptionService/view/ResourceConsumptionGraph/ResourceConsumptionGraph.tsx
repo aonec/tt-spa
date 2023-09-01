@@ -116,11 +116,10 @@ export const ResourceConsumptionGraph: FC<ResourceConsumptionGraphProps> = ({
     ...Object.values(checkedAdditionalAddressConsumption),
   ].map(prepareData);
 
-  const isHaveDataForMinMaxCalculation = Boolean(
-    dataForMinMaxCalculation?.flat().length,
-  );
-
   useEffect(() => {
+    const isHaveDataForMinMaxCalculation = Boolean(
+      dataForMinMaxCalculation?.flat().length,
+    );
     if (isHaveDataForMinMaxCalculation) {
       const { minValue, maxValue } = getMinAndMaxForResourceConsumptionGraph(
         dataForMinMaxCalculation,
@@ -130,7 +129,7 @@ export const ResourceConsumptionGraph: FC<ResourceConsumptionGraphProps> = ({
         return prev[1] !== maxValue ? [minValue, maxValue] : prev;
       });
     }
-  }, [dataForMinMaxCalculation, isHaveDataForMinMaxCalculation]);
+  }, [dataForMinMaxCalculation]);
 
   const lines = useMemo(
     () =>

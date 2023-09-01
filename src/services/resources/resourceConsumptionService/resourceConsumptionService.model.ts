@@ -27,33 +27,46 @@ const clearData = domain.createEvent();
 const clearSummary = domain.createEvent();
 
 const getSummaryConsumptions = domain.createEvent<ConsumptionDataPayload>();
-
+/**
+ * общий расход (сверху)
+ */
 const getSummaryHousingConsumptionsFx = domain.createEffect<
   ConsumptionDataPayload,
   GetSummaryHousingConsumptionsByResourcesResponse,
   EffectFailDataAxiosError
->(fetchSummaryHousingConsumptions); // общий расход сверху
+>(fetchSummaryHousingConsumptions);
 
 const getConsumptionData = domain.createEvent<ConsumptionDataPayload>();
-
+/**
+ * одпу
+ */
 const getHousingConsumptionPlotFx = domain.createEffect<
   ConsumptionDataPayload,
   { housing: ResourceConsumptionWithNull[] },
   EffectFailDataAxiosError
->(fetchHousingConsumptionPlot); // одпу
+>(fetchHousingConsumptionPlot);
 
+/**
+ * одпу потребление за прошлый период
+ */
 const getPrevHousingConsumptionPlotFx = domain.createEffect<
   ConsumptionDataPayload,
   { housing: ResourceConsumptionWithNull[] },
   EffectFailDataAxiosError
->(fetchHousingConsumptionPlot); // одпу за прошлый период
+>(fetchHousingConsumptionPlot);
 
+/**
+ * одпу потребление адрес для сравнения
+ */
 const getAdditionalHousingConsumptionPlotFx = domain.createEffect<
   ConsumptionDataPayload,
   { housing: ResourceConsumptionWithNull[] },
   EffectFailDataAxiosError
 >(fetchHousingConsumptionPlot); // одпу адрес для сравнения
 
+/**
+ * нормативное и абонентское потрбление
+ */
 const getNormativeAndSubscriberConsumptionDataFx = domain.createEffect<
   ConsumptionDataPayload,
   {
@@ -61,8 +74,11 @@ const getNormativeAndSubscriberConsumptionDataFx = domain.createEffect<
     subscriber: ResourceConsumptionWithNull[];
   },
   EffectFailDataAxiosError
->(fetchNormativeAndSubscriberConsumptionData); // норматив и абонентское
+>(fetchNormativeAndSubscriberConsumptionData);
 
+/**
+ * нормативное и абонентское потрбление за прошлый период
+ */
 const getPrevNormativeAndSubscriberConsumptionDataFx = domain.createEffect<
   ConsumptionDataPayload,
   {
@@ -70,8 +86,11 @@ const getPrevNormativeAndSubscriberConsumptionDataFx = domain.createEffect<
     subscriber: ResourceConsumptionWithNull[];
   },
   EffectFailDataAxiosError
->(fetchNormativeAndSubscriberConsumptionData); // норматив и абонентское за прошлый период
+>(fetchNormativeAndSubscriberConsumptionData);
 
+/**
+ * нормативное и абонентское потрбление адрес для сравнения
+ */
 const getAdditionalNormativeAndSubscriberConsumptionDataFx =
   domain.createEffect<
     ConsumptionDataPayload,
@@ -80,7 +99,7 @@ const getAdditionalNormativeAndSubscriberConsumptionDataFx =
       subscriber: ResourceConsumptionWithNull[];
     },
     EffectFailDataAxiosError
-  >(fetchNormativeAndSubscriberConsumptionData); // норматив и абонентское адрес для сравнения
+  >(fetchNormativeAndSubscriberConsumptionData);
 
 const $housingConsumptionData = domain
   .createStore<ConsumptionDataForTwoMonth | null>(null)

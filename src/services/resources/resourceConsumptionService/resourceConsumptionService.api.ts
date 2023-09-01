@@ -62,9 +62,6 @@ export const fetchNormativeAndSubscriberConsumptionData = async (
         paramsSerializer: (params) => {
           return queryString.stringify(params);
         },
-        headers: {
-          'api-version': 2,
-        },
       },
     );
 
