@@ -43,21 +43,24 @@ const getHousingByFilter = async (
   }
 };
 
-export const getCalculatorsModels = async (
+export const getModels = async (
   data: GetMeteringDevicesModelsRequest,
 ): Promise<string[]> => {
   const params = {
-    Type: EMeteringDeviceType.Calculator,
     PageSize: 10,
     OrderBy: EOrderByRule.Descending,
     ...data,
   };
 
-  const path = `MeteringDevices/ExistingModels/`;
+  const path = `MeteringDevices/ExistingModels`;
 
-  const res: { items: string[] } = await axios.get(path, {
-    params,
+  const resODPU: { items: string[] } = await axios.get(path, {
+    params: { ...params, Type: EMeteringDeviceType.HousingPipe },
   });
 
-  return res.items;
+  const resCalculator: { items: string[] } = await axios.get(path, {
+    params: { ...params, Type: EMeteringDeviceType.Calculator },
+  });
+
+  return [...resODPU.items, ...resCalculator.items];
 };

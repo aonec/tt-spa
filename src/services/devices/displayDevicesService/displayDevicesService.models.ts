@@ -1,8 +1,8 @@
 import { combine, createDomain, forward, guard, sample } from 'effector';
 import {
-  getCalculatorsModels,
   getNodesListQuery,
   getHousingsByFilter,
+  getModels,
 } from './displayDevicesService.api';
 import {
   BuildingByFilterResponse,
@@ -44,20 +44,20 @@ const $devices = $nodesPagedData.map((data) =>
 
 const handleFetchModels = domain.createEvent<string>();
 
-const getCalculatorsModelsFx = domain.createEffect<
+const getModelsFx = domain.createEffect<
   GetMeteringDevicesModelsRequest,
   string[]
->(getCalculatorsModels);
+>(getModels);
 
 const $calculatorsModels = domain
   .createStore<string[]>([])
-  .on(getCalculatorsModelsFx.doneData, (_, models) => models);
+  .on(getModelsFx.doneData, (_, models) => models);
 
 sample({
   clock: handleFetchModels,
   filter: Boolean,
   fn: (Text) => ({ Text }),
-  target: getCalculatorsModelsFx,
+  target: getModelsFx,
 });
 
 const setDevicesProfileFilter = domain.createEvent<NodesListRequestPayload>();
