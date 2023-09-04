@@ -1,9 +1,9 @@
 import { groupBy } from 'lodash';
-import { CalculatorListResponse } from 'api/types';
+import { PipeNodeResponse } from 'api/types';
 import { DevicesByAddressInterface } from 'services/devices/displayDevicesService/displayDevicesService.types';
 
 export const groupDevicesByObjects = (
-  devices: CalculatorListResponse[],
+  devices: PipeNodeResponse[],
 ): DevicesByAddressInterface[] => {
   const devicesByAddresses = Object.values(
     groupBy(devices, (value) => {
@@ -11,7 +11,7 @@ export const groupDevicesByObjects = (
       return `${address?.street} ${address?.housingStockId}`;
     }),
   ).map((devices) => ({
-    devices,
+    devices: Object.values(groupBy(devices, (device) => device.calculatorId)),
     building: devices[0].address,
   }));
 

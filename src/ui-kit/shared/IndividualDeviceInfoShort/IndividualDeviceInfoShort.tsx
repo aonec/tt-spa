@@ -23,7 +23,10 @@ export const IndividualDeviceInfoShort: FC<IndividualDeviceInfoShortProps> = ({
     : '';
 
   return (
-    <Wrapper onClick={onClick} clickable={Boolean(onClick)}>
+    <Wrapper
+      onClick={() => device.id && onClick?.(device.id)}
+      clickable={Boolean(onClick)}
+    >
       <RowWrapper>
         <IconWrapper>
           {device.resource && <ResourceIconLookup resource={device.resource} />}

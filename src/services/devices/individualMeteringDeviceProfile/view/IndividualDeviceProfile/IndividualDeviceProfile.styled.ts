@@ -1,7 +1,8 @@
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 export const HeaderWrapper = styled.div`
-  margin-top: 24px;
+  margin-top: 16px;
 `;
 
 export const DeviceTitle = styled.div`
@@ -10,10 +11,14 @@ export const DeviceTitle = styled.div`
   gap: 16px;
 `;
 
-export const AddressWrapper = styled.div`
+export const AddressWrapper = styled(Link)`
   margin-top: 8px;
+  font-weight: 500;
+  color: #272f5a;
+  opacity: 0.9;
   display: flex;
   align-items: center;
+  gap: 16opx;
 `;
 
 export const SerialNumber = styled.span`
@@ -21,7 +26,7 @@ export const SerialNumber = styled.span`
 `;
 
 export const Content = styled.div`
-  margin-top: 24px;
+  margin-top: 16px;
 `;
 
 export const CommonInfoWrapper = styled.div`
