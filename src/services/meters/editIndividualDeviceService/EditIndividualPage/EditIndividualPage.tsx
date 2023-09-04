@@ -23,6 +23,8 @@ import { getApartmentFromFullAddress } from 'utils/getApartmentFromFullAddress';
 import { ResourceIconLookup } from 'ui-kit/shared/ResourceIconLookup';
 import { DeviceStatus } from 'ui-kit/shared/IndividualDeviceInfo/DeviceStatus';
 import { PageHeader } from 'ui-kit/shared/PageHeader';
+import { usePermission } from 'hooks/usePermission';
+import { ESecuredIdentityRoleName } from 'api/types';
 
 export const EditIndividualPage: FC<EditIndividualPageProps> = ({
   currentTab,
@@ -35,6 +37,11 @@ export const EditIndividualPage: FC<EditIndividualPageProps> = ({
   isDeviceUpdating,
 }) => {
   const address = individualDevice?.address;
+
+  const isOperator = usePermission([
+    ESecuredIdentityRoleName.Operator,
+    ESecuredIdentityRoleName.SeniorOperator,
+  ]);
 
   return (
     <Wrapper>
@@ -94,6 +101,7 @@ export const EditIndividualPage: FC<EditIndividualPageProps> = ({
                 mountPlaces={mountPlaces}
                 onCancel={onCancel}
                 isDeviceUpdating={isDeviceUpdating}
+                isOperator={isOperator}
               />
             )}
           {currentTab === EditIndividualDeviceTabs.Documents && <Documents />}

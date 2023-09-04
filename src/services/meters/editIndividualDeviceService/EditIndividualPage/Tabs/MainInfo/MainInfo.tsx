@@ -5,7 +5,6 @@ import {
   ButtonSC,
   Footer,
   GridContainer,
-  ResourceTypeWrapper,
   SwitchWrapper,
   TextWrapper,
   Wrapper,
@@ -15,13 +14,12 @@ import { FormItem } from 'ui-kit/FormItem';
 import { Select } from 'ui-kit/Select';
 import { UpdateIndividualDeviceRequest } from 'api/types';
 import dayjs from 'api/dayjs';
-import { ResourceNamesDictionary } from 'dictionaries';
-import { ResourceIconLookup } from 'ui-kit/shared/ResourceIconLookup';
 import { Input } from 'ui-kit/Input';
 import { DatePicker } from 'ui-kit/DatePicker';
 import { Button } from 'ui-kit/Button';
 import { useSwitchInputOnEnter } from 'hooks/useSwitchInputOnEnter';
 import { fromEnter } from 'ui-kit/shared/DatePickerNative';
+import { SpaceLine } from 'ui-kit/SpaceLine';
 
 const dataKey = 'edit-individual-device-main-info';
 
@@ -31,6 +29,7 @@ export const MainInfo: FC<MainInfoProps> = ({
   mountPlaces,
   onCancel,
   isDeviceUpdating,
+  isOperator,
 }) => {
   const {
     model,
@@ -88,19 +87,9 @@ export const MainInfo: FC<MainInfoProps> = ({
 
   return (
     <Wrapper>
-      <FormItem label="Тип ресурса">
-        <Select value={values.resource} disabled>
-          <Select.Option key={values.resource} value={values.resource}>
-            <ResourceTypeWrapper>
-              <ResourceIconLookup resource={values.resource} />
-              {ResourceNamesDictionary[values.resource]}
-            </ResourceTypeWrapper>
-          </Select.Option>
-        </Select>
-      </FormItem>
-
       <FormItem label="Модель прибора">
         <Input
+          disabled={!isOperator}
           value={values.model || undefined}
           placeholder="Укажите модель"
           type="text"
@@ -112,6 +101,7 @@ export const MainInfo: FC<MainInfoProps> = ({
 
       <FormItem label="Серийный номер">
         <Input
+          disabled={!isOperator}
           value={values.serialNumber || undefined}
           placeholder="Укажите серийный номер"
           type="text"
@@ -128,7 +118,7 @@ export const MainInfo: FC<MainInfoProps> = ({
           value={mountPlaces ? values.mountPlaceId || undefined : ''}
           onChange={(value) => setFieldValue('mountPlaceId', value)}
           placeholder="Укажите место"
-          disabled={!mountPlaces}
+          disabled={!mountPlaces || !isOperator}
           data-reading-input={dataKey}
           onKeyDown={fromEnter(() => next(2))}
           showAction={['focus']}
@@ -144,6 +134,7 @@ export const MainInfo: FC<MainInfoProps> = ({
       <GridContainer>
         <FormItem label="Разрядность">
           <Input
+            disabled={!isOperator}
             placeholder="Укажите разрядность"
             type="number"
             onChange={(value) => setFieldValue('bitDepth', value.target.value)}
@@ -154,6 +145,7 @@ export const MainInfo: FC<MainInfoProps> = ({
         </FormItem>
         <FormItem label="Множитель">
           <Input
+            disabled={!isOperator}
             placeholder="Укажите множитель"
             type="number"
             onChange={(value) =>
@@ -166,13 +158,15 @@ export const MainInfo: FC<MainInfoProps> = ({
         </FormItem>
       </GridContainer>
 
-      <SwitchWrapper>
-        <Switch
-          checked={values.isPolling}
-          onChange={(value) => setFieldValue('isPolling', value)}
-        />
-        <TextWrapper>Дистанционное снятие показаний</TextWrapper>
-      </SwitchWrapper>
+      {isOperator && (
+        <SwitchWrapper>
+          <Switch
+            checked={values.isPolling}
+            onChange={(value) => setFieldValue('isPolling', value)}
+          />
+          <TextWrapper>Дистанционное снятие показаний</TextWrapper>
+        </SwitchWrapper>
+      )}
 
       <FormItem label="Дата поверки">
         <DatePicker
@@ -188,28 +182,52 @@ export const MainInfo: FC<MainInfoProps> = ({
           format="DD.MM.YYYY"
         />
       </FormItem>
+      <SpaceLine />
 
-      <FormItem label="Пломба">
-        <Input
-          placeholder="Укажите номер пломбы"
-          type="number"
-          onChange={(value) => setFieldValue('sealNumber', value.target.value)}
-          value={values.sealNumber || undefined}
-          data-reading-input={dataKey}
-          onKeyDown={fromEnter(() => next(5))}
-        />
-      </FormItem>
+      <GridContainer>
+        <FormItem label="Дата поверки">
+          <DatePicker
+            disabled
+            value={dayjs(values.lastCheckingDate)}
+            format="DD.MM.YYYY"
+          />
+        </FormItem>
+        <FormItem label="Дата Следующей поверки">
+          <DatePicker
+            disabled
+            value={dayjs(values.futureCheckingDate)}
+            format="DD.MM.YYYY"
+          />
+        </FormItem>
+      </GridContainer>
 
-      <FormItem label="Дата установки пломбы">
-        <DatePicker
-          value={values.sealInstallationDate}
-          format="DD.MM.YYYY"
-          onChange={(date) => {
-            setFieldValue('sealInstallationDate', date);
-          }}
-          data-reading-input={dataKey}
-        />
-      </FormItem>
+      <SpaceLine />
+
+      <GridContainer>
+        <FormItem label="Пломба">
+          <Input
+            placeholder="Укажите номер пломбы"
+            type="number"
+            onChange={(value) =>
+              setFieldValue('sealNumber', value.target.value)
+            }
+            value={values.sealNumber || undefined}
+            data-reading-input={dataKey}
+            onKeyDown={fromEnter(() => next(5))}
+          />
+        </FormItem>
+
+        <FormItem label="Дата установки пломбы">
+          <DatePicker
+            value={values.sealInstallationDate}
+            format="DD.MM.YYYY"
+            onChange={(date) => {
+              setFieldValue('sealInstallationDate', date);
+            }}
+            data-reading-input={dataKey}
+          />
+        </FormItem>
+      </GridContainer>
 
       <Footer>
         <Button type="ghost" onClick={() => onCancel()}>

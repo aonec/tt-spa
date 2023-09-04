@@ -15,7 +15,9 @@ import { addressSearchService } from 'services/addressSearchService/addressSearc
 const domain = createDomain('actsJournalService');
 
 const updateActsFilter = domain.createEvent<ActsJournalRequestParams>();
+
 const setPageNumber = domain.createEvent<number>();
+
 const $actsFilter = domain
   .createStore<ActsJournalRequestParams>({ PageSize: 20, PageNumber: 1 })
   .on(updateActsFilter, (oldFilter, newFilter) => {
@@ -25,7 +27,9 @@ const $actsFilter = domain
       PageNumber: 1,
     };
   })
-  .on(setPageNumber, (oldFilter, PageNumber) => ({ ...oldFilter, PageNumber }));
+  .on(setPageNumber, (oldFilter, PageNumber) => {
+    return { ...oldFilter, PageNumber };
+  });
 
 const getActs = domain.createEvent();
 const getActsFx = domain.createEffect<
@@ -72,7 +76,7 @@ sample({
 });
 
 sample({
-  clock: [ActsJournalGate.open, updateActsFilter, actCreated],
+  clock: [ActsJournalGate.open, $actsFilter, actCreated],
   target: getActs,
 });
 
@@ -86,7 +90,6 @@ sample({
       gateStatus,
     }),
   ),
-
   filter: ({ actsFilter, gateStatus }) => {
     return Boolean(actsFilter.City) && gateStatus;
   },

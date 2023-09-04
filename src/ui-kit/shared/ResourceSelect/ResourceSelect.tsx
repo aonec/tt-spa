@@ -11,6 +11,7 @@ export const ResourceSelect: FC<ResourceSelectProps> = ({
   exclude = [],
   disabled,
   onChange,
+  small = false,
 }) => {
   const resources = Object.values(EResourceType).filter(
     (resource) => !exclude.includes(resource),
@@ -18,6 +19,7 @@ export const ResourceSelect: FC<ResourceSelectProps> = ({
 
   return (
     <Select
+      small={small}
       value={selectedResource || undefined}
       onChange={(value) =>
         onChange && onChange((value || null) as EResourceType | null)
