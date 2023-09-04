@@ -56,8 +56,6 @@ export const AddressSearchContainer: FC<AddressSearchContainerProps> = ({
     [hasCorpuses, fields],
   );
 
-  console.log(fields);
-
   useEffect(() => {
     if (!cities?.length || initialValues?.city) return;
 

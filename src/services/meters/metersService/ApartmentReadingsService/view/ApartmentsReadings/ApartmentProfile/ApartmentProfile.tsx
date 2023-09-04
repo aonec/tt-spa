@@ -62,8 +62,8 @@ export const ApartmentProfile: FC<ApartmentProfileProps> = ({
         City: city,
         Street: street,
         HousingStockNumber: house,
-        ApartmentNumber: apartmentNumber,
         Corpus: corpus,
+        ApartmentNumber: apartmentNumber,
         Question: question,
       });
     },
@@ -93,8 +93,8 @@ export const ApartmentProfile: FC<ApartmentProfileProps> = ({
             SearchFieldType.City,
             SearchFieldType.Street,
             SearchFieldType.House,
-            SearchFieldType.Apartment,
             SearchFieldType.Corpus,
+            SearchFieldType.Apartment,
             SearchFieldType.Question,
           ]}
           customTemplate={[
@@ -106,6 +106,7 @@ export const ApartmentProfile: FC<ApartmentProfileProps> = ({
               city: address.city || undefined,
               street: address.street || undefined,
               house: address.number || undefined,
+              corpus: address.corpus || undefined,
               apartment: apartment?.apartmentNumber || undefined,
               question: selectedHomeownerName || undefined,
             }

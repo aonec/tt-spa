@@ -31,7 +31,7 @@ const handleUpdateApartment =
 const handleUpdateHomeowner =
   domain.createEvent<UpdateHomeownerRequestPayload>();
 
-const setSelectedHomeownerName = domain.createEvent<string>();
+const setSelectedHomeownerName = domain.createEvent<string | null>();
 
 const ApartmentGate = createGate<{ id?: number }>();
 

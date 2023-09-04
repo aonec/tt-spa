@@ -19,8 +19,6 @@ const $hasCorpuses = $currentUser.map(
     user?.organization?.filtersConfiguration?.hasHousingStockCorpuses || false,
 );
 
-$hasCorpuses.watch((hasCorpuses) => console.log(hasCorpuses));
-
 const $diametersConfig = $currentUser.map((user) => {
   const diameters = (
     user?.organization?.filtersConfiguration?.pipeDiameters || []
