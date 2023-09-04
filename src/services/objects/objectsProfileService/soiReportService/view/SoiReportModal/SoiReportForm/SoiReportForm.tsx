@@ -41,8 +41,8 @@ export const SoiReportForm: FC<SoiReportFormProps> = ({
         const date = values.Date;
 
         const id = preparedAddresses
-          .find((dd) =>
-            dd.children?.find(
+          .find((addressStreet) =>
+            addressStreet.children?.find(
               (preparedAddress) =>
                 preparedAddress.value === values.HousingStockIdHash,
             ),

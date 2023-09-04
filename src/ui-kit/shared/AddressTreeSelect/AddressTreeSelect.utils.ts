@@ -28,7 +28,7 @@ export const prepareAddressesForTreeSelect = ({
 
       const corpusText = corpus ? `, к. ${corpus}` : '';
 
-      if (isTreeCheckable === false) {
+      if (!isTreeCheckable) {
         return {
           title: `${street}, ${number}${corpusText}`,
           value: `${buildingId}_${street}${number}${corpusText}`,
