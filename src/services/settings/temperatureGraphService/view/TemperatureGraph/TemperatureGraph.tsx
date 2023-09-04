@@ -37,7 +37,7 @@ export const TemperatureGraph: FC<TemperatureGraphProps> = ({
 
   const handleChangeInput = useCallback(
     (
-      inputValue,
+      inputValue: React.ChangeEvent<HTMLInputElement>,
       data: TemperatureNormativeRow,
       fieldName: ETemteratureTypes,
     ) => {
