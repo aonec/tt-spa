@@ -25,9 +25,9 @@ export function prepareDataForNodeStatistic(
   let elemsCount = 0;
 
   if (reportType === 'daily') {
-    elemsCount = differenceInDays(new Date(maxTime), new Date(minTime));
+    elemsCount = differenceInDays(new Date(maxTime), new Date(minTime)) + 1;
   } else if (reportType === 'hourly') {
-    elemsCount = differenceInHours(new Date(maxTime), new Date(minTime));
+    elemsCount = differenceInHours(new Date(maxTime), new Date(minTime)) + 1;
   }
 
   const result = [];
@@ -55,7 +55,7 @@ export function prepareDataForNodeStatistic(
       index++;
     } else {
       result.push({
-        timeUtc: dayjs(minTime).utcOffset(0).add(iterator, 'hours').format(),
+        timeUtc: dayjs(minTime).utcOffset(0).add(iterator, 'hour').format(),
         value: 0,
       });
     }
@@ -83,9 +83,7 @@ const getTaskXPos = (payload: GetTaskXPosPayload) => {
     return (
       Math.round(
         differenceInMinutes(new Date(currentData), new Date(minDate)) / 60,
-      ) -
-      new Date().getTimezoneOffset() / 60 +
-      1
+      ) + 1
     );
   }
   return (
@@ -169,10 +167,13 @@ const formHourlyTicks = (
   if (archiveArr.length <= 24) return archiveArr;
 
   const sortedArchive = sortArchiveArray(archiveArr);
+  const length = sortedArchive.length;
 
   return [
     sortedArchive[0],
-    ...sortedArchive.filter((entry) => isHourMultiplySix(entry.timeUtc)),
+    ...sortedArchive.filter(
+      (entry, index) => length - index > 3 && isHourMultiplySix(entry.timeUtc),
+    ),
     sortedArchive[sortedArchive.length - 1],
   ];
 };
