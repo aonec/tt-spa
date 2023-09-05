@@ -18,4 +18,5 @@ export const closingReasonsDictionary = {
   [EClosingReason.DeviceBroken]: 'Поломка',
   [EClosingReason.CertificateIssued]: 'Выдана справка',
   [EClosingReason.ByLetter]: 'Письмо из УК',
+  [EClosingReason.CheckingDate]: 'Выход поверки',
 };

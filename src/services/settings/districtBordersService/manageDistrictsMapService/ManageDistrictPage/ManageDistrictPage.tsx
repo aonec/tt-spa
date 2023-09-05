@@ -15,6 +15,7 @@ export const ManageDistrictPage: FC<Props> = ({
   organizationCoordinates,
   districtsPageSegment,
   setDistrictsPageSegment,
+  isDistrictLoading,
 }) => {
   const history = useHistory();
 
@@ -59,7 +60,10 @@ export const ManageDistrictPage: FC<Props> = ({
         </ControlButtonsWrapper>
       </Header>
       {districtsPageSegment === 'list' && (
-        <ManageDistrictsList existingDistricts={existingDistricts} />
+        <ManageDistrictsList
+          existingDistricts={existingDistricts}
+          isDistrictLoading={isDistrictLoading}
+        />
       )}
       {districtsPageSegment === 'map' && (
         <ManageDistrictsMap

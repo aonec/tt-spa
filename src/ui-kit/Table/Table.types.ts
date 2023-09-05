@@ -18,5 +18,6 @@ export type TableProps<T> = {
   pagination?: Pagination;
   rowStyles?: string;
   headerStyles?: string;
-  onClick?: (elem: T) => void;
+  link?: (elem: T) => string;
+  isSticky?: boolean;
 };

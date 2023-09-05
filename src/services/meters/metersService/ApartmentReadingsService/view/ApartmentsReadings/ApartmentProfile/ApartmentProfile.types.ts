@@ -13,7 +13,7 @@ export type ApartmentProfileProps = {
   handlePauseApartment: () => void;
   handleCancelPauseApartment: () => void;
   openEditPersonalNumberModal: (payload: boolean) => boolean;
-  setSelectedHomeownerName: (payload: string) => void;
+  setSelectedHomeownerName: (payload: string | null) => void;
   selectedHomeownerName: string | null;
   isPermitionToApartmentStatusPatch: boolean;
   printIssueCertificate: () => void;

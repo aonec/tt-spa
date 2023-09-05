@@ -66,7 +66,7 @@ export const StatisticProfile: FC<StatisticProfileProps> = ({
 
   return (
     <>
-      <PageHeader title="Статистика" contextMenu={{ menuButtons }} />
+      <PageHeader title="Статистика и данные" contextMenu={{ menuButtons }} />
 
       <TabsSC
         activeKey={grouptype}
