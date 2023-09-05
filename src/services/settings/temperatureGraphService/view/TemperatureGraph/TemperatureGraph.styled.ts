@@ -6,7 +6,7 @@ export const PageWrapper = styled.div`
   flex-direction: column;
   width: 980px;
   height: 78vh;
-  overflow-y: scroll;
+  overflow-y: hidden;
   overflow-x: hidden;
 `;
 

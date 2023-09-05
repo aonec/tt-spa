@@ -59,12 +59,12 @@ export const TemperatureGraph: FC<TemperatureGraphProps> = ({
   useEffect(() => setColumnErrors(errorColumns), [errorColumns]);
 
   const getDayTime = (inputFieldName: ETemteratureTypes) => {
-    if (
-      inputFieldName === ETemteratureTypes.dayFeedBackFlowTemperature ||
-      inputFieldName === ETemteratureTypes.dayFeedFlowTemperature
-    ) {
-      return EDayPartError.day;
-    } else return EDayPartError.night;
+    const isDay = [
+      ETemteratureTypes.dayFeedBackFlowTemperature,
+      ETemteratureTypes.dayFeedFlowTemperature,
+    ].includes(inputFieldName);
+
+    return isDay ? EDayPartError.day : EDayPartError.night;
   };
 
   const getValidationPassed = (
@@ -100,6 +100,7 @@ export const TemperatureGraph: FC<TemperatureGraphProps> = ({
             Number(onBlurData.target.value),
       );
     }
+    return true;
   };
 
   const handlePassValidation = (
