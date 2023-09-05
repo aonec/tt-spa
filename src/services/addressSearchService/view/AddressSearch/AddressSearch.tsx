@@ -48,6 +48,8 @@ export const AddressSearch: FC<AddressSearchProps> = ({
         handleChange(SearchFieldType.Street, '');
         handleChange(SearchFieldType.House, '');
         handleChange(SearchFieldType.Corpus, '');
+        handleChange(SearchFieldType.Apartment, '');
+
         handleSubmit();
       }}
       value={values.city}

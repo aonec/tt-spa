@@ -73,13 +73,14 @@ export const ApartmentInfo: FC<ApartmentInfoProps> = ({
   );
 
   useEffect(() => {
-    selectedHomeowner?.name &&
-      setSelectedHomeownerName(selectedHomeowner?.name);
+    setSelectedHomeownerName(selectedHomeowner?.name || null);
   }, [selectedHomeowner, setSelectedHomeownerName]);
 
   const houseManagement = housingStock?.houseManagement;
 
-  const houseManagementName = `Домоуправление «${houseManagement?.name}»`;
+  const houseManagementName = houseManagement?.name
+    ? `Домоуправление «${houseManagement?.name}»`
+    : '';
 
   const houseManagementInfo = useMemo(() => {
     const phoneNumber = houseManagement?.phone
@@ -198,9 +199,9 @@ export const ApartmentInfo: FC<ApartmentInfoProps> = ({
 
                           <SubText>
                             Дата изменения:{' '}
-                            {dayjs(selectedHomeowner?.editedAt).format(
-                              'DD.MM.YYYY',
-                            )}
+                            {dayjs(
+                              selectedHomeowner?.editedAt || undefined,
+                            ).format('DD.MM.YYYY')}
                           </SubText>
                         </div>
                       }

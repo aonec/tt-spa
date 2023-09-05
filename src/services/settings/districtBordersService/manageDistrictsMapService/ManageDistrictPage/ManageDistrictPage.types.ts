@@ -7,6 +7,7 @@ export type Props = {
   organizationCoordinates: OrganizationCoordinates | null;
   districtsPageSegment: DistrictsPageSegment;
   setDistrictsPageSegment: (payload: DistrictsPageSegment) => void;
+  isDistrictLoading: boolean;
 };
 
 export type DistrictsPageSegment = 'list' | 'map';

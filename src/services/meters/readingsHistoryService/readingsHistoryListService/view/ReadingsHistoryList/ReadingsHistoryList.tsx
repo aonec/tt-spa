@@ -200,7 +200,7 @@ export const ReadingsHistoryList: FC<ReadingsHistoryListProps> = ({
       );
 
       const entryDate = reading && (
-        <div>{getTimeStringByUTC(reading.entryDate)}</div>
+        <div>{getTimeStringByUTC(reading.uploadTime)}</div>
       );
 
       const arrowButtonComponent =
