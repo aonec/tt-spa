@@ -50,6 +50,7 @@ export const ApartmentProfile: FC<ApartmentProfileProps> = ({
         street,
         house,
         apartment: apartmentNumber,
+        corpus,
         question,
       } = values;
 
@@ -61,6 +62,7 @@ export const ApartmentProfile: FC<ApartmentProfileProps> = ({
         City: city,
         Street: street,
         HousingStockNumber: house,
+        Corpus: corpus,
         ApartmentNumber: apartmentNumber,
         Question: question,
       });
@@ -91,6 +93,7 @@ export const ApartmentProfile: FC<ApartmentProfileProps> = ({
             SearchFieldType.City,
             SearchFieldType.Street,
             SearchFieldType.House,
+            SearchFieldType.Corpus,
             SearchFieldType.Apartment,
             SearchFieldType.Question,
           ]}
@@ -103,6 +106,7 @@ export const ApartmentProfile: FC<ApartmentProfileProps> = ({
               city: address.city || undefined,
               street: address.street || undefined,
               house: address.number || undefined,
+              corpus: address.corpus || undefined,
               apartment: apartment?.apartmentNumber || undefined,
               question: selectedHomeownerName || undefined,
             }
