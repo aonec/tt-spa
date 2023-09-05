@@ -105,7 +105,8 @@ export const ContextMenuButton: FC<ContextMenuButtonProps> = (props) => {
           {!children && (
             <StyledMenuButton
               size={size}
-              onClick={() => {
+              onClick={(e) => {
+                e.preventDefault();
                 setIsVisible(true);
               }}
             >
