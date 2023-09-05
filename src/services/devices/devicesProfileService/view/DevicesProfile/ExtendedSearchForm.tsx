@@ -15,7 +15,6 @@ import { DiamtersConfig } from 'services/currentUserService/currentUserService.t
 import { FormItem } from 'ui-kit/FormItem';
 import { Select } from 'ui-kit/Select';
 import { RangePicker } from 'ui-kit/RangePicker';
-import { Dayjs } from 'dayjs';
 import { NodesListRequestPayload } from 'services/devices/displayDevicesService/displayDevicesService.types';
 import { ResourceSelect } from 'ui-kit/shared/ResourceSelect';
 
