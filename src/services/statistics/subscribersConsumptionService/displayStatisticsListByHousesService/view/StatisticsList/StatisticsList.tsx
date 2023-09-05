@@ -8,7 +8,6 @@ import {
   PageWrapper,
   RowStyle,
 } from './StatisticsList.styled';
-import { useHistory } from 'react-router-dom';
 import { Table } from 'ui-kit/Table';
 import { prepareConsumptions } from './StatisticsList.utils';
 import { StatisticsListProps } from './StatisticsList.types';
@@ -16,8 +15,6 @@ import { StatisticsListProps } from './StatisticsList.types';
 export const StatisticsList: React.FC<StatisticsListProps> = ({
   statistics,
 }) => {
-  const history = useHistory();
-
   return (
     <PageWrapper>
       <Table
@@ -25,9 +22,7 @@ export const StatisticsList: React.FC<StatisticsListProps> = ({
         elements={statistics}
         rowStyles={RowStyle}
         headerStyles={HeaderStyles}
-        onClick={(apartment) =>
-          history.push(`/apartments/${apartment.apartmentId}/testimony`)
-        }
+        link={(apartment) => `/apartments/${apartment.apartmentId}/testimony`}
         columns={[
           {
             label: '№',

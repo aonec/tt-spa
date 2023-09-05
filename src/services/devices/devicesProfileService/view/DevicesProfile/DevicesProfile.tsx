@@ -3,21 +3,21 @@ import { useFormik } from 'formik';
 import { DevicesListContainer } from 'services/devices/displayDevicesService/displayDevicesService.container';
 import { SearchDevices } from '../SearchDevices';
 import { ExtendedSearch } from 'ui-kit/ExtendedSearch';
-import { CalculatorsListRequestPayload } from 'services/calculators/calculatorsListService/calculatorsListService.types';
 import { ExtendedSearchForm } from './ExtendedSearchForm';
 import { Wrapper } from './DevicesProfile.styled';
 import { DiamtersConfig } from 'services/currentUserService/currentUserService.types';
 import { DevicesSearchType } from 'services/devices/devicesPageService/devicesPageService.types';
 import { Radio } from 'antd';
 import { HeaderInject } from 'services/objects/objectsProfileService/view/ObjectsProfile/ObjectsProfile.types';
+import { NodesListRequestPayload } from 'services/devices/displayDevicesService/displayDevicesService.types';
 
 interface DeviceProfileProps extends HeaderInject {
-  setFilter: (payload: CalculatorsListRequestPayload) => void;
+  setFilter: (payload: NodesListRequestPayload) => void;
   isOpen: boolean;
   open: (payload: void) => void;
   close: (payload: void) => void;
   openDownloadDevicesReportModal: () => void;
-  searchState: CalculatorsListRequestPayload | null;
+  searchState: NodesListRequestPayload | null;
   clearSearchPayload: (payload: void) => void;
   diametersConfig: DiamtersConfig;
   devicesSearchType: DevicesSearchType;
@@ -47,34 +47,27 @@ export const DevicesProfile: FC<DeviceProfileProps> = ({
     setFieldValue,
     values,
     resetForm,
-  } = useFormik<CalculatorsListRequestPayload>({
+  } = useFormik<NodesListRequestPayload>({
     initialValues: {
-      'Filter.PipeDiameters': searchState?.['Filter.PipeDiameters'],
-      'Filter.ExpiresCheckingDateAt':
-        searchState?.['Filter.ExpiresCheckingDateAt'],
-      'Filter.Resource': searchState?.['Filter.Resource'],
-      'Filter.Model': searchState?.['Filter.Model'],
-      'Filter.CommercialDateRange.From':
-        searchState?.['Filter.CommercialDateRange.From'],
-      'Filter.CommercialDateRange.To':
-        searchState?.['Filter.CommercialDateRange.To'],
-      'Filter.Address.City': searchState?.['Filter.Address.City'],
-      'Filter.Address.Street': searchState?.['Filter.Address.Street'],
-      'Filter.Address.HousingStockNumber':
-        searchState?.['Filter.Address.HousingStockNumber'],
-      'Filter.Address.Corpus': searchState?.['Filter.Address.Corpus'],
-      'Filter.Address.HouseCategory':
-        searchState?.['Filter.Address.HouseCategory'],
-      'Filter.NodeStatus': searchState?.['Filter.NodeStatus'],
-      Question: searchState?.Question,
-      OrderRule: searchState?.OrderRule,
+      'DevicesFilter.PipeDiameters':
+        searchState?.['DevicesFilter.PipeDiameters'],
+      'DevicesFilter.ExpiresCheckingDateAt':
+        searchState?.['DevicesFilter.ExpiresCheckingDateAt'],
+      Resource: searchState?.Resource,
+      'DevicesFilter.Model': searchState?.['DevicesFilter.Model'],
+      'CommercialDateRange.From': searchState?.['CommercialDateRange.From'],
+      'CommercialDateRange.To': searchState?.['CommercialDateRange.To'],
+      'Address.City': searchState?.['Address.City'],
+      'Address.Street': searchState?.['Address.Street'],
+      'Address.HousingStockNumber': searchState?.['Address.HousingStockNumber'],
+      'Address.Corpus': searchState?.['Address.Corpus'],
+      'Address.HouseCategory': searchState?.['Address.HouseCategory'],
+      CommercialStatus: searchState?.CommercialStatus,
+      'DevicesFilter.Question': searchState?.['DevicesFilter.Question'],
+      OrderBy: searchState?.OrderBy,
       IsConnected: searchState?.IsConnected,
-      CountTasks: searchState?.CountTasks,
-      IsClosed: searchState?.IsClosed,
-      FileName: searchState?.FileName,
       PageNumber: searchState?.PageNumber,
       PageSize: searchState?.PageSize,
-      OrderBy: searchState?.OrderBy,
     },
     enableReinitialize: true,
     onSubmit: (values) => {
