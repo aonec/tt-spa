@@ -6,7 +6,7 @@ import { getBuildingAddress } from 'utils/getBuildingAddress';
 import { AddressWrapper, NodeStatusWrapper } from './CommonInfoTab.styled';
 import { CommonInfoTabProps } from './CommonInfoTab.types';
 import { additionalAddressesString } from 'utils/additionalAddressesString';
-import { Tooltip } from 'antd';
+import { Tooltip } from 'ui-kit/shared/Tooltip';
 import { EHouseCategory, ENodeRegistrationType } from 'api/types';
 import { configNamesLookup } from 'utils/configNamesLookup';
 import { NodeRegistrationTypeLookup } from 'dictionaries';

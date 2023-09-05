@@ -1,4 +1,4 @@
-import { Tooltip } from 'antd';
+import { Tooltip } from 'ui-kit/shared/Tooltip';
 import dayjs from 'api/dayjs';
 import React, { FC, useCallback } from 'react';
 import { useHistory } from 'react-router-dom';

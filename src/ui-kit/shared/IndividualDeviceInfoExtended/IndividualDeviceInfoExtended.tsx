@@ -14,7 +14,7 @@ import {
   LinkWrapper,
 } from './IndividualDeviceInfoExtended.styled';
 import { prepareDateForDateLine } from './IndividualDeviceInfoExtended.utils';
-import { Tooltip } from 'antd';
+import { Tooltip } from 'ui-kit/shared/Tooltip';
 import { individualDeviceMountPlacesService } from 'services/devices/individualDeviceMountPlacesService/individualDeviceMountPlacesService.model';
 import { useStore } from 'effector-react';
 

@@ -1,1 +1,1 @@
-export { TemperatureGraph } from './TemperatureGraph'
+export { TemperatureGraph } from './TemperatureGraph';
