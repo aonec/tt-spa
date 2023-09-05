@@ -8,6 +8,7 @@ import { CreateNodeConfirmationModal } from './view/CreateNodeConfirmationModal'
 import { CreateCalculatorModalContainer } from 'services/calculators/createCalculatorModalService';
 import { addressSearchService } from 'services/addressSearchService/addressSearchService.models';
 import { EHouseCategory } from 'api/types';
+import { mountAddressService } from './view/CreateNodePage/MountAddress/MountAddress.models';
 
 const { inputs, outputs, gates } = createNodeService;
 const { CreateNodeGate } = gates;
@@ -18,8 +19,6 @@ export const CreateNodeContainer = () => {
     buildingId: string;
     houseCategory?: string;
   }>();
-
-  console.log(buildingId, houseCategory);
 
   const preparedHouseCategory = useMemo(() => {
     if (houseCategory === 'livingProfile') {
@@ -55,6 +54,7 @@ export const CreateNodeContainer = () => {
     updateRequestPayload,
     validateNode,
     validationResult,
+    mountBuilding,
   } = useUnit({
     isBuildingLoading: outputs.$isLoadingBuilding,
     building: outputs.$building,
@@ -77,6 +77,7 @@ export const CreateNodeContainer = () => {
     validateNode: inputs.validateNode,
     closeConfiramtionModal: inputs.closeConfiramtionModal,
     handleSubmitForm: inputs.handleSubmitForm,
+    mountBuilding: mountAddressService.outputs.$buildingListItem,
   });
 
   useEffect(() => {
@@ -84,6 +85,8 @@ export const CreateNodeContainer = () => {
       history.push(`/nodes/${node.id}`),
     );
   }, [history]);
+
+  const preparedBuildingData = mountBuilding || building; //первый берет данные из сторы (случай входа на страницу из "приборы"), второй из запроса по данным из парамс
 
   return (
     <>
@@ -94,12 +97,12 @@ export const CreateNodeContainer = () => {
       <ExistingCitiesGate />
       <CreateNodeServiceZoneContainer />
       <CreateCalculatorModalContainer />
-      {building && selectedServiceZone && (
+      {preparedBuildingData && selectedServiceZone && (
         <CreateNodeConfirmationModal
           isOpen={isConfirmationModalOpen}
           handleClose={() => closeConfiramtionModal()}
           requestPayload={requestPayload}
-          building={building}
+          building={preparedBuildingData}
           calculator={selectedCalculator}
           serviceZone={selectedServiceZone}
           handleSubmitForm={() => handleSubmitForm()}
