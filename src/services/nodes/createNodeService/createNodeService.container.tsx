@@ -19,6 +19,8 @@ export const CreateNodeContainer = () => {
     houseCategory?: string;
   }>();
 
+  console.log(buildingId, houseCategory);
+
   const preparedHouseCategory = useMemo(() => {
     if (houseCategory === 'livingProfile') {
       return EHouseCategory.Living;
