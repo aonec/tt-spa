@@ -38,7 +38,7 @@ const sizesOfButton: {
   };
 } = {
   middle: {
-    height: 42,
+    height: 48,
     padding: 20,
     fontSize: 16,
   },

@@ -117,7 +117,9 @@ export const IndividualDeviceProfile: FC<Props> = ({ device }) => {
                       key: 'Дата установки пломбы',
                       value:
                         device.sealInstallationDate &&
-                        dayjs(device.sealInstallationDate).format('DD.MM.YYYY'),
+                        dayjs(device.sealInstallationDate).format(
+                          'DD.MM.YYYY',
+                        ),
                     },
                   ]}
                 />
