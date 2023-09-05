@@ -4,14 +4,13 @@ import { useHistory, useParams } from 'react-router-dom';
 import { editApartmentProfileService } from './editApartmentProfileService.model';
 import { EditApartmentPage } from './view/EditApartmentPage';
 
-const { inputs, outputs, gates } = editApartmentProfileService;
+const { inputs, outputs, gates, forms } = editApartmentProfileService;
 const { ApartmentGate } = gates;
 
 export const EditApartmentProfileContainer = () => {
   const { apartmentId } = useParams<{ apartmentId: string }>();
 
   const setTabSection = useEvent(inputs.setTabSection);
-  const handleUpdateApartment = useEvent(inputs.handleUpdateApartment);
   const updateApartmentSuccess = inputs.updateApartmentSuccess;
 
   const apartment = useStore(outputs.$apartment);
@@ -37,8 +36,8 @@ export const EditApartmentProfileContainer = () => {
         setTabSection={setTabSection}
         apartment={apartment}
         isLoading={isLoading}
-        handleUpdateApartment={handleUpdateApartment}
         isUpdatingApartmentLoading={isUpdatingApartmentLoading}
+        commonDataForm={forms.editApartmentCommonInfoForm}
       />
     </>
   );

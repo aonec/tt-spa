@@ -1,3 +1,5 @@
+import { editApartmentProfileService } from './editApartmentProfileService.model';
+
 export enum TabsSection {
   CommonData = 'CommonData',
   Homeowners = 'Homeowners',
@@ -14,3 +16,6 @@ export type PutApartment = {
   ColdWaterRiserCount?: number;
   HotWaterRiserCount?: number;
 };
+
+export type EditApartmentCommonInfoFormType =
+  typeof editApartmentProfileService.forms.editApartmentCommonInfoForm;
