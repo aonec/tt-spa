@@ -3,7 +3,7 @@ import { Cellphone, Name, Role, Wrapper } from './StaffItem.styled';
 import { StaffItemProps } from './StaffItem.types';
 import { useHistory } from 'react-router-dom';
 import { sortUserRoles } from '../Staff.utils';
-import { Tooltip } from 'antd';
+import { Tooltip } from 'ui-kit/shared/Tooltip';
 import { ContextMenuButton } from 'ui-kit/ContextMenuButton/ContextMenuButton';
 import { usePhoneMask } from 'hooks/usePhoneMask';
 import { StaffStatus } from 'ui-kit/shared/StaffStatus/StaffStatus';
@@ -35,7 +35,9 @@ export const StaffItem: FC<StaffItemProps> = ({
       </Name>
 
       <Role>
-        <Tooltip title={rolesString}>{sortedRoles[0]?.value}</Tooltip>
+        <Tooltip color="" title={rolesString}>
+          {sortedRoles[0]?.value}
+        </Tooltip>
       </Role>
 
       <Cellphone>

@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { Tooltip } from 'antd';
+import { Tooltip } from 'ui-kit/shared/Tooltip';
 import { ConfirmUsingExistingApartmentFormProps } from './ConfirmUsingExistingApartmentForm.types';
 import { WithLoader } from 'ui-kit/shared/WithLoader';
 import { getApartmentAddressString } from 'utils/getApartmentAddress';

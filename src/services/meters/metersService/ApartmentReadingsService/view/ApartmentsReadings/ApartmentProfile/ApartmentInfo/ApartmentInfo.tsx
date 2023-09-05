@@ -1,6 +1,6 @@
 import React, { FC, useCallback, useEffect, useMemo, useState } from 'react';
 import { useEvent, useStore } from 'effector-react';
-import { Tooltip } from 'antd';
+import { Tooltip } from 'ui-kit/shared/Tooltip';
 import {
   AccountOpeningDate,
   AdditionalHeaderInfoWrapper,

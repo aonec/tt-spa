@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo } from 'react';
-import { Tooltip } from 'antd';
+import { Tooltip } from 'ui-kit/shared/Tooltip';
 import { QuestionCircleOutlined } from '@ant-design/icons';
 import { ExtendedSearchTypes, taskCategotiesProps } from './SearchTasks.types';
 import {
