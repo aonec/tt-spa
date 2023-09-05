@@ -1,11 +1,11 @@
-export enum EIsDeviceConnectedType {
+export enum DeviceConnectionType {
   Connected = 'Connected',
   NotConnected = 'NotConnected',
   All = 'All',
 }
 
 export const IsConnectedToBooleanDictionary = {
-  [EIsDeviceConnectedType.Connected]: true,
-  [EIsDeviceConnectedType.NotConnected]: false,
-  [EIsDeviceConnectedType.All]: undefined,
+  [DeviceConnectionType.Connected]: true,
+  [DeviceConnectionType.NotConnected]: false,
+  [DeviceConnectionType.All]: undefined,
 };

@@ -8,7 +8,7 @@ import { DevicesSearchType } from 'services/devices/devicesPageService/devicesPa
 import { Radio } from 'antd';
 import { DeviceProfileProps } from './DevicesProfile.types';
 import {
-  EIsDeviceConnectedType,
+  DeviceConnectionType,
   IsConnectedToBooleanDictionary,
 } from './ExtendedSearchForm/ExtendedSearchForm.constants';
 import { NodesListRequestForm } from 'services/devices/displayDevicesService/displayDevicesService.types';
@@ -59,10 +59,10 @@ export const DevicesProfile: FC<DeviceProfileProps> = ({
       OrderBy: searchState?.OrderBy,
       IsConnected:
         searchState?.IsConnected === undefined
-          ? EIsDeviceConnectedType.All
+          ? DeviceConnectionType.All
           : searchState?.IsConnected
-          ? EIsDeviceConnectedType.Connected
-          : EIsDeviceConnectedType.NotConnected,
+          ? DeviceConnectionType.Connected
+          : DeviceConnectionType.NotConnected,
       PageNumber: searchState?.PageNumber,
       PageSize: searchState?.PageSize,
     },

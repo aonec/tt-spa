@@ -8,7 +8,7 @@ import {
   EResourceType,
   PipeNodeResponse,
 } from 'api/types';
-import { EIsDeviceConnectedType } from '../devicesProfileService/view/DevicesProfile/ExtendedSearchForm/ExtendedSearchForm.constants';
+import { DeviceConnectionType } from '../devicesProfileService/view/DevicesProfile/ExtendedSearchForm/ExtendedSearchForm.constants';
 
 export interface DevicesByAddressInterface {
   devices: GroupedByCalculatorPipeNodes[];
@@ -47,5 +47,5 @@ export type NodesListRequestForm = Omit<
   NodesListRequestPayload,
   'IsConnected'
 > & {
-  IsConnected: EIsDeviceConnectedType | undefined;
+  IsConnected: DeviceConnectionType | undefined;
 };

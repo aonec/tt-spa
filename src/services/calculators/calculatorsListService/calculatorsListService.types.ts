@@ -7,7 +7,7 @@ import {
   EOrderByRule,
   EResourceType,
 } from 'api/types';
-import { EIsDeviceConnectedType } from 'services/devices/devicesProfileService/view/DevicesProfile/ExtendedSearchForm/ExtendedSearchForm.constants';
+import { DeviceConnectionType } from 'services/devices/devicesProfileService/view/DevicesProfile/ExtendedSearchForm/ExtendedSearchForm.constants';
 
 export interface CalculatorsListRequestPayload {
   'Filter.DiameterRange.From'?: number;
@@ -44,5 +44,5 @@ export type CalculatorsListRequestForm = Omit<
   CalculatorsListRequestPayload,
   'IsConnected'
 > & {
-  IsConnected: EIsDeviceConnectedType | undefined;
+  IsConnected: DeviceConnectionType | undefined;
 };

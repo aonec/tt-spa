@@ -29,7 +29,7 @@ import {
   StyledFormThreeRows,
   StyledSlider,
 } from './ExtendedSearchForm.styled';
-import { EIsDeviceConnectedType } from './ExtendedSearchForm.constants';
+import { DeviceConnectionType } from './ExtendedSearchForm.constants';
 
 const { Option } = Select;
 
@@ -260,11 +260,11 @@ export const ExtendedSearchForm: FC<ExtendedSearchFormProps> = ({
             value={values.IsConnected}
             onChange={(value) => setFieldValue('IsConnected', value)}
           >
-            <Option value={EIsDeviceConnectedType.All}>Все</Option>
-            <Option value={EIsDeviceConnectedType.Connected}>
+            <Option value={DeviceConnectionType.All}>Все</Option>
+            <Option value={DeviceConnectionType.Connected}>
               Прибор опрашивается
             </Option>
-            <Option value={EIsDeviceConnectedType.NotConnected}>
+            <Option value={DeviceConnectionType.NotConnected}>
               Прибор не опрашивается
             </Option>
           </Select>

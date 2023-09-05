@@ -1,4 +1,3 @@
-import { CalculatorsListRequestPayload } from 'services/calculators/calculatorsListService/calculatorsListService.types';
 import { DiamtersConfig } from 'services/currentUserService/currentUserService.types';
 import { DevicesSearchType } from 'services/devices/devicesPageService/devicesPageService.types';
 import { NodesListRequestPayload } from 'services/devices/displayDevicesService/displayDevicesService.types';
