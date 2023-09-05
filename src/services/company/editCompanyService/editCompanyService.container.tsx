@@ -1,4 +1,4 @@
-import { useEvent, useStore } from 'effector-react';
+import { useStore } from 'effector-react';
 import React, { useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { WithLoader } from 'ui-kit/shared/WithLoader';
@@ -6,7 +6,7 @@ import { editCompanyService } from './editCompanyService.model';
 import { EditCompanyPage } from './view/EditCompanyPage';
 import { addressSearchService } from 'services/addressSearchService/addressSearchService.models';
 
-const { inputs, outputs, gates } = editCompanyService;
+const { inputs, outputs, gates, forms } = editCompanyService;
 const { EditCompanyGate } = gates;
 const organizationUpdated = inputs.organizationUpdated;
 const { ExistingCitiesGate } = addressSearchService.gates;
@@ -19,8 +19,6 @@ export const EditCompanyContainer = () => {
   const isUpdating = useStore(outputs.$isUpdating);
   const existingCities = useStore(addressSearchService.outputs.$existingCities);
 
-  const handleUpdateOrganization = useEvent(inputs.updateOrganization);
-
   useEffect(() => {
     return organizationUpdated.watch(() => history.goBack()).unsubscribe;
   }, [history]);
@@ -32,7 +30,7 @@ export const EditCompanyContainer = () => {
       <WithLoader isLoading={isOrganizationLoading}>
         <EditCompanyPage
           currentManagingFirm={currentManagingFirm}
-          handleUpdateOrganization={handleUpdateOrganization}
+          form={forms.editCompanyForm}
           existingCities={existingCities || []}
           isUpdating={isUpdating}
         />

@@ -1,4 +1,5 @@
-import { CalculatorResponse, UpdateCalculatorRequest } from 'api/types';
+import { CalculatorResponse } from 'api/types';
+import { EditMainInfoFormType } from 'services/calculators/editCalculatorService/editCalculatorService.types';
 
 interface ItemInterface {
   id: number;
@@ -11,5 +12,5 @@ export type EditMainInfoProps = {
   calculator: CalculatorResponse | null;
   onCancel: () => void;
   calculatorTypesSelectItems: ItemInterface[];
-  onSubmit: (payload: UpdateCalculatorRequest) => void;
+  form: EditMainInfoFormType;
 };

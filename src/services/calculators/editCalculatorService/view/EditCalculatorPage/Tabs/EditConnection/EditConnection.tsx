@@ -4,62 +4,20 @@ import { EditConnectionProps } from './EditConnection.types';
 import { FormItem } from 'ui-kit/FormItem';
 import { Switch } from 'antd';
 import { Input } from 'ui-kit/Input';
-import { useFormik } from 'formik';
-import { MeteringDeviceConnection, UpdateCalculatorRequest } from 'api/types';
-import * as yup from 'yup';
 import { Footer } from '../EditMainInfo/EditMainInfo.styled';
 import { Button } from 'ui-kit/Button';
 import { ErrorMessage } from 'ui-kit/ErrorMessage';
 import { EditExistingConnectionErrorModal } from './EditExistingConnectionErrorModal';
+import { useForm } from 'effector-forms';
 
 export const EditConnection: FC<EditConnectionProps> = ({
-  calculator,
   onCancel,
-  onSubmit,
   sameConnectionCalculator,
   handleCloseModal,
   isModalOpen,
+  form,
 }) => {
-  const connection = calculator?.connection;
-
-  const { values, setFieldValue, errors, handleSubmit } = useFormik({
-    initialValues: {
-      connection: {
-        ipV4: connection?.ipV4 ? connection.ipV4.trim() : null,
-        port: String(connection?.port).trim(),
-        deviceAddress: String(connection?.deviceAddress).trim(),
-      },
-      isConnected: calculator?.isConnected || undefined,
-    },
-    validationSchema: yup.object().shape({
-      connection: yup.object().shape({
-        ipV4: yup.string().required('Это поле обязательно'),
-        port: yup.number().required('Это поле обязательно'),
-        deviceAddress: yup.number().required('Это поле обязательно'),
-      }),
-    }),
-    validateOnBlur: false,
-    validateOnChange: false,
-    enableReinitialize: true,
-    onSubmit: (data) => {
-      const { connection, isConnected } = data;
-
-      const convertedData: UpdateCalculatorRequest = {
-        isConnected,
-        connection: {
-          ipV4: connection?.ipV4?.trim(),
-          port: Number(connection?.port),
-          deviceAddress: Number(connection?.deviceAddress),
-        } as MeteringDeviceConnection,
-      };
-
-      onSubmit(convertedData);
-    },
-  });
-
-  const err = errors.connection as unknown as
-    | { ipV4?: string; port?: string; deviceAddress?: string }
-    | undefined;
+  const { values, submit, fields } = useForm(form);
 
   return (
     <>
@@ -73,9 +31,9 @@ export const EditConnection: FC<EditConnectionProps> = ({
         <FormItem>
           <Switch
             style={{ width: '48px' }}
-            checked={values.isConnected}
+            checked={values.isConnected || undefined}
             onChange={(value) => {
-              setFieldValue('isConnected', value);
+              fields.isConnected.onChange(value);
             }}
           />
           <SwitchText>Опрашивать вычислитель</SwitchText>
@@ -85,52 +43,43 @@ export const EditConnection: FC<EditConnectionProps> = ({
           <Input
             placeholder="Укажите IP-адрес устройства, например 192.168.0.1"
             type="text"
-            value={values.connection?.ipV4 || undefined}
+            value={values.ipV4 || undefined}
             onChange={(value) => {
-              setFieldValue('connection', {
-                ...values.connection,
-                ipV4: value.target.value,
-              });
+              fields.ipV4.onChange(value.target.value);
             }}
           />
-          <ErrorMessage>{err?.ipV4}</ErrorMessage>
+          <ErrorMessage>{fields.ipV4.errorText()}</ErrorMessage>
         </FormItem>
 
         <FormItem label="Порт">
           <Input
             type="number"
             placeholder="Укажите порт устройства (например, 1234)"
-            value={values.connection?.port || undefined}
+            value={values.port || undefined}
             onChange={(value) => {
-              setFieldValue('connection', {
-                ...values.connection,
-                port: value.target.value,
-              });
+              fields.port.onChange(value.target.value);
             }}
           />
-          <ErrorMessage>{err?.port}</ErrorMessage>
+          <ErrorMessage>{fields.port.errorText()}</ErrorMessage>
         </FormItem>
 
         <FormItem label="Адрес прибора">
           <Input
             type="number"
             placeholder="Укажите адреса устройства"
-            value={values.connection?.deviceAddress || undefined}
+            value={values.deviceAddress || undefined}
             onChange={(value) => {
-              setFieldValue('connection', {
-                ...values.connection,
-                deviceAddress: value.target.value,
-              });
+              fields.deviceAddress.onChange(value.target.value);
             }}
           />
-          <ErrorMessage>{err?.deviceAddress}</ErrorMessage>
+          <ErrorMessage>{fields.deviceAddress.errorText()}</ErrorMessage>
         </FormItem>
 
         <Footer>
           <Button type="ghost" onClick={onCancel}>
             Отмена
           </Button>
-          <Button onClick={() => handleSubmit()}>Сохранить</Button>
+          <Button onClick={() => submit()}>Сохранить</Button>
         </Footer>
       </Wrapper>
     </>

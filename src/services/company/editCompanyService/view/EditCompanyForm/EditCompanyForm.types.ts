@@ -1,8 +1,7 @@
-import { OrganizationResponse, OrganizationUpdateRequest } from 'api/types';
+import { EditCompanyFormType } from '../../editCompanyService.types';
 
 export type EditCompanyFormProps = {
-  currentManagingFirm: OrganizationResponse;
-  handleUpdateOrganization: (payload: OrganizationUpdateRequest) => void;
   existingCities: string[];
   isUpdating: boolean;
+  form: EditCompanyFormType;
 };

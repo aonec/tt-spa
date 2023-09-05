@@ -16,6 +16,9 @@ import { SetApartmentStatusRequest } from './pauseApartmentService.types';
 import { apartmentService } from '../apartmentService';
 import { apartmentProblemDevicesService } from '../apartmentProblemDevicesService';
 import { setApartmentStatus } from './pauseApartmentService.api';
+import { createForm } from 'effector-forms';
+import moment from 'moment';
+import { Document } from 'ui-kit/DocumentsService';
 
 const domain = createDomain('pauseApartmentService');
 
@@ -31,19 +34,26 @@ const pauseApartmentStatusFx = createEffect<
   EffectFailDataAxiosError
 >(setApartmentStatus);
 
-const pauseApartment = domain.createEvent<SetApartmentStatusRequest>();
+const pauseApartmentForm = createForm({
+  fields: {
+    fromDate: { init: moment().format() as string | null },
+    toDate: { init: null as string | null },
+    documents: { init: [] as Document[] },
+  },
+  validateOn: ['submit'],
+});
 
 const $isPauseApartmentModalVisible = domain
   .createStore(false)
   .on(pauseApartmentButtonClicked, () => true)
-  .reset(
-    pauseApartmentModalCancelButtonClicked,
-    pauseApartmentStatusFx.doneData,
-  );
+  .reset(pauseApartmentModalCancelButtonClicked);
 
-forward({
-  from: pauseApartmentStatusFx.done,
-  to: apartmentService.inputs.refetchApartment,
+sample({
+  clock: pauseApartmentStatusFx.done,
+  target: [
+    apartmentService.inputs.refetchApartment,
+    pauseApartmentModalCancelButtonClicked,
+  ],
 });
 
 forward({
@@ -54,9 +64,21 @@ forward({
   to: apartmentProblemDevicesService.inputs.handleResetProblemDevices,
 });
 
-forward({
-  from: pauseApartment,
-  to: pauseApartmentStatusFx,
+sample({
+  source: PauseApartmentGate.state.map(({ id }) => id),
+  clock: pauseApartmentForm.formValidated,
+  fn: (apartmentId, payload) => ({
+    apartmentId,
+    requestPayload: {
+      fromDate: moment(payload.fromDate).format('YYYY-MM-DD'),
+      toDate: moment(payload.toDate).format('YYYY-MM-DD'),
+      status: EApartmentStatus.Pause,
+      documentIds: payload.documents
+        .map((document) => document.id)
+        .filter((documentId): documentId is number => Boolean(documentId)),
+    },
+  }),
+  target: pauseApartmentStatusFx,
 });
 
 sample({
@@ -71,6 +93,11 @@ sample({
     },
   }),
   target: pauseApartmentStatusFx,
+});
+
+sample({
+  clock: pauseApartmentModalCancelButtonClicked,
+  target: pauseApartmentForm.reset,
 });
 
 pauseApartmentStatusFx.failData.watch((error) => {
@@ -98,7 +125,6 @@ export const pauseApartmentService = {
     pauseApartmentButtonClicked,
     cancelPauseApartmentButtonClicked,
     pauseApartmentStatusFx,
-    pauseApartment,
   },
   outputs: {
     $isPauseApartmentModalVisible,
@@ -109,4 +135,5 @@ export const pauseApartmentService = {
     ProblemDevicesGate: apartmentProblemDevicesService.gates.ProblemDevicesGate,
     PauseApartmentGate,
   },
+  forms: { pauseApartmentForm },
 };

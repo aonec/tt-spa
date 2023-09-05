@@ -7,9 +7,9 @@ import { EditCompanyPageProps } from './EditCompanyPage.types';
 
 export const EditCompanyPage: FC<EditCompanyPageProps> = ({
   currentManagingFirm,
-  handleUpdateOrganization,
   existingCities,
   isUpdating,
+  form,
 }) => {
   return (
     <>
@@ -18,10 +18,9 @@ export const EditCompanyPage: FC<EditCompanyPageProps> = ({
         <>
           <PageHeaderSC title="Профиль компании. Редактирование" />
           <EditCompanyForm
-            currentManagingFirm={currentManagingFirm}
-            handleUpdateOrganization={handleUpdateOrganization}
             existingCities={existingCities}
             isUpdating={isUpdating}
+            form={form}
           />
         </>
       )}

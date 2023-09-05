@@ -1,8 +1,9 @@
 import { IndividualDeviceWithExpiredCheckingDateResponse } from 'api/types';
-import { SetApartmentStatusRequest } from 'services/apartments/pauseApartmentService/pauseApartmentService.types';
+import { PauseApartmentFormType } from 'services/apartments/pauseApartmentService/pauseApartmentService.types';
 
 export type Props = {
   problemDevices: IndividualDeviceWithExpiredCheckingDateResponse[];
+  form: PauseApartmentFormType;
+  formId: string;
   apartmentId: number;
-  pauseApartment: (payload: SetApartmentStatusRequest) => void;
 };

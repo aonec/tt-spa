@@ -1,7 +1,5 @@
 import { useSwitchInputOnEnter } from 'hooks/useSwitchInputOnEnter';
 import { fromEnter } from 'ui-kit/shared/DatePickerNative';
-import { useFormik } from 'formik';
-import { OrganizationUpdateRequest } from 'api/types';
 import React, { FC, useCallback } from 'react';
 import { useHistory } from 'react-router-dom';
 import { Button } from 'ui-kit/Button';
@@ -14,29 +12,17 @@ import {
   Wrapper,
 } from './EditCompanyForm.styled';
 import { EditCompanyFormProps } from './EditCompanyForm.types';
+import { useForm } from 'effector-forms';
 
 export const EditCompanyForm: FC<EditCompanyFormProps> = ({
-  currentManagingFirm,
-  handleUpdateOrganization,
   existingCities,
   isUpdating,
+  form,
 }) => {
   const history = useHistory();
   const next = useSwitchInputOnEnter('editCompany', true);
 
-  const { values, setFieldValue, submitForm } =
-    useFormik<OrganizationUpdateRequest>({
-      initialValues: {
-        city: currentManagingFirm.address?.city || null,
-        corpus: currentManagingFirm.address?.corpus || null,
-        street: currentManagingFirm.address?.street || null,
-        houseNumber: currentManagingFirm.address?.houseNumber || null,
-        email: currentManagingFirm.email,
-        name: currentManagingFirm.name,
-        phoneNumber: currentManagingFirm.phoneNumber,
-      },
-      onSubmit: handleUpdateOrganization,
-    });
+  const { fields, submit, values } = useForm(form);
 
   const handleEnter = useCallback(
     (index: number) =>
@@ -51,7 +37,7 @@ export const EditCompanyForm: FC<EditCompanyFormProps> = ({
       <FormItem label="Название">
         <Input
           value={values.name || undefined}
-          onChange={(e) => setFieldValue('name', e.target.value)}
+          onChange={(e) => fields.name?.onChange(e.target.value)}
           data-reading-input={'editCompany'}
           onKeyDown={handleEnter(0)}
         />
@@ -59,7 +45,7 @@ export const EditCompanyForm: FC<EditCompanyFormProps> = ({
       <FormItem label="Город">
         <Select
           value={values.city || undefined}
-          onChange={(value) => setFieldValue('city', value)}
+          onChange={(value) => fields.city?.onChange(String(value))}
           placeholder="Выберите город"
           data-reading-input={'editCompany'}
           onKeyDown={handleEnter(1)}
@@ -76,7 +62,7 @@ export const EditCompanyForm: FC<EditCompanyFormProps> = ({
         <FormItem label="Улица">
           <Input
             value={values.street || undefined}
-            onChange={(e) => setFieldValue('street', e.target.value)}
+            onChange={(e) => fields.street?.onChange(e.target.value)}
             placeholder="Название улицы"
             data-reading-input={'editCompany'}
             onKeyDown={handleEnter(2)}
@@ -85,7 +71,7 @@ export const EditCompanyForm: FC<EditCompanyFormProps> = ({
         <FormItem label="Дом">
           <Input
             value={values.houseNumber || undefined}
-            onChange={(e) => setFieldValue('houseNumber', e.target.value)}
+            onChange={(e) => fields.houseNumber?.onChange(e.target.value)}
             placeholder="Номер дома"
             data-reading-input={'editCompany'}
             onKeyDown={handleEnter(3)}
@@ -94,7 +80,7 @@ export const EditCompanyForm: FC<EditCompanyFormProps> = ({
         <FormItem label="Корпус">
           <Input
             value={values.corpus || undefined}
-            onChange={(e) => setFieldValue('corpus', e.target.value)}
+            onChange={(e) => fields.corpus?.onChange(e.target.value)}
             placeholder="Номер корпуса"
             data-reading-input={'editCompany'}
             onKeyDown={handleEnter(4)}
@@ -104,7 +90,7 @@ export const EditCompanyForm: FC<EditCompanyFormProps> = ({
       <FormItem label="Электронная почта">
         <Input
           value={values.email || undefined}
-          onChange={(e) => setFieldValue('email', e.target.value)}
+          onChange={(e) => fields.email?.onChange(e.target.value)}
           data-reading-input={'editCompany'}
           onKeyDown={handleEnter(5)}
         />
@@ -112,7 +98,7 @@ export const EditCompanyForm: FC<EditCompanyFormProps> = ({
       <FormItem label="Контактный телефон">
         <Input
           value={values.phoneNumber || undefined}
-          onChange={(e) => setFieldValue('phoneNumber', e.target.value)}
+          onChange={(e) => fields.phoneNumber?.onChange(e.target.value)}
           data-reading-input={'editCompany'}
           onKeyDown={handleEnter(6)}
         />
@@ -121,7 +107,7 @@ export const EditCompanyForm: FC<EditCompanyFormProps> = ({
         <Button type="ghost" onClick={() => history.goBack()}>
           Отмена
         </Button>
-        <Button type="primary" onClick={submitForm} isLoading={isUpdating}>
+        <Button type="primary" onClick={() => submit()} isLoading={isUpdating}>
           Сохранить
         </Button>
       </FooterWrapper>

@@ -1,4 +1,8 @@
-import { CalculatorResponse, UpdateCalculatorRequest } from 'api/types';
+import { CalculatorResponse } from 'api/types';
+import {
+  EditConnectionFormType,
+  EditMainInfoFormType,
+} from '../../editCalculatorService.types';
 
 interface ItemInterface {
   id: number;
@@ -12,11 +16,12 @@ export type EditCalculatorPageProps = {
   currentTab: EditCalculatorTabs;
   handleChangeTab: (payload: EditCalculatorTabs) => void;
   calculatorTypesSelectItems: ItemInterface[];
-  handleSubmit: (payload: UpdateCalculatorRequest) => void;
   isCalculatorLoading: boolean;
   sameConnectionCalculator: CalculatorResponse | null;
   handleCloseModal: () => void;
   isModalOpen: boolean;
+  editMainInfoForm: EditMainInfoFormType;
+  editConnectionForm: EditConnectionFormType;
 };
 
 export enum EditCalculatorTabs {
