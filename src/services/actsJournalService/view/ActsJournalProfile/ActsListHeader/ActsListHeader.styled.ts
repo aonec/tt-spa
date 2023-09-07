@@ -14,6 +14,7 @@ export const Wrapper = styled.div`
   background: #f3f5f6;
 
   user-select: none;
+  position: sticky;
 `;
 
 export const Title = styled.div`

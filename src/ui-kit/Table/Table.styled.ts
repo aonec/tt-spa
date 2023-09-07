@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import styled, { css } from 'styled-components';
 
 export const Wrapper = styled.div`
@@ -30,17 +31,27 @@ export const Header = styled.div<{
   ${({ isSticky }) => (isSticky ? stickyHeaderCss : '')}
 `;
 
-export const Row = styled.div<{ temp: string; css?: string }>`
+const RowStyle = css<{ temp: string; css?: string }>`
   width: max-content;
   height: 50px;
   display: grid;
   grid-gap: 16px;
-  grid-template-columns: ${({ temp }) => temp};
   align-items: center;
   border-bottom: 1px solid rgba(0, 0, 0, 0.08);
   font-weight: 400;
   font-size: 14px;
   color: #272f5a;
+`;
+
+export const Row = styled.div<{ temp: string; css?: string }>`
+  ${RowStyle}
+  grid-template-columns: ${({ temp }) => temp};
+  ${({ css }) => css || ''}
+`;
+
+export const RowLink = styled(Link)<{ temp: string; css?: string }>`
+  ${RowStyle}
+  grid-template-columns: ${({ temp }) => temp};
   ${({ css }) => css || ''}
 `;
 

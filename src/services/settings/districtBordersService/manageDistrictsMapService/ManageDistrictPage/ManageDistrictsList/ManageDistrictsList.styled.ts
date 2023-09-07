@@ -78,8 +78,25 @@ export const StreetWrapper = styled.div<{ isOpen: boolean }>`
   font-weight: ${({ isOpen }) => (isOpen ? 500 : 400)};
 `;
 
-export const AddressNumber = styled.div`
-  margin-left: 16px;
+export const AddressNumbersList = styled.div`
+  display: grid;
+  grid-gap: 12px;
+  grid-template-columns: repeat(auto-fill, minmax(66px, 68px));
+  cursor: pointer;
+`;
+
+export const AddressNumber = styled.div<{ isOpen: boolean }>`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 66px;
+  height: 33px;
+  border-radius: 4px;
+  border: 1px solid #f3f5f6;
+  background: ${({ isOpen }) => (isOpen ? '#189ee9' : '#ffffff')};
+  color: ${({ isOpen }) => (isOpen ? 'white' : 'initial')};
+  box-shadow: 0px 8px 16px 0px rgba(78, 93, 146, 0.08),
+    0px 4px 4px 0px rgba(78, 93, 146, 0.16);
 `;
 
 export const Line = styled.div`

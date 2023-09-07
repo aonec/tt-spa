@@ -9,7 +9,7 @@ import { ContextMenuElement } from 'ui-kit/ContextMenuButton/ContextMenuButton.t
 export type ApartmentInfoProps = {
   apartment: ApartmentResponse;
   handleUpdateApartment: (payload: UpdateApartmentRequestPayload) => void;
-  setSelectedHomeownerName: (payload: string) => void;
+  setSelectedHomeownerName: (payload: string | null) => void;
   menuButtons?: ContextMenuElement[];
   additionalHeaderInfo?: ReactNode;
   handleUpdateHomeowner?: (payload: UpdateHomeownerRequestPayload) => void;
