@@ -10,7 +10,10 @@ export const Bootstrap: FC<BootstrapProps> = ({ children }) => {
 
   return (
     <>
-      <ConfigProvider locale={ruRu}>
+      <ConfigProvider
+        locale={ruRu}
+        theme={{ token: { colorPrimary: '#1890ff' } }}
+      >
         <YMaps
           query={{
             apikey: 'a3a2f1cb-0246-4933-8004-db07a669deb7',
