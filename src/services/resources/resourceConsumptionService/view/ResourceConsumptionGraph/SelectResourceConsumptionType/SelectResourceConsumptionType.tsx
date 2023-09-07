@@ -61,10 +61,8 @@ export const SelectResourceConsumptionType: FC<
           colorConstructor={(type) =>
             getGraphTypeColors({ resource, type, isOpacityNeed: true })
           }
-          isPrevHousingLoading={isPrevHousingLoading}
-          isPrevNormativeAndSubscriberLoading={
-            isPrevNormativeAndSubscriberLoading
-          }
+          isHousingLoading={isPrevHousingLoading}
+          isNormativeAndSubscriberLoading={isPrevNormativeAndSubscriberLoading}
           consumptionData={consumptionData.prevMonthData}
         />
       )}

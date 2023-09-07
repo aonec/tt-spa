@@ -14,8 +14,6 @@ export const SelectGraphType: FC<SelectGraphTypeProps> = ({
   colorConstructor,
   isHousingLoading,
   isNormativeAndSubscriberLoading,
-  isPrevHousingLoading,
-  isPrevNormativeAndSubscriberLoading,
   consumptionData,
 }) => {
   const setChecked = useCallback(
@@ -34,11 +32,11 @@ export const SelectGraphType: FC<SelectGraphTypeProps> = ({
             isNormativeAndSubscriberLoading,
           type === ResourceConsumptionGraphType.Subscriber &&
             isNormativeAndSubscriberLoading,
-          type === ResourceConsumptionGraphType.Housing && isPrevHousingLoading,
+          type === ResourceConsumptionGraphType.Housing && isHousingLoading,
           type === ResourceConsumptionGraphType.Normative &&
-            isPrevNormativeAndSubscriberLoading,
+            isNormativeAndSubscriberLoading,
           type === ResourceConsumptionGraphType.Subscriber &&
-            isPrevNormativeAndSubscriberLoading,
+            isNormativeAndSubscriberLoading,
         ].some(Boolean);
 
         const isConsumptionDataEmpty = [

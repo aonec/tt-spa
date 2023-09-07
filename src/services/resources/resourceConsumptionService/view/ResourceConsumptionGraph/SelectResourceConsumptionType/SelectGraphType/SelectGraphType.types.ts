@@ -12,7 +12,5 @@ export type SelectGraphTypeProps = {
   colorConstructor: (type: ResourceConsumptionGraphType) => string;
   isHousingLoading?: boolean;
   isNormativeAndSubscriberLoading?: boolean;
-  isPrevHousingLoading?: boolean;
-  isPrevNormativeAndSubscriberLoading?: boolean;
   consumptionData?: MonthConsumptionData;
 };
