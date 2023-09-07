@@ -4,9 +4,16 @@ import { FormModal } from 'ui-kit/Modals/FormModal';
 import { AddressSearchContainer } from 'services/addressSearchService';
 import { SearchFieldType } from 'services/addressSearchService/view/AddressSearch/AddressSearch.types';
 import { useYMaps } from 'hooks/ymaps/useYMaps';
-import { MapWrapper } from './AddHouseToDistrictModal.styled';
+import {
+  InfoIconSC,
+  MapWrapper,
+  NotificationDescription,
+  NotificationTitle,
+  NotificationWrapper,
+} from './AddHouseToDistrictModal.styled';
 import { useRenderDistricts, useRenderPlacemarks } from 'hooks/ymaps/utils';
 import { getHousesPlacmearks } from 'services/settings/districtBordersService/createDistrictBorderMapService/view/CreateDistrictBorderMapPage/CreateDistrictBorderMapPage.utils';
+import { getBuildingAddress } from 'utils/getBuildingAddress';
 
 export const AddHouseToDistrictModal: FC<Props> = ({
   isOpen,
@@ -18,6 +25,7 @@ export const AddHouseToDistrictModal: FC<Props> = ({
   handleSearchHouse,
   isLoading,
   addHouse,
+  districtsList,
 }) => {
   const { mapRef, map } = useYMaps(organizationCoordinates);
 
@@ -25,6 +33,22 @@ export const AddHouseToDistrictModal: FC<Props> = ({
     () => (openedDistrict ? [openedDistrict] : []),
     [openedDistrict],
   );
+
+  const existingHouseInDistrictData = useMemo(() => {
+    const districtWithSelectedHouse = districtsList.find((distict) =>
+      Boolean(
+        distict.houses?.find(
+          (houseInDistrict) => houseInDistrict.id === house?.id,
+        ),
+      ),
+    );
+
+    return {
+      distirct: districtWithSelectedHouse || null,
+      isSelectedHouseInDistrict:
+        openedDistrict?.id === districtWithSelectedHouse?.id,
+    };
+  }, [districtsList, house?.id, openedDistrict?.id]);
 
   useRenderDistricts(map, districtData);
 
@@ -85,6 +109,25 @@ export const AddHouseToDistrictModal: FC<Props> = ({
             ]}
             isError={hasError}
           />
+          {existingHouseInDistrictData.distirct && (
+            <NotificationWrapper>
+              <InfoIconSC />
+              <div>
+                <NotificationTitle>
+                  Объект {getBuildingAddress(house)} ранее был добавлен в район
+                  "{existingHouseInDistrictData.distirct.name}"
+                </NotificationTitle>
+                {existingHouseInDistrictData.distirct.id !==
+                  openedDistrict?.id && (
+                  <NotificationDescription>
+                    При добавлении объектов в текущий район, они будут
+                    автоматически удалены из района "
+                    {existingHouseInDistrictData.distirct.name}"
+                  </NotificationDescription>
+                )}
+              </div>
+            </NotificationWrapper>
+          )}
           <MapWrapper>
             <div ref={mapRef} style={{ width: '100%', height: '400px' }} />
           </MapWrapper>

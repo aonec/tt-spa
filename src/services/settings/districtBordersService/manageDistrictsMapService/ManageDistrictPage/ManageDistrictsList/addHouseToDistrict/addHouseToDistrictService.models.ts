@@ -43,6 +43,10 @@ addHouseToDistrictMutation.finished.success.watch(() =>
   message.success('Дом успешно добавлен в район!'),
 );
 
+addHouseToDistrictMutation.finished.failure.watch((e) => {
+  message.error(e.error.response.data.error.Message);
+});
+
 export const addHouseToDistrictService = {
   inputs: { openAddHouseModal, closeAddHouseModal, handleSearchHouse },
   outputs: {
