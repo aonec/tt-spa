@@ -1,4 +1,9 @@
 import { EHousingStockOrderRule, EOrderByRule } from 'api/types';
+import { DistrictData } from 'types';
+
+export type AddHouseToDistrictContainerProps = {
+  districtsList: DistrictData[];
+};
 
 export type GetBuildingFilters = {
   OrderRule?: EHousingStockOrderRule;

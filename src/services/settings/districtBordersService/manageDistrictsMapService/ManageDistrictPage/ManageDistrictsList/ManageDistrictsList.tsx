@@ -103,7 +103,7 @@ export const ManageDistrictsList: FC<Props> = ({
 
   return (
     <>
-      <AddHouseToDistrictContainer />
+      <AddHouseToDistrictContainer districtsList={preparedExistingDistricts} />
       <WithLoader isLoading={isDistrictLoading}>
         {isDeleteDistrictModalOpen && selectedPreparedDistrict && (
           <DeleteDistrictModal
