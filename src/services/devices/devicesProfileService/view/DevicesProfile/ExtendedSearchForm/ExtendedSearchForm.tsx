@@ -257,8 +257,8 @@ export const ExtendedSearchForm: FC<ExtendedSearchFormProps> = ({
           <Select
             small
             placeholder="Выберите из списка"
-            value={values.IsConnected}
-            onChange={(value) => setFieldValue('IsConnected', value)}
+            value={values.connectionType}
+            onChange={(value) => setFieldValue('connectionType', value)}
           >
             <Option value={DeviceConnectionType.All}>Все</Option>
             <Option value={DeviceConnectionType.Connected}>

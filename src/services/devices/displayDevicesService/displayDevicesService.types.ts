@@ -47,5 +47,5 @@ export type NodesListRequestForm = Omit<
   NodesListRequestPayload,
   'IsConnected'
 > & {
-  IsConnected: DeviceConnectionType | undefined;
+  connectionType: DeviceConnectionType | undefined;
 };

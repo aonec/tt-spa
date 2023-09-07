@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useMemo, useState } from 'react';
 import { useFormik } from 'formik';
 import { DevicesListContainer } from 'services/devices/displayDevicesService/displayDevicesService.container';
 import { SearchDevices } from '../SearchDevices';
@@ -32,6 +32,16 @@ export const DevicesProfile: FC<DeviceProfileProps> = ({
   calculatorsModels,
   isSearchError,
 }) => {
+  const preparedConnectionType = useMemo(() => {
+    if (searchState?.IsConnected === undefined) {
+      return DeviceConnectionType.All;
+    } else {
+      return searchState.IsConnected
+        ? DeviceConnectionType.Connected
+        : DeviceConnectionType.NotConnected;
+    }
+  }, [searchState?.IsConnected]);
+
   const {
     handleSubmit: submitForm,
     setFieldValue,
@@ -57,12 +67,7 @@ export const DevicesProfile: FC<DeviceProfileProps> = ({
       RegistrationType: searchState?.RegistrationType,
       'DevicesFilter.Question': searchState?.['DevicesFilter.Question'],
       OrderBy: searchState?.OrderBy,
-      IsConnected:
-        searchState?.IsConnected === undefined
-          ? DeviceConnectionType.All
-          : searchState?.IsConnected
-          ? DeviceConnectionType.Connected
-          : DeviceConnectionType.NotConnected,
+      connectionType: preparedConnectionType,
       PageNumber: searchState?.PageNumber,
       PageSize: searchState?.PageSize,
     },
@@ -70,8 +75,8 @@ export const DevicesProfile: FC<DeviceProfileProps> = ({
     onSubmit: (values) => {
       setFilter({
         ...values,
-        IsConnected: values.IsConnected
-          ? IsConnectedToBooleanDictionary[values.IsConnected]
+        IsConnected: values.connectionType
+          ? IsConnectedToBooleanDictionary[values.connectionType]
           : undefined,
       });
     },
