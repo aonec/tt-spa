@@ -28,7 +28,7 @@ export const Calendar: FC<CalendarProps> = ({
       fullscreen={false}
       value={selectedDate || undefined}
       onChange={handleSelectDate}
-      dateFullCellRender={(date) => {
+      fullCellRender={(date) => {
         const formatedDate = date.startOf('day');
 
         const isSelectedDate = formatedSelectedDate

@@ -21,4 +21,5 @@ export type ApartmentSealProfileProps = {
   nearestAppointment: AppointmentResponse | null;
   isAppointmentLoading: boolean;
   isApartmentFetched: boolean;
+  openRemoveAppointmentModal: () => void;
 };
