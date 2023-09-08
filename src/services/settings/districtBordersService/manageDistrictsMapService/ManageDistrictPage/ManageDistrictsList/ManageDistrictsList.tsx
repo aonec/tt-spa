@@ -1,6 +1,7 @@
 import React, { FC, useCallback, useEffect, useMemo, useState } from 'react';
 import { ChevronDown } from 'react-bootstrap-icons';
 import { groupBy, sortBy } from 'lodash';
+import { useHistory } from 'react-router-dom';
 import {
   AddressHousesCount,
   AddressNumber,
@@ -28,10 +29,13 @@ import {
 } from '../../manageDistrictsMapService.api';
 import { useUnit } from 'effector-react';
 import { manageDistrictMapService } from '../ManageDistrictsMap/ManageDistricsMap.model';
-import { useHistory } from 'react-router-dom';
 import { WithLoader } from 'ui-kit/shared/WithLoader';
 import { AddHouseToDistrictContainer } from './addHouseToDistrict';
 import { addHouseToDistrictService } from './addHouseToDistrict/addHouseToDistrictService.models';
+import {
+  DeleteHouseInDistrictContainer,
+  deleteHouseInDistrictService,
+} from './deleteHouseInDistrict';
 
 const { outputs, inputs } = manageDistrictMapService;
 
@@ -49,6 +53,7 @@ export const ManageDistrictsList: FC<Props> = ({
     openEditDistrictModal,
     closeEditDistrictModal,
     openAddHouseModal,
+    handleDeleteBuildingDialogShow,
   } = useUnit({
     selectedDistrictId: outputs.$selectedDistrict,
     isDeleteDistrictModalOpen: outputs.$isDeleteDistrictModalOpen,
@@ -59,6 +64,8 @@ export const ManageDistrictsList: FC<Props> = ({
     openEditDistrictModal: inputs.openEditDistrictModal,
     closeEditDistrictModal: inputs.closeEditDistrictModal,
     openAddHouseModal: addHouseToDistrictService.inputs.openAddHouseModal,
+    handleDeleteBuildingDialogShow:
+      deleteHouseInDistrictService.inputs.handleDialogShow,
   });
 
   const { start: deleteDistrict, pending: isDeletingDistrictLoading } = useUnit(
@@ -127,6 +134,8 @@ export const ManageDistrictsList: FC<Props> = ({
         <Wrapper>
           {preparedExistingDistricts.map((elem) => {
             const color = getDistrictColor(elem.type);
+
+            const districtId = elem.id;
 
             const groupedAddresses = groupBy(elem.houses || [], (house) => {
               const arr = house.address?.split(' ');
@@ -205,22 +214,38 @@ export const ManageDistrictsList: FC<Props> = ({
                                 (elem) => {
                                   const arr = elem.address?.split(' ');
                                   const number = arr && arr[arr?.length - 2];
+
+                                  const houseId = elem.id;
+
                                   return (
-                                    <ContextMenuButton
-                                      menuButtons={[
-                                        {
-                                          title: 'Удалить дом',
-                                          color: ContextMenuButtonColor.danger,
-                                          onClick: () => {},
-                                        },
-                                      ]}
-                                    >
-                                      {(isOpen) => (
-                                        <AddressNumber isOpen={isOpen}>
-                                          {number}
-                                        </AddressNumber>
+                                    <>
+                                      <ContextMenuButton
+                                        menuButtons={[
+                                          {
+                                            title: 'Удалить дом',
+                                            color:
+                                              ContextMenuButtonColor.danger,
+                                            onClick: () => {
+                                              handleDeleteBuildingDialogShow(
+                                                true,
+                                              );
+                                            },
+                                          },
+                                        ]}
+                                      >
+                                        {(isOpen) => (
+                                          <AddressNumber isOpen={isOpen}>
+                                            {number}
+                                          </AddressNumber>
+                                        )}
+                                      </ContextMenuButton>
+                                      {houseId && (
+                                        <DeleteHouseInDistrictContainer
+                                          buildingId={houseId}
+                                          districtId={districtId}
+                                        />
                                       )}
-                                    </ContextMenuButton>
+                                    </>
                                   );
                                 },
                               )}
