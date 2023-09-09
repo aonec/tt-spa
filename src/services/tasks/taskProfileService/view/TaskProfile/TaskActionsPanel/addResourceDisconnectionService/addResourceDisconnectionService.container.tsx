@@ -1,24 +1,41 @@
-import React, { FC } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { addResourceDisconnectionService } from './addResourceDisconnectionService.models';
 import { ActionComponentProps } from '../TaskActionsPanel.types';
 import { CreateResourceDisconnectionPanel } from './view/CreateResourceDisconnectionPanel';
 import { CreateResourceDisconnectionContainer } from 'services/resources/createResourceDisconnectionService';
 import { useUnit } from 'effector-react';
+import { ChooseTypeOfResourceDisconnectionModalContainer } from 'services/resources/chooseTypeOfResourceDisconnectionModalService/chooseTypeOfResourceDisconnectionModalService.container';
+import { ResourceDisconnectingCreateRequest } from 'api/types';
 
 const { inputs } = addResourceDisconnectionService;
 
-export const AddResourceDisconnectionContainer: FC<
-  ActionComponentProps
-> = () => {
+export const AddResourceDisconnectionContainer: FC<ActionComponentProps> = ({
+  handleChange,
+}) => {
+  const [
+    createDisconnectionRequestPayload,
+    setCreateDisconnectionRequestPayload,
+  ] = useState<ResourceDisconnectingCreateRequest | null>(null);
+
   const { openCreateDisconnectionModal } = useUnit({
     openCreateDisconnectionModal: inputs.openCreateDisconnectionModal,
   });
 
+  useEffect(() => {
+    handleChange({ resourceDisconnecting: createDisconnectionRequestPayload });
+  }, [createDisconnectionRequestPayload, handleChange]);
+
   return (
     <>
-      <CreateResourceDisconnectionContainer />
+      <ChooseTypeOfResourceDisconnectionModalContainer />
+      <CreateResourceDisconnectionContainer
+        handleCreateDisconnectionState={(data) =>
+          setCreateDisconnectionRequestPayload(data)
+        }
+      />
       <CreateResourceDisconnectionPanel
         openCreateDisconnectionModal={openCreateDisconnectionModal}
+        createDisconnectionRequestPayload={createDisconnectionRequestPayload}
       />
     </>
   );

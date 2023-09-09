@@ -1,12 +1,12 @@
 // import { createDomain } from 'effector';
-import { createResourceDisconnectionService } from 'services/resources/createResourceDisconnectionService';
+import { chooseTypeOfResourceDisconnectionModalService } from 'services/resources/chooseTypeOfResourceDisconnectionModalService';
 
 // const domain = createDomain('addResourceDisconnectionService');
 
 export const addResourceDisconnectionService = {
   inputs: {
     openCreateDisconnectionModal:
-      createResourceDisconnectionService.inputs.openModal,
+      chooseTypeOfResourceDisconnectionModalService.inputs.openModal,
   },
   outputs: {},
 };
