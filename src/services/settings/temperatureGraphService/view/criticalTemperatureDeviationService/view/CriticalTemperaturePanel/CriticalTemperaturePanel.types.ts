@@ -1,3 +1,1 @@
-export type CriticalTemperaturePanelProps = {
-  
-};
+export type CriticalTemperaturePanelProps = {};

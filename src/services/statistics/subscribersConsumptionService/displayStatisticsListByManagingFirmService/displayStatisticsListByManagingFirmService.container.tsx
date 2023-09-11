@@ -1,4 +1,3 @@
-import { Skeleton } from 'antd';
 import { useEvent, useStore } from 'effector-react';
 import React from 'react';
 import {
@@ -55,8 +54,6 @@ export const DisplayStatisticsListByManagingFirmContainer = () => {
         managingFirmsLoading={managingFirmsLoading}
       />
       <WithLoader isLoading={housingStocksIsLoading}>
-        {housingStocksIsLoading && <Skeleton active />}
-        {!housingStocksIsLoading && (
           <HousingStocksList
             housingStocks={housingStocks}
             selectHousingStock={selectHousingStock}
@@ -65,7 +62,6 @@ export const DisplayStatisticsListByManagingFirmContainer = () => {
             selectedHousingStock={selectedHousingStock}
             setFileName={setFileName}
           />
-        )}
       </WithLoader>
     </>
   );

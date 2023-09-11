@@ -54,11 +54,13 @@ export const ChangeODPUReadingsContainer: FC<ChangeODPUReadingsProps> = ({
   }, [oldDeviceReadings, oldDeviceInitialReadings, onChangeOldReadings]);
 
   const handleChangeOldDeviceReadings = useCallback(
-    ({ readings }) => setOldDeviceReadings(readings),
+    ({ readings }: { readings: PreparedHousingMeteringDeviceReadings[] }) =>
+      setOldDeviceReadings(readings),
     [setOldDeviceReadings],
   );
   const handleChangeNewDeviceReadings = useCallback(
-    ({ readings }) => setNewDeviceReadings(readings),
+    ({ readings }: { readings: PreparedHousingMeteringDeviceReadings[] }) =>
+      setNewDeviceReadings(readings),
     [setNewDeviceReadings],
   );
 

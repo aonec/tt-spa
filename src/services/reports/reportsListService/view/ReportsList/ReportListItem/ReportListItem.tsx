@@ -7,7 +7,7 @@ import {
 } from './ReportListItem.styled';
 import { ReportListItemProps } from './ReportListItem.types';
 import { ContextMenuButton } from 'ui-kit/ContextMenuButton/ContextMenuButton';
-import moment from 'moment';
+import dayjs from 'api/dayjs';
 
 export const ReportListItem: FC<ReportListItemProps> = ({
   report,
@@ -32,7 +32,7 @@ export const ReportListItem: FC<ReportListItemProps> = ({
   return (
     <Wrapper>
       <ReportName>{report.reportNameText}</ReportName>
-      <ReportDate>{moment(report.timeStamp).format('DD.MM.YYYY')}</ReportDate>
+      <ReportDate>{dayjs(report.timeStamp).format('DD.MM.YYYY')}</ReportDate>
       <ContextMenuWrapper>
         <ContextMenuButton
           size="small"

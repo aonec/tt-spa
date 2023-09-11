@@ -4,7 +4,7 @@ import { Form } from 'antd';
 import { FormItem } from 'ui-kit/FormItem';
 import { DatePicker } from 'ui-kit/DatePicker';
 import { useFormik } from 'formik';
-import moment from 'moment';
+import dayjs from 'api/dayjs';
 import * as yup from 'yup';
 import { CloseDeviceRequest, EDocumentType } from 'api/types';
 import { ErrorMessage } from 'ui-kit/ErrorMessage';
@@ -19,7 +19,7 @@ export const CloseHousingMeteringDeviceForm: FC<
   const { handleSubmit, values, errors, setFieldValue } = useFormik({
     initialValues: {
       deviceId: deviceId,
-      closingDate: moment(),
+      closingDate: dayjs(),
       documents: [] as Document[],
     },
     validationSchema: yup.object({
@@ -29,7 +29,7 @@ export const CloseHousingMeteringDeviceForm: FC<
     onSubmit: () => {
       const form: CloseDeviceRequest = {
         deviceId: values.deviceId,
-        closingDate: values.closingDate.toISOString(true),
+        closingDate: values.closingDate.format(),
         documentsIds: values.documents.map((doc) => doc.id),
       };
 
@@ -53,7 +53,7 @@ export const CloseHousingMeteringDeviceForm: FC<
             placeholder="Выберите"
             format="DD.MM.YYYY"
           />
-          <ErrorMessage> {errors.closingDate} </ErrorMessage>
+          <ErrorMessage>{errors.closingDate as unknown as string}</ErrorMessage>
         </FormItem>
       </Form>
 

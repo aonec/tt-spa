@@ -1,4 +1,4 @@
-import moment from 'moment';
+import dayjs from 'api/dayjs';
 import React, { FC, useCallback, useMemo, useState } from 'react';
 import {
   NODE_STATISTICS_PAGE_SIZE,
@@ -25,11 +25,11 @@ export const NodeStatisticsTable: FC<NodeStatisticsTableProps> = ({
 
   const timeConstructor = useCallback(
     (date: string) => {
-      const startDateStr = moment(date)
+      const startDateStr = dayjs(date)
         .utc(false)
         .startOf(ReportTimeType[reportType])
         .format(ReportStartTimeFormat[reportType]);
-      const endDateStr = moment(date)
+      const endDateStr = dayjs(date)
         .utc(false)
         .endOf(ReportTimeType[reportType])
         .format(ReportEndTimeFormat[reportType]);
@@ -45,7 +45,7 @@ export const NodeStatisticsTable: FC<NodeStatisticsTableProps> = ({
   const sortedArchiveReadings = useMemo(
     () =>
       (requiredArchiveReadings || []).sort((first, second) =>
-        moment(first.time).diff(moment(second.time)),
+        dayjs(first.time).diff(dayjs(second.time)),
       ),
     [requiredArchiveReadings],
   );

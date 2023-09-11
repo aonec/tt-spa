@@ -1,8 +1,8 @@
-import { Skeleton } from 'antd';
 import React, { FC } from 'react';
 import { FormModal } from 'ui-kit/Modals/FormModal/FormModal';
 import { CreateResourceDisconnectionForm } from '../CreateResourceDisconnectionForm';
 import { CreateResourceDisconnectionModalProps } from './CreateResourceDisconnectionModal.types';
+import { WithLoader } from 'ui-kit/shared/WithLoader';
 
 export const CreateResourceDisconnectionModal: FC<
   CreateResourceDisconnectionModalProps
@@ -41,9 +41,7 @@ export const CreateResourceDisconnectionModal: FC<
       title={modalTitle}
       submitBtnText={buttonPlaceholder}
       form={
-        <>
-          {isDisconnectionLoading && <Skeleton active />}
-          {!isDisconnectionLoading && (
+          <WithLoader isLoading={isDisconnectionLoading}>
             <CreateResourceDisconnectionForm
               handleCreateResourceDisconnection={
                 handleCreateResourceDisconnection
@@ -65,8 +63,7 @@ export const CreateResourceDisconnectionModal: FC<
               selectedCity={selectedCity}
               selectedBuilding={selectedBuilding}
             />
-          )}
-        </>
+          </WithLoader>
       }
       formId="createResourceDisconnection"
     />

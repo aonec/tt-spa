@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import moment from 'moment';
+import dayjs from 'api/dayjs';
 import {
   EHousingMeteringDeviceType,
   EMagistralType,
@@ -14,13 +14,13 @@ export const groupWithEmptyReadings = (
   deviceIds: { [key in EMagistralType]: number | null },
 ) => {
   const sortedReadingsDictionary = _.groupBy(allReadings, (reading) => {
-    const readingDate = moment(reading.readingDate);
+    const readingDate = dayjs(reading.readingDate);
     return `${readingDate.format('YYYY')} ${readingDate.format('MMMM')}`;
   });
 
   const sortedReadingsDates = Object.keys(sortedReadingsDictionary).sort(
     (first, second) =>
-      moment(first, 'YYYY MMMM').diff(moment(second, 'YYYY MMMM'), 'month'),
+      dayjs(first, 'YYYY MMMM').diff(dayjs(second, 'YYYY MMMM'), 'month'),
   );
 
   const { FeedBackFlow: feedBackFlowId, FeedFlow: feedFlowId } = deviceIds;
@@ -29,19 +29,19 @@ export const groupWithEmptyReadings = (
     return [];
   }
 
-  let firstReadingDate = moment(sortedReadingsDates[0], 'YYYY MMMM');
+  let firstReadingDate = dayjs(sortedReadingsDates[0], 'YYYY MMMM');
 
   if (!firstReadingDate.isValid()) {
-    firstReadingDate = moment().add(1, 'month');
+    firstReadingDate = dayjs().add(1, 'month');
   }
 
-  const diff = moment(firstReadingDate, 'YYYY MMMM').diff(
-    moment().add(1, 'month'),
+  const diff = dayjs(firstReadingDate, 'YYYY MMMM').diff(
+    dayjs().add(1, 'month'),
     'month',
   );
 
   const readingsWithEmpty = getFilledArray(Math.abs(diff) + 1, (index) => {
-    const date = moment().add(diff + index + 1, 'month');
+    const date = dayjs().add(diff + index + 1, 'month');
     const year = date.format('YYYY');
     const month = date.format('MMMM');
 

@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { FiltrationWrapper } from './DistributeRecordsPage.styled';
+import { Circle, FiltrationWrapper } from './DistributeRecordsPage.styled';
 import { Props } from './DistributeRecordsPage.types';
 import { AddressSearchContainer } from 'services/addressSearchService';
 import { SearchFieldType } from 'services/addressSearchService/view/AddressSearch/AddressSearch.types';
@@ -32,6 +32,8 @@ export const DistributeRecordsPage: FC<Props> = ({
   isLoadingDistributeAppointments,
   openRemoveAssignmentModal,
   organizationCoordinates,
+  appointmentsExistingDays,
+  handleSetMonth,
 }) => {
   return (
     <>
@@ -70,13 +72,26 @@ export const DistributeRecordsPage: FC<Props> = ({
         <DatePicker
           disabled={!appointmentDate}
           value={getDatePickerValue(appointmentDate)}
-          onChange={(date) =>
-            date && handleSetAppointmentDate(date.format('YYYY-MM-DD'))
-          }
+          onChange={(date) => {
+            date && handleSetAppointmentDate(date.format('YYYY-MM-DD'));
+            date && handleSetMonth(date.format('YYYY-MM'));
+          }}
           small
           style={{ width: 240 }}
           format="DD.MM.YYYY"
           allowClear={false}
+          onPanelChange={(day) => handleSetMonth(day.format('YYYY-MM'))}
+          cellRender={(day, info) => {
+            if (appointmentsExistingDays[day.format('YYYY-MM-DD')]) {
+              return (
+                <>
+                  {info.originNode}
+                  <Circle />
+                </>
+              );
+            }
+            return info.originNode;
+          }}
         />
       </FiltrationWrapper>
       <DistrictsMap

@@ -1,13 +1,13 @@
 import React, { FC, useCallback, useMemo } from 'react';
 import { ConfigProvider } from 'antd';
+import { Dayjs } from 'dayjs';
 import {
   StyledContainerThreeItems,
   StyledSlider,
   StyledFormThreeRows,
 } from './DevicesProfile.styled';
-import type { Moment } from 'moment';
 import _ from 'lodash';
-import moment from 'moment';
+import dayjs from 'api/dayjs';
 import { AddressSearchContainer } from 'services/addressSearchService';
 import { SearchFieldType } from 'services/addressSearchService/view/AddressSearch/AddressSearch.types';
 import { DeviceAddressSearchFieldsNameLookup } from './DevicesProfile.constants';
@@ -27,7 +27,7 @@ export const ExtendedSearchForm: FC<{
 }> = ({ values, setFieldValue, diametersConfig }) => {
   const { marks, maxValue, minValue, diameters } = diametersConfig;
 
-  type RangeValue = [Moment | null, Moment | null] | null;
+  type RangeValue = [Dayjs | null, Dayjs | null] | null;
 
   const dateFormat = 'YYYY-MM-DD';
 
@@ -122,9 +122,10 @@ export const ExtendedSearchForm: FC<{
       <StyledContainerThreeItems>
         <FormItem label="Диаметр трубы, мм">
           <StyledSlider
-            getTooltipPopupContainer={(triggerNode) =>
-              triggerNode.parentNode as HTMLElement
-            }
+            tooltip={{
+              getPopupContainer: (triggerNode) =>
+                triggerNode.parentNode as HTMLElement,
+            }}
             defaultValue={[0, 255]}
             marks={marks}
             min={minValue}
@@ -141,10 +142,10 @@ export const ExtendedSearchForm: FC<{
               small
               value={[
                 values['CommercialDateRange.From']
-                  ? moment(values['CommercialDateRange.From'], dateFormat)
+                  ? dayjs(values['CommercialDateRange.From'], dateFormat)
                   : null,
                 values['CommercialDateRange.To']
-                  ? moment(values['CommercialDateRange.To'], dateFormat)
+                  ? dayjs(values['CommercialDateRange.To'], dateFormat)
                   : null,
               ]}
               onChange={(value: RangeValue): void => {

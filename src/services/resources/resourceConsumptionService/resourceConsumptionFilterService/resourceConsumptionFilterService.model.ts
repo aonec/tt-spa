@@ -10,7 +10,7 @@ import {
 } from 'ui-kit/shared/AddressTreeSelect/AddressTreeSelect.utils';
 import { getAddressSearchData } from '../resourceConsumptionService.utils';
 import { getAddressesFx } from './resourceConsumptionFilterService.api';
-import moment from 'moment';
+import dayjs from 'api/dayjs';
 import { resourceConsumptionService } from '../resourceConsumptionService.model';
 import { ConsumptionDataFilter } from './resourceConsumptionFilterService.types';
 
@@ -44,8 +44,8 @@ const $selectedResource = domain
 const setFilter = domain.createEvent<ConsumptionDataFilter>();
 const $resourceConsumptionFilter = domain
   .createStore<ConsumptionDataFilter>({
-    From: moment().startOf('month').utcOffset(0, true).format(),
-    To: moment().endOf('month').utcOffset(0, true).format(),
+    From: dayjs().startOf('month').utcOffset(0, true).format(),
+    To: dayjs().endOf('month').utcOffset(0, true).format(),
     AdditionalHousingStockIds: [],
     BuildingIds: [],
   })

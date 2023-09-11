@@ -9,7 +9,7 @@ import {
   Wrapper,
 } from './NodeConnection.styled';
 import { NodeConnectionProps } from './NodeConnection.types';
-import moment from 'moment';
+import dayjs from 'api/dayjs';
 import { CalculatorIcon } from 'ui-kit/icons';
 import { DeviceStatus } from 'ui-kit/shared/IndividualDeviceInfo/DeviceStatus';
 
@@ -32,11 +32,11 @@ export const NodeConnection: FC<NodeConnectionProps> = ({
   } = node.calculator;
 
   const lastCheckingDateText = lastCheckingDate
-    ? moment(lastCheckingDate).format('DD.MM.YYYY')
+    ? dayjs(lastCheckingDate).format('DD.MM.YYYY')
     : 'Дата поверки не указана';
 
   const futureCheckingDateText = futureCheckingDate
-    ? moment(futureCheckingDate).format('DD.MM.YYYY')
+    ? dayjs(futureCheckingDate).format('DD.MM.YYYY')
     : 'Следующая Дата поверки не указана';
 
   return (

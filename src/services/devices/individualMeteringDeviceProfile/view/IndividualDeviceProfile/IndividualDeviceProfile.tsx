@@ -19,7 +19,7 @@ import { getApartmentFromFullAddress } from 'utils/getApartmentFromFullAddress';
 import { Tabs } from 'ui-kit/Tabs';
 import { CommonInfo } from 'ui-kit/shared/CommonInfo';
 import { resourceNamesLookup } from 'utils/resourceNamesLookup';
-import moment from 'moment';
+import dayjs from 'api/dayjs';
 import { DeviceStatus } from 'ui-kit/shared/IndividualDeviceInfo/DeviceStatus';
 import { ReadingsHistoryContainer } from 'services/meters/readingsHistoryService/readingsHistoryService.container';
 import { useHistory } from 'react-router-dom';
@@ -95,17 +95,17 @@ export const IndividualDeviceProfile: FC<Props> = ({ device }) => {
                     },
                     {
                       key: 'Дата ввода в эксплуатацию',
-                      value: moment(device.openingDate).format('DD.MM.YYYY'),
+                      value: dayjs(device.openingDate).format('DD.MM.YYYY'),
                     },
                     {
                       key: 'Дата последней поверки',
-                      value: moment(device.lastCheckingDate).format(
+                      value: dayjs(device.lastCheckingDate).format(
                         'DD.MM.YYYY',
                       ),
                     },
                     {
                       key: 'Дата следующей поверки',
-                      value: moment(device.futureCheckingDate).format(
+                      value: dayjs(device.futureCheckingDate).format(
                         'DD.MM.YYYY',
                       ),
                     },
@@ -117,7 +117,7 @@ export const IndividualDeviceProfile: FC<Props> = ({ device }) => {
                       key: 'Дата установки пломбы',
                       value:
                         device.sealInstallationDate &&
-                        moment(device.sealInstallationDate).format(
+                        dayjs(device.sealInstallationDate).format(
                           'DD.MM.YYYY',
                         ),
                     },

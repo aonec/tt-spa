@@ -1,4 +1,4 @@
-import moment from 'moment';
+import dayjs from 'api/dayjs';
 import { DocumentResponse } from 'api/types';
 import React, { FC } from 'react';
 import {
@@ -16,7 +16,7 @@ export const ActCardItem: FC<ActCardItemProps> = ({ act, handleSaveFile }) => {
   const actNumber = act.registryNumber;
   const actType = ActTypesNamesLookup[act.actType];
 
-  const jobDate = moment(act.actJobDate).format('DD.MM.YYYY');
+  const jobDate = dayjs(act.actJobDate).format('DD.MM.YYYY');
 
   return (
     <Wrapper>

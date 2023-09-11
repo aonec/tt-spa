@@ -24,7 +24,7 @@ import {
   prepareDeviceReadings,
 } from './workWithIndividualDeviceService.utils';
 import { message } from 'antd';
-import moment from 'moment';
+import dayjs from 'api/dayjs';
 
 const WorkWithIndividualDeviceGate = createGate<{
   type: WorkWithIndividualDeviceType;
@@ -242,12 +242,12 @@ const checkIndividualDevicePayload = combine(
     oldDeviceClosingReason: info.oldDeviceClosingReason || undefined,
     isPolling: info.isPolling,
 
-    lastCheckingDate: moment(info.lastCheckingDate)
-      .utcOffset(0, true)
-      .toISOString(true),
-    futureCheckingDate: moment(info.futureCheckingDate)
-      .utcOffset(0, true)
-      .toISOString(),
+    lastCheckingDate: info.lastCheckingDate
+      ? dayjs(info.lastCheckingDate).utcOffset(0, true).format()
+      : null,
+    futureCheckingDate: info.futureCheckingDate
+      ? dayjs(info.futureCheckingDate).utcOffset(0, true).toISOString()
+      : null,
     bitDepth: Number(info.bitDepth),
     scaleFactor: Number(info.scaleFactor),
     oldDeviceReadings: compareReadingsArrWithSameIndex(

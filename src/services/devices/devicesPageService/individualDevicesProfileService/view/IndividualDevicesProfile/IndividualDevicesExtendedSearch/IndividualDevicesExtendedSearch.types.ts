@@ -1,6 +1,7 @@
 import { IndividualDeviceMountPlaceForFilterResponse } from 'api/types';
 import { DevicesSearchType } from 'services/devices/devicesPageService/devicesPageService.types';
 import { SearchIndividualDevicesParams } from '../../../individualDevicesProfileService.types';
+import { ReactNode } from 'react';
 
 export type IndividualDevicesExtendedSearchProps = {
   devicesSearchType: DevicesSearchType;
@@ -8,4 +9,5 @@ export type IndividualDevicesExtendedSearchProps = {
   values: SearchIndividualDevicesParams;
   handleClear?: () => void;
   mountPlaces: IndividualDeviceMountPlaceForFilterResponse[];
+  children?: ReactNode;
 };

@@ -9,7 +9,7 @@ import {
 import { ApartmentAlertsProps } from './ApartmentAlerts.types';
 import { EApartmentStatus } from 'api/types';
 import { Alert } from 'ui-kit/Alert/Alert';
-import moment from 'moment';
+import dayjs from 'api/dayjs';
 import { Link } from 'react-router-dom';
 import { ReplacedAccountAlert } from './ReplacedAccountAlert';
 import { EditedAccountsAlert } from './EditedAccountsAlert';
@@ -35,7 +35,7 @@ export const ApartmentAlerts: FC<ApartmentAlertsProps> = ({
   const recentlyReplacedAccounts = homeownerAccounts.filter(
     (account) =>
       account.replacedByAccount &&
-      moment().diff(moment(account.closedAt), 'month') < 3,
+      dayjs().diff(dayjs(account.closedAt), 'month') < 3,
   );
 
   const openedHomeownerAccounts = useMemo(
@@ -45,7 +45,7 @@ export const ApartmentAlerts: FC<ApartmentAlertsProps> = ({
 
   const recentlyEditedAccounts = openedHomeownerAccounts.filter(
     (account) =>
-      account.editedAt && moment().diff(moment(account.editedAt), 'month') < 3,
+      account.editedAt && dayjs().diff(dayjs(account.editedAt), 'month') < 3,
   );
 
   const recentlyModifiedApartmentPersonalAccounts =
@@ -57,7 +57,7 @@ export const ApartmentAlerts: FC<ApartmentAlertsProps> = ({
         <AlertContent>
           <div>
             Квартира на паузе до{' '}
-            {moment(apartment.stoppedTo).format('DD.MM.YYYY')}
+            {dayjs(apartment.stoppedTo).format('DD.MM.YYYY')}
           </div>
           {isPermitionToApartmentStatusPatch && (
             <AlertLink onClick={handleCancelPauseApartment}>
@@ -109,7 +109,7 @@ export const ApartmentAlerts: FC<ApartmentAlertsProps> = ({
 
   const apartmentHomeownerAcconutChangeAlerts =
     recentlyModifiedApartmentPersonalAccounts?.map((homeownerAccount) => {
-      const changeDateInfo = `Дата изменения: ${moment(
+      const changeDateInfo = `Дата изменения: ${dayjs(
         homeownerAccount?.openAtFact,
       ).format('DD.MM.YYYY')}`;
 

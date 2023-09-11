@@ -8,7 +8,7 @@ import {
 } from 'api/types';
 import { useStore } from 'effector-react';
 import axios from 'api/axios';
-import moment from 'moment';
+import dayjs from 'api/dayjs';
 import _ from 'lodash/fp';
 import { EffectFailDataAxiosError } from 'types';
 import { message } from 'antd';
@@ -127,7 +127,7 @@ export function useReadingHistoryValues() {
 
   const uploadReading = useCallback(
     async (reading: IndividualDeviceReadingsCreateRequest) => {
-      const date = moment(reading.readingDate);
+      const date = dayjs(reading.readingDate);
       const dateString = `${date.month() + 2}.${date.year()}`;
 
       setUploadingReadingsStatuses((prev) => ({

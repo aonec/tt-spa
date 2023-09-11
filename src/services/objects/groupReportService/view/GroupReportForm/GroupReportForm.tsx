@@ -10,7 +10,7 @@ import {
 import { FormItem } from 'ui-kit/FormItem';
 import { Select } from 'ui-kit/Select';
 import { Input } from 'ui-kit/Input';
-import moment from 'moment';
+import dayjs from 'api/dayjs';
 import { RowWrapper } from './GroupReportForm.styled';
 import { GroupReportDatesSelect } from './GroupReportDatesSelect';
 import { RadioGroupSC } from './GroupReportDatesSelect/GroupReportDatesSelect.styled';
@@ -38,10 +38,10 @@ export const GroupReportForm: FC<GroupReportFormProps> = ({
     //  & { isRegular: boolean }  // todo: регулярная выгрузка
   >({
     initialValues: {
-      FileName: `Групповой_отчёт_${moment().format('DD.MM.YYYY')}`,
+      FileName: `Групповой_отчёт_${dayjs().format('DD.MM.YYYY')}`,
       ReportType: EReportType.Hourly,
-      From: moment().startOf('month').format(),
-      To: moment().endOf('day').format(),
+      From: dayjs().startOf('month').format(),
+      To: dayjs().endOf('day').format(),
       // isRegular: false,  // todo: регулярная выгрузка
       HouseManagementId: null,
       ReportFormat: EReportFormat.Consumption,
@@ -57,8 +57,8 @@ export const GroupReportForm: FC<GroupReportFormProps> = ({
 
       handleDownload({
         ...payload,
-        From: moment(values.From).format('YYYY-MM-DD'),
-        To: moment(values.To).format('YYYY-MM-DD'),
+        From: dayjs(values.From).format('YYYY-MM-DD'),
+        To: dayjs(values.To).format('YYYY-MM-DD'),
       });
     },
   });

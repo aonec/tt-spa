@@ -31,7 +31,7 @@ export const EmailNotifySelect: FC<EmailNotifySelectProps> = ({
         <Select
           placeholder="Выберите получателей"
           mode="multiple"
-          onChange={handleChange}
+          onChange={(value) => handleChange(value as SelectValue)}
         >
           {contractors.map((contractor) => (
             <Select.Option key={contractor.id} value={contractor.id}>
