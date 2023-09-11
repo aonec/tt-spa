@@ -30,6 +30,7 @@ export const ApartmentSealProfile: FC<ApartmentSealProfileProps> = ({
   nearestAppointment,
   isAppointmentLoading,
   isApartmentFetched,
+  openRemoveAppointmentModal,
 }) => {
   const address = apartment?.housingStock?.address?.mainAddress;
   const appointmentDate = useMemo(
@@ -129,6 +130,7 @@ export const ApartmentSealProfile: FC<ApartmentSealProfileProps> = ({
                   handleOpenCreateSealAppointmentModal
                 }
                 isAppointmentExist={Boolean(nearestAppointment)}
+                openRemoveAppointmentModal={openRemoveAppointmentModal}
               />
             )}
           </>

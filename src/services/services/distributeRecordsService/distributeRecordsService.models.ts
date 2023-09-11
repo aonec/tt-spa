@@ -2,6 +2,7 @@ import { combine, createDomain, forward, sample } from 'effector';
 import { createGate } from 'effector-react';
 import {
   appointmentsCountingQuery,
+  districtAppoinmtentsOnMonthQuery,
   districtAppointmentsQuery,
   districtsQuery,
   individualSealControllersQuery,
@@ -28,6 +29,7 @@ const DistributeRecordsGate = createGate();
 const handleUnselectDistrict = domain.createEvent();
 const handleSelectDistrict = domain.createEvent<string>();
 const setAppointmentDate = domain.createEvent<string>();
+const setMonth = domain.createEvent<string>();
 const selectAppointments = domain.createEvent<string[]>();
 
 const openDistributeAppointmentsModal = domain.createEvent();
@@ -42,7 +44,15 @@ const $appointmentDate = domain
   .createStore<string | null>(dayjs().format('YYYY-MM-DD'))
   .on(setAppointmentDate, (_, date) => date)
   .on(nearestAppointmentsDateQuery.$data, (_, res) => res?.date)
-  .reset();
+  .reset(DistributeRecordsGate.close);
+
+const $currentMonth = domain
+  .createStore<string | null>(dayjs().format('YYYY-MM'))
+  .on(setMonth, (_, month) => month)
+  .on(nearestAppointmentsDateQuery.$data, (_, res) =>
+    dayjs(res?.date).format('YYYY-MM'),
+  )
+  .reset(DistributeRecordsGate.close);
 
 const $selectedAppointmentsIds = domain
   .createStore<string[]>([])
@@ -65,6 +75,14 @@ sample({
   filter: (data): data is GetDistrictAppointmentsRequestPayload =>
     Boolean(data.districtId),
   target: districtAppointmentsQuery.start,
+});
+
+sample({
+  source: $getAppointmentsRequestPayload,
+  clock: [$selectedDistrict, $currentMonth],
+  filter: (data): data is GetDistrictAppointmentsRequestPayload =>
+    Boolean(data.districtId && data.date),
+  target: districtAppoinmtentsOnMonthQuery.start,
 });
 
 forward({
@@ -113,9 +131,12 @@ forward({
   to: individualSealControllersQuery.start,
 });
 
-forward({
-  from: [DistributeRecordsGate.close, handleUnselectDistrict],
-  to: districtAppointmentsQuery.reset,
+sample({
+  clock: [DistributeRecordsGate.close, handleUnselectDistrict],
+  target: [
+    districtAppointmentsQuery.reset,
+    districtAppoinmtentsOnMonthQuery.reset,
+  ],
 });
 
 setAppointmentsToControllerMutation.finished.failure.watch(({ error }) => {
@@ -138,6 +159,7 @@ export const distributeRecordsService = {
     selectAppointments,
     openDistributeAppointmentsModal,
     closeDistributeAppointmentsModal,
+    setMonth,
     openCreateControllerModal:
       createControllerService.inputs.openCreateControllerModal,
   },

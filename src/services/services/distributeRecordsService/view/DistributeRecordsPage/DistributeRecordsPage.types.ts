@@ -31,4 +31,6 @@ export type Props = {
   isLoadingDistributeAppointments: boolean;
   openRemoveAssignmentModal: (id: string) => void;
   organizationCoordinates: OrganizationCoordinates | null;
+  appointmentsExistingDays: { [key: string]: boolean };
+  handleSetMonth: (month: string) => void;
 };

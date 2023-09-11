@@ -15,6 +15,7 @@ export const StyledDialog = styled(Modal)`
     display: flex;
     justify-content: flex-end;
     align-items: center;
+    border-radius: 0 0 8px 8px;
     padding: 24px 32px;
     font-weight: 700;
   }
