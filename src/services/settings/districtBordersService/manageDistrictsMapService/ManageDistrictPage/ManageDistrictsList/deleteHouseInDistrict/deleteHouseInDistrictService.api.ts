@@ -12,7 +12,7 @@ export const deleteHouseInDistrictMutation = createMutation({
   >((params) =>
     axios.post(
       `/IndividualSeal/Districts/${params.districtId}/DeleteHouse`,
-      params.data,
+      params.buildingId,
       { headers: { 'Content-Type': `application/json` } },
     ),
   ),

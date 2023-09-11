@@ -2,6 +2,7 @@ import React, { FC, useCallback, useEffect, useMemo, useState } from 'react';
 import { ChevronDown } from 'react-bootstrap-icons';
 import { groupBy, sortBy } from 'lodash';
 import { useHistory } from 'react-router-dom';
+import { useUnit } from 'effector-react';
 import {
   AddressHousesCount,
   AddressNumber,
@@ -27,7 +28,6 @@ import {
   deleteDistrictMutation,
   updateDistrictMutation,
 } from '../../manageDistrictsMapService.api';
-import { useUnit } from 'effector-react';
 import { manageDistrictMapService } from '../ManageDistrictsMap/ManageDistricsMap.model';
 import { WithLoader } from 'ui-kit/shared/WithLoader';
 import { AddHouseToDistrictContainer } from './addHouseToDistrict';
@@ -53,7 +53,7 @@ export const ManageDistrictsList: FC<Props> = ({
     openEditDistrictModal,
     closeEditDistrictModal,
     openAddHouseModal,
-    handleDeleteBuildingDialogShow,
+    setDeletePayloadData,
   } = useUnit({
     selectedDistrictId: outputs.$selectedDistrict,
     isDeleteDistrictModalOpen: outputs.$isDeleteDistrictModalOpen,
@@ -64,8 +64,8 @@ export const ManageDistrictsList: FC<Props> = ({
     openEditDistrictModal: inputs.openEditDistrictModal,
     closeEditDistrictModal: inputs.closeEditDistrictModal,
     openAddHouseModal: addHouseToDistrictService.inputs.openAddHouseModal,
-    handleDeleteBuildingDialogShow:
-      deleteHouseInDistrictService.inputs.handleDialogShow,
+    setDeletePayloadData:
+      deleteHouseInDistrictService.inputs.setDeletePayloadData,
   });
 
   const { start: deleteDistrict, pending: isDeletingDistrictLoading } = useUnit(
@@ -111,6 +111,8 @@ export const ManageDistrictsList: FC<Props> = ({
   return (
     <>
       <AddHouseToDistrictContainer districtsList={preparedExistingDistricts} />
+      <DeleteHouseInDistrictContainer />
+
       <WithLoader isLoading={isDistrictLoading}>
         {isDeleteDistrictModalOpen && selectedPreparedDistrict && (
           <DeleteDistrictModal
@@ -215,7 +217,7 @@ export const ManageDistrictsList: FC<Props> = ({
                                   const arr = elem.address?.split(' ');
                                   const number = arr && arr[arr?.length - 2];
 
-                                  const houseId = elem.id;
+                                  const buildingId = elem.id;
 
                                   return (
                                     <>
@@ -226,9 +228,11 @@ export const ManageDistrictsList: FC<Props> = ({
                                             color:
                                               ContextMenuButtonColor.danger,
                                             onClick: () => {
-                                              handleDeleteBuildingDialogShow(
-                                                true,
-                                              );
+                                              buildingId &&
+                                                setDeletePayloadData({
+                                                  districtId,
+                                                  buildingId,
+                                                });
                                             },
                                           },
                                         ]}
@@ -239,12 +243,6 @@ export const ManageDistrictsList: FC<Props> = ({
                                           </AddressNumber>
                                         )}
                                       </ContextMenuButton>
-                                      {houseId && (
-                                        <DeleteHouseInDistrictContainer
-                                          buildingId={houseId}
-                                          districtId={districtId}
-                                        />
-                                      )}
                                     </>
                                   );
                                 },

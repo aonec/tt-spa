@@ -1,31 +1,27 @@
-import React, { FC } from 'react';
+import React from 'react';
+import { useUnit } from 'effector-react';
 import { Dialog } from 'ui-kit/shared/Dialog/Dialog';
 import { deleteHouseInDistrictService } from './deleteHouseInDistrictService.models';
-import { useUnit } from 'effector-react';
 import { deleteHouseInDistrictMutation } from './deleteHouseInDistrictService.api';
-import { DeleteHouseInDistrictContainerProps } from './deleteHouseInDistrictService.types';
 
 const { inputs, outputs } = deleteHouseInDistrictService;
 
-export const DeleteHouseInDistrictContainer: FC<
-  DeleteHouseInDistrictContainerProps
-> = ({ buildingId, districtId }) => {
-  const { handleDialogShow, isDialogOpen } = useUnit({
-    handleDialogShow: inputs.handleDialogShow,
-    isDialogOpen: outputs.$isDialogOpen,
-  });
-
-  const { start: deleteHouse, pending: isLoading } = useUnit(
-    deleteHouseInDistrictMutation,
-  );
+export const DeleteHouseInDistrictContainer = () => {
+  const { handleCloseDialog, isDialogOpen, handleDelete, isDeleteLoading } =
+    useUnit({
+      handleCloseDialog: inputs.handleCloseDialog,
+      handleDelete: inputs.handleDelete,
+      isDialogOpen: outputs.$isDialogOpen,
+      isDeleteLoading: deleteHouseInDistrictMutation.$pending,
+    });
 
   return (
     <Dialog
       title="Вы действительно хотите удалить дом?"
       isOpen={isDialogOpen}
-      isLoading={isLoading}
-      onCancel={() => handleDialogShow(false)}
-      onSubmit={() => deleteHouse({ districtId, data: buildingId })}
+      isLoading={isDeleteLoading}
+      onCancel={() => handleCloseDialog()}
+      onSubmit={() => handleDelete()}
       submitText="Удалить дом"
       type="danger"
     />

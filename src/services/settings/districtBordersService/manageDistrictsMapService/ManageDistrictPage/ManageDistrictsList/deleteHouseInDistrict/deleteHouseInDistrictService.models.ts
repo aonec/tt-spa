@@ -1,18 +1,34 @@
+import { createEvent, createStore, sample } from 'effector';
 import { message } from 'antd';
 import { deleteHouseInDistrictMutation } from './deleteHouseInDistrictService.api';
-import { createEvent, createStore, sample } from 'effector';
+import { DeleteHouseInDistrictRequestPayload } from './deleteHouseInDistrictService.types';
 
-const handleDialogShow = createEvent<boolean>();
+const handleCloseDialog = createEvent();
 
-const $isDialogOpen = createStore<boolean>(false).on(
-  handleDialogShow,
-  (_, isShow) => isShow,
-);
+const handleDelete = createEvent();
+
+const setDeletePayloadData = createEvent<DeleteHouseInDistrictRequestPayload>();
+
+const reset = createEvent();
+
+const $payloadData = createStore<DeleteHouseInDistrictRequestPayload | null>(
+  null,
+)
+  .on(setDeletePayloadData, (_, data) => data)
+  .reset(reset);
+
+const $isDialogOpen = $payloadData.map(Boolean);
 
 sample({
-  clock: deleteHouseInDistrictMutation.finished.success,
-  fn: () => false,
-  target: handleDialogShow,
+  clock: handleDelete,
+  source: $payloadData,
+  filter: (data): data is DeleteHouseInDistrictRequestPayload => Boolean(data),
+  target: deleteHouseInDistrictMutation.start,
+});
+
+sample({
+  clock: [deleteHouseInDistrictMutation.finished.success, handleCloseDialog],
+  target: reset,
 });
 
 deleteHouseInDistrictMutation.finished.failure.watch((e) => {
@@ -24,6 +40,6 @@ deleteHouseInDistrictMutation.finished.failure.watch((e) => {
 });
 
 export const deleteHouseInDistrictService = {
-  inputs: { handleDialogShow },
+  inputs: { handleCloseDialog, handleDelete, setDeletePayloadData },
   outputs: { $isDialogOpen },
 };
