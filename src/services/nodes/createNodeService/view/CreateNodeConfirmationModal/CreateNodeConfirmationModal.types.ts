@@ -1,4 +1,5 @@
 import {
+  BuildingListResponse,
   CalculatorIntoHousingStockResponse,
   EPipeNodeValidationMessageStringDictionaryItem,
   HousingStockResponse,
@@ -11,7 +12,11 @@ export type CreateNodeConfirmationModalProps = {
   isOpen: boolean;
   handleClose: () => void;
   requestPayload: CreateNodeFormPayload;
-  building: HousingStockResponse | NonResidentialBuildingResponse;
+  building:
+    | BuildingListResponse
+    | HousingStockResponse
+    | NonResidentialBuildingResponse
+    | null;
   calculator: CalculatorIntoHousingStockResponse | null;
   serviceZone: NodeServiceZoneResponse;
   isLoading: boolean;
