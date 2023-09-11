@@ -5,7 +5,10 @@ import { CreateResourceDisconnectionPanel } from './view/CreateResourceDisconnec
 import { CreateResourceDisconnectionContainer } from 'services/resources/createResourceDisconnectionService';
 import { useUnit } from 'effector-react';
 import { ChooseTypeOfResourceDisconnectionModalContainer } from 'services/resources/chooseTypeOfResourceDisconnectionModalService/chooseTypeOfResourceDisconnectionModalService.container';
-import { ResourceDisconnectingCreateRequest } from 'api/types';
+import {
+  ResourceDisconnectingCreateRequest,
+  StagePushRequest,
+} from 'api/types';
 
 const { inputs } = addResourceDisconnectionService;
 
@@ -17,6 +20,9 @@ export const AddResourceDisconnectionContainer: FC<ActionComponentProps> = ({
     setCreateDisconnectionRequestPayload,
   ] = useState<ResourceDisconnectingCreateRequest | null>(null);
 
+  const [pushStageRequest, setPushStageRequest] =
+    useState<StagePushRequest | null>(null);
+
   const { openCreateDisconnectionModal } = useUnit({
     openCreateDisconnectionModal: inputs.openCreateDisconnectionModal,
   });
@@ -24,6 +30,13 @@ export const AddResourceDisconnectionContainer: FC<ActionComponentProps> = ({
   useEffect(() => {
     handleChange({ resourceDisconnecting: createDisconnectionRequestPayload });
   }, [createDisconnectionRequestPayload, handleChange]);
+
+  useEffect(() => {
+    handleChange((prev) => {
+      setPushStageRequest(prev);
+      return prev;
+    });
+  }, [handleChange]);
 
   return (
     <>
@@ -34,6 +47,7 @@ export const AddResourceDisconnectionContainer: FC<ActionComponentProps> = ({
         }
       />
       <CreateResourceDisconnectionPanel
+        pushStageRequest={pushStageRequest}
         openCreateDisconnectionModal={openCreateDisconnectionModal}
         createDisconnectionRequestPayload={createDisconnectionRequestPayload}
       />

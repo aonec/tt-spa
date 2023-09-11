@@ -61,11 +61,6 @@ export const taskActionsComponents: TaskActionsComponent[] = [
     position: TaskPanelInputPositionType.Middle,
   },
   {
-    actionType: EStageActionType.CreateResourceDisconnecting,
-    Component: AddResourceDisconnectionContainer,
-    position: TaskPanelInputPositionType.Middle,
-  },
-  {
     actionType: EStageActionType.FixReading,
     Component: CorrectionReadingsContainer,
     position: TaskPanelInputPositionType.Full,
@@ -88,6 +83,11 @@ export const taskActionsComponents: TaskActionsComponent[] = [
   {
     actionType: EStageActionType.Completion,
     Component: CompletionStageContainer,
+    position: TaskPanelInputPositionType.Full,
+  },
+  {
+    actionType: EStageActionType.CreateResourceDisconnecting,
+    Component: AddResourceDisconnectionContainer,
     position: TaskPanelInputPositionType.Full,
   },
   {
