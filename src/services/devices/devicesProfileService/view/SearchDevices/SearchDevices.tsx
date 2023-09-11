@@ -184,9 +184,10 @@ export const SearchDevices: FC<SearchDevicesProps> = ({
                 <StyledLabel>Диаметр трубы, мм </StyledLabel>
 
                 <SCSlider
-                  getTooltipPopupContainer={(triggerNode) =>
-                    triggerNode.parentNode as HTMLElement
-                  }
+                  tooltip={{
+                    getPopupContainer: (triggerNode) =>
+                      triggerNode.parentNode as HTMLElement,
+                  }}
                   defaultValue={[0, 255]}
                   max={maxValue}
                   min={minValue}

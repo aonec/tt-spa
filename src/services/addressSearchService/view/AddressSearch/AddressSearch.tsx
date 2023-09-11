@@ -89,7 +89,7 @@ export const AddressSearch: FC<AddressSearchProps> = ({
         clearFields(index);
       }}
       disabled={isDisabled}
-      error={isError}
+      error={isError || undefined}
     />
   );
 
@@ -97,7 +97,7 @@ export const AddressSearch: FC<AddressSearchProps> = ({
     <InputSC
       small
       placeholder="Дом"
-      value={values.house}
+      value={values.house || ''}
       onChange={(e) => handleChange(SearchFieldType.House, e.target.value)}
       onClick={() => {
         clearFields(index);
@@ -108,7 +108,7 @@ export const AddressSearch: FC<AddressSearchProps> = ({
         next(index);
       })}
       disabled={isDisabled}
-      error={isError}
+      error={isError || undefined}
     />
   );
 
@@ -116,7 +116,7 @@ export const AddressSearch: FC<AddressSearchProps> = ({
     <InputSC
       small
       placeholder="Корпус"
-      value={values.corpus}
+      value={values.corpus || ''}
       onChange={(e) => handleChange(SearchFieldType.Corpus, e.target.value)}
       data-reading-input={dataKey}
       onClick={() => {
@@ -127,7 +127,7 @@ export const AddressSearch: FC<AddressSearchProps> = ({
         next(index);
       })}
       disabled={isDisabled}
-      error={isError}
+      error={isError || undefined}
     />
   );
 
@@ -135,7 +135,7 @@ export const AddressSearch: FC<AddressSearchProps> = ({
     <InputSC
       small
       placeholder="Квартирa"
-      value={values.apartment}
+      value={values.apartment || ''}
       onChange={(e) => handleChange(SearchFieldType.Apartment, e.target.value)}
       data-reading-input={dataKey}
       onClick={() => {
@@ -146,7 +146,7 @@ export const AddressSearch: FC<AddressSearchProps> = ({
         next(index);
       })}
       disabled={isDisabled}
-      error={isError}
+      error={isError || undefined}
     />
   );
 
@@ -165,7 +165,7 @@ export const AddressSearch: FC<AddressSearchProps> = ({
         next(index);
       })}
       disabled={isDisabled}
-      error={isError}
+      error={isError || undefined}
     />
   );
 

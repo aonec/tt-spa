@@ -122,9 +122,10 @@ export const ExtendedSearchForm: FC<{
       <StyledContainerThreeItems>
         <FormItem label="Диаметр трубы, мм">
           <StyledSlider
-            getTooltipPopupContainer={(triggerNode) =>
-              triggerNode.parentNode as HTMLElement
-            }
+            tooltip={{
+              getPopupContainer: (triggerNode) =>
+                triggerNode.parentNode as HTMLElement,
+            }}
             defaultValue={[0, 255]}
             marks={marks}
             min={minValue}
