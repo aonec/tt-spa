@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { ComponentMeta } from '@storybook/react';
 import { CommentPanel } from '.';
-import moment from 'moment';
+import dayjs from 'api/dayjs';
 
 export default {
   title: 'CommentPanel',
@@ -13,7 +13,7 @@ export const HavePermission = () => {
   const [comment, setComment] = useState<string | null>(
     'а через styled ебется?',
   );
-  const [date, setDate] = useState(moment().format());
+  const [date, setDate] = useState(dayjs().format());
   const remove = () => setComment(null);
   const author = 'Aziz Azizmuradov';
 
@@ -24,7 +24,7 @@ export const HavePermission = () => {
         onRemove={remove}
         onEdit={(newComment) => {
           setComment(newComment);
-          setDate(moment().format());
+          setDate(dayjs().format());
         }}
         commentDate={date}
         isHavePermission={true}
@@ -36,7 +36,7 @@ export const HavePermission = () => {
 
 export const DoNotHavePermission = () => {
   const comment = 'AntD - хуйня а не либа';
-  const commentDate = moment().format();
+  const commentDate = dayjs().format();
 
   return (
     <div style={{ width: 300 }}>

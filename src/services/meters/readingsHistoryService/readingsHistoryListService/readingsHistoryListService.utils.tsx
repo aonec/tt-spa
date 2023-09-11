@@ -7,14 +7,14 @@ import {
   IndividualDeviceReadingsItemHistoryResponse,
   IndividualDeviceResponse,
 } from 'api/types';
-import moment from 'moment';
+import dayjs from 'api/dayjs';
 import _, { round } from 'lodash';
 import { getMeasurementUnit } from 'services/meters/individualDeviceMetersInputService/individualDeviceMetersInputService.utils';
 import { CorrectReadingValuesValidationResult } from './readingsHistoryListService.types';
 import { confirmReadingService } from '../confirmReadingService/confirmReadingService.model';
 
 export function getNewReadingDate(month: number, year: number) {
-  const date = moment(`${15}.${month}.${year}`, 'DD.MM.YYYY');
+  const date = dayjs(`${15}.${month}.${year}`, 'DD.MM.YYYY');
 
   date.set('month', month - 2);
 

@@ -1,4 +1,4 @@
-import moment from 'moment';
+import dayjs from 'api/dayjs';
 import React, { FC } from 'react';
 import {
   AccountNumberWrapper,
@@ -14,7 +14,7 @@ export const EditedAccountsAlert: FC<EditedAccountsAlertProps> = ({
   recentlyEditedAccount,
 }) => {
   const { editedAt, personalAccountNumber } = recentlyEditedAccount;
-  const preparedDate = moment(editedAt).format('DD.MM.YYYY');
+  const preparedDate = dayjs(editedAt).format('DD.MM.YYYY');
   return (
     <ApartmentAlertWrapper>
       <Alert>

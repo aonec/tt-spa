@@ -4,7 +4,7 @@ import {
   NonResidentialBuildingResponse,
 } from 'api/types';
 import { GetConsolidatedReport } from '../../consolidatedReportService.types';
-import moment from 'moment';
+import dayjs from 'api/dayjs';
 
 export type ConsolidatedReportFormProps = {
   formId: string;
@@ -21,4 +21,4 @@ export enum ArchiveType {
   AnyPeriod = 'AnyPeriod',
 }
 
-export type DatePeriod = [null | moment.Moment, null | moment.Moment];
+export type DatePeriod = [null | dayjs.Dayjs, null | dayjs.Dayjs];

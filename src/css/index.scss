@@ -1,5 +1,5 @@
 @import '../styles/fonts/fonts.css';
-@import '~antd/dist/antd.css';
+@import '~antd/dist/reset.css';
 
 $white: #ffffff;
 $blue: #189ee9;
@@ -76,9 +76,12 @@ form {
     0px 4px 4px rgba(78, 93, 146, 0.16);
 }
 
+* {
+  font-family: 'PTRootUIWeb', sans-serif !important;
+}
+
 body {
   margin: 0;
-  font-family: 'PTRootUIWeb', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color: var(--main-100);
@@ -87,11 +90,11 @@ body {
 
   .ant-tooltip-inner {
     color: white;
-    background-color: #272f5a;
+    background-color: #272f5a !important;
     border-radius: 4px;
 
     path {
-      fill: #272f5a;
+      fill: #272f5a !important;
     }
   }
 }
@@ -321,4 +324,41 @@ sup {
       }
     }
   }
+}
+
+.ant-modal-content {
+  padding: 0 !important;
+}
+
+.ant-modal-header {
+  padding: 20px 32px !important;
+
+  .ant-modal-title {
+    h1 {
+      font-weight: 200 !important;
+      font-size: 32px;
+    }
+  }
+}
+
+.ant-modal-body {
+  padding: 20px 24px;
+}
+
+.ant-modal-footer {
+  div {
+    border-radius: 0 0 8px 8px;
+  }
+}
+
+:where(.css-dev-only-do-not-override-17a39f8).ant-modal
+  .ant-modal-footer
+  .ant-btn
+  + .ant-btn:not(.ant-dropdown-trigger) {
+  margin-inline-start: 16px !important;
+}
+
+.ant-form-item-row {
+  width: 100%;
+  display: block;
 }

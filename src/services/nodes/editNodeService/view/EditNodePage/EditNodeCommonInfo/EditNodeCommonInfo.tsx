@@ -13,7 +13,7 @@ import {
 } from './EditNodeCommonInfo.styled';
 import { EditNodeCommonInfoProps } from './EditNodeCommonInfo.types';
 import { useFormik } from 'formik';
-import moment from 'moment';
+import dayjs from 'api/dayjs';
 import { Form } from 'antd';
 import { Button } from 'ui-kit/Button';
 import { useHistory } from 'react-router-dom';
@@ -36,11 +36,11 @@ export const EditNodeCommonInfo: FC<EditNodeCommonInfoProps> = ({
   const history = useHistory();
 
   const futureCommercialAccountingDate = node.futureCommercialAccountingDate
-    ? moment(node.futureCommercialAccountingDate)
+    ? dayjs(node.futureCommercialAccountingDate)
     : undefined;
 
   const lastCommercialAccountingDate = node.lastCommercialAccountingDate
-    ? moment(node.lastCommercialAccountingDate)
+    ? dayjs(node.lastCommercialAccountingDate)
     : undefined;
 
   const { values, setFieldValue, handleSubmit, errors } = useFormik({

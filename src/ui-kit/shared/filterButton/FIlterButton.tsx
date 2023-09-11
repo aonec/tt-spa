@@ -1,7 +1,7 @@
 import { SpaceLine } from 'ui-kit/SpaceLine';
 import { Popover } from 'antd';
 import styled from 'styled-components';
-import React from 'react';
+import React, { ReactNode } from 'react';
 import {
   ActiveFiltersIcon,
   FilterIcon,
@@ -15,6 +15,7 @@ interface Props {
   onClear?(): void;
   active?: boolean;
   allowClear?: boolean;
+  children?: ReactNode;
 }
 
 export const FilterButton: React.FC<Props> = ({

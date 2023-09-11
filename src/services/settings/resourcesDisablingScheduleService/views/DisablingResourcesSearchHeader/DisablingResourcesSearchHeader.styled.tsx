@@ -6,8 +6,3 @@ export const StyledDisablingResourcesSearchHeader = styled.div`
   gap: 16px;
   margin-bottom: 15px;
 `;
-
-export const FormItem = styled.div`
-  display: flex;
-  align-items: center;
-`;

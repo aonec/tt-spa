@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import { Bootstrap } from './Bootstrap';
 import { RouterContainer } from './routerService';
-import 'moment/locale/ru';
+import 'dayjs/locale/ru';
 import 'css/index.scss';
 import 'css/styles.css';
 

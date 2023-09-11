@@ -1,6 +1,6 @@
 import { Form, Select } from 'antd';
 import { useFormik } from 'formik';
-import moment from 'moment';
+import dayjs from 'api/dayjs';
 import { EReportType } from 'api/types';
 import React, { FC } from 'react';
 import { Button } from 'ui-kit/Button';
@@ -29,10 +29,10 @@ export const SearchNodeArchiveFilters: FC<SearchNodeArchiveFiltersProps> = ({
         type: EReportType.Daily,
       },
       onSubmit: ({ from, to, type }) => {
-        const toDate = to?.endOf('day').toISOString(true);
+        const toDate = to?.endOf('day').format();
 
         handleSubmit({
-          from: from?.toISOString(true),
+          from: from?.format(),
           to: toDate,
           type,
         });
@@ -48,7 +48,7 @@ export const SearchNodeArchiveFilters: FC<SearchNodeArchiveFiltersProps> = ({
             value={[values.from, values.to]}
             format="DD.MM.YYYY"
             disabledDate={(date) => {
-              const currentDate = moment().startOf('day');
+              const currentDate = dayjs().startOf('day');
               const pickerDate = date.startOf('day');
               const diff = currentDate.diff(pickerDate, 'days');
 

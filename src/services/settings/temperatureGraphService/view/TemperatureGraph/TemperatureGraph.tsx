@@ -1,6 +1,14 @@
-import React, { FC, useCallback } from 'react';
+import React, {
+  ChangeEvent,
+  FC,
+  useCallback,
+  useEffect,
+  useState,
+} from 'react';
 import { useFormik } from 'formik';
+import { message } from 'antd';
 import {
+  EDayPartError,
   ETemteratureTypes,
   TemperatureGraphProps,
 } from './TemperatureGraph.types';
@@ -8,7 +16,6 @@ import { Table } from '../../../../../ui-kit/Table/Table';
 import {
   Footer,
   InputSc,
-  InputScShort,
   InputsContainer,
   PageWrapper,
   WrapperCelsius,
@@ -18,26 +25,171 @@ import {
   WrapperUnderscore,
   WrapperValue,
 } from './TemperatureGraph.styled';
-import { CriticalTemperaturePanel } from '../criticalTemperatureDeviationService/view/CriticalTemperaturePanel';
 import { Button } from 'ui-kit/Button';
-import { TemperatureNormativeRow } from 'api/types';
+import {
+  TemperatureNormativeRow,
+  TemperatureNormativeUpdateRequest,
+} from 'api/types';
+import { ErrorColumnType } from '../../temperatureGraphService.types';
 
 export const TemperatureGraph: FC<TemperatureGraphProps> = ({
   temperatureNormative: initialTemperatureNormatives,
   isEditing,
   handleEditTemperatureNormative,
+  setEditedTemperatureNormative,
+  isLoading,
+  errorColumns,
 }) => {
   const { values, setFieldValue, handleSubmit, handleReset } = useFormik<{
     temperatureNormativesArr: TemperatureNormativeRow[];
   }>({
     initialValues: { temperatureNormativesArr: initialTemperatureNormatives },
     enableReinitialize: true,
-    onSubmit: (data) => {},
+    onSubmit: (data) => {
+      const { temperatureNormativesArr } = data;
+      const requestData = {
+        updateRows: temperatureNormativesArr,
+      } as TemperatureNormativeUpdateRequest;
+      setEditedTemperatureNormative(requestData);
+    },
   });
+
+  const [columnErrors, setColumnErrors] = useState<ErrorColumnType[]>([]);
+
+  useEffect(() => setColumnErrors(errorColumns), [errorColumns]);
+
+  const getDayTime = (inputFieldName: ETemteratureTypes) => {
+    const isDay = [
+      ETemteratureTypes.dayFeedBackFlowTemperature,
+      ETemteratureTypes.dayFeedFlowTemperature,
+    ].includes(inputFieldName);
+
+    return isDay ? EDayPartError.day : EDayPartError.night;
+  };
+
+  const getValidationPassed = (
+    inputFieldName: ETemteratureTypes,
+    onBlurData: ChangeEvent<HTMLInputElement>,
+    currentTemperatureNormative?: TemperatureNormativeRow,
+  ) => {
+    if (inputFieldName === ETemteratureTypes.dayFeedFlowTemperature) {
+      return Boolean(
+        currentTemperatureNormative?.dayFeedBackFlowTemperature &&
+          currentTemperatureNormative.dayFeedBackFlowTemperature >
+            Number(onBlurData.target.value),
+      );
+    }
+    if (inputFieldName === ETemteratureTypes.dayFeedBackFlowTemperature) {
+      return Boolean(
+        currentTemperatureNormative?.dayFeedFlowTemperature &&
+          currentTemperatureNormative.dayFeedFlowTemperature <
+            Number(onBlurData.target.value),
+      );
+    }
+    if (inputFieldName === ETemteratureTypes.nightFeedFlowTemperature) {
+      return Boolean(
+        currentTemperatureNormative?.nightFeedBackFlowTemperature &&
+          currentTemperatureNormative.nightFeedBackFlowTemperature >
+            Number(onBlurData.target.value),
+      );
+    }
+    if (inputFieldName === ETemteratureTypes.nightFeedBackFlowTemperature) {
+      return Boolean(
+        currentTemperatureNormative?.nightFeedFlowTemperature &&
+          currentTemperatureNormative.nightFeedFlowTemperature <
+            Number(onBlurData.target.value),
+      );
+    }
+    return true;
+  };
+
+  const handlePassValidation = (
+    currentColumnError: ErrorColumnType | undefined,
+    columnErrors: ErrorColumnType[],
+    data: TemperatureNormativeRow,
+    dayTime: EDayPartError,
+  ) => {
+    if (currentColumnError) {
+      currentColumnError[data.outdoorTemperature!].push(dayTime);
+      setColumnErrors([...columnErrors, currentColumnError]);
+    } else {
+      setColumnErrors([
+        ...columnErrors,
+        {
+          [data.outdoorTemperature!]: [dayTime],
+        },
+      ]);
+    }
+
+    message.error(
+      'Температура на обратной магистрали должна быть меньше, чем на подающей',
+    );
+  };
+
+  const handleNoPassValidation = (
+    currentColumnError: ErrorColumnType | undefined,
+    columnErrors: ErrorColumnType[],
+    data: TemperatureNormativeRow,
+    dayTime: EDayPartError,
+  ) => {
+    if (!currentColumnError) return;
+
+    const filteredDayPart = currentColumnError[data.outdoorTemperature!].filter(
+      (dayPart) => dayPart !== dayTime,
+    );
+
+    const filteredColumnErrors = columnErrors.filter(
+      (columnError) =>
+        Number(Object.keys(columnError)[0]) !== data.outdoorTemperature!,
+    );
+
+    if (Boolean(filteredDayPart.length)) {
+      setColumnErrors([
+        ...filteredColumnErrors,
+        {
+          [data.outdoorTemperature!]: filteredDayPart,
+        },
+      ]);
+    } else {
+      setColumnErrors(filteredColumnErrors);
+    }
+  };
+
+  const handleOnBlur = useCallback(
+    (
+      onBlurData: ChangeEvent<HTMLInputElement>,
+      data: TemperatureNormativeRow,
+      inputFieldName: ETemteratureTypes,
+    ) => {
+      const currentTemperatureNormative = values.temperatureNormativesArr.find(
+        (temperatureNormative) =>
+          temperatureNormative.outdoorTemperature === data.outdoorTemperature,
+      );
+
+      const currentColumnError = columnErrors.find(
+        (columnError) => columnError[data.outdoorTemperature!],
+      );
+
+      const dayTime = getDayTime(inputFieldName);
+
+      const isPassValidation = getValidationPassed(
+        inputFieldName,
+        onBlurData,
+        currentTemperatureNormative,
+      );
+
+      if (Boolean(isPassValidation)) {
+        handlePassValidation(currentColumnError, columnErrors, data, dayTime);
+      } else {
+        handleNoPassValidation(currentColumnError, columnErrors, data, dayTime);
+      }
+    },
+    [columnErrors, values.temperatureNormativesArr],
+  );
 
   const handleChangeInput = useCallback(
     (
-      inputValue,
+      e: React.ChangeEvent<HTMLInputElement>,
       data: TemperatureNormativeRow,
       fieldName: ETemteratureTypes,
     ) => {
@@ -50,7 +202,7 @@ export const TemperatureGraph: FC<TemperatureGraphProps> = ({
           } else {
             return {
               ...temperatureNormative,
-              [fieldName]: Number(inputValue.target.value),
+              [fieldName]: Number(e.target.value),
             };
           }
         },
@@ -61,6 +213,22 @@ export const TemperatureGraph: FC<TemperatureGraphProps> = ({
     [setFieldValue, values.temperatureNormativesArr],
   );
 
+  const isError = useCallback(
+    (fieldName: ETemteratureTypes, data: TemperatureNormativeRow) => {
+      const currentColumnErr = columnErrors.find(
+        (err) => Number(Object.keys(err)[0]) === data.outdoorTemperature!,
+      );
+
+      const dayTime = getDayTime(fieldName);
+      const dayParts =
+        currentColumnErr && currentColumnErr[data.outdoorTemperature!];
+      const isCurrentIncludeErr = dayParts?.includes(dayTime);
+
+      return Boolean(isCurrentIncludeErr);
+    },
+    [columnErrors],
+  );
+
   const renderDoubledColumns = useCallback(
     (
       data: TemperatureNormativeRow,
@@ -69,21 +237,29 @@ export const TemperatureGraph: FC<TemperatureGraphProps> = ({
     ) =>
       isEditing ? (
         <InputsContainer>
-          <InputScShort
+          <InputSc
             type="number"
             suffix={<WrapperCelsius>°C</WrapperCelsius>}
             value={data[firstInputFieldName]}
             onChange={(inputValue) =>
               handleChangeInput(inputValue, data, firstInputFieldName)
             }
+            onBlur={(onBlurData: ChangeEvent<HTMLInputElement>) =>
+              handleOnBlur(onBlurData, data, firstInputFieldName)
+            }
+            isErr={isError(firstInputFieldName, data)}
           />
-          <InputScShort
+          <InputSc
             type="number"
             suffix={<WrapperCelsius>°C</WrapperCelsius>}
             value={data[secondInputFieldName]}
             onChange={(inputValue) =>
               handleChangeInput(inputValue, data, secondInputFieldName)
             }
+            onBlur={(onBlurData: ChangeEvent<HTMLInputElement>) =>
+              handleOnBlur(onBlurData, data, secondInputFieldName)
+            }
+            isErr={isError(secondInputFieldName, data)}
           />
         </InputsContainer>
       ) : (
@@ -92,13 +268,13 @@ export const TemperatureGraph: FC<TemperatureGraphProps> = ({
           <div>{data[secondInputFieldName]}</div>
         </WrapperTime>
       ),
-    [handleChangeInput, isEditing],
+    [handleChangeInput, handleOnBlur, isEditing, isError],
   );
 
   return (
     <PageWrapper>
-      <CriticalTemperaturePanel />
       <Table
+        isSticky
         columns={[
           {
             label: 'Т наружного воздуха',
@@ -188,7 +364,12 @@ export const TemperatureGraph: FC<TemperatureGraphProps> = ({
           >
             Отмена
           </Button>
-          <Button type="primary" onClick={() => handleSubmit()}>
+          <Button
+            type="primary"
+            isLoading={isLoading}
+            onClick={() => handleSubmit()}
+            disabled={Boolean(columnErrors.length)}
+          >
             Сохранить
           </Button>
         </Footer>

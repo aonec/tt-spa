@@ -1,1 +1,1 @@
-export { CriticalTemperaturePanel } from './CriticalTemperaturePanel'
+export { CriticalTemperaturePanel } from './CriticalTemperaturePanel';

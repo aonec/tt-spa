@@ -1,5 +1,5 @@
 import { fromEnter } from 'ui-kit/shared/DatePickerNative';
-import { Tooltip } from 'antd';
+import { Tooltip } from 'ui-kit/shared/Tooltip';
 import React, {
   ChangeEvent,
   FC,

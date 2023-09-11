@@ -34,7 +34,7 @@ const $diametersConfig = $currentUser.map((user) => {
     if (value === maxValue) {
       return { ...acc, [value]: String(value) };
     }
-    return { ...acc, [value]: '' };
+    return { ...acc, [value]: ' ' };
   }, {} as { [key: string]: string });
 
   return { marks, maxValue, minValue, diameters };

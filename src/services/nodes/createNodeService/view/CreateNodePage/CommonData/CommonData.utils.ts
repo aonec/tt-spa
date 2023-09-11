@@ -1,5 +1,5 @@
 import { uniqueId } from 'lodash';
-import moment from 'moment';
+import dayjs from 'api/dayjs';
 import {
   EMagistralType,
   ENodeCommercialAccountStatus,
@@ -12,7 +12,7 @@ import { ChangeNodeStatusFormik } from 'services/nodes/changeNodeStatusService/v
 export const getInitialDateFieldValue = (date?: string | null) => {
   if (!date) return null;
 
-  return moment(date);
+  return dayjs(date);
 };
 
 export const getInitialDataForChangeNodeStatusForm = (

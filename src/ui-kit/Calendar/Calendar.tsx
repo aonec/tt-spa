@@ -7,7 +7,7 @@ import {
   TextWrapper,
 } from './Calendar.styled';
 import { CalendarProps } from './Calendar.types';
-import moment from 'moment';
+import dayjs from 'api/dayjs';
 import { ChevronIcon } from 'ui-kit/icons';
 
 export const Calendar: FC<CalendarProps> = ({
@@ -15,7 +15,7 @@ export const Calendar: FC<CalendarProps> = ({
   handleSelectDate,
   eventDates,
 }) => {
-  const currentDate = moment().startOf('day');
+  const currentDate = dayjs().startOf('day');
   const formatedSelectedDate = selectedDate && selectedDate.startOf('day');
 
   const formatedEventDates = useMemo(
@@ -28,7 +28,7 @@ export const Calendar: FC<CalendarProps> = ({
       fullscreen={false}
       value={selectedDate || undefined}
       onChange={handleSelectDate}
-      dateFullCellRender={(date) => {
+      fullCellRender={(date) => {
         const formatedDate = date.startOf('day');
 
         const isSelectedDate = formatedSelectedDate

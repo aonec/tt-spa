@@ -1,6 +1,6 @@
 import { combine, createDomain, forward, sample } from 'effector';
 import { createGate } from 'effector-react';
-import moment from 'moment';
+import dayjs from 'api/dayjs';
 import {
   ApartmentActResponse,
   DocumentResponse,
@@ -45,7 +45,7 @@ const $filteredActsList = combine($actsList, $actsFilter, (acts, filters) => {
   const hasActResources = filters.resources?.length;
 
   let filteredActs = acts.sort((first, second) =>
-    moment(second.actJobDate).diff(moment(first.actJobDate)),
+    dayjs(second.actJobDate).diff(dayjs(first.actJobDate)),
   );
 
   if (hasActTypes) {

@@ -1,4 +1,5 @@
 import React, { FC, useCallback, useMemo, useState } from 'react';
+import { DataNode } from 'antd/lib/tree';
 import {
   CancelAllText,
   ContentWrapper,
@@ -153,26 +154,27 @@ export const DistributeAppointmentsPanel: FC<
               checkable={true}
               treeData={data}
               titleRender={(elem) => {
-                if (elem.key !== elem.title) {
-                  return elem.title;
+                const node = elem as unknown as any;
+                if (node.key !== node.title) {
+                  return node.title;
                 }
                 return (
                   <RootWrapperTitle>
-                    {elem.title}
+                    {node.title}
                     <CountWrapper>
-                      Заявки: {(elem.children || []).length}
+                      Заявки: {(node.children || []).length}
                     </CountWrapper>
                   </RootWrapperTitle>
                 );
               }}
               onCheck={(_, info) => {
-                const { checkedNodes } = info;
+                const { checkedNodes } = info as { checkedNodes: DataNode[] };
                 const filteredNodes = checkedNodes.filter((elem) =>
                   Boolean(elem.key !== elem.title),
                 );
 
                 handleSelectAppointments(
-                  filteredNodes.map((elem) => String(elem.key)),
+                  filteredNodes.map((elem) => String(elem.key as string)),
                 );
               }}
               onExpand={(keys) =>

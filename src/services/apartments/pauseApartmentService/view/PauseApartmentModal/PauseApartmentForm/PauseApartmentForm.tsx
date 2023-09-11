@@ -1,6 +1,6 @@
 import React, { FC, useMemo } from 'react';
 import { useFormik } from 'formik';
-import moment from 'moment';
+import dayjs from 'api/dayjs';
 import { Document } from 'ui-kit/DocumentsService';
 import {
   FilesUploadWrap,
@@ -32,7 +32,7 @@ export const PauseApartmentForm: FC<Props> = ({
 }) => {
   const { values, setFieldValue, errors, handleSubmit } = useFormik({
     initialValues: {
-      fromDate: moment().toISOString(true) as string | null,
+      fromDate: dayjs().format() as string | null,
       toDate: null as string | null,
       documents: [] as Document[],
     },
@@ -40,8 +40,8 @@ export const PauseApartmentForm: FC<Props> = ({
       const payload = {
         apartmentId: apartmentId,
         requestPayload: {
-          fromDate: moment(values.fromDate).format('YYYY-MM-DD'),
-          toDate: moment(values.toDate).format('YYYY-MM-DD'),
+          fromDate: dayjs(values.fromDate).format('YYYY-MM-DD'),
+          toDate: dayjs(values.toDate).format('YYYY-MM-DD'),
           status: EApartmentStatus.Pause,
           documentIds: values.documents
             .map((document) => document.id)
@@ -66,23 +66,23 @@ export const PauseApartmentForm: FC<Props> = ({
       <FormItem label="Дата начала">
         <DatePicker
           allowClear
-          value={values.fromDate ? moment(values.fromDate) : undefined}
-          onChange={(value: moment.Moment | null) =>
-            setFieldValue('fromDate', value && value.toISOString(true))
+          value={values.fromDate ? dayjs(values.fromDate) : undefined}
+          onChange={(value: dayjs.Dayjs | null) =>
+            setFieldValue('fromDate', value && value.format())
           }
           format="DD.MM.YYYY"
-          disabledDate={(value) => value.diff(moment(values.toDate)) > 0}
+          disabledDate={(value) => value.diff(dayjs(values.toDate)) > 0}
         />
         <ErrorMessage>{errors.fromDate}</ErrorMessage>
       </FormItem>
       <FormItem label="Дата окончания">
         <DatePicker
           allowClear
-          value={values.toDate ? moment(values.toDate) : undefined}
-          onChange={(value: moment.Moment | null) => {
-            setFieldValue('toDate', value && value.toISOString(true));
+          value={values.toDate ? dayjs(values.toDate) : undefined}
+          onChange={(value: dayjs.Dayjs | null) => {
+            setFieldValue('toDate', value && value.format());
           }}
-          disabledDate={(value) => value.diff(moment(values.fromDate)) < 0}
+          disabledDate={(value) => value.diff(dayjs(values.fromDate)) < 0}
           format="DD.MM.YYYY"
         />
         <ErrorMessage>{errors.toDate}</ErrorMessage>
@@ -99,8 +99,8 @@ export const PauseApartmentForm: FC<Props> = ({
         {problemDevices.map((elem) => (
           <>
             <Alert>
-              {moment(elem.futureCheckingDate).format('DD.MM.YYYY')} выходит
-              срок поверки у прибора <b> {elem.model}</b> ({elem.serialNumber})
+              {dayjs(elem.futureCheckingDate).format('DD.MM.YYYY')} выходит срок
+              поверки у прибора <b> {elem.model}</b> ({elem.serialNumber})
             </Alert>
           </>
         ))}

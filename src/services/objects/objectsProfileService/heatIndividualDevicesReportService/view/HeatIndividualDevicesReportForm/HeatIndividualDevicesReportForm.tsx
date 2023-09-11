@@ -1,6 +1,6 @@
 import { Form } from 'antd';
 import { useFormik } from 'formik';
-import moment from 'moment';
+import dayjs from 'api/dayjs';
 import { EResourceType } from 'api/types';
 import React, { FC, useEffect } from 'react';
 import { FormItem } from 'ui-kit/FormItem';
@@ -33,11 +33,7 @@ export const HeatIndividualDevicesReportForm: FC<
       resource: EResourceType.Heat,
       Name: 'Сводный_отчёт_ИПУ',
       HousingStockIds: [],
-      date: moment()
-        .startOf('month')
-        .set('day', 15)
-        .utcOffset(0, true)
-        .format(),
+      date: dayjs().startOf('month').set('day', 15).utcOffset(0, true).format(),
     },
     validationSchema,
     validateOnBlur: false,
@@ -48,8 +44,8 @@ export const HeatIndividualDevicesReportForm: FC<
       handleDownloadModal({
         HousingStockIds,
         Name,
-        Month: Number(moment(date).format('MM')),
-        Year: Number(moment(date).format('YYYY')),
+        Month: Number(dayjs(date).format('MM')),
+        Year: Number(dayjs(date).format('YYYY')),
       });
     },
   });
@@ -109,7 +105,7 @@ export const HeatIndividualDevicesReportForm: FC<
             picker="month"
             format="MMMM YYYY"
             placeholder="Выберите"
-            value={moment(values.date)}
+            value={dayjs(values.date)}
             onChange={(date) =>
               setFieldValue(
                 'date',

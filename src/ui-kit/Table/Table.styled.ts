@@ -12,7 +12,11 @@ const stickyHeaderCss = css`
   z-index: 10;
 `;
 
-export const Header = styled.div<{ temp: string; css?: string ; isSticky?: boolean }>`
+export const Header = styled.div<{
+  temp: string;
+  css?: string;
+  isSticky?: boolean;
+}>`
   width: max-content;
   background: #f3f5f6;
   min-height: 50px;

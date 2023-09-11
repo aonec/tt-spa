@@ -9,7 +9,7 @@ import { useFormik } from 'formik';
 import * as yup from 'yup';
 import { Button } from 'ui-kit/Button';
 import { UpdateCalculatorRequest } from 'api/types';
-import moment from 'moment';
+import dayjs from 'api/dayjs';
 import { NodesInfo } from './NodesInfo';
 import { ErrorMessage } from 'ui-kit/ErrorMessage';
 
@@ -89,16 +89,16 @@ export const EditMainInfo: FC<EditMainInfoProps> = ({
             onChange={(date) => {
               setFieldValue(
                 'lastCheckingDate',
-                moment(date).format('YYYY-MM-DDTHH:mm:ss'),
+                dayjs(date).format('YYYY-MM-DDTHH:mm:ss'),
               );
               setFieldValue(
                 'futureCheckingDate',
-                moment(date).add(4, 'years').format('YYYY-MM-DDTHH:mm:ss'),
+                dayjs(date).add(4, 'years').format('YYYY-MM-DDTHH:mm:ss'),
               );
             }}
             value={
               values.lastCheckingDate
-                ? moment(values.lastCheckingDate)
+                ? dayjs(values.lastCheckingDate)
                 : undefined
             }
             format="DD.MM.YYYY"
@@ -111,12 +111,12 @@ export const EditMainInfo: FC<EditMainInfoProps> = ({
             onChange={(date) => {
               setFieldValue(
                 'futureCheckingDate',
-                moment(date).format('YYYY-MM-DDTHH:mm:ss'),
+                dayjs(date).format('YYYY-MM-DDTHH:mm:ss'),
               );
             }}
             value={
               values.futureCheckingDate
-                ? moment(values.futureCheckingDate)
+                ? dayjs(values.futureCheckingDate)
                 : undefined
             }
             format="DD.MM.YYYY"

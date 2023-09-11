@@ -1,4 +1,4 @@
-import moment from 'moment';
+import dayjs from 'api/dayjs';
 import { IndividualDeviceReadingsResponse } from 'api/types';
 import { getFilledArray } from 'utils/getFilledArray';
 import { getReadingValueKey } from '../../individualDeviceMetersInputService.utils';
@@ -18,7 +18,7 @@ export function getPreviousMeterTooltipTitle(
     )
     .join(', ');
 
-  const month = moment(reading.readingDateTime).add(1, 'M').format('MMMM');
+  const month = dayjs(reading.readingDateTime).add(1, 'M').format('MMMM');
 
   return `Последнее показание: ${valuesString} (${month})`;
 }

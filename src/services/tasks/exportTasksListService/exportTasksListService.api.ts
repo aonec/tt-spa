@@ -1,6 +1,6 @@
 import { axios } from 'api/axios';
 import { downloadURI } from 'services/reports/CreateReportModal/utils';
-import moment from 'moment';
+import dayjs from 'api/dayjs';
 import { ExportTasksListRequestPayload } from './exportTasksListService.types';
 
 export const downloadTasksList = async (
@@ -14,7 +14,7 @@ export const downloadTasksList = async (
 
     const url = window.URL.createObjectURL(new Blob([res]));
 
-    const date = moment().format('DD-MM-YYYY');
+    const date = dayjs().format('DD-MM-YYYY');
 
     return downloadURI(url, `Список_задач_${date}`);
   } catch (error) {

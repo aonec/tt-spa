@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import { StyledContainerThreeItems } from 'services/devices/devicesProfileService/view/DevicesProfile/DevicesProfile.styled';
 import { Select } from 'ui-kit/Select';
 
 export const Wrapper = styled.div`
@@ -8,11 +7,11 @@ export const Wrapper = styled.div`
   gap: 16px;
 `;
 
-export const StyledContainerThreeItemsMainTypes = styled(
-  StyledContainerThreeItems,
-)`
-  margin-top: 10px;
+export const StyledContainerThreeItemsMainTypes = styled.div`
+  display: grid;
   grid-template-columns: 4fr 4fr 4fr;
+  gap: 16px;
+  margin-top: 10px;
   grid-column-gap: 16px;
 `;
 

@@ -1,4 +1,4 @@
-import moment from 'moment';
+import dayjs from 'api/dayjs';
 import { IndividualDeviceResponse } from 'api/types';
 
 export function useDeviceCheckingDates(
@@ -6,8 +6,8 @@ export function useDeviceCheckingDates(
 ) {
   return (
     individualDevice &&
-    `${moment(individualDevice.lastCheckingDate).format(
-      'DD.MM.YYYY',
-    )} — ${moment(individualDevice.futureCheckingDate).format('DD.MM.YYYY')}`
+    `${dayjs(individualDevice.lastCheckingDate).format('DD.MM.YYYY')} — ${dayjs(
+      individualDevice.futureCheckingDate,
+    ).format('DD.MM.YYYY')}`
   );
 }

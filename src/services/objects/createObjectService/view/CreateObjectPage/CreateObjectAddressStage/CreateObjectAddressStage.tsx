@@ -92,7 +92,7 @@ export const CreateObjectAddressStage: FC<CreateObjectAddressStageProps> = ({
         <GridWrapper>
           <FormItem label="Город">
             <AutoComplete
-              onChange={(value) => setFieldValue('city', value)}
+              onChange={(value) => setFieldValue('city', String(value))}
               value={values.city || undefined}
               placeholder="Выберите из списка"
               options={preparedExistingCities}

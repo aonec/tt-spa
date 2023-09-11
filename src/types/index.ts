@@ -42,6 +42,19 @@ export type EffectFailDataAxiosErrorDataApartmentId = {
   };
 };
 
+export type EffectFailDataAxiosErrorDataTemperatureGraph = {
+  response: {
+    data: {
+      error: {
+        Message: string;
+        Text: string;
+        Data: Record<string, { DayPart: string }>;
+      };
+      status: number;
+    };
+  };
+};
+
 export const ymaps = window.ymaps;
 
 export enum DistrictColor {
