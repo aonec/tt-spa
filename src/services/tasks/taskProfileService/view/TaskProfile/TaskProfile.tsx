@@ -37,6 +37,7 @@ export const TaskProfile: FC<TaskProfileProps> = ({
   closeDeleteDocumentModal,
   deleteDocumentModalIsOpen,
   openDeleteDocumentModal,
+  pushStageRequestPayload,
 }) => {
   const {
     individualDevices,
@@ -90,6 +91,7 @@ export const TaskProfile: FC<TaskProfileProps> = ({
               isLoading={isPushStageLoading || isLoadingTask}
               taskType={task.type}
               actions={taskActions}
+              pushStageRequestPayload={pushStageRequestPayload}
               handleChangePushStagePayload={handleChangePushStagePayload}
             />
           )}

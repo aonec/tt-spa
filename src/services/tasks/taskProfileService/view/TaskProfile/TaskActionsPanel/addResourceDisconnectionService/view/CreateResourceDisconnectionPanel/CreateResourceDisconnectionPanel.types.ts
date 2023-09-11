@@ -1,10 +1,7 @@
-import {
-  ResourceDisconnectingCreateRequest,
-  StagePushRequest,
-} from 'api/types';
+import { StagePushRequest } from 'api/types';
 
 export type Props = {
   openCreateDisconnectionModal: () => void;
-  createDisconnectionRequestPayload: ResourceDisconnectingCreateRequest | null;
+  handleRemove: () => void;
   pushStageRequest: StagePushRequest | null;
 };

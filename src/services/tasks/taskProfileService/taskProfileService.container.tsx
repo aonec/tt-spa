@@ -31,6 +31,7 @@ export const TaskProfileContainer = () => {
     handleChangePushStagePayload,
     openDeleteDocumentModal,
     closeDeleteDocumentModal,
+    pushStageRequestPayload,
   } = useUnit({
     task: outputs.$task,
     pipeNode: outputs.$pipeNode,
@@ -50,6 +51,7 @@ export const TaskProfileContainer = () => {
     handleChangePushStagePayload: inputs.handleChangePushStagePayload,
     openDeleteDocumentModal: inputs.openDeleteDocumentModal,
     closeDeleteDocumentModal: inputs.closeDeleteDocumentModal,
+    pushStageRequestPayload: outputs.$pushStageRequestPayload,
   });
 
   const device = task && task.device;
@@ -88,6 +90,7 @@ export const TaskProfileContainer = () => {
           deleteDocumentModalIsOpen={deleteDocumentModalIsOpen}
           openDeleteDocumentModal={openDeleteDocumentModal}
           closeDeleteDocumentModal={() => closeDeleteDocumentModal()}
+          pushStageRequestPayload={pushStageRequestPayload}
         />
       )}
     </>
