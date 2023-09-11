@@ -41,29 +41,29 @@ export const CreateResourceDisconnectionModal: FC<
       title={modalTitle}
       submitBtnText={buttonPlaceholder}
       form={
-          <WithLoader isLoading={isDisconnectionLoading}>
-            <CreateResourceDisconnectionForm
-              handleCreateResourceDisconnection={
-                handleCreateResourceDisconnection
-              }
-              formId="createResourceDisconnection"
-              treeData={treeData}
-              disconnectingTypes={disconnectingTypes}
-              resourceTypes={resourceTypes}
-              isInterHeatingSeason={isInterHeatingSeason}
-              resourceDisconnection={resourceDisconnection}
-              isEdit={isEdit}
-              handleEditResourceDisconnection={handleEditResourceDisconnection}
-              handleUpdateDocument={handleUpdateDocument}
-              setTypeOfAddress={setTypeOfAddress}
-              typeOfAddress={typeOfAddress}
-              isHousingStocksLoading={isHousingStocksLoading}
-              existingCities={existingCities}
-              selectCity={selectCity}
-              selectedCity={selectedCity}
-              selectedBuilding={selectedBuilding}
-            />
-          </WithLoader>
+        <WithLoader isLoading={isDisconnectionLoading}>
+          <CreateResourceDisconnectionForm
+            handleCreateResourceDisconnection={
+              handleCreateResourceDisconnection
+            }
+            formId="createResourceDisconnection"
+            treeData={treeData}
+            disconnectingTypes={disconnectingTypes}
+            resourceTypes={resourceTypes}
+            isInterHeatingSeason={isInterHeatingSeason}
+            resourceDisconnection={resourceDisconnection}
+            isEdit={isEdit}
+            handleEditResourceDisconnection={handleEditResourceDisconnection}
+            handleUpdateDocument={handleUpdateDocument}
+            setTypeOfAddress={setTypeOfAddress}
+            typeOfAddress={typeOfAddress}
+            isHousingStocksLoading={isHousingStocksLoading}
+            existingCities={existingCities}
+            selectCity={selectCity}
+            selectedCity={selectedCity}
+            selectedBuilding={selectedBuilding}
+          />
+        </WithLoader>
       }
       formId="createResourceDisconnection"
     />

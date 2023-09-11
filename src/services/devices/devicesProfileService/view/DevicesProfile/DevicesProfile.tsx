@@ -1,31 +1,19 @@
-import React, { FC } from 'react';
+import React, { FC, useMemo, useState } from 'react';
 import { useFormik } from 'formik';
 import { DevicesListContainer } from 'services/devices/displayDevicesService/displayDevicesService.container';
 import { SearchDevices } from '../SearchDevices';
 import { ExtendedSearch } from 'ui-kit/ExtendedSearch';
-import { ExtendedSearchForm } from './ExtendedSearchForm';
 import { Wrapper } from './DevicesProfile.styled';
-import { DiamtersConfig } from 'services/currentUserService/currentUserService.types';
 import { DevicesSearchType } from 'services/devices/devicesPageService/devicesPageService.types';
 import { Radio } from 'antd';
-import { HeaderInject } from 'services/objects/objectsProfileService/view/ObjectsProfile/ObjectsProfile.types';
-import { NodesListRequestPayload } from 'services/devices/displayDevicesService/displayDevicesService.types';
-
-interface DeviceProfileProps extends HeaderInject {
-  setFilter: (payload: NodesListRequestPayload) => void;
-  isOpen: boolean;
-  open: (payload: void) => void;
-  close: (payload: void) => void;
-  openDownloadDevicesReportModal: () => void;
-  searchState: NodesListRequestPayload | null;
-  clearSearchPayload: (payload: void) => void;
-  diametersConfig: DiamtersConfig;
-  devicesSearchType: DevicesSearchType;
-  setDevicesSearchType: (type: DevicesSearchType) => void;
-  setSerialNumber: (value: string) => void;
-  serialNumber: string;
-  isSearchError: boolean;
-}
+import { DeviceProfileProps } from './DevicesProfile.types';
+import {
+  DeviceConnectionType,
+  IsConnectedToBooleanDictionary,
+} from './ExtendedSearchForm/ExtendedSearchForm.constants';
+import { NodesListRequestForm } from 'services/devices/displayDevicesService/displayDevicesService.types';
+import { ExtendedSearchForm } from './ExtendedSearchForm/ExtendedSearchForm';
+import { ESelectedDateType } from './ExtendedSearchForm/ExtendedSearchForm.types';
 
 export const DevicesProfile: FC<DeviceProfileProps> = ({
   setFilter,
@@ -40,19 +28,32 @@ export const DevicesProfile: FC<DeviceProfileProps> = ({
   serialNumber,
   setSerialNumber,
   Header,
+  handleFetchModels,
+  calculatorsModels,
   isSearchError,
 }) => {
+  const preparedConnectionType = useMemo(() => {
+    if (searchState?.IsConnected === undefined) {
+      return DeviceConnectionType.All;
+    } else {
+      return searchState.IsConnected
+        ? DeviceConnectionType.Connected
+        : DeviceConnectionType.NotConnected;
+    }
+  }, [searchState?.IsConnected]);
+
   const {
     handleSubmit: submitForm,
     setFieldValue,
     values,
     resetForm,
-  } = useFormik<NodesListRequestPayload>({
+  } = useFormik<NodesListRequestForm>({
     initialValues: {
       'DevicesFilter.PipeDiameters':
         searchState?.['DevicesFilter.PipeDiameters'],
       'DevicesFilter.ExpiresCheckingDateAt':
         searchState?.['DevicesFilter.ExpiresCheckingDateAt'],
+      ExpiresAdmissionActDateAt: searchState?.ExpiresAdmissionActDateAt,
       Resource: searchState?.Resource,
       'DevicesFilter.Model': searchState?.['DevicesFilter.Model'],
       'CommercialDateRange.From': searchState?.['CommercialDateRange.From'],
@@ -63,17 +64,27 @@ export const DevicesProfile: FC<DeviceProfileProps> = ({
       'Address.Corpus': searchState?.['Address.Corpus'],
       'Address.HouseCategory': searchState?.['Address.HouseCategory'],
       CommercialStatus: searchState?.CommercialStatus,
+      RegistrationType: searchState?.RegistrationType,
       'DevicesFilter.Question': searchState?.['DevicesFilter.Question'],
       OrderBy: searchState?.OrderBy,
-      IsConnected: searchState?.IsConnected,
+      connectionType: preparedConnectionType,
       PageNumber: searchState?.PageNumber,
       PageSize: searchState?.PageSize,
     },
     enableReinitialize: true,
     onSubmit: (values) => {
-      setFilter(values);
+      setFilter({
+        ...values,
+        IsConnected: values.connectionType
+          ? IsConnectedToBooleanDictionary[values.connectionType]
+          : undefined,
+      });
     },
   });
+
+  const [dateType, setDateType] = useState<ESelectedDateType>(
+    ESelectedDateType.ExpiresCheckingDateAt,
+  );
 
   return (
     <Wrapper>
@@ -123,6 +134,10 @@ export const DevicesProfile: FC<DeviceProfileProps> = ({
                 setFieldValue={setFieldValue}
                 values={values}
                 diametersConfig={diametersConfig}
+                calculatorsModels={calculatorsModels}
+                handleFetchModels={handleFetchModels}
+                dateType={dateType}
+                setDateType={setDateType}
               />
             }
           />

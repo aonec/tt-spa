@@ -2,6 +2,7 @@ import { combine, createDomain, forward, sample } from 'effector';
 import {
   getNodesListQuery,
   getHousingsByFilter,
+  getModels,
 } from './displayDevicesService.api';
 import {
   BuildingByFilterResponse,
@@ -14,6 +15,7 @@ import { DevicesSearchType } from '../devicesPageService/devicesPageService.type
 import { EffectFailDataAxiosError } from 'types';
 import { message } from 'antd';
 import { groupDevicesByObjects } from 'utils/groupDevicesByObjects';
+import { GetMeteringDevicesModelsRequest } from '../individualDevices/displayIndividualDeviceAndNamesService/displayIndividualDeviceAndNamesService.types';
 import { NodesListRequestPayload } from './displayDevicesService.types';
 
 const domain = createDomain('displayDevicesService');
@@ -39,6 +41,24 @@ const $housingsByFilter = domain
 const $devices = $nodesPagedData.map((data) =>
   groupDevicesByObjects(data?.pipeNodes || []),
 );
+
+const handleFetchModels = domain.createEvent<string>();
+
+const getModelsFx = domain.createEffect<
+  GetMeteringDevicesModelsRequest,
+  string[]
+>(getModels);
+
+const $calculatorsModels = domain
+  .createStore<string[]>([])
+  .on(getModelsFx.doneData, (_, models) => models);
+
+sample({
+  clock: handleFetchModels,
+  filter: Boolean,
+  fn: (Text) => ({ Text }),
+  target: getModelsFx,
+});
 
 const setDevicesProfileFilter = domain.createEvent<NodesListRequestPayload>();
 
@@ -188,6 +208,7 @@ export const displayDevicesService = {
     clearSearchPayload,
     setDevicesSearchType,
     setSerialNumber,
+    handleFetchModels,
   },
   outputs: {
     $total,
@@ -200,6 +221,7 @@ export const displayDevicesService = {
     $housingsByFilter,
     $devicesSearchType,
     $serialNumber,
+    $calculatorsModels,
   },
   gates: {
     CalculatorsGate,

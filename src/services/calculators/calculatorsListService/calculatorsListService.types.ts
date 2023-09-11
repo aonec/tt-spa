@@ -3,15 +3,18 @@ import {
   EExpiresDateAt,
   EHouseCategory,
   ENodeCommercialAccountStatus,
+  ENodeRegistrationType,
   EOrderByRule,
   EResourceType,
 } from 'api/types';
+import { DeviceConnectionType } from 'services/devices/devicesProfileService/view/DevicesProfile/ExtendedSearchForm/ExtendedSearchForm.constants';
 
 export interface CalculatorsListRequestPayload {
   'Filter.DiameterRange.From'?: number;
   'Filter.DiameterRange.To'?: number;
   'Filter.PipeDiameters'?: number[];
   'Filter.ExpiresCheckingDateAt'?: EExpiresDateAt;
+  'Filter.ExpiresAdmissionActDateAt'?: EExpiresDateAt;
   'Filter.Resource'?: EResourceType;
   'Filter.Model'?: string;
   'Filter.CommercialDateRange.From'?: string;
@@ -21,7 +24,9 @@ export interface CalculatorsListRequestPayload {
   'Filter.Address.HousingStockNumber'?: string;
   'Filter.Address.Corpus'?: string;
   'Filter.Address.HouseCategory'?: EHouseCategory;
+  'Filter.HousingStockId'?: number;
   'Filter.NodeStatus'?: ENodeCommercialAccountStatus;
+  'Filter.NodeRegistrationType'?: ENodeRegistrationType;
   Question?: string;
   OrderRule?: ECalculatorOrderRule;
   IsConnected?: boolean;
@@ -31,4 +36,13 @@ export interface CalculatorsListRequestPayload {
   PageNumber?: number;
   PageSize?: number;
   OrderBy?: EOrderByRule;
+  Skip?: number;
+  Take?: number;
 }
+
+export type CalculatorsListRequestForm = Omit<
+  CalculatorsListRequestPayload,
+  'IsConnected'
+> & {
+  IsConnected: DeviceConnectionType | undefined;
+};

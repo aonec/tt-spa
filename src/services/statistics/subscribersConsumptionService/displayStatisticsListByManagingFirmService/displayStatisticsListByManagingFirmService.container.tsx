@@ -54,14 +54,14 @@ export const DisplayStatisticsListByManagingFirmContainer = () => {
         managingFirmsLoading={managingFirmsLoading}
       />
       <WithLoader isLoading={housingStocksIsLoading}>
-          <HousingStocksList
-            housingStocks={housingStocks}
-            selectHousingStock={selectHousingStock}
-            statisticIsLoading={statisticIsLoading}
-            handleOpenModal={handleOpenModal}
-            selectedHousingStock={selectedHousingStock}
-            setFileName={setFileName}
-          />
+        <HousingStocksList
+          housingStocks={housingStocks}
+          selectHousingStock={selectHousingStock}
+          statisticIsLoading={statisticIsLoading}
+          handleOpenModal={handleOpenModal}
+          selectedHousingStock={selectedHousingStock}
+          setFileName={setFileName}
+        />
       </WithLoader>
     </>
   );
