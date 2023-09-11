@@ -136,7 +136,7 @@ export const ExtendedSearchForm: FC<ExtendedSearchFormProps> = ({
             placeholder="Начните вводить марку прибора"
             onChange={(value) => {
               setFieldValue("['DevicesFilter.Model']", value);
-              handleFetchModels(value);
+              handleFetchModels(value as string);
             }}
             options={calculatorsModels.map((elem) => ({ value: elem })) || []}
           />
