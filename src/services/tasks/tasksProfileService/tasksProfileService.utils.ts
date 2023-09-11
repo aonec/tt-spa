@@ -1,4 +1,4 @@
-import moment from 'moment';
+import dayjs from 'api/dayjs';
 import {
   EStageTimeStatus,
   ETaskClosingStatus,
@@ -129,9 +129,9 @@ export const createTimer = (task: TaskListResponse | TaskResponse) => {
 };
 
 const getFormatedTime = (time: number) => {
-  const days = Math.floor(moment.duration(Math.abs(time)).asDays());
-  const hours = moment.duration(Math.abs(time)).hours();
-  const minutes = moment.duration(Math.abs(time)).minutes();
+  const days = Math.floor(dayjs.duration(Math.abs(time)).asDays());
+  const hours = dayjs.duration(Math.abs(time)).hours();
+  const minutes = dayjs.duration(Math.abs(time)).minutes();
 
   if (time > 0 && days > 0) {
     return `${days}д ${hours}ч`;

@@ -1,8 +1,8 @@
-import { Skeleton } from 'antd';
 import React, { FC } from 'react';
 import { FormModal } from 'ui-kit/Modals/FormModal/FormModal';
 import { CreateResourceDisconnectionForm } from '../CreateResourceDisconnectionForm';
 import { CreateResourceDisconnectionModalProps } from './CreateResourceDisconnectionModal.types';
+import { WithLoader } from 'ui-kit/shared/WithLoader';
 
 export const CreateResourceDisconnectionModal: FC<
   CreateResourceDisconnectionModalProps
@@ -41,32 +41,29 @@ export const CreateResourceDisconnectionModal: FC<
       title={modalTitle}
       submitBtnText={buttonPlaceholder}
       form={
-        <>
-          {isDisconnectionLoading && <Skeleton active />}
-          {!isDisconnectionLoading && (
-            <CreateResourceDisconnectionForm
-              handleCreateResourceDisconnection={
-                handleCreateResourceDisconnection
-              }
-              formId="createResourceDisconnection"
-              treeData={treeData}
-              disconnectingTypes={disconnectingTypes}
-              resourceTypes={resourceTypes}
-              isInterHeatingSeason={isInterHeatingSeason}
-              resourceDisconnection={resourceDisconnection}
-              isEdit={isEdit}
-              handleEditResourceDisconnection={handleEditResourceDisconnection}
-              handleUpdateDocument={handleUpdateDocument}
-              setTypeOfAddress={setTypeOfAddress}
-              typeOfAddress={typeOfAddress}
-              isHousingStocksLoading={isHousingStocksLoading}
-              existingCities={existingCities}
-              selectCity={selectCity}
-              selectedCity={selectedCity}
-              selectedBuilding={selectedBuilding}
-            />
-          )}
-        </>
+        <WithLoader isLoading={isDisconnectionLoading}>
+          <CreateResourceDisconnectionForm
+            handleCreateResourceDisconnection={
+              handleCreateResourceDisconnection
+            }
+            formId="createResourceDisconnection"
+            treeData={treeData}
+            disconnectingTypes={disconnectingTypes}
+            resourceTypes={resourceTypes}
+            isInterHeatingSeason={isInterHeatingSeason}
+            resourceDisconnection={resourceDisconnection}
+            isEdit={isEdit}
+            handleEditResourceDisconnection={handleEditResourceDisconnection}
+            handleUpdateDocument={handleUpdateDocument}
+            setTypeOfAddress={setTypeOfAddress}
+            typeOfAddress={typeOfAddress}
+            isHousingStocksLoading={isHousingStocksLoading}
+            existingCities={existingCities}
+            selectCity={selectCity}
+            selectedCity={selectedCity}
+            selectedBuilding={selectedBuilding}
+          />
+        </WithLoader>
       }
       formId="createResourceDisconnection"
     />

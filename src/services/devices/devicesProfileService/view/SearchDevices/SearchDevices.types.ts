@@ -1,7 +1,7 @@
-import { FormEvent } from 'react';
+import { FormEvent, ReactNode } from 'react';
 import { DiamtersConfig } from 'services/currentUserService/currentUserService.types';
 import { DevicesSearchType } from 'services/devices/devicesPageService/devicesPageService.types';
-import { NodesListRequestForm, NodesListRequestPayload } from 'services/devices/displayDevicesService/displayDevicesService.types';
+import { NodesListRequestForm } from 'services/devices/displayDevicesService/displayDevicesService.types';
 
 export type SearchDevicesProps = {
   isExtendedSearchOpen: boolean;
@@ -18,4 +18,5 @@ export type SearchDevicesProps = {
   serialNumber: string;
   handleClear: () => void;
   isSearchError: boolean;
+  children?: ReactNode;
 };

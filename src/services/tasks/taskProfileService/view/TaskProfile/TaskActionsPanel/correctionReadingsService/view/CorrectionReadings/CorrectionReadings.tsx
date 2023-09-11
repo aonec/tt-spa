@@ -1,4 +1,4 @@
-import moment from 'moment';
+import dayjs from 'api/dayjs';
 import { IndividualDeviceReadingsItemHistoryResponse } from 'api/types';
 import React, { FC, useEffect, useState } from 'react';
 import { getReadingValuesArray } from 'services/meters/individualDeviceMetersInputService/view/ApartmentIndividualDeviceMetersInputLine/ApartmentIndividualDeviceMetersInputLine.utils';
@@ -42,7 +42,7 @@ export const CorrectionReadings: FC<CorrectionReadingsProps> = ({
 
   const problemReading = device?.invalidReading;
 
-  const readingDate = moment(problemReading?.readingDate).format('MMMM YYYY');
+  const readingDate = dayjs(problemReading?.readingDate).format('MMMM YYYY');
   const rateNum = device?.rateType ? getRateNum(device?.rateType) : 0;
 
   const problemReadingValues =

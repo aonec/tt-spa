@@ -8,6 +8,7 @@ export const SealBottomPanel: FC<SealBottomPanelProps> = ({
   apartment,
   openCreateSealAppointmentModal,
   isAppointmentExist,
+  openRemoveAppointmentModal,
 }) => {
   const history = useHistory();
 
@@ -21,15 +22,33 @@ export const SealBottomPanel: FC<SealBottomPanelProps> = ({
         >
           Перейти в профиль квартиры
         </Button>
-        <Button
-          onClick={openCreateSealAppointmentModal}
-          size="small"
-          type={isAppointmentExist ? 'ghost' : 'primary'}
-        >
-          {isAppointmentExist
-            ? 'Редактировать запись'
-            : 'Записать на опломбировку'}
-        </Button>
+        {!isAppointmentExist && (
+          <Button
+            onClick={openCreateSealAppointmentModal}
+            size="small"
+            type={'primary'}
+          >
+            Записать на опломбировку
+          </Button>
+        )}
+        {isAppointmentExist && (
+          <>
+            <Button
+              onClick={openCreateSealAppointmentModal}
+              size="small"
+              type={'ghost'}
+            >
+              Редактировать запись
+            </Button>
+            <Button
+              onClick={openRemoveAppointmentModal}
+              size="small"
+              type={'danger'}
+            >
+              Удалить запись
+            </Button>
+          </>
+        )}
       </Panel>
     </Wrapper>
   );

@@ -1,10 +1,10 @@
-import moment from 'moment';
+import dayjs from 'api/dayjs';
 import { BuildingListResponse, ResourceDisconnectingResponse } from 'api/types';
 import { TreeSelectElement } from 'ui-kit/shared/AddressTreeSelect/AddressTreeSelect.types';
 import { hours } from './CreateResourceDisconnectionForm.constants';
 
 export const getDate = (date: string, hour: string) =>
-  moment(`${date} ${hour}`, 'DD.MM.YYYY HH:00').toISOString();
+  dayjs(`${date} ${hour}`, 'DD.MM.YYYY HH:00').toISOString();
 
 export const getAllHousingStocks = (items: TreeSelectElement[]): number[] =>
   items.reduce((acc, item) => {
@@ -34,10 +34,10 @@ export const getFormValues = (
     housingStockIds: selectedBuilding
       ? [...housingStockIds, selectedBuilding.id]
       : housingStockIds,
-    startDate: moment(startDate).format('DD.MM.YYYY'),
-    startHour: moment(startDate).format('HH:mm'),
-    endDate: endDate ? moment(endDate).format('DD.MM.YYYY') : '',
-    endHour: endDate ? moment(endDate).format('HH:mm') : '0:00',
+    startDate: dayjs(startDate).format('DD.MM.YYYY'),
+    startHour: dayjs(startDate).format('HH:mm'),
+    endDate: endDate ? dayjs(endDate).format('DD.MM.YYYY') : '',
+    endHour: endDate ? dayjs(endDate).format('HH:mm') : '0:00',
     disconnectingType: disconnectingType?.value || null,
     sender: resourceDisconnection?.sender || '',
     heatingStationId,

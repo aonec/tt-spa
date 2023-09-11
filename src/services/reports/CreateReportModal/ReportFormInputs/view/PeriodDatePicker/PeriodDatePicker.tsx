@@ -1,18 +1,18 @@
 import FormItem from 'antd/lib/form/FormItem';
-import moment from 'moment';
+import dayjs from 'api/dayjs';
 import React, { FC, useCallback } from 'react';
 import styled from 'styled-components';
 import { DatePicker } from 'ui-kit/DatePicker';
 
 interface Props {
-  date: moment.Moment | null;
-  onChange(date: moment.Moment): void;
+  date: dayjs.Dayjs | null;
+  onChange(date: dayjs.Dayjs): void;
   format?: string;
 }
 
 export const PeriodDatePicker: FC<Props> = ({ date, onChange, format }) => {
   const handleChange = useCallback(
-    (value: moment.Moment | null) => {
+    (value: dayjs.Dayjs | null) => {
       value && onChange(value);
     },
     [onChange],

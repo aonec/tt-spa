@@ -1,6 +1,6 @@
 import { useFormik } from 'formik';
 import React, { FC } from 'react';
-import moment from 'moment';
+import dayjs from 'api/dayjs';
 import { Button } from 'ui-kit/Button';
 import { FormItem } from 'ui-kit/FormItem';
 import { Input } from 'ui-kit/Input';
@@ -101,7 +101,7 @@ export const CreateObjectAdditionalInfoStage: FC<
             }
             value={
               values.constructionYear
-                ? moment(values.constructionYear)
+                ? dayjs(values.constructionYear)
                 : undefined
             }
           />

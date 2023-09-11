@@ -71,7 +71,6 @@ export const AddressTreeSelect: FC<AddressTreeSelectProps> = ({
     <TreeSelectSC
       small={small}
       showSearch
-      showArrow
       value={treeSelectValues}
       disabled={disabled}
       treeCheckable
@@ -94,7 +93,9 @@ export const AddressTreeSelect: FC<AddressTreeSelectProps> = ({
       }}
       treeData={[{ title: 'Все дома', value: -1, key: -1 }, ...treeData]}
       showCheckedStrategy="SHOW_CHILD"
-      onChange={(values) => handleChangeHousingStocks(values)}
+      onChange={(values) =>
+        handleChangeHousingStocks(values as TreeSelectValue)
+      }
       placeholder={placeholder}
     />
   );

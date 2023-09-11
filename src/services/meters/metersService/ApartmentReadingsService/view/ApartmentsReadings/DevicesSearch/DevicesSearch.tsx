@@ -100,7 +100,7 @@ export const DevicesSearch: FC<DevicesSearchProps> = ({
         style={{ width: '100%' }}
         small
         value={serialNumber}
-        onChange={setSerialNumber}
+        onChange={(value) => setSerialNumber(String(value))}
         placeholder="Серийный номер прибора"
         onKeyDown={onKeyDownHandler}
       />

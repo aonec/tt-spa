@@ -3,7 +3,7 @@ import styled, { css } from 'styled-components';
 
 const FormAutoCompleteStyles = css`
   .ant-select-selection-placeholder {
-    line-height: 38px !important;
+    line-height: 28px !important;
   }
 `;
 

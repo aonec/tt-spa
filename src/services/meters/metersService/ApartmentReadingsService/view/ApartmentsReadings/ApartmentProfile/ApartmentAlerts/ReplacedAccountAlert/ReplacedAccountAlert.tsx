@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import moment from 'moment';
+import dayjs from 'api/dayjs';
 import { Alert } from 'ui-kit/Alert/Alert';
 import {
   AccountNumberWrapper,
@@ -16,7 +16,7 @@ export const ReplacedAccountAlert: FC<ReplacedAccountAlertProps> = ({
   if (!recentlyReplacedAccount.replacedByAccount) {
     return null;
   }
-  const closedDate = moment(recentlyReplacedAccount.closedAt).format(
+  const closedDate = dayjs(recentlyReplacedAccount.closedAt).format(
     'DD.MM.YYYY',
   );
 

@@ -1,5 +1,5 @@
 import { MagistralsDisctionary } from 'dictionaries';
-import moment from 'moment';
+import dayjs from 'api/dayjs';
 import { EHouseCategory, EMagistralType } from 'api/types';
 import React, { FC, useMemo } from 'react';
 import { CommonInfo } from 'ui-kit/shared/CommonInfo';
@@ -55,13 +55,13 @@ export const CommonInfoTab: FC<CommonInfoProps> = ({
     {
       key: 'Дата поверки прибора',
       value: housingMeteringDevice?.lastCheckingDate
-        ? moment(housingMeteringDevice?.lastCheckingDate).format('DD.MM.YYYY')
+        ? dayjs(housingMeteringDevice?.lastCheckingDate).format('DD.MM.YYYY')
         : '-',
     },
     {
       key: 'Дата следующей поверки прибора',
       value: housingMeteringDevice?.futureCheckingDate
-        ? moment(housingMeteringDevice?.futureCheckingDate).format('DD.MM.YYYY')
+        ? dayjs(housingMeteringDevice?.futureCheckingDate).format('DD.MM.YYYY')
         : '-',
     },
   ];

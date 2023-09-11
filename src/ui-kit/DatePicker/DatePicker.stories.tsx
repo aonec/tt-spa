@@ -1,8 +1,8 @@
 import React from 'react';
 import { ComponentMeta, ComponentStory } from '@storybook/react';
 import { DatePicker } from './DatePicker.styled';
-import LocaleProvider from 'antd/lib/locale-provider';
-import ruRu from 'antd/lib/locale-provider/ru_RU';
+import { ConfigProvider } from 'antd';
+import ruRu from 'antd/locale/ru_RU';
 
 const meta: ComponentMeta<typeof DatePicker> = {
   title: 'DatePicker',
@@ -21,9 +21,9 @@ export const Overview: ComponentStory<typeof DatePicker> = (args) => (
       height: '400px',
     }}
   >
-    <LocaleProvider locale={ruRu}>
+    <ConfigProvider locale={ruRu}>
       <DatePicker {...args} />
-    </LocaleProvider>
+    </ConfigProvider>
   </div>
 );
 

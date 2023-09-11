@@ -8,8 +8,8 @@ export const getUpdateNodeDataFromFormik = (
   values: EditHousingMeteringDeviceCommonInfoFormTypes,
 ): UpdatePipeHousingMeteringDeviceRequest => ({
   serialNumber: values.serialNumber,
-  lastCheckingDate: values.lastCheckingDate?.toISOString(true),
-  futureCheckingDate: values.futureCheckingDate?.toISOString(true),
+  lastCheckingDate: values.lastCheckingDate?.format(),
+  futureCheckingDate: values.futureCheckingDate?.format(),
   housingMeteringDeviceType:
     values.housingMeteringDeviceType as EHousingMeteringDeviceType,
   resource: values.resource,

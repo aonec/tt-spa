@@ -7297,12 +7297,13 @@ export class Api<
       data: AppointmentCreateRequest,
       params: RequestParams = {},
     ) =>
-      this.request<void, ErrorApiResponse>({
+      this.request<string, ErrorApiResponse>({
         path: `/api/IndividualSeal/Appointments`,
         method: 'POST',
         body: data,
         secure: true,
         type: ContentType.Json,
+        format: 'json',
         ...params,
       }),
 
@@ -8894,12 +8895,13 @@ export class Api<
       data: DistrictCreateRequest,
       params: RequestParams = {},
     ) =>
-      this.request<void, ErrorApiResponse>({
+      this.request<string, ErrorApiResponse>({
         path: `/api/IndividualSeal/Districts`,
         method: 'POST',
         body: data,
         secure: true,
         type: ContentType.Json,
+        format: 'json',
         ...params,
       }),
 
@@ -8964,6 +8966,29 @@ export class Api<
     ) =>
       this.request<void, ErrorApiResponse>({
         path: `/api/IndividualSeal/Districts/${districtId}/AddHouse`,
+        method: 'POST',
+        body: data,
+        secure: true,
+        type: ContentType.Json,
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li>
+     *
+     * @tags Districts
+     * @name IndividualSealDistrictsDeleteHouseCreate
+     * @summary IndividualSealReadWrite
+     * @request POST:/api/IndividualSeal/Districts/{districtId}/DeleteHouse
+     * @secure
+     */
+    individualSealDistrictsDeleteHouseCreate: (
+      districtId: string,
+      data: number,
+      params: RequestParams = {},
+    ) =>
+      this.request<void, ErrorApiResponse>({
+        path: `/api/IndividualSeal/Districts/${districtId}/DeleteHouse`,
         method: 'POST',
         body: data,
         secure: true,

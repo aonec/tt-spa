@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import moment from 'moment';
+import dayjs from 'api/dayjs';
 import { ResourceIconLookup } from 'ui-kit/shared/ResourceIconLookup';
 import { DeviceStatus } from 'ui-kit/shared/IndividualDeviceInfo/DeviceStatus';
 import { IndividualDeviceInfoExtendedProps } from './IndividualDeviceInfoExtended.types';
@@ -14,7 +14,7 @@ import {
   LinkWrapper,
 } from './IndividualDeviceInfoExtended.styled';
 import { prepareDateForDateLine } from './IndividualDeviceInfoExtended.utils';
-import { Tooltip } from 'antd';
+import { Tooltip } from 'ui-kit/shared/Tooltip';
 import { individualDeviceMountPlacesService } from 'services/devices/individualDeviceMountPlacesService/individualDeviceMountPlacesService.model';
 import { useStore } from 'effector-react';
 
@@ -77,7 +77,7 @@ export const IndividualDeviceInfoExtended: FC<
       </ApartmentInfo>
       {device.closingDate && (
         <ClosingDate>
-          {moment(device.closingDate).format('DD.MM.YYYY')}
+          {dayjs(device.closingDate).format('DD.MM.YYYY')}
         </ClosingDate>
       )}
     </Wrapper>

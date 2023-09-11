@@ -1,7 +1,7 @@
 import React, { FC, useCallback, useMemo } from 'react';
 import { ConfigProvider } from 'antd';
 import _ from 'lodash';
-import moment from 'moment';
+import dayjs from 'api/dayjs';
 import { AddressSearchContainer } from 'services/addressSearchService';
 import { SearchFieldType } from 'services/addressSearchService/view/AddressSearch/AddressSearch.types';
 import { DeviceAddressSearchFieldsNameLookup } from '../DevicesProfile.constants';
@@ -164,10 +164,10 @@ export const ExtendedSearchForm: FC<ExtendedSearchFormProps> = ({
               small
               value={[
                 values['CommercialDateRange.From']
-                  ? moment(values['CommercialDateRange.From'], dateFormat)
+                  ? dayjs(values['CommercialDateRange.From'], dateFormat)
                   : null,
                 values['CommercialDateRange.To']
-                  ? moment(values['CommercialDateRange.To'], dateFormat)
+                  ? dayjs(values['CommercialDateRange.To'], dateFormat)
                   : null,
               ]}
               onChange={(value: RangeValue): void => {

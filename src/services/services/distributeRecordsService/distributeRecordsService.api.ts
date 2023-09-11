@@ -15,6 +15,8 @@ import {
 } from './distributeRecordsService.types';
 import { EffectFailDataAxiosError } from 'types';
 import { createEffect } from 'effector';
+import dayjs from 'api/dayjs';
+import { getFilledArray } from 'utils/getFilledArray';
 
 export const districtsQuery = createQuery<void, DistrictResponse[] | null>({
   handler: async () => {
@@ -49,6 +51,55 @@ export const appointmentsCountingQuery = createQuery<
     }, {});
   },
 });
+
+export const districtAppoinmtentsOnMonthQuery = createQuery<
+  GetDistrictAppointmentsRequestPayload,
+  { [key: string]: boolean }
+>({
+  handler: async ({ date, districtId }) => {
+    const startOfMonth = dayjs(date).startOf('month');
+    const result = await Promise.all(
+      getFilledArray(dayjs(date).daysInMonth(), (index) => index).map(
+        async (shift) => {
+          const date = startOfMonth.add(shift, 'day').format('YYYY-MM-DD');
+          const counting = await getDistrictAppoinmtentsCounting({
+            date,
+            districtId,
+          });
+
+          return {
+            date,
+            isExist: Boolean(
+              (counting?.distributed || 0) + (counting?.notDistributed || 0),
+            ),
+          };
+        },
+      ),
+    );
+
+    return result.reduce((acc, { date, isExist }) => {
+      if (isExist) {
+        return { ...acc, [date]: true };
+      }
+      return acc;
+    }, {} as { [key: string]: boolean });
+  },
+});
+
+const getDistrictAppoinmtentsCounting = async (
+  params: GetDistrictAppointmentsRequestPayload,
+) => {
+  try {
+    const response: AppointmentCounterResponse = await axios.get(
+      'IndividualSeal/Appointments/Counting',
+      { params },
+    );
+
+    return response;
+  } catch {
+    return null;
+  }
+};
 
 export const districtAppointmentsQuery = createQuery<
   GetDistrictAppointmentsRequestPayload,

@@ -1,7 +1,7 @@
-import moment from 'moment';
+import dayjs from 'api/dayjs';
 import { ReportType } from '../StatisticsGraph/StatisticsGraph.types';
 
-export const ReportTimeType: { [key in ReportType]: moment.unitOfTime.Base } = {
+export const ReportTimeType: { [key in ReportType]: dayjs.OpUnitType } = {
   monthly: 'month',
   daily: 'day',
   hourly: 'hour',

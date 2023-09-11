@@ -3,6 +3,7 @@ import { useUnit } from 'effector-react';
 import { intersection } from 'lodash';
 import {
   appointmentsCountingQuery,
+  districtAppoinmtentsOnMonthQuery,
   districtAppointmentsQuery,
   districtsQuery,
   individualSealControllersQuery,
@@ -52,6 +53,8 @@ export const DistributeRecordsContainer = () => {
     selectedAppointmentsIds,
     isDistributeAppointmentsModalOpen,
     organizationCoordinates,
+    appointmentsExistingDays,
+    handleSetMonth,
   } = useUnit({
     handleSelectDistrict: inputs.handleSelectDistrict,
     handleUnselectDistrict: inputs.handleUnselectDistrict,
@@ -67,6 +70,8 @@ export const DistributeRecordsContainer = () => {
     isDistributeAppointmentsModalOpen:
       outputs.$isDistributeAppointmentsModalOpen,
     organizationCoordinates: outputs.$organizationCoordinates,
+    appointmentsExistingDays: districtAppoinmtentsOnMonthQuery.$data,
+    handleSetMonth: inputs.setMonth,
   });
 
   const handleSelectHousingStock = useCallback(
@@ -131,6 +136,8 @@ export const DistributeRecordsContainer = () => {
         isLoadingDistributeAppointments={isLoadingDistributeAppointments}
         openRemoveAssignmentModal={openRemoveAssignmentModal}
         organizationCoordinates={organizationCoordinates}
+        appointmentsExistingDays={appointmentsExistingDays || {}}
+        handleSetMonth={handleSetMonth}
       />
     </>
   );

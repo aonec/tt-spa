@@ -16,7 +16,7 @@ import { Select } from 'ui-kit/Select';
 import { FormItem } from 'ui-kit/FormItem';
 import { ErrorMessage } from 'ui-kit/ErrorMessage';
 import { Input } from 'ui-kit/Input';
-import moment from 'moment';
+import dayjs from 'api/dayjs';
 import { EIndividualDeviceRateType, EResourceType } from 'api/types';
 import { useParams } from 'react-router';
 import { useUnit } from 'effector-react';
@@ -144,8 +144,8 @@ export const WorkWithIndividualDeviceForm: FC<
                 value={fields.model.value}
                 placeholder="Введите модель прибора"
                 onChange={(value) => {
-                  fields.model.onChange(value);
-                  handleFetchModels(value);
+                  fields.model.onChange(String(value));
+                  handleFetchModels(String(value));
                 }}
                 options={(models || []).map((elem) => ({ value: elem })) || []}
                 onKeyDown={enterKeyDownHandler(1)}
@@ -286,13 +286,13 @@ export const WorkWithIndividualDeviceForm: FC<
             onKeyDown={enterKeyDownHandler(isCheck ? 0 : 7)}
             disabled={isReopen}
             onChange={(incomingValue: string) => {
-              const value = moment(incomingValue);
+              const value = dayjs(incomingValue);
 
               fields.lastCheckingDate.onChange(
                 value.utcOffset(0, true).toISOString(),
               );
 
-              const nextCheckingDate = moment(value);
+              const nextCheckingDate = dayjs(value);
 
               if (!fields.resource.value) return;
 
@@ -322,7 +322,7 @@ export const WorkWithIndividualDeviceForm: FC<
             disabled={isReopen}
             onChange={(date) =>
               fields.futureCheckingDate.onChange(
-                moment(date).utcOffset(0, true).toISOString(),
+                dayjs(date).utcOffset(0, true).toISOString(),
               )
             }
             value={fields.futureCheckingDate.value}

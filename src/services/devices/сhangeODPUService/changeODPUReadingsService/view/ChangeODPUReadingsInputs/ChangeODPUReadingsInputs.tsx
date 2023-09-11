@@ -68,7 +68,13 @@ export const ChangeODPUReadingsInputs: FC<ChangeODPUReadingsInputsProps> = ({
   );
 
   const handleChangeValue = useCallback(
-    ({ values, id }) => handleChange({ newValues: values, id: String(id) }),
+    ({
+      values,
+      id,
+    }: {
+      values: { value?: string; nonResidentialRoomConsumption?: string };
+      id: string | number;
+    }) => handleChange({ newValues: values, id: String(id) }),
     [handleChange],
   );
 

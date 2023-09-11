@@ -20,8 +20,10 @@ export const ManageDistrictsMapContainer = () => {
     organizationCoordinates,
     districtsPageSegment,
     setDistrictsPageSegment,
+    isDistrictLoading,
   } = useUnit({
     existingDistricts: existingDistrictsQuery.$data,
+    isDistrictLoading: existingDistrictsQuery.$pending,
     organizationCoordinates: outputs.$organizationCoordinates,
     handleDeleteDistrict: inputs.handleDeleteDistrict,
     isDeletingDistrictLoading: deleteDistrictMutation.$pending,
@@ -38,6 +40,7 @@ export const ManageDistrictsMapContainer = () => {
         organizationCoordinates={organizationCoordinates}
         districtsPageSegment={districtsPageSegment}
         setDistrictsPageSegment={setDistrictsPageSegment}
+        isDistrictLoading={isDistrictLoading}
       />
     </>
   );

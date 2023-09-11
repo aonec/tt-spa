@@ -1,4 +1,4 @@
-import { combine, createDomain, forward, guard, sample } from 'effector';
+import { combine, createDomain, forward, sample } from 'effector';
 import {
   getNodesListQuery,
   getHousingsByFilter,
@@ -85,7 +85,8 @@ const $serialNumber = domain
 const setDevicesSearchType = domain.createEvent<DevicesSearchType>();
 const $devicesSearchType = domain
   .createStore<DevicesSearchType>(DevicesSearchType.SearialNumber)
-  .on(setDevicesSearchType, (_, type) => type);
+  .on(setDevicesSearchType, (_, type) => type)
+  .reset(clearSearchPayload);
 
 const extendedSearchOpened = domain.createEvent();
 const extendedSearchClosed = domain.createEvent();
@@ -128,15 +129,18 @@ $searchPayload
   .reset(clearSearchPayload);
 
 sample({
-  source: $serialNumber,
-  clock: guard({
-    clock: $searchPayload,
-    filter: Boolean,
-  }),
-  fn: (Question, payload) => ({
+  source: combine($serialNumber, $searchPayload, (Question, payload) => ({
     ...payload,
     PageSize: 20,
     'DevicesFilter.Question': Question,
+  })),
+  clock: sample({
+    source: $devicesSearchType,
+    clock: $searchPayload,
+    filter: (type, payload) =>
+      type === DevicesSearchType.Address
+        ? Boolean(payload['Address.Street'])
+        : true,
   }),
   target: getNodesListQuery.start,
 });
@@ -144,6 +148,11 @@ sample({
 sample({
   clock: CalculatorsGate.close,
   target: [clearSearchPayload, getNodesListQuery.reset],
+});
+
+sample({
+  clock: $devicesSearchType,
+  target: getNodesListQuery.reset,
 });
 
 sample({

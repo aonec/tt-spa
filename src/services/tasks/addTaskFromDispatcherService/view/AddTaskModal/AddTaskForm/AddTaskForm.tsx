@@ -20,7 +20,7 @@ import { addTaskFromDispatcherService } from 'services/tasks/addTaskFromDispatch
 import { TaskTypeDictionary } from 'dictionaries';
 import { AutoComplete } from 'ui-kit/AutoComplete';
 import { autocompleteAddress, sortByAlphabet } from './AddTaskForm.utils';
-import moment from 'moment';
+import dayjs from 'api/dayjs';
 
 const {
   gates: { PageGate },
@@ -130,7 +130,7 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
 
     if (values.isPermittedToChangeDeadline) return null;
 
-    const sourceDateTime = moment(
+    const sourceDateTime = dayjs(
       values.requestDate
         .format('YYYY-MM-DD')
         .concat('T', values.requestTime || ''),

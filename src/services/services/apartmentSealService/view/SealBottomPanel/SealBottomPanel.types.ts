@@ -4,4 +4,5 @@ export type SealBottomPanelProps = {
   apartment: ApartmentResponse;
   openCreateSealAppointmentModal: () => void;
   isAppointmentExist: boolean;
+  openRemoveAppointmentModal: () => void;
 };

@@ -1,5 +1,5 @@
-import { Tooltip } from 'antd';
-import moment from 'moment';
+import { Tooltip } from 'ui-kit/shared/Tooltip';
+import dayjs from 'api/dayjs';
 import React, { FC, useCallback } from 'react';
 import { useHistory } from 'react-router-dom';
 import { SearchIcon } from 'ui-kit/icons';
@@ -48,15 +48,15 @@ export const IndividualDeviceListItem: FC<IndividualDeviceListItemProps> = ({
         <DeviceStatus isActive={!device.closingDate} />
       </DeviceStatusWrapper>
       <DateWrapper>
-        {moment(device.lastCheckingDate).format('DD.MM.YYYY')}
+        {dayjs(device.lastCheckingDate).format('DD.MM.YYYY')}
       </DateWrapper>
       <DateWrapper>
-        {moment(device.futureCheckingDate).format('DD.MM.YYYY')}
+        {dayjs(device.futureCheckingDate).format('DD.MM.YYYY')}
       </DateWrapper>
       <div>
         <Consumption>{device.consumption?.consumption}</Consumption>
         <ConsumptionDate>
-          {moment(device.consumption?.readingDate).format('DD.MM.YYYY')}
+          {dayjs(device.consumption?.readingDate).format('DD.MM.YYYY')}
         </ConsumptionDate>
       </div>
       <Loader show={isConsumptionsLoading} size={20}>

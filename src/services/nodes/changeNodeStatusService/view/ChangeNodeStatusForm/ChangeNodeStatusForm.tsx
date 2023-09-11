@@ -90,7 +90,7 @@ export const ChangeNodeStatusForm: FC<ChangeNodeStatusFormProps> = ({
           <Select
             placeholder="Выберите"
             value={values.commercialStatus || undefined}
-            onChange={changeCommercialStatus}
+            onChange={(value) => changeCommercialStatus(value as SelectValue)}
           >
             {commercialNodeStatuses.map(({ nodeStatus, text, Icon }) => (
               <Select.Option key={nodeStatus} value={nodeStatus}>

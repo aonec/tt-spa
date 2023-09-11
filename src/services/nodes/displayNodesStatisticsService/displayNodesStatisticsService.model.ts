@@ -1,6 +1,6 @@
 import { createDomain, forward, sample } from 'effector';
 import { createGate } from 'effector-react';
-import moment from 'moment';
+import dayjs from 'api/dayjs';
 import {
   ArchivesDataModel,
   DateTimeTaskStatisticsItemArrayDictionaryItem,
@@ -32,11 +32,11 @@ const setArchiveFilter = domain.createEvent<ArchiveReadingsFilter>();
 const $archiveFilter = domain
   .createStore<ArchiveReadingsFilter>({
     ReportType: 'hourly',
-    From: moment()
+    From: dayjs()
       .subtract(1, 'week')
       .startOf('day')
       .format('YYYY-MM-DD HH:mm:ss'),
-    To: moment().endOf('day').format('YYYY-MM-DD HH:mm:ss'),
+    To: dayjs().endOf('day').format('YYYY-MM-DD HH:mm:ss'),
   })
   .on(setArchiveFilter, (_, filter) => filter)
   .reset(clearStores);

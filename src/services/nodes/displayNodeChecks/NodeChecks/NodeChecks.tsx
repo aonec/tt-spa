@@ -12,7 +12,7 @@ import {
   styles,
 } from './NodeCheks.styled';
 import { Table } from 'ui-kit/Table';
-import moment from 'moment';
+import dayjs from 'api/dayjs';
 import { CheckingActDocumentType } from './NodeCheks.constants';
 import {
   DocumentIcon,
@@ -40,7 +40,7 @@ export const NodeChecks: FC<NodeChecksProps> = ({
             label: 'Дата',
             size: '0.7fr',
             render: (nodeCheck) =>
-              moment(nodeCheck.checkingDate).format('DD.MM.YYYY'),
+              dayjs(nodeCheck.checkingDate).format('DD.MM.YYYY'),
             css: (isHeader) => `${!isHeader && 'font-weight: 600'}`,
           },
           {

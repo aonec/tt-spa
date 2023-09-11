@@ -6,7 +6,7 @@ import { useFormik } from 'formik';
 import { EDocumentType, UpdateNodeCheckRequest } from 'api/types';
 import { FormItem } from 'ui-kit/FormItem';
 import { DatePicker } from 'ui-kit/DatePicker';
-import moment from 'moment';
+import dayjs from 'api/dayjs';
 import { Input } from 'ui-kit/Input';
 import { Select } from 'ui-kit/Select';
 import { CheckingActDocumentType } from '../../../displayNodeChecks/NodeChecks/NodeCheks.constants';
@@ -54,7 +54,7 @@ export const NodeCheckForm: FC<NodeCheckFormProps> = ({
               }
               setFieldValue('checkingDate', date?.format('YYYY-MM-DD'));
             }}
-            value={values.checkingDate ? moment(values.checkingDate) : null}
+            value={values.checkingDate ? dayjs(values.checkingDate) : null}
           />
           <ErrorMessage>{errors.checkingDate}</ErrorMessage>
         </FormItem>

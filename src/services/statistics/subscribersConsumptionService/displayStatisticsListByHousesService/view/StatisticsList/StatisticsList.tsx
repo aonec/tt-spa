@@ -1,6 +1,6 @@
 import React from 'react';
-import moment from 'moment';
-import { Tooltip } from 'antd';
+import dayjs from 'api/dayjs';
+import { Tooltip } from 'ui-kit/shared/Tooltip';
 import {
   HeaderStyles,
   HomeownerNameWrapper,
@@ -58,7 +58,7 @@ export const StatisticsList: React.FC<StatisticsListProps> = ({
             label: 'Дата последней передачи показаний',
             size: '135px',
             render: (apartment) =>
-              moment(apartment.dateLastTransmissionOfReading).format(
+              dayjs(apartment.dateLastTransmissionOfReading).format(
                 'DD.MM.YYYY',
               ),
             css: (isHeader) => `${isHeader && 'white-space:normal;'}`,
@@ -68,7 +68,7 @@ export const StatisticsList: React.FC<StatisticsListProps> = ({
             size: '135px',
             render: (apartment) =>
               apartment.dateLastCheck
-                ? moment(apartment.dateLastCheck).format('DD.MM.YYYY')
+                ? dayjs(apartment.dateLastCheck).format('DD.MM.YYYY')
                 : '-',
             css: (isHeader) => `${isHeader && 'white-space:normal;'}`,
           },

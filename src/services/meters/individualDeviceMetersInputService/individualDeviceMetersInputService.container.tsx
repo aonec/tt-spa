@@ -1,6 +1,6 @@
 import { message } from 'antd';
 import { useEvent, useStore } from 'effector-react';
-import moment from 'moment';
+import dayjs from 'api/dayjs';
 import { IndividualDeviceReadingsResponse } from 'api/types';
 import React, { FC, useCallback, useMemo } from 'react';
 import { individualDeviceMetersInputService } from './individualDeviceMetersInputService.model';
@@ -127,9 +127,7 @@ export const IndividualDeviceMetersInputContainer: FC<
         if (result.type === ValidationReadingsResultType.EmptyValues) {
           const meterId = readingPayload.meterId;
 
-          const readingMonth = moment(readingPayload.readingDate).format(
-            'MMMM',
-          );
+          const readingMonth = dayjs(readingPayload.readingDate).format('MMMM');
 
           openConfirmReadingModal({
             title: (

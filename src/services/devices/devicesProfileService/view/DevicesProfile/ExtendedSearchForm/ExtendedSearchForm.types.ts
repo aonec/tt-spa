@@ -1,5 +1,5 @@
 import { EExpiresDateAt } from 'api/types';
-import { Moment } from 'moment';
+import { Dayjs } from 'dayjs';
 import { DiamtersConfig } from 'services/currentUserService/currentUserService.types';
 import { NodesListRequestForm } from 'services/devices/displayDevicesService/displayDevicesService.types';
 
@@ -13,7 +13,7 @@ export type ExtendedSearchFormProps = {
   setDateType: React.Dispatch<React.SetStateAction<ESelectedDateType>>;
 };
 
-export type RangeValue = [Moment | null, Moment | null] | null;
+export type RangeValue = [Dayjs | null, Dayjs | null] | null;
 
 export type ExpiresCheckingPeriodSegmented =
   | EExpiresDateAt.NextMonth

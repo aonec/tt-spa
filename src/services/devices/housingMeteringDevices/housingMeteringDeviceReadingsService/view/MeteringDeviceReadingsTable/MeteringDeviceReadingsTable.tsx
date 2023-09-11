@@ -1,4 +1,4 @@
-import moment from 'moment';
+import dayjs from 'api/dayjs';
 import React, { FC, useMemo } from 'react';
 import { NoFlowMeterTitle } from '../../housingMeteringDeviceReadingsService.styled';
 import { groupWithEmptyReadings } from '../../housingMeteringDeviceReadingsService.utils';
@@ -39,7 +39,7 @@ export const MeteringDeviceReadingsTable: FC<
               key={year}
               createReading={(reading) => {
                 const { deviceId, month, value } = reading;
-                const readingDate = moment(`${year} ${month}`, 'YYYY MMMM')
+                const readingDate = dayjs(`${year} ${month}`, 'YYYY MMMM')
                   .startOf('month')
                   .utcOffset(0, true)
                   .format();
