@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { Input } from 'ui-kit/Input';
+import { ArrowRightLongIcon, ChevronIcon, SearchIcon } from 'ui-kit/icons';
 
 export const GridContainer = styled.div`
   display: grid;
@@ -33,4 +34,49 @@ export const TextareaSC = styled(Input.TextArea)`
   font-weight: 400;
   font-size: 16px;
   line-height: 32px;
+`;
+
+export const ResourseTypeWrapper = styled.div`
+  color: #272f5a;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 32px;
+`;
+
+export const OptionItemWrapper = styled.div``;
+
+export const TopWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  height: 32px;
+  align-items: center;
+
+  gap: 8px;
+`;
+
+export const SearchIconSc = styled(SearchIcon)`
+  margin-right: 10px;
+`;
+
+export const ChevronIconDown = styled(ChevronIcon)`
+  transform: rotate(270deg);
+`;
+
+export const ArrowRightLongIconDim = styled(ArrowRightLongIcon)`
+  fill: #272f5a;
+  fill-opacity: 0.5;
+`;
+
+export const WorkTitle = styled.div`
+  color: rgba(39, 47, 90, 1);
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 32px;
+`;
+
+export const WorkType = styled.div`
+  color: #272f5a;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 16px;
 `;
