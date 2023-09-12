@@ -50,10 +50,14 @@ export const SoiReportForm: FC<SoiReportFormProps> = ({
       (preparedAddress) => preparedAddress.value === data.HousingStockIdHash,
     );
 
+    const buildingId = chosenBuilding?.buildingId;
+    //select не работает с нашим buildingId
+    //здесь много появдяется много ?. , может лучше строку HousingStockIdHash разделить?
+
     const preparedData = {
       ReportName: data.ReportName,
       HouseManagementId: data.HouseManagementId,
-      HousingStockId: chosenBuilding?.buildingId,
+      HousingStockId: buildingId,
       Resource: data.Resource,
       NormativePerPerson: normativePerPerson,
       Period:
