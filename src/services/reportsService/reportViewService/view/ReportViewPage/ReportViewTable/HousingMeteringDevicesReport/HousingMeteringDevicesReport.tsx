@@ -1,5 +1,5 @@
 import { Empty } from 'antd';
-import moment from 'moment';
+import dayjs from 'api/dayjs';
 import React, { FC } from 'react';
 import { ResourceIconLookup } from 'ui-kit/shared/ResourceIconLookup';
 import { Table } from 'ui-kit/Table';
@@ -67,10 +67,10 @@ export const HousingMeteringDevicesReport: FC<
                   </DeviceWrapper>
                   <DeviceCheckingDates>
                     {elem.lastCheckingDate &&
-                      moment(elem.lastCheckingDate).format('DD.MM.YYYY')}
+                      dayjs(elem.lastCheckingDate).format('DD.MM.YYYY')}
                     {` — `}
                     {elem.futureCheckingDate &&
-                      moment(elem.futureCheckingDate).format('DD.MM.YYYY')}
+                      dayjs(elem.futureCheckingDate).format('DD.MM.YYYY')}
                   </DeviceCheckingDates>
                 </div>
               );

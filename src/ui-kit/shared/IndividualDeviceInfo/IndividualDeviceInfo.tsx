@@ -1,4 +1,4 @@
-import moment from 'moment';
+import dayjs from 'api/dayjs';
 import React, { FC } from 'react';
 import { ResourceIconLookup } from '../ResourceIconLookup';
 import { DeviceStatus } from './DeviceStatus';
@@ -20,8 +20,8 @@ export const IndividualDeviceInfo: FC<IndividualDeviceInfoProps> = ({
   const checkingDateInfo = device.lastCheckingDate &&
     device.futureCheckingDate && (
       <CheckingDates>
-        {moment(device.lastCheckingDate).format('DD.MM.YYYY')} —{' '}
-        {moment(device.futureCheckingDate).format('DD.MM.YYYY')}
+        {dayjs(device.lastCheckingDate).format('DD.MM.YYYY')} —{' '}
+        {dayjs(device.futureCheckingDate).format('DD.MM.YYYY')}
       </CheckingDates>
     );
 

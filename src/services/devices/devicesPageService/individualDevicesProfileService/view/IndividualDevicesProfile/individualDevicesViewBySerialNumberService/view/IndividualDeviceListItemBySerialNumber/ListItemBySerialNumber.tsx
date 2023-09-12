@@ -1,5 +1,5 @@
 import { ContextMenuButton } from 'ui-kit/ContextMenuButton/ContextMenuButton';
-import { Tooltip } from 'antd';
+import { Tooltip } from 'ui-kit/shared/Tooltip';
 import { useEvent, useStore } from 'effector-react';
 import React, { FC } from 'react';
 import {

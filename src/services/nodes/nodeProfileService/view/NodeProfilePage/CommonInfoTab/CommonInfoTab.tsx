@@ -1,12 +1,12 @@
 import React, { FC, useMemo } from 'react';
-import moment from 'moment';
+import dayjs from 'api/dayjs';
 import { NodeStatusIconsDictionary } from 'services/devices/resourceAccountingSystemsService/view/ResourceAccountingSystems/NodesGroup/NodeItem/NodeStatus/NodeStatus.constants';
 import { CommonInfo } from 'ui-kit/shared/CommonInfo';
 import { getBuildingAddress } from 'utils/getBuildingAddress';
 import { AddressWrapper, NodeStatusWrapper } from './CommonInfoTab.styled';
 import { CommonInfoTabProps } from './CommonInfoTab.types';
 import { additionalAddressesString } from 'utils/additionalAddressesString';
-import { Tooltip } from 'antd';
+import { Tooltip } from 'ui-kit/shared/Tooltip';
 import { EHouseCategory, ENodeRegistrationType } from 'api/types';
 import { configNamesLookup } from 'utils/configNamesLookup';
 import { NodeRegistrationTypeLookup } from 'dictionaries';
@@ -80,14 +80,14 @@ export const CommonInfoTab: FC<CommonInfoTabProps> = ({ pipeNode }) => {
           hidden: !isNodeCommercial,
           value:
             pipeNode?.lastCommercialAccountingDate &&
-            moment(pipeNode?.lastCommercialAccountingDate).format('DD.MM.YYYY'),
+            dayjs(pipeNode?.lastCommercialAccountingDate).format('DD.MM.YYYY'),
         },
         {
           key: 'Дата окончания действия акта-допуска',
           hidden: !isNodeCommercial,
           value:
             pipeNode?.futureCommercialAccountingDate &&
-            moment(pipeNode?.futureCommercialAccountingDate).format(
+            dayjs(pipeNode?.futureCommercialAccountingDate).format(
               'DD.MM.YYYY',
             ),
         },

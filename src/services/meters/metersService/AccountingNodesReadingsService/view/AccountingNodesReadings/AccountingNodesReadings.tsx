@@ -7,6 +7,7 @@ import { Empty } from 'antd';
 import { TypeAddressToStart } from 'ui-kit/shared/TypeToStart';
 import { WithLoader } from 'ui-kit/shared/WithLoader';
 import { AccountingNodesList } from '../AccountingNodesList';
+import { NothingFound } from 'ui-kit/shared/NothingFound';
 
 export const AccountingNodesReadings: FC<AccountingNodesReadingsProps> = ({
   handleGetElectricNodes,
@@ -17,6 +18,7 @@ export const AccountingNodesReadings: FC<AccountingNodesReadingsProps> = ({
   sliderIndex,
   upSliderIndex,
   sum,
+  isElectricNodesFetched,
 }) => {
   const electricNodesExist = electricNodes.length !== 0;
 
@@ -47,10 +49,12 @@ export const AccountingNodesReadings: FC<AccountingNodesReadingsProps> = ({
             house: address.number || undefined,
           }
         }
+        isError={!address && isElectricNodesFetched}
       />
       <WithLoader isLoading={isLoading}>
         <Wrapper>
-          {!address && <TypeAddressToStart />}
+          {!address && !isElectricNodesFetched && <TypeAddressToStart />}
+          {!address && isElectricNodesFetched && <NothingFound />}
           {!electricNodesExist && address && (
             <Empty
               image={Empty.PRESENTED_IMAGE_SIMPLE}

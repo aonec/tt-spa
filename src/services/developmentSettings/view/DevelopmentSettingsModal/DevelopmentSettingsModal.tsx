@@ -1,5 +1,5 @@
 import React, { FC, useMemo } from 'react';
-import moment from 'moment';
+import dayjs from 'api/dayjs';
 import stc from 'string-to-color';
 import { baseURL } from 'api/axios';
 import { FormModal } from 'ui-kit/Modals/FormModal';
@@ -82,6 +82,7 @@ export const DevelopmentSettingsModal: FC<DevelopmentSettingsModalProps> = ({
                       onClick={() => toggleFeature(key)}
                       color={color}
                       isActive={isActive}
+                      key={key}
                     >
                       {key}
                     </FeatureToggle>
@@ -98,7 +99,7 @@ export const DevelopmentSettingsModal: FC<DevelopmentSettingsModalProps> = ({
               </FeatureTogglesWrapper>
             </FormItem>
           )}
-          <Badge>TT frontend team {moment().format('YYYY')} [ver: 1.1.0]</Badge>
+          <Badge>TT frontend team {dayjs().format('YYYY')} [ver: 1.1.0]</Badge>
         </>
       }
       centered

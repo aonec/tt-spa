@@ -14,13 +14,22 @@ const {
 } = manageDistrictsMapService;
 
 export const ManageDistrictsMapContainer = () => {
-  const { existingDistricts, handleDeleteDistrict, organizationCoordinates } =
-    useUnit({
-      existingDistricts: existingDistrictsQuery.$data,
-      organizationCoordinates: outputs.$organizationCoordinates,
-      handleDeleteDistrict: inputs.handleDeleteDistrict,
-      isDeletingDistrictLoading: deleteDistrictMutation.$pending,
-    });
+  const {
+    existingDistricts,
+    handleDeleteDistrict,
+    organizationCoordinates,
+    districtsPageSegment,
+    setDistrictsPageSegment,
+    isDistrictLoading,
+  } = useUnit({
+    existingDistricts: existingDistrictsQuery.$data,
+    isDistrictLoading: existingDistrictsQuery.$pending,
+    organizationCoordinates: outputs.$organizationCoordinates,
+    handleDeleteDistrict: inputs.handleDeleteDistrict,
+    isDeletingDistrictLoading: deleteDistrictMutation.$pending,
+    districtsPageSegment: outputs.$districtsPageSegment,
+    setDistrictsPageSegment: inputs.setDistrictsPageSegment,
+  });
 
   return (
     <>
@@ -29,6 +38,9 @@ export const ManageDistrictsMapContainer = () => {
         existingDistricts={existingDistricts}
         handleDeleteDistrict={handleDeleteDistrict}
         organizationCoordinates={organizationCoordinates}
+        districtsPageSegment={districtsPageSegment}
+        setDistrictsPageSegment={setDistrictsPageSegment}
+        isDistrictLoading={isDistrictLoading}
       />
     </>
   );

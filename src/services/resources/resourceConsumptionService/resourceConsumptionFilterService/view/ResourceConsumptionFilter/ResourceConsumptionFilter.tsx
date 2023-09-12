@@ -1,6 +1,6 @@
 import { ErrorMessage } from 'ui-kit/ErrorMessage';
 import { useFormik } from 'formik';
-import moment from 'moment';
+import dayjs from 'api/dayjs';
 import React, { FC, useCallback, useEffect, useState } from 'react';
 import { Button } from 'ui-kit/Button';
 import { FormItem } from 'ui-kit/FormItem';
@@ -68,7 +68,7 @@ export const ResourceConsumptionFilter: FC<ResourceConsumptionFilterProps> = ({
       setFilter({
         ...values,
         BuildingIds,
-        To: moment(values.From).endOf('month').utcOffset(0, true).format(),
+        To: dayjs(values.From).endOf('month').utcOffset(0, true).format(),
       });
     },
   });
@@ -120,7 +120,7 @@ export const ResourceConsumptionFilter: FC<ResourceConsumptionFilterProps> = ({
         <FormWrapper>
           <FormItem label="Период">
             <DatePickerSC
-              value={moment(values.From)}
+              value={dayjs(values.From)}
               onChange={(date) =>
                 setFieldValue(
                   'From',
@@ -130,7 +130,7 @@ export const ResourceConsumptionFilter: FC<ResourceConsumptionFilterProps> = ({
               picker="month"
               format={'MMMM YYYY'}
               disabledDate={(month) => {
-                const currentMonth = moment().startOf('month');
+                const currentMonth = dayjs().startOf('month');
                 const selectedMonth = month.startOf('month');
                 const diff = currentMonth.diff(selectedMonth, 'month');
                 return diff < 0;

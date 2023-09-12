@@ -1,3 +1,5 @@
+import { House } from 'api/types';
+
 export type EffectFailDataAxiosError = {
   response: {
     data: {
@@ -40,6 +42,19 @@ export type EffectFailDataAxiosErrorDataApartmentId = {
   };
 };
 
+export type EffectFailDataAxiosErrorDataTemperatureGraph = {
+  response: {
+    data: {
+      error: {
+        Message: string;
+        Text: string;
+        Data: Record<string, { DayPart: string }>;
+      };
+      status: number;
+    };
+  };
+};
+
 export const ymaps = window.ymaps;
 
 export enum DistrictColor {
@@ -57,6 +72,7 @@ export type DistrictData = {
   name: string;
   isEditing?: boolean;
   isDrawing?: boolean;
+  houses?: House[];
 };
 
 export type BlobResponseErrorType = {

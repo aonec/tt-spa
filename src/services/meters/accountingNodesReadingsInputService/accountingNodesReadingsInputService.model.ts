@@ -17,7 +17,7 @@ import {
   UpdateHousingMeteringDeviceReadingsPayload,
 } from './accountingNodesReadingsInputService.types';
 import { MetersInputBlockStatus } from '../individualDeviceMetersInputService/view/MetersInputsBlock/MetersInputsBlock.types';
-import moment from 'moment';
+import dayjs from 'api/dayjs';
 import { EffectFailDataAxiosError } from 'types';
 import { message } from 'antd';
 import { confirmReadingService } from '../readingsHistoryService/confirmReadingService/confirmReadingService.model';
@@ -127,9 +127,9 @@ const $deviceInputStatuses = domain
     };
   })
   .on(setLoadingStatusToInput, (statuses, { deviceId, readingDate }) => {
-    const index = moment()
+    const index = dayjs()
       .startOf('M')
-      .diff(moment(readingDate).startOf('M'), 'M');
+      .diff(dayjs(readingDate).startOf('M'), 'M');
 
     let statusesByDevice = statuses[deviceId];
 
@@ -142,9 +142,9 @@ const $deviceInputStatuses = domain
   })
   .on(sendReadingFx.done, (statuses, { params }) => {
     const { readingDate, deviceId } = params;
-    const index = moment()
+    const index = dayjs()
       .startOf('M')
-      .diff(moment(readingDate).startOf('M'), 'M');
+      .diff(dayjs(readingDate).startOf('M'), 'M');
 
     let statusesByDevice = statuses[deviceId];
 
@@ -157,9 +157,9 @@ const $deviceInputStatuses = domain
   })
   .on(sendReadingFx.fail, (statuses, { params }) => {
     const { readingDate, deviceId } = params;
-    const index = moment()
+    const index = dayjs()
       .startOf('M')
-      .diff(moment(readingDate).startOf('M'), 'M');
+      .diff(dayjs(readingDate).startOf('M'), 'M');
 
     let statusesByDevice = statuses[deviceId];
 

@@ -1,4 +1,3 @@
-import { EClosingReason } from 'api/types';
 import React, { FC } from 'react';
 import {
   ClosingReasonText,
@@ -7,13 +6,8 @@ import {
   Wrapper,
 } from './DeviceStatus.styled';
 import { DeviceStatusProps } from './DeviceStatus.types';
-
-export const closingReasonLookup: { [key: string]: string | null } = {
-  [EClosingReason.Manually]: 'Плановая замена',
-  [EClosingReason.DeviceBroken]: 'Поломка',
-  [EClosingReason.CertificateIssued]: 'Выдана справка',
-  [EClosingReason.None]: null,
-};
+import { ClosingReasonsDictionary } from 'dictionaries';
+import { EClosingReason } from 'api/types';
 
 export const DeviceStatus: FC<DeviceStatusProps> = ({
   isActive,
@@ -21,7 +15,10 @@ export const DeviceStatus: FC<DeviceStatusProps> = ({
 }) => {
   const statusText = isActive ? 'Активен' : 'Закрыт';
 
-  const closingReasonText = closingReason && closingReasonLookup[closingReason];
+  const closingReasonText =
+    closingReason &&
+    closingReason !== EClosingReason.None &&
+    ClosingReasonsDictionary[closingReason];
 
   return (
     <Wrapper>

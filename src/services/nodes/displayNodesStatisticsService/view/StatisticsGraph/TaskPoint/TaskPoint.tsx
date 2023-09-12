@@ -1,4 +1,4 @@
-import { Tooltip } from 'antd';
+import { Tooltip } from 'ui-kit/shared/Tooltip';
 import React, { FC } from 'react';
 import { TaskPointProps } from './TaskPoint.types';
 import { getTaskDotStyle, getTaskTextStyle } from './TaskPoint.utils';

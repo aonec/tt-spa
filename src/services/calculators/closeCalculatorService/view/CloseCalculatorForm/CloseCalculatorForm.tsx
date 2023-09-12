@@ -1,6 +1,6 @@
 import { Form } from 'antd';
 import { useFormik } from 'formik';
-import moment from 'moment';
+import dayjs from 'api/dayjs';
 import React, { FC, useState } from 'react';
 import { DatePicker } from 'ui-kit/DatePicker';
 import { Document, DocumentsUploadContainer } from 'ui-kit/DocumentsService';
@@ -21,7 +21,7 @@ export const CloseCalculatorForm: FC<CloseCalculatorFormProps> = ({
   const { submitForm, setFieldValue, values, errors } =
     useFormik<CloseCalculatorFormik>({
       initialValues: {
-        closingDate: moment().format(),
+        closingDate: dayjs().format(),
         documentsIds: [],
       },
       validationSchema: yup.object().shape({
@@ -40,7 +40,7 @@ export const CloseCalculatorForm: FC<CloseCalculatorFormProps> = ({
       </MessageWrapper>
       <FormItem label="Дата снятия прибора с учета">
         <DatePicker
-          value={moment(values.closingDate)}
+          value={dayjs(values.closingDate)}
           onChange={(date) => {
             if (!date) {
               return;

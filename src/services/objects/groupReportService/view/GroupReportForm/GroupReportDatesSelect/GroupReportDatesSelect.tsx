@@ -1,4 +1,4 @@
-import moment from 'moment';
+import dayjs from 'api/dayjs';
 import React, { FC, useCallback, useState } from 'react';
 import {
   GroupReportRangeLookup,
@@ -30,14 +30,14 @@ export const GroupReportDatesSelect: FC<GroupReportDatesSelectProps> = ({
     (range: GroupReportRangeOptions) => {
       if (range === GroupReportRangeOptions.ThisMonth) {
         return setValue({
-          From: moment().startOf('month').format(),
-          To: moment().endOf('day').format(),
+          From: dayjs().startOf('month').format(),
+          To: dayjs().endOf('day').format(),
         });
       }
       if (range === GroupReportRangeOptions.LastMonth) {
         return setValue({
-          From: moment().subtract(1, 'months').startOf('month').format(),
-          To: moment().subtract(1, 'months').endOf('month').format(),
+          From: dayjs().subtract(1, 'months').startOf('month').format(),
+          To: dayjs().subtract(1, 'months').endOf('month').format(),
         });
       }
     },
@@ -60,13 +60,13 @@ export const GroupReportDatesSelect: FC<GroupReportDatesSelectProps> = ({
           small
           disabled={currentRange !== GroupReportRangeOptions.CustomRange}
           disabledDate={(date) => {
-            const currentDay = moment().startOf('day');
+            const currentDay = dayjs().startOf('day');
             const diff = currentDay.diff(date.startOf('day'));
             return diff < 0;
           }}
           allowClear={false}
           format="DD.MM.YYYY"
-          value={[moment(value.From), moment(value.To)]}
+          value={[dayjs(value.From), dayjs(value.To)]}
           onChange={(range) => {
             if (
               !range ||

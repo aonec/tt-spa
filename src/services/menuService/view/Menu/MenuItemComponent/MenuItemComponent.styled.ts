@@ -20,6 +20,7 @@ export const MenuItemWrapper = styled(NavLink)`
 
   &:hover {
     transition: 0.2s;
+    color: #189ee9;
     path {
       fill: #189ee9 !important;
     }
@@ -30,6 +31,7 @@ export const MenuItemTitle = styled.div`
   margin-left: 12px;
   font-size: 14px;
   font-weight: 500;
+  white-space: nowrap;
 `;
 
 export const Chevron = styled(ChevronDown)<{ open: boolean }>`

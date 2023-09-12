@@ -13,9 +13,10 @@ import {
   SearchFieldType,
 } from 'services/addressSearchService/view/AddressSearch/AddressSearch.types';
 import { IndividualDevicesList } from './IndividualDevicesList';
-import moment from 'moment';
+import dayjs from 'api/dayjs';
 import { SealBottomPanel } from '../SealBottomPanel';
 import { GoBack } from 'ui-kit/shared/GoBack';
+import { NothingFound } from 'ui-kit/shared/NothingFound';
 
 export const ApartmentSealProfile: FC<ApartmentSealProfileProps> = ({
   apartment,
@@ -28,12 +29,13 @@ export const ApartmentSealProfile: FC<ApartmentSealProfileProps> = ({
   openCreateSealAppointmentModal,
   nearestAppointment,
   isAppointmentLoading,
+  isApartmentFetched,
+  openRemoveAppointmentModal,
 }) => {
   const address = apartment?.housingStock?.address?.mainAddress;
   const appointmentDate = useMemo(
     () =>
-      nearestAppointment &&
-      moment(nearestAppointment.date).format('DD.MM.YYYY'),
+      nearestAppointment && dayjs(nearestAppointment.date).format('DD.MM.YYYY'),
     [nearestAppointment],
   );
 
@@ -99,9 +101,11 @@ export const ApartmentSealProfile: FC<ApartmentSealProfileProps> = ({
             question: selectedHomeownerName || undefined,
           }
         }
+        isError={!apartment && isApartmentFetched}
       />
       <WithLoader isLoading={isLoadingApartment}>
-        {!apartment && <TypeAddressToStart />}
+        {!apartment && !isApartmentFetched && <TypeAddressToStart />}
+        {!apartment && isApartmentFetched && <NothingFound />}
         {apartment && (
           <>
             <ContentWrapper>
@@ -126,6 +130,7 @@ export const ApartmentSealProfile: FC<ApartmentSealProfileProps> = ({
                   handleOpenCreateSealAppointmentModal
                 }
                 isAppointmentExist={Boolean(nearestAppointment)}
+                openRemoveAppointmentModal={openRemoveAppointmentModal}
               />
             )}
           </>

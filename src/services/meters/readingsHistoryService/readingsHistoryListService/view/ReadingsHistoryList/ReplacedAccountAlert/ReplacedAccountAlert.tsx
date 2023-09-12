@@ -1,5 +1,5 @@
 import { Alert } from 'ui-kit/Alert/Alert';
-import moment from 'moment';
+import dayjs from 'api/dayjs';
 import React, { FC } from 'react';
 import { ArrowRightLongIcon } from 'ui-kit/icons';
 import {
@@ -20,7 +20,7 @@ export const ReplacedAccountAlert: FC<ReplacedAccountAlertProps> = ({
     return null;
   }
 
-  const closedDate = moment(recentlyReplacedAccount.closedAt).format(
+  const closedDate = dayjs(recentlyReplacedAccount.closedAt).format(
     'DD.MM.YYYY',
   );
 

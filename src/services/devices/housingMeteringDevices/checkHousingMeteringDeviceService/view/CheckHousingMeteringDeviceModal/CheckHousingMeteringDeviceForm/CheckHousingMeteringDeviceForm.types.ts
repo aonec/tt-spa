@@ -1,4 +1,5 @@
 import { CheckDeviceRequest } from 'api/types';
+import dayjs from 'api/dayjs';
 
 export type CheckHousingMeteringDeviceFormProps = {
   deviceId: number;
@@ -8,6 +9,6 @@ export type CheckHousingMeteringDeviceFormProps = {
 
 export type CheckHousingMeteringDeviceFormTypes = {
   deviceId: number;
-  lastCheckingDate: moment.Moment | null;
-  futureCheckingDate: moment.Moment | null;
+  lastCheckingDate: dayjs.Dayjs | null;
+  futureCheckingDate: dayjs.Dayjs | null;
 };

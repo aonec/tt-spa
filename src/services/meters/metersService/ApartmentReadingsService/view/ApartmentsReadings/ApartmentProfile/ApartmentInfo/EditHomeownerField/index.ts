@@ -1,1 +1,1 @@
-export { EditHomeownerField } from './EditHomeownerField'
+export { EditHomeownerField } from './EditHomeownerField';

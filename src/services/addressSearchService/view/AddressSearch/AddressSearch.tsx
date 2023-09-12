@@ -2,11 +2,9 @@ import { fromEnter } from 'ui-kit/shared/DatePickerNative';
 import React, { FC, ReactElement } from 'react';
 import { FormItem } from 'ui-kit/FormItem';
 import { SearchFieldsLabels } from './AddressSearch.constants';
-import { Wrapper } from './AddressSearch.styled';
+import { Wrapper, InputSC, AutoCompleteSC } from './AddressSearch.styled';
 import { AddressSearchProps, SearchFieldType } from './AddressSearch.types';
 import { Select } from 'ui-kit/Select';
-import { Input } from 'ui-kit/Input';
-import { AutoComplete } from 'ui-kit/AutoComplete';
 import { useSwitchInputOnEnter } from 'hooks/useSwitchInputOnEnter';
 import { useAutocomplete } from 'hooks/useAutocomplete';
 
@@ -23,6 +21,7 @@ export const AddressSearch: FC<AddressSearchProps> = ({
   showLabels,
   disabledFields,
   className,
+  isError,
 }) => {
   const next = useSwitchInputOnEnter(dataKey, false, false);
 
@@ -45,7 +44,11 @@ export const AddressSearch: FC<AddressSearchProps> = ({
       onKeyDown={fromEnter(() => next(index))}
       data-reading-input={dataKey}
       onChange={(value) => {
-        handleChange(SearchFieldType.City, value.toString());
+        handleChange(SearchFieldType.City, String(value));
+        handleChange(SearchFieldType.Street, '');
+        handleChange(SearchFieldType.House, '');
+        handleChange(SearchFieldType.Corpus, '');
+        handleChange(SearchFieldType.Apartment, '');
 
         handleSubmit();
       }}
@@ -62,13 +65,13 @@ export const AddressSearch: FC<AddressSearchProps> = ({
   );
 
   const streetSearch = (index: number, isDisabled?: boolean) => (
-    <AutoComplete
+    <AutoCompleteSC
       small
       placeholder="Улица"
       data-reading-input={dataKey}
       value={values.street || ''}
       onChange={(value) => {
-        handleChange(SearchFieldType.Street, value.toString());
+        handleChange(SearchFieldType.Street, String(value));
       }}
       onKeyDown={fromEnter(() => {
         if (values.street && streetMatch)
@@ -86,14 +89,15 @@ export const AddressSearch: FC<AddressSearchProps> = ({
         clearFields(index);
       }}
       disabled={isDisabled}
+      error={isError || undefined}
     />
   );
 
   const homeNumberSearch = (index: number, isDisabled?: boolean) => (
-    <Input
+    <InputSC
       small
       placeholder="Дом"
-      value={values.house}
+      value={values.house || ''}
       onChange={(e) => handleChange(SearchFieldType.House, e.target.value)}
       onClick={() => {
         clearFields(index);
@@ -104,14 +108,15 @@ export const AddressSearch: FC<AddressSearchProps> = ({
         next(index);
       })}
       disabled={isDisabled}
+      error={isError || undefined}
     />
   );
 
   const corpusSearch = (index: number, isDisabled?: boolean) => (
-    <Input
+    <InputSC
       small
       placeholder="Корпус"
-      value={values.corpus}
+      value={values.corpus || ''}
       onChange={(e) => handleChange(SearchFieldType.Corpus, e.target.value)}
       data-reading-input={dataKey}
       onClick={() => {
@@ -122,14 +127,15 @@ export const AddressSearch: FC<AddressSearchProps> = ({
         next(index);
       })}
       disabled={isDisabled}
+      error={isError || undefined}
     />
   );
 
   const apartmentSearch = (index: number, isDisabled?: boolean) => (
-    <Input
+    <InputSC
       small
       placeholder="Квартирa"
-      value={values.apartment}
+      value={values.apartment || ''}
       onChange={(e) => handleChange(SearchFieldType.Apartment, e.target.value)}
       data-reading-input={dataKey}
       onClick={() => {
@@ -140,11 +146,12 @@ export const AddressSearch: FC<AddressSearchProps> = ({
         next(index);
       })}
       disabled={isDisabled}
+      error={isError || undefined}
     />
   );
 
   const questionSearch = (index: number, isDisabled?: boolean) => (
-    <Input
+    <InputSC
       small
       placeholder="Л/С или ФИО"
       value={values.question}
@@ -158,6 +165,7 @@ export const AddressSearch: FC<AddressSearchProps> = ({
         next(index);
       })}
       disabled={isDisabled}
+      error={isError || undefined}
     />
   );
 

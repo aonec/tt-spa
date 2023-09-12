@@ -1,6 +1,6 @@
 import { message } from 'antd';
 import { combine, createDomain, forward, guard, sample } from 'effector';
-import moment from 'moment';
+import dayjs from 'api/dayjs';
 import { IndividualDeviceListItemResponse } from 'api/types';
 import { EffectFailDataAxiosError } from 'types';
 import { apartmentIndividualDevicesMetersService } from '../apartmentIndividualDevicesMetersService';
@@ -29,7 +29,7 @@ const $isOpen = $selectedDevice.map((device) => Boolean(device));
 
 const setReadingDate = domain.createEvent<string>('');
 const $readingDate = domain
-  .createStore<string>(moment().startOf('month').format(ReadingDateFormat))
+  .createStore<string>(dayjs().startOf('month').format(ReadingDateFormat))
   .on(setReadingDate, (_, date) => date)
   .reset(closeModal);
 

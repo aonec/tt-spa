@@ -11,7 +11,7 @@ import { AccountingNodeReadingsLineProps } from './AccountingNodeReadingsLine.ty
 import { ResourceIconLookup } from 'ui-kit/shared/ResourceIconLookup';
 import { useHistory } from 'react-router-dom';
 import { ContextMenuButton } from 'ui-kit/ContextMenuButton';
-import moment from 'moment';
+import dayjs from 'api/dayjs';
 import { round } from 'utils/round';
 import { useNodeReadings } from './AccountingNodeReadingsLine.hook';
 import { getNodeReadingValue } from './AccountingNodeReadingsLine.utils';
@@ -57,7 +57,7 @@ export const AccountingNodeReadingsLine: FC<
     if (!previousExistingReadingBySliderIndex) {
       return null;
     }
-    const month = moment(
+    const month = dayjs(
       previousExistingReadingBySliderIndex.readingDate,
     ).format('MMMM');
 

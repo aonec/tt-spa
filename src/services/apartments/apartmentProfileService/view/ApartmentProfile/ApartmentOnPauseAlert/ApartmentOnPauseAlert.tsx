@@ -2,7 +2,7 @@ import { Alert } from 'ui-kit/Alert';
 import { EApartmentStatus } from 'api/types';
 import React, { FC } from 'react';
 import { ApartmentOnPauseAlertProps } from './ApartmentOnPauseAlert.types';
-import moment from 'moment';
+import dayjs from 'api/dayjs';
 import { AlertIconType, AlertType } from 'ui-kit/Alert/Alert.types';
 
 export const ApartmentOnPauseAlert: FC<ApartmentOnPauseAlertProps> = ({
@@ -15,8 +15,8 @@ export const ApartmentOnPauseAlert: FC<ApartmentOnPauseAlertProps> = ({
     return null;
   }
 
-  const from = moment(apartment.stoppedFrom).format('MMMM YYYY');
-  const to = moment(apartment.stoppedTo).format('MMMM YYYY');
+  const from = dayjs(apartment.stoppedFrom).format('MMMM YYYY');
+  const to = dayjs(apartment.stoppedTo).format('MMMM YYYY');
 
   if (!isPaused) {
     return null;

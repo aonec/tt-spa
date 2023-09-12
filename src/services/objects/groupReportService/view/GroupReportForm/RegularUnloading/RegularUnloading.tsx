@@ -1,15 +1,15 @@
 import { ErrorMessage } from 'ui-kit/ErrorMessage';
 import { Switch } from 'antd';
 import { LabeledValue } from 'antd/lib/select';
-import moment from 'moment';
+import dayjs from 'api/dayjs';
 import React, { FC, useEffect, useMemo } from 'react';
 import { DatePicker } from 'ui-kit/DatePicker';
 import { FormItem } from 'ui-kit/FormItem';
 import { Input } from 'ui-kit/Input';
 import { Select } from 'ui-kit/Select';
-import { RadioGroupSC } from '../GroupReportDatesSelect/GroupReportDatesSelect.styled';
+// import { RadioGroupSC } from '../GroupReportDatesSelect/GroupReportDatesSelect.styled'; // todo: регулярная выгрузка
 import { RowWrapper } from '../GroupReportForm.styled';
-import { SubsTypeRadioOptions } from './RegularUnloading.constants';
+// import { SubsTypeRadioOptions } from './RegularUnloading.constants'; // todo: регулярная выгрузка
 import { SwitchWrapper, Wrapper } from './RegularUnloading.styled';
 import { RegularUnloadingProps } from './RegularUnloading.types';
 
@@ -17,7 +17,7 @@ export const RegularUnloading: FC<RegularUnloadingProps> = ({
   contractors,
   handleChangeContractorIds,
   handleChangeEmail,
-  handleChangeSubsType,
+  // handleChangeSubsType, // todo: регулярная выгрузка
   handleThriggerAt,
   handleChangeIsRegular,
   values,
@@ -39,14 +39,14 @@ export const RegularUnloading: FC<RegularUnloadingProps> = ({
     if (!isRegular) {
       handleChangeContractorIds();
       handleChangeEmail();
-      handleChangeSubsType();
+      // handleChangeSubsType(); // todo: регулярная выгрузка
       handleThriggerAt();
     }
   }, [
     isRegular,
     handleChangeContractorIds,
     handleChangeEmail,
-    handleChangeSubsType,
+    // handleChangeSubsType, // todo: регулярная выгрузка
     handleThriggerAt,
   ]);
 
@@ -93,7 +93,7 @@ export const RegularUnloading: FC<RegularUnloadingProps> = ({
               <DatePicker
                 value={
                   values['Subscription.TriggerAt']
-                    ? moment(values['Subscription.TriggerAt'])
+                    ? dayjs(values['Subscription.TriggerAt'])
                     : undefined
                 }
                 placeholder={'Введите дату'}
@@ -106,14 +106,14 @@ export const RegularUnloading: FC<RegularUnloadingProps> = ({
               <ErrorMessage>{errors['Subscription.TriggerAt']}</ErrorMessage>
             </FormItem>
           </RowWrapper>
-          <FormItem label="Период">
+          {/* <FormItem label="Период"> // todo: регулярная выгрузка
             <RadioGroupSC
               options={SubsTypeRadioOptions}
               onChange={(e) => handleChangeSubsType(e.target.value)}
               value={values['Subscription.Type']}
             />
             <ErrorMessage>{errors['Subscription.Type']}</ErrorMessage>
-          </FormItem>
+          </FormItem> */}
         </>
       )}
     </Wrapper>

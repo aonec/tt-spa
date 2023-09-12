@@ -1,4 +1,4 @@
-import moment from 'moment';
+import dayjs from 'api/dayjs';
 import { IndividualDeviceReadingsItemHistoryResponse } from 'api/types';
 
 export const getReadingValuesArray = (
@@ -15,7 +15,7 @@ export const getReadingValuesArray = (
 };
 
 export const getMonthName = (month: number) =>
-  moment()
+  dayjs()
     .month(month - 1)
     .format('MMMM');
 

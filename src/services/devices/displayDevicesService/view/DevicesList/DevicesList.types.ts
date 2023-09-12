@@ -1,17 +1,20 @@
-import { CalculatorsListRequestPayload } from 'services/calculators/calculatorsListService/calculatorsListService.types';
-import { HousingByFilterResponse } from 'api/types';
+import { BuildingByFilterResponse } from 'api/types';
 import { DevicesSearchType } from 'services/devices/devicesPageService/devicesPageService.types';
-import { DevicesByAddressInterface } from '../../displayDevicesService.types';
+import {
+  DevicesByAddressInterface,
+  NodesListRequestPayload,
+} from '../../displayDevicesService.types';
 
 export type DevicesListProps = {
   housingStocksDevices: DevicesByAddressInterface[];
-  housingStocksAddressForSwitcher: HousingByFilterResponse[];
+  housingStocksAddressForSwitcher: BuildingByFilterResponse[];
   isLoading: boolean;
   total?: number;
   pageNumber?: number;
   pageSize?: number;
   setPageNumber: (pageNumber: number) => void;
-  setAddressBySwither: (address: CalculatorsListRequestPayload) => void;
+  setAddressBySwither: (address: NodesListRequestPayload) => void;
   mainFilterSearchType: DevicesSearchType;
   setMainFilterSearchType: (type: DevicesSearchType) => void;
+  isDevicesFetched: boolean;
 };

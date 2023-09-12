@@ -17,7 +17,7 @@ import {
   IndividualDeviceListItemResponse,
 } from 'api/types';
 import { EffectFailDataAxiosErrorDataApartmentId } from 'types';
-import moment from 'moment';
+import dayjs from 'api/dayjs';
 import { createGate } from 'effector-react';
 import { message } from 'antd';
 
@@ -185,7 +185,7 @@ sample({
     ) => {
       const accountForClosing = {
         homeownerAccountId: switchStageData?.replaceableAccountId,
-        closedAt: moment().toISOString(true),
+        closedAt: dayjs().format(),
       };
 
       const homeownerAccountForSplittedApartment = {

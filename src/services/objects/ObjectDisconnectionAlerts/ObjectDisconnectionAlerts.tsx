@@ -1,10 +1,9 @@
 import { Alert } from 'ui-kit/Alert/Alert';
-import moment from 'moment';
+import dayjs from 'api/dayjs';
 import React, { FC } from 'react';
 import { actResourceNamesLookup } from 'utils/actResourceNamesLookup';
 import { AlertContent, AlertWrapper } from './ObjectDisconnectionAlerts.styled';
 import { ObjectDisconnectionAlertsProps } from './ObjectDisconnectionAlerts.types';
-import { ContextMenuButton } from 'ui-kit/ContextMenuButton/ContextMenuButton';
 import { AlertIconType, AlertType } from 'ui-kit/Alert/Alert.types';
 
 export const ObjectDisconnectionAlerts: FC<ObjectDisconnectionAlertsProps> = ({
@@ -12,7 +11,9 @@ export const ObjectDisconnectionAlerts: FC<ObjectDisconnectionAlertsProps> = ({
 }) => {
   const disconnectionsAlert = disconnections.map((disconnection) => {
     const resourceName = actResourceNamesLookup[disconnection.resource];
-    const entDate = moment(disconnection.endDate).format('DD.MM.YYYY');
+    const endDate = dayjs(disconnection.endDate).format('DD.MM.YYYY');
+
+    const dateText = disconnection.endDate ? ` до ${endDate}` : '';
 
     const disconnectionType = disconnection.disconnectingType;
     const disconnectionTypeDescription = disconnectionType?.description;
@@ -26,14 +27,14 @@ export const ObjectDisconnectionAlerts: FC<ObjectDisconnectionAlertsProps> = ({
         <Alert type={AlertType.default} icon={AlertIconType.stop}>
           <AlertContent>
             <div>
-              На объекте отключение ресурса {resourceName}, тип:
-              {disconnectionTypeDescription}, до {entDate}
+              На объекте отключение ресурса {resourceName}
+              {dateText}, тип: {disconnectionTypeDescription}
             </div>
-            <ContextMenuButton size="small" />
           </AlertContent>
         </Alert>
       </AlertWrapper>
     );
   });
+
   return <>{disconnectionsAlert}</>;
 };

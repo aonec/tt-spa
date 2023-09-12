@@ -1,18 +1,15 @@
-import { useStore } from 'effector-react';
-import { useFormik } from 'formik';
+import { useUnit } from 'effector-react';
 import { last } from 'lodash';
 import React, { FC, useEffect, useMemo } from 'react';
 import { currentUserService } from 'services/currentUserService';
 import { addressSearchService } from './addressSearchService.models';
 import { AddressSearchContainerProps } from './addressSearchService.types';
 import { AddressSearch } from './view/AddressSearch';
-import {
-  AddressSearchValues,
-  SearchFieldType,
-} from './view/AddressSearch/AddressSearch.types';
+import { SearchFieldType } from './view/AddressSearch/AddressSearch.types';
+import { useForm } from 'effector-forms';
 
-const { gates, outputs } = addressSearchService;
-const { ExistingCitiesGate, ExistingStreetsGate } = gates;
+const { gates, outputs, forms } = addressSearchService;
+const { ExistingCitiesGate, ExistingStreetsGate, AddressSearchGate } = gates;
 
 export const AddressSearchContainer: FC<AddressSearchContainerProps> = ({
   fields,
@@ -23,26 +20,42 @@ export const AddressSearchContainer: FC<AddressSearchContainerProps> = ({
   disabledFields,
   onChange,
   className,
+  isError = false,
 }) => {
-  const { values, handleSubmit, setFieldValue } =
-    useFormik<AddressSearchValues>({
-      initialValues: initialValues || {
-        city: '',
-        street: '',
-        house: '',
-        corpus: '',
-        apartment: '',
-        question: '',
-      },
-      enableReinitialize: true,
-      onSubmit: (values) => {
-        onSubmit?.(values);
-      },
-    });
+  const { cities, hasCorpuses, streets } = useUnit({
+    cities: outputs.$existingCities,
+    streets: outputs.$existingStreets,
+    hasCorpuses: currentUserService.outputs.$hasCorpuses,
+  });
 
-  const cities = useStore(outputs.$existingCities);
-  const streets = useStore(outputs.$existingStreets);
-  const hasCorpuses = useStore(currentUserService.outputs.$hasCorpuses);
+  const {
+    fields: fieldsOfForm,
+    setForm,
+    values,
+    submit,
+    set,
+  } = useForm(forms.addressSearchForm);
+
+  useEffect(
+    () =>
+      forms.addressSearchForm.formValidated.watch(
+        (values) => onSubmit && onSubmit(values),
+      ).unsubscribe,
+    [onSubmit, values],
+  );
+
+  useEffect(() => {
+    if (initialValues) {
+      setForm({
+        apartment: initialValues.apartment || '',
+        corpus: initialValues.corpus || '',
+        house: initialValues.house || '',
+        question: initialValues.question || '',
+        street: initialValues.street || '',
+        city: initialValues.city || '',
+      });
+    }
+  }, [initialValues, setForm]);
 
   const preparedFields = useMemo(
     () =>
@@ -58,15 +71,16 @@ export const AddressSearchContainer: FC<AddressSearchContainerProps> = ({
   useEffect(() => {
     if (!cities?.length || initialValues?.city) return;
 
-    setFieldValue('city', last(cities));
+    set({ city: last(cities) || '' });
 
     if (onChange) onChange('city', last(cities) || '');
 
-    handleSubmit();
-  }, [cities, initialValues, setFieldValue, onChange, handleSubmit]);
+    submit();
+  }, [cities, initialValues, set, onChange, submit]);
 
-  const handleChange = (key: string, value: string) => {
-    setFieldValue(key, value);
+  const handleChange = (key: SearchFieldType, value: string) => {
+    fieldsOfForm[key]?.onChange(value);
+
     if (onChange) {
       return onChange(key, value);
     }
@@ -75,18 +89,20 @@ export const AddressSearchContainer: FC<AddressSearchContainerProps> = ({
   return (
     <>
       <ExistingCitiesGate />
+      <AddressSearchGate />
       <ExistingStreetsGate City={values.city} />
       <AddressSearch
         cities={cities || []}
         streets={streets}
-        handleChange={handleChange}
         values={values}
-        handleSubmit={handleSubmit}
+        handleSubmit={submit}
         fields={preparedFields}
         customTemplate={customTemplate}
         showLabels={showLabels}
         disabledFields={disabledFields}
         className={className}
+        isError={isError}
+        handleChange={handleChange}
       />
     </>
   );

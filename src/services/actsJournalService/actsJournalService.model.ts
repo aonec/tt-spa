@@ -8,14 +8,16 @@ import { message } from 'antd';
 import { createGate } from 'effector-react';
 import { ActsJournalRequestParams } from './actsJournalService.types';
 import { last } from 'lodash';
-import moment from 'moment';
+import dayjs from 'api/dayjs';
 import { addressIdSearchService } from './addressIdSearchService';
 import { addressSearchService } from 'services/addressSearchService/addressSearchService.models';
 
 const domain = createDomain('actsJournalService');
 
 const updateActsFilter = domain.createEvent<ActsJournalRequestParams>();
+
 const setPageNumber = domain.createEvent<number>();
+
 const $actsFilter = domain
   .createStore<ActsJournalRequestParams>({ PageSize: 20, PageNumber: 1 })
   .on(updateActsFilter, (oldFilter, newFilter) => {
@@ -25,7 +27,9 @@ const $actsFilter = domain
       PageNumber: 1,
     };
   })
-  .on(setPageNumber, (oldFilter, PageNumber) => ({ ...oldFilter, PageNumber }));
+  .on(setPageNumber, (oldFilter, PageNumber) => {
+    return { ...oldFilter, PageNumber };
+  });
 
 const getActs = domain.createEvent();
 const getActsFx = domain.createEffect<
@@ -66,13 +70,13 @@ sample({
   fn: (apartmentId, payload) => ({
     ...payload,
     apartmentId,
-    actJobDate: moment(payload.actJobDate).format('YYYY-MM-DD'),
+    actJobDate: dayjs(payload.actJobDate).format('YYYY-MM-DD'),
   }),
   target: createActFx,
 });
 
 sample({
-  clock: [ActsJournalGate.open, updateActsFilter, actCreated],
+  clock: [ActsJournalGate.open, $actsFilter, actCreated],
   target: getActs,
 });
 
@@ -86,7 +90,6 @@ sample({
       gateStatus,
     }),
   ),
-
   filter: ({ actsFilter, gateStatus }) => {
     return Boolean(actsFilter.City) && gateStatus;
   },

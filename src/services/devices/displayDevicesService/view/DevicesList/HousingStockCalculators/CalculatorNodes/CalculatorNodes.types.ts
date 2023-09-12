@@ -1,5 +1,5 @@
-import { CalculatorListResponse } from 'api/types';
+import { GroupedByCalculatorPipeNodes } from 'services/devices/displayDevicesService/displayDevicesService.types';
 
 export type CalculatorNodesProps = {
-  calculator: CalculatorListResponse;
+  devices: GroupedByCalculatorPipeNodes;
 };

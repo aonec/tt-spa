@@ -15,6 +15,7 @@ import { useHistory, useParams } from 'react-router-dom';
 import confirm from 'antd/lib/modal/confirm';
 import { TypeAddressToStart } from 'ui-kit/shared/TypeToStart';
 import { EApartmentStatus } from 'api/types';
+import { NothingFound } from 'ui-kit/shared/NothingFound';
 
 const { gates } = apartmentReadingsService;
 const { ApartmentGate } = gates;
@@ -33,6 +34,7 @@ export const ApartmentProfile: FC<ApartmentProfileProps> = ({
   printIssueCertificate,
   handleUpdateHomeowner,
   isUpdateHomeownerLoading,
+  isApartmentFetched,
 }) => {
   const { id } = useParams<{ id: string }>();
   const history = useHistory();
@@ -48,6 +50,7 @@ export const ApartmentProfile: FC<ApartmentProfileProps> = ({
         street,
         house,
         apartment: apartmentNumber,
+        corpus,
         question,
       } = values;
 
@@ -59,6 +62,7 @@ export const ApartmentProfile: FC<ApartmentProfileProps> = ({
         City: city,
         Street: street,
         HousingStockNumber: house,
+        Corpus: corpus,
         ApartmentNumber: apartmentNumber,
         Question: question,
       });
@@ -89,6 +93,7 @@ export const ApartmentProfile: FC<ApartmentProfileProps> = ({
             SearchFieldType.City,
             SearchFieldType.Street,
             SearchFieldType.House,
+            SearchFieldType.Corpus,
             SearchFieldType.Apartment,
             SearchFieldType.Question,
           ]}
@@ -101,13 +106,16 @@ export const ApartmentProfile: FC<ApartmentProfileProps> = ({
               city: address.city || undefined,
               street: address.street || undefined,
               house: address.number || undefined,
+              corpus: address.corpus || undefined,
               apartment: apartment?.apartmentNumber || undefined,
               question: selectedHomeownerName || undefined,
             }
           }
+          isError={!isLoadingApartment && !apartment && isApartmentFetched}
         />
         <WithLoader isLoading={isLoadingApartment}>
-          {!apartment && <TypeAddressToStart />}
+          {!apartment && !isApartmentFetched && <TypeAddressToStart />}
+          {!apartment && isApartmentFetched && <NothingFound />}
           {apartment && (
             <ContentWrapper>
               <ApartmentInfo

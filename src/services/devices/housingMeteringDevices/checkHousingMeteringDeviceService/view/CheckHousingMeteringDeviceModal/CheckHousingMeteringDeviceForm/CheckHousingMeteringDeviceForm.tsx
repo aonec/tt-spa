@@ -6,7 +6,7 @@ import {
 } from './CheckHousingMeteringDeviceForm.types';
 import { useFormik } from 'formik';
 import { ErrorMessage } from 'ui-kit/ErrorMessage';
-import moment from 'moment';
+import dayjs from 'api/dayjs';
 import * as yup from 'yup';
 import { CheckDeviceRequest } from 'api/types';
 import { FormItem } from 'ui-kit/FormItem';
@@ -36,8 +36,8 @@ export const CheckHousingMeteringDeviceForm: FC<
         if (values.lastCheckingDate && values.futureCheckingDate) {
           const form: CheckDeviceRequest = {
             deviceId: values.deviceId,
-            currentCheckingDate: values.lastCheckingDate.toISOString(true),
-            futureCheckingDate: values.futureCheckingDate.toISOString(true),
+            currentCheckingDate: values.lastCheckingDate.format(),
+            futureCheckingDate: values.futureCheckingDate.format(),
           };
           handleOnSubmit(form);
         }
@@ -53,7 +53,7 @@ export const CheckHousingMeteringDeviceForm: FC<
               setFieldValue('lastCheckingDate', date);
               setFieldValue(
                 'futureCheckingDate',
-                date ? moment(date).add(4, 'year') : '',
+                date ? dayjs(date).add(4, 'year') : '',
               );
             }}
             placeholder="Выберите"

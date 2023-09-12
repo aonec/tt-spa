@@ -7,13 +7,14 @@ import {
 
 export type AddressSearchContainerProps = {
   fields: SearchFieldType[];
-  handleSubmit?: (values: AddressSearchValues) => void;
-  initialValues?: AddressSearchValues | null;
+  handleSubmit?: (values: Partial<AddressSearchValues>) => void;
+  initialValues?: Partial<AddressSearchValues> | null;
   customTemplate?: CustomTemplateType;
   showLabels?: boolean;
   disabledFields?: SearchFieldType[];
   onChange?: (key: string, value: string) => void;
   className?: string;
+  isError?: boolean;
 };
 
 export type GetExistingSteetRequestParams = {

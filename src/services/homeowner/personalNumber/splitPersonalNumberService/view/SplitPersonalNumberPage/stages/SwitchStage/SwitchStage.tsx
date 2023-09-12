@@ -16,7 +16,7 @@ import { DatePickerNative } from 'ui-kit/shared/DatePickerNative';
 import { ErrorMessage } from 'ui-kit/ErrorMessage';
 import { Input } from 'ui-kit/Input';
 import { Switch } from 'antd';
-import moment from 'moment';
+import dayjs from 'api/dayjs';
 
 export const SwitchStage: FC<SwitchStageProps> = ({
   homeowner,
@@ -72,7 +72,7 @@ export const SwitchStage: FC<SwitchStageProps> = ({
         <DatePickerNative
           value={values.openAt}
           onChange={(value) =>
-            setFieldValue('openAt', moment(value).format('YYYY-MM-DD'))
+            setFieldValue('openAt', dayjs(value).format('YYYY-MM-DD'))
           }
         />
         <ErrorMessage>{errors.openAt}</ErrorMessage>

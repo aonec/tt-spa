@@ -1,6 +1,7 @@
 import React, { FC, useCallback, useMemo } from 'react';
+import { Tooltip } from 'ui-kit/shared/Tooltip';
 import { HousingStockCalculatorsProps } from './HousingStockCalculators.types';
-import { EHouseCategory, HouseAddress } from 'api/types';
+import { EHouseCategory, BuildingAddress } from 'api/types';
 import { DevicesSearchType } from 'services/devices/devicesPageService/devicesPageService.types';
 import {
   CalculatorNodesListWrapper,
@@ -10,7 +11,7 @@ import {
 import { Switcher } from 'ui-kit/shared/Switcher';
 import {
   getBuildingAddress,
-  getHousingStockAddressString,
+  getBuildingAddressString,
 } from 'utils/getBuildingAddress';
 import { CalculatorNodes } from './CalculatorNodes';
 
@@ -25,25 +26,30 @@ export const HousingStockCalculators: FC<HousingStockCalculatorsProps> = ({
   const previousAddress = housingStocksAddressForSwitcher?.previous?.address;
 
   const handleClickAddress = useCallback(
-    (address: HouseAddress) => {
+    (address: BuildingAddress) => {
       if (mainFilterSearchType !== DevicesSearchType.Address) {
         setMainFilterSearchType(DevicesSearchType.Address);
       }
       setAddressBySwither({
-        'Filter.Address.City': address.city || undefined,
-        'Filter.Address.Street': address.street || undefined,
-        'Filter.Address.HousingStockNumber': address.houseNumber || undefined,
-        'Filter.Address.Corpus': address.houseCorpus || undefined,
+        'Address.City': address.city || undefined,
+        'Address.Street': address.street || undefined,
+        'Address.HousingStockNumber': address.houseNumber || undefined,
+        'Address.Corpus': address.houseCorpus || undefined,
       });
     },
     [setAddressBySwither, mainFilterSearchType, setMainFilterSearchType],
   );
 
-  const calculators = housingStockDevices.devices;
+  const pipeNodeDevicesGroupedByCalculator = housingStockDevices.devices;
 
-  const calculatorNodesList = calculators.map((calculator) => (
-    <CalculatorNodes calculator={calculator} key={calculator.id} />
-  ));
+  const calculatorNodesList = pipeNodeDevicesGroupedByCalculator.map(
+    (pipeNodeDevices) => (
+      <CalculatorNodes
+        devices={pipeNodeDevices}
+        key={pipeNodeDevices[0].calculatorId}
+      />
+    ),
+  );
 
   const buildingProfilePath = useMemo(() => {
     if (housingStockDevices.building?.houseCategory === EHouseCategory.Living) {
@@ -56,18 +62,34 @@ export const HousingStockCalculators: FC<HousingStockCalculatorsProps> = ({
     if (!housingStockDevices.building) {
       return 'У данного прибора не указан адрес';
     }
-
     const { address, id } = housingStockDevices.building;
+
+    const additionalAddressesString = (address?.additionalAddresses || [])
+      .map((elem) => {
+        const corpusText = elem.corpus ? `, к.${elem.corpus}` : '';
+        return `${elem.street}, ${elem.number}${corpusText}`;
+      })
+      .join('; ');
+
+    const fullAddress = additionalAddressesString
+      ? `${getBuildingAddress({
+          address,
+        })}; ${additionalAddressesString}`
+      : getBuildingAddress({
+          address,
+        });
 
     return (
       <HousingStockAddressHeaderWrapper>
-        <HousingStockAddress to={`/buildings/${buildingProfilePath}/${id}`}>
-          {getBuildingAddress({ address })}
-        </HousingStockAddress>
+        <Tooltip title={fullAddress}>
+          <HousingStockAddress to={`/buildings/${buildingProfilePath}/${id}`}>
+            {fullAddress}
+          </HousingStockAddress>
+        </Tooltip>
         <Switcher
           nextValue={nextAddress}
           previousValue={previousAddress}
-          textConstructor={(address) => getHousingStockAddressString(address)}
+          textConstructor={(address) => getBuildingAddressString(address)}
           handleClick={handleClickAddress}
         />
       </HousingStockAddressHeaderWrapper>

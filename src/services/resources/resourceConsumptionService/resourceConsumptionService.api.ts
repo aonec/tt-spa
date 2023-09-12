@@ -1,5 +1,5 @@
 import { axios } from 'api/axios';
-import moment from 'moment';
+import dayjs from 'api/dayjs';
 import {
   GetDataForHousingConsumptionPlotResponse,
   GetDataForIndividualDevicesConsumptionPlotResponse,
@@ -19,7 +19,7 @@ import queryString from 'query-string';
 export const fetchConsumptionsForTwoMonth = async (
   params: ConsumptionDataPayload,
 ): Promise<ConsumptionDataForTwoMonth> => {
-  const prevMonth = moment(params.From).subtract(1, 'month');
+  const prevMonth = dayjs(params.From).subtract(1, 'month');
   const paramsForPrevMonthRequest = {
     ...params,
     From: prevMonth.startOf('month').utcOffset(0, true).format(),

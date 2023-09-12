@@ -8,12 +8,12 @@ import {
 } from './DocumentCardItem.styled';
 import { DocumentCardItemProps } from './DocumentCardItem.types';
 import { saveAs } from 'file-saver';
-import moment from 'moment';
+import dayjs from 'api/dayjs';
 
 export const DocumentCardItem: FC<DocumentCardItemProps> = ({ document }) => {
   const { url, name, uploadingTime } = document;
 
-  const formatedUploadingTime = moment(uploadingTime).format('DD.MM.YYYY');
+  const formatedUploadingTime = dayjs(uploadingTime).format('DD.MM.YYYY');
 
   const handleDownloadFile = () => {
     if (url && name) {

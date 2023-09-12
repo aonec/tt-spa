@@ -1,4 +1,4 @@
-import moment from 'moment';
+import dayjs from 'api/dayjs';
 import React, { FC } from 'react';
 import { Link } from 'react-router-dom';
 import {
@@ -48,7 +48,7 @@ export const TaskInfoPanel: FC<TaskInfoPanelProps> = ({ task }) => {
             },
             {
               key: 'Дата создания',
-              value: moment(task.creationTime).format('DD.MM.YYYY'),
+              value: dayjs(task.creationTime).format('DD.MM.YYYY'),
             },
             {
               key: 'Исполнитель',

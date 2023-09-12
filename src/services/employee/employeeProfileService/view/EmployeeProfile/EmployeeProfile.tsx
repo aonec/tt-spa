@@ -1,6 +1,6 @@
 import { SpaceLine } from 'ui-kit/SpaceLine';
-import { Tooltip } from 'antd';
-import moment from 'moment';
+import { Tooltip } from 'ui-kit/shared/Tooltip';
+import dayjs from 'api/dayjs';
 import React, { FC, useState } from 'react';
 import { GoBack } from 'ui-kit/shared/GoBack';
 import {
@@ -132,7 +132,7 @@ export const EmployeeProfile: FC<EmployeeProfileProps> = ({
               <FieldTitle>Дата начала работы</FieldTitle>
               <Field>
                 {(userData?.hireDate &&
-                  moment(userData?.hireDate).format('DD.MM.YYYY')) ||
+                  dayjs(userData?.hireDate).format('DD.MM.YYYY')) ||
                   'Нет данных'}
               </Field>
             </GridContainer>

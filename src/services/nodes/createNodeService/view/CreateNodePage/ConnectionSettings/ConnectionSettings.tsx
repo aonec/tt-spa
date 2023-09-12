@@ -120,7 +120,9 @@ export const ConnectionSettings: FC<ConnectionSettingsProps> = ({
           <Select
             placeholder="Выберите"
             value={values.connectionType || undefined}
-            onChange={handleChangeConnectionType}
+            onChange={(value) =>
+              handleChangeConnectionType(value as SelectValue)
+            }
           >
             {Object.values(CalculatorConnectionType).map((connectionType) => (
               <Select.Option key={connectionType} value={connectionType}>

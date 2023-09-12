@@ -1,63 +1,76 @@
-import { combine, createDomain, forward, guard, sample } from 'effector';
+import { combine, createDomain, forward, sample } from 'effector';
 import {
-  getCalculatorsList,
+  getNodesListQuery,
   getHousingsByFilter,
+  getModels,
 } from './displayDevicesService.api';
 import {
-  CalculatorListResponsePagedList,
+  BuildingByFilterResponse,
   EOrderByRule,
-  HousingByFilterResponse,
+  NodesPagedList,
 } from 'api/types';
-import { CalculatorsListRequestPayload } from 'services/calculators/calculatorsListService/calculatorsListService.types';
 import { createGate } from 'effector-react';
 import { GetHousingByFilterRequestPayload } from '../devicesPageService/individualDevicesProfileService/view/IndividualDevicesProfile/individualDevicesViewByAddressService/individualDevicesViewByAddressService.types';
 import { DevicesSearchType } from '../devicesPageService/devicesPageService.types';
 import { EffectFailDataAxiosError } from 'types';
 import { message } from 'antd';
 import { groupDevicesByObjects } from 'utils/groupDevicesByObjects';
+import { GetMeteringDevicesModelsRequest } from '../individualDevices/displayIndividualDeviceAndNamesService/displayIndividualDeviceAndNamesService.types';
+import { NodesListRequestPayload } from './displayDevicesService.types';
 
 const domain = createDomain('displayDevicesService');
 
-const $calculatorsPagedData =
-  domain.createStore<CalculatorListResponsePagedList | null>(null);
+const $nodesPagedData = domain.createStore<NodesPagedList | null>(null);
 
 const fetchHousingsByFilterFx = domain.createEffect<
   GetHousingByFilterRequestPayload[],
-  (HousingByFilterResponse | null)[],
+  (BuildingByFilterResponse | null)[],
   EffectFailDataAxiosError
 >(getHousingsByFilter);
 const $housingsByFilter = domain
-  .createStore<HousingByFilterResponse[]>([])
+  .createStore<BuildingByFilterResponse[]>([])
   .on(fetchHousingsByFilterFx.doneData, (_, addresses) =>
     addresses.reduce((acc, elem) => {
       if (!elem) {
         return acc;
       }
       return [...acc, elem];
-    }, [] as HousingByFilterResponse[]),
+    }, [] as BuildingByFilterResponse[]),
   );
 
-const $devices = $calculatorsPagedData.map((data) =>
-  groupDevicesByObjects(data?.items || []),
+const $devices = $nodesPagedData.map((data) =>
+  groupDevicesByObjects(data?.pipeNodes || []),
 );
 
-const fetchCalculatorsFx = domain.createEffect<
-  CalculatorsListRequestPayload,
-  CalculatorListResponsePagedList
->(getCalculatorsList);
+const handleFetchModels = domain.createEvent<string>();
 
-const setDevicesProfileFilter =
-  domain.createEvent<CalculatorsListRequestPayload>();
+const getModelsFx = domain.createEffect<
+  GetMeteringDevicesModelsRequest,
+  string[]
+>(getModels);
+
+const $calculatorsModels = domain
+  .createStore<string[]>([])
+  .on(getModelsFx.doneData, (_, models) => models);
+
+sample({
+  clock: handleFetchModels,
+  filter: Boolean,
+  fn: (Text) => ({ Text }),
+  target: getModelsFx,
+});
+
+const setDevicesProfileFilter = domain.createEvent<NodesListRequestPayload>();
 
 const $loading = combine(
-  fetchCalculatorsFx.pending,
+  getNodesListQuery.$pending,
   fetchHousingsByFilterFx.pending,
   (...loadings) => loadings.includes(true),
 );
 
-const $searchPayload = domain.createStore<CalculatorsListRequestPayload>({
+const $searchPayload = domain.createStore<NodesListRequestPayload>({
   PageNumber: 1,
-  PageSize: 10,
+  PageSize: 20,
   OrderBy: EOrderByRule.Ascending,
 });
 
@@ -72,20 +85,21 @@ const $serialNumber = domain
 const setDevicesSearchType = domain.createEvent<DevicesSearchType>();
 const $devicesSearchType = domain
   .createStore<DevicesSearchType>(DevicesSearchType.SearialNumber)
-  .on(setDevicesSearchType, (_, type) => type);
+  .on(setDevicesSearchType, (_, type) => type)
+  .reset(clearSearchPayload);
 
 const extendedSearchOpened = domain.createEvent();
 const extendedSearchClosed = domain.createEvent();
 
 const clearCalculators = domain.createEvent();
 
-$calculatorsPagedData
-  .on(fetchCalculatorsFx.doneData, (_, data) => data)
-  .reset([fetchCalculatorsFx.failData, clearCalculators]);
+$nodesPagedData
+  .on(getNodesListQuery.$data, (_, data) => data)
+  .reset([getNodesListQuery.finished.failure, clearCalculators]);
 
-const $total = $calculatorsPagedData.map((state) => state?.totalItems);
-const $pageNumber = $calculatorsPagedData.map((state) => state?.pageNumber);
-const $pageSize = $calculatorsPagedData.map((state) => state?.pageSize);
+const $total = $nodesPagedData.map((state) => state?.totalItems);
+const $pageNumber = $nodesPagedData.map((state) => state?.pageNumber);
+const $pageSize = $nodesPagedData.map((state) => state?.pageSize);
 
 const setPageNumber = domain.createEvent<number>();
 
@@ -99,13 +113,14 @@ forward({
 sample({
   source: $searchPayload,
   clock: CalculatorsGate.open,
-  target: fetchCalculatorsFx,
+  target: getNodesListQuery.start,
 });
 
 $searchPayload
   .on(setDevicesProfileFilter, (oldFilter, filter) => ({
     ...oldFilter,
     ...filter,
+    PageNumber: 1,
   }))
   .on(setPageNumber, (state, pageNumber) => ({
     ...state,
@@ -114,25 +129,48 @@ $searchPayload
   .reset(clearSearchPayload);
 
 sample({
-  source: $serialNumber,
-  clock: guard({
+  source: combine($serialNumber, $searchPayload, (Question, payload) => ({
+    ...payload,
+    PageSize: 20,
+    'DevicesFilter.Question': Question,
+  })),
+  clock: sample({
+    source: $devicesSearchType,
     clock: $searchPayload,
-    filter: Boolean,
+    filter: (type, payload) =>
+      type === DevicesSearchType.Address
+        ? Boolean(payload['Address.Street'])
+        : true,
   }),
-  fn: (Question, payload) => ({ ...payload, PageSize: 10, Question }),
-  target: fetchCalculatorsFx,
-});
-
-forward({
-  from: CalculatorsGate.close,
-  to: clearSearchPayload,
+  target: getNodesListQuery.start,
 });
 
 sample({
-  clock: $devices.map((devices) =>
+  clock: CalculatorsGate.close,
+  target: [clearSearchPayload, getNodesListQuery.reset],
+});
+
+sample({
+  clock: $devicesSearchType,
+  target: getNodesListQuery.reset,
+});
+
+sample({
+  source: $searchPayload,
+  clock: $devices,
+  fn: (filter, devices) =>
     devices.reduce((acc, device) => {
-      const { city, street, corpus, number } =
-        device.building?.address?.mainAddress || {};
+      const address = device.building?.address;
+      let currentAddress = address?.mainAddress;
+
+      if (filter['Address.Street']) {
+        currentAddress =
+          [address?.mainAddress, ...(address?.additionalAddresses || [])].find(
+            (address) => address?.street === filter['Address.Street'],
+          ) || currentAddress;
+      }
+      const { city, street, corpus, number } = currentAddress || {};
+
       if (!city || !street || !number) {
         return acc;
       }
@@ -146,7 +184,6 @@ sample({
         },
       ];
     }, [] as GetHousingByFilterRequestPayload[]),
-  ),
   target: fetchHousingsByFilterFx,
 });
 
@@ -171,6 +208,7 @@ export const displayDevicesService = {
     clearSearchPayload,
     setDevicesSearchType,
     setSerialNumber,
+    handleFetchModels,
   },
   outputs: {
     $total,
@@ -183,6 +221,7 @@ export const displayDevicesService = {
     $housingsByFilter,
     $devicesSearchType,
     $serialNumber,
+    $calculatorsModels,
   },
   gates: {
     CalculatorsGate,

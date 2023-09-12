@@ -1,12 +1,14 @@
-import { CalculatorsListRequestPayload } from 'services/calculators/calculatorsListService/calculatorsListService.types';
-import { HousingByFilterResponse } from 'api/types';
+import { BuildingByFilterResponse } from 'api/types';
 import { DevicesSearchType } from 'services/devices/devicesPageService/devicesPageService.types';
-import { DevicesByAddressInterface } from 'services/devices/displayDevicesService/displayDevicesService.types';
+import {
+  DevicesByAddressInterface,
+  NodesListRequestPayload,
+} from 'services/devices/displayDevicesService/displayDevicesService.types';
 
 export type HousingStockCalculatorsProps = {
   housingStockDevices: DevicesByAddressInterface;
-  housingStocksAddressForSwitcher?: HousingByFilterResponse;
-  setAddressBySwither: (address: CalculatorsListRequestPayload) => void;
+  housingStocksAddressForSwitcher?: BuildingByFilterResponse;
+  setAddressBySwither: (address: NodesListRequestPayload) => void;
   mainFilterSearchType: DevicesSearchType;
   setMainFilterSearchType: (type: DevicesSearchType) => void;
 };

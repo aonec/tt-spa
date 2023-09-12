@@ -9,7 +9,7 @@ import {
   Wrapper,
 } from './IndividualDeviceInfoShort.styled';
 import { IndividualDeviceInfoShortProps } from './IndividualDeviceInfoShort.types';
-import moment from 'moment';
+import dayjs from 'api/dayjs';
 
 export const IndividualDeviceInfoShort: FC<IndividualDeviceInfoShortProps> = ({
   device,
@@ -19,11 +19,14 @@ export const IndividualDeviceInfoShort: FC<IndividualDeviceInfoShortProps> = ({
 
   const isSealExist = device.sealNumber;
   const sealInstallationDate = device.sealInstallationDate
-    ? `(${moment(device.sealInstallationDate).format('DD.MM.YYYY')})`
+    ? `(${dayjs(device.sealInstallationDate).format('DD.MM.YYYY')})`
     : '';
 
   return (
-    <Wrapper onClick={onClick} clickable={Boolean(onClick)}>
+    <Wrapper
+      onClick={() => device.id && onClick?.(device.id)}
+      clickable={Boolean(onClick)}
+    >
       <RowWrapper>
         <IconWrapper>
           {device.resource && <ResourceIconLookup resource={device.resource} />}

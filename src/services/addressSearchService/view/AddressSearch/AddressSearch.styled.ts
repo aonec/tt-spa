@@ -1,13 +1,15 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { CustomTemplateType, SearchFieldType } from './AddressSearch.types';
+import { Input } from 'ui-kit/Input';
+import { AutoComplete } from 'ui-kit/AutoComplete';
 
 function getGridTemplateByFields(
   fields: SearchFieldType[],
-  customTemplate?: CustomTemplateType
+  customTemplate?: CustomTemplateType,
 ) {
   const customTemplateObject = customTemplate?.reduce(
     (acc, elem) => ({ ...acc, [elem.fieldType]: elem.templateValue }),
-    {}
+    {},
   );
 
   const templates = {
@@ -31,4 +33,32 @@ export const Wrapper = styled.div<{
   grid-template-columns: ${({ fields, customTemplate }) =>
     getGridTemplateByFields(fields, customTemplate)};
   grid-gap: 15px;
+`;
+
+const errorBorderStyle = css`
+  border-color: #fc525b !important;
+`;
+
+const errorFocusedStyle = css`
+  box-shadow: 0 0 0 2px rgba(252, 82, 91, 0.2) !important;
+`;
+
+export const InputSC = styled(Input)<{ error?: boolean }>`
+  ${({ error }) => error && errorBorderStyle}
+
+  &:focus {
+    ${({ error }) => error && errorFocusedStyle}
+  }
+`;
+
+export const AutoCompleteSC = styled(AutoComplete)<{ error?: boolean }>`
+  .ant-select-selector {
+    ${({ error }) => error && errorBorderStyle}
+  }
+
+  &.ant-select-focused {
+    .ant-select-selector {
+      ${({ error }) => error && errorFocusedStyle};
+    }
+  }
 `;

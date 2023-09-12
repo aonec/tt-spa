@@ -25,10 +25,12 @@ export const ApartmentsReadings: FC<ApartmentsReadingsProps> = ({
   printIssueCertificate,
   handleUpdateHomeowner,
   isUpdateHomeownerLoading,
+  isApartmentFetched,
 }) => {
   const componentsDictionary: { [key in SearchMode]: ReactNode } = {
     [SearchMode.Apartment]: (
       <ApartmentProfile
+        isApartmentFetched={isApartmentFetched}
         handleSearchApartment={handleSearchApartment}
         isLoadingApartment={isLoadingApartment}
         apartment={apartment}

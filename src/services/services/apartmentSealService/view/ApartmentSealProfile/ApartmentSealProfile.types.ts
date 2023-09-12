@@ -13,11 +13,13 @@ export type ApartmentSealProfileProps = {
   apartment: ApartmentResponse | null;
   isLoadingApartment: boolean;
   searchApartment: (payload: GetApartmentsRequestPayload) => void;
-  setSelectedHomeownerName: (name: string) => void;
+  setSelectedHomeownerName: (name: string | null) => void;
   selectedHomeownerName: string | null;
   updateApartment: (payload: UpdateApartmentRequestPayload) => void;
   individualDevices: IndividualDeviceListItemResponse[];
   openCreateSealAppointmentModal: (payload: OpenCreateSealModalPayload) => void;
   nearestAppointment: AppointmentResponse | null;
   isAppointmentLoading: boolean;
+  isApartmentFetched: boolean;
+  openRemoveAppointmentModal: () => void;
 };

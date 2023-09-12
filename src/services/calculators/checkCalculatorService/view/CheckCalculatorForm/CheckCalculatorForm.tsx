@@ -1,6 +1,6 @@
 import { Form } from 'antd';
 import { useFormik } from 'formik';
-import moment from 'moment';
+import dayjs from 'api/dayjs';
 import React, { FC } from 'react';
 import { DatePicker } from 'ui-kit/DatePicker';
 import { FormItem } from 'ui-kit/FormItem';
@@ -17,8 +17,8 @@ export const CheckCalculatorForm: FC<CheckCalculatorFormProps> = ({
   const { values, setFieldValue, submitForm, errors } =
     useFormik<CheckCalculatorFormik>({
       initialValues: {
-        currentCheckingDate: moment().format(),
-        futureCheckingDate: moment().add(4, 'year').format(),
+        currentCheckingDate: dayjs().format(),
+        futureCheckingDate: dayjs().add(4, 'year').format(),
       },
       validationSchema: yup.object().shape({
         currentCheckingDate: yup.string().required('Это поле обязательно'),
@@ -34,7 +34,7 @@ export const CheckCalculatorForm: FC<CheckCalculatorFormProps> = ({
       <Wrapper>
         <FormItem label="Дата последней поверки прибора">
           <DatePicker
-            value={moment(values.currentCheckingDate)}
+            value={dayjs(values.currentCheckingDate)}
             onChange={(date) => {
               if (!date) {
                 return;
@@ -48,7 +48,7 @@ export const CheckCalculatorForm: FC<CheckCalculatorFormProps> = ({
         </FormItem>
         <FormItem label="Дата следующей поверки прибора">
           <DatePicker
-            value={moment(values.futureCheckingDate)}
+            value={dayjs(values.futureCheckingDate)}
             onChange={(date) => {
               if (!date) {
                 return;

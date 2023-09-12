@@ -1,8 +1,8 @@
 import { Form } from 'antd';
 import { useFormik } from 'formik';
-import moment from 'moment';
+import dayjs from 'api/dayjs';
 import { EResourceType } from 'api/types';
-import React, { FC } from 'react';
+import React, { FC, useEffect } from 'react';
 import { FormItem } from 'ui-kit/FormItem';
 import { Input } from 'ui-kit/Input';
 import { HeatIndividualDevicesReportFormProps } from './HeatIndividualDevicesReportForm.types';
@@ -18,7 +18,14 @@ import { addressSearchService } from 'services/addressSearchService/addressSearc
 
 export const HeatIndividualDevicesReportForm: FC<
   HeatIndividualDevicesReportFormProps
-> = ({ handleDownloadModal, formId, selectCity, selectedCity, treeData }) => {
+> = ({
+  handleDownloadModal,
+  formId,
+  selectCity,
+  selectedCity,
+  treeData,
+  selectedBuilding,
+}) => {
   const existingCities = useStore(addressSearchService.outputs.$existingCities);
 
   const { values, handleSubmit, setFieldValue, errors } = useFormik({
@@ -26,11 +33,7 @@ export const HeatIndividualDevicesReportForm: FC<
       resource: EResourceType.Heat,
       Name: 'Сводный_отчёт_ИПУ',
       HousingStockIds: [],
-      date: moment()
-        .startOf('month')
-        .set('day', 15)
-        .utcOffset(0, true)
-        .format(),
+      date: dayjs().startOf('month').set('day', 15).utcOffset(0, true).format(),
     },
     validationSchema,
     validateOnBlur: false,
@@ -41,11 +44,17 @@ export const HeatIndividualDevicesReportForm: FC<
       handleDownloadModal({
         HousingStockIds,
         Name,
-        Month: Number(moment(date).format('MM')),
-        Year: Number(moment(date).format('YYYY')),
+        Month: Number(dayjs(date).format('MM')),
+        Year: Number(dayjs(date).format('YYYY')),
       });
     },
   });
+
+  useEffect(() => {
+    if (!selectedBuilding) return;
+
+    setFieldValue('HousingStockIds', [selectedBuilding.id]);
+  }, [selectedBuilding, setFieldValue]);
 
   return (
     <Form id={formId} onSubmitCapture={handleSubmit}>
@@ -63,7 +72,10 @@ export const HeatIndividualDevicesReportForm: FC<
         <FormItem label="Город">
           <Select
             disabled={!(existingCities || []).length}
-            onChange={(value) => selectCity(String(value))}
+            onChange={(value) => {
+              selectCity(String(value));
+              setFieldValue('HousingStockIds', []);
+            }}
             value={selectedCity || undefined}
             placeholder="Выберите город"
           >
@@ -93,7 +105,7 @@ export const HeatIndividualDevicesReportForm: FC<
             picker="month"
             format="MMMM YYYY"
             placeholder="Выберите"
-            value={moment(values.date)}
+            value={dayjs(values.date)}
             onChange={(date) =>
               setFieldValue(
                 'date',

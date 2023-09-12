@@ -1,4 +1,5 @@
 import {
+  BuildingListResponse,
   EResourceDisconnectingType,
   EResourceDisconnectingTypeNullableStringDictionaryItem,
   EResourceType,
@@ -31,6 +32,7 @@ export type CreateResourceDisconnectionFormProps = {
   existingCities: string[];
   selectedCity: string | null;
   selectCity: (city: string) => void;
+  selectedBuilding: BuildingListResponse | null;
 };
 
 export type CreateResourceDisconnectionFormTypes = {

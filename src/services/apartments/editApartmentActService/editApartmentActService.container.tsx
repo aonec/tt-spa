@@ -4,7 +4,7 @@ import { FormModal } from 'ui-kit/Modals/FormModal/FormModal';
 import { editApartmentActService } from './editApartmentActService.model';
 import { EditApartmentActForm } from './view/EditApartmentActForm';
 
-const { inputs, outputs } = editApartmentActService;
+const { inputs, outputs, forms } = editApartmentActService;
 const formId = 'edit-apartment-document';
 
 export const EditApartmentActModalContainer = () => {
@@ -15,18 +15,17 @@ export const EditApartmentActModalContainer = () => {
   const handleClose = useEvent(inputs.closeModal);
 
   const handleDeleteAct = useEvent(inputs.deleteActDocument);
-  const handleSubmit = useEvent(inputs.editAct);
 
   const form = useMemo(
     () => (
       <EditApartmentActForm
         formId={formId}
-        handleSubmit={handleSubmit}
         handleDeleteAct={() => handleDeleteAct()}
         initialValues={initialValues}
+        form={forms.editActForm}
       />
     ),
-    [initialValues, handleDeleteAct, handleSubmit],
+    [initialValues, handleDeleteAct],
   );
   return (
     <FormModal

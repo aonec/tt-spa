@@ -5,12 +5,16 @@ export const Wrapper = styled.div`
   display: grid;
   grid-template-columns: ${apartmentIndividualDeviceMetersInputLineGridTemplate};
   grid-gap: 16px;
-  background: rgba(39, 47, 90, 0.04);
   border-bottom: 1px solid #dcdee4;
   align-items: center;
   height: 48px;
   padding: 0 16px;
   color: rgba(39, 47, 90, 0.9);
+
+  background-color: #f6f7f8;
+  position: sticky;
+  top: 190px;
+  z-index: 10;
 `;
 
 export const MonthSliderWrapper = styled.div`

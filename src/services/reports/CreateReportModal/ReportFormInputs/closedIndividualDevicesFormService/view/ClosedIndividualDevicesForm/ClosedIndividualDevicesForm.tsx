@@ -3,7 +3,7 @@ import { SpaceLine } from 'ui-kit/SpaceLine';
 import { Checkbox } from 'antd';
 import { useForm } from 'effector-forms';
 import { EClosingReason } from 'api/types';
-import React, { FC } from 'react';
+import React, { FC, useEffect } from 'react';
 import { TreeSelectSC } from 'services/resources/createResourceDisconnectionService/view/CreateResourceDisconnectionForm/CreateResourceDisconnectionForm.styled';
 import { FormItem } from 'ui-kit/FormItem';
 import { Select } from 'ui-kit/Select';
@@ -33,6 +33,7 @@ export const ClosedIndividualDevicesForm: FC<
   existingCities,
   selectCity,
   selectedCity,
+  handleFetchHousingStockData,
 }) => {
   const {
     fields: {
@@ -64,6 +65,10 @@ export const ClosedIndividualDevicesForm: FC<
   const isCityShow =
     existingCities.length > 1 && unloadSelectType === UnloadingType.ByAddress;
 
+  useEffect(() => {
+    housingStockId && handleFetchHousingStockData(housingStockId);
+  }, [housingStockId, handleFetchHousingStockData]);
+
   return (
     <div>
       <ExportTypeSelectWrapper>
@@ -86,7 +91,10 @@ export const ClosedIndividualDevicesForm: FC<
             <FormItem label="Город">
               <Select
                 placeholder="Выберите из списка"
-                onChange={(type) => selectCity(String(type))}
+                onChange={(type) => {
+                  selectCity(String(type));
+                  handleChangeHousingStockId(null);
+                }}
                 value={selectedCity || undefined}
               >
                 {existingCities.map((city) => (

@@ -15,13 +15,14 @@ export const CreateReportForm: FC<Props> = ({ type, setType }) => {
     (value: SelectValue) => value && setType(value as ReportType),
     [setType],
   );
+
   return (
     <>
       <FormItem label="Тип отчета">
         <Select
           placeholder="Выберите тип отчета"
           value={type || undefined}
-          onChange={handleChange}
+          onChange={(value) => handleChange(value as SelectValue)}
         >
           {reportTypeTitleNames.map(({ type, name }) => (
             <Select.Option key={type} value={type}>

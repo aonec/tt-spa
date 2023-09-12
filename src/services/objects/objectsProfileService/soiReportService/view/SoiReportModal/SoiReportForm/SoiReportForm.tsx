@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import { Form, Radio, Space } from 'antd';
 import { useFormik } from 'formik';
-import moment from 'moment';
+import dayjs from 'api/dayjs';
 import { ESoiReportPeriod } from 'api/types';
 import { ErrorMessage } from 'ui-kit/ErrorMessage';
 import { TreeSelectSC } from 'services/resources/createResourceDisconnectionService/view/CreateResourceDisconnectionForm/CreateResourceDisconnectionForm.styled';
@@ -87,7 +87,10 @@ export const SoiReportForm: FC<SoiReportFormProps> = ({
         <FormItem label="Город">
           <Select
             value={selectedCity || undefined}
-            onChange={(city) => setSelectedCity(city as string)}
+            onChange={(city) => {
+              setSelectedCity(city as string);
+              setFieldValue('HousingStockId', null);
+            }}
             placeholder="Выберите город"
           >
             {citiesList?.map((city) => (
@@ -173,7 +176,7 @@ export const SoiReportForm: FC<SoiReportFormProps> = ({
             onChange={(value) => setFieldValue('Date', value)}
             picker={values.Period}
             format={values.Period === 'month' ? 'MMMM YYYY' : 'YYYY'}
-            disabledDate={(date) => moment().diff(date) < 0}
+            disabledDate={(date) => dayjs().diff(date) < 0}
           />
         </FormItem>
       </FormGrid>

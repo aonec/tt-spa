@@ -1,5 +1,5 @@
 import { ResourceInfo } from 'ui-kit/shared/ResourceInfo';
-import moment from 'moment';
+import dayjs from 'api/dayjs';
 import React, { FC } from 'react';
 import { DocumentIcon, PencilIcon, TrashIcon, UploadIcon } from 'ui-kit/icons';
 import {
@@ -37,7 +37,7 @@ export const ApartmentActItem: FC<ApartmentActItemProps> = ({
 
   return (
     <ListItem>
-      <DateWrapper>{moment(actJobDate).format('DD.MM.YYYY')}</DateWrapper>
+      <DateWrapper>{dayjs(actJobDate).format('DD.MM.YYYY')}</DateWrapper>
       <ActNumber>{registryNumber}</ActNumber>
 
       <DocumentName>

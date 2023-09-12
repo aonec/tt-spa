@@ -5,15 +5,14 @@ import { GraphTooltipProps } from './Graphtooltip.types';
 
 const formatDate = (timeStamp: string): Date => {
   const dateObject = new Date(timeStamp);
-  const millisecondsInHour = 60 * 1000;
-  const date = new Date(
-    dateObject.valueOf() + dateObject.getTimezoneOffset() * millisecondsInHour,
-  );
+  const date = new Date(dateObject.valueOf());
+
   return date;
 };
 
 export const GraphTooltip: React.FC<GraphTooltipProps> = (props) => {
   const { datum, x, y, measure } = props;
+
   return (
     <g style={{ pointerEvents: 'none' }}>
       <foreignObject
@@ -24,7 +23,9 @@ export const GraphTooltip: React.FC<GraphTooltipProps> = (props) => {
         style={{ overflow: 'visible' }}
       >
         <TooltipBlock value={datum!.value}>
-          <DateBlock>{format(formatDate(datum!.time), 'dd.MM.yyyy')}</DateBlock>
+          <DateBlock>
+            {format(formatDate(datum!.timeUtc), 'dd.MM.yyyy')}
+          </DateBlock>
           <Value>
             {datum!.value.toFixed(3)} {measure}
           </Value>

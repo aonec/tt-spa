@@ -5,6 +5,11 @@ import { useUnit } from 'effector-react';
 import { ApartmentSealProfile } from './view/ApartmentSealProfile';
 import { CreateSealContainer, createSealService } from '../createSealService';
 import './apartmentSealService.relations';
+import { getApartmentQuery } from 'services/meters/metersService/ApartmentReadingsService/ApartmentReadingsService.api';
+import {
+  DeleteAppointmentContainer,
+  deleteAppointmentService,
+} from '../deleteAppointmentService';
 
 const { inputs, outputs, gates } = apartmentSealService;
 const { ApartmentGate } = gates;
@@ -24,6 +29,8 @@ export const ApartmentSealContainer = () => {
     setSelectedHomeownerName,
     updateApartment,
     openCreateSealAppointmentModal,
+    isApartmentFetched,
+    openRemoveAppointmentModal,
   } = useUnit({
     isApartmentLoading: outputs.$isApartmentLoading,
     isAppointmentLoading: outputs.$isSealAppointmentLoading,
@@ -34,11 +41,13 @@ export const ApartmentSealContainer = () => {
     searchApartment: inputs.handleSearchApartment,
     setSelectedHomeownerName: inputs.setSelectedHomeownerName,
     updateApartment: inputs.handleUpdateApartment,
+    openRemoveAppointmentModal: deleteAppointmentService.inputs.openModal,
     openCreateSealAppointmentModal: createSealService.inputs.openModal,
+    isApartmentFetched: getApartmentQuery.$succeeded,
   });
 
   useEffect(() => {
-    return inputs.handleApartmentLoaded.watch((apartment) => {
+    return inputs.handleApartmentLoaded.watch(({ result: apartment }) => {
       if (!apartment || apartment.id === Number(id)) return;
 
       history.push(`/services/seal/apartment/${apartment.id}`);
@@ -49,6 +58,7 @@ export const ApartmentSealContainer = () => {
     <>
       <ApartmentGate id={Number(id)} />
       <CreateSealContainer />
+      <DeleteAppointmentContainer />
       <ApartmentSealProfile
         apartment={apartment}
         isLoadingApartment={isApartmentLoading}
@@ -60,6 +70,11 @@ export const ApartmentSealContainer = () => {
         openCreateSealAppointmentModal={openCreateSealAppointmentModal}
         nearestAppointment={nearestAppointment}
         isAppointmentLoading={isAppointmentLoading}
+        isApartmentFetched={isApartmentFetched}
+        openRemoveAppointmentModal={() =>
+          nearestAppointment &&
+          openRemoveAppointmentModal(nearestAppointment.id)
+        }
       />
     </>
   );

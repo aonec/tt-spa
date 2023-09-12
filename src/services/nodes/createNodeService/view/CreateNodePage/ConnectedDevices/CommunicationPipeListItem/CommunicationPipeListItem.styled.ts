@@ -12,6 +12,13 @@ export const Wrapper = styled.div`
   }
 `;
 
+export const PipeEntryNumber = styled.div`
+  display: flex;
+  align-items: center;
+  font-weight: 400;
+  color: #272f5ab2;
+`;
+
 export const InfoWrapper = styled.div`
   display: flex;
   justify-content: space-between;
@@ -21,7 +28,11 @@ export const InfoWrapper = styled.div`
   font-weight: 500;
 `;
 
-export const PipeNumber = styled.span`
+export const PipeNumber = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 4px;
+
   font-weight: 500;
   font-size: 16px;
   color: #272f5a;

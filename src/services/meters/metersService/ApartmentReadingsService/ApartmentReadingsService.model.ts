@@ -8,7 +8,7 @@ import {
   UpdateHomeownerRequestPayload,
 } from './ApartmentReadingsService.types';
 import {
-  getApartment,
+  getApartmentQuery,
   patchHomeowner,
   putApartment,
 } from './ApartmentReadingsService.api';
@@ -31,15 +31,9 @@ const handleUpdateApartment =
 const handleUpdateHomeowner =
   domain.createEvent<UpdateHomeownerRequestPayload>();
 
-const setSelectedHomeownerName = domain.createEvent<string>();
+const setSelectedHomeownerName = domain.createEvent<string | null>();
 
 const ApartmentGate = createGate<{ id?: number }>();
-
-const fetchApartmentFx = domain.createEffect<
-  GetApartmentsRequestPayload,
-  ApartmentResponse | null,
-  EffectFailDataAxiosError
->(getApartment);
 
 const updateApartmentFx = domain.createEffect<
   UpdateApartmentRequestPayload,
@@ -58,7 +52,7 @@ const handleHomeownerUpdated = updateHomeownerFx.doneData;
 const $apartment = domain
   .createStore<ApartmentResponse | null>(null)
   .on(
-    [fetchApartmentFx.doneData, updateApartmentFx.doneData],
+    [getApartmentQuery.$data, updateApartmentFx.doneData],
     (_, apartment) => apartment,
   )
   .on(handleHomeownerUpdated, (prevApartment, updatedHomeowner) => {
@@ -98,7 +92,12 @@ sample({
 
 forward({
   from: handleSearchApartment,
-  to: fetchApartmentFx,
+  to: getApartmentQuery.start,
+});
+
+sample({
+  clock: ApartmentGate.close,
+  target: getApartmentQuery.reset,
 });
 
 sample({
@@ -111,7 +110,7 @@ sample({
     }),
     pauseApartmentService.inputs.pauseApartmentStatusFx.doneData,
   ],
-  target: fetchApartmentFx,
+  target: getApartmentQuery.start,
 });
 
 forward({
@@ -123,11 +122,11 @@ updateApartmentFx.doneData.watch(() => message.success('Сохранено ус�
 
 updateHomeownerFx.doneData.watch(() => message.success('Сохранено успешно!'));
 
-const $isLoadingApartment = fetchApartmentFx.pending;
+const $isLoadingApartment = getApartmentQuery.$pending;
 
-const handleApartmentLoaded = fetchApartmentFx.doneData;
+const handleApartmentLoaded = getApartmentQuery.finished.success;
 
-fetchApartmentFx.failData.watch((error) => {
+getApartmentQuery.finished.failure.watch(({ error }) => {
   return message.error(
     error.response.data.error.Text ||
       error.response.data.error.Message ||

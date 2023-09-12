@@ -1,5 +1,7 @@
 import React, { FC } from 'react';
 import {
+  AddressSearchWrapper,
+  HeaderBackgraundWrapper,
   IndividualDevicesListWrapper,
   Wrapper,
 } from './HousesReadingsPage.styled';
@@ -11,6 +13,7 @@ import { HousingStockInfoPanel } from './HousingStockInfoPanel';
 import { IndividualDevicesList } from './IndividualDevicesList';
 import { TopButton } from './IndividualDevicesList/TopButton';
 import { TypeAddressToStart } from 'ui-kit/shared/TypeToStart';
+import { NothingFound } from 'ui-kit/shared/NothingFound';
 
 export const HousesReadingsPage: FC<HousesReadingsPageProps> = ({
   housingStock,
@@ -23,35 +26,41 @@ export const HousesReadingsPage: FC<HousesReadingsPageProps> = ({
   managementFirmConsumptionRates,
   openReadingsHistoryModal,
   isAllDevicesLoaded,
+  isHousingStockFetched,
 }) => {
   const address = housingStock?.address?.mainAddress;
 
   return (
     <Wrapper>
       {Boolean(individualDevicesList.length) && <TopButton />}
-      <AddressSearchContainer
-        fields={[
-          SearchFieldType.City,
-          SearchFieldType.Street,
-          SearchFieldType.House,
-        ]}
-        handleSubmit={(values) => {
-          handleSearchHousingStock({
-            City: values.city,
-            Street: values.street,
-            BuildingNumber: values.house,
-          });
-        }}
-        initialValues={
-          address && {
-            city: address.city || undefined,
-            street: address.street || undefined,
-            house: address.number || undefined,
+      <HeaderBackgraundWrapper />
+      <AddressSearchWrapper>
+        <AddressSearchContainer
+          fields={[
+            SearchFieldType.City,
+            SearchFieldType.Street,
+            SearchFieldType.House,
+          ]}
+          handleSubmit={(values) => {
+            handleSearchHousingStock({
+              City: values.city,
+              Street: values.street,
+              BuildingNumber: values.house,
+            });
+          }}
+          initialValues={
+            address && {
+              city: address.city || undefined,
+              street: address.street || undefined,
+              house: address.number || undefined,
+            }
           }
-        }
-      />
+          isError={!housingStock && isHousingStockFetched}
+        />
+      </AddressSearchWrapper>
       <WithLoader isLoading={isLoadingHousingStock}>
-        {!housingStock && <TypeAddressToStart />}
+        {!housingStock && !isHousingStockFetched && <TypeAddressToStart />}
+        {!housingStock && isHousingStockFetched && <NothingFound />}
         {housingStock && (
           <>
             <HousingStockInfoPanel
