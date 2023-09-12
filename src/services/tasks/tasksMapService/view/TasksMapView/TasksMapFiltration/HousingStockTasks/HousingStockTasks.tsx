@@ -1,6 +1,6 @@
 import React, { FC, useMemo } from 'react';
 import _ from 'lodash';
-import { Tooltip } from 'antd';
+import { Tooltip } from 'ui-kit/shared/Tooltip';
 import {
   Address,
   ApartmentInfo,

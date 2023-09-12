@@ -1,7 +1,7 @@
 import { ErrorMessage } from 'ui-kit/ErrorMessage';
 import { MagistralsDisctionary } from 'dictionaries';
 import { useFormik } from 'formik';
-import moment from 'moment';
+import dayjs from 'api/dayjs';
 import { EHousingMeteringDeviceType, EMagistralType } from 'api/types';
 import React, { FC } from 'react';
 import { HousingMeteringDeviceDictionary } from 'services/nodes/addPipeNodeCommonDeviceService/view/AddCommonDeviceForm/CommonDataStep/CommonDataStep.constants';
@@ -40,10 +40,10 @@ export const EditHousingMeteringDeviceCommonInfo: FC<
     model: housingMeteringDevice?.model || null,
     serialNumber: housingMeteringDevice?.serialNumber || null,
     lastCheckingDate: housingMeteringDevice?.lastCheckingDate
-      ? moment(housingMeteringDevice?.lastCheckingDate)
+      ? dayjs(housingMeteringDevice?.lastCheckingDate)
       : null,
     futureCheckingDate: housingMeteringDevice?.futureCheckingDate
-      ? moment(housingMeteringDevice?.futureCheckingDate)
+      ? dayjs(housingMeteringDevice?.futureCheckingDate)
       : null,
     communicationPipeId: housingMeteringDevice?.communicationPipe?.id || null,
   };
@@ -144,7 +144,7 @@ export const EditHousingMeteringDeviceCommonInfo: FC<
               setFieldValue('lastCheckingDate', date);
               setFieldValue(
                 'futureCheckingDate',
-                date ? moment(date).add(4, 'year') : '',
+                date ? dayjs(date).add(4, 'year') : '',
               );
             }}
             placeholder="Выберите"

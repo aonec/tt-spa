@@ -3,7 +3,7 @@ import { EClosingReason, IndividualDeviceListItemResponse } from 'api/types';
 import { closeIndivididualDeviceMutation } from './closeIndividualDeviceService.api';
 import { message } from 'antd';
 import { createForm } from 'effector-forms';
-import moment from 'moment';
+import dayjs from 'api/dayjs';
 import { Document } from 'ui-kit/DocumentsService';
 import { apartmentIndividualDevicesMetersService } from 'services/meters/apartmentIndividualDevicesMetersService';
 
@@ -23,7 +23,7 @@ const closeIndividualDeviceForm = createForm({
   domain,
   fields: {
     closingDate: {
-      init: moment() as moment.Moment | null,
+      init: dayjs() as dayjs.Dayjs | null,
       rules: [
         {
           name: 'required',
@@ -59,7 +59,7 @@ sample({
     deviceId: id,
     closingDate: form.closingDate
       ? form.closingDate.format('YYYY-MM-DD')
-      : moment().format('YYYY-MM-DD'),
+      : dayjs().format('YYYY-MM-DD'),
     closingReason: form.closingReason,
     documentsIds: form.documentsIds.map((document) => document.id),
   }),

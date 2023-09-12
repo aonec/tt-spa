@@ -49,4 +49,5 @@ export const Grid = styled.div`
 export const StyledExpirationDate = styled.div`
   display: flex;
   align-items: center;
+  width: 100%;
 `;

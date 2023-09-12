@@ -1,4 +1,4 @@
-import moment from 'moment';
+import dayjs from 'api/dayjs';
 import {
   AddOrganizationUserWorkingStatusRequest,
   EOrganizationUserWorkingStatusType,
@@ -14,12 +14,18 @@ export const prepareUpdateStatusPayload = (
 ) => {
   return {
     ...data,
-    startDate: moment(data?.startDate)
-      .set({ hour: 0, minute: 0, second: 0, millisecond: 0 })
-      .toISOString(true),
-    endDate: moment(data?.endDate)
-      .set({ hour: 0, minute: 0, second: 0, millisecond: 0 })
-      .toISOString(true),
+    startDate: dayjs(data?.startDate)
+      .set('hour', 0)
+      .set('minute', 0)
+      .set('second', 0)
+      .set('millisecond', 0)
+      .format(),
+    endDate: dayjs(data?.endDate)
+      .set('hour', 0)
+      .set('minute', 0)
+      .set('second', 0)
+      .set('millisecond', 0)
+      .format(),
   };
 };
 

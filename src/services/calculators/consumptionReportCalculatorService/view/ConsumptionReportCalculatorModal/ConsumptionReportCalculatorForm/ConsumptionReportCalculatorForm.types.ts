@@ -1,4 +1,5 @@
 import { CalculatorResponse } from 'api/types';
+import dayjs from 'api/dayjs';
 import { GetCalculatorReportParams } from 'services/calculators/consumptionReportCalculatorService/consumptionReportCalculatorService.types';
 
 export type ConsumptionReportCalculatorFormProps = {
@@ -15,4 +16,4 @@ export enum ArchiveType {
   AnyPeriod = 'AnyPeriod',
 }
 
-export type DatePeriod = [null | moment.Moment, null | moment.Moment];
+export type DatePeriod = [null | dayjs.Dayjs, null | dayjs.Dayjs];

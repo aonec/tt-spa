@@ -20,6 +20,7 @@ export const MenuItemWrapper = styled(NavLink)`
 
   &:hover {
     transition: 0.2s;
+    color: #189ee9;
     path {
       fill: #189ee9 !important;
     }

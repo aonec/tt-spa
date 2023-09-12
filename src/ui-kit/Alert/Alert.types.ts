@@ -1,6 +1,9 @@
+import { ReactNode } from 'react';
+
 export type AlertProps = {
   icon?: AlertIconType;
   type?: AlertType;
+  children?: ReactNode;
 };
 
 export enum AlertIconType {

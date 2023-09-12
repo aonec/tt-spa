@@ -7,7 +7,7 @@ import {
   Wrapper,
 } from './DocumentsPanel.styled';
 import { DocumentsPanelProps } from './DocumentsPanel.types';
-import moment from 'moment';
+import dayjs from 'api/dayjs';
 
 export const DocumentsPanel: FC<DocumentsPanelProps> = ({
   handleClick,
@@ -15,7 +15,7 @@ export const DocumentsPanel: FC<DocumentsPanelProps> = ({
 }) => {
   const preparedDocuments = documents
     .sort((first, second) =>
-      moment(second.uploadingTime).diff(moment(first.uploadingTime)),
+      dayjs(second.uploadingTime).diff(dayjs(first.uploadingTime)),
     )
     .slice(0, 2);
 

@@ -1,4 +1,4 @@
-import moment from 'moment';
+import dayjs from 'api/dayjs';
 import { ArchiveType, DatePeriod } from './ConsolidatedReportForm.types';
 
 export const getDatePeriod = (
@@ -6,13 +6,13 @@ export const getDatePeriod = (
   period: DatePeriod,
 ): { From: string; To: string } | null => {
   if (archiveType === ArchiveType.StartOfMonth) {
-    period = [moment().startOf('month'), moment()];
+    period = [dayjs().startOf('month'), dayjs()];
   }
 
   if (archiveType === ArchiveType.PreviousMonth) {
     period = [
-      moment().subtract(1, 'months').startOf('month'),
-      moment().subtract(1, 'months').endOf('month'),
+      dayjs().subtract(1, 'months').startOf('month'),
+      dayjs().subtract(1, 'months').endOf('month'),
     ];
   }
 

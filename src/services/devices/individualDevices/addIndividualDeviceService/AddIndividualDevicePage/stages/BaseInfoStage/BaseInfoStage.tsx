@@ -25,7 +25,7 @@ import {
 } from 'api/types';
 import { DatePickerNative } from 'ui-kit/shared/DatePickerNative';
 import { getIndividualDeviceRateNumByName } from 'utils/getIndividualDeviceRateNumByName';
-import moment from 'moment';
+import dayjs from 'api/dayjs';
 import { getBitDepthAndScaleFactor } from 'utils/getBitDepthAndScaleFactor';
 import { addIndividualDeviceService } from '../../../addIndividualDeviceService.model';
 import { useHistory, useParams } from 'react-router-dom';
@@ -194,13 +194,13 @@ export const BaseInfoStage: FC<BaseInfoStageProps> = ({
       <FormItem label="Дата последней поверки прибора">
         <DatePickerNative
           onChange={(incomingValue: string) => {
-            const value = moment(incomingValue);
+            const value = dayjs(incomingValue);
 
             const formattedDate = value.format('YYYY-MM-DD');
 
             setFieldValue('lastCheckingDate', formattedDate);
 
-            const nextCheckingDate = moment(formattedDate);
+            const nextCheckingDate = dayjs(formattedDate);
 
             if (!values.resource) return;
 
@@ -224,7 +224,7 @@ export const BaseInfoStage: FC<BaseInfoStageProps> = ({
           onChange={(value) =>
             setFieldValue(
               'futureCheckingDate',
-              moment(value).format('YYYY-MM-DD'),
+              dayjs(value).format('YYYY-MM-DD'),
             )
           }
           value={values.futureCheckingDate}
@@ -306,7 +306,7 @@ export const BaseInfoStage: FC<BaseInfoStageProps> = ({
             placeholder="Введите модель прибора"
             onChange={(value) => {
               setFieldValue('model', value);
-              handleFetchModels(value);
+              handleFetchModels(String(value));
             }}
             options={modelNames?.map((elem) => ({ value: elem })) || []}
           />
@@ -436,7 +436,7 @@ export const BaseInfoStage: FC<BaseInfoStageProps> = ({
       <FormItem label="Дата ввода в эксплуатацию">
         <DatePickerNative
           onChange={(value) =>
-            setFieldValue('openingDate', moment(value).format('YYYY-MM-DD'))
+            setFieldValue('openingDate', dayjs(value).format('YYYY-MM-DD'))
           }
           value={values.openingDate}
         />
@@ -470,7 +470,7 @@ export const BaseInfoStage: FC<BaseInfoStageProps> = ({
             onChange={(value) =>
               setFieldValue(
                 'sealInstallationDate',
-                moment(value).format('YYYY-MM-DD'),
+                dayjs(value).format('YYYY-MM-DD'),
               )
             }
             value={values.sealInstallationDate}

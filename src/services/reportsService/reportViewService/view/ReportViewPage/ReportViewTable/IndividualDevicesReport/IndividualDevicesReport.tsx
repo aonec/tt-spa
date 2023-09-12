@@ -16,7 +16,7 @@ import {
   EConstructedReportDeviceStatus,
   EIndividualDeviceReportOption,
 } from 'api/types';
-import moment from 'moment';
+import dayjs from 'api/dayjs';
 import { Empty } from 'antd';
 import { getReportElemAddress } from '../ReportViewTable.utils';
 
@@ -90,7 +90,7 @@ export const IndividualDevicesReport: FC<IndividualDevicesReportProps> = ({
           size: '170px',
           hidden: !isDeviceCheckingDateExpirationOption,
           render: (elem) =>
-            moment(
+            dayjs(
               elem.deviceCheckingDateExpirationOption?.lastCheckingDate,
             ).format('DD.MM.YYYY'),
         },
@@ -99,7 +99,7 @@ export const IndividualDevicesReport: FC<IndividualDevicesReportProps> = ({
           size: '170px',
           hidden: !isDeviceCheckingDateExpirationOption,
           render: (elem) =>
-            moment(
+            dayjs(
               elem.deviceCheckingDateExpirationOption?.futureCheckingDate,
             ).format('DD.MM.YYYY'),
         },
@@ -134,7 +134,7 @@ export const IndividualDevicesReport: FC<IndividualDevicesReportProps> = ({
           size: '150px',
           hidden: !isClosedDeviceOnOneOfRisersOption,
           render: (elem) =>
-            moment(elem.closedDeviceOnOneOfRisersOption?.checkingDate).format(
+            dayjs(elem.closedDeviceOnOneOfRisersOption?.checkingDate).format(
               'DD.MM.YYYY',
             ),
         },
@@ -143,7 +143,7 @@ export const IndividualDevicesReport: FC<IndividualDevicesReportProps> = ({
           size: '150px',
           hidden: !isClosedDeviceOption,
           render: (elem) =>
-            moment(elem.closedDevicesOption?.checkingDate).format('DD.MM.YYYY'),
+            dayjs(elem.closedDevicesOption?.checkingDate).format('DD.MM.YYYY'),
         },
         {
           label: 'Статус',
@@ -162,7 +162,7 @@ export const IndividualDevicesReport: FC<IndividualDevicesReportProps> = ({
                 ClosingReasonsDictionary[elem.closedDevicesOption.closingReason]
               })`;
 
-            const closingDate = moment(
+            const closingDate = dayjs(
               elem.closedDevicesOption?.closingDate,
             ).format('DD.MM.YYYY');
 
@@ -179,7 +179,7 @@ export const IndividualDevicesReport: FC<IndividualDevicesReportProps> = ({
           size: '170px',
           hidden: !isInvalidCheckingDates,
           render: (elem) =>
-            moment(elem.invalidCheckingDatesOption?.lastCheckingDate).format(
+            dayjs(elem.invalidCheckingDatesOption?.lastCheckingDate).format(
               'DD.MM.YYYY',
             ),
         },
@@ -188,7 +188,7 @@ export const IndividualDevicesReport: FC<IndividualDevicesReportProps> = ({
           size: '170px',
           hidden: !isInvalidCheckingDates,
           render: (elem) =>
-            moment(elem.invalidCheckingDatesOption?.futureCheckingDate).format(
+            dayjs(elem.invalidCheckingDatesOption?.futureCheckingDate).format(
               'DD.MM.YYYY',
             ),
         },

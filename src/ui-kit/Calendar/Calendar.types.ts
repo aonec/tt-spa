@@ -1,5 +1,7 @@
+import dayjs from 'dayjs';
+
 export type CalendarProps = {
-  selectedDate: moment.Moment | null;
-  handleSelectDate: (date: moment.Moment) => void;
-  eventDates?: moment.Moment[];
+  selectedDate: dayjs.Dayjs | null;
+  handleSelectDate: (date: dayjs.Dayjs) => void;
+  eventDates?: dayjs.Dayjs[];
 };
