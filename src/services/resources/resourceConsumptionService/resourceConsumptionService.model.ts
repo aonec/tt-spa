@@ -1,5 +1,6 @@
 import { combine, createDomain, forward, sample } from 'effector';
 import { createGate } from 'effector-react';
+import dayjs from 'api/dayjs';
 import { GetSummaryHousingConsumptionsByResourcesResponse } from 'api/types';
 import { initialSelectedGraphTypes } from './resourceConsumptionService.constants';
 import {
@@ -17,7 +18,6 @@ import {
   fetchNormativeAndSubscriberConsumptionData,
   fetchSummaryHousingConsumptions,
 } from './resourceConsumptionService.api';
-import moment from 'moment';
 import { setConsumptionData } from './resourceConsumptionService.utils';
 
 const domain = createDomain('resourceConsumptionService');
@@ -225,7 +225,7 @@ sample({
   source: $isAdditionalAddressSelected,
   filter: (isAdditionalAddressSelected) => !isAdditionalAddressSelected,
   fn: (_, params) => {
-    const prevMonth = moment(params.From).subtract(1, 'month');
+    const prevMonth = dayjs(params.From).subtract(1, 'month');
     const paramsForPrevMonthRequest = {
       ...params,
       From: prevMonth.startOf('month').utcOffset(0, true).format(),
