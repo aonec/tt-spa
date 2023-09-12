@@ -21,7 +21,12 @@ export const AddResourceDisconnectionContainer: FC<ActionComponentProps> = ({
       <ChooseTypeOfResourceDisconnectionModalContainer />
       <CreateResourceDisconnectionContainer
         handleCreateDisconnectionState={(data) =>
-          handleChange({ resourceDisconnecting: data })
+          handleChange({
+            resourceDisconnecting: {
+              ...data,
+              housingStockIds: data.housingStockIds.filter(Boolean),
+            },
+          })
         }
       />
       <CreateResourceDisconnectionPanel

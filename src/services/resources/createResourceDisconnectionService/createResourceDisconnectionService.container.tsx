@@ -1,5 +1,5 @@
 import { useUnit } from 'effector-react';
-import React, { FC, useMemo } from 'react';
+import React, { FC, useEffect, useMemo } from 'react';
 import { resourceDisconnectionFiltersService } from 'services/resources/resourceDisconnectionFiltersService';
 import { createResourceDisconnectionService } from './createResourceDisconnectionService.model';
 import { CreateResourceDisconnectionModal } from './view/CreateResourceDisconnectionModal';
@@ -18,13 +18,13 @@ import {
 } from 'ui-kit/shared/AddressTreeSelect/AddressTreeSelect.utils';
 import { addressSearchService } from 'services/addressSearchService/addressSearchService.models';
 
-const { inputs, outputs } = createResourceDisconnectionService;
+const { inputs, outputs, fx } = createResourceDisconnectionService;
 const { gates } = resourceDisconnectionFiltersService;
 const { ResourceDisconnectigFiltersGate } = gates;
 
 export const CreateResourceDisconnectionContainer: FC<
   CreateDisconnectionContainerProps
-> = ({ handleCreateDisconnectionState }) => {
+> = ({ handleCreateDisconnectionState, handleComplete }) => {
   const {
     isOpen,
     resourceTypes,
@@ -76,6 +76,13 @@ export const CreateResourceDisconnectionContainer: FC<
       editResourceDisconnectionService.inputs.updateDocument,
     selectedBuilding: outputs.$selectedBuilding,
   });
+
+  useEffect(() => {
+    if (handleComplete) {
+      return fx.createResourceDisconnectionFx.doneData.watch(handleComplete)
+        .unsubscribe;
+    }
+  }, [handleComplete]);
 
   const preparedExistingHousingStocks = useMemo(() => {
     if (typeOfAddress === EAddressDetails.All) {

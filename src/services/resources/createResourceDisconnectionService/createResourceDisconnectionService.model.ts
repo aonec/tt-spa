@@ -230,6 +230,7 @@ export const createResourceDisconnectionService = {
     setTypeOfAddress,
     selectCity,
   },
+  fx: { createResourceDisconnectionFx },
   outputs: {
     $isModalOpen,
     $resourceTypes,
