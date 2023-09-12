@@ -1,4 +1,5 @@
-import { combine, createDomain, forward, guard, sample } from 'effector';
+import { combine, createDomain, guard, sample } from 'effector';
+import { message } from 'antd';
 import {
   HouseManagementResponse,
   StreetWithBuildingNumbersResponsePagedList,
@@ -14,7 +15,6 @@ import {
   SoiReportType,
 } from './soiReportService.types';
 import { BlobResponseErrorType } from 'types';
-import { message } from 'antd';
 import { GetAddressesWithCityRequestPayload } from 'services/workingRanges/uniqueWorkingRangeService/uniqueWorkingRangeService.types';
 import { addressSearchService } from 'services/addressSearchService/addressSearchService.models';
 
@@ -93,9 +93,9 @@ sample({
   target: fetchAdressesFx,
 });
 
-forward({
-  from: createSoiReport,
-  to: createSoiReportFx,
+sample({
+  clock: createSoiReport,
+  target: createSoiReportFx,
 });
 
 createSoiReportFx.failData.watch(async (error) => {

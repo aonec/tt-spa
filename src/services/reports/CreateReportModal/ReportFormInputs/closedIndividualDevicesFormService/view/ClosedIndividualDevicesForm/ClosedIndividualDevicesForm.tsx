@@ -66,7 +66,7 @@ export const ClosedIndividualDevicesForm: FC<
     existingCities.length > 1 && unloadSelectType === UnloadingType.ByAddress;
 
   useEffect(() => {
-    housingStockId && handleFetchHousingStockData(housingStockId);
+    housingStockId && handleFetchHousingStockData(Number(housingStockId));
   }, [housingStockId, handleFetchHousingStockData]);
 
   return (

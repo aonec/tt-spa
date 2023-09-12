@@ -1,4 +1,5 @@
-import { HouseManagementResponse } from 'api/types';
+import dayjs from 'dayjs';
+import { EResourceType, HouseManagementResponse } from 'api/types';
 import { TreeSelectElement } from 'ui-kit/shared/AddressTreeSelect/AddressTreeSelect.types';
 import {
   CreateSoiReportRequestPayload,
@@ -13,4 +14,14 @@ export type SoiReportFormProps = {
   houseManagements: HouseManagementResponse[] | null;
   preparedAddresses: TreeSelectElement[];
   createSoiReport: (payload: CreateSoiReportRequestPayload) => void;
+};
+
+export type CreateSoiReportForm = {
+  ReportName: string;
+  HouseManagementId: string | null;
+  HousingStockIdHash: string | null;
+  Resource: EResourceType | null;
+  Period: 'month' | 'year';
+  NormativePerPerson: string;
+  Date: dayjs.Dayjs | null;
 };
