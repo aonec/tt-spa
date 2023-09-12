@@ -17,10 +17,10 @@ import {
   InputWrapper,
 } from 'services/meters/individualDeviceMetersInputService/view/MetersInputsBlock/MetersInputsBlock.styled';
 import { MetersInputBlockStatus } from 'services/meters/individualDeviceMetersInputService/view/MetersInputsBlock/MetersInputsBlock.types';
-import { Tooltip } from 'antd';
+import { Tooltip } from 'ui-kit/shared/Tooltip';
 import { fromEnter } from 'ui-kit/shared/DatePickerNative';
 import { getTimeStringByUTC } from 'utils/getTimeStringByUTC';
-import moment from 'moment';
+import dayjs from 'api/dayjs';
 import { isNumber } from 'lodash';
 import { useSwitchInputOnEnter } from 'hooks/useSwitchInputOnEnter';
 
@@ -69,7 +69,7 @@ export const AccountingNodeReadingsInputBlock: FC<
   const handleTriggerInput = useCallback(() => {
     const preparedReadingDate =
       readingDate ||
-      moment().subtract(sliderIndex, 'month').format('YYYY-MM-DD');
+      dayjs().subtract(sliderIndex, 'month').format('YYYY-MM-DD');
 
     handleSendReading({
       value: bufferedReadingValue,

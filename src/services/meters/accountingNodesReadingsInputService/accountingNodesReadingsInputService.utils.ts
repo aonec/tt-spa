@@ -1,5 +1,5 @@
 import { HousingMeteringDeviceReadingsIncludingPlacementResponse } from 'api/types';
-import moment from 'moment';
+import dayjs from 'api/dayjs';
 import {
   NodeReadingsStatuses,
   PreparedNodeReadingsData,
@@ -14,13 +14,11 @@ export const getPreparedNodeReadingsDictionary = (
   readings.reduce((acc, elem) => {
     const dateFormat = 'YYYY-MM';
 
-    const currentMonthDate = moment(
-      moment().format(dateFormat),
-      dateFormat,
-    ).add(1, 'M');
-    const readingMonthDate = moment(
-      moment(elem.readingDate).format(dateFormat),
+    const currentMonthDate = dayjs(dayjs().format(dateFormat), dateFormat).add(
+      1,
+      'M',
     );
+    const readingMonthDate = dayjs(dayjs(elem.readingDate).format(dateFormat));
 
     if (
       elem.isArchived ||

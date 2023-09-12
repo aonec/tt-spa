@@ -154,9 +154,17 @@ sample({
 });
 
 sample({
-  source: $requestPayload.map(({ buildingId }) => buildingId || null),
   clock: $requestPayload,
-  filter: (id): id is number => Boolean(id),
+  source: combine(
+    $stepNumber,
+    $requestPayload,
+    (stepNumber, requestPayload) => ({
+      stepNumber,
+      buildingId: requestPayload.buildingId,
+    }),
+  ),
+  filter: (source) => Boolean(source.buildingId) && source.stepNumber === 1,
+  fn: (source) => source.buildingId as number,
   target: fetchCalculatorsListFx,
 });
 

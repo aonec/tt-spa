@@ -43,7 +43,7 @@ const errorFocusedStyle = css`
   box-shadow: 0 0 0 2px rgba(252, 82, 91, 0.2) !important;
 `;
 
-export const InputSC = styled(Input)<{ error: boolean }>`
+export const InputSC = styled(Input)<{ error?: boolean }>`
   ${({ error }) => error && errorBorderStyle}
 
   &:focus {
@@ -51,7 +51,7 @@ export const InputSC = styled(Input)<{ error: boolean }>`
   }
 `;
 
-export const AutoCompleteSC = styled(AutoComplete)<{ error: boolean }>`
+export const AutoCompleteSC = styled(AutoComplete)<{ error?: boolean }>`
   .ant-select-selector {
     ${({ error }) => error && errorBorderStyle}
   }

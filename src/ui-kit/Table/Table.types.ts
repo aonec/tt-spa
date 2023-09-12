@@ -19,4 +19,5 @@ export type TableProps<T> = {
   rowStyles?: string;
   headerStyles?: string;
   link?: (elem: T) => string;
+  isSticky?: boolean;
 };

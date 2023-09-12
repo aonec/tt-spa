@@ -1,4 +1,4 @@
-import { Tooltip } from 'antd';
+import { Tooltip } from 'ui-kit/shared/Tooltip';
 import React, { FC, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { DeviceIcon } from 'ui-kit/icons';

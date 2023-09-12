@@ -1,5 +1,5 @@
 import React from 'react';
-import moment from 'moment';
+import dayjs from 'api/dayjs';
 import { Popover } from 'antd';
 import { ContextMenuButton } from 'ui-kit/ContextMenuButton/ContextMenuButton';
 import {
@@ -41,18 +41,18 @@ export const DisablingResourceItem: React.FC<RenderApartmentProps> = ({
       <GroupWrapper>
         <TimeElement>
           <StyledFontLarge>
-            {moment(startDate).format('DD.MM.YYYY')}
+            {dayjs(startDate).format('DD.MM.YYYY')}
           </StyledFontLarge>
-          <span>{moment(startDate).format('HH:mm')}</span>
+          <span>{dayjs(startDate).format('HH:mm')}</span>
         </TimeElement>
         {endDate && (
           <>
             -
             <TimeElement>
               <StyledFontLarge>
-                {moment(endDate).format('DD.MM.YYYY')}
+                {dayjs(endDate).format('DD.MM.YYYY')}
               </StyledFontLarge>
-              <span>{moment(endDate).format('HH:mm')}</span>
+              <span>{dayjs(endDate).format('HH:mm')}</span>
             </TimeElement>
           </>
         )}

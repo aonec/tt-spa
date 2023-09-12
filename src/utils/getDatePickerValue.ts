@@ -1,8 +1,10 @@
-import moment from 'moment';
+import dayjs from 'api/dayjs';
 
 export const getDatePickerValue = (
   date?: string | null,
-  format?: moment.MomentFormatSpecification
-): moment.Moment | null => {
-  return date ? moment(date, format) : null;
+  format?: dayjs.OptionType,
+): dayjs.Dayjs | null => {
+  return date ? dayjs(date, format) : null;
 };
+
+dayjs().format();

@@ -4,11 +4,10 @@ import { Input } from 'ui-kit/Input';
 export const PageWrapper = styled.div`
   display: flex;
   flex-direction: column;
-
-  position: relative;
-
-  width: 960px;
-  margin: 10px;
+  width: 980px;
+  height: 78vh;
+  overflow-y: hidden;
+  overflow-x: hidden;
 `;
 
 export const WrapperMultiHeader = styled.div`
@@ -40,12 +39,14 @@ export const WrapperTime = styled.div`
   grid-template-columns: 1.55fr 1fr;
 `;
 
-export const InputSc = styled(Input)`
+export const InputSc = styled(Input)<{ isErr?: boolean }>`
   height: 32px;
-`;
 
-export const InputScShort = styled(Input)`
-  height: 32px;
+  .ant-input {
+    background-color: ${({ isErr }) => (isErr ? '#ff002140' : 'none')};
+    margin-top: 6px;
+    height: 20px;
+  }
 `;
 
 export const InputsContainer = styled.div`
@@ -58,14 +59,12 @@ export const Footer = styled.div`
   align-items: center;
   justify-content: flex-end;
   gap: 16px;
-  height: 60px;
   padding: 0 50px;
+  height: 80px;
+  width: 320px;
+  background-color: white;
 
   position: fixed;
-  bottom: 0px;
-
-  width: calc(100% - 570px);
-
-  background: transparent;
-  z-index: 10;
+  right: 16.5vw;
+  bottom: 0vh;
 `;

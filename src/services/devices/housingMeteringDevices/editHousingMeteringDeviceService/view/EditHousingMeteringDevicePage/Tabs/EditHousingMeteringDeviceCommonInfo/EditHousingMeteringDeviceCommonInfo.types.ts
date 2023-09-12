@@ -1,4 +1,3 @@
-import { Moment } from 'moment';
 import {
   CommunicationPipeResponse,
   EHousingMeteringDeviceType,
@@ -6,6 +5,7 @@ import {
   PipeHousingMeteringDeviceResponse,
   UpdatePipeHousingMeteringDeviceRequest,
 } from 'api/types';
+import { Dayjs } from 'dayjs';
 
 export type EditHousingMeteringDeviceCommonInfoProps = {
   housingMeteringDevice: PipeHousingMeteringDeviceResponse | null;
@@ -20,7 +20,7 @@ export type EditHousingMeteringDeviceCommonInfoFormTypes = {
   housingMeteringDeviceType: EHousingMeteringDeviceType | null;
   model: string | null;
   serialNumber: string | null;
-  lastCheckingDate: Moment | null;
-  futureCheckingDate: Moment | null;
+  lastCheckingDate: Dayjs | null;
+  futureCheckingDate: Dayjs | null;
   communicationPipeId: number | null;
 };

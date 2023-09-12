@@ -1,4 +1,4 @@
-import moment from 'moment';
+import dayjs from 'api/dayjs';
 import {
   HousingMeteringDeviceReadingsIncludingPlacementResponse,
   SwitchHousingDeviceReadingsCreateRequest,
@@ -11,13 +11,13 @@ export const prepareData = (
   readings: HousingMeteringDeviceReadingsIncludingPlacementResponse[],
 ) => {
   const dateFormat = 'YYYY-MM';
-  const currentMonthDate = moment(
-    moment().add(1, 'month').format(dateFormat),
+  const currentMonthDate = dayjs(
+    dayjs().add(1, 'month').format(dateFormat),
     dateFormat,
   );
   const preparedArray = getFilledArray(7, (index) => {
     const text = firstLetterToUpperCase(
-      moment(currentMonthDate).subtract(index, 'month').format('MMMM'),
+      dayjs(currentMonthDate).subtract(index, 'month').format('MMMM'),
     );
 
     return {
@@ -25,7 +25,7 @@ export const prepareData = (
       id: text,
       value: null,
       nonResidentialRoomConsumption: null,
-      readingDate: moment(currentMonthDate)
+      readingDate: dayjs(currentMonthDate)
         .utcOffset(0, true)
         .subtract(index, 'month')
         .format(),
@@ -34,8 +34,8 @@ export const prepareData = (
 
   return readings
     .reduce((acc, currentReading) => {
-      const readingMonthDate = moment(
-        moment(currentReading.readingDate).format(dateFormat),
+      const readingMonthDate = dayjs(
+        dayjs(currentReading.readingDate).format(dateFormat),
       );
 
       const diff = currentMonthDate.diff(readingMonthDate, 'months');
@@ -59,7 +59,7 @@ export const prepareData = (
       return acc;
     }, preparedArray as PreparedHousingMeteringDeviceReadings[])
     .sort((firstReading, secondReading) =>
-      moment(secondReading.readingDate).diff(firstReading.readingDate),
+      dayjs(secondReading.readingDate).diff(firstReading.readingDate),
     );
 };
 

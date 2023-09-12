@@ -1,7 +1,7 @@
 import { ErrorMessage } from 'ui-kit/ErrorMessage';
 import { Form } from 'antd';
 import { useFormik } from 'formik';
-import moment from 'moment';
+import dayjs from 'api/dayjs';
 import {
   EDocumentType,
   EResourceDisconnectingType,
@@ -143,7 +143,7 @@ export const CreateResourceDisconnectionForm: FC<
   const preparedEndHours = prepareEndHours(values.startHour);
 
   const handleDisableDate = useCallback(
-    (endDate: moment.Moment) => {
+    (endDate: dayjs.Dayjs) => {
       const startDate = getDatePickerValue(values.startDate, 'DD.MM.YYYY');
       if (!startDate) {
         return true;

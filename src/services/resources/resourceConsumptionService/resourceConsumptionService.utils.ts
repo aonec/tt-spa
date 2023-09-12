@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import moment from 'moment';
+import dayjs from 'api/dayjs';
 import {
   DateTimeDoubleDictionaryItem,
   StreetWithBuildingNumbersResponse,
@@ -21,14 +21,14 @@ export const prepareDataForConsumptionGraphWithLastValue = (
   if (!lastDate) {
     return prepareDataForConsumptionGraph(dataArr);
   }
-  const startOfMonth = moment(dataArr[0].key).startOf('month');
+  const startOfMonth = dayjs(dataArr[0].key).startOf('month');
   const emptyArray = getFilledArray(
-    moment(lastDate).diff(startOfMonth, 'd') + 1,
+    dayjs(lastDate).diff(startOfMonth, 'd') + 1,
     (index) => index + 1,
   );
 
   const objectOfData = dataArr.reduce((acc, elem) => {
-    const diff = String(moment(elem.key).diff(startOfMonth, 'day') + 1);
+    const diff = String(dayjs(elem.key).diff(startOfMonth, 'day') + 1);
 
     return { ...acc, [diff]: { ...elem, key: diff } };
   }, {} as { [key: string]: DateTimeDoubleDictionaryItem });
@@ -52,11 +52,11 @@ export const prepareDataForConsumptionGraph = (
   if (!dataArr.length) {
     return [];
   }
-  const startOfMonth = moment(dataArr[0].key).startOf('month');
+  const startOfMonth = dayjs(dataArr[0].key).startOf('month');
   const emptyArray = getFilledArray(31, (index) => index + 1);
 
   const objectOfData = dataArr.reduce((acc, elem) => {
-    const diff = String(moment(elem.key).diff(startOfMonth, 'day') + 1);
+    const diff = String(dayjs(elem.key).diff(startOfMonth, 'day') + 1);
 
     return { ...acc, [diff]: { ...elem, key: diff } };
   }, {} as { [key: string]: DateTimeDoubleDictionaryItem });

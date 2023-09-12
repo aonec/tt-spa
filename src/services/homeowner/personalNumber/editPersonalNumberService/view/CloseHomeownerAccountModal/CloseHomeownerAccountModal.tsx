@@ -11,7 +11,7 @@ import {
   GridContainer,
   ModalTitle,
 } from './CloseHomeownerAccountModal.styled';
-import moment from 'moment';
+import dayjs from 'api/dayjs';
 
 const formId = 'close-homeowner-account-modal';
 
@@ -64,7 +64,7 @@ export const CloseHomeownerAccountModal: FC<
               onChange={(value) =>
                 setFieldValue(
                   'closedAt',
-                  moment(value).startOf('day').format('YYYY-MM-DD'),
+                  dayjs(value).startOf('day').format('YYYY-MM-DD'),
                 )
               }
             />

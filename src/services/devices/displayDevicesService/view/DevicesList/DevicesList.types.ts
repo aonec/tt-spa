@@ -16,4 +16,5 @@ export type DevicesListProps = {
   setAddressBySwither: (address: NodesListRequestPayload) => void;
   mainFilterSearchType: DevicesSearchType;
   setMainFilterSearchType: (type: DevicesSearchType) => void;
+  isDevicesFetched: boolean;
 };

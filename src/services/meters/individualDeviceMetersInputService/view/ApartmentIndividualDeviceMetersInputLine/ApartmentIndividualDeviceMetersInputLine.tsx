@@ -1,4 +1,3 @@
-import { Tooltip } from 'antd';
 import React, { FC, useMemo } from 'react';
 import { HistoryIcon } from 'ui-kit/icons';
 import { ResourceIconLookup } from 'ui-kit/shared/ResourceIconLookup';
@@ -14,6 +13,7 @@ import {
 import { ApartmentIndividualDeviceMetersInputLineProps } from './ApartmentIndividualDeviceMetersInputLine.types';
 import { getReadingValuesArray } from './ApartmentIndividualDeviceMetersInputLine.utils';
 import { ContextMenuButton } from 'ui-kit/ContextMenuButton/ContextMenuButton';
+import { Tooltip } from 'ui-kit/shared/Tooltip';
 
 export const ApartmentIndividualDeviceMetersInputLine: FC<
   ApartmentIndividualDeviceMetersInputLineProps

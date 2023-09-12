@@ -1,5 +1,5 @@
 import React, { FC, useCallback } from 'react';
-import moment from 'moment';
+import dayjs from 'api/dayjs';
 import _ from 'lodash';
 import {
   IndividualDeviceReadingsItemHistoryResponse,
@@ -200,7 +200,7 @@ export const ReadingsHistoryList: FC<ReadingsHistoryListProps> = ({
       );
 
       const entryDate = reading && (
-        <div>{getTimeStringByUTC(reading.entryDate)}</div>
+        <div>{getTimeStringByUTC(reading.uploadTime)}</div>
       );
 
       const arrowButtonComponent =
@@ -213,10 +213,10 @@ export const ReadingsHistoryList: FC<ReadingsHistoryListProps> = ({
         actualHomeownerAccount,
       );
 
-      const accountLastChangeYear = moment(
+      const accountLastChangeYear = dayjs(
         actualHomeownerAccount?.openAt,
       ).year();
-      const accountLastChangeMonth = moment(actualHomeownerAccount?.openAt)
+      const accountLastChangeMonth = dayjs(actualHomeownerAccount?.openAt)
         .set('day', 15)
         .month();
 

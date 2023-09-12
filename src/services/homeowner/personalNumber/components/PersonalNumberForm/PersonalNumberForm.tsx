@@ -1,7 +1,7 @@
 import React, { FC, useEffect } from 'react';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
-import moment from 'moment';
+import dayjs from 'api/dayjs';
 import {
   DeleteButton,
   FlexContainer,
@@ -45,8 +45,7 @@ export const PersonalNumberForm: FC<PersonalNumberFormProps> = ({
       initialValues: {
         name: ((isEdit || isSplit) && homeowner?.name) || '',
         phoneNumber: (isEdit && homeowner?.phoneNumber) || '',
-        openAt:
-          (isEdit && moment(homeowner?.openAt).format('YYYY-MM-DD')) || '',
+        openAt: (isEdit && dayjs(homeowner?.openAt).format('YYYY-MM-DD')) || '',
         personalAccountNumber:
           (isEdit && homeowner?.personalAccountNumber) || '',
         paymentCode: (isEdit && homeowner?.paymentCode) || '',
@@ -114,7 +113,7 @@ export const PersonalNumberForm: FC<PersonalNumberFormProps> = ({
         <DatePickerNative
           value={values.openAt}
           onChange={(value) =>
-            setFieldValue('openAt', moment(value).format('YYYY-MM-DD'))
+            setFieldValue('openAt', dayjs(value).format('YYYY-MM-DD'))
           }
           disabled={isEdit}
         />

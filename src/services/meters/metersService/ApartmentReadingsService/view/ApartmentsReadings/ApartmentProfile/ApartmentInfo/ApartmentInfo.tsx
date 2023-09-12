@@ -1,6 +1,6 @@
 import React, { FC, useCallback, useEffect, useMemo, useState } from 'react';
 import { useEvent, useStore } from 'effector-react';
-import { Tooltip } from 'antd';
+import { Tooltip } from 'ui-kit/shared/Tooltip';
 import {
   AccountOpeningDate,
   AdditionalHeaderInfoWrapper,
@@ -29,7 +29,7 @@ import { ApartmentInfoProps } from './ApartmentInfo.types';
 import { ContextMenuButton } from 'ui-kit/ContextMenuButton/ContextMenuButton';
 import { getApartmentAddressString } from 'utils/getApartmentAddress';
 import { BriefcaseIcon, CrownIcon, HouseIcon, InfoIcon } from 'ui-kit/icons';
-import moment from 'moment';
+import dayjs from 'api/dayjs';
 import { apartmentInfoService } from './ApartmentInfo.model';
 import { PrintApartmentDevicesCertificateContainer } from 'services/apartments/printApartmentDevicesCertificateService';
 import { EditHomeownerField } from './EditHomeownerField';
@@ -73,13 +73,14 @@ export const ApartmentInfo: FC<ApartmentInfoProps> = ({
   );
 
   useEffect(() => {
-    selectedHomeowner?.name &&
-      setSelectedHomeownerName(selectedHomeowner?.name);
+    setSelectedHomeownerName(selectedHomeowner?.name || null);
   }, [selectedHomeowner, setSelectedHomeownerName]);
 
   const houseManagement = housingStock?.houseManagement;
 
-  const houseManagementName = `Домоуправление «${houseManagement?.name}»`;
+  const houseManagementName = houseManagement?.name
+    ? `Домоуправление «${houseManagement?.name}»`
+    : '';
 
   const houseManagementInfo = useMemo(() => {
     const phoneNumber = houseManagement?.phone
@@ -92,7 +93,7 @@ export const ApartmentInfo: FC<ApartmentInfoProps> = ({
     return `${phoneNumber} ${information}`;
   }, [houseManagement]);
 
-  const accountingOpeningDate = `открыт с ${moment(
+  const accountingOpeningDate = `открыт с ${dayjs(
     selectedHomeowner?.openAt,
   ).format('DD.MM.YYYY')}`;
 
@@ -198,9 +199,9 @@ export const ApartmentInfo: FC<ApartmentInfoProps> = ({
 
                           <SubText>
                             Дата изменения:{' '}
-                            {moment(selectedHomeowner?.editedAt).format(
-                              'DD.MM.YYYY',
-                            )}
+                            {dayjs(
+                              selectedHomeowner?.editedAt || undefined,
+                            ).format('DD.MM.YYYY')}
                           </SubText>
                         </div>
                       }

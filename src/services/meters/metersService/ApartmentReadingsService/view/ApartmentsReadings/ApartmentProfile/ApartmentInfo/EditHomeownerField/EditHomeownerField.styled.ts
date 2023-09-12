@@ -28,6 +28,7 @@ export const ValueWrapper = styled.div`
   cursor: pointer;
   padding: 4px;
   border-radius: 4px;
+  min-height: 20px;
 
   transition: 0.2s;
 
@@ -40,6 +41,7 @@ export const InputSC = styled(Input)`
   color: #272f5a;
   font-weight: 600;
   font-size: 14px;
+  min-height: 36px;
 `;
 
 export const PencilIconSC = styled(PencilIcon)`

@@ -29,3 +29,10 @@ export const PanelInfoText = styled.div`
   font-size: 14px;
   color: #272f5a;
 `;
+
+export const StickyWrapper = styled.div`
+  background-color: #fff;
+  position: sticky;
+  top: 72px;
+  z-index: 10;
+`;

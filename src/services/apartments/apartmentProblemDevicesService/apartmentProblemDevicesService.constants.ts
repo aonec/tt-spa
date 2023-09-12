@@ -1,4 +1,4 @@
-import moment from 'moment';
+import dayjs from 'api/dayjs';
 import { GetProblemDevicesRequestPayload } from './apartmentProblemDevicesService.types';
 
 export function preparedDevicesToFetch(
@@ -10,10 +10,10 @@ export function preparedDevicesToFetch(
       ...values.requestPayload,
       fromDate:
         values.requestPayload?.fromDate &&
-        moment(values.requestPayload?.fromDate).format('YYYY-MM-DD'),
+        dayjs(values.requestPayload?.fromDate).format('YYYY-MM-DD'),
       toDate:
         values.requestPayload?.toDate &&
-        moment(values.requestPayload?.toDate).format('YYYY-MM-DD'),
+        dayjs(values.requestPayload?.toDate).format('YYYY-MM-DD'),
     },
   };
 }

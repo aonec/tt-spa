@@ -15,7 +15,7 @@ import { getDatePickerValue } from 'utils/getDatePickerValue';
 import { DatePicker } from 'ui-kit/DatePicker';
 import { validationSchema } from './CreateSealAppointmentForm.constants';
 import { ErrorMessage } from 'ui-kit/ErrorMessage';
-import moment from 'moment';
+import dayjs from 'api/dayjs';
 
 export const CreateSealAppointmentForm: FC<CreateSealAppointmentFormProps> = ({
   formId,
@@ -114,7 +114,7 @@ export const CreateSealAppointmentForm: FC<CreateSealAppointmentFormProps> = ({
         <FormItem label="Дата записи на опломбировку">
           <DatePicker
             format="DD.MM.YYYY"
-            disabledDate={(date) => moment().diff(date, 'd') > 0}
+            disabledDate={(date) => dayjs().diff(date, 'd') > 0}
             value={getDatePickerValue(values.date)}
             onChange={(date) =>
               setFieldValue('date', date?.format('YYYY-MM-DD'))

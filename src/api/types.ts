@@ -776,8 +776,6 @@ export interface BuildingListResponse {
 
   /** @format int32 */
   managingFirmId: number;
-  inspectorId: number | null;
-  inspectedDay: string | null;
 
   /** @format int32 */
   numberOfTasks: number | null;
@@ -2069,6 +2067,7 @@ export enum EManagingFirmTaskFilterType {
   EmergencyApplication = 'EmergencyApplication',
   PlannedApplication = 'PlannedApplication',
   CurrentApplication = 'CurrentApplication',
+  ResourceDisconnecting = 'ResourceDisconnecting',
 }
 
 export interface EManagingFirmTaskFilterTypeNullableStringDictionaryItem {
@@ -2092,6 +2091,7 @@ export enum EManagingFirmTaskType {
   MeasurementErrorNonCommercial = 'MeasurementErrorNonCommercial',
   IndividualDeviceCheckNoReadings = 'IndividualDeviceCheckNoReadings',
   RiserNoReadings = 'RiserNoReadings',
+  ResourceDisconnecting = 'ResourceDisconnecting',
 }
 
 export enum EMeteringDeviceType {
@@ -2375,6 +2375,7 @@ export enum EStageActionType {
   CompletionOrSwitch = 'CompletionOrSwitch',
   ClearManuallyAttachedParticipants = 'ClearManuallyAttachedParticipants',
   CloseIndividualDevices = 'CloseIndividualDevices',
+  CreateResourceDisconnecting = 'CreateResourceDisconnecting',
 }
 
 export enum EStageStatus {
@@ -2410,6 +2411,7 @@ export enum ETaskConfirmationType {
   PipeRuptureNotConfirmAnomaly = 'PipeRuptureNotConfirm_Anomaly',
   PipeRuptureNotConfirmCalculatorMalfunction = 'PipeRuptureNotConfirm_CalculatorMalfunction',
   PipeRuptureNotConfirmPowerMalfunction = 'PipeRuptureNotConfirm_PowerMalfunction',
+  ResourceDisconnectingNotConfirm = 'ResourceDisconnectingNotConfirm',
 }
 
 export interface ETaskConfirmationTypeStringDictionaryItem {
@@ -2430,6 +2432,7 @@ export enum ETaskCreateType {
   EmergencyApplication = 'EmergencyApplication',
   PlannedApplication = 'PlannedApplication',
   CurrentApplication = 'CurrentApplication',
+  ResourceDisconnecting = 'ResourceDisconnecting',
 }
 
 export enum ETaskEngineeringElement {
@@ -5599,6 +5602,7 @@ export interface StagePushRequest {
   deviceCloses?: CloseDeviceRequest[] | null;
   calculatorSwitch?: SwitchCalculatorRequest | null;
   housingMeteringDeviceSwitch?: SwitchHousingMeteringDeviceRequest | null;
+  resourceDisconnecting?: ResourceDisconnectingCreateRequest | null;
   readings?: IndividualDeviceReadingsCreateRequest[] | null;
   fixedReading?: IndividualDeviceReadingsCreateRequest | null;
 
@@ -6136,6 +6140,12 @@ export interface TaskStatisticsItem {
 
   /** @format date-time */
   creationTime?: string;
+
+  /** @format date-time */
+  firstTriggerTime?: string;
+
+  /** @format date-time */
+  lastTriggerTime?: string | null;
 }
 
 export interface TaskStatisticsResponse {
@@ -6179,6 +6189,14 @@ export interface TasksPagedListSuccessApiResponse {
   successResponse: TasksPagedList | null;
 }
 
+export interface TemperatureNormativeResponse {
+  rows: TemperatureNormativeRow[] | null;
+}
+
+export interface TemperatureNormativeResponseSuccessApiResponse {
+  successResponse: TemperatureNormativeResponse | null;
+}
+
 export interface TemperatureNormativeRow {
   /** @format double */
   outdoorTemperature?: number;
@@ -6217,14 +6235,6 @@ export interface TemperatureNormativeRowUpdate {
 
   /** @format double */
   heatFeedFlowTemperature: number;
-}
-
-export interface TemperatureNormativeResponse {
-  rows: TemperatureNormativeRow[] | null;
-}
-
-export interface TemperatureNormativeResponseSuccessApiResponse {
-  successResponse: TemperatureNormativeResponse | null;
 }
 
 export interface TemperatureNormativeUpdateRequest {
@@ -6422,6 +6432,14 @@ export interface UpdateIndividualDeviceRequest {
   contractorId?: number | null;
   connection?: MeteringDeviceConnection | null;
   isConnected?: boolean;
+}
+
+export interface UpdateIndividualDeviceSealRequest {
+  serialNumber: string;
+  sealNumber: string;
+
+  /** @format date-time */
+  sealInstallationDate: string;
 }
 
 export interface UpdateInspectorOnBuildingRequest {
@@ -7279,12 +7297,13 @@ export class Api<
       data: AppointmentCreateRequest,
       params: RequestParams = {},
     ) =>
-      this.request<void, ErrorApiResponse>({
+      this.request<string, ErrorApiResponse>({
         path: `/api/IndividualSeal/Appointments`,
         method: 'POST',
         body: data,
         secure: true,
         type: ContentType.Json,
+        format: 'json',
         ...params,
       }),
 
@@ -8192,8 +8211,6 @@ export class Api<
      */
     calculatorsExportList: (
       query?: {
-        'Filter.DiameterRange.From'?: number;
-        'Filter.DiameterRange.To'?: number;
         'Filter.PipeDiameters'?: number[];
         'Filter.ExpiresCheckingDateAt'?: EExpiresDateAt;
         'Filter.ExpiresAdmissionActDateAt'?: EExpiresDateAt;
@@ -8243,8 +8260,6 @@ export class Api<
      */
     calculatorsList: (
       query?: {
-        'Filter.DiameterRange.From'?: number;
-        'Filter.DiameterRange.To'?: number;
         'Filter.PipeDiameters'?: number[];
         'Filter.ExpiresCheckingDateAt'?: EExpiresDateAt;
         'Filter.ExpiresAdmissionActDateAt'?: EExpiresDateAt;
@@ -8880,12 +8895,13 @@ export class Api<
       data: DistrictCreateRequest,
       params: RequestParams = {},
     ) =>
-      this.request<void, ErrorApiResponse>({
+      this.request<string, ErrorApiResponse>({
         path: `/api/IndividualSeal/Districts`,
         method: 'POST',
         body: data,
         secure: true,
         type: ContentType.Json,
+        format: 'json',
         ...params,
       }),
 
@@ -8950,6 +8966,29 @@ export class Api<
     ) =>
       this.request<void, ErrorApiResponse>({
         path: `/api/IndividualSeal/Districts/${districtId}/AddHouse`,
+        method: 'POST',
+        body: data,
+        secure: true,
+        type: ContentType.Json,
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li>
+     *
+     * @tags Districts
+     * @name IndividualSealDistrictsDeleteHouseCreate
+     * @summary IndividualSealReadWrite
+     * @request POST:/api/IndividualSeal/Districts/{districtId}/DeleteHouse
+     * @secure
+     */
+    individualSealDistrictsDeleteHouseCreate: (
+      districtId: string,
+      data: number,
+      params: RequestParams = {},
+    ) =>
+      this.request<void, ErrorApiResponse>({
+        path: `/api/IndividualSeal/Districts/${districtId}/DeleteHouse`,
         method: 'POST',
         body: data,
         secure: true,
@@ -10822,7 +10861,10 @@ export class Api<
       data: UpdateIndividualDeviceRequest,
       params: RequestParams = {},
     ) =>
-      this.request<MeteringDeviceResponseSuccessApiResponse, ErrorApiResponse>({
+      this.request<
+        IndividualDeviceResponseSuccessApiResponse,
+        ErrorApiResponse
+      >({
         path: `/api/IndividualDevices/${deviceId}`,
         method: 'PUT',
         body: data,
@@ -10885,9 +10927,39 @@ export class Api<
       data: CreateIndividualDeviceRequest,
       params: RequestParams = {},
     ) =>
-      this.request<MeteringDeviceResponseSuccessApiResponse, ErrorApiResponse>({
+      this.request<
+        IndividualDeviceResponseSuccessApiResponse,
+        ErrorApiResponse
+      >({
         path: `/api/IndividualDevices`,
         method: 'POST',
+        body: data,
+        secure: true,
+        type: ContentType.Json,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Исполнитель УК</li>
+     *
+     * @tags IndividualDevices
+     * @name IndividualDevicesSealUpdate
+     * @summary IndividualDeviceUpdateSeal
+     * @request PUT:/api/IndividualDevices/{deviceId}/seal
+     * @secure
+     */
+    individualDevicesSealUpdate: (
+      deviceId: number,
+      data: UpdateIndividualDeviceSealRequest,
+      params: RequestParams = {},
+    ) =>
+      this.request<
+        IndividualDeviceResponseSuccessApiResponse,
+        ErrorApiResponse
+      >({
+        path: `/api/IndividualDevices/${deviceId}/seal`,
+        method: 'PUT',
         body: data,
         secure: true,
         type: ContentType.Json,
@@ -11590,11 +11662,10 @@ export class Api<
         'DevicesFilter.ExpiresCheckingDateAt'?: EExpiresDateAt;
         'DevicesFilter.Model'?: string;
         'DevicesFilter.Question'?: string;
-        'DevicesFilter.DiameterRange.From'?: number;
-        'DevicesFilter.DiameterRange.To'?: number;
         'DevicesFilter.PipeDiameters'?: number[];
         'CommercialDateRange.From'?: string;
         'CommercialDateRange.To'?: string;
+        ExpiresAdmissionActDateAt?: EExpiresDateAt;
         PageNumber?: number;
         PageSize?: number;
         OrderBy?: EOrderByRule;
@@ -13832,7 +13903,7 @@ export class Api<
         Resource?: EResourceType;
         DisconnectingType?: EResourceDisconnectingType;
         OrderRule?: EResourceDisconnectingOrderRule;
-        HousingStockId?: number;
+        BuildingId?: number;
         Status?: EResourceDisconnectingStatus;
         PageNumber?: number;
         PageSize?: number;
@@ -14688,6 +14759,7 @@ export class Api<
         secure: true,
         type: ContentType.Json,
         format: 'json',
+        ...params,
       }),
   };
 }

@@ -30,6 +30,8 @@ export const DevicesProfileContainer: FC<HeaderInject> = ({ Header }) => {
     setSerialNumber,
     devices,
     isDevicesFetched,
+    calculatorsModels,
+    handleFetchModels,
   } = useUnit({
     isOpen: outputs.$isExtendedSearchOpen,
     searchState: outputs.$searchPayload,
@@ -45,6 +47,8 @@ export const DevicesProfileContainer: FC<HeaderInject> = ({ Header }) => {
     openDownloadDevicesReportModal: devicesReportService.inputs.openModal,
     devices: outputs.$devices,
     isDevicesFetched: getNodesListQuery.$succeeded,
+    calculatorsModels: outputs.$calculatorsModels,
+    handleFetchModels: inputs.handleFetchModels,
   });
 
   const isEmpty = Boolean(!devices.length);
@@ -83,6 +87,8 @@ export const DevicesProfileContainer: FC<HeaderInject> = ({ Header }) => {
         setDevicesSearchType={setDevicesSearchType}
         serialNumber={serialNumber}
         setSerialNumber={setSerialNumber}
+        calculatorsModels={calculatorsModels}
+        handleFetchModels={handleFetchModels}
         isSearchError={isEmpty && isDevicesFetched}
       />
     </>

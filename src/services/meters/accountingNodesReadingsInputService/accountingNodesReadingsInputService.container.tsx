@@ -9,7 +9,7 @@ import { useUnit } from 'effector-react';
 import { AccountingNodesReadingsService } from '../metersService/AccountingNodesReadingsService';
 import { UpdateAccountingNodesSumPayload } from '../metersService/AccountingNodesReadingsService/AccountingNodesReadingsService.types';
 import { PreValidatedNodeReadings } from './view/AccountingNodeReadingsLine/AccountingNodeReadingsLine.types';
-import moment from 'moment';
+import dayjs from 'api/dayjs';
 import { getNodeReadingValue } from './view/AccountingNodeReadingsLine/AccountingNodeReadingsLine.utils';
 
 const { gates, inputs, outputs } = accountingNodesReadingsInputService;
@@ -48,7 +48,7 @@ export const AccountingNodesReadingsInputContainer: FC<
       const { value, reading, readingDate } = payload;
       const isEdited = value !== getNodeReadingValue(reading);
 
-      const readingMonth = moment(readingDate).format('MMMM');
+      const readingMonth = dayjs(readingDate).format('MMMM');
       const prevReading = readings.find(
         (elem) => elem.id === reading?.previousReadingsId,
       );

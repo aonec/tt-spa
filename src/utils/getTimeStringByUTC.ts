@@ -1,8 +1,8 @@
-import moment from 'moment';
+import dayjs from 'api/dayjs';
 
 export function getTimeStringByUTC(
   dateString: string,
-  format: string = 'DD.MM.YYYY HH:mm'
+  format: string = 'DD.MM.YYYY HH:mm',
 ) {
-  return moment.utc(dateString).local().format(format);
+  return dayjs(dateString).format(format);
 }

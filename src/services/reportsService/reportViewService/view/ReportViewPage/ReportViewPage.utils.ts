@@ -18,6 +18,7 @@ import {
   EmployeeReportDatePeriodType,
   EmployeeReportType,
 } from './ReportFiltrationForm/ReportFiltrationForm.types';
+import dayjs from 'api/dayjs';
 
 const getResourcesText = (resourcesList: EResourceType[]) => {
   return resourcesList
@@ -27,8 +28,8 @@ const getResourcesText = (resourcesList: EResourceType[]) => {
 
 const getPeriodText = (
   reportDatePeriod: ReportDatePeriod | null,
-  from: moment.Moment | null,
-  to: moment.Moment | null,
+  from: dayjs.Dayjs | null,
+  to: dayjs.Dayjs | null,
 ) => {
   if (!reportDatePeriod) return null;
 

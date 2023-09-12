@@ -55,7 +55,7 @@ const handleApartmentLoaded = getApartmentQuery.finished.success;
 const $isApartmentLoading = getApartmentQuery.$pending;
 const $isSealAppointmentLoading = fetchAppointmentFx.pending;
 
-const setSelectedHomeownerName = domain.createEvent<string>();
+const setSelectedHomeownerName = domain.createEvent<string | null>();
 const $selectedHomeownerName = domain
   .createStore<string | null>(null)
   .on(setSelectedHomeownerName, (_, name) => name);
@@ -91,7 +91,11 @@ sample({
 
 sample({
   source: $apartment,
-  clock: [$apartment, refetchAppointment],
+  clock: sample({
+    source: ApartmentGate.open,
+    clock: [$apartment, refetchAppointment],
+    filter: Boolean,
+  }),
   fn: (apartment) => apartment.id,
   filter: Boolean,
   target: fetchAppointmentFx,

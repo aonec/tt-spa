@@ -9,7 +9,7 @@ export const StyledMenuButton = styled(Button)`
   justify-content: center;
   color: gray !important;
   width: ${({ size }) => (size === 'small' ? '32px' : '48px')};
-  height: ${({ size }) => (size === 'small' ? '32px' : '48px')};
+  height: ${({ size }) => (size === 'small' ? '32px' : '48px')} !important;
   border-radius: 4px;
 `;
 
@@ -18,9 +18,11 @@ export const MenuItem = styled(Menu.Item)<{ color?: string }>`
   color: ${({ color = ContextMenuButtonColorsLookup.primary }) =>
     color} !important;
 
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+  .ant-dropdown-menu-title-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
 
   &:hover {
     color: white !important;
