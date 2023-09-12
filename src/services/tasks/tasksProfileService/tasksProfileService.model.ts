@@ -24,6 +24,7 @@ import { TasksPageSegment } from './view/TasksProfile/TasksProfile.types';
 import { addressSearchService } from 'services/addressSearchService/addressSearchService.models';
 import { addTaskFromDispatcherService } from '../addTaskFromDispatcherService';
 import { getAcceptableSearchParams } from './tasksProfileService.utils';
+import { interval } from 'patronum';
 
 const domain = createDomain('tasksProfileService');
 
@@ -43,11 +44,6 @@ const changePageNumber = domain.createEvent<number>();
 const searchTasks = domain.createEvent<GetTasksListRequestPayload>();
 
 const SetCityGate = createGate<{ cities: string[] | null }>();
-
-const searchTasksFx = domain.createEffect<
-  GetTasksListRequestPayload | null,
-  TasksPagedList
->(getTasks);
 
 const getApartmentFx = domain.createEffect<
   FiltersGatePayload,
@@ -101,6 +97,32 @@ const $searchState = domain
   }))
   .reset(clearFilters);
 
+const startSearchTasks = domain.createEvent();
+const searchTasksFx = domain.createEffect<
+  GetTasksListRequestPayload | null,
+  TasksPagedList
+>(getTasks);
+
+const { tick: searchTasksTrigger } = interval({
+  start: startSearchTasks,
+  timeout: 40000,
+  stop: $searchState.updates,
+  leading: true,
+});
+
+sample({
+  source: $searchState,
+  clock: [searchTasksTrigger],
+  filter: (searchState) => Boolean(searchState.City && searchState.GroupType),
+  target: searchTasksFx,
+});
+
+sample({
+  source: sample({ source: InitialGate.state, filter: Boolean }),
+  clock: $searchState,
+  target: startSearchTasks,
+});
+
 const $tasksPagedData = domain
   .createStore<TasksPagedList | null>(null)
   .on(searchTasksFx.doneData, (_, tasksPaged) => tasksPaged);
@@ -119,12 +141,6 @@ const $isLoading = searchTasksFx.pending;
 sample({
   clock: TasksIsOpen.close,
   target: clearFilters,
-});
-
-sample({
-  clock: $searchState,
-  filter: (searchState) => Boolean(searchState.City && searchState.GroupType),
-  target: searchTasksFx,
 });
 
 split({
