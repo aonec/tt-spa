@@ -77,6 +77,8 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
       taskDescription: null,
 
       isPermittedToChangeDeadline: false,
+
+      petitionId: null,
     },
     enableReinitialize: true,
     validateOnBlur: true,
@@ -401,6 +403,8 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
         <>
           <FormItem label="Причина обращения">
             <AutoCompleteAntD
+              value={values.petitionId}
+              onChange={(value) => setFieldValue('petitionId', value)}
               allowClear
               options={[
                 {

@@ -37,6 +37,8 @@ export type AddTask = {
   taskDescription: string | null;
 
   isPermittedToChangeDeadline: boolean;
+
+  petitionId: string | null;
 };
 
 export type AddTaskFormProps = {
