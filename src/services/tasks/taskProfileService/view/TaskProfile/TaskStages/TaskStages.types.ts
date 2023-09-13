@@ -5,4 +5,5 @@ export type TaskStagesProps = {
   handleRevertStage: () => void;
   isRevertStageLoading: boolean;
   isStageCanBeReverted: boolean;
+  isEntryPoint: boolean;
 };

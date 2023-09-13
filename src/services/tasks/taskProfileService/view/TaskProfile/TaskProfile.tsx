@@ -132,7 +132,7 @@ export const TaskProfile: FC<TaskProfileProps> = ({
               stages={stages || []}
               isRevertStageLoading={isRevertStageLoading}
               isStageCanBeReverted={canBeReverted}
-              // is={task.currentStage}
+              isEntryPoint={Boolean(task.currentStage?.isEntryPoint)}
             />
           </TaskWrapper>
         </>

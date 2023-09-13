@@ -19,6 +19,7 @@ export const TaskStages: FC<TaskStagesProps> = ({
   handleRevertStage,
   isRevertStageLoading,
   isStageCanBeReverted,
+  isEntryPoint,
 }) => {
   const { openCreateResourceDisconnectionModal } = useUnit({
     openCreateResourceDisconnectionModal:
@@ -59,12 +60,16 @@ export const TaskStages: FC<TaskStagesProps> = ({
       <Wrapper>
         <TitleWrapper>Этапы выполнения</TitleWrapper>
         {stagesView}
-        <DisconnectionWrapper>
-          Знаете, что задача сформирована из-за отключения ресурса?
-          <MessageButton onClick={() => openCreateResourceDisconnectionModal()}>
-            Сообщить об отключении
-          </MessageButton>
-        </DisconnectionWrapper>
+        {isEntryPoint && (
+          <DisconnectionWrapper>
+            Знаете, что задача сформирована из-за отключения ресурса?
+            <MessageButton
+              onClick={() => openCreateResourceDisconnectionModal()}
+            >
+              Сообщить об отключении
+            </MessageButton>
+          </DisconnectionWrapper>
+        )}
       </Wrapper>
     </>
   );
