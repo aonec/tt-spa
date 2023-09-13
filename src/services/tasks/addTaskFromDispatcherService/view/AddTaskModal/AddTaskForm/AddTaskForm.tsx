@@ -1,5 +1,6 @@
-import React, { FC, useEffect, useMemo } from 'react';
+import React, { FC, useCallback, useEffect, useMemo } from 'react';
 import { AutoComplete as AutoCompleteAntD } from 'antd';
+import { capitalize } from 'lodash';
 import {
   ArrowRightLongIconDim,
   ChevronIconDown,
@@ -13,6 +14,8 @@ import {
   TextareaSC,
   TopWrapper,
   WorkTitle,
+  WorkTitleColored,
+  WorkTitleWrapper,
   WorkType,
 } from './AddTaskForm.styled';
 import { AddTask, AddTaskFormProps } from './AddTaskForm.types';
@@ -27,10 +30,14 @@ import { DatePicker } from 'ui-kit/DatePicker';
 import { EisTaskType } from 'api/types';
 import { SelectTime } from 'ui-kit/SelectTime';
 import { addTaskFromDispatcherService } from 'services/tasks/addTaskFromDispatcherService/addTaskFromDispatcherService.models';
-import { TaskTypeDictionary } from 'dictionaries';
-import { autocompleteAddress, sortByAlphabet } from './AddTaskForm.utils';
-import { SearchIcon } from 'ui-kit/icons';
+import { ResourceShortNamesDictionary, TaskTypeDictionary } from 'dictionaries';
+import {
+  autocompleteAddress,
+  autocompleteTaskReason,
+  sortByAlphabet,
+} from './AddTaskForm.utils';
 import { AutoComplete } from 'ui-kit/AutoComplete';
+import { TaskReasonType, taskReasonData } from './AddTaskForm.constants';
 
 const {
   gates: { PageGate },
@@ -78,7 +85,7 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
 
       isPermittedToChangeDeadline: false,
 
-      petitionId: null,
+      taskReasonSearch: null,
     },
     enableReinitialize: true,
     validateOnBlur: true,
@@ -192,6 +199,47 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
     values.addressSearch,
     ErpObjectsString || [],
   );
+
+  const getTaskReasonOptions = useCallback(
+    (taskReasons: TaskReasonType, coloredText: string | null) =>
+      taskReasons.map((taskReason) => {
+        const preparedColoredText = capitalize(coloredText || undefined);
+        const residualText = taskReason.name.slice(coloredText?.length);
+
+        return {
+          label: (
+            <OptionItemWrapper>
+              <TopWrapper>
+                <ResourseTypeWrapper>
+                  {ResourceShortNamesDictionary[taskReason.resourceType]}
+                </ResourseTypeWrapper>
+                <ArrowRightLongIconDim />
+                <WorkTitleWrapper>
+                  <WorkTitleColored>{preparedColoredText}</WorkTitleColored>
+                  <WorkTitle>{residualText}</WorkTitle>
+                </WorkTitleWrapper>
+              </TopWrapper>
+              <WorkType>{taskReason.nomenclatureName}</WorkType>
+            </OptionItemWrapper>
+          ),
+          value: taskReason.name,
+          id: taskReason.id,
+        };
+      }),
+    [],
+  );
+
+  const filteredTaskReasonData = useMemo(
+    () => autocompleteTaskReason(values.taskReasonSearch, taskReasonData),
+    [values.taskReasonSearch],
+  );
+
+  const taskReasonOptions = getTaskReasonOptions(
+    filteredTaskReasonData,
+    values.taskReasonSearch,
+  );
+
+  console.log('render');
 
   return (
     <>
@@ -400,67 +448,16 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
           </GridContainer>
         </ContainerWithOutline>
 
-        <>
-          <FormItem label="Причина обращения">
-            <AutoCompleteAntD
-              value={values.petitionId}
-              onChange={(value) => setFieldValue('petitionId', value)}
-              allowClear
-              options={[
-                {
-                  label: (
-                    <OptionItemWrapper>
-                      <TopWrapper>
-                        <ResourseTypeWrapper>Электричество</ResourseTypeWrapper>
-                        <ArrowRightLongIconDim />
-                        <WorkTitle>
-                          Отсутствие света в подъезде в домах коридорного типа
-                        </WorkTitle>
-                      </TopWrapper>
-                      <WorkType>Восстановление 1 светоточки</WorkType>
-                    </OptionItemWrapper>
-                  ),
-                  value: 'Отсутствие света в подъезде в домах коридорного типа',
-                  id: 'id1',
-                },
-                {
-                  label: (
-                    <OptionItemWrapper>
-                      <TopWrapper>
-                        <ResourseTypeWrapper>ХВС</ResourseTypeWrapper>
-                        <ArrowRightLongIconDim />
-                        <WorkTitle>Отсутствие ХВС</WorkTitle>
-                      </TopWrapper>
-                      <WorkType>
-                        Ревизия узла учета горячего и холодного водоснабжения
-                      </WorkType>
-                    </OptionItemWrapper>
-                  ),
-                  value: 'Отсутствие ХВС',
-                  id: 'id2',
-                },
-                {
-                  label: (
-                    <OptionItemWrapper>
-                      <TopWrapper>
-                        <ResourseTypeWrapper>ГВС</ResourseTypeWrapper>
-                        <ArrowRightLongIconDim />
-                        <WorkTitle>Отсутствие ГВС</WorkTitle>
-                      </TopWrapper>
-                      <WorkType>
-                        Ревизия узла учета горячего и холодного водоснабжения
-                      </WorkType>
-                    </OptionItemWrapper>
-                  ),
-                  value: 'Отсутствие ГВС',
-                  id: 'id3',
-                },
-              ]}
-            >
-              <Input prefix={<SearchIconSc />} suffix={<ChevronIconDown />} />
-            </AutoCompleteAntD>
-          </FormItem>
-        </>
+        <FormItem label="Причина обращения">
+          <AutoCompleteAntD
+            value={values.taskReasonSearch}
+            onChange={(value) => setFieldValue('taskReasonSearch', value)}
+            allowClear
+            options={taskReasonOptions}
+          >
+            <Input prefix={<SearchIconSc />}  />
+          </AutoCompleteAntD>
+        </FormItem>
 
         <GridContainer>
           <FormItem label="Ответственный исполнитель">

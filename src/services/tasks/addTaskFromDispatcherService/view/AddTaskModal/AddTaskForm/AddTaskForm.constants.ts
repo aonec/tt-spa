@@ -1,6 +1,13 @@
 import { EResourceType } from 'api/types';
 
-export const petitionData = [
+export type TaskReasonType = {
+  id: string;
+  resourceType: EResourceType;
+  name: string;
+  nomenclatureName: string;
+}[];
+
+export const taskReasonData: TaskReasonType = [
   {
     id: 'id1',
     resourceType: EResourceType.ColdWaterSupply,
@@ -22,13 +29,25 @@ export const petitionData = [
   {
     id: 'id4',
     resourceType: EResourceType.Heat,
-    name: 'Теплишко',
+    name: 'Отсутствие тепла',
     nomenclatureName: 'Починить батарею',
   },
   {
     id: 'id5',
     resourceType: EResourceType.Heat,
-    name: 'Теплата',
+    name: 'Теплота',
     nomenclatureName: 'Включить батарею',
+  },
+  {
+    id: 'id6',
+    resourceType: EResourceType.Heat,
+    name: 'Холодно',
+    nomenclatureName: 'Включить батарею',
+  },
+  {
+    id: 'id7',
+    resourceType: EResourceType.Heat,
+    name: 'Фанта вместо ХВС',
+    nomenclatureName: 'Чинят трубы',
   },
 ];

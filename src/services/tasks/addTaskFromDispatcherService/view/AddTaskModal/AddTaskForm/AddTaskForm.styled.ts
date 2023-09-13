@@ -67,11 +67,21 @@ export const ArrowRightLongIconDim = styled(ArrowRightLongIcon)`
   fill-opacity: 0.5;
 `;
 
-export const WorkTitle = styled.div`
-  color: rgba(39, 47, 90, 1);
+export const WorkTitleWrapper = styled.div`
+  display: flex;
+
   font-size: 16px;
   font-weight: 400;
   line-height: 32px;
+`;
+export const WorkTitle = styled.div`
+  color: rgba(39, 47, 90, 1);
+  white-space: pre-wrap;
+`;
+
+export const WorkTitleColored = styled.div`
+  color: #189ee9;
+  white-space: pre-wrap;
 `;
 
 export const WorkType = styled.div`
