@@ -40,19 +40,13 @@ export const SoiReportForm: FC<SoiReportFormProps> = ({
 
     const date = data.Date;
 
-    const chosenStreet = preparedAddresses.find((addressStreet) =>
-      addressStreet.children?.find(
-        (preparedAddress) => preparedAddress.value === data.HousingStockIdHash,
-      ),
-    );
-
-    const chosenBuilding = chosenStreet?.children?.find(
-      (preparedAddress) => preparedAddress.value === data.HousingStockIdHash,
-    );
+    const chosenBuilding = preparedAddresses
+      .flatMap((addressStreet) => addressStreet.children)
+      .find(
+        (preparedAddress) => preparedAddress?.value === data.HousingStockIdHash,
+      );
 
     const buildingId = chosenBuilding?.buildingId;
-    //select не работает с нашим buildingId
-    //здесь много появдяется много ?. , может лучше строку HousingStockIdHash разделить?
 
     const preparedData = {
       ReportName: data.ReportName,

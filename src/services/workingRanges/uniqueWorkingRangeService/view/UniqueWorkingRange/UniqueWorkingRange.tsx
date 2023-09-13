@@ -79,6 +79,26 @@ export const UniqueWorkingRange: FC<UniqueWorkingRangeProps> = ({
         ENodeWorkingRangeType.DeltaMassOfMagistral,
     );
 
+  const handleOnSubmit = (data: UniqueWorkingRangeType) => {
+    const { housingStockIdHash, nodeId, nodeResourceType, season } = data;
+
+    const chosenBuilding = preparedAddresses
+      .flatMap((addressStreet) => addressStreet.children)
+      .find((preparedAddress) => preparedAddress?.value === housingStockIdHash);
+
+    const housingStockId = chosenBuilding?.buildingId;
+
+    !nodeId &&
+      housingStockId &&
+      handleOnSearchDataChange({
+        nodeResourceType,
+        season,
+        housingStockId,
+      });
+
+    nodeId && handleNodeChoosen({ season, nodeId });
+  };
+
   const { values, handleSubmit, setFieldValue } =
     useFormik<UniqueWorkingRangeType>({
       initialValues: {
@@ -88,27 +108,19 @@ export const UniqueWorkingRange: FC<UniqueWorkingRangeProps> = ({
         nodeId: null,
       },
       enableReinitialize: true,
-      onSubmit: (data) => {
-        const { housingStockIdHash, nodeId, nodeResourceType, season } = data;
-
-        const housingStockId = Number(String(housingStockIdHash).split('_')[0]);
-
-        !nodeId &&
-          housingStockIdHash &&
-          handleOnSearchDataChange({
-            nodeResourceType,
-            season,
-            housingStockId,
-          });
-
-        nodeId && handleNodeChoosen({ season, nodeId });
-      },
+      onSubmit: (data) => handleOnSubmit(data),
     });
 
-  const housingStockId = useMemo(
-    () => Number(String(values.housingStockIdHash).split('_')[0]),
-    [values.housingStockIdHash],
-  );
+  const housingStockId = useMemo(() => {
+    const chosenBuilding = preparedAddresses
+      .flatMap((addressStreet) => addressStreet.children)
+      .find(
+        (preparedAddress) =>
+          preparedAddress?.value === values.housingStockIdHash,
+      );
+
+    return chosenBuilding?.buildingId;
+  }, [values.housingStockIdHash, preparedAddresses]);
 
   useEffect(() => {
     housingStockId && handleFetchNodes(housingStockId);
