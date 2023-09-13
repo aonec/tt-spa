@@ -45,7 +45,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "updateTypes": "npx swagger-typescript-api -p https://fop.k8s.transparent-technology.ru/openapi/site/ttm_api.json -o ./src/api -n types.ts --axios",
+    "updateTypes": "npx swagger-typescript-api -p https://fop.k8s.transparent-technology.ru/openapi/site/ttm_api.json -o ./src/api -n types.ts",
     "prepare": "husky install",
     "storybook": "start-storybook -p 6006 -s public",
     "build-storybook": "build-storybook -s public"
