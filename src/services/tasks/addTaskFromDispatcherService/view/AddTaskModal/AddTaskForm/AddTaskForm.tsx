@@ -41,6 +41,7 @@ import {
 import { TaskReasonType, taskReasonData } from './AddTaskForm.constants';
 import { usePhoneMask } from 'hooks/usePhoneMask';
 import { Alert } from 'ui-kit/Alert';
+import { ExistingTasks } from './ExistingTasks';
 
 const {
   gates: { PageGate },
@@ -406,7 +407,7 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
           </FormItem>
         </ContainerWithOutline> */}
 
-        <ContainerWithOutline>
+        {/* <ContainerWithOutline>
           <GridContainer>
             <FormItem label="Дата заявки">
               <GridContainerAsymmetricLeft>
@@ -420,9 +421,9 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
                   onChange={(value) => setFieldValue('requestTime', value)}
                 />
               </GridContainerAsymmetricLeft>
-            </FormItem>
+            </FormItem> */}
 
-            <FormItem label="Нормативный срок">
+        {/* <FormItem label="Нормативный срок">
               <GridContainerAsymmetricLeft>
                 {!values.isPermittedToChangeDeadline ? (
                   <>
@@ -455,9 +456,11 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
                   </>
                 )}
               </GridContainerAsymmetricLeft>
-            </FormItem>
-          </GridContainer>
-        </ContainerWithOutline>
+            </FormItem> */}
+        {/* </GridContainer>
+        </ContainerWithOutline> */}
+
+        <ExistingTasks />
 
         <FormItem label="Причина обращения">
           <AutoCompleteAntD
