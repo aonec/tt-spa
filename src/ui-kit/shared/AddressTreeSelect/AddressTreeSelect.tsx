@@ -1,4 +1,11 @@
-import React, { FC, useCallback, useMemo, useRef } from 'react';
+import React, {
+  FC,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 import {
   addressesCountTexts,
   selectedCountTexts,
@@ -8,6 +15,7 @@ import { getAllHousingStocks } from 'services/resources/createResourceDisconnect
 import { getCountText } from 'utils/getCountText';
 import { TreeSelectSC } from './AddressTreeSelect.styled';
 import { AddressTreeSelectProps } from './AddressTreeSelect.types';
+import _ from 'lodash';
 
 export const AddressTreeSelect: FC<AddressTreeSelectProps> = ({
   treeData,
@@ -16,8 +24,13 @@ export const AddressTreeSelect: FC<AddressTreeSelectProps> = ({
   placeholder = 'Выберите адрес',
   disabled = false,
   small = false,
+  placement,
 }) => {
   const isAllPrevious = useRef(false);
+  const expandedNodes = useRef<React.Key[]>([]);
+  const [lastExpandedNode, setLastExpandedNode] = useState<React.Key | null>(
+    null,
+  );
 
   const allHousingStocks = useMemo(
     () => getAllHousingStocks(treeData),
@@ -67,6 +80,17 @@ export const AddressTreeSelect: FC<AddressTreeSelectProps> = ({
     [allHousingStocks, onChange],
   );
 
+  useEffect(() => {
+    if (lastExpandedNode) {
+      const node = document.querySelector(`span[title='${lastExpandedNode}']`);
+
+      node?.parentElement?.parentElement?.parentElement?.parentElement?.scroll({
+        left: 0,
+        top: node?.parentElement?.offsetTop || 0,
+      });
+    }
+  }, [lastExpandedNode]);
+
   return (
     <TreeSelectSC
       small={small}
@@ -97,6 +121,14 @@ export const AddressTreeSelect: FC<AddressTreeSelectProps> = ({
         handleChangeHousingStocks(values as TreeSelectValue)
       }
       placeholder={placeholder}
+      onTreeExpand={(keys) => {
+        const expandedKey = _.first(_.difference(keys, expandedNodes.current));
+
+        setLastExpandedNode(expandedKey || null);
+        expandedNodes.current = keys;
+      }}
+      virtual={false}
+      placement={placement}
     />
   );
 };
