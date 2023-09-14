@@ -132,7 +132,11 @@ forward({
 });
 
 sample({
-  clock: [DistributeRecordsGate.close, handleUnselectDistrict],
+  clock: [
+    DistributeRecordsGate.close,
+    handleUnselectDistrict,
+    $selectedDistrict,
+  ],
   target: [
     districtAppointmentsQuery.reset,
     districtAppoinmtentsOnMonthQuery.reset,
