@@ -16,13 +16,26 @@ import {
 
 export const fetchSummaryHousingConsumptions = (
   params: ConsumptionDataPayload,
-): Promise<GetSummaryHousingConsumptionsByResourcesResponse> =>
-  axios.get('Nodes/SummaryHousingConsumptionsByResources', {
+): Promise<GetSummaryHousingConsumptionsByResourcesResponse> => {
+  console.log(
+    new URLSearchParams([
+      ...params.BuildingIds.map((id) => ['BuildingIds', id.toString()]),
+      ...params.AdditionalHousingStockIds.map((id) => [
+        'AdditionalHousingStockIds',
+        id.toString(),
+      ]),
+    ]).toString(),
+  );
+
+  console.log(queryString.stringify(params));
+
+  return axios.get('Nodes/SummaryHousingConsumptionsByResources', {
     params,
     paramsSerializer: (params) => {
-      return queryString.stringify(params);
+      return new URLSearchParams(params).toString();
     },
   });
+};
 
 export const fetchHousingConsumptionPlot = async (
   params: ConsumptionDataPayload,
