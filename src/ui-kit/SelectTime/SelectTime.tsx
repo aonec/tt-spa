@@ -3,8 +3,6 @@ import { SelectTimeProps } from './SelectTime.types';
 import { Select } from 'ui-kit/Select/Select.styled';
 
 const hours = [
-  '06:00',
-  '07:00',
   '08:00',
   '09:00',
   '10:00',
@@ -27,6 +25,8 @@ const hours = [
   '03:00',
   '04:00',
   '05:00',
+  '06:00',
+  '07:00',
 ];
 
 export const SelectTime: FC<SelectTimeProps> = ({ value, onChange }) => {

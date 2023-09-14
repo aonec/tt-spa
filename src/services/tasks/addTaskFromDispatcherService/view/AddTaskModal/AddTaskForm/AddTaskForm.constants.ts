@@ -51,3 +51,41 @@ export const taskReasonData: TaskReasonType = [
     nomenclatureName: 'Чинят трубы',
   },
 ];
+
+export type SubscriberType = {
+  id: string;
+  firstName: string;
+  lastName: string;
+  surname: string;
+  address: string;
+  apartmentNumber: string;
+}[];
+
+export const subscriberData: SubscriberType = [
+  {
+    id: '1',
+    firstName: 'Петр',
+    lastName: 'Иванов',
+    surname: 'Сергеевич',
+    address: '50 лет Октября 116 к5',
+    apartmentNumber: '4',
+  },
+  {
+    id: '2',
+    firstName: 'Иван',
+    lastName: 'Макаров',
+    surname: 'Алексеевич',
+    address: '50 лет Октября 112',
+    apartmentNumber: '11',
+  },
+  {
+    id: '3',
+    firstName: 'Олег',
+    lastName: 'Яшин',
+    surname: 'Иванович',
+    address: 'Советская 1',
+    apartmentNumber: '44',
+  },
+];
+
+

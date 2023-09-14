@@ -104,3 +104,21 @@ export const ResourceDisconnectionAlertWrapper = styled.div`
 export const ResourceDisconnectionDate = styled.div`
   font-weight: 500;
 `;
+
+export const FullnameWrapper = styled.div``;
+
+export const Fullname = styled.div`
+  color: #272f5a;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 28px;
+`;
+
+export const Address = styled.div`
+  color: #272f5a;
+  font-size: 12px;
+  font-weight: 300;
+  line-height: 16px;
+
+  padding-left: 6px;
+`;

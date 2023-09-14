@@ -38,3 +38,24 @@ export function autocompleteTaskReason(
     taskReason.name.toLocaleLowerCase().startsWith(search.toLocaleLowerCase()),
   );
 }
+
+type FullnameType = [secondName: string, firstName: string, surName: string];
+
+export function sortSubscriberName(
+  fullNames: FullnameType[],
+  search: string,
+): FullnameType[] {
+  return fullNames
+    .filter((name) => name.some((part) => part.includes(search)))
+    .sort((a, b) => {
+      const aWeight =
+        (a[0].includes(search) ? 2 : 0) +
+        (a[1].includes(search) ? 1 : 0) +
+        (a[2].includes(search) ? 1 : 0);
+      const bWeight =
+        (b[0].includes(search) ? 2 : 0) +
+        (b[1].includes(search) ? 1 : 0) +
+        (b[2].includes(search) ? 1 : 0);
+      return bWeight - aWeight;
+    });
+}

@@ -2,9 +2,12 @@ import React, { FC, useCallback, useEffect, useMemo } from 'react';
 import { AutoComplete as AutoCompleteAntD } from 'antd';
 import { capitalize } from 'lodash';
 import {
+  Address,
   ArrowRightLongIconDim,
   ChevronIconDown,
   ContainerWithOutline,
+  Fullname,
+  FullnameWrapper,
   GridContainer,
   GridContainerAsymmetricLeft,
   GridContainerAsymmetricRight,
@@ -38,7 +41,12 @@ import {
   autocompleteTaskReason,
   sortByAlphabet,
 } from './AddTaskForm.utils';
-import { TaskReasonType, taskReasonData } from './AddTaskForm.constants';
+import {
+  SubscriberType,
+  TaskReasonType,
+  subscriberData,
+  taskReasonData,
+} from './AddTaskForm.constants';
 import { usePhoneMask } from 'hooks/usePhoneMask';
 import { Alert } from 'ui-kit/Alert';
 import { ExistingTasks } from './ExistingTasks';
@@ -256,11 +264,47 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
     );
   }, []);
 
+  const getSubscribersNameOptions = useCallback(
+    (subscribersData: SubscriberType) =>
+      subscribersData.map((subscriber) => {
+        return {
+          label: (
+            <FullnameWrapper>
+              <Fullname>
+                {subscriber.lastName} {subscriber.firstName}{' '}
+                {subscriber.surname}
+              </Fullname>
+              <Address>{subscriber.address}</Address>
+            </FullnameWrapper>
+          ),
+          value: `${subscriber.lastName} ${subscriber.firstName} ${subscriber.surname}`,
+          id: subscriber.id,
+        };
+      }),
+    [],
+  );
+
+  const subscribersNameOptions = getSubscribersNameOptions(subscriberData);
+
   return (
     <>
       <PageGate />
 
       <Form id={formId} onSubmitCapture={handleSubmit}>
+        <FormItem label="Дата заявки">
+          <GridContainerAsymmetricLeft>
+            <DatePicker
+              value={values.requestDate}
+              onChange={(value) => setFieldValue('requestDate', value)}
+            />
+
+            <SelectTime
+              value={values.requestTime || undefined}
+              onChange={(value) => setFieldValue('requestTime', value)}
+            />
+          </GridContainerAsymmetricLeft>
+        </FormItem>
+
         <GridContainer>
           <FormItem label="Источник заявки">
             <Select
@@ -289,14 +333,16 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
 
         <GridContainer>
           <FormItem label="ФИО абонента">
-            <Input
-              prefix={<SearchIconSc />}
-              placeholder="Введите"
-              value={values.subscriberName || undefined}
-              onChange={(value) =>
-                setFieldValue('subscriberName', value.target.value)
-              }
-            />
+            <AutoCompleteAntD options={subscribersNameOptions}>
+              <Input
+                prefix={<SearchIconSc />}
+                placeholder="Начните вводить"
+                value={values.subscriberName || undefined}
+                onChange={(value) =>
+                  setFieldValue('subscriberName', value.target.value)
+                }
+              />
+            </AutoCompleteAntD>
           </FormItem>
           <FormItem label="Номер телефона">
             <Input

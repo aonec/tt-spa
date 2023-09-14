@@ -35,7 +35,6 @@ export const DateWrapper = styled.div`
   display: grid;
   grid-template-columns: 1.5fr 1.5fr 1fr;
   grid-gap: 4px 20px;
-
   margin-top: 16px;
 `;
 
