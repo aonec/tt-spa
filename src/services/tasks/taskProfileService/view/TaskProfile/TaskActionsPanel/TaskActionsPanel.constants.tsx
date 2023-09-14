@@ -19,6 +19,7 @@ import { CloseDevicesContainer } from './CloseDeviceService';
 import { CommentContainer } from './commentService';
 import { AttachDocumentContainer } from './attachDocumentService';
 import { SwitchDeviceContainer } from './switchDeviceService';
+import { AddResourceDisconnectionContainer } from './addResourceDisconnectionService';
 
 export const taskActionsComponents: TaskActionsComponent[] = [
   {
@@ -82,6 +83,11 @@ export const taskActionsComponents: TaskActionsComponent[] = [
   {
     actionType: EStageActionType.Completion,
     Component: CompletionStageContainer,
+    position: TaskPanelInputPositionType.Full,
+  },
+  {
+    actionType: EStageActionType.CreateResourceDisconnecting,
+    Component: AddResourceDisconnectionContainer,
     position: TaskPanelInputPositionType.Full,
   },
   {

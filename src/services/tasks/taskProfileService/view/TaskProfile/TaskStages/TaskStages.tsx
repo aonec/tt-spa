@@ -1,15 +1,31 @@
 import React, { FC, useMemo } from 'react';
 import { Stage } from './Stage';
-import { TitleWrapper, Wrapper } from './TaskStages.styled';
+import {
+  DisconnectionWrapper,
+  MessageButton,
+  TitleWrapper,
+  Wrapper,
+} from './TaskStages.styled';
 import { TaskStagesProps } from './TaskStages.types';
 import { EStageStatus } from 'api/types';
+import { ChooseTypeOfResourceDisconnectionModalContainer } from 'services/resources/chooseTypeOfResourceDisconnectionModalService/chooseTypeOfResourceDisconnectionModalService.container';
+import { CreateResourceDisconnectionContainer } from 'services/resources/createResourceDisconnectionService';
+import { useUnit } from 'effector-react';
+import { chooseTypeOfResourceDisconnectionModalService } from 'services/resources/chooseTypeOfResourceDisconnectionModalService';
+import { useHistory } from 'react-router-dom';
 
 export const TaskStages: FC<TaskStagesProps> = ({
   stages,
   handleRevertStage,
   isRevertStageLoading,
   isStageCanBeReverted,
+  isEntryPoint,
 }) => {
+  const { openCreateResourceDisconnectionModal } = useUnit({
+    openCreateResourceDisconnectionModal:
+      chooseTypeOfResourceDisconnectionModalService.inputs.openModal,
+  });
+
   const stagesView = useMemo(
     () =>
       stages.map((stage, index) => {
@@ -31,10 +47,30 @@ export const TaskStages: FC<TaskStagesProps> = ({
     [stages, handleRevertStage, isRevertStageLoading, isStageCanBeReverted],
   );
 
+  const history = useHistory();
+
   return (
-    <Wrapper>
-      <TitleWrapper>Этапы выполнения</TitleWrapper>
-      {stagesView}
-    </Wrapper>
+    <>
+      <ChooseTypeOfResourceDisconnectionModalContainer />
+      <CreateResourceDisconnectionContainer
+        handleComplete={() => {
+          history.goBack();
+        }}
+      />
+      <Wrapper>
+        <TitleWrapper>Этапы выполнения</TitleWrapper>
+        {stagesView}
+        {isEntryPoint && (
+          <DisconnectionWrapper>
+            Знаете, что задача сформирована из-за отключения ресурса?
+            <MessageButton
+              onClick={() => openCreateResourceDisconnectionModal()}
+            >
+              Сообщить об отключении
+            </MessageButton>
+          </DisconnectionWrapper>
+        )}
+      </Wrapper>
+    </>
   );
 };
