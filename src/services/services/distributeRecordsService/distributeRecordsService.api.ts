@@ -54,7 +54,7 @@ export const appointmentsCountingQuery = createQuery<
 
 export const districtAppoinmtentsOnMonthQuery = createQuery<
   GetDistrictAppointmentsRequestPayload,
-  { [key: string]: boolean }
+  { [key: string]: number }
 >({
   handler: async ({ date, districtId }) => {
     const startOfMonth = dayjs(date).startOf('month');
@@ -69,20 +69,19 @@ export const districtAppoinmtentsOnMonthQuery = createQuery<
 
           return {
             date,
-            isExist: Boolean(
+            numberOfCounts:
               (counting?.distributed || 0) + (counting?.notDistributed || 0),
-            ),
           };
         },
       ),
     );
 
-    return result.reduce((acc, { date, isExist }) => {
-      if (isExist) {
-        return { ...acc, [date]: true };
+    return result.reduce((acc, { date, numberOfCounts }) => {
+      if (numberOfCounts) {
+        return { ...acc, [date]: numberOfCounts };
       }
       return acc;
-    }, {} as { [key: string]: boolean });
+    }, {} as { [key: string]: number });
   },
 });
 

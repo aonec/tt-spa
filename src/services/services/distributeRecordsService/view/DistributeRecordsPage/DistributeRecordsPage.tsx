@@ -1,5 +1,10 @@
 import React, { FC } from 'react';
-import { Circle, FiltrationWrapper } from './DistributeRecordsPage.styled';
+import {
+  Circle,
+  CounterWrapper,
+  FiltrationWrapper,
+  SkeletonSC,
+} from './DistributeRecordsPage.styled';
 import { Props } from './DistributeRecordsPage.types';
 import { AddressSearchContainer } from 'services/addressSearchService';
 import { SearchFieldType } from 'services/addressSearchService/view/AddressSearch/AddressSearch.types';
@@ -32,8 +37,9 @@ export const DistributeRecordsPage: FC<Props> = ({
   isLoadingDistributeAppointments,
   openRemoveAssignmentModal,
   organizationCoordinates,
-  appointmentsExistingDays,
+  appointmentsOnMonthData,
   handleSetMonth,
+  appointmentsOnMonthLoading,
 }) => {
   return (
     <>
@@ -81,8 +87,26 @@ export const DistributeRecordsPage: FC<Props> = ({
           format="DD.MM.YYYY"
           allowClear={false}
           onPanelChange={(day) => handleSetMonth(day.format('YYYY-MM'))}
+          renderExtraFooter={() => {
+            if (appointmentsOnMonthLoading) {
+              return <SkeletonSC active />;
+            }
+            if (appointmentDate && selectedDistrict) {
+              return (
+                <CounterWrapper>
+                  Записи на эту дату:{' '}
+                  {appointmentsOnMonthData[appointmentDate] || 0}
+                </CounterWrapper>
+              );
+            }
+            return null;
+          }}
+          showToday={false}
           cellRender={(day, info) => {
-            if (appointmentsExistingDays[day.format('YYYY-MM-DD')]) {
+            if (
+              info.type === 'date' &&
+              appointmentsOnMonthData[day.format('YYYY-MM-DD')]
+            ) {
               return (
                 <>
                   {info.originNode}

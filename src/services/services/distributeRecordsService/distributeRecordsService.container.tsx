@@ -53,8 +53,9 @@ export const DistributeRecordsContainer = () => {
     selectedAppointmentsIds,
     isDistributeAppointmentsModalOpen,
     organizationCoordinates,
-    appointmentsExistingDays,
+    appointmentsOnMonthData,
     handleSetMonth,
+    appointmentsOnMonthLoading,
   } = useUnit({
     handleSelectDistrict: inputs.handleSelectDistrict,
     handleUnselectDistrict: inputs.handleUnselectDistrict,
@@ -70,7 +71,8 @@ export const DistributeRecordsContainer = () => {
     isDistributeAppointmentsModalOpen:
       outputs.$isDistributeAppointmentsModalOpen,
     organizationCoordinates: outputs.$organizationCoordinates,
-    appointmentsExistingDays: districtAppoinmtentsOnMonthQuery.$data,
+    appointmentsOnMonthData: districtAppoinmtentsOnMonthQuery.$data,
+    appointmentsOnMonthLoading: districtAppoinmtentsOnMonthQuery.$pending,
     handleSetMonth: inputs.setMonth,
   });
 
@@ -136,8 +138,9 @@ export const DistributeRecordsContainer = () => {
         isLoadingDistributeAppointments={isLoadingDistributeAppointments}
         openRemoveAssignmentModal={openRemoveAssignmentModal}
         organizationCoordinates={organizationCoordinates}
-        appointmentsExistingDays={appointmentsExistingDays || {}}
+        appointmentsOnMonthData={appointmentsOnMonthData || {}}
         handleSetMonth={handleSetMonth}
+        appointmentsOnMonthLoading={appointmentsOnMonthLoading}
       />
     </>
   );
