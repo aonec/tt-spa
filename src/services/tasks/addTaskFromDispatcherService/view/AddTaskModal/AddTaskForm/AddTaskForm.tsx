@@ -9,6 +9,8 @@ import {
   GridContainerAsymmetricLeft,
   GridContainerAsymmetricRight,
   OptionItemWrapper,
+  ResourceDisconnectionAlertWrapper,
+  ResourceDisconnectionDate,
   ResourseTypeWrapper,
   SearchIconSc,
   TextareaSC,
@@ -36,8 +38,9 @@ import {
   autocompleteTaskReason,
   sortByAlphabet,
 } from './AddTaskForm.utils';
-import { AutoComplete } from 'ui-kit/AutoComplete';
 import { TaskReasonType, taskReasonData } from './AddTaskForm.constants';
+import { usePhoneMask } from 'hooks/usePhoneMask';
+import { Alert } from 'ui-kit/Alert';
 
 const {
   gates: { PageGate },
@@ -241,6 +244,17 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
 
   console.log('render');
 
+  const getResourceDisconnectionAlert = useCallback(() => {
+    return (
+      <ResourceDisconnectionAlertWrapper>
+        <div>Плановое отключение ГВС:</div>
+        <ResourceDisconnectionDate>
+          10.07.2023 - 20.07.2023
+        </ResourceDisconnectionDate>
+      </ResourceDisconnectionAlertWrapper>
+    );
+  }, []);
+
   return (
     <>
       <PageGate />
@@ -272,7 +286,57 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
           </FormItem>
         </GridContainer>
 
-        <FormItem label="Тип заявки">
+        <GridContainer>
+          <FormItem label="ФИО абонента">
+            <Input
+              prefix={<SearchIconSc />}
+              placeholder="Введите"
+              value={values.subscriberName || undefined}
+              onChange={(value) =>
+                setFieldValue('subscriberName', value.target.value)
+              }
+            />
+          </FormItem>
+          <FormItem label="Номер телефона">
+            <Input
+              placeholder="Введите"
+              value={values.phoneNumber || undefined}
+              onChange={(value) =>
+                setFieldValue('phoneNumber', value.target.value)
+              }
+            />
+          </FormItem>
+        </GridContainer>
+
+        <GridContainerAsymmetricRight>
+          <FormItem label="Адрес">
+            <AutoCompleteAntD
+              allowClear
+              value={values.addressSearch}
+              onChange={(value) => setFieldValue('addressSearch', value)}
+              onSelect={(value) =>
+                setFieldValue('selectedObjectAddress', value)
+              }
+              options={preparedErpObjects}
+            >
+              <Input prefix={<SearchIconSc />} placeholder="Начните вводить " />
+            </AutoCompleteAntD>
+          </FormItem>
+
+          <FormItem label="Номер квартиры">
+            <Input
+              placeholder="Введите"
+              value={values.apartmentNumber || undefined}
+              onChange={(value) =>
+                setFieldValue('apartmentNumber', value.target.value)
+              }
+            />
+          </FormItem>
+        </GridContainerAsymmetricRight>
+
+        <Alert centered>{getResourceDisconnectionAlert()}</Alert>
+
+        {/* <FormItem label="Тип заявки">
           <Select
             placeholder="Выберите из списка"
             value={values.taskType || undefined}
@@ -295,7 +359,7 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
               </Select.Option>
             ))}
           </Select>
-        </FormItem>
+        </FormItem> */}
 
         {/* <FormItem label="Категория">
             <Select
@@ -314,7 +378,7 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
         {/* </Select>
           </FormItem> */}
 
-        <ContainerWithOutline>
+        {/* <ContainerWithOutline>
           <FormItem label="Вид работ">
             <Select
               placeholder="Выберите из списка"
@@ -340,7 +404,7 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
               ))}
             </Select>
           </FormItem>
-        </ContainerWithOutline>
+        </ContainerWithOutline> */}
 
         <ContainerWithOutline>
           <GridContainer>
@@ -395,59 +459,6 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
           </GridContainer>
         </ContainerWithOutline>
 
-        <GridContainer>
-          <FormItem label="Адрес">
-            <AutoComplete
-              placeholder="Улица"
-              value={values.addressSearch}
-              onChange={(value) => setFieldValue('addressSearch', value)}
-              onSelect={(value) =>
-                setFieldValue('selectedObjectAddress', value)
-              }
-              options={preparedErpObjects}
-            />
-          </FormItem>
-
-          <GridContainerAsymmetricRight>
-            {/* <FormItem label="Номер квартиры">
-              <Input
-                placeholder="Введите"
-                value={values.apartmentNumber || undefined}
-                onChange={(value) =>
-                  setFieldValue('apartmentNumber', value.target.value)
-                }
-              />
-            </FormItem> */}
-
-            {/* <FormItem label="УК">
-              <Input placeholder="???" disabled />
-            </FormItem> */}
-          </GridContainerAsymmetricRight>
-        </GridContainer>
-
-        <ContainerWithOutline>
-          <GridContainer>
-            <FormItem label="ФИО абонента">
-              <Input
-                placeholder="Введите"
-                value={values.subscriberName || undefined}
-                onChange={(value) =>
-                  setFieldValue('subscriberName', value.target.value)
-                }
-              />
-            </FormItem>
-            <FormItem label="Номер телефона">
-              <Input
-                placeholder="Введите"
-                value={values.phoneNumber || undefined}
-                onChange={(value) =>
-                  setFieldValue('phoneNumber', value.target.value)
-                }
-              />
-            </FormItem>
-          </GridContainer>
-        </ContainerWithOutline>
-
         <FormItem label="Причина обращения">
           <AutoCompleteAntD
             value={values.taskReasonSearch}
@@ -455,7 +466,7 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
             allowClear
             options={taskReasonOptions}
           >
-            <Input prefix={<SearchIconSc />}  />
+            <Input prefix={<SearchIconSc />} />
           </AutoCompleteAntD>
         </FormItem>
 

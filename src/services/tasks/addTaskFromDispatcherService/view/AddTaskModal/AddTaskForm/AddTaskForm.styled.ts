@@ -16,7 +16,7 @@ export const GridContainerAsymmetricLeft = styled.div`
 
 export const GridContainerAsymmetricRight = styled.div`
   display: grid;
-  grid-template-columns: 1fr 2fr;
+  grid-template-columns: 4fr 1fr;
   grid-gap: 4px 20px;
 `;
 
@@ -89,4 +89,18 @@ export const WorkType = styled.div`
   font-size: 14px;
   font-weight: 400;
   line-height: 16px;
+`;
+
+export const ResourceDisconnectionAlertWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  color: #272f5a;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 16px;
+  gap: 6px;
+`;
+
+export const ResourceDisconnectionDate = styled.div`
+  font-weight: 500;
 `;

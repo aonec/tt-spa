@@ -17,6 +17,7 @@ export const Alert: React.FC<AlertProps> = ({
   children,
   icon = AlertIconType.info,
   type = AlertType.default,
+  centered,
 }) => {
   const icons: { [key in AlertIconType]: React.FC } = {
     [AlertIconType.info]: InfoIcon,
@@ -29,7 +30,7 @@ export const Alert: React.FC<AlertProps> = ({
   const color = AlertColorLookup[type];
 
   return (
-    <AlertWrap color={color}>
+    <AlertWrap color={color} centered={centered}>
       <IconWrapper color={color}>
         <Icon />
       </IconWrapper>
