@@ -18,6 +18,7 @@ export const AddTaskModal: FC<AddTaskModalProps> = ({
   handleTaskDeadlineRequest,
   taskDeadline,
   isCreatePending,
+  handleSelectHousingAddress,
 }) => {
   const [disableSubmit, setDisableSubmit] = useState(true);
 
@@ -42,6 +43,7 @@ export const AddTaskModal: FC<AddTaskModalProps> = ({
           executors={executors}
           handleTaskDeadlineRequest={handleTaskDeadlineRequest}
           taskDeadline={taskDeadline}
+          handleSelectHousingAddress={handleSelectHousingAddress}
         />
       }
       formId={formId}

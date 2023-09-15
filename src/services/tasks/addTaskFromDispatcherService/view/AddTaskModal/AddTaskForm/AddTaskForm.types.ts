@@ -13,7 +13,6 @@ export type AddTask = {
   sourceId: string | null;
   requestNumber: string | null;
   taskType: null | EisTaskType;
-  // categoryId: string | null;
   workTypeId: string | null;
 
   requestDate: dayjs.Dayjs | null;
@@ -53,4 +52,5 @@ export type AddTaskFormProps = {
   executors: ErpExecutorResponse[];
   handleTaskDeadlineRequest: (payload: GetTaskDeadlineRequest) => void;
   taskDeadline: ErpTaskDeadlineResponse | null;
+  handleSelectHousingAddress: (payload: string) => void;
 };

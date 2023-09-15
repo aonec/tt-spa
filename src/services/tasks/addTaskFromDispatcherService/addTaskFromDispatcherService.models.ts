@@ -1,4 +1,4 @@
-import { createDomain, forward, sample } from 'effector';
+import { createDomain, sample } from 'effector';
 import {
   createTask,
   getAddresses,
@@ -43,6 +43,9 @@ const resetDeadline = domain.createEvent();
 
 const handleCreateTask = domain.createEvent<AddTask>();
 
+const handleSelectHousingAddress = domain.createEvent<string>();
+const setSelectedHousingId = domain.createEvent<string | null>();
+
 const handleReset = domain.createEvent();
 
 const createTaskFx = domain.createEffect<
@@ -63,10 +66,6 @@ const getWorkCategoriesFx = domain.createEffect<
 const getLeadExecutorsFx = domain.createEffect<void, ErpExecutorResponse[]>(
   getLeadExecutors,
 );
-
-// const getErpObjectsFx = domain.createEffect<void, ErpObjectResponse[]>(
-//   getTasksErpObjects,
-// );
 
 const getAddressesFx = domain.createEffect<
   GetAddressesRequest,
@@ -109,16 +108,16 @@ const $executors = domain
   .on(getErpExecutorsForLeadFx.doneData, (_, data) => data)
   .reset(handleReset);
 
-// const $ErpObjects = domain
-//   .createStore<ErpObjectResponse[]>([])
-//   .reset(handleReset);
-
 const $preparedForOptionsAddresses = domain
   .createStore<PreparedAddress[]>([])
   .on(getAddressesFx.doneData, (_, data) =>
     prepareAddressesForTreeSelect(data.items),
   )
   .reset(handleReset);
+
+const $selectedHousingStockId = domain
+  .createStore<string | null>(null)
+  .on(setSelectedHousingId, (_, id) => id);
 
 const $taskDeadlineRequest = domain
   .createStore<GetTaskDeadlineRequest | null>(null)
@@ -131,39 +130,35 @@ const $taskDeadline = domain
   .reset(resetDeadline)
   .reset(handleReset);
 
-// sample({
-//   clock: handleCreateTask,
-//   source: $ErpObjects,
-//   fn: (ErpObjects, data) => {
-//     const object = ErpObjects.find(
-//       (object) => object.address === data.selectedObjectAddress,
-//     );
+sample({
+  clock: handleCreateTask,
+  source: $selectedHousingStockId,
+  fn: (selectedHousingStockId, data) => {
+    const sourceDateTime = data.requestDate
+      ?.format('YYYY-MM-DD')
+      .concat('T', data.requestTime || '');
 
-//     const sourceDateTime = data.requestDate
-//       ?.format('YYYY-MM-DD')
-//       .concat('T', data.requestTime || '');
+    const manualTaskDeadline = data.manualDeadlineDate
+      ?.format('YYYY-MM-DD')
+      .concat('T', data.manualDeadlineTime || '');
 
-//     const manualTaskDeadline = data.manualDeadlineDate
-//       ?.format('YYYY-MM-DD')
-//       .concat('T', data.manualDeadlineTime || '');
-
-//     return {
-//       leadId: data.leadId,
-//       objectId: object?.id,
-//       sourceDateTime: sourceDateTime,
-//       sourceId: data.sourceId,
-//       sourceNumber: data.requestNumber,
-//       taskDescription: data.taskDescription,
-//       taskType: data.taskType,
-//       workCategoryId: data.workTypeId,
-//       subscriberFullName: data.subscriberName,
-//       subscriberPhoneNumber: data.phoneNumber,
-//       workerId: data.executorId,
-//       taskDeadline: data.taskDeadline || manualTaskDeadline,
-//     } as ErpCreateTaskRequest;
-//   },
-//   target: createTaskFx,
-// });
+    return {
+      leadId: data.leadId,
+      objectId: selectedHousingStockId,
+      sourceDateTime: sourceDateTime,
+      sourceId: data.sourceId,
+      sourceNumber: data.requestNumber,
+      taskDescription: data.taskDescription,
+      taskType: data.taskType,
+      workCategoryId: data.workTypeId,
+      subscriberFullName: data.subscriberName,
+      subscriberPhoneNumber: data.phoneNumber,
+      workerId: data.executorId,
+      taskDeadline: data.taskDeadline || manualTaskDeadline,
+    } as ErpCreateTaskRequest;
+  },
+  target: createTaskFx,
+});
 
 sample({
   clock: PageGate.open,
@@ -192,30 +187,15 @@ sample({
 });
 
 sample({
-  clock: $taskDeadlineRequest,
-  fn: (request) => request!,
-  filter: (request) => {
-    if (!request) {
-      return false;
-    }
-    if (!Boolean(request.TaskType)) {
-      return false;
-    }
-    if (!Boolean(request.WorkCategoryId)) {
-      return false;
-    }
-    if (!request.isPermittedToRequest) {
-      return false;
-    }
-    return true;
+  clock: handleSelectHousingAddress,
+  source: $preparedForOptionsAddresses,
+  fn: (optionAddresses, selectedAddress) => {
+    const selectedOption = optionAddresses.find(
+      (optionItem) => optionItem.address === selectedAddress,
+    );
+    return selectedOption?.id || null;
   },
-  target: getErpTaskDeadlineFx,
-});
-
-sample({
-  clock: $taskDeadlineRequest,
-  filter: (request) => request?.isPermittedToRequest || false,
-  target: resetDeadline,
+  target: setSelectedHousingId,
 });
 
 const onSuccessCreation = createTaskFx.doneData;
@@ -246,13 +226,14 @@ export const addTaskFromDispatcherService = {
     handleCreateTask,
     choоseLeadExecutor,
     handleTaskDeadlineRequest,
+    handleSelectHousingAddress,
   },
   outputs: {
     $isModalOpen,
     $ERPSources,
     $workCategories,
     $leadExecutors,
-    $ErpObjects : $preparedForOptionsAddresses,
+    $ErpObjects: $preparedForOptionsAddresses,
     $executors,
     $taskDeadlineRequest,
     $taskDeadline,

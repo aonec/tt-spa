@@ -19,6 +19,7 @@ export const AddTaskFromDispatcherContainer = () => {
     taskDeadline,
     workCategories,
     isCreatePending,
+    handleSelectHousingAddress,
   } = useUnit({
     isModalOpen: outputs.$isModalOpen,
     handleCloseModal: inputs.handleCloseModal,
@@ -32,6 +33,7 @@ export const AddTaskFromDispatcherContainer = () => {
     choоseLeadExecutor: inputs.choоseLeadExecutor,
     handleTaskDeadlineRequest: inputs.handleTaskDeadlineRequest,
     isCreatePending: outputs.$isCreatePending,
+    handleSelectHousingAddress: inputs.handleSelectHousingAddress,
   });
 
   return (
@@ -49,6 +51,7 @@ export const AddTaskFromDispatcherContainer = () => {
         handleTaskDeadlineRequest={handleTaskDeadlineRequest}
         taskDeadline={taskDeadline}
         isCreatePending={isCreatePending}
+        handleSelectHousingAddress={handleSelectHousingAddress}
       />
     </>
   );

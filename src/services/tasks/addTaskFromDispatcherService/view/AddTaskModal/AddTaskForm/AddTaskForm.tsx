@@ -35,7 +35,7 @@ import { DatePicker } from 'ui-kit/DatePicker';
 import { EisTaskType } from 'api/types';
 import { SelectTime } from 'ui-kit/SelectTime';
 import { addTaskFromDispatcherService } from 'services/tasks/addTaskFromDispatcherService/addTaskFromDispatcherService.models';
-import { ResourceShortNamesDictionary, TaskTypeDictionary } from 'dictionaries';
+import { ResourceShortNamesDictionary } from 'dictionaries';
 import {
   autocompleteAddress,
   autocompleteTaskReason,
@@ -47,7 +47,6 @@ import {
   subscriberData,
   taskReasonData,
 } from './AddTaskForm.constants';
-import { usePhoneMask } from 'hooks/usePhoneMask';
 import { Alert } from 'ui-kit/Alert';
 import { ExistingTasks } from './ExistingTasks';
 
@@ -64,6 +63,7 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
   choоseLeadExecutor,
   executors,
   leadExecutors,
+  handleSelectHousingAddress,
 }) => {
   const { values, handleSubmit, setFieldValue, errors } = useFormik<AddTask>({
     initialValues: {
@@ -292,9 +292,10 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
               allowClear
               value={values.addressSearch}
               onChange={(value) => setFieldValue('addressSearch', value)}
-              onSelect={(value) =>
-                setFieldValue('ё', value)
-              }
+              onSelect={(value) => {
+                setFieldValue('selectedObjectAddress', value);
+                handleSelectHousingAddress(value);
+              }}
               options={preparedErpObjects}
             >
               <Input prefix={<SearchIconSc />} placeholder="Начните вводить " />

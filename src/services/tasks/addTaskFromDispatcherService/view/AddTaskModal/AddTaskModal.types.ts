@@ -21,4 +21,5 @@ export type AddTaskModalProps = {
   handleTaskDeadlineRequest: (payload: GetTaskDeadlineRequest) => void;
   taskDeadline: ErpTaskDeadlineResponse | null;
   isCreatePending: boolean;
+  handleSelectHousingAddress: (payload: string) => void;
 };
