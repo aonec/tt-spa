@@ -5,9 +5,13 @@ import {
   ErpSourceResponse,
   ErpWorkCategoryResponse,
   ErpObjectResponse,
+  ResourceDisconnectingResponse,
 } from 'api/types';
 import dayjs from 'dayjs';
-import { GetTaskDeadlineRequest } from 'services/tasks/addTaskFromDispatcherService/addTaskFromDispatcherService.types';
+import {
+  ExistingApartmentNumberType,
+  GetTaskDeadlineRequest,
+} from 'services/tasks/addTaskFromDispatcherService/addTaskFromDispatcherService.types';
 
 export type AddTask = {
   sourceId: string | null;
@@ -53,4 +57,6 @@ export type AddTaskFormProps = {
   handleTaskDeadlineRequest: (payload: GetTaskDeadlineRequest) => void;
   taskDeadline: ErpTaskDeadlineResponse | null;
   handleSelectHousingAddress: (payload: string) => void;
+  existingApartmentNumbers: ExistingApartmentNumberType[];
+  resourceDisconnection: ResourceDisconnectingResponse[];
 };

@@ -17,7 +17,7 @@ import { FormItem } from 'ui-kit/FormItem';
 import { Input } from 'ui-kit/Input';
 
 export const ExistingTasks: FC<ExistingTasksProps> = ({}) => {
-  const [isOpen, setIsOpen] = useState(true);
+  const [isOpen, setIsOpen] = useState(false);
 
   return (
     <PanelWrapper>

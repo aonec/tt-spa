@@ -1,5 +1,6 @@
 import { axios } from 'api/axios';
 import {
+  ApartmentListResponsePagedList,
   ErpCreateTaskRequest,
   ErpExecutorResponse,
   ErpObjectResponse,
@@ -7,12 +8,14 @@ import {
   ErpTaskDeadlineResponse,
   ErpWorkCategoryResponse,
   ResourceDisconnectingResponse,
+  ResourceDisconnectingResponsePagedList,
   StreetWithBuildingNumbersResponsePagedList,
 } from 'api/types';
 import queryString from 'query-string';
 import {
   GetAddressesRequest,
   GetApartmentsRequest,
+  GetResourceDisconnectionRequest,
   GetTaskDeadlineRequest,
 } from './addTaskFromDispatcherService.types';
 
@@ -57,17 +60,18 @@ export const getErpTaskDeadline = (
 };
 
 export const getResourceDisconnection = (
-  buildingId: string,
-): Promise<ResourceDisconnectingResponse> => {
-  return axios.get(`ResourceDisconnecting/${buildingId}`);
+  params: GetResourceDisconnectionRequest,
+): Promise<ResourceDisconnectingResponsePagedList> => {
+  return axios.get('ResourceDisconnecting', {
+    params,
+  });
 };
 
 export const getApartments = (
   params: GetApartmentsRequest,
-): Promise<ResourceDisconnectingResponse> => {
+): Promise<ApartmentListResponsePagedList> => {
   return axios.get('Apartments', {
     params,
-    paramsSerializer: queryString.stringify,
   });
 };
 

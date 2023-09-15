@@ -22,8 +22,11 @@ export const GridContainerAsymmetricRight = styled.div`
 
 export const ContainerWithOutline = styled.div`
   border-bottom: 1px solid #dcdee4;
-  padding-bottom: 10px;
-  margin-bottom: 10px;
+  border-top: 1px solid #dcdee4;
+  padding-bottom: 20px;
+  margin-bottom: 16px;
+  padding-top: 10px;
+  margin-top: 24px;
 `;
 
 export const TextareaSC = styled(Input.TextArea)`

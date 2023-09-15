@@ -4,9 +4,13 @@ import {
   ErpSourceResponse,
   ErpWorkCategoryResponse,
   ErpObjectResponse,
+  ResourceDisconnectingResponse,
 } from 'api/types';
 import { AddTask } from './AddTaskForm/AddTaskForm.types';
-import { GetTaskDeadlineRequest } from '../../addTaskFromDispatcherService.types';
+import {
+  ExistingApartmentNumberType,
+  GetTaskDeadlineRequest,
+} from '../../addTaskFromDispatcherService.types';
 
 export type AddTaskModalProps = {
   isModalOpen: boolean;
@@ -22,4 +26,6 @@ export type AddTaskModalProps = {
   taskDeadline: ErpTaskDeadlineResponse | null;
   isCreatePending: boolean;
   handleSelectHousingAddress: (payload: string) => void;
+  existingApartmentNumbers: ExistingApartmentNumberType[];
+  resourceDisconnection: ResourceDisconnectingResponse[] ;
 };

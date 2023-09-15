@@ -2,26 +2,34 @@ import { createDomain, sample } from 'effector';
 import {
   createTask,
   getAddresses,
+  getApartments,
   getERPSources,
   getErpExecutorsForLead,
   getErpTaskDeadline,
   getLeadExecutors,
+  getResourceDisconnection,
   getWorkCategories,
 } from './addTaskFromDispatcherService.api';
 import {
+  ApartmentListResponsePagedList,
   ErpCreateTaskRequest,
   ErpExecutorResponse,
   ErpObjectResponse,
   ErpSourceResponse,
   ErpTaskDeadlineResponse,
   ErpWorkCategoryResponse,
+  ResourceDisconnectingResponse,
+  ResourceDisconnectingResponsePagedList,
   StreetWithBuildingNumbersResponsePagedList,
 } from 'api/types';
 import { createGate } from 'effector-react';
 import { EffectFailDataAxiosError } from 'types';
 import { AddTask } from './view/AddTaskModal/AddTaskForm/AddTaskForm.types';
 import {
+  ExistingApartmentNumberType,
   GetAddressesRequest,
+  GetApartmentsRequest,
+  GetResourceDisconnectionRequest,
   GetTaskDeadlineRequest,
   PreparedAddress,
 } from './addTaskFromDispatcherService.types';
@@ -82,6 +90,16 @@ const getErpTaskDeadlineFx = domain.createEffect<
   ErpTaskDeadlineResponse
 >(getErpTaskDeadline);
 
+const getApartmentsFx = domain.createEffect<
+  GetApartmentsRequest,
+  ApartmentListResponsePagedList
+>(getApartments);
+
+const getResourceDisconnectionFx = domain.createEffect<
+  GetResourceDisconnectionRequest,
+  ResourceDisconnectingResponsePagedList
+>(getResourceDisconnection);
+
 const $isModalOpen = domain
   .createStore<boolean>(false)
   .on(handleOpenModal, () => true)
@@ -128,6 +146,20 @@ const $taskDeadline = domain
   .createStore<ErpTaskDeadlineResponse | null>(null)
   .on(getErpTaskDeadlineFx.doneData, (_, data) => data)
   .reset(resetDeadline)
+  .reset(handleReset);
+
+const $existingApartmentNumbers = domain
+  .createStore<ExistingApartmentNumberType[]>([])
+  .on(getApartmentsFx.doneData, (_, { items }) => {
+    if (!items) return [];
+    return items
+      .filter((apartment) => Boolean(apartment.apartmentNumber))
+      .map((apartment) => ({ value: apartment.apartmentNumber! }));
+  });
+
+const $resourceDisconnection = domain
+  .createStore<ResourceDisconnectingResponse[]>([])
+  .on(getResourceDisconnectionFx.doneData, (_, data) => data.items || [])
   .reset(handleReset);
 
 sample({
@@ -198,12 +230,26 @@ sample({
   target: setSelectedHousingId,
 });
 
+sample({
+  clock: $selectedHousingStockId,
+  filter: Boolean,
+  fn: (housingStockId) => ({ HousingStockId: Number(housingStockId) }),
+  target: getApartmentsFx,
+});
+
+sample({
+  clock: $selectedHousingStockId,
+  filter: Boolean,
+  fn: (housingStockId) => ({ BuildingId: Number(housingStockId) }),
+  target: getResourceDisconnectionFx,
+});
+
 const onSuccessCreation = createTaskFx.doneData;
 
 const $isCreatePending = createTaskFx.pending;
 
 sample({
-  clock: onSuccessCreation,
+  clock: [onSuccessCreation, PageGate.close],
   target: handleReset,
 });
 
@@ -238,6 +284,8 @@ export const addTaskFromDispatcherService = {
     $taskDeadlineRequest,
     $taskDeadline,
     $isCreatePending,
+    $existingApartmentNumbers,
+    $resourceDisconnection,
   },
   gates: { PageGate },
 };

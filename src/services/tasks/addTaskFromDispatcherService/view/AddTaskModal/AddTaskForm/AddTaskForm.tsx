@@ -32,12 +32,17 @@ import { FormItem } from 'ui-kit/FormItem';
 import { Select } from 'ui-kit/Select';
 import { Input } from 'ui-kit/Input';
 import { DatePicker } from 'ui-kit/DatePicker';
-import { EisTaskType } from 'api/types';
+import {
+  EResourceType,
+  EisTaskType,
+  ResourceDisconnectingTypeResponse,
+} from 'api/types';
 import { SelectTime } from 'ui-kit/SelectTime';
 import { addTaskFromDispatcherService } from 'services/tasks/addTaskFromDispatcherService/addTaskFromDispatcherService.models';
 import { ResourceShortNamesDictionary } from 'dictionaries';
 import {
   autocompleteAddress,
+  autocompleteApartNumber,
   autocompleteTaskReason,
   sortByAlphabet,
 } from './AddTaskForm.utils';
@@ -49,6 +54,8 @@ import {
 } from './AddTaskForm.constants';
 import { Alert } from 'ui-kit/Alert';
 import { ExistingTasks } from './ExistingTasks';
+import { AutoComplete } from 'ui-kit/AutoComplete';
+import { LinkButton } from 'ui-kit/shared/LinkButton';
 
 const {
   gates: { PageGate },
@@ -64,6 +71,8 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
   executors,
   leadExecutors,
   handleSelectHousingAddress,
+  existingApartmentNumbers,
+  resourceDisconnection,
 }) => {
   const { values, handleSubmit, setFieldValue, errors } = useFormik<AddTask>({
     initialValues: {
@@ -73,7 +82,7 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
       workTypeId: null,
 
       requestDate: dayjs(),
-      requestTime: dayjs().format('hh:00'),
+      requestTime: dayjs().format('HH:00'),
 
       manualDeadlineDate: null,
       manualDeadlineTime: null,
@@ -184,16 +193,28 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
     values.taskReasonSearch,
   );
 
-  const getResourceDisconnectionAlert = useCallback(() => {
-    return (
-      <ResourceDisconnectionAlertWrapper>
-        <div>Плановое отключение ГВС:</div>
-        <ResourceDisconnectionDate>
-          10.07.2023 - 20.07.2023
-        </ResourceDisconnectionDate>
-      </ResourceDisconnectionAlertWrapper>
-    );
-  }, []);
+  const getResourceDisconnectionAlert = useCallback(
+    (
+      disconnectingType: ResourceDisconnectingTypeResponse | null,
+      resource: EResourceType,
+      startDate: string,
+      endDate: string | null,
+    ) => {
+      return (
+        <ResourceDisconnectionAlertWrapper>
+          <div>
+            {disconnectingType?.description}{' '}
+            {ResourceShortNamesDictionary[resource]} :
+          </div>
+          <ResourceDisconnectionDate>
+            {dayjs(startDate).format('DD.MM.YYYY')}
+            {endDate ? ` — ${dayjs(endDate).format('DD.MM.YYYY')}` : ''}
+          </ResourceDisconnectionDate>
+        </ResourceDisconnectionAlertWrapper>
+      );
+    },
+    [],
+  );
 
   const getSubscribersNameOptions = useCallback(
     (subscribersData: SubscriberType) =>
@@ -213,6 +234,11 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
         };
       }),
     [],
+  );
+
+  const apartNumberOptions = autocompleteApartNumber(
+    values.apartmentNumber,
+    existingApartmentNumbers,
   );
 
   const subscribersNameOptions = getSubscribersNameOptions(subscriberData);
@@ -264,16 +290,14 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
 
         <GridContainer>
           <FormItem label="ФИО абонента">
-            <AutoCompleteAntD options={subscribersNameOptions}>
-              <Input
-                prefix={<SearchIconSc />}
-                placeholder="Начните вводить"
-                value={values.subscriberName || undefined}
-                onChange={(value) =>
-                  setFieldValue('subscriberName', value.target.value)
-                }
-              />
-            </AutoCompleteAntD>
+            <Input
+              // prefix={<SearchIconSc />}
+              placeholder="Начните вводить"
+              value={values.subscriberName || undefined}
+              onChange={(value) =>
+                setFieldValue('subscriberName', value.target.value)
+              }
+            />
           </FormItem>
           <FormItem label="Номер телефона">
             <Input
@@ -303,17 +327,30 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
           </FormItem>
 
           <FormItem label="Номер квартиры">
-            <Input
-              placeholder="Введите"
-              value={values.apartmentNumber || undefined}
-              onChange={(value) =>
-                setFieldValue('apartmentNumber', value.target.value)
-              }
-            />
+            <AutoCompleteAntD
+              value={values.apartmentNumber}
+              onChange={(value) => setFieldValue('apartmentNumber', value)}
+              onSelect={(value) => {
+                setFieldValue('apartmentNumber', value);
+              }}
+              options={apartNumberOptions}
+            >
+              <Input placeholder="Введите" />
+            </AutoCompleteAntD>
           </FormItem>
         </GridContainerAsymmetricRight>
 
-        <Alert centered>{getResourceDisconnectionAlert()}</Alert>
+        {Boolean(resourceDisconnection.length) &&
+          resourceDisconnection.map((disconnection) => (
+            <Alert centered>
+              {getResourceDisconnectionAlert(
+                disconnection.disconnectingType,
+                disconnection.resource,
+                disconnection.startDate,
+                disconnection.endDate,
+              )}
+            </Alert>
+          ))}
 
         {/* <FormItem label="Тип заявки">
           <Select
@@ -438,18 +475,20 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
         {/* </GridContainer>
         </ContainerWithOutline> */}
 
-        <ExistingTasks />
+        <ContainerWithOutline>
+          <FormItem label="Причина обращения">
+            <AutoCompleteAntD
+              value={values.taskReasonSearch}
+              onChange={(value) => setFieldValue('taskReasonSearch', value)}
+              allowClear
+              options={taskReasonOptions}
+            >
+              <Input prefix={<SearchIconSc />} placeholder="Начните вводить" />
+            </AutoCompleteAntD>
+          </FormItem>
 
-        <FormItem label="Причина обращения">
-          <AutoCompleteAntD
-            value={values.taskReasonSearch}
-            onChange={(value) => setFieldValue('taskReasonSearch', value)}
-            allowClear
-            options={taskReasonOptions}
-          >
-            <Input prefix={<SearchIconSc />} />
-          </AutoCompleteAntD>
-        </FormItem>
+          <LinkButton onClick={() => {}}>+ Добавить обращение</LinkButton>
+        </ContainerWithOutline>
 
         <GridContainer>
           <FormItem label="Ответственный исполнитель">
