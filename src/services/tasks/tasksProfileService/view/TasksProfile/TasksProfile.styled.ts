@@ -1,6 +1,5 @@
 import { Pagination, Tabs } from 'antd';
 import styled from 'styled-components';
-import { Button } from 'ui-kit/Button';
 
 export const Wrapper = styled.div`
   margin-top: -16px;
@@ -45,10 +44,7 @@ export const HeaderContainer = styled.div`
 export const Flex = styled.div`
   display: flex;
   align-items: center;
-  padding-top: 16px;
-  width: 36px;
-`;
-
-export const ButtonSC = styled(Button)`
-  padding: 0px 7px;
+  margin-top: 16px;
+  margin-left: 60px;
+  margin-right: 230px;
 `;
