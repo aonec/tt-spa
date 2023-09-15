@@ -7,7 +7,7 @@ import {
   Wrapper,
 } from './TaskStages.styled';
 import { TaskStagesProps } from './TaskStages.types';
-import { EStageStatus } from 'api/types';
+import { EManagingFirmTaskType, EStageStatus } from 'api/types';
 import { ChooseTypeOfResourceDisconnectionModalContainer } from 'services/resources/chooseTypeOfResourceDisconnectionModalService/chooseTypeOfResourceDisconnectionModalService.container';
 import { CreateResourceDisconnectionContainer } from 'services/resources/createResourceDisconnectionService';
 import { useUnit } from 'effector-react';
@@ -20,6 +20,7 @@ export const TaskStages: FC<TaskStagesProps> = ({
   isRevertStageLoading,
   isStageCanBeReverted,
   isEntryPoint,
+  taskType,
 }) => {
   const { openCreateResourceDisconnectionModal } = useUnit({
     openCreateResourceDisconnectionModal:
@@ -60,16 +61,17 @@ export const TaskStages: FC<TaskStagesProps> = ({
       <Wrapper>
         <TitleWrapper>Этапы выполнения</TitleWrapper>
         {stagesView}
-        {isEntryPoint && (
-          <DisconnectionWrapper>
-            Знаете, что задача сформирована из-за отключения ресурса?
-            <MessageButton
-              onClick={() => openCreateResourceDisconnectionModal()}
-            >
-              Сообщить об отключении
-            </MessageButton>
-          </DisconnectionWrapper>
-        )}
+        {isEntryPoint &&
+          taskType === EManagingFirmTaskType.HousingDeviceMalfunction && (
+            <DisconnectionWrapper>
+              Знаете, что задача сформирована из-за отключения ресурса?
+              <MessageButton
+                onClick={() => openCreateResourceDisconnectionModal()}
+              >
+                Сообщить об отключении
+              </MessageButton>
+            </DisconnectionWrapper>
+          )}
       </Wrapper>
     </>
   );

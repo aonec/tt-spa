@@ -1,4 +1,4 @@
-import { StageListResponse } from 'api/types';
+import { EManagingFirmTaskType, StageListResponse } from 'api/types';
 
 export type TaskStagesProps = {
   stages: StageListResponse[];
@@ -6,4 +6,5 @@ export type TaskStagesProps = {
   isRevertStageLoading: boolean;
   isStageCanBeReverted: boolean;
   isEntryPoint: boolean;
+  taskType: EManagingFirmTaskType;
 };
