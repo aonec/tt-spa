@@ -5,3 +5,16 @@ export type GetTaskDeadlineRequest = {
   TaskType?: EisTaskType;
   isPermittedToRequest: boolean;
 };
+
+export type GetApartmentsRequest = {
+  HousingStockId: number;
+};
+
+export type GetAddressesRequest = {
+  City: string;
+};
+
+export type PreparedAddress = {
+  id: string;
+  address: string;
+};

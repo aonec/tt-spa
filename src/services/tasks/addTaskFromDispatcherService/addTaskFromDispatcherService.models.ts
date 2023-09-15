@@ -1,11 +1,11 @@
 import { createDomain, forward, sample } from 'effector';
 import {
   createTask,
+  getAddresses,
   getERPSources,
   getErpExecutorsForLead,
   getErpTaskDeadline,
   getLeadExecutors,
-  getTasksErpObjects,
   getWorkCategories,
 } from './addTaskFromDispatcherService.api';
 import {
@@ -15,12 +15,19 @@ import {
   ErpSourceResponse,
   ErpTaskDeadlineResponse,
   ErpWorkCategoryResponse,
+  StreetWithBuildingNumbersResponsePagedList,
 } from 'api/types';
 import { createGate } from 'effector-react';
 import { EffectFailDataAxiosError } from 'types';
 import { AddTask } from './view/AddTaskModal/AddTaskForm/AddTaskForm.types';
-import { GetTaskDeadlineRequest } from './addTaskFromDispatcherService.types';
+import {
+  GetAddressesRequest,
+  GetTaskDeadlineRequest,
+  PreparedAddress,
+} from './addTaskFromDispatcherService.types';
 import { message } from 'antd';
+import { currentUserService } from 'services/currentUserService';
+import { prepareAddressesForTreeSelect } from './addTaskFromDispatcherService.utils';
 
 const domain = createDomain('addTaskFromDispatcherService');
 
@@ -57,9 +64,14 @@ const getLeadExecutorsFx = domain.createEffect<void, ErpExecutorResponse[]>(
   getLeadExecutors,
 );
 
-const getErpObjectsFx = domain.createEffect<void, ErpObjectResponse[]>(
-  getTasksErpObjects,
-);
+// const getErpObjectsFx = domain.createEffect<void, ErpObjectResponse[]>(
+//   getTasksErpObjects,
+// );
+
+const getAddressesFx = domain.createEffect<
+  GetAddressesRequest,
+  StreetWithBuildingNumbersResponsePagedList
+>(getAddresses);
 
 const getErpExecutorsForLeadFx = domain.createEffect<
   { leadId: string },
@@ -97,9 +109,15 @@ const $executors = domain
   .on(getErpExecutorsForLeadFx.doneData, (_, data) => data)
   .reset(handleReset);
 
-const $ErpObjects = domain
-  .createStore<ErpObjectResponse[]>([])
-  .on(getErpObjectsFx.doneData, (_, data) => data)
+// const $ErpObjects = domain
+//   .createStore<ErpObjectResponse[]>([])
+//   .reset(handleReset);
+
+const $preparedForOptionsAddresses = domain
+  .createStore<PreparedAddress[]>([])
+  .on(getAddressesFx.doneData, (_, data) =>
+    prepareAddressesForTreeSelect(data.items),
+  )
   .reset(handleReset);
 
 const $taskDeadlineRequest = domain
@@ -113,48 +131,53 @@ const $taskDeadline = domain
   .reset(resetDeadline)
   .reset(handleReset);
 
+// sample({
+//   clock: handleCreateTask,
+//   source: $ErpObjects,
+//   fn: (ErpObjects, data) => {
+//     const object = ErpObjects.find(
+//       (object) => object.address === data.selectedObjectAddress,
+//     );
+
+//     const sourceDateTime = data.requestDate
+//       ?.format('YYYY-MM-DD')
+//       .concat('T', data.requestTime || '');
+
+//     const manualTaskDeadline = data.manualDeadlineDate
+//       ?.format('YYYY-MM-DD')
+//       .concat('T', data.manualDeadlineTime || '');
+
+//     return {
+//       leadId: data.leadId,
+//       objectId: object?.id,
+//       sourceDateTime: sourceDateTime,
+//       sourceId: data.sourceId,
+//       sourceNumber: data.requestNumber,
+//       taskDescription: data.taskDescription,
+//       taskType: data.taskType,
+//       workCategoryId: data.workTypeId,
+//       subscriberFullName: data.subscriberName,
+//       subscriberPhoneNumber: data.phoneNumber,
+//       workerId: data.executorId,
+//       taskDeadline: data.taskDeadline || manualTaskDeadline,
+//     } as ErpCreateTaskRequest;
+//   },
+//   target: createTaskFx,
+// });
+
 sample({
-  clock: handleCreateTask,
-  source: $ErpObjects,
-  fn: (ErpObjects, data) => {
-    const object = ErpObjects.find(
-      (object) => object.address === data.selectedObjectAddress,
-    );
-
-    const sourceDateTime = data.requestDate
-      ?.format('YYYY-MM-DD')
-      .concat('T', data.requestTime || '');
-
-    const manualTaskDeadline = data.manualDeadlineDate
-      ?.format('YYYY-MM-DD')
-      .concat('T', data.manualDeadlineTime || '');
-
-    return {
-      leadId: data.leadId,
-      objectId: object?.id,
-      sourceDateTime: sourceDateTime,
-      sourceId: data.sourceId,
-      sourceNumber: data.requestNumber,
-      taskDescription: data.taskDescription,
-      taskType: data.taskType,
-      workCategoryId: data.workTypeId,
-      subscriberFullName: data.subscriberName,
-      subscriberPhoneNumber: data.phoneNumber,
-      workerId: data.executorId,
-      taskDeadline: data.taskDeadline || manualTaskDeadline,
-    } as ErpCreateTaskRequest;
-  },
-  target: createTaskFx,
+  clock: PageGate.open,
+  target: [getERPSourcesFx, getWorkCategoriesFx, getLeadExecutorsFx],
 });
 
-forward({
-  from: PageGate.open,
-  to: [
-    getERPSourcesFx,
-    getWorkCategoriesFx,
-    getLeadExecutorsFx,
-    getErpObjectsFx,
-  ],
+sample({
+  clock: PageGate.open,
+  source: currentUserService.outputs.$userCity,
+  filter: Boolean,
+  fn: (userCity) => ({
+    City: userCity,
+  }),
+  target: getAddressesFx,
 });
 
 sample({
@@ -229,7 +252,7 @@ export const addTaskFromDispatcherService = {
     $ERPSources,
     $workCategories,
     $leadExecutors,
-    $ErpObjects,
+    $ErpObjects : $preparedForOptionsAddresses,
     $executors,
     $taskDeadlineRequest,
     $taskDeadline,
