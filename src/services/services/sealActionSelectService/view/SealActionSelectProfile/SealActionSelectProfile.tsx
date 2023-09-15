@@ -47,7 +47,7 @@ export const SealActionSelectProfile: FC<SealProfileProps> = ({
                   <>
                     <TextWrapper>{totalAppointmentsDate}:</TextWrapper>
                     <TextWrapper>
-                      {nearestTotalAppointments.notDistributed} из {totalCount} записей
+                      {nearestTotalAppointments.notDistributed} из {totalCount}
                     </TextWrapper>
                   </>
                 )}
