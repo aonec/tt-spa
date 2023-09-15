@@ -29,6 +29,6 @@ export type UniqueWorkingRangeProps = {
 export type UniqueWorkingRangeType = {
   nodeResourceType: EResourceType;
   season: ENodeWorkingRangeSeason;
-  housingStockId: number | null;
+  housingStockIdHash: string | null;
   nodeId: number | null;
 };

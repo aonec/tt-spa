@@ -55,7 +55,7 @@ export const form = createForm({
       init: null as string | null,
     },
     housingStockId: {
-      init: null as number | null,
+      init: null as string | null,
     },
     isWithoutApartments: {
       init: false,
@@ -91,7 +91,7 @@ sample({
       houseManagementId:
         values.houseManagementId !== 'null' ? values.houseManagementId : null,
       housingStockId:
-        values.housingStockId !== 'null' ? Number(values.housingStockId) : null,
+        values.housingStockId !== 'null' ? values.housingStockId : null,
     };
 
     return formValues;
@@ -181,11 +181,11 @@ const workingReports = [
 ];
 
 sample({
+  clock: createReport,
   source: combine(
     form.$values,
     closedIndividualDevicesFormService.outputs.$unloadSelectType,
   ),
-  clock: createReport,
   fn: ([
     {
       type,

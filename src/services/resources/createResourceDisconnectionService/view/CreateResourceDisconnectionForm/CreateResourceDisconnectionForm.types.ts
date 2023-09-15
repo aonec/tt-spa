@@ -33,6 +33,10 @@ export type CreateResourceDisconnectionFormProps = {
   selectedCity: string | null;
   selectCity: (city: string) => void;
   selectedBuilding: BuildingListResponse | null;
+  handleCreateDisconnectionState?: (
+    payload: ResourceDisconnectingCreateRequest,
+  ) => void;
+  handleCloseModal: () => void;
 };
 
 export type CreateResourceDisconnectionFormTypes = {
