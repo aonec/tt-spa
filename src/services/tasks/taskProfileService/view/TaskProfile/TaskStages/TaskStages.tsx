@@ -52,25 +52,27 @@ export const TaskStages: FC<TaskStagesProps> = ({
 
   return (
     <>
-      <ChooseTypeOfResourceDisconnectionModalContainer />
-      <CreateResourceDisconnectionContainer
-        handleComplete={() => {
-          history.goBack();
-        }}
-      />
       <Wrapper>
         <TitleWrapper>Этапы выполнения</TitleWrapper>
         {stagesView}
         {isEntryPoint &&
           taskType === EManagingFirmTaskType.HousingDeviceMalfunction && (
-            <DisconnectionWrapper>
-              Знаете, что задача сформирована из-за отключения ресурса?
-              <MessageButton
-                onClick={() => openCreateResourceDisconnectionModal()}
-              >
-                Сообщить об отключении
-              </MessageButton>
-            </DisconnectionWrapper>
+            <>
+              <ChooseTypeOfResourceDisconnectionModalContainer />
+              <CreateResourceDisconnectionContainer
+                handleComplete={() => {
+                  history.goBack();
+                }}
+              />
+              <DisconnectionWrapper>
+                Знаете, что задача сформирована из-за отключения ресурса?
+                <MessageButton
+                  onClick={() => openCreateResourceDisconnectionModal()}
+                >
+                  Сообщить об отключении
+                </MessageButton>
+              </DisconnectionWrapper>
+            </>
           )}
       </Wrapper>
     </>
