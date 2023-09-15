@@ -58,14 +58,11 @@ const {
 export const AddTaskForm: FC<AddTaskFormProps> = ({
   formId,
   ERPSources,
-  workCategories: workTypes,
   ErpObjects,
   handleCreateTask,
   setDisableSubmit,
   choоseLeadExecutor,
   executors,
-  handleTaskDeadlineRequest,
-  taskDeadline,
   leadExecutors,
 }) => {
   const { values, handleSubmit, setFieldValue, errors } = useFormik<AddTask>({
@@ -75,8 +72,8 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
       taskType: null as null | EisTaskType,
       workTypeId: null,
 
-      requestDate: null,
-      requestTime: null,
+      requestDate: dayjs(),
+      requestTime: dayjs().format('hh:00'),
 
       manualDeadlineDate: null,
       manualDeadlineTime: null,
@@ -99,42 +96,17 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
 
       taskReasonSearch: null,
     },
-    enableReinitialize: true,
+    // enableReinitialize: true,
     validateOnBlur: true,
     validateOnMount: true,
 
     validationSchema: yup.object().shape({
       sourceId: yup.string().nullable().required('Обязательное поле'),
       requestNumber: yup.string().nullable().required('Обязательное поле'),
-      taskType: yup.string().nullable().required('Обязательное поле'),
-      workTypeId: yup.string().nullable().required('Обязательное поле'),
       subscriberName: yup.string().nullable().required('Обязательное поле'),
       phoneNumber: yup.string().nullable().required('Обязательное поле'),
       requestDate: yup.string().nullable().required('Обязательное поле'),
       requestTime: yup.string().nullable().required('Обязательное поле'),
-      taskDeadline: yup
-        .string()
-        .nullable()
-        .required('Обязательное поле')
-        .when('isPermittedToChangeDeadline', {
-          is: true,
-          then: yup.string().nullable(),
-        }),
-      manualDeadlineDate: yup
-        .string()
-        .nullable()
-        .when('isPermittedToChangeDeadline', {
-          is: true,
-          then: yup.string().required('Это поле обязательно'),
-        }),
-
-      manualDeadlineTime: yup
-        .string()
-        .nullable()
-        .when('isPermittedToChangeDeadline', {
-          is: true,
-          then: yup.string().required('Это поле обязательно'),
-        }),
       executorId: yup.string().nullable().required('Обязательное поле'),
       leadId: yup.string().nullable().required('Обязательное поле'),
       selectedObjectAddress: yup
@@ -146,45 +118,6 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
       handleCreateTask(data);
     },
   });
-
-  useEffect(() => {
-    const isPermitted =
-      workTypes.find((workType) => workType.id === values.workTypeId)
-        ?.isDeadlineChangingPermitted || false;
-
-    setFieldValue('isPermittedToChangeDeadline', isPermitted);
-  }, [values.workTypeId, setFieldValue, workTypes]);
-
-  const calculatedDeadlineDateArr = useMemo(() => {
-    if (!taskDeadline || !values.requestDate || !values.requestTime)
-      return null;
-
-    if (values.isPermittedToChangeDeadline) return null;
-
-    const sourceDateTime = dayjs(
-      values.requestDate
-        .format('YYYY-MM-DD')
-        .concat('T', values.requestTime || ''),
-    );
-
-    const deadlineDate = sourceDateTime.add(
-      taskDeadline.deadlineInHours,
-      'hours',
-    );
-
-    const deadlineDateFormatted = deadlineDate.format('YYYY-MM-DDTHH:mm');
-    setFieldValue('taskDeadline', deadlineDateFormatted);
-
-    const dateArr = deadlineDateFormatted.split('T');
-
-    return dateArr;
-  }, [
-    taskDeadline,
-    values.requestDate,
-    values.requestTime,
-    values.isPermittedToChangeDeadline,
-    setFieldValue,
-  ]);
 
   const sortedLeadExecutors = useMemo(() => {
     return sortByAlphabet(leadExecutors);
@@ -250,8 +183,6 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
     filteredTaskReasonData,
     values.taskReasonSearch,
   );
-
-  console.log('render');
 
   const getResourceDisconnectionAlert = useCallback(() => {
     return (
@@ -362,7 +293,7 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
               value={values.addressSearch}
               onChange={(value) => setFieldValue('addressSearch', value)}
               onSelect={(value) =>
-                setFieldValue('selectedObjectAddress', value)
+                setFieldValue('ё', value)
               }
               options={preparedErpObjects}
             >
