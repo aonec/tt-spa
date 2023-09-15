@@ -26,6 +26,7 @@ export const Form = () => {
           onChange={(ids) => setSelectedIds(ids)}
           treeData={prepareAddressesForTreeSelect({
             items: TreeData[0].streets as StreetWithBuildingNumbersResponse[],
+            isTreeCheckable: true,
           })}
         />
       </FormItem>

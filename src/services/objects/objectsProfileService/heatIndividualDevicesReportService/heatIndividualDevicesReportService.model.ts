@@ -56,6 +56,7 @@ const $treeData = domain
   .on(getAddressesFx.doneData, (_, data) =>
     prepareAddressesForTreeSelect({
       items: data.items || [],
+      isTreeCheckable: true,
     }),
   )
   .reset(clearStore);
