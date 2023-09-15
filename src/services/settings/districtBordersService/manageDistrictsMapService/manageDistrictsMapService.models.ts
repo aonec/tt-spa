@@ -9,6 +9,7 @@ import {
 import { currentUserService } from 'services/currentUserService';
 import { DistrictsPageSegment } from './ManageDistrictPage/ManageDistrictPage.types';
 import { addHouseToDistrictMutation } from './ManageDistrictPage/ManageDistrictsList/addHouseToDistrict/addHouseToDistrictService.api';
+import { deleteHouseInDistrictMutation } from './ManageDistrictPage/ManageDistrictsList/deleteHouseInDistrict/deleteHouseInDistrictService.api';
 
 const domain = createDomain('manageDistrictsMapService');
 
@@ -49,6 +50,7 @@ sample({
     deleteDistrictMutation.finished.success,
     updateDistrictMutation.finished.success,
     addHouseToDistrictMutation.finished.success,
+    deleteHouseInDistrictMutation.finished.success,
   ],
   target: existingDistrictsQuery.start,
 });
