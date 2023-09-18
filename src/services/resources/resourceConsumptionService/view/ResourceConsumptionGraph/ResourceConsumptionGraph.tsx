@@ -248,10 +248,10 @@ export const ResourceConsumptionGraph: FC<ResourceConsumptionGraphProps> = ({
         width={width}
         theme={VictoryTheme.material}
         containerComponent={<VictoryVoronoiContainer />}
-        animate={{
-          duration: 0,
-          onLoad: { duration: 600 },
-        }}
+        // animate={{
+        //   duration: 200,
+        //   onLoad: { duration: 600 },
+        // }}
       >
         <VictoryAxis
           tickComponent={<TickComponent />}
@@ -263,8 +263,9 @@ export const ResourceConsumptionGraph: FC<ResourceConsumptionGraphProps> = ({
           }}
           style={horizontalAxisStyle}
         />
-        <VictoryAxis dependentAxis domain={minmax} style={verticalAxisStyle} />
+        <VictoryAxis domain={minmax} dependentAxis style={verticalAxisStyle} />
         <VictoryLine
+          domain={{ y: minmax }}
           samples={1}
           labels={['0', ``]}
           labelComponent={<VictoryLabel renderInPortal dy={7} dx={-16} />}
