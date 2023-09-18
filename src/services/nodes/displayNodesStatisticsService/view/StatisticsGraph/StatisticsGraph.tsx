@@ -81,9 +81,11 @@ export const GraphView: React.FC<GraphViewProps> = ({
     }
     const firstlyPreparedData = prepareData(archiveValues);
 
-    const finallyData =
-      firstlyPreparedData &&
-      prepareDataForNodeStatistic(firstlyPreparedData, reportType, withFault);
+    const finallyData = prepareDataForNodeStatistic(
+      firstlyPreparedData,
+      reportType,
+      withFault,
+    );
 
     return finallyData;
   }, [requiredArchiveValues, reportType, withFault]);

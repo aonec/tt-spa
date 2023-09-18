@@ -12,9 +12,8 @@ export enum ResourceConsumptionGraphDataType {
 }
 
 export type ConsumptionDataForTwoMonth = {
-  [ResourceConsumptionGraphDataType.currentMonthData]?: MonthConsumptionData;
-  [ResourceConsumptionGraphDataType.prevMonthData]?: MonthConsumptionData;
-  [ResourceConsumptionGraphDataType.additionalAddress]?: MonthConsumptionData;
+  [ResourceConsumptionGraphDataType.currentMonthData]: MonthConsumptionData;
+  [ResourceConsumptionGraphDataType.prevMonthData]: MonthConsumptionData;
 };
 
 export enum ResourceConsumptionGraphType {
@@ -24,15 +23,9 @@ export enum ResourceConsumptionGraphType {
 }
 
 export type MonthConsumptionData = {
-  [ResourceConsumptionGraphType.Housing]?: ResourceConsumptionWithNull[];
-  [ResourceConsumptionGraphType.Normative]?: ResourceConsumptionWithNull[];
-  [ResourceConsumptionGraphType.Subscriber]?: ResourceConsumptionWithNull[];
-};
-
-export type AllConsumptionDataWithNullableAdditionalAddress = {
-  [ResourceConsumptionGraphDataType.currentMonthData]?: MonthConsumptionData;
-  [ResourceConsumptionGraphDataType.prevMonthData]?: MonthConsumptionData;
-  [ResourceConsumptionGraphDataType.additionalAddress]: MonthConsumptionData | null;
+  [ResourceConsumptionGraphType.Housing]: ResourceConsumptionWithNull[];
+  [ResourceConsumptionGraphType.Normative]: ResourceConsumptionWithNull[];
+  [ResourceConsumptionGraphType.Subscriber]: ResourceConsumptionWithNull[];
 };
 
 export type ConsumptionDataPayload = {
@@ -51,10 +44,4 @@ export type AddressWithSearchString = {
 export type PreparedHouseManagements = {
   id: string;
   name: string | null;
-};
-
-export type SetConsumptionDataType = {
-  housing?: ResourceConsumptionWithNull[];
-  normative?: ResourceConsumptionWithNull[];
-  subscriber?: ResourceConsumptionWithNull[];
 };

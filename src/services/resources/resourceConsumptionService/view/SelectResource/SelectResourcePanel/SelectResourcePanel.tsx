@@ -1,6 +1,5 @@
-import { round } from 'lodash';
+import { isNull, round } from 'lodash';
 import React, { FC } from 'react';
-import { Skeleton } from 'antd';
 import { ResourceIconLookup } from 'ui-kit/shared/ResourceIconLookup';
 import { ResourceTypeNamesLookup } from '../SelectResource.constants';
 import { resourceSummaryUnits } from './SelectResourcePanel.constants';
@@ -17,10 +16,10 @@ export const SelectResourcePanel: FC<SelectResourcePanelProps> = ({
   active,
   setResource,
   summary,
-  isSummaryLoading,
 }) => {
-  const isSummaryExist = Boolean(summary);
-  const summaryText = isSummaryExist ? `${summary && round(summary)} ` : null;
+  const summaryText = isNull(summary)
+    ? null
+    : `${round(summary)} ${resourceSummaryUnits[resource]}`;
 
   return (
     <Wrapper active={active} onClick={() => setResource(resource)}>
@@ -29,13 +28,7 @@ export const SelectResourcePanel: FC<SelectResourcePanelProps> = ({
           <ResourceIconLookup resource={resource} />
         </div>
         <GroupWrapper>
-          <SummaryWrapper>
-            {!isSummaryLoading ? summaryText : null}
-            {isSummaryLoading ? (
-              <Skeleton.Button active={true} size="small" />
-            ) : null}
-            {isSummaryExist ? resourceSummaryUnits[resource] : null}
-          </SummaryWrapper>
+          <SummaryWrapper>{summaryText}</SummaryWrapper>
           <div>{ResourceTypeNamesLookup[resource]}</div>
         </GroupWrapper>
       </ContentWrapper>
