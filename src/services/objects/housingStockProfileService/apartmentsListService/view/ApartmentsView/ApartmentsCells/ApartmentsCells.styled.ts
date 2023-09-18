@@ -14,5 +14,5 @@ export const CellsWrapper = styled.div`
   margin-top: 24px;
   display: grid;
   grid-gap: 12px;
-  grid-template-columns: repeat(auto-fill, 33px);
+  grid-template-columns: repeat(auto-fill, 66px);
 `;
