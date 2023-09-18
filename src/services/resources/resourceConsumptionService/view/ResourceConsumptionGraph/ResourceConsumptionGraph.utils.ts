@@ -6,12 +6,9 @@ import { ResourceConsumptionGraphColors } from './ResourceConsumptionGraph.const
 const minDelta = 0.01;
 
 export function getMinAndMaxForResourceConsumptionGraph<T>(
-  dataArr: ((T & { value: number }[]) | null)[],
+  dataArr: (T & { value: number }[])[],
 ) {
-  const filteredDataArr = dataArr.filter((data) => Boolean(data)) as (T &
-    { value: number }[])[];
-
-  return getMinAndMax(filteredDataArr?.flat(), minDelta);
+  return getMinAndMax(dataArr.flat(), minDelta);
 }
 
 export const getGraphTypeColors = ({
@@ -34,20 +31,3 @@ export const getGraphTypeColors = ({
   }
   return color;
 };
-
-export function hasNoConsecutiveNumbers(
-  arr: { key?: string; value?: number | null | undefined }[],
-): boolean {
-  let count = 0;
-  for (let i = 0; i < arr.length; i++) {
-    if (typeof arr[i].value === 'number') {
-      count++;
-      if (count >= 2) {
-        return false;
-      }
-    } else {
-      count = 0;
-    }
-  }
-  return true;
-}

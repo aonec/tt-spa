@@ -14,23 +14,14 @@ export type ResourceConsumptionProfileProps = {
   isLoading: boolean;
   resourceConsumptionFilter: ConsumptionDataFilter;
   setResource: (resource: EResourceType) => void;
+  housingConsumptionData: ConsumptionDataForTwoMonth | null;
   selectedGraphTypes: BooleanTypesOfResourceConsumptionGraphForTwoMonth;
   setSelectedGraphTypes: (
     selected: BooleanTypesOfResourceConsumptionGraphForTwoMonth,
   ) => void;
+  additionalConsumptionData: MonthConsumptionData | null;
   summaryConsumption: GetSummaryHousingConsumptionsByResourcesResponse | null;
   resource: EResourceType;
-  isSummaryLoading: boolean;
-  isPrevNormativeAndSubscriberLoading: boolean;
-  isPrevHousingLoading: boolean;
-  isNormativeAndSubscriberLoading: boolean;
-  isHousingLoading: boolean;
-  isAdditionalAddressSelected: boolean;
-  housingConsumptionData: {
-    [ResourceConsumptionGraphDataType.currentMonthData]?: MonthConsumptionData;
-    [ResourceConsumptionGraphDataType.prevMonthData]?: MonthConsumptionData;
-    [ResourceConsumptionGraphDataType.additionalAddress]: MonthConsumptionData | null;
-  };
 };
 
 export type BooleanTypesOfResourceConsumptionGraphForTwoMonth = {
@@ -44,5 +35,5 @@ export type BooleanTypesOfResourceConsumptionGraph = {
 
 export type SelectedAddresses = {
   currentAddress: boolean;
-  additionalAddress: boolean;
+  addditionalAddress: boolean;
 };

@@ -40,6 +40,4 @@ export const GroupWrapper = styled.div`
 export const SummaryWrapper = styled.div`
   font-weight: 500;
   display: flex;
-  align-items: center;
-  gap: 6px;
 `;

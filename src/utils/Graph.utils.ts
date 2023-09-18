@@ -30,9 +30,8 @@ export function getMinAndMax<T>(
 }
 
 export function prepareData<T>(data: (T & { value?: number | null })[]) {
-  if (!data) return null;
   return data.reduce((acc, reading) => {
-    if (reading === undefined || reading.value === undefined) {
+    if (reading?.value === undefined) {
       return acc;
     }
     return [...acc, reading as T & PreparedArchiveValues];

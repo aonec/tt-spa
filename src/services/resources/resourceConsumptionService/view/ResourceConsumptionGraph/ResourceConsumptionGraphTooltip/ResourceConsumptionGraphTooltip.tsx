@@ -27,7 +27,7 @@ export const ResourceConsumptionGraphTooltip: FC<
           <DateBlock>
             {dayjs(startOfMonth)
               .add(Number(key) - 1, 'day')
-              .format('DD.MM.YYYY')}
+              .format('DD.MM.yyyy')}
           </DateBlock>
           <Value>
             Общедомовое потребление {value.toFixed(3)} {measure}

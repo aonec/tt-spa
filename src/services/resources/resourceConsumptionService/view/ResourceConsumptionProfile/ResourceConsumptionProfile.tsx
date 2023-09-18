@@ -1,5 +1,6 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useEffect, useMemo, useState } from 'react';
 import { WithLoader } from 'ui-kit/shared/WithLoader';
+import { ResourceConsumptionGraphDataType } from '../../resourceConsumptionService.types';
 import { ResourceConsumptionGraph } from '../ResourceConsumptionGraph';
 import { SelectResourceConsumptionType } from '../ResourceConsumptionGraph/SelectResourceConsumptionType';
 import { SelectResource } from '../SelectResource';
@@ -21,14 +22,9 @@ export const ResourceConsumptionProfile: FC<
   housingConsumptionData,
   selectedGraphTypes,
   setSelectedGraphTypes,
+  additionalConsumptionData,
   summaryConsumption,
-  isSummaryLoading,
   resource,
-  isHousingLoading,
-  isNormativeAndSubscriberLoading,
-  isPrevHousingLoading,
-  isPrevNormativeAndSubscriberLoading,
-  isAdditionalAddressSelected,
 }) => {
   const [selectedAddresses, setSelectedAddresses] = useState<SelectedAddresses>(
     initialSelectedAddresses,
@@ -36,7 +32,18 @@ export const ResourceConsumptionProfile: FC<
 
   useEffect(() => {
     setSelectedAddresses(initialSelectedAddresses);
-  }, [housingConsumptionData?.additionalAddress]);
+  }, [additionalConsumptionData]);
+
+  const consumptionData = useMemo(() => {
+    if (!housingConsumptionData) {
+      return null;
+    }
+    return {
+      ...housingConsumptionData,
+      [ResourceConsumptionGraphDataType.additionalAddress]:
+        additionalConsumptionData,
+    };
+  }, [housingConsumptionData, additionalConsumptionData]);
 
   return (
     <Wrapper>
@@ -45,44 +52,33 @@ export const ResourceConsumptionProfile: FC<
           selectedResource={resource}
           setResource={setResource}
           summaryConsumption={summaryConsumption}
-          isSummaryLoading={isSummaryLoading}
         />
 
         <WithLoader isLoading={isLoading}>
           <ResourceConsumptionGraph
-            consumptionData={housingConsumptionData}
+            consumptionData={consumptionData}
             resource={resource}
             startOfMonth={resourceConsumptionFilter?.From || ''}
             checked={selectedGraphTypes}
+            additionalConsumptionData={additionalConsumptionData}
             selectedAddresses={selectedAddresses}
-            isAdditionalAddressSelected={isAdditionalAddressSelected}
           />
-
           {housingConsumptionData &&
             Boolean(
-              housingConsumptionData?.currentMonthData?.housing?.length,
+              housingConsumptionData?.currentMonthData.housing.length,
             ) && (
               <SelectResourceConsumptionType
                 disabled={getDisabledGraphTypes(housingConsumptionData)}
                 checked={selectedGraphTypes}
                 setCheckedGraphTypes={setSelectedGraphTypes}
                 resource={resource}
-                isAdditionalAddress={isAdditionalAddressSelected}
+                isAdditionalAddress={Boolean(additionalConsumptionData)}
                 currentAddress={'Основные адреса'}
                 additionalAddress={'Адреса для сравнения'}
                 selectedAddresses={selectedAddresses}
                 setSelectedAddresses={(selected) =>
                   setSelectedAddresses(selected)
                 }
-                isHousingLoading={isHousingLoading}
-                isNormativeAndSubscriberLoading={
-                  isNormativeAndSubscriberLoading
-                }
-                isPrevHousingLoading={isPrevHousingLoading}
-                isPrevNormativeAndSubscriberLoading={
-                  isPrevNormativeAndSubscriberLoading
-                }
-                consumptionData={housingConsumptionData}
               />
             )}
         </WithLoader>

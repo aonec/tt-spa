@@ -1,67 +1,33 @@
-import { useUnit } from 'effector-react';
-import React, { useMemo } from 'react';
+import { useEvent, useStore } from 'effector-react';
+import React from 'react';
 import { resourceConsumptionService } from './resourceConsumptionService.model';
 import { ResourceConsumptionProfile } from './view/ResourceConsumptionProfile';
 import './resourceConsumptionService.relations';
 import { resourceConsumptionFilterService } from './resourceConsumptionFilterService';
 import { addressSearchService } from 'services/addressSearchService/addressSearchService.models';
-import {
-  AllConsumptionDataWithNullableAdditionalAddress,
-  MonthConsumptionData,
-  ResourceConsumptionGraphDataType,
-} from './resourceConsumptionService.types';
 
 const { inputs, outputs, gates } = resourceConsumptionService;
 const { ResourceConsumptionGate } = gates;
 const { ExistingCitiesGate } = addressSearchService.gates;
 
 export const ResourceConsumptionContainer = () => {
-  const {
-    setSelectedGraphTypes,
-    setResource,
-    selectedGraphTypes,
-    summaryConsumption,
-    housingConsumptionData,
-    resource,
-    resourceConsumptionFilter,
-    isAdditionalAddressSelected,
-    isPrevNormativeAndSubscriberLoading,
-    isPrevHousingLoading,
-    isNormativeAndSubscriberLoading,
-    isHousingLoading,
-    isSummaryLoading,
-    isLoading,
-  } = useUnit({
-    setSelectedGraphTypes: inputs.setSelectedGraphTypes,
-    setResource: resourceConsumptionFilterService.inputs.setResource,
-    selectedGraphTypes: outputs.$selectedGraphTypes,
-    summaryConsumption: outputs.$summaryConsumption,
-    housingConsumptionData: outputs.$housingConsumptionData,
-    resource: resourceConsumptionFilterService.outputs.$selectedResource,
-    resourceConsumptionFilter:
-      resourceConsumptionFilterService.outputs.$resourceConsumptionFilter,
-    isAdditionalAddressSelected: outputs.$isAdditionalAddressSelected,
-    isPrevNormativeAndSubscriberLoading:
-      outputs.$isPrevNormativeAndSubscriberLoading,
-    isPrevHousingLoading: outputs.$isPrevHousingLoading,
-    isNormativeAndSubscriberLoading: outputs.$isNormativeAndSubscriberLoading,
-    isHousingLoading: outputs.$isHousingLoading,
-    isSummaryLoading: outputs.$isSummaryLoading,
-    isLoading: outputs.$isLoading,
-  });
+  const isLoading = useStore(outputs.$isLoading);
 
-  const preparedHousingConsumptionData: AllConsumptionDataWithNullableAdditionalAddress =
-    useMemo(() => {
-      if (housingConsumptionData?.additionalAddress) {
-        return housingConsumptionData as {
-          [ResourceConsumptionGraphDataType.currentMonthData]?: MonthConsumptionData;
-          [ResourceConsumptionGraphDataType.prevMonthData]?: MonthConsumptionData;
-          [ResourceConsumptionGraphDataType.additionalAddress]: MonthConsumptionData;
-        };
-      } else {
-        return { ...housingConsumptionData, additionalAddress: null };
-      }
-    }, [housingConsumptionData]);
+  const resourceConsumptionFilter = useStore(
+    resourceConsumptionFilterService.outputs.$resourceConsumptionFilter,
+  );
+  const resource = useStore(
+    resourceConsumptionFilterService.outputs.$selectedResource,
+  );
+  const housingConsumptionData = useStore(outputs.$housingConsumptionData);
+  const summaryConsumption = useStore(outputs.$summaryConsumption);
+  const selectedGraphTypes = useStore(outputs.$selectedGraphTypes);
+  const additionalConsumptionData = useStore(outputs.$additionalConsumption);
+
+  const setResource = useEvent(
+    resourceConsumptionFilterService.inputs.setResource,
+  );
+  const setSelectedGraphTypes = useEvent(inputs.setSelectedGraphTypes);
 
   return (
     <>
@@ -71,19 +37,12 @@ export const ResourceConsumptionContainer = () => {
         resourceConsumptionFilter={resourceConsumptionFilter}
         isLoading={isLoading}
         setResource={setResource}
-        housingConsumptionData={preparedHousingConsumptionData}
+        housingConsumptionData={housingConsumptionData}
         selectedGraphTypes={selectedGraphTypes}
         setSelectedGraphTypes={setSelectedGraphTypes}
+        additionalConsumptionData={additionalConsumptionData}
         summaryConsumption={summaryConsumption}
-        isSummaryLoading={isSummaryLoading}
         resource={resource}
-        isPrevNormativeAndSubscriberLoading={
-          isPrevNormativeAndSubscriberLoading
-        }
-        isPrevHousingLoading={isPrevHousingLoading}
-        isNormativeAndSubscriberLoading={isNormativeAndSubscriberLoading}
-        isHousingLoading={isHousingLoading}
-        isAdditionalAddressSelected={isAdditionalAddressSelected}
       />
     </>
   );

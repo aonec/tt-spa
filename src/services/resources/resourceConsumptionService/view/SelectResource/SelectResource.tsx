@@ -9,7 +9,6 @@ export const SelectResource: FC<SelectResourceProps> = ({
   selectedResource,
   setResource,
   summaryConsumption,
-  isSummaryLoading,
 }) => {
   return (
     <Wrapper>
@@ -26,7 +25,6 @@ export const SelectResource: FC<SelectResourceProps> = ({
             active={selectedResource === resourceType}
             key={resourceType}
             summary={summary}
-            isSummaryLoading={isSummaryLoading}
           />
         );
       })}
