@@ -97,6 +97,7 @@ sample({
       return {
         ...filter,
         ResourceType,
+        BuildingIds: filter?.AdditionalHousingStockIds,
       };
     },
   ),
