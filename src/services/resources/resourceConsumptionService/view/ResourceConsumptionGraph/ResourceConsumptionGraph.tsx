@@ -224,9 +224,14 @@ export const ResourceConsumptionGraph: FC<ResourceConsumptionGraphProps> = ({
   }, []);
 
   if (
+    !resource ||
     !consumptionData ||
-    consumptionData?.currentMonthData?.housing?.length === 0 ||
-    !resource
+    (consumptionData.currentMonthData?.housing?.length === 0 &&
+      consumptionData.currentMonthData?.normative?.length === 0 &&
+      consumptionData.currentMonthData?.subscriber?.length === 0 &&
+      consumptionData.prevMonthData?.housing?.length === 0 &&
+      consumptionData.prevMonthData?.normative?.length === 0 &&
+      consumptionData.prevMonthData?.subscriber?.length === 0)
   ) {
     return <GraphEmptyData />;
   }

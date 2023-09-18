@@ -58,33 +58,31 @@ export const ResourceConsumptionProfile: FC<
             isAdditionalAddressSelected={isAdditionalAddressSelected}
           />
 
-          {housingConsumptionData &&
-            Boolean(
-              housingConsumptionData?.currentMonthData?.housing?.length,
-            ) && (
-              <SelectResourceConsumptionType
-                disabled={getDisabledGraphTypes(housingConsumptionData)}
-                checked={selectedGraphTypes}
-                setCheckedGraphTypes={setSelectedGraphTypes}
-                resource={resource}
-                isAdditionalAddress={isAdditionalAddressSelected}
-                currentAddress={'Основные адреса'}
-                additionalAddress={'Адреса для сравнения'}
-                selectedAddresses={selectedAddresses}
-                setSelectedAddresses={(selected) =>
-                  setSelectedAddresses(selected)
-                }
-                isHousingLoading={isHousingLoading}
-                isNormativeAndSubscriberLoading={
-                  isNormativeAndSubscriberLoading
-                }
-                isPrevHousingLoading={isPrevHousingLoading}
-                isPrevNormativeAndSubscriberLoading={
-                  isPrevNormativeAndSubscriberLoading
-                }
-                consumptionData={housingConsumptionData}
-              />
-            )}
+          {!housingConsumptionData?.currentMonthData?.housing?.length && (
+            <span>
+              Нет данных по общедомовому потреблению за выбранный период.
+              Пожалуйста, измените период для формирования новой статистики.
+            </span>
+          )}
+
+          <SelectResourceConsumptionType
+            disabled={getDisabledGraphTypes(housingConsumptionData)}
+            checked={selectedGraphTypes}
+            setCheckedGraphTypes={setSelectedGraphTypes}
+            resource={resource}
+            isAdditionalAddress={isAdditionalAddressSelected}
+            currentAddress={'Основные адреса'}
+            additionalAddress={'Адреса для сравнения'}
+            selectedAddresses={selectedAddresses}
+            setSelectedAddresses={(selected) => setSelectedAddresses(selected)}
+            isHousingLoading={isHousingLoading}
+            isNormativeAndSubscriberLoading={isNormativeAndSubscriberLoading}
+            isPrevHousingLoading={isPrevHousingLoading}
+            isPrevNormativeAndSubscriberLoading={
+              isPrevNormativeAndSubscriberLoading
+            }
+            consumptionData={housingConsumptionData}
+          />
         </WithLoader>
       </GraphWrapper>
       <ResourceConsumptionFilterContainer />

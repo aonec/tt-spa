@@ -22,6 +22,14 @@ export const SelectGraphType: FC<SelectGraphTypeProps> = ({
     [checked, handleSetChecked],
   );
 
+  if (
+    consumptionData?.normative?.length === 0 &&
+    consumptionData?.housing?.length === 0 &&
+    consumptionData?.subscriber?.length === 0
+  ) {
+    return <Wrapper></Wrapper>;
+  }
+
   return (
     <Wrapper>
       <SelectTitle>{title}</SelectTitle>
@@ -40,7 +48,7 @@ export const SelectGraphType: FC<SelectGraphTypeProps> = ({
         ].some(Boolean);
 
         const isConsumptionDataEmpty = [
-          type === ResourceConsumptionGraphType.Normative &&
+          type === ResourceConsumptionGraphType.Normative && //как это можно избавиться от  type, чтобы сократить?
             consumptionData?.normative &&
             hasNoConsecutiveNumbers(consumptionData.normative),
           type === ResourceConsumptionGraphType.Subscriber &&

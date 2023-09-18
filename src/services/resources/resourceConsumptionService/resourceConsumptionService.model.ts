@@ -37,6 +37,8 @@ const getSummaryHousingConsumptionsFx = domain.createEffect<
 >(fetchSummaryHousingConsumptions);
 
 const getConsumptionData = domain.createEvent<ConsumptionDataPayload>();
+getConsumptionData.watch(() => 'click');
+
 /**
  * одпу
  */
