@@ -162,9 +162,9 @@ export const CreateSealAppointmentForm: FC<CreateSealAppointmentFormProps> = ({
               ) {
                 return (
                   <Tooltip
-                    title={`${formatedDay} ${
+                    title={`${formatedDay} (${
                       appointmentsOnMonthData[formatedDay]
-                    } (${getCountText(
+                    } ${getCountText(
                       appointmentsOnMonthData[formatedDay],
                       appointmentsText,
                     )})`}
