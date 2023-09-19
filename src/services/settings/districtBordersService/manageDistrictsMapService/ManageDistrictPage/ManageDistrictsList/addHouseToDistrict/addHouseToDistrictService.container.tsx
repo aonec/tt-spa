@@ -1,13 +1,16 @@
-import React from 'react';
+import React, { FC } from 'react';
 import { addHouseToDistrictService } from './addHouseToDistrictService.models';
 import { AddHouseToDistrictModal } from './view/AddHouseToDistrictModal';
 import { useUnit } from 'effector-react';
 import { currentUserService } from 'services/currentUserService';
 import { addHouseToDistrictMutation } from './addHouseToDistrictService.api';
+import { AddHouseToDistrictContainerProps } from './addHouseToDistrictService.types';
 
 const { inputs, outputs } = addHouseToDistrictService;
 
-export const AddHouseToDistrictContainer = () => {
+export const AddHouseToDistrictContainer: FC<
+  AddHouseToDistrictContainerProps
+> = ({ districtsList }) => {
   const {
     isOpen,
     openedDistrict,
@@ -44,6 +47,7 @@ export const AddHouseToDistrictContainer = () => {
       handleSearchHouse={handleSearchHouse}
       addHouse={addHouse}
       isLoading={isLoading}
+      districtsList={districtsList}
     />
   );
 };

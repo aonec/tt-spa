@@ -1,4 +1,4 @@
-import moment from 'moment';
+import dayjs from 'api/dayjs';
 import { EResourceType } from 'api/types';
 import React, { FC } from 'react';
 import { getMinAndMax, GraphColorLookup } from 'utils/Graph.utils';
@@ -66,11 +66,11 @@ export const IndividualDeviceConsumptionGraph: FC<
           }}
           offsetY={10}
           tickFormat={(date) =>
-            ticksData.includes(date) ? moment(date).format('MMMM') : ''
+            ticksData.includes(date) ? dayjs(date).format('MMMM') : ''
           }
           tickValues={preparedData
             .map((value) => value.time)
-            .sort((first, second) => moment(first).diff(moment(second)))}
+            .sort((first, second) => dayjs(first).diff(dayjs(second)))}
           tickComponent={<DeviceGraphTick />}
         />
         <VictoryAxis

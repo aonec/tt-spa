@@ -1,11 +1,11 @@
-import moment from 'moment';
+import dayjs from 'api/dayjs';
 
-export const checkIsDateNotFuture = (date: moment.Moment): boolean => {
-  const diff = date.diff(moment());
+export const checkIsDateNotFuture = (date: dayjs.Dayjs): boolean => {
+  const diff = date.diff(dayjs());
 
   return diff > 0;
 };
 
 export const getDatePickerValue = (
   date?: string | null,
-): moment.Moment | undefined => (date ? moment(date) : void 0);
+): dayjs.Dayjs | undefined => (date ? dayjs(date) : void 0);

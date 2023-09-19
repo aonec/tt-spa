@@ -16,4 +16,5 @@ export type Props = {
   handleSearchHouse: (payload: GetBuildingFilters) => void;
   addHouse: (payload: AddHouseToDistrictRequestPayload) => void;
   isLoading: boolean;
+  districtsList: DistrictData[];
 };

@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import { useFormik } from 'formik';
-import moment from 'moment';
+import dayjs from 'api/dayjs';
 import { Form } from 'antd';
 import { EResourceType } from 'api/types';
 import { FormItem } from 'ui-kit/FormItem';
@@ -27,7 +27,7 @@ export const FeedFlowTemperatureReportForm: FC<Props> = ({
   const { values, handleChange, setFieldValue, handleSubmit, errors } =
     useFormik({
       initialValues: {
-        name: `Сводный_отчёт_по_ГВС_${moment().format('DD.MM.YYYY')}`,
+        name: `Сводный_отчёт_по_ГВС_${dayjs().format('DD.MM.YYYY')}`,
         city: null as null | string,
         houseMangementId: null as null | string,
         temperature: '',

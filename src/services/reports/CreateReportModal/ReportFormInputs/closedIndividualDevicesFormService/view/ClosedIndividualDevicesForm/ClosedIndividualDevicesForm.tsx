@@ -66,7 +66,7 @@ export const ClosedIndividualDevicesForm: FC<
     existingCities.length > 1 && unloadSelectType === UnloadingType.ByAddress;
 
   useEffect(() => {
-    housingStockId && handleFetchHousingStockData(housingStockId);
+    housingStockId && handleFetchHousingStockData(Number(housingStockId));
   }, [housingStockId, handleFetchHousingStockData]);
 
   return (
@@ -113,10 +113,10 @@ export const ClosedIndividualDevicesForm: FC<
               placeholder="Выберите из списка"
               showSearch
               showArrow
-              treeCheckable={false}
               treeData={preparedAddresses}
-              value={housingStockId || undefined}
-              onChange={(value) => handleChangeHousingStockId(value as number)}
+              value={Number(housingStockId) || undefined}
+              onChange={(value) => handleChangeHousingStockId(value as string)}
+              treeCheckable={false}
             />
           </FormItem>
         )}

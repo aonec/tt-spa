@@ -91,7 +91,11 @@ sample({
 
 sample({
   source: $apartment,
-  clock: [$apartment, refetchAppointment],
+  clock: sample({
+    source: ApartmentGate.open,
+    clock: [$apartment, refetchAppointment],
+    filter: Boolean,
+  }),
   fn: (apartment) => apartment.id,
   filter: Boolean,
   target: fetchAppointmentFx,

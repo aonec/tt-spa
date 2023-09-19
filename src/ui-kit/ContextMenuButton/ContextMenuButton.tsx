@@ -66,7 +66,7 @@ export const ContextMenuButton: FC<ContextMenuButtonProps> = (props) => {
 
   const menuButtonsFiltered = menuButtons?.filter(({ hidden }) => !hidden);
 
-  const menu = (
+  const menu = () => (
     <Menu onClick={(e) => e.domEvent.stopPropagation()}>
       {menuButtonsFiltered &&
         getMenuButtons({
@@ -89,11 +89,11 @@ export const ContextMenuButton: FC<ContextMenuButtonProps> = (props) => {
   return (
     <div onClick={(e) => e.stopPropagation()}>
       <Dropdown
-        overlay={menu}
+        dropdownRender={menu}
         disabled={disabled}
-        visible={isVisible}
+        open={isVisible}
         trigger={['click']}
-        onVisibleChange={(visible) => setIsVisible(visible)}
+        onOpenChange={(visible) => setIsVisible(visible)}
       >
         <>
           {Boolean(children) && (
@@ -103,7 +103,13 @@ export const ContextMenuButton: FC<ContextMenuButtonProps> = (props) => {
           )}
 
           {!children && (
-            <StyledMenuButton size={size} onClick={() => setIsVisible(true)}>
+            <StyledMenuButton
+              size={size}
+              onClick={(e) => {
+                e.preventDefault();
+                setIsVisible(true);
+              }}
+            >
               <MoreIcon />
             </StyledMenuButton>
           )}

@@ -1,5 +1,5 @@
 import { Checkbox } from 'antd';
-import moment from 'moment';
+import dayjs from 'api/dayjs';
 import React, { FC, useCallback, useEffect } from 'react';
 import {
   DatesWrapper,
@@ -27,7 +27,7 @@ export const SubscribersConsumptionExtendedSearch: FC<
   } = values;
 
   const handleChangeDateRange = useCallback(
-    (dates: [moment.Moment | null, moment.Moment | null] | null) => {
+    (dates: [dayjs.Dayjs | null, dayjs.Dayjs | null] | null) => {
       if (!dates) {
         setFieldValue('DateLastCheckFrom', undefined);
         setFieldValue('DateLastCheckTo', undefined);
@@ -53,9 +53,9 @@ export const SubscribersConsumptionExtendedSearch: FC<
     if (ExcludeApartments) {
       setFieldValue(
         'DateLastCheckFrom',
-        moment().subtract(3, 'month').toISOString(),
+        dayjs().subtract(3, 'month').toISOString(),
       );
-      setFieldValue('DateLastCheckTo', moment().toISOString());
+      setFieldValue('DateLastCheckTo', dayjs().toISOString());
     }
     if (!ExcludeApartments) {
       setFieldValue('DateLastCheckFrom', undefined);
@@ -162,8 +162,8 @@ export const SubscribersConsumptionExtendedSearch: FC<
           value={
             DateLastCheckFrom && DateLastCheckTo
               ? [
-                  moment(DateLastCheckFrom) || null,
-                  moment(DateLastCheckTo).startOf('day') || null,
+                  dayjs(DateLastCheckFrom) || null,
+                  dayjs(DateLastCheckTo).startOf('day') || null,
                 ]
               : null
           }
@@ -187,7 +187,7 @@ export const SubscribersConsumptionExtendedSearch: FC<
           picker="month"
           format="MMMM YYYY"
           disabledDate={(date) => {
-            const diff = moment(date).diff(moment(), 'months');
+            const diff = dayjs(date).diff(dayjs(), 'months');
 
             return diff >= 1;
           }}

@@ -33,4 +33,7 @@ export type CreateResourceDisconnectionModalProps = {
   selectedCity: string | null;
   selectCity: (city: string) => void;
   selectedBuilding: BuildingListResponse | null;
+  handleCreateDisconnectionState?: (
+    payload: ResourceDisconnectingCreateRequest,
+  ) => void;
 };

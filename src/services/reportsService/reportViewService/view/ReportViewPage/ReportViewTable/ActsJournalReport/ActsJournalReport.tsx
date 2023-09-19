@@ -1,5 +1,5 @@
 import { Empty } from 'antd';
-import moment from 'moment';
+import dayjs from 'api/dayjs';
 import React, { FC } from 'react';
 import { ResourceIconLookup } from 'ui-kit/shared/ResourceIconLookup';
 import { Table } from 'ui-kit/Table';
@@ -53,7 +53,7 @@ export const ActsJournalReport: FC<ActsJournalReportProps> = ({
             label: 'Дата акта',
             size: '100px',
             render: (elem) => (
-              <ActDate>{moment(elem.actDate).format('DD.MM.YYYY')}</ActDate>
+              <ActDate>{dayjs(elem.actDate).format('DD.MM.YYYY')}</ActDate>
             ),
           },
           {
@@ -79,7 +79,7 @@ export const ActsJournalReport: FC<ActsJournalReportProps> = ({
           {
             label: 'Дата работ',
             size: '100px',
-            render: (elem) => moment(elem.actJobDate).format('DD.MM.YYYY'),
+            render: (elem) => dayjs(elem.actJobDate).format('DD.MM.YYYY'),
           },
         ]}
         elements={actJournalReportData?.rows || []}

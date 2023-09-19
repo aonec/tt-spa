@@ -17,7 +17,7 @@ import {
 } from './DeviceStep.styled';
 import { DeviceStepProps } from './DeviceStep.types';
 import { MagistralsDisctionary } from 'dictionaries';
-import moment from 'moment';
+import dayjs from 'api/dayjs';
 
 export const DeviceStep: FC<DeviceStepProps> = ({
   communicationPipes,
@@ -80,7 +80,7 @@ export const DeviceStep: FC<DeviceStepProps> = ({
             value={values.lastCheckingDate}
             onChange={(date) => {
               setFieldValue('lastCheckingDate', date);
-              setFieldValue('futureCheckingDate', moment(date).add('year', 4));
+              setFieldValue('futureCheckingDate', dayjs(date).add(4, 'year'));
             }}
             placeholder="Выберите"
             format="DD.MM.YYYY"

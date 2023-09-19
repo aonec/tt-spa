@@ -1,5 +1,4 @@
 import { EResourceType } from 'api/types';
-import { ConsumptionDataFilter } from './resourceConsumptionFilterService/resourceConsumptionFilterService.types';
 
 export type ResourceConsumptionWithNull = {
   value?: number | null;
@@ -13,8 +12,9 @@ export enum ResourceConsumptionGraphDataType {
 }
 
 export type ConsumptionDataForTwoMonth = {
-  [ResourceConsumptionGraphDataType.currentMonthData]: MonthConsumptionData;
-  [ResourceConsumptionGraphDataType.prevMonthData]: MonthConsumptionData;
+  [ResourceConsumptionGraphDataType.currentMonthData]?: MonthConsumptionData;
+  [ResourceConsumptionGraphDataType.prevMonthData]?: MonthConsumptionData;
+  [ResourceConsumptionGraphDataType.additionalAddress]?: MonthConsumptionData;
 };
 
 export enum ResourceConsumptionGraphType {
@@ -24,13 +24,23 @@ export enum ResourceConsumptionGraphType {
 }
 
 export type MonthConsumptionData = {
-  [ResourceConsumptionGraphType.Housing]: ResourceConsumptionWithNull[];
-  [ResourceConsumptionGraphType.Normative]: ResourceConsumptionWithNull[];
-  [ResourceConsumptionGraphType.Subscriber]: ResourceConsumptionWithNull[];
+  [ResourceConsumptionGraphType.Housing]?: ResourceConsumptionWithNull[];
+  [ResourceConsumptionGraphType.Normative]?: ResourceConsumptionWithNull[];
+  [ResourceConsumptionGraphType.Subscriber]?: ResourceConsumptionWithNull[];
 };
 
-export type ConsumptionDataPayload = ConsumptionDataFilter & {
+export type AllConsumptionDataWithNullableAdditionalAddress = {
+  [ResourceConsumptionGraphDataType.currentMonthData]?: MonthConsumptionData;
+  [ResourceConsumptionGraphDataType.prevMonthData]?: MonthConsumptionData;
+  [ResourceConsumptionGraphDataType.additionalAddress]: MonthConsumptionData | null;
+};
+
+export type ConsumptionDataPayload = {
   ResourceType: EResourceType;
+  BuildingIds: number[];
+  AdditionalHousingStockIds: number[];
+  From: string;
+  To: string;
 };
 
 export type AddressWithSearchString = {
@@ -41,4 +51,10 @@ export type AddressWithSearchString = {
 export type PreparedHouseManagements = {
   id: string;
   name: string | null;
+};
+
+export type SetConsumptionDataType = {
+  housing?: ResourceConsumptionWithNull[];
+  normative?: ResourceConsumptionWithNull[];
+  subscriber?: ResourceConsumptionWithNull[];
 };

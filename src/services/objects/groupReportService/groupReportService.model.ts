@@ -2,7 +2,7 @@ import { message } from 'antd';
 import { combine, createDomain, forward, guard, sample } from 'effector';
 import { delay, not } from 'patronum';
 import { createGate } from 'effector-react';
-import moment from 'moment';
+import dayjs from 'api/dayjs';
 import {
   EReportType,
   GroupReportFormResponse,
@@ -90,10 +90,10 @@ guard({
     const { From, To, ReportType } = payload || {};
     const isNotTooLongDaily =
       ReportType === EReportType.Daily &&
-      moment(To).diff(moment(From), 'day') < MAX_DAILY_TYPE_DAYS;
+      dayjs(To).diff(dayjs(From), 'day') < MAX_DAILY_TYPE_DAYS;
     const isNotTooLongHourly =
       ReportType === EReportType.Hourly &&
-      moment(To).diff(moment(From), 'day') < MAX_HOURLY_TYPE_DAYS;
+      dayjs(To).diff(dayjs(From), 'day') < MAX_HOURLY_TYPE_DAYS;
 
     return isExist && (isNotTooLongDaily || isNotTooLongHourly);
   },
@@ -107,10 +107,10 @@ guard({
     const { From, To, ReportType } = payload || {};
     const isTooLongDaily =
       ReportType === EReportType.Daily &&
-      moment(To).diff(moment(From), 'day') >= MAX_DAILY_TYPE_DAYS;
+      dayjs(To).diff(dayjs(From), 'day') >= MAX_DAILY_TYPE_DAYS;
     const isTooLongHourly =
       ReportType === EReportType.Hourly &&
-      moment(To).diff(moment(From), 'day') >= MAX_HOURLY_TYPE_DAYS;
+      dayjs(To).diff(dayjs(From), 'day') >= MAX_HOURLY_TYPE_DAYS;
 
     return isExist && (isTooLongDaily || isTooLongHourly);
   },

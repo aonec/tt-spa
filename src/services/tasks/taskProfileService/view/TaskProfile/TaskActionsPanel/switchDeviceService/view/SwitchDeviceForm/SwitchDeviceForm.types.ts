@@ -2,6 +2,7 @@ import {
   MeteringDeviceResponse,
   SwitchHousingMeteringDeviceRequest,
 } from 'api/types';
+import dayjs from 'dayjs';
 import { CalculatorInfoItem } from 'services/calculators/calculatorsInfoService/calculatorsInfoService.types';
 
 export type SwitchDeviceFormProps = {
@@ -14,9 +15,9 @@ export type SwitchDeviceFormProps = {
 };
 
 export type SwitchDeviceFormValues = {
-  lastCheckingDate: null | moment.Moment;
-  futureCheckingDate: null | moment.Moment;
-  openingDate: null | moment.Moment;
+  lastCheckingDate: null | dayjs.Dayjs;
+  futureCheckingDate: null | dayjs.Dayjs;
+  openingDate: null | dayjs.Dayjs;
   model: '';
   serialNumber: '';
   calculatorInfoId: number | null;

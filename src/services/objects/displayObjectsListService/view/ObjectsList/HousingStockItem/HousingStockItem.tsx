@@ -1,5 +1,5 @@
 import { ContextMenuButton } from 'ui-kit/ContextMenuButton/ContextMenuButton';
-import { Tooltip } from 'antd';
+import { Tooltip } from 'ui-kit/shared/Tooltip';
 import React, { FC, useMemo } from 'react';
 import { WarningIcon } from 'ui-kit/icons';
 import { getBuildingAddress } from 'utils/getBuildingAddress';

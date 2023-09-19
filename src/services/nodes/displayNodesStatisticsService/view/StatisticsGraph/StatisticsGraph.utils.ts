@@ -1,4 +1,4 @@
-import moment from 'moment';
+import dayjs from 'api/dayjs';
 import { DateTimeTaskStatisticsItemArrayDictionaryItem } from 'api/types';
 import {
   GetTaskXPosPayload,
@@ -25,9 +25,9 @@ export function prepareDataForNodeStatistic(
   let elemsCount = 0;
 
   if (reportType === 'daily') {
-    elemsCount = differenceInDays(new Date(maxTime), new Date(minTime));
+    elemsCount = differenceInDays(new Date(maxTime), new Date(minTime)) + 1;
   } else if (reportType === 'hourly') {
-    elemsCount = differenceInHours(new Date(maxTime), new Date(minTime));
+    elemsCount = differenceInHours(new Date(maxTime), new Date(minTime)) + 1;
   }
 
   const result = [];
@@ -35,7 +35,7 @@ export function prepareDataForNodeStatistic(
   for (let iterator = 0, index = 0; iterator < elemsCount; iterator++) {
     let elem = {
       ...data[index],
-      timeUtc: moment(data[index].timeUtc).format(),
+      timeUtc: dayjs(data[index].timeUtc).format(),
     };
 
     if (elem.hasFault && !withFault) {
@@ -55,7 +55,7 @@ export function prepareDataForNodeStatistic(
       index++;
     } else {
       result.push({
-        timeUtc: moment(minTime).utcOffset(0).add(iterator, 'hours').format(),
+        timeUtc: dayjs(minTime).utcOffset(0).add(iterator, 'hour').format(),
         value: 0,
       });
     }
@@ -87,8 +87,7 @@ const getTaskXPos = (payload: GetTaskXPosPayload) => {
     );
   }
   return (
-    moment(currentData).utc(true).diff(moment(minDate).startOf('day'), 'day') +
-    1
+    dayjs(currentData).utc(true).diff(dayjs(minDate).startOf('day'), 'day') + 1
   );
 };
 
@@ -154,8 +153,8 @@ const isDayMultiplyFive = (timeStamp: string): boolean => {
 
 export function sortArchiveArray<T>(archiveArr: (PreparedArchiveValues & T)[]) {
   const sortedArchive = archiveArr.sort((first, second) => {
-    const firstDate = moment(first.timeUtc);
-    const secondDate = moment(second.timeUtc);
+    const firstDate = dayjs(first.timeUtc);
+    const secondDate = dayjs(second.timeUtc);
     return firstDate.diff(secondDate);
   });
 
@@ -168,10 +167,13 @@ const formHourlyTicks = (
   if (archiveArr.length <= 24) return archiveArr;
 
   const sortedArchive = sortArchiveArray(archiveArr);
+  const length = sortedArchive.length;
 
   return [
     sortedArchive[0],
-    ...sortedArchive.filter((entry) => isHourMultiplySix(entry.timeUtc)),
+    ...sortedArchive.filter(
+      (entry, index) => length - index > 3 && isHourMultiplySix(entry.timeUtc),
+    ),
     sortedArchive[sortedArchive.length - 1],
   ];
 };

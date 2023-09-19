@@ -1,4 +1,4 @@
-import moment from 'moment';
+import dayjs from 'api/dayjs';
 import React, { FC } from 'react';
 import { Value } from './ResourceConsumptionGraphTooltip.styled';
 import { ResourceConsumptionGraphTooltipProps } from './ResourceConsumptionGraphTooltip.types';
@@ -25,9 +25,9 @@ export const ResourceConsumptionGraphTooltip: FC<
       >
         <TooltipBlock value={value}>
           <DateBlock>
-            {moment(startOfMonth)
+            {dayjs(startOfMonth)
               .add(Number(key) - 1, 'day')
-              .format('DD.MM.yyyy')}
+              .format('DD.MM.YYYY')}
           </DateBlock>
           <Value>
             Общедомовое потребление {value.toFixed(3)} {measure}

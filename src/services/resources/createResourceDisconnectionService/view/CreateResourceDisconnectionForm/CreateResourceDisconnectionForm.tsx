@@ -1,7 +1,7 @@
 import { ErrorMessage } from 'ui-kit/ErrorMessage';
 import { Form } from 'antd';
 import { useFormik } from 'formik';
-import moment from 'moment';
+import dayjs from 'api/dayjs';
 import {
   EDocumentType,
   EResourceDisconnectingType,
@@ -58,6 +58,8 @@ export const CreateResourceDisconnectionForm: FC<
   selectCity,
   selectedCity,
   selectedBuilding,
+  handleCreateDisconnectionState,
+  handleCloseModal,
 }) => {
   const documentInit = useMemo(
     () =>
@@ -86,6 +88,24 @@ export const CreateResourceDisconnectionForm: FC<
         return;
       }
 
+      const createPayload = {
+        resource,
+        disconnectingType,
+        startDate: getDate(formValues.startDate, formValues.startHour),
+        endDate: getDate(formValues.endDate, formValues.endHour),
+        housingStockIds: preparedHousingStockIds,
+        heatingStationId: formValues.heatingStationId || null,
+        sender: formValues.sender,
+        documentId: formValues.documentId,
+      };
+
+      if (handleCreateDisconnectionState) {
+        handleCreateDisconnectionState(createPayload);
+        handleCloseModal();
+
+        return;
+      }
+
       if (isEdit) {
         if (isInterHeatingSeason) {
           const document = documents[0];
@@ -105,25 +125,18 @@ export const CreateResourceDisconnectionForm: FC<
         });
       }
 
-      return handleCreateResourceDisconnection({
-        resource,
-        disconnectingType,
-        startDate: getDate(formValues.startDate, formValues.startHour),
-        endDate: getDate(formValues.endDate, formValues.endHour),
-        housingStockIds: preparedHousingStockIds,
-        heatingStationId: formValues.heatingStationId || null,
-        sender: formValues.sender,
-        documentId: formValues.documentId,
-      });
+      return handleCreateResourceDisconnection(createPayload);
     },
     [
-      documents,
-      handleCreateResourceDisconnection,
-      handleEditResourceDisconnection,
+      handleCreateDisconnectionState,
       isEdit,
+      handleCreateResourceDisconnection,
+      handleCloseModal,
+      isInterHeatingSeason,
+      handleEditResourceDisconnection,
+      documents,
       documentInit,
       handleUpdateDocument,
-      isInterHeatingSeason,
     ],
   );
 
@@ -143,7 +156,7 @@ export const CreateResourceDisconnectionForm: FC<
   const preparedEndHours = prepareEndHours(values.startHour);
 
   const handleDisableDate = useCallback(
-    (endDate: moment.Moment) => {
+    (endDate: dayjs.Dayjs) => {
       const startDate = getDatePickerValue(values.startDate, 'DD.MM.YYYY');
       if (!startDate) {
         return true;

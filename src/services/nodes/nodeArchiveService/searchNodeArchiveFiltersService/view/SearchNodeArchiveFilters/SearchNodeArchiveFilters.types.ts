@@ -1,4 +1,4 @@
-import moment from 'moment';
+import dayjs from 'api/dayjs';
 import { EReportType } from 'api/types';
 import { LoadNodeArchiveDataPayload } from '../../../displayNodeArchiveService/displayNodeArchiveService.types';
 
@@ -8,7 +8,7 @@ export type SearchNodeArchiveFiltersProps = {
 };
 
 export type FormValues = {
-  from: null | moment.Moment;
-  to: null | moment.Moment;
+  from: null | dayjs.Dayjs;
+  to: null | dayjs.Dayjs;
   type: EReportType;
 };

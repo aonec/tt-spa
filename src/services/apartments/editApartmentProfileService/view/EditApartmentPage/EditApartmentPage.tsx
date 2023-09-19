@@ -21,8 +21,8 @@ export const EditApartmentPage: FC<EditApartmentPageProps> = ({
   isLoading,
   tabSection,
   setTabSection,
-  handleUpdateApartment,
   isUpdatingApartmentLoading,
+  commonDataForm,
 }) => {
   const address = apartment?.housingStock?.address?.mainAddress;
   const additionalAddresses =
@@ -57,9 +57,8 @@ export const EditApartmentPage: FC<EditApartmentPageProps> = ({
           <TabPane tab="Общие данные" key={TabsSection.CommonData}>
             {apartment && (
               <EditCommonDataForm
-                apartment={apartment}
-                handleUpdateApartment={handleUpdateApartment}
                 isUpdatingApartmentLoading={isUpdatingApartmentLoading}
+                form={commonDataForm}
               />
             )}
           </TabPane>

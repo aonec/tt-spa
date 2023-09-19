@@ -35,6 +35,7 @@ const SmallSelectStyles = css`
 
 export const Select = styled(AntSelect)<{ small?: boolean }>`
   height: ${({ small }) => (small ? '32px' : '48px')};
+  width: 100% !important;
 
   .ant-select-selector {
     height: 100% !important;
@@ -43,7 +44,7 @@ export const Select = styled(AntSelect)<{ small?: boolean }>`
   }
 
   .ant-select-arrow {
-    padding: ${({ small }) => (small ? '0px' : ' 0 28px')} !important;
+    padding: ${({ small }) => (small ? '0px' : ' 0 8px')} !important;
 
     ${({ suffixIcon }) => suffixIcon && selectIconStyles}
   }

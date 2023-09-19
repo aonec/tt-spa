@@ -222,6 +222,10 @@ createResourceDisconnectionFx.failData.watch((error) => {
   );
 });
 
+createResourceDisconnectionFx.doneData.watch(() => {
+  return message.success('Отключение ресурса создано!');
+});
+
 export const createResourceDisconnectionService = {
   inputs: {
     openModal,
@@ -230,6 +234,7 @@ export const createResourceDisconnectionService = {
     setTypeOfAddress,
     selectCity,
   },
+  fx: { createResourceDisconnectionFx },
   outputs: {
     $isModalOpen,
     $resourceTypes,

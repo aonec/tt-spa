@@ -1,4 +1,3 @@
-import { Skeleton } from 'antd';
 import { useEvent, useStore } from 'effector-react';
 import React from 'react';
 import {
@@ -55,17 +54,14 @@ export const DisplayStatisticsListByManagingFirmContainer = () => {
         managingFirmsLoading={managingFirmsLoading}
       />
       <WithLoader isLoading={housingStocksIsLoading}>
-        {housingStocksIsLoading && <Skeleton active />}
-        {!housingStocksIsLoading && (
-          <HousingStocksList
-            housingStocks={housingStocks}
-            selectHousingStock={selectHousingStock}
-            statisticIsLoading={statisticIsLoading}
-            handleOpenModal={handleOpenModal}
-            selectedHousingStock={selectedHousingStock}
-            setFileName={setFileName}
-          />
-        )}
+        <HousingStocksList
+          housingStocks={housingStocks}
+          selectHousingStock={selectHousingStock}
+          statisticIsLoading={statisticIsLoading}
+          handleOpenModal={handleOpenModal}
+          selectedHousingStock={selectedHousingStock}
+          setFileName={setFileName}
+        />
       </WithLoader>
     </>
   );

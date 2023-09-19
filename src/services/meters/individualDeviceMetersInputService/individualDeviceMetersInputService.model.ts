@@ -12,7 +12,7 @@ import {
 import { MetersInputBlockStatus } from './view/MetersInputsBlock/MetersInputsBlock.types';
 import { IndividualDeviceReadingsResponse } from 'api/types';
 import { message } from 'antd';
-import moment from 'moment';
+import dayjs from 'api/dayjs';
 import { EffectFailDataAxiosError } from 'types';
 import { confirmReadingService } from '../readingsHistoryService/confirmReadingService/confirmReadingService.model';
 
@@ -141,7 +141,7 @@ deleteMeterFx.done.watch(({ params: { deviceId, readingDate } }) => {
 
   if (!device) return;
 
-  const readingMonth = moment(readingDate).format('MMMM');
+  const readingMonth = dayjs(readingDate).format('MMMM');
 
   message.info(
     `Показание за ${readingMonth} на приборе ${device.model} (${device.serialNumber}) было удалено`,

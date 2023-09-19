@@ -1,4 +1,4 @@
-import moment from 'moment';
+import dayjs from 'api/dayjs';
 
 export enum ReportType {
   OperatorsWorkingReport = 'OperatorsWorkingReport',
@@ -28,4 +28,4 @@ export const reportTypeTitleNames = Object.keys(ReportType).map((key) => ({
   type: key,
 }));
 
-export type RangePeriod = [moment.Moment | null, moment.Moment | null] | null;
+export type RangePeriod = [dayjs.Dayjs | null, dayjs.Dayjs | null] | null;

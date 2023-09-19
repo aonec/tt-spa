@@ -2,7 +2,7 @@ import React, { FC, useState } from 'react';
 import { Wrapper } from './SearchHousingStock.styled';
 import { SearchHousingStockProps } from './SearchHousingStock.types';
 import { ExtendedSearch } from 'ui-kit/ExtendedSearch';
-import moment from 'moment';
+import dayjs from 'api/dayjs';
 import { SubscribersConsumptionExtendedSearch } from '../SubscribersConsumptionExtendedSearch';
 import { useFormik } from 'formik';
 import { AddressSearchContainer } from 'services/addressSearchService';
@@ -20,7 +20,7 @@ export const SearchHousingStock: FC<SearchHousingStockProps> = ({
   const close = () => setIsOpen(false);
 
   const isExcluded =
-    moment().diff(moment(filter?.DateLastCheckFrom), 'month') >= 3;
+    dayjs().diff(dayjs(filter?.DateLastCheckFrom), 'month') >= 3;
 
   const { values, submitForm, resetForm, setFieldValue } = useFormik({
     initialValues: {

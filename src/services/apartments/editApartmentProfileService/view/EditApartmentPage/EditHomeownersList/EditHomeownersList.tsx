@@ -22,7 +22,7 @@ import {
   Wrapper,
 } from './EditHomeownersList.styled';
 import { EditHomeownersListProps } from './EditHomeownersList.types';
-import moment from 'moment';
+import dayjs from 'api/dayjs';
 import { EPersonType } from 'api/types';
 import { EditHomeownerFormPayload } from './editHomeownerService/editHomeownerService.types';
 import {
@@ -62,7 +62,7 @@ export const EditHomeownersList: FC<EditHomeownersListProps> = ({
               phoneNumber: homeowner.phoneNumber || '',
               paymentCode: homeowner.paymentCode || '',
               personType: String(homeowner.personType) as EPersonType,
-              openAt: moment(homeowner.openAt),
+              openAt: dayjs(homeowner.openAt),
               isMainOnApartment: homeowner.isMainPersonalAccountNumber,
             };
 

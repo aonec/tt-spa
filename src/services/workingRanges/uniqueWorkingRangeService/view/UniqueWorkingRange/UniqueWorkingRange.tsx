@@ -1,4 +1,4 @@
-import React, { FC, useEffect } from 'react';
+import React, { FC, useEffect, useMemo } from 'react';
 import {
   ErrorBlockGrid,
   ErrorFieldName,
@@ -79,33 +79,52 @@ export const UniqueWorkingRange: FC<UniqueWorkingRangeProps> = ({
         ENodeWorkingRangeType.DeltaMassOfMagistral,
     );
 
+  const handleOnSubmit = (data: UniqueWorkingRangeType) => {
+    const { housingStockIdHash, nodeId, nodeResourceType, season } = data;
+
+    const chosenBuilding = preparedAddresses
+      .flatMap((addressStreet) => addressStreet.children)
+      .find((preparedAddress) => preparedAddress?.value === housingStockIdHash);
+
+    const housingStockId = chosenBuilding?.buildingId;
+
+    !nodeId &&
+      housingStockId &&
+      handleOnSearchDataChange({
+        nodeResourceType,
+        season,
+        housingStockId,
+      });
+
+    nodeId && handleNodeChoosen({ season, nodeId });
+  };
+
   const { values, handleSubmit, setFieldValue } =
     useFormik<UniqueWorkingRangeType>({
       initialValues: {
         nodeResourceType: EResourceType.ColdWaterSupply,
         season: ENodeWorkingRangeSeason.HeatingSeason,
-        housingStockId: null,
+        housingStockIdHash: null,
         nodeId: null,
       },
       enableReinitialize: true,
-      onSubmit: (data) => {
-        const { housingStockId, nodeId, nodeResourceType, season } = data;
-
-        !nodeId &&
-          housingStockId &&
-          handleOnSearchDataChange({
-            nodeResourceType,
-            season,
-            housingStockId,
-          });
-
-        nodeId && handleNodeChoosen({ season, nodeId });
-      },
+      onSubmit: (data) => handleOnSubmit(data),
     });
 
+  const housingStockId = useMemo(() => {
+    const chosenBuilding = preparedAddresses
+      .flatMap((addressStreet) => addressStreet.children)
+      .find(
+        (preparedAddress) =>
+          preparedAddress?.value === values.housingStockIdHash,
+      );
+
+    return chosenBuilding?.buildingId;
+  }, [values.housingStockIdHash, preparedAddresses]);
+
   useEffect(() => {
-    values.housingStockId && handleFetchNodes(values.housingStockId);
-  }, [values.housingStockId, handleFetchNodes]);
+    housingStockId && handleFetchNodes(housingStockId);
+  }, [housingStockId, handleFetchNodes]);
 
   const preparedNodes = nodes?.reduce((acc, node) => {
     if (node.resource === values.nodeResourceType) {
@@ -167,9 +186,9 @@ export const UniqueWorkingRange: FC<UniqueWorkingRangeProps> = ({
 
         <TreeSelectSC
           placeholder="Выберите улицу"
-          value={values.housingStockId || undefined}
+          value={values.housingStockIdHash || undefined}
           onChange={(value) => {
-            setFieldValue('housingStockId', value || null);
+            setFieldValue('housingStockIdHash', value || null);
             handleSubmit();
             setFieldValue('nodeId', null);
           }}

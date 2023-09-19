@@ -1,5 +1,5 @@
 import { useEvent, useStore } from 'effector-react';
-import moment from 'moment';
+import dayjs from 'api/dayjs';
 import React from 'react';
 import { Dialog } from 'ui-kit/shared/Dialog/Dialog';
 import { completeResourceDisconnectionService } from './completeResourceDisconnectionService.model';
@@ -26,7 +26,7 @@ export const CompleteResourceDisconnectionContainer = () => {
       description={
         <>
           {endDate &&
-            `Плановая дата завершения - ${moment(endDate).format('LL')} `}
+            `Плановая дата завершения - ${dayjs(endDate).format('LL')} `}
           Если вы подтверждаете принудительное завершение, то отключение ресурса
           закончится на всех объектах автоматически после подтверждения.
         </>

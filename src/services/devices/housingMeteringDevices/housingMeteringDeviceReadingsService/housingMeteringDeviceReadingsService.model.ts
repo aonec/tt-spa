@@ -1,7 +1,7 @@
 import { message } from 'antd';
 import { createDomain, forward, sample } from 'effector';
 import { createGate } from 'effector-react';
-import moment from 'moment';
+import dayjs from 'api/dayjs';
 import {
   CreateHousingMeteringDeviceReadingsRequest,
   EResourceType,
@@ -84,7 +84,7 @@ createReadingFailed.watch((error) =>
 
 createReadingFx.done.watch(({ params }) =>
   message.success(
-    `Показание за ${moment(params.readingDate).format('MMMM YYYY')} сохранено!`,
+    `Показание за ${dayjs(params.readingDate).format('MMMM YYYY')} сохранено!`,
   ),
 );
 

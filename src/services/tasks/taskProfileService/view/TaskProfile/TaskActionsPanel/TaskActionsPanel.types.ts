@@ -13,6 +13,7 @@ export type TaskActionsPanelProps = {
   handleChangePushStagePayload: (
     payload: StagePushRequest | ((prev: StagePushRequest) => StagePushRequest),
   ) => void;
+  pushStageRequestPayload: StagePushRequest;
 };
 
 export enum TaskPanelInputPositionType {
@@ -36,6 +37,7 @@ export type ActionComponentProps = {
   handleChange: (
     payload: StagePushRequest | ((prev: StagePushRequest) => StagePushRequest),
   ) => void;
+  pushStageRequestPayload: StagePushRequest;
   type?: TaskPanelComponentAdditionalType;
 };
 

@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { Tooltip } from 'antd';
+import { Tooltip } from 'ui-kit/shared/Tooltip';
 import {
   Accuracy,
   LegendCircle,

@@ -10,12 +10,21 @@ const {
 } = temperatureGraphService;
 
 export const TemperatureGraphContainer = () => {
-  const { temperatureNormative, isEditing, handleEditTemperatureNormative } =
-    useUnit({
-      temperatureNormative: outputs.$temperatureNormative,
-      isEditing: outputs.$isEditing,
-      handleEditTemperatureNormative: inputs.handleEditTemperatureNormative,
-    });
+  const {
+    temperatureNormative,
+    isEditing,
+    handleEditTemperatureNormative,
+    setEditedTemperatureNormative,
+    isLoading,
+    errorColumns,
+  } = useUnit({
+    temperatureNormative: outputs.$temperatureNormative,
+    isEditing: outputs.$isEditing,
+    handleEditTemperatureNormative: inputs.handleEditTemperatureNormative,
+    setEditedTemperatureNormative: inputs.setEditedTemperatureNormative,
+    isLoading: outputs.$isLoading,
+    errorColumns: outputs.$errorColumns,
+  });
   return (
     <>
       <TemperatureGraphGate />
@@ -23,6 +32,9 @@ export const TemperatureGraphContainer = () => {
         temperatureNormative={temperatureNormative}
         isEditing={isEditing}
         handleEditTemperatureNormative={handleEditTemperatureNormative}
+        setEditedTemperatureNormative={setEditedTemperatureNormative}
+        isLoading={isLoading}
+        errorColumns={errorColumns}
       />
     </>
   );

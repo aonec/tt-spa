@@ -20,7 +20,6 @@ import {
   getDatePickerValue,
 } from './ChangeODPUForm.utils';
 import { DatePickerNative } from 'ui-kit/shared/DatePickerNative';
-import { useFormik } from 'formik';
 import { FormItem } from 'ui-kit/FormItem';
 import { Select } from 'ui-kit/Select';
 import { Input } from 'ui-kit/Input';
@@ -35,6 +34,7 @@ import {
 import { ErrorMessage } from 'ui-kit/ErrorMessage';
 import { Button } from 'ui-kit/Button';
 import { ChangeODPUReadingsContainer } from 'services/devices/сhangeODPUService/changeODPUReadingsService';
+import { useFormik } from 'formik';
 
 export const ChangeODPUForm: FC<ChangeODPUFormProps> = ({
   oldDevice,
@@ -261,7 +261,9 @@ export const ChangeODPUForm: FC<ChangeODPUFormProps> = ({
         onChangeNewReadings={handleNewReadingsChange}
         onChangeOldReadings={handleOldReadingsChange}
       />
-      <ErrorMessage>{errors.newDeviceReadings}</ErrorMessage>
+      <ErrorMessage>
+        {errors.newDeviceReadings as unknown as string}
+      </ErrorMessage>
 
       <SealInfoWrapper>
         <FormItem label="Номер пломбы">

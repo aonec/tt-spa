@@ -72,11 +72,11 @@ export const ApartmentProfile: FC<ApartmentProfileProps> = ({
               },
               {
                 key: 'Количество проживающих / зарегистрированных',
-                value: apartment.normativeNumberOfLiving,
+                value: apartment.numberOfLiving,
               },
               {
                 key: 'Нормативное количество проживающих',
-                value: apartment.numberOfLiving,
+                value: apartment.normativeNumberOfLiving,
               },
               {
                 key: 'Основной лицевой счет ',

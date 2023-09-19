@@ -6,6 +6,7 @@ import {
   ErpWorkCategoryResponse,
   ErpObjectResponse,
 } from 'api/types';
+import dayjs from 'dayjs';
 import { GetTaskDeadlineRequest } from 'services/tasks/addTaskFromDispatcherService/addTaskFromDispatcherService.types';
 
 export type AddTask = {
@@ -15,10 +16,10 @@ export type AddTask = {
   // categoryId: string | null;
   workTypeId: string | null;
 
-  requestDate: moment.Moment | null;
+  requestDate: dayjs.Dayjs | null;
   requestTime: string | null;
 
-  manualDeadlineDate: moment.Moment | null;
+  manualDeadlineDate: dayjs.Dayjs | null;
   manualDeadlineTime: string | null;
 
   addressSearch: string;

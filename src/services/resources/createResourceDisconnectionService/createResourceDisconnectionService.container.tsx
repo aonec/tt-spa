@@ -1,5 +1,5 @@
 import { useUnit } from 'effector-react';
-import React, { useMemo } from 'react';
+import React, { FC, useEffect, useMemo } from 'react';
 import { resourceDisconnectionFiltersService } from 'services/resources/resourceDisconnectionFiltersService';
 import { createResourceDisconnectionService } from './createResourceDisconnectionService.model';
 import { CreateResourceDisconnectionModal } from './view/CreateResourceDisconnectionModal';
@@ -8,18 +8,23 @@ import { chooseTypeOfResourceDisconnectionModalService } from '../chooseTypeOfRe
 import '../editResourceDisconnectionService/editResourceDisconnectionService.relations';
 import '../chooseTypeOfResourceDisconnectionModalService/chooseTypeOfResourceDisconnectionModalService.relations';
 import { editResourceDisconnectionService } from '../editResourceDisconnectionService';
-import { EAddressDetails } from './createResourceDisconnectionService.types';
+import {
+  CreateDisconnectionContainerProps,
+  EAddressDetails,
+} from './createResourceDisconnectionService.types';
 import {
   prepareAddressesForTreeSelect,
   prepareAddressesWithParentsForTreeSelect,
 } from 'ui-kit/shared/AddressTreeSelect/AddressTreeSelect.utils';
 import { addressSearchService } from 'services/addressSearchService/addressSearchService.models';
 
-const { inputs, outputs } = createResourceDisconnectionService;
+const { inputs, outputs, fx } = createResourceDisconnectionService;
 const { gates } = resourceDisconnectionFiltersService;
 const { ResourceDisconnectigFiltersGate } = gates;
 
-export const CreateResourceDisconnectionContainer = () => {
+export const CreateResourceDisconnectionContainer: FC<
+  CreateDisconnectionContainerProps
+> = ({ handleCreateDisconnectionState, handleComplete }) => {
   const {
     isOpen,
     resourceTypes,
@@ -72,9 +77,19 @@ export const CreateResourceDisconnectionContainer = () => {
     selectedBuilding: outputs.$selectedBuilding,
   });
 
+  useEffect(() => {
+    if (handleComplete) {
+      return fx.createResourceDisconnectionFx.doneData.watch(handleComplete)
+        .unsubscribe;
+    }
+  }, [handleComplete]);
+
   const preparedExistingHousingStocks = useMemo(() => {
     if (typeOfAddress === EAddressDetails.All) {
-      return prepareAddressesForTreeSelect({ items: existingBuildings });
+      return prepareAddressesForTreeSelect({
+        items: existingBuildings,
+        isTreeCheckable: true,
+      });
     }
     const housingStocks = buildingWithHeatingStations.length
       ? buildingWithHeatingStations
@@ -110,6 +125,7 @@ export const CreateResourceDisconnectionContainer = () => {
         selectCity={selectCity}
         selectedCity={selectedCity}
         selectedBuilding={selectedBuilding}
+        handleCreateDisconnectionState={handleCreateDisconnectionState}
       />
     </>
   );

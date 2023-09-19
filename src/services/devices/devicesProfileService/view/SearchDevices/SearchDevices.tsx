@@ -42,6 +42,11 @@ export const SearchDevices: FC<SearchDevicesProps> = ({
 }) => {
   const { marks, maxValue, minValue, diameters } = diametersConfig;
 
+  const throttledSubmit = useMemo(
+    () => _.debounce(submitForm, 1000),
+    [submitForm],
+  );
+
   const handleChangeRange = useCallback(
     (value: [number, number]) => {
       const firstIndex = diameters.findIndex((elem) => elem === value[0]);
@@ -52,9 +57,9 @@ export const SearchDevices: FC<SearchDevicesProps> = ({
         diameters.slice(firstIndex, secondIndex),
       );
 
-      setTimeout(() => submitForm(), 1000);
+      throttledSubmit();
     },
-    [setFieldValue, submitForm, diameters],
+    [setFieldValue, diameters, throttledSubmit],
   );
 
   const rangeValues: [number, number] = useMemo(() => {
@@ -184,9 +189,10 @@ export const SearchDevices: FC<SearchDevicesProps> = ({
                 <StyledLabel>Диаметр трубы, мм </StyledLabel>
 
                 <SCSlider
-                  getTooltipPopupContainer={(triggerNode) =>
-                    triggerNode.parentNode as HTMLElement
-                  }
+                  tooltip={{
+                    getPopupContainer: (triggerNode) =>
+                      triggerNode.parentNode as HTMLElement,
+                  }}
                   defaultValue={[0, 255]}
                   max={maxValue}
                   min={minValue}
