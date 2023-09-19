@@ -5,7 +5,6 @@ import {
   VictoryArea,
   VictoryAxis,
   VictoryChart,
-  VictoryLabel,
   VictoryLine,
   VictoryTheme,
   VictoryVoronoiContainer,
@@ -19,7 +18,6 @@ import { ResourceConsumptionGraphColorsMeasure } from './ResourceConsumptionGrap
 import {
   getCurrentDataStyle,
   Wrapper,
-  ZeroLineStyle,
 } from './ResourceConsumptionGraph.styled';
 import { ResourceConsumptionGraphProps } from './ResourceConsumptionGraph.types';
 import {
@@ -34,6 +32,7 @@ import {
   verticalAxisStyle,
 } from 'services/nodes/displayNodesStatisticsService/view/StatisticsGraph/StatisticsGraph.styled';
 import { CustomTooltip } from 'ui-kit/shared/GraphComponents/CustomTooltip';
+import { isEmpty } from 'lodash';
 
 const height = 360;
 
@@ -46,8 +45,6 @@ export const ResourceConsumptionGraph: FC<ResourceConsumptionGraphProps> = ({
   isAdditionalAddressSelected,
 }) => {
   const [width, setWidth] = useState(0);
-
-  const [minmax, setMinmax] = useState<[number, number]>([0, 0]);
 
   const checkedCurrentMonthConsumption = useMemo(() => {
     const res = {
@@ -116,101 +113,116 @@ export const ResourceConsumptionGraph: FC<ResourceConsumptionGraphProps> = ({
     ...Object.values(checkedAdditionalAddressConsumption),
   ].map(prepareData);
 
-  useEffect(() => {
-    const isHaveDataForMinMaxCalculation = Boolean(
-      dataForMinMaxCalculation?.flat().length,
+  const isHaveDataForMinMaxCalculation = !isEmpty(
+    dataForMinMaxCalculation?.flat(),
+  );
+
+  const [minmax, setMinmax] = useState<[number, number]>([0, 0]);
+
+  if (isHaveDataForMinMaxCalculation) {
+    const { minValue, maxValue } = getMinAndMaxForResourceConsumptionGraph(
+      dataForMinMaxCalculation,
     );
-    if (isHaveDataForMinMaxCalculation) {
-      const { minValue, maxValue } = getMinAndMaxForResourceConsumptionGraph(
-        dataForMinMaxCalculation,
-      );
 
-      setMinmax((prev) => {
-        return prev[1] !== maxValue ? [minValue, maxValue] : prev;
-      });
-    }
-  }, [dataForMinMaxCalculation]);
+    setMinmax((prev) => {
+      return prev[1] !== maxValue ? [minValue, maxValue] : prev;
+    });
+    console.log('set');
+  }
 
-  const lines = useMemo(
-    () =>
-      Object.values(ResourceConsumptionGraphDataType).map((typeOfData) => {
-        const isAdditionalAddress =
-          (additionalAddressConsumptionData &&
-            typeOfData === ResourceConsumptionGraphDataType.prevMonthData) ||
-          !selectedAddresses.additionalAddress;
+  // const minmax = useMemo(() => {
+  //   if (isHaveDataForMinMaxCalculation) {
+  //     const { minValue, maxValue } = getMinAndMaxForResourceConsumptionGraph(
+  //       dataForMinMaxCalculation,
+  //     );
 
-        const hideCurrentMonthData =
+  //     setMinmax((prev) => {
+  //       return prev[1] !== maxValue ? [minValue, maxValue] : prev;
+  //     });
+  //     console.log('set');
+  //   }
+  // }, [dataForMinMaxCalculation]);
+
+  const lines = useMemo(() => {
+    console.log('lines');
+
+    return Object.values(ResourceConsumptionGraphDataType).map((typeOfData) => {
+      const isAdditionalAddress =
+        (additionalAddressConsumptionData &&
+          typeOfData === ResourceConsumptionGraphDataType.prevMonthData) ||
+        !selectedAddresses.additionalAddress;
+
+      const hideCurrentMonthData =
+        typeOfData === ResourceConsumptionGraphDataType.currentMonthData &&
+        !selectedAddresses.currentAddress;
+
+      if (
+        !consumptionData ||
+        !resource ||
+        // isAdditionalAddress ||разобраться с доп адресами в следующей задаче
+        hideCurrentMonthData
+      ) {
+        return null;
+      }
+
+      const monthData = consumptionData[typeOfData];
+
+      const typeOfChecked =
+        typeOfData === ResourceConsumptionGraphDataType.additionalAddress
+          ? ResourceConsumptionGraphDataType.currentMonthData
+          : typeOfData;
+
+      const isLineChecked = !isAdditionalAddress
+        ? checked[typeOfChecked]
+        : selectedAddresses.currentAddress
+        ? checked[typeOfChecked]
+        : checked[typeOfChecked];
+
+      if (!monthData) {
+        return null;
+      }
+
+      return Object.entries(monthData).map(([key, data]) => {
+        const isCurrentMonthHousingData =
           typeOfData === ResourceConsumptionGraphDataType.currentMonthData &&
-          !selectedAddresses.currentAddress;
+          key === ResourceConsumptionGraphType.Housing;
 
         if (
-          !consumptionData ||
-          !resource ||
-          isAdditionalAddress ||
-          hideCurrentMonthData
+          isLineChecked[key as ResourceConsumptionGraphType] &&
+          !isCurrentMonthHousingData
         ) {
-          return null;
+          return (
+            <VictoryLine
+              key={key}
+              data={data}
+              interpolation="monotoneX"
+              x="key"
+              y="value"
+              style={{
+                data: {
+                  stroke: getGraphTypeColors({
+                    resource,
+                    type: key as ResourceConsumptionGraphType,
+                    isOpacityNeed:
+                      typeOfData !==
+                      ResourceConsumptionGraphDataType.currentMonthData,
+                  }),
+                  strokeWidth: 2,
+                },
+              }}
+            />
+          );
         }
-
-        const monthData = consumptionData[typeOfData];
-
-        const typeOfChecked =
-          typeOfData === ResourceConsumptionGraphDataType.additionalAddress
-            ? ResourceConsumptionGraphDataType.currentMonthData
-            : typeOfData;
-
-        const isLineChecked = !isAdditionalAddress
-          ? checked[typeOfChecked]
-          : selectedAddresses.currentAddress
-          ? checked[typeOfChecked]
-          : checked[typeOfChecked];
-
-        if (!monthData) {
-          return null;
-        }
-
-        return Object.entries(monthData).map(([key, data]) => {
-          const isCurrentMonthHousingData =
-            typeOfData === ResourceConsumptionGraphDataType.currentMonthData &&
-            key === ResourceConsumptionGraphType.Housing;
-
-          if (
-            isLineChecked[key as ResourceConsumptionGraphType] &&
-            !isCurrentMonthHousingData
-          ) {
-            return (
-              <VictoryLine
-                key={key}
-                data={data}
-                interpolation="monotoneX"
-                x="key"
-                y="value"
-                style={{
-                  data: {
-                    stroke: getGraphTypeColors({
-                      resource,
-                      type: key as ResourceConsumptionGraphType,
-                      isOpacityNeed:
-                        typeOfData !==
-                        ResourceConsumptionGraphDataType.currentMonthData,
-                    }),
-                    strokeWidth: 2,
-                  },
-                }}
-              />
-            );
-          }
-          return null;
-        });
-      }),
-    [
-      consumptionData,
-      resource,
-      checked,
-      selectedAddresses,
-      additionalAddressConsumptionData,
-    ],
-  );
+        return null;
+      });
+    });
+  }, [
+    consumptionData,
+    resource,
+    checked,
+    selectedAddresses,
+    additionalAddressConsumptionData,
+  ]);
 
   useEffect(() => {
     const wrapperNode = document.getElementById('graphWrapper');
@@ -253,10 +265,6 @@ export const ResourceConsumptionGraph: FC<ResourceConsumptionGraphProps> = ({
         width={width}
         theme={VictoryTheme.material}
         containerComponent={<VictoryVoronoiContainer />}
-        // animate={{
-        //   duration: 200,
-        //   onLoad: { duration: 600 },
-        // }}
       >
         <VictoryAxis
           tickComponent={<TickComponent />}
@@ -269,41 +277,32 @@ export const ResourceConsumptionGraph: FC<ResourceConsumptionGraphProps> = ({
           style={horizontalAxisStyle}
         />
         <VictoryAxis domain={minmax} dependentAxis style={verticalAxisStyle} />
-        <VictoryLine
-          domain={{ y: minmax }}
-          samples={1}
-          labels={['0', ``]}
-          labelComponent={<VictoryLabel renderInPortal dy={7} dx={-16} />}
-          y={() => 0}
-          style={ZeroLineStyle}
-        />
         {lines}
-        {checked.currentMonthData.housing &&
-          selectedAddresses.currentAddress && (
-            <VictoryArea
-              data={consumptionData.currentMonthData?.housing}
-              x="key"
-              y="value"
-              interpolation="monotoneX"
-              style={getCurrentDataStyle(resource)}
-              labels={() => ''}
-              labelComponent={
-                <CustomTooltip
-                  flyoutStyle={{ fill: 'var(--main-100)' }}
-                  style={{ fill: '#fff' }}
-                  height={height}
-                  flyoutComponent={
-                    <ResourceConsumptionGraphTooltip
-                      startOfMonth={startOfMonth}
-                      measure={ResourceConsumptionGraphColorsMeasure[resource]}
-                    />
-                  }
-                  minValue={minmax[0]}
-                  maxValue={minmax[1]}
-                />
-              }
-            />
-          )}
+        {checked.currentMonthData.housing && (
+          <VictoryArea
+            data={consumptionData.currentMonthData?.housing}
+            x="key"
+            y="value"
+            interpolation="monotoneX"
+            style={getCurrentDataStyle(resource)}
+            labels={() => ''}
+            labelComponent={
+              <CustomTooltip
+                flyoutStyle={{ fill: 'var(--main-100)' }}
+                style={{ fill: '#fff' }}
+                height={height}
+                flyoutComponent={
+                  <ResourceConsumptionGraphTooltip
+                    startOfMonth={startOfMonth}
+                    measure={ResourceConsumptionGraphColorsMeasure[resource]}
+                  />
+                }
+                minValue={minmax[0]}
+                maxValue={minmax[1]}
+              />
+            }
+          />
+        )}
       </VictoryChart>
     </Wrapper>
   );

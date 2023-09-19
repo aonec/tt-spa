@@ -7,6 +7,7 @@ import {
   ConsumptionDataForTwoMonth,
   ConsumptionDataPayload,
   ResourceConsumptionGraphDataType,
+  ResourceConsumptionGraphType,
   ResourceConsumptionWithNull,
 } from './resourceConsumptionService.types';
 import { BooleanTypesOfResourceConsumptionGraphForTwoMonth } from './view/ResourceConsumptionProfile/ResourceConsumptionProfile.types';
@@ -18,7 +19,10 @@ import {
   fetchNormativeAndSubscriberConsumptionData,
   fetchSummaryHousingConsumptions,
 } from './resourceConsumptionService.api';
-import { setConsumptionData } from './resourceConsumptionService.utils';
+import {
+  handleResetNormativeAndSubscriberData,
+  setConsumptionData,
+} from './resourceConsumptionService.utils';
 
 const domain = createDomain('resourceConsumptionService');
 
@@ -37,7 +41,6 @@ const getSummaryHousingConsumptionsFx = domain.createEffect<
 >(fetchSummaryHousingConsumptions);
 
 const getConsumptionData = domain.createEvent<ConsumptionDataPayload>();
-getConsumptionData.watch(() => 'click');
 
 /**
  * одпу
@@ -149,6 +152,9 @@ const $housingConsumptionData = domain
         data,
       ),
   )
+  .on(getConsumptionData, (prev, _) =>
+    handleResetNormativeAndSubscriberData(prev),
+  )
   .reset(clearData);
 
 const getAdditionalConsumptionData =
@@ -169,6 +175,39 @@ const $selectedGraphTypes = domain
   )
   .on(setSelectedGraphTypes, (_, selected) => selected)
   .reset(clearData);
+
+const $dynamicMinMax = combine(
+  $housingConsumptionData,
+  $selectedGraphTypes,
+  (consumptionData, checked) => {
+    const checkedCurrentMonthConsumption = {
+      [ResourceConsumptionGraphType.Housing]: checked.currentMonthData.housing
+        ? consumptionData?.currentMonthData?.housing
+        : [],
+      [ResourceConsumptionGraphType.Normative]: checked.currentMonthData
+        .normative
+        ? consumptionData?.currentMonthData?.normative
+        : [],
+      [ResourceConsumptionGraphType.Subscriber]: checked.currentMonthData
+        .subscriber
+        ? consumptionData?.currentMonthData?.subscriber
+        : [],
+    };
+
+    const checkedPrevMonthConsumption = {
+      [ResourceConsumptionGraphType.Housing]: checked.prevMonthData.housing
+        ? consumptionData?.prevMonthData?.housing
+        : [],
+      [ResourceConsumptionGraphType.Normative]: checked.prevMonthData.normative
+        ? consumptionData?.prevMonthData?.normative
+        : [],
+      [ResourceConsumptionGraphType.Subscriber]: checked.prevMonthData
+        .subscriber
+        ? consumptionData?.prevMonthData?.subscriber
+        : [],
+    };
+  },
+);
 
 const $summaryConsumption = domain
   .createStore<GetSummaryHousingConsumptionsByResourcesResponse | null>(null)

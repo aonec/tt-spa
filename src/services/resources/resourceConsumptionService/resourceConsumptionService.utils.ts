@@ -100,3 +100,25 @@ export const setConsumptionData = (
     },
   };
 };
+
+export const handleResetNormativeAndSubscriberData = (
+  prev: ConsumptionDataForTwoMonth | null,
+): ConsumptionDataForTwoMonth | null => {
+  return {
+    currentMonthData: {
+      housing: undefined,
+      normative: undefined,
+      subscriber: undefined,
+    },
+    prevMonthData: {
+      housing: undefined,
+      normative: undefined,
+      subscriber: undefined,
+    },
+    additionalAddress: {
+      housing: undefined,
+      normative: undefined,
+      subscriber: undefined,
+    },
+  };
+};
