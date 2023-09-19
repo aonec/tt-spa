@@ -20,7 +20,7 @@ import {
   fetchSummaryHousingConsumptions,
 } from './resourceConsumptionService.api';
 import {
-  handleResetNormativeAndSubscriberData,
+  getIsOnlyHousingDataEmpty,
   prepareDataForMinMaxCalculation,
   setConsumptionData,
 } from './resourceConsumptionService.utils';
@@ -154,8 +154,7 @@ const $housingConsumptionData = domain
         data,
       ),
   )
-  .on(getConsumptionData, () => handleResetNormativeAndSubscriberData())
-  .reset(clearData);
+  .reset([clearData, getConsumptionData]);
 
 const getAdditionalConsumptionData =
   domain.createEvent<ConsumptionDataPayload>();
@@ -197,6 +196,10 @@ const $dynamicMinMax = domain
       return prevMinMax[1] !== maxValue ? [minValue, maxValue] : prevMinMax;
     }
   });
+
+const $isOnlyHousingDataEmpty = $housingConsumptionData.map(
+  getIsOnlyHousingDataEmpty,
+);
 
 const $summaryConsumption = domain
   .createStore<GetSummaryHousingConsumptionsByResourcesResponse | null>(null)
@@ -296,6 +299,7 @@ export const resourceConsumptionService = {
     $isPrevNormativeAndSubscriberLoading,
     $isAdditionalAddressSelected,
     $dynamicMinMax,
+    $isOnlyHousingDataEmpty,
   },
   gates: { ResourceConsumptionGate },
 };

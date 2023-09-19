@@ -105,27 +105,6 @@ export const setConsumptionData = (
   };
 };
 
-export const handleResetNormativeAndSubscriberData =
-  (): ConsumptionDataForTwoMonth | null => {
-    return {
-      currentMonthData: {
-        housing: undefined,
-        normative: undefined,
-        subscriber: undefined,
-      },
-      prevMonthData: {
-        housing: undefined,
-        normative: undefined,
-        subscriber: undefined,
-      },
-      additionalAddress: {
-        housing: undefined,
-        normative: undefined,
-        subscriber: undefined,
-      },
-    };
-  };
-
 export const prepareDataForMinMaxCalculation = (
   consumptionData: ConsumptionDataForTwoMonth | null,
   checked: BooleanTypesOfResourceConsumptionGraphForTwoMonth,
@@ -174,4 +153,18 @@ export const prepareDataForMinMaxCalculation = (
   ].map(prepareData);
 
   return dataForMinMaxCalculation;
+};
+
+export const getIsOnlyHousingDataEmpty = (
+  housingConsumptionData: ConsumptionDataForTwoMonth | null,
+) => {
+  if (
+    !housingConsumptionData?.currentMonthData?.housing?.length &&
+    (housingConsumptionData?.currentMonthData?.normative?.length ||
+      housingConsumptionData?.currentMonthData?.subscriber?.length ||
+      housingConsumptionData?.prevMonthData?.normative?.length ||
+      housingConsumptionData?.prevMonthData?.subscriber?.length)
+  ) {
+    return true;
+  } else return false;
 };

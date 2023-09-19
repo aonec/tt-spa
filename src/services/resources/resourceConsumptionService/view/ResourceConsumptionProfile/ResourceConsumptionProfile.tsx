@@ -30,11 +30,11 @@ export const ResourceConsumptionProfile: FC<
   isPrevNormativeAndSubscriberLoading,
   isAdditionalAddressSelected,
   dynamicMinMax,
+  isOnlyHousingDataEmpty,
 }) => {
   const [selectedAddresses, setSelectedAddresses] = useState<SelectedAddresses>(
     initialSelectedAddresses,
   );
-
   useEffect(() => {
     setSelectedAddresses(initialSelectedAddresses);
   }, [housingConsumptionData?.additionalAddress]);
@@ -60,11 +60,11 @@ export const ResourceConsumptionProfile: FC<
             dynamicMinMax={dynamicMinMax}
           />
 
-          {!housingConsumptionData?.currentMonthData?.housing?.length && (
-            <span>
+          {isOnlyHousingDataEmpty && (
+            <div>
               Нет данных по общедомовому потреблению за выбранный период.
               Пожалуйста, измените период для формирования новой статистики.
-            </span>
+            </div>
           )}
 
           <SelectResourceConsumptionType
