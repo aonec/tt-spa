@@ -1,6 +1,5 @@
 import React, { FC, useEffect, useMemo, useState } from 'react';
 import { GraphEmptyData } from 'services/nodes/displayNodesStatisticsService/view/GraphEmptyData';
-import { prepareData } from 'utils/Graph.utils';
 import {
   VictoryArea,
   VictoryAxis,
@@ -10,7 +9,6 @@ import {
   VictoryVoronoiContainer,
 } from 'victory';
 import {
-  MonthConsumptionData,
   ResourceConsumptionGraphDataType,
   ResourceConsumptionGraphType,
 } from '../../resourceConsumptionService.types';
@@ -20,10 +18,7 @@ import {
   Wrapper,
 } from './ResourceConsumptionGraph.styled';
 import { ResourceConsumptionGraphProps } from './ResourceConsumptionGraph.types';
-import {
-  getGraphTypeColors,
-  getMinAndMaxForResourceConsumptionGraph,
-} from './ResourceConsumptionGraph.utils';
+import { getGraphTypeColors } from './ResourceConsumptionGraph.utils';
 import { ResourceConsumptionGraphTooltip } from './ResourceConsumptionGraphTooltip';
 import { GraphGradient } from 'ui-kit/shared/GraphComponents/GraphGradient';
 import { TickComponent } from 'ui-kit/shared/GraphComponents/TickComponent';
@@ -32,7 +27,6 @@ import {
   verticalAxisStyle,
 } from 'services/nodes/displayNodesStatisticsService/view/StatisticsGraph/StatisticsGraph.styled';
 import { CustomTooltip } from 'ui-kit/shared/GraphComponents/CustomTooltip';
-import { isEmpty } from 'lodash';
 
 const height = 360;
 
@@ -42,110 +36,14 @@ export const ResourceConsumptionGraph: FC<ResourceConsumptionGraphProps> = ({
   startOfMonth,
   checked,
   selectedAddresses,
-  isAdditionalAddressSelected,
+  dynamicMinMax,
 }) => {
   const [width, setWidth] = useState(0);
-
-  const checkedCurrentMonthConsumption = useMemo(() => {
-    const res = {
-      [ResourceConsumptionGraphType.Housing]: checked.currentMonthData.housing
-        ? consumptionData?.currentMonthData?.housing
-        : [],
-      [ResourceConsumptionGraphType.Normative]: checked.currentMonthData
-        .normative
-        ? consumptionData?.currentMonthData?.normative
-        : [],
-      [ResourceConsumptionGraphType.Subscriber]: checked.currentMonthData
-        .subscriber
-        ? consumptionData?.currentMonthData?.subscriber
-        : [],
-    };
-    return res as MonthConsumptionData;
-  }, [consumptionData?.currentMonthData, checked.currentMonthData]);
-
-  const checkedPrevMonthConsumption = useMemo(() => {
-    if (isAdditionalAddressSelected) return {};
-
-    const res = {
-      [ResourceConsumptionGraphType.Housing]: checked.prevMonthData.housing
-        ? consumptionData?.prevMonthData?.housing
-        : [],
-      [ResourceConsumptionGraphType.Normative]: checked.prevMonthData.normative
-        ? consumptionData?.prevMonthData?.normative
-        : [],
-      [ResourceConsumptionGraphType.Subscriber]: checked.prevMonthData
-        .subscriber
-        ? consumptionData?.prevMonthData?.subscriber
-        : [],
-    };
-    return res as MonthConsumptionData;
-  }, [
-    consumptionData?.prevMonthData,
-    checked.prevMonthData,
-    isAdditionalAddressSelected,
-  ]);
 
   const additionalAddressConsumptionData =
     consumptionData?.additionalAddress || null;
 
-  const checkedAdditionalAddressConsumption = useMemo(() => {
-    if (!isAdditionalAddressSelected || !selectedAddresses.additionalAddress)
-      return {};
-
-    const res = {
-      [ResourceConsumptionGraphType.Housing]:
-        additionalAddressConsumptionData?.housing,
-      [ResourceConsumptionGraphType.Normative]:
-        additionalAddressConsumptionData?.normative,
-      [ResourceConsumptionGraphType.Subscriber]:
-        additionalAddressConsumptionData?.subscriber,
-    };
-    return res as MonthConsumptionData;
-  }, [
-    selectedAddresses.additionalAddress,
-    additionalAddressConsumptionData,
-    isAdditionalAddressSelected,
-  ]);
-
-  const dataForMinMaxCalculation = [
-    ...Object.values(checkedCurrentMonthConsumption),
-    ...Object.values(checkedPrevMonthConsumption),
-    ...Object.values(checkedAdditionalAddressConsumption),
-  ].map(prepareData);
-
-  const isHaveDataForMinMaxCalculation = !isEmpty(
-    dataForMinMaxCalculation?.flat(),
-  );
-
-  const [minmax, setMinmax] = useState<[number, number]>([0, 0]);
-
-  if (isHaveDataForMinMaxCalculation) {
-    const { minValue, maxValue } = getMinAndMaxForResourceConsumptionGraph(
-      dataForMinMaxCalculation,
-    );
-
-    setMinmax((prev) => {
-      return prev[1] !== maxValue ? [minValue, maxValue] : prev;
-    });
-    console.log('set');
-  }
-
-  // const minmax = useMemo(() => {
-  //   if (isHaveDataForMinMaxCalculation) {
-  //     const { minValue, maxValue } = getMinAndMaxForResourceConsumptionGraph(
-  //       dataForMinMaxCalculation,
-  //     );
-
-  //     setMinmax((prev) => {
-  //       return prev[1] !== maxValue ? [minValue, maxValue] : prev;
-  //     });
-  //     console.log('set');
-  //   }
-  // }, [dataForMinMaxCalculation]);
-
   const lines = useMemo(() => {
-    console.log('lines');
-
     return Object.values(ResourceConsumptionGraphDataType).map((typeOfData) => {
       const isAdditionalAddress =
         (additionalAddressConsumptionData &&
@@ -254,7 +152,7 @@ export const ResourceConsumptionGraph: FC<ResourceConsumptionGraphProps> = ({
 
       <VictoryChart
         padding={{ top: 0, bottom: 0, left: 26, right: 0 }}
-        domain={{ y: minmax }}
+        domain={{ y: dynamicMinMax }}
         style={{
           parent: {
             overflow: 'visible',
@@ -265,6 +163,10 @@ export const ResourceConsumptionGraph: FC<ResourceConsumptionGraphProps> = ({
         width={width}
         theme={VictoryTheme.material}
         containerComponent={<VictoryVoronoiContainer />}
+        // animate={{
+        //   duration: 2000,
+        //   onLoad: { duration: 600 },
+        // }}
       >
         <VictoryAxis
           tickComponent={<TickComponent />}
@@ -276,7 +178,11 @@ export const ResourceConsumptionGraph: FC<ResourceConsumptionGraphProps> = ({
           }}
           style={horizontalAxisStyle}
         />
-        <VictoryAxis domain={minmax} dependentAxis style={verticalAxisStyle} />
+        <VictoryAxis
+          domain={dynamicMinMax}
+          dependentAxis
+          style={verticalAxisStyle}
+        />
         {lines}
         {checked.currentMonthData.housing && (
           <VictoryArea
@@ -297,8 +203,8 @@ export const ResourceConsumptionGraph: FC<ResourceConsumptionGraphProps> = ({
                     measure={ResourceConsumptionGraphColorsMeasure[resource]}
                   />
                 }
-                minValue={minmax[0]}
-                maxValue={minmax[1]}
+                minValue={dynamicMinMax[0]}
+                maxValue={dynamicMinMax[1]}
               />
             }
           />

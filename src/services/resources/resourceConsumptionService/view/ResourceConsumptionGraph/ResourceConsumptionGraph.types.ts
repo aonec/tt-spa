@@ -1,6 +1,5 @@
 import { EResourceType } from 'api/types';
 import {
-  ConsumptionDataForTwoMonth,
   MonthConsumptionData,
   ResourceConsumptionGraphDataType,
 } from '../../resourceConsumptionService.types';
@@ -20,4 +19,5 @@ export type ResourceConsumptionGraphProps = {
     [ResourceConsumptionGraphDataType.prevMonthData]?: MonthConsumptionData;
     [ResourceConsumptionGraphDataType.additionalAddress]: MonthConsumptionData | null;
   };
+  dynamicMinMax: [number, number];
 };

@@ -29,6 +29,7 @@ export const ResourceConsumptionProfile: FC<
   isPrevHousingLoading,
   isPrevNormativeAndSubscriberLoading,
   isAdditionalAddressSelected,
+  dynamicMinMax,
 }) => {
   const [selectedAddresses, setSelectedAddresses] = useState<SelectedAddresses>(
     initialSelectedAddresses,
@@ -56,6 +57,7 @@ export const ResourceConsumptionProfile: FC<
             checked={selectedGraphTypes}
             selectedAddresses={selectedAddresses}
             isAdditionalAddressSelected={isAdditionalAddressSelected}
+            dynamicMinMax={dynamicMinMax}
           />
 
           {!housingConsumptionData?.currentMonthData?.housing?.length && (

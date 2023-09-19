@@ -4,7 +4,6 @@ import {
 } from 'api/types';
 import { ConsumptionDataFilter } from '../../resourceConsumptionFilterService/resourceConsumptionFilterService.types';
 import {
-  ConsumptionDataForTwoMonth,
   ResourceConsumptionGraphType,
   ResourceConsumptionGraphDataType,
   MonthConsumptionData,
@@ -31,6 +30,7 @@ export type ResourceConsumptionProfileProps = {
     [ResourceConsumptionGraphDataType.prevMonthData]?: MonthConsumptionData;
     [ResourceConsumptionGraphDataType.additionalAddress]: MonthConsumptionData | null;
   };
+  dynamicMinMax: [number, number];
 };
 
 export type BooleanTypesOfResourceConsumptionGraphForTwoMonth = {

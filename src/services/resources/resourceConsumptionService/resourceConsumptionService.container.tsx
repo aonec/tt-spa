@@ -31,6 +31,7 @@ export const ResourceConsumptionContainer = () => {
     isHousingLoading,
     isSummaryLoading,
     isLoading,
+    dynamicMinMax,
   } = useUnit({
     setSelectedGraphTypes: inputs.setSelectedGraphTypes,
     setResource: resourceConsumptionFilterService.inputs.setResource,
@@ -48,6 +49,7 @@ export const ResourceConsumptionContainer = () => {
     isHousingLoading: outputs.$isHousingLoading,
     isSummaryLoading: outputs.$isSummaryLoading,
     isLoading: outputs.$isLoading,
+    dynamicMinMax: outputs.$dynamicMinMax,
   });
 
   const preparedHousingConsumptionData: AllConsumptionDataWithNullableAdditionalAddress =
@@ -84,6 +86,7 @@ export const ResourceConsumptionContainer = () => {
         isNormativeAndSubscriberLoading={isNormativeAndSubscriberLoading}
         isHousingLoading={isHousingLoading}
         isAdditionalAddressSelected={isAdditionalAddressSelected}
+        dynamicMinMax={dynamicMinMax}
       />
     </>
   );

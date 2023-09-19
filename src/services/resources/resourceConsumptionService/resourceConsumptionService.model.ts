@@ -1,13 +1,13 @@
 import { combine, createDomain, forward, sample } from 'effector';
 import { createGate } from 'effector-react';
 import dayjs from 'api/dayjs';
+import { isEmpty } from 'lodash';
 import { GetSummaryHousingConsumptionsByResourcesResponse } from 'api/types';
 import { initialSelectedGraphTypes } from './resourceConsumptionService.constants';
 import {
   ConsumptionDataForTwoMonth,
   ConsumptionDataPayload,
   ResourceConsumptionGraphDataType,
-  ResourceConsumptionGraphType,
   ResourceConsumptionWithNull,
 } from './resourceConsumptionService.types';
 import { BooleanTypesOfResourceConsumptionGraphForTwoMonth } from './view/ResourceConsumptionProfile/ResourceConsumptionProfile.types';
@@ -21,8 +21,10 @@ import {
 } from './resourceConsumptionService.api';
 import {
   handleResetNormativeAndSubscriberData,
+  prepareDataForMinMaxCalculation,
   setConsumptionData,
 } from './resourceConsumptionService.utils';
+import { getMinAndMaxForResourceConsumptionGraph } from './view/ResourceConsumptionGraph/ResourceConsumptionGraph.utils';
 
 const domain = createDomain('resourceConsumptionService');
 
@@ -152,9 +154,7 @@ const $housingConsumptionData = domain
         data,
       ),
   )
-  .on(getConsumptionData, (prev, _) =>
-    handleResetNormativeAndSubscriberData(prev),
-  )
+  .on(getConsumptionData, () => handleResetNormativeAndSubscriberData())
   .reset(clearData);
 
 const getAdditionalConsumptionData =
@@ -176,38 +176,27 @@ const $selectedGraphTypes = domain
   .on(setSelectedGraphTypes, (_, selected) => selected)
   .reset(clearData);
 
-const $dynamicMinMax = combine(
+const $dataForMinMaxCalculation = combine(
   $housingConsumptionData,
   $selectedGraphTypes,
-  (consumptionData, checked) => {
-    const checkedCurrentMonthConsumption = {
-      [ResourceConsumptionGraphType.Housing]: checked.currentMonthData.housing
-        ? consumptionData?.currentMonthData?.housing
-        : [],
-      [ResourceConsumptionGraphType.Normative]: checked.currentMonthData
-        .normative
-        ? consumptionData?.currentMonthData?.normative
-        : [],
-      [ResourceConsumptionGraphType.Subscriber]: checked.currentMonthData
-        .subscriber
-        ? consumptionData?.currentMonthData?.subscriber
-        : [],
-    };
-
-    const checkedPrevMonthConsumption = {
-      [ResourceConsumptionGraphType.Housing]: checked.prevMonthData.housing
-        ? consumptionData?.prevMonthData?.housing
-        : [],
-      [ResourceConsumptionGraphType.Normative]: checked.prevMonthData.normative
-        ? consumptionData?.prevMonthData?.normative
-        : [],
-      [ResourceConsumptionGraphType.Subscriber]: checked.prevMonthData
-        .subscriber
-        ? consumptionData?.prevMonthData?.subscriber
-        : [],
-    };
-  },
+  prepareDataForMinMaxCalculation,
 );
+
+const $dynamicMinMax = domain
+  .createStore<[number, number]>([0, 0])
+  .on($dataForMinMaxCalculation, (prevMinMax, dataForMinMaxCalculation) => {
+    const isHaveDataForMinMaxCalculation = !isEmpty(
+      dataForMinMaxCalculation?.flat(),
+    );
+
+    if (isHaveDataForMinMaxCalculation) {
+      const { minValue, maxValue } = getMinAndMaxForResourceConsumptionGraph(
+        dataForMinMaxCalculation,
+      );
+
+      return prevMinMax[1] !== maxValue ? [minValue, maxValue] : prevMinMax;
+    }
+  });
 
 const $summaryConsumption = domain
   .createStore<GetSummaryHousingConsumptionsByResourcesResponse | null>(null)
@@ -306,6 +295,7 @@ export const resourceConsumptionService = {
     $isPrevHousingLoading,
     $isPrevNormativeAndSubscriberLoading,
     $isAdditionalAddressSelected,
+    $dynamicMinMax,
   },
   gates: { ResourceConsumptionGate },
 };
