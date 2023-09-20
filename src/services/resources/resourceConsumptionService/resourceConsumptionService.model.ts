@@ -11,12 +11,14 @@ import { initialSelectedGraphTypes } from './resourceConsumptionService.constant
 import {
   ConsumptionDataForTwoMonth,
   ConsumptionDataPayload,
+  ConsumptionRequestPayload,
   MonthConsumptionData,
 } from './resourceConsumptionService.types';
 import { BooleanTypesOfResourceConsumptionGraphForTwoMonth } from './view/ResourceConsumptionProfile/ResourceConsumptionProfile.types';
 import { EffectFailDataAxiosError } from 'types';
 import { addressSearchService } from 'services/addressSearchService/addressSearchService.models';
 import { getAddressesFx } from './resourceConsumptionFilterService/resourceConsumptionFilterService.api';
+import axios, { CancelTokenSource } from 'axios';
 
 const domain = createDomain('resourceConsumptionService');
 
@@ -25,7 +27,7 @@ const clearData = domain.createEvent();
 const getConsumptionData = domain.createEvent<ConsumptionDataPayload>();
 
 const getHousingConsumptionFx = domain.createEffect<
-  ConsumptionDataPayload,
+  ConsumptionRequestPayload,
   ConsumptionDataForTwoMonth,
   EffectFailDataAxiosError
 >(fetchConsumptionsForTwoMonth);
@@ -40,7 +42,7 @@ const getAdditionalConsumptionData =
 
 const clearAdditionalAddressData = domain.createEvent();
 const getAdditionalConsumptionFx = domain.createEffect<
-  ConsumptionDataPayload,
+  ConsumptionRequestPayload,
   MonthConsumptionData
 >(fetchConsumptionsForMonth);
 const $additionalConsumption = domain
@@ -85,14 +87,38 @@ const $isLoading = domain
   .createStore(true)
   .on($isLoadingFromApi, (_, isLoading) => isLoading);
 
+const cancelMainRequests = domain.createEvent<{ token: CancelTokenSource }>();
+domain
+  .createStore<CancelTokenSource | null>(null)
+  .on(cancelMainRequests, (oldToken, { token }) => {
+    if (oldToken) {
+      oldToken.cancel();
+    }
+    return token;
+  });
+
+const cancelAdditionalRequests = domain.createEvent<{
+  token: CancelTokenSource;
+}>();
+domain
+  .createStore<CancelTokenSource | null>(null)
+  .on(cancelAdditionalRequests, (oldToken, { token }) => {
+    if (oldToken) {
+      oldToken.cancel();
+    }
+    return token;
+  });
+
 sample({
   clock: getAdditionalConsumptionData,
-  target: getAdditionalConsumptionFx,
+  fn: (params) => ({ token: axios.CancelToken.source(), params }),
+  target: [getAdditionalConsumptionFx, cancelAdditionalRequests],
 });
 
 sample({
   clock: getConsumptionData,
-  target: getHousingConsumptionFx,
+  fn: (params) => ({ token: axios.CancelToken.source(), params }),
+  target: [getHousingConsumptionFx, cancelMainRequests],
 });
 
 sample({

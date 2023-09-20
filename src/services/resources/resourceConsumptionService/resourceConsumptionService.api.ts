@@ -8,6 +8,7 @@ import {
 import {
   ConsumptionDataForTwoMonth,
   ConsumptionDataPayload,
+  ConsumptionRequestPayload,
   MonthConsumptionData,
 } from './resourceConsumptionService.types';
 import {
@@ -15,10 +16,12 @@ import {
   prepareDataForConsumptionGraphWithLastValue,
 } from './resourceConsumptionService.utils';
 import queryString from 'query-string';
+import { CancelTokenSource } from 'axios';
 
-export const fetchConsumptionsForTwoMonth = async (
-  params: ConsumptionDataPayload,
-): Promise<ConsumptionDataForTwoMonth> => {
+export const fetchConsumptionsForTwoMonth = async ({
+  params,
+  token,
+}: ConsumptionRequestPayload): Promise<ConsumptionDataForTwoMonth> => {
   const prevMonth = dayjs(params.From).subtract(1, 'month');
   const paramsForPrevMonthRequest = {
     ...params,
@@ -26,22 +29,25 @@ export const fetchConsumptionsForTwoMonth = async (
     To: prevMonth.endOf('month').utcOffset(0, true).format(),
   };
 
-  const currentMonthData = await fetchConsumptionsForMonth(params);
-  const prevMonthData = await fetchConsumptionsForMonth(
-    paramsForPrevMonthRequest,
-  );
+  const currentMonthData = await fetchConsumptionsForMonth({ params, token });
+  const prevMonthData = await fetchConsumptionsForMonth({
+    params: paramsForPrevMonthRequest,
+    token,
+  });
 
   return { currentMonthData, prevMonthData };
 };
 
-export const fetchConsumptionsForMonth = async (
-  params: ConsumptionDataPayload,
-): Promise<MonthConsumptionData> => {
-  const housingMonthData = await fetchHousingConsumptionData(params);
+export const fetchConsumptionsForMonth = async ({
+  params,
+  token,
+}: ConsumptionRequestPayload): Promise<MonthConsumptionData> => {
+  const housingMonthData = await fetchHousingConsumptionData(params, token);
   const housingConsumptionArr = housingMonthData.housingConsumption || [];
 
   const normativeAndSubscriberData = await fetchNormativeConsumptionData(
     params,
+    token,
   );
 
   if (
@@ -64,18 +70,21 @@ export const fetchConsumptionsForMonth = async (
   };
 };
 
-export const fetchHousingConsumptionData = (
+const fetchHousingConsumptionData = (
   params: ConsumptionDataPayload,
+  token: CancelTokenSource,
 ): Promise<GetDataForHousingConsumptionPlotResponse> =>
   axios.get('Nodes/DataForHousingConsumptionPlot', {
     params,
     paramsSerializer: (params) => {
       return queryString.stringify(params);
     },
+    cancelToken: token.token,
   });
 
-export const fetchNormativeConsumptionData = (
+const fetchNormativeConsumptionData = (
   params: ConsumptionDataPayload,
+  token: CancelTokenSource,
 ): Promise<GetDataForIndividualDevicesConsumptionPlotResponse> =>
   axios.get(
     'IndividualDeviceReadings/DataForSubscriberAndNormativeConsumptionPlot',
@@ -92,6 +101,7 @@ export const fetchNormativeConsumptionData = (
       headers: {
         'api-version': 2,
       },
+      cancelToken: token.token,
     },
   );
 

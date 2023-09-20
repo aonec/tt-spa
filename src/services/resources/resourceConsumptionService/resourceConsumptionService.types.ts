@@ -1,4 +1,5 @@
 import { EResourceType } from 'api/types';
+import { CancelTokenSource } from 'axios';
 
 export type ResourceConsumptionWithNull = {
   value?: number | null;
@@ -26,6 +27,11 @@ export type MonthConsumptionData = {
   [ResourceConsumptionGraphType.Housing]: ResourceConsumptionWithNull[];
   [ResourceConsumptionGraphType.Normative]: ResourceConsumptionWithNull[];
   [ResourceConsumptionGraphType.Subscriber]: ResourceConsumptionWithNull[];
+};
+
+export type ConsumptionRequestPayload = {
+  params: ConsumptionDataPayload;
+  token: CancelTokenSource;
 };
 
 export type ConsumptionDataPayload = {
