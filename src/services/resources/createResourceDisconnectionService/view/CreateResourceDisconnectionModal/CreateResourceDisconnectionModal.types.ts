@@ -36,4 +36,5 @@ export type CreateResourceDisconnectionModalProps = {
   handleCreateDisconnectionState?: (
     payload: ResourceDisconnectingCreateRequest,
   ) => void;
+  dateFrom?: string | null;
 };

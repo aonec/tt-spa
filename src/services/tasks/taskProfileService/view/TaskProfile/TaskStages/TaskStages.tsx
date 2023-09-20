@@ -20,12 +20,14 @@ export const TaskStages: FC<TaskStagesProps> = ({
   isRevertStageLoading,
   isStageCanBeReverted,
   isEntryPoint,
-  taskType,
+  task,
 }) => {
   const { openCreateResourceDisconnectionModal } = useUnit({
     openCreateResourceDisconnectionModal:
       chooseTypeOfResourceDisconnectionModalService.inputs.openModal,
   });
+
+  const taskType = task.type;
 
   const stagesView = useMemo(
     () =>
@@ -50,30 +52,34 @@ export const TaskStages: FC<TaskStagesProps> = ({
 
   const history = useHistory();
 
+  const isF1Task =
+    taskType === EManagingFirmTaskType.HousingDeviceMalfunction ||
+    taskType === EManagingFirmTaskType.CalculatorMalfunction;
+
   return (
     <>
       <Wrapper>
         <TitleWrapper>Этапы выполнения</TitleWrapper>
         {stagesView}
-        {isEntryPoint &&
-          taskType === EManagingFirmTaskType.HousingDeviceMalfunction && (
-            <>
-              <ChooseTypeOfResourceDisconnectionModalContainer />
-              <CreateResourceDisconnectionContainer
-                handleComplete={() => {
-                  history.goBack();
-                }}
-              />
-              <DisconnectionWrapper>
-                Знаете, что задача сформирована из-за отключения ресурса?
-                <MessageButton
-                  onClick={() => openCreateResourceDisconnectionModal()}
-                >
-                  Сообщить об отключении
-                </MessageButton>
-              </DisconnectionWrapper>
-            </>
-          )}
+        {isEntryPoint && isF1Task && (
+          <>
+            <ChooseTypeOfResourceDisconnectionModalContainer />
+            <CreateResourceDisconnectionContainer
+              handleComplete={() => {
+                history.goBack();
+              }}
+              dateFrom={task.creationTime}
+            />
+            <DisconnectionWrapper>
+              Знаете, что задача сформирована из-за отключения ресурса?
+              <MessageButton
+                onClick={() => openCreateResourceDisconnectionModal()}
+              >
+                Сообщить об отключении
+              </MessageButton>
+            </DisconnectionWrapper>
+          </>
+        )}
       </Wrapper>
     </>
   );

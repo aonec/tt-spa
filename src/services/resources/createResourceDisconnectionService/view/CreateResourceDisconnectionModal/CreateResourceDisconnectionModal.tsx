@@ -28,6 +28,7 @@ export const CreateResourceDisconnectionModal: FC<
   selectedCity,
   selectedBuilding,
   handleCreateDisconnectionState,
+  dateFrom,
 }) => {
   const buttonPlaceholder = isEdit
     ? 'Сохранить изменения'
@@ -68,6 +69,7 @@ export const CreateResourceDisconnectionModal: FC<
               selectedBuilding={selectedBuilding}
               handleCreateDisconnectionState={handleCreateDisconnectionState}
               handleCloseModal={handleClose}
+              dateFrom={dateFrom}
             />
           )}
         </WithLoader>

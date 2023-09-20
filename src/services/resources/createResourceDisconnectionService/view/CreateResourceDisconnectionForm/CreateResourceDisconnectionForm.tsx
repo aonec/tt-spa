@@ -60,6 +60,7 @@ export const CreateResourceDisconnectionForm: FC<
   selectedBuilding,
   handleCreateDisconnectionState,
   handleCloseModal,
+  dateFrom,
 }) => {
   const documentInit = useMemo(
     () =>
@@ -298,6 +299,9 @@ export const CreateResourceDisconnectionForm: FC<
               placeholder="Дата"
               onChange={(_, stringDate) =>
                 setFieldValue('startDate', stringDate)
+              }
+              disabledDate={(date) =>
+                (dateFrom && date.diff(dateFrom) > 0) || false
               }
             />
             <Select

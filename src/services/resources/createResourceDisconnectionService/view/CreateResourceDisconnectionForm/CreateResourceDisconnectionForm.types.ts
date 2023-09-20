@@ -37,6 +37,7 @@ export type CreateResourceDisconnectionFormProps = {
     payload: ResourceDisconnectingCreateRequest,
   ) => void;
   handleCloseModal: () => void;
+  dateFrom?: string | null;
 };
 
 export type CreateResourceDisconnectionFormTypes = {

@@ -5,6 +5,7 @@ export type CreateDisconnectionContainerProps = {
     payload: ResourceDisconnectingCreateRequest,
   ) => void;
   handleComplete?: () => void;
+  dateFrom?: string | null;
 };
 
 export enum EAddressDetails {
