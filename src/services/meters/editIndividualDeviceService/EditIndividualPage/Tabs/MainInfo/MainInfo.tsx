@@ -70,10 +70,9 @@ export const MainInfo: FC<MainInfoProps> = ({
         bitDepth: Number(data.bitDepth),
         scaleFactor: Number(data.scaleFactor),
         sealNumber: data.sealNumber,
-        sealInstallationDate: dayjs(
-          values.sealInstallationDate,
-          'DD.MM.YYYY',
-        ).format(),
+        sealInstallationDate: !values.sealInstallationDate
+          ? null
+          : dayjs(values.sealInstallationDate, 'DD.MM.YYYY').format(),
         mountPlaceId: data.mountPlaceId,
         isPolling: data.isPolling,
       };
