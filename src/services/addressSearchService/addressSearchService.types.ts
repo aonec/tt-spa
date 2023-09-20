@@ -24,3 +24,14 @@ export type GetExistingSteetRequestParams = {
   PageSize?: number;
   OrderBy?: EOrderByRule;
 };
+
+export type GetApartmentsRequest = {
+  City: string;
+  Street: string;
+  HousingStockNumber: string;
+  Corpus?: string;
+};
+
+export type ExistingApartmentNumberType = {
+  value: string;
+};

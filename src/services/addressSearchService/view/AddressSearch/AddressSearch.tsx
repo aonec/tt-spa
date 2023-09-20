@@ -22,6 +22,7 @@ export const AddressSearch: FC<AddressSearchProps> = ({
   disabledFields,
   className,
   isError,
+  handleSearchApartNumber,
 }) => {
   const next = useSwitchInputOnEnter(dataKey, false, false);
 
@@ -105,6 +106,7 @@ export const AddressSearch: FC<AddressSearchProps> = ({
       data-reading-input={dataKey}
       onKeyDown={fromEnter(() => {
         handleSubmit();
+        handleSearchApartNumber();
         next(index);
       })}
       disabled={isDisabled}

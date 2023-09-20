@@ -33,4 +33,5 @@ export type AddressSearchProps = {
   disabledFields?: SearchFieldType[];
   className?: string;
   isError: boolean;
+  handleSearchApartNumber: () => void;
 };

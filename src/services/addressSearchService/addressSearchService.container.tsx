@@ -8,7 +8,7 @@ import { AddressSearch } from './view/AddressSearch';
 import { SearchFieldType } from './view/AddressSearch/AddressSearch.types';
 import { useForm } from 'effector-forms';
 
-const { gates, outputs, forms } = addressSearchService;
+const { gates, outputs, forms, inputs } = addressSearchService;
 const { ExistingCitiesGate, ExistingStreetsGate, AddressSearchGate } = gates;
 
 export const AddressSearchContainer: FC<AddressSearchContainerProps> = ({
@@ -22,10 +22,18 @@ export const AddressSearchContainer: FC<AddressSearchContainerProps> = ({
   className,
   isError = false,
 }) => {
-  const { cities, hasCorpuses, streets } = useUnit({
+  const {
+    cities,
+    hasCorpuses,
+    streets,
+    handleSearchApartNumber,
+    setWithApartment,
+  } = useUnit({
     cities: outputs.$existingCities,
     streets: outputs.$existingStreets,
     hasCorpuses: currentUserService.outputs.$hasCorpuses,
+    handleSearchApartNumber: inputs.handleSearchApartNumber,
+    setWithApartment: inputs.setWithApartment,
   });
 
   const {
@@ -69,6 +77,13 @@ export const AddressSearchContainer: FC<AddressSearchContainerProps> = ({
   );
 
   useEffect(() => {
+    const withApartment = preparedFields.some(
+      (searchField) => searchField === SearchFieldType.Apartment,
+    );
+    setWithApartment(withApartment);
+  }, [preparedFields, setWithApartment]);
+
+  useEffect(() => {
     if (!cities?.length || initialValues?.city) return;
 
     set({ city: last(cities) || '' });
@@ -103,6 +118,7 @@ export const AddressSearchContainer: FC<AddressSearchContainerProps> = ({
         className={className}
         isError={isError}
         handleChange={handleChange}
+        handleSearchApartNumber={handleSearchApartNumber}
       />
     </>
   );
