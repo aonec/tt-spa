@@ -65,12 +65,12 @@ export const ApartmentIndividualDeviceMetersInputLine: FC<
         <div className="device-icon">
           <ResourceIconLookup resource={device.resource} />
         </div>
-        <Tooltip title={`${device.serialNumber} (${device.model})`}>
+        {/* <Tooltip title={`${device.serialNumber} (${device.model})`}> */}
           <div className="device-info-text">
             <strong>{device.serialNumber}</strong>
             <div>{device.model}</div>
           </div>
-        </Tooltip>
+        {/* </Tooltip> */}
       </DeviceInfoWrapper>
       <MetersInputsBlock
         handleUploadReading={handleUploadReading}
@@ -106,13 +106,13 @@ export const ApartmentIndividualDeviceMetersInputLine: FC<
           </div>
         )) || '-'}
       </ConsumptionWrapper>
-      <Tooltip title="История показаний" className="device-option">
+      {/* <Tooltip title="История показаний" className="device-option"> */}
         <HistoryIcon
           onClick={openReadingsHistoryModal}
           style={{ cursor: 'pointer' }}
         />
-      </Tooltip>
-      <ContextMenuButton size="small" />
+      {/* </Tooltip> */}
+      {/* <ContextMenuButton size="small" /> */}
     </Wrapper>
   );
 };
