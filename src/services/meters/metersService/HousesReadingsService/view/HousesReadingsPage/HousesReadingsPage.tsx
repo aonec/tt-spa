@@ -33,7 +33,7 @@ export const HousesReadingsPage: FC<HousesReadingsPageProps> = ({
   return (
     <Wrapper>
       {Boolean(individualDevicesList.length) && <TopButton />}
-      <HeaderBackgraundWrapper />
+      {/* <HeaderBackgraundWrapper /> */}
       <AddressSearchWrapper>
         <AddressSearchContainer
           fields={[

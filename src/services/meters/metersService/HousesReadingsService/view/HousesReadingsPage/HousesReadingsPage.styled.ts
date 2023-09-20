@@ -10,7 +10,7 @@ export const IndividualDevicesListWrapper = styled.div`
 
 export const AddressSearchWrapper = styled.div`
   background-color: #fff;
-  position: sticky;
+  /* position: sticky; */
   top: 16px;
   z-index: 10;
 `;

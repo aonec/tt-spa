@@ -12,7 +12,7 @@ export const Wrapper = styled.div`
   color: rgba(39, 47, 90, 0.9);
 
   background-color: #f6f7f8;
-  position: sticky;
+  /* position: sticky; */
   top: 190px;
   z-index: 10;
 `;
