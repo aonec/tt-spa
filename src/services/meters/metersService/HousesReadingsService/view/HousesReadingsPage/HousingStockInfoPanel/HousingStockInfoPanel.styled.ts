@@ -32,7 +32,7 @@ export const PanelInfoText = styled.div`
 
 export const StickyWrapper = styled.div`
   background-color: #fff;
-  /* position: sticky; */
+  position: sticky;
   top: 72px;
   z-index: 10;
 `;

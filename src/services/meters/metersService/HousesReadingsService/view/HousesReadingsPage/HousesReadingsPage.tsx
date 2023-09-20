@@ -1,7 +1,5 @@
 import React, { FC } from 'react';
 import {
-  AddressSearchWrapper,
-  HeaderBackgraundWrapper,
   IndividualDevicesListWrapper,
   Wrapper,
 } from './HousesReadingsPage.styled';
@@ -33,31 +31,28 @@ export const HousesReadingsPage: FC<HousesReadingsPageProps> = ({
   return (
     <Wrapper>
       {Boolean(individualDevicesList.length) && <TopButton />}
-      {/* <HeaderBackgraundWrapper /> */}
-      <AddressSearchWrapper>
-        <AddressSearchContainer
-          fields={[
-            SearchFieldType.City,
-            SearchFieldType.Street,
-            SearchFieldType.House,
-          ]}
-          handleSubmit={(values) => {
-            handleSearchHousingStock({
-              City: values.city,
-              Street: values.street,
-              BuildingNumber: values.house,
-            });
-          }}
-          initialValues={
-            address && {
-              city: address.city || undefined,
-              street: address.street || undefined,
-              house: address.number || undefined,
-            }
+      <AddressSearchContainer
+        fields={[
+          SearchFieldType.City,
+          SearchFieldType.Street,
+          SearchFieldType.House,
+        ]}
+        handleSubmit={(values) => {
+          handleSearchHousingStock({
+            City: values.city,
+            Street: values.street,
+            BuildingNumber: values.house,
+          });
+        }}
+        initialValues={
+          address && {
+            city: address.city || undefined,
+            street: address.street || undefined,
+            house: address.number || undefined,
           }
-          isError={!housingStock && isHousingStockFetched}
-        />
-      </AddressSearchWrapper>
+        }
+        isError={!housingStock && isHousingStockFetched}
+      />
       <WithLoader isLoading={isLoadingHousingStock}>
         {!housingStock && !isHousingStockFetched && <TypeAddressToStart />}
         {!housingStock && isHousingStockFetched && <NothingFound />}
