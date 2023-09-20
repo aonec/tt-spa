@@ -1,4 +1,7 @@
-import { ResourceDisconnectingCreateRequest } from 'api/types';
+import {
+  BuildingAddressResponse,
+  ResourceDisconnectingCreateRequest,
+} from 'api/types';
 
 export type CreateDisconnectionContainerProps = {
   handleCreateDisconnectionState?: (
@@ -6,6 +9,7 @@ export type CreateDisconnectionContainerProps = {
   ) => void;
   handleComplete?: () => void;
   dateFrom?: string | null;
+  preselectedAddress?: BuildingAddressResponse | null;
 };
 
 export enum EAddressDetails {

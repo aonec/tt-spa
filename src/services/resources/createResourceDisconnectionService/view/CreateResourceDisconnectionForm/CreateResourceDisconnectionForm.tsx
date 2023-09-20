@@ -61,6 +61,7 @@ export const CreateResourceDisconnectionForm: FC<
   handleCreateDisconnectionState,
   handleCloseModal,
   dateFrom,
+  preselectedAddress,
 }) => {
   const documentInit = useMemo(
     () =>
@@ -94,7 +95,12 @@ export const CreateResourceDisconnectionForm: FC<
         disconnectingType,
         startDate: getDate(formValues.startDate, formValues.startHour),
         endDate: getDate(formValues.endDate, formValues.endHour),
-        housingStockIds: preparedHousingStockIds,
+        housingStockIds: [
+          ...preparedHousingStockIds,
+          ...(preselectedAddress?.mainAddress?.id
+            ? [preselectedAddress?.mainAddress?.id]
+            : []),
+        ],
         heatingStationId: formValues.heatingStationId || null,
         sender: formValues.sender,
         documentId: formValues.documentId,
@@ -129,6 +135,7 @@ export const CreateResourceDisconnectionForm: FC<
       return handleCreateResourceDisconnection(createPayload);
     },
     [
+      preselectedAddress,
       handleCreateDisconnectionState,
       isEdit,
       handleCreateResourceDisconnection,

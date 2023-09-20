@@ -69,6 +69,7 @@ export const TaskStages: FC<TaskStagesProps> = ({
                 history.goBack();
               }}
               dateFrom={task.creationTime}
+              preselectedAddress={task.apartment?.housingStock?.address}
             />
             <DisconnectionWrapper>
               Знаете, что задача сформирована из-за отключения ресурса?

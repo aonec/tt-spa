@@ -24,7 +24,12 @@ const { ResourceDisconnectigFiltersGate } = gates;
 
 export const CreateResourceDisconnectionContainer: FC<
   CreateDisconnectionContainerProps
-> = ({ handleCreateDisconnectionState, handleComplete, dateFrom }) => {
+> = ({
+  handleCreateDisconnectionState,
+  handleComplete,
+  dateFrom,
+  preselectedAddress,
+}) => {
   const {
     isOpen,
     resourceTypes,

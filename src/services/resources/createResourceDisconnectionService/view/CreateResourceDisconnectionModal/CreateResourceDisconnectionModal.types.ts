@@ -1,4 +1,5 @@
 import {
+  BuildingAddressResponse,
   BuildingListResponse,
   EResourceDisconnectingTypeNullableStringDictionaryItem,
   EResourceTypeNullableStringDictionaryItem,
@@ -37,4 +38,5 @@ export type CreateResourceDisconnectionModalProps = {
     payload: ResourceDisconnectingCreateRequest,
   ) => void;
   dateFrom?: string | null;
+  preselectedAddress?: BuildingAddressResponse | null;
 };
