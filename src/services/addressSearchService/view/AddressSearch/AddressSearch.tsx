@@ -1,12 +1,18 @@
 import { fromEnter } from 'ui-kit/shared/DatePickerNative';
-import React, { FC, ReactElement } from 'react';
+import React, { FC, ReactElement, useState } from 'react';
 import { FormItem } from 'ui-kit/FormItem';
 import { SearchFieldsLabels } from './AddressSearch.constants';
-import { Wrapper, InputSC, AutoCompleteSC } from './AddressSearch.styled';
+import {
+  Wrapper,
+  InputSC,
+  AutoCompleteSC,
+  AutoCompleteAntdSC,
+} from './AddressSearch.styled';
 import { AddressSearchProps, SearchFieldType } from './AddressSearch.types';
 import { Select } from 'ui-kit/Select';
 import { useSwitchInputOnEnter } from 'hooks/useSwitchInputOnEnter';
 import { useAutocomplete } from 'hooks/useAutocomplete';
+import './AddressSearch.scss';
 
 const dataKey = 'search-address-inputs';
 
@@ -23,6 +29,7 @@ export const AddressSearch: FC<AddressSearchProps> = ({
   className,
   isError,
   handleSearchApartNumber,
+  existingApartmentNumbers,
 }) => {
   const next = useSwitchInputOnEnter(dataKey, false, false);
 
@@ -133,25 +140,36 @@ export const AddressSearch: FC<AddressSearchProps> = ({
     />
   );
 
-  const apartmentSearch = (index: number, isDisabled?: boolean) => (
-    <InputSC
-      small
-      placeholder="Квартирa"
-      value={values.apartment || ''}
-      onChange={(e) => handleChange(SearchFieldType.Apartment, e.target.value)}
-      data-reading-input={dataKey}
-      onClick={() => {
-        clearFields(index);
-      }}
-      onKeyDown={fromEnter(() => {
-        handleSubmit();
-        next(index);
-      })}
-      disabled={isDisabled}
-      error={isError || undefined}
-    />
-  );
+  const [isOpen, setOpen] = useState(true);
 
+  const apartmentSearch = (index: number, isDisabled?: boolean) => {
+    return (
+      <AutoCompleteAntdSC
+        options={existingApartmentNumbers}
+        open={isOpen}
+        onFocus={() => setOpen(true)}
+        // onSelect={() => setOpen(false)}
+        // onBlur={() => setOpen(false)}
+        value={values.apartment || ''}
+        onKeyDown={fromEnter(() => {
+          handleSubmit();
+          next(index);
+        })}
+        onChange={(e) => handleChange(SearchFieldType.Apartment, e as any)}
+      >
+        <InputSC
+          small
+          placeholder="Квартирa"
+          data-reading-input={dataKey}
+          onClick={() => {
+            clearFields(index);
+          }}
+          disabled={isDisabled}
+          error={isError || undefined}
+        />
+      </AutoCompleteAntdSC>
+    );
+  };
   const questionSearch = (index: number, isDisabled?: boolean) => (
     <InputSC
       small

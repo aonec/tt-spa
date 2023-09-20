@@ -33,6 +33,8 @@ export const ActsJournalProfile: FC<ActsJournalProfileProps> = ({
     [updateActsFilter],
   );
 
+  console.log(actsFilter);
+
   return (
     <>
       <Wrapper>

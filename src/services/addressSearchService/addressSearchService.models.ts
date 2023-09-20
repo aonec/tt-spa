@@ -127,6 +127,7 @@ export const addressSearchService = {
     $existingCities,
     $existingStreets,
     $isExistingCitiesLoading,
+    $existingApartmentNumbers,
   },
   inputs: { handleSearchApartNumber, setWithApartment },
   gates: {

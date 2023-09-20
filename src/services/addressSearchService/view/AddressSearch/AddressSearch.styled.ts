@@ -1,4 +1,5 @@
 import styled, { css } from 'styled-components';
+import { AutoComplete as AutoCompleteAntD } from 'antd';
 import { CustomTemplateType, SearchFieldType } from './AddressSearch.types';
 import { Input } from 'ui-kit/Input';
 import { AutoComplete } from 'ui-kit/AutoComplete';
@@ -61,4 +62,11 @@ export const AutoCompleteSC = styled(AutoComplete)<{ error?: boolean }>`
       ${({ error }) => error && errorFocusedStyle};
     }
   }
+`;
+
+export const AutoCompleteAntdSC = styled(AutoCompleteAntD)`
+  .ant-select-item-option-active {
+    background-color: rgb(24, 158, 233) !important;
+  }
+  
 `;

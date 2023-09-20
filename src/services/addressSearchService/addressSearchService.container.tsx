@@ -28,12 +28,14 @@ export const AddressSearchContainer: FC<AddressSearchContainerProps> = ({
     streets,
     handleSearchApartNumber,
     setWithApartment,
+    existingApartmentNumbers,
   } = useUnit({
     cities: outputs.$existingCities,
     streets: outputs.$existingStreets,
     hasCorpuses: currentUserService.outputs.$hasCorpuses,
     handleSearchApartNumber: inputs.handleSearchApartNumber,
     setWithApartment: inputs.setWithApartment,
+    existingApartmentNumbers: outputs.$existingApartmentNumbers,
   });
 
   const {
@@ -119,6 +121,7 @@ export const AddressSearchContainer: FC<AddressSearchContainerProps> = ({
         isError={isError}
         handleChange={handleChange}
         handleSearchApartNumber={handleSearchApartNumber}
+        existingApartmentNumbers={existingApartmentNumbers}
       />
     </>
   );
