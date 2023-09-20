@@ -1,4 +1,4 @@
-import { Skeleton, Tooltip } from 'antd';
+import { Tooltip } from 'antd';
 import React, { FC, useCallback, useEffect, useMemo, useState } from 'react';
 import { getBuildingAddress } from 'utils/getBuildingAddress';
 import {
@@ -12,6 +12,7 @@ import {
 import { HousingStocksListItemProps } from './HousingStocksListItem.types';
 import { StatisticsList } from 'services/statistics/subscribersConsumptionService/displayStatisticsListByHousesService/view/StatisticsList';
 import { ListOpeningChevron } from 'ui-kit/shared/ListOpeningChevron';
+import { WithLoader } from 'ui-kit/shared/WithLoader';
 
 export const HousingStocksListItem: FC<HousingStocksListItemProps> = ({
   housingStock,
@@ -39,12 +40,12 @@ export const HousingStocksListItem: FC<HousingStocksListItemProps> = ({
     if (!isOpen) {
       return null;
     }
-    if (statisticIsLoading) {
-      return <Skeleton active />;
-    }
-    if (!statisticIsLoading) {
-      return <StatisticsList statistics={apartmentsStatistic} />;
-    }
+
+    return (
+      <WithLoader isLoading={statisticIsLoading}>
+        <StatisticsList statistics={apartmentsStatistic} />
+      </WithLoader>
+    );
   }, [
     apartmentsStatistic,
     isCurrentHousingStockSelected,
