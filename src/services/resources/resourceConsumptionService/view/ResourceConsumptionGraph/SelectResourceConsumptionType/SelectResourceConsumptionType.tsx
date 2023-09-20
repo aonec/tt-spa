@@ -8,7 +8,9 @@ import { SelectGraphTypeItem } from './SelectGraphType/SelectGraphTypeItem';
 import { Wrapper } from './SelectResourceConsumptionType.styled';
 import { SelectResourceConsumptionTypeProps } from './SelectResourceConsumptionType.types';
 
-export const SelectResourceConsumptionType: FC<SelectResourceConsumptionTypeProps> = ({
+export const SelectResourceConsumptionType: FC<
+  SelectResourceConsumptionTypeProps
+> = ({
   disabled,
   checked,
   setCheckedGraphTypes,
@@ -18,11 +20,16 @@ export const SelectResourceConsumptionType: FC<SelectResourceConsumptionTypeProp
   currentAddress,
   selectedAddresses,
   setSelectedAddresses,
+  isHousingLoading,
+  isNormativeAndSubscriberLoading,
+  isPrevHousingLoading,
+  isPrevNormativeAndSubscriberLoading,
+  consumptionData,
 }) => {
   const handleSetChecked = useCallback(
     (key: string, newChecked: BooleanTypesOfResourceConsumptionGraph) =>
       setCheckedGraphTypes({ ...checked, [key]: newChecked }),
-    [checked, setCheckedGraphTypes]
+    [checked, setCheckedGraphTypes],
   );
 
   if (!resource) {
@@ -39,6 +46,9 @@ export const SelectResourceConsumptionType: FC<SelectResourceConsumptionTypeProp
           handleSetChecked('currentMonthData', checked)
         }
         colorConstructor={(type) => getGraphTypeColors({ resource, type })}
+        isHousingLoading={isHousingLoading}
+        isNormativeAndSubscriberLoading={isNormativeAndSubscriberLoading}
+        consumptionData={consumptionData.currentMonthData}
       />
       {!isAdditionalAddress && (
         <SelectGraphType
@@ -51,6 +61,9 @@ export const SelectResourceConsumptionType: FC<SelectResourceConsumptionTypeProp
           colorConstructor={(type) =>
             getGraphTypeColors({ resource, type, isOpacityNeed: true })
           }
+          isHousingLoading={isPrevHousingLoading}
+          isNormativeAndSubscriberLoading={isPrevNormativeAndSubscriberLoading}
+          consumptionData={consumptionData.prevMonthData}
         />
       )}
       {isAdditionalAddress && (
@@ -77,13 +90,13 @@ export const SelectResourceConsumptionType: FC<SelectResourceConsumptionTypeProp
               type: ResourceConsumptionGraphType.Housing,
               isOpacityNeed: true,
             })}
-            checked={selectedAddresses.addditionalAddress}
+            checked={selectedAddresses.additionalAddress}
             disabled={false}
             text={additionalAddress}
             setChecked={(checked) =>
               setSelectedAddresses({
                 ...selectedAddresses,
-                addditionalAddress: checked,
+                additionalAddress: checked,
               })
             }
           />

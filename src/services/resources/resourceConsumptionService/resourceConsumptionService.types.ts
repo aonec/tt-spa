@@ -13,8 +13,9 @@ export enum ResourceConsumptionGraphDataType {
 }
 
 export type ConsumptionDataForTwoMonth = {
-  [ResourceConsumptionGraphDataType.currentMonthData]: MonthConsumptionData;
-  [ResourceConsumptionGraphDataType.prevMonthData]: MonthConsumptionData;
+  [ResourceConsumptionGraphDataType.currentMonthData]?: MonthConsumptionData;
+  [ResourceConsumptionGraphDataType.prevMonthData]?: MonthConsumptionData;
+  [ResourceConsumptionGraphDataType.additionalAddress]?: MonthConsumptionData;
 };
 
 export enum ResourceConsumptionGraphType {
@@ -24,9 +25,15 @@ export enum ResourceConsumptionGraphType {
 }
 
 export type MonthConsumptionData = {
-  [ResourceConsumptionGraphType.Housing]: ResourceConsumptionWithNull[];
-  [ResourceConsumptionGraphType.Normative]: ResourceConsumptionWithNull[];
-  [ResourceConsumptionGraphType.Subscriber]: ResourceConsumptionWithNull[];
+  [ResourceConsumptionGraphType.Housing]?: ResourceConsumptionWithNull[];
+  [ResourceConsumptionGraphType.Normative]?: ResourceConsumptionWithNull[];
+  [ResourceConsumptionGraphType.Subscriber]?: ResourceConsumptionWithNull[];
+};
+
+export type AllConsumptionDataWithNullableAdditionalAddress = {
+  [ResourceConsumptionGraphDataType.currentMonthData]?: MonthConsumptionData;
+  [ResourceConsumptionGraphDataType.prevMonthData]?: MonthConsumptionData;
+  [ResourceConsumptionGraphDataType.additionalAddress]: MonthConsumptionData | null;
 };
 
 export type ConsumptionRequestPayload = {
@@ -50,4 +57,21 @@ export type AddressWithSearchString = {
 export type PreparedHouseManagements = {
   id: string;
   name: string | null;
+};
+
+export type SetConsumptionDataType = {
+  housing?: ResourceConsumptionWithNull[];
+  normative?: ResourceConsumptionWithNull[];
+  subscriber?: ResourceConsumptionWithNull[];
+};
+
+export enum ResourceConsumptionCancelToken {
+  summary = 'summary',
+  currentMonthData = 'currentMonthData',
+  prevMonthData = 'prevMonthData',
+  additionalAddress = 'additionalAddress',
+}
+
+export type CancelTokens = {
+  [key in ResourceConsumptionCancelToken]?: CancelTokenSource;
 };
