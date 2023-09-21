@@ -28,7 +28,8 @@ export const CreateResourceDisconnectionContainer: FC<
   handleCreateDisconnectionState,
   handleComplete,
   dateFrom,
-  preselectedAddress,
+  preselectedBuilding,
+  defaultResource,
 }) => {
   const {
     isOpen,
@@ -132,6 +133,8 @@ export const CreateResourceDisconnectionContainer: FC<
         selectedBuilding={selectedBuilding}
         handleCreateDisconnectionState={handleCreateDisconnectionState}
         dateFrom={dateFrom}
+        preselectedBuilding={preselectedBuilding}
+        defaultResource={defaultResource}
       />
     </>
   );

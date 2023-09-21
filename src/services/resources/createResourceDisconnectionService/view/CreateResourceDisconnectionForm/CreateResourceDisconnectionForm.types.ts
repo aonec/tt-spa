@@ -1,5 +1,4 @@
 import {
-  BuildingAddressResponse,
   BuildingListResponse,
   EResourceDisconnectingType,
   EResourceDisconnectingTypeNullableStringDictionaryItem,
@@ -39,7 +38,8 @@ export type CreateResourceDisconnectionFormProps = {
   ) => void;
   handleCloseModal: () => void;
   dateFrom?: string | null;
-  preselectedAddress?: BuildingAddressResponse | null;
+  preselectedBuilding?: number | null;
+  defaultResource?: EResourceType | null;
 };
 
 export type CreateResourceDisconnectionFormTypes = {

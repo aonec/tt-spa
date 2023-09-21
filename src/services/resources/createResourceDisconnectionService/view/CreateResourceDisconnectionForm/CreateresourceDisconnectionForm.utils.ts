@@ -19,6 +19,7 @@ export const getAllHousingStocks = (items: TreeSelectElement[]): number[] =>
 export const getFormValues = (
   resourceDisconnection: ResourceDisconnectingResponse,
   selectedBuilding: BuildingListResponse | null,
+  preselectedBuilding?: number | null,
 ) => {
   const { heatingStation, disconnectingType, buildings, startDate, endDate } =
     resourceDisconnection;
@@ -31,9 +32,12 @@ export const getFormValues = (
   return {
     ...resourceDisconnection,
     documentId: resourceDisconnection.document?.id || null,
-    housingStockIds: selectedBuilding
-      ? [...housingStockIds, selectedBuilding.id]
-      : housingStockIds,
+    housingStockIds: [
+      ...(selectedBuilding
+        ? [...housingStockIds, selectedBuilding.id]
+        : housingStockIds),
+      ...(preselectedBuilding ? [preselectedBuilding] : []),
+    ],
     startDate: dayjs(startDate).format('DD.MM.YYYY'),
     startHour: dayjs(startDate).format('HH:mm'),
     endDate: endDate ? dayjs(endDate).format('DD.MM.YYYY') : '',

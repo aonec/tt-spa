@@ -29,7 +29,8 @@ export const CreateResourceDisconnectionModal: FC<
   selectedBuilding,
   handleCreateDisconnectionState,
   dateFrom,
-  preselectedAddress,
+  preselectedBuilding,
+  defaultResource,
 }) => {
   const buttonPlaceholder = isEdit
     ? 'Сохранить изменения'
@@ -71,7 +72,8 @@ export const CreateResourceDisconnectionModal: FC<
               handleCreateDisconnectionState={handleCreateDisconnectionState}
               handleCloseModal={handleClose}
               dateFrom={dateFrom}
-              preselectedAddress={preselectedAddress}
+              preselectedBuilding={preselectedBuilding}
+              defaultResource={defaultResource}
             />
           )}
         </WithLoader>

@@ -61,7 +61,8 @@ export const CreateResourceDisconnectionForm: FC<
   handleCreateDisconnectionState,
   handleCloseModal,
   dateFrom,
-  preselectedAddress,
+  preselectedBuilding,
+  defaultResource,
 }) => {
   const documentInit = useMemo(
     () =>
@@ -75,8 +76,12 @@ export const CreateResourceDisconnectionForm: FC<
     if (!isEdit || !resourceDisconnection) {
       return formInitialValues;
     }
-    return getFormValues(resourceDisconnection, selectedBuilding);
-  }, [resourceDisconnection, isEdit, selectedBuilding]);
+    return getFormValues(
+      resourceDisconnection,
+      selectedBuilding,
+      preselectedBuilding,
+    );
+  }, [isEdit, resourceDisconnection, selectedBuilding, preselectedBuilding]);
 
   const handleSubmitFormik = useCallback(
     (formValues: CreateResourceDisconnectionFormTypes) => {
@@ -95,12 +100,7 @@ export const CreateResourceDisconnectionForm: FC<
         disconnectingType,
         startDate: getDate(formValues.startDate, formValues.startHour),
         endDate: getDate(formValues.endDate, formValues.endHour),
-        housingStockIds: [
-          ...preparedHousingStockIds,
-          ...(preselectedAddress?.mainAddress?.id
-            ? [preselectedAddress?.mainAddress?.id]
-            : []),
-        ],
+        housingStockIds: preparedHousingStockIds,
         heatingStationId: formValues.heatingStationId || null,
         sender: formValues.sender,
         documentId: formValues.documentId,
@@ -135,7 +135,6 @@ export const CreateResourceDisconnectionForm: FC<
       return handleCreateResourceDisconnection(createPayload);
     },
     [
-      preselectedAddress,
       handleCreateDisconnectionState,
       isEdit,
       handleCreateResourceDisconnection,
@@ -175,11 +174,17 @@ export const CreateResourceDisconnectionForm: FC<
   );
 
   useEffect(() => {
-    setFieldValue(
-      'housingStockIds',
-      selectedBuilding ? [selectedBuilding.id] : [],
-    );
-  }, [treeData, setFieldValue, selectedBuilding]);
+    if (defaultResource) {
+      setFieldValue('resource', defaultResource);
+    }
+  }, [defaultResource, setFieldValue]);
+
+  useEffect(() => {
+    setFieldValue('housingStockIds', [
+      ...(selectedBuilding ? [selectedBuilding.id] : []),
+      ...(preselectedBuilding ? [preselectedBuilding] : []),
+    ]);
+  }, [treeData, setFieldValue, selectedBuilding, preselectedBuilding]);
 
   useEffect(() => {
     if (!values.startDate) {
@@ -196,8 +201,11 @@ export const CreateResourceDisconnectionForm: FC<
       (housingstock) => housingstock.id,
     );
 
-    setFieldValue('housingStockIds', housingStockIds);
-  }, [treeData, setFieldValue, resourceDisconnection]);
+    setFieldValue('housingStockIds', [
+      housingStockIds,
+      ...(preselectedBuilding ? [preselectedBuilding] : []),
+    ]);
+  }, [treeData, setFieldValue, resourceDisconnection, preselectedBuilding]);
 
   useEffect(() => {
     if (!isInterHeatingSeason) {
@@ -224,8 +232,8 @@ export const CreateResourceDisconnectionForm: FC<
     <Form id={formId} onSubmitCapture={submitForm}>
       <BaseInfoWrapper>
         <CreateResourceDisconnectionSelectResource
-          disabled={isInterHeatingSeason || isEdit}
-          currentValue={values.resource || undefined}
+          disabled={isInterHeatingSeason || isEdit || Boolean(defaultResource)}
+          currentValue={defaultResource || values.resource || undefined}
           resourceTypes={resourceTypes}
           errorText={errors.resource || null}
           setFieldValue={(value) => setFieldValue('resource', value)}
