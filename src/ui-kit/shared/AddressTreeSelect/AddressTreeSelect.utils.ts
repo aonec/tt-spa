@@ -3,7 +3,10 @@ import {
   HouseManagementWithStreetsResponse,
   StreetWithBuildingNumbersResponse,
 } from 'api/types';
-import { TreeSelectElement } from './AddressTreeSelect.types';
+import {
+  TreeSelectElement,
+  TreeSelectElementWithParents,
+} from './AddressTreeSelect.types';
 
 type PrepareAddressesParams = {
   items: StreetWithBuildingNumbersResponse[];
@@ -63,3 +66,19 @@ export const prepareAddressesWithParentsForTreeSelect = (
 
     return [...acc, { title: name, value: id, key: id, children }];
   }, [] as TreeSelectElement[]);
+
+export const getParents = (
+  data: TreeSelectElement[],
+  parentKeys?: (number | string)[],
+): TreeSelectElementWithParents[] =>
+  data.reduce((acc, elem) => {
+    if (elem.children) {
+      const parents = getParents(elem.children, [
+        ...(parentKeys || []),
+        elem.key,
+      ]);
+
+      return [...acc, { ...elem, parents: parentKeys || [] }, ...parents];
+    }
+    return acc;
+  }, [] as TreeSelectElementWithParents[]);

@@ -16,6 +16,7 @@ import { getCountText } from 'utils/getCountText';
 import { TreeSelectSC } from './AddressTreeSelect.styled';
 import { AddressTreeSelectProps } from './AddressTreeSelect.types';
 import _ from 'lodash';
+import { getParents } from './AddressTreeSelect.utils';
 
 export const AddressTreeSelect: FC<AddressTreeSelectProps> = ({
   treeData,
@@ -27,15 +28,15 @@ export const AddressTreeSelect: FC<AddressTreeSelectProps> = ({
   placement,
 }) => {
   const isAllPrevious = useRef(false);
-  const expandedNodes = useRef<React.Key[]>([]);
-  const [lastExpandedNode, setLastExpandedNode] = useState<React.Key | null>(
-    null,
-  );
+  const [expandedNodes, setExpandedNodes] = useState<React.Key[]>([]);
+  const [foundTitle, setFoundTitle] = useState<string | null>(null);
 
   const allHousingStocks = useMemo(
     () => getAllHousingStocks(treeData),
     [treeData],
   );
+
+  const parents = useMemo(() => getParents(treeData), [treeData]);
 
   const isAllHousingStocksSelected =
     selectedHousingStockIds.length === allHousingStocks.length;
@@ -81,15 +82,15 @@ export const AddressTreeSelect: FC<AddressTreeSelectProps> = ({
   );
 
   useEffect(() => {
-    if (lastExpandedNode) {
-      const node = document.querySelector(`span[title='${lastExpandedNode}']`);
+    if (foundTitle) {
+      const node = document.querySelector(`span[title='${foundTitle}']`);
 
       node?.parentElement?.parentElement?.parentElement?.parentElement?.scroll({
         left: 0,
         top: node?.parentElement?.offsetTop || 0,
       });
     }
-  }, [lastExpandedNode]);
+  }, [foundTitle]);
 
   return (
     <TreeSelectSC
@@ -122,13 +123,19 @@ export const AddressTreeSelect: FC<AddressTreeSelectProps> = ({
       }
       placeholder={placeholder}
       onTreeExpand={(keys) => {
-        const expandedKey = _.first(_.difference(keys, expandedNodes.current));
+        const expandedKey = _.first(_.difference(keys, expandedNodes));
+        const node = parents.find((elem) => elem.key === expandedKey);
+        setFoundTitle(node?.title || null);
 
-        setLastExpandedNode(expandedKey || null);
-        expandedNodes.current = keys;
+        if (node) {
+          setExpandedNodes([...node.parents, node.key]);
+        } else {
+          setExpandedNodes(keys);
+        }
       }}
       virtual={false}
       placement={placement}
+      treeExpandedKeys={expandedNodes}
     />
   );
 };

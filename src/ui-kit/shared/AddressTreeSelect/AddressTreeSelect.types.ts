@@ -16,3 +16,7 @@ export type TreeSelectElement = {
   value: string | number;
   children?: TreeSelectElement[];
 };
+
+export type TreeSelectElementWithParents = TreeSelectElement & {
+  parents: (string | number)[];
+};
