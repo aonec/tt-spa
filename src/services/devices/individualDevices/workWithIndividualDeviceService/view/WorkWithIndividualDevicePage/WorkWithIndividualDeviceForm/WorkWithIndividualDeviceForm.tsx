@@ -300,11 +300,12 @@ export const WorkWithIndividualDeviceForm: FC<
                 value?.year() +
                 (fields.resource.value === EResourceType.Electricity ? 16 : 6);
 
-              nextCheckingDate.set('year', nextYear);
+              const nextDate = nextCheckingDate
+                .set('year', nextYear)
+                .utcOffset(0, true)
+                .toISOString();
 
-              fields.futureCheckingDate.onChange(
-                nextCheckingDate.utcOffset(0, true).toISOString(),
-              );
+              fields.futureCheckingDate.onChange(nextDate);
             }}
             value={fields.lastCheckingDate.value}
           />
