@@ -27,7 +27,7 @@ export const NodeProfileContainer = () => {
   const openChangeNodeTypeModal = useEvent(inputs.openChangeNodeTypeModal);
 
   const handleChangeTab = (section: PipeNodeProfileSection) =>
-    history.push(`/nodes/${nodeId}/${section}`);
+    history.replace(`/nodes/${nodeId}/${section}`);
 
   const handleEditNode = () => history.push(`/nodes/${pipeNode?.id}/edit`);
 

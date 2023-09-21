@@ -20,7 +20,7 @@ export const EditExistingConnectionErrorForm: FC<
 
       <CalculatorBlock>
         <Model
-          to={`/calculators/${sameConnectionCalculator?.id}`}
+          to={`/calculators/${sameConnectionCalculator?.id}/profile`}
           target="_blank"
         >
           {sameConnectionCalculator?.model || 'Модель не указана'}

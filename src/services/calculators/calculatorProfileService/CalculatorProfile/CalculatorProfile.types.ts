@@ -7,7 +7,7 @@ import { CalculatorProfileGrouptype } from '../calculatorProfileService.constant
 
 export type CalculatorProfileProps = {
   calculator: CalculatorResponse;
-  currentGrouptype: CalculatorProfileGrouptype;
+  currentGrouptype?: CalculatorProfileGrouptype;
   setGrouptype: (grouptype: CalculatorProfileGrouptype) => void;
   handleOpenCloseCalculatorModal: (payload: CalculatorResponse) => void;
   handleOpenCheckCalculatorModal: (payload: CalculatorResponse) => void;
