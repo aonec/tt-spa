@@ -11,6 +11,7 @@ const { inputs } = addResourceDisconnectionService;
 export const AddResourceDisconnectionContainer: FC<ActionComponentProps> = ({
   handleChange,
   pushStageRequestPayload,
+  task,
 }) => {
   const { openCreateDisconnectionModal } = useUnit({
     openCreateDisconnectionModal: inputs.openCreateDisconnectionModal,
@@ -28,6 +29,9 @@ export const AddResourceDisconnectionContainer: FC<ActionComponentProps> = ({
             },
           })
         }
+        dateFrom={task.creationTime}
+        preselectedBuilding={task.buildingId}
+        defaultResource={task.device?.resource || task.pipeNode?.resource}
       />
       <CreateResourceDisconnectionPanel
         pushStageRequest={pushStageRequestPayload}

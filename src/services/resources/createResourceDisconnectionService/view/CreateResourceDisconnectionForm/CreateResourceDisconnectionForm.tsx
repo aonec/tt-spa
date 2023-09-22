@@ -201,7 +201,7 @@ export const CreateResourceDisconnectionForm: FC<
 
   useEffect(() => {
     setFieldValue('housingStockIds', [
-      ...(selectedBuilding ? [selectedBuilding.id] : []),
+      ...(selectedBuilding?.id ? [selectedBuilding.id] : []),
       ...(preselectedBuilding ? [preselectedBuilding] : []),
     ]);
   }, [treeData, setFieldValue, selectedBuilding, preselectedBuilding]);

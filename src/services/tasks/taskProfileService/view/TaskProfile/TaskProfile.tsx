@@ -89,7 +89,7 @@ export const TaskProfile: FC<TaskProfileProps> = ({
             <TaskActionsPanel
               handlePushStage={pushStage}
               isLoading={isPushStageLoading || isLoadingTask}
-              taskType={task.type}
+              task={task}
               actions={taskActions}
               pushStageRequestPayload={pushStageRequestPayload}
               handleChangePushStagePayload={handleChangePushStagePayload}

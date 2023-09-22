@@ -70,7 +70,6 @@ export const TaskStages: FC<TaskStagesProps> = ({
               }}
               dateFrom={task.creationTime}
               preselectedBuilding={task.buildingId}
-              defaultResource={task.device?.resource}
             />
             <DisconnectionWrapper>
               Знаете, что задача сформирована из-за отключения ресурса?
