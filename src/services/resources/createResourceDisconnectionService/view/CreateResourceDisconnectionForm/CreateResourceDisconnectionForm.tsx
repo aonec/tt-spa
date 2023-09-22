@@ -1,5 +1,5 @@
 import { ErrorMessage } from 'ui-kit/ErrorMessage';
-import { Form } from 'antd';
+import { Form, message } from 'antd';
 import { useFormik } from 'formik';
 import dayjs from 'api/dayjs';
 import {
@@ -63,6 +63,7 @@ export const CreateResourceDisconnectionForm: FC<
   dateFrom,
   preselectedBuilding,
   defaultResource,
+  preselectedBuildingData,
 }) => {
   const documentInit = useMemo(
     () =>
@@ -92,6 +93,22 @@ export const CreateResourceDisconnectionForm: FC<
       const disconnectingType = formValues.disconnectingType;
 
       if (!(resource && disconnectingType)) {
+        return;
+      }
+
+      if (
+        preselectedBuilding &&
+        !preparedHousingStockIds.includes(preselectedBuilding)
+      ) {
+        const address = preselectedBuildingData?.addresses?.find(
+          (elem) => elem.buildingId === preselectedBuilding,
+        );
+
+        message.error(
+          `Адрес "${preselectedBuildingData?.street || ''}${
+            address?.corpus || ''
+          } ${address?.number || ''}" обязателен`,
+        );
         return;
       }
 
@@ -135,9 +152,12 @@ export const CreateResourceDisconnectionForm: FC<
       return handleCreateResourceDisconnection(createPayload);
     },
     [
+      preselectedBuilding,
       handleCreateDisconnectionState,
       isEdit,
       handleCreateResourceDisconnection,
+      preselectedBuildingData?.addresses,
+      preselectedBuildingData?.street,
       handleCloseModal,
       isInterHeatingSeason,
       handleEditResourceDisconnection,

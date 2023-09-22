@@ -6,6 +6,7 @@ import {
   ResourceDisconnectingCreateRequest,
   ResourceDisconnectingResponse,
   ResourceDisconnectingUpdateRequest,
+  StreetWithBuildingNumbersResponse,
 } from 'api/types';
 import { TreeSelectElement } from 'ui-kit/shared/AddressTreeSelect/AddressTreeSelect.types';
 import { EAddressDetails } from '../../createResourceDisconnectionService.types';
@@ -40,4 +41,5 @@ export type CreateResourceDisconnectionModalProps = {
   dateFrom?: string | null;
   preselectedBuilding?: number | null;
   defaultResource?: EResourceType | null;
+  preselectedBuildingData?: StreetWithBuildingNumbersResponse;
 };

@@ -22,6 +22,10 @@ const { inputs, outputs, fx } = createResourceDisconnectionService;
 const { gates } = resourceDisconnectionFiltersService;
 const { ResourceDisconnectigFiltersGate } = gates;
 
+const {
+  gates: { ExistingCitiesGate },
+} = addressSearchService;
+
 export const CreateResourceDisconnectionContainer: FC<
   CreateDisconnectionContainerProps
 > = ({
@@ -108,8 +112,15 @@ export const CreateResourceDisconnectionContainer: FC<
     typeOfAddress,
   ]);
 
+  const preselectedBuildingData = existingBuildings.find((elem) =>
+    elem.addresses?.find(
+      (address) => address.buildingId === preselectedBuilding,
+    ),
+  );
+
   return (
     <>
+      <ExistingCitiesGate />
       <ResourceDisconnectigFiltersGate />
       <CreateResourceDisconnectionModal
         resourceTypes={resourceTypes}
@@ -135,6 +146,7 @@ export const CreateResourceDisconnectionContainer: FC<
         dateFrom={dateFrom}
         preselectedBuilding={preselectedBuilding}
         defaultResource={defaultResource}
+        preselectedBuildingData={preselectedBuildingData}
       />
     </>
   );
