@@ -42,4 +42,5 @@ export type CreateResourceDisconnectionModalProps = {
   preselectedBuilding?: number | null;
   defaultResource?: EResourceType | null;
   preselectedBuildingData?: StreetWithBuildingNumbersResponse;
+  defaultCity?: string | null;
 };

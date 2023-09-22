@@ -64,6 +64,7 @@ export const CreateResourceDisconnectionForm: FC<
   preselectedBuilding,
   defaultResource,
   preselectedBuildingData,
+  defaultCity,
 }) => {
   const documentInit = useMemo(
     () =>
@@ -176,6 +177,12 @@ export const CreateResourceDisconnectionForm: FC<
       validateOnBlur: false,
       onSubmit: handleSubmitFormik,
     });
+
+  useEffect(() => {
+    if (defaultCity) {
+      selectCity(defaultCity);
+    }
+  }, [defaultCity, selectCity]);
 
   const isCityShow =
     existingCities.length > 1 && typeOfAddress === EAddressDetails.All;

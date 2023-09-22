@@ -42,6 +42,7 @@ export type CreateResourceDisconnectionFormProps = {
   preselectedBuilding?: number | null;
   defaultResource?: EResourceType | null;
   preselectedBuildingData?: StreetWithBuildingNumbersResponse;
+  defaultCity?: string | null;
 };
 
 export type CreateResourceDisconnectionFormTypes = {
