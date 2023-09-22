@@ -37,6 +37,7 @@ export type ResourceConsumptionProfileProps = {
 export type BooleanTypesOfResourceConsumptionGraphForTwoMonth = {
   [ResourceConsumptionGraphDataType.currentMonthData]: BooleanTypesOfResourceConsumptionGraph;
   [ResourceConsumptionGraphDataType.prevMonthData]: BooleanTypesOfResourceConsumptionGraph;
+  [ResourceConsumptionGraphDataType.additionalAddress]: BooleanTypesOfResourceConsumptionGraph;
 };
 
 export type BooleanTypesOfResourceConsumptionGraph = {

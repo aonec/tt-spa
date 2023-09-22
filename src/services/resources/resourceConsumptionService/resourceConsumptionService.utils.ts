@@ -105,46 +105,63 @@ export const setConsumptionData = (
   };
 };
 
+const getCheckedCurrentMonthConsumption = (
+  consumptionData: ConsumptionDataForTwoMonth | null,
+  checked: BooleanTypesOfResourceConsumptionGraphForTwoMonth,
+  consumptionType: ResourceConsumptionGraphDataType,
+): MonthConsumptionData => {
+  return {
+    [ResourceConsumptionGraphType.Housing]: checked[consumptionType].housing
+      ? consumptionData?.[consumptionType]?.housing
+      : [],
+    [ResourceConsumptionGraphType.Normative]: checked[consumptionType].normative
+      ? consumptionData?.[consumptionType]?.normative
+      : [],
+    [ResourceConsumptionGraphType.Subscriber]: checked[consumptionType]
+      .subscriber
+      ? consumptionData?.[consumptionType]?.subscriber
+      : [],
+  };
+};
+
+const getCheckedConsumptionData = (
+  consumptionData: ConsumptionDataForTwoMonth | null,
+  checked: BooleanTypesOfResourceConsumptionGraphForTwoMonth,
+) => {
+  const checkedCurrentMonthConsumption = getCheckedCurrentMonthConsumption(
+    consumptionData,
+    checked,
+    ResourceConsumptionGraphDataType.currentMonthData,
+  );
+
+  const checkedPrevMonthConsumption = getCheckedCurrentMonthConsumption(
+    consumptionData,
+    checked,
+    ResourceConsumptionGraphDataType.prevMonthData,
+  );
+
+  const checkedAdditionalAddressConsumption = getCheckedCurrentMonthConsumption(
+    consumptionData,
+    checked,
+    ResourceConsumptionGraphDataType.additionalAddress,
+  );
+
+  return {
+    checkedCurrentMonthConsumption,
+    checkedPrevMonthConsumption,
+    checkedAdditionalAddressConsumption,
+  };
+};
+
 export const prepareDataForMinMaxCalculation = (
   consumptionData: ConsumptionDataForTwoMonth | null,
   checked: BooleanTypesOfResourceConsumptionGraphForTwoMonth,
 ) => {
-  const checkedCurrentMonthConsumption: MonthConsumptionData = {
-    [ResourceConsumptionGraphType.Housing]: checked.currentMonthData.housing
-      ? consumptionData?.currentMonthData?.housing
-      : [],
-    [ResourceConsumptionGraphType.Normative]: checked.currentMonthData.normative
-      ? consumptionData?.currentMonthData?.normative
-      : [],
-    [ResourceConsumptionGraphType.Subscriber]: checked.currentMonthData
-      .subscriber
-      ? consumptionData?.currentMonthData?.subscriber
-      : [],
-  };
-
-  const checkedPrevMonthConsumption: MonthConsumptionData = {
-    [ResourceConsumptionGraphType.Housing]: checked.prevMonthData.housing
-      ? consumptionData?.prevMonthData?.housing
-      : [],
-    [ResourceConsumptionGraphType.Normative]: checked.prevMonthData.normative
-      ? consumptionData?.prevMonthData?.normative
-      : [],
-    [ResourceConsumptionGraphType.Subscriber]: checked.prevMonthData.subscriber
-      ? consumptionData?.prevMonthData?.subscriber
-      : [],
-  };
-
-  const additionalAddressConsumptionData =
-    consumptionData?.additionalAddress || null;
-
-  const checkedAdditionalAddressConsumption: MonthConsumptionData = {
-    [ResourceConsumptionGraphType.Housing]:
-      additionalAddressConsumptionData?.housing,
-    [ResourceConsumptionGraphType.Normative]:
-      additionalAddressConsumptionData?.normative,
-    [ResourceConsumptionGraphType.Subscriber]:
-      additionalAddressConsumptionData?.subscriber,
-  };
+  const {
+    checkedCurrentMonthConsumption,
+    checkedPrevMonthConsumption,
+    checkedAdditionalAddressConsumption,
+  } = getCheckedConsumptionData(consumptionData, checked);
 
   const dataForMinMaxCalculation = [
     ...Object.values(checkedCurrentMonthConsumption),

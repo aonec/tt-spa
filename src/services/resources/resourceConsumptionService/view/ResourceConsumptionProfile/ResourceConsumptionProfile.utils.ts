@@ -15,5 +15,9 @@ export const getDisabledGraphTypes = (data: {
       (acc, [key, arr]) => ({ ...acc, [key]: arr?.length === 0 }),
       {} as BooleanTypesOfResourceConsumptionGraph,
     ),
+    additionalAddress: Object.entries(data.additionalAddress || []).reduce(
+      (acc, [key, arr]) => ({ ...acc, [key]: arr?.length === 0 }),
+      {} as BooleanTypesOfResourceConsumptionGraph,
+    ),
   };
 };
