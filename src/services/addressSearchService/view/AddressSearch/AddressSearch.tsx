@@ -12,7 +12,6 @@ import { AddressSearchProps, SearchFieldType } from './AddressSearch.types';
 import { Select } from 'ui-kit/Select';
 import { useSwitchInputOnEnter } from 'hooks/useSwitchInputOnEnter';
 import { useAutocomplete } from 'hooks/useAutocomplete';
-import './AddressSearch.scss';
 
 const dataKey = 'search-address-inputs';
 
@@ -148,14 +147,19 @@ export const AddressSearch: FC<AddressSearchProps> = ({
         options={existingApartmentNumbers}
         open={isOpen}
         onFocus={() => setOpen(true)}
-        // onSelect={() => setOpen(false)}
-        // onBlur={() => setOpen(false)}
+        onSelect={() => setOpen(false)}
+        onBlur={() => setOpen(false)}
         value={values.apartment || ''}
         onKeyDown={fromEnter(() => {
           handleSubmit();
           next(index);
         })}
         onChange={(e) => handleChange(SearchFieldType.Apartment, e as any)}
+        filterOption={(inputValue, option) =>
+          option?.value
+            .toLocaleLowerCase()
+            .startsWith(inputValue.toLocaleLowerCase())
+        }
       >
         <InputSC
           small

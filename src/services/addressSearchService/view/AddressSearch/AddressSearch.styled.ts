@@ -65,8 +65,25 @@ export const AutoCompleteSC = styled(AutoComplete)<{ error?: boolean }>`
 `;
 
 export const AutoCompleteAntdSC = styled(AutoCompleteAntD)`
-  .ant-select-item-option-active {
-    background-color: rgb(24, 158, 233) !important;
+  //не работает
+  .ant-select-dropdown {
+    .css-dev-only-do-not-override-1gccvlx {
+      .ant-select-dropdown-placement-bottomLeft {
+        .rc-virtual-list {
+          .rc-virtual-list-holder {
+            .rc-virtual-list-holder-inner {
+              .ant-select-item {
+                .ant-select-item-option {
+                  .ant-select-item-option-active {
+                    background-color: rgb(24, 158, 233) !important;
+                    color: white !important;
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
   }
-  
 `;
