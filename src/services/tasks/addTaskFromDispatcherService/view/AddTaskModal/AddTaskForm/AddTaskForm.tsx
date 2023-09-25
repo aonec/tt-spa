@@ -4,7 +4,6 @@ import { capitalize } from 'lodash';
 import {
   Address,
   ArrowRightLongIconDim,
-  ChevronIconDown,
   ContainerWithOutline,
   Fullname,
   FullnameWrapper,
@@ -16,6 +15,7 @@ import {
   ResourceDisconnectionDate,
   ResourseTypeWrapper,
   SearchIconSc,
+  SelectCaret,
   TextareaSC,
   TopWrapper,
   WorkTitle,
@@ -53,8 +53,6 @@ import {
   taskReasonData,
 } from './AddTaskForm.constants';
 import { Alert } from 'ui-kit/Alert';
-import { ExistingTasks } from './ExistingTasks';
-import { AutoComplete } from 'ui-kit/AutoComplete';
 import { LinkButton } from 'ui-kit/shared/LinkButton';
 
 const {
@@ -243,6 +241,16 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
 
   const subscribersNameOptions = getSubscribersNameOptions(subscriberData);
 
+  const sourceOptions = useMemo(
+    () =>
+      ERPSources.map((source) => ({
+        value: source.id,
+        key: source.id,
+        label: source.name,
+      })),
+    [ERPSources],
+  );
+
   return (
     <>
       <PageGate />
@@ -264,17 +272,20 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
 
         <GridContainer>
           <FormItem label="Источник заявки">
-            <Select
+            <SelectCaret
+              showSearch
               placeholder="Выберите из списка"
               value={values.sourceId || undefined}
               onChange={(value) => setFieldValue('sourceId', value)}
-            >
-              {ERPSources.map((source) => (
-                <Select.Option value={source.id} key={source.id}>
-                  {source.name}
-                </Select.Option>
-              ))}
-            </Select>
+              options={sourceOptions}
+              optionFilterProp="label"
+              optionLabelProp="label"
+              filterOption={(inputValue, option) =>
+                option?.label
+                  .toLocaleLowerCase()
+                  .startsWith(inputValue.toLocaleLowerCase())
+              }
+            />
           </FormItem>
 
           <FormItem label="Номер заявки">
@@ -283,28 +294,6 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
               value={values.requestNumber || undefined}
               onChange={(value) =>
                 setFieldValue('requestNumber', value.target.value)
-              }
-            />
-          </FormItem>
-        </GridContainer>
-
-        <GridContainer>
-          <FormItem label="ФИО абонента">
-            <Input
-              // prefix={<SearchIconSc />}
-              placeholder="Начните вводить"
-              value={values.subscriberName || undefined}
-              onChange={(value) =>
-                setFieldValue('subscriberName', value.target.value)
-              }
-            />
-          </FormItem>
-          <FormItem label="Номер телефона">
-            <Input
-              placeholder="Введите"
-              value={values.phoneNumber || undefined}
-              onChange={(value) =>
-                setFieldValue('phoneNumber', value.target.value)
               }
             />
           </FormItem>
@@ -339,6 +328,28 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
             </AutoCompleteAntD>
           </FormItem>
         </GridContainerAsymmetricRight>
+
+        <GridContainer>
+          <FormItem label="ФИО абонента">
+            <Input
+              // prefix={<SearchIconSc />}
+              placeholder="Начните вводить"
+              value={values.subscriberName || undefined}
+              onChange={(value) =>
+                setFieldValue('subscriberName', value.target.value)
+              }
+            />
+          </FormItem>
+          <FormItem label="Номер телефона">
+            <Input
+              placeholder="Введите"
+              value={values.phoneNumber || undefined}
+              onChange={(value) =>
+                setFieldValue('phoneNumber', value.target.value)
+              }
+            />
+          </FormItem>
+        </GridContainer>
 
         {Boolean(resourceDisconnection.length) &&
           resourceDisconnection.map((disconnection) => (

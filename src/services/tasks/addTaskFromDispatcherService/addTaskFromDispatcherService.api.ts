@@ -3,11 +3,9 @@ import {
   ApartmentListResponsePagedList,
   ErpCreateTaskRequest,
   ErpExecutorResponse,
-  ErpObjectResponse,
   ErpSourceResponse,
   ErpTaskDeadlineResponse,
   ErpWorkCategoryResponse,
-  ResourceDisconnectingResponse,
   ResourceDisconnectingResponsePagedList,
   StreetWithBuildingNumbersResponsePagedList,
 } from 'api/types';
@@ -36,10 +34,6 @@ export const getWorkCategories = (): Promise<ErpWorkCategoryResponse[]> => {
 export const getLeadExecutors = (): Promise<ErpExecutorResponse[]> => {
   return axios.get('Tasks/ErpLeads');
 };
-
-// export const getTasksErpObjects = (): Promise<ErpObjectResponse[]> => {
-//   return axios.get('Tasks/ErpObjects');
-// };
 
 export const getErpExecutorsForLead = (params: {
   leadId: string;

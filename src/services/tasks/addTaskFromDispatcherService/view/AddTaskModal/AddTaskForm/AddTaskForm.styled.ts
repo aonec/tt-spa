@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { Input } from 'ui-kit/Input';
+import { Select } from 'ui-kit/Select';
 import { ArrowRightLongIcon, ChevronIcon, SearchIcon } from 'ui-kit/icons';
 
 export const GridContainer = styled.div`
@@ -124,4 +125,8 @@ export const Address = styled.div`
   line-height: 16px;
 
   padding-left: 6px;
+`;
+
+export const SelectCaret = styled(Select)`
+  caret-color: transparent;
 `;
