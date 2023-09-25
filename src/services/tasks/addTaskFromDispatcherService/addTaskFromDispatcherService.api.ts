@@ -78,9 +78,9 @@ export const getAddresses = (
 };
 
 export const getApartmentHomeownerNames = (
-  params: GetAddressesRequest,
+  apartmentId: number,
 ): Promise<StreetWithBuildingNumbersResponsePagedList> => {
-  return axios.get('Buildings/ExistingStreetsWithBuildingNumbers', {
-    params,
+  return axios.get(`Apartments/${apartmentId}/HomeownerAccountNames`, {
+    params: { isAlsoClosed: true },
   });
 };

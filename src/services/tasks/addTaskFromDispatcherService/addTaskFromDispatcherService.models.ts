@@ -173,28 +173,24 @@ const $resourceDisconnection = domain
 sample({
   clock: handleCreateTask,
   source: $selectedHousingStockId,
+  filter: (selectedHousingStockId) => Boolean(selectedHousingStockId),
   fn: (selectedHousingStockId, data) => {
     const sourceDateTime = data.requestDate
       ?.format('YYYY-MM-DD')
       .concat('T', data.requestTime || '');
 
-    const manualTaskDeadline = data.manualDeadlineDate
-      ?.format('YYYY-MM-DD')
-      .concat('T', data.manualDeadlineTime || '');
-
     return {
-      leadId: data.leadId,
-      objectId: selectedHousingStockId,
-      sourceDateTime: sourceDateTime,
+      taskReasonId: '',
+      taskType: data.taskType,
+      objectTtmId: Number(selectedHousingStockId),
       sourceId: data.sourceId,
       sourceNumber: data.requestNumber,
-      taskDescription: data.taskDescription,
-      taskType: data.taskType,
-      workCategoryId: data.workTypeId,
-      subscriberFullName: data.subscriberName,
-      subscriberPhoneNumber: data.phoneNumber,
+      sourceDateTime: sourceDateTime,
+      leadId: data.leadId,
       workerId: data.executorId,
-      taskDeadline: data.taskDeadline || manualTaskDeadline,
+      subscriberPhoneNumber: data.phoneNumber,
+      subscriberFullName: data.subscriberName,
+      taskDescription: data.taskDescription,
     } as ErpCreateTaskRequest;
   },
   target: createTaskFx,
