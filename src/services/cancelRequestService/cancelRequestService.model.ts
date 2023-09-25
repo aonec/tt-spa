@@ -1,14 +1,11 @@
-import { createDomain } from 'effector';
+import { createEvent, createStore } from 'effector';
 import { SetTokenPayload, TokensByUrl } from './cancelRequestService.types';
 import _ from 'lodash';
 
-const domain = createDomain('cancelRequestService');
+const cancelRequest = createEvent<string>();
 
-const cancelRequest = domain.createEvent<string>();
-
-const setToken = domain.createEvent<SetTokenPayload>();
-const $tokens = domain
-  .createStore<TokensByUrl>({})
+const setToken = createEvent<SetTokenPayload>();
+const $tokens = createStore<TokensByUrl>({})
   .on(setToken, (tokens, { token, url }) => ({ ...tokens, [url]: token }))
   .on(cancelRequest, (tokens, url) => {
     const token = tokens[url];
