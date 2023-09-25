@@ -55,7 +55,8 @@ export const AddressSearchContainer: FC<AddressSearchContainerProps> = ({
         city: initialValues.city || '',
       });
     }
-  }, [initialValues, setForm]);
+    // eslint-disable-next-line
+  }, [setForm]);
 
   const preparedFields = useMemo(
     () =>
