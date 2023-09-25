@@ -48,15 +48,13 @@ export type AddTaskFormProps = {
   formId: string;
   ERPSources: ErpSourceResponse[];
   leadExecutors: ErpExecutorResponse[];
-  workCategories: ErpWorkCategoryResponse[];
   ErpObjects: ErpObjectResponse[];
   handleCreateTask: (payload: AddTask) => void;
   setDisableSubmit: React.Dispatch<React.SetStateAction<boolean>>;
   choоseLeadExecutor: (payload: string) => void;
   executors: ErpExecutorResponse[];
-  handleTaskDeadlineRequest: (payload: GetTaskDeadlineRequest) => void;
-  taskDeadline: ErpTaskDeadlineResponse | null;
   handleSelectHousingAddress: (payload: string) => void;
   existingApartmentNumbers: ExistingApartmentNumberType[];
   resourceDisconnection: ResourceDisconnectingResponse[];
+  handleSelectApartmentNumber: (payload: string) => void;
 };

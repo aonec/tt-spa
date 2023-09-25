@@ -71,6 +71,7 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
   handleSelectHousingAddress,
   existingApartmentNumbers,
   resourceDisconnection,
+  handleSelectApartmentNumber,
 }) => {
   const { values, handleSubmit, setFieldValue, errors } = useFormik<AddTask>({
     initialValues: {
@@ -239,7 +240,15 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
     existingApartmentNumbers,
   );
 
-  const subscribersNameOptions = getSubscribersNameOptions(subscriberData);
+  const apartId = useMemo(() => {
+    if (!values.apartmentNumber) return null;
+    const selectedOption = apartNumberOptions.find(
+      (apartNumberOption) => apartNumberOption.value === values.apartmentNumber,
+    );
+    return selectedOption?.id || null;
+  }, [apartNumberOptions, values.apartmentNumber]);
+
+  // const subscribersNameOptions = getSubscribersNameOptions(subscriberData);
 
   const sourceOptions = useMemo(
     () =>
@@ -321,6 +330,7 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
               onChange={(value) => setFieldValue('apartmentNumber', value)}
               onSelect={(value) => {
                 setFieldValue('apartmentNumber', value);
+                handleSelectApartmentNumber(value);
               }}
               options={apartNumberOptions}
             >

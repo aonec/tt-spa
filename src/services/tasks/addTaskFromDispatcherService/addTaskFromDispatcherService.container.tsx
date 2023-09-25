@@ -22,6 +22,7 @@ export const AddTaskFromDispatcherContainer = () => {
     handleSelectHousingAddress,
     existingApartmentNumbers,
     resourceDisconnection,
+    handleSelectApartmentNumber,
   } = useUnit({
     isModalOpen: outputs.$isModalOpen,
     handleCloseModal: inputs.handleCloseModal,
@@ -36,6 +37,7 @@ export const AddTaskFromDispatcherContainer = () => {
     handleTaskDeadlineRequest: inputs.handleTaskDeadlineRequest,
     isCreatePending: outputs.$isCreatePending,
     handleSelectHousingAddress: inputs.handleSelectHousingAddress,
+    handleSelectApartmentNumber: inputs.handleSelectApartmentNumber,
     existingApartmentNumbers: outputs.$existingApartmentNumbers,
     resourceDisconnection: outputs.$resourceDisconnection,
   });
@@ -58,6 +60,7 @@ export const AddTaskFromDispatcherContainer = () => {
         handleSelectHousingAddress={handleSelectHousingAddress}
         existingApartmentNumbers={existingApartmentNumbers}
         resourceDisconnection={resourceDisconnection}
+        handleSelectApartmentNumber={handleSelectApartmentNumber}
       />
     </>
   );

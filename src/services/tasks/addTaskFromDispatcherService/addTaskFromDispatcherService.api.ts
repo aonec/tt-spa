@@ -76,3 +76,11 @@ export const getAddresses = (
     params,
   });
 };
+
+export const getApartmentHomeownerNames = (
+  params: GetAddressesRequest,
+): Promise<StreetWithBuildingNumbersResponsePagedList> => {
+  return axios.get('Buildings/ExistingStreetsWithBuildingNumbers', {
+    params,
+  });
+};

@@ -25,4 +25,5 @@ export type PreparedAddress = {
 
 export type ExistingApartmentNumberType = {
   value: string;
+  id: number;
 };

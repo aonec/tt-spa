@@ -51,7 +51,9 @@ const resetDeadline = domain.createEvent();
 const handleCreateTask = domain.createEvent<AddTask>();
 
 const handleSelectHousingAddress = domain.createEvent<string>();
+const handleSelectApartmentNumber = domain.createEvent<string>();
 const setSelectedHousingId = domain.createEvent<string | null>();
+const setSelectedApartmentId = domain.createEvent<number | null>();
 
 const handleReset = domain.createEvent();
 
@@ -136,6 +138,10 @@ const $selectedHousingStockId = domain
   .createStore<string | null>(null)
   .on(setSelectedHousingId, (_, id) => id);
 
+const $selectedApartmentId = domain
+  .createStore<number | null>(null)
+  .on(setSelectedApartmentId, (_, id) => id);
+
 const $taskDeadlineRequest = domain
   .createStore<GetTaskDeadlineRequest | null>(null)
   .on(handleTaskDeadlineRequest, (prev, data) => ({ ...prev, ...data }))
@@ -153,7 +159,10 @@ const $existingApartmentNumbers = domain
     if (!items) return [];
     return items
       .filter((apartment) => Boolean(apartment.apartmentNumber))
-      .map((apartment) => ({ value: apartment.apartmentNumber! }));
+      .map((apartment) => ({
+        value: apartment.apartmentNumber as string,
+        id: apartment.id,
+      }));
   });
 
 const $resourceDisconnection = domain
@@ -230,6 +239,18 @@ sample({
 });
 
 sample({
+  clock: handleSelectApartmentNumber,
+  source: $existingApartmentNumbers,
+  fn: (apartmentOptions, selectedApartNumber) => {
+    const selectedOption = apartmentOptions.find(
+      (optionItem) => optionItem.value === selectedApartNumber,
+    );
+    return selectedOption?.id || null;
+  },
+  target: setSelectedApartmentId,
+});
+
+sample({
   clock: $selectedHousingStockId,
   filter: Boolean,
   fn: (housingStockId) => ({ HousingStockId: Number(housingStockId) }),
@@ -272,6 +293,7 @@ export const addTaskFromDispatcherService = {
     choоseLeadExecutor,
     handleTaskDeadlineRequest,
     handleSelectHousingAddress,
+    handleSelectApartmentNumber,
   },
   outputs: {
     $isModalOpen,

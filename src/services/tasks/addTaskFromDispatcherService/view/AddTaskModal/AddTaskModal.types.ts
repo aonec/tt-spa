@@ -27,5 +27,6 @@ export type AddTaskModalProps = {
   isCreatePending: boolean;
   handleSelectHousingAddress: (payload: string) => void;
   existingApartmentNumbers: ExistingApartmentNumberType[];
-  resourceDisconnection: ResourceDisconnectingResponse[] ;
+  resourceDisconnection: ResourceDisconnectingResponse[];
+  handleSelectApartmentNumber: (payload: string) => void;
 };
