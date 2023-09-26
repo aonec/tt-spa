@@ -4,8 +4,11 @@ import dayjs from 'api/dayjs';
 import { GetSummaryHousingConsumptionsByResourcesResponse } from 'api/types';
 import { initialSelectedGraphTypes } from './resourceConsumptionService.constants';
 import {
+  CancelTokens,
   ConsumptionDataForTwoMonth,
   ConsumptionDataPayload,
+  ConsumptionRequestPayload,
+  ResourceConsumptionCancelToken,
   ResourceConsumptionGraphDataType,
   ResourceConsumptionWithNull,
 } from './resourceConsumptionService.types';
@@ -19,6 +22,7 @@ import {
   fetchSummaryHousingConsumptions,
 } from './resourceConsumptionService.api';
 import { setConsumptionData } from './resourceConsumptionService.utils';
+import axios, { CancelTokenSource } from 'axios';
 
 const domain = createDomain('resourceConsumptionService');
 
@@ -31,7 +35,7 @@ const getSummaryConsumptions = domain.createEvent<ConsumptionDataPayload>();
  * общий расход (сверху)
  */
 const getSummaryHousingConsumptionsFx = domain.createEffect<
-  ConsumptionDataPayload,
+  ConsumptionRequestPayload,
   GetSummaryHousingConsumptionsByResourcesResponse,
   EffectFailDataAxiosError
 >(fetchSummaryHousingConsumptions);
@@ -41,7 +45,7 @@ const getConsumptionData = domain.createEvent<ConsumptionDataPayload>();
  * одпу
  */
 const getHousingConsumptionPlotFx = domain.createEffect<
-  ConsumptionDataPayload,
+  ConsumptionRequestPayload,
   { housing: ResourceConsumptionWithNull[] },
   EffectFailDataAxiosError
 >(fetchHousingConsumptionPlot);
@@ -50,7 +54,7 @@ const getHousingConsumptionPlotFx = domain.createEffect<
  * одпу потребление за прошлый период
  */
 const getPrevHousingConsumptionPlotFx = domain.createEffect<
-  ConsumptionDataPayload,
+  ConsumptionRequestPayload,
   { housing: ResourceConsumptionWithNull[] },
   EffectFailDataAxiosError
 >(fetchHousingConsumptionPlot);
@@ -59,16 +63,16 @@ const getPrevHousingConsumptionPlotFx = domain.createEffect<
  * одпу потребление адрес для сравнения
  */
 const getAdditionalHousingConsumptionPlotFx = domain.createEffect<
-  ConsumptionDataPayload,
+  ConsumptionRequestPayload,
   { housing: ResourceConsumptionWithNull[] },
   EffectFailDataAxiosError
 >(fetchHousingConsumptionPlot); // одпу адрес для сравнения
 
 /**
- * нормативное и абонентское потрбление
+ * нормативное и абонентское потребление
  */
 const getNormativeAndSubscriberConsumptionDataFx = domain.createEffect<
-  ConsumptionDataPayload,
+  ConsumptionRequestPayload,
   {
     normative: ResourceConsumptionWithNull[];
     subscriber: ResourceConsumptionWithNull[];
@@ -77,10 +81,10 @@ const getNormativeAndSubscriberConsumptionDataFx = domain.createEffect<
 >(fetchNormativeAndSubscriberConsumptionData);
 
 /**
- * нормативное и абонентское потрбление за прошлый период
+ * нормативное и абонентское потребление за прошлый период
  */
 const getPrevNormativeAndSubscriberConsumptionDataFx = domain.createEffect<
-  ConsumptionDataPayload,
+  ConsumptionRequestPayload,
   {
     normative: ResourceConsumptionWithNull[];
     subscriber: ResourceConsumptionWithNull[];
@@ -89,11 +93,11 @@ const getPrevNormativeAndSubscriberConsumptionDataFx = domain.createEffect<
 >(fetchNormativeAndSubscriberConsumptionData);
 
 /**
- * нормативное и абонентское потрбление адрес для сравнения
+ * нормативное и абонентское потребление адрес для сравнения
  */
 const getAdditionalNormativeAndSubscriberConsumptionDataFx =
   domain.createEffect<
-    ConsumptionDataPayload,
+    ConsumptionRequestPayload,
     {
       normative: ResourceConsumptionWithNull[];
       subscriber: ResourceConsumptionWithNull[];
@@ -199,24 +203,56 @@ const $isLoading = domain
   .createStore(true)
   .on($isLoadingFromApi, (_, isLoading) => isLoading);
 
+const cancelPrevMonthRequests = domain.createEvent<{
+  token: CancelTokenSource;
+}>();
+const cancelAdditionalRequests = domain.createEvent<{
+  token: CancelTokenSource;
+}>();
+const cancelMainRequests = domain.createEvent<{
+  token: CancelTokenSource;
+}>();
+const cancelSummaryRequests = domain.createEvent<{
+  token: CancelTokenSource;
+}>();
+const setToken = domain.createEvent<{
+  token: CancelTokenSource;
+  type: ResourceConsumptionCancelToken;
+}>();
+
+domain
+  .createStore<CancelTokens>({})
+  .on(setToken, (tokens, { token: newToken, type }) => {
+    const oldToken = tokens[type];
+    if (oldToken) {
+      oldToken.cancel();
+    }
+    return { ...tokens, [type]: newToken };
+  });
+
 sample({
   clock: getSummaryConsumptions,
-  target: getSummaryHousingConsumptionsFx,
+  fn: (params) => ({ params, token: axios.CancelToken.source() }),
+  target: [getSummaryHousingConsumptionsFx, cancelSummaryRequests],
 });
 
 sample({
   clock: getConsumptionData,
+  fn: (params) => ({ params, token: axios.CancelToken.source() }),
   target: [
     getHousingConsumptionPlotFx,
     getNormativeAndSubscriberConsumptionDataFx,
+    cancelMainRequests,
   ],
 });
 
 sample({
   clock: getAdditionalConsumptionData,
+  fn: (params) => ({ params, token: axios.CancelToken.source() }),
   target: [
     getAdditionalHousingConsumptionPlotFx,
     getAdditionalNormativeAndSubscriberConsumptionDataFx,
+    cancelAdditionalRequests,
   ],
 });
 
@@ -231,17 +267,57 @@ sample({
       From: prevMonth.startOf('month').utcOffset(0, true).format(),
       To: prevMonth.endOf('month').utcOffset(0, true).format(),
     };
-    return paramsForPrevMonthRequest;
+    return {
+      params: paramsForPrevMonthRequest,
+      token: axios.CancelToken.source(),
+    };
   },
   target: [
     getPrevHousingConsumptionPlotFx,
     getPrevNormativeAndSubscriberConsumptionDataFx,
+    cancelPrevMonthRequests,
   ],
 });
 
 forward({
   from: ResourceConsumptionGate.close,
   to: [clearData, clearAdditionalAddressData, clearSummary],
+});
+
+sample({
+  clock: cancelAdditionalRequests,
+  fn: ({ token }) => ({
+    token,
+    type: ResourceConsumptionCancelToken.additionalAddress,
+  }),
+  target: setToken,
+});
+
+sample({
+  clock: cancelMainRequests,
+  fn: ({ token }) => ({
+    token,
+    type: ResourceConsumptionCancelToken.currentMonthData,
+  }),
+  target: setToken,
+});
+
+sample({
+  clock: cancelPrevMonthRequests,
+  fn: ({ token }) => ({
+    token,
+    type: ResourceConsumptionCancelToken.prevMonthData,
+  }),
+  target: setToken,
+});
+
+sample({
+  clock: cancelSummaryRequests,
+  fn: ({ token }) => ({
+    token,
+    type: ResourceConsumptionCancelToken.summary,
+  }),
+  target: setToken,
 });
 
 export const resourceConsumptionService = {

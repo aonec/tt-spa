@@ -2,6 +2,8 @@ import axios from 'axios';
 import { createEvent, createStore } from 'effector';
 import { forbiddenList } from '../utils/403handling';
 import { message } from 'antd';
+import { cancellableUrl } from 'services/cancelRequestService/cancelRequestService.constants';
+import { cancelRequestService } from 'services/cancelRequestService';
 
 export const devUrl = 'https://stage.k8s.transparent-technology.ru/api/';
 
@@ -13,6 +15,15 @@ axios.defaults.baseURL = baseURL;
 
 axios.interceptors.request.use((req) => {
   req.headers.Authorization = `Bearer ${takeFromLocStor('token')}`;
+
+  if (req.url && cancellableUrl.some((regex) => regex.test(req.url!))) {
+    cancelRequestService.inputs.cancelRequest(req.url);
+
+    const token = axios.CancelToken.source();
+    req.cancelToken = token.token;
+
+    cancelRequestService.inputs.setToken({ url: req.url, token: token });
+  }
 
   if (req.url && checkUrl('refresh', req.url)) {
     req.data = {

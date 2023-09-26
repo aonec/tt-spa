@@ -15,8 +15,9 @@ export const FiltersWrap = styled.div`
 `;
 
 export const Bottom = styled.div`
-  padding: 15px;
+  padding: 16px;
   display: flex;
+  justify-content: space-between;
   background: #f3f5f6;
 `;
 
