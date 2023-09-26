@@ -4,7 +4,7 @@ import { HousingProfileTabs } from '../../housingMeteringDeviceProfileService.ty
 export type HousingMeteringDeviceProfileProps = {
   deviceId: string;
   housingMeteringDevice: PipeHousingMeteringDeviceResponse | null;
-  currentTab: HousingProfileTabs;
+  currentTab?: HousingProfileTabs;
   handleChangeTab: (payload: HousingProfileTabs) => void;
   housingMeteringDeviceTasks: TasksPagedList | null;
   handleCheckModalOpen: () => void;

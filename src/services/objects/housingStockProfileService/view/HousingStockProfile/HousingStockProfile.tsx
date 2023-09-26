@@ -20,7 +20,7 @@ const { TabPane } = TabsSC;
 
 export const HousingStockProfile: FC<HousingStockProfileProps> = ({
   housingStock,
-  currentGrouptype,
+  currentGrouptype = HousingStockProfileGrouptype.Common,
   setCurrentGrouptype,
   openCommonReport,
   isPermitionToAddNode,

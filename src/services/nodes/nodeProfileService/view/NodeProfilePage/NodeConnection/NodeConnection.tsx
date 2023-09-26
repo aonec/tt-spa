@@ -41,7 +41,7 @@ export const NodeConnection: FC<NodeConnectionProps> = ({
 
   return (
     <Wrapper>
-      <LinkSC to={`/calculators/${id}`}>
+      <LinkSC to={`/calculators/${id}/profile`}>
         <CalculatorIcon />
         <ModelWrapper>{model}</ModelWrapper>
         <SerialWrapper>({serialNumber})</SerialWrapper>
