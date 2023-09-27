@@ -146,7 +146,11 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
                   <WorkTitle>{taskReason.name}</WorkTitle>
                 </WorkTitleWrapper>
               </TopWrapper>
-                <Button>ffff</Button>
+              {taskReason.allowedTaskTypes.map((taskType) => (
+                <Button onClick={() => console.log(taskReason.id, taskType)}>
+                  {taskType}
+                </Button>
+              ))}
             </OptionItemWrapper>
           ),
           value: taskReason.name,
@@ -195,8 +199,6 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
       })),
     [ERPSources],
   );
-
-  console.log(values.taskReasonSearch);
 
   return (
     <>
