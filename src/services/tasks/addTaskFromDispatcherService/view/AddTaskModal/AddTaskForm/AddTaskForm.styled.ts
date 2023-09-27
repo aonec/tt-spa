@@ -52,7 +52,7 @@ export const OptionItemWrapper = styled.div``;
 export const TopWrapper = styled.div`
   display: flex;
   flex-direction: row;
-  height: 32px;
+  min-height: 32px;
   align-items: center;
 
   gap: 8px;

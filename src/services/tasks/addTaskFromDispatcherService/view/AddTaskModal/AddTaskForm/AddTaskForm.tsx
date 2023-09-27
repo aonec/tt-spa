@@ -2,7 +2,6 @@ import React, { FC, useCallback, useEffect, useMemo } from 'react';
 import { AutoComplete as AutoCompleteAntD, Form } from 'antd';
 import * as yup from 'yup';
 import dayjs from 'api/dayjs';
-import { capitalize } from 'lodash';
 import {
   ArrowRightLongIconDim,
   ContainerWithOutline,
@@ -18,7 +17,6 @@ import {
   TextareaSC,
   TopWrapper,
   WorkTitle,
-  WorkTitleColored,
   WorkTitleWrapper,
 } from './AddTaskForm.styled';
 import { AddTask, AddTaskFormProps } from './AddTaskForm.types';
@@ -38,11 +36,9 @@ import { ResourceShortNamesDictionary } from 'dictionaries';
 import {
   autocompleteAddress,
   autocompleteApartNumber,
-  autocompleteTaskReason,
   sortByAlphabet,
 } from './AddTaskForm.utils';
 import { Alert } from 'ui-kit/Alert';
-import { LinkButton } from 'ui-kit/shared/LinkButton';
 import { ErpTaskReasons } from 'services/tasks/addTaskFromDispatcherService/addTaskFromDispatcherService.types';
 
 const {
@@ -146,11 +142,8 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
   );
 
   const getTaskReasonOptions = useCallback(
-    (taskReasons: ErpTaskReasons[], coloredText: string | null) =>
-      taskReasons.map((taskReason) => {
-        const preparedColoredText = capitalize(coloredText || undefined);
-        const residualText = taskReason.name.slice(coloredText?.length);
-
+    (taskReasons: ErpTaskReasons[]) =>
+      taskReasons.map((taskReason, index) => {
         return {
           label: (
             <OptionItemWrapper>
@@ -160,28 +153,19 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
                 </ResourseTypeWrapper>
                 <ArrowRightLongIconDim />
                 <WorkTitleWrapper>
-                  <WorkTitleColored>{preparedColoredText}</WorkTitleColored>
-                  <WorkTitle>{residualText}</WorkTitle>
+                  <WorkTitle>{taskReason.name}</WorkTitle>
                 </WorkTitleWrapper>
               </TopWrapper>
             </OptionItemWrapper>
           ),
           value: taskReason.name,
-          id: taskReason.id,
+          key: `${taskReason.id}${index}`,
         };
       }),
     [],
   );
 
-  const filteredTaskReasonData = useMemo(
-    () => autocompleteTaskReason(values.taskReasonSearch, taskReasons),
-    [values.taskReasonSearch],
-  );
-
-  const taskReasonOptions = getTaskReasonOptions(
-    filteredTaskReasonData,
-    values.taskReasonSearch,
-  );
+  const taskReasonOptions = getTaskReasonOptions(taskReasons);
 
   const getResourceDisconnectionAlert = useCallback(
     (
@@ -205,26 +189,6 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
     },
     [],
   );
-
-  // const getSubscribersNameOptions = useCallback(
-  //   (subscribersData: SubscriberType) =>
-  //     subscribersData.map((subscriber) => {
-  //       return {
-  //         label: (
-  //           <FullnameWrapper>
-  //             <Fullname>
-  //               {subscriber.lastName} {subscriber.firstName}{' '}
-  //               {subscriber.surname}
-  //             </Fullname>
-  //             <Address>{subscriber.address}</Address>
-  //           </FullnameWrapper>
-  //         ),
-  //         value: `${subscriber.lastName} ${subscriber.firstName} ${subscriber.surname}`,
-  //         id: subscriber.id,
-  //       };
-  //     }),
-  //   [],
-  // );
 
   const apartNumberOptions = autocompleteApartNumber(
     values.apartmentNumber,
@@ -359,17 +323,23 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
 
         <ContainerWithOutline>
           <FormItem label="Причина обращения">
-            <AutoCompleteAntD
+            <Select
+              showSearch
+              allowClear
+              virtual={false}
+              placeholder="Начните вводить"
               value={values.taskReasonSearch}
               onChange={(value) => setFieldValue('taskReasonSearch', value)}
-              allowClear
+              optionFilterProp="value"
+              optionLabelProp="value"
               options={taskReasonOptions}
-            >
-              <Input prefix={<SearchIconSc />} placeholder="Начните вводить" />
-            </AutoCompleteAntD>
+              filterOption={(inputValue, option) =>
+                option?.value
+                  .toLocaleLowerCase()
+                  .startsWith(inputValue.toLocaleLowerCase())
+              }
+            />
           </FormItem>
-
-          <LinkButton onClick={() => {}}>+ Добавить обращение</LinkButton>
         </ContainerWithOutline>
 
         <GridContainer>

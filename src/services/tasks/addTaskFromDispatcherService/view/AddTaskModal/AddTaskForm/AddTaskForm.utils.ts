@@ -1,9 +1,6 @@
 import _ from 'lodash';
 import { ErpExecutorResponse } from 'api/types';
-import {
-  ErpTaskReasons,
-  ExistingApartmentNumberType,
-} from 'services/tasks/addTaskFromDispatcherService/addTaskFromDispatcherService.types';
+import { ExistingApartmentNumberType } from 'services/tasks/addTaskFromDispatcherService/addTaskFromDispatcherService.types';
 
 type Address = {
   value: string;
@@ -35,14 +32,3 @@ export function autocompleteApartNumber(
 export const sortByAlphabet = (leadExecutors: ErpExecutorResponse[]) => {
   return _.sortBy(leadExecutors, [(o) => o.name]);
 };
-
-export function autocompleteTaskReason(
-  search: string | null,
-  taskReasons: ErpTaskReasons[],
-): ErpTaskReasons[] {
-  if (!search) return taskReasons;
-
-  return taskReasons.filter((taskReason) =>
-    taskReason.name.toLocaleLowerCase().startsWith(search.toLocaleLowerCase()),
-  );
-}
