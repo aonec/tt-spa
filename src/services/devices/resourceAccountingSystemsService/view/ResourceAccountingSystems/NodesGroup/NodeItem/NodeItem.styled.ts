@@ -26,6 +26,13 @@ export const NodeZoneWrapper = styled.div`
   text-overflow: ellipsis;
 `;
 
+export const NodeEntryNumber = styled.div`
+  color: rgba(39, 47, 90, 0.7);
+  margin-left: 4px;
+  font-weight: 400;
+  font-size: 12px;
+`;
+
 export const NodeName = styled.span`
   display: flex;
   align-items: center;
@@ -41,7 +48,7 @@ export const NodeName = styled.span`
   }
 `;
 
-export const ZoneWrapper = styled.span`
+export const ZoneWrapper = styled.div`
   max-width: 300px;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -49,8 +56,8 @@ export const ZoneWrapper = styled.span`
 `;
 
 export const NodeServiceZone = styled.div<{ isZoneExist: boolean }>`
-  display: flex;
-  align-items: center;
+  /* display: flex; */
+  /* align-items: center; */
 
   margin-top: 2px;
   font-weight: 400;

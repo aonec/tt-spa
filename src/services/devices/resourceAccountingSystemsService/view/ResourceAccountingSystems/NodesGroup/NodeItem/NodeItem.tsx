@@ -9,6 +9,7 @@ import {
   DeviceIconWrapper,
   IncorrectConfigurationIconSC,
   NoCalculatorTextWrapper,
+  NodeEntryNumber,
   NodeInfo,
   NodeInfoWrapper,
   NodeName,
@@ -38,10 +39,12 @@ export const NodeItem: FC<NodeItemProps> = ({
           <NodeZoneWrapper>
             <NodeName>
               Узел {node.number}
-              {isIncorrectConfig && <IncorrectConfigurationIconSC />}
+              {isIncorrectConfig && <IncorrectConfigurationIconSC />}{' '}
+              <NodeEntryNumber>
+                {node.entryNumber && `Ввод ${node.entryNumber}`}
+              </NodeEntryNumber>
             </NodeName>
             <NodeServiceZone isZoneExist={Boolean(node.serviceZone?.name)}>
-              <div>{node.entryNumber && `Ввод ${node.entryNumber}, `}</div>
               <ZoneWrapper>
                 {node.serviceZone?.name || 'Зона не указана'}
               </ZoneWrapper>
