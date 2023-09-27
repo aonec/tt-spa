@@ -10,7 +10,7 @@ export const Wrapper = styled.div<{
   display: grid;
   grid-gap: 15px;
   grid-template-columns: ${({ segmentName }) =>
-    segmentName === 'resource' ? '0.7fr 1fr 1fr' : '1fr 1fr'};
+    segmentName === 'resource' ? '1.2fr 1.2fr 1fr' : '1fr 1fr'};
   align-items: center;
 
   border-top: 1px solid #e9e9e9;
@@ -20,7 +20,13 @@ export const Wrapper = styled.div<{
   }
 `;
 
-export const NodeName = styled.div`
+export const NodeZoneWrapper = styled.div`
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+`;
+
+export const NodeName = styled.span`
   display: flex;
   align-items: center;
 
@@ -35,8 +41,8 @@ export const NodeName = styled.div`
   }
 `;
 
-export const ZoneWrapper = styled.div`
-  max-width: 90px;
+export const ZoneWrapper = styled.span`
+  max-width: 300px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -78,7 +84,7 @@ export const BaseNodeInfo = styled.div`
   align-items: center;
   justify-content: space-between;
   min-width: 120px;
-  max-width: 160px;
+  max-width: 240px;
 `;
 
 export const NodeInfo = styled.div`
