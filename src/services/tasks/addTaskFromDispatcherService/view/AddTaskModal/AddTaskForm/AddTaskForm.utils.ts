@@ -1,7 +1,9 @@
 import _ from 'lodash';
 import { ErpExecutorResponse } from 'api/types';
-import { TaskReasonType } from './AddTaskForm.constants';
-import { ExistingApartmentNumberType } from 'services/tasks/addTaskFromDispatcherService/addTaskFromDispatcherService.types';
+import {
+  ErpTaskReasons,
+  ExistingApartmentNumberType,
+} from 'services/tasks/addTaskFromDispatcherService/addTaskFromDispatcherService.types';
 
 type Address = {
   value: string;
@@ -36,8 +38,8 @@ export const sortByAlphabet = (leadExecutors: ErpExecutorResponse[]) => {
 
 export function autocompleteTaskReason(
   search: string | null,
-  taskReasons: TaskReasonType,
-): TaskReasonType {
+  taskReasons: ErpTaskReasons[],
+): ErpTaskReasons[] {
   if (!search) return taskReasons;
 
   return taskReasons.filter((taskReason) =>

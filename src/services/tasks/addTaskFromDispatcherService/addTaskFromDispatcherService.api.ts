@@ -11,6 +11,7 @@ import {
 } from 'api/types';
 import queryString from 'query-string';
 import {
+  ErpTaskReasons,
   GetAddressesRequest,
   GetApartmentsRequest,
   GetResourceDisconnectionRequest,
@@ -83,4 +84,8 @@ export const getApartmentHomeownerNames = (
   return axios.get(`Apartments/${apartmentId}/HomeownerAccountNames`, {
     params: { isAlsoClosed: true },
   });
+};
+
+export const getTaskReasons = (): Promise<ErpTaskReasons[]> => {
+  return axios.get('Tasks/ErpTaskReasons');
 };

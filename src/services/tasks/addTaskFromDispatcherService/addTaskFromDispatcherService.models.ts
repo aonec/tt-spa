@@ -9,6 +9,7 @@ import {
   getErpTaskDeadline,
   getLeadExecutors,
   getResourceDisconnection,
+  getTaskReasons,
   getWorkCategories,
 } from './addTaskFromDispatcherService.api';
 import {
@@ -26,6 +27,7 @@ import { createGate } from 'effector-react';
 import { EffectFailDataAxiosError } from 'types';
 import { AddTask } from './view/AddTaskModal/AddTaskForm/AddTaskForm.types';
 import {
+  ErpTaskReasons,
   ExistingApartmentNumberType,
   GetAddressesRequest,
   GetApartmentsRequest,
@@ -107,6 +109,10 @@ const getResourceDisconnectionFx = domain.createEffect<
   ResourceDisconnectingResponsePagedList
 >(getResourceDisconnection);
 
+const getTaskReasonsFx = domain.createEffect<void, ErpTaskReasons[]>(
+  getTaskReasons,
+);
+
 const $isModalOpen = domain
   .createStore<boolean>(false)
   .on(handleOpenModal, () => true)
@@ -182,6 +188,11 @@ const $resourceDisconnection = domain
   .on(getResourceDisconnectionFx.doneData, (_, data) => data.items || [])
   .reset(handleReset);
 
+const $taskReasons = domain
+  .createStore<ErpTaskReasons[]>([])
+  .on(getTaskReasonsFx.doneData, (_, data) => data)
+  .reset(handleReset);
+
 sample({
   clock: handleCreateTask,
   source: $selectedHousingStockId,
@@ -210,7 +221,12 @@ sample({
 
 sample({
   clock: PageGate.open,
-  target: [getERPSourcesFx, getWorkCategoriesFx, getLeadExecutorsFx],
+  target: [
+    getERPSourcesFx,
+    getWorkCategoriesFx,
+    getLeadExecutorsFx,
+    getTaskReasonsFx,
+  ],
 });
 
 sample({
@@ -322,6 +338,7 @@ export const addTaskFromDispatcherService = {
     $existingApartmentNumbers,
     $resourceDisconnection,
     $apartmentHomeownerNames,
+    $taskReasons,
   },
   gates: { PageGate },
 };

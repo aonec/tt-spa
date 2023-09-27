@@ -7,6 +7,7 @@ import {
 } from 'api/types';
 import dayjs from 'dayjs';
 import {
+  ErpTaskReasons,
   ExistingApartmentNumberType,
   HomeownerNameOption,
 } from 'services/tasks/addTaskFromDispatcherService/addTaskFromDispatcherService.types';
@@ -56,4 +57,5 @@ export type AddTaskFormProps = {
   resourceDisconnection: ResourceDisconnectingResponse[];
   handleSelectApartmentNumber: (payload: string) => void;
   apartmentHomeownerNames: HomeownerNameOption[];
+  taskReasons: ErpTaskReasons[];
 };

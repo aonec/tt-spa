@@ -4,11 +4,8 @@ import * as yup from 'yup';
 import dayjs from 'api/dayjs';
 import { capitalize } from 'lodash';
 import {
-  Address,
   ArrowRightLongIconDim,
   ContainerWithOutline,
-  Fullname,
-  FullnameWrapper,
   GridContainer,
   GridContainerAsymmetricLeft,
   GridContainerAsymmetricRight,
@@ -23,7 +20,6 @@ import {
   WorkTitle,
   WorkTitleColored,
   WorkTitleWrapper,
-  WorkType,
 } from './AddTaskForm.styled';
 import { AddTask, AddTaskFormProps } from './AddTaskForm.types';
 import { useFormik } from 'formik';
@@ -45,13 +41,9 @@ import {
   autocompleteTaskReason,
   sortByAlphabet,
 } from './AddTaskForm.utils';
-import {
-  SubscriberType,
-  TaskReasonType,
-  taskReasonData,
-} from './AddTaskForm.constants';
 import { Alert } from 'ui-kit/Alert';
 import { LinkButton } from 'ui-kit/shared/LinkButton';
+import { ErpTaskReasons } from 'services/tasks/addTaskFromDispatcherService/addTaskFromDispatcherService.types';
 
 const {
   gates: { PageGate },
@@ -71,6 +63,7 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
   resourceDisconnection,
   handleSelectApartmentNumber,
   apartmentHomeownerNames,
+  taskReasons,
 }) => {
   const { values, handleSubmit, setFieldValue, errors } = useFormik<AddTask>({
     initialValues: {
@@ -153,7 +146,7 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
   );
 
   const getTaskReasonOptions = useCallback(
-    (taskReasons: TaskReasonType, coloredText: string | null) =>
+    (taskReasons: ErpTaskReasons[], coloredText: string | null) =>
       taskReasons.map((taskReason) => {
         const preparedColoredText = capitalize(coloredText || undefined);
         const residualText = taskReason.name.slice(coloredText?.length);
@@ -163,7 +156,7 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
             <OptionItemWrapper>
               <TopWrapper>
                 <ResourseTypeWrapper>
-                  {ResourceShortNamesDictionary[taskReason.resourceType]}
+                  {ResourceShortNamesDictionary[taskReason.reasonType]}
                 </ResourseTypeWrapper>
                 <ArrowRightLongIconDim />
                 <WorkTitleWrapper>
@@ -171,7 +164,6 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
                   <WorkTitle>{residualText}</WorkTitle>
                 </WorkTitleWrapper>
               </TopWrapper>
-              <WorkType>{taskReason.nomenclatureName}</WorkType>
             </OptionItemWrapper>
           ),
           value: taskReason.name,
@@ -182,7 +174,7 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
   );
 
   const filteredTaskReasonData = useMemo(
-    () => autocompleteTaskReason(values.taskReasonSearch, taskReasonData),
+    () => autocompleteTaskReason(values.taskReasonSearch, taskReasons),
     [values.taskReasonSearch],
   );
 
@@ -214,25 +206,25 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
     [],
   );
 
-  const getSubscribersNameOptions = useCallback(
-    (subscribersData: SubscriberType) =>
-      subscribersData.map((subscriber) => {
-        return {
-          label: (
-            <FullnameWrapper>
-              <Fullname>
-                {subscriber.lastName} {subscriber.firstName}{' '}
-                {subscriber.surname}
-              </Fullname>
-              <Address>{subscriber.address}</Address>
-            </FullnameWrapper>
-          ),
-          value: `${subscriber.lastName} ${subscriber.firstName} ${subscriber.surname}`,
-          id: subscriber.id,
-        };
-      }),
-    [],
-  );
+  // const getSubscribersNameOptions = useCallback(
+  //   (subscribersData: SubscriberType) =>
+  //     subscribersData.map((subscriber) => {
+  //       return {
+  //         label: (
+  //           <FullnameWrapper>
+  //             <Fullname>
+  //               {subscriber.lastName} {subscriber.firstName}{' '}
+  //               {subscriber.surname}
+  //             </Fullname>
+  //             <Address>{subscriber.address}</Address>
+  //           </FullnameWrapper>
+  //         ),
+  //         value: `${subscriber.lastName} ${subscriber.firstName} ${subscriber.surname}`,
+  //         id: subscriber.id,
+  //       };
+  //     }),
+  //   [],
+  // );
 
   const apartNumberOptions = autocompleteApartNumber(
     values.apartmentNumber,

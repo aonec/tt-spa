@@ -1,4 +1,4 @@
-import { EisTaskType } from 'api/types';
+import { EResourceType, EisTaskType } from 'api/types';
 
 export type GetTaskDeadlineRequest = {
   WorkCategoryId?: string;
@@ -30,4 +30,16 @@ export type ExistingApartmentNumberType = {
 
 export type HomeownerNameOption = {
   value: string;
+};
+
+export enum TaskTypes {
+  Current = 'Current',
+  Emergency = 'Emergency',
+}
+
+export type ErpTaskReasons = {
+  allowedTaskTypes: TaskTypes[];
+  id: string;
+  name: string;
+  reasonType: EResourceType;
 };
