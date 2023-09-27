@@ -10,6 +10,7 @@ import { AddTask } from './AddTaskForm/AddTaskForm.types';
 import {
   ExistingApartmentNumberType,
   GetTaskDeadlineRequest,
+  HomeownerNameOption,
 } from '../../addTaskFromDispatcherService.types';
 
 export type AddTaskModalProps = {
@@ -29,4 +30,5 @@ export type AddTaskModalProps = {
   existingApartmentNumbers: ExistingApartmentNumberType[];
   resourceDisconnection: ResourceDisconnectingResponse[];
   handleSelectApartmentNumber: (payload: string) => void;
+  apartmentHomeownerNames: HomeownerNameOption[];
 };

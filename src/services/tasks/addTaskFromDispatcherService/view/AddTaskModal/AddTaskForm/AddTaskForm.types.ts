@@ -1,16 +1,14 @@
 import {
   EisTaskType,
   ErpExecutorResponse,
-  ErpTaskDeadlineResponse,
   ErpSourceResponse,
-  ErpWorkCategoryResponse,
   ErpObjectResponse,
   ResourceDisconnectingResponse,
 } from 'api/types';
 import dayjs from 'dayjs';
 import {
   ExistingApartmentNumberType,
-  GetTaskDeadlineRequest,
+  HomeownerNameOption,
 } from 'services/tasks/addTaskFromDispatcherService/addTaskFromDispatcherService.types';
 
 export type AddTask = {
@@ -57,4 +55,5 @@ export type AddTaskFormProps = {
   existingApartmentNumbers: ExistingApartmentNumberType[];
   resourceDisconnection: ResourceDisconnectingResponse[];
   handleSelectApartmentNumber: (payload: string) => void;
+  apartmentHomeownerNames: HomeownerNameOption[];
 };

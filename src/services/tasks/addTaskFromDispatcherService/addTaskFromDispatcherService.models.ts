@@ -2,6 +2,7 @@ import { createDomain, sample } from 'effector';
 import {
   createTask,
   getAddresses,
+  getApartmentHomeownerNames,
   getApartments,
   getERPSources,
   getErpExecutorsForLead,
@@ -30,6 +31,7 @@ import {
   GetApartmentsRequest,
   GetResourceDisconnectionRequest,
   GetTaskDeadlineRequest,
+  HomeownerNameOption,
   PreparedAddress,
 } from './addTaskFromDispatcherService.types';
 import { message } from 'antd';
@@ -96,6 +98,10 @@ const getApartmentsFx = domain.createEffect<
   ApartmentListResponsePagedList
 >(getApartments);
 
+const getApartmentHomeownerNamesFx = domain.createEffect<number, string[]>(
+  getApartmentHomeownerNames,
+);
+
 const getResourceDisconnectionFx = domain.createEffect<
   GetResourceDisconnectionRequest,
   ResourceDisconnectingResponsePagedList
@@ -141,6 +147,12 @@ const $selectedHousingStockId = domain
 const $selectedApartmentId = domain
   .createStore<number | null>(null)
   .on(setSelectedApartmentId, (_, id) => id);
+
+const $apartmentHomeownerNames = domain
+  .createStore<HomeownerNameOption[]>([])
+  .on(getApartmentHomeownerNamesFx.doneData, (_, data) =>
+    data.map((name) => ({ value: name })),
+  );
 
 const $taskDeadlineRequest = domain
   .createStore<GetTaskDeadlineRequest | null>(null)
@@ -260,6 +272,12 @@ sample({
   target: getResourceDisconnectionFx,
 });
 
+sample({
+  clock: $selectedApartmentId,
+  filter: Boolean,
+  target: getApartmentHomeownerNamesFx,
+});
+
 const onSuccessCreation = createTaskFx.doneData;
 
 const $isCreatePending = createTaskFx.pending;
@@ -303,6 +321,7 @@ export const addTaskFromDispatcherService = {
     $isCreatePending,
     $existingApartmentNumbers,
     $resourceDisconnection,
+    $apartmentHomeownerNames,
   },
   gates: { PageGate },
 };

@@ -1,5 +1,7 @@
 import React, { FC, useCallback, useEffect, useMemo } from 'react';
-import { AutoComplete as AutoCompleteAntD } from 'antd';
+import { AutoComplete as AutoCompleteAntD, Form } from 'antd';
+import * as yup from 'yup';
+import dayjs from 'api/dayjs';
 import { capitalize } from 'lodash';
 import {
   Address,
@@ -25,9 +27,6 @@ import {
 } from './AddTaskForm.styled';
 import { AddTask, AddTaskFormProps } from './AddTaskForm.types';
 import { useFormik } from 'formik';
-import * as yup from 'yup';
-import dayjs from 'api/dayjs';
-import { Form } from 'antd';
 import { FormItem } from 'ui-kit/FormItem';
 import { Select } from 'ui-kit/Select';
 import { Input } from 'ui-kit/Input';
@@ -49,7 +48,6 @@ import {
 import {
   SubscriberType,
   TaskReasonType,
-  subscriberData,
   taskReasonData,
 } from './AddTaskForm.constants';
 import { Alert } from 'ui-kit/Alert';
@@ -72,6 +70,7 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
   existingApartmentNumbers,
   resourceDisconnection,
   handleSelectApartmentNumber,
+  apartmentHomeownerNames,
 }) => {
   const { values, handleSubmit, setFieldValue, errors } = useFormik<AddTask>({
     initialValues: {
@@ -240,16 +239,6 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
     existingApartmentNumbers,
   );
 
-  const apartId = useMemo(() => {
-    if (!values.apartmentNumber) return null;
-    const selectedOption = apartNumberOptions.find(
-      (apartNumberOption) => apartNumberOption.value === values.apartmentNumber,
-    );
-    return selectedOption?.id || null;
-  }, [apartNumberOptions, values.apartmentNumber]);
-
-  // const subscribersNameOptions = getSubscribersNameOptions(subscriberData);
-
   const sourceOptions = useMemo(
     () =>
       ERPSources.map((source) => ({
@@ -317,6 +306,8 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
               onSelect={(value) => {
                 setFieldValue('selectedObjectAddress', value);
                 handleSelectHousingAddress(value);
+                values.apartmentNumber &&
+                  handleSelectApartmentNumber(values.apartmentNumber);
               }}
               options={preparedErpObjects}
             >
@@ -341,14 +332,15 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
 
         <GridContainer>
           <FormItem label="ФИО абонента">
-            <Input
-              // prefix={<SearchIconSc />}
-              placeholder="Начните вводить"
-              value={values.subscriberName || undefined}
-              onChange={(value) =>
-                setFieldValue('subscriberName', value.target.value)
-              }
-            />
+            <AutoCompleteAntD options={apartmentHomeownerNames}>
+              <Input
+                placeholder="Начните вводить"
+                value={values.subscriberName || undefined}
+                onChange={(value) =>
+                  setFieldValue('subscriberName', value.target.value)
+                }
+              />
+            </AutoCompleteAntD>
           </FormItem>
           <FormItem label="Номер телефона">
             <Input
@@ -391,33 +383,49 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
         <GridContainer>
           <FormItem label="Ответственный исполнитель">
             <Select
+              showSearch
+              optionFilterProp="label"
+              optionLabelProp="label"
               placeholder="Выберите из списка"
               value={values.leadId || undefined}
-              onChange={(value) => {
+              onSelect={(value) => {
                 setFieldValue('leadId', value);
+                setFieldValue('executorId', null);
                 choоseLeadExecutor(value as string);
               }}
-            >
-              {sortedLeadExecutors.map((leadExecutor) => (
-                <Select.Option value={leadExecutor.id} key={leadExecutor.id}>
-                  {leadExecutor.name}
-                </Select.Option>
-              ))}
-            </Select>
+              options={sortedLeadExecutors.map((leadExecutor) => ({
+                value: leadExecutor.id,
+                key: leadExecutor.id,
+                label: leadExecutor.name,
+              }))}
+              filterOption={(inputValue, option) =>
+                option?.label
+                  .toLocaleLowerCase()
+                  .startsWith(inputValue.toLocaleLowerCase())
+              }
+            />
           </FormItem>
           <FormItem label="Исполнитель">
             <Select
+              allowClear
+              showSearch
+              optionFilterProp="label"
+              optionLabelProp="label"
               placeholder="Выберите из списка"
               value={values.executorId || undefined}
               onChange={(value) => setFieldValue('executorId', value)}
               disabled={!Boolean(values.leadId)}
-            >
-              {sortedExecutors.map((executor) => (
-                <Select.Option value={executor.id} key={executor.id}>
-                  {executor.name}
-                </Select.Option>
-              ))}
-            </Select>
+              options={sortedExecutors.map((executor) => ({
+                value: executor.id,
+                key: executor.id,
+                label: executor.name,
+              }))}
+              filterOption={(inputValue, option) =>
+                option?.label
+                  .toLocaleLowerCase()
+                  .startsWith(inputValue.toLocaleLowerCase())
+              }
+            />
           </FormItem>
         </GridContainer>
 

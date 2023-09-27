@@ -27,3 +27,7 @@ export type ExistingApartmentNumberType = {
   value: string;
   id: number;
 };
+
+export type HomeownerNameOption = {
+  value: string;
+};
