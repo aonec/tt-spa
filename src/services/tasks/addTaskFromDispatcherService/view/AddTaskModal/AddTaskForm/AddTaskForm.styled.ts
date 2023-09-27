@@ -47,7 +47,10 @@ export const ResourseTypeWrapper = styled.div`
   line-height: 32px;
 `;
 
-export const OptionItemWrapper = styled.div``;
+export const OptionItemWrapper = styled.div`
+  display: flex;
+  justify-content: space-between;
+`;
 
 export const TopWrapper = styled.div`
   display: flex;

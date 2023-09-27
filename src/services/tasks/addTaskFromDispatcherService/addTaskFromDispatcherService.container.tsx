@@ -15,7 +15,6 @@ export const AddTaskFromDispatcherContainer = () => {
     executors,
     handleCreateTask,
     leadExecutors,
-    workCategories,
     isCreatePending,
     handleSelectHousingAddress,
     existingApartmentNumbers,
@@ -23,13 +22,13 @@ export const AddTaskFromDispatcherContainer = () => {
     handleSelectApartmentNumber,
     apartmentHomeownerNames,
     taskReasons,
+    handleSelectTaskReason,
   } = useUnit({
     isModalOpen: outputs.$isModalOpen,
     handleCloseModal: inputs.handleCloseModal,
     ERPSources: outputs.$ERPSources,
     preparedForOptionsAddresses: outputs.$preparedForOptionsAddresses,
     leadExecutors: outputs.$leadExecutors,
-    workCategories: outputs.$workCategories,
     executors: outputs.$executors,
     handleCreateTask: inputs.handleCreateTask,
     choоseLeadExecutor: inputs.choоseLeadExecutor,
@@ -40,6 +39,7 @@ export const AddTaskFromDispatcherContainer = () => {
     resourceDisconnection: outputs.$resourceDisconnection,
     apartmentHomeownerNames: outputs.$apartmentHomeownerNames,
     taskReasons: outputs.$taskReasons,
+    handleSelectTaskReason: inputs.handleSelectTaskReason,
   });
 
   return (
@@ -50,7 +50,6 @@ export const AddTaskFromDispatcherContainer = () => {
         ERPSources={ERPSources}
         preparedForOptionsAddresses={preparedForOptionsAddresses}
         leadExecutors={leadExecutors}
-        workCategories={workCategories}
         handleCreateTask={handleCreateTask}
         choоseLeadExecutor={choоseLeadExecutor}
         executors={executors}
@@ -61,6 +60,7 @@ export const AddTaskFromDispatcherContainer = () => {
         handleSelectApartmentNumber={handleSelectApartmentNumber}
         apartmentHomeownerNames={apartmentHomeownerNames}
         taskReasons={taskReasons}
+        handleSelectTaskReason={handleSelectTaskReason}
       />
     </>
   );

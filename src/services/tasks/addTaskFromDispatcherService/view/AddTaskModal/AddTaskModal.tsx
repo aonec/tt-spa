@@ -21,6 +21,7 @@ export const AddTaskModal: FC<AddTaskModalProps> = ({
   apartmentHomeownerNames,
   taskReasons,
   preparedForOptionsAddresses,
+  handleSelectTaskReason,
 }) => {
   const [disableSubmit, setDisableSubmit] = useState(true);
 
@@ -48,6 +49,7 @@ export const AddTaskModal: FC<AddTaskModalProps> = ({
           handleSelectApartmentNumber={handleSelectApartmentNumber}
           apartmentHomeownerNames={apartmentHomeownerNames}
           taskReasons={taskReasons}
+          handleSelectTaskReason={handleSelectTaskReason}
         />
       }
       formId={formId}

@@ -1,7 +1,6 @@
 import {
   ErpExecutorResponse,
   ErpSourceResponse,
-  ErpWorkCategoryResponse,
   ResourceDisconnectingResponse,
 } from 'api/types';
 import { AddTask } from './AddTaskForm/AddTaskForm.types';
@@ -18,7 +17,6 @@ export type AddTaskModalProps = {
   ERPSources: ErpSourceResponse[];
   preparedForOptionsAddresses: PreparedAddress[];
   leadExecutors: ErpExecutorResponse[];
-  workCategories: ErpWorkCategoryResponse[];
   handleCreateTask: (payload: AddTask) => void;
   choоseLeadExecutor: (payload: string) => void;
   executors: ErpExecutorResponse[];
@@ -29,4 +27,5 @@ export type AddTaskModalProps = {
   handleSelectApartmentNumber: (payload: string) => void;
   apartmentHomeownerNames: HomeownerNameOption[];
   taskReasons: ErpTaskReasons[];
+  handleSelectTaskReason: (payload: string) => void;
 };

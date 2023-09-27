@@ -50,6 +50,7 @@ export type AddTaskFormProps = {
   handleSelectApartmentNumber: (payload: string) => void;
   apartmentHomeownerNames: HomeownerNameOption[];
   taskReasons: ErpTaskReasons[];
+  handleSelectTaskReason: (payload: string) => void;
 };
 
 export type AddressOption = {

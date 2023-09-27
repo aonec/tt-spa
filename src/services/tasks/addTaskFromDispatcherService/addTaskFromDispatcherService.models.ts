@@ -1,4 +1,4 @@
-import { createDomain, sample } from 'effector';
+import { combine, createDomain, sample } from 'effector';
 import {
   createTask,
   getAddresses,
@@ -6,19 +6,15 @@ import {
   getApartments,
   getERPSources,
   getErpExecutorsForLead,
-  getErpTaskDeadline,
   getLeadExecutors,
   getResourceDisconnection,
   getTaskReasons,
-  getWorkCategories,
 } from './addTaskFromDispatcherService.api';
 import {
   ApartmentListResponsePagedList,
   ErpCreateTaskRequest,
   ErpExecutorResponse,
   ErpSourceResponse,
-  ErpTaskDeadlineResponse,
-  ErpWorkCategoryResponse,
   ResourceDisconnectingResponse,
   ResourceDisconnectingResponsePagedList,
   StreetWithBuildingNumbersResponsePagedList,
@@ -53,8 +49,11 @@ const handleCreateTask = domain.createEvent<AddTask>();
 
 const handleSelectHousingAddress = domain.createEvent<string>();
 const handleSelectApartmentNumber = domain.createEvent<string>();
+const handleSelectTaskReason = domain.createEvent<string>();
+
 const setSelectedHousingId = domain.createEvent<string | null>();
 const setSelectedApartmentId = domain.createEvent<number | null>();
+const setSelectedTaskReasonId = domain.createEvent<string | null>();
 
 const handleReset = domain.createEvent();
 
@@ -67,11 +66,6 @@ const createTaskFx = domain.createEffect<
 const getERPSourcesFx = domain.createEffect<void, ErpSourceResponse[]>(
   getERPSources,
 );
-
-const getWorkCategoriesFx = domain.createEffect<
-  void,
-  ErpWorkCategoryResponse[]
->(getWorkCategories);
 
 const getLeadExecutorsFx = domain.createEffect<void, ErpExecutorResponse[]>(
   getLeadExecutors,
@@ -116,11 +110,6 @@ const $ERPSources = domain
   .on(getERPSourcesFx.doneData, (_, data) => data)
   .reset(handleReset);
 
-const $workCategories = domain
-  .createStore<ErpWorkCategoryResponse[]>([])
-  .on(getWorkCategoriesFx.doneData, (_, data) => data)
-  .reset(handleReset);
-
 const $leadExecutors = domain
   .createStore<ErpExecutorResponse[]>([])
   .on(getLeadExecutorsFx.doneData, (_, data) => data)
@@ -145,6 +134,10 @@ const $selectedHousingStockId = domain
 const $selectedApartmentId = domain
   .createStore<number | null>(null)
   .on(setSelectedApartmentId, (_, id) => id);
+
+const $selectedTaskReasonId = domain
+  .createStore<string | null>(null)
+  .on(setSelectedTaskReasonId, (_, id) => id);
 
 const $apartmentHomeownerNames = domain
   .createStore<HomeownerNameOption[]>([])
@@ -176,17 +169,23 @@ const $taskReasons = domain
 
 sample({
   clock: handleCreateTask,
-  source: $selectedHousingStockId,
-  filter: (selectedHousingStockId) => Boolean(selectedHousingStockId),
-  fn: (selectedHousingStockId, data) => {
+  source: combine(
+    $selectedHousingStockId,
+    $selectedTaskReasonId,
+    (selectedHousingStockId, selectedTaskReasonId) => ({
+      selectedHousingStockId,
+      selectedTaskReasonId,
+    }),
+  ),
+  fn: (source, data) => {
     const sourceDateTime = data.requestDate
       ?.format('YYYY-MM-DD')
       .concat('T', data.requestTime || '');
 
     return {
-      taskReasonId: '',
+      taskReasonId: source.selectedTaskReasonId,
       taskType: data.taskType,
-      objectTtmId: Number(selectedHousingStockId),
+      objectTtmId: Number(source.selectedHousingStockId),
       sourceId: data.sourceId,
       sourceNumber: data.requestNumber,
       sourceDateTime: sourceDateTime,
@@ -202,12 +201,7 @@ sample({
 
 sample({
   clock: PageGate.open,
-  target: [
-    getERPSourcesFx,
-    getWorkCategoriesFx,
-    getLeadExecutorsFx,
-    getTaskReasonsFx,
-  ],
+  target: [getERPSourcesFx, getLeadExecutorsFx, getTaskReasonsFx],
 });
 
 sample({
@@ -253,6 +247,18 @@ sample({
     return selectedOption?.id || null;
   },
   target: setSelectedApartmentId,
+});
+
+sample({
+  clock: handleSelectTaskReason,
+  source: $taskReasons,
+  fn: (taskReasons, selectedTaskReason) => {
+    const selectedOption = taskReasons.find(
+      (optionItem) => optionItem.name === selectedTaskReason,
+    );
+    return selectedOption?.id || null;
+  },
+  target: setSelectedTaskReasonId,
 });
 
 sample({
@@ -304,11 +310,11 @@ export const addTaskFromDispatcherService = {
     choоseLeadExecutor,
     handleSelectHousingAddress,
     handleSelectApartmentNumber,
+    handleSelectTaskReason,
   },
   outputs: {
     $isModalOpen,
     $ERPSources,
-    $workCategories,
     $leadExecutors,
     $preparedForOptionsAddresses,
     $executors,

@@ -40,6 +40,7 @@ import {
 } from './AddTaskForm.utils';
 import { Alert } from 'ui-kit/Alert';
 import { ErpTaskReasons } from 'services/tasks/addTaskFromDispatcherService/addTaskFromDispatcherService.types';
+import { Button } from 'ui-kit/Button';
 
 const {
   gates: { PageGate },
@@ -60,6 +61,7 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
   handleSelectApartmentNumber,
   apartmentHomeownerNames,
   taskReasons,
+  handleSelectTaskReason,
 }) => {
   const { values, handleSubmit, setFieldValue, errors } = useFormik<AddTask>({
     initialValues: {
@@ -144,6 +146,7 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
                   <WorkTitle>{taskReason.name}</WorkTitle>
                 </WorkTitleWrapper>
               </TopWrapper>
+                <Button>ffff</Button>
             </OptionItemWrapper>
           ),
           value: taskReason.name,
@@ -318,7 +321,10 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
               virtual={false}
               placeholder="Начните вводить"
               value={values.taskReasonSearch}
-              onChange={(value) => setFieldValue('taskReasonSearch', value)}
+              onChange={(value) => {
+                setFieldValue('taskReasonSearch', value);
+                handleSelectTaskReason(value as string);
+              }}
               optionFilterProp="value"
               optionLabelProp="value"
               options={taskReasonOptions}
