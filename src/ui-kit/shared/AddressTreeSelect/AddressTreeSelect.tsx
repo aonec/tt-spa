@@ -92,6 +92,21 @@ export const AddressTreeSelect: FC<AddressTreeSelectProps> = ({
     }
   }, [foundTitle]);
 
+  const handleExpandTree = useCallback(
+    (keys: React.Key[]) => {
+      const expandedKey = _.first(_.difference(keys, expandedNodes));
+      const node = parents.find((elem) => elem.key === expandedKey);
+      setFoundTitle(node?.title || null);
+
+      if (node) {
+        setExpandedNodes([...node.parents, node.key]);
+      } else {
+        setExpandedNodes(keys);
+      }
+    },
+    [setExpandedNodes, setFoundTitle, parents, expandedNodes],
+  );
+
   return (
     <TreeSelectSC
       small={small}
@@ -122,17 +137,7 @@ export const AddressTreeSelect: FC<AddressTreeSelectProps> = ({
         handleChangeHousingStocks(values as TreeSelectValue)
       }
       placeholder={placeholder}
-      onTreeExpand={(keys) => {
-        const expandedKey = _.first(_.difference(keys, expandedNodes));
-        const node = parents.find((elem) => elem.key === expandedKey);
-        setFoundTitle(node?.title || null);
-
-        if (node) {
-          setExpandedNodes([...node.parents, node.key]);
-        } else {
-          setExpandedNodes(keys);
-        }
-      }}
+      onTreeExpand={handleExpandTree}
       virtual={false}
       placement={placement}
       treeExpandedKeys={expandedNodes}
