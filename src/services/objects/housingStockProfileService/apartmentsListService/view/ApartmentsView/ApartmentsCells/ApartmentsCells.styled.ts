@@ -15,5 +15,4 @@ export const CellsWrapper = styled.div`
   display: flex;
   flex-wrap: wrap;
   grid-gap: 12px;
-  /* grid-template-columns: repeat(auto-fill, 66px); */
 `;
