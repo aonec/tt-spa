@@ -25,19 +25,20 @@ export const getFormValues = (
     resourceDisconnection;
 
   const heatingStationId = heatingStation?.id;
-  const housingStockIds = (buildings || []).map(
+  const buildingsIdsList = (buildings || []).map(
     (housingStock) => housingStock.id,
   );
+
+  const housingStockIds = [
+    ...buildingsIdsList,
+    selectedBuilding?.id,
+    preselectedBuilding,
+  ].filter(Boolean) as number[];
 
   return {
     ...resourceDisconnection,
     documentId: resourceDisconnection.document?.id || null,
-    housingStockIds: [
-      ...(selectedBuilding
-        ? [...housingStockIds, selectedBuilding.id]
-        : housingStockIds),
-      ...(preselectedBuilding ? [preselectedBuilding] : []),
-    ],
+    housingStockIds,
     startDate: dayjs(startDate).format('DD.MM.YYYY'),
     startHour: dayjs(startDate).format('HH:mm'),
     endDate: endDate ? dayjs(endDate).format('DD.MM.YYYY') : '',
