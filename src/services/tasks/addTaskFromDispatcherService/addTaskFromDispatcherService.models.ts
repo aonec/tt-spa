@@ -49,9 +49,6 @@ const handleCloseModal = domain.createEvent();
 
 const choоseLeadExecutor = domain.createEvent<string>();
 
-const handleTaskDeadlineRequest = domain.createEvent<GetTaskDeadlineRequest>();
-const resetDeadline = domain.createEvent();
-
 const handleCreateTask = domain.createEvent<AddTask>();
 
 const handleSelectHousingAddress = domain.createEvent<string>();
@@ -89,11 +86,6 @@ const getErpExecutorsForLeadFx = domain.createEffect<
   { leadId: string },
   ErpExecutorResponse[]
 >(getErpExecutorsForLead);
-
-const getErpTaskDeadlineFx = domain.createEffect<
-  GetTaskDeadlineRequest,
-  ErpTaskDeadlineResponse
->(getErpTaskDeadline);
 
 const getApartmentsFx = domain.createEffect<
   GetApartmentsRequest,
@@ -159,17 +151,6 @@ const $apartmentHomeownerNames = domain
   .on(getApartmentHomeownerNamesFx.doneData, (_, data) =>
     data.map((name) => ({ value: name })),
   );
-
-const $taskDeadlineRequest = domain
-  .createStore<GetTaskDeadlineRequest | null>(null)
-  .on(handleTaskDeadlineRequest, (prev, data) => ({ ...prev, ...data }))
-  .reset(handleReset);
-
-const $taskDeadline = domain
-  .createStore<ErpTaskDeadlineResponse | null>(null)
-  .on(getErpTaskDeadlineFx.doneData, (_, data) => data)
-  .reset(resetDeadline)
-  .reset(handleReset);
 
 const $existingApartmentNumbers = domain
   .createStore<ExistingApartmentNumberType[]>([])
@@ -321,7 +302,6 @@ export const addTaskFromDispatcherService = {
     handleCloseModal,
     handleCreateTask,
     choоseLeadExecutor,
-    handleTaskDeadlineRequest,
     handleSelectHousingAddress,
     handleSelectApartmentNumber,
   },
@@ -330,10 +310,8 @@ export const addTaskFromDispatcherService = {
     $ERPSources,
     $workCategories,
     $leadExecutors,
-    $ErpObjects: $preparedForOptionsAddresses,
+    $preparedForOptionsAddresses,
     $executors,
-    $taskDeadlineRequest,
-    $taskDeadline,
     $isCreatePending,
     $existingApartmentNumbers,
     $resourceDisconnection,

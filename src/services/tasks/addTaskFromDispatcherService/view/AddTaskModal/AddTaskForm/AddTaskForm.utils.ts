@@ -1,20 +1,27 @@
 import _ from 'lodash';
 import { ErpExecutorResponse } from 'api/types';
-import { ExistingApartmentNumberType } from 'services/tasks/addTaskFromDispatcherService/addTaskFromDispatcherService.types';
+import {
+  ExistingApartmentNumberType,
+  PreparedAddress,
+} from 'services/tasks/addTaskFromDispatcherService/addTaskFromDispatcherService.types';
+import { AddressOption } from './AddTaskForm.types';
 
-type Address = {
-  value: string;
-};
-
-export function autocompleteAddress(
+export function preparedAddressOption(
   addressSearch: string,
-  streets: string[],
-): Address[] {
+  streets: PreparedAddress[],
+): AddressOption[] {
   if (!addressSearch) return [];
+
   const filteredStreets = streets.filter((street) =>
-    street.toLocaleLowerCase().startsWith(addressSearch.toLocaleLowerCase()),
+    street.address
+      .toLocaleLowerCase()
+      .startsWith(addressSearch.toLocaleLowerCase()),
   );
-  return filteredStreets.map((street) => ({ value: street }));
+
+  return filteredStreets.map((street) => ({
+    value: street.address,
+    key: street.id,
+  }));
 }
 
 export function autocompleteApartNumber(

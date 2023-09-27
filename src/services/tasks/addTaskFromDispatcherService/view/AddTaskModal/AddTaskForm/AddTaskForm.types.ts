@@ -2,7 +2,6 @@ import {
   EisTaskType,
   ErpExecutorResponse,
   ErpSourceResponse,
-  ErpObjectResponse,
   ResourceDisconnectingResponse,
 } from 'api/types';
 import dayjs from 'dayjs';
@@ -10,6 +9,7 @@ import {
   ErpTaskReasons,
   ExistingApartmentNumberType,
   HomeownerNameOption,
+  PreparedAddress,
 } from 'services/tasks/addTaskFromDispatcherService/addTaskFromDispatcherService.types';
 
 export type AddTask = {
@@ -21,11 +21,7 @@ export type AddTask = {
   requestDate: dayjs.Dayjs | null;
   requestTime: string | null;
 
-  manualDeadlineDate: dayjs.Dayjs | null;
-  manualDeadlineTime: string | null;
-
   addressSearch: string;
-  selectedObjectAddress: string | null;
 
   apartmentNumber: string | null;
   subscriberName: string | null;
@@ -34,11 +30,7 @@ export type AddTask = {
   leadId: string | null;
   executorId: string | null;
 
-  taskDeadline: string | null;
-
   taskDescription: string | null;
-
-  isPermittedToChangeDeadline: boolean;
 
   taskReasonSearch: string | null;
 };
@@ -47,7 +39,7 @@ export type AddTaskFormProps = {
   formId: string;
   ERPSources: ErpSourceResponse[];
   leadExecutors: ErpExecutorResponse[];
-  ErpObjects: ErpObjectResponse[];
+  preparedForOptionsAddresses: PreparedAddress[];
   handleCreateTask: (payload: AddTask) => void;
   setDisableSubmit: React.Dispatch<React.SetStateAction<boolean>>;
   choоseLeadExecutor: (payload: string) => void;
@@ -58,4 +50,9 @@ export type AddTaskFormProps = {
   handleSelectApartmentNumber: (payload: string) => void;
   apartmentHomeownerNames: HomeownerNameOption[];
   taskReasons: ErpTaskReasons[];
+};
+
+export type AddressOption = {
+  value: string;
+  key: string;
 };

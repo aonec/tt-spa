@@ -34,8 +34,8 @@ import { SelectTime } from 'ui-kit/SelectTime';
 import { addTaskFromDispatcherService } from 'services/tasks/addTaskFromDispatcherService/addTaskFromDispatcherService.models';
 import { ResourceShortNamesDictionary } from 'dictionaries';
 import {
-  autocompleteAddress,
   autocompleteApartNumber,
+  preparedAddressOption,
   sortByAlphabet,
 } from './AddTaskForm.utils';
 import { Alert } from 'ui-kit/Alert';
@@ -48,7 +48,7 @@ const {
 export const AddTaskForm: FC<AddTaskFormProps> = ({
   formId,
   ERPSources,
-  ErpObjects,
+  preparedForOptionsAddresses,
   handleCreateTask,
   setDisableSubmit,
   choоseLeadExecutor,
@@ -71,15 +71,9 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
       requestDate: dayjs(),
       requestTime: dayjs().format('HH:00'),
 
-      manualDeadlineDate: null,
-      manualDeadlineTime: null,
-
-      taskDeadline: null,
-
       addressSearch: '',
-      selectedObjectAddress: null,
-
       apartmentNumber: null,
+
       subscriberName: null,
       phoneNumber: null,
 
@@ -87,8 +81,6 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
       executorId: null,
 
       taskDescription: null,
-
-      isPermittedToChangeDeadline: false,
 
       taskReasonSearch: null,
     },
@@ -132,13 +124,9 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
     setDisableSubmit(isHaveValidationErrors);
   }, [isHaveValidationErrors, setDisableSubmit]);
 
-  const ErpObjectsString = ErpObjects.map((object) => object.address).filter(
-    Boolean,
-  ) as string[];
-
-  const preparedErpObjects = autocompleteAddress(
+  const preparedAddressOptions = preparedAddressOption(
     values.addressSearch,
-    ErpObjectsString || [],
+    preparedForOptionsAddresses || [],
   );
 
   const getTaskReasonOptions = useCallback(
@@ -205,6 +193,8 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
     [ERPSources],
   );
 
+  console.log(values.taskReasonSearch);
+
   return (
     <>
       <PageGate />
@@ -265,7 +255,7 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
                 values.apartmentNumber &&
                   handleSelectApartmentNumber(values.apartmentNumber);
               }}
-              options={preparedErpObjects}
+              options={preparedAddressOptions}
             >
               <Input prefix={<SearchIconSc />} placeholder="Начните вводить " />
             </AutoCompleteAntD>
@@ -288,14 +278,13 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
 
         <GridContainer>
           <FormItem label="ФИО абонента">
-            <AutoCompleteAntD options={apartmentHomeownerNames}>
-              <Input
-                placeholder="Начните вводить"
-                value={values.subscriberName || undefined}
-                onChange={(value) =>
-                  setFieldValue('subscriberName', value.target.value)
-                }
-              />
+            <AutoCompleteAntD
+              allowClear
+              value={values.subscriberName || undefined}
+              onChange={(value) => setFieldValue('subscriberName', value)}
+              options={apartmentHomeownerNames}
+            >
+              <Input placeholder="Начните вводить" />
             </AutoCompleteAntD>
           </FormItem>
           <FormItem label="Номер телефона">
