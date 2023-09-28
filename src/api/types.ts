@@ -2231,6 +2231,14 @@ export interface EditIndividualDeviceReadingsHistoryRequest {
   newReadings?: SwitchIndividualDeviceReadingsCreateRequest[] | null;
 }
 
+export enum EisTaskReasonType {
+  Heat = 'Heat',
+  HotWaterSupply = 'HotWaterSupply',
+  ColdWaterSupply = 'ColdWaterSupply',
+  Electricity = 'Electricity',
+  TrafficControl = 'TrafficControl',
+}
+
 export enum EisTaskType {
   Emergency = 'Emergency',
   Planned = 'Planned',
@@ -2352,6 +2360,14 @@ export interface ErpSourceResponse {
 export interface ErpTaskDeadlineResponse {
   /** @format int32 */
   deadlineInHours: number;
+}
+
+export interface ErpTaskReasonResponse {
+  /** @format uuid */
+  id: string;
+  reasonType: EisTaskReasonType;
+  name: string | null;
+  allowedTaskTypes: EisTaskType[] | null;
 }
 
 export interface ErpWorkCategoryResponse {
@@ -14494,7 +14510,7 @@ export class Api<
      * @secure
      */
     tasksErpTaskReasonsList: (params: RequestParams = {}) =>
-      this.request<ErpWorkCategoryResponse[], ErrorApiResponse>({
+      this.request<ErpTaskReasonResponse[], ErrorApiResponse>({
         path: `/api/Tasks/ErpTaskReasons`,
         method: 'GET',
         secure: true,

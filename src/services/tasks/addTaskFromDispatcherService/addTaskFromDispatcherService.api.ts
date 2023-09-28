@@ -5,13 +5,13 @@ import {
   ErpExecutorResponse,
   ErpSourceResponse,
   ErpTaskDeadlineResponse,
+  ErpTaskReasonResponse,
   ErpWorkCategoryResponse,
   ResourceDisconnectingResponsePagedList,
   StreetWithBuildingNumbersResponsePagedList,
 } from 'api/types';
 import queryString from 'query-string';
 import {
-  ErpTaskReasons,
   GetAddressesRequest,
   GetApartmentsRequest,
   GetResourceDisconnectionRequest,
@@ -86,6 +86,6 @@ export const getApartmentHomeownerNames = (
   });
 };
 
-export const getTaskReasons = (): Promise<ErpTaskReasons[]> => {
+export const getTaskReasons = (): Promise<ErpTaskReasonResponse[]> => {
   return axios.get('Tasks/ErpTaskReasons');
 };

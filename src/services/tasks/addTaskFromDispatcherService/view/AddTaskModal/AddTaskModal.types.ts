@@ -1,11 +1,11 @@
 import {
   ErpExecutorResponse,
   ErpSourceResponse,
+  ErpTaskReasonResponse,
   ResourceDisconnectingResponse,
 } from 'api/types';
 import { AddTask } from './AddTaskForm/AddTaskForm.types';
 import {
-  ErpTaskReasons,
   ExistingApartmentNumberType,
   HomeownerNameOption,
   PreparedAddress,
@@ -26,6 +26,6 @@ export type AddTaskModalProps = {
   resourceDisconnection: ResourceDisconnectingResponse[];
   handleSelectApartmentNumber: (payload: string) => void;
   apartmentHomeownerNames: HomeownerNameOption[];
-  taskReasons: ErpTaskReasons[];
+  taskReasons: ErpTaskReasonResponse[];
   handleSelectTaskReason: (payload: string) => void;
 };

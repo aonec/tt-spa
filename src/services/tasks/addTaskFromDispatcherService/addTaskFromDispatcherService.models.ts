@@ -15,6 +15,7 @@ import {
   ErpCreateTaskRequest,
   ErpExecutorResponse,
   ErpSourceResponse,
+  ErpTaskReasonResponse,
   ResourceDisconnectingResponse,
   ResourceDisconnectingResponsePagedList,
   StreetWithBuildingNumbersResponsePagedList,
@@ -23,12 +24,10 @@ import { createGate } from 'effector-react';
 import { EffectFailDataAxiosError } from 'types';
 import { AddTask } from './view/AddTaskModal/AddTaskForm/AddTaskForm.types';
 import {
-  ErpTaskReasons,
   ExistingApartmentNumberType,
   GetAddressesRequest,
   GetApartmentsRequest,
   GetResourceDisconnectionRequest,
-  GetTaskDeadlineRequest,
   HomeownerNameOption,
   PreparedAddress,
 } from './addTaskFromDispatcherService.types';
@@ -95,7 +94,7 @@ const getResourceDisconnectionFx = domain.createEffect<
   ResourceDisconnectingResponsePagedList
 >(getResourceDisconnection);
 
-const getTaskReasonsFx = domain.createEffect<void, ErpTaskReasons[]>(
+const getTaskReasonsFx = domain.createEffect<void, ErpTaskReasonResponse[]>(
   getTaskReasons,
 );
 
@@ -163,7 +162,7 @@ const $resourceDisconnection = domain
   .reset(handleReset);
 
 const $taskReasons = domain
-  .createStore<ErpTaskReasons[]>([])
+  .createStore<ErpTaskReasonResponse[]>([])
   .on(getTaskReasonsFx.doneData, (_, data) => data)
   .reset(handleReset);
 

@@ -50,6 +50,7 @@ export const ResourseTypeWrapper = styled.div`
 export const OptionItemWrapper = styled.div`
   display: flex;
   justify-content: space-between;
+  align-items: center;
 `;
 
 export const TopWrapper = styled.div`
@@ -132,4 +133,11 @@ export const Address = styled.div`
 
 export const SelectCaret = styled(Select)`
   caret-color: transparent;
+`;
+
+export const TaskTypesWrapper = styled.div`
+  display: flex;
+  gap: 6px;
+  justify-content: center;
+  z-index: 1100;
 `;

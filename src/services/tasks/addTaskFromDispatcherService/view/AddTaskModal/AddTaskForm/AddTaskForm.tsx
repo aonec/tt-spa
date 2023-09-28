@@ -1,5 +1,9 @@
 import React, { FC, useCallback, useEffect, useMemo } from 'react';
-import { AutoComplete as AutoCompleteAntD, Form } from 'antd';
+import {
+  AutoComplete as AutoCompleteAntD,
+  Form,
+  Button as ButtonAntD,
+} from 'antd';
 import * as yup from 'yup';
 import dayjs from 'api/dayjs';
 import {
@@ -14,6 +18,7 @@ import {
   ResourseTypeWrapper,
   SearchIconSc,
   SelectCaret,
+  TaskTypesWrapper,
   TextareaSC,
   TopWrapper,
   WorkTitle,
@@ -28,19 +33,22 @@ import { DatePicker } from 'ui-kit/DatePicker';
 import {
   EResourceType,
   EisTaskType,
+  ErpTaskReasonResponse,
   ResourceDisconnectingTypeResponse,
 } from 'api/types';
 import { SelectTime } from 'ui-kit/SelectTime';
 import { addTaskFromDispatcherService } from 'services/tasks/addTaskFromDispatcherService/addTaskFromDispatcherService.models';
-import { ResourceShortNamesDictionary } from 'dictionaries';
+import {
+  ResourceShortNamesDictionary,
+  TaskReasonTypeDictionary,
+  TaskTypeDictionary,
+} from 'dictionaries';
 import {
   autocompleteApartNumber,
   preparedAddressOption,
   sortByAlphabet,
 } from './AddTaskForm.utils';
 import { Alert } from 'ui-kit/Alert';
-import { ErpTaskReasons } from 'services/tasks/addTaskFromDispatcherService/addTaskFromDispatcherService.types';
-import { Button } from 'ui-kit/Button';
 
 const {
   gates: { PageGate },
@@ -67,7 +75,7 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
     initialValues: {
       sourceId: null,
       requestNumber: null,
-      taskType: null as null | EisTaskType,
+      taskType: EisTaskType.Planned,
       workTypeId: null,
 
       requestDate: dayjs(),
@@ -132,32 +140,44 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
   );
 
   const getTaskReasonOptions = useCallback(
-    (taskReasons: ErpTaskReasons[]) =>
+    (taskReasons: ErpTaskReasonResponse[]) =>
       taskReasons.map((taskReason, index) => {
         return {
           label: (
             <OptionItemWrapper>
-              <TopWrapper>
+              <TopWrapper
+                onClick={() => {
+                  setFieldValue('taskType', EisTaskType.Planned);
+                }}
+              >
                 <ResourseTypeWrapper>
-                  {ResourceShortNamesDictionary[taskReason.reasonType]}
+                  {TaskReasonTypeDictionary[taskReason.reasonType]}
                 </ResourseTypeWrapper>
                 <ArrowRightLongIconDim />
                 <WorkTitleWrapper>
                   <WorkTitle>{taskReason.name}</WorkTitle>
                 </WorkTitleWrapper>
               </TopWrapper>
-              {taskReason.allowedTaskTypes.map((taskType) => (
-                <Button onClick={() => console.log(taskReason.id, taskType)}>
-                  {taskType}
-                </Button>
-              ))}
+              <TaskTypesWrapper>
+                {taskReason.allowedTaskTypes?.map((taskType) => (
+                  <ButtonAntD
+                    size="small"
+                    onClick={() => {
+                      setFieldValue('taskType', taskType);
+                    }}
+                    danger={taskType === EisTaskType.Emergency}
+                  >
+                    {TaskTypeDictionary[taskType]}
+                  </ButtonAntD>
+                ))}
+              </TaskTypesWrapper>
             </OptionItemWrapper>
           ),
           value: taskReason.name,
           key: `${taskReason.id}${index}`,
         };
       }),
-    [],
+    [setFieldValue],
   );
 
   const taskReasonOptions = getTaskReasonOptions(taskReasons);
@@ -321,6 +341,13 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
               showSearch
               allowClear
               virtual={false}
+              status={
+                values.taskType === EisTaskType.Emergency
+                  ? 'error'
+                  : values.taskType === EisTaskType.Current
+                  ? 'warning'
+                  : ''
+              }
               placeholder="Начните вводить"
               value={values.taskReasonSearch}
               onChange={(value) => {

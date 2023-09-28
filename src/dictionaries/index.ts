@@ -7,6 +7,7 @@ import {
   ENodeRegistrationType,
   EResourceType,
   ETaskEngineeringElement,
+  EisTaskReasonType,
   EisTaskType,
 } from 'api/types';
 import { DistrictColor, DistrictColorData } from 'types';
@@ -47,6 +48,16 @@ export const ResourceMapNamesDictionary: {
   [EResourceType.HotWaterSupply]: 'ГВС',
   [EResourceType.Electricity]: 'Электричество',
   [EResourceType.Heat]: 'Отопление',
+};
+
+export const TaskReasonTypeDictionary: {
+  [key in EisTaskReasonType]: string;
+} = {
+  [EisTaskReasonType.ColdWaterSupply]: 'ХВС',
+  [EisTaskReasonType.HotWaterSupply]: 'ГВС',
+  [EisTaskReasonType.Electricity]: 'Электричество',
+  [EisTaskReasonType.Heat]: 'Отопление',
+  [EisTaskReasonType.TrafficControl]: 'Контроль',
 };
 
 export const ClosingReasonsDictionary: { [key in EClosingReason]: string } = {
