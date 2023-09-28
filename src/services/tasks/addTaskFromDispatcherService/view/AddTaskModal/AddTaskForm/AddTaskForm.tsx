@@ -1,4 +1,4 @@
-import React, { FC, useCallback, useEffect, useMemo } from 'react';
+import React, { FC, useCallback, useEffect, useMemo, useState } from 'react';
 import {
   AutoComplete as AutoCompleteAntD,
   Form,
@@ -49,10 +49,14 @@ import {
   sortByAlphabet,
 } from './AddTaskForm.utils';
 import { Alert } from 'ui-kit/Alert';
+import { useSwitchInputOnEnter } from 'hooks/useSwitchInputOnEnter';
+import { fromEnter } from 'ui-kit/shared/DatePickerNative';
 
 const {
   gates: { PageGate },
 } = addTaskFromDispatcherService;
+
+const dataKey = 'add-task-form';
 
 export const AddTaskForm: FC<AddTaskFormProps> = ({
   formId,
@@ -116,6 +120,8 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
       handleCreateTask(data);
     },
   });
+
+  const next = useSwitchInputOnEnter(dataKey, false, false);
 
   const sortedLeadExecutors = useMemo(() => {
     return sortByAlphabet(leadExecutors);
@@ -220,6 +226,8 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
     [ERPSources],
   );
 
+  const [isNameOpen, setNameOpen] = useState(false);
+
   return (
     <>
       <PageGate />
@@ -254,6 +262,8 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
                   .toLocaleLowerCase()
                   .startsWith(inputValue.toLocaleLowerCase())
               }
+              data-reading-input={dataKey}
+              onKeyDown={fromEnter(() => next(0))}
             />
           </FormItem>
 
@@ -264,6 +274,8 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
               onChange={(value) =>
                 setFieldValue('requestNumber', value.target.value)
               }
+              data-reading-input={dataKey}
+              onKeyDown={fromEnter(() => next(1))}
             />
           </FormItem>
         </GridContainer>
@@ -281,6 +293,8 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
                   handleSelectApartmentNumber(values.apartmentNumber);
               }}
               options={preparedAddressOptions}
+              data-reading-input={dataKey}
+              onKeyDown={fromEnter(() => next(2))}
             >
               <Input prefix={<SearchIconSc />} placeholder="Начните вводить " />
             </AutoCompleteAntD>
@@ -295,6 +309,8 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
                 handleSelectApartmentNumber(value);
               }}
               options={apartNumberOptions}
+              data-reading-input={dataKey}
+              onKeyDown={fromEnter(() => next(3))}
             >
               <Input placeholder="Введите" />
             </AutoCompleteAntD>
@@ -304,10 +320,13 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
         <GridContainer>
           <FormItem label="ФИО абонента">
             <AutoCompleteAntD
+              defaultActiveFirstOption
               allowClear
               value={values.subscriberName || undefined}
               onChange={(value) => setFieldValue('subscriberName', value)}
               options={apartmentHomeownerNames}
+              data-reading-input={dataKey}
+              onKeyDown={fromEnter(() => next(4))}
             >
               <Input placeholder="Начните вводить" />
             </AutoCompleteAntD>
@@ -319,6 +338,8 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
               onChange={(value) =>
                 setFieldValue('phoneNumber', value.target.value)
               }
+              data-reading-input={dataKey}
+              onKeyDown={fromEnter(() => next(5))}
             />
           </FormItem>
         </GridContainer>
@@ -362,6 +383,9 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
                   .toLocaleLowerCase()
                   .startsWith(inputValue.toLocaleLowerCase())
               }
+              data-reading-input={dataKey}
+              onKeyDown={fromEnter(() => next(6))}
+              // onMouseEnter={fromEnter(() => next(6))}
             />
           </FormItem>
         </ContainerWithOutline>
@@ -369,12 +393,13 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
         <GridContainer>
           <FormItem label="Ответственный исполнитель">
             <Select
+              allowClear
               showSearch
               optionFilterProp="label"
               optionLabelProp="label"
               placeholder="Выберите из списка"
               value={values.leadId || undefined}
-              onSelect={(value) => {
+              onChange={(value) => {
                 setFieldValue('leadId', value);
                 setFieldValue('executorId', null);
                 choоseLeadExecutor(value as string);
@@ -389,6 +414,9 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
                   .toLocaleLowerCase()
                   .startsWith(inputValue.toLocaleLowerCase())
               }
+              data-reading-input={dataKey}
+              onKeyDown={fromEnter(() => next(7))}
+              // onMouseEnter={fromEnter(() => next(7))}
             />
           </FormItem>
           <FormItem label="Исполнитель">
@@ -411,6 +439,9 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
                   .toLocaleLowerCase()
                   .startsWith(inputValue.toLocaleLowerCase())
               }
+              data-reading-input={dataKey}
+              onKeyDown={fromEnter(() => next(8))}
+              onMouseEnter={fromEnter(() => next(8))}
             />
           </FormItem>
         </GridContainer>
