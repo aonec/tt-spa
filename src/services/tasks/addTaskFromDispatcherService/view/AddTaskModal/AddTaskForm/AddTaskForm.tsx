@@ -79,7 +79,7 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
     initialValues: {
       sourceId: null,
       requestNumber: null,
-      taskType: EisTaskType.Planned,
+      taskType: EisTaskType.Current,
       workTypeId: null,
 
       requestDate: dayjs(),
@@ -152,9 +152,9 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
           label: (
             <OptionItemWrapper>
               <TopWrapper
-                onClick={() => {
-                  setFieldValue('taskType', EisTaskType.Planned);
-                }}
+                // onClick={() => {
+                //   setFieldValue('taskType', EisTaskType.Current);
+                // }}
               >
                 <ResourseTypeWrapper>
                   {TaskReasonTypeDictionary[taskReason.reasonType]}
@@ -164,19 +164,21 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
                   <WorkTitle>{taskReason.name}</WorkTitle>
                 </WorkTitleWrapper>
               </TopWrapper>
-              <TaskTypesWrapper>
-                {taskReason.allowedTaskTypes?.map((taskType) => (
-                  <ButtonAntD
-                    size="small"
-                    onClick={() => {
-                      setFieldValue('taskType', taskType);
-                    }}
-                    danger={taskType === EisTaskType.Emergency}
-                  >
-                    {TaskTypeDictionary[taskType]}
-                  </ButtonAntD>
-                ))}
-              </TaskTypesWrapper>
+              {/* <TaskTypesWrapper>
+                {taskReason.allowedTaskTypes
+                  ?.filter((taskType) => taskType !== EisTaskType.Current)
+                  .map((taskType) => (
+                    <ButtonAntD
+                      size="small"
+                      onClick={() => {
+                        setFieldValue('taskType', taskType);
+                      }}
+                      danger={taskType === EisTaskType.Emergency}
+                    >
+                      {TaskTypeDictionary[taskType]}
+                    </ButtonAntD>
+                  ))}
+              </TaskTypesWrapper> */}
             </OptionItemWrapper>
           ),
           value: taskReason.name,
@@ -230,7 +232,7 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
     if (values.taskType === EisTaskType.Emergency) {
       return 'error';
     }
-    if (values.taskType === EisTaskType.Current) {
+    if (values.taskType === EisTaskType.Planned) {
       return 'warning';
     }
     return '';
