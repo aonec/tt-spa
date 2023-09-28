@@ -128,21 +128,25 @@ const $preparedForOptionsAddresses = domain
 
 const $selectedHousingStockId = domain
   .createStore<string | null>(null)
-  .on(setSelectedHousingId, (_, id) => id);
+  .on(setSelectedHousingId, (_, id) => id)
+  .reset(handleReset);
 
 const $selectedApartmentId = domain
   .createStore<number | null>(null)
-  .on(setSelectedApartmentId, (_, id) => id);
+  .on(setSelectedApartmentId, (_, id) => id)
+  .reset(handleReset);
 
 const $selectedTaskReasonId = domain
   .createStore<string | null>(null)
-  .on(setSelectedTaskReasonId, (_, id) => id);
+  .on(setSelectedTaskReasonId, (_, id) => id)
+  .reset(handleReset);
 
 const $apartmentHomeownerNames = domain
   .createStore<HomeownerNameOption[]>([])
   .on(getApartmentHomeownerNamesFx.doneData, (_, data) =>
     data.map((name) => ({ value: name })),
-  );
+  )
+  .reset(handleReset);
 
 const $existingApartmentNumbers = domain
   .createStore<ExistingApartmentNumberType[]>([])
@@ -154,7 +158,8 @@ const $existingApartmentNumbers = domain
         value: apartment.apartmentNumber as string,
         id: apartment.id,
       }));
-  });
+  })
+  .reset(handleReset);
 
 const $resourceDisconnection = domain
   .createStore<ResourceDisconnectingResponse[]>([])

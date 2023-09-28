@@ -226,7 +226,20 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
     [ERPSources],
   );
 
+  const statusTaskType = useMemo(() => {
+    if (values.taskType === EisTaskType.Emergency) {
+      return 'error';
+    }
+    if (values.taskType === EisTaskType.Current) {
+      return 'warning';
+    }
+    return '';
+  }, [values.taskType]);
+
   const [isNameOpen, setNameOpen] = useState(false);
+  const [isReasonOpen, setReasonOpen] = useState(false);
+  const [isLeadOpen, setLeadOpen] = useState(false);
+  const [isExecutorOpen, setExecutorOpen] = useState(false);
 
   return (
     <>
@@ -320,13 +333,17 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
         <GridContainer>
           <FormItem label="ФИО абонента">
             <AutoCompleteAntD
-              defaultActiveFirstOption
               allowClear
               value={values.subscriberName || undefined}
               onChange={(value) => setFieldValue('subscriberName', value)}
               options={apartmentHomeownerNames}
               data-reading-input={dataKey}
               onKeyDown={fromEnter(() => next(4))}
+              open={isNameOpen}
+              onBlur={() => setNameOpen(false)}
+              onFocus={() => setNameOpen(true)}
+              onSelect={() => setNameOpen(false)}
+              onMouseDown={() => setNameOpen(true)}
             >
               <Input placeholder="Начните вводить" />
             </AutoCompleteAntD>
@@ -362,13 +379,7 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
               showSearch
               allowClear
               virtual={false}
-              status={
-                values.taskType === EisTaskType.Emergency
-                  ? 'error'
-                  : values.taskType === EisTaskType.Current
-                  ? 'warning'
-                  : ''
-              }
+              status={statusTaskType}
               placeholder="Начните вводить"
               value={values.taskReasonSearch}
               onChange={(value) => {
@@ -384,8 +395,18 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
                   .startsWith(inputValue.toLocaleLowerCase())
               }
               data-reading-input={dataKey}
-              onKeyDown={fromEnter(() => next(6))}
-              // onMouseEnter={fromEnter(() => next(6))}
+              onKeyDown={fromEnter(() => {
+                next(6);
+                setFieldValue('taskType', EisTaskType.Planned);
+              })}
+              open={isReasonOpen}
+              onBlur={() => setReasonOpen(false)}
+              onFocus={() => setReasonOpen(true)}
+              onSelect={() => {
+                setReasonOpen(false);
+                next(6);
+              }}
+              onMouseDown={() => setReasonOpen(true)}
             />
           </FormItem>
         </ContainerWithOutline>
@@ -416,7 +437,14 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
               }
               data-reading-input={dataKey}
               onKeyDown={fromEnter(() => next(7))}
-              // onMouseEnter={fromEnter(() => next(7))}
+              open={isLeadOpen}
+              onBlur={() => setLeadOpen(false)}
+              onFocus={() => setLeadOpen(true)}
+              onSelect={() => {
+                setLeadOpen(false);
+                next(7);
+              }}
+              onMouseDown={() => setLeadOpen(true)}
             />
           </FormItem>
           <FormItem label="Исполнитель">
@@ -441,7 +469,14 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
               }
               data-reading-input={dataKey}
               onKeyDown={fromEnter(() => next(8))}
-              onMouseEnter={fromEnter(() => next(8))}
+              open={isExecutorOpen}
+              onBlur={() => setExecutorOpen(false)}
+              onFocus={() => setExecutorOpen(true)}
+              onSelect={() => {
+                setExecutorOpen(false);
+                next(8);
+              }}
+              onMouseDown={() => setExecutorOpen(true)}
             />
           </FormItem>
         </GridContainer>
