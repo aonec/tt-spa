@@ -3,7 +3,7 @@ import { HousingStockProfileGrouptype } from '../../housingStockProfileService.c
 
 export type HousingStockProfileProps = {
   housingStock: HousingStockResponse;
-  currentGrouptype: HousingStockProfileGrouptype;
+  currentGrouptype?: HousingStockProfileGrouptype;
   setCurrentGrouptype: (grouptype: HousingStockProfileGrouptype) => void;
   openCommonReport: () => void;
   isPermitionToAddNode: boolean;

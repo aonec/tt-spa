@@ -37,7 +37,7 @@ export const HousingMeteringDeviceProfile: FC<
 > = ({
   deviceId,
   housingMeteringDevice,
-  currentTab,
+  currentTab = HousingProfileTabs.CommonInfo,
   handleChangeTab,
   housingMeteringDeviceTasks,
   handleCheckModalOpen,

@@ -3,10 +3,7 @@ import {
   BooleanTypesOfResourceConsumptionGraphForTwoMonth,
   SelectedAddresses,
 } from '../../ResourceConsumptionProfile/ResourceConsumptionProfile.types';
-import {
-  ConsumptionDataForTwoMonth,
-  MonthConsumptionData,
-} from 'services/resources/resourceConsumptionService/resourceConsumptionService.types';
+import { MonthConsumptionData } from 'services/resources/resourceConsumptionService/resourceConsumptionService.types';
 
 export type SelectResourceConsumptionTypeProps = {
   disabled: BooleanTypesOfResourceConsumptionGraphForTwoMonth;
