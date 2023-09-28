@@ -35,17 +35,21 @@ export const DatePickerNative: React.FC<Props> = React.forwardRef(
     },
     ref,
   ) => {
-    const [innerValue, setInnerValue] = useState<any>();
+    const [innerValue, setInnerValue] = useState<string | null>(null);
     const value = dayjs(incomingValue).format();
-    const currentValueTodayjs = dayjs(innerValue);
-    const isCurrentValueValid = currentValueTodayjs.isValid();
+    const currentValueTodayjs = innerValue ? dayjs(innerValue) : null;
+    const isCurrentValueValid = currentValueTodayjs
+      ? currentValueTodayjs.isValid()
+      : false;
 
     const setInitialInnerValue = () => {
-      setInnerValue(value ? dayjs(value).format('YYYY-MM-DD') : undefined);
+      setInnerValue(value ? dayjs(value).format('YYYY-MM-DD') : null);
     };
 
     function onChangeGlobal() {
-      if (innerValue) onChange && onChange(currentValueTodayjs.toISOString());
+      if (innerValue && currentValueTodayjs && isCurrentValueValid) {
+        onChange && onChange(currentValueTodayjs.toISOString());
+      }
 
       if (isCurrentValueValid) setInitialInnerValue();
     }
