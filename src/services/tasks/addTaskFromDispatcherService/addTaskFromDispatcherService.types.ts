@@ -35,4 +35,5 @@ export type HomeownerNameOption = {
 export enum TaskTypes {
   Current = 'Current',
   Emergency = 'Emergency',
+  Planned = 'Planned',
 }
