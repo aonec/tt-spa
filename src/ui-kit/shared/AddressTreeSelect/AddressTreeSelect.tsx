@@ -85,10 +85,9 @@ export const AddressTreeSelect: FC<AddressTreeSelectProps> = ({
     if (foundTitle) {
       const node = document.querySelector(`span[title='${foundTitle}']`);
 
-      node?.parentElement?.parentElement?.parentElement?.parentElement?.scroll({
-        left: 0,
-        top: node?.parentElement?.offsetTop || 0,
-      });
+      node
+        ?.closest('.ant-select-tree-list-holder')
+        ?.scroll({ left: 0, top: node?.parentElement?.offsetTop || 0 });
     }
   }, [foundTitle]);
 
