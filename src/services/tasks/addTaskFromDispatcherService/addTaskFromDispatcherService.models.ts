@@ -34,6 +34,7 @@ import {
 import { message } from 'antd';
 import { currentUserService } from 'services/currentUserService';
 import { prepareAddressesForTreeSelect } from './addTaskFromDispatcherService.utils';
+import dayjs from 'dayjs';
 
 const domain = createDomain('addTaskFromDispatcherService');
 
@@ -186,13 +187,15 @@ sample({
       ?.format('YYYY-MM-DD')
       .concat('T', data.requestTime || '');
 
+    const sourceDateTimeUTC = dayjs(sourceDateTime).utcOffset(0).toISOString();
+
     return {
       taskReasonId: source.selectedTaskReasonId,
       taskType: data.taskType,
       objectTtmId: Number(source.selectedHousingStockId),
       sourceId: data.sourceId,
       sourceNumber: data.requestNumber,
-      sourceDateTime: sourceDateTime,
+      sourceDateTime: sourceDateTimeUTC,
       leadId: data.leadId,
       workerId: data.executorId,
       subscriberPhoneNumber: data.phoneNumber,
