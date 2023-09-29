@@ -1,9 +1,5 @@
 import React, { FC, useCallback, useEffect, useMemo, useState } from 'react';
-import {
-  AutoComplete as AutoCompleteAntD,
-  Form,
-  Button as ButtonAntD,
-} from 'antd';
+import { AutoComplete as AutoCompleteAntD, Form } from 'antd';
 import * as yup from 'yup';
 import dayjs from 'api/dayjs';
 import {
@@ -18,7 +14,6 @@ import {
   ResourseTypeWrapper,
   SearchIconSc,
   SelectCaret,
-  TaskTypesWrapper,
   TextareaSC,
   TopWrapper,
   WorkTitle,
@@ -33,7 +28,6 @@ import { DatePicker } from 'ui-kit/DatePicker';
 import {
   EResourceType,
   EisTaskType,
-  ErpTaskReasonResponse,
   ResourceDisconnectingTypeResponse,
 } from 'api/types';
 import { SelectTime } from 'ui-kit/SelectTime';
@@ -79,7 +73,7 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
     initialValues: {
       sourceId: null,
       requestNumber: null,
-      taskType: EisTaskType.Current,
+      taskType: null,
       workTypeId: null,
 
       requestDate: dayjs(),
@@ -115,6 +109,8 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
         .string()
         .nullable()
         .required('Обязательное поле'),
+      taskType: yup.string().nullable().required('Обязательное поле'),
+      taskReasonSearch: yup.string().nullable().required('Обязательное поле'),
     }),
     onSubmit: (data) => {
       handleCreateTask(data);
@@ -145,17 +141,13 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
     preparedForOptionsAddresses || [],
   );
 
-  const getTaskReasonOptions = useCallback(
-    (taskReasons: ErpTaskReasonResponse[]) =>
+  const taskReasonOptions = useMemo(
+    () =>
       taskReasons.map((taskReason, index) => {
         return {
           label: (
             <OptionItemWrapper>
-              <TopWrapper
-                // onClick={() => {
-                //   setFieldValue('taskType', EisTaskType.Current);
-                // }}
-              >
+              <TopWrapper>
                 <ResourseTypeWrapper>
                   {TaskReasonTypeDictionary[taskReason.reasonType]}
                 </ResourseTypeWrapper>
@@ -164,31 +156,35 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
                   <WorkTitle>{taskReason.name}</WorkTitle>
                 </WorkTitleWrapper>
               </TopWrapper>
-              {/* <TaskTypesWrapper>
-                {taskReason.allowedTaskTypes
-                  ?.filter((taskType) => taskType !== EisTaskType.Current)
-                  .map((taskType) => (
-                    <ButtonAntD
-                      size="small"
-                      onClick={() => {
-                        setFieldValue('taskType', taskType);
-                      }}
-                      danger={taskType === EisTaskType.Emergency}
-                    >
-                      {TaskTypeDictionary[taskType]}
-                    </ButtonAntD>
-                  ))}
-              </TaskTypesWrapper> */}
             </OptionItemWrapper>
           ),
           value: taskReason.name,
           key: `${taskReason.id}${index}`,
         };
       }),
-    [setFieldValue],
+    [taskReasons],
   );
 
-  const taskReasonOptions = getTaskReasonOptions(taskReasons);
+  const taskTypeOptions = useMemo(() => {
+    const selectedOption = taskReasons.find(
+      (optionItem) => optionItem.name === values.taskReasonSearch,
+    );
+
+    const allowedTaskTypes = selectedOption?.allowedTaskTypes || [];
+
+    return allowedTaskTypes.map((taskType) => ({
+      label: TaskTypeDictionary[taskType],
+      value: taskType,
+      key: taskType,
+    }));
+  }, [values.taskReasonSearch, taskReasons]);
+
+  useEffect(() => {
+    if (taskTypeOptions.length === 1) {
+      setFieldValue('taskType', taskTypeOptions[0].value);
+      next(7);
+    }
+  }, [taskTypeOptions, setFieldValue, next]);
 
   const getResourceDisconnectionAlert = useCallback(
     (
@@ -240,6 +236,7 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
 
   const [isNameOpen, setNameOpen] = useState(false);
   const [isReasonOpen, setReasonOpen] = useState(false);
+  const [isTaskTypeOpen, setTaskTypeOpen] = useState(false);
   const [isLeadOpen, setLeadOpen] = useState(false);
   const [isExecutorOpen, setExecutorOpen] = useState(false);
 
@@ -399,7 +396,6 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
               data-reading-input={dataKey}
               onKeyDown={fromEnter(() => {
                 next(6);
-                setFieldValue('taskType', EisTaskType.Planned);
               })}
               open={isReasonOpen}
               onBlur={() => setReasonOpen(false)}
@@ -409,6 +405,31 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
                 next(6);
               }}
               onMouseDown={() => setReasonOpen(true)}
+            />
+          </FormItem>
+          <FormItem label="Тип заявки">
+            <Select
+              allowClear
+              status={statusTaskType}
+              placeholder="Начните вводить"
+              value={values.taskType}
+              onChange={(value) => {
+                setFieldValue('taskType', value);
+              }}
+              optionLabelProp="label"
+              options={taskTypeOptions}
+              data-reading-input={dataKey}
+              onKeyDown={fromEnter(() => {
+                next(7);
+              })}
+              open={isTaskTypeOpen}
+              onBlur={() => setTaskTypeOpen(false)}
+              onFocus={() => setTaskTypeOpen(true)}
+              onSelect={() => {
+                setTaskTypeOpen(false);
+                next(7);
+              }}
+              onMouseDown={() => setTaskTypeOpen(true)}
             />
           </FormItem>
         </ContainerWithOutline>
@@ -438,13 +459,13 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
                   .startsWith(inputValue.toLocaleLowerCase())
               }
               data-reading-input={dataKey}
-              onKeyDown={fromEnter(() => next(7))}
+              onKeyDown={fromEnter(() => next(8))}
               open={isLeadOpen}
               onBlur={() => setLeadOpen(false)}
               onFocus={() => setLeadOpen(true)}
               onSelect={() => {
                 setLeadOpen(false);
-                next(7);
+                next(8);
               }}
               onMouseDown={() => setLeadOpen(true)}
             />
@@ -470,13 +491,13 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
                   .startsWith(inputValue.toLocaleLowerCase())
               }
               data-reading-input={dataKey}
-              onKeyDown={fromEnter(() => next(8))}
+              onKeyDown={fromEnter(() => next(9))}
               open={isExecutorOpen}
               onBlur={() => setExecutorOpen(false)}
               onFocus={() => setExecutorOpen(true)}
               onSelect={() => {
                 setExecutorOpen(false);
-                next(8);
+                next(9);
               }}
               onMouseDown={() => setExecutorOpen(true)}
             />

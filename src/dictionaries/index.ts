@@ -55,7 +55,7 @@ export const TaskReasonTypeDictionary: {
 } = {
   [EisTaskReasonType.ColdWaterSupply]: 'ХВС',
   [EisTaskReasonType.HotWaterSupply]: 'ГВС',
-  [EisTaskReasonType.Electricity]: 'Электричество',
+  [EisTaskReasonType.Electricity]: 'ЭЭ',
   [EisTaskReasonType.Heat]: 'Отопление',
   [EisTaskReasonType.TrafficControl]: 'Контроль',
 };
