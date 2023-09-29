@@ -21,19 +21,17 @@ export const ActsJournalProfile: FC<ActsJournalProfileProps> = ({
   actsFilter,
   setPageNumber,
   actCreated,
+  handleResetAddressSearchForm,
 }) => {
-  const handleClearAddress = useCallback(
-    () =>
-      updateActsFilter({
-        HousingStockNumber: undefined,
-        Street: undefined,
-        Corpus: undefined,
-        ApartmentNumber: undefined,
-      }),
-    [updateActsFilter],
-  );
-
-  console.log(actsFilter);
+  const handleClearAddress = useCallback(() => {
+    updateActsFilter({
+      HousingStockNumber: undefined,
+      Street: undefined,
+      Corpus: undefined,
+      ApartmentNumber: undefined,
+    });
+    handleResetAddressSearchForm();
+  }, [updateActsFilter, handleResetAddressSearchForm]);
 
   return (
     <>

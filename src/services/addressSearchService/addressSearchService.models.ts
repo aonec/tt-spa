@@ -17,6 +17,7 @@ import { ApartmentListResponsePagedList } from 'api/types';
 const domain = createDomain('addressSearchService');
 
 const handleSearchApartNumber = domain.createEvent();
+const handleResetForm = domain.createEvent();
 
 const setWithApartment = domain.createEvent<boolean>();
 
@@ -45,15 +46,6 @@ const $withApartment = domain
   .store<boolean>(false)
   .on(setWithApartment, (_, data) => data);
 
-const $existingApartmentNumbers = domain
-  .createStore<ExistingApartmentNumberType[]>([])
-  .on(getApartmentsFx.doneData, (_, { items }) => {
-    if (!items) return [];
-    return items
-      .filter((apartment) => Boolean(apartment.apartmentNumber))
-      .map((apartment) => ({ value: apartment.apartmentNumber! }));
-  });
-
 const addressSearchForm = createForm<AddressSearchValues>({
   fields: {
     city: {
@@ -76,6 +68,16 @@ const addressSearchForm = createForm<AddressSearchValues>({
     },
   },
 });
+
+const $existingApartmentNumbers = domain
+  .createStore<ExistingApartmentNumberType[]>([])
+  .on(getApartmentsFx.doneData, (_, { items }) => {
+    if (!items) return [];
+    return items
+      .filter((apartment) => Boolean(apartment.apartmentNumber))
+      .map((apartment) => ({ value: apartment.apartmentNumber! }));
+  })
+  .reset(addressSearchForm.reset);
 
 const AddressSearchGate = createGate();
 const ExistingCitiesGate = createGate();
@@ -120,6 +122,8 @@ sample({
   target: getApartmentsFx,
 });
 
+sample({ clock: handleResetForm, target: addressSearchForm.reset });
+
 const $isExistingCitiesLoading = fetchExistingStreets.pending;
 
 export const addressSearchService = {
@@ -129,7 +133,7 @@ export const addressSearchService = {
     $isExistingCitiesLoading,
     $existingApartmentNumbers,
   },
-  inputs: { handleSearchApartNumber, setWithApartment },
+  inputs: { handleSearchApartNumber, setWithApartment, handleResetForm },
   gates: {
     ExistingCitiesGate,
     ExistingStreetsGate,

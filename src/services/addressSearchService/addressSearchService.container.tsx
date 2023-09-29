@@ -65,7 +65,7 @@ export const AddressSearchContainer: FC<AddressSearchContainerProps> = ({
         city: initialValues.city || '',
       });
     }
-  }, [initialValues, setForm]);
+  }, [setForm, initialValues]);
 
   const preparedFields = useMemo(
     () =>

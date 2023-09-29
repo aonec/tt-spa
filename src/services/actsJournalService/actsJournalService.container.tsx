@@ -1,22 +1,35 @@
 import React from 'react';
 import { ActsJournalProfile } from './view/ActsJournalProfile';
 import { actsJournalService } from './actsJournalService.model';
-import { useEvent, useStore } from 'effector-react';
+import { useUnit } from 'effector-react';
 import './actsJournalService.relations';
+import { addressSearchService } from 'services/addressSearchService/addressSearchService.models';
 
 const { inputs, outputs, gates } = actsJournalService;
 const { ActsJournalGate } = gates;
 
 export const ActsJournalContainer = () => {
-  const handleCreateAct = useEvent(inputs.createAct);
-  const updateActsFilter = useEvent(inputs.updateActsFilter);
-  const setPageNumber = useEvent(inputs.setPageNumber);
-  const actCreated = inputs.actCreated;
+  const {
+    actsFilter,
+    actsPagedData,
+    handleCreateAct,
+    handleResetAddressSearchForm,
+    isActsLoading,
+    isCreateLoading,
+    setPageNumber,
+    updateActsFilter,
+  } = useUnit({
+    handleCreateAct: inputs.createAct,
+    updateActsFilter: inputs.updateActsFilter,
+    setPageNumber: inputs.setPageNumber,
+    isCreateLoading: outputs.$isCreateLoading,
+    isActsLoading: outputs.$isActsLoading,
+    actsPagedData: outputs.$actsPagedData,
+    actsFilter: outputs.$actsFilter,
+    handleResetAddressSearchForm: addressSearchService.inputs.handleResetForm,
+  });
 
-  const isCreateLoading = useStore(outputs.$isCreateLoading);
-  const isActsLoading = useStore(outputs.$isActsLoading);
-  const actsPagedData = useStore(outputs.$actsPagedData);
-  const actsFilter = useStore(outputs.$actsFilter);
+  const actCreated = inputs.actCreated;
 
   return (
     <>
@@ -30,6 +43,7 @@ export const ActsJournalContainer = () => {
         actsFilter={actsFilter}
         setPageNumber={setPageNumber}
         actCreated={actCreated}
+        handleResetAddressSearchForm={handleResetAddressSearchForm}
       />
     </>
   );

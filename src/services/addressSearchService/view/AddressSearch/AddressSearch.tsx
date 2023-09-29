@@ -139,7 +139,7 @@ export const AddressSearch: FC<AddressSearchProps> = ({
     />
   );
 
-  const [isOpen, setOpen] = useState(true);
+  const [isOpen, setOpen] = useState(false);
 
   const apartmentSearch = (index: number, isDisabled?: boolean) => {
     return (
@@ -147,14 +147,17 @@ export const AddressSearch: FC<AddressSearchProps> = ({
         options={existingApartmentNumbers}
         open={isOpen}
         onFocus={() => setOpen(true)}
-        onSelect={() => setOpen(false)}
-        onBlur={() => setOpen(false)}
+        onSelect={() => {
+          setOpen(false);
+          handleSubmit();
+        }}
         value={values.apartment || ''}
+        onChange={(e) => handleChange(SearchFieldType.Apartment, e as any)}
         onKeyDown={fromEnter(() => {
           handleSubmit();
           next(index);
         })}
-        onChange={(e) => handleChange(SearchFieldType.Apartment, e as any)}
+        onBlur={() => setOpen(false)}
         filterOption={(inputValue, option) =>
           option?.value
             .toLocaleLowerCase()
@@ -167,6 +170,7 @@ export const AddressSearch: FC<AddressSearchProps> = ({
           data-reading-input={dataKey}
           onClick={() => {
             clearFields(index);
+            setOpen(true);
           }}
           disabled={isDisabled}
           error={isError || undefined}
