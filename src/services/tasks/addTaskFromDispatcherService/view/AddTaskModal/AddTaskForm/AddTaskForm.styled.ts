@@ -1,7 +1,9 @@
+import { TimePicker } from 'antd';
 import styled from 'styled-components';
+import { DatePicker } from 'ui-kit/DatePicker';
 import { Input } from 'ui-kit/Input';
 import { Select } from 'ui-kit/Select';
-import { ArrowRightLongIcon, ChevronIcon, SearchIcon } from 'ui-kit/icons';
+import { ArrowRightLongIcon, SearchIcon } from 'ui-kit/icons';
 
 export const GridContainer = styled.div`
   display: grid;
@@ -58,16 +60,11 @@ export const TopWrapper = styled.div`
   flex-direction: row;
   min-height: 32px;
   align-items: center;
-
   gap: 8px;
 `;
 
 export const SearchIconSc = styled(SearchIcon)`
   margin-right: 10px;
-`;
-
-export const ChevronIconDown = styled(ChevronIcon)`
-  transform: rotate(270deg);
 `;
 
 export const ArrowRightLongIconDim = styled(ArrowRightLongIcon)`
@@ -113,31 +110,25 @@ export const ResourceDisconnectionDate = styled.div`
   font-weight: 500;
 `;
 
-export const FullnameWrapper = styled.div``;
-
-export const Fullname = styled.div`
-  color: #272f5a;
-  font-size: 16px;
-  font-weight: 400;
-  line-height: 28px;
-`;
-
-export const Address = styled.div`
-  color: #272f5a;
-  font-size: 12px;
-  font-weight: 300;
-  line-height: 16px;
-
-  padding-left: 6px;
-`;
-
 export const SelectCaret = styled(Select)`
   caret-color: transparent;
 `;
 
-export const TaskTypesWrapper = styled.div`
-  display: flex;
-  gap: 6px;
-  justify-content: center;
-  z-index: 1100;
+export const TimePickerSc = styled(TimePicker)`
+  border-radius: 4px;
+
+  .ant-picker-input {
+    font-size: 18px;
+
+    input {
+      font-size: 18px;
+      line-height: 32px;
+    }
+  }
+`;
+
+export const DatePickerSc = styled(DatePicker)`
+  input {
+    font-size: 18px !important;
+  }
 `;

@@ -1,9 +1,10 @@
 import React, { FC, useCallback, useEffect, useMemo, useState } from 'react';
-import { AutoComplete as AutoCompleteAntD, Form, TimePicker } from 'antd';
+import { AutoComplete as AutoCompleteAntD, Form } from 'antd';
 import dayjs from 'api/dayjs';
 import {
   ArrowRightLongIconDim,
   ContainerWithOutline,
+  DatePickerSc,
   GridContainer,
   GridContainerAsymmetricLeft,
   GridContainerAsymmetricRight,
@@ -14,6 +15,7 @@ import {
   SearchIconSc,
   SelectCaret,
   TextareaSC,
+  TimePickerSc,
   TopWrapper,
   WorkTitle,
   WorkTitleWrapper,
@@ -23,7 +25,6 @@ import { useFormik } from 'formik';
 import { FormItem } from 'ui-kit/FormItem';
 import { Select } from 'ui-kit/Select';
 import { Input } from 'ui-kit/Input';
-import { DatePicker } from 'ui-kit/DatePicker';
 import {
   EResourceType,
   EisTaskType,
@@ -228,12 +229,13 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
       <Form id={formId} onSubmitCapture={handleSubmit}>
         <FormItem label="Дата заявки">
           <GridContainerAsymmetricLeft>
-            <DatePicker
+            <DatePickerSc
+              format="DD MMMM"
               value={values.requestDate}
               onChange={(value) => setFieldValue('requestDate', value)}
             />
 
-            <TimePicker
+            <TimePickerSc
               format="HH:mm"
               value={values.requestTime || undefined}
               onChange={(value) => {
