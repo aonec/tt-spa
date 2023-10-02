@@ -21,7 +21,6 @@ import { PauseIcon, WarningIcon } from 'ui-kit/icons';
 
 export const ApartmentCellItem: FC<ApartmentCellItemProps> = ({
   apartment,
-  hosuingStockId,
 }) => {
   const isApartmentOnPause = apartment.status === EApartmentStatus.Pause;
   const isTasksOnApartmentExist = Boolean(
