@@ -28,12 +28,14 @@ export const AddressSearchContainer: FC<AddressSearchContainerProps> = ({
     streets,
     setInitialValues,
     verifiedInitialValues,
+    selectedCity,
   } = useUnit({
     cities: outputs.$existingCities,
     streets: outputs.$existingStreets,
     hasCorpuses: currentUserService.outputs.$hasCorpuses,
     setInitialValues: inputs.setInitialValues,
     verifiedInitialValues: outputs.$verifiedInitialValues,
+    selectedCity: outputs.$selectedCity,
   });
 
   const {
@@ -81,14 +83,15 @@ export const AddressSearchContainer: FC<AddressSearchContainerProps> = ({
   );
 
   useEffect(() => {
-    if (!cities?.length || initialValues?.city) return;
+    if (!cities?.length || selectedCity) return;
 
     set({ city: last(cities) || '' });
 
-    if (onChange) onChange('city', last(cities) || '');
+    if (onChange && !selectedCity) onChange('city', last(cities) || '');
+    if (onChange && selectedCity) onChange('city', selectedCity);
 
     submit();
-  }, [cities, initialValues, set, onChange, submit]);
+  }, [cities, selectedCity, set, onChange, submit, initialValues]);
 
   const handleChange = (key: SearchFieldType, value: string) => {
     fieldsOfForm[key]?.onChange(value);

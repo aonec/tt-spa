@@ -11,6 +11,10 @@ import { AddressSearchValues } from './view/AddressSearch/AddressSearch.types';
 
 const domain = createDomain('addressSearchService');
 
+const AddressSearchGate = createGate();
+const ExistingCitiesGate = createGate();
+const ExistingStreetsGate = createGate<GetExistingSteetRequestParams>();
+
 const fetchExistingCities = domain.createEffect<void, string[] | null>(
   getExistingCities,
 );
@@ -37,7 +41,10 @@ const $verifiedInitialValues = domain
     } else {
       return prev;
     }
-  });
+  })
+  .reset(AddressSearchGate.close);
+
+const $selectedCity = $verifiedInitialValues.map((data) => data?.city);
 
 const addressSearchForm = createForm<AddressSearchValues>({
   fields: {
@@ -61,10 +68,6 @@ const addressSearchForm = createForm<AddressSearchValues>({
     },
   },
 });
-
-const AddressSearchGate = createGate();
-const ExistingCitiesGate = createGate();
-const ExistingStreetsGate = createGate<GetExistingSteetRequestParams>();
 
 sample({
   clock: AddressSearchGate.close,
@@ -92,6 +95,7 @@ export const addressSearchService = {
     $existingStreets,
     $isExistingCitiesLoading,
     $verifiedInitialValues,
+    $selectedCity,
   },
   inputs: { setInitialValues },
   gates: {
