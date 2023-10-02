@@ -3,7 +3,7 @@ import {
   getExistingCities,
   getExistingStreets,
 } from './addressSearchService.api';
-import { combine, createDomain, sample } from 'effector';
+import { createDomain, sample } from 'effector';
 import { createGate } from 'effector-react';
 import { createForm } from 'effector-forms';
 import {
@@ -103,16 +103,13 @@ sample({
 
 sample({
   clock: handleSearchApartNumber,
-  source: combine(
-    addressSearchForm.$values,
-    $withApartment,
-    (values, withApartment) => ({ ...values, withApartment }),
-  ),
-  filter: (values) =>
-    Boolean(
-      values.withApartment && values.city && values.street && values.house,
-    ),
-  fn: (values) =>
+  source: {
+    values: addressSearchForm.$values,
+    withApartment: $withApartment,
+  },
+  filter: ({ withApartment, values }) =>
+    Boolean(withApartment && values.city && values.street && values.house),
+  fn: ({ values }) =>
     ({
       City: values.city,
       Street: values.street,
