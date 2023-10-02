@@ -1,6 +1,5 @@
 import React, { FC, useCallback, useEffect, useMemo, useState } from 'react';
 import { AutoComplete as AutoCompleteAntD, Form } from 'antd';
-import * as yup from 'yup';
 import dayjs from 'api/dayjs';
 import {
   ArrowRightLongIconDim,
@@ -45,6 +44,7 @@ import {
 import { Alert } from 'ui-kit/Alert';
 import { useSwitchInputOnEnter } from 'hooks/useSwitchInputOnEnter';
 import { fromEnter } from 'ui-kit/shared/DatePickerNative';
+import { validationSchema } from './AddTaskForm.constants';
 
 const {
   gates: { PageGate },
@@ -75,43 +75,21 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
       requestNumber: null,
       taskType: null,
       workTypeId: null,
-
       requestDate: dayjs(),
       requestTime: dayjs().format('HH:00'),
-
       addressSearch: '',
       apartmentNumber: null,
-
       subscriberName: null,
       phoneNumber: null,
-
       leadId: null,
       executorId: null,
-
       taskDescription: null,
-
       taskReasonSearch: null,
     },
-    // enableReinitialize: true,
     validateOnBlur: true,
     validateOnMount: true,
 
-    validationSchema: yup.object().shape({
-      sourceId: yup.string().nullable().required('Обязательное поле'),
-      requestNumber: yup.string().nullable().required('Обязательное поле'),
-      subscriberName: yup.string().nullable().required('Обязательное поле'),
-      phoneNumber: yup.string().nullable().required('Обязательное поле'),
-      requestDate: yup.string().nullable().required('Обязательное поле'),
-      requestTime: yup.string().nullable().required('Обязательное поле'),
-      executorId: yup.string().nullable().required('Обязательное поле'),
-      leadId: yup.string().nullable().required('Обязательное поле'),
-      selectedObjectAddress: yup
-        .string()
-        .nullable()
-        .required('Обязательное поле'),
-      taskType: yup.string().nullable().required('Обязательное поле'),
-      taskReasonSearch: yup.string().nullable().required('Обязательное поле'),
-    }),
+    validationSchema,
     onSubmit: (data) => {
       handleCreateTask(data);
     },
@@ -119,13 +97,12 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
 
   const next = useSwitchInputOnEnter(dataKey, false, false);
 
-  const sortedLeadExecutors = useMemo(() => {
-    return sortByAlphabet(leadExecutors);
-  }, [leadExecutors]);
+  const sortedLeadExecutors = useMemo(
+    () => sortByAlphabet(leadExecutors),
+    [leadExecutors],
+  );
 
-  const sortedExecutors = useMemo(() => {
-    return sortByAlphabet(executors);
-  }, [executors]);
+  const sortedExecutors = useMemo(() => sortByAlphabet(executors), [executors]);
 
   const isHaveValidationErrors = useMemo(
     () => Boolean(Object.keys(errors).length),
@@ -136,9 +113,13 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
     setDisableSubmit(isHaveValidationErrors);
   }, [isHaveValidationErrors, setDisableSubmit]);
 
-  const preparedAddressOptions = preparedAddressOption(
-    values.addressSearch,
-    preparedForOptionsAddresses || [],
+  const preparedAddressOptions = useMemo(
+    () =>
+      preparedAddressOption(
+        values.addressSearch,
+        preparedForOptionsAddresses || [],
+      ),
+    [values.addressSearch, preparedForOptionsAddresses],
   );
 
   const taskReasonOptions = useMemo(
@@ -209,9 +190,10 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
     [],
   );
 
-  const apartNumberOptions = autocompleteApartNumber(
-    values.apartmentNumber,
-    existingApartmentNumbers,
+  const apartNumberOptions = useMemo(
+    () =>
+      autocompleteApartNumber(values.apartmentNumber, existingApartmentNumbers),
+    [values.apartmentNumber, existingApartmentNumbers],
   );
 
   const sourceOptions = useMemo(
