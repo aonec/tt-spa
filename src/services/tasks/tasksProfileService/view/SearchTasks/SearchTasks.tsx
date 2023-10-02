@@ -151,6 +151,7 @@ export const SearchTasks: FC<SearchTasksProps> = ({
         />
         <Select
           small
+          data-test="task-type-selector"
           placeholder="Тип задачи"
           value={values.TaskType!}
           onChange={(value) => {
