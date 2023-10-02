@@ -2107,6 +2107,7 @@ export enum EStageActionType {
   ClearManuallyAttachedParticipants = 'ClearManuallyAttachedParticipants',
   CloseIndividualDevices = 'CloseIndividualDevices',
   CreateResourceDisconnecting = 'CreateResourceDisconnecting',
+  SetApplicationPostponeDate = 'SetApplicationPostponeDate',
 }
 
 export enum EStageStatus {
@@ -4979,6 +4980,8 @@ export interface StagePushRequest {
   taskConfirmation?: TaskConfirmationRequest | null;
   /** @format date-time */
   applicationCompletionDate?: string | null;
+  /** @format date-time */
+  applicationPostponeDate?: string | null;
   /** @maxLength 1024 */
   comment?: string | null;
 }
@@ -14618,13 +14621,12 @@ export class Api<
       data: ErpCreateTaskRequest,
       params: RequestParams = {},
     ) =>
-      this.request<File, ErrorApiResponse>({
+      this.request<void, ErrorApiResponse>({
         path: `/api/Tasks/ErpCreateTask`,
         method: 'POST',
         body: data,
         secure: true,
         type: ContentType.Json,
-        format: 'json',
         ...params,
       }),
 
