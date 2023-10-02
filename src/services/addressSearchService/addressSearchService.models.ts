@@ -3,6 +3,7 @@ import {
   getExistingStreets,
 } from './addressSearchService.api';
 import { createDomain, sample } from 'effector';
+import { isEqual } from 'lodash';
 import { createGate } from 'effector-react';
 import { GetExistingSteetRequestParams } from './addressSearchService.types';
 import { createForm } from 'effector-forms';
@@ -24,6 +25,19 @@ const fetchExistingStreets = domain.createEffect<
 const $existingStreets = domain
   .createStore<string[]>([])
   .on(fetchExistingStreets.doneData, (_, payload) => payload);
+
+const setInitialValues =
+  domain.createEvent<Partial<AddressSearchValues> | null>();
+const $verifiedInitialValues = domain
+  .createStore<Partial<AddressSearchValues> | null>(null)
+  .on(setInitialValues, (prev, income) => {
+    const isInitialValuesRealyChange = !isEqual(prev, income);
+    if (isInitialValuesRealyChange) {
+      return income;
+    } else {
+      return prev;
+    }
+  });
 
 const addressSearchForm = createForm<AddressSearchValues>({
   fields: {
@@ -77,7 +91,9 @@ export const addressSearchService = {
     $existingCities,
     $existingStreets,
     $isExistingCitiesLoading,
+    $verifiedInitialValues,
   },
+  inputs: { setInitialValues },
   gates: {
     ExistingCitiesGate,
     ExistingStreetsGate,

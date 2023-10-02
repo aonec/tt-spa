@@ -8,7 +8,7 @@ import { AddressSearch } from './view/AddressSearch';
 import { SearchFieldType } from './view/AddressSearch/AddressSearch.types';
 import { useForm } from 'effector-forms';
 
-const { gates, outputs, forms } = addressSearchService;
+const { gates, outputs, forms, inputs } = addressSearchService;
 const { ExistingCitiesGate, ExistingStreetsGate, AddressSearchGate } = gates;
 
 export const AddressSearchContainer: FC<AddressSearchContainerProps> = ({
@@ -22,10 +22,18 @@ export const AddressSearchContainer: FC<AddressSearchContainerProps> = ({
   className,
   isError = false,
 }) => {
-  const { cities, hasCorpuses, streets } = useUnit({
+  const {
+    cities,
+    hasCorpuses,
+    streets,
+    setInitialValues,
+    verifiedInitialValues,
+  } = useUnit({
     cities: outputs.$existingCities,
     streets: outputs.$existingStreets,
     hasCorpuses: currentUserService.outputs.$hasCorpuses,
+    setInitialValues: inputs.setInitialValues,
+    verifiedInitialValues: outputs.$verifiedInitialValues,
   });
 
   const {
@@ -45,17 +53,21 @@ export const AddressSearchContainer: FC<AddressSearchContainerProps> = ({
   );
 
   useEffect(() => {
-    if (initialValues) {
+    setInitialValues(initialValues || null);
+  }, [initialValues, setInitialValues]);
+
+  useEffect(() => {
+    if (verifiedInitialValues) {
       setForm({
-        apartment: initialValues.apartment || '',
-        corpus: initialValues.corpus || '',
-        house: initialValues.house || '',
-        question: initialValues.question || '',
-        street: initialValues.street || '',
-        city: initialValues.city || '',
+        apartment: verifiedInitialValues.apartment || '',
+        corpus: verifiedInitialValues.corpus || '',
+        house: verifiedInitialValues.house || '',
+        question: verifiedInitialValues.question || '',
+        street: verifiedInitialValues.street || '',
+        city: verifiedInitialValues.city || '',
       });
     }
-  }, [setForm, initialValues]);
+  }, [setForm, verifiedInitialValues]);
 
   const preparedFields = useMemo(
     () =>
