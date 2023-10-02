@@ -175,6 +175,7 @@ export const prepareDataForMinMaxCalculation = (
 export const getIsOnlyHousingDataEmpty = (
   housingConsumptionData: ConsumptionDataForTwoMonth | null,
 ) => {
+
   if (
     !housingConsumptionData?.currentMonthData?.housing?.length &&
     (housingConsumptionData?.currentMonthData?.normative?.length ||
@@ -182,6 +183,6 @@ export const getIsOnlyHousingDataEmpty = (
       housingConsumptionData?.prevMonthData?.normative?.length ||
       housingConsumptionData?.prevMonthData?.subscriber?.length)
   ) {
-    return true;
+    return true; //some
   } else return false;
 };

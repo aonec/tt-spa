@@ -195,7 +195,7 @@ const $dynamicMinMax = domain
 
       return prevMinMax[1] !== maxValue ? [minValue, maxValue] : prevMinMax;
     }
-  });
+  }); //sample
 
 const $isOnlyHousingDataEmpty = $housingConsumptionData.map(
   getIsOnlyHousingDataEmpty,

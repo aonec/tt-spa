@@ -142,7 +142,7 @@ export const ResourceConsumptionGraph: FC<ResourceConsumptionGraphProps> = ({
       consumptionData.prevMonthData?.housing?.length === 0 &&
       consumptionData.prevMonthData?.normative?.length === 0 &&
       consumptionData.prevMonthData?.subscriber?.length === 0)
-  ) {
+  ) { //every
     return <GraphEmptyData />;
   }
 
