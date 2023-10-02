@@ -11,6 +11,7 @@ import {
   getTaskReasons,
 } from './addTaskFromDispatcherService.api';
 import {
+  ApartmentListResponse,
   ApartmentListResponsePagedList,
   ErpCreateTaskRequest,
   ErpExecutorResponse,
@@ -150,17 +151,18 @@ const $apartmentHomeownerNames = domain
   .reset(handleReset);
 
 const $existingApartmentNumbers = domain
-  .createStore<ExistingApartmentNumberType[]>([])
-  .on(getApartmentsFx.doneData, (_, { items }) => {
-    if (!items) return [];
-    return items
-      .filter((apartment) => Boolean(apartment.apartmentNumber))
-      .map((apartment) => ({
-        value: apartment.apartmentNumber as string,
-        id: apartment.id,
-      }));
-  })
+  .createStore<ApartmentListResponse[]>([])
+  .on(getApartmentsFx.doneData, (_, { items }) => items || [])
   .reset(handleReset);
+
+const $preparedApartmentNumbers = $existingApartmentNumbers.map((items) => {
+  return items
+    .filter((apartment) => Boolean(apartment.apartmentNumber))
+    .map((apartment) => ({
+      value: apartment.apartmentNumber as string,
+      id: apartment.id,
+    }));
+});
 
 const $resourceDisconnection = domain
   .createStore<ResourceDisconnectingResponse[]>([])
@@ -246,7 +248,7 @@ sample({
 
 sample({
   clock: handleSelectApartmentNumber,
-  source: $existingApartmentNumbers,
+  source: $preparedApartmentNumbers,
   fn: (apartmentOptions, selectedApartNumber) => {
     const selectedOption = apartmentOptions.find(
       (optionItem) => optionItem.value === selectedApartNumber,
@@ -326,7 +328,7 @@ export const addTaskFromDispatcherService = {
     $preparedForOptionsAddresses,
     $executors,
     $isCreatePending,
-    $existingApartmentNumbers,
+    $preparedApartmentNumbers,
     $resourceDisconnection,
     $apartmentHomeownerNames,
     $taskReasons,

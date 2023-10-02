@@ -17,7 +17,7 @@ export const AddTaskFromDispatcherContainer = () => {
     leadExecutors,
     isCreatePending,
     handleSelectHousingAddress,
-    existingApartmentNumbers,
+    preparedApartmentNumbers,
     resourceDisconnection,
     handleSelectApartmentNumber,
     apartmentHomeownerNames,
@@ -35,7 +35,7 @@ export const AddTaskFromDispatcherContainer = () => {
     isCreatePending: outputs.$isCreatePending,
     handleSelectHousingAddress: inputs.handleSelectHousingAddress,
     handleSelectApartmentNumber: inputs.handleSelectApartmentNumber,
-    existingApartmentNumbers: outputs.$existingApartmentNumbers,
+    preparedApartmentNumbers: outputs.$preparedApartmentNumbers,
     resourceDisconnection: outputs.$resourceDisconnection,
     apartmentHomeownerNames: outputs.$apartmentHomeownerNames,
     taskReasons: outputs.$taskReasons,
@@ -55,7 +55,7 @@ export const AddTaskFromDispatcherContainer = () => {
         executors={executors}
         isCreatePending={isCreatePending}
         handleSelectHousingAddress={handleSelectHousingAddress}
-        existingApartmentNumbers={existingApartmentNumbers}
+        existingApartmentNumbers={preparedApartmentNumbers}
         resourceDisconnection={resourceDisconnection}
         handleSelectApartmentNumber={handleSelectApartmentNumber}
         apartmentHomeownerNames={apartmentHomeownerNames}
