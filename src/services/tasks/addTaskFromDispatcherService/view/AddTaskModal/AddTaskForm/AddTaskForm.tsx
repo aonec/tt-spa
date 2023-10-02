@@ -1,5 +1,5 @@
 import React, { FC, useCallback, useEffect, useMemo, useState } from 'react';
-import { AutoComplete as AutoCompleteAntD, Form } from 'antd';
+import { AutoComplete as AutoCompleteAntD, Form, TimePicker } from 'antd';
 import dayjs from 'api/dayjs';
 import {
   ArrowRightLongIconDim,
@@ -29,7 +29,6 @@ import {
   EisTaskType,
   ResourceDisconnectingTypeResponse,
 } from 'api/types';
-import { SelectTime } from 'ui-kit/SelectTime';
 import { addTaskFromDispatcherService } from 'services/tasks/addTaskFromDispatcherService/addTaskFromDispatcherService.models';
 import {
   ResourceShortNamesDictionary,
@@ -76,7 +75,7 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
       taskType: null,
       workTypeId: null,
       requestDate: dayjs(),
-      requestTime: dayjs().format('HH:00'),
+      requestTime: dayjs(),
       addressSearch: '',
       apartmentNumber: null,
       subscriberName: null,
@@ -234,9 +233,12 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
               onChange={(value) => setFieldValue('requestDate', value)}
             />
 
-            <SelectTime
+            <TimePicker
+              format="HH:mm"
               value={values.requestTime || undefined}
-              onChange={(value) => setFieldValue('requestTime', value)}
+              onChange={(value) => {
+                setFieldValue('requestTime', value);
+              }}
             />
           </GridContainerAsymmetricLeft>
         </FormItem>
@@ -360,7 +362,6 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
               showSearch
               allowClear
               virtual={false}
-              status={statusTaskType}
               placeholder="Начните вводить"
               value={values.taskReasonSearch}
               onChange={(value) => {

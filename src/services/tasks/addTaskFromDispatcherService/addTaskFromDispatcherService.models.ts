@@ -185,7 +185,7 @@ sample({
   fn: (source, data) => {
     const sourceDateTime = data.requestDate
       ?.format('YYYY-MM-DD')
-      .concat('T', data.requestTime || '');
+      .concat('T', data.requestTime?.format('HH:mm') || '');
 
     const sourceDateTimeUTC = dayjs(sourceDateTime).utcOffset(0).toISOString();
 

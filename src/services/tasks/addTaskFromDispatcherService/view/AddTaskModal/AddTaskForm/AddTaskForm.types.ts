@@ -19,7 +19,7 @@ export type AddTask = {
   workTypeId: string | null;
 
   requestDate: dayjs.Dayjs | null;
-  requestTime: string | null;
+  requestTime: dayjs.Dayjs | null;
 
   addressSearch: string;
 
