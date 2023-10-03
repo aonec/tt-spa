@@ -38,8 +38,8 @@ import {
   TaskTypeDictionary,
 } from 'dictionaries';
 import {
+  autocomplete,
   autocompleteApartNumber,
-  preparedAddressOption,
   sortByAlphabet,
 } from './AddTaskForm.utils';
 import { Alert } from 'ui-kit/Alert';
@@ -120,11 +120,7 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
   }, [isHaveValidationErrors, setDisableSubmit]);
 
   const preparedAddressOptions = useMemo(
-    () =>
-      preparedAddressOption(
-        values.addressSearch,
-        preparedForOptionsAddresses || [],
-      ),
+    () => autocomplete(values.addressSearch, preparedForOptionsAddresses || []),
     [values.addressSearch, preparedForOptionsAddresses],
   );
 
