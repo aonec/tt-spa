@@ -133,20 +133,35 @@ export const ResourceConsumptionGraph: FC<ResourceConsumptionGraphProps> = ({
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  const isConsumptionDataItemsEmpty = useMemo(
-    () =>
-      [
-        consumptionData.currentMonthData?.housing?.length,
-        consumptionData.currentMonthData?.normative?.length,
-        consumptionData.currentMonthData?.subscriber?.length,
-        consumptionData.prevMonthData?.housing?.length,
-        consumptionData.prevMonthData?.normative?.length,
-        consumptionData.prevMonthData?.subscriber?.length,
-      ].every((elem) => !Boolean(elem)),
-    [consumptionData],
+  const isConsumptionDataItemsEmpty = [
+    consumptionData.currentMonthData?.housing?.length,
+    consumptionData.currentMonthData?.normative?.length,
+    consumptionData.currentMonthData?.subscriber?.length,
+    consumptionData.prevMonthData?.housing?.length,
+    consumptionData.prevMonthData?.normative?.length,
+    consumptionData.prevMonthData?.subscriber?.length,
+  ].every((elem) => !Boolean(elem));
+
+  console.log(
+    isConsumptionDataItemsEmpty,
+    consumptionData.currentMonthData?.housing?.length === 0 &&
+      consumptionData.currentMonthData?.normative?.length === 0 &&
+      consumptionData.currentMonthData?.subscriber?.length === 0 &&
+      consumptionData.prevMonthData?.housing?.length === 0 &&
+      consumptionData.prevMonthData?.normative?.length === 0 &&
+      consumptionData.prevMonthData?.subscriber?.length === 0,
   );
 
-  if (!resource || !consumptionData || isConsumptionDataItemsEmpty) {
+  if (
+    !resource ||
+    !consumptionData ||
+    (consumptionData.currentMonthData?.housing?.length === 0 &&
+      consumptionData.currentMonthData?.normative?.length === 0 &&
+      consumptionData.currentMonthData?.subscriber?.length === 0 &&
+      consumptionData.prevMonthData?.housing?.length === 0 &&
+      consumptionData.prevMonthData?.normative?.length === 0 &&
+      consumptionData.prevMonthData?.subscriber?.length === 0)
+  ) {
     return <GraphEmptyData />;
   }
 
