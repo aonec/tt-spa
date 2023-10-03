@@ -10,6 +10,9 @@ declare namespace Cypress {
   interface Chainable {
     login(): Chainable<void>;
 
-    clickLink(label: string): Chainable<void>;
+    selectOption(testId: string, option: string): Chainable<void>;
+
+    getByTestId(testId: string): Chainable<JQuery<HTMLElement>>
+    ;
   }
 }

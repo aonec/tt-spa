@@ -9,6 +9,18 @@ Cypress.Commands.add('login', () => {
   cy.contains('button', 'Вход в систему').click();
 });
 
-Cypress.Commands.add('clickLink', (label) => {
-  cy.get('a').contains(label).click();
+Cypress.Commands.add('selectOption', (testId, option) => {
+  cy.getByTestId(testId).click();
+
+  cy.get('.ant-select-dropdown :not(.ant-select-dropdown-hidden)')
+    .find('.ant-select-item-option')
+    .each((elem) => {
+      if (elem.text() === option) {
+        cy.wrap(elem).click();
+      }
+    });
+});
+
+Cypress.Commands.add('getByTestId', (testId) => {
+  return cy.get(`[data-test=${testId}]`);
 });

@@ -25,6 +25,8 @@ const $existingStreets = domain
   .createStore<string[]>([])
   .on(fetchExistingStreets.doneData, (_, payload) => payload);
 
+const $isExistingCitiesLoading = fetchExistingCities.pending;
+
 const addressSearchForm = createForm<AddressSearchValues>({
   fields: {
     city: {
@@ -58,9 +60,9 @@ sample({
 });
 
 sample({
-  source: $existingCities,
+  source: { cities: $existingCities, isLoading: $isExistingCitiesLoading },
   clock: ExistingCitiesGate.open,
-  filter: (cities) => !cities,
+  filter: ({ cities, isLoading }) => !cities && !isLoading,
   target: fetchExistingCities,
 });
 
@@ -69,8 +71,6 @@ sample({
   filter: (payload) => Boolean(payload.City),
   target: fetchExistingStreets,
 });
-
-const $isExistingCitiesLoading = fetchExistingStreets.pending;
 
 export const addressSearchService = {
   outputs: {

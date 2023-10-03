@@ -6,7 +6,7 @@ export default defineConfig({
     supportFile: 'cypress/support/e2e.ts',
   },
   env: {
-    email: '',
-    password: '',
+    email: '1.4@mail.ru',
+    password: '123456',
   },
 });

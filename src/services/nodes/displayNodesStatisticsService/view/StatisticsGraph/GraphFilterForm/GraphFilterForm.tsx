@@ -99,6 +99,7 @@ export const GraphFilterForm: React.FC<GraphFilterFormProps> = ({
         <ClosedFilterWrapper>
           <Tooltip title="Настройка параметров">
             <ButtonSC
+              data-test={'node-graph-filter-button'}
               onClick={() => openModal()}
               icon={<SortingIcon />}
               style={{ marginRight: 16 }}
