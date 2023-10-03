@@ -134,13 +134,13 @@ export const ResourceConsumptionGraph: FC<ResourceConsumptionGraphProps> = ({
   }, []);
 
   const isConsumptionDataItemsEmpty = [
-    consumptionData.currentMonthData?.housing?.length,
-    consumptionData.currentMonthData?.normative?.length,
-    consumptionData.currentMonthData?.subscriber?.length,
-    consumptionData.prevMonthData?.housing?.length,
-    consumptionData.prevMonthData?.normative?.length,
-    consumptionData.prevMonthData?.subscriber?.length,
-  ].every((elem) => !Boolean(elem));
+    consumptionData.currentMonthData?.housing?.length === 0,
+    consumptionData.currentMonthData?.normative?.length === 0,
+    consumptionData.currentMonthData?.subscriber?.length === 0,
+    consumptionData.prevMonthData?.housing?.length === 0,
+    consumptionData.prevMonthData?.normative?.length === 0,
+    consumptionData.prevMonthData?.subscriber?.length === 0,
+  ].every(Boolean);
 
   console.log(
     isConsumptionDataItemsEmpty,
@@ -152,16 +152,7 @@ export const ResourceConsumptionGraph: FC<ResourceConsumptionGraphProps> = ({
       consumptionData.prevMonthData?.subscriber?.length === 0,
   );
 
-  if (
-    !resource ||
-    !consumptionData ||
-    (consumptionData.currentMonthData?.housing?.length === 0 &&
-      consumptionData.currentMonthData?.normative?.length === 0 &&
-      consumptionData.currentMonthData?.subscriber?.length === 0 &&
-      consumptionData.prevMonthData?.housing?.length === 0 &&
-      consumptionData.prevMonthData?.normative?.length === 0 &&
-      consumptionData.prevMonthData?.subscriber?.length === 0)
-  ) {
+  if (!resource || !consumptionData || isConsumptionDataItemsEmpty) {
     return <GraphEmptyData />;
   }
 
