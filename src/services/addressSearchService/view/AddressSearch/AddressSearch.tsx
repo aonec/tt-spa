@@ -22,6 +22,7 @@ export const AddressSearch: FC<AddressSearchProps> = ({
   disabledFields,
   className,
   isError,
+  isFocus,
 }) => {
   const next = useSwitchInputOnEnter(dataKey, false, false);
 
@@ -90,6 +91,7 @@ export const AddressSearch: FC<AddressSearchProps> = ({
       }}
       disabled={isDisabled}
       error={isError || undefined}
+      autoFocus={isFocus}
     />
   );
 

@@ -21,6 +21,7 @@ export const AddressSearchContainer: FC<AddressSearchContainerProps> = ({
   onChange,
   className,
   isError = false,
+  isFocus = false,
 }) => {
   const {
     cities,
@@ -124,6 +125,7 @@ export const AddressSearchContainer: FC<AddressSearchContainerProps> = ({
         className={className}
         isError={isError}
         handleChange={handleChange}
+        isFocus={isFocus}
       />
     </>
   );
