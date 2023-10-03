@@ -10,6 +10,14 @@ export const GridContainer = styled.div`
   grid-template-columns: 1fr 1fr;
   grid-gap: 4px 20px;
 `;
+export const GridContainerExpandable = styled.div<{ isTwoColumn: boolean }>`
+  display: grid;
+
+  grid-template-columns: ${({ isTwoColumn }) =>
+    isTwoColumn ? '2fr 2fr ' : '2fr 1fr 2fr'};
+
+  grid-gap: 4px 20px;
+`;
 
 export const GridContainerAsymmetricLeft = styled.div`
   display: grid;
@@ -114,15 +122,20 @@ export const SelectCaret = styled(Select)`
   caret-color: transparent;
 `;
 
-export const TimePickerSc = styled(TimePicker)`
+export const TimePickerSc = styled(TimePicker).attrs({
+  format: 'HH:mm',
+  suffixIcon: null,
+  allowClear: false,
+})`
   border-radius: 4px;
 
-  .ant-picker-input {
-    font-size: 18px;
+  padding: 8px 20px !important;
 
+  .ant-picker-input {
     input {
       font-size: 18px;
       line-height: 32px;
+      padding: 0px;
     }
   }
 `;

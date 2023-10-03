@@ -25,7 +25,6 @@ import { createGate } from 'effector-react';
 import { EffectFailDataAxiosError } from 'types';
 import { AddTask } from './view/AddTaskModal/AddTaskForm/AddTaskForm.types';
 import {
-  ExistingApartmentNumberType,
   GetAddressesRequest,
   GetApartmentsRequest,
   GetResourceDisconnectionRequest,

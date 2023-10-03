@@ -8,6 +8,7 @@ import {
   GridContainer,
   GridContainerAsymmetricLeft,
   GridContainerAsymmetricRight,
+  GridContainerExpandable,
   OptionItemWrapper,
   ResourceDisconnectionAlertWrapper,
   ResourceDisconnectionDate,
@@ -71,7 +72,7 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
 }) => {
   const { values, handleSubmit, setFieldValue, errors } = useFormik<AddTask>({
     initialValues: {
-      sourceId: null,
+      sourceId: '34ac5b2e-9ebd-11e8-8131-001dd8b88b72',
       requestNumber: null,
       taskType: null,
       workTypeId: null,
@@ -94,6 +95,11 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
       handleCreateTask(data);
     },
   });
+
+  const isFromSubscriber = useMemo(
+    () => values.sourceId === '34ac5b2e-9ebd-11e8-8131-001dd8b88b72',
+    [values.sourceId],
+  );
 
   const next = useSwitchInputOnEnter(dataKey, false, false);
 
@@ -227,25 +233,7 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
       <PageGate />
 
       <Form id={formId} onSubmitCapture={handleSubmit}>
-        <FormItem label="Дата заявки">
-          <GridContainerAsymmetricLeft>
-            <DatePickerSc
-              format="DD MMMM"
-              value={values.requestDate}
-              onChange={(value) => setFieldValue('requestDate', value)}
-            />
-
-            <TimePickerSc
-              format="HH:mm"
-              value={values.requestTime || undefined}
-              onChange={(value) => {
-                setFieldValue('requestTime', value);
-              }}
-            />
-          </GridContainerAsymmetricLeft>
-        </FormItem>
-
-        <GridContainer>
+        <GridContainerExpandable isTwoColumn={!isFromSubscriber}>
           <FormItem label="Источник заявки">
             <SelectCaret
               showSearch
@@ -265,18 +253,37 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
             />
           </FormItem>
 
-          <FormItem label="Номер заявки">
-            <Input
-              placeholder="Введите"
-              value={values.requestNumber || undefined}
-              onChange={(value) =>
-                setFieldValue('requestNumber', value.target.value)
-              }
-              data-reading-input={dataKey}
-              onKeyDown={fromEnter(() => next(1))}
-            />
+          {isFromSubscriber && (
+            <FormItem label="Номер заявки">
+              <Input
+                placeholder="Введите"
+                value={values.requestNumber || undefined}
+                onChange={(value) =>
+                  setFieldValue('requestNumber', value.target.value)
+                }
+                data-reading-input={dataKey}
+                onKeyDown={fromEnter(() => next(1))}
+              />
+            </FormItem>
+          )}
+
+          <FormItem label="Дата и время заявки">
+            <GridContainerAsymmetricLeft>
+              <DatePickerSc
+                format="DD.MM.YYYY"
+                value={values.requestDate}
+                onChange={(value) => setFieldValue('requestDate', value)}
+              />
+
+              <TimePickerSc
+                value={values.requestTime || undefined}
+                onChange={(value) => {
+                  setFieldValue('requestTime', value);
+                }}
+              />
+            </GridContainerAsymmetricLeft>
           </FormItem>
-        </GridContainer>
+        </GridContainerExpandable>
 
         <GridContainerAsymmetricRight>
           <FormItem label="Адрес">
@@ -315,36 +322,38 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
           </FormItem>
         </GridContainerAsymmetricRight>
 
-        <GridContainer>
-          <FormItem label="ФИО абонента">
-            <AutoCompleteAntD
-              allowClear
-              value={values.subscriberName || undefined}
-              onChange={(value) => setFieldValue('subscriberName', value)}
-              options={apartmentHomeownerNames}
-              data-reading-input={dataKey}
-              onKeyDown={fromEnter(() => next(4))}
-              open={isNameOpen}
-              onBlur={() => setNameOpen(false)}
-              onFocus={() => setNameOpen(true)}
-              onSelect={() => setNameOpen(false)}
-              onMouseDown={() => setNameOpen(true)}
-            >
-              <Input placeholder="Начните вводить" />
-            </AutoCompleteAntD>
-          </FormItem>
-          <FormItem label="Номер телефона">
-            <Input
-              placeholder="Введите"
-              value={values.phoneNumber || undefined}
-              onChange={(value) =>
-                setFieldValue('phoneNumber', value.target.value)
-              }
-              data-reading-input={dataKey}
-              onKeyDown={fromEnter(() => next(5))}
-            />
-          </FormItem>
-        </GridContainer>
+        {isFromSubscriber && (
+          <GridContainer>
+            <FormItem label="ФИО абонента">
+              <AutoCompleteAntD
+                allowClear
+                value={values.subscriberName || undefined}
+                onChange={(value) => setFieldValue('subscriberName', value)}
+                options={apartmentHomeownerNames}
+                data-reading-input={dataKey}
+                onKeyDown={fromEnter(() => next(4))}
+                open={isNameOpen}
+                onBlur={() => setNameOpen(false)}
+                onFocus={() => setNameOpen(true)}
+                onSelect={() => setNameOpen(false)}
+                onMouseDown={() => setNameOpen(true)}
+              >
+                <Input placeholder="Начните вводить" />
+              </AutoCompleteAntD>
+            </FormItem>
+            <FormItem label="Номер телефона">
+              <Input
+                placeholder="Введите"
+                value={values.phoneNumber || undefined}
+                onChange={(value) =>
+                  setFieldValue('phoneNumber', value.target.value)
+                }
+                data-reading-input={dataKey}
+                onKeyDown={fromEnter(() => next(5))}
+              />
+            </FormItem>
+          </GridContainer>
+        )}
 
         {Boolean(resourceDisconnection.length) &&
           resourceDisconnection.map((disconnection) => (
