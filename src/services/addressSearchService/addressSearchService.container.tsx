@@ -1,5 +1,5 @@
 import { useUnit } from 'effector-react';
-import { last } from 'lodash';
+import { isEmpty, last } from 'lodash';
 import React, { FC, useEffect, useMemo } from 'react';
 import { currentUserService } from 'services/currentUserService';
 import { addressSearchService } from './addressSearchService.models';
@@ -67,6 +67,15 @@ export const AddressSearchContainer: FC<AddressSearchContainerProps> = ({
         city: verifiedInitialValues.city || '',
       });
     }
+    if (!verifiedInitialValues || isEmpty(verifiedInitialValues)) {
+      setForm({
+        apartment: '',
+        corpus: '',
+        house: '',
+        question: '',
+        street: '',
+      });
+    }
   }, [setForm, verifiedInitialValues]);
 
   const preparedFields = useMemo(
@@ -81,14 +90,14 @@ export const AddressSearchContainer: FC<AddressSearchContainerProps> = ({
   );
 
   useEffect(() => {
-    if (!cities?.length || initialValues?.city) return;
+    if (!cities?.length || verifiedInitialValues?.city) return;
 
     set({ city: last(cities) || '' });
 
     if (onChange) onChange('city', last(cities) || '');
 
-    submit();
-  }, [cities, initialValues, set, onChange, submit]);
+    // submit();
+  }, [cities, verifiedInitialValues, set, onChange, submit]);
 
   const handleChange = (key: SearchFieldType, value: string) => {
     fieldsOfForm[key]?.onChange(value);

@@ -14,6 +14,8 @@ import { addressSearchService } from 'services/addressSearchService/addressSearc
 
 const domain = createDomain('actsJournalService');
 
+const ActsJournalGate = createGate();
+
 const updateActsFilter = domain.createEvent<ActsJournalRequestParams>();
 
 const setPageNumber = domain.createEvent<number>();
@@ -29,7 +31,8 @@ const $actsFilter = domain
   })
   .on(setPageNumber, (oldFilter, PageNumber) => {
     return { ...oldFilter, PageNumber };
-  });
+  })
+  .reset(ActsJournalGate.close);
 
 const getActs = domain.createEvent();
 const getActsFx = domain.createEffect<
@@ -44,8 +47,6 @@ const $actsPagedData = domain
 const createAct =
   domain.createEvent<Omit<AddApartmentActRequest, 'apartmentId'>>();
 const createActFx = domain.createEffect<AddApartmentActRequest, void>(addAct);
-
-const ActsJournalGate = createGate();
 
 const $isCreateLoading = createActFx.pending;
 const $isActsLoading = getActsFx.pending;

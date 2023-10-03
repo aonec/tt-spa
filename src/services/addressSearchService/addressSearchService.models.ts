@@ -28,6 +28,7 @@ const $existingStreets = domain
 
 const setInitialValues =
   domain.createEvent<Partial<AddressSearchValues> | null>();
+
 const $verifiedInitialValues = domain
   .createStore<Partial<AddressSearchValues> | null>(null)
   .on(setInitialValues, (prev, income) => {
