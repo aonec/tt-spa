@@ -1,4 +1,13 @@
-import { combine, createDomain, sample } from 'effector';
+import {
+  combine,
+  createEffect,
+  createEvent,
+  createStore,
+  sample,
+} from 'effector';
+import { createGate } from 'effector-react';
+import dayjs from 'dayjs';
+import { message } from 'antd';
 import {
   createTask,
   getAddresses,
@@ -21,7 +30,6 @@ import {
   ResourceDisconnectingResponsePagedList,
   StreetWithBuildingNumbersResponsePagedList,
 } from 'api/types';
-import { createGate } from 'effector-react';
 import { EffectFailDataAxiosError } from 'types';
 import { AddTask } from './view/AddTaskModal/AddTaskForm/AddTaskForm.types';
 import {
@@ -31,126 +39,110 @@ import {
   HomeownerNameOption,
   PreparedAddress,
 } from './addTaskFromDispatcherService.types';
-import { message } from 'antd';
 import { currentUserService } from 'services/currentUserService';
 import { prepareAddressesForTreeSelect } from './addTaskFromDispatcherService.utils';
-import dayjs from 'dayjs';
-
-const domain = createDomain('addTaskFromDispatcherService');
 
 const PageGate = createGate();
 
-const handleOpenModal = domain.createEvent();
-const handleCloseModal = domain.createEvent();
+const handleOpenModal = createEvent();
+const handleCloseModal = createEvent();
 
-const choоseLeadExecutor = domain.createEvent<string>();
+const choоseLeadExecutor = createEvent<string>();
 
-const handleCreateTask = domain.createEvent<AddTask>();
+const handleCreateTask = createEvent<AddTask>();
 
-const handleSelectHousingAddress = domain.createEvent<string>();
-const handleSelectApartmentNumber = domain.createEvent<string>();
-const handleSelectTaskReason = domain.createEvent<string>();
+const handleSelectHousingAddress = createEvent<string>();
+const handleSelectApartmentNumber = createEvent<string>();
+const handleSelectTaskReason = createEvent<string>();
 
-const setSelectedHousingId = domain.createEvent<string | null>();
-const setSelectedApartmentId = domain.createEvent<number | null>();
-const setSelectedTaskReasonId = domain.createEvent<string | null>();
+const setSelectedHousingId = createEvent<string | null>();
+const setSelectedApartmentId = createEvent<number | null>();
+const setSelectedTaskReasonId = createEvent<string | null>();
 
-const handleReset = domain.createEvent();
+const handleReset = createEvent();
 
-const createTaskFx = domain.createEffect<
+const createTaskFx = createEffect<
   ErpCreateTaskRequest,
   File | null,
   EffectFailDataAxiosError
 >(createTask);
 
-const getERPSourcesFx = domain.createEffect<void, ErpSourceResponse[]>(
-  getERPSources,
-);
+const getERPSourcesFx = createEffect<void, ErpSourceResponse[]>(getERPSources);
 
-const getLeadExecutorsFx = domain.createEffect<void, ErpExecutorResponse[]>(
+const getLeadExecutorsFx = createEffect<void, ErpExecutorResponse[]>(
   getLeadExecutors,
 );
 
-const getAddressesFx = domain.createEffect<
+const getAddressesFx = createEffect<
   GetAddressesRequest,
   StreetWithBuildingNumbersResponsePagedList
 >(getAddresses);
 
-const getErpExecutorsForLeadFx = domain.createEffect<
+const getErpExecutorsForLeadFx = createEffect<
   { leadId: string },
   ErpExecutorResponse[]
 >(getErpExecutorsForLead);
 
-const getApartmentsFx = domain.createEffect<
+const getApartmentsFx = createEffect<
   GetApartmentsRequest,
   ApartmentListResponsePagedList
 >(getApartments);
 
-const getApartmentHomeownerNamesFx = domain.createEffect<number, string[]>(
+const getApartmentHomeownerNamesFx = createEffect<number, string[]>(
   getApartmentHomeownerNames,
 );
 
-const getResourceDisconnectionFx = domain.createEffect<
+const getResourceDisconnectionFx = createEffect<
   GetResourceDisconnectionRequest,
   ResourceDisconnectingResponsePagedList
 >(getResourceDisconnection);
 
-const getTaskReasonsFx = domain.createEffect<void, ErpTaskReasonResponse[]>(
+const getTaskReasonsFx = createEffect<void, ErpTaskReasonResponse[]>(
   getTaskReasons,
 );
 
-const $isModalOpen = domain
-  .createStore<boolean>(false)
+const $isModalOpen = createStore<boolean>(false)
   .on(handleOpenModal, () => true)
   .on(handleCloseModal, () => false)
   .reset(handleReset);
 
-const $ERPSources = domain
-  .createStore<ErpSourceResponse[]>([])
+const $ERPSources = createStore<ErpSourceResponse[]>([])
   .on(getERPSourcesFx.doneData, (_, data) => data)
   .reset(handleReset);
 
-const $leadExecutors = domain
-  .createStore<ErpExecutorResponse[]>([])
+const $leadExecutors = createStore<ErpExecutorResponse[]>([])
   .on(getLeadExecutorsFx.doneData, (_, data) => data)
   .reset(handleReset);
 
-const $executors = domain
-  .createStore<ErpExecutorResponse[]>([])
+const $executors = createStore<ErpExecutorResponse[]>([])
   .on(getErpExecutorsForLeadFx.doneData, (_, data) => data)
   .reset(handleReset);
 
-const $preparedForOptionsAddresses = domain
-  .createStore<PreparedAddress[]>([])
+const $preparedForOptionsAddresses = createStore<PreparedAddress[]>([])
   .on(getAddressesFx.doneData, (_, data) =>
     prepareAddressesForTreeSelect(data.items),
   )
   .reset(handleReset);
 
-const $selectedHousingStockId = domain
-  .createStore<string | null>(null)
+const $selectedHousingStockId = createStore<string | null>(null)
   .on(setSelectedHousingId, (_, id) => id)
   .reset(handleReset);
 
-const $selectedApartmentId = domain
-  .createStore<number | null>(null)
+const $selectedApartmentId = createStore<number | null>(null)
   .on(setSelectedApartmentId, (_, id) => id)
   .reset(handleReset);
 
-const $selectedTaskReasonId = domain
-  .createStore<string | null>(null)
+const $selectedTaskReasonId = createStore<string | null>(null)
   .on(setSelectedTaskReasonId, (_, id) => id)
   .reset(handleReset);
 
-const $apartmentHomeownerNames = domain
-  .createStore<HomeownerNameOption[]>([])
+const $apartmentHomeownerNames = createStore<HomeownerNameOption[]>([])
   .on(getApartmentHomeownerNamesFx.doneData, (_, data) =>
     data.map((name) => ({ value: name })),
   )
   .reset(handleReset);
 
-const $existingApartmentNumbers = domain
-  .createStore<ApartmentListResponse[]>([])
+const $existingApartmentNumbers = createStore<ApartmentListResponse[]>([])
   .on(getApartmentsFx.doneData, (_, { items }) => items || [])
   .reset(handleReset);
 
@@ -163,13 +155,11 @@ const $preparedApartmentNumbers = $existingApartmentNumbers.map((items) => {
     }));
 });
 
-const $resourceDisconnection = domain
-  .createStore<ResourceDisconnectingResponse[]>([])
+const $resourceDisconnection = createStore<ResourceDisconnectingResponse[]>([])
   .on(getResourceDisconnectionFx.doneData, (_, data) => data.items || [])
   .reset(handleReset);
 
-const $taskReasons = domain
-  .createStore<ErpTaskReasonResponse[]>([])
+const $taskReasons = createStore<ErpTaskReasonResponse[]>([])
   .on(getTaskReasonsFx.doneData, (_, data) => data)
   .reset(handleReset);
 
