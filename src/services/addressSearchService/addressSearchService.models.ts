@@ -1,11 +1,11 @@
+import { createEffect, createEvent, createStore, sample } from 'effector';
+import { createGate } from 'effector-react';
+import { createForm } from 'effector-forms';
 import {
   getApartments,
   getExistingCities,
   getExistingStreets,
 } from './addressSearchService.api';
-import { createDomain, sample } from 'effector';
-import { createGate } from 'effector-react';
-import { createForm } from 'effector-forms';
 import {
   ExistingApartmentNumberType,
   GetApartmentsRequest,
@@ -14,37 +14,38 @@ import {
 import { AddressSearchValues } from './view/AddressSearch/AddressSearch.types';
 import { ApartmentListResponsePagedList } from 'api/types';
 
-const domain = createDomain('addressSearchService');
+const handleSearchApartNumber = createEvent();
+const handleResetForm = createEvent();
 
-const handleSearchApartNumber = domain.createEvent();
-const handleResetForm = domain.createEvent();
+const setWithApartment = createEvent<boolean>();
 
-const setWithApartment = domain.createEvent<boolean>();
-
-const fetchExistingCities = domain.createEffect<void, string[] | null>(
+const fetchExistingCities = createEffect<void, string[] | null>(
   getExistingCities,
 );
 
-const getApartmentsFx = domain.createEffect<
+const getApartmentsFx = createEffect<
   GetApartmentsRequest,
   ApartmentListResponsePagedList
 >(getApartments);
 
-const $existingCities = domain
-  .createStore<string[] | null>(null)
-  .on(fetchExistingCities.doneData, (_, cities) => cities);
+const $existingCities = createStore<string[] | null>(null).on(
+  fetchExistingCities.doneData,
+  (_, cities) => cities,
+);
 
-const fetchExistingStreets = domain.createEffect<
+const fetchExistingStreets = createEffect<
   GetExistingSteetRequestParams,
   string[]
 >(getExistingStreets);
-const $existingStreets = domain
-  .createStore<string[]>([])
-  .on(fetchExistingStreets.doneData, (_, payload) => payload);
+const $existingStreets = createStore<string[]>([]).on(
+  fetchExistingStreets.doneData,
+  (_, payload) => payload,
+);
 
-const $withApartment = domain
-  .store<boolean>(false)
-  .on(setWithApartment, (_, data) => data);
+const $withApartment = createStore<boolean>(false).on(
+  setWithApartment,
+  (_, data) => data,
+);
 
 const addressSearchForm = createForm<AddressSearchValues>({
   fields: {
@@ -69,8 +70,7 @@ const addressSearchForm = createForm<AddressSearchValues>({
   },
 });
 
-const $existingApartmentNumbers = domain
-  .createStore<ExistingApartmentNumberType[]>([])
+const $existingApartmentNumbers = createStore<ExistingApartmentNumberType[]>([])
   .on(getApartmentsFx.doneData, (_, { items }) => {
     if (!items) return [];
     return items
