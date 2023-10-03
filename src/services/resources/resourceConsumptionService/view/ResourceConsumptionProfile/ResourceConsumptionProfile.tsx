@@ -4,7 +4,11 @@ import { ResourceConsumptionGraph } from '../ResourceConsumptionGraph';
 import { SelectResourceConsumptionType } from '../ResourceConsumptionGraph/SelectResourceConsumptionType';
 import { SelectResource } from '../SelectResource';
 import { initialSelectedAddresses } from './ResourceConsumptionProfile.constants';
-import { GraphWrapper, Wrapper } from './ResourceConsumptionProfile.styled';
+import {
+  GraphWrapper,
+  HousingDataEmptyAlert,
+  Wrapper,
+} from './ResourceConsumptionProfile.styled';
 import {
   ResourceConsumptionProfileProps,
   SelectedAddresses,
@@ -61,10 +65,10 @@ export const ResourceConsumptionProfile: FC<
           />
 
           {isOnlyHousingDataEmpty && (
-            <div>
+            <HousingDataEmptyAlert>
               Нет данных по общедомовому потреблению за выбранный период.
               Пожалуйста, измените период для формирования новой статистики.
-            </div>
+            </HousingDataEmptyAlert>
           )}
 
           <SelectResourceConsumptionType

@@ -181,21 +181,7 @@ const $dataForMinMaxCalculation = combine(
   prepareDataForMinMaxCalculation,
 );
 
-const $dynamicMinMax = domain
-  .createStore<[number, number]>([0, 0])
-  .on($dataForMinMaxCalculation, (prevMinMax, dataForMinMaxCalculation) => {
-    const isHaveDataForMinMaxCalculation = !isEmpty(
-      dataForMinMaxCalculation?.flat(),
-    );
-
-    if (isHaveDataForMinMaxCalculation) {
-      const { minValue, maxValue } = getMinAndMaxForResourceConsumptionGraph(
-        dataForMinMaxCalculation,
-      );
-
-      return prevMinMax[1] !== maxValue ? [minValue, maxValue] : prevMinMax;
-    }
-  }); //sample
+const $dynamicMinMax = domain.createStore<[number, number]>([0, 0]);
 
 const $isOnlyHousingDataEmpty = $housingConsumptionData.map(
   getIsOnlyHousingDataEmpty,
@@ -270,6 +256,28 @@ sample({
     getPrevHousingConsumptionPlotFx,
     getPrevNormativeAndSubscriberConsumptionDataFx,
   ],
+});
+
+sample({
+  source: $dynamicMinMax,
+  clock: $dataForMinMaxCalculation,
+  filter: (_, dataForMinMaxCalculation) => {
+    const isHaveDataForMinMaxCalculation = !isEmpty(
+      dataForMinMaxCalculation?.flat(),
+    );
+    return isHaveDataForMinMaxCalculation;
+  },
+  fn: (dynamicMinMax, dataForMinMaxCalculation) => {
+    const { minValue, maxValue } = getMinAndMaxForResourceConsumptionGraph(
+      dataForMinMaxCalculation,
+    );
+
+    const isMaxValueChange = dynamicMinMax[1] !== maxValue;
+    return isMaxValueChange
+      ? ([minValue, maxValue] as [number, number])
+      : dynamicMinMax;
+  },
+  target: $dynamicMinMax,
 });
 
 forward({

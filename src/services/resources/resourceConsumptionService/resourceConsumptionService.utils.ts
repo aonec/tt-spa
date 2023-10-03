@@ -175,14 +175,23 @@ export const prepareDataForMinMaxCalculation = (
 export const getIsOnlyHousingDataEmpty = (
   housingConsumptionData: ConsumptionDataForTwoMonth | null,
 ) => {
+  const isCurrentMonthHousing =
+    housingConsumptionData?.currentMonthData?.housing?.length;
+  const isCurrentMonthNormative =
+    housingConsumptionData?.currentMonthData?.normative?.length;
+  const isCurrentMonthSubscriber =
+    housingConsumptionData?.currentMonthData?.subscriber?.length;
+  const isPrevMonthNormative =
+    housingConsumptionData?.prevMonthData?.normative?.length;
+  const isPrevMonthSubscriber =
+    housingConsumptionData?.prevMonthData?.subscriber?.length;
 
-  if (
-    !housingConsumptionData?.currentMonthData?.housing?.length &&
-    (housingConsumptionData?.currentMonthData?.normative?.length ||
-      housingConsumptionData?.currentMonthData?.subscriber?.length ||
-      housingConsumptionData?.prevMonthData?.normative?.length ||
-      housingConsumptionData?.prevMonthData?.subscriber?.length)
-  ) {
-    return true; //some
-  } else return false;
+  const isOtherDataNotEmpty = [
+    isCurrentMonthNormative,
+    isCurrentMonthSubscriber,
+    isPrevMonthNormative,
+    isPrevMonthSubscriber,
+  ].some((elem) => Boolean(elem));
+
+  return Boolean(!isCurrentMonthHousing && isOtherDataNotEmpty);
 };
