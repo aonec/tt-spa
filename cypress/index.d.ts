@@ -4,7 +4,7 @@ declare namespace Cypress {
   import dayjs from '../src/api/dayjs';
 
   interface Cypress {
-    dayjs: typeof dayjs;
+    dayjs: dayjs.Dayjs;
   }
 
   interface Chainable {
@@ -12,7 +12,6 @@ declare namespace Cypress {
 
     selectOption(testId: string, option: string): Chainable<void>;
 
-    getByTestId(testId: string): Chainable<JQuery<HTMLElement>>
-    ;
+    getByTestId(testId: string): Chainable<JQuery<HTMLElement>>;
   }
 }
