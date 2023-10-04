@@ -33,7 +33,9 @@ export const MeteringDeviceListItem: FC<MeteringDeviceListItemProps> = ({
       <InfoWrapper>
         <ResourceIconLookup resource={resource} />
         {device.id && (
-          <Link to={`/housingMeteringDevices/${device.id}`}>{deviceInfo}</Link>
+          <Link to={`/housingMeteringDevices/${device.id}/profile`}>
+            {deviceInfo}
+          </Link>
         )}
         {!device.id && deviceInfo}
       </InfoWrapper>

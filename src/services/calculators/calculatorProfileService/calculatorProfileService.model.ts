@@ -2,7 +2,6 @@ import { createDomain, forward, sample } from 'effector';
 import { createGate } from 'effector-react';
 import { CalculatorResponse } from 'api/types';
 import { fetchCalculator } from './calculatorProfileService.api';
-import { CalculatorProfileGrouptype } from './calculatorProfileService.constants';
 import { consumptionReportCalculatorService } from '../consumptionReportCalculatorService';
 import { meteringDevicesService } from 'services/devices/resourceAccountingSystemsService/view/ResourceAccountingSystems/meteringDevicesService';
 import { calculatorCommentService } from './CalculatorProfile/calculatorCommentService';
@@ -12,12 +11,6 @@ const domain = createDomain('calculatorProfileService');
 const clearStore = domain.createEvent();
 const refetchCalculator = domain.createEvent();
 const handleFecthCalculator = domain.createEvent<number>();
-
-const setCalculatorGrouptype = domain.createEvent<CalculatorProfileGrouptype>();
-const $currentCalculatorGrouptype = domain
-  .createStore<CalculatorProfileGrouptype>(CalculatorProfileGrouptype.Common)
-  .on(setCalculatorGrouptype, (_, grouptype) => grouptype)
-  .reset(clearStore);
 
 const getCalculatorFx = domain.createEffect<number, CalculatorResponse>(
   fetchCalculator,
@@ -70,7 +63,6 @@ forward({
 
 export const calculatorProfileService = {
   inputs: {
-    setCalculatorGrouptype,
     refetchCalculator,
     clearStore,
     handleFecthCalculator,
@@ -81,7 +73,6 @@ export const calculatorProfileService = {
   outputs: {
     $calculator,
     $isLoading,
-    $currentCalculatorGrouptype,
   },
   gates: { CalculatorIdGate },
 };

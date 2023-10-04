@@ -1,5 +1,5 @@
 import { ErrorMessage } from 'ui-kit/ErrorMessage';
-import { Form } from 'antd';
+import { Form, message } from 'antd';
 import { useFormik } from 'formik';
 import dayjs from 'api/dayjs';
 import {
@@ -60,6 +60,11 @@ export const CreateResourceDisconnectionForm: FC<
   selectedBuilding,
   handleCreateDisconnectionState,
   handleCloseModal,
+  dateFrom,
+  preselectedBuilding,
+  defaultResource,
+  preselectedBuildingData,
+  defaultCity,
 }) => {
   const documentInit = useMemo(
     () =>
@@ -73,8 +78,12 @@ export const CreateResourceDisconnectionForm: FC<
     if (!isEdit || !resourceDisconnection) {
       return formInitialValues;
     }
-    return getFormValues(resourceDisconnection, selectedBuilding);
-  }, [resourceDisconnection, isEdit, selectedBuilding]);
+    return getFormValues(
+      resourceDisconnection,
+      selectedBuilding,
+      preselectedBuilding,
+    );
+  }, [isEdit, resourceDisconnection, selectedBuilding, preselectedBuilding]);
 
   const handleSubmitFormik = useCallback(
     (formValues: CreateResourceDisconnectionFormTypes) => {
@@ -85,6 +94,22 @@ export const CreateResourceDisconnectionForm: FC<
       const disconnectingType = formValues.disconnectingType;
 
       if (!(resource && disconnectingType)) {
+        return;
+      }
+
+      if (
+        preselectedBuilding &&
+        !preparedHousingStockIds.includes(preselectedBuilding)
+      ) {
+        const address = preselectedBuildingData?.addresses?.find(
+          (elem) => elem.buildingId === preselectedBuilding,
+        );
+
+        message.error(
+          `Адрес "${preselectedBuildingData?.street || ''}${
+            address?.corpus || ''
+          } ${address?.number || ''}" обязателен`,
+        );
         return;
       }
 
@@ -128,9 +153,12 @@ export const CreateResourceDisconnectionForm: FC<
       return handleCreateResourceDisconnection(createPayload);
     },
     [
+      preselectedBuilding,
       handleCreateDisconnectionState,
       isEdit,
       handleCreateResourceDisconnection,
+      preselectedBuildingData?.addresses,
+      preselectedBuildingData?.street,
       handleCloseModal,
       isInterHeatingSeason,
       handleEditResourceDisconnection,
@@ -150,6 +178,12 @@ export const CreateResourceDisconnectionForm: FC<
       onSubmit: handleSubmitFormik,
     });
 
+  useEffect(() => {
+    if (defaultCity) {
+      selectCity(defaultCity);
+    }
+  }, [defaultCity, selectCity]);
+
   const isCityShow =
     existingCities.length > 1 && typeOfAddress === EAddressDetails.All;
 
@@ -167,11 +201,17 @@ export const CreateResourceDisconnectionForm: FC<
   );
 
   useEffect(() => {
-    setFieldValue(
-      'housingStockIds',
-      selectedBuilding ? [selectedBuilding.id] : [],
-    );
-  }, [treeData, setFieldValue, selectedBuilding]);
+    if (defaultResource) {
+      setFieldValue('resource', defaultResource);
+    }
+  }, [defaultResource, setFieldValue]);
+
+  useEffect(() => {
+    setFieldValue('housingStockIds', [
+      ...(selectedBuilding?.id ? [selectedBuilding.id] : []),
+      ...(preselectedBuilding ? [preselectedBuilding] : []),
+    ]);
+  }, [treeData, setFieldValue, selectedBuilding, preselectedBuilding]);
 
   useEffect(() => {
     if (!values.startDate) {
@@ -188,8 +228,11 @@ export const CreateResourceDisconnectionForm: FC<
       (housingstock) => housingstock.id,
     );
 
-    setFieldValue('housingStockIds', housingStockIds);
-  }, [treeData, setFieldValue, resourceDisconnection]);
+    setFieldValue('housingStockIds', [
+      housingStockIds,
+      ...(preselectedBuilding ? [preselectedBuilding] : []),
+    ]);
+  }, [treeData, setFieldValue, resourceDisconnection, preselectedBuilding]);
 
   useEffect(() => {
     if (!isInterHeatingSeason) {
@@ -216,8 +259,8 @@ export const CreateResourceDisconnectionForm: FC<
     <Form id={formId} onSubmitCapture={submitForm}>
       <BaseInfoWrapper>
         <CreateResourceDisconnectionSelectResource
-          disabled={isInterHeatingSeason || isEdit}
-          currentValue={values.resource || undefined}
+          disabled={isInterHeatingSeason || isEdit || Boolean(defaultResource)}
+          currentValue={defaultResource || values.resource || undefined}
           resourceTypes={resourceTypes}
           errorText={errors.resource || null}
           setFieldValue={(value) => setFieldValue('resource', value)}
@@ -298,6 +341,9 @@ export const CreateResourceDisconnectionForm: FC<
               placeholder="Дата"
               onChange={(_, stringDate) =>
                 setFieldValue('startDate', stringDate)
+              }
+              disabledDate={(date) =>
+                (dateFrom && date.diff(dateFrom) > 0) || false
               }
             />
             <Select

@@ -12,8 +12,9 @@ import {
   ResourceAccountingSystemsSegment,
 } from './ResourceAccountingSystems.types';
 import { NodesGroup } from './NodesGroup';
-import { Empty, Skeleton } from 'antd';
+import { Empty } from 'antd';
 import { getNodesGroups } from './ResourceAccountingSystems.utils';
+import { WithLoader } from 'ui-kit/shared/WithLoader';
 
 export const ResourceAccountingSystems: FC<ResourceAccountingSystemsProps> = ({
   nodes,
@@ -49,8 +50,7 @@ export const ResourceAccountingSystems: FC<ResourceAccountingSystemsProps> = ({
           onChange={setSegmentName}
         />
       </Header>
-      {isLoading && <Skeleton active />}
-      {!isLoading && (
+      <WithLoader isLoading={isLoading}>
         <NodesGroupsWrapper>
           {nodesGroups.length ? (
             nodesGroups.map(([key, nodes]) => {
@@ -68,7 +68,7 @@ export const ResourceAccountingSystems: FC<ResourceAccountingSystemsProps> = ({
             <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
           )}
         </NodesGroupsWrapper>
-      )}
+      </WithLoader>
     </Wrapper>
   );
 };

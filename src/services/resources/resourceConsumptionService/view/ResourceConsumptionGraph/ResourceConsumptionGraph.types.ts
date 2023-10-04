@@ -1,6 +1,5 @@
 import { EResourceType } from 'api/types';
 import {
-  ConsumptionDataForTwoMonth,
   MonthConsumptionData,
   ResourceConsumptionGraphDataType,
 } from '../../resourceConsumptionService.types';

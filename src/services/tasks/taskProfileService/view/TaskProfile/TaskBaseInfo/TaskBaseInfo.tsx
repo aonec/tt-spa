@@ -58,7 +58,9 @@ export const TaskBaseInfo: FC<TaskBaseInfoProps> = ({ task }) => {
         </RowWrapper>
         <RowWrapper>
           <div>Адрес</div>
-          <LinkSC to={linkPath}>{address}</LinkSC>
+          <LinkSC to={linkPath} target="_blank">
+            {address}
+          </LinkSC>
         </RowWrapper>
         {apartment && (
           <RowWrapper>

@@ -11,7 +11,7 @@ import { CalculatorInfoProps } from './CalculatorInfo.types';
 
 export const CalculatorInfo: FC<CalculatorInfoProps> = ({ calculator }) => {
   return (
-    <Link to={`/calculators/${calculator.id}`}>
+    <Link to={`/calculators/${calculator.id}/profile`}>
       <Wrapper>
         <CalculatorIcon />
         <CalculatorModel>{calculator.model}</CalculatorModel>

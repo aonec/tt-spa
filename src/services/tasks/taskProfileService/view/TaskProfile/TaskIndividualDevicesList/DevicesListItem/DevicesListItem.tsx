@@ -29,7 +29,7 @@ export const DevicesListItem: FC<DevicesListItemProps> = ({
           <IndividualDeviceInfo device={device} />
         </GroupWrapper>
         <GroupWrapper>
-          <LinkSC to={`/apartments/${apartmentId}/testimony`}>
+          <LinkSC to={`/apartments/${apartmentId}/testimony`} target="_blank">
             Перейти в профиль
           </LinkSC>
           <ReadingsHistoryButtonWrapper>

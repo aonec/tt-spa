@@ -1,6 +1,7 @@
 import { createEffect, createEvent, createStore, sample } from 'effector';
 import { createGate } from 'effector-react';
 import { createForm } from 'effector-forms';
+import { isEqual } from 'lodash';
 import {
   getApartments,
   getExistingCities,
@@ -46,6 +47,18 @@ const $withApartment = createStore<boolean>(false).on(
   setWithApartment,
   (_, data) => data,
 );
+
+const setInitialValues = createEvent<Partial<AddressSearchValues> | null>();
+const $verifiedInitialValues = createStore<Partial<AddressSearchValues> | null>(
+  null,
+).on(setInitialValues, (prev, income) => {
+  const isInitialValuesRealyChange = !isEqual(prev, income);
+  if (isInitialValuesRealyChange) {
+    return income;
+  } else {
+    return prev;
+  }
+});
 
 const addressSearchForm = createForm<AddressSearchValues>({
   fields: {
@@ -129,8 +142,14 @@ export const addressSearchService = {
     $existingStreets,
     $isExistingCitiesLoading,
     $existingApartmentNumbers,
+    $verifiedInitialValues,
   },
-  inputs: { handleSearchApartNumber, setWithApartment, handleResetForm },
+  inputs: {
+    handleSearchApartNumber,
+    setWithApartment,
+    handleResetForm,
+    setInitialValues,
+  },
   gates: {
     ExistingCitiesGate,
     ExistingStreetsGate,

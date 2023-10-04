@@ -4,7 +4,6 @@ import {
 } from 'api/types';
 import { ConsumptionDataFilter } from '../../resourceConsumptionFilterService/resourceConsumptionFilterService.types';
 import {
-  ConsumptionDataForTwoMonth,
   ResourceConsumptionGraphType,
   ResourceConsumptionGraphDataType,
   MonthConsumptionData,

@@ -12,8 +12,6 @@ import {
 } from './ApartmentIndividualDeviceMetersInputLine.styled';
 import { ApartmentIndividualDeviceMetersInputLineProps } from './ApartmentIndividualDeviceMetersInputLine.types';
 import { getReadingValuesArray } from './ApartmentIndividualDeviceMetersInputLine.utils';
-import { ContextMenuButton } from 'ui-kit/ContextMenuButton/ContextMenuButton';
-import { Tooltip } from 'ui-kit/shared/Tooltip';
 
 export const ApartmentIndividualDeviceMetersInputLine: FC<
   ApartmentIndividualDeviceMetersInputLineProps
@@ -66,10 +64,10 @@ export const ApartmentIndividualDeviceMetersInputLine: FC<
           <ResourceIconLookup resource={device.resource} />
         </div>
         {/* <Tooltip title={`${device.serialNumber} (${device.model})`}> */}
-          <div className="device-info-text">
-            <strong>{device.serialNumber}</strong>
-            <div>{device.model}</div>
-          </div>
+        <div className="device-info-text">
+          <strong>{device.serialNumber}</strong>
+          <div>{device.model}</div>
+        </div>
         {/* </Tooltip> */}
       </DeviceInfoWrapper>
       <MetersInputsBlock
@@ -107,10 +105,10 @@ export const ApartmentIndividualDeviceMetersInputLine: FC<
         )) || '-'}
       </ConsumptionWrapper>
       {/* <Tooltip title="История показаний" className="device-option"> */}
-        <HistoryIcon
-          onClick={openReadingsHistoryModal}
-          style={{ cursor: 'pointer' }}
-        />
+      <HistoryIcon
+        onClick={openReadingsHistoryModal}
+        style={{ cursor: 'pointer' }}
+      />
       {/* </Tooltip> */}
       {/* <ContextMenuButton size="small" /> */}
     </Wrapper>

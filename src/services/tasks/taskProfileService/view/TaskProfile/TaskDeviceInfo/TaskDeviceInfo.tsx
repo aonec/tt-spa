@@ -38,7 +38,7 @@ export const TaskDeviceInfo: FC<TaskDeviceInfoProps> = ({ device }) => {
 
   return (
     <Wrapper>
-      <TitleWrapper to={`/${path}/${id}`}>
+      <TitleWrapper to={`/${path}/${id}`} target="_blank">
         {icon}
         <SerialNumber>{serialNumber}</SerialNumber>
         <Model>({model})</Model>

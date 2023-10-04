@@ -64,13 +64,10 @@ export const HouseManagementsReportTable: FC<
           css: getSumColumnCSS,
           render: (elem) =>
             [
-              elem.apartmentsCount,
-              elem.apartmentsWithIMDCount,
               elem.coldWaterSupplyCount,
               elem.hotWaterSupplyCount,
               elem.electricityCount,
               elem.heatCount,
-              elem.housingStocksCount,
             ].reduce((acc, elem) => acc + elem, 0),
         },
       ]}
