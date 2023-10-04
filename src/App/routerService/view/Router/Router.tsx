@@ -198,12 +198,12 @@ export const Router: FC<RouterProps> = ({
                   {isAnyRole && (
                     <Route path="/buildings">
                       <Route
-                        path={`/buildings/livingProfile/:buildingId`}
+                        path={`/buildings/livingProfile/:buildingId/:section?`}
                         component={HousingStockProfileContainer}
                         exact
                       />
                       <Route
-                        path={`/buildings/nonResidentialProfile/:buildingId`}
+                        path={`/buildings/nonResidentialProfile/:buildingId/:section?`}
                         component={NonResidentialBuildingProfileContainer}
                         exact
                       />
@@ -291,14 +291,6 @@ export const Router: FC<RouterProps> = ({
                     />
                   )}
 
-                  {isAnyRole && (
-                    <Route
-                      path={['/calculators/:deviceId']}
-                      component={CalculatorProfileContainer}
-                      exact
-                    />
-                  )}
-
                   {isAdministrator || isExecutor ? (
                     <Route
                       path="/calculators/:deviceId/edit"
@@ -309,6 +301,14 @@ export const Router: FC<RouterProps> = ({
                     <Route
                       path="/calculators/:deviceId/edit"
                       component={AccessDeniedPage}
+                      exact
+                    />
+                  )}
+
+                  {isAnyRole && (
+                    <Route
+                      path="/calculators/:deviceId/profile/:section?"
+                      component={CalculatorProfileContainer}
                       exact
                     />
                   )}
@@ -335,14 +335,6 @@ export const Router: FC<RouterProps> = ({
                     />
                   )}
 
-                  {isAnyRole && (
-                    <Route
-                      path={['/housingMeteringDevices/:deviceId/']}
-                      component={HousingMeteringDeviceProfileContainer}
-                      exact
-                    />
-                  )}
-
                   {isAdministrator ||
                   isExecutor ||
                   isSeniorOperator ||
@@ -356,6 +348,16 @@ export const Router: FC<RouterProps> = ({
                     <Route
                       path="/housingMeteringDevices/:deviceId/edit"
                       component={AccessDeniedPage}
+                      exact
+                    />
+                  )}
+
+                  {isAnyRole && (
+                    <Route
+                      path={[
+                        '/housingMeteringDevices/:deviceId/profile/:section?',
+                      ]}
+                      component={HousingMeteringDeviceProfileContainer}
                       exact
                     />
                   )}

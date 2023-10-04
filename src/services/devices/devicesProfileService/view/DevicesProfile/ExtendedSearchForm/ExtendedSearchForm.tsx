@@ -59,7 +59,7 @@ export const ExtendedSearchForm: FC<ExtendedSearchFormProps> = ({
       const firstIndex = diameters.findIndex((elem) => elem === value[0]);
       const secondIndex = diameters.findIndex((elem) => elem === value[1]) + 1;
       setFieldValue(
-        "['Filter.PipeDiameters']",
+        "['DevicesFilter.PipeDiameters']",
         diameters.slice(firstIndex, secondIndex),
       );
     },
@@ -145,9 +145,10 @@ export const ExtendedSearchForm: FC<ExtendedSearchFormProps> = ({
       <StyledContainerThreeItems>
         <FormItem label="Диаметр трубы, мм">
           <StyledSlider
-            getTooltipPopupContainer={(triggerNode: HTMLElement) =>
-              triggerNode.parentNode as HTMLElement
-            }
+            tooltip={{
+              getPopupContainer: (triggerNode: HTMLElement) =>
+                triggerNode.parentNode as HTMLElement,
+            }}
             defaultValue={[0, 255]}
             marks={marks}
             min={minValue}

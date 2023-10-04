@@ -24,6 +24,7 @@ export const DisablingResourceItem: React.FC<RenderApartmentProps> = ({
   handleOpenDeleteDisconnectionModal,
   handleOpenEditDisconnectionModal,
   isPermitionToChangeResourceDisabling,
+  isMinimized,
 }) => {
   const {
     disconnectingType,
@@ -63,14 +64,18 @@ export const DisablingResourceItem: React.FC<RenderApartmentProps> = ({
       </GroupWrapper>
 
       <StyledLinkTypeElement onClick={() => openModal(disconnection)}>
-        {(buildings &&
-          declOfNum(buildings?.length, ['адрес', 'адреса', 'адресов'])) ||
-          'Не указан'}{' '}
+        {!isMinimized &&
+          ((buildings &&
+            declOfNum(buildings?.length, ['адрес', 'адреса', 'адресов'])) ||
+            'Не указан')}
       </StyledLinkTypeElement>
 
-      <StyledTextElement>{heatingStation?.name || 'Нет'}</StyledTextElement>
       <StyledTextElement>
-        {ResourceDisconnectingClassLookUp[disconnectingType?.value!]}
+        {!isMinimized && (heatingStation?.name || 'Нет')}
+      </StyledTextElement>
+      <StyledTextElement>
+        {isMinimized &&
+          ResourceDisconnectingClassLookUp[disconnectingType?.value!]}
       </StyledTextElement>
 
       <SenderColumn>

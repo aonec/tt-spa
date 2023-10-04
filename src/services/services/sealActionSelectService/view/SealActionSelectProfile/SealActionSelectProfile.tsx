@@ -49,7 +49,7 @@ export const SealActionSelectProfile: FC<SealProfileProps> = ({
                   <>
                     <TextWrapper>{totalAppointmentsDate}:</TextWrapper>
                     <TextWrapper>
-                      {nearestTotalAppointments.notDistributed} из ${totalCount}
+                      {nearestTotalAppointments.notDistributed} из {totalCount}{' '}
                       {getCountText(totalCount, appointmentsText)}
                     </TextWrapper>
                   </>

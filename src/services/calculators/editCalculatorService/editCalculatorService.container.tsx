@@ -32,7 +32,7 @@ export const EditCalculatorContainer = () => {
     return inputs.editCalculatorSuccess.watch(
       (data: MeteringDeviceResponse | null) => {
         if (data?.id) {
-          history.push(`/calculators/${data.id}`);
+          history.push(`/calculators/${data.id}/profile`);
         }
       },
     ).unsubscribe;

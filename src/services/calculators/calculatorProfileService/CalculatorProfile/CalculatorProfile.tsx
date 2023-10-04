@@ -31,7 +31,7 @@ const { TabPane } = Tabs;
 
 export const CalculatorProfile: FC<CalculatorProfileProps> = ({
   calculator,
-  currentGrouptype,
+  currentGrouptype = CalculatorProfileGrouptype.Common,
   setGrouptype,
   handleOpenCloseCalculatorModal,
   handleOpenCheckCalculatorModal,

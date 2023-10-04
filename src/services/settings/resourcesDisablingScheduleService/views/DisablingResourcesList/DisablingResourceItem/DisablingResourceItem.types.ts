@@ -13,4 +13,5 @@ export type RenderApartmentProps = {
   }) => void;
   handleOpenEditDisconnectionModal: (id: string) => void;
   isPermitionToChangeResourceDisabling: boolean;
+  isMinimized?: boolean;
 };

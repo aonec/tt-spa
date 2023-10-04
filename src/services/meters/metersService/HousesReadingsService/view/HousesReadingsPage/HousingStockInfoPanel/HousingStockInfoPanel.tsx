@@ -3,7 +3,6 @@ import {
   Panel,
   PanelInfoLabel,
   PanelInfoText,
-  StickyWrapper,
   Title,
 } from './HousingStockInfoPanel.styled';
 import { HousingStockInfoPanelProps } from './HousingStockInfoPanel.types';
@@ -16,7 +15,7 @@ export const HousingStockInfoPanel: FC<HousingStockInfoPanelProps> = ({
   const addressString = getBuildingAddress(housingStock, true);
 
   return (
-    <StickyWrapper>
+    <>
       <Title>{addressString}</Title>
       <Panel>
         <div>
@@ -28,6 +27,6 @@ export const HousingStockInfoPanel: FC<HousingStockInfoPanelProps> = ({
           <PanelInfoText>{housingStock.inspectedDay}</PanelInfoText>
         </div>
       </Panel>
-    </StickyWrapper>
+    </>
   );
 };

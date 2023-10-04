@@ -1,6 +1,6 @@
 import { useEvent, useStore } from 'effector-react';
-import React from 'react';
-import { useParams } from 'react-router-dom';
+import React, { useCallback } from 'react';
+import { useHistory, useParams } from 'react-router-dom';
 import { WithLoader } from 'ui-kit/shared/WithLoader';
 import {
   CheckCalculatorContainer,
@@ -15,18 +15,21 @@ import { calculatorProfileService } from './calculatorProfileService.model';
 import { ConsumptionReportCalculatorContainer } from '../consumptionReportCalculatorService';
 import { ESecuredIdentityRoleName } from 'api/types';
 import { usePermission } from 'hooks/usePermission';
+import { CalculatorProfileGrouptype } from './calculatorProfileService.constants';
 
 const { gates, inputs, outputs } = calculatorProfileService;
 const { CalculatorIdGate } = gates;
 
 export const CalculatorProfileContainer = () => {
-  const { deviceId } = useParams<{ deviceId: string }>();
+  const { deviceId, section } = useParams<{
+    deviceId: string;
+    section?: CalculatorProfileGrouptype;
+  }>();
+  const history = useHistory();
 
   const isLoading = useStore(outputs.$isLoading);
   const calculator = useStore(outputs.$calculator);
-  const currentGrouptype = useStore(outputs.$currentCalculatorGrouptype);
 
-  const setGrouptype = useEvent(inputs.setCalculatorGrouptype);
   const handleOpenCloseCalculatorModal = useEvent(
     closeCalculatorService.inputs.openModal,
   );
@@ -43,6 +46,12 @@ export const CalculatorProfileContainer = () => {
     ESecuredIdentityRoleName.ManagingFirmExecutor,
   ]);
 
+  const setGrouptype = useCallback(
+    (section: CalculatorProfileGrouptype) =>
+      history.replace(`/calculators/${deviceId}/profile/${section}`),
+    [history, deviceId],
+  );
+
   return (
     <>
       <CalculatorIdGate id={Number(deviceId)} />
@@ -53,7 +62,7 @@ export const CalculatorProfileContainer = () => {
         {calculator && (
           <CalculatorProfile
             calculator={calculator}
-            currentGrouptype={currentGrouptype}
+            currentGrouptype={section}
             setGrouptype={setGrouptype}
             handleOpenCloseCalculatorModal={handleOpenCloseCalculatorModal}
             handleOpenCheckCalculatorModal={handleOpenCheckCalculatorModal}

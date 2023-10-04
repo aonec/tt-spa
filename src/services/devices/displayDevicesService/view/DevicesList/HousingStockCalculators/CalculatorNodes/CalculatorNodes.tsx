@@ -41,7 +41,7 @@ export const CalculatorNodes: FC<CalculatorNodesProps> = ({ devices }) => {
     <>
       <CalculatorTitle>
         <CalculatorWithStatusWrapper>
-          <DeviceLink to={`/calculators/${calculator.id}`}>
+          <DeviceLink to={`/calculators/${calculator.id}/profile`}>
             <CalculatorModelWrapper>
               <CalculatorIconWrapper>
                 <CalculatorIcon />

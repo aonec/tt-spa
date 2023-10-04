@@ -1,32 +1,33 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { Skeleton } from 'antd';
 import { useUnit } from 'effector-react';
-import { useParams } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 import { housingStockProfileService } from './housingStockProfileService.model';
 import { HousingStockProfile } from './view/HousingStockProfile';
 import { ConsolidatedReportContainer } from './consolidatedReportService';
 import { ESecuredIdentityRoleName } from 'api/types';
 import { usePermission } from 'hooks/usePermission';
+import { HousingStockProfileGrouptype } from './housingStockProfileService.constants';
 
 const { inputs, outputs, gates } = housingStockProfileService;
 const { ObjectProfileIdGate } = gates;
 
 export const HousingStockProfileContainer = () => {
-  const { buildingId } = useParams<{ buildingId: string }>();
+  const { buildingId, section } = useParams<{
+    buildingId: string;
+    section?: HousingStockProfileGrouptype;
+  }>();
+  const history = useHistory();
 
   const {
-    currentGrouptype,
     housingStock,
     isLoading,
     openConsolidatedReportModal,
-    setCurrentGrouptype,
     resourceDisconnections,
   } = useUnit({
     housingStock: outputs.$housingStock,
     resourceDisconnections: outputs.$resourceDisconnections,
     isLoading: outputs.$isLoading,
-    currentGrouptype: outputs.$currentGrouptype,
-    setCurrentGrouptype: inputs.setCurrentGroutype,
     openConsolidatedReportModal: inputs.openConsolidatedReportModal,
   });
 
@@ -44,6 +45,12 @@ export const HousingStockProfileContainer = () => {
     ESecuredIdentityRoleName.Administrator,
   ]);
 
+  const setGrouptype = useCallback(
+    (section: HousingStockProfileGrouptype) =>
+      history.replace(`/buildings/livingProfile/${buildingId}/${section}`),
+    [history, buildingId],
+  );
+
   return (
     <>
       <ObjectProfileIdGate objectId={Number(buildingId)} />
@@ -52,8 +59,8 @@ export const HousingStockProfileContainer = () => {
       {!isLoading && housingStock && (
         <HousingStockProfile
           housingStock={housingStock}
-          setCurrentGrouptype={setCurrentGrouptype}
-          currentGrouptype={currentGrouptype}
+          setCurrentGrouptype={setGrouptype}
+          currentGrouptype={section}
           openCommonReport={() => openConsolidatedReportModal()}
           isPermitionToAddNode={isPermitionToAddNode}
           isPermitionToDownloadConsolidatedReport={

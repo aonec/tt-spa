@@ -4,6 +4,7 @@ import { createSealService } from './createSealService.model';
 import { useUnit } from 'effector-react';
 import { CreateSealAppointmentForm } from './view/CreateSealAppointmentForm';
 import { WorkWithAppointmentType } from './createSealService.types';
+import { districtAppoinmtentsOnMonthQuery } from './createSealService.api';
 
 const { inputs, outputs } = createSealService;
 const fromId = 'create-seal-appointment';
@@ -16,6 +17,10 @@ export const CreateSealContainer = () => {
     isOpen,
     appointment,
     actionType,
+    setMonth,
+    appointmentsOnMonthData,
+    appointmentsOnMonthLoading,
+    districtId,
   } = useUnit({
     isOpen: outputs.$isOpen,
     apartment: outputs.$apartment,
@@ -23,6 +28,10 @@ export const CreateSealContainer = () => {
     closeModal: inputs.closeModal,
     handleWorkWithAppointment: inputs.workWithAppointment,
     actionType: outputs.$actionType,
+    setMonth: inputs.setMonth,
+    appointmentsOnMonthData: districtAppoinmtentsOnMonthQuery.$data,
+    appointmentsOnMonthLoading: districtAppoinmtentsOnMonthQuery.$pending,
+    districtId: outputs.$districtId,
   });
 
   const submitText = useMemo(() => {
@@ -44,6 +53,10 @@ export const CreateSealContainer = () => {
             handleWorkWithAppointment={handleWorkWithAppointment}
             apartment={apartment}
             appointment={appointment}
+            setMonth={setMonth}
+            appointmentsOnMonthData={appointmentsOnMonthData || {}}
+            appointmentsOnMonthLoading={appointmentsOnMonthLoading}
+            districtId={districtId}
           />
         )
       }

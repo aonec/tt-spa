@@ -1,7 +1,7 @@
 import { axios } from 'api/axios';
 import queryString from 'query-string';
 import {
-  ConsumptionDataPayload,
+  ConsumptionRequestPayload,
   ResourceConsumptionWithNull,
 } from './resourceConsumptionService.types';
 import {
@@ -14,24 +14,30 @@ import {
   prepareDataForConsumptionGraphWithLastValue,
 } from './resourceConsumptionService.utils';
 
-export const fetchSummaryHousingConsumptions = (
-  params: ConsumptionDataPayload,
-): Promise<GetSummaryHousingConsumptionsByResourcesResponse> =>
+export const fetchSummaryHousingConsumptions = ({
+  params,
+  token,
+}: ConsumptionRequestPayload): Promise<GetSummaryHousingConsumptionsByResourcesResponse> =>
   axios.get('Nodes/SummaryHousingConsumptionsByResources', {
     params,
     paramsSerializer: (params) => {
       return queryString.stringify(params);
     },
+    cancelToken: token.token,
   });
 
-export const fetchHousingConsumptionPlot = async (
-  params: ConsumptionDataPayload,
-): Promise<{ housing: ResourceConsumptionWithNull[] }> => {
+export const fetchHousingConsumptionPlot = async ({
+  params,
+  token,
+}: ConsumptionRequestPayload): Promise<{
+  housing: ResourceConsumptionWithNull[];
+}> => {
   const res: GetDataForHousingConsumptionPlotResponse = await axios.get(
     'Nodes/DataForHousingConsumptionPlot',
     {
       params,
       paramsSerializer: (params) => queryString.stringify(params),
+      cancelToken: token.token,
     },
   );
   const housingConsumptionArr = res.housingConsumption || [];
@@ -43,9 +49,10 @@ export const fetchHousingConsumptionPlot = async (
   return { housing };
 };
 
-export const fetchNormativeAndSubscriberConsumptionData = async (
-  params: ConsumptionDataPayload,
-): Promise<{
+export const fetchNormativeAndSubscriberConsumptionData = async ({
+  params,
+  token,
+}: ConsumptionRequestPayload): Promise<{
   normative: ResourceConsumptionWithNull[];
   subscriber: ResourceConsumptionWithNull[];
 }> => {
@@ -62,6 +69,7 @@ export const fetchNormativeAndSubscriberConsumptionData = async (
         paramsSerializer: (params) => {
           return queryString.stringify(params);
         },
+        cancelToken: token.token,
       },
     );
 

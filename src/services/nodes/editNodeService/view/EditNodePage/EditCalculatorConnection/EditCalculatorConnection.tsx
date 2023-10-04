@@ -64,7 +64,9 @@ export const EditCalculatorConnection: FC<AddCalculatorConnectionProps> = ({
               вычислителя. Чтобы отредактировать другие параметры вычислителя,
               перейдите в профиль прибора.
             </span>
-            <LinkSC to={`/calculators/${node?.calculatorId}`}>Перейти</LinkSC>
+            <LinkSC to={`/calculators/${node?.calculatorId}/profile`}>
+              Перейти
+            </LinkSC>
           </AlertContentWrapper>
         </Alert>
       )}

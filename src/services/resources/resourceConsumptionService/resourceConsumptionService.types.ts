@@ -1,5 +1,5 @@
 import { EResourceType } from 'api/types';
-import { ConsumptionDataFilter } from './resourceConsumptionFilterService/resourceConsumptionFilterService.types';
+import { CancelTokenSource } from 'axios';
 
 export type ResourceConsumptionWithNull = {
   value?: number | null;
@@ -36,8 +36,17 @@ export type AllConsumptionDataWithNullableAdditionalAddress = {
   [ResourceConsumptionGraphDataType.additionalAddress]: MonthConsumptionData | null;
 };
 
-export type ConsumptionDataPayload = ConsumptionDataFilter & {
+export type ConsumptionRequestPayload = {
+  params: ConsumptionDataPayload;
+  token: CancelTokenSource;
+};
+
+export type ConsumptionDataPayload = {
   ResourceType: EResourceType;
+  BuildingIds: number[];
+  AdditionalHousingStockIds: number[];
+  From: string;
+  To: string;
 };
 
 export type AddressWithSearchString = {
@@ -54,4 +63,15 @@ export type SetConsumptionDataType = {
   housing?: ResourceConsumptionWithNull[];
   normative?: ResourceConsumptionWithNull[];
   subscriber?: ResourceConsumptionWithNull[];
+};
+
+export enum ResourceConsumptionCancelToken {
+  summary = 'summary',
+  currentMonthData = 'currentMonthData',
+  prevMonthData = 'prevMonthData',
+  additionalAddress = 'additionalAddress',
+}
+
+export type CancelTokens = {
+  [key in ResourceConsumptionCancelToken]?: CancelTokenSource;
 };

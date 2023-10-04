@@ -2,6 +2,7 @@ import React, { FC } from 'react';
 import { Form, Radio, Space } from 'antd';
 import { useFormik } from 'formik';
 import dayjs from 'api/dayjs';
+import _ from 'lodash';
 import { ESoiReportPeriod } from 'api/types';
 import { ErrorMessage } from 'ui-kit/ErrorMessage';
 import { TreeSelectSC } from 'services/resources/createResourceDisconnectionService/view/CreateResourceDisconnectionForm/CreateResourceDisconnectionForm.styled';
@@ -9,11 +10,14 @@ import { DatePicker } from 'ui-kit/DatePicker';
 import { FormItem } from 'ui-kit/FormItem';
 import { Input } from 'ui-kit/Input';
 import { Select } from 'ui-kit/Select';
-import { SoiReportType } from '../../../soiReportService.types';
+import {
+  CreateSoiReportRequestPayload,
+  SoiReportType,
+} from '../../../soiReportService.types';
 import { CREATE_SOI_REPORT_FORM_ID } from '../SoiReportModal.constants';
 import { formInitialValues, validationSchema } from './SoiReportForm.constants';
 import { FormGrid } from './SoiReportForm.styled';
-import { SoiReportFormProps } from './SoiReportForm.types';
+import { CreateSoiReportForm, SoiReportFormProps } from './SoiReportForm.types';
 import { ResourceSelect } from 'ui-kit/shared/ResourceSelect';
 
 const withoutHouseMagement = 'withoutHouseMagement';
@@ -27,33 +31,48 @@ export const SoiReportForm: FC<SoiReportFormProps> = ({
   preparedAddresses,
   createSoiReport,
 }) => {
+  const preparedCreateSoiReport = (data: CreateSoiReportForm) => {
+    if (!data.Period || !data.Date) return;
+
+    const normativePerPerson = data.NormativePerPerson
+      ? Number(data.NormativePerPerson)
+      : null;
+
+    const date = data.Date;
+
+    const chosenBuilding = preparedAddresses
+      .flatMap((addressStreet) => addressStreet.children)
+      .find(
+        (preparedAddress) => preparedAddress?.value === data.HousingStockIdHash,
+      );
+
+    const buildingId = chosenBuilding?.buildingId;
+
+    const preparedData = {
+      ReportName: data.ReportName,
+      HouseManagementId: data.HouseManagementId,
+      HousingStockId: buildingId,
+      Resource: data.Resource,
+      NormativePerPerson: normativePerPerson,
+      Period:
+        data.Period === 'year' ? ESoiReportPeriod.Year : ESoiReportPeriod.Month,
+      Year: date.year(),
+      Month: Number(date.format('MM')),
+    };
+
+    const filteredData = _.omitBy(
+      preparedData,
+      _.isNil,
+    ) as CreateSoiReportRequestPayload;
+
+    createSoiReport(filteredData);
+  };
+
   const { values, handleSubmit, handleChange, setFieldValue, errors } =
     useFormik({
       initialValues: formInitialValues,
       validationSchema,
-      onSubmit: (values) => {
-        if (!values.Period || !values.Date) return;
-
-        const normativePerPerson = values.NormativePerPerson
-          ? Number(values.NormativePerPerson)
-          : null;
-
-        const date = values.Date;
-
-        createSoiReport({
-          ReportName: values.ReportName,
-          HouseManagementId: values.HouseManagementId,
-          HousingStockId: values.HousingStockId || undefined,
-          Resource: values.Resource || undefined,
-          NormativePerPerson: normativePerPerson || undefined,
-          Period:
-            values.Period === 'year'
-              ? ESoiReportPeriod.Year
-              : ESoiReportPeriod.Month,
-          Year: date.year(),
-          Month: Number(date.format('MM')),
-        });
-      },
+      onSubmit: (data) => preparedCreateSoiReport(data),
     });
 
   return (
@@ -88,10 +107,10 @@ export const SoiReportForm: FC<SoiReportFormProps> = ({
           <FormItem label="Адрес">
             <TreeSelectSC
               placeholder="Выберите из списка"
-              value={values.HousingStockId || undefined}
-              onChange={(value) =>
-                setFieldValue('HousingStockId', value || null)
-              }
+              value={values.HousingStockIdHash || undefined}
+              onChange={(value) => {
+                setFieldValue('HousingStockIdHash', value || null);
+              }}
               showSearch
               showArrow
               treeCheckable={false}
@@ -155,6 +174,7 @@ export const SoiReportForm: FC<SoiReportFormProps> = ({
         </FormItem>
         <FormItem label="Период">
           <DatePicker
+            clearIcon={false}
             value={values.Date}
             onChange={(value) => setFieldValue('Date', value)}
             picker={values.Period}
