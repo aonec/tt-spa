@@ -1,13 +1,9 @@
-import { fromEnter } from 'ui-kit/shared/DatePickerNative';
 import React, { FC, ReactElement, useState } from 'react';
+import { AutoComplete as AutoCompleteAntD } from 'antd';
+import { fromEnter } from 'ui-kit/shared/DatePickerNative';
 import { FormItem } from 'ui-kit/FormItem';
 import { SearchFieldsLabels } from './AddressSearch.constants';
-import {
-  Wrapper,
-  InputSC,
-  AutoCompleteSC,
-  AutoCompleteAntdSC,
-} from './AddressSearch.styled';
+import { Wrapper, InputSC, AutoCompleteSC } from './AddressSearch.styled';
 import { AddressSearchProps, SearchFieldType } from './AddressSearch.types';
 import { Select } from 'ui-kit/Select';
 import { useSwitchInputOnEnter } from 'hooks/useSwitchInputOnEnter';
@@ -143,7 +139,7 @@ export const AddressSearch: FC<AddressSearchProps> = ({
 
   const apartmentSearch = (index: number, isDisabled?: boolean) => {
     return (
-      <AutoCompleteAntdSC
+      <AutoCompleteAntD
         options={existingApartmentNumbers}
         open={isOpen}
         onFocus={() => setOpen(true)}
@@ -159,9 +155,11 @@ export const AddressSearch: FC<AddressSearchProps> = ({
         })}
         onBlur={() => setOpen(false)}
         filterOption={(inputValue, option) =>
-          option?.value
-            .toLocaleLowerCase()
-            .startsWith(inputValue.toLocaleLowerCase())
+          option
+            ? option.value
+                .toLocaleLowerCase()
+                .startsWith(inputValue.toLocaleLowerCase())
+            : false
         }
       >
         <InputSC
@@ -175,7 +173,7 @@ export const AddressSearch: FC<AddressSearchProps> = ({
           disabled={isDisabled}
           error={isError || undefined}
         />
-      </AutoCompleteAntdSC>
+      </AutoCompleteAntD>
     );
   };
   const questionSearch = (index: number, isDisabled?: boolean) => (

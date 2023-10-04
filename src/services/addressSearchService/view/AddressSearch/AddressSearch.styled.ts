@@ -1,5 +1,4 @@
 import styled, { css } from 'styled-components';
-import { AutoComplete as AutoCompleteAntD } from 'antd';
 import { CustomTemplateType, SearchFieldType } from './AddressSearch.types';
 import { Input } from 'ui-kit/Input';
 import { AutoComplete } from 'ui-kit/AutoComplete';
@@ -60,30 +59,6 @@ export const AutoCompleteSC = styled(AutoComplete)<{ error?: boolean }>`
   &.ant-select-focused {
     .ant-select-selector {
       ${({ error }) => error && errorFocusedStyle};
-    }
-  }
-`;
-
-export const AutoCompleteAntdSC = styled(AutoCompleteAntD)`
-  //не работает
-  .ant-select-dropdown {
-    .css-dev-only-do-not-override-1gccvlx {
-      .ant-select-dropdown-placement-bottomLeft {
-        .rc-virtual-list {
-          .rc-virtual-list-holder {
-            .rc-virtual-list-holder-inner {
-              .ant-select-item {
-                .ant-select-item-option {
-                  .ant-select-item-option-active {
-                    background-color: rgb(24, 158, 233) !important;
-                    color: white !important;
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
     }
   }
 `;
