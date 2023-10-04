@@ -182,6 +182,7 @@ export const ResourceConsumptionFilter: FC<ResourceConsumptionFilterProps> = ({
             placeholder="Выберите из списка"
             onChange={(ids) => setFieldValue('BuildingIds', ids)}
             selectedHousingStockIds={values.BuildingIds}
+            placement="topLeft"
           />
           <ErrorMessage>{errors.BuildingIds}</ErrorMessage>
         </FormItem>
@@ -203,6 +204,7 @@ export const ResourceConsumptionFilter: FC<ResourceConsumptionFilterProps> = ({
                   setFieldValue('AdditionalHousingStockIds', ids)
                 }
                 selectedHousingStockIds={values.AdditionalHousingStockIds}
+                placement="topLeft"
               />
               <TrashIconSC
                 onClick={() => {
