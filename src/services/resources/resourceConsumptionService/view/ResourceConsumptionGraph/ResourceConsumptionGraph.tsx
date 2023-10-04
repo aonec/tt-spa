@@ -133,23 +133,17 @@ export const ResourceConsumptionGraph: FC<ResourceConsumptionGraphProps> = ({
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  const isConsumptionDataItemsEmpty = [
-    consumptionData.currentMonthData?.housing?.length === 0,
-    consumptionData.currentMonthData?.normative?.length === 0,
-    consumptionData.currentMonthData?.subscriber?.length === 0,
-    consumptionData.prevMonthData?.housing?.length === 0,
-    consumptionData.prevMonthData?.normative?.length === 0,
-    consumptionData.prevMonthData?.subscriber?.length === 0,
-  ].every(Boolean);
-
-  console.log(
-    isConsumptionDataItemsEmpty,
-    consumptionData.currentMonthData?.housing?.length === 0 &&
-      consumptionData.currentMonthData?.normative?.length === 0 &&
-      consumptionData.currentMonthData?.subscriber?.length === 0 &&
-      consumptionData.prevMonthData?.housing?.length === 0 &&
-      consumptionData.prevMonthData?.normative?.length === 0 &&
-      consumptionData.prevMonthData?.subscriber?.length === 0,
+  const isConsumptionDataItemsEmpty = useMemo(
+    () =>
+      [
+        consumptionData.currentMonthData?.housing?.length === 0,
+        consumptionData.currentMonthData?.normative?.length === 0,
+        consumptionData.currentMonthData?.subscriber?.length === 0,
+        consumptionData.prevMonthData?.housing?.length === 0,
+        consumptionData.prevMonthData?.normative?.length === 0,
+        consumptionData.prevMonthData?.subscriber?.length === 0,
+      ].every(Boolean),
+    [consumptionData],
   );
 
   if (!resource || !consumptionData || isConsumptionDataItemsEmpty) {
