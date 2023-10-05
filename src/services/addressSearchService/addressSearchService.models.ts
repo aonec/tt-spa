@@ -1,43 +1,64 @@
+import { createEffect, createEvent, createStore, sample } from 'effector';
+import { createGate } from 'effector-react';
+import { createForm } from 'effector-forms';
+import { isEqual } from 'lodash';
 import {
+  getApartments,
   getExistingCities,
   getExistingStreets,
 } from './addressSearchService.api';
-import { createDomain, sample } from 'effector';
-import { isEqual } from 'lodash';
-import { createGate } from 'effector-react';
-import { GetExistingSteetRequestParams } from './addressSearchService.types';
-import { createForm } from 'effector-forms';
+import {
+  ExistingApartmentNumberType,
+  GetApartmentsRequest,
+  GetExistingSteetRequestParams,
+} from './addressSearchService.types';
 import { AddressSearchValues } from './view/AddressSearch/AddressSearch.types';
+import { ApartmentListResponsePagedList } from 'api/types';
 
-const domain = createDomain('addressSearchService');
+const handleSearchApartNumber = createEvent();
+const handleResetForm = createEvent();
 
-const fetchExistingCities = domain.createEffect<void, string[] | null>(
+const setWithApartment = createEvent<boolean>();
+
+const fetchExistingCities = createEffect<void, string[] | null>(
   getExistingCities,
 );
-const $existingCities = domain
-  .createStore<string[] | null>(null)
-  .on(fetchExistingCities.doneData, (_, cities) => cities);
 
-const fetchExistingStreets = domain.createEffect<
+const getApartmentsFx = createEffect<
+  GetApartmentsRequest,
+  ApartmentListResponsePagedList
+>(getApartments);
+
+const $existingCities = createStore<string[] | null>(null).on(
+  fetchExistingCities.doneData,
+  (_, cities) => cities,
+);
+
+const fetchExistingStreets = createEffect<
   GetExistingSteetRequestParams,
   string[]
 >(getExistingStreets);
-const $existingStreets = domain
-  .createStore<string[]>([])
-  .on(fetchExistingStreets.doneData, (_, payload) => payload);
+const $existingStreets = createStore<string[]>([]).on(
+  fetchExistingStreets.doneData,
+  (_, payload) => payload,
+);
 
-const setInitialValues =
-  domain.createEvent<Partial<AddressSearchValues> | null>();
-const $verifiedInitialValues = domain
-  .createStore<Partial<AddressSearchValues> | null>(null)
-  .on(setInitialValues, (prev, income) => {
-    const isInitialValuesRealyChange = !isEqual(prev, income);
-    if (isInitialValuesRealyChange) {
-      return income;
-    } else {
-      return prev;
-    }
-  });
+const $withApartment = createStore<boolean>(false).on(
+  setWithApartment,
+  (_, data) => data,
+);
+
+const setInitialValues = createEvent<Partial<AddressSearchValues> | null>();
+const $verifiedInitialValues = createStore<Partial<AddressSearchValues> | null>(
+  null,
+).on(setInitialValues, (prev, income) => {
+  const isInitialValuesRealyChange = !isEqual(prev, income);
+  if (isInitialValuesRealyChange) {
+    return income;
+  } else {
+    return prev;
+  }
+});
 
 const addressSearchForm = createForm<AddressSearchValues>({
   fields: {
@@ -62,6 +83,15 @@ const addressSearchForm = createForm<AddressSearchValues>({
   },
 });
 
+const $existingApartmentNumbers = createStore<ExistingApartmentNumberType[]>([])
+  .on(getApartmentsFx.doneData, (_, { items }) => {
+    if (!items) return [];
+    return items
+      .filter((apartment) => Boolean(apartment.apartmentNumber))
+      .map((apartment) => ({ value: apartment.apartmentNumber! }));
+  })
+  .reset(addressSearchForm.reset);
+
 const AddressSearchGate = createGate();
 const ExistingCitiesGate = createGate();
 const ExistingStreetsGate = createGate<GetExistingSteetRequestParams>();
@@ -84,6 +114,26 @@ sample({
   target: fetchExistingStreets,
 });
 
+sample({
+  clock: handleSearchApartNumber,
+  source: {
+    values: addressSearchForm.$values,
+    withApartment: $withApartment,
+  },
+  filter: ({ withApartment, values }) =>
+    Boolean(withApartment && values.city && values.street && values.house),
+  fn: ({ values }) =>
+    ({
+      City: values.city,
+      Street: values.street,
+      HousingStockNumber: values.house,
+      Corpus: values.corpus,
+    } as GetApartmentsRequest),
+  target: getApartmentsFx,
+});
+
+sample({ clock: handleResetForm, target: addressSearchForm.reset });
+
 const $isExistingCitiesLoading = fetchExistingStreets.pending;
 
 export const addressSearchService = {
@@ -91,9 +141,15 @@ export const addressSearchService = {
     $existingCities,
     $existingStreets,
     $isExistingCitiesLoading,
+    $existingApartmentNumbers,
     $verifiedInitialValues,
   },
-  inputs: { setInitialValues },
+  inputs: {
+    handleSearchApartNumber,
+    setWithApartment,
+    handleResetForm,
+    setInitialValues,
+  },
   gates: {
     ExistingCitiesGate,
     ExistingStreetsGate,
