@@ -16,4 +16,5 @@ export type ActsJournalProfileProps = {
   actsFilter: ActsJournalRequestParams;
   setPageNumber: (pageNumber: number) => void;
   actCreated: Event<void>;
+  handleResetAddressSearchForm: () => void;
 };

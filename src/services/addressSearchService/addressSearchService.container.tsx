@@ -27,12 +27,18 @@ export const AddressSearchContainer: FC<AddressSearchContainerProps> = ({
     cities,
     hasCorpuses,
     streets,
+    handleSearchApartNumber,
+    setWithApartment,
+    existingApartmentNumbers,
     setInitialValues,
     verifiedInitialValues,
   } = useUnit({
     cities: outputs.$existingCities,
     streets: outputs.$existingStreets,
     hasCorpuses: currentUserService.outputs.$hasCorpuses,
+    handleSearchApartNumber: inputs.handleSearchApartNumber,
+    setWithApartment: inputs.setWithApartment,
+    existingApartmentNumbers: outputs.$existingApartmentNumbers,
     setInitialValues: inputs.setInitialValues,
     verifiedInitialValues: outputs.$verifiedInitialValues,
   });
@@ -91,6 +97,13 @@ export const AddressSearchContainer: FC<AddressSearchContainerProps> = ({
   );
 
   useEffect(() => {
+    const withApartment = preparedFields.some(
+      (searchField) => searchField === SearchFieldType.Apartment,
+    );
+    setWithApartment(withApartment);
+  }, [preparedFields, setWithApartment]);
+
+  useEffect(() => {
     if (!cities?.length || verifiedInitialValues?.city) return;
 
     set({ city: last(cities) || '' });
@@ -126,6 +139,8 @@ export const AddressSearchContainer: FC<AddressSearchContainerProps> = ({
         isError={isError}
         handleChange={handleChange}
         isFocus={isFocus}
+        handleSearchApartNumber={handleSearchApartNumber}
+        existingApartmentNumbers={existingApartmentNumbers}
       />
     </>
   );
