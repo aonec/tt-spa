@@ -1,19 +1,22 @@
 import { useEvent, useStore } from 'effector-react';
-import React from 'react';
-import { useParams } from 'react-router-dom';
+import React, { useCallback } from 'react';
+import { useHistory, useParams } from 'react-router-dom';
 import { WithLoader } from 'ui-kit/shared/WithLoader';
 import { housingMeteringDeviceProfileService } from './housingMeteringDeviceProfileService.model';
 import { HousingMeteringDeviceProfile } from './view/HousingMeteringDeviceProfile';
 import { ESecuredIdentityRoleName } from 'api/types';
 import { usePermission } from 'hooks/usePermission';
+import { HousingProfileTabs } from './housingMeteringDeviceProfileService.types';
 
 const { inputs, outputs, gates } = housingMeteringDeviceProfileService;
 const { FetchHousingMeteringDeviceGate } = gates;
 
 export const HousingMeteringDeviceProfileContainer = () => {
-  const { deviceId } = useParams<{ deviceId: string }>();
-
-  const handleChangeTab = useEvent(inputs.handleChangeTab);
+  const { deviceId, section } = useParams<{
+    deviceId: string;
+    section?: HousingProfileTabs;
+  }>();
+  const history = useHistory();
 
   const handleCheckModalOpen = useEvent(inputs.handleCheckModalOpen);
 
@@ -26,7 +29,6 @@ export const HousingMeteringDeviceProfileContainer = () => {
     outputs.$housingMeteringDeviceTask,
   );
 
-  const currentTab = useStore(outputs.$currentTab);
   const pending = useStore(outputs.$pending);
   const tasksPending = useStore(outputs.$tasksPending);
 
@@ -43,6 +45,12 @@ export const HousingMeteringDeviceProfileContainer = () => {
     ESecuredIdentityRoleName.Operator,
   ]);
 
+  const setGrouptype = useCallback(
+    (section: HousingProfileTabs) =>
+      history.replace(`/housingMeteringDevices/${deviceId}/profile/${section}`),
+    [history, deviceId],
+  );
+
   return (
     <>
       <FetchHousingMeteringDeviceGate deviceId={Number(deviceId)} />
@@ -50,8 +58,8 @@ export const HousingMeteringDeviceProfileContainer = () => {
         <HousingMeteringDeviceProfile
           deviceId={deviceId}
           housingMeteringDevice={housingMeteringDevice}
-          currentTab={currentTab}
-          handleChangeTab={handleChangeTab}
+          currentTab={section}
+          handleChangeTab={setGrouptype}
           housingMeteringDeviceTasks={housingMeteringDeviceTasks}
           handleCheckModalOpen={() => handleCheckModalOpen()}
           handleDeviceClosingModalOpen={() => handleDeviceClosingModalOpen()}

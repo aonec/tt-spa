@@ -1,10 +1,12 @@
 import {
   BuildingListResponse,
   EResourceDisconnectingTypeNullableStringDictionaryItem,
+  EResourceType,
   EResourceTypeNullableStringDictionaryItem,
   ResourceDisconnectingCreateRequest,
   ResourceDisconnectingResponse,
   ResourceDisconnectingUpdateRequest,
+  StreetWithBuildingNumbersResponse,
 } from 'api/types';
 import { TreeSelectElement } from 'ui-kit/shared/AddressTreeSelect/AddressTreeSelect.types';
 import { EAddressDetails } from '../../createResourceDisconnectionService.types';
@@ -33,4 +35,12 @@ export type CreateResourceDisconnectionModalProps = {
   selectedCity: string | null;
   selectCity: (city: string) => void;
   selectedBuilding: BuildingListResponse | null;
+  handleCreateDisconnectionState?: (
+    payload: ResourceDisconnectingCreateRequest,
+  ) => void;
+  dateFrom?: string | null;
+  preselectedBuilding?: number | null;
+  defaultResource?: EResourceType | null;
+  preselectedBuildingData?: StreetWithBuildingNumbersResponse;
+  defaultCity?: string | null;
 };

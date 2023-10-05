@@ -21,7 +21,7 @@ const { TabPane } = TabsSC;
 export const NonResidentialBuildingProfile: FC<
   NonResidentialBuildingProfileProps
 > = ({
-  currentGrouptype,
+  currentGrouptype = NonResidentialBuildingProfileGrouptype.Common,
   setGrouptype,
   nonResidentialBuilding,
   isPermissionToEditHousingStock,

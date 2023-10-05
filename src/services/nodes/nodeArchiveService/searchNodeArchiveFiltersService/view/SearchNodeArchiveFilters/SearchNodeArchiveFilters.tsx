@@ -78,13 +78,7 @@ export const SearchNodeArchiveFilters: FC<SearchNodeArchiveFiltersProps> = ({
         <Button onClick={() => resetForm()} type="ghost">
           Сбросить
         </Button>
-        <Button
-          disabled={loading}
-          onClick={submitForm}
-          style={{ marginLeft: '15px' }}
-        >
-          Применить фильтр
-        </Button>
+        <Button onClick={submitForm}>Применить фильтр</Button>
       </Bottom>
     </Wrap>
   );

@@ -1,25 +1,40 @@
 import { useUnit } from 'effector-react';
-import React, { useMemo } from 'react';
+import React, { FC, useEffect, useMemo } from 'react';
 import { resourceDisconnectionFiltersService } from 'services/resources/resourceDisconnectionFiltersService';
 import { createResourceDisconnectionService } from './createResourceDisconnectionService.model';
 import { CreateResourceDisconnectionModal } from './view/CreateResourceDisconnectionModal';
 import { chooseTypeOfResourceDisconnectionModalService } from '../chooseTypeOfResourceDisconnectionModalService/chooseTypeOfResourceDisconnectionModalService.model';
-
 import '../editResourceDisconnectionService/editResourceDisconnectionService.relations';
 import '../chooseTypeOfResourceDisconnectionModalService/chooseTypeOfResourceDisconnectionModalService.relations';
 import { editResourceDisconnectionService } from '../editResourceDisconnectionService';
-import { EAddressDetails } from './createResourceDisconnectionService.types';
+import {
+  CreateDisconnectionContainerProps,
+  EAddressDetails,
+} from './createResourceDisconnectionService.types';
 import {
   prepareAddressesForTreeSelect,
   prepareAddressesWithParentsForTreeSelect,
 } from 'ui-kit/shared/AddressTreeSelect/AddressTreeSelect.utils';
 import { addressSearchService } from 'services/addressSearchService/addressSearchService.models';
+import { preselectedBuildingQuery } from './createResourceDisconnectionService.api';
 
-const { inputs, outputs } = createResourceDisconnectionService;
+const { inputs, outputs, fx } = createResourceDisconnectionService;
 const { gates } = resourceDisconnectionFiltersService;
 const { ResourceDisconnectigFiltersGate } = gates;
 
-export const CreateResourceDisconnectionContainer = () => {
+const {
+  gates: { ExistingCitiesGate },
+} = addressSearchService;
+
+export const CreateResourceDisconnectionContainer: FC<
+  CreateDisconnectionContainerProps
+> = ({
+  handleCreateDisconnectionState,
+  handleComplete,
+  dateFrom,
+  preselectedBuilding,
+  defaultResource,
+}) => {
   const {
     isOpen,
     resourceTypes,
@@ -72,9 +87,33 @@ export const CreateResourceDisconnectionContainer = () => {
     selectedBuilding: outputs.$selectedBuilding,
   });
 
+  const { start: fetchPreseelcetedBuilding, data: building } = useUnit(
+    preselectedBuildingQuery,
+  );
+
+  const defaultCity = building?.address?.mainAddress?.city;
+
+  useEffect(() => {
+    if (preselectedBuilding) {
+      fetchPreseelcetedBuilding(preselectedBuilding);
+
+      return preselectedBuildingQuery.reset;
+    }
+  }, [fetchPreseelcetedBuilding, preselectedBuilding]);
+
+  useEffect(() => {
+    if (handleComplete) {
+      return fx.createResourceDisconnectionFx.doneData.watch(handleComplete)
+        .unsubscribe;
+    }
+  }, [handleComplete]);
+
   const preparedExistingHousingStocks = useMemo(() => {
     if (typeOfAddress === EAddressDetails.All) {
-      return prepareAddressesForTreeSelect({ items: existingBuildings });
+      return prepareAddressesForTreeSelect({
+        items: existingBuildings,
+        isTreeCheckable: true,
+      });
     }
     const housingStocks = buildingWithHeatingStations.length
       ? buildingWithHeatingStations
@@ -87,8 +126,15 @@ export const CreateResourceDisconnectionContainer = () => {
     typeOfAddress,
   ]);
 
+  const preselectedBuildingData = existingBuildings.find((elem) =>
+    elem.addresses?.find(
+      (address) => address.buildingId === preselectedBuilding,
+    ),
+  );
+
   return (
     <>
+      <ExistingCitiesGate />
       <ResourceDisconnectigFiltersGate />
       <CreateResourceDisconnectionModal
         resourceTypes={resourceTypes}
@@ -110,6 +156,12 @@ export const CreateResourceDisconnectionContainer = () => {
         selectCity={selectCity}
         selectedCity={selectedCity}
         selectedBuilding={selectedBuilding}
+        handleCreateDisconnectionState={handleCreateDisconnectionState}
+        dateFrom={dateFrom}
+        preselectedBuilding={preselectedBuilding}
+        defaultResource={defaultResource}
+        preselectedBuildingData={preselectedBuildingData}
+        defaultCity={defaultCity}
       />
     </>
   );

@@ -40,12 +40,18 @@ export const DistrictsMap: FC<Props> = ({
   const districtsDataList: DistrictData[] = useMemo(() => {
     return getPayloadFromDistricts(filteredDistrictsList).map((elem) => {
       const districtAppointmentsCounting = appointmentsCounting?.[elem.id];
-      const count = districtAppointmentsCounting?.notDistributed || 0;
+      const countOfNotDistributed =
+        districtAppointmentsCounting?.notDistributed || 0;
+      const totalCount =
+        countOfNotDistributed +
+        (districtAppointmentsCounting?.distributed || 0);
 
       const isShowName = selectedDistrict !== elem.id;
 
       const name = isShowName
-        ? `${elem.name} ${count ? `(${count})` : ''}`
+        ? `${elem.name} ${
+            totalCount ? `(${countOfNotDistributed}/${totalCount})` : ''
+          }`
         : '';
 
       return {

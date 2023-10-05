@@ -55,7 +55,12 @@ sample({
   source: combine(
     resourceConsumptionFilterService.outputs.$resourceConsumptionFilter,
     resourceConsumptionFilterService.outputs.$selectedResource,
-    (filter, ResourceType) => ({ ...filter, ResourceType }),
+    (filter, ResourceType) => {
+      return {
+        ...filter,
+        ResourceType,
+      };
+    },
   ),
   clock: resourceConsumptionFilterService.outputs.$resourceConsumptionFilter,
   filter: (filter): filter is ConsumptionDataPayload =>
@@ -72,7 +77,12 @@ sample({
   clock: combine(
     resourceConsumptionFilterService.outputs.$resourceConsumptionFilter,
     resourceConsumptionFilterService.outputs.$selectedResource,
-    (filter, ResourceType) => ({ ...filter, ResourceType }),
+    (filter, ResourceType) => {
+      return {
+        ...filter,
+        ResourceType,
+      };
+    },
   ),
   filter: (filter): filter is ConsumptionDataPayload =>
     Boolean(filter?.From && filter?.To && filter?.BuildingIds?.length),
@@ -83,11 +93,13 @@ sample({
   clock: combine(
     resourceConsumptionFilterService.outputs.$resourceConsumptionFilter,
     resourceConsumptionFilterService.outputs.$selectedResource,
-    (filter, ResourceType) => ({
-      ...filter,
-      ResourceType,
-      BuildingIds: filter?.AdditionalHousingStockIds,
-    }),
+    (filter, ResourceType) => {
+      return {
+        ...filter,
+        ResourceType,
+        BuildingIds: filter?.AdditionalHousingStockIds,
+      };
+    },
   ),
   filter: (filter): filter is ConsumptionDataPayload =>
     Boolean(

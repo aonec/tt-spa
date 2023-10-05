@@ -18,7 +18,7 @@ export const ConnectionSettings: FC<ConnectionSettingsProps> = ({
   return (
     <>
       {isConnected && (
-        <NavLink to={`/calculators/${hubConnection?.calculatorId}`}>
+        <NavLink to={`/calculators/${hubConnection?.calculatorId}/profile`}>
           <CalculatorItem>
             <CalculatorIcon />
             <NameWrap>

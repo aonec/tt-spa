@@ -10,7 +10,6 @@ import {
   fetchHousingStock,
   fetchResourceDisconnectionOnHousingStock,
 } from './housingStockProfileService.api';
-import { HousingStockProfileGrouptype } from './housingStockProfileService.constants';
 import { consolidatedReportService } from './consolidatedReportService';
 import { currentUserService } from 'services/currentUserService';
 
@@ -61,15 +60,6 @@ $resourceDisconnections
   )
   .reset(ObjectProfileIdGate.close);
 
-const resetGrouptype = domain.createEvent();
-const setCurrentGroutype = domain.createEvent<HousingStockProfileGrouptype>();
-
-const $currentGrouptype = domain
-  .createStore<HousingStockProfileGrouptype>(
-    HousingStockProfileGrouptype.Common,
-  )
-  .on(setCurrentGroutype, (_, grouptype) => grouptype);
-
 const $isLoading = getHousingStockFx.pending;
 
 const FetchObjectGate = createGate<{ objectId: number }>();
@@ -84,16 +74,10 @@ forward({
   to: getHousingStockFx,
 });
 
-forward({
-  from: ObjectProfileIdGate.close,
-  to: resetGrouptype,
-});
-
 forward({ from: handleFetchHousingStock, to: getHousingStockFx });
 
 export const housingStockProfileService = {
   inputs: {
-    setCurrentGroutype,
     openConsolidatedReportModal:
       consolidatedReportService.inputs.openConsolidatedReportModal,
     handleFetchHousingStock,
@@ -101,7 +85,6 @@ export const housingStockProfileService = {
   outputs: {
     $housingStock,
     $isLoading,
-    $currentGrouptype,
     $taskCount,
     $housingStockId,
     $isAdministrator,

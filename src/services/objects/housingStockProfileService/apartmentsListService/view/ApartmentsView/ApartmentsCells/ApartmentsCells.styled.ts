@@ -12,7 +12,7 @@ export const LegendWrapper = styled.div`
 
 export const CellsWrapper = styled.div`
   margin-top: 24px;
-  display: grid;
+  display: flex;
+  flex-wrap: wrap;
   grid-gap: 12px;
-  grid-template-columns: repeat(auto-fill, 33px);
 `;

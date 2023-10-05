@@ -19,7 +19,7 @@ export const MeteringDeviceListItem: FC<MeteringDeviceListItemProps> = ({
   return (
     <Wrapper>
       <BaseInfo>
-        <ModelWrapper to={`/housingMeteringDevices/${device.id}`}>
+        <ModelWrapper to={`/housingMeteringDevices/${device.id}/profile`}>
           <Model>{device.model}</Model>
           <SerialNumber>({device.serialNumber})</SerialNumber>
         </ModelWrapper>

@@ -5,15 +5,12 @@ import {
   getDeviceTasks,
   getHousingMeteringDevice,
 } from './housingMeteringDeviceProfileService.api';
-import { HousingProfileTabs } from './housingMeteringDeviceProfileService.types';
 import { checkHousingMeteringDeviceService } from '../checkHousingMeteringDeviceService';
 import { closeHousingMeteringDeviceService } from '../closeHousingMeteringDeviceService';
 import { EffectFailDataAxiosError } from 'types';
 import { message } from 'antd';
 
 const domain = createDomain('housingMeteringDeviceProfileService');
-
-const handleChangeTab = domain.createEvent<HousingProfileTabs>();
 
 const handleHousingMeteringDeviceUpdate = domain.createEvent();
 
@@ -40,10 +37,6 @@ const $housingMeteringDevice = domain
 const $housingMeteringDeviceTask = domain
   .createStore<TasksPagedList | null>(null)
   .on(fetchHousingMeteringDeviceTasksFx.doneData, (_, data) => data);
-
-const $currentTab = domain
-  .createStore<HousingProfileTabs>(HousingProfileTabs.CommonInfo)
-  .on(handleChangeTab, (_, tab) => tab);
 
 sample({
   source: FetchHousingMeteringDeviceGate.state,
@@ -87,7 +80,6 @@ const $tasksPending = fetchHousingMeteringDeviceTasksFx.pending;
 
 export const housingMeteringDeviceProfileService = {
   inputs: {
-    handleChangeTab,
     handleHousingMeteringDeviceUpdate,
     handleCheckModalOpen:
       checkHousingMeteringDeviceService.inputs.handleOpenModal,
@@ -96,7 +88,6 @@ export const housingMeteringDeviceProfileService = {
   },
   outputs: {
     $housingMeteringDevice,
-    $currentTab,
     $housingMeteringDeviceTask,
     $pending,
     $tasksPending,

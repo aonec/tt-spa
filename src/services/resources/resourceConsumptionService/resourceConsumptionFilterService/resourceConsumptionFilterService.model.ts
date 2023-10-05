@@ -88,6 +88,7 @@ const $treeData = combine(
     );
     return prepareAddressesForTreeSelect({
       items: requiredHouseManagements?.streets || [],
+      isTreeCheckable: true,
     });
   },
 );

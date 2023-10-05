@@ -11,6 +11,10 @@ export type CreateSealAppointmentFormProps = {
   ) => void;
   apartment: ApartmentResponse;
   appointment: AppointmentResponse | null;
+  setMonth: (month: string) => void;
+  appointmentsOnMonthData: { [key: string]: number };
+  appointmentsOnMonthLoading: boolean;
+  districtId: string | null;
 };
 
 export type AppointmentCreateFormik = {

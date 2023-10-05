@@ -23,6 +23,10 @@ export const SealActionSelectProfile: FC<SealProfileProps> = ({
     'DD MMMM',
   );
 
+  const totalCount =
+    (nearestTotalAppointments?.distributed || 0) +
+    (nearestTotalAppointments?.notDistributed || 0);
+
   return (
     <>
       <PageHeader title="Опломбировка" />
@@ -45,11 +49,8 @@ export const SealActionSelectProfile: FC<SealProfileProps> = ({
                   <>
                     <TextWrapper>{totalAppointmentsDate}:</TextWrapper>
                     <TextWrapper>
-                      {nearestTotalAppointments.notDistributed}{' '}
-                      {getCountText(
-                        nearestTotalAppointments.notDistributed,
-                        appointmentsText,
-                      )}
+                      {nearestTotalAppointments.notDistributed} из {totalCount}{' '}
+                      {getCountText(totalCount, appointmentsText)}
                     </TextWrapper>
                   </>
                 )}

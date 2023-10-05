@@ -5,8 +5,10 @@ import { AttachDocument } from './view/AttachDocument';
 
 export const AttachDocumentContainer: FC<ActionComponentProps> = ({
   handleChange,
-  type,
+  task,
 }) => {
+  const type = task.type;
+
   const handleDocumentsChange = useCallback(
     (documentsIds: number[]) => {
       handleChange({ documentsIds });

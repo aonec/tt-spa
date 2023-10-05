@@ -35,6 +35,7 @@ export const ClosedIndividualDevicesFormContainer = () => {
   const preparedAddresses = prepareAddressesForTreeSelect({
     items: addressesPagedList?.items || [],
     isSelectableStreetNode: false,
+    isTreeCheckable: true,
   });
 
   return (

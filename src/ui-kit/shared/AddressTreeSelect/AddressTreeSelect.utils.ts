@@ -3,18 +3,23 @@ import {
   HouseManagementWithStreetsResponse,
   StreetWithBuildingNumbersResponse,
 } from 'api/types';
-import { TreeSelectElement } from './AddressTreeSelect.types';
+import {
+  TreeSelectElement,
+  TreeSelectElementWithParents,
+} from './AddressTreeSelect.types';
 
 type PrepareAddressesParams = {
   items: StreetWithBuildingNumbersResponse[];
   parentId?: string;
   isSelectableStreetNode?: boolean;
+  isTreeCheckable: boolean;
 };
 
 export const prepareAddressesForTreeSelect = ({
   items,
   parentId,
   isSelectableStreetNode = true,
+  isTreeCheckable,
 }: PrepareAddressesParams) =>
   items.reduce((acc, { street, addresses }) => {
     if (!street) return acc;
@@ -26,11 +31,20 @@ export const prepareAddressesForTreeSelect = ({
 
       const corpusText = corpus ? `, к. ${corpus}` : '';
 
-      return {
-        title: `${street}, ${number}${corpusText}`,
-        value: buildingId,
-        key: buildingId,
-      };
+      if (!isTreeCheckable) {
+        return {
+          title: `${street}, ${number}${corpusText}`,
+          value: `${buildingId}_${street}${number}${corpusText}`,
+          key: `${buildingId}_${street}${number}${corpusText}`,
+          buildingId,
+        };
+      } else {
+        return {
+          title: `${street}, ${number}${corpusText}`,
+          value: buildingId,
+          key: buildingId,
+        };
+      }
     });
 
     const preparedParent = parentId ? parentId : '';
@@ -59,7 +73,24 @@ export const prepareAddressesWithParentsForTreeSelect = (
     const children = prepareAddressesForTreeSelect({
       items: streets,
       parentId: id,
+      isTreeCheckable: true,
     });
 
     return [...acc, { title: name, value: id, key: id, children }];
   }, [] as TreeSelectElement[]);
+
+export const getParents = (
+  data: TreeSelectElement[],
+  parentKeys?: (number | string)[],
+): TreeSelectElementWithParents[] =>
+  data.reduce((acc, elem) => {
+    if (elem.children) {
+      const parents = getParents(elem.children, [
+        ...(parentKeys || []),
+        elem.key,
+      ]);
+
+      return [...acc, { ...elem, parents: parentKeys || [] }, ...parents];
+    }
+    return acc;
+  }, [] as TreeSelectElementWithParents[]);

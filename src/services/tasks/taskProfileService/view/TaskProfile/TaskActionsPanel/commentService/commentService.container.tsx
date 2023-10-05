@@ -1,13 +1,16 @@
-import React, { FC } from 'react';
+import React, { FC, useCallback } from 'react';
 import { ActionComponentProps } from '../TaskActionsPanel.types';
 import { Comment } from './view/Comment';
 
 export const CommentContainer: FC<ActionComponentProps> = ({
   handleChange,
 }) => {
-  function handleCommentChange(comment: string) {
-    handleChange({ comment });
-  }
+  const handleCommentChange = useCallback(
+    (comment: string) => {
+      handleChange({ comment });
+    },
+    [handleChange],
+  );
 
   return <Comment handleCommentChange={handleCommentChange} />;
 };

@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { Skeleton } from 'antd';
 
 export const FiltrationWrapper = styled.div`
   display: flex;
@@ -20,4 +21,19 @@ export const Circle = styled.div`
   position: absolute;
   top: 5px;
   right: 4px;
+`;
+
+export const CounterWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  margin-left: 16px;
+
+  font-weight: 500;
+  color: #272f5a;
+`;
+
+export const SkeletonSC = styled(Skeleton.Input)`
+  margin-top: 4px;
+  margin-left: 8px;
+  height: 24px !important;
 `;

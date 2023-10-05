@@ -1,14 +1,17 @@
-import { createDomain, merge, sample, split } from 'effector';
+import { createDomain, merge, sample, split, combine } from 'effector';
 import {
   ApartmentResponse,
   AppointmentCreateRequest,
   AppointmentResponse,
   AppointmentUpdateRequest,
+  DistrictResponse,
 } from 'api/types';
 import { message } from 'antd';
 import {
+  districtAppoinmtentsOnMonthQuery,
   fetchCreateSeal,
   fetchEditAppointmentSeal,
+  getDistrict,
 } from './createSealService.api';
 import { EffectFailDataAxiosError } from 'types';
 import {
@@ -16,6 +19,8 @@ import {
   WorkWithAppointmentType,
   WorkWithAppoitnmentPayload,
 } from './createSealService.types';
+import { GetDistrictAppointmentsRequestPayload } from '../distributeRecordsService/distributeRecordsService.types';
+import dayjs from 'dayjs';
 
 const domain = createDomain('createSealService');
 
@@ -58,6 +63,37 @@ const workWithSealSucceed = merge([
   editSealAppointmentFx.doneData,
 ]);
 
+const getDistrictFx = domain.createEffect<number, DistrictResponse[]>(
+  getDistrict,
+);
+const $districtId = domain
+  .createStore<string | null>(null)
+  .on(getDistrictFx.doneData, (_, districts) => districts[0]?.id || null)
+  .reset(closeModal);
+
+const setMonth = domain.createEvent();
+const $currentMonth = domain
+  .createStore<string>(dayjs().startOf('month').format('YYYY-MM-DD'))
+  .on(setMonth, (_, month) => month);
+
+sample({
+  source: combine($districtId, $currentMonth, (districtId, date) => ({
+    districtId,
+    date,
+  })),
+  clock: [$districtId, $currentMonth],
+  filter: (data): data is GetDistrictAppointmentsRequestPayload =>
+    Boolean(data.districtId && data.date),
+  target: districtAppoinmtentsOnMonthQuery.start,
+});
+
+sample({
+  source: $apartment.map((apartment) => apartment?.housingStock?.id),
+  filter: Boolean,
+  clock: openModal,
+  target: getDistrictFx,
+});
+
 split({
   source: workWithAppointment,
   match: $actionType,
@@ -81,6 +117,11 @@ sample({
   fn: (apartment, payload) => ({ ...payload, apartmentId: apartment.id }),
   filter: Boolean,
   target: createSealAppointmentFx,
+});
+
+sample({
+  clock: $districtId,
+  target: [districtAppoinmtentsOnMonthQuery.reset],
 });
 
 createSealAppointmentFx.doneData.watch(() =>
@@ -118,11 +159,13 @@ export const createSealService = {
     closeModal,
     workWithAppointment,
     workWithSealSucceed,
+    setMonth,
   },
   outputs: {
     $isOpen,
     $apartment,
     $appointment,
     $actionType,
+    $districtId,
   },
 };

@@ -22,7 +22,7 @@ export const CommentHeader = styled.div`
 
 export const CommentTitle = styled.div`
   color: #272f5a;
-  font-weight: 600;
+  font-weight: 500;
   font-size: 16px;
   line-height: 20px;
 `;

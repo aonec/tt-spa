@@ -1,3 +1,5 @@
+import { TreeSelectProps } from 'antd';
+
 export type AddressTreeSelectProps = {
   treeData: TreeSelectElement[];
   small?: boolean;
@@ -5,11 +7,17 @@ export type AddressTreeSelectProps = {
   selectedHousingStockIds: number[];
   disabled?: boolean;
   placeholder?: string;
+  placement?: TreeSelectProps['placement'];
 };
 
 export type TreeSelectElement = {
   title: string;
   key: string | number;
   value: string | number;
+  buildingId?: number;
   children?: TreeSelectElement[];
+};
+
+export type TreeSelectElementWithParents = TreeSelectElement & {
+  parents: (string | number)[];
 };
