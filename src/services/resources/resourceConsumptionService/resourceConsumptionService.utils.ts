@@ -191,7 +191,7 @@ export const getIsOnlyHousingDataEmpty = (
     isCurrentMonthSubscriber,
     isPrevMonthNormative,
     isPrevMonthSubscriber,
-  ].some((elem) => Boolean(elem));
+  ].some(Boolean);
 
   return Boolean(!isCurrentMonthHousing && isOtherDataNotEmpty);
 };
