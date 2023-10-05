@@ -13,6 +13,9 @@ Cypress.Commands.add('selectOption', (testId, option) => {
   cy.getByTestId(testId).click();
 
   cy.get('.ant-select-dropdown :not(.ant-select-dropdown-hidden)')
+    .should('be.visible');
+
+  cy.get('.ant-select-dropdown :not(.ant-select-dropdown-hidden)')
     .find('.ant-select-item-option')
     .each((elem) => {
       if (elem.text() === option) {

@@ -5,8 +5,8 @@ describe('task statistics', () => {
 
   it('visit tasks page and visit node', () => {
     cy.contains('div', /Наблюдаемые/).click();
-    cy.intercept('GET', 'api/Tasks*').as('getTasks');
-    cy.wait('@getTasks');
+
+    cy.getByTestId('task-item').should('be.visible');
 
     cy.selectOption('task-type-selector', 'Неполадки с ОДПУ');
 
