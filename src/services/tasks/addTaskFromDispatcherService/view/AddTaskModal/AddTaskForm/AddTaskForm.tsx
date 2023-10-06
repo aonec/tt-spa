@@ -165,7 +165,12 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
   useEffect(() => {
     if (taskTypeOptions.length === 1) {
       setFieldValue('taskType', taskTypeOptions[0].value);
-      next(7);
+
+      if (isFromSubscriber) {
+        next(7);
+      } else {
+        next(4);
+      }
     }
   }, [taskTypeOptions, setFieldValue, next]);
 
@@ -232,6 +237,7 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
         <GridContainerExpandable isTwoColumn={!isFromSubscriber}>
           <FormItem label="Источник заявки">
             <SelectCaret
+              isFromSubscriber={isFromSubscriber}
               showSearch
               placeholder="Выберите из списка"
               value={values.sourceId || undefined}
@@ -295,7 +301,13 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
               }}
               options={preparedAddressOptions}
               data-reading-input={dataKey}
-              onKeyDown={fromEnter(() => next(2))}
+              onKeyDown={fromEnter(() => {
+                if (isFromSubscriber) {
+                  next(2);
+                } else {
+                  next(1);
+                }
+              })}
             >
               <Input prefix={<SearchIconSc />} placeholder="Начните вводить " />
             </AutoCompleteAntD>
@@ -311,7 +323,13 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
               }}
               options={apartNumberOptions}
               data-reading-input={dataKey}
-              onKeyDown={fromEnter(() => next(3))}
+              onKeyDown={fromEnter(() => {
+                if (isFromSubscriber) {
+                  next(3);
+                } else {
+                  next(2);
+                }
+              })}
             >
               <Input placeholder="Введите" />
             </AutoCompleteAntD>
@@ -385,14 +403,22 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
               }
               data-reading-input={dataKey}
               onKeyDown={fromEnter(() => {
-                next(6);
+                if (isFromSubscriber) {
+                  next(6);
+                } else {
+                  next(3);
+                }
               })}
               open={isReasonOpen}
               onBlur={() => setReasonOpen(false)}
               onFocus={() => setReasonOpen(true)}
               onSelect={() => {
                 setReasonOpen(false);
-                next(6);
+                if (isFromSubscriber) {
+                  next(6);
+                } else {
+                  next(3);
+                }
               }}
               onMouseDown={() => setReasonOpen(true)}
             />
@@ -410,14 +436,22 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
               options={taskTypeOptions}
               data-reading-input={dataKey}
               onKeyDown={fromEnter(() => {
-                next(7);
+                if (isFromSubscriber) {
+                  next(7);
+                } else {
+                  next(4);
+                }
               })}
               open={isTaskTypeOpen}
               onBlur={() => setTaskTypeOpen(false)}
               onFocus={() => setTaskTypeOpen(true)}
               onSelect={() => {
                 setTaskTypeOpen(false);
-                next(7);
+                if (isFromSubscriber) {
+                  next(7);
+                } else {
+                  next(4);
+                }
               }}
               onMouseDown={() => setTaskTypeOpen(true)}
             />
@@ -449,13 +483,23 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
                   .startsWith(inputValue.toLocaleLowerCase())
               }
               data-reading-input={dataKey}
-              onKeyDown={fromEnter(() => next(8))}
+              onKeyDown={fromEnter(() => {
+                if (isFromSubscriber) {
+                  next(8);
+                } else {
+                  next(5);
+                }
+              })}
               open={isLeadOpen}
               onBlur={() => setLeadOpen(false)}
               onFocus={() => setLeadOpen(true)}
               onSelect={() => {
                 setLeadOpen(false);
-                next(8);
+                if (isFromSubscriber) {
+                  next(8);
+                } else {
+                  next(5);
+                }
               }}
               onMouseDown={() => setLeadOpen(true)}
             />
@@ -481,13 +525,23 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
                   .startsWith(inputValue.toLocaleLowerCase())
               }
               data-reading-input={dataKey}
-              onKeyDown={fromEnter(() => next(9))}
+              onKeyDown={fromEnter(() => {
+                if (isFromSubscriber) {
+                  next(9);
+                } else {
+                  next(6);
+                }
+              })}
               open={isExecutorOpen}
               onBlur={() => setExecutorOpen(false)}
               onFocus={() => setExecutorOpen(true)}
               onSelect={() => {
                 setExecutorOpen(false);
-                next(9);
+                if (isFromSubscriber) {
+                  next(9);
+                } else {
+                  next(6);
+                }
               }}
               onMouseDown={() => setExecutorOpen(true)}
             />

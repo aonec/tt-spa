@@ -13,13 +13,17 @@ import { TasksProfile } from './view/TasksProfile';
 import queryString from 'query-string';
 import { addressSearchService } from 'services/addressSearchService/addressSearchService.models';
 import { TaskTypesGate } from '../taskTypesService/taskTypesService.model';
-import { AddTaskFromDispatcherContainer } from '../addTaskFromDispatcherService';
+import {
+  AddTaskFromDispatcherContainer,
+  addTaskFromDispatcherService,
+} from '../addTaskFromDispatcherService';
 import { usePermission } from 'hooks/usePermission';
 import { exportTasksListService } from '../exportTasksListService';
 
 const { ExistingCitiesGate } = addressSearchService.gates;
 const { inputs, outputs, gates } = tasksProfileService;
 const { InitialGate, SetCityGate } = gates;
+const { AddTaskDataFetchGate } = addTaskFromDispatcherService.gates;
 
 export const TasksProfileContainer = () => {
   const { grouptype } = useParams<{ grouptype: TaskGroupingFilter }>();
@@ -151,11 +155,13 @@ export const TasksProfileContainer = () => {
 
   return (
     <>
+      {isPermissionToAddTask && <AddTaskDataFetchGate />}
       <InitialGate />
       <ExistingCitiesGate />
       <SetCityGate cities={existingCities} />
       <TaskTypesGate />
-      <AddTaskFromDispatcherContainer />
+
+      {isPermissionToAddTask && <AddTaskFromDispatcherContainer />}
       <TasksProfile
         handleExportTasksList={() => handleExportTasksList()}
         grouptype={grouptype}

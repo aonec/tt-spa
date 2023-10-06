@@ -43,6 +43,7 @@ import { currentUserService } from 'services/currentUserService';
 import { prepareAddressesForTreeSelect } from './addTaskFromDispatcherService.utils';
 
 const PageGate = createGate();
+const AddTaskDataFetchGate = createGate();
 
 const handleOpenModal = createEvent();
 const handleCloseModal = createEvent();
@@ -108,11 +109,11 @@ const $isModalOpen = createStore<boolean>(false)
 
 const $ERPSources = createStore<ErpSourceResponse[]>([])
   .on(getERPSourcesFx.doneData, (_, data) => data)
-  .reset(handleReset);
+  // .reset(handleReset);
 
 const $leadExecutors = createStore<ErpExecutorResponse[]>([])
   .on(getLeadExecutorsFx.doneData, (_, data) => data)
-  .reset(handleReset);
+  // .reset(handleReset);
 
 const $executors = createStore<ErpExecutorResponse[]>([])
   .on(getErpExecutorsForLeadFx.doneData, (_, data) => data)
@@ -122,7 +123,7 @@ const $preparedForOptionsAddresses = createStore<PreparedAddress[]>([])
   .on(getAddressesFx.doneData, (_, data) =>
     prepareAddressesForTreeSelect(data.items),
   )
-  .reset(handleReset);
+  // .reset(handleReset);
 
 const $selectedHousingStockId = createStore<string | null>(null)
   .on(setSelectedHousingId, (_, id) => id)
@@ -161,7 +162,7 @@ const $resourceDisconnection = createStore<ResourceDisconnectingResponse[]>([])
 
 const $taskReasons = createStore<ErpTaskReasonResponse[]>([])
   .on(getTaskReasonsFx.doneData, (_, data) => data)
-  .reset(handleReset);
+  // .reset(handleReset);
 
 sample({
   clock: handleCreateTask,
@@ -198,12 +199,12 @@ sample({
 });
 
 sample({
-  clock: PageGate.open,
+  clock: AddTaskDataFetchGate.open,
   target: [getERPSourcesFx, getLeadExecutorsFx, getTaskReasonsFx],
 });
 
 sample({
-  clock: PageGate.open,
+  clock: AddTaskDataFetchGate.open,
   source: currentUserService.outputs.$userCity,
   filter: Boolean,
   fn: (userCity) => ({
@@ -322,5 +323,5 @@ export const addTaskFromDispatcherService = {
     $apartmentHomeownerNames,
     $taskReasons,
   },
-  gates: { PageGate },
+  gates: { PageGate, AddTaskDataFetchGate },
 };
