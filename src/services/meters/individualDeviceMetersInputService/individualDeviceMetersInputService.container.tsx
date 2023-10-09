@@ -35,6 +35,7 @@ export const IndividualDeviceMetersInputContainer: FC<
   isHousingStocksReadingInputs,
   devices,
   editable,
+  style,
 }) => {
   const uploadingMetersDevicesStatuses = useStore(
     outputs.$uploadingMetersStatuses,
@@ -237,6 +238,7 @@ export const IndividualDeviceMetersInputContainer: FC<
       previousReadingByCurrentSliderIndex={previousReadingByCurrentSliderIndex}
       editable={editable}
       apartmentId={device.apartmentId}
+      style={style}
     />
   );
 };

@@ -25,6 +25,7 @@ export const ApartmentIndividualDeviceMetersInputLine: FC<
   handleUploadReading,
   uploadingMetersStatuses,
   previousReadingByCurrentSliderIndex,
+  style,
 }) => {
   const isDeviceClosed = Boolean(device.closingDate);
 
@@ -57,7 +58,7 @@ export const ApartmentIndividualDeviceMetersInputLine: FC<
   }, [previousReading, currentReading, rateNum]);
 
   return (
-    <Wrapper>
+    <Wrapper style={style}>
       <div>{device.apartmentNumber}</div>
       <DeviceInfoWrapper>
         <div className="device-icon">

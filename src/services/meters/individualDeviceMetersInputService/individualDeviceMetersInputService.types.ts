@@ -14,6 +14,7 @@ export type IndividualDeviceMetersInputContainerProps = {
   managementFirmConsumptionRates: ConsumptionRatesDictionary | null;
   isHousingStocksReadingInputs?: boolean;
   editable?: boolean;
+  style?: React.CSSProperties;
 };
 
 export type PreparedReadingsData = {

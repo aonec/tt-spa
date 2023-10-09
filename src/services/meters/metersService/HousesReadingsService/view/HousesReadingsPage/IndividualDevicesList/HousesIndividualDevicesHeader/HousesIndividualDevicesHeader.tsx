@@ -8,7 +8,9 @@ import {
 import { HousesIndividualDevicesHeaderProps } from './HousesIndividualDevicesHeader.types';
 import { ChevronIcon } from 'ui-kit/icons';
 
-export const HousesIndividualDevicesHeader: FC<HousesIndividualDevicesHeaderProps> = ({
+export const HousesIndividualDevicesHeader: FC<
+  HousesIndividualDevicesHeaderProps
+> = ({
   prevReadingMonth,
   currentReadingMonth,
   upSliderIndex,
