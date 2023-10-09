@@ -1,11 +1,11 @@
-import dayjs from 'api/dayjs';
 import React, { FC, useState } from 'react';
-import { DatePicker } from 'ui-kit/DatePicker';
+import { ExecutionPostponedDatePickerProps } from './ExecutionPostponedDatePicker.types';
 import { FormItem } from 'ui-kit/FormItem';
-import { SetNextStageDeadlineDatepickerProps } from './SetNextStageDeadlineDatepicker.types';
+import { DatePicker } from 'ui-kit/DatePicker';
+import dayjs from 'dayjs';
 
-export const SetNextStageDeadlineDatepicker: FC<
-  SetNextStageDeadlineDatepickerProps
+export const ExecutionPostponedDatePicker: FC<
+  ExecutionPostponedDatePickerProps
 > = ({ handleDateChange }) => {
   const [date, setDate] = useState<dayjs.Dayjs | null>(null);
 
@@ -19,10 +19,10 @@ export const SetNextStageDeadlineDatepicker: FC<
   return (
     <FormItem label="Дата">
       <DatePicker
-        value={date && dayjs(date)}
-        onChange={(date) => handleChange(date)}
         allowClear
         placeholder="Выберите дату"
+        value={date && dayjs(date)}
+        onChange={(date) => handleChange(date)}
         format="DD.MM.YYYY"
       />
     </FormItem>
