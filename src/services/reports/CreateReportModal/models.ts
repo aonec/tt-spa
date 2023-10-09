@@ -8,10 +8,7 @@ import { createForm } from 'effector-forms';
 import { reportsInputs } from '../models';
 import { getReportTypeTitleName, RangePeriod, ReportType } from './types';
 import { downloadURI } from './utils';
-import {
-  UnloadTypeFieldsDictionary,
-  ZippedReports,
-} from './CreateReport.constants';
+import { UnloadTypeFieldsDictionary } from './CreateReport.constants';
 import { reportsListService } from '../reportsListService';
 import { EffectFailDataAxiosError } from '../../../types/index';
 import { closedIndividualDevicesFormService } from './ReportFormInputs/closedIndividualDevicesFormService';
@@ -150,7 +147,6 @@ const createReportFx = createReportDomain.createEffect<
       `${getReportTypeTitleName(form.$values.getState().type!)}_${dayjs(
         date.To,
       ).format('MMMM_YYYY')}`,
-      ZippedReports.includes(type),
     );
   },
 );
