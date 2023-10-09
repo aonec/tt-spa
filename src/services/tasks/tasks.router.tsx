@@ -15,14 +15,9 @@ export const TasksRouter = () => {
   ]);
   const TasksIsOpen = tasksProfileService.gates.TasksIsOpen;
 
-  const isDispacher = usePermission([
-    ESecuredIdentityRoleName.ManagingFirmDispatcher,
-  ]);
-
-  const initialTasksPath =
-    isSpectator || isDispacher
-      ? `/tasks/list/${TaskGroupingFilter.Observing}`
-      : `/tasks/list/${TaskGroupingFilter.Executing}`;
+  const initialTasksPath = isSpectator
+    ? `/tasks/list/${TaskGroupingFilter.Observing}`
+    : `/tasks/list/${TaskGroupingFilter.Executing}`;
 
   return [
     <Redirect from="/tasks" to={initialTasksPath} exact />,
