@@ -143,6 +143,7 @@ const $isAllDevicesLoaded = combine(
 const $totalItems = $individualDevicesPagedList.map(
   (list) => list?.totalItems || 0,
 );
+
 const handleHousingStockLoaded = getHousingStockQuery.finished.success;
 
 export const housesReadingsService = {

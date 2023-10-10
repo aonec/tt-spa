@@ -11,6 +11,7 @@ export type IndividualDeviceMetersInputContainerProps = {
   sliderIndex: number;
   openReadingsHistoryModal: (deviceId: number) => void;
   deviceIndex: number;
+  shift?: number;
   managementFirmConsumptionRates: ConsumptionRatesDictionary | null;
   isHousingStocksReadingInputs?: boolean;
   editable?: boolean;

@@ -7,6 +7,8 @@ import { getReadingsMonthByShift } from 'services/meters/apartmentIndividualDevi
 import { IndividualDeviceMetersInputContainer } from 'services/meters/individualDeviceMetersInputService';
 import { PREVIOUS_READING_INDEX_LIMIT } from 'services/meters/apartmentIndividualDevicesMetersService/apartmentIndividualDevicesMetersService.constants';
 import { InfiniteLoader, List, WindowScroller } from 'react-virtualized';
+import { LIST_SCALE } from './IndividualDevicesList.constants';
+import { getRateNum } from 'services/meters/individualDeviceMetersInputService/view/MetersInputsBlock/MetersInputsBlock.utils';
 
 export const IndividualDevicesList: FC<IndividualDevicesListProps> = ({
   individualDevicesList,
@@ -18,6 +20,7 @@ export const IndividualDevicesList: FC<IndividualDevicesListProps> = ({
   totalItems,
 }) => {
   const [sliderIndex, setSliderIndex] = useState(0);
+  const [startIndex, setStartIndex] = useState(0);
 
   const isCanUp = sliderIndex < PREVIOUS_READING_INDEX_LIMIT;
   const isCanDown = sliderIndex > 0;
@@ -54,37 +57,48 @@ export const IndividualDevicesList: FC<IndividualDevicesListProps> = ({
                 new Promise((res) => res(loadNextPageOfIndividualDevicesList()))
               }
             >
-              {({ onRowsRendered, registerChild }) => (
-                <List
-                  autoHeight
-                  height={height}
-                  isScrolling={isScrolling}
-                  scrollTop={scrollTop}
-                  width={960}
-                  rowHeight={80}
-                  rowCount={individualDevicesList.length}
-                  onRowsRendered={onRowsRendered}
-                  ref={registerChild}
-                  overscanRowCount={8}
-                  rowRenderer={({ index, style, key }) => {
-                    return individualDevicesList[index] ? (
-                      <IndividualDeviceMetersInputContainer
-                        key={key}
-                        devices={individualDevicesList}
-                        device={individualDevicesList[index]}
-                        sliderIndex={sliderIndex}
-                        openReadingsHistoryModal={openReadingsHistoryModal}
-                        managementFirmConsumptionRates={
-                          managementFirmConsumptionRates
-                        }
-                        deviceIndex={index}
-                        isHousingStocksReadingInputs
-                        style={style}
-                      />
-                    ) : null;
-                  }}
-                />
-              )}
+              {({ onRowsRendered, registerChild }) => {
+                return (
+                  <List
+                    autoHeight
+                    height={height}
+                    isScrolling={isScrolling}
+                    scrollTop={scrollTop}
+                    width={960}
+                    rowHeight={({ index }) =>
+                      60 +
+                      LIST_SCALE *
+                        getRateNum(individualDevicesList[index].rateType)
+                    }
+                    rowCount={individualDevicesList.length}
+                    onRowsRendered={(props) => {
+                      setStartIndex(props.overscanStartIndex);
+                      onRowsRendered(props);
+                    }}
+                    ref={registerChild}
+                    noRowsRenderer={() => <>{null}</>}
+                    overscanRowCount={12}
+                    rowRenderer={({ index, style, key }) => {
+                      return (
+                        <IndividualDeviceMetersInputContainer
+                          key={key}
+                          devices={individualDevicesList}
+                          device={individualDevicesList[index]}
+                          sliderIndex={sliderIndex}
+                          openReadingsHistoryModal={openReadingsHistoryModal}
+                          managementFirmConsumptionRates={
+                            managementFirmConsumptionRates
+                          }
+                          deviceIndex={index}
+                          shift={startIndex}
+                          style={style}
+                          isHousingStocksReadingInputs
+                        />
+                      );
+                    }}
+                  />
+                );
+              }}
             </InfiniteLoader>
             {!isAllDevicesLoaded && (
               <LoadButtonWrapper>

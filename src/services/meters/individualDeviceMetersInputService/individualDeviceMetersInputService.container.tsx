@@ -36,6 +36,7 @@ export const IndividualDeviceMetersInputContainer: FC<
   devices,
   editable,
   style,
+  shift,
 }) => {
   const uploadingMetersDevicesStatuses = useStore(
     outputs.$uploadingMetersStatuses,
@@ -79,10 +80,11 @@ export const IndividualDeviceMetersInputContainer: FC<
     [openReadingsHistoryModalById, device.id],
   );
 
-  const inputIndex = useMemo(
-    () => getInputIndex(deviceIndex, devices),
-    [deviceIndex, devices],
-  );
+  const inputIndex = useMemo(() => {
+    return (
+      getInputIndex(deviceIndex, devices) - getInputIndex(shift || 0, devices)
+    );
+  }, [deviceIndex, devices, shift]);
 
   const deviceRateNum = useMemo(
     () => getRateNum(device.rateType),
