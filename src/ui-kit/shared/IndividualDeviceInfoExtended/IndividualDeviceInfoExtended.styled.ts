@@ -68,3 +68,9 @@ export const DateLineWrapper = styled.div`
 
   white-space: nowrap;
 `;
+
+export const SealWrapper = styled.div`
+  color: rgba(39, 47, 90, 0.7);
+  margin-top: 8px;
+  margin-left: 20px;
+`;

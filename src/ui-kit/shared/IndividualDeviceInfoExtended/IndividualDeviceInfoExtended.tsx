@@ -12,6 +12,7 @@ import {
   MountPlace,
   SerialNumberWrapper,
   LinkWrapper,
+  SealWrapper,
 } from './IndividualDeviceInfoExtended.styled';
 import { prepareDateForDateLine } from './IndividualDeviceInfoExtended.utils';
 import { Tooltip } from 'ui-kit/shared/Tooltip';
@@ -75,11 +76,20 @@ export const IndividualDeviceInfoExtended: FC<
           {preparedFutureCheckingDate}
         </DateLineWrapper>
       </ApartmentInfo>
-      {device.closingDate && (
-        <ClosingDate>
-          {dayjs(device.closingDate).format('DD.MM.YYYY')}
-        </ClosingDate>
-      )}
+      <div>
+        {device.closingDate && (
+          <ClosingDate>
+            {dayjs(device.closingDate).format('DD.MM.YYYY')}
+          </ClosingDate>
+        )}
+        {device.sealNumber && (
+          <SealWrapper>
+            Пломба {device.sealNumber}{' '}
+            {device.sealInstallationDate &&
+              dayjs(device.sealInstallationDate).format('DD.MM.YYYY')}
+          </SealWrapper>
+        )}
+      </div>
     </Wrapper>
   );
 };
