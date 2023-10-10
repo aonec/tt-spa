@@ -54,7 +54,7 @@ export const TaskBaseInfo: FC<TaskBaseInfoProps> = ({ task }) => {
         </RowWrapper>
         <RowWrapper>
           <div>Дата создания</div>
-          <div>{preparedCreationTime}</div>
+          <div data-test="task-creation-time">{preparedCreationTime}</div>
         </RowWrapper>
         <RowWrapper>
           <div>Адрес</div>

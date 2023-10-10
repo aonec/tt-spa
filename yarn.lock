@@ -6671,13 +6671,6 @@ data-urls@^2.0.0:
     whatwg-mimetype "^2.3.0"
     whatwg-url "^8.0.0"
 
-date-fns@^2.16.1:
-  version "2.30.0"
-  resolved "https://registry.yarnpkg.com/date-fns/-/date-fns-2.30.0.tgz#f367e644839ff57894ec6ac480de40cae4b0f4d0"
-  integrity sha512-fnULvOpxnC5/Vg3NCiWelDsLiUc9bRwAPs/+LfTLNvetFCtCTN+yQz15C/fs4AwX1R9K5GLtLfn8QW+dWisaAw==
-  dependencies:
-    "@babel/runtime" "^7.21.0"
-
 dayjs@^1.10.4:
   version "1.11.10"
   resolved "https://registry.yarnpkg.com/dayjs/-/dayjs-1.11.10.tgz#68acea85317a6e164457d6d6947564029a6a16a0"
@@ -7469,13 +7462,6 @@ eslint-module-utils@^2.8.0:
   integrity sha512-aWajIYfsqCKRDgUfjEXNN/JlrzauMuSEy5sbd7WXbtW3EH6A6MpwEh42c7qD+MqQo9QMJ6fWLAeIJynx0g6OAw==
   dependencies:
     debug "^3.2.7"
-
-eslint-plugin-cypress@^2.15.1:
-  version "2.15.1"
-  resolved "https://registry.yarnpkg.com/eslint-plugin-cypress/-/eslint-plugin-cypress-2.15.1.tgz#336afa7e8e27451afaf65aa359c9509e0a4f3a7b"
-  integrity sha512-eLHLWP5Q+I4j2AWepYq0PgFEei9/s5LvjuSqWrxurkg1YZ8ltxdvMNmdSf0drnsNo57CTgYY/NIHHLRSWejR7w==
-  dependencies:
-    globals "^13.20.0"
 
 eslint-plugin-flowtype@^8.0.3:
   version "8.0.3"
@@ -8625,13 +8611,6 @@ globals@^13.19.0:
   version "13.21.0"
   resolved "https://registry.yarnpkg.com/globals/-/globals-13.21.0.tgz#163aae12f34ef502f5153cfbdd3600f36c63c571"
   integrity sha512-ybyme3s4yy/t/3s35bewwXKOf7cvzfreG2lH0lZl0JB7I4GxRP2ghxOK/Nb9EkRXdbBXZLfq/p/0W2JUONB/Gg==
-  dependencies:
-    type-fest "^0.20.2"
-
-globals@^13.20.0:
-  version "13.22.0"
-  resolved "https://registry.yarnpkg.com/globals/-/globals-13.22.0.tgz#0c9fcb9c48a2494fbb5edbfee644285543eba9d8"
-  integrity sha512-H1Ddc/PbZHTDVJSnj8kWptIRSD6AM3pK+mKytuIVF4uoBV7rshFlhhvA58ceJ5wp3Er58w6zj7bykMpYXt3ETw==
   dependencies:
     type-fest "^0.20.2"
 
