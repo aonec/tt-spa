@@ -9,7 +9,8 @@ export const CellWrapper = styled(Link)<{ tasksState: ETasksState }>`
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 34px;
+  min-width: 66px;
+  padding: 0 8px;
   height: 34px;
   background: ${({ tasksState }) => TasksStateBackgroundLookup[tasksState]};
   border: 1px solid #f3f5f6;

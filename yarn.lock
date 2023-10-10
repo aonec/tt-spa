@@ -1575,9 +1575,9 @@
   integrity sha512-P6omY1zv5MItm93kLM8s2vr1HICJH8v0dvddDhysbIuZ+vcjOHg5Zbkf1mTkcmi2JA9oBG2anOkRnW8WJTS8Og==
 
 "@exodus/schemasafe@^1.0.0-rc.2":
-  version "1.2.4"
-  resolved "https://registry.yarnpkg.com/@exodus/schemasafe/-/schemasafe-1.2.4.tgz#e671579887e9a735ab4352942f7523a551001640"
-  integrity sha512-DNmuVYeOqFmLmJIJvFIX1TKttOZVI9FwDrqDujhyArjqtXUaZuuB+SuDBTQq3Ev368a7ONJiAJ8m9zi0+IBqZQ==
+  version "1.3.0"
+  resolved "https://registry.yarnpkg.com/@exodus/schemasafe/-/schemasafe-1.3.0.tgz#731656abe21e8e769a7f70a4d833e6312fe59b7f"
+  integrity sha512-5Aap/GaRupgNx/feGBwLLTVv8OQFfv3pq2lPRzPg9R+IOBnDgghTGW7l7EuVXOvg5cc/xSAlRW8rBrjIC3Nvqw==
 
 "@farfetched/core@^0.8.12":
   version "0.8.14"
@@ -6463,13 +6463,6 @@ data-urls@^2.0.0:
     abab "^2.0.3"
     whatwg-mimetype "^2.3.0"
     whatwg-url "^8.0.0"
-
-date-fns@^2.16.1:
-  version "2.30.0"
-  resolved "https://registry.yarnpkg.com/date-fns/-/date-fns-2.30.0.tgz#f367e644839ff57894ec6ac480de40cae4b0f4d0"
-  integrity sha512-fnULvOpxnC5/Vg3NCiWelDsLiUc9bRwAPs/+LfTLNvetFCtCTN+yQz15C/fs4AwX1R9K5GLtLfn8QW+dWisaAw==
-  dependencies:
-    "@babel/runtime" "^7.21.0"
 
 dayjs@^1.11.1, dayjs@^1.11.9:
   version "1.11.9"

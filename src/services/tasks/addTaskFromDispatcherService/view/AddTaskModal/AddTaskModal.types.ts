@@ -1,24 +1,31 @@
 import {
   ErpExecutorResponse,
-  ErpTaskDeadlineResponse,
   ErpSourceResponse,
-  ErpWorkCategoryResponse,
-  ErpObjectResponse,
+  ErpTaskReasonResponse,
+  ResourceDisconnectingResponse,
 } from 'api/types';
 import { AddTask } from './AddTaskForm/AddTaskForm.types';
-import { GetTaskDeadlineRequest } from '../../addTaskFromDispatcherService.types';
+import {
+  ExistingApartmentNumberType,
+  HomeownerNameOption,
+  PreparedAddress,
+} from '../../addTaskFromDispatcherService.types';
 
 export type AddTaskModalProps = {
   isModalOpen: boolean;
   handleCloseModal: () => void;
   ERPSources: ErpSourceResponse[];
-  ErpObjects: ErpObjectResponse[];
+  preparedForOptionsAddresses: PreparedAddress[];
   leadExecutors: ErpExecutorResponse[];
-  workCategories: ErpWorkCategoryResponse[];
   handleCreateTask: (payload: AddTask) => void;
   choоseLeadExecutor: (payload: string) => void;
   executors: ErpExecutorResponse[];
-  handleTaskDeadlineRequest: (payload: GetTaskDeadlineRequest) => void;
-  taskDeadline: ErpTaskDeadlineResponse | null;
   isCreatePending: boolean;
+  handleSelectHousingAddress: (payload: string) => void;
+  existingApartmentNumbers: ExistingApartmentNumberType[];
+  resourceDisconnection: ResourceDisconnectingResponse[];
+  handleSelectApartmentNumber: (payload: string) => void;
+  apartmentHomeownerNames: HomeownerNameOption[];
+  taskReasons: ErpTaskReasonResponse[];
+  handleSelectTaskReason: (payload: string) => void;
 };

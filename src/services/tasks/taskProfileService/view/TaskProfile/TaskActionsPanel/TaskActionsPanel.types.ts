@@ -3,11 +3,12 @@ import {
   EStageActionType,
   StagePushRequest,
   EManagingFirmTaskType,
+  TaskResponse,
 } from 'api/types';
 
 export type TaskActionsPanelProps = {
   actions: EStageActionType[];
-  taskType: EManagingFirmTaskType;
+  task: TaskResponse;
   handlePushStage: () => void;
   isLoading: boolean;
   handleChangePushStagePayload: (
@@ -38,7 +39,7 @@ export type ActionComponentProps = {
     payload: StagePushRequest | ((prev: StagePushRequest) => StagePushRequest),
   ) => void;
   pushStageRequestPayload: StagePushRequest;
-  type?: TaskPanelComponentAdditionalType;
+  task: TaskResponse;
 };
 
 export type TaskActionsComponent = {

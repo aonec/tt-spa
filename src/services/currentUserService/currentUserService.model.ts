@@ -14,6 +14,10 @@ const $currentUser = domain
   .createStore<OrganizationUserResponse | null>(null)
   .on(fetchCurrentUserFx.doneData, (_, user) => user);
 
+const $userCity = $currentUser.map(
+  (user) => user?.organization?.address?.city || null,
+);
+
 const $hasCorpuses = $currentUser.map(
   (user) =>
     user?.organization?.filtersConfiguration?.hasHousingStockCorpuses || false,
@@ -70,6 +74,7 @@ export const currentUserService = {
     $currentUserRoles,
     $userRolesKeys,
     $organizationCoordinates: $coordinates,
+    $userCity,
   },
   gates: {
     CurrentUserGate,

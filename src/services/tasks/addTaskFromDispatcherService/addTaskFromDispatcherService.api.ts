@@ -1,14 +1,22 @@
 import { axios } from 'api/axios';
 import {
+  ApartmentListResponsePagedList,
   ErpCreateTaskRequest,
   ErpExecutorResponse,
-  ErpObjectResponse,
   ErpSourceResponse,
   ErpTaskDeadlineResponse,
+  ErpTaskReasonResponse,
   ErpWorkCategoryResponse,
+  ResourceDisconnectingResponsePagedList,
+  StreetWithBuildingNumbersResponsePagedList,
 } from 'api/types';
 import queryString from 'query-string';
-import { GetTaskDeadlineRequest } from './addTaskFromDispatcherService.types';
+import {
+  GetAddressesRequest,
+  GetApartmentsRequest,
+  GetResourceDisconnectionRequest,
+  GetTaskDeadlineRequest,
+} from './addTaskFromDispatcherService.types';
 
 export const createTask = (
   requestPayload: ErpCreateTaskRequest,
@@ -28,10 +36,6 @@ export const getLeadExecutors = (): Promise<ErpExecutorResponse[]> => {
   return axios.get('Tasks/ErpLeads');
 };
 
-export const getTasksErpObjects = (): Promise<ErpObjectResponse[]> => {
-  return axios.get('Tasks/ErpObjects');
-};
-
 export const getErpExecutorsForLead = (params: {
   leadId: string;
 }): Promise<ErpExecutorResponse[]> => {
@@ -48,4 +52,40 @@ export const getErpTaskDeadline = (
     params,
     paramsSerializer: queryString.stringify,
   });
+};
+
+export const getResourceDisconnection = (
+  params: GetResourceDisconnectionRequest,
+): Promise<ResourceDisconnectingResponsePagedList> => {
+  return axios.get('ResourceDisconnecting', {
+    params,
+  });
+};
+
+export const getApartments = (
+  params: GetApartmentsRequest,
+): Promise<ApartmentListResponsePagedList> => {
+  return axios.get('Apartments', {
+    params,
+  });
+};
+
+export const getAddresses = (
+  params: GetAddressesRequest,
+): Promise<StreetWithBuildingNumbersResponsePagedList> => {
+  return axios.get('Buildings/ExistingStreetsWithBuildingNumbers', {
+    params,
+  });
+};
+
+export const getApartmentHomeownerNames = (
+  apartmentId: number,
+): Promise<string[]> => {
+  return axios.get(`Apartments/${apartmentId}/HomeownerAccountNames`, {
+    params: { isAlsoClosed: true },
+  });
+};
+
+export const getTaskReasons = (): Promise<ErpTaskReasonResponse[]> => {
+  return axios.get('Tasks/ErpTaskReasons');
 };

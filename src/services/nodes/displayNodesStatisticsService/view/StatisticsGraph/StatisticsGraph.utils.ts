@@ -5,12 +5,6 @@ import {
   ReportType,
   PreparedArchiveValues,
 } from './StatisticsGraph.types';
-import {
-  differenceInDays,
-  differenceInHours,
-  differenceInMinutes,
-  format,
-} from 'date-fns';
 
 export function prepareDataForNodeStatistic(
   unsortedData: PreparedArchiveValues[],
@@ -25,9 +19,9 @@ export function prepareDataForNodeStatistic(
   let elemsCount = 0;
 
   if (reportType === 'daily') {
-    elemsCount = differenceInDays(new Date(maxTime), new Date(minTime)) + 1;
+    elemsCount = dayjs(maxTime).diff(dayjs(minTime), 'day') + 1;
   } else if (reportType === 'hourly') {
-    elemsCount = differenceInHours(new Date(maxTime), new Date(minTime)) + 1;
+    elemsCount = dayjs(maxTime).diff(dayjs(minTime), 'hour') + 1;
   }
 
   const result = [];
@@ -45,9 +39,9 @@ export function prepareDataForNodeStatistic(
     let diff = 0;
 
     if (reportType === 'daily') {
-      diff = differenceInDays(new Date(elem.timeUtc), new Date(minTime));
+      diff = dayjs(elem.timeUtc).diff(dayjs(minTime), 'day');
     } else if (reportType === 'hourly') {
-      diff = differenceInHours(new Date(elem.timeUtc), new Date(minTime));
+      diff = dayjs(elem.timeUtc).diff(dayjs(minTime), 'hour');
     }
 
     if (diff === iterator) {
@@ -71,19 +65,18 @@ const getTaskXPos = (payload: GetTaskXPosPayload) => {
 
   let diff = 0;
   if (reportType === 'hourly') {
-    diff = differenceInHours(new Date(currentData), new Date(maxDate));
+    diff = dayjs(currentData).diff(dayjs(maxDate), 'hour');
   } else {
-    diff = differenceInDays(new Date(currentData), new Date(maxDate));
+    diff = dayjs(currentData).diff(dayjs(maxDate), 'day');
   }
 
   if (diff > 0) {
     return null;
   }
+
   if (reportType === 'hourly') {
     return (
-      Math.round(
-        differenceInMinutes(new Date(currentData), new Date(minDate)) / 60,
-      ) + 1
+      Math.round(dayjs(currentData).diff(dayjs(minDate), 'minutes') / 60) + 1
     );
   }
   return (
@@ -125,15 +118,8 @@ export const getPreparedTaskData = ({
   };
 };
 
-export const formatDate = (timeStamp: string): Date => {
-  const dateObject = new Date(timeStamp);
-
-  return dateObject;
-};
-
 const getHourFromTimeStamp = (timeStamp: string): number => {
-  const date = formatDate(timeStamp);
-  return +format(date, 'HH');
+  return Number(dayjs(timeStamp).format('HH'));
 };
 
 const isHourMultiplySix = (timeStamp: string): boolean => {
@@ -142,8 +128,7 @@ const isHourMultiplySix = (timeStamp: string): boolean => {
 };
 
 const getDayFromTimeStamp = (timeStamp: string): number => {
-  const date = formatDate(timeStamp);
-  return +format(date, 'dd');
+  return Number(dayjs(timeStamp, 'DD'));
 };
 
 const isDayMultiplyFive = (timeStamp: string): boolean => {
@@ -225,15 +210,10 @@ export const getTickFormat = (
   x: string,
 ) => {
   if (reportType === 'daily') {
-    return format(formatDate(x), 'dd.MM');
+    return dayjs(x).format('DD.MM');
   }
-  if (archiveArrLength <= 24) {
-    return format(formatDate(x), 'HH');
-  }
-
   if (archiveArrLength >= 97) {
-    return format(formatDate(x), 'H');
+    return dayjs(x).format('H');
   }
-
-  return format(formatDate(x), 'HH:mm');
+  return dayjs(x).format('HH:mm');
 };

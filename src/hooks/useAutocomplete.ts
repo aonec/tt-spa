@@ -13,7 +13,10 @@ export function useAutocomplete(street: string | null, streets: string[]) {
   };
 }
 
-function sortAddressBySimilarity(addressSearch: string, streets: string[]) {
+export function sortAddressBySimilarity(
+  addressSearch: string,
+  streets: string[],
+) {
   return streets
     .sort((a, b) => {
       const aPoints = countSimilarityPoints(addressSearch, a);
