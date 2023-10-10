@@ -18,7 +18,7 @@ import { taskActionInfoComponents } from './TaskActionsPanel.constants';
 
 export const TaskActionsPanel: FC<TaskActionsPanelProps> = ({
   actions,
-  taskType,
+  task,
   handlePushStage,
   isLoading,
   handleChangePushStagePayload,
@@ -27,16 +27,16 @@ export const TaskActionsPanel: FC<TaskActionsPanelProps> = ({
   const { halfSizeActions, fullSizeActions, bottomActions } =
     useTaskPanelActions(actions);
 
-  const renderTaskAction = ({ Component, type }: TaskActionsComponent) => (
+  const renderTaskAction = ({ Component }: TaskActionsComponent) => (
     <Component
+      task={task}
       handleChange={handleChangePushStagePayload}
-      type={type}
       pushStageRequestPayload={pushStageRequestPayload}
     />
   );
 
   const actionInfoComponents = taskActionInfoComponents.filter(
-    (elem) => elem.taskType === taskType && actions.includes(elem.action),
+    (elem) => elem.taskType === task.type && actions.includes(elem.action),
   );
 
   return (

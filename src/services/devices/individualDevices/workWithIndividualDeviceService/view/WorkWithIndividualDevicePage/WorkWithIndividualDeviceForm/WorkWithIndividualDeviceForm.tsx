@@ -63,7 +63,7 @@ export const WorkWithIndividualDeviceForm: FC<
   const isSerialNumberAllreadyExist =
     serialNumberForChecking[0]?.serialNumber === fields.serialNumber.value;
 
-  const next = useSwitchInputOnEnter(dataKey, true);
+  const next = useSwitchInputOnEnter(dataKey, true, false);
 
   const enterKeyDownHandler = useCallback(
     (index: number) => fromEnter(() => next(index)),
@@ -302,7 +302,8 @@ export const WorkWithIndividualDeviceForm: FC<
                 .utcOffset(0, true)
                 .toISOString();
 
-              fields.futureCheckingDate.onChange(nextDate);
+              !Boolean(fields.futureCheckingDate.value) &&
+                fields.futureCheckingDate.onChange(nextDate);
             }}
             value={fields.lastCheckingDate.value}
           />

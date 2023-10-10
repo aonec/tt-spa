@@ -1,3 +1,5 @@
+import { ExistingApartmentNumberType } from 'services/addressSearchService/addressSearchService.types';
+
 export enum SearchFieldType {
   City = 'city',
   Street = 'street',
@@ -33,4 +35,6 @@ export type AddressSearchProps = {
   disabledFields?: SearchFieldType[];
   className?: string;
   isError: boolean;
+  handleSearchApartNumber: () => void;
+  existingApartmentNumbers: ExistingApartmentNumberType[];
 };
