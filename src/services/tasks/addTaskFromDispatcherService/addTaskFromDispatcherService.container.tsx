@@ -10,28 +10,36 @@ export const AddTaskFromDispatcherContainer = () => {
     isModalOpen,
     handleCloseModal,
     ERPSources,
-    ErpObjects,
+    preparedForOptionsAddresses,
     choоseLeadExecutor,
     executors,
     handleCreateTask,
-    handleTaskDeadlineRequest,
     leadExecutors,
-    taskDeadline,
-    workCategories,
     isCreatePending,
+    handleSelectHousingAddress,
+    preparedApartmentNumbers,
+    resourceDisconnection,
+    handleSelectApartmentNumber,
+    apartmentHomeownerNames,
+    taskReasons,
+    handleSelectTaskReason,
   } = useUnit({
     isModalOpen: outputs.$isModalOpen,
     handleCloseModal: inputs.handleCloseModal,
     ERPSources: outputs.$ERPSources,
-    ErpObjects: outputs.$ErpObjects,
+    preparedForOptionsAddresses: outputs.$preparedForOptionsAddresses,
     leadExecutors: outputs.$leadExecutors,
-    workCategories: outputs.$workCategories,
     executors: outputs.$executors,
-    taskDeadline: outputs.$taskDeadline,
     handleCreateTask: inputs.handleCreateTask,
     choоseLeadExecutor: inputs.choоseLeadExecutor,
-    handleTaskDeadlineRequest: inputs.handleTaskDeadlineRequest,
     isCreatePending: outputs.$isCreatePending,
+    handleSelectHousingAddress: inputs.handleSelectHousingAddress,
+    handleSelectApartmentNumber: inputs.handleSelectApartmentNumber,
+    preparedApartmentNumbers: outputs.$preparedApartmentNumbers,
+    resourceDisconnection: outputs.$resourceDisconnection,
+    apartmentHomeownerNames: outputs.$apartmentHomeownerNames,
+    taskReasons: outputs.$taskReasons,
+    handleSelectTaskReason: inputs.handleSelectTaskReason,
   });
 
   return (
@@ -40,15 +48,19 @@ export const AddTaskFromDispatcherContainer = () => {
         isModalOpen={isModalOpen}
         handleCloseModal={handleCloseModal}
         ERPSources={ERPSources}
-        ErpObjects={ErpObjects}
+        preparedForOptionsAddresses={preparedForOptionsAddresses}
         leadExecutors={leadExecutors}
-        workCategories={workCategories}
         handleCreateTask={handleCreateTask}
         choоseLeadExecutor={choоseLeadExecutor}
         executors={executors}
-        handleTaskDeadlineRequest={handleTaskDeadlineRequest}
-        taskDeadline={taskDeadline}
         isCreatePending={isCreatePending}
+        handleSelectHousingAddress={handleSelectHousingAddress}
+        existingApartmentNumbers={preparedApartmentNumbers}
+        resourceDisconnection={resourceDisconnection}
+        handleSelectApartmentNumber={handleSelectApartmentNumber}
+        apartmentHomeownerNames={apartmentHomeownerNames}
+        taskReasons={taskReasons}
+        handleSelectTaskReason={handleSelectTaskReason}
       />
     </>
   );

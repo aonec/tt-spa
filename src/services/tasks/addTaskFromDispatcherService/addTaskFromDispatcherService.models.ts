@@ -1,160 +1,215 @@
-import { createDomain, forward, sample } from 'effector';
+import {
+  combine,
+  createEffect,
+  createEvent,
+  createStore,
+  sample,
+} from 'effector';
+import { createGate } from 'effector-react';
+import dayjs from 'dayjs';
+import { message } from 'antd';
 import {
   createTask,
+  getAddresses,
+  getApartmentHomeownerNames,
+  getApartments,
   getERPSources,
   getErpExecutorsForLead,
-  getErpTaskDeadline,
   getLeadExecutors,
-  getTasksErpObjects,
-  getWorkCategories,
+  getResourceDisconnection,
+  getTaskReasons,
 } from './addTaskFromDispatcherService.api';
 import {
+  ApartmentListResponse,
+  ApartmentListResponsePagedList,
   ErpCreateTaskRequest,
   ErpExecutorResponse,
-  ErpObjectResponse,
   ErpSourceResponse,
-  ErpTaskDeadlineResponse,
-  ErpWorkCategoryResponse,
+  ErpTaskReasonResponse,
+  ResourceDisconnectingResponse,
+  ResourceDisconnectingResponsePagedList,
+  StreetWithBuildingNumbersResponsePagedList,
 } from 'api/types';
-import { createGate } from 'effector-react';
 import { EffectFailDataAxiosError } from 'types';
 import { AddTask } from './view/AddTaskModal/AddTaskForm/AddTaskForm.types';
-import { GetTaskDeadlineRequest } from './addTaskFromDispatcherService.types';
-import { message } from 'antd';
-
-const domain = createDomain('addTaskFromDispatcherService');
+import {
+  GetAddressesRequest,
+  GetApartmentsRequest,
+  GetResourceDisconnectionRequest,
+  HomeownerNameOption,
+  PreparedAddress,
+} from './addTaskFromDispatcherService.types';
+import { currentUserService } from 'services/currentUserService';
+import { prepareAddressesForTreeSelect } from './addTaskFromDispatcherService.utils';
 
 const PageGate = createGate();
 
-const handleOpenModal = domain.createEvent();
-const handleCloseModal = domain.createEvent();
+const handleOpenModal = createEvent();
+const handleCloseModal = createEvent();
 
-const choоseLeadExecutor = domain.createEvent<string>();
+const choоseLeadExecutor = createEvent<string>();
 
-const handleTaskDeadlineRequest = domain.createEvent<GetTaskDeadlineRequest>();
-const resetDeadline = domain.createEvent();
+const handleCreateTask = createEvent<AddTask>();
 
-const handleCreateTask = domain.createEvent<AddTask>();
+const handleSelectHousingAddress = createEvent<string>();
+const handleSelectApartmentNumber = createEvent<string>();
+const handleSelectTaskReason = createEvent<string>();
 
-const handleReset = domain.createEvent();
+const setSelectedHousingId = createEvent<string | null>();
+const setSelectedApartmentId = createEvent<number | null>();
+const setSelectedTaskReasonId = createEvent<string | null>();
 
-const createTaskFx = domain.createEffect<
+const handleReset = createEvent();
+
+const createTaskFx = createEffect<
   ErpCreateTaskRequest,
   File | null,
   EffectFailDataAxiosError
 >(createTask);
 
-const getERPSourcesFx = domain.createEffect<void, ErpSourceResponse[]>(
-  getERPSources,
-);
+const getERPSourcesFx = createEffect<void, ErpSourceResponse[]>(getERPSources);
 
-const getWorkCategoriesFx = domain.createEffect<
-  void,
-  ErpWorkCategoryResponse[]
->(getWorkCategories);
-
-const getLeadExecutorsFx = domain.createEffect<void, ErpExecutorResponse[]>(
+const getLeadExecutorsFx = createEffect<void, ErpExecutorResponse[]>(
   getLeadExecutors,
 );
 
-const getErpObjectsFx = domain.createEffect<void, ErpObjectResponse[]>(
-  getTasksErpObjects,
-);
+const getAddressesFx = createEffect<
+  GetAddressesRequest,
+  StreetWithBuildingNumbersResponsePagedList
+>(getAddresses);
 
-const getErpExecutorsForLeadFx = domain.createEffect<
+const getErpExecutorsForLeadFx = createEffect<
   { leadId: string },
   ErpExecutorResponse[]
 >(getErpExecutorsForLead);
 
-const getErpTaskDeadlineFx = domain.createEffect<
-  GetTaskDeadlineRequest,
-  ErpTaskDeadlineResponse
->(getErpTaskDeadline);
+const getApartmentsFx = createEffect<
+  GetApartmentsRequest,
+  ApartmentListResponsePagedList
+>(getApartments);
 
-const $isModalOpen = domain
-  .createStore<boolean>(false)
+const getApartmentHomeownerNamesFx = createEffect<number, string[]>(
+  getApartmentHomeownerNames,
+);
+
+const getResourceDisconnectionFx = createEffect<
+  GetResourceDisconnectionRequest,
+  ResourceDisconnectingResponsePagedList
+>(getResourceDisconnection);
+
+const getTaskReasonsFx = createEffect<void, ErpTaskReasonResponse[]>(
+  getTaskReasons,
+);
+
+const $isModalOpen = createStore<boolean>(false)
   .on(handleOpenModal, () => true)
   .on(handleCloseModal, () => false)
   .reset(handleReset);
 
-const $ERPSources = domain
-  .createStore<ErpSourceResponse[]>([])
+const $ERPSources = createStore<ErpSourceResponse[]>([])
   .on(getERPSourcesFx.doneData, (_, data) => data)
   .reset(handleReset);
 
-const $workCategories = domain
-  .createStore<ErpWorkCategoryResponse[]>([])
-  .on(getWorkCategoriesFx.doneData, (_, data) => data)
-  .reset(handleReset);
-
-const $leadExecutors = domain
-  .createStore<ErpExecutorResponse[]>([])
+const $leadExecutors = createStore<ErpExecutorResponse[]>([])
   .on(getLeadExecutorsFx.doneData, (_, data) => data)
   .reset(handleReset);
 
-const $executors = domain
-  .createStore<ErpExecutorResponse[]>([])
+const $executors = createStore<ErpExecutorResponse[]>([])
   .on(getErpExecutorsForLeadFx.doneData, (_, data) => data)
   .reset(handleReset);
 
-const $ErpObjects = domain
-  .createStore<ErpObjectResponse[]>([])
-  .on(getErpObjectsFx.doneData, (_, data) => data)
+const $preparedForOptionsAddresses = createStore<PreparedAddress[]>([])
+  .on(getAddressesFx.doneData, (_, data) =>
+    prepareAddressesForTreeSelect(data.items),
+  )
   .reset(handleReset);
 
-const $taskDeadlineRequest = domain
-  .createStore<GetTaskDeadlineRequest | null>(null)
-  .on(handleTaskDeadlineRequest, (prev, data) => ({ ...prev, ...data }))
+const $selectedHousingStockId = createStore<string | null>(null)
+  .on(setSelectedHousingId, (_, id) => id)
   .reset(handleReset);
 
-const $taskDeadline = domain
-  .createStore<ErpTaskDeadlineResponse | null>(null)
-  .on(getErpTaskDeadlineFx.doneData, (_, data) => data)
-  .reset(resetDeadline)
+const $selectedApartmentId = createStore<number | null>(null)
+  .on(setSelectedApartmentId, (_, id) => id)
+  .reset(handleReset);
+
+const $selectedTaskReasonId = createStore<string | null>(null)
+  .on(setSelectedTaskReasonId, (_, id) => id)
+  .reset(handleReset);
+
+const $apartmentHomeownerNames = createStore<HomeownerNameOption[]>([])
+  .on(getApartmentHomeownerNamesFx.doneData, (_, data) =>
+    data.map((name) => ({ value: name })),
+  )
+  .reset(handleReset);
+
+const $existingApartmentNumbers = createStore<ApartmentListResponse[]>([])
+  .on(getApartmentsFx.doneData, (_, { items }) => items || [])
+  .reset(handleReset);
+
+const $preparedApartmentNumbers = $existingApartmentNumbers.map((items) => {
+  return items
+    .filter((apartment) => Boolean(apartment.apartmentNumber))
+    .map((apartment) => ({
+      value: apartment.apartmentNumber as string,
+      id: apartment.id,
+    }));
+});
+
+const $resourceDisconnection = createStore<ResourceDisconnectingResponse[]>([])
+  .on(getResourceDisconnectionFx.doneData, (_, data) => data.items || [])
+  .reset(handleReset);
+
+const $taskReasons = createStore<ErpTaskReasonResponse[]>([])
+  .on(getTaskReasonsFx.doneData, (_, data) => data)
   .reset(handleReset);
 
 sample({
   clock: handleCreateTask,
-  source: $ErpObjects,
-  fn: (ErpObjects, data) => {
-    const object = ErpObjects.find(
-      (object) => object.address === data.selectedObjectAddress,
-    );
-
+  source: combine(
+    $selectedHousingStockId,
+    $selectedTaskReasonId,
+    (selectedHousingStockId, selectedTaskReasonId) => ({
+      selectedHousingStockId,
+      selectedTaskReasonId,
+    }),
+  ),
+  fn: (source, data) => {
     const sourceDateTime = data.requestDate
       ?.format('YYYY-MM-DD')
-      .concat('T', data.requestTime || '');
+      .concat('T', data.requestTime?.format('HH:mm') || '');
 
-    const manualTaskDeadline = data.manualDeadlineDate
-      ?.format('YYYY-MM-DD')
-      .concat('T', data.manualDeadlineTime || '');
+    const sourceDateTimeUTC = dayjs(sourceDateTime).utcOffset(0).toISOString();
 
     return {
-      leadId: data.leadId,
-      objectId: object?.id,
-      sourceDateTime: sourceDateTime,
+      taskReasonId: source.selectedTaskReasonId,
+      taskType: data.taskType,
+      objectTtmId: Number(source.selectedHousingStockId),
       sourceId: data.sourceId,
       sourceNumber: data.requestNumber,
-      taskDescription: data.taskDescription,
-      taskType: data.taskType,
-      workCategoryId: data.workTypeId,
-      subscriberFullName: data.subscriberName,
-      subscriberPhoneNumber: data.phoneNumber,
+      sourceDateTime: sourceDateTimeUTC,
+      leadId: data.leadId,
       workerId: data.executorId,
-      taskDeadline: data.taskDeadline || manualTaskDeadline,
+      subscriberPhoneNumber: data.phoneNumber,
+      subscriberFullName: data.subscriberName,
+      taskDescription: data.taskDescription,
     } as ErpCreateTaskRequest;
   },
   target: createTaskFx,
 });
 
-forward({
-  from: PageGate.open,
-  to: [
-    getERPSourcesFx,
-    getWorkCategoriesFx,
-    getLeadExecutorsFx,
-    getErpObjectsFx,
-  ],
+sample({
+  clock: PageGate.open,
+  target: [getERPSourcesFx, getLeadExecutorsFx, getTaskReasonsFx],
+});
+
+sample({
+  clock: PageGate.open,
+  source: currentUserService.outputs.$userCity,
+  filter: Boolean,
+  fn: (userCity) => ({
+    City: userCity,
+  }),
+  target: getAddressesFx,
 });
 
 sample({
@@ -169,30 +224,59 @@ sample({
 });
 
 sample({
-  clock: $taskDeadlineRequest,
-  fn: (request) => request!,
-  filter: (request) => {
-    if (!request) {
-      return false;
-    }
-    if (!Boolean(request.TaskType)) {
-      return false;
-    }
-    if (!Boolean(request.WorkCategoryId)) {
-      return false;
-    }
-    if (!request.isPermittedToRequest) {
-      return false;
-    }
-    return true;
+  clock: handleSelectHousingAddress,
+  source: $preparedForOptionsAddresses,
+  fn: (optionAddresses, selectedAddress) => {
+    const selectedOption = optionAddresses.find(
+      (optionItem) => optionItem.address === selectedAddress,
+    );
+    return selectedOption?.id || null;
   },
-  target: getErpTaskDeadlineFx,
+  target: setSelectedHousingId,
 });
 
 sample({
-  clock: $taskDeadlineRequest,
-  filter: (request) => request?.isPermittedToRequest || false,
-  target: resetDeadline,
+  clock: handleSelectApartmentNumber,
+  source: $preparedApartmentNumbers,
+  fn: (apartmentOptions, selectedApartNumber) => {
+    const selectedOption = apartmentOptions.find(
+      (optionItem) => optionItem.value === selectedApartNumber,
+    );
+    return selectedOption?.id || null;
+  },
+  target: setSelectedApartmentId,
+});
+
+sample({
+  clock: handleSelectTaskReason,
+  source: $taskReasons,
+  fn: (taskReasons, selectedTaskReason) => {
+    const selectedOption = taskReasons.find(
+      (optionItem) => optionItem.name === selectedTaskReason,
+    );
+    return selectedOption?.id || null;
+  },
+  target: setSelectedTaskReasonId,
+});
+
+sample({
+  clock: $selectedHousingStockId,
+  filter: Boolean,
+  fn: (housingStockId) => ({ HousingStockId: Number(housingStockId) }),
+  target: getApartmentsFx,
+});
+
+sample({
+  clock: $selectedHousingStockId,
+  filter: Boolean,
+  fn: (housingStockId) => ({ BuildingId: Number(housingStockId) }),
+  target: getResourceDisconnectionFx,
+});
+
+sample({
+  clock: $selectedApartmentId,
+  filter: Boolean,
+  target: getApartmentHomeownerNamesFx,
 });
 
 const onSuccessCreation = createTaskFx.doneData;
@@ -200,7 +284,7 @@ const onSuccessCreation = createTaskFx.doneData;
 const $isCreatePending = createTaskFx.pending;
 
 sample({
-  clock: onSuccessCreation,
+  clock: [onSuccessCreation, PageGate.close],
   target: handleReset,
 });
 
@@ -222,18 +306,21 @@ export const addTaskFromDispatcherService = {
     handleCloseModal,
     handleCreateTask,
     choоseLeadExecutor,
-    handleTaskDeadlineRequest,
+    handleSelectHousingAddress,
+    handleSelectApartmentNumber,
+    handleSelectTaskReason,
   },
   outputs: {
     $isModalOpen,
     $ERPSources,
-    $workCategories,
     $leadExecutors,
-    $ErpObjects,
+    $preparedForOptionsAddresses,
     $executors,
-    $taskDeadlineRequest,
-    $taskDeadline,
     $isCreatePending,
+    $preparedApartmentNumbers,
+    $resourceDisconnection,
+    $apartmentHomeownerNames,
+    $taskReasons,
   },
   gates: { PageGate },
 };

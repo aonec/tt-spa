@@ -2107,6 +2107,7 @@ export enum EStageActionType {
   ClearManuallyAttachedParticipants = 'ClearManuallyAttachedParticipants',
   CloseIndividualDevices = 'CloseIndividualDevices',
   CreateResourceDisconnecting = 'CreateResourceDisconnecting',
+  SetApplicationPostponeDate = 'SetApplicationPostponeDate',
 }
 
 export enum EStageStatus {
@@ -2231,6 +2232,14 @@ export interface EditIndividualDeviceReadingsHistoryRequest {
   newReadings?: SwitchIndividualDeviceReadingsCreateRequest[] | null;
 }
 
+export enum EisTaskReasonType {
+  Heat = 'Heat',
+  HotWaterSupply = 'HotWaterSupply',
+  ColdWaterSupply = 'ColdWaterSupply',
+  Electricity = 'Electricity',
+  TrafficControl = 'TrafficControl',
+}
+
 export enum EisTaskType {
   Emergency = 'Emergency',
   Planned = 'Planned',
@@ -2313,17 +2322,15 @@ export interface ElectricNodeResponseSuccessApiResponse {
 
 export interface ErpCreateTaskRequest {
   /** @format uuid */
-  workCategoryId: string;
+  taskReasonId: string;
   taskType: EisTaskType;
-  /** @format uuid */
-  objectId: string;
+  /** @format int32 */
+  objectTtmId: number;
   /** @format uuid */
   sourceId: string;
   sourceNumber: string;
   /** @format date-time */
   sourceDateTime: string;
-  /** @format date-time */
-  taskDeadline: string;
   /** @format uuid */
   leadId: string;
   /** @format uuid */
@@ -2354,6 +2361,14 @@ export interface ErpSourceResponse {
 export interface ErpTaskDeadlineResponse {
   /** @format int32 */
   deadlineInHours: number;
+}
+
+export interface ErpTaskReasonResponse {
+  /** @format uuid */
+  id: string;
+  reasonType: EisTaskReasonType;
+  name: string | null;
+  allowedTaskTypes: EisTaskType[] | null;
 }
 
 export interface ErpWorkCategoryResponse {
@@ -4965,6 +4980,8 @@ export interface StagePushRequest {
   taskConfirmation?: TaskConfirmationRequest | null;
   /** @format date-time */
   applicationCompletionDate?: string | null;
+  /** @format date-time */
+  applicationPostponeDate?: string | null;
   /** @maxLength 1024 */
   comment?: string | null;
 }
@@ -6340,6 +6357,32 @@ export class Api<
         ErrorApiResponse
       >({
         path: `/api/Apartments/${apartmentId}/HomeownerAccounts`,
+        method: 'GET',
+        query: query,
+        secure: true,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
+     *
+     * @tags Apartments
+     * @name ApartmentsHomeownerAccountNamesDetail
+     * @summary HomeownersRead
+     * @request GET:/api/Apartments/{apartmentId}/HomeownerAccountNames
+     * @secure
+     */
+    apartmentsHomeownerAccountNamesDetail: (
+      apartmentId: number,
+      query?: {
+        /** @default false */
+        isAlsoClosed?: boolean;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<string[], ErrorApiResponse>({
+        path: `/api/Apartments/${apartmentId}/HomeownerAccountNames`,
         method: 'GET',
         query: query,
         secure: true,
@@ -12867,31 +12910,6 @@ export class Api<
      * @description Роли:<li>Старший оператор</li><li>Оператор</li>
      *
      * @tags Reports
-     * @name ReportsReadingsReportList
-     * @summary ReadingReportForOperator
-     * @request GET:/api/Reports/ReadingsReport
-     * @secure
-     */
-    reportsReadingsReportList: (
-      query?: {
-        /** @format int32 */
-        MonthsFromNow?: number;
-      },
-      params: RequestParams = {},
-    ) =>
-      this.request<File, ErrorApiResponse>({
-        path: `/api/Reports/ReadingsReport`,
-        method: 'GET',
-        query: query,
-        secure: true,
-        format: 'json',
-        ...params,
-      }),
-
-    /**
-     * @description Роли:<li>Старший оператор</li><li>Оператор</li>
-     *
-     * @tags Reports
      * @name ReportsClosedDevicesReportXlsxList
      * @summary ReadingReportForOperator
      * @request GET:/api/Reports/ClosedDevicesReportXlsx
@@ -12957,6 +12975,7 @@ export class Api<
     reportsRunnerReportsList: (
       query: {
         yearRange: YearRangeType;
+        /** Список Id домоуправлений */
         hmIds?: string[];
       },
       params: RequestParams = {},
@@ -12965,24 +12984,6 @@ export class Api<
         path: `/api/Reports/RunnerReports`,
         method: 'GET',
         query: query,
-        secure: true,
-        format: 'json',
-        ...params,
-      }),
-
-    /**
-     * @description Роли:<li>Старший оператор</li><li>Оператор</li>
-     *
-     * @tags Reports
-     * @name ReportsHomeownerAccountsForErcList
-     * @summary ReadingReportForOperator
-     * @request GET:/api/Reports/HomeownerAccountsForErc
-     * @secure
-     */
-    reportsHomeownerAccountsForErcList: (params: RequestParams = {}) =>
-      this.request<File, ErrorApiResponse>({
-        path: `/api/Reports/HomeownerAccountsForErc`,
-        method: 'GET',
         secure: true,
         format: 'json',
         ...params,
@@ -13144,48 +13145,6 @@ export class Api<
      * @description Роли:<li>Старший оператор</li><li>Оператор</li>
      *
      * @tags Reports
-     * @name ReportsIndividualDevicesReportList
-     * @summary ReadingReportForOperator
-     * @request GET:/api/Reports/IndividualDevicesReport
-     * @secure
-     */
-    reportsIndividualDevicesReportList: (
-      query: {
-        /** @format uuid */
-        HouseManagementId?: string;
-        /**
-         * @deprecated
-         * @format int32
-         */
-        HousingStockId?: number;
-        HousingStocksIds?: number[];
-        ReportOption: EIndividualDeviceReportOption;
-        Resources?: EResourceType[];
-        /** @format date-time */
-        From?: string;
-        /** @format date-time */
-        To?: string;
-        ClosingReasons?: EClosingReason[];
-        WithoutApartmentsWithOpenDevicesByResources?: boolean;
-      },
-      params: RequestParams = {},
-    ) =>
-      this.request<
-        IndividualDevicesConstructedReportResponseIEnumerableSuccessApiResponse,
-        ErrorApiResponse
-      >({
-        path: `/api/Reports/IndividualDevicesReport`,
-        method: 'GET',
-        query: query,
-        secure: true,
-        format: 'json',
-        ...params,
-      }),
-
-    /**
-     * @description Роли:<li>Старший оператор</li><li>Оператор</li>
-     *
-     * @tags Reports
      * @name ReportsApartmentActsReportList
      * @summary ReadingReportForOperator
      * @request GET:/api/Reports/ApartmentActsReport
@@ -13214,6 +13173,42 @@ export class Api<
         ErrorApiResponse
       >({
         path: `/api/Reports/ApartmentActsReport`,
+        method: 'GET',
+        query: query,
+        secure: true,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Старший оператор</li><li>Оператор</li>
+     *
+     * @tags Reports
+     * @name ReportsApartmentActsReportXlsxList
+     * @summary ReadingReportForOperator
+     * @request GET:/api/Reports/ApartmentActsReportXlsx
+     * @secure
+     */
+    reportsApartmentActsReportXlsxList: (
+      query?: {
+        /** @format uuid */
+        HouseManagementId?: string;
+        /**
+         * @deprecated
+         * @format int32
+         */
+        HousingStockId?: number;
+        HousingStocksIds?: number[];
+        Resources?: EActResourceType[];
+        /** @format date-time */
+        From?: string;
+        /** @format date-time */
+        To?: string;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<FileContentResultSuccessApiResponse, ErrorApiResponse>({
+        path: `/api/Reports/ApartmentActsReportXlsx`,
         method: 'GET',
         query: query,
         secure: true,
@@ -13264,6 +13259,42 @@ export class Api<
      * @description Роли:<li>Старший оператор</li><li>Оператор</li>
      *
      * @tags Reports
+     * @name ReportsHousingDevicesReportXlsxList
+     * @summary ReadingReportForOperator
+     * @request GET:/api/Reports/HousingDevicesReportXlsx
+     * @secure
+     */
+    reportsHousingDevicesReportXlsxList: (
+      query: {
+        /** @format uuid */
+        HouseManagementId?: string;
+        /**
+         * @deprecated
+         * @format int32
+         */
+        HousingStockId?: number;
+        HousingStocksIds?: number[];
+        Resources?: EResourceType[];
+        /** @format date-time */
+        From: string;
+        /** @format date-time */
+        To: string;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<FileContentResultSuccessApiResponse, ErrorApiResponse>({
+        path: `/api/Reports/HousingDevicesReportXlsx`,
+        method: 'GET',
+        query: query,
+        secure: true,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Старший оператор</li><li>Оператор</li>
+     *
+     * @tags Reports
      * @name ReportsHomeownersReportList
      * @summary ReadingReportForOperator
      * @request GET:/api/Reports/HomeownersReport
@@ -13288,6 +13319,80 @@ export class Api<
         ErrorApiResponse
       >({
         path: `/api/Reports/HomeownersReport`,
+        method: 'GET',
+        query: query,
+        secure: true,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Старший оператор</li><li>Оператор</li>
+     *
+     * @tags Reports
+     * @name ReportsHomeownersReportXlsxList
+     * @summary ReadingReportForOperator
+     * @request GET:/api/Reports/HomeownersReportXlsx
+     * @secure
+     */
+    reportsHomeownersReportXlsxList: (
+      query: {
+        /** @format uuid */
+        HouseManagementId?: string;
+        /**
+         * @deprecated
+         * @format int32
+         */
+        HousingStockId?: number;
+        HousingStocksIds?: number[];
+        ShowOnlyDuplicates: boolean;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<FileContentResultSuccessApiResponse, ErrorApiResponse>({
+        path: `/api/Reports/HomeownersReportXlsx`,
+        method: 'GET',
+        query: query,
+        secure: true,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Старший оператор</li><li>Оператор</li>
+     *
+     * @tags Reports
+     * @name ReportsIndividualDevicesReportList
+     * @summary ReadingReportForOperator
+     * @request GET:/api/Reports/IndividualDevicesReport
+     * @secure
+     */
+    reportsIndividualDevicesReportList: (
+      query: {
+        /** @format uuid */
+        HouseManagementId?: string;
+        /**
+         * @deprecated
+         * @format int32
+         */
+        HousingStockId?: number;
+        HousingStocksIds?: number[];
+        ReportOption: EIndividualDeviceReportOption;
+        Resources?: EResourceType[];
+        /** @format date-time */
+        From?: string;
+        /** @format date-time */
+        To?: string;
+        ClosingReasons?: EClosingReason[];
+        WithoutApartmentsWithOpenDevicesByResources?: boolean;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<
+        IndividualDevicesConstructedReportResponseIEnumerableSuccessApiResponse,
+        ErrorApiResponse
+      >({
+        path: `/api/Reports/IndividualDevicesReport`,
         method: 'GET',
         query: query,
         secure: true,
@@ -13338,110 +13443,6 @@ export class Api<
      * @description Роли:<li>Старший оператор</li><li>Оператор</li>
      *
      * @tags Reports
-     * @name ReportsApartmentActsReportXlsxList
-     * @summary ReadingReportForOperator
-     * @request GET:/api/Reports/ApartmentActsReportXlsx
-     * @secure
-     */
-    reportsApartmentActsReportXlsxList: (
-      query?: {
-        /** @format uuid */
-        HouseManagementId?: string;
-        /**
-         * @deprecated
-         * @format int32
-         */
-        HousingStockId?: number;
-        HousingStocksIds?: number[];
-        Resources?: EActResourceType[];
-        /** @format date-time */
-        From?: string;
-        /** @format date-time */
-        To?: string;
-      },
-      params: RequestParams = {},
-    ) =>
-      this.request<FileContentResultSuccessApiResponse, ErrorApiResponse>({
-        path: `/api/Reports/ApartmentActsReportXlsx`,
-        method: 'GET',
-        query: query,
-        secure: true,
-        format: 'json',
-        ...params,
-      }),
-
-    /**
-     * @description Роли:<li>Старший оператор</li><li>Оператор</li>
-     *
-     * @tags Reports
-     * @name ReportsHousingDevicesReportXlsxList
-     * @summary ReadingReportForOperator
-     * @request GET:/api/Reports/HousingDevicesReportXlsx
-     * @secure
-     */
-    reportsHousingDevicesReportXlsxList: (
-      query: {
-        /** @format uuid */
-        HouseManagementId?: string;
-        /**
-         * @deprecated
-         * @format int32
-         */
-        HousingStockId?: number;
-        HousingStocksIds?: number[];
-        Resources?: EResourceType[];
-        /** @format date-time */
-        From: string;
-        /** @format date-time */
-        To: string;
-      },
-      params: RequestParams = {},
-    ) =>
-      this.request<FileContentResultSuccessApiResponse, ErrorApiResponse>({
-        path: `/api/Reports/HousingDevicesReportXlsx`,
-        method: 'GET',
-        query: query,
-        secure: true,
-        format: 'json',
-        ...params,
-      }),
-
-    /**
-     * @description Роли:<li>Старший оператор</li><li>Оператор</li>
-     *
-     * @tags Reports
-     * @name ReportsHomeownersReportXlsxList
-     * @summary ReadingReportForOperator
-     * @request GET:/api/Reports/HomeownersReportXlsx
-     * @secure
-     */
-    reportsHomeownersReportXlsxList: (
-      query: {
-        /** @format uuid */
-        HouseManagementId?: string;
-        /**
-         * @deprecated
-         * @format int32
-         */
-        HousingStockId?: number;
-        HousingStocksIds?: number[];
-        ShowOnlyDuplicates: boolean;
-      },
-      params: RequestParams = {},
-    ) =>
-      this.request<FileContentResultSuccessApiResponse, ErrorApiResponse>({
-        path: `/api/Reports/HomeownersReportXlsx`,
-        method: 'GET',
-        query: query,
-        secure: true,
-        format: 'json',
-        ...params,
-      }),
-
-    /**
-     * @description Роли:<li>Старший оператор</li><li>Оператор</li>
-     *
-     * @tags Reports
      * @name ReportsOperatorsWorkingReportList
      * @summary ReadingReportForOperator
      * @request GET:/api/Reports/OperatorsWorkingReport
@@ -13461,6 +13462,33 @@ export class Api<
         ErrorApiResponse
       >({
         path: `/api/Reports/OperatorsWorkingReport`,
+        method: 'GET',
+        query: query,
+        secure: true,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Старший оператор</li><li>Оператор</li>
+     *
+     * @tags Reports
+     * @name ReportsOperatorsWorkingReportXlsxList
+     * @summary ReadingReportForOperator
+     * @request GET:/api/Reports/OperatorsWorkingReportXlsx
+     * @secure
+     */
+    reportsOperatorsWorkingReportXlsxList: (
+      query?: {
+        /** @format date-time */
+        From?: string;
+        /** @format date-time */
+        To?: string;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<File, ErrorApiResponse>({
+        path: `/api/Reports/OperatorsWorkingReportXlsx`,
         method: 'GET',
         query: query,
         secure: true,
@@ -13502,6 +13530,33 @@ export class Api<
      * @description Роли:<li>Старший оператор</li><li>Оператор</li>
      *
      * @tags Reports
+     * @name ReportsInspectorsWorkingReportXlsxList
+     * @summary ReadingReportForOperator
+     * @request GET:/api/Reports/InspectorsWorkingReportXlsx
+     * @secure
+     */
+    reportsInspectorsWorkingReportXlsxList: (
+      query?: {
+        /** @format date-time */
+        From?: string;
+        /** @format date-time */
+        To?: string;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<File, ErrorApiResponse>({
+        path: `/api/Reports/InspectorsWorkingReportXlsx`,
+        method: 'GET',
+        query: query,
+        secure: true,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Старший оператор</li><li>Оператор</li>
+     *
+     * @tags Reports
      * @name ReportsCallCenterWorkingReportList
      * @summary ReadingReportForOperator
      * @request GET:/api/Reports/CallCenterWorkingReport
@@ -13532,6 +13587,33 @@ export class Api<
      * @description Роли:<li>Старший оператор</li><li>Оператор</li>
      *
      * @tags Reports
+     * @name ReportsCallCenterWorkingReportXlsxList
+     * @summary ReadingReportForOperator
+     * @request GET:/api/Reports/CallCenterWorkingReportXlsx
+     * @secure
+     */
+    reportsCallCenterWorkingReportXlsxList: (
+      query?: {
+        /** @format date-time */
+        From?: string;
+        /** @format date-time */
+        To?: string;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<File, ErrorApiResponse>({
+        path: `/api/Reports/CallCenterWorkingReportXlsx`,
+        method: 'GET',
+        query: query,
+        secure: true,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Старший оператор</li><li>Оператор</li>
+     *
+     * @tags Reports
      * @name ReportsHouseManagementsReportList
      * @summary ReadingReportForOperator
      * @request GET:/api/Reports/HouseManagementsReport
@@ -13551,87 +13633,6 @@ export class Api<
         ErrorApiResponse
       >({
         path: `/api/Reports/HouseManagementsReport`,
-        method: 'GET',
-        query: query,
-        secure: true,
-        format: 'json',
-        ...params,
-      }),
-
-    /**
-     * @description Роли:<li>Старший оператор</li><li>Оператор</li>
-     *
-     * @tags Reports
-     * @name ReportsOperatorsWorkingReportXlsxList
-     * @summary ReadingReportForOperator
-     * @request GET:/api/Reports/OperatorsWorkingReportXlsx
-     * @secure
-     */
-    reportsOperatorsWorkingReportXlsxList: (
-      query?: {
-        /** @format date-time */
-        From?: string;
-        /** @format date-time */
-        To?: string;
-      },
-      params: RequestParams = {},
-    ) =>
-      this.request<File, ErrorApiResponse>({
-        path: `/api/Reports/OperatorsWorkingReportXlsx`,
-        method: 'GET',
-        query: query,
-        secure: true,
-        format: 'json',
-        ...params,
-      }),
-
-    /**
-     * @description Роли:<li>Старший оператор</li><li>Оператор</li>
-     *
-     * @tags Reports
-     * @name ReportsInspectorsWorkingReportXlsxList
-     * @summary ReadingReportForOperator
-     * @request GET:/api/Reports/InspectorsWorkingReportXlsx
-     * @secure
-     */
-    reportsInspectorsWorkingReportXlsxList: (
-      query?: {
-        /** @format date-time */
-        From?: string;
-        /** @format date-time */
-        To?: string;
-      },
-      params: RequestParams = {},
-    ) =>
-      this.request<File, ErrorApiResponse>({
-        path: `/api/Reports/InspectorsWorkingReportXlsx`,
-        method: 'GET',
-        query: query,
-        secure: true,
-        format: 'json',
-        ...params,
-      }),
-
-    /**
-     * @description Роли:<li>Старший оператор</li><li>Оператор</li>
-     *
-     * @tags Reports
-     * @name ReportsCallCenterWorkingReportXlsxList
-     * @summary ReadingReportForOperator
-     * @request GET:/api/Reports/CallCenterWorkingReportXlsx
-     * @secure
-     */
-    reportsCallCenterWorkingReportXlsxList: (
-      query?: {
-        /** @format date-time */
-        From?: string;
-        /** @format date-time */
-        To?: string;
-      },
-      params: RequestParams = {},
-    ) =>
-      this.request<File, ErrorApiResponse>({
-        path: `/api/Reports/CallCenterWorkingReportXlsx`,
         method: 'GET',
         query: query,
         secure: true,
@@ -14506,6 +14507,24 @@ export class Api<
      * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
      *
      * @tags Tasks
+     * @name TasksErpTaskReasonsList
+     * @summary TasksRead
+     * @request GET:/api/Tasks/ErpTaskReasons
+     * @secure
+     */
+    tasksErpTaskReasonsList: (params: RequestParams = {}) =>
+      this.request<ErpTaskReasonResponse[], ErrorApiResponse>({
+        path: `/api/Tasks/ErpTaskReasons`,
+        method: 'GET',
+        secure: true,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
+     *
+     * @tags Tasks
      * @name TasksErpLeadsList
      * @summary TasksRead
      * @request GET:/api/Tasks/ErpLeads
@@ -14602,13 +14621,12 @@ export class Api<
       data: ErpCreateTaskRequest,
       params: RequestParams = {},
     ) =>
-      this.request<File, ErrorApiResponse>({
+      this.request<void, ErrorApiResponse>({
         path: `/api/Tasks/ErpCreateTask`,
         method: 'POST',
         body: data,
         secure: true,
         type: ContentType.Json,
-        format: 'json',
         ...params,
       }),
 

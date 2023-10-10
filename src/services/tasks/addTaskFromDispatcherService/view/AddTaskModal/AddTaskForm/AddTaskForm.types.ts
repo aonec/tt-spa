@@ -1,29 +1,27 @@
 import {
   EisTaskType,
   ErpExecutorResponse,
-  ErpTaskDeadlineResponse,
   ErpSourceResponse,
-  ErpWorkCategoryResponse,
-  ErpObjectResponse,
+  ErpTaskReasonResponse,
+  ResourceDisconnectingResponse,
 } from 'api/types';
 import dayjs from 'dayjs';
-import { GetTaskDeadlineRequest } from 'services/tasks/addTaskFromDispatcherService/addTaskFromDispatcherService.types';
+import {
+  ExistingApartmentNumberType,
+  HomeownerNameOption,
+  PreparedAddress,
+} from 'services/tasks/addTaskFromDispatcherService/addTaskFromDispatcherService.types';
 
 export type AddTask = {
   sourceId: string | null;
   requestNumber: string | null;
   taskType: null | EisTaskType;
-  // categoryId: string | null;
   workTypeId: string | null;
 
   requestDate: dayjs.Dayjs | null;
-  requestTime: string | null;
-
-  manualDeadlineDate: dayjs.Dayjs | null;
-  manualDeadlineTime: string | null;
+  requestTime: dayjs.Dayjs | null;
 
   addressSearch: string;
-  selectedObjectAddress: string | null;
 
   apartmentNumber: string | null;
   subscriberName: string | null;
@@ -32,23 +30,30 @@ export type AddTask = {
   leadId: string | null;
   executorId: string | null;
 
-  taskDeadline: string | null;
-
   taskDescription: string | null;
 
-  isPermittedToChangeDeadline: boolean;
+  taskReasonSearch: string | null;
 };
 
 export type AddTaskFormProps = {
   formId: string;
   ERPSources: ErpSourceResponse[];
   leadExecutors: ErpExecutorResponse[];
-  workCategories: ErpWorkCategoryResponse[];
-  ErpObjects: ErpObjectResponse[];
+  preparedForOptionsAddresses: PreparedAddress[];
   handleCreateTask: (payload: AddTask) => void;
   setDisableSubmit: React.Dispatch<React.SetStateAction<boolean>>;
   choоseLeadExecutor: (payload: string) => void;
   executors: ErpExecutorResponse[];
-  handleTaskDeadlineRequest: (payload: GetTaskDeadlineRequest) => void;
-  taskDeadline: ErpTaskDeadlineResponse | null;
+  handleSelectHousingAddress: (payload: string) => void;
+  existingApartmentNumbers: ExistingApartmentNumberType[];
+  resourceDisconnection: ResourceDisconnectingResponse[];
+  handleSelectApartmentNumber: (payload: string) => void;
+  apartmentHomeownerNames: HomeownerNameOption[];
+  taskReasons: ErpTaskReasonResponse[];
+  handleSelectTaskReason: (payload: string) => void;
+};
+
+export type AddressOption = {
+  value: string;
+  key: string;
 };

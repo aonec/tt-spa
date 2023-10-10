@@ -6,9 +6,10 @@ export const IconWrapper = styled.div<{ color?: string }>`
   }
 `;
 
-export const AlertWrap = styled.div<{ color?: string }>`
+export const AlertWrap = styled.div<{ color?: string; centered?: boolean }>`
   display: flex;
   align-items: flex-start;
+  align-items: ${({ centered }) => (centered ? 'center' : 'flex-start')};
 
   background: ${({ color }) => `${color || '189ee9'}35`};
   border-left: 2px solid ${({ color }) => `${color || '#189ee9'}`};

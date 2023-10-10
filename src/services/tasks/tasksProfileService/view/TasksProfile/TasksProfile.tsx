@@ -12,17 +12,17 @@ import {
   HeaderWrapper,
   HeaderContainer,
   Flex,
-  ButtonSC,
 } from './TasksProfile.styled';
 import { useUnit } from 'effector-react';
 import { Empty } from 'antd';
 import { TaskGroupingFilter } from 'api/types';
 import { Segmented } from 'ui-kit/Segmented';
-import { ListIcon, MapIcon, PlusSmallIcon } from 'ui-kit/icons';
+import { ListIcon, MapIcon } from 'ui-kit/icons';
 import { TasksMapContainer } from 'services/tasks/tasksMapService';
 import { WithLoader } from 'ui-kit/shared/WithLoader';
 import { developmentSettingsService } from 'services/developmentSettings/developmentSettings.models';
 import { TasksPageSegment, TasksProfileProps } from './TasksProfile.types';
+import { Button } from 'ui-kit/Button';
 
 const { TabPane } = TabsSC;
 
@@ -118,13 +118,9 @@ export const TasksProfile: FC<TasksProfileProps> = ({
               {header}
               {featureToggles.dispatcherAddTask && isPermissionToAddTask && (
                 <Flex>
-                  <ButtonSC
-                    size="small"
-                    type="ghost"
-                    onClick={handleOpenAddTaskModal}
-                  >
-                    <PlusSmallIcon />
-                  </ButtonSC>
+                  <Button onClick={handleOpenAddTaskModal}>
+                    + Создать задачу
+                  </Button>
                 </Flex>
               )}
             </HeaderContainer>

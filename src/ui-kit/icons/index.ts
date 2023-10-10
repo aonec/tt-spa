@@ -87,6 +87,7 @@ import { ReactComponent as FilterIconBlue } from './svg/filterIconBlue.svg';
 import { ReactComponent as FilterIconTransparent } from './svg/filterIconTransparent.svg';
 import { ReactComponent as MapPaperIcon } from './svg/mapPaper.svg';
 import { ReactComponent as TemperatureIcon } from './svg/temperature.svg';
+import { ReactComponent as CheckedBoxIcon } from './svg/checkedBox.svg';
 
 export {
   FinishIcon,
@@ -178,4 +179,5 @@ export {
   FilterIconTransparent,
   MapPaperIcon,
   TemperatureIcon,
+  CheckedBoxIcon,
 };

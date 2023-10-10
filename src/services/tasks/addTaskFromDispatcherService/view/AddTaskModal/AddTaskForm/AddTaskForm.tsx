@@ -1,167 +1,114 @@
-import React, { FC, useEffect, useMemo } from 'react';
+import React, { FC, useCallback, useEffect, useMemo, useState } from 'react';
+import { AutoComplete as AutoCompleteAntD, Form } from 'antd';
+import dayjs from 'api/dayjs';
 import {
+  ArrowRightLongIconDim,
   ContainerWithOutline,
+  DatePickerSc,
   GridContainer,
   GridContainerAsymmetricLeft,
   GridContainerAsymmetricRight,
+  GridContainerExpandable,
+  OptionItemWrapper,
+  ResourceDisconnectionAlertWrapper,
+  ResourceDisconnectionDate,
+  ResourseTypeWrapper,
+  SearchIconSc,
+  SelectCaret,
   TextareaSC,
+  TimePickerSc,
+  TopWrapper,
+  WorkTitle,
+  WorkTitleWrapper,
 } from './AddTaskForm.styled';
 import { AddTask, AddTaskFormProps } from './AddTaskForm.types';
 import { useFormik } from 'formik';
-import * as yup from 'yup';
-import { Form } from 'antd';
 import { FormItem } from 'ui-kit/FormItem';
 import { Select } from 'ui-kit/Select';
 import { Input } from 'ui-kit/Input';
-import { DatePicker } from 'ui-kit/DatePicker';
-import { EisTaskType } from 'api/types';
-import { SelectTime } from 'ui-kit/SelectTime';
+import {
+  EResourceType,
+  EisTaskType,
+  ResourceDisconnectingTypeResponse,
+} from 'api/types';
 import { addTaskFromDispatcherService } from 'services/tasks/addTaskFromDispatcherService/addTaskFromDispatcherService.models';
-import { TaskTypeDictionary } from 'dictionaries';
-import { AutoComplete } from 'ui-kit/AutoComplete';
-import { autocompleteAddress, sortByAlphabet } from './AddTaskForm.utils';
-import dayjs from 'api/dayjs';
+import {
+  ResourceShortNamesDictionary,
+  TaskReasonTypeDictionary,
+  TaskTypeDictionary,
+} from 'dictionaries';
+import {
+  autocomplete,
+  autocompleteApartNumber,
+  sortByAlphabet,
+} from './AddTaskForm.utils';
+import { Alert } from 'ui-kit/Alert';
+import { useSwitchInputOnEnter } from 'hooks/useSwitchInputOnEnter';
+import { fromEnter } from 'ui-kit/shared/DatePickerNative';
+import { validationSchema } from './AddTaskForm.constants';
 
 const {
   gates: { PageGate },
 } = addTaskFromDispatcherService;
 
+const dataKey = 'add-task-form';
+
 export const AddTaskForm: FC<AddTaskFormProps> = ({
   formId,
   ERPSources,
-  workCategories: workTypes,
-  ErpObjects,
+  preparedForOptionsAddresses,
   handleCreateTask,
   setDisableSubmit,
   choоseLeadExecutor,
   executors,
-  handleTaskDeadlineRequest,
-  taskDeadline,
   leadExecutors,
+  handleSelectHousingAddress,
+  existingApartmentNumbers,
+  resourceDisconnection,
+  handleSelectApartmentNumber,
+  apartmentHomeownerNames,
+  taskReasons,
+  handleSelectTaskReason,
 }) => {
   const { values, handleSubmit, setFieldValue, errors } = useFormik<AddTask>({
     initialValues: {
-      sourceId: null,
+      sourceId: '34ac5b2e-9ebd-11e8-8131-001dd8b88b72',
       requestNumber: null,
-      taskType: null as null | EisTaskType,
+      taskType: null,
       workTypeId: null,
-
-      requestDate: null,
-      requestTime: null,
-
-      manualDeadlineDate: null,
-      manualDeadlineTime: null,
-
-      taskDeadline: null,
-
+      requestDate: dayjs(),
+      requestTime: dayjs(),
       addressSearch: '',
-      selectedObjectAddress: null,
-
       apartmentNumber: null,
       subscriberName: null,
       phoneNumber: null,
-
       leadId: null,
       executorId: null,
-
       taskDescription: null,
-
-      isPermittedToChangeDeadline: false,
+      taskReasonSearch: null,
     },
-    enableReinitialize: true,
     validateOnBlur: true,
     validateOnMount: true,
 
-    validationSchema: yup.object().shape({
-      sourceId: yup.string().nullable().required('Обязательное поле'),
-      requestNumber: yup.string().nullable().required('Обязательное поле'),
-      taskType: yup.string().nullable().required('Обязательное поле'),
-      workTypeId: yup.string().nullable().required('Обязательное поле'),
-      subscriberName: yup.string().nullable().required('Обязательное поле'),
-      phoneNumber: yup.string().nullable().required('Обязательное поле'),
-      requestDate: yup.string().nullable().required('Обязательное поле'),
-      requestTime: yup.string().nullable().required('Обязательное поле'),
-      taskDeadline: yup
-        .string()
-        .nullable()
-        .required('Обязательное поле')
-        .when('isPermittedToChangeDeadline', {
-          is: true,
-          then: yup.string().nullable(),
-        }),
-      manualDeadlineDate: yup
-        .string()
-        .nullable()
-        .when('isPermittedToChangeDeadline', {
-          is: true,
-          then: yup.string().required('Это поле обязательно'),
-        }),
-
-      manualDeadlineTime: yup
-        .string()
-        .nullable()
-        .when('isPermittedToChangeDeadline', {
-          is: true,
-          then: yup.string().required('Это поле обязательно'),
-        }),
-      executorId: yup.string().nullable().required('Обязательное поле'),
-      leadId: yup.string().nullable().required('Обязательное поле'),
-      selectedObjectAddress: yup
-        .string()
-        .nullable()
-        .required('Обязательное поле'),
-    }),
+    validationSchema,
     onSubmit: (data) => {
       handleCreateTask(data);
     },
   });
 
-  useEffect(() => {
-    const isPermitted =
-      workTypes.find((workType) => workType.id === values.workTypeId)
-        ?.isDeadlineChangingPermitted || false;
+  const isFromSubscriber = useMemo(
+    () => values.sourceId === '34ac5b2e-9ebd-11e8-8131-001dd8b88b72',
+    [values.sourceId],
+  );
 
-    setFieldValue('isPermittedToChangeDeadline', isPermitted);
-  }, [values.workTypeId, setFieldValue, workTypes]);
+  const next = useSwitchInputOnEnter(dataKey, false, false);
 
-  const calculatedDeadlineDateArr = useMemo(() => {
-    if (!taskDeadline || !values.requestDate || !values.requestTime)
-      return null;
+  const sortedLeadExecutors = useMemo(
+    () => sortByAlphabet(leadExecutors),
+    [leadExecutors],
+  );
 
-    if (values.isPermittedToChangeDeadline) return null;
-
-    const sourceDateTime = dayjs(
-      values.requestDate
-        .format('YYYY-MM-DD')
-        .concat('T', values.requestTime || ''),
-    );
-
-    const deadlineDate = sourceDateTime.add(
-      taskDeadline.deadlineInHours,
-      'hours',
-    );
-
-    const deadlineDateFormatted = deadlineDate.format('YYYY-MM-DDTHH:mm');
-    setFieldValue('taskDeadline', deadlineDateFormatted);
-
-    const dateArr = deadlineDateFormatted.split('T');
-
-    return dateArr;
-  }, [
-    taskDeadline,
-    values.requestDate,
-    values.requestTime,
-    values.isPermittedToChangeDeadline,
-    setFieldValue,
-  ]);
-
-  const sortedLeadExecutors = useMemo(() => {
-    return sortByAlphabet(leadExecutors);
-  }, [leadExecutors]);
-
-  const sortedExecutors = useMemo(() => {
-    return sortByAlphabet(executors);
-  }, [executors]);
+  const sortedExecutors = useMemo(() => sortByAlphabet(executors), [executors]);
 
   const isHaveValidationErrors = useMemo(
     () => Boolean(Object.keys(errors).length),
@@ -172,209 +119,223 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
     setDisableSubmit(isHaveValidationErrors);
   }, [isHaveValidationErrors, setDisableSubmit]);
 
-  const ErpObjectsString = ErpObjects.map((object) => object.address).filter(
-    Boolean,
-  ) as string[];
-
-  const preparedErpObjects = autocompleteAddress(
-    values.addressSearch,
-    ErpObjectsString || [],
+  const preparedAddressOptions = useMemo(
+    () => autocomplete(values.addressSearch, preparedForOptionsAddresses || []),
+    [values.addressSearch, preparedForOptionsAddresses],
   );
+
+  const taskReasonOptions = useMemo(
+    () =>
+      taskReasons.map((taskReason, index) => {
+        return {
+          label: (
+            <OptionItemWrapper>
+              <TopWrapper>
+                <ResourseTypeWrapper>
+                  {TaskReasonTypeDictionary[taskReason.reasonType]}
+                </ResourseTypeWrapper>
+                <ArrowRightLongIconDim />
+                <WorkTitleWrapper>
+                  <WorkTitle>{taskReason.name}</WorkTitle>
+                </WorkTitleWrapper>
+              </TopWrapper>
+            </OptionItemWrapper>
+          ),
+          value: taskReason.name,
+          key: `${taskReason.id}${index}`,
+        };
+      }),
+    [taskReasons],
+  );
+
+  const taskTypeOptions = useMemo(() => {
+    const selectedOption = taskReasons.find(
+      (optionItem) => optionItem.name === values.taskReasonSearch,
+    );
+
+    const allowedTaskTypes = selectedOption?.allowedTaskTypes || [];
+
+    return allowedTaskTypes.map((taskType) => ({
+      label: TaskTypeDictionary[taskType],
+      value: taskType,
+      key: taskType,
+    }));
+  }, [values.taskReasonSearch, taskReasons]);
+
+  useEffect(() => {
+    if (taskTypeOptions.length === 1) {
+      setFieldValue('taskType', taskTypeOptions[0].value);
+      next(7);
+    }
+  }, [taskTypeOptions, setFieldValue, next]);
+
+  const getResourceDisconnectionAlert = useCallback(
+    (
+      disconnectingType: ResourceDisconnectingTypeResponse | null,
+      resource: EResourceType,
+      startDate: string,
+      endDate: string | null,
+    ) => {
+      return (
+        <ResourceDisconnectionAlertWrapper>
+          <div>
+            {disconnectingType?.description}{' '}
+            {ResourceShortNamesDictionary[resource]} :
+          </div>
+          <ResourceDisconnectionDate>
+            {dayjs(startDate).format('DD.MM.YYYY')}
+            {endDate ? ` — ${dayjs(endDate).format('DD.MM.YYYY')}` : ''}
+          </ResourceDisconnectionDate>
+        </ResourceDisconnectionAlertWrapper>
+      );
+    },
+    [],
+  );
+
+  const apartNumberOptions = useMemo(
+    () =>
+      autocompleteApartNumber(values.apartmentNumber, existingApartmentNumbers),
+    [values.apartmentNumber, existingApartmentNumbers],
+  );
+
+  const sourceOptions = useMemo(
+    () =>
+      ERPSources.map((source) => ({
+        value: source.id,
+        key: source.id,
+        label: source.name,
+      })),
+    [ERPSources],
+  );
+
+  const statusTaskType = useMemo(() => {
+    if (values.taskType === EisTaskType.Emergency) {
+      return 'error';
+    }
+    if (values.taskType === EisTaskType.Planned) {
+      return 'warning';
+    }
+    return '';
+  }, [values.taskType]);
+
+  const [isNameOpen, setNameOpen] = useState(false);
+  const [isReasonOpen, setReasonOpen] = useState(false);
+  const [isTaskTypeOpen, setTaskTypeOpen] = useState(false);
+  const [isLeadOpen, setLeadOpen] = useState(false);
+  const [isExecutorOpen, setExecutorOpen] = useState(false);
 
   return (
     <>
       <PageGate />
 
       <Form id={formId} onSubmitCapture={handleSubmit}>
-        <GridContainer>
+        <GridContainerExpandable isTwoColumn={!isFromSubscriber}>
           <FormItem label="Источник заявки">
-            <Select
+            <SelectCaret
+              showSearch
               placeholder="Выберите из списка"
               value={values.sourceId || undefined}
               onChange={(value) => setFieldValue('sourceId', value)}
-            >
-              {ERPSources.map((source) => (
-                <Select.Option value={source.id} key={source.id}>
-                  {source.name}
-                </Select.Option>
-              ))}
-            </Select>
-          </FormItem>
-
-          <FormItem label="Номер заявки">
-            <Input
-              placeholder="Введите"
-              value={values.requestNumber || undefined}
-              onChange={(value) =>
-                setFieldValue('requestNumber', value.target.value)
+              options={sourceOptions}
+              optionFilterProp="label"
+              optionLabelProp="label"
+              filterOption={(inputValue, option) =>
+                option?.label
+                  .toLocaleLowerCase()
+                  .startsWith(inputValue.toLocaleLowerCase())
               }
+              data-reading-input={dataKey}
+              onKeyDown={fromEnter(() => next(0))}
             />
           </FormItem>
-        </GridContainer>
 
-        <FormItem label="Тип заявки">
-          <Select
-            placeholder="Выберите из списка"
-            value={values.taskType || undefined}
-            onChange={(value) => {
-              setFieldValue('taskType', value);
+          {isFromSubscriber && (
+            <FormItem label="Номер заявки">
+              <Input
+                placeholder="Введите"
+                value={values.requestNumber || undefined}
+                onChange={(value) =>
+                  setFieldValue('requestNumber', value.target.value)
+                }
+                data-reading-input={dataKey}
+                onKeyDown={fromEnter(() => next(1))}
+              />
+            </FormItem>
+          )}
 
-              const isPermitted =
-                workTypes.find((workType) => workType.id === values.workTypeId)
-                  ?.isDeadlineChangingPermitted || false;
+          <FormItem label="Дата и время заявки">
+            <GridContainerAsymmetricLeft>
+              <DatePickerSc
+                format="DD.MM.YYYY"
+                value={values.requestDate}
+                onChange={(value) => setFieldValue('requestDate', value)}
+              />
 
-              handleTaskDeadlineRequest({
-                TaskType: value as EisTaskType,
-                isPermittedToRequest: isPermitted,
-              });
-            }}
-          >
-            {Object.values(EisTaskType).map((e) => (
-              <Select.Option value={e} key={e}>
-                {TaskTypeDictionary[e]}
-              </Select.Option>
-            ))}
-          </Select>
-        </FormItem>
-
-        {/* <FormItem label="Категория">
-            <Select
-              placeholder="Выберите из списка"
-              value={values.categoryId || undefined}
-              onChange={(value) => setFieldValue('categoryId', value)}
-            >
-              {/* {categories.map((category, index) => (
-                <Select.Option
-                  value={category.id || index}
-                  key={category.id || index}
-                >
-                  {category.name}
-                </Select.Option>
-              ))} */}
-        {/* </Select>
-          </FormItem> */}
-
-        <ContainerWithOutline>
-          <FormItem label="Вид работ">
-            <Select
-              placeholder="Выберите из списка"
-              value={values.workTypeId || undefined}
-              onChange={(value) => {
-                setFieldValue('workTypeId', value);
-
-                const isPermitted =
-                  workTypes.find(
-                    (workType) => workType.id === values.workTypeId,
-                  )?.isDeadlineChangingPermitted || false;
-
-                handleTaskDeadlineRequest({
-                  WorkCategoryId: value as string,
-                  isPermittedToRequest: isPermitted,
-                });
-              }}
-            >
-              {workTypes.map((workType) => (
-                <Select.Option value={workType.id} key={workType.id}>
-                  {workType.name}
-                </Select.Option>
-              ))}
-            </Select>
+              <TimePickerSc
+                value={values.requestTime || undefined}
+                onChange={(value) => {
+                  setFieldValue('requestTime', value);
+                }}
+              />
+            </GridContainerAsymmetricLeft>
           </FormItem>
-        </ContainerWithOutline>
+        </GridContainerExpandable>
 
-        <ContainerWithOutline>
-          <GridContainer>
-            <FormItem label="Дата заявки">
-              <GridContainerAsymmetricLeft>
-                <DatePicker
-                  value={values.requestDate}
-                  onChange={(value) => setFieldValue('requestDate', value)}
-                />
-
-                <SelectTime
-                  value={values.requestTime || undefined}
-                  onChange={(value) => setFieldValue('requestTime', value)}
-                />
-              </GridContainerAsymmetricLeft>
-            </FormItem>
-
-            <FormItem label="Нормативный срок">
-              <GridContainerAsymmetricLeft>
-                {!values.isPermittedToChangeDeadline ? (
-                  <>
-                    <Input
-                      disabled
-                      placeholder="Выберите дату заявки"
-                      value={calculatedDeadlineDateArr?.[0]}
-                    />
-                    <Input
-                      disabled
-                      placeholder="Время"
-                      value={calculatedDeadlineDateArr?.[1]}
-                    />
-                  </>
-                ) : (
-                  <>
-                    <DatePicker
-                      value={values.manualDeadlineDate}
-                      onChange={(value) =>
-                        setFieldValue('manualDeadlineDate', value)
-                      }
-                    />
-
-                    <SelectTime
-                      value={values.manualDeadlineTime || undefined}
-                      onChange={(value) =>
-                        setFieldValue('manualDeadlineTime', value)
-                      }
-                    />
-                  </>
-                )}
-              </GridContainerAsymmetricLeft>
-            </FormItem>
-          </GridContainer>
-        </ContainerWithOutline>
-
-        <GridContainer>
+        <GridContainerAsymmetricRight>
           <FormItem label="Адрес">
-            <AutoComplete
-              placeholder="Улица"
+            <AutoCompleteAntD
+              allowClear
               value={values.addressSearch}
               onChange={(value) => setFieldValue('addressSearch', value)}
-              onSelect={(value) =>
-                setFieldValue('selectedObjectAddress', value)
-              }
-              options={preparedErpObjects}
-            />
+              onSelect={(value) => {
+                setFieldValue('selectedObjectAddress', value);
+                handleSelectHousingAddress(value);
+                values.apartmentNumber &&
+                  handleSelectApartmentNumber(values.apartmentNumber);
+              }}
+              options={preparedAddressOptions}
+              data-reading-input={dataKey}
+              onKeyDown={fromEnter(() => next(2))}
+            >
+              <Input prefix={<SearchIconSc />} placeholder="Начните вводить " />
+            </AutoCompleteAntD>
           </FormItem>
 
-          <GridContainerAsymmetricRight>
-            {/* <FormItem label="Номер квартиры">
-              <Input
-                placeholder="Введите"
-                value={values.apartmentNumber || undefined}
-                onChange={(value) =>
-                  setFieldValue('apartmentNumber', value.target.value)
-                }
-              />
-            </FormItem> */}
+          <FormItem label="Номер квартиры">
+            <AutoCompleteAntD
+              value={values.apartmentNumber}
+              onChange={(value) => setFieldValue('apartmentNumber', value)}
+              onSelect={(value) => {
+                setFieldValue('apartmentNumber', value);
+                handleSelectApartmentNumber(value);
+              }}
+              options={apartNumberOptions}
+              data-reading-input={dataKey}
+              onKeyDown={fromEnter(() => next(3))}
+            >
+              <Input placeholder="Введите" />
+            </AutoCompleteAntD>
+          </FormItem>
+        </GridContainerAsymmetricRight>
 
-            {/* <FormItem label="УК">
-              <Input placeholder="???" disabled />
-            </FormItem> */}
-          </GridContainerAsymmetricRight>
-        </GridContainer>
-
-        <ContainerWithOutline>
+        {isFromSubscriber && (
           <GridContainer>
             <FormItem label="ФИО абонента">
-              <Input
-                placeholder="Введите"
+              <AutoCompleteAntD
+                allowClear
                 value={values.subscriberName || undefined}
-                onChange={(value) =>
-                  setFieldValue('subscriberName', value.target.value)
-                }
-              />
+                onChange={(value) => setFieldValue('subscriberName', value)}
+                options={apartmentHomeownerNames}
+                data-reading-input={dataKey}
+                onKeyDown={fromEnter(() => next(4))}
+                open={isNameOpen}
+                onBlur={() => setNameOpen(false)}
+                onFocus={() => setNameOpen(true)}
+                onSelect={() => setNameOpen(false)}
+                onMouseDown={() => setNameOpen(true)}
+              >
+                <Input placeholder="Начните вводить" />
+              </AutoCompleteAntD>
             </FormItem>
             <FormItem label="Номер телефона">
               <Input
@@ -383,41 +344,153 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
                 onChange={(value) =>
                   setFieldValue('phoneNumber', value.target.value)
                 }
+                data-reading-input={dataKey}
+                onKeyDown={fromEnter(() => next(5))}
               />
             </FormItem>
           </GridContainer>
+        )}
+
+        {Boolean(resourceDisconnection.length) &&
+          resourceDisconnection.map((disconnection) => (
+            <Alert centered>
+              {getResourceDisconnectionAlert(
+                disconnection.disconnectingType,
+                disconnection.resource,
+                disconnection.startDate,
+                disconnection.endDate,
+              )}
+            </Alert>
+          ))}
+
+        <ContainerWithOutline>
+          <FormItem label="Причина обращения">
+            <Select
+              showSearch
+              allowClear
+              virtual={false}
+              placeholder="Начните вводить"
+              value={values.taskReasonSearch}
+              onChange={(value) => {
+                setFieldValue('taskReasonSearch', value);
+                handleSelectTaskReason(value as string);
+              }}
+              optionFilterProp="value"
+              optionLabelProp="value"
+              options={taskReasonOptions}
+              filterOption={(inputValue, option) =>
+                option?.value
+                  .toLocaleLowerCase()
+                  .startsWith(inputValue.toLocaleLowerCase())
+              }
+              data-reading-input={dataKey}
+              onKeyDown={fromEnter(() => {
+                next(6);
+              })}
+              open={isReasonOpen}
+              onBlur={() => setReasonOpen(false)}
+              onFocus={() => setReasonOpen(true)}
+              onSelect={() => {
+                setReasonOpen(false);
+                next(6);
+              }}
+              onMouseDown={() => setReasonOpen(true)}
+            />
+          </FormItem>
+          <FormItem label="Тип заявки">
+            <Select
+              allowClear
+              status={statusTaskType}
+              placeholder="Начните вводить"
+              value={values.taskType}
+              onChange={(value) => {
+                setFieldValue('taskType', value);
+              }}
+              optionLabelProp="label"
+              options={taskTypeOptions}
+              data-reading-input={dataKey}
+              onKeyDown={fromEnter(() => {
+                next(7);
+              })}
+              open={isTaskTypeOpen}
+              onBlur={() => setTaskTypeOpen(false)}
+              onFocus={() => setTaskTypeOpen(true)}
+              onSelect={() => {
+                setTaskTypeOpen(false);
+                next(7);
+              }}
+              onMouseDown={() => setTaskTypeOpen(true)}
+            />
+          </FormItem>
         </ContainerWithOutline>
 
         <GridContainer>
           <FormItem label="Ответственный исполнитель">
             <Select
+              allowClear
+              showSearch
+              optionFilterProp="label"
+              optionLabelProp="label"
               placeholder="Выберите из списка"
               value={values.leadId || undefined}
               onChange={(value) => {
                 setFieldValue('leadId', value);
+                setFieldValue('executorId', null);
                 choоseLeadExecutor(value as string);
               }}
-            >
-              {sortedLeadExecutors.map((leadExecutor) => (
-                <Select.Option value={leadExecutor.id} key={leadExecutor.id}>
-                  {leadExecutor.name}
-                </Select.Option>
-              ))}
-            </Select>
+              options={sortedLeadExecutors.map((leadExecutor) => ({
+                value: leadExecutor.id,
+                key: leadExecutor.id,
+                label: leadExecutor.name,
+              }))}
+              filterOption={(inputValue, option) =>
+                option?.label
+                  .toLocaleLowerCase()
+                  .startsWith(inputValue.toLocaleLowerCase())
+              }
+              data-reading-input={dataKey}
+              onKeyDown={fromEnter(() => next(8))}
+              open={isLeadOpen}
+              onBlur={() => setLeadOpen(false)}
+              onFocus={() => setLeadOpen(true)}
+              onSelect={() => {
+                setLeadOpen(false);
+                next(8);
+              }}
+              onMouseDown={() => setLeadOpen(true)}
+            />
           </FormItem>
           <FormItem label="Исполнитель">
             <Select
+              allowClear
+              showSearch
+              optionFilterProp="label"
+              optionLabelProp="label"
               placeholder="Выберите из списка"
               value={values.executorId || undefined}
               onChange={(value) => setFieldValue('executorId', value)}
               disabled={!Boolean(values.leadId)}
-            >
-              {sortedExecutors.map((executor) => (
-                <Select.Option value={executor.id} key={executor.id}>
-                  {executor.name}
-                </Select.Option>
-              ))}
-            </Select>
+              options={sortedExecutors.map((executor) => ({
+                value: executor.id,
+                key: executor.id,
+                label: executor.name,
+              }))}
+              filterOption={(inputValue, option) =>
+                option?.label
+                  .toLocaleLowerCase()
+                  .startsWith(inputValue.toLocaleLowerCase())
+              }
+              data-reading-input={dataKey}
+              onKeyDown={fromEnter(() => next(9))}
+              open={isExecutorOpen}
+              onBlur={() => setExecutorOpen(false)}
+              onFocus={() => setExecutorOpen(true)}
+              onSelect={() => {
+                setExecutorOpen(false);
+                next(9);
+              }}
+              onMouseDown={() => setExecutorOpen(true)}
+            />
           </FormItem>
         </GridContainer>
 

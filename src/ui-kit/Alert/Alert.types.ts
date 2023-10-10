@@ -4,6 +4,7 @@ export type AlertProps = {
   icon?: AlertIconType;
   type?: AlertType;
   children?: ReactNode;
+  centered?: boolean;
 };
 
 export enum AlertIconType {
