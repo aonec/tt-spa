@@ -11,7 +11,10 @@ import { reportViewService } from 'services/reportsService/reportViewService';
 import { ReportFiltrationFormValues } from 'services/reportsService/reportViewService/reportViewService.types';
 import dayjs from 'dayjs';
 import { ReportType } from 'services/reportsService/view/ReportsPage/ReportsPage.types';
-import { EmployeeReportType } from 'services/reportsService/reportViewService/view/ReportViewPage/ReportFiltrationForm/ReportFiltrationForm.types';
+import {
+  EmployeeReportDatePeriodType,
+  EmployeeReportType,
+} from 'services/reportsService/reportViewService/view/ReportViewPage/ReportFiltrationForm/ReportFiltrationForm.types';
 import {
   EClosingReason,
   EIndividualDeviceReportOption,
@@ -41,13 +44,13 @@ export const ReportsListContainer = () => {
 
   const history = useHistory();
   useEffect(() => {
-    inputs.openExistedReport.watch((data) => {
+    return inputs.openExistedReport.watch((data) => {
       const type = data.type;
 
       const isEmployeeReport = Boolean(
         EmployeeReportType[type as keyof typeof EmployeeReportType],
       );
-      const isIndividualDevicesReport = type === 'ClosedDevicesReport';
+      const isIndividualDevicesReport = type === 'ClosedDevicesReport'; // hardcode на ClosedDevicesReport тк enum не совпадает
 
       const isActsJournalReport = Boolean(
         EmployeeReportType[type as keyof typeof EmployeeReportType],
@@ -64,6 +67,15 @@ export const ReportsListContainer = () => {
       if (isEmployeeReport) {
         const { from, to } = data;
 
+        const dateRange = dayjs(to).diff(from, 'month');
+
+        const employeeReportDatePeriodType =
+          dateRange > 1
+            ? EmployeeReportDatePeriodType.Year
+            : EmployeeReportDatePeriodType.Month;
+
+        const employeeReportDate = dayjs(from);
+
         const dataForOpenEmployeeReportType: ReportFiltrationFormValues = {
           ...filtrationValues,
           reportType: ReportType.Employee,
@@ -71,13 +83,15 @@ export const ReportsListContainer = () => {
           to: dayjs(to),
           employeeReportType:
             EmployeeReportType[type as keyof typeof EmployeeReportType],
+          employeeReportDate,
+          employeeReportDatePeriodType,
         };
-
         reportViewService.inputs.setFiltrationValues(
           dataForOpenEmployeeReportType,
         );
         history.push('/reports/Employee');
       }
+
       if (isIndividualDevicesReport) {
         const {
           from,
@@ -108,12 +122,15 @@ export const ReportsListContainer = () => {
           reportType: ReportType.IndividualDevices,
           from: dayjs(from),
           to: dayjs(to),
-          reportOption:
-            EIndividualDeviceReportOption[
-              type as keyof typeof EIndividualDeviceReportOption
-            ],
-          closingReasons: closingReasonsArr,
-          resources: resourcesArr,
+          // reportOption:
+          //   EIndividualDeviceReportOption[
+          //     type as keyof typeof EIndividualDeviceReportOption
+          //   ],
+          reportOption: EIndividualDeviceReportOption.ClosedDevices,
+          // closingReasons: closingReasonsArr,
+          closingReasons: [EClosingReason.CertificateIssued],
+          // resources: resourcesArr,
+          resources: [EResourceType.ColdWaterSupply],
           withoutApartmentsWithOpenDevicesByResources:
             withoutApartmentsWithOpenDevicesByResourcesBoolean,
           housingStockIds: [Number(housingStockId)],
@@ -125,7 +142,7 @@ export const ReportsListContainer = () => {
         );
         history.push('/reports/IndividualDevices');
       }
-    });
+    }).unsubscribe;
   }, [history, filtrationValues]);
 
   const archivedReportsCountString = useMemo(() => {
