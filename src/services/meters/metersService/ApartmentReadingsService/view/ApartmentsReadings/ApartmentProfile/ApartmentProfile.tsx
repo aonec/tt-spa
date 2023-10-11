@@ -112,6 +112,7 @@ export const ApartmentProfile: FC<ApartmentProfileProps> = ({
             }
           }
           isError={!isLoadingApartment && !apartment && isApartmentFetched}
+          isFocus={true}
         />
         <WithLoader isLoading={isLoadingApartment}>
           {!apartment && !isApartmentFetched && <TypeAddressToStart />}

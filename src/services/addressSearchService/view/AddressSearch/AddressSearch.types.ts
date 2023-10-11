@@ -35,6 +35,7 @@ export type AddressSearchProps = {
   disabledFields?: SearchFieldType[];
   className?: string;
   isError: boolean;
+  isFocus: boolean;
   handleSearchApartNumber: () => void;
   existingApartmentNumbers: ExistingApartmentNumberType[];
 };
