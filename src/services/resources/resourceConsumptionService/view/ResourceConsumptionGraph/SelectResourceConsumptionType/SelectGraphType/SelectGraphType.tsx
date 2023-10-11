@@ -1,4 +1,4 @@
-import React, { FC, useCallback } from 'react';
+import React, { FC, useCallback, useMemo } from 'react';
 import { ResourceConsumptionGraphType } from 'services/resources/resourceConsumptionService/resourceConsumptionService.types';
 import { TypeNameLookup } from './SelectGraphType.constants';
 import { SelectTitle, Wrapper } from './SelectGraphType.styled';
@@ -22,11 +22,17 @@ export const SelectGraphType: FC<SelectGraphTypeProps> = ({
     [checked, handleSetChecked],
   );
 
-  if (
-    consumptionData?.normative?.length === 0 &&
-    consumptionData?.housing?.length === 0 &&
-    consumptionData?.subscriber?.length === 0
-  ) {
+  const isDataEmpty = useMemo(() => {
+    if (!consumptionData) return false;
+
+    const { normative, housing, subscriber } = consumptionData;
+
+    return [normative, housing, subscriber].every(
+      (consumption) => consumption?.length === 0,
+    );
+  }, [consumptionData]);
+
+  if (isDataEmpty) {
     return <Wrapper></Wrapper>;
   }
 
@@ -34,29 +40,37 @@ export const SelectGraphType: FC<SelectGraphTypeProps> = ({
     <Wrapper>
       <SelectTitle>{title}</SelectTitle>
       {Object.values(ResourceConsumptionGraphType).map((type) => {
+        const isHousing = type === ResourceConsumptionGraphType.Housing;
+        const isNormative = type === ResourceConsumptionGraphType.Normative;
+        const isSubscriber = type === ResourceConsumptionGraphType.Subscriber;
+
+        const isHousingLoadingWithTypeCheck = isHousing && isHousingLoading;
+        const isNormativeLoadingWithTypeCheck =
+          isNormative && isNormativeAndSubscriberLoading;
+        const isSubscriberLoadingWithTypeChecking =
+          isSubscriber && isNormativeAndSubscriberLoading;
         const isLoading = [
-          type === ResourceConsumptionGraphType.Housing && isHousingLoading,
-          type === ResourceConsumptionGraphType.Normative &&
-            isNormativeAndSubscriberLoading,
-          type === ResourceConsumptionGraphType.Subscriber &&
-            isNormativeAndSubscriberLoading,
-          type === ResourceConsumptionGraphType.Housing && isHousingLoading,
-          type === ResourceConsumptionGraphType.Normative &&
-            isNormativeAndSubscriberLoading,
-          type === ResourceConsumptionGraphType.Subscriber &&
-            isNormativeAndSubscriberLoading,
+          isHousingLoadingWithTypeCheck,
+          isNormativeLoadingWithTypeCheck,
+          isSubscriberLoadingWithTypeChecking,
         ].some(Boolean);
 
+        const isNormativeEmpty =
+          isNormative &&
+          consumptionData?.normative &&
+          hasNoConsecutiveNumbers(consumptionData.normative);
+        const isSubscriberEmpty =
+          isSubscriber &&
+          consumptionData?.subscriber &&
+          hasNoConsecutiveNumbers(consumptionData.subscriber);
+        const isHousingEmpty =
+          isHousing &&
+          consumptionData?.housing &&
+          hasNoConsecutiveNumbers(consumptionData.housing);
         const isConsumptionDataEmpty = [
-          type === ResourceConsumptionGraphType.Normative && //как это можно избавиться от  type, чтобы сократить?
-            consumptionData?.normative &&
-            hasNoConsecutiveNumbers(consumptionData.normative),
-          type === ResourceConsumptionGraphType.Subscriber &&
-            consumptionData?.subscriber &&
-            hasNoConsecutiveNumbers(consumptionData.subscriber),
-          type === ResourceConsumptionGraphType.Housing &&
-            consumptionData?.housing &&
-            hasNoConsecutiveNumbers(consumptionData.housing),
+          isNormativeEmpty,
+          isSubscriberEmpty,
+          isHousingEmpty,
         ].some(Boolean);
 
         return (

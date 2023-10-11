@@ -1,5 +1,20 @@
-import { MonthConsumptionData } from '../../resourceConsumptionService.types';
 import { BooleanTypesOfResourceConsumptionGraph } from './ResourceConsumptionProfile.types';
+import {
+  MonthConsumptionData,
+  ResourceConsumptionWithNull,
+} from '../../resourceConsumptionService.types';
+
+const getResourceConsumptionGraphData = (
+  acc: BooleanTypesOfResourceConsumptionGraph,
+  [key, arr]: [string, ResourceConsumptionWithNull[]],
+) => ({ ...acc, [key]: arr?.length === 0 });
+
+const getConsumptionByMonthData = (monthData?: MonthConsumptionData | null) => {
+  return Object.entries(monthData || {}).reduce(
+    getResourceConsumptionGraphData,
+    {} as BooleanTypesOfResourceConsumptionGraph,
+  );
+};
 
 export const getDisabledGraphTypes = (data: {
   currentMonthData?: MonthConsumptionData | undefined;
@@ -7,17 +22,8 @@ export const getDisabledGraphTypes = (data: {
   additionalAddress: MonthConsumptionData | null;
 }) => {
   return {
-    currentMonthData: Object.entries(data.currentMonthData || []).reduce(
-      (acc, [key, arr]) => ({ ...acc, [key]: arr?.length === 0 }),
-      {} as BooleanTypesOfResourceConsumptionGraph,
-    ),
-    prevMonthData: Object.entries(data.prevMonthData || []).reduce(
-      (acc, [key, arr]) => ({ ...acc, [key]: arr?.length === 0 }),
-      {} as BooleanTypesOfResourceConsumptionGraph,
-    ),
-    additionalAddress: Object.entries(data.additionalAddress || []).reduce(
-      (acc, [key, arr]) => ({ ...acc, [key]: arr?.length === 0 }),
-      {} as BooleanTypesOfResourceConsumptionGraph,
-    ),
+    currentMonthData: getConsumptionByMonthData(data.currentMonthData),
+    prevMonthData: getConsumptionByMonthData(data.prevMonthData),
+    additionalAddress: getConsumptionByMonthData(data.additionalAddress),
   };
 };
