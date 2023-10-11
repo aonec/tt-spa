@@ -76,7 +76,7 @@ export const IndividualDevicesList: FC<IndividualDevicesListProps> = ({
                       onRowsRendered(props);
                     }}
                     ref={registerChild}
-                    noRowsRenderer={() => <>{null}</>}
+                    noRowsRenderer={() => <></>}
                     overscanRowCount={12}
                     rowRenderer={({ index, style, key }) => {
                       return (
