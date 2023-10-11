@@ -230,6 +230,8 @@ guard({
   target: fetchHomeownersReportFx,
 });
 
+loadEmployeeReport.watch((data) => console.log(data));
+
 guard({
   clock: sample({
     clock: loadEmployeeReport.map(getReportPayloadValues),
