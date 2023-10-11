@@ -15,6 +15,7 @@ export type AddressSearchContainerProps = {
   onChange?: (key: string, value: string) => void;
   className?: string;
   isError?: boolean;
+  isFocus?: boolean;
 };
 
 export type GetExistingSteetRequestParams = {
