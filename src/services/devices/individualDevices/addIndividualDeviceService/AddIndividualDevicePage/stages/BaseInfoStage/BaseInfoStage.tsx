@@ -55,7 +55,7 @@ export const BaseInfoStage: FC<BaseInfoStageProps> = ({
         formData?.futureCheckingDate || (null as string | null),
       openingDate: formData?.openingDate || (null as string | null),
       bitDepth: formData?.bitDepth || (null as number | null),
-      scaleFactor: formData?.scaleFactor || (null as number | null),
+      // scaleFactor: formData?. || (null as number | null),
       apartmentId: apartmentId as number | null,
       mountPlaceId: formData?.mountPlaceId || (null as number | null),
       model: formData?.model || '',
@@ -360,7 +360,7 @@ export const BaseInfoStage: FC<BaseInfoStageProps> = ({
           <ErrorMessage>{errors.bitDepth}</ErrorMessage>
         </FormItem>
 
-        <FormItem label="Множитель">
+        {/* <FormItem label="Множитель">
           <Input
             type="number"
             placeholder="Введите множитель прибора"
@@ -371,7 +371,7 @@ export const BaseInfoStage: FC<BaseInfoStageProps> = ({
             value={values.scaleFactor || undefined}
           />
           <ErrorMessage>{errors.scaleFactor}</ErrorMessage>
-        </FormItem>
+        </FormItem> */}
       </FormWrap>
 
       <FormItem label="Тариф прибора">
