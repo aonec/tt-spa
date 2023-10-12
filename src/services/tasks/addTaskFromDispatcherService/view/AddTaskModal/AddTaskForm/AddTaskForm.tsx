@@ -172,7 +172,7 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
         next(4);
       }
     }
-  }, [taskTypeOptions, setFieldValue, next]);
+  }, [taskTypeOptions, setFieldValue, next, isFromSubscriber]);
 
   const getResourceDisconnectionAlert = useCallback(
     (
