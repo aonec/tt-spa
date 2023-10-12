@@ -47,8 +47,8 @@ export const IndividualDevicesList: FC<IndividualDevicesListProps> = ({
         isCanUp={isCanUp}
         isCanDown={isCanDown}
       />
-      <WindowScroller>
-        {({ isScrolling, scrollTop, height }) => (
+      <WindowScroller scrollingResetTimeInterval={0}>
+        {({ isScrolling, scrollTop, height, onChildScroll }) => (
           <>
             <InfiniteLoader
               isRowLoaded={({ index }) => index < individualDevicesList.length}
@@ -63,6 +63,7 @@ export const IndividualDevicesList: FC<IndividualDevicesListProps> = ({
                     autoHeight
                     height={height}
                     isScrolling={isScrolling}
+                    onScroll={onChildScroll}
                     scrollTop={scrollTop}
                     width={960}
                     rowHeight={({ index }) =>
