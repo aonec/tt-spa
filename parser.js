@@ -9,23 +9,20 @@ function traverseDirectory(dir) {
     if (stats.isFile()) {
       // Read file contents
       let contents = fs.readFileSync(filePath, 'utf8');
-      // Remove "domain.", "createDomain," and "import { createDomain } from 'effector';" from contents
-      contents = contents.replace(/domain\./g, '').replace(/createDomain/g, '').replace(/import { createDomain } from 'effector';/g, '');
-      // Check if "createDomain" was removed
-      if (contents.indexOf('createDomain') === -1) {
-        // Add "import { createEffect, createEvent, createStore } from 'effector';" to contents
-        contents = "import { createEffect, createEvent, createStore } from 'effector';\n" + contents;
-        console.log(`Added import statement to file: ${filePath}`);
+      if (contents.indexOf('createDomain') !== -1) {
+
+      contents = contents.split('\n').filter(line => !line.includes('domain = createDomain')).join('\n');
+
+      contents = contents.replace(/domain\./g, '').replace(/createDomain\s*,?/g, '').replace(/import { createDomain } from 'effector';/g, '');
+       
+      contents = "import { createEffect, createEvent, createStore } from 'effector';\n" + contents;
+
       }
-      // Write updated contents back to file
       fs.writeFileSync(filePath, contents);
-      console.log(`Removed "domain.", "createDomain," and "import { createDomain } from 'effector';" from file: ${filePath}`);
     } else if (stats.isDirectory()) {
-      // Recursively call function on directory
       traverseDirectory(filePath);
     }
   }
 }
 
-// Call the function with the path to your project directory
 traverseDirectory('src');
