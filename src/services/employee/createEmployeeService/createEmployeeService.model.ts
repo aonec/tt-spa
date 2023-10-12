@@ -1,4 +1,5 @@
-import { createDomain, forward } from 'effector';
+import { createEffect, createEvent, createStore } from 'effector';
+import { forward } from 'effector';
 import { competencesService } from '../competencesService';
 import { rolesService } from '../rolesService';
 import { addStaff } from './createEmployeeService.api';
@@ -9,14 +10,12 @@ import {
 import { EffectFailDataAxiosError } from 'types';
 import { message } from 'antd';
 
-const domain = createDomain('createEmployeeService');
+const handleOpenModal = createEvent();
+const handleCloseModal = createEvent();
 
-const handleOpenModal = domain.createEvent();
-const handleCloseModal = domain.createEvent();
+const handleCreateEmloyee = createEvent<OrganizationUserCreateRequest>();
 
-const handleCreateEmloyee = domain.createEvent<OrganizationUserCreateRequest>();
-
-const createEmloyeeFx = domain.createEffect<
+const createEmloyeeFx = createEffect<
   OrganizationUserCreateRequest,
   OrganizationUserResponse,
   EffectFailDataAxiosError
@@ -24,8 +23,7 @@ const createEmloyeeFx = domain.createEffect<
 
 const createEmloyeeSuccess = createEmloyeeFx.doneData;
 
-const $isModalOpen = domain
-  .createStore<boolean>(false)
+const $isModalOpen = createStore<boolean>(false)
   .on(handleOpenModal, () => true)
   .on(handleCloseModal, () => false)
   .reset(createEmloyeeSuccess);

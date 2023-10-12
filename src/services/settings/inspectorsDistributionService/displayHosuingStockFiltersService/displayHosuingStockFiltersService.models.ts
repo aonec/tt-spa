@@ -1,17 +1,11 @@
-import { createDomain, forward } from 'effector';
+import { createEffect, createStore } from 'effector';
+import { forward } from 'effector';
 import { createGate } from 'effector-react';
 import _ from 'lodash';
 import { BuildingFiltersResponse } from 'api/types';
 import { getHosuingStockFilters } from './displayHosuingStockFiltersService.api';
 
-const displayHosuingStockFiltersServiceDomain = createDomain(
-  'displayHosuingStockFiltersServiceDomain',
-);
-
-const $hosuingStockfilters =
-  displayHosuingStockFiltersServiceDomain.createStore<BuildingFiltersResponse | null>(
-    null,
-  );
+const $hosuingStockfilters = createStore<BuildingFiltersResponse | null>(null);
 
 const $hosuingManagementList = $hosuingStockfilters.map((filters) => {
   const houseManagements = filters?.houseManagements || [];
@@ -24,11 +18,9 @@ const $hosuingManagementList = $hosuingStockfilters.map((filters) => {
   return sortedHouseManagements;
 });
 
-const fetchHosuingStockFiltersFx =
-  displayHosuingStockFiltersServiceDomain.createEffect<
-    void,
-    BuildingFiltersResponse
-  >(getHosuingStockFilters);
+const fetchHosuingStockFiltersFx = createEffect<void, BuildingFiltersResponse>(
+  getHosuingStockFilters,
+);
 
 const $loading = fetchHosuingStockFiltersFx.pending;
 

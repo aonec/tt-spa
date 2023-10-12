@@ -1,4 +1,5 @@
-import { createDomain, forward, guard, sample } from 'effector';
+import { createEffect, createEvent, createStore } from 'effector';
+import { forward, guard, sample } from 'effector';
 import { createGate } from 'effector-react';
 import { ApartmentResponse, HomeownerAccountResponse } from 'api/types';
 import { SearchMode } from './view/ApartmentsReadings/ApartmentsReadings.types';
@@ -19,29 +20,25 @@ import { selectPersonalNumberActionService } from 'services/homeowner/personalNu
 import { pauseApartmentService } from 'services/apartments/pauseApartmentService/pauseApartmentService.models';
 import { printApartmentDevicesCertificateService } from 'services/apartments/printApartmentDevicesCertificateService/printApartmentDevicesCertificateService.models';
 
-const domain = createDomain('apartmentReadingsService');
+const setSearchMode = createEvent<SearchMode>();
 
-const setSearchMode = domain.createEvent<SearchMode>();
+const handleSearchApartment = createEvent<GetApartmentsRequestPayload>();
 
-const handleSearchApartment = domain.createEvent<GetApartmentsRequestPayload>();
+const handleUpdateApartment = createEvent<UpdateApartmentRequestPayload>();
 
-const handleUpdateApartment =
-  domain.createEvent<UpdateApartmentRequestPayload>();
+const handleUpdateHomeowner = createEvent<UpdateHomeownerRequestPayload>();
 
-const handleUpdateHomeowner =
-  domain.createEvent<UpdateHomeownerRequestPayload>();
-
-const setSelectedHomeownerName = domain.createEvent<string | null>();
+const setSelectedHomeownerName = createEvent<string | null>();
 
 const ApartmentGate = createGate<{ id?: number }>();
 
-const updateApartmentFx = domain.createEffect<
+const updateApartmentFx = createEffect<
   UpdateApartmentRequestPayload,
   ApartmentResponse,
   EffectFailDataAxiosError
 >(putApartment);
 
-const updateHomeownerFx = domain.createEffect<
+const updateHomeownerFx = createEffect<
   UpdateHomeownerRequestPayload,
   HomeownerAccountResponse,
   EffectFailDataAxiosError
@@ -49,8 +46,7 @@ const updateHomeownerFx = domain.createEffect<
 
 const handleHomeownerUpdated = updateHomeownerFx.doneData;
 
-const $apartment = domain
-  .createStore<ApartmentResponse | null>(null)
+const $apartment = createStore<ApartmentResponse | null>(null)
   .on(
     [getApartmentQuery.$data, updateApartmentFx.doneData],
     (_, apartment) => apartment,
@@ -75,13 +71,15 @@ const $apartment = domain
   })
   .reset(ApartmentGate.close);
 
-const $searchMode = domain
-  .createStore(SearchMode.Apartment)
-  .on(setSearchMode, (_, mode) => mode);
+const $searchMode = createStore(SearchMode.Apartment).on(
+  setSearchMode,
+  (_, mode) => mode,
+);
 
-const $selectedHomeownerName = domain
-  .createStore<string | null>(null)
-  .on(setSelectedHomeownerName, (_, name) => name);
+const $selectedHomeownerName = createStore<string | null>(null).on(
+  setSelectedHomeownerName,
+  (_, name) => name,
+);
 
 const $isUpdateHomeownerLoading = updateHomeownerFx.pending;
 

@@ -1,4 +1,5 @@
-import { createDomain, forward } from 'effector';
+import { createEffect, createEvent, createStore } from 'effector';
+import { forward } from 'effector';
 import { getStandartWorkingRange } from './standartWorkingRangeService.api';
 import {
   AllNodeWorkingRangeResponse,
@@ -7,14 +8,12 @@ import {
 } from 'api/types';
 import { EffectFailDataAxiosError } from 'types';
 
-const domain = createDomain('standartWorkingRangeService');
-
-const handleOnSearchDataChange = domain.createEvent<{
+const handleOnSearchDataChange = createEvent<{
   nodeResourceType: EResourceType;
   season: ENodeWorkingRangeSeason;
 }>();
 
-const getStandartWorkingRangeFx = domain.createEffect<
+const getStandartWorkingRangeFx = createEffect<
   {
     nodeResourceType: EResourceType;
     season: ENodeWorkingRangeSeason;
@@ -23,9 +22,9 @@ const getStandartWorkingRangeFx = domain.createEffect<
   EffectFailDataAxiosError
 >(getStandartWorkingRange);
 
-const $standartWorkingRange = domain
-  .createStore<AllNodeWorkingRangeResponse | null>(null)
-  .on(getStandartWorkingRangeFx.doneData, (_, range) => range);
+const $standartWorkingRange = createStore<AllNodeWorkingRangeResponse | null>(
+  null,
+).on(getStandartWorkingRangeFx.doneData, (_, range) => range);
 
 const $isLoading = getStandartWorkingRangeFx.pending;
 

@@ -1,4 +1,5 @@
-import { combine, createDomain, sample } from 'effector';
+import { createEffect, createEvent, createStore } from 'effector';
+import { combine, sample } from 'effector';
 import { ApartmentActResponse, EActResourceType, EActType } from 'api/types';
 import { apartmentActsListService } from '../apartmentActsListService';
 import {
@@ -12,22 +13,17 @@ import {
 import { createForm } from 'effector-forms';
 import { required } from 'api/formRules';
 
-const domain = createDomain('editApartmentActService');
+const openModal = createEvent<ApartmentActResponse>();
+const closeModal = createEvent();
 
-const openModal = domain.createEvent<ApartmentActResponse>();
-const closeModal = domain.createEvent();
-
-const $act = domain
-  .createStore<ApartmentActResponse | null>(null)
+const $act = createStore<ApartmentActResponse | null>(null)
   .on(openModal, (_, act) => act)
   .reset(closeModal);
 
 const $isModalOpen = $act.map(Boolean);
 
-const deleteActDocument = domain.createEvent();
-const deleteActDocumentFx = domain.createEffect<number, void>(
-  fetchDeleteActDocument,
-);
+const deleteActDocument = createEvent();
+const deleteActDocumentFx = createEffect<number, void>(fetchDeleteActDocument);
 
 const editActForm = createForm<EditActFormPayload>({
   fields: {
@@ -54,9 +50,7 @@ const editActForm = createForm<EditActFormPayload>({
   validateOn: ['submit'],
 });
 
-const editActFx = domain.createEffect<EditActRequestPayload, void>(
-  updateApartmentAct,
-);
+const editActFx = createEffect<EditActRequestPayload, void>(updateApartmentAct);
 
 const $editActIsLoading = combine(
   editActFx.pending,

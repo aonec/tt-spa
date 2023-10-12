@@ -1,4 +1,5 @@
-import { createDomain, forward } from 'effector';
+import { createEffect, createEvent, createStore } from 'effector';
+import { forward } from 'effector';
 import { managementFirmConsumptionRatesService } from '../managementFirmConsumptionRatesService';
 import { apartmentIndividualDevicesMetersService } from '../apartmentIndividualDevicesMetersService/apartmentIndividualDevicesMetersService.model';
 import {
@@ -16,27 +17,25 @@ import dayjs from 'api/dayjs';
 import { EffectFailDataAxiosError } from 'types';
 import { confirmReadingService } from '../readingsHistoryService/confirmReadingService/confirmReadingService.model';
 
-const domain = createDomain('individualDeviceMetersInputService');
-
-const $uploadingMetersStatuses = domain.createStore<{
+const $uploadingMetersStatuses = createStore<{
   [deviceId: number]: {
     [sliderIndex: number]: MetersInputBlockStatus;
   };
 }>({});
 
-const uploadMeterFx = domain.createEffect<
+const uploadMeterFx = createEffect<
   UploadMeterPayload,
   IndividualDeviceReadingsResponse,
   EffectFailDataAxiosError
 >(({ meter }) => uploadReading(meter));
 
-const deleteMeterFx = domain.createEffect<DeleteMeterPayload, void>(
-  ({ meterId }) => removeReading(meterId),
+const deleteMeterFx = createEffect<DeleteMeterPayload, void>(({ meterId }) =>
+  removeReading(meterId),
 );
 
-const uploadMeter = domain.createEvent<UploadMeterPayload>();
+const uploadMeter = createEvent<UploadMeterPayload>();
 
-const deleteMeter = domain.createEvent<DeleteMeterPayload>();
+const deleteMeter = createEvent<DeleteMeterPayload>();
 
 const $devices =
   apartmentIndividualDevicesMetersService.outputs.$individualDevicesList;
@@ -63,7 +62,7 @@ uploadMeterFx.failData.watch((error) => {
   }
 });
 
-const clearStatuses = domain.createEvent();
+const clearStatuses = createEvent();
 
 $uploadingMetersStatuses
   .on(uploadMeter, (state, { meter: { deviceId }, sliderIndex }) => ({

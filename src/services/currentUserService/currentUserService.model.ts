@@ -1,18 +1,18 @@
+import { createEffect, createStore } from 'effector';
 import { createGate } from 'effector-react';
-import { createDomain, sample } from 'effector';
+import { sample } from 'effector';
 import _ from 'lodash';
 import { OrganizationUserResponse } from 'api/types';
 import { getCurrentUser } from './currentUserService.api';
 import { OrganizationCoordinates } from './currentUserService.types';
 
-const domain = createDomain('currentUserService');
-
-const fetchCurrentUserFx = domain.createEffect<void, OrganizationUserResponse>(
+const fetchCurrentUserFx = createEffect<void, OrganizationUserResponse>(
   getCurrentUser,
 );
-const $currentUser = domain
-  .createStore<OrganizationUserResponse | null>(null)
-  .on(fetchCurrentUserFx.doneData, (_, user) => user);
+const $currentUser = createStore<OrganizationUserResponse | null>(null).on(
+  fetchCurrentUserFx.doneData,
+  (_, user) => user,
+);
 
 const $userCity = $currentUser.map(
   (user) => user?.organization?.address?.city || null,

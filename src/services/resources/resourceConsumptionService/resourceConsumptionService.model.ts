@@ -1,4 +1,5 @@
-import { combine, createDomain, forward, sample } from 'effector';
+import { createEffect, createEvent, createStore } from 'effector';
+import { combine, forward, sample } from 'effector';
 import { createGate } from 'effector-react';
 import dayjs from 'api/dayjs';
 import { GetSummaryHousingConsumptionsByResourcesResponse } from 'api/types';
@@ -24,27 +25,25 @@ import {
 import { setConsumptionData } from './resourceConsumptionService.utils';
 import axios, { CancelTokenSource } from 'axios';
 
-const domain = createDomain('resourceConsumptionService');
+const clearData = createEvent();
 
-const clearData = domain.createEvent();
+const clearSummary = createEvent();
 
-const clearSummary = domain.createEvent();
-
-const getSummaryConsumptions = domain.createEvent<ConsumptionDataPayload>();
+const getSummaryConsumptions = createEvent<ConsumptionDataPayload>();
 /**
  * общий расход (сверху)
  */
-const getSummaryHousingConsumptionsFx = domain.createEffect<
+const getSummaryHousingConsumptionsFx = createEffect<
   ConsumptionRequestPayload,
   GetSummaryHousingConsumptionsByResourcesResponse,
   EffectFailDataAxiosError
 >(fetchSummaryHousingConsumptions);
 
-const getConsumptionData = domain.createEvent<ConsumptionDataPayload>();
+const getConsumptionData = createEvent<ConsumptionDataPayload>();
 /**
  * одпу
  */
-const getHousingConsumptionPlotFx = domain.createEffect<
+const getHousingConsumptionPlotFx = createEffect<
   ConsumptionRequestPayload,
   { housing: ResourceConsumptionWithNull[] },
   EffectFailDataAxiosError
@@ -53,7 +52,7 @@ const getHousingConsumptionPlotFx = domain.createEffect<
 /**
  * одпу потребление за прошлый период
  */
-const getPrevHousingConsumptionPlotFx = domain.createEffect<
+const getPrevHousingConsumptionPlotFx = createEffect<
   ConsumptionRequestPayload,
   { housing: ResourceConsumptionWithNull[] },
   EffectFailDataAxiosError
@@ -62,7 +61,7 @@ const getPrevHousingConsumptionPlotFx = domain.createEffect<
 /**
  * одпу потребление адрес для сравнения
  */
-const getAdditionalHousingConsumptionPlotFx = domain.createEffect<
+const getAdditionalHousingConsumptionPlotFx = createEffect<
   ConsumptionRequestPayload,
   { housing: ResourceConsumptionWithNull[] },
   EffectFailDataAxiosError
@@ -71,7 +70,7 @@ const getAdditionalHousingConsumptionPlotFx = domain.createEffect<
 /**
  * нормативное и абонентское потребление
  */
-const getNormativeAndSubscriberConsumptionDataFx = domain.createEffect<
+const getNormativeAndSubscriberConsumptionDataFx = createEffect<
   ConsumptionRequestPayload,
   {
     normative: ResourceConsumptionWithNull[];
@@ -83,7 +82,7 @@ const getNormativeAndSubscriberConsumptionDataFx = domain.createEffect<
 /**
  * нормативное и абонентское потребление за прошлый период
  */
-const getPrevNormativeAndSubscriberConsumptionDataFx = domain.createEffect<
+const getPrevNormativeAndSubscriberConsumptionDataFx = createEffect<
   ConsumptionRequestPayload,
   {
     normative: ResourceConsumptionWithNull[];
@@ -95,18 +94,18 @@ const getPrevNormativeAndSubscriberConsumptionDataFx = domain.createEffect<
 /**
  * нормативное и абонентское потребление адрес для сравнения
  */
-const getAdditionalNormativeAndSubscriberConsumptionDataFx =
-  domain.createEffect<
-    ConsumptionRequestPayload,
-    {
-      normative: ResourceConsumptionWithNull[];
-      subscriber: ResourceConsumptionWithNull[];
-    },
-    EffectFailDataAxiosError
-  >(fetchNormativeAndSubscriberConsumptionData);
+const getAdditionalNormativeAndSubscriberConsumptionDataFx = createEffect<
+  ConsumptionRequestPayload,
+  {
+    normative: ResourceConsumptionWithNull[];
+    subscriber: ResourceConsumptionWithNull[];
+  },
+  EffectFailDataAxiosError
+>(fetchNormativeAndSubscriberConsumptionData);
 
-const $housingConsumptionData = domain
-  .createStore<ConsumptionDataForTwoMonth | null>(null)
+const $housingConsumptionData = createStore<ConsumptionDataForTwoMonth | null>(
+  null,
+)
   .on(getPrevHousingConsumptionPlotFx.doneData, (prev, data) =>
     setConsumptionData(
       prev,
@@ -153,32 +152,30 @@ const $housingConsumptionData = domain
   )
   .reset(clearData);
 
-const getAdditionalConsumptionData =
-  domain.createEvent<ConsumptionDataPayload>();
+const getAdditionalConsumptionData = createEvent<ConsumptionDataPayload>();
 
-const clearAdditionalAddressData = domain.createEvent();
+const clearAdditionalAddressData = createEvent();
 
-const $isAdditionalAddressSelected = domain
-  .createStore<boolean>(false)
+const $isAdditionalAddressSelected = createStore<boolean>(false)
   .on(getAdditionalConsumptionData, (_, data) => Boolean(data))
   .reset([clearAdditionalAddressData, clearData]);
 
 const setSelectedGraphTypes =
-  domain.createEvent<BooleanTypesOfResourceConsumptionGraphForTwoMonth>();
-const $selectedGraphTypes = domain
-  .createStore<BooleanTypesOfResourceConsumptionGraphForTwoMonth>(
+  createEvent<BooleanTypesOfResourceConsumptionGraphForTwoMonth>();
+const $selectedGraphTypes =
+  createStore<BooleanTypesOfResourceConsumptionGraphForTwoMonth>(
     initialSelectedGraphTypes,
   )
-  .on(setSelectedGraphTypes, (_, selected) => selected)
-  .reset(clearData);
+    .on(setSelectedGraphTypes, (_, selected) => selected)
+    .reset(clearData);
 
-const $summaryConsumption = domain
-  .createStore<GetSummaryHousingConsumptionsByResourcesResponse | null>(null)
-  .on(
-    getSummaryHousingConsumptionsFx.doneData,
-    (_, consumptions) => consumptions,
-  )
-  .reset(clearSummary);
+const $summaryConsumption =
+  createStore<GetSummaryHousingConsumptionsByResourcesResponse | null>(null)
+    .on(
+      getSummaryHousingConsumptionsFx.doneData,
+      (_, consumptions) => consumptions,
+    )
+    .reset(clearSummary);
 
 const $isExistingCitiesLoading =
   addressSearchService.outputs.$isExistingCitiesLoading;
@@ -199,36 +196,38 @@ const $isLoadingFromApi = combine(
   (...loadings) => loadings.includes(true),
 );
 
-const $isLoading = domain
-  .createStore(true)
-  .on($isLoadingFromApi, (_, isLoading) => isLoading);
+const $isLoading = createStore(true).on(
+  $isLoadingFromApi,
+  (_, isLoading) => isLoading,
+);
 
-const cancelPrevMonthRequests = domain.createEvent<{
+const cancelPrevMonthRequests = createEvent<{
   token: CancelTokenSource;
 }>();
-const cancelAdditionalRequests = domain.createEvent<{
+const cancelAdditionalRequests = createEvent<{
   token: CancelTokenSource;
 }>();
-const cancelMainRequests = domain.createEvent<{
+const cancelMainRequests = createEvent<{
   token: CancelTokenSource;
 }>();
-const cancelSummaryRequests = domain.createEvent<{
+const cancelSummaryRequests = createEvent<{
   token: CancelTokenSource;
 }>();
-const setToken = domain.createEvent<{
+const setToken = createEvent<{
   token: CancelTokenSource;
   type: ResourceConsumptionCancelToken;
 }>();
 
-domain
-  .createStore<CancelTokens>({})
-  .on(setToken, (tokens, { token: newToken, type }) => {
+createStore<CancelTokens>({}).on(
+  setToken,
+  (tokens, { token: newToken, type }) => {
     const oldToken = tokens[type];
     if (oldToken) {
       oldToken.cancel();
     }
     return { ...tokens, [type]: newToken };
-  });
+  },
+);
 
 sample({
   clock: getSummaryConsumptions,

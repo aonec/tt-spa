@@ -1,12 +1,10 @@
-import { createDomain, createEvent } from 'effector';
+import { createEvent, createStore } from 'effector';
 import { persist } from 'effector-storage/local';
 import { featureToggles } from 'featureToggles';
 import axios from 'api/axios';
 import { FeatureToggles } from './developmentSettings.types';
 
-const domain = createDomain('developmentSettings');
-
-const $isDevSettingsModalOpen = domain.createStore(false);
+const $isDevSettingsModalOpen = createStore(false);
 
 const devApiURL = localStorage.getItem('dev-api-url');
 
@@ -16,16 +14,15 @@ if (devApiURL) {
 
 const apiURL = axios.defaults.baseURL;
 
-const openDevSettingsModal = domain.createEvent();
+const openDevSettingsModal = createEvent();
 const closeDevSettingsModal = createEvent();
 
-const toggleFeature = domain.createEvent<string>();
-const resetFeatureToggles = domain.createEvent();
+const toggleFeature = createEvent<string>();
+const resetFeatureToggles = createEvent();
 
-const setDevUrl = domain.createEvent<string>();
+const setDevUrl = createEvent<string>();
 
-const $featureToggles = domain
-  .createStore<FeatureToggles>(featureToggles)
+const $featureToggles = createStore<FeatureToggles>(featureToggles)
   .on(toggleFeature, (prev, feature) => ({
     ...prev,
     [feature]: !prev[feature as keyof FeatureToggles],
@@ -34,9 +31,7 @@ const $featureToggles = domain
 
 persist({ store: $featureToggles, key: 'featureToggles' });
 
-const $devUrl = domain
-  .createStore(apiURL || '')
-  .on(setDevUrl, (_, devUrl) => devUrl);
+const $devUrl = createStore(apiURL || '').on(setDevUrl, (_, devUrl) => devUrl);
 
 $isDevSettingsModalOpen
   .on(openDevSettingsModal, () => true)

@@ -1,11 +1,5 @@
 import { createGate } from 'effector-react';
-import {
-  createStore,
-  createEffect,
-  createDomain,
-  combine,
-  sample,
-} from 'effector';
+import { createStore, createEffect, combine, sample } from 'effector';
 import {
   IndividualDeviceMountPlaceForFilterResponse,
   IndividualDeviceMountPlaceListResponse,
@@ -15,15 +9,16 @@ import {
   getIndividualDeviceMountPlaces,
 } from './individualDeviceMountPlacesService.api';
 
-const domain = createDomain('individualDeviceMountPlacesService');
-
-const fetchIndividualDeviceFxMountPlacesFx = domain.createEffect<
+const fetchIndividualDeviceFxMountPlacesFx = createEffect<
   number,
   IndividualDeviceMountPlaceListResponse[]
 >(getIndividualDeviceMountPlaces);
-const $individualDeviceMountPlaces = domain
-  .createStore<IndividualDeviceMountPlaceListResponse[] | null>(null)
-  .on(fetchIndividualDeviceFxMountPlacesFx.doneData, (_, places) => places);
+const $individualDeviceMountPlaces = createStore<
+  IndividualDeviceMountPlaceListResponse[] | null
+>(null).on(
+  fetchIndividualDeviceFxMountPlacesFx.doneData,
+  (_, places) => places,
+);
 
 const fetchAllIndividualDeviceMountPlacesFx = createEffect<
   void,

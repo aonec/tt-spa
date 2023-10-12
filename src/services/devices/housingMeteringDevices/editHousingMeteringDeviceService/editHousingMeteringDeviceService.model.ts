@@ -1,5 +1,6 @@
+import { createEffect, createEvent, createStore } from 'effector';
 import { message } from 'antd';
-import { combine, createDomain, forward, sample } from 'effector';
+import { combine, forward, sample } from 'effector';
 import { createGate } from 'effector-react';
 import {
   CommunicationPipeResponse,
@@ -17,35 +18,33 @@ import {
 } from './editHousingMeteringDeviceService.api';
 import { EditHousingMeteringDeviceTabs } from './editHousingMeteringDeviceService.types';
 
-const domain = createDomain('editHousingMeteringDeviceService');
-
-const handleChangeTab = domain.createEvent<EditHousingMeteringDeviceTabs>();
-const $currentTab = domain
-  .createStore<EditHousingMeteringDeviceTabs>(
-    EditHousingMeteringDeviceTabs.CommonInfo,
-  )
-  .on(handleChangeTab, (_, tab) => tab);
+const handleChangeTab = createEvent<EditHousingMeteringDeviceTabs>();
+const $currentTab = createStore<EditHousingMeteringDeviceTabs>(
+  EditHousingMeteringDeviceTabs.CommonInfo,
+).on(handleChangeTab, (_, tab) => tab);
 
 const handleHousingMeteringDeviceUpdate =
   housingMeteringDeviceProfileService.inputs.handleHousingMeteringDeviceUpdate;
 
-const handleSubmitForm =
-  domain.createEvent<UpdatePipeHousingMeteringDeviceRequest>();
+const handleSubmitForm = createEvent<UpdatePipeHousingMeteringDeviceRequest>();
 
-const getHousingMeteringDeviceFx = domain.createEffect<
+const getHousingMeteringDeviceFx = createEffect<
   number,
   PipeHousingMeteringDeviceResponse
 >(fetchHousingMeteringDevice);
-const $housingMeteringDevice = domain
-  .createStore<PipeHousingMeteringDeviceResponse | null>(null)
-  .on(getHousingMeteringDeviceFx.doneData, (_, device) => device);
+const $housingMeteringDevice =
+  createStore<PipeHousingMeteringDeviceResponse | null>(null).on(
+    getHousingMeteringDeviceFx.doneData,
+    (_, device) => device,
+  );
 
-const getPipesFx = domain.createEffect<number, PipeNodeResponse>(fetchPipeNode);
-const $communicationPipes = domain
-  .createStore<CommunicationPipeResponse[]>([])
-  .on(getPipesFx.doneData, (_, pipeNode) => pipeNode.communicationPipes || []);
+const getPipesFx = createEffect<number, PipeNodeResponse>(fetchPipeNode);
+const $communicationPipes = createStore<CommunicationPipeResponse[]>([]).on(
+  getPipesFx.doneData,
+  (_, pipeNode) => pipeNode.communicationPipes || [],
+);
 
-const editHousingMeteringDeviceFx = domain.createEffect<
+const editHousingMeteringDeviceFx = createEffect<
   { deviceId: number } & UpdatePipeHousingMeteringDeviceRequest,
   MeteringDeviceResponse,
   EffectFailDataAxiosError

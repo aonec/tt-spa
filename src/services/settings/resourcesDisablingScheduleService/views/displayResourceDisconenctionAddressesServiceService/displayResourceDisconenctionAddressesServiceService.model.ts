@@ -1,24 +1,19 @@
-import { createDomain } from 'effector';
+import { createEvent, createStore } from 'effector';
+
 import { groupBy } from 'lodash';
 import {
   BuildingShortResponse,
   ResourceDisconnectingResponse,
 } from 'api/types';
 
-const domain = createDomain(
-  'displayResourceDisconenctionAddressesServiceService',
-);
+const openModal = createEvent<ResourceDisconnectingResponse>();
+const closeModal = createEvent();
 
-const openModal = domain.createEvent<ResourceDisconnectingResponse>();
-const closeModal = domain.createEvent();
-
-const $disconnection = domain
-  .createStore<ResourceDisconnectingResponse | null>(null)
+const $disconnection = createStore<ResourceDisconnectingResponse | null>(null)
   .on(openModal, (_, disconnection) => disconnection)
   .reset(closeModal);
 
-const $addresses = domain
-  .createStore<[string, BuildingShortResponse[]][]>([])
+const $addresses = createStore<[string, BuildingShortResponse[]][]>([])
   .on(openModal, (_, disconnection) => {
     if (!disconnection) {
       return [];

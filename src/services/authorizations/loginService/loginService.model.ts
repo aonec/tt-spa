@@ -1,15 +1,14 @@
-import { createDomain, forward } from 'effector';
+import { createEffect, createEvent } from 'effector';
+import { forward } from 'effector';
 import { LoginRequest, TokenResponse } from 'api/types';
 import { EffectFailDataAxiosError } from 'types';
 import { loginPost } from './loginService.api';
 import { message } from 'antd';
 import { developmentSettingsService } from 'services/developmentSettings/developmentSettings.models';
 
-const domain = createDomain('loginService');
+const handlePostLogin = createEvent<LoginRequest>();
 
-const handlePostLogin = domain.createEvent<LoginRequest>();
-
-const postLoginFx = domain.createEffect<
+const postLoginFx = createEffect<
   LoginRequest,
   TokenResponse,
   EffectFailDataAxiosError
