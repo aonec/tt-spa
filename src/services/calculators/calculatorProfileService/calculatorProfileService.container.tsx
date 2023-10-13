@@ -44,6 +44,7 @@ export const CalculatorProfileContainer = () => {
   const isPermitionToCalculatorActions = usePermission([
     ESecuredIdentityRoleName.Administrator,
     ESecuredIdentityRoleName.ManagingFirmExecutor,
+    ESecuredIdentityRoleName.ManagingFirmSpectatingAdministrator,
   ]);
 
   const setGrouptype = useCallback(
