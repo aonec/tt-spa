@@ -40,6 +40,7 @@ import {
 } from './addTaskFromDispatcherService.types';
 import { currentUserService } from 'services/currentUserService';
 import { prepareAddressesForTreeSelect } from './addTaskFromDispatcherService.utils';
+import _ from 'lodash';
 
 const PageGate = createGate();
 const AddTaskDataFetchGate = createGate();
@@ -168,7 +169,7 @@ sample({
 
     const sourceDateTimeUTC = dayjs(sourceDateTime).utcOffset(0).toISOString();
 
-    return {
+    const payload = {
       taskReasonId: source.selectedTaskReasonId,
       taskType: data.taskType,
       objectTtmId: Number(source.selectedHousingStockId),
@@ -179,6 +180,10 @@ sample({
       subscriberFullName: data.subscriberName,
       taskDescription: data.taskDescription,
     } as ErpCreateTaskRequest;
+
+    const filteredByNullValuesPayload = _.pickBy(payload, _.identity);
+
+    return filteredByNullValuesPayload as ErpCreateTaskRequest;
   },
   target: createTaskFx,
 });

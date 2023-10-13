@@ -150,15 +150,24 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
 
   useEffect(() => {
     if (taskTypeOptions.length === 1) {
-      setFieldValue('taskType', taskTypeOptions[0].value);
+      const singularTaskType = taskTypeOptions[0].value;
+
+      setFieldValue('taskType', singularTaskType);
+      handleSelectTaskType(singularTaskType);
 
       if (isFromSubscriber) {
-        next(7);
+        next(6);
       } else {
-        next(4);
+        next(5);
       }
     }
-  }, [taskTypeOptions, setFieldValue, next, isFromSubscriber]);
+  }, [
+    taskTypeOptions,
+    setFieldValue,
+    next,
+    isFromSubscriber,
+    handleSelectTaskType,
+  ]);
 
   const getResourceDisconnectionAlert = useCallback(
     (
@@ -213,12 +222,20 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
   const [isReasonOpen, setReasonOpen] = useState(false);
   const [isTaskTypeOpen, setTaskTypeOpen] = useState(false);
 
+  // useEffect(() => {
+  //   document.addEventListener('DOMContentLoaded', (event) => {
+  //     console.log('first');
+  //   });
+
+  //   return () => document.removeEventListener()
+  // }, [isFromSubscriber]);
+
   return (
     <>
       <PageGate />
 
       <Form id={formId} onSubmitCapture={handleSubmit}>
-        <GridContainerExpandable isTwoColumn={!isFromSubscriber}>
+        <GridContainerExpandable isTwoColumn={isFromSubscriber}>
           <FormItem label="Источник заявки">
             <SelectCaret
               isFromSubscriber={isFromSubscriber}
@@ -236,10 +253,11 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
               }
               data-reading-input={dataKey}
               onKeyDown={fromEnter(() => next(0))}
+              onSelect={() => next(0)}
             />
           </FormItem>
 
-          {isFromSubscriber && (
+          {!isFromSubscriber && (
             <FormItem label="Номер заявки">
               <Input
                 placeholder="Введите"
@@ -287,9 +305,9 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
               data-reading-input={dataKey}
               onKeyDown={fromEnter(() => {
                 if (isFromSubscriber) {
-                  next(2);
-                } else {
                   next(1);
+                } else {
+                  next(2);
                 }
               })}
             >
@@ -309,9 +327,9 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
               data-reading-input={dataKey}
               onKeyDown={fromEnter(() => {
                 if (isFromSubscriber) {
-                  next(3);
-                } else {
                   next(2);
+                } else {
+                  next(3);
                 }
               })}
             >
@@ -329,7 +347,7 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
                 onChange={(value) => setFieldValue('subscriberName', value)}
                 options={apartmentHomeownerNames}
                 data-reading-input={dataKey}
-                onKeyDown={fromEnter(() => next(4))}
+                onKeyDown={fromEnter(() => next(3))}
                 open={isNameOpen}
                 onBlur={() => setNameOpen(false)}
                 onFocus={() => setNameOpen(true)}
@@ -347,7 +365,7 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
                   setFieldValue('phoneNumber', value.target.value)
                 }
                 data-reading-input={dataKey}
-                onKeyDown={fromEnter(() => next(5))}
+                onKeyDown={fromEnter(() => next(4))}
               />
             </FormItem>
           </GridContainer>
@@ -388,9 +406,9 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
               data-reading-input={dataKey}
               onKeyDown={fromEnter(() => {
                 if (isFromSubscriber) {
-                  next(6);
+                  next(5);
                 } else {
-                  next(3);
+                  next(4);
                 }
               })}
               open={isReasonOpen}
@@ -399,9 +417,9 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
               onSelect={() => {
                 setReasonOpen(false);
                 if (isFromSubscriber) {
-                  next(6);
+                  next(5);
                 } else {
-                  next(3);
+                  next(4);
                 }
               }}
               onMouseDown={() => setReasonOpen(true)}
@@ -421,9 +439,9 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
               data-reading-input={dataKey}
               onKeyDown={fromEnter(() => {
                 if (isFromSubscriber) {
-                  next(7);
+                  next(6);
                 } else {
-                  next(4);
+                  next(5);
                 }
               })}
               open={isTaskTypeOpen}
@@ -433,9 +451,9 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
                 setTaskTypeOpen(false);
                 handleSelectTaskType(taskType as EisTaskType);
                 if (isFromSubscriber) {
-                  next(7);
+                  next(6);
                 } else {
-                  next(4);
+                  next(5);
                 }
               }}
               onMouseDown={() => setTaskTypeOpen(true)}
