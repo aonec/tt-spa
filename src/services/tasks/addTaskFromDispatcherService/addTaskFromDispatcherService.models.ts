@@ -107,23 +107,24 @@ const $isModalOpen = createStore<boolean>(false)
   .on(handleCloseModal, () => false)
   .reset(handleReset);
 
-const $ERPSources = createStore<ErpSourceResponse[]>([])
-  .on(getERPSourcesFx.doneData, (_, data) => data)
-  // .reset(handleReset);
+const $ERPSources = createStore<ErpSourceResponse[]>([]).on(
+  getERPSourcesFx.doneData,
+  (_, data) => data,
+);
 
-const $leadExecutors = createStore<ErpExecutorResponse[]>([])
-  .on(getLeadExecutorsFx.doneData, (_, data) => data)
-  // .reset(handleReset);
+const $leadExecutors = createStore<ErpExecutorResponse[]>([]).on(
+  getLeadExecutorsFx.doneData,
+  (_, data) => data,
+);
 
 const $executors = createStore<ErpExecutorResponse[]>([])
   .on(getErpExecutorsForLeadFx.doneData, (_, data) => data)
   .reset(handleReset);
 
-const $preparedForOptionsAddresses = createStore<PreparedAddress[]>([])
-  .on(getAddressesFx.doneData, (_, data) =>
-    prepareAddressesForTreeSelect(data.items),
-  )
-  // .reset(handleReset);
+const $preparedForOptionsAddresses = createStore<PreparedAddress[]>([]).on(
+  getAddressesFx.doneData,
+  (_, data) => prepareAddressesForTreeSelect(data.items),
+);
 
 const $selectedHousingStockId = createStore<string | null>(null)
   .on(setSelectedHousingId, (_, id) => id)
@@ -160,9 +161,10 @@ const $resourceDisconnection = createStore<ResourceDisconnectingResponse[]>([])
   .on(getResourceDisconnectionFx.doneData, (_, data) => data.items || [])
   .reset(handleReset);
 
-const $taskReasons = createStore<ErpTaskReasonResponse[]>([])
-  .on(getTaskReasonsFx.doneData, (_, data) => data)
-  // .reset(handleReset);
+const $taskReasons = createStore<ErpTaskReasonResponse[]>([]).on(
+  getTaskReasonsFx.doneData,
+  (_, data) => data,
+);
 
 sample({
   clock: handleCreateTask,
