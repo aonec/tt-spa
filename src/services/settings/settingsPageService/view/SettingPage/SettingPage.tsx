@@ -1,4 +1,4 @@
-import React, { FC, useMemo } from 'react';
+import React, { FC, useEffect, useMemo } from 'react';
 import { useUnit } from 'effector-react';
 import { useHistory, useLocation, useParams } from 'react-router-dom';
 import { TabsSC } from './SettingPage.styled';
@@ -99,6 +99,43 @@ export const SettingPage: FC<SettingPageProps> = ({
     featureToggles.districtsManage,
     featureToggles.workingRanges,
     featureToggles.temperatureGraph,
+  ]);
+
+  useEffect(() => {
+    const keys: { key: string; visible: boolean }[] = adminSettings
+      ? [
+          {
+            key: 'operatingRanges',
+            visible: featureToggles.workingRanges,
+          },
+          {
+            key: 'districtBorder',
+            visible: featureToggles.districtsManage,
+          },
+          { key: 'temperatureGraph', visible: featureToggles.temperatureGraph },
+        ]
+      : [
+          {
+            key: 'controllers',
+            visible: featureToggles.controllersDistribution,
+          },
+          { key: 'inspectors', visible: true },
+          {
+            key: 'districtBorder',
+            visible: true,
+          },
+        ];
+
+    const path = keys.find((elem) => elem.visible);
+
+    if (path) history.push(path.key);
+  }, [
+    adminSettings,
+    featureToggles.controllersDistribution,
+    featureToggles.districtsManage,
+    featureToggles.temperatureGraph,
+    featureToggles.workingRanges,
+    history,
   ]);
 
   return (
