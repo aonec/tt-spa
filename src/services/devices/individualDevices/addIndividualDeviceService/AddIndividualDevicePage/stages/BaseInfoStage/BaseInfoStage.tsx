@@ -55,7 +55,6 @@ export const BaseInfoStage: FC<BaseInfoStageProps> = ({
         formData?.futureCheckingDate || (null as string | null),
       openingDate: formData?.openingDate || (null as string | null),
       bitDepth: formData?.bitDepth || (null as number | null),
-      // scaleFactor: formData?. || (null as number | null),
       apartmentId: apartmentId as number | null,
       mountPlaceId: formData?.mountPlaceId || (null as number | null),
       model: formData?.model || '',

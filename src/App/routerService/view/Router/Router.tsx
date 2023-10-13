@@ -91,6 +91,10 @@ export const Router: FC<RouterProps> = ({
     ESecuredIdentityRoleName.ManagingFirmSpectatingAdministrator,
   );
 
+  const isRescrictedSpectator = roles.includes(
+    ESecuredIdentityRoleName.ManagingFirmSpectatorRestricted,
+  );
+
   const isAnyRole =
     isAdministrator ||
     isSeniorOperator ||
@@ -110,6 +114,13 @@ export const Router: FC<RouterProps> = ({
 
     return isSeniorOperator || isOperator ? '/meters/apartments' : defaultPath;
   })();
+
+  const isShowNodeArchivePage =
+    isAdministrator ||
+    isExecutor ||
+    isSpectator ||
+    isSpectatingAdministrator ||
+    isRescrictedSpectator;
 
   return (
     <Wrapper>
@@ -413,13 +424,15 @@ export const Router: FC<RouterProps> = ({
                     />
                   )}
 
-                  {isAnyRole && (
-                    <Route
-                      path="/nodeArchive/:nodeId"
-                      component={NodeArchivePageContainer}
-                      exact
-                    />
-                  )}
+                  <Route
+                    path="/nodeArchive/:nodeId"
+                    component={
+                      isShowNodeArchivePage
+                        ? NodeArchivePageContainer
+                        : AccessDeniedPage
+                    }
+                    exact
+                  />
 
                   {(isSeniorOperator || isOperator) && (
                     <Route

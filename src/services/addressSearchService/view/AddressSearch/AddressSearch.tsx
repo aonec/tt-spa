@@ -23,6 +23,7 @@ export const AddressSearch: FC<AddressSearchProps> = ({
   disabledFields,
   className,
   isError,
+  isFocus,
   handleSearchApartNumber,
   existingApartmentNumbers,
 }) => {
@@ -93,6 +94,7 @@ export const AddressSearch: FC<AddressSearchProps> = ({
       }}
       disabled={isDisabled}
       error={isError || undefined}
+      autoFocus={isFocus}
     />
   );
 
