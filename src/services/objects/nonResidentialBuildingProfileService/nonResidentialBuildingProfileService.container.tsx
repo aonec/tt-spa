@@ -38,12 +38,14 @@ export const NonResidentialBuildingProfileContainer = () => {
   const isPermitionToAddNode = usePermission([
     ESecuredIdentityRoleName.Administrator,
     ESecuredIdentityRoleName.ManagingFirmExecutor,
+    ESecuredIdentityRoleName.ManagingFirmSpectatingAdministrator,
   ]);
   const isPermitionToDownloadConsolidatedReport = usePermission([
     ESecuredIdentityRoleName.Administrator,
     ESecuredIdentityRoleName.ManagingFirmExecutor,
     ESecuredIdentityRoleName.ManagingFirmSpectator,
     ESecuredIdentityRoleName.ManagingFirmSpectatorRestricted,
+    ESecuredIdentityRoleName.ManagingFirmSpectatingAdministrator,
   ]);
   const isPermissionToEditHousingStock = usePermission([
     ESecuredIdentityRoleName.Administrator,
