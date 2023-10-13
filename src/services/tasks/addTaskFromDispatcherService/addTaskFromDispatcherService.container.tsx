@@ -11,10 +11,7 @@ export const AddTaskFromDispatcherContainer = () => {
     handleCloseModal,
     ERPSources,
     preparedForOptionsAddresses,
-    choоseLeadExecutor,
-    executors,
     handleCreateTask,
-    leadExecutors,
     isCreatePending,
     handleSelectHousingAddress,
     preparedApartmentNumbers,
@@ -28,10 +25,7 @@ export const AddTaskFromDispatcherContainer = () => {
     handleCloseModal: inputs.handleCloseModal,
     ERPSources: outputs.$ERPSources,
     preparedForOptionsAddresses: outputs.$preparedForOptionsAddresses,
-    leadExecutors: outputs.$leadExecutors,
-    executors: outputs.$executors,
     handleCreateTask: inputs.handleCreateTask,
-    choоseLeadExecutor: inputs.choоseLeadExecutor,
     isCreatePending: outputs.$isCreatePending,
     handleSelectHousingAddress: inputs.handleSelectHousingAddress,
     handleSelectApartmentNumber: inputs.handleSelectApartmentNumber,
@@ -49,10 +43,7 @@ export const AddTaskFromDispatcherContainer = () => {
         handleCloseModal={handleCloseModal}
         ERPSources={ERPSources}
         preparedForOptionsAddresses={preparedForOptionsAddresses}
-        leadExecutors={leadExecutors}
         handleCreateTask={handleCreateTask}
-        choоseLeadExecutor={choоseLeadExecutor}
-        executors={executors}
         isCreatePending={isCreatePending}
         handleSelectHousingAddress={handleSelectHousingAddress}
         existingApartmentNumbers={preparedApartmentNumbers}

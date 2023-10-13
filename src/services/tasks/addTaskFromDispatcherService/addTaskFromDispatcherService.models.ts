@@ -14,8 +14,6 @@ import {
   getApartmentHomeownerNames,
   getApartments,
   getERPSources,
-  getErpExecutorsForLead,
-  getLeadExecutors,
   getResourceDisconnection,
   getTaskReasons,
 } from './addTaskFromDispatcherService.api';
@@ -23,9 +21,8 @@ import {
   ApartmentListResponse,
   ApartmentListResponsePagedList,
   ErpCreateTaskRequest,
-  ErpExecutorResponse,
   ErpSourceResponse,
-  ErpTaskReasonResponse,
+  ErpTaskReasonGroupResponse,
   ResourceDisconnectingResponse,
   ResourceDisconnectingResponsePagedList,
   StreetWithBuildingNumbersResponsePagedList,
@@ -48,8 +45,6 @@ const AddTaskDataFetchGate = createGate();
 const handleOpenModal = createEvent();
 const handleCloseModal = createEvent();
 
-const choоseLeadExecutor = createEvent<string>();
-
 const handleCreateTask = createEvent<AddTask>();
 
 const handleSelectHousingAddress = createEvent<string>();
@@ -70,19 +65,14 @@ const createTaskFx = createEffect<
 
 const getERPSourcesFx = createEffect<void, ErpSourceResponse[]>(getERPSources);
 
-const getLeadExecutorsFx = createEffect<void, ErpExecutorResponse[]>(
-  getLeadExecutors,
+const getTaskReasonsFx = createEffect<void, ErpTaskReasonGroupResponse[]>(
+  getTaskReasons,
 );
 
 const getAddressesFx = createEffect<
   GetAddressesRequest,
   StreetWithBuildingNumbersResponsePagedList
 >(getAddresses);
-
-const getErpExecutorsForLeadFx = createEffect<
-  { leadId: string },
-  ErpExecutorResponse[]
->(getErpExecutorsForLead);
 
 const getApartmentsFx = createEffect<
   GetApartmentsRequest,
@@ -98,10 +88,6 @@ const getResourceDisconnectionFx = createEffect<
   ResourceDisconnectingResponsePagedList
 >(getResourceDisconnection);
 
-const getTaskReasonsFx = createEffect<void, ErpTaskReasonResponse[]>(
-  getTaskReasons,
-);
-
 const $isModalOpen = createStore<boolean>(false)
   .on(handleOpenModal, () => true)
   .on(handleCloseModal, () => false)
@@ -111,15 +97,6 @@ const $ERPSources = createStore<ErpSourceResponse[]>([]).on(
   getERPSourcesFx.doneData,
   (_, data) => data,
 );
-
-const $leadExecutors = createStore<ErpExecutorResponse[]>([]).on(
-  getLeadExecutorsFx.doneData,
-  (_, data) => data,
-);
-
-const $executors = createStore<ErpExecutorResponse[]>([])
-  .on(getErpExecutorsForLeadFx.doneData, (_, data) => data)
-  .reset(handleReset);
 
 const $preparedForOptionsAddresses = createStore<PreparedAddress[]>([]).on(
   getAddressesFx.doneData,
@@ -161,7 +138,7 @@ const $resourceDisconnection = createStore<ResourceDisconnectingResponse[]>([])
   .on(getResourceDisconnectionFx.doneData, (_, data) => data.items || [])
   .reset(handleReset);
 
-const $taskReasons = createStore<ErpTaskReasonResponse[]>([]).on(
+const $taskReasons = createStore<ErpTaskReasonGroupResponse[]>([]).on(
   getTaskReasonsFx.doneData,
   (_, data) => data,
 );
@@ -190,8 +167,6 @@ sample({
       sourceId: data.sourceId,
       sourceNumber: data.requestNumber,
       sourceDateTime: sourceDateTimeUTC,
-      leadId: data.leadId,
-      workerId: data.executorId,
       subscriberPhoneNumber: data.phoneNumber,
       subscriberFullName: data.subscriberName,
       taskDescription: data.taskDescription,
@@ -202,7 +177,7 @@ sample({
 
 sample({
   clock: AddTaskDataFetchGate.open,
-  target: [getERPSourcesFx, getLeadExecutorsFx, getTaskReasonsFx],
+  target: [getERPSourcesFx, getTaskReasonsFx],
 });
 
 sample({
@@ -213,17 +188,6 @@ sample({
     City: userCity,
   }),
   target: getAddressesFx,
-});
-
-sample({
-  clock: choоseLeadExecutor,
-  filter: Boolean,
-  fn: (data) => {
-    return {
-      leadId: data,
-    };
-  },
-  target: getErpExecutorsForLeadFx,
 });
 
 sample({
@@ -308,7 +272,6 @@ export const addTaskFromDispatcherService = {
     handleOpenModal,
     handleCloseModal,
     handleCreateTask,
-    choоseLeadExecutor,
     handleSelectHousingAddress,
     handleSelectApartmentNumber,
     handleSelectTaskReason,
@@ -316,9 +279,7 @@ export const addTaskFromDispatcherService = {
   outputs: {
     $isModalOpen,
     $ERPSources,
-    $leadExecutors,
     $preparedForOptionsAddresses,
-    $executors,
     $isCreatePending,
     $preparedApartmentNumbers,
     $resourceDisconnection,

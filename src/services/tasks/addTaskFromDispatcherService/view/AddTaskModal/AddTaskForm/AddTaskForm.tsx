@@ -59,9 +59,6 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
   preparedForOptionsAddresses,
   handleCreateTask,
   setDisableSubmit,
-  choоseLeadExecutor,
-  executors,
-  leadExecutors,
   handleSelectHousingAddress,
   existingApartmentNumbers,
   resourceDisconnection,
@@ -82,8 +79,6 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
       apartmentNumber: null,
       subscriberName: null,
       phoneNumber: null,
-      leadId: null,
-      executorId: null,
       taskDescription: null,
       taskReasonSearch: null,
     },
@@ -102,13 +97,6 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
   );
 
   const next = useSwitchInputOnEnter(dataKey, false, false);
-
-  const sortedLeadExecutors = useMemo(
-    () => sortByAlphabet(leadExecutors),
-    [leadExecutors],
-  );
-
-  const sortedExecutors = useMemo(() => sortByAlphabet(executors), [executors]);
 
   const isHaveValidationErrors = useMemo(
     () => Boolean(Object.keys(errors).length),
@@ -457,96 +445,6 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
             />
           </FormItem>
         </ContainerWithOutline>
-
-        <GridContainer>
-          <FormItem label="Ответственный исполнитель">
-            <Select
-              allowClear
-              showSearch
-              optionFilterProp="label"
-              optionLabelProp="label"
-              placeholder="Выберите из списка"
-              value={values.leadId || undefined}
-              onChange={(value) => {
-                setFieldValue('leadId', value);
-                setFieldValue('executorId', null);
-                choоseLeadExecutor(value as string);
-              }}
-              options={sortedLeadExecutors.map((leadExecutor) => ({
-                value: leadExecutor.id,
-                key: leadExecutor.id,
-                label: leadExecutor.name,
-              }))}
-              filterOption={(inputValue, option) =>
-                option?.label
-                  .toLocaleLowerCase()
-                  .startsWith(inputValue.toLocaleLowerCase())
-              }
-              data-reading-input={dataKey}
-              onKeyDown={fromEnter(() => {
-                if (isFromSubscriber) {
-                  next(8);
-                } else {
-                  next(5);
-                }
-              })}
-              open={isLeadOpen}
-              onBlur={() => setLeadOpen(false)}
-              onFocus={() => setLeadOpen(true)}
-              onSelect={() => {
-                setLeadOpen(false);
-                if (isFromSubscriber) {
-                  next(8);
-                } else {
-                  next(5);
-                }
-              }}
-              onMouseDown={() => setLeadOpen(true)}
-            />
-          </FormItem>
-          <FormItem label="Исполнитель">
-            <Select
-              allowClear
-              showSearch
-              optionFilterProp="label"
-              optionLabelProp="label"
-              placeholder="Выберите из списка"
-              value={values.executorId || undefined}
-              onChange={(value) => setFieldValue('executorId', value)}
-              disabled={!Boolean(values.leadId)}
-              options={sortedExecutors.map((executor) => ({
-                value: executor.id,
-                key: executor.id,
-                label: executor.name,
-              }))}
-              filterOption={(inputValue, option) =>
-                option?.label
-                  .toLocaleLowerCase()
-                  .startsWith(inputValue.toLocaleLowerCase())
-              }
-              data-reading-input={dataKey}
-              onKeyDown={fromEnter(() => {
-                if (isFromSubscriber) {
-                  next(9);
-                } else {
-                  next(6);
-                }
-              })}
-              open={isExecutorOpen}
-              onBlur={() => setExecutorOpen(false)}
-              onFocus={() => setExecutorOpen(true)}
-              onSelect={() => {
-                setExecutorOpen(false);
-                if (isFromSubscriber) {
-                  next(9);
-                } else {
-                  next(6);
-                }
-              }}
-              onMouseDown={() => setExecutorOpen(true)}
-            />
-          </FormItem>
-        </GridContainer>
 
         <FormItem label="Описание проблемы">
           <TextareaSC

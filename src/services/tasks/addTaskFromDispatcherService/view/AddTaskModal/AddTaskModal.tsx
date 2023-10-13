@@ -9,10 +9,7 @@ export const AddTaskModal: FC<AddTaskModalProps> = ({
   handleCloseModal,
   isModalOpen,
   ERPSources,
-  leadExecutors,
   handleCreateTask,
-  choоseLeadExecutor,
-  executors,
   isCreatePending,
   handleSelectHousingAddress,
   existingApartmentNumbers,
@@ -37,12 +34,9 @@ export const AddTaskModal: FC<AddTaskModalProps> = ({
         <AddTaskForm
           formId={formId}
           ERPSources={ERPSources}
-          leadExecutors={leadExecutors}
           preparedForOptionsAddresses={preparedForOptionsAddresses}
           handleCreateTask={handleCreateTask}
           setDisableSubmit={setDisableSubmit}
-          choоseLeadExecutor={choоseLeadExecutor}
-          executors={executors}
           handleSelectHousingAddress={handleSelectHousingAddress}
           existingApartmentNumbers={existingApartmentNumbers}
           resourceDisconnection={resourceDisconnection}
