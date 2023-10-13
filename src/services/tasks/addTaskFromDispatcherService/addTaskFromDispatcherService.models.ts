@@ -109,11 +109,9 @@ const $isModalOpen = createStore<boolean>(false)
 
 const $ERPSources = createStore<ErpSourceResponse[]>([])
   .on(getERPSourcesFx.doneData, (_, data) => data)
-  // .reset(handleReset);
 
 const $leadExecutors = createStore<ErpExecutorResponse[]>([])
   .on(getLeadExecutorsFx.doneData, (_, data) => data)
-  // .reset(handleReset);
 
 const $executors = createStore<ErpExecutorResponse[]>([])
   .on(getErpExecutorsForLeadFx.doneData, (_, data) => data)
@@ -123,7 +121,6 @@ const $preparedForOptionsAddresses = createStore<PreparedAddress[]>([])
   .on(getAddressesFx.doneData, (_, data) =>
     prepareAddressesForTreeSelect(data.items),
   )
-  // .reset(handleReset);
 
 const $selectedHousingStockId = createStore<string | null>(null)
   .on(setSelectedHousingId, (_, id) => id)
@@ -162,7 +159,6 @@ const $resourceDisconnection = createStore<ResourceDisconnectingResponse[]>([])
 
 const $taskReasons = createStore<ErpTaskReasonResponse[]>([])
   .on(getTaskReasonsFx.doneData, (_, data) => data)
-  // .reset(handleReset);
 
 sample({
   clock: handleCreateTask,
