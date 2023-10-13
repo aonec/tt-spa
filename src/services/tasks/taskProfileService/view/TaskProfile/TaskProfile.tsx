@@ -17,6 +17,8 @@ import { TaskInfoWrapper, TaskWrapper, Wrapper } from './TaskProfile.styled';
 import { TaskProfileProps } from './TaskProfile.types';
 import { TaskProfileHeader } from './TaskProfileHeader';
 import { TaskStages } from './TaskStages';
+import { EManagingFirmTaskType } from 'api/types';
+import { ApplicationInfoContainer } from '../../applicationInfoService';
 
 export const TaskProfile: FC<TaskProfileProps> = ({
   task,
@@ -63,6 +65,11 @@ export const TaskProfile: FC<TaskProfileProps> = ({
   }, [task]);
 
   const taskActions = task.currentStage?.actions || [];
+
+  const isApplication =
+    task.type === EManagingFirmTaskType.PlannedApplication ||
+    task.type === EManagingFirmTaskType.CurrentApplication ||
+    task.type === EManagingFirmTaskType.EmergencyApplication;
 
   return (
     <Wrapper>
@@ -114,18 +121,23 @@ export const TaskProfile: FC<TaskProfileProps> = ({
                 handleSetComment={handleSetComment}
                 commentText={commentText}
               />
-              <TaskBaseInfo task={task} />
-              {individualDevices && individualDevices.length !== 0 && (
-                <TaskIndividualDevicesList
-                  devices={individualDevices}
-                  apartmentId={apartmemtId}
-                />
+              {!isApplication && (
+                <>
+                  <TaskBaseInfo task={task} />
+                  {individualDevices && individualDevices.length !== 0 && (
+                    <TaskIndividualDevicesList
+                      devices={individualDevices}
+                      apartmentId={apartmemtId}
+                    />
+                  )}
+                  {device && <TaskDeviceInfo device={device} />}
+                  {pipeNode && <TaskPipeNodeInfo pipeNode={pipeNode} />}
+                  {relatedPipeNode && (
+                    <TaskPipeNodeInfo pipeNode={relatedPipeNode} />
+                  )}
+                </>
               )}
-              {device && <TaskDeviceInfo device={device} />}
-              {pipeNode && <TaskPipeNodeInfo pipeNode={pipeNode} />}
-              {relatedPipeNode && (
-                <TaskPipeNodeInfo pipeNode={relatedPipeNode} />
-              )}
+              {isApplication && <ApplicationInfoContainer />}
             </TaskInfoWrapper>
             <TaskStages
               handleRevertStage={handleRevertStage}
