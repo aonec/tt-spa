@@ -130,32 +130,17 @@ export const MainInfo: FC<MainInfoProps> = ({
         </Select>
       </FormItem>
 
-      <GridContainer>
-        <FormItem label="Разрядность">
-          <Input
-            disabled={!isOperator}
-            placeholder="Укажите разрядность"
-            type="number"
-            onChange={(value) => setFieldValue('bitDepth', value.target.value)}
-            value={values.bitDepth || undefined}
-            data-reading-input={dataKey}
-            onKeyDown={fromEnter(() => next(3))}
-          />
-        </FormItem>
-        <FormItem label="Множитель">
-          <Input
-            disabled={!isOperator}
-            placeholder="Укажите множитель"
-            type="number"
-            onChange={(value) =>
-              setFieldValue('scaleFactor', value.target.value)
-            }
-            value={values.scaleFactor || undefined}
-            data-reading-input={dataKey}
-            onKeyDown={fromEnter(() => next(4))}
-          />
-        </FormItem>
-      </GridContainer>
+      <FormItem label="Разрядность">
+        <Input
+          disabled={!isOperator}
+          placeholder="Укажите разрядность"
+          type="number"
+          onChange={(value) => setFieldValue('bitDepth', value.target.value)}
+          value={values.bitDepth || undefined}
+          data-reading-input={dataKey}
+          onKeyDown={fromEnter(() => next(3))}
+        />
+      </FormItem>
 
       {isOperator && (
         <SwitchWrapper>
