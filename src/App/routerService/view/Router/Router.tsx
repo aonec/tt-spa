@@ -108,9 +108,7 @@ export const Router: FC<RouterProps> = ({
   const redirectRoute = (() => {
     if (!roles.length) return '/login';
 
-    const defaultPath = isSpectatingAdministrator
-      ? '/statistics/resourceConsumption'
-      : '/tasks/';
+    const defaultPath = '/tasks/';
 
     return isSeniorOperator || isOperator ? '/meters/apartments' : defaultPath;
   })();

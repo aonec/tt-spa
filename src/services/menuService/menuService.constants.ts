@@ -23,7 +23,4 @@ export const privates: MenuFiltrationConfig = {
 export const hidden: MenuFiltrationConfig = {
   [MenuType.Devices]: [ESecuredIdentityRoleName.ManagingFirmDispatcher],
   [MenuType.Statistics]: [ESecuredIdentityRoleName.ManagingFirmDispatcher],
-  [MenuType.Tasks]: [
-    ESecuredIdentityRoleName.ManagingFirmSpectatingAdministrator,
-  ],
 };
