@@ -45,6 +45,7 @@ export type AddTaskFormProps = {
   apartmentHomeownerNames: HomeownerNameOption[];
   taskReasons: ErpTaskReasonGroupResponse[];
   handleSelectTaskReason: (payload: string) => void;
+  handleSelectTaskType: (payload: EisTaskType) => void;
 };
 
 export type AddressOption = {

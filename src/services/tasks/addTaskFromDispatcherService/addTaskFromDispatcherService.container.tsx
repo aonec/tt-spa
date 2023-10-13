@@ -20,6 +20,7 @@ export const AddTaskFromDispatcherContainer = () => {
     apartmentHomeownerNames,
     taskReasons,
     handleSelectTaskReason,
+    handleSelectTaskType,
   } = useUnit({
     isModalOpen: outputs.$isModalOpen,
     handleCloseModal: inputs.handleCloseModal,
@@ -34,6 +35,7 @@ export const AddTaskFromDispatcherContainer = () => {
     apartmentHomeownerNames: outputs.$apartmentHomeownerNames,
     taskReasons: outputs.$taskReasons,
     handleSelectTaskReason: inputs.handleSelectTaskReason,
+    handleSelectTaskType: inputs.handleSelectTaskType,
   });
 
   return (
@@ -52,6 +54,7 @@ export const AddTaskFromDispatcherContainer = () => {
         apartmentHomeownerNames={apartmentHomeownerNames}
         taskReasons={taskReasons}
         handleSelectTaskReason={handleSelectTaskReason}
+        handleSelectTaskType={handleSelectTaskType}
       />
     </>
   );

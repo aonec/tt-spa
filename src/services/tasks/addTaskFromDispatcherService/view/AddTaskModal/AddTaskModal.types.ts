@@ -1,4 +1,5 @@
 import {
+  EisTaskType,
   ErpSourceResponse,
   ErpTaskReasonGroupResponse,
   ResourceDisconnectingResponse,
@@ -24,4 +25,5 @@ export type AddTaskModalProps = {
   apartmentHomeownerNames: HomeownerNameOption[];
   taskReasons: ErpTaskReasonGroupResponse[];
   handleSelectTaskReason: (payload: string) => void;
+  handleSelectTaskType: (payload: EisTaskType) => void;
 };

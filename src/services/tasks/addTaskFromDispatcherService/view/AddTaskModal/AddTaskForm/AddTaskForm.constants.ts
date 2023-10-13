@@ -4,8 +4,6 @@ export const validationSchema = yup.object().shape({
   sourceId: yup.string().nullable().required('Обязательное поле'),
   requestDate: yup.string().nullable().required('Обязательное поле'),
   requestTime: yup.string().nullable().required('Обязательное поле'),
-  executorId: yup.string().nullable().required('Обязательное поле'),
-  leadId: yup.string().nullable().required('Обязательное поле'),
   selectedObjectAddress: yup.string().nullable().required('Обязательное поле'),
   taskType: yup.string().nullable().required('Обязательное поле'),
   taskReasonSearch: yup.string().nullable().required('Обязательное поле'),

@@ -20,9 +20,11 @@ import {
 import {
   ApartmentListResponse,
   ApartmentListResponsePagedList,
+  EisTaskType,
   ErpCreateTaskRequest,
   ErpSourceResponse,
   ErpTaskReasonGroupResponse,
+  ErpTaskReasonItemResponse,
   ResourceDisconnectingResponse,
   ResourceDisconnectingResponsePagedList,
   StreetWithBuildingNumbersResponsePagedList,
@@ -50,9 +52,11 @@ const handleCreateTask = createEvent<AddTask>();
 const handleSelectHousingAddress = createEvent<string>();
 const handleSelectApartmentNumber = createEvent<string>();
 const handleSelectTaskReason = createEvent<string>();
+const handleSelectTaskType = createEvent<EisTaskType>();
 
 const setSelectedHousingId = createEvent<string | null>();
 const setSelectedApartmentId = createEvent<number | null>();
+const setSelectedTaskReasonOption = createEvent<ErpTaskReasonItemResponse[]>();
 const setSelectedTaskReasonId = createEvent<string | null>();
 
 const handleReset = createEvent();
@@ -98,6 +102,15 @@ const $ERPSources = createStore<ErpSourceResponse[]>([]).on(
   (_, data) => data,
 );
 
+const $taskReasons = createStore<ErpTaskReasonGroupResponse[]>([]).on(
+  getTaskReasonsFx.doneData,
+  (_, data) => data,
+);
+
+const $resourceDisconnection = createStore<ResourceDisconnectingResponse[]>([])
+  .on(getResourceDisconnectionFx.doneData, (_, data) => data.items || [])
+  .reset(handleReset);
+
 const $preparedForOptionsAddresses = createStore<PreparedAddress[]>([]).on(
   getAddressesFx.doneData,
   (_, data) => prepareAddressesForTreeSelect(data.items),
@@ -109,6 +122,10 @@ const $selectedHousingStockId = createStore<string | null>(null)
 
 const $selectedApartmentId = createStore<number | null>(null)
   .on(setSelectedApartmentId, (_, id) => id)
+  .reset(handleReset);
+
+const $selectedTaskReasonOption = createStore<ErpTaskReasonItemResponse[]>([])
+  .on(setSelectedTaskReasonOption, (_, taskReasonOption) => taskReasonOption)
   .reset(handleReset);
 
 const $selectedTaskReasonId = createStore<string | null>(null)
@@ -133,15 +150,6 @@ const $preparedApartmentNumbers = $existingApartmentNumbers.map((items) => {
       id: apartment.id,
     }));
 });
-
-const $resourceDisconnection = createStore<ResourceDisconnectingResponse[]>([])
-  .on(getResourceDisconnectionFx.doneData, (_, data) => data.items || [])
-  .reset(handleReset);
-
-const $taskReasons = createStore<ErpTaskReasonGroupResponse[]>([]).on(
-  getTaskReasonsFx.doneData,
-  (_, data) => data,
-);
 
 sample({
   clock: handleCreateTask,
@@ -221,7 +229,19 @@ sample({
     const selectedOption = taskReasons.find(
       (optionItem) => optionItem.name === selectedTaskReason,
     );
-    return selectedOption?.id || null;
+    return selectedOption?.items || [];
+  },
+  target: setSelectedTaskReasonOption,
+});
+
+sample({
+  clock: handleSelectTaskType,
+  source: $selectedTaskReasonOption,
+  fn: (taskReason, selectedTaskType) => {
+    const taskReasonFromTaskType = taskReason.find(
+      (taskReasonItem) => taskReasonItem.taskType === selectedTaskType,
+    );
+    return taskReasonFromTaskType?.id || null;
   },
   target: setSelectedTaskReasonId,
 });
@@ -275,6 +295,7 @@ export const addTaskFromDispatcherService = {
     handleSelectHousingAddress,
     handleSelectApartmentNumber,
     handleSelectTaskReason,
+    handleSelectTaskType,
   },
   outputs: {
     $isModalOpen,

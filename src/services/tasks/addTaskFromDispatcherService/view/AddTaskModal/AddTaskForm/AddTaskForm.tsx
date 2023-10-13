@@ -37,11 +37,7 @@ import {
   TaskReasonTypeDictionary,
   TaskTypeDictionary,
 } from 'dictionaries';
-import {
-  autocomplete,
-  autocompleteApartNumber,
-  sortByAlphabet,
-} from './AddTaskForm.utils';
+import { autocomplete, autocompleteApartNumber } from './AddTaskForm.utils';
 import { Alert } from 'ui-kit/Alert';
 import { useSwitchInputOnEnter } from 'hooks/useSwitchInputOnEnter';
 import { fromEnter } from 'ui-kit/shared/DatePickerNative';
@@ -66,6 +62,7 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
   apartmentHomeownerNames,
   taskReasons,
   handleSelectTaskReason,
+  handleSelectTaskType,
 }) => {
   const { values, handleSubmit, setFieldValue, errors } = useFormik<AddTask>({
     initialValues: {
@@ -120,7 +117,7 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
             <OptionItemWrapper>
               <TopWrapper>
                 <ResourseTypeWrapper>
-                  {TaskReasonTypeDictionary[taskReason.reasonType]}
+                  {TaskReasonTypeDictionary[taskReason.type]}
                 </ResourseTypeWrapper>
                 <ArrowRightLongIconDim />
                 <WorkTitleWrapper>
@@ -130,7 +127,7 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
             </OptionItemWrapper>
           ),
           value: taskReason.name,
-          key: `${taskReason.id}${index}`,
+          key: `${taskReason.name}${index}`,
         };
       }),
     [taskReasons],
@@ -141,7 +138,8 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
       (optionItem) => optionItem.name === values.taskReasonSearch,
     );
 
-    const allowedTaskTypes = selectedOption?.allowedTaskTypes || [];
+    const allowedTaskTypes =
+      selectedOption?.items?.map((item) => item.taskType) || [];
 
     return allowedTaskTypes.map((taskType) => ({
       label: TaskTypeDictionary[taskType],
@@ -214,8 +212,6 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
   const [isNameOpen, setNameOpen] = useState(false);
   const [isReasonOpen, setReasonOpen] = useState(false);
   const [isTaskTypeOpen, setTaskTypeOpen] = useState(false);
-  const [isLeadOpen, setLeadOpen] = useState(false);
-  const [isExecutorOpen, setExecutorOpen] = useState(false);
 
   return (
     <>
@@ -433,8 +429,9 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
               open={isTaskTypeOpen}
               onBlur={() => setTaskTypeOpen(false)}
               onFocus={() => setTaskTypeOpen(true)}
-              onSelect={() => {
+              onSelect={(taskType) => {
                 setTaskTypeOpen(false);
+                handleSelectTaskType(taskType as EisTaskType);
                 if (isFromSubscriber) {
                   next(7);
                 } else {
