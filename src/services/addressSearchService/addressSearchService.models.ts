@@ -43,12 +43,8 @@ const $existingStreets = createStore<string[]>([]).on(
   (_, payload) => payload,
 );
 
-const $withApartment = createStore<boolean>(false).on(
-  setWithApartment,
-  (_, data) => data,
-);
-
 const setInitialValues = createEvent<Partial<AddressSearchValues> | null>();
+
 const $verifiedInitialValues = createStore<Partial<AddressSearchValues> | null>(
   null,
 ).on(setInitialValues, (prev, income) => {
@@ -59,6 +55,10 @@ const $verifiedInitialValues = createStore<Partial<AddressSearchValues> | null>(
     return prev;
   }
 });
+const $withApartment = createStore<boolean>(false).on(
+  setWithApartment,
+  (_, data) => data,
+);
 
 const addressSearchForm = createForm<AddressSearchValues>({
   fields: {
