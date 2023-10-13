@@ -22,6 +22,7 @@ export const DevicesPageContainer = () => {
   const isPermitionToAddNode = usePermission([
     ESecuredIdentityRoleName.Administrator,
     ESecuredIdentityRoleName.ManagingFirmExecutor,
+    ESecuredIdentityRoleName.ManagingFirmSpectatingAdministrator,
   ]);
 
   useEffect(() => {

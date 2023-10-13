@@ -75,10 +75,6 @@ export const PreviewModalForm: FC<PreviewModalFormProps> = ({
       value: formData.bitDepth,
     },
     {
-      name: 'Множитель',
-      value: formData.scaleFactor,
-    },
-    {
       name: 'Первичные показания прибора',
       value: getStartupReadingsString(
         formData.startupReadings,

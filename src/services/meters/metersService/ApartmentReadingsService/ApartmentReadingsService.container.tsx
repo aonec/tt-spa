@@ -55,6 +55,7 @@ export const ApartmentReadingsContainer = () => {
     ESecuredIdentityRoleName.Administrator,
     ESecuredIdentityRoleName.SeniorOperator,
     ESecuredIdentityRoleName.Operator,
+    ESecuredIdentityRoleName.ManagingFirmSpectatingAdministrator,
   ]);
 
   useEffect(() => {
