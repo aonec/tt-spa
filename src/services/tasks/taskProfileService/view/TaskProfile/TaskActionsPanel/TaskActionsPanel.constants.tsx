@@ -20,6 +20,7 @@ import { CommentContainer } from './commentService';
 import { AttachDocumentContainer } from './attachDocumentService';
 import { SwitchDeviceContainer } from './switchDeviceService';
 import { AddResourceDisconnectionContainer } from './addResourceDisconnectionService';
+import { SetExecutionPostponedDateContainer } from './setExecutionPostponedDateService';
 
 export const taskActionsComponents: TaskActionsComponent[] = [
   {
@@ -98,6 +99,11 @@ export const taskActionsComponents: TaskActionsComponent[] = [
   {
     actionType: EStageActionType.SwitchDevices,
     Component: SwitchDeviceContainer,
+    position: TaskPanelInputPositionType.Full,
+  },
+  {
+    actionType: EStageActionType.SetApplicationPostponeDate,
+    Component: SetExecutionPostponedDateContainer,
     position: TaskPanelInputPositionType.Full,
   },
 ];
