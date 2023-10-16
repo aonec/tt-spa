@@ -168,8 +168,9 @@ export const ResourceConsumptionGraph: FC<ResourceConsumptionGraphProps> = ({
         theme={VictoryTheme.material}
         containerComponent={<VictoryVoronoiContainer />}
         // animate={{
-        //   duration: 2000,
+        //   duration: 200,
         //   onLoad: { duration: 600 },
+        //   easing: 'elastic',
         // }}
       >
         <VictoryAxis
