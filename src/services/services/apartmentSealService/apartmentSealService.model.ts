@@ -16,6 +16,7 @@ import {
   UpdateApartmentRequestPayload,
 } from 'services/meters/metersService/ApartmentReadingsService/ApartmentReadingsService.types';
 import {
+  existingDistrictsQuery,
   getIndividualDevices,
   getNearestAppointmentForApartment,
 } from './apartmentSealService.api';
@@ -117,6 +118,11 @@ getApartmentQuery.finished.failure.watch(({ error }) => {
       error.response.data.error.Message ||
       'Произошла ошибка',
   );
+});
+
+sample({
+  clock: ApartmentGate.open,
+  target: existingDistrictsQuery.start,
 });
 
 updateApartmentFx.doneData.watch(() => message.success('Сохранено успешно!'));
