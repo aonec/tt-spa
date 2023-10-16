@@ -13,7 +13,10 @@ import {
 import { createGate } from 'effector-react';
 import { addHousingStocksToChecked } from './districtBordersByAddressService.utils';
 import { createDistrictBorderMapService } from '../createDistrictBorderMapService/createDistrictBorderMapService.models';
-import { existingHousingStocksQuery } from '../createDistrictBorderMapService/createDistrictBorderMapService.api';
+import {
+  createDistrictMutation,
+  existingHousingStocksQuery,
+} from '../createDistrictBorderMapService/createDistrictBorderMapService.api';
 
 const domain = createDomain('districtBordersByAddressService');
 
@@ -57,7 +60,7 @@ const $checkedhousingStockIdsWithStreet = domain
   .on(setHousingStockIdsWithStreet, (prevIdsWithStreet, commingIdsWithStreet) =>
     addHousingStocksToChecked(prevIdsWithStreet, commingIdsWithStreet),
   )
-  .reset(pageResetter);
+  .reset(pageResetter, createDistrictMutation.finished.success);
 
 const $checkedHousingStockIdsAndPoligon = domain
   .createStore<{

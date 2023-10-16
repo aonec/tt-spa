@@ -29,7 +29,8 @@ export const CreateDistrictBorderMapContainer = () => {
     existingDistrictsQuery,
   );
 
-  const { start: handleCreateDistrict } = useUnit(createDistrictMutation);
+  const { start: handleCreateDistrict, pending: isLoadingPostDistrict } =
+    useUnit(createDistrictMutation);
 
   useEffect(() => {
     return createDistrictMutation.finished.success.watch(() =>
@@ -47,6 +48,7 @@ export const CreateDistrictBorderMapContainer = () => {
         handleCreateDistrict={handleCreateDistrict}
         preselectedDistrictPayload={preselectedDistrictPayload}
         organizationCoordinates={organizationCoordinates}
+        isLoadingPostDistrict={isLoadingPostDistrict}
       />
     </>
   );

@@ -29,6 +29,7 @@ export const CreateDistrictBorderMapPage: FC<Props> = ({
   handleCreateDistrict,
   preselectedDistrictPayload,
   organizationCoordinates,
+  isLoadingPostDistrict,
 }) => {
   const { map, mapRef } = useYMaps(organizationCoordinates);
 
@@ -147,7 +148,7 @@ export const CreateDistrictBorderMapPage: FC<Props> = ({
       <MapWrapper>
         {!fields.isEditing.value && (
           <CreateDistrictFormPanel
-            isLoadingCreatingDistrict={false}
+            isLoadingCreatingDistrict={isLoadingPostDistrict}
             isLoadingHousingStocks={false}
             selectedHousingStocks={fields.selectedHouses.value}
             housingStocksInDistrict={housesInDistrict}
