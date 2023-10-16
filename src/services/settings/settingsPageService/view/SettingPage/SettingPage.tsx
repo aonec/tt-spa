@@ -15,6 +15,7 @@ import { TemperatureGraphContainer } from 'services/settings/temperatureGraphSer
 export const SettingPage: FC<SettingPageProps> = ({
   handleReassingInspector,
   handleEditTemperatureNormative,
+  isAdminSettings,
 }) => {
   const { featureToggles } = useUnit({
     featureToggles: developmentSettingsService.outputs.$featureToggles,
@@ -23,8 +24,9 @@ export const SettingPage: FC<SettingPageProps> = ({
   const { section } = useParams<{ section: string }>();
   const history = useHistory();
   const { pathname } = useLocation();
-  const isAdminSettings = pathname.split('/')[1] === 'isAdminSettings';
   const isTemperatureGraphTab = pathname.split('/')[2] === 'temperatureGraph';
+
+  const pagePath = isAdminSettings ? 'adminSettings' : 'settings';
 
   const menuButtons = useMemo(() => {
     if (isAdminSettings) {
@@ -57,11 +59,6 @@ export const SettingPage: FC<SettingPageProps> = ({
     if (isAdminSettings) {
       return (
         <>
-          {featureToggles.districtsManage && (
-            <TabsSC.TabPane tab="Границы районов" key="districtBorder">
-              <DistrictBordersContainer />
-            </TabsSC.TabPane>
-          )}
           {featureToggles.workingRanges && (
             <TabsSC.TabPane tab="Рабочие диапазоны узлов" key="operatingRanges">
               <WorkingRangeTab />
@@ -75,6 +72,7 @@ export const SettingPage: FC<SettingPageProps> = ({
         </>
       );
     }
+
     return (
       <>
         {featureToggles.districtsManage && (
@@ -105,10 +103,6 @@ export const SettingPage: FC<SettingPageProps> = ({
     const keys: { key: string; visible: boolean }[] = isAdminSettings
       ? [
           {
-            key: 'districtBorder',
-            visible: featureToggles.districtsManage,
-          },
-          {
             key: 'operatingRanges',
             visible: featureToggles.workingRanges,
           },
@@ -128,7 +122,7 @@ export const SettingPage: FC<SettingPageProps> = ({
 
     const path = keys.find((elem) => elem.visible);
 
-    if (path) history.push(path.key);
+    if (path) history.push(`/${pagePath}/${path.key}`);
   }, [
     isAdminSettings,
     featureToggles.controllersDistribution,
@@ -136,6 +130,7 @@ export const SettingPage: FC<SettingPageProps> = ({
     featureToggles.temperatureGraph,
     featureToggles.workingRanges,
     history,
+    pagePath,
   ]);
 
   return (
@@ -143,12 +138,15 @@ export const SettingPage: FC<SettingPageProps> = ({
       <InspectorAddressesResetModalContainer />
 
       <PageHeader
-        title={isAdminSettings ? 'Настройки оператора' : 'Настройки'}
+        title={isAdminSettings ? 'Настройки' : 'Настройки оператора'}
         contextMenu={{
           menuButtons,
         }}
       />
-      <TabsSC activeKey={section} onChange={history.push}>
+      <TabsSC
+        activeKey={section}
+        onChange={(key) => history.push(`/${pagePath}/${key}`)}
+      >
         {settingsComponent}
       </TabsSC>
     </>

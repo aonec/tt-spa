@@ -112,13 +112,13 @@ export const useMenuItems = (): MenuItem[] => {
       : ([] as MenuItem[])),
     {
       title: 'Настройки оператора',
-      path: '/settings/inspectors',
+      path: '/settings',
       icon: SettingsIcon,
       type: MenuType.Settings,
     },
     {
       title: 'Настройки',
-      path: '/adminSettings/operatingRanges',
+      path: '/adminSettings',
       icon: SettingsIcon,
       type: MenuType.SettingsAdministrator,
     },
