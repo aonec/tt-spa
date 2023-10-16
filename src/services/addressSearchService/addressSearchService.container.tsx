@@ -22,6 +22,7 @@ export const AddressSearchContainer: FC<AddressSearchContainerProps> = ({
   className,
   isError = false,
   isFocus = false,
+  autoBurn = false,
 }) => {
   const {
     cities,
@@ -110,8 +111,10 @@ export const AddressSearchContainer: FC<AddressSearchContainerProps> = ({
 
     if (onChange) onChange('city', last(cities) || '');
 
-    // submit();
-  }, [cities, verifiedInitialValues, set, onChange, submit]);
+    if (autoBurn) {
+      submit();
+    }
+  }, [cities, verifiedInitialValues, set, onChange, submit, autoBurn]);
 
   const handleChange = (key: SearchFieldType, value: string) => {
     fieldsOfForm[key]?.onChange(value);

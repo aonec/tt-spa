@@ -23,11 +23,11 @@ export const SettingPage: FC<SettingPageProps> = ({
   const { section } = useParams<{ section: string }>();
   const history = useHistory();
   const { pathname } = useLocation();
-  const adminSettings = pathname.split('/')[1] === 'adminSettings';
+  const isAdminSettings = pathname.split('/')[1] === 'isAdminSettings';
   const isTemperatureGraphTab = pathname.split('/')[2] === 'temperatureGraph';
 
   const menuButtons = useMemo(() => {
-    if (adminSettings) {
+    if (isAdminSettings) {
       return [
         {
           title: 'Редактировать температурный график',
@@ -47,24 +47,24 @@ export const SettingPage: FC<SettingPageProps> = ({
       },
     ];
   }, [
-    adminSettings,
+    isAdminSettings,
     handleReassingInspector,
     handleEditTemperatureNormative,
     isTemperatureGraphTab,
   ]);
 
   const settingsComponent = useMemo(() => {
-    if (adminSettings) {
+    if (isAdminSettings) {
       return (
         <>
-          {featureToggles.workingRanges && (
-            <TabsSC.TabPane tab="Рабочие диапазоны узлов" key="operatingRanges">
-              <WorkingRangeTab />
-            </TabsSC.TabPane>
-          )}
           {featureToggles.districtsManage && (
             <TabsSC.TabPane tab="Границы районов" key="districtBorder">
               <DistrictBordersContainer />
+            </TabsSC.TabPane>
+          )}
+          {featureToggles.workingRanges && (
+            <TabsSC.TabPane tab="Рабочие диапазоны узлов" key="operatingRanges">
+              <WorkingRangeTab />
             </TabsSC.TabPane>
           )}
           {featureToggles.temperatureGraph && (
@@ -77,6 +77,11 @@ export const SettingPage: FC<SettingPageProps> = ({
     }
     return (
       <>
+        {featureToggles.districtsManage && (
+          <TabsSC.TabPane tab="Границы районов" key="districtBorder">
+            <DistrictBordersContainer />
+          </TabsSC.TabPane>
+        )}
         {featureToggles.controllersDistribution && (
           <TabsSC.TabPane
             tab="Распределение контролеров"
@@ -86,15 +91,10 @@ export const SettingPage: FC<SettingPageProps> = ({
         <TabsSC.TabPane tab="Распределение инспекторов" key="inspectors">
           <InspectorsDistributionPage />
         </TabsSC.TabPane>
-        {featureToggles.districtsManage && (
-          <TabsSC.TabPane tab="Границы районов" key="districtBorder">
-            <DistrictBordersContainer />
-          </TabsSC.TabPane>
-        )}
       </>
     );
   }, [
-    adminSettings,
+    isAdminSettings,
     featureToggles.controllersDistribution,
     featureToggles.districtsManage,
     featureToggles.workingRanges,
@@ -102,35 +102,35 @@ export const SettingPage: FC<SettingPageProps> = ({
   ]);
 
   useEffect(() => {
-    const keys: { key: string; visible: boolean }[] = adminSettings
+    const keys: { key: string; visible: boolean }[] = isAdminSettings
       ? [
-          {
-            key: 'operatingRanges',
-            visible: featureToggles.workingRanges,
-          },
           {
             key: 'districtBorder',
             visible: featureToggles.districtsManage,
+          },
+          {
+            key: 'operatingRanges',
+            visible: featureToggles.workingRanges,
           },
           { key: 'temperatureGraph', visible: featureToggles.temperatureGraph },
         ]
       : [
           {
+            key: 'districtBorder',
+            visible: featureToggles.districtsManage,
+          },
+          {
             key: 'controllers',
             visible: featureToggles.controllersDistribution,
           },
           { key: 'inspectors', visible: true },
-          {
-            key: 'districtBorder',
-            visible: true,
-          },
         ];
 
     const path = keys.find((elem) => elem.visible);
 
     if (path) history.push(path.key);
   }, [
-    adminSettings,
+    isAdminSettings,
     featureToggles.controllersDistribution,
     featureToggles.districtsManage,
     featureToggles.temperatureGraph,
@@ -143,7 +143,7 @@ export const SettingPage: FC<SettingPageProps> = ({
       <InspectorAddressesResetModalContainer />
 
       <PageHeader
-        title="Настройки"
+        title={isAdminSettings ? 'Настройки оператора' : 'Настройки'}
         contextMenu={{
           menuButtons,
         }}

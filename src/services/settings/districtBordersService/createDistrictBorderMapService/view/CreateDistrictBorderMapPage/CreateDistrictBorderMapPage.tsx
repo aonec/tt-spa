@@ -19,6 +19,7 @@ import { useForm } from 'effector-forms';
 import { createDistrictBorderMapService } from '../../createDistrictBorderMapService.models';
 import { CreateDistrictFormPanel } from './CreateDistrictFormPanel';
 import { getPayloadFromDistricts } from 'utils/districtsData';
+import { findPolygonCenter } from 'utils/findPolygonCenter';
 
 const { forms } = createDistrictBorderMapService;
 
@@ -70,6 +71,14 @@ export const CreateDistrictBorderMapPage: FC<Props> = ({
     () => savedDistricts['working-district'] || null,
     [savedDistricts],
   );
+
+  useEffect(() => {
+    if (!preselectedDistrictPayload?.polygon) return;
+
+    const center = findPolygonCenter(preselectedDistrictPayload.polygon);
+
+    map?.setCenter(center, 15);
+  }, [map, preselectedDistrictPayload]);
 
   useMemo(() => {
     if (!preselectedDistrictPayload || !workingDistrict) return;

@@ -98,6 +98,8 @@ sample({
   target: createDistrictBorderMapService.inputs.setDistrictPayload,
 });
 
+const $isLoading = fetchAddressFx.pending;
+
 export const districtBordersByAddressService = {
   inputs: {
     handleFetchAddress,
@@ -110,6 +112,7 @@ export const districtBordersByAddressService = {
     $addresses,
     $filter,
     $checkedhousingStockIdsWithStreet,
+    $isLoading,
   },
   gates: { DistrictBordersByAddressPageGate },
 };

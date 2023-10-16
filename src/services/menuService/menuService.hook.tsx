@@ -111,7 +111,7 @@ export const useMenuItems = (): MenuItem[] => {
         ]
       : ([] as MenuItem[])),
     {
-      title: 'Настройки',
+      title: 'Настройки оператора',
       path: '/settings/inspectors',
       icon: SettingsIcon,
       type: MenuType.Settings,
