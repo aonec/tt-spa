@@ -222,14 +222,6 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
   const [isReasonOpen, setReasonOpen] = useState(false);
   const [isTaskTypeOpen, setTaskTypeOpen] = useState(false);
 
-  // useEffect(() => {
-  //   document.addEventListener('DOMContentLoaded', (event) => {
-  //     console.log('first');
-  //   });
-
-  //   return () => document.removeEventListener()
-  // }, [isFromSubscriber]);
-
   return (
     <>
       <PageGate />
