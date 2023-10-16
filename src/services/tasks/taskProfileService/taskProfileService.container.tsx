@@ -34,6 +34,7 @@ export const TaskProfileContainer = () => {
     openDeleteDocumentModal,
     closeDeleteDocumentModal,
     pushStageRequestPayload,
+    handleFetchApplicationInfo,
   } = useUnit({
     task: outputs.$task,
     pipeNode: outputs.$pipeNode,
@@ -54,6 +55,8 @@ export const TaskProfileContainer = () => {
     openDeleteDocumentModal: inputs.openDeleteDocumentModal,
     closeDeleteDocumentModal: inputs.closeDeleteDocumentModal,
     pushStageRequestPayload: outputs.$pushStageRequestPayload,
+    handleFetchApplicationInfo:
+      applicationInfoService.inputs.handleFetchApplicationInfo,
   });
 
   const device = task && task.device;
@@ -68,9 +71,6 @@ export const TaskProfileContainer = () => {
     task?.type === EManagingFirmTaskType.PlannedApplication ||
     task?.type === EManagingFirmTaskType.CurrentApplication ||
     task?.type === EManagingFirmTaskType.EmergencyApplication;
-
-  const handleFetchApplicationInfo =
-    applicationInfoService.inputs.handleFetchApplicationInfo;
 
   useEffect(() => {
     if (isApplication) {

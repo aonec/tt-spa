@@ -12,10 +12,12 @@ export const Wrapper = styled.div`
 `;
 
 export const KeyWrapper = styled.div`
-  color: rgba(39, 47, 90, 0.70);
+  color: rgba(39, 47, 90, 0.7);
   overflow: hidden;
+  display: flex;
+  align-items: center;
 `;
 
 export const ValueWrapper = styled.div`
-  color: rgba(39, 47, 90, 0.90);
+  color: rgba(39, 47, 90, 0.9);
 `;

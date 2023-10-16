@@ -27,9 +27,7 @@ export const Name = styled.div`
   line-height: 24px;
 `;
 
-export const AvatarSC = styled(Avatar)`
-  background-color: #272f5a;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+export const AvatarSC = styled(Avatar)<{ color: string }>`
+  background-color: ${({ color }) => color};
+  padding-top: 2px;
 `;

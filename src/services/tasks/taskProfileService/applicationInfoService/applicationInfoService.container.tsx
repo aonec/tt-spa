@@ -5,7 +5,10 @@ import { useUnit } from 'effector-react';
 import { ApplicationInfoContainerProps } from './applicationInfoService.types';
 import { EHouseCategory } from 'api/types';
 
-const { outputs } = applicationInfoService;
+const {
+  outputs,
+  gates: { PageGate },
+} = applicationInfoService;
 
 export const ApplicationInfoContainer: FC<ApplicationInfoContainerProps> = ({
   task,
@@ -13,7 +16,7 @@ export const ApplicationInfoContainer: FC<ApplicationInfoContainerProps> = ({
   const { applicationInfo } = useUnit({
     applicationInfo: outputs.$applicationInfo,
   });
-  const { id, address, apartment, houseCategory } = task;
+  const { address, apartment, houseCategory } = task;
 
   const apartmentId = apartment?.id;
   const buildingId = task.buildingId;
@@ -30,10 +33,13 @@ export const ApplicationInfoContainer: FC<ApplicationInfoContainerProps> = ({
     : `/buildings/${buildingProfilePath}/${buildingId}`;
 
   return (
-    <ApplicationInfoBlock
-      applicationInfo={applicationInfo}
-      addressLinkPath={addressLinkPath}
-      address={address}
-    />
+    <>
+      <PageGate />
+      <ApplicationInfoBlock
+        applicationInfo={applicationInfo}
+        addressLinkPath={addressLinkPath}
+        address={address}
+      />
+    </>
   );
 };
