@@ -1,14 +1,22 @@
 import React, { FC } from 'react';
-import { Header, Wrapper } from './BrigadeInfo.styled';
+import {
+  Header,
+  Name,
+  BrigadeMember,
+  Wrapper,
+  AvatarSC,
+} from './BrigadeInfo.styled';
 import { BrigadeInfoProps } from './BrigadeInfo.types';
-import { Avatar } from 'antd';
-
-export const BrigadeInfo: FC<BrigadeInfoProps> = ({}) => {
+export const BrigadeInfo: FC<BrigadeInfoProps> = ({ brigadeInfo }) => {
   return (
     <Wrapper>
       <Header>Состав бригады</Header>
-      
-      <Avatar />
+      {brigadeInfo.map((brigadeMember) => (
+        <BrigadeMember key={brigadeMember.id}>
+          <AvatarSC>{brigadeMember.name?.[0]}</AvatarSC>
+          <Name>{brigadeMember.name}</Name>
+        </BrigadeMember>
+      ))}
     </Wrapper>
   );
 };

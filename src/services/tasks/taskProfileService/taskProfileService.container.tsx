@@ -1,10 +1,12 @@
 import { ReadingsHistoryContainer } from 'services/meters/readingsHistoryService/readingsHistoryService.container';
 import { Skeleton } from 'antd';
 import { useUnit } from 'effector-react';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { taskProfileService } from '.';
 import { TaskProfile } from './view/TaskProfile';
+import { EManagingFirmTaskType } from 'api/types';
+import { applicationInfoService } from './applicationInfoService';
 
 const { gates, outputs, inputs } = taskProfileService;
 const { TaskIdGate, RelatedNodeIdGate } = gates;
@@ -62,6 +64,20 @@ export const TaskProfileContainer = () => {
   const isViewerExecutor =
     Boolean(currentUser?.id) && currentUser?.id === task?.perpetrator?.id;
 
+  const isApplication =
+    task?.type === EManagingFirmTaskType.PlannedApplication ||
+    task?.type === EManagingFirmTaskType.CurrentApplication ||
+    task?.type === EManagingFirmTaskType.EmergencyApplication;
+
+  const handleFetchApplicationInfo =
+    applicationInfoService.inputs.handleFetchApplicationInfo;
+
+  useEffect(() => {
+    if (isApplication) {
+      handleFetchApplicationInfo(Number(taskId));
+    }
+  }, [isApplication, handleFetchApplicationInfo, taskId]);
+
   return (
     <>
       {nodeId && <RelatedNodeIdGate nodeId={nodeId} />}
@@ -91,6 +107,7 @@ export const TaskProfileContainer = () => {
           openDeleteDocumentModal={openDeleteDocumentModal}
           closeDeleteDocumentModal={() => closeDeleteDocumentModal()}
           pushStageRequestPayload={pushStageRequestPayload}
+          isApplication={isApplication}
         />
       )}
     </>

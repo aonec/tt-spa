@@ -17,7 +17,6 @@ import { TaskInfoWrapper, TaskWrapper, Wrapper } from './TaskProfile.styled';
 import { TaskProfileProps } from './TaskProfile.types';
 import { TaskProfileHeader } from './TaskProfileHeader';
 import { TaskStages } from './TaskStages';
-import { EManagingFirmTaskType } from 'api/types';
 import { ApplicationInfoContainer } from '../../applicationInfoService';
 
 export const TaskProfile: FC<TaskProfileProps> = ({
@@ -40,6 +39,7 @@ export const TaskProfile: FC<TaskProfileProps> = ({
   deleteDocumentModalIsOpen,
   openDeleteDocumentModal,
   pushStageRequestPayload,
+  isApplication,
 }) => {
   const {
     individualDevices,
@@ -65,11 +65,6 @@ export const TaskProfile: FC<TaskProfileProps> = ({
   }, [task]);
 
   const taskActions = task.currentStage?.actions || [];
-
-  const isApplication =
-    task.type === EManagingFirmTaskType.PlannedApplication ||
-    task.type === EManagingFirmTaskType.CurrentApplication ||
-    task.type === EManagingFirmTaskType.EmergencyApplication;
 
   return (
     <Wrapper>
@@ -137,7 +132,7 @@ export const TaskProfile: FC<TaskProfileProps> = ({
                   )}
                 </>
               )}
-              {isApplication && <ApplicationInfoContainer />}
+              {isApplication && <ApplicationInfoContainer task={task} />}
             </TaskInfoWrapper>
             <TaskStages
               handleRevertStage={handleRevertStage}

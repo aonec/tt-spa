@@ -1,37 +1,49 @@
 import React, { FC } from 'react';
-import { Wrapper } from './ApplicationBaseInfo.styled';
 import { ApplicationBaseInfoProps } from './ApplicationBaseInfo.types';
 import { CommonInfo } from 'ui-kit/shared/CommonInfo';
+import { LinkSC } from './ApplicationBaseInfo.styled';
+import { TaskTypeDictionary } from 'dictionaries';
 
 export const ApplicationBaseInfo: FC<ApplicationBaseInfoProps> = ({
   applicationInfo,
+  address,
+  addressLinkPath,
 }) => {
   return (
     <CommonInfo
       items={[
         {
-          key: 'Номер задачи',
+          key: 'Номер задачи в источнике',
           value: applicationInfo?.number,
         },
         {
           key: 'Источник заявки',
-          value: applicationInfo?.number,
+          value: applicationInfo?.source,
         },
         {
           key: 'Тип заявки',
-          value: applicationInfo?.number,
+          value:
+            applicationInfo?.type && TaskTypeDictionary[applicationInfo?.type],
         },
         {
           key: 'Вид работ',
-          value: applicationInfo?.number,
+          value: applicationInfo?.category,
         },
         {
           key: 'Адрес',
-          value: applicationInfo?.number,
+          value: (
+            <LinkSC to={addressLinkPath} target="_blank">
+              {address}
+            </LinkSC>
+          ),
+        },
+        {
+          key: 'Описание',
+          value: applicationInfo?.description,
         },
         {
           key: 'Комментарий к заявке',
-          value: applicationInfo?.number,
+          value: applicationInfo?.comment,
         },
       ]}
     />
