@@ -35,6 +35,8 @@ export const IndividualDeviceMetersInputContainer: FC<
   isHousingStocksReadingInputs,
   devices,
   editable,
+  style,
+  shift = 0,
 }) => {
   const uploadingMetersDevicesStatuses = useStore(
     outputs.$uploadingMetersStatuses,
@@ -78,10 +80,9 @@ export const IndividualDeviceMetersInputContainer: FC<
     [openReadingsHistoryModalById, device.id],
   );
 
-  const inputIndex = useMemo(
-    () => getInputIndex(deviceIndex, devices),
-    [deviceIndex, devices],
-  );
+  const inputIndex = useMemo(() => {
+    return getInputIndex(deviceIndex, devices) - getInputIndex(shift, devices);
+  }, [deviceIndex, devices, shift]);
 
   const deviceRateNum = useMemo(
     () => getRateNum(device.rateType),
@@ -237,6 +238,7 @@ export const IndividualDeviceMetersInputContainer: FC<
       previousReadingByCurrentSliderIndex={previousReadingByCurrentSliderIndex}
       editable={editable}
       apartmentId={device.apartmentId}
+      style={style}
     />
   );
 };
