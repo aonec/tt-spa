@@ -36,7 +36,7 @@ export const IndividualDeviceMetersInputContainer: FC<
   devices,
   editable,
   style,
-  shift,
+  shift = 0,
 }) => {
   const uploadingMetersDevicesStatuses = useStore(
     outputs.$uploadingMetersStatuses,
@@ -81,9 +81,7 @@ export const IndividualDeviceMetersInputContainer: FC<
   );
 
   const inputIndex = useMemo(() => {
-    return (
-      getInputIndex(deviceIndex, devices) - getInputIndex(shift || 0, devices)
-    );
+    return getInputIndex(deviceIndex, devices) - getInputIndex(shift, devices);
   }, [deviceIndex, devices, shift]);
 
   const deviceRateNum = useMemo(
