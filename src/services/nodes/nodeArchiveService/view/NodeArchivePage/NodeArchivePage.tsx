@@ -1,6 +1,11 @@
 import React, { FC } from 'react';
 import { NodeArchivePageProps } from './NodeArchivePage.types';
-import { FiltersWrap, PageHeaderSC, Wrap } from './NodeArchivePage.styled';
+import {
+  FiltersWrap,
+  PageHeaderSC,
+  StickyWrapper,
+  Wrap,
+} from './NodeArchivePage.styled';
 import { NodeInfo } from './components/NodeInfo/';
 import { SearchNodeArchiveFiltersContainer } from '../../searchNodeArchiveFiltersService';
 import { NodeArchiveContainer } from '../../displayNodeArchiveService';
@@ -12,16 +17,21 @@ export const NodeArchivePage: FC<NodeArchivePageProps> = ({
   loading,
 }) => {
   return (
-    <WithLoader isLoading={loading}>
-      <GoBack />
-      <PageHeaderSC title="Архив" />
-      <NodeInfo node={node} />
+    <>
+      <StickyWrapper>
+        <GoBack />
+        <PageHeaderSC title="Архив" />
+        <NodeInfo node={node} />
+      </StickyWrapper>
       <Wrap>
-        <NodeArchiveContainer />
+        <WithLoader isLoading={loading} maxWidth="300px">
+          <NodeArchiveContainer />
+        </WithLoader>
+
         <FiltersWrap>
           <SearchNodeArchiveFiltersContainer />
         </FiltersWrap>
       </Wrap>
-    </WithLoader>
+    </>
   );
 };
