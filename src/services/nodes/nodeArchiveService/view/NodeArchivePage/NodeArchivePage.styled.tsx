@@ -18,13 +18,8 @@ export const PageHeaderSC = styled(PageHeader)`
 
 export const StickyWrapper = styled.div`
   position: sticky;
-  top: 16px;
+  top: 0px;
   background-color: #fff;
   padding-bottom: 17px;
-`;
-
-export const MaxWidth = styled.div`
-  max-width: 300px;
-  width: 300px;
-  overflow: hidden;
+  padding-top: 16px;
 `;
