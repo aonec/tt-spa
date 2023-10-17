@@ -34,7 +34,7 @@ export const CreateDistrictBorderMapContainer = () => {
 
   useEffect(() => {
     return createDistrictMutation.finished.success.watch(() =>
-      history.push('/districtBordersSettings/manageDistricts'),
+      history.push('/settings/districtBorder'),
     ).unsubscribe;
   }, [history]);
 
