@@ -179,9 +179,10 @@ export const SubscribersConsumptionExtendedSearch: FC<
               'MonthOfLastTransmission',
               value && Number(value.month() + 1),
             );
+
             setFieldValue(
               'YearOfLastTransmission',
-              value && Number(value.format('yyyy')),
+              value && Number(value.format('YYYY')),
             );
           }}
           picker="month"
