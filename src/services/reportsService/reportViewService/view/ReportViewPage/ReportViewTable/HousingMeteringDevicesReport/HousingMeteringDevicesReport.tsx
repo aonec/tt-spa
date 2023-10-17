@@ -11,8 +11,10 @@ import {
   DeviceModel,
   DeviceSerialNumber,
   DeviceWrapper,
+  FullAddressWrapper,
 } from './HousingMeteringDevicesReport.styled';
 import { HousingMeteringDevicesReportProps } from './HousingMeteringDevicesReport.types';
+import { Tooltip } from 'ui-kit/shared/Tooltip';
 
 export const HousingMeteringDevicesReport: FC<
   HousingMeteringDevicesReportProps
@@ -47,10 +49,10 @@ export const HousingMeteringDevicesReport: FC<
               );
 
               return (
-                <div>
+                <FullAddressWrapper>
                   <ApartmentNumber>Дом №{number}</ApartmentNumber>
-                  {addressString}
-                </div>
+                  <Tooltip title={addressString}>{addressString}</Tooltip>
+                </FullAddressWrapper>
               );
             },
           },

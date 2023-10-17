@@ -267,6 +267,7 @@ export const ReportFiltrationForm: FC<ReportFiltrationFormProps> = ({
             <FormItem label="Ресурс">
               {!isShowActResourcesSelect && (
                 <SelectMultiple
+                  showSearch={false}
                   placeholder="Выберите"
                   value={values.resources || undefined}
                   onChange={(value) => setFieldValue('resources', value)}
@@ -372,6 +373,7 @@ export const ReportFiltrationForm: FC<ReportFiltrationFormProps> = ({
               </FormItem>
               <PeriodPickerWrapprer>
                 <RangePicker
+                  small
                   disabled={
                     values.reportDatePeriod !== ReportDatePeriod.AnyPeriod
                   }

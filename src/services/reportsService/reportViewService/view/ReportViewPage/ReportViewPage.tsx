@@ -6,12 +6,11 @@ import {
   FiltrationInfoList,
   FiltrationInfoWrapper,
   HeaderTitleWrapper,
-  HeaderWrapper,
+  PageHaderSC,
   Wrapper,
 } from './ReportViewPage.styled';
 import { ReportViewPageProps } from './ReportViewPage.types';
 import { GoBack } from 'ui-kit/shared/GoBack';
-import { PageHeader } from 'ui-kit/shared/PageHeader';
 import {
   ReportIconsDictionary,
   ReportNamesDictionary,
@@ -58,16 +57,14 @@ export const ReportViewPage: FC<ReportViewPageProps> = ({
   return (
     <Wrapper>
       <GoBack />
-      <HeaderWrapper>
-        <PageHeader
-          title={
-            <HeaderTitleWrapper>
-              {ReportIconsDictionary[reportType]}
-              <div>{ReportNamesDictionary[reportType]}</div>
-            </HeaderTitleWrapper>
-          }
-        />
-      </HeaderWrapper>
+      <PageHaderSC
+        title={
+          <HeaderTitleWrapper>
+            {ReportIconsDictionary[reportType]}
+            <div>{ReportNamesDictionary[reportType]}</div>
+          </HeaderTitleWrapper>
+        }
+      />
       <ExtendedSearchWrapper>
         <ExtendedSearch
           isOpen={isOpen}
