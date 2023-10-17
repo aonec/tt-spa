@@ -40,7 +40,7 @@ export const ApartmentSealProfile: FC<ApartmentSealProfileProps> = ({
   const address = apartment?.housingStock?.address?.mainAddress;
 
   const isAddressInDistrict =
-    address && housesWithDistricts.includes(address.id);
+    address && housesWithDistricts.includes(address.housingStockId);
 
   const appointmentDate = useMemo(
     () =>

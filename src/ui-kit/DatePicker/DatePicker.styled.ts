@@ -16,6 +16,10 @@ export const DatePicker = styled(AntDatePicker)<{ small?: boolean }>`
     padding: 8px 24px !important;
   }
   .ant-picker-clear {
-    ${({ small }) => (small && 'height: 28px')}
+    ${({ small }) => small && 'height: 28px'}
+  }
+
+  .ant-picker-clear {
+    height: ${({ small }) => (small ? '13px' : '15px')};
   }
 `;
