@@ -1,8 +1,9 @@
 import { createGate } from 'effector-react';
-import { createDomain, forward, sample } from 'effector';
+import { createDomain, createEvent, forward, sample } from 'effector';
 import { BuildingListResponsePagedList } from 'api/types';
 import { SearchHousingStocksPayload } from './displayObjectsListService.types';
 import { getBuildingsQuery } from './displayObjectsListService.api';
+import { deleteObjectService } from '../deleteObjectService';
 
 const domain = createDomain('displayObjectsListService');
 
@@ -21,6 +22,8 @@ const searchHosuingStocks = domain.createEvent<SearchHousingStocksPayload>();
 const setPageNumber = domain.createEvent<number>();
 
 const clearSearchState = domain.createEvent();
+
+const refetchBuildings = createEvent();
 
 const HousingStocksGate = createGate();
 
@@ -43,7 +46,8 @@ $searchPayload
   .reset(clearSearchState);
 
 sample({
-  clock: $searchPayload,
+  source: $searchPayload,
+  clock: [$searchPayload, refetchBuildings],
   filter: (searchPayload) => Boolean(searchPayload),
   fn: (payload) => {
     return {
@@ -67,6 +71,11 @@ sample({
 sample({
   clock: HousingStocksGate.close,
   target: getBuildingsQuery.reset,
+});
+
+sample({
+  clock: deleteObjectService.inputs.buildingDeleted,
+  target: refetchBuildings,
 });
 
 export const displayObjectsListService = {
