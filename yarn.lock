@@ -3774,13 +3774,6 @@
   resolved "https://registry.yarnpkg.com/@types/unist/-/unist-2.0.7.tgz#5b06ad6894b236a1d2bd6b2f07850ca5c59cf4d6"
   integrity sha512-cputDpIbFgLUaGQn6Vqg3/YsJwxUwHLO13v3i5ouxT4lat0khip9AEWxtERujXV9wxIB1EyF97BSJFt6vpdI8g==
 
-"@types/victory@^33.1.4":
-  version "33.1.5"
-  resolved "https://registry.yarnpkg.com/@types/victory/-/victory-33.1.5.tgz#de1ee8ddc685582b9e394baff03606f87d627d4b"
-  integrity sha512-Lpi1kAlZ4+gY7oH3tRcmJs4YhTIJTTJxkQkyYTK7CtTHl+S6Xf7E7e207eq6D/Dn9UQAB7PCrNrzTGtO5+9GGQ==
-  dependencies:
-    "@types/react" "*"
-
 "@types/webpack-env@^1.16.0":
   version "1.18.1"
   resolved "https://registry.yarnpkg.com/@types/webpack-env/-/webpack-env-1.18.1.tgz#49699bb508961e14a3bfb68c78cd87b296889d1d"
