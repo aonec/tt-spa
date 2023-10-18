@@ -60,6 +60,7 @@ export const ObjectsProfileContainer = () => {
     ESecuredIdentityRoleName.ManagingFirmExecutor,
     ESecuredIdentityRoleName.ManagingFirmSpectator,
     ESecuredIdentityRoleName.ManagingFirmSpectatorRestricted,
+    ESecuredIdentityRoleName.ManagingFirmSpectatingAdministrator,
   ]);
   const isPermitionToDownloadSOIReport = usePermission([
     ESecuredIdentityRoleName.Administrator,
@@ -69,20 +70,25 @@ export const ObjectsProfileContainer = () => {
     ESecuredIdentityRoleName.ManagingFirmSpectator,
     ESecuredIdentityRoleName.ManagingFirmSpectatorRestricted,
     ESecuredIdentityRoleName.ManagingFirmDispatcher,
+    ESecuredIdentityRoleName.ManagingFirmSpectatingAdministrator,
   ]);
   const isPermitionToDownloadFeedBackFlowReport = usePermission([
     ESecuredIdentityRoleName.Administrator,
     ESecuredIdentityRoleName.ManagingFirmExecutor,
+    ESecuredIdentityRoleName.ManagingFirmSpectatingAdministrator,
   ]);
   const isPermitionToCreateResourceDisconnection = usePermission([
     ESecuredIdentityRoleName.Administrator,
+    ESecuredIdentityRoleName.ManagingFirmSpectatingAdministrator,
   ]);
   const isPermitionToCreateObjectAndIPUReport = usePermission([
     ESecuredIdentityRoleName.Administrator,
+    ESecuredIdentityRoleName.ManagingFirmSpectatingAdministrator,
   ]);
   const isPermitionToCreateFeedFlowPipeTemperatureReport = usePermission([
     ESecuredIdentityRoleName.Administrator,
     ESecuredIdentityRoleName.ManagingFirmSpectator,
+    ESecuredIdentityRoleName.ManagingFirmSpectatingAdministrator,
   ]);
 
   useEffect(() => {

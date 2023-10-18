@@ -30,11 +30,14 @@ export type ResourceConsumptionProfileProps = {
     [ResourceConsumptionGraphDataType.prevMonthData]?: MonthConsumptionData;
     [ResourceConsumptionGraphDataType.additionalAddress]: MonthConsumptionData | null;
   };
+  dynamicMinMax: [number, number];
+  isOnlyHousingDataEmpty: boolean;
 };
 
 export type BooleanTypesOfResourceConsumptionGraphForTwoMonth = {
   [ResourceConsumptionGraphDataType.currentMonthData]: BooleanTypesOfResourceConsumptionGraph;
   [ResourceConsumptionGraphDataType.prevMonthData]: BooleanTypesOfResourceConsumptionGraph;
+  [ResourceConsumptionGraphDataType.additionalAddress]: BooleanTypesOfResourceConsumptionGraph;
 };
 
 export type BooleanTypesOfResourceConsumptionGraph = {

@@ -15,7 +15,8 @@ export const DatePicker = styled(AntDatePicker)<{ small?: boolean }>`
     height: 100% !important;
     padding: 8px 24px !important;
   }
+
   .ant-picker-clear {
-    ${({ small }) => (small && 'height: 28px')}
+    ${({ small }) => small && 'height: 28px;'}
   }
 `;

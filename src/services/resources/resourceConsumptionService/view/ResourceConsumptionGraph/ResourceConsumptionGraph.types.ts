@@ -19,4 +19,5 @@ export type ResourceConsumptionGraphProps = {
     [ResourceConsumptionGraphDataType.prevMonthData]?: MonthConsumptionData;
     [ResourceConsumptionGraphDataType.additionalAddress]: MonthConsumptionData | null;
   };
+  dynamicMinMax: [number, number];
 };

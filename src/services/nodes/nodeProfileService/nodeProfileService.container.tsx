@@ -34,6 +34,7 @@ export const NodeProfileContainer = () => {
   const isPermitionToEditsNode = usePermission([
     ESecuredIdentityRoleName.Administrator,
     ESecuredIdentityRoleName.ManagingFirmExecutor,
+    ESecuredIdentityRoleName.ManagingFirmSpectatingAdministrator,
   ]);
 
   return (

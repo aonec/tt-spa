@@ -25,7 +25,7 @@ axios.interceptors.request.use((req) => {
     cancelRequestService.inputs.setToken({ url: req.url, token: token });
   }
 
-  if (req.url && checkUrl('refresh', req.url)) {
+  if (req.url && checkUrl('refreshToken', req.url)) {
     req.data = {
       token: takeFromLocStor('token'),
       refreshToken: takeFromLocStor('refreshToken'),
@@ -86,11 +86,15 @@ axios.interceptors.response.use(
       return new Promise((resolve) => {
         if (!$isRefreshRunning.getState()) {
           setIsRefreshRunning(true);
-          axios.post('/auth/refreshToken').then(() => {
-            setIsRefreshRunning(false);
+          const isRefreshTokenExist = Boolean(takeFromLocStor('refreshToken'));
 
-            return resolve(axios(config));
-          });
+          if (isRefreshTokenExist) {
+            axios.post('/auth/refreshToken').then(() => {
+              setIsRefreshRunning(false);
+
+              return resolve(axios(config));
+            });
+          }
         } else {
           const subscription = $isRefreshRunning.watch((isRefreshStop) => {
             if (!isRefreshStop) {

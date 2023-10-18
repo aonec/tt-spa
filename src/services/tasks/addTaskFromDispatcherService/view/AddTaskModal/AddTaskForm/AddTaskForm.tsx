@@ -37,11 +37,7 @@ import {
   TaskReasonTypeDictionary,
   TaskTypeDictionary,
 } from 'dictionaries';
-import {
-  autocomplete,
-  autocompleteApartNumber,
-  sortByAlphabet,
-} from './AddTaskForm.utils';
+import { autocomplete, autocompleteApartNumber } from './AddTaskForm.utils';
 import { Alert } from 'ui-kit/Alert';
 import { useSwitchInputOnEnter } from 'hooks/useSwitchInputOnEnter';
 import { fromEnter } from 'ui-kit/shared/DatePickerNative';
@@ -59,9 +55,6 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
   preparedForOptionsAddresses,
   handleCreateTask,
   setDisableSubmit,
-  choоseLeadExecutor,
-  executors,
-  leadExecutors,
   handleSelectHousingAddress,
   existingApartmentNumbers,
   resourceDisconnection,
@@ -69,6 +62,7 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
   apartmentHomeownerNames,
   taskReasons,
   handleSelectTaskReason,
+  handleSelectTaskType,
 }) => {
   const { values, handleSubmit, setFieldValue, errors } = useFormik<AddTask>({
     initialValues: {
@@ -82,8 +76,6 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
       apartmentNumber: null,
       subscriberName: null,
       phoneNumber: null,
-      leadId: null,
-      executorId: null,
       taskDescription: null,
       taskReasonSearch: null,
     },
@@ -102,13 +94,6 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
   );
 
   const next = useSwitchInputOnEnter(dataKey, false, false);
-
-  const sortedLeadExecutors = useMemo(
-    () => sortByAlphabet(leadExecutors),
-    [leadExecutors],
-  );
-
-  const sortedExecutors = useMemo(() => sortByAlphabet(executors), [executors]);
 
   const isHaveValidationErrors = useMemo(
     () => Boolean(Object.keys(errors).length),
@@ -132,7 +117,7 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
             <OptionItemWrapper>
               <TopWrapper>
                 <ResourseTypeWrapper>
-                  {TaskReasonTypeDictionary[taskReason.reasonType]}
+                  {TaskReasonTypeDictionary[taskReason.type]}
                 </ResourseTypeWrapper>
                 <ArrowRightLongIconDim />
                 <WorkTitleWrapper>
@@ -142,7 +127,7 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
             </OptionItemWrapper>
           ),
           value: taskReason.name,
-          key: `${taskReason.id}${index}`,
+          key: `${taskReason.name}${index}`,
         };
       }),
     [taskReasons],
@@ -153,7 +138,8 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
       (optionItem) => optionItem.name === values.taskReasonSearch,
     );
 
-    const allowedTaskTypes = selectedOption?.allowedTaskTypes || [];
+    const allowedTaskTypes =
+      selectedOption?.items?.map((item) => item.taskType) || [];
 
     return allowedTaskTypes.map((taskType) => ({
       label: TaskTypeDictionary[taskType],
@@ -164,10 +150,24 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
 
   useEffect(() => {
     if (taskTypeOptions.length === 1) {
-      setFieldValue('taskType', taskTypeOptions[0].value);
-      next(7);
+      const singularTaskType = taskTypeOptions[0].value;
+
+      setFieldValue('taskType', singularTaskType);
+      handleSelectTaskType(singularTaskType);
+
+      if (isFromSubscriber) {
+        next(6);
+      } else {
+        next(5);
+      }
     }
-  }, [taskTypeOptions, setFieldValue, next]);
+  }, [
+    taskTypeOptions,
+    setFieldValue,
+    next,
+    isFromSubscriber,
+    handleSelectTaskType,
+  ]);
 
   const getResourceDisconnectionAlert = useCallback(
     (
@@ -221,17 +221,16 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
   const [isNameOpen, setNameOpen] = useState(false);
   const [isReasonOpen, setReasonOpen] = useState(false);
   const [isTaskTypeOpen, setTaskTypeOpen] = useState(false);
-  const [isLeadOpen, setLeadOpen] = useState(false);
-  const [isExecutorOpen, setExecutorOpen] = useState(false);
 
   return (
     <>
       <PageGate />
 
       <Form id={formId} onSubmitCapture={handleSubmit}>
-        <GridContainerExpandable isTwoColumn={!isFromSubscriber}>
+        <GridContainerExpandable isTwoColumn={isFromSubscriber}>
           <FormItem label="Источник заявки">
             <SelectCaret
+              isFromSubscriber={isFromSubscriber}
               showSearch
               placeholder="Выберите из списка"
               value={values.sourceId || undefined}
@@ -246,10 +245,11 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
               }
               data-reading-input={dataKey}
               onKeyDown={fromEnter(() => next(0))}
+              onSelect={() => next(0)}
             />
           </FormItem>
 
-          {isFromSubscriber && (
+          {!isFromSubscriber && (
             <FormItem label="Номер заявки">
               <Input
                 placeholder="Введите"
@@ -295,7 +295,13 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
               }}
               options={preparedAddressOptions}
               data-reading-input={dataKey}
-              onKeyDown={fromEnter(() => next(2))}
+              onKeyDown={fromEnter(() => {
+                if (isFromSubscriber) {
+                  next(1);
+                } else {
+                  next(2);
+                }
+              })}
             >
               <Input prefix={<SearchIconSc />} placeholder="Начните вводить " />
             </AutoCompleteAntD>
@@ -311,7 +317,13 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
               }}
               options={apartNumberOptions}
               data-reading-input={dataKey}
-              onKeyDown={fromEnter(() => next(3))}
+              onKeyDown={fromEnter(() => {
+                if (isFromSubscriber) {
+                  next(2);
+                } else {
+                  next(3);
+                }
+              })}
             >
               <Input placeholder="Введите" />
             </AutoCompleteAntD>
@@ -327,7 +339,7 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
                 onChange={(value) => setFieldValue('subscriberName', value)}
                 options={apartmentHomeownerNames}
                 data-reading-input={dataKey}
-                onKeyDown={fromEnter(() => next(4))}
+                onKeyDown={fromEnter(() => next(3))}
                 open={isNameOpen}
                 onBlur={() => setNameOpen(false)}
                 onFocus={() => setNameOpen(true)}
@@ -345,7 +357,7 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
                   setFieldValue('phoneNumber', value.target.value)
                 }
                 data-reading-input={dataKey}
-                onKeyDown={fromEnter(() => next(5))}
+                onKeyDown={fromEnter(() => next(4))}
               />
             </FormItem>
           </GridContainer>
@@ -385,14 +397,22 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
               }
               data-reading-input={dataKey}
               onKeyDown={fromEnter(() => {
-                next(6);
+                if (isFromSubscriber) {
+                  next(5);
+                } else {
+                  next(4);
+                }
               })}
               open={isReasonOpen}
               onBlur={() => setReasonOpen(false)}
               onFocus={() => setReasonOpen(true)}
               onSelect={() => {
                 setReasonOpen(false);
-                next(6);
+                if (isFromSubscriber) {
+                  next(5);
+                } else {
+                  next(4);
+                }
               }}
               onMouseDown={() => setReasonOpen(true)}
             />
@@ -410,89 +430,28 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
               options={taskTypeOptions}
               data-reading-input={dataKey}
               onKeyDown={fromEnter(() => {
-                next(7);
+                if (isFromSubscriber) {
+                  next(6);
+                } else {
+                  next(5);
+                }
               })}
               open={isTaskTypeOpen}
               onBlur={() => setTaskTypeOpen(false)}
               onFocus={() => setTaskTypeOpen(true)}
-              onSelect={() => {
+              onSelect={(taskType) => {
                 setTaskTypeOpen(false);
-                next(7);
+                handleSelectTaskType(taskType as EisTaskType);
+                if (isFromSubscriber) {
+                  next(6);
+                } else {
+                  next(5);
+                }
               }}
               onMouseDown={() => setTaskTypeOpen(true)}
             />
           </FormItem>
         </ContainerWithOutline>
-
-        <GridContainer>
-          <FormItem label="Ответственный исполнитель">
-            <Select
-              allowClear
-              showSearch
-              optionFilterProp="label"
-              optionLabelProp="label"
-              placeholder="Выберите из списка"
-              value={values.leadId || undefined}
-              onChange={(value) => {
-                setFieldValue('leadId', value);
-                setFieldValue('executorId', null);
-                choоseLeadExecutor(value as string);
-              }}
-              options={sortedLeadExecutors.map((leadExecutor) => ({
-                value: leadExecutor.id,
-                key: leadExecutor.id,
-                label: leadExecutor.name,
-              }))}
-              filterOption={(inputValue, option) =>
-                option?.label
-                  .toLocaleLowerCase()
-                  .startsWith(inputValue.toLocaleLowerCase())
-              }
-              data-reading-input={dataKey}
-              onKeyDown={fromEnter(() => next(8))}
-              open={isLeadOpen}
-              onBlur={() => setLeadOpen(false)}
-              onFocus={() => setLeadOpen(true)}
-              onSelect={() => {
-                setLeadOpen(false);
-                next(8);
-              }}
-              onMouseDown={() => setLeadOpen(true)}
-            />
-          </FormItem>
-          <FormItem label="Исполнитель">
-            <Select
-              allowClear
-              showSearch
-              optionFilterProp="label"
-              optionLabelProp="label"
-              placeholder="Выберите из списка"
-              value={values.executorId || undefined}
-              onChange={(value) => setFieldValue('executorId', value)}
-              disabled={!Boolean(values.leadId)}
-              options={sortedExecutors.map((executor) => ({
-                value: executor.id,
-                key: executor.id,
-                label: executor.name,
-              }))}
-              filterOption={(inputValue, option) =>
-                option?.label
-                  .toLocaleLowerCase()
-                  .startsWith(inputValue.toLocaleLowerCase())
-              }
-              data-reading-input={dataKey}
-              onKeyDown={fromEnter(() => next(9))}
-              open={isExecutorOpen}
-              onBlur={() => setExecutorOpen(false)}
-              onFocus={() => setExecutorOpen(true)}
-              onSelect={() => {
-                setExecutorOpen(false);
-                next(9);
-              }}
-              onMouseDown={() => setExecutorOpen(true)}
-            />
-          </FormItem>
-        </GridContainer>
 
         <FormItem label="Описание проблемы">
           <TextareaSC

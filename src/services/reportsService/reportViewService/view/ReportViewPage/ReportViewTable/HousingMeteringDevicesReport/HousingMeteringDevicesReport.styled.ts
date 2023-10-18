@@ -28,3 +28,10 @@ export const DeviceCheckingDates = styled.div`
   color: rgba(39, 47, 90, 0.7);
   transform: translateX(24px);
 `;
+
+export const FullAddressWrapper = styled.div`
+  max-width: 230px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+`;

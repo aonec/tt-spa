@@ -16,6 +16,7 @@ export type MetersInputsBlockProps = {
   inputIndex: number;
   handleUploadReading: UploadReading;
   tooltip?: string;
+  focusOnFirst?: boolean;
 };
 
 export type BufferedReadingValues = {

@@ -137,6 +137,10 @@ const $isAllDevicesLoaded = combine(
     typeof data?.totalItems === 'number' && data.totalItems === devices.length,
 );
 
+const $totalItems = $individualDevicesPagedList.map(
+  (list) => list?.totalItems || 0,
+);
+
 const handleHousingStockLoaded = getHousingStockQuery.finished.success;
 
 export const housesReadingsService = {
@@ -157,6 +161,7 @@ export const housesReadingsService = {
     $individualDevices,
     $isAllDevicesLoaded,
     $isLoadingIndividualDevices,
+    $totalItems,
     $consumptionRates:
       managementFirmConsumptionRatesService.outputs.$consumptionRates,
   },

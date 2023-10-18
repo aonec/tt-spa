@@ -45,6 +45,7 @@ export const ApartmentActsListContainer = () => {
 
   const isPermitionToChangeApartmentAct = usePermission([
     ESecuredIdentityRoleName.Administrator,
+    ESecuredIdentityRoleName.ManagingFirmSpectatingAdministrator,
     ESecuredIdentityRoleName.ManagingFirmExecutor,
     ESecuredIdentityRoleName.SeniorOperator,
     ESecuredIdentityRoleName.ManagingFirmSpectator,

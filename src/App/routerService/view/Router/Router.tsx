@@ -61,18 +61,12 @@ export const Router: FC<RouterProps> = ({
   isRolesLoadded,
   featureToggles,
 }) => {
-  const redirectRoute = roles.length
-    ? roles?.includes(
-        ESecuredIdentityRoleName.SeniorOperator ||
-          ESecuredIdentityRoleName.Operator,
-      )
-      ? '/meters/apartments'
-      : '/tasks/'
-    : '/login';
+  const isAdministrator =
+    roles.includes(ESecuredIdentityRoleName.Administrator) ||
+    roles.includes(
+      ESecuredIdentityRoleName.ManagingFirmSpectatingAdministrator,
+    );
 
-  const isAdministrator = roles.includes(
-    ESecuredIdentityRoleName.Administrator,
-  );
   const isSeniorOperator = roles.includes(
     ESecuredIdentityRoleName.SeniorOperator,
   );
@@ -92,6 +86,15 @@ export const Router: FC<RouterProps> = ({
   const isSpectatorRestricted = roles.includes(
     ESecuredIdentityRoleName.ManagingFirmSpectator,
   );
+
+  const isSpectatingAdministrator = roles.includes(
+    ESecuredIdentityRoleName.ManagingFirmSpectatingAdministrator,
+  );
+
+  const isRescrictedSpectator = roles.includes(
+    ESecuredIdentityRoleName.ManagingFirmSpectatorRestricted,
+  );
+
   const isAnyRole =
     isAdministrator ||
     isSeniorOperator ||
@@ -101,6 +104,21 @@ export const Router: FC<RouterProps> = ({
     isDispatcher ||
     isSpectator ||
     isSpectatorRestricted;
+
+  const redirectRoute = (() => {
+    if (!roles.length) return '/login';
+
+    const defaultPath = '/tasks/';
+
+    return isSeniorOperator || isOperator ? '/meters/apartments' : defaultPath;
+  })();
+
+  const isShowNodeArchivePage =
+    isAdministrator ||
+    isExecutor ||
+    isSpectator ||
+    isSpectatingAdministrator ||
+    isRescrictedSpectator;
 
   return (
     <Wrapper>
@@ -404,13 +422,15 @@ export const Router: FC<RouterProps> = ({
                     />
                   )}
 
-                  {isAnyRole && (
-                    <Route
-                      path="/nodeArchive/:nodeId"
-                      component={NodeArchivePageContainer}
-                      exact
-                    />
-                  )}
+                  <Route
+                    path="/nodeArchive/:nodeId"
+                    component={
+                      isShowNodeArchivePage
+                        ? NodeArchivePageContainer
+                        : AccessDeniedPage
+                    }
+                    exact
+                  />
 
                   {(isSeniorOperator || isOperator) && (
                     <Route

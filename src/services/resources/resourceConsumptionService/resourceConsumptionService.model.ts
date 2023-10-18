@@ -2,6 +2,8 @@ import { createEffect, createEvent, createStore } from 'effector';
 import { combine, forward, sample } from 'effector';
 import { createGate } from 'effector-react';
 import dayjs from 'api/dayjs';
+import { isEmpty } from 'lodash';
+import axios, { CancelTokenSource } from 'axios';
 import { GetSummaryHousingConsumptionsByResourcesResponse } from 'api/types';
 import { initialSelectedGraphTypes } from './resourceConsumptionService.constants';
 import {
@@ -22,8 +24,12 @@ import {
   fetchNormativeAndSubscriberConsumptionData,
   fetchSummaryHousingConsumptions,
 } from './resourceConsumptionService.api';
-import { setConsumptionData } from './resourceConsumptionService.utils';
-import axios, { CancelTokenSource } from 'axios';
+import {
+  getIsOnlyHousingDataEmpty,
+  prepareDataForMinMaxCalculation,
+  setConsumptionData,
+} from './resourceConsumptionService.utils';
+import { getMinAndMaxForResourceConsumptionGraph } from './view/ResourceConsumptionGraph/ResourceConsumptionGraph.utils';
 
 const clearData = createEvent();
 
@@ -150,7 +156,7 @@ const $housingConsumptionData = createStore<ConsumptionDataForTwoMonth | null>(
         data,
       ),
   )
-  .reset(clearData);
+  .reset([clearData, getConsumptionData]);
 
 const getAdditionalConsumptionData = createEvent<ConsumptionDataPayload>();
 
@@ -168,6 +174,18 @@ const $selectedGraphTypes =
   )
     .on(setSelectedGraphTypes, (_, selected) => selected)
     .reset(clearData);
+
+const $dataForMinMaxCalculation = combine(
+  $housingConsumptionData,
+  $selectedGraphTypes,
+  prepareDataForMinMaxCalculation,
+);
+
+const $dynamicMinMax = createStore<[number, number]>([0, 0]);
+
+const $isOnlyHousingDataEmpty = $housingConsumptionData.map(
+  getIsOnlyHousingDataEmpty,
+);
 
 const $summaryConsumption =
   createStore<GetSummaryHousingConsumptionsByResourcesResponse | null>(null)
@@ -278,6 +296,28 @@ sample({
   ],
 });
 
+sample({
+  source: $dynamicMinMax,
+  clock: $dataForMinMaxCalculation,
+  filter: (_, dataForMinMaxCalculation) => {
+    const isHaveDataForMinMaxCalculation = !isEmpty(
+      dataForMinMaxCalculation?.flat(),
+    );
+    return isHaveDataForMinMaxCalculation;
+  },
+  fn: (dynamicMinMax, dataForMinMaxCalculation) => {
+    const { minValue, maxValue } = getMinAndMaxForResourceConsumptionGraph(
+      dataForMinMaxCalculation,
+    );
+
+    const isMaxValueChange = dynamicMinMax[1] !== maxValue;
+    return isMaxValueChange
+      ? ([minValue, maxValue] as [number, number])
+      : dynamicMinMax;
+  },
+  target: $dynamicMinMax,
+});
+
 forward({
   from: ResourceConsumptionGate.close,
   to: [clearData, clearAdditionalAddressData, clearSummary],
@@ -340,6 +380,8 @@ export const resourceConsumptionService = {
     $isPrevHousingLoading,
     $isPrevNormativeAndSubscriberLoading,
     $isAdditionalAddressSelected,
+    $dynamicMinMax,
+    $isOnlyHousingDataEmpty,
   },
   gates: { ResourceConsumptionGate },
 };

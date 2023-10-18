@@ -36,9 +36,11 @@ const $housingStockId = $housingStock.map((housingStock) => {
 const $isAdministrator = currentUserService.outputs.$currentUser.map((user) => {
   const roles = user?.roles || [];
   const rolesKeys = roles.map(({ key }) => key);
-  const isAdministrator = rolesKeys.includes(
-    ESecuredIdentityRoleName.Administrator,
-  );
+  const isAdministrator =
+    rolesKeys.includes(ESecuredIdentityRoleName.Administrator) ||
+    rolesKeys.includes(
+      ESecuredIdentityRoleName.ManagingFirmSpectatingAdministrator,
+    );
 
   return isAdministrator;
 });

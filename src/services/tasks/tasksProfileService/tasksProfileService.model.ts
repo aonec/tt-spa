@@ -113,8 +113,9 @@ sample({
 });
 
 sample({
-  source: sample({ source: InitialGate.state, filter: Boolean }),
+  source: InitialGate.state,
   clock: $searchState,
+  filter: (isOpen) => Boolean(isOpen),
   target: startSearchTasks,
 });
 

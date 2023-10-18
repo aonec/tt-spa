@@ -2,6 +2,7 @@ import React, { FC } from 'react';
 import {
   ApartmentNumber,
   ClosingDate,
+  FullAddressWrapper,
   PhoneNumber,
   ResourceWrapper,
 } from './IndividualDevicesReport.styled';
@@ -19,6 +20,7 @@ import {
 import dayjs from 'api/dayjs';
 import { Empty } from 'antd';
 import { getReportElemAddress } from '../ReportViewTable.utils';
+import { Tooltip } from 'ui-kit/shared/Tooltip';
 
 export const IndividualDevicesReport: FC<IndividualDevicesReportProps> = ({
   individualDevicesReportData,
@@ -58,10 +60,10 @@ export const IndividualDevicesReport: FC<IndividualDevicesReportProps> = ({
             const { addressString, number } = getReportElemAddress(elem);
 
             return (
-              <div>
+              <FullAddressWrapper>
                 <ApartmentNumber>Кв. №{number}</ApartmentNumber>
-                {addressString}
-              </div>
+                <Tooltip title={addressString}>{addressString}</Tooltip>
+              </FullAddressWrapper>
             );
           },
         },
