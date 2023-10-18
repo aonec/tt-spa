@@ -67,10 +67,14 @@ export const TaskProfileContainer = () => {
   const isViewerExecutor =
     Boolean(currentUser?.id) && currentUser?.id === task?.perpetrator?.id;
 
-  const isApplication =
-    task?.type === EManagingFirmTaskType.PlannedApplication ||
-    task?.type === EManagingFirmTaskType.CurrentApplication ||
-    task?.type === EManagingFirmTaskType.EmergencyApplication;
+  const isApplication = Boolean(
+    task &&
+      [
+        EManagingFirmTaskType.PlannedApplication,
+        EManagingFirmTaskType.CurrentApplication,
+        EManagingFirmTaskType.EmergencyApplication,
+      ].includes(task.type),
+  );
 
   useEffect(() => {
     if (isApplication) {
