@@ -1,25 +1,24 @@
-import { createDomain, forward } from 'effector';
+import { createEffect, createEvent, createStore } from 'effector';
+import { forward } from 'effector';
 import { createGate } from 'effector-react';
 import { IndividualDeviceMountPlaceForFilterResponse } from 'api/types';
 import { DevicesSearchType } from '../devicesPageService.types';
 import { fetchMouintPlaces } from './individualDevicesProfileService.api';
 
-const domain = createDomain('individualDevicesProfileService');
-
-const getMountPlacesFx = domain.createEffect<
+const getMountPlacesFx = createEffect<
   void,
   IndividualDeviceMountPlaceForFilterResponse[]
 >(fetchMouintPlaces);
 
-const $mountPlaces = domain
-  .createStore<IndividualDeviceMountPlaceForFilterResponse[]>([])
-  .on(getMountPlacesFx.doneData, (_, places) => places);
+const $mountPlaces = createStore<IndividualDeviceMountPlaceForFilterResponse[]>(
+  [],
+).on(getMountPlacesFx.doneData, (_, places) => places);
 
-const setDevicesSearchType = domain.createEvent<DevicesSearchType>();
+const setDevicesSearchType = createEvent<DevicesSearchType>();
 
-export const $devicesSearchType = domain
-  .createStore<DevicesSearchType>(DevicesSearchType.SearialNumber)
-  .on(setDevicesSearchType, (_, type) => type);
+export const $devicesSearchType = createStore<DevicesSearchType>(
+  DevicesSearchType.SearialNumber,
+).on(setDevicesSearchType, (_, type) => type);
 
 const IndividualDevicesGate = createGate();
 

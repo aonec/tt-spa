@@ -1,14 +1,12 @@
-import { createDomain, forward } from 'effector';
+import { createEvent, createStore } from 'effector';
+import { forward } from 'effector';
 import { createIndividualSealControllerMutation } from './createControllerService.api';
 import { message } from 'antd';
 
-const domain = createDomain('createControllerService');
+const openCreateControllerModal = createEvent();
+const closeCreateControllerModal = createEvent();
 
-const openCreateControllerModal = domain.createEvent();
-const closeCreateControllerModal = domain.createEvent();
-
-const $isModalOpen = domain
-  .createStore(false)
+const $isModalOpen = createStore(false)
   .on(openCreateControllerModal, () => true)
   .reset(closeCreateControllerModal);
 

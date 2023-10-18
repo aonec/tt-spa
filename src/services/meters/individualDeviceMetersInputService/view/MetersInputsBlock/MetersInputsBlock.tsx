@@ -48,6 +48,7 @@ export const MetersInputsBlock: FC<MetersInputsBlockProps> = ({
   status: uploadingStatus,
   handleUploadReading,
   tooltip,
+  focusOnFirst = true,
 }) => {
   const [status, setStatus] = useState<MetersInputBlockStatus | null>(null);
 
@@ -71,7 +72,7 @@ export const MetersInputsBlock: FC<MetersInputsBlockProps> = ({
 
   const nextInput = useSwitchInputOnEnter(
     dataString,
-    !isPrevious && inputIndex === 0,
+    focusOnFirst && !isPrevious && inputIndex === 0,
   );
 
   const handleReadingInputFocus = useCallback(

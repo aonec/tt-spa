@@ -1,4 +1,5 @@
-import { combine, createDomain, sample } from 'effector';
+import { createEffect, createEvent, createStore } from 'effector';
+import { combine, sample } from 'effector';
 import { createGate } from 'effector-react';
 import {
   BuildingListResponse,
@@ -20,51 +21,47 @@ import { SubscriberStatisticsForm } from './view/ManagingFirmSearch/ManagingFirm
 import _ from 'lodash';
 import { addressSearchService } from 'services/addressSearchService/addressSearchService.models';
 
-const domain = createDomain('displayStatisticsListByManagingFirmService');
-
 const StatiscticsPageGate = createGate();
 
-const getManagingFirmsFx = domain.createEffect<
+const getManagingFirmsFx = createEffect<
   string,
   HouseManagementWithStreetsResponse[]
 >(fetchManagingFirm);
-const $managingFirms = domain
-  .createStore<HouseManagementWithStreetsResponse[]>([])
-  .on(getManagingFirmsFx.doneData, (_, managingFirms) => managingFirms);
+const $managingFirms = createStore<HouseManagementWithStreetsResponse[]>([]).on(
+  getManagingFirmsFx.doneData,
+  (_, managingFirms) => managingFirms,
+);
 
-const selectCity = domain.createEvent<string>();
-const $selectedCity = domain
-  .createStore<string>('')
-  .on(selectCity, (_, city) => city);
+const selectCity = createEvent<string>();
+const $selectedCity = createStore<string>('').on(selectCity, (_, city) => city);
 
-const selectManagingFirm = domain.createEvent<string>();
-const $selectedManagingFirm = domain
-  .createStore<string>('')
+const selectManagingFirm = createEvent<string>();
+const $selectedManagingFirm = createStore<string>('')
   .on(selectManagingFirm, (_, managingFirm) => managingFirm)
   .reset($managingFirms);
 
-const setSubscriberStatisticsFilter =
-  domain.createEvent<SubscriberStatisticsForm>();
-const $subscriberStatisticsFilter = domain
-  .createStore<SubscriberStatisticsForm | null>(null)
-  .on(setSubscriberStatisticsFilter, (_, filter) => filter);
+const setSubscriberStatisticsFilter = createEvent<SubscriberStatisticsForm>();
+const $subscriberStatisticsFilter =
+  createStore<SubscriberStatisticsForm | null>(null).on(
+    setSubscriberStatisticsFilter,
+    (_, filter) => filter,
+  );
 
-const selectHousingStock = domain.createEvent<number>();
-const $selectedHousingStock = domain
-  .createStore<number>(0)
-  .on(selectHousingStock, (_, housingStock) => housingStock);
+const selectHousingStock = createEvent<number>();
+const $selectedHousingStock = createStore<number>(0).on(
+  selectHousingStock,
+  (_, housingStock) => housingStock,
+);
 
-const getStatisticFx = domain.createEffect<
+const getStatisticFx = createEffect<
   SubscriberStatisticsFilter,
   SubscriberStatisticsСonsumptionResponse[]
 >(fetchSubscribersStatistic);
 
-const getHousingStocksFx = domain.createEffect<
-  string,
-  BuildingListResponsePagedList
->(fetchHousingStocksByManagingFirm);
-const $housingStocks = domain
-  .createStore<HousingStockWithApartmentStatistic[]>([])
+const getHousingStocksFx = createEffect<string, BuildingListResponsePagedList>(
+  fetchHousingStocksByManagingFirm,
+);
+const $housingStocks = createStore<HousingStockWithApartmentStatistic[]>([])
   .on(getHousingStocksFx.doneData, (_, pagedResponse) => {
     if (!pagedResponse.items) {
       return [];

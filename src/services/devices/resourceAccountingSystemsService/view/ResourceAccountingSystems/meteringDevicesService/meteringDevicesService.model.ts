@@ -1,4 +1,5 @@
-import { createDomain, guard } from 'effector';
+import { createEffect, createEvent, createStore } from 'effector';
+import { guard } from 'effector';
 import {
   NodeOnHousingStockResponse,
   PipeNodeIntoCalculatorResponse,
@@ -6,30 +7,28 @@ import {
 } from 'api/types';
 import { getMeteringDevices } from './meteringDevicesService.api';
 
-const domain = createDomain('meteringDevicesService');
-
-const openDevicesListModal = domain.createEvent<
+const openDevicesListModal = createEvent<
   NodeOnHousingStockResponse | PipeNodeIntoCalculatorResponse
 >();
 
-const closeDevicesListModal = domain.createEvent();
+const closeDevicesListModal = createEvent();
 
-const clearMeteringDevicesList = domain.createEvent();
+const clearMeteringDevicesList = createEvent();
 
-const fetchMeteringDevices = domain.createEffect<
+const fetchMeteringDevices = createEffect<
   number,
   PipeNodeMeteringDeviceResponse[]
 >(getMeteringDevices);
 
-const $pipeNode = domain
-  .createStore<
-    NodeOnHousingStockResponse | PipeNodeIntoCalculatorResponse | null
-  >(null)
+const $pipeNode = createStore<
+  NodeOnHousingStockResponse | PipeNodeIntoCalculatorResponse | null
+>(null)
   .on(openDevicesListModal, (_, node) => node)
   .reset(closeDevicesListModal);
 
-const $meterindDevicesList = domain
-  .createStore<PipeNodeMeteringDeviceResponse[] | null>(null)
+const $meterindDevicesList = createStore<
+  PipeNodeMeteringDeviceResponse[] | null
+>(null)
   .on(fetchMeteringDevices.doneData, (_, meteringDevices) => meteringDevices)
   .reset(clearMeteringDevicesList);
 

@@ -1,4 +1,5 @@
-import { combine, createDomain, forward, sample, split } from 'effector';
+import { createEffect, createEvent, createStore } from 'effector';
+import { combine, forward, sample, split } from 'effector';
 import {
   getOrganizationUser,
   getOrganizationUserTasksByRoles,
@@ -27,88 +28,80 @@ import {
   prepareUpdateStatusPayload,
 } from './changeStatusEmployeeService.utils';
 
-const domain = createDomain('changeStatusEmployeeService');
+const handleOpenModal = createEvent();
+const handleCloseModal = createEvent();
 
-const handleOpenModal = domain.createEvent();
-const handleCloseModal = domain.createEvent();
+const openTransferTasksModal = createEvent();
 
-const openTransferTasksModal = domain.createEvent();
-
-const handleCatchEmployeeStatusData = domain.createEvent<{
+const handleCatchEmployeeStatusData = createEvent<{
   id: number;
   status: UserStatusResponse | null;
 }>();
 
-const fetchOrganizationUserTasksByRoles = domain.createEvent();
+const fetchOrganizationUserTasksByRoles = createEvent();
 
 const handleUpdateStatus =
-  domain.createEvent<AddOrganizationUserWorkingStatusRequest>();
+  createEvent<AddOrganizationUserWorkingStatusRequest>();
 
-const sendUpdateStatusRequest = domain.createEvent();
+const sendUpdateStatusRequest = createEvent();
 
 const sendUpdateStatusRequestWithPayload =
-  domain.createEvent<AddOrganizationUserWorkingStatusRequest>();
+  createEvent<AddOrganizationUserWorkingStatusRequest>();
 
 const handleApplyTasksReassignment =
-  domain.createEvent<OrganizationUserTaskReassignment[]>();
+  createEvent<OrganizationUserTaskReassignment[]>();
 
-const updateStatusFx = domain.createEffect<
+const updateStatusFx = createEffect<
   AddOrganizationUserWorkingStatusRequest,
   OrganizationUserWorkingStatusResponse | null,
   EffectFailDataAxiosError
 >(postEmloyeeStatus);
 
-const fetchOrganizationUserFx = domain.createEffect<
-  number,
-  OrganizationUserResponse
->(getOrganizationUser);
+const fetchOrganizationUserFx = createEffect<number, OrganizationUserResponse>(
+  getOrganizationUser,
+);
 
-const fetchOrganizationUserTasksByRolesFx = domain.createEffect<
+const fetchOrganizationUserTasksByRolesFx = createEffect<
   GetOrganizationUserTasksByRolesRequestParams,
   UserTasksByRoles
 >(getOrganizationUserTasksByRoles);
 
-const fetchOrganizationUsersByRolesListFx = domain.createEffect<
+const fetchOrganizationUsersByRolesListFx = createEffect<
   ESecuredIdentityRoleName[],
   OrganizationUsersByRolesList
 >(getOrganizationUsersByRolesList);
 
 const successUpdateStatus = updateStatusFx.doneData;
 
-const $isModalOpen = domain
-  .createStore<boolean>(false)
+const $isModalOpen = createStore<boolean>(false)
   .on(handleOpenModal, () => true)
   .on(handleCloseModal, () => false);
 
-const $employeeStatus = domain
-  .createStore<EmployeeStatus | null>(null)
+const $employeeStatus = createStore<EmployeeStatus | null>(null)
   .on(handleCatchEmployeeStatusData, (_, data) => data)
   .reset(handleCloseModal);
 
-const $currentUser = domain
-  .createStore<OrganizationUserResponse | null>(null)
+const $currentUser = createStore<OrganizationUserResponse | null>(null)
   .on(fetchOrganizationUserFx.doneData, (_, user) => user)
   .reset(handleCloseModal);
 
-const $organizationUserTasksByRoles = domain
-  .createStore<UserTasksByRoles | null>(null)
+const $organizationUserTasksByRoles = createStore<UserTasksByRoles | null>(null)
   .on(fetchOrganizationUserTasksByRolesFx.doneData, (_, data) => data)
   .reset(handleCloseModal);
 
-const $userStatusChangeRequestPayload = domain
-  .createStore<AddOrganizationUserWorkingStatusRequest | null>(null)
-  .on(handleUpdateStatus, (_, data) => data)
-  .reset(handleCloseModal);
+const $userStatusChangeRequestPayload =
+  createStore<AddOrganizationUserWorkingStatusRequest | null>(null)
+    .on(handleUpdateStatus, (_, data) => data)
+    .reset(handleCloseModal);
 
-const $isTransferUserTasksModalOpen = domain
-  .createStore(false)
+const $isTransferUserTasksModalOpen = createStore(false)
   .on(openTransferTasksModal, () => true)
   .reset(handleCloseModal);
 
-const $organizationUsersByRolesList = domain
-  .createStore<OrganizationUsersByRolesList | null>(null)
-  .on(fetchOrganizationUsersByRolesListFx.doneData, (_, users) => users)
-  .reset(handleCloseModal);
+const $organizationUsersByRolesList =
+  createStore<OrganizationUsersByRolesList | null>(null)
+    .on(fetchOrganizationUsersByRolesListFx.doneData, (_, users) => users)
+    .reset(handleCloseModal);
 
 split({
   source: fetchOrganizationUserTasksByRolesFx.doneData,

@@ -1,8 +1,9 @@
+import { createEffect, createEvent, createStore } from 'effector';
 import axios from 'axios';
 import dayjs from 'api/dayjs';
 import { message } from 'antd';
 import queryString from 'query-string';
-import { combine, createDomain, forward, sample } from 'effector';
+import { combine, forward, sample } from 'effector';
 import { EClosingReason, EResourceType } from 'api/types';
 import { createForm } from 'effector-forms';
 import { reportsInputs } from '../models';
@@ -13,14 +14,13 @@ import { reportsListService } from '../reportsListService';
 import { EffectFailDataAxiosError } from '../../../types/index';
 import { closedIndividualDevicesFormService } from './ReportFormInputs/closedIndividualDevicesFormService';
 
-const createReportDomain = createDomain('CreateReport');
+const openModalButtonClicked = createEvent();
+const closeModalButonClicked = createEvent();
 
-const openModalButtonClicked = createReportDomain.createEvent();
-const closeModalButonClicked = createReportDomain.createEvent();
-
-const $isModalOpen = createReportDomain
-  .createStore(false)
-  .on(reportsListService.inputs.openExistedReport, () => true);
+const $isModalOpen = createStore(false).on(
+  reportsListService.inputs.openExistedReport,
+  () => true,
+);
 
 export const form = createForm({
   fields: {
@@ -96,7 +96,7 @@ sample({
   target: form.setForm,
 });
 
-const createReportFx = createReportDomain.createEffect<
+const createReportFx = createEffect<
   {
     type: ReportType;
     date: {
@@ -158,7 +158,7 @@ forward({
 
 $isModalOpen.reset(createReportFx.doneData);
 
-const createReport = createReportDomain.createEvent();
+const createReport = createEvent();
 
 forward({
   from: createReportFx.doneData,

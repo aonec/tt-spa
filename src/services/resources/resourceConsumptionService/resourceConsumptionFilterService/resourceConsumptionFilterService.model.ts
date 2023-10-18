@@ -1,4 +1,5 @@
-import { combine, createDomain, sample } from 'effector';
+import { createEvent, createStore } from 'effector';
+import { combine, sample } from 'effector';
 import {
   EResourceType,
   HouseManagementWithStreetsResponse,
@@ -14,41 +15,36 @@ import dayjs from 'api/dayjs';
 import { resourceConsumptionService } from '../resourceConsumptionService.model';
 import { ConsumptionDataFilter } from './resourceConsumptionFilterService.types';
 
-const domain = createDomain('resourceConsumptionFilterService');
+const clearFilter = createEvent();
 
-const clearFilter = domain.createEvent();
-
-const selectCity = domain.createEvent<string>();
-const $selectedCity = domain
-  .createStore<string | null>(null)
+const selectCity = createEvent<string>();
+const $selectedCity = createStore<string | null>(null)
   .on(selectCity, (_, city) => city)
   .reset(resourceConsumptionService.gates.ResourceConsumptionGate.close);
 
-const selectHouseManagememt = domain.createEvent<string | null>();
-const $selectedHouseManagement = domain
-  .createStore<string | null>(null)
+const selectHouseManagememt = createEvent<string | null>();
+const $selectedHouseManagement = createStore<string | null>(null)
   .on(selectHouseManagememt, (_, id) => id)
   .reset(clearFilter);
 
-const $houseManagements = domain
-  .createStore<HouseManagementWithStreetsResponse[]>([])
+const $houseManagements = createStore<HouseManagementWithStreetsResponse[]>([])
   .on(getAddressesFx.doneData, (_, houseManagements) => houseManagements)
   .reset(resourceConsumptionService.gates.ResourceConsumptionGate.close);
 
-const setResource = domain.createEvent<EResourceType>();
-const $selectedResource = domain
-  .createStore<EResourceType>(EResourceType.ColdWaterSupply)
+const setResource = createEvent<EResourceType>();
+const $selectedResource = createStore<EResourceType>(
+  EResourceType.ColdWaterSupply,
+)
   .on(setResource, (_, resource) => resource)
   .reset(clearFilter);
 
-const setFilter = domain.createEvent<ConsumptionDataFilter>();
-const $resourceConsumptionFilter = domain
-  .createStore<ConsumptionDataFilter>({
-    From: dayjs().startOf('month').utcOffset(0, true).format(),
-    To: dayjs().endOf('month').utcOffset(0, true).format(),
-    AdditionalHousingStockIds: [],
-    BuildingIds: [],
-  })
+const setFilter = createEvent<ConsumptionDataFilter>();
+const $resourceConsumptionFilter = createStore<ConsumptionDataFilter>({
+  From: dayjs().startOf('month').utcOffset(0, true).format(),
+  To: dayjs().endOf('month').utcOffset(0, true).format(),
+  AdditionalHousingStockIds: [],
+  BuildingIds: [],
+})
   .on(setFilter, (oldFilter, filter) => ({
     ...oldFilter,
     ...filter,

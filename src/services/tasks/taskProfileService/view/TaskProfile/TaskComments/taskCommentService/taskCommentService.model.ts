@@ -1,24 +1,23 @@
-import { createDomain, forward } from 'effector';
+import { createEffect, createEvent, createStore } from 'effector';
+import { forward } from 'effector';
 import { deleteTaskComment, updateTaskComment } from './taskCommentService.api';
 import { EffectFailDataAxiosError } from 'types';
 import { message } from 'antd';
 import { TaskCommentRequest, TaskCommentResponse } from 'api/types';
 import { taskProfileService } from 'services/tasks/taskProfileService/taskProfileService.model';
 
-const domain = createDomain('taskCommentService');
-
-const handleDelete = domain.createEvent<{
+const handleDelete = createEvent<{
   taskId: number;
   commentId: number;
 }>();
 
-const handleUpdate = domain.createEvent<{
+const handleUpdate = createEvent<{
   taskId: number;
   commentId: number;
   data: TaskCommentRequest;
 }>();
 
-const deleteTaskCommentFx = domain.createEffect<
+const deleteTaskCommentFx = createEffect<
   {
     taskId: number;
     commentId: number;
@@ -27,7 +26,7 @@ const deleteTaskCommentFx = domain.createEffect<
   EffectFailDataAxiosError
 >(deleteTaskComment);
 
-const updateTaskCommentFx = domain.createEffect<
+const updateTaskCommentFx = createEffect<
   {
     taskId: number;
     commentId: number;
@@ -37,8 +36,7 @@ const updateTaskCommentFx = domain.createEffect<
   EffectFailDataAxiosError
 >(updateTaskComment);
 
-const $updatedCommentData = domain
-  .createStore<TaskCommentResponse | null>(null)
+const $updatedCommentData = createStore<TaskCommentResponse | null>(null)
   .on(updateTaskCommentFx.doneData, (_, commentData) => commentData)
   .reset(handleUpdate);
 

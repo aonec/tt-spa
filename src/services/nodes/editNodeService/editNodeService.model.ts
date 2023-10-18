@@ -1,4 +1,5 @@
-import { createDomain, forward, guard, sample } from 'effector';
+import { createEffect, createEvent, createStore } from 'effector';
+import { forward, guard, sample } from 'effector';
 import { createGate } from 'effector-react';
 import {
   EResourceType,
@@ -18,32 +19,31 @@ import { addHosuingMeteringDeviceService } from './view/EditNodePage/addHosuingM
 import { message } from 'antd';
 import { EffectFailDataAxiosError } from 'types';
 
-const domain = createDomain('editNodeService');
+const clearStore = createEvent();
 
-const clearStore = domain.createEvent();
-
-const setEditNodeGrouptype = domain.createEvent<NodeEditGrouptype>();
-const $editNodeGrouptype = domain
-  .createStore<NodeEditGrouptype>(NodeEditGrouptype.CommonInfo)
+const setEditNodeGrouptype = createEvent<NodeEditGrouptype>();
+const $editNodeGrouptype = createStore<NodeEditGrouptype>(
+  NodeEditGrouptype.CommonInfo,
+)
   .on(setEditNodeGrouptype, (_, grouptype) => grouptype)
   .reset(clearStore);
 
-const getNodeZonesFx = domain.createEffect<void, NodeServiceZoneListResponse>(
+const getNodeZonesFx = createEffect<void, NodeServiceZoneListResponse>(
   fetchServiceZones,
 );
-const $nodeZones = domain
-  .createStore<NodeServiceZoneResponse[]>([])
-  .on(getNodeZonesFx.doneData, (_, zones) => zones.nodeServiceZones || []);
+const $nodeZones = createStore<NodeServiceZoneResponse[]>([]).on(
+  getNodeZonesFx.doneData,
+  (_, zones) => zones.nodeServiceZones || [],
+);
 
-const refetchNode = domain.createEvent();
-const getNodeFx = domain.createEffect<string, PipeNodeResponse>(fetchNode);
-const $node = domain
-  .createStore<PipeNodeResponse | null>(null)
+const refetchNode = createEvent();
+const getNodeFx = createEffect<string, PipeNodeResponse>(fetchNode);
+const $node = createStore<PipeNodeResponse | null>(null)
   .on(getNodeFx.doneData, (_, node) => node)
   .reset(clearStore);
 
-const updateNode = domain.createEvent<UpdatePipeNodeRequest>();
-const updateNodeFx = domain.createEffect<
+const updateNode = createEvent<UpdatePipeNodeRequest>();
+const updateNodeFx = createEffect<
   {
     pipeNodeId: string;
     payload: UpdatePipeNodeRequest;

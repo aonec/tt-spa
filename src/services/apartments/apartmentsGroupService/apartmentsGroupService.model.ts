@@ -1,12 +1,10 @@
-import { createDomain } from 'effector';
+import { createEvent, createStore } from 'effector';
 
-const domain = createDomain('apartmentsGroupService');
-
-const setApartmentId = domain.createEvent<number | null>();
-const apartmentId = domain
-  .createStore<number | null>(null)
-  .on(setApartmentId, (_, id) => id);
-
+const setApartmentId = createEvent<number | null>();
+const apartmentId = createStore<number | null>(null).on(
+  setApartmentId,
+  (_, id) => id,
+);
 
 export const apartmentsGroupService = {
   inputs: { setApartmentId },

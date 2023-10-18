@@ -1,4 +1,5 @@
-import { createDomain, sample, split } from 'effector';
+import { createEffect, createEvent, createStore } from 'effector';
+import { sample, split } from 'effector';
 import { createGate } from 'effector-react';
 import {
   ApartmentResponse,
@@ -26,47 +27,41 @@ import { addTaskFromDispatcherService } from '../addTaskFromDispatcherService';
 import { getAcceptableSearchParams } from './tasksProfileService.utils';
 import { interval } from 'patronum';
 
-const domain = createDomain('tasksProfileService');
-
 const TasksIsOpen = createGate();
 const InitialGate = createGate();
 
-const clearAddress = domain.createEvent();
-const clearFilters = domain.createEvent();
-const setPipeNodeId = domain.createEvent<{ pipeNodeId: string }>();
-const setTasksPageSegment = domain.createEvent<TasksPageSegment>();
-const setDeviceId = domain.createEvent<{ deviceId: string }>();
-const extendedSearchOpened = domain.createEvent();
-const extendedSearchClosed = domain.createEvent();
-const changeFiltersByGroupType = domain.createEvent<TaskGroupingFilter>();
-const changeGroupType = domain.createEvent<TaskGroupingFilter>();
-const changePageNumber = domain.createEvent<number>();
-const searchTasks = domain.createEvent<GetTasksListRequestPayload>();
+const clearAddress = createEvent();
+const clearFilters = createEvent();
+const setPipeNodeId = createEvent<{ pipeNodeId: string }>();
+const setTasksPageSegment = createEvent<TasksPageSegment>();
+const setDeviceId = createEvent<{ deviceId: string }>();
+const extendedSearchOpened = createEvent();
+const extendedSearchClosed = createEvent();
+const changeFiltersByGroupType = createEvent<TaskGroupingFilter>();
+const changeGroupType = createEvent<TaskGroupingFilter>();
+const changePageNumber = createEvent<number>();
+const searchTasks = createEvent<GetTasksListRequestPayload>();
 
 const SetCityGate = createGate<{ cities: string[] | null }>();
 
-const getApartmentFx = domain.createEffect<
-  FiltersGatePayload,
-  ApartmentResponse
->(fetchApartment);
+const getApartmentFx = createEffect<FiltersGatePayload, ApartmentResponse>(
+  fetchApartment,
+);
 
-const $apartment = domain
-  .createStore<ApartmentResponse | null>(null)
+const $apartment = createStore<ApartmentResponse | null>(null)
   .on(getApartmentFx.doneData, (_, apartment) => apartment)
   .reset(clearAddress);
 
-const getHousingStockFx = domain.createEffect<
+const getHousingStockFx = createEffect<
   FiltersGatePayload,
   HousingStockResponse
 >(fetchHousingStock);
 
-const $housingStock = domain
-  .createStore<HousingStockResponse | null>(null)
+const $housingStock = createStore<HousingStockResponse | null>(null)
   .on(getHousingStockFx.doneData, (_, housingStock) => housingStock)
   .reset(clearAddress);
 
-const $searchState = domain
-  .createStore<GetTasksListRequestPayload>({})
+const $searchState = createStore<GetTasksListRequestPayload>({})
   .on(setPipeNodeId, (prev, { pipeNodeId }) => ({
     ...prev,
     PipeNodeId: Number(pipeNodeId),
@@ -97,8 +92,8 @@ const $searchState = domain
   }))
   .reset(clearFilters);
 
-const startSearchTasks = domain.createEvent();
-const searchTasksFx = domain.createEffect<
+const startSearchTasks = createEvent();
+const searchTasksFx = createEffect<
   GetTasksListRequestPayload | null,
   TasksPagedList
 >(getTasks);
@@ -124,18 +119,19 @@ sample({
   target: startSearchTasks,
 });
 
-const $tasksPagedData = domain
-  .createStore<TasksPagedList | null>(null)
-  .on(searchTasksFx.doneData, (_, tasksPaged) => tasksPaged);
+const $tasksPagedData = createStore<TasksPagedList | null>(null).on(
+  searchTasksFx.doneData,
+  (_, tasksPaged) => tasksPaged,
+);
 
-const $isExtendedSearchOpen = domain
-  .createStore(false)
+const $isExtendedSearchOpen = createStore(false)
   .on(extendedSearchOpened, () => true)
   .reset(extendedSearchClosed);
 
-const $tasksPageSegment = domain
-  .createStore<TasksPageSegment>('list')
-  .on(setTasksPageSegment, (_, segment) => segment);
+const $tasksPageSegment = createStore<TasksPageSegment>('list').on(
+  setTasksPageSegment,
+  (_, segment) => segment,
+);
 
 const $isLoading = searchTasksFx.pending;
 

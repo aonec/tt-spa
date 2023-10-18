@@ -1,29 +1,27 @@
-import { createDomain, sample } from 'effector';
+import { createEffect, createEvent, createStore } from 'effector';
+import { sample } from 'effector';
 import { createGate } from 'effector-react';
 import { HomeownerCertificateResponse } from 'api/types';
 import { getHomeownerCertificate } from './printApartmentDevicesCertificateService.api';
 
-const domain = createDomain('printApartmentDevicesCertificateService');
+const getIssueCertificateButtonClicked = createEvent();
+const closeIssueCertificateModalButtonClicked = createEvent();
+const printIssueSertificateButtonClicked = createEvent<number>();
 
-const getIssueCertificateButtonClicked = domain.createEvent();
-const closeIssueCertificateModalButtonClicked = domain.createEvent();
-const printIssueSertificateButtonClicked = domain.createEvent<number>();
-
-const fetchHomeownerCertificateFx = domain.createEffect<
+const fetchHomeownerCertificateFx = createEffect<
   string,
   HomeownerCertificateResponse
 >(getHomeownerCertificate);
 
 const HomeownerCerificateGate = createGate<{ id: string | null }>();
 
-const $isPrintIssueCertificateModalOpen = domain
-  .createStore(false)
+const $isPrintIssueCertificateModalOpen = createStore(false)
   .on(printIssueSertificateButtonClicked, () => true)
   .reset(closeIssueCertificateModalButtonClicked);
 
-const $homeownerCertificate = domain
-  .createStore<HomeownerCertificateResponse | null>(null)
-  .on(fetchHomeownerCertificateFx.doneData, (_, certificate) => certificate);
+const $homeownerCertificate = createStore<HomeownerCertificateResponse | null>(
+  null,
+).on(fetchHomeownerCertificateFx.doneData, (_, certificate) => certificate);
 
 sample({
   source: HomeownerCerificateGate.state.map((values) => values.id),

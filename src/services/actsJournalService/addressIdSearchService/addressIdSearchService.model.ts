@@ -1,31 +1,28 @@
-import { createDomain } from 'effector';
+import { createEffect, createEvent, createStore } from 'effector';
+
 import {
   FindAddressFilter,
   FindApartmentParams,
 } from './addressIdSearchService.types';
 import { fetchApartmentId } from './addressIdSearchService.api';
 
-const domain = createDomain('addressIdSearchService');
+const setAddress = createEvent<FindAddressFilter>();
+const $searchAddressFilter = createStore<FindAddressFilter>({}).on(
+  setAddress,
+  (_, address) => address,
+);
 
-const setAddress = domain.createEvent<FindAddressFilter>();
-const $searchAddressFilter = domain
-  .createStore<FindAddressFilter>({})
-  .on(setAddress, (_, address) => address);
-
-const getApartmentSearchId = domain.createEvent();
-const getApartmentSearchIdFx = domain.createEffect<
-  FindApartmentParams,
-  number | null
->(fetchApartmentId);
-const $apartmentSearchId = domain
-  .createStore<number | null>(null)
+const getApartmentSearchId = createEvent();
+const getApartmentSearchIdFx = createEffect<FindApartmentParams, number | null>(
+  fetchApartmentId,
+);
+const $apartmentSearchId = createStore<number | null>(null)
   .on(getApartmentSearchIdFx.doneData, (_, id) => id)
   .reset($searchAddressFilter);
 
 const $isSuccess = $apartmentSearchId.map(Boolean);
 
-const $isError = domain
-  .createStore(false)
+const $isError = createStore(false)
   .on(getApartmentSearchIdFx.fail, () => true)
   .reset(getApartmentSearchIdFx.doneData, $searchAddressFilter);
 

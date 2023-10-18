@@ -1,4 +1,5 @@
-import { createDomain, sample } from 'effector';
+import { createEffect, createEvent, createStore } from 'effector';
+import { sample } from 'effector';
 import {
   createOrUpdateNodeReading,
   createOrUpdateNonResidentialRoomConsumption,
@@ -22,37 +23,33 @@ import { EffectFailDataAxiosError } from 'types';
 import { message } from 'antd';
 import { confirmReadingService } from '../readingsHistoryService/confirmReadingService/confirmReadingService.model';
 
-const domain = createDomain('accountingNodesReadingsInputService');
-
 const AccountingNodesReadingsInputGate = createGate<{
   nodeId: number;
   deviceId: number;
 }>();
 
-const removeReading = domain.createEvent<DeleteNodeReading>();
-const removeReadingFx = domain.createEffect(deleteNodeReading);
+const removeReading = createEvent<DeleteNodeReading>();
+const removeReadingFx = createEffect(deleteNodeReading);
 
-const sendReading =
-  domain.createEvent<CreateHousingMeteringDeviceReadingsPayload>();
-const sendReadingFx = domain.createEffect<
+const sendReading = createEvent<CreateHousingMeteringDeviceReadingsPayload>();
+const sendReadingFx = createEffect<
   CreateHousingMeteringDeviceReadingsPayload,
   HousingMeteringDeviceReadingsIncludingPlacementResponse,
   EffectFailDataAxiosError
 >(createOrUpdateNodeReading);
 
 const sendNonResConsumptionReading =
-  domain.createEvent<UpdateHousingMeteringDeviceReadingsPayload>();
-const sendNonResConsumptionReadingFx = domain.createEffect<
+  createEvent<UpdateHousingMeteringDeviceReadingsPayload>();
+const sendNonResConsumptionReadingFx = createEffect<
   UpdateHousingMeteringDeviceReadingsPayload,
   HousingMeteringDeviceReadingsIncludingPlacementResponse
 >(createOrUpdateNonResidentialRoomConsumption);
 
-const getReadingsOfElectricNodeFx = domain.createEffect<
+const getReadingsOfElectricNodeFx = createEffect<
   { nodeId: number },
   HousingMeteringDeviceReadingsIncludingPlacementResponse[]
 >(fetchReadingsOfElectricNode);
-const $readings = domain
-  .createStore<NodeReadingsDataByDevices>({})
+const $readings = createStore<NodeReadingsDataByDevices>({})
   .on(getReadingsOfElectricNodeFx.doneData, (readings, result) => {
     if (!result.length) {
       return readings;
@@ -83,11 +80,10 @@ const $readings = domain
   })
   .reset(AccountingNodesReadingsInputGate.close);
 
-const setLoadingStatusToNonResConsumptionInput = domain.createEvent<{
+const setLoadingStatusToNonResConsumptionInput = createEvent<{
   oldReadingId: string;
 }>();
-const $nonResConsumptionInputStatuses = domain
-  .createStore<NodeReadingsStatuses>({})
+const $nonResConsumptionInputStatuses = createStore<NodeReadingsStatuses>({})
   .on(
     setLoadingStatusToNonResConsumptionInput,
     (statuses, { oldReadingId }) => ({
@@ -104,15 +100,14 @@ const $nonResConsumptionInputStatuses = domain
     [params.oldReadingId]: MetersInputBlockStatus.Failed,
   }));
 
-const setLoadingStatusToInput = domain.createEvent<{
+const setLoadingStatusToInput = createEvent<{
   deviceId: number;
   readingDate: string;
 }>();
-const setInitialLoadingInputStatuses = domain.createEvent<{
+const setInitialLoadingInputStatuses = createEvent<{
   deviceId: number;
 }>();
-const $deviceInputStatuses = domain
-  .createStore<NodeReadingsStatusesByDevices>({})
+const $deviceInputStatuses = createStore<NodeReadingsStatusesByDevices>({})
   .on(setInitialLoadingInputStatuses, (statuses, { deviceId }) => ({
     ...statuses,
     [deviceId]: getELectricNodeInputStatuses(MetersInputBlockStatus.Loading),

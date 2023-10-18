@@ -1,4 +1,5 @@
-import { createDomain, merge, sample, split, combine } from 'effector';
+import { createEffect, createEvent, createStore } from 'effector';
+import { merge, sample, split, combine } from 'effector';
 import {
   ApartmentResponse,
   AppointmentCreateRequest,
@@ -22,33 +23,29 @@ import {
 import { GetDistrictAppointmentsRequestPayload } from '../distributeRecordsService/distributeRecordsService.types';
 import dayjs from 'dayjs';
 
-const domain = createDomain('createSealService');
+const workWithAppointment = createEvent<WorkWithAppoitnmentPayload>();
 
-const workWithAppointment = domain.createEvent<WorkWithAppoitnmentPayload>();
-
-const createSealAppointment = domain.createEvent<WorkWithAppoitnmentPayload>();
-const createSealAppointmentFx = domain.createEffect<
+const createSealAppointment = createEvent<WorkWithAppoitnmentPayload>();
+const createSealAppointmentFx = createEffect<
   AppointmentCreateRequest,
   void,
   EffectFailDataAxiosError
 >(fetchCreateSeal);
 
-const editSealAppointment = domain.createEvent<WorkWithAppoitnmentPayload>();
-const editSealAppointmentFx = domain.createEffect<
+const editSealAppointment = createEvent<WorkWithAppoitnmentPayload>();
+const editSealAppointmentFx = createEffect<
   AppointmentUpdateRequest & { id: string },
   void,
   EffectFailDataAxiosError
 >(fetchEditAppointmentSeal);
 
-const openModal = domain.createEvent<OpenCreateSealModalPayload>();
-const closeModal = domain.createEvent();
-const $apartment = domain
-  .createStore<ApartmentResponse | null>(null)
+const openModal = createEvent<OpenCreateSealModalPayload>();
+const closeModal = createEvent();
+const $apartment = createStore<ApartmentResponse | null>(null)
   .on(openModal, (_, { apartment }) => apartment)
   .reset(closeModal);
 
-const $appointment = domain
-  .createStore<AppointmentResponse | null>(null)
+const $appointment = createStore<AppointmentResponse | null>(null)
   .on(openModal, (_, { appointment }) => appointment)
   .reset(closeModal);
 const $actionType = $appointment.map((appointment) =>
@@ -63,18 +60,15 @@ const workWithSealSucceed = merge([
   editSealAppointmentFx.doneData,
 ]);
 
-const getDistrictFx = domain.createEffect<number, DistrictResponse[]>(
-  getDistrict,
-);
-const $districtId = domain
-  .createStore<string | null>(null)
+const getDistrictFx = createEffect<number, DistrictResponse[]>(getDistrict);
+const $districtId = createStore<string | null>(null)
   .on(getDistrictFx.doneData, (_, districts) => districts[0]?.id || null)
   .reset(closeModal);
 
-const setMonth = domain.createEvent();
-const $currentMonth = domain
-  .createStore<string>(dayjs().startOf('month').format('YYYY-MM-DD'))
-  .on(setMonth, (_, month) => month);
+const setMonth = createEvent();
+const $currentMonth = createStore<string>(
+  dayjs().startOf('month').format('YYYY-MM-DD'),
+).on(setMonth, (_, month) => month);
 
 sample({
   source: combine($districtId, $currentMonth, (districtId, date) => ({

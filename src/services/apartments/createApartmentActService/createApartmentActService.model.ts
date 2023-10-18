@@ -1,4 +1,5 @@
-import { createDomain, sample } from 'effector';
+import { createEffect, createEvent, createStore } from 'effector';
+import { sample } from 'effector';
 import { AddApartmentActRequest, EActResourceType, EActType } from 'api/types';
 import { apartmentActsListService } from '../apartmentActsListService';
 import { postApartmentAct } from './createApartmentActService.api';
@@ -6,15 +7,13 @@ import { CreateActFormPayload } from './createApartmentActService.types';
 import { createForm } from 'effector-forms';
 import { required } from 'api/formRules';
 
-const domain = createDomain('createApartmentActService');
-
-const $isModalOpen = domain.createStore(false);
-const openModal = domain.createEvent();
-const closeModal = domain.createEvent();
+const $isModalOpen = createStore(false);
+const openModal = createEvent();
+const closeModal = createEvent();
 
 $isModalOpen.on(openModal, () => true).reset(closeModal);
 
-const createActFx = domain.createEffect<AddApartmentActRequest, void>(
+const createActFx = createEffect<AddApartmentActRequest, void>(
   postApartmentAct,
 );
 
