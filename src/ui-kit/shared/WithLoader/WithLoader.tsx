@@ -9,13 +9,7 @@ export const WithLoader: FC<WithLoaderProps> = ({
 }) => {
   return (
     <>
-      {isLoading && (
-        <SkeletonSC
-          active
-          // style={{ maxWidth: maxWidth || 'fit-content' }}
-          maxWidth={maxWidth}
-        />
-      )}
+      {isLoading && <SkeletonSC active maxWidth={maxWidth} />}
       {!isLoading && children}
     </>
   );
