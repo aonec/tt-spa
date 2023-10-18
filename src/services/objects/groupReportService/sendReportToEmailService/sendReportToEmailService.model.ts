@@ -1,28 +1,25 @@
-import { createDomain, forward, sample } from 'effector';
+import { createEvent, createStore } from 'effector';
+import { forward, sample } from 'effector';
 import { currentUserService } from 'services/currentUserService';
 
-const domain = createDomain('sendReportToEmailService');
+const openModal = createEvent();
+const closeModal = createEvent();
 
-const openModal = domain.createEvent();
-const closeModal = domain.createEvent();
-
-const $isOpen = domain
-  .createStore(false)
+const $isOpen = createStore(false)
   .on(openModal, () => true)
   .on(closeModal, () => false);
 
-const openSetEmailModal = domain.createEvent();
-const closeSetEmailModal = domain.createEvent();
+const openSetEmailModal = createEvent();
+const closeSetEmailModal = createEvent();
 
-const $isOpenSetEmail = domain
-  .createStore(false)
+const $isOpenSetEmail = createStore(false)
   .on(openSetEmailModal, () => true)
   .on(closeSetEmailModal, () => false);
 
-const submitEmail = domain.createEvent();
+const submitEmail = createEvent();
 
-const setEmail = domain.createEvent<string>();
-const $defaultEmail = domain.createStore('').on(setEmail, (_, email) => email);
+const setEmail = createEvent<string>();
+const $defaultEmail = createStore('').on(setEmail, (_, email) => email);
 
 sample({
   source: currentUserService.outputs.$currentUser.map(

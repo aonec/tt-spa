@@ -1,5 +1,6 @@
+import { createEffect, createEvent, createStore } from 'effector';
 import { message } from 'antd';
-import { createDomain, forward, sample } from 'effector';
+import { forward, sample } from 'effector';
 import { HomeownerAccountCloseRequest } from 'api/types';
 import {
   EffectFailDataAxiosError,
@@ -13,44 +14,37 @@ import { PersonalNumberFormTypes } from '../components/PersonalNumberForm/Person
 import { apartmentProfileService } from 'services/apartments/apartmentProfileService';
 import { EditHomeownerRequestPayload } from './editPersonalNumberService.types';
 
-const domain = createDomain('editPersonalNumberService');
+const onForced = createEvent();
 
-const onForced = domain.createEvent();
+const handleConfirmationModalClose = createEvent();
 
-const handleConfirmationModalClose = domain.createEvent();
+const handleEditHomeownerAccount = createEvent<PersonalNumberFormTypes>();
 
-const handleEditHomeownerAccount =
-  domain.createEvent<PersonalNumberFormTypes>();
+const handleCloseHomeownerAccount = createEvent<HomeownerAccountCloseRequest>();
 
-const handleCloseHomeownerAccount =
-  domain.createEvent<HomeownerAccountCloseRequest>();
+const setVisibleCloseHomeownerAccountModal = createEvent<boolean>();
 
-const setVisibleCloseHomeownerAccountModal = domain.createEvent<boolean>();
-
-const closeHomeownerAccountFx = domain.createEffect<
+const closeHomeownerAccountFx = createEffect<
   HomeownerAccountCloseRequest,
   void,
   EffectFailDataAxiosError
 >(closeHomeownerAccount);
 
-const $isVisibleCloseHomeownerAccountModal = domain
-  .createStore<boolean>(false)
+const $isVisibleCloseHomeownerAccountModal = createStore<boolean>(false)
   .on(setVisibleCloseHomeownerAccountModal, (_, data) => data)
   .reset(closeHomeownerAccountFx.doneData);
 
-const $isForced = domain
-  .createStore<boolean>(false)
+const $isForced = createStore<boolean>(false)
   .on(onForced, () => true)
   .reset(handleConfirmationModalClose);
 
-const editHomeownerAccountFx = domain.createEffect<
+const editHomeownerAccountFx = createEffect<
   EditHomeownerRequestPayload,
   void,
   EffectFailDataAxiosErrorDataApartmentId
 >(putHomeownerAccount);
 
-const $samePersonalAccountNumderId = domain
-  .createStore<number | null>(null)
+const $samePersonalAccountNumderId = createStore<number | null>(null)
   .on(editHomeownerAccountFx.failData, (prev, errData) => {
     if (errData.response.status === 409) {
       return errData.response.data.error.Data.ApartmentId;

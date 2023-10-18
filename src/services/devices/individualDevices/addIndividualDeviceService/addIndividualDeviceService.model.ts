@@ -1,4 +1,5 @@
-import { combine, createDomain, sample } from 'effector';
+import { createEffect, createEvent, createStore } from 'effector';
+import { combine, sample } from 'effector';
 import { apartmentService } from 'services/apartments/apartmentService';
 import { displayContractorsService } from 'services/contractors/displayContractorsService';
 import { individualDeviceMountPlacesService } from 'services/devices/individualDeviceMountPlacesService';
@@ -14,43 +15,37 @@ import { createGate } from 'effector-react';
 import { documentService } from 'ui-kit/DocumentsService/DocumentsService.model';
 import { message } from 'antd';
 
-const domain = createDomain('addIndividualDeviceService');
-
 const PageGate = createGate();
 
-const handleGoPrevStage = domain.createEvent();
+const handleGoPrevStage = createEvent();
 
-const handleSubmitForm = domain.createEvent<CreateIndividualDeviceRequest>();
-const handleSubmitDocumentStage = domain.createEvent<DocumentStageForm>();
-const handleCreateDevice = domain.createEvent();
-const handleCloseModal = domain.createEvent();
+const handleSubmitForm = createEvent<CreateIndividualDeviceRequest>();
+const handleSubmitDocumentStage = createEvent<DocumentStageForm>();
+const handleCreateDevice = createEvent();
+const handleCloseModal = createEvent();
 
-const createIndividualDeviceFx = domain.createEffect<
+const createIndividualDeviceFx = createEffect<
   CreateIndividualDeviceRequest,
   MeteringDeviceResponse,
   EffectFailDataAxiosError
 >(createIndividualDevice);
 
-const $stageNumber = domain
-  .createStore<number>(1)
+const $stageNumber = createStore<number>(1)
   .on(handleSubmitForm, (prev) => prev + 1)
   .on(handleGoPrevStage, (prev) => prev - 1)
   .reset(PageGate.close);
 
-const $formData = domain
-  .createStore<CreateIndividualDeviceRequest | null>(null)
+const $formData = createStore<CreateIndividualDeviceRequest | null>(null)
   .on(handleSubmitForm, (prev, data) => {
     return { ...prev, ...data };
   })
   .reset(PageGate.close);
 
-const $documents = domain
-  .createStore<DocumentStageForm | null>(null)
+const $documents = createStore<DocumentStageForm | null>(null)
   .on(handleSubmitDocumentStage, (_, docs) => docs)
   .reset(PageGate.close);
 
-const $isModalOpen = domain
-  .createStore<boolean>(false)
+const $isModalOpen = createStore<boolean>(false)
   .on(handleSubmitDocumentStage, () => true)
   .on(handleCloseModal, () => false)
   .reset(PageGate.close);

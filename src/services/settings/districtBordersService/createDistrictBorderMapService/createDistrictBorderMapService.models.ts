@@ -1,4 +1,4 @@
-import { createDomain, sample } from 'effector';
+import { createEvent, createStore, sample } from 'effector';
 import { createGate } from 'effector-react';
 import { createForm } from 'effector-forms';
 import { message } from 'antd';
@@ -10,8 +10,6 @@ import {
 } from './createDistrictBorderMapService.api';
 import { CreatingDistrictPayload } from './createDistrictBorderMapService.types';
 import { currentUserService } from 'services/currentUserService';
-
-const domain = createDomain('createDistrictBorderMap');
 
 const CreateDistrictGate = createGate();
 
@@ -31,10 +29,11 @@ const createDistrictForm = createForm({
   },
 });
 
-const setDistrictPayload = domain.createEvent<CreatingDistrictPayload>();
+const setDistrictPayload = createEvent<CreatingDistrictPayload>();
 
-const $preselectedDistrictPayload = domain
-  .createStore<CreatingDistrictPayload | null>(null)
+const $preselectedDistrictPayload = createStore<CreatingDistrictPayload | null>(
+  null,
+)
   .on(setDistrictPayload, (_, data) => data)
   .reset(CreateDistrictGate.close);
 

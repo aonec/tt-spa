@@ -61,18 +61,12 @@ export const Router: FC<RouterProps> = ({
   isRolesLoadded,
   featureToggles,
 }) => {
-  const redirectRoute = roles.length
-    ? roles?.includes(
-        ESecuredIdentityRoleName.SeniorOperator ||
-          ESecuredIdentityRoleName.Operator,
-      )
-      ? '/meters/apartments'
-      : '/tasks/'
-    : '/login';
+  const isAdministrator =
+    roles.includes(ESecuredIdentityRoleName.Administrator) ||
+    roles.includes(
+      ESecuredIdentityRoleName.ManagingFirmSpectatingAdministrator,
+    );
 
-  const isAdministrator = roles.includes(
-    ESecuredIdentityRoleName.Administrator,
-  );
   const isSeniorOperator = roles.includes(
     ESecuredIdentityRoleName.SeniorOperator,
   );
@@ -110,6 +104,14 @@ export const Router: FC<RouterProps> = ({
     isDispatcher ||
     isSpectator ||
     isSpectatorRestricted;
+
+  const redirectRoute = (() => {
+    if (!roles.length) return '/login';
+
+    const defaultPath = '/tasks/';
+
+    return isSeniorOperator || isOperator ? '/meters/apartments' : defaultPath;
+  })();
 
   const isShowNodeArchivePage =
     isAdministrator ||

@@ -1,4 +1,5 @@
-import { createDomain, forward } from 'effector';
+import { createEffect, createEvent, createStore } from 'effector';
+import { forward } from 'effector';
 import { createGate } from 'effector-react';
 import {
   ESecuredIdentityRoleName,
@@ -13,16 +14,14 @@ import {
 import { consolidatedReportService } from './consolidatedReportService';
 import { currentUserService } from 'services/currentUserService';
 
-const domain = createDomain('objectProfileService');
 const ObjectProfileIdGate = createGate<{ objectId: number }>();
 
-const handleFetchHousingStock = domain.createEvent<number>();
+const handleFetchHousingStock = createEvent<number>();
 
-const getHousingStockFx = domain.createEffect<number, HousingStockResponse>(
+const getHousingStockFx = createEffect<number, HousingStockResponse>(
   fetchHousingStock,
 );
-const $housingStock = domain
-  .createStore<HousingStockResponse | null>(null)
+const $housingStock = createStore<HousingStockResponse | null>(null)
   .on(getHousingStockFx.doneData, (_, housingStock) => housingStock)
   .reset(ObjectProfileIdGate.close);
 
@@ -37,18 +36,20 @@ const $housingStockId = $housingStock.map((housingStock) => {
 const $isAdministrator = currentUserService.outputs.$currentUser.map((user) => {
   const roles = user?.roles || [];
   const rolesKeys = roles.map(({ key }) => key);
-  const isAdministrator = rolesKeys.includes(
-    ESecuredIdentityRoleName.Administrator,
-  );
+  const isAdministrator =
+    rolesKeys.includes(ESecuredIdentityRoleName.Administrator) ||
+    rolesKeys.includes(
+      ESecuredIdentityRoleName.ManagingFirmSpectatingAdministrator,
+    );
 
   return isAdministrator;
 });
 
-const $resourceDisconnections = domain.createStore<
-  ResourceDisconnectingResponse[]
->([]);
+const $resourceDisconnections = createStore<ResourceDisconnectingResponse[]>(
+  [],
+);
 
-const getResourceDisconnectionsFx = domain.createEffect<
+const getResourceDisconnectionsFx = createEffect<
   number,
   ResourceDisconnectingResponsePagedList
 >(fetchResourceDisconnectionOnHousingStock);

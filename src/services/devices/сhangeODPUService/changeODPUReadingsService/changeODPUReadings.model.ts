@@ -1,14 +1,12 @@
-import { createDomain, forward } from 'effector';
+import { createEffect, createStore } from 'effector';
+import { forward } from 'effector';
 import { createGate } from 'effector-react';
 import { GetHousingMeteringDeviceReadingsResponse } from 'api/types';
 import { fetchOldReadings } from './changeODPUReadings.api';
 import { prepareData } from './changeODPUReadings.utils';
 import { PreparedHousingMeteringDeviceReadings } from './changeODPUReadingsService.types';
 
-const domain = createDomain('ChangeODPUReadingsService');
-const $oldReadings = domain.createStore<
-  PreparedHousingMeteringDeviceReadings[]
->([]);
+const $oldReadings = createStore<PreparedHousingMeteringDeviceReadings[]>([]);
 
 const $newDeviceInitialReadings = $oldReadings.map((readings) =>
   readings.map((elem) => ({
@@ -20,7 +18,7 @@ const $newDeviceInitialReadings = $oldReadings.map((readings) =>
   })),
 );
 
-const getOldReadings = domain.createEffect<
+const getOldReadings = createEffect<
   number,
   GetHousingMeteringDeviceReadingsResponse
 >(fetchOldReadings);

@@ -57,6 +57,7 @@ export const ResourceDisablingScheduleContainer = () => {
 
   const isPermitionToChangeResourceDisabling = usePermission([
     ESecuredIdentityRoleName.Administrator,
+    ESecuredIdentityRoleName.ManagingFirmSpectatingAdministrator,
   ]);
 
   return (

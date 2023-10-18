@@ -35,6 +35,7 @@ export const DocumentsUploadContainer: FC<DocumentsUploadContainerProps> = ({
     ESecuredIdentityRoleName.ManagingFirmExecutor,
     ESecuredIdentityRoleName.ManagingFirmDispatcher,
     ESecuredIdentityRoleName.Controller,
+    ESecuredIdentityRoleName.ManagingFirmSpectatingAdministrator,
   ]);
 
   const { handleFile, isLoading, removeDocument } = useDocumentsUpload(

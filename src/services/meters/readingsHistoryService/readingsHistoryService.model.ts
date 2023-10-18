@@ -1,36 +1,34 @@
+import { createEffect, createEvent, createStore } from 'effector';
 import { createGate } from 'effector-react';
-import { sample, createDomain, combine } from 'effector';
+import { sample, combine } from 'effector';
 import { IndividualDeviceReadingsHistoryResponse } from 'api/types';
 import { EffectFailDataAxiosError } from 'types';
 import { displayIndividualDeviceAndNamesService } from 'services/devices/individualDevices/displayIndividualDeviceAndNamesService';
 import { getReadingsHistory } from './readingsHistoryService.api';
 
-const domain = createDomain('readingsHistory');
-
 const ReadingHistoryGate = createGate<{ deviceId: number }>();
 
-const fetchReadingHistoryFx = domain.createEffect<
+const fetchReadingHistoryFx = createEffect<
   number,
   IndividualDeviceReadingsHistoryResponse,
   EffectFailDataAxiosError
 >(getReadingsHistory);
 
-const refetchReadingHistory = domain.createEvent<number>();
+const refetchReadingHistory = createEvent<number>();
 
-const openReadingsHistoryModal = domain.createEvent<number>();
-const closeReadingsHistoryModal = domain.createEvent();
+const openReadingsHistoryModal = createEvent<number>();
+const closeReadingsHistoryModal = createEvent();
 
-const $readingsHistoryModalDeviceId = domain
-  .createStore<number | null>(null)
+const $readingsHistoryModalDeviceId = createStore<number | null>(null)
   .on(openReadingsHistoryModal, (_, deviceId) => deviceId)
   .reset(closeReadingsHistoryModal);
 
 const $isReadingsHstoryModalOpen = $readingsHistoryModalDeviceId.map(Boolean);
 
-const $readingHistory = domain
-  .createStore<IndividualDeviceReadingsHistoryResponse | null>(null)
-  .on(fetchReadingHistoryFx.doneData, (_, historyData) => historyData)
-  .reset(ReadingHistoryGate.close);
+const $readingHistory =
+  createStore<IndividualDeviceReadingsHistoryResponse | null>(null)
+    .on(fetchReadingHistoryFx.doneData, (_, historyData) => historyData)
+    .reset(ReadingHistoryGate.close);
 
 sample({
   clock: ReadingHistoryGate.open.map(({ deviceId }) => deviceId),

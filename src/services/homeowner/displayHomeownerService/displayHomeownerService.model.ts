@@ -1,19 +1,19 @@
-import { createDomain } from 'effector';
+import { createEffect, createStore } from 'effector';
+
 import { createGate } from 'effector-react';
 import { HomeownerAccountResponse } from 'api/types';
 import { getHomeownerAccount } from './displayHomeownerService.api';
 
-const domain = createDomain('displayHomeownerService');
-
 const HomeownerGate = createGate<{ id: string }>();
 
-const fetchHomeownerFx = domain.createEffect<string, HomeownerAccountResponse>(
+const fetchHomeownerFx = createEffect<string, HomeownerAccountResponse>(
   getHomeownerAccount,
 );
 
-const $homeowner = domain
-  .createStore<HomeownerAccountResponse | null>(null)
-  .on(fetchHomeownerFx.doneData, (_, homeowner) => homeowner);
+const $homeowner = createStore<HomeownerAccountResponse | null>(null).on(
+  fetchHomeownerFx.doneData,
+  (_, homeowner) => homeowner,
+);
 
 export const displayHomeownerService = {
   inputs: {},

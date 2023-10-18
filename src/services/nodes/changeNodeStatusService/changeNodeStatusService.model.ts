@@ -1,5 +1,6 @@
+import { createEffect, createEvent, createStore } from 'effector';
 import { message } from 'antd';
-import { createDomain, forward, sample } from 'effector';
+import { forward, sample } from 'effector';
 import { PipeNodeResponse } from 'api/types';
 import { EffectFailDataAxiosError } from 'types';
 import { fetchChangeCommercialStatus } from './changeNodeStatusService.api';
@@ -9,20 +10,17 @@ import {
 } from './changeNodeStatusService.types';
 import { getChangeNodeStatusPayload } from './changeNodeStatusService.utils';
 
-const domain = createDomain('changeNodeStatusService');
+const openModal = createEvent<PipeNodeResponse>();
+const closeModal = createEvent();
 
-const openModal = domain.createEvent<PipeNodeResponse>();
-const closeModal = domain.createEvent();
-
-const $node = domain
-  .createStore<PipeNodeResponse | null>(null)
+const $node = createStore<PipeNodeResponse | null>(null)
   .on(openModal, (_, node) => node)
   .reset(closeModal);
 
 const $isOpen = $node.map((node) => Boolean(node));
 
-const changeNodeStatus = domain.createEvent<ChangeNodeStatusFormPayload>();
-const changeNodeStatusFx = domain.createEffect<
+const changeNodeStatus = createEvent<ChangeNodeStatusFormPayload>();
+const changeNodeStatusFx = createEffect<
   ChangeNodeStatusPayload,
   void,
   EffectFailDataAxiosError

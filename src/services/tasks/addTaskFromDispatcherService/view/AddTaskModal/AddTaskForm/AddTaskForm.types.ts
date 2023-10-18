@@ -1,6 +1,5 @@
 import {
   EisTaskType,
-  ErpExecutorResponse,
   ErpSourceResponse,
   ErpTaskReasonGroupResponse,
   ResourceDisconnectingResponse,

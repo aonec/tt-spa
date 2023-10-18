@@ -1,13 +1,12 @@
-import { createDomain, forward } from 'effector';
+import { createEffect, createStore } from 'effector';
+import { forward } from 'effector';
 import { createGate } from 'effector-react';
 import { InspectorResponse } from 'api/types';
 import { getInspector } from './inspectorService.api';
 
-const domain = createDomain('inspectorService');
+const $inspector = createStore<InspectorResponse | null>(null);
 
-const $inspector = domain.createStore<InspectorResponse | null>(null);
-
-const fetchInspectorFx = domain.createEffect<number, InspectorResponse>();
+const fetchInspectorFx = createEffect<number, InspectorResponse>();
 
 const InspectorGate = createGate<{ id: number }>();
 

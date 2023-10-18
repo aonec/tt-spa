@@ -1,4 +1,5 @@
-import { createDomain, forward, sample } from 'effector';
+import { createEffect, createEvent, createStore } from 'effector';
+import { forward, sample } from 'effector';
 import { createGate } from 'effector-react';
 import {
   IndividualDeviceListResponseFromDevicePagePagedList,
@@ -11,42 +12,39 @@ import {
 } from './displayIndividualDeviceAndNamesService.api';
 import { GetMeteringDevicesModelsRequest } from './displayIndividualDeviceAndNamesService.types';
 
-const domain = createDomain('displayIndividualDeviceAndNamesService');
-
 const IndividualDeviceGate = createGate<{ id: number }>();
 
-const handleFetchModels = domain.createEvent<string>();
-const handleFetchIndividualDevice = domain.createEvent<number>();
-const handleFetchSerialNumberForCheck = domain.createEvent<string>();
+const handleFetchModels = createEvent<string>();
+const handleFetchIndividualDevice = createEvent<number>();
+const handleFetchSerialNumberForCheck = createEvent<string>();
 
-const fetchIndividualDeviceFx = domain.createEffect<
-  number,
-  IndividualDeviceResponse
->(getIndividualDevice);
+const fetchIndividualDeviceFx = createEffect<number, IndividualDeviceResponse>(
+  getIndividualDevice,
+);
 
-const fetchIndividualDeviceNamesFx = domain.createEffect<
+const fetchIndividualDeviceNamesFx = createEffect<
   GetMeteringDevicesModelsRequest,
   string[]
 >(getIndividualDevicesModels);
 
-const fetchSerialNumberForCheckFx = domain.createEffect<
+const fetchSerialNumberForCheckFx = createEffect<
   string,
   IndividualDeviceListResponseFromDevicePagePagedList
 >(getSerialNumberForCheck);
 
-const $individualDevice = domain
-  .createStore<IndividualDeviceResponse | null>(null)
+const $individualDevice = createStore<IndividualDeviceResponse | null>(null)
   .on(fetchIndividualDeviceFx.doneData, (_, device) => device)
   .reset(IndividualDeviceGate.close);
 
-const $individualDevicesNames = domain
-  .createStore<string[] | null>(null)
-  .on(fetchIndividualDeviceNamesFx.doneData, (_, value) => value);
+const $individualDevicesNames = createStore<string[] | null>(null).on(
+  fetchIndividualDeviceNamesFx.doneData,
+  (_, value) => value,
+);
 
-const $serialNumberForChecking = domain
-  .createStore<IndividualDeviceListResponseFromDevicePagePagedList | null>(null)
-  .on(fetchSerialNumberForCheckFx.doneData, (_, data) => data)
-  .reset(fetchSerialNumberForCheckFx);
+const $serialNumberForChecking =
+  createStore<IndividualDeviceListResponseFromDevicePagePagedList | null>(null)
+    .on(fetchSerialNumberForCheckFx.doneData, (_, data) => data)
+    .reset(fetchSerialNumberForCheckFx);
 
 const $isIndividualDeviceLoading = fetchIndividualDeviceFx.pending;
 const $isIndividualDeviceNamesLoading = fetchIndividualDeviceNamesFx.pending;

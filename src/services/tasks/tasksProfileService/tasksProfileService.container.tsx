@@ -79,6 +79,7 @@ export const TasksProfileContainer = () => {
   const isSpectator = usePermission([
     ESecuredIdentityRoleName.ManagingFirmSpectator,
     ESecuredIdentityRoleName.ManagingFirmSpectatorRestricted,
+    ESecuredIdentityRoleName.ManagingFirmSpectatingAdministrator,
   ]);
 
   const { apartmentId, housingStockId } = queryString.parse(

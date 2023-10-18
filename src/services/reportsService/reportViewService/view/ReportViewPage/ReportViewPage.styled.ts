@@ -1,17 +1,14 @@
 import styled from 'styled-components';
 import { Button } from 'ui-kit/Button';
+import { PageHeader } from 'ui-kit/shared/PageHeader';
 
 export const Wrapper = styled.div`
   width: 100%;
   max-width: 1200px;
 `;
 
-export const HeaderWrapper = styled.div`
-  margin-top: 42px;
-`;
-
 export const ExtendedSearchWrapper = styled.div`
-  margin-top: 42px;
+  margin-top: 32px;
   margin-bottom: 16px;
 `;
 
@@ -58,4 +55,8 @@ export const HeaderTitleWrapper = styled.div`
 
 export const ButtonSC = styled(Button)`
   padding: 0 34px;
+`;
+
+export const PageHaderSC = styled(PageHeader)`
+  margin-top: 16px;
 `;

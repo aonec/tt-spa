@@ -1,23 +1,21 @@
-import { createDomain, sample } from 'effector';
+import { createEffect, createEvent, createStore } from 'effector';
+import { sample } from 'effector';
 import { UpdateNodeCheckRequest } from 'api/types';
 import { fetchCreateNodeCheck } from './createNodeCheckService.api';
 import { CreateNodeCheckPayload } from './createNodeCheckService.types';
 import { message } from 'antd';
 
-const domain = createDomain('createNodeCheckService');
+const openModal = createEvent<number>();
+const closeModal = createEvent();
 
-const openModal = domain.createEvent<number>();
-const closeModal = domain.createEvent();
-
-const $nodeId = domain
-  .createStore<number | null>(null)
+const $nodeId = createStore<number | null>(null)
   .on(openModal, (_, nodeId) => nodeId)
   .reset(closeModal);
 
 const $isOpen = $nodeId.map(Boolean);
 
-const createNodeCheck = domain.createEvent<UpdateNodeCheckRequest>();
-const createNodeCheckFx = domain.createEffect<CreateNodeCheckPayload, void>(
+const createNodeCheck = createEvent<UpdateNodeCheckRequest>();
+const createNodeCheckFx = createEffect<CreateNodeCheckPayload, void>(
   fetchCreateNodeCheck,
 );
 

@@ -35,12 +35,14 @@ export const HousingMeteringDeviceProfileContainer = () => {
   const isPermitionToCheckHousingMeteringDevice = usePermission([
     ESecuredIdentityRoleName.Administrator,
     ESecuredIdentityRoleName.ManagingFirmExecutor,
+    ESecuredIdentityRoleName.ManagingFirmSpectatingAdministrator,
   ]);
   const isPermitionToCloseHousingMeteringDevice =
     isPermitionToCheckHousingMeteringDevice;
   const isPermitionToEditHousingMeteringDevice = usePermission([
     ESecuredIdentityRoleName.Administrator,
     ESecuredIdentityRoleName.ManagingFirmExecutor,
+    ESecuredIdentityRoleName.ManagingFirmSpectatingAdministrator,
     ESecuredIdentityRoleName.SeniorOperator,
     ESecuredIdentityRoleName.Operator,
   ]);

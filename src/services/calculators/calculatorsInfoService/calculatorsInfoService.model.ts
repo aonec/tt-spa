@@ -1,19 +1,17 @@
-import { createDomain, forward } from 'effector';
+import { createEffect, createStore } from 'effector';
+import { forward } from 'effector';
 import { createGate } from 'effector-react';
 import { CalculatorInfoListResponse } from 'api/types';
 import { getCalculatorInfos } from './calculatorsInfoService.api';
 
-const domain = createDomain('calculatorsInfoService');
-
 const CalculatorInfosGate = createGate();
 
-const fetchCalculatorTypesFx = domain.createEffect<
+const fetchCalculatorTypesFx = createEffect<
   void,
   CalculatorInfoListResponse[] | null
 >(getCalculatorInfos);
 
-const $calculatorTypes = domain
-  .createStore<CalculatorInfoListResponse[] | null>(null)
+const $calculatorTypes = createStore<CalculatorInfoListResponse[] | null>(null)
   .on(fetchCalculatorTypesFx.doneData, (_, data) => {
     return data;
   })

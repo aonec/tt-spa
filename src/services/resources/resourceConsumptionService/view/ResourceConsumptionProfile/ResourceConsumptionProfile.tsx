@@ -4,7 +4,11 @@ import { ResourceConsumptionGraph } from '../ResourceConsumptionGraph';
 import { SelectResourceConsumptionType } from '../ResourceConsumptionGraph/SelectResourceConsumptionType';
 import { SelectResource } from '../SelectResource';
 import { initialSelectedAddresses } from './ResourceConsumptionProfile.constants';
-import { GraphWrapper, Wrapper } from './ResourceConsumptionProfile.styled';
+import {
+  GraphWrapper,
+  HousingDataEmptyAlert,
+  Wrapper,
+} from './ResourceConsumptionProfile.styled';
 import {
   ResourceConsumptionProfileProps,
   SelectedAddresses,
@@ -29,11 +33,12 @@ export const ResourceConsumptionProfile: FC<
   isPrevHousingLoading,
   isPrevNormativeAndSubscriberLoading,
   isAdditionalAddressSelected,
+  dynamicMinMax,
+  isOnlyHousingDataEmpty,
 }) => {
   const [selectedAddresses, setSelectedAddresses] = useState<SelectedAddresses>(
     initialSelectedAddresses,
   );
-
   useEffect(() => {
     setSelectedAddresses(initialSelectedAddresses);
   }, [housingConsumptionData?.additionalAddress]);
@@ -56,35 +61,34 @@ export const ResourceConsumptionProfile: FC<
             checked={selectedGraphTypes}
             selectedAddresses={selectedAddresses}
             isAdditionalAddressSelected={isAdditionalAddressSelected}
+            dynamicMinMax={dynamicMinMax}
           />
 
-          {housingConsumptionData &&
-            Boolean(
-              housingConsumptionData?.currentMonthData?.housing?.length,
-            ) && (
-              <SelectResourceConsumptionType
-                disabled={getDisabledGraphTypes(housingConsumptionData)}
-                checked={selectedGraphTypes}
-                setCheckedGraphTypes={setSelectedGraphTypes}
-                resource={resource}
-                isAdditionalAddress={isAdditionalAddressSelected}
-                currentAddress={'Основные адреса'}
-                additionalAddress={'Адреса для сравнения'}
-                selectedAddresses={selectedAddresses}
-                setSelectedAddresses={(selected) =>
-                  setSelectedAddresses(selected)
-                }
-                isHousingLoading={isHousingLoading}
-                isNormativeAndSubscriberLoading={
-                  isNormativeAndSubscriberLoading
-                }
-                isPrevHousingLoading={isPrevHousingLoading}
-                isPrevNormativeAndSubscriberLoading={
-                  isPrevNormativeAndSubscriberLoading
-                }
-                consumptionData={housingConsumptionData}
-              />
-            )}
+          {isOnlyHousingDataEmpty && (
+            <HousingDataEmptyAlert>
+              Нет данных по общедомовому потреблению за выбранный период.
+              Пожалуйста, измените период для формирования новой статистики.
+            </HousingDataEmptyAlert>
+          )}
+
+          <SelectResourceConsumptionType
+            disabled={getDisabledGraphTypes(housingConsumptionData)}
+            checked={selectedGraphTypes}
+            setCheckedGraphTypes={setSelectedGraphTypes}
+            resource={resource}
+            isAdditionalAddress={isAdditionalAddressSelected}
+            currentAddress={'Основные адреса'}
+            additionalAddress={'Адреса для сравнения'}
+            selectedAddresses={selectedAddresses}
+            setSelectedAddresses={(selected) => setSelectedAddresses(selected)}
+            isHousingLoading={isHousingLoading}
+            isNormativeAndSubscriberLoading={isNormativeAndSubscriberLoading}
+            isPrevHousingLoading={isPrevHousingLoading}
+            isPrevNormativeAndSubscriberLoading={
+              isPrevNormativeAndSubscriberLoading
+            }
+            consumptionData={housingConsumptionData}
+          />
         </WithLoader>
       </GraphWrapper>
       <ResourceConsumptionFilterContainer />

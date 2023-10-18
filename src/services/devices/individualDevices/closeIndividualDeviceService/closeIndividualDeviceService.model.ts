@@ -1,4 +1,5 @@
-import { createDomain, sample } from 'effector';
+import { createEvent, createStore } from 'effector';
+import { sample } from 'effector';
 import { EClosingReason, IndividualDeviceListItemResponse } from 'api/types';
 import { closeIndivididualDeviceMutation } from './closeIndividualDeviceService.api';
 import { message } from 'antd';
@@ -7,20 +8,18 @@ import dayjs from 'api/dayjs';
 import { Document } from 'ui-kit/DocumentsService';
 import { apartmentIndividualDevicesMetersService } from 'services/meters/apartmentIndividualDevicesMetersService';
 
-const domain = createDomain('closeIndividualDeviceService');
+const closeModal = createEvent();
+const openModal = createEvent<IndividualDeviceListItemResponse>();
 
-const closeModal = domain.createEvent();
-const openModal = domain.createEvent<IndividualDeviceListItemResponse>();
-
-const $closingDevice = domain
-  .createStore<IndividualDeviceListItemResponse | null>(null)
+const $closingDevice = createStore<IndividualDeviceListItemResponse | null>(
+  null,
+)
   .on(openModal, (_, device) => device)
   .reset(closeModal);
 
 const $isOpen = $closingDevice.map(Boolean);
 
 const closeIndividualDeviceForm = createForm({
-  domain,
   fields: {
     closingDate: {
       init: dayjs() as dayjs.Dayjs | null,

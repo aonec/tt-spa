@@ -1,4 +1,5 @@
-import { createDomain, sample } from 'effector';
+import { createEffect, createEvent, createStore } from 'effector';
+import { sample } from 'effector';
 import { createForm } from 'effector-forms';
 import { message } from 'antd';
 import { displayInspectorsService } from 'services/inspectors/displayInspectorsService/displayInspectorsService.models';
@@ -9,14 +10,12 @@ import {
 } from './inspectorReassignmentService.types';
 import { searchInspectorsHousingStockService } from '../searchInspectorsHousingStocksService/searchInspectorsHousingStockService.models';
 
-const domain = createDomain('inspectorrRassignmentService');
+const openModal = createEvent();
+const closeModal = createEvent();
 
-const openModal = domain.createEvent();
-const closeModal = domain.createEvent();
+const saveInspectorReassing = createEvent();
 
-const saveInspectorReassing = domain.createEvent();
-
-const reassingInspectorsFx = domain.createEffect<PatchInspectorPayload, void>(
+const reassingInspectorsFx = createEffect<PatchInspectorPayload, void>(
   reassingHousingStockInspector,
 );
 
@@ -45,8 +44,7 @@ const reassingmentInspectorsForm = createForm({
   },
 });
 
-const $isModalOpen = domain
-  .createStore(false)
+const $isModalOpen = createStore(false)
   .on(openModal, () => true)
   .reset(closeModal);
 
