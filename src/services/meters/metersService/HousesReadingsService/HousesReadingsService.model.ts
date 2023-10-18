@@ -1,5 +1,6 @@
+import { createEffect, createEvent, createStore } from 'effector';
 import { individualDeviceMetersInputService } from 'services/meters/individualDeviceMetersInputService';
-import { combine, createDomain, forward, guard, sample } from 'effector';
+import { combine, forward, guard, sample } from 'effector';
 import { createGate } from 'effector-react';
 import {
   GetHousingStocksListRequestPayload,
@@ -20,29 +21,26 @@ import { managementFirmConsumptionRatesService } from 'services/meters/managemen
 import { inspectorService } from 'services/inspectors/inspectorService';
 import { readingsHistoryService } from 'services/meters/readingsHistoryService/readingsHistoryService.model';
 
-const domain = createDomain('housesReadingsService');
-
 const HousingStockGate = createGate<{ housingStockId: number | null }>();
 
 const handleSearchHousingStock =
-  domain.createEvent<GetHousingStocksListRequestPayload>();
+  createEvent<GetHousingStocksListRequestPayload>();
 
-const loadNextPageOfIndividualDevicesList = domain.createEvent();
+const loadNextPageOfIndividualDevicesList = createEvent();
 
-const fetchIndividualDevicesFx = domain.createEffect<
+const fetchIndividualDevicesFx = createEffect<
   GetIndividualDevicesListRequestPayload,
   IndividualDeviceListItemResponsePagedList
 >(getIndividualDevicesList);
 
 const $housingStock = getHousingStockQuery.$data;
 
-const $individualDevicesPagedList = domain
-  .createStore<IndividualDeviceListItemResponsePagedList | null>(null)
-  .on(fetchIndividualDevicesFx.doneData, (_, data) => data)
-  .reset(HousingStockGate.close, $housingStock);
+const $individualDevicesPagedList =
+  createStore<IndividualDeviceListItemResponsePagedList | null>(null)
+    .on(fetchIndividualDevicesFx.doneData, (_, data) => data)
+    .reset(HousingStockGate.close, $housingStock);
 
-const $individualDevices = domain
-  .createStore<IndividualDeviceListItemResponse[]>([])
+const $individualDevices = createStore<IndividualDeviceListItemResponse[]>([])
   .on(fetchIndividualDevicesFx.doneData, (prev, { items }) =>
     items ? [...prev, ...items] : prev,
   )
@@ -60,8 +58,7 @@ const $individualDevices = domain
     },
   );
 
-const $individualDevicesPageNumber = domain
-  .createStore(1)
+const $individualDevicesPageNumber = createStore(1)
   .on(fetchIndividualDevicesFx.doneData, (pageNumber) => pageNumber + 1)
   .reset(HousingStockGate.close, $housingStock);
 

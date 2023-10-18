@@ -1,21 +1,15 @@
-import { createDomain, forward } from 'effector';
+import { createEffect, createStore } from 'effector';
+import { forward } from 'effector';
 import { createGate } from 'effector-react';
 import { InspectorResponse } from 'api/types';
 import { getInspectors } from './displayInspectorsService.api';
 import { sortBy } from 'lodash';
 
-const displayInspectorsServiceDomain = createDomain(
-  'displayInspectorsServiceDomain',
+const $inspectorsList = createStore<InspectorResponse[] | null>(null);
+
+const fetchInspectorsListFx = createEffect<void, InspectorResponse[] | null>(
+  getInspectors,
 );
-
-const $inspectorsList = displayInspectorsServiceDomain.createStore<
-  InspectorResponse[] | null
->(null);
-
-const fetchInspectorsListFx = displayInspectorsServiceDomain.createEffect<
-  void,
-  InspectorResponse[] | null
->(getInspectors);
 
 const $loading = fetchInspectorsListFx.pending;
 

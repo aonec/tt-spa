@@ -1,21 +1,19 @@
-import { createDomain, sample } from 'effector';
+import { createEvent, createStore } from 'effector';
+import { sample } from 'effector';
 import { message } from 'antd';
 import { removeAppointmentMutation } from './deleteAppointmentService.api';
 import { apartmentSealService } from '../apartmentSealService';
 
-const domain = createDomain('deleteAppointmentService');
+const openModal = createEvent<string>();
+const closeModal = createEvent();
 
-const openModal = domain.createEvent<string>();
-const closeModal = domain.createEvent();
-
-const $appointmentId = domain
-  .createStore<string | null>(null)
+const $appointmentId = createStore<string | null>(null)
   .on(openModal, (_, id) => id)
   .reset(closeModal);
 
 const $isOpen = $appointmentId.map(Boolean);
 
-const removeAppointment = domain.createEvent();
+const removeAppointment = createEvent();
 
 sample({
   source: $appointmentId,

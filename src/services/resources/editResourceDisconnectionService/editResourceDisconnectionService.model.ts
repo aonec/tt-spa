@@ -1,4 +1,5 @@
-import { createDomain, guard, sample } from 'effector';
+import { createEffect, createEvent, createStore } from 'effector';
+import { guard, sample } from 'effector';
 import {
   ResourceDisconnectingResponse,
   ResourceDisconnectingUpdateRequest,
@@ -15,56 +16,56 @@ import {
 import { EffectFailDataAxiosError } from 'types';
 import { message } from 'antd';
 
-const domain = createDomain('editResourceDisconnectionService');
+const openEditModal = createEvent<string>();
+const clearDisconnectionId = createEvent();
 
-const openEditModal = domain.createEvent<string>();
-const clearDisconnectionId = domain.createEvent();
-
-const updateDocument = domain.createEvent<number>();
-const updateDocumentFx = domain.createEffect<UpdateDocumentPayload, void>(
+const updateDocument = createEvent<number>();
+const updateDocumentFx = createEffect<UpdateDocumentPayload, void>(
   fetchUpdateResourceDisconnectingDocument,
 );
 
 const editResourceDisconnection =
-  domain.createEvent<ResourceDisconnectingUpdateRequest>();
+  createEvent<ResourceDisconnectingUpdateRequest>();
 
-const editResourceDisconnectionFx = domain.createEffect<
+const editResourceDisconnectionFx = createEffect<
   ResourceDisconnectingUpdatePayload,
   void,
   EffectFailDataAxiosError
 >(fetchEditResourceDisconnection);
 
-const getResourceDisconnectionFx = domain.createEffect(
-  fetchResourceDisconnection,
-);
+const getResourceDisconnectionFx = createEffect(fetchResourceDisconnection);
 
-const $editedResourceDisconnectionId = domain
-  .createStore<string>('')
+const $editedResourceDisconnectionId = createStore<string>('')
   .on(openEditModal, (_, id) => id)
   .reset(clearDisconnectionId);
 
 const $isEdit = $editedResourceDisconnectionId.map((id) => Boolean(id));
 
-const clearResourceDisconnection = domain.createEvent();
+const clearResourceDisconnection = createEvent();
 
-const $resourceDisconnection = domain
-  .createStore<ResourceDisconnectingResponse | null>(null)
-  .on(getResourceDisconnectionFx.doneData, (_, disconnection) => disconnection)
-  .reset(clearResourceDisconnection);
+const $resourceDisconnection =
+  createStore<ResourceDisconnectingResponse | null>(null)
+    .on(
+      getResourceDisconnectionFx.doneData,
+      (_, disconnection) => disconnection,
+    )
+    .reset(clearResourceDisconnection);
 
 const $isDisconectionLoading = getResourceDisconnectionFx.pending;
 
 const setEditResourceDisconnectionPayload =
-  domain.createEvent<ResourceDisconnectingUpdatePayload>();
-const $editResourceDisconnectionPayload = domain
-  .createStore<ResourceDisconnectingUpdatePayload | null>(null)
-  .on(setEditResourceDisconnectionPayload, (_, data) => {
-    const { id } = data;
-    if (!id) {
-      return null;
-    }
-    return data;
-  });
+  createEvent<ResourceDisconnectingUpdatePayload>();
+const $editResourceDisconnectionPayload =
+  createStore<ResourceDisconnectingUpdatePayload | null>(null).on(
+    setEditResourceDisconnectionPayload,
+    (_, data) => {
+      const { id } = data;
+      if (!id) {
+        return null;
+      }
+      return data;
+    },
+  );
 
 sample({
   clock: guard({

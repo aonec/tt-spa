@@ -1,4 +1,5 @@
-import { createDomain, guard, sample } from 'effector';
+import { createEffect, createEvent, createStore } from 'effector';
+import { guard, sample } from 'effector';
 import {
   HouseManagementResponse,
   HousingStockResponse,
@@ -13,43 +14,40 @@ import {
 } from './closedIndividualDevicesFormService.api';
 import { UnloadingType } from './closedIndividualDevicesFormService.types';
 
-const domain = createDomain('closedIndividualDevicesFormService');
+const handleFetchHousingStockData = createEvent<number>();
 
-const handleFetchHousingStockData = domain.createEvent<number>();
+const setUnloadSelectType = createEvent<UnloadingType>();
 
-const setUnloadSelectType = domain.createEvent<UnloadingType>();
+const $unloadSelectType = createStore<UnloadingType | null>(null).on(
+  setUnloadSelectType,
+  (_, unloadType) => unloadType,
+);
 
-const $unloadSelectType = domain
-  .createStore<UnloadingType | null>(null)
-  .on(setUnloadSelectType, (_, unloadType) => unloadType);
-
-const fetchAdressesFx = domain.createEffect<
+const fetchAdressesFx = createEffect<
   string,
   StreetWithBuildingNumbersResponsePagedList
 >(getAdresses);
 
-const selectCity = domain.createEvent<string>();
+const selectCity = createEvent<string>();
 
-const $selectedCity = domain
-  .createStore<string | null>(null)
-  .on(selectCity, (_, city) => city);
+const $selectedCity = createStore<string | null>(null).on(
+  selectCity,
+  (_, city) => city,
+);
 
-const fetchHousingStockDataFx = domain.createEffect<
-  number,
-  HousingStockResponse
->(getHousingStockData);
+const fetchHousingStockDataFx = createEffect<number, HousingStockResponse>(
+  getHousingStockData,
+);
 
 sample({
   clock: handleFetchHousingStockData,
   target: fetchHousingStockDataFx,
 });
 
-const $reopenReportsHousingStockCity = domain
-  .createStore<string | null>(null)
-  .on(
-    fetchHousingStockDataFx.doneData,
-    (_, data) => data.address?.mainAddress?.city || null,
-  );
+const $reopenReportsHousingStockCity = createStore<string | null>(null).on(
+  fetchHousingStockDataFx.doneData,
+  (_, data) => data.address?.mainAddress?.city || null,
+);
 
 sample({
   clock: $selectedCity,
@@ -63,10 +61,9 @@ sample({
   target: selectCity,
 });
 
-const fetchOrganzationFx = domain.createEffect<
-  void,
-  OrganizationResponsePagedList
->(getOrganizations);
+const fetchOrganzationFx = createEffect<void, OrganizationResponsePagedList>(
+  getOrganizations,
+);
 
 guard({
   source: $unloadSelectType,
@@ -74,7 +71,7 @@ guard({
   target: fetchOrganzationFx,
 });
 
-const fetchHouseManagementsFx = domain.createEffect<
+const fetchHouseManagementsFx = createEffect<
   void,
   HouseManagementResponse[] | null
 >(getHouseManagements);
@@ -85,20 +82,24 @@ guard({
   target: fetchHouseManagementsFx,
 });
 
-const $addressesPagedList = domain
-  .createStore<StreetWithBuildingNumbersResponsePagedList | null>(null)
-  .on(fetchAdressesFx.doneData, (_, data) => data);
-
-const $organizationPagedList = domain
-  .createStore<OrganizationResponsePagedList | null>(null)
-  .on(fetchOrganzationFx.doneData, (_, organizations) => organizations);
-
-const $houseManagementList = domain
-  .createStore<HouseManagementResponse[] | null>(null)
-  .on(
-    fetchHouseManagementsFx.doneData,
-    (_, HouseManagements) => HouseManagements,
+const $addressesPagedList =
+  createStore<StreetWithBuildingNumbersResponsePagedList | null>(null).on(
+    fetchAdressesFx.doneData,
+    (_, data) => data,
   );
+
+const $organizationPagedList =
+  createStore<OrganizationResponsePagedList | null>(null).on(
+    fetchOrganzationFx.doneData,
+    (_, organizations) => organizations,
+  );
+
+const $houseManagementList = createStore<HouseManagementResponse[] | null>(
+  null,
+).on(
+  fetchHouseManagementsFx.doneData,
+  (_, HouseManagements) => HouseManagements,
+);
 
 export const closedIndividualDevicesFormService = {
   inputs: { setUnloadSelectType, selectCity, handleFetchHousingStockData },
