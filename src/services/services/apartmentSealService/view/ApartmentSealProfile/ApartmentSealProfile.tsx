@@ -2,6 +2,7 @@ import React, { FC, useCallback, useMemo } from 'react';
 import { ApartmentSealProfileProps } from './ApartmentSealProfile.types';
 import { WithLoader } from 'ui-kit/shared/WithLoader';
 import {
+  AdditionalInfoWrapper,
   AddressSearchContainerSC,
   AppointmentTextWrapper,
   ContentWrapper,
@@ -33,6 +34,7 @@ export const ApartmentSealProfile: FC<ApartmentSealProfileProps> = ({
   openRemoveAppointmentModal,
 }) => {
   const address = apartment?.housingStock?.address?.mainAddress;
+  const isAssigned = nearestAppointment?.controllerId;
   const appointmentDate = useMemo(
     () =>
       nearestAppointment && dayjs(nearestAppointment.date).format('DD.MM.YYYY'),
@@ -114,11 +116,18 @@ export const ApartmentSealProfile: FC<ApartmentSealProfileProps> = ({
                 handleUpdateApartment={updateApartment}
                 setSelectedHomeownerName={setSelectedHomeownerName}
                 additionalHeaderInfo={
-                  appointmentDate && (
-                    <AppointmentTextWrapper>
-                      Запись на опломбировку: {appointmentDate}
-                    </AppointmentTextWrapper>
-                  )
+                  <AdditionalInfoWrapper>
+                    {isAssigned && (
+                      <AppointmentTextWrapper>
+                        Задание уже выдано контролеру
+                      </AppointmentTextWrapper>
+                    )}
+                    {appointmentDate && (
+                      <AppointmentTextWrapper>
+                        Запись на опломбировку: {appointmentDate}
+                      </AppointmentTextWrapper>
+                    )}
+                  </AdditionalInfoWrapper>
                 }
               />
               <IndividualDevicesList individualDevices={individualDevices} />
