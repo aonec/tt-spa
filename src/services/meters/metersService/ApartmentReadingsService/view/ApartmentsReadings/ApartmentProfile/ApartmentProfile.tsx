@@ -1,5 +1,9 @@
-import React, { FC, useCallback } from 'react';
-import { ContentWrapper, ReadingsWrapper } from './ApartmentProfile.styled';
+import React, { FC, useCallback, useMemo } from 'react';
+import {
+  AppointmentTextWrapper,
+  ContentWrapper,
+  ReadingsWrapper,
+} from './ApartmentProfile.styled';
 import { ApartmentProfileProps } from './ApartmentProfile.types';
 import { AddressSearchContainer } from 'services/addressSearchService';
 import {
@@ -16,6 +20,7 @@ import confirm from 'antd/lib/modal/confirm';
 import { TypeAddressToStart } from 'ui-kit/shared/TypeToStart';
 import { EApartmentStatus } from 'api/types';
 import { NothingFound } from 'ui-kit/shared/NothingFound';
+import dayjs from 'dayjs';
 
 const { gates } = apartmentReadingsService;
 const { ApartmentGate } = gates;
@@ -35,6 +40,7 @@ export const ApartmentProfile: FC<ApartmentProfileProps> = ({
   handleUpdateHomeowner,
   isUpdateHomeownerLoading,
   isApartmentFetched,
+  nearestAppointment,
 }) => {
   const { id } = useParams<{ id: string }>();
   const history = useHistory();
@@ -71,6 +77,12 @@ export const ApartmentProfile: FC<ApartmentProfileProps> = ({
   );
 
   const address = apartment?.housingStock?.address?.mainAddress;
+
+  const appointmentDate = useMemo(
+    () =>
+      nearestAppointment && dayjs(nearestAppointment.date).format('DD.MM.YYYY'),
+    [nearestAppointment],
+  );
 
   const cancelPauseApartment = () =>
     confirm({
@@ -152,6 +164,13 @@ export const ApartmentProfile: FC<ApartmentProfileProps> = ({
                 ]}
                 handleUpdateHomeowner={handleUpdateHomeowner}
                 isUpdateHomeownerLoading={isUpdateHomeownerLoading}
+                additionalHeaderInfo={
+                  appointmentDate && (
+                    <AppointmentTextWrapper>
+                      Запись на опломбировку: {appointmentDate}
+                    </AppointmentTextWrapper>
+                  )
+                }
               />
               <ApartmentAlerts
                 apartment={apartment}
