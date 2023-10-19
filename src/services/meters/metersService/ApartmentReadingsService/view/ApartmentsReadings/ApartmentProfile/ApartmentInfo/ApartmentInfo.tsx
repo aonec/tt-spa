@@ -93,7 +93,7 @@ export const ApartmentInfo: FC<ApartmentInfoProps> = ({
     return `${phoneNumber} ${information}`;
   }, [houseManagement]);
 
-  const accountingOpeningDate = `открыт с ${dayjs(
+  const accountingOpeningDate = ` открыт с ${dayjs(
     selectedHomeowner?.openAt,
   ).format('DD.MM.YYYY')}`;
 
