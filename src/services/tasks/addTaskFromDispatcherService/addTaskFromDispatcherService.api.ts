@@ -1,6 +1,7 @@
 import { axios } from 'api/axios';
 import {
   ApartmentListResponsePagedList,
+  EResourceDisconnectingStatus,
   ErpCreateTaskRequest,
   ErpSourceResponse,
   ErpTaskReasonGroupResponse,
@@ -31,7 +32,7 @@ export const getResourceDisconnection = (
   params: GetResourceDisconnectionRequest,
 ): Promise<ResourceDisconnectingResponsePagedList> => {
   return axios.get('ResourceDisconnecting', {
-    params,
+    params: { ...params, Status: EResourceDisconnectingStatus.Active },
   });
 };
 
