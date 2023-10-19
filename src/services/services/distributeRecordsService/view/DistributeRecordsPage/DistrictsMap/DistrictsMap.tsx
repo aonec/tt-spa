@@ -12,6 +12,7 @@ import warningInactivePlacemark from 'hooks/ymaps/placemarks/warningInactivePlac
 import warningAvtivePlacemark from 'hooks/ymaps/placemarks/warningActivePlacemark.svg';
 
 import { DistributeAppointmentsPanel } from '../DistributeAppointmentsPanel';
+import { findPolygonCenter } from 'utils/findPolygonCenter';
 
 export const DistrictsMap: FC<Props> = ({
   districtsList,
@@ -57,13 +58,20 @@ export const DistrictsMap: FC<Props> = ({
       return {
         ...elem,
         name,
-        onClick: handleSelectDistrict,
+        onClick: (id: string) => {
+          const districtCenter = findPolygonCenter(elem.coordinates[0]);
+
+          map?.setCenter(districtCenter, undefined, { duration: 200 });
+
+          handleSelectDistrict(id);
+        },
       };
     });
   }, [
     appointmentsCounting,
     filteredDistrictsList,
     handleSelectDistrict,
+    map,
     selectedDistrict,
   ]);
 
