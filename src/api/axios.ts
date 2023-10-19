@@ -15,6 +15,7 @@ axios.defaults.baseURL = baseURL;
 
 axios.interceptors.request.use((req) => {
   req.headers.Authorization = `Bearer ${takeFromLocStor('token')}`;
+  req.headers['x-user-path'] = window.location.pathname || 'none';
 
   if (req.url && cancellableUrl.some((regex) => regex.test(req.url!))) {
     cancelRequestService.inputs.cancelRequest(req.url);
