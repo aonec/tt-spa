@@ -15,12 +15,15 @@ type PrepareAddressesParams = {
   isTreeCheckable: boolean;
 };
 
-export const prepareAddressesForTreeSelect = ({
-  items,
-  parentId,
-  isSelectableStreetNode = true,
-  isTreeCheckable,
-}: PrepareAddressesParams) =>
+export const prepareAddressesForTreeSelect = (
+  {
+    items,
+    parentId,
+    isSelectableStreetNode = true,
+    isTreeCheckable,
+  }: PrepareAddressesParams,
+  disabledIds: number[] = [],
+) =>
   items.reduce((acc, { street, addresses }) => {
     if (!street) return acc;
 
@@ -37,12 +40,14 @@ export const prepareAddressesForTreeSelect = ({
           value: `${buildingId}_${street}${number}${corpusText}`,
           key: `${buildingId}_${street}${number}${corpusText}`,
           buildingId,
+          disabled: disabledIds.includes(buildingId),
         };
       } else {
         return {
           title: `${street}, ${number}${corpusText}`,
           value: buildingId,
           key: buildingId,
+          disabled: disabledIds.includes(buildingId),
         };
       }
     });
@@ -65,18 +70,30 @@ export const prepareAddressesWithParentsForTreeSelect = (
   items:
     | HeatingStationWithStreetsResponse[]
     | HouseManagementWithStreetsResponse[],
+  disabledIds?: number[],
 ) =>
   items.reduce((acc, { id, name, streets }) => {
     if (!streets || !name) {
       return acc;
     }
-    const children = prepareAddressesForTreeSelect({
-      items: streets,
-      parentId: id,
-      isTreeCheckable: true,
-    });
+    const children = prepareAddressesForTreeSelect(
+      {
+        items: streets,
+        parentId: id,
+        isTreeCheckable: true,
+      },
+      disabledIds,
+    );
 
-    return [...acc, { title: name, value: id, key: id, children }];
+    return [
+      ...acc,
+      {
+        title: name,
+        value: id,
+        key: id,
+        children,
+      },
+    ];
   }, [] as TreeSelectElement[]);
 
 export const getParents = (
