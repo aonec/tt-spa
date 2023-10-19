@@ -1,26 +1,21 @@
+import { createEvent, createStore } from 'effector';
 import { createGate } from 'effector-react';
-import { createDomain, forward, sample } from 'effector';
+import { forward, sample } from 'effector';
 import { BuildingListResponsePagedList } from 'api/types';
 import { SearchHousingStocksPayload } from './displayObjectsListService.types';
 import { getBuildingsQuery } from './displayObjectsListService.api';
 
-const domain = createDomain('displayObjectsListService');
-
-const $housingStocks = domain.createStore<BuildingListResponsePagedList | null>(
-  null,
-);
+const $housingStocks = createStore<BuildingListResponsePagedList | null>(null);
 
 const $isLoading = getBuildingsQuery.$pending;
 
-const $searchPayload = domain.createStore<SearchHousingStocksPayload | null>(
-  null,
-);
+const $searchPayload = createStore<SearchHousingStocksPayload | null>(null);
 
-const searchHosuingStocks = domain.createEvent<SearchHousingStocksPayload>();
+const searchHosuingStocks = createEvent<SearchHousingStocksPayload>();
 
-const setPageNumber = domain.createEvent<number>();
+const setPageNumber = createEvent<number>();
 
-const clearSearchState = domain.createEvent();
+const clearSearchState = createEvent();
 
 const HousingStocksGate = createGate();
 

@@ -1,19 +1,17 @@
-import { createDomain, sample } from 'effector';
+import { createEvent, createStore } from 'effector';
+import { sample } from 'effector';
 import { removeAssignmentMutation } from './removeAssignmentService.api';
 import { message } from 'antd';
 
-const domain = createDomain('removeAssignmentService');
-
-const closeModal = domain.createEvent();
-const openModal = domain.createEvent<string>();
-const $assignmentId = domain
-  .createStore<string | null>(null)
+const closeModal = createEvent();
+const openModal = createEvent<string>();
+const $assignmentId = createStore<string | null>(null)
   .on(openModal, (_, id) => id)
   .reset(closeModal);
 
 const $isOpen = $assignmentId.map(Boolean);
 
-const removeAssignment = domain.createEvent();
+const removeAssignment = createEvent();
 const assignmentRemoved = removeAssignmentMutation.finished.success;
 
 sample({

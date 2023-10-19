@@ -1,5 +1,5 @@
 import {
-  createDomain,
+  createStore,
   createEffect,
   createEvent,
   forward,
@@ -17,8 +17,6 @@ import { apartmentService } from '../apartmentService';
 import { apartmentProblemDevicesService } from '../apartmentProblemDevicesService';
 import { setApartmentStatus } from './pauseApartmentService.api';
 
-const domain = createDomain('pauseApartmentService');
-
 const PauseApartmentGate = createGate<{ id: number }>();
 
 const pauseApartmentButtonClicked = createEvent();
@@ -31,10 +29,9 @@ const pauseApartmentStatusFx = createEffect<
   EffectFailDataAxiosError
 >(setApartmentStatus);
 
-const pauseApartment = domain.createEvent<SetApartmentStatusRequest>();
+const pauseApartment = createEvent<SetApartmentStatusRequest>();
 
-const $isPauseApartmentModalVisible = domain
-  .createStore(false)
+const $isPauseApartmentModalVisible = createStore(false)
   .on(pauseApartmentButtonClicked, () => true)
   .reset(
     pauseApartmentModalCancelButtonClicked,

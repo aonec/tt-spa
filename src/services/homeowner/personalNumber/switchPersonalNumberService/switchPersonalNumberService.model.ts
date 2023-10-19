@@ -1,4 +1,5 @@
-import { createDomain, sample } from 'effector';
+import { createEffect, createEvent, createStore } from 'effector';
+import { sample } from 'effector';
 import { replaceHomeownerAccount } from './switchPersonalNumberService.api';
 import { EffectFailDataAxiosErrorDataApartmentId } from 'types';
 import { HomeownerAccountReplaceRequest } from 'api/types';
@@ -6,30 +7,26 @@ import { PersonalNumberFormTypes } from '../components/PersonalNumberForm/Person
 import { message } from 'antd';
 import { apartmentProfileService } from 'services/apartments/apartmentProfileService';
 
-const domain = createDomain('switchPersonalNumberService');
+const onForced = createEvent();
 
-const onForced = domain.createEvent();
+const handleConfirmationModalClose = createEvent();
 
-const handleConfirmationModalClose = domain.createEvent();
-
-const handleSwitchHomeownerAccount = domain.createEvent<{
+const handleSwitchHomeownerAccount = createEvent<{
   replaceableAccountId: string;
   form: PersonalNumberFormTypes;
 }>();
 
-const $isForced = domain
-  .createStore<boolean>(false)
+const $isForced = createStore<boolean>(false)
   .on(onForced, () => true)
   .reset(handleConfirmationModalClose);
 
-const switchHomeownerAccountFx = domain.createEffect<
+const switchHomeownerAccountFx = createEffect<
   HomeownerAccountReplaceRequest,
   void,
   EffectFailDataAxiosErrorDataApartmentId
 >(replaceHomeownerAccount);
 
-const $samePersonalAccountNumderId = domain
-  .createStore<number | null>(null)
+const $samePersonalAccountNumderId = createStore<number | null>(null)
   .on(switchHomeownerAccountFx.failData, (prev, errData) => {
     if (errData.response.status === 409) {
       return errData.response.data.error.Data.ApartmentId;

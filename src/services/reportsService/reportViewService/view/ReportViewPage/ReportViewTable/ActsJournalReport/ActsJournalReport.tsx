@@ -10,9 +10,10 @@ import {
 } from '../IndividualDevicesReport/IndividualDevicesReport.styled';
 import { getReportElemAddress } from '../ReportViewTable.utils';
 import { ActsCountPanel } from './ActsCountPanel';
-import { ActDate } from './ActsJournalReport.styled';
+import { ActDate, FullAddressWrapper } from './ActsJournalReport.styled';
 import { ActsJournalReportProps } from './ActsJournalReport.types';
 import { ActTypesNamesLookup } from 'dictionaries';
+import { Tooltip } from 'ui-kit/shared/Tooltip';
 
 export const ActsJournalReport: FC<ActsJournalReportProps> = ({
   actJournalReportData,
@@ -42,10 +43,10 @@ export const ActsJournalReport: FC<ActsJournalReportProps> = ({
               const { addressString, number } = getReportElemAddress(elem);
 
               return (
-                <div>
+                <FullAddressWrapper>
                   <ApartmentNumber>Кв. №{number}</ApartmentNumber>
-                  {addressString}
-                </div>
+                  <Tooltip title={addressString}>{addressString}</Tooltip>
+                </FullAddressWrapper>
               );
             },
           },

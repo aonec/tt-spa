@@ -1,4 +1,4 @@
-import { createDomain, sample } from 'effector';
+import { createEvent, sample } from 'effector';
 import { getInspectorsHousingStocksQuery } from './displayInspectorsHousingStocksService.api';
 import { GetInspectorsHousingStocksRequestParams } from './types';
 import { searchInspectorsHousingStockService } from '../searchInspectorsHousingStocksService/searchInspectorsHousingStockService.models';
@@ -7,14 +7,12 @@ import { createGate } from 'effector-react';
 const { startSearchInspectorsHousingStocks } =
   searchInspectorsHousingStockService.inputs;
 
-const domain = createDomain('displayInspectorsHousingStocksService');
-
 const DisplayInspectorsGate = createGate();
 
 const $loading = getInspectorsHousingStocksQuery.$pending;
 
 const handleGetInspectorsHousingStocks =
-  domain.createEvent<GetInspectorsHousingStocksRequestParams>();
+  createEvent<GetInspectorsHousingStocksRequestParams>();
 
 const $inspectorsHousingStocksList = getInspectorsHousingStocksQuery.$data;
 

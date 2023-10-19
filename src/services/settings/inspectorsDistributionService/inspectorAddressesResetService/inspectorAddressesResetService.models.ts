@@ -1,27 +1,22 @@
-import { createDomain, sample } from 'effector';
-import { createForm } from 'effector-forms';
 import { message } from 'antd';
 import { InspectorResponse } from 'api/types';
+import { createEffect, createEvent, createStore, sample } from 'effector';
+import { createForm } from 'effector-forms';
 import { displayInspectorsService } from 'services/inspectors/displayInspectorsService/displayInspectorsService.models';
 import { searchInspectorsHousingStockService } from '../searchInspectorsHousingStocksService/searchInspectorsHousingStockService.models';
 import { resetInspectorHousingStocksAddresses } from './inspectorAddressesResetService.api';
 import { ResetAddressesFormPayload } from './inspectorAddressesResetService.types';
 
-const inspectorAddressesResetServiceDomain = createDomain(
-  'inspectorAddressesResetService',
+const $isModalOpen = createStore(false);
+
+const openModal = createEvent();
+const closeModal = createEvent();
+
+const resetAddresses = createEvent();
+
+const resetAddressesFx = createEffect<number, InspectorResponse | null>(
+  resetInspectorHousingStocksAddresses,
 );
-
-const $isModalOpen = inspectorAddressesResetServiceDomain.createStore(false);
-
-const openModal = inspectorAddressesResetServiceDomain.createEvent();
-const closeModal = inspectorAddressesResetServiceDomain.createEvent();
-
-const resetAddresses = inspectorAddressesResetServiceDomain.createEvent();
-
-const resetAddressesFx = inspectorAddressesResetServiceDomain.createEffect<
-  number,
-  InspectorResponse | null
->(resetInspectorHousingStocksAddresses);
 
 const $loading = resetAddressesFx.pending;
 

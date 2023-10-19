@@ -7,10 +7,10 @@ export const Wrapper = styled.div`
 `;
 
 export const Title = styled.div`
-  margin: 32px 0 0 16px;
-  color: rgba(39, 47, 90, 0.9);
+  margin-top: 32px;
   font-weight: 400;
   font-size: 14px;
+  color: #272f5ae5;
 `;
 
 export const ReportBlocksWrapper = styled.div`
@@ -24,6 +24,8 @@ export const ReportsList = styled.div`
   gap: 16px;
   overflow-x: scroll;
   scrollbar-width: none !important;
+
+  transform: translateX(-16px);
 
   &::-webkit-scrollbar {
     display: none;

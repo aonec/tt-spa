@@ -1,4 +1,5 @@
-import { createDomain, forward } from 'effector';
+import { createEffect, createEvent, createStore } from 'effector';
+import { forward } from 'effector';
 import { addressSearchService } from 'services/addressSearchService/addressSearchService.models';
 import { houseManagementsService } from 'services/objects/houseManagementsService';
 import { getFeedFlowPipeTemperatureReport } from './flowTemperatureDeviationReportService.api';
@@ -6,22 +7,18 @@ import { EffectFailDataAxiosError } from 'types';
 import { FeedFlowTemperatureRequestPayload } from './flowTemperatureDeviationReportService.types';
 import { message } from 'antd';
 
-const domain = createDomain('flowTemperatureDeviationReportService');
+const openFlowTemperatureDeviationReportModal = createEvent();
+const closeFlowTemperatureDeviationReportModal = createEvent();
 
-const openFlowTemperatureDeviationReportModal = domain.createEvent();
-const closeFlowTemperatureDeviationReportModal = domain.createEvent();
+const handleExportReport = createEvent<FeedFlowTemperatureRequestPayload>();
 
-const handleExportReport =
-  domain.createEvent<FeedFlowTemperatureRequestPayload>();
-
-const exportFlowTemperatureDeviationReportFx = domain.createEffect<
+const exportFlowTemperatureDeviationReportFx = createEffect<
   FeedFlowTemperatureRequestPayload,
   void,
   EffectFailDataAxiosError
 >(getFeedFlowPipeTemperatureReport);
 
-const $isModalOpen = domain
-  .createStore(false)
+const $isModalOpen = createStore(false)
   .on(openFlowTemperatureDeviationReportModal, () => true)
   .reset(closeFlowTemperatureDeviationReportModal);
 

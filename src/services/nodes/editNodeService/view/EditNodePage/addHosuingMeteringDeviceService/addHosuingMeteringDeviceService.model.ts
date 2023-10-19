@@ -1,5 +1,6 @@
+import { createEffect, createEvent, createStore } from 'effector';
 import { message } from 'antd';
-import { createDomain, forward, guard, sample } from 'effector';
+import { forward, guard, sample } from 'effector';
 import {
   CreatePipeHousingMeteringDeviceRequest,
   PipeNodeResponse,
@@ -9,46 +10,42 @@ import { fetchAddHousingMeteringDevice } from './addHosuingMeteringDeviceService
 import { EXTREAM_STEP_NUMBER } from './addHosuingMeteringDeviceService.constants';
 import { CreatePipeHousingMeteringDevicePayload } from './addHosuingMeteringDeviceService.types';
 
-const domain = createDomain('addHosuingMeteringDeviceService');
+const openModal = createEvent<PipeNodeResponse>();
+const closeModal = createEvent();
 
-const openModal = domain.createEvent<PipeNodeResponse>();
-const closeModal = domain.createEvent();
-
-const $pipeNode = domain
-  .createStore<PipeNodeResponse | null>(null)
+const $pipeNode = createStore<PipeNodeResponse | null>(null)
   .on(openModal, (_, node) => node)
   .reset(closeModal);
 
 const $isOpen = $pipeNode.map(Boolean);
 
-const handleFormComplete = domain.createEvent();
+const handleFormComplete = createEvent();
 
-const createMeteringDeviceFx = domain.createEffect<
+const createMeteringDeviceFx = createEffect<
   CreatePipeHousingMeteringDeviceRequest,
   void,
   EffectFailDataAxiosError
 >(fetchAddHousingMeteringDevice);
 
 const updateCommonDeviceRequestPayload =
-  domain.createEvent<Partial<CreatePipeHousingMeteringDevicePayload>>();
-const $requestPayload = domain
-  .createStore<Partial<CreatePipeHousingMeteringDevicePayload> | null>(null)
-  .on(updateCommonDeviceRequestPayload, (oldData, data) => {
-    if (!oldData) {
-      return { ...data };
-    }
-    return {
-      ...oldData,
-      ...data,
-    };
-  })
-  .on($pipeNode, (payload, node) => ({ ...payload, nodeId: node?.id }))
-  .reset(closeModal);
+  createEvent<Partial<CreatePipeHousingMeteringDevicePayload>>();
+const $requestPayload =
+  createStore<Partial<CreatePipeHousingMeteringDevicePayload> | null>(null)
+    .on(updateCommonDeviceRequestPayload, (oldData, data) => {
+      if (!oldData) {
+        return { ...data };
+      }
+      return {
+        ...oldData,
+        ...data,
+      };
+    })
+    .on($pipeNode, (payload, node) => ({ ...payload, nodeId: node?.id }))
+    .reset(closeModal);
 
-const goNextStep = domain.createEvent();
-const goPrevStep = domain.createEvent();
-const $currentFormStep = domain
-  .createStore<number>(0)
+const goNextStep = createEvent();
+const goPrevStep = createEvent();
+const $currentFormStep = createStore<number>(0)
   .on(goNextStep, (prev) => prev + 1)
   .on(goPrevStep, (prev) => prev - 1)
   .reset(closeModal);

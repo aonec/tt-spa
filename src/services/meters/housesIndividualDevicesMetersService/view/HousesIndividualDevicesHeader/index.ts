@@ -1,1 +1,0 @@
-export { HousesIndividualDevicesHeader } from './HousesIndividualDevicesHeader'

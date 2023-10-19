@@ -1,15 +1,13 @@
-import { createDomain, sample } from 'effector';
+import { createEvent, createStore } from 'effector';
+import { sample } from 'effector';
 import { workWithIndividualDeviceService } from '../workWithIndividualDeviceService.model';
 import { displayIndividualDeviceAndNamesService } from '../../displayIndividualDeviceAndNamesService';
 
-const domain = createDomain('workWithIndividualDeviceSubmitActionService');
+const submit = createEvent();
 
-const submit = domain.createEvent();
-
-const closeModal = domain.createEvent();
-const openModal = domain.createEvent();
-const $isOpen = domain
-  .createStore(false)
+const closeModal = createEvent();
+const openModal = createEvent();
+const $isOpen = createStore(false)
   .on(openModal, () => true)
   .reset(closeModal);
 

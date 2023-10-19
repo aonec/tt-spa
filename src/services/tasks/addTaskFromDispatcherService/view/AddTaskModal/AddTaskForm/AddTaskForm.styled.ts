@@ -118,8 +118,13 @@ export const ResourceDisconnectionDate = styled.div`
   font-weight: 500;
 `;
 
-export const SelectCaret = styled(Select)`
+export const SelectCaret = styled(Select)<{ isFromSubscriber: boolean }>`
   caret-color: transparent;
+
+  .ant-select-selection-item {
+    background-color: ${({ isFromSubscriber }) =>
+      isFromSubscriber ? 'rgba(24, 158, 233, 0.2)' : 'white'};
+  }
 `;
 
 export const TimePickerSc = styled(TimePicker).attrs({

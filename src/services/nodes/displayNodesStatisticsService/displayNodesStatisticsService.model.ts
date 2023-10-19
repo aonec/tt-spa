@@ -1,4 +1,5 @@
-import { createDomain, forward, sample } from 'effector';
+import { createEffect, createEvent, createStore } from 'effector';
+import { forward, sample } from 'effector';
 import { createGate } from 'effector-react';
 import dayjs from 'api/dayjs';
 import {
@@ -18,50 +19,46 @@ import {
 
 const NodeInfoGate = createGate<{ nodeId: number; pipeCount: number }>();
 
-const domain = createDomain('displayNodesStatisticsService');
+const clearStores = createEvent();
 
-const clearStores = domain.createEvent();
-
-const setGraphType = domain.createEvent<string>();
-const $graphType = domain
-  .createStore<string>('')
+const setGraphType = createEvent<string>();
+const $graphType = createStore<string>('')
   .on(setGraphType, (_, type) => type)
   .reset(clearStores);
 
-const setArchiveFilter = domain.createEvent<ArchiveReadingsFilter>();
-const $archiveFilter = domain
-  .createStore<ArchiveReadingsFilter>({
-    ReportType: 'hourly',
-    From: dayjs()
-      .subtract(1, 'week')
-      .startOf('day')
-      .format('YYYY-MM-DD HH:mm:ss'),
-    To: dayjs().endOf('day').format('YYYY-MM-DD HH:mm:ss'),
-  })
+const setArchiveFilter = createEvent<ArchiveReadingsFilter>();
+const $archiveFilter = createStore<ArchiveReadingsFilter>({
+  ReportType: 'hourly',
+  From: dayjs()
+    .subtract(1, 'week')
+    .startOf('day')
+    .format('YYYY-MM-DD HH:mm:ss'),
+  To: dayjs().endOf('day').format('YYYY-MM-DD HH:mm:ss'),
+})
   .on(setArchiveFilter, (_, filter) => filter)
   .reset(clearStores);
 
-const getArchiveDataFx = domain.createEffect<
+const getArchiveDataFx = createEffect<
   FetchArchiveReadingsPayload,
   ArchivesDataModel
 >(requestNodeReadings);
-const $archiveReadings = domain
-  .createStore<ArchivesDataModel | null>(null)
+const $archiveReadings = createStore<ArchivesDataModel | null>(null)
   .on(getArchiveDataFx.doneData, (_, data) => data)
   .reset(clearStores);
 
-const getTaskStatisticsFx = domain.createEffect<
+const getTaskStatisticsFx = createEffect<
   TasksStatisticPayload,
   TaskStatisticsResponse
 >(requestTaskStatistics);
-const $taskStatistics = domain
-  .createStore<DateTimeTaskStatisticsItemArrayDictionaryItem[]>([])
-  .on(getTaskStatisticsFx.doneData, (_, data) => data.tasks || []);
+const $taskStatistics = createStore<
+  DateTimeTaskStatisticsItemArrayDictionaryItem[]
+>([]).on(getTaskStatisticsFx.doneData, (_, data) => data.tasks || []);
 
-const setWithFault = domain.createEvent<boolean>();
-const $withFault = domain
-  .createStore(true)
-  .on(setWithFault, (_, withFault) => withFault);
+const setWithFault = createEvent<boolean>();
+const $withFault = createStore(true).on(
+  setWithFault,
+  (_, withFault) => withFault,
+);
 
 const $isLoading = getArchiveDataFx.pending;
 

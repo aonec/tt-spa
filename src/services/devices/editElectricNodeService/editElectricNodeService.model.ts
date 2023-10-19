@@ -1,4 +1,5 @@
-import { createDomain, forward, sample } from 'effector';
+import { createEffect, createEvent, createStore } from 'effector';
+import { forward, sample } from 'effector';
 import { createGate } from 'effector-react';
 import { ElectricHousingMeteringDeviceResponse } from 'api/types';
 import {
@@ -9,18 +10,17 @@ import { EditElectricNodePayload } from './editElectricNodeService.types';
 import { EffectFailDataAxiosError } from 'types';
 import { message } from 'antd';
 
-const domain = createDomain('editElectricNodeService');
-
-const $electricNode =
-  domain.createStore<ElectricHousingMeteringDeviceResponse | null>(null);
-const getElectricNodeFx = domain.createEffect<
+const $electricNode = createStore<ElectricHousingMeteringDeviceResponse | null>(
+  null,
+);
+const getElectricNodeFx = createEffect<
   number,
   ElectricHousingMeteringDeviceResponse
 >(fetchElectricNode);
-const refetchElectricNode = domain.createEvent<number>();
+const refetchElectricNode = createEvent<number>();
 
-const updateDevice = domain.createEvent<EditElectricNodePayload>();
-const updateDeviceFx = domain.createEffect<
+const updateDevice = createEvent<EditElectricNodePayload>();
+const updateDeviceFx = createEffect<
   EditElectricNodePayload,
   void,
   EffectFailDataAxiosError

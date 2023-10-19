@@ -2323,29 +2323,48 @@ export interface ElectricNodeResponseSuccessApiResponse {
   successResponse: ElectricNodeResponse | null;
 }
 
+export interface ErpApplicationBrigadeMemberResponse {
+  /** @format uuid */
+  id: string;
+  name: string | null;
+}
+
+export interface ErpApplicationResponse {
+  /** @format uuid */
+  id: string;
+  number: string | null;
+  type: EisTaskType;
+  comment: string | null;
+  description: string | null;
+  category: string | null;
+  source: string | null;
+  brigade: ErpApplicationBrigadeMemberResponse[] | null;
+}
+
+export interface ErpApplicationResponseSuccessApiResponse {
+  successResponse: ErpApplicationResponse | null;
+}
+
 export interface ErpCreateTaskRequest {
   /** @format uuid */
   taskReasonId: string;
-  taskType: EisTaskType;
   /** @format int32 */
   objectTtmId: number;
+  taskDescription?: string | null;
   /** @format uuid */
   sourceId: string;
-  sourceNumber: string;
+  sourceNumber?: string | null;
   /** @format date-time */
   sourceDateTime: string;
-  /** @format uuid */
-  leadId: string;
-  /** @format uuid */
-  workerId: string;
-  subscriberPhoneNumber: string;
-  subscriberFullName: string;
-  taskDescription?: string | null;
+  subscriberPhoneNumber?: string | null;
+  subscriberFullName?: string | null;
+  /** @format date-time */
+  taskDeadline?: string | null;
 }
 
 export interface ErpExecutorResponse {
-  /** @format uuid */
-  id: string;
+  /** @format int32 */
+  ttmId: number;
   name: string | null;
 }
 
@@ -2366,19 +2385,16 @@ export interface ErpTaskDeadlineResponse {
   deadlineInHours: number;
 }
 
-export interface ErpTaskReasonResponse {
-  /** @format uuid */
-  id: string;
-  reasonType: EisTaskReasonType;
+export interface ErpTaskReasonGroupResponse {
+  type: EisTaskReasonType;
   name: string | null;
-  allowedTaskTypes: EisTaskType[] | null;
+  items: ErpTaskReasonItemResponse[] | null;
 }
 
-export interface ErpWorkCategoryResponse {
+export interface ErpTaskReasonItemResponse {
   /** @format uuid */
   id: string;
-  name: string | null;
-  isDeadlineChangingPermitted: boolean;
+  taskType: EisTaskType;
 }
 
 export interface ErrorApiResponse {
@@ -14530,31 +14546,13 @@ export class Api<
      * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Администратор УК без назначений задач</li><li>Контролёр</li>
      *
      * @tags Tasks
-     * @name TasksErpWorkCategoriesList
-     * @summary TasksRead
-     * @request GET:/api/Tasks/ErpWorkCategories
-     * @secure
-     */
-    tasksErpWorkCategoriesList: (params: RequestParams = {}) =>
-      this.request<ErpWorkCategoryResponse[], ErrorApiResponse>({
-        path: `/api/Tasks/ErpWorkCategories`,
-        method: 'GET',
-        secure: true,
-        format: 'json',
-        ...params,
-      }),
-
-    /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Администратор УК без назначений задач</li><li>Контролёр</li>
-     *
-     * @tags Tasks
      * @name TasksErpTaskReasonsList
      * @summary TasksRead
      * @request GET:/api/Tasks/ErpTaskReasons
      * @secure
      */
     tasksErpTaskReasonsList: (params: RequestParams = {}) =>
-      this.request<ErpTaskReasonResponse[], ErrorApiResponse>({
+      this.request<ErpTaskReasonGroupResponse[], ErrorApiResponse>({
         path: `/api/Tasks/ErpTaskReasons`,
         method: 'GET',
         secure: true,
@@ -14566,14 +14564,14 @@ export class Api<
      * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Администратор УК без назначений задач</li><li>Контролёр</li>
      *
      * @tags Tasks
-     * @name TasksErpLeadsList
+     * @name TasksApplicationDetail
      * @summary TasksRead
-     * @request GET:/api/Tasks/ErpLeads
+     * @request GET:/api/Tasks/{taskId}/application
      * @secure
      */
-    tasksErpLeadsList: (params: RequestParams = {}) =>
-      this.request<ErpExecutorResponse[], ErrorApiResponse>({
-        path: `/api/Tasks/ErpLeads`,
+    tasksApplicationDetail: (taskId: number, params: RequestParams = {}) =>
+      this.request<ErpApplicationResponseSuccessApiResponse, ErrorApiResponse>({
+        path: `/api/Tasks/${taskId}/application`,
         method: 'GET',
         secure: true,
         format: 'json',
@@ -14584,22 +14582,18 @@ export class Api<
      * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Администратор УК без назначений задач</li><li>Контролёр</li>
      *
      * @tags Tasks
-     * @name TasksErpExecutorsForLeadList
+     * @name TasksApplicationBrigadeDetail
      * @summary TasksRead
-     * @request GET:/api/Tasks/ErpExecutorsForLead
+     * @request GET:/api/Tasks/{taskId}/application/brigade
      * @secure
      */
-    tasksErpExecutorsForLeadList: (
-      query: {
-        /** @format uuid */
-        LeadId: string;
-      },
+    tasksApplicationBrigadeDetail: (
+      taskId: number,
       params: RequestParams = {},
     ) =>
       this.request<ErpExecutorResponse[], ErrorApiResponse>({
-        path: `/api/Tasks/ErpExecutorsForLead`,
+        path: `/api/Tasks/${taskId}/application/brigade`,
         method: 'GET',
-        query: query,
         secure: true,
         format: 'json',
         ...params,
@@ -14635,8 +14629,7 @@ export class Api<
     tasksErpTaskDeadlineList: (
       query: {
         /** @format uuid */
-        WorkCategoryId: string;
-        TaskType: EisTaskType;
+        TaskReasonId: string;
       },
       params: RequestParams = {},
     ) =>

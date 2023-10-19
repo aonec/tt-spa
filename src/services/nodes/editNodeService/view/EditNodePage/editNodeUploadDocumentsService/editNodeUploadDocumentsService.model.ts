@@ -1,4 +1,5 @@
-import { createDomain, guard, sample } from 'effector';
+import { createEffect, createEvent, createStore } from 'effector';
+import { guard, sample } from 'effector';
 import { DocumentLiteResponse } from 'api/types';
 import { fetchUpdateDocuments } from './editNodeUploadDocumentsService.api';
 import { UpdateDocumentPayload } from './editNodeUploadDocumentsService.types';
@@ -6,25 +7,21 @@ import { EffectFailDataAxiosError } from 'types';
 import { message } from 'antd';
 import { editNodeService } from 'services/nodes/editNodeService/editNodeService.model';
 
-const domain = createDomain('editNodeUploadDocumentsService');
-
-const closeModal = domain.createEvent();
-const openModal = domain.createEvent();
-const $isOpenModal = domain
-  .createStore(false)
+const closeModal = createEvent();
+const openModal = createEvent();
+const $isOpenModal = createStore(false)
   .on(openModal, () => true)
   .reset(closeModal);
 
-const updateDocumentsFx = domain.createEffect<
+const updateDocumentsFx = createEffect<
   UpdateDocumentPayload,
   void,
   EffectFailDataAxiosError
 >(fetchUpdateDocuments);
 
-const updateDocuments = domain.createEvent<DocumentLiteResponse[]>();
+const updateDocuments = createEvent<DocumentLiteResponse[]>();
 
-const $documents = domain
-  .createStore<DocumentLiteResponse[]>([])
+const $documents = createStore<DocumentLiteResponse[]>([])
   .on(editNodeService.outputs.$node, (_, node) => node?.documents || [])
   .on(updateDocuments, (_, documents) => documents);
 

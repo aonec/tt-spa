@@ -26,6 +26,8 @@ import { ReportType } from '../StatisticsGraph.types';
 import { SortingIcon } from 'ui-kit/icons';
 import { Select } from 'ui-kit/Select';
 
+const rangeWrapperId = 'node-statistics-filter-wrapper';
+
 export const GraphFilterForm: React.FC<GraphFilterFormProps> = ({
   setGraphParam,
   currentGraphParam,
@@ -99,6 +101,7 @@ export const GraphFilterForm: React.FC<GraphFilterFormProps> = ({
         <ClosedFilterWrapper>
           <Tooltip title="Настройка параметров">
             <ButtonSC
+              data-test={'node-graph-filter-button'}
               onClick={() => openModal()}
               icon={<SortingIcon />}
               style={{ marginRight: 16 }}
@@ -126,13 +129,18 @@ export const GraphFilterForm: React.FC<GraphFilterFormProps> = ({
                 />
               </Tooltip>
               <FormItem label="Произвольный период">
-                <RangeWrapper id="div">
+                <RangeWrapper id={rangeWrapperId}>
                   <DatePicker.RangePicker
-                    getPopupContainer={() => document.getElementById('div')!}
+                    getPopupContainer={() =>
+                      document.getElementById(rangeWrapperId)!
+                    }
                     name="dateRange"
                     format="DD MMMM YYYY"
                     style={{ marginRight: 16 }}
                     disabledDate={(date) => {
+                      if (!date) {
+                        return false;
+                      }
                       const currentDay = dayjs().startOf('day');
                       const diff = currentDay.diff(date.startOf('day'));
                       return diff < 0;

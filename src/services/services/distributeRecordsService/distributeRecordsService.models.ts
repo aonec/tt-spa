@@ -1,4 +1,5 @@
-import { combine, createDomain, forward, sample } from 'effector';
+import { createEvent, createStore } from 'effector';
+import { combine, forward, sample } from 'effector';
 import { createGate } from 'effector-react';
 import {
   appointmentsCountingQuery,
@@ -22,45 +23,40 @@ import { message } from 'antd';
 import { removeAssignmentService } from '../removeAssignmentService';
 import { currentUserService } from 'services/currentUserService';
 
-const domain = createDomain('distributeRecords');
-
 const DistributeRecordsGate = createGate();
 
-const handleUnselectDistrict = domain.createEvent();
-const handleSelectDistrict = domain.createEvent<string>();
-const setAppointmentDate = domain.createEvent<string>();
-const setMonth = domain.createEvent<string>();
-const selectAppointments = domain.createEvent<string[]>();
+const handleUnselectDistrict = createEvent();
+const handleSelectDistrict = createEvent<string>();
+const setAppointmentDate = createEvent<string>();
+const setMonth = createEvent<string>();
+const selectAppointments = createEvent<string[]>();
 
-const openDistributeAppointmentsModal = domain.createEvent();
-const closeDistributeAppointmentsModal = domain.createEvent();
+const openDistributeAppointmentsModal = createEvent();
+const closeDistributeAppointmentsModal = createEvent();
 
-const $selectedDistrict = domain
-  .createStore<string | null>(null)
+const $selectedDistrict = createStore<string | null>(null)
   .on(handleSelectDistrict, (_, id) => id)
   .reset(DistributeRecordsGate.close, handleUnselectDistrict);
 
-const $appointmentDate = domain
-  .createStore<string | null>(dayjs().format('YYYY-MM-DD'))
+const $appointmentDate = createStore<string | null>(
+  dayjs().format('YYYY-MM-DD'),
+)
   .on(setAppointmentDate, (_, date) => date)
   .on(nearestAppointmentsDateQuery.$data, (_, res) => res?.date)
   .reset(DistributeRecordsGate.close);
 
-const $currentMonth = domain
-  .createStore<string | null>(dayjs().format('YYYY-MM'))
+const $currentMonth = createStore<string | null>(dayjs().format('YYYY-MM'))
   .on(setMonth, (_, month) => month)
   .on(nearestAppointmentsDateQuery.$data, (_, res) =>
     dayjs(res?.date).format('YYYY-MM'),
   )
   .reset(DistributeRecordsGate.close);
 
-const $selectedAppointmentsIds = domain
-  .createStore<string[]>([])
+const $selectedAppointmentsIds = createStore<string[]>([])
   .on(selectAppointments, (_, ids) => ids)
   .reset(districtAppointmentsQuery.$data, DistributeRecordsGate.close);
 
-const $isDistributeAppointmentsModalOpen = domain
-  .createStore(false)
+const $isDistributeAppointmentsModalOpen = createStore(false)
   .on(openDistributeAppointmentsModal, () => true)
   .on(closeDistributeAppointmentsModal, () => false);
 

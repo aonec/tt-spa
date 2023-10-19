@@ -20,4 +20,5 @@ export type HousesReadingsPageProps = {
   openReadingsHistoryModal: (deviceId: number) => void;
   isAllDevicesLoaded: boolean;
   isHousingStockFetched: boolean;
+  totalItems: number;
 };

@@ -193,7 +193,9 @@ export const GraphView: React.FC<GraphViewProps> = ({
           x="timeUtc"
           y="value"
         />
-        {isAverageLineRendered && Number.isFinite(averageDeltaMass) ? (
+        {isAverageLineRendered &&
+        averageDeltaMass &&
+        Number.isFinite(averageDeltaMass) ? (
           <VictoryLine
             samples={1}
             y={() => averageDeltaMass}

@@ -25,6 +25,7 @@ export const HousesReadingsPage: FC<HousesReadingsPageProps> = ({
   openReadingsHistoryModal,
   isAllDevicesLoaded,
   isHousingStockFetched,
+  totalItems,
 }) => {
   const address = housingStock?.address?.mainAddress;
 
@@ -72,6 +73,7 @@ export const HousesReadingsPage: FC<HousesReadingsPageProps> = ({
                 managementFirmConsumptionRates={managementFirmConsumptionRates}
                 openReadingsHistoryModal={openReadingsHistoryModal}
                 isAllDevicesLoaded={isAllDevicesLoaded}
+                totalItems={totalItems}
               />
             </IndividualDevicesListWrapper>
           </>

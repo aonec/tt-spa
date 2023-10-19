@@ -1,7 +1,5 @@
-import { createDomain } from 'effector';
+import { createEvent } from 'effector';
 
-const reportsDomain = createDomain('Reports');
-
-const createReportButtonClicked = reportsDomain.createEvent();
+const createReportButtonClicked = createEvent();
 
 export const reportsInputs = { createReportButtonClicked };

@@ -85,7 +85,7 @@ export const TasksListItem: FC<TasksListItemProps> = ({ task }) => {
   }, [pipeNode]);
 
   return (
-    <Wrapper>
+    <Wrapper data-test="task-item">
       <Link to={`/tasks/profile/${id}`}>
         <TaskItemWrapper>
           <NameRowWrapper>

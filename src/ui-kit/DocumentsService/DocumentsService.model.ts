@@ -1,12 +1,11 @@
-import { createDomain } from 'effector';
+import { createEvent, createStore } from 'effector';
 
-const domain = createDomain('documentService');
+const setIsLoading = createEvent<boolean>();
 
-const setIsLoading = domain.createEvent<boolean>();
-
-const $isLoading = domain
-  .createStore<boolean>(false)
-  .on(setIsLoading, (_, data) => data);
+const $isLoading = createStore<boolean>(false).on(
+  setIsLoading,
+  (_, data) => data,
+);
 
 export const documentService = {
   inputs: { setIsLoading },
