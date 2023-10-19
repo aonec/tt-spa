@@ -1,4 +1,3 @@
-import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 export const Wrapper = styled.div`
@@ -6,13 +5,15 @@ export const Wrapper = styled.div`
   width: 100%;
 `;
 
-export const TitleWrapper = styled(Link)`
+export const TitleWrapper = styled.div`
   display: flex;
   align-items: center;
 
   font-size: 24px;
   font-weight: 400;
   color: #272f5a;
+
+  cursor: pointer;
 `;
 
 export const RowWrapper = styled.div`
