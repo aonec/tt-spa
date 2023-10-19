@@ -32,12 +32,3 @@ export const RowStyle = `
 export const HeaderStyles = `
   grid-gap: 0px;
 `;
-
-export const PageWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  width: 105%;
-  height: 66vh;
-  overflow-y: hidden;
-  overflow-x: hidden;
-`;

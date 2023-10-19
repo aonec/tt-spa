@@ -1,5 +1,12 @@
 import { Tooltip } from 'antd';
-import React, { FC, useCallback, useEffect, useMemo, useState } from 'react';
+import React, {
+  FC,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 import { getBuildingAddress } from 'utils/getBuildingAddress';
 import {
   AddressWrapper,
@@ -22,6 +29,7 @@ export const HousingStocksListItem: FC<HousingStocksListItemProps> = ({
   selectedHousingStock,
   setFileName,
 }) => {
+  const wrapperRef = useRef<HTMLDivElement>(null);
   const { apartmentsStatistic, id, address, numberOfApartments } = housingStock;
 
   const [isActive, setIsActive] = useState(false);
@@ -71,9 +79,21 @@ export const HousingStocksListItem: FC<HousingStocksListItemProps> = ({
     }
   }, [isCurrentHousingStockSelected]);
 
+  useEffect(() => {
+    if (isActive && isCurrentHousingStockSelected && !statisticIsLoading) {
+      const wrapper = wrapperRef.current;
+      if (wrapper) {
+        wrapper.scrollIntoView({
+          behavior: 'smooth',
+          block: 'start',
+        });
+      }
+    }
+  }, [isActive, isCurrentHousingStockSelected, statisticIsLoading]);
+
   return (
     <div>
-      <Wrapper>
+      <Wrapper ref={wrapperRef}>
         <GroupWrapper
           onClick={() => {
             selectHousingStock(id);

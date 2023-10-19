@@ -23,6 +23,8 @@ import { addressSearchService } from 'services/addressSearchService/addressSearc
 
 const StatiscticsPageGate = createGate();
 
+const clearStore = createEvent();
+
 const getManagingFirmsFx = createEffect<
   string,
   HouseManagementWithStreetsResponse[]
@@ -38,7 +40,8 @@ const $selectedCity = createStore<string>('').on(selectCity, (_, city) => city);
 const selectManagingFirm = createEvent<string>();
 const $selectedManagingFirm = createStore<string>('')
   .on(selectManagingFirm, (_, managingFirm) => managingFirm)
-  .reset($managingFirms);
+  .reset($managingFirms)
+  .reset(clearStore);
 
 const setSubscriberStatisticsFilter = createEvent<SubscriberStatisticsForm>();
 const $subscriberStatisticsFilter =
@@ -86,7 +89,8 @@ const $housingStocks = createStore<HousingStockWithApartmentStatistic[]>([])
         }
         return { ...housingStock, apartmentsStatistic };
       }),
-  );
+  )
+  .reset(clearStore);
 
 const $housingStocksIsLoading = getHousingStocksFx.pending;
 const $statisticIsLoading = getStatisticFx.pending;
@@ -135,6 +139,11 @@ sample({
   filter: (filter) => Boolean(filter.HousingStockId),
   fn: (filter) => prepareFilterBeforeSenging(filter),
   target: getStatisticFx,
+});
+
+sample({
+  clock: StatiscticsPageGate.close,
+  target: clearStore,
 });
 
 export const displayStatisticsListByManagingFirmService = {
