@@ -38,7 +38,7 @@ export const CreateSealContainer = () => {
     if (actionType === WorkWithAppointmentType.create) {
       return 'Создать запись';
     }
-    return 'Редактировать запись';
+    return 'Сохранить';
   }, [actionType]);
 
   return (
