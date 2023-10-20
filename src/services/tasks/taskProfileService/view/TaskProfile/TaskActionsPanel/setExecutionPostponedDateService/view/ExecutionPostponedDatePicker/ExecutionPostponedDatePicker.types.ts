@@ -1,3 +1,8 @@
+import { StageChanges } from '../../setExecutionPostponedDateService.types';
+
 export type ExecutionPostponedDatePickerProps = {
-  handleDateChange: (applicationPostponeDate: string) => void;
+  handleStageChanges: ({
+    applicationPostponeDate,
+    comment,
+  }: StageChanges) => void;
 };
