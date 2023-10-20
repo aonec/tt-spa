@@ -1,17 +1,17 @@
-import { createDomain, sample } from 'effector';
+import { createEffect, createEvent, createStore } from 'effector';
+import { sample } from 'effector';
 import { createGate } from 'effector-react';
 import { NodeCheckResponse, NodeCheckResponsePagedList } from 'api/types';
 import { fetchNodeChecks } from './displayNodeChecksService.api';
 
-const domain = createDomain('displayNodeChecksService');
-
-const refetchNodeChecks = domain.createEvent();
-const getNodeChecksFx = domain.createEffect<number, NodeCheckResponsePagedList>(
+const refetchNodeChecks = createEvent();
+const getNodeChecksFx = createEffect<number, NodeCheckResponsePagedList>(
   fetchNodeChecks,
 );
-const $nodeChecks = domain
-  .createStore<NodeCheckResponse[]>([])
-  .on(getNodeChecksFx.doneData, (_, pagedData) => pagedData?.items || []);
+const $nodeChecks = createStore<NodeCheckResponse[]>([]).on(
+  getNodeChecksFx.doneData,
+  (_, pagedData) => pagedData?.items || [],
+);
 
 const NodeChecksGate = createGate<{ nodeId: number }>();
 

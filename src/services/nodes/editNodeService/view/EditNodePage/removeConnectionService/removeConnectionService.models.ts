@@ -1,23 +1,21 @@
+import { createEffect, createEvent, createStore } from 'effector';
 import { message } from 'antd';
-import { createDomain, forward, sample } from 'effector';
+import { forward, sample } from 'effector';
 import { PipeNodeResponse, UpdatePipeNodeRequest } from 'api/types';
 import { editNodeService } from 'services/nodes/editNodeService';
 import { EffectFailDataAxiosError } from 'types';
 import { fetchRemoveConnection } from './removeConnectionService.api';
 
-const domain = createDomain('removeConnectionService');
+const openModal = createEvent<PipeNodeResponse>();
+const closeModal = createEvent();
 
-const openModal = domain.createEvent<PipeNodeResponse>();
-const closeModal = domain.createEvent();
-
-const $node = domain
-  .createStore<PipeNodeResponse | null>(null)
+const $node = createStore<PipeNodeResponse | null>(null)
   .on(openModal, (_, node) => node)
   .reset(closeModal);
 const $isConfirmModalOpen = $node.map(Boolean);
 
-const removeConnection = domain.createEvent();
-const removeConnectionFx = domain.createEffect<
+const removeConnection = createEvent();
+const removeConnectionFx = createEffect<
   UpdatePipeNodeRequest & { nodeId: number },
   void,
   EffectFailDataAxiosError

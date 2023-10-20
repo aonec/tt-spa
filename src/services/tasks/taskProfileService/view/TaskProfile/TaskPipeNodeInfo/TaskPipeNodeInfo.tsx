@@ -22,7 +22,11 @@ export const TaskPipeNodeInfo: FC<TaskPipeNodeInfoProps> = ({ pipeNode }) => {
           <TextWrapper>Узел {number}</TextWrapper>
         </GroupWrapper>
         <GroupWrapper>
-          <LinkSC to={`/nodes/${id}/stats`} target="_blank">
+          <LinkSC
+            to={`/nodes/${id}/stats`}
+            target="_blank"
+            data-test="task-pipe-node-link"
+          >
             Перейти {'>'}
           </LinkSC>
         </GroupWrapper>

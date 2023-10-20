@@ -42,6 +42,7 @@ export const IndividualDeviceMetersInputLine: FC<
   previousReadingByCurrentSliderIndex,
   editable = true,
   apartmentId,
+  style,
 }) => {
   const history = useHistory();
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -143,7 +144,7 @@ export const IndividualDeviceMetersInputLine: FC<
   );
 
   return (
-    <Wrapper isDeviceClosed={isDeviceClosed}>
+    <Wrapper isDeviceClosed={isDeviceClosed} style={style}>
       <SelectSwitchDeviceTypeModal
         apartmentId={apartmentId}
         show={isModalOpen}

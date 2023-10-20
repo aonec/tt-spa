@@ -15,6 +15,7 @@ axios.defaults.baseURL = baseURL;
 
 axios.interceptors.request.use((req) => {
   req.headers.Authorization = `Bearer ${takeFromLocStor('token')}`;
+  req.headers['x-user-path'] = window.location.pathname || 'none';
 
   if (req.url && cancellableUrl.some((regex) => regex.test(req.url!))) {
     cancelRequestService.inputs.cancelRequest(req.url);
@@ -25,7 +26,7 @@ axios.interceptors.request.use((req) => {
     cancelRequestService.inputs.setToken({ url: req.url, token: token });
   }
 
-  if (req.url && checkUrl('refresh', req.url)) {
+  if (req.url && checkUrl('refreshToken', req.url)) {
     req.data = {
       token: takeFromLocStor('token'),
       refreshToken: takeFromLocStor('refreshToken'),
@@ -86,11 +87,15 @@ axios.interceptors.response.use(
       return new Promise((resolve) => {
         if (!$isRefreshRunning.getState()) {
           setIsRefreshRunning(true);
-          axios.post('/auth/refreshToken').then(() => {
-            setIsRefreshRunning(false);
+          const isRefreshTokenExist = Boolean(takeFromLocStor('refreshToken'));
 
-            return resolve(axios(config));
-          });
+          if (isRefreshTokenExist) {
+            axios.post('/auth/refreshToken').then(() => {
+              setIsRefreshRunning(false);
+
+              return resolve(axios(config));
+            });
+          }
         } else {
           const subscription = $isRefreshRunning.watch((isRefreshStop) => {
             if (!isRefreshStop) {

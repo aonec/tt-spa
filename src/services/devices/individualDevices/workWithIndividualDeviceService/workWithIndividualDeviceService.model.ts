@@ -1,4 +1,5 @@
-import { combine, createDomain, sample, split } from 'effector';
+import { createEvent } from 'effector';
+import { combine, sample, split } from 'effector';
 import { createGate } from 'effector-react';
 import {
   CheckIndividualDevicePayload,
@@ -30,10 +31,7 @@ const WorkWithIndividualDeviceGate = createGate<{
   type: WorkWithIndividualDeviceType;
 }>();
 
-const domain = createDomain('workWithIndividualDeviceService');
-
 const deviceInfoForm = createForm({
-  domain,
   fields: {
     model: {
       init: '',
@@ -169,13 +167,13 @@ const $individualDevice =
 
 const deviceChecked = checkIndividualDeviceMutation.finished.success;
 const deviceSwitched = switchIndividualDeviceMutation.finished.success;
-const actionSucceed = domain.createEvent<WorkWithIndividualDeviceType>();
+const actionSucceed = createEvent<WorkWithIndividualDeviceType>();
 
-const fetchSerialNumberForCheck = domain.createEvent<string>();
+const fetchSerialNumberForCheck = createEvent<string>();
 
-const submitAction = domain.createEvent();
-const switchIndividualDevice = domain.createEvent();
-const checkIndividualDevice = domain.createEvent();
+const submitAction = createEvent();
+const switchIndividualDevice = createEvent();
+const checkIndividualDevice = createEvent();
 
 split({
   source: WorkWithIndividualDeviceGate.state.map(({ type }) => type),

@@ -1,4 +1,5 @@
-import { createDomain, merge, sample } from 'effector';
+import { createEffect, createEvent, createStore } from 'effector';
+import { merge, sample } from 'effector';
 import { createGate } from 'effector-react';
 import { CalculatorCommentResponse } from 'api/types';
 import {
@@ -10,24 +11,20 @@ import { CalculatorCommentPayload } from './calculatorCommentService.types';
 import { message } from 'antd';
 import { EffectFailDataAxiosError } from 'types';
 
-const domain = createDomain('calculatorCommentService');
+const removeComment = createEvent();
+const removeCommentFx = createEffect<number, void, EffectFailDataAxiosError>(
+  fetchRemoveComment,
+);
 
-const removeComment = domain.createEvent();
-const removeCommentFx = domain.createEffect<
-  number,
-  void,
-  EffectFailDataAxiosError
->(fetchRemoveComment);
-
-const createComment = domain.createEvent<string>();
-const createCommentFx = domain.createEffect<
+const createComment = createEvent<string>();
+const createCommentFx = createEffect<
   CalculatorCommentPayload,
   CalculatorCommentResponse,
   EffectFailDataAxiosError
 >(fetchCreateComment);
 
-const editComment = domain.createEvent<string>();
-const editCommentFx = domain.createEffect<
+const editComment = createEvent<string>();
+const editCommentFx = createEffect<
   CalculatorCommentPayload,
   CalculatorCommentResponse,
   EffectFailDataAxiosError
@@ -38,8 +35,7 @@ const CalculatorIdGate = createGate<{ calculatorId: number }>();
 const commentEdited = merge([createCommentFx.doneData, editCommentFx.doneData]);
 const commentDelited = removeCommentFx.doneData;
 
-const $commentResponseData = domain
-  .createStore<CalculatorCommentResponse | null>(null)
+const $commentResponseData = createStore<CalculatorCommentResponse | null>(null)
   .on(createCommentFx.doneData, (_, comment) => comment)
   .on(editCommentFx.doneData, (_, comment) => comment);
 

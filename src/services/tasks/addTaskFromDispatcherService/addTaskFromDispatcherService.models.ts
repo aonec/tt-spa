@@ -14,18 +14,17 @@ import {
   getApartmentHomeownerNames,
   getApartments,
   getERPSources,
-  getErpExecutorsForLead,
-  getLeadExecutors,
   getResourceDisconnection,
   getTaskReasons,
 } from './addTaskFromDispatcherService.api';
 import {
   ApartmentListResponse,
   ApartmentListResponsePagedList,
+  EisTaskType,
   ErpCreateTaskRequest,
-  ErpExecutorResponse,
   ErpSourceResponse,
-  ErpTaskReasonResponse,
+  ErpTaskReasonGroupResponse,
+  ErpTaskReasonItemResponse,
   ResourceDisconnectingResponse,
   ResourceDisconnectingResponsePagedList,
   StreetWithBuildingNumbersResponsePagedList,
@@ -41,22 +40,24 @@ import {
 } from './addTaskFromDispatcherService.types';
 import { currentUserService } from 'services/currentUserService';
 import { prepareAddressesForTreeSelect } from './addTaskFromDispatcherService.utils';
+import _ from 'lodash';
 
 const PageGate = createGate();
+const AddTaskDataFetchGate = createGate();
 
 const handleOpenModal = createEvent();
 const handleCloseModal = createEvent();
-
-const choоseLeadExecutor = createEvent<string>();
 
 const handleCreateTask = createEvent<AddTask>();
 
 const handleSelectHousingAddress = createEvent<string>();
 const handleSelectApartmentNumber = createEvent<string>();
 const handleSelectTaskReason = createEvent<string>();
+const handleSelectTaskType = createEvent<EisTaskType>();
 
 const setSelectedHousingId = createEvent<string | null>();
 const setSelectedApartmentId = createEvent<number | null>();
+const setSelectedTaskReasonOption = createEvent<ErpTaskReasonItemResponse[]>();
 const setSelectedTaskReasonId = createEvent<string | null>();
 
 const handleReset = createEvent();
@@ -69,19 +70,14 @@ const createTaskFx = createEffect<
 
 const getERPSourcesFx = createEffect<void, ErpSourceResponse[]>(getERPSources);
 
-const getLeadExecutorsFx = createEffect<void, ErpExecutorResponse[]>(
-  getLeadExecutors,
+const getTaskReasonsFx = createEffect<void, ErpTaskReasonGroupResponse[]>(
+  getTaskReasons,
 );
 
 const getAddressesFx = createEffect<
   GetAddressesRequest,
   StreetWithBuildingNumbersResponsePagedList
 >(getAddresses);
-
-const getErpExecutorsForLeadFx = createEffect<
-  { leadId: string },
-  ErpExecutorResponse[]
->(getErpExecutorsForLead);
 
 const getApartmentsFx = createEffect<
   GetApartmentsRequest,
@@ -97,32 +93,29 @@ const getResourceDisconnectionFx = createEffect<
   ResourceDisconnectingResponsePagedList
 >(getResourceDisconnection);
 
-const getTaskReasonsFx = createEffect<void, ErpTaskReasonResponse[]>(
-  getTaskReasons,
-);
-
 const $isModalOpen = createStore<boolean>(false)
   .on(handleOpenModal, () => true)
   .on(handleCloseModal, () => false)
   .reset(handleReset);
 
-const $ERPSources = createStore<ErpSourceResponse[]>([])
-  .on(getERPSourcesFx.doneData, (_, data) => data)
+const $ERPSources = createStore<ErpSourceResponse[]>([]).on(
+  getERPSourcesFx.doneData,
+  (_, data) => data,
+);
+
+const $taskReasons = createStore<ErpTaskReasonGroupResponse[]>([]).on(
+  getTaskReasonsFx.doneData,
+  (_, data) => data,
+);
+
+const $resourceDisconnection = createStore<ResourceDisconnectingResponse[]>([])
+  .on(getResourceDisconnectionFx.doneData, (_, data) => data.items || [])
   .reset(handleReset);
 
-const $leadExecutors = createStore<ErpExecutorResponse[]>([])
-  .on(getLeadExecutorsFx.doneData, (_, data) => data)
-  .reset(handleReset);
-
-const $executors = createStore<ErpExecutorResponse[]>([])
-  .on(getErpExecutorsForLeadFx.doneData, (_, data) => data)
-  .reset(handleReset);
-
-const $preparedForOptionsAddresses = createStore<PreparedAddress[]>([])
-  .on(getAddressesFx.doneData, (_, data) =>
-    prepareAddressesForTreeSelect(data.items),
-  )
-  .reset(handleReset);
+const $preparedForOptionsAddresses = createStore<PreparedAddress[]>([]).on(
+  getAddressesFx.doneData,
+  (_, data) => prepareAddressesForTreeSelect(data.items),
+);
 
 const $selectedHousingStockId = createStore<string | null>(null)
   .on(setSelectedHousingId, (_, id) => id)
@@ -130,6 +123,10 @@ const $selectedHousingStockId = createStore<string | null>(null)
 
 const $selectedApartmentId = createStore<number | null>(null)
   .on(setSelectedApartmentId, (_, id) => id)
+  .reset(handleReset);
+
+const $selectedTaskReasonOption = createStore<ErpTaskReasonItemResponse[]>([])
+  .on(setSelectedTaskReasonOption, (_, taskReasonOption) => taskReasonOption)
   .reset(handleReset);
 
 const $selectedTaskReasonId = createStore<string | null>(null)
@@ -155,14 +152,6 @@ const $preparedApartmentNumbers = $existingApartmentNumbers.map((items) => {
     }));
 });
 
-const $resourceDisconnection = createStore<ResourceDisconnectingResponse[]>([])
-  .on(getResourceDisconnectionFx.doneData, (_, data) => data.items || [])
-  .reset(handleReset);
-
-const $taskReasons = createStore<ErpTaskReasonResponse[]>([])
-  .on(getTaskReasonsFx.doneData, (_, data) => data)
-  .reset(handleReset);
-
 sample({
   clock: handleCreateTask,
   source: combine(
@@ -180,47 +169,38 @@ sample({
 
     const sourceDateTimeUTC = dayjs(sourceDateTime).utcOffset(0).toISOString();
 
-    return {
+    const payload = {
       taskReasonId: source.selectedTaskReasonId,
       taskType: data.taskType,
       objectTtmId: Number(source.selectedHousingStockId),
       sourceId: data.sourceId,
       sourceNumber: data.requestNumber,
       sourceDateTime: sourceDateTimeUTC,
-      leadId: data.leadId,
-      workerId: data.executorId,
       subscriberPhoneNumber: data.phoneNumber,
       subscriberFullName: data.subscriberName,
       taskDescription: data.taskDescription,
     } as ErpCreateTaskRequest;
+
+    const filteredByNullValuesPayload = _.pickBy(payload, _.identity);
+
+    return filteredByNullValuesPayload as ErpCreateTaskRequest;
   },
   target: createTaskFx,
 });
 
 sample({
-  clock: PageGate.open,
-  target: [getERPSourcesFx, getLeadExecutorsFx, getTaskReasonsFx],
+  clock: AddTaskDataFetchGate.open,
+  target: [getERPSourcesFx, getTaskReasonsFx],
 });
 
 sample({
-  clock: PageGate.open,
+  clock: AddTaskDataFetchGate.open,
   source: currentUserService.outputs.$userCity,
   filter: Boolean,
   fn: (userCity) => ({
     City: userCity,
   }),
   target: getAddressesFx,
-});
-
-sample({
-  clock: choоseLeadExecutor,
-  filter: Boolean,
-  fn: (data) => {
-    return {
-      leadId: data,
-    };
-  },
-  target: getErpExecutorsForLeadFx,
 });
 
 sample({
@@ -254,7 +234,19 @@ sample({
     const selectedOption = taskReasons.find(
       (optionItem) => optionItem.name === selectedTaskReason,
     );
-    return selectedOption?.id || null;
+    return selectedOption?.items || [];
+  },
+  target: setSelectedTaskReasonOption,
+});
+
+sample({
+  clock: handleSelectTaskType,
+  source: $selectedTaskReasonOption,
+  fn: (taskReason, selectedTaskType) => {
+    const taskReasonFromTaskType = taskReason.find(
+      (taskReasonItem) => taskReasonItem.taskType === selectedTaskType,
+    );
+    return taskReasonFromTaskType?.id || null;
   },
   target: setSelectedTaskReasonId,
 });
@@ -305,22 +297,20 @@ export const addTaskFromDispatcherService = {
     handleOpenModal,
     handleCloseModal,
     handleCreateTask,
-    choоseLeadExecutor,
     handleSelectHousingAddress,
     handleSelectApartmentNumber,
     handleSelectTaskReason,
+    handleSelectTaskType,
   },
   outputs: {
     $isModalOpen,
     $ERPSources,
-    $leadExecutors,
     $preparedForOptionsAddresses,
-    $executors,
     $isCreatePending,
     $preparedApartmentNumbers,
     $resourceDisconnection,
     $apartmentHomeownerNames,
     $taskReasons,
   },
-  gates: { PageGate },
+  gates: { PageGate, AddTaskDataFetchGate },
 };

@@ -1,4 +1,5 @@
-import { createDomain, forward, sample } from 'effector';
+import { createEffect, createEvent, createStore } from 'effector';
+import { forward, sample } from 'effector';
 import { createGate } from 'effector-react';
 import { CalculatorResponse } from 'api/types';
 import { fetchCalculator } from './calculatorProfileService.api';
@@ -6,18 +7,15 @@ import { consumptionReportCalculatorService } from '../consumptionReportCalculat
 import { meteringDevicesService } from 'services/devices/resourceAccountingSystemsService/view/ResourceAccountingSystems/meteringDevicesService';
 import { calculatorCommentService } from './CalculatorProfile/calculatorCommentService';
 
-const domain = createDomain('calculatorProfileService');
+const clearStore = createEvent();
+const refetchCalculator = createEvent();
+const handleFecthCalculator = createEvent<number>();
 
-const clearStore = domain.createEvent();
-const refetchCalculator = domain.createEvent();
-const handleFecthCalculator = domain.createEvent<number>();
-
-const getCalculatorFx = domain.createEffect<number, CalculatorResponse>(
+const getCalculatorFx = createEffect<number, CalculatorResponse>(
   fetchCalculator,
 );
 
-const $calculator = domain
-  .createStore<CalculatorResponse | null>(null)
+const $calculator = createStore<CalculatorResponse | null>(null)
   .on(getCalculatorFx.doneData, (_, device) => device)
   .on(calculatorCommentService.inputs.commentEdited, (calculator, comment) => {
     if (calculator) {

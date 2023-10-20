@@ -109,21 +109,32 @@ export const CreateResourceDisconnectionContainer: FC<
   }, [handleComplete]);
 
   const preparedExistingHousingStocks = useMemo(() => {
+    const disabledBuildingIds = preselectedBuilding
+      ? [preselectedBuilding]
+      : [];
+
     if (typeOfAddress === EAddressDetails.All) {
-      return prepareAddressesForTreeSelect({
-        items: existingBuildings,
-        isTreeCheckable: true,
-      });
+      return prepareAddressesForTreeSelect(
+        {
+          items: existingBuildings,
+          isTreeCheckable: true,
+        },
+        disabledBuildingIds,
+      );
     }
     const housingStocks = buildingWithHeatingStations.length
       ? buildingWithHeatingStations
       : buildingWithHouseManagements;
-    return prepareAddressesWithParentsForTreeSelect(housingStocks);
+    return prepareAddressesWithParentsForTreeSelect(
+      housingStocks,
+      disabledBuildingIds,
+    );
   }, [
-    existingBuildings,
+    preselectedBuilding,
+    typeOfAddress,
     buildingWithHeatingStations,
     buildingWithHouseManagements,
-    typeOfAddress,
+    existingBuildings,
   ]);
 
   const preselectedBuildingData = existingBuildings.find((elem) =>

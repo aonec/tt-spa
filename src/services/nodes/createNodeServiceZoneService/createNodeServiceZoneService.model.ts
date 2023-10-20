@@ -1,26 +1,23 @@
+import { createEffect, createEvent, createStore } from 'effector';
 import { message } from 'antd';
-import { createDomain, forward } from 'effector';
+import { forward } from 'effector';
 import { NodeServiceZoneRequest, NodeServiceZoneResponse } from 'api/types';
 import { EffectFailDataAxiosError } from 'types';
 import { postNodeServiceZone } from './createNodeServiceZoneService.api';
 
-const domain = createDomain('createNodeServiceZoneService');
+const handleCreateNodeServiceZone = createEvent<NodeServiceZoneRequest>();
 
-const handleCreateNodeServiceZone =
-  domain.createEvent<NodeServiceZoneRequest>();
-
-const createNodeServiceZoneFx = domain.createEffect<
+const createNodeServiceZoneFx = createEffect<
   NodeServiceZoneRequest,
   NodeServiceZoneResponse,
   EffectFailDataAxiosError
 >(postNodeServiceZone);
 
-const openCreateNodeServiceZoneModal = domain.createEvent();
+const openCreateNodeServiceZoneModal = createEvent();
 
-const closeCreateNodeServiceZoneModal = domain.createEvent();
+const closeCreateNodeServiceZoneModal = createEvent();
 
-const $isModalOpen = domain
-  .createStore(false)
+const $isModalOpen = createStore(false)
   .on(openCreateNodeServiceZoneModal, () => true)
   .reset(closeCreateNodeServiceZoneModal);
 

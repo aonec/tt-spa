@@ -6,4 +6,9 @@ export const RangePicker = styled(DatePicker.RangePicker)<{ small?: boolean }>`
   width: 100%;
 
   height: ${({ small }) => (small ? '32px' : '48px')};
+  .ant-picker-clear {
+    svg {
+      margin-right: 12px !important;
+    }
+  }
 `;

@@ -1,4 +1,5 @@
-import { combine, createDomain, sample } from 'effector';
+import { createEffect, createEvent, createStore } from 'effector';
+import { combine, sample } from 'effector';
 import { addAct, fetchActs } from './actsJournalService.api';
 import {
   AddApartmentActRequest,
@@ -12,16 +13,16 @@ import dayjs from 'api/dayjs';
 import { addressIdSearchService } from './addressIdSearchService';
 import { addressSearchService } from 'services/addressSearchService/addressSearchService.models';
 
-const domain = createDomain('actsJournalService');
-
 const ActsJournalGate = createGate();
 
-const updateActsFilter = domain.createEvent<ActsJournalRequestParams>();
+const updateActsFilter = createEvent<ActsJournalRequestParams>();
 
-const setPageNumber = domain.createEvent<number>();
+const setPageNumber = createEvent<number>();
 
-const $actsFilter = domain
-  .createStore<ActsJournalRequestParams>({ PageSize: 20, PageNumber: 1 })
+const $actsFilter = createStore<ActsJournalRequestParams>({
+  PageSize: 20,
+  PageNumber: 1,
+})
   .on(updateActsFilter, (oldFilter, newFilter) => {
     return {
       ...oldFilter,
@@ -34,19 +35,18 @@ const $actsFilter = domain
   })
   .reset(ActsJournalGate.close);
 
-const getActs = domain.createEvent();
-const getActsFx = domain.createEffect<
+const getActs = createEvent();
+const getActsFx = createEffect<
   ActsJournalRequestParams,
   ApartmentActResponsePagedList
 >(fetchActs);
 
-const $actsPagedData = domain
-  .createStore<ApartmentActResponsePagedList | null>(null)
-  .on(getActsFx.doneData, (_, data) => data);
+const $actsPagedData = createStore<ApartmentActResponsePagedList | null>(
+  null,
+).on(getActsFx.doneData, (_, data) => data);
 
-const createAct =
-  domain.createEvent<Omit<AddApartmentActRequest, 'apartmentId'>>();
-const createActFx = domain.createEffect<AddApartmentActRequest, void>(addAct);
+const createAct = createEvent<Omit<AddApartmentActRequest, 'apartmentId'>>();
+const createActFx = createEffect<AddApartmentActRequest, void>(addAct);
 
 const $isCreateLoading = createActFx.pending;
 const $isActsLoading = getActsFx.pending;

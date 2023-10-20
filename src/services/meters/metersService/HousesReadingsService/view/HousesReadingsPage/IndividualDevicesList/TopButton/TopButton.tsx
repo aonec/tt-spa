@@ -5,7 +5,7 @@ import { Button, Wrapper } from './TopButton.styled';
 
 export const TopButton = () => {
   const { fastUp, slowUp, isUpRunnung, stopUp } = useUpPage();
-  
+
   return (
     <Wrapper>
       <Button onClick={isUpRunnung ? stopUp : slowUp}>

@@ -1,4 +1,5 @@
-import { createDomain, forward, sample } from 'effector';
+import { createEffect, createEvent, createStore } from 'effector';
+import { forward, sample } from 'effector';
 import {
   AllNodeWorkingRangeResponse,
   ENodeWorkingRangeSeason,
@@ -16,24 +17,22 @@ import {
 import { GetAddressesWithCityRequestPayload } from './uniqueWorkingRangeService.types';
 import { addressSearchService } from 'services/addressSearchService/addressSearchService.models';
 
-const domain = createDomain('uniqueWorkingRangeService');
-
-const handleOnSearchDataChange = domain.createEvent<{
+const handleOnSearchDataChange = createEvent<{
   nodeResourceType: EResourceType;
   season: ENodeWorkingRangeSeason;
   housingStockId: number;
 }>();
 
-const handleNodeChoosen = domain.createEvent<{
+const handleNodeChoosen = createEvent<{
   season: ENodeWorkingRangeSeason;
   nodeId: number;
 }>();
 
-const setSelectedCity = domain.createEvent<string>();
+const setSelectedCity = createEvent<string>();
 
-const handleFetchNodes = domain.createEvent<number>();
+const handleFetchNodes = createEvent<number>();
 
-const getHousingStockUniqueWorkingRangeFx = domain.createEffect<
+const getHousingStockUniqueWorkingRangeFx = createEffect<
   {
     nodeResourceType: EResourceType;
     season: ENodeWorkingRangeSeason;
@@ -43,7 +42,7 @@ const getHousingStockUniqueWorkingRangeFx = domain.createEffect<
   EffectFailDataAxiosError
 >(getHousingStockUniqueWorkingRange);
 
-const getNodeUniqueWorkingRangeFx = domain.createEffect<
+const getNodeUniqueWorkingRangeFx = createEffect<
   {
     season: ENodeWorkingRangeSeason;
     nodeId: number;
@@ -52,33 +51,38 @@ const getNodeUniqueWorkingRangeFx = domain.createEffect<
   EffectFailDataAxiosError
 >(getNodeUniqueWorkingRange);
 
-const fetchAdressesFx = domain.createEffect<
+const fetchAdressesFx = createEffect<
   GetAddressesWithCityRequestPayload,
   StreetWithBuildingNumbersResponsePagedList | null
 >(getAdresses);
 
-const getNodesFx = domain.createEffect<
-  number,
-  NodeOnHousingStockResponse[] | null
->(getNodes);
+const getNodesFx = createEffect<number, NodeOnHousingStockResponse[] | null>(
+  getNodes,
+);
 
-const $housingStockUniqueWorkingRange = domain
-  .createStore<AllNodeWorkingRangeResponse | null>(null)
-  .on(getHousingStockUniqueWorkingRangeFx.doneData, (_, range) => range);
+const $housingStockUniqueWorkingRange =
+  createStore<AllNodeWorkingRangeResponse | null>(null).on(
+    getHousingStockUniqueWorkingRangeFx.doneData,
+    (_, range) => range,
+  );
 
 const $isLoading = getHousingStockUniqueWorkingRangeFx.pending;
 
-const $selectedCity = domain
-  .createStore<string | null>(null)
-  .on(setSelectedCity, (_, city) => city);
+const $selectedCity = createStore<string | null>(null).on(
+  setSelectedCity,
+  (_, city) => city,
+);
 
-const $addressesPagedList = domain
-  .createStore<StreetWithBuildingNumbersResponsePagedList | null>(null)
-  .on(fetchAdressesFx.doneData, (_, addresses) => addresses);
+const $addressesPagedList =
+  createStore<StreetWithBuildingNumbersResponsePagedList | null>(null).on(
+    fetchAdressesFx.doneData,
+    (_, addresses) => addresses,
+  );
 
-const $nodes = domain
-  .createStore<NodeOnHousingStockResponse[] | null>(null)
-  .on(getNodesFx.doneData, (_, nodes) => nodes);
+const $nodes = createStore<NodeOnHousingStockResponse[] | null>(null).on(
+  getNodesFx.doneData,
+  (_, nodes) => nodes,
+);
 
 sample({
   clock: sample({ clock: $selectedCity, filter: Boolean }),

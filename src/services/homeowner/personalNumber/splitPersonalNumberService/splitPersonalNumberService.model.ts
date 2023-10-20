@@ -1,4 +1,5 @@
-import { combine, createDomain, guard, sample } from 'effector';
+import { createEffect, createEvent, createStore } from 'effector';
+import { combine, guard, sample } from 'effector';
 import { apartmentProfileService } from 'services/apartments/apartmentProfileService';
 import {
   AddNewApartmentStage,
@@ -21,48 +22,40 @@ import dayjs from 'api/dayjs';
 import { createGate } from 'effector-react';
 import { message } from 'antd';
 
-const domain = createDomain('splitPersonalNumberService');
-
 const SplitPageGate = createGate();
 
-const goBackStage = domain.createEvent();
-const goNextStage = domain.createEvent();
+const goBackStage = createEvent();
+const goNextStage = createEvent();
 
-const handleForceConfirmationModalClose = domain.createEvent();
-const onForced = domain.createEvent();
+const handleForceConfirmationModalClose = createEvent();
+const onForced = createEvent();
 
-const handleSubmitSwitchStage = domain.createEvent<SwitchStage>();
-const handleSubmitAddNewApartmentStage =
-  domain.createEvent<AddNewApartmentStage>();
-const handleSubmitTransferDevicesStage = domain.createEvent<TransferStage>();
+const handleSubmitSwitchStage = createEvent<SwitchStage>();
+const handleSubmitAddNewApartmentStage = createEvent<AddNewApartmentStage>();
+const handleSubmitTransferDevicesStage = createEvent<TransferStage>();
 
-const handleCheckApartmentExist = domain.createEvent();
+const handleCheckApartmentExist = createEvent();
 
 const $apartment = apartmentProfileService.outputs.$apartment;
 
-const $switchStageData = domain
-  .createStore<SwitchStage | null>(null)
+const $switchStageData = createStore<SwitchStage | null>(null)
   .on(handleSubmitSwitchStage, (_, data) => data)
   .reset(SplitPageGate.close);
-const $addNewApartmentStageData = domain
-  .createStore<AddNewApartmentStage | null>(null)
+const $addNewApartmentStageData = createStore<AddNewApartmentStage | null>(null)
   .on(handleSubmitAddNewApartmentStage, (_, data) => data)
   .reset(SplitPageGate.close);
-const $transferDevicesData = domain
-  .createStore<TransferStage | null>(null)
+const $transferDevicesData = createStore<TransferStage | null>(null)
   .on(handleSubmitTransferDevicesStage, (_, data) => data)
   .reset(SplitPageGate.close);
 
-const splitPersonalNumber = domain.createEvent<boolean>();
-const handleSplitInExistApart = domain.createEvent();
+const splitPersonalNumber = createEvent<boolean>();
+const handleSplitInExistApart = createEvent();
 
-const $isForced = domain
-  .createStore<boolean>(false)
+const $isForced = createStore<boolean>(false)
   .on(onForced, () => true)
   .reset(handleForceConfirmationModalClose);
 
-const $stageNumber = domain
-  .createStore<number>(1)
+const $stageNumber = createStore<number>(1)
   .on(goNextStage, (stageNumber) => stageNumber + 1)
   .on(goBackStage, (stageNumber) => stageNumber - 1)
   .reset(SplitPageGate.close);
@@ -80,7 +73,7 @@ guard({
 
 const IndividualDevicesGate = createGate<GetIndividualDeviceRequestParams>();
 
-const getIndividualDevicesFx = domain.createEffect<
+const getIndividualDevicesFx = createEffect<
   GetIndividualDeviceRequestParams,
   {
     items: IndividualDeviceListItemResponse[];
@@ -93,11 +86,11 @@ sample({
   target: getIndividualDevicesFx,
 });
 
-const $individualDevices = domain
-  .createStore<{ items: IndividualDeviceListItemResponse[] } | null>(null)
-  .on(getIndividualDevicesFx.doneData, (_, devices) => devices);
+const $individualDevices = createStore<{
+  items: IndividualDeviceListItemResponse[];
+} | null>(null).on(getIndividualDevicesFx.doneData, (_, devices) => devices);
 
-const checkApartmentExistingFx = domain.createEffect<
+const checkApartmentExistingFx = createEffect<
   {
     housingStockId: number;
     apartmentNumber: string;
@@ -105,7 +98,7 @@ const checkApartmentExistingFx = domain.createEffect<
   number | null
 >(doesApartmentExist);
 
-const splitPersonalNumberFx = domain.createEffect<
+const splitPersonalNumberFx = createEffect<
   {
     data: HomeownerAccountSplitRequest;
     isForced?: boolean;
@@ -114,13 +107,11 @@ const splitPersonalNumberFx = domain.createEffect<
   EffectFailDataAxiosErrorDataApartmentId
 >(splitHomeownerAccount);
 
-const $checkedExistingApartmentId = domain
-  .createStore<number | null>(null)
+const $checkedExistingApartmentId = createStore<number | null>(null)
   .on(checkApartmentExistingFx.doneData, (_, id) => id)
   .reset(SplitPageGate.close);
 
-const $samePersonalAccountNumderId = domain
-  .createStore<number | null>(null)
+const $samePersonalAccountNumderId = createStore<number | null>(null)
   .on(splitPersonalNumberFx.failData, (prev, errData) => {
     if (errData.response.status === 409) {
       return errData.response.data.error.Data.ApartmentId;

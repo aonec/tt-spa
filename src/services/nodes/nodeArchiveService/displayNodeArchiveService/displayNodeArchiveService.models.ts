@@ -1,4 +1,5 @@
-import { combine, createDomain } from 'effector';
+import { createEffect, createEvent, createStore } from 'effector';
+import { combine } from 'effector';
 import { createGate } from 'effector-react';
 import { getNodeArchiveData } from './displayNodeArchiveService.api';
 import {
@@ -10,22 +11,19 @@ import {
 import { nodeProfileService } from 'services/nodes/nodeProfileService';
 import _ from 'lodash';
 
-const domain = createDomain('displayNodeArchiveService');
-
 const NodeArchiveGate = createGate();
 
-const $nodeArchiveData = domain.createStore<NodeArchiveData | null>(null);
+const $nodeArchiveData = createStore<NodeArchiveData | null>(null);
 
-const fetchNodeArchiveDataFx = domain.createEffect<
+const fetchNodeArchiveDataFx = createEffect<
   GetNodeArchiveDataRequestParams,
   NodeArchiveData
 >(getNodeArchiveData);
 
-const loadNodeArchiveData = domain.createEvent<LoadNodeArchiveDataPayload>();
+const loadNodeArchiveData = createEvent<LoadNodeArchiveDataPayload>();
 
-const setWithFaultReadings = domain.createEvent<boolean>();
-const $withFaultReadings = domain
-  .createStore(false)
+const setWithFaultReadings = createEvent<boolean>();
+const $withFaultReadings = createStore(false)
   .on(setWithFaultReadings, (_, withFaultReadings) => withFaultReadings)
   .reset(NodeArchiveGate.close);
 

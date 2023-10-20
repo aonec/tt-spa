@@ -1,5 +1,3 @@
-import _ from 'lodash';
-import { ErpExecutorResponse } from 'api/types';
 import {
   ExistingApartmentNumberType,
   PreparedAddress,
@@ -36,10 +34,6 @@ export function autocompleteApartNumber(
       .startsWith(apartmentNumber.toLocaleLowerCase()),
   );
 }
-
-export const sortByAlphabet = (leadExecutors: ErpExecutorResponse[]) => {
-  return _.sortBy(leadExecutors, [(o) => o.name]);
-};
 
 export function autocomplete(
   street: string | null,

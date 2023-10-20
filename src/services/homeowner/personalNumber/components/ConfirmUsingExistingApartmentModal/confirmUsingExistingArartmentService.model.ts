@@ -1,4 +1,5 @@
-import { createDomain, sample } from 'effector';
+import { createEffect, createEvent, createStore } from 'effector';
+import { sample } from 'effector';
 import {
   fetchApartment,
   fetchIndividualDevices,
@@ -10,9 +11,7 @@ import {
 } from 'api/types';
 import { splitPersonalNumberService } from '../../splitPersonalNumberService';
 
-const domain = createDomain('confirmUsingExistingArartmentService');
-
-const handleCloseModal = domain.createEvent();
+const handleCloseModal = createEvent();
 
 const $checkedExistingApartmentId =
   splitPersonalNumberService.outputs.$checkedExistingApartmentId.reset(
@@ -22,21 +21,21 @@ const $checkedExistingApartmentId =
 const $isConfirmExistingApartmentModalOpen =
   $checkedExistingApartmentId.map(Boolean);
 
-const getApartmentFx = domain.createEffect<number, ApartmentResponse>(
-  fetchApartment,
+const getApartmentFx = createEffect<number, ApartmentResponse>(fetchApartment);
+const $apartment = createStore<ApartmentResponse | null>(null).on(
+  getApartmentFx.doneData,
+  (_, apartment) => apartment,
 );
-const $apartment = domain
-  .createStore<ApartmentResponse | null>(null)
-  .on(getApartmentFx.doneData, (_, apartment) => apartment);
 
-const getDevicesFx = domain.createEffect<
+const getDevicesFx = createEffect<
   number,
   IndividualDeviceListItemResponsePagedList
 >(fetchIndividualDevices);
 
-const $devices = domain
-  .createStore<IndividualDeviceListItemResponse[]>([])
-  .on(getDevicesFx.doneData, (_, devices) => devices.items || []);
+const $devices = createStore<IndividualDeviceListItemResponse[]>([]).on(
+  getDevicesFx.doneData,
+  (_, devices) => devices.items || [],
+);
 
 const $isApartmentLoading = getApartmentFx.pending;
 const $isDeviceLoading = getDevicesFx.pending;

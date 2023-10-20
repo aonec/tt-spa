@@ -29,6 +29,7 @@ export const HousesReadingsContainer = () => {
     loadConsumptionRates,
     loadNextPageOfIndividualDevicesList,
     openReadingsHistoryModal,
+    totalItems,
   } = useUnit({
     housingStock: outputs.$housingStock,
     isHousingStockFetched: getHousingStockQuery.$succeeded,
@@ -43,6 +44,7 @@ export const HousesReadingsContainer = () => {
       inputs.loadNextPageOfIndividualDevicesList,
     loadConsumptionRates: inputs.loadManagemenFirmConsumptionRates,
     openReadingsHistoryModal: inputs.openReadingsHistoryModal,
+    totalItems: outputs.$totalItems,
   });
 
   const { managementFirmConsumptionRates } = useManagingFirmConsumptionRates(
@@ -50,24 +52,6 @@ export const HousesReadingsContainer = () => {
     loadConsumptionRates,
     housingStock?.managingFirmId,
   );
-
-  useEffect(() => {
-    const onScrollDown = () => {
-      if (isLoadingIndividualDevices) return;
-
-      const scrollHeight = document.body.scrollHeight - window.screen.height;
-
-      if (window.scrollY > scrollHeight - 200) {
-        loadNextPageOfIndividualDevicesList();
-      }
-    };
-
-    window.addEventListener('scroll', onScrollDown, true);
-
-    return () => {
-      window.removeEventListener('scroll', onScrollDown, true);
-    };
-  }, [loadNextPageOfIndividualDevicesList, isLoadingIndividualDevices]);
 
   useEffect(() => {
     return inputs.handleHousingStockLoaded.watch(({ result: housingStock }) => {
@@ -99,6 +83,7 @@ export const HousesReadingsContainer = () => {
         openReadingsHistoryModal={openReadingsHistoryModal}
         isAllDevicesLoaded={isAllDevicesLoaded}
         isHousingStockFetched={isHousingStockFetched}
+        totalItems={totalItems}
       />
     </>
   );

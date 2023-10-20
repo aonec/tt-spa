@@ -25,6 +25,7 @@ export const ApartmentIndividualDeviceMetersInputLine: FC<
   handleUploadReading,
   uploadingMetersStatuses,
   previousReadingByCurrentSliderIndex,
+  style,
 }) => {
   const isDeviceClosed = Boolean(device.closingDate);
 
@@ -57,7 +58,7 @@ export const ApartmentIndividualDeviceMetersInputLine: FC<
   }, [previousReading, currentReading, rateNum]);
 
   return (
-    <Wrapper>
+    <Wrapper style={style}>
       <div>{device.apartmentNumber}</div>
       <DeviceInfoWrapper>
         <div className="device-icon">
@@ -71,6 +72,7 @@ export const ApartmentIndividualDeviceMetersInputLine: FC<
         {/* </Tooltip> */}
       </DeviceInfoWrapper>
       <MetersInputsBlock
+        focusOnFirst={false}
         handleUploadReading={handleUploadReading}
         reading={previousReading}
         rateType={device.rateType}
@@ -82,6 +84,7 @@ export const ApartmentIndividualDeviceMetersInputLine: FC<
         tooltip={(!previousReading && previousReadingTooltipTitle) || ''}
       />
       <MetersInputsBlock
+        focusOnFirst={false}
         handleUploadReading={handleUploadReading}
         reading={currentReading}
         rateType={device.rateType}

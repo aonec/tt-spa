@@ -1,14 +1,13 @@
-import { createDomain, sample } from 'effector';
+import { createEvent, createStore } from 'effector';
+import { sample } from 'effector';
 import { createForm } from 'effector-forms';
 import { GetInspectorsHousingStocksRequestParams } from '../displayInspectorsHousingStocksService/types';
 import { addressSearchService } from 'services/addressSearchService/addressSearchService.models';
 
-const domain = createDomain('searchInspectorsHousingStockService');
+const $isExtendedSearchOpen = createStore(false);
 
-const $isExtendedSearchOpen = domain.createStore(false);
-
-const extendedSearchOpened = domain.createEvent();
-const extendedSearchClosed = domain.createEvent();
+const extendedSearchOpened = createEvent();
+const extendedSearchClosed = createEvent();
 
 const searchForm = createForm({
   fields: {
@@ -30,12 +29,12 @@ const searchForm = createForm({
   },
 });
 
-const clearExtendedSearch = domain.createEvent();
+const clearExtendedSearch = createEvent();
 
 const startSearchInspectorsHousingStocks =
-  domain.createEvent<GetInspectorsHousingStocksRequestParams>();
+  createEvent<GetInspectorsHousingStocksRequestParams>();
 
-const applyExtendedFilters = domain.createEvent();
+const applyExtendedFilters = createEvent();
 
 sample({
   clock: addressSearchService.outputs.$existingCities.map((cities) =>

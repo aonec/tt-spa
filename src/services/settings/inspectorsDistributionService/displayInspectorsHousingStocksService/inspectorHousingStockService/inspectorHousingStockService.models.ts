@@ -1,4 +1,5 @@
-import { createDomain, sample } from 'effector';
+import { createEffect, createEvent, createStore } from 'effector';
+import { sample } from 'effector';
 import { message } from 'antd';
 import { HousingStockResponse } from 'api/types';
 import { EffectFailDataAxiosError } from 'types';
@@ -15,24 +16,18 @@ const { $inspectorsList } = displayInspectorsService.outputs;
 const { $inspectorsHousingStocksList } =
   displayInspectorsHousingStocksService.outputs;
 
-const inspectorHousingStockServiceDomain = createDomain(
-  'inspectorHousingStockService',
+const $currentHousingStockUpdates = createStore<CurrentHousingStockUpdate[]>(
+  [],
 );
 
-const $currentHousingStockUpdates =
-  inspectorHousingStockServiceDomain.createStore<CurrentHousingStockUpdate[]>(
-    [],
-  );
-
-const updateHousingStockInspectorInfoFx =
-  inspectorHousingStockServiceDomain.createEffect<
-    PatchHousingStockInspectorInfoPayload,
-    HousingStockResponse | null,
-    EffectFailDataAxiosError
-  >(patchHousingStockInspectorInfo);
+const updateHousingStockInspectorInfoFx = createEffect<
+  PatchHousingStockInspectorInfoPayload,
+  HousingStockResponse | null,
+  EffectFailDataAxiosError
+>(patchHousingStockInspectorInfo);
 
 const updateHousingStockInspectorInfo =
-  inspectorHousingStockServiceDomain.createEvent<PatchHousingStockInspectorInfoPayload>();
+  createEvent<PatchHousingStockInspectorInfoPayload>();
 
 updateHousingStockInspectorInfoFx.failData.watch((error) => {
   return message.error(

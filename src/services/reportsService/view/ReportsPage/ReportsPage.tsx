@@ -11,7 +11,6 @@ import {
 } from './ReportsPage.styled';
 import { ReportsPageProps } from './ReportsPage.types';
 import { PageHeader } from 'ui-kit/shared/PageHeader';
-import { ReportsListContainer } from 'services/reports/reportsListService';
 import {
   ReportIconsDictionary,
   ReportNamesDictionary,
@@ -73,7 +72,7 @@ export const ReportsPage: FC<ReportsPageProps> = () => {
           ))}
         </ReportsList>
       </ReportBlocksWrapper>
-      <ReportsListContainer />
+      {/* <ReportsListContainer /> */}
     </Wrapper>
   );
 };

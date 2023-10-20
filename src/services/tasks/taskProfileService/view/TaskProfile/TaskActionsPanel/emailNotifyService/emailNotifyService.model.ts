@@ -1,4 +1,5 @@
-import { createDomain, guard } from 'effector';
+import { createEffect, createStore } from 'effector';
+import { guard } from 'effector';
 import { createGate } from 'effector-react';
 import {
   ContractorListResponse,
@@ -6,17 +7,13 @@ import {
 } from 'api/types';
 import { getContractors } from './emailNotifyService.api';
 
-const domain = createDomain('emailNotifyService');
-
-const fetchContractorsFx = domain.createEffect<
-  void,
-  ContractorListResponsePagedList
->(getContractors);
+const fetchContractorsFx = createEffect<void, ContractorListResponsePagedList>(
+  getContractors,
+);
 
 const ContractorsGate = createGate();
 
-const $contractors = domain
-  .createStore<ContractorListResponse[] | null>(null)
+const $contractors = createStore<ContractorListResponse[] | null>(null)
   .on(fetchContractorsFx.doneData, (_, data) => data.items)
   .reset(ContractorsGate.close);
 

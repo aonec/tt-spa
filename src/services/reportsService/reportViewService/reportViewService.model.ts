@@ -1,13 +1,5 @@
-import {
-  Store,
-  combine,
-  createDomain,
-  forward,
-  guard,
-  sample,
-  split,
-  merge,
-} from 'effector';
+import { createEffect, createEvent, createStore } from 'effector';
+import { Store, combine, forward, guard, sample, split, merge } from 'effector';
 import { createGate } from 'effector-react';
 import {
   ApartmentActsConstructedReportResponse,
@@ -49,93 +41,92 @@ import { BlobResponseErrorType, EffectFailDataAxiosError } from 'types';
 import { message } from 'antd';
 import { addressSearchService } from 'services/addressSearchService/addressSearchService.models';
 
-const domain = createDomain('reportViewService');
-
 const ReportViewGate = createGate<{ reportType: ReportType }>();
 
 const AddressesWithHouseManagementsGate = createGate();
 
-const fetchAddressesWithHouseManagementsFx = domain.createEffect<
+const fetchAddressesWithHouseManagementsFx = createEffect<
   void,
   HouseManagementWithStreetsResponse[]
 >(getAddressesWithHouseManagements);
 
-const fetchIndividualDevicesReportFx = domain.createEffect<
+const fetchIndividualDevicesReportFx = createEffect<
   IndividualDeviceReportRequestPaload,
   IndividualDevicesConstructedReportResponse[],
   EffectFailDataAxiosError
 >(getIndividualDevicesReport);
 
-const fetchActJournalReportFx = domain.createEffect<
+const fetchActJournalReportFx = createEffect<
   ActsJournalReportRequestPayload,
   ApartmentActsConstructedReportResponse,
   EffectFailDataAxiosError
 >(getActJournalReport);
 
-const fetchHousingMeteringDevicesReportFx = domain.createEffect<
+const fetchHousingMeteringDevicesReportFx = createEffect<
   HousingMeteringDevicesReportRequestPayload,
   HousingDevicesConstructedReportResponse[],
   EffectFailDataAxiosError
 >(getHousingMeteringDevicesReport);
 
-const fetchHomeownersReportFx = domain.createEffect<
+const fetchHomeownersReportFx = createEffect<
   HomeownersReportRequestPayload,
   HomeownersConstructedReportResponse[],
   EffectFailDataAxiosError
 >(getHomeownersReport);
 
-const fetchEmployeeReportFx = domain.createEffect<
+const fetchEmployeeReportFx = createEffect<
   EmployeeReportRequestPayload,
   EmployeeReportResponse,
   EffectFailDataAxiosError
 >(getEmployeeReport);
 
-const downloadReportFileFx = domain.createEffect<
+const downloadReportFileFx = createEffect<
   ReportPayload,
   void,
   BlobResponseErrorType
 >(downloadReportFile);
 
-const loadIndividualDeviceReport = domain.createEvent<ReportPayload>();
-const loadActJournalReport = domain.createEvent<ReportPayload>();
-const loadHousingMeteringDevicesReport = domain.createEvent<ReportPayload>();
-const loadHomeownersReport = domain.createEvent<ReportPayload>();
-const loadEmployeeReport = domain.createEvent<ReportPayload>();
+const loadIndividualDeviceReport = createEvent<ReportPayload>();
+const loadActJournalReport = createEvent<ReportPayload>();
+const loadHousingMeteringDevicesReport = createEvent<ReportPayload>();
+const loadHomeownersReport = createEvent<ReportPayload>();
+const loadEmployeeReport = createEvent<ReportPayload>();
 
-const downloadReport = domain.createEvent();
+const downloadReport = createEvent();
 
-const setFiltrationValues = domain.createEvent<ReportFiltrationFormValues>();
+const setFiltrationValues = createEvent<ReportFiltrationFormValues>();
 
-const clearFiltrationValues = domain.createEvent();
+const clearFiltrationValues = createEvent();
 
-const $addressesWithHouseManagements = domain
-  .createStore<HouseManagementWithStreetsResponse[]>([])
+const $addressesWithHouseManagements = createStore<
+  HouseManagementWithStreetsResponse[]
+>([])
   .on(fetchAddressesWithHouseManagementsFx.doneData, (_, data) => data)
   .reset(AddressesWithHouseManagementsGate.close);
 
-const $filtrationValues = domain
-  .createStore<ReportFiltrationFormValues>({
-    city: null,
-    houseManagement: null,
-    housingStockIds: [],
-    resources: [],
-    reportOption: null,
-    from: null,
-    to: null,
-    reportDatePeriod: null,
-    closingReasons: [],
-    actResources: [],
-    showOnlyDuplicates: false,
-    withoutApartmentsWithOpenDevicesByResources: false,
-    employeeReportType: null,
-    employeeReportDatePeriodType: null,
-    employeeReportDate: null,
-  })
+const $filtrationValues = createStore<ReportFiltrationFormValues>({
+  city: null,
+  houseManagement: null,
+  housingStockIds: [],
+  resources: [],
+  reportOption: null,
+  from: null,
+  to: null,
+  reportDatePeriod: null,
+  closingReasons: [],
+  actResources: [],
+  showOnlyDuplicates: false,
+  withoutApartmentsWithOpenDevicesByResources: false,
+  employeeReportType: null,
+  employeeReportDatePeriodType: null,
+  employeeReportDate: null,
+})
   .on(setFiltrationValues, (_, values) => values)
   .reset(ReportViewGate.close, clearFiltrationValues);
 
-const $individualDevicesReportData = domain
-  .createStore<IndividualDevicesConstructedReportResponse[] | null>(null)
+const $individualDevicesReportData = createStore<
+  IndividualDevicesConstructedReportResponse[] | null
+>(null)
   .on(fetchIndividualDevicesReportFx.doneData, (_, data) => data)
   .reset(
     fetchIndividualDevicesReportFx.failData,
@@ -143,23 +134,24 @@ const $individualDevicesReportData = domain
     clearFiltrationValues,
   );
 
-const $actJournalReportData = domain
-  .createStore<ApartmentActsConstructedReportResponse | null>(null)
-  .on(fetchActJournalReportFx.doneData, (_, data) => data)
-  .reset(ReportViewGate.close, clearFiltrationValues);
+const $actJournalReportData =
+  createStore<ApartmentActsConstructedReportResponse | null>(null)
+    .on(fetchActJournalReportFx.doneData, (_, data) => data)
+    .reset(ReportViewGate.close, clearFiltrationValues);
 
-const $housingMeteringDevicesReportData = domain
-  .createStore<HousingDevicesConstructedReportResponse[] | null>(null)
+const $housingMeteringDevicesReportData = createStore<
+  HousingDevicesConstructedReportResponse[] | null
+>(null)
   .on(fetchHousingMeteringDevicesReportFx.doneData, (_, data) => data)
   .reset(ReportViewGate.close, clearFiltrationValues);
 
-const $homeownersReportData = domain
-  .createStore<HomeownersConstructedReportResponse[] | null>(null)
+const $homeownersReportData = createStore<
+  HomeownersConstructedReportResponse[] | null
+>(null)
   .on(fetchHomeownersReportFx.doneData, (_, data) => data)
   .reset(ReportViewGate.close, clearFiltrationValues);
 
-const $emloyeeReportData = domain
-  .createStore<EmployeeReportResponse | null>(null)
+const $emloyeeReportData = createStore<EmployeeReportResponse | null>(null)
   .on(fetchEmployeeReportFx.doneData, (_, data) => data)
   .reset(ReportViewGate.close, clearFiltrationValues);
 

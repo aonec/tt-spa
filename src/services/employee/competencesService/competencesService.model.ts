@@ -1,20 +1,19 @@
-import { createDomain, forward, guard } from 'effector';
+import { createEffect, createStore } from 'effector';
+import { forward, guard } from 'effector';
 import { createGate } from 'effector-react';
 import { ManagementFirmCompetenceResponse } from 'api/types';
 import { getCompetencesCatalog } from './competencesService.api';
 
-const domain = createDomain('competencesService');
-
 const CompetencesGate = createGate();
 
-const fetchCompetencesFx = domain.createEffect<
+const fetchCompetencesFx = createEffect<
   void,
   ManagementFirmCompetenceResponse[] | null
 >(getCompetencesCatalog);
 
-const $competencesCatalog = domain
-  .createStore<ManagementFirmCompetenceResponse[] | null>(null)
-  .on(fetchCompetencesFx.doneData, (_, competences) => competences);
+const $competencesCatalog = createStore<
+  ManagementFirmCompetenceResponse[] | null
+>(null).on(fetchCompetencesFx.doneData, (_, competences) => competences);
 
 forward({
   from: guard({

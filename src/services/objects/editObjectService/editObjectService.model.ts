@@ -1,4 +1,5 @@
-import { createDomain, merge, sample, split } from 'effector';
+import { createEffect, createEvent, createStore } from 'effector';
+import { merge, sample, split } from 'effector';
 import { createObjectService } from '../createObjectService';
 import { createHeatingStationService } from '../heatingStations/createHeatingStationService';
 import { editHeatingStationService } from '../heatingStations/editHeatingStationService';
@@ -25,39 +26,36 @@ import { message } from 'antd';
 import { GetBuildingPayload } from 'services/nodes/createNodeService/createNodeService.types';
 import { EditObjectPayload } from './editObjectService.types';
 
-const domain = createDomain('editObjectService');
-
 const ObjectIdGate = createGate<{
   buildingId: number;
   houseCategory: EHouseCategory | null;
 }>();
 
-const handleUpdateHousingStock =
-  domain.createEvent<HousingStockUpdateRequest>();
+const handleUpdateHousingStock = createEvent<HousingStockUpdateRequest>();
 
 const handleCreateHousingStockAddress =
-  domain.createEvent<BuildingAddressCreateRequest>();
+  createEvent<BuildingAddressCreateRequest>();
 
-const handleUpdateHousingStockAddress = domain.createEvent<{
+const handleUpdateHousingStockAddress = createEvent<{
   addressId: number;
   data: BuildingAddressUpdateRequest;
 }>();
 
-const handleDeleteHousingStockAddress = domain.createEvent<{
+const handleDeleteHousingStockAddress = createEvent<{
   addressId: number;
 }>();
 
-const onPageCancel = domain.createEvent();
+const onPageCancel = createEvent();
 
-const handleRefetchBuilding = domain.createEvent();
+const handleRefetchBuilding = createEvent();
 
-const updateBuildingFx = domain.createEffect<
+const updateBuildingFx = createEffect<
   EditObjectPayload,
   void,
   EffectFailDataAxiosError
 >(updateHousingStock);
 
-const createHousingStockAddressFx = domain.createEffect<
+const createHousingStockAddressFx = createEffect<
   {
     housingStockId: number;
     data: BuildingAddressCreateRequest;
@@ -66,7 +64,7 @@ const createHousingStockAddressFx = domain.createEffect<
   EffectFailDataAxiosError
 >(createHousingStockAddress);
 
-const updateHousingStockAddressFx = domain.createEffect<
+const updateHousingStockAddressFx = createEffect<
   {
     housingStockId: number;
     addressId: number;
@@ -76,7 +74,7 @@ const updateHousingStockAddressFx = domain.createEffect<
   EffectFailDataAxiosError
 >(updateHousingStockAddress);
 
-const deleteHousingStockAddressFx = domain.createEffect<
+const deleteHousingStockAddressFx = createEffect<
   {
     housingStockId: number;
     addressId: number;
@@ -149,24 +147,23 @@ const successDeleteAddress = deleteHousingStockAddressFx.doneData;
 const successUpdateAddress = updateHousingStockAddressFx.doneData;
 const successCreateAddress = createHousingStockAddressFx.doneData;
 
-const fetchBuilding = domain.createEvent<GetBuildingPayload>();
-const fetchHousingStockFx = domain.createEffect<
+const fetchBuilding = createEvent<GetBuildingPayload>();
+const fetchHousingStockFx = createEffect<
   { buildingId: number },
   HousingStockResponse
 >(getHousingStock);
-const $housingStock = domain
-  .createStore<HousingStockResponse | null>(null)
+const $housingStock = createStore<HousingStockResponse | null>(null)
   .on(fetchHousingStockFx.doneData, (_, building) => building)
   .reset(ObjectIdGate.close);
 
-const fetchNonResidentialBuildingFx = domain.createEffect<
+const fetchNonResidentialBuildingFx = createEffect<
   { buildingId: number },
   NonResidentialBuildingResponse
 >(getNonResidentialBuilding);
-const $nonResidentialBuilding = domain
-  .createStore<NonResidentialBuildingResponse | null>(null)
-  .on(fetchNonResidentialBuildingFx.doneData, (_, building) => building)
-  .reset(ObjectIdGate.close);
+const $nonResidentialBuilding =
+  createStore<NonResidentialBuildingResponse | null>(null)
+    .on(fetchNonResidentialBuildingFx.doneData, (_, building) => building)
+    .reset(ObjectIdGate.close);
 
 sample({
   clock: [handleRefetchBuilding, ObjectIdGate.state],

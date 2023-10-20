@@ -1,22 +1,20 @@
-import { createDomain, sample } from 'effector';
+import { createEffect, createEvent, createStore } from 'effector';
+import { sample } from 'effector';
 import { removeNodeCheckPayload } from './removeNodeCheckService.types';
 import { fetchRemoveNodeCheck } from './removeNodeCheckService.api';
 import { message } from 'antd';
 
-const domain = createDomain('removeNodeCheckService');
+const openModal = createEvent<removeNodeCheckPayload>();
+const closeModal = createEvent();
 
-const openModal = domain.createEvent<removeNodeCheckPayload>();
-const closeModal = domain.createEvent();
-
-const $removeNodeCheckPayload = domain
-  .createStore<removeNodeCheckPayload | null>(null)
+const $removeNodeCheckPayload = createStore<removeNodeCheckPayload | null>(null)
   .on(openModal, (_, payload) => payload)
   .reset(closeModal);
 
 const $isOpen = $removeNodeCheckPayload.map(Boolean);
 
-const removeNodeCheck = domain.createEvent();
-const removeNodeCheckFx = domain.createEffect<removeNodeCheckPayload, void>(
+const removeNodeCheck = createEvent();
+const removeNodeCheckFx = createEffect<removeNodeCheckPayload, void>(
   fetchRemoveNodeCheck,
 );
 const $isLoading = removeNodeCheckFx.pending;
