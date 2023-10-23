@@ -308,8 +308,7 @@ export interface ApartmentCreateRequest {
 export interface ApartmentListResponse {
   /** @format int32 */
   id: number;
-  /** @format int32 */
-  housingStockId: number;
+  housingStock: BuildingShortResponse | null;
   apartmentNumber: string | null;
   homeownerName: string | null;
   /** @format int32 */
