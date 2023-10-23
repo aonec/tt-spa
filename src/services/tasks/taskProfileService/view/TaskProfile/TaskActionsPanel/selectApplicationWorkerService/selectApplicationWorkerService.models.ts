@@ -1,7 +1,7 @@
 import { createEffect, createStore, sample } from 'effector';
+import { createGate } from 'effector-react';
 import { getApplicationBrigade } from './selectApplicationWorkerService.api';
 import { ErpExecutorResponse } from 'api/types';
-import { createGate } from 'effector-react';
 
 const SelectApplicationWorkerGate = createGate<{ taskId: number }>();
 
@@ -21,7 +21,6 @@ sample({
 });
 
 export const selectApplicationWorkerService = {
-  inputs: {},
   outputs: { $applicationBrigade },
   gates: { SelectApplicationWorkerGate },
 };

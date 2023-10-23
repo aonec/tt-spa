@@ -6,7 +6,6 @@ import { ActionComponentProps } from '../TaskActionsPanel.types';
 
 const {
   gates: { SelectApplicationWorkerGate },
-  inputs,
   outputs,
 } = selectApplicationWorkerService;
 
@@ -19,13 +18,16 @@ export const SelectApplicationWorkerContainer: FC<ActionComponentProps> = ({
   });
 
   const handleSelectWorker = (workerId: number) => {
-    handleChange();
+    handleChange({ nextPerpetratorId: workerId });
   };
 
   return (
     <>
       <SelectApplicationWorkerGate taskId={task.id} />
-      <SelectApplicationWorker applicationBrigade={applicationBrigade} />
+      <SelectApplicationWorker
+        applicationBrigade={applicationBrigade}
+        handleSelectWorker={handleSelectWorker}
+      />
     </>
   );
 };

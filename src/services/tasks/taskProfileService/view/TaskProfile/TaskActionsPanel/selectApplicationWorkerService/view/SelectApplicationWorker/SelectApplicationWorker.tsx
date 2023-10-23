@@ -4,6 +4,7 @@ import { SelectApplicationWorkerProps } from './SelectApplicationWorker.types';
 
 export const SelectApplicationWorker: FC<SelectApplicationWorkerProps> = ({
   applicationBrigade,
+  handleSelectWorker,
 }) => {
   const options = useMemo(
     () =>
@@ -20,7 +21,7 @@ export const SelectApplicationWorker: FC<SelectApplicationWorkerProps> = ({
       allowClear
       options={options}
       placeholder={'Выберите'}
-      onSelect={() => {}}
+      onChange={(value) => handleSelectWorker(value as number)}
     />
   );
 };
