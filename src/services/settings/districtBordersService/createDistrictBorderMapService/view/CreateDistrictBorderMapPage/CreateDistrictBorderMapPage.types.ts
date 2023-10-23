@@ -1,5 +1,5 @@
 import {
-  BuildingListResponsePagedList,
+  BuildingWithCoordinatesResponsePagedList,
   DistrictCreateRequest,
   DistrictResponse,
 } from 'api/types';
@@ -7,7 +7,7 @@ import { CreatingDistrictPayload } from '../../createDistrictBorderMapService.ty
 import { OrganizationCoordinates } from 'services/currentUserService/currentUserService.types';
 
 export type Props = {
-  existingHousingStocks: BuildingListResponsePagedList | null;
+  existingHousingStocks: BuildingWithCoordinatesResponsePagedList | null;
   existingDistricts: DistrictResponse[] | null;
   isLoading: boolean;
   handleCreateDistrict: (payload: DistrictCreateRequest) => void;

@@ -308,6 +308,8 @@ export interface ApartmentCreateRequest {
 export interface ApartmentListResponse {
   /** @format int32 */
   id: number;
+  /** @format int32 */
+  housingStockId: number;
   apartmentNumber: string | null;
   homeownerName: string | null;
   /** @format int32 */
@@ -320,7 +322,6 @@ export interface ApartmentListResponse {
   /** @format float */
   square: number | null;
   comment: string | null;
-  housingStock: BuildingListResponse | null;
 }
 
 export interface ApartmentListResponsePagedList {
@@ -727,6 +728,24 @@ export interface BuildingWithCoordinatesResponse {
   coordinates: PointResponse | null;
 }
 
+export interface BuildingWithCoordinatesResponsePagedList {
+  /** @format int32 */
+  totalItems: number;
+  /** @format int32 */
+  pageNumber: number;
+  /** @format int32 */
+  pageSize: number;
+  /** @format int32 */
+  totalPages: number;
+  hasPreviousPage: boolean;
+  hasNextPage: boolean;
+  /** @format int32 */
+  nextPageNumber: number;
+  /** @format int32 */
+  previousPageNumber: number;
+  items: BuildingWithCoordinatesResponse[] | null;
+}
+
 export interface BuildingWithTasksResponse {
   building: BuildingWithCoordinatesResponse | null;
   tasks: TaskShortResponse[] | null;
@@ -1009,6 +1028,7 @@ export interface ClosedDevicesConstructedReportResponse {
   /** @format date-time */
   closingDate: string | null;
   closingReason: EClosingReason | null;
+  phoneNumber: string | null;
 }
 
 export interface CommunicationPipeForAddingDeviceListResponse {
@@ -1826,6 +1846,9 @@ export enum EManagingFirmTaskType {
   IndividualDeviceCheckNoReadings = 'IndividualDeviceCheckNoReadings',
   RiserNoReadings = 'RiserNoReadings',
   ResourceDisconnecting = 'ResourceDisconnecting',
+  CurrentApplicationUnassigned = 'CurrentApplicationUnassigned',
+  EmergencyApplicationUnassigned = 'EmergencyApplicationUnassigned',
+  PlannedApplicationUnassigned = 'PlannedApplicationUnassigned',
 }
 
 export enum EMeteringDeviceType {
@@ -2111,6 +2134,7 @@ export enum EStageActionType {
   CloseIndividualDevices = 'CloseIndividualDevices',
   CreateResourceDisconnecting = 'CreateResourceDisconnecting',
   SetApplicationPostponeDate = 'SetApplicationPostponeDate',
+  SelectApplicationWorker = 'SelectApplicationWorker',
 }
 
 export enum EStageStatus {
@@ -2325,13 +2349,15 @@ export interface ElectricNodeResponseSuccessApiResponse {
 
 export interface ErpApplicationBrigadeMemberResponse {
   /** @format uuid */
-  id: string;
+  erpId: string;
   name: string | null;
 }
 
 export interface ErpApplicationResponse {
   /** @format uuid */
   id: string;
+  /** @format uuid */
+  erpId: string;
   number: string | null;
   type: EisTaskType;
   comment: string | null;
@@ -2368,27 +2394,39 @@ export interface ErpExecutorResponse {
   name: string | null;
 }
 
-export interface ErpObjectResponse {
-  /** @format uuid */
-  id: string;
-  address: string | null;
+export interface ErpExecutorResponseIEnumerableSuccessApiResponse {
+  successResponse: ErpExecutorResponse[] | null;
 }
 
 export interface ErpSourceResponse {
   /** @format uuid */
   id: string;
   name: string | null;
+  isSourceNumberRequired: boolean;
+  isSubscriberRequired: boolean;
+}
+
+export interface ErpSourceResponseIEnumerableSuccessApiResponse {
+  successResponse: ErpSourceResponse[] | null;
 }
 
 export interface ErpTaskDeadlineResponse {
   /** @format int32 */
-  deadlineInHours: number;
+  deadlineInHours: number | null;
+}
+
+export interface ErpTaskDeadlineResponseSuccessApiResponse {
+  successResponse: ErpTaskDeadlineResponse | null;
 }
 
 export interface ErpTaskReasonGroupResponse {
   type: EisTaskReasonType;
   name: string | null;
   items: ErpTaskReasonItemResponse[] | null;
+}
+
+export interface ErpTaskReasonGroupResponseIEnumerableSuccessApiResponse {
+  successResponse: ErpTaskReasonGroupResponse[] | null;
 }
 
 export interface ErpTaskReasonItemResponse {
@@ -2425,7 +2463,6 @@ export interface FullAddressResponse {
   apartmentId: number | null;
   apartmentNumber: string | null;
   comment: string | null;
-  coordinates: PointResponse | null;
 }
 
 export interface GetDataForHousingConsumptionPlotResponse {
@@ -3124,15 +3161,10 @@ export interface HousingStockListResponse {
   id: number;
   /** @format int32 */
   managingFirmId: number;
-  /** @format int32 */
-  numberOfTasks: number | null;
   managementFirm: ManagementFirmLiteResponse | null;
   address: BuildingAddressResponse | null;
-  coordinates: PointResponse | null;
   livingHouseType: ELivingHouseType;
   houseTypeString: string | null;
-  /** @format int32 */
-  numberOfApartments: number;
   houseManagement: HouseManagementResponse | null;
 }
 
@@ -5341,7 +5373,7 @@ export interface TaskCreationAssignment {
   /** @format int32 */
   executorId?: number;
   /** @format int32 */
-  observerId?: number | null;
+  observerId?: number;
 }
 
 export interface TaskCreationTargetObject {
@@ -6456,7 +6488,10 @@ export class Api<
      * @secure
      */
     apartmentsActsDetail: (apartmentId: number, params: RequestParams = {}) =>
-      this.request<ApartmentCheckResponseListSuccessApiResponse, any>({
+      this.request<
+        ApartmentCheckResponseListSuccessApiResponse,
+        ErrorApiResponse
+      >({
         path: `/api/Apartments/${apartmentId}/Acts`,
         method: 'GET',
         secure: true,
@@ -7284,6 +7319,53 @@ export class Api<
      * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Администратор УК без назначений задач</li><li>Контролёр</li>
      *
      * @tags Buildings
+     * @name BuildingsLiteList
+     * @summary HousingStocksRead
+     * @request GET:/api/Buildings/Lite
+     * @secure
+     */
+    buildingsLiteList: (
+      query?: {
+        OrderRule?: EHousingStockOrderRule;
+        City?: string;
+        Street?: string;
+        BuildingNumber?: string;
+        Corpus?: string;
+        /** @format uuid */
+        HeatingStationId?: string;
+        /** @format double */
+        totalAreaMaxValue?: number;
+        /** @format double */
+        totalAreaMinValue?: number;
+        totalAreaMeasurableUnit?: string;
+        /** @format uuid */
+        HouseManagementId?: string;
+        HouseCategory?: EHouseCategory;
+        /** @format int32 */
+        PageNumber?: number;
+        /** @format int32 */
+        PageSize?: number;
+        OrderBy?: EOrderByRule;
+        /** @format int32 */
+        Skip?: number;
+        /** @format int32 */
+        Take?: number;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<BuildingWithCoordinatesResponsePagedList, ErrorApiResponse>({
+        path: `/api/Buildings/Lite`,
+        method: 'GET',
+        query: query,
+        secure: true,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Администратор УК без назначений задач</li><li>Контролёр</li>
+     *
+     * @tags Buildings
      * @name BuildingsList
      * @summary HousingStocksRead
      * @request GET:/api/Buildings
@@ -7305,6 +7387,7 @@ export class Api<
         totalAreaMeasurableUnit?: string;
         /** @format uuid */
         HouseManagementId?: string;
+        HouseCategory?: EHouseCategory;
         /** @format int32 */
         PageNumber?: number;
         /** @format int32 */
@@ -7577,7 +7660,7 @@ export class Api<
     ) =>
       this.request<
         CalculatorIntoHousingStockResponseArraySuccessApiResponse,
-        any
+        ErrorApiResponse
       >({
         path: `/api/Buildings/${buildingId}/Calculators`,
         method: 'GET',
@@ -8408,11 +8491,11 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li><li>Администратор УК без назначений задач</li>
+     * @description Роли:<li>Администратор</li><li>Старший оператор</li>
      *
      * @tags Districts
      * @name IndividualSealDistrictsCreate
-     * @summary IndividualSealReadWrite
+     * @summary IndividualSealDistrictReadWrite
      * @request POST:/api/IndividualSeal/Districts
      * @secure
      */
@@ -8431,11 +8514,11 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li><li>Администратор УК без назначений задач</li>
+     * @description Роли:<li>Администратор</li><li>Старший оператор</li>
      *
      * @tags Districts
      * @name IndividualSealDistrictsDelete
-     * @summary IndividualSealReadWrite
+     * @summary IndividualSealDistrictReadWrite
      * @request DELETE:/api/IndividualSeal/Districts/{districtId}
      * @secure
      */
@@ -8459,11 +8542,11 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li><li>Администратор УК без назначений задач</li>
+     * @description Роли:<li>Администратор</li><li>Старший оператор</li>
      *
      * @tags Districts
      * @name IndividualSealDistrictsUpdate
-     * @summary IndividualSealReadWrite
+     * @summary IndividualSealDistrictReadWrite
      * @request PUT:/api/IndividualSeal/Districts/{districtId}
      * @secure
      */
@@ -8482,11 +8565,11 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li><li>Администратор УК без назначений задач</li>
+     * @description Роли:<li>Администратор</li><li>Старший оператор</li>
      *
      * @tags Districts
      * @name IndividualSealDistrictsAddHouseCreate
-     * @summary IndividualSealReadWrite
+     * @summary IndividualSealDistrictReadWrite
      * @request POST:/api/IndividualSeal/Districts/{districtId}/AddHouse
      * @secure
      */
@@ -8505,11 +8588,11 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li><li>Администратор УК без назначений задач</li>
+     * @description Роли:<li>Администратор</li><li>Старший оператор</li>
      *
      * @tags Districts
      * @name IndividualSealDistrictsDeleteHouseCreate
-     * @summary IndividualSealReadWrite
+     * @summary IndividualSealDistrictReadWrite
      * @request POST:/api/IndividualSeal/Districts/{districtId}/DeleteHouse
      * @secure
      */
@@ -8539,7 +8622,7 @@ export class Api<
     documentsTypesList: (params: RequestParams = {}) =>
       this.request<
         EDocumentTypeStringDictionaryItemListSuccessApiResponse,
-        any
+        ErrorApiResponse
       >({
         path: `/api/Documents/types`,
         method: 'GET',
@@ -8629,7 +8712,7 @@ export class Api<
     ) =>
       this.request<
         ElectricHousingMeteringDeviceResponseSuccessApiResponse,
-        any
+        ErrorApiResponse
       >({
         path: `/api/ElectricHousingMeteringDevices/${deviceId}`,
         method: 'GET',
@@ -8654,7 +8737,7 @@ export class Api<
     ) =>
       this.request<
         ElectricHousingMeteringDeviceResponseSuccessApiResponse,
-        any
+        ErrorApiResponse
       >({
         path: `/api/ElectricHousingMeteringDevices/${deviceId}`,
         method: 'PUT',
@@ -8680,7 +8763,7 @@ export class Api<
     ) =>
       this.request<
         ElectricHousingMeteringDeviceResponseSuccessApiResponse,
-        any
+        ErrorApiResponse
       >({
         path: `/api/ElectricHousingMeteringDevices`,
         method: 'POST',
@@ -8706,7 +8789,7 @@ export class Api<
     ) =>
       this.request<
         ElectricHousingMeteringDeviceResponseSuccessApiResponse,
-        any
+        ErrorApiResponse
       >({
         path: `/api/ElectricHousingMeteringDevices/switch`,
         method: 'POST',
@@ -9432,7 +9515,7 @@ export class Api<
     ) =>
       this.request<
         HousingMeteringDeviceReadingsIncludingPlacementResponseSuccessApiResponse,
-        any
+        ErrorApiResponse
       >({
         path: `/api/HousingMeteringDeviceReadings`,
         method: 'POST',
@@ -9458,7 +9541,7 @@ export class Api<
     ) =>
       this.request<
         HousingMeteringDeviceReadingsIncludingPlacementResponseSuccessApiResponse,
-        any
+        ErrorApiResponse
       >({
         path: `/api/HousingMeteringDeviceReadings`,
         method: 'PUT',
@@ -9511,7 +9594,7 @@ export class Api<
       },
       params: RequestParams = {},
     ) =>
-      this.request<void, any>({
+      this.request<any, ErrorApiResponse>({
         path: `/api/HousingMeteringDeviceReadings/SyncReadingsFromArchives`,
         method: 'POST',
         query: query,
@@ -9894,7 +9977,7 @@ export class Api<
     ) =>
       this.request<
         CalculatorIntoHousingStockResponseArraySuccessApiResponse,
-        any
+        ErrorApiResponse
       >({
         path: `/api/HousingStocks/${housingStockId}/Calculators`,
         method: 'GET',
@@ -10124,7 +10207,7 @@ export class Api<
       },
       params: RequestParams = {},
     ) =>
-      this.request<void, any>({
+      this.request<any, ErrorApiResponse>({
         path: `/api/Imports/ImportOrganizationWithoutNodes`,
         method: 'POST',
         body: data,
@@ -11342,7 +11425,7 @@ export class Api<
       },
       params: RequestParams = {},
     ) =>
-      this.request<NodesPagedListSuccessApiResponse, any>({
+      this.request<NodesPagedListSuccessApiResponse, ErrorApiResponse>({
         path: `/api/Nodes`,
         method: 'GET',
         query: query,
@@ -12482,7 +12565,7 @@ export class Api<
       deviceId: number,
       params: RequestParams = {},
     ) =>
-      this.request<void, any>({
+      this.request<any, ErrorApiResponse>({
         path: `/api/PipeHousingMeteringDevices/${deviceId}`,
         method: 'DELETE',
         secure: true,
@@ -12567,7 +12650,7 @@ export class Api<
       data: CreatePipeNodeRequest,
       params: RequestParams = {},
     ) =>
-      this.request<PipeNodeValidationResultResponse, any>({
+      this.request<PipeNodeValidationResultResponse, ErrorApiResponse>({
         path: `/api/PipeNodes/validate`,
         method: 'POST',
         body: data,
@@ -12694,7 +12777,7 @@ export class Api<
     ) =>
       this.request<
         EMagistralTypeStringDictionaryItemListSuccessApiResponse,
-        any
+        ErrorApiResponse
       >({
         path: `/api/PipeNodes/PipeMagistralTypes`,
         method: 'GET',
@@ -12717,7 +12800,7 @@ export class Api<
       pipeNodeId: number,
       params: RequestParams = {},
     ) =>
-      this.request<PipeNodeMeteringDeviceResponse[], any>({
+      this.request<PipeNodeMeteringDeviceResponse[], ErrorApiResponse>({
         path: `/api/PipeNodes/${pipeNodeId}/MeteringDevices`,
         method: 'GET',
         secure: true,
@@ -12735,7 +12818,7 @@ export class Api<
      * @secure
      */
     pipeNodesPipesDetail: (pipeNodeId: number, params: RequestParams = {}) =>
-      this.request<CommunicationPipeLiteResponse[], any>({
+      this.request<CommunicationPipeLiteResponse[], ErrorApiResponse>({
         path: `/api/PipeNodes/${pipeNodeId}/Pipes`,
         method: 'GET',
         secure: true,
@@ -14534,7 +14617,10 @@ export class Api<
      * @secure
      */
     tasksErpSourcesList: (params: RequestParams = {}) =>
-      this.request<ErpSourceResponse[], ErrorApiResponse>({
+      this.request<
+        ErpSourceResponseIEnumerableSuccessApiResponse,
+        ErrorApiResponse
+      >({
         path: `/api/Tasks/ErpSources`,
         method: 'GET',
         secure: true,
@@ -14552,7 +14638,10 @@ export class Api<
      * @secure
      */
     tasksErpTaskReasonsList: (params: RequestParams = {}) =>
-      this.request<ErpTaskReasonGroupResponse[], ErrorApiResponse>({
+      this.request<
+        ErpTaskReasonGroupResponseIEnumerableSuccessApiResponse,
+        ErrorApiResponse
+      >({
         path: `/api/Tasks/ErpTaskReasons`,
         method: 'GET',
         secure: true,
@@ -14591,26 +14680,11 @@ export class Api<
       taskId: number,
       params: RequestParams = {},
     ) =>
-      this.request<ErpExecutorResponse[], ErrorApiResponse>({
+      this.request<
+        ErpExecutorResponseIEnumerableSuccessApiResponse,
+        ErrorApiResponse
+      >({
         path: `/api/Tasks/${taskId}/application/brigade`,
-        method: 'GET',
-        secure: true,
-        format: 'json',
-        ...params,
-      }),
-
-    /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Администратор УК без назначений задач</li><li>Контролёр</li>
-     *
-     * @tags Tasks
-     * @name TasksErpObjectsList
-     * @summary TasksRead
-     * @request GET:/api/Tasks/ErpObjects
-     * @secure
-     */
-    tasksErpObjectsList: (params: RequestParams = {}) =>
-      this.request<ErpObjectResponse[], ErrorApiResponse>({
-        path: `/api/Tasks/ErpObjects`,
         method: 'GET',
         secure: true,
         format: 'json',
@@ -14633,14 +14707,16 @@ export class Api<
       },
       params: RequestParams = {},
     ) =>
-      this.request<ErpTaskDeadlineResponse[], ErrorApiResponse>({
-        path: `/api/Tasks/ErpTaskDeadline`,
-        method: 'GET',
-        query: query,
-        secure: true,
-        format: 'json',
-        ...params,
-      }),
+      this.request<ErpTaskDeadlineResponseSuccessApiResponse, ErrorApiResponse>(
+        {
+          path: `/api/Tasks/ErpTaskDeadline`,
+          method: 'GET',
+          query: query,
+          secure: true,
+          format: 'json',
+          ...params,
+        },
+      ),
 
     /**
      * @description Роли:<li>Диспетчер УК</li>
@@ -14674,7 +14750,10 @@ export class Api<
      * @secure
      */
     temperatureNormativeList: (params: RequestParams = {}) =>
-      this.request<TemperatureNormativeResponseSuccessApiResponse, any>({
+      this.request<
+        TemperatureNormativeResponseSuccessApiResponse,
+        ErrorApiResponse
+      >({
         path: `/api/TemperatureNormative`,
         method: 'GET',
         secure: true,
