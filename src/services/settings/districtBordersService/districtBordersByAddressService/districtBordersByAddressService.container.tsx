@@ -15,7 +15,7 @@ const {
 } = districtBordersByAddressService;
 
 export const DistrictBordersByAddressContainer = () => {
-  const handleFetchAddress = useEvent(inputs.handleFetchAddress);
+  const selectCity = useEvent(inputs.selectCity);
   const setFilter = useEvent(inputs.setFilter);
   const setHousingStockIdsWithStreet = useEvent(
     inputs.setHousingStockIdsWithStreet,
@@ -80,7 +80,7 @@ export const DistrictBordersByAddressContainer = () => {
     <>
       <DistrictBordersByAddressPageGate />
       <DistrictBordersByAddressPage
-        handleFetchAddress={handleFetchAddress}
+        selectCity={selectCity}
         addresses={filteredAddress}
         setFilter={setFilter}
         setHousingStockIdsWithStreet={setHousingStockIdsWithStreet}

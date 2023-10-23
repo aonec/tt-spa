@@ -30,12 +30,13 @@ export const Street = styled.div<{ isChecked: boolean }>`
   font-weight: ${({ isChecked }) => (isChecked ? '500' : '400')};
 `;
 
-export const LeftBlock = styled.div`
+export const LeftBlock = styled.div<{ isCheckable: boolean }>`
   display: flex;
   align-items: center;
   gap: 16px;
 
-  cursor: pointer;
+  cursor: ${({ isCheckable }) => (isCheckable ? 'not-allowed' : 'pointer')};
+  ${({ isCheckable }) => isCheckable && 'opacity: 0.6;'}
 `;
 
 export const RightBlock = styled.div`

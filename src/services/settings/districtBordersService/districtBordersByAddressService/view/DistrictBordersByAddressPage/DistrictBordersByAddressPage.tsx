@@ -18,7 +18,7 @@ import { useHistory } from 'react-router-dom';
 export const DistrictBordersByAddressPage: FC<
   DistrictBordersByAddressPageProps
 > = ({
-  handleFetchAddress,
+  selectCity,
   addresses,
   setFilter,
   checkedhousingStockIdsWithStreet,
@@ -48,9 +48,7 @@ export const DistrictBordersByAddressPage: FC<
             setFilter(data);
 
             if (data.city && cityInFilter !== data.city) {
-              handleFetchAddress({
-                City: data.city,
-              });
+              selectCity(data.city);
             }
           }}
         />

@@ -1,4 +1,4 @@
-import { EOrderByRule } from 'api/types';
+import { EOrderByRule, StreetWithBuildingNumbersResponse } from 'api/types';
 
 export type FetchAddressQueryType = {
   City: string;
@@ -39,4 +39,18 @@ export type HousingStocksIdsWithCoordinates = {
 export type Coordinate = {
   latitude: number;
   longitude: number;
+};
+
+export type StreetWithPreparedBuildingNumbers = Omit<
+  StreetWithBuildingNumbersResponse,
+  'addresses'
+> & {
+  addresses:
+    | {
+        buildingId: number;
+        number: string | null;
+        corpus: string | null;
+        isDistributed: boolean;
+      }[]
+    | null;
 };

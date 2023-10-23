@@ -7,12 +7,11 @@ export const HousingStockNumber: FC<HousingStockNumberProps> = ({
   housingStock,
   setHousingStockIdsWithStreet,
   currentStreetCheckedHousingStockIds,
-  checkedhousingStockIdsWithStreet,
   street,
 }) => {
   const [isChecked, setCheck] = useState(false);
 
-  const currentHousingStockId = housingStock.buildingId;
+  const { buildingId: currentHousingStockId, isDistributed } = housingStock;
 
   useEffect(
     () =>
@@ -26,6 +25,7 @@ export const HousingStockNumber: FC<HousingStockNumberProps> = ({
 
   return (
     <HousingStockNumberWrapper
+      isDistributed={isDistributed}
       onClick={() => {
         if (isChecked) {
           setHousingStockIdsWithStreet({
@@ -46,7 +46,7 @@ export const HousingStockNumber: FC<HousingStockNumberProps> = ({
         }
       }}
     >
-      <Checkbox checked={isChecked} />
+      <Checkbox checked={isChecked} disabled={isDistributed} />
       <Number isChecked={isChecked}>
         {housingStock.number} {housingStock.corpus}
       </Number>

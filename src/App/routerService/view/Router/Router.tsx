@@ -44,17 +44,14 @@ import { ActsJournalContainer } from 'services/actsJournalService';
 import { ServicesContainer } from 'services/services/servicesService';
 import { NodeArchivePageContainer } from 'services/nodes/nodeArchiveService';
 import { EditNodeContainer } from 'services/nodes/editNodeService';
-import { DistrictBordersByAddressContainer } from 'services/settings/districtBordersService/districtBordersByAddressService';
 import { StatisticsProfileContainer } from 'services/statistics/statisticsProfileService';
 import { AddIndividualDeviceContainer } from 'services/devices/individualDevices/addIndividualDeviceService';
 import { ResourceDisablingScheduleContainer } from 'services/settings/resourcesDisablingScheduleService/ResourceDisablingScheduleContainer';
 import { WorkWithIndividualDeviceContainer } from 'services/devices/individualDevices/workWithIndividualDeviceService';
 import { WorkWithIndividualDeviceType } from 'services/devices/individualDevices/workWithIndividualDeviceService/workWithIndividualDeviceService.types';
-import { ManageDistrictsMapContainer } from 'services/settings/districtBordersService/manageDistrictsMapService';
-import { CreateDistrictBorderMapContainer } from 'services/settings/districtBordersService/createDistrictBorderMapService';
 import { NonResidentialBuildingProfileContainer } from 'services/objects/nonResidentialBuildingProfileService';
-import { EditDistrictBordersContainer } from 'services/settings/districtBordersService/editDistrictBordersService';
 import { IndividualMeteringDeviceProfileContainer } from 'services/devices/individualMeteringDeviceProfile';
+import { DistrictBordersRouter } from 'services/settings/districtBordersService/DistrictBorders.router';
 
 export const Router: FC<RouterProps> = ({
   roles,
@@ -135,6 +132,7 @@ export const Router: FC<RouterProps> = ({
                   <Redirect from="/" to={redirectRoute} exact />
 
                   {TasksRouter()}
+                  {DistrictBordersRouter()}
 
                   {(isSeniorOperator || isOperator) && (
                     <Route path="/actsJournal" exact>
@@ -440,22 +438,6 @@ export const Router: FC<RouterProps> = ({
                     />
                   )}
 
-                  {(isSeniorOperator || isOperator) && (
-                    <Route
-                      path="/districtBordersSettings/createByHousingStocksList"
-                      component={DistrictBordersByAddressContainer}
-                      exact
-                    />
-                  )}
-
-                  {(isSeniorOperator || isOperator) && (
-                    <Route
-                      path="/districtBordersSettings/editDistrictBorders/:id"
-                      component={EditDistrictBordersContainer}
-                      exact
-                    />
-                  )}
-
                   {isAdministrator && (
                     <Route
                       path="/adminSettings/:section"
@@ -482,22 +464,6 @@ export const Router: FC<RouterProps> = ({
                     <Route
                       path="/adminSettings/operatingRanges/Unique"
                       component={UniqueWorkingRangeContainer}
-                      exact
-                    />
-                  )}
-
-                  {(isSeniorOperator || isAdministrator) && (
-                    <Route
-                      path="/districtBordersSettings/createByMap"
-                      component={CreateDistrictBorderMapContainer}
-                      exact
-                    />
-                  )}
-
-                  {(isSeniorOperator || isAdministrator) && (
-                    <Route
-                      path="/districtBordersSettings/manageDistricts"
-                      component={ManageDistrictsMapContainer}
                       exact
                     />
                   )}

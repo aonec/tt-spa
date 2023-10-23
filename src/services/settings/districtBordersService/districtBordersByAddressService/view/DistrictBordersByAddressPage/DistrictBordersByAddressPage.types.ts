@@ -1,14 +1,13 @@
-import { StreetWithBuildingNumbersResponse } from 'api/types';
 import {
   CheckedHousingStocksIdWithStreets,
   CheckedHousingStocksIdWithStreetsHandler,
-  FetchAddressQueryType,
   FilterType,
+  StreetWithPreparedBuildingNumbers,
 } from '../../districtBordersByAddressService.types';
 
 export type DistrictBordersByAddressPageProps = {
-  handleFetchAddress: (payload: FetchAddressQueryType) => void;
-  addresses: StreetWithBuildingNumbersResponse[] | null;
+  selectCity: (city: string) => void;
+  addresses: StreetWithPreparedBuildingNumbers[] | null;
   setFilter: (payload: FilterType) => void;
   setHousingStockIdsWithStreet: (
     payload: CheckedHousingStocksIdWithStreetsHandler,

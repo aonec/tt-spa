@@ -1,9 +1,10 @@
-import { StreetWithBuildingNumbersResponse } from 'api/types';
+import { DistrictResponse, House } from 'api/types';
 import {
   CheckedHousingStocksIdWithStreets,
   CheckedHousingStocksIdWithStreetsHandler,
   Coordinate,
   FilterType,
+  StreetWithPreparedBuildingNumbers,
 } from './districtBordersByAddressService.types';
 
 // Функция, определяющая, лежит ли точка p1 левее точки p2 относительно точки p0
@@ -80,7 +81,7 @@ export const findPolygonCenter = (polygon: Polygon): [number, number] => {
 };
 
 export const getFilteredAddresses = (
-  addresses: StreetWithBuildingNumbersResponse[] | null,
+  addresses: StreetWithPreparedBuildingNumbers[] | null,
   filterData: FilterType | null,
 ) => {
   if (!addresses) return [];
@@ -118,7 +119,7 @@ export const getFilteredAddresses = (
         street: filteredByStreetAddress[0].street,
         addresses: filteredHouses,
       },
-    ] as StreetWithBuildingNumbersResponse[];
+    ] as StreetWithPreparedBuildingNumbers[];
   }
 };
 
@@ -176,3 +177,11 @@ export const addHousingStocksToChecked = (
     }
   }
 };
+
+export const getHousesWithDisctictId = (
+  districts: DistrictResponse[],
+): House[] =>
+  districts.reduce(
+    (acc, district) => [...acc, ...(district.houses || [])],
+    [] as House[],
+  );

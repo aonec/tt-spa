@@ -1,13 +1,13 @@
 import styled from 'styled-components';
 
-export const HousingStockNumberWrapper = styled.div`
+export const HousingStockNumberWrapper = styled.div<{ isDistributed: boolean }>`
   display: flex;
   align-items: center;
   gap: 16px;
   margin: 16px 60px;
   width: 100px;
 
-  cursor: pointer;
+  cursor: ${({ isDistributed }) => (isDistributed ? 'not-allowed' : 'pointer')};
 
   &:first-child {
     margin-top: 0px;
@@ -15,6 +15,7 @@ export const HousingStockNumberWrapper = styled.div`
   &:last-child {
     padding-bottom: 16px;
   }
+  ${({ isDistributed }) => isDistributed && 'opacity: 0.6;'}
 `;
 
 export const Number = styled.div<{ isChecked: boolean }>`

@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useEffect, useMemo, useState } from 'react';
 import { Checkbox } from 'antd';
 import {
   ChevronSC,
@@ -27,8 +27,16 @@ export const AddressStreetGroup: FC<AddressStreetGroupProps> = ({
 
   const sortedAddresses = sortStickyBodyAddress(address.addresses);
 
-  const housingStockIds =
-    address.addresses?.map((address) => address.buildingId) || [];
+  const housingStockIds = (address.addresses || [])
+    .filter((elem) => !elem.isDistributed)
+    .map((address) => address.buildingId);
+
+  const isCheckable = useMemo(
+    () =>
+      (address.addresses || []).filter((elem) => !elem.isDistributed).length !==
+      0,
+    [address],
+  );
 
   const currentStreetCheckedHousingStockIds =
     checkedhousingStockIdsWithStreet.find((data) => data.street === street)
@@ -55,8 +63,13 @@ export const AddressStreetGroup: FC<AddressStreetGroupProps> = ({
     <Wrapper>
       <GroupHeader onClick={() => setIsOpen((isOpen) => !isOpen)}>
         <LeftBlock
+          isCheckable={!isCheckable}
           onClick={() => {
             setIsOpen((isOpen) => !isOpen);
+
+            if (!isCheckable) {
+              return;
+            }
 
             if (isChecked) {
               setHousingStockIdsWithStreet({
@@ -75,7 +88,11 @@ export const AddressStreetGroup: FC<AddressStreetGroupProps> = ({
             }
           }}
         >
-          <Checkbox checked={false} indeterminate={isChecked} />
+          <Checkbox
+            checked={false}
+            indeterminate={isChecked}
+            disabled={!isCheckable}
+          />
           <Street isChecked={isChecked}>ул. {address.street}</Street>
         </LeftBlock>
 
@@ -95,9 +112,6 @@ export const AddressStreetGroup: FC<AddressStreetGroupProps> = ({
             <HousingStockNumber
               key={housingStock.buildingId}
               housingStock={housingStock}
-              checkedhousingStockIdsWithStreet={
-                checkedhousingStockIdsWithStreet
-              }
               currentStreetCheckedHousingStockIds={
                 currentStreetCheckedHousingStockIds
               }
