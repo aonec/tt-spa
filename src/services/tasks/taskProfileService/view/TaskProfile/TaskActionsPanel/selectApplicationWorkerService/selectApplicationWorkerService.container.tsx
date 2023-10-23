@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { FC } from 'react';
 import { useUnit } from 'effector-react';
 import { SelectApplicationWorker } from './view/SelectApplicationWorker';
 import { selectApplicationWorkerService } from './selectApplicationWorkerService.models';
-import { useParams } from 'react-router-dom';
+import { ActionComponentProps } from '../TaskActionsPanel.types';
 
 const {
   gates: { SelectApplicationWorkerGate },
@@ -10,16 +10,21 @@ const {
   outputs,
 } = selectApplicationWorkerService;
 
-export const SelectApplicationWorkerContainer = () => {
+export const SelectApplicationWorkerContainer: FC<ActionComponentProps> = ({
+  handleChange,
+  task,
+}) => {
   const { applicationBrigade } = useUnit({
     applicationBrigade: outputs.$applicationBrigade,
   });
 
-  const taskId = useParams<{ taskId: string }>();
+  const handleSelectWorker = (workerId: number) => {
+    handleChange();
+  };
 
   return (
     <>
-      <SelectApplicationWorkerGate taskId={Number(taskId)} />
+      <SelectApplicationWorkerGate taskId={task.id} />
       <SelectApplicationWorker applicationBrigade={applicationBrigade} />
     </>
   );
