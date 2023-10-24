@@ -29,6 +29,9 @@ export type AddTask = {
   taskDescription: string | null;
 
   taskReasonSearch: string | null;
+
+  isSourceNumberRequired: boolean;
+  isSubscriberRequired: boolean;
 };
 
 export type AddTaskFormProps = {

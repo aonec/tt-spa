@@ -64,9 +64,13 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
   handleSelectTaskReason,
   handleSelectTaskType,
 }) => {
+  const initialSource = useMemo(() => {
+    return ERPSources.find((source) => source.name === 'Обращение граждан');
+  }, [ERPSources]);
+
   const { values, handleSubmit, setFieldValue, errors } = useFormik<AddTask>({
     initialValues: {
-      sourceId: '34ac5b2e-9ebd-11e8-8131-001dd8b88b72',
+      sourceId: initialSource?.id || null,
       requestNumber: null,
       taskType: null,
       workTypeId: null,
@@ -78,10 +82,11 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
       phoneNumber: null,
       taskDescription: null,
       taskReasonSearch: null,
+      isSourceNumberRequired: initialSource?.isSourceNumberRequired || false,
+      isSubscriberRequired: initialSource?.isSubscriberRequired || false,
     },
     validateOnBlur: true,
     validateOnMount: true,
-
     validationSchema,
     onSubmit: (data) => {
       handleCreateTask(data);
@@ -89,9 +94,31 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
   });
 
   const isFromSubscriber = useMemo(
-    () => values.sourceId === '34ac5b2e-9ebd-11e8-8131-001dd8b88b72',
-    [values.sourceId],
+    () => values.sourceId === initialSource?.id,
+    [values.sourceId, initialSource?.id],
   );
+
+  const selectedSource = useMemo(() => {
+    return ERPSources.find((source) => source.id === values.sourceId);
+  }, [ERPSources, values.sourceId]);
+
+  const isSourceNumberRequired = useMemo(
+    () => Boolean(selectedSource?.isSourceNumberRequired),
+    [selectedSource],
+  );
+
+  const isSubscriberRequired = useMemo(
+    () => Boolean(selectedSource?.isSubscriberRequired),
+    [selectedSource],
+  );
+
+  useEffect(() => {
+    setFieldValue('isSourceNumberRequired', isSourceNumberRequired);
+  }, [isSourceNumberRequired, setFieldValue]);
+
+  useEffect(() => {
+    setFieldValue('isSubscriberRequired', isSubscriberRequired);
+  }, [isSubscriberRequired, setFieldValue]);
 
   const next = useSwitchInputOnEnter(dataKey, false, false);
 
@@ -227,7 +254,7 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
       <PageGate />
 
       <Form id={formId} onSubmitCapture={handleSubmit}>
-        <GridContainerExpandable isTwoColumn={isFromSubscriber}>
+        <GridContainerExpandable isTwoColumn={!isSourceNumberRequired}>
           <FormItem label="Источник заявки">
             <SelectCaret
               isFromSubscriber={isFromSubscriber}
@@ -249,8 +276,8 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
             />
           </FormItem>
 
-          {!isFromSubscriber && (
-            <FormItem label="Номер заявки">
+          {isSourceNumberRequired && (
+            <FormItem label="Номер в источнике">
               <Input
                 placeholder="Введите"
                 value={values.requestNumber || undefined}
@@ -330,7 +357,7 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
           </FormItem>
         </GridContainerAsymmetricRight>
 
-        {isFromSubscriber && (
+        {isSubscriberRequired && (
           <GridContainer>
             <FormItem label="ФИО абонента">
               <AutoCompleteAntD
