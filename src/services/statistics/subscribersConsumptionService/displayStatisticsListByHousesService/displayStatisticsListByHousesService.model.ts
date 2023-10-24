@@ -28,8 +28,10 @@ const $consumptionStatisticsByHouse = createStore<
   SubscriberStatisticsСonsumptionResponse[]
 >([])
   .on(getConsumptionStatisticsByHouseFx.doneData, (_, statistics) => statistics)
-  .reset(getConsumptionStatisticsByHouseFx.failData)
-  .reset(StatisticsByHouseGate.close);
+  .reset([
+    getConsumptionStatisticsByHouseFx.failData,
+    StatisticsByHouseGate.close,
+  ]);
 
 const setSubscriberStatisticsFilter = createEvent<SubscriberStatisticsForm>();
 
