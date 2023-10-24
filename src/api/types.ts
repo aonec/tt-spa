@@ -2379,6 +2379,12 @@ export interface ErpSourceResponse {
   /** @format uuid */
   id: string;
   name: string | null;
+  isSourceNumberRequired: boolean;
+  isSubscriberRequired: boolean;
+}
+
+export interface ErpSourceResponseIEnumerableSuccessApiResponse {
+  successResponse: ErpSourceResponse[] | null;
 }
 
 export interface ErpTaskDeadlineResponse {
@@ -14535,7 +14541,10 @@ export class Api<
      * @secure
      */
     tasksErpSourcesList: (params: RequestParams = {}) =>
-      this.request<ErpSourceResponse[], ErrorApiResponse>({
+      this.request<
+        ErpSourceResponseIEnumerableSuccessApiResponse,
+        ErrorApiResponse
+      >({
         path: `/api/Tasks/ErpSources`,
         method: 'GET',
         secure: true,
