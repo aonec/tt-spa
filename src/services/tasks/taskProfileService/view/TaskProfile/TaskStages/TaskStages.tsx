@@ -1,4 +1,6 @@
 import React, { FC, useMemo } from 'react';
+import { useHistory } from 'react-router-dom';
+import { useUnit } from 'effector-react';
 import { Stage } from './Stage';
 import {
   DisconnectionWrapper,
@@ -10,9 +12,7 @@ import { TaskStagesProps } from './TaskStages.types';
 import { EManagingFirmTaskType, EStageStatus } from 'api/types';
 import { ChooseTypeOfResourceDisconnectionModalContainer } from 'services/resources/chooseTypeOfResourceDisconnectionModalService/chooseTypeOfResourceDisconnectionModalService.container';
 import { CreateResourceDisconnectionContainer } from 'services/resources/createResourceDisconnectionService';
-import { useUnit } from 'effector-react';
 import { chooseTypeOfResourceDisconnectionModalService } from 'services/resources/chooseTypeOfResourceDisconnectionModalService';
-import { useHistory } from 'react-router-dom';
 
 export const TaskStages: FC<TaskStagesProps> = ({
   stages,
@@ -31,7 +31,7 @@ export const TaskStages: FC<TaskStagesProps> = ({
 
   const stagesView = useMemo(
     () =>
-      stages.map((stage, index) => {
+      stages.map((stage) => {
         const canRevertStage =
           stages[stage.number]?.status === EStageStatus.InProgress &&
           isStageCanBeReverted;
