@@ -15,12 +15,17 @@ export const getBuildingPlacmearksWithTasks = (
     const isHouseInsideDistrict = housesInDistrict.includes(elem.id);
     const isHouseSelected = selectedHouses.includes(elem.id);
 
+    let placemarkIconLink: string = '';
+    if (!isHouseInsideDistrict) {
+      placemarkIconLink = housingStockMiniPlacemark;
+    } else if (!isHouseSelected) {
+      placemarkIconLink = inactiveHousingStockPlacemark;
+    } else {
+      placemarkIconLink = housingStockPlacemark;
+    }
+    
     return {
-      placemarkIconLink: isHouseInsideDistrict
-        ? isHouseSelected
-          ? housingStockPlacemark
-          : inactiveHousingStockPlacemark
-        : housingStockMiniPlacemark,
+      placemarkIconLink,
       coords: [
         elem.coordinates?.latitude || 0,
         elem.coordinates?.longitude || 0,
