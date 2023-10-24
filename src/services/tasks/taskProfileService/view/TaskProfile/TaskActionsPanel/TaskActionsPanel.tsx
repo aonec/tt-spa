@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useCallback } from 'react';
 import {
   HalfSizeActionsWrapper,
   PushStageButtonWrapper,
@@ -24,15 +24,18 @@ export const TaskActionsPanel: FC<TaskActionsPanelProps> = ({
   handleChangePushStagePayload,
   pushStageRequestPayload,
 }) => {
-  const { halfSizeActions, fullSizeActions, bottomActions } =
+  let { halfSizeActions, fullSizeActions, bottomActions } =
     useTaskPanelActions(actions);
 
-  const renderTaskAction = ({ Component }: TaskActionsComponent) => (
-    <Component
-      task={task}
-      handleChange={handleChangePushStagePayload}
-      pushStageRequestPayload={pushStageRequestPayload}
-    />
+  const renderTaskAction = useCallback(
+    ({ Component }: TaskActionsComponent) => (
+      <Component
+        task={task}
+        handleChange={handleChangePushStagePayload}
+        pushStageRequestPayload={pushStageRequestPayload}
+      />
+    ),
+    [task, handleChangePushStagePayload, pushStageRequestPayload],
   );
 
   const actionInfoComponents = taskActionInfoComponents.filter(
