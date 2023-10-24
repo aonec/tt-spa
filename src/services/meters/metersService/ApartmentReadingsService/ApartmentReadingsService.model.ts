@@ -24,6 +24,7 @@ import { individualDeviceMountPlacesService } from 'services/devices/individualD
 import { selectPersonalNumberActionService } from 'services/homeowner/personalNumber/selectPersonalNumberActionService';
 import { pauseApartmentService } from 'services/apartments/pauseApartmentService/pauseApartmentService.models';
 import { printApartmentDevicesCertificateService } from 'services/apartments/printApartmentDevicesCertificateService/printApartmentDevicesCertificateService.models';
+import { and } from 'patronum';
 
 const setSearchMode = createEvent<SearchMode>();
 
@@ -96,14 +97,11 @@ const $apartmentAppointment = createStore<AppointmentResponse | null>(null)
 const $isUpdateHomeownerLoading = updateHomeownerFx.pending;
 
 sample({
-  source: $apartment,
-  clock: sample({
-    source: ApartmentGate.open,
-    clock: $apartment,
-    filter: Boolean,
-  }),
-  fn: (apartment) => apartment.id,
+  source: and(ApartmentGate.state, $apartment),
   filter: Boolean,
+  clock: $apartment,
+  //Проверка типа идет выше
+  fn: (_, apartment) => (apartment as ApartmentResponse).id,
   target: fetchAppointmentFx,
 });
 
