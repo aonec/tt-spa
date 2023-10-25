@@ -29,9 +29,11 @@ export type AddTask = {
   taskDescription: string | null;
 
   taskReasonSearch: string | null;
+  taskDeadline?: dayjs.Dayjs | null;
 
   isSourceNumberRequired: boolean;
   isSubscriberRequired: boolean;
+  isManualDeadlineRequired: boolean;
 };
 
 export type AddTaskFormProps = {
@@ -48,6 +50,7 @@ export type AddTaskFormProps = {
   taskReasons: ErpTaskReasonGroupResponse[];
   handleSelectTaskReason: (payload: string) => void;
   handleSelectTaskType: (payload: EisTaskType) => void;
+  isManualDeadlineRequired: boolean;
 };
 
 export type AddressOption = {

@@ -14,6 +14,7 @@ import {
   getApartmentHomeownerNames,
   getApartments,
   getERPSources,
+  getErpTaskDeadline,
   getResourceDisconnection,
   getTaskReasons,
 } from './addTaskFromDispatcherService.api';
@@ -23,6 +24,7 @@ import {
   EisTaskType,
   ErpCreateTaskRequest,
   ErpSourceResponse,
+  ErpTaskDeadlineResponse,
   ErpTaskReasonGroupResponse,
   ErpTaskReasonItemResponse,
   ResourceDisconnectingResponse,
@@ -74,6 +76,10 @@ const getTaskReasonsFx = createEffect<void, ErpTaskReasonGroupResponse[]>(
   getTaskReasons,
 );
 
+const getErpTaskDeadlineFx = createEffect<string, ErpTaskDeadlineResponse>(
+  getErpTaskDeadline,
+);
+
 const getAddressesFx = createEffect<
   GetAddressesRequest,
   StreetWithBuildingNumbersResponsePagedList
@@ -107,6 +113,9 @@ const $taskReasons = createStore<ErpTaskReasonGroupResponse[]>([]).on(
   getTaskReasonsFx.doneData,
   (_, data) => data,
 );
+const $isManualDeadlineRequired = createStore<boolean>(true)
+  .on(getErpTaskDeadlineFx.doneData, (_, data) => !data.deadlineInHours)
+  .reset(handleReset);
 
 const $resourceDisconnection = createStore<ResourceDisconnectingResponse[]>([])
   .on(getResourceDisconnectionFx.doneData, (_, data) => data.items || [])
@@ -248,7 +257,7 @@ sample({
     );
     return taskReasonFromTaskType?.id || null;
   },
-  target: setSelectedTaskReasonId,
+  target: [setSelectedTaskReasonId, getErpTaskDeadlineFx],
 });
 
 sample({
@@ -311,6 +320,7 @@ export const addTaskFromDispatcherService = {
     $resourceDisconnection,
     $apartmentHomeownerNames,
     $taskReasons,
+    $isManualDeadlineRequired,
   },
   gates: { PageGate, AddTaskDataFetchGate },
 };

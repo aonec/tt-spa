@@ -21,6 +21,7 @@ export const AddTaskFromDispatcherContainer = () => {
     taskReasons,
     handleSelectTaskReason,
     handleSelectTaskType,
+    isManualDeadlineRequired,
   } = useUnit({
     isModalOpen: outputs.$isModalOpen,
     handleCloseModal: inputs.handleCloseModal,
@@ -36,6 +37,7 @@ export const AddTaskFromDispatcherContainer = () => {
     taskReasons: outputs.$taskReasons,
     handleSelectTaskReason: inputs.handleSelectTaskReason,
     handleSelectTaskType: inputs.handleSelectTaskType,
+    isManualDeadlineRequired: outputs.$isManualDeadlineRequired,
   });
 
   return (
@@ -55,6 +57,7 @@ export const AddTaskFromDispatcherContainer = () => {
         taskReasons={taskReasons}
         handleSelectTaskReason={handleSelectTaskReason}
         handleSelectTaskType={handleSelectTaskType}
+        isManualDeadlineRequired={isManualDeadlineRequired}
       />
     </>
   );

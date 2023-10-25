@@ -46,6 +46,7 @@ import { Alert } from 'ui-kit/Alert';
 import { useSwitchInputOnEnter } from 'hooks/useSwitchInputOnEnter';
 import { fromEnter } from 'ui-kit/shared/DatePickerNative';
 import { validationSchema } from './AddTaskForm.constants';
+import { DatePicker } from 'ui-kit/DatePicker';
 
 const {
   gates: { PageGate },
@@ -67,6 +68,7 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
   taskReasons,
   handleSelectTaskReason,
   handleSelectTaskType,
+  isManualDeadlineRequired,
 }) => {
   const initialSource = useMemo(() => ERPSources[0], [ERPSources]);
 
@@ -84,8 +86,10 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
       phoneNumber: null,
       taskDescription: null,
       taskReasonSearch: null,
+      taskDeadline: null,
       isSourceNumberRequired: initialSource?.isSourceNumberRequired || false,
       isSubscriberRequired: initialSource?.isSubscriberRequired || false,
+      isManualDeadlineRequired: isManualDeadlineRequired,
     },
     validateOnBlur: true,
     validateOnMount: true,
@@ -543,6 +547,12 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
             />
           </FormItem>
         </ContainerWithOutline>
+
+        {values.isManualDeadlineRequired && (
+          <FormItem label="Срок выполнения">
+            <DatePicker />
+          </FormItem>
+        )}
 
         <FormItem label="Описание проблемы">
           <TextareaSC
