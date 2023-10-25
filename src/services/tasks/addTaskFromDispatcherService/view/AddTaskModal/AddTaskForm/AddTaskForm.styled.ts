@@ -118,12 +118,12 @@ export const ResourceDisconnectionDate = styled.div`
   font-weight: 500;
 `;
 
-export const SelectCaret = styled(Select)<{ isFromSubscriber: boolean }>`
+export const SelectCaret = styled(Select)<{ isInitialSource: boolean }>`
   caret-color: transparent;
 
   .ant-select-selection-item {
-    background-color: ${({ isFromSubscriber }) =>
-      isFromSubscriber ? 'rgba(24, 158, 233, 0.2)' : 'white'};
+    background-color: ${({ isInitialSource }) =>
+      isInitialSource ? 'rgba(24, 158, 233, 0.2)' : 'white'};
   }
 `;
 

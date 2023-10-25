@@ -13,7 +13,7 @@ import {
 
 export type AddTask = {
   sourceId: string | null;
-  requestNumber: string | null;
+  requestNumber?: string | null;
   taskType: null | EisTaskType;
   workTypeId: string | null;
 
@@ -23,8 +23,8 @@ export type AddTask = {
   addressSearch: string;
 
   apartmentNumber: string | null;
-  subscriberName: string | null;
-  phoneNumber: string | null;
+  subscriberName?: string | null;
+  phoneNumber?: string | null;
 
   taskDescription: string | null;
 

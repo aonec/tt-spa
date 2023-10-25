@@ -37,7 +37,11 @@ import {
   TaskReasonTypeDictionary,
   TaskTypeDictionary,
 } from 'dictionaries';
-import { autocomplete, autocompleteApartNumber } from './AddTaskForm.utils';
+import {
+  autocomplete,
+  autocompleteApartNumber,
+  filterData,
+} from './AddTaskForm.utils';
 import { Alert } from 'ui-kit/Alert';
 import { useSwitchInputOnEnter } from 'hooks/useSwitchInputOnEnter';
 import { fromEnter } from 'ui-kit/shared/DatePickerNative';
@@ -68,7 +72,7 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
     return ERPSources.find((source) => source.name === 'Обращение граждан');
   }, [ERPSources]);
 
-  const { values, handleSubmit, setFieldValue, errors } = useFormik<AddTask>({
+  const { values, handleSubmit, setFieldValue, isValid } = useFormik<AddTask>({
     initialValues: {
       sourceId: initialSource?.id || null,
       requestNumber: null,
@@ -89,11 +93,12 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
     validateOnMount: true,
     validationSchema,
     onSubmit: (data) => {
-      handleCreateTask(data);
+      const filteredData = filterData(data);
+      handleCreateTask(filteredData);
     },
   });
 
-  const isFromSubscriber = useMemo(
+  const isInitialSource = useMemo(
     () => values.sourceId === initialSource?.id,
     [values.sourceId, initialSource?.id],
   );
@@ -106,7 +111,6 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
     () => Boolean(selectedSource?.isSourceNumberRequired),
     [selectedSource],
   );
-
   const isSubscriberRequired = useMemo(
     () => Boolean(selectedSource?.isSubscriberRequired),
     [selectedSource],
@@ -139,14 +143,9 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
 
   const next = useSwitchInputOnEnter(dataKey, false, false);
 
-  const isHaveValidationErrors = useMemo(
-    () => Boolean(Object.keys(errors).length),
-    [errors],
-  );
-
   useEffect(() => {
-    setDisableSubmit(isHaveValidationErrors);
-  }, [isHaveValidationErrors, setDisableSubmit]);
+    setDisableSubmit(!isValid);
+  }, [isValid, setDisableSubmit]);
 
   const preparedAddressOptions = useMemo(
     () => autocomplete(values.addressSearch, preparedForOptionsAddresses || []),
@@ -284,7 +283,7 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
         <GridContainerExpandable isTwoColumn={!isSourceNumberRequired}>
           <FormItem label="Источник заявки">
             <SelectCaret
-              isFromSubscriber={isFromSubscriber}
+              isInitialSource={isInitialSource}
               showSearch
               placeholder="Выберите из списка"
               value={values.sourceId || undefined}

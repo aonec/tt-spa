@@ -2,8 +2,9 @@ import {
   ExistingApartmentNumberType,
   PreparedAddress,
 } from 'services/tasks/addTaskFromDispatcherService/addTaskFromDispatcherService.types';
-import { AddressOption } from './AddTaskForm.types';
+import { AddTask, AddressOption } from './AddTaskForm.types';
 import { countSimilarityPoints } from 'utils/countSimilarityPoints';
+import _ from 'lodash';
 
 export function preparedAddressOption(
   addressSearch: string,
@@ -73,3 +74,16 @@ function filterAddressBySimilarity(
       return bPoints - aPoints;
     });
 }
+
+export const filterData = (data: AddTask) => {
+  if (!data.isSourceNumberRequired && data.isSubscriberRequired) {
+    return _.omit(data, ['requestNumber']);
+  }
+  if (!data.isSubscriberRequired && data.isSourceNumberRequired) {
+    return _.omit(data, ['subscriberName', 'phoneNumber']);
+  }
+  if (!data.isSubscriberRequired && !data.isSourceNumberRequired) {
+    return _.omit(data, ['subscriberName', 'phoneNumber', 'requestNumber']);
+  }
+  return data;
+};
