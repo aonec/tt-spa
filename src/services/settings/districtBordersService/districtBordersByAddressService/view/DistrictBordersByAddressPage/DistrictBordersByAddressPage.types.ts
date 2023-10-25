@@ -15,7 +15,7 @@ export type DistrictBordersByAddressPageProps = {
   checkedhousingStocksWithStreet: CheckedHousingStocksWithStreets[];
   handleOpenDistrictEditer: () => void;
   isAllowedToEditer: boolean;
-  cityInFilter: string | undefined;
+  filter: FilterType | null;
   openShowAddressesModal: () => void;
   checkedAddressesAmount: number;
 };

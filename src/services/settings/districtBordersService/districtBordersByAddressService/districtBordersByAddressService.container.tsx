@@ -12,11 +12,7 @@ import {
   showSelectedAddressesService,
 } from '../showSelectedAddressesService';
 
-const {
-  inputs,
-  outputs,
-  gates: { DistrictBordersByAddressPageGate },
-} = districtBordersByAddressService;
+const { inputs, outputs } = districtBordersByAddressService;
 
 export const DistrictBordersByAddressContainer = () => {
   const {
@@ -44,8 +40,6 @@ export const DistrictBordersByAddressContainer = () => {
   const { data: housingStocksWithCoordinates } = useUnit(
     existingHousingStocksQuery,
   );
-
-  const cityInFilter = filterData?.city;
 
   const checkedhousingStockIds = checkedhousingStockIdsWithStreet.reduce(
     (acc, current) => [
@@ -94,7 +88,6 @@ export const DistrictBordersByAddressContainer = () => {
 
   return (
     <>
-      <DistrictBordersByAddressPageGate />
       <ShowSelectedAddressesContainer />
       <DistrictBordersByAddressPage
         selectCity={selectCity}
@@ -104,7 +97,7 @@ export const DistrictBordersByAddressContainer = () => {
         checkedhousingStocksWithStreet={checkedhousingStockIdsWithStreet}
         handleOpenDistrictEditer={handleOpenDistrictEditer}
         isAllowedToEditer={isAllowedToEditer}
-        cityInFilter={cityInFilter}
+        filter={filterData}
         openShowAddressesModal={() =>
           openShowAddressesModal(checkedhousingStockIdsWithStreet)
         }

@@ -29,7 +29,7 @@ export const DistrictBordersByAddressPage: FC<
   checkedhousingStocksWithStreet,
   handleOpenDistrictEditer,
   isAllowedToEditer,
-  cityInFilter,
+  filter,
   setHousingStocksWithStreet,
   openShowAddressesModal,
   checkedAddressesAmount,
@@ -50,11 +50,16 @@ export const DistrictBordersByAddressPage: FC<
             SearchFieldType.House,
             SearchFieldType.Corpus,
           ]}
-          initialValues={{ city: cityInFilter }}
+          initialValues={{
+            city: filter?.city,
+            street: filter?.street,
+            house: filter?.house,
+            corpus: filter?.corpus,
+          }}
           handleSubmit={(data) => {
             setFilter(data);
 
-            if (data.city && cityInFilter !== data.city) {
+            if (data.city && filter?.city !== data.city) {
               selectCity(data.city);
             }
           }}

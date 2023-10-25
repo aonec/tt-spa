@@ -26,6 +26,9 @@ export const HousingStockNumber: FC<HousingStockNumberProps> = ({
     <HousingStockNumberWrapper
       isDistributed={isDistributed}
       onClick={() => {
+        if (isDistributed) {
+          return;
+        }
         if (isChecked) {
           setAddress({
             address: housingStock,
