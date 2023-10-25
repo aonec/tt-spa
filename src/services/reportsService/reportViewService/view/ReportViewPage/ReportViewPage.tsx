@@ -47,8 +47,6 @@ export const ReportViewPage: FC<ReportViewPageProps> = ({
 
     if (!form) return;
 
-    console.log("first")
-
     form.requestSubmit();
 
     setIsOpen(false);

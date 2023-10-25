@@ -17,7 +17,6 @@ const ReportsHistoryGate = createGate();
 const refetchReportsHistory = domain.createEvent();
 
 const openExistedReport = domain.createEvent<Record<string, string>>();
-openExistedReport.watch((data) => console.log(data));
 
 const $reportsHistoryPagedData = domain
   .createStore<ReportRequestHistoryPagedList | null>(null)
