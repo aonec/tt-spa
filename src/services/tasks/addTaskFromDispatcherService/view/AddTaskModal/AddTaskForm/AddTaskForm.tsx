@@ -68,13 +68,11 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
   handleSelectTaskReason,
   handleSelectTaskType,
 }) => {
-  const initialSource = useMemo(() => {
-    return ERPSources.find((source) => source.name === 'Обращение граждан');
-  }, [ERPSources]);
+  const initialSource = useMemo(() => ERPSources[0], [ERPSources]);
 
   const { values, handleSubmit, setFieldValue, isValid } = useFormik<AddTask>({
     initialValues: {
-      sourceId: initialSource?.id || null,
+      sourceId: initialSource.id,
       requestNumber: null,
       taskType: null,
       workTypeId: null,
@@ -99,8 +97,8 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
   });
 
   const isInitialSource = useMemo(
-    () => values.sourceId === initialSource?.id,
-    [values.sourceId, initialSource?.id],
+    () => values.sourceId === initialSource.id,
+    [values.sourceId, initialSource.id],
   );
 
   const selectedSource = useMemo(() => {
