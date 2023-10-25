@@ -112,6 +112,23 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
     [selectedSource],
   );
 
+  const isSubscriberAndSourceNumberRequired = [
+    isSubscriberRequired,
+    isSourceNumberRequired,
+  ].every(Boolean);
+  const isOnlySubscriberRequired = [
+    isSubscriberRequired,
+    !isSourceNumberRequired,
+  ].every(Boolean);
+  const isOnlySourceNumberRequired = [
+    !isSubscriberRequired,
+    isSourceNumberRequired,
+  ].every(Boolean);
+  const isNoAdditionalFieldsRequired = [
+    !isSubscriberRequired,
+    !isSourceNumberRequired,
+  ].every(Boolean);
+
   useEffect(() => {
     setFieldValue('isSourceNumberRequired', isSourceNumberRequired);
   }, [isSourceNumberRequired, setFieldValue]);
@@ -182,18 +199,28 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
       setFieldValue('taskType', singularTaskType);
       handleSelectTaskType(singularTaskType);
 
-      if (isFromSubscriber) {
-        next(6);
-      } else {
+      if (isNoAdditionalFieldsRequired) {
+        next(4);
+      }
+      if (isOnlySourceNumberRequired) {
         next(5);
+      }
+      if (isOnlySubscriberRequired) {
+        next(6);
+      }
+      if (isSubscriberAndSourceNumberRequired) {
+        next(7);
       }
     }
   }, [
     taskTypeOptions,
     setFieldValue,
     next,
-    isFromSubscriber,
     handleSelectTaskType,
+    isSubscriberAndSourceNumberRequired,
+    isOnlySourceNumberRequired,
+    isOnlySubscriberRequired,
+    isNoAdditionalFieldsRequired,
   ]);
 
   const getResourceDisconnectionAlert = useCallback(
@@ -323,7 +350,7 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
               options={preparedAddressOptions}
               data-reading-input={dataKey}
               onKeyDown={fromEnter(() => {
-                if (isFromSubscriber) {
+                if (isOnlySubscriberRequired || isNoAdditionalFieldsRequired) {
                   next(1);
                 } else {
                   next(2);
@@ -345,7 +372,7 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
               options={apartNumberOptions}
               data-reading-input={dataKey}
               onKeyDown={fromEnter(() => {
-                if (isFromSubscriber) {
+                if (isOnlySubscriberRequired || isNoAdditionalFieldsRequired) {
                   next(2);
                 } else {
                   next(3);
@@ -366,7 +393,13 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
                 onChange={(value) => setFieldValue('subscriberName', value)}
                 options={apartmentHomeownerNames}
                 data-reading-input={dataKey}
-                onKeyDown={fromEnter(() => next(3))}
+                onKeyDown={fromEnter(() => {
+                  if (isOnlySubscriberRequired) {
+                    next(3);
+                  } else {
+                    next(4);
+                  }
+                })}
                 open={isNameOpen}
                 onBlur={() => setNameOpen(false)}
                 onFocus={() => setNameOpen(true)}
@@ -384,7 +417,13 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
                   setFieldValue('phoneNumber', value.target.value)
                 }
                 data-reading-input={dataKey}
-                onKeyDown={fromEnter(() => next(4))}
+                onKeyDown={fromEnter(() => {
+                  if (isOnlySubscriberRequired) {
+                    next(4);
+                  } else {
+                    next(5);
+                  }
+                })}
               />
             </FormItem>
           </GridContainer>
@@ -424,10 +463,17 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
               }
               data-reading-input={dataKey}
               onKeyDown={fromEnter(() => {
-                if (isFromSubscriber) {
-                  next(5);
-                } else {
+                if (isNoAdditionalFieldsRequired) {
+                  next(3);
+                }
+                if (isOnlySourceNumberRequired) {
                   next(4);
+                }
+                if (isOnlySubscriberRequired) {
+                  next(5);
+                }
+                if (isSubscriberAndSourceNumberRequired) {
+                  next(6);
                 }
               })}
               open={isReasonOpen}
@@ -435,10 +481,17 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
               onFocus={() => setReasonOpen(true)}
               onSelect={() => {
                 setReasonOpen(false);
-                if (isFromSubscriber) {
-                  next(5);
-                } else {
+                if (isNoAdditionalFieldsRequired) {
+                  next(3);
+                }
+                if (isOnlySourceNumberRequired) {
                   next(4);
+                }
+                if (isOnlySubscriberRequired) {
+                  next(5);
+                }
+                if (isSubscriberAndSourceNumberRequired) {
+                  next(6);
                 }
               }}
               onMouseDown={() => setReasonOpen(true)}
@@ -457,10 +510,17 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
               options={taskTypeOptions}
               data-reading-input={dataKey}
               onKeyDown={fromEnter(() => {
-                if (isFromSubscriber) {
-                  next(6);
-                } else {
+                if (isNoAdditionalFieldsRequired) {
+                  next(4);
+                }
+                if (isOnlySourceNumberRequired) {
                   next(5);
+                }
+                if (isOnlySubscriberRequired) {
+                  next(6);
+                }
+                if (isSubscriberAndSourceNumberRequired) {
+                  next(7);
                 }
               })}
               open={isTaskTypeOpen}
@@ -469,10 +529,17 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
               onSelect={(taskType) => {
                 setTaskTypeOpen(false);
                 handleSelectTaskType(taskType as EisTaskType);
-                if (isFromSubscriber) {
-                  next(6);
-                } else {
+                if (isNoAdditionalFieldsRequired) {
+                  next(4);
+                }
+                if (isOnlySourceNumberRequired) {
                   next(5);
+                }
+                if (isOnlySubscriberRequired) {
+                  next(6);
+                }
+                if (isSubscriberAndSourceNumberRequired) {
+                  next(7);
                 }
               }}
               onMouseDown={() => setTaskTypeOpen(true)}
