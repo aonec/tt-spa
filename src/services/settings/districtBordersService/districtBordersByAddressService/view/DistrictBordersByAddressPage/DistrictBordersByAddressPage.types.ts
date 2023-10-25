@@ -1,5 +1,5 @@
 import {
-  CheckedHousingStocksIdWithStreets,
+  CheckedHousingStocksWithStreets,
   CheckedHousingStocksIdWithStreetsHandler,
   FilterType,
   StreetWithPreparedBuildingNumbers,
@@ -9,11 +9,13 @@ export type DistrictBordersByAddressPageProps = {
   selectCity: (city: string) => void;
   addresses: StreetWithPreparedBuildingNumbers[] | null;
   setFilter: (payload: FilterType) => void;
-  setHousingStockIdsWithStreet: (
+  setHousingStocksWithStreet: (
     payload: CheckedHousingStocksIdWithStreetsHandler,
   ) => void;
-  checkedhousingStockIdsWithStreet: CheckedHousingStocksIdWithStreets[];
+  checkedhousingStocksWithStreet: CheckedHousingStocksWithStreets[];
   handleOpenDistrictEditer: () => void;
   isAllowedToEditer: boolean;
   cityInFilter: string | undefined;
+  openShowAddressesModal: () => void;
+  checkedAddressesAmount: number;
 };

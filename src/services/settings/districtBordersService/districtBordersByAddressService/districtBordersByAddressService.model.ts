@@ -12,7 +12,7 @@ import {
   StreetWithBuildingNumbersResponsePagedList,
 } from 'api/types';
 import {
-  CheckedHousingStocksIdWithStreets,
+  CheckedHousingStocksWithStreets,
   CheckedHousingStocksIdWithStreetsHandler,
   FetchAddressQueryType,
   FilterType,
@@ -92,7 +92,7 @@ const $filter = createStore<FilterType | null>(null)
   .reset(pageResetter);
 
 const $checkedhousingStockIdsWithStreet = createStore<
-  CheckedHousingStocksIdWithStreets[]
+  CheckedHousingStocksWithStreets[]
 >([])
   .on(setHousingStockIdsWithStreet, (prevIdsWithStreet, commingIdsWithStreet) =>
     addHousingStocksToChecked(prevIdsWithStreet, commingIdsWithStreet),

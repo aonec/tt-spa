@@ -2,9 +2,12 @@ import React, { FC } from 'react';
 import {
   AddressSortWrapper,
   ButtonSC,
+  ButtonsWrapper,
   FooterWrapper,
   GoBackWrapper,
+  LinkWrapper,
   Panel,
+  TextWrapper,
   Wrapper,
 } from './DistrictBordersByAddressPage.styled';
 import { DistrictBordersByAddressPageProps } from './DistrictBordersByAddressPage.types';
@@ -14,6 +17,8 @@ import { GoBack } from 'ui-kit/shared/GoBack';
 import { Button } from 'ui-kit/Button';
 import { AddressStreetGroup } from './AddressStreetGroup';
 import { useHistory } from 'react-router-dom';
+import { addressesCountTexts } from 'services/reportsService/reportViewService/view/ReportViewPage/ReportFiltrationForm/ReportFiltrationForm.constants';
+import { getCountText } from 'utils/getCountText';
 
 export const DistrictBordersByAddressPage: FC<
   DistrictBordersByAddressPageProps
@@ -21,11 +26,13 @@ export const DistrictBordersByAddressPage: FC<
   selectCity,
   addresses,
   setFilter,
-  checkedhousingStockIdsWithStreet,
+  checkedhousingStocksWithStreet,
   handleOpenDistrictEditer,
   isAllowedToEditer,
   cityInFilter,
-  setHousingStockIdsWithStreet,
+  setHousingStocksWithStreet,
+  openShowAddressesModal,
+  checkedAddressesAmount,
 }) => {
   const history = useHistory();
 
@@ -58,25 +65,37 @@ export const DistrictBordersByAddressPage: FC<
         <AddressStreetGroup
           address={address}
           key={address.street}
-          checkedhousingStockIdsWithStreet={checkedhousingStockIdsWithStreet}
-          setHousingStockIdsWithStreet={setHousingStockIdsWithStreet}
+          checkedhousingStocksWithStreet={checkedhousingStocksWithStreet}
+          setHousingStocksWithStreet={setHousingStocksWithStreet}
         />
       ))}
 
       <FooterWrapper>
         <Panel>
-          <Button type="ghost" onClick={history.goBack}>
-            Отмена
-          </Button>
-          <ButtonSC
-            disabled={!isAllowedToEditer}
-            onClick={() => {
-              handleOpenDistrictEditer();
-              history.push('/districtBordersSettings/createByMap');
-            }}
-          >
-            Продолжить
-          </ButtonSC>
+          <TextWrapper>
+            Всего: {checkedAddressesAmount}{' '}
+            {getCountText(checkedAddressesAmount, addressesCountTexts)}
+            <LinkWrapper
+              disabled={!Boolean(checkedAddressesAmount)}
+              onClick={() => checkedAddressesAmount && openShowAddressesModal()}
+            >
+              Показать
+            </LinkWrapper>
+          </TextWrapper>
+          <ButtonsWrapper>
+            <Button type="ghost" onClick={history.goBack}>
+              Отмена
+            </Button>
+            <ButtonSC
+              disabled={!isAllowedToEditer}
+              onClick={() => {
+                handleOpenDistrictEditer();
+                history.push('/districtBordersSettings/createByMap');
+              }}
+            >
+              Продолжить
+            </ButtonSC>
+          </ButtonsWrapper>
         </Panel>
       </FooterWrapper>
     </Wrapper>

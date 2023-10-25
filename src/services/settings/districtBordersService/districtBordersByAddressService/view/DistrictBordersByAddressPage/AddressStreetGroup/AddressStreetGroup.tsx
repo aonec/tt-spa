@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useMemo, useState } from 'react';
+import React, { FC, useCallback, useEffect, useMemo, useState } from 'react';
 import { Checkbox } from 'antd';
 import {
   ChevronSC,
@@ -13,11 +13,12 @@ import {
 import { AddressStreetGroupProps } from './AddressStreetGroup.types';
 import { HousingStockNumber } from './HousingStockNumber';
 import { sortStickyBodyAddress } from './AddressStreetGroup.utils';
+import { AddressShortResponse } from 'api/types';
 
 export const AddressStreetGroup: FC<AddressStreetGroupProps> = ({
   address,
-  checkedhousingStockIdsWithStreet,
-  setHousingStockIdsWithStreet,
+  checkedhousingStocksWithStreet,
+  setHousingStocksWithStreet,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -27,9 +28,9 @@ export const AddressStreetGroup: FC<AddressStreetGroupProps> = ({
 
   const sortedAddresses = sortStickyBodyAddress(address.addresses);
 
-  const housingStockIds = (address.addresses || [])
-    .filter((elem) => !elem.isDistributed)
-    .map((address) => address.buildingId);
+  const housingStocks = (address.addresses || []).filter(
+    (elem) => !elem.isDistributed,
+  );
 
   const isCheckable = useMemo(
     () =>
@@ -38,13 +39,14 @@ export const AddressStreetGroup: FC<AddressStreetGroupProps> = ({
     [address],
   );
 
-  const currentStreetCheckedHousingStockIds =
-    checkedhousingStockIdsWithStreet.find((data) => data.street === street)
-      ?.housingStocksId || [];
+  const currentStreetCheckedHousingStockIds = (
+    checkedhousingStocksWithStreet.find((data) => data.street === street)
+      ?.addresses || []
+  ).map((elem) => elem.buildingId);
 
   useEffect(() => {
     const isEqualIdsLength =
-      housingStockIds.length === currentStreetCheckedHousingStockIds.length;
+      housingStocks.length === currentStreetCheckedHousingStockIds.length;
     if (
       isEqualIdsLength &&
       Boolean(currentStreetCheckedHousingStockIds.length)
@@ -53,11 +55,39 @@ export const AddressStreetGroup: FC<AddressStreetGroupProps> = ({
     } else {
       setCheck(false);
     }
-  }, [currentStreetCheckedHousingStockIds.length, housingStockIds.length]);
+  }, [currentStreetCheckedHousingStockIds.length, housingStocks.length]);
 
   const checkedHousesCountString = `Выбрано: ${
     isChecked ? 'Все' : currentStreetCheckedHousingStockIds.length
   } `;
+
+  const handleSetAddress = useCallback(
+    ({
+      isToAdd,
+      address,
+    }: {
+      isToAdd: boolean;
+      address: AddressShortResponse;
+    }) => {
+      const allAddresses =
+        checkedhousingStocksWithStreet.find((data) => data.street === street)
+          ?.addresses || [];
+
+      if (isToAdd) {
+        return setHousingStocksWithStreet({
+          street,
+          addresses: [...allAddresses, address],
+        });
+      }
+      setHousingStocksWithStreet({
+        street,
+        addresses: allAddresses.filter(
+          (elem) => elem.buildingId !== address.buildingId,
+        ),
+      });
+    },
+    [checkedhousingStocksWithStreet, setHousingStocksWithStreet, street],
+  );
 
   return (
     <Wrapper>
@@ -72,17 +102,15 @@ export const AddressStreetGroup: FC<AddressStreetGroupProps> = ({
             }
 
             if (isChecked) {
-              setHousingStockIdsWithStreet({
+              setHousingStocksWithStreet({
                 street,
-                housingStocksId: [],
-                isToAdd: false,
+                addresses: [],
               });
               setCheck(false);
             } else {
-              setHousingStockIdsWithStreet({
+              setHousingStocksWithStreet({
                 street,
-                housingStocksId: housingStockIds,
-                isToAdd: true,
+                addresses: housingStocks,
               });
               setCheck(true);
             }
@@ -115,7 +143,7 @@ export const AddressStreetGroup: FC<AddressStreetGroupProps> = ({
               currentStreetCheckedHousingStockIds={
                 currentStreetCheckedHousingStockIds
               }
-              setHousingStockIdsWithStreet={setHousingStockIdsWithStreet}
+              setAddress={handleSetAddress}
               street={street}
             />
           ))}

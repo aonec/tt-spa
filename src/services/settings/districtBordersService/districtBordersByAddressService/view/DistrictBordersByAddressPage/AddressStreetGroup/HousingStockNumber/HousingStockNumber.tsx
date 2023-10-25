@@ -5,9 +5,8 @@ import { HousingStockNumberWrapper, Number } from './HousingStockNumber.styled';
 
 export const HousingStockNumber: FC<HousingStockNumberProps> = ({
   housingStock,
-  setHousingStockIdsWithStreet,
+  setAddress,
   currentStreetCheckedHousingStockIds,
-  street,
 }) => {
   const [isChecked, setCheck] = useState(false);
 
@@ -28,17 +27,15 @@ export const HousingStockNumber: FC<HousingStockNumberProps> = ({
       isDistributed={isDistributed}
       onClick={() => {
         if (isChecked) {
-          setHousingStockIdsWithStreet({
-            street,
-            housingStocksId: currentHousingStockId,
+          setAddress({
+            address: housingStock,
             isToAdd: false,
           });
 
           setCheck(false);
         } else {
-          setHousingStockIdsWithStreet({
-            street,
-            housingStocksId: currentHousingStockId,
+          setAddress({
+            address: housingStock,
             isToAdd: true,
           });
 

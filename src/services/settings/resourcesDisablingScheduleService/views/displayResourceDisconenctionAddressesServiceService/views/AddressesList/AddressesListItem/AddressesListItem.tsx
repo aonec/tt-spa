@@ -7,12 +7,12 @@ import {
 import { AddressesListItemProps } from './AddressesListItem.types';
 
 export const AddressesListItem: FC<AddressesListItemProps> = ({
-  housingStocks,
   street,
+  addresses,
 }) => {
-  const housingStocksNumber = housingStocks.reduce((acc, address) => {
-    const number = address.address?.mainAddress?.number;
-    const corpus = address.address?.mainAddress?.corpus;
+  const housingStocksNumber = addresses.reduce((acc, address) => {
+    const number = address.number;
+    const corpus = address.corpus;
 
     if (!number) {
       return acc;

@@ -1,13 +1,13 @@
 import {
-  CheckedHousingStocksIdWithStreets,
+  CheckedHousingStocksWithStreets,
   CheckedHousingStocksIdWithStreetsHandler,
   StreetWithPreparedBuildingNumbers,
 } from '../../../districtBordersByAddressService.types';
 
 export type AddressStreetGroupProps = {
   address: StreetWithPreparedBuildingNumbers;
-  checkedhousingStockIdsWithStreet: CheckedHousingStocksIdWithStreets[];
-  setHousingStockIdsWithStreet: (
+  checkedhousingStocksWithStreet: CheckedHousingStocksWithStreets[];
+  setHousingStocksWithStreet: (
     payload: CheckedHousingStocksIdWithStreetsHandler,
   ) => void;
 };
