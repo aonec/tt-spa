@@ -24,7 +24,9 @@ export const ApartmentSealContainer = () => {
   const housesWithDistricts = useMemo(() => {
     return (
       existingDistricts?.reduce((acc, { houses }) => {
-        const housesIds = (houses || []).map(({ id }) => id!);
+        if (!houses) return acc;
+
+        const housesIds = houses.map(({ id }) => id!);
 
         return [...acc, ...housesIds];
       }, [] as number[]) || []

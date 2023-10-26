@@ -74,11 +74,11 @@ export const CreateDistrictBorderMapPage: FC<Props> = ({
   );
 
   useEffect(() => {
-    if (!preselectedDistrictPayload?.polygon) return;
+    if (!preselectedDistrictPayload?.polygon || !map) return;
 
     const center = findPolygonCenter(preselectedDistrictPayload.polygon);
 
-    map?.setCenter(center, 15);
+    map.setCenter(center, 15);
   }, [map, preselectedDistrictPayload]);
 
   useMemo(() => {
