@@ -144,11 +144,8 @@ export const TasksProfile: FC<TasksProfileProps> = ({
                   ></TabPane>
                 </TabsSC>
               ) : (
-                <TabsSC
-                  activeKey={!isHaveExecutingTasks ? 'Observing' : grouptype}
-                  onChange={history.push}
-                >
-                  {!isSpectator && isHaveExecutingTasks && (
+                <TabsSC activeKey={grouptype} onChange={history.push}>
+                  {!isSpectator && (
                     <TabPane
                       tab={executingTabText}
                       key={TaskGroupingFilter.Executing}
