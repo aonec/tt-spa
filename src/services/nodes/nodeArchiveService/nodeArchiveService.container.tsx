@@ -6,7 +6,6 @@ import { useParams } from 'react-router-dom';
 
 export const NodeArchivePageContainer = () => {
   const node = useStore(nodeArchiveService.outputs.$node);
-  const loading = useStore(nodeArchiveService.outputs.$loadingNode);
 
   const NodeGate = nodeArchiveService.inputs.NodeGate;
 
@@ -15,7 +14,7 @@ export const NodeArchivePageContainer = () => {
   return (
     <>
       <NodeGate pipeNodeId={Number(nodeId)} />
-      <NodeArchivePage node={node} loading={loading} />
+      <NodeArchivePage node={node} />
     </>
   );
 };

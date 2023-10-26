@@ -25,7 +25,6 @@ const pageResetter = createEvent();
 
 const handleOpenDistrictEditer = createEvent();
 
-// fix
 const handleCloseDistrictEditer = createEvent();
 
 const setPoligon = createEvent<{
@@ -100,12 +99,18 @@ sample({
 
 const $isLoading = fetchAddressFx.pending;
 
+sample({
+  clock: createDistrictBorderMapService.gates.CreateDistrictGate.close,
+  target: handleCloseDistrictEditer,
+});
+
 export const districtBordersByAddressService = {
   inputs: {
     handleFetchAddress,
     setFilter,
     setHousingStockIdsWithStreet,
     handleOpenDistrictEditer,
+    handleCloseDistrictEditer,
     setPoligon,
   },
   outputs: {

@@ -1,4 +1,3 @@
-import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 export const TaskBaseInfoWrapper = styled.div`
@@ -30,7 +29,8 @@ export const RowWrapper = styled.div`
   border-bottom: 1px solid var(--frame);
 `;
 
-export const LinkSC = styled(Link)`
+export const Address = styled.div`
   font-weight: 500;
   color: #272f5a;
+  cursor: pointer;
 `;

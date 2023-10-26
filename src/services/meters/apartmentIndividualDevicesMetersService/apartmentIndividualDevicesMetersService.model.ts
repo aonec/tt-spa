@@ -88,11 +88,6 @@ $sliderIndex
   });
 
 sample({
-  clock: readingsHistoryService.gates.ReadingHistoryGate.close,
-  target: refetchIndividualDevices,
-});
-
-sample({
   clock: readingsHistoryService.inputs.closeReadingsHistoryModal,
   target: refetchIndividualDevices,
 });

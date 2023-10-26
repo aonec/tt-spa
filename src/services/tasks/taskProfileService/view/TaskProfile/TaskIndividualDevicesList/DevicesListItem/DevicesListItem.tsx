@@ -7,11 +7,12 @@ import {
   ChevronWrapper,
   DeviceTitleWrapper,
   GroupWrapper,
-  LinkSC,
+  LinkToProfile,
   ReadingsHistoryButtonWrapper,
   Wrapper,
 } from './DevicesListItem.styled';
 import { DevicesListItemProps } from './DevicesListItem.types';
+import { useHistory } from 'react-router-dom';
 
 export const DevicesListItem: FC<DevicesListItemProps> = ({
   device,
@@ -22,6 +23,8 @@ export const DevicesListItem: FC<DevicesListItemProps> = ({
   const [isOpen, setIsOpen] = useState(false);
   const toggle = () => setIsOpen(!isOpen);
 
+  const history = useHistory();
+
   return (
     <Wrapper>
       <DeviceTitleWrapper>
@@ -29,9 +32,11 @@ export const DevicesListItem: FC<DevicesListItemProps> = ({
           <IndividualDeviceInfo device={device} />
         </GroupWrapper>
         <GroupWrapper>
-          <LinkSC to={`/apartments/${apartmentId}/testimony`} target="_blank">
+          <LinkToProfile
+            onClick={() => history.push(`/apartments/${apartmentId}/testimony`)}
+          >
             Перейти в профиль
-          </LinkSC>
+          </LinkToProfile>
           <ReadingsHistoryButtonWrapper>
             <ReadingsHistoryButton deviceId={id} />
           </ReadingsHistoryButtonWrapper>
