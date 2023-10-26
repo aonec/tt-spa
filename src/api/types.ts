@@ -2111,6 +2111,7 @@ export enum EStageActionType {
   CloseIndividualDevices = 'CloseIndividualDevices',
   CreateResourceDisconnecting = 'CreateResourceDisconnecting',
   SetApplicationPostponeDate = 'SetApplicationPostponeDate',
+  SelectApplicationWorker = 'SelectApplicationWorker',
 }
 
 export enum EStageStatus {

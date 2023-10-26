@@ -15,7 +15,6 @@ import { GetMeteringDevicesModelsRequest } from './displayIndividualDeviceAndNam
 const IndividualDeviceGate = createGate<{ id: number }>();
 
 const handleFetchModels = createEvent<string>();
-const handleFetchIndividualDevice = createEvent<number>();
 const handleFetchSerialNumberForCheck = createEvent<string>();
 
 const fetchIndividualDeviceFx = createEffect<number, IndividualDeviceResponse>(
@@ -57,11 +56,6 @@ sample({
   target: fetchIndividualDeviceFx,
 });
 
-forward({
-  from: handleFetchIndividualDevice,
-  to: fetchIndividualDeviceFx,
-});
-
 sample({
   clock: handleFetchModels,
   filter: Boolean,
@@ -76,7 +70,6 @@ forward({
 
 export const displayIndividualDeviceAndNamesService = {
   inputs: {
-    handleFetchIndividualDevice,
     handleFetchSerialNumberForCheck,
     handleFetchModels,
   },

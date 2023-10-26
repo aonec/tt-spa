@@ -73,13 +73,6 @@ export const TasksProfile: FC<TasksProfileProps> = ({
       history.push('/tasks/list/Observing');
     }
   });
-  useEffect(() => {
-    if (!isHaveExecutingTasks) {
-      history.push('/tasks/list/Observing');
-    } else {
-      history.push('/tasks/list/Executing');
-    }
-  }, [isHaveExecutingTasks, history]);
 
   const header = (
     <HeaderWrapper isList={tasksPageSegment === 'list'}>
@@ -152,7 +145,7 @@ export const TasksProfile: FC<TasksProfileProps> = ({
                 </TabsSC>
               ) : (
                 <TabsSC activeKey={grouptype} onChange={history.push}>
-                  {!isSpectator && isHaveExecutingTasks && (
+                  {!isSpectator && (
                     <TabPane
                       tab={executingTabText}
                       key={TaskGroupingFilter.Executing}

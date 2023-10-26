@@ -4,11 +4,6 @@ import { Checkbox } from 'antd';
 
 export const columnWidth = `120px`;
 
-export const ListWrapper = styled.div`
-  width: 100%;
-  overflow-x: auto;
-`;
-
 export const Wrapper = styled.div`
   width: 800px;
 `;
@@ -28,4 +23,10 @@ export const Header = styled.div<{ columnsCount: number }>`
 
 export const CheckboxSC = styled(Checkbox)`
   color: #272f5ae5;
+`;
+
+export const StickyWrapper = styled.div`
+  position: sticky;
+  top: 124px;
+  background-color: #fff;
 `;

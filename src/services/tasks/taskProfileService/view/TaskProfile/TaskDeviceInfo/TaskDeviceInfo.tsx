@@ -10,6 +10,7 @@ import {
   Wrapper,
 } from './TaskDeviceInfo.styled';
 import { TaskDeviceInfoProps } from './TaskDeviceInfo.types';
+import { useHistory } from 'react-router-dom';
 
 export const TaskDeviceInfo: FC<TaskDeviceInfoProps> = ({ device }) => {
   const {
@@ -36,9 +37,11 @@ export const TaskDeviceInfo: FC<TaskDeviceInfoProps> = ({ device }) => {
   );
   const path = resource ? 'housingMeteringDevices' : 'calculators';
 
+  const history = useHistory();
+
   return (
     <Wrapper>
-      <TitleWrapper to={`/${path}/${id}/profile`} target="_blank">
+      <TitleWrapper onClick={() => history.push(`/${path}/${id}/profile`)}>
         {icon}
         <SerialNumber>{serialNumber}</SerialNumber>
         <Model>({model})</Model>

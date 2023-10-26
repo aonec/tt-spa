@@ -41,13 +41,6 @@ sample({
   target: fetchReadingHistoryFx,
 });
 
-sample({
-  source: $readingsHistoryModalDeviceId,
-  filter: Boolean,
-  target:
-    displayIndividualDeviceAndNamesService.inputs.handleFetchIndividualDevice,
-});
-
 const $isReadingsHistoryLoading = combine(
   fetchReadingHistoryFx.pending,
   $readingHistory,
