@@ -29,7 +29,8 @@ export type AddTask = {
   taskDescription: string | null;
 
   taskReasonSearch: string | null;
-  taskDeadline?: dayjs.Dayjs | null;
+  taskDeadlineDate?: dayjs.Dayjs | null;
+  taskDeadlineTime?: dayjs.Dayjs | null;
 
   isSourceNumberRequired: boolean;
   isSubscriberRequired: boolean;

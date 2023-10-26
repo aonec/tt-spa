@@ -8,6 +8,7 @@ import {
   GridContainer,
   GridContainerAsymmetricLeft,
   GridContainerAsymmetricRight,
+  GridContainerAsymmetricThreeColumn,
   GridContainerExpandable,
   OptionItemWrapper,
   ResourceDisconnectionAlertWrapper,
@@ -16,7 +17,8 @@ import {
   SearchIconSc,
   SelectCaret,
   TextareaSC,
-  TimePickerSc,
+  TimePickerLarge,
+  TimePickerMedium,
   TopWrapper,
   WorkTitle,
   WorkTitleWrapper,
@@ -86,7 +88,8 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
       phoneNumber: null,
       taskDescription: null,
       taskReasonSearch: null,
-      taskDeadline: null,
+      taskDeadlineDate: null,
+      taskDeadlineTime: dayjs(),
       isSourceNumberRequired: initialSource?.isSourceNumberRequired || false,
       isSubscriberRequired: initialSource?.isSubscriberRequired || false,
       isManualDeadlineRequired: isManualDeadlineRequired,
@@ -143,11 +146,15 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
     setFieldValue('isSubscriberRequired', isSubscriberRequired);
   }, [isSubscriberRequired, setFieldValue]);
 
-  const next = useSwitchInputOnEnter(dataKey, false, false);
+  useEffect(() => {
+    setFieldValue('isManualDeadlineRequired', isManualDeadlineRequired);
+  }, [isManualDeadlineRequired, setFieldValue]);
 
   useEffect(() => {
     setDisableSubmit(!isValid);
   }, [isValid, setDisableSubmit]);
+
+  const next = useSwitchInputOnEnter(dataKey, false, false);
 
   const preparedAddressOptions = useMemo(
     () => autocomplete(values.addressSearch, preparedForOptionsAddresses || []),
@@ -326,7 +333,7 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
                 onChange={(value) => setFieldValue('requestDate', value)}
               />
 
-              <TimePickerSc
+              <TimePickerLarge
                 value={values.requestTime || undefined}
                 onChange={(value) => {
                   setFieldValue('requestTime', value);
@@ -453,6 +460,8 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
               onChange={(value) => {
                 setFieldValue('taskReasonSearch', value);
                 handleSelectTaskReason(value as string);
+                setFieldValue('taskDeadlineDate', null);
+                setFieldValue('taskDeadlineTime', null);
               }}
               optionFilterProp="value"
               optionLabelProp="value"
@@ -506,6 +515,8 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
               value={values.taskType}
               onChange={(value) => {
                 setFieldValue('taskType', value);
+                setFieldValue('taskDeadlineDate', null);
+                setFieldValue('taskDeadlineTime', null);
               }}
               optionLabelProp="label"
               options={taskTypeOptions}
@@ -546,13 +557,28 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
               onMouseDown={() => setTaskTypeOpen(true)}
             />
           </FormItem>
-        </ContainerWithOutline>
 
-        {values.isManualDeadlineRequired && (
-          <FormItem label="Срок выполнения">
-            <DatePicker />
-          </FormItem>
-        )}
+          {values.isManualDeadlineRequired && (
+            <FormItem label="Срок выполнения">
+              <GridContainerAsymmetricThreeColumn>
+                <DatePicker
+                  allowClear
+                  format="DD.MM.YYYY"
+                  value={values.taskDeadlineDate}
+                  onChange={(value) => setFieldValue('taskDeadlineDate', value)}
+                />
+
+                <TimePickerMedium
+                  value={values.taskDeadlineTime || undefined}
+                  onChange={(value) => {
+                    setFieldValue('taskDeadlineTime', value);
+                  }}
+                />
+                <div></div>
+              </GridContainerAsymmetricThreeColumn>
+            </FormItem>
+          )}
+        </ContainerWithOutline>
 
         <FormItem label="Описание проблемы">
           <TextareaSC
