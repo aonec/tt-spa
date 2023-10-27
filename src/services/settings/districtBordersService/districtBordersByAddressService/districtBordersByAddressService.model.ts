@@ -26,6 +26,7 @@ import {
 import { createDistrictBorderMapService } from '../createDistrictBorderMapService/createDistrictBorderMapService.models';
 import { existingHousingStocksQuery } from '../createDistrictBorderMapService/createDistrictBorderMapService.api';
 import { addressSearchService } from 'services/addressSearchService/addressSearchService.models';
+import { or } from 'patronum';
 
 const DistrictBordersByAddressPageGate = createGate();
 
@@ -106,6 +107,8 @@ const $checkedHousingStockIdsAndPoligon = createStore<{
   .on(setPoligon, (_, data) => data)
   .reset(pageResetter);
 
+const $isLoading = or(fetchAddressFx.pending, getDistrictsFx.pending);
+
 sample({
   clock: addressSearchService.outputs.$existingCities,
   fn: (cities) => _.last(cities) || '',
@@ -152,6 +155,7 @@ export const districtBordersByAddressService = {
     $addresses: $preparedAddresses,
     $filter,
     $checkedhousingStockIdsWithStreet,
+    $isLoading,
   },
   gates: { DistrictBordersByAddressPageGate },
 };

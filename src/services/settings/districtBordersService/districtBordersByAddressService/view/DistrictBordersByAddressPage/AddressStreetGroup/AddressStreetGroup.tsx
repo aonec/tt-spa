@@ -125,7 +125,7 @@ export const AddressStreetGroup: FC<AddressStreetGroupProps> = ({
         </LeftBlock>
 
         <RightBlock>
-          <SelectedAddressCount>
+          <SelectedAddressCount disabled={!isCheckable}>
             {Boolean(sortedAddresses.length) && checkedHousesCountString}
           </SelectedAddressCount>
 

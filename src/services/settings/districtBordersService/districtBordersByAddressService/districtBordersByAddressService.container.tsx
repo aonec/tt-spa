@@ -25,6 +25,7 @@ export const DistrictBordersByAddressContainer = () => {
     setHousingStockIdsWithStreet,
     setPoligon,
     openShowAddressesModal,
+    isLoading,
   } = useUnit({
     selectCity: inputs.selectCity,
     setFilter: inputs.setFilter,
@@ -35,6 +36,7 @@ export const DistrictBordersByAddressContainer = () => {
     filterData: outputs.$filter,
     checkedhousingStockIdsWithStreet: outputs.$checkedhousingStockIdsWithStreet,
     openShowAddressesModal: showSelectedAddressesService.inputs.openModal,
+    isLoading: outputs.$isLoading,
   });
 
   const { data: housingStocksWithCoordinates } = useUnit(
@@ -102,6 +104,7 @@ export const DistrictBordersByAddressContainer = () => {
           openShowAddressesModal(checkedhousingStockIdsWithStreet)
         }
         checkedAddressesAmount={checkedhousingStockIds.length}
+        isLoading={isLoading}
       />
     </>
   );

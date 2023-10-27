@@ -50,12 +50,14 @@ export const RightBlock = styled.div`
   }
 `;
 
-export const SelectedAddressCount = styled.div`
+export const SelectedAddressCount = styled.div<{ disabled: boolean }>`
   color: #686d8c;
   font-weight: 400;
   font-size: 16px;
 
   user-select: none;
+
+  ${({ disabled }) => disabled && 'opacity: 0.6;'}
 `;
 
 export const ChevronWrapper = styled.div`

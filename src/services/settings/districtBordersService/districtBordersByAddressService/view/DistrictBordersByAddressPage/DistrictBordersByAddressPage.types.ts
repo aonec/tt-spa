@@ -18,4 +18,5 @@ export type DistrictBordersByAddressPageProps = {
   filter: FilterType | null;
   openShowAddressesModal: () => void;
   checkedAddressesAmount: number;
+  isLoading: boolean;
 };

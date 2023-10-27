@@ -128,7 +128,7 @@ export const SettingPage: FC<SettingPageProps> = ({
 
     const path = keys.find((elem) => elem.visible);
 
-    if (path) history.push(path.key);
+    if (pathname.split('/').length === 2 && path) history.push(path.key);
   }, [
     adminSettings,
     featureToggles.controllersDistribution,
@@ -136,6 +136,7 @@ export const SettingPage: FC<SettingPageProps> = ({
     featureToggles.temperatureGraph,
     featureToggles.workingRanges,
     history,
+    pathname,
   ]);
 
   return (
@@ -148,7 +149,7 @@ export const SettingPage: FC<SettingPageProps> = ({
           menuButtons,
         }}
       />
-      <TabsSC activeKey={section} onChange={history.push}>
+      <TabsSC activeKey={section} onChange={history.replace}>
         {settingsComponent}
       </TabsSC>
     </>
