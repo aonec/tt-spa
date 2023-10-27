@@ -3,33 +3,27 @@ import { ExecutionPostponedDatePickerProps } from './ExecutionPostponedDatePicke
 import { FormItem } from 'ui-kit/FormItem';
 import { DatePicker } from 'ui-kit/DatePicker';
 import dayjs from 'dayjs';
-import { Comment } from '../../../commentService/view/Comment';
 
 export const ExecutionPostponedDatePicker: FC<
   ExecutionPostponedDatePickerProps
 > = ({ handleStageChanges }) => {
   const [date, setDate] = useState<dayjs.Dayjs | null>(null);
-  const [comment, setComment] = useState<string | null>(null);
 
   useEffect(() => {
-    const formattedDate = date?.format('YYYY-MM-DD');
+    const formattedDate = date?.format('YYYY-MM-DD') || null;
 
-    if (formattedDate)
-      handleStageChanges({ applicationPostponeDate: formattedDate, comment });
-  }, [date, comment]);
+    handleStageChanges({ applicationPostponeDate: formattedDate });
+  }, [date, handleStageChanges]);
 
   return (
-    <>
-      <FormItem label="Дата">
-        <DatePicker
-          allowClear
-          placeholder="Выберите дату"
-          value={date && dayjs(date)}
-          onChange={(date) => setDate(date)}
-          format="DD.MM.YYYY"
-        />
-      </FormItem>
-      <Comment handleCommentChange={setComment} />
-    </>
+    <FormItem label="Дата">
+      <DatePicker
+        allowClear
+        placeholder="Выберите дату"
+        value={date && dayjs(date)}
+        onChange={(date) => setDate(date)}
+        format="DD.MM.YYYY"
+      />
+    </FormItem>
   );
 };

@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useCallback } from 'react';
 import { ActionComponentProps } from '../TaskActionsPanel.types';
 import { ExecutionPostponedDatePicker } from './view/ExecutionPostponedDatePicker';
 import { StageChanges } from './setExecutionPostponedDateService.types';
@@ -6,12 +6,14 @@ import { StageChanges } from './setExecutionPostponedDateService.types';
 export const SetExecutionPostponedDateContainer: FC<ActionComponentProps> = ({
   handleChange,
 }) => {
-  function handleStageChanges({
-    applicationPostponeDate,
-    comment,
-  }: StageChanges) {
-    handleChange({ applicationPostponeDate, comment });
-  }
+  const handleStageChanges = useCallback(
+    function ({ applicationPostponeDate }: StageChanges) {
+      handleChange({ applicationPostponeDate });
+    },
+    [handleChange],
+  );
 
-  return <ExecutionPostponedDatePicker handleStageChanges={handleStageChanges} />;
+  return (
+    <ExecutionPostponedDatePicker handleStageChanges={handleStageChanges} />
+  );
 };
