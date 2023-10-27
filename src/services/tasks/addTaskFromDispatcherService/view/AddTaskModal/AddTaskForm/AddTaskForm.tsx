@@ -76,35 +76,38 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
 }) => {
   const initialSource = useMemo(() => ERPSources[0], [ERPSources]);
 
-  const { values, handleSubmit, setFieldValue, isValid } = useFormik<AddTask>({
-    initialValues: {
-      sourceId: initialSource.id,
-      requestNumber: null,
-      taskType: null,
-      workTypeId: null,
-      requestDate: dayjs(),
-      requestTime: dayjs(),
-      addressSearch: '',
-      apartmentNumber: null,
-      subscriberName: null,
-      phoneNumber: null,
-      taskDescription: null,
-      taskReasonSearch: null,
-      taskReasonOrderNumber: null,
-      taskDeadlineDate: null,
-      taskDeadlineTime: dayjs(),
-      isSourceNumberRequired: initialSource?.isSourceNumberRequired || false,
-      isSubscriberRequired: initialSource?.isSubscriberRequired || false,
-      isManualDeadlineRequired: isManualDeadlineRequired,
-    },
-    validateOnBlur: true,
-    validateOnMount: true,
-    validationSchema,
-    onSubmit: (data) => {
-      const filteredData = filterData(data);
-      handleCreateTask(filteredData);
-    },
-  });
+  const { values, handleSubmit, setFieldValue, isValid, errors } =
+    useFormik<AddTask>({
+      initialValues: {
+        sourceId: initialSource.id,
+        requestNumber: null,
+        taskType: null,
+        workTypeId: null,
+        requestDate: dayjs(),
+        requestTime: dayjs(),
+        addressSearch: '',
+        apartmentNumber: null,
+        subscriberName: null,
+        phoneNumber: null,
+        taskDescription: null,
+        taskReasonSearch: null,
+        taskReasonOrderNumber: null,
+        taskDeadlineDate: null,
+        taskDeadlineTime: dayjs(),
+        isSourceNumberRequired: initialSource?.isSourceNumberRequired || false,
+        isSubscriberRequired: initialSource?.isSubscriberRequired || false,
+        isManualDeadlineRequired: isManualDeadlineRequired,
+      },
+      validateOnBlur: true,
+      validateOnMount: true,
+      validationSchema,
+      onSubmit: (data) => {
+        const filteredData = filterData(data);
+        handleCreateTask(filteredData);
+      },
+    });
+
+  console.log(errors);
 
   const isInitialSource = useMemo(
     () => values.sourceId === initialSource.id,
