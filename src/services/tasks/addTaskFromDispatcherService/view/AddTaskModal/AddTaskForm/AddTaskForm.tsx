@@ -40,8 +40,9 @@ import {
   TaskTypeDictionary,
 } from 'dictionaries';
 import {
-  autocomplete,
+  autocompleteAddress,
   autocompleteApartNumber,
+  autocompleteReason,
   filterData,
 } from './AddTaskForm.utils';
 import { Alert } from 'ui-kit/Alert';
@@ -157,32 +158,38 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
   const next = useSwitchInputOnEnter(dataKey, false, false);
 
   const preparedAddressOptions = useMemo(
-    () => autocomplete(values.addressSearch, preparedForOptionsAddresses || []),
+    () =>
+      autocompleteAddress(
+        values.addressSearch,
+        preparedForOptionsAddresses || [],
+      ),
     [values.addressSearch, preparedForOptionsAddresses],
   );
 
   const taskReasonOptions = useMemo(
     () =>
-      taskReasons.map((taskReason, index) => {
-        return {
-          label: (
-            <OptionItemWrapper>
-              <TopWrapper>
-                <ResourseTypeWrapper>
-                  {TaskReasonTypeDictionary[taskReason.type]}
-                </ResourseTypeWrapper>
-                <ArrowRightLongIconDim />
-                <WorkTitleWrapper>
-                  <WorkTitle>{taskReason.name}</WorkTitle>
-                </WorkTitleWrapper>
-              </TopWrapper>
-            </OptionItemWrapper>
-          ),
-          value: taskReason.name,
-          key: `${taskReason.name}${index}`,
-        };
-      }),
-    [taskReasons],
+      autocompleteReason(values.taskReasonSearch, taskReasons).map(
+        (taskReason, index) => {
+          return {
+            label: (
+              <OptionItemWrapper>
+                <TopWrapper>
+                  <ResourseTypeWrapper>
+                    {TaskReasonTypeDictionary[taskReason.type]}
+                  </ResourseTypeWrapper>
+                  <ArrowRightLongIconDim />
+                  <WorkTitleWrapper>
+                    <WorkTitle>{taskReason.name}</WorkTitle>
+                  </WorkTitleWrapper>
+                </TopWrapper>
+              </OptionItemWrapper>
+            ),
+            value:  taskReason.name,
+            key: `${taskReason.name}${index}`,
+          };
+        },
+      ),
+    [taskReasons, values.taskReasonSearch],
   );
 
   const taskTypeOptions = useMemo(() => {
@@ -346,6 +353,7 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
         <GridContainerAsymmetricRight>
           <FormItem label="Адрес">
             <AutoCompleteAntD
+              showSearch
               allowClear
               value={values.addressSearch}
               onChange={(value) => setFieldValue('addressSearch', value)}
@@ -463,14 +471,9 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
                 setFieldValue('taskDeadlineDate', null);
                 setFieldValue('taskDeadlineTime', null);
               }}
-              optionFilterProp="value"
-              optionLabelProp="value"
+              onClear={() => setFieldValue('taskReasonSearch', null)}
+              optionLabelProp="label"
               options={taskReasonOptions}
-              filterOption={(inputValue, option) =>
-                option?.value
-                  .toLocaleLowerCase()
-                  .startsWith(inputValue.toLocaleLowerCase())
-              }
               data-reading-input={dataKey}
               onKeyDown={fromEnter(() => {
                 if (isNoAdditionalFieldsRequired) {
