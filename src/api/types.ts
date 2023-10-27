@@ -2393,6 +2393,8 @@ export interface ErpTaskDeadlineResponse {
 }
 
 export interface ErpTaskReasonGroupResponse {
+  /** @format int32 */
+  orderNumber: number;
   type: EisTaskReasonType;
   name: string | null;
   items: ErpTaskReasonItemResponse[] | null;

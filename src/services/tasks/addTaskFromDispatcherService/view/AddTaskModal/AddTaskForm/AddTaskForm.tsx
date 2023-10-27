@@ -72,6 +72,7 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
   handleSelectTaskReason,
   handleSelectTaskType,
   isManualDeadlineRequired,
+  selectedTaskReasonOption,
 }) => {
   const initialSource = useMemo(() => ERPSources[0], [ERPSources]);
 
@@ -89,6 +90,7 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
       phoneNumber: null,
       taskDescription: null,
       taskReasonSearch: null,
+      taskReasonOrderNumber: null,
       taskDeadlineDate: null,
       taskDeadlineTime: dayjs(),
       isSourceNumberRequired: initialSource?.isSourceNumberRequired || false,
@@ -169,7 +171,7 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
   const taskReasonOptions = useMemo(
     () =>
       autocompleteReason(values.taskReasonSearch, taskReasons).map(
-        (taskReason, index) => {
+        (taskReason) => {
           return {
             label: (
               <OptionItemWrapper>
@@ -184,28 +186,28 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
                 </TopWrapper>
               </OptionItemWrapper>
             ),
-            value:  taskReason.name,
-            key: `${taskReason.name}${index}`,
+            value: taskReason.orderNumber,
+            key: `${taskReason.name}${taskReason.orderNumber}`,
           };
         },
       ),
     [taskReasons, values.taskReasonSearch],
   );
 
-  const taskTypeOptions = useMemo(() => {
-    const selectedOption = taskReasons.find(
-      (optionItem) => optionItem.name === values.taskReasonSearch,
-    );
+  // console.log(values.taskReasonSearch);
+  // console.log(taskReasonOptions);
 
-    const allowedTaskTypes =
-      selectedOption?.items?.map((item) => item.taskType) || [];
+  const taskTypeOptions = useMemo(() => {
+    const allowedTaskTypes = selectedTaskReasonOption.map(
+      (item) => item.taskType,
+    );
 
     return allowedTaskTypes.map((taskType) => ({
       label: TaskTypeDictionary[taskType],
       value: taskType,
       key: taskType,
     }));
-  }, [values.taskReasonSearch, taskReasons]);
+  }, [selectedTaskReasonOption]);
 
   useEffect(() => {
     if (taskTypeOptions.length === 1) {
@@ -462,18 +464,21 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
             <Select
               showSearch
               allowClear
-              virtual={false}
+              virtual={true}
               placeholder="Начните вводить"
-              value={values.taskReasonSearch}
+              value={values.taskReasonOrderNumber}
+              onSearch={(search) => {
+                setFieldValue('taskReasonSearch', search);
+              }}
               onChange={(value) => {
-                setFieldValue('taskReasonSearch', value);
-                handleSelectTaskReason(value as string);
+                setFieldValue('taskReasonOrderNumber', value as number);
+                handleSelectTaskReason(value as number);
                 setFieldValue('taskDeadlineDate', null);
                 setFieldValue('taskDeadlineTime', null);
               }}
-              onClear={() => setFieldValue('taskReasonSearch', null)}
-              optionLabelProp="label"
-              options={taskReasonOptions}
+              onClear={() => {
+                setFieldValue('taskReasonSearch', null);
+              }}
               data-reading-input={dataKey}
               onKeyDown={fromEnter(() => {
                 if (isNoAdditionalFieldsRequired) {
@@ -508,7 +513,17 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
                 }
               }}
               onMouseDown={() => setReasonOpen(true)}
-            />
+            >
+              {taskReasonOptions.map((elem) => (
+                <Select.Option
+                  optionLabelProp="label"
+                  key={elem.key}
+                  value={elem.value}
+                >
+                  {elem.label}
+                </Select.Option>
+              ))}
+            </Select>
           </FormItem>
           <FormItem label="Тип заявки">
             <Select

@@ -54,7 +54,7 @@ const handleCreateTask = createEvent<AddTask>();
 
 const handleSelectHousingAddress = createEvent<string>();
 const handleSelectApartmentNumber = createEvent<string>();
-const handleSelectTaskReason = createEvent<string>();
+const handleSelectTaskReason = createEvent<number>();
 const handleSelectTaskType = createEvent<EisTaskType>();
 
 const setSelectedHousingId = createEvent<string | null>();
@@ -250,8 +250,9 @@ sample({
   source: $taskReasons,
   fn: (taskReasons, selectedTaskReason) => {
     const selectedOption = taskReasons.find(
-      (optionItem) => optionItem.name === selectedTaskReason,
+      (optionItem) => optionItem.orderNumber === selectedTaskReason,
     );
+
     return selectedOption?.items || [];
   },
   target: setSelectedTaskReasonOption,
@@ -329,6 +330,7 @@ export const addTaskFromDispatcherService = {
     $resourceDisconnection,
     $apartmentHomeownerNames,
     $taskReasons,
+    $selectedTaskReasonOption,
     $isManualDeadlineRequired,
   },
   gates: { PageGate, AddTaskDataFetchGate },
