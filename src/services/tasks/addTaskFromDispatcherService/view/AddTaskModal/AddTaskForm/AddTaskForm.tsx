@@ -107,8 +107,6 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
       },
     });
 
-  console.log(errors);
-
   const isInitialSource = useMemo(
     () => values.sourceId === initialSource.id,
     [values.sourceId, initialSource.id],
