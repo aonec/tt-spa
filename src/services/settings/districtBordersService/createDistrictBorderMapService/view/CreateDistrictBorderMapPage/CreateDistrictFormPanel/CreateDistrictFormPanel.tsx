@@ -44,7 +44,7 @@ export const CreateDistrictFormPanel: FC<CreateDistrictFormPanelProps> = ({
   }, [formSection]);
 
   const handleSubmit = useCallback(() => {
-    if (!districtName) {
+    if (!name) {
       message.error('Введите название района');
       return;
     }
@@ -58,7 +58,6 @@ export const CreateDistrictFormPanel: FC<CreateDistrictFormPanelProps> = ({
 
     handleCreateDistrict(payload);
   }, [
-    districtName,
     name,
     selectedHousingStocks,
     districtPolygonCoordinates,
