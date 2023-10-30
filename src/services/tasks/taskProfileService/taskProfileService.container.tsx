@@ -70,9 +70,9 @@ export const TaskProfileContainer = () => {
   const isApplication = Boolean(
     task &&
       [
-        EManagingFirmTaskType.PlannedApplication,
-        EManagingFirmTaskType.CurrentApplication,
-        EManagingFirmTaskType.EmergencyApplication,
+        EManagingFirmTaskType.CurrentApplicationUnassigned,
+        EManagingFirmTaskType.EmergencyApplicationUnassigned,
+        EManagingFirmTaskType.PlannedApplicationUnassigned,
       ].includes(task.type),
   );
 
