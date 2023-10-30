@@ -5430,6 +5430,7 @@ export interface TaskResponse {
     | null;
   buildingCoordinates: PointResponse | null;
   canBeReverted: boolean;
+  isApplicationTask: boolean;
 }
 
 export interface TaskResponseSuccessApiResponse {
