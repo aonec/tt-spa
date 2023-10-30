@@ -223,7 +223,11 @@ export const MetersInputsBlock: FC<MetersInputsBlockProps> = ({
   return (
     <Tooltip title={tooltip}>
       <div>
-        <Wrapper className="meters-wrapper" resource={resource}>
+        <Wrapper
+          className="meters-wrapper"
+          data-test="meters-input"
+          resource={resource}
+        >
           {inputsArray}
         </Wrapper>
         <ReadingDate>{readingDate || 'Нет показаний'}</ReadingDate>

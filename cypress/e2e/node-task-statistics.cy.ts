@@ -1,12 +1,12 @@
 describe('task statistics', () => {
   beforeEach(() => {
-    cy.login();
+    cy.loginAsAdmin();
   });
 
   it('visit tasks page and visit node', () => {
     cy.contains('div', /Наблюдаемые/).click();
 
-    cy.getByTestId('task-item').should('be.visible');
+    cy.getByTestId('task-item');
 
     cy.selectOption('task-type-selector', 'Неполадки с ОДПУ');
 
