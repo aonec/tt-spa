@@ -26,6 +26,7 @@ export const ApartmentsReadings: FC<ApartmentsReadingsProps> = ({
   handleUpdateHomeowner,
   isUpdateHomeownerLoading,
   isApartmentFetched,
+  nearestAppointment,
 }) => {
   const componentsDictionary: { [key in SearchMode]: ReactNode } = {
     [SearchMode.Apartment]: (
@@ -44,6 +45,7 @@ export const ApartmentsReadings: FC<ApartmentsReadingsProps> = ({
         printIssueCertificate={printIssueCertificate}
         handleUpdateHomeowner={handleUpdateHomeowner}
         isUpdateHomeownerLoading={isUpdateHomeownerLoading}
+        nearestAppointment={nearestAppointment}
       />
     ),
     [SearchMode.SerialNumber]: (

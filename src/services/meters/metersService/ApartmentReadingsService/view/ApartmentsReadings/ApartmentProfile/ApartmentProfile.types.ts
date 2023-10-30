@@ -1,4 +1,4 @@
-import { ApartmentResponse } from 'api/types';
+import { ApartmentResponse, AppointmentResponse } from 'api/types';
 import {
   GetApartmentsRequestPayload,
   UpdateApartmentRequestPayload,
@@ -20,4 +20,5 @@ export type ApartmentProfileProps = {
   handleUpdateHomeowner: (payload: UpdateHomeownerRequestPayload) => void;
   isUpdateHomeownerLoading: boolean;
   isApartmentFetched: boolean;
+  nearestAppointment: AppointmentResponse | null;
 };

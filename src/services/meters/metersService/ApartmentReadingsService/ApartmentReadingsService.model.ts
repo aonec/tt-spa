@@ -1,7 +1,11 @@
 import { createEffect, createEvent, createStore } from 'effector';
 import { forward, guard, sample } from 'effector';
 import { createGate } from 'effector-react';
-import { ApartmentResponse, HomeownerAccountResponse } from 'api/types';
+import {
+  ApartmentResponse,
+  AppointmentResponse,
+  HomeownerAccountResponse,
+} from 'api/types';
 import { SearchMode } from './view/ApartmentsReadings/ApartmentsReadings.types';
 import {
   GetApartmentsRequestPayload,
@@ -10,6 +14,7 @@ import {
 } from './ApartmentReadingsService.types';
 import {
   getApartmentQuery,
+  getNearestAppointmentForApartment,
   patchHomeowner,
   putApartment,
 } from './ApartmentReadingsService.api';
@@ -19,6 +24,7 @@ import { individualDeviceMountPlacesService } from 'services/devices/individualD
 import { selectPersonalNumberActionService } from 'services/homeowner/personalNumber/selectPersonalNumberActionService';
 import { pauseApartmentService } from 'services/apartments/pauseApartmentService/pauseApartmentService.models';
 import { printApartmentDevicesCertificateService } from 'services/apartments/printApartmentDevicesCertificateService/printApartmentDevicesCertificateService.models';
+import { and } from 'patronum';
 
 const setSearchMode = createEvent<SearchMode>();
 
@@ -81,7 +87,23 @@ const $selectedHomeownerName = createStore<string | null>(null).on(
   (_, name) => name,
 );
 
+const fetchAppointmentFx = createEffect<number, AppointmentResponse[]>(
+  getNearestAppointmentForApartment,
+);
+const $apartmentAppointment = createStore<AppointmentResponse | null>(null)
+  .on(fetchAppointmentFx.doneData, (_, appointments) => appointments[0] || null)
+  .reset(ApartmentGate.close);
+
 const $isUpdateHomeownerLoading = updateHomeownerFx.pending;
+
+sample({
+  source: and(ApartmentGate.state, $apartment),
+  filter: Boolean,
+  clock: $apartment,
+  //Проверка типа идет выше
+  fn: (_, apartment) => (apartment as ApartmentResponse).id,
+  target: fetchAppointmentFx,
+});
 
 sample({
   clock: handleUpdateHomeowner,
@@ -175,6 +197,7 @@ export const apartmentReadingsService = {
       individualDeviceMountPlacesService.outputs
         .$allIndividualDeviceMountPlaces,
     $isUpdateHomeownerLoading,
+    $apartmentAppointment,
   },
   gates: { ApartmentGate },
 };
