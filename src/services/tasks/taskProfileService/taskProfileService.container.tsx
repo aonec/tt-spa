@@ -5,7 +5,6 @@ import React, { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { taskProfileService } from '.';
 import { TaskProfile } from './view/TaskProfile';
-import { EManagingFirmTaskType } from 'api/types';
 import { applicationInfoService } from './applicationInfoService';
 
 const { gates, outputs, inputs } = taskProfileService;
@@ -67,14 +66,7 @@ export const TaskProfileContainer = () => {
   const isViewerExecutor =
     Boolean(currentUser?.id) && currentUser?.id === task?.perpetrator?.id;
 
-  const isApplication = Boolean(
-    task &&
-      [
-        EManagingFirmTaskType.PlannedApplication,
-        EManagingFirmTaskType.CurrentApplication,
-        EManagingFirmTaskType.EmergencyApplication,
-      ].includes(task.type),
-  );
+  const isApplication = Boolean(task?.isApplicationTask);
 
   useEffect(() => {
     if (isApplication) {

@@ -1,9 +1,9 @@
 import React, { FC, useMemo } from 'react';
-import { ApplicationInfoBlock } from './view/ApplicationInfoBlock';
-import { applicationInfoService } from './applicationInfoService.models';
 import { useUnit } from 'effector-react';
+import { ApplicationInfoBlock } from './view/ApplicationInfoBlock';
 import { ApplicationInfoContainerProps } from './applicationInfoService.types';
 import { EHouseCategory } from 'api/types';
+import { applicationInfoService } from './applicationInfoService.models';
 
 const {
   outputs,
@@ -13,8 +13,9 @@ const {
 export const ApplicationInfoContainer: FC<ApplicationInfoContainerProps> = ({
   task,
 }) => {
-  const { applicationInfo } = useUnit({
+  const { applicationInfo, isLoading } = useUnit({
     applicationInfo: outputs.$applicationInfo,
+    isLoading: outputs.$isLoading,
   });
   const { address, apartment, houseCategory } = task;
 
@@ -39,6 +40,7 @@ export const ApplicationInfoContainer: FC<ApplicationInfoContainerProps> = ({
         applicationInfo={applicationInfo}
         addressLinkPath={addressLinkPath}
         address={address}
+        isLoading={isLoading}
       />
     </>
   );

@@ -1826,6 +1826,9 @@ export enum EManagingFirmTaskType {
   IndividualDeviceCheckNoReadings = 'IndividualDeviceCheckNoReadings',
   RiserNoReadings = 'RiserNoReadings',
   ResourceDisconnecting = 'ResourceDisconnecting',
+  CurrentApplicationUnassigned = 'CurrentApplicationUnassigned',
+  EmergencyApplicationUnassigned = 'EmergencyApplicationUnassigned',
+  PlannedApplicationUnassigned = 'PlannedApplicationUnassigned',
 }
 
 export enum EMeteringDeviceType {
@@ -5428,6 +5431,7 @@ export interface TaskResponse {
     | null;
   buildingCoordinates: PointResponse | null;
   canBeReverted: boolean;
+  isApplicationTask: boolean;
 }
 
 export interface TaskResponseSuccessApiResponse {

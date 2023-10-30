@@ -1,9 +1,9 @@
 import { createEffect, createEvent, createStore, sample } from 'effector';
-import { getApplicationInfo } from './applicationInfoService.api';
-import { ErpApplicationResponse } from 'api/types';
-import { createGate } from 'effector-react';
-import { EffectFailDataAxiosError } from 'types';
 import { message } from 'antd';
+import { createGate } from 'effector-react';
+import { ErpApplicationResponse } from 'api/types';
+import { EffectFailDataAxiosError } from 'types';
+import { getApplicationInfo } from './applicationInfoService.api';
 
 const PageGate = createGate();
 
@@ -18,6 +18,8 @@ const getApplicationInfoFx = createEffect<
 const $applicationInfo = createStore<ErpApplicationResponse | null>(null)
   .on(getApplicationInfoFx.doneData, (_, data) => data)
   .reset(PageGate.close);
+
+const $isLoading = getApplicationInfoFx.pending;
 
 sample({
   clock: handleFetchApplicationInfo,
@@ -34,6 +36,6 @@ getApplicationInfoFx.failData.watch((error) => {
 
 export const applicationInfoService = {
   inputs: { handleFetchApplicationInfo },
-  outputs: { $applicationInfo },
+  outputs: { $applicationInfo, $isLoading },
   gates: { PageGate },
 };

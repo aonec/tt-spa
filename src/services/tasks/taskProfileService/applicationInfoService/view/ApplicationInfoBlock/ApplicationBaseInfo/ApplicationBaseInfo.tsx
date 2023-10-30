@@ -8,9 +8,11 @@ export const ApplicationBaseInfo: FC<ApplicationBaseInfoProps> = ({
   applicationInfo,
   address,
   addressLinkPath,
+  isLoading,
 }) => {
   return (
     <CommonInfo
+      isLoading={isLoading}
       items={[
         {
           key: 'Номер задачи в источнике',

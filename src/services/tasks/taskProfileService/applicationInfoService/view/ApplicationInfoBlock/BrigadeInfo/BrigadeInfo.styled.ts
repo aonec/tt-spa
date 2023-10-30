@@ -29,5 +29,5 @@ export const Name = styled.div`
 
 export const AvatarSC = styled(Avatar)<{ color: string }>`
   background-color: ${({ color }) => color};
-  padding-top: 2px;
+  padding-top: 0px;
 `;
