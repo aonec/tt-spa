@@ -18,6 +18,9 @@ export const DistrictBordersByAddressContainer = () => {
   const { data: housingStocksWithCoordinates } = useUnit(
     existingHousingStocksQuery,
   );
+  const { isLoading } = useUnit({
+    isLoading: outputs.$isLoading,
+  });
 
   const {
     checkedhousingStockIdsWithStreet,
@@ -95,6 +98,7 @@ export const DistrictBordersByAddressContainer = () => {
         handleOpenDistrictEditer={handleOpenDistrictEditer}
         isAllowedToEditer={isAllowedToEditer}
         cityInFilter={cityInFilter}
+        isLoading={isLoading}
       />
     </>
   );

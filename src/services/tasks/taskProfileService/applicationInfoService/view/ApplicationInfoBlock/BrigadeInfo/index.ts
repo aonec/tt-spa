@@ -1,1 +1,1 @@
-export { BrigadeInfo } from './BrigadeInfo'
+export { BrigadeInfo } from './BrigadeInfo';

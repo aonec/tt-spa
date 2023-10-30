@@ -14,7 +14,10 @@ import {
 import { createGate } from 'effector-react';
 import { addHousingStocksToChecked } from './districtBordersByAddressService.utils';
 import { createDistrictBorderMapService } from '../createDistrictBorderMapService/createDistrictBorderMapService.models';
-import { existingHousingStocksQuery } from '../createDistrictBorderMapService/createDistrictBorderMapService.api';
+import {
+  createDistrictMutation,
+  existingHousingStocksQuery,
+} from '../createDistrictBorderMapService/createDistrictBorderMapService.api';
 
 const DistrictBordersByAddressPageGate = createGate();
 
@@ -55,7 +58,7 @@ const $checkedhousingStockIdsWithStreet = createStore<
   .on(setHousingStockIdsWithStreet, (prevIdsWithStreet, commingIdsWithStreet) =>
     addHousingStocksToChecked(prevIdsWithStreet, commingIdsWithStreet),
   )
-  .reset(pageResetter);
+  .reset(pageResetter, createDistrictMutation.finished.success);
 
 const $checkedHousingStockIdsAndPoligon = createStore<{
   housingStockIds: number[];
@@ -94,6 +97,8 @@ sample({
   target: createDistrictBorderMapService.inputs.setDistrictPayload,
 });
 
+const $isLoading = fetchAddressFx.pending;
+
 sample({
   clock: createDistrictBorderMapService.gates.CreateDistrictGate.close,
   target: handleCloseDistrictEditer,
@@ -112,6 +117,7 @@ export const districtBordersByAddressService = {
     $addresses,
     $filter,
     $checkedhousingStockIdsWithStreet,
+    $isLoading,
   },
   gates: { DistrictBordersByAddressPageGate },
 };

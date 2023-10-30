@@ -3,6 +3,7 @@ import { ApartmentSealProfileProps } from './ApartmentSealProfile.types';
 import { WithLoader } from 'ui-kit/shared/WithLoader';
 import {
   AddressSearchContainerSC,
+  AlertWrapper,
   AppointmentTextWrapper,
   ContentWrapper,
 } from './ApartmentSealProfile.styled';
@@ -17,6 +18,9 @@ import dayjs from 'api/dayjs';
 import { SealBottomPanel } from '../SealBottomPanel';
 import { GoBack } from 'ui-kit/shared/GoBack';
 import { NothingFound } from 'ui-kit/shared/NothingFound';
+import { Alert } from 'ui-kit/Alert';
+import { AlertType } from 'ui-kit/Alert/Alert.types';
+import { getHousingStockItemAddress } from 'utils/getHousingStockItemAddress';
 
 export const ApartmentSealProfile: FC<ApartmentSealProfileProps> = ({
   apartment,
@@ -31,8 +35,13 @@ export const ApartmentSealProfile: FC<ApartmentSealProfileProps> = ({
   isAppointmentLoading,
   isApartmentFetched,
   openRemoveAppointmentModal,
+  housesWithDistricts,
 }) => {
   const address = apartment?.housingStock?.address?.mainAddress;
+
+  const isAddressInDistrict =
+    address && housesWithDistricts.includes(address.housingStockId);
+
   const appointmentDate = useMemo(
     () =>
       nearestAppointment && dayjs(nearestAppointment.date).format('DD.MM.YYYY'),
@@ -121,6 +130,15 @@ export const ApartmentSealProfile: FC<ApartmentSealProfileProps> = ({
                   )
                 }
               />
+              {isAddressInDistrict === false && (
+                <AlertWrapper>
+                  <Alert type={AlertType.danger}>
+                    Этот адрес не включен ни в один район, добавьте дом "
+                    {getHousingStockItemAddress(address!)}" в один из районов
+                    или создайте новый район.
+                  </Alert>
+                </AlertWrapper>
+              )}
               <IndividualDevicesList individualDevices={individualDevices} />
             </ContentWrapper>
             {!isAppointmentLoading && (

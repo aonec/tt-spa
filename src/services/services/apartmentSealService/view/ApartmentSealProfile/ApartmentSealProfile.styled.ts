@@ -18,3 +18,7 @@ export const AppointmentTextWrapper = styled.div`
 export const AddressSearchContainerSC = styled(AddressSearchContainer)`
   margin-top: 16px;
 `;
+
+export const AlertWrapper = styled.div`
+  margin-top: 24px;
+`;

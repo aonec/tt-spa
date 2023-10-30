@@ -13,4 +13,5 @@ export type Props = {
   handleCreateDistrict: (payload: DistrictCreateRequest) => void;
   preselectedDistrictPayload: CreatingDistrictPayload | null;
   organizationCoordinates: OrganizationCoordinates | null;
+  isLoadingPostDistrict: boolean;
 };

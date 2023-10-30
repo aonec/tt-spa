@@ -1,1 +1,1 @@
-export { SelectApplicationWorker } from './SelectApplicationWorker'
+export { SelectApplicationWorker } from './SelectApplicationWorker';

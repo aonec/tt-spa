@@ -17,6 +17,7 @@ export const MenuItemWrapper = styled(NavLink)`
   padding: 0 15px;
   color: #272f5a;
   border-left: 3px solid #00000000;
+  cursor: pointer !important;
 
   &:hover {
     transition: 0.2s;
