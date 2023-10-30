@@ -42,7 +42,6 @@ import {
 import {
   autocompleteAddress,
   autocompleteApartNumber,
-  autocompleteReason,
   filterData,
 } from './AddTaskForm.utils';
 import { Alert } from 'ui-kit/Alert';
@@ -76,36 +75,35 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
 }) => {
   const initialSource = useMemo(() => ERPSources[0], [ERPSources]);
 
-  const { values, handleSubmit, setFieldValue, isValid, errors } =
-    useFormik<AddTask>({
-      initialValues: {
-        sourceId: initialSource.id,
-        requestNumber: null,
-        taskType: null,
-        workTypeId: null,
-        requestDate: dayjs(),
-        requestTime: dayjs(),
-        addressSearch: '',
-        apartmentNumber: null,
-        subscriberName: null,
-        phoneNumber: null,
-        taskDescription: null,
-        taskReasonSearch: null,
-        taskReasonOrderNumber: null,
-        taskDeadlineDate: null,
-        taskDeadlineTime: dayjs(),
-        isSourceNumberRequired: initialSource?.isSourceNumberRequired || false,
-        isSubscriberRequired: initialSource?.isSubscriberRequired || false,
-        isManualDeadlineRequired: isManualDeadlineRequired,
-      },
-      validateOnBlur: true,
-      validateOnMount: true,
-      validationSchema,
-      onSubmit: (data) => {
-        const filteredData = filterData(data);
-        handleCreateTask(filteredData);
-      },
-    });
+  const { values, handleSubmit, setFieldValue, isValid } = useFormik<AddTask>({
+    initialValues: {
+      sourceId: initialSource.id,
+      requestNumber: null,
+      taskType: null,
+      workTypeId: null,
+      requestDate: dayjs(),
+      requestTime: dayjs(),
+      addressSearch: '',
+      apartmentNumber: null,
+      subscriberName: null,
+      phoneNumber: null,
+      taskDescription: null,
+      taskReasonSearch: null,
+      taskReasonOrderNumber: null,
+      taskDeadlineDate: null,
+      taskDeadlineTime: dayjs(),
+      isSourceNumberRequired: initialSource?.isSourceNumberRequired || false,
+      isSubscriberRequired: initialSource?.isSubscriberRequired || false,
+      isManualDeadlineRequired: isManualDeadlineRequired,
+    },
+    validateOnBlur: true,
+    validateOnMount: true,
+    validationSchema,
+    onSubmit: (data) => {
+      const filteredData = filterData(data);
+      handleCreateTask(filteredData);
+    },
+  });
 
   const isInitialSource = useMemo(
     () => values.sourceId === initialSource.id,
@@ -171,32 +169,27 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
 
   const taskReasonOptions = useMemo(
     () =>
-      autocompleteReason(values.taskReasonSearch, taskReasons).map(
-        (taskReason) => {
-          return {
-            label: (
-              <OptionItemWrapper>
-                <TopWrapper>
-                  <ResourseTypeWrapper>
-                    {TaskReasonTypeDictionary[taskReason.type]}
-                  </ResourseTypeWrapper>
-                  <ArrowRightLongIconDim />
-                  <WorkTitleWrapper>
-                    <WorkTitle>{taskReason.name}</WorkTitle>
-                  </WorkTitleWrapper>
-                </TopWrapper>
-              </OptionItemWrapper>
-            ),
-            value: taskReason.orderNumber,
-            key: `${taskReason.name}${taskReason.orderNumber}`,
-          };
-        },
-      ),
-    [taskReasons, values.taskReasonSearch],
+      taskReasons.map((taskReason) => {
+        return {
+          label: (
+            <OptionItemWrapper>
+              <TopWrapper>
+                <ResourseTypeWrapper>
+                  {TaskReasonTypeDictionary[taskReason.type]}
+                </ResourseTypeWrapper>
+                <ArrowRightLongIconDim />
+                <WorkTitleWrapper>
+                  <WorkTitle>{taskReason.name}</WorkTitle>
+                </WorkTitleWrapper>
+              </TopWrapper>
+            </OptionItemWrapper>
+          ),
+          value: taskReason.name,
+          key: `${taskReason.name}${taskReason.orderNumber}`,
+        };
+      }),
+    [taskReasons],
   );
-
-  // console.log(values.taskReasonSearch);
-  // console.log(taskReasonOptions);
 
   const taskTypeOptions = useMemo(() => {
     const allowedTaskTypes = selectedTaskReasonOption.map(
@@ -465,20 +458,19 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
             <Select
               showSearch
               allowClear
-              virtual={true}
+              virtual={false}
               placeholder="Начните вводить"
-              value={values.taskReasonOrderNumber}
-              onSearch={(search) => {
-                setFieldValue('taskReasonSearch', search);
-              }}
+              value={values.taskReasonSearch}
               onChange={(value) => {
-                setFieldValue('taskReasonOrderNumber', value as number);
-                handleSelectTaskReason(value as number);
-                setFieldValue('taskDeadlineDate', null);
-                setFieldValue('taskDeadlineTime', null);
+                setFieldValue('taskReasonSearch', value);
+                handleSelectTaskReason(value as string);
               }}
-              onClear={() => {
-                setFieldValue('taskReasonSearch', null);
+              optionFilterProp="value"
+              optionLabelProp="value"
+              filterOption={(inputValue, option) => {
+                return option?.value
+                  ?.toLocaleLowerCase()
+                  .startsWith(inputValue?.toLocaleLowerCase());
               }}
               data-reading-input={dataKey}
               onKeyDown={fromEnter(() => {
@@ -526,6 +518,7 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
               ))}
             </Select>
           </FormItem>
+
           <FormItem label="Тип заявки">
             <Select
               allowClear
