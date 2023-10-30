@@ -24,3 +24,7 @@ export const AdditionalInfoWrapper = styled.div`
   align-items: center;
   gap: 8px;
 `;
+
+export const AlertWrapper = styled.div`
+  margin-top: 24px;
+`;

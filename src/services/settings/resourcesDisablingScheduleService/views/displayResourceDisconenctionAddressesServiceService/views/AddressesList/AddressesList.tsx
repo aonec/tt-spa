@@ -6,12 +6,17 @@ import { AddressesListItem } from './AddressesListItem';
 
 export const AddressesList: FC<AddressesListProps> = ({ streets }) => {
   const list = streets.map((street) => {
-    const [streetName, housingStocks] = street;
+    const { addresses, street: streetName } = street;
+
+    if (!streetName) {
+      return null;
+    }
+
     return (
       <AddressesListItem
         key={streetName}
         street={streetName}
-        housingStocks={housingStocks}
+        addresses={addresses}
       />
     );
   });

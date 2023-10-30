@@ -5,14 +5,12 @@ import { HousingStockNumberWrapper, Number } from './HousingStockNumber.styled';
 
 export const HousingStockNumber: FC<HousingStockNumberProps> = ({
   housingStock,
-  setHousingStockIdsWithStreet,
+  setAddress,
   currentStreetCheckedHousingStockIds,
-  checkedhousingStockIdsWithStreet,
-  street,
 }) => {
   const [isChecked, setCheck] = useState(false);
 
-  const currentHousingStockId = housingStock.buildingId;
+  const { buildingId: currentHousingStockId, isDistributed } = housingStock;
 
   useEffect(
     () =>
@@ -26,19 +24,21 @@ export const HousingStockNumber: FC<HousingStockNumberProps> = ({
 
   return (
     <HousingStockNumberWrapper
+      isDistributed={isDistributed}
       onClick={() => {
+        if (isDistributed) {
+          return;
+        }
         if (isChecked) {
-          setHousingStockIdsWithStreet({
-            street,
-            housingStocksId: currentHousingStockId,
+          setAddress({
+            address: housingStock,
             isToAdd: false,
           });
 
           setCheck(false);
         } else {
-          setHousingStockIdsWithStreet({
-            street,
-            housingStocksId: currentHousingStockId,
+          setAddress({
+            address: housingStock,
             isToAdd: true,
           });
 
@@ -46,7 +46,7 @@ export const HousingStockNumber: FC<HousingStockNumberProps> = ({
         }
       }}
     >
-      <Checkbox checked={isChecked} />
+      <Checkbox checked={isChecked} disabled={isDistributed} />
       <Number isChecked={isChecked}>
         {housingStock.number} {housingStock.corpus}
       </Number>

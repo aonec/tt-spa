@@ -1,1 +1,1 @@
-export { ApplicationBaseInfo } from './ApplicationBaseInfo'
+export { ApplicationBaseInfo } from './ApplicationBaseInfo';

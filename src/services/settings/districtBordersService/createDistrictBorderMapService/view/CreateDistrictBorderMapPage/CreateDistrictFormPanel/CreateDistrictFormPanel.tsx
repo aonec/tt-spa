@@ -1,4 +1,4 @@
-import React, { FC, useCallback } from 'react';
+import React, { FC, useCallback, useEffect, useState } from 'react';
 import {
   AddressItem,
   ColorCircle,
@@ -36,6 +36,13 @@ export const CreateDistrictFormPanel: FC<CreateDistrictFormPanelProps> = ({
   setDistrictName,
   districtPolygonCoordinates,
 }) => {
+  const [name, setName] = useState(districtName);
+
+  useEffect(() => {
+    setDistrictName(name);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [formSection]);
+
   const handleSubmit = useCallback(() => {
     if (!districtName) {
       message.error('Введите название района');
@@ -43,7 +50,7 @@ export const CreateDistrictFormPanel: FC<CreateDistrictFormPanelProps> = ({
     }
 
     const payload = combinePayloadForCreateDistrict(
-      districtName,
+      name,
       selectedHousingStocks,
       districtPolygonCoordinates,
       districtColor,
@@ -51,11 +58,12 @@ export const CreateDistrictFormPanel: FC<CreateDistrictFormPanelProps> = ({
 
     handleCreateDistrict(payload);
   }, [
-    districtColor,
     districtName,
-    districtPolygonCoordinates,
-    handleCreateDistrict,
+    name,
     selectedHousingStocks,
+    districtPolygonCoordinates,
+    districtColor,
+    handleCreateDistrict,
   ]);
 
   const housingStocksListSection = (
@@ -99,8 +107,8 @@ export const CreateDistrictFormPanel: FC<CreateDistrictFormPanelProps> = ({
       <FormWrapper>
         <FormItem label="Название района">
           <Input
-            value={districtName}
-            onChange={(e) => setDistrictName(e.target.value)}
+            value={name}
+            onChange={(e) => setName(e.target.value)}
             small
             placeholder="Введите название"
           />
