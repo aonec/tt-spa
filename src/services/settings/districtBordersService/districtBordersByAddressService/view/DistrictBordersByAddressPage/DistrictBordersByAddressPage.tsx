@@ -46,6 +46,7 @@ export const DistrictBordersByAddressPage: FC<
       <WithLoader isLoading={isLoading}>
         <AddressSortWrapper>
           <AddressSearchContainer
+            autoBurn
             fields={[
               SearchFieldType.City,
               SearchFieldType.Street,

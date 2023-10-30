@@ -432,7 +432,7 @@ export const Router: FC<RouterProps> = ({
 
                   {(isSeniorOperator || isOperator) && (
                     <Route
-                      path="/settings/:section"
+                      path="/settings/:section?"
                       component={SettingsPageContainer}
                       exact
                     />
@@ -440,8 +440,10 @@ export const Router: FC<RouterProps> = ({
 
                   {isAdministrator && (
                     <Route
-                      path="/adminSettings/:section"
-                      component={SettingsPageContainer}
+                      path="/adminSettings/:section?"
+                      component={() => (
+                        <SettingsPageContainer isAdminSettings />
+                      )}
                       exact
                     />
                   )}

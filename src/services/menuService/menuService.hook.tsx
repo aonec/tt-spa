@@ -59,18 +59,6 @@ export const useMenuItems = (): MenuItem[] => {
       type: MenuType.Buildings,
     },
     {
-      title: 'Приборы',
-      path: '/devices',
-      icon: DeviceIcon,
-      type: MenuType.Devices,
-    },
-    {
-      title: 'Профиль компании',
-      path: '/companyProfile/commonInfo',
-      icon: CompanyProfileIcon,
-      type: MenuType.CompanyProfile,
-    },
-    {
       title: 'Ввод показаний',
       path: `/meters/${MeterSection.Apartments}`,
       icon: DocumentIcon,
@@ -111,14 +99,26 @@ export const useMenuItems = (): MenuItem[] => {
         ]
       : ([] as MenuItem[])),
     {
-      title: 'Настройки',
-      path: '/settings/inspectors',
+      title: 'Приборы',
+      path: '/devices',
+      icon: DeviceIcon,
+      type: MenuType.Devices,
+    },
+    {
+      title: 'Профиль компании',
+      path: '/companyProfile/commonInfo',
+      icon: CompanyProfileIcon,
+      type: MenuType.CompanyProfile,
+    },
+    {
+      title: 'Настройки оператора',
+      path: '/settings',
       icon: SettingsIcon,
       type: MenuType.Settings,
     },
     {
       title: 'Настройки',
-      path: '/adminSettings/operatingRanges',
+      path: '/adminSettings',
       icon: SettingsIcon,
       type: MenuType.SettingsAdministrator,
     },

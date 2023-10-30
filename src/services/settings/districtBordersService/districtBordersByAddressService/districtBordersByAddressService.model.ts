@@ -24,9 +24,12 @@ import {
   getHousesWithDisctictId,
 } from './districtBordersByAddressService.utils';
 import { createDistrictBorderMapService } from '../createDistrictBorderMapService/createDistrictBorderMapService.models';
-import { existingHousingStocksQuery } from '../createDistrictBorderMapService/createDistrictBorderMapService.api';
 import { addressSearchService } from 'services/addressSearchService/addressSearchService.models';
 import { or } from 'patronum';
+import {
+  createDistrictMutation,
+  existingHousingStocksQuery,
+} from '../createDistrictBorderMapService/createDistrictBorderMapService.api';
 
 const DistrictBordersByAddressPageGate = createGate();
 
@@ -34,7 +37,6 @@ const pageResetter = createEvent();
 
 const handleOpenDistrictEditer = createEvent();
 
-// fix
 const setPoligon = createEvent<{
   housingStockIds: number[];
   polygon: number[][];
@@ -98,7 +100,7 @@ const $checkedhousingStockIdsWithStreet = createStore<
   .on(setHousingStockIdsWithStreet, (prevIdsWithStreet, commingIdsWithStreet) =>
     addHousingStocksToChecked(prevIdsWithStreet, commingIdsWithStreet),
   )
-  .reset(pageResetter);
+  .reset(pageResetter, createDistrictMutation.finished.success);
 
 const $checkedHousingStockIdsAndPoligon = createStore<{
   housingStockIds: number[];
