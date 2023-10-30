@@ -14,6 +14,7 @@ import {
   getApartmentHomeownerNames,
   getApartments,
   getERPSources,
+  getErpTaskDeadline,
   getResourceDisconnection,
   getTaskReasons,
 } from './addTaskFromDispatcherService.api';
@@ -23,6 +24,7 @@ import {
   EisTaskType,
   ErpCreateTaskRequest,
   ErpSourceResponse,
+  ErpTaskDeadlineResponse,
   ErpTaskReasonGroupResponse,
   ErpTaskReasonItemResponse,
   ResourceDisconnectingResponse,
@@ -52,7 +54,7 @@ const handleCreateTask = createEvent<AddTask>();
 
 const handleSelectHousingAddress = createEvent<string>();
 const handleSelectApartmentNumber = createEvent<string>();
-const handleSelectTaskReason = createEvent<string>();
+const handleSelectTaskReason = createEvent<number>();
 const handleSelectTaskType = createEvent<EisTaskType>();
 
 const setSelectedHousingId = createEvent<string | null>();
@@ -72,6 +74,10 @@ const getERPSourcesFx = createEffect<void, ErpSourceResponse[]>(getERPSources);
 
 const getTaskReasonsFx = createEffect<void, ErpTaskReasonGroupResponse[]>(
   getTaskReasons,
+);
+
+const getErpTaskDeadlineFx = createEffect<string, ErpTaskDeadlineResponse>(
+  getErpTaskDeadline,
 );
 
 const getAddressesFx = createEffect<
@@ -107,6 +113,9 @@ const $taskReasons = createStore<ErpTaskReasonGroupResponse[]>([]).on(
   getTaskReasonsFx.doneData,
   (_, data) => data,
 );
+const $isManualDeadlineRequired = createStore<boolean>(false)
+  .on(getErpTaskDeadlineFx.doneData, (_, data) => !data.deadlineInHours)
+  .reset([handleReset, handleSelectTaskType, handleSelectTaskReason]);
 
 const $resourceDisconnection = createStore<ResourceDisconnectingResponse[]>([])
   .on(getResourceDisconnectionFx.doneData, (_, data) => data.items || [])
@@ -169,6 +178,14 @@ sample({
 
     const sourceDateTimeUTC = dayjs(sourceDateTime).utcOffset(0).toISOString();
 
+    const deadlineDateTime = data.taskDeadlineDate
+      ?.format('YYYY-MM-DD')
+      .concat('T', data.taskDeadlineTime?.format('HH:mm') || '');
+
+    const deadlineDateTimeUTC = data.taskDeadlineDate
+      ? dayjs(deadlineDateTime).utcOffset(0).toISOString()
+      : null;
+
     const payload = {
       taskReasonId: source.selectedTaskReasonId,
       taskType: data.taskType,
@@ -179,6 +196,7 @@ sample({
       subscriberPhoneNumber: data.phoneNumber,
       subscriberFullName: data.subscriberName,
       taskDescription: data.taskDescription,
+      taskDeadline: deadlineDateTimeUTC,
     } as ErpCreateTaskRequest;
 
     const filteredByNullValuesPayload = _.pickBy(payload, _.identity);
@@ -232,8 +250,9 @@ sample({
   source: $taskReasons,
   fn: (taskReasons, selectedTaskReason) => {
     const selectedOption = taskReasons.find(
-      (optionItem) => optionItem.name === selectedTaskReason,
+      (optionItem) => optionItem.orderNumber === selectedTaskReason,
     );
+
     return selectedOption?.items || [];
   },
   target: setSelectedTaskReasonOption,
@@ -248,7 +267,7 @@ sample({
     );
     return taskReasonFromTaskType?.id || null;
   },
-  target: setSelectedTaskReasonId,
+  target: [setSelectedTaskReasonId, getErpTaskDeadlineFx],
 });
 
 sample({
@@ -311,6 +330,8 @@ export const addTaskFromDispatcherService = {
     $resourceDisconnection,
     $apartmentHomeownerNames,
     $taskReasons,
+    $selectedTaskReasonOption,
+    $isManualDeadlineRequired,
   },
   gates: { PageGate, AddTaskDataFetchGate },
 };

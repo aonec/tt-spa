@@ -20,6 +20,8 @@ export const AddTaskModal: FC<AddTaskModalProps> = ({
   preparedForOptionsAddresses,
   handleSelectTaskReason,
   handleSelectTaskType,
+  isManualDeadlineRequired,
+  selectedTaskReasonOption,
 }) => {
   const [disableSubmit, setDisableSubmit] = useState(true);
 
@@ -46,6 +48,8 @@ export const AddTaskModal: FC<AddTaskModalProps> = ({
           taskReasons={taskReasons}
           handleSelectTaskReason={handleSelectTaskReason}
           handleSelectTaskType={handleSelectTaskType}
+          isManualDeadlineRequired={isManualDeadlineRequired}
+          selectedTaskReasonOption={selectedTaskReasonOption}
         />
       }
       formId={formId}

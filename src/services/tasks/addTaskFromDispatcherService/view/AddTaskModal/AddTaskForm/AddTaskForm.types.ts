@@ -2,6 +2,7 @@ import {
   EisTaskType,
   ErpSourceResponse,
   ErpTaskReasonGroupResponse,
+  ErpTaskReasonItemResponse,
   ResourceDisconnectingResponse,
 } from 'api/types';
 import dayjs from 'dayjs';
@@ -13,7 +14,7 @@ import {
 
 export type AddTask = {
   sourceId: string | null;
-  requestNumber: string | null;
+  requestNumber?: string | null;
   taskType: null | EisTaskType;
   workTypeId: string | null;
 
@@ -23,12 +24,19 @@ export type AddTask = {
   addressSearch: string;
 
   apartmentNumber: string | null;
-  subscriberName: string | null;
-  phoneNumber: string | null;
+  subscriberName?: string | null;
+  phoneNumber?: string | null;
 
   taskDescription: string | null;
 
   taskReasonSearch: string | null;
+  taskReasonOrderNumber: number | null;
+  taskDeadlineDate?: dayjs.Dayjs | null;
+  taskDeadlineTime?: dayjs.Dayjs | null;
+
+  isSourceNumberRequired: boolean;
+  isSubscriberRequired: boolean;
+  isManualDeadlineRequired: boolean;
 };
 
 export type AddTaskFormProps = {
@@ -43,8 +51,10 @@ export type AddTaskFormProps = {
   handleSelectApartmentNumber: (payload: string) => void;
   apartmentHomeownerNames: HomeownerNameOption[];
   taskReasons: ErpTaskReasonGroupResponse[];
-  handleSelectTaskReason: (payload: string) => void;
+  handleSelectTaskReason: (payload: number) => void;
   handleSelectTaskType: (payload: EisTaskType) => void;
+  isManualDeadlineRequired: boolean;
+  selectedTaskReasonOption: ErpTaskReasonItemResponse[];
 };
 
 export type AddressOption = {
