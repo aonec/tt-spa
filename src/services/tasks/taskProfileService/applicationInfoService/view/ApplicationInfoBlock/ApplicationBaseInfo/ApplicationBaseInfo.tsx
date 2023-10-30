@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import { ApplicationBaseInfoProps } from './ApplicationBaseInfo.types';
 import { CommonInfo } from 'ui-kit/shared/CommonInfo';
-import { LinkSC, SkeletonLoader } from './ApplicationBaseInfo.styled';
+import { LinkSC } from './ApplicationBaseInfo.styled';
 import { TaskTypeDictionary } from 'dictionaries';
 
 export const ApplicationBaseInfo: FC<ApplicationBaseInfoProps> = ({
@@ -12,44 +12,28 @@ export const ApplicationBaseInfo: FC<ApplicationBaseInfoProps> = ({
 }) => {
   return (
     <CommonInfo
+      isLoading={isLoading}
       items={[
         {
           key: 'Номер задачи в источнике',
-          value: isLoading ? (
-            <SkeletonLoader active={true} />
-          ) : (
-            applicationInfo?.number
-          ),
+          value: applicationInfo?.number,
         },
         {
           key: 'Источник заявки',
-          value: isLoading ? (
-            <SkeletonLoader active={true} />
-          ) : (
-            applicationInfo?.source
-          ),
+          value: applicationInfo?.source,
         },
         {
           key: 'Тип заявки',
-          value: isLoading ? (
-            <SkeletonLoader active={true} />
-          ) : (
-            applicationInfo?.type && TaskTypeDictionary[applicationInfo?.type]
-          ),
+          value:
+            applicationInfo?.type && TaskTypeDictionary[applicationInfo?.type],
         },
         {
           key: 'Вид работ',
-          value: isLoading ? (
-            <SkeletonLoader active={true} />
-          ) : (
-            applicationInfo?.category
-          ),
+          value: applicationInfo?.category,
         },
         {
           key: 'Адрес',
-          value: isLoading ? (
-            <SkeletonLoader active={true} />
-          ) : (
+          value: (
             <LinkSC to={addressLinkPath} target="_blank">
               {address}
             </LinkSC>
@@ -57,19 +41,11 @@ export const ApplicationBaseInfo: FC<ApplicationBaseInfoProps> = ({
         },
         {
           key: 'Описание',
-          value: isLoading ? (
-            <SkeletonLoader active={true} />
-          ) : (
-            applicationInfo?.description
-          ),
+          value: applicationInfo?.description,
         },
         {
           key: 'Комментарий к заявке',
-          value: isLoading ? (
-            <SkeletonLoader active={true} />
-          ) : (
-            applicationInfo?.comment
-          ),
+          value: applicationInfo?.comment,
         },
       ]}
     />

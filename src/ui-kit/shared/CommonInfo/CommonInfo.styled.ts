@@ -1,3 +1,4 @@
+import { Skeleton } from 'antd';
 import styled from 'styled-components';
 
 export const Wrapper = styled.div`
@@ -20,4 +21,12 @@ export const KeyWrapper = styled.div`
 
 export const ValueWrapper = styled.div`
   color: rgba(39, 47, 90, 0.9);
+`;
+
+export const SkeletonLoader = styled(Skeleton.Input)`
+  .ant-skeleton-input {
+    width: 150px;
+    border-radius: 4px;
+    max-height: 16px;
+  }
 `;
