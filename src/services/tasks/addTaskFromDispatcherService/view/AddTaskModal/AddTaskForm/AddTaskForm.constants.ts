@@ -6,8 +6,8 @@ export const validationSchema = yup.object().shape({
   requestTime: yup.string().nullable().required('Обязательное поле'),
   selectedObjectAddress: yup.string().nullable().required('Обязательное поле'),
   apartmentNumber: yup.string().nullable().required('Обязательное поле'),
-  taskType: yup.string().nullable().required('Обязательное поле'),
-  taskReasonOrderNumber: yup.number().nullable().required('Обязательное поле'),
+  // taskType: yup.string().nullable().required('Обязательное поле'),
+  // taskReasonOrderNumber: yup.number().nullable().required('Обязательное поле'),
   requestNumber: yup
     .string()
     .nullable()

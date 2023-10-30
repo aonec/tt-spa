@@ -25,7 +25,7 @@ export type AddTaskModalProps = {
   handleSelectApartmentNumber: (payload: string) => void;
   apartmentHomeownerNames: HomeownerNameOption[];
   taskReasons: ErpTaskReasonGroupResponse[];
-  handleSelectTaskReason: (payload: number) => void;
+  handleSelectTaskReason: (payload: string) => void;
   handleSelectTaskType: (payload: EisTaskType) => void;
   isManualDeadlineRequired: boolean;
   selectedTaskReasonOption: ErpTaskReasonItemResponse[];
