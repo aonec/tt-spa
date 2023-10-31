@@ -14,9 +14,9 @@ import { createGate } from 'effector-react';
 const StatisticsByHouseGate = createGate();
 
 const setHousingStockAddress = createEvent<Partial<HousingStockAddressForm>>();
-const $housingStockAddress = createStore<Partial<HousingStockAddressForm>>(
-  {},
-).on(setHousingStockAddress, (_, address) => address);
+const $housingStockAddress = createStore<Partial<HousingStockAddressForm>>({})
+  .on(setHousingStockAddress, (_, address) => address)
+  .reset(StatisticsByHouseGate.close);
 
 const $selectedHousingStockId = fetchHousingStockIdQuery.$data;
 
@@ -26,18 +26,19 @@ const getConsumptionStatisticsByHouseFx = createEffect<
 >(fetchStatisticsByHouse);
 const $consumptionStatisticsByHouse = createStore<
   SubscriberStatisticsСonsumptionResponse[]
->([]).on(
-  getConsumptionStatisticsByHouseFx.doneData,
-  (_, statistics) => statistics,
-);
+>([])
+  .on(getConsumptionStatisticsByHouseFx.doneData, (_, statistics) => statistics)
+  .reset([
+    getConsumptionStatisticsByHouseFx.failData,
+    StatisticsByHouseGate.close,
+  ]);
 
 const setSubscriberStatisticsFilter = createEvent<SubscriberStatisticsForm>();
 
 const $subscriberStatisticsByHouseFilter =
-  createStore<SubscriberStatisticsForm | null>(null).on(
-    setSubscriberStatisticsFilter,
-    (_, filter) => filter,
-  );
+  createStore<SubscriberStatisticsForm | null>(null)
+    .on(setSubscriberStatisticsFilter, (_, filter) => filter)
+    .reset(StatisticsByHouseGate.close);
 
 const $isLoading = getConsumptionStatisticsByHouseFx.pending;
 
