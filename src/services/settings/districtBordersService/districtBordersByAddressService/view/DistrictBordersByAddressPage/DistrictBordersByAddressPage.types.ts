@@ -17,4 +17,5 @@ export type DistrictBordersByAddressPageProps = {
   handleOpenDistrictEditer: () => void;
   isAllowedToEditer: boolean;
   cityInFilter: string | undefined;
+  isLoading: boolean;
 };

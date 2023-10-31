@@ -1,4 +1,3 @@
-import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { ChevronBoldIcon } from 'ui-kit/icons';
 
@@ -22,10 +21,11 @@ export const GroupWrapper = styled.div`
   align-items: center;
 `;
 
-export const LinkSC = styled(Link)`
+export const LinkToProfile = styled.div`
   font-size: 14px;
   font-weight: 500;
   color: #272f5a;
+  cursor: pointer;
 `;
 
 export const ChevronWrapper = styled.div<{ open: boolean }>`

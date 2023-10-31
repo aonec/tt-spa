@@ -21,6 +21,7 @@ import { AttachDocumentContainer } from './attachDocumentService';
 import { SwitchDeviceContainer } from './switchDeviceService';
 import { AddResourceDisconnectionContainer } from './addResourceDisconnectionService';
 import { SetExecutionPostponedDateContainer } from './setExecutionPostponedDateService';
+import { SelectApplicationWorkerContainer } from './selectApplicationWorkerService';
 
 export const taskActionsComponents: TaskActionsComponent[] = [
   {
@@ -105,6 +106,11 @@ export const taskActionsComponents: TaskActionsComponent[] = [
     actionType: EStageActionType.SetApplicationPostponeDate,
     Component: SetExecutionPostponedDateContainer,
     position: TaskPanelInputPositionType.Full,
+  },
+  {
+    actionType: EStageActionType.SelectApplicationWorker,
+    Component: SelectApplicationWorkerContainer,
+    position: TaskPanelInputPositionType.Bottom,
   },
 ];
 

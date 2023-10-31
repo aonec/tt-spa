@@ -1,8 +1,10 @@
 import { axios } from 'api/axios';
 import {
   ApartmentListResponsePagedList,
+  EResourceDisconnectingStatus,
   ErpCreateTaskRequest,
   ErpSourceResponse,
+  ErpTaskDeadlineResponse,
   ErpTaskReasonGroupResponse,
   ResourceDisconnectingResponsePagedList,
   StreetWithBuildingNumbersResponsePagedList,
@@ -23,6 +25,12 @@ export const getERPSources = (): Promise<ErpSourceResponse[]> => {
   return axios.get('Tasks/ErpSources');
 };
 
+export const getErpTaskDeadline = (
+  TaskReasonId: string,
+): Promise<ErpTaskDeadlineResponse> => {
+  return axios.get('Tasks/ErpTaskDeadline', { params: { TaskReasonId } });
+};
+
 export const getTaskReasons = (): Promise<ErpTaskReasonGroupResponse[]> => {
   return axios.get('Tasks/ErpTaskReasons');
 };
@@ -31,7 +39,7 @@ export const getResourceDisconnection = (
   params: GetResourceDisconnectionRequest,
 ): Promise<ResourceDisconnectingResponsePagedList> => {
   return axios.get('ResourceDisconnecting', {
-    params,
+    params: { ...params, Status: EResourceDisconnectingStatus.Active },
   });
 };
 

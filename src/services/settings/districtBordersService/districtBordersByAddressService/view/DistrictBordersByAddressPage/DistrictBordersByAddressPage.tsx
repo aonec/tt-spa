@@ -14,6 +14,7 @@ import { GoBack } from 'ui-kit/shared/GoBack';
 import { Button } from 'ui-kit/Button';
 import { AddressStreetGroup } from './AddressStreetGroup';
 import { useHistory } from 'react-router-dom';
+import { Skeleton } from 'antd';
 
 export const DistrictBordersByAddressPage: FC<
   DistrictBordersByAddressPageProps
@@ -26,6 +27,7 @@ export const DistrictBordersByAddressPage: FC<
   isAllowedToEditer,
   cityInFilter,
   setHousingStockIdsWithStreet,
+  isLoading,
 }) => {
   const history = useHistory();
 
@@ -37,6 +39,7 @@ export const DistrictBordersByAddressPage: FC<
 
       <AddressSortWrapper>
         <AddressSearchContainer
+          autoBurn
           fields={[
             SearchFieldType.City,
             SearchFieldType.Street,
@@ -56,14 +59,17 @@ export const DistrictBordersByAddressPage: FC<
         />
       </AddressSortWrapper>
 
-      {addresses?.map((address) => (
-        <AddressStreetGroup
-          address={address}
-          key={address.street}
-          checkedhousingStockIdsWithStreet={checkedhousingStockIdsWithStreet}
-          setHousingStockIdsWithStreet={setHousingStockIdsWithStreet}
-        />
-      ))}
+      {isLoading && <Skeleton active />}
+
+      {!isLoading &&
+        addresses?.map((address) => (
+          <AddressStreetGroup
+            address={address}
+            key={address.street}
+            checkedhousingStockIdsWithStreet={checkedhousingStockIdsWithStreet}
+            setHousingStockIdsWithStreet={setHousingStockIdsWithStreet}
+          />
+        ))}
 
       <FooterWrapper>
         <Panel>

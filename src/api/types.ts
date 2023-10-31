@@ -1826,6 +1826,9 @@ export enum EManagingFirmTaskType {
   IndividualDeviceCheckNoReadings = 'IndividualDeviceCheckNoReadings',
   RiserNoReadings = 'RiserNoReadings',
   ResourceDisconnecting = 'ResourceDisconnecting',
+  CurrentApplicationUnassigned = 'CurrentApplicationUnassigned',
+  EmergencyApplicationUnassigned = 'EmergencyApplicationUnassigned',
+  PlannedApplicationUnassigned = 'PlannedApplicationUnassigned',
 }
 
 export enum EMeteringDeviceType {
@@ -2111,6 +2114,7 @@ export enum EStageActionType {
   CloseIndividualDevices = 'CloseIndividualDevices',
   CreateResourceDisconnecting = 'CreateResourceDisconnecting',
   SetApplicationPostponeDate = 'SetApplicationPostponeDate',
+  SelectApplicationWorker = 'SelectApplicationWorker',
 }
 
 export enum EStageStatus {
@@ -2378,6 +2382,12 @@ export interface ErpSourceResponse {
   /** @format uuid */
   id: string;
   name: string | null;
+  isSourceNumberRequired: boolean;
+  isSubscriberRequired: boolean;
+}
+
+export interface ErpSourceResponseIEnumerableSuccessApiResponse {
+  successResponse: ErpSourceResponse[] | null;
 }
 
 export interface ErpTaskDeadlineResponse {
@@ -2386,6 +2396,8 @@ export interface ErpTaskDeadlineResponse {
 }
 
 export interface ErpTaskReasonGroupResponse {
+  /** @format int32 */
+  orderNumber: number;
   type: EisTaskReasonType;
   name: string | null;
   items: ErpTaskReasonItemResponse[] | null;
@@ -5427,6 +5439,7 @@ export interface TaskResponse {
     | null;
   buildingCoordinates: PointResponse | null;
   canBeReverted: boolean;
+  isApplicationTask: boolean;
 }
 
 export interface TaskResponseSuccessApiResponse {
@@ -14534,7 +14547,10 @@ export class Api<
      * @secure
      */
     tasksErpSourcesList: (params: RequestParams = {}) =>
-      this.request<ErpSourceResponse[], ErrorApiResponse>({
+      this.request<
+        ErpSourceResponseIEnumerableSuccessApiResponse,
+        ErrorApiResponse
+      >({
         path: `/api/Tasks/ErpSources`,
         method: 'GET',
         secure: true,

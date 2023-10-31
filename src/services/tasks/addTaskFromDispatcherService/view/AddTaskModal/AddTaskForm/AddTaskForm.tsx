@@ -8,6 +8,7 @@ import {
   GridContainer,
   GridContainerAsymmetricLeft,
   GridContainerAsymmetricRight,
+  GridContainerAsymmetricThreeColumn,
   GridContainerExpandable,
   OptionItemWrapper,
   ResourceDisconnectionAlertWrapper,
@@ -16,7 +17,8 @@ import {
   SearchIconSc,
   SelectCaret,
   TextareaSC,
-  TimePickerSc,
+  TimePickerLarge,
+  TimePickerMedium,
   TopWrapper,
   WorkTitle,
   WorkTitleWrapper,
@@ -37,11 +39,16 @@ import {
   TaskReasonTypeDictionary,
   TaskTypeDictionary,
 } from 'dictionaries';
-import { autocomplete, autocompleteApartNumber } from './AddTaskForm.utils';
+import {
+  autocompleteAddress,
+  autocompleteApartNumber,
+  filterData,
+} from './AddTaskForm.utils';
 import { Alert } from 'ui-kit/Alert';
 import { useSwitchInputOnEnter } from 'hooks/useSwitchInputOnEnter';
 import { fromEnter } from 'ui-kit/shared/DatePickerNative';
 import { validationSchema } from './AddTaskForm.constants';
+import { DatePicker } from 'ui-kit/DatePicker';
 
 const {
   gates: { PageGate },
@@ -63,10 +70,14 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
   taskReasons,
   handleSelectTaskReason,
   handleSelectTaskType,
+  isManualDeadlineRequired,
+  selectedTaskReasonOption,
 }) => {
-  const { values, handleSubmit, setFieldValue, errors } = useFormik<AddTask>({
+  const initialSource = useMemo(() => ERPSources[0], [ERPSources]);
+
+  const { values, handleSubmit, setFieldValue, isValid } = useFormik<AddTask>({
     initialValues: {
-      sourceId: '34ac5b2e-9ebd-11e8-8131-001dd8b88b72',
+      sourceId: initialSource.id,
       requestNumber: null,
       taskType: null,
       workTypeId: null,
@@ -78,40 +89,87 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
       phoneNumber: null,
       taskDescription: null,
       taskReasonSearch: null,
+      taskReasonOrderNumber: null,
+      taskDeadlineDate: null,
+      taskDeadlineTime: dayjs(),
+      isSourceNumberRequired: initialSource?.isSourceNumberRequired || false,
+      isSubscriberRequired: initialSource?.isSubscriberRequired || false,
+      isManualDeadlineRequired: isManualDeadlineRequired,
     },
     validateOnBlur: true,
     validateOnMount: true,
-
     validationSchema,
     onSubmit: (data) => {
-      handleCreateTask(data);
+      const filteredData = filterData(data);
+      handleCreateTask(filteredData);
     },
   });
 
-  const isFromSubscriber = useMemo(
-    () => values.sourceId === '34ac5b2e-9ebd-11e8-8131-001dd8b88b72',
-    [values.sourceId],
+  const isInitialSource = useMemo(
+    () => values.sourceId === initialSource.id,
+    [values.sourceId, initialSource.id],
   );
+
+  const selectedSource = useMemo(() => {
+    return ERPSources.find((source) => source.id === values.sourceId);
+  }, [ERPSources, values.sourceId]);
+
+  const isSourceNumberRequired = useMemo(
+    () => Boolean(selectedSource?.isSourceNumberRequired),
+    [selectedSource],
+  );
+  const isSubscriberRequired = useMemo(
+    () => Boolean(selectedSource?.isSubscriberRequired),
+    [selectedSource],
+  );
+
+  const isSubscriberAndSourceNumberRequired = [
+    isSubscriberRequired,
+    isSourceNumberRequired,
+  ].every(Boolean);
+  const isOnlySubscriberRequired = [
+    isSubscriberRequired,
+    !isSourceNumberRequired,
+  ].every(Boolean);
+  const isOnlySourceNumberRequired = [
+    !isSubscriberRequired,
+    isSourceNumberRequired,
+  ].every(Boolean);
+  const isNoAdditionalFieldsRequired = [
+    !isSubscriberRequired,
+    !isSourceNumberRequired,
+  ].every(Boolean);
+
+  useEffect(() => {
+    setFieldValue('isSourceNumberRequired', isSourceNumberRequired);
+  }, [isSourceNumberRequired, setFieldValue]);
+
+  useEffect(() => {
+    setFieldValue('isSubscriberRequired', isSubscriberRequired);
+  }, [isSubscriberRequired, setFieldValue]);
+
+  useEffect(() => {
+    setFieldValue('isManualDeadlineRequired', isManualDeadlineRequired);
+  }, [isManualDeadlineRequired, setFieldValue]);
+
+  useEffect(() => {
+    setDisableSubmit(!isValid);
+  }, [isValid, setDisableSubmit]);
 
   const next = useSwitchInputOnEnter(dataKey, false, false);
 
-  const isHaveValidationErrors = useMemo(
-    () => Boolean(Object.keys(errors).length),
-    [errors],
-  );
-
-  useEffect(() => {
-    setDisableSubmit(isHaveValidationErrors);
-  }, [isHaveValidationErrors, setDisableSubmit]);
-
   const preparedAddressOptions = useMemo(
-    () => autocomplete(values.addressSearch, preparedForOptionsAddresses || []),
+    () =>
+      autocompleteAddress(
+        values.addressSearch,
+        preparedForOptionsAddresses || [],
+      ),
     [values.addressSearch, preparedForOptionsAddresses],
   );
 
   const taskReasonOptions = useMemo(
     () =>
-      taskReasons.map((taskReason, index) => {
+      taskReasons.map((taskReason) => {
         return {
           label: (
             <OptionItemWrapper>
@@ -127,26 +185,23 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
             </OptionItemWrapper>
           ),
           value: taskReason.name,
-          key: `${taskReason.name}${index}`,
+          key: `${taskReason.name}${taskReason.orderNumber}`,
         };
       }),
     [taskReasons],
   );
 
   const taskTypeOptions = useMemo(() => {
-    const selectedOption = taskReasons.find(
-      (optionItem) => optionItem.name === values.taskReasonSearch,
+    const allowedTaskTypes = selectedTaskReasonOption.map(
+      (item) => item.taskType,
     );
-
-    const allowedTaskTypes =
-      selectedOption?.items?.map((item) => item.taskType) || [];
 
     return allowedTaskTypes.map((taskType) => ({
       label: TaskTypeDictionary[taskType],
       value: taskType,
       key: taskType,
     }));
-  }, [values.taskReasonSearch, taskReasons]);
+  }, [selectedTaskReasonOption]);
 
   useEffect(() => {
     if (taskTypeOptions.length === 1) {
@@ -155,18 +210,28 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
       setFieldValue('taskType', singularTaskType);
       handleSelectTaskType(singularTaskType);
 
-      if (isFromSubscriber) {
-        next(6);
-      } else {
+      if (isNoAdditionalFieldsRequired) {
+        next(4);
+      }
+      if (isOnlySourceNumberRequired) {
         next(5);
+      }
+      if (isOnlySubscriberRequired) {
+        next(6);
+      }
+      if (isSubscriberAndSourceNumberRequired) {
+        next(7);
       }
     }
   }, [
     taskTypeOptions,
     setFieldValue,
     next,
-    isFromSubscriber,
     handleSelectTaskType,
+    isSubscriberAndSourceNumberRequired,
+    isOnlySourceNumberRequired,
+    isOnlySubscriberRequired,
+    isNoAdditionalFieldsRequired,
   ]);
 
   const getResourceDisconnectionAlert = useCallback(
@@ -227,10 +292,10 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
       <PageGate />
 
       <Form id={formId} onSubmitCapture={handleSubmit}>
-        <GridContainerExpandable isTwoColumn={isFromSubscriber}>
+        <GridContainerExpandable isTwoColumn={!isSourceNumberRequired}>
           <FormItem label="Источник заявки">
             <SelectCaret
-              isFromSubscriber={isFromSubscriber}
+              isInitialSource={isInitialSource}
               showSearch
               placeholder="Выберите из списка"
               value={values.sourceId || undefined}
@@ -249,8 +314,8 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
             />
           </FormItem>
 
-          {!isFromSubscriber && (
-            <FormItem label="Номер заявки">
+          {isSourceNumberRequired && (
+            <FormItem label="Номер в источнике">
               <Input
                 placeholder="Введите"
                 value={values.requestNumber || undefined}
@@ -271,7 +336,7 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
                 onChange={(value) => setFieldValue('requestDate', value)}
               />
 
-              <TimePickerSc
+              <TimePickerLarge
                 value={values.requestTime || undefined}
                 onChange={(value) => {
                   setFieldValue('requestTime', value);
@@ -284,6 +349,7 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
         <GridContainerAsymmetricRight>
           <FormItem label="Адрес">
             <AutoCompleteAntD
+              showSearch
               allowClear
               value={values.addressSearch}
               onChange={(value) => setFieldValue('addressSearch', value)}
@@ -296,7 +362,7 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
               options={preparedAddressOptions}
               data-reading-input={dataKey}
               onKeyDown={fromEnter(() => {
-                if (isFromSubscriber) {
+                if (isOnlySubscriberRequired || isNoAdditionalFieldsRequired) {
                   next(1);
                 } else {
                   next(2);
@@ -318,7 +384,7 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
               options={apartNumberOptions}
               data-reading-input={dataKey}
               onKeyDown={fromEnter(() => {
-                if (isFromSubscriber) {
+                if (isOnlySubscriberRequired || isNoAdditionalFieldsRequired) {
                   next(2);
                 } else {
                   next(3);
@@ -330,7 +396,7 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
           </FormItem>
         </GridContainerAsymmetricRight>
 
-        {isFromSubscriber && (
+        {isSubscriberRequired && (
           <GridContainer>
             <FormItem label="ФИО абонента">
               <AutoCompleteAntD
@@ -339,7 +405,13 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
                 onChange={(value) => setFieldValue('subscriberName', value)}
                 options={apartmentHomeownerNames}
                 data-reading-input={dataKey}
-                onKeyDown={fromEnter(() => next(3))}
+                onKeyDown={fromEnter(() => {
+                  if (isOnlySubscriberRequired) {
+                    next(3);
+                  } else {
+                    next(4);
+                  }
+                })}
                 open={isNameOpen}
                 onBlur={() => setNameOpen(false)}
                 onFocus={() => setNameOpen(true)}
@@ -357,7 +429,13 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
                   setFieldValue('phoneNumber', value.target.value)
                 }
                 data-reading-input={dataKey}
-                onKeyDown={fromEnter(() => next(4))}
+                onKeyDown={fromEnter(() => {
+                  if (isOnlySubscriberRequired) {
+                    next(4);
+                  } else {
+                    next(5);
+                  }
+                })}
               />
             </FormItem>
           </GridContainer>
@@ -389,18 +467,24 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
               }}
               optionFilterProp="value"
               optionLabelProp="value"
-              options={taskReasonOptions}
-              filterOption={(inputValue, option) =>
-                option?.value
-                  .toLocaleLowerCase()
-                  .startsWith(inputValue.toLocaleLowerCase())
-              }
+              filterOption={(inputValue, option) => {
+                return option?.value
+                  ?.toLocaleLowerCase()
+                  .startsWith(inputValue?.toLocaleLowerCase());
+              }}
               data-reading-input={dataKey}
               onKeyDown={fromEnter(() => {
-                if (isFromSubscriber) {
-                  next(5);
-                } else {
+                if (isNoAdditionalFieldsRequired) {
+                  next(3);
+                }
+                if (isOnlySourceNumberRequired) {
                   next(4);
+                }
+                if (isOnlySubscriberRequired) {
+                  next(5);
+                }
+                if (isSubscriberAndSourceNumberRequired) {
+                  next(6);
                 }
               })}
               open={isReasonOpen}
@@ -408,15 +492,33 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
               onFocus={() => setReasonOpen(true)}
               onSelect={() => {
                 setReasonOpen(false);
-                if (isFromSubscriber) {
-                  next(5);
-                } else {
+                if (isNoAdditionalFieldsRequired) {
+                  next(3);
+                }
+                if (isOnlySourceNumberRequired) {
                   next(4);
+                }
+                if (isOnlySubscriberRequired) {
+                  next(5);
+                }
+                if (isSubscriberAndSourceNumberRequired) {
+                  next(6);
                 }
               }}
               onMouseDown={() => setReasonOpen(true)}
-            />
+            >
+              {taskReasonOptions.map((elem) => (
+                <Select.Option
+                  optionLabelProp="label"
+                  key={elem.key}
+                  value={elem.value}
+                >
+                  {elem.label}
+                </Select.Option>
+              ))}
+            </Select>
           </FormItem>
+
           <FormItem label="Тип заявки">
             <Select
               allowClear
@@ -425,15 +527,24 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
               value={values.taskType}
               onChange={(value) => {
                 setFieldValue('taskType', value);
+                setFieldValue('taskDeadlineDate', null);
+                setFieldValue('taskDeadlineTime', null);
               }}
               optionLabelProp="label"
               options={taskTypeOptions}
               data-reading-input={dataKey}
               onKeyDown={fromEnter(() => {
-                if (isFromSubscriber) {
-                  next(6);
-                } else {
+                if (isNoAdditionalFieldsRequired) {
+                  next(4);
+                }
+                if (isOnlySourceNumberRequired) {
                   next(5);
+                }
+                if (isOnlySubscriberRequired) {
+                  next(6);
+                }
+                if (isSubscriberAndSourceNumberRequired) {
+                  next(7);
                 }
               })}
               open={isTaskTypeOpen}
@@ -442,15 +553,43 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
               onSelect={(taskType) => {
                 setTaskTypeOpen(false);
                 handleSelectTaskType(taskType as EisTaskType);
-                if (isFromSubscriber) {
-                  next(6);
-                } else {
+                if (isNoAdditionalFieldsRequired) {
+                  next(4);
+                }
+                if (isOnlySourceNumberRequired) {
                   next(5);
+                }
+                if (isOnlySubscriberRequired) {
+                  next(6);
+                }
+                if (isSubscriberAndSourceNumberRequired) {
+                  next(7);
                 }
               }}
               onMouseDown={() => setTaskTypeOpen(true)}
             />
           </FormItem>
+
+          {values.isManualDeadlineRequired && (
+            <FormItem label="Срок выполнения">
+              <GridContainerAsymmetricThreeColumn>
+                <DatePicker
+                  allowClear
+                  format="DD.MM.YYYY"
+                  value={values.taskDeadlineDate}
+                  onChange={(value) => setFieldValue('taskDeadlineDate', value)}
+                />
+
+                <TimePickerMedium
+                  value={values.taskDeadlineTime || undefined}
+                  onChange={(value) => {
+                    setFieldValue('taskDeadlineTime', value);
+                  }}
+                />
+                <div></div>
+              </GridContainerAsymmetricThreeColumn>
+            </FormItem>
+          )}
         </ContainerWithOutline>
 
         <FormItem label="Описание проблемы">
