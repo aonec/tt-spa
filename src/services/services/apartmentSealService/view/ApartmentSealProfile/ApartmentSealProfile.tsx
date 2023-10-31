@@ -2,6 +2,7 @@ import React, { FC, useCallback, useMemo } from 'react';
 import { ApartmentSealProfileProps } from './ApartmentSealProfile.types';
 import { WithLoader } from 'ui-kit/shared/WithLoader';
 import {
+  AdditionalInfoWrapper,
   AddressSearchContainerSC,
   AlertWrapper,
   AppointmentTextWrapper,
@@ -38,6 +39,7 @@ export const ApartmentSealProfile: FC<ApartmentSealProfileProps> = ({
   housesWithDistricts,
 }) => {
   const address = apartment?.housingStock?.address?.mainAddress;
+  const isAssigned = nearestAppointment?.controllerId;
 
   const isAddressInDistrict =
     address && housesWithDistricts.includes(address.housingStockId);
@@ -123,11 +125,18 @@ export const ApartmentSealProfile: FC<ApartmentSealProfileProps> = ({
                 handleUpdateApartment={updateApartment}
                 setSelectedHomeownerName={setSelectedHomeownerName}
                 additionalHeaderInfo={
-                  appointmentDate && (
-                    <AppointmentTextWrapper>
-                      Запись на опломбировку: {appointmentDate}
-                    </AppointmentTextWrapper>
-                  )
+                  <AdditionalInfoWrapper>
+                    {isAssigned && (
+                      <AppointmentTextWrapper>
+                        Задание уже выдано контролеру
+                      </AppointmentTextWrapper>
+                    )}
+                    {appointmentDate && (
+                      <AppointmentTextWrapper>
+                        Запись на опломбировку: {appointmentDate}
+                      </AppointmentTextWrapper>
+                    )}
+                  </AdditionalInfoWrapper>
                 }
               />
               {isAddressInDistrict === false && (

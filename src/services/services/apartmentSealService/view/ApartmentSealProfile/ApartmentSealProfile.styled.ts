@@ -19,6 +19,12 @@ export const AddressSearchContainerSC = styled(AddressSearchContainer)`
   margin-top: 16px;
 `;
 
+export const AdditionalInfoWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 8px;
+`;
+
 export const AlertWrapper = styled.div`
   margin-top: 24px;
 `;
