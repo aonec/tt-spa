@@ -1,9 +1,12 @@
-import { BuildingListResponse, DistrictCreateRequest } from 'api/types';
+import {
+  BuildingWithCoordinatesResponse,
+  DistrictCreateRequest,
+} from 'api/types';
 import { DistrictColor } from 'types';
 
 export type CreateDistrictFormPanelProps = {
   isLoadingHousingStocks: boolean;
-  housingStocksInDistrict: BuildingListResponse[];
+  housingStocksInDistrict: BuildingWithCoordinatesResponse[];
   selectedHousingStocks: number[];
   handleClickHousingStock: (id: number) => void;
   handleCancel: () => void;

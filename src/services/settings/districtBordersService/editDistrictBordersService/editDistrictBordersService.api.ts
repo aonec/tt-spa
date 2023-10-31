@@ -1,12 +1,15 @@
 import { createQuery } from '@farfetched/core';
 import axios from 'api/axios';
-import { BuildingListResponsePagedList, DistrictResponse } from 'api/types';
+import {
+  BuildingWithCoordinatesResponsePagedList,
+  DistrictResponse,
+} from 'api/types';
 
 export const existingHousingStocksQuery = createQuery<
   void,
-  BuildingListResponsePagedList
+  BuildingWithCoordinatesResponsePagedList
 >({
-  handler: () => axios.get('Buildings'),
+  handler: () => axios.get('Buildings/Lite'),
 });
 
 export const existingDistrictsQuery = createQuery<
