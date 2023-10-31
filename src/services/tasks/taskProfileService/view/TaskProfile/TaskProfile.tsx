@@ -18,6 +18,7 @@ import { TaskProfileProps } from './TaskProfile.types';
 import { TaskProfileHeader } from './TaskProfileHeader';
 import { TaskStages } from './TaskStages';
 import { ApplicationInfoContainer } from '../../applicationInfoService';
+import { Button } from 'ui-kit/Button';
 
 export const TaskProfile: FC<TaskProfileProps> = ({
   task,
@@ -69,82 +70,86 @@ export const TaskProfile: FC<TaskProfileProps> = ({
   return (
     <Wrapper>
       <GoBack />
-      {name && (
-        <>
-          <Dialog
-            isOpen={deleteDocumentModalIsOpen}
-            onCancel={closeDeleteDocumentModal}
-            onSubmit={() => handleDeleteDocument()}
-            type="danger"
-            title="Вы уверены, что хотите удалить документ?"
+      <>
+        <Dialog
+          isOpen={deleteDocumentModalIsOpen}
+          onCancel={closeDeleteDocumentModal}
+          onSubmit={() => handleDeleteDocument()}
+          type="danger"
+          title="Вы уверены, что хотите удалить документ?"
+        />
+        <TaskProfileHeader
+          name={name || ''}
+          devices={individualDevices || []}
+          timeline={timeline}
+          nodeDevice={device}
+          timer={timer}
+          taskName={taskName || ''}
+          pipeNode={pipeNode}
+        />
+        {task.type && isViewerExecutor && (
+          <TaskActionsPanel
+            handlePushStage={pushStage}
+            isLoading={isPushStageLoading || isLoadingTask}
+            task={task}
+            actions={taskActions}
+            pushStageRequestPayload={pushStageRequestPayload}
+            handleChangePushStagePayload={handleChangePushStagePayload}
           />
-          <TaskProfileHeader
-            name={name}
-            devices={individualDevices || []}
-            timeline={timeline}
-            nodeDevice={device}
-            timer={timer}
-            taskName={taskName || ''}
-            pipeNode={pipeNode}
+        )}
+        <TaskWrapper>
+          <TaskInfoWrapper>
+            {task.taskConfirmation && (
+              <TaskConfirmationPanel
+                taskConfirmation={task.taskConfirmation}
+                taskType={task.type}
+              />
+            )}
+            <TaskDocumentsList
+              documents={documents || []}
+              openDeleteDocumentModal={openDeleteDocumentModal}
+            />
+            <TaskComments
+              comments={comments || []}
+              handleAddComment={handleAddComment}
+              isPerpetrator={isPerpetrator}
+              handleSetComment={handleSetComment}
+              commentText={commentText}
+            />
+            {!isApplication && (
+              <>
+                <TaskBaseInfo task={task} />
+                {individualDevices && individualDevices.length !== 0 && (
+                  <TaskIndividualDevicesList
+                    devices={individualDevices}
+                    apartmentId={apartmemtId}
+                  />
+                )}
+                {device && <TaskDeviceInfo device={device} />}
+                {pipeNode && <TaskPipeNodeInfo pipeNode={pipeNode} />}
+                {relatedPipeNode && (
+                  <TaskPipeNodeInfo pipeNode={relatedPipeNode} />
+                )}
+              </>
+            )}
+            {isApplication && <ApplicationInfoContainer task={task} />}
+          </TaskInfoWrapper>
+          <TaskStages
+            handleRevertStage={handleRevertStage}
+            stages={stages || []}
+            isRevertStageLoading={isRevertStageLoading}
+            isStageCanBeReverted={canBeReverted}
+            isEntryPoint={Boolean(task.currentStage?.isEntryPoint)}
+            task={task}
           />
-          {task.type && isViewerExecutor && (
-            <TaskActionsPanel
-              handlePushStage={pushStage}
-              isLoading={isPushStageLoading || isLoadingTask}
-              task={task}
-              actions={taskActions}
-              pushStageRequestPayload={pushStageRequestPayload}
-              handleChangePushStagePayload={handleChangePushStagePayload}
-            />
-          )}
-          <TaskWrapper>
-            <TaskInfoWrapper>
-              {task.taskConfirmation && (
-                <TaskConfirmationPanel
-                  taskConfirmation={task.taskConfirmation}
-                  taskType={task.type}
-                />
-              )}
-              <TaskDocumentsList
-                documents={documents || []}
-                openDeleteDocumentModal={openDeleteDocumentModal}
-              />
-              <TaskComments
-                comments={comments || []}
-                handleAddComment={handleAddComment}
-                isPerpetrator={isPerpetrator}
-                handleSetComment={handleSetComment}
-                commentText={commentText}
-              />
-              {!isApplication && (
-                <>
-                  <TaskBaseInfo task={task} />
-                  {individualDevices && individualDevices.length !== 0 && (
-                    <TaskIndividualDevicesList
-                      devices={individualDevices}
-                      apartmentId={apartmemtId}
-                    />
-                  )}
-                  {device && <TaskDeviceInfo device={device} />}
-                  {pipeNode && <TaskPipeNodeInfo pipeNode={pipeNode} />}
-                  {relatedPipeNode && (
-                    <TaskPipeNodeInfo pipeNode={relatedPipeNode} />
-                  )}
-                </>
-              )}
-              {isApplication && <ApplicationInfoContainer task={task} />}
-            </TaskInfoWrapper>
-            <TaskStages
-              handleRevertStage={handleRevertStage}
-              stages={stages || []}
-              isRevertStageLoading={isRevertStageLoading}
-              isStageCanBeReverted={canBeReverted}
-              isEntryPoint={Boolean(task.currentStage?.isEntryPoint)}
-              task={task}
-            />
-          </TaskWrapper>
-        </>
-      )}
+        </TaskWrapper>
+
+        {isViewerExecutor && (
+          <Button size="small" type="ghostDanger">
+            Отложить задачу
+          </Button>
+        )}
+      </>
     </Wrapper>
   );
 };

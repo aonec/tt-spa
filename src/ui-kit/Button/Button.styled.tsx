@@ -28,6 +28,12 @@ const typesOfButton: {
     shadowColor: '#00000014',
     borderColor: '#dcdee4',
   },
+  ghostDanger: {
+    mainColor: 'transparent',
+    fontColor: '#ff4545',
+    shadowColor: '#ff454540',
+    borderColor: '#ff4545',
+  },
 };
 
 const sizesOfButton: {
