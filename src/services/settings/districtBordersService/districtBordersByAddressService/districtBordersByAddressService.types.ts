@@ -48,12 +48,12 @@ export type StreetWithPreparedBuildingNumbers = Omit<
   StreetWithBuildingNumbersResponse,
   'addresses'
 > & {
-  addresses:
-    | {
-        buildingId: number;
-        number: string | null;
-        corpus: string | null;
-        isDistributed: boolean;
-      }[]
-    | null;
+  addresses: PreparedBuildingWithFlag[] | null;
+};
+
+export type PreparedBuildingWithFlag = {
+  buildingId: number;
+  number: string | null;
+  corpus: string | null;
+  isDistributed: boolean;
 };

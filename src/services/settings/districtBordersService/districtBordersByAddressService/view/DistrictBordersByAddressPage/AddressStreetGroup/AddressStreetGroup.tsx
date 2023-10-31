@@ -33,9 +33,7 @@ export const AddressStreetGroup: FC<AddressStreetGroupProps> = ({
   );
 
   const isCheckable = useMemo(
-    () =>
-      (address.addresses || []).filter((elem) => !elem.isDistributed).length !==
-      0,
+    () => (address.addresses || []).some((elem) => !elem.isDistributed),
     [address],
   );
 

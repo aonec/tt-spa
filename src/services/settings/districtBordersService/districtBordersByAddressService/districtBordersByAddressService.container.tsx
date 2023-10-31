@@ -43,12 +43,8 @@ export const DistrictBordersByAddressContainer = () => {
     existingHousingStocksQuery,
   );
 
-  const checkedhousingStockIds = checkedhousingStockIdsWithStreet.reduce(
-    (acc, current) => [
-      ...acc,
-      ...current.addresses.map((elem) => elem.buildingId),
-    ],
-    [] as number[],
+  const checkedhousingStockIds = checkedhousingStockIdsWithStreet.flatMap(
+    (current) => current.addresses.map((elem) => elem.buildingId),
   );
 
   const isAllowedToEditer = checkedhousingStockIds.length > 2;

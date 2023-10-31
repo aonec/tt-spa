@@ -72,22 +72,27 @@ const $addresses = createStore<StreetWithBuildingNumbersResponse[] | null>(
 const $preparedAddresses = combine(
   $addresses,
   $distrubitedAddresses,
-  (addresses, distributed) =>
-    addresses
-      ? addresses.reduce((acc, street) => {
-          const houses = street.addresses
-            ? street.addresses.map((address) => {
-                const isDistributed = distributed.some(
-                  (elem) => elem.id === address.buildingId,
-                );
+  (addresses, distributed) => {
+    if (!addresses) {
+      return null;
+    }
 
-                return { ...address, isDistributed };
-              })
-            : null;
+    return addresses.reduce((acc, street) => {
+      if (!street.addresses) {
+        return [...acc, { ...street, addresses: null }];
+      }
 
-          return [...acc, { ...street, addresses: houses }];
-        }, [] as StreetWithPreparedBuildingNumbers[])
-      : null,
+      const houses = street.addresses.map((address) => {
+        const isDistributed = distributed.some(
+          (elem) => elem.id === address.buildingId,
+        );
+
+        return { ...address, isDistributed };
+      });
+
+      return [...acc, { ...street, addresses: houses }];
+    }, [] as StreetWithPreparedBuildingNumbers[]);
+  },
 );
 
 const $filter = createStore<FilterType | null>(null)
