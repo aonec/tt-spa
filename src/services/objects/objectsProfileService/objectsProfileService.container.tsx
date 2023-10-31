@@ -20,6 +20,7 @@ import {
   heatIndividualDevicesReportService,
 } from './heatIndividualDevicesReportService';
 import { FlowTemperatureDeviationReportContainer } from './flowTemperatureDeviationReport';
+import { DeleteObjectContainer } from '../deleteObjectService';
 
 const { inputs, outputs } = objectsProfileService;
 
@@ -106,6 +107,7 @@ export const ObjectsProfileContainer = () => {
       <FeedFlowBackReportContainer />
       <GroupReportContainer />
       <FlowTemperatureDeviationReportContainer />
+      <DeleteObjectContainer />
       <ObjectsProfile
         pageSegment={pageSegment}
         setSegment={setSegment}

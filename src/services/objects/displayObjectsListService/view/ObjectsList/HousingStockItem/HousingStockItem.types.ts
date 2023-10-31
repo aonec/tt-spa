@@ -8,4 +8,5 @@ export type HousingStockItemProps = {
   openResourceDisconnectionReportModal: (
     payload: void | BuildingListResponse,
   ) => void;
+  openDeleteBuildingModal: (building: BuildingListResponse) => void;
 };
