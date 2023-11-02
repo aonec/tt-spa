@@ -18,7 +18,7 @@ export const BrigadeInfo: FC<BrigadeInfoProps> = ({ brigadeInfo }) => {
         const color = stc(brigadeMember.name);
 
         return (
-          <BrigadeMember key={brigadeMember.id}>
+          <BrigadeMember key={brigadeMember.erpId}>
             <AvatarSC color={color}>{brigadeMember.name?.[0]}</AvatarSC>
             <Name>{brigadeMember.name}</Name>
           </BrigadeMember>

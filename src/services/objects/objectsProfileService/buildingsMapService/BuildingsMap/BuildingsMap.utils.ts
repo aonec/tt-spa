@@ -23,7 +23,7 @@ export const getBuildingPlacmearksWithTasks = (
     } else {
       placemarkIconLink = housingStockPlacemark;
     }
-    
+
     return {
       placemarkIconLink,
       coords: [

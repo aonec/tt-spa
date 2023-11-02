@@ -27,6 +27,8 @@ import {
   verticalAxisStyle,
 } from 'services/nodes/displayNodesStatisticsService/view/StatisticsGraph/StatisticsGraph.styled';
 import { CustomTooltip } from 'ui-kit/shared/GraphComponents/CustomTooltip';
+import { useUnit } from 'effector-react';
+import { developmentSettingsService } from 'services/developmentSettings/developmentSettings.models';
 
 const height = 360;
 
@@ -38,6 +40,9 @@ export const ResourceConsumptionGraph: FC<ResourceConsumptionGraphProps> = ({
   selectedAddresses,
   dynamicMinMax,
 }) => {
+  const { featureToggles } = useUnit({
+    featureToggles: developmentSettingsService.outputs.$featureToggles,
+  });
   const [width, setWidth] = useState(0);
 
   const additionalAddressConsumptionData =
@@ -167,10 +172,13 @@ export const ResourceConsumptionGraph: FC<ResourceConsumptionGraphProps> = ({
         width={width}
         theme={VictoryTheme.material}
         containerComponent={<VictoryVoronoiContainer />}
-        // animate={{
-        //   duration: 2000,
-        //   onLoad: { duration: 600 },
-        // }}
+        animate={
+          featureToggles.graficAnimation && {
+            onLoad: { duration: 1000 },
+            duration: 400,
+            easing: 'bounce',
+          }
+        }
       >
         <VictoryAxis
           tickComponent={<TickComponent />}
