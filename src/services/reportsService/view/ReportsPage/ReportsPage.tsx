@@ -16,6 +16,7 @@ import {
   ReportNamesDictionary,
   reportsSelectItems,
 } from './ReportsPage.constants';
+import { ReportsListContainer } from 'services/reports/reportsListService';
 
 export const ReportsPage: FC<ReportsPageProps> = () => {
   const reportsListRef = useRef<HTMLDivElement>(null);
@@ -72,7 +73,7 @@ export const ReportsPage: FC<ReportsPageProps> = () => {
           ))}
         </ReportsList>
       </ReportBlocksWrapper>
-      {/* <ReportsListContainer /> */}
+      <ReportsListContainer />
     </Wrapper>
   );
 };

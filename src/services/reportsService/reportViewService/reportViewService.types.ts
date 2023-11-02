@@ -39,6 +39,7 @@ export type ReportFiltrationFormValues = {
   employeeReportType: EmployeeReportType | null;
   employeeReportDatePeriodType: EmployeeReportDatePeriodType | null;
   employeeReportDate: dayjs.Dayjs | null;
+  reportType?: ReportType;
 };
 
 export type ReportPayload = {

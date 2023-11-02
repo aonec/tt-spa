@@ -177,7 +177,7 @@ export const prepareEmployeeReportRequestPayload = (
 
   if (!values.employeeReportType) return null;
 
-  const period = isCallCenterReport
+  let period = isCallCenterReport
     ? getCallCenterReportDatePeriod(values.from, values.to)
     : values.employeeReportDatePeriodType &&
       getEmployeeReportDatePeriod(
@@ -185,7 +185,12 @@ export const prepareEmployeeReportRequestPayload = (
         values.employeeReportDate,
       );
 
-  if (!period) return null;
+  if (!period) {
+    period = {
+      From: values.from?.utcOffset(0).format('YYYY-MM-DD'),
+      To: values.to?.utcOffset(0).format('YYYY-MM-DD'),
+    };
+  }
 
   return {
     employeeReportType: values.employeeReportType,
