@@ -1,13 +1,10 @@
-import { createDomain } from 'effector';
+import { createEvent, createStore } from 'effector';
+
 import { printApartmentDevicesCertificateService } from 'services/apartments/printApartmentDevicesCertificateService/printApartmentDevicesCertificateService.models';
 
-const domain = createDomain('apartmentInfoService');
+const togglePanel = createEvent();
 
-const togglePanel = domain.createEvent();
-
-const $isPanelOpen = domain
-  .createStore(false)
-  .on(togglePanel, (isOpen) => !isOpen);
+const $isPanelOpen = createStore(false).on(togglePanel, (isOpen) => !isOpen);
 
 export const apartmentInfoService = {
   inputs: {

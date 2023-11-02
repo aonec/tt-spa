@@ -60,6 +60,8 @@ const $withApartment = createStore<boolean>(false).on(
   (_, data) => data,
 );
 
+const $isExistingCitiesLoading = fetchExistingCities.pending;
+
 const addressSearchForm = createForm<AddressSearchValues>({
   fields: {
     city: {
@@ -102,9 +104,9 @@ sample({
 });
 
 sample({
-  source: $existingCities,
+  source: { cities: $existingCities, isLoading: $isExistingCitiesLoading },
   clock: ExistingCitiesGate.open,
-  filter: (cities) => !cities,
+  filter: ({ cities, isLoading }) => !cities && !isLoading,
   target: fetchExistingCities,
 });
 
@@ -133,8 +135,6 @@ sample({
 });
 
 sample({ clock: handleResetForm, target: addressSearchForm.reset });
-
-const $isExistingCitiesLoading = fetchExistingStreets.pending;
 
 export const addressSearchService = {
   outputs: {

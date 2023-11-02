@@ -1,5 +1,6 @@
+import { createEffect, createEvent, createStore } from 'effector';
 import { message } from 'antd';
-import { createDomain, forward, sample } from 'effector';
+import { forward, sample } from 'effector';
 import { createGate } from 'effector-react';
 import dayjs from 'api/dayjs';
 import {
@@ -14,25 +15,23 @@ import {
   fetchHousingMeteringDeviceReadings,
 } from './housingMeteringDeviceReadingsService.api';
 
-const domain = createDomain('housingMeteringDeviceReadingsService');
-
-const getHousingMeteringDeviceReadingsFx = domain.createEffect<
+const getHousingMeteringDeviceReadingsFx = createEffect<
   number,
   GetHousingMeteringDeviceReadingsResponse
 >(fetchHousingMeteringDeviceReadings);
 
-const createReading =
-  domain.createEvent<CreateHousingMeteringDeviceReadingsRequest>();
-const createReadingFx = domain.createEffect<
+const createReading = createEvent<CreateHousingMeteringDeviceReadingsRequest>();
+const createReadingFx = createEffect<
   CreateHousingMeteringDeviceReadingsRequest,
   HousingMeteringDeviceReadingsIncludingPlacementResponse,
   EffectFailDataAxiosError
 >(createHousingMeteringDeviceReading);
 
-const clearStore = domain.createEvent();
+const clearStore = createEvent();
 
-const $readings = domain
-  .createStore<HousingMeteringDeviceReadingsIncludingPlacementResponse[]>([])
+const $readings = createStore<
+  HousingMeteringDeviceReadingsIncludingPlacementResponse[]
+>([])
   .on(getHousingMeteringDeviceReadingsFx.doneData, (_, response) =>
     (response.items || []).filter(
       (reading) => !reading.isArchived && !reading.isRemoved,
@@ -40,10 +39,11 @@ const $readings = domain
   )
   .reset(clearStore);
 
-const setResource = domain.createEvent<EResourceType>();
-const $isColdWater = domain
-  .createStore(false)
-  .on(setResource, (_, resource) => resource === EResourceType.ColdWaterSupply);
+const setResource = createEvent<EResourceType>();
+const $isColdWater = createStore(false).on(
+  setResource,
+  (_, resource) => resource === EResourceType.ColdWaterSupply,
+);
 
 const $isLoading = getHousingMeteringDeviceReadingsFx.pending;
 

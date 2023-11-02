@@ -1,8 +1,8 @@
 import {
   EisTaskType,
-  ErpExecutorResponse,
   ErpSourceResponse,
-  ErpTaskReasonResponse,
+  ErpTaskReasonGroupResponse,
+  ErpTaskReasonItemResponse,
   ResourceDisconnectingResponse,
 } from 'api/types';
 import dayjs from 'dayjs';
@@ -14,7 +14,7 @@ import {
 
 export type AddTask = {
   sourceId: string | null;
-  requestNumber: string | null;
+  requestNumber?: string | null;
   taskType: null | EisTaskType;
   workTypeId: string | null;
 
@@ -24,33 +24,37 @@ export type AddTask = {
   addressSearch: string;
 
   apartmentNumber: string | null;
-  subscriberName: string | null;
-  phoneNumber: string | null;
-
-  leadId: string | null;
-  executorId: string | null;
+  subscriberName?: string | null;
+  phoneNumber?: string | null;
 
   taskDescription: string | null;
 
   taskReasonSearch: string | null;
+  taskReasonOrderNumber: number | null;
+  taskDeadlineDate?: dayjs.Dayjs | null;
+  taskDeadlineTime?: dayjs.Dayjs | null;
+
+  isSourceNumberRequired: boolean;
+  isSubscriberRequired: boolean;
+  isManualDeadlineRequired: boolean;
 };
 
 export type AddTaskFormProps = {
   formId: string;
   ERPSources: ErpSourceResponse[];
-  leadExecutors: ErpExecutorResponse[];
   preparedForOptionsAddresses: PreparedAddress[];
   handleCreateTask: (payload: AddTask) => void;
   setDisableSubmit: React.Dispatch<React.SetStateAction<boolean>>;
-  choоseLeadExecutor: (payload: string) => void;
-  executors: ErpExecutorResponse[];
   handleSelectHousingAddress: (payload: string) => void;
   existingApartmentNumbers: ExistingApartmentNumberType[];
   resourceDisconnection: ResourceDisconnectingResponse[];
   handleSelectApartmentNumber: (payload: string) => void;
   apartmentHomeownerNames: HomeownerNameOption[];
-  taskReasons: ErpTaskReasonResponse[];
+  taskReasons: ErpTaskReasonGroupResponse[];
   handleSelectTaskReason: (payload: string) => void;
+  handleSelectTaskType: (payload: EisTaskType) => void;
+  isManualDeadlineRequired: boolean;
+  selectedTaskReasonOption: ErpTaskReasonItemResponse[];
 };
 
 export type AddressOption = {

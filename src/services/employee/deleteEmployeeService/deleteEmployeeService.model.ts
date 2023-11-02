@@ -1,19 +1,18 @@
-import { createDomain, guard } from 'effector';
+import { createEffect, createEvent, createStore } from 'effector';
+import { guard } from 'effector';
 import { deleteManagingFirmUser } from './deleteEmployeeService.api';
 import { message } from 'antd';
 import { OrganizationUserResponse } from 'api/types';
 import { EffectFailDataAxiosError } from 'types';
 
-const domain = createDomain('deleteEmployeeService');
+const handleOpenModal = createEvent();
+const handleCloseModal = createEvent();
 
-const handleOpenModal = domain.createEvent();
-const handleCloseModal = domain.createEvent();
+const handleCatchEmployeeId = createEvent<number>();
 
-const handleCatchEmployeeId = domain.createEvent<number>();
+const handleDelete = createEvent();
 
-const handleDelete = domain.createEvent();
-
-const deleteEmployeeFx = domain.createEffect<
+const deleteEmployeeFx = createEffect<
   number,
   OrganizationUserResponse | null,
   EffectFailDataAxiosError
@@ -21,15 +20,15 @@ const deleteEmployeeFx = domain.createEffect<
 
 const successDelete = deleteEmployeeFx.doneData;
 
-const $isModalOpen = domain
-  .createStore<boolean>(false)
+const $isModalOpen = createStore<boolean>(false)
   .on(handleOpenModal, () => true)
   .on(handleCloseModal, () => false)
   .reset(successDelete);
 
-const $EmployeeId = domain
-  .createStore<number | null>(null)
-  .on(handleCatchEmployeeId, (_, id) => id);
+const $EmployeeId = createStore<number | null>(null).on(
+  handleCatchEmployeeId,
+  (_, id) => id,
+);
 
 guard({
   clock: handleDelete,

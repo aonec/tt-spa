@@ -1,4 +1,5 @@
-import { createDomain, forward, sample } from 'effector';
+import { createEffect, createEvent, createStore } from 'effector';
+import { forward, sample } from 'effector';
 import { BuildingWithTasksResponse, TaskResponse } from 'api/types';
 import { tasksProfileService } from '../tasksProfileService';
 import {
@@ -13,50 +14,47 @@ import {
 import { getHousingStocksWithTasksRequestPayload } from './tasksMapService.utils';
 import { currentUserService } from 'services/currentUserService';
 
-const domain = createDomain('tasksMap');
+const applyFilters = createEvent<HousingStocksWithTasksFiltrationValues>();
 
-const applyFilters =
-  domain.createEvent<HousingStocksWithTasksFiltrationValues>();
+const resetFilters = createEvent();
 
-const resetFilters = domain.createEvent();
+const handleClickMarker = createEvent<BuildingWithTasksResponse>();
 
-const handleClickMarker = domain.createEvent<BuildingWithTasksResponse>();
+const clearSelectedHousingStock = createEvent();
 
-const clearSelectedHousingStock = domain.createEvent();
+const handleClickTask = createEvent<number>();
 
-const handleClickTask = domain.createEvent<number>();
+const clearTask = createEvent();
 
-const clearTask = domain.createEvent();
-
-const fetchHousingStocksWithTasksFx = domain.createEffect<
+const fetchHousingStocksWithTasksFx = createEffect<
   GetHousingStocksWithTasksRequestPayload,
   BuildingWithTasksResponse[]
 >(getHousingStocksWithTasks);
 
-const $housingStocksWithTasks = domain
-  .createStore<BuildingWithTasksResponse[]>([])
-  .on(fetchHousingStocksWithTasksFx.doneData, (_, data = []) => [...data]);
+const $housingStocksWithTasks = createStore<BuildingWithTasksResponse[]>([]).on(
+  fetchHousingStocksWithTasksFx.doneData,
+  (_, data = []) => [...data],
+);
 
-const fetchTaskFx = domain.createEffect<number, TaskResponse>(getTask);
+const fetchTaskFx = createEffect<number, TaskResponse>(getTask);
 
-const $filtrationValues = domain
-  .createStore<HousingStocksWithTasksFiltrationValues>({
-    engineeringElement: null,
-    resourceTypes: [],
-    timeStatus: null,
-    type: null,
-    executorId: null,
-  })
+const $filtrationValues = createStore<HousingStocksWithTasksFiltrationValues>({
+  engineeringElement: null,
+  resourceTypes: [],
+  timeStatus: null,
+  type: null,
+  executorId: null,
+})
   .on(applyFilters, (_, filters) => filters)
   .reset(resetFilters);
 
-const $selectedHousingStock = domain
-  .createStore<BuildingWithTasksResponse | null>(null)
+const $selectedHousingStock = createStore<BuildingWithTasksResponse | null>(
+  null,
+)
   .on(handleClickMarker, (_, housingStock) => housingStock)
   .reset(clearSelectedHousingStock);
 
-const $task = domain
-  .createStore<TaskResponse | null>(null)
+const $task = createStore<TaskResponse | null>(null)
   .on(fetchTaskFx.doneData, (_, task) => task)
   .reset(clearTask, handleClickMarker);
 

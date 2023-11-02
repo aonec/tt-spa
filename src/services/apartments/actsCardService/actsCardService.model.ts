@@ -1,4 +1,5 @@
-import { createDomain, forward } from 'effector';
+import { createEffect, createEvent, createStore } from 'effector';
+import { forward } from 'effector';
 import { createGate } from 'effector-react';
 import {
   ApartmentActResponse,
@@ -7,16 +8,13 @@ import {
 } from 'api/types';
 import { fetchPreviousActs, fetchSaveFile } from './actsCardService.api';
 
-const domain = createDomain('actsCardService');
+const $acts = createStore<ApartmentActResponse[]>([]);
+const getPreviousActs = createEffect<number, ApartmentActResponsePagedList>(
+  fetchPreviousActs,
+);
 
-const $acts = domain.createStore<ApartmentActResponse[]>([]);
-const getPreviousActs = domain.createEffect<
-  number,
-  ApartmentActResponsePagedList
->(fetchPreviousActs);
-
-const saveFile = domain.createEvent<DocumentResponse>();
-const saveFileFx = domain.createEffect<DocumentResponse, void>(fetchSaveFile);
+const saveFile = createEvent<DocumentResponse>();
+const saveFileFx = createEffect<DocumentResponse, void>(fetchSaveFile);
 
 $acts.on(
   getPreviousActs.doneData,

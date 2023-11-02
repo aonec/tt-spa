@@ -9,10 +9,7 @@ export const AddTaskModal: FC<AddTaskModalProps> = ({
   handleCloseModal,
   isModalOpen,
   ERPSources,
-  leadExecutors,
   handleCreateTask,
-  choоseLeadExecutor,
-  executors,
   isCreatePending,
   handleSelectHousingAddress,
   existingApartmentNumbers,
@@ -22,6 +19,9 @@ export const AddTaskModal: FC<AddTaskModalProps> = ({
   taskReasons,
   preparedForOptionsAddresses,
   handleSelectTaskReason,
+  handleSelectTaskType,
+  isManualDeadlineRequired,
+  selectedTaskReasonOption,
 }) => {
   const [disableSubmit, setDisableSubmit] = useState(true);
 
@@ -37,12 +37,9 @@ export const AddTaskModal: FC<AddTaskModalProps> = ({
         <AddTaskForm
           formId={formId}
           ERPSources={ERPSources}
-          leadExecutors={leadExecutors}
           preparedForOptionsAddresses={preparedForOptionsAddresses}
           handleCreateTask={handleCreateTask}
           setDisableSubmit={setDisableSubmit}
-          choоseLeadExecutor={choоseLeadExecutor}
-          executors={executors}
           handleSelectHousingAddress={handleSelectHousingAddress}
           existingApartmentNumbers={existingApartmentNumbers}
           resourceDisconnection={resourceDisconnection}
@@ -50,6 +47,9 @@ export const AddTaskModal: FC<AddTaskModalProps> = ({
           apartmentHomeownerNames={apartmentHomeownerNames}
           taskReasons={taskReasons}
           handleSelectTaskReason={handleSelectTaskReason}
+          handleSelectTaskType={handleSelectTaskType}
+          isManualDeadlineRequired={isManualDeadlineRequired}
+          selectedTaskReasonOption={selectedTaskReasonOption}
         />
       }
       formId={formId}

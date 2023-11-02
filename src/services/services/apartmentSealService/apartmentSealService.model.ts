@@ -1,4 +1,5 @@
-import { createDomain, sample } from 'effector';
+import { createEffect, createEvent, createStore } from 'effector';
+import { sample } from 'effector';
 import {
   ApartmentResponse,
   IndividualDeviceListItemResponse,
@@ -16,38 +17,34 @@ import {
   UpdateApartmentRequestPayload,
 } from 'services/meters/metersService/ApartmentReadingsService/ApartmentReadingsService.types';
 import {
+  existingDistrictsQuery,
   getIndividualDevices,
   getNearestAppointmentForApartment,
 } from './apartmentSealService.api';
 
-const domain = createDomain('apartmentSealService');
-
 const ApartmentGate = createGate<{ id?: number }>();
 
-const handleUpdateApartment =
-  domain.createEvent<UpdateApartmentRequestPayload>();
-const updateApartmentFx = domain.createEffect<
+const handleUpdateApartment = createEvent<UpdateApartmentRequestPayload>();
+const updateApartmentFx = createEffect<
   UpdateApartmentRequestPayload,
   ApartmentResponse,
   EffectFailDataAxiosError
 >(putApartment);
 
-const handleSearchApartment = domain.createEvent<GetApartmentsRequestPayload>();
+const handleSearchApartment = createEvent<GetApartmentsRequestPayload>();
 
-const $apartment = domain
-  .createStore<ApartmentResponse | null>(null)
+const $apartment = createStore<ApartmentResponse | null>(null)
   .on(
     [getApartmentQuery.$data, updateApartmentFx.doneData],
     (_, apartment) => apartment,
   )
   .reset(ApartmentGate.close);
 
-const refetchAppointment = domain.createEvent();
-const fetchAppointmentFx = domain.createEffect<number, AppointmentResponse[]>(
+const refetchAppointment = createEvent();
+const fetchAppointmentFx = createEffect<number, AppointmentResponse[]>(
   getNearestAppointmentForApartment,
 );
-const $apartmentAppointment = domain
-  .createStore<AppointmentResponse | null>(null)
+const $apartmentAppointment = createStore<AppointmentResponse | null>(null)
   .on(fetchAppointmentFx.doneData, (_, appointments) => appointments[0] || null)
   .reset(ApartmentGate.close);
 
@@ -55,15 +52,16 @@ const handleApartmentLoaded = getApartmentQuery.finished.success;
 const $isApartmentLoading = getApartmentQuery.$pending;
 const $isSealAppointmentLoading = fetchAppointmentFx.pending;
 
-const setSelectedHomeownerName = domain.createEvent<string | null>();
-const $selectedHomeownerName = domain
-  .createStore<string | null>(null)
-  .on(setSelectedHomeownerName, (_, name) => name);
+const setSelectedHomeownerName = createEvent<string | null>();
+const $selectedHomeownerName = createStore<string | null>(null).on(
+  setSelectedHomeownerName,
+  (_, name) => name,
+);
 
-const getIndividualDevicesFx = domain.createEffect(getIndividualDevices);
-const $individualDevices = domain
-  .createStore<IndividualDeviceListItemResponse[]>([])
-  .on(getIndividualDevicesFx.doneData, (_, data) => data?.items || []);
+const getIndividualDevicesFx = createEffect(getIndividualDevices);
+const $individualDevices = createStore<IndividualDeviceListItemResponse[]>(
+  [],
+).on(getIndividualDevicesFx.doneData, (_, data) => data?.items || []);
 
 sample({
   source: $apartment,
@@ -117,6 +115,11 @@ getApartmentQuery.finished.failure.watch(({ error }) => {
       error.response.data.error.Message ||
       'Произошла ошибка',
   );
+});
+
+sample({
+  clock: ApartmentGate.open,
+  target: existingDistrictsQuery.start,
 });
 
 updateApartmentFx.doneData.watch(() => message.success('Сохранено успешно!'));

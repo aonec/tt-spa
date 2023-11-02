@@ -1,21 +1,18 @@
-import { createDomain, forward } from 'effector';
+import { createEffect, createStore } from 'effector';
+import { forward } from 'effector';
 import { createGate } from 'effector-react';
 import { EResourceType, NodeOnHousingStockResponse } from 'api/types';
 import { getNodes } from './resourceAccountingSystemsService.api';
 import { sortNodes } from './resourceAccountingSystemsService.utils';
 import { meteringDevicesService } from './view/ResourceAccountingSystems/meteringDevicesService';
 
-const domain = createDomain('resourceAccountingSystemsService');
-
-const fetchNodesFx = domain.createEffect<
-  number,
-  NodeOnHousingStockResponse[] | null
->(getNodes);
+const fetchNodesFx = createEffect<number, NodeOnHousingStockResponse[] | null>(
+  getNodes,
+);
 
 const NodesGate = createGate<{ buildingId: number }>();
 
-const $nodes = domain
-  .createStore<NodeOnHousingStockResponse[] | null>(null)
+const $nodes = createStore<NodeOnHousingStockResponse[] | null>(null)
   .on(fetchNodesFx.doneData, (_, nodes) => {
     if (!nodes) return [];
 

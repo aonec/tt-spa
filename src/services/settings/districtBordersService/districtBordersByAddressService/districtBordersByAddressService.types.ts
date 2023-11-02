@@ -1,7 +1,7 @@
 import { EOrderByRule } from 'api/types';
 
 export type FetchAddressQueryType = {
-  City: string;
+  City?: string;
   Street?: string;
   PageNumber?: number;
   PageSize?: number;

@@ -1,4 +1,5 @@
-import { combine, createDomain, sample } from 'effector';
+import { createEffect, createEvent, createStore } from 'effector';
+import { combine, sample } from 'effector';
 import { prepareFilterBeforeSenging } from '../displayStatisticsListByManagingFirmService/displayStatisticsListByManagingFirmService.utils';
 import { SubscriberStatisticsForm } from '../displayStatisticsListByManagingFirmService/view/ManagingFirmSearch/ManagingFirmSearch.types';
 import {
@@ -10,35 +11,34 @@ import { SubscriberStatisticsСonsumptionResponse } from 'api/types';
 import { HousingStockAddressForm } from './displayStatisticsListByHousesService.types';
 import { createGate } from 'effector-react';
 
-const domain = createDomain('displayStatisticsListByHousesService');
-
 const StatisticsByHouseGate = createGate();
 
-const setHousingStockAddress =
-  domain.createEvent<Partial<HousingStockAddressForm>>();
-const $housingStockAddress = domain
-  .createStore<Partial<HousingStockAddressForm>>({})
-  .on(setHousingStockAddress, (_, address) => address);
+const setHousingStockAddress = createEvent<Partial<HousingStockAddressForm>>();
+const $housingStockAddress = createStore<Partial<HousingStockAddressForm>>({})
+  .on(setHousingStockAddress, (_, address) => address)
+  .reset(StatisticsByHouseGate.close);
 
 const $selectedHousingStockId = fetchHousingStockIdQuery.$data;
 
-const getConsumptionStatisticsByHouseFx = domain.createEffect<
+const getConsumptionStatisticsByHouseFx = createEffect<
   SubscriberStatisticsFilter,
   SubscriberStatisticsСonsumptionResponse[]
 >(fetchStatisticsByHouse);
-const $consumptionStatisticsByHouse = domain
-  .createStore<SubscriberStatisticsСonsumptionResponse[]>([])
-  .on(
-    getConsumptionStatisticsByHouseFx.doneData,
-    (_, statistics) => statistics,
-  );
+const $consumptionStatisticsByHouse = createStore<
+  SubscriberStatisticsСonsumptionResponse[]
+>([])
+  .on(getConsumptionStatisticsByHouseFx.doneData, (_, statistics) => statistics)
+  .reset([
+    getConsumptionStatisticsByHouseFx.failData,
+    StatisticsByHouseGate.close,
+  ]);
 
-const setSubscriberStatisticsFilter =
-  domain.createEvent<SubscriberStatisticsForm>();
+const setSubscriberStatisticsFilter = createEvent<SubscriberStatisticsForm>();
 
-const $subscriberStatisticsByHouseFilter = domain
-  .createStore<SubscriberStatisticsForm | null>(null)
-  .on(setSubscriberStatisticsFilter, (_, filter) => filter);
+const $subscriberStatisticsByHouseFilter =
+  createStore<SubscriberStatisticsForm | null>(null)
+    .on(setSubscriberStatisticsFilter, (_, filter) => filter)
+    .reset(StatisticsByHouseGate.close);
 
 const $isLoading = getConsumptionStatisticsByHouseFx.pending;
 

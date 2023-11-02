@@ -1,4 +1,4 @@
-import React, { FC, useMemo } from 'react';
+import React, { FC, useCallback, useMemo } from 'react';
 import { intersection } from 'lodash';
 import { DistrictData } from 'types';
 import { MapWrapper } from './DistrictsMap.styled';
@@ -12,6 +12,7 @@ import warningInactivePlacemark from 'hooks/ymaps/placemarks/warningInactivePlac
 import warningAvtivePlacemark from 'hooks/ymaps/placemarks/warningActivePlacemark.svg';
 
 import { DistributeAppointmentsPanel } from '../DistributeAppointmentsPanel';
+import { findPolygonCenter } from 'utils/findPolygonCenter';
 
 export const DistrictsMap: FC<Props> = ({
   districtsList,
@@ -37,6 +38,17 @@ export const DistrictsMap: FC<Props> = ({
     return districtsList.filter((elem) => elem.id === selectedDistrict);
   }, [districtsList, selectedDistrict]);
 
+  const handleClickDistrict = useCallback(
+    (district: DistrictData) => {
+      const districtCenter = findPolygonCenter(district.coordinates[0]);
+
+      map?.setCenter(districtCenter, undefined, { duration: 200 });
+
+      handleSelectDistrict(district.id);
+    },
+    [handleSelectDistrict, map],
+  );
+
   const districtsDataList: DistrictData[] = useMemo(() => {
     return getPayloadFromDistricts(filteredDistrictsList).map((elem) => {
       const districtAppointmentsCounting = appointmentsCounting?.[elem.id];
@@ -57,13 +69,13 @@ export const DistrictsMap: FC<Props> = ({
       return {
         ...elem,
         name,
-        onClick: handleSelectDistrict,
+        onClick: () => handleClickDistrict(elem),
       };
     });
   }, [
     appointmentsCounting,
     filteredDistrictsList,
-    handleSelectDistrict,
+    handleClickDistrict,
     selectedDistrict,
   ]);
 

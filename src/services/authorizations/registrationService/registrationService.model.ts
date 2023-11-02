@@ -1,14 +1,13 @@
-import { createDomain, forward } from 'effector';
+import { createEffect, createEvent } from 'effector';
+import { forward } from 'effector';
 import { confirmRegistration } from './registrationService.api';
 import { ConfirmRequest } from 'api/types';
 import { EffectFailDataAxiosError } from 'types';
 import { message } from 'antd';
 
-const domain = createDomain('registrationService');
+const handleConfirmRegistration = createEvent<ConfirmRequest>();
 
-const handleConfirmRegistration = domain.createEvent<ConfirmRequest>();
-
-const confirmRegistrationFx = domain.createEffect<
+const confirmRegistrationFx = createEffect<
   ConfirmRequest,
   void,
   EffectFailDataAxiosError

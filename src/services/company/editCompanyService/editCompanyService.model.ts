@@ -1,5 +1,6 @@
+import { createEffect, createEvent, createStore } from 'effector';
 import { message } from 'antd';
-import { createDomain, forward, sample } from 'effector';
+import { forward, sample } from 'effector';
 import { createGate } from 'effector-react';
 import { OrganizationResponse, OrganizationUpdateRequest } from 'api/types';
 import { EffectFailDataAxiosError } from 'types';
@@ -9,20 +10,16 @@ import {
 } from './editCompanyService.api';
 import { OrganizationUpdatePayload } from './editCompanyService.types';
 
-const domain = createDomain('editCompanyService');
-
-const clearCurrentManagingFirm = domain.createEvent();
-const getCurrentManagingFirmFx = domain.createEffect<
-  void,
-  OrganizationResponse
->(fetchCurrentManagingFirm);
-const $currentManagingFirm = domain
-  .createStore<OrganizationResponse | null>(null)
+const clearCurrentManagingFirm = createEvent();
+const getCurrentManagingFirmFx = createEffect<void, OrganizationResponse>(
+  fetchCurrentManagingFirm,
+);
+const $currentManagingFirm = createStore<OrganizationResponse | null>(null)
   .on(getCurrentManagingFirmFx.doneData, (_, firm) => firm)
   .reset(clearCurrentManagingFirm);
 
-const updateOrganization = domain.createEvent<OrganizationUpdateRequest>();
-const updateOrganizationFx = domain.createEffect<
+const updateOrganization = createEvent<OrganizationUpdateRequest>();
+const updateOrganizationFx = createEffect<
   OrganizationUpdatePayload,
   void,
   EffectFailDataAxiosError

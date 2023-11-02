@@ -1,8 +1,17 @@
 import React, { FC } from 'react';
-import { KeyWrapper, ValueWrapper, Wrapper } from './CommonInfo.styled';
+import {
+  KeyWrapper,
+  SkeletonLoader,
+  ValueWrapper,
+  Wrapper,
+} from './CommonInfo.styled';
 import { CommonInfoProps } from './CommonInfo.types';
 
-export const CommonInfo: FC<CommonInfoProps> = ({ items, className }) => {
+export const CommonInfo: FC<CommonInfoProps> = ({
+  items,
+  className,
+  isLoading,
+}) => {
   return (
     <div className={className}>
       {items.map(({ key, value, hidden }) => {
@@ -13,7 +22,11 @@ export const CommonInfo: FC<CommonInfoProps> = ({ items, className }) => {
         return (
           <Wrapper key={key}>
             <KeyWrapper>{key}</KeyWrapper>
-            <ValueWrapper>{value || '—'}</ValueWrapper>
+            {isLoading ? (
+              <SkeletonLoader active />
+            ) : (
+              <ValueWrapper>{value || '—'}</ValueWrapper>
+            )}
           </Wrapper>
         );
       })}

@@ -1,36 +1,35 @@
-import { combine, createDomain, guard, sample } from 'effector';
+import { createEffect, createEvent, createStore } from 'effector';
+import { combine, guard, sample } from 'effector';
 import { createGate } from 'effector-react';
 import { ApartmentListResponsePagedList } from 'api/types';
 import { getApartmentsList } from './apartmentsListService.api';
 import { SegmentType } from './view/ApartmentsView/ApartmentsView.types';
 
-const domain = createDomain('apartmentsListService');
-
-const fetchApartmentsList = domain.createEffect<
+const fetchApartmentsList = createEffect<
   number,
   ApartmentListResponsePagedList
 >(getApartmentsList);
 
 const ApartmentsListGate = createGate<{ housingStockId: number }>();
 
-const setCurrentApartmentId = domain.createEvent<number>();
+const setCurrentApartmentId = createEvent<number>();
 
-const clearCurrentApartmentId = domain.createEvent();
+const clearCurrentApartmentId = createEvent();
 
-const $currentApartmentId = domain
-  .createStore<number | null>(null)
+const $currentApartmentId = createStore<number | null>(null)
   .on(setCurrentApartmentId, (_, id) => id)
   .reset(clearCurrentApartmentId);
 
-const $apartmentsPagedList = domain
-  .createStore<ApartmentListResponsePagedList | null>(null)
-  .on(fetchApartmentsList.doneData, (_, data) => data);
+const $apartmentsPagedList = createStore<ApartmentListResponsePagedList | null>(
+  null,
+).on(fetchApartmentsList.doneData, (_, data) => data);
 
-const setCurrentSegment = domain.createEvent<SegmentType>();
+const setCurrentSegment = createEvent<SegmentType>();
 
-const $currentSegment = domain
-  .createStore<SegmentType>('cells')
-  .on(setCurrentSegment, (_, segment) => segment);
+const $currentSegment = createStore<SegmentType>('cells').on(
+  setCurrentSegment,
+  (_, segment) => segment,
+);
 
 sample({
   source: ApartmentsListGate.state.map(({ housingStockId }) => housingStockId),

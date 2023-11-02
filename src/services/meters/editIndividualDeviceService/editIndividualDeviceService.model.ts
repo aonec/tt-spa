@@ -1,4 +1,5 @@
-import { createDomain, sample } from 'effector';
+import { createEffect, createEvent, createStore } from 'effector';
+import { sample } from 'effector';
 import { EditIndividualDeviceTabs } from './EditIndividualPage/EditIndividualPage.types';
 import { createGate } from 'effector-react';
 import {
@@ -14,22 +15,20 @@ import { EffectFailDataAxiosError } from 'types';
 import { message } from 'antd';
 import { individualDeviceMountPlacesService } from 'services/devices/individualDeviceMountPlacesService/individualDeviceMountPlacesService.model';
 
-const domain = createDomain('editIndividualDeviceService');
-
 const FetchIndividualDeviceGate = createGate<{ deviceId: number }>();
 
-const handleChangeTab = domain.createEvent<EditIndividualDeviceTabs>();
+const handleChangeTab = createEvent<EditIndividualDeviceTabs>();
 
-const handleUpdateDevice = domain.createEvent<{
+const handleUpdateDevice = createEvent<{
   deviceId: number;
   payload: UpdateIndividualDeviceRequest;
 }>();
 
-const getDeviceFx = domain.createEffect<number, IndividualDeviceResponse>(
+const getDeviceFx = createEffect<number, IndividualDeviceResponse>(
   getIndividualDevice,
 );
 
-const putDeviceFx = domain.createEffect<
+const putDeviceFx = createEffect<
   {
     deviceId: number;
     payload: UpdateIndividualDeviceRequest;
@@ -38,9 +37,10 @@ const putDeviceFx = domain.createEffect<
   EffectFailDataAxiosError
 >(putIndividualDevice);
 
-const $individualDevice = domain
-  .createStore<IndividualDeviceResponse | null>(null)
-  .on(getDeviceFx.doneData, (_, device) => device);
+const $individualDevice = createStore<IndividualDeviceResponse | null>(null).on(
+  getDeviceFx.doneData,
+  (_, device) => device,
+);
 
 sample({
   clock: FetchIndividualDeviceGate.open,
@@ -56,9 +56,9 @@ sample({
   target: putDeviceFx,
 });
 
-const $currentTab = domain
-  .createStore<EditIndividualDeviceTabs>(EditIndividualDeviceTabs.CommonInfo)
-  .on(handleChangeTab, (_, tab) => tab);
+const $currentTab = createStore<EditIndividualDeviceTabs>(
+  EditIndividualDeviceTabs.CommonInfo,
+).on(handleChangeTab, (_, tab) => tab);
 
 const $isDeviceLoading = getDeviceFx.pending;
 const $isDeviceUpdating = putDeviceFx.pending;

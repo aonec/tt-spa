@@ -1,0 +1,1 @@
+export { BrigadeInfo } from './BrigadeInfo';

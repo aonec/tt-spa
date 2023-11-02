@@ -24,3 +24,10 @@ export const ClosingDate = styled.div`
   font-size: 12px;
   color: rgba(39, 47, 90, 0.7);
 `;
+
+export const FullAddressWrapper = styled.div`
+  max-width: 230px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+`;

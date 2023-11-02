@@ -1,4 +1,5 @@
-import { createDomain, sample } from 'effector';
+import { createEvent, createStore } from 'effector';
+import { sample } from 'effector';
 import {
   AccountingNodesSumReadings,
   GetElectricNodesByAddress,
@@ -9,15 +10,12 @@ import { PREVIOUS_READING_INDEX_LIMIT } from './AccountingNodesReadingsService.c
 import { round } from 'utils/round';
 import { getElectricNodesQuery } from './AccountingNodesReadingsService.api';
 
-const domain = createDomain('AccountingNodesReadingsService');
-
 const HousingStockIdGate = createGate<{ id?: number }>();
 
-const upSliderIndex = domain.createEvent();
-const downSliderIndex = domain.createEvent();
+const upSliderIndex = createEvent();
+const downSliderIndex = createEvent();
 
-const $sliderIndex = domain
-  .createStore(0)
+const $sliderIndex = createStore(0)
   .on(upSliderIndex, (index) => {
     if (index === PREVIOUS_READING_INDEX_LIMIT) return index;
 
@@ -29,7 +27,7 @@ const $sliderIndex = domain
     return --index;
   });
 
-const fetchElectricNodes = domain.createEvent<GetElectricNodesByAddress>();
+const fetchElectricNodes = createEvent<GetElectricNodesByAddress>();
 
 const $housingStockAddress = getElectricNodesQuery.$data.map((nodes) => {
   if (nodes?.length) {
@@ -38,10 +36,8 @@ const $housingStockAddress = getElectricNodesQuery.$data.map((nodes) => {
   return null;
 });
 
-const updateNodeReadings =
-  domain.createEvent<UpdateAccountingNodesSumPayload>();
-const $readingsList = domain
-  .createStore<AccountingNodesSumReadings>({})
+const updateNodeReadings = createEvent<UpdateAccountingNodesSumPayload>();
+const $readingsList = createStore<AccountingNodesSumReadings>({})
   .on(
     updateNodeReadings,
     (readingsList, { id, currentReading, previousExistingReading }) => {

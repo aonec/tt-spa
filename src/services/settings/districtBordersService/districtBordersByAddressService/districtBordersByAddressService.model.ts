@@ -1,4 +1,5 @@
-import { createDomain, sample } from 'effector';
+import { createEffect, createEvent, createStore } from 'effector';
+import { sample } from 'effector';
 import { getAddresses } from './districtBordersByAddressService.api';
 import {
   StreetWithBuildingNumbersResponse,
@@ -13,62 +14,60 @@ import {
 import { createGate } from 'effector-react';
 import { addHousingStocksToChecked } from './districtBordersByAddressService.utils';
 import { createDistrictBorderMapService } from '../createDistrictBorderMapService/createDistrictBorderMapService.models';
-import { existingHousingStocksQuery } from '../createDistrictBorderMapService/createDistrictBorderMapService.api';
-
-const domain = createDomain('districtBordersByAddressService');
+import {
+  createDistrictMutation,
+  existingHousingStocksQuery,
+} from '../createDistrictBorderMapService/createDistrictBorderMapService.api';
 
 const DistrictBordersByAddressPageGate = createGate();
 
-const pageResetter = domain.createEvent();
+const pageResetter = createEvent();
 
-const handleOpenDistrictEditer = domain.createEvent();
+const handleOpenDistrictEditer = createEvent();
 
-// fix
-const handleCloseDistrictEditer = domain.createEvent();
+const handleCloseDistrictEditer = createEvent();
 
-const setPoligon = domain.createEvent<{
+const setPoligon = createEvent<{
   housingStockIds: number[];
   polygon: number[][];
 }>();
 
-const handleFetchAddress = domain.createEvent<FetchAddressQueryType>();
+const handleFetchAddress = createEvent<FetchAddressQueryType>();
 
-const setFilter = domain.createEvent<FilterType>();
+const setFilter = createEvent<FilterType>();
 
 const setHousingStockIdsWithStreet =
-  domain.createEvent<CheckedHousingStocksIdWithStreetsHandler>();
+  createEvent<CheckedHousingStocksIdWithStreetsHandler>();
 
-const fetchAddressFx = domain.createEffect<
+const fetchAddressFx = createEffect<
   FetchAddressQueryType,
   StreetWithBuildingNumbersResponsePagedList
 >(getAddresses);
 
-const $addresses = domain
-  .createStore<StreetWithBuildingNumbersResponse[] | null>(null)
-  .on(fetchAddressFx.doneData, (_, addresses) => addresses.items);
+const $addresses = createStore<StreetWithBuildingNumbersResponse[] | null>(
+  null,
+).on(fetchAddressFx.doneData, (_, addresses) => addresses.items);
 
-const $filter = domain
-  .createStore<FilterType | null>(null)
+const $filter = createStore<FilterType | null>(null)
   .on(setFilter, (_, data) => data)
   .reset(pageResetter);
 
-const $checkedhousingStockIdsWithStreet = domain
-  .createStore<CheckedHousingStocksIdWithStreets[]>([])
+const $checkedhousingStockIdsWithStreet = createStore<
+  CheckedHousingStocksIdWithStreets[]
+>([])
   .on(setHousingStockIdsWithStreet, (prevIdsWithStreet, commingIdsWithStreet) =>
     addHousingStocksToChecked(prevIdsWithStreet, commingIdsWithStreet),
   )
-  .reset(pageResetter);
+  .reset(pageResetter, createDistrictMutation.finished.success);
 
-const $checkedHousingStockIdsAndPoligon = domain
-  .createStore<{
-    housingStockIds: number[];
-    polygon: number[][];
-  }>({ housingStockIds: [], polygon: [] })
+const $checkedHousingStockIdsAndPoligon = createStore<{
+  housingStockIds: number[];
+  polygon: number[][];
+}>({ housingStockIds: [], polygon: [] })
   .on(setPoligon, (_, data) => data)
   .reset(pageResetter);
 
-const $onEditingInMap = domain
-  .createStore<boolean>(false)
+const $onEditingInMap = createStore<boolean>(false)
   .on(handleOpenDistrictEditer, () => true)
   .on(handleCloseDistrictEditer, () => false)
   .reset(pageResetter);
@@ -98,18 +97,27 @@ sample({
   target: createDistrictBorderMapService.inputs.setDistrictPayload,
 });
 
+const $isLoading = fetchAddressFx.pending;
+
+sample({
+  clock: createDistrictBorderMapService.gates.CreateDistrictGate.close,
+  target: handleCloseDistrictEditer,
+});
+
 export const districtBordersByAddressService = {
   inputs: {
     handleFetchAddress,
     setFilter,
     setHousingStockIdsWithStreet,
     handleOpenDistrictEditer,
+    handleCloseDistrictEditer,
     setPoligon,
   },
   outputs: {
     $addresses,
     $filter,
     $checkedhousingStockIdsWithStreet,
+    $isLoading,
   },
   gates: { DistrictBordersByAddressPageGate },
 };

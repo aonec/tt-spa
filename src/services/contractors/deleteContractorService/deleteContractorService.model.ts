@@ -1,21 +1,20 @@
+import { createEffect, createEvent, createStore } from 'effector';
 import { message } from 'antd';
-import { createDomain, forward, guard, sample } from 'effector';
+import { forward, guard, sample } from 'effector';
 import { deleteContractor } from './deleteContractorService.api';
 import { ContractorResponse } from 'api/types';
 import { EffectFailDataAxiosError } from 'types';
 
-const domain = createDomain('deleteContractorService');
+const handleCloseModal = createEvent();
 
-const handleCloseModal = domain.createEvent();
-
-const catchContractorId = domain.createEvent<{
+const catchContractorId = createEvent<{
   id: number;
   name: string | null;
 }>();
 
-const handleDeleteContractor = domain.createEvent();
+const handleDeleteContractor = createEvent();
 
-const deleteContractorFx = domain.createEffect<
+const deleteContractorFx = createEffect<
   number,
   ContractorResponse,
   EffectFailDataAxiosError
@@ -23,8 +22,9 @@ const deleteContractorFx = domain.createEffect<
 
 const deleteContractorSuccess = deleteContractorFx.doneData;
 
-const $contractorData = domain
-  .createStore<{ id: number; name: string | null } | null>(null)
+const $contractorData = createStore<{ id: number; name: string | null } | null>(
+  null,
+)
   .on(catchContractorId, (_, data) => data)
   .reset(handleCloseModal);
 

@@ -16,7 +16,6 @@ export const Device: IndividualDeviceResponse = {
     apartmentId: 635331,
     apartmentNumber: '114',
     comment: 'план ук от 30,05,22.  план ук от .01,02,,2020',
-    coordinates: { latitude: 55.652375, longitude: 51.837849 },
   },
   resource: EResourceType.HotWaterSupply,
   mountPlace: 'Toilet',

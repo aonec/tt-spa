@@ -1,6 +1,7 @@
+import { createEffect, createEvent, createStore } from 'effector';
 import { resourceDisablingScheduleServiceService } from 'services/settings/resourcesDisablingScheduleService/ResourceDisablingScheduleService.model';
 import { message } from 'antd';
-import { combine, createDomain, forward, sample, split } from 'effector';
+import { combine, forward, sample, split } from 'effector';
 import {
   ResourceDisconnectingCreateRequest,
   StreetWithBuildingNumbersResponsePagedList,
@@ -22,8 +23,6 @@ import {
 } from './createResourceDisconnectionService.api';
 import { EAddressDetails } from './createResourceDisconnectionService.types';
 import { addressSearchService } from 'services/addressSearchService/addressSearchService.models';
-
-const domain = createDomain('createResourceDisconnectionService');
 
 const $resourceTypes =
   resourceDisconnectionFiltersService.outputs.$resourceDisconnectionFilters.map(
@@ -49,34 +48,30 @@ const $disconnectingTypes = combine(
   },
 );
 
-const openModal = domain.createEvent();
-const closeModal = domain.createEvent();
-const clearHousingStocks = domain.createEvent();
-const clearTypeOfAddress = domain.createEvent();
+const openModal = createEvent();
+const closeModal = createEvent();
+const clearHousingStocks = createEvent();
+const clearTypeOfAddress = createEvent();
 
-const $selectedBuilding = domain
-  .createStore<BuildingListResponse | null>(null)
+const $selectedBuilding = createStore<BuildingListResponse | null>(null)
   .on(
     chooseTypeOfResourceDisconnectionModalService.inputs.openModal,
     (_, Building) => Building || null,
   )
   .reset(closeModal);
 
-const $isModalOpen = domain
-  .createStore(false)
+const $isModalOpen = createStore(false)
   .on(openModal, () => true)
   .reset(closeModal);
 
-const setTypeOfAddress = domain.createEvent<EAddressDetails>();
-const $typeOfAddress = domain
-  .createStore<EAddressDetails>(EAddressDetails.All)
+const setTypeOfAddress = createEvent<EAddressDetails>();
+const $typeOfAddress = createStore<EAddressDetails>(EAddressDetails.All)
   .on(setTypeOfAddress, (_, type) => type)
   .reset(clearTypeOfAddress);
 
-const selectCity = domain.createEvent<string>();
+const selectCity = createEvent<string>();
 
-const $selectedCity = domain
-  .createStore<string | null>(null)
+const $selectedCity = createStore<string | null>(null)
   .on(selectCity, (_, city) => city)
   .on(
     chooseTypeOfResourceDisconnectionModalService.inputs.openModal,
@@ -88,37 +83,38 @@ const $selectedCity = domain
   )
   .reset(closeModal);
 
-const getBuildings = domain.createEvent();
-const getExistingBuildingsFx = domain.createEffect<
+const getBuildings = createEvent();
+const getExistingBuildingsFx = createEffect<
   string,
   StreetWithBuildingNumbersResponsePagedList
 >(fetchExistingBuildings);
 
-const $existingBuildings = domain
-  .createStore<StreetWithBuildingNumbersResponse[]>([])
+const $existingBuildings = createStore<StreetWithBuildingNumbersResponse[]>([])
   .on(
     getExistingBuildingsFx.doneData,
     (_, housingStocks) => housingStocks.items || [],
   )
   .reset(clearHousingStocks);
 
-const getHeatingStationFx = domain.createEffect<
+const getHeatingStationFx = createEffect<
   void,
   HeatingStationWithStreetsResponse[]
 >(fetchExistingBuildingsWithHeatingStation);
 
-const $buildingWithHeatingStations = domain
-  .createStore<HeatingStationWithStreetsResponse[]>([])
+const $buildingWithHeatingStations = createStore<
+  HeatingStationWithStreetsResponse[]
+>([])
   .on(getHeatingStationFx.doneData, (_, housingStocks) => housingStocks)
   .reset(clearHousingStocks);
 
-const getHouseManagementsFx = domain.createEffect<
+const getHouseManagementsFx = createEffect<
   void,
   HouseManagementWithStreetsResponse[]
 >(fetchExistingBuildingsWithHouseManagement);
 
-const $buildingWithHouseManagements = domain
-  .createStore<HouseManagementWithStreetsResponse[]>([])
+const $buildingWithHouseManagements = createStore<
+  HouseManagementWithStreetsResponse[]
+>([])
   .on(getHouseManagementsFx.doneData, (_, housingStocks) => housingStocks)
   .reset(clearHousingStocks);
 
@@ -130,8 +126,8 @@ const $isHousingStocksLoading = combine(
 );
 
 const createResourceDisconnection =
-  domain.createEvent<ResourceDisconnectingCreateRequest>();
-const createResourceDisconnectionFx = domain.createEffect<
+  createEvent<ResourceDisconnectingCreateRequest>();
+const createResourceDisconnectionFx = createEffect<
   ResourceDisconnectingCreateRequest,
   void,
   EffectFailDataAxiosError

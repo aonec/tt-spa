@@ -1,13 +1,9 @@
-import { createDomain } from 'effector';
+import { createEvent } from 'effector';
+
 import { displayNodeArchiveService } from '../displayNodeArchiveService';
 import { LoadNodeArchiveDataPayload } from '../displayNodeArchiveService/displayNodeArchiveService.types';
 
-const searchNodeArchiveFiltersServiceDomain = createDomain(
-  'searchNodeArchiveFiltersService',
-);
-
-const applyFilters =
-  searchNodeArchiveFiltersServiceDomain.createEvent<LoadNodeArchiveDataPayload>();
+const applyFilters = createEvent<LoadNodeArchiveDataPayload>();
 
 export const searchNodeArchiveFilters = {
   inputs: {

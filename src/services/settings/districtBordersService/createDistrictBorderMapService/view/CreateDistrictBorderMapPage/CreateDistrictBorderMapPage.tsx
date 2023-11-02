@@ -19,6 +19,7 @@ import { useForm } from 'effector-forms';
 import { createDistrictBorderMapService } from '../../createDistrictBorderMapService.models';
 import { CreateDistrictFormPanel } from './CreateDistrictFormPanel';
 import { getPayloadFromDistricts } from 'utils/districtsData';
+import { findPolygonCenter } from 'utils/findPolygonCenter';
 
 const { forms } = createDistrictBorderMapService;
 
@@ -28,6 +29,7 @@ export const CreateDistrictBorderMapPage: FC<Props> = ({
   handleCreateDistrict,
   preselectedDistrictPayload,
   organizationCoordinates,
+  isLoadingPostDistrict,
 }) => {
   const { map, mapRef } = useYMaps(organizationCoordinates);
 
@@ -70,6 +72,14 @@ export const CreateDistrictBorderMapPage: FC<Props> = ({
     () => savedDistricts['working-district'] || null,
     [savedDistricts],
   );
+
+  useEffect(() => {
+    if (!preselectedDistrictPayload?.polygon || !map) return;
+
+    const center = findPolygonCenter(preselectedDistrictPayload.polygon);
+
+    map.setCenter(center, 15);
+  }, [map, preselectedDistrictPayload]);
 
   useMemo(() => {
     if (!preselectedDistrictPayload || !workingDistrict) return;
@@ -138,7 +148,7 @@ export const CreateDistrictBorderMapPage: FC<Props> = ({
       <MapWrapper>
         {!fields.isEditing.value && (
           <CreateDistrictFormPanel
-            isLoadingCreatingDistrict={false}
+            isLoadingCreatingDistrict={isLoadingPostDistrict}
             isLoadingHousingStocks={false}
             selectedHousingStocks={fields.selectedHouses.value}
             housingStocksInDistrict={housesInDistrict}

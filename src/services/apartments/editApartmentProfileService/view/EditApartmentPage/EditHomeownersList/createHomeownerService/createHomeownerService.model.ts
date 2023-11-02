@@ -1,4 +1,5 @@
-import { combine, createDomain, forward, sample } from 'effector';
+import { createEffect, createEvent, createStore } from 'effector';
+import { combine, forward, sample } from 'effector';
 import { HomeownerAccountCreateRequest } from 'api/types';
 import { editApartmentProfileService } from 'services/apartments/editApartmentProfileService/editApartmentProfileService.model';
 import { postHomeownerAccount } from './createHomeownerService.api';
@@ -6,34 +7,29 @@ import { message } from 'antd';
 import { EffectFailDataAxiosErrorDataApartmentId } from 'types';
 import { CreateHomeownerPayload } from './createHomeownerService.types';
 
-const domain = createDomain('createHomeownerService');
+const handleCreateHomeowner = createEvent<HomeownerAccountCreateRequest>();
+const handleConfirmationModalClose = createEvent();
+const onForced = createEvent();
 
-const handleCreateHomeowner =
-  domain.createEvent<HomeownerAccountCreateRequest>();
-const handleConfirmationModalClose = domain.createEvent();
-const onForced = domain.createEvent();
-
-const createHomeownerFx = domain.createEffect<
+const createHomeownerFx = createEffect<
   CreateHomeownerPayload,
   void,
   EffectFailDataAxiosErrorDataApartmentId
 >(postHomeownerAccount);
 
-const openCreateHomeownerModal = domain.createEvent();
-const closeCreateHomeownerModal = domain.createEvent();
+const openCreateHomeownerModal = createEvent();
+const closeCreateHomeownerModal = createEvent();
 
-const $createHomeownerPayloadData = domain
-  .createStore<HomeownerAccountCreateRequest | null>(null)
-  .on(handleCreateHomeowner, (_, formData) => formData)
-  .reset(closeCreateHomeownerModal);
+const $createHomeownerPayloadData =
+  createStore<HomeownerAccountCreateRequest | null>(null)
+    .on(handleCreateHomeowner, (_, formData) => formData)
+    .reset(closeCreateHomeownerModal);
 
-const $isModalOpen = domain
-  .createStore(false)
+const $isModalOpen = createStore(false)
   .on(openCreateHomeownerModal, () => true)
   .reset(closeCreateHomeownerModal, createHomeownerFx.doneData);
 
-const $samePersonalAccountNumderId = domain
-  .createStore<number | null>(null)
+const $samePersonalAccountNumderId = createStore<number | null>(null)
   .on(createHomeownerFx.failData, (prev, errData) => {
     if (errData.response.status === 409) {
       return errData.response.data.error.Data.ApartmentId;
@@ -42,8 +38,7 @@ const $samePersonalAccountNumderId = domain
   })
   .reset(handleConfirmationModalClose);
 
-const $isForced = domain
-  .createStore<boolean>(false)
+const $isForced = createStore<boolean>(false)
   .on(onForced, () => true)
   .reset(handleConfirmationModalClose);
 

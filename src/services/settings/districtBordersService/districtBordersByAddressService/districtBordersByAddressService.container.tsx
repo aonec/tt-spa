@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo } from 'react';
-import { useEvent, useStore, useUnit } from 'effector-react';
+import { useUnit } from 'effector-react';
 import { DistrictBordersByAddressPage } from './view/DistrictBordersByAddressPage/DistrictBordersByAddressPage';
 import { districtBordersByAddressService } from './districtBordersByAddressService.model';
 import {
@@ -15,22 +15,32 @@ const {
 } = districtBordersByAddressService;
 
 export const DistrictBordersByAddressContainer = () => {
-  const handleFetchAddress = useEvent(inputs.handleFetchAddress);
-  const setFilter = useEvent(inputs.setFilter);
-  const setHousingStockIdsWithStreet = useEvent(
-    inputs.setHousingStockIdsWithStreet,
-  );
-  const handleOpenDistrictEditer = useEvent(inputs.handleOpenDistrictEditer);
-  const setPoligon = useEvent(inputs.setPoligon);
-
-  const addresses = useStore(outputs.$addresses);
-  const filterData = useStore(outputs.$filter);
-  const checkedhousingStockIdsWithStreet = useStore(
-    outputs.$checkedhousingStockIdsWithStreet,
-  );
   const { data: housingStocksWithCoordinates } = useUnit(
     existingHousingStocksQuery,
   );
+  const { isLoading } = useUnit({
+    isLoading: outputs.$isLoading,
+  });
+
+  const {
+    checkedhousingStockIdsWithStreet,
+    filterData,
+    addresses,
+    setPoligon,
+    handleOpenDistrictEditer,
+    setHousingStockIdsWithStreet,
+    setFilter,
+    handleFetchAddress,
+  } = useUnit({
+    checkedhousingStockIdsWithStreet: outputs.$checkedhousingStockIdsWithStreet,
+    filterData: outputs.$filter,
+    addresses: outputs.$addresses,
+    setPoligon: inputs.setPoligon,
+    handleOpenDistrictEditer: inputs.handleOpenDistrictEditer,
+    setHousingStockIdsWithStreet: inputs.setHousingStockIdsWithStreet,
+    setFilter: inputs.setFilter,
+    handleFetchAddress: inputs.handleFetchAddress,
+  });
 
   const cityInFilter = filterData?.city;
 
@@ -88,6 +98,7 @@ export const DistrictBordersByAddressContainer = () => {
         handleOpenDistrictEditer={handleOpenDistrictEditer}
         isAllowedToEditer={isAllowedToEditer}
         cityInFilter={cityInFilter}
+        isLoading={isLoading}
       />
     </>
   );

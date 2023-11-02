@@ -1,4 +1,5 @@
-import { combine, createDomain, guard, sample } from 'effector';
+import { createEffect, createStore } from 'effector';
+import { combine, guard, sample } from 'effector';
 import { createGate } from 'effector-react';
 import {
   OrganizationUserListResponse,
@@ -7,17 +8,16 @@ import {
 import { taskProfileService } from 'services/tasks/taskProfileService/taskProfileService.model';
 import { getOrganizationUsers } from './addPerpetratorService.api';
 
-const domain = createDomain('addPerpetratorService');
-
-const fetchOrganizationUsersFx = domain.createEffect<
+const fetchOrganizationUsersFx = createEffect<
   string[] | null,
   OrganizationUserListResponsePagedList
 >(getOrganizationUsers);
 
 const OrganizationUsersGate = createGate();
 
-const $organizationUsers = domain
-  .createStore<OrganizationUserListResponse[] | null>(null)
+const $organizationUsers = createStore<OrganizationUserListResponse[] | null>(
+  null,
+)
   .on(fetchOrganizationUsersFx.doneData, (_, data) => data.items)
   .reset(OrganizationUsersGate.close);
 

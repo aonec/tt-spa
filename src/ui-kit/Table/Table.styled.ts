@@ -4,6 +4,7 @@ import styled, { css } from 'styled-components';
 export const Wrapper = styled.div`
   max-width: 1200px;
   overflow-x: auto;
+  width: min-content;
 `;
 
 const stickyHeaderCss = css`

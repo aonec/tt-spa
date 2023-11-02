@@ -24,6 +24,11 @@ export const GridContainerAsymmetricLeft = styled.div`
   grid-template-columns: 2fr 1fr;
   grid-gap: 4px 20px;
 `;
+export const GridContainerAsymmetricThreeColumn = styled.div`
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  grid-gap: 4px 20px;
+`;
 
 export const GridContainerAsymmetricRight = styled.div`
   display: grid;
@@ -118,11 +123,16 @@ export const ResourceDisconnectionDate = styled.div`
   font-weight: 500;
 `;
 
-export const SelectCaret = styled(Select)`
+export const SelectCaret = styled(Select)<{ isInitialSource: boolean }>`
   caret-color: transparent;
+
+  .ant-select-selection-item {
+    background-color: ${({ isInitialSource }) =>
+      isInitialSource ? 'rgba(24, 158, 233, 0.2)' : 'white'};
+  }
 `;
 
-export const TimePickerSc = styled(TimePicker).attrs({
+export const TimePickerLarge = styled(TimePicker).attrs({
   format: 'HH:mm',
   suffixIcon: null,
   allowClear: false,
@@ -134,6 +144,24 @@ export const TimePickerSc = styled(TimePicker).attrs({
   .ant-picker-input {
     input {
       font-size: 18px;
+      line-height: 32px;
+      padding: 0px;
+    }
+  }
+`;
+
+export const TimePickerMedium = styled(TimePicker).attrs({
+  format: 'HH:mm',
+  suffixIcon: null,
+  allowClear: true,
+})`
+  border-radius: 4px;
+
+  padding: 8px 20px !important;
+
+  .ant-picker-input {
+    input {
+      font-size: 16px;
       line-height: 32px;
       padding: 0px;
     }

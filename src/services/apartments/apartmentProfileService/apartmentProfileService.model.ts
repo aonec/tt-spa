@@ -1,18 +1,14 @@
-import { createDomain, sample } from 'effector';
+import { createEffect, createStore } from 'effector';
+import { sample } from 'effector';
 import { createGate } from 'effector-react';
 import { ApartmentResponse } from 'api/types';
 import { getApartment } from './apartmentProfileService.api';
 
-const domain = createDomain('apartmentProfileService');
-
-const fetchApartmentFx = domain.createEffect<number, ApartmentResponse>(
-  getApartment,
-);
+const fetchApartmentFx = createEffect<number, ApartmentResponse>(getApartment);
 
 const ApartmentGate = createGate<{ apartmentId: number }>();
 
-const $apartment = domain
-  .createStore<ApartmentResponse | null>(null)
+const $apartment = createStore<ApartmentResponse | null>(null)
   .on(fetchApartmentFx.doneData, (_, apartment) => apartment)
   .reset(ApartmentGate.close);
 

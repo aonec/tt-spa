@@ -1,4 +1,5 @@
-import { combine, createDomain, guard, sample } from 'effector';
+import { createEffect, createEvent, createStore } from 'effector';
+import { combine, guard, sample } from 'effector';
 import { createGate } from 'effector-react';
 import {
   IndividualDeviceListItemResponse,
@@ -10,28 +11,26 @@ import { GetIndividualDevicesParams } from './apartmentIndividualDevicesMetersSe
 import { managementFirmConsumptionRatesService } from '../managementFirmConsumptionRatesService';
 import { readingsHistoryService } from '../readingsHistoryService/readingsHistoryService.model';
 
-const domain = createDomain('apartmentIndividualDevicesMetersService');
-
 const $individualDevicesPagedData =
-  domain.createStore<IndividualDeviceListItemResponsePagedList | null>(null);
+  createStore<IndividualDeviceListItemResponsePagedList | null>(null);
 
-const fetchIndividualDevicesFx = domain.createEffect<
+const fetchIndividualDevicesFx = createEffect<
   GetIndividualDevicesParams,
   IndividualDeviceListItemResponsePagedList
 >(getIndividualDevices);
 
-const $isShowClosedIndividualDevices = domain.createStore(false);
+const $isShowClosedIndividualDevices = createStore(false);
 
-const setIsShowClosedDevices = domain.createEvent<boolean>();
+const setIsShowClosedDevices = createEvent<boolean>();
 
-const $sliderIndex = domain.createStore(0);
+const $sliderIndex = createStore(0);
 
-const upSliderIndex = domain.createEvent();
-const downSliderIndex = domain.createEvent();
+const upSliderIndex = createEvent();
+const downSliderIndex = createEvent();
 
-const $individualDevicesList = domain
-  .createStore<IndividualDeviceListItemResponse[]>([])
-  .on($individualDevicesPagedData, (_, data) => data?.items || []);
+const $individualDevicesList = createStore<IndividualDeviceListItemResponse[]>(
+  [],
+).on($individualDevicesPagedData, (_, data) => data?.items || []);
 
 const $filteredIndividualDevicesList = combine(
   $individualDevicesList,
@@ -56,7 +55,7 @@ const $closedDevicesCount = $individualDevicesPagedData.map((data) => {
   ).length;
 });
 
-const refetchIndividualDevices = domain.createEvent();
+const refetchIndividualDevices = createEvent();
 
 const $isLoading = fetchIndividualDevicesFx.pending;
 
@@ -87,11 +86,6 @@ $sliderIndex
 
     return --index;
   });
-
-sample({
-  clock: readingsHistoryService.gates.ReadingHistoryGate.close,
-  target: refetchIndividualDevices,
-});
 
 sample({
   clock: readingsHistoryService.inputs.closeReadingsHistoryModal,
