@@ -18,6 +18,7 @@ import { taskActionInfoComponents } from './TaskActionsPanel.constants';
 
 export const TaskActionsPanel: FC<TaskActionsPanelProps> = ({
   actions,
+  additionActions,
   task,
   handlePushStage,
   isLoading,
@@ -26,6 +27,11 @@ export const TaskActionsPanel: FC<TaskActionsPanelProps> = ({
 }) => {
   const { halfSizeActions, fullSizeActions, bottomActions } =
     useTaskPanelActions(actions);
+
+  const panelAdditionalActions = useTaskPanelActions(additionActions);
+  const halfSizeAdditionalActions = panelAdditionalActions.halfSizeActions;
+  const fullSizeAdditionalActions = panelAdditionalActions.fullSizeActions;
+  const bottomAdditionalActions = panelAdditionalActions.bottomActions;
 
   const renderTaskAction = ({ Component }: TaskActionsComponent) => (
     <Component
@@ -57,10 +63,21 @@ export const TaskActionsPanel: FC<TaskActionsPanelProps> = ({
             <BottomActionWrapper>
               {bottomActions.map(renderTaskAction)}
             </BottomActionWrapper>
-            <PushStageButtonWrapper>
-              <Button onClick={handlePushStage}>Завершить этап</Button>
-            </PushStageButtonWrapper>
           </BottomContentWrapper>
+
+          <HalfSizeActionsWrapper
+            isOneElement={halfSizeAdditionalActions.length === 1}
+          >
+            {halfSizeAdditionalActions.map(renderTaskAction)}
+          </HalfSizeActionsWrapper>
+          {fullSizeAdditionalActions.map(renderTaskAction)}
+          <BottomActionWrapper>
+            {bottomAdditionalActions.map(renderTaskAction)}
+          </BottomActionWrapper>
+
+          <PushStageButtonWrapper>
+            <Button onClick={handlePushStage}>Завершить этап</Button>
+          </PushStageButtonWrapper>
         </>
       )}
     </Wrapper>

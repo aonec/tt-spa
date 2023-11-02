@@ -22,6 +22,8 @@ import { SwitchDeviceContainer } from './switchDeviceService';
 import { AddResourceDisconnectionContainer } from './addResourceDisconnectionService';
 import { SetExecutionPostponedDateContainer } from './setExecutionPostponedDateService';
 import { SelectApplicationWorkerContainer } from './selectApplicationWorkerService';
+import { AttachPhotoContainer } from './attachPhotoService';
+import { SetApplicationCompletionDateContainer } from './setApplicationCompletionDateService';
 
 export const taskActionsComponents: TaskActionsComponent[] = [
   {
@@ -110,6 +112,16 @@ export const taskActionsComponents: TaskActionsComponent[] = [
   {
     actionType: EStageActionType.SelectApplicationWorker,
     Component: SelectApplicationWorkerContainer,
+    position: TaskPanelInputPositionType.Bottom,
+  },
+  {
+    actionType: EStageActionType.SetApplicationCompletionDate,
+    Component: SetApplicationCompletionDateContainer,
+    position: TaskPanelInputPositionType.Bottom,
+  },
+  {
+    actionType: EStageActionType.AddPhotos,
+    Component: AttachPhotoContainer,
     position: TaskPanelInputPositionType.Bottom,
   },
 ];

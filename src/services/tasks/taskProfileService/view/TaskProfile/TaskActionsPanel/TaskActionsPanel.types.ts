@@ -8,6 +8,7 @@ import {
 
 export type TaskActionsPanelProps = {
   actions: EStageActionType[];
+  additionActions: EStageActionType[];
   task: TaskResponse;
   handlePushStage: () => void;
   isLoading: boolean;

@@ -66,6 +66,8 @@ export const TaskProfile: FC<TaskProfileProps> = ({
 
   const taskActions = task.currentStage?.actions || [];
 
+  const taskAdditionActions = task.currentStage?.additionalActions || [];
+
   return (
     <Wrapper>
       <GoBack />
@@ -93,6 +95,7 @@ export const TaskProfile: FC<TaskProfileProps> = ({
               isLoading={isPushStageLoading || isLoadingTask}
               task={task}
               actions={taskActions}
+              additionActions={taskAdditionActions}
               pushStageRequestPayload={pushStageRequestPayload}
               handleChangePushStagePayload={handleChangePushStagePayload}
             />

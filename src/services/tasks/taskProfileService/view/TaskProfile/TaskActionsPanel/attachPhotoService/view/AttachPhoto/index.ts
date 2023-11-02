@@ -1,0 +1,1 @@
+export { AttachPhoto } from './AttachPhoto'
