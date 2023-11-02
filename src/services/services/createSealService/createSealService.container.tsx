@@ -4,7 +4,10 @@ import { createSealService } from './createSealService.model';
 import { useUnit } from 'effector-react';
 import { CreateSealAppointmentForm } from './view/CreateSealAppointmentForm';
 import { WorkWithAppointmentType } from './createSealService.types';
-import { districtAppoinmtentsOnMonthQuery } from './createSealService.api';
+import {
+  $districtAppoinmtentsOnMonth,
+  districtAppoinmtentsOnMonthQuery,
+} from './createSealService.api';
 
 const { inputs, outputs } = createSealService;
 const fromId = 'create-seal-appointment';
@@ -29,7 +32,7 @@ export const CreateSealContainer = () => {
     handleWorkWithAppointment: inputs.workWithAppointment,
     actionType: outputs.$actionType,
     setMonth: inputs.setMonth,
-    appointmentsOnMonthData: districtAppoinmtentsOnMonthQuery.$data,
+    appointmentsOnMonthData: $districtAppoinmtentsOnMonth,
     appointmentsOnMonthLoading: districtAppoinmtentsOnMonthQuery.$pending,
     districtId: outputs.$districtId,
   });
