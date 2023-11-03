@@ -2,18 +2,20 @@ import React, { FC, useCallback } from 'react';
 import { saveAs } from 'file-saver';
 import { Button } from 'ui-kit/Button';
 import { UploadIcon } from 'ui-kit/icons';
-
 import {
+  CloseBlueIconSC,
   DocumentItemWrapper,
   DocumentSkeleton,
   DocumentsListElement,
   DocumentsListWrapper,
+  PhotoWrapper,
   TrashIconSC,
   Wrapper,
 } from './DocumentsLineUpload.styled';
 import { DocumentsLineUploadProps } from './DocumentsLineUpload.types';
 import { DocumentResponse } from 'api/types';
 import axios from 'api/axios';
+import { Image } from 'antd';
 
 export const DocumentsLineUpload: FC<DocumentsLineUploadProps> = ({
   fileHandler,
@@ -24,6 +26,7 @@ export const DocumentsLineUpload: FC<DocumentsLineUploadProps> = ({
   documents,
   isMaxDocuments,
   removeDocument,
+  isPhoto,
 }) => {
   const id = `file-input-${uniqId}`;
 
@@ -88,20 +91,40 @@ export const DocumentsLineUpload: FC<DocumentsLineUploadProps> = ({
       <DocumentsListWrapper>
         {(documents as DocumentResponse[]).map((document) => (
           <DocumentItemWrapper key={document.id}>
-            <TrashIconSC
-              onClick={() => {
-                try {
-                  axios.delete(`Documents/${document.id}`);
-                } catch (error) {}
-                removeDocument(document.id);
-              }}
-            />
-            <DocumentsListElement
-              onClick={() => handleDownloadFile(document.url, document.name)}
-              title={document.name || ''}
-            >
-              {document.name}
-            </DocumentsListElement>
+            {!isPhoto && (
+              <>
+                <TrashIconSC
+                  onClick={() => {
+                    try {
+                      axios.delete(`Documents/${document.id}`);
+                    } catch (error) {}
+                    removeDocument(document.id);
+                  }}
+                />
+                <DocumentsListElement
+                  onClick={() =>
+                    handleDownloadFile(document.url, document.name)
+                  }
+                  title={document.name || ''}
+                >
+                  {document.name}
+                </DocumentsListElement>
+              </>
+            )}
+
+            {isPhoto && document.url && (
+              <PhotoWrapper key={document.id}>
+                <Image height={60} src={document.url} />
+                <CloseBlueIconSC
+                  onClick={() => {
+                    try {
+                      axios.delete(`Documents/${document.id}`);
+                    } catch (error) {}
+                    removeDocument(document.id);
+                  }}
+                />
+              </PhotoWrapper>
+            )}
           </DocumentItemWrapper>
         ))}
       </DocumentsListWrapper>

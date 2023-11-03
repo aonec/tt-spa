@@ -1,6 +1,6 @@
 import { Skeleton } from 'antd';
 import styled from 'styled-components';
-import { TrashIcon } from 'ui-kit/icons';
+import { CloseBlueIcon, TrashIcon } from 'ui-kit/icons';
 
 export const Wrapper = styled.div`
   padding-right: 16px;
@@ -10,7 +10,7 @@ export const Wrapper = styled.div`
 
 export const DocumentsListWrapper = styled.div`
   margin-left: 5px;
-  height: 42px;
+  height: 48px;
   display: flex;
   align-items: center;
   overflow: hidden;
@@ -60,4 +60,12 @@ export const DocumentSkeleton = styled(Skeleton.Input)`
   margin-right: 3px;
   min-width: 70px;
   border-radius: 4px;
+`;
+
+export const PhotoWrapper = styled.div`
+  margin-left: 16px;
+`;
+
+export const CloseBlueIconSC = styled(CloseBlueIcon)`
+  padding-bottom: 0px;
 `;

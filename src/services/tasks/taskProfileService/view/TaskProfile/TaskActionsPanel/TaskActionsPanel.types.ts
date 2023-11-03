@@ -33,6 +33,7 @@ export enum TaskPanelComponentAdditionalType {
   MailText = 'MailText',
   ContractorSelect = 'ContractorSelect',
   EmailTemplate = 'EmailTemplate',
+  CurrentApplication = 'CurrentApplication',
 }
 
 export type ActionComponentProps = {

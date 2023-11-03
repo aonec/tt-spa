@@ -7,13 +7,14 @@ import {
 export type Document = DocumentResponse | DocumentLiteResponse;
 
 export type DocumentsUploadContainerProps = {
-  documents?: Document[] | null;
   onChange: (documents: Document[]) => void;
   uniqId: string;
+  documents?: Document[] | null;
   max?: number;
   type?: EDocumentType;
   label?: string;
   componentType?: DocumentsUploadComponentType;
+  isPhoto?: boolean;
 };
 
 export enum DocumentsUploadComponentType {

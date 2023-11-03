@@ -25,6 +25,7 @@ export const DocumentsUploadContainer: FC<DocumentsUploadContainerProps> = ({
   label,
   type,
   componentType = DocumentsUploadComponentType.DragAndDrop,
+  isPhoto,
 }) => {
   if (!documents) {
     documents = [];
@@ -53,7 +54,7 @@ export const DocumentsUploadContainer: FC<DocumentsUploadContainerProps> = ({
 
   return componentType === DocumentsUploadComponentType.DragAndDrop ? (
     <div>
-      {!isMaxDocuments && (
+      {isMaxDocuments && (
         <DragAndDrop
           disabled={isLoading}
           accept={accept}
@@ -86,6 +87,7 @@ export const DocumentsUploadContainer: FC<DocumentsUploadContainerProps> = ({
       uniqId={uniqId}
       label={label}
       isMaxDocuments={isMaxDocuments}
+      isPhoto={isPhoto}
     />
   );
 };

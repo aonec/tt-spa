@@ -7,6 +7,10 @@ export const documentComponentDataDictionary: {
     lable: 'Загрузить письмо из шаблона',
     maxDocuments: 1,
   },
+  [TaskPanelComponentAdditionalType.CurrentApplication]: {
+    lable: 'Загрузить акт',
+    maxDocuments: Infinity,
+  },
   Default: {
     lable: 'Загрузить',
     maxDocuments: Infinity,

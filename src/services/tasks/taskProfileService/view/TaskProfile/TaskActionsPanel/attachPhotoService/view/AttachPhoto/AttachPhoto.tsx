@@ -1,5 +1,4 @@
 import React, { FC, useEffect, useState } from 'react';
-import { Wrapper } from './AttachPhoto.styled';
 import { AttachPhotoProps } from './AttachPhoto.types';
 import { DocumentsUploadContainer } from 'ui-kit/DocumentsService';
 import {
@@ -21,11 +20,12 @@ export const AttachPhoto: FC<AttachPhotoProps> = ({
     <DocumentsUploadContainer
       documents={documents}
       onChange={setDocuments}
-      uniqId="task-profile-documents-attach"
+      uniqId="task-profile-photo-attach"
       label="Загрузить фото"
       componentType={DocumentsUploadComponentType.Line}
       max={9}
       type={EDocumentType.Photo}
+      isPhoto={true}
     />
   );
 };
