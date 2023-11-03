@@ -122,7 +122,8 @@ export const SettingPage: FC<SettingPageProps> = ({
 
     const path = keys.find((elem) => elem.visible);
 
-    if (path) history.push(`/${pagePath}/${path.key}`);
+    if (pathname.split('/').length === 2 && path)
+      history.push(`/${pagePath}/${path.key}`);
   }, [
     isAdminSettings,
     featureToggles.controllersDistribution,
@@ -130,6 +131,7 @@ export const SettingPage: FC<SettingPageProps> = ({
     featureToggles.temperatureGraph,
     featureToggles.workingRanges,
     history,
+    pathname,
     pagePath,
   ]);
 
@@ -145,7 +147,7 @@ export const SettingPage: FC<SettingPageProps> = ({
       />
       <TabsSC
         activeKey={section}
-        onChange={(key) => history.push(`/${pagePath}/${key}`)}
+        onChange={(key) => history.replace(`/${pagePath}/${key}`)}
       >
         {settingsComponent}
       </TabsSC>

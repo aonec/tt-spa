@@ -1,9 +1,10 @@
-import { StreetWithBuildingNumbersResponse } from 'api/types';
+import { DistrictResponse, House } from 'api/types';
 import {
-  CheckedHousingStocksIdWithStreets,
+  CheckedHousingStocksWithStreets,
   CheckedHousingStocksIdWithStreetsHandler,
   Coordinate,
   FilterType,
+  StreetWithPreparedBuildingNumbers,
 } from './districtBordersByAddressService.types';
 
 // Функция, определяющая, лежит ли точка p1 левее точки p2 относительно точки p0
@@ -80,7 +81,7 @@ export const findPolygonCenter = (polygon: Polygon): [number, number] => {
 };
 
 export const getFilteredAddresses = (
-  addresses: StreetWithBuildingNumbersResponse[] | null,
+  addresses: StreetWithPreparedBuildingNumbers[] | null,
   filterData: FilterType | null,
 ) => {
   if (!addresses) return [];
@@ -118,61 +119,44 @@ export const getFilteredAddresses = (
         street: filteredByStreetAddress[0].street,
         addresses: filteredHouses,
       },
-    ] as StreetWithBuildingNumbersResponse[];
+    ] as StreetWithPreparedBuildingNumbers[];
   }
 };
 
 export const addHousingStocksToChecked = (
-  prevIdsWithStreet: CheckedHousingStocksIdWithStreets[],
-  commingIdsWithStreet: CheckedHousingStocksIdWithStreetsHandler,
+  prevIdsWithStreet: CheckedHousingStocksWithStreets[],
+  comingIdsWithStreet: CheckedHousingStocksIdWithStreetsHandler,
 ) => {
-  const street = commingIdsWithStreet.street;
+  const street = comingIdsWithStreet.street;
 
-  const isArray = Array.isArray(commingIdsWithStreet.housingStocksId);
-
-  const housingStockByStreetIndex = prevIdsWithStreet.findIndex(
+  const streetIndex = prevIdsWithStreet.findIndex(
     (elem) => elem.street === street,
   );
 
-  if (housingStockByStreetIndex === -1) {
+  if (streetIndex === -1) {
     return [
       ...prevIdsWithStreet,
       {
         street: street ? street : 'unknown',
-        housingStocksId: isArray
-          ? commingIdsWithStreet.housingStocksId
-          : ([commingIdsWithStreet.housingStocksId] as any),
+        addresses: comingIdsWithStreet.addresses,
       },
     ];
-  } else {
-    if (commingIdsWithStreet.isToAdd) {
-      const clonePrevIdsWithStreet = prevIdsWithStreet.slice();
-
-      clonePrevIdsWithStreet[housingStockByStreetIndex] = {
-        street: street ? street : 'unknown',
-        housingStocksId: isArray
-          ? (commingIdsWithStreet.housingStocksId as any)
-          : [
-              ...prevIdsWithStreet[housingStockByStreetIndex].housingStocksId,
-              commingIdsWithStreet.housingStocksId,
-            ],
-      };
-
-      return clonePrevIdsWithStreet;
-    }
-    if (!commingIdsWithStreet.isToAdd) {
-      const clonePrevIdsWithStreet = prevIdsWithStreet.slice();
-
-      clonePrevIdsWithStreet[housingStockByStreetIndex] = {
-        street: street ? street : 'unknown',
-        housingStocksId: isArray
-          ? []
-          : prevIdsWithStreet[housingStockByStreetIndex].housingStocksId.filter(
-              (housingStockId) =>
-                housingStockId !== commingIdsWithStreet.housingStocksId,
-            ),
-      };
-      return clonePrevIdsWithStreet;
-    }
   }
+
+  const clonePrevIdsWithStreet = prevIdsWithStreet.slice();
+
+  clonePrevIdsWithStreet[streetIndex] = {
+    street: street ? street : 'unknown',
+    addresses: comingIdsWithStreet.addresses,
+  };
+
+  return clonePrevIdsWithStreet;
 };
+
+export const getHousesWithDisctictId = (
+  districts: DistrictResponse[],
+): House[] =>
+  districts.reduce(
+    (acc, district) => [...acc, ...(district.houses || [])],
+    [] as House[],
+  );

@@ -1,4 +1,8 @@
-import { EOrderByRule } from 'api/types';
+import {
+  AddressShortResponse,
+  EOrderByRule,
+  StreetWithBuildingNumbersResponse,
+} from 'api/types';
 
 export type FetchAddressQueryType = {
   City?: string;
@@ -17,15 +21,14 @@ export type FilterType = {
   corpus?: string;
 };
 
-export type CheckedHousingStocksIdWithStreets = {
+export type CheckedHousingStocksWithStreets = {
   street: string;
-  housingStocksId: number[] | [];
+  addresses: AddressShortResponse[];
 };
 
 export type CheckedHousingStocksIdWithStreetsHandler = {
   street: string | null;
-  housingStocksId: number[] | number;
-  isToAdd: boolean;
+  addresses: AddressShortResponse[];
 };
 
 export type HousingStocksIdsWithCoordinates = {
@@ -39,4 +42,18 @@ export type HousingStocksIdsWithCoordinates = {
 export type Coordinate = {
   latitude: number;
   longitude: number;
+};
+
+export type StreetWithPreparedBuildingNumbers = Omit<
+  StreetWithBuildingNumbersResponse,
+  'addresses'
+> & {
+  addresses: PreparedBuildingWithFlag[] | null;
+};
+
+export type PreparedBuildingWithFlag = {
+  buildingId: number;
+  number: string | null;
+  corpus: string | null;
+  isDistributed: boolean;
 };

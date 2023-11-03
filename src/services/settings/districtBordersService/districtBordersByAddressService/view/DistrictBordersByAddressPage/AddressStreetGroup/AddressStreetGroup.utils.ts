@@ -21,7 +21,7 @@ function splitStringByLetter(address: AddressShortResponse) {
 }
 
 // сортирует по номеру и буквам, потом обратно "склеевает" в одну строку
-function sortArray(addresses: ModifiedAddressShortResponse) {
+function sortArray(addresses: ModifiedAddressShortResponse[]) {
   addresses.sort((a, b) => {
     const numComparison = parseInt(a.number[0]) - parseInt(b.number[0]);
     const letterComparison = (a.number[1] || '').localeCompare(
@@ -38,7 +38,7 @@ function sortArray(addresses: ModifiedAddressShortResponse) {
 
 // возвращает отсортированный массив адресов путем очерёдного вызова вышепредставленных функций
 export const sortStickyBodyAddress = (
-  addresses: AddressShortResponse[] | null,
+  addresses: (AddressShortResponse & { isDistributed: Boolean })[] | null,
 ) => {
   if (!addresses) {
     return [];
@@ -50,7 +50,7 @@ export const sortStickyBodyAddress = (
     .map((address) => {
       return splitStringByLetter(address);
     })
-    .filter(Boolean) as ModifiedAddressShortResponse;
+    .filter(Boolean) as ModifiedAddressShortResponse[];
 
   const sortedFlatArray = sortArray(splitedAddressesArr);
 
