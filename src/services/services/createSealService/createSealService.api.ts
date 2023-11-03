@@ -63,12 +63,15 @@ export const districtAppoinmtentsOnMonthQuery = createQuery<
               date: string;
               counting: AppointmentCounterResponse | null;
             };
+            const numberOfCounts =
+              (counting?.distributed || 0) + (counting?.notDistributed || 0);
 
-            addAppointment({
-              date,
-              numberOfCounts:
-                (counting?.distributed || 0) + (counting?.notDistributed || 0),
-            });
+            if (numberOfCounts) {
+              addAppointment({
+                date,
+                numberOfCounts,
+              });
+            }
           }),
       ),
     );
