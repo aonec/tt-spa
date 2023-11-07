@@ -1,11 +1,6 @@
 import React, { FC } from 'react';
 import { NodeArchivePageProps } from './NodeArchivePage.types';
-import {
-  FiltersWrap,
-  PageHeaderSC,
-  StickyWrapper,
-  Wrap,
-} from './NodeArchivePage.styled';
+import { PageHeaderSC, StickyWrapper, Wrap } from './NodeArchivePage.styled';
 import { NodeInfo } from './components/NodeInfo/';
 import { SearchNodeArchiveFiltersContainer } from '../../searchNodeArchiveFiltersService';
 import { NodeArchiveContainer } from '../../displayNodeArchiveService';
@@ -22,9 +17,7 @@ export const NodeArchivePage: FC<NodeArchivePageProps> = ({ node }) => {
       <Wrap>
         <NodeArchiveContainer />
 
-        <FiltersWrap>
-          <SearchNodeArchiveFiltersContainer />
-        </FiltersWrap>
+        <SearchNodeArchiveFiltersContainer />
       </Wrap>
     </>
   );
