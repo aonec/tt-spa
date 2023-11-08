@@ -7,9 +7,7 @@ import {
 } from 'api/types';
 import { GetDistrictAppointmentsRequestPayload } from '../distributeRecordsService/distributeRecordsService.types';
 import { createQuery } from '@farfetched/core';
-import { getFilledArray } from 'utils/getFilledArray';
 import dayjs from 'dayjs';
-import { createEvent, createStore, sample } from 'effector';
 
 export const fetchCreateSeal = (
   payload: AppointmentCreateRequest,
@@ -24,76 +22,44 @@ export const fetchEditAppointmentSeal = ({
 export const getDistrict = (HouseId: number): Promise<DistrictResponse[]> =>
   axios.get('IndividualSeal/Districts', { params: { HouseId } });
 
-const clearAppointments = createEvent();
-const addAppointment = createEvent<{ date: string; numberOfCounts: number }>();
-export const $districtAppoinmtentsOnMonth = createStore<{
-  [key: string]: number;
-}>({})
-  .on(addAppointment, (prevCounts, { date, numberOfCounts }) => ({
-    ...prevCounts,
-    [date]: numberOfCounts,
-  }))
-  .reset(clearAppointments);
-
 export const districtAppoinmtentsOnMonthQuery = createQuery<
   GetDistrictAppointmentsRequestPayload,
-  void
+  {
+    [key: string]: number;
+  }
 >({
   handler: async ({ date, districtId }) => {
-    const startOfMonth = dayjs(date).startOf('month');
+    let startOfMonth = dayjs(date).startOf('month');
     const today = dayjs();
 
-    await Promise.all(
-      getFilledArray(startOfMonth.daysInMonth(), (index) => index).map(
-        (shift) =>
-          new Promise((resolve) => {
-            const date = startOfMonth.add(shift, 'day');
-            if (date.diff(today, 'day') < 0) {
-              return resolve({ date, counting: null });
-            }
+    if (startOfMonth.diff(today, 'day') < 0) {
+      startOfMonth = today.startOf('day');
+    }
 
-            const formatedDate = date.format('YYYY-MM-DD');
-
-            getDistrictAppoinmtentsCounting({
-              date: formatedDate,
-              districtId,
-            }).then((counting) => resolve({ date: formatedDate, counting }));
-          }).then((data) => {
-            const { counting, date } = data as {
-              date: string;
-              counting: AppointmentCounterResponse | null;
-            };
-            const numberOfCounts =
-              (counting?.distributed || 0) + (counting?.notDistributed || 0);
-
-            if (numberOfCounts) {
-              addAppointment({
-                date,
-                numberOfCounts,
-              });
-            }
-          }),
-      ),
+    const res: AppointmentCounterResponse[] = await axios.get(
+      'IndividualSeal/Appointments/Planning',
+      {
+        params: {
+          districtId,
+          from: startOfMonth.format('YYYY-MM-DD'),
+          to: startOfMonth
+            .add(1, 'month')
+            .startOf('month')
+            .format('YYYY-MM-DD'),
+        },
+      },
     );
+    const preparedRes = res.reduce(
+      (acc, day) => ({
+        ...acc,
+        [dayjs(day.date).format('YYYY-MM-DD')]:
+          (day?.distributed || 0) + (day?.notDistributed || 0),
+      }),
+      {} as {
+        [key: string]: number;
+      },
+    );
+
+    return preparedRes;
   },
 });
-
-sample({
-  clock: districtAppoinmtentsOnMonthQuery.start,
-  target: clearAppointments,
-});
-
-const getDistrictAppoinmtentsCounting = async (
-  params: GetDistrictAppointmentsRequestPayload,
-) => {
-  try {
-    const response: AppointmentCounterResponse = await axios.get(
-      'IndividualSeal/Appointments/Counting',
-      { params },
-    );
-
-    return response;
-  } catch {
-    return null;
-  }
-};

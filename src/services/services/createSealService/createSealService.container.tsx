@@ -4,10 +4,7 @@ import { createSealService } from './createSealService.model';
 import { useUnit } from 'effector-react';
 import { CreateSealAppointmentForm } from './view/CreateSealAppointmentForm';
 import { WorkWithAppointmentType } from './createSealService.types';
-import {
-  $districtAppoinmtentsOnMonth,
-  districtAppoinmtentsOnMonthQuery,
-} from './createSealService.api';
+import { districtAppoinmtentsOnMonthQuery } from './createSealService.api';
 
 const { inputs, outputs } = createSealService;
 const fromId = 'create-seal-appointment';
@@ -32,7 +29,7 @@ export const CreateSealContainer = () => {
     handleWorkWithAppointment: inputs.workWithAppointment,
     actionType: outputs.$actionType,
     setMonth: inputs.setMonth,
-    appointmentsOnMonthData: $districtAppoinmtentsOnMonth,
+    appointmentsOnMonthData: districtAppoinmtentsOnMonthQuery.$data,
     appointmentsOnMonthLoading: districtAppoinmtentsOnMonthQuery.$pending,
     districtId: outputs.$districtId,
   });
