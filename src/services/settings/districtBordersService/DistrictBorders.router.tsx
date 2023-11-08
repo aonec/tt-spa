@@ -10,8 +10,7 @@ import { ManageDistrictsMapContainer } from './manageDistrictsMapService';
 import { usePermission } from 'hooks/usePermission';
 import { ESecuredIdentityRoleName } from 'api/types';
 
-const { DistrictBordersByAddressPageGate } =
-  districtBordersByAddressService.gates;
+const { DistrictBordersGroupPageGate } = districtBordersByAddressService.gates;
 
 export const DistrictBordersRouter = () => {
   const isOperator = usePermission([ESecuredIdentityRoleName.Operator]);
@@ -25,7 +24,7 @@ export const DistrictBordersRouter = () => {
 
   return [
     <Route path="/districtBordersSettings">
-      <DistrictBordersByAddressPageGate />
+      <DistrictBordersGroupPageGate />
       {(isSeniorOperator || isOperator) && (
         <Route
           path="/districtBordersSettings/createByHousingStocksList"
