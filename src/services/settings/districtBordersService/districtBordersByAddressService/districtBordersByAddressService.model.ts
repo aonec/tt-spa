@@ -32,6 +32,7 @@ import {
 } from '../createDistrictBorderMapService/createDistrictBorderMapService.api';
 
 const DistrictBordersByAddressPageGate = createGate();
+const DistrictBordersGroupPageGate = createGate();
 
 const pageResetter = createEvent();
 
@@ -130,7 +131,7 @@ sample({
 });
 
 sample({
-  clock: DistrictBordersByAddressPageGate.close,
+  clock: DistrictBordersGroupPageGate.close,
   target: pageResetter,
 });
 
@@ -164,5 +165,5 @@ export const districtBordersByAddressService = {
     $checkedhousingStockIdsWithStreet,
     $isLoading,
   },
-  gates: { DistrictBordersByAddressPageGate },
+  gates: { DistrictBordersByAddressPageGate, DistrictBordersGroupPageGate },
 };

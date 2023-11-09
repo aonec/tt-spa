@@ -13,6 +13,8 @@ import {
 } from '../showSelectedAddressesService';
 
 const { inputs, outputs } = districtBordersByAddressService;
+const { DistrictBordersByAddressPageGate } =
+  districtBordersByAddressService.gates;
 
 export const DistrictBordersByAddressContainer = () => {
   const {
@@ -86,6 +88,7 @@ export const DistrictBordersByAddressContainer = () => {
 
   return (
     <>
+      <DistrictBordersByAddressPageGate />
       <ShowSelectedAddressesContainer />
       <DistrictBordersByAddressPage
         selectCity={selectCity}
