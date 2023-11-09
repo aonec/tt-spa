@@ -128,14 +128,14 @@ export function useReadingHistoryValues() {
   const uploadReading = useCallback(
     async (reading: IndividualDeviceReadingsCreateRequest) => {
       const date = dayjs(reading.readingDate);
-      const dateString = `${date.month() + 2}.${date.year()}`;
+      const dateString = date.add(1, 'month').format('M.YYYY');
 
       setUploadingReadingsStatuses((prev) => ({
         ...prev,
         [dateString]: 'pending',
       }));
       try {
-        await createReading(reading);
+        reading.value1 !== null && (await createReading(reading));
         readingsHistoryService.inputs.refetchReadingHistory(Number(deviceId));
 
         setUploadingReadingsStatuses((prev) => ({

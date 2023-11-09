@@ -94,12 +94,12 @@ export const AccountingNodeReadingsLine: FC<
       </DeviceInfo>
       <div>{device?.scaleFactor}</div>
       <AccountingNodeReadingsInputBlock
-        handleSendReading={(payload) =>
+        handleSendReading={(payload) => {
           handleValidateReading({
             ...payload,
             reading: previousReadingReadingBySliderIndex,
-          })
-        }
+          });
+        }}
         readingValue={getNodeReadingValue(previousReadingReadingBySliderIndex)}
         readingDate={previousReadingReadingBySliderIndex?.readingDate}
         sliderIndex={sliderIndex}
@@ -114,12 +114,12 @@ export const AccountingNodeReadingsLine: FC<
       />
 
       <AccountingNodeReadingsInputBlock
-        handleSendReading={(payload) =>
+        handleSendReading={(payload) => {
           handleValidateReading({
             ...payload,
             reading: currentReading,
-          })
-        }
+          });
+        }}
         readingValue={getNodeReadingValue(currentReading)}
         readingDate={currentReading?.readingDate}
         resource={device.resource}
@@ -137,12 +137,12 @@ export const AccountingNodeReadingsLine: FC<
       <div>{consumption}</div>
       {currentReading ? (
         <AccountingNodeReadingsInputBlock
-          handleSendReading={({ value }) =>
+          handleSendReading={({ value }) => {
             handleSendNonResConsumption({
               oldReadingId: currentReading.id,
               nonResidentialRoomConsumption: value || 0,
-            })
-          }
+            });
+          }}
           readingValue={currentReading.nonResidentialRoomConsumption}
           sliderIndex={-1}
           status={deviceNonResConsumptionInputStatuses[currentReading.id]}
