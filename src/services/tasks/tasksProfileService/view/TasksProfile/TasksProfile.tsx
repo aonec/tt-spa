@@ -132,16 +132,13 @@ export const TasksProfile: FC<TasksProfileProps> = ({
                     <TabPane
                       tab={executingTabText}
                       key={TaskGroupingFilter.Executing}
-                    ></TabPane>
+                    />
                   )}
                   <TabPane
                     tab={observingTabText}
                     key={TaskGroupingFilter.Observing}
-                  ></TabPane>
-                  <TabPane
-                    tab="Архив"
-                    key={TaskGroupingFilter.Archived}
-                  ></TabPane>
+                  />
+                  <TabPane tab="Архив" key={TaskGroupingFilter.Archived} />
                 </TabsSC>
               ) : (
                 <TabsSC activeKey={grouptype} onChange={history.push}>

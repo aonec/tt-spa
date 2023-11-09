@@ -73,6 +73,7 @@ export const SearchTasks: FC<SearchTasksProps> = ({
     },
     [setFieldValue],
   );
+
   const handleKeyDown = useMemo(
     () =>
       fromEnter((e) => {
@@ -82,17 +83,18 @@ export const SearchTasks: FC<SearchTasksProps> = ({
       }),
     [setFieldValue, handleSubmit],
   );
+
   const clearInput = useCallback(() => {
     setFieldValue('TaskId', '');
   }, [setFieldValue]);
 
   const { grouptype } = useParams<{ grouptype: TaskGroupingFilter }>();
 
-  const clearAllFilters = () => {
+  const clearAllFilters = useCallback(() => {
     clearFilters();
     resetForm();
     changeFiltersByGroupType(grouptype);
-  };
+  }, [clearFilters, resetForm, changeFiltersByGroupType, grouptype]);
 
   useEffect(() => {
     if (lastGroupTypeRef.current === currentFilter?.GroupType) {
@@ -109,6 +111,7 @@ export const SearchTasks: FC<SearchTasksProps> = ({
   }, [currentFilter?.GroupType, lastGroupTypeRef, clearInput]);
 
   const isArchived = currentFilter?.GroupType === 'Archived';
+
   return (
     <ExtendedSearch
       isOpen={isExtendedSearchOpen}

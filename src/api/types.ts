@@ -78,7 +78,7 @@ export interface AddOrganizationModel {
 }
 
 export interface AddOrganizationUserModel {
-  email: string;
+  email?: string | null;
   lastName: string;
   firstName: string;
   middleName?: string | null;
@@ -1821,6 +1821,7 @@ export enum EManagingFirmTaskFilterType {
   PlannedApplication = 'PlannedApplication',
   CurrentApplication = 'CurrentApplication',
   ResourceDisconnecting = 'ResourceDisconnecting',
+  TemperatureNormativeDeviation = 'TemperatureNormativeDeviation',
 }
 
 export interface EManagingFirmTaskFilterTypeNullableStringDictionaryItem {
@@ -1848,6 +1849,7 @@ export enum EManagingFirmTaskType {
   CurrentApplicationUnassigned = 'CurrentApplicationUnassigned',
   EmergencyApplicationUnassigned = 'EmergencyApplicationUnassigned',
   PlannedApplicationUnassigned = 'PlannedApplicationUnassigned',
+  TemperatureNormativeDeviation = 'TemperatureNormativeDeviation',
 }
 
 export enum EMeteringDeviceType {
@@ -2009,8 +2011,6 @@ export enum EReportName {
   InspectorsWorkingReport = 'InspectorsWorkingReport',
   CallCenterWorkingReport = 'CallCenterWorkingReport',
   HouseManagementsReport = 'HouseManagementsReport',
-  CheckingDatesReport = 'CheckingDatesReport',
-  ClosedDevicesReport = 'ClosedDevicesReport',
 }
 
 export enum EReportType {
@@ -2170,6 +2170,7 @@ export enum ETaskConfirmationType {
   PipeRuptureNotConfirmCalculatorMalfunction = 'PipeRuptureNotConfirm_CalculatorMalfunction',
   PipeRuptureNotConfirmPowerMalfunction = 'PipeRuptureNotConfirm_PowerMalfunction',
   ResourceDisconnectingNotConfirm = 'ResourceDisconnectingNotConfirm',
+  FeedBackFlowTemperatureErrorNoted = 'FeedBackFlowTemperatureErrorNoted',
 }
 
 export interface ETaskConfirmationTypeStringDictionaryItem {
@@ -2191,6 +2192,7 @@ export enum ETaskCreateType {
   PlannedApplication = 'PlannedApplication',
   CurrentApplication = 'CurrentApplication',
   ResourceDisconnecting = 'ResourceDisconnecting',
+  TemperatureNormativeDeviation = 'TemperatureNormativeDeviation',
 }
 
 export enum ETaskEngineeringElement {
@@ -2356,7 +2358,7 @@ export interface ErpApplicationResponse {
   /** @format uuid */
   id: string;
   /** @format uuid */
-  erpId: string;
+  erpId: string | null;
   number: string | null;
   type: EisTaskType;
   comment: string | null;
@@ -5346,8 +5348,6 @@ export interface TaskCreateRequest {
   activationTriggerDateTimeUtc?: string | null;
   /** @format uuid */
   activationTriggerGuid?: string | null;
-  assignment?: TaskCreationAssignment | null;
-  application?: TaskCreationApplication | null;
 }
 
 export interface TaskCreateResponse {
@@ -5358,23 +5358,6 @@ export interface TaskCreateResponse {
 
 export interface TaskCreateResponseSuccessApiResponse {
   successResponse: TaskCreateResponse | null;
-}
-
-export interface TaskCreationApplication {
-  number?: string | null;
-  sourceName?: string | null;
-  nomenclatureName?: string | null;
-  /** @format date-time */
-  creationTime?: string;
-  /** @format date-time */
-  executionDeadline?: string;
-}
-
-export interface TaskCreationAssignment {
-  /** @format int32 */
-  executorId?: number;
-  /** @format int32 */
-  observerId?: number;
 }
 
 export interface TaskCreationTargetObject {
@@ -14224,6 +14207,8 @@ export class Api<
         Corpus?: string;
         ApartmentNumber?: string;
         /** @format int32 */
+        PerpetratorId?: number;
+        /** @format int32 */
         PageNumber?: number;
         /** @format int32 */
         PageSize?: number;
@@ -14280,6 +14265,8 @@ export class Api<
         HousingStockNumber?: string;
         Corpus?: string;
         ApartmentNumber?: string;
+        /** @format int32 */
+        PerpetratorId?: number;
         /** @format int32 */
         PageNumber?: number;
         /** @format int32 */
@@ -14588,6 +14575,8 @@ export class Api<
         HousingStockNumber?: string;
         Corpus?: string;
         ApartmentNumber?: string;
+        /** @format int32 */
+        PerpetratorId?: number;
         /** @format int32 */
         PageNumber?: number;
         /** @format int32 */
