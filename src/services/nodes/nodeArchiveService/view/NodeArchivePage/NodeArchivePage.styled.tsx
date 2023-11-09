@@ -2,14 +2,9 @@ import { PageHeader } from 'ui-kit/shared/PageHeader';
 import styled from 'styled-components';
 
 export const Wrap = styled.div`
-  display: flex;
-`;
-
-export const FiltersWrap = styled.div`
-  position: fixed;
-  top: 130px;
-  left: 1050px;
-  background-color: #fff;
+  display: grid;
+  grid-template-columns: 4fr 1fr;
+  grid-gap: 20px;
 `;
 
 export const PageHeaderSC = styled(PageHeader)`
