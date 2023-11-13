@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useMemo } from 'react';
 import {
   CompanyProfileProps,
   CompanyProfileSection,
@@ -9,8 +9,6 @@ import { CommonInfoTab } from './Tabs/CommonInfoTab';
 import { Staff } from './Tabs/Staff';
 import { Contractors } from './Tabs/Contractors';
 import { TabsSC } from './CompanyProfile.styled';
-
-const { TabPane } = TabsSC;
 
 export const CompanyProfile: FC<CompanyProfileProps> = ({
   currentManagingFirm,
@@ -30,6 +28,15 @@ export const CompanyProfile: FC<CompanyProfileProps> = ({
 }) => {
   const history = useHistory();
   const { section } = useParams<{ section: CompanyProfileSection }>();
+
+  const tabItems = useMemo(
+    () => [
+      { label: 'Общие данные', key: CompanyProfileSection.CommonInfo },
+      { label: 'Сотрудники', key: CompanyProfileSection.Staff },
+      { label: 'Контрагенты', key: CompanyProfileSection.Contractors },
+    ],
+    [],
+  );
 
   return (
     <>
@@ -63,11 +70,8 @@ export const CompanyProfile: FC<CompanyProfileProps> = ({
         onChange={(activeKey) =>
           history.push(`/companyProfile/${activeKey as CompanyProfileSection}`)
         }
-      >
-        <TabPane tab="Общие данные" key={CompanyProfileSection.CommonInfo} />
-        <TabPane tab="Сотрудники" key={CompanyProfileSection.Staff} />
-        <TabPane tab="Контрагенты" key={CompanyProfileSection.Contractors} />
-      </TabsSC>
+        items={tabItems}
+      />
 
       <Route path="/companyProfile/commonInfo" exact>
         <CommonInfoTab currentManagingFirm={currentManagingFirm} />

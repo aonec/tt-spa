@@ -1,4 +1,4 @@
-import React, { FC, ReactNode } from 'react';
+import React, { FC, ReactNode, useMemo } from 'react';
 import { useHistory } from 'react-router-dom';
 import { ActsCardContainer } from 'services/apartments/actsCardService';
 import { ApartmentActsListContainer } from 'services/apartments/apartmentActsListService';
@@ -116,6 +116,16 @@ export const ApartmentProfile: FC<ApartmentProfileProps> = ({
     [ApartmentSection.ActsJournal]: <ApartmentActsListContainer />,
   };
 
+  const tabItems = useMemo(
+    () => [
+      { label: 'Общие данные', key: ApartmentSection.CommonData },
+      { label: 'Собственники', key: ApartmentSection.Homeowners },
+      { label: 'Приборы учета', key: ApartmentSection.Testimony },
+      { label: 'Журнал актов', key: ApartmentSection.ActsJournal },
+    ],
+    [],
+  );
+
   return (
     <WithLoader isLoading={isApartmentLoading}>
       {apartment && (
@@ -156,24 +166,8 @@ export const ApartmentProfile: FC<ApartmentProfileProps> = ({
                   }`,
                 )
               }
-            >
-              <Tabs.TabPane
-                tab="Общие данные"
-                key={ApartmentSection.CommonData}
-              />
-              <Tabs.TabPane
-                tab="Собственники"
-                key={ApartmentSection.Homeowners}
-              />
-              <Tabs.TabPane
-                tab="Приборы учета"
-                key={ApartmentSection.Testimony}
-              />
-              <Tabs.TabPane
-                tab="Журнал актов"
-                key={ApartmentSection.ActsJournal}
-              />
-            </Tabs>
+              items={tabItems}
+            />
           </TabsWrapper>
           <ContentWrapper>
             <BaseContentWrapper>

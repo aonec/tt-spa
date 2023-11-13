@@ -16,7 +16,6 @@ import {
 import { HousingStockProfileProps } from './HousingStockProfile.types';
 import { LinkCard } from 'ui-kit/shared/LinkCard';
 import { stringifyUrl } from 'query-string';
-const { TabPane } = TabsSC;
 
 export const HousingStockProfile: FC<HousingStockProfileProps> = ({
   housingStock,
@@ -49,6 +48,18 @@ export const HousingStockProfile: FC<HousingStockProfileProps> = ({
       ),
     }),
     [housingStock, resourceDisconnections],
+  );
+
+  const tabItems = useMemo(
+    () => [
+      { label: 'Общая информация', key: HousingStockProfileGrouptype.Common },
+      { label: 'Квартиры', key: HousingStockProfileGrouptype.Apartments },
+      {
+        label: 'Системы учета ресурсов',
+        key: HousingStockProfileGrouptype.Devices,
+      },
+    ],
+    [],
   );
 
   return (
@@ -89,17 +100,9 @@ export const HousingStockProfile: FC<HousingStockProfileProps> = ({
           setCurrentGrouptype(grouptype as HousingStockProfileGrouptype)
         }
         activeKey={currentGrouptype}
-      >
-        <TabPane
-          tab="Общая информация"
-          key={HousingStockProfileGrouptype.Common}
-        />
-        <TabPane tab="Квартиры" key={HousingStockProfileGrouptype.Apartments} />
-        <TabPane
-          tab="Системы учета ресурсов"
-          key={HousingStockProfileGrouptype.Devices}
-        />
-      </TabsSC>
+        items={tabItems}
+      />
+
       <Wrapper>
         <ContentWrapper>{content[currentGrouptype]}</ContentWrapper>
         <div>

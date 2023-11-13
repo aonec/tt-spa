@@ -1,10 +1,10 @@
 import { Link } from 'react-router-dom';
 import styled, { css } from 'styled-components';
 
-export const Wrapper = styled.div`
+export const Wrapper = styled.div<{ floating: boolean }>`
   max-width: 1200px;
   overflow-x: auto;
-  width: min-content;
+  width: ${({ floating }) => (floating ? '100%' : 'min-content')};
 `;
 
 const stickyHeaderCss = css`

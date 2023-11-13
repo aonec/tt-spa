@@ -1,5 +1,5 @@
 import { PageHeader } from 'ui-kit/shared/PageHeader';
-import React, { FC } from 'react';
+import React, { FC, useMemo } from 'react';
 import { useHistory } from 'react-router-dom';
 import { GoBack } from 'ui-kit/shared/GoBack';
 import { HeaderInfoString } from 'ui-kit/shared/HeaderInfoString';
@@ -34,6 +34,14 @@ export const EditHousingMeteringDevicePage: FC<
   const history = useHistory();
   const onCancel = () => history.goBack();
 
+  const tabItems = useMemo(
+    () => [
+      { label: 'Общие данные', key: EditHousingMeteringDeviceTabs.CommonInfo },
+      { label: 'Документы', key: EditHousingMeteringDeviceTabs.Documents },
+    ],
+    [],
+  );
+
   return (
     <Wrapper>
       <GoBack />
@@ -63,16 +71,8 @@ export const EditHousingMeteringDevicePage: FC<
           handleChangeTab(value as EditHousingMeteringDeviceTabs);
         }}
         activeKey={currentTab}
-      >
-        <Tabs.TabPane
-          tab="Общие данные"
-          key={EditHousingMeteringDeviceTabs.CommonInfo}
-        />
-        <Tabs.TabPane
-          tab="Документы"
-          key={EditHousingMeteringDeviceTabs.Documents}
-        />
-      </Tabs>
+        items={tabItems}
+      />
 
       {currentTab === EditHousingMeteringDeviceTabs.CommonInfo && (
         <EditHousingMeteringDeviceCommonInfo

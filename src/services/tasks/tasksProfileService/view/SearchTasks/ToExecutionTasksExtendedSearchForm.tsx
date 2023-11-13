@@ -227,7 +227,7 @@ export const ToExecutionTasksExtendedSearchForm: React.FC<
             data-reading-input="tasksExtendedSearch"
             id="TaskType"
             placeholder="Тип задачи"
-            value={values.TaskType!}
+            value={values.TaskType || undefined}
             onChange={(value) => {
               setFieldValue('TaskType', value);
             }}
