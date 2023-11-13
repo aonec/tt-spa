@@ -20,8 +20,13 @@ export const TasksRouter = () => {
     : `/tasks/list/${TaskGroupingFilter.Executing}`;
 
   return [
-    <Redirect from="/tasks" to={initialTasksPath} exact />,
-    <Route path="/tasks">
+    <Redirect
+      from="/tasks"
+      to={initialTasksPath}
+      exact
+      key="redirect-to-tasks"
+    />,
+    <Route path="/tasks" key="/tasks">
       <TasksIsOpen />
 
       <Route
