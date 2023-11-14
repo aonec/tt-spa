@@ -1,23 +1,17 @@
-export function countSimilarityPoints(
-  addressSearch: string,
-  addressString: string,
-) {
-  let street = addressString.toLowerCase();
+export function countSimilarityPoints(search: string, string: string) {
+  let street = string.toLowerCase();
 
-  const addressSearchArr = addressSearch
-    .toLowerCase()
-    .split(' ')
-    .filter(Boolean);
+  const searchArr = search.toLowerCase().split(' ').filter(Boolean);
 
   let points = 0;
 
-  if (street.indexOf(addressSearch.toLowerCase()) === 0) {
+  if (street.indexOf(search.toLowerCase()) === 0) {
     points += 1;
   }
 
-  points += addressSearchArr.reduce((points, addressSearchSlice) => {
-    if (street.includes(addressSearchSlice)) {
-      street = street.replace(addressSearchSlice, '');
+  points += searchArr.reduce((points, searchSlice) => {
+    if (street.includes(searchSlice)) {
+      street = street.replace(searchSlice, '');
       return points + 1;
     }
     return points;
