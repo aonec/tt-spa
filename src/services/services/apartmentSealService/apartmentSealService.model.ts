@@ -8,16 +8,14 @@ import {
 import { EffectFailDataAxiosError } from 'types';
 import { message } from 'antd';
 import { createGate } from 'effector-react';
-import {
-  getApartmentQuery,
-  putApartment,
-} from 'services/meters/metersService/ApartmentReadingsService/ApartmentReadingsService.api';
+import { putApartment } from 'services/meters/metersService/ApartmentReadingsService/ApartmentReadingsService.api';
 import {
   GetApartmentsRequestPayload,
   UpdateApartmentRequestPayload,
 } from 'services/meters/metersService/ApartmentReadingsService/ApartmentReadingsService.types';
 import {
   existingDistrictsQuery,
+  getApartmentQuery,
   getIndividualDevices,
   getNearestAppointmentForApartment,
 } from './apartmentSealService.api';
@@ -72,13 +70,11 @@ sample({
 
 sample({
   source: ApartmentGate.state.map(({ id }) => ({ ApartmentId: id })),
-  clock: [
-    sample({
-      source: $apartment,
-      clock: ApartmentGate.state,
-      filter: (apartment, { id }) => Boolean(id && id !== apartment?.id),
-    }),
-  ],
+  clock: sample({
+    source: $apartment,
+    clock: ApartmentGate.state,
+    filter: (apartment, { id }) => Boolean(id && id !== apartment?.id),
+  }),
   target: getApartmentQuery.start,
 });
 
