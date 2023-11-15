@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo } from 'react';
 import { Tooltip } from 'ui-kit/shared/Tooltip';
 import { QuestionCircleOutlined } from '@ant-design/icons';
-import { ExtendedSearchTypes, taskCategotiesProps } from './SearchTasks.types';
+import { ExtendedSearchTypes } from './SearchTasks.types';
 import {
   ApartmentNumberWrapper,
   OverFlowSelectSC,
@@ -11,10 +11,10 @@ import {
   ToExecutionWrapper,
 } from './SearchTasks.styled';
 import {
-  EManagingFirmTaskFilterTypeNullableStringDictionaryItem,
   EResourceType,
   ETaskEngineeringElement,
   EStageTimeStatus,
+  EManagingFirmTaskFilterType,
 } from 'api/types';
 import {
   EngineeringElementLookUp,
@@ -40,43 +40,34 @@ export const ToExecutionTasksExtendedSearchForm: React.FC<
 
   const next = useSwitchInputOnEnter('tasksExtendedSearch', true);
 
-  const TaskCategory =
-    taskCategories[
-      (values?.EngineeringElement as keyof taskCategotiesProps) || 'All'
-    ];
+  const FilteredTaskTypes = useMemo(() => {
+    if (values?.EngineeringElement) {
+      return taskCategories[values?.EngineeringElement];
+    }
+    return Object.values(EManagingFirmTaskFilterType);
+  }, [values.EngineeringElement]);
 
   useEffect(() => {
     if (!values.ApartmentNumber) {
       setFieldValue('ApartmentNumber', null);
     }
-    if (!values?.TaskType) return;
-    if (!TaskCategory.includes(values?.TaskType)) {
+    if (!values.TaskType) return;
+
+    if (!FilteredTaskTypes.includes(values.TaskType)) {
       setFieldValue('TaskType', null);
     }
-  }, [values, setFieldValue, TaskCategory]);
+  }, [values, setFieldValue, FilteredTaskTypes]);
 
-  const isValueExists = useMemo(
+  const preparedTaskTypes = useMemo(
     () =>
-      values?.EngineeringElement
-        ? Object.values(
-            taskCategories[
-              values?.EngineeringElement as keyof taskCategotiesProps
-            ],
-          )
-        : [],
-    [values],
+      (taskTypes || []).reduce((acc, { key, value }) => {
+        if (!key) {
+          return acc;
+        }
+        return { ...acc, [key]: value };
+      }, {} as { [key in EManagingFirmTaskFilterType]: string }),
+    [taskTypes],
   );
-
-  const FilteredTaskTypes = useMemo(() => {
-    if (!taskTypes) return [];
-    if (isValueExists.length === 0) return taskTypes;
-    return taskTypes.filter(
-      (el: EManagingFirmTaskFilterTypeNullableStringDictionaryItem) => {
-        if (!el.key) return true;
-        return isValueExists.includes(el.key);
-      },
-    );
-  }, [taskTypes, isValueExists]);
 
   return (
     <ToExecutionWrapper>
@@ -233,10 +224,15 @@ export const ToExecutionTasksExtendedSearchForm: React.FC<
             }}
             onKeyDown={fromEnter(() => next(5))}
           >
+            {
+              <OverFlowSelectSC.Option value={null}>
+                Все
+              </OverFlowSelectSC.Option>
+            }
             {FilteredTaskTypes &&
-              FilteredTaskTypes.map(({ value, key }) => (
+              FilteredTaskTypes.map((key) => (
                 <Option key={key!} value={key!}>
-                  {value}
+                  {preparedTaskTypes[key] || ''}
                 </Option>
               ))}
           </OverFlowSelectSC>
