@@ -9,6 +9,8 @@ const PageGate = createGate();
 
 const handleFetchApplicationInfo = createEvent<number>();
 
+const setModalOpen = createEvent<boolean>();
+
 const getApplicationInfoFx = createEffect<
   number,
   ErpApplicationResponse,
@@ -20,6 +22,11 @@ const $applicationInfo = createStore<ErpApplicationResponse | null>(null)
   .reset(PageGate.close);
 
 const $isLoading = getApplicationInfoFx.pending;
+
+const $isPostponeModalOpen = createStore<boolean>(false).on(
+  setModalOpen,
+  (_, open) => open,
+);
 
 sample({
   clock: handleFetchApplicationInfo,
@@ -35,7 +42,7 @@ getApplicationInfoFx.failData.watch((error) => {
 });
 
 export const applicationInfoService = {
-  inputs: { handleFetchApplicationInfo },
-  outputs: { $applicationInfo, $isLoading },
+  inputs: { handleFetchApplicationInfo, setModalOpen },
+  outputs: { $applicationInfo, $isLoading, $isPostponeModalOpen },
   gates: { PageGate },
 };

@@ -1,8 +1,9 @@
 import React, { FC } from 'react';
-import { TitleWrapper } from './ApplicationInfoBlock.styled';
+import { ButtonSC, TitleWrapper } from './ApplicationInfoBlock.styled';
 import { ApplicationInfoBlockProps } from './ApplicationInfoBlock.types';
 import { ApplicationBaseInfo } from './ApplicationBaseInfo';
 import { BrigadeInfo } from './BrigadeInfo';
+import { Button } from 'ui-kit/Button';
 
 export const ApplicationInfoBlock: FC<ApplicationInfoBlockProps> = ({
   applicationInfo,
@@ -10,6 +11,8 @@ export const ApplicationInfoBlock: FC<ApplicationInfoBlockProps> = ({
   addressLinkPath,
   isLoading,
   isViewerExecutor,
+  isPostponeModalOpen,
+  setModalOpen,
 }) => {
   const brigadeInfo = applicationInfo?.brigade || [];
 
@@ -23,7 +26,15 @@ export const ApplicationInfoBlock: FC<ApplicationInfoBlockProps> = ({
         isLoading={isLoading}
       />
       <BrigadeInfo brigadeInfo={brigadeInfo} />
-      <>Отложить задачу</>
+      {isViewerExecutor && (
+        <ButtonSC
+          type="ghostDanger"
+          size="small"
+          onClick={() => setModalOpen(true)}
+        >
+          Отложить задачу
+        </ButtonSC>
+      )}
     </>
   );
 };
