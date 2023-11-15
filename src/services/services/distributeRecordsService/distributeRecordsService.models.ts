@@ -22,6 +22,8 @@ import {
 import { message } from 'antd';
 import { removeAssignmentService } from '../removeAssignmentService';
 import { currentUserService } from 'services/currentUserService';
+import axios from 'api/axios';
+import { downloadURI } from 'utils/downloadByURL';
 
 const DistributeRecordsGate = createGate();
 
@@ -149,6 +151,39 @@ setAppointmentsToControllerMutation.finished.failure.watch(({ error }) => {
 
 setAppointmentsToControllerMutation.finished.success.watch(() =>
   message.success('Записи успешно распределены!'),
+);
+
+setAppointmentsToControllerMutation.finished.success.watch(
+  async ({ params: { controllerId } }) => {
+    const appointmentDate = $appointmentDate.getState();
+    const controllers = individualSealControllersQuery.$data.getState();
+
+    const res: string = await axios.get(
+      `IndividualSeal/Controllers/${controllerId}/WorkFile`,
+      {
+        params: { date: dayjs(appointmentDate).format('YYYY-MM-DD') },
+        responseType: 'blob',
+      },
+    );
+
+    const url = window.URL.createObjectURL(new Blob([res]));
+
+    const controller = controllers?.find((elem) => elem.id === controllerId);
+
+    const fullName = [
+      controller?.firstName,
+      controller?.lastName,
+      controller?.middleName,
+    ]
+      .filter(Boolean)
+      .join('_');
+
+    downloadURI(
+      url,
+      `задание_${dayjs(appointmentDate).format('DD.MM.YYYY')}_${fullName}`,
+      false,
+    );
+  },
 );
 
 export const distributeRecordsService = {
