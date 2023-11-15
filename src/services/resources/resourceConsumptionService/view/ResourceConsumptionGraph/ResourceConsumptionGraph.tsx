@@ -173,7 +173,7 @@ export const ResourceConsumptionGraph: FC<ResourceConsumptionGraphProps> = ({
         theme={VictoryTheme.material}
         containerComponent={<VictoryVoronoiContainer />}
         animate={
-          featureToggles.graficAnimation && {
+          featureToggles.chartAnimation && {
             onLoad: { duration: 1000 },
             duration: 400,
             easing: 'bounce',

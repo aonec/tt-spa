@@ -6,5 +6,5 @@ export const featureToggles = {
   districtsManage: false,
   controllersDistribution: false,
   temperatureGraph: true,
-  graficAnimation: false,
+  chartAnimation: false,
 };
