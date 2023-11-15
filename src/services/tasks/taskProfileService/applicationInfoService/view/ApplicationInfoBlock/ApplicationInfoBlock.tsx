@@ -9,6 +9,7 @@ export const ApplicationInfoBlock: FC<ApplicationInfoBlockProps> = ({
   address,
   addressLinkPath,
   isLoading,
+  isViewerExecutor,
 }) => {
   const brigadeInfo = applicationInfo?.brigade || [];
 
@@ -22,6 +23,7 @@ export const ApplicationInfoBlock: FC<ApplicationInfoBlockProps> = ({
         isLoading={isLoading}
       />
       <BrigadeInfo brigadeInfo={brigadeInfo} />
+      <>Отложить задачу</>
     </>
   );
 };

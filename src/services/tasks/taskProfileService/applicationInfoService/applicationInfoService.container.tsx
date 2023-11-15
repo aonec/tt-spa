@@ -12,6 +12,7 @@ const {
 
 export const ApplicationInfoContainer: FC<ApplicationInfoContainerProps> = ({
   task,
+  isViewerExecutor,
 }) => {
   const { applicationInfo, isLoading } = useUnit({
     applicationInfo: outputs.$applicationInfo,
@@ -41,6 +42,7 @@ export const ApplicationInfoContainer: FC<ApplicationInfoContainerProps> = ({
         addressLinkPath={addressLinkPath}
         address={address}
         isLoading={isLoading}
+        isViewerExecutor={isViewerExecutor}
       />
     </>
   );

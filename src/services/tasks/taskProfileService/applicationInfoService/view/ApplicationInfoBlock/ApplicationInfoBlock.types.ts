@@ -5,4 +5,5 @@ export type ApplicationInfoBlockProps = {
   addressLinkPath: string;
   address: string | null;
   isLoading: boolean;
+  isViewerExecutor: boolean;
 };

@@ -132,7 +132,12 @@ export const TaskProfile: FC<TaskProfileProps> = ({
                   )}
                 </>
               )}
-              {isApplication && <ApplicationInfoContainer task={task} />}
+              {isApplication && (
+                <ApplicationInfoContainer
+                  task={task}
+                  isViewerExecutor={isViewerExecutor}
+                />
+              )}
             </TaskInfoWrapper>
             <TaskStages
               handleRevertStage={handleRevertStage}
