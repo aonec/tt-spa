@@ -4,11 +4,12 @@ export function countSimilarityPoints(search: string, string: string) {
   const searchArr = search.toLowerCase().split(' ').filter(Boolean);
 
   let points = 0;
+  const indexOfOverlaping = street
+    .split(' ')
+    .findIndex((elem) => elem.indexOf(search.toLowerCase()) === 0);
 
-  if (
-    street.split(' ').some((elem) => elem.indexOf(search.toLowerCase()) === 0)
-  ) {
-    points += 1;
+  if (indexOfOverlaping !== -1) {
+    points += indexOfOverlaping ? 1 : 2;
   }
 
   points += searchArr.reduce((points, searchSlice) => {
