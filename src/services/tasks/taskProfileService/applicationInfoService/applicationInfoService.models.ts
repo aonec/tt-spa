@@ -11,6 +11,8 @@ const handleFetchApplicationInfo = createEvent<number>();
 
 const setModalOpen = createEvent<boolean>();
 
+const handlePostpone = createEvent<string>();
+
 const getApplicationInfoFx = createEffect<
   number,
   ErpApplicationResponse,
@@ -42,7 +44,7 @@ getApplicationInfoFx.failData.watch((error) => {
 });
 
 export const applicationInfoService = {
-  inputs: { handleFetchApplicationInfo, setModalOpen },
+  inputs: { handleFetchApplicationInfo, setModalOpen, handlePostpone },
   outputs: { $applicationInfo, $isLoading, $isPostponeModalOpen },
   gates: { PageGate },
 };

@@ -6,6 +6,5 @@ export type ApplicationInfoBlockProps = {
   address: string | null;
   isLoading: boolean;
   isViewerExecutor: boolean;
-  isPostponeModalOpen: boolean;
   setModalOpen: (payload: boolean) => void;
 };

@@ -1,6 +1,5 @@
 import styled from 'styled-components';
 import { Button } from 'ui-kit/Button';
-import { Input } from 'ui-kit/Input';
 
 export const TitleWrapper = styled.div`
   font-size: 24px;
@@ -11,9 +10,4 @@ export const TitleWrapper = styled.div`
 
 export const ButtonSC = styled(Button)`
   margin-top: 32px;
-`;
-
-export const TextareaSC = styled(Input.TextArea)`
-  resize: none !important;
-  padding: 12px 16px;
 `;

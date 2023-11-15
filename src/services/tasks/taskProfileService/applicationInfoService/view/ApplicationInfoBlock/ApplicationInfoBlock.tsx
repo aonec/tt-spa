@@ -3,7 +3,6 @@ import { ButtonSC, TitleWrapper } from './ApplicationInfoBlock.styled';
 import { ApplicationInfoBlockProps } from './ApplicationInfoBlock.types';
 import { ApplicationBaseInfo } from './ApplicationBaseInfo';
 import { BrigadeInfo } from './BrigadeInfo';
-import { Button } from 'ui-kit/Button';
 
 export const ApplicationInfoBlock: FC<ApplicationInfoBlockProps> = ({
   applicationInfo,
@@ -11,7 +10,6 @@ export const ApplicationInfoBlock: FC<ApplicationInfoBlockProps> = ({
   addressLinkPath,
   isLoading,
   isViewerExecutor,
-  isPostponeModalOpen,
   setModalOpen,
 }) => {
   const brigadeInfo = applicationInfo?.brigade || [];
