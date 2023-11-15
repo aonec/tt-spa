@@ -5,7 +5,9 @@ export function countSimilarityPoints(search: string, string: string) {
 
   let points = 0;
 
-  if (street.indexOf(search.toLowerCase()) === 0) {
+  if (
+    street.split(' ').some((elem) => elem.indexOf(search.toLowerCase()) === 0)
+  ) {
     points += 1;
   }
 
