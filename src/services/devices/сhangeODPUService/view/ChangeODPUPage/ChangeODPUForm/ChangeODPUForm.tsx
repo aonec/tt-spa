@@ -25,7 +25,6 @@ import { Select } from 'ui-kit/Select';
 import { Input } from 'ui-kit/Input';
 import { DatePicker } from 'ui-kit/DatePicker';
 import {
-  closingReasonDictionary,
   initialValues,
   ODPUPhaseDictionary,
   switchDeviceValidationSchema,
@@ -35,6 +34,7 @@ import { ErrorMessage } from 'ui-kit/ErrorMessage';
 import { Button } from 'ui-kit/Button';
 import { ChangeODPUReadingsContainer } from 'services/devices/сhangeODPUService/changeODPUReadingsService';
 import { useFormik } from 'formik';
+import { ClosingReasonsDictionary } from 'dictionaries';
 
 export const ChangeODPUForm: FC<ChangeODPUFormProps> = ({
   oldDevice,
@@ -245,7 +245,7 @@ export const ChangeODPUForm: FC<ChangeODPUFormProps> = ({
               }
               placeholder="Выберите причину замены"
             >
-              {closingReasonDictionary.map(({ key, value }) => (
+              {Object.entries(ClosingReasonsDictionary).map(([key, value]) => (
                 <Select.Option key={key} value={key}>
                   {value}
                 </Select.Option>

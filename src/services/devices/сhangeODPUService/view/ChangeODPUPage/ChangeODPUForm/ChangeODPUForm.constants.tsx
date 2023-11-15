@@ -1,4 +1,4 @@
-import { EClosingReason, EPhaseNumberType, EYearQuarter } from 'api/types';
+import { EPhaseNumberType, EYearQuarter } from 'api/types';
 import { SwitchElectricHousingDeviceRequestFormPayload } from './ChangeODPUForm.types';
 import * as yup from 'yup';
 
@@ -23,11 +23,6 @@ export const initialValues: SwitchElectricHousingDeviceRequestFormPayload = {
 export const ODPUPhaseDictionary = [
   { key: EPhaseNumberType.SinglePhase, value: 'Однофазный счетчик' },
   { key: EPhaseNumberType.ThreePhase, value: 'Трехфазный счетчик' },
-];
-
-export const closingReasonDictionary = [
-  { key: EClosingReason.Manually, value: 'Плановая замена' },
-  { key: EClosingReason.DeviceBroken, value: 'Поломка' },
 ];
 
 export const yearQuarterDictionary = [
