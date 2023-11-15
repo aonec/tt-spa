@@ -130,3 +130,18 @@ export const setAppointmentsToControllerMutation = createMutation({
     (data) => axios.post('IndividualSeal/Appointments/Set', data),
   ),
 });
+
+export const individualSealTaskDocumentQuery = createQuery<
+  {
+    controllerId: string;
+    appointmentDate: string;
+  },
+  string
+>({
+  handler: ({ controllerId, appointmentDate }) => {
+    return axios.get(`IndividualSeal/Controllers/${controllerId}/WorkFile`, {
+      params: { date: dayjs(appointmentDate).format('YYYY-MM-DD') },
+      responseType: 'blob',
+    });
+  },
+});

@@ -7,6 +7,7 @@ import {
   districtAppointmentsQuery,
   districtsQuery,
   individualSealControllersQuery,
+  individualSealTaskDocumentQuery,
   nearestAppointmentsDateQuery,
   setAppointmentsToControllerMutation,
 } from './distributeRecordsService.api';
@@ -22,8 +23,7 @@ import {
 import { message } from 'antd';
 import { removeAssignmentService } from '../removeAssignmentService';
 import { currentUserService } from 'services/currentUserService';
-import axios from 'api/axios';
-import { downloadURI } from 'utils/downloadByURL';
+import { downloadTaskDocument } from './distributeRecordsService.utils';
 
 const DistributeRecordsGate = createGate();
 
@@ -153,38 +153,35 @@ setAppointmentsToControllerMutation.finished.success.watch(() =>
   message.success('Записи успешно распределены!'),
 );
 
-setAppointmentsToControllerMutation.finished.success.watch(
-  async ({ params: { controllerId } }) => {
-    const appointmentDate = $appointmentDate.getState();
-    const controllers = individualSealControllersQuery.$data.getState();
+sample({
+  source: $appointmentDate,
+  clock: setAppointmentsToControllerMutation.finished.success,
+  filter: (date): date is string => Boolean(date),
+  fn: (appointmentDate, { params: { controllerId } }) => ({
+    controllerId,
+    appointmentDate: appointmentDate!,
+  }),
+  target: individualSealTaskDocumentQuery.start,
+});
 
-    const res: string = await axios.get(
-      `IndividualSeal/Controllers/${controllerId}/WorkFile`,
-      {
-        params: { date: dayjs(appointmentDate).format('YYYY-MM-DD') },
-        responseType: 'blob',
-      },
-    );
-
-    const url = window.URL.createObjectURL(new Blob([res]));
-
+sample({
+  source: combine(
+    $appointmentDate,
+    individualSealControllersQuery.$data,
+    (appointmentDate, controllers) => ({ appointmentDate, controllers }),
+  ),
+  clock: individualSealTaskDocumentQuery.finished.success,
+  fn: (
+    { appointmentDate, controllers },
+    { result: documentResponse, params: { controllerId } },
+  ) => {
     const controller = controllers?.find((elem) => elem.id === controllerId);
 
-    const fullName = [
-      controller?.firstName,
-      controller?.lastName,
-      controller?.middleName,
-    ]
-      .filter(Boolean)
-      .join('_');
+    if (!appointmentDate || !controller) return;
 
-    downloadURI(
-      url,
-      `задание_${dayjs(appointmentDate).format('DD.MM.YYYY')}_${fullName}`,
-      false,
-    );
+    downloadTaskDocument(documentResponse, appointmentDate, controller);
   },
-);
+});
 
 export const distributeRecordsService = {
   inputs: {
