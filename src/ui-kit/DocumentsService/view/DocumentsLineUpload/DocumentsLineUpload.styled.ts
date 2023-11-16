@@ -67,5 +67,5 @@ export const PhotoWrapper = styled.div`
 `;
 
 export const CloseBlueIconSC = styled(CloseBlueIcon)`
-  padding-bottom: 0px;
+  margin-bottom: 10px;
 `;

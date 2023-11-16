@@ -18,6 +18,8 @@ import { TaskProfileProps } from './TaskProfile.types';
 import { TaskProfileHeader } from './TaskProfileHeader';
 import { TaskStages } from './TaskStages';
 import { ApplicationInfoContainer } from '../../applicationInfoService';
+import { EDocumentType } from 'api/types';
+import { TaskPhotosList } from './TaskPhotosList';
 
 export const TaskProfile: FC<TaskProfileProps> = ({
   task,
@@ -68,6 +70,11 @@ export const TaskProfile: FC<TaskProfileProps> = ({
 
   const taskAdditionActions = task.currentStage?.additionalActions || [];
 
+  const photos = documents.filter((doc) => doc.type === EDocumentType.Photo);
+  const documentsWithoutPhotos = documents.filter(
+    (doc) => doc.type !== EDocumentType.Photo,
+  );
+
   return (
     <Wrapper>
       <GoBack />
@@ -108,8 +115,9 @@ export const TaskProfile: FC<TaskProfileProps> = ({
                   taskType={task.type}
                 />
               )}
+              <TaskPhotosList photos={photos || []} />
               <TaskDocumentsList
-                documents={documents || []}
+                documents={documentsWithoutPhotos || []}
                 openDeleteDocumentModal={openDeleteDocumentModal}
               />
               <TaskComments

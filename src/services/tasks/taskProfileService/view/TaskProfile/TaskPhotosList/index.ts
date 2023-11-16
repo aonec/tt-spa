@@ -1,0 +1,1 @@
+export { TaskPhotosList } from './TaskPhotosList';

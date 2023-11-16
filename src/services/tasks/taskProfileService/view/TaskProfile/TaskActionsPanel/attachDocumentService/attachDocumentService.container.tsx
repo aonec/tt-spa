@@ -11,7 +11,12 @@ export const AttachDocumentContainer: FC<ActionComponentProps> = ({
 
   const handleDocumentsChange = useCallback(
     (documentsIds: number[]) => {
-      handleChange({ documentsIds });
+      handleChange((prev) => {
+        return {
+          ...prev,
+          documentsIds: [...(prev.documentsIds || []), ...documentsIds],
+        };
+      });
     },
     [handleChange],
   );
