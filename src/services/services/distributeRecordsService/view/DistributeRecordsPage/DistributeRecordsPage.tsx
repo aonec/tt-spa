@@ -1,10 +1,5 @@
 import React, { FC } from 'react';
-import {
-  Circle,
-  CounterWrapper,
-  FiltrationWrapper,
-  SkeletonSC,
-} from './DistributeRecordsPage.styled';
+import { FiltrationWrapper } from './DistributeRecordsPage.styled';
 import { Props } from './DistributeRecordsPage.types';
 import { AddressSearchContainer } from 'services/addressSearchService';
 import { SearchFieldType } from 'services/addressSearchService/view/AddressSearch/AddressSearch.types';
@@ -37,9 +32,6 @@ export const DistributeRecordsPage: FC<Props> = ({
   isLoadingDistributeAppointments,
   openRemoveAssignmentModal,
   organizationCoordinates,
-  appointmentsOnMonthData,
-  handleSetMonth,
-  appointmentsOnMonthLoading,
 }) => {
   return (
     <>
@@ -80,42 +72,12 @@ export const DistributeRecordsPage: FC<Props> = ({
           value={getDatePickerValue(appointmentDate)}
           onChange={(date) => {
             date && handleSetAppointmentDate(date.format('YYYY-MM-DD'));
-            date && handleSetMonth(date.format('YYYY-MM'));
           }}
           small
           style={{ width: 240 }}
           format="DD.MM.YYYY"
           allowClear={false}
-          onPanelChange={(day) => handleSetMonth(day.format('YYYY-MM'))}
-          renderExtraFooter={() => {
-            if (appointmentsOnMonthLoading) {
-              return <SkeletonSC active />;
-            }
-            if (appointmentDate && selectedDistrict) {
-              return (
-                <CounterWrapper>
-                  Записи на эту дату:{' '}
-                  {appointmentsOnMonthData[appointmentDate] || 0}
-                </CounterWrapper>
-              );
-            }
-            return null;
-          }}
           showToday={false}
-          cellRender={(day, info) => {
-            if (
-              info.type === 'date' &&
-              appointmentsOnMonthData[day.format('YYYY-MM-DD')]
-            ) {
-              return (
-                <>
-                  {info.originNode}
-                  <Circle />
-                </>
-              );
-            }
-            return info.originNode;
-          }}
         />
       </FiltrationWrapper>
       <DistrictsMap

@@ -1,15 +1,17 @@
-import { EManagingFirmTaskFilterType } from 'api/types';
-import { taskCategotiesProps } from './SearchTasks.types';
+import {
+  EManagingFirmTaskFilterType,
+  ETaskEngineeringElement,
+} from 'api/types';
 
-export const taskCategories: taskCategotiesProps = {
-  All: Object.keys(
-    EManagingFirmTaskFilterType,
-  ) as Partial<EManagingFirmTaskFilterType>[],
+export const taskCategories: {
+  [key in ETaskEngineeringElement]: EManagingFirmTaskFilterType[];
+} = {
   Node: [
     EManagingFirmTaskFilterType.CalculatorMalfunctionAny,
     EManagingFirmTaskFilterType.HousingDeviceMalfunctionAny,
     EManagingFirmTaskFilterType.CalculatorLackOfConnection,
     EManagingFirmTaskFilterType.MeasurementErrorAny,
+    EManagingFirmTaskFilterType.TemperatureNormativeDeviation,
   ],
   IndividualDevice: [
     EManagingFirmTaskFilterType.IndividualDeviceCheck,
