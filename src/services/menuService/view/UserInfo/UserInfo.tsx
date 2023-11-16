@@ -16,14 +16,18 @@ export const UserInfo: FC<UserInfoProps> = ({ isLoading, currentUser }) => {
       return <UserLoader active={isLoading} />;
     }
 
-    return <UserEmail>{currentUser.email}</UserEmail>;
+    return (
+      <Tooltip title={currentUser.email}>
+        <UserEmail>{currentUser.email}</UserEmail>
+      </Tooltip>
+    );
   }, [currentUser, isLoading]);
 
   return (
     <UserInfoWrapper>
       <UserEmailWrapper>
         <UserIconSC />
-        <Tooltip title={currentUser?.email}>{userEmail}</Tooltip>
+        {userEmail}
       </UserEmailWrapper>
       <UserManagingFirmName>
         {currentUser?.organization?.name}

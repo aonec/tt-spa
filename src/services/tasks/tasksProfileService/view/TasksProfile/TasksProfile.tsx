@@ -24,8 +24,6 @@ import { developmentSettingsService } from 'services/developmentSettings/develop
 import { TasksPageSegment, TasksProfileProps } from './TasksProfile.types';
 import { Button } from 'ui-kit/Button';
 
-const { TabPane } = TabsSC;
-
 export const TasksProfile: FC<TasksProfileProps> = ({
   handleExportTasksList,
   tasks,
@@ -108,6 +106,28 @@ export const TasksProfile: FC<TasksProfileProps> = ({
     </HeaderWrapper>
   );
 
+  const tabItems = useMemo(
+    () => [
+      ...(!isSpectator
+        ? [
+            {
+              label: executingTabText,
+              key: TaskGroupingFilter.Executing,
+            },
+          ]
+        : []),
+      {
+        label: observingTabText,
+        key: TaskGroupingFilter.Observing,
+      },
+      {
+        label: isPermissionToAddTask ? 'Закрытые' : 'Архив',
+        key: TaskGroupingFilter.Archived,
+      },
+    ],
+    [isSpectator, executingTabText, observingTabText, isPermissionToAddTask],
+  );
+
   return (
     <Wrapper>
       {tasksPageSegment === 'map' && header}
@@ -126,38 +146,11 @@ export const TasksProfile: FC<TasksProfileProps> = ({
             </HeaderContainer>
 
             <ContentWrapper>
-              {!isPermissionToAddTask ? (
-                <TabsSC activeKey={grouptype} onChange={history.push}>
-                  {!isSpectator && (
-                    <TabPane
-                      tab={executingTabText}
-                      key={TaskGroupingFilter.Executing}
-                    />
-                  )}
-                  <TabPane
-                    tab={observingTabText}
-                    key={TaskGroupingFilter.Observing}
-                  />
-                  <TabPane tab="Архив" key={TaskGroupingFilter.Archived} />
-                </TabsSC>
-              ) : (
-                <TabsSC activeKey={grouptype} onChange={history.push}>
-                  {!isSpectator && (
-                    <TabPane
-                      tab={executingTabText}
-                      key={TaskGroupingFilter.Executing}
-                    ></TabPane>
-                  )}
-                  <TabPane
-                    tab={observingTabText}
-                    key={TaskGroupingFilter.Observing}
-                  ></TabPane>
-                  <TabPane
-                    tab="Закрытые"
-                    key={TaskGroupingFilter.Archived}
-                  ></TabPane>
-                </TabsSC>
-              )}
+              <TabsSC
+                activeKey={grouptype}
+                onChange={history.push}
+                items={tabItems}
+              />
               <SearchTasks
                 onSubmit={handleSearch}
                 taskTypes={taskTypes}

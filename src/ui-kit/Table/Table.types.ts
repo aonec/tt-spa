@@ -20,4 +20,5 @@ export type TableProps<T> = {
   headerStyles?: string;
   link?: (elem: T) => string;
   isSticky?: boolean;
+  floating?: boolean;
 };

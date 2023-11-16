@@ -4,7 +4,6 @@ import { useHistory } from 'react-router-dom';
 import { CommonInfo } from 'ui-kit/shared/CommonInfo';
 import { GoBack } from 'ui-kit/shared/GoBack';
 import { LinkCard } from 'ui-kit/shared/LinkCard';
-import { Tabs } from 'ui-kit/Tabs';
 import { getBuildingAddress } from 'utils/getBuildingAddress';
 import { getTimeStringByUTC } from 'utils/getTimeStringByUTC';
 import { CalculatorProfileGrouptype } from '../calculatorProfileService.constants';
@@ -26,8 +25,6 @@ import { NodeDocumentsList } from './NodeDocumentsList';
 import { RelatedNodesList } from './RelatedNodesList';
 import { ContextMenuButtonColor } from 'ui-kit/ContextMenuButton/ContextMenuButton.types';
 import { EHouseCategory, TaskGroupingFilter } from 'api/types';
-
-const { TabPane } = Tabs;
 
 export const CalculatorProfile: FC<CalculatorProfileProps> = ({
   calculator,
@@ -161,6 +158,19 @@ export const CalculatorProfile: FC<CalculatorProfileProps> = ({
 
   const component = contentComponents[currentGrouptype];
 
+  const tabItems = useMemo(
+    () => [
+      { label: 'Общие данные', key: CalculatorProfileGrouptype.Common },
+      {
+        label: 'Настройки соединения',
+        key: CalculatorProfileGrouptype.Connection,
+      },
+      { label: 'Узлы', key: CalculatorProfileGrouptype.Nodes },
+      { label: 'Документы', key: CalculatorProfileGrouptype.Documents },
+    ],
+    [],
+  );
+
   return (
     <div>
       <GoBack />
@@ -181,15 +191,8 @@ export const CalculatorProfile: FC<CalculatorProfileProps> = ({
         onChange={(grouptype) =>
           setGrouptype(grouptype as CalculatorProfileGrouptype)
         }
-      >
-        <TabPane tab="Общие данные" key={CalculatorProfileGrouptype.Common} />
-        <TabPane
-          tab="Настройки соединения"
-          key={CalculatorProfileGrouptype.Connection}
-        />
-        <TabPane tab="Узлы" key={CalculatorProfileGrouptype.Nodes} />
-        <TabPane tab="Документы" key={CalculatorProfileGrouptype.Documents} />
-      </TabsSC>
+        items={tabItems}
+      />
       <ContentWrapper>
         <Content>{component}</Content>
         <PanelsWrapper>
