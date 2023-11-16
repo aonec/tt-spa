@@ -16,11 +16,11 @@ import {
 } from './ClosedIndividualDevicesForm.styled';
 import { ClosedIndividualDevicesFormProps } from './ClosedIndividualDevicesForm.types';
 import {
-  closingReasonsDictionary,
   unloadingTypesDictionary,
   unloadingTypesForLabelDictionary,
 } from './ClosedIndividualDevicesFormService.constants';
 import { SelectMultiple } from 'ui-kit/SelectMultiple';
+import { ClosingReasonsDictionary } from 'dictionaries';
 
 export const ClosedIndividualDevicesForm: FC<
   ClosedIndividualDevicesFormProps
@@ -170,7 +170,7 @@ export const ClosedIndividualDevicesForm: FC<
             handleChangeClosingReasons(value as EClosingReason[])
           }
         >
-          {Object.entries(closingReasonsDictionary).map(([key, elem]) => (
+          {Object.entries(ClosingReasonsDictionary).map(([key, elem]) => (
             <Select.Option value={key} key={key}>
               {elem}
             </Select.Option>

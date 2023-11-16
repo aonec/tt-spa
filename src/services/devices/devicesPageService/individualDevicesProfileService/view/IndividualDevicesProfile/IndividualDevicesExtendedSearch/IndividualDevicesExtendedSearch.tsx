@@ -16,7 +16,6 @@ import { useFormik } from 'formik';
 import { EApartmentStatus, EResourceType } from 'api/types';
 import {
   apartmentStatusesLookup,
-  closingReasonLookup,
   expiresCheckingDateAtLookup,
   formTranslateLookup,
   resourcesNamesLookup,
@@ -25,6 +24,7 @@ import { ResourceIconLookup } from 'ui-kit/shared/ResourceIconLookup';
 import { DevicesSearchType } from 'services/devices/devicesPageService/devicesPageService.types';
 import { Select } from 'ui-kit/Select';
 import { Input } from 'ui-kit/Input';
+import { ClosingReasonsDictionary } from 'dictionaries';
 
 export const IndividualDevicesExtendedSearch: FC<
   IndividualDevicesExtendedSearchProps
@@ -41,7 +41,11 @@ export const IndividualDevicesExtendedSearch: FC<
   const { values, setFieldValue, handleSubmit, resetForm } =
     useFormik<SearchIndividualDevicesParams>({
       initialValues: filters,
-      onSubmit: handleApply,
+      onSubmit: (values) =>
+        handleApply({
+          ...values,
+          IsAlsoClosing: Boolean(values.ClosingReason),
+        }),
       enableReinitialize: true,
     });
 
@@ -188,7 +192,7 @@ export const IndividualDevicesExtendedSearch: FC<
                 }
                 allowClear
               >
-                {Object.entries(closingReasonLookup).map(
+                {Object.entries(ClosingReasonsDictionary).map(
                   ([closingReason, text]) => (
                     <Select key={closingReason} value={closingReason}>
                       {text}
