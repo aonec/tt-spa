@@ -88,22 +88,12 @@ function filterReasonBySimilarity(
   search: string,
   reasons: ErpTaskReasonGroupResponse[],
 ) {
-  return reasons
-    .filter((reason) =>
-      reason.name
-        ?.toLocaleLowerCase()
-        .startsWith(search?.toLocaleLowerCase()?.[0]),
-    )
-    .filter((reason) => {
-      const searchSimilarityPoint = countSimilarityPoints(search, reason.name!);
-      return Boolean(searchSimilarityPoint);
-    })
-    .sort((a, b) => {
-      const bPoints = countSimilarityPoints(search, b.name!);
-      const aPoints = countSimilarityPoints(search, a.name!);
+  return reasons.sort((a, b) => {
+    const bPoints = countSimilarityPoints(search, b.name!);
+    const aPoints = countSimilarityPoints(search, a.name!);
 
-      return bPoints - aPoints;
-    });
+    return bPoints - aPoints;
+  });
 }
 
 export const filterData = (data: AddTask) => {
