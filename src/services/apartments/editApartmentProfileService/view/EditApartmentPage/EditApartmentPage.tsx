@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, ReactNode, useMemo } from 'react';
 import { GoBack } from 'ui-kit/shared/GoBack';
 import { HeaderInfoString } from 'ui-kit/shared/HeaderInfoString';
 import {
@@ -14,8 +14,6 @@ import { getHousingStockItemAddress } from 'utils/getHousingStockItemAddress';
 import { EditHomeownersList } from './EditHomeownersList';
 import { ApartmentActsListContainer } from 'services/apartments/apartmentActsListService';
 
-const { TabPane } = TabsSC;
-
 export const EditApartmentPage: FC<EditApartmentPageProps> = ({
   apartment,
   isLoading,
@@ -30,6 +28,28 @@ export const EditApartmentPage: FC<EditApartmentPageProps> = ({
 
   const filteredHomeownerAccounts =
     apartment?.homeownerAccounts?.filter((elem) => !elem.closedAt) || [];
+
+  const tabItems = useMemo(
+    () => [
+      { label: 'Общие данные', key: TabsSection.CommonData },
+      { label: 'Собственники', key: TabsSection.Homeowners },
+      { label: 'Журнал актов', key: TabsSection.ActsJournal },
+    ],
+    [],
+  );
+
+  const components: { [ley in TabsSection]: ReactNode } = {
+    [TabsSection.CommonData]: apartment && (
+      <EditCommonDataForm
+        isUpdatingApartmentLoading={isUpdatingApartmentLoading}
+        form={commonDataForm}
+      />
+    ),
+    [TabsSection.ActsJournal]: <ApartmentActsListContainer />,
+    [TabsSection.Homeowners]: filteredHomeownerAccounts && (
+      <EditHomeownersList homeowners={filteredHomeownerAccounts} />
+    ),
+  };
 
   return (
     <div>
@@ -53,24 +73,9 @@ export const EditApartmentPage: FC<EditApartmentPageProps> = ({
         <TabsSC
           activeKey={tabSection}
           onChange={(activeKey) => setTabSection(activeKey as TabsSection)}
-        >
-          <TabPane tab="Общие данные" key={TabsSection.CommonData}>
-            {apartment && (
-              <EditCommonDataForm
-                isUpdatingApartmentLoading={isUpdatingApartmentLoading}
-                form={commonDataForm}
-              />
-            )}
-          </TabPane>
-          <TabPane tab="Собственники" key={TabsSection.Homeowners}>
-            {filteredHomeownerAccounts && (
-              <EditHomeownersList homeowners={filteredHomeownerAccounts} />
-            )}
-          </TabPane>
-          <TabPane tab="Журнал актов" key={TabsSection.ActsJournal}>
-            <ApartmentActsListContainer />
-          </TabPane>
-        </TabsSC>
+          items={tabItems}
+        />
+        {components[tabSection]}
       </WithLoader>
     </div>
   );

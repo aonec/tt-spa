@@ -5,12 +5,14 @@ import { useUnit } from 'effector-react';
 import { ApartmentSealProfile } from './view/ApartmentSealProfile';
 import { CreateSealContainer, createSealService } from '../createSealService';
 import './apartmentSealService.relations';
-import { getApartmentQuery } from 'services/meters/metersService/ApartmentReadingsService/ApartmentReadingsService.api';
 import {
   DeleteAppointmentContainer,
   deleteAppointmentService,
 } from '../deleteAppointmentService';
-import { existingDistrictsQuery } from './apartmentSealService.api';
+import {
+  existingDistrictsQuery,
+  getApartmentQuery,
+} from './apartmentSealService.api';
 
 const { inputs, outputs, gates } = apartmentSealService;
 const { ApartmentGate } = gates;
@@ -71,7 +73,7 @@ export const ApartmentSealContainer = () => {
 
   return (
     <>
-      <ApartmentGate id={Number(id)} />
+      <ApartmentGate id={id ? Number(id) : undefined} />
       <CreateSealContainer />
       <DeleteAppointmentContainer />
       <ApartmentSealProfile

@@ -150,10 +150,14 @@ export const AddressSearch: FC<AddressSearchProps> = ({
           handleSubmit();
         }}
         value={values.apartment || ''}
-        onChange={(e) => handleChange(SearchFieldType.Apartment, e as any)}
+        onChange={(e) => {
+          handleChange(SearchFieldType.Apartment, e as any);
+        }}
         onKeyDown={fromEnter(() => {
-          handleSubmit();
           next(index);
+          if (!existingApartmentNumbers.length) {
+            handleSubmit();
+          }
         })}
         onBlur={() => setOpen(false)}
         filterOption={(inputValue, option) =>
@@ -183,7 +187,9 @@ export const AddressSearch: FC<AddressSearchProps> = ({
       small
       placeholder="Л/С или ФИО"
       value={values.question}
-      onChange={(e) => handleChange(SearchFieldType.Question, e.target.value)}
+      onChange={(e) => {
+        handleChange(SearchFieldType.Question, e.target.value);
+      }}
       data-reading-input={dataKey}
       onClick={() => {
         clearFields(index);

@@ -1,5 +1,5 @@
 import { createEffect, createEvent, createStore } from 'effector';
-import { forward, guard, sample } from 'effector';
+import { forward, sample } from 'effector';
 import { createGate } from 'effector-react';
 import {
   ApartmentResponse,
@@ -97,7 +97,7 @@ const $apartmentAppointment = createStore<AppointmentResponse | null>(null)
 const $isUpdateHomeownerLoading = updateHomeownerFx.pending;
 
 sample({
-  source: and(ApartmentGate.state, $apartment),
+  source: and(ApartmentGate.status, $apartment),
   filter: Boolean,
   clock: $apartment,
   //Проверка типа идет выше
@@ -110,9 +110,9 @@ sample({
   target: updateHomeownerFx,
 });
 
-forward({
-  from: handleSearchApartment,
-  to: getApartmentQuery.start,
+sample({
+  clock: handleSearchApartment,
+  target: getApartmentQuery.start,
 });
 
 sample({
@@ -123,7 +123,7 @@ sample({
 sample({
   source: ApartmentGate.state.map(({ id }) => ({ ApartmentId: id })),
   clock: [
-    guard({
+    sample({
       source: $apartment,
       clock: ApartmentGate.state,
       filter: (apartment, { id }) => Boolean(id && id !== apartment?.id),

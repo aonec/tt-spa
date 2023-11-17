@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useMemo } from 'react';
 import {
   GridContainer,
   MarginTop,
@@ -110,6 +110,26 @@ export const ConsumptionReportCalculatorForm: FC<
     return { value: id, label };
   });
 
+  const tabItems = useMemo(() => {
+    if (!resources?.length) {
+      return [];
+    }
+
+    return resources.map((resource) => {
+      const resourceName = ResourceNamesDictionary[resource];
+
+      return {
+        label: (
+          <StyledTab>
+            <ResourceIconLookup resource={resource} />
+            <div> {resourceName} </div>
+          </StyledTab>
+        ),
+        key: resource,
+      };
+    });
+  }, [resources]);
+
   return (
     <Form id={formId} onSubmitCapture={handleSubmit}>
       <Tabs
@@ -118,23 +138,8 @@ export const ConsumptionReportCalculatorForm: FC<
           setFieldValue('nodeId', null);
         }}
         activeKey={values.currentResourceType}
-      >
-        {resources &&
-          resources.map((resource) => {
-            const resourceName = ResourceNamesDictionary[resource];
-            return (
-              <Tabs.TabPane
-                tab={
-                  <StyledTab>
-                    <ResourceIconLookup resource={resource} />
-                    <div> {resourceName} </div>
-                  </StyledTab>
-                }
-                key={resource}
-              />
-            );
-          })}
-      </Tabs>
+        items={tabItems}
+      />
 
       <FormItem label="Название отчета">
         <Input

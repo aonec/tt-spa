@@ -23,7 +23,7 @@ export const DistrictBordersRouter = () => {
   ]);
 
   return [
-    <Route path="/districtBordersSettings">
+    <Route path="/districtBordersSettings" key="/districtBordersSettings">
       <DistrictBordersGroupPageGate />
       {(isSeniorOperator || isOperator) && (
         <Route

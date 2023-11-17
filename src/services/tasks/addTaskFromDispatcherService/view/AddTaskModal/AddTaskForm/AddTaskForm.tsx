@@ -42,6 +42,7 @@ import {
 import {
   autocompleteAddress,
   autocompleteApartNumber,
+  autocompleteReason,
   filterData,
 } from './AddTaskForm.utils';
 import { Alert } from 'ui-kit/Alert';
@@ -169,26 +170,28 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
 
   const taskReasonOptions = useMemo(
     () =>
-      taskReasons.map((taskReason) => {
-        return {
-          label: (
-            <OptionItemWrapper>
-              <TopWrapper>
-                <ResourseTypeWrapper>
-                  {TaskReasonTypeDictionary[taskReason.type]}
-                </ResourseTypeWrapper>
-                <ArrowRightLongIconDim />
-                <WorkTitleWrapper>
-                  <WorkTitle>{taskReason.name}</WorkTitle>
-                </WorkTitleWrapper>
-              </TopWrapper>
-            </OptionItemWrapper>
-          ),
-          value: taskReason.name,
-          key: `${taskReason.name}${taskReason.orderNumber}`,
-        };
-      }),
-    [taskReasons],
+      autocompleteReason(values.taskReasonSearch, taskReasons).map(
+        (taskReason) => {
+          return {
+            label: (
+              <OptionItemWrapper>
+                <TopWrapper>
+                  <ResourseTypeWrapper>
+                    {TaskReasonTypeDictionary[taskReason.type]}
+                  </ResourseTypeWrapper>
+                  <ArrowRightLongIconDim />
+                  <WorkTitleWrapper>
+                    <WorkTitle>{taskReason.name}</WorkTitle>
+                  </WorkTitleWrapper>
+                </TopWrapper>
+              </OptionItemWrapper>
+            ),
+            value: `${taskReason.orderNumber}_${taskReason.name}`,
+            key: taskReason.orderNumber,
+          };
+        },
+      ),
+    [values.taskReasonSearch, taskReasons],
   );
 
   const taskTypeOptions = useMemo(() => {
@@ -358,6 +361,12 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
                 handleSelectHousingAddress(value);
                 values.apartmentNumber &&
                   handleSelectApartmentNumber(values.apartmentNumber);
+
+                if (isOnlySubscriberRequired || isNoAdditionalFieldsRequired) {
+                  next(1);
+                } else {
+                  next(2);
+                }
               }}
               options={preparedAddressOptions}
               data-reading-input={dataKey}
@@ -380,6 +389,12 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
               onSelect={(value) => {
                 setFieldValue('apartmentNumber', value);
                 handleSelectApartmentNumber(value);
+
+                if (isOnlySubscriberRequired || isNoAdditionalFieldsRequired) {
+                  next(2);
+                } else {
+                  next(3);
+                }
               }}
               options={apartNumberOptions}
               data-reading-input={dataKey}
@@ -415,7 +430,15 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
                 open={isNameOpen}
                 onBlur={() => setNameOpen(false)}
                 onFocus={() => setNameOpen(true)}
-                onSelect={() => setNameOpen(false)}
+                onSelect={() => {
+                  setNameOpen(false);
+
+                  if (isOnlySubscriberRequired) {
+                    next(3);
+                  } else {
+                    next(4);
+                  }
+                }}
                 onMouseDown={() => setNameOpen(true)}
               >
                 <Input placeholder="Начните вводить" />
@@ -458,19 +481,38 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
             <Select
               showSearch
               allowClear
-              virtual={false}
+              virtual={true}
               placeholder="Начните вводить"
-              value={values.taskReasonSearch}
-              onChange={(value) => {
-                setFieldValue('taskReasonSearch', value);
-                handleSelectTaskReason(value as string);
+              value={values.taskReasonOrderNumber}
+              onClear={() => {
+                setFieldValue('taskReasonSearch', null);
+                setFieldValue('taskReasonOrderNumber', null);
               }}
-              optionFilterProp="value"
-              optionLabelProp="value"
-              filterOption={(inputValue, option) => {
-                return option?.value
-                  ?.toLocaleLowerCase()
-                  .startsWith(inputValue?.toLocaleLowerCase());
+              onSearch={(value) => {
+                setFieldValue('taskReasonSearch', value);
+              }}
+              onSelect={(value) => {
+                const valueString = value as string;
+
+                const name = valueString.split('_')[1];
+
+                setFieldValue('taskReasonOrderNumber', valueString);
+                setFieldValue('taskReasonSearch', name);
+                handleSelectTaskReason(name);
+
+                setReasonOpen(false);
+                if (isNoAdditionalFieldsRequired) {
+                  next(3);
+                }
+                if (isOnlySourceNumberRequired) {
+                  next(4);
+                }
+                if (isOnlySubscriberRequired) {
+                  next(5);
+                }
+                if (isSubscriberAndSourceNumberRequired) {
+                  next(6);
+                }
               }}
               data-reading-input={dataKey}
               onKeyDown={fromEnter(() => {
@@ -490,29 +532,10 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
               open={isReasonOpen}
               onBlur={() => setReasonOpen(false)}
               onFocus={() => setReasonOpen(true)}
-              onSelect={() => {
-                setReasonOpen(false);
-                if (isNoAdditionalFieldsRequired) {
-                  next(3);
-                }
-                if (isOnlySourceNumberRequired) {
-                  next(4);
-                }
-                if (isOnlySubscriberRequired) {
-                  next(5);
-                }
-                if (isSubscriberAndSourceNumberRequired) {
-                  next(6);
-                }
-              }}
               onMouseDown={() => setReasonOpen(true)}
             >
               {taskReasonOptions.map((elem) => (
-                <Select.Option
-                  optionLabelProp="label"
-                  key={elem.key}
-                  value={elem.value}
-                >
+                <Select.Option key={elem.key} value={elem.value}>
                   {elem.label}
                 </Select.Option>
               ))}

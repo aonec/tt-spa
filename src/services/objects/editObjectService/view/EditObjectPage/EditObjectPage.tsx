@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { FC, ReactNode, useMemo, useState } from 'react';
 import { CityWrappper, Edit, PageTitleAddress } from './EditObjectPage.styled';
 import {
   EditObjectPageProps,
@@ -41,6 +41,60 @@ export const EditObjectPage: FC<EditObjectPageProps> = ({
   );
   const city = address?.mainAddress?.city || '';
 
+  const tabItems = useMemo(
+    () => [
+      { label: 'Адрес объекта', key: EditObjectPageTabs.Address },
+      { label: 'Основная информация', key: EditObjectPageTabs.MainInfo },
+      {
+        label: 'Дополнительная информация',
+        key: EditObjectPageTabs.AdditionalInfo,
+      },
+    ],
+    [],
+  );
+
+  const components: { [key in EditObjectPageTabs]: ReactNode } = {
+    [EditObjectPageTabs.Address]: address && (
+      <AddressTab
+        address={address}
+        existingCities={existingCities}
+        existingStreets={existingStreets}
+        onPageCancel={onPageCancel}
+        handleCreateHousingStockAddress={handleCreateHousingStockAddress}
+        handleDeleteHousingStockAddress={handleDeleteHousingStockAddress}
+        handleUpdateHousingStockAddress={handleUpdateHousingStockAddress}
+        isUpdateLoading={isUpdateLoading}
+        isCreateLoading={isCreateLoading}
+        handleRefetchHousingStock={handleRefetchHousingStock}
+      />
+    ),
+    [EditObjectPageTabs.MainInfo]: houseCategory && (
+      <MainInfoTab
+        housingStock={housingStock}
+        nonResidentialBuilding={nonResidentialBuilding}
+        houseManagements={houseManagements}
+        openCreateHeatingStationModal={openCreateHeatingStationModal}
+        openEditHeatingStationModal={openEditHeatingStationModal}
+        heatingStations={heatingStations}
+        heatingStationCapture={heatingStationCapture}
+        onPageCancel={onPageCancel}
+        handleUpdateHousingStock={handleUpdateHousingStock}
+        isHeatingStationsLoading={isHeatingStationsLoading}
+        isHouseManagementsLoading={isHouseManagementsLoading}
+        houseCategory={houseCategory}
+      />
+    ),
+    [EditObjectPageTabs.AdditionalInfo]: houseCategory && (
+      <AdditionalInfoTab
+        housingStock={housingStock}
+        nonResidentialBuilding={nonResidentialBuilding}
+        onPageCancel={onPageCancel}
+        handleUpdateHousingStock={handleUpdateHousingStock}
+        houseCategory={houseCategory}
+      />
+    ),
+  };
+
   return (
     <>
       <GoBack />
@@ -52,59 +106,9 @@ export const EditObjectPage: FC<EditObjectPageProps> = ({
       <Tabs
         onChange={(tab) => setTab(tab as EditObjectPageTabs)}
         activeKey={activeTab}
-      >
-        <Tabs.TabPane tab="Адрес объекта" key={EditObjectPageTabs.Address}>
-          {address && (
-            <AddressTab
-              address={address}
-              existingCities={existingCities}
-              existingStreets={existingStreets}
-              onPageCancel={onPageCancel}
-              handleCreateHousingStockAddress={handleCreateHousingStockAddress}
-              handleDeleteHousingStockAddress={handleDeleteHousingStockAddress}
-              handleUpdateHousingStockAddress={handleUpdateHousingStockAddress}
-              isUpdateLoading={isUpdateLoading}
-              isCreateLoading={isCreateLoading}
-              handleRefetchHousingStock={handleRefetchHousingStock}
-            />
-          )}
-        </Tabs.TabPane>
-        <Tabs.TabPane
-          tab="Основная информация"
-          key={EditObjectPageTabs.MainInfo}
-        >
-          {houseCategory && (
-            <MainInfoTab
-              housingStock={housingStock}
-              nonResidentialBuilding={nonResidentialBuilding}
-              houseManagements={houseManagements}
-              openCreateHeatingStationModal={openCreateHeatingStationModal}
-              openEditHeatingStationModal={openEditHeatingStationModal}
-              heatingStations={heatingStations}
-              heatingStationCapture={heatingStationCapture}
-              onPageCancel={onPageCancel}
-              handleUpdateHousingStock={handleUpdateHousingStock}
-              isHeatingStationsLoading={isHeatingStationsLoading}
-              isHouseManagementsLoading={isHouseManagementsLoading}
-              houseCategory={houseCategory}
-            />
-          )}
-        </Tabs.TabPane>
-        <Tabs.TabPane
-          tab="Дополнительная информация"
-          key={EditObjectPageTabs.AdditionalInfo}
-        >
-          {houseCategory && (
-            <AdditionalInfoTab
-              housingStock={housingStock}
-              nonResidentialBuilding={nonResidentialBuilding}
-              onPageCancel={onPageCancel}
-              handleUpdateHousingStock={handleUpdateHousingStock}
-              houseCategory={houseCategory}
-            />
-          )}
-        </Tabs.TabPane>
-      </Tabs>
+        items={tabItems}
+      />
+      {components[activeTab]}
     </>
   );
 };

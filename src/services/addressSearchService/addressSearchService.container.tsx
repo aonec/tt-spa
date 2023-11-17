@@ -54,9 +54,9 @@ export const AddressSearchContainer: FC<AddressSearchContainerProps> = ({
 
   useEffect(
     () =>
-      forms.addressSearchForm.formValidated.watch(
-        (values) => onSubmit && onSubmit(values),
-      ).unsubscribe,
+      forms.addressSearchForm.formValidated.watch((values) => {
+        onSubmit && onSubmit(values);
+      }).unsubscribe,
     [onSubmit, values],
   );
 

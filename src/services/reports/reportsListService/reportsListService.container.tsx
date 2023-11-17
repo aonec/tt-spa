@@ -16,8 +16,6 @@ import {
   EmployeeReportType,
 } from 'services/reportsService/reportViewService/view/ReportViewPage/ReportFiltrationForm/ReportFiltrationForm.types';
 
-const { TabPane } = TabsSC;
-
 const { outputs, gates, inputs } = reportsListService;
 const { ReportsHistoryGate } = gates;
 
@@ -91,6 +89,17 @@ export const ReportsListContainer = () => {
     return `(${archivedReportsCount})`;
   }, [reportsHistoryListPagedData]);
 
+  const tabItems = useMemo(
+    () => [
+      { label: 'Актуальные отчеты', key: ReportStatusType.Actual },
+      {
+        label: `Архивные отчеты ${archivedReportsCountString}`,
+        key: ReportStatusType.Archived,
+      },
+    ],
+    [archivedReportsCountString],
+  );
+
   return (
     <>
       <ReportsHistoryGate />
@@ -99,13 +108,9 @@ export const ReportsListContainer = () => {
           isShowActual ? ReportStatusType.Actual : ReportStatusType.Archived
         }
         onChange={(key) => setIsShowActual(key === ReportStatusType.Actual)}
-      >
-        <TabPane tab="Актуальные отчеты" key={ReportStatusType.Actual} />
-        <TabPane
-          tab={`Архивные отчеты ${archivedReportsCountString}`}
-          key={ReportStatusType.Archived}
-        />
-      </TabsSC>
+        items={tabItems}
+      />
+
       <ReportsList
         reportsList={reportsHistoryListPagedData?.items || null}
         isLoading={isLoading}
