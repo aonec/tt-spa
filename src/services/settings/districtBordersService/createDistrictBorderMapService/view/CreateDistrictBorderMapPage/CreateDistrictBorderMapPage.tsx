@@ -1,4 +1,4 @@
-import React, { FC, useCallback, useEffect, useMemo } from 'react';
+import React, { FC, useCallback, useEffect, useMemo, useState } from 'react';
 import { Button } from 'ui-kit/Button';
 import { PencilIcon } from 'ui-kit/icons';
 import { useYMaps } from 'hooks/ymaps/useYMaps';
@@ -20,6 +20,8 @@ import { createDistrictBorderMapService } from '../../createDistrictBorderMapSer
 import { CreateDistrictFormPanel } from './CreateDistrictFormPanel';
 import { getPayloadFromDistricts } from 'utils/districtsData';
 import { findPolygonCenter } from 'utils/findPolygonCenter';
+import { SearchAddresses } from './SearchAddresses/SearchAddresses';
+import { BuildingWithCoordinatesResponse } from 'api/types';
 
 const { forms } = createDistrictBorderMapService;
 
@@ -32,7 +34,8 @@ export const CreateDistrictBorderMapPage: FC<Props> = ({
   isLoadingPostDistrict,
 }) => {
   const { map, mapRef } = useYMaps(organizationCoordinates);
-
+  const [searchBuilding, setSearchBuilding] =
+    useState<BuildingWithCoordinatesResponse | null>(null);
   const { fields } = useForm(forms.createDistrictForm);
 
   const toggleHouse = useCallback(
@@ -112,11 +115,13 @@ export const CreateDistrictBorderMapPage: FC<Props> = ({
         housesInDistrict.map(({ id }) => id),
         fields.selectedHouses.value,
         toggleHouse,
+        searchBuilding && [searchBuilding.id],
       ),
     [
       existingHousingStocks,
       fields.selectedHouses.value,
       housesInDistrict,
+      searchBuilding,
       toggleHouse,
     ],
   );
@@ -129,6 +134,18 @@ export const CreateDistrictBorderMapPage: FC<Props> = ({
         <div>
           <GoBack />
         </div>
+        <SearchAddresses
+          handleSelect={(building) => {
+            const center = [
+              building.coordinates?.latitude!,
+              building.coordinates?.longitude!,
+            ];
+
+            setSearchBuilding(building);
+            map?.setCenter(center, 17, { duration: 200 });
+          }}
+          existingHousingStocks={existingHousingStocks}
+        />
         <ControlButtonsWrapper>
           {fields.isEditing.value && (
             <Button onClick={() => fields.isEditing.onChange(false)}>
