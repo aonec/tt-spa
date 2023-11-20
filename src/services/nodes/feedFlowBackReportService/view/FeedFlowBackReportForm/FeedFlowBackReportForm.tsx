@@ -35,7 +35,7 @@ export const FeedFlowBackReportForm: FC<FeedFlowBackReportFormProps> = ({
         temperature: '',
       },
       onSubmit: (values) => {
-        if (!values.name || !values.temperature) {
+        if (!values.name || typeof values.temperature !== 'number') {
           return;
         }
 

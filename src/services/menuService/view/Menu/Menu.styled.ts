@@ -9,6 +9,15 @@ export const Footer = styled.div`
   padding: 0 16px;
 `;
 
+export const MenuItemWrapper = styled.div`
+  overflow-y: auto;
+  height: calc(100vh - 180px);
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+`;
+
 export const DevSettingsButton = styled.div`
   border: 1px solid #e5e5e5;
   height: 26px;

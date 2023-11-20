@@ -7,7 +7,6 @@ import {
 } from 'api/types';
 import { GetDistrictAppointmentsRequestPayload } from '../distributeRecordsService/distributeRecordsService.types';
 import { createQuery } from '@farfetched/core';
-import { getFilledArray } from 'utils/getFilledArray';
 import dayjs from 'dayjs';
 
 export const fetchCreateSeal = (
@@ -25,48 +24,42 @@ export const getDistrict = (HouseId: number): Promise<DistrictResponse[]> =>
 
 export const districtAppoinmtentsOnMonthQuery = createQuery<
   GetDistrictAppointmentsRequestPayload,
-  { [key: string]: number }
+  {
+    [key: string]: number;
+  }
 >({
   handler: async ({ date, districtId }) => {
-    const startOfMonth = dayjs(date).startOf('month');
-    const result = await Promise.all(
-      getFilledArray(dayjs(date).daysInMonth(), (index) => index).map(
-        async (shift) => {
-          const date = startOfMonth.add(shift, 'day').format('YYYY-MM-DD');
-          const counting = await getDistrictAppoinmtentsCounting({
-            date,
-            districtId,
-          });
+    let startOfMonth = dayjs(date).startOf('month');
+    const today = dayjs();
 
-          return {
-            date,
-            numberOfCounts:
-              (counting?.distributed || 0) + (counting?.notDistributed || 0),
-          };
+    if (startOfMonth.diff(today, 'day') < 0) {
+      startOfMonth = today.startOf('day');
+    }
+
+    const res: AppointmentCounterResponse[] = await axios.get(
+      'IndividualSeal/Appointments/Planning',
+      {
+        params: {
+          districtId,
+          from: startOfMonth.format('YYYY-MM-DD'),
+          to: startOfMonth
+            .add(1, 'month')
+            .startOf('month')
+            .format('YYYY-MM-DD'),
         },
-      ),
+      },
+    );
+    const preparedRes = res.reduce(
+      (acc, day) => ({
+        ...acc,
+        [dayjs(day.date).format('YYYY-MM-DD')]:
+          (day?.distributed || 0) + (day?.notDistributed || 0),
+      }),
+      {} as {
+        [key: string]: number;
+      },
     );
 
-    return result.reduce((acc, { date, numberOfCounts }) => {
-      if (numberOfCounts) {
-        return { ...acc, [date]: numberOfCounts };
-      }
-      return acc;
-    }, {} as { [key: string]: number });
+    return preparedRes;
   },
 });
-
-const getDistrictAppoinmtentsCounting = async (
-  params: GetDistrictAppointmentsRequestPayload,
-) => {
-  try {
-    const response: AppointmentCounterResponse = await axios.get(
-      'IndividualSeal/Appointments/Counting',
-      { params },
-    );
-
-    return response;
-  } catch {
-    return null;
-  }
-};

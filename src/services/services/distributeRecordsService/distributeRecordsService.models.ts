@@ -3,7 +3,6 @@ import { combine, forward, sample } from 'effector';
 import { createGate } from 'effector-react';
 import {
   appointmentsCountingQuery,
-  districtAppoinmtentsOnMonthQuery,
   districtAppointmentsQuery,
   districtsQuery,
   individualSealControllersQuery,
@@ -30,7 +29,6 @@ const DistributeRecordsGate = createGate();
 const handleUnselectDistrict = createEvent();
 const handleSelectDistrict = createEvent<string>();
 const setAppointmentDate = createEvent<string>();
-const setMonth = createEvent<string>();
 const selectAppointments = createEvent<string[]>();
 
 const openDistributeAppointmentsModal = createEvent();
@@ -44,13 +42,9 @@ const $appointmentDate = createStore<string | null>(
   dayjs().format('YYYY-MM-DD'),
 )
   .on(setAppointmentDate, (_, date) => date)
-  .on(nearestAppointmentsDateQuery.$data, (_, res) => res?.date)
-  .reset(DistributeRecordsGate.close);
-
-const $currentMonth = createStore<string | null>(dayjs().format('YYYY-MM'))
-  .on(setMonth, (_, month) => month)
-  .on(nearestAppointmentsDateQuery.$data, (_, res) =>
-    dayjs(res?.date).format('YYYY-MM'),
+  .on(
+    nearestAppointmentsDateQuery.$data,
+    (_, res) => res?.date && dayjs(res.date).format('YYYY-MM-DD'),
   )
   .reset(DistributeRecordsGate.close);
 
@@ -73,14 +67,6 @@ sample({
   filter: (data): data is GetDistrictAppointmentsRequestPayload =>
     Boolean(data.districtId),
   target: districtAppointmentsQuery.start,
-});
-
-sample({
-  source: $getAppointmentsRequestPayload,
-  clock: [$selectedDistrict, $currentMonth],
-  filter: (data): data is GetDistrictAppointmentsRequestPayload =>
-    Boolean(data.districtId && data.date),
-  target: districtAppoinmtentsOnMonthQuery.start,
 });
 
 forward({
@@ -135,10 +121,7 @@ sample({
     handleUnselectDistrict,
     $selectedDistrict,
   ],
-  target: [
-    districtAppointmentsQuery.reset,
-    districtAppoinmtentsOnMonthQuery.reset,
-  ],
+  target: districtAppointmentsQuery.reset,
 });
 
 setAppointmentsToControllerMutation.finished.failure.watch(({ error }) => {
@@ -191,7 +174,6 @@ export const distributeRecordsService = {
     selectAppointments,
     openDistributeAppointmentsModal,
     closeDistributeAppointmentsModal,
-    setMonth,
     openCreateControllerModal:
       createControllerService.inputs.openCreateControllerModal,
   },

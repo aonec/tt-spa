@@ -1,4 +1,4 @@
-import React, { FC, useMemo, useState } from 'react';
+import React, { FC, useCallback, useMemo, useState } from 'react';
 import {
   AppointmentCreateFormik,
   CreateSealAppointmentFormProps,
@@ -80,6 +80,15 @@ export const CreateSealAppointmentForm: FC<CreateSealAppointmentFormProps> = ({
       },
     });
 
+  const handlePanelChange = useCallback(
+    (day: dayjs.Dayjs) => {
+      setMonth(day.startOf('month').format('YYYY-MM-DD'));
+    },
+    [setMonth],
+  );
+
+  const date = useMemo(() => getDatePickerValue(values.date), [values]);
+
   return (
     <Form id={formId} onSubmitCapture={submitForm}>
       <FormItem label="Адрес">
@@ -129,13 +138,11 @@ export const CreateSealAppointmentForm: FC<CreateSealAppointmentFormProps> = ({
           <DatePicker
             format="DD.MM.YYYY"
             disabledDate={(date) => dayjs().diff(date, 'd') > 0}
-            value={getDatePickerValue(values.date)}
+            value={date}
             onChange={(date) =>
               setFieldValue('date', date?.format('YYYY-MM-DD'))
             }
-            onPanelChange={(day) =>
-              setMonth(day.startOf('month').format('YYYY-MM-DD'))
-            }
+            onPanelChange={handlePanelChange}
             renderExtraFooter={() => {
               if (appointmentsOnMonthLoading) {
                 return <SkeletonSC active />;
@@ -145,7 +152,7 @@ export const CreateSealAppointmentForm: FC<CreateSealAppointmentFormProps> = ({
                 return (
                   <CounterWrapper>
                     Записи на эту дату:{' '}
-                    {appointmentsOnMonthData[values.date] || 0}
+                    {appointmentsOnMonthData?.[values.date] || 0}
                   </CounterWrapper>
                 );
               }

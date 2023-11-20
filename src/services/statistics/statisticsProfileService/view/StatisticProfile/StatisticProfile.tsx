@@ -1,4 +1,4 @@
-import React, { FC, useMemo } from 'react';
+import React, { FC, ReactNode, useMemo } from 'react';
 import { TabsSC } from './StatisticProfile.styled';
 import { StatisticProfileProps } from './StatisticProfile.types';
 import { PageHeader } from 'ui-kit/shared/PageHeader';
@@ -9,7 +9,6 @@ import { SubscribersConsumptionContainer } from 'services/statistics/subscribers
 import { useHistory } from 'react-router-dom';
 import { ResourceDisablingScheduleContainer } from 'services/settings/resourcesDisablingScheduleService/ResourceDisablingScheduleContainer';
 import { chooseTypeOfResourceDisconnectionModalService } from 'services/resources/chooseTypeOfResourceDisconnectionModalService';
-const { TabPane } = TabsSC;
 
 export const StatisticProfile: FC<StatisticProfileProps> = ({
   handleOpenExportStatisticModal,
@@ -64,6 +63,36 @@ export const StatisticProfile: FC<StatisticProfileProps> = ({
     housingStockAddress,
   ]);
 
+  const tabItems = useMemo(
+    () => [
+      {
+        label: 'Анализ потребления ресурсов',
+        key: StatisticProfileGrouptype.resourceConsumption,
+      },
+      {
+        label: 'Учет абонентского потребления',
+        key: StatisticProfileGrouptype.subscribersConsumption,
+      },
+      {
+        label: 'Отключение ресурсов',
+        key: StatisticProfileGrouptype.disabledResources,
+      },
+    ],
+    [],
+  );
+
+  const components: { [key in StatisticProfileGrouptype]: ReactNode } = {
+    [StatisticProfileGrouptype.resourceConsumption]: (
+      <ResourceConsumptionContainer />
+    ),
+    [StatisticProfileGrouptype.disabledResources]: (
+      <ResourceDisablingScheduleContainer />
+    ),
+    [StatisticProfileGrouptype.subscribersConsumption]: (
+      <SubscribersConsumptionContainer />
+    ),
+  };
+
   return (
     <>
       <PageHeader title="Статистика и данные" contextMenu={{ menuButtons }} />
@@ -71,28 +100,9 @@ export const StatisticProfile: FC<StatisticProfileProps> = ({
       <TabsSC
         activeKey={grouptype}
         onChange={(value) => history.push(`/statistics/${value}`)}
-      >
-        <TabPane
-          tab="Анализ потребления ресурсов"
-          key={StatisticProfileGrouptype.resourceConsumption}
-        >
-          <ResourceConsumptionContainer />
-        </TabPane>
-        <TabPane
-          style={{ overflow: 'none' }}
-          tab="Учет абонентского потребления"
-          key={StatisticProfileGrouptype.subscribersConsumption}
-        >
-          <SubscribersConsumptionContainer />
-        </TabPane>
-
-        <TabPane
-          tab="Отключение ресурсов"
-          key={StatisticProfileGrouptype.disabledResources}
-        >
-          <ResourceDisablingScheduleContainer />
-        </TabPane>
-      </TabsSC>
+        items={tabItems}
+      />
+      {components[grouptype]}
     </>
   );
 };

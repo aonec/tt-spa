@@ -34,6 +34,14 @@ export const DevicesPageProfile: FC<DevicesPageProfileProps> = ({
     [handleAddNode, isPermitionToAddNode, type, openDownloadDevicesReportModal],
   );
 
+  const tabItems = useMemo(
+    () => [
+      { label: 'ОДПУ', key: DevicesProfileTabsType.ODPU },
+      { label: 'ИПУ', key: DevicesProfileTabsType.IndividualDevices },
+    ],
+    [],
+  );
+
   const Header = useCallback(
     ({ children }: { children: ReactNode }) => {
       return (
@@ -47,18 +55,13 @@ export const DevicesPageProfile: FC<DevicesPageProfileProps> = ({
             onChange={(activeKey) =>
               setDevicesType(activeKey as DevicesProfileTabsType)
             }
-          >
-            <Tabs.TabPane tab="ОДПУ" key={DevicesProfileTabsType.ODPU} />
-            <Tabs.TabPane
-              tab="ИПУ"
-              key={DevicesProfileTabsType.IndividualDevices}
-            />
-          </Tabs>
+            items={tabItems}
+          />
           {children}
         </FiltrationWrapper>
       );
     },
-    [menuButtonArr, setDevicesType, type],
+    [menuButtonArr, setDevicesType, type, tabItems],
   );
 
   return (

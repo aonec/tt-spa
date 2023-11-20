@@ -16,8 +16,6 @@ import { ResourceAccountingSystemsContainer } from 'services/devices/resourceAcc
 import { useHistory } from 'react-router-dom';
 import { LinkCard } from 'ui-kit/shared/LinkCard';
 
-const { TabPane } = TabsSC;
-
 export const NonResidentialBuildingProfile: FC<
   NonResidentialBuildingProfileProps
 > = ({
@@ -47,6 +45,20 @@ export const NonResidentialBuildingProfile: FC<
       ),
     }),
     [nonResidentialBuilding, resourceDisconnections],
+  );
+
+  const tabItems = useMemo(
+    () => [
+      {
+        label: 'Общая информация',
+        key: NonResidentialBuildingProfileGrouptype.Common,
+      },
+      {
+        label: 'Системы учета ресурсов',
+        key: NonResidentialBuildingProfileGrouptype.Devices,
+      },
+    ],
+    [],
   );
 
   if (!nonResidentialBuilding) {
@@ -105,16 +117,8 @@ export const NonResidentialBuildingProfile: FC<
           setGrouptype(grouptype as NonResidentialBuildingProfileGrouptype)
         }
         activeKey={currentGrouptype}
-      >
-        <TabPane
-          tab="Общая информация"
-          key={NonResidentialBuildingProfileGrouptype.Common}
-        />
-        <TabPane
-          tab="Системы учета ресурсов"
-          key={NonResidentialBuildingProfileGrouptype.Devices}
-        />
-      </TabsSC>
+        items={tabItems}
+      />
       <Wrapper>
         <ContentWrapper>{content[currentGrouptype]}</ContentWrapper>
         <div>

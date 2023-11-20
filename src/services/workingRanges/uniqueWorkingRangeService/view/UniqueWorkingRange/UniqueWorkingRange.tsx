@@ -29,8 +29,6 @@ import { WithLoader } from 'ui-kit/shared/WithLoader';
 import { ResourceSelectSC } from 'ui-kit/shared/ResourceSelectSC';
 import { Select } from 'ui-kit/Select';
 
-const { TabPane } = TabsSC;
-
 export const UniqueWorkingRange: FC<UniqueWorkingRangeProps> = ({
   handleOnSearchDataChange,
   housingStockUniqueWorkingRange,
@@ -136,6 +134,20 @@ export const UniqueWorkingRange: FC<UniqueWorkingRangeProps> = ({
   const isElectricity =
     (values.nodeResourceType as EResourceType) === EResourceType.Electricity;
 
+  const tabItems = useMemo(
+    () => [
+      {
+        label: 'Отопительный сезон',
+        key: ENodeWorkingRangeSeason.HeatingSeason,
+      },
+      {
+        label: 'Межотопительный сезон',
+        key: ENodeWorkingRangeSeason.InterHeating,
+      },
+    ],
+    [],
+  );
+
   return (
     <>
       <GoBack />
@@ -146,16 +158,8 @@ export const UniqueWorkingRange: FC<UniqueWorkingRangeProps> = ({
           handleSubmit();
         }}
         activeKey={values.season}
-      >
-        <TabPane
-          tab="Отопительный сезон"
-          key={ENodeWorkingRangeSeason.HeatingSeason}
-        />
-        <TabPane
-          tab="Межотопительный сезон"
-          key={ENodeWorkingRangeSeason.InterHeating}
-        />
-      </TabsSC>
+        items={tabItems}
+      />
 
       <FilterBlock>
         <ResourceSelectSC

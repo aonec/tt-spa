@@ -20,12 +20,13 @@ export const Header = styled.div<{ columnsCount: number }>`
   grid-gap: 8px;
   align-items: center;
   padding: 0 8px;
-  margin-top: 8px;
 `;
 
 export const CheckboxSC = styled(Checkbox)`
   color: #272f5ae5;
-  width: 100%;
+  background-color: #fff;
+  width: 80vw;
+  padding-bottom: 8px;
 `;
 
 export const StickyWrapper = styled.div`

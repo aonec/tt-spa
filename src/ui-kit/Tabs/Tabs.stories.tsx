@@ -11,21 +11,14 @@ const meta: ComponentMeta<typeof Tabs> = {
 
 export default meta;
 
+const tabItems = [
+  { label: 'Общие данные', key: EditCalculatorTabs.CommonInfo },
+  { label: 'Настройки соединения', key: EditCalculatorTabs.Connection },
+  { label: 'Документы', key: EditCalculatorTabs.Documents },
+];
+
 export const Overview: ComponentStory<typeof Tabs> = (args) => (
   <div style={{ width: '800px', display: 'flex', justifyContent: 'center' }}>
-    <Tabs {...args} />
+    <Tabs {...args} items={tabItems} />
   </div>
 );
-
-Overview.args = {
-  children: (
-    <>
-      <Tabs.TabPane tab="Общие данные" key={EditCalculatorTabs.CommonInfo} />
-      <Tabs.TabPane
-        tab="Настройки соединения"
-        key={EditCalculatorTabs.Connection}
-      />
-      <Tabs.TabPane tab="Документы" key={EditCalculatorTabs.Documents} />
-    </>
-  ),
-};

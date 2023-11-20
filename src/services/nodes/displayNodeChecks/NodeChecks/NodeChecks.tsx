@@ -35,6 +35,7 @@ export const NodeChecks: FC<NodeChecksProps> = ({
         elements={documents}
         headerStyles={styles}
         rowStyles={styles}
+        floating
         columns={[
           {
             label: 'Дата',
