@@ -4,6 +4,7 @@ import {
 } from 'api/types';
 import { DistrictColor, DistrictData } from 'types';
 import housingStockMiniPlacemark from 'hooks/ymaps/placemarks/housingStockMiniPlacemark.svg';
+import housingStockActiveMiniPlacemark from 'hooks/ymaps/placemarks/housingStockActiveMiniPlacemark.svg';
 import housingStockPlacemark from 'hooks/ymaps/placemarks/housingStockPlacemark.svg';
 import inactiveHousingStockPlacemark from 'hooks/ymaps/placemarks/inactiveHousingStockPlacemark.svg';
 import { isPointInsidePolygon } from 'utils/isPointInsidePolygon';
@@ -13,18 +14,22 @@ export const getBuildingPlacmearks = (
   housesInDistrict: number[],
   selectedHouses: number[],
   toggleHouse: (id: number) => void,
+  activeHouses?: number[] | null,
 ) => {
   if (!housingStocks?.items) return [];
 
   return housingStocks.items.map((elem) => {
     const isHouseInsideDistrict = housesInDistrict.includes(elem.id);
     const isHouseSelected = selectedHouses.includes(elem.id);
+    const isHouseActive = activeHouses?.includes(elem.id);
 
     return {
       placemarkIconLink: isHouseInsideDistrict
         ? isHouseSelected
           ? housingStockPlacemark
           : inactiveHousingStockPlacemark
+        : isHouseActive
+        ? housingStockActiveMiniPlacemark
         : housingStockMiniPlacemark,
       coords: [
         elem.coordinates?.latitude || 0,

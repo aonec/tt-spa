@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { AutoComplete } from 'ui-kit/AutoComplete';
 
 export const Header = styled.div`
   height: 48px;
@@ -20,4 +21,8 @@ export const ControlButtonsWrapper = styled.div`
   display: flex;
   align-items: center;
   gap: 16px;
+`;
+
+export const SearchInput = styled(AutoComplete)`
+  width: 500px;
 `;
