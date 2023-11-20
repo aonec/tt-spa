@@ -142,7 +142,10 @@ export const CreateDistrictBorderMapPage: FC<Props> = ({
             ];
 
             setSearchBuilding(building);
-            map?.setCenter(center, 17, { duration: 200 });
+
+            const MAP_ZOOM = 17;
+
+            map?.setCenter(center, MAP_ZOOM, { duration: 200 });
           }}
           existingHousingStocks={existingHousingStocks}
         />

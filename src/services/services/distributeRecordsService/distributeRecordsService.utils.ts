@@ -1,12 +1,12 @@
-import { ControllerResponse } from 'api/types';
 import dayjs from 'dayjs';
 import { downloadURI } from 'utils/downloadByURL';
+import { DownloadTaskDocumentRequestPayload } from './distributeRecordsService.types';
 
-export const downloadTaskDocument = (
-  documentResponse: string,
-  appointmentDate: string,
-  controller: ControllerResponse,
-) => {
+export const downloadTaskDocument = ({
+  documentResponse,
+  appointmentDate,
+  controller,
+}: DownloadTaskDocumentRequestPayload) => {
   const url = window.URL.createObjectURL(new Blob([documentResponse]));
 
   const fullName = [

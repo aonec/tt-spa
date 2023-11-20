@@ -15,6 +15,7 @@ import {
 } from './distributeRecordsService.types';
 import { EffectFailDataAxiosError } from 'types';
 import { createEffect } from 'effector';
+import dayjs from 'api/dayjs';
 
 export const districtsQuery = createQuery<void, DistrictResponse[] | null>({
   handler: async () => {

@@ -1,4 +1,4 @@
-import { createEvent, createStore } from 'effector';
+import { createEffect, createEvent, createStore } from 'effector';
 import { combine, forward, sample } from 'effector';
 import { createGate } from 'effector-react';
 import {
@@ -12,6 +12,7 @@ import {
 } from './distributeRecordsService.api';
 import dayjs from 'api/dayjs';
 import {
+  DownloadTaskDocumentRequestPayload,
   GetDistrictAppointmentsRequestPayload,
   GetDistrictsAppointmentsCountingRequestPayload,
 } from './distributeRecordsService.types';
@@ -147,6 +148,11 @@ sample({
   target: individualSealTaskDocumentQuery.start,
 });
 
+const downloadTaskDocumentFx = createEffect<
+  DownloadTaskDocumentRequestPayload,
+  void
+>(downloadTaskDocument);
+
 sample({
   source: combine(
     $appointmentDate,
@@ -157,13 +163,16 @@ sample({
   fn: (
     { appointmentDate, controllers },
     { result: documentResponse, params: { controllerId } },
-  ) => {
+  ): DownloadTaskDocumentRequestPayload => {
     const controller = controllers?.find((elem) => elem.id === controllerId);
 
-    if (!appointmentDate || !controller) return;
-
-    downloadTaskDocument(documentResponse, appointmentDate, controller);
+    return {
+      documentResponse,
+      appointmentDate: appointmentDate!,
+      controller: controller!,
+    };
   },
+  target: downloadTaskDocumentFx,
 });
 
 export const distributeRecordsService = {
