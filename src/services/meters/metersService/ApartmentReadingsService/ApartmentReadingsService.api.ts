@@ -2,6 +2,7 @@ import { axios } from 'api/axios';
 import {
   ApartmentListResponsePagedList,
   ApartmentResponse,
+  AppointmentResponse,
   HomeownerAccountResponse,
 } from 'api/types';
 import {
@@ -47,6 +48,11 @@ export const getApartmentQuery = createQuery({
     return apartment;
   }),
 });
+
+export const getNearestAppointmentForApartment = (
+  ApartmentId: number,
+): Promise<AppointmentResponse[]> =>
+  axios.get('IndividualSeal/Appointments', { params: { ApartmentId } });
 
 export const putApartment = ({
   apartmentId,

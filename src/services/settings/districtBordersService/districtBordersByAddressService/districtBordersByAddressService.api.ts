@@ -1,5 +1,8 @@
 import { axios } from 'api/axios';
-import { StreetWithBuildingNumbersResponsePagedList } from 'api/types';
+import {
+  DistrictResponse,
+  StreetWithBuildingNumbersResponsePagedList,
+} from 'api/types';
 import { FetchAddressQueryType } from './districtBordersByAddressService.types';
 
 export const getAddresses = (
@@ -9,3 +12,6 @@ export const getAddresses = (
     params,
   });
 };
+
+export const getDistrictsWithHouses = (): Promise<DistrictResponse[]> =>
+  axios.get('IndividualSeal/Districts');

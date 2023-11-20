@@ -37,8 +37,6 @@ import { HousingMeteringDeviceReadingsContainer } from 'services/devices/housing
 import { getDeviceIds } from 'services/devices/housingMeteringDevices/housingMeteringDeviceReadingsService/housingMeteringDeviceReadingsService.utils';
 import { usePermission } from 'hooks/usePermission';
 
-const { TabPane } = TabsSC;
-
 export const NodeProfilePage: FC<NodeProfilePageProps> = ({
   isLoading,
   pipeNode,
@@ -126,6 +124,20 @@ export const NodeProfilePage: FC<NodeProfilePageProps> = ({
     ESecuredIdentityRoleName.ManagingFirmSpectatingAdministrator,
   ]);
 
+  const tabItems = useMemo(
+    () => [
+      { label: 'Общие данные', key: PipeNodeProfileSection.Common },
+      { label: 'Статистика', key: PipeNodeProfileSection.Stats },
+      ...(isShowReadingsTab
+        ? [{ label: 'Ввод показаний', key: PipeNodeProfileSection.Readings }]
+        : []),
+      { label: 'Настройки соединения', key: PipeNodeProfileSection.Connection },
+      { label: 'Подключенные приборы', key: PipeNodeProfileSection.Related },
+      { label: 'История проверок', key: PipeNodeProfileSection.Checks },
+    ],
+    [isShowReadingsTab],
+  );
+
   return (
     <WithLoader isLoading={isLoading}>
       {pipeNode && (
@@ -188,28 +200,8 @@ export const NodeProfilePage: FC<NodeProfilePageProps> = ({
             onChange={(activeKey) =>
               handleChangeTab(activeKey as PipeNodeProfileSection)
             }
-          >
-            <TabPane tab="Общие данные" key={PipeNodeProfileSection.Common} />
-            <TabPane tab="Статистика" key={PipeNodeProfileSection.Stats} />
-            {isShowReadingsTab && (
-              <TabPane
-                tab="Ввод показаний"
-                key={PipeNodeProfileSection.Readings}
-              />
-            )}
-            <TabPane
-              tab="Настройки соединения"
-              key={PipeNodeProfileSection.Connection}
-            />
-            <TabPane
-              tab="Подключенные приборы"
-              key={PipeNodeProfileSection.Related}
-            />
-            <TabPane
-              tab="История проверок"
-              key={PipeNodeProfileSection.Checks}
-            />
-          </TabsSC>
+            items={tabItems}
+          />
           <Wrapper>
             {contentComponent}
             <div>

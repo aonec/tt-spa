@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useMemo } from 'react';
 import {
   Address,
   DeviceModel,
@@ -43,6 +43,14 @@ export const EditIndividualPage: FC<EditIndividualPageProps> = ({
     ESecuredIdentityRoleName.SeniorOperator,
   ]);
 
+  const tabItems = useMemo(
+    () => [
+      { label: 'Общая информация', key: EditIndividualDeviceTabs.CommonInfo },
+      { label: 'Документы', key: EditIndividualDeviceTabs.Documents },
+    ],
+    [],
+  );
+
   return (
     <Wrapper>
       <GoBack />
@@ -82,16 +90,8 @@ export const EditIndividualPage: FC<EditIndividualPageProps> = ({
               handleChangeTab(value as EditIndividualDeviceTabs);
             }}
             activeKey={currentTab}
-          >
-            <Tabs.TabPane
-              tab="Общая информация"
-              key={EditIndividualDeviceTabs.CommonInfo}
-            />
-            <Tabs.TabPane
-              tab="Документы"
-              key={EditIndividualDeviceTabs.Documents}
-            />
-          </Tabs>
+            items={tabItems}
+          />
 
           {currentTab === EditIndividualDeviceTabs.CommonInfo &&
             individualDevice && (

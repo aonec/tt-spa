@@ -38,7 +38,7 @@ const $selectedCity = createStore<string>('').on(selectCity, (_, city) => city);
 const selectManagingFirm = createEvent<string>();
 const $selectedManagingFirm = createStore<string>('')
   .on(selectManagingFirm, (_, managingFirm) => managingFirm)
-  .reset($managingFirms);
+  .reset([$managingFirms, StatiscticsPageGate.close]);
 
 const setSubscriberStatisticsFilter = createEvent<SubscriberStatisticsForm>();
 const $subscriberStatisticsFilter =
@@ -86,7 +86,8 @@ const $housingStocks = createStore<HousingStockWithApartmentStatistic[]>([])
         }
         return { ...housingStock, apartmentsStatistic };
       }),
-  );
+  )
+  .reset(StatiscticsPageGate.close);
 
 const $housingStocksIsLoading = getHousingStocksFx.pending;
 const $statisticIsLoading = getStatisticFx.pending;

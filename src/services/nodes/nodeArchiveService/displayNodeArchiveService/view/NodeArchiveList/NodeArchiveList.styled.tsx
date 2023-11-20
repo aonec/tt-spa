@@ -5,7 +5,9 @@ import { Checkbox } from 'antd';
 export const columnWidth = `120px`;
 
 export const Wrapper = styled.div`
-  width: 800px;
+  overflow-y: auto;
+  overflow-x: auto;
+  height: calc(100vh - 160px);
 `;
 
 export const Header = styled.div<{ columnsCount: number }>`
@@ -18,15 +20,17 @@ export const Header = styled.div<{ columnsCount: number }>`
   grid-gap: 8px;
   align-items: center;
   padding: 0 8px;
-  margin-top: 8px;
 `;
 
 export const CheckboxSC = styled(Checkbox)`
   color: #272f5ae5;
+  background-color: #fff;
+  width: 80vw;
+  padding-bottom: 8px;
 `;
 
 export const StickyWrapper = styled.div`
   position: sticky;
-  top: 124px;
+  top: 0px;
   background-color: #fff;
 `;

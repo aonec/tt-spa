@@ -1,5 +1,6 @@
 import {
   ApartmentResponse,
+  AppointmentResponse,
   IndividualDeviceMountPlaceForFilterResponse,
 } from 'api/types';
 import {
@@ -28,6 +29,7 @@ export type ApartmentsReadingsProps = {
   handleUpdateHomeowner: (payload: UpdateHomeownerRequestPayload) => void;
   isUpdateHomeownerLoading: boolean;
   isApartmentFetched: boolean;
+  nearestAppointment: AppointmentResponse | null;
 };
 
 export enum SearchMode {

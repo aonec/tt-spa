@@ -4,6 +4,7 @@ import {
   EResourceDisconnectingStatus,
   ErpCreateTaskRequest,
   ErpSourceResponse,
+  ErpTaskDeadlineResponse,
   ErpTaskReasonGroupResponse,
   ResourceDisconnectingResponsePagedList,
   StreetWithBuildingNumbersResponsePagedList,
@@ -22,6 +23,12 @@ export const createTask = (
 
 export const getERPSources = (): Promise<ErpSourceResponse[]> => {
   return axios.get('Tasks/ErpSources');
+};
+
+export const getErpTaskDeadline = (
+  TaskReasonId: string,
+): Promise<ErpTaskDeadlineResponse> => {
+  return axios.get('Tasks/ErpTaskDeadline', { params: { TaskReasonId } });
 };
 
 export const getTaskReasons = (): Promise<ErpTaskReasonGroupResponse[]> => {

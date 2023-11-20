@@ -5,6 +5,7 @@ import { getApartmentAddressString } from 'utils/getApartmentAddress';
 import { Wrapper } from './ApartmentItem.styled';
 import { ApartmentItemProps } from './ApartmentItem.types';
 import { HouseCategoryDictionary } from 'services/objects/createObjectService/view/CreateObjectPage/CreateObjectMainInfoStage/createObjectMainInfoStage.constants';
+import { EHouseCategory } from 'api/types';
 
 export const ApartmentItem: FC<ApartmentItemProps> = ({ apartment }) => {
   const address = getApartmentAddressString(apartment);
@@ -16,7 +17,7 @@ export const ApartmentItem: FC<ApartmentItemProps> = ({ apartment }) => {
       <div>{mainAddress?.city}</div>
       <div>
         {apartment?.housingStock?.houseCategory &&
-          HouseCategoryDictionary[apartment?.housingStock?.houseCategory]}
+          HouseCategoryDictionary[EHouseCategory.Living]}
       </div>
       <ContextMenuButton size="small" />
     </Wrapper>

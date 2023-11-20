@@ -1,4 +1,4 @@
-import React, { FC, useEffect } from 'react';
+import React, { FC, useEffect, useMemo } from 'react';
 import {
   ErrorBlockGrid,
   ErrorFieldName,
@@ -23,8 +23,6 @@ import {
 } from 'api/types';
 import { WithLoader } from 'ui-kit/shared/WithLoader';
 import { ResourceSelectSC } from 'ui-kit/shared/ResourceSelectSC';
-
-const { TabPane } = TabsSC;
 
 export const StandartWorkingRange: FC<StandartWorkingRangeProps> = ({
   handleOnSearchDataChange,
@@ -88,6 +86,20 @@ export const StandartWorkingRange: FC<StandartWorkingRangeProps> = ({
   const isElectricity =
     (values.nodeResourceType as EResourceType) === EResourceType.Electricity;
 
+  const tabItems = useMemo(
+    () => [
+      {
+        label: 'Отопительный сезон',
+        key: ENodeWorkingRangeSeason.HeatingSeason,
+      },
+      {
+        label: 'Межотопительный сезон',
+        key: ENodeWorkingRangeSeason.InterHeating,
+      },
+    ],
+    [],
+  );
+
   return (
     <>
       <GoBack />
@@ -98,16 +110,8 @@ export const StandartWorkingRange: FC<StandartWorkingRangeProps> = ({
           handleSubmit();
         }}
         activeKey={values.season}
-      >
-        <TabPane
-          tab="Отопительный сезон"
-          key={ENodeWorkingRangeSeason.HeatingSeason}
-        />
-        <TabPane
-          tab="Межотопительный сезон"
-          key={ENodeWorkingRangeSeason.InterHeating}
-        />
-      </TabsSC>
+        items={tabItems}
+      />
       <ResourceSelectWrapper>
         <ResourceSelectSC
           resource={values.nodeResourceType}

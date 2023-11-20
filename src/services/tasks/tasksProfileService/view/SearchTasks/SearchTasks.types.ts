@@ -1,6 +1,5 @@
 import { FormikErrors } from 'formik';
 import {
-  EManagingFirmTaskFilterType,
   EManagingFirmTaskFilterTypeNullableStringDictionaryItem,
   GuidStringDictionaryItem,
   OrganizationUserListResponse,
@@ -33,11 +32,4 @@ export type ExtendedSearchTypes = {
   taskTypes: EManagingFirmTaskFilterTypeNullableStringDictionaryItem[] | null;
   housingManagments?: GuidStringDictionaryItem[] | null;
   perpetrators?: OrganizationUserListResponse[] | null;
-};
-
-export type taskCategotiesProps = {
-  Node: Partial<EManagingFirmTaskFilterType>[];
-  All: Partial<EManagingFirmTaskFilterType>[];
-  IndividualDevice: Partial<EManagingFirmTaskFilterType>[];
-  HouseNetwork: Partial<EManagingFirmTaskFilterType>[];
 };

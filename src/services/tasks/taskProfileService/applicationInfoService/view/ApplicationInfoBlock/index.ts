@@ -1,1 +1,1 @@
-export { ApplicationInfoBlock } from './ApplicationInfoBlock'
+export { ApplicationInfoBlock } from './ApplicationInfoBlock';

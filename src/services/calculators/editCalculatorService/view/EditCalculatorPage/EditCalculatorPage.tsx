@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useMemo } from 'react';
 import {
   CalculatorModel,
   CalculatorNumber,
@@ -37,6 +37,15 @@ export const EditCalculatorPage: FC<EditCalculatorPageProps> = ({
   const history = useHistory();
   const onCancel = () => history.goBack();
 
+  const tabItems = useMemo(
+    () => [
+      { label: 'Общие данные', key: EditCalculatorTabs.CommonInfo },
+      { label: 'Настройки соединения', key: EditCalculatorTabs.Connection },
+      { label: 'Документы', key: EditCalculatorTabs.Documents },
+    ],
+    [],
+  );
+
   return (
     <Wrapper>
       <GoBack />
@@ -67,17 +76,9 @@ export const EditCalculatorPage: FC<EditCalculatorPageProps> = ({
               handleChangeTab(value as EditCalculatorTabs);
             }}
             activeKey={currentTab}
-          >
-            <Tabs.TabPane
-              tab="Общие данные"
-              key={EditCalculatorTabs.CommonInfo}
-            />
-            <Tabs.TabPane
-              tab="Настройки соединения"
-              key={EditCalculatorTabs.Connection}
-            />
-            <Tabs.TabPane tab="Документы" key={EditCalculatorTabs.Documents} />
-          </Tabs>
+            items={tabItems}
+          />
+
           {currentTab === EditCalculatorTabs.CommonInfo && (
             <EditMainInfo
               calculator={calculator}

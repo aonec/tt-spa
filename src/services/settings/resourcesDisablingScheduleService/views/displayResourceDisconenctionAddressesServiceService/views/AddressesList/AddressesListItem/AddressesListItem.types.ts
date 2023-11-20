@@ -1,6 +1,6 @@
-import { BuildingShortResponse } from 'api/types';
+import { ShortAddress } from '../AddressesList.types';
 
 export type AddressesListItemProps = {
-  housingStocks: BuildingShortResponse[];
+  addresses: ShortAddress[];
   street: string;
 };

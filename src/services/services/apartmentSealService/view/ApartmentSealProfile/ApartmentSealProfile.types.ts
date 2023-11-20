@@ -22,4 +22,5 @@ export type ApartmentSealProfileProps = {
   isAppointmentLoading: boolean;
   isApartmentFetched: boolean;
   openRemoveAppointmentModal: () => void;
+  housesWithDistricts: number[];
 };

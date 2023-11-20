@@ -1,9 +1,4 @@
-import {
-  EApartmentStatus,
-  EClosingReason,
-  EExpiresDateAt,
-  EResourceType,
-} from 'api/types';
+import { EApartmentStatus, EExpiresDateAt, EResourceType } from 'api/types';
 
 export const resourcesNamesLookup: { [key in EResourceType]: string } = {
   [EResourceType.ColdWaterSupply]: 'ХВС',
@@ -16,12 +11,6 @@ export const apartmentStatusesLookup: { [key in EApartmentStatus]: string } = {
   [EApartmentStatus.Debtor]: 'Должник',
   [EApartmentStatus.Ok]: 'Передают показания',
   [EApartmentStatus.Pause]: 'На паузе',
-};
-
-export const closingReasonLookup: { [key: string]: string | null } = {
-  [EClosingReason.Manually]: 'Плановая замена',
-  [EClosingReason.DeviceBroken]: 'Поломка',
-  [EClosingReason.CertificateIssued]: 'Выдана справка',
 };
 
 export const expiresCheckingDateAtLookup: {

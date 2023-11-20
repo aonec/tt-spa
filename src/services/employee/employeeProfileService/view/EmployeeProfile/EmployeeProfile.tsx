@@ -1,7 +1,7 @@
 import { SpaceLine } from 'ui-kit/SpaceLine';
 import { Tooltip } from 'ui-kit/shared/Tooltip';
 import dayjs from 'api/dayjs';
-import React, { FC, useState } from 'react';
+import React, { FC, useMemo, useState } from 'react';
 import { GoBack } from 'ui-kit/shared/GoBack';
 import {
   BlockTitle,
@@ -24,8 +24,6 @@ import { usePhoneMask } from 'hooks/usePhoneMask';
 import { StaffStatus } from 'ui-kit/shared/StaffStatus/StaffStatus';
 import { ContextMenuButtonColor } from 'ui-kit/ContextMenuButton/ContextMenuButton.types';
 
-const { TabPane } = TabsSC;
-
 export const EmployeeProfile: FC<EmployeeProfileProps> = ({
   userData,
   handleOpenChangeStatusModal,
@@ -43,6 +41,14 @@ export const EmployeeProfile: FC<EmployeeProfileProps> = ({
   const rolesString = sortedRoles?.map(({ value }) => value).join(', ');
 
   const [currentTabKey, setTab] = useState('1');
+
+  const tabItems = useMemo(
+    () => [
+      { label: 'Общие данные', key: '1' },
+      { label: 'Статистика', key: '2' },
+    ],
+    [],
+  );
 
   return (
     <Wrapper>
@@ -74,10 +80,7 @@ export const EmployeeProfile: FC<EmployeeProfileProps> = ({
         <StaffStatus status={userData?.status?.type} />
       )}
 
-      <TabsSC activeKey={currentTabKey} onChange={setTab}>
-        <TabPane tab="Общие данные" key="1"></TabPane>
-        <TabPane tab="Статистика" key="2"></TabPane>
-      </TabsSC>
+      <TabsSC activeKey={currentTabKey} onChange={setTab} items={tabItems} />
 
       {currentTabKey === '1' && (
         <GridWrapper>

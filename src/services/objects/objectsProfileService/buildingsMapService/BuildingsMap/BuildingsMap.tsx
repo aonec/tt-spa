@@ -10,7 +10,6 @@ import {
 } from './BuildingsMap.styled';
 import { Props } from './BuildingsMap.types';
 import { useYMaps } from 'hooks/ymaps/useYMaps';
-import { getBuildingPlacmearks } from 'services/settings/districtBordersService/createDistrictBorderMapService/view/CreateDistrictBorderMapPage/CreateDistrictBorderMapPage.utils';
 import { useRenderPlacemarks } from 'hooks/ymaps/utils';
 import { Input } from 'ui-kit/Input';
 import { SearchIcon } from 'ui-kit/icons';
@@ -21,6 +20,7 @@ import { SpaceLine } from 'ui-kit/SpaceLine';
 import { CommonInfo } from 'ui-kit/shared/CommonInfo';
 import { Button } from 'ui-kit/Button';
 import { Link } from 'react-router-dom';
+import { getBuildingPlacmearksWithTasks } from './BuildingsMap.utils';
 
 export const BuildingsMap: FC<Props> = ({
   isLoading,
@@ -42,12 +42,11 @@ export const BuildingsMap: FC<Props> = ({
 
   const buildingsPlacemarks = useMemo(
     () =>
-      getBuildingPlacmearks(
+      getBuildingPlacmearksWithTasks(
         existingHousingStocks,
         existingHousingStocks?.items?.map(({ id }) => id) || [],
         selectedBuildingId ? [selectedBuildingId] : [],
         (id) => setSelectedBuilding(selectedBuildingId === id ? null : id),
-        true,
       ),
     [existingHousingStocks, selectedBuildingId],
   );

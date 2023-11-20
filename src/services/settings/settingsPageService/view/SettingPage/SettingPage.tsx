@@ -1,8 +1,8 @@
-import React, { FC, useEffect, useMemo } from 'react';
+import React, { FC, ReactNode, useEffect, useMemo } from 'react';
 import { useUnit } from 'effector-react';
 import { useHistory, useLocation, useParams } from 'react-router-dom';
 import { TabsSC } from './SettingPage.styled';
-import { SettingPageProps } from './SettingPage.types';
+import { SettingPageProps, SettingsPageSection } from './SettingPage.types';
 import { inspectorAddressesResetService } from 'services/settings/inspectorsDistributionService/inspectorAddressesResetService/inspectorAddressesResetService.models';
 import { InspectorsDistributionPage } from 'services/settings/inspectorsDistributionService/views/InspectorsDistributionPage';
 import { InspectorAddressesResetModalContainer } from 'services/settings/inspectorsDistributionService/inspectorAddressesResetService/InspectorAddressesResetModalContainer';
@@ -15,19 +15,21 @@ import { TemperatureGraphContainer } from 'services/settings/temperatureGraphSer
 export const SettingPage: FC<SettingPageProps> = ({
   handleReassingInspector,
   handleEditTemperatureNormative,
+  isAdminSettings,
 }) => {
   const { featureToggles } = useUnit({
     featureToggles: developmentSettingsService.outputs.$featureToggles,
   });
 
-  const { section } = useParams<{ section: string }>();
+  const { section } = useParams<{ section: SettingsPageSection }>();
   const history = useHistory();
   const { pathname } = useLocation();
-  const adminSettings = pathname.split('/')[1] === 'adminSettings';
   const isTemperatureGraphTab = pathname.split('/')[2] === 'temperatureGraph';
 
+  const pagePath = isAdminSettings ? 'adminSettings' : 'settings';
+
   const menuButtons = useMemo(() => {
-    if (adminSettings) {
+    if (isAdminSettings) {
       return [
         {
           title: 'Редактировать температурный график',
@@ -47,54 +49,43 @@ export const SettingPage: FC<SettingPageProps> = ({
       },
     ];
   }, [
-    adminSettings,
+    isAdminSettings,
     handleReassingInspector,
     handleEditTemperatureNormative,
     isTemperatureGraphTab,
   ]);
 
-  const settingsComponent = useMemo(() => {
-    if (adminSettings) {
-      return (
-        <>
-          {featureToggles.workingRanges && (
-            <TabsSC.TabPane tab="Рабочие диапазоны узлов" key="operatingRanges">
-              <WorkingRangeTab />
-            </TabsSC.TabPane>
-          )}
-          {featureToggles.districtsManage && (
-            <TabsSC.TabPane tab="Границы районов" key="districtBorder">
-              <DistrictBordersContainer />
-            </TabsSC.TabPane>
-          )}
-          {featureToggles.temperatureGraph && (
-            <TabsSC.TabPane tab="Температурный график" key="temperatureGraph">
-              <TemperatureGraphContainer />
-            </TabsSC.TabPane>
-          )}
-        </>
-      );
+  const components: { [key in SettingsPageSection]: ReactNode } = {
+    [SettingsPageSection.operatingRanges]: <WorkingRangeTab />,
+    [SettingsPageSection.temperatureGraph]: <TemperatureGraphContainer />,
+    [SettingsPageSection.districtBorder]: <DistrictBordersContainer />,
+    [SettingsPageSection.controllers]: <></>,
+    [SettingsPageSection.inspectors]: <InspectorsDistributionPage />,
+  };
+
+  const tabItems = useMemo(() => {
+    if (isAdminSettings) {
+      return [
+        ...(featureToggles.workingRanges
+          ? [{ label: 'Рабочие диапазоны узлов', key: 'operatingRanges' }]
+          : []),
+        ...(featureToggles.temperatureGraph
+          ? [{ label: 'Температурный график', key: 'temperatureGraph' }]
+          : []),
+      ];
     }
-    return (
-      <>
-        {featureToggles.controllersDistribution && (
-          <TabsSC.TabPane
-            tab="Распределение контролеров"
-            key="controllers"
-          ></TabsSC.TabPane>
-        )}
-        <TabsSC.TabPane tab="Распределение инспекторов" key="inspectors">
-          <InspectorsDistributionPage />
-        </TabsSC.TabPane>
-        {featureToggles.districtsManage && (
-          <TabsSC.TabPane tab="Границы районов" key="districtBorder">
-            <DistrictBordersContainer />
-          </TabsSC.TabPane>
-        )}
-      </>
-    );
+
+    return [
+      ...(featureToggles.districtsManage
+        ? [{ label: 'Границы районов', key: 'districtBorder' }]
+        : []),
+      ...(featureToggles.controllersDistribution
+        ? [{ label: 'Распределение контролеров', key: 'controllers' }]
+        : []),
+      { label: 'Распределение инспекторов', key: 'inspectors' },
+    ];
   }, [
-    adminSettings,
+    isAdminSettings,
     featureToggles.controllersDistribution,
     featureToggles.districtsManage,
     featureToggles.workingRanges,
@@ -102,40 +93,39 @@ export const SettingPage: FC<SettingPageProps> = ({
   ]);
 
   useEffect(() => {
-    const keys: { key: string; visible: boolean }[] = adminSettings
+    const keys: { key: string; visible: boolean }[] = isAdminSettings
       ? [
           {
             key: 'operatingRanges',
             visible: featureToggles.workingRanges,
           },
+          { key: 'temperatureGraph', visible: featureToggles.temperatureGraph },
+        ]
+      : [
           {
             key: 'districtBorder',
             visible: featureToggles.districtsManage,
           },
-          { key: 'temperatureGraph', visible: featureToggles.temperatureGraph },
-        ]
-      : [
           {
             key: 'controllers',
             visible: featureToggles.controllersDistribution,
           },
           { key: 'inspectors', visible: true },
-          {
-            key: 'districtBorder',
-            visible: true,
-          },
         ];
 
     const path = keys.find((elem) => elem.visible);
 
-    if (path) history.push(path.key);
+    if (pathname.split('/').length === 2 && path)
+      history.push(`/${pagePath}/${path.key}`);
   }, [
-    adminSettings,
+    isAdminSettings,
     featureToggles.controllersDistribution,
     featureToggles.districtsManage,
     featureToggles.temperatureGraph,
     featureToggles.workingRanges,
     history,
+    pathname,
+    pagePath,
   ]);
 
   return (
@@ -143,14 +133,17 @@ export const SettingPage: FC<SettingPageProps> = ({
       <InspectorAddressesResetModalContainer />
 
       <PageHeader
-        title="Настройки"
+        title={isAdminSettings ? 'Настройки' : 'Настройки оператора'}
         contextMenu={{
           menuButtons,
         }}
       />
-      <TabsSC activeKey={section} onChange={history.push}>
-        {settingsComponent}
-      </TabsSC>
+      <TabsSC
+        activeKey={section}
+        onChange={(key) => history.replace(`/${pagePath}/${key}`)}
+        items={tabItems}
+      />
+      {components[section]}
     </>
   );
 };

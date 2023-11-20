@@ -1,28 +1,84 @@
 import { Pagination } from 'antd';
-import { useEvent, useStore } from 'effector-react';
-import React, { useMemo } from 'react';
+import { useUnit } from 'effector-react';
+import React, { useEffect, useMemo } from 'react';
+import dayjs from 'dayjs';
+import { useHistory } from 'react-router-dom';
 import { PAGE_SIZE } from './reportsListService.constants';
 import { reportsListService } from './reportsListService.model';
 import { ReportStatusType } from './reportsListService.types';
 import { ReportsList } from './view/ReportsList';
 import { TabsSC } from './reportsListService.styled';
-
-const { TabPane } = TabsSC;
+import { reportViewService } from 'services/reportsService/reportViewService';
+import { ReportFiltrationFormValues } from 'services/reportsService/reportViewService/reportViewService.types';
+import { ReportType } from 'services/reportsService/view/ReportsPage/ReportsPage.types';
+import {
+  EmployeeReportDatePeriodType,
+  EmployeeReportType,
+} from 'services/reportsService/reportViewService/view/ReportViewPage/ReportFiltrationForm/ReportFiltrationForm.types';
 
 const { outputs, gates, inputs } = reportsListService;
 const { ReportsHistoryGate } = gates;
 
 export const ReportsListContainer = () => {
-  const reportsHistoryListPagedData = useStore(
-    outputs.$reportsHistoryPagedData,
-  );
-  const isLoading = useStore(outputs.$isLoading);
-  const pageNumber = useStore(outputs.$pageNumber);
-  const isShowActual = useStore(outputs.$isShowActual);
+  const {
+    reportsHistoryListPagedData,
+    isLoading,
+    pageNumber,
+    isShowActual,
+    openExistedReport,
+    setPageNumber,
+    setIsShowActual,
+    filtrationValues,
+  } = useUnit({
+    reportsHistoryListPagedData: outputs.$reportsHistoryPagedData,
+    isLoading: outputs.$isLoading,
+    pageNumber: outputs.$pageNumber,
+    isShowActual: outputs.$isShowActual,
+    openExistedReport: inputs.openExistedReport,
+    setPageNumber: inputs.setPageNumber,
+    setIsShowActual: inputs.setIsShowActual,
+    filtrationValues: reportViewService.outputs.$filtrationValues,
+  });
 
-  const openExistedReport = useEvent(inputs.openExistedReport);
-  const setPageNumber = useEvent(inputs.setPageNumber);
-  const setIsShowActual = useEvent(inputs.setIsShowActual);
+  const history = useHistory();
+
+  useEffect(() => {
+    return inputs.openExistedReport.watch((data) => {
+      const type = data.type;
+
+      const isEmployeeReport = Boolean(
+        EmployeeReportType[type as keyof typeof EmployeeReportType],
+      );
+
+      if (isEmployeeReport) {
+        const { from, to } = data;
+
+        const dateRange = dayjs(to).diff(from, 'month');
+
+        const employeeReportDatePeriodType =
+          dateRange > 1
+            ? EmployeeReportDatePeriodType.Year
+            : EmployeeReportDatePeriodType.Month;
+
+        const employeeReportDate = dayjs(from);
+
+        const dataForOpenEmployeeReportType: ReportFiltrationFormValues = {
+          ...filtrationValues,
+          reportType: ReportType.Employee,
+          from: dayjs(from),
+          to: dayjs(to),
+          employeeReportType:
+            EmployeeReportType[type as keyof typeof EmployeeReportType],
+          employeeReportDate,
+          employeeReportDatePeriodType,
+        };
+        reportViewService.inputs.setFiltrationValues(
+          dataForOpenEmployeeReportType,
+        );
+        history.push('/reports/Employee');
+      }
+    }).unsubscribe;
+  }, [history, filtrationValues]);
 
   const archivedReportsCountString = useMemo(() => {
     const archivedReportsCount =
@@ -33,6 +89,17 @@ export const ReportsListContainer = () => {
     return `(${archivedReportsCount})`;
   }, [reportsHistoryListPagedData]);
 
+  const tabItems = useMemo(
+    () => [
+      { label: 'Актуальные отчеты', key: ReportStatusType.Actual },
+      {
+        label: `Архивные отчеты ${archivedReportsCountString}`,
+        key: ReportStatusType.Archived,
+      },
+    ],
+    [archivedReportsCountString],
+  );
+
   return (
     <>
       <ReportsHistoryGate />
@@ -41,13 +108,9 @@ export const ReportsListContainer = () => {
           isShowActual ? ReportStatusType.Actual : ReportStatusType.Archived
         }
         onChange={(key) => setIsShowActual(key === ReportStatusType.Actual)}
-      >
-        <TabPane tab="Актуальные отчеты" key={ReportStatusType.Actual} />
-        <TabPane
-          tab={`Архивные отчеты ${archivedReportsCountString}`}
-          key={ReportStatusType.Archived}
-        />
-      </TabsSC>
+        items={tabItems}
+      />
+
       <ReportsList
         reportsList={reportsHistoryListPagedData?.items || null}
         isLoading={isLoading}

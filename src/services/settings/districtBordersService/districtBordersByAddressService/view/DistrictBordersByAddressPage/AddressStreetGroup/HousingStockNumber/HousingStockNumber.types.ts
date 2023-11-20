@@ -1,15 +1,11 @@
 import { AddressShortResponse } from 'api/types';
-import {
-  CheckedHousingStocksIdWithStreets,
-  CheckedHousingStocksIdWithStreetsHandler,
-} from 'services/settings/districtBordersService/districtBordersByAddressService/districtBordersByAddressService.types';
 
 export type HousingStockNumberProps = {
-  housingStock: AddressShortResponse;
+  housingStock: AddressShortResponse & { isDistributed: boolean };
   currentStreetCheckedHousingStockIds: number[];
-  checkedhousingStockIdsWithStreet: CheckedHousingStocksIdWithStreets[];
-  setHousingStockIdsWithStreet: (
-    payload: CheckedHousingStocksIdWithStreetsHandler,
-  ) => void;
+  setAddress: (payload: {
+    isToAdd: boolean;
+    address: AddressShortResponse;
+  }) => void;
   street: string | null;
 };

@@ -1,15 +1,18 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { useHistory, useParams } from 'react-router';
 import { apartmentSealService } from './apartmentSealService.model';
 import { useUnit } from 'effector-react';
 import { ApartmentSealProfile } from './view/ApartmentSealProfile';
 import { CreateSealContainer, createSealService } from '../createSealService';
 import './apartmentSealService.relations';
-import { getApartmentQuery } from 'services/meters/metersService/ApartmentReadingsService/ApartmentReadingsService.api';
 import {
   DeleteAppointmentContainer,
   deleteAppointmentService,
 } from '../deleteAppointmentService';
+import {
+  existingDistrictsQuery,
+  getApartmentQuery,
+} from './apartmentSealService.api';
 
 const { inputs, outputs, gates } = apartmentSealService;
 const { ApartmentGate } = gates;
@@ -17,6 +20,20 @@ const { ApartmentGate } = gates;
 export const ApartmentSealContainer = () => {
   const history = useHistory();
   const { id } = useParams<{ id: string }>();
+
+  const { data: existingDistricts } = useUnit(existingDistrictsQuery);
+
+  const housesWithDistricts = useMemo(() => {
+    return (
+      existingDistricts?.reduce((acc, { houses }) => {
+        if (!houses) return acc;
+
+        const housesIds = houses.map(({ id }) => id!);
+
+        return [...acc, ...housesIds];
+      }, [] as number[]) || []
+    );
+  }, [existingDistricts]);
 
   const {
     apartment,
@@ -56,7 +73,7 @@ export const ApartmentSealContainer = () => {
 
   return (
     <>
-      <ApartmentGate id={Number(id)} />
+      <ApartmentGate id={id ? Number(id) : undefined} />
       <CreateSealContainer />
       <DeleteAppointmentContainer />
       <ApartmentSealProfile
@@ -75,6 +92,7 @@ export const ApartmentSealContainer = () => {
           nearestAppointment &&
           openRemoveAppointmentModal(nearestAppointment.id)
         }
+        housesWithDistricts={housesWithDistricts}
       />
     </>
   );

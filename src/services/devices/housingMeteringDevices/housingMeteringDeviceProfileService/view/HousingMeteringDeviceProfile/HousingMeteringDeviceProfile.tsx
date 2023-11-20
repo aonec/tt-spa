@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useMemo } from 'react';
 import { useHistory } from 'react-router-dom';
 import { stringifyUrl } from 'query-string';
 
@@ -30,8 +30,6 @@ import { HousingMeteringDeviceProfileProps } from './HousingMeteringDeviceProfil
 import { ContextMenuButtonColor } from 'ui-kit/ContextMenuButton/ContextMenuButton.types';
 import { TaskGroupingFilter } from 'api/types';
 
-const { TabPane } = TabsSC;
-
 export const HousingMeteringDeviceProfile: FC<
   HousingMeteringDeviceProfileProps
 > = ({
@@ -55,6 +53,18 @@ export const HousingMeteringDeviceProfile: FC<
   const resource = housingMeteringDevice?.resource;
 
   const tasksCount = housingMeteringDeviceTasks?.items?.length || 0;
+
+  const tabItems = useMemo(
+    () => [
+      { label: 'Общие данные', key: HousingProfileTabs.CommonInfo },
+      {
+        label: 'Настройки соединения',
+        key: HousingProfileTabs.ConnectionSettings,
+      },
+      { label: 'Документы', key: HousingProfileTabs.Documents },
+    ],
+    [],
+  );
 
   return (
     <>
@@ -120,14 +130,8 @@ export const HousingMeteringDeviceProfile: FC<
             handleChangeTab(value as HousingProfileTabs);
           }}
           activeKey={currentTab}
-        >
-          <TabPane tab="Общие данные" key={HousingProfileTabs.CommonInfo} />
-          <TabPane
-            tab="Настройки соединения"
-            key={HousingProfileTabs.ConnectionSettings}
-          />
-          <TabPane tab="Документы" key={HousingProfileTabs.Documents} />
-        </TabsSC>
+          items={tabItems}
+        />
 
         <PageGridContainer>
           {currentTab === HousingProfileTabs.CommonInfo && (

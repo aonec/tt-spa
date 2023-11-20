@@ -8,7 +8,9 @@ declare namespace Cypress {
   }
 
   interface Chainable {
-    login(): Chainable<void>;
+    loginAsAdmin(): Chainable<void>;
+
+    loginAsOperator(): Chainable<void>;
 
     selectOption(testId: string, option: string): Chainable<void>;
 

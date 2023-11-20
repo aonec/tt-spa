@@ -18,6 +18,7 @@ export function Table<T>({
   headerStyles,
   isSticky,
   link,
+  floating = false,
 }: PropsWithChildren<TableProps<T>>) {
   const pageSize = pagination?.pageSize || Infinity;
 
@@ -55,7 +56,7 @@ export function Table<T>({
   );
 
   return (
-    <Wrapper>
+    <Wrapper floating={floating}>
       <Header temp={temp} css={headerStyles} isSticky={isSticky}>
         {filteredColumns.map((column, columnIndex) => (
           <TableElement key={columnIndex} css={column.css?.(true)}>

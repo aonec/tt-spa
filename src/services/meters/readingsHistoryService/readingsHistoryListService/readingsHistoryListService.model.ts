@@ -20,6 +20,7 @@ createReadingFx.use(createReading);
 
 sample({
   clock: readingFieldButtonClicked,
+  filter: (reading) => Boolean(reading.value1),
   target: createReadingFx,
 });
 

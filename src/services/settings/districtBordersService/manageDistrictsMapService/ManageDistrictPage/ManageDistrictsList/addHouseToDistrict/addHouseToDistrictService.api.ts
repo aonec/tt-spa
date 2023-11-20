@@ -3,19 +3,22 @@ import {
   AddHouseToDistrictRequestPayload,
   GetBuildingFilters,
 } from './addHouseToDistrictService.types';
-import { BuildingListResponsePagedList, HousingStockResponse } from 'api/types';
+import {
+  BuildingWithCoordinatesResponsePagedList,
+  HousingStockResponse,
+} from 'api/types';
 import { createMutation } from '@farfetched/core';
 import { EffectFailDataAxiosError } from 'types';
 import { createEffect } from 'effector';
 
-export const getBuildings = (
+const getBuildings = (
   params: GetBuildingFilters,
-): Promise<BuildingListResponsePagedList> => axios.get('Buildings', { params });
+): Promise<BuildingWithCoordinatesResponsePagedList> =>
+  axios.get('Buildings/Lite', { params });
 
 export const getBuilding = async (params: GetBuildingFilters) => {
-  const houses: BuildingListResponsePagedList | null = await getBuildings(
-    params,
-  );
+  const houses: BuildingWithCoordinatesResponsePagedList | null =
+    await getBuildings(params);
 
   if (!houses?.items?.length) return null;
 
