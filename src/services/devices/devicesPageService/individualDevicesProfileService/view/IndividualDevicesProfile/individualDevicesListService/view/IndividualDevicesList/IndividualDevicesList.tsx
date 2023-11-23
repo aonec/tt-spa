@@ -23,8 +23,9 @@ export const IndividualDevicesList: FC<IndividualDevicesListProps> = ({
       <Header>
         <div>Прибор</div>
         <div>Статус</div>
-        <div>Дата поверки прибора</div>
-        <div>Дата следующей поверки прибора</div>
+        <div>Разрядность</div>
+        <div>Дата поверки</div>
+        <div>Дата сл. поверки</div>
         <div>Текущий расход</div>
         <GroupWrapper>
           Средний расход
