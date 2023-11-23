@@ -14,6 +14,7 @@ import {
 import { useRenderDistricts, useRenderPlacemarks } from 'hooks/ymaps/utils';
 import { getHousesPlacmearks } from 'services/settings/districtBordersService/createDistrictBorderMapService/view/CreateDistrictBorderMapPage/CreateDistrictBorderMapPage.utils';
 import { getBuildingAddress } from 'utils/getBuildingAddress';
+import { MapZoomControl } from 'ui-kit/shared/MapZoomControl';
 
 export const AddHouseToDistrictModal: FC<Props> = ({
   isOpen,
@@ -130,6 +131,7 @@ export const AddHouseToDistrictModal: FC<Props> = ({
           )}
           <MapWrapper>
             <div ref={mapRef} style={{ width: '100%', height: '400px' }} />
+            {map && <MapZoomControl map={map} />}
           </MapWrapper>
         </>
       }

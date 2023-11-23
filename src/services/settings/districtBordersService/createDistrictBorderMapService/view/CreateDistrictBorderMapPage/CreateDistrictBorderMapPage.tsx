@@ -20,6 +20,7 @@ import { createDistrictBorderMapService } from '../../createDistrictBorderMapSer
 import { CreateDistrictFormPanel } from './CreateDistrictFormPanel';
 import { getPayloadFromDistricts } from 'utils/districtsData';
 import { findPolygonCenter } from 'utils/findPolygonCenter';
+import { MapZoomControl } from 'ui-kit/shared/MapZoomControl';
 import { SearchAddresses } from './SearchAddresses/SearchAddresses';
 import { BuildingWithCoordinatesResponse } from 'api/types';
 
@@ -187,6 +188,7 @@ export const CreateDistrictBorderMapPage: FC<Props> = ({
           />
         )}
         <div ref={mapRef} style={{ width: '100%', height: '86vh' }} />
+        {map && <MapZoomControl map={map} />}
       </MapWrapper>
     </div>
   );
