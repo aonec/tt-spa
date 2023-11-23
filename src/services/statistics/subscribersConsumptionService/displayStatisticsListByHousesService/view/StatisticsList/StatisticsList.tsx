@@ -51,11 +51,17 @@ export const StatisticsList: React.FC<StatisticsListProps> = ({
           size: '110px',
           render: (apartment) =>
             prepareConsumptions(apartment.electricityConsumption),
+          sortedCb: (first, second) =>
+            (first?.electricityConsumption ?? -1) -
+            (second?.electricityConsumption ?? 0),
         },
         {
           label: 'ТЭ',
           size: '110px',
           render: (apartment) => prepareConsumptions(apartment.heatConsumption),
+          sortedCb: (first, second) =>
+            (first?.electricityConsumption ?? -1) -
+            (second?.electricityConsumption ?? 0),
         },
         {
           label: 'Дата последней передачи показаний',
