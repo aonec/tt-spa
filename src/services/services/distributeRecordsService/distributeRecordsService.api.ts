@@ -15,6 +15,7 @@ import {
 } from './distributeRecordsService.types';
 import { EffectFailDataAxiosError } from 'types';
 import { createEffect } from 'effector';
+import dayjs from 'api/dayjs';
 
 export const districtsQuery = createQuery<void, DistrictResponse[] | null>({
   handler: async () => {
@@ -79,4 +80,19 @@ export const setAppointmentsToControllerMutation = createMutation({
   effect: createEffect<AppointmentsSetRequest, void, EffectFailDataAxiosError>(
     (data) => axios.post('IndividualSeal/Appointments/Set', data),
   ),
+});
+
+export const individualSealTaskDocumentQuery = createQuery<
+  {
+    controllerId: string;
+    appointmentDate: string;
+  },
+  string
+>({
+  handler: ({ controllerId, appointmentDate }) => {
+    return axios.get(`IndividualSeal/Controllers/${controllerId}/WorkFile`, {
+      params: { date: dayjs(appointmentDate).format('YYYY-MM-DD') },
+      responseType: 'blob',
+    });
+  },
 });
