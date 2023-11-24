@@ -1,5 +1,5 @@
 import { useFormik } from 'formik';
-import React, { FC } from 'react';
+import React, { FC, useState } from 'react';
 import { AddressSearchContainer } from 'services/addressSearchService';
 import { SearchFieldType } from 'services/addressSearchService/view/AddressSearch/AddressSearch.types';
 import { DevicesSearchType } from 'services/devices/devicesPageService/devicesPageService.types';
@@ -23,6 +23,8 @@ export const IndividualDevicesAddressSearch: FC<
   clearSearchPayload,
   mountPlaces,
 }) => {
+  const [isExendedSearchOpen, setIsExendedSearchOpen] = useState(false);
+
   const { values, handleSubmit, setValues, setFieldValue, resetForm } =
     useFormik<SearchIndividualDevicesRequestPayload>({
       initialValues: filters,
@@ -49,6 +51,8 @@ export const IndividualDevicesAddressSearch: FC<
         devicesSearchType={DevicesSearchType.Address}
         values={values}
         mountPlaces={mountPlaces}
+        isOpen={isExendedSearchOpen}
+        setIsOpen={setIsExendedSearchOpen}
       >
         <SearchWrapper>
           <AddressSearchContainer
