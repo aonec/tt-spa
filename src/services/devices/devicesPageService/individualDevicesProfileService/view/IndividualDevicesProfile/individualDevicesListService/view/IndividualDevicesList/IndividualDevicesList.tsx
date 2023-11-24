@@ -75,8 +75,8 @@ export const IndividualDevicesList: FC<IndividualDevicesListProps> = ({
           },
           {
             label: 'Разрядность',
-            size: '0.22fr',
-            css: () => 'padding: 0px;',
+            size: '0.24fr',
+            css: () => 'padding: 8px;',
             render: (device) => device.bitDepth,
           },
           {
