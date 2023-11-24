@@ -1,4 +1,4 @@
-import { createEvent, createStore } from 'effector';
+import { createEffect, createEvent, createStore } from 'effector';
 import { combine, forward, sample } from 'effector';
 import { createGate } from 'effector-react';
 import {
@@ -6,11 +6,13 @@ import {
   districtAppointmentsQuery,
   districtsQuery,
   individualSealControllersQuery,
+  individualSealTaskDocumentQuery,
   nearestAppointmentsDateQuery,
   setAppointmentsToControllerMutation,
 } from './distributeRecordsService.api';
 import dayjs from 'api/dayjs';
 import {
+  DownloadTaskDocumentRequestPayload,
   GetDistrictAppointmentsRequestPayload,
   GetDistrictsAppointmentsCountingRequestPayload,
 } from './distributeRecordsService.types';
@@ -21,6 +23,7 @@ import {
 import { message } from 'antd';
 import { removeAssignmentService } from '../removeAssignmentService';
 import { currentUserService } from 'services/currentUserService';
+import { downloadTaskDocument } from './distributeRecordsService.utils';
 
 const DistributeRecordsGate = createGate();
 
@@ -133,6 +136,44 @@ setAppointmentsToControllerMutation.finished.failure.watch(({ error }) => {
 setAppointmentsToControllerMutation.finished.success.watch(() =>
   message.success('Записи успешно распределены!'),
 );
+
+sample({
+  source: $appointmentDate,
+  clock: setAppointmentsToControllerMutation.finished.success,
+  filter: (date): date is string => Boolean(date),
+  fn: (appointmentDate, { params: { controllerId } }) => ({
+    controllerId,
+    appointmentDate: appointmentDate!,
+  }),
+  target: individualSealTaskDocumentQuery.start,
+});
+
+const downloadTaskDocumentFx = createEffect<
+  DownloadTaskDocumentRequestPayload,
+  void
+>(downloadTaskDocument);
+
+sample({
+  source: combine(
+    $appointmentDate,
+    individualSealControllersQuery.$data,
+    (appointmentDate, controllers) => ({ appointmentDate, controllers }),
+  ),
+  clock: individualSealTaskDocumentQuery.finished.success,
+  fn: (
+    { appointmentDate, controllers },
+    { result: documentResponse, params: { controllerId } },
+  ): DownloadTaskDocumentRequestPayload => {
+    const controller = controllers?.find((elem) => elem.id === controllerId);
+
+    return {
+      documentResponse,
+      appointmentDate: appointmentDate!,
+      controller: controller!,
+    };
+  },
+  target: downloadTaskDocumentFx,
+});
 
 export const distributeRecordsService = {
   inputs: {
