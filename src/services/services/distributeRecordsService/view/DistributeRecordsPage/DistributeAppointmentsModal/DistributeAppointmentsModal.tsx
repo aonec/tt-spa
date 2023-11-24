@@ -40,11 +40,10 @@ export const DistributeAppointmentsModal: FC<Props> = ({
 
   useEffect(() => {
     return setAppointmentsToControllerMutation.finished.success.watch(
-      async () => {
+      async ({ result: { assignmentId } }) => {
         const res: string = await axios.get(
-          `IndividualSeal/Controllers/${controllerId}/WorkFile`,
+          `IndividualSeal/Assignments/${assignmentId}/File`,
           {
-            params: { date: dayjs(appointmentDate).format('YYYY-MM-DD') },
             responseType: 'blob',
           },
         );

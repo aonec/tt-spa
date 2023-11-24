@@ -4,6 +4,7 @@ import {
   AppointmentCounterResponse,
   AppointmentResponse,
   AppointmentsSetRequest,
+  AppointmentsSetResponse,
   ControllerResponse,
   DistrictResponse,
   TotalAppointmentCounterResponse,
@@ -76,7 +77,9 @@ export const individualSealControllersQuery = createQuery<
 });
 
 export const setAppointmentsToControllerMutation = createMutation({
-  effect: createEffect<AppointmentsSetRequest, void, EffectFailDataAxiosError>(
-    (data) => axios.post('IndividualSeal/Appointments/Set', data),
-  ),
+  effect: createEffect<
+    AppointmentsSetRequest,
+    AppointmentsSetResponse,
+    EffectFailDataAxiosError
+  >((data) => axios.post('IndividualSeal/Appointments/Set', data)),
 });
