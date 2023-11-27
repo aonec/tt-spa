@@ -2,13 +2,17 @@ import React, { FC } from 'react';
 import { ExtendedSearch } from 'ui-kit/ExtendedSearch';
 import { AddressSearchContainer } from 'services/addressSearchService';
 import { SearchFieldType } from 'services/addressSearchService/view/AddressSearch/AddressSearch.types';
-import { IndividualDevicesExtendedSearchProps } from './IndividualDevicesExtendedSearch.types';
+import {
+  EExpiresDateAtExtended,
+  IndividualDevicesExtendedSearchProps,
+} from './IndividualDevicesExtendedSearch.types';
 import { SearchIndividualDevicesParams } from '../../../individualDevicesProfileService.types';
 import {
   FirstLineWrapper,
   ResourceNameWrapper,
   ResourceOptionWrapper,
   SecondLineWrapper,
+  ThirdLineWrapper,
 } from './IndividualDevicesExtendedSearch.styled';
 import { FormItem } from 'ui-kit/FormItem';
 import { SearchIcon } from 'ui-kit/icons';
@@ -16,7 +20,6 @@ import { useFormik } from 'formik';
 import { EApartmentStatus, EResourceType } from 'api/types';
 import {
   apartmentStatusesLookup,
-  expiresCheckingDateAtLookup,
   formTranslateLookup,
   resourcesNamesLookup,
 } from './IndividualDevicesExtendedSearch.constants';
@@ -25,6 +28,7 @@ import { DevicesSearchType } from 'services/devices/devicesPageService/devicesPa
 import { Select } from 'ui-kit/Select';
 import { Input } from 'ui-kit/Input';
 import { ClosingReasonsDictionary } from 'dictionaries';
+import { Segmented } from 'ui-kit/Segmented';
 
 export const IndividualDevicesExtendedSearch: FC<
   IndividualDevicesExtendedSearchProps
@@ -201,26 +205,55 @@ export const IndividualDevicesExtendedSearch: FC<
                 )}
               </Select>
             </FormItem>
-            <FormItem label="Дата окoнчания поверки">
+          </SecondLineWrapper>
+          <FormItem label="Дата">
+            <ThirdLineWrapper>
               <Select
                 small
-                placeholder="Дата окoнчания поверки"
-                value={values.ExpiresCheckingDateAt || undefined}
+                placeholder="Выберите"
+                value={null}
                 onChange={(value) =>
                   setFieldValue('ExpiresCheckingDateAt', value || null)
                 }
                 allowClear
+                disabled
               >
-                {Object.entries(expiresCheckingDateAtLookup).map(
-                  ([key, value]) => (
-                    <Select key={key} value={key}>
-                      {value}
-                    </Select>
-                  ),
-                )}
+                <Select.Option value={null}>Оканчания поверки</Select.Option>
               </Select>
-            </FormItem>
-          </SecondLineWrapper>
+              <Segmented<EExpiresDateAtExtended>
+                active={
+                  values.ExpiresCheckingDateAt
+                    ? EExpiresDateAtExtended[values.ExpiresCheckingDateAt]
+                    : EExpiresDateAtExtended.All
+                }
+                items={[
+                  {
+                    title: 'Любая',
+                    name: EExpiresDateAtExtended.All,
+                  },
+                  {
+                    title: 'В ближайший месяц',
+                    name: EExpiresDateAtExtended.NextMonth,
+                  },
+                  {
+                    title: 'В ближайшие 2 месяца',
+                    name: EExpiresDateAtExtended.NextTwoMonth,
+                  },
+                  {
+                    title: 'Истекла',
+                    name: EExpiresDateAtExtended.Past,
+                  },
+                ]}
+                onChange={(value) => {
+                  if (value === EExpiresDateAtExtended.All) {
+                    setFieldValue('ExpiresCheckingDateAt', null);
+                    return;
+                  }
+                  setFieldValue('ExpiresCheckingDateAt', value);
+                }}
+              />
+            </ThirdLineWrapper>
+          </FormItem>
         </>
       }
     >

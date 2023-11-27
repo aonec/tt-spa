@@ -13,3 +13,10 @@ export type IndividualDevicesExtendedSearchProps = {
   isOpen: boolean;
   setIsOpen: (isOpen: boolean) => void;
 };
+
+export enum EExpiresDateAtExtended {
+  NextMonth = 'NextMonth',
+  NextTwoMonth = 'NextTwoMonth',
+  Past = 'Past',
+  All = 'All',
+}
