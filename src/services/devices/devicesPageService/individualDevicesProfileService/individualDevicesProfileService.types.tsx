@@ -2,6 +2,7 @@ import {
   EApartmentStatus,
   EClosingReason,
   EExpiresDateAt,
+  EIndividualDeviceOrderRule,
   EOrderByRule,
   EResourceType,
 } from 'api/types';
@@ -22,4 +23,5 @@ export type SearchIndividualDevicesParams = {
   PageNumber?: number;
   PageSize?: number;
   OrderBy?: EOrderByRule | null;
+  OrderRule?: EIndividualDeviceOrderRule;
 };
