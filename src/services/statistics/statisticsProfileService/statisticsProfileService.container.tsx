@@ -13,7 +13,10 @@ export const StatisticsProfileContainer = () => {
   const { grouptype, searchType } = useParams<{
     grouptype: StatisticProfileGrouptype;
     searchType: SubscribersConsumptionSearchType;
-  }>();
+  }>() as {
+    grouptype: StatisticProfileGrouptype;
+    searchType: SubscribersConsumptionSearchType;
+  };
 
   const handleOpenExportStatisticModal = useUnit(
     exportSubscribersConsumptionService.inputs.openModal,
@@ -27,8 +30,6 @@ export const StatisticsProfileContainer = () => {
   const housingStockAddress = useUnit(
     displayStatisticsListByHousesService.outputs.$housingStockAddress,
   );
-
-  if (!grouptype || !searchType) return null;
 
   return (
     <>

@@ -6,7 +6,7 @@ import { ResourceConsumptionContainer } from 'services/resources/resourceConsump
 import { StatisticProfileGrouptype } from '../../statisticsProfileService.types';
 import { SubscribersConsumptionSearchType } from 'services/statistics/subscribersConsumptionService/subscribersConsumptionService.types';
 import { SubscribersConsumptionContainer } from 'services/statistics/subscribersConsumptionService';
-import {  useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { ResourceDisablingScheduleContainer } from 'services/settings/resourcesDisablingScheduleService/ResourceDisablingScheduleContainer';
 import { chooseTypeOfResourceDisconnectionModalService } from 'services/resources/chooseTypeOfResourceDisconnectionModalService';
 
@@ -18,7 +18,7 @@ export const StatisticProfile: FC<StatisticProfileProps> = ({
   housingStockId,
   housingStockAddress,
 }) => {
-  const history =  useNavigate();
+  const history = useNavigate();
 
   const menuButtons = useMemo(() => {
     if (grouptype === StatisticProfileGrouptype.disabledResources) {
@@ -99,7 +99,7 @@ export const StatisticProfile: FC<StatisticProfileProps> = ({
 
       <TabsSC
         activeKey={grouptype}
-        onChange={(value) =>  history(`/statistics/${value}`)}
+        onChange={(value) => history(`/statistics/${value}`)}
         items={tabItems}
       />
       {components[grouptype]}
