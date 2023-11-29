@@ -1,7 +1,7 @@
 import { useUnit } from 'effector-react';
 import { ESecuredIdentityRoleName } from 'api/types';
 import React, { useEffect } from 'react';
-import { useHistory, useParams } from 'react-router-dom';
+import {  useNavigate, useParams } from 'react-router-dom';
 import { FeedFlowBackReportContainer } from 'services/nodes/feedFlowBackReportService';
 import { ChooseTypeOfResourceDisconnectionModalContainer } from 'services/resources/chooseTypeOfResourceDisconnectionModalService/chooseTypeOfResourceDisconnectionModalService.container';
 import { chooseTypeOfResourceDisconnectionModalService } from 'services/resources/chooseTypeOfResourceDisconnectionModalService/chooseTypeOfResourceDisconnectionModalService.model';
@@ -27,7 +27,7 @@ const { inputs, outputs } = objectsProfileService;
 export const ObjectsProfileContainer = () => {
   const { searchType } = useParams<{ searchType?: SearchType }>();
 
-  const history = useHistory();
+  const history =  useNavigate();
 
   const {
     openSoiReportModal,
@@ -54,7 +54,7 @@ export const ObjectsProfileContainer = () => {
     pageSegment: outputs.$pageSegment,
   });
 
-  const handleCreateObject = () => history.push('/buildings/create');
+  const handleCreateObject = () =>  history('/buildings/create');
 
   const isPermitionToDownloadGroupReport = usePermission([
     ESecuredIdentityRoleName.Administrator,
@@ -94,7 +94,7 @@ export const ObjectsProfileContainer = () => {
 
   useEffect(() => {
     if (!searchType) {
-      history.push(`/buildings/${SearchType.Houses}`);
+       history(`/buildings/${SearchType.Houses}`);
     }
   }, [searchType, history]);
 

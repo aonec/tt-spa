@@ -4,7 +4,7 @@ import {
   CompanyProfileSection,
 } from './CompanyProfile.types';
 import { PageHeader } from 'ui-kit/shared/PageHeader';
-import { Route, useHistory, useParams } from 'react-router-dom';
+import { Route, useNavigate, useParams } from 'react-router-dom';
 import { CommonInfoTab } from './Tabs/CommonInfoTab';
 import { Staff } from './Tabs/Staff';
 import { Contractors } from './Tabs/Contractors';
@@ -26,7 +26,7 @@ export const CompanyProfile: FC<CompanyProfileProps> = ({
   handleOpenEditContractorModal,
   catchContractorData,
 }) => {
-  const history = useHistory();
+  const history = useNavigate();
   const { section } = useParams<{ section: CompanyProfileSection }>();
 
   const tabItems = useMemo(
@@ -46,7 +46,7 @@ export const CompanyProfile: FC<CompanyProfileProps> = ({
           menuButtons: [
             {
               title: 'Редактировать информацию о компании',
-              onClick: () => history.push('/editCompany'),
+              onClick: () => history('/editCompany'),
             },
             {
               title: 'Добавить контрагента',
@@ -68,15 +68,15 @@ export const CompanyProfile: FC<CompanyProfileProps> = ({
       <TabsSC
         activeKey={section}
         onChange={(activeKey) =>
-          history.push(`/companyProfile/${activeKey as CompanyProfileSection}`)
+          history(`/companyProfile/${activeKey as CompanyProfileSection}`)
         }
         items={tabItems}
       />
 
-      <Route path="/companyProfile/commonInfo" exact>
+      <Route path="/companyProfile/commonInfo">
         <CommonInfoTab currentManagingFirm={currentManagingFirm} />
       </Route>
-      <Route path="/companyProfile/staff" exact>
+      <Route path="/companyProfile/staff">
         <Staff
           staffList={staffList}
           isLoadingStaff={isLoadingStaff}
@@ -86,7 +86,7 @@ export const CompanyProfile: FC<CompanyProfileProps> = ({
           handleCatchEmployeeId={handleCatchEmployeeId}
         />
       </Route>
-      <Route path="/companyProfile/contractors" exact>
+      <Route path="/companyProfile/contractors">
         <Contractors
           conractorsList={conractorsList}
           isLoadingContractors={isLoadingContractors}

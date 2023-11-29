@@ -7,6 +7,7 @@ import { AccountingNodesReadingsContainer } from './AccountingNodesReadingsServi
 
 export const MetersContainer: FC = () => {
   const { section } = useParams<{ section: MeterSection }>();
+  if (!section) return null;
 
   const componentsDictionary: { [key in MeterSection]: FC } = {
     [MeterSection.Apartments]: ApartmentReadingsContainer,

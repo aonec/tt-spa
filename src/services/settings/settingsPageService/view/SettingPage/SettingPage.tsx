@@ -1,6 +1,6 @@
 import React, { FC, ReactNode, useEffect, useMemo } from 'react';
 import { useUnit } from 'effector-react';
-import { useHistory, useLocation, useParams } from 'react-router-dom';
+import { useNavigate, useLocation, useParams } from 'react-router-dom';
 import { TabsSC } from './SettingPage.styled';
 import { SettingPageProps, SettingsPageSection } from './SettingPage.types';
 import { inspectorAddressesResetService } from 'services/settings/inspectorsDistributionService/inspectorAddressesResetService/inspectorAddressesResetService.models';
@@ -22,7 +22,8 @@ export const SettingPage: FC<SettingPageProps> = ({
   });
 
   const { section } = useParams<{ section: SettingsPageSection }>();
-  const history = useHistory();
+
+  const history = useNavigate();
   const { pathname } = useLocation();
   const isTemperatureGraphTab = pathname.split('/')[2] === 'temperatureGraph';
 
@@ -116,7 +117,7 @@ export const SettingPage: FC<SettingPageProps> = ({
     const path = keys.find((elem) => elem.visible);
 
     if (pathname.split('/').length === 2 && path)
-      history.push(`/${pagePath}/${path.key}`);
+      history(`/${pagePath}/${path.key}`);
   }, [
     isAdminSettings,
     featureToggles.controllersDistribution,
@@ -127,6 +128,8 @@ export const SettingPage: FC<SettingPageProps> = ({
     pathname,
     pagePath,
   ]);
+
+  if (!section) return null;
 
   return (
     <>
@@ -140,7 +143,11 @@ export const SettingPage: FC<SettingPageProps> = ({
       />
       <TabsSC
         activeKey={section}
-        onChange={(key) => history.replace(`/${pagePath}/${key}`)}
+        onChange={(key) =>
+          history(`/${pagePath}/${key}`, {
+            replace: true,
+          })
+        }
         items={tabItems}
       />
       {components[section]}

@@ -7,7 +7,14 @@ export const SubMenuItem: FC<SubMenuItemProps> = ({ subMenuItem }) => {
   const { title, path } = subMenuItem;
 
   return (
-    <SubMenuItemWrapper to={path} activeClassName="active-menu-item-nav-link">
+    <SubMenuItemWrapper
+      to={path}
+      // activeClassName="active-menu-item-nav-link"
+      //Протестить
+      className={({ isActive }) =>
+        `${isActive ? ' active-menu-item-nav-link' : ''}`
+      }
+    >
       <SubMenuItemTitle>{title}</SubMenuItemTitle>
     </SubMenuItemWrapper>
   );

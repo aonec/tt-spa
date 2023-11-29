@@ -9,12 +9,12 @@ import {
   Wrapper,
 } from './TaskPipeNodeInfo.styled';
 import { TaskPipeNodeInfoProps } from './TaskPipeNodeInfo.types';
-import { useHistory } from 'react-router-dom';
+import {  useNavigate } from 'react-router-dom';
 
 export const TaskPipeNodeInfo: FC<TaskPipeNodeInfoProps> = ({ pipeNode }) => {
   const { resource, number, id } = pipeNode;
 
-  const history = useHistory();
+  const history =  useNavigate();
 
   return (
     <Wrapper>
@@ -26,7 +26,7 @@ export const TaskPipeNodeInfo: FC<TaskPipeNodeInfoProps> = ({ pipeNode }) => {
         </GroupWrapper>
         <GroupWrapper>
           <GoTo
-            onClick={() => history.push(`/nodes/${id}/stats`)}
+            onClick={() =>  history(`/nodes/${id}/stats`)}
             data-test="task-pipe-node-link"
           >
             Перейти {'>'}

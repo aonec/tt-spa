@@ -1,7 +1,7 @@
 import React, { FC, useCallback, useEffect, useMemo, useState } from 'react';
 import { ChevronDown } from 'react-bootstrap-icons';
 import { groupBy, sortBy } from 'lodash';
-import { useHistory } from 'react-router-dom';
+import {  useNavigate } from 'react-router-dom';
 import { useUnit } from 'effector-react';
 import {
   AddressHousesCount,
@@ -76,7 +76,7 @@ export const ManageDistrictsList: FC<Props> = ({
     updateDistrictMutation,
   );
 
-  const history = useHistory();
+  const history =  useNavigate();
 
   const [openedDistrict, setOpenedDistrict] = useState<string | null>(null);
   const [openedStreets, setOpenedStreets] = useState<string[]>([]);
@@ -180,7 +180,7 @@ export const ManageDistrictsList: FC<Props> = ({
                       {
                         title: 'Изменить границы района на карте',
                         onClick: () => {
-                          history.push(
+                           history(
                             `/districtBordersSettings/editDistrictBorders/${elem.id}`,
                           );
                         },

@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect } from 'react';
-import { useHistory, useParams } from 'react-router';
+import {  useNavigate, useParams } from 'react-router';
 import { DevicesProfileTabsType } from './devicesPageService.types';
 import { DevicesPageProfile } from './view/DevicesPageProfile';
 import { ESecuredIdentityRoleName } from 'api/types';
@@ -13,7 +13,7 @@ import {
 export const DevicesPageContainer = () => {
   const { type } = useParams<{ type?: DevicesProfileTabsType }>();
 
-  const history = useHistory();
+  const history =  useNavigate();
 
   const openDownloadDevicesReportModal = useEvent(
     devicesReportService.inputs.openModal,
@@ -28,17 +28,17 @@ export const DevicesPageContainer = () => {
   useEffect(() => {
     if (type) return;
 
-    history.push(`/devices/${DevicesProfileTabsType.ODPU}`);
+     history(`/devices/${DevicesProfileTabsType.ODPU}`);
   }, [type, history]);
 
   const setDevicesType = useCallback(
     (type: DevicesProfileTabsType) => {
-      history.push(`/devices/${type}`);
+       history(`/devices/${type}`);
     },
     [history],
   );
 
-  const handleAddNode = () => history.push('/devices/addNode');
+  const handleAddNode = () =>  history('/devices/addNode');
 
   return (
     <>

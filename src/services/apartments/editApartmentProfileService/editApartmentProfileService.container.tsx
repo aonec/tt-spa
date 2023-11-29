@@ -1,6 +1,6 @@
 import { useEvent, useStore } from 'effector-react';
 import React, { useEffect } from 'react';
-import { useHistory, useParams } from 'react-router-dom';
+import {  useNavigate, useParams } from 'react-router-dom';
 import { editApartmentProfileService } from './editApartmentProfileService.model';
 import { EditApartmentPage } from './view/EditApartmentPage';
 
@@ -20,11 +20,11 @@ export const EditApartmentProfileContainer = () => {
     outputs.$isUpdatingApartmentLoading,
   );
 
-  const history = useHistory();
+  const history =  useNavigate();
 
   useEffect(() => {
     return updateApartmentSuccess.watch(() => {
-      history.goBack();
+      history(-1);
     }).unsubscribe;
   }, [updateApartmentSuccess, history]);
 

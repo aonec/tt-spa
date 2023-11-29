@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useUnit } from 'effector-react';
-import { useHistory, useParams } from 'react-router-dom';
+import {  useNavigate, useParams } from 'react-router-dom';
 import { HousesReadingsPage } from './view/HousesReadingsPage';
 import { housesReadingsService } from './HousesReadingsService.model';
 import { ReadingsHistoryContainer } from 'services/meters/readingsHistoryService/readingsHistoryService.container';
@@ -13,7 +13,7 @@ const { HousingStockGate, InspectorGate } = gates;
 
 export const HousesReadingsContainer = () => {
   const { id } = useParams<{ id?: string }>();
-  const history = useHistory();
+  const history =  useNavigate();
 
   const housingStockId = Number(id) || null;
   const {
@@ -57,7 +57,7 @@ export const HousesReadingsContainer = () => {
     return inputs.handleHousingStockLoaded.watch(({ result: housingStock }) => {
       if (!housingStock || Number(id) === housingStock?.id) return;
 
-      history.push(`/meters/houses/${housingStock.id}`);
+       history(`/meters/houses/${housingStock.id}`);
     }).unsubscribe;
   }, [history, id]);
 

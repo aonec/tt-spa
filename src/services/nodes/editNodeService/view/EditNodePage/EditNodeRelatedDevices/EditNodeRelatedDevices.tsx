@@ -1,6 +1,6 @@
 import { useEvent } from 'effector-react';
 import React, { FC } from 'react';
-import { useHistory } from 'react-router-dom';
+import {  useNavigate } from 'react-router-dom';
 import {
   DeletePipeHousingMeteringDeviceContainer,
   deletePipeHousingMeteringDeviceService,
@@ -17,7 +17,7 @@ import { EPipeNodeConfig } from 'api/types';
 export const EditNodeRelatedDevices: FC<EditNodeRelatedDevicesProps> = ({
   node,
 }) => {
-  const history = useHistory();
+  const history =  useNavigate();
 
   const openAddHousingMeteringDeviceModal = useEvent(
     addHosuingMeteringDeviceService.inputs.openModal,
@@ -35,7 +35,7 @@ export const EditNodeRelatedDevices: FC<EditNodeRelatedDevicesProps> = ({
         communicationPipes={node.communicationPipes || []}
         configuration={node.configuration}
         handleEditDevice={(deviceId) =>
-          history.push(`/housingMeteringDevices/${deviceId}/edit`)
+           history(`/housingMeteringDevices/${deviceId}/edit`)
         }
         handleDeleteDevice={(device) =>
           openDeleteHousingMeteringDeviceModal(device)

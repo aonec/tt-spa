@@ -12,7 +12,7 @@ import {
 import { HousingStockItemProps } from './HousingStockItem.types';
 import { HouseCategoryDictionary } from 'services/objects/createObjectService/view/CreateObjectPage/CreateObjectMainInfoStage/createObjectMainInfoStage.constants';
 import { EHouseCategory, ESecuredIdentityRoleName } from 'api/types';
-import { useHistory } from 'react-router-dom';
+import {  useNavigate } from 'react-router-dom';
 import { ContextMenuButtonColor } from 'ui-kit/ContextMenuButton/ContextMenuButton.types';
 import { usePermission } from 'hooks/usePermission';
 
@@ -26,7 +26,7 @@ export const HousingStockItem: FC<HousingStockItemProps> = ({
 }) => {
   const address = getBuildingAddress(housingStock);
   const mainAddress = housingStock.address?.mainAddress;
-  const history = useHistory();
+  const history =  useNavigate();
   const isAdmin = usePermission([
     ESecuredIdentityRoleName.Administrator,
     ESecuredIdentityRoleName.ManagingFirmSpectatingAdministrator,
@@ -80,7 +80,7 @@ export const HousingStockItem: FC<HousingStockItemProps> = ({
             {
               title: 'Посмотреть информацию',
               onClick: () =>
-                history.push(
+                 history(
                   `/buildings/${buildingProfilePath}/${housingStock.id}`,
                 ),
             },

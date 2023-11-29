@@ -1,6 +1,6 @@
 import { useEvent, useStore } from 'effector-react';
 import React, { useCallback } from 'react';
-import { useHistory, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { WithLoader } from 'ui-kit/shared/WithLoader';
 import {
   CheckCalculatorContainer,
@@ -25,7 +25,7 @@ export const CalculatorProfileContainer = () => {
     deviceId: string;
     section?: CalculatorProfileGrouptype;
   }>();
-  const history = useHistory();
+  const history = useNavigate();
 
   const isLoading = useStore(outputs.$isLoading);
   const calculator = useStore(outputs.$calculator);
@@ -49,7 +49,9 @@ export const CalculatorProfileContainer = () => {
 
   const setGrouptype = useCallback(
     (section: CalculatorProfileGrouptype) =>
-      history.replace(`/calculators/${deviceId}/profile/${section}`),
+      history(`/calculators/${deviceId}/profile/${section}`, {
+        replace: true,
+      }),
     [history, deviceId],
   );
 

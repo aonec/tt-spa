@@ -28,6 +28,8 @@ export const StatisticsProfileContainer = () => {
     displayStatisticsListByHousesService.outputs.$housingStockAddress,
   );
 
+  if (!grouptype || !searchType) return null;
+
   return (
     <>
       <CreateResourceDisconnectionContainer />

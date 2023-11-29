@@ -1,6 +1,6 @@
 import { useEvent, useStore } from 'effector-react';
 import React, { useEffect } from 'react';
-import { useHistory, useParams } from 'react-router-dom';
+import {  useNavigate, useParams } from 'react-router-dom';
 import { сhangeODPUService } from './сhangeODPUService.model';
 import { ChangeODPUPage } from './view/ChangeODPUPage';
 
@@ -9,7 +9,7 @@ const { OldDeviceIdGate } = gates;
 
 export const ChangeODPUContainer = () => {
   const { oldDeviceId } = useParams<{ oldDeviceId: string }>();
-  const history = useHistory();
+  const history =  useNavigate();
 
   const oldDevice = useStore(outputs.$oldDevice);
   const isLoadingDevice = useStore(outputs.$isLoadingDevice);
@@ -20,7 +20,7 @@ export const ChangeODPUContainer = () => {
   useEffect(
     () =>
       inputs.switchHousingMeteringDeviceFx.doneData.watch(() =>
-        history.goBack(),
+        history(-1),
       ).unsubscribe,
     [history],
   );

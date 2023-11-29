@@ -11,7 +11,7 @@ import {
   Wrapper,
 } from './EditCommonDataForm.styled';
 import { EditCommonDataFormProps } from './EditCommonDataForm.types';
-import { useHistory } from 'react-router-dom';
+import {  useNavigate } from 'react-router-dom';
 import { useForm } from 'effector-forms';
 
 export const EditCommonDataForm: FC<EditCommonDataFormProps> = ({
@@ -20,7 +20,7 @@ export const EditCommonDataForm: FC<EditCommonDataFormProps> = ({
 }) => {
   const { fields, submit } = useForm(form);
 
-  const history = useHistory();
+  const history =  useNavigate();
 
   return (
     <Wrapper>
@@ -82,7 +82,7 @@ export const EditCommonDataForm: FC<EditCommonDataFormProps> = ({
       </FieldsWrapper>
       <SpaceLine />
       <Footer>
-        <Button type="ghost" onClick={() => history.goBack()}>
+        <Button type="ghost" onClick={() => history(-1)}>
           Отмена
         </Button>
         <SaveButtonWrapper>

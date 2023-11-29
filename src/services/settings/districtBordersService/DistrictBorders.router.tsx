@@ -28,29 +28,25 @@ export const DistrictBordersRouter = () => {
       {(isSeniorOperator || isOperator) && (
         <Route
           path="/districtBordersSettings/createByHousingStocksList"
-          component={DistrictBordersByAddressContainer}
-          exact
+          element={<DistrictBordersByAddressContainer />}
         />
       )}
       {(isSeniorOperator || isOperator) && (
         <Route
           path="/districtBordersSettings/editDistrictBorders/:id"
-          component={EditDistrictBordersContainer}
-          exact
+          element={<EditDistrictBordersContainer />}
         />
       )}
       {(isSeniorOperator || isAdministrator) && (
         <Route
           path="/districtBordersSettings/createByMap"
-          component={CreateDistrictBorderMapContainer}
-          exact
+          element={<CreateDistrictBorderMapContainer />}
         />
       )}
       {(isSeniorOperator || isAdministrator) && (
         <Route
           path="/districtBordersSettings/manageDistricts"
-          component={ManageDistrictsMapContainer}
-          exact
+          element={<ManageDistrictsMapContainer />}
         />
       )}
     </Route>,

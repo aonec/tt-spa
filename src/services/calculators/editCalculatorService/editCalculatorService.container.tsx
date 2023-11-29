@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { EditCalculatorPage } from './view/EditCalculatorPage';
 import { editCalculatorService } from './editCalculatorService.model';
 import { useEvent, useStore } from 'effector-react';
-import { useHistory, useParams } from 'react-router-dom';
+import {  useNavigate, useParams } from 'react-router-dom';
 import { MeteringDeviceResponse } from 'api/types';
 
 const { inputs, outputs, gates } = editCalculatorService;
@@ -22,7 +22,7 @@ export const EditCalculatorContainer = () => {
 
   const { deviceId } = useParams<{ deviceId: string }>();
 
-  const history = useHistory();
+  const history =  useNavigate();
 
   const calculatorTypesSelectItems = useStore(
     outputs.$calculatorTypesSelectItems,
@@ -32,7 +32,7 @@ export const EditCalculatorContainer = () => {
     return inputs.editCalculatorSuccess.watch(
       (data: MeteringDeviceResponse | null) => {
         if (data?.id) {
-          history.push(`/calculators/${data.id}/profile`);
+           history(`/calculators/${data.id}/profile`);
         }
       },
     ).unsubscribe;

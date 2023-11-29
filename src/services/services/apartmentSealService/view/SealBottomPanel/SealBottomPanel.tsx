@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 import { Panel, Wrapper } from './SealBottomPanel.styled';
 import { SealBottomPanelProps } from './SealBottomPanel.types';
 import { Button } from 'ui-kit/Button';
-import { useHistory } from 'react-router-dom';
+import {  useNavigate } from 'react-router-dom';
 
 export const SealBottomPanel: FC<SealBottomPanelProps> = ({
   apartment,
@@ -10,7 +10,7 @@ export const SealBottomPanel: FC<SealBottomPanelProps> = ({
   isAppointmentExist,
   openRemoveAppointmentModal,
 }) => {
-  const history = useHistory();
+  const history =  useNavigate();
 
   return (
     <Wrapper>
@@ -18,7 +18,7 @@ export const SealBottomPanel: FC<SealBottomPanelProps> = ({
         <Button
           type="ghost"
           size="small"
-          onClick={() => history.push(`/apartments/${apartment.id}`)}
+          onClick={() =>  history(`/apartments/${apartment.id}`)}
         >
           Перейти в профиль квартиры
         </Button>

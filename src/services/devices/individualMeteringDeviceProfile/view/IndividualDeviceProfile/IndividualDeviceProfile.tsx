@@ -22,7 +22,7 @@ import { resourceNamesLookup } from 'utils/resourceNamesLookup';
 import dayjs from 'api/dayjs';
 import { DeviceStatus } from 'ui-kit/shared/IndividualDeviceInfo/DeviceStatus';
 import { ReadingsHistoryContainer } from 'services/meters/readingsHistoryService/readingsHistoryService.container';
-import { useHistory } from 'react-router-dom';
+import {  useNavigate } from 'react-router-dom';
 
 export const IndividualDeviceProfile: FC<Props> = ({ device }) => {
   const [currentTab, setCurrentTab] = useState<IndividualDeviceProfileTab>(
@@ -31,7 +31,7 @@ export const IndividualDeviceProfile: FC<Props> = ({ device }) => {
 
   const isActive = device.closingDate === null;
 
-  const history = useHistory();
+  const history =  useNavigate();
 
   const tabItems = useMemo(
     () => [
@@ -124,7 +124,7 @@ export const IndividualDeviceProfile: FC<Props> = ({ device }) => {
               {
                 title: 'Редактировать',
                 onClick: () =>
-                  history.push(`/individualDevices/${device.id}/edit`),
+                   history(`/individualDevices/${device.id}/edit`),
               },
             ],
           }}

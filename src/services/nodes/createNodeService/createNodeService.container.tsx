@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo } from 'react';
-import { useHistory, useParams } from 'react-router-dom';
+import {  useNavigate, useParams } from 'react-router-dom';
 import { useUnit } from 'effector-react';
 import { createNodeService } from './createNodeService.model';
 import { CreateNodePage } from './view/CreateNodePage';
@@ -30,7 +30,7 @@ export const CreateNodeContainer = () => {
     return null;
   }, [houseCategory]);
 
-  const history = useHistory();
+  const history =  useNavigate();
 
   const {
     building,
@@ -82,7 +82,7 @@ export const CreateNodeContainer = () => {
 
   useEffect(() => {
     return inputs.handlePipeNodeCreated.watch((node) =>
-      history.push(`/nodes/${node.id}`),
+       history(`/nodes/${node.id}`),
     );
   }, [history]);
 

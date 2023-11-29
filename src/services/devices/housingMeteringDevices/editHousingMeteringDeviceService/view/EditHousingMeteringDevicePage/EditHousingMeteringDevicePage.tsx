@@ -1,6 +1,6 @@
 import { PageHeader } from 'ui-kit/shared/PageHeader';
 import React, { FC, useMemo } from 'react';
-import { useHistory } from 'react-router-dom';
+import {  useNavigate } from 'react-router-dom';
 import { GoBack } from 'ui-kit/shared/GoBack';
 import { HeaderInfoString } from 'ui-kit/shared/HeaderInfoString';
 import { DeviceStatus } from 'ui-kit/shared/IndividualDeviceInfo/DeviceStatus';
@@ -31,8 +31,8 @@ export const EditHousingMeteringDevicePage: FC<
   const address = housingMeteringDevice?.address?.address?.mainAddress;
   const isActive = !Boolean(housingMeteringDevice?.closingDate);
 
-  const history = useHistory();
-  const onCancel = () => history.goBack();
+  const history =  useNavigate();
+  const onCancel = () => history(-1);
 
   const tabItems = useMemo(
     () => [

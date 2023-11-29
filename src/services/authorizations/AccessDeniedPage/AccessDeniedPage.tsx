@@ -9,10 +9,10 @@ import {
 import { AccessDeniedPageProps } from './AccessDeniedPage.types';
 import { ReactComponent as Page403Icon } from './assets/403.svg';
 import { Button } from 'ui-kit/Button';
-import { useHistory } from 'react-router-dom';
+import {  useNavigate } from 'react-router-dom';
 
 export const AccessDeniedPage: FC<AccessDeniedPageProps> = () => {
-  const history = useHistory();
+  const history =  useNavigate();
 
   return (
     <Wrapper>
@@ -26,7 +26,7 @@ export const AccessDeniedPage: FC<AccessDeniedPageProps> = () => {
           письме не забудьте указать ссылку на страницу.
         </Descripion>
       </DescriptionWrapper>
-      <Button onClick={() => history.goBack()}>Вернуться назад</Button>
+      <Button onClick={() => history(-1)}>Вернуться назад</Button>
     </Wrapper>
   );
 };

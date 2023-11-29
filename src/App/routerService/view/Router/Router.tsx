@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { Redirect, Route, Switch } from 'react-router-dom';
+import { Navigate, Route, Routes } from 'react-router-dom';
 import { ESecuredIdentityRoleName } from 'api/types';
 import { Panel } from 'App/Panel';
 import { Layout, PageWrapper, Wrapper } from './Router.styled';
@@ -119,482 +119,407 @@ export const Router: FC<RouterProps> = ({
 
   return (
     <Wrapper>
-      <Switch>
-        <Route path="/login" component={LoginContainer} />
-        <Route path="/registration*" component={RegistrationContainer} />
+      <Routes>
+        <Route path="/login" element={<LoginContainer />} />
+        <Route path="/registration*" element={<RegistrationContainer />} />
         <Route path="/">
           <Layout>
             <Panel />
             <div />
             <PageWrapper>
               {!isRolesLoadded && Boolean(roles.length) && (
-                <Switch>
-                  <Redirect from="/" to={redirectRoute} exact />
-
+                <Routes>
+                  //Протестить
+                  <Route
+                    path="/"
+                    element={<Navigate replace to={redirectRoute} />}
+                  />
                   {TasksRouter()}
                   {DistrictBordersRouter()}
-
                   {(isSeniorOperator || isOperator) && (
-                    <Route path="/actsJournal" exact>
+                    <Route path="/actsJournal">
                       <ActsJournalContainer />
                     </Route>
                   )}
-
                   {isAdministrator ? (
                     <Route
                       path="/buildings/create"
-                      component={CreateObjectContainer}
-                      exact
+                      element={<CreateObjectContainer />}
                     />
                   ) : (
                     <Route
                       path="/buildings/create"
-                      component={AccessDeniedPage}
-                      exact
+                      element={<AccessDeniedPage />}
                     />
                   )}
                   {isAdministrator ? (
                     <Route
                       path="/buildings/:houseCategory/:buildingId/edit"
-                      component={EditObjectContainer}
-                      exact
+                      element={<EditObjectContainer />}
                     />
                   ) : (
-                    <Redirect
-                      from="/buildings/:buildingId/edit"
-                      to="/access-denied/"
-                      exact
+                    // <Redirect
+                    //   from="/buildings/:buildingId/edit"
+                    //   to="/access-denied/"
+                    // />
+                    <Route
+                      path="/buildings/:buildingId/edit"
+                      element={<Navigate replace to="/access-denied/" />}
                     />
                   )}
-
                   {isAdministrator || isExecutor ? (
                     <Route
                       path="/buildings/:houseCategory/:buildingId/addNode"
-                      component={CreateNodeContainer}
-                      exact
+                      element={<CreateNodeContainer />}
                     />
                   ) : (
                     <Route
                       path="/buildings/:buildingId/addNode"
-                      component={AccessDeniedPage}
-                      exact
+                      element={<AccessDeniedPage />}
                     />
                   )}
-
                   {isAnyRole && (
                     <Route
                       path="/buildings/:searchType?"
-                      component={ObjectsProfileContainer}
-                      exact
+                      element={<ObjectsProfileContainer />}
                     />
                   )}
-
                   {isAdministrator || isSeniorOperator || isOperator ? (
                     <Route
                       path="/apartments/:apartmentId/edit"
-                      component={EditApartmentProfileContainer}
-                      exact
+                      element={<EditApartmentProfileContainer />}
                     />
                   ) : (
                     <Route
                       path="/apartments/:apartmentId/edit"
-                      component={AccessDeniedPage}
-                      exact
+                      element={<AccessDeniedPage />}
                     />
                   )}
-
                   {isAnyRole && (
                     <Route
                       path="/apartments/:apartmentId/:tabSection?"
-                      component={ApartmentProfileContainer}
-                      exact
+                      element={<ApartmentProfileContainer />}
                     />
                   )}
-
                   {isAnyRole && (
                     <Route path="/buildings">
                       <Route
                         path={`/buildings/livingProfile/:buildingId/:section?`}
-                        component={HousingStockProfileContainer}
-                        exact
+                        element={<HousingStockProfileContainer />}
                       />
                       <Route
                         path={`/buildings/nonResidentialProfile/:buildingId/:section?`}
-                        component={NonResidentialBuildingProfileContainer}
-                        exact
+                        element={<NonResidentialBuildingProfileContainer />}
                       />
                     </Route>
                   )}
-
                   {isAdministrator || isExecutor ? (
                     <Route
                       path="/devices/addNode"
-                      component={CreateNodeContainer}
-                      exact
+                      element={<CreateNodeContainer />}
                     />
                   ) : (
                     <Route
                       path="/devices/addNode"
-                      component={AccessDeniedPage}
-                      exact
+                      element={<AccessDeniedPage />}
                     />
                   )}
-
                   {isAnyRole && (
                     <Route
                       path="/devices/:type?"
-                      component={DevicesPageContainer}
-                      exact
+                      element={<DevicesPageContainer />}
                     />
                   )}
-
                   {isAdministrator || isExecutor ? (
                     <Route
                       path="/changeODPU/:oldDeviceId"
-                      component={ChangeODPUContainer}
-                      exact
+                      element={<ChangeODPUContainer />}
                     />
                   ) : (
                     <Route
                       path="/changeODPU/:oldDeviceId"
-                      component={AccessDeniedPage}
-                      exact
+                      element={<AccessDeniedPage />}
                     />
                   )}
-
                   {isAdministrator ||
                   isSeniorOperator ||
                   isOperator ||
                   isExecutor ? (
                     <Route
                       path="/electricNode/:deviceId/edit"
-                      component={EditElectricNodeContainer}
+                      element={<EditElectricNodeContainer />}
                     />
                   ) : (
                     <Route
                       path="/electricNode/:deviceId/edit"
-                      component={AccessDeniedPage}
+                      element={<AccessDeniedPage />}
                     />
                   )}
-
                   {isAdministrator && (
-                    <Route
-                      path="/companyProfile/editManagingFirmUser/:id"
-                      exact
-                    >
+                    <Route path="/companyProfile/editManagingFirmUser/:id">
                       <EditEmployeeContainer />
                     </Route>
                   )}
-
                   {isAdministrator && (
                     <Route
                       path="/companyProfile/:section?"
-                      component={CompanyProfileContainer}
+                      element={<CompanyProfileContainer />}
                     />
                   )}
-
                   {isAdministrator && (
                     <Route
                       path="/editCompany"
-                      component={EditCompanyContainer}
+                      element={<EditCompanyContainer />}
                     />
                   )}
-
                   {isAdministrator && (
                     <Route
                       path="/userProfile/:id"
-                      component={EmployeeProfileContainer}
+                      element={<EmployeeProfileContainer />}
                     />
                   )}
-
                   {isAdministrator || isExecutor ? (
                     <Route
                       path="/calculators/:deviceId/edit"
-                      component={EditCalculatorContainer}
-                      exact
+                      element={<EditCalculatorContainer />}
                     />
                   ) : (
                     <Route
                       path="/calculators/:deviceId/edit"
-                      component={AccessDeniedPage}
-                      exact
+                      element={<AccessDeniedPage />}
                     />
                   )}
-
                   {isAnyRole && (
                     <Route
                       path="/calculators/:deviceId/profile/:section?"
-                      component={CalculatorProfileContainer}
-                      exact
+                      element={<CalculatorProfileContainer />}
                     />
                   )}
-
                   {isAdministrator || isExecutor ? (
                     <Route
                       path="/nodes/:nodeId/edit"
-                      component={EditNodeContainer}
-                      exact
+                      element={<EditNodeContainer />}
                     />
                   ) : (
                     <Route
                       path="/nodes/:nodeId/edit"
-                      component={AccessDeniedPage}
-                      exact
+                      element={<AccessDeniedPage />}
                     />
                   )}
-
                   {isAnyRole && (
                     <Route
                       path="/nodes/:nodeId/:section?"
-                      component={NodeProfileContainer}
-                      exact
+                      element={<NodeProfileContainer />}
                     />
                   )}
-
                   {isAdministrator ||
                   isExecutor ||
                   isSeniorOperator ||
                   isOperator ? (
                     <Route
                       path="/housingMeteringDevices/:deviceId/edit"
-                      component={EditHousingMeteringDeviceContainer}
-                      exact
+                      element={<EditHousingMeteringDeviceContainer />}
                     />
                   ) : (
                     <Route
                       path="/housingMeteringDevices/:deviceId/edit"
-                      component={AccessDeniedPage}
-                      exact
+                      element={<AccessDeniedPage />}
                     />
                   )}
-
+                  //протестить
                   {isAnyRole && (
                     <Route
-                      path={[
-                        '/housingMeteringDevices/:deviceId/profile/:section?',
-                      ]}
-                      component={HousingMeteringDeviceProfileContainer}
-                      exact
+                      path="/housingMeteringDevices/:deviceId/profile/:section?"
+                      element={<HousingMeteringDeviceProfileContainer />}
                     />
                   )}
-
                   {(isSeniorOperator ||
                     isExecutor ||
                     isAdministrator ||
                     isOperator) && (
                     <Route
                       path="/individualDeviceProfile/:id"
-                      component={IndividualMeteringDeviceProfileContainer}
-                      exact
+                      element={<IndividualMeteringDeviceProfileContainer />}
                     />
                   )}
-
                   {isAdministrator ||
                   isSeniorOperator ||
                   isExecutor ||
                   isOperator ? (
                     <Route
                       path="/individualDevices/:deviceId/edit"
-                      component={EditIndividualDeviceContainer}
-                      exact
+                      element={<EditIndividualDeviceContainer />}
                     />
                   ) : (
                     <Route
                       path="/individualDevices/:deviceId/edit"
-                      component={AccessDeniedPage}
-                      exact
+                      element={<AccessDeniedPage />}
                     />
                   )}
-
                   {isAnyRole && (
                     <Route
                       path="/meters/:section/:id?"
-                      component={MetersContainer}
+                      element={<MetersContainer />}
                     />
                   )}
-
                   {isAnyRole && (
                     <Route
                       path="/services/:service/:section/:id?"
-                      component={ServicesContainer}
+                      element={<ServicesContainer />}
                     />
                   )}
-
                   <Route
                     path="/nodeArchive/:nodeId"
-                    component={
-                      isShowNodeArchivePage
-                        ? NodeArchivePageContainer
-                        : AccessDeniedPage
+                    element={
+                      isShowNodeArchivePage ? (
+                        <NodeArchivePageContainer />
+                      ) : (
+                        <AccessDeniedPage />
+                      )
                     }
-                    exact
                   />
-
                   {(isSeniorOperator || isOperator) && (
                     <Route
                       path="/settings/:section?"
-                      component={SettingsPageContainer}
-                      exact
+                      element={<SettingsPageContainer />}
                     />
                   )}
-
+                  //Протестить
                   {isAdministrator && (
                     <Route
                       path="/adminSettings/:section?"
-                      component={() => (
-                        <SettingsPageContainer isAdminSettings />
-                      )}
-                      exact
+                      element={<SettingsPageContainer isAdminSettings />}
                     />
                   )}
-
                   {isAdministrator && (
                     <Route
                       path="/adminSettings/operatingRanges/Standart"
-                      component={StandartWorkingRangeContainer}
-                      exact
+                      element={<StandartWorkingRangeContainer />}
                     />
                   )}
                   {isAdministrator && (
                     <Route
                       path="/adminSettings/operatingRanges/Group"
-                      component={GroupWorkingRangeContainer}
-                      exact
+                      element={<GroupWorkingRangeContainer />}
                     />
                   )}
                   {isAdministrator && (
                     <Route
                       path="/adminSettings/operatingRanges/Unique"
-                      component={UniqueWorkingRangeContainer}
-                      exact
+                      element={<UniqueWorkingRangeContainer />}
                     />
                   )}
-
-                  <Redirect
-                    from="/statistics/"
-                    to="/statistics/resourceConsumption"
-                    exact
+                  <Route
+                    path="/statistics/"
+                    element={
+                      <Navigate replace to="/statistics/resourceConsumption" />
+                    }
                   />
-
-                  <Redirect
-                    from="/statistics/subscribersConsumption"
-                    to="/statistics/subscribersConsumption/houses"
-                    exact
+                  <Route
+                    path="/statistics/subscribersConsumption"
+                    element={
+                      <Navigate
+                        replace
+                        to="/statistics/subscribersConsumption/houses"
+                      />
+                    }
                   />
                   {isAnyRole && (
                     <Route path="/statistics/:grouptype/:searchType?">
                       <StatisticsProfileContainer />
                     </Route>
                   )}
-
                   {isSeniorOperator && (
                     <Route
                       path="/reports"
-                      component={
-                        featureToggles.reportsConstructor
-                          ? ReportsContainer
-                          : ReportsPageContainer
+                      element={
+                        featureToggles.reportsConstructor ? (
+                          <ReportsContainer />
+                        ) : (
+                          <ReportsPageContainer />
+                        )
                       }
-                      exact
                     />
                   )}
                   {isSeniorOperator && (
                     <Route
                       path="/reports/:reportType"
-                      component={ReportViewContainer}
-                      exact
+                      element={<ReportViewContainer />}
                     />
                   )}
-
                   {(isAdministrator || isSeniorOperator || isOperator) && (
-                    <Route path="/apartment/:id/addIndividualDevice" exact>
+                    <Route path="/apartment/:id/addIndividualDevice">
                       <AddIndividualDeviceContainer />
                     </Route>
                   )}
-
                   {(isAdministrator || isSeniorOperator || isOperator) && (
-                    <Route
-                      path="/apartment/:id/individualDevice/:deviceId/switch"
-                      exact
-                    >
+                    <Route path="/apartment/:id/individualDevice/:deviceId/switch">
                       <WorkWithIndividualDeviceContainer
                         type={WorkWithIndividualDeviceType.switch}
                       />
                     </Route>
                   )}
                   {(isAdministrator || isSeniorOperator || isOperator) && (
-                    <Route
-                      path="/apartment/:id/individualDevice/:deviceId/check"
-                      exact
-                    >
+                    <Route path="/apartment/:id/individualDevice/:deviceId/check">
                       <WorkWithIndividualDeviceContainer
                         type={WorkWithIndividualDeviceType.check}
                       />
                     </Route>
                   )}
                   {(isSeniorOperator || isOperator) && (
-                    <Route
-                      path="/apartment/:id/individualDevice/:deviceId/reopen"
-                      exact
-                    >
+                    <Route path="/apartment/:id/individualDevice/:deviceId/reopen">
                       <WorkWithIndividualDeviceContainer
                         type={WorkWithIndividualDeviceType.reopen}
                       />
                     </Route>
                   )}
                   {(isAdministrator || isSeniorOperator || isOperator) && (
-                    <Route path="/apartment/:id/homeowners/add" exact>
+                    <Route path="/apartment/:id/homeowners/add">
                       <AddPersonalNumberContainer />
                     </Route>
                   )}
                   {(isAdministrator || isSeniorOperator || isOperator) && (
-                    <Route
-                      path="/apartment/:id/homeowners/:homeownerId/split"
-                      exact
-                    >
+                    <Route path="/apartment/:id/homeowners/:homeownerId/split">
                       <SplitPersonalNumberContainer />
                     </Route>
                   )}
                   {(isAdministrator || isSeniorOperator || isOperator) && (
-                    <Route
-                      path="/apartment/:id/homeowners/:homeownerId/edit"
-                      exact
-                    >
+                    <Route path="/apartment/:id/homeowners/:homeownerId/edit">
                       <EditPersonalNumberContainer />
                     </Route>
                   )}
                   {(isAdministrator || isSeniorOperator || isOperator) && (
-                    <Route
-                      path="/apartment/:id/homeowners/:homeownerId/switch"
-                      exact
-                    >
+                    <Route path="/apartment/:id/homeowners/:homeownerId/switch">
                       <SwitchPersonalNumberContainer />
                     </Route>
                   )}
                   {isDispatcher && (
-                    <Route path="/disabledResources" exact>
+                    <Route path="/disabledResources">
                       <ResourceDisablingScheduleContainer />
                     </Route>
                   )}
-
                   <Route path="/access-denied/">
                     <AccessDeniedPage />
                   </Route>
-                  <Redirect from="/services" to="/services/seal" exact />
-                  <Redirect
-                    from="/services/seal"
-                    to="/services/seal/select"
-                    exact
+                  <Route
+                    path="/services"
+                    element={<Navigate replace to="/services/seal" />}
                   />
-
-                  <Redirect from="/meters" to="/meters/apartments" exact />
-                  <Route path="*" component={AccessDeniedPage} exact />
-                </Switch>
+                  <Route
+                    path="/services/seal"
+                    element={<Navigate replace to="/services/seal/select" />}
+                  />
+                  <Route
+                    path="/meters"
+                    element={<Navigate replace to="/meters/apartments" />}
+                  />
+                  <Route path="*" element={<AccessDeniedPage />} />
+                </Routes>
               )}
             </PageWrapper>
           </Layout>
         </Route>
-      </Switch>
+      </Routes>
     </Wrapper>
   );
 };

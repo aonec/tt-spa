@@ -1,5 +1,5 @@
 import React, { FC, useMemo } from 'react';
-import { useHistory } from 'react-router-dom';
+import {  useNavigate } from 'react-router-dom';
 import { useUnit } from 'effector-react';
 import { Stage } from './Stage';
 import {
@@ -50,7 +50,7 @@ export const TaskStages: FC<TaskStagesProps> = ({
     [stages, handleRevertStage, isRevertStageLoading, isStageCanBeReverted],
   );
 
-  const history = useHistory();
+  const history =  useNavigate();
 
   const isF1Task =
     taskType === EManagingFirmTaskType.HousingDeviceMalfunction ||
@@ -66,7 +66,7 @@ export const TaskStages: FC<TaskStagesProps> = ({
             <ChooseTypeOfResourceDisconnectionModalContainer />
             <CreateResourceDisconnectionContainer
               handleComplete={() => {
-                history.goBack();
+                history(-1);
               }}
               dateFrom={task.creationTime}
               preselectedBuilding={task.buildingId}

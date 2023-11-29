@@ -3,18 +3,18 @@ import { CloseHousingMeteringDeviceModal } from './view/CloseHousingMeteringDevi
 import { CloseHousingMeteringDeviceServiceContainerProps } from './closeHousingMeteringDeviceService.types';
 import { closeHousingMeteringDeviceService } from './closeHousingMeteringDeviceService.model';
 import { useEvent, useStore } from 'effector-react';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 const { inputs, outputs } = closeHousingMeteringDeviceService;
 
 export const CloseHousingMeteringDeviceContainer: FC<
   CloseHousingMeteringDeviceServiceContainerProps
 > = ({ housingMeteringDevice }) => {
-  const navigate = useHistory();
+  const history = useNavigate();
 
   useEffect(() => {
-    return inputs.onSuccessClose.watch(() => navigate.goBack()).unsubscribe;
-  }, [navigate]);
+    return inputs.onSuccessClose.watch(() => history(-1)).unsubscribe;
+  }, [history]);
 
   const isModalOpen = useStore(outputs.$isModalOpen);
 

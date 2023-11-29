@@ -8,7 +8,7 @@ import {
 import { PersonalNumberPageContainerProps } from './PersonalNumberPageContainer.types';
 import { GoBack } from 'ui-kit/shared/GoBack';
 import { Button } from 'ui-kit/Button';
-import { Link, useHistory } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { getApartmentAddressString } from 'utils/getApartmentAddress';
 
 export const PersonalNumberPageContainer: FC<
@@ -25,14 +25,14 @@ export const PersonalNumberPageContainer: FC<
   handleCheckApartmentExist,
   isCheckApartLoading,
 }) => {
-  const history = useHistory();
+  const history = useNavigate();
 
   const address = apartment && getApartmentAddressString(apartment);
 
   const getFirstButton = useMemo(() => {
     if (isFirstStage || isFirstStage === undefined) {
       return (
-        <Button type="ghost" onClick={history.goBack}>
+        <Button type="ghost" onClick={() => history(-1)}>
           Отмена
         </Button>
       );
@@ -43,7 +43,7 @@ export const PersonalNumberPageContainer: FC<
         </Button>
       );
     }
-  }, [isFirstStage, history.goBack, onCancelHandler]);
+  }, [isFirstStage, history, onCancelHandler]);
 
   const getSecondButton = useMemo(() => {
     if (isLastStage || isLastStage === undefined) {

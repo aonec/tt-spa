@@ -1,6 +1,6 @@
 import { useStore } from 'effector-react';
 import React from 'react';
-import { Redirect, useParams } from 'react-router-dom';
+import { Navigate, Route, useParams } from 'react-router-dom';
 import { apartmentProfileService } from './apartmentProfileService.model';
 import { ApartmentProfile } from './view/ApartmentProfile';
 import { ApartmentSection } from './view/ApartmentProfile/ApartmentProfile.types';
@@ -27,8 +27,19 @@ export const ApartmentProfileContainer = () => {
   return (
     <>
       {!tabSection && (
-        <Redirect
-          to={`/apartments/${apartmentId}/${ApartmentSection.CommonData}`}
+        // <Redirect
+        //   to={`/apartments/${apartmentId}/${ApartmentSection.CommonData}`}
+        // />
+
+        //Протестить
+
+        <Route
+          element={
+            <Navigate
+              replace
+              to={`/apartments/${apartmentId}/${ApartmentSection.CommonData}`}
+            />
+          }
         />
       )}
       {apartmentId && <ApartmentGate apartmentId={Number(apartmentId)} />}

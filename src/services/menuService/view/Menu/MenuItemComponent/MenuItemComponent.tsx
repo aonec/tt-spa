@@ -7,7 +7,6 @@ import {
 import { MenuItemComponentProps } from './MenuItemComponent.types';
 import './MenuItemComponent.styles.scss';
 import { SubMenu } from './SubMenu';
-
 import { Wrapper } from './MenuItemComponent.styled';
 
 export const MenuItemComponent: FC<MenuItemComponentProps> = ({ menuItem }) => {
@@ -27,7 +26,10 @@ export const MenuItemComponent: FC<MenuItemComponentProps> = ({ menuItem }) => {
         <MenuItemWrapper
           onClick={openSubMenu}
           to={path}
-          activeClassName="active-menu-item-nav-link"
+          //Протеcтить
+          className={({ isActive }) =>
+            `${isActive ? 'active-menu-item-nav-link' : ''}`
+          }
         >
           {Icon && <Icon className="menu-item-icon" />}
           <MenuItemTitle>{title}</MenuItemTitle>

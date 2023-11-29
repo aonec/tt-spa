@@ -1,4 +1,4 @@
-import { Redirect, Route } from 'react-router-dom';
+import { Navigate, Route } from 'react-router-dom';
 import { TaskProfileContainer } from './taskProfileService';
 import {
   TasksProfileContainer,
@@ -20,25 +20,18 @@ export const TasksRouter = () => {
     : `/tasks/list/${TaskGroupingFilter.Executing}`;
 
   return [
-    <Redirect
-      from="/tasks"
-      to={initialTasksPath}
-      exact
-      key="redirect-to-tasks"
+    <Route
+      path="/tasks"
+      element={<Navigate replace to={initialTasksPath} />}
     />,
     <Route path="/tasks" key="/tasks">
       <TasksIsOpen />
 
-      <Route
-        path="/tasks/profile/:taskId"
-        component={TaskProfileContainer}
-        exact
-      />
+      <Route path="/tasks/profile/:taskId" element={<TaskProfileContainer />} />
 
       <Route
         path="/tasks/list/:grouptype"
-        component={TasksProfileContainer}
-        exact
+        element={<TasksProfileContainer />}
       />
     </Route>,
   ];

@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { AddPersonalNumberPage } from './view/AddPersonalNumberPage';
 import { addPersonalNumberService } from './addPersonalNumberService.model';
 import { useEvent, useStore } from 'effector-react';
-import { useHistory, useParams } from 'react-router-dom';
+import {  useNavigate, useParams } from 'react-router-dom';
 import { ConfirmationAddingExistingPersonalNumber } from '../components/ConfirmationAddingExistingPersonalNumberModal';
 
 const {
@@ -13,7 +13,7 @@ const {
 
 export const AddPersonalNumberContainer = () => {
   const { id } = useParams<{ id: string }>();
-  const history = useHistory();
+  const history =  useNavigate();
 
   const apartment = useStore(outputs.$apartment);
   const isLoading = useStore(outputs.$isLoading);
@@ -29,7 +29,7 @@ export const AddPersonalNumberContainer = () => {
 
   useEffect(() => {
     return inputs.successAddPersonalNumber.watch(() => {
-      history.push(`/meters/apartments/${apartment?.id}`);
+       history(`/meters/apartments/${apartment?.id}`);
     }).unsubscribe;
   }, [history, apartment?.id]);
 

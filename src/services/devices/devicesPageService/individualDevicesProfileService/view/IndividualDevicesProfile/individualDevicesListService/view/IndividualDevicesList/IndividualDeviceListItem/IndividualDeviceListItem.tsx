@@ -1,7 +1,7 @@
 import { Tooltip } from 'ui-kit/shared/Tooltip';
 import dayjs from 'api/dayjs';
 import React, { FC, useCallback } from 'react';
-import { useHistory } from 'react-router-dom';
+import {  useNavigate } from 'react-router-dom';
 import { SearchIcon } from 'ui-kit/icons';
 import { DeviceStatus } from 'ui-kit/shared/IndividualDeviceInfo/DeviceStatus';
 import { IndividualDeviceInfoShort } from 'ui-kit/shared/IndividualDeviceInfoShort';
@@ -24,10 +24,10 @@ export const IndividualDeviceListItem: FC<IndividualDeviceListItemProps> = ({
   consumptionData,
   isConsumptionsLoading,
 }) => {
-  const history = useHistory();
+  const history =  useNavigate();
 
   const handleClickDevice = useCallback(
-    (id: number) => history.push(`/individualDeviceProfile/${id}`),
+    (id: number) =>  history(`/individualDeviceProfile/${id}`),
     [history],
   );
 

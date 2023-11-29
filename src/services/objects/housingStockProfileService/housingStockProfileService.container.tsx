@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react';
 import { Skeleton } from 'antd';
 import { useUnit } from 'effector-react';
-import { useHistory, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { housingStockProfileService } from './housingStockProfileService.model';
 import { HousingStockProfile } from './view/HousingStockProfile';
 import { ConsolidatedReportContainer } from './consolidatedReportService';
@@ -17,7 +17,7 @@ export const HousingStockProfileContainer = () => {
     buildingId: string;
     section?: HousingStockProfileGrouptype;
   }>();
-  const history = useHistory();
+  const history = useNavigate();
 
   const {
     housingStock,
@@ -49,7 +49,9 @@ export const HousingStockProfileContainer = () => {
 
   const setGrouptype = useCallback(
     (section: HousingStockProfileGrouptype) =>
-      history.replace(`/buildings/livingProfile/${buildingId}/${section}`),
+      history(`/buildings/livingProfile/${buildingId}/${section}`, {
+        replace: true,
+      }),
     [history, buildingId],
   );
 

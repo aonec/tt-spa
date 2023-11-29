@@ -2,7 +2,7 @@ import { useEvent, useStore } from 'effector-react';
 import React, { useEffect } from 'react';
 import { editIndividualDeviceService } from './editIndividualDeviceService.model';
 import { EditIndividualPage } from './EditIndividualPage';
-import { useHistory, useParams } from 'react-router-dom';
+import {  useNavigate, useParams } from 'react-router-dom';
 import { individualDeviceMountPlacesService } from '../../devices/individualDeviceMountPlacesService/individualDeviceMountPlacesService.model';
 
 const { inputs, outputs, gates } = editIndividualDeviceService;
@@ -12,8 +12,8 @@ const { AllIndividualDeviceMountPlacesGate, IndividualDeviceMountPlacesGate } =
 
 export const EditIndividualDeviceContainer = () => {
   const { deviceId } = useParams<{ deviceId: string }>();
-  const history = useHistory();
-  const onCancel = () => history.goBack();
+  const history =  useNavigate();
+  const onCancel = () => history(-1);
 
   const handleChangeTab = useEvent(inputs.handleChangeTab);
   const handleUpdateDevice = useEvent(inputs.handleUpdateDevice);
@@ -28,7 +28,7 @@ export const EditIndividualDeviceContainer = () => {
 
   useEffect(() => {
     return inputs.updateDeviceSuccess.watch(() => {
-      history.goBack();
+      history(-1);
     }).unsubscribe;
   }, [history, apartmentId]);
 
