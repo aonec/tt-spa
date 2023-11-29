@@ -129,7 +129,7 @@ export const Router: FC<RouterProps> = ({
         <Route path="/" element={<RouterWrapper />}>
           <Route path="/" element={<Navigate replace to={redirectRoute} />} />
           {TasksRouter()}
-          {/* {DistrictBordersRouter()} */}
+          {DistrictBordersRouter()}
           <Route
             path="/actsJournal"
             element={

@@ -140,9 +140,6 @@ sample({
   target: clearFilters,
 });
 
-TasksIsOpen.open.watch(() => console.log('open'));
-TasksIsOpen.close.watch(() => console.log('close'));
-
 split({
   source: sample({ clock: InitialGate.open, fn: getAcceptableSearchParams }),
   match: {

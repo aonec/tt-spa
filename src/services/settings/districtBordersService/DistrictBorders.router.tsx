@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route } from 'react-router-dom';
+import { Outlet, Route } from 'react-router-dom';
 import {
   DistrictBordersByAddressContainer,
   districtBordersByAddressService,
@@ -23,9 +23,21 @@ export const DistrictBordersRouter = () => {
     ESecuredIdentityRoleName.ManagingFirmSpectatingAdministrator,
   ]);
 
+  const RoutesWrapper = () => {
+    return (
+      <>
+        <DistrictBordersGroupPageGate />
+        <Outlet />
+      </>
+    );
+  };
+
   return [
-    <Route path="/districtBordersSettings" key="/districtBordersSettings">
-      <DistrictBordersGroupPageGate />
+    <Route
+      path="/districtBordersSettings"
+      key="/districtBordersSettings"
+      element={<RoutesWrapper />}
+    >
       <Route
         path="/districtBordersSettings/createByHousingStocksList"
         element={
