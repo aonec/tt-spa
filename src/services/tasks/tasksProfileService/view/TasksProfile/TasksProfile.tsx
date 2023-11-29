@@ -1,5 +1,5 @@
 import React, { FC, useEffect, useMemo } from 'react';
-import {  useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { PageHeader } from 'ui-kit/shared/PageHeader';
 import { SearchTasks } from '../SearchTasks';
 import { TasksList } from '../TasksList';
@@ -51,7 +51,7 @@ export const TasksProfile: FC<TasksProfileProps> = ({
     featureToggles: developmentSettingsService.outputs.$featureToggles,
   });
 
-  const history =  useNavigate();
+  const history = useNavigate();
   const { executingTasksCount, observingTasksCount, totalItems } =
     pagedTasks || {};
 
@@ -68,7 +68,7 @@ export const TasksProfile: FC<TasksProfileProps> = ({
 
   useEffect(() => {
     if (isSpectator && grouptype === TaskGroupingFilter.Executing) {
-       history('/tasks/list/Observing');
+      history('/tasks/list/Observing');
     }
   });
 
@@ -148,7 +148,7 @@ export const TasksProfile: FC<TasksProfileProps> = ({
             <ContentWrapper>
               <TabsSC
                 activeKey={grouptype}
-                onChange={ history}
+                onChange={(activeKey) => history(`/tasks/list/${activeKey}`)}
                 items={tabItems}
               />
               <SearchTasks
