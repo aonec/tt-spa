@@ -9,6 +9,7 @@ import { CreateDistrictBorderMapContainer } from './createDistrictBorderMapServi
 import { ManageDistrictsMapContainer } from './manageDistrictsMapService';
 import { usePermission } from 'hooks/usePermission';
 import { ESecuredIdentityRoleName } from 'api/types';
+import { AccessDeniedPage } from 'services/authorizations/AccessDeniedPage';
 
 const { DistrictBordersGroupPageGate } = districtBordersByAddressService.gates;
 
@@ -25,30 +26,46 @@ export const DistrictBordersRouter = () => {
   return [
     <Route path="/districtBordersSettings" key="/districtBordersSettings">
       <DistrictBordersGroupPageGate />
-      {(isSeniorOperator || isOperator) && (
-        <Route
-          path="/districtBordersSettings/createByHousingStocksList"
-          element={<DistrictBordersByAddressContainer />}
-        />
-      )}
-      {(isSeniorOperator || isOperator) && (
-        <Route
-          path="/districtBordersSettings/editDistrictBorders/:id"
-          element={<EditDistrictBordersContainer />}
-        />
-      )}
-      {(isSeniorOperator || isAdministrator) && (
-        <Route
-          path="/districtBordersSettings/createByMap"
-          element={<CreateDistrictBorderMapContainer />}
-        />
-      )}
-      {(isSeniorOperator || isAdministrator) && (
-        <Route
-          path="/districtBordersSettings/manageDistricts"
-          element={<ManageDistrictsMapContainer />}
-        />
-      )}
+      <Route
+        path="/districtBordersSettings/createByHousingStocksList"
+        element={
+          isSeniorOperator || isOperator ? (
+            <DistrictBordersByAddressContainer />
+          ) : (
+            <AccessDeniedPage />
+          )
+        }
+      />
+      <Route
+        path="/districtBordersSettings/editDistrictBorders/:id"
+        element={
+          isSeniorOperator || isOperator ? (
+            <EditDistrictBordersContainer />
+          ) : (
+            <AccessDeniedPage />
+          )
+        }
+      />
+      <Route
+        path="/districtBordersSettings/createByMap"
+        element={
+          isSeniorOperator || isAdministrator ? (
+            <CreateDistrictBorderMapContainer />
+          ) : (
+            <AccessDeniedPage />
+          )
+        }
+      />
+      <Route
+        path="/districtBordersSettings/manageDistricts"
+        element={
+          isSeniorOperator || isAdministrator ? (
+            <ManageDistrictsMapContainer />
+          ) : (
+            <AccessDeniedPage />
+          )
+        }
+      />
     </Route>,
   ];
 };

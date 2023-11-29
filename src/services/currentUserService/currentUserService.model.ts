@@ -48,6 +48,7 @@ const $isLoading = fetchCurrentUserFx.pending;
 
 const CurrentUserGate = createGate();
 
+
 sample({ clock: CurrentUserGate.open, target: fetchCurrentUserFx });
 
 const $currentUserRoles = $currentUser.map((user) => user?.roles || []);

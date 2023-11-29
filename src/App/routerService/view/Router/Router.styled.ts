@@ -1,7 +1,5 @@
 import styled from 'styled-components';
 
-export const Wrapper = styled.div``;
-
 export const Layout = styled.div`
   height: 100vh;
   display: grid;

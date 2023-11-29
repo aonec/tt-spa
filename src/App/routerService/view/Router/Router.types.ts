@@ -8,7 +8,3 @@ export type RouterProps = {
   featureToggles: FeatureToggles;
 };
 
-export type PermittedRouteProps = {
-  permissionList: boolean[];
-  children: ReactNode;
-};

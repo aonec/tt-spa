@@ -38,7 +38,7 @@ export const MenuContainer = () => {
     <>
       <DevelopmentSettingsContainer isAuth />
       <UserRolesGate />
-      <CurrentUserGate />
+      {/* <CurrentUserGate /> */}
       <UserInfo isLoading={isCurrentUserLoading} currentUser={currentUser} />
       <Menu
         menuItems={filteredMenuItems}

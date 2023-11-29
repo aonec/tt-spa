@@ -1,8 +1,8 @@
 import React, { FC } from 'react';
-import { Navigate, Route, Routes } from 'react-router-dom';
+import { Navigate, Outlet, Route, Routes } from 'react-router-dom';
 import { ESecuredIdentityRoleName } from 'api/types';
 import { Panel } from 'App/Panel';
-import { Layout, PageWrapper, Wrapper } from './Router.styled';
+import { Layout, PageWrapper } from './Router.styled';
 import { RouterProps } from './Router.types';
 import { TasksRouter } from 'services/tasks/tasks.router';
 import { ObjectsProfileContainer } from 'services/objects/objectsProfileService';
@@ -52,6 +52,11 @@ import { WorkWithIndividualDeviceType } from 'services/devices/individualDevices
 import { NonResidentialBuildingProfileContainer } from 'services/objects/nonResidentialBuildingProfileService';
 import { IndividualMeteringDeviceProfileContainer } from 'services/devices/individualMeteringDeviceProfile';
 import { DistrictBordersRouter } from 'services/settings/districtBordersService/DistrictBorders.router';
+import { menuService } from 'services/menuService/menuService.model';
+
+const {
+  gates: { CurrentUserGate },
+} = menuService;
 
 export const Router: FC<RouterProps> = ({
   roles,
@@ -75,12 +80,8 @@ export const Router: FC<RouterProps> = ({
   const isExecutor = roles.includes(
     ESecuredIdentityRoleName.ManagingFirmExecutor,
   );
-  const isController = roles.includes(ESecuredIdentityRoleName.Controller);
 
   const isSpectator = roles.includes(
-    ESecuredIdentityRoleName.ManagingFirmSpectator,
-  );
-  const isSpectatorRestricted = roles.includes(
     ESecuredIdentityRoleName.ManagingFirmSpectator,
   );
 
@@ -91,16 +92,6 @@ export const Router: FC<RouterProps> = ({
   const isRescrictedSpectator = roles.includes(
     ESecuredIdentityRoleName.ManagingFirmSpectatorRestricted,
   );
-
-  const isAnyRole =
-    isAdministrator ||
-    isSeniorOperator ||
-    isOperator ||
-    isExecutor ||
-    isController ||
-    isDispatcher ||
-    isSpectator ||
-    isSpectatorRestricted;
 
   const redirectRoute = (() => {
     if (!roles.length) return '/login';
@@ -117,409 +108,456 @@ export const Router: FC<RouterProps> = ({
     isSpectatingAdministrator ||
     isRescrictedSpectator;
 
+  function RouterWrapper() {
+    return (
+      <Layout>
+        <Panel />
+        <div />
+        <PageWrapper>
+          <Outlet />
+        </PageWrapper>
+      </Layout>
+    );
+  }
+
   return (
-    <Wrapper>
+    <>
+      <CurrentUserGate />
       <Routes>
         <Route path="/login" element={<LoginContainer />} />
         <Route path="/registration*" element={<RegistrationContainer />} />
-        <Route path="/">
-          <Layout>
-            <Panel />
-            <div />
-            <PageWrapper>
-              {!isRolesLoadded && Boolean(roles.length) && (
-                <Routes>
-                  //Протестить
-                  <Route
-                    path="/"
-                    element={<Navigate replace to={redirectRoute} />}
-                  />
-                  {TasksRouter()}
-                  {DistrictBordersRouter()}
-                  {(isSeniorOperator || isOperator) && (
-                    <Route path="/actsJournal">
-                      <ActsJournalContainer />
-                    </Route>
-                  )}
-                  {isAdministrator ? (
-                    <Route
-                      path="/buildings/create"
-                      element={<CreateObjectContainer />}
-                    />
-                  ) : (
-                    <Route
-                      path="/buildings/create"
-                      element={<AccessDeniedPage />}
-                    />
-                  )}
-                  {isAdministrator ? (
-                    <Route
-                      path="/buildings/:houseCategory/:buildingId/edit"
-                      element={<EditObjectContainer />}
-                    />
-                  ) : (
-                    // <Redirect
+        <Route path="/" element={<RouterWrapper />}>
+          <Route path="/" element={<Navigate replace to={redirectRoute} />} />
+          {/* {TasksRouter()} */}
+          {/* {DistrictBordersRouter()} */}
+          <Route
+            path="/actsJournal"
+            element={
+              isSeniorOperator || isOperator ? (
+                <ActsJournalContainer />
+              ) : (
+                <AccessDeniedPage />
+              )
+            }
+          />
+          <Route
+            path="/buildings/create"
+            element={
+              isAdministrator ? <CreateObjectContainer /> : <AccessDeniedPage />
+            }
+          />
+          <Route
+            path="/buildings/:houseCategory/:buildingId/edit"
+            element={
+              isAdministrator ? <EditObjectContainer /> : <AccessDeniedPage />
+            }
+          />
+          {/* // <Redirect
                     //   from="/buildings/:buildingId/edit"
                     //   to="/access-denied/"
                     // />
-                    <Route
-                      path="/buildings/:buildingId/edit"
-                      element={<Navigate replace to="/access-denied/" />}
-                    />
-                  )}
-                  {isAdministrator || isExecutor ? (
-                    <Route
-                      path="/buildings/:houseCategory/:buildingId/addNode"
-                      element={<CreateNodeContainer />}
-                    />
-                  ) : (
-                    <Route
+                    // <Route
+                    //   path="/buildings/:buildingId/edit"
+                    //   element={<Navigate replace to="/access-denied/" />}
+                    // /> */}
+          <Route
+            path="/buildings/:houseCategory/:buildingId/addNode"
+            element={
+              isAdministrator || isExecutor ? (
+                <CreateNodeContainer />
+              ) : (
+                <AccessDeniedPage />
+              )
+            }
+          />
+          //Протестить
+          {/* <Route
                       path="/buildings/:buildingId/addNode"
                       element={<AccessDeniedPage />}
-                    />
-                  )}
-                  {isAnyRole && (
-                    <Route
-                      path="/buildings/:searchType?"
-                      element={<ObjectsProfileContainer />}
-                    />
-                  )}
-                  {isAdministrator || isSeniorOperator || isOperator ? (
-                    <Route
-                      path="/apartments/:apartmentId/edit"
-                      element={<EditApartmentProfileContainer />}
-                    />
-                  ) : (
-                    <Route
-                      path="/apartments/:apartmentId/edit"
-                      element={<AccessDeniedPage />}
-                    />
-                  )}
-                  {isAnyRole && (
-                    <Route
-                      path="/apartments/:apartmentId/:tabSection?"
-                      element={<ApartmentProfileContainer />}
-                    />
-                  )}
-                  {isAnyRole && (
-                    <Route path="/buildings">
-                      <Route
-                        path={`/buildings/livingProfile/:buildingId/:section?`}
-                        element={<HousingStockProfileContainer />}
-                      />
-                      <Route
-                        path={`/buildings/nonResidentialProfile/:buildingId/:section?`}
-                        element={<NonResidentialBuildingProfileContainer />}
-                      />
-                    </Route>
-                  )}
-                  {isAdministrator || isExecutor ? (
-                    <Route
-                      path="/devices/addNode"
-                      element={<CreateNodeContainer />}
-                    />
-                  ) : (
-                    <Route
-                      path="/devices/addNode"
-                      element={<AccessDeniedPage />}
-                    />
-                  )}
-                  {isAnyRole && (
-                    <Route
-                      path="/devices/:type?"
-                      element={<DevicesPageContainer />}
-                    />
-                  )}
-                  {isAdministrator || isExecutor ? (
-                    <Route
-                      path="/changeODPU/:oldDeviceId"
-                      element={<ChangeODPUContainer />}
-                    />
-                  ) : (
-                    <Route
-                      path="/changeODPU/:oldDeviceId"
-                      element={<AccessDeniedPage />}
-                    />
-                  )}
-                  {isAdministrator ||
-                  isSeniorOperator ||
-                  isOperator ||
-                  isExecutor ? (
-                    <Route
-                      path="/electricNode/:deviceId/edit"
-                      element={<EditElectricNodeContainer />}
-                    />
-                  ) : (
-                    <Route
-                      path="/electricNode/:deviceId/edit"
-                      element={<AccessDeniedPage />}
-                    />
-                  )}
-                  {isAdministrator && (
-                    <Route path="/companyProfile/editManagingFirmUser/:id">
-                      <EditEmployeeContainer />
-                    </Route>
-                  )}
-                  {isAdministrator && (
-                    <Route
-                      path="/companyProfile/:section?"
-                      element={<CompanyProfileContainer />}
-                    />
-                  )}
-                  {isAdministrator && (
-                    <Route
-                      path="/editCompany"
-                      element={<EditCompanyContainer />}
-                    />
-                  )}
-                  {isAdministrator && (
-                    <Route
-                      path="/userProfile/:id"
-                      element={<EmployeeProfileContainer />}
-                    />
-                  )}
-                  {isAdministrator || isExecutor ? (
-                    <Route
-                      path="/calculators/:deviceId/edit"
-                      element={<EditCalculatorContainer />}
-                    />
-                  ) : (
-                    <Route
-                      path="/calculators/:deviceId/edit"
-                      element={<AccessDeniedPage />}
-                    />
-                  )}
-                  {isAnyRole && (
-                    <Route
-                      path="/calculators/:deviceId/profile/:section?"
-                      element={<CalculatorProfileContainer />}
-                    />
-                  )}
-                  {isAdministrator || isExecutor ? (
-                    <Route
-                      path="/nodes/:nodeId/edit"
-                      element={<EditNodeContainer />}
-                    />
-                  ) : (
-                    <Route
-                      path="/nodes/:nodeId/edit"
-                      element={<AccessDeniedPage />}
-                    />
-                  )}
-                  {isAnyRole && (
-                    <Route
-                      path="/nodes/:nodeId/:section?"
-                      element={<NodeProfileContainer />}
-                    />
-                  )}
-                  {isAdministrator ||
-                  isExecutor ||
-                  isSeniorOperator ||
-                  isOperator ? (
-                    <Route
-                      path="/housingMeteringDevices/:deviceId/edit"
-                      element={<EditHousingMeteringDeviceContainer />}
-                    />
-                  ) : (
-                    <Route
-                      path="/housingMeteringDevices/:deviceId/edit"
-                      element={<AccessDeniedPage />}
-                    />
-                  )}
-                  //протестить
-                  {isAnyRole && (
-                    <Route
-                      path="/housingMeteringDevices/:deviceId/profile/:section?"
-                      element={<HousingMeteringDeviceProfileContainer />}
-                    />
-                  )}
-                  {(isSeniorOperator ||
-                    isExecutor ||
-                    isAdministrator ||
-                    isOperator) && (
-                    <Route
-                      path="/individualDeviceProfile/:id"
-                      element={<IndividualMeteringDeviceProfileContainer />}
-                    />
-                  )}
-                  {isAdministrator ||
-                  isSeniorOperator ||
-                  isExecutor ||
-                  isOperator ? (
-                    <Route
-                      path="/individualDevices/:deviceId/edit"
-                      element={<EditIndividualDeviceContainer />}
-                    />
-                  ) : (
-                    <Route
-                      path="/individualDevices/:deviceId/edit"
-                      element={<AccessDeniedPage />}
-                    />
-                  )}
-                  {isAnyRole && (
-                    <Route
-                      path="/meters/:section/:id?"
-                      element={<MetersContainer />}
-                    />
-                  )}
-                  {isAnyRole && (
-                    <Route
-                      path="/services/:service/:section/:id?"
-                      element={<ServicesContainer />}
-                    />
-                  )}
-                  <Route
-                    path="/nodeArchive/:nodeId"
-                    element={
-                      isShowNodeArchivePage ? (
-                        <NodeArchivePageContainer />
-                      ) : (
-                        <AccessDeniedPage />
-                      )
-                    }
-                  />
-                  {(isSeniorOperator || isOperator) && (
-                    <Route
-                      path="/settings/:section?"
-                      element={<SettingsPageContainer />}
-                    />
-                  )}
-                  //Протестить
-                  {isAdministrator && (
-                    <Route
-                      path="/adminSettings/:section?"
-                      element={<SettingsPageContainer isAdminSettings />}
-                    />
-                  )}
-                  {isAdministrator && (
-                    <Route
-                      path="/adminSettings/operatingRanges/Standart"
-                      element={<StandartWorkingRangeContainer />}
-                    />
-                  )}
-                  {isAdministrator && (
-                    <Route
-                      path="/adminSettings/operatingRanges/Group"
-                      element={<GroupWorkingRangeContainer />}
-                    />
-                  )}
-                  {isAdministrator && (
-                    <Route
-                      path="/adminSettings/operatingRanges/Unique"
-                      element={<UniqueWorkingRangeContainer />}
-                    />
-                  )}
-                  <Route
-                    path="/statistics/"
-                    element={
-                      <Navigate replace to="/statistics/resourceConsumption" />
-                    }
-                  />
-                  <Route
-                    path="/statistics/subscribersConsumption"
-                    element={
-                      <Navigate
-                        replace
-                        to="/statistics/subscribersConsumption/houses"
-                      />
-                    }
-                  />
-                  {isAnyRole && (
-                    <Route path="/statistics/:grouptype/:searchType?">
-                      <StatisticsProfileContainer />
-                    </Route>
-                  )}
-                  {isSeniorOperator && (
-                    <Route
-                      path="/reports"
-                      element={
-                        featureToggles.reportsConstructor ? (
-                          <ReportsContainer />
-                        ) : (
-                          <ReportsPageContainer />
-                        )
-                      }
-                    />
-                  )}
-                  {isSeniorOperator && (
-                    <Route
-                      path="/reports/:reportType"
-                      element={<ReportViewContainer />}
-                    />
-                  )}
-                  {(isAdministrator || isSeniorOperator || isOperator) && (
-                    <Route path="/apartment/:id/addIndividualDevice">
-                      <AddIndividualDeviceContainer />
-                    </Route>
-                  )}
-                  {(isAdministrator || isSeniorOperator || isOperator) && (
-                    <Route path="/apartment/:id/individualDevice/:deviceId/switch">
-                      <WorkWithIndividualDeviceContainer
-                        type={WorkWithIndividualDeviceType.switch}
-                      />
-                    </Route>
-                  )}
-                  {(isAdministrator || isSeniorOperator || isOperator) && (
-                    <Route path="/apartment/:id/individualDevice/:deviceId/check">
-                      <WorkWithIndividualDeviceContainer
-                        type={WorkWithIndividualDeviceType.check}
-                      />
-                    </Route>
-                  )}
-                  {(isSeniorOperator || isOperator) && (
-                    <Route path="/apartment/:id/individualDevice/:deviceId/reopen">
-                      <WorkWithIndividualDeviceContainer
-                        type={WorkWithIndividualDeviceType.reopen}
-                      />
-                    </Route>
-                  )}
-                  {(isAdministrator || isSeniorOperator || isOperator) && (
-                    <Route path="/apartment/:id/homeowners/add">
-                      <AddPersonalNumberContainer />
-                    </Route>
-                  )}
-                  {(isAdministrator || isSeniorOperator || isOperator) && (
-                    <Route path="/apartment/:id/homeowners/:homeownerId/split">
-                      <SplitPersonalNumberContainer />
-                    </Route>
-                  )}
-                  {(isAdministrator || isSeniorOperator || isOperator) && (
-                    <Route path="/apartment/:id/homeowners/:homeownerId/edit">
-                      <EditPersonalNumberContainer />
-                    </Route>
-                  )}
-                  {(isAdministrator || isSeniorOperator || isOperator) && (
-                    <Route path="/apartment/:id/homeowners/:homeownerId/switch">
-                      <SwitchPersonalNumberContainer />
-                    </Route>
-                  )}
-                  {isDispatcher && (
-                    <Route path="/disabledResources">
-                      <ResourceDisablingScheduleContainer />
-                    </Route>
-                  )}
-                  <Route path="/access-denied/">
-                    <AccessDeniedPage />
-                  </Route>
-                  <Route
-                    path="/services"
-                    element={<Navigate replace to="/services/seal" />}
-                  />
-                  <Route
-                    path="/services/seal"
-                    element={<Navigate replace to="/services/seal/select" />}
-                  />
-                  <Route
-                    path="/meters"
-                    element={<Navigate replace to="/meters/apartments" />}
-                  />
-                  <Route path="*" element={<AccessDeniedPage />} />
-                </Routes>
-              )}
-            </PageWrapper>
-          </Layout>
+                    /> */}
+          <Route
+            path="/buildings/:searchType?"
+            element={<ObjectsProfileContainer />}
+          />
+          <Route
+            path="/apartments/:apartmentId/edit"
+            element={
+              isAdministrator || isSeniorOperator || isOperator ? (
+                <EditApartmentProfileContainer />
+              ) : (
+                <AccessDeniedPage />
+              )
+            }
+          />
+          <Route
+            path="/apartments/:apartmentId/:tabSection?"
+            element={<ApartmentProfileContainer />}
+          />
+          <Route path="/buildings">
+            <Route
+              path={`/buildings/livingProfile/:buildingId/:section?`}
+              element={<HousingStockProfileContainer />}
+            />
+            <Route
+              path={`/buildings/nonResidentialProfile/:buildingId/:section?`}
+              element={<NonResidentialBuildingProfileContainer />}
+            />
+          </Route>
+          <Route
+            path="/devices/addNode"
+            element={
+              isAdministrator || isExecutor ? (
+                <CreateNodeContainer />
+              ) : (
+                <AccessDeniedPage />
+              )
+            }
+          />
+          <Route path="/devices/:type?" element={<DevicesPageContainer />} />
+          <Route
+            path="/changeODPU/:oldDeviceId"
+            element={
+              isAdministrator || isExecutor ? (
+                <ChangeODPUContainer />
+              ) : (
+                <AccessDeniedPage />
+              )
+            }
+          />
+          <Route
+            path="/electricNode/:deviceId/edit"
+            element={
+              isAdministrator ||
+              isSeniorOperator ||
+              isOperator ||
+              isExecutor ? (
+                <EditElectricNodeContainer />
+              ) : (
+                <AccessDeniedPage />
+              )
+            }
+          />
+          <Route
+            path="/companyProfile/editManagingFirmUser/:id"
+            element={
+              isAdministrator ? <EditEmployeeContainer /> : <AccessDeniedPage />
+            }
+          />
+          <Route
+            path="/companyProfile/:section?"
+            element={
+              isAdministrator ? (
+                <CompanyProfileContainer />
+              ) : (
+                <AccessDeniedPage />
+              )
+            }
+          />
+          <Route
+            path="/editCompany"
+            element={
+              isAdministrator ? <EditCompanyContainer /> : <AccessDeniedPage />
+            }
+          />
+          <Route
+            path="/userProfile/:id"
+            element={
+              isAdministrator ? (
+                <EmployeeProfileContainer />
+              ) : (
+                <AccessDeniedPage />
+              )
+            }
+          />
+          <Route
+            path="/calculators/:deviceId/edit"
+            element={
+              isAdministrator || isExecutor ? (
+                <EditCalculatorContainer />
+              ) : (
+                <AccessDeniedPage />
+              )
+            }
+          />
+          <Route
+            path="/calculators/:deviceId/profile/:section?"
+            element={<CalculatorProfileContainer />}
+          />
+          <Route
+            path="/nodes/:nodeId/edit"
+            element={
+              isAdministrator || isExecutor ? (
+                <EditNodeContainer />
+              ) : (
+                <AccessDeniedPage />
+              )
+            }
+          />
+          <Route
+            path="/nodes/:nodeId/:section?"
+            element={<NodeProfileContainer />}
+          />
+          <Route
+            path="/housingMeteringDevices/:deviceId/edit"
+            element={
+              isAdministrator ||
+              isExecutor ||
+              isSeniorOperator ||
+              isOperator ? (
+                <EditHousingMeteringDeviceContainer />
+              ) : (
+                <AccessDeniedPage />
+              )
+            }
+          />
+          //протестить
+          <Route
+            path="/housingMeteringDevices/:deviceId/profile/:section?"
+            element={<HousingMeteringDeviceProfileContainer />}
+          />
+          <Route
+            path="/individualDeviceProfile/:id"
+            element={
+              isSeniorOperator ||
+              isExecutor ||
+              isAdministrator ||
+              isOperator ? (
+                <IndividualMeteringDeviceProfileContainer />
+              ) : (
+                <AccessDeniedPage />
+              )
+            }
+          />
+          <Route
+            path="/individualDevices/:deviceId/edit"
+            element={
+              isAdministrator ||
+              isSeniorOperator ||
+              isExecutor ||
+              isOperator ? (
+                <EditIndividualDeviceContainer />
+              ) : (
+                <AccessDeniedPage />
+              )
+            }
+          />
+          <Route path="/meters/:section/:id?" element={<MetersContainer />} />
+          <Route
+            path="/services/:service/:section/:id?"
+            element={<ServicesContainer />}
+          />
+          <Route
+            path="/nodeArchive/:nodeId"
+            element={
+              isShowNodeArchivePage ? (
+                <NodeArchivePageContainer />
+              ) : (
+                <AccessDeniedPage />
+              )
+            }
+          />
+          <Route
+            path="/settings/:section?"
+            element={
+              isSeniorOperator || isOperator ? (
+                <SettingsPageContainer />
+              ) : (
+                <AccessDeniedPage />
+              )
+            }
+          />
+          //Протестить
+          <Route
+            path="/adminSettings/:section?"
+            element={
+              isAdministrator ? (
+                <SettingsPageContainer isAdminSettings />
+              ) : (
+                <AccessDeniedPage />
+              )
+            }
+          />
+          <Route
+            path="/adminSettings/operatingRanges/Standart"
+            element={
+              isAdministrator ? (
+                <StandartWorkingRangeContainer />
+              ) : (
+                <AccessDeniedPage />
+              )
+            }
+          />
+          <Route
+            path="/adminSettings/operatingRanges/Group"
+            element={
+              isAdministrator ? (
+                <GroupWorkingRangeContainer />
+              ) : (
+                <AccessDeniedPage />
+              )
+            }
+          />
+          <Route
+            path="/adminSettings/operatingRanges/Unique"
+            element={
+              isAdministrator ? (
+                <UniqueWorkingRangeContainer />
+              ) : (
+                <AccessDeniedPage />
+              )
+            }
+          />
+          <Route
+            path="/statistics/"
+            element={<Navigate replace to="/statistics/resourceConsumption" />}
+          />
+          <Route
+            path="/statistics/subscribersConsumption"
+            element={
+              <Navigate
+                replace
+                to="/statistics/subscribersConsumption/houses"
+              />
+            }
+          />
+          <Route
+            path="/statistics/:grouptype/:searchType?"
+            element={<StatisticsProfileContainer />}
+          />
+          <Route
+            path="/reports"
+            element={
+              featureToggles.reportsConstructor ? (
+                isSeniorOperator ? (
+                  <ReportsContainer />
+                ) : (
+                  <AccessDeniedPage />
+                )
+              ) : isSeniorOperator ? (
+                <ReportsPageContainer />
+              ) : (
+                <AccessDeniedPage />
+              )
+            }
+          />
+          <Route
+            path="/reports/:reportType"
+            element={
+              isSeniorOperator ? <ReportViewContainer /> : <AccessDeniedPage />
+            }
+          />
+          <Route
+            path="/apartment/:id/addIndividualDevice"
+            element={
+              isAdministrator || isSeniorOperator || isOperator ? (
+                <AddIndividualDeviceContainer />
+              ) : (
+                <AccessDeniedPage />
+              )
+            }
+          />
+          <Route
+            path="/apartment/:id/individualDevice/:deviceId/switch"
+            element={
+              isAdministrator || isSeniorOperator || isOperator ? (
+                <WorkWithIndividualDeviceContainer
+                  type={WorkWithIndividualDeviceType.switch}
+                />
+              ) : (
+                <AccessDeniedPage />
+              )
+            }
+          />
+          <Route
+            path="/apartment/:id/individualDevice/:deviceId/check"
+            element={
+              isAdministrator || isSeniorOperator || isOperator ? (
+                <WorkWithIndividualDeviceContainer
+                  type={WorkWithIndividualDeviceType.check}
+                />
+              ) : (
+                <AccessDeniedPage />
+              )
+            }
+          />
+          <Route
+            path="/apartment/:id/individualDevice/:deviceId/reopen"
+            element={
+              isSeniorOperator || isOperator ? (
+                <WorkWithIndividualDeviceContainer
+                  type={WorkWithIndividualDeviceType.reopen}
+                />
+              ) : (
+                <AccessDeniedPage />
+              )
+            }
+          />
+          <Route
+            path="/apartment/:id/homeowners/add"
+            element={
+              isAdministrator || isSeniorOperator || isOperator ? (
+                <AddPersonalNumberContainer />
+              ) : (
+                <AccessDeniedPage />
+              )
+            }
+          />
+          <Route
+            path="/apartment/:id/homeowners/:homeownerId/split"
+            element={
+              isAdministrator || isSeniorOperator || isOperator ? (
+                <SplitPersonalNumberContainer />
+              ) : (
+                <AccessDeniedPage />
+              )
+            }
+          />
+          <Route
+            path="/apartment/:id/homeowners/:homeownerId/edit"
+            element={
+              isAdministrator || isSeniorOperator || isOperator ? (
+                <EditPersonalNumberContainer />
+              ) : (
+                <AccessDeniedPage />
+              )
+            }
+          />
+          <Route
+            path="/apartment/:id/homeowners/:homeownerId/switch"
+            element={
+              isAdministrator || isSeniorOperator || isOperator ? (
+                <SwitchPersonalNumberContainer />
+              ) : (
+                <AccessDeniedPage />
+              )
+            }
+          />
+          <Route
+            path="/disabledResources"
+            element={
+              isDispatcher ? (
+                <ResourceDisablingScheduleContainer />
+              ) : (
+                <AccessDeniedPage />
+              )
+            }
+          />
+          <Route path="/access-denied/" element={<AccessDeniedPage />} />
+          <Route
+            path="/services"
+            element={<Navigate replace to="/services/seal" />}
+          />
+          <Route
+            path="/services/seal"
+            element={<Navigate replace to="/services/seal/select" />}
+          />
+          <Route
+            path="/meters"
+            element={<Navigate replace to="/meters/apartments" />}
+          />
+          <Route path="*" element={<AccessDeniedPage />} />
         </Route>
       </Routes>
-    </Wrapper>
+    </>
   );
 };
