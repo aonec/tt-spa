@@ -52,10 +52,6 @@ export const TasksListItem: FC<TasksListItemProps> = ({ task }) => {
       return taskName;
     }
 
-    if (creationReason.length > 80) {
-      const cuttedCreationReason = creationReason.slice(0, 80);
-      return `${cuttedCreationReason}...`;
-    }
     return creationReason;
   }, [creationReason, taskName]);
 
