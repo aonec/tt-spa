@@ -1,7 +1,19 @@
-import React, { useEffect, useMemo } from 'react';
-import { Tooltip } from 'ui-kit/shared/Tooltip';
+import React, { FC, useEffect, useMemo } from 'react';
 import { QuestionCircleOutlined } from '@ant-design/icons';
-import { ExtendedSearchTypes } from './SearchTasks.types';
+import { ToExecutionTasksExtendedSearchFormProps } from './ToExecutionTasksExtendedSearchForm.types';
+import { useSwitchInputOnEnter } from 'hooks/useSwitchInputOnEnter';
+import { taskCategories } from './ToExecutionTasksExtendedSearchForm.constants';
+import {
+  EManagingFirmTaskFilterType,
+  EResourceType,
+  EStageTimeStatus,
+  ETaskEngineeringElement,
+} from 'api/types';
+import { Select } from 'ui-kit/Select';
+import { FormItem } from 'ui-kit/FormItem';
+import { fromEnter } from 'ui-kit/shared/DatePickerNative';
+import { Tooltip } from 'ui-kit/shared/Tooltip';
+import { AddressSearchFieldsNameLookup } from '../SearchTasks.constants';
 import {
   ApartmentNumberWrapper,
   OverFlowSelectSC,
@@ -9,33 +21,19 @@ import {
   StyledContainerThreeItemsMainTypes,
   StyledTooltiContainer,
   ToExecutionWrapper,
-} from './SearchTasks.styled';
-import {
-  EResourceType,
-  ETaskEngineeringElement,
-  EStageTimeStatus,
-  EManagingFirmTaskFilterType,
-} from 'api/types';
-import {
-  EngineeringElementLookUp,
-  ResourceLookUp,
-  TimeStatusesLookUp,
-} from '../../tasksProfileService.types';
-import { AddressSearchContainer } from 'services/addressSearchService';
+} from './ToExecutionTasksExtendedSearchForm.styled';
 import { SearchFieldType } from 'services/addressSearchService/view/AddressSearch/AddressSearch.types';
-import { AddressSearchFieldsNameLookup } from './SearchTasks.constants';
-import { useSwitchInputOnEnter } from 'hooks/useSwitchInputOnEnter';
-import { FormItem } from 'ui-kit/FormItem';
-import { taskCategories } from './ToExecutionTasksExtendedSearchForm.constants';
-import { Select } from 'ui-kit/Select';
+import { AddressSearchContainer } from 'services/addressSearchService';
 import { Input } from 'ui-kit/Input';
-import { fromEnter } from 'ui-kit/shared/DatePickerNative';
+import { EngineeringElementLookUp } from 'dictionaries';
+import { actResourceNamesLookup } from 'utils/actResourceNamesLookup';
+import { TimeStatusesLookUp } from 'services/tasks/tasksProfileService/tasksProfileService.types';
 
 const { Option } = Select;
 
-export const ToExecutionTasksExtendedSearchForm: React.FC<
-  ExtendedSearchTypes
-> = ({ setFieldValue, values, taskTypes, housingManagments, perpetrators }) => {
+export const ToExecutionTasksExtendedSearchForm: FC<
+  ToExecutionTasksExtendedSearchFormProps
+> = ({ setFieldValue, taskTypes, values, housingManagments, perpetrators }) => {
   const isIndividualDevice = values.EngineeringElement === 'IndividualDevice';
 
   const next = useSwitchInputOnEnter('tasksExtendedSearch', true);
@@ -159,7 +157,7 @@ export const ToExecutionTasksExtendedSearchForm: React.FC<
             {Object.keys(EResourceType).map((el) => {
               return (
                 <Option value={el} key={el}>
-                  {ResourceLookUp[el as EResourceType]}
+                  {actResourceNamesLookup[el as EResourceType]}
                 </Option>
               );
             })}
@@ -181,11 +179,16 @@ export const ToExecutionTasksExtendedSearchForm: React.FC<
           >
             <Option value={''}>Все</Option>
             {housingManagments &&
-              housingManagments.map(({ value, key }) => (
-                <Option key={key!} value={key!}>
-                  {value}
-                </Option>
-              ))}
+              housingManagments.map(({ value, key }) => {
+                if (!key) {
+                  return null;
+                }
+                return (
+                  <Option key={key} value={key}>
+                    {value}
+                  </Option>
+                );
+              })}
           </Select>
         </FormItem>
       </StyledContainerThreeItemsMainTypes>
@@ -230,11 +233,16 @@ export const ToExecutionTasksExtendedSearchForm: React.FC<
               </OverFlowSelectSC.Option>
             }
             {FilteredTaskTypes &&
-              FilteredTaskTypes.map((key) => (
-                <Option key={key!} value={key!}>
-                  {preparedTaskTypes[key] || ''}
-                </Option>
-              ))}
+              FilteredTaskTypes.map((key) => {
+                if (!key) {
+                  return null;
+                }
+                return (
+                  <Option key={key} value={key}>
+                    {preparedTaskTypes[key] || ''}
+                  </Option>
+                );
+              })}
           </OverFlowSelectSC>
         </FormItem>
         <FormItem label="Исполнитель">

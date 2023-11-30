@@ -1,4 +1,3 @@
-import { FormikErrors } from 'formik';
 import {
   EManagingFirmTaskFilterTypeNullableStringDictionaryItem,
   GuidStringDictionaryItem,
@@ -18,18 +17,4 @@ export type SearchTasksProps = {
   changeFiltersByGroupType: (payload: TaskGroupingFilter) => TaskGroupingFilter;
   housingManagments: GuidStringDictionaryItem[] | null;
   perpetrators: OrganizationUserListResponse[] | null;
-};
-
-export const TasksFilterTypeDictionary = {};
-
-export type ExtendedSearchTypes = {
-  values: GetTasksListRequestPayload;
-  setFieldValue: (
-    field: string,
-    value: any,
-    shouldValidate?: boolean | undefined,
-  ) => Promise<void> | Promise<FormikErrors<GetTasksListRequestPayload>>;
-  taskTypes: EManagingFirmTaskFilterTypeNullableStringDictionaryItem[] | null;
-  housingManagments?: GuidStringDictionaryItem[] | null;
-  perpetrators?: OrganizationUserListResponse[] | null;
 };
