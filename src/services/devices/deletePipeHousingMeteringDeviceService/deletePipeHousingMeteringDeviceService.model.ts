@@ -1,5 +1,5 @@
 import { createEffect, createEvent, createStore } from 'effector';
-import { forward, sample } from 'effector';
+import { sample } from 'effector';
 import { PipeHousingMeteringDeviceListResponse } from 'api/types';
 import { message } from 'antd';
 import { fetchDeletePipeDevice } from './deletePipeHousingMeteringDeviceService.api';
@@ -26,9 +26,9 @@ sample({
   target: deleteDeviceFx,
 });
 
-forward({
-  from: deleteDeviceFx.doneData,
-  to: [closeModal, editNodeService.inputs.refetchNode],
+sample({
+  clock: deleteDeviceFx.doneData,
+  target: [closeModal, editNodeService.inputs.refetchNode],
 });
 
 export const deletePipeHousingMeteringDeviceService = {

@@ -1,8 +1,8 @@
-import { forward } from 'effector';
+import { sample } from 'effector';
 import { createResourceDisconnectionService } from '../createResourceDisconnectionService';
 import { chooseTypeOfResourceDisconnectionModalService } from './chooseTypeOfResourceDisconnectionModalService.model';
 
-forward({
-  from: chooseTypeOfResourceDisconnectionModalService.inputs.submitModal,
-  to: createResourceDisconnectionService.inputs.openModal,
+sample({
+  clock: chooseTypeOfResourceDisconnectionModalService.inputs.submitModal,
+  target: createResourceDisconnectionService.inputs.openModal,
 });

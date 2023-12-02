@@ -1,5 +1,5 @@
 import { createEffect, createEvent, createStore } from 'effector';
-import { forward } from 'effector';
+import { sample } from 'effector';
 import { createGate } from 'effector-react';
 import {
   ESecuredIdentityRoleName,
@@ -65,17 +65,17 @@ const $isLoading = getHousingStockFx.pending;
 
 const FetchObjectGate = createGate<{ objectId: number }>();
 
-forward({
-  from: ObjectProfileIdGate.open.map(({ objectId }) => objectId),
-  to: [getResourceDisconnectionsFx, getHousingStockFx],
+sample({
+  clock: ObjectProfileIdGate.open.map(({ objectId }) => objectId),
+  target: [getResourceDisconnectionsFx, getHousingStockFx],
 });
 
-forward({
-  from: FetchObjectGate.open.map(({ objectId }) => objectId),
-  to: getHousingStockFx,
+sample({
+  clock: FetchObjectGate.open.map(({ objectId }) => objectId),
+  target: getHousingStockFx,
 });
 
-forward({ from: handleFetchHousingStock, to: getHousingStockFx });
+sample({ clock: handleFetchHousingStock, target: getHousingStockFx });
 
 export const housingStockProfileService = {
   inputs: {

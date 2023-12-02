@@ -1,6 +1,6 @@
 import { createEffect, createEvent, createStore } from 'effector';
 import { message } from 'antd';
-import { combine, forward, guard, sample } from 'effector';
+import { combine, sample } from 'effector';
 import { delay, not } from 'patronum';
 import { createGate } from 'effector-react';
 import dayjs from 'api/dayjs';
@@ -69,7 +69,7 @@ const $isDownloading = combine(
 
 const GroupReportGate = createGate();
 
-guard({
+sample({
   clock: setGroupReportPayload,
   filter: (payload): payload is GroupReportRequestPayload =>
     Boolean(
@@ -82,7 +82,7 @@ guard({
   target: $downloadReportPayload,
 });
 
-guard({
+sample({
   clock: $downloadReportPayload,
   filter: (payload): payload is GroupReportRequestPayload => {
     const isExist = Boolean(payload);
@@ -99,7 +99,7 @@ guard({
   target: downloadGroupReportFx,
 });
 
-guard({
+sample({
   clock: $downloadReportPayload,
   filter: (payload): payload is GroupReportRequestPayload => {
     const isExist = Boolean(payload);
@@ -116,12 +116,12 @@ guard({
   target: sendReportToEmailService.inputs.openModal,
 });
 
-forward({
-  from: getGroupReport,
-  to: getGroupReportFx,
+sample({
+  clock: getGroupReport,
+  target: getGroupReportFx,
 });
 
-guard({
+sample({
   source: $reportFilters,
   clock: GroupReportGate.open,
   filter: (filter) => !Boolean(filter),

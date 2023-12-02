@@ -1,5 +1,5 @@
 import { createEffect, createEvent, createStore } from 'effector';
-import { forward } from 'effector';
+import { sample } from 'effector';
 import { addressSearchService } from 'services/addressSearchService/addressSearchService.models';
 import { houseManagementsService } from 'services/objects/houseManagementsService';
 import { getFeedFlowPipeTemperatureReport } from './flowTemperatureDeviationReportService.api';
@@ -22,9 +22,9 @@ const $isModalOpen = createStore(false)
   .on(openFlowTemperatureDeviationReportModal, () => true)
   .reset(closeFlowTemperatureDeviationReportModal);
 
-forward({
-  from: handleExportReport,
-  to: exportFlowTemperatureDeviationReportFx,
+sample({
+  clock: handleExportReport,
+  target: exportFlowTemperatureDeviationReportFx,
 });
 
 exportFlowTemperatureDeviationReportFx.failData.watch((error) => {

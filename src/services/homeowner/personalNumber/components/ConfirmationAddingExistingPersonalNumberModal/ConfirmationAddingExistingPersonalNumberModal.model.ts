@@ -1,5 +1,5 @@
 import { createEffect, createEvent, createStore } from 'effector';
-import { forward } from 'effector';
+import { sample } from 'effector';
 import { ApartmentResponse } from 'api/types';
 import { getSamePersonalAccountNumderApartmentData } from './ConfirmationAddingExistingPersonalNumberModal.api';
 
@@ -18,9 +18,9 @@ $samePersonalAccountNumderApartmentData.on(
   (_, data) => data,
 );
 
-forward({
-  from: samePersonalAccountNumderId,
-  to: fetchSamePersonalAccountNumderApartmentDataFx,
+sample({
+  clock: samePersonalAccountNumderId,
+  target: fetchSamePersonalAccountNumderApartmentDataFx,
 });
 
 export const ConfirmationAddingExistingPersonalNumberModal = {

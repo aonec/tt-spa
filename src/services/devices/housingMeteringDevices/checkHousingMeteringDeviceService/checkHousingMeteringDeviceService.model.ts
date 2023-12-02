@@ -1,5 +1,5 @@
 import { createEffect, createEvent, createStore } from 'effector';
-import { forward } from 'effector';
+import { sample } from 'effector';
 import { postCheckDevice } from './checkHousingMeteringDeviceService.api';
 import { CheckDeviceRequest } from 'api/types';
 import { EffectFailDataAxiosError } from 'types';
@@ -30,9 +30,9 @@ editCheckDateFx.failData.watch((error) => {
   );
 });
 
-forward({
-  from: handleOnSubmit,
-  to: editCheckDateFx,
+sample({
+  clock: handleOnSubmit,
+  target: editCheckDateFx,
 });
 
 const $isModalOpen = createStore<boolean>(false)

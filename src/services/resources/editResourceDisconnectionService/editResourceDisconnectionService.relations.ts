@@ -1,20 +1,21 @@
 import { resourceDisablingScheduleServiceService } from 'services/settings/resourcesDisablingScheduleService/ResourceDisablingScheduleService.model';
-import { forward } from 'effector';
+import { sample } from 'effector';
 import { createResourceDisconnectionService } from '../createResourceDisconnectionService';
 import { editResourceDisconnectionService } from './editResourceDisconnectionService.model';
 
-forward({
-  from: createResourceDisconnectionService.inputs.closeModal,
-  to: [
+sample({
+  clock: createResourceDisconnectionService.inputs.closeModal,
+  target: [
     editResourceDisconnectionService.inputs.clearDisconnectionId,
     editResourceDisconnectionService.inputs.clearResourceDisconnection,
   ],
 });
 
-forward({
-  from: editResourceDisconnectionService.inputs.editResourceDisconnectionFx
-    .doneData,
-  to: [
+sample({
+  clock:
+    editResourceDisconnectionService.inputs.editResourceDisconnectionFx
+      .doneData,
+  target: [
     createResourceDisconnectionService.inputs.closeModal,
     resourceDisablingScheduleServiceService.inputs
       .refetchResourceDisconnections,

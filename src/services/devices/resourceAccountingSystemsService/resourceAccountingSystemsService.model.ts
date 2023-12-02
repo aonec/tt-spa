@@ -1,5 +1,5 @@
 import { createEffect, createStore } from 'effector';
-import { forward } from 'effector';
+import { sample } from 'effector';
 import { createGate } from 'effector-react';
 import { EResourceType, NodeOnHousingStockResponse } from 'api/types';
 import { getNodes } from './resourceAccountingSystemsService.api';
@@ -22,9 +22,9 @@ const $nodes = createStore<NodeOnHousingStockResponse[] | null>(null)
   })
   .reset(NodesGate.close);
 
-forward({
-  from: NodesGate.open.map(({ buildingId }) => buildingId),
-  to: fetchNodesFx,
+sample({
+  clock: NodesGate.open.map(({ buildingId }) => buildingId),
+  target: fetchNodesFx,
 });
 
 const $isLoading = fetchNodesFx.pending;

@@ -1,5 +1,5 @@
 import { createEffect, createStore } from 'effector';
-import { guard, sample } from 'effector';
+import { sample } from 'effector';
 import { createGate } from 'effector-react';
 import { ResourceDisconnectingFilterResponse } from 'api/types';
 import { fetchResourceDisconnectionFilters } from './resourceDisconnectionFiltersService.api';
@@ -23,7 +23,7 @@ $resourceDisconnectionFilters.on(
 const ResourceDisconnectigFiltersGate = createGate();
 
 sample({
-  clock: guard({
+  clock: sample({
     source: $resourceDisconnectionFilters,
     clock: ResourceDisconnectigFiltersGate.open,
     filter: (source) => !source,

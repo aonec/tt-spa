@@ -1,5 +1,5 @@
 import { createEffect, createStore } from 'effector';
-import { forward } from 'effector';
+import { sample } from 'effector';
 import { createGate } from 'effector-react';
 import { GetHousingMeteringDeviceReadingsResponse } from 'api/types';
 import { fetchOldReadings } from './changeODPUReadings.api';
@@ -31,9 +31,9 @@ const $loading = getOldReadings.pending;
 
 const OldDeviceNodeIdGate = createGate<{ nodeId: number }>();
 
-forward({
-  from: OldDeviceNodeIdGate.open.map(({ nodeId }) => nodeId),
-  to: getOldReadings,
+sample({
+  clock: OldDeviceNodeIdGate.open.map(({ nodeId }) => nodeId),
+  target: getOldReadings,
 });
 
 export const ChangeODPUReadingsService = {

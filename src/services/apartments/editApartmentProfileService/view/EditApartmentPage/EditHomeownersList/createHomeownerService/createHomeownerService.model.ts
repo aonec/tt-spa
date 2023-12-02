@@ -1,5 +1,5 @@
 import { createEffect, createEvent, createStore } from 'effector';
-import { combine, forward, sample } from 'effector';
+import { combine, sample } from 'effector';
 import { HomeownerAccountCreateRequest } from 'api/types';
 import { editApartmentProfileService } from 'services/apartments/editApartmentProfileService/editApartmentProfileService.model';
 import { postHomeownerAccount } from './createHomeownerService.api';
@@ -57,9 +57,9 @@ sample({
   target: createHomeownerFx,
 });
 
-forward({
-  from: createHomeownerFx.doneData,
-  to: editApartmentProfileService.inputs.refetchAaprtment,
+sample({
+  clock: createHomeownerFx.doneData,
+  target: editApartmentProfileService.inputs.refetchAaprtment,
 });
 
 createHomeownerFx.failData.watch((error) => {

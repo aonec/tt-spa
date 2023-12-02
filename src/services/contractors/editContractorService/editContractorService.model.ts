@@ -1,5 +1,5 @@
 import { createEffect, createEvent, createStore } from 'effector';
-import { forward } from 'effector';
+import { sample } from 'effector';
 import { patchContractor } from './editContractorService.api';
 import { ContractorResponse, ContractorUpdateRequest } from 'api/types';
 import { EffectFailDataAxiosError } from 'types';
@@ -32,9 +32,9 @@ const $contractorData = createStore<ContractorDataType | null>(null)
   .on(catchContractorData, (_, data) => data)
   .reset(editContractorSuccess);
 
-forward({
-  from: handleEditcontractor,
-  to: editContractorFx,
+sample({
+  clock: handleEditcontractor,
+  target: editContractorFx,
 });
 
 editContractorFx.failData.watch((error) =>

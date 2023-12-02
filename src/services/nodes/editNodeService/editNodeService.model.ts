@@ -1,5 +1,5 @@
 import { createEffect, createEvent, createStore } from 'effector';
-import { forward, guard, sample } from 'effector';
+import { sample } from 'effector';
 import { createGate } from 'effector-react';
 import {
   EResourceType,
@@ -59,9 +59,9 @@ const NodeResourceGate = createGate<{ resource: EResourceType }>();
 const $isLoading = getNodeFx.pending;
 const $isUpdateLoading = updateNodeFx.pending;
 
-forward({
-  from: NodeIdGate.close,
-  to: clearStore,
+sample({
+  clock: NodeIdGate.close,
+  target: clearStore,
 });
 
 sample({
@@ -70,24 +70,24 @@ sample({
   target: getNodeFx,
 });
 
-guard({
+sample({
   source: $nodeZones,
   clock: NodeIdGate.open,
   filter: (zones) => zones.length === 0,
   target: getNodeZonesFx,
 });
 
-forward({
-  from: createNodeServiceZoneService.inputs.createNodeServiceZoneFx.doneData,
-  to: getNodeZonesFx,
+sample({
+  clock: createNodeServiceZoneService.inputs.createNodeServiceZoneFx.doneData,
+  target: getNodeZonesFx,
 });
 
-forward({
-  from: [
+sample({
+  clock: [
     addHosuingMeteringDeviceService.inputs.deviceCreated,
     updateNodeFx.doneData,
   ],
-  to: refetchNode,
+  target: refetchNode,
 });
 
 sample({

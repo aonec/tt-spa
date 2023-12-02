@@ -1,5 +1,5 @@
 import { createEffect, createEvent, createStore } from 'effector';
-import { guard, sample } from 'effector';
+import { sample } from 'effector';
 import {
   ResourceDisconnectingResponse,
   ResourceDisconnectingUpdateRequest,
@@ -68,7 +68,7 @@ const $editResourceDisconnectionPayload =
   );
 
 sample({
-  clock: guard({
+  clock: sample({
     clock: $editedResourceDisconnectionId,
     filter: Boolean,
   }),
@@ -83,7 +83,7 @@ sample({
 });
 
 sample({
-  clock: guard({
+  clock: sample({
     clock: $editResourceDisconnectionPayload,
     filter: Boolean,
   }),
@@ -91,7 +91,7 @@ sample({
 });
 
 sample({
-  source: guard({
+  source: sample({
     source: $resourceDisconnection,
     filter: Boolean,
   }),

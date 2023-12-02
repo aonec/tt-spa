@@ -1,5 +1,5 @@
 import { createEffect, createEvent, createStore } from 'effector';
-import { forward, sample } from 'effector';
+import { sample } from 'effector';
 import { createGate } from 'effector-react';
 import { CalculatorResponse } from 'api/types';
 import { fetchCalculator } from './calculatorProfileService.api';
@@ -43,9 +43,9 @@ sample({
   target: getCalculatorFx,
 });
 
-forward({
-  from: handleFecthCalculator,
-  to: getCalculatorFx,
+sample({
+  clock: handleFecthCalculator,
+  target: getCalculatorFx,
 });
 
 sample({
@@ -54,9 +54,9 @@ sample({
   target: getCalculatorFx,
 });
 
-forward({
-  from: CalculatorIdGate.close,
-  to: clearStore,
+sample({
+  clock: CalculatorIdGate.close,
+  target: clearStore,
 });
 
 export const calculatorProfileService = {

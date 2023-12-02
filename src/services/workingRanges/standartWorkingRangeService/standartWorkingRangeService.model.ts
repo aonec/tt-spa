@@ -1,5 +1,5 @@
 import { createEffect, createEvent, createStore } from 'effector';
-import { forward } from 'effector';
+import { sample } from 'effector';
 import { getStandartWorkingRange } from './standartWorkingRangeService.api';
 import {
   AllNodeWorkingRangeResponse,
@@ -28,9 +28,9 @@ const $standartWorkingRange = createStore<AllNodeWorkingRangeResponse | null>(
 
 const $isLoading = getStandartWorkingRangeFx.pending;
 
-forward({
-  from: handleOnSearchDataChange,
-  to: getStandartWorkingRangeFx,
+sample({
+  clock: handleOnSearchDataChange,
+  target: getStandartWorkingRangeFx,
 });
 
 export const standartWorkingRangeService = {

@@ -1,10 +1,4 @@
-import {
-  createStore,
-  createEffect,
-  createEvent,
-  forward,
-  sample,
-} from 'effector';
+import { createStore, createEffect, createEvent, sample } from 'effector';
 import { createGate } from 'effector-react';
 import { message } from 'antd';
 import { EffectFailDataAxiosError } from 'types';
@@ -38,22 +32,22 @@ const $isPauseApartmentModalVisible = createStore(false)
     pauseApartmentStatusFx.doneData,
   );
 
-forward({
-  from: pauseApartmentStatusFx.done,
-  to: apartmentService.inputs.refetchApartment,
+sample({
+  clock: pauseApartmentStatusFx.done,
+  target: apartmentService.inputs.refetchApartment,
 });
 
-forward({
-  from: [
+sample({
+  clock: [
     pauseApartmentStatusFx.doneData,
     pauseApartmentModalCancelButtonClicked,
   ],
-  to: apartmentProblemDevicesService.inputs.handleResetProblemDevices,
+  target: apartmentProblemDevicesService.inputs.handleResetProblemDevices,
 });
 
-forward({
-  from: pauseApartment,
-  to: pauseApartmentStatusFx,
+sample({
+  clock: pauseApartment,
+  target: pauseApartmentStatusFx,
 });
 
 sample({
