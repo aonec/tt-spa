@@ -2,10 +2,6 @@ import React from 'react';
 import { CompanyProfile } from './view/CompanyProfile';
 import { companyProfileService } from './companyProfileService.model';
 import { useEvent, useStore } from 'effector-react';
-import { Outlet, Route,  } from 'react-router-dom';
-import { CommonInfoTab } from './view/CompanyProfile/Tabs/CommonInfoTab';
-import { Staff } from './view/CompanyProfile/Tabs/Staff';
-import { Contractors } from './view/CompanyProfile/Tabs/Contractors';
 
 const { inputs, outputs } = companyProfileService;
 const {
@@ -40,64 +36,25 @@ export const CompanyProfileContainer = () => {
   const catchContractorData = useEvent(inputs.catchContractorData);
 
   return (
-    <Route
-      element={
-        <>
-          <FetchingCurrentManagingFirmGate />
+    <>
+      <FetchingCurrentManagingFirmGate />
 
-          <CompanyProfile
-            staffList={staffList}
-            isLoadingStaff={isLoadingStaff}
-            handleOpenStatusChangeModal={() => handleOpenStatusChangeModal()}
-            handleOpenDeleteModal={() => handleOpenDeleteModal()}
-            handleCatchEmployeeStatusData={handleCatchEmployeeStatusData}
-            handleCatchEmployeeId={handleCatchEmployeeId}
-            handleOpenCreateEmployeeModal={() =>
-              handleOpenCreateEmployeeModal()
-            }
-            conractorsList={conractorsList}
-            isLoadingContractors={isLoadingContractors}
-            handleOpenAddContractorModal={() => handleOpenAddContractorModal()}
-            catchContractorId={catchContractorId}
-            handleOpenEditContractorModal={() =>
-              handleOpenEditContractorModal()
-            }
-            catchContractorData={catchContractorData}
-          />
-          <Outlet />
-        </>
-      }
-    >
-      
-      <Route
-        path="/companyProfile/commonInfo"
-        element={<CommonInfoTab currentManagingFirm={currentManagingFirm} />}
+      <CompanyProfile
+        staffList={staffList}
+        isLoadingStaff={isLoadingStaff}
+        handleOpenStatusChangeModal={() => handleOpenStatusChangeModal()}
+        handleOpenDeleteModal={() => handleOpenDeleteModal()}
+        handleCatchEmployeeStatusData={handleCatchEmployeeStatusData}
+        handleCatchEmployeeId={handleCatchEmployeeId}
+        handleOpenCreateEmployeeModal={() => handleOpenCreateEmployeeModal()}
+        conractorsList={conractorsList}
+        isLoadingContractors={isLoadingContractors}
+        handleOpenAddContractorModal={() => handleOpenAddContractorModal()}
+        catchContractorId={catchContractorId}
+        handleOpenEditContractorModal={() => handleOpenEditContractorModal()}
+        catchContractorData={catchContractorData}
+        currentManagingFirm={currentManagingFirm}
       />
-      <Route
-        path="/companyProfile/staff"
-        element={
-          <Staff
-            staffList={staffList}
-            isLoadingStaff={isLoadingStaff}
-            handleOpenStatusChangeModal={handleOpenStatusChangeModal}
-            handleCatchEmployeeStatusData={handleCatchEmployeeStatusData}
-            handleOpenDeleteModal={handleOpenDeleteModal}
-            handleCatchEmployeeId={handleCatchEmployeeId}
-          />
-        }
-      />
-      <Route
-        path="/companyProfile/contractors"
-        element={
-          <Contractors
-            conractorsList={conractorsList}
-            isLoadingContractors={isLoadingContractors}
-            catchContractorId={catchContractorId}
-            handleOpenEditContractorModal={handleOpenEditContractorModal}
-            catchContractorData={catchContractorData}
-          />
-        }
-      />
-    </Route>
+    </>
   );
 };
