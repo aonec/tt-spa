@@ -1,16 +1,12 @@
-import { Navigate, Outlet, createBrowserRouter } from 'react-router-dom';
-import React, { useEffect } from 'react';
+import { Navigate, Outlet } from 'react-router-dom';
+import React from 'react';
 import { Layout, PageWrapper } from './view/Router/Router.styled';
 import { Panel } from 'App/Panel';
-import { useStore } from 'effector-react';
-import { routerService } from './routerService.model';
 import {
   ESecuredIdentityRoleName,
   ESecuredIdentityRoleNameStringDictionaryItem,
   TaskGroupingFilter,
 } from 'api/types';
-import { axios } from 'api/axios';
-import { OrganizationUserResponse } from 'api/types';
 import { HousingStockProfileContainer } from 'services/objects/housingStockProfileService';
 import { DevicesPageContainer } from 'services/devices/devicesPageService';
 import { ChangeODPUContainer } from 'services/devices/сhangeODPUService';
@@ -76,8 +72,6 @@ const {
   gates: { CurrentUserGate },
 } = currentUserService;
 
-const { outputs } = routerService;
-
 function RouterWrapper() {
   return (
     <Layout>
@@ -115,512 +109,517 @@ const DistrictBordersRouterWrapper = () => {
 const featureToggles =
   developmentSettingsService.outputs.$featureToggles.getState();
 
-const getCurrentUser = (): Promise<OrganizationUserResponse> =>
-  axios.get('OrganizationUsers/current');
+export const getRoutes = (
+  currentUserRoles: ESecuredIdentityRoleNameStringDictionaryItem[],
+) => {
+  const roles =
+    currentUserRoles?.reduce((acc, { key }) => {
+      if (!key) {
+        return acc;
+      }
+      return [...acc, key];
+    }, [] as ESecuredIdentityRoleName[]) || [];
 
-let currentUserRoles: ESecuredIdentityRoleNameStringDictionaryItem[] = [];
+  const isAdministrator =
+    roles.includes(ESecuredIdentityRoleName.Administrator) ||
+    roles.includes(
+      ESecuredIdentityRoleName.ManagingFirmSpectatingAdministrator,
+    );
 
-getCurrentUser().then((data) => (currentUserRoles = data.roles!));
+  const isSeniorOperator = roles.includes(
+    ESecuredIdentityRoleName.SeniorOperator,
+  );
+  const isOperator = roles.includes(ESecuredIdentityRoleName.Operator);
 
-const roles =
-  currentUserRoles?.reduce((acc, { key }) => {
-    if (!key) {
-      return acc;
-    }
-    return [...acc, key];
-  }, [] as ESecuredIdentityRoleName[]) || [];
+  const isDispatcher = roles.includes(
+    ESecuredIdentityRoleName.ManagingFirmDispatcher,
+  );
+  const isExecutor = roles.includes(
+    ESecuredIdentityRoleName.ManagingFirmExecutor,
+  );
 
-const isAdministrator =
-  roles.includes(ESecuredIdentityRoleName.Administrator) ||
-  roles.includes(ESecuredIdentityRoleName.ManagingFirmSpectatingAdministrator);
+  const isSpectator = roles.includes(
+    ESecuredIdentityRoleName.ManagingFirmSpectator,
+  );
 
-const isSeniorOperator = roles.includes(
-  ESecuredIdentityRoleName.SeniorOperator,
-);
-const isOperator = roles.includes(ESecuredIdentityRoleName.Operator);
+  const isSpectatingAdministrator = roles.includes(
+    ESecuredIdentityRoleName.ManagingFirmSpectatingAdministrator,
+  );
 
-const isDispatcher = roles.includes(
-  ESecuredIdentityRoleName.ManagingFirmDispatcher,
-);
-const isExecutor = roles.includes(
-  ESecuredIdentityRoleName.ManagingFirmExecutor,
-);
+  const isRescrictedSpectator = roles.includes(
+    ESecuredIdentityRoleName.ManagingFirmSpectatorRestricted,
+  );
 
-const isSpectator = roles.includes(
-  ESecuredIdentityRoleName.ManagingFirmSpectator,
-);
+  const redirectRoute = (() => {
+    if (!roles.length) return '/login';
 
-const isSpectatingAdministrator = roles.includes(
-  ESecuredIdentityRoleName.ManagingFirmSpectatingAdministrator,
-);
+    const defaultPath = '/tasks/';
 
-const isRescrictedSpectator = roles.includes(
-  ESecuredIdentityRoleName.ManagingFirmSpectatorRestricted,
-);
+    return isSeniorOperator || isOperator ? '/meters/apartments' : defaultPath;
+  })();
 
-const redirectRoute = (() => {
-  if (!roles.length) return '/login';
+  const initialTasksPath = isSpectator
+    ? `/tasks/list/${TaskGroupingFilter.Observing}`
+    : `/tasks/list/${TaskGroupingFilter.Executing}`;
 
-  const defaultPath = '/tasks/';
+  const isShowNodeArchivePage =
+    isAdministrator ||
+    isExecutor ||
+    isSpectator ||
+    isSpectatingAdministrator ||
+    isRescrictedSpectator;
 
-  return isSeniorOperator || isOperator ? '/meters/apartments' : defaultPath;
-})();
+  return [
+    {
+      path: '/login',
+      element: <LoginContainer />,
+    },
+    {
+      path: '/registration*',
+      element: <RegistrationContainer />,
+    },
+    {
+      path: '/',
+      element: <RouterWrapper />,
+      children: [
+        {
+          path: '/',
+          element: <Navigate replace to={redirectRoute} />,
+        },
+        {
+          path: '/actsJournal',
+          element:
+            isSeniorOperator || isOperator ? (
+              <ActsJournalContainer />
+            ) : (
+              <AccessDeniedPage />
+            ),
+        },
+        {
+          path: '/buildings/create',
+          element: isAdministrator ? (
+            <CreateObjectContainer />
+          ) : (
+            <AccessDeniedPage />
+          ),
+        },
+        {
+          path: '/buildings/:houseCategory/:buildingId/edit',
+          element: isAdministrator ? (
+            <EditObjectContainer />
+          ) : (
+            <AccessDeniedPage />
+          ),
+        },
+        {
+          path: '/buildings/:houseCategory/:buildingId/addNode',
+          element:
+            isAdministrator || isExecutor ? (
+              <CreateNodeContainer />
+            ) : (
+              <AccessDeniedPage />
+            ),
+        },
+        {
+          path: '/districtBordersSettings',
+          element: <DistrictBordersRouterWrapper />,
+          children: [
+            {
+              path: '/districtBordersSettings/createByHousingStocksList',
+              element:
+                isSeniorOperator || isOperator ? (
+                  <DistrictBordersByAddressContainer />
+                ) : (
+                  <AccessDeniedPage />
+                ),
+            },
+            {
+              path: '/districtBordersSettings/editDistrictBorders/:id',
+              element:
+                isSeniorOperator || isOperator ? (
+                  <EditDistrictBordersContainer />
+                ) : (
+                  <AccessDeniedPage />
+                ),
+            },
+            {
+              path: '/districtBordersSettings/createByMap',
+              element:
+                isSeniorOperator || isAdministrator ? (
+                  <CreateDistrictBorderMapContainer />
+                ) : (
+                  <AccessDeniedPage />
+                ),
+            },
+            {
+              path: '/districtBordersSettings/manageDistricts',
+              element:
+                isSeniorOperator || isAdministrator ? (
+                  <ManageDistrictsMapContainer />
+                ) : (
+                  <AccessDeniedPage />
+                ),
+            },
+          ],
+        },
 
-const initialTasksPath = isSpectator
-  ? `/tasks/list/${TaskGroupingFilter.Observing}`
-  : `/tasks/list/${TaskGroupingFilter.Executing}`;
-
-const isShowNodeArchivePage =
-  isAdministrator ||
-  isExecutor ||
-  isSpectator ||
-  isSpectatingAdministrator ||
-  isRescrictedSpectator;
-
-export const routes = [
-  {
-    path: '/login',
-    element: <LoginContainer />,
-  },
-  {
-    path: '/registration*',
-    element: <RegistrationContainer />,
-  },
-  {
-    path: '/',
-    element: <RouterWrapper />,
-    children: [
-      {
-        path: '/',
-        element: <Navigate replace to={redirectRoute} />,
-      },
-      {
-        path: '/actsJournal',
-        element:
-          isSeniorOperator || isOperator ? (
-            <ActsJournalContainer />
+        { path: '/tasks', element: <Navigate replace to={initialTasksPath} /> },
+        {
+          path: '/tasks',
+          element: <TasksRouterWrapper />,
+          children: [
+            {
+              path: '/tasks/profile/:taskId',
+              element: <TaskProfileContainer />,
+            },
+            {
+              path: '/tasks/list/:grouptype',
+              element: <TasksProfileContainer />,
+            },
+          ],
+        },
+        {
+          path: '/apartments/:apartmentId/edit',
+          element:
+            isAdministrator || isSeniorOperator || isOperator ? (
+              <EditApartmentProfileContainer />
+            ) : (
+              <AccessDeniedPage />
+            ),
+        },
+        {
+          path: '/apartments/:apartmentId/:tabSection?',
+          element: <ApartmentProfileContainer />,
+        },
+        {
+          path: '/buildings/:searchType?',
+          element: <ObjectsProfileContainer />,
+        },
+        {
+          path: '/buildings/livingProfile/:buildingId/:section?',
+          element: <HousingStockProfileContainer />,
+        },
+        {
+          path: '/buildings/nonResidentialProfile/:buildingId/:section?',
+          element: <NonResidentialBuildingProfileContainer />,
+        },
+        {
+          path: '/devices/addNode',
+          element:
+            isAdministrator || isExecutor ? (
+              <CreateNodeContainer />
+            ) : (
+              <AccessDeniedPage />
+            ),
+        },
+        {
+          path: '/devices/:type?',
+          element: <DevicesPageContainer />,
+        },
+        {
+          path: '/changeODPU/:oldDeviceId',
+          element:
+            isAdministrator || isExecutor ? (
+              <ChangeODPUContainer />
+            ) : (
+              <AccessDeniedPage />
+            ),
+        },
+        {
+          path: '/electricNode/:deviceId/edit',
+          element:
+            isAdministrator || isSeniorOperator || isOperator || isExecutor ? (
+              <EditElectricNodeContainer />
+            ) : (
+              <AccessDeniedPage />
+            ),
+        },
+        {
+          path: '/companyProfile/editManagingFirmUser/:id',
+          element: isAdministrator ? (
+            <EditEmployeeContainer />
           ) : (
             <AccessDeniedPage />
           ),
-      },
-      {
-        path: '/buildings/create',
-        element: isAdministrator ? (
-          <CreateObjectContainer />
-        ) : (
-          <AccessDeniedPage />
-        ),
-      },
-      {
-        path: '/buildings/:houseCategory/:buildingId/edit',
-        element: isAdministrator ? (
-          <EditObjectContainer />
-        ) : (
-          <AccessDeniedPage />
-        ),
-      },
-      {
-        path: '/buildings/:houseCategory/:buildingId/addNode',
-        element:
-          isAdministrator || isExecutor ? (
-            <CreateNodeContainer />
+        },
+        {
+          path: '/companyProfile/:section?',
+          element: isAdministrator ? (
+            <CompanyProfileContainer />
           ) : (
             <AccessDeniedPage />
           ),
-      },
-      {
-        path: '/districtBordersSettings',
-        element: <DistrictBordersRouterWrapper />,
-        children: [
-          {
-            path: '/districtBordersSettings/createByHousingStocksList',
-            element:
-              isSeniorOperator || isOperator ? (
-                <DistrictBordersByAddressContainer />
-              ) : (
-                <AccessDeniedPage />
-              ),
-          },
-          {
-            path: '/districtBordersSettings/editDistrictBorders/:id',
-            element:
-              isSeniorOperator || isOperator ? (
-                <EditDistrictBordersContainer />
-              ) : (
-                <AccessDeniedPage />
-              ),
-          },
-          {
-            path: '/districtBordersSettings/createByMap',
-            element:
-              isSeniorOperator || isAdministrator ? (
-                <CreateDistrictBorderMapContainer />
-              ) : (
-                <AccessDeniedPage />
-              ),
-          },
-          {
-            path: '/districtBordersSettings/manageDistricts',
-            element:
-              isSeniorOperator || isAdministrator ? (
-                <ManageDistrictsMapContainer />
-              ) : (
-                <AccessDeniedPage />
-              ),
-          },
-        ],
-      },
-
-      { path: '/tasks', element: <Navigate replace to={initialTasksPath} /> },
-      {
-        path: '/tasks',
-        element: <TasksRouterWrapper />,
-        children: [
-          { path: '/tasks/profile/:taskId', element: <TaskProfileContainer /> },
-          {
-            path: '/tasks/list/:grouptype',
-            element: <TasksProfileContainer />,
-          },
-        ],
-      },
-      {
-        path: '/apartments/:apartmentId/edit',
-        element:
-          isAdministrator || isSeniorOperator || isOperator ? (
-            <EditApartmentProfileContainer />
+        },
+        {
+          path: '/editCompany',
+          element: isAdministrator ? (
+            <EditCompanyContainer />
           ) : (
             <AccessDeniedPage />
           ),
-      },
-      {
-        path: '/apartments/:apartmentId/:tabSection?',
-        element: <ApartmentProfileContainer />,
-      },
-      {
-        path: '/buildings/:searchType?',
-        element: <ObjectsProfileContainer />,
-      },
-      {
-        path: '/buildings/livingProfile/:buildingId/:section?',
-        element: <HousingStockProfileContainer />,
-      },
-      {
-        path: '/buildings/nonResidentialProfile/:buildingId/:section?',
-        element: <NonResidentialBuildingProfileContainer />,
-      },
-      {
-        path: '/devices/addNode',
-        element:
-          isAdministrator || isExecutor ? (
-            <CreateNodeContainer />
+        },
+        {
+          path: '/userProfile/:id',
+          element: isAdministrator ? (
+            <EmployeeProfileContainer />
           ) : (
             <AccessDeniedPage />
           ),
-      },
-      {
-        path: '/devices/:type?',
-        element: <DevicesPageContainer />,
-      },
-      {
-        path: '/changeODPU/:oldDeviceId',
-        element:
-          isAdministrator || isExecutor ? (
-            <ChangeODPUContainer />
+        },
+        {
+          path: '/calculators/:deviceId/edit',
+          element:
+            isAdministrator || isExecutor ? (
+              <EditCalculatorContainer />
+            ) : (
+              <AccessDeniedPage />
+            ),
+        },
+        {
+          path: '/calculators/:deviceId/profile/:section?',
+          element: <CalculatorProfileContainer />,
+        },
+        {
+          path: '/nodes/:nodeId/edit',
+          element:
+            isAdministrator || isExecutor ? (
+              <EditNodeContainer />
+            ) : (
+              <AccessDeniedPage />
+            ),
+        },
+        {
+          path: '/nodes/:nodeId/:section?',
+          element: <NodeProfileContainer />,
+        },
+        {
+          path: '/housingMeteringDevices/:deviceId/edit',
+          element:
+            isAdministrator || isExecutor || isSeniorOperator || isOperator ? (
+              <EditHousingMeteringDeviceContainer />
+            ) : (
+              <AccessDeniedPage />
+            ),
+        },
+        {
+          path: '/housingMeteringDevices/:deviceId/profile/:section?',
+          element: <HousingMeteringDeviceProfileContainer />,
+        },
+        {
+          path: '/individualDeviceProfile/:id',
+          element:
+            isSeniorOperator || isExecutor || isAdministrator || isOperator ? (
+              <IndividualMeteringDeviceProfileContainer />
+            ) : (
+              <AccessDeniedPage />
+            ),
+        },
+        {
+          path: '/individualDevices/:deviceId/edit',
+          element:
+            isAdministrator || isSeniorOperator || isExecutor || isOperator ? (
+              <EditIndividualDeviceContainer />
+            ) : (
+              <AccessDeniedPage />
+            ),
+        },
+        {
+          path: '/meters/:section/:id?',
+          element: <MetersContainer />,
+        },
+        {
+          path: '/services/:service/:section/:id?',
+          element: <ServicesContainer />,
+        },
+        {
+          path: '/nodeArchive/:nodeId',
+          element: isShowNodeArchivePage ? (
+            <NodeArchivePageContainer />
           ) : (
             <AccessDeniedPage />
           ),
-      },
-      {
-        path: '/electricNode/:deviceId/edit',
-        element:
-          isAdministrator || isSeniorOperator || isOperator || isExecutor ? (
-            <EditElectricNodeContainer />
+        },
+        {
+          path: '/settings/:section?',
+          element:
+            isSeniorOperator || isOperator ? (
+              <SettingsPageContainer />
+            ) : (
+              <AccessDeniedPage />
+            ),
+        },
+        {
+          path: '/adminSettings/:section?',
+          element: isAdministrator ? (
+            <SettingsPageContainer isAdminSettings />
           ) : (
             <AccessDeniedPage />
           ),
-      },
-      {
-        path: '/companyProfile/editManagingFirmUser/:id',
-        element: isAdministrator ? (
-          <EditEmployeeContainer />
-        ) : (
-          <AccessDeniedPage />
-        ),
-      },
-      {
-        path: '/companyProfile/:section?',
-        element: isAdministrator ? (
-          CompanyProfileContainer()
-        ) : (
-          <AccessDeniedPage />
-        ),
-      },
-      {
-        path: '/editCompany',
-        element: isAdministrator ? (
-          <EditCompanyContainer />
-        ) : (
-          <AccessDeniedPage />
-        ),
-      },
-      {
-        path: '/userProfile/:id',
-        element: isAdministrator ? (
-          <EmployeeProfileContainer />
-        ) : (
-          <AccessDeniedPage />
-        ),
-      },
-      {
-        path: '/calculators/:deviceId/edit',
-        element:
-          isAdministrator || isExecutor ? (
-            <EditCalculatorContainer />
+        },
+        {
+          path: '/adminSettings/operatingRanges/Standart',
+          element: isAdministrator ? (
+            <StandartWorkingRangeContainer />
           ) : (
             <AccessDeniedPage />
           ),
-      },
-      {
-        path: '/calculators/:deviceId/profile/:section?',
-        element: <CalculatorProfileContainer />,
-      },
-      {
-        path: '/nodes/:nodeId/edit',
-        element:
-          isAdministrator || isExecutor ? (
-            <EditNodeContainer />
+        },
+        {
+          path: '/adminSettings/operatingRanges/Group',
+          element: isAdministrator ? (
+            <GroupWorkingRangeContainer />
           ) : (
             <AccessDeniedPage />
           ),
-      },
-      {
-        path: '/nodes/:nodeId/:section?',
-        element: <NodeProfileContainer />,
-      },
-      {
-        path: '/housingMeteringDevices/:deviceId/edit',
-        element:
-          isAdministrator || isExecutor || isSeniorOperator || isOperator ? (
-            <EditHousingMeteringDeviceContainer />
+        },
+        {
+          path: '/adminSettings/operatingRanges/Unique',
+          element: isAdministrator ? (
+            <UniqueWorkingRangeContainer />
           ) : (
             <AccessDeniedPage />
           ),
-      },
-      {
-        path: '/housingMeteringDevices/:deviceId/profile/:section?',
-        element: <HousingMeteringDeviceProfileContainer />,
-      },
-      {
-        path: '/individualDeviceProfile/:id',
-        element:
-          isSeniorOperator || isExecutor || isAdministrator || isOperator ? (
-            <IndividualMeteringDeviceProfileContainer />
+        },
+        {
+          path: '/statistics/',
+          element: <Navigate replace to="/statistics/resourceConsumption" />,
+        },
+        {
+          path: '/statistics/subscribersConsumption',
+          element: (
+            <Navigate replace to="/statistics/subscribersConsumption/houses" />
+          ),
+        },
+        {
+          path: '/statistics/:grouptype/:searchType?',
+          element: <StatisticsProfileContainer />,
+        },
+        {
+          path: '/reports',
+          element: featureToggles.reportsConstructor ? (
+            isSeniorOperator ? (
+              <ReportsContainer />
+            ) : (
+              <AccessDeniedPage />
+            )
+          ) : isSeniorOperator ? (
+            <ReportsPageContainer />
           ) : (
             <AccessDeniedPage />
           ),
-      },
-      {
-        path: '/individualDevices/:deviceId/edit',
-        element:
-          isAdministrator || isSeniorOperator || isExecutor || isOperator ? (
-            <EditIndividualDeviceContainer />
+        },
+        {
+          path: '/statistics/:grouptype/:searchType?',
+          element: <StatisticsProfileContainer />,
+        },
+        {
+          path: '/reports/:reportType',
+          element: isSeniorOperator ? (
+            <ReportViewContainer />
           ) : (
             <AccessDeniedPage />
           ),
-      },
-      {
-        path: '/meters/:section/:id?',
-        element: <MetersContainer />,
-      },
-      {
-        path: '/services/:service/:section/:id?',
-        element: <ServicesContainer />,
-      },
-      {
-        path: '/nodeArchive/:nodeId',
-        element: isShowNodeArchivePage ? (
-          <NodeArchivePageContainer />
-        ) : (
-          <AccessDeniedPage />
-        ),
-      },
-      {
-        path: '/settings/:section?',
-        element:
-          isSeniorOperator || isOperator ? (
-            <SettingsPageContainer />
+        },
+        {
+          path: '/apartment/:id/addIndividualDevice',
+          element:
+            isAdministrator || isSeniorOperator || isOperator ? (
+              <AddIndividualDeviceContainer />
+            ) : (
+              <AccessDeniedPage />
+            ),
+        },
+        {
+          path: '/apartment/:id/individualDevice/:deviceId/switch',
+          element:
+            isAdministrator || isSeniorOperator || isOperator ? (
+              <WorkWithIndividualDeviceContainer
+                type={WorkWithIndividualDeviceType.switch}
+              />
+            ) : (
+              <AccessDeniedPage />
+            ),
+        },
+        {
+          path: '/apartment/:id/individualDevice/:deviceId/check',
+          element:
+            isAdministrator || isSeniorOperator || isOperator ? (
+              <WorkWithIndividualDeviceContainer
+                type={WorkWithIndividualDeviceType.check}
+              />
+            ) : (
+              <AccessDeniedPage />
+            ),
+        },
+        {
+          path: '/apartment/:id/individualDevice/:deviceId/reopen',
+          element:
+            isSeniorOperator || isOperator ? (
+              <WorkWithIndividualDeviceContainer
+                type={WorkWithIndividualDeviceType.reopen}
+              />
+            ) : (
+              <AccessDeniedPage />
+            ),
+        },
+        {
+          path: '/apartment/:id/homeowners/add',
+          element:
+            isAdministrator || isSeniorOperator || isOperator ? (
+              <AddPersonalNumberContainer />
+            ) : (
+              <AccessDeniedPage />
+            ),
+        },
+        {
+          path: '/apartment/:id/homeowners/:homeownerId/split',
+          element:
+            isAdministrator || isSeniorOperator || isOperator ? (
+              <SplitPersonalNumberContainer />
+            ) : (
+              <AccessDeniedPage />
+            ),
+        },
+        {
+          path: '/apartment/:id/homeowners/:homeownerId/edit',
+          element:
+            isAdministrator || isSeniorOperator || isOperator ? (
+              <EditPersonalNumberContainer />
+            ) : (
+              <AccessDeniedPage />
+            ),
+        },
+        {
+          path: '/apartment/:id/homeowners/:homeownerId/switch',
+          element:
+            isAdministrator || isSeniorOperator || isOperator ? (
+              <SwitchPersonalNumberContainer />
+            ) : (
+              <AccessDeniedPage />
+            ),
+        },
+        {
+          path: '/disabledResources',
+          element: isDispatcher ? (
+            <ResourceDisablingScheduleContainer />
           ) : (
             <AccessDeniedPage />
           ),
-      },
-      {
-        path: '/adminSettings/:section?',
-        element: isAdministrator ? (
-          <SettingsPageContainer isAdminSettings />
-        ) : (
-          <AccessDeniedPage />
-        ),
-      },
-      {
-        path: '/adminSettings/operatingRanges/Standart',
-        element: isAdministrator ? (
-          <StandartWorkingRangeContainer />
-        ) : (
-          <AccessDeniedPage />
-        ),
-      },
-      {
-        path: '/adminSettings/operatingRanges/Group',
-        element: isAdministrator ? (
-          <GroupWorkingRangeContainer />
-        ) : (
-          <AccessDeniedPage />
-        ),
-      },
-      {
-        path: '/adminSettings/operatingRanges/Unique',
-        element: isAdministrator ? (
-          <UniqueWorkingRangeContainer />
-        ) : (
-          <AccessDeniedPage />
-        ),
-      },
-      {
-        path: '/statistics/',
-        element: <Navigate replace to="/statistics/resourceConsumption" />,
-      },
-      {
-        path: '/statistics/subscribersConsumption',
-        element: (
-          <Navigate replace to="/statistics/subscribersConsumption/houses" />
-        ),
-      },
-      {
-        path: '/statistics/:grouptype/:searchType?',
-        element: <StatisticsProfileContainer />,
-      },
-      {
-        path: '/reports',
-        element: featureToggles.reportsConstructor ? (
-          isSeniorOperator ? (
-            <ReportsContainer />
-          ) : (
-            <AccessDeniedPage />
-          )
-        ) : isSeniorOperator ? (
-          <ReportsPageContainer />
-        ) : (
-          <AccessDeniedPage />
-        ),
-      },
-      {
-        path: '/statistics/:grouptype/:searchType?',
-        element: <StatisticsProfileContainer />,
-      },
-      {
-        path: '/reports/:reportType',
-        element: isSeniorOperator ? (
-          <ReportViewContainer />
-        ) : (
-          <AccessDeniedPage />
-        ),
-      },
-      {
-        path: '/apartment/:id/addIndividualDevice',
-        element:
-          isAdministrator || isSeniorOperator || isOperator ? (
-            <AddIndividualDeviceContainer />
-          ) : (
-            <AccessDeniedPage />
-          ),
-      },
-      {
-        path: '/apartment/:id/individualDevice/:deviceId/switch',
-        element:
-          isAdministrator || isSeniorOperator || isOperator ? (
-            <WorkWithIndividualDeviceContainer
-              type={WorkWithIndividualDeviceType.switch}
-            />
-          ) : (
-            <AccessDeniedPage />
-          ),
-      },
-      {
-        path: '/apartment/:id/individualDevice/:deviceId/check',
-        element:
-          isAdministrator || isSeniorOperator || isOperator ? (
-            <WorkWithIndividualDeviceContainer
-              type={WorkWithIndividualDeviceType.check}
-            />
-          ) : (
-            <AccessDeniedPage />
-          ),
-      },
-      {
-        path: '/apartment/:id/individualDevice/:deviceId/reopen',
-        element:
-          isSeniorOperator || isOperator ? (
-            <WorkWithIndividualDeviceContainer
-              type={WorkWithIndividualDeviceType.reopen}
-            />
-          ) : (
-            <AccessDeniedPage />
-          ),
-      },
-      {
-        path: '/apartment/:id/homeowners/add',
-        element:
-          isAdministrator || isSeniorOperator || isOperator ? (
-            <AddPersonalNumberContainer />
-          ) : (
-            <AccessDeniedPage />
-          ),
-      },
-      {
-        path: '/apartment/:id/homeowners/:homeownerId/split',
-        element:
-          isAdministrator || isSeniorOperator || isOperator ? (
-            <SplitPersonalNumberContainer />
-          ) : (
-            <AccessDeniedPage />
-          ),
-      },
-      {
-        path: '/apartment/:id/homeowners/:homeownerId/edit',
-        element:
-          isAdministrator || isSeniorOperator || isOperator ? (
-            <EditPersonalNumberContainer />
-          ) : (
-            <AccessDeniedPage />
-          ),
-      },
-      {
-        path: '/apartment/:id/homeowners/:homeownerId/switch',
-        element:
-          isAdministrator || isSeniorOperator || isOperator ? (
-            <SwitchPersonalNumberContainer />
-          ) : (
-            <AccessDeniedPage />
-          ),
-      },
-      {
-        path: '/disabledResources',
-        element: isDispatcher ? (
-          <ResourceDisablingScheduleContainer />
-        ) : (
-          <AccessDeniedPage />
-        ),
-      },
-      { path: '/access-denied/', element: <AccessDeniedPage /> },
-      { path: '/services', element: <Navigate replace to="/services/seal" /> },
-      {
-        path: '/services/seal',
-        element: <Navigate replace to="/services/seal/select" />,
-      },
-      {
-        path: '/meters',
-        element: <Navigate replace to="/meters/apartments" />,
-      },
-    ],
-  },
-];
+        },
+        { path: '/access-denied/', element: <AccessDeniedPage /> },
+        {
+          path: '/services',
+          element: <Navigate replace to="/services/seal" />,
+        },
+        {
+          path: '/services/seal',
+          element: <Navigate replace to="/services/seal/select" />,
+        },
+        {
+          path: '/meters',
+          element: <Navigate replace to="/meters/apartments" />,
+        },
+      ],
+    },
+  ];
+};

@@ -1,6 +1,6 @@
 import { useStore } from 'effector-react';
-import React from 'react';
-import { Navigate, Route, useParams } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { Navigate, Route, useNavigate, useParams } from 'react-router-dom';
 import { apartmentProfileService } from './apartmentProfileService.model';
 import { ApartmentProfile } from './view/ApartmentProfile';
 import { ApartmentSection } from './view/ApartmentProfile/ApartmentProfile.types';
@@ -18,15 +18,23 @@ export const ApartmentProfileContainer = () => {
 
   const { tabSection } = useParams<{ tabSection: ApartmentSection }>();
 
+  const history = useNavigate();
+
   const isPermitionToEditApartment = usePermission([
     ESecuredIdentityRoleName.Administrator,
     ESecuredIdentityRoleName.SeniorOperator,
     ESecuredIdentityRoleName.Operator,
   ]);
 
+  useEffect(() => {
+    if (!tabSection) {
+      history(`/apartments/${apartmentId}/${ApartmentSection.CommonData}`);
+    }
+  }, []);
+
   return (
     <>
-      {!tabSection && (
+      {/* {!tabSection && (
         // <Redirect
         //   to={`/apartments/${apartmentId}/${ApartmentSection.CommonData}`}
         // />
@@ -41,7 +49,7 @@ export const ApartmentProfileContainer = () => {
             />
           }
         />
-      )}
+      )} */}
       {apartmentId && <ApartmentGate apartmentId={Number(apartmentId)} />}
       <ApartmentProfile
         apartment={apartment}

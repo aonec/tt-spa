@@ -2,7 +2,7 @@ import React from 'react';
 import { CompanyProfile } from './view/CompanyProfile';
 import { companyProfileService } from './companyProfileService.model';
 import { useEvent, useStore } from 'effector-react';
-import { Outlet, Route, Routes } from 'react-router-dom';
+import { Outlet, Route,  } from 'react-router-dom';
 import { CommonInfoTab } from './view/CompanyProfile/Tabs/CommonInfoTab';
 import { Staff } from './view/CompanyProfile/Tabs/Staff';
 import { Contractors } from './view/CompanyProfile/Tabs/Contractors';
@@ -43,7 +43,7 @@ export const CompanyProfileContainer = () => {
     <Route
       element={
         <>
-          {/* <FetchingCurrentManagingFirmGate /> */}
+          <FetchingCurrentManagingFirmGate />
 
           <CompanyProfile
             staffList={staffList}
@@ -68,6 +68,7 @@ export const CompanyProfileContainer = () => {
         </>
       }
     >
+      
       <Route
         path="/companyProfile/commonInfo"
         element={<CommonInfoTab currentManagingFirm={currentManagingFirm} />}
