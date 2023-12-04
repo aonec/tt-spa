@@ -4,14 +4,22 @@ import {
   CompanyProfileSection,
 } from './CompanyProfile.types';
 import { PageHeader } from 'ui-kit/shared/PageHeader';
-import { Route, useNavigate, useParams } from 'react-router-dom';
+import {
+  Outlet,
+  Route,
+  Routes,
+  useNavigate,
+  useParams,
+} from 'react-router-dom';
 import { CommonInfoTab } from './Tabs/CommonInfoTab';
 import { Staff } from './Tabs/Staff';
 import { Contractors } from './Tabs/Contractors';
 import { TabsSC } from './CompanyProfile.styled';
+import { companyProfileService } from '../../companyProfileService.model';
+
+
 
 export const CompanyProfile: FC<CompanyProfileProps> = ({
-  currentManagingFirm,
   staffList,
   isLoadingStaff,
   handleOpenStatusChangeModal,
@@ -72,29 +80,6 @@ export const CompanyProfile: FC<CompanyProfileProps> = ({
         }
         items={tabItems}
       />
-
-      <Route path="/companyProfile/commonInfo">
-        <CommonInfoTab currentManagingFirm={currentManagingFirm} />
-      </Route>
-      <Route path="/companyProfile/staff">
-        <Staff
-          staffList={staffList}
-          isLoadingStaff={isLoadingStaff}
-          handleOpenStatusChangeModal={handleOpenStatusChangeModal}
-          handleCatchEmployeeStatusData={handleCatchEmployeeStatusData}
-          handleOpenDeleteModal={handleOpenDeleteModal}
-          handleCatchEmployeeId={handleCatchEmployeeId}
-        />
-      </Route>
-      <Route path="/companyProfile/contractors">
-        <Contractors
-          conractorsList={conractorsList}
-          isLoadingContractors={isLoadingContractors}
-          catchContractorId={catchContractorId}
-          handleOpenEditContractorModal={handleOpenEditContractorModal}
-          catchContractorData={catchContractorData}
-        />
-      </Route>
     </>
   );
 };

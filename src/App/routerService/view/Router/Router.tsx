@@ -52,65 +52,67 @@ import { WorkWithIndividualDeviceType } from 'services/devices/individualDevices
 import { NonResidentialBuildingProfileContainer } from 'services/objects/nonResidentialBuildingProfileService';
 import { IndividualMeteringDeviceProfileContainer } from 'services/devices/individualMeteringDeviceProfile';
 import { DistrictBordersRouter } from 'services/settings/districtBordersService/DistrictBorders.router';
-import { menuService } from 'services/menuService/menuService.model';
+import { currentUserService } from 'services/currentUserService';
 
 const {
   gates: { CurrentUserGate },
-} = menuService;
+} = currentUserService;
 
 export const Router: FC<RouterProps> = ({
-  roles,
-  isRolesLoadded,
+  // roles,
+  // isRolesLoadded,
   featureToggles,
 }) => {
-  const isAdministrator =
-    roles.includes(ESecuredIdentityRoleName.Administrator) ||
-    roles.includes(
-      ESecuredIdentityRoleName.ManagingFirmSpectatingAdministrator,
-    );
+  // const isAdministrator =
+  //   roles.includes(ESecuredIdentityRoleName.Administrator) ||
+  //   roles.includes(
+  //     ESecuredIdentityRoleName.ManagingFirmSpectatingAdministrator,
+  //   );
 
-  const isSeniorOperator = roles.includes(
-    ESecuredIdentityRoleName.SeniorOperator,
-  );
-  const isOperator = roles.includes(ESecuredIdentityRoleName.Operator);
+  // const isSeniorOperator = roles.includes(
+  //   ESecuredIdentityRoleName.SeniorOperator,
+  // );
+  // const isOperator = roles.includes(ESecuredIdentityRoleName.Operator);
 
-  const isDispatcher = roles.includes(
-    ESecuredIdentityRoleName.ManagingFirmDispatcher,
-  );
-  const isExecutor = roles.includes(
-    ESecuredIdentityRoleName.ManagingFirmExecutor,
-  );
+  // const isDispatcher = roles.includes(
+  //   ESecuredIdentityRoleName.ManagingFirmDispatcher,
+  // );
+  // const isExecutor = roles.includes(
+  //   ESecuredIdentityRoleName.ManagingFirmExecutor,
+  // );
 
-  const isSpectator = roles.includes(
-    ESecuredIdentityRoleName.ManagingFirmSpectator,
-  );
+  // const isSpectator = roles.includes(
+  //   ESecuredIdentityRoleName.ManagingFirmSpectator,
+  // );
 
-  const isSpectatingAdministrator = roles.includes(
-    ESecuredIdentityRoleName.ManagingFirmSpectatingAdministrator,
-  );
+  // const isSpectatingAdministrator = roles.includes(
+  //   ESecuredIdentityRoleName.ManagingFirmSpectatingAdministrator,
+  // );
 
-  const isRescrictedSpectator = roles.includes(
-    ESecuredIdentityRoleName.ManagingFirmSpectatorRestricted,
-  );
+  // const isRescrictedSpectator = roles.includes(
+  //   ESecuredIdentityRoleName.ManagingFirmSpectatorRestricted,
+  // );
 
-  const redirectRoute = (() => {
-    if (!roles.length) return '/login';
+  // const redirectRoute = (() => {
+  //   if (!roles.length) return '/login';
 
-    const defaultPath = '/tasks/';
+  //   const defaultPath = '/tasks/';
 
-    return isSeniorOperator || isOperator ? '/meters/apartments' : defaultPath;
-  })();
+  //   return isSeniorOperator || isOperator ? '/meters/apartments' : defaultPath;
+  // })();
 
-  const isShowNodeArchivePage =
-    isAdministrator ||
-    isExecutor ||
-    isSpectator ||
-    isSpectatingAdministrator ||
-    isRescrictedSpectator;
+  // const isShowNodeArchivePage =
+  //   isAdministrator ||
+  //   isExecutor ||
+  //   isSpectator ||
+  //   isSpectatingAdministrator ||
+  //   isRescrictedSpectator;
 
   function RouterWrapper() {
     return (
       <Layout>
+        <CurrentUserGate />
+
         <Panel />
         <div />
         <PageWrapper>
@@ -120,17 +122,18 @@ export const Router: FC<RouterProps> = ({
     );
   }
 
+  console.log('rerender');
+
   return (
     <>
-      <CurrentUserGate />
       <Routes>
         <Route path="/login" element={<LoginContainer />} />
         <Route path="/registration*" element={<RegistrationContainer />} />
         <Route path="/" element={<RouterWrapper />}>
-          <Route path="/" element={<Navigate replace to={redirectRoute} />} />
-          {TasksRouter()}
-          {DistrictBordersRouter()}
-          <Route
+          {/* <Route path="/" element={<Navigate replace to={redirectRoute} />} /> */}
+          {/* {TasksRouter()}
+          {DistrictBordersRouter()} */}
+          {/* <Route
             path="/actsJournal"
             element={
               isSeniorOperator || isOperator ? (
@@ -160,7 +163,7 @@ export const Router: FC<RouterProps> = ({
                     //   path="/buildings/:buildingId/edit"
                     //   element={<Navigate replace to="/access-denied/" />}
                     // /> */}
-          <Route
+          {/* <Route
             path="/buildings/:houseCategory/:buildingId/addNode"
             element={
               isAdministrator || isExecutor ? (
@@ -169,13 +172,13 @@ export const Router: FC<RouterProps> = ({
                 <AccessDeniedPage />
               )
             }
-          />
-          //Протестить
+          /> */}
+          {/* //Протестить */}
           {/* <Route
                       path="/buildings/:buildingId/addNode"
                       element={<AccessDeniedPage />}
                     /> */}
-          <Route
+          {/* <Route
             path="/buildings/:searchType?"
             element={<ObjectsProfileContainer />}
           />
@@ -242,18 +245,15 @@ export const Router: FC<RouterProps> = ({
             element={
               isAdministrator ? <EditEmployeeContainer /> : <AccessDeniedPage />
             }
-          />
-          <Route
+          /> */}
+          {/* <Route
             path="/companyProfile/:section?"
             element={
-              isAdministrator ? (
-                <CompanyProfileContainer />
-              ) : (
-                <AccessDeniedPage />
-              )
+              isAdministrator ? CompanyProfileContainer() : <AccessDeniedPage />
             }
-          />
-          <Route
+          /> */}
+          {/* {CompanyProfileContainer()} */}
+          {/* <Route
             path="/editCompany"
             element={
               isAdministrator ? <EditCompanyContainer /> : <AccessDeniedPage />
@@ -309,9 +309,9 @@ export const Router: FC<RouterProps> = ({
                 <AccessDeniedPage />
               )
             }
-          />
+          /> */}
           //протестить
-          <Route
+          {/* <Route
             path="/housingMeteringDevices/:deviceId/profile/:section?"
             element={<HousingMeteringDeviceProfileContainer />}
           />
@@ -531,8 +531,8 @@ export const Router: FC<RouterProps> = ({
                 <AccessDeniedPage />
               )
             }
-          />
-          <Route
+          /> */}
+          {/* <Route
             path="/disabledResources"
             element={
               isDispatcher ? (
@@ -541,7 +541,7 @@ export const Router: FC<RouterProps> = ({
                 <AccessDeniedPage />
               )
             }
-          />
+          /> */}
           <Route path="/access-denied/" element={<AccessDeniedPage />} />
           <Route
             path="/services"

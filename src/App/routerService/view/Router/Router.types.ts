@@ -3,8 +3,8 @@ import { ReactNode } from 'react';
 import { FeatureToggles } from 'services/developmentSettings/developmentSettings.types';
 
 export type RouterProps = {
-  roles: ESecuredIdentityRoleName[];
-  isRolesLoadded: boolean;
+  // roles: ESecuredIdentityRoleName[];
+  // isRolesLoadded: boolean;
   featureToggles: FeatureToggles;
 };
 

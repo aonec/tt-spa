@@ -20,7 +20,7 @@ export const TasksRouter = () => {
 
   const TasksIsOpen = tasksProfileService.gates.TasksIsOpen;
 
-  const RouteWrapper = () => {
+  const TasksRouterWrapper = () => {
     return (
       <>
         <TasksIsOpen />
@@ -34,7 +34,7 @@ export const TasksRouter = () => {
       path="/tasks"
       element={<Navigate replace to={initialTasksPath} />}
     />,
-    <Route path="/tasks" key="/tasks" element={<RouteWrapper />}>
+    <Route path="/tasks" key="/tasks" element={<TasksRouterWrapper />}>
       <Route path="/tasks/profile/:taskId" element={<TaskProfileContainer />} />
 
       <Route

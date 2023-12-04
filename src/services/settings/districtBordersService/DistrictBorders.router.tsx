@@ -23,7 +23,7 @@ export const DistrictBordersRouter = () => {
     ESecuredIdentityRoleName.ManagingFirmSpectatingAdministrator,
   ]);
 
-  const RoutesWrapper = () => {
+  const DistrictBordersRouterWrapper = () => {
     return (
       <>
         <DistrictBordersGroupPageGate />
@@ -36,7 +36,7 @@ export const DistrictBordersRouter = () => {
     <Route
       path="/districtBordersSettings"
       key="/districtBordersSettings"
-      element={<RoutesWrapper />}
+      element={<DistrictBordersRouterWrapper />}
     >
       <Route
         path="/districtBordersSettings/createByHousingStocksList"

@@ -1,13 +1,11 @@
 import {
   ContractorListResponsePagedList,
-  OrganizationResponse,
   OrganizationUserListResponsePagedList,
   UserStatusResponse,
 } from 'api/types';
 import { ContractorDataType } from 'services/contractors/editContractorService/editContractorService.types';
 
 export type CompanyProfileProps = {
-  currentManagingFirm: OrganizationResponse | null;
   staffList: OrganizationUserListResponsePagedList | null;
   isLoadingStaff: boolean;
   handleOpenStatusChangeModal: () => void;

@@ -10,7 +10,7 @@ import { developmentSettingsService } from 'services/developmentSettings/develop
 import { DevelopmentSettingsContainer } from 'services/developmentSettings/developmentSettings.container';
 
 const { outputs, gates } = menuService;
-const { UserRolesGate, CurrentUserGate } = gates;
+const { UserRolesGate } = gates;
 
 export const MenuContainer = () => {
   const { currentUser, isCurrentUserLoading, openDevSettingsModal } = useUnit({
@@ -38,7 +38,6 @@ export const MenuContainer = () => {
     <>
       <DevelopmentSettingsContainer isAuth />
       <UserRolesGate />
-      {/* <CurrentUserGate /> */}
       <UserInfo isLoading={isCurrentUserLoading} currentUser={currentUser} />
       <Menu
         menuItems={filteredMenuItems}
