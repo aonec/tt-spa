@@ -1,4 +1,4 @@
-import React, { ChangeEvent, FC } from 'react';
+import React, { ChangeEvent, FC, useMemo } from 'react';
 import { ArchiveTasksExtendedSearchFormProps } from './ArchiveTasksExtendedSearchForm.types';
 import { FormItem } from 'ui-kit/FormItem';
 import { Select } from 'ui-kit/Select';
@@ -15,6 +15,18 @@ const { Option } = Select;
 export const ArchiveTasksExtendedSearchForm: FC<
   ArchiveTasksExtendedSearchFormProps
 > = ({ setFieldValue, taskTypes, values }) => {
+  const taskTypeOptions = useMemo(
+    () =>
+      (taskTypes || [])
+        .filter((elem) => Boolean(elem.key))
+        .map(({ value, key }) => (
+          <Select.Option key={key} value={key}>
+            {value}
+          </Select.Option>
+        )),
+    [taskTypes],
+  );
+
   return (
     <StyledFormTwoRows id="searchForm">
       <StyledContainerFourItems>
@@ -92,17 +104,7 @@ export const ArchiveTasksExtendedSearchForm: FC<
               setFieldValue('TaskType', value);
             }}
           >
-            {taskTypes &&
-              taskTypes.map(({ value, key }) => {
-                if (!key) {
-                  return null;
-                }
-                return (
-                  <Select.Option key={key} value={key}>
-                    {value}
-                  </Select.Option>
-                );
-              })}
+            {taskTypeOptions}
           </Select>
         </FormItem>
         <FormItem label="Статус Задачи">

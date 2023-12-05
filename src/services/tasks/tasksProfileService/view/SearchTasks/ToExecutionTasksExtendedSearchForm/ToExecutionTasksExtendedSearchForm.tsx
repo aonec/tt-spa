@@ -67,6 +67,30 @@ export const ToExecutionTasksExtendedSearchForm: FC<
     [taskTypes],
   );
 
+  const housingManagementOptions = useMemo(
+    () =>
+      (housingManagments || [])
+        .filter((elem) => Boolean(elem.key))
+        .map(({ value, key }) => (
+          <Option key={key} value={key}>
+            {value}
+          </Option>
+        )),
+    [housingManagments],
+  );
+
+  const taskTypeOptions = useMemo(
+    () =>
+      (FilteredTaskTypes || [])
+        .filter((elem) => Boolean(elem))
+        .map((key) => (
+          <Option key={key} value={key}>
+            {preparedTaskTypes[key] || ''}
+          </Option>
+        )),
+    [FilteredTaskTypes, preparedTaskTypes],
+  );
+
   return (
     <ToExecutionWrapper>
       <StyledContainerAdressSection>
@@ -178,17 +202,7 @@ export const ToExecutionTasksExtendedSearchForm: FC<
             onKeyDown={fromEnter(() => next(3))}
           >
             <Option value={''}>Все</Option>
-            {housingManagments &&
-              housingManagments.map(({ value, key }) => {
-                if (!key) {
-                  return null;
-                }
-                return (
-                  <Option key={key} value={key}>
-                    {value}
-                  </Option>
-                );
-              })}
+            {housingManagementOptions}
           </Select>
         </FormItem>
       </StyledContainerThreeItemsMainTypes>
@@ -232,17 +246,7 @@ export const ToExecutionTasksExtendedSearchForm: FC<
                 Все
               </OverFlowSelectSC.Option>
             }
-            {FilteredTaskTypes &&
-              FilteredTaskTypes.map((key) => {
-                if (!key) {
-                  return null;
-                }
-                return (
-                  <Option key={key} value={key}>
-                    {preparedTaskTypes[key] || ''}
-                  </Option>
-                );
-              })}
+            {taskTypeOptions}
           </OverFlowSelectSC>
         </FormItem>
         <FormItem label="Исполнитель">
