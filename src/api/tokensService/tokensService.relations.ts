@@ -26,8 +26,8 @@ sample({
   target: [
     tokensService.inputs.deleteToken,
     tokensService.inputs.deleteRefreshToken,
-    tokensService.inputs.redirectToLogin,
     tokensService.inputs.tokenActive,
+    tokensService.inputs.redirectToLogin,
   ],
 });
 
