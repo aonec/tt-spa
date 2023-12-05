@@ -10,7 +10,7 @@ export type TableColumn<T> = {
   render: (element: T, rowIndex: number) => ReactNode;
   hidden?: boolean;
   css?: (isHeader: boolean) => string;
-  sortedCb?: (first: T, second: T) => number;
+  sortedParam?: (first: T) => number | null;
 };
 
 export type TableProps<T> = {
