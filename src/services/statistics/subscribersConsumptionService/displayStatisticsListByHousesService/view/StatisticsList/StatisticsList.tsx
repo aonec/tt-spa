@@ -33,35 +33,27 @@ export const StatisticsList: React.FC<StatisticsListProps> = ({
           size: '110px',
           render: (apartment) =>
             prepareConsumptions(apartment.coldWaterSupplyConsumption),
-          sortedCb: (first, second) =>
-            (first?.coldWaterSupplyConsumption ?? -1) -
-            (second?.coldWaterSupplyConsumption ?? 0),
+          sortedParam: (elem) => elem?.coldWaterSupplyConsumption,
         },
         {
           label: 'ГВС',
           size: '110px',
           render: (apartment) =>
             prepareConsumptions(apartment.hotWaterSupplyConsumption),
-          sortedCb: (first, second) =>
-            (first?.hotWaterSupplyConsumption ?? -1) -
-            (second?.hotWaterSupplyConsumption ?? 0),
+          sortedParam: (elem) => elem?.hotWaterSupplyConsumption,
         },
         {
           label: 'ЭЭ',
           size: '110px',
           render: (apartment) =>
             prepareConsumptions(apartment.electricityConsumption),
-          sortedCb: (first, second) =>
-            (first?.electricityConsumption ?? -1) -
-            (second?.electricityConsumption ?? 0),
+          sortedParam: (elem) => elem?.electricityConsumption,
         },
         {
           label: 'ТЭ',
           size: '110px',
           render: (apartment) => prepareConsumptions(apartment.heatConsumption),
-          sortedCb: (first, second) =>
-            (first?.electricityConsumption ?? -1) -
-            (second?.electricityConsumption ?? 0),
+          sortedParam: (elem) => elem?.electricityConsumption,
         },
         {
           label: 'Дата последней передачи показаний',

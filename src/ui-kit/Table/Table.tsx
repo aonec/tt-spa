@@ -68,16 +68,16 @@ export function Table<T>({
   );
 
   const sortedRows = useMemo(() => {
-    const sortedCb = filteredColumns[isSorted.key]?.sortedCb;
+    const sortedParam = filteredColumns[isSorted.key]?.sortedParam;
     const clonedElements = _.clone(elements);
 
-    if (!sortedCb || !isSorted.value) {
+    if (!sortedParam || !isSorted.value) {
       return clonedElements;
     }
     if (isSorted.value === EOrderByRule.Ascending) {
-      return clonedElements.sort(sortedCb);
+      return _.sortBy(clonedElements, sortedParam);
     }
-    return clonedElements.sort((first, second) => -sortedCb(first, second));
+    return _.sortBy(clonedElements, sortedParam).reverse();
   }, [elements, isSorted, filteredColumns]);
 
   const columnsComponent = useMemo(
@@ -88,7 +88,7 @@ export function Table<T>({
         return (
           <TableElement key={columnIndex} css={column.css?.(true)}>
             {column.label}
-            {column.sortedCb && (
+            {column.sortedParam && (
               <SortButtonSC
                 onChange={(value) => {
                   setIsSorted({ key: columnIndex, value });
