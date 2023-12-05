@@ -47,6 +47,7 @@ export const IndividualDeviceListItem: FC<IndividualDeviceListItemProps> = ({
       <DeviceStatusWrapper>
         <DeviceStatus isActive={!device.closingDate} />
       </DeviceStatusWrapper>
+      <div>{device.bitDepth || '-'}</div>
       <DateWrapper>
         {dayjs(device.lastCheckingDate).format('DD.MM.YYYY')}
       </DateWrapper>

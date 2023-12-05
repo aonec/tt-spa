@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { FC } from 'react';
 import { ExtendedSearch } from 'ui-kit/ExtendedSearch';
 import { AddressSearchContainer } from 'services/addressSearchService';
 import { SearchFieldType } from 'services/addressSearchService/view/AddressSearch/AddressSearch.types';
@@ -35,9 +35,9 @@ export const IndividualDevicesExtendedSearch: FC<
   values: filters,
   handleClear,
   mountPlaces,
+  isOpen,
+  setIsOpen,
 }) => {
-  const [isOpen, setIsOpen] = useState(false);
-
   const { values, setFieldValue, handleSubmit, resetForm } =
     useFormik<SearchIndividualDevicesParams>({
       initialValues: filters,

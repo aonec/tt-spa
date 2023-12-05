@@ -62,7 +62,11 @@ export const TaskNameWrapper = styled.div`
   font-weight: 500;
   font-size: 16px;
   color: #272f5a;
+  max-width: 80%;
+
+  overflow: hidden;
   white-space: nowrap;
+  text-overflow: ellipsis;
 `;
 
 export const TimeWrapper = styled.span<{ fail?: boolean }>`
