@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useCallback } from 'react';
 import { ExtendedSearch } from 'ui-kit/ExtendedSearch';
 import { AddressSearchContainer } from 'services/addressSearchService';
 import { SearchFieldType } from 'services/addressSearchService/view/AddressSearch/AddressSearch.types';
@@ -20,6 +20,7 @@ import { useFormik } from 'formik';
 import { EApartmentStatus, EResourceType } from 'api/types';
 import {
   apartmentStatusesLookup,
+  expiresCheckingDateAt,
   formTranslateLookup,
   resourcesNamesLookup,
 } from './IndividualDevicesExtendedSearch.constants';
@@ -52,6 +53,15 @@ export const IndividualDevicesExtendedSearch: FC<
         }),
       enableReinitialize: true,
     });
+
+  const handleSelectExpiredDate = useCallback(
+    (value: EExpiresDateAtExtended) => {
+      const preparedValue = value === EExpiresDateAtExtended.All ? null : value;
+
+      setFieldValue('ExpiresCheckingDateAt', preparedValue);
+    },
+    [setFieldValue],
+  );
 
   return (
     <ExtendedSearch
@@ -226,31 +236,8 @@ export const IndividualDevicesExtendedSearch: FC<
                     ? EExpiresDateAtExtended[values.ExpiresCheckingDateAt]
                     : EExpiresDateAtExtended.All
                 }
-                items={[
-                  {
-                    title: 'Любая',
-                    name: EExpiresDateAtExtended.All,
-                  },
-                  {
-                    title: 'В ближайший месяц',
-                    name: EExpiresDateAtExtended.NextMonth,
-                  },
-                  {
-                    title: 'В ближайшие 2 месяца',
-                    name: EExpiresDateAtExtended.NextTwoMonth,
-                  },
-                  {
-                    title: 'Истекла',
-                    name: EExpiresDateAtExtended.Past,
-                  },
-                ]}
-                onChange={(value) => {
-                  if (value === EExpiresDateAtExtended.All) {
-                    setFieldValue('ExpiresCheckingDateAt', null);
-                    return;
-                  }
-                  setFieldValue('ExpiresCheckingDateAt', value);
-                }}
+                items={expiresCheckingDateAt}
+                onChange={handleSelectExpiredDate}
               />
             </ThirdLineWrapper>
           </FormItem>
