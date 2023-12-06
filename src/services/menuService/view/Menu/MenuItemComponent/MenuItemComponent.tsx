@@ -1,13 +1,10 @@
 import React, { FC, useCallback, useState } from 'react';
-import {
-  Chevron,
-  MenuItemTitle,
-  MenuItemWrapper,
-} from './MenuItemComponent.styled';
+import { Chevron, MenuItemTitle } from './MenuItemComponent.styled';
 import { MenuItemComponentProps } from './MenuItemComponent.types';
 import './MenuItemComponent.styles.scss';
 import { SubMenu } from './SubMenu';
 import { Wrapper } from './MenuItemComponent.styled';
+import { NavLink } from 'react-router-dom';
 
 export const MenuItemComponent: FC<MenuItemComponentProps> = ({ menuItem }) => {
   const { title, icon: Icon, path } = menuItem;
@@ -23,17 +20,18 @@ export const MenuItemComponent: FC<MenuItemComponentProps> = ({ menuItem }) => {
   return (
     <>
       <Wrapper>
-        <MenuItemWrapper
+        <NavLink
           onClick={openSubMenu}
           to={path}
-          //Протеcтить
-          className={({ isActive }) =>
-            `${isActive ? 'active-menu-item-nav-link' : ''}`
-          }
+          className={({ isActive }) => {
+            return isActive
+              ? 'active-menu-item-nav-link'
+              : 'menu-item-nav-link';
+          }}
         >
           {Icon && <Icon className="menu-item-icon" />}
           <MenuItemTitle>{title}</MenuItemTitle>
-        </MenuItemWrapper>
+        </NavLink>
         {isSubMenuItemsExist && (
           <Chevron open={isOpen} onClick={toggleChevron} />
         )}

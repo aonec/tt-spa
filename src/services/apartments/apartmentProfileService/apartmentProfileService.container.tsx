@@ -1,6 +1,6 @@
 import { useStore } from 'effector-react';
 import React, { useEffect } from 'react';
-import { Navigate, Route, useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { apartmentProfileService } from './apartmentProfileService.model';
 import { ApartmentProfile } from './view/ApartmentProfile';
 import { ApartmentSection } from './view/ApartmentProfile/ApartmentProfile.types';
@@ -28,28 +28,14 @@ export const ApartmentProfileContainer = () => {
 
   useEffect(() => {
     if (!tabSection) {
-      history(`/apartments/${apartmentId}/${ApartmentSection.CommonData}`);
+      history(`/apartments/${apartmentId}/${ApartmentSection.CommonData}`, {
+        replace: true,
+      });
     }
   }, []);
 
   return (
     <>
-      {/* {!tabSection && (
-        // <Redirect
-        //   to={`/apartments/${apartmentId}/${ApartmentSection.CommonData}`}
-        // />
-
-        //Протестить
-
-        <Route
-          element={
-            <Navigate
-              replace
-              to={`/apartments/${apartmentId}/${ApartmentSection.CommonData}`}
-            />
-          }
-        />
-      )} */}
       {apartmentId && <ApartmentGate apartmentId={Number(apartmentId)} />}
       <ApartmentProfile
         apartment={apartment}

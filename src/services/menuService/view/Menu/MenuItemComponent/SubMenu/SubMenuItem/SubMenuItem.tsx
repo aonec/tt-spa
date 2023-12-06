@@ -1,21 +1,20 @@
 import React, { FC } from 'react';
+import { NavLink } from 'react-router-dom';
 import { SubMenuItemProps } from './SubMenuItem.types';
-import { SubMenuItemTitle, SubMenuItemWrapper } from './SubMenuItem.styled';
+import { SubMenuItemTitle } from './SubMenuItem.styled';
 import './SubMenuItem.styles.scss';
 
 export const SubMenuItem: FC<SubMenuItemProps> = ({ subMenuItem }) => {
   const { title, path } = subMenuItem;
 
   return (
-    <SubMenuItemWrapper
+    <NavLink
       to={path}
-      // activeClassName="active-menu-item-nav-link"
-      //Протестить
       className={({ isActive }) =>
-        `${isActive ? ' active-menu-item-nav-link' : ''}`
+        isActive ? 'active-submenu-item-nav-link' : 'submenu-item-nav-link'
       }
     >
       <SubMenuItemTitle>{title}</SubMenuItemTitle>
-    </SubMenuItemWrapper>
+    </NavLink>
   );
 };

@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import { stringifyUrl } from 'query-string';
 
 export function useApp() {
-  //Протестить
   const history = useNavigate();
 
   useEffect(() => {
