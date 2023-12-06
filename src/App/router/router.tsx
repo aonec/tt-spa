@@ -1,6 +1,6 @@
 import { Navigate, Outlet } from 'react-router-dom';
 import React from 'react';
-import { Layout, PageWrapper } from './view/Router/Router.styled';
+import { Layout, PageWrapper } from './Router.styled';
 import { Panel } from 'App/Panel';
 import {
   ESecuredIdentityRoleName,
@@ -71,6 +71,10 @@ import {
 const {
   gates: { CurrentUserGate },
 } = currentUserService;
+const featureToggles =
+  developmentSettingsService.outputs.$featureToggles.getState();
+const { TasksIsOpen } = tasksProfileService.gates;
+const { DistrictBordersGroupPageGate } = districtBordersByAddressService.gates;
 
 function RouterWrapper() {
   return (
@@ -86,7 +90,6 @@ function RouterWrapper() {
   );
 }
 
-const { TasksIsOpen } = tasksProfileService.gates;
 const TasksRouterWrapper = () => {
   return (
     <>
@@ -96,7 +99,6 @@ const TasksRouterWrapper = () => {
   );
 };
 
-const { DistrictBordersGroupPageGate } = districtBordersByAddressService.gates;
 const DistrictBordersRouterWrapper = () => {
   return (
     <>
@@ -105,9 +107,6 @@ const DistrictBordersRouterWrapper = () => {
     </>
   );
 };
-
-const featureToggles =
-  developmentSettingsService.outputs.$featureToggles.getState();
 
 export const getRoutes = (
   currentUserRoles: ESecuredIdentityRoleNameStringDictionaryItem[],

@@ -1,13 +1,12 @@
 import React, { FC, useMemo } from 'react';
 import { Bootstrap } from './Bootstrap';
-// import { RouterContainer } from './routerService';
+import { useRoutes } from 'react-router-dom';
+import { useStore } from 'effector-react';
 import 'dayjs/locale/ru';
 import 'css/index.scss';
 import 'css/styles.css';
-import { BrowserRouter, RouterProvider, useRoutes } from 'react-router-dom';
-import { getRoutes } from './routerService/router';
+import { getRoutes } from './router/router';
 import { currentUserService } from 'services/currentUserService';
-import { useStore } from 'effector-react';
 
 const { outputs } = currentUserService;
 
