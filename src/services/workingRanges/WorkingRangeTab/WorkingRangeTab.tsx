@@ -4,30 +4,30 @@ import {
   WorkingRangeTabProps,
   WorkingRangeType,
 } from './WorkingRangeTab.types';
-import {  useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 export const WorkingRangeTab: FC<WorkingRangeTabProps> = () => {
-  const history =  useNavigate();
+  const history = useNavigate();
 
   return (
     <Wrapper>
       <Panel
         onClick={() => {
-           history(`operatingRanges/${WorkingRangeType.Standart}`);
+          history(`${WorkingRangeType.Standart}`);
         }}
       >
         Стандартные рабочие диапазоны <ChevronIconRight />
       </Panel>
       <Panel
         onClick={() => {
-           history(`operatingRanges/${WorkingRangeType.Group}`);
+          history(`${WorkingRangeType.Group}`);
         }}
       >
         Групповые рабочие диапазоны <ChevronIconRight />
       </Panel>
       <Panel
         onClick={() => {
-           history(`operatingRanges/${WorkingRangeType.Unique}`);
+          history(`${WorkingRangeType.Unique}`);
         }}
       >
         Уникальные рабочие диапазоны <ChevronIconRight />
