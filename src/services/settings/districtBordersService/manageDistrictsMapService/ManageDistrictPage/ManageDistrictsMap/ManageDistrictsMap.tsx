@@ -14,6 +14,7 @@ import {
   updateDistrictMutation,
 } from '../../manageDistrictsMapService.api';
 import { EditDistrictInfoModal } from './EditDistrictInfoModal';
+import { MapZoomControl } from 'ui-kit/shared/MapZoomControl';
 
 const { outputs, inputs } = manageDistrictMapService;
 
@@ -119,6 +120,7 @@ export const ManageDistrictsMap: FC<Props> = ({
       )}
       <MapWrapper>
         <div ref={mapRef} style={{ width: '100%', height: '86vh' }} />
+        {map && <MapZoomControl map={map} />}
       </MapWrapper>
     </>
   );

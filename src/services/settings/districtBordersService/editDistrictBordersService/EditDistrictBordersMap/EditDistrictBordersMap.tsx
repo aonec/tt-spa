@@ -16,6 +16,7 @@ import {
 import { Header, MapWrapper } from './EditDistrictBordersMap.styled';
 import { Props } from './EditDistrictBordersMap.types';
 import { SelectedHousingStocksPanel } from './SelectedHousingStocksPanel';
+import { MapZoomControl } from 'ui-kit/shared/MapZoomControl';
 
 export const EditDistrictBordersMap: FC<Props> = ({
   organizationCoordinates,
@@ -152,6 +153,7 @@ export const EditDistrictBordersMap: FC<Props> = ({
           />
         )}
         <div ref={mapRef} style={{ width: '100%', height: '86vh' }} />
+        {map && <MapZoomControl map={map} />}
       </MapWrapper>
     </div>
   );

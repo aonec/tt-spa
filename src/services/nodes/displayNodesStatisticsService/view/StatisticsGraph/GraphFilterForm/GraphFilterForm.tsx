@@ -124,7 +124,6 @@ export const GraphFilterForm: React.FC<GraphFilterFormProps> = ({
               <Tooltip title="Настройка параметров">
                 <ButtonSC
                   onClick={() => setIsActive((state) => !state)}
-                  style={{ marginBottom: 8 }}
                   icon={<SortingIcon />}
                 />
               </Tooltip>

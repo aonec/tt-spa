@@ -25,7 +25,7 @@ export const Header = styled.div<{ columnsCount: number }>`
 export const CheckboxSC = styled(Checkbox)`
   color: #272f5ae5;
   background-color: #fff;
-  width: 80vw;
+  width: 100%;
   padding-bottom: 8px;
 `;
 
@@ -33,4 +33,13 @@ export const StickyWrapper = styled.div`
   position: sticky;
   top: 0px;
   background-color: #fff;
+  z-index: 10;
+  width: fit-content;
+`;
+
+export const FirstColumn = styled.div`
+  position: sticky;
+  top: 0px;
+  left: 0px;
+  background-color: rgba(243, 245, 246, 1);
 `;

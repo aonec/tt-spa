@@ -14,9 +14,6 @@ import {
   CreateControllerContainer,
   createIndividualSealControllerMutation,
 } from 'services/services/distributeRecordsService/createControllerService';
-import { axios } from 'api/axios';
-import { setAppointmentsToControllerMutation } from 'services/services/distributeRecordsService/distributeRecordsService.api';
-import { downloadURI } from 'utils/downloadByURL';
 
 export const DistributeAppointmentsModal: FC<Props> = ({
   isModalOpen,
@@ -37,39 +34,6 @@ export const DistributeAppointmentsModal: FC<Props> = ({
       },
     ).unsubscribe;
   }, []);
-
-  useEffect(() => {
-    return setAppointmentsToControllerMutation.finished.success.watch(
-      async ({ result: { assignmentId } }) => {
-        const res: string = await axios.get(
-          `IndividualSeal/Assignments/${assignmentId}/File`,
-          {
-            responseType: 'blob',
-          },
-        );
-
-        const url = window.URL.createObjectURL(new Blob([res]));
-
-        const controller = controllers?.find(
-          (elem) => elem.id === controllerId,
-        );
-
-        const fullName = [
-          controller?.firstName,
-          controller?.lastName,
-          controller?.middleName,
-        ]
-          .filter(Boolean)
-          .join('_');
-
-        downloadURI(
-          url,
-          `задание_${dayjs(appointmentDate).format('DD.MM.YYYY')}_${fullName}`,
-          false,
-        );
-      },
-    ).unsubscribe;
-  }, [appointmentDate, controllerId, controllers]);
 
   useEffect(() => {
     if (!isModalOpen) {

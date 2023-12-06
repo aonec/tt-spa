@@ -4,7 +4,7 @@ import {
   HousingStockWithTasksResponse,
 } from 'api/types';
 import React, { FC, useEffect, useRef, useState } from 'react';
-import { MapZoomControl } from './MapZoomControl';
+import { MapZoomControl } from '../../../../../../ui-kit/shared/MapZoomControl';
 import { Wrapper } from './TasksMapsNative.styled';
 import { TasksMapsNativeProps } from './TasksMapsNative.types';
 import {
