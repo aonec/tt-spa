@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import { SortButton } from 'services/actsJournalService/view/ActsJournalProfile/ActsListHeader/SortButton';
 import styled, { css } from 'styled-components';
 
 export const Wrapper = styled.div<{ floating: boolean }>`
@@ -69,4 +70,8 @@ export const TableElement = styled.div<{ css?: string }>`
   display: flex;
   align-items: center;
   ${({ css }) => css || ''}
+`;
+
+export const SortButtonSC = styled(SortButton)`
+  margin-left: 4px;
 `;
