@@ -1,4 +1,4 @@
-import { useEvent, useStore } from 'effector-react';
+import { useUnit } from 'effector-react';
 import React from 'react';
 import { FormModal } from 'ui-kit/Modals/FormModal';
 import { WithLoader } from 'ui-kit/shared/WithLoader';
@@ -11,13 +11,21 @@ const { inputs, outputs, gates } = groupReportService;
 const { GroupReportGate } = gates;
 
 export const GroupReportContainer = () => {
-  const isOpen = useStore(outputs.$isOpen);
-  const reportFilters = useStore(outputs.$reportFilters);
-  const isFiltersLoading = useStore(outputs.$isFiltersLoading);
-  const isDownloading = useStore(outputs.$isDownloading);
-
-  const handleCloseModal = useEvent(inputs.closeModal);
-  const downloadReport = useEvent(inputs.setGroupReportPayload);
+  const {
+    downloadReport,
+    handleCloseModal,
+    isDownloading,
+    isFiltersLoading,
+    isOpen,
+    reportFilters,
+  } = useUnit({
+    isOpen: outputs.$isOpen,
+    reportFilters: outputs.$reportFilters,
+    isFiltersLoading: outputs.$isFiltersLoading,
+    isDownloading: outputs.$isDownloading,
+    handleCloseModal: inputs.closeModal,
+    downloadReport: inputs.setGroupReportPayload,
+  });
 
   return (
     <>

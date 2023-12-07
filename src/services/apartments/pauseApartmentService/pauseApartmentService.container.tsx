@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import { pauseApartmentService } from './pauseApartmentService.models';
-import { useEvent, useStore } from 'effector-react';
+import { useUnit } from 'effector-react';
 import { PauseApartmentModal } from './view/PauseApartmentModal';
 import { Props } from './pauseApartmentService.types';
 
@@ -8,14 +8,20 @@ const { inputs, outputs, gates } = pauseApartmentService;
 const { PauseApartmentGate } = gates;
 
 export const PauseApartmentContainer: FC<Props> = ({ apartmentId }) => {
-  const isOpen = useStore(outputs.$isPauseApartmentModalVisible);
-  const isLoading = useStore(outputs.$isLoading);
-  const problemDevices = useStore(outputs.$problemDevices);
-
-  const pauseApartmentModalCancelButtonClicked = useEvent(
-    inputs.pauseApartmentModalCancelButtonClicked,
-  );
-  const pauseApartment = useEvent(inputs.pauseApartment);
+  const {
+    isLoading,
+    isOpen,
+    pauseApartment,
+    pauseApartmentModalCancelButtonClicked,
+    problemDevices,
+  } = useUnit({
+    isOpen: outputs.$isPauseApartmentModalVisible,
+    isLoading: outputs.$isLoading,
+    problemDevices: outputs.$problemDevices,
+    pauseApartmentModalCancelButtonClicked:
+      inputs.pauseApartmentModalCancelButtonClicked,
+    pauseApartment: inputs.pauseApartment,
+  });
 
   return (
     <>

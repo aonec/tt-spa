@@ -18,7 +18,7 @@ import {
   Wrapper,
 } from './ResourceConsumptionFilter.styled';
 import { ResourceConsumptionFilterProps } from './ResourceConsumptionFilter.types';
-import { useStore } from 'effector-react';
+import { useUnit } from 'effector-react';
 import { ConsumptionDataFilter } from '../../resourceConsumptionFilterService.types';
 import { Select } from 'ui-kit/Select';
 import { resourceConsumptionFilterService } from '../../resourceConsumptionFilterService.model';
@@ -39,7 +39,9 @@ export const ResourceConsumptionFilter: FC<ResourceConsumptionFilterProps> = ({
   isLoading,
   handleClearSummary,
 }) => {
-  const existingCities = useStore(addressSearchService.outputs.$existingCities);
+  const { existingCities } = useUnit({
+    existingCities: addressSearchService.outputs.$existingCities,
+  });
   const [isAdditionalAddress, setIsAdditionalAddress] = useState(false);
 
   const { values, setFieldValue, submitForm, errors, setValues } = useFormik<

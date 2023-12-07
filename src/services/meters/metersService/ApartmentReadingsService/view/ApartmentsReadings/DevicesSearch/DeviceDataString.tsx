@@ -1,5 +1,5 @@
 import React from 'react';
-import { useStore } from 'effector-react';
+import { useUnit } from 'effector-react';
 import { EIndividualDeviceRateType, EResourceType } from 'api/types';
 import styled from 'styled-components';
 import { ResourceIconLookup } from 'ui-kit/shared/ResourceIconLookup';
@@ -25,7 +25,7 @@ const {
 export const DeviceDataString: React.FC<Props> = ({
   device: deviceFromProps,
 }) => {
-  const deviceFromStore = useStore($individualDevice);
+  const { deviceFromStore } = useUnit({ deviceFromStore: $individualDevice });
 
   const device = deviceFromProps || deviceFromStore;
 

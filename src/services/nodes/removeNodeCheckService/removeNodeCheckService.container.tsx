@@ -1,16 +1,17 @@
 import React from 'react';
 import { removeNodeCheckService } from './removeNodeCheckService.model';
-import { useEvent, useStore } from 'effector-react';
+import { useUnit } from 'effector-react';
 import { Dialog } from 'ui-kit/shared/Dialog/Dialog';
 
 const { inputs, outputs } = removeNodeCheckService;
 
 export const RemoveNodeCheckContainer = () => {
-  const isOpen = useStore(outputs.$isOpen);
-  const isLoading = useStore(outputs.$isLoading);
-
-  const closeModal = useEvent(inputs.closeModal);
-  const removeNodeCheck = useEvent(inputs.removeNodeCheck);
+  const { closeModal, isLoading, isOpen, removeNodeCheck } = useUnit({
+    isOpen: outputs.$isOpen,
+    isLoading: outputs.$isLoading,
+    closeModal: inputs.closeModal,
+    removeNodeCheck: inputs.removeNodeCheck,
+  });
 
   return (
     <Dialog

@@ -1,6 +1,6 @@
 import React from 'react';
 import { flowTemperatureDeviationReportService } from './flowTemperatureDeviationReportService.models';
-import { useEvent, useStore } from 'effector-react';
+import { useUnit } from 'effector-react';
 import { FormModal } from 'ui-kit/Modals/FormModal';
 import { FeedFlowTemperatureReportForm } from './view/FeedFlowTemperatureReportForm';
 
@@ -9,13 +9,21 @@ const formId = 'feed-flow-temperature-report-form';
 const { inputs, outputs } = flowTemperatureDeviationReportService;
 
 export const FlowTemperatureDeviationReportContainer = () => {
-  const isModalOpen = useStore(outputs.$isModalOpen);
-  const existingCities = useStore(outputs.$existingCities);
-  const houseManagements = useStore(outputs.$houseManagements);
-  const isLoading = useStore(outputs.$isLoading);
-
-  const closeModal = useEvent(inputs.closeFlowTemperatureDeviationReportModal);
-  const handleExportReport = useEvent(inputs.handleExportReport);
+  const {
+    closeModal,
+    existingCities,
+    handleExportReport,
+    houseManagements,
+    isLoading,
+    isModalOpen,
+  } = useUnit({
+    isModalOpen: outputs.$isModalOpen,
+    existingCities: outputs.$existingCities,
+    houseManagements: outputs.$houseManagements,
+    isLoading: outputs.$isLoading,
+    closeModal: inputs.closeFlowTemperatureDeviationReportModal,
+    handleExportReport: inputs.handleExportReport,
+  });
 
   return (
     <FormModal

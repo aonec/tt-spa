@@ -11,7 +11,7 @@ import { ResourceSelect } from 'ui-kit/shared/ResourceSelect';
 import { DatePicker } from 'ui-kit/DatePicker';
 import { AddressTreeSelect } from 'ui-kit/shared/AddressTreeSelect';
 import { Select } from 'ui-kit/Select';
-import { useStore } from 'effector-react';
+import { useUnit } from 'effector-react';
 import { validationSchema } from './HeatIndividualDevicesReportForm.constants';
 import { ErrorMessage } from 'ui-kit/ErrorMessage';
 import { addressSearchService } from 'services/addressSearchService/addressSearchService.models';
@@ -26,7 +26,9 @@ export const HeatIndividualDevicesReportForm: FC<
   treeData,
   selectedBuilding,
 }) => {
-  const existingCities = useStore(addressSearchService.outputs.$existingCities);
+  const { existingCities } = useUnit({
+    existingCities: addressSearchService.outputs.$existingCities,
+  });
 
   const { values, handleSubmit, setFieldValue, errors } = useFormik({
     initialValues: {

@@ -1,4 +1,4 @@
-import { useEvent, useStore } from 'effector-react';
+import { useUnit } from 'effector-react';
 import React from 'react';
 import { deleteContractorService } from './deleteContractorService.model';
 import { DeleteContractorModal } from './view/DeleteContractorModal';
@@ -6,12 +6,17 @@ import { DeleteContractorModal } from './view/DeleteContractorModal';
 const { inputs, outputs } = deleteContractorService;
 
 export const DeleteContractorContainer = () => {
-  const isModalOpen = useStore(outputs.$isModalOpen);
-  const contractorData = useStore(outputs.$contractorData);
-
-  const handleCloseModal = useEvent(inputs.handleCloseModal);
-
-  const handleDeleteContractor = useEvent(inputs.handleDeleteContractor);
+  const {
+    contractorData,
+    handleCloseModal,
+    handleDeleteContractor,
+    isModalOpen,
+  } = useUnit({
+    isModalOpen: outputs.$isModalOpen,
+    contractorData: outputs.$contractorData,
+    handleCloseModal: inputs.handleCloseModal,
+    handleDeleteContractor: inputs.handleDeleteContractor,
+  });
 
   return (
     <>

@@ -1,4 +1,4 @@
-import { useEvent, useStore } from 'effector-react';
+import { useUnit } from 'effector-react';
 import React, { useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { addressSearchService } from 'services/addressSearchService/addressSearchService.models';
@@ -13,36 +13,41 @@ const { HouseManagementsFetchGate, PageCloseGate, HeatingStationsFetchGate } =
   gates;
 
 export const CreateObjectContainer = () => {
-  const existingCities = useStore(addressSearchService.outputs.$existingCities);
-  const existingStreets = useStore(
-    addressSearchService.outputs.$existingStreets,
-  );
-
-  const stageNumber = useStore(outputs.$stageNumber);
-  const isPreviewModalOpen = useStore(outputs.$isPreviewModalOpen);
-  const isCreateLoading = useStore(outputs.$isCreateLoading);
-
-  const houseManagements = useStore(outputs.$houseManagements);
-  const createObjectData = useStore(outputs.$createObjectData);
-  const heatingStations = useStore(outputs.$heatingStations);
-
-  const handleSubmitCreateObject = useEvent(inputs.handleSubmitCreateObject);
-  const handlePostCreateObject = useEvent(inputs.handlePostCreateObject);
-
-  const openPreviewModal = useEvent(inputs.openPreviewModal);
-  const closePreviewModal = useEvent(inputs.closePreviewModal);
-
-  const openCreateHeatingStationModal = useEvent(
-    inputs.handleHeatindStationModalOpen,
-  );
-
-  const openEditHeatingStationModal = useEvent(
-    inputs.openEditHeatingStationModal,
-  );
-
-  const heatingStationCapture = useEvent(inputs.heatingStationCapture);
-
-  const goBackStage = useEvent(inputs.goBackStage);
+  const {
+    closePreviewModal,
+    createObjectData,
+    existingCities,
+    existingStreets,
+    goBackStage,
+    handlePostCreateObject,
+    handleSubmitCreateObject,
+    heatingStationCapture,
+    heatingStations,
+    houseManagements,
+    isCreateLoading,
+    isPreviewModalOpen,
+    openCreateHeatingStationModal,
+    openEditHeatingStationModal,
+    openPreviewModal,
+    stageNumber,
+  } = useUnit({
+    existingCities: addressSearchService.outputs.$existingCities,
+    existingStreets: addressSearchService.outputs.$existingStreets,
+    stageNumber: outputs.$stageNumber,
+    isPreviewModalOpen: outputs.$isPreviewModalOpen,
+    isCreateLoading: outputs.$isCreateLoading,
+    houseManagements: outputs.$houseManagements,
+    createObjectData: outputs.$createObjectData,
+    heatingStations: outputs.$heatingStations,
+    handleSubmitCreateObject: inputs.handleSubmitCreateObject,
+    handlePostCreateObject: inputs.handlePostCreateObject,
+    openPreviewModal: inputs.openPreviewModal,
+    closePreviewModal: inputs.closePreviewModal,
+    openCreateHeatingStationModal: inputs.handleHeatindStationModalOpen,
+    openEditHeatingStationModal: inputs.openEditHeatingStationModal,
+    heatingStationCapture: inputs.heatingStationCapture,
+    goBackStage: inputs.goBackStage,
+  });
 
   const history = useHistory();
   const onPageCancel = () => history.goBack();

@@ -2,18 +2,20 @@ import React from 'react';
 import { FormModal } from 'ui-kit/Modals/FormModal';
 import { NodeCheckForm } from '../createNodeCheckService/view/NodeCheckForm';
 import { editNodeCheckService } from './editNodeCheckService.model';
-import { useEvent, useStore } from 'effector-react';
+import { useUnit } from 'effector-react';
 
 const { inputs, outputs } = editNodeCheckService;
 const formId = 'edit-node-check';
 
 export const EditNodeCheckContainer = () => {
-  const isOpen = useStore(outputs.$isOpen);
-  const initialValues = useStore(outputs.$updateNodePayload);
-  const isLoading = useStore(outputs.$isLoading);
-
-  const editNodeCheck = useEvent(inputs.editNodeCheck);
-  const closeModal = useEvent(inputs.closeModal);
+  const { closeModal, editNodeCheck, initialValues, isLoading, isOpen } =
+    useUnit({
+      isOpen: outputs.$isOpen,
+      initialValues: outputs.$updateNodePayload,
+      isLoading: outputs.$isLoading,
+      editNodeCheck: inputs.editNodeCheck,
+      closeModal: inputs.closeModal,
+    });
 
   return (
     <FormModal

@@ -4,7 +4,7 @@ import { DevicesProfileTabsType } from './devicesPageService.types';
 import { DevicesPageProfile } from './view/DevicesPageProfile';
 import { ESecuredIdentityRoleName } from 'api/types';
 import { usePermission } from 'hooks/usePermission';
-import { useEvent } from 'effector-react';
+import { useUnit } from 'effector-react';
 import {
   DevicesReportContainer,
   devicesReportService,
@@ -15,9 +15,9 @@ export const DevicesPageContainer = () => {
 
   const history = useHistory();
 
-  const openDownloadDevicesReportModal = useEvent(
-    devicesReportService.inputs.openModal,
-  );
+  const { openDownloadDevicesReportModal } = useUnit({
+    openDownloadDevicesReportModal: devicesReportService.inputs.openModal,
+  });
 
   const isPermitionToAddNode = usePermission([
     ESecuredIdentityRoleName.Administrator,

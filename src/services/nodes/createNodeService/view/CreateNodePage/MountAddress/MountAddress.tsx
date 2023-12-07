@@ -14,7 +14,7 @@ import { AutoComplete } from 'ui-kit/AutoComplete';
 import { getPreparedStreetsOptions } from 'services/objects/createObjectService/view/CreateObjectPage/CreateObjectAddressStage/CreateObjectAddressStage.utils';
 import { useHistory } from 'react-router-dom';
 import { mountAddressService } from './MountAddress.models';
-import { useStore } from 'effector-react';
+import { useUnit } from 'effector-react';
 import { addressSearchService } from 'services/addressSearchService/addressSearchService.models';
 
 const { outputs, effects } = mountAddressService;
@@ -27,8 +27,10 @@ export const MountAddress: FC<MountAddressProps> = ({
   updateRequestPayload,
   isDisabledAddress,
 }) => {
-  const savedHousingStock = useStore(outputs.$buildingListItem);
-  const isLoading = useStore(outputs.$isLoading);
+  const { isLoading, savedHousingStock } = useUnit({
+    savedHousingStock: outputs.$buildingListItem,
+    isLoading: outputs.$isLoading,
+  });
 
   const address = building?.address?.mainAddress;
 

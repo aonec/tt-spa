@@ -1,4 +1,4 @@
-import { useStore } from 'effector-react';
+import { useUnit } from 'effector-react';
 import React, { FC } from 'react';
 import { CheckLg, XLg } from 'react-bootstrap-icons';
 import {
@@ -27,9 +27,9 @@ export const AddressIdSearch: FC<AddressIdSearchProps> = ({
   addressFilter,
   dataKey,
 }) => {
-  const existingStreets = useStore(
-    addressSearchService.outputs.$existingStreets,
-  );
+  const { existingStreets } = useUnit({
+    existingStreets: addressSearchService.outputs.$existingStreets,
+  });
   const focusedIndex = useFocusedIndex(addressIdSearchKey);
   const isFirstFocused = focusedIndex === 0;
 

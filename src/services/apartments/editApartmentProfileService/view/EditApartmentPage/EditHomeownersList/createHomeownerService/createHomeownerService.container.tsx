@@ -1,4 +1,4 @@
-import { useEvent, useStore } from 'effector-react';
+import { useUnit } from 'effector-react';
 import React from 'react';
 import { FormModal } from 'ui-kit/Modals/FormModal/FormModal';
 import { EditHomeownerForm } from '../HomeownerForm';
@@ -10,17 +10,25 @@ const { inputs, outputs } = createHomeownerService;
 const formId = 'create-homeowner-form';
 
 export const CreateHomeownerContainer = () => {
-  const isModalOpen = useStore(outputs.$isModalOpen);
-  const isLoading = useStore(outputs.$isLoading);
-  const samePersonalAccountNumderId = useStore(
-    outputs.$samePersonalAccountNumderId,
-  );
-  const isConfirmationModalOpen = useStore(outputs.$isConfirmationModalOpen);
-
-  const handleCloseModal = useEvent(inputs.closeCreateHomeownerModal);
-  const handleCreateHomeowner = useEvent(inputs.handleCreateHomeowner);
-  const confirmationModalClose = useEvent(inputs.handleConfirmationModalClose);
-  const handleForced = useEvent(inputs.onForced);
+  const {
+    confirmationModalClose,
+    handleCloseModal,
+    handleCreateHomeowner,
+    handleForced,
+    isConfirmationModalOpen,
+    isLoading,
+    isModalOpen,
+    samePersonalAccountNumderId,
+  } = useUnit({
+    isModalOpen: outputs.$isModalOpen,
+    isLoading: outputs.$isLoading,
+    samePersonalAccountNumderId: outputs.$samePersonalAccountNumderId,
+    isConfirmationModalOpen: outputs.$isConfirmationModalOpen,
+    handleCloseModal: inputs.closeCreateHomeownerModal,
+    handleCreateHomeowner: inputs.handleCreateHomeowner,
+    confirmationModalClose: inputs.handleConfirmationModalClose,
+    handleForced: inputs.onForced,
+  });
 
   return (
     <>

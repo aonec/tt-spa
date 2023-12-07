@@ -1,4 +1,4 @@
-import { useEvent, useStore } from 'effector-react';
+import { useUnit } from 'effector-react';
 import dayjs from 'api/dayjs';
 import React from 'react';
 import { Dialog } from 'ui-kit/shared/Dialog/Dialog';
@@ -7,12 +7,13 @@ import { deleteResourceDisconnectionService } from './deleteResourceDisconnectio
 const { inputs, outputs } = deleteResourceDisconnectionService;
 
 export const DeleteResourceDisconnectionContainer = () => {
-  const isOpen = useStore(outputs.$isModalOpen);
-  const isLoading = useStore(outputs.$deleteResourceDisconnectionIsLoading);
-  const endDate = useStore(outputs.$endDate);
-
-  const closeModal = useEvent(inputs.closeModal);
-  const handleComplete = useEvent(inputs.deleteResourceDisconnection);
+  const { closeModal, endDate, handleComplete, isLoading, isOpen } = useUnit({
+    isOpen: outputs.$isModalOpen,
+    isLoading: outputs.$deleteResourceDisconnectionIsLoading,
+    endDate: outputs.$endDate,
+    closeModal: inputs.closeModal,
+    handleComplete: inputs.deleteResourceDisconnection,
+  });
 
   return (
     <Dialog

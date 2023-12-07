@@ -1,16 +1,22 @@
 import React from 'react';
-import { useEvent, useStore } from 'effector-react';
+import { useUnit } from 'effector-react';
 import { removeNodeCalculatorConnectionService } from './removeConnectionService.models';
 import { FormModal } from 'ui-kit/Modals/FormModal';
 
 const { inputs, outputs } = removeNodeCalculatorConnectionService;
 
 export const RemoveConnectionConfirmModalContainer = () => {
-  const isConfirmModalOpen = useStore(outputs.$isConfirmModalOpen);
-  const isLoading = useStore(outputs.$isLoading);
-
-  const closeConfirmationModal = useEvent(inputs.closeModal);
-  const removeConnection = useEvent(inputs.removeConnection);
+  const {
+    closeConfirmationModal,
+    isConfirmModalOpen,
+    isLoading,
+    removeConnection,
+  } = useUnit({
+    isConfirmModalOpen: outputs.$isConfirmModalOpen,
+    isLoading: outputs.$isLoading,
+    closeConfirmationModal: inputs.closeModal,
+    removeConnection: inputs.removeConnection,
+  });
 
   return (
     <FormModal

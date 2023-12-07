@@ -1,4 +1,4 @@
-import { useEvent, useStore } from 'effector-react';
+import { useUnit } from 'effector-react';
 import React from 'react';
 import { NodeChecks } from './NodeChecks/NodeChecks';
 import { DisplayNodeChecksContainerProps } from './displayNodeChecksService.types';
@@ -23,18 +23,19 @@ const { NodeChecksGate } = gates;
 export const DisplayNodeChecksContainer: React.FC<
   DisplayNodeChecksContainerProps
 > = ({ pipeNodeId }) => {
-  const nodeChecks = useStore(outputs.$nodeChecks);
-  const isLoading = useStore(outputs.$loading);
-
-  const handleOpenRemoveNodeCheckModal = useEvent(
-    removeNodeCheckService.inputs.openModal,
-  );
-  const handleOpenCreateNodeCheckModal = useEvent(
-    createNodeCheckService.inputs.openModal,
-  );
-  const handleOpenEditNodeCheckModal = useEvent(
-    editNodeCheckService.inputs.openModal,
-  );
+  const {
+    handleOpenCreateNodeCheckModal,
+    handleOpenEditNodeCheckModal,
+    handleOpenRemoveNodeCheckModal,
+    isLoading,
+    nodeChecks,
+  } = useUnit({
+    nodeChecks: outputs.$nodeChecks,
+    isLoading: outputs.$loading,
+    handleOpenRemoveNodeCheckModal: removeNodeCheckService.inputs.openModal,
+    handleOpenCreateNodeCheckModal: createNodeCheckService.inputs.openModal,
+    handleOpenEditNodeCheckModal: editNodeCheckService.inputs.openModal,
+  });
 
   return (
     <>

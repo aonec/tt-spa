@@ -1,4 +1,4 @@
-import { useEvent, useStore } from 'effector-react';
+import { useUnit } from 'effector-react';
 import React from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 import { ChangeNodeStatusContainer } from '../changeNodeStatusService';
@@ -20,11 +20,17 @@ export const NodeProfileContainer = () => {
 
   const history = useHistory();
 
-  const pipeNode = useStore(outputs.$pipeNode);
-  const isLoading = useStore(outputs.$isLoading);
-
-  const openChangeNodeStatusModal = useEvent(inputs.openChangeNodeStatusModal);
-  const openChangeNodeTypeModal = useEvent(inputs.openChangeNodeTypeModal);
+  const {
+    isLoading,
+    pipeNode,
+    openChangeNodeStatusModal,
+    openChangeNodeTypeModal,
+  } = useUnit({
+    pipeNode: outputs.$pipeNode,
+    isLoading: outputs.$isLoading,
+    openChangeNodeStatusModal: inputs.openChangeNodeStatusModal,
+    openChangeNodeTypeModal: inputs.openChangeNodeTypeModal,
+  });
 
   const handleChangeTab = (section: PipeNodeProfileSection) =>
     history.replace(`/nodes/${nodeId}/${section}`);

@@ -1,4 +1,4 @@
-import { useEvent, useStore } from 'effector-react';
+import { useUnit } from 'effector-react';
 import React, { FC } from 'react';
 import { CommentPanel } from 'ui-kit/shared/CommentPanel';
 import { calculatorCommentService } from './calculatorCommentService.model';
@@ -14,12 +14,17 @@ export const CalculatorCommentContainer: FC<
 > = ({ comment, calculatorId }) => {
   const lastModifiedDateTimeFromCalculatorData = comment?.lastModifiedDateTime;
   const lastModifiedUserFromCalculatorData = comment?.lastModifiedUser;
-
-  const handleRemoveComment = useEvent(inputs.removeComment);
-  const handleCreateComment = useEvent(inputs.createComment);
-  const handleEditComment = useEvent(inputs.editComment);
-
-  const commentResponseData = useStore(outputs.$commentResponseData);
+  const {
+    commentResponseData,
+    handleCreateComment,
+    handleEditComment,
+    handleRemoveComment,
+  } = useUnit({
+    handleRemoveComment: inputs.removeComment,
+    handleCreateComment: inputs.createComment,
+    handleEditComment: inputs.editComment,
+    commentResponseData: outputs.$commentResponseData,
+  });
 
   const isCommentExist = Boolean(comment);
 

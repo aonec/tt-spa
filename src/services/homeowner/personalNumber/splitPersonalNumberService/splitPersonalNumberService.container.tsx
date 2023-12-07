@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { splitPersonalNumberService } from './splitPersonalNumberService.model';
 import { SplitPersonalNumberPage } from './view/SplitPersonalNumberPage';
-import { useEvent, useStore } from 'effector-react';
+import { useUnit } from 'effector-react';
 import { useHistory, useParams } from 'react-router-dom';
 import { ConfirmationAddingExistingPersonalNumber } from '../components/ConfirmationAddingExistingPersonalNumberModal';
 import { ConfirmUsingExistingArartmentModal } from '../components/ConfirmUsingExistingApartmentModal/ConfirmUsingExistingArartmentModal';
@@ -22,41 +22,45 @@ export const SplitPersonalNumberContainer = () => {
 
   const { homeownerId } = useParams<{ homeownerId: string }>();
   const history = useHistory();
+  const {
+    addNewApartmentStageData,
+    apartment,
+    goBackStage,
+    handleCheckApartmentExist,
+    handleForceConfirmationModalClose,
+    handleSubmitAddNewApartmentStage,
+    handleSubmitSwitchStage,
+    handleSubmitTransferDevicesStage,
+    individualDevices,
+    isCheckApartLoading,
+    isConfirmationModalOpen,
+    onForced,
+    samePersonalAccountNumderId,
+    stageNumber,
+    switchStageData,
+    transferDevicesData,
+  } = useUnit({
+    stageNumber: outputs.$stageNumber,
+    apartment: outputs.$apartment,
+    individualDevices: outputs.$individualDevices,
+    switchStageData: outputs.$switchStageData,
+    addNewApartmentStageData: outputs.$addNewApartmentStageData,
+    transferDevicesData: outputs.$transferDevicesData,
+    isConfirmationModalOpen: outputs.$isConfirmationModalOpen,
+    samePersonalAccountNumderId: outputs.$samePersonalAccountNumderId,
+    isCheckApartLoading: outputs.$isCheckApartLoading,
+    handleSubmitSwitchStage: inputs.handleSubmitSwitchStage,
+    handleSubmitAddNewApartmentStage: inputs.handleSubmitAddNewApartmentStage,
+    handleSubmitTransferDevicesStage: inputs.handleSubmitTransferDevicesStage,
+    handleCheckApartmentExist: inputs.handleCheckApartmentExist,
+    goBackStage: inputs.goBackStage,
+    handleForceConfirmationModalClose: inputs.handleForceConfirmationModalClose,
+    onForced: inputs.onForced,
+  });
 
-  const stageNumber = useStore(outputs.$stageNumber);
-
-  const apartment = useStore(outputs.$apartment);
   const homeowner = apartment?.homeownerAccounts?.find(
     (homeownerAccount) => homeownerAccount.id === homeownerId,
   );
-  const individualDevices = useStore(outputs.$individualDevices);
-
-  const switchStageData = useStore(outputs.$switchStageData);
-  const addNewApartmentStageData = useStore(outputs.$addNewApartmentStageData);
-  const transferDevicesData = useStore(outputs.$transferDevicesData);
-
-  const isConfirmationModalOpen = useStore(outputs.$isConfirmationModalOpen);
-  const samePersonalAccountNumderId = useStore(
-    outputs.$samePersonalAccountNumderId,
-  );
-
-  const isCheckApartLoading = useStore(outputs.$isCheckApartLoading);
-
-  const handleSubmitSwitchStage = useEvent(inputs.handleSubmitSwitchStage);
-  const handleSubmitAddNewApartmentStage = useEvent(
-    inputs.handleSubmitAddNewApartmentStage,
-  );
-  const handleSubmitTransferDevicesStage = useEvent(
-    inputs.handleSubmitTransferDevicesStage,
-  );
-  const handleCheckApartmentExist = useEvent(inputs.handleCheckApartmentExist);
-
-  const goBackStage = useEvent(inputs.goBackStage);
-
-  const handleForceConfirmationModalClose = useEvent(
-    inputs.handleForceConfirmationModalClose,
-  );
-  const onForced = useEvent(inputs.onForced);
 
   useEffect(() => {
     return inputs.successSplit.watch(() => {

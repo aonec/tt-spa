@@ -1,4 +1,4 @@
-import { useEvent, useStore } from 'effector-react';
+import { useUnit } from 'effector-react';
 import React, { useEffect } from 'react';
 import { FormModal } from 'ui-kit/Modals/FormModal';
 import { closeCalculatorService } from './closeCalculatorService.model';
@@ -8,11 +8,13 @@ import { useHistory } from 'react-router-dom';
 const { inputs, outputs } = closeCalculatorService;
 
 export const CloseCalculatorContainer = () => {
-  const isOpen = useStore(outputs.$isModalOpen);
-  const calculator = useStore(outputs.$calculatorInfo);
-
-  const handleCloseModal = useEvent(inputs.closeModal);
-  const handleCloseCalculator = useEvent(inputs.closeCalculator);
+  const { calculator, handleCloseCalculator, handleCloseModal, isOpen } =
+    useUnit({
+      isOpen: outputs.$isModalOpen,
+      calculator: outputs.$calculatorInfo,
+      handleCloseModal: inputs.closeModal,
+      handleCloseCalculator: inputs.closeCalculator,
+    });
 
   const navigate = useHistory();
 

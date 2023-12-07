@@ -1,23 +1,19 @@
-import { useEvent, useStore } from 'effector-react';
+import { useUnit } from 'effector-react';
 import React, { FC } from 'react';
 import { inspectorAddressesResetService } from './inspectorAddressesResetService.models';
 import { InspectorAddressesResetModal } from './views/InspectorAddressesResetModal';
 
 export const InspectorAddressesResetModalContainer: FC = () => {
-  const isOpen = useStore(inspectorAddressesResetService.outputs.$isModalOpen);
-  const loading = useStore(inspectorAddressesResetService.outputs.$loading);
-  const inspectorsList = useStore(
-    inspectorAddressesResetService.outputs.$inspectorsList,
-  );
+  const { handleClose, handleResetAddress, inspectorsList, isOpen, loading } =
+    useUnit({
+      isOpen: inspectorAddressesResetService.outputs.$isModalOpen,
+      loading: inspectorAddressesResetService.outputs.$loading,
+      inspectorsList: inspectorAddressesResetService.outputs.$inspectorsList,
+      handleClose: inspectorAddressesResetService.inputs.closeModal,
+      handleResetAddress: inspectorAddressesResetService.inputs.resetAddresses,
+    });
 
   const form = inspectorAddressesResetService.form;
-
-  const handleClose = useEvent(
-    inspectorAddressesResetService.inputs.closeModal,
-  );
-  const handleResetAddress = useEvent(
-    inspectorAddressesResetService.inputs.resetAddresses,
-  );
 
   return (
     <InspectorAddressesResetModal

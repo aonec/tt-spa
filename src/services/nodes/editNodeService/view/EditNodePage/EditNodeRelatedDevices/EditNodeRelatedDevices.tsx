@@ -1,4 +1,4 @@
-import { useEvent } from 'effector-react';
+import { useUnit } from 'effector-react';
 import React, { FC } from 'react';
 import { useHistory } from 'react-router-dom';
 import {
@@ -18,13 +18,15 @@ export const EditNodeRelatedDevices: FC<EditNodeRelatedDevicesProps> = ({
   node,
 }) => {
   const history = useHistory();
-
-  const openAddHousingMeteringDeviceModal = useEvent(
-    addHosuingMeteringDeviceService.inputs.openModal,
-  );
-  const openDeleteHousingMeteringDeviceModal = useEvent(
-    deletePipeHousingMeteringDeviceService.inputs.openModal,
-  );
+  const {
+    openAddHousingMeteringDeviceModal,
+    openDeleteHousingMeteringDeviceModal,
+  } = useUnit({
+    openAddHousingMeteringDeviceModal:
+      addHosuingMeteringDeviceService.inputs.openModal,
+    openDeleteHousingMeteringDeviceModal:
+      deletePipeHousingMeteringDeviceService.inputs.openModal,
+  });
 
   const isNodeConfigWithoutODPU =
     node.configuration === EPipeNodeConfig.HeatNoHousingMeteringDevice;

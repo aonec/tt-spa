@@ -1,15 +1,17 @@
 import React, { useEffect } from 'react';
 import { RegistrationPage } from './view/RegistrationPage';
 import { registrationService } from './registrationService.model';
-import { useEvent, useStore } from 'effector-react';
+import { useUnit } from 'effector-react';
 import { useHistory } from 'react-router-dom';
 
 const { inputs, outputs } = registrationService;
 
 export const RegistrationContainer = () => {
-  const isLoading = useStore(outputs.$isLoading);
+  const { handleConfirmRegistration, isLoading } = useUnit({
+    isLoading: outputs.$isLoading,
+    handleConfirmRegistration: inputs.handleConfirmRegistration,
+  });
 
-  const handleConfirmRegistration = useEvent(inputs.handleConfirmRegistration);
   const successRegistration = inputs.successRegistration;
 
   const history = useHistory();

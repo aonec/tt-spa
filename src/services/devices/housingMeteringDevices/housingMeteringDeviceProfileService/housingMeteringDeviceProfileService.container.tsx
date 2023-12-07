@@ -1,4 +1,4 @@
-import { useEvent, useStore } from 'effector-react';
+import { useUnit } from 'effector-react';
 import React, { useCallback } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 import { WithLoader } from 'ui-kit/shared/WithLoader';
@@ -18,19 +18,21 @@ export const HousingMeteringDeviceProfileContainer = () => {
   }>();
   const history = useHistory();
 
-  const handleCheckModalOpen = useEvent(inputs.handleCheckModalOpen);
-
-  const handleDeviceClosingModalOpen = useEvent(
-    inputs.handleDeviceClosingModalOpen,
-  );
-
-  const housingMeteringDevice = useStore(outputs.$housingMeteringDevice);
-  const housingMeteringDeviceTasks = useStore(
-    outputs.$housingMeteringDeviceTask,
-  );
-
-  const pending = useStore(outputs.$pending);
-  const tasksPending = useStore(outputs.$tasksPending);
+  const {
+    handleCheckModalOpen,
+    handleDeviceClosingModalOpen,
+    housingMeteringDevice,
+    housingMeteringDeviceTasks,
+    pending,
+    tasksPending,
+  } = useUnit({
+    handleCheckModalOpen: inputs.handleCheckModalOpen,
+    handleDeviceClosingModalOpen: inputs.handleDeviceClosingModalOpen,
+    housingMeteringDevice: outputs.$housingMeteringDevice,
+    housingMeteringDeviceTasks: outputs.$housingMeteringDeviceTask,
+    pending: outputs.$pending,
+    tasksPending: outputs.$tasksPending,
+  });
 
   const isPermitionToCheckHousingMeteringDevice = usePermission([
     ESecuredIdentityRoleName.Administrator,

@@ -1,4 +1,4 @@
-import { useEvent, useStore } from 'effector-react';
+import { useUnit } from 'effector-react';
 import React, { useCallback } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 import { WithLoader } from 'ui-kit/shared/WithLoader';
@@ -26,20 +26,21 @@ export const CalculatorProfileContainer = () => {
     section?: CalculatorProfileGrouptype;
   }>();
   const history = useHistory();
-
-  const isLoading = useStore(outputs.$isLoading);
-  const calculator = useStore(outputs.$calculator);
-
-  const handleOpenCloseCalculatorModal = useEvent(
-    closeCalculatorService.inputs.openModal,
-  );
-  const handleOpenCheckCalculatorModal = useEvent(
-    checkCalculatorService.inputs.openModal,
-  );
-  const handleOpenConsumptionReportModal = useEvent(
-    inputs.handleConsumptionReportModalOpen,
-  );
-  const openDevicesListModal = useEvent(inputs.openDevicesListModal);
+  const {
+    calculator,
+    handleOpenCheckCalculatorModal,
+    handleOpenCloseCalculatorModal,
+    handleOpenConsumptionReportModal,
+    isLoading,
+    openDevicesListModal,
+  } = useUnit({
+    isLoading: outputs.$isLoading,
+    calculator: outputs.$calculator,
+    handleOpenCloseCalculatorModal: closeCalculatorService.inputs.openModal,
+    handleOpenCheckCalculatorModal: checkCalculatorService.inputs.openModal,
+    handleOpenConsumptionReportModal: inputs.handleConsumptionReportModalOpen,
+    openDevicesListModal: inputs.openDevicesListModal,
+  });
 
   const isPermitionToCalculatorActions = usePermission([
     ESecuredIdentityRoleName.Administrator,

@@ -1,5 +1,5 @@
 import React, { FC, useCallback, useEffect, useMemo } from 'react';
-import { useEvent, useStore } from 'effector-react';
+import { useUnit } from 'effector-react';
 import { useFormik } from 'formik';
 import { ErrorMessage } from 'ui-kit/ErrorMessage';
 import { Button } from 'ui-kit/Button';
@@ -38,9 +38,10 @@ export const ConnectionSettings: FC<ConnectionSettingsProps> = ({
   updateRequestPayload,
   requestPayload,
 }) => {
-  const connectionType = useStore(outputs.$connectionType);
-
-  const setConnectionType = useEvent(inputs.setConnectionType);
+  const { connectionType, setConnectionType } = useUnit({
+    connectionType: outputs.$connectionType,
+    setConnectionType: inputs.setConnectionType,
+  });
 
   const initialValues = useMemo(() => {
     return {
