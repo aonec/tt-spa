@@ -19,7 +19,7 @@ export const pipeValidationSchema = Yup.object().shape({
     .required('Укажите номер для трубы'),
   diameter: Yup.number()
     .required('Укажите диаметр для трубы')
-    .min(1, 'Укажите диаметр для трубы'),
+    .min(15, 'Диаметр трубы должен быть не меньше 15'),
 });
 
 export const validationSchema = Yup.object().shape({

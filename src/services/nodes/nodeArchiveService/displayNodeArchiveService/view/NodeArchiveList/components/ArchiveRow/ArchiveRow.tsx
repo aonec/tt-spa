@@ -5,7 +5,7 @@ import { ArchiveRowProps } from './ArchiveRow.types';
 export const ArchiveRow: FC<ArchiveRowProps> = ({ row, columnsCount }) => {
   return (
     <Row columnsCount={columnsCount} isFault={row.isFault}>
-      <DateWrapper>{row.dateTimeText}</DateWrapper>
+      <DateWrapper isFault={row.isFault}>{row.dateTimeText}</DateWrapper>
       {row.values.map((value, index) => (
         <div key={index}>{value.text}</div>
       ))}

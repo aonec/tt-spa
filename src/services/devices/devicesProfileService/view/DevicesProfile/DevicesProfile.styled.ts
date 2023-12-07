@@ -3,7 +3,7 @@ import styled from 'styled-components';
 const { RangePicker } = DatePicker;
 
 export const Wrapper = styled.div`
-  max-width: 960px;
+  max-width: 1060px;
 `;
 
 export const StyledContainerFourItems = styled.div`

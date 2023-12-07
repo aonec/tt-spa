@@ -1732,6 +1732,8 @@ export enum EIndividualDeviceOrderRule {
   ApartmentNumber = 'ApartmentNumber',
   SerialNumber = 'SerialNumber',
   Address = 'Address',
+  BitDepth = 'BitDepth',
+  CheckingDate = 'CheckingDate',
 }
 
 export enum EIndividualDeviceRateType {
@@ -3319,6 +3321,7 @@ export interface IndividualDeviceListItemResponse {
   /** @format double */
   scaleFactor: number | null;
   resource: EResourceType;
+  /** @deprecated */
   mountPlace: string | null;
   deviceMountPlace: IndividualDeviceMountPlaceListResponse | null;
   rateType: EIndividualDeviceRateType;
@@ -3373,6 +3376,8 @@ export interface IndividualDeviceListResponseFromDevicePage {
   apartmentId?: number;
   address?: ApartmentAddress | null;
   homeowners?: HomeownerAccount[] | null;
+  /** @format int32 */
+  bitDepth?: number | null;
 }
 
 export interface IndividualDeviceListResponseFromDevicePagePagedList {
@@ -3609,6 +3614,7 @@ export interface IndividualDeviceResponse {
   scaleFactor: number | null;
   address: FullAddressResponse | null;
   resource: EResourceType;
+  /** @deprecated */
   mountPlace: string | null;
   deviceMountPlace: IndividualDeviceMountPlaceListResponse | null;
   rateType: EIndividualDeviceRateType;
@@ -3642,6 +3648,8 @@ export interface IndividualDeviceResponseFromDevicePage {
   sealNumber?: string | null;
   /** @format date-time */
   sealInstallationDate?: string | null;
+  /** @format int32 */
+  bitDepth?: number | null;
 }
 
 export interface IndividualDeviceResponseFromDevicePageListSuccessApiResponse {
@@ -5390,6 +5398,7 @@ export interface TaskListResponse {
   currentStage: StageResponse | null;
   /** @format date-time */
   creationTime: string | null;
+  creationReason: string | null;
   /** @format date-time */
   expectedCompletionTime: string | null;
   /** @format date-time */
@@ -6977,7 +6986,10 @@ export class Api<
       assignmentId: string,
       params: RequestParams = {},
     ) =>
-      this.request<AssignmentResponseSuccessApiResponse, ErrorApiResponse>({
+      this.request<
+        AssignmentResponseSuccessApiResponse,
+        ProblemDetails | ErrorApiResponse
+      >({
         path: `/api/IndividualSeal/Assignments/${assignmentId}`,
         method: 'GET',
         secure: true,
@@ -7001,6 +7013,26 @@ export class Api<
       this.request<void, ErrorApiResponse>({
         path: `/api/IndividualSeal/Assignments/${assignmentId}`,
         method: 'DELETE',
+        secure: true,
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li><li>Администратор УК без назначений задач</li>
+     *
+     * @tags Assignments
+     * @name IndividualSealAssignmentsFileDetail
+     * @summary IndividualSealRead
+     * @request GET:/api/IndividualSeal/Assignments/{assignmentId}/File
+     * @secure
+     */
+    individualSealAssignmentsFileDetail: (
+      assignmentId: string,
+      params: RequestParams = {},
+    ) =>
+      this.request<void, ProblemDetails | ErrorApiResponse>({
+        path: `/api/IndividualSeal/Assignments/${assignmentId}/File`,
+        method: 'GET',
         secure: true,
         ...params,
       }),
@@ -13150,7 +13182,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Наблюдатель УК</li><li>Администратор УК без назначений задач</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Наблюдатель УК</li><li>Администратор УК без назначений задач</li>
      *
      * @tags Reports
      * @name ReportsFeedBackFlowTemperatureReportList

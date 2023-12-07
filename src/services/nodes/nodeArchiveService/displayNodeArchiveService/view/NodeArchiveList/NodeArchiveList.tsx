@@ -6,6 +6,7 @@ import {
   CheckboxSC,
   Wrapper,
   StickyWrapper,
+  FirstColumn,
 } from './NodeArchiveList.styled';
 import { NodeArchiveListProps } from './NodeArchiveList.types';
 import { Empty } from 'antd';
@@ -19,6 +20,7 @@ export const NodeArchiveList: FC<NodeArchiveListProps> = ({
   const filteredColumns = (data?.columns || []).filter(
     (column) => column.text !== 'Н.C.',
   );
+
   const filteredRows = (data?.rows || []).map((row) => ({
     ...row,
     values: row.values.filter((elem) => elem.doubleValue !== null),
@@ -44,7 +46,8 @@ export const NodeArchiveList: FC<NodeArchiveListProps> = ({
             )}
             {isReadingsExist && (
               <Header columnsCount={data.columns.length - 1}>
-                {filteredColumns.map((column, index) => (
+                <FirstColumn> {filteredColumns[0].text} </FirstColumn>
+                {filteredColumns.slice(1).map((column, index) => (
                   <div key={index}>{column.text}</div>
                 ))}
               </Header>

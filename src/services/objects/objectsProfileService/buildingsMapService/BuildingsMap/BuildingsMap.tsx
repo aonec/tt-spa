@@ -21,6 +21,7 @@ import { CommonInfo } from 'ui-kit/shared/CommonInfo';
 import { Button } from 'ui-kit/Button';
 import { Link } from 'react-router-dom';
 import { getBuildingPlacmearksWithTasks } from './BuildingsMap.utils';
+import { MapZoomControl } from 'ui-kit/shared/MapZoomControl';
 
 export const BuildingsMap: FC<Props> = ({
   isLoading,
@@ -125,6 +126,7 @@ export const BuildingsMap: FC<Props> = ({
         )}
       </MapPanel>
       <div ref={mapRef} style={{ width: '100%', height: '86vh' }} />
+      {map && <MapZoomControl map={map} />}
     </Wrapper>
   );
 };

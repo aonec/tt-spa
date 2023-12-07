@@ -13,6 +13,7 @@ import warningAvtivePlacemark from 'hooks/ymaps/placemarks/warningActivePlacemar
 
 import { DistributeAppointmentsPanel } from '../DistributeAppointmentsPanel';
 import { findPolygonCenter } from 'utils/findPolygonCenter';
+import { MapZoomControl } from 'ui-kit/shared/MapZoomControl';
 
 export const DistrictsMap: FC<Props> = ({
   districtsList,
@@ -130,6 +131,7 @@ export const DistrictsMap: FC<Props> = ({
         />
       )}
       <div ref={mapRef} style={{ width: '100%', height: '83vh' }} />
+      {map && <MapZoomControl map={map} />}
     </MapWrapper>
   );
 };

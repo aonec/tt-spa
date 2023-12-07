@@ -1,9 +1,10 @@
 import axios from 'axios';
 import { createEvent, createStore } from 'effector';
 import { forbiddenList } from '../utils/403handling';
-import { message } from 'antd';
+import { notification, message } from 'antd';
 import { cancellableUrl } from 'services/cancelRequestService/cancelRequestService.constants';
 import { cancelRequestService } from 'services/cancelRequestService';
+import { isUndefined } from 'lodash/fp';
 
 export const devUrl = 'https://stage.k8s.transparent-technology.ru/api/';
 
@@ -53,12 +54,21 @@ axios.interceptors.response.use(
       saveToLocalStorage('user', user);
     }
 
+    setIsOnline();
     const res = data.successResponse ?? data ?? {};
 
     return res;
   },
   (error) => {
     const status = error?.response?.status;
+
+    if (isUndefined(status) && $isOnline.getState()) {
+      notification.error({
+        description: 'Проверьте свое подключение к интернету',
+        message: 'Ошибка связи',
+      });
+      setIsOffline();
+    }
 
     if (
       status === 403 &&
@@ -127,11 +137,17 @@ function checkUrl(str: string, url: string) {
   return new RegExp(str, 'gi').test(url);
 }
 
-export const $isRefreshRunning = createStore(false);
+const setIsRefreshRunning = createEvent<boolean>();
+const $isRefreshRunning = createStore(false).on(
+  setIsRefreshRunning,
+  (_, value) => value,
+);
 
-export const setIsRefreshRunning = createEvent<boolean>();
-
-$isRefreshRunning.on(setIsRefreshRunning, (_, value) => value);
+const setIsOffline = createEvent();
+const setIsOnline = createEvent();
+const $isOnline = createStore(true)
+  .on(setIsOffline, () => false)
+  .on(setIsOnline, () => true);
 
 export default axios;
 

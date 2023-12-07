@@ -81,10 +81,6 @@ export const ConnectedDevices: FC<ConnectedDevicesProps> = ({
     updateRequestPayload({ communicationPipes });
   }, [communicationPipes, updateRequestPayload]);
 
-  const handleDeletePipe = (pipeId: string) => {
-    setCommunicationPipes((prev) => prev.filter((elem) => elem.id !== pipeId));
-  };
-
   const handleDeleteDevice = (pipeId: string, deviceIndex: number) => {
     setCommunicationPipes((prev) =>
       prev.map((pipe) => {
@@ -125,7 +121,6 @@ export const ConnectedDevices: FC<ConnectedDevicesProps> = ({
                 configuration={configuration}
                 key={pipe.id}
                 pipe={pipe}
-                handleDeletePipe={handleDeletePipe}
                 handleDeleteDevice={handleDeleteDevice}
                 isNodeConfigWithoutODPU={isNodeConfigWithoutODPU}
               />
