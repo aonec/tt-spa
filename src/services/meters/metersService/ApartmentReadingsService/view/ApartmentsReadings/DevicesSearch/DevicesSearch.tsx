@@ -2,13 +2,11 @@ import React, { FC, useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import { CancelTokenSource } from 'axios';
 import axios from 'api/axios';
-import { IndividualDeviceListItemResponse } from 'api/types';
+import { IndividualDeviceListResponseFromDevicePage } from 'api/types';
 import { DateRangeContainer, Device } from './DevicesSearch.styled';
 import { DevicesSearchProps } from './DevicesSearch.types';
-import { DeviceStatus } from 'ui-kit/shared/IndividualDeviceInfo/DeviceStatus';
 import { WithLoader } from 'ui-kit/shared/WithLoader';
 import { AutoComplete } from 'ui-kit/AutoComplete';
-import { DateRange } from 'ui-kit/shared/DateRange';
 import { individualDeviceMountPlacesService } from 'services/devices/individualDeviceMountPlacesService/individualDeviceMountPlacesService.model';
 import { DeviceDataString } from './DeviceDataString';
 
@@ -20,7 +18,8 @@ export const DevicesSearch: FC<DevicesSearchProps> = ({
   allIndividualDeviceMountPlaces,
 }) => {
   const [serialNumber, setSerialNumber] = useState('');
-  const [devices, setDevices] = useState<IndividualDeviceListItemResponse[]>();
+  const [devices, setDevices] =
+    useState<IndividualDeviceListResponseFromDevicePage[]>();
   const [isLoading, setIsLoading] = useState(false);
   const [cancelTokenSource, setCancelTokenSource] =
     useState<CancelTokenSource | null>(null);
@@ -39,8 +38,8 @@ export const DevicesSearch: FC<DevicesSearchProps> = ({
       const newCancelToken = axios.CancelToken.source();
       setCancelTokenSource(newCancelToken);
       const res: {
-        items: IndividualDeviceListItemResponse[];
-      } = await axios.get('IndividualDevices', {
+        items: IndividualDeviceListResponseFromDevicePage[];
+      } = await axios.get('Devices/Individual', {
         params: {
           serialNumber,
           pageNumber: 1,
@@ -60,7 +59,7 @@ export const DevicesSearch: FC<DevicesSearchProps> = ({
   };
 
   const renderDevice = (
-    device: IndividualDeviceListItemResponse,
+    device: IndividualDeviceListResponseFromDevicePage,
     index: number,
   ) => (
     <NavLink
@@ -69,26 +68,26 @@ export const DevicesSearch: FC<DevicesSearchProps> = ({
       key={device.id}
     >
       <Device key={index}>
-        <DeviceDataString device={device} />
-        <DeviceStatus
+        <DeviceDataString device={device as any} />
+        {/* <DeviceStatus
           isActive={device.closingDate === null}
           closingReason={device.closingReason}
-        />
+        /> */}
         <DateRangeContainer>
-          <DateRange
+          {/* <DateRange
             firstDate={device.lastCheckingDate}
             lastDate={device.futureCheckingDate}
             bold
-          />
+          /> */}
         </DateRangeContainer>
-        <div>
+        {/* <div>
           {allIndividualDeviceMountPlaces &&
             device.mountPlace &&
             allIndividualDeviceMountPlaces.find(
               (mountPlaceFromServer) =>
                 mountPlaceFromServer.name === device.mountPlace,
             )?.description}
-        </div>
+        </div> */}
       </Device>
     </NavLink>
   );
