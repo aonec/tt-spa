@@ -32,7 +32,7 @@ export const ApartmentProfileContainer = () => {
         replace: true,
       });
     }
-  }, []);
+  }, [tabSection, apartmentId, navigate]);
 
   return (
     <>

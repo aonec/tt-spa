@@ -6,7 +6,6 @@ import { useParams } from 'react-router-dom';
 import { taskProfileService } from '.';
 import { TaskProfile } from './view/TaskProfile';
 import { applicationInfoService } from './applicationInfoService';
-import { tasksProfileService } from '../tasksProfileService';
 
 const { gates, outputs, inputs } = taskProfileService;
 const { TaskIdGate, RelatedNodeIdGate } = gates;
