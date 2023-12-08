@@ -31,8 +31,8 @@ export const EditHousingMeteringDevicePage: FC<
   const address = housingMeteringDevice?.address?.address?.mainAddress;
   const isActive = !Boolean(housingMeteringDevice?.closingDate);
 
-  const history =  useNavigate();
-  const onCancel = () => history(-1);
+  const navigate =  useNavigate();
+  const onCancel = () => navigate(-1);
 
   const tabItems = useMemo(
     () => [

@@ -32,7 +32,7 @@ export const MountAddress: FC<MountAddressProps> = ({
 
   const address = building?.address?.mainAddress;
 
-  const history =  useNavigate();
+  const navigate =  useNavigate();
 
   const initialValues = useMemo(() => {
     const savedHousingStockAddress = savedHousingStock?.address?.mainAddress;
@@ -141,7 +141,7 @@ export const MountAddress: FC<MountAddressProps> = ({
           </FormItem>
         </FormWrapper>
         <Footer>
-          <Button type="ghost" onClick={() => history(-1)}>
+          <Button type="ghost" onClick={() => navigate(-1)}>
             Отмена
           </Button>
           <ButtonSC onClick={() => handleSubmitForm()}>Далее</ButtonSC>

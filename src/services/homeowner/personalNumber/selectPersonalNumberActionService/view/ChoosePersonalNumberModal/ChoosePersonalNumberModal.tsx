@@ -16,17 +16,17 @@ export const ChoosePersonalNumberModal: FC<ChoosePersonalNumberModalProps> = ({
   selectedAction,
   setSelectActionModalOpen,
 }) => {
-  const history =  useNavigate();
+  const navigate =  useNavigate();
 
   const [homeownerId, setHomeownerId] = useState<string | null>(null);
 
   const redirectToPage = () => {
     if (selectedAction === PersonalNumberActions.Add) {
-       history(
+       navigate(
         `/apartment/${apartment.id}/homeowners/${PersonalNumberActions.Add}`,
       );
     } else {
-       history(
+       navigate(
         `/apartment/${apartment.id}/homeowners/${homeownerId}/${selectedAction}`,
       );
     }

@@ -26,7 +26,7 @@ export const CompanyProfile: FC<CompanyProfileProps> = ({
   catchContractorData,
   currentManagingFirm,
 }) => {
-  const history = useNavigate();
+  const navigate = useNavigate();
   const { section } = useParams<{ section: CompanyProfileSection }>();
 
   const tabItems = useMemo(
@@ -46,7 +46,7 @@ export const CompanyProfile: FC<CompanyProfileProps> = ({
           menuButtons: [
             {
               title: 'Редактировать информацию о компании',
-              onClick: () => history('/editCompany'),
+              onClick: () => navigate('/editCompany'),
             },
             {
               title: 'Добавить контрагента',
@@ -68,7 +68,7 @@ export const CompanyProfile: FC<CompanyProfileProps> = ({
       <TabsSC
         activeKey={section}
         onChange={(activeKey) =>
-          history(`/companyProfile/${activeKey as CompanyProfileSection}`)
+          navigate(`/companyProfile/${activeKey as CompanyProfileSection}`)
         }
         items={tabItems}
       />

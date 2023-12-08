@@ -17,7 +17,7 @@ import { EPipeNodeConfig } from 'api/types';
 export const EditNodeRelatedDevices: FC<EditNodeRelatedDevicesProps> = ({
   node,
 }) => {
-  const history =  useNavigate();
+  const navigate =  useNavigate();
 
   const openAddHousingMeteringDeviceModal = useEvent(
     addHosuingMeteringDeviceService.inputs.openModal,
@@ -35,7 +35,7 @@ export const EditNodeRelatedDevices: FC<EditNodeRelatedDevicesProps> = ({
         communicationPipes={node.communicationPipes || []}
         configuration={node.configuration}
         handleEditDevice={(deviceId) =>
-           history(`/housingMeteringDevices/${deviceId}/edit`)
+           navigate(`/housingMeteringDevices/${deviceId}/edit`)
         }
         handleDeleteDevice={(device) =>
           openDeleteHousingMeteringDeviceModal(device)

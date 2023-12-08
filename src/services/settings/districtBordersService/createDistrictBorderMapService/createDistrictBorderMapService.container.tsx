@@ -15,7 +15,7 @@ const {
 } = createDistrictBorderMapService;
 
 export const CreateDistrictBorderMapContainer = () => {
-  const history =  useNavigate();
+  const navigate =  useNavigate();
 
   const { preselectedDistrictPayload, organizationCoordinates } = useUnit({
     preselectedDistrictPayload: outputs.$preselectedDistrictPayload,
@@ -34,9 +34,9 @@ export const CreateDistrictBorderMapContainer = () => {
 
   useEffect(() => {
     return createDistrictMutation.finished.success.watch(() =>
-       history('/settings/districtBorder'),
+       navigate('/settings/districtBorder'),
     ).unsubscribe;
-  }, [history]);
+  }, [navigate]);
 
   return (
     <>

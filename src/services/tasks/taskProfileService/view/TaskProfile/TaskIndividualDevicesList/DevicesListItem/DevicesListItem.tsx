@@ -23,7 +23,7 @@ export const DevicesListItem: FC<DevicesListItemProps> = ({
   const [isOpen, setIsOpen] = useState(false);
   const toggle = () => setIsOpen(!isOpen);
 
-  const history =  useNavigate();
+  const navigate =  useNavigate();
 
   return (
     <Wrapper>
@@ -33,7 +33,7 @@ export const DevicesListItem: FC<DevicesListItemProps> = ({
         </GroupWrapper>
         <GroupWrapper>
           <LinkToProfile
-            onClick={() =>  history(`/apartments/${apartmentId}/testimony`)}
+            onClick={() =>  navigate(`/apartments/${apartmentId}/testimony`)}
           >
             Перейти в профиль
           </LinkToProfile>

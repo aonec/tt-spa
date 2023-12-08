@@ -36,7 +36,7 @@ export const ApartmentProfile: FC<ApartmentProfileProps> = ({
   tabSection,
   isPermitionToEditApartment,
 }) => {
-  const history = useNavigate();
+  const navigate = useNavigate();
 
   const address = apartment?.housingStock?.address?.mainAddress;
   const additionalAddresses =
@@ -137,7 +137,7 @@ export const ApartmentProfile: FC<ApartmentProfileProps> = ({
               menuButtons: [
                 {
                   title: 'Редактировать квартиру',
-                  onClick: () => history(`/apartments/${apartment.id}/edit`),
+                  onClick: () => navigate(`/apartments/${apartment.id}/edit`),
                   hidden: !isPermitionToEditApartment,
                 },
               ],
@@ -159,7 +159,7 @@ export const ApartmentProfile: FC<ApartmentProfileProps> = ({
             <Tabs
               activeKey={tabSection}
               onChange={(activeKey) =>
-                history(
+                navigate(
                   `/apartments/${apartment.id}/${
                     activeKey as ApartmentSection
                   }`,

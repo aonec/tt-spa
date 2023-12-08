@@ -21,7 +21,7 @@ const {
 export const EditDistrictBordersContainer = () => {
   const { id } = useParams<{ id: string }>();
 
-  const history = useNavigate();
+  const navigate = useNavigate();
 
   const { organizationCoordinates } = useUnit({
     organizationCoordinates:
@@ -62,9 +62,9 @@ export const EditDistrictBordersContainer = () => {
 
   useEffect(() => {
     return updateDistrictMutation.finished.success.watch(() => {
-      history('/districtBordersSettings/manageDistricts');
+      navigate('/districtBordersSettings/manageDistricts');
     }).unsubscribe;
-  }, [history]);
+  }, [navigate]);
 
   if (!id) return null;
 

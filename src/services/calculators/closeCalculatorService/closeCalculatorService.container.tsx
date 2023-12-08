@@ -14,11 +14,11 @@ export const CloseCalculatorContainer = () => {
   const handleCloseModal = useEvent(inputs.closeModal);
   const handleCloseCalculator = useEvent(inputs.closeCalculator);
 
-  const history = useNavigate();
+  const navigate = useNavigate();
 
   useEffect(() => {
-    return inputs.successClose.watch(() => history(-1)).unsubscribe;
-  }, [history]);
+    return inputs.successClose.watch(() => navigate(-1)).unsubscribe;
+  }, [navigate]);
 
   if (!calculator) {
     return null;

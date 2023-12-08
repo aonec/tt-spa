@@ -24,11 +24,11 @@ export const IndividualDeviceListItem: FC<IndividualDeviceListItemProps> = ({
   consumptionData,
   isConsumptionsLoading,
 }) => {
-  const history =  useNavigate();
+  const navigate =  useNavigate();
 
   const handleClickDevice = useCallback(
-    (id: number) =>  history(`/individualDeviceProfile/${id}`),
-    [history],
+    (id: number) =>  navigate(`/individualDeviceProfile/${id}`),
+    [navigate],
   );
 
   const isConsumptionExist =

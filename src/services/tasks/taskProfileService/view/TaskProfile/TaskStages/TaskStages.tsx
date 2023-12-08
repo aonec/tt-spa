@@ -50,7 +50,7 @@ export const TaskStages: FC<TaskStagesProps> = ({
     [stages, handleRevertStage, isRevertStageLoading, isStageCanBeReverted],
   );
 
-  const history =  useNavigate();
+  const navigate =  useNavigate();
 
   const isF1Task =
     taskType === EManagingFirmTaskType.HousingDeviceMalfunction ||
@@ -66,7 +66,7 @@ export const TaskStages: FC<TaskStagesProps> = ({
             <ChooseTypeOfResourceDisconnectionModalContainer />
             <CreateResourceDisconnectionContainer
               handleComplete={() => {
-                history(-1);
+                navigate(-1);
               }}
               dateFrom={task.creationTime}
               preselectedBuilding={task.buildingId}

@@ -21,7 +21,7 @@ export const NonResidentialBuildingProfileContainer = () => {
     buildingId: string;
     section?: NonResidentialBuildingProfileGrouptype;
   }>();
-  const history = useNavigate();
+  const navigate = useNavigate();
 
   const {
     isLoading,
@@ -53,10 +53,10 @@ export const NonResidentialBuildingProfileContainer = () => {
 
   const setGrouptype = useCallback(
     (section: NonResidentialBuildingProfileGrouptype) =>
-      history(`/buildings/nonResidentialProfile/${buildingId}/${section}`, {
+      navigate(`/buildings/nonResidentialProfile/${buildingId}/${section}`, {
         replace: true,
       }),
-    [history, buildingId],
+    [navigate, buildingId],
   );
 
   return (

@@ -30,7 +30,7 @@ export const AccountingNodeReadingsLine: FC<
   readings,
   handleUpdateReadingsSum,
 }) => {
-  const history =  useNavigate();
+  const navigate =  useNavigate();
 
   const {
     currentReading,
@@ -65,13 +65,13 @@ export const AccountingNodeReadingsLine: FC<
   }, [previousExistingReadingBySliderIndex]);
 
   const handleChangeODPU = useCallback(
-    () =>  history(`/changeODPU/${device.id}`),
-    [history, device.id],
+    () =>  navigate(`/changeODPU/${device.id}`),
+    [navigate, device.id],
   );
 
   const handleEditODPU = useCallback(
-    () =>  history(`/electricNode/${device.id}/edit`),
-    [history, device.id],
+    () =>  navigate(`/electricNode/${device.id}/edit`),
+    [navigate, device.id],
   );
 
   useEffect(() => {

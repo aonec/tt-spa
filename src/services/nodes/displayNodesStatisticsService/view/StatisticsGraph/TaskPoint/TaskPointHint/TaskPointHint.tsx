@@ -4,7 +4,7 @@ import { ChevronIconCS, TaskInfoItem } from './TaskPointHint.styled';
 import { TaskPointHintProps } from './TaskPointHint.types';
 
 export const TaskPointHint: FC<TaskPointHintProps> = ({ task }) => {
-  const history =  useNavigate();
+  const navigate =  useNavigate();
   if (!task.title) {
     return null;
   }
@@ -14,7 +14,7 @@ export const TaskPointHint: FC<TaskPointHintProps> = ({ task }) => {
       <span>{task.title}</span>
       <div>
         <ChevronIconCS
-          onClick={() =>  history(`/tasks/profile/${task.id}`)}
+          onClick={() =>  navigate(`/tasks/profile/${task.id}`)}
         />
       </div>
     </TaskInfoItem>

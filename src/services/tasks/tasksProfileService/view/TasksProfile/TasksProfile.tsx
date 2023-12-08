@@ -51,7 +51,7 @@ export const TasksProfile: FC<TasksProfileProps> = ({
     featureToggles: developmentSettingsService.outputs.$featureToggles,
   });
 
-  const history = useNavigate();
+  const navigate = useNavigate();
   const { executingTasksCount, observingTasksCount, totalItems } =
     pagedTasks || {};
 
@@ -68,7 +68,7 @@ export const TasksProfile: FC<TasksProfileProps> = ({
 
   useEffect(() => {
     if (isSpectator && grouptype === TaskGroupingFilter.Executing) {
-      history('/tasks/list/Observing');
+      navigate('/tasks/list/Observing');
     }
   });
 
@@ -148,7 +148,7 @@ export const TasksProfile: FC<TasksProfileProps> = ({
             <ContentWrapper>
               <TabsSC
                 activeKey={grouptype}
-                onChange={(activeKey) => history(`/tasks/list/${activeKey}`)}
+                onChange={(activeKey) => navigate(`/tasks/list/${activeKey}`)}
                 items={tabItems}
               />
               <SearchTasks

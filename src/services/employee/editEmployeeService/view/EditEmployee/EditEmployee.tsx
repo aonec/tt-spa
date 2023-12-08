@@ -27,8 +27,8 @@ export const EditEmployee: FC<EditEmployeeProps> = ({
   const params = useParams<{ id: string }>();
   const userId = Number(params.id);
 
-  const history =  useNavigate();
-  const onCancel = () =>  history('/companyProfile/staff');
+  const navigate =  useNavigate();
+  const onCancel = () =>  navigate('/companyProfile/staff');
 
   const phoneMask = usePhoneMask();
 

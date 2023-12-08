@@ -12,7 +12,7 @@ import { getApartmentQuery } from './ApartmentReadingsService.api';
 const { inputs, outputs } = apartmentReadingsService;
 
 export const ApartmentReadingsContainer = () => {
-  const history =  useNavigate();
+  const navigate =  useNavigate();
   const { id } = useParams<{ id: string }>();
 
   const {
@@ -64,9 +64,9 @@ export const ApartmentReadingsContainer = () => {
     return inputs.handleApartmentLoaded.watch(({ result: apartment }) => {
       if (!apartment || apartment.id === Number(id)) return;
 
-       history(`/meters/apartments/${apartment.id}`);
+       navigate(`/meters/apartments/${apartment.id}`);
     }).unsubscribe;
-  }, [history, id]);
+  }, [navigate, id]);
 
   const handlePrintIssueCertificate = () => {
     printIssueCertificate(Number(id));

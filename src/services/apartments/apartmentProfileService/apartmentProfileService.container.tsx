@@ -18,7 +18,7 @@ export const ApartmentProfileContainer = () => {
 
   const { tabSection } = useParams<{ tabSection: ApartmentSection }>();
 
-  const history = useNavigate();
+  const navigate = useNavigate();
 
   const isPermitionToEditApartment = usePermission([
     ESecuredIdentityRoleName.Administrator,
@@ -28,7 +28,7 @@ export const ApartmentProfileContainer = () => {
 
   useEffect(() => {
     if (!tabSection) {
-      history(`/apartments/${apartmentId}/${ApartmentSection.CommonData}`, {
+      navigate(`/apartments/${apartmentId}/${ApartmentSection.CommonData}`, {
         replace: true,
       });
     }

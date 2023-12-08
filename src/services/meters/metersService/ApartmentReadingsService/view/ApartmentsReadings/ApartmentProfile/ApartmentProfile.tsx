@@ -43,7 +43,7 @@ export const ApartmentProfile: FC<ApartmentProfileProps> = ({
   nearestAppointment,
 }) => {
   const { id } = useParams<{ id: string }>();
-  const history =  useNavigate();
+  const navigate =  useNavigate();
 
   const isPaused = apartment
     ? apartment.status === EApartmentStatus.Pause
@@ -153,7 +153,7 @@ export const ApartmentProfile: FC<ApartmentProfileProps> = ({
                   {
                     title: 'Добавить новый прибор',
                     onClick: () =>
-                       history(
+                       navigate(
                         `/apartment/${apartment.id}/addIndividualDevice`,
                       ),
                   },

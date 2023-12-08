@@ -12,10 +12,10 @@ export const RegistrationContainer = () => {
   const handleConfirmRegistration = useEvent(inputs.handleConfirmRegistration);
   const successRegistration = inputs.successRegistration;
 
-  const history =  useNavigate();
+  const navigate =  useNavigate();
   useEffect(() => {
-    successRegistration.watch(() =>  history('/login'));
-  }, [successRegistration, history]);
+    successRegistration.watch(() =>  navigate('/login'));
+  }, [successRegistration, navigate]);
 
   return (
     <RegistrationPage

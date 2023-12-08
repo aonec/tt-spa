@@ -29,7 +29,7 @@ export const EditCalculatorConnection: FC<AddCalculatorConnectionProps> = ({
   isLoading,
   openRemoveConnectionModal,
 }) => {
-  const history =  useNavigate();
+  const navigate =  useNavigate();
 
   const { values, handleSubmit, setFieldValue, errors } = useFormik<
     Partial<UpdatePipeNodeRequest>
@@ -116,7 +116,7 @@ export const EditCalculatorConnection: FC<AddCalculatorConnectionProps> = ({
         </FormItem>
       </FormWrapper>
       <FooterWrapper>
-        <Button type="ghost" onClick={() => history(-1)}>
+        <Button type="ghost" onClick={() => navigate(-1)}>
           Отмена
         </Button>
 

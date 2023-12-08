@@ -14,7 +14,7 @@ export const LoginContainer = () => {
 
   const isLoading = useStore(outputs.$isLoading);
 
-  const history = useNavigate();
+  const navigate = useNavigate();
   const { search } = useLocation();
 
   useEffect(
@@ -25,14 +25,14 @@ export const LoginContainer = () => {
           return window.location.replace(redirectUrl as string | URL);
         }
 
-        history(
+        navigate(
           successResponse?.roles?.includes('Operator') ? '/meters' : '/tasks',
           {
             replace: true,
           },
         );
       }).unsubscribe,
-    [history, search],
+    [navigate, search],
   );
 
   return (

@@ -23,7 +23,7 @@ export const SettingPage: FC<SettingPageProps> = ({
 
   const { section } = useParams<{ section: SettingsPageSection }>();
 
-  const history = useNavigate();
+  const navigate = useNavigate();
   const { pathname } = useLocation();
   const isTemperatureGraphTab = pathname.split('/')[2] === 'temperatureGraph';
 
@@ -117,14 +117,14 @@ export const SettingPage: FC<SettingPageProps> = ({
     const path = keys.find((elem) => elem.visible);
 
     if (pathname.split('/').length === 2 && path)
-      history(`/${pagePath}/${path.key}`);
+      navigate(`/${pagePath}/${path.key}`);
   }, [
     isAdminSettings,
     featureToggles.controllersDistribution,
     featureToggles.districtsManage,
     featureToggles.temperatureGraph,
     featureToggles.workingRanges,
-    history,
+    navigate,
     pathname,
     pagePath,
   ]);
@@ -144,7 +144,7 @@ export const SettingPage: FC<SettingPageProps> = ({
       <TabsSC
         activeKey={section}
         onChange={(key) =>
-          history(`/${pagePath}/${key}`, {
+          navigate(`/${pagePath}/${key}`, {
             replace: true,
           })
         }

@@ -12,7 +12,7 @@ import { Button } from 'ui-kit/Button';
 import {  useNavigate } from 'react-router-dom';
 
 export const AccessDeniedPage: FC<AccessDeniedPageProps> = () => {
-  const history =  useNavigate();
+  const navigate =  useNavigate();
 
   return (
     <Wrapper>
@@ -26,7 +26,7 @@ export const AccessDeniedPage: FC<AccessDeniedPageProps> = () => {
           письме не забудьте указать ссылку на страницу.
         </Descripion>
       </DescriptionWrapper>
-      <Button onClick={() => history(-1)}>Вернуться назад</Button>
+      <Button onClick={() => navigate(-1)}>Вернуться назад</Button>
     </Wrapper>
   );
 };

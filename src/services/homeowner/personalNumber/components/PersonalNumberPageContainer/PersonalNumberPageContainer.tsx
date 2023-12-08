@@ -25,14 +25,14 @@ export const PersonalNumberPageContainer: FC<
   handleCheckApartmentExist,
   isCheckApartLoading,
 }) => {
-  const history = useNavigate();
+  const navigate = useNavigate();
 
   const address = apartment && getApartmentAddressString(apartment);
 
   const getFirstButton = useMemo(() => {
     if (isFirstStage || isFirstStage === undefined) {
       return (
-        <Button type="ghost" onClick={() => history(-1)}>
+        <Button type="ghost" onClick={() => navigate(-1)}>
           Отмена
         </Button>
       );
@@ -43,7 +43,7 @@ export const PersonalNumberPageContainer: FC<
         </Button>
       );
     }
-  }, [isFirstStage, history, onCancelHandler]);
+  }, [isFirstStage, navigate, onCancelHandler]);
 
   const getSecondButton = useMemo(() => {
     if (isLastStage || isLastStage === undefined) {

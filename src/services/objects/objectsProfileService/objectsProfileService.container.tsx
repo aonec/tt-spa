@@ -27,7 +27,7 @@ const { inputs, outputs } = objectsProfileService;
 export const ObjectsProfileContainer = () => {
   const { searchType } = useParams<{ searchType?: SearchType }>();
 
-  const history =  useNavigate();
+  const navigate =  useNavigate();
 
   const {
     openSoiReportModal,
@@ -54,7 +54,7 @@ export const ObjectsProfileContainer = () => {
     pageSegment: outputs.$pageSegment,
   });
 
-  const handleCreateObject = () =>  history('/buildings/create');
+  const handleCreateObject = () =>  navigate('/buildings/create');
 
   const isPermitionToDownloadGroupReport = usePermission([
     ESecuredIdentityRoleName.Administrator,
@@ -94,9 +94,9 @@ export const ObjectsProfileContainer = () => {
 
   useEffect(() => {
     if (!searchType) {
-       history(`/buildings/${SearchType.Houses}`);
+       navigate(`/buildings/${SearchType.Houses}`);
     }
-  }, [searchType, history]);
+  }, [searchType, navigate]);
 
   return (
     <>

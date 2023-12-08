@@ -16,7 +16,7 @@ export const SwitchPersonalNumberContainer = () => {
   const apartmentId = id;
 
   const { homeownerId } = useParams<{ homeownerId: string }>();
-  const history =  useNavigate();
+  const navigate =  useNavigate();
 
   const isLoading = useStore(outputs.$isLoading);
   const apartment = useStore(outputs.$apartment);
@@ -37,9 +37,9 @@ export const SwitchPersonalNumberContainer = () => {
 
   useEffect(() => {
     return inputs.successSwitchHomeownerAccount.watch(() => {
-       history(`/meters/apartments/${apartmentId}`);
+       navigate(`/meters/apartments/${apartmentId}`);
     }).unsubscribe;
-  }, [history, apartmentId]);
+  }, [navigate, apartmentId]);
 
   return (
     <>

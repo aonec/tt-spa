@@ -13,7 +13,7 @@ const {
 
 export const AddPersonalNumberContainer = () => {
   const { id } = useParams<{ id: string }>();
-  const history =  useNavigate();
+  const navigate =  useNavigate();
 
   const apartment = useStore(outputs.$apartment);
   const isLoading = useStore(outputs.$isLoading);
@@ -29,9 +29,9 @@ export const AddPersonalNumberContainer = () => {
 
   useEffect(() => {
     return inputs.successAddPersonalNumber.watch(() => {
-       history(`/meters/apartments/${apartment?.id}`);
+       navigate(`/meters/apartments/${apartment?.id}`);
     }).unsubscribe;
-  }, [history, apartment?.id]);
+  }, [navigate, apartment?.id]);
 
   return (
     <>

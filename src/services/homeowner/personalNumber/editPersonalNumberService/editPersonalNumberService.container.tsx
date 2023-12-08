@@ -17,7 +17,7 @@ export const EditPersonalNumberContainer = () => {
   const apartmentId = id;
 
   const { homeownerId } = useParams<{ homeownerId: string }>();
-  const history =  useNavigate();
+  const navigate =  useNavigate();
 
   const isLoading = useStore(outputs.$isLoading);
   const isLoadingClosingAccount = useStore(outputs.$isLoadingClosingAccount);
@@ -48,15 +48,15 @@ export const EditPersonalNumberContainer = () => {
 
   useEffect(() => {
     return inputs.successEditHomeownerAccount.watch(() => {
-       history(`/meters/apartments/${apartmentId}`);
+       navigate(`/meters/apartments/${apartmentId}`);
     }).unsubscribe;
-  }, [history, apartmentId]);
+  }, [navigate, apartmentId]);
 
   useEffect(() => {
     return inputs.successCloseHomeownerAccount.watch(() => {
-       history(`/meters/apartments/${apartmentId}`);
+       navigate(`/meters/apartments/${apartmentId}`);
     }).unsubscribe;
-  }, [history, apartmentId]);
+  }, [navigate, apartmentId]);
 
   return (
     <>

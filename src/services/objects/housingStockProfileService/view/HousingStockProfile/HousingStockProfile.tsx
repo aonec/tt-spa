@@ -27,7 +27,7 @@ export const HousingStockProfile: FC<HousingStockProfileProps> = ({
   isPermissionToEditHousingStock,
   resourceDisconnections,
 }) => {
-  const history =  useNavigate();
+  const navigate =  useNavigate();
 
   const { address } = housingStock;
   const addressString = getBuildingAddress(housingStock);
@@ -72,7 +72,7 @@ export const HousingStockProfile: FC<HousingStockProfileProps> = ({
             {
               title: 'Добавить узел',
               onClick: () =>
-                 history(
+                 navigate(
                   `/buildings/livingProfile/${housingStock.id}/addNode`,
                 ),
               hidden: !isPermitionToAddNode,
@@ -85,7 +85,7 @@ export const HousingStockProfile: FC<HousingStockProfileProps> = ({
             {
               title: 'Редактировать',
               onClick: () =>
-                 history(
+                 navigate(
                   `/buildings/livingProfile/${housingStock.id}/edit`,
                 ),
               hidden: !isPermissionToEditHousingStock,

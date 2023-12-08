@@ -76,7 +76,7 @@ export const ManageDistrictsList: FC<Props> = ({
     updateDistrictMutation,
   );
 
-  const history =  useNavigate();
+  const navigate =  useNavigate();
 
   const [openedDistrict, setOpenedDistrict] = useState<string | null>(null);
   const [openedStreets, setOpenedStreets] = useState<string[]>([]);
@@ -180,7 +180,7 @@ export const ManageDistrictsList: FC<Props> = ({
                       {
                         title: 'Изменить границы района на карте',
                         onClick: () => {
-                           history(
+                           navigate(
                             `/districtBordersSettings/editDistrictBorders/${elem.id}`,
                           );
                         },

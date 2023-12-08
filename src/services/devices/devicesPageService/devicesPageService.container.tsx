@@ -13,7 +13,7 @@ import {
 export const DevicesPageContainer = () => {
   const { type } = useParams<{ type?: DevicesProfileTabsType }>();
 
-  const history =  useNavigate();
+  const navigate =  useNavigate();
 
   const openDownloadDevicesReportModal = useEvent(
     devicesReportService.inputs.openModal,
@@ -28,17 +28,17 @@ export const DevicesPageContainer = () => {
   useEffect(() => {
     if (type) return;
 
-     history(`/devices/${DevicesProfileTabsType.ODPU}`);
-  }, [type, history]);
+     navigate(`/devices/${DevicesProfileTabsType.ODPU}`);
+  }, [type, navigate]);
 
   const setDevicesType = useCallback(
     (type: DevicesProfileTabsType) => {
-       history(`/devices/${type}`);
+       navigate(`/devices/${type}`);
     },
-    [history],
+    [navigate],
   );
 
-  const handleAddNode = () =>  history('/devices/addNode');
+  const handleAddNode = () =>  navigate('/devices/addNode');
 
   return (
     <>

@@ -19,7 +19,7 @@ export const EditObjectContainer = () => {
     buildingId: string;
     houseCategory: string;
   }>();
-  const history =  useNavigate();
+  const navigate =  useNavigate();
 
   const preparedHouseCategory = useMemo(() => {
     if (houseCategory === 'livingProfile') {
@@ -78,8 +78,8 @@ export const EditObjectContainer = () => {
   });
 
   useEffect(() => {
-    return inputs.onPageCancel.watch(() => history(-1)).unsubscribe;
-  }, [history]);
+    return inputs.onPageCancel.watch(() => navigate(-1)).unsubscribe;
+  }, [navigate]);
 
   return (
     <>

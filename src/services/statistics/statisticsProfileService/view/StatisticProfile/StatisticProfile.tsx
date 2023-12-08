@@ -18,7 +18,7 @@ export const StatisticProfile: FC<StatisticProfileProps> = ({
   housingStockId,
   housingStockAddress,
 }) => {
-  const history = useNavigate();
+  const navigate = useNavigate();
 
   const menuButtons = useMemo(() => {
     if (grouptype === StatisticProfileGrouptype.disabledResources) {
@@ -99,7 +99,7 @@ export const StatisticProfile: FC<StatisticProfileProps> = ({
 
       <TabsSC
         activeKey={grouptype}
-        onChange={(value) => history(`/statistics/${value}`)}
+        onChange={(value) => navigate(`/statistics/${value}`)}
         items={tabItems}
       />
       {components[grouptype]}

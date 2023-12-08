@@ -18,7 +18,7 @@ const { inputs, outputs, gates } = apartmentSealService;
 const { ApartmentGate } = gates;
 
 export const ApartmentSealContainer = () => {
-  const history =  useNavigate();
+  const navigate =  useNavigate();
   const { id } = useParams<{ id: string }>();
 
   const { data: existingDistricts } = useUnit(existingDistrictsQuery);
@@ -67,9 +67,9 @@ export const ApartmentSealContainer = () => {
     return inputs.handleApartmentLoaded.watch(({ result: apartment }) => {
       if (!apartment || apartment.id === Number(id)) return;
 
-       history(`/services/seal/apartment/${apartment.id}`);
+       navigate(`/services/seal/apartment/${apartment.id}`);
     }).unsubscribe;
-  }, [history, id]);
+  }, [navigate, id]);
 
   return (
     <>

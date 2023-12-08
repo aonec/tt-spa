@@ -30,7 +30,7 @@ export const CreateNodeContainer = () => {
     return null;
   }, [houseCategory]);
 
-  const history =  useNavigate();
+  const navigate =  useNavigate();
 
   const {
     building,
@@ -82,9 +82,9 @@ export const CreateNodeContainer = () => {
 
   useEffect(() => {
     return inputs.handlePipeNodeCreated.watch((node) =>
-       history(`/nodes/${node.id}`),
+       navigate(`/nodes/${node.id}`),
     );
-  }, [history]);
+  }, [navigate]);
 
   const preparedBuildingData = mountBuilding || building; //первый берет данные из сторы (случай входа на страницу из "приборы"), второй из запроса по данным из парамс
 

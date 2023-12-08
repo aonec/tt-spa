@@ -26,7 +26,7 @@ export const HousingStockItem: FC<HousingStockItemProps> = ({
 }) => {
   const address = getBuildingAddress(housingStock);
   const mainAddress = housingStock.address?.mainAddress;
-  const history =  useNavigate();
+  const navigate =  useNavigate();
   const isAdmin = usePermission([
     ESecuredIdentityRoleName.Administrator,
     ESecuredIdentityRoleName.ManagingFirmSpectatingAdministrator,
@@ -80,7 +80,7 @@ export const HousingStockItem: FC<HousingStockItemProps> = ({
             {
               title: 'Посмотреть информацию',
               onClick: () =>
-                 history(
+                 navigate(
                   `/buildings/${buildingProfilePath}/${housingStock.id}`,
                 ),
             },

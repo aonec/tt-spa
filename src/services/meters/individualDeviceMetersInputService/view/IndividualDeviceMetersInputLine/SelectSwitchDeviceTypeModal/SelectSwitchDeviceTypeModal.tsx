@@ -12,13 +12,13 @@ import { FormModal } from 'ui-kit/Modals/FormModal';
 export const SelectSwitchDeviceTypeModal: FC<
   SelectSwitchDeviceTypeModalProps
 > = ({ apartmentId, close, deviceId, show }) => {
-  const history =  useNavigate();
+  const navigate =  useNavigate();
 
   const [selectedSwitchType, setSelectedSwitchType] =
     useState<SelectSwitchDeviceType | null>(null);
 
   const next = (to: SelectSwitchDeviceType) =>
-     history(
+     navigate(
       `/apartment/${apartmentId}/individualDevice/${deviceId}/${to}`,
     );
 

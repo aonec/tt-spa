@@ -14,7 +14,7 @@ import {  useNavigate } from 'react-router-dom';
 export const TaskPipeNodeInfo: FC<TaskPipeNodeInfoProps> = ({ pipeNode }) => {
   const { resource, number, id } = pipeNode;
 
-  const history =  useNavigate();
+  const navigate =  useNavigate();
 
   return (
     <Wrapper>
@@ -26,7 +26,7 @@ export const TaskPipeNodeInfo: FC<TaskPipeNodeInfoProps> = ({ pipeNode }) => {
         </GroupWrapper>
         <GroupWrapper>
           <GoTo
-            onClick={() =>  history(`/nodes/${id}/stats`)}
+            onClick={() =>  navigate(`/nodes/${id}/stats`)}
             data-test="task-pipe-node-link"
           >
             Перейти {'>'}

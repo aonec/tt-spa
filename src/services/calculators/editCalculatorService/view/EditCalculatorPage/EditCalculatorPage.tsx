@@ -34,8 +34,8 @@ export const EditCalculatorPage: FC<EditCalculatorPageProps> = ({
 }) => {
   const address = calculator?.address?.address?.mainAddress;
 
-  const history =  useNavigate();
-  const onCancel = () => history(-1);
+  const navigate =  useNavigate();
+  const onCancel = () => navigate(-1);
 
   const tabItems = useMemo(
     () => [

@@ -19,7 +19,7 @@ const formId = 'select-personal-number-action-modal';
 export const SelectPersonalNumberActionModal: FC<
   SelectPersonalNumberActionModalProps
 > = ({ isOpen, setAction, apartmentId, setSelectActionModalOpen }) => {
-  const history =  useNavigate();
+  const navigate =  useNavigate();
 
   return (
     <FormModal
@@ -45,7 +45,7 @@ export const SelectPersonalNumberActionModal: FC<
           <SelectItem
             onClick={() => {
               setAction(PersonalNumberActions.Add);
-               history(
+               navigate(
                 `/apartment/${apartmentId}/homeowners/${PersonalNumberActions.Add}`,
               );
             }}

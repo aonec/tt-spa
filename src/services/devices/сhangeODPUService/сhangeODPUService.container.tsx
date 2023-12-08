@@ -9,7 +9,7 @@ const { OldDeviceIdGate } = gates;
 
 export const ChangeODPUContainer = () => {
   const { oldDeviceId } = useParams<{ oldDeviceId: string }>();
-  const history =  useNavigate();
+  const navigate =  useNavigate();
 
   const oldDevice = useStore(outputs.$oldDevice);
   const isLoadingDevice = useStore(outputs.$isLoadingDevice);
@@ -20,9 +20,9 @@ export const ChangeODPUContainer = () => {
   useEffect(
     () =>
       inputs.switchHousingMeteringDeviceFx.doneData.watch(() =>
-        history(-1),
+        navigate(-1),
       ).unsubscribe,
-    [history],
+    [navigate],
   );
 
   return (

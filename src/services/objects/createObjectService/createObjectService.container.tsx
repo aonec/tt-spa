@@ -44,8 +44,8 @@ export const CreateObjectContainer = () => {
 
   const goBackStage = useEvent(inputs.goBackStage);
 
-  const history =  useNavigate();
-  const onPageCancel = () => history(-1);
+  const navigate =  useNavigate();
+  const onPageCancel = () => navigate(-1);
 
   useEffect(() => {
     return inputs.handleCreateObjectSuccessDone.watch((data) => {
@@ -58,10 +58,10 @@ export const CreateObjectContainer = () => {
       }
 
       if (data?.id) {
-         history(`/buildings/${buildingProfilePath}/${data.id}`);
+         navigate(`/buildings/${buildingProfilePath}/${data.id}`);
       }
     }).unsubscribe;
-  }, [history]);
+  }, [navigate]);
 
   return (
     <>

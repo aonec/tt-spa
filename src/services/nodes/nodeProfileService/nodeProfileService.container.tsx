@@ -18,7 +18,7 @@ export const NodeProfileContainer = () => {
     section?: PipeNodeProfileSection;
   }>();
 
-  const history = useNavigate();
+  const navigate = useNavigate();
 
   const pipeNode = useStore(outputs.$pipeNode);
   const isLoading = useStore(outputs.$isLoading);
@@ -27,11 +27,11 @@ export const NodeProfileContainer = () => {
   const openChangeNodeTypeModal = useEvent(inputs.openChangeNodeTypeModal);
 
   const handleChangeTab = (section: PipeNodeProfileSection) =>
-    history(`/nodes/${nodeId}/${section}`, {
+    navigate(`/nodes/${nodeId}/${section}`, {
       replace: true,
     });
 
-  const handleEditNode = () => history(`/nodes/${pipeNode?.id}/edit`);
+  const handleEditNode = () => navigate(`/nodes/${pipeNode?.id}/edit`);
 
   const isPermitionToEditsNode = usePermission([
     ESecuredIdentityRoleName.Administrator,

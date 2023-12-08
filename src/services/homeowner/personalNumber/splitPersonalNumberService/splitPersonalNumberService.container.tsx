@@ -21,7 +21,7 @@ export const SplitPersonalNumberContainer = () => {
   const apartmentId = id;
 
   const { homeownerId } = useParams<{ homeownerId: string }>();
-  const history =  useNavigate();
+  const navigate =  useNavigate();
 
   const stageNumber = useStore(outputs.$stageNumber);
 
@@ -60,9 +60,9 @@ export const SplitPersonalNumberContainer = () => {
 
   useEffect(() => {
     return inputs.successSplit.watch(() => {
-       history(`/meters/apartments/${apartmentId}`);
+       navigate(`/meters/apartments/${apartmentId}`);
     });
-  }, [history, apartmentId]);
+  }, [navigate, apartmentId]);
 
   return (
     <>

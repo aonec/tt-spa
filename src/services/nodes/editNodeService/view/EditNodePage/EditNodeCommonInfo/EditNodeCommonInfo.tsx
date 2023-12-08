@@ -33,7 +33,7 @@ export const EditNodeCommonInfo: FC<EditNodeCommonInfoProps> = ({
   updateNode,
   isLoading,
 }) => {
-  const history =  useNavigate();
+  const navigate =  useNavigate();
 
   const futureCommercialAccountingDate = node.futureCommercialAccountingDate
     ? dayjs(node.futureCommercialAccountingDate)
@@ -210,7 +210,7 @@ export const EditNodeCommonInfo: FC<EditNodeCommonInfoProps> = ({
       </Form>
 
       <FooterWrapper>
-        <Button type="ghost" onClick={() => history(-1)}>
+        <Button type="ghost" onClick={() => navigate(-1)}>
           Отмена
         </Button>
 

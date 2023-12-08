@@ -28,7 +28,7 @@ export const NonResidentialBuildingProfile: FC<
   openConsolidatedReportModal,
   resourceDisconnections,
 }) => {
-  const history =  useNavigate();
+  const navigate =  useNavigate();
 
   const content: {
     [key in NonResidentialBuildingProfileGrouptype]: ReactNode;
@@ -90,7 +90,7 @@ export const NonResidentialBuildingProfile: FC<
             {
               title: 'Добавить узел',
               onClick: () =>
-                 history(
+                 navigate(
                   `/buildings/nonResidentialProfile/${nonResidentialBuilding.id}/addNode`,
                 ),
               hidden: !isPermitionToAddNode,
@@ -103,7 +103,7 @@ export const NonResidentialBuildingProfile: FC<
             {
               title: 'Редактировать',
               onClick: () =>
-                 history(
+                 navigate(
                   `/buildings/nonResidentialProfile/${nonResidentialBuilding.id}/edit`,
                 ),
               hidden: !isPermissionToEditHousingStock,

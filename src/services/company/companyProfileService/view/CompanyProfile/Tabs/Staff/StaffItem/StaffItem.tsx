@@ -16,7 +16,7 @@ export const StaffItem: FC<StaffItemProps> = ({
   handleOpenDeleteModal,
   handleCatchEmployeeId,
 }) => {
-  const history =  useNavigate();
+  const navigate =  useNavigate();
   const phoneMask = usePhoneMask();
 
   const { firstName, lastName, middleName, roles, id, cellphone, status } =
@@ -28,7 +28,7 @@ export const StaffItem: FC<StaffItemProps> = ({
     <Wrapper key={staff.id}>
       <Name
         onClick={() => {
-           history(`/userProfile/${id}`);
+           navigate(`/userProfile/${id}`);
         }}
       >
         {lastName} {firstName} {middleName}
@@ -49,7 +49,7 @@ export const StaffItem: FC<StaffItemProps> = ({
         menuButtons={[
           {
             title: 'Открыть профиль сотрудника',
-            onClick: () =>  history(`/userProfile/${id}`),
+            onClick: () =>  navigate(`/userProfile/${id}`),
           },
           {
             title: 'Изменить статус',
@@ -61,7 +61,7 @@ export const StaffItem: FC<StaffItemProps> = ({
           {
             title: 'Редактировать информацию о сотруднике',
             onClick: () =>
-               history(`/companyProfile/editManagingFirmUser/${id}`),
+               navigate(`/companyProfile/editManagingFirmUser/${id}`),
           },
           {
             title: 'Удалить сотрудника',

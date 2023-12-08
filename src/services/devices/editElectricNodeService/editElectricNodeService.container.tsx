@@ -15,13 +15,13 @@ export const EditElectricNodeContainer = () => {
 
   const handleUpdateDevice = useEvent(inputs.updateDevice);
 
-  const history =  useNavigate();
+  const navigate =  useNavigate();
 
   useEffect(
     () =>
-      inputs.handleSuccessUpdateDevice.watch(() => history(-1))
+      inputs.handleSuccessUpdateDevice.watch(() => navigate(-1))
         .unsubscribe,
-    [history],
+    [navigate],
   );
 
   return (

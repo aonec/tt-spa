@@ -29,7 +29,7 @@ export const EmployeeProfile: FC<EmployeeProfileProps> = ({
   handleOpenChangeStatusModal,
   handleOpenDeleteEmployeeModal,
 }) => {
-  const history =  useNavigate();
+  const navigate =  useNavigate();
 
   const userInitials = `${userData?.firstName || ''} ${
     userData?.middleName || ''
@@ -64,7 +64,7 @@ export const EmployeeProfile: FC<EmployeeProfileProps> = ({
             {
               title: 'Редактировать информацию о сотруднике',
               onClick: () =>
-                 history(
+                 navigate(
                   `/companyProfile/editManagingFirmUser/${userData?.id}`,
                 ),
             },

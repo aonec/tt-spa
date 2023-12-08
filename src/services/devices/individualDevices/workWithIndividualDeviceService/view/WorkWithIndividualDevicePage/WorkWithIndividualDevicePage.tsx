@@ -30,7 +30,7 @@ export const WorkWithIndividualDevicePage: FC<
   handleFetchModels,
   models,
 }) => {
-  const history = useNavigate();
+  const navigate = useNavigate();
 
   return (
     <>
@@ -67,7 +67,7 @@ export const WorkWithIndividualDevicePage: FC<
               individualDevice={individualDevice}
             />
             <FooterWrapper>
-              <Button type="ghost" onClick={() => history(-1)}>
+              <Button type="ghost" onClick={() => navigate(-1)}>
                 Отмена
               </Button>
               <Button onClick={() => form.submit()}>Далее</Button>

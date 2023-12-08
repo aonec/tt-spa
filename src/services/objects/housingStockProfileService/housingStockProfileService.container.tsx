@@ -17,7 +17,7 @@ export const HousingStockProfileContainer = () => {
     buildingId: string;
     section?: HousingStockProfileGrouptype;
   }>();
-  const history = useNavigate();
+  const navigate = useNavigate();
 
   const {
     housingStock,
@@ -49,10 +49,10 @@ export const HousingStockProfileContainer = () => {
 
   const setGrouptype = useCallback(
     (section: HousingStockProfileGrouptype) =>
-      history(`/buildings/livingProfile/${buildingId}/${section}`, {
+      navigate(`/buildings/livingProfile/${buildingId}/${section}`, {
         replace: true,
       }),
-    [history, buildingId],
+    [navigate, buildingId],
   );
 
   return (

@@ -12,7 +12,7 @@ const organizationUpdated = inputs.organizationUpdated;
 const { ExistingCitiesGate } = addressSearchService.gates;
 
 export const EditCompanyContainer = () => {
-  const history =  useNavigate();
+  const navigate =  useNavigate();
 
   const currentManagingFirm = useStore(outputs.$currentManagingFirm);
   const isOrganizationLoading = useStore(outputs.$isOrganizationLoading);
@@ -22,8 +22,8 @@ export const EditCompanyContainer = () => {
   const handleUpdateOrganization = useEvent(inputs.updateOrganization);
 
   useEffect(() => {
-    return organizationUpdated.watch(() => history(-1)).unsubscribe;
-  }, [history]);
+    return organizationUpdated.watch(() => navigate(-1)).unsubscribe;
+  }, [navigate]);
 
   return (
     <>

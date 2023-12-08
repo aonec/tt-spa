@@ -21,7 +21,7 @@ export const EditCompanyForm: FC<EditCompanyFormProps> = ({
   existingCities,
   isUpdating,
 }) => {
-  const history =  useNavigate();
+  const navigate =  useNavigate();
   const next = useSwitchInputOnEnter('editCompany', true);
 
   const { values, setFieldValue, submitForm } =
@@ -118,7 +118,7 @@ export const EditCompanyForm: FC<EditCompanyFormProps> = ({
         />
       </FormItem>
       <FooterWrapper>
-        <Button type="ghost" onClick={() => history(-1)}>
+        <Button type="ghost" onClick={() => navigate(-1)}>
           Отмена
         </Button>
         <Button type="primary" onClick={submitForm} isLoading={isUpdating}>

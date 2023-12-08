@@ -19,7 +19,7 @@ export const WorkWithIndividualDeviceContainer: FC<
   WorkWithIndividualDeviceContainerProps
 > = ({ type }) => {
   const { deviceId } = useParams<{ deviceId: string }>();
-  const history = useNavigate();
+  const navigate = useNavigate();
 
   const {
     individualDevice,
@@ -43,8 +43,8 @@ export const WorkWithIndividualDeviceContainer: FC<
     useUnit(getSerialNumberQuery);
 
   useEffect(() => {
-    return inputs.actionSucceed.watch(() => history(-1)).unsubscribe;
-  }, [history]);
+    return inputs.actionSucceed.watch(() => navigate(-1)).unsubscribe;
+  }, [navigate]);
 
   return (
     <>

@@ -17,7 +17,7 @@ export const ManageDistrictPage: FC<Props> = ({
   setDistrictsPageSegment,
   isDistrictLoading,
 }) => {
-  const history =  useNavigate();
+  const navigate =  useNavigate();
 
   return (
     <div>
@@ -46,12 +46,12 @@ export const ManageDistrictPage: FC<Props> = ({
               {
                 title: 'Задать границы нового района на карте',
                 onClick: () =>
-                   history('/districtBordersSettings/createByMap'),
+                   navigate('/districtBordersSettings/createByMap'),
               },
               {
                 title: 'Задать границы нового района по адресам',
                 onClick: () =>
-                   history(
+                   navigate(
                     '/districtBordersSettings/createByHousingStocksList',
                   ),
               },

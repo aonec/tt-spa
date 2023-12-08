@@ -36,7 +36,7 @@ export const DistrictBordersByAddressPage: FC<
   checkedAddressesAmount,
   isLoading,
 }) => {
-  const history = useNavigate();
+  const navigate = useNavigate();
 
   return (
     <Wrapper>
@@ -93,14 +93,14 @@ export const DistrictBordersByAddressPage: FC<
               </LinkWrapper>
             </TextWrapper>
             <ButtonsWrapper>
-              <Button type="ghost" onClick={() => history(-1)}>
+              <Button type="ghost" onClick={() => navigate(-1)}>
                 Отмена
               </Button>
               <ButtonSC
                 disabled={!isAllowedToEditer}
                 onClick={() => {
                   handleOpenDistrictEditer();
-                  history('/districtBordersSettings/createByMap');
+                  navigate('/districtBordersSettings/createByMap');
                 }}
               >
                 Продолжить

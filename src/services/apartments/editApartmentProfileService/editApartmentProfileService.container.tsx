@@ -20,13 +20,13 @@ export const EditApartmentProfileContainer = () => {
     outputs.$isUpdatingApartmentLoading,
   );
 
-  const history =  useNavigate();
+  const navigate =  useNavigate();
 
   useEffect(() => {
     return updateApartmentSuccess.watch(() => {
-      history(-1);
+      navigate(-1);
     }).unsubscribe;
-  }, [updateApartmentSuccess, history]);
+  }, [updateApartmentSuccess, navigate]);
 
   return (
     <>

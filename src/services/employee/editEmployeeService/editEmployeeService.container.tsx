@@ -10,7 +10,7 @@ const { inputs, outputs, gates } = editEmployeeService;
 const { CompetencesGate, UserRolesGate, FetchEmployeeDataGate } = gates;
 
 export const EditEmployeeContainer = () => {
-  const history = useNavigate();
+  const navigate = useNavigate();
   const isPending = useStore(outputs.$pending);
   const competences = useStore(outputs.$competencesCatalog);
   const userRoles = useStore(outputs.$userRoles);
@@ -34,9 +34,9 @@ export const EditEmployeeContainer = () => {
 
   useEffect(() => {
     return inputs.successUpdate.watch(() => {
-      history(`/userProfile/${userId}`);
+      navigate(`/userProfile/${userId}`);
     }).unsubscribe;
-  }, [history, userId]);
+  }, [navigate, userId]);
 
   if (!userId) return null;
 

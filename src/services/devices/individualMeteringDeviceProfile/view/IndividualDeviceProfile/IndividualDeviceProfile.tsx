@@ -31,7 +31,7 @@ export const IndividualDeviceProfile: FC<Props> = ({ device }) => {
 
   const isActive = device.closingDate === null;
 
-  const history = useNavigate();
+  const navigate = useNavigate();
 
   const tabItems = useMemo(
     () => [
@@ -123,7 +123,7 @@ export const IndividualDeviceProfile: FC<Props> = ({ device }) => {
             menuButtons: [
               {
                 title: 'Редактировать',
-                onClick: () => history(`/individualDevices/${device.id}/edit`),
+                onClick: () => navigate(`/individualDevices/${device.id}/edit`),
               },
             ],
           }}

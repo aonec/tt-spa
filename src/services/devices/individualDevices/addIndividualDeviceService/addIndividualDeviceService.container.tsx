@@ -10,7 +10,7 @@ const { ApartmentGate, PageGate } = gates;
 
 export const AddIndividualDeviceContainer = () => {
   const { id } = useParams<{ id: string }>();
-  const history = useNavigate();
+  const navigate = useNavigate();
 
   const { stageNumber, handleGoPrevStage } = useUnit({
     stageNumber: outputs.$stageNumber,
@@ -52,9 +52,9 @@ export const AddIndividualDeviceContainer = () => {
   const idFromParams = Number(id);
 
   useEffect(() => {
-    return inputs.successCreateIndividualDevice.watch(() => history(-1))
+    return inputs.successCreateIndividualDevice.watch(() => navigate(-1))
       .unsubscribe;
-  }, [history]);
+  }, [navigate]);
 
   return (
     <>

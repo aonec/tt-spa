@@ -170,7 +170,7 @@ export const BaseInfoStage: FC<BaseInfoStageProps> = ({
   });
 
   const { id } = useParams<{ id: string }>();
-  const history = useNavigate();
+  const navigate = useNavigate();
 
   const isSerialNumberAllreadyExist =
     serialNumberForChecking?.items?.[0]?.serialNumber === values.serialNumber;
@@ -479,7 +479,7 @@ export const BaseInfoStage: FC<BaseInfoStageProps> = ({
       </FormItem>
 
       <Footer>
-        <Button type="ghost" onClick={() => history(-1)}>
+        <Button type="ghost" onClick={() => navigate(-1)}>
           Отмена
         </Button>
         <Button onClick={() => handleSubmit()}>Далее</Button>

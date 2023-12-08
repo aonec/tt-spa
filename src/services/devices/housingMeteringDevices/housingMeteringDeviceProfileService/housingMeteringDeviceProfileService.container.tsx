@@ -17,7 +17,7 @@ export const HousingMeteringDeviceProfileContainer = () => {
     section?: HousingProfileTabs;
   }>();
 
-  const history = useNavigate();
+  const navigate = useNavigate();
 
   const handleCheckModalOpen = useEvent(inputs.handleCheckModalOpen);
 
@@ -50,10 +50,10 @@ export const HousingMeteringDeviceProfileContainer = () => {
 
   const setGrouptype = useCallback(
     (section: HousingProfileTabs) =>
-      history(`/housingMeteringDevices/${deviceId}/profile/${section}`, {
+      navigate(`/housingMeteringDevices/${deviceId}/profile/${section}`, {
         replace: true,
       }),
-    [history, deviceId],
+    [navigate, deviceId],
   );
 
   if (!deviceId) return null;

@@ -44,7 +44,7 @@ export const HousingMeteringDeviceProfile: FC<
   isPermitionToCloseHousingMeteringDevice,
   isPermitionToEditHousingMeteringDevice,
 }) => {
-  const history = useNavigate();
+  const navigate = useNavigate();
 
   const deviceAddress = housingMeteringDevice?.address?.address?.mainAddress;
   const deviceModel = housingMeteringDevice?.model;
@@ -106,7 +106,7 @@ export const HousingMeteringDeviceProfile: FC<
               {
                 title: 'Редактировать ОДПУ',
                 onClick: () => {
-                  history(`/housingMeteringDevices/${deviceId}/edit`);
+                  navigate(`/housingMeteringDevices/${deviceId}/edit`);
                 },
                 hidden: !isPermitionToEditHousingMeteringDevice,
               },

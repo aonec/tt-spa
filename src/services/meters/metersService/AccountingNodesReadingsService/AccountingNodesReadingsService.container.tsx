@@ -10,7 +10,7 @@ const { inputs, outputs, gates } = AccountingNodesReadingsService;
 const { HousingStockIdGate } = gates;
 
 export const AccountingNodesReadingsContainer = () => {
-  const history =  useNavigate();
+  const navigate =  useNavigate();
   const { id } = useParams<{ id: string }>();
 
   const {
@@ -39,9 +39,9 @@ export const AccountingNodesReadingsContainer = () => {
     return outputs.$housingStockAddress.watch((address) => {
       if (!address || address.housingStockId === Number(id)) return;
 
-       history(`/meters/accountingNodes/${address.housingStockId}`);
+       navigate(`/meters/accountingNodes/${address.housingStockId}`);
     }).unsubscribe;
-  }, [history, id]);
+  }, [navigate, id]);
 
   return (
     <>

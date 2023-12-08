@@ -20,7 +20,7 @@ export const EditCommonDataForm: FC<EditCommonDataFormProps> = ({
 }) => {
   const { fields, submit } = useForm(form);
 
-  const history =  useNavigate();
+  const navigate =  useNavigate();
 
   return (
     <Wrapper>
@@ -82,7 +82,7 @@ export const EditCommonDataForm: FC<EditCommonDataFormProps> = ({
       </FieldsWrapper>
       <SpaceLine />
       <Footer>
-        <Button type="ghost" onClick={() => history(-1)}>
+        <Button type="ghost" onClick={() => navigate(-1)}>
           Отмена
         </Button>
         <SaveButtonWrapper>

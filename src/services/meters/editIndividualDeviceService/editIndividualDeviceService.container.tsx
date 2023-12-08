@@ -12,8 +12,8 @@ const { AllIndividualDeviceMountPlacesGate, IndividualDeviceMountPlacesGate } =
 
 export const EditIndividualDeviceContainer = () => {
   const { deviceId } = useParams<{ deviceId: string }>();
-  const history =  useNavigate();
-  const onCancel = () => history(-1);
+  const navigate =  useNavigate();
+  const onCancel = () => navigate(-1);
 
   const handleChangeTab = useEvent(inputs.handleChangeTab);
   const handleUpdateDevice = useEvent(inputs.handleUpdateDevice);
@@ -28,9 +28,9 @@ export const EditIndividualDeviceContainer = () => {
 
   useEffect(() => {
     return inputs.updateDeviceSuccess.watch(() => {
-      history(-1);
+      navigate(-1);
     }).unsubscribe;
-  }, [history, apartmentId]);
+  }, [navigate, apartmentId]);
 
   return (
     <>

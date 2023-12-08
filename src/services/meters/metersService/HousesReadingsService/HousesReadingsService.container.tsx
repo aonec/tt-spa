@@ -13,7 +13,7 @@ const { HousingStockGate, InspectorGate } = gates;
 
 export const HousesReadingsContainer = () => {
   const { id } = useParams<{ id?: string }>();
-  const history =  useNavigate();
+  const navigate =  useNavigate();
 
   const housingStockId = Number(id) || null;
   const {
@@ -57,9 +57,9 @@ export const HousesReadingsContainer = () => {
     return inputs.handleHousingStockLoaded.watch(({ result: housingStock }) => {
       if (!housingStock || Number(id) === housingStock?.id) return;
 
-       history(`/meters/houses/${housingStock.id}`);
+       navigate(`/meters/houses/${housingStock.id}`);
     }).unsubscribe;
-  }, [history, id]);
+  }, [navigate, id]);
 
   return (
     <>

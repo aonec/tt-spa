@@ -10,11 +10,11 @@ const { inputs, outputs } = closeHousingMeteringDeviceService;
 export const CloseHousingMeteringDeviceContainer: FC<
   CloseHousingMeteringDeviceServiceContainerProps
 > = ({ housingMeteringDevice }) => {
-  const history = useNavigate();
+  const navigate = useNavigate();
 
   useEffect(() => {
-    return inputs.onSuccessClose.watch(() => history(-1)).unsubscribe;
-  }, [history]);
+    return inputs.onSuccessClose.watch(() => navigate(-1)).unsubscribe;
+  }, [navigate]);
 
   const isModalOpen = useStore(outputs.$isModalOpen);
 

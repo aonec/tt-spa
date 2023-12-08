@@ -22,7 +22,7 @@ export const EditCalculatorContainer = () => {
 
   const { deviceId } = useParams<{ deviceId: string }>();
 
-  const history =  useNavigate();
+  const navigate =  useNavigate();
 
   const calculatorTypesSelectItems = useStore(
     outputs.$calculatorTypesSelectItems,
@@ -32,11 +32,11 @@ export const EditCalculatorContainer = () => {
     return inputs.editCalculatorSuccess.watch(
       (data: MeteringDeviceResponse | null) => {
         if (data?.id) {
-           history(`/calculators/${data.id}/profile`);
+           navigate(`/calculators/${data.id}/profile`);
         }
       },
     ).unsubscribe;
-  }, [history]);
+  }, [navigate]);
 
   useEffect(() => {
     handleFecthCalculator(Number(deviceId));

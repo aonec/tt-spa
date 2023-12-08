@@ -7,27 +7,27 @@ import {
 import { useNavigate } from 'react-router-dom';
 
 export const WorkingRangeTab: FC<WorkingRangeTabProps> = () => {
-  const history = useNavigate();
+  const navigate = useNavigate();
 
   return (
     <Wrapper>
       <Panel
         onClick={() => {
-          history(`${WorkingRangeType.Standart}`);
+          navigate(`${WorkingRangeType.Standart}`);
         }}
       >
         Стандартные рабочие диапазоны <ChevronIconRight />
       </Panel>
       <Panel
         onClick={() => {
-          history(`${WorkingRangeType.Group}`);
+          navigate(`${WorkingRangeType.Group}`);
         }}
       >
         Групповые рабочие диапазоны <ChevronIconRight />
       </Panel>
       <Panel
         onClick={() => {
-          history(`${WorkingRangeType.Unique}`);
+          navigate(`${WorkingRangeType.Unique}`);
         }}
       >
         Уникальные рабочие диапазоны <ChevronIconRight />

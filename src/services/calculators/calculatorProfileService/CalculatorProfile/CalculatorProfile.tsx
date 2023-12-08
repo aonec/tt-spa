@@ -36,7 +36,7 @@ export const CalculatorProfile: FC<CalculatorProfileProps> = ({
   openDevicesListModal,
   isPermitionToCalculatorActions,
 }) => {
-  const history =  useNavigate();
+  const navigate =  useNavigate();
 
   const {
     id,
@@ -101,7 +101,7 @@ export const CalculatorProfile: FC<CalculatorProfileProps> = ({
       menuButtons: [
         {
           title: 'Редактировать вычислитель',
-          onClick: () =>  history(`/calculators/${calculator.id}/edit`),
+          onClick: () =>  navigate(`/calculators/${calculator.id}/edit`),
           hidden: !isPermitionToCalculatorActions,
         },
         {
@@ -126,7 +126,7 @@ export const CalculatorProfile: FC<CalculatorProfileProps> = ({
       handleOpenCheckCalculatorModal,
       handleOpenCloseCalculatorModal,
       calculator,
-      history,
+      navigate,
       handleOpenConsumptionReportModal,
       isPermitionToCalculatorActions,
     ],

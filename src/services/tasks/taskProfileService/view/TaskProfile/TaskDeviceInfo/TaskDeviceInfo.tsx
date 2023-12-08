@@ -37,11 +37,11 @@ export const TaskDeviceInfo: FC<TaskDeviceInfoProps> = ({ device }) => {
   );
   const path = resource ? 'housingMeteringDevices' : 'calculators';
 
-  const history =  useNavigate();
+  const navigate =  useNavigate();
 
   return (
     <Wrapper>
-      <TitleWrapper onClick={() =>  history(`/${path}/${id}/profile`)}>
+      <TitleWrapper onClick={() =>  navigate(`/${path}/${id}/profile`)}>
         {icon}
         <SerialNumber>{serialNumber}</SerialNumber>
         <Model>({model})</Model>

@@ -41,7 +41,7 @@ export const TaskBaseInfo: FC<TaskBaseInfoProps> = ({ task }) => {
     ? getTimeStringByUTC(creationTime)
     : '-';
 
-  const history =  useNavigate();
+  const navigate =  useNavigate();
 
   return (
     <TaskBaseInfoWrapper>
@@ -61,7 +61,7 @@ export const TaskBaseInfo: FC<TaskBaseInfoProps> = ({ task }) => {
         </RowWrapper>
         <RowWrapper>
           <div>Адрес</div>
-          <Address onClick={() =>  history(linkPath)}>{address}</Address>
+          <Address onClick={() =>  navigate(linkPath)}>{address}</Address>
         </RowWrapper>
         {apartment && (
           <RowWrapper>

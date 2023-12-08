@@ -25,7 +25,7 @@ export const CalculatorProfileContainer = () => {
     deviceId: string;
     section?: CalculatorProfileGrouptype;
   }>();
-  const history = useNavigate();
+  const navigate = useNavigate();
 
   const isLoading = useStore(outputs.$isLoading);
   const calculator = useStore(outputs.$calculator);
@@ -49,10 +49,10 @@ export const CalculatorProfileContainer = () => {
 
   const setGrouptype = useCallback(
     (section: CalculatorProfileGrouptype) =>
-      history(`/calculators/${deviceId}/profile/${section}`, {
+      navigate(`/calculators/${deviceId}/profile/${section}`, {
         replace: true,
       }),
-    [history, deviceId],
+    [navigate, deviceId],
   );
 
   return (

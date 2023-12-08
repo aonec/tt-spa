@@ -10,7 +10,7 @@ export const SealBottomPanel: FC<SealBottomPanelProps> = ({
   isAppointmentExist,
   openRemoveAppointmentModal,
 }) => {
-  const history =  useNavigate();
+  const navigate =  useNavigate();
 
   return (
     <Wrapper>
@@ -18,7 +18,7 @@ export const SealBottomPanel: FC<SealBottomPanelProps> = ({
         <Button
           type="ghost"
           size="small"
-          onClick={() =>  history(`/apartments/${apartment.id}`)}
+          onClick={() =>  navigate(`/apartments/${apartment.id}`)}
         >
           Перейти в профиль квартиры
         </Button>

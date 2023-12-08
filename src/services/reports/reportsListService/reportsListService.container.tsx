@@ -40,7 +40,7 @@ export const ReportsListContainer = () => {
     filtrationValues: reportViewService.outputs.$filtrationValues,
   });
 
-  const history =  useNavigate();
+  const navigate =  useNavigate();
 
   useEffect(() => {
     return inputs.openExistedReport.watch((data) => {
@@ -75,10 +75,10 @@ export const ReportsListContainer = () => {
         reportViewService.inputs.setFiltrationValues(
           dataForOpenEmployeeReportType,
         );
-         history('/reports/Employee');
+         navigate('/reports/Employee');
       }
     }).unsubscribe;
-  }, [history, filtrationValues]);
+  }, [navigate, filtrationValues]);
 
   const archivedReportsCountString = useMemo(() => {
     const archivedReportsCount =
