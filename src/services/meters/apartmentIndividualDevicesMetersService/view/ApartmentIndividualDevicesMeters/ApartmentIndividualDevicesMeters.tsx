@@ -1,4 +1,4 @@
-import { Checkbox, Skeleton } from 'antd';
+import { Checkbox } from 'antd';
 import React, { FC, useMemo } from 'react';
 import { IndividualDeviceMetersInputContainer } from 'services/meters/individualDeviceMetersInputService';
 import { ChevronIcon } from 'ui-kit/icons';
@@ -11,8 +11,11 @@ import {
   Wrapper,
 } from './ApartmentIndividualDevicesMeters.styled';
 import { ApartmentIndividualDevicesMetersProps } from './ApartmentIndividualDevicesMeters.types';
+import { WithLoader } from 'ui-kit/shared/WithLoader';
 
-export const ApartmentIndividualDevicesMeters: FC<ApartmentIndividualDevicesMetersProps> = ({
+export const ApartmentIndividualDevicesMeters: FC<
+  ApartmentIndividualDevicesMetersProps
+> = ({
   individualDevicesList,
   isLoading,
   closedDevicesCount,
@@ -32,13 +35,14 @@ export const ApartmentIndividualDevicesMeters: FC<ApartmentIndividualDevicesMete
 
   const prevReadingMonth = useMemo(
     (): string => getReadingsMonthByShift(sliderIndex),
-    [sliderIndex]
+    [sliderIndex],
   );
   const currentReadingMonth = useMemo(() => getReadingsMonthByShift(-1), []);
 
-  const isCanUp = useMemo(() => sliderIndex < PREVIOUS_READING_INDEX_LIMIT, [
-    sliderIndex,
-  ]);
+  const isCanUp = useMemo(
+    () => sliderIndex < PREVIOUS_READING_INDEX_LIMIT,
+    [sliderIndex],
+  );
   const isCanDown = useMemo(() => sliderIndex > 0, [sliderIndex]);
 
   return (
@@ -66,9 +70,8 @@ export const ApartmentIndividualDevicesMeters: FC<ApartmentIndividualDevicesMete
         </MonthSliderWrapper>
         <div className="current-reading">{currentReadingMonth}</div>
       </Header>
-      {isLoading && <Skeleton active />}
-      {!isLoading &&
-        individualDevicesList.map((device, index) => (
+      <WithLoader isLoading={isLoading}>
+        {individualDevicesList.map((device, index) => (
           <IndividualDeviceMetersInputContainer
             devices={individualDevicesList}
             sliderIndex={sliderIndex}
@@ -79,6 +82,7 @@ export const ApartmentIndividualDevicesMeters: FC<ApartmentIndividualDevicesMete
             editable={editable}
           />
         ))}
+      </WithLoader>
     </Wrapper>
   );
 };
