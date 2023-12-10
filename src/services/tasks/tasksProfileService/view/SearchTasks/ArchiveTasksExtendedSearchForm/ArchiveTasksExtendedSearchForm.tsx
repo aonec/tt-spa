@@ -15,17 +15,18 @@ const { Option } = Select;
 export const ArchiveTasksExtendedSearchForm: FC<
   ArchiveTasksExtendedSearchFormProps
 > = ({ setFieldValue, taskTypes, values }) => {
-  const taskTypeOptions = useMemo(
-    () =>
-      (taskTypes || [])
-        .filter((elem) => Boolean(elem.key))
-        .map(({ value, key }) => (
-          <Select.Option key={key} value={key}>
-            {value}
-          </Select.Option>
-        )),
-    [taskTypes],
-  );
+  const taskTypeOptions = useMemo(() => {
+    if (!taskTypes) {
+      return null;
+    }
+    return taskTypes
+      .filter((elem) => Boolean(elem.key))
+      .map(({ value, key }) => (
+        <Select.Option key={key} value={key}>
+          {value}
+        </Select.Option>
+      ));
+  }, [taskTypes]);
 
   return (
     <StyledFormTwoRows id="searchForm">
