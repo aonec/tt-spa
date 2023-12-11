@@ -46,6 +46,7 @@ export const DevicesSearch: FC<DevicesSearchProps> = ({
           pageNumber: 1,
           pageSize: 25,
           OrderRule: 'SerialNumber',
+          IsAlsoClosing: true,
         },
         cancelToken: newCancelToken?.token,
       });
