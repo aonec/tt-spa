@@ -9,13 +9,14 @@ import { WithLoader } from 'ui-kit/shared/WithLoader';
 import { AutoComplete } from 'ui-kit/AutoComplete';
 import { individualDeviceMountPlacesService } from 'services/devices/individualDeviceMountPlacesService/individualDeviceMountPlacesService.model';
 import { DeviceDataString } from './DeviceDataString';
+import { DeviceStatus } from 'ui-kit/shared/IndividualDeviceInfo/DeviceStatus';
+import { DateRange } from 'ui-kit/shared/DateRange';
 
 const { AllIndividualDeviceMountPlacesGate } =
   individualDeviceMountPlacesService.gates;
 
 export const DevicesSearch: FC<DevicesSearchProps> = ({
   handleClickDevice,
-  allIndividualDeviceMountPlaces,
 }) => {
   const [serialNumber, setSerialNumber] = useState('');
   const [devices, setDevices] =
@@ -44,7 +45,7 @@ export const DevicesSearch: FC<DevicesSearchProps> = ({
           serialNumber,
           pageNumber: 1,
           pageSize: 25,
-          orderRule: 'serialNumber',
+          OrderRule: 'SerialNumber',
         },
         cancelToken: newCancelToken?.token,
       });
@@ -68,26 +69,23 @@ export const DevicesSearch: FC<DevicesSearchProps> = ({
       key={device.id}
     >
       <Device key={index}>
-        <DeviceDataString device={device as any} />
-        {/* <DeviceStatus
-          isActive={device.closingDate === null}
-          closingReason={device.closingReason}
-        /> */}
-        <DateRangeContainer>
-          {/* <DateRange
-            firstDate={device.lastCheckingDate}
-            lastDate={device.futureCheckingDate}
-            bold
-          /> */}
-        </DateRangeContainer>
-        {/* <div>
-          {allIndividualDeviceMountPlaces &&
-            device.mountPlace &&
-            allIndividualDeviceMountPlaces.find(
-              (mountPlaceFromServer) =>
-                mountPlaceFromServer.name === device.mountPlace,
-            )?.description}
-        </div> */}
+        <DeviceDataString device={device} />
+        {device.closingReason && (
+          <DeviceStatus
+            isActive={device.closingDate === null}
+            closingReason={device.closingReason}
+          />
+        )}
+        {device.lastCheckingDate && device.futureCheckingDate && (
+          <DateRangeContainer>
+            <DateRange
+              firstDate={device.lastCheckingDate}
+              lastDate={device.futureCheckingDate}
+              bold
+            />
+          </DateRangeContainer>
+        )}
+        <div>{device.mountPlace}</div>
       </Device>
     </NavLink>
   );
