@@ -25,8 +25,9 @@ export const Header = styled.div<{ columnsCount: number }>`
 export const CheckboxSC = styled(Checkbox)`
   color: #272f5ae5;
   background-color: #fff;
-  width: 100%;
   padding-bottom: 8px;
+  position: sticky;
+  left: 0px;
 `;
 
 export const StickyWrapper = styled.div`

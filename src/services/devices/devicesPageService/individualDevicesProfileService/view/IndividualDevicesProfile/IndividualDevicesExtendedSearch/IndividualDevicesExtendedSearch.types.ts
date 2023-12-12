@@ -10,4 +10,13 @@ export type IndividualDevicesExtendedSearchProps = {
   handleClear?: () => void;
   mountPlaces: IndividualDeviceMountPlaceForFilterResponse[];
   children?: ReactNode;
+  isOpen: boolean;
+  setIsOpen: (isOpen: boolean) => void;
 };
+
+export enum EExpiresDateAtExtended {
+  NextMonth = 'NextMonth',
+  NextTwoMonth = 'NextTwoMonth',
+  Past = 'Past',
+  All = 'All',
+}

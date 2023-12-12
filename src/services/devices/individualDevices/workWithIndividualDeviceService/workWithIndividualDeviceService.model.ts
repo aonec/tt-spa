@@ -235,16 +235,18 @@ const checkIndividualDevicePayload = combine(
     rateType: info.rateType,
     model: info.model,
     contractorId: info.contractorId,
-    sealInstallationDate: info.sealInstallationDate,
+    sealInstallationDate: info.sealInstallationDate
+      ? dayjs(info.sealInstallationDate).utcOffset(0, true).toISOString()
+      : null,
     sealNumber: info.sealNumber,
     oldDeviceClosingReason: info.oldDeviceClosingReason || undefined,
     isPolling: info.isPolling,
 
     lastCheckingDate: info.lastCheckingDate
-      ? dayjs(info.lastCheckingDate).utcOffset(0, true).format()
+      ? dayjs(info.lastCheckingDate).utcOffset(0).toISOString()
       : null,
     futureCheckingDate: info.futureCheckingDate
-      ? dayjs(info.futureCheckingDate).utcOffset(0, true).toISOString()
+      ? dayjs(info.futureCheckingDate).utcOffset(0).toISOString()
       : null,
     bitDepth: Number(info.bitDepth),
     scaleFactor: Number(info.scaleFactor),
