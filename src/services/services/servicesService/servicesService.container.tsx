@@ -5,6 +5,7 @@ import { SealContainer } from '../sealService';
 
 export const ServicesContainer = () => {
   const { service } = useParams<{ service: ServiceSection }>();
+  if (!service) return null;
 
   const componentsDictionary: { [key in ServiceSection]: FC } = {
     [ServiceSection.Seal]: SealContainer,

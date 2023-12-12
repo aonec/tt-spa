@@ -12,7 +12,7 @@ import {
   Wrapper,
 } from './DevicesListItem.styled';
 import { DevicesListItemProps } from './DevicesListItem.types';
-import { useHistory } from 'react-router-dom';
+import {  useNavigate } from 'react-router-dom';
 
 export const DevicesListItem: FC<DevicesListItemProps> = ({
   device,
@@ -23,7 +23,7 @@ export const DevicesListItem: FC<DevicesListItemProps> = ({
   const [isOpen, setIsOpen] = useState(false);
   const toggle = () => setIsOpen(!isOpen);
 
-  const history = useHistory();
+  const navigate =  useNavigate();
 
   return (
     <Wrapper>
@@ -33,7 +33,7 @@ export const DevicesListItem: FC<DevicesListItemProps> = ({
         </GroupWrapper>
         <GroupWrapper>
           <LinkToProfile
-            onClick={() => history.push(`/apartments/${apartmentId}/testimony`)}
+            onClick={() =>  navigate(`/apartments/${apartmentId}/testimony`)}
           >
             Перейти в профиль
           </LinkToProfile>

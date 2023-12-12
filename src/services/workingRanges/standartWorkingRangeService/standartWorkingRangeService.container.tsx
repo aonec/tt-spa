@@ -12,12 +12,10 @@ export const StandartWorkingRangeContainer = () => {
   const handleOnSearchDataChange = useEvent(inputs.handleOnSearchDataChange);
 
   return (
-    <>
-      <StandartWorkingRange
-        standartWorkingRange={standartWorkingRange}
-        handleOnSearchDataChange={handleOnSearchDataChange}
-        isLoading={isLoading}
-      />
-    </>
+    <StandartWorkingRange
+      standartWorkingRange={standartWorkingRange}
+      handleOnSearchDataChange={handleOnSearchDataChange}
+      isLoading={isLoading}
+    />
   );
 };

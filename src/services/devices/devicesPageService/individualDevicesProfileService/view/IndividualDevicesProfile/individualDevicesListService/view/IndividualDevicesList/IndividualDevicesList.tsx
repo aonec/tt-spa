@@ -15,7 +15,7 @@ import { IndividualDevicesListProps } from './IndividualDevicesList.types';
 import { Table } from 'ui-kit/Table';
 import { IndividualDeviceInfoShort } from 'ui-kit/shared/IndividualDeviceInfoShort';
 import { Tooltip } from 'ui-kit/shared/Tooltip';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { DeviceStatus } from 'ui-kit/shared/IndividualDeviceInfo/DeviceStatus';
 import dayjs from 'api/dayjs';
 import { Loader } from 'ui-kit/Loader';
@@ -33,11 +33,11 @@ export const IndividualDevicesList: FC<IndividualDevicesListProps> = ({
   graphData,
   isConsumptionsLoading,
 }) => {
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const handleClickDevice = useCallback(
-    (id: number) => history.push(`/individualDeviceProfile/${id}`),
-    [history],
+    (id: number) => navigate(`/individualDeviceProfile/${id}`),
+    [navigate],
   );
 
   const graphComponent = useCallback(

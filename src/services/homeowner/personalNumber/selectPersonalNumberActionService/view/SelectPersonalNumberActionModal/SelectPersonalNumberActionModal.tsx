@@ -12,14 +12,14 @@ import {
 } from 'ui-kit/icons';
 import { FormModal } from 'ui-kit/Modals/FormModal';
 import { PersonalNumberActions } from '../../selectPersonalNumberActionService.types';
-import { useHistory } from 'react-router-dom';
+import {  useNavigate } from 'react-router-dom';
 
 const formId = 'select-personal-number-action-modal';
 
 export const SelectPersonalNumberActionModal: FC<
   SelectPersonalNumberActionModalProps
 > = ({ isOpen, setAction, apartmentId, setSelectActionModalOpen }) => {
-  const history = useHistory();
+  const navigate =  useNavigate();
 
   return (
     <FormModal
@@ -45,7 +45,7 @@ export const SelectPersonalNumberActionModal: FC<
           <SelectItem
             onClick={() => {
               setAction(PersonalNumberActions.Add);
-              history.push(
+               navigate(
                 `/apartment/${apartmentId}/homeowners/${PersonalNumberActions.Add}`,
               );
             }}

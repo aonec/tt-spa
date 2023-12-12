@@ -9,6 +9,5 @@ export const menuService = {
   },
   gates: {
     UserRolesGate: rolesService.gates.UserRolesGate,
-    CurrentUserGate: currentUserService.gates.CurrentUserGate,
   },
 };

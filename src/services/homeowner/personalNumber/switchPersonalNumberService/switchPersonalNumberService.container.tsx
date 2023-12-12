@@ -3,7 +3,7 @@ import { switchPersonalNumberService } from './switchPersonalNumberService.model
 import { SwitchPersonalNumberPage } from './view/SwitchPersonalNumberPage';
 import { ConfirmationAddingExistingPersonalNumber } from '../components/ConfirmationAddingExistingPersonalNumberModal';
 import { useEvent, useStore } from 'effector-react';
-import { useHistory, useParams } from 'react-router-dom';
+import {  useNavigate, useParams } from 'react-router-dom';
 
 const {
   inputs,
@@ -16,7 +16,7 @@ export const SwitchPersonalNumberContainer = () => {
   const apartmentId = id;
 
   const { homeownerId } = useParams<{ homeownerId: string }>();
-  const history = useHistory();
+  const navigate =  useNavigate();
 
   const isLoading = useStore(outputs.$isLoading);
   const apartment = useStore(outputs.$apartment);
@@ -37,9 +37,9 @@ export const SwitchPersonalNumberContainer = () => {
 
   useEffect(() => {
     return inputs.successSwitchHomeownerAccount.watch(() => {
-      history.push(`/meters/apartments/${apartmentId}`);
+       navigate(`/meters/apartments/${apartmentId}`);
     }).unsubscribe;
-  }, [history, apartmentId]);
+  }, [navigate, apartmentId]);
 
   return (
     <>

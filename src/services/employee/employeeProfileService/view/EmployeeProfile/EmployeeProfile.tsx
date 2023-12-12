@@ -18,7 +18,7 @@ import {
   СompetenceDiv,
 } from './EmployeeProfile.styled';
 import { EmployeeProfileProps } from './EmployeeProfile.types';
-import { useHistory } from 'react-router-dom';
+import {  useNavigate } from 'react-router-dom';
 import { sortUserRoles } from 'services/company/companyProfileService/view/CompanyProfile/Tabs/Staff/Staff.utils';
 import { usePhoneMask } from 'hooks/usePhoneMask';
 import { StaffStatus } from 'ui-kit/shared/StaffStatus/StaffStatus';
@@ -29,7 +29,7 @@ export const EmployeeProfile: FC<EmployeeProfileProps> = ({
   handleOpenChangeStatusModal,
   handleOpenDeleteEmployeeModal,
 }) => {
-  const history = useHistory();
+  const navigate =  useNavigate();
 
   const userInitials = `${userData?.firstName || ''} ${
     userData?.middleName || ''
@@ -64,7 +64,7 @@ export const EmployeeProfile: FC<EmployeeProfileProps> = ({
             {
               title: 'Редактировать информацию о сотруднике',
               onClick: () =>
-                history.push(
+                 navigate(
                   `/companyProfile/editManagingFirmUser/${userData?.id}`,
                 ),
             },

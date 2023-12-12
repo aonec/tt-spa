@@ -18,6 +18,7 @@ export const EditHousingMeteringDeviceContainer = () => {
   const isLoading = useStore(outputs.$isLoading);
 
   const { deviceId } = useParams<{ deviceId: string }>();
+  if (!deviceId) return null;
 
   return (
     <>

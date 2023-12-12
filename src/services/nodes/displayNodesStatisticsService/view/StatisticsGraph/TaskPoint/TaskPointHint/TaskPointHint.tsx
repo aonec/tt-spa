@@ -1,10 +1,10 @@
 import React, { FC } from 'react';
-import { useHistory } from 'react-router';
+import {  useNavigate } from 'react-router';
 import { ChevronIconCS, TaskInfoItem } from './TaskPointHint.styled';
 import { TaskPointHintProps } from './TaskPointHint.types';
 
 export const TaskPointHint: FC<TaskPointHintProps> = ({ task }) => {
-  const history = useHistory();
+  const navigate =  useNavigate();
   if (!task.title) {
     return null;
   }
@@ -14,7 +14,7 @@ export const TaskPointHint: FC<TaskPointHintProps> = ({ task }) => {
       <span>{task.title}</span>
       <div>
         <ChevronIconCS
-          onClick={() => history.push(`/tasks/profile/${task.id}`)}
+          onClick={() =>  navigate(`/tasks/profile/${task.id}`)}
         />
       </div>
     </TaskInfoItem>

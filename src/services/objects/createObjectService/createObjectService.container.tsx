@@ -1,6 +1,6 @@
 import { useEvent, useStore } from 'effector-react';
 import React, { useEffect } from 'react';
-import { useHistory } from 'react-router-dom';
+import {  useNavigate } from 'react-router-dom';
 import { addressSearchService } from 'services/addressSearchService/addressSearchService.models';
 import { CreateHeatingStationContainer } from '../heatingStations/createHeatingStationService';
 import { EditHeatingStationContainer } from '../heatingStations/editHeatingStationService';
@@ -44,8 +44,8 @@ export const CreateObjectContainer = () => {
 
   const goBackStage = useEvent(inputs.goBackStage);
 
-  const history = useHistory();
-  const onPageCancel = () => history.goBack();
+  const navigate =  useNavigate();
+  const onPageCancel = () => navigate(-1);
 
   useEffect(() => {
     return inputs.handleCreateObjectSuccessDone.watch((data) => {
@@ -58,10 +58,10 @@ export const CreateObjectContainer = () => {
       }
 
       if (data?.id) {
-        history.push(`/buildings/${buildingProfilePath}/${data.id}`);
+         navigate(`/buildings/${buildingProfilePath}/${data.id}`);
       }
     }).unsubscribe;
-  }, [history]);
+  }, [navigate]);
 
   return (
     <>

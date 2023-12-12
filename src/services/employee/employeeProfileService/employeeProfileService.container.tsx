@@ -9,6 +9,7 @@ import { DeleteEmployeeContainer } from 'services/employee/deleteEmployeeService
 
 export const EmployeeProfileContainer = () => {
   const { id } = useParams<{ id: string }>();
+
   const { inputs, outputs, gates } = employeeProfileService;
 
   const { FetchUserDataGate } = gates;
@@ -21,6 +22,8 @@ export const EmployeeProfileContainer = () => {
   const handleOpenDeleteEmployeeModal = useEvent(
     inputs.handleOpenDeleteEmployeeModal,
   );
+
+  if (!id) return null;
 
   return (
     <>

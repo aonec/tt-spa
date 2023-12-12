@@ -1,6 +1,6 @@
 import { useEvent, useStore } from 'effector-react';
 import React, { useEffect } from 'react';
-import { useHistory } from 'react-router-dom';
+import {  useNavigate } from 'react-router-dom';
 import { WithLoader } from 'ui-kit/shared/WithLoader';
 import { editCompanyService } from './editCompanyService.model';
 import { EditCompanyPage } from './view/EditCompanyPage';
@@ -12,7 +12,7 @@ const organizationUpdated = inputs.organizationUpdated;
 const { ExistingCitiesGate } = addressSearchService.gates;
 
 export const EditCompanyContainer = () => {
-  const history = useHistory();
+  const navigate =  useNavigate();
 
   const currentManagingFirm = useStore(outputs.$currentManagingFirm);
   const isOrganizationLoading = useStore(outputs.$isOrganizationLoading);
@@ -22,8 +22,8 @@ export const EditCompanyContainer = () => {
   const handleUpdateOrganization = useEvent(inputs.updateOrganization);
 
   useEffect(() => {
-    return organizationUpdated.watch(() => history.goBack()).unsubscribe;
-  }, [history]);
+    return organizationUpdated.watch(() => navigate(-1)).unsubscribe;
+  }, [navigate]);
 
   return (
     <>

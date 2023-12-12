@@ -7,7 +7,7 @@ import { ErrorMessage } from 'ui-kit/ErrorMessage';
 import { useFormik } from 'formik';
 import { GoBack } from 'ui-kit/shared/GoBack';
 import { Button } from 'ui-kit/Button';
-import { useHistory, useParams } from 'react-router-dom';
+import {  useNavigate, useParams } from 'react-router-dom';
 import { Loader } from 'ui-kit/Loader';
 import {
   ESecuredIdentityRoleName,
@@ -27,8 +27,8 @@ export const EditEmployee: FC<EditEmployeeProps> = ({
   const params = useParams<{ id: string }>();
   const userId = Number(params.id);
 
-  const history = useHistory();
-  const onCancel = () => history.push('/companyProfile/staff');
+  const navigate =  useNavigate();
+  const onCancel = () =>  navigate('/companyProfile/staff');
 
   const phoneMask = usePhoneMask();
 

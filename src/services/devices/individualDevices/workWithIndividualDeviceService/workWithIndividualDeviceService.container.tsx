@@ -9,7 +9,7 @@ import { displayContractorsService } from 'services/contractors/displayContracto
 import { getSerialNumberQuery } from './workWithIndividualDeviceService.api';
 import { displayIndividualDeviceAndNamesService } from '../displayIndividualDeviceAndNamesService';
 import { WorkWithIndividualDeviceSubmitActionContainer } from './workWithIndividualDeviceSubmitActionService';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 const { gates, inputs, outputs, forms } = workWithIndividualDeviceService;
 const { WorkWithIndividualDeviceGate, IndividualDeviceGate } = gates;
@@ -19,7 +19,7 @@ export const WorkWithIndividualDeviceContainer: FC<
   WorkWithIndividualDeviceContainerProps
 > = ({ type }) => {
   const { deviceId } = useParams<{ deviceId: string }>();
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const {
     individualDevice,
@@ -43,8 +43,8 @@ export const WorkWithIndividualDeviceContainer: FC<
     useUnit(getSerialNumberQuery);
 
   useEffect(() => {
-    return inputs.actionSucceed.watch(history.goBack).unsubscribe;
-  }, [history]);
+    return inputs.actionSucceed.watch(() => navigate(-1)).unsubscribe;
+  }, [navigate]);
 
   return (
     <>

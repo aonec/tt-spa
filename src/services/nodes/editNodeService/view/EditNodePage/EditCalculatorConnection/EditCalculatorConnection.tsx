@@ -16,7 +16,7 @@ import { Button } from 'ui-kit/Button';
 import { Alert } from 'ui-kit/Alert';
 import { validationSchema } from './EditCalculatorConnection.constants';
 import { UpdatePipeNodeRequest } from 'api/types';
-import { useHistory } from 'react-router-dom';
+import {  useNavigate } from 'react-router-dom';
 import { RemoveConnectionConfirmModalContainer } from '../removeConnectionService';
 
 const calculatorConnectionInputNumbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
@@ -29,7 +29,7 @@ export const EditCalculatorConnection: FC<AddCalculatorConnectionProps> = ({
   isLoading,
   openRemoveConnectionModal,
 }) => {
-  const history = useHistory();
+  const navigate =  useNavigate();
 
   const { values, handleSubmit, setFieldValue, errors } = useFormik<
     Partial<UpdatePipeNodeRequest>
@@ -116,7 +116,7 @@ export const EditCalculatorConnection: FC<AddCalculatorConnectionProps> = ({
         </FormItem>
       </FormWrapper>
       <FooterWrapper>
-        <Button type="ghost" onClick={() => history.goBack()}>
+        <Button type="ghost" onClick={() => navigate(-1)}>
           Отмена
         </Button>
 

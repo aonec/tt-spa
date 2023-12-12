@@ -1,6 +1,6 @@
 import { useEvent, useStore } from 'effector-react';
 import React, { useEffect } from 'react';
-import { useHistory, useParams } from 'react-router-dom';
+import {  useNavigate, useParams } from 'react-router-dom';
 import { editElectricNodeService } from './editElectricNodeService.model';
 import { EditElectricNodePage } from './view/EditElectricNodePage';
 
@@ -15,13 +15,13 @@ export const EditElectricNodeContainer = () => {
 
   const handleUpdateDevice = useEvent(inputs.updateDevice);
 
-  const history = useHistory();
+  const navigate =  useNavigate();
 
   useEffect(
     () =>
-      inputs.handleSuccessUpdateDevice.watch(() => history.goBack())
+      inputs.handleSuccessUpdateDevice.watch(() => navigate(-1))
         .unsubscribe,
-    [history],
+    [navigate],
   );
 
   return (

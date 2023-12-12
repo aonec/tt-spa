@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { useHistory, useParams } from 'react-router-dom';
+import {  useNavigate, useParams } from 'react-router-dom';
 import { AccountingNodesReadings } from './view/AccountingNodesReadings';
 import { AccountingNodesReadingsService } from './AccountingNodesReadingsService.model';
 import { useUnit } from 'effector-react';
@@ -10,7 +10,7 @@ const { inputs, outputs, gates } = AccountingNodesReadingsService;
 const { HousingStockIdGate } = gates;
 
 export const AccountingNodesReadingsContainer = () => {
-  const history = useHistory();
+  const navigate =  useNavigate();
   const { id } = useParams<{ id: string }>();
 
   const {
@@ -39,9 +39,9 @@ export const AccountingNodesReadingsContainer = () => {
     return outputs.$housingStockAddress.watch((address) => {
       if (!address || address.housingStockId === Number(id)) return;
 
-      history.push(`/meters/accountingNodes/${address.housingStockId}`);
+       navigate(`/meters/accountingNodes/${address.housingStockId}`);
     }).unsubscribe;
-  }, [history, id]);
+  }, [navigate, id]);
 
   return (
     <>

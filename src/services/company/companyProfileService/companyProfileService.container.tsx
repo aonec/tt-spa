@@ -3,8 +3,10 @@ import { CompanyProfile } from './view/CompanyProfile';
 import { companyProfileService } from './companyProfileService.model';
 import { useEvent, useStore } from 'effector-react';
 
-const { inputs, outputs, gates } = companyProfileService;
-const { FetchingCurrentManagingFirmGate } = gates;
+const { inputs, outputs } = companyProfileService;
+const {
+  gates: { FetchingCurrentManagingFirmGate },
+} = companyProfileService;
 
 export const CompanyProfileContainer = () => {
   const currentManagingFirm = useStore(outputs.$currentManagingFirm);
@@ -14,30 +16,30 @@ export const CompanyProfileContainer = () => {
   const isLoadingContractors = useStore(outputs.$isLoadingContractors);
 
   const handleOpenStatusChangeModal = useEvent(
-    inputs.handleOpenStatusChangeModal
+    inputs.handleOpenStatusChangeModal,
   );
   const handleOpenDeleteModal = useEvent(inputs.handleOpenDeleteModal);
   const handleCatchEmployeeStatusData = useEvent(
-    inputs.handleCatchEmployeeStatusData
+    inputs.handleCatchEmployeeStatusData,
   );
   const handleCatchEmployeeId = useEvent(inputs.handleCatchEmployeeId);
   const handleOpenCreateEmployeeModal = useEvent(
-    inputs.handleOpenCreateEmployeeModal
+    inputs.handleOpenCreateEmployeeModal,
   );
   const handleOpenAddContractorModal = useEvent(
-    inputs.handleOpenAddContractorModal
+    inputs.handleOpenAddContractorModal,
   );
   const catchContractorId = useEvent(inputs.catchContractorId);
   const handleOpenEditContractorModal = useEvent(
-    inputs.handleOpenEditContractorModal
+    inputs.handleOpenEditContractorModal,
   );
   const catchContractorData = useEvent(inputs.catchContractorData);
 
   return (
     <>
       <FetchingCurrentManagingFirmGate />
+
       <CompanyProfile
-        currentManagingFirm={currentManagingFirm}
         staffList={staffList}
         isLoadingStaff={isLoadingStaff}
         handleOpenStatusChangeModal={() => handleOpenStatusChangeModal()}
@@ -51,6 +53,7 @@ export const CompanyProfileContainer = () => {
         catchContractorId={catchContractorId}
         handleOpenEditContractorModal={() => handleOpenEditContractorModal()}
         catchContractorData={catchContractorData}
+        currentManagingFirm={currentManagingFirm}
       />
     </>
   );
