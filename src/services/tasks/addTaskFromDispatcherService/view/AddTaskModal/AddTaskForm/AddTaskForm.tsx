@@ -50,6 +50,7 @@ import { useSwitchInputOnEnter } from 'hooks/useSwitchInputOnEnter';
 import { fromEnter } from 'ui-kit/shared/DatePickerNative';
 import { validationSchema } from './AddTaskForm.constants';
 import { DatePicker } from 'ui-kit/DatePicker';
+import { SavePhoneNumber } from './SavePhoneNumber';
 
 const {
   gates: { PageGate },
@@ -445,21 +446,23 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
               </AutoCompleteAntD>
             </FormItem>
             <FormItem label="Номер телефона">
-              <Input
-                placeholder="Введите"
-                value={values.phoneNumber || undefined}
-                onChange={(value) =>
-                  setFieldValue('phoneNumber', value.target.value)
-                }
-                data-reading-input={dataKey}
-                onKeyDown={fromEnter(() => {
-                  if (isOnlySubscriberRequired) {
-                    next(4);
-                  } else {
-                    next(5);
+              <SavePhoneNumber>
+                <Input
+                  placeholder="Введите"
+                  value={values.phoneNumber || undefined}
+                  onChange={(value) =>
+                    setFieldValue('phoneNumber', value.target.value)
                   }
-                })}
-              />
+                  data-reading-input={dataKey}
+                  onKeyDown={fromEnter(() => {
+                    if (isOnlySubscriberRequired) {
+                      next(4);
+                    } else {
+                      next(5);
+                    }
+                  })}
+                />
+              </SavePhoneNumber>
             </FormItem>
           </GridContainer>
         )}
