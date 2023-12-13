@@ -1,5 +1,5 @@
 import { createEffect, createEvent, createStore } from 'effector';
-import { forward } from 'effector';
+import { sample } from 'effector';
 import { message } from 'antd';
 import { EffectFailDataAxiosError } from 'types';
 import { GetConsolidatedReport } from './consolidatedReportService.types';
@@ -16,9 +16,9 @@ const downloadConsolidatedReportFx = createEffect<
   EffectFailDataAxiosError
 >(getConsolidatedReport);
 
-forward({
-  from: handleSubmit,
-  to: downloadConsolidatedReportFx,
+sample({
+  clock: handleSubmit,
+  target: downloadConsolidatedReportFx,
 });
 
 downloadConsolidatedReportFx.failData.watch((error) => {

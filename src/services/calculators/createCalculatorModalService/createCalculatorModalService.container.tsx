@@ -1,20 +1,30 @@
 import React from 'react';
 import { createCalculatorModalService } from './createCalculatorModalService.model';
-import { useEvent, useStore } from 'effector-react';
+import { useUnit } from 'effector-react';
 import { CreateCalculatorModal } from './view/CreateCalculatorModal';
 
 const { inputs, outputs } = createCalculatorModalService;
 
 export const CreateCalculatorModalContainer = () => {
-  const stepNumber = useStore(outputs.$stepNumber);
-  const isOpen = useStore(outputs.$isOpen);
-  const isLoading = useStore(outputs.$isLoading);
-  const payload = useStore(outputs.$requestPayload);
-
-  const goPrevStep = useEvent(inputs.goPrevStep);
-  const handleSubmitForm = useEvent(inputs.handleSubmitForm);
-  const updatePayload = useEvent(inputs.updateRequestPayload);
-  const closeModal = useEvent(inputs.closeModal);
+  const {
+    closeModal,
+    goPrevStep,
+    handleSubmitForm,
+    isLoading,
+    isOpen,
+    payload,
+    stepNumber,
+    updatePayload,
+  } = useUnit({
+    stepNumber: outputs.$stepNumber,
+    isOpen: outputs.$isOpen,
+    isLoading: outputs.$isLoading,
+    payload: outputs.$requestPayload,
+    goPrevStep: inputs.goPrevStep,
+    handleSubmitForm: inputs.handleSubmitForm,
+    updatePayload: inputs.updateRequestPayload,
+    closeModal: inputs.closeModal,
+  });
 
   return (
     <CreateCalculatorModal

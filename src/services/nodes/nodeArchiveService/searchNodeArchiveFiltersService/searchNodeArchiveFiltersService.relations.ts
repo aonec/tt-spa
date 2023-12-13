@@ -1,7 +1,7 @@
-import { forward } from 'effector';
+import { sample } from 'effector';
 import { searchNodeArchiveFilters } from './searchNodeArchiveFiltersService.models';
 
-forward({
-  from: searchNodeArchiveFilters.inputs.applyFilters,
-  to: searchNodeArchiveFilters.inputs.loadNodeArchiveData,
+sample({
+  clock: searchNodeArchiveFilters.inputs.applyFilters,
+  target: searchNodeArchiveFilters.inputs.loadNodeArchiveData,
 });

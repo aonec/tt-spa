@@ -1,4 +1,4 @@
-import { useEvent, useStore } from 'effector-react';
+import { useUnit } from 'effector-react';
 import React, { useMemo } from 'react';
 import { resourceConsumptionService } from '../resourceConsumptionService.model';
 import { resourceConsumptionFilterService } from './resourceConsumptionFilterService.model';
@@ -7,26 +7,36 @@ import { ResourceConsumptionFilter } from './view/ResourceConsumptionFilter';
 const { inputs, outputs } = resourceConsumptionFilterService;
 
 export const ResourceConsumptionFilterContainer = () => {
-  const selectedHouseManagement = useStore(outputs.$selectedHouseManagement);
-  const houseManagements = useStore(outputs.$houseManagements);
-  const treeData = useStore(outputs.$treeData);
-  const selectedCity = useStore(outputs.$selectedCity);
-  const resourceConsumptionFilter = useStore(
-    outputs.$resourceConsumptionFilter,
-  );
-  const isLoading = useStore(resourceConsumptionService.outputs.$isLoading);
-
-  const handleClearFilter = useEvent(inputs.clearFilter);
-  const selectCity = useEvent(inputs.selectCity);
-  const setHouseManagement = useEvent(inputs.selectHouseManagememt);
-  const setFilter = useEvent(inputs.setFilter);
-  const handleClearAdditionalAddressData = useEvent(
-    resourceConsumptionService.inputs.clearAdditionalAddressData,
-  );
-  const handleClearData = useEvent(resourceConsumptionService.inputs.clearData);
-  const hadleClearData = useEvent(
-    resourceConsumptionService.inputs.clearSummary,
-  );
+  const {
+    hadleClearData,
+    handleClearAdditionalAddressData,
+    handleClearData,
+    handleClearFilter,
+    houseManagements,
+    isLoading,
+    resourceConsumptionFilter,
+    selectCity,
+    selectedCity,
+    selectedHouseManagement,
+    setFilter,
+    setHouseManagement,
+    treeData,
+  } = useUnit({
+    selectedHouseManagement: outputs.$selectedHouseManagement,
+    houseManagements: outputs.$houseManagements,
+    treeData: outputs.$treeData,
+    selectedCity: outputs.$selectedCity,
+    resourceConsumptionFilter: outputs.$resourceConsumptionFilter,
+    isLoading: resourceConsumptionService.outputs.$isLoading,
+    handleClearFilter: inputs.clearFilter,
+    selectCity: inputs.selectCity,
+    setHouseManagement: inputs.selectHouseManagememt,
+    setFilter: inputs.setFilter,
+    handleClearAdditionalAddressData:
+      resourceConsumptionService.inputs.clearAdditionalAddressData,
+    handleClearData: resourceConsumptionService.inputs.clearData,
+    hadleClearData: resourceConsumptionService.inputs.clearSummary,
+  });
 
   const preparedHouseManagements = useMemo(
     () =>

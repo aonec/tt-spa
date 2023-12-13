@@ -1,5 +1,5 @@
 import { createEffect, createEvent } from 'effector';
-import { forward } from 'effector';
+import { sample } from 'effector';
 import { editEmployee } from './editEmployeeService.api';
 import {
   OrganizationUserResponse,
@@ -25,7 +25,7 @@ const updateEmployeeFx = createEffect<
   EffectFailDataAxiosError
 >(editEmployee);
 
-forward({ from: handleSubmit, to: updateEmployeeFx });
+sample({ clock: handleSubmit, target: updateEmployeeFx });
 
 const $pending = updateEmployeeFx.pending;
 

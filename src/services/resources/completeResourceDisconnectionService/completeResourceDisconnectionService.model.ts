@@ -1,7 +1,7 @@
 import { createEffect, createEvent, createStore } from 'effector';
 import { resourceDisablingScheduleServiceService } from 'services/settings/resourcesDisablingScheduleService/ResourceDisablingScheduleService.model';
 import { message } from 'antd';
-import { forward, guard, sample } from 'effector';
+import { sample } from 'effector';
 import { EffectFailDataAxiosError } from 'types';
 import { fetchCompleteResourceDisconnecting } from './completeResourceDisconnectionService.api';
 
@@ -30,7 +30,7 @@ const $completeResourceDisconnectionIsLoading =
   completeResourceDisconnectionFx.pending;
 
 sample({
-  clock: guard({
+  clock: sample({
     source: $resourceDisconnectionId,
     clock: completeResourceDisconnection,
     filter: Boolean,
@@ -38,9 +38,9 @@ sample({
   target: completeResourceDisconnectionFx,
 });
 
-forward({
-  from: completeResourceDisconnectionFx.doneData,
-  to: [
+sample({
+  clock: completeResourceDisconnectionFx.doneData,
+  target: [
     closeModal,
     resourceDisablingScheduleServiceService.inputs
       .refetchResourceDisconnections,

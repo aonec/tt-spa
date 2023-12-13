@@ -1,5 +1,5 @@
 import { createEffect, createEvent, createStore } from 'effector';
-import { forward, sample } from 'effector';
+import { sample } from 'effector';
 import {
   AllNodeWorkingRangeResponse,
   ENodeWorkingRangeSeason,
@@ -90,19 +90,19 @@ sample({
   target: fetchAdressesFx,
 });
 
-forward({
-  from: handleOnSearchDataChange,
-  to: getHousingStockUniqueWorkingRangeFx,
+sample({
+  clock: handleOnSearchDataChange,
+  target: getHousingStockUniqueWorkingRangeFx,
 });
 
-forward({
-  from: handleNodeChoosen,
-  to: getNodeUniqueWorkingRangeFx,
+sample({
+  clock: handleNodeChoosen,
+  target: getNodeUniqueWorkingRangeFx,
 });
 
-forward({
-  from: handleFetchNodes,
-  to: getNodesFx,
+sample({
+  clock: handleFetchNodes,
+  totarget: getNodesFx,
 });
 
 export const uniqueWorkingRangeService = {

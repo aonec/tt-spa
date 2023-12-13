@@ -1,5 +1,5 @@
 import { createEvent, createStore } from 'effector';
-import { forward, guard, sample } from 'effector';
+import { sample } from 'effector';
 import { EXTREAM_STEP_NUMBER } from './addPipeNodeCommonDeviceService.constants';
 import { CreateCommonDevicePartitial } from './addPipeNodeCommonDeviceService.types';
 
@@ -32,7 +32,7 @@ const $currentFormStep = createStore<number>(0)
   .on(goPrevStep, (prev) => prev - 1)
   .reset(closeAddCommonDeviceModal);
 
-guard({
+sample({
   source: $currentFormStep,
   clock: updateCommonDeviceRequestPayload,
   filter: (stepNumber) => stepNumber < EXTREAM_STEP_NUMBER,
@@ -45,9 +45,9 @@ sample({
   target: handleMeteringDeviceCreated,
 });
 
-forward({
-  from: handleMeteringDeviceCreated,
-  to: closeAddCommonDeviceModal,
+sample({
+  clock: handleMeteringDeviceCreated,
+  target: closeAddCommonDeviceModal,
 });
 
 export const addPipeNodeCommonDeviceService = {

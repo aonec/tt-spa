@@ -1,7 +1,7 @@
 import { createEffect, createEvent, createStore } from 'effector';
 import { message } from 'antd';
 import { EffectFailDataAxiosError } from '../../../types/index';
-import { forward } from 'effector';
+import { sample } from 'effector';
 import { createGate } from 'effector-react';
 import {
   ElectricHousingMeteringDeviceResponse,
@@ -37,14 +37,14 @@ const $isLoadingSwitch = switchHousingMeteringDeviceFx.pending;
 
 $oldDevice.on(getHousingMeteringDeviceFx.doneData, (_, device) => device);
 
-forward({
-  from: OldDeviceIdGate.state.map(({ oldDeviceId }) => oldDeviceId),
-  to: getHousingMeteringDeviceFx,
+sample({
+  clock: OldDeviceIdGate.state.map(({ oldDeviceId }) => oldDeviceId),
+  target: getHousingMeteringDeviceFx,
 });
 
-forward({
-  from: switchHousingMeteringDevice,
-  to: switchHousingMeteringDeviceFx,
+sample({
+  clock: switchHousingMeteringDevice,
+  target: switchHousingMeteringDeviceFx,
 });
 
 switchHousingMeteringDeviceFx.failData.watch((error) => {

@@ -1,5 +1,5 @@
 import { createEffect, createEvent, createStore } from 'effector';
-import { combine, guard, sample } from 'effector';
+import { combine, sample } from 'effector';
 import { createGate } from 'effector-react';
 import { PipeHousingMeteringDeviceResponse, TasksPagedList } from 'api/types';
 import {
@@ -41,7 +41,7 @@ const $housingMeteringDeviceTask = createStore<TasksPagedList | null>(null).on(
 
 sample({
   source: FetchHousingMeteringDeviceGate.state,
-  clock: guard({
+  clock: sample({
     source: combine(
       $housingMeteringDevice,
       FetchHousingMeteringDeviceGate.state,

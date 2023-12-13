@@ -1,5 +1,5 @@
 import { createEffect, createStore } from 'effector';
-import { forward } from 'effector';
+import { sample } from 'effector';
 import {
   getContractors,
   getCurrentManagingFirm,
@@ -60,29 +60,29 @@ const $contractorsList = createStore<ContractorListResponsePagedList | null>(
   null,
 ).on(fetchContractorsFx.doneData, (_, data) => data);
 
-forward({
-  from: FetchingCurrentManagingFirmGate.open,
-  to: fetchCurrentManagingFirmFx,
+sample({
+  clock: FetchingCurrentManagingFirmGate.open,
+  target: fetchCurrentManagingFirmFx,
 });
 
-forward({
-  from: [
+sample({
+  clock: [
     FetchingStaffGate.open,
     successDeleteEmployee,
     successUpdateStatus,
     successCreateEmloyee,
   ],
-  to: fetchStaffFx,
+  target: fetchStaffFx,
 });
 
-forward({
-  from: [
+sample({
+  clock: [
     FetchingContractorsGate.open,
     successAddContractor,
     successDeleteContractor,
     successEditContractor,
   ],
-  to: fetchContractorsFx,
+  target: fetchContractorsFx,
 });
 
 const $fetchStaffPending = fetchStaffFx.pending;

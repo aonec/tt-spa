@@ -1,7 +1,7 @@
 import { createEvent, createStore } from 'effector';
 import { createGate } from 'effector-react';
 import { getApartmentsQuery } from './displayApartmentsListService.api';
-import { sample, guard, forward } from 'effector';
+import { sample } from 'effector';
 import { ApartmentListResponsePagedList } from 'api/types';
 import { SearchApartmentsPayload } from './displayApartmentsListService.types';
 
@@ -30,9 +30,9 @@ const clearSearchPayload = createEvent();
 
 const ApartmentsListGate = createGate();
 
-forward({
-  from: ApartmentsListGate.close,
-  to: clearSearchPayload,
+sample({
+  clock: ApartmentsListGate.close,
+  target: clearSearchPayload,
 });
 
 $searchApartmentsPayload
@@ -49,7 +49,7 @@ $apartmentsPagedList
   .reset(clearSearchPayload);
 
 sample({
-  clock: guard({
+  clock: sample({
     clock: $searchApartmentsPayload,
     filter: Boolean,
   }),

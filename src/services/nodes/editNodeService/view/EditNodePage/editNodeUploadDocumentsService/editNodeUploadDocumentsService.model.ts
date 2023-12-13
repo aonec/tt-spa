@@ -1,5 +1,5 @@
 import { createEffect, createEvent, createStore } from 'effector';
-import { guard, sample } from 'effector';
+import { sample } from 'effector';
 import { DocumentLiteResponse } from 'api/types';
 import { fetchUpdateDocuments } from './editNodeUploadDocumentsService.api';
 import { UpdateDocumentPayload } from './editNodeUploadDocumentsService.types';
@@ -26,7 +26,7 @@ const $documents = createStore<DocumentLiteResponse[]>([])
   .on(updateDocuments, (_, documents) => documents);
 
 sample({
-  source: guard({
+  source: sample({
     source: editNodeService.outputs.$node.map((node) => node?.id),
     filter: Boolean,
   }),

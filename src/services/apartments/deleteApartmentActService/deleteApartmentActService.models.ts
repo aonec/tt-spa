@@ -1,5 +1,5 @@
 import { createEffect, createEvent, createStore } from 'effector';
-import { forward, sample } from 'effector';
+import { sample } from 'effector';
 import { apartmentActsListService } from '../apartmentActsListService';
 import { deleteApartmentAct } from './deleteApartmentActService.api';
 
@@ -20,9 +20,9 @@ sample({
   target: deleteActFx,
 });
 
-forward({
-  from: deleteActFx.doneData,
-  to: [apartmentActsListService.inputs.refetchApartmentActs, closeModal],
+sample({
+  clock: deleteActFx.doneData,
+  target: [apartmentActsListService.inputs.refetchApartmentActs, closeModal],
 });
 
 export const deleteApartmentActService = {

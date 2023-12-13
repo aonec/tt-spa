@@ -1,5 +1,5 @@
 import { createEffect, createEvent } from 'effector';
-import { forward } from 'effector';
+import { sample } from 'effector';
 import { confirmRegistration } from './registrationService.api';
 import { ConfirmRequest } from 'api/types';
 import { EffectFailDataAxiosError } from 'types';
@@ -13,7 +13,7 @@ const confirmRegistrationFx = createEffect<
   EffectFailDataAxiosError
 >(confirmRegistration);
 
-forward({ from: handleConfirmRegistration, to: confirmRegistrationFx });
+sample({ clock: handleConfirmRegistration, target: confirmRegistrationFx });
 
 const $isLoading = confirmRegistrationFx.pending;
 const successRegistration = confirmRegistrationFx.doneData;

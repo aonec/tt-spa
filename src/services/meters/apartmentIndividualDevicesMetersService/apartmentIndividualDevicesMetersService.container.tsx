@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { useEvent, useStore } from 'effector-react';
+import { useUnit } from 'effector-react';
 import { ReadingsHistoryContainer } from 'services/meters/readingsHistoryService/readingsHistoryService.container';
 import { DeleteIndividualDeviceModalContainer } from 'services/devices/individualDevices/deleteIndividualDevice/DeleteIndividualDeviceModalContainer';
 import { apartmentIndividualDevicesMetersService } from './apartmentIndividualDevicesMetersService.model';
@@ -21,20 +21,31 @@ export const ApartmentIndividualDevicesMetersContainer: FC<Params> = ({
   maxWidth,
   editable,
 }) => {
-  const individualDevicesList = useStore(
-    outputs.$filteredIndividualDevicesList,
-  );
-  const isLoading = useStore(outputs.$isLoading);
-  const isShowClosedDevices = useStore(outputs.$isShowClosedIndividualDevices);
-  const closedDevicesCount = useStore(outputs.$closedDevicesCount);
-  const sliderIndex = useStore(outputs.$sliderIndex);
-  const consumptionRates = useStore(outputs.$consumptionRates);
-
-  const setIsShowClosedDevices = useEvent(inputs.setIsShowClosedDevices);
-  const upSliderIndex = useEvent(inputs.upSliderIndex);
-  const downSliderIndex = useEvent(inputs.downSliderIndex);
-  const openReadingsHistoryModal = useEvent(inputs.openReadingsHistoryModal);
-  const loadConsumptionRates = useEvent(inputs.loadConsumptionRates);
+  const {
+    closedDevicesCount,
+    consumptionRates,
+    downSliderIndex,
+    individualDevicesList,
+    isLoading,
+    isShowClosedDevices,
+    loadConsumptionRates,
+    openReadingsHistoryModal,
+    setIsShowClosedDevices,
+    sliderIndex,
+    upSliderIndex,
+  } = useUnit({
+    individualDevicesList: outputs.$filteredIndividualDevicesList,
+    isLoading: outputs.$isLoading,
+    isShowClosedDevices: outputs.$isShowClosedIndividualDevices,
+    closedDevicesCount: outputs.$closedDevicesCount,
+    sliderIndex: outputs.$sliderIndex,
+    consumptionRates: outputs.$consumptionRates,
+    setIsShowClosedDevices: inputs.setIsShowClosedDevices,
+    upSliderIndex: inputs.upSliderIndex,
+    downSliderIndex: inputs.downSliderIndex,
+    openReadingsHistoryModal: inputs.openReadingsHistoryModal,
+    loadConsumptionRates: inputs.loadConsumptionRates,
+  });
 
   const { managementFirmConsumptionRates } = useManagingFirmConsumptionRates(
     consumptionRates,

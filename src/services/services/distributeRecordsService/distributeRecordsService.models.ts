@@ -1,5 +1,5 @@
 import { createEffect, createEvent, createStore } from 'effector';
-import { combine, forward, sample } from 'effector';
+import { combine, sample } from 'effector';
 import { createGate } from 'effector-react';
 import {
   appointmentsCountingQuery,
@@ -70,9 +70,9 @@ sample({
   target: districtAppointmentsQuery.start,
 });
 
-forward({
-  from: setAppointmentsToControllerMutation.finished.success,
-  to: [closeDistributeAppointmentsModal],
+sample({
+  clock: setAppointmentsToControllerMutation.finished.success,
+  target: [closeDistributeAppointmentsModal],
 });
 
 sample({
@@ -102,18 +102,18 @@ sample({
   target: appointmentsCountingQuery.start,
 });
 
-forward({
-  from: DistributeRecordsGate.open,
-  to: [
+sample({
+  clock: DistributeRecordsGate.open,
+  target: [
     districtsQuery.start,
     nearestAppointmentsDateQuery.start,
     individualSealControllersQuery.start,
   ],
 });
 
-forward({
-  from: createIndividualSealControllerMutation.finished.success,
-  to: individualSealControllersQuery.start,
+sample({
+  clock: createIndividualSealControllerMutation.finished.success,
+  target: individualSealControllersQuery.start,
 });
 
 sample({

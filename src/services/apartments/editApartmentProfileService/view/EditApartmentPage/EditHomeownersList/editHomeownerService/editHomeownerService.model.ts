@@ -1,6 +1,6 @@
 import { createEffect, createEvent, createStore } from 'effector';
 import { editApartmentProfileService } from 'services/apartments/editApartmentProfileService/editApartmentProfileService.model';
-import { combine, forward, sample } from 'effector';
+import { combine, sample } from 'effector';
 import {
   EditHomeownerFormPayload,
   EditHomeownerRequestPayload,
@@ -87,9 +87,9 @@ sample({
   target: editHomeownerFx,
 });
 
-forward({
-  from: editHomeownerFx.doneData,
-  to: [
+sample({
+  clock: editHomeownerFx.doneData,
+  target: [
     editApartmentProfileService.inputs.refetchAaprtment,
     handleConfirmationModalClose,
   ],

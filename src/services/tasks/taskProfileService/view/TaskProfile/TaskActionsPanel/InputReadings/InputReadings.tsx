@@ -1,6 +1,6 @@
 import React, { FC, useEffect, useState } from 'react';
 import { InputReadingsProps, Reading } from './InputReadings.types';
-import { useStore } from 'effector-react';
+import { useUnit } from 'effector-react';
 import { IndividualDeviceOnTaskResponse } from 'api/types';
 import { SpaceLine } from 'ui-kit/SpaceLine';
 import { getReadingMonth } from './InputReadings.utils';
@@ -18,7 +18,7 @@ import {
 export const InputReadings: FC<InputReadingsProps> = ({ handleChange }) => {
   const [readings, setReadings] = useState<Reading[]>([]);
 
-  const task = useStore(taskProfileService.outputs.$task);
+  const { task } = useUnit({ task: taskProfileService.outputs.$task });
 
   useEffect(() => {
     const devices = task?.individualDevices;

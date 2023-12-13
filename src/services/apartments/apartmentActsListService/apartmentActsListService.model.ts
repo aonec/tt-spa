@@ -1,5 +1,5 @@
 import { createEffect, createEvent, createStore } from 'effector';
-import { combine, forward, sample } from 'effector';
+import { combine, sample } from 'effector';
 import { createGate } from 'effector-react';
 import dayjs from 'api/dayjs';
 import {
@@ -61,9 +61,9 @@ const $filteredActsList = combine($actsList, $actsFilter, (acts, filters) => {
   return filteredActs;
 });
 
-forward({
-  from: saveFile,
-  to: saveFileFx,
+sample({
+  clock: saveFile,
+  target: saveFileFx,
 });
 
 sample({
@@ -72,9 +72,9 @@ sample({
   target: fetchActsListFx,
 });
 
-forward({
-  from: ApartmentActsListGate.state.map(({ apartmentId }) => apartmentId),
-  to: fetchActsListFx,
+sample({
+  clock: ApartmentActsListGate.state.map(({ apartmentId }) => apartmentId),
+  target: fetchActsListFx,
 });
 
 $actsList.on(fetchActsListFx.doneData, (_, actsList) => actsList);

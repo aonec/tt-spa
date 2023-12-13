@@ -1,4 +1,4 @@
-import { useEvent, useStore } from 'effector-react';
+import { useUnit } from 'effector-react';
 import React from 'react';
 import { uniqueWorkingRangeService } from './uniqueWorkingRangeService.model';
 import { UniqueWorkingRange } from './view/UniqueWorkingRange/UniqueWorkingRange';
@@ -9,19 +9,29 @@ const { inputs, outputs } = uniqueWorkingRangeService;
 const { ExistingCitiesGate } = addressSearchService.gates;
 
 export const UniqueWorkingRangeContainer = () => {
-  const housingStockUniqueWorkingRange = useStore(
-    outputs.$housingStockUniqueWorkingRange,
-  );
-  const isLoading = useStore(outputs.$isLoading);
-  const addressesPagedList = useStore(outputs.$addressesPagedList);
-  const existingCities = useStore(outputs.$existingCities);
-  const selectedCity = useStore(outputs.$selectedCity);
-  const nodes = useStore(outputs.$nodes);
-
-  const handleOnSearchDataChange = useEvent(inputs.handleOnSearchDataChange);
-  const handleNodeChoosen = useEvent(inputs.handleNodeChoosen);
-  const setSelectedCity = useEvent(inputs.setSelectedCity);
-  const handleFetchNodes = useEvent(inputs.handleFetchNodes);
+  const {
+    addressesPagedList,
+    existingCities,
+    handleFetchNodes,
+    handleNodeChoosen,
+    handleOnSearchDataChange,
+    housingStockUniqueWorkingRange,
+    isLoading,
+    nodes,
+    selectedCity,
+    setSelectedCity,
+  } = useUnit({
+    housingStockUniqueWorkingRange: outputs.$housingStockUniqueWorkingRange,
+    isLoading: outputs.$isLoading,
+    addressesPagedList: outputs.$addressesPagedList,
+    existingCities: outputs.$existingCities,
+    selectedCity: outputs.$selectedCity,
+    nodes: outputs.$nodes,
+    handleOnSearchDataChange: inputs.handleOnSearchDataChange,
+    handleNodeChoosen: inputs.handleNodeChoosen,
+    setSelectedCity: inputs.setSelectedCity,
+    handleFetchNodes: inputs.handleFetchNodes,
+  });
 
   const preparedAddresses = prepareAddressesForTreeSelect({
     items: addressesPagedList?.items || [],

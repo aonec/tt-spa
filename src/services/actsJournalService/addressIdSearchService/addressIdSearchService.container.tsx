@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import { addressIdSearchService } from './addressIdSearchService.model';
-import { useEvent, useStore } from 'effector-react';
+import { useUnit } from 'effector-react';
 import { AddressIdSearchContainerProps } from './addressIdSearchService.types';
 import { AddressIdSearch } from './view/AddressIdSearch';
 
@@ -10,13 +10,21 @@ export const AddressIdSearchContainer: FC<AddressIdSearchContainerProps> = ({
   onEnter,
   dataKey,
 }) => {
-  const isSuccess = useStore(outputs.$isSuccess);
-  const isError = useStore(outputs.$isError);
-  const isLoading = useStore(outputs.$isLoading);
-  const addressFilter = useStore(outputs.$searchAddressFilter);
-
-  const getApartmentId = useEvent(inputs.getApartmentSearchId);
-  const setAddress = useEvent(inputs.setAddress);
+  const {
+    addressFilter,
+    getApartmentId,
+    isError,
+    isLoading,
+    isSuccess,
+    setAddress,
+  } = useUnit({
+    isSuccess: outputs.$isSuccess,
+    isError: outputs.$isError,
+    isLoading: outputs.$isLoading,
+    addressFilter: outputs.$searchAddressFilter,
+    getApartmentId: inputs.getApartmentSearchId,
+    setAddress: inputs.setAddress,
+  });
 
   return (
     <AddressIdSearch

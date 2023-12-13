@@ -2,7 +2,7 @@ import { Pagination } from 'antd';
 import { useUnit } from 'effector-react';
 import React, { useEffect, useMemo } from 'react';
 import dayjs from 'dayjs';
-import {  useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { PAGE_SIZE } from './reportsListService.constants';
 import { reportsListService } from './reportsListService.model';
 import { ReportStatusType } from './reportsListService.types';
@@ -40,7 +40,7 @@ export const ReportsListContainer = () => {
     filtrationValues: reportViewService.outputs.$filtrationValues,
   });
 
-  const navigate =  useNavigate();
+  const navigate = useNavigate();
 
   useEffect(() => {
     return inputs.openExistedReport.watch((data) => {
@@ -75,7 +75,7 @@ export const ReportsListContainer = () => {
         reportViewService.inputs.setFiltrationValues(
           dataForOpenEmployeeReportType,
         );
-         navigate('/reports/Employee');
+        navigate('/reports/Employee');
       }
     }).unsubscribe;
   }, [navigate, filtrationValues]);

@@ -9,10 +9,10 @@ import {
 import { AccessDeniedPageProps } from './AccessDeniedPage.types';
 import { ReactComponent as Page403Icon } from './assets/403.svg';
 import { Button } from 'ui-kit/Button';
-import {  useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 export const AccessDeniedPage: FC<AccessDeniedPageProps> = () => {
-  const navigate =  useNavigate();
+  const navigate = useNavigate();
 
   return (
     <Wrapper>

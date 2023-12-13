@@ -75,7 +75,7 @@ export const currentUserService = {
     $userRolesKeys,
     $organizationCoordinates: $coordinates,
     $userCity,
-    fetchCurrentUserFx
+    fetchCurrentUserFx,
   },
   gates: {
     CurrentUserGate,

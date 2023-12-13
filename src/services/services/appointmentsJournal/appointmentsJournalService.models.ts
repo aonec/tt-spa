@@ -1,4 +1,4 @@
-import { forward, sample } from 'effector';
+import { sample } from 'effector';
 import { createForm } from 'effector-forms';
 import dayjs from 'api/dayjs';
 import { individualSealAssignmentsQuery } from './appointmentsJournalService.api';
@@ -24,9 +24,9 @@ sample({
   target: individualSealAssignmentsQuery.start,
 });
 
-forward({
-  from: AssignmentsJournalGate.open,
-  to: individualSealControllersQuery.start,
+sample({
+  clock: AssignmentsJournalGate.open,
+  target: individualSealControllersQuery.start,
 });
 
 export const appointmentsJournalService = {

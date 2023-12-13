@@ -1,5 +1,5 @@
 import { createEffect, createStore } from 'effector';
-import { forward } from 'effector';
+import { sample } from 'effector';
 import { createGate } from 'effector-react';
 import { CalculatorInfoListResponse } from 'api/types';
 import { getCalculatorInfos } from './calculatorsInfoService.api';
@@ -28,9 +28,9 @@ const $calculatorTypesSelectItems = $calculatorTypes.map((types) => {
   }));
 });
 
-forward({
-  from: CalculatorInfosGate.open,
-  to: fetchCalculatorTypesFx,
+sample({
+  clock: CalculatorInfosGate.open,
+  target: fetchCalculatorTypesFx,
 });
 
 export const calculatorsInfoService = {

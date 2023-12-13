@@ -11,7 +11,7 @@ import {
   Wrapper,
 } from './EditCommonDataForm.styled';
 import { EditCommonDataFormProps } from './EditCommonDataForm.types';
-import {  useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useForm } from 'effector-forms';
 
 export const EditCommonDataForm: FC<EditCommonDataFormProps> = ({
@@ -20,7 +20,7 @@ export const EditCommonDataForm: FC<EditCommonDataFormProps> = ({
 }) => {
   const { fields, submit } = useForm(form);
 
-  const navigate =  useNavigate();
+  const navigate = useNavigate();
 
   return (
     <Wrapper>

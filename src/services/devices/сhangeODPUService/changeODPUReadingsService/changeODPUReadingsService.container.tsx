@@ -1,4 +1,4 @@
-import { useStore } from 'effector-react';
+import { useUnit } from 'effector-react';
 import React, { FC, useCallback, useEffect, useState } from 'react';
 import { ChangeODPUReadingsService } from './changeODPUReadings.model';
 import { Wrapper } from './changeODPUReadings.styled';
@@ -20,10 +20,12 @@ export const ChangeODPUReadingsContainer: FC<ChangeODPUReadingsProps> = ({
 }) => {
   const { resource, serialNumber, model, nodeId } = device || {};
 
-  const loading = useStore(outputs.$loading);
-
-  const oldDeviceInitialReadings = useStore(outputs.$oldReadings);
-  const newDeviceInitialReadings = useStore(outputs.$newDeviceInitialReadings);
+  const { loading, newDeviceInitialReadings, oldDeviceInitialReadings } =
+    useUnit({
+      loading: outputs.$loading,
+      oldDeviceInitialReadings: outputs.$oldReadings,
+      newDeviceInitialReadings: outputs.$newDeviceInitialReadings,
+    });
 
   const [newDeviceReadings, setNewDeviceReadings] = useState<
     PreparedHousingMeteringDeviceReadings[]

@@ -1,4 +1,4 @@
-import { useEvent, useStore } from 'effector-react';
+import { useUnit } from 'effector-react';
 import React from 'react';
 import { FormModal } from 'ui-kit/Modals/FormModal';
 import { checkCalculatorService } from './checkCalculatorService.model';
@@ -7,11 +7,13 @@ import { CheckCalculatorForm } from './view/CheckCalculatorForm';
 const { inputs, outputs } = checkCalculatorService;
 
 export const CheckCalculatorContainer = () => {
-  const calculator = useStore(outputs.$calculatorInfo);
-  const isOpen = useStore(outputs.$isModalOpen);
-
-  const handleCloseModal = useEvent(inputs.closeModal);
-  const handleCheckCalculator = useEvent(inputs.checkCalculator);
+  const { calculator, handleCheckCalculator, handleCloseModal, isOpen } =
+    useUnit({
+      calculator: outputs.$calculatorInfo,
+      isOpen: outputs.$isModalOpen,
+      handleCloseModal: inputs.closeModal,
+      handleCheckCalculator: inputs.checkCalculator,
+    });
 
   if (!calculator) {
     return null;

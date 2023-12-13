@@ -1,6 +1,6 @@
 import { createEffect, createEvent, createStore } from 'effector';
 import { message } from 'antd';
-import { forward, guard, sample } from 'effector';
+import { sample } from 'effector';
 import {
   AddHeatingStationRequest,
   CreateAddressRequest,
@@ -23,7 +23,7 @@ const createHeatingStationFx = createEffect<
   EffectFailDataAxiosError
 >(postHeatingStation);
 
-guard({
+sample({
   clock: sample({
     clock: handleCreateHeatingStation,
     fn: (data: HeatingStation) => {
@@ -55,9 +55,9 @@ createHeatingStationFx.failData.watch((error) =>
   message.error(error.response.data.error.Text),
 );
 
-forward({
-  from: createHeatingStationFx.doneData,
-  to: handleCloseModal,
+sample({
+  clock: createHeatingStationFx.doneData,
+  target: handleCloseModal,
 });
 
 const $existingCities = addressSearchService.outputs.$existingCities;

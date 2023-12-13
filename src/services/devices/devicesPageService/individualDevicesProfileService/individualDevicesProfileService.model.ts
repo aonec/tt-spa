@@ -1,5 +1,5 @@
 import { createEffect, createEvent, createStore } from 'effector';
-import { forward } from 'effector';
+import { sample } from 'effector';
 import { createGate } from 'effector-react';
 import { IndividualDeviceMountPlaceForFilterResponse } from 'api/types';
 import { DevicesSearchType } from '../devicesPageService.types';
@@ -22,9 +22,9 @@ export const $devicesSearchType = createStore<DevicesSearchType>(
 
 const IndividualDevicesGate = createGate();
 
-forward({
-  from: IndividualDevicesGate.open,
-  to: getMountPlacesFx,
+sample({
+  clock: IndividualDevicesGate.open,
+  target: getMountPlacesFx,
 });
 
 export const individualDevicesProfileService = {

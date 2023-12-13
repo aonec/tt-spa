@@ -1,6 +1,6 @@
 import { createEffect, createEvent, createStore } from 'effector';
 import { message } from 'antd';
-import { forward, guard, sample } from 'effector';
+import { sample } from 'effector';
 import { CalculatorResponse, CheckDeviceRequest } from 'api/types';
 import { calculatorProfileService } from '../calculatorProfileService';
 import { fetchCloseCalculator } from './checkCalculatorService.api';
@@ -24,7 +24,7 @@ const checkCalculatorFx = createEffect<
 >(fetchCloseCalculator);
 
 sample({
-  source: guard({
+  source: sample({
     source: $calculatorInfo,
     filter: Boolean,
   }),
@@ -36,9 +36,9 @@ sample({
   target: checkCalculatorFx,
 });
 
-forward({
-  from: checkCalculatorFx.doneData,
-  to: [closeModal, calculatorProfileService.inputs.refetchCalculator],
+sample({
+  clock: checkCalculatorFx.doneData,
+  target: [closeModal, calculatorProfileService.inputs.refetchCalculator],
 });
 
 checkCalculatorFx.doneData.watch(() => {

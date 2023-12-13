@@ -1,5 +1,5 @@
 import { createEffect, createEvent, createStore } from 'effector';
-import { forward, sample } from 'effector';
+import { sample } from 'effector';
 import { createGate } from 'effector-react';
 import {
   IndividualDeviceListResponseFromDevicePagePagedList,
@@ -63,9 +63,9 @@ sample({
   target: fetchIndividualDeviceNamesFx,
 });
 
-forward({
-  from: handleFetchSerialNumberForCheck,
-  to: fetchSerialNumberForCheckFx,
+sample({
+  clock: handleFetchSerialNumberForCheck,
+  target: fetchSerialNumberForCheckFx,
 });
 
 export const displayIndividualDeviceAndNamesService = {
