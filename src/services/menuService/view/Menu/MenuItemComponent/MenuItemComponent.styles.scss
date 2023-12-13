@@ -2,16 +2,45 @@
   path {
     fill: #272f5a;
   }
-
 }
 
 .active-menu-item-nav-link {
+  display: flex;
+  align-items: center;
+  height: 35px;
+  margin-top: 12px;
+  padding: 0 15px;
   color: #189ee9 !important;
   border-left: 3px solid #189ee9 !important;
 
   .menu-item-icon {
     path {
       fill: #189ee9 !important;
+    }
+  }
+}
+
+.menu-item-nav-link {
+  display: flex;
+  align-items: center;
+  height: 35px;
+  margin-top: 12px;
+  padding: 0 15px;
+  color: #272f5a;
+  border-left: 3px solid #00000000;
+  cursor: pointer !important;
+
+  &:hover {
+    transition: 0.2s;
+    color: #189ee9;
+    path {
+      fill: #189ee9 !important;
+    }
+
+    .menu-item-icon {
+      path {
+        fill: #189ee9 !important;
+      }
     }
   }
 }

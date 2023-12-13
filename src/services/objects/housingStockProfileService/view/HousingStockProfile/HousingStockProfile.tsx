@@ -1,5 +1,5 @@
 import React, { FC, ReactNode, useMemo } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { ResourceAccountingSystemsContainer } from 'services/devices/resourceAccountingSystemsService';
 import { GoBack } from 'ui-kit/shared/GoBack';
 import { getBuildingAddress } from 'utils/getBuildingAddress';
@@ -27,7 +27,7 @@ export const HousingStockProfile: FC<HousingStockProfileProps> = ({
   isPermissionToEditHousingStock,
   resourceDisconnections,
 }) => {
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const { address } = housingStock;
   const addressString = getBuildingAddress(housingStock);
@@ -72,9 +72,7 @@ export const HousingStockProfile: FC<HousingStockProfileProps> = ({
             {
               title: 'Добавить узел',
               onClick: () =>
-                history.push(
-                  `/buildings/livingProfile/${housingStock.id}/addNode`,
-                ),
+                navigate(`/buildings/livingProfile/${housingStock.id}/addNode`),
               hidden: !isPermitionToAddNode,
             },
             {
@@ -85,9 +83,7 @@ export const HousingStockProfile: FC<HousingStockProfileProps> = ({
             {
               title: 'Редактировать',
               onClick: () =>
-                history.push(
-                  `/buildings/livingProfile/${housingStock.id}/edit`,
-                ),
+                navigate(`/buildings/livingProfile/${housingStock.id}/edit`),
               hidden: !isPermissionToEditHousingStock,
             },
           ],

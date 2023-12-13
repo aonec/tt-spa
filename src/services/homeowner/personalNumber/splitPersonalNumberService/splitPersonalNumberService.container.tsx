@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { splitPersonalNumberService } from './splitPersonalNumberService.model';
 import { SplitPersonalNumberPage } from './view/SplitPersonalNumberPage';
 import { useUnit } from 'effector-react';
-import { useHistory, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { ConfirmationAddingExistingPersonalNumber } from '../components/ConfirmationAddingExistingPersonalNumberModal';
 import { ConfirmUsingExistingArartmentModal } from '../components/ConfirmUsingExistingApartmentModal/ConfirmUsingExistingArartmentModal';
 import { individualDeviceMountPlacesService } from 'services/devices/individualDeviceMountPlacesService';
@@ -21,7 +21,6 @@ export const SplitPersonalNumberContainer = () => {
   const apartmentId = id;
 
   const { homeownerId } = useParams<{ homeownerId: string }>();
-  const history = useHistory();
   const {
     addNewApartmentStageData,
     apartment,
@@ -57,6 +56,7 @@ export const SplitPersonalNumberContainer = () => {
     handleForceConfirmationModalClose: inputs.handleForceConfirmationModalClose,
     onForced: inputs.onForced,
   });
+  const navigate = useNavigate();
 
   const homeowner = apartment?.homeownerAccounts?.find(
     (homeownerAccount) => homeownerAccount.id === homeownerId,
@@ -64,9 +64,9 @@ export const SplitPersonalNumberContainer = () => {
 
   useEffect(() => {
     return inputs.successSplit.watch(() => {
-      history.push(`/meters/apartments/${apartmentId}`);
+      navigate(`/meters/apartments/${apartmentId}`);
     });
-  }, [history, apartmentId]);
+  }, [navigate, apartmentId]);
 
   return (
     <>

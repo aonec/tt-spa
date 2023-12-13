@@ -1,6 +1,6 @@
 import { useUnit } from 'effector-react';
 import React, { useCallback } from 'react';
-import { useHistory, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { WithLoader } from 'ui-kit/shared/WithLoader';
 import { housingMeteringDeviceProfileService } from './housingMeteringDeviceProfileService.model';
 import { HousingMeteringDeviceProfile } from './view/HousingMeteringDeviceProfile';
@@ -16,7 +16,8 @@ export const HousingMeteringDeviceProfileContainer = () => {
     deviceId: string;
     section?: HousingProfileTabs;
   }>();
-  const history = useHistory();
+
+  const navigate = useNavigate();
 
   const {
     handleCheckModalOpen,
@@ -51,9 +52,13 @@ export const HousingMeteringDeviceProfileContainer = () => {
 
   const setGrouptype = useCallback(
     (section: HousingProfileTabs) =>
-      history.replace(`/housingMeteringDevices/${deviceId}/profile/${section}`),
-    [history, deviceId],
+      navigate(`/housingMeteringDevices/${deviceId}/profile/${section}`, {
+        replace: true,
+      }),
+    [navigate, deviceId],
   );
+
+  if (!deviceId) return null;
 
   return (
     <>

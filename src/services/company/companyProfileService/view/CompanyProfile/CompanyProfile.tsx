@@ -4,14 +4,13 @@ import {
   CompanyProfileSection,
 } from './CompanyProfile.types';
 import { PageHeader } from 'ui-kit/shared/PageHeader';
-import { Route, useHistory, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { CommonInfoTab } from './Tabs/CommonInfoTab';
 import { Staff } from './Tabs/Staff';
 import { Contractors } from './Tabs/Contractors';
 import { TabsSC } from './CompanyProfile.styled';
 
 export const CompanyProfile: FC<CompanyProfileProps> = ({
-  currentManagingFirm,
   staffList,
   isLoadingStaff,
   handleOpenStatusChangeModal,
@@ -25,8 +24,9 @@ export const CompanyProfile: FC<CompanyProfileProps> = ({
   catchContractorId,
   handleOpenEditContractorModal,
   catchContractorData,
+  currentManagingFirm,
 }) => {
-  const history = useHistory();
+  const navigate = useNavigate();
   const { section } = useParams<{ section: CompanyProfileSection }>();
 
   const tabItems = useMemo(
@@ -46,7 +46,7 @@ export const CompanyProfile: FC<CompanyProfileProps> = ({
           menuButtons: [
             {
               title: 'Редактировать информацию о компании',
-              onClick: () => history.push('/editCompany'),
+              onClick: () => navigate('/editCompany'),
             },
             {
               title: 'Добавить контрагента',
@@ -68,15 +68,16 @@ export const CompanyProfile: FC<CompanyProfileProps> = ({
       <TabsSC
         activeKey={section}
         onChange={(activeKey) =>
-          history.push(`/companyProfile/${activeKey as CompanyProfileSection}`)
+          navigate(`/companyProfile/${activeKey as CompanyProfileSection}`)
         }
         items={tabItems}
       />
 
-      <Route path="/companyProfile/commonInfo" exact>
+      {section === CompanyProfileSection.CommonInfo && (
         <CommonInfoTab currentManagingFirm={currentManagingFirm} />
-      </Route>
-      <Route path="/companyProfile/staff" exact>
+      )}
+
+      {section === CompanyProfileSection.Staff && (
         <Staff
           staffList={staffList}
           isLoadingStaff={isLoadingStaff}
@@ -85,8 +86,9 @@ export const CompanyProfile: FC<CompanyProfileProps> = ({
           handleOpenDeleteModal={handleOpenDeleteModal}
           handleCatchEmployeeId={handleCatchEmployeeId}
         />
-      </Route>
-      <Route path="/companyProfile/contractors" exact>
+      )}
+
+      {section === CompanyProfileSection.Contractors && (
         <Contractors
           conractorsList={conractorsList}
           isLoadingContractors={isLoadingContractors}
@@ -94,7 +96,7 @@ export const CompanyProfile: FC<CompanyProfileProps> = ({
           handleOpenEditContractorModal={handleOpenEditContractorModal}
           catchContractorData={catchContractorData}
         />
-      </Route>
+      )}
     </>
   );
 };

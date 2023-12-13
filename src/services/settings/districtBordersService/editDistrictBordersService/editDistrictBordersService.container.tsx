@@ -7,7 +7,7 @@ import {
   existingHousingStocksQuery,
 } from './editDistrictBordersService.api';
 import { editDistrictBordersService } from './editDistrictBordersService.models';
-import { useHistory, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import {
   getDistrictJsonData,
   getPayloadFromDistrict,
@@ -21,7 +21,7 @@ const {
 export const EditDistrictBordersContainer = () => {
   const { id } = useParams<{ id: string }>();
 
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const { organizationCoordinates } = useUnit({
     organizationCoordinates:
@@ -50,20 +50,23 @@ export const EditDistrictBordersContainer = () => {
   const handleUpdateDistrictBorder = (coordinates: number[][]) => {
     if (!districtData) return;
 
-    updateDistrict({
-      id,
-      additionalInfo: getDistrictJsonData({
-        districtColor: districtData.type,
-        districtPolygonCoordinates: coordinates,
-      }),
-    });
+    id &&
+      updateDistrict({
+        id,
+        additionalInfo: getDistrictJsonData({
+          districtColor: districtData.type,
+          districtPolygonCoordinates: coordinates,
+        }),
+      });
   };
 
   useEffect(() => {
     return updateDistrictMutation.finished.success.watch(() => {
-      history.push('/districtBordersSettings/manageDistricts');
+      navigate('/districtBordersSettings/manageDistricts');
     }).unsubscribe;
-  }, [history]);
+  }, [navigate]);
+
+  if (!id) return null;
 
   return (
     <>

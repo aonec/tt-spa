@@ -35,10 +35,9 @@ export const AppointmentsJournalPage: FC<Props> = ({
   }, [controllersList]);
 
   const handleDownloadFile = useCallback(
-    (controllerId: string, date: string) => () => {
+    (assignmentId: string) => () => {
       downloadWorkFile({
-        controllerId,
-        date: dayjs(date).format('YYYY-MM-DD'),
+        assignmentId,
       });
     },
     [downloadWorkFile],
@@ -125,10 +124,7 @@ export const AppointmentsJournalPage: FC<Props> = ({
                   size: '180px',
                   render: (assignment) => (
                     <DownloadButtonWrapper
-                      onClick={handleDownloadFile(
-                        assignment.controllerId,
-                        assignment.date,
-                      )}
+                      onClick={handleDownloadFile(assignment.id)}
                     >
                       <DownloadBlueIcon />
                       <div>Скачать задание</div>

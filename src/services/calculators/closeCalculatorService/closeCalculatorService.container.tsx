@@ -3,7 +3,7 @@ import React, { useEffect } from 'react';
 import { FormModal } from 'ui-kit/Modals/FormModal';
 import { closeCalculatorService } from './closeCalculatorService.model';
 import { CloseCalculatorForm } from './view/CloseCalculatorForm';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 const { inputs, outputs } = closeCalculatorService;
 
@@ -16,10 +16,10 @@ export const CloseCalculatorContainer = () => {
       handleCloseCalculator: inputs.closeCalculator,
     });
 
-  const navigate = useHistory();
+  const navigate = useNavigate();
 
   useEffect(() => {
-    return inputs.successClose.watch(() => navigate.goBack()).unsubscribe;
+    return inputs.successClose.watch(() => navigate(-1)).unsubscribe;
   }, [navigate]);
 
   if (!calculator) {

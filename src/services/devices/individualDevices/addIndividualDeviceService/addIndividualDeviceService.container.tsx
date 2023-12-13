@@ -2,7 +2,7 @@ import { useUnit } from 'effector-react';
 import React, { useEffect } from 'react';
 import { addIndividualDeviceService } from './addIndividualDeviceService.model';
 import { AddIndividualDevicePage } from './AddIndividualDevicePage';
-import { useHistory, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { PreviewModal } from './AddIndividualDevicePage/PreviewModal/PreviewModal';
 
 const { inputs, outputs, gates } = addIndividualDeviceService;
@@ -10,7 +10,7 @@ const { ApartmentGate, PageGate } = gates;
 
 export const AddIndividualDeviceContainer = () => {
   const { id } = useParams<{ id: string }>();
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const { stageNumber, handleGoPrevStage } = useUnit({
     stageNumber: outputs.$stageNumber,
@@ -52,9 +52,9 @@ export const AddIndividualDeviceContainer = () => {
   const idFromParams = Number(id);
 
   useEffect(() => {
-    return inputs.successCreateIndividualDevice.watch(history.goBack)
+    return inputs.successCreateIndividualDevice.watch(() => navigate(-1))
       .unsubscribe;
-  }, [history.goBack]);
+  }, [navigate]);
 
   return (
     <>

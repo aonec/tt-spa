@@ -7,7 +7,6 @@ import {
 import { ContractorDataType } from 'services/contractors/editContractorService/editContractorService.types';
 
 export type CompanyProfileProps = {
-  currentManagingFirm: OrganizationResponse | null;
   staffList: OrganizationUserListResponsePagedList | null;
   isLoadingStaff: boolean;
   handleOpenStatusChangeModal: () => void;
@@ -24,6 +23,7 @@ export type CompanyProfileProps = {
   catchContractorId: (payload: { id: number; name: string | null }) => void;
   handleOpenEditContractorModal: () => void;
   catchContractorData: (payload: ContractorDataType) => void;
+  currentManagingFirm: OrganizationResponse | null;
 };
 
 export enum CompanyProfileSection {

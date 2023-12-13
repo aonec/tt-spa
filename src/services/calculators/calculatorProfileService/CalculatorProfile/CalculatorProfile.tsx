@@ -1,6 +1,6 @@
 import { stringifyUrl } from 'query-string';
 import React, { FC, ReactElement, useMemo } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { CommonInfo } from 'ui-kit/shared/CommonInfo';
 import { GoBack } from 'ui-kit/shared/GoBack';
 import { LinkCard } from 'ui-kit/shared/LinkCard';
@@ -36,7 +36,7 @@ export const CalculatorProfile: FC<CalculatorProfileProps> = ({
   openDevicesListModal,
   isPermitionToCalculatorActions,
 }) => {
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const {
     id,
@@ -101,7 +101,7 @@ export const CalculatorProfile: FC<CalculatorProfileProps> = ({
       menuButtons: [
         {
           title: 'Редактировать вычислитель',
-          onClick: () => history.push(`/calculators/${calculator.id}/edit`),
+          onClick: () => navigate(`/calculators/${calculator.id}/edit`),
           hidden: !isPermitionToCalculatorActions,
         },
         {
@@ -126,7 +126,7 @@ export const CalculatorProfile: FC<CalculatorProfileProps> = ({
       handleOpenCheckCalculatorModal,
       handleOpenCloseCalculatorModal,
       calculator,
-      history,
+      navigate,
       handleOpenConsumptionReportModal,
       isPermitionToCalculatorActions,
     ],

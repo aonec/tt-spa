@@ -1,6 +1,6 @@
 import { useUnit } from 'effector-react';
 import React, { useEffect } from 'react';
-import { useHistory, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { EditPersonalNumberPage } from './view/EditPersonalNumberPage';
 import { editPersonalNumberService } from './editPersonalNumberService.model';
 import { ConfirmationAddingExistingPersonalNumber } from '../components/ConfirmationAddingExistingPersonalNumberModal';
@@ -17,7 +17,7 @@ export const EditPersonalNumberContainer = () => {
   const apartmentId = id;
 
   const { homeownerId } = useParams<{ homeownerId: string }>();
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const {
     apartment,
@@ -53,15 +53,15 @@ export const EditPersonalNumberContainer = () => {
 
   useEffect(() => {
     return inputs.successEditHomeownerAccount.watch(() => {
-      history.push(`/meters/apartments/${apartmentId}`);
+      navigate(`/meters/apartments/${apartmentId}`);
     }).unsubscribe;
-  }, [history, apartmentId]);
+  }, [navigate, apartmentId]);
 
   useEffect(() => {
     return inputs.successCloseHomeownerAccount.watch(() => {
-      history.push(`/meters/apartments/${apartmentId}`);
+      navigate(`/meters/apartments/${apartmentId}`);
     }).unsubscribe;
-  }, [history, apartmentId]);
+  }, [navigate, apartmentId]);
 
   return (
     <>

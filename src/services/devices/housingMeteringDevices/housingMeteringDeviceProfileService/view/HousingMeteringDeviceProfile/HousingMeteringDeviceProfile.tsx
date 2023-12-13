@@ -1,5 +1,5 @@
 import React, { FC, useMemo } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { stringifyUrl } from 'query-string';
 
 import { GoBack } from 'ui-kit/shared/GoBack';
@@ -44,7 +44,7 @@ export const HousingMeteringDeviceProfile: FC<
   isPermitionToCloseHousingMeteringDevice,
   isPermitionToEditHousingMeteringDevice,
 }) => {
-  const { push } = useHistory();
+  const navigate = useNavigate();
 
   const deviceAddress = housingMeteringDevice?.address?.address?.mainAddress;
   const deviceModel = housingMeteringDevice?.model;
@@ -106,7 +106,7 @@ export const HousingMeteringDeviceProfile: FC<
               {
                 title: 'Редактировать ОДПУ',
                 onClick: () => {
-                  push(`/housingMeteringDevices/${deviceId}/edit`);
+                  navigate(`/housingMeteringDevices/${deviceId}/edit`);
                 },
                 hidden: !isPermitionToEditHousingMeteringDevice,
               },

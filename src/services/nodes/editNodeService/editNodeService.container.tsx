@@ -52,6 +52,8 @@ export const EditNodeContainer = () => {
       removeNodeCalculatorConnectionService.inputs.openModal,
   });
 
+  if (!nodeId) return null;
+
   return (
     <>
       <NodeIdGate nodeId={nodeId} />

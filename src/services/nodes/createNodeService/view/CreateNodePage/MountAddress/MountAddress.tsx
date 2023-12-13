@@ -12,7 +12,7 @@ import { validationSchema } from './MountAddress.constants';
 import { ErrorMessage } from 'ui-kit/ErrorMessage';
 import { AutoComplete } from 'ui-kit/AutoComplete';
 import { getPreparedStreetsOptions } from 'services/objects/createObjectService/view/CreateObjectPage/CreateObjectAddressStage/CreateObjectAddressStage.utils';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { mountAddressService } from './MountAddress.models';
 import { useUnit } from 'effector-react';
 import { addressSearchService } from 'services/addressSearchService/addressSearchService.models';
@@ -34,7 +34,7 @@ export const MountAddress: FC<MountAddressProps> = ({
 
   const address = building?.address?.mainAddress;
 
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const initialValues = useMemo(() => {
     const savedHousingStockAddress = savedHousingStock?.address?.mainAddress;
@@ -143,7 +143,7 @@ export const MountAddress: FC<MountAddressProps> = ({
           </FormItem>
         </FormWrapper>
         <Footer>
-          <Button type="ghost" onClick={() => history.goBack()}>
+          <Button type="ghost" onClick={() => navigate(-1)}>
             Отмена
           </Button>
           <ButtonSC onClick={() => handleSubmitForm()}>Далее</ButtonSC>
