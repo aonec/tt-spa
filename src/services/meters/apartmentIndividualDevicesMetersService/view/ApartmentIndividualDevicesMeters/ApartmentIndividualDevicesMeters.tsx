@@ -1,4 +1,4 @@
-import { Checkbox, Skeleton } from 'antd';
+import { Checkbox } from 'antd';
 import React, { FC, useMemo } from 'react';
 import { IndividualDeviceMetersInputContainer } from 'services/meters/individualDeviceMetersInputService';
 import { ChevronIcon } from 'ui-kit/icons';
@@ -11,6 +11,7 @@ import {
   Wrapper,
 } from './ApartmentIndividualDevicesMeters.styled';
 import { ApartmentIndividualDevicesMetersProps } from './ApartmentIndividualDevicesMeters.types';
+import { WithLoader } from 'ui-kit/shared/WithLoader';
 
 export const ApartmentIndividualDevicesMeters: FC<
   ApartmentIndividualDevicesMetersProps
@@ -69,9 +70,8 @@ export const ApartmentIndividualDevicesMeters: FC<
         </MonthSliderWrapper>
         <div className="current-reading">{currentReadingMonth}</div>
       </Header>
-      {isLoading && <Skeleton active />}
-      {!isLoading &&
-        individualDevicesList.map((device, index) => (
+      <WithLoader isLoading={isLoading}>
+        {individualDevicesList.map((device, index) => (
           <IndividualDeviceMetersInputContainer
             devices={individualDevicesList}
             sliderIndex={sliderIndex}
@@ -82,6 +82,7 @@ export const ApartmentIndividualDevicesMeters: FC<
             editable={editable}
           />
         ))}
+      </WithLoader>
     </Wrapper>
   );
 };
