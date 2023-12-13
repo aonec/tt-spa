@@ -1,4 +1,4 @@
-import { useEvent, useStore } from 'effector-react';
+import { useUnit } from 'effector-react';
 import React, { useEffect } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 import { editApartmentProfileService } from './editApartmentProfileService.model';
@@ -10,16 +10,21 @@ const { ApartmentGate } = gates;
 export const EditApartmentProfileContainer = () => {
   const { apartmentId } = useParams<{ apartmentId: string }>();
 
-  const setTabSection = useEvent(inputs.setTabSection);
   const updateApartmentSuccess = inputs.updateApartmentSuccess;
 
-  const apartment = useStore(outputs.$apartment);
-  const isLoading = useStore(outputs.$isLoading);
-  const tabSection = useStore(outputs.$tabSection);
-  const isUpdatingApartmentLoading = useStore(
-    outputs.$isUpdatingApartmentLoading,
-  );
-
+  const {
+    apartment,
+    isLoading,
+    isUpdatingApartmentLoading,
+    setTabSection,
+    tabSection,
+  } = useUnit({
+    setTabSection: inputs.setTabSection,
+    apartment: outputs.$apartment,
+    isLoading: outputs.$isLoading,
+    tabSection: outputs.$tabSection,
+    isUpdatingApartmentLoading: outputs.$isUpdatingApartmentLoading,
+  });
   const history = useHistory();
 
   useEffect(() => {

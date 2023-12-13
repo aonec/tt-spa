@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { useEvent, useStore } from 'effector-react';
+import { useUnit } from 'effector-react';
 import { individualDevicesProfileService } from './individualDevicesProfileService.model';
 import { IndividualDevicesProfile } from './view/IndividualDevicesProfile';
 import { HeaderInject } from 'services/objects/objectsProfileService/view/ObjectsProfile/ObjectsProfile.types';
@@ -10,9 +10,10 @@ const { IndividualDevicesGate } = gates;
 export const IndividualDevicesProfileContainer: FC<HeaderInject> = ({
   Header,
 }) => {
-  const devicesSearchType = useStore(outputs.$devicesSearchType);
-
-  const setDevicesSearchType = useEvent(inputs.setDevicesSearchType);
+  const { devicesSearchType, setDevicesSearchType } = useUnit({
+    devicesSearchType: outputs.$devicesSearchType,
+    setDevicesSearchType: inputs.setDevicesSearchType,
+  });
 
   return (
     <>

@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { LoginPage } from './view/LoginPage';
 import { loginService } from './loginService.model';
-import { useEvent, useStore } from 'effector-react';
+import { useUnit } from 'effector-react';
 import { useHistory, useLocation } from 'react-router-dom';
 import { parse } from 'query-string';
 import { isDevMode } from 'api/axios';
@@ -9,10 +9,11 @@ import { isDevMode } from 'api/axios';
 const { inputs, outputs } = loginService;
 
 export const LoginContainer = () => {
-  const handlePostLogin = useEvent(inputs.handlePostLogin);
-  const openDevSettingsModal = useEvent(inputs.openDevSettingsModal);
-
-  const isLoading = useStore(outputs.$isLoading);
+  const { handlePostLogin, isLoading, openDevSettingsModal } = useUnit({
+    handlePostLogin: inputs.handlePostLogin,
+    openDevSettingsModal: inputs.openDevSettingsModal,
+    isLoading: outputs.$isLoading,
+  });
 
   const { replace } = useHistory();
   const { search } = useLocation();

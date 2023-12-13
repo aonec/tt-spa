@@ -1,5 +1,5 @@
 import React from 'react';
-import { useEvent, useStore } from 'effector-react';
+import { useUnit } from 'effector-react';
 import { ChangeStatusEmployeeModal } from './view/ChangeStatusEmployeeModal';
 import { changeStatusEmployeeService } from './changeStatusEmployeeService.model';
 import { UserTasksTransferModal } from './view/UserTasksTransferModal';
@@ -7,25 +7,29 @@ import { UserTasksTransferModal } from './view/UserTasksTransferModal';
 const { inputs, outputs } = changeStatusEmployeeService;
 
 export const ChangeStatusEmployeeContainer = () => {
-  const isModalOpen = useStore(outputs.$isModalOpen);
-  const employeeStatus = useStore(outputs.$employeeStatus);
-  const isLoading = useStore(outputs.$isLoading);
-  const organizationUserTasksByRoles = useStore(
-    outputs.$organizationUserTasksByRoles,
-  );
-  const isTransferUserTasksModalOpen = useStore(
-    outputs.$isTransferUserTasksModalOpen,
-  );
-  const currentUser = useStore(outputs.$currentUser);
-  const organizationUsersByRolesList = useStore(
-    outputs.$organizationUsersByRolesList,
-  );
-
-  const handleCloseModal = useEvent(inputs.handleCloseModal);
-  const handleUpdateStatus = useEvent(inputs.handleUpdateStatus);
-  const handleApplyTasksReassignment = useEvent(
-    inputs.handleApplyTasksReassignment,
-  );
+  const {
+    currentUser,
+    employeeStatus,
+    handleApplyTasksReassignment,
+    handleCloseModal,
+    handleUpdateStatus,
+    isLoading,
+    isModalOpen,
+    isTransferUserTasksModalOpen,
+    organizationUserTasksByRoles,
+    organizationUsersByRolesList,
+  } = useUnit({
+    isModalOpen: outputs.$isModalOpen,
+    employeeStatus: outputs.$employeeStatus,
+    isLoading: outputs.$isLoading,
+    organizationUserTasksByRoles: outputs.$organizationUserTasksByRoles,
+    isTransferUserTasksModalOpen: outputs.$isTransferUserTasksModalOpen,
+    currentUser: outputs.$currentUser,
+    organizationUsersByRolesList: outputs.$organizationUsersByRolesList,
+    handleCloseModal: inputs.handleCloseModal,
+    handleUpdateStatus: inputs.handleUpdateStatus,
+    handleApplyTasksReassignment: inputs.handleApplyTasksReassignment,
+  });
 
   return (
     <>

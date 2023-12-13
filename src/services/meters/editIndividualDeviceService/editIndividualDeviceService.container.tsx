@@ -1,4 +1,4 @@
-import { useEvent, useStore } from 'effector-react';
+import { useUnit } from 'effector-react';
 import React, { useEffect } from 'react';
 import { editIndividualDeviceService } from './editIndividualDeviceService.model';
 import { EditIndividualPage } from './EditIndividualPage';
@@ -15,14 +15,23 @@ export const EditIndividualDeviceContainer = () => {
   const history = useHistory();
   const onCancel = () => history.goBack();
 
-  const handleChangeTab = useEvent(inputs.handleChangeTab);
-  const handleUpdateDevice = useEvent(inputs.handleUpdateDevice);
-
-  const currentTab = useStore(outputs.$currentTab);
-  const individualDevice = useStore(outputs.$individualDevice);
-  const isDeviceLoading = useStore(outputs.$isDeviceLoading);
-  const isDeviceUpdating = useStore(outputs.$isDeviceUpdating);
-  const mountPlaces = useStore(outputs.$mountPlaces);
+  const {
+    currentTab,
+    handleChangeTab,
+    handleUpdateDevice,
+    individualDevice,
+    isDeviceLoading,
+    isDeviceUpdating,
+    mountPlaces,
+  } = useUnit({
+    handleChangeTab: inputs.handleChangeTab,
+    handleUpdateDevice: inputs.handleUpdateDevice,
+    currentTab: outputs.$currentTab,
+    individualDevice: outputs.$individualDevice,
+    isDeviceLoading: outputs.$isDeviceLoading,
+    isDeviceUpdating: outputs.$isDeviceUpdating,
+    mountPlaces: outputs.$mountPlaces,
+  });
 
   const apartmentId = individualDevice?.address?.apartmentId;
 

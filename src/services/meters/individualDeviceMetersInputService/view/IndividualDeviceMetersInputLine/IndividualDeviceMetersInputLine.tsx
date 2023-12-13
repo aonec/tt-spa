@@ -1,5 +1,5 @@
 import React, { FC, useMemo, useState } from 'react';
-import { useEvent, useStore } from 'effector-react';
+import { useUnit } from 'effector-react';
 import { message, Tooltip } from 'antd';
 import confirm from 'antd/lib/modal/confirm';
 import { useHistory } from 'react-router-dom';
@@ -47,18 +47,18 @@ export const IndividualDeviceMetersInputLine: FC<
   const history = useHistory();
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const onDeleteIndividualDevice = useEvent(
-    deleteIndividualDeviceService.inputs.openModal,
-  );
-
-  const openEditReadingsHistoryModal = useEvent(
-    editReadingsHistoryService.inputs.openModal,
-  );
-  const openCloseIndividualDeviceModal = useEvent(
-    closeIndividualDeviceService.inputs.openModal,
-  );
-
-  const managementFirmUser = useStore(currentUserService.outputs.$currentUser);
+  const {
+    managementFirmUser,
+    onDeleteIndividualDevice,
+    openCloseIndividualDeviceModal,
+    openEditReadingsHistoryModal,
+  } = useUnit({
+    onDeleteIndividualDevice: deleteIndividualDeviceService.inputs.openModal,
+    openEditReadingsHistoryModal: editReadingsHistoryService.inputs.openModal,
+    openCloseIndividualDeviceModal:
+      closeIndividualDeviceService.inputs.openModal,
+    managementFirmUser: currentUserService.outputs.$currentUser,
+  });
 
   const isDeviceClosed = Boolean(device.closingDate);
 

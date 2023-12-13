@@ -1,4 +1,4 @@
-import { useEvent, useStore } from 'effector-react';
+import { useUnit } from 'effector-react';
 import React from 'react';
 import { FormModal } from 'ui-kit/Modals/FormModal';
 import { feedFlowBackReportService } from './feedFlowBackReportService.model';
@@ -9,13 +9,21 @@ const formId = 'feed-flow-back-report-form';
 const { inputs, outputs } = feedFlowBackReportService;
 
 export const FeedFlowBackReportContainer = () => {
-  const isModalOpen = useStore(outputs.$isModalOpen);
-  const existingCities = useStore(outputs.$existingCities);
-  const houseManagements = useStore(outputs.$houseManagements);
-  const isLoading = useStore(outputs.$isLoading);
-
-  const closeModal = useEvent(inputs.closeFeedFlowBackReportModal);
-  const handleExportReport = useEvent(inputs.handleExportReport);
+  const {
+    closeModal,
+    existingCities,
+    handleExportReport,
+    houseManagements,
+    isLoading,
+    isModalOpen,
+  } = useUnit({
+    isModalOpen: outputs.$isModalOpen,
+    existingCities: outputs.$existingCities,
+    houseManagements: outputs.$houseManagements,
+    isLoading: outputs.$isLoading,
+    closeModal: inputs.closeFeedFlowBackReportModal,
+    handleExportReport: inputs.handleExportReport,
+  });
 
   return (
     <FormModal

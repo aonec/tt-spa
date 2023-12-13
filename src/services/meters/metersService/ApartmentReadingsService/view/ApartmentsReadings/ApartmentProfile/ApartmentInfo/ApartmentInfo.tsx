@@ -1,5 +1,5 @@
 import React, { FC, useCallback, useEffect, useMemo, useState } from 'react';
-import { useEvent, useStore } from 'effector-react';
+import { useUnit } from 'effector-react';
 import { Tooltip } from 'ui-kit/shared/Tooltip';
 import {
   AccountOpeningDate,
@@ -60,9 +60,10 @@ export const ApartmentInfo: FC<ApartmentInfoProps> = ({
 
   const [activeHomeowner, setActiveHomeowner] = useState(initialHomeownerId);
 
-  const togglePanel = useEvent(inputs.togglePanel);
-
-  const isPanelOpen = useStore(outputs.$isPanelOpen);
+  const { isPanelOpen, togglePanel } = useUnit({
+    togglePanel: inputs.togglePanel,
+    isPanelOpen: outputs.$isPanelOpen,
+  });
 
   const addressString = getApartmentAddressString(apartment);
 

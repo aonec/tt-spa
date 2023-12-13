@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { switchPersonalNumberService } from './switchPersonalNumberService.model';
 import { SwitchPersonalNumberPage } from './view/SwitchPersonalNumberPage';
 import { ConfirmationAddingExistingPersonalNumber } from '../components/ConfirmationAddingExistingPersonalNumberModal';
-import { useEvent, useStore } from 'effector-react';
+import { useUnit } from 'effector-react';
 import { useHistory, useParams } from 'react-router-dom';
 
 const {
@@ -18,21 +18,26 @@ export const SwitchPersonalNumberContainer = () => {
   const { homeownerId } = useParams<{ homeownerId: string }>();
   const history = useHistory();
 
-  const isLoading = useStore(outputs.$isLoading);
-  const apartment = useStore(outputs.$apartment);
+  const {
+    apartment,
+    confirmationModalClose,
+    handleForced,
+    handleSwitchHomeownerAccount,
+    isConfirmationModalOpen,
+    isLoading,
+    samePersonalAccountNumderId,
+  } = useUnit({
+    isLoading: outputs.$isLoading,
+    apartment: outputs.$apartment,
+    isConfirmationModalOpen: outputs.$isConfirmationModalOpen,
+    samePersonalAccountNumderId: outputs.$samePersonalAccountNumderId,
+    confirmationModalClose: inputs.handleConfirmationModalClose,
+    handleForced: inputs.onForced,
+    handleSwitchHomeownerAccount: inputs.handleSwitchHomeownerAccount,
+  });
+
   const homeowner = apartment?.homeownerAccounts?.find(
     (homeownerAccount) => homeownerAccount.id === homeownerId,
-  );
-
-  const isConfirmationModalOpen = useStore(outputs.$isConfirmationModalOpen);
-  const samePersonalAccountNumderId = useStore(
-    outputs.$samePersonalAccountNumderId,
-  );
-  const confirmationModalClose = useEvent(inputs.handleConfirmationModalClose);
-  const handleForced = useEvent(inputs.onForced);
-
-  const handleSwitchHomeownerAccount = useEvent(
-    inputs.handleSwitchHomeownerAccount,
   );
 
   useEffect(() => {

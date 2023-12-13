@@ -1,5 +1,5 @@
 import { message } from 'antd';
-import { useEvent, useStore } from 'effector-react';
+import { useUnit } from 'effector-react';
 import dayjs from 'api/dayjs';
 import { IndividualDeviceReadingsResponse } from 'api/types';
 import React, { FC, useCallback, useMemo } from 'react';
@@ -38,20 +38,22 @@ export const IndividualDeviceMetersInputContainer: FC<
   style,
   shift = 0,
 }) => {
-  const uploadingMetersDevicesStatuses = useStore(
-    outputs.$uploadingMetersStatuses,
-  );
+  const {
+    deleteMeter,
+    openConfirmReadingModal,
+    uploadMeter,
+    uploadingMetersDevicesStatuses,
+  } = useUnit({
+    uploadingMetersDevicesStatuses: outputs.$uploadingMetersStatuses,
+    openConfirmReadingModal: inputs.openConfirmReadingModal,
+    uploadMeter: inputs.uploadMeter,
+    deleteMeter: inputs.deleteMeter,
+  });
 
   const uploadingMetersStatuses = useMemo(
     () => uploadingMetersDevicesStatuses[device.id] || {},
     [device.id, uploadingMetersDevicesStatuses],
   );
-
-  const openConfirmReadingModal = useEvent(inputs.openConfirmReadingModal);
-
-  const uploadMeter = useEvent(inputs.uploadMeter);
-
-  const deleteMeter = useEvent(inputs.deleteMeter);
 
   const previousReadingByCurrentSliderIndex = useMemo(() => {
     if (!device.readings) return;

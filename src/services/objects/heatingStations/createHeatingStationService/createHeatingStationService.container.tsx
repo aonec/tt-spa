@@ -1,4 +1,4 @@
-import { useEvent, useStore } from 'effector-react';
+import { useUnit } from 'effector-react';
 import React from 'react';
 import { createHeatingStationService } from './createHeatingStationService.model';
 import { CreateNewHeatingStationModal } from './view/CreateNewHeatingStationModal';
@@ -6,16 +6,19 @@ import { CreateNewHeatingStationModal } from './view/CreateNewHeatingStationModa
 const { inputs, outputs } = createHeatingStationService;
 
 export const CreateHeatingStationContainer = () => {
-  const isModalOpen = useStore(outputs.$isModalOpen);
-
-  const existingCities = useStore(outputs.$existingCities);
-  const existingStreets = useStore(outputs.$existingStreets);
-
-  const handleCloseModal = useEvent(inputs.handleCloseModal);
-
-  const handleCreateHeatingStation = useEvent(
-    inputs.handleCreateHeatingStation
-  );
+  const {
+    existingCities,
+    existingStreets,
+    handleCloseModal,
+    handleCreateHeatingStation,
+    isModalOpen,
+  } = useUnit({
+    isModalOpen: outputs.$isModalOpen,
+    existingCities: outputs.$existingCities,
+    existingStreets: outputs.$existingStreets,
+    handleCloseModal: inputs.handleCloseModal,
+    handleCreateHeatingStation: inputs.handleCreateHeatingStation,
+  });
 
   return (
     <>

@@ -1,5 +1,5 @@
 import React from 'react';
-import { useStore, useUnit } from 'effector-react';
+import { useUnit } from 'effector-react';
 import { Router } from './view/Router';
 import { routerService } from './routerService.model';
 import { ESecuredIdentityRoleName } from 'api/types';
@@ -8,13 +8,11 @@ import { developmentSettingsService } from 'services/developmentSettings/develop
 const { outputs } = routerService;
 
 export const RouterContainer = () => {
-  const { featureToggles } = useUnit({
+  const { featureToggles, currentUserRoles, isRolesLoadded } = useUnit({
     featureToggles: developmentSettingsService.outputs.$featureToggles,
+    currentUserRoles: outputs.$currentUserRoles,
+    isRolesLoadded: outputs.$isCurrentUserLoading,
   });
-
-  const currentUserRoles = useStore(outputs.$currentUserRoles);
-
-  const isRolesLoadded = useStore(outputs.$isCurrentUserLoading);
 
   const roles =
     currentUserRoles.reduce((acc, { key }) => {

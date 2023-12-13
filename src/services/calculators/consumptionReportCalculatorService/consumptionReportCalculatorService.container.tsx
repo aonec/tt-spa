@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import { consumptionReportCalculatorService } from './consumptionReportCalculatorService.model';
 import { ConsumptionReportCalculatorModal } from './view/ConsumptionReportCalculatorModal';
-import { useEvent, useStore } from 'effector-react';
+import { useUnit } from 'effector-react';
 import { ConsumptionReportCalculatorServiceContainerProps } from './consumptionReportCalculatorService.types';
 
 const { inputs, outputs } = consumptionReportCalculatorService;
@@ -9,13 +9,12 @@ const { inputs, outputs } = consumptionReportCalculatorService;
 export const ConsumptionReportCalculatorContainer: FC<
   ConsumptionReportCalculatorServiceContainerProps
 > = ({ calculator }) => {
-  const isModalOpen = useStore(outputs.$isModalOpen);
-
-  const isLoading = useStore(outputs.$isLoading);
-
-  const handleModalClosed = useEvent(inputs.handleModalClose);
-
-  const handleSubmit = useEvent(inputs.handleSubmit);
+  const { handleModalClosed, handleSubmit, isLoading, isModalOpen } = useUnit({
+    isModalOpen: outputs.$isModalOpen,
+    isLoading: outputs.$isLoading,
+    handleModalClosed: inputs.handleModalClose,
+    handleSubmit: inputs.handleSubmit,
+  });
 
   return (
     <>

@@ -1,4 +1,4 @@
-import { useEvent, useStore } from 'effector-react';
+import { useUnit } from 'effector-react';
 import React, { useState } from 'react';
 import { Dialog } from 'ui-kit/shared/Dialog/Dialog';
 import { deletePipeHousingMeteringDeviceService } from './deletePipeHousingMeteringDeviceService.model';
@@ -10,12 +10,12 @@ const { inputs, outputs } = deletePipeHousingMeteringDeviceService;
 
 export const DeletePipeHousingMeteringDeviceContainer = () => {
   const [serialNumberText, setSerialNumberText] = useState('');
-
-  const isOpen = useStore(outputs.$isOpen);
-  const device = useStore(outputs.$pipeMeteringDevice);
-
-  const closeModal = useEvent(inputs.closeModal);
-  const handleDeleteDevice = useEvent(inputs.deleteDevice);
+  const { closeModal, device, handleDeleteDevice, isOpen } = useUnit({
+    isOpen: outputs.$isOpen,
+    device: outputs.$pipeMeteringDevice,
+    closeModal: inputs.closeModal,
+    handleDeleteDevice: inputs.deleteDevice,
+  });
 
   return (
     <Dialog
