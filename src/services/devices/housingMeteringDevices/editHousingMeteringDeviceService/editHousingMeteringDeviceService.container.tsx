@@ -26,6 +26,7 @@ export const EditHousingMeteringDeviceContainer = () => {
   });
 
   const { deviceId } = useParams<{ deviceId: string }>();
+  if (!deviceId) return null;
 
   return (
     <>

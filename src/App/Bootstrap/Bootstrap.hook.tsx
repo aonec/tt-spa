@@ -1,9 +1,9 @@
 import { useEffect } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { stringifyUrl } from 'query-string';
 
 export function useApp() {
-  const { push } = useHistory();
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (window.location.href.match(/registration/gi)) {
@@ -14,7 +14,7 @@ export function useApp() {
     if (!token) {
       const redirectUrl = window.location.pathname;
 
-      push(stringifyUrl({ url: '/login', query: { redirectUrl } }));
+      navigate(stringifyUrl({ url: '/login', query: { redirectUrl } }));
     }
-  }, [push]);
+  }, [navigate]);
 }

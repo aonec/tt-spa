@@ -1,5 +1,5 @@
 import React, { FC, ReactNode, useMemo } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { ActsCardContainer } from 'services/apartments/actsCardService';
 import { ApartmentActsListContainer } from 'services/apartments/apartmentActsListService';
 import { ApartmentIndividualDevicesMetersContainer } from 'services/meters/apartmentIndividualDevicesMetersService';
@@ -36,7 +36,7 @@ export const ApartmentProfile: FC<ApartmentProfileProps> = ({
   tabSection,
   isPermitionToEditApartment,
 }) => {
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const address = apartment?.housingStock?.address?.mainAddress;
   const additionalAddresses =
@@ -137,8 +137,7 @@ export const ApartmentProfile: FC<ApartmentProfileProps> = ({
               menuButtons: [
                 {
                   title: 'Редактировать квартиру',
-                  onClick: () =>
-                    history.push(`/apartments/${apartment.id}/edit`),
+                  onClick: () => navigate(`/apartments/${apartment.id}/edit`),
                   hidden: !isPermitionToEditApartment,
                 },
               ],
@@ -160,10 +159,13 @@ export const ApartmentProfile: FC<ApartmentProfileProps> = ({
             <Tabs
               activeKey={tabSection}
               onChange={(activeKey) =>
-                history.replace(
+                navigate(
                   `/apartments/${apartment.id}/${
                     activeKey as ApartmentSection
                   }`,
+                  {
+                    replace: true,
+                  },
                 )
               }
               items={tabItems}

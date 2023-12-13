@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route } from 'react-router-dom';
+import { Outlet, Route } from 'react-router-dom';
 import {
   DistrictBordersByAddressContainer,
   districtBordersByAddressService,
@@ -9,6 +9,7 @@ import { CreateDistrictBorderMapContainer } from './createDistrictBorderMapServi
 import { ManageDistrictsMapContainer } from './manageDistrictsMapService';
 import { usePermission } from 'hooks/usePermission';
 import { ESecuredIdentityRoleName } from 'api/types';
+import { AccessDeniedPage } from 'services/authorizations/AccessDeniedPage';
 
 const { DistrictBordersGroupPageGate } = districtBordersByAddressService.gates;
 
@@ -22,37 +23,61 @@ export const DistrictBordersRouter = () => {
     ESecuredIdentityRoleName.ManagingFirmSpectatingAdministrator,
   ]);
 
+  const DistrictBordersRouterWrapper = () => {
+    return (
+      <>
+        <DistrictBordersGroupPageGate />
+        <Outlet />
+      </>
+    );
+  };
+
   return [
-    <Route path="/districtBordersSettings" key="/districtBordersSettings">
-      <DistrictBordersGroupPageGate />
-      {(isSeniorOperator || isOperator) && (
-        <Route
-          path="/districtBordersSettings/createByHousingStocksList"
-          component={DistrictBordersByAddressContainer}
-          exact
-        />
-      )}
-      {(isSeniorOperator || isOperator) && (
-        <Route
-          path="/districtBordersSettings/editDistrictBorders/:id"
-          component={EditDistrictBordersContainer}
-          exact
-        />
-      )}
-      {(isSeniorOperator || isAdministrator) && (
-        <Route
-          path="/districtBordersSettings/createByMap"
-          component={CreateDistrictBorderMapContainer}
-          exact
-        />
-      )}
-      {(isSeniorOperator || isAdministrator) && (
-        <Route
-          path="/districtBordersSettings/manageDistricts"
-          component={ManageDistrictsMapContainer}
-          exact
-        />
-      )}
+    <Route
+      path="/districtBordersSettings"
+      key="/districtBordersSettings"
+      element={<DistrictBordersRouterWrapper />}
+    >
+      <Route
+        path="/districtBordersSettings/createByHousingStocksList"
+        element={
+          isSeniorOperator || isOperator ? (
+            <DistrictBordersByAddressContainer />
+          ) : (
+            <AccessDeniedPage />
+          )
+        }
+      />
+      <Route
+        path="/districtBordersSettings/editDistrictBorders/:id"
+        element={
+          isSeniorOperator || isOperator ? (
+            <EditDistrictBordersContainer />
+          ) : (
+            <AccessDeniedPage />
+          )
+        }
+      />
+      <Route
+        path="/districtBordersSettings/createByMap"
+        element={
+          isSeniorOperator || isAdministrator ? (
+            <CreateDistrictBorderMapContainer />
+          ) : (
+            <AccessDeniedPage />
+          )
+        }
+      />
+      <Route
+        path="/districtBordersSettings/manageDistricts"
+        element={
+          isSeniorOperator || isAdministrator ? (
+            <ManageDistrictsMapContainer />
+          ) : (
+            <AccessDeniedPage />
+          )
+        }
+      />
     </Route>,
   ];
 };

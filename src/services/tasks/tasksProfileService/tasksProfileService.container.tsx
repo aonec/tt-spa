@@ -26,7 +26,9 @@ const { InitialGate, SetCityGate } = gates;
 const { AddTaskDataFetchGate } = addTaskFromDispatcherService.gates;
 
 export const TasksProfileContainer = () => {
-  const { grouptype } = useParams<{ grouptype: TaskGroupingFilter }>();
+  const { grouptype } = useParams<{
+    grouptype: TaskGroupingFilter;
+  }>() as { grouptype: TaskGroupingFilter };
 
   const {
     taskTypes,
@@ -97,7 +99,6 @@ export const TasksProfileContainer = () => {
     const isHousingStockIdExist = Boolean(housingStockId);
     if (isApartmentIdExist || isHousingStockIdExist) {
       lastGroupTypeRef.current = grouptype;
-
       return;
     }
     clearAddress();

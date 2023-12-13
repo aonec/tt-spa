@@ -1,4 +1,3 @@
-import { NavLink } from 'react-router-dom';
 import styled from 'styled-components';
 import { ChevronDown } from 'react-bootstrap-icons';
 
@@ -7,25 +6,6 @@ export const Wrapper = styled.div`
   justify-content: space-between;
   align-items: center;
   padding-right: 15px;
-`;
-
-export const MenuItemWrapper = styled(NavLink)`
-  display: flex;
-  align-items: center;
-  height: 35px;
-  margin-top: 12px;
-  padding: 0 15px;
-  color: #272f5a;
-  border-left: 3px solid #00000000;
-  cursor: pointer !important;
-
-  &:hover {
-    transition: 0.2s;
-    color: #189ee9;
-    path {
-      fill: #189ee9 !important;
-    }
-  }
 `;
 
 export const MenuItemTitle = styled.div`

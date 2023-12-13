@@ -3,8 +3,10 @@ import { CompanyProfile } from './view/CompanyProfile';
 import { companyProfileService } from './companyProfileService.model';
 import { useUnit } from 'effector-react';
 
-const { inputs, outputs, gates } = companyProfileService;
-const { FetchingCurrentManagingFirmGate } = gates;
+const { inputs, outputs } = companyProfileService;
+const {
+  gates: { FetchingCurrentManagingFirmGate },
+} = companyProfileService;
 
 export const CompanyProfileContainer = () => {
   const {
@@ -42,8 +44,8 @@ export const CompanyProfileContainer = () => {
   return (
     <>
       <FetchingCurrentManagingFirmGate />
+
       <CompanyProfile
-        currentManagingFirm={currentManagingFirm}
         staffList={staffList}
         isLoadingStaff={isLoadingStaff}
         handleOpenStatusChangeModal={() => handleOpenStatusChangeModal()}
@@ -57,6 +59,7 @@ export const CompanyProfileContainer = () => {
         catchContractorId={catchContractorId}
         handleOpenEditContractorModal={() => handleOpenEditContractorModal()}
         catchContractorData={catchContractorData}
+        currentManagingFirm={currentManagingFirm}
       />
     </>
   );

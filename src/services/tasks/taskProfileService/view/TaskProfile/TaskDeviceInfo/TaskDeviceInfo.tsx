@@ -10,7 +10,7 @@ import {
   Wrapper,
 } from './TaskDeviceInfo.styled';
 import { TaskDeviceInfoProps } from './TaskDeviceInfo.types';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 export const TaskDeviceInfo: FC<TaskDeviceInfoProps> = ({ device }) => {
   const {
@@ -37,11 +37,11 @@ export const TaskDeviceInfo: FC<TaskDeviceInfoProps> = ({ device }) => {
   );
   const path = resource ? 'housingMeteringDevices' : 'calculators';
 
-  const history = useHistory();
+  const navigate = useNavigate();
 
   return (
     <Wrapper>
-      <TitleWrapper onClick={() => history.push(`/${path}/${id}/profile`)}>
+      <TitleWrapper onClick={() => navigate(`/${path}/${id}/profile`)}>
         {icon}
         <SerialNumber>{serialNumber}</SerialNumber>
         <Model>({model})</Model>

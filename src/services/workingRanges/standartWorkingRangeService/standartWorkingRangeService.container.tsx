@@ -15,12 +15,10 @@ export const StandartWorkingRangeContainer = () => {
   );
 
   return (
-    <>
-      <StandartWorkingRange
-        standartWorkingRange={standartWorkingRange}
-        handleOnSearchDataChange={handleOnSearchDataChange}
-        isLoading={isLoading}
-      />
-    </>
+    <StandartWorkingRange
+      standartWorkingRange={standartWorkingRange}
+      handleOnSearchDataChange={handleOnSearchDataChange}
+      isLoading={isLoading}
+    />
   );
 };

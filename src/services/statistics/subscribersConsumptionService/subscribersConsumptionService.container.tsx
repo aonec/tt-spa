@@ -11,6 +11,8 @@ export const SubscribersConsumptionContainer = () => {
     searchType: SubscribersConsumptionSearchType;
   }>();
 
+  if (!searchType) return null;
+
   const subscribersConsumptionListComponentsLookup = {
     [SubscribersConsumptionSearchType.Houses]: (
       <DisplayStatisticsListByHousesContainer />

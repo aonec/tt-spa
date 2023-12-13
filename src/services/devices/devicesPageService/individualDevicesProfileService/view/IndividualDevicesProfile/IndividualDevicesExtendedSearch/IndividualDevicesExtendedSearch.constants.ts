@@ -1,4 +1,5 @@
-import { EApartmentStatus, EExpiresDateAt, EResourceType } from 'api/types';
+import { EApartmentStatus, EResourceType } from 'api/types';
+import { EExpiresDateAtExtended } from './IndividualDevicesExtendedSearch.types';
 
 export const resourcesNamesLookup: { [key in EResourceType]: string } = {
   [EResourceType.ColdWaterSupply]: 'ХВС',
@@ -13,17 +14,28 @@ export const apartmentStatusesLookup: { [key in EApartmentStatus]: string } = {
   [EApartmentStatus.Pause]: 'На паузе',
 };
 
-export const expiresCheckingDateAtLookup: {
-  [key in EExpiresDateAt]: string | null;
-} = {
-  [EExpiresDateAt.NextMonth]: 'В ближайший месяц',
-  [EExpiresDateAt.NextTwoMonth]: 'В следующие два месяца',
-  [EExpiresDateAt.Past]: 'Истекла',
-};
-
 export const formTranslateLookup: { [key: string]: string } = {
   city: 'City',
   street: 'Street',
   house: 'HouseNumber',
   corpus: 'HouseCorpus',
 };
+
+export const expiresCheckingDateAt = [
+  {
+    title: 'Любая',
+    name: EExpiresDateAtExtended.All,
+  },
+  {
+    title: 'В ближайший месяц',
+    name: EExpiresDateAtExtended.NextMonth,
+  },
+  {
+    title: 'В ближайшие 2 месяца',
+    name: EExpiresDateAtExtended.NextTwoMonth,
+  },
+  {
+    title: 'Истекла',
+    name: EExpiresDateAtExtended.Past,
+  },
+];

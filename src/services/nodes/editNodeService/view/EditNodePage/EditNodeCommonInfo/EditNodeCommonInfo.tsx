@@ -16,7 +16,7 @@ import { useFormik } from 'formik';
 import dayjs from 'api/dayjs';
 import { Form } from 'antd';
 import { Button } from 'ui-kit/Button';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { configNamesLookup } from 'utils/configNamesLookup';
 import { ConfiguratePipe } from 'services/nodes/createNodeService/view/CreateNodePage/CommonData/ConfiguratePipe';
 import { CommunicationPipeResponse, EMagistralType } from 'api/types';
@@ -33,7 +33,7 @@ export const EditNodeCommonInfo: FC<EditNodeCommonInfoProps> = ({
   updateNode,
   isLoading,
 }) => {
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const futureCommercialAccountingDate = node.futureCommercialAccountingDate
     ? dayjs(node.futureCommercialAccountingDate)
@@ -210,7 +210,7 @@ export const EditNodeCommonInfo: FC<EditNodeCommonInfoProps> = ({
       </Form>
 
       <FooterWrapper>
-        <Button type="ghost" onClick={() => history.goBack()}>
+        <Button type="ghost" onClick={() => navigate(-1)}>
           Отмена
         </Button>
 

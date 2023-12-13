@@ -18,11 +18,10 @@ export const downloadСontrollerWorkFileQuery = createQuery<
   DownloadControllerWorkFileRequestPayload,
   void
 >({
-  handler: async ({ controllerId, ...params }) => {
+  handler: async ({ assignmentId }) => {
     const res: string = await axios.get(
-      `IndividualSeal/Controllers/${controllerId}/WorkFile`,
+      `IndividualSeal/Assignments/${assignmentId}/File`,
       {
-        params,
         responseType: 'blob',
       },
     );

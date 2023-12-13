@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { EditEmployee } from './view/EditEmployee';
 import { editEmployeeService } from './editEmployeeService.model';
 import { useUnit } from 'effector-react';
-import { useHistory, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { WithLoader } from 'ui-kit/shared/WithLoader';
 import { LoaderWrapper } from './view/EditEmployee/EditEmployee.styled';
 
@@ -10,7 +10,8 @@ const { inputs, outputs, gates } = editEmployeeService;
 const { CompetencesGate, UserRolesGate, FetchEmployeeDataGate } = gates;
 
 export const EditEmployeeContainer = () => {
-  const history = useHistory();
+  const navigate = useNavigate();
+
   const {
     competences,
     employeeData,
@@ -42,9 +43,11 @@ export const EditEmployeeContainer = () => {
 
   useEffect(() => {
     return inputs.successUpdate.watch(() => {
-      history.push(`/userProfile/${userId}`);
+      navigate(`/userProfile/${userId}`);
     }).unsubscribe;
-  }, [history, userId]);
+  }, [navigate, userId]);
+
+  if (!userId) return null;
 
   return (
     <>

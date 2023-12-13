@@ -93,7 +93,7 @@ export const SearchTasks: FC<SearchTasksProps> = ({
   const clearAllFilters = useCallback(() => {
     clearFilters();
     resetForm();
-    changeFiltersByGroupType(grouptype);
+    grouptype && changeFiltersByGroupType(grouptype);
   }, [clearFilters, resetForm, changeFiltersByGroupType, grouptype]);
 
   useEffect(() => {

@@ -24,6 +24,8 @@ export const EmployeeProfileContainer = () => {
     handleOpenDeleteEmployeeModal: inputs.handleOpenDeleteEmployeeModal,
   });
 
+  if (!id) return null;
+
   return (
     <>
       <FetchUserDataGate id={id} />

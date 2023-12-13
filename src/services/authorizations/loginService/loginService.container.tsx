@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { LoginPage } from './view/LoginPage';
 import { loginService } from './loginService.model';
 import { useUnit } from 'effector-react';
-import { useHistory, useLocation } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { parse } from 'query-string';
 import { isDevMode } from 'api/axios';
 
@@ -15,7 +15,7 @@ export const LoginContainer = () => {
     isLoading: outputs.$isLoading,
   });
 
-  const { replace } = useHistory();
+  const navigate = useNavigate();
   const { search } = useLocation();
 
   useEffect(
@@ -26,11 +26,14 @@ export const LoginContainer = () => {
           return window.location.replace(redirectUrl as string | URL);
         }
 
-        replace(
+        navigate(
           successResponse?.roles?.includes('Operator') ? '/meters' : '/tasks',
+          {
+            replace: true,
+          },
         );
       }).unsubscribe,
-    [replace, search],
+    [navigate, search],
   );
 
   return (
