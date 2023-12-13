@@ -21,8 +21,6 @@ export const SplitPersonalNumberContainer = () => {
   const apartmentId = id;
 
   const { homeownerId } = useParams<{ homeownerId: string }>();
-  const navigate = useNavigate();
-
   const {
     addNewApartmentStageData,
     apartment,
@@ -58,6 +56,7 @@ export const SplitPersonalNumberContainer = () => {
     handleForceConfirmationModalClose: inputs.handleForceConfirmationModalClose,
     onForced: inputs.onForced,
   });
+  const navigate = useNavigate();
 
   const homeowner = apartment?.homeownerAccounts?.find(
     (homeownerAccount) => homeownerAccount.id === homeownerId,
