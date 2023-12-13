@@ -12,7 +12,7 @@ import {
   HousingStocksWithTasksFiltrationValues,
 } from './tasksMapService.types';
 import { getHousingStocksWithTasksRequestPayload } from './tasksMapService.utils';
-import { currentUserService } from 'services/currentUserService';
+import { currentOrganizationService } from 'services/currentOrganizationService';
 
 const applyFilters = createEvent<HousingStocksWithTasksFiltrationValues>();
 
@@ -99,6 +99,6 @@ export const tasksMapService = {
     $isLoadingTask,
     $organizationUsers: tasksProfileService.outputs.$organizationUsers,
     $organizationCoordinates:
-      currentUserService.outputs.$organizationCoordinates,
+      currentOrganizationService.outputs.$organizationCoordinates,
   },
 };

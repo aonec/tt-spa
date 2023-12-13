@@ -4502,7 +4502,7 @@ export interface OrganizationUserResponse {
   dismissalDate: string | null;
   /** @format date-time */
   suspendedFromDate: string | null;
-  organization: OrganizationResponse | null;
+  // organization: OrganizationResponse | null;
   status: UserStatusResponse | null;
   competences: UserCompetenceResponse[] | null;
   roles: ESecuredIdentityRoleNameStringDictionaryItem[] | null;

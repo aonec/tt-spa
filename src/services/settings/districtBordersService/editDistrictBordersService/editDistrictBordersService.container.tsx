@@ -1,7 +1,6 @@
 import React, { useEffect, useMemo } from 'react';
 import { EditDistrictBordersMap } from './EditDistrictBordersMap';
 import { useUnit } from 'effector-react';
-import { currentUserService } from 'services/currentUserService';
 import {
   existingDistrictsQuery,
   existingHousingStocksQuery,
@@ -13,6 +12,7 @@ import {
   getPayloadFromDistrict,
 } from 'utils/districtsData';
 import { updateDistrictMutation } from '../manageDistrictsMapService/manageDistrictsMapService.api';
+import { currentOrganizationService } from 'services/currentOrganizationService';
 
 const {
   gates: { DistrictBordersGate },
@@ -25,7 +25,7 @@ export const EditDistrictBordersContainer = () => {
 
   const { organizationCoordinates } = useUnit({
     organizationCoordinates:
-      currentUserService.outputs.$organizationCoordinates,
+      currentOrganizationService.outputs.$organizationCoordinates,
   });
 
   const { data: existingHousingStocks, pending: isLoadingHousingStocks } =

@@ -67,10 +67,15 @@ import {
   TasksProfileContainer,
   tasksProfileService,
 } from 'services/tasks/tasksProfileService';
+import { currentOrganizationService } from 'services/currentOrganizationService';
 
 const {
   gates: { CurrentUserGate },
 } = currentUserService;
+const {
+  gates: { CurrentManagingFirmGate },
+} = currentOrganizationService;
+
 const featureToggles =
   developmentSettingsService.outputs.$featureToggles.getState();
 const { TasksIsOpen } = tasksProfileService.gates;
@@ -80,6 +85,7 @@ function RouterWrapper() {
   return (
     <Layout>
       <CurrentUserGate />
+      <CurrentManagingFirmGate />
 
       <Panel />
       <div />
