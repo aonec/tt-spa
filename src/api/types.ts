@@ -3367,17 +3367,23 @@ export interface IndividualDeviceListResponseFromDevicePage {
   id?: number;
   model?: string | null;
   serialNumber?: string | null;
-  resourceType?: EResourceType;
   /** @format date-time */
   closingDate?: string | null;
+  closingReason?: EClosingReason | null;
+  resourceType?: EResourceType;
+  mountPlace?: string | null;
+  /** @format date-time */
+  lastCheckingDate?: string;
+  /** @format date-time */
+  futureCheckingDate?: string;
+  /** @format int32 */
+  bitDepth?: number | null;
   /** @format int32 */
   housingStockId?: number;
   /** @format int32 */
   apartmentId?: number;
   address?: ApartmentAddress | null;
   homeowners?: HomeownerAccount[] | null;
-  /** @format int32 */
-  bitDepth?: number | null;
 }
 
 export interface IndividualDeviceListResponseFromDevicePagePagedList {
