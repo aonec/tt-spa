@@ -83,6 +83,10 @@ export const downloadReportFile = async ({
   const reportUrl =
     employeeReportUrl || DownloadReportUrlsDictionary[reportType];
 
+  if (!reportUrl) {
+    return;
+  }
+
   const res: string = await axios.get(reportUrl, {
     params: payload,
     responseType: 'blob',
