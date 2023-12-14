@@ -34,6 +34,7 @@ import { apartmentInfoService } from './ApartmentInfo.model';
 import { PrintApartmentDevicesCertificateContainer } from 'services/apartments/printApartmentDevicesCertificateService';
 import { EditHomeownerField } from './EditHomeownerField';
 import { CommentField } from './CommentField';
+import { PhoneNumberField } from './PhoneNumberField';
 
 const { inputs, outputs } = apartmentInfoService;
 
@@ -222,12 +223,13 @@ export const ApartmentInfo: FC<ApartmentInfoProps> = ({
                 <InfoPanelLabel>Платежный код</InfoPanelLabel>
                 <ExtraInfoText>{selectedHomeowner?.paymentCode}</ExtraInfoText>
               </div>
-              <EditHomeownerField
+              {/* <EditHomeownerField
                 title="Телефон"
                 value={selectedHomeowner?.phoneNumber || null}
                 handleUpdate={(value) => updateHomeowner(value, 'phoneNumber')}
                 isUpdateHomeownerLoading={isUpdateHomeownerLoading}
-              />
+              /> */}
+              <PhoneNumberField phoneNumbers={[]} />
             </ExtraInfoWrapper>
           )}
         </InfoPanel>
