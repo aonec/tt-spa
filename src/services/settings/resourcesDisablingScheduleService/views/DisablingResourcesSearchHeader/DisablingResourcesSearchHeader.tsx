@@ -4,10 +4,10 @@ import { EResourceDisconnectingType, EResourceType } from 'api/types';
 import { StyledDisablingResourcesSearchHeader } from './DisablingResourcesSearchHeader.styled';
 import { DisablingResourcesProps } from '../../ResourceDisablingScheduleContainer.types';
 import { DisablingResourcesSearchProps } from './DisablingResourcesSearchHeader.types';
-import { ResourceLookUp } from 'services/tasks/tasksProfileService/tasksProfileService.types';
 import { ResourceDisconnectingClassLookUp } from './DisablingResourcesSearchHeader.utils';
 import { Select } from 'ui-kit/Select';
 import { FormItem } from 'ui-kit/FormItem';
+import { actResourceNamesLookup } from 'utils/actResourceNamesLookup';
 
 const { Option } = Select;
 
@@ -65,7 +65,9 @@ export const DisablingResourcesSearch: React.FC<
           <Option value={''}>{'Все типы ресурсов'}</Option>
           {Object.keys(EResourceType).map((el) => {
             return (
-              <Option value={el}>{ResourceLookUp[el as EResourceType]}</Option>
+              <Option value={el}>
+                {actResourceNamesLookup[el as EResourceType]}
+              </Option>
             );
           })}
         </Select>
