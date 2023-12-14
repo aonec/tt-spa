@@ -17,7 +17,7 @@ export const getExistingStreets = async (
 ): Promise<string[]> => {
   const res: { items: string[] } = await axios.get(
     `Buildings/ExistingStreets`,
-    { params, paramsSerializer: queryString.stringify },
+    { params, paramsSerializer: (params) => queryString.stringify(params) },
   );
 
   return res.items;
