@@ -8,6 +8,7 @@ import { AppointmentsJournalContainer } from '../appointmentsJournal';
 
 export const SealContainer = () => {
   const { section } = useParams<{ section: SealActionType }>();
+  if (!section) return null;
 
   const componentsDictionary: { [key in SealActionType]: FC } = {
     [SealActionType.Select]: SealActionSelectContainer,

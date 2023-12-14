@@ -16,7 +16,7 @@ import { SearchFieldType } from 'services/addressSearchService/view/AddressSearc
 import { GoBack } from 'ui-kit/shared/GoBack';
 import { Button } from 'ui-kit/Button';
 import { AddressStreetGroup } from './AddressStreetGroup';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { addressesCountTexts } from 'services/reportsService/reportViewService/view/ReportViewPage/ReportFiltrationForm/ReportFiltrationForm.constants';
 import { getCountText } from 'utils/getCountText';
 import { WithLoader } from 'ui-kit/shared/WithLoader';
@@ -36,7 +36,7 @@ export const DistrictBordersByAddressPage: FC<
   checkedAddressesAmount,
   isLoading,
 }) => {
-  const history = useHistory();
+  const navigate = useNavigate();
 
   return (
     <Wrapper>
@@ -93,14 +93,14 @@ export const DistrictBordersByAddressPage: FC<
               </LinkWrapper>
             </TextWrapper>
             <ButtonsWrapper>
-              <Button type="ghost" onClick={history.goBack}>
+              <Button type="ghost" onClick={() => navigate(-1)}>
                 Отмена
               </Button>
               <ButtonSC
                 disabled={!isAllowedToEditer}
                 onClick={() => {
                   handleOpenDistrictEditer();
-                  history.push('/districtBordersSettings/createByMap');
+                  navigate('/districtBordersSettings/createByMap');
                 }}
               >
                 Продолжить

@@ -9,7 +9,7 @@ import {
 } from './TaskBaseInfo.styled';
 import { TaskBaseInfoProps } from './TaskBaseInfo.types';
 import { EHouseCategory } from 'api/types';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 export const TaskBaseInfo: FC<TaskBaseInfoProps> = ({ task }) => {
   const {
@@ -41,7 +41,7 @@ export const TaskBaseInfo: FC<TaskBaseInfoProps> = ({ task }) => {
     ? getTimeStringByUTC(creationTime)
     : '-';
 
-  const history = useHistory();
+  const navigate = useNavigate();
 
   return (
     <TaskBaseInfoWrapper>
@@ -61,7 +61,7 @@ export const TaskBaseInfo: FC<TaskBaseInfoProps> = ({ task }) => {
         </RowWrapper>
         <RowWrapper>
           <div>Адрес</div>
-          <Address onClick={() => history.push(linkPath)}>{address}</Address>
+          <Address onClick={() => navigate(linkPath)}>{address}</Address>
         </RowWrapper>
         {apartment && (
           <RowWrapper>

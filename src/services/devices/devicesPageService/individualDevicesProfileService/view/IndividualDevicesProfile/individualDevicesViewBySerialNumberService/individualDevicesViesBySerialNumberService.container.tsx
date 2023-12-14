@@ -1,5 +1,5 @@
 import { Skeleton } from 'antd';
-import { useEvent, useStore } from 'effector-react';
+import { useUnit } from 'effector-react';
 import React, { FC } from 'react';
 import { DEVICES_LIST_BY_SERIAL_NUMBER_SIZE } from './individualDevicesViesBySerialNumberService.constants';
 import { individualDevicesViewBySerialNumberService } from './individualDevicesViesBySerialNumberService.model';
@@ -16,15 +16,25 @@ const { inputs, outputs } = individualDevicesViewBySerialNumberService;
 export const IndividualDevicesViewBySerialNumberContainer: FC<HeaderInject> = ({
   Header,
 }) => {
-  const filter = useStore(outputs.$searchPayload);
-  const devices = useStore(outputs.$devices);
-  const totalItems = useStore(outputs.$totalItems);
-  const mountPlaces = useStore(outputs.$mountPlaces);
-  const isLoading = useStore(outputs.$isLoading);
-
-  const setFilter = useEvent(inputs.setFilter);
-  const clearSearchPayload = useEvent(inputs.clearFilter);
-  const changePageNumber = useEvent(inputs.changePageNumber);
+  const {
+    changePageNumber,
+    clearSearchPayload,
+    devices,
+    filter,
+    isLoading,
+    mountPlaces,
+    setFilter,
+    totalItems,
+  } = useUnit({
+    filter: outputs.$searchPayload,
+    devices: outputs.$devices,
+    totalItems: outputs.$totalItems,
+    mountPlaces: outputs.$mountPlaces,
+    isLoading: outputs.$isLoading,
+    setFilter: inputs.setFilter,
+    clearSearchPayload: inputs.clearFilter,
+    changePageNumber: inputs.changePageNumber,
+  });
 
   return (
     <>

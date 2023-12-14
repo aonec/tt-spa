@@ -55,7 +55,7 @@ export const EditReadingsHistoryModal: FC<EditReadingsHistoryModalProps> = ({
 
   return (
     <FormModal
-      formId="edit-readings-history-modal"
+      formId="edit-readings-navigate-modal"
       title="Ввод показаний за произвольный период"
       onCancel={handleCloseModal}
       submitBtnText="Сохранить показание"

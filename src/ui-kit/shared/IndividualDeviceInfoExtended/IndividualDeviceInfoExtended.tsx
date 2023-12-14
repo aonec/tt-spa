@@ -17,7 +17,7 @@ import {
 import { prepareDateForDateLine } from './IndividualDeviceInfoExtended.utils';
 import { Tooltip } from 'ui-kit/shared/Tooltip';
 import { individualDeviceMountPlacesService } from 'services/devices/individualDeviceMountPlacesService/individualDeviceMountPlacesService.model';
-import { useStore } from 'effector-react';
+import { useUnit } from 'effector-react';
 
 const { AllIndividualDeviceMountPlacesGate } =
   individualDeviceMountPlacesService.gates;
@@ -27,9 +27,11 @@ export const IndividualDeviceInfoExtended: FC<
 > = ({ device, onClick }) => {
   const isActive = device.closingDate === null;
 
-  const allIndividualDeviceMountPlaces = useStore(
-    individualDeviceMountPlacesService.outputs.$allIndividualDeviceMountPlaces,
-  );
+  const { allIndividualDeviceMountPlaces } = useUnit({
+    allIndividualDeviceMountPlaces:
+      individualDeviceMountPlacesService.outputs
+        .$allIndividualDeviceMountPlaces,
+  });
 
   const preparedLastCheckingDate = prepareDateForDateLine(
     device.lastCheckingDate,

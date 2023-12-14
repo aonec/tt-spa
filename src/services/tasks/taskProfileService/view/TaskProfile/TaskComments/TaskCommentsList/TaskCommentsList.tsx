@@ -7,6 +7,8 @@ import { useParams } from 'react-router-dom';
 export const TaskCommentsList: FC<TaskCommentsListProps> = ({ comments }) => {
   const { taskId } = useParams<{ taskId: string }>();
 
+  if (!taskId) return null;
+
   const commentsList = comments.map((comment) => (
     <TaskCommentContainer key={comment.id} comment={comment} taskId={taskId} />
   ));

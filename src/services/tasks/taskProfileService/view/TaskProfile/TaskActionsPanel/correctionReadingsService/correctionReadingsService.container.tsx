@@ -1,4 +1,4 @@
-import { useStore } from 'effector-react';
+import { useUnit } from 'effector-react';
 import React, { FC, useCallback } from 'react';
 import { BufferedReadingValues } from 'services/meters/individualDeviceMetersInputService/view/MetersInputsBlock/MetersInputsBlock.types';
 import { ActionComponentProps } from '../TaskActionsPanel.types';
@@ -10,7 +10,7 @@ const { outputs } = correctionReadingsService;
 export const CorrectionReadingsContainer: FC<ActionComponentProps> = ({
   handleChange,
 }) => {
-  const task = useStore(outputs.$task);
+  const { task } = useUnit({ task: outputs.$task });
 
   const handleReadingChange = useCallback(
     (values: BufferedReadingValues) => {

@@ -1,4 +1,4 @@
-import { useStore } from 'effector-react';
+import { useUnit } from 'effector-react';
 import { ETaskConfirmationType } from 'api/types';
 import React, { FC, useCallback } from 'react';
 import { ActionComponentProps } from '../TaskActionsPanel.types';
@@ -12,11 +12,11 @@ const { outputs } = completionStageService;
 export const CompletionStageContainer: FC<ActionComponentProps> = ({
   handleChange,
 }) => {
-  const taskConfirmationTypes = useStore(outputs.$taskConfirmationTypes);
-
-  const taskType = useStore(outputs.$taskType);
-
-  const payload = useStore(taskProfileService.outputs.$pushStageRequestPayload);
+  const { payload, taskConfirmationTypes, taskType } = useUnit({
+    taskConfirmationTypes: outputs.$taskConfirmationTypes,
+    taskType: outputs.$taskType,
+    payload: taskProfileService.outputs.$pushStageRequestPayload,
+  });
 
   function handleChangeConfirmationType(
     confirmationType: ETaskConfirmationType,

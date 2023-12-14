@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react';
 import { nonResidentialBuildingProfileService } from './nonResidentialBuildingProfileService.model';
-import { useHistory, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import {
   nonResidentialBuildingQuery,
   resourceDisconnectionQuery,
@@ -21,7 +21,7 @@ export const NonResidentialBuildingProfileContainer = () => {
     buildingId: string;
     section?: NonResidentialBuildingProfileGrouptype;
   }>();
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const {
     isLoading,
@@ -53,10 +53,10 @@ export const NonResidentialBuildingProfileContainer = () => {
 
   const setGrouptype = useCallback(
     (section: NonResidentialBuildingProfileGrouptype) =>
-      history.replace(
-        `/buildings/nonResidentialProfile/${buildingId}/${section}`,
-      ),
-    [history, buildingId],
+      navigate(`/buildings/nonResidentialProfile/${buildingId}/${section}`, {
+        replace: true,
+      }),
+    [navigate, buildingId],
   );
 
   return (

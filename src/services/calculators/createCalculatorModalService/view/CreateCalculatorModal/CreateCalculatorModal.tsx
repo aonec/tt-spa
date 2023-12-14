@@ -1,4 +1,4 @@
-import { useStore } from 'effector-react';
+import { useUnit } from 'effector-react';
 import React, { FC, ReactNode, useMemo } from 'react';
 import { BaseInfoForm } from './BaseInfoForm';
 import { ConnectionSettingsForm } from './ConnectionSettingsForm';
@@ -27,7 +27,9 @@ export const CreateCalculatorModal: FC<CreateCalculatorModalProps> = ({
   isLoading,
   payload,
 }) => {
-  const calculatorTypes = useStore(outputs.$calculatorTypesSelectItems);
+  const { calculatorTypes } = useUnit({
+    calculatorTypes: outputs.$calculatorTypesSelectItems,
+  });
   const stepComponentDictionary: { [key: number]: ReactNode } = useMemo(
     () => ({
       1: (

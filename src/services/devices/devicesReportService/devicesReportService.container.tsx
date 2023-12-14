@@ -2,17 +2,20 @@ import React from 'react';
 import { FormModal } from 'ui-kit/Modals/FormModal';
 import { DevicesReportModalForm } from './view/DevicesReportModalForm';
 import { devicesReportService } from './devicesReportService.model';
-import { useEvent, useStore } from 'effector-react';
+import { useUnit } from 'effector-react';
 
 const { inputs, outputs } = devicesReportService;
 const formId = 'devices-report-modal';
 
 export const DevicesReportContainer = () => {
-  const isOpen = useStore(outputs.$isOpen);
-  const isLoading = useStore(outputs.$isLoading);
-
-  const closeModal = useEvent(inputs.closeModal);
-  const handleDownloadDeviceReport = useEvent(inputs.downloadDeviceReport);
+  const { closeModal, handleDownloadDeviceReport, isLoading, isOpen } = useUnit(
+    {
+      isOpen: outputs.$isOpen,
+      isLoading: outputs.$isLoading,
+      closeModal: inputs.closeModal,
+      handleDownloadDeviceReport: inputs.downloadDeviceReport,
+    },
+  );
 
   return (
     <FormModal

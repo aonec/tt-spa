@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
 import { EditEmployee } from './view/EditEmployee';
 import { editEmployeeService } from './editEmployeeService.model';
-import { useEvent, useStore } from 'effector-react';
-import { useHistory, useParams } from 'react-router-dom';
+import { useUnit } from 'effector-react';
+import { useNavigate, useParams } from 'react-router-dom';
 import { WithLoader } from 'ui-kit/shared/WithLoader';
 import { LoaderWrapper } from './view/EditEmployee/EditEmployee.styled';
 
@@ -10,14 +10,23 @@ const { inputs, outputs, gates } = editEmployeeService;
 const { CompetencesGate, UserRolesGate, FetchEmployeeDataGate } = gates;
 
 export const EditEmployeeContainer = () => {
-  const history = useHistory();
-  const isPending = useStore(outputs.$pending);
-  const competences = useStore(outputs.$competencesCatalog);
-  const userRoles = useStore(outputs.$userRoles);
-  const employeeData = useStore(outputs.$employeeData);
-  const employeeDataPending = useStore(outputs.$employeeDataPending);
+  const navigate = useNavigate();
 
-  const handleSubmit = useEvent(inputs.handleSubmit);
+  const {
+    competences,
+    employeeData,
+    employeeDataPending,
+    handleSubmit,
+    isPending,
+    userRoles,
+  } = useUnit({
+    isPending: outputs.$pending,
+    competences: outputs.$competencesCatalog,
+    userRoles: outputs.$userRoles,
+    employeeData: outputs.$employeeData,
+    employeeDataPending: outputs.$employeeDataPending,
+    handleSubmit: inputs.handleSubmit,
+  });
 
   const multipleSelectionCompetences = competences?.map((elem) => ({
     label: elem.title,
@@ -34,9 +43,11 @@ export const EditEmployeeContainer = () => {
 
   useEffect(() => {
     return inputs.successUpdate.watch(() => {
-      history.push(`/userProfile/${userId}`);
+      navigate(`/userProfile/${userId}`);
     }).unsubscribe;
-  }, [history, userId]);
+  }, [navigate, userId]);
+
+  if (!userId) return null;
 
   return (
     <>

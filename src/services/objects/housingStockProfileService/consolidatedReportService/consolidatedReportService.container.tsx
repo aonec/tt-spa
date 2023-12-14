@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { useEvent, useStore } from 'effector-react';
+import { useUnit } from 'effector-react';
 import { FormModal } from 'ui-kit/Modals/FormModal';
 import { consolidatedReportService } from './consolidatedReportService.model';
 import { ConsolidatedReportForm } from './view/ConsolidatedReportForm';
@@ -10,11 +10,12 @@ const { inputs, outputs } = consolidatedReportService;
 const formId = 'consolidated-report-form';
 
 export const ConsolidatedReportContainer: FC<Props> = ({ building }) => {
-  const closeModal = useEvent(inputs.closeConsolidatedReportModal);
-  const handleSubmit = useEvent(inputs.handleSubmit);
-
-  const isModalOpen = useStore(outputs.$isModalOpen);
-  const isLoading = useStore(outputs.$isLoading);
+  const { closeModal, handleSubmit, isLoading, isModalOpen } = useUnit({
+    closeModal: inputs.closeConsolidatedReportModal,
+    handleSubmit: inputs.handleSubmit,
+    isModalOpen: outputs.$isModalOpen,
+    isLoading: outputs.$isLoading,
+  });
 
   return (
     <FormModal

@@ -1,42 +1,51 @@
 import React, { useEffect } from 'react';
 import { EditCalculatorPage } from './view/EditCalculatorPage';
 import { editCalculatorService } from './editCalculatorService.model';
-import { useEvent, useStore } from 'effector-react';
-import { useHistory, useParams } from 'react-router-dom';
+import { useUnit } from 'effector-react';
+import { useNavigate, useParams } from 'react-router-dom';
 import { MeteringDeviceResponse } from 'api/types';
 
 const { inputs, outputs, gates } = editCalculatorService;
 const { CalculatorInfosGate, SaveDeviceIdGate } = gates;
 
 export const EditCalculatorContainer = () => {
-  const handleChangeTab = useEvent(inputs.handleChangeTab);
-  const handleSubmit = useEvent(inputs.handleSubmit);
-  const handleCloseModal = useEvent(inputs.handleCloseModal);
-  const handleFecthCalculator = useEvent(inputs.handleFecthCalculator);
-
-  const currentTab = useStore(outputs.$currentTab);
-  const calculator = useStore(outputs.$calculator);
-  const isCalculatorLoading = useStore(outputs.$isLoading);
-  const sameConnectionCalculator = useStore(outputs.$sameConnectionCalculator);
-  const isModalOpen = useStore(outputs.$isModalOpen);
+  const {
+    calculator,
+    calculatorTypesSelectItems,
+    currentTab,
+    handleChangeTab,
+    handleCloseModal,
+    handleFecthCalculator,
+    handleSubmit,
+    isCalculatorLoading,
+    isModalOpen,
+    sameConnectionCalculator,
+  } = useUnit({
+    handleChangeTab: inputs.handleChangeTab,
+    handleSubmit: inputs.handleSubmit,
+    handleCloseModal: inputs.handleCloseModal,
+    handleFecthCalculator: inputs.handleFecthCalculator,
+    currentTab: outputs.$currentTab,
+    calculator: outputs.$calculator,
+    isCalculatorLoading: outputs.$isLoading,
+    sameConnectionCalculator: outputs.$sameConnectionCalculator,
+    isModalOpen: outputs.$isModalOpen,
+    calculatorTypesSelectItems: outputs.$calculatorTypesSelectItems,
+  });
 
   const { deviceId } = useParams<{ deviceId: string }>();
 
-  const history = useHistory();
-
-  const calculatorTypesSelectItems = useStore(
-    outputs.$calculatorTypesSelectItems,
-  );
+  const navigate = useNavigate();
 
   useEffect(() => {
     return inputs.editCalculatorSuccess.watch(
       (data: MeteringDeviceResponse | null) => {
         if (data?.id) {
-          history.push(`/calculators/${data.id}/profile`);
+          navigate(`/calculators/${data.id}/profile`);
         }
       },
     ).unsubscribe;
-  }, [history]);
+  }, [navigate]);
 
   useEffect(() => {
     handleFecthCalculator(Number(deviceId));

@@ -1,5 +1,5 @@
 import React, { FC, useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { CheckIcon, SwitchIcon } from 'ui-kit/icons';
 import { ActionButton } from 'ui-kit/shared/ActionButton';
 import { ButtonsWrapper } from './SelectSwitchDeviceTypeModal.styled';
@@ -12,15 +12,13 @@ import { FormModal } from 'ui-kit/Modals/FormModal';
 export const SelectSwitchDeviceTypeModal: FC<
   SelectSwitchDeviceTypeModalProps
 > = ({ apartmentId, close, deviceId, show }) => {
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const [selectedSwitchType, setSelectedSwitchType] =
     useState<SelectSwitchDeviceType | null>(null);
 
   const next = (to: SelectSwitchDeviceType) =>
-    history.push(
-      `/apartment/${apartmentId}/individualDevice/${deviceId}/${to}`,
-    );
+    navigate(`/apartment/${apartmentId}/individualDevice/${deviceId}/${to}`);
 
   const setSwitchType = (to: SelectSwitchDeviceType) => () =>
     to === selectedSwitchType

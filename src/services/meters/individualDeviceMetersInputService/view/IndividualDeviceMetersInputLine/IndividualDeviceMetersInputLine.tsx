@@ -1,8 +1,8 @@
 import React, { FC, useMemo, useState } from 'react';
-import { useEvent, useStore } from 'effector-react';
+import { useUnit } from 'effector-react';
 import { message, Tooltip } from 'antd';
 import confirm from 'antd/lib/modal/confirm';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { ESecuredIdentityRoleName } from 'api/types';
 import { HistoryIcon, StarIcon } from 'ui-kit/icons';
 import { deleteIndividualDeviceService } from 'services/devices/individualDevices/deleteIndividualDevice/deleteIndividualDeviceService.models';
@@ -44,21 +44,21 @@ export const IndividualDeviceMetersInputLine: FC<
   apartmentId,
   style,
 }) => {
-  const history = useHistory();
+  const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const onDeleteIndividualDevice = useEvent(
-    deleteIndividualDeviceService.inputs.openModal,
-  );
-
-  const openEditReadingsHistoryModal = useEvent(
-    editReadingsHistoryService.inputs.openModal,
-  );
-  const openCloseIndividualDeviceModal = useEvent(
-    closeIndividualDeviceService.inputs.openModal,
-  );
-
-  const managementFirmUser = useStore(currentUserService.outputs.$currentUser);
+  const {
+    managementFirmUser,
+    onDeleteIndividualDevice,
+    openCloseIndividualDeviceModal,
+    openEditReadingsHistoryModal,
+  } = useUnit({
+    onDeleteIndividualDevice: deleteIndividualDeviceService.inputs.openModal,
+    openEditReadingsHistoryModal: editReadingsHistoryService.inputs.openModal,
+    openCloseIndividualDeviceModal:
+      closeIndividualDeviceService.inputs.openModal,
+    managementFirmUser: currentUserService.outputs.$currentUser,
+  });
 
   const isDeviceClosed = Boolean(device.closingDate);
 
@@ -77,7 +77,7 @@ export const IndividualDeviceMetersInputLine: FC<
     () => [
       {
         title: 'Редактировать',
-        onClick: () => history.push(`/individualDevices/${device.id}/edit`),
+        onClick: () => navigate(`/individualDevices/${device.id}/edit`),
       },
       {
         title: 'Замена или поверка прибора',
@@ -124,7 +124,7 @@ export const IndividualDeviceMetersInputLine: FC<
     [
       device,
       isSeniorOperator,
-      history,
+      navigate,
       onDeleteIndividualDevice,
       isDeviceClosed,
       openEditReadingsHistoryModal,
@@ -183,7 +183,7 @@ export const IndividualDeviceMetersInputLine: FC<
         {editable && (
           <StarIcon
             onClick={() =>
-              history.push(
+              navigate(
                 `/apartment/${apartmentId}/individualDevice/${device.id}/reopen`,
               )
             }

@@ -358,3 +358,15 @@ sup {
   width: 100%;
   display: block;
 }
+
+.ant-btn-link {
+  color: rgb(24, 158, 233);
+  transition: all 0.2s ease 0s;
+  font-weight: 500;
+  font-size: 16px;
+  cursor: pointer;
+
+  &:hover {
+    opacity: 0.8;
+  }
+}

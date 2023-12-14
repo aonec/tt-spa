@@ -6,7 +6,7 @@ const clickableMixin = css`
 
 export const Wrapper = styled.div<{ clickable: boolean }>`
   overflow: hidden;
-  max-width: 220px;
+  max-width: 210px;
   cursor: pointer;
   transition: 0.2s;
 

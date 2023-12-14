@@ -1,4 +1,4 @@
-import { useStore } from 'effector-react';
+import { useUnit } from 'effector-react';
 import React, { FC, useCallback } from 'react';
 import { useParams } from 'react-router-dom';
 import { ActionComponentProps } from '../TaskActionsPanel.types';
@@ -14,7 +14,7 @@ export const SwitchOrCompleteContainer: FC<ActionComponentProps> = ({
 }) => {
   const { taskId } = useParams<{ taskId: string }>();
 
-  const nextStages = useStore(outputs.$nextStages);
+  const { nextStages } = useUnit({ nextStages: outputs.$nextStages });
 
   const handleChangeCheckbox = useCallback(
     (checked: boolean) => {
@@ -24,7 +24,7 @@ export const SwitchOrCompleteContainer: FC<ActionComponentProps> = ({
         nextStageId: checked ? finalStage?.id : undefined,
       });
     },
-    [nextStages, handleChange]
+    [nextStages, handleChange],
   );
 
   return (
