@@ -34,7 +34,7 @@ export const HomeownersList: FC<HomeownersListProps> = ({ homeowners }) => {
                 },
                 {
                   key: 'Контактный номер телефона',
-                  value: homeowner.phoneNumber,
+                  value: (homeowner.phoneNumbers || []).toString(),
                 },
               ]}
             />

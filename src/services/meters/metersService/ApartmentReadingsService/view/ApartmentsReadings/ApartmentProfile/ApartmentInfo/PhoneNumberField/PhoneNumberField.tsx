@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useEffect, useMemo, useState } from 'react';
 import {
   FieldName,
   Header,
@@ -16,50 +16,85 @@ import { PencilIcon, TrashIcon } from 'ui-kit/icons';
 import { Tooltip } from 'ui-kit/shared/Tooltip';
 import { Input } from 'ui-kit/Input';
 import { Button } from 'ui-kit/Button';
+import { useFormik } from 'formik';
+import * as Yup from 'yup';
+import { ErrorMessage } from 'ui-kit/ErrorMessage';
 
 const getMenuButtons = ({
   phoneNumbers,
   selectPhoneNumber,
+  isEditable,
+  editPhoneNumber,
+  deletePhoneNumber,
 }: {
   phoneNumbers: string[];
   selectPhoneNumber: (phone: string) => void;
+  isEditable: boolean;
+  editPhoneNumber: (phone: string) => void;
+  deletePhoneNumber?: (phone: string) => void;
 }) =>
   phoneNumbers.map((phone, index) => {
     return (
       <MenuItem
         onClick={() => {
           selectPhoneNumber(phone);
-          // setIsOpen(false);
         }}
         key={index + phone}
       >
         <Tooltip title={phone}>
           <TextWrapper>{phone}</TextWrapper>
         </Tooltip>
-        <IconsWrapper>
-          <PencilIcon
-            onClick={(e) => {
-              e.stopPropagation();
-            }}
-          />
-          <TrashIcon
-            onClick={(e) => {
-              e.stopPropagation();
-            }}
-          />
-        </IconsWrapper>
+        {isEditable && (
+          <IconsWrapper>
+            <PencilIcon onClick={() => editPhoneNumber(phone)} />
+            <TrashIcon
+              onClick={(e) => {
+                e.stopPropagation();
+                deletePhoneNumber && deletePhoneNumber(phone);
+              }}
+            />
+          </IconsWrapper>
+        )}
       </MenuItem>
     );
   });
 
 export const PhoneNumberField: FC<PhoneNumberFieldProps> = ({
   phoneNumbers,
+  addPhoneNumber,
+  deletePhoneNumber,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedPhoneNumber, selectPhoneNumber] = useState<string | null>(
     null,
   );
-  const [isEditing, setIsEditing] = useState(true);
+  const [isEditing, setIsEditing] = useState(false);
+
+  const isEditable = useMemo(
+    () => Boolean(deletePhoneNumber && addPhoneNumber),
+    [deletePhoneNumber, addPhoneNumber],
+  );
+
+  const { values, setFieldValue, submitForm, resetForm, errors } = useFormik({
+    initialValues: {
+      phoneNumber: '',
+      oldPhoneNumber: null,
+    },
+    validationSchema: Yup.object().shape({
+      phoneNumber: Yup.string().test(
+        'isNumber',
+        'Телефонный номер может содержать только цифры',
+        (value) => /^[0-9]*$/.test(value || ''),
+      ),
+    }),
+    validateOnBlur: false,
+    validateOnChange: false,
+    validateOnMount: true,
+    onSubmit: (values) => {
+      addPhoneNumber && addPhoneNumber(values);
+      setIsEditing(false);
+    },
+  });
 
   useEffect(() => {
     selectPhoneNumber(_.first(phoneNumbers) || null);
@@ -68,15 +103,29 @@ export const PhoneNumberField: FC<PhoneNumberFieldProps> = ({
   const menu = () => (
     <Menu onClick={(e) => e.domEvent.stopPropagation()}>
       {[
-        ...getMenuButtons({ phoneNumbers, selectPhoneNumber }),
-        <MenuItem
-          color={'#189EE9'}
-          onClick={() => {
+        ...getMenuButtons({
+          phoneNumbers,
+          selectPhoneNumber,
+          isEditable,
+          editPhoneNumber: (phone) => {
+            setFieldValue('phoneNumber', phone);
+            setFieldValue('oldPhoneNumber', phone);
             setIsEditing(true);
-          }}
-        >
-          Добавить номер
-        </MenuItem>,
+          },
+          deletePhoneNumber,
+        }),
+        ...(isEditable
+          ? [
+              <MenuItem
+                color={'#189EE9'}
+                onClick={() => {
+                  setIsEditing(true);
+                }}
+              >
+                Добавить номер
+              </MenuItem>,
+            ]
+          : []),
       ]}
     </Menu>
   );
@@ -94,22 +143,32 @@ export const PhoneNumberField: FC<PhoneNumberFieldProps> = ({
           onOpenChange={(visible) => setIsOpen(visible)}
         >
           <Tooltip title={selectedPhoneNumber}>
-            <ValueWrapper>{selectedPhoneNumber || '8t35432489'}</ValueWrapper>
+            <ValueWrapper>{selectedPhoneNumber}</ValueWrapper>
           </Tooltip>
         </DropdownSC>
       )}
       {isEditing && (
         <div>
-          <Input small />
+          <Input
+            small
+            value={values.phoneNumber}
+            onChange={(e) => setFieldValue('phoneNumber', e.target.value)}
+          />
+          <ErrorMessage>{errors.phoneNumber}</ErrorMessage>
           <ButtonsWrapper>
             <Button
               size="small"
               type="ghost"
-              onClick={() => setIsEditing(false)}
+              onClick={() => {
+                setIsEditing(false);
+                resetForm();
+              }}
             >
               Отмена
             </Button>
-            <Button size="small">Сохранить</Button>
+            <Button size="small" onClick={submitForm}>
+              Сохранить
+            </Button>
           </ButtonsWrapper>
         </div>
       )}

@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useEffect, useMemo, useState } from 'react';
 import {
   InputSC,
   FieldName,
@@ -20,6 +20,8 @@ export const EditHomeownerField: FC<EditHomeownerFieldProps> = ({
   const [fieldCurrentValue, setFieldCurrentValue] = useState<string | null>(
     initialValue,
   );
+
+  const isEditable = useMemo(() => Boolean(handleUpdate), [handleUpdate]);
 
   useEffect(() => {
     setFieldCurrentValue(initialValue);
@@ -51,11 +53,21 @@ export const EditHomeownerField: FC<EditHomeownerFieldProps> = ({
     <div>
       <Header>
         <FieldName>{title}</FieldName>
-        <PencilIconSC onClick={isEditing ? handleCancelEdit : handleEdit} />
+        {isEditable && (
+          <PencilIconSC onClick={isEditing ? handleCancelEdit : handleEdit} />
+        )}
       </Header>
 
       {!isEditing && (
-        <ValueWrapper onClick={handleEdit}>{fieldCurrentValue}</ValueWrapper>
+        <ValueWrapper
+          onClick={() => {
+            if (isEditable) {
+              handleEdit();
+            }
+          }}
+        >
+          {fieldCurrentValue}
+        </ValueWrapper>
       )}
 
       {isEditing && (

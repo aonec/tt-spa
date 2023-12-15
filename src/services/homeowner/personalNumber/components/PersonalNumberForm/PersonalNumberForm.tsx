@@ -44,7 +44,8 @@ export const PersonalNumberForm: FC<PersonalNumberFormProps> = ({
     useFormik<PersonalNumberFormTypes>({
       initialValues: {
         name: ((isEdit || isSplit) && homeowner?.name) || '',
-        phoneNumber: (isEdit && homeowner?.phoneNumber) || '',
+        // phoneNumber: (isEdit && homeowner?.phoneNumber) || '',
+        phoneNumber: '',
         openAt: (isEdit && dayjs(homeowner?.openAt).format('YYYY-MM-DD')) || '',
         personalAccountNumber:
           (isEdit && homeowner?.personalAccountNumber) || '',
