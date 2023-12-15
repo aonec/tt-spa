@@ -2,11 +2,11 @@ import { useUnit } from 'effector-react';
 import React, { FC, useEffect, useRef } from 'react';
 import { displayDevicesService } from '../displayDevicesService';
 import { DevicesProfile } from './view/DevicesProfile';
-import { currentUserService } from 'services/currentUserService';
 import { DevicesSearchType } from '../devicesPageService/devicesPageService.types';
 import { HeaderInject } from 'services/objects/objectsProfileService/view/ObjectsProfile/ObjectsProfile.types';
 import { devicesReportService } from '../devicesReportService';
 import { getNodesListQuery } from '../displayDevicesService/displayDevicesService.api';
+import { currentOrganizationService } from 'services/currentOrganizationService';
 
 const { outputs, inputs, gates } = displayDevicesService;
 const CalculatorsGate = gates.CalculatorsGate;
@@ -35,7 +35,7 @@ export const DevicesProfileContainer: FC<HeaderInject> = ({ Header }) => {
   } = useUnit({
     isOpen: outputs.$isExtendedSearchOpen,
     searchState: outputs.$searchPayload,
-    diametersConfig: currentUserService.outputs.$diametersConfig,
+    diametersConfig: currentOrganizationService.outputs.$diametersConfig,
     devicesSearchType: outputs.$devicesSearchType,
     serialNumber: outputs.$serialNumber,
     setSerialNumber: inputs.setSerialNumber,

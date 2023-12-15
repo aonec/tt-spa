@@ -2,16 +2,6 @@ import { createEvent, createStore, sample } from 'effector';
 import { createGate } from 'effector-react';
 import { ConfirmReadingCallbackPayload } from './confirmReadingService.types';
 
-const $onConfirmReadingInputCallback =
-  createStore<ConfirmReadingCallbackPayload | null>(null);
-
-const $isConfirmReadingInputModalOpen =
-  $onConfirmReadingInputCallback.map(Boolean);
-
-const $confirmModalTitle = $onConfirmReadingInputCallback.map(
-  (state) => state?.title,
-);
-
 const openConfirmReadingModal = createEvent<ConfirmReadingCallbackPayload>();
 
 const executeConfirmReadingCallback = createEvent();
@@ -24,16 +14,24 @@ const CancelSwitchInputGate = createGate();
 
 const $isCancelSwitchInput = createStore<boolean>(false);
 
-$onConfirmReadingInputCallback
-  .on(openConfirmReadingModal, (_, payload) => payload)
-  .reset(closeConfirmReadingModal);
+const $onConfirmReadingInputCallback =
+  createStore<ConfirmReadingCallbackPayload | null>(null)
+    .on(openConfirmReadingModal, (_, payload) => payload)
+    .on(closeConfirmReadingModal, () => null);
+
+const $isConfirmReadingInputModalOpen =
+  $onConfirmReadingInputCallback.map(Boolean);
+
+const $confirmModalTitle = $onConfirmReadingInputCallback.map(
+  (state) => state?.title,
+);
 
 sample({
   clock: executeCancelReadingCallback,
   source: $onConfirmReadingInputCallback,
   filter: (payload): payload is ConfirmReadingCallbackPayload =>
     Boolean(payload?.onCancel),
-  fn: (payload) => payload?.onCancel?.(),
+  fn: (payload) => setTimeout(() => payload?.onCancel?.(), 0),
   target: closeConfirmReadingModal,
 });
 
@@ -42,7 +40,9 @@ sample({
   source: $onConfirmReadingInputCallback,
   filter: (payload): payload is ConfirmReadingCallbackPayload =>
     Boolean(payload),
-  fn: (payload) => payload?.onSubmit(),
+  fn: (payload) => {
+    if (payload?.onSubmit) setTimeout(payload?.onSubmit, 0);
+  },
   target: closeConfirmReadingModal,
 });
 

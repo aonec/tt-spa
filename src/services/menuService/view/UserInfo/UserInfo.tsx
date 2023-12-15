@@ -10,7 +10,11 @@ import {
 } from './UserInfo.styled';
 import { UserInfoProps } from './UserInfo.types';
 
-export const UserInfo: FC<UserInfoProps> = ({ isLoading, currentUser }) => {
+export const UserInfo: FC<UserInfoProps> = ({
+  isLoading,
+  currentUser,
+  currentManagingFirm,
+}) => {
   const userEmail = useMemo(() => {
     if (!currentUser) {
       return <UserLoader active={isLoading} />;
@@ -29,9 +33,7 @@ export const UserInfo: FC<UserInfoProps> = ({ isLoading, currentUser }) => {
         <UserIconSC />
         {userEmail}
       </UserEmailWrapper>
-      <UserManagingFirmName>
-        {currentUser?.organization?.name}
-      </UserManagingFirmName>
+      <UserManagingFirmName>{currentManagingFirm?.name}</UserManagingFirmName>
     </UserInfoWrapper>
   );
 };

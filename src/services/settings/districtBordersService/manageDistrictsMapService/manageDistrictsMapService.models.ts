@@ -7,10 +7,10 @@ import {
   existingDistrictsQuery,
   updateDistrictMutation,
 } from './manageDistrictsMapService.api';
-import { currentUserService } from 'services/currentUserService';
 import { DistrictsPageSegment } from './ManageDistrictPage/ManageDistrictPage.types';
 import { addHouseToDistrictMutation } from './ManageDistrictPage/ManageDistrictsList/addHouseToDistrict/addHouseToDistrictService.api';
 import { deleteHouseInDistrictMutation } from './ManageDistrictPage/ManageDistrictsList/deleteHouseInDistrict/deleteHouseInDistrictService.api';
+import { currentOrganizationService } from 'services/currentOrganizationService';
 
 const ManageDistrictsGate = createGate();
 
@@ -67,7 +67,7 @@ export const manageDistrictsMapService = {
   },
   outputs: {
     $organizationCoordinates:
-      currentUserService.outputs.$organizationCoordinates,
+      currentOrganizationService.outputs.$organizationCoordinates,
     $districtsPageSegment,
   },
   gates: { ManageDistrictsGate },
