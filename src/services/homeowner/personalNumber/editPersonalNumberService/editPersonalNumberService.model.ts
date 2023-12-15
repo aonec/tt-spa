@@ -1,6 +1,6 @@
 import { createEffect, createEvent, createStore } from 'effector';
 import { message } from 'antd';
-import { forward, sample } from 'effector';
+import { sample } from 'effector';
 import { HomeownerAccountCloseRequest } from 'api/types';
 import {
   EffectFailDataAxiosError,
@@ -74,9 +74,9 @@ sample({
   target: editHomeownerAccountFx,
 });
 
-forward({
-  from: handleCloseHomeownerAccount,
-  to: closeHomeownerAccountFx,
+sample({
+  clock: handleCloseHomeownerAccount,
+  target: closeHomeownerAccountFx,
 });
 
 const $isLoading = editHomeownerAccountFx.pending;

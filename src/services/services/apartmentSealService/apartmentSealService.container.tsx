@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo } from 'react';
-import {  useNavigate, useParams } from 'react-router';
+import { useNavigate, useParams } from 'react-router';
 import { apartmentSealService } from './apartmentSealService.model';
 import { useUnit } from 'effector-react';
 import { ApartmentSealProfile } from './view/ApartmentSealProfile';
@@ -18,7 +18,7 @@ const { inputs, outputs, gates } = apartmentSealService;
 const { ApartmentGate } = gates;
 
 export const ApartmentSealContainer = () => {
-  const navigate =  useNavigate();
+  const navigate = useNavigate();
   const { id } = useParams<{ id: string }>();
 
   const { data: existingDistricts } = useUnit(existingDistrictsQuery);
@@ -67,7 +67,7 @@ export const ApartmentSealContainer = () => {
     return inputs.handleApartmentLoaded.watch(({ result: apartment }) => {
       if (!apartment || apartment.id === Number(id)) return;
 
-       navigate(`/services/seal/apartment/${apartment.id}`);
+      navigate(`/services/seal/apartment/${apartment.id}`);
     }).unsubscribe;
   }, [navigate, id]);
 

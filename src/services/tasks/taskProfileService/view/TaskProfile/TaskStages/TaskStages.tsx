@@ -1,5 +1,5 @@
 import React, { FC, useMemo } from 'react';
-import {  useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useUnit } from 'effector-react';
 import { Stage } from './Stage';
 import {
@@ -50,7 +50,7 @@ export const TaskStages: FC<TaskStagesProps> = ({
     [stages, handleRevertStage, isRevertStageLoading, isStageCanBeReverted],
   );
 
-  const navigate =  useNavigate();
+  const navigate = useNavigate();
 
   const isF1Task =
     taskType === EManagingFirmTaskType.HousingDeviceMalfunction ||

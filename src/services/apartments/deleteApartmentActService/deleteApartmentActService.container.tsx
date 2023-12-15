@@ -1,4 +1,4 @@
-import { useEvent, useStore } from 'effector-react';
+import { useUnit } from 'effector-react';
 import React from 'react';
 import { Dialog } from 'ui-kit/shared/Dialog/Dialog';
 import { deleteApartmentActService } from './deleteApartmentActService.models';
@@ -6,11 +6,12 @@ import { deleteApartmentActService } from './deleteApartmentActService.models';
 const { inputs, outputs } = deleteApartmentActService;
 
 export const DeleteApartmentActModalContainer = () => {
-  const isOpen = useStore(outputs.$isModalOpen);
-  const isLoading = useStore(outputs.$deleteActIsLoading);
-
-  const handleClose = useEvent(inputs.closeModal);
-  const handleSubmit = useEvent(inputs.deleteAct);
+  const { handleClose, handleSubmit, isLoading, isOpen } = useUnit({
+    isOpen: outputs.$isModalOpen,
+    isLoading: outputs.$deleteActIsLoading,
+    handleClose: inputs.closeModal,
+    handleSubmit: inputs.deleteAct,
+  });
 
   return (
     <Dialog

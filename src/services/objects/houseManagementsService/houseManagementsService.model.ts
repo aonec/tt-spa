@@ -1,5 +1,5 @@
 import { createEffect, createStore } from 'effector';
-import { forward } from 'effector';
+import { sample } from 'effector';
 import { createGate } from 'effector-react';
 import { HouseManagementResponse } from 'api/types';
 import { getHouseManagements } from './houseManagementsService.api';
@@ -16,9 +16,9 @@ const $houseManagements = createStore<HouseManagementResponse[] | null>(
   null,
 ).on(fetchHouseManagementFx.doneData, (_, list) => list);
 
-forward({
-  from: HouseManagementsGate.state,
-  to: fetchHouseManagementFx,
+sample({
+  clock: HouseManagementsGate.state,
+  target: fetchHouseManagementFx,
 });
 
 export const houseManagementsService = {

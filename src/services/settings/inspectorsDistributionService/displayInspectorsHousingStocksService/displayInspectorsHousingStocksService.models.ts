@@ -1,4 +1,4 @@
-import { createEvent, sample } from 'effector';
+import { createEvent, createStore, sample } from 'effector';
 import { getInspectorsHousingStocksQuery } from './displayInspectorsHousingStocksService.api';
 import { GetInspectorsHousingStocksRequestParams } from './types';
 import { searchInspectorsHousingStockService } from '../searchInspectorsHousingStocksService/searchInspectorsHousingStockService.models';
@@ -16,8 +16,14 @@ const handleGetInspectorsHousingStocks =
 
 const $inspectorsHousingStocksList = getInspectorsHousingStocksQuery.$data;
 
+const $searchInspectorsFilter =
+  createStore<GetInspectorsHousingStocksRequestParams>({}).on(
+    startSearchInspectorsHousingStocks,
+    (_, params) => params,
+  );
+
 sample({
-  clock: startSearchInspectorsHousingStocks,
+  clock: $searchInspectorsFilter,
   target: getInspectorsHousingStocksQuery.start,
 });
 
@@ -32,6 +38,7 @@ export const displayInspectorsHousingStocksService = {
   },
   outputs: {
     $inspectorsHousingStocksList,
+    $searchInspectorsFilter,
     $loading,
   },
   gates: { DisplayInspectorsGate },

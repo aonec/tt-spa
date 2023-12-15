@@ -1,5 +1,5 @@
 import { createEffect, createEvent, createStore } from 'effector';
-import { forward, sample } from 'effector';
+import { sample } from 'effector';
 import { createGate } from 'effector-react';
 import { ElectricHousingMeteringDeviceResponse } from 'api/types';
 import {
@@ -33,14 +33,14 @@ const $isLoadingDevice = getElectricNodeFx.pending;
 
 const NodeIdGate = createGate<{ deviceId: number }>();
 
-forward({
-  from: updateDevice,
-  to: updateDeviceFx,
+sample({
+  clock: updateDevice,
+  target: updateDeviceFx,
 });
 
-forward({
-  from: refetchElectricNode,
-  to: getElectricNodeFx,
+sample({
+  clock: refetchElectricNode,
+  target: getElectricNodeFx,
 });
 
 sample({
@@ -50,9 +50,9 @@ sample({
   target: refetchElectricNode,
 });
 
-forward({
-  from: NodeIdGate.open.map(({ deviceId }) => deviceId),
-  to: getElectricNodeFx,
+sample({
+  clock: NodeIdGate.open.map(({ deviceId }) => deviceId),
+  target: getElectricNodeFx,
 });
 
 const handleSuccessUpdateDevice = updateDeviceFx.doneData;

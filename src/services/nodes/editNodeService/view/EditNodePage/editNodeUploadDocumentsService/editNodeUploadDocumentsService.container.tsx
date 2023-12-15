@@ -1,5 +1,5 @@
 import { Empty } from 'antd';
-import { useEvent, useStore } from 'effector-react';
+import { useUnit } from 'effector-react';
 import React from 'react';
 import { DocumentsList } from 'ui-kit/DocumentsService/view/DocumentsList';
 import { editNodeUploadDocumentsService } from './editNodeUploadDocumentsService.model';
@@ -9,12 +9,15 @@ import { EditNodeUploadDocumentsModal } from './view/EditNodeUploadDocumentsModa
 const { inputs, outputs } = editNodeUploadDocumentsService;
 
 export const EditNodeUploadDocumentsContainer = () => {
-  const documents = useStore(outputs.$documents);
-  const isOpen = useStore(outputs.$isOpenModal);
-
-  const updateDocuments = useEvent(inputs.updateDocuments);
-  const openModal = useEvent(inputs.openModal);
-  const closeModal = useEvent(inputs.closeModal);
+  const { closeModal, documents, isOpen, openModal, updateDocuments } = useUnit(
+    {
+      documents: outputs.$documents,
+      isOpen: outputs.$isOpenModal,
+      updateDocuments: inputs.updateDocuments,
+      openModal: inputs.openModal,
+      closeModal: inputs.closeModal,
+    },
+  );
 
   const isDocsExist = documents.length !== 0;
 

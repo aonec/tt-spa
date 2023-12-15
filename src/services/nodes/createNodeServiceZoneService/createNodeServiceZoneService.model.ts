@@ -1,6 +1,6 @@
 import { createEffect, createEvent, createStore } from 'effector';
 import { message } from 'antd';
-import { forward } from 'effector';
+import { sample } from 'effector';
 import { NodeServiceZoneRequest, NodeServiceZoneResponse } from 'api/types';
 import { EffectFailDataAxiosError } from 'types';
 import { postNodeServiceZone } from './createNodeServiceZoneService.api';
@@ -21,14 +21,14 @@ const $isModalOpen = createStore(false)
   .on(openCreateNodeServiceZoneModal, () => true)
   .reset(closeCreateNodeServiceZoneModal);
 
-forward({
-  from: handleCreateNodeServiceZone,
-  to: createNodeServiceZoneFx,
+sample({
+  clock: handleCreateNodeServiceZone,
+  target: createNodeServiceZoneFx,
 });
 
-forward({
-  from: createNodeServiceZoneFx.doneData,
-  to: closeCreateNodeServiceZoneModal,
+sample({
+  clock: createNodeServiceZoneFx.doneData,
+  target: closeCreateNodeServiceZoneModal,
 });
 
 const $isLoading = createNodeServiceZoneFx.pending;

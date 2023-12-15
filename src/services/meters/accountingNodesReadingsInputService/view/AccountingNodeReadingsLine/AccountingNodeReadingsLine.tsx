@@ -9,7 +9,7 @@ import {
 } from './AccountingNodeReadingsLine.styled';
 import { AccountingNodeReadingsLineProps } from './AccountingNodeReadingsLine.types';
 import { ResourceIconLookup } from 'ui-kit/shared/ResourceIconLookup';
-import {  useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { ContextMenuButton } from 'ui-kit/ContextMenuButton';
 import dayjs from 'api/dayjs';
 import { round } from 'utils/round';
@@ -30,7 +30,7 @@ export const AccountingNodeReadingsLine: FC<
   readings,
   handleUpdateReadingsSum,
 }) => {
-  const navigate =  useNavigate();
+  const navigate = useNavigate();
 
   const {
     currentReading,
@@ -65,12 +65,12 @@ export const AccountingNodeReadingsLine: FC<
   }, [previousExistingReadingBySliderIndex]);
 
   const handleChangeODPU = useCallback(
-    () =>  navigate(`/changeODPU/${device.id}`),
+    () => navigate(`/changeODPU/${device.id}`),
     [navigate, device.id],
   );
 
   const handleEditODPU = useCallback(
-    () =>  navigate(`/electricNode/${device.id}/edit`),
+    () => navigate(`/electricNode/${device.id}/edit`),
     [navigate, device.id],
   );
 

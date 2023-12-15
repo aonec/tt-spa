@@ -1,5 +1,5 @@
 import { createEffect, createEvent, createStore } from 'effector';
-import { combine, guard, Store } from 'effector';
+import { combine, sample, Store } from 'effector';
 import { createGate } from 'effector-react';
 import {
   ApartmentByAddressFilterResponsePagedList,
@@ -78,7 +78,7 @@ const $getHousingsByFilterRequestPayload: Store<GetHousingByFilterRequestPayload
     return payload;
   });
 
-guard({
+sample({
   clock: $getHousingsByFilterRequestPayload,
   filter: (payload): payload is GetHousingByFilterRequestPayload =>
     Boolean(payload),
@@ -114,7 +114,7 @@ const $getIndividualDevicesApartmentsRequestPayload: Store<GetIndividualDevicesA
     return payload;
   });
 
-guard({
+sample({
   clock: $getIndividualDevicesApartmentsRequestPayload,
   filter: (payload): payload is GetIndividualDevicesApartments =>
     Boolean(payload),

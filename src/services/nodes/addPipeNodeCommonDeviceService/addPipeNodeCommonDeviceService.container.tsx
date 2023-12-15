@@ -1,4 +1,4 @@
-import { useEvent, useStore } from 'effector-react';
+import { useUnit } from 'effector-react';
 import React, { FC } from 'react';
 import { FormModal } from 'ui-kit/Modals/FormModal';
 import { EXTREAM_STEP_NUMBER } from './addPipeNodeCommonDeviceService.constants';
@@ -14,16 +14,23 @@ export const AddPipeNodeCommonDeviceContainer: FC<Props> = ({
   configuration,
   communicationPipes,
 }) => {
-  const isModalOpen = useStore(outputs.$isModalOpen);
-  const currentFormStep = useStore(outputs.$currentFormStep);
-  const requestPayload = useStore(outputs.$requestPayload);
-
-  const close = useEvent(inputs.closeAddCommonDeviceModal);
-  const updateRequestPayload = useEvent(
-    inputs.updateCommonDeviceRequestPayload,
-  );
-  const goPrevStep = useEvent(inputs.goPrevStep);
-  const handleFormComplete = useEvent(inputs.handleFormComplete);
+  const {
+    close,
+    currentFormStep,
+    goPrevStep,
+    handleFormComplete,
+    isModalOpen,
+    requestPayload,
+    updateRequestPayload,
+  } = useUnit({
+    isModalOpen: outputs.$isModalOpen,
+    currentFormStep: outputs.$currentFormStep,
+    requestPayload: outputs.$requestPayload,
+    close: inputs.closeAddCommonDeviceModal,
+    updateRequestPayload: inputs.updateCommonDeviceRequestPayload,
+    goPrevStep: inputs.goPrevStep,
+    handleFormComplete: inputs.handleFormComplete,
+  });
 
   const submitBtnText =
     currentFormStep === EXTREAM_STEP_NUMBER ? 'Добавить' : 'Далее';

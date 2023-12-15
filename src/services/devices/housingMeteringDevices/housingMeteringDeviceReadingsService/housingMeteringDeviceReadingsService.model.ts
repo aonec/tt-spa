@@ -1,6 +1,6 @@
 import { createEffect, createEvent, createStore } from 'effector';
 import { message } from 'antd';
-import { forward, sample } from 'effector';
+import { sample } from 'effector';
 import { createGate } from 'effector-react';
 import dayjs from 'api/dayjs';
 import {
@@ -50,19 +50,19 @@ const $isLoading = getHousingMeteringDeviceReadingsFx.pending;
 const NodeIdGate = createGate<{ nodeId: number }>();
 const NodeResourceGate = createGate<{ resource: EResourceType }>();
 
-forward({
-  from: NodeIdGate.open.map(({ nodeId }) => nodeId),
-  to: getHousingMeteringDeviceReadingsFx,
+sample({
+  clock: NodeIdGate.open.map(({ nodeId }) => nodeId),
+  target: getHousingMeteringDeviceReadingsFx,
 });
 
-forward({
-  from: NodeResourceGate.state.map(({ resource }) => resource),
-  to: setResource,
+sample({
+  clock: NodeResourceGate.state.map(({ resource }) => resource),
+  target: setResource,
 });
 
-forward({
-  from: createReading,
-  to: createReadingFx,
+sample({
+  clock: createReading,
+  target: createReadingFx,
 });
 
 sample({
@@ -71,9 +71,9 @@ sample({
   target: getHousingMeteringDeviceReadingsFx,
 });
 
-forward({
-  from: NodeIdGate.close,
-  to: clearStore,
+sample({
+  clock: NodeIdGate.close,
+  target: clearStore,
 });
 
 const createReadingFailed = createReadingFx.failData;

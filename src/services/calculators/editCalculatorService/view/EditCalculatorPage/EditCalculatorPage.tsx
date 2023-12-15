@@ -11,7 +11,7 @@ import {
   EditCalculatorPageProps,
   EditCalculatorTabs,
 } from './EditCalculatorPage.types';
-import {  useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { GoBack } from 'ui-kit/shared/GoBack';
 import { PageHeader } from 'ui-kit/shared/PageHeader';
 import { HeaderInfoString } from 'ui-kit/shared/HeaderInfoString';
@@ -34,7 +34,7 @@ export const EditCalculatorPage: FC<EditCalculatorPageProps> = ({
 }) => {
   const address = calculator?.address?.address?.mainAddress;
 
-  const navigate =  useNavigate();
+  const navigate = useNavigate();
   const onCancel = () => navigate(-1);
 
   const tabItems = useMemo(

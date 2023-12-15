@@ -1,5 +1,5 @@
 import { createEffect, createEvent, createStore } from 'effector';
-import { forward, sample } from 'effector';
+import { sample } from 'effector';
 import { BuildingWithTasksResponse, TaskResponse } from 'api/types';
 import { tasksProfileService } from '../tasksProfileService';
 import {
@@ -71,9 +71,9 @@ sample({
   target: fetchHousingStocksWithTasksFx,
 });
 
-forward({
-  from: handleClickTask,
-  to: fetchTaskFx,
+sample({
+  clock: handleClickTask,
+  target: fetchTaskFx,
 });
 
 const $isLoadingHousingStocksWithTasks = fetchHousingStocksWithTasksFx.pending;

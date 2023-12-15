@@ -1,7 +1,7 @@
 import { createEffect, createEvent, createStore } from 'effector';
 import { message } from 'antd';
 import { ApartmentResponse } from 'api/types';
-import { forward, sample } from 'effector';
+import { sample } from 'effector';
 import { createGate } from 'effector-react';
 import { PutApartment, TabsSection } from './editApartmentProfileService.types';
 import { getApartment, putApartment } from './editApartmentProfileService.api';
@@ -38,9 +38,9 @@ const editApartmentCommonInfoForm = createForm({
   validateOn: ['submit'],
 });
 
-forward({
-  from: ApartmentGate.open.map(({ apartmentId }) => apartmentId),
-  to: fetchApartmentFx,
+sample({
+  clock: ApartmentGate.open.map(({ apartmentId }) => apartmentId),
+  target: fetchApartmentFx,
 });
 
 sample({

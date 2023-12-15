@@ -1,5 +1,5 @@
 import { createEffect, createEvent, createStore } from 'effector';
-import { forward } from 'effector';
+import { sample } from 'effector';
 import { competencesService } from '../competencesService';
 import { rolesService } from '../rolesService';
 import { addStaff } from './createEmployeeService.api';
@@ -28,7 +28,7 @@ const $isModalOpen = createStore<boolean>(false)
   .on(handleCloseModal, () => false)
   .reset(createEmloyeeSuccess);
 
-forward({ from: handleCreateEmloyee, to: createEmloyeeFx });
+sample({ clock: handleCreateEmloyee, target: createEmloyeeFx });
 
 const $isLoading = createEmloyeeFx.pending;
 

@@ -1,6 +1,6 @@
-import { useEvent } from 'effector-react';
+import { useUnit } from 'effector-react';
 import React, { FC } from 'react';
-import {  useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import {
   DeletePipeHousingMeteringDeviceContainer,
   deletePipeHousingMeteringDeviceService,
@@ -17,14 +17,17 @@ import { EPipeNodeConfig } from 'api/types';
 export const EditNodeRelatedDevices: FC<EditNodeRelatedDevicesProps> = ({
   node,
 }) => {
-  const navigate =  useNavigate();
+  const navigate = useNavigate();
 
-  const openAddHousingMeteringDeviceModal = useEvent(
-    addHosuingMeteringDeviceService.inputs.openModal,
-  );
-  const openDeleteHousingMeteringDeviceModal = useEvent(
-    deletePipeHousingMeteringDeviceService.inputs.openModal,
-  );
+  const {
+    openAddHousingMeteringDeviceModal,
+    openDeleteHousingMeteringDeviceModal,
+  } = useUnit({
+    openAddHousingMeteringDeviceModal:
+      addHosuingMeteringDeviceService.inputs.openModal,
+    openDeleteHousingMeteringDeviceModal:
+      deletePipeHousingMeteringDeviceService.inputs.openModal,
+  });
 
   const isNodeConfigWithoutODPU =
     node.configuration === EPipeNodeConfig.HeatNoHousingMeteringDevice;
@@ -35,7 +38,7 @@ export const EditNodeRelatedDevices: FC<EditNodeRelatedDevicesProps> = ({
         communicationPipes={node.communicationPipes || []}
         configuration={node.configuration}
         handleEditDevice={(deviceId) =>
-           navigate(`/housingMeteringDevices/${deviceId}/edit`)
+          navigate(`/housingMeteringDevices/${deviceId}/edit`)
         }
         handleDeleteDevice={(device) =>
           openDeleteHousingMeteringDeviceModal(device)

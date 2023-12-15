@@ -1,5 +1,5 @@
 import { createEffect, createEvent, createStore } from 'effector';
-import { forward, sample } from 'effector';
+import { sample } from 'effector';
 import { createGate } from 'effector-react';
 import dayjs from 'api/dayjs';
 import {
@@ -76,9 +76,9 @@ sample({
   target: [getArchiveDataFx, getTaskStatisticsFx],
 });
 
-forward({
-  from: NodeInfoGate.close,
-  to: clearStores,
+sample({
+  clock: NodeInfoGate.close,
+  target: clearStores,
 });
 
 export const displayNodesStatisticsService = {

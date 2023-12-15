@@ -1,5 +1,5 @@
 import { createEffect, createEvent, createStore } from 'effector';
-import { forward, sample } from 'effector';
+import { sample } from 'effector';
 import { HomeownerAccountCloseRequest } from 'api/types';
 import { editApartmentProfileService } from 'services/apartments/editApartmentProfileService/editApartmentProfileService.model';
 import { postCloseHomeownerApartment } from './closeHomeownerAccountService.api';
@@ -35,9 +35,9 @@ sample({
   target: closeHomeownerAccountFx,
 });
 
-forward({
-  from: closeHomeownerAccountFx.doneData,
-  to: editApartmentProfileService.inputs.refetchAaprtment,
+sample({
+  clock: closeHomeownerAccountFx.doneData,
+  target: editApartmentProfileService.inputs.refetchAaprtment,
 });
 
 closeHomeownerAccountFx.failData.watch((error) => {

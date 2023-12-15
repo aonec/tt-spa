@@ -1,4 +1,4 @@
-import { useStore } from 'effector-react';
+import { useUnit } from 'effector-react';
 import React, { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { apartmentProfileService } from './apartmentProfileService.model';
@@ -12,9 +12,10 @@ const { ApartmentGate } = gates;
 
 export const ApartmentProfileContainer = () => {
   const { apartmentId } = useParams<{ apartmentId: string }>();
-
-  const apartment = useStore(outputs.$apartment);
-  const isApartmentLoading = useStore(outputs.$isApartmentLoading);
+  const { apartment, isApartmentLoading } = useUnit({
+    apartment: outputs.$apartment,
+    isApartmentLoading: outputs.$isApartmentLoading,
+  });
 
   const { tabSection } = useParams<{ tabSection: ApartmentSection }>();
 

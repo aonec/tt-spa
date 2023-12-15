@@ -1,5 +1,5 @@
 import { createEvent, createStore } from 'effector';
-import { forward, sample } from 'effector';
+import { sample } from 'effector';
 import { currentUserService } from 'services/currentUserService';
 
 const openModal = createEvent();
@@ -29,14 +29,14 @@ sample({
   target: setEmail,
 });
 
-forward({
-  from: submitEmail,
-  to: [closeModal, closeSetEmailModal],
+sample({
+  clock: submitEmail,
+  target: [closeModal, closeSetEmailModal],
 });
 
-forward({
-  from: openSetEmailModal,
-  to: closeModal,
+sample({
+  clock: openSetEmailModal,
+  target: closeModal,
 });
 
 export const sendReportToEmailService = {

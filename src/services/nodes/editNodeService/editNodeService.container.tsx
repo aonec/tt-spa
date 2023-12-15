@@ -1,4 +1,4 @@
-import { useEvent, useStore } from 'effector-react';
+import { useUnit } from 'effector-react';
 import React from 'react';
 import { useParams } from 'react-router-dom';
 import {
@@ -22,26 +22,35 @@ const { CalculatorsGate } = calculatorsListService.gates;
 export const EditNodeContainer = () => {
   const { nodeId } = useParams<{ nodeId: string }>();
 
-  const node = useStore(outputs.$node);
-  const isLoading = useStore(outputs.$isLoading);
-  const isUpdateLoading = useStore(outputs.$isUpdateLoading);
-  const grouptype = useStore(outputs.$editNodeGrouptype);
-  const nodeZones = useStore(outputs.$nodeZones);
-  const calculators = useStore(calculatorsListService.outputs.$calculatorsList);
-
-  const setGrouptype = useEvent(inputs.setEditNodeGrouptype);
-  const openAddNewZonesModal = useEvent(
-    createNodeServiceZoneService.inputs.openCreateNodeServiceZoneModal,
-  );
-
-  const refetchNode = useEvent(inputs.refetchNode);
-  const updateNode = useEvent(inputs.updateNode);
-  const openCreateCalculatorModal = useEvent(
-    createCalculatorModalService.inputs.openModal,
-  );
-  const openRemoveConnectionModal = useEvent(
-    removeNodeCalculatorConnectionService.inputs.openModal,
-  );
+  const {
+    calculators,
+    grouptype,
+    isLoading,
+    isUpdateLoading,
+    node,
+    nodeZones,
+    openAddNewZonesModal,
+    openCreateCalculatorModal,
+    openRemoveConnectionModal,
+    refetchNode,
+    setGrouptype,
+    updateNode,
+  } = useUnit({
+    node: outputs.$node,
+    isLoading: outputs.$isLoading,
+    isUpdateLoading: outputs.$isUpdateLoading,
+    grouptype: outputs.$editNodeGrouptype,
+    nodeZones: outputs.$nodeZones,
+    calculators: calculatorsListService.outputs.$calculatorsList,
+    setGrouptype: inputs.setEditNodeGrouptype,
+    openAddNewZonesModal:
+      createNodeServiceZoneService.inputs.openCreateNodeServiceZoneModal,
+    refetchNode: inputs.refetchNode,
+    updateNode: inputs.updateNode,
+    openCreateCalculatorModal: createCalculatorModalService.inputs.openModal,
+    openRemoveConnectionModal:
+      removeNodeCalculatorConnectionService.inputs.openModal,
+  });
 
   if (!nodeId) return null;
 

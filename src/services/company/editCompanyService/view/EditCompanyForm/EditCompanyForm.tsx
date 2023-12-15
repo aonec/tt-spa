@@ -3,7 +3,7 @@ import { fromEnter } from 'ui-kit/shared/DatePickerNative';
 import { useFormik } from 'formik';
 import { OrganizationUpdateRequest } from 'api/types';
 import React, { FC, useCallback } from 'react';
-import {  useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { Button } from 'ui-kit/Button';
 import { FormItem } from 'ui-kit/FormItem';
 import { Input } from 'ui-kit/Input';
@@ -21,7 +21,7 @@ export const EditCompanyForm: FC<EditCompanyFormProps> = ({
   existingCities,
   isUpdating,
 }) => {
-  const navigate =  useNavigate();
+  const navigate = useNavigate();
   const next = useSwitchInputOnEnter('editCompany', true);
 
   const { values, setFieldValue, submitForm } =

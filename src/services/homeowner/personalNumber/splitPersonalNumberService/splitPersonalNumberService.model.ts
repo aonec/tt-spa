@@ -1,5 +1,5 @@
 import { createEffect, createEvent, createStore } from 'effector';
-import { combine, guard, sample } from 'effector';
+import { combine, sample } from 'effector';
 import { apartmentProfileService } from 'services/apartments/apartmentProfileService';
 import {
   AddNewApartmentStage,
@@ -60,7 +60,7 @@ const $stageNumber = createStore<number>(1)
   .on(goBackStage, (stageNumber) => stageNumber - 1)
   .reset(SplitPageGate.close);
 
-guard({
+sample({
   source: $stageNumber,
   clock: [
     handleSubmitSwitchStage,

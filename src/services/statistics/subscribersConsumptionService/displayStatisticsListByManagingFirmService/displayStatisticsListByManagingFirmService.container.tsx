@@ -1,4 +1,4 @@
-import { useEvent, useStore } from 'effector-react';
+import { useUnit } from 'effector-react';
 import React from 'react';
 import {
   ExportSubscribersConsumptionContainer,
@@ -15,27 +15,41 @@ const { StatiscticsPageGate } = gates;
 const { ExistingCitiesGate } = addressSearchService.gates;
 
 export const DisplayStatisticsListByManagingFirmContainer = () => {
-  const cities = useStore(outputs.$cities);
-  const managingFirms = useStore(outputs.$managingFirms);
-  const selectedManagingFirm = useStore(outputs.$selectedManagingFirm);
-  const selectedCity = useStore(outputs.$selectedCity);
-  const housingStocks = useStore(outputs.$housingStocks);
-  const housingStocksIsLoading = useStore(outputs.$housingStocksIsLoading);
-  const statisticIsLoading = useStore(outputs.$statisticIsLoading);
-  const selectedHousingStock = useStore(outputs.$selectedHousingStock);
-  const filter = useStore(outputs.$subscriberStatisticsFilter);
-  const managingFirmsLoading = useStore(outputs.$managingFirmsLoading);
-
-  const setFilter = useEvent(inputs.setSubscriberStatisticsFilter);
-  const selectCity = useEvent(inputs.selectCity);
-  const selectManagingFirm = useEvent(inputs.selectManagingFirm);
-  const selectHousingStock = useEvent(inputs.selectHousingStock);
-  const handleOpenModal = useEvent(
-    exportSubscribersConsumptionService.inputs.openModal,
-  );
-  const setFileName = useEvent(
-    exportSubscribersConsumptionService.inputs.setFileName,
-  );
+  const {
+    cities,
+    filter,
+    handleOpenModal,
+    housingStocks,
+    housingStocksIsLoading,
+    managingFirms,
+    managingFirmsLoading,
+    selectCity,
+    selectHousingStock,
+    selectManagingFirm,
+    selectedCity,
+    selectedHousingStock,
+    selectedManagingFirm,
+    setFileName,
+    setFilter,
+    statisticIsLoading,
+  } = useUnit({
+    cities: outputs.$cities,
+    managingFirms: outputs.$managingFirms,
+    selectedManagingFirm: outputs.$selectedManagingFirm,
+    selectedCity: outputs.$selectedCity,
+    housingStocks: outputs.$housingStocks,
+    housingStocksIsLoading: outputs.$housingStocksIsLoading,
+    statisticIsLoading: outputs.$statisticIsLoading,
+    selectedHousingStock: outputs.$selectedHousingStock,
+    filter: outputs.$subscriberStatisticsFilter,
+    managingFirmsLoading: outputs.$managingFirmsLoading,
+    setFilter: inputs.setSubscriberStatisticsFilter,
+    selectCity: inputs.selectCity,
+    selectManagingFirm: inputs.selectManagingFirm,
+    selectHousingStock: inputs.selectHousingStock,
+    handleOpenModal: exportSubscribersConsumptionService.inputs.openModal,
+    setFileName: exportSubscribersConsumptionService.inputs.setFileName,
+  });
 
   return (
     <>

@@ -1,6 +1,6 @@
 import { createEffect, createEvent, createStore } from 'effector';
 import { individualDeviceMetersInputService } from 'services/meters/individualDeviceMetersInputService';
-import { combine, forward, guard, sample } from 'effector';
+import { combine, sample } from 'effector';
 import { createGate } from 'effector-react';
 import {
   GetHousingStocksListRequestPayload,
@@ -62,7 +62,7 @@ const $individualDevicesPageNumber = createStore(1)
   .on(fetchIndividualDevicesFx.doneData, (pageNumber) => pageNumber + 1)
   .reset(HousingStockGate.close, $housingStock);
 
-guard({
+sample({
   clock: handleSearchHousingStock,
   filter: ({ City, Street, BuildingNumber }) => {
     return [City, Street, BuildingNumber].every(Boolean);
@@ -84,8 +84,8 @@ sample({
 });
 
 sample({
-  clock: guard({
-    clock: guard({
+  clock: sample({
+    clock: sample({
       source: combine(
         $individualDevices,
         $individualDevicesPagedList,
@@ -116,9 +116,9 @@ sample({
   target: fetchIndividualDevicesFx,
 });
 
-forward({
-  from: $housingStock,
-  to: loadNextPageOfIndividualDevicesList,
+sample({
+  clock: $housingStock,
+  target: loadNextPageOfIndividualDevicesList,
 });
 
 sample({

@@ -1,7 +1,7 @@
 import { createEffect, createEvent, createStore } from 'effector';
 import { resourceDisablingScheduleServiceService } from 'services/settings/resourcesDisablingScheduleService/ResourceDisablingScheduleService.model';
 import { message } from 'antd';
-import { combine, forward, sample, split } from 'effector';
+import { combine, sample, split } from 'effector';
 import {
   ResourceDisconnectingCreateRequest,
   StreetWithBuildingNumbersResponsePagedList,
@@ -154,19 +154,19 @@ sample({
   target: selectCity,
 });
 
-forward({
-  from: createResourceDisconnection,
-  to: createResourceDisconnectionFx,
+sample({
+  clock: createResourceDisconnection,
+  target: createResourceDisconnectionFx,
 });
 
-forward({
-  from: createResourceDisconnectionFx.done,
-  to: closeModal,
+sample({
+  clock: createResourceDisconnectionFx.done,
+  target: closeModal,
 });
 
-forward({
-  from: closeModal,
-  to: [clearHousingStocks, clearTypeOfAddress],
+sample({
+  clock: closeModal,
+  target: [clearHousingStocks, clearTypeOfAddress],
 });
 
 sample({
@@ -204,10 +204,11 @@ split({
   },
 });
 
-forward({
-  from: createResourceDisconnectionFx.doneData,
-  to: resourceDisablingScheduleServiceService.inputs
-    .refetchResourceDisconnections,
+sample({
+  clock: createResourceDisconnectionFx.doneData,
+  target:
+    resourceDisablingScheduleServiceService.inputs
+      .refetchResourceDisconnections,
 });
 
 createResourceDisconnectionFx.failData.watch((error) => {

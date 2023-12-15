@@ -1,6 +1,6 @@
 import { createEffect, createEvent, createStore } from 'effector';
 import { message } from 'antd';
-import { forward, sample } from 'effector';
+import { sample } from 'effector';
 import { PipeNodeResponse } from 'api/types';
 import { EffectFailDataAxiosError } from 'types';
 import { fetchChangeCommercialStatus } from './changeNodeStatusService.api';
@@ -36,9 +36,9 @@ changeNodeStatusFx.failData.watch((error) => {
   );
 });
 
-forward({
-  from: changeNodeStatusFx.doneData,
-  to: closeModal,
+sample({
+  clock: changeNodeStatusFx.doneData,
+  target: closeModal,
 });
 
 sample({

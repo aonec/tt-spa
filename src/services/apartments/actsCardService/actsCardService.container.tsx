@@ -1,4 +1,4 @@
-import { useEvent, useStore } from 'effector-react';
+import { useUnit } from 'effector-react';
 import React, { FC } from 'react';
 import { ActsCardContainerProps } from './actsCardContainer.types';
 import { actsCardService } from './actsCardService.model';
@@ -10,9 +10,10 @@ const { ActsCardGate } = gates;
 export const ActsCardContainer: FC<ActsCardContainerProps> = ({
   apartmentId,
 }) => {
-  const acts = useStore(outputs.$acts);
-
-  const handleSaveFile = useEvent(inputs.saveFile);
+  const { acts, handleSaveFile } = useUnit({
+    acts: outputs.$acts,
+    handleSaveFile: inputs.saveFile,
+  });
 
   return (
     <>

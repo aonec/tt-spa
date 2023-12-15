@@ -1,5 +1,5 @@
 import { createEffect, createEvent, createStore } from 'effector';
-import { forward, sample } from 'effector';
+import { sample } from 'effector';
 import { createGate } from 'effector-react';
 import {
   ApartmentResponse,
@@ -133,9 +133,9 @@ sample({
   target: getApartmentQuery.start,
 });
 
-forward({
-  from: handleUpdateApartment,
-  to: updateApartmentFx,
+sample({
+  clock: handleUpdateApartment,
+  target: updateApartmentFx,
 });
 
 updateApartmentFx.doneData.watch(() => message.success('Сохранено успешно!'));

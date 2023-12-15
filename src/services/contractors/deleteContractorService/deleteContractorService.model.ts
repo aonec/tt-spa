@@ -1,6 +1,6 @@
 import { createEffect, createEvent, createStore } from 'effector';
 import { message } from 'antd';
-import { forward, guard, sample } from 'effector';
+import { sample } from 'effector';
 import { deleteContractor } from './deleteContractorService.api';
 import { ContractorResponse } from 'api/types';
 import { EffectFailDataAxiosError } from 'types';
@@ -28,14 +28,14 @@ const $contractorData = createStore<{ id: number; name: string | null } | null>(
   .on(catchContractorId, (_, data) => data)
   .reset(handleCloseModal);
 
-forward({
-  from: deleteContractorSuccess,
-  to: handleCloseModal,
+sample({
+  clock: deleteContractorSuccess,
+  target: handleCloseModal,
 });
 
 const $isModalOpen = $contractorData.map(Boolean);
 
-guard({
+sample({
   clock: handleDeleteContractor,
   source: sample({
     source: $contractorData,

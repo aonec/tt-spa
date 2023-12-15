@@ -7,7 +7,7 @@ import {
   existingDistrictsQuery,
   existingHousingStocksQuery,
 } from './createDistrictBorderMapService.api';
-import {  useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 const {
   outputs,
@@ -15,7 +15,7 @@ const {
 } = createDistrictBorderMapService;
 
 export const CreateDistrictBorderMapContainer = () => {
-  const navigate =  useNavigate();
+  const navigate = useNavigate();
 
   const { preselectedDistrictPayload, organizationCoordinates } = useUnit({
     preselectedDistrictPayload: outputs.$preselectedDistrictPayload,
@@ -34,7 +34,7 @@ export const CreateDistrictBorderMapContainer = () => {
 
   useEffect(() => {
     return createDistrictMutation.finished.success.watch(() =>
-       navigate('/settings/districtBorder'),
+      navigate('/settings/districtBorder'),
     ).unsubscribe;
   }, [navigate]);
 

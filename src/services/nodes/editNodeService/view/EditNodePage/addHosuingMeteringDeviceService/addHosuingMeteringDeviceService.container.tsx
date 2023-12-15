@@ -1,4 +1,4 @@
-import { useEvent, useStore } from 'effector-react';
+import { useUnit } from 'effector-react';
 import { EMagistralType } from 'api/types';
 import React from 'react';
 import { AddCommonDeviceForm } from 'services/nodes/addPipeNodeCommonDeviceService/view/AddCommonDeviceForm';
@@ -10,17 +10,25 @@ const { inputs, outputs } = addHosuingMeteringDeviceService;
 const formId = 'add-housing-metering-device-in-edit-node-page';
 
 export const AddHosuingMeteringDeviceContainer = () => {
-  const isOpen = useStore(outputs.$isOpen);
-  const pipeNode = useStore(outputs.$pipeNode);
-  const currentFormStep = useStore(outputs.$currentFormStep);
-  const requestPayload = useStore(outputs.$requestPayload);
-
-  const handleClose = useEvent(inputs.closeModal);
-  const goPrevStep = useEvent(inputs.goPrevStep);
-  const handleFormComplete = useEvent(inputs.handleFormComplete);
-  const updateCommonDeviceRequestPayload = useEvent(
-    inputs.updateCommonDeviceRequestPayload,
-  );
+  const {
+    currentFormStep,
+    goPrevStep,
+    handleClose,
+    handleFormComplete,
+    isOpen,
+    pipeNode,
+    requestPayload,
+    updateCommonDeviceRequestPayload,
+  } = useUnit({
+    isOpen: outputs.$isOpen,
+    pipeNode: outputs.$pipeNode,
+    currentFormStep: outputs.$currentFormStep,
+    requestPayload: outputs.$requestPayload,
+    handleClose: inputs.closeModal,
+    goPrevStep: inputs.goPrevStep,
+    handleFormComplete: inputs.handleFormComplete,
+    updateCommonDeviceRequestPayload: inputs.updateCommonDeviceRequestPayload,
+  });
 
   const submitBtnText =
     currentFormStep === EXTREAM_STEP_NUMBER ? 'Добавить' : 'Далее';
