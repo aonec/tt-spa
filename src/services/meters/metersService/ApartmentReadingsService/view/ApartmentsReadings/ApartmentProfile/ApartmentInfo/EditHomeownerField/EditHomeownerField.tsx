@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useMemo, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import {
   InputSC,
   FieldName,
@@ -21,7 +21,7 @@ export const EditHomeownerField: FC<EditHomeownerFieldProps> = ({
     initialValue,
   );
 
-  const isEditable = useMemo(() => Boolean(handleUpdate), [handleUpdate]);
+  const isEditable = Boolean(handleUpdate);
 
   useEffect(() => {
     setFieldCurrentValue(initialValue);
