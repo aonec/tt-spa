@@ -8,6 +8,7 @@ import {
   IconsWrapper,
   TextWrapper,
   ButtonsWrapper,
+  ChevronSC,
 } from './PhoneNumberField.styled';
 import { PhoneNumberFieldProps } from './PhoneNumberField.types';
 import { Menu } from 'antd';
@@ -143,7 +144,10 @@ export const PhoneNumberField: FC<PhoneNumberFieldProps> = ({
           onOpenChange={(visible) => setIsOpen(visible)}
         >
           <Tooltip title={selectedPhoneNumber}>
-            <ValueWrapper>{selectedPhoneNumber}</ValueWrapper>
+            <ValueWrapper>
+              <TextWrapper> {selectedPhoneNumber}</TextWrapper>
+              <ChevronSC isOpen={isOpen} />
+            </ValueWrapper>
           </Tooltip>
         </DropdownSC>
       )}

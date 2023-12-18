@@ -36,19 +36,19 @@ sample({
   clock: handleAddPersonalNumber,
   source: $isForced,
   filter: (_, formData) => Boolean(formData.apartmentId),
-  fn: (isForced, formData) =>
-    ({
-      body: {
-        apartmentId: formData.apartmentId,
-        name: formData.name,
-        openAt: formData.openAt,
-        personalAccountNumber: formData.personalAccountNumber,
-        isMainOnApartment: formData.isMainOnApartment,
-        paymentCode: formData.paymentCode,
-        phoneNumber: formData.phoneNumber,
-      },
-      isForced,
-    } as AddHomeownerRequestPayload),
+  fn: (isForced, formData) => ({
+    body: {
+      //Проверка типа выше
+      apartmentId: formData.apartmentId as number,
+      name: formData.name,
+      openAt: formData.openAt,
+      personalAccountNumber: formData.personalAccountNumber,
+      isMainOnApartment: formData.isMainOnApartment,
+      paymentCode: formData.paymentCode,
+      phoneNumbers: formData.phoneNumbers,
+    },
+    isForced,
+  }),
   target: addPersonalNumberFx,
 });
 
