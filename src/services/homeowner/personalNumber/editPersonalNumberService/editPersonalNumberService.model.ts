@@ -66,7 +66,6 @@ sample({
         personalAccountNumber: formData.personalAccountNumber,
         paymentCode: formData.paymentCode,
         name: formData.name,
-        phoneNumber: formData.phoneNumber,
         IsMainOnApartment: formData.isMainOnApartment,
       },
       isForced: isForced,

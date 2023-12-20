@@ -1,6 +1,7 @@
 import { Dropdown, Menu } from 'antd';
 import styled from 'styled-components';
 import { ContextMenuButtonColorsLookup } from 'ui-kit/ContextMenuButton/ContextMenuButton.types';
+import { ChevronIcon } from 'ui-kit/icons';
 
 export const FieldName = styled.div`
   color: #272f5ab2;
@@ -53,10 +54,9 @@ export const ValueWrapper = styled.div`
   border-radius: 4px;
   min-height: 20px;
 
-  width: 156px;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 
   transition: 0.2s;
 
@@ -84,4 +84,9 @@ export const ButtonsWrapper = styled.div`
   justify-content: flex-end;
   gap: 8px;
   margin-top: 8px;
+`;
+
+export const ChevronSC = styled(ChevronIcon)<{ isOpen: boolean }>`
+  transition: 0.2s;
+  transform: rotate(${({ isOpen }) => (isOpen ? '90' : '-90')}deg);
 `;
