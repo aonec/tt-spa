@@ -54,7 +54,7 @@ export const getOrganizationUsersList = (
 ): Promise<OrganizationUserListResponsePagedList> =>
   axios.get('OrganizationUsers', {
     params,
-    paramsSerializer: queryString.stringify,
+    paramsSerializer: (params) => queryString.stringify(params),
   });
 
 export const getOrganizationUsersByRolesList = (

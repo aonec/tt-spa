@@ -16,7 +16,7 @@ export const getProblemDevices = async ({
 
     {
       params: requestPayload,
-      paramsSerializer: queryString.stringify,
+      paramsSerializer: (params) => queryString.stringify(params),
     },
   );
 
