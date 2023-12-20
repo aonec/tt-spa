@@ -29,8 +29,6 @@ export const currentUserService = {
     $isLoading,
     $currentUserRoles,
     $userRolesKeys,
-    $organizationCoordinates: $coordinates,
-    $userCity,
     fetchCurrentUserFx,
   },
   gates: {

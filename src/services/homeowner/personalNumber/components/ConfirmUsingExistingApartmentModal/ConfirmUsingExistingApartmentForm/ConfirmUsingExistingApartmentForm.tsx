@@ -39,7 +39,9 @@ export const ConfirmUsingExistingApartmentForm: FC<
         <>
           <FlexContainer>
             {apartment?.homeownerAccounts?.map((elem) => (
-              <Tooltip title={`${elem.name}, ${elem.phoneNumber}`}>
+              <Tooltip
+                title={`${elem.name}, ${(elem.phoneNumbers || []).toString()}`}
+              >
                 <PersonalNumber>{elem.personalAccountNumber}</PersonalNumber>
               </Tooltip>
             ))}

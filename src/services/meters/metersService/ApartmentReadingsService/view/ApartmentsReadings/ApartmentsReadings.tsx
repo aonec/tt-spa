@@ -27,6 +27,8 @@ export const ApartmentsReadings: FC<ApartmentsReadingsProps> = ({
   isUpdateHomeownerLoading,
   isApartmentFetched,
   nearestAppointment,
+  addPhoneNumber,
+  deletePhoneNumber,
 }) => {
   const componentsDictionary: { [key in SearchMode]: ReactNode } = {
     [SearchMode.Apartment]: (
@@ -46,6 +48,8 @@ export const ApartmentsReadings: FC<ApartmentsReadingsProps> = ({
         handleUpdateHomeowner={handleUpdateHomeowner}
         isUpdateHomeownerLoading={isUpdateHomeownerLoading}
         nearestAppointment={nearestAppointment}
+        addPhoneNumber={addPhoneNumber}
+        deletePhoneNumber={deletePhoneNumber}
       />
     ),
     [SearchMode.SerialNumber]: (

@@ -16,6 +16,7 @@ import { ErrorMessage } from 'ui-kit/ErrorMessage';
 import { DatePickerNative } from 'ui-kit/shared/DatePickerNative';
 import { Switch } from 'antd';
 import dayjs from 'api/dayjs';
+import { PhoneNumberFormField } from 'services/homeowner/personalNumber/components/PersonalNumberForm/PhoneNumberFormField';
 
 export const AddNewApartmentStage: FC<AddNewApartmentStageProps> = ({
   apartment,
@@ -31,7 +32,7 @@ export const AddNewApartmentStage: FC<AddNewApartmentStageProps> = ({
     initialValues: {
       apartmentNumber: addNewApartmentStageData?.apartmentNumber || null,
       name: addNewApartmentStageData?.name || '',
-      phoneNumber: addNewApartmentStageData?.phoneNumber || '',
+      phoneNumbers: addNewApartmentStageData?.phoneNumbers || [],
       openAt: addNewApartmentStageData?.openAt || '',
       personalAccountNumber:
         addNewApartmentStageData?.personalAccountNumber || '',
@@ -57,7 +58,7 @@ export const AddNewApartmentStage: FC<AddNewApartmentStageProps> = ({
           apartmentNumber: data.apartmentNumber,
           personalAccountNumber: data.personalAccountNumber,
           name: data.name,
-          phoneNumber: data.phoneNumber,
+          phoneNumbers: data.phoneNumbers,
           openAt: data.openAt,
           isMainOnApartment: data.isMainOnApartment,
           paymentCode: data.paymentCode,
@@ -128,11 +129,21 @@ export const AddNewApartmentStage: FC<AddNewApartmentStageProps> = ({
           <ErrorMessage>{errors.name}</ErrorMessage>
         </FormItem>
         <FormItem label="Телефон">
-          <Input
-            placeholder="Введите телефон"
-            value={values.phoneNumber || undefined}
-            onChange={(value) =>
-              setFieldValue('phoneNumber', value.target.value)
+          <PhoneNumberFormField
+            phoneNumbers={values.phoneNumbers || []}
+            deletePhoneNumber={(oldPhoneNumber) =>
+              setFieldValue(
+                'phoneNumbers',
+                (values.phoneNumbers || []).filter(
+                  (elem) => elem !== oldPhoneNumber,
+                ),
+              )
+            }
+            addPhoneNumber={(phone) =>
+              setFieldValue('phoneNumbers', [
+                ...(values.phoneNumbers || []),
+                phone,
+              ])
             }
           />
         </FormItem>
