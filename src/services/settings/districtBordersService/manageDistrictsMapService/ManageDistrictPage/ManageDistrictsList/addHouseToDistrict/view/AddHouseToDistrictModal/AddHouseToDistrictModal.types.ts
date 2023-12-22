@@ -1,10 +1,10 @@
 import { HousingStockResponse } from 'api/types';
-import { OrganizationCoordinates } from 'services/currentUserService/currentUserService.types';
 import { DistrictData } from 'types';
 import {
   AddHouseToDistrictRequestPayload,
   GetBuildingFilters,
 } from '../../addHouseToDistrictService.types';
+import { OrganizationCoordinates } from 'services/currentOrganizationService/currentOrganizationService.types';
 
 export type Props = {
   isOpen: boolean;

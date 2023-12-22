@@ -1,5 +1,5 @@
 import { FormEvent, ReactNode } from 'react';
-import { DiamtersConfig } from 'services/currentUserService/currentUserService.types';
+import { DiamtersConfig } from 'services/currentOrganizationService/currentOrganizationService.types';
 import { DevicesSearchType } from 'services/devices/devicesPageService/devicesPageService.types';
 import { NodesListRequestForm } from 'services/devices/displayDevicesService/displayDevicesService.types';
 
