@@ -4,7 +4,9 @@ import {
   IndividualDeviceMountPlaceForFilterResponse,
 } from 'api/types';
 import {
+  EditPhoneNumberRequest,
   GetApartmentsRequestPayload,
+  RemovePhoneNumberRequest,
   UpdateApartmentRequestPayload,
   UpdateHomeownerRequestPayload,
 } from '../../ApartmentReadingsService.types';
@@ -30,6 +32,8 @@ export type ApartmentsReadingsProps = {
   isUpdateHomeownerLoading: boolean;
   isApartmentFetched: boolean;
   nearestAppointment: AppointmentResponse | null;
+  addPhoneNumber: (payload: EditPhoneNumberRequest) => void;
+  deletePhoneNumber: (payload: RemovePhoneNumberRequest) => void;
 };
 
 export enum SearchMode {
