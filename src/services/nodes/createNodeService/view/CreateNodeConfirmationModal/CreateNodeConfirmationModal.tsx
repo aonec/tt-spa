@@ -137,8 +137,8 @@ export const CreateNodeConfirmationModal: FC<
                 ? NodeRegistrationTypeLookup[requestPayload.registrationType]
                 : '',
             },
-            { key: 'Номер узла', value: requestPayload.number },
-            { key: 'Зона', value: serviceZone.name },
+            { key: 'Название узла', value: requestPayload.title },
+            { key: 'Зона', value: serviceZone?.name },
             {
               hidden: !requestPayload.commercialStatusRequest?.commercialStatus,
               key: 'Коммерческий учет показателей приборов',

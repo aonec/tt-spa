@@ -60,7 +60,7 @@ export const TaskInfoPanel: FC<TaskInfoPanelProps> = ({ task }) => {
       {task.pipeNode && (
         <DeviceWrapper>
           <ResourceIconLookup resource={task.pipeNode.resource} />
-          <DeviceNumber>Узел {task.pipeNode.number}</DeviceNumber>
+          <DeviceNumber>Узел {task.pipeNode.title}</DeviceNumber>
         </DeviceWrapper>
       )}
       {task.device && (
