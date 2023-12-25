@@ -1,5 +1,4 @@
-import { createEvent, sample } from 'effector';
-import { message } from 'antd';
+import { sample } from 'effector';
 import {
   createJsonMutation,
   declareParams,
@@ -10,13 +9,6 @@ import { tokensService } from '../tokensService';
 import { developmentSettingsService } from 'services/developmentSettings/developmentSettings.models';
 import { MutationFactoryParams } from './types';
 import { requestFailed, setIsOnline } from './model';
-
-const forbiddenUserError = createEvent();
-forbiddenUserError.watch(() => {
-  message.error(
-    'У вашего аккаунта нет доступа к выбранному действию. Уточните свои права у Администратора',
-  );
-});
 
 export function createMutationWithAuth<
   Params extends object | void,
