@@ -1,16 +1,15 @@
-import { createEvent, EventCallable, sample } from 'effector';
+import { createEvent, sample } from 'effector';
 import { message } from 'antd';
 import {
   createJsonMutation,
   declareParams,
-  isHttpErrorCode,
   applyBarrier,
-  Contract,
 } from '@farfetched/core';
-import { authBarrier } from './tokensService/tokensService.relations';
-import { tokensService } from './tokensService';
+import { authBarrier } from '../tokensService/tokensService.relations';
+import { tokensService } from '../tokensService';
 import { developmentSettingsService } from 'services/developmentSettings/developmentSettings.models';
-import { forbiddenList } from 'utils/403handling';
+import { MutationFactoryParams } from './types';
+import { requestFailed, setIsOnline } from './model';
 
 const forbiddenUserError = createEvent();
 forbiddenUserError.watch(() => {
@@ -30,19 +29,7 @@ export function createMutationWithAuth<
   abort,
   method,
   body,
-}: {
-  url: ((params: Params) => string) | string;
-  method: 'POST' | 'PUT' | 'PATCH' | 'DELETE';
-  body?: Body;
-  response: {
-    contract: Contract<unknown, { successResponse: Data | null }>;
-    mapData: (payload: {
-      result: Data | null;
-      params: Params;
-    }) => TransformedData;
-  };
-  abort?: EventCallable<void>;
-}) {
+}: MutationFactoryParams<Params, Data, TransformedData, Body>) {
   const mutation = createJsonMutation({
     params: declareParams<Params>(),
     request: {
@@ -62,6 +49,7 @@ export function createMutationWithAuth<
         source: tokensService.outputs.$token,
         fn: (_, token) => ({
           Authorization: `Bearer ${token}`,
+          'x-user-path': window.location.pathname || 'none',
         }),
       },
     },
@@ -77,26 +65,16 @@ export function createMutationWithAuth<
 
   applyBarrier(mutation, { barrier: authBarrier });
 
-  sample({
-    clock: mutation.finished.failure,
-    filter: isHttpErrorCode(401),
-    target: tokensService.inputs.tokenExpired,
-  });
+  setIsOnline();
 
   sample({
     clock: mutation.finished.failure,
-    filter: ({ error, params }) => {
-      return (
-        forbiddenList.some(
-          (forbiddenUrl) =>
-            forbiddenUrl.methods.includes('GET') &&
-            forbiddenUrl.regExp.test(
-              typeof url === 'function' ? url(params) : url,
-            ),
-        ) && isHttpErrorCode(403)({ error })
-      );
-    },
-    target: forbiddenUserError,
+    fn: ({ error, params }) => ({
+      error,
+      method,
+      url: typeof url === 'function' ? url(params) : url,
+    }),
+    target: requestFailed,
   });
 
   return mutation;
