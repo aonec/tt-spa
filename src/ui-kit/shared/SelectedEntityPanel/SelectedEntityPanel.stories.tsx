@@ -1,18 +1,18 @@
 import React from 'react';
-import { ComponentMeta } from '@storybook/react';
+import { Meta } from '@storybook/react';
 import { SelectedEntityPanel } from '.';
 import { CalculatorIcon } from 'ui-kit/icons';
 import {
   CalculatorModel,
   CalculatorSerialNumber,
   Wrapper,
-} from './SelectedEntityPanel.styled.stories';
+} from './SelectedEntityPanel.stories.styled';
 
 export default {
   title: 'SelectedEntityPanel',
   component: SelectedEntityPanel,
   parameters: { layout: 'centered' },
-} as ComponentMeta<typeof SelectedEntityPanel>;
+} as Meta<typeof SelectedEntityPanel>;
 
 export const Overview = () => (
   <Wrapper>

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ComponentMeta } from '@storybook/react';
+import { Meta } from '@storybook/react';
 import { ItemPanelsSelect } from '.';
 import { ResourceIconLookup } from '../ResourceIconLookup';
 import { EResourceType } from 'api/types';
@@ -9,7 +9,7 @@ export default {
   title: 'ItemPanelsSelect',
   component: ItemPanelsSelect,
   parameters: { layout: 'centered' },
-} as ComponentMeta<typeof ItemPanelsSelect>;
+} as Meta<typeof ItemPanelsSelect>;
 
 export const Overview = () => {
   const [resourceTypes, setResourceTypes] = useState<EResourceType[]>([]);

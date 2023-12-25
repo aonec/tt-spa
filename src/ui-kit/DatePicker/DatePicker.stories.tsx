@@ -1,10 +1,10 @@
 import React from 'react';
-import { ComponentMeta, ComponentStory } from '@storybook/react';
+import { Meta, ComponentStory } from '@storybook/react';
 import { DatePicker } from './DatePicker.styled';
 import { ConfigProvider } from 'antd';
 import ruRu from 'antd/locale/ru_RU';
 
-const meta: ComponentMeta<typeof DatePicker> = {
+const meta: Meta<typeof DatePicker> = {
   title: 'DatePicker',
   component: DatePicker,
   parameters: { layout: 'centered' },
