@@ -33,6 +33,8 @@ export const ApartmentReadingsContainer = () => {
     allIndividualDeviceMountPlaces,
     isApartmentFetched,
     nearestAppointment,
+    removePhoneNumber,
+    addPhoneNumber,
   } = useUnit({
     printIssueCertificate: inputs.printIssueCertificate,
     isUpdateHomeownerLoading: outputs.$isUpdateHomeownerLoading,
@@ -51,6 +53,8 @@ export const ApartmentReadingsContainer = () => {
     allIndividualDeviceMountPlaces: outputs.$allIndividualDeviceMountPlaces,
     isApartmentFetched: getApartmentQuery.$succeeded,
     nearestAppointment: outputs.$apartmentAppointment,
+    removePhoneNumber: inputs.removePhoneNumber,
+    addPhoneNumber: inputs.addPhoneNumber,
   });
 
   const isPermitionToApartmentStatusPatch = usePermission([
@@ -97,6 +101,8 @@ export const ApartmentReadingsContainer = () => {
         isUpdateHomeownerLoading={isUpdateHomeownerLoading}
         isApartmentFetched={isApartmentFetched}
         nearestAppointment={nearestAppointment}
+        deletePhoneNumber={removePhoneNumber}
+        addPhoneNumber={addPhoneNumber}
       />
     </>
   );

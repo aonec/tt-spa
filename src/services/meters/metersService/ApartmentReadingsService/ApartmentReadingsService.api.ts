@@ -6,7 +6,9 @@ import {
   HomeownerAccountResponse,
 } from 'api/types';
 import {
+  EditPhoneNumberRequest,
   GetApartmentsRequestPayload,
+  RemovePhoneNumberRequest,
   UpdateApartmentRequestPayload,
   UpdateHomeownerRequestPayload,
 } from './ApartmentReadingsService.types';
@@ -65,3 +67,24 @@ export const patchHomeowner = ({
   data,
 }: UpdateHomeownerRequestPayload): Promise<HomeownerAccountResponse> =>
   axios.put(`HomeownerAccounts/${id}`, data);
+
+export const removePhoneNumberRequest = ({
+  id,
+  phoneNumber,
+}: RemovePhoneNumberRequest): Promise<string[]> =>
+  axios.post(`HomeownerAccounts/${id}/RemovePhone`, { phoneNumber });
+
+export const addPhoneNumberRequest = async ({
+  id,
+  phoneNumber,
+  oldPhoneNumber,
+}: EditPhoneNumberRequest): Promise<string[]> => {
+  if (oldPhoneNumber) {
+    await removePhoneNumberRequest({ id, phoneNumber: oldPhoneNumber });
+  }
+  const res: string[] = await axios.post(`HomeownerAccounts/${id}/AddPhone`, {
+    phoneNumber,
+  });
+
+  return res;
+};

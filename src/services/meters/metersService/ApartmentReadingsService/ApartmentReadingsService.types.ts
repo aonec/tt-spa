@@ -2,6 +2,8 @@ import {
   EOrderByRule,
   HomeownerAccountUpdateRequest,
   ApartmentUpdateRequest,
+  HomeownerAccountRemovePhoneNumberRequest,
+  HomeownerAccountAddPhoneNumberRequest,
 } from 'api/types';
 
 export type GetApartmentsRequestPayload = {
@@ -28,4 +30,14 @@ export type UpdateApartmentRequestPayload = ApartmentUpdateRequest & {
 export type UpdateHomeownerRequestPayload = {
   id: string;
   data: HomeownerAccountUpdateRequest;
+};
+
+export type RemovePhoneNumberRequest =
+  HomeownerAccountRemovePhoneNumberRequest & {
+    id: string;
+  };
+
+export type EditPhoneNumberRequest = HomeownerAccountAddPhoneNumberRequest & {
+  id: string;
+  oldPhoneNumber: string | null;
 };

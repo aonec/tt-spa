@@ -1,4 +1,4 @@
-import { DiamtersConfig } from 'services/currentUserService/currentUserService.types';
+import { DiamtersConfig } from 'services/currentOrganizationService/currentOrganizationService.types';
 import { DevicesSearchType } from 'services/devices/devicesPageService/devicesPageService.types';
 import { NodesListRequestPayload } from 'services/devices/displayDevicesService/displayDevicesService.types';
 import { HeaderInject } from 'services/objects/objectsProfileService/view/ObjectsProfile/ObjectsProfile.types';

@@ -2,7 +2,7 @@ import {
   BuildingWithCoordinatesResponsePagedList,
   DistrictResponse,
 } from 'api/types';
-import { OrganizationCoordinates } from 'services/currentUserService/currentUserService.types';
+import { OrganizationCoordinates } from 'services/currentOrganizationService/currentOrganizationService.types';
 
 export type Props = {
   districtId: string;

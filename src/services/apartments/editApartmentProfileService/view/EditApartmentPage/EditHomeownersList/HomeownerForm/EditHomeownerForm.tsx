@@ -28,24 +28,23 @@ export const EditHomeownerForm: FC<EditHomeownerFormProps> = ({
     useFormik({
       initialValues: initialValues || formInitialValues,
       onSubmit: (values) => {
-        isEdit &&
-          handleEditHomeownerPreparation &&
-          handleEditHomeownerPreparation({
-            personalAccountNumber: values.personalAccountNumber,
-            name: values.name,
-            phoneNumber: values.phoneNumber,
-            personType: values.personType,
-            paymentCode: values.paymentCode,
-            isMainOnApartment: values.isMainOnApartment,
-            openAt: values.openAt,
-          });
+        // isEdit &&
+        //   handleEditHomeownerPreparation &&
+        //   handleEditHomeownerPreparation({
+        //     personalAccountNumber: values.personalAccountNumber,
+        //     name: values.name,
+        //     personType: values.personType,
+        //     paymentCode: values.paymentCode,
+        //     isMainOnApartment: values.isMainOnApartment,
+        //     openAt: values.openAt,
+        //   });
 
         handleCreateHomeowner &&
           handleCreateHomeowner({
             apartmentId: Number(apartmentId),
             personalAccountNumber: values.personalAccountNumber,
             name: values.name,
-            phoneNumber: values.phoneNumber,
+            phoneNumbers: values.phoneNumbers,
             personType: values.personType || undefined,
             paymentCode: values.paymentCode || null,
             openAt: values.openAt?.toISOString()!,
@@ -87,12 +86,12 @@ export const EditHomeownerForm: FC<EditHomeownerFormProps> = ({
           <ErrorMessage>{errors.paymentCode}</ErrorMessage>
         </FormItem>
         <FormItem label="Телефон">
-          <Input
+          {/* <Input
             value={values.phoneNumber}
             name="phoneNumber"
             onChange={handleChange}
             placeholder="Введите телефон"
-          />
+          /> */}
         </FormItem>
         <FormItem label="Дата открытия лицевого счета">
           {!isEdit && (

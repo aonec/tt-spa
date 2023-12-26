@@ -41,7 +41,7 @@ export const EditHomeownerContainer = () => {
       id: housingStockPayload?.id,
       name: payload.name,
       personalAccountNumber: payload.personalAccountNumber,
-      phoneNumber: payload.phoneNumber,
+      phoneNumbers: payload.phoneNumbers,
       paymentCode: payload.paymentCode,
       personType: String(payload.personType) as EPersonType,
       isMainOnApartment: payload.isMainOnApartment,

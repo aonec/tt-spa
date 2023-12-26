@@ -4,7 +4,7 @@ import {
   DistrictResponse,
 } from 'api/types';
 import { CreatingDistrictPayload } from '../../createDistrictBorderMapService.types';
-import { OrganizationCoordinates } from 'services/currentUserService/currentUserService.types';
+import { OrganizationCoordinates } from 'services/currentOrganizationService/currentOrganizationService.types';
 
 export type Props = {
   existingHousingStocks: BuildingWithCoordinatesResponsePagedList | null;
