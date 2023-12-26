@@ -22,8 +22,8 @@ import {
 } from './createControllerService';
 import { message } from 'antd';
 import { removeAssignmentService } from '../removeAssignmentService';
-import { currentUserService } from 'services/currentUserService';
 import { downloadTaskDocument } from './distributeRecordsService.utils';
+import { currentOrganizationService } from 'services/currentOrganizationService';
 
 const DistributeRecordsGate = createGate();
 
@@ -192,7 +192,7 @@ export const distributeRecordsService = {
     $selectedAppointmentsIds,
     $isDistributeAppointmentsModalOpen,
     $organizationCoordinates:
-      currentUserService.outputs.$organizationCoordinates,
+      currentOrganizationService.outputs.$organizationCoordinates,
   },
   gates: { DistributeRecordsGate },
 };

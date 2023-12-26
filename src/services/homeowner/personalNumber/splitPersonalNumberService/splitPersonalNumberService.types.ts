@@ -9,7 +9,7 @@ export type SwitchStage = {
 export type AddNewApartmentStage = {
   personalAccountNumber: string;
   name: string;
-  phoneNumber?: string | null;
+  phoneNumbers?: string[] | null;
   openAt: string;
   isMainOnApartment?: boolean;
   paymentCode?: string | null;

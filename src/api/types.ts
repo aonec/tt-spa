@@ -1027,6 +1027,8 @@ export interface ClosedDevicesConstructedReportResponse {
   /** @format date-time */
   closingDate: string | null;
   closingReason: EClosingReason | null;
+  homeownerPhoneNumbers: string[] | null;
+  /** @deprecated */
   phoneNumber: string | null;
 }
 
@@ -1524,6 +1526,8 @@ export interface DeviceCheckingDateExpirationConstructedReportResponse {
   lastCheckingDate: string;
   /** @format date-time */
   futureCheckingDate: string;
+  homeownerPhoneNumbers: string[] | null;
+  /** @deprecated */
   homeownerPhoneNumber: string | null;
 }
 
@@ -2452,6 +2456,10 @@ export interface ErrorResponse {
   requestId: string | null;
 }
 
+export interface FeatureTogglesResponse {
+  sealService: boolean;
+}
+
 export interface FileContentResultSuccessApiResponse {
   /** @format binary */
   successResponse: File | null;
@@ -2693,6 +2701,10 @@ export interface HomeownerAccount {
   isMain?: boolean;
 }
 
+export interface HomeownerAccountAddPhoneNumberRequest {
+  phoneNumber?: string | null;
+}
+
 export interface HomeownerAccountCloseRequest {
   /** @format uuid */
   homeownerAccountId: string;
@@ -2703,7 +2715,7 @@ export interface HomeownerAccountCloseRequest {
 export interface HomeownerAccountCreateRequest {
   personalAccountNumber: string;
   name: string;
-  phoneNumber?: string | null;
+  phoneNumbers?: string[] | null;
   personType?: EPersonType;
   /** @format double */
   ownershipArea?: number | null;
@@ -2718,7 +2730,7 @@ export interface HomeownerAccountCreateRequest {
 export interface HomeownerAccountCreateUnattachedRequest {
   personalAccountNumber: string;
   name: string;
-  phoneNumber?: string | null;
+  phoneNumbers?: string[] | null;
   personType?: EPersonType;
   /** @format double */
   ownershipArea?: number | null;
@@ -2731,7 +2743,7 @@ export interface HomeownerAccountCreateUnattachedRequest {
 export interface HomeownerAccountListResponse {
   /** @format uuid */
   id: string;
-  phoneNumber: string | null;
+  phoneNumbers: string[] | null;
   name: string | null;
   personType: EPersonType;
   paymentCode: string | null;
@@ -2756,6 +2768,10 @@ export enum HomeownerAccountOrderRule {
   PaymentCode = 'PaymentCode',
 }
 
+export interface HomeownerAccountRemovePhoneNumberRequest {
+  phoneNumber?: string | null;
+}
+
 export interface HomeownerAccountReplaceRequest {
   /** @format uuid */
   replaceableAccountId: string;
@@ -2765,7 +2781,7 @@ export interface HomeownerAccountReplaceRequest {
 export interface HomeownerAccountResponse {
   /** @format uuid */
   id: string;
-  phoneNumber: string | null;
+  phoneNumbers: string[] | null;
   name: string | null;
   personType: EPersonType;
   apartment: FullAddressResponse | null;
@@ -2826,7 +2842,6 @@ export interface HomeownerAccountUpdateRequest {
   personalAccountNumber?: string | null;
   paymentCode?: string | null;
   name?: string | null;
-  phoneNumber?: string | null;
   personType?: EPersonType | null;
   /** @format double */
   ownershipArea?: number | null;
@@ -2852,6 +2867,8 @@ export interface HomeownersConstructedReportResponse {
   apartmentNumber: string | null;
   homeownerFullName: string | null;
   homeownerAccountNumber: string | null;
+  homeownerPhoneNumbers: string[] | null;
+  /** @deprecated */
   homeownerPhoneNumber: string | null;
 }
 
@@ -3937,10 +3954,6 @@ export interface ManagementFirmEventDataTaskResponse {
 }
 
 export interface ManagementFirmFiltersConfigurationResponse {
-  /** @format int32 */
-  id: number;
-  /** @format int32 */
-  managementFirmId: number;
   hasHousingStockCorpuses: boolean;
   pipeDiameters: number[] | null;
 }
@@ -4375,6 +4388,7 @@ export interface OrganizationResponse {
   workingTime: string | null;
   address: OrganizationAddressResponse | null;
   filtersConfiguration: ManagementFirmFiltersConfigurationResponse | null;
+  platformConfiguration: PlatformConfigurationResponse | null;
   /** @format double */
   latitude: number | null;
   /** @format double */
@@ -4502,7 +4516,6 @@ export interface OrganizationUserResponse {
   dismissalDate: string | null;
   /** @format date-time */
   suspendedFromDate: string | null;
-  organization: OrganizationResponse | null;
   status: UserStatusResponse | null;
   competences: UserCompetenceResponse[] | null;
   roles: ESecuredIdentityRoleNameStringDictionaryItem[] | null;
@@ -4764,6 +4777,10 @@ export interface PipeNodeValidationResultResponse {
 export interface PipeNodeValidationStatusResponse {
   configuration: EPipeNodeConfig;
   validationResult: PipeNodeValidationResultResponse | null;
+}
+
+export interface PlatformConfigurationResponse {
+  featureToggles: FeatureTogglesResponse | null;
 }
 
 export interface PointResponse {
@@ -5165,6 +5182,8 @@ export interface SubscriberStatisticsСonsumptionResponse {
   /** @format int32 */
   apartmentId: number;
   homeownerAccountFullName: string | null;
+  homeownerAccountPhoneNumbers: string[] | null;
+  /** @deprecated */
   homeownerAccountPhoneNumber: string | null;
 }
 
@@ -9329,6 +9348,54 @@ export class Api<
         path: `/api/HomeownerAccounts/${id}`,
         method: 'PUT',
         query: query,
+        body: data,
+        secure: true,
+        type: ContentType.Json,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li><li>Администратор УК без назначений задач</li>
+     *
+     * @tags HomeownerAccounts
+     * @name HomeownerAccountsAddPhoneCreate
+     * @summary HomeownersUpdate
+     * @request POST:/api/HomeownerAccounts/{id}/AddPhone
+     * @secure
+     */
+    homeownerAccountsAddPhoneCreate: (
+      id: string,
+      data: HomeownerAccountAddPhoneNumberRequest,
+      params: RequestParams = {},
+    ) =>
+      this.request<string[], ErrorApiResponse>({
+        path: `/api/HomeownerAccounts/${id}/AddPhone`,
+        method: 'POST',
+        body: data,
+        secure: true,
+        type: ContentType.Json,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li><li>Администратор УК без назначений задач</li>
+     *
+     * @tags HomeownerAccounts
+     * @name HomeownerAccountsRemovePhoneCreate
+     * @summary HomeownersUpdate
+     * @request POST:/api/HomeownerAccounts/{id}/RemovePhone
+     * @secure
+     */
+    homeownerAccountsRemovePhoneCreate: (
+      id: string,
+      data: HomeownerAccountRemovePhoneNumberRequest,
+      params: RequestParams = {},
+    ) =>
+      this.request<string[], ErrorApiResponse>({
+        path: `/api/HomeownerAccounts/${id}/RemovePhone`,
+        method: 'POST',
         body: data,
         secure: true,
         type: ContentType.Json,

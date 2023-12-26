@@ -1,6 +1,8 @@
 import { ApartmentResponse } from 'api/types';
 import { ReactNode } from 'react';
 import {
+  EditPhoneNumberRequest,
+  RemovePhoneNumberRequest,
   UpdateApartmentRequestPayload,
   UpdateHomeownerRequestPayload,
 } from 'services/meters/metersService/ApartmentReadingsService/ApartmentReadingsService.types';
@@ -14,4 +16,6 @@ export type ApartmentInfoProps = {
   additionalHeaderInfo?: ReactNode;
   handleUpdateHomeowner?: (payload: UpdateHomeownerRequestPayload) => void;
   isUpdateHomeownerLoading?: boolean;
+  addPhoneNumber?: (payload: EditPhoneNumberRequest) => void;
+  deletePhoneNumber?: (payload: RemovePhoneNumberRequest) => void;
 };

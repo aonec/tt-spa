@@ -8,6 +8,7 @@ import {
 import { createGate } from 'effector-react';
 import dayjs from 'dayjs';
 import { message } from 'antd';
+import _ from 'lodash';
 import {
   createTask,
   getAddresses,
@@ -40,9 +41,8 @@ import {
   HomeownerNameOption,
   PreparedAddress,
 } from './addTaskFromDispatcherService.types';
-import { currentUserService } from 'services/currentUserService';
 import { prepareAddressesForTreeSelect } from './addTaskFromDispatcherService.utils';
-import _ from 'lodash';
+import { currentOrganizationService } from 'services/currentOrganizationService';
 
 const PageGate = createGate();
 const AddTaskDataFetchGate = createGate();
@@ -213,7 +213,7 @@ sample({
 
 sample({
   clock: AddTaskDataFetchGate.open,
-  source: currentUserService.outputs.$userCity,
+  source: currentOrganizationService.outputs.$userCity,
   filter: Boolean,
   fn: (userCity) => ({
     City: userCity,
