@@ -999,14 +999,28 @@ export interface CloseDeviceRequest {
   /** @format int32 */
   deviceId: number;
   documentsIds?: number[] | null;
-  /** @format date-time */
+  /**
+   * @deprecated
+   * @format date-time
+   */
   closingDate?: string | null;
+  /** @format int32 */
+  closingMonth?: number | null;
+  /** @format int32 */
+  closingYear?: number | null;
   closingReason?: EClosingReason | null;
 }
 
 export interface CloseIndividualDeviceRequest {
-  /** @format date-time */
+  /**
+   * @deprecated
+   * @format date-time
+   */
   closingDate?: string | null;
+  /** @format int32 */
+  closingMonth?: number | null;
+  /** @format int32 */
+  closingYear?: number | null;
   closingReason?: EClosingReason | null;
   documentsIds?: number[] | null;
 }
