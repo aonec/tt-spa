@@ -66,8 +66,8 @@ export const HomeownersReport: FC<HomeownersReportProps> = ({
           size: '170px',
           render: (elem) => (
             <PhoneNumberWrapper>
-              <Tooltip title={elem.homeownerPhoneNumber}>
-                {elem.homeownerPhoneNumber}
+              <Tooltip title={(elem.homeownerPhoneNumbers || []).join(', ')}>
+                {(elem.homeownerPhoneNumbers || []).join(', ')}
               </Tooltip>
             </PhoneNumberWrapper>
           ),
