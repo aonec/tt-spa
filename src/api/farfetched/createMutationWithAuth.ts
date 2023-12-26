@@ -57,7 +57,10 @@ export function createMutationWithAuth<
 
   applyBarrier(mutation, { barrier: authBarrier });
 
-  setIsOnline();
+  sample({
+    clock: mutation.finished.success,
+    target: setIsOnline,
+  });
 
   sample({
     clock: mutation.finished.failure,

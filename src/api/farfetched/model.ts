@@ -62,3 +62,9 @@ sample({
   filter: (isOnline, { error }) => isNetworkError({ error }) && isOnline,
   target: [setIsOffline, networkError],
 });
+
+sample({
+  clock: requestFailed,
+  filter: ({ error }) => !isNetworkError({ error }),
+  target: setIsOnline,
+});

@@ -47,7 +47,10 @@ export function createQueryWithAuth<
 
   applyBarrier(query, { barrier: authBarrier });
 
-  setIsOnline();
+  sample({
+    clock: query.finished.success,
+    target: setIsOnline,
+  });
 
   sample({
     clock: query.finished.failure,
