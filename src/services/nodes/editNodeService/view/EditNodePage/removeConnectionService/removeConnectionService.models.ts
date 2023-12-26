@@ -29,7 +29,7 @@ sample({
     resource: node.resource,
     nodeId: node.id,
     disconnectFromCalculator: true,
-    number: node.number,
+    title: node.title,
   }),
   target: removeConnectionFx,
 });

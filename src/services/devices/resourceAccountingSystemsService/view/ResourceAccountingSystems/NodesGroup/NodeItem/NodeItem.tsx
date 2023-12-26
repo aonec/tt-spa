@@ -38,7 +38,7 @@ export const NodeItem: FC<NodeItemProps> = ({
         <Link to={`/nodes/${node.id}`}>
           <NodeZoneWrapper>
             <NodeName>
-              Узел {node.number}
+              Узел {node.title}
               {isIncorrectConfig && <IncorrectConfigurationIconSC />}{' '}
               <NodeEntryNumber>
                 {node.entryNumber && `Ввод ${node.entryNumber}`}

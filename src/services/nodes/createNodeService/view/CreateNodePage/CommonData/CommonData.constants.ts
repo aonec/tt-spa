@@ -25,8 +25,7 @@ export const pipeValidationSchema = Yup.object().shape({
 export const validationSchema = Yup.object().shape({
   configuration: Yup.string().nullable().required('Это поле обязательное'),
   registrationType: Yup.string().nullable().required('Это поле обязательное'),
-  nodeServiceZoneId: Yup.string().nullable().required('Это поле обязательное'),
-  number: Yup.string().required('Это поле обязательное'),
+  title: Yup.string().required('Это поле обязательное'),
   communicationPipes: Yup.array().of(pipeValidationSchema),
   commercialStatusRequest: Yup.object()
     .nullable()

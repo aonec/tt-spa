@@ -126,10 +126,10 @@ export const UniqueWorkingRange: FC<UniqueWorkingRangeProps> = ({
 
   const preparedNodes = nodes?.reduce((acc, node) => {
     if (node.resource === values.nodeResourceType) {
-      return [...acc, { value: node.id, nodeNumber: node.number }];
+      return [...acc, { value: node.id, nodeTitle: node.title }];
     }
     return acc;
-  }, [] as { value: number; nodeNumber: number }[]);
+  }, [] as { value: number; nodeTitle: string | null }[]);
 
   const isElectricity =
     (values.nodeResourceType as EResourceType) === EResourceType.Electricity;
@@ -213,7 +213,7 @@ export const UniqueWorkingRange: FC<UniqueWorkingRangeProps> = ({
         >
           {preparedNodes?.map((node) => (
             <Select.Option key={node.value} value={node.value}>
-              {`Узел  ${node.nodeNumber}`}
+              {`Узел  ${node.nodeTitle}`}
             </Select.Option>
           ))}
         </Select>

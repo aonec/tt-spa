@@ -1310,10 +1310,14 @@ export interface CreateElectricHousingMeteringDeviceRequest {
 export interface CreateElectricNodeRequest {
   /** @format int32 */
   buildingId?: number;
-  /** @format int32 */
+  /**
+   * @deprecated
+   * @format int32
+   */
   number?: number;
+  title?: string | null;
   /** @format int32 */
-  nodeServiceZoneId?: number;
+  nodeServiceZoneId?: number | null;
   registrationType?: ENodeRegistrationType;
   commercialStatusRequest?: NodeSetCommercialStatusRequest | null;
   technicalTypeRequest?: NodeSetTechnicalTypeRequest | null;
@@ -1436,10 +1440,14 @@ export interface CreatePipeHousingMeteringDeviceRequest {
 export interface CreatePipeNodeRequest {
   /** @format int32 */
   buildingId?: number;
-  /** @format int32 */
+  /**
+   * @deprecated
+   * @format int32
+   */
   number?: number;
+  title?: string | null;
   /** @format int32 */
-  nodeServiceZoneId?: number;
+  nodeServiceZoneId?: number | null;
   registrationType?: ENodeRegistrationType;
   commercialStatusRequest?: NodeSetCommercialStatusRequest | null;
   technicalTypeRequest?: NodeSetTechnicalTypeRequest | null;
@@ -2329,8 +2337,12 @@ export interface ElectricHousingMeteringDeviceResponseSuccessApiResponse {
 export interface ElectricNodeResponse {
   /** @format int32 */
   id: number;
-  /** @format int32 */
+  /**
+   * @deprecated
+   * @format int32
+   */
   number: number;
+  title: string | null;
   registrationType: ENodeRegistrationType;
   commercialStatus: NodeCommercialStatusResponse | null;
   resource: EResourceType;
@@ -3905,7 +3917,11 @@ export interface ManagementFirmEventDataDeviceResponse {
 export interface ManagementFirmEventDataElectricNodeResponse {
   /** @format int32 */
   id: number;
-  /** @format int32 */
+  title: string | null;
+  /**
+   * @deprecated
+   * @format int32
+   */
   number: number;
   resource: EResourceType;
 }
@@ -3927,7 +3943,11 @@ export interface ManagementFirmEventDataIdResponse {
 export interface ManagementFirmEventDataPipeNodeResponse {
   /** @format int32 */
   id: number;
-  /** @format int32 */
+  title: string | null;
+  /**
+   * @deprecated
+   * @format int32
+   */
   number: number;
   resource: EResourceType;
   /** @format int32 */
@@ -4143,8 +4163,12 @@ export interface NodeNetworkDeviceResponse {
 export interface NodeOnHousingStockResponse {
   /** @format int32 */
   id: number;
-  /** @format int32 */
+  /**
+   * @deprecated
+   * @format int32
+   */
   number: number;
+  title: string | null;
   /** @format int32 */
   entryNumber: number | null;
   status: ENodeCommercialAccountStatus;
@@ -4647,8 +4671,12 @@ export interface PipeHousingMeteringDeviceListResponse {
 export interface PipeHousingMeteringDeviceNodeResponse {
   /** @format int32 */
   id: number;
-  /** @format int32 */
+  /**
+   * @deprecated
+   * @format int32
+   */
   number: number;
+  title: string | null;
 }
 
 export interface PipeHousingMeteringDeviceResponse {
@@ -4706,8 +4734,12 @@ export interface PipeNodeHeatingSeasonListResponse {
 export interface PipeNodeIntoCalculatorResponse {
   /** @format int32 */
   id: number;
-  /** @format int32 */
+  /**
+   * @deprecated
+   * @format int32
+   */
   number: number;
+  title: string | null;
   /** @format int32 */
   entryNumber: number | null;
   commercialStatus: NodeCommercialStatusResponse | null;
@@ -4736,8 +4768,12 @@ export interface PipeNodeMeteringDeviceResponse {
 export interface PipeNodeResponse {
   /** @format int32 */
   id: number;
-  /** @format int32 */
+  /**
+   * @deprecated
+   * @format int32
+   */
   number: number;
+  title: string | null;
   registrationType: ENodeRegistrationType;
   commercialStatus: NodeCommercialStatusResponse | null;
   resource: EResourceType;
@@ -5701,8 +5737,12 @@ export interface UpdateElectricHousingMeteringDeviceRequest {
 }
 
 export interface UpdateElectricNodeRequest {
-  /** @format int32 */
-  number?: number | null;
+  /**
+   * @deprecated
+   * @format int32
+   */
+  number?: number;
+  title?: string | null;
   /** @format int32 */
   nodeServiceZoneId?: number | null;
   locationName?: string | null;
@@ -5789,8 +5829,12 @@ export interface UpdatePipeHousingMeteringDeviceRequest {
 }
 
 export interface UpdatePipeNodeRequest {
-  /** @format int32 */
-  number?: number | null;
+  /**
+   * @deprecated
+   * @format int32
+   */
+  number?: number;
+  title?: string | null;
   /** @format int32 */
   nodeServiceZoneId?: number | null;
   communicationPipes?: UpdateCommunicationPipeRequest[] | null;
