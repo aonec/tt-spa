@@ -38,7 +38,7 @@ export const EditNodePage: FC<EditNodePageProps> = ({
   isUpdateLoading,
   openRemoveConnectionModal,
 }) => {
-  const { number, address, resource, registrationType } = node;
+  const { title, address, resource, registrationType } = node;
 
   const isIncorrectConfig =
     node?.validationResult?.errors?.length !== 0 ||
@@ -138,7 +138,7 @@ export const EditNodePage: FC<EditNodePageProps> = ({
             <ResourceIconWrapper>
               <ResourceIconLookup resource={resource} />
             </ResourceIconWrapper>
-            Узел {number}. Редактирование
+            Узел {title}. Редактирование
           </>
         }
       />

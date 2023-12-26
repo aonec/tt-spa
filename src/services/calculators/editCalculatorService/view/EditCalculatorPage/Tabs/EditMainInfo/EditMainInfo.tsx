@@ -21,7 +21,7 @@ export const EditMainInfo: FC<EditMainInfoProps> = ({
 }) => {
   const nodes = calculator?.nodes;
   const nodesTinyData = nodes?.map((node) => ({
-    number: node.number,
+    title: node.title,
     id: node.id,
     resource: node.resource,
     entryNumber: node.communicationPipes?.[0]?.entryNumber || null,

@@ -57,7 +57,7 @@ export const NodeDevices: FC<NodeDevicesProps> = ({ node }) => {
             </ResourceIconWrapper>
 
             <NodeTitleWrapper>
-              <span>{`Узел ${node.number}`}</span>
+              <span>{`Узел ${node.title}`}</span>
               {isIncorrectConfig && <IncorrectConfigurationIconSC />}
             </NodeTitleWrapper>
           </DeviceLink>

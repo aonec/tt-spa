@@ -111,7 +111,10 @@ export const IndividualDevicesReport: FC<IndividualDevicesReportProps> = ({
           hidden: !isDeviceCheckingDateExpirationOption,
           render: (elem) => (
             <PhoneNumber>
-              {elem.deviceCheckingDateExpirationOption?.homeownerPhoneNumber}
+              {(
+                elem.deviceCheckingDateExpirationOption
+                  ?.homeownerPhoneNumbers || []
+              ).join(', ')}
             </PhoneNumber>
           ),
         },
