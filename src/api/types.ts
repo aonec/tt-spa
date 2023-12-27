@@ -2182,6 +2182,15 @@ export enum EStageType {
   Final = 'Final',
 }
 
+export enum ESwitchingReason {
+  Manually = 'Manually',
+  NoReadings = 'NoReadings',
+  DeviceBroken = 'DeviceBroken',
+  CheckingDate = 'CheckingDate',
+  CertificateIssued = 'CertificateIssued',
+  MaintainingStopped = 'MaintainingStopped',
+}
+
 export enum ETaskClosingStatus {
   Properly = 'Properly',
   Interrupted = 'Interrupted',
@@ -5377,7 +5386,7 @@ export interface SwitchIndividualDeviceRequest {
   openingDate?: string | null;
   /** @format int32 */
   contractorId?: number | null;
-  oldDeviceClosingReason?: EClosingReason;
+  oldDeviceClosingReason?: ESwitchingReason;
   /** @format int32 */
   newDeviceMountPlaceId?: number | null;
   oldDeviceReadings?: SwitchIndividualDeviceReadingsCreateRequest[] | null;
