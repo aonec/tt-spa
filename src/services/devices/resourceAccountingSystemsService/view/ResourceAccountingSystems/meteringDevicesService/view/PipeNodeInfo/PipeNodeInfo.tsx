@@ -7,7 +7,7 @@ export const PipeNodeInfo: FC<PipeNodeInfoProps> = ({ pipeNode }) => {
   return (
     <Wrapper to={`/nodes/${pipeNode?.id}`}>
       <ResourceIconLookup resource={pipeNode?.resource} />
-      <Name>Узел {pipeNode?.number}</Name>
+      <Name>Узел {pipeNode?.title}</Name>
     </Wrapper>
   );
 };

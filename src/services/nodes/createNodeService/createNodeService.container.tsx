@@ -97,7 +97,7 @@ export const CreateNodeContainer = () => {
       <ExistingCitiesGate />
       <CreateNodeServiceZoneContainer />
       <CreateCalculatorModalContainer />
-      {preparedBuildingData && selectedServiceZone && (
+      {preparedBuildingData && (
         <CreateNodeConfirmationModal
           isOpen={isConfirmationModalOpen}
           handleClose={() => closeConfiramtionModal()}

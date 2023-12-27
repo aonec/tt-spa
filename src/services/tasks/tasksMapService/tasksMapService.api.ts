@@ -12,7 +12,7 @@ export const getHousingStocksWithTasks = (
 ): Promise<BuildingWithTasksResponse[]> => {
   return axios.get('Buildings/BuildingsWithTasks', {
     params,
-    paramsSerializer: queryString.stringify,
+    paramsSerializer: (params) => queryString.stringify(params),
   });
 };
 
