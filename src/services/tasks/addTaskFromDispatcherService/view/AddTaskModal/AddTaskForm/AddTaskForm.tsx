@@ -50,7 +50,7 @@ import { useSwitchInputOnEnter } from 'hooks/useSwitchInputOnEnter';
 import { fromEnter } from 'ui-kit/shared/DatePickerNative';
 import { validationSchema } from './AddTaskForm.constants';
 import { DatePicker } from 'ui-kit/DatePicker';
-import { SavePhoneNumber } from './SavePhoneNumber';
+import { SavePhoneNumber } from './savePhoneNumberService';
 
 const {
   gates: { PageGate },
@@ -446,7 +446,7 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
               </AutoCompleteAntD>
             </FormItem>
             <FormItem label="Номер телефона">
-              <SavePhoneNumber>
+              <SavePhoneNumber phoneNumber={values.phoneNumber || null}>
                 <Input
                   placeholder="Введите"
                   value={values.phoneNumber || undefined}

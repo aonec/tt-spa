@@ -8,10 +8,13 @@ import {
   Title,
   Wrapper,
 } from './SavePhoneNumber.styled';
-import { SavePhoneNumberProps } from './SavePhoneNumber.types';
 import { Tooltip } from 'ui-kit/shared/Tooltip';
+import { SavePhoneNumberProps } from './SavePhoneNumber.types';
 
-export const SavePhoneNumber: FC<SavePhoneNumberProps> = ({ children }) => {
+export const SavePhoneNumber: FC<SavePhoneNumberProps> = ({
+  children,
+  phoneNumber,
+}) => {
   return (
     <Tooltip
       placement="topRight"
