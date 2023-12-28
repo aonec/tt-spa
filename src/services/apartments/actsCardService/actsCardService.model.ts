@@ -1,5 +1,5 @@
 import { createEffect, createEvent, createStore } from 'effector';
-import { forward } from 'effector';
+import { sample } from 'effector';
 import { createGate } from 'effector-react';
 import {
   ApartmentActResponse,
@@ -23,14 +23,14 @@ $acts.on(
 
 const ActsCardGate = createGate<{ apartmentId: number }>();
 
-forward({
-  from: ActsCardGate.open.map(({ apartmentId }) => apartmentId),
-  to: getPreviousActs,
+sample({
+  clock: ActsCardGate.open.map(({ apartmentId }) => apartmentId),
+  target: getPreviousActs,
 });
 
-forward({
-  from: saveFile,
-  to: saveFileFx,
+sample({
+  clock: saveFile,
+  target: saveFileFx,
 });
 
 export const actsCardService = {

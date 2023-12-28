@@ -1,5 +1,5 @@
 import { createEffect, createStore } from 'effector';
-import { guard } from 'effector';
+import { sample } from 'effector';
 import { createGate } from 'effector-react';
 import {
   ContractorListResponse,
@@ -17,7 +17,7 @@ const $contractors = createStore<ContractorListResponse[] | null>(null)
   .on(fetchContractorsFx.doneData, (_, data) => data.items)
   .reset(ContractorsGate.close);
 
-guard({
+sample({
   source: $contractors,
   clock: ContractorsGate.open,
   filter: (users) => !users,

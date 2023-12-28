@@ -1,6 +1,6 @@
 import { EExpiresDateAt } from 'api/types';
 import { Dayjs } from 'dayjs';
-import { DiamtersConfig } from 'services/currentUserService/currentUserService.types';
+import { DiamtersConfig } from 'services/currentOrganizationService/currentOrganizationService.types';
 import { NodesListRequestForm } from 'services/devices/displayDevicesService/displayDevicesService.types';
 
 export type ExtendedSearchFormProps = {

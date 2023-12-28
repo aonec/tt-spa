@@ -13,7 +13,7 @@ import { GoBack } from 'ui-kit/shared/GoBack';
 import { NonResidentialBuildingProfileGrouptype } from '../../nonResidentialBuildingProfileService.constants';
 import { NonResidentialBuildingInfo } from '../NonResidentialBuildingInfo';
 import { ResourceAccountingSystemsContainer } from 'services/devices/resourceAccountingSystemsService';
-import {  useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { LinkCard } from 'ui-kit/shared/LinkCard';
 
 export const NonResidentialBuildingProfile: FC<
@@ -28,7 +28,7 @@ export const NonResidentialBuildingProfile: FC<
   openConsolidatedReportModal,
   resourceDisconnections,
 }) => {
-  const navigate =  useNavigate();
+  const navigate = useNavigate();
 
   const content: {
     [key in NonResidentialBuildingProfileGrouptype]: ReactNode;
@@ -90,7 +90,7 @@ export const NonResidentialBuildingProfile: FC<
             {
               title: 'Добавить узел',
               onClick: () =>
-                 navigate(
+                navigate(
                   `/buildings/nonResidentialProfile/${nonResidentialBuilding.id}/addNode`,
                 ),
               hidden: !isPermitionToAddNode,
@@ -103,7 +103,7 @@ export const NonResidentialBuildingProfile: FC<
             {
               title: 'Редактировать',
               onClick: () =>
-                 navigate(
+                navigate(
                   `/buildings/nonResidentialProfile/${nonResidentialBuilding.id}/edit`,
                 ),
               hidden: !isPermissionToEditHousingStock,

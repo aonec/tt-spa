@@ -1,5 +1,5 @@
 import React, { FC, useMemo } from 'react';
-import { useEvent, useStore } from 'effector-react';
+import { useUnit } from 'effector-react';
 import { apartmentService } from 'services/apartments/apartmentService';
 import { displayIndividualDeviceAndNamesService } from 'services/devices/individualDevices/displayIndividualDeviceAndNamesService';
 import {
@@ -33,18 +33,21 @@ export const ReadingsHistoryListContainer: FC<
     resetValue,
   } = useReadingHistoryValues();
 
-  const device = useStore($individualDevice);
+  const {
+    consumptionRates,
+    device,
+    loadConsumptionRates,
+    pendingHistory,
+    apartment,
+  } = useUnit({
+    device: $individualDevice,
+    pendingHistory: readingsHistoryService.outputs.$isReadingsHistoryLoading,
+    consumptionRates: outputs.$consumptionRates,
+    loadConsumptionRates: inputs.loadManagemenFirmConsumptionRates,
+    apartment: apartmentService.outputs.$apartment,
+  });
 
   const readingsHistory = values;
-
-  const pendingHistory = useStore(
-    readingsHistoryService.outputs.$isReadingsHistoryLoading,
-  );
-
-  const consumptionRates = useStore(outputs.$consumptionRates);
-  const loadConsumptionRates = useEvent(
-    inputs.loadManagemenFirmConsumptionRates,
-  );
 
   const { managementFirmConsumptionRates } = useManagingFirmConsumptionRates(
     consumptionRates,
@@ -65,8 +68,6 @@ export const ReadingsHistoryListContainer: FC<
     () => device && getIndividualDeviceRateNumByName(device.rateType),
     [device],
   );
-
-  const apartment = useStore(apartmentService.outputs.$apartment);
 
   return (
     <ReadingsHistoryList

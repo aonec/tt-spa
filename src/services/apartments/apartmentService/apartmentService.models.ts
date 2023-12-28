@@ -1,5 +1,5 @@
 import { createEffect, createEvent, createStore } from 'effector';
-import { forward, sample } from 'effector';
+import { sample } from 'effector';
 import { createGate } from 'effector-react';
 import { ApartmentResponse } from 'api/types';
 import { getApartment } from './apartmentService.api';
@@ -31,9 +31,9 @@ sample({
   target: fetchApartmentFx,
 });
 
-forward({
-  from: ApartmentGate.close,
-  to: resetApartment,
+sample({
+  clock: ApartmentGate.close,
+  target: resetApartment,
 });
 
 export const apartmentService = {

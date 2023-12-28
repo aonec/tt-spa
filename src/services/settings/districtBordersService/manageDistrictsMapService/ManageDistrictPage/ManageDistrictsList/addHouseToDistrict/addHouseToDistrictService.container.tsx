@@ -2,9 +2,9 @@ import React, { FC } from 'react';
 import { addHouseToDistrictService } from './addHouseToDistrictService.models';
 import { AddHouseToDistrictModal } from './view/AddHouseToDistrictModal';
 import { useUnit } from 'effector-react';
-import { currentUserService } from 'services/currentUserService';
 import { addHouseToDistrictMutation } from './addHouseToDistrictService.api';
 import { AddHouseToDistrictContainerProps } from './addHouseToDistrictService.types';
+import { currentOrganizationService } from 'services/currentOrganizationService';
 
 const { inputs, outputs } = addHouseToDistrictService;
 
@@ -26,7 +26,7 @@ export const AddHouseToDistrictContainer: FC<
     hasError: outputs.$hasError,
     closeAddHouseModal: inputs.closeAddHouseModal,
     organizationCoordinates:
-      currentUserService.outputs.$organizationCoordinates,
+      currentOrganizationService.outputs.$organizationCoordinates,
     handleSearchHouse: inputs.handleSearchHouse,
   });
 

@@ -88,7 +88,7 @@ export const TasksListItem: FC<TasksListItemProps> = ({ task }) => {
     return (
       <PipeNodeWrapper>
         <ResourceIconLookup resource={pipeNode.resource} />
-        <PipeNodeNameWrapper>Узел {pipeNode.number}</PipeNodeNameWrapper>
+        <PipeNodeNameWrapper>Узел {pipeNode.title}</PipeNodeNameWrapper>
       </PipeNodeWrapper>
     );
   }, [pipeNode]);

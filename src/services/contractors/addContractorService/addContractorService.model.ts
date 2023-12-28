@@ -1,5 +1,5 @@
 import { createEffect, createEvent, createStore } from 'effector';
-import { forward } from 'effector';
+import { sample } from 'effector';
 import { ContractorCreateRequest, ContractorResponse } from 'api/types';
 import { createContractor } from './addContractorService.api';
 import { message } from 'antd';
@@ -23,9 +23,9 @@ const $isModalOpen = createStore<boolean>(false)
   .on(handleCloseModal, () => false)
   .reset(addContractorSuccess);
 
-forward({
-  from: handleAddcontractor,
-  to: addContractorFx,
+sample({
+  clock: handleAddcontractor,
+  target: addContractorFx,
 });
 
 addContractorFx.failData.watch((error) =>

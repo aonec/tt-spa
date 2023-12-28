@@ -1,6 +1,6 @@
 import { createEffect, createEvent, createStore } from 'effector';
 import { message } from 'antd';
-import { combine, forward, sample } from 'effector';
+import { combine, sample } from 'effector';
 import { createGate } from 'effector-react';
 import {
   CommunicationPipeResponse,
@@ -71,9 +71,9 @@ sample({
   target: editHousingMeteringDeviceFx,
 });
 
-forward({
-  from: EditMeteringDeviceGate.open.map(({ deviceId }) => deviceId),
-  to: getHousingMeteringDeviceFx,
+sample({
+  clock: EditMeteringDeviceGate.open.map(({ deviceId }) => deviceId),
+  target: getHousingMeteringDeviceFx,
 });
 
 const successEditDevice = editHousingMeteringDeviceFx.doneData;

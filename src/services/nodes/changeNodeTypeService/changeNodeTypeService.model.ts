@@ -1,6 +1,6 @@
 import { createEffect, createEvent, createStore } from 'effector';
 import { message } from 'antd';
-import { forward, guard } from 'effector';
+import { sample } from 'effector';
 import { NodeSetRegistrationTypeRequest, PipeNodeResponse } from 'api/types';
 import { EffectFailDataAxiosError } from 'types';
 import { fetchChangeNodeType } from './changeNodeTypeService.api';
@@ -42,18 +42,18 @@ changeNodeTypeFx.failData.watch((error) => {
   );
 });
 
-guard({
+sample({
   clock: $node,
   filter: (node) => !Boolean(node),
   target: clearPayload,
 });
 
-forward({
-  from: changeNodeTypeFx.doneData,
-  to: closeModal,
+sample({
+  clock: changeNodeTypeFx.doneData,
+  target: closeModal,
 });
 
-guard({
+sample({
   clock: $changeNodeTypePayload,
   filter: (payload): payload is ChangeNodeTypePayload =>
     Boolean(

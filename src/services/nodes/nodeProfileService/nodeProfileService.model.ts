@@ -1,5 +1,5 @@
 import { createEffect, createStore } from 'effector';
-import { forward, sample } from 'effector';
+import { sample } from 'effector';
 import { createGate } from 'effector-react';
 import { PipeNodeResponse } from 'api/types';
 import { changeNodeStatusService } from '../changeNodeStatusService';
@@ -14,9 +14,9 @@ const $pipeNode = createStore<PipeNodeResponse | null>(null)
   .on(fetchPipeNodeFx.doneData, (_, pipeNode) => pipeNode)
   .reset(PipeNodeGate.close);
 
-forward({
-  from: PipeNodeGate.open.map(({ pipeNodeId }) => pipeNodeId),
-  to: fetchPipeNodeFx,
+sample({
+  clock: PipeNodeGate.open.map(({ pipeNodeId }) => pipeNodeId),
+  target: fetchPipeNodeFx,
 });
 
 sample({

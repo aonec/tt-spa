@@ -1,5 +1,5 @@
 import { createEffect, createEvent, createStore } from 'effector';
-import { forward } from 'effector';
+import { sample } from 'effector';
 import {
   AllNodeWorkingRangeResponse,
   ENodeWorkingRangeSeason,
@@ -45,14 +45,14 @@ const GroupWorkingRangeGate = createGate();
 
 const $isLoading = getGroupWorkingRangeFx.pending;
 
-forward({
-  from: handleOnSearchDataChange,
-  to: getGroupWorkingRangeFx,
+sample({
+  clock: handleOnSearchDataChange,
+  target: getGroupWorkingRangeFx,
 });
 
-forward({
-  from: GroupWorkingRangeGate.open,
-  to: getHouseManagementsFx,
+sample({
+  clock: GroupWorkingRangeGate.open,
+  target: getHouseManagementsFx,
 });
 
 export const groupWorkingRangeService = {

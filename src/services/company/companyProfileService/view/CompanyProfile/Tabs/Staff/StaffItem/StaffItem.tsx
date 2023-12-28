@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import { Cellphone, Name, Role, Wrapper } from './StaffItem.styled';
 import { StaffItemProps } from './StaffItem.types';
-import {  useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { sortUserRoles } from '../Staff.utils';
 import { Tooltip } from 'ui-kit/shared/Tooltip';
 import { ContextMenuButton } from 'ui-kit/ContextMenuButton/ContextMenuButton';
@@ -16,7 +16,7 @@ export const StaffItem: FC<StaffItemProps> = ({
   handleOpenDeleteModal,
   handleCatchEmployeeId,
 }) => {
-  const navigate =  useNavigate();
+  const navigate = useNavigate();
   const phoneMask = usePhoneMask();
 
   const { firstName, lastName, middleName, roles, id, cellphone, status } =
@@ -28,7 +28,7 @@ export const StaffItem: FC<StaffItemProps> = ({
     <Wrapper key={staff.id}>
       <Name
         onClick={() => {
-           navigate(`/userProfile/${id}`);
+          navigate(`/userProfile/${id}`);
         }}
       >
         {lastName} {firstName} {middleName}
@@ -49,7 +49,7 @@ export const StaffItem: FC<StaffItemProps> = ({
         menuButtons={[
           {
             title: 'Открыть профиль сотрудника',
-            onClick: () =>  navigate(`/userProfile/${id}`),
+            onClick: () => navigate(`/userProfile/${id}`),
           },
           {
             title: 'Изменить статус',
@@ -61,7 +61,7 @@ export const StaffItem: FC<StaffItemProps> = ({
           {
             title: 'Редактировать информацию о сотруднике',
             onClick: () =>
-               navigate(`/companyProfile/editManagingFirmUser/${id}`),
+              navigate(`/companyProfile/editManagingFirmUser/${id}`),
           },
           {
             title: 'Удалить сотрудника',

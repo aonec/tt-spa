@@ -1,5 +1,5 @@
-import React, { FC, useCallback, useEffect, useMemo, useState } from 'react';
-import { useEvent, useStore } from 'effector-react';
+import React, { FC, useEffect, useMemo, useState } from 'react';
+import { useUnit } from 'effector-react';
 import { Tooltip } from 'ui-kit/shared/Tooltip';
 import {
   AccountOpeningDate,
@@ -34,6 +34,7 @@ import { apartmentInfoService } from './ApartmentInfo.model';
 import { PrintApartmentDevicesCertificateContainer } from 'services/apartments/printApartmentDevicesCertificateService';
 import { EditHomeownerField } from './EditHomeownerField';
 import { CommentField } from './CommentField';
+import { PhoneNumberField } from './PhoneNumberField';
 
 const { inputs, outputs } = apartmentInfoService;
 
@@ -45,6 +46,8 @@ export const ApartmentInfo: FC<ApartmentInfoProps> = ({
   additionalHeaderInfo,
   isUpdateHomeownerLoading,
   handleUpdateHomeowner,
+  addPhoneNumber,
+  deletePhoneNumber,
 }) => {
   const filteredHomeowners = apartment.homeownerAccounts
     ?.filter((homeowner) => !homeowner.closedAt)
@@ -60,9 +63,10 @@ export const ApartmentInfo: FC<ApartmentInfoProps> = ({
 
   const [activeHomeowner, setActiveHomeowner] = useState(initialHomeownerId);
 
-  const togglePanel = useEvent(inputs.togglePanel);
-
-  const isPanelOpen = useStore(outputs.$isPanelOpen);
+  const { isPanelOpen, togglePanel } = useUnit({
+    togglePanel: inputs.togglePanel,
+    isPanelOpen: outputs.$isPanelOpen,
+  });
 
   const addressString = getApartmentAddressString(apartment);
 
@@ -97,15 +101,37 @@ export const ApartmentInfo: FC<ApartmentInfoProps> = ({
     selectedHomeowner?.openAt,
   ).format('DD.MM.YYYY')}`;
 
-  const updateHomeowner = useCallback(
-    (value: string, fieldName: string) =>
-      activeHomeowner &&
-      handleUpdateHomeowner?.({
+  const updateHomeowner = useMemo(() => {
+    if (!activeHomeowner || !handleUpdateHomeowner) {
+      return;
+    }
+    return (value: string, fieldName: string) =>
+      handleUpdateHomeowner({
         id: activeHomeowner,
         data: { [fieldName]: value },
-      }),
-    [activeHomeowner, handleUpdateHomeowner],
-  );
+      });
+  }, [activeHomeowner, handleUpdateHomeowner]);
+
+  const handleRemovePhoneNumber = useMemo(() => {
+    if (!activeHomeowner || !deletePhoneNumber) {
+      return;
+    }
+    return (phoneNumber: string) =>
+      deletePhoneNumber({ id: activeHomeowner, phoneNumber });
+  }, [deletePhoneNumber, activeHomeowner]);
+
+  const handleAddPhoneNumber = useMemo(() => {
+    if (!activeHomeowner || !addPhoneNumber) {
+      return;
+    }
+    return ({
+      phoneNumber,
+      oldPhoneNumber,
+    }: {
+      phoneNumber: string;
+      oldPhoneNumber: string | null;
+    }) => addPhoneNumber({ id: activeHomeowner, phoneNumber, oldPhoneNumber });
+  }, [addPhoneNumber, activeHomeowner]);
 
   return (
     <>
@@ -177,7 +203,9 @@ export const ApartmentInfo: FC<ApartmentInfoProps> = ({
               <EditHomeownerField
                 title="Собственник"
                 value={selectedHomeowner?.name || null}
-                handleUpdate={(value) => updateHomeowner(value, 'name')}
+                handleUpdate={
+                  updateHomeowner && ((value) => updateHomeowner(value, 'name'))
+                }
                 isUpdateHomeownerLoading={isUpdateHomeownerLoading}
               />
               <div>
@@ -221,11 +249,10 @@ export const ApartmentInfo: FC<ApartmentInfoProps> = ({
                 <InfoPanelLabel>Платежный код</InfoPanelLabel>
                 <ExtraInfoText>{selectedHomeowner?.paymentCode}</ExtraInfoText>
               </div>
-              <EditHomeownerField
-                title="Телефон"
-                value={selectedHomeowner?.phoneNumber || null}
-                handleUpdate={(value) => updateHomeowner(value, 'phoneNumber')}
-                isUpdateHomeownerLoading={isUpdateHomeownerLoading}
+              <PhoneNumberField
+                phoneNumbers={selectedHomeowner?.phoneNumbers || []}
+                addPhoneNumber={handleAddPhoneNumber}
+                deletePhoneNumber={handleRemovePhoneNumber}
               />
             </ExtraInfoWrapper>
           )}

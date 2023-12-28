@@ -1,5 +1,5 @@
 import { createEffect, createEvent, createStore } from 'effector';
-import { forward } from 'effector';
+import { sample } from 'effector';
 import { deleteTaskComment, updateTaskComment } from './taskCommentService.api';
 import { EffectFailDataAxiosError } from 'types';
 import { message } from 'antd';
@@ -40,8 +40,8 @@ const $updatedCommentData = createStore<TaskCommentResponse | null>(null)
   .on(updateTaskCommentFx.doneData, (_, commentData) => commentData)
   .reset(handleUpdate);
 
-forward({ from: handleDelete, to: deleteTaskCommentFx });
-forward({ from: handleUpdate, to: updateTaskCommentFx });
+sample({ clock: handleDelete, target: deleteTaskCommentFx });
+sample({ clock: handleUpdate, target: updateTaskCommentFx });
 
 deleteTaskCommentFx.failData.watch((error) => {
   return message.error(

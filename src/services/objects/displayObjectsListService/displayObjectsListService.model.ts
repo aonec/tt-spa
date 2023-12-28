@@ -1,4 +1,4 @@
-import { createEvent, createStore, forward, sample } from 'effector';
+import { createEvent, createStore, sample } from 'effector';
 import { createGate } from 'effector-react';
 import { BuildingListResponsePagedList } from 'api/types';
 import { SearchHousingStocksPayload } from './displayObjectsListService.types';
@@ -21,9 +21,9 @@ const refetchBuildings = createEvent();
 
 const HousingStocksGate = createGate();
 
-forward({
-  from: HousingStocksGate.close,
-  to: clearSearchState,
+sample({
+  clock: HousingStocksGate.close,
+  target: clearSearchState,
 });
 
 $housingStocks

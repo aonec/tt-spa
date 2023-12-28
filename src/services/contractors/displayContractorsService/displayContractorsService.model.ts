@@ -1,5 +1,5 @@
 import { createEffect, createStore } from 'effector';
-import { forward } from 'effector';
+import { sample } from 'effector';
 import { createGate } from 'effector-react';
 import { ContractorListResponse } from 'api/types';
 import { getContractors } from './displayContractorsService.api';
@@ -15,9 +15,9 @@ const $contractors = createStore<ContractorListResponse[] | null>(null).on(
   (_, contractors) => contractors,
 );
 
-forward({
-  from: ContractorsGate.open,
-  to: getContractorsFx,
+sample({
+  clock: ContractorsGate.open,
+  target: getContractorsFx,
 });
 
 export const displayContractorsService = {

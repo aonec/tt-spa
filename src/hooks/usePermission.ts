@@ -1,10 +1,12 @@
-import { useStore } from 'effector-react';
+import { useUnit } from 'effector-react';
 import _ from 'lodash';
 import { ESecuredIdentityRoleName } from 'api/types';
 import { currentUserService } from 'services/currentUserService';
 
 export const usePermission = (permitedRoles: ESecuredIdentityRoleName[]) => {
-  const userRolesKeys = useStore(currentUserService.outputs.$userRolesKeys);
+  const { userRolesKeys } = useUnit({
+    userRolesKeys: currentUserService.outputs.$userRolesKeys,
+  });
   const result = Boolean(_.intersection(userRolesKeys, permitedRoles).length);
 
   return result;

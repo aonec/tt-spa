@@ -3,7 +3,7 @@ import axios from 'axios';
 import dayjs from 'api/dayjs';
 import { message } from 'antd';
 import queryString from 'query-string';
-import { combine, forward, sample } from 'effector';
+import { combine, sample } from 'effector';
 import { EClosingReason, EResourceType } from 'api/types';
 import { createForm } from 'effector-forms';
 import { reportsInputs } from '../models';
@@ -151,23 +151,23 @@ const createReportFx = createEffect<
   },
 );
 
-forward({
-  from: createReportFx.doneData,
-  to: form.reset,
+sample({
+  clock: createReportFx.doneData,
+  target: form.reset,
 });
 
 $isModalOpen.reset(createReportFx.doneData);
 
 const createReport = createEvent();
 
-forward({
-  from: createReportFx.doneData,
-  to: reportsListService.inputs.refetchReportsHistory,
+sample({
+  clock: createReportFx.doneData,
+  target: reportsListService.inputs.refetchReportsHistory,
 });
 
-forward({
-  from: form.formValidated,
-  to: createReport,
+sample({
+  clock: form.formValidated,
+  target: createReport,
 });
 
 const workingReports = [
@@ -228,9 +228,9 @@ $isModalOpen
   .on(openModalButtonClicked, () => true)
   .reset(closeModalButonClicked);
 
-forward({
-  from: reportsInputs.createReportButtonClicked,
-  to: openModalButtonClicked,
+sample({
+  clock: reportsInputs.createReportButtonClicked,
+  target: openModalButtonClicked,
 });
 
 createReportFx.failData.watch((error) => {

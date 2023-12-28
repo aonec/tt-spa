@@ -4,7 +4,7 @@ import { FormModal } from 'ui-kit/Modals/FormModal';
 import { CrownIcon, PencilBigIcon } from 'ui-kit/icons';
 import { Footer, SelectSC, Title } from './ChoosePersonalNumberModal.styled';
 import { Button } from 'ui-kit/Button';
-import {  useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { PersonalNumberActions } from '../../selectPersonalNumberActionService.types';
 
 const formId = 'choose-personal-number-modal';
@@ -16,17 +16,17 @@ export const ChoosePersonalNumberModal: FC<ChoosePersonalNumberModalProps> = ({
   selectedAction,
   setSelectActionModalOpen,
 }) => {
-  const navigate =  useNavigate();
+  const navigate = useNavigate();
 
   const [homeownerId, setHomeownerId] = useState<string | null>(null);
 
   const redirectToPage = () => {
     if (selectedAction === PersonalNumberActions.Add) {
-       navigate(
+      navigate(
         `/apartment/${apartment.id}/homeowners/${PersonalNumberActions.Add}`,
       );
     } else {
-       navigate(
+      navigate(
         `/apartment/${apartment.id}/homeowners/${homeownerId}/${selectedAction}`,
       );
     }

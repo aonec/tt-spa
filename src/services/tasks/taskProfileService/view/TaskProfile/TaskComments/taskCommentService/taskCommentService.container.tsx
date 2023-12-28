@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 import { Comment } from './view/Comment';
 import { TaskCommentContainerProps } from './taskCommentService.types';
 import { taskCommentService } from './taskCommentService.model';
-import { useEvent, useStore } from 'effector-react';
+import { useUnit } from 'effector-react';
 
 const { inputs, outputs } = taskCommentService;
 
@@ -11,10 +11,12 @@ export const TaskCommentContainer: FC<TaskCommentContainerProps> = ({
   taskId,
 }) => {
   const taskIdNumber = Number(taskId);
-  const handleDelete = useEvent(inputs.handleDelete);
-  const handleUpdate = useEvent(inputs.handleUpdate);
+  const { handleDelete, handleUpdate, updatedCommentData } = useUnit({
+    handleDelete: inputs.handleDelete,
+    handleUpdate: inputs.handleUpdate,
+    updatedCommentData: outputs.$updatedCommentData,
+  });
 
-  const updatedCommentData = useStore(outputs.$updatedCommentData);
   const comment =
     updatedCommentData && updatedCommentData?.id === commentFromTask.id
       ? updatedCommentData

@@ -1,4 +1,4 @@
-import { useEvent, useStore } from 'effector-react';
+import { useUnit } from 'effector-react';
 import React, { useMemo } from 'react';
 import { displayResourceDisconenctionAddressesServiceService } from './displayResourceDisconenctionAddressesServiceService.model';
 import { AddressesList } from './views/AddressesList';
@@ -8,10 +8,11 @@ import { FormModal } from 'ui-kit/Modals/FormModal';
 const { inputs, outputs } = displayResourceDisconenctionAddressesServiceService;
 
 export const DisplayResourceDisconenctionAddressesServiceContainer = () => {
-  const streets = useStore(outputs.$addresses);
-  const disconnection = useStore(outputs.$disconnection);
-
-  const closeModal = useEvent(inputs.closeModal);
+  const { closeModal, disconnection, streets } = useUnit({
+    streets: outputs.$addresses,
+    disconnection: outputs.$disconnection,
+    closeModal: inputs.closeModal,
+  });
 
   const isModalOpen = Boolean(disconnection);
 

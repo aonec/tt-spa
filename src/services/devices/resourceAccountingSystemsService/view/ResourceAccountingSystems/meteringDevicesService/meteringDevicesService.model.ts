@@ -1,5 +1,5 @@
 import { createEffect, createEvent, createStore } from 'effector';
-import { guard } from 'effector';
+import { sample } from 'effector';
 import {
   NodeOnHousingStockResponse,
   PipeNodeIntoCalculatorResponse,
@@ -32,7 +32,7 @@ const $meterindDevicesList = createStore<
   .on(fetchMeteringDevices.doneData, (_, meteringDevices) => meteringDevices)
   .reset(clearMeteringDevicesList);
 
-guard({
+sample({
   clock: $pipeNode.map((node) => node?.id),
   filter: (id): id is number => typeof id === 'number',
   target: fetchMeteringDevices,

@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo } from 'react';
 import { EditObjectPage } from './view/EditObjectPage';
-import {  useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { editObjectService } from './editObjectService.model';
 import { useUnit } from 'effector-react';
 import { addressSearchService } from 'services/addressSearchService/addressSearchService.models';
@@ -19,7 +19,7 @@ export const EditObjectContainer = () => {
     buildingId: string;
     houseCategory: string;
   }>();
-  const navigate =  useNavigate();
+  const navigate = useNavigate();
 
   const preparedHouseCategory = useMemo(() => {
     if (houseCategory === 'livingProfile') {

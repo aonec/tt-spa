@@ -1,5 +1,5 @@
 import { createEffect, createEvent, createStore } from 'effector';
-import { combine, forward, sample } from 'effector';
+import { combine, sample } from 'effector';
 import {
   getNodesListQuery,
   getHousingsByFilter,
@@ -104,9 +104,9 @@ const setPageNumber = createEvent<number>();
 
 export const CalculatorsGate = createGate();
 
-forward({
-  from: $devicesSearchType,
-  to: clearCalculators,
+sample({
+  clock: $devicesSearchType,
+  target: clearCalculators,
 });
 
 sample({

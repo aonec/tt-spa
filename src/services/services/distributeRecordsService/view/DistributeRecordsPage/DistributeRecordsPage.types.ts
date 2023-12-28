@@ -6,7 +6,7 @@ import {
 } from 'api/types';
 import { AppointmentsByHousingStocks } from './DistrictsMap/DistrictsMap.types';
 import { AppointmentsCountingByDistrictsResponse } from '../../distributeRecordsService.types';
-import { OrganizationCoordinates } from 'services/currentUserService/currentUserService.types';
+import { OrganizationCoordinates } from 'services/currentOrganizationService/currentOrganizationService.types';
 
 export type Props = {
   districtsList: DistrictResponse[];

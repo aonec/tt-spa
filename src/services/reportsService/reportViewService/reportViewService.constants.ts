@@ -9,9 +9,11 @@ import {
 } from './reportViewService.utils';
 import { EmployeeReportType } from './view/ReportViewPage/ReportFiltrationForm/ReportFiltrationForm.types';
 
-export const DownloadReportUrlsDictionary: { [key in ReportType]: string } = {
+export const DownloadReportUrlsDictionary: {
+  [key in ReportType]: string | null;
+} = {
   [ReportType.ActsJournal]: 'Reports/ApartmentActsReportXlsx',
-  [ReportType.Employee]: 'Reports/EmployeeReportXlsx',
+  [ReportType.Employee]: null,
   [ReportType.Homeowners]: 'Reports/HomeownersReportXlsx',
   [ReportType.HousingDevices]: 'Reports/HousingDevicesReportXlsx',
   [ReportType.IndividualDevices]: 'Reports/IndividualDevicesReportXlsx',
@@ -41,5 +43,4 @@ export const PrepareReportRequestFunctionsDictionary: {
   [ReportType.HousingDevices]:
     prepareHousingMeteringDevicesReportRequestPayload,
   [ReportType.IndividualDevices]: prepareIndividualDevicesReportRequestPayload,
-  [ReportType.Employee]: prepareEmployeeReportRequestPayload,
 };

@@ -1,5 +1,5 @@
 import { createEffect, createEvent, createStore } from 'effector';
-import { Store, combine, forward, guard, sample, split, merge } from 'effector';
+import { Store, combine, sample, split, merge } from 'effector';
 import { createGate } from 'effector-react';
 import {
   ApartmentActsConstructedReportResponse,
@@ -155,9 +155,9 @@ const $emloyeeReportData = createStore<EmployeeReportResponse | null>(null)
   .on(fetchEmployeeReportFx.doneData, (_, data) => data)
   .reset(ReportViewGate.close, clearFiltrationValues);
 
-forward({
-  from: AddressesWithHouseManagementsGate.open,
-  to: fetchAddressesWithHouseManagementsFx,
+sample({
+  clock: AddressesWithHouseManagementsGate.open,
+  target: fetchAddressesWithHouseManagementsFx,
 });
 
 const $reportPayload: Store<ReportPayload> = combine(
@@ -178,7 +178,7 @@ split({
   },
 });
 
-guard({
+sample({
   clock: sample({
     clock: loadIndividualDeviceReport.map(getReportPayloadValues),
     fn: prepareIndividualDevicesReportRequestPayload,
@@ -189,7 +189,7 @@ guard({
   target: fetchIndividualDevicesReportFx,
 });
 
-guard({
+sample({
   clock: sample({
     clock: loadActJournalReport.map(getReportPayloadValues),
     fn: prepareActJournalReportRequestPayload,
@@ -200,7 +200,7 @@ guard({
   target: fetchActJournalReportFx,
 });
 
-guard({
+sample({
   clock: sample({
     clock: loadHousingMeteringDevicesReport.map(getReportPayloadValues),
     fn: prepareHousingMeteringDevicesReportRequestPayload,
@@ -211,7 +211,7 @@ guard({
   target: fetchHousingMeteringDevicesReportFx,
 });
 
-guard({
+sample({
   clock: sample({
     clock: loadHomeownersReport.map(getReportPayloadValues),
     fn: prepareHomeownersReportRequestPayload,
@@ -222,7 +222,7 @@ guard({
   target: fetchHomeownersReportFx,
 });
 
-guard({
+sample({
   clock: sample({
     clock: loadEmployeeReport.map(getReportPayloadValues),
     fn: prepareEmployeeReportRequestPayload,

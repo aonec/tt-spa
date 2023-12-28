@@ -1,6 +1,6 @@
 import { createEffect, createEvent, createStore } from 'effector';
 import { createGate } from 'effector-react';
-import { combine, guard, sample } from 'effector';
+import { combine, sample } from 'effector';
 import {
   getIndividualDeviceConsumptionsList,
   getIndividualDevicesList,
@@ -56,7 +56,7 @@ const $isConsumptionsLoading = fetchIndividualDeviceConsumptionsListFx.pending;
 
 sample({
   source: IndividualDevicesIds.state.map(({ devicesIds }) => devicesIds),
-  clock: guard({
+  clock: sample({
     source: $isLoading,
     clock: IndividualDevicesIds.state,
     filter: (isLoading, ids) => !isLoading && Boolean(ids?.devicesIds?.length),

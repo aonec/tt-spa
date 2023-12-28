@@ -1,5 +1,5 @@
 import { createEffect, createEvent, createStore } from 'effector';
-import { combine, guard, sample } from 'effector';
+import { combine, sample } from 'effector';
 import { createGate } from 'effector-react';
 import {
   IndividualDeviceListItemResponse,
@@ -66,7 +66,7 @@ $individualDevicesPagedData.on(
   (_, data) => data,
 );
 
-guard({
+sample({
   clock: [IndividualDevicesGate.state, refetchIndividualDevices],
   source: IndividualDevicesGate.state,
   filter: (params) => Boolean(params.ApartmentId),

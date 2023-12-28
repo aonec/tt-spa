@@ -1,5 +1,5 @@
 import { createEffect, createEvent, createStore } from 'effector';
-import { forward, sample } from 'effector';
+import { sample } from 'effector';
 import {
   BuildingListResponse,
   StreetWithBuildingNumbersResponsePagedList,
@@ -66,9 +66,9 @@ sample({
   target: getAddressesFx,
 });
 
-forward({
-  from: downloadReportFx.doneData,
-  to: [closeModal, clearStore],
+sample({
+  clock: downloadReportFx.doneData,
+  target: [closeModal, clearStore],
 });
 
 export const heatIndividualDevicesReportService = {

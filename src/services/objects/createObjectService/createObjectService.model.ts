@@ -1,6 +1,6 @@
 import { createEffect, createEvent, createStore } from 'effector';
 import { message } from 'antd';
-import { forward, guard, sample } from 'effector';
+import { sample } from 'effector';
 import { createGate } from 'effector-react';
 import { HouseManagementResponse } from 'api/types';
 import { EffectFailDataAxiosError } from 'types';
@@ -68,7 +68,7 @@ const $stageNumber = createStore<number>(1)
   .on(goBackStage, (stageNumber) => stageNumber - 1)
   .reset(resetter);
 
-guard({
+sample({
   source: $stageNumber,
   clock: handleSubmitCreateObject,
   filter: (stageNumber) => stageNumber < 3,
@@ -85,17 +85,17 @@ const $isPreviewModalOpen = createStore<boolean>(false)
 
 const $heatingStations = displayHeatingStationsService.outputs.$heatingStations;
 
-forward({
-  from: HouseManagementsFetchGate.open,
-  to: fetchHouseManagementsFx,
+sample({
+  clock: HouseManagementsFetchGate.open,
+  target: fetchHouseManagementsFx,
 });
 
-forward({
-  from: PageCloseGate.close,
-  to: resetter,
+sample({
+  clock: PageCloseGate.close,
+  target: resetter,
 });
 
-guard({
+sample({
   clock: sample({
     source: $createObjectData,
     clock: handlePostCreateObject,

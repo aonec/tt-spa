@@ -1,4 +1,4 @@
-import { useEvent, useStore } from 'effector-react';
+import { useUnit } from 'effector-react';
 import React from 'react';
 import { ActionButton } from 'ui-kit/shared/ActionButton';
 import { chooseTypeOfResourceDisconnectionModalService } from './chooseTypeOfResourceDisconnectionModalService.model';
@@ -12,13 +12,21 @@ import { FormModal } from 'ui-kit/Modals/FormModal';
 const { inputs, outputs } = chooseTypeOfResourceDisconnectionModalService;
 
 export const ChooseTypeOfResourceDisconnectionModalContainer = () => {
-  const isModalOpen = useStore(outputs.$isModalOpen);
-  const isInterHeatingSeason = useStore(outputs.$isInterHeatingSeason);
-
-  const setInterHeatingSeason = useEvent(inputs.setInterHeatingSeason);
-  const clearInterHeatingSeason = useEvent(inputs.clearInterHeatingSeason);
-  const closeModal = useEvent(inputs.closeModal);
-  const submitModal = useEvent(inputs.submitModal);
+  const {
+    clearInterHeatingSeason,
+    closeModal,
+    isInterHeatingSeason,
+    isModalOpen,
+    setInterHeatingSeason,
+    submitModal,
+  } = useUnit({
+    isModalOpen: outputs.$isModalOpen,
+    isInterHeatingSeason: outputs.$isInterHeatingSeason,
+    setInterHeatingSeason: inputs.setInterHeatingSeason,
+    clearInterHeatingSeason: inputs.clearInterHeatingSeason,
+    closeModal: inputs.closeModal,
+    submitModal: inputs.submitModal,
+  });
 
   return (
     <FormModal

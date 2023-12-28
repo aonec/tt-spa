@@ -1,5 +1,5 @@
 import { createEffect, createEvent } from 'effector';
-import { forward } from 'effector';
+import { sample } from 'effector';
 import { LoginRequest, TokenResponse } from 'api/types';
 import { EffectFailDataAxiosError } from 'types';
 import { loginPost } from './loginService.api';
@@ -26,7 +26,7 @@ postLoginFx.failData.watch((error) => {
   );
 });
 
-forward({ from: handlePostLogin, to: postLoginFx });
+sample({ clock: handlePostLogin, target: postLoginFx });
 
 export const loginService = {
   inputs: {

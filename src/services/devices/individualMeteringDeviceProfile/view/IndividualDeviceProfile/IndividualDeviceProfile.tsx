@@ -128,9 +128,7 @@ export const IndividualDeviceProfile: FC<Props> = ({ device }) => {
             ],
           }}
         />
-        <AddressWrapper
-          to={`/apartments/${device.address?.apartmentId}`}
-        >
+        <AddressWrapper to={`/apartments/${device.address?.apartmentId}`}>
           {getApartmentFromFullAddress(device.address, true)}
           <DeviceStatus
             isActive={isActive}

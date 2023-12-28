@@ -1,4 +1,4 @@
-import { useEvent, useStore } from 'effector-react';
+import { useUnit } from 'effector-react';
 import React, { FC } from 'react';
 import { housingMeteringDeviceReadingsService } from './housingMeteringDeviceReadingsService.model';
 import { HousingMeteringDeviceReadingsContainerProps } from './housingMeteringDeviceReadingsService.types';
@@ -11,13 +11,15 @@ const { NodeIdGate, NodeResourceGate } = gates;
 export const HousingMeteringDeviceReadingsContainer: FC<
   HousingMeteringDeviceReadingsContainerProps
 > = ({ nodeId, resource, deviceIds }) => {
-  const readings = useStore(outputs.$readings);
-  const isColdWater = useStore(outputs.$isColdWater);
-  const isLoading = useStore(outputs.$isLoading);
+  const { createReading, isColdWater, isLoading, readings } = useUnit({
+    readings: outputs.$readings,
+    isColdWater: outputs.$isColdWater,
+    isLoading: outputs.$isLoading,
+    createReading: inputs.createReading,
+  });
 
   const isShowLoader = readings.length === 0 && isLoading;
 
-  const createReading = useEvent(inputs.createReading);
   const createReadingFailed = inputs.createReadingFailed;
 
   return (

@@ -1,5 +1,5 @@
 import { createEffect, createEvent, createStore } from 'effector';
-import { guard } from 'effector';
+import { sample } from 'effector';
 import { deleteManagingFirmUser } from './deleteEmployeeService.api';
 import { message } from 'antd';
 import { OrganizationUserResponse } from 'api/types';
@@ -30,7 +30,7 @@ const $EmployeeId = createStore<number | null>(null).on(
   (_, id) => id,
 );
 
-guard({
+sample({
   clock: handleDelete,
   source: $EmployeeId,
   filter: (id): id is number => Boolean(id),

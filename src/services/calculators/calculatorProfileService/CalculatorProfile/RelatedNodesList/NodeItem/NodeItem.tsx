@@ -21,7 +21,7 @@ export const NodeItem: FC<NodeItemProps> = ({ node, openDevicesListModal }) => {
   const nodeInfo = (
     <BaseNodeInfo>
       <Link to={`/nodes/${node?.id}`}>
-        <NodeName>Узел {node?.number}</NodeName>
+        <NodeName>Узел {node?.title}</NodeName>
         <AdditionalInfo>
           Ввод {node?.communicationPipes?.[0]?.entryNumber},{' '}
           {node?.nodeServiceZone?.name}

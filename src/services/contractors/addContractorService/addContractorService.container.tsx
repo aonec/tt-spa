@@ -1,16 +1,16 @@
 import React from 'react';
 import { addContractorService } from './addContractorService.model';
-import { useEvent, useStore } from 'effector-react';
+import { useUnit } from 'effector-react';
 import { AddContractorModal } from './view/AddContractorModal';
 
 const { inputs, outputs } = addContractorService;
 
 export const AddContractorContainer = () => {
-  const isModalOpen = useStore(outputs.$isModalOpen);
-
-  const handleCloseModal = useEvent(inputs.handleCloseModal);
-
-  const handleAddcontractor = useEvent(inputs.handleAddcontractor);
+  const { handleAddcontractor, handleCloseModal, isModalOpen } = useUnit({
+    isModalOpen: outputs.$isModalOpen,
+    handleCloseModal: inputs.handleCloseModal,
+    handleAddcontractor: inputs.handleAddcontractor,
+  });
   return (
     <>
       <AddContractorModal

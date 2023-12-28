@@ -21,6 +21,8 @@ export const EditHomeownerField: FC<EditHomeownerFieldProps> = ({
     initialValue,
   );
 
+  const isEditable = Boolean(handleUpdate);
+
   useEffect(() => {
     setFieldCurrentValue(initialValue);
 
@@ -51,11 +53,21 @@ export const EditHomeownerField: FC<EditHomeownerFieldProps> = ({
     <div>
       <Header>
         <FieldName>{title}</FieldName>
-        <PencilIconSC onClick={isEditing ? handleCancelEdit : handleEdit} />
+        {isEditable && (
+          <PencilIconSC onClick={isEditing ? handleCancelEdit : handleEdit} />
+        )}
       </Header>
 
       {!isEditing && (
-        <ValueWrapper onClick={handleEdit}>{fieldCurrentValue}</ValueWrapper>
+        <ValueWrapper
+          onClick={() => {
+            if (isEditable) {
+              handleEdit();
+            }
+          }}
+        >
+          {fieldCurrentValue}
+        </ValueWrapper>
       )}
 
       {isEditing && (

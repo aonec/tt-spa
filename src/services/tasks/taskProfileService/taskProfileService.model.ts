@@ -1,7 +1,7 @@
 import { createEffect, createEvent, createStore } from 'effector';
 import { pushStagePayloadValidationsArray } from './taskProfileService.constants';
 import { message } from 'antd';
-import { combine, forward, guard, sample } from 'effector';
+import { combine, sample } from 'effector';
 import { createGate } from 'effector-react';
 import {
   StagePushRequest,
@@ -129,9 +129,9 @@ const $documents = createStore<DocumentResponse[]>([])
 
 const $isLoading = getTasksFx.pending;
 
-forward({
-  from: TaskIdGate.open.map(({ taskId }) => taskId),
-  to: getTasksFx,
+sample({
+  clock: TaskIdGate.open.map(({ taskId }) => taskId),
+  target: getTasksFx,
 });
 
 sample({
@@ -150,7 +150,7 @@ sample({
 });
 
 sample({
-  source: guard({
+  source: sample({
     source: $deletedDocumentId,
     filter: Boolean,
   }),
@@ -158,27 +158,27 @@ sample({
   target: deleteDocumentFx,
 });
 
-forward({
-  from: deleteDocumentFx.doneData,
-  to: closeDeleteDocumentModal,
+sample({
+  clock: deleteDocumentFx.doneData,
+  target: closeDeleteDocumentModal,
 });
 
-forward({
-  from: RelatedNodeIdGate.state.map(({ nodeId }) => nodeId),
-  to: getNodeFx,
+sample({
+  clock: RelatedNodeIdGate.state.map(({ nodeId }) => nodeId),
+  target: getNodeFx,
 });
 
-forward({
-  from: addCommentFx.doneData,
-  to: clearComment,
+sample({
+  clock: addCommentFx.doneData,
+  target: clearComment,
 });
 
-guard({
+sample({
   source: combine($pushStageRequestPayload, $task, (data, task) => ({
     data,
     taskId: task?.id,
   })),
-  clock: guard({
+  clock: sample({
     source: combine($task, $pushStageRequestPayload),
     clock: handlePushStage,
     filter: ([task, payload]) => {
@@ -207,7 +207,7 @@ guard({
   target: pushStageFx,
 });
 
-guard({
+sample({
   source: $task.map((task) => task?.id),
   clock: handleRevertStage,
   filter: (id): id is number => Boolean(id),
@@ -220,9 +220,9 @@ pushStageFx.failData.watch((error) =>
   message.error(error.response.data.error.Text),
 );
 
-forward({
-  from: [pushStageFx.doneData, revertStageFx.doneData],
-  to: refetchTask,
+sample({
+  clock: [pushStageFx.doneData, revertStageFx.doneData],
+  target: refetchTask,
 });
 
 const $isRevertStageLoading = revertStageFx.pending;

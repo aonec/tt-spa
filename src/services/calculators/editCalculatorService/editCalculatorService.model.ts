@@ -1,5 +1,5 @@
 import { createEffect, createEvent, createStore } from 'effector';
-import { guard, sample } from 'effector';
+import { sample } from 'effector';
 import { EditCalculatorTabs } from './view/EditCalculatorPage/EditCalculatorPage.types';
 import { calculatorProfileService } from '../calculatorProfileService';
 import {
@@ -69,7 +69,7 @@ const editCalculatorSuccess = editCalculatorFx.doneData;
 const editCalculatorFailData = editCalculatorFx.failData;
 
 sample({
-  clock: guard({
+  clock: sample({
     clock: editCalculatorFailData,
     filter: (errorData) => {
       return errorData.response.status === 409;

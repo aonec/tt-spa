@@ -43,23 +43,8 @@ export type FiltersGatePayload = {
   deviceId: string | null;
 };
 
-export const EngineeringElementLookUp: {
-  [key in ETaskEngineeringElement]: string;
-} = {
-  [ETaskEngineeringElement.Node]: 'Общедомовой узел учета',
-  [ETaskEngineeringElement.IndividualDevice]: 'Индивидуальный прибор учета',
-  [ETaskEngineeringElement.HouseNetwork]: 'Общедомовые сети',
-};
-
 export const TimeStatusesLookUp: { [key in EStageTimeStatus]: string } = {
   [EStageTimeStatus.Normal]: 'Нормально',
   [EStageTimeStatus.RunningOut]: 'Истекает',
   [EStageTimeStatus.Expired]: 'Просроченно',
-};
-
-export const ResourceLookUp: { [key in EResourceType]: string } = {
-  [EResourceType.ColdWaterSupply]: 'Холодная вода',
-  [EResourceType.HotWaterSupply]: 'Горячая вода',
-  [EResourceType.Heat]: 'Тепло',
-  [EResourceType.Electricity]: 'Электричество',
 };

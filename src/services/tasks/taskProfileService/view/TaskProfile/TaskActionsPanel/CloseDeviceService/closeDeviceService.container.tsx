@@ -1,5 +1,5 @@
 import React from 'react';
-import { useStore } from 'effector-react';
+import { useUnit } from 'effector-react';
 import dayjs from 'api/dayjs';
 import { FC, useEffect, useState } from 'react';
 import { CloseDevicesContainerProps } from './closeDeviceService.types';
@@ -44,9 +44,9 @@ export const CloseDevicesContainer: FC<CloseDevicesContainerProps> = ({
     });
   }, [selectedDevices, handleChange]);
 
-  const individualDevices = useStore(
-    closeDeviceService.outputs.$individualDevices,
-  );
+  const { individualDevices } = useUnit({
+    individualDevices: closeDeviceService.outputs.$individualDevices,
+  });
 
   return (
     <CloseDevices

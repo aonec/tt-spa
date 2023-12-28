@@ -1,5 +1,5 @@
 import { createEffect, createEvent, createStore } from 'effector';
-import { combine, forward, sample, split } from 'effector';
+import { combine, sample, split } from 'effector';
 import {
   getOrganizationUser,
   getOrganizationUserTasksByRoles,
@@ -177,9 +177,9 @@ updateStatusFx.failData.watch((error) =>
   message.error(error.response.data.error.Text),
 );
 
-forward({
-  from: successUpdateStatus,
-  to: handleCloseModal,
+sample({
+  clock: successUpdateStatus,
+  target: handleCloseModal,
 });
 
 successUpdateStatus.watch(() => message.success('Статус изменен!'));

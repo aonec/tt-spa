@@ -1,5 +1,5 @@
 import { createEffect, createEvent, createStore } from 'effector';
-import { forward } from 'effector';
+import { sample } from 'effector';
 import { FeedBackFlowReportPayload } from './feedFlowBackReportService.types';
 import { getFeedBackFlowReport } from './feedFlowBackReportService.api';
 import { houseManagementsService } from 'services/objects/houseManagementsService';
@@ -22,9 +22,9 @@ const $isModalOpen = createStore(false)
   .on(openFeedFlowBackReportModal, () => true)
   .reset(closeFeedFlowBackReportModal, exportFeedBackFlowReportFx.doneData);
 
-forward({
-  from: handleExportReport,
-  to: exportFeedBackFlowReportFx,
+sample({
+  clock: handleExportReport,
+  target: exportFeedBackFlowReportFx,
 });
 
 exportFeedBackFlowReportFx.failData.watch(async (error) => {

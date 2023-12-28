@@ -1,5 +1,5 @@
 import { createEffect, createEvent, createStore } from 'effector';
-import { forward } from 'effector';
+import { sample } from 'effector';
 import { getReport } from './consumptionReportCalculatorService.api';
 import { GetCalculatorReportParams } from './consumptionReportCalculatorService.types';
 import { message } from 'antd';
@@ -16,9 +16,9 @@ const fetchReportFx = createEffect<
   BlobResponseErrorType
 >(getReport);
 
-forward({
-  from: handleSubmit,
-  to: fetchReportFx,
+sample({
+  clock: handleSubmit,
+  target: fetchReportFx,
 });
 
 const handleSuccess = fetchReportFx.doneData;

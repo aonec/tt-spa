@@ -1027,6 +1027,8 @@ export interface ClosedDevicesConstructedReportResponse {
   /** @format date-time */
   closingDate: string | null;
   closingReason: EClosingReason | null;
+  homeownerPhoneNumbers: string[] | null;
+  /** @deprecated */
   phoneNumber: string | null;
 }
 
@@ -1308,10 +1310,14 @@ export interface CreateElectricHousingMeteringDeviceRequest {
 export interface CreateElectricNodeRequest {
   /** @format int32 */
   buildingId?: number;
-  /** @format int32 */
+  /**
+   * @deprecated
+   * @format int32
+   */
   number?: number;
+  title?: string | null;
   /** @format int32 */
-  nodeServiceZoneId?: number;
+  nodeServiceZoneId?: number | null;
   registrationType?: ENodeRegistrationType;
   commercialStatusRequest?: NodeSetCommercialStatusRequest | null;
   technicalTypeRequest?: NodeSetTechnicalTypeRequest | null;
@@ -1434,10 +1440,14 @@ export interface CreatePipeHousingMeteringDeviceRequest {
 export interface CreatePipeNodeRequest {
   /** @format int32 */
   buildingId?: number;
-  /** @format int32 */
+  /**
+   * @deprecated
+   * @format int32
+   */
   number?: number;
+  title?: string | null;
   /** @format int32 */
-  nodeServiceZoneId?: number;
+  nodeServiceZoneId?: number | null;
   registrationType?: ENodeRegistrationType;
   commercialStatusRequest?: NodeSetCommercialStatusRequest | null;
   technicalTypeRequest?: NodeSetTechnicalTypeRequest | null;
@@ -1524,6 +1534,8 @@ export interface DeviceCheckingDateExpirationConstructedReportResponse {
   lastCheckingDate: string;
   /** @format date-time */
   futureCheckingDate: string;
+  homeownerPhoneNumbers: string[] | null;
+  /** @deprecated */
   homeownerPhoneNumber: string | null;
 }
 
@@ -2325,8 +2337,12 @@ export interface ElectricHousingMeteringDeviceResponseSuccessApiResponse {
 export interface ElectricNodeResponse {
   /** @format int32 */
   id: number;
-  /** @format int32 */
+  /**
+   * @deprecated
+   * @format int32
+   */
   number: number;
+  title: string | null;
   registrationType: ENodeRegistrationType;
   commercialStatus: NodeCommercialStatusResponse | null;
   resource: EResourceType;
@@ -2450,6 +2466,10 @@ export interface ErrorResponse {
   text: string | null;
   data: Record<string, any>;
   requestId: string | null;
+}
+
+export interface FeatureTogglesResponse {
+  sealService: boolean;
 }
 
 export interface FileContentResultSuccessApiResponse {
@@ -2693,6 +2713,10 @@ export interface HomeownerAccount {
   isMain?: boolean;
 }
 
+export interface HomeownerAccountAddPhoneNumberRequest {
+  phoneNumber?: string | null;
+}
+
 export interface HomeownerAccountCloseRequest {
   /** @format uuid */
   homeownerAccountId: string;
@@ -2703,7 +2727,7 @@ export interface HomeownerAccountCloseRequest {
 export interface HomeownerAccountCreateRequest {
   personalAccountNumber: string;
   name: string;
-  phoneNumber?: string | null;
+  phoneNumbers?: string[] | null;
   personType?: EPersonType;
   /** @format double */
   ownershipArea?: number | null;
@@ -2718,7 +2742,7 @@ export interface HomeownerAccountCreateRequest {
 export interface HomeownerAccountCreateUnattachedRequest {
   personalAccountNumber: string;
   name: string;
-  phoneNumber?: string | null;
+  phoneNumbers?: string[] | null;
   personType?: EPersonType;
   /** @format double */
   ownershipArea?: number | null;
@@ -2731,7 +2755,7 @@ export interface HomeownerAccountCreateUnattachedRequest {
 export interface HomeownerAccountListResponse {
   /** @format uuid */
   id: string;
-  phoneNumber: string | null;
+  phoneNumbers: string[] | null;
   name: string | null;
   personType: EPersonType;
   paymentCode: string | null;
@@ -2756,6 +2780,10 @@ export enum HomeownerAccountOrderRule {
   PaymentCode = 'PaymentCode',
 }
 
+export interface HomeownerAccountRemovePhoneNumberRequest {
+  phoneNumber?: string | null;
+}
+
 export interface HomeownerAccountReplaceRequest {
   /** @format uuid */
   replaceableAccountId: string;
@@ -2765,7 +2793,7 @@ export interface HomeownerAccountReplaceRequest {
 export interface HomeownerAccountResponse {
   /** @format uuid */
   id: string;
-  phoneNumber: string | null;
+  phoneNumbers: string[] | null;
   name: string | null;
   personType: EPersonType;
   apartment: FullAddressResponse | null;
@@ -2826,7 +2854,6 @@ export interface HomeownerAccountUpdateRequest {
   personalAccountNumber?: string | null;
   paymentCode?: string | null;
   name?: string | null;
-  phoneNumber?: string | null;
   personType?: EPersonType | null;
   /** @format double */
   ownershipArea?: number | null;
@@ -2852,6 +2879,8 @@ export interface HomeownersConstructedReportResponse {
   apartmentNumber: string | null;
   homeownerFullName: string | null;
   homeownerAccountNumber: string | null;
+  homeownerPhoneNumbers: string[] | null;
+  /** @deprecated */
   homeownerPhoneNumber: string | null;
 }
 
@@ -3367,17 +3396,23 @@ export interface IndividualDeviceListResponseFromDevicePage {
   id?: number;
   model?: string | null;
   serialNumber?: string | null;
-  resourceType?: EResourceType;
   /** @format date-time */
   closingDate?: string | null;
+  closingReason?: EClosingReason | null;
+  resourceType?: EResourceType;
+  mountPlace?: string | null;
+  /** @format date-time */
+  lastCheckingDate?: string;
+  /** @format date-time */
+  futureCheckingDate?: string;
+  /** @format int32 */
+  bitDepth?: number | null;
   /** @format int32 */
   housingStockId?: number;
   /** @format int32 */
   apartmentId?: number;
   address?: ApartmentAddress | null;
   homeowners?: HomeownerAccount[] | null;
-  /** @format int32 */
-  bitDepth?: number | null;
 }
 
 export interface IndividualDeviceListResponseFromDevicePagePagedList {
@@ -3882,7 +3917,11 @@ export interface ManagementFirmEventDataDeviceResponse {
 export interface ManagementFirmEventDataElectricNodeResponse {
   /** @format int32 */
   id: number;
-  /** @format int32 */
+  title: string | null;
+  /**
+   * @deprecated
+   * @format int32
+   */
   number: number;
   resource: EResourceType;
 }
@@ -3904,7 +3943,11 @@ export interface ManagementFirmEventDataIdResponse {
 export interface ManagementFirmEventDataPipeNodeResponse {
   /** @format int32 */
   id: number;
-  /** @format int32 */
+  title: string | null;
+  /**
+   * @deprecated
+   * @format int32
+   */
   number: number;
   resource: EResourceType;
   /** @format int32 */
@@ -3931,10 +3974,6 @@ export interface ManagementFirmEventDataTaskResponse {
 }
 
 export interface ManagementFirmFiltersConfigurationResponse {
-  /** @format int32 */
-  id: number;
-  /** @format int32 */
-  managementFirmId: number;
   hasHousingStockCorpuses: boolean;
   pipeDiameters: number[] | null;
 }
@@ -4124,8 +4163,12 @@ export interface NodeNetworkDeviceResponse {
 export interface NodeOnHousingStockResponse {
   /** @format int32 */
   id: number;
-  /** @format int32 */
+  /**
+   * @deprecated
+   * @format int32
+   */
   number: number;
+  title: string | null;
   /** @format int32 */
   entryNumber: number | null;
   status: ENodeCommercialAccountStatus;
@@ -4369,6 +4412,7 @@ export interface OrganizationResponse {
   workingTime: string | null;
   address: OrganizationAddressResponse | null;
   filtersConfiguration: ManagementFirmFiltersConfigurationResponse | null;
+  platformConfiguration: PlatformConfigurationResponse | null;
   /** @format double */
   latitude: number | null;
   /** @format double */
@@ -4496,7 +4540,6 @@ export interface OrganizationUserResponse {
   dismissalDate: string | null;
   /** @format date-time */
   suspendedFromDate: string | null;
-  organization: OrganizationResponse | null;
   status: UserStatusResponse | null;
   competences: UserCompetenceResponse[] | null;
   roles: ESecuredIdentityRoleNameStringDictionaryItem[] | null;
@@ -4628,8 +4671,12 @@ export interface PipeHousingMeteringDeviceListResponse {
 export interface PipeHousingMeteringDeviceNodeResponse {
   /** @format int32 */
   id: number;
-  /** @format int32 */
+  /**
+   * @deprecated
+   * @format int32
+   */
   number: number;
+  title: string | null;
 }
 
 export interface PipeHousingMeteringDeviceResponse {
@@ -4687,8 +4734,12 @@ export interface PipeNodeHeatingSeasonListResponse {
 export interface PipeNodeIntoCalculatorResponse {
   /** @format int32 */
   id: number;
-  /** @format int32 */
+  /**
+   * @deprecated
+   * @format int32
+   */
   number: number;
+  title: string | null;
   /** @format int32 */
   entryNumber: number | null;
   commercialStatus: NodeCommercialStatusResponse | null;
@@ -4717,8 +4768,12 @@ export interface PipeNodeMeteringDeviceResponse {
 export interface PipeNodeResponse {
   /** @format int32 */
   id: number;
-  /** @format int32 */
+  /**
+   * @deprecated
+   * @format int32
+   */
   number: number;
+  title: string | null;
   registrationType: ENodeRegistrationType;
   commercialStatus: NodeCommercialStatusResponse | null;
   resource: EResourceType;
@@ -4758,6 +4813,10 @@ export interface PipeNodeValidationResultResponse {
 export interface PipeNodeValidationStatusResponse {
   configuration: EPipeNodeConfig;
   validationResult: PipeNodeValidationResultResponse | null;
+}
+
+export interface PlatformConfigurationResponse {
+  featureToggles: FeatureTogglesResponse | null;
 }
 
 export interface PointResponse {
@@ -5159,6 +5218,8 @@ export interface SubscriberStatisticsСonsumptionResponse {
   /** @format int32 */
   apartmentId: number;
   homeownerAccountFullName: string | null;
+  homeownerAccountPhoneNumbers: string[] | null;
+  /** @deprecated */
   homeownerAccountPhoneNumber: string | null;
 }
 
@@ -5676,8 +5737,12 @@ export interface UpdateElectricHousingMeteringDeviceRequest {
 }
 
 export interface UpdateElectricNodeRequest {
-  /** @format int32 */
-  number?: number | null;
+  /**
+   * @deprecated
+   * @format int32
+   */
+  number?: number;
+  title?: string | null;
   /** @format int32 */
   nodeServiceZoneId?: number | null;
   locationName?: string | null;
@@ -5764,8 +5829,12 @@ export interface UpdatePipeHousingMeteringDeviceRequest {
 }
 
 export interface UpdatePipeNodeRequest {
-  /** @format int32 */
-  number?: number | null;
+  /**
+   * @deprecated
+   * @format int32
+   */
+  number?: number;
+  title?: string | null;
   /** @format int32 */
   nodeServiceZoneId?: number | null;
   communicationPipes?: UpdateCommunicationPipeRequest[] | null;
@@ -9323,6 +9392,54 @@ export class Api<
         path: `/api/HomeownerAccounts/${id}`,
         method: 'PUT',
         query: query,
+        body: data,
+        secure: true,
+        type: ContentType.Json,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li><li>Администратор УК без назначений задач</li>
+     *
+     * @tags HomeownerAccounts
+     * @name HomeownerAccountsAddPhoneCreate
+     * @summary HomeownersUpdate
+     * @request POST:/api/HomeownerAccounts/{id}/AddPhone
+     * @secure
+     */
+    homeownerAccountsAddPhoneCreate: (
+      id: string,
+      data: HomeownerAccountAddPhoneNumberRequest,
+      params: RequestParams = {},
+    ) =>
+      this.request<string[], ErrorApiResponse>({
+        path: `/api/HomeownerAccounts/${id}/AddPhone`,
+        method: 'POST',
+        body: data,
+        secure: true,
+        type: ContentType.Json,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li><li>Администратор УК без назначений задач</li>
+     *
+     * @tags HomeownerAccounts
+     * @name HomeownerAccountsRemovePhoneCreate
+     * @summary HomeownersUpdate
+     * @request POST:/api/HomeownerAccounts/{id}/RemovePhone
+     * @secure
+     */
+    homeownerAccountsRemovePhoneCreate: (
+      id: string,
+      data: HomeownerAccountRemovePhoneNumberRequest,
+      params: RequestParams = {},
+    ) =>
+      this.request<string[], ErrorApiResponse>({
+        path: `/api/HomeownerAccounts/${id}/RemovePhone`,
+        method: 'POST',
         body: data,
         secure: true,
         type: ContentType.Json,

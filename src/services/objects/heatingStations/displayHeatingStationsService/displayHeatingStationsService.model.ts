@@ -1,5 +1,5 @@
 import { createEffect, createStore } from 'effector';
-import { forward } from 'effector';
+import { sample } from 'effector';
 import { createGate } from 'effector-react';
 import { HeatingStationResponsePagedList } from 'api/types';
 import { createHeatingStationService } from '../createHeatingStationService';
@@ -17,13 +17,13 @@ const $heatingStations = createStore<HeatingStationResponsePagedList | null>(
   null,
 ).on(fetchHeatingStationsFx.doneData, (_, data) => data);
 
-forward({
-  from: [
+sample({
+  clock: [
     HeatingStationsFetchGate.open,
     createHeatingStationService.inputs.handleHeatingStationCreated,
     editHeatingStationService.inputs.handleHeatingStationEdited,
   ],
-  to: fetchHeatingStationsFx,
+  target: fetchHeatingStationsFx,
 });
 
 const $isHeatingStationsLoading = fetchHeatingStationsFx.pending;

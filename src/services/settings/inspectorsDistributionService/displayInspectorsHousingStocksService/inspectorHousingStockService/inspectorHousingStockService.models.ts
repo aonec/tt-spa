@@ -10,10 +10,11 @@ import {
   CurrentHousingStockUpdate,
   PatchHousingStockInspectorInfoPayload,
 } from './inspectorHousingStockService.types';
+import { getInspectorsHousingStocksQuery } from '../displayInspectorsHousingStocksService.api';
 
 const { $inspectorsList } = displayInspectorsService.outputs;
 
-const { $inspectorsHousingStocksList } =
+const { $inspectorsHousingStocksList, $searchInspectorsFilter } =
   displayInspectorsHousingStocksService.outputs;
 
 const $currentHousingStockUpdates = createStore<CurrentHousingStockUpdate[]>(
@@ -66,30 +67,11 @@ $currentHousingStockUpdates.on(
 
 $currentHousingStockUpdates.reset($inspectorsHousingStocksList);
 
-$inspectorsHousingStocksList.on(
-  updateHousingStockInspectorInfoFx.done,
-  (housingStocks, updatedHousingStock) => {
-    const updatedHousingStocks = housingStocks?.map((housingStock) => {
-      if (
-        housingStock.buildingId !== updatedHousingStock.params.housingStockId
-      ) {
-        return housingStock;
-      }
-
-      const { inspectorId, inspectedDay } = updatedHousingStock.params.data;
-
-      const res = {
-        ...housingStock,
-        inspectedDay: inspectedDay || housingStock.inspectedDay,
-        inspectorId: inspectorId,
-      };
-
-      return res;
-    });
-
-    return updatedHousingStocks;
-  },
-);
+sample({
+  source: $searchInspectorsFilter,
+  clock: updateHousingStockInspectorInfoFx.done,
+  target: getInspectorsHousingStocksQuery.start,
+});
 
 sample({
   clock: updateHousingStockInspectorInfo,

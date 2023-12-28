@@ -1,6 +1,6 @@
 import { createEffect, createEvent, createStore } from 'effector';
 import { message } from 'antd';
-import { forward, sample } from 'effector';
+import { sample } from 'effector';
 import { PipeNodeResponse, UpdatePipeNodeRequest } from 'api/types';
 import { editNodeService } from 'services/nodes/editNodeService';
 import { EffectFailDataAxiosError } from 'types';
@@ -29,14 +29,14 @@ sample({
     resource: node.resource,
     nodeId: node.id,
     disconnectFromCalculator: true,
-    number: node.number,
+    title: node.title,
   }),
   target: removeConnectionFx,
 });
 
-forward({
-  from: removeConnectionFx.doneData,
-  to: [editNodeService.inputs.refetchNode, closeModal],
+sample({
+  clock: removeConnectionFx.doneData,
+  target: [editNodeService.inputs.refetchNode, closeModal],
 });
 
 removeConnectionFx.doneData.watch(() => {

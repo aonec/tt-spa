@@ -1,6 +1,6 @@
 import { createEffect, createEvent, createStore } from 'effector';
 import { message } from 'antd';
-import { forward, guard, sample } from 'effector';
+import { sample } from 'effector';
 import { HeatingStationResponse, UpdateHeatingStationRequest } from 'api/types';
 import { addressSearchService } from 'services/addressSearchService/addressSearchService.models';
 import { EffectFailDataAxiosError } from 'types';
@@ -25,7 +25,7 @@ const editHeatingStationFx = createEffect<
   EffectFailDataAxiosError
 >(editHeatingStation);
 
-guard({
+sample({
   clock: sample({
     clock: handleEditHeatingStation,
     fn: ({ id, data }) => {
@@ -52,9 +52,9 @@ editHeatingStationFx.failData.watch((error) =>
   message.error(error.response.data.error.Text),
 );
 
-forward({
-  from: editHeatingStationFx.doneData,
-  to: handleCloseModal,
+sample({
+  clock: editHeatingStationFx.doneData,
+  target: handleCloseModal,
 });
 
 const $existingCities = addressSearchService.outputs.$existingCities;
