@@ -82,8 +82,12 @@ export const StatisticsList: React.FC<StatisticsListProps> = ({
                 </Tooltip>
               </HomeownerNameWrapper>
               <HomeownerNumberWrapper>
-                <Tooltip title={apartment.homeownerAccountPhoneNumber || '-'}>
-                  {apartment.homeownerAccountPhoneNumber || '-'}
+                <Tooltip
+                  title={(apartment.homeownerAccountPhoneNumbers || []).join(
+                    ', ',
+                  )}
+                >
+                  {(apartment.homeownerAccountPhoneNumbers || []).join(', ')}
                 </Tooltip>
               </HomeownerNumberWrapper>
             </div>

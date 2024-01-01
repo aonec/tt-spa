@@ -64,7 +64,6 @@ sample({
         paymentCode,
         personType,
         personalAccountNumber,
-        phoneNumber,
       } = payloadData;
 
       const res: EditHomeownerRequestPayload = {
@@ -75,7 +74,6 @@ sample({
           paymentCode,
           personType,
           personalAccountNumber,
-          phoneNumber,
         },
         isForced: isForced,
       };

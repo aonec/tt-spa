@@ -88,7 +88,7 @@ export const ConsumptionReportCalculatorForm: FC<
   const currentGroup = nodeGroups[values.currentResourceType];
 
   const options = currentGroup.map((node) => {
-    const { id, number, communicationPipes } = node;
+    const { id, title, communicationPipes } = node;
 
     const devicesList = _.flatten(
       communicationPipes?.map((communicationPipe) => {
@@ -105,7 +105,7 @@ export const ConsumptionReportCalculatorForm: FC<
       .map((device) => `${device?.model} (${device?.serialNumber})`)
       .join(', ');
 
-    const label = `Узел ${number}: ${calculator?.model} (${calculator?.serialNumber}) ${devicesString}`;
+    const label = `Узел ${title}: ${calculator?.model} (${calculator?.serialNumber}) ${devicesString}`;
 
     return { value: id, label };
   });

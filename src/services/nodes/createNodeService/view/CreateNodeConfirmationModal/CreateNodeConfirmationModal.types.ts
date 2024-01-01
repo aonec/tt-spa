@@ -18,7 +18,7 @@ export type CreateNodeConfirmationModalProps = {
     | NonResidentialBuildingResponse
     | null;
   calculator: CalculatorIntoHousingStockResponse | null;
-  serviceZone: NodeServiceZoneResponse;
+  serviceZone: NodeServiceZoneResponse | null;
   isLoading: boolean;
   handleSubmitForm: () => void;
   validationResult: EPipeNodeValidationMessageStringDictionaryItem[];

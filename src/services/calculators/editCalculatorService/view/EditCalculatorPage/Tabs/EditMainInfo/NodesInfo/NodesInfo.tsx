@@ -22,7 +22,7 @@ export const NodesInfo: FC<NodesInfoProps> = ({ nodesTinyData }) => {
           <React.Fragment key={node.id}>
             <Plate>
               {node.resource && <ResourceIconLookup resource={node.resource} />}
-              <NodeNumber>Узел {node.number}</NodeNumber>
+              <NodeNumber>Узел {node.title}</NodeNumber>
             </Plate>
             <Plate>{node.entryNumber}</Plate>
           </React.Fragment>

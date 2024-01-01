@@ -46,7 +46,7 @@ export const EditNodeCommonInfo: FC<EditNodeCommonInfoProps> = ({
   const { values, setFieldValue, handleSubmit, errors } = useFormik({
     initialValues: {
       nodeServiceZoneId: node.nodeServiceZone?.id,
-      number: node.number,
+      title: node.title,
       communicationPipes: node.communicationPipes || [],
     },
     enableReinitialize: true,
@@ -124,12 +124,11 @@ export const EditNodeCommonInfo: FC<EditNodeCommonInfoProps> = ({
               </Select.Option>
             </Select>
           </FormItem>
-          <FormItem label="Номер узла">
+          <FormItem label="Название узла">
             <Input
-              placeholder="Номер узла"
-              value={String(values.number)}
-              onChange={(e) => setFieldValue('number', Number(e.target.value))}
-              type="number"
+              placeholder="Название узла"
+              value={values.title || undefined}
+              onChange={(e) => setFieldValue('title', e.target.value)}
             />
           </FormItem>
         </InfoWrapper>

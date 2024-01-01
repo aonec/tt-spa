@@ -58,7 +58,7 @@ export const EditHousingMeteringDevicePage: FC<
               {address?.city}
               {address && getHousingStockItemAddress(address)}
               <div>
-                Узел {housingMeteringDevice?.hubConnection?.node?.number}
+                Узел {housingMeteringDevice?.hubConnection?.node?.title}
               </div>
               <DeviceStatus isActive={isActive} />
             </HeaderInfoString>
