@@ -1,7 +1,6 @@
 import React, { FC, useMemo } from 'react';
 import dayjs from 'api/dayjs';
 import stc from 'string-to-color';
-import { baseURL } from 'api/axios';
 import { FormModal } from 'ui-kit/Modals/FormModal';
 import { SettingsIcon } from 'ui-kit/icons';
 import { Input } from 'ui-kit/Input';
@@ -16,6 +15,7 @@ import {
 } from './DevelopmentSettingsModal.styled';
 import { DevelopmentSettingsModalProps } from './DevelopmentSettingsModal.types';
 import { urls } from './DevelopmentSettingsModal.constants';
+import { baseURL } from 'services/developmentSettings/developmentSettings.models';
 
 export const DevelopmentSettingsModal: FC<DevelopmentSettingsModalProps> = ({
   visible,

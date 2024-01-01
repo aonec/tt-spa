@@ -11,7 +11,7 @@ const method: 'GET' = 'GET';
 export function createQueryWithAuth<
   Params extends object | void,
   Data,
-  TransformedData,
+  TransformedData = Data,
 >({ url, response }: QueryFactoryParams<Params, Data, TransformedData>) {
   const query = createJsonQuery({
     params: declareParams<Params>(),
@@ -38,7 +38,9 @@ export function createQueryWithAuth<
     response: {
       ...response,
       mapData: ({ params, result }) =>
-        response.mapData({ params, result: result.successResponse }),
+        response.mapData
+          ? response.mapData({ params, result: result.successResponse })
+          : result.successResponse,
     },
     concurrency: {
       strategy: 'TAKE_EVERY',

@@ -9,7 +9,7 @@ export type QueryFactoryParams<
   url: ((params: Params) => string) | string;
   response: {
     contract: Contract<unknown, { successResponse: Data | null }>;
-    mapData: (payload: {
+    mapData?: (payload: {
       result: Data | null;
       params: Params;
     }) => TransformedData;
