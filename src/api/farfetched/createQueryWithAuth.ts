@@ -12,7 +12,11 @@ export function createQueryWithAuth<
   Params extends object | void,
   Data,
   TransformedData = Data,
->({ url, response }: QueryFactoryParams<Params, Data, TransformedData>) {
+>({
+  url,
+  response,
+  errorConverter,
+}: QueryFactoryParams<Params, Data, TransformedData>) {
   const query = createJsonQuery({
     params: declareParams<Params>(),
     request: {
@@ -57,6 +61,7 @@ export function createQueryWithAuth<
   sample({
     clock: query.finished.failure,
     fn: ({ error, params }) => ({
+      errorConverter,
       error,
       method,
       url: typeof url === 'function' ? url(params) : url,

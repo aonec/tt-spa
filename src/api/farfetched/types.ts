@@ -1,4 +1,4 @@
-import { Contract } from '@farfetched/core';
+import { Contract, HttpError } from '@farfetched/core';
 import { EventCallable } from 'effector';
 
 export type QueryFactoryParams<
@@ -14,6 +14,7 @@ export type QueryFactoryParams<
       params: Params;
     }) => TransformedData;
   };
+  errorConverter?: (error: HttpError) => string;
 };
 
 export type MutationFactoryParams<
@@ -33,4 +34,11 @@ export type MutationFactoryParams<
     }) => TransformedData;
   };
   abort?: EventCallable<void>;
+};
+
+export type OperationFailDataError = {
+  error: {
+    Message: string;
+    Text: string;
+  };
 };

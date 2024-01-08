@@ -1,13 +1,16 @@
 import { createEvent, createStore } from 'effector';
 import { message, notification } from 'antd';
 import {
+  HttpError,
   JsonApiRequestError,
+  isHttpError,
   isHttpErrorCode,
   isNetworkError,
 } from '@farfetched/core';
 import { sample } from 'effector';
 import { forbiddenList } from 'utils/403handling';
 import { tokensService } from 'api/tokensService';
+import { OperationFailDataError } from './types';
 
 const forbiddenUserError = createEvent();
 forbiddenUserError.watch(() => {
@@ -30,11 +33,28 @@ networkError.watch(() =>
   }),
 );
 
+const errorLogger = createEvent<string>();
+errorLogger.watch((text) => message.error(text));
+
 export const requestFailed = createEvent<{
   error: JsonApiRequestError;
+  errorConverter?: (error: HttpError) => string;
   url: string;
   method: 'POST' | 'PUT' | 'PATCH' | 'DELETE' | 'GET';
 }>();
+
+sample({
+  source: $isOnline,
+  clock: requestFailed,
+  filter: (isOnline, { error }) => isNetworkError({ error }) && isOnline,
+  target: [setIsOffline, networkError],
+});
+
+sample({
+  clock: requestFailed,
+  filter: ({ error }) => !isNetworkError({ error }),
+  target: setIsOnline,
+});
 
 sample({
   clock: requestFailed,
@@ -57,14 +77,19 @@ sample({
 });
 
 sample({
-  source: $isOnline,
   clock: requestFailed,
-  filter: (isOnline, { error }) => isNetworkError({ error }) && isOnline,
-  target: [setIsOffline, networkError],
-});
+  filter: ({ error }) =>
+    isHttpError({ error }) &&
+    !isHttpErrorCode(401)({ error }) &&
+    !isHttpErrorCode(403)({ error }),
+  fn: ({ error, errorConverter }) => {
+    const httpError = error as HttpError;
+    if (errorConverter) {
+      return errorConverter(httpError);
+    }
 
-sample({
-  clock: requestFailed,
-  filter: ({ error }) => !isNetworkError({ error }),
-  target: setIsOnline,
+    const result = (httpError.response as OperationFailDataError).error;
+    return result.Text || result.Message;
+  },
+  target: errorLogger,
 });
