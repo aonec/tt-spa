@@ -45,7 +45,5 @@ export const checkIndividualDeviceMutation = createMutation({
     CheckIndividualDevicePayload,
     IndividualDeviceResponse,
     EffectFailDataAxiosError
-  >(({ deviceId, ...payload }) =>
-    axios.post(`IndividualDevices/${deviceId}/check`, payload),
-  ),
+  >(({ deviceId, ...payload }) => axios.post(`IndividualDevices/${deviceId}/check`, payload)),
 });
