@@ -6571,9 +6571,10 @@ ee-first@1.1.1:
   resolved "https://registry.npmjs.org/ee-first/-/ee-first-1.1.1.tgz"
   integrity sha512-WMwm9LhRUo+WUaRN+vRuETqG89IgZphVSNkdFgeb6sS/E4OrDIN7t48CAewSHXc6C8lefD8KKfr5vY61brQlow==
 
-"effector-forms@https://github.com/Rinasik/effector-forms.git":
-  version "1.4.0"
-  resolved "git+ssh://git@github.com/Rinasik/effector-forms.git#ecf6994d21cdf458452230e79ea5bcbec1548d25"
+effector-forms@2.0.0-next.0:
+  version "2.0.0-next.0"
+  resolved "https://registry.yarnpkg.com/effector-forms/-/effector-forms-2.0.0-next.0.tgz#3d968964fbfca1c321dc81753aa7328f4aea465b"
+  integrity sha512-aFKOWBdj/kU/xedCwlmHrBzgl3OPcJ2442oZqTAcAgRiSJ4sFy5nENW7tIW+ZDosqVTVd6GkvqlMtmnSHEKroA==
 
 effector-react@23.0.1:
   version "23.0.1"
