@@ -172,7 +172,6 @@ export const AddressTab: FC<AddressTabProps> = ({
           <ItemGridWrapper>
             <FormItem label="Номер дома">
               <Input
-                type="number"
                 placeholder="Введите"
                 value={values.house || undefined}
                 onChange={(value) => setFieldValue('house', value.target.value)}
