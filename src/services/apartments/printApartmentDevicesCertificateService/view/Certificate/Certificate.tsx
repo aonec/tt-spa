@@ -238,7 +238,7 @@ export const Certificate: FC<Props> = ({ certificate, isPJKH }) => {
           )}
           {isPJKH && (
             <>
-              Специались по работе
+              Специалист по работе
               <br />с населением
             </>
           )}
