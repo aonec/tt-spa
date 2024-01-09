@@ -220,7 +220,6 @@ export const AddressTab: FC<AddressTabProps> = ({
               <ItemGridWrapper>
                 <FormItem label="Номер дома">
                   <Input
-                    type="number"
                     placeholder="Введите"
                     value={address.number || undefined}
                     onChange={(value) =>
