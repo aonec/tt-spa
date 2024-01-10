@@ -2,6 +2,7 @@ import { createEvent, createStore } from 'effector';
 import { featureToggles } from 'featureToggles';
 import axios from 'api/axios';
 import { FeatureToggles } from './developmentSettings.types';
+import { persist } from 'effector-storage/local';
 
 const $isDevSettingsModalOpen = createStore(false);
 
@@ -28,7 +29,7 @@ const $featureToggles = createStore<FeatureToggles>(featureToggles)
   }))
   .on(resetFeatureToggles, () => ({ ...featureToggles }));
 
-// persist({ store: $featureToggles, key: 'featureToggles' });
+persist({ store: $featureToggles, key: 'featureToggles' });
 
 const $devUrl = createStore(apiURL || '').on(setDevUrl, (_, devUrl) => devUrl);
 
