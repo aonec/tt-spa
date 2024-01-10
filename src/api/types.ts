@@ -999,14 +999,28 @@ export interface CloseDeviceRequest {
   /** @format int32 */
   deviceId: number;
   documentsIds?: number[] | null;
-  /** @format date-time */
+  /**
+   * @deprecated
+   * @format date-time
+   */
   closingDate?: string | null;
+  /** @format int32 */
+  closingMonth?: number | null;
+  /** @format int32 */
+  closingYear?: number | null;
   closingReason?: EClosingReason | null;
 }
 
 export interface CloseIndividualDeviceRequest {
-  /** @format date-time */
+  /**
+   * @deprecated
+   * @format date-time
+   */
   closingDate?: string | null;
+  /** @format int32 */
+  closingMonth?: number | null;
+  /** @format int32 */
+  closingYear?: number | null;
   closingReason?: EClosingReason | null;
   documentsIds?: number[] | null;
 }
@@ -2168,6 +2182,15 @@ export enum EStageType {
   Final = 'Final',
 }
 
+export enum ESwitchingReason {
+  Manually = 'Manually',
+  NoReadings = 'NoReadings',
+  DeviceBroken = 'DeviceBroken',
+  CheckingDate = 'CheckingDate',
+  CertificateIssued = 'CertificateIssued',
+  MaintainingStopped = 'MaintainingStopped',
+}
+
 export enum ETaskClosingStatus {
   Properly = 'Properly',
   Interrupted = 'Interrupted',
@@ -2714,7 +2737,7 @@ export interface HomeownerAccount {
 }
 
 export interface HomeownerAccountAddPhoneNumberRequest {
-  phoneNumber?: string | null;
+  phoneNumber: string;
 }
 
 export interface HomeownerAccountCloseRequest {
@@ -2781,7 +2804,7 @@ export enum HomeownerAccountOrderRule {
 }
 
 export interface HomeownerAccountRemovePhoneNumberRequest {
-  phoneNumber?: string | null;
+  phoneNumber: string;
 }
 
 export interface HomeownerAccountReplaceRequest {
@@ -2858,6 +2881,7 @@ export interface HomeownerAccountUpdateRequest {
   /** @format double */
   ownershipArea?: number | null;
   isMainOnApartment?: boolean | null;
+  phoneNumbers?: string[] | null;
 }
 
 export interface HomeownerCertificateResponse {
@@ -5363,7 +5387,7 @@ export interface SwitchIndividualDeviceRequest {
   openingDate?: string | null;
   /** @format int32 */
   contractorId?: number | null;
-  oldDeviceClosingReason?: EClosingReason;
+  oldDeviceClosingReason?: ESwitchingReason;
   /** @format int32 */
   newDeviceMountPlaceId?: number | null;
   oldDeviceReadings?: SwitchIndividualDeviceReadingsCreateRequest[] | null;
