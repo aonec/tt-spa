@@ -150,25 +150,27 @@ export const PersonalNumberForm: FC<PersonalNumberFormProps> = ({
           />
           <ErrorMessage>{errors.name}</ErrorMessage>
         </FormItem>
-        <FormItem label="Телефон">
-          <PhoneNumberFormField
-            phoneNumbers={values.phoneNumbers || []}
-            addPhoneNumber={(phone) =>
-              setFieldValue('phoneNumbers', [
-                ...(values.phoneNumbers || []),
-                phone,
-              ])
-            }
-            deletePhoneNumber={(oldPhoneNumber) =>
-              setFieldValue(
-                'phoneNumbers',
-                (values.phoneNumbers || []).filter(
-                  (elem) => elem !== oldPhoneNumber,
-                ),
-              )
-            }
-          />
-        </FormItem>
+        {!isEdit && (
+          <FormItem label="Телефон">
+            <PhoneNumberFormField
+              phoneNumbers={values.phoneNumbers || []}
+              addPhoneNumber={(phone) =>
+                setFieldValue('phoneNumbers', [
+                  ...(values.phoneNumbers || []),
+                  phone,
+                ])
+              }
+              deletePhoneNumber={(oldPhoneNumber) =>
+                setFieldValue(
+                  'phoneNumbers',
+                  (values.phoneNumbers || []).filter(
+                    (elem) => elem !== oldPhoneNumber,
+                  ),
+                )
+              }
+            />
+          </FormItem>
+        )}
       </GridContainerOwner>
       <FlexContainer>
         <SwitchWrapper
