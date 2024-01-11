@@ -89,7 +89,7 @@ sample({
     }
 
     const result = (httpError.response as OperationFailDataError).error;
-    return result.Text || result.Message;
+    return result.Text || result.Message || 'Произошла ошибка';
   },
   target: errorLogger,
 });
