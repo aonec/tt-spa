@@ -999,14 +999,28 @@ export interface CloseDeviceRequest {
   /** @format int32 */
   deviceId: number;
   documentsIds?: number[] | null;
-  /** @format date-time */
+  /**
+   * @deprecated
+   * @format date-time
+   */
   closingDate?: string | null;
+  /** @format int32 */
+  closingMonth?: number | null;
+  /** @format int32 */
+  closingYear?: number | null;
   closingReason?: EClosingReason | null;
 }
 
 export interface CloseIndividualDeviceRequest {
-  /** @format date-time */
+  /**
+   * @deprecated
+   * @format date-time
+   */
   closingDate?: string | null;
+  /** @format int32 */
+  closingMonth?: number | null;
+  /** @format int32 */
+  closingYear?: number | null;
   closingReason?: EClosingReason | null;
   documentsIds?: number[] | null;
 }
@@ -2166,6 +2180,15 @@ export enum EStageType {
   Common = 'Common',
   Switch = 'Switch',
   Final = 'Final',
+}
+
+export enum ESwitchingReason {
+  Manually = 'Manually',
+  NoReadings = 'NoReadings',
+  DeviceBroken = 'DeviceBroken',
+  CheckingDate = 'CheckingDate',
+  CertificateIssued = 'CertificateIssued',
+  MaintainingStopped = 'MaintainingStopped',
 }
 
 export enum ETaskClosingStatus {
@@ -5363,7 +5386,7 @@ export interface SwitchIndividualDeviceRequest {
   openingDate?: string | null;
   /** @format int32 */
   contractorId?: number | null;
-  oldDeviceClosingReason?: EClosingReason;
+  oldDeviceClosingReason?: ESwitchingReason;
   /** @format int32 */
   newDeviceMountPlaceId?: number | null;
   oldDeviceReadings?: SwitchIndividualDeviceReadingsCreateRequest[] | null;

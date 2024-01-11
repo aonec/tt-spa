@@ -21,7 +21,7 @@ import { ErrorMessage } from 'ui-kit/ErrorMessage';
 import { Input } from 'ui-kit/Input';
 import { EIndividualDeviceRateType, EResourceType } from 'api/types';
 import { individualDeviceMountPlacesService } from 'services/devices/individualDeviceMountPlacesService';
-import { ClosingReasonsDictionary } from 'dictionaries';
+import { SwitchingReasonsDictionary } from 'dictionaries';
 import { ResourceSelect } from 'ui-kit/shared/ResourceSelect';
 import { Loader } from 'ui-kit/Loader';
 import { AutoComplete } from 'ui-kit/AutoComplete';
@@ -253,11 +253,13 @@ export const WorkWithIndividualDeviceForm: FC<
                 onChange={fields.oldDeviceClosingReason.onChange as any}
                 showAction={['focus']}
               >
-                {Object.entries(ClosingReasonsDictionary).map(([key, elem]) => (
-                  <Select.Option value={key} key={key}>
-                    {elem}
-                  </Select.Option>
-                ))}
+                {Object.entries(SwitchingReasonsDictionary).map(
+                  ([key, elem]) => (
+                    <Select.Option value={key} key={key}>
+                      {elem}
+                    </Select.Option>
+                  ),
+                )}
               </Select>
             </FormItem>
           </FormWrapper>

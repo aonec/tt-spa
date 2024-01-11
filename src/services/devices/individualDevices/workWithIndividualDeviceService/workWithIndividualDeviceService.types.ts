@@ -1,7 +1,7 @@
 import {
   CheckIndividualDeviceRequest,
-  EClosingReason,
   EIndividualDeviceRateType,
+  ESwitchingReason,
   SwitchIndividualDeviceReadingsCreateRequest,
   SwitchIndividualDeviceRequest,
 } from 'api/types';
@@ -41,7 +41,7 @@ export type SwitchIndividualDevicePayload = {
   contractorId: string | null;
   sealInstallationDate: string | null;
   sealNumber: string | null;
-  oldDeviceClosingReason: EClosingReason | undefined;
+  oldDeviceClosingReason: ESwitchingReason | undefined;
   isPolling: boolean;
   oldDeviceReadings: SwitchIndividualDeviceReadingsCreateRequest[] | null;
 } & SwitchIndividualDeviceRequest;
