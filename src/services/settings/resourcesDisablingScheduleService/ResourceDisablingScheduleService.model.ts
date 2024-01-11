@@ -1,5 +1,5 @@
 import { createEffect, createEvent, createStore } from 'effector';
-import { guard, sample } from 'effector';
+import { sample } from 'effector';
 import { createGate } from 'effector-react';
 
 import { ResourceDisconnectingResponsePagedList } from 'api/types';
@@ -54,7 +54,7 @@ sample({
 
 sample({
   source: $filters,
-  clock: guard({
+  clock: sample({
     source: resourceDisablingGate.status,
     clock: refetchResourceDisconnections,
     filter: (isOpen) => isOpen,

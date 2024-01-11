@@ -1,5 +1,5 @@
 import { createEffect, createEvent, createStore } from 'effector';
-import { combine, sample, forward } from 'effector';
+import { combine, sample } from 'effector';
 import { createGate } from 'effector-react';
 import { EOrderByRule, ReportRequestHistoryPagedList } from 'api/types';
 import { getReportsHistoryList } from './reportsListService.api';
@@ -44,9 +44,9 @@ const $pageNumber = createStore<number>(1)
 
 const $requestPayload = combine($isShowActual, $pageNumber, $reportNameText);
 
-forward({
-  from: $requestPayload,
-  to: refetchReportsHistory,
+sample({
+  clock: $requestPayload,
+  target: refetchReportsHistory,
 });
 
 sample({

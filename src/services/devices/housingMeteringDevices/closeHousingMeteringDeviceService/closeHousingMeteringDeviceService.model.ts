@@ -1,5 +1,5 @@
 import { createEffect, createEvent, createStore } from 'effector';
-import { forward } from 'effector';
+import { sample } from 'effector';
 import { EffectFailDataAxiosError } from 'types';
 import { closeDevice } from './closeHousingMeteringDeviceService.api';
 import { CloseDeviceRequest } from 'api/types';
@@ -29,9 +29,9 @@ closeHousingMeteringDeviceFx.failData.watch((error) => {
 
 const onSuccessClose = closeHousingMeteringDeviceFx.doneData;
 
-forward({
-  from: handleOnSubmit,
-  to: closeHousingMeteringDeviceFx,
+sample({
+  clock: handleOnSubmit,
+  target: closeHousingMeteringDeviceFx,
 });
 
 const $isModalOpen = createStore<boolean>(false)

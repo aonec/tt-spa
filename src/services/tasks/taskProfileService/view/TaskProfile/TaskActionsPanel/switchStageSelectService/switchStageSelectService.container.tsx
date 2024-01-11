@@ -1,4 +1,4 @@
-import { useStore } from 'effector-react';
+import { useUnit } from 'effector-react';
 import React, { FC, useCallback } from 'react';
 import { useParams } from 'react-router-dom';
 import { ActionComponentProps } from '../TaskActionsPanel.types';
@@ -13,14 +13,14 @@ const {
 export const SwitchStageSelectContainer: FC<ActionComponentProps> = ({
   handleChange,
 }) => {
-  const nextStages = useStore(outputs.$nextStages);
+  const { nextStages } = useUnit({ nextStages: outputs.$nextStages });
   const { taskId } = useParams<{ taskId: string }>();
 
   const handleSelectedNextStageChange = useCallback(
     (nextStageId: number) => {
       handleChange({ nextStageId });
     },
-    [handleChange]
+    [handleChange],
   );
 
   return (

@@ -4,7 +4,7 @@ import {
   ControllerResponse,
   DistrictResponse,
 } from 'api/types';
-import { OrganizationCoordinates } from 'services/currentUserService/currentUserService.types';
+import { OrganizationCoordinates } from 'services/currentOrganizationService/currentOrganizationService.types';
 import { AppointmentsCountingByDistrictsResponse } from 'services/services/distributeRecordsService/distributeRecordsService.types';
 
 export type Props = {

@@ -3,7 +3,7 @@ import { FormModal } from 'ui-kit/Modals/FormModal';
 import { ConfirmationAddingExistingPersonalNumberForm } from './ConfirmationAddingExistingPersonalNumberForm';
 import { ConfirmationAddingExistingPersonalNumberProps } from './ConfirmationAddingExistingPersonalNumberModal.types';
 import { ConfirmationAddingExistingPersonalNumberModal } from './ConfirmationAddingExistingPersonalNumberModal.model';
-import { useEvent, useStore } from 'effector-react';
+import { useUnit } from 'effector-react';
 
 const { inputs, outputs } = ConfirmationAddingExistingPersonalNumberModal;
 const formId = 'confirm-adding-existing-personal-number';
@@ -16,13 +16,14 @@ export const ConfirmationAddingExistingPersonalNumber: FC<
   confirmationModalClose,
   handleForced,
 }) => {
-  const handleSamePersonalAccountNumderId = useEvent(
-    inputs.samePersonalAccountNumderId,
-  );
-
-  const samePersonalAccountNumderApartmentData = useStore(
-    outputs.$samePersonalAccountNumderApartmentData,
-  );
+  const {
+    handleSamePersonalAccountNumderId,
+    samePersonalAccountNumderApartmentData,
+  } = useUnit({
+    handleSamePersonalAccountNumderId: inputs.samePersonalAccountNumderId,
+    samePersonalAccountNumderApartmentData:
+      outputs.$samePersonalAccountNumderApartmentData,
+  });
 
   useEffect(() => {
     if (samePersonalAccountNumderId) {

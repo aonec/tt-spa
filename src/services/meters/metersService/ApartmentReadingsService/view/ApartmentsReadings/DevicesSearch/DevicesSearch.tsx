@@ -2,25 +2,25 @@ import React, { FC, useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import { CancelTokenSource } from 'axios';
 import axios from 'api/axios';
-import { IndividualDeviceListItemResponse } from 'api/types';
+import { IndividualDeviceListResponseFromDevicePage } from 'api/types';
 import { DateRangeContainer, Device } from './DevicesSearch.styled';
 import { DevicesSearchProps } from './DevicesSearch.types';
-import { DeviceStatus } from 'ui-kit/shared/IndividualDeviceInfo/DeviceStatus';
 import { WithLoader } from 'ui-kit/shared/WithLoader';
 import { AutoComplete } from 'ui-kit/AutoComplete';
-import { DateRange } from 'ui-kit/shared/DateRange';
 import { individualDeviceMountPlacesService } from 'services/devices/individualDeviceMountPlacesService/individualDeviceMountPlacesService.model';
 import { DeviceDataString } from './DeviceDataString';
+import { DeviceStatus } from 'ui-kit/shared/IndividualDeviceInfo/DeviceStatus';
+import { DateRange } from 'ui-kit/shared/DateRange';
 
 const { AllIndividualDeviceMountPlacesGate } =
   individualDeviceMountPlacesService.gates;
 
 export const DevicesSearch: FC<DevicesSearchProps> = ({
   handleClickDevice,
-  allIndividualDeviceMountPlaces,
 }) => {
   const [serialNumber, setSerialNumber] = useState('');
-  const [devices, setDevices] = useState<IndividualDeviceListItemResponse[]>();
+  const [devices, setDevices] =
+    useState<IndividualDeviceListResponseFromDevicePage[]>();
   const [isLoading, setIsLoading] = useState(false);
   const [cancelTokenSource, setCancelTokenSource] =
     useState<CancelTokenSource | null>(null);
@@ -39,13 +39,14 @@ export const DevicesSearch: FC<DevicesSearchProps> = ({
       const newCancelToken = axios.CancelToken.source();
       setCancelTokenSource(newCancelToken);
       const res: {
-        items: IndividualDeviceListItemResponse[];
-      } = await axios.get('IndividualDevices', {
+        items: IndividualDeviceListResponseFromDevicePage[];
+      } = await axios.get('Devices/Individual', {
         params: {
           serialNumber,
           pageNumber: 1,
           pageSize: 25,
-          orderRule: 'serialNumber',
+          OrderRule: 'SerialNumber',
+          IsAlsoClosing: true,
         },
         cancelToken: newCancelToken?.token,
       });
@@ -60,7 +61,7 @@ export const DevicesSearch: FC<DevicesSearchProps> = ({
   };
 
   const renderDevice = (
-    device: IndividualDeviceListItemResponse,
+    device: IndividualDeviceListResponseFromDevicePage,
     index: number,
   ) => (
     <NavLink
@@ -70,25 +71,22 @@ export const DevicesSearch: FC<DevicesSearchProps> = ({
     >
       <Device key={index}>
         <DeviceDataString device={device} />
-        <DeviceStatus
-          isActive={device.closingDate === null}
-          closingReason={device.closingReason}
-        />
-        <DateRangeContainer>
-          <DateRange
-            firstDate={device.lastCheckingDate}
-            lastDate={device.futureCheckingDate}
-            bold
+        {device.closingReason && (
+          <DeviceStatus
+            isActive={device.closingDate === null}
+            closingReason={device.closingReason}
           />
-        </DateRangeContainer>
-        <div>
-          {allIndividualDeviceMountPlaces &&
-            device.mountPlace &&
-            allIndividualDeviceMountPlaces.find(
-              (mountPlaceFromServer) =>
-                mountPlaceFromServer.name === device.mountPlace,
-            )?.description}
-        </div>
+        )}
+        {device.lastCheckingDate && device.futureCheckingDate && (
+          <DateRangeContainer>
+            <DateRange
+              firstDate={device.lastCheckingDate}
+              lastDate={device.futureCheckingDate}
+              bold
+            />
+          </DateRangeContainer>
+        )}
+        <div>{device.mountPlace}</div>
       </Device>
     </NavLink>
   );

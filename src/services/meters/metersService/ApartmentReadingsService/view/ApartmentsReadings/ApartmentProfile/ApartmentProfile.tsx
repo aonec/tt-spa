@@ -15,7 +15,7 @@ import { ApartmentIndividualDevicesMetersContainer } from 'services/meters/apart
 import { ApartmentInfo } from './ApartmentInfo';
 import { ApartmentAlerts } from './ApartmentAlerts';
 import { apartmentReadingsService } from '../../../ApartmentReadingsService.model';
-import { useHistory, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import confirm from 'antd/lib/modal/confirm';
 import { TypeAddressToStart } from 'ui-kit/shared/TypeToStart';
 import { EApartmentStatus } from 'api/types';
@@ -41,9 +41,11 @@ export const ApartmentProfile: FC<ApartmentProfileProps> = ({
   isUpdateHomeownerLoading,
   isApartmentFetched,
   nearestAppointment,
+  addPhoneNumber,
+  deletePhoneNumber,
 }) => {
   const { id } = useParams<{ id: string }>();
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const isPaused = apartment
     ? apartment.status === EApartmentStatus.Pause
@@ -153,7 +155,7 @@ export const ApartmentProfile: FC<ApartmentProfileProps> = ({
                   {
                     title: 'Добавить новый прибор',
                     onClick: () =>
-                      history.push(
+                      navigate(
                         `/apartment/${apartment.id}/addIndividualDevice`,
                       ),
                   },
@@ -164,6 +166,8 @@ export const ApartmentProfile: FC<ApartmentProfileProps> = ({
                 ]}
                 handleUpdateHomeowner={handleUpdateHomeowner}
                 isUpdateHomeownerLoading={isUpdateHomeownerLoading}
+                addPhoneNumber={addPhoneNumber}
+                deletePhoneNumber={deletePhoneNumber}
                 additionalHeaderInfo={
                   appointmentDate && (
                     <AppointmentTextWrapper>

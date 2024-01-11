@@ -1,21 +1,33 @@
-import React, { ChangeEvent } from 'react';
-import { ExtendedSearchTypes } from './SearchTasks.types';
-import { StyledContainerFourItems } from 'services/devices/devicesProfileService/view/DevicesProfile/DevicesProfile.styled';
-import {
-  StyledContainerThreeItemsMainTypes,
-  StyledFormTwoRows,
-} from './SearchTasks.styled';
+import React, { ChangeEvent, FC, useMemo } from 'react';
+import { ArchiveTasksExtendedSearchFormProps } from './ArchiveTasksExtendedSearchForm.types';
 import { FormItem } from 'ui-kit/FormItem';
 import { Select } from 'ui-kit/Select';
 import { Input } from 'ui-kit/Input';
+import {
+  StyledContainerThreeItemsMainTypes,
+  StyledFormTwoRows,
+} from './ArchiveTasksExtendedSearchForm.styled';
+import { StyledContainerFourItems } from 'services/devices/devicesProfileService/view/DevicesProfile/DevicesProfile.styled';
+import { ETaskClosingStatus } from 'api/types';
 
 const { Option } = Select;
 
-export const ArchiveTasksExtendedSearchForm: React.FC<ExtendedSearchTypes> = ({
-  setFieldValue,
-  values,
-  taskTypes,
-}) => {
+export const ArchiveTasksExtendedSearchForm: FC<
+  ArchiveTasksExtendedSearchFormProps
+> = ({ setFieldValue, taskTypes, values }) => {
+  const taskTypeOptions = useMemo(() => {
+    if (!taskTypes) {
+      return null;
+    }
+    return taskTypes
+      .filter((elem) => Boolean(elem.key))
+      .map(({ value, key }) => (
+        <Select.Option key={key} value={key}>
+          {value}
+        </Select.Option>
+      ));
+  }, [taskTypes]);
+
   return (
     <StyledFormTwoRows id="searchForm">
       <StyledContainerFourItems>
@@ -88,17 +100,12 @@ export const ArchiveTasksExtendedSearchForm: React.FC<ExtendedSearchTypes> = ({
             small
             id="TaskType"
             placeholder="Тип задачи"
-            value={values.TaskType!}
+            value={values.TaskType || undefined}
             onChange={(value) => {
               setFieldValue('TaskType', value);
             }}
           >
-            {taskTypes &&
-              taskTypes.map(({ value, key }) => (
-                <Select.Option key={key!} value={key!}>
-                  {value}
-                </Select.Option>
-              ))}
+            {taskTypeOptions}
           </Select>
         </FormItem>
         <FormItem label="Статус Задачи">
@@ -110,13 +117,13 @@ export const ArchiveTasksExtendedSearchForm: React.FC<ExtendedSearchTypes> = ({
               setFieldValue('ClosingStatuses', value);
             }}
           >
-            <Option key="Properly" value="Properly">
+            <Option key="Properly" value={ETaskClosingStatus.Properly}>
               {'Выполнена в срок'}
             </Option>
-            <Select.Option key="Lated" value="Lated" disabled>
-              {'Просрочена'}
-            </Select.Option>
-            <Select.Option key="Interrupted" value="Interrupted">
+            <Select.Option
+              key="Interrupted"
+              value={ETaskClosingStatus.Interrupted}
+            >
               {'Закрыта автоматически'}
             </Select.Option>
           </Select>

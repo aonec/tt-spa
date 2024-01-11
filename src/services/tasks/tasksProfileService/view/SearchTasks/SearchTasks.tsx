@@ -12,13 +12,13 @@ import { EManagingFirmTaskFilterType, TaskGroupingFilter } from 'api/types';
 import { ExtendedSearch } from 'ui-kit/ExtendedSearch';
 import { fromEnter } from 'ui-kit/shared/DatePickerNative';
 import { ArchiveTasksExtendedSearchForm } from './ArchiveTasksExtendedSearchForm';
-import { ToExecutionTasksExtendedSearchForm } from './ToExecutionTasksExtendedSearchForm';
 import { Wrapper } from './SearchTasks.styled';
 import { GetTasksListRequestPayload } from '../../tasksProfileService.types';
 import { SearchTasksProps } from './SearchTasks.types';
 import { Select } from 'ui-kit/Select';
 import { Input } from 'ui-kit/Input';
 import { addressSearchService } from 'services/addressSearchService/addressSearchService.models';
+import { ToExecutionTasksExtendedSearchForm } from './ToExecutionTasksExtendedSearchForm';
 
 const { ExistingCitiesGate, ExistingStreetsGate } = addressSearchService.gates;
 
@@ -93,7 +93,7 @@ export const SearchTasks: FC<SearchTasksProps> = ({
   const clearAllFilters = useCallback(() => {
     clearFilters();
     resetForm();
-    changeFiltersByGroupType(grouptype);
+    grouptype && changeFiltersByGroupType(grouptype);
   }, [clearFilters, resetForm, changeFiltersByGroupType, grouptype]);
 
   useEffect(() => {

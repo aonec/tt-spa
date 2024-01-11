@@ -151,7 +151,7 @@ export const NodeProfilePage: FC<NodeProfilePageProps> = ({
                   style={{ transform: 'scale(1.2)' }}
                 />
                 <NodeNumberWrapper>
-                  Узел {pipeNode.number}
+                  Узел {pipeNode.title}
                   {isIncorrectConfig && (
                     <Tooltip title="Проверьте конфигурацию узла">
                       <IncorrectConfigurationIconSC />

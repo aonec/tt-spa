@@ -27,7 +27,7 @@ export type PersonalNumberFormProps = {
 
 export type PersonalNumberFormTypes = {
   name: string;
-  phoneNumber: string;
+  phoneNumbers?: string[];
   openAt: string;
   personalAccountNumber: string;
   paymentCode: string;

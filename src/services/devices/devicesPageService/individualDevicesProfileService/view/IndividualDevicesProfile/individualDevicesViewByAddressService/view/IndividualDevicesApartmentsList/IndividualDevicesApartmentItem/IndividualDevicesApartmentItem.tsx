@@ -1,5 +1,5 @@
 import { ContextMenuButton } from 'ui-kit/ContextMenuButton/ContextMenuButton';
-import { useEvent, useStore } from 'effector-react';
+import { useUnit } from 'effector-react';
 import React, { FC } from 'react';
 import {
   AdditionalHomeownersCountTextWrapper,
@@ -23,9 +23,10 @@ const { inputs, outputs } = individualDevicesListService;
 export const IndividualDevicesApartmentItem: FC<
   IndividualDevicesApartmentItemProps
 > = ({ individualDevicesApartment, housingStockId }) => {
-  const openedApartmentId = useStore(outputs.$openedBlockId);
-
-  const toggleApartment = useEvent(inputs.toggleBlock);
+  const { openedApartmentId, toggleApartment } = useUnit({
+    openedApartmentId: outputs.$openedBlockId,
+    toggleApartment: inputs.toggleBlock,
+  });
 
   const homeowner = individualDevicesApartment?.homeowners?.[0];
 

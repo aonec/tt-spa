@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import { ReportType } from '../view/ReportsPage/ReportsPage.types';
 import { ReportViewPage } from './view/ReportViewPage';
 import { reportViewService } from './reportViewService.model';
-import { useEvent, useStore } from 'effector-react';
+import { useUnit } from 'effector-react';
 
 const { inputs, outputs, gates } = reportViewService;
 const {
@@ -14,28 +14,37 @@ const {
 
 export const ReportViewContainer = () => {
   const { reportType } = useParams<{ reportType: ReportType }>();
-
-  const setFiltrationValues = useEvent(inputs.setFiltrationValues);
-  const downloadReport = useEvent(inputs.downloadReport);
-  const clearFiltrationValues = useEvent(inputs.clearFiltrationValues);
-
-  const existingCities = useStore(outputs.$existingCities);
-  const houseManagements = useStore(outputs.$houseManagements);
-  const addressesWithHouseManagements = useStore(
-    outputs.$addressesWithHouseManagements,
-  );
-  const filtrationValues = useStore(outputs.$filtrationValues);
-  const isLoadingReport = useStore(outputs.$isReportLoading);
-  const individualDevicesReportData = useStore(
-    outputs.$individualDevicesReportData,
-  );
-  const actJournalReportData = useStore(outputs.$actJournalReportData);
-  const housingMeteringDevicesReportData = useStore(
-    outputs.$housingMeteringDevicesReportData,
-  );
-  const homeownersReportData = useStore(outputs.$homeownersReportData);
-  const emloyeeReportData = useStore(outputs.$emloyeeReportData);
-  const isReportFileDownloading = useStore(outputs.$isReportFileDownloading);
+  const {
+    actJournalReportData,
+    addressesWithHouseManagements,
+    clearFiltrationValues,
+    downloadReport,
+    emloyeeReportData,
+    existingCities,
+    filtrationValues,
+    homeownersReportData,
+    houseManagements,
+    housingMeteringDevicesReportData,
+    individualDevicesReportData,
+    isLoadingReport,
+    isReportFileDownloading,
+    setFiltrationValues,
+  } = useUnit({
+    setFiltrationValues: inputs.setFiltrationValues,
+    downloadReport: inputs.downloadReport,
+    clearFiltrationValues: inputs.clearFiltrationValues,
+    existingCities: outputs.$existingCities,
+    houseManagements: outputs.$houseManagements,
+    addressesWithHouseManagements: outputs.$addressesWithHouseManagements,
+    filtrationValues: outputs.$filtrationValues,
+    isLoadingReport: outputs.$isReportLoading,
+    individualDevicesReportData: outputs.$individualDevicesReportData,
+    actJournalReportData: outputs.$actJournalReportData,
+    housingMeteringDevicesReportData: outputs.$housingMeteringDevicesReportData,
+    homeownersReportData: outputs.$homeownersReportData,
+    emloyeeReportData: outputs.$emloyeeReportData,
+    isReportFileDownloading: outputs.$isReportFileDownloading,
+  });
 
   if (!reportType) return null;
 

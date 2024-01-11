@@ -6,7 +6,7 @@ import { Segmented } from 'ui-kit/Segmented';
 import { ListIcon, MapIcon } from 'ui-kit/icons';
 import { ManageDistrictsMap } from './ManageDistrictsMap';
 import { ContextMenuButton } from 'ui-kit/ContextMenuButton';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { ManageDistrictsList } from './ManageDistrictsList';
 
 export const ManageDistrictPage: FC<Props> = ({
@@ -17,7 +17,7 @@ export const ManageDistrictPage: FC<Props> = ({
   setDistrictsPageSegment,
   isDistrictLoading,
 }) => {
-  const history = useHistory();
+  const navigate = useNavigate();
 
   return (
     <div>
@@ -45,13 +45,12 @@ export const ManageDistrictPage: FC<Props> = ({
             menuButtons={[
               {
                 title: 'Задать границы нового района на карте',
-                onClick: () =>
-                  history.push('/districtBordersSettings/createByMap'),
+                onClick: () => navigate('/districtBordersSettings/createByMap'),
               },
               {
                 title: 'Задать границы нового района по адресам',
                 onClick: () =>
-                  history.push(
+                  navigate(
                     '/districtBordersSettings/createByHousingStocksList',
                   ),
               },

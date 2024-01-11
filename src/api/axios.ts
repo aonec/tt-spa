@@ -62,7 +62,7 @@ axios.interceptors.response.use(
   (error) => {
     const status = error?.response?.status;
 
-    if (isUndefined(status) && $isOnline.getState()) {
+    if (!axios.isCancel(error) && isUndefined(status) && $isOnline.getState()) {
       notification.error({
         description: 'Проверьте свое подключение к интернету',
         message: 'Ошибка связи',

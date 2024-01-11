@@ -1,4 +1,4 @@
-import { useEvent } from 'effector-react';
+import { useUnit } from 'effector-react';
 import React, { FC } from 'react';
 import { List } from 'ui-kit/List';
 import { LinkButton } from 'ui-kit/shared/LinkButton';
@@ -45,7 +45,9 @@ const {
 export const EditHomeownersList: FC<EditHomeownersListProps> = ({
   homeowners,
 }) => {
-  const handleAddHomeowner = useEvent(openCreateHomeownerModal);
+  const { handleAddHomeowner } = useUnit({
+    handleAddHomeowner: openCreateHomeownerModal,
+  });
 
   return (
     <>
@@ -59,7 +61,8 @@ export const EditHomeownersList: FC<EditHomeownersListProps> = ({
               id: homeowner.id,
               personalAccountNumber: homeowner.personalAccountNumber || '',
               name: homeowner.name || '',
-              phoneNumber: homeowner.phoneNumber || '',
+              // phoneNupmber: homeowner.phoneNumber || '',
+              phoneNumbers: [],
               paymentCode: homeowner.paymentCode || '',
               personType: String(homeowner.personType) as EPersonType,
               openAt: dayjs(homeowner.openAt),

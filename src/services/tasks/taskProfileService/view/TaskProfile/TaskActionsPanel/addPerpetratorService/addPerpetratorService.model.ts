@@ -1,5 +1,5 @@
 import { createEffect, createStore } from 'effector';
-import { combine, guard, sample } from 'effector';
+import { combine, sample } from 'effector';
 import { createGate } from 'effector-react';
 import {
   OrganizationUserListResponse,
@@ -23,7 +23,7 @@ const $organizationUsers = createStore<OrganizationUserListResponse[] | null>(
 
 sample({
   source: taskProfileService.outputs.$task,
-  clock: guard({
+  clock: sample({
     source: combine($organizationUsers, taskProfileService.outputs.$task),
     clock: OrganizationUsersGate.open,
     filter: ([users, task]) => !users && Boolean(task),

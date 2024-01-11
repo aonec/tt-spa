@@ -1,6 +1,6 @@
-import { useEvent, useStore } from 'effector-react';
+import { useUnit } from 'effector-react';
 import React, { useCallback } from 'react';
-import { useHistory, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { WithLoader } from 'ui-kit/shared/WithLoader';
 import { housingMeteringDeviceProfileService } from './housingMeteringDeviceProfileService.model';
 import { HousingMeteringDeviceProfile } from './view/HousingMeteringDeviceProfile';
@@ -16,21 +16,24 @@ export const HousingMeteringDeviceProfileContainer = () => {
     deviceId: string;
     section?: HousingProfileTabs;
   }>();
-  const history = useHistory();
 
-  const handleCheckModalOpen = useEvent(inputs.handleCheckModalOpen);
+  const navigate = useNavigate();
 
-  const handleDeviceClosingModalOpen = useEvent(
-    inputs.handleDeviceClosingModalOpen,
-  );
-
-  const housingMeteringDevice = useStore(outputs.$housingMeteringDevice);
-  const housingMeteringDeviceTasks = useStore(
-    outputs.$housingMeteringDeviceTask,
-  );
-
-  const pending = useStore(outputs.$pending);
-  const tasksPending = useStore(outputs.$tasksPending);
+  const {
+    handleCheckModalOpen,
+    handleDeviceClosingModalOpen,
+    housingMeteringDevice,
+    housingMeteringDeviceTasks,
+    pending,
+    tasksPending,
+  } = useUnit({
+    handleCheckModalOpen: inputs.handleCheckModalOpen,
+    handleDeviceClosingModalOpen: inputs.handleDeviceClosingModalOpen,
+    housingMeteringDevice: outputs.$housingMeteringDevice,
+    housingMeteringDeviceTasks: outputs.$housingMeteringDeviceTask,
+    pending: outputs.$pending,
+    tasksPending: outputs.$tasksPending,
+  });
 
   const isPermitionToCheckHousingMeteringDevice = usePermission([
     ESecuredIdentityRoleName.Administrator,
@@ -49,9 +52,13 @@ export const HousingMeteringDeviceProfileContainer = () => {
 
   const setGrouptype = useCallback(
     (section: HousingProfileTabs) =>
-      history.replace(`/housingMeteringDevices/${deviceId}/profile/${section}`),
-    [history, deviceId],
+      navigate(`/housingMeteringDevices/${deviceId}/profile/${section}`, {
+        replace: true,
+      }),
+    [navigate, deviceId],
   );
+
+  if (!deviceId) return null;
 
   return (
     <>

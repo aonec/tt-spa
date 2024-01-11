@@ -1,4 +1,4 @@
-import { useStore } from 'effector-react';
+import { useUnit } from 'effector-react';
 import React, { FC, useCallback } from 'react';
 import { ActionComponentProps } from '../TaskActionsPanel.types';
 import { addPerpetratorService } from './addPerpetratorService.model';
@@ -11,13 +11,15 @@ const { OrganizationUsersGate } = gates;
 export const AddPerpetratorContainer: FC<ActionComponentProps> = ({
   handleChange,
 }) => {
-  const organizationUsers = useStore(outputs.$organizationUsers);
+  const { organizationUsers } = useUnit({
+    organizationUsers: outputs.$organizationUsers,
+  });
 
   const handlePerpetratorChange = useCallback(
     (userId: number | null) => {
       if (userId) handleChange({ nextPerpetratorId: userId });
     },
-    [handleChange]
+    [handleChange],
   );
 
   return (

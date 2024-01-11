@@ -1,6 +1,6 @@
 import { createEffect, createEvent, createStore } from 'effector';
 import { message } from 'antd';
-import { forward, sample } from 'effector';
+import { sample } from 'effector';
 import { createGate } from 'effector-react';
 import { OrganizationResponse, OrganizationUpdateRequest } from 'api/types';
 import { EffectFailDataAxiosError } from 'types';
@@ -42,14 +42,14 @@ sample({
   target: updateOrganizationFx,
 });
 
-forward({
-  from: EditCompanyGate.open,
-  to: getCurrentManagingFirmFx,
+sample({
+  clock: EditCompanyGate.open,
+  target: getCurrentManagingFirmFx,
 });
 
-forward({
-  from: EditCompanyGate.close,
-  to: clearCurrentManagingFirm,
+sample({
+  clock: EditCompanyGate.close,
+  target: clearCurrentManagingFirm,
 });
 
 updateOrganizationFx.doneData.watch(() =>

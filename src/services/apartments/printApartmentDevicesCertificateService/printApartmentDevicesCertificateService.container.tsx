@@ -1,13 +1,13 @@
 import React, { FC, useRef } from 'react';
 import { printApartmentDevicesCertificateService } from './printApartmentDevicesCertificateService.models';
 import { Certificate } from './view/Certificate';
-import { useEvent, useStore, useUnit } from 'effector-react';
+import { useUnit } from 'effector-react';
 import { Props } from './printApartmentDevicesCertificateService.types';
 import { FormModal } from 'ui-kit/Modals/FormModal';
 import ReactToPrint from 'react-to-print';
 import { Button } from 'ui-kit/Button';
 import { WithLoader } from 'ui-kit/shared/WithLoader';
-import { currentUserService } from 'services/currentUserService';
+import { currentOrganizationService } from 'services/currentOrganizationService';
 
 const { inputs, outputs, gates } = printApartmentDevicesCertificateService;
 const { HomeownerCerificateGate } = gates;
@@ -15,17 +15,24 @@ const { HomeownerCerificateGate } = gates;
 export const PrintApartmentDevicesCertificateContainer: FC<Props> = ({
   homeownerId,
 }) => {
-  const currentUser = useUnit(currentUserService.outputs.$currentUser);
-
-  const isPJKH = currentUser?.organization?.id === 4;
-
-  const homeownerCertificate = useStore(outputs.$homeownerCertificate);
-  const isLoading = useStore(outputs.$isLoading);
-  const isOpen = useStore(outputs.$isPrintIssueCertificateModalOpen);
-
-  const closeIssueCertificateModalButtonClicked = useEvent(
-    inputs.closeIssueCertificateModalButtonClicked,
+  const currentManagingFirm = useUnit(
+    currentOrganizationService.outputs.$currentManagingFirm,
   );
+
+  const isPJKH = currentManagingFirm?.id === 4;
+
+  const {
+    closeIssueCertificateModalButtonClicked,
+    homeownerCertificate,
+    isLoading,
+    isOpen,
+  } = useUnit({
+    homeownerCertificate: outputs.$homeownerCertificate,
+    isLoading: outputs.$isLoading,
+    isOpen: outputs.$isPrintIssueCertificateModalOpen,
+    closeIssueCertificateModalButtonClicked:
+      inputs.closeIssueCertificateModalButtonClicked,
+  });
 
   const certificateRef = useRef<HTMLDivElement>(null);
 

@@ -9,7 +9,7 @@ import {
   existingHousingStocksQuery,
 } from './createDistrictBorderMapService.api';
 import { CreatingDistrictPayload } from './createDistrictBorderMapService.types';
-import { currentUserService } from 'services/currentUserService';
+import { currentOrganizationService } from 'services/currentOrganizationService';
 
 const CreateDistrictGate = createGate();
 
@@ -74,7 +74,7 @@ export const createDistrictBorderMapService = {
   outputs: {
     $preselectedDistrictPayload,
     $organizationCoordinates:
-      currentUserService.outputs.$organizationCoordinates,
+      currentOrganizationService.outputs.$organizationCoordinates,
   },
   gates: { CreateDistrictGate },
   forms: { createDistrictForm },

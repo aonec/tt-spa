@@ -1,4 +1,4 @@
-import { useEvent, useStore } from 'effector-react';
+import { useUnit } from 'effector-react';
 import React from 'react';
 import { editReadingsHistoryService } from './editReadingsHistoryService.model';
 import { EditReadingsHistoryModal } from './view/EditReadingsHistoryModal';
@@ -6,15 +6,25 @@ import { EditReadingsHistoryModal } from './view/EditReadingsHistoryModal';
 const { inputs, outputs } = editReadingsHistoryService;
 
 export const EditReadingsHistoryContainer = () => {
-  const device = useStore(outputs.$selectedDevice);
-  const isOpen = useStore(outputs.$isOpen);
-  const readings = useStore(outputs.$readings);
-  const readingDate = useStore(outputs.$readingDate);
-
-  const handleCloseModal = useEvent(inputs.closeModal);
-  const setReadingDate = useEvent(inputs.setReadingDate);
-  const setReadings = useEvent(inputs.setReadings);
-  const editReadings = useEvent(inputs.editReadingsHistory);
+  const {
+    device,
+    editReadings,
+    handleCloseModal,
+    isOpen,
+    readingDate,
+    readings,
+    setReadingDate,
+    setReadings,
+  } = useUnit({
+    device: outputs.$selectedDevice,
+    isOpen: outputs.$isOpen,
+    readings: outputs.$readings,
+    readingDate: outputs.$readingDate,
+    handleCloseModal: inputs.closeModal,
+    setReadingDate: inputs.setReadingDate,
+    setReadings: inputs.setReadings,
+    editReadings: inputs.editReadingsHistory,
+  });
 
   if (!device) {
     return null;

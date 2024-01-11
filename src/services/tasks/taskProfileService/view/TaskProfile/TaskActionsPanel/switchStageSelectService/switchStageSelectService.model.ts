@@ -1,5 +1,5 @@
 import { createEffect, createStore } from 'effector';
-import { forward } from 'effector';
+import { sample } from 'effector';
 import { createGate } from 'effector-react';
 import {
   StageListResponse,
@@ -18,9 +18,9 @@ const $nextStages = createStore<StageListResponse[] | null>(null)
   .on(fetchNextStagesFx.doneData, (_, { items }) => items)
   .reset(NextStagesGate.close);
 
-forward({
-  from: NextStagesGate.open.map(({ taskId }) => taskId),
-  to: fetchNextStagesFx,
+sample({
+  clock: NextStagesGate.open.map(({ taskId }) => taskId),
+  target: fetchNextStagesFx,
 });
 
 export const switchStageSelectService = {

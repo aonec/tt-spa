@@ -1,5 +1,5 @@
 import { createEffect, createEvent, createStore } from 'effector';
-import { combine, guard, sample } from 'effector';
+import { combine, sample } from 'effector';
 import { createGate } from 'effector-react';
 import { ApartmentListResponsePagedList } from 'api/types';
 import { getApartmentsList } from './apartmentsListService.api';
@@ -33,7 +33,7 @@ const $currentSegment = createStore<SegmentType>('cells').on(
 
 sample({
   source: ApartmentsListGate.state.map(({ housingStockId }) => housingStockId),
-  clock: guard({
+  clock: sample({
     source: combine(
       $apartmentsPagedList,
       ApartmentsListGate.state.map(({ housingStockId }) => housingStockId),

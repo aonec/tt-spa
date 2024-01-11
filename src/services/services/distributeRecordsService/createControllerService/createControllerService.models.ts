@@ -1,5 +1,5 @@
 import { createEvent, createStore } from 'effector';
-import { forward } from 'effector';
+import { sample } from 'effector';
 import { createIndividualSealControllerMutation } from './createControllerService.api';
 import { message } from 'antd';
 
@@ -16,9 +16,9 @@ createIndividualSealControllerMutation.finished.success.watch(({ params }) => {
   );
 });
 
-forward({
-  from: createIndividualSealControllerMutation.finished.success,
-  to: closeCreateControllerModal,
+sample({
+  clock: createIndividualSealControllerMutation.finished.success,
+  target: closeCreateControllerModal,
 });
 
 export const createControllerService = {

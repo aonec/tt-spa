@@ -1,12 +1,12 @@
 import { useEffect } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { stringifyUrl } from 'query-string';
 import { useUnit } from 'effector-react';
 import { developmentSettingsService } from 'services/developmentSettings/developmentSettings.models';
 import { isDevMode } from 'api/axios';
 
 export function useApp() {
-  const { push } = useHistory();
+  const navigate = useNavigate();
 
   const { resetFeatureToggles } = useUnit({
     resetFeatureToggles: developmentSettingsService.inputs.resetFeatureToggles,
@@ -27,7 +27,7 @@ export function useApp() {
     if (!token) {
       const redirectUrl = window.location.pathname;
 
-      push(stringifyUrl({ url: '/login', query: { redirectUrl } }));
+      navigate(stringifyUrl({ url: '/login', query: { redirectUrl } }));
     }
-  }, [push]);
+  }, [navigate]);
 }

@@ -5,7 +5,7 @@ import {
   TaskResponse,
 } from 'api/types';
 import { HousingStocksWithTasksFiltrationValues } from '../../tasksMapService.types';
-import { OrganizationCoordinates } from 'services/currentUserService/currentUserService.types';
+import { OrganizationCoordinates } from 'services/currentOrganizationService/currentOrganizationService.types';
 
 export type TasksMapViewProps = {
   taskTypes: EManagingFirmTaskFilterTypeNullableStringDictionaryItem[] | null;

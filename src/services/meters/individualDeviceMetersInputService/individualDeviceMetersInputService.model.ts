@@ -1,5 +1,5 @@
 import { createEffect, createEvent, createStore } from 'effector';
-import { forward } from 'effector';
+import { sample } from 'effector';
 import { managementFirmConsumptionRatesService } from '../managementFirmConsumptionRatesService';
 import { apartmentIndividualDevicesMetersService } from '../apartmentIndividualDevicesMetersService/apartmentIndividualDevicesMetersService.model';
 import {
@@ -40,14 +40,14 @@ const deleteMeter = createEvent<DeleteMeterPayload>();
 const $devices =
   apartmentIndividualDevicesMetersService.outputs.$individualDevicesList;
 
-forward({
-  from: uploadMeter,
-  to: uploadMeterFx,
+sample({
+  clock: uploadMeter,
+  target: uploadMeterFx,
 });
 
-forward({
-  from: deleteMeter,
-  to: deleteMeterFx,
+sample({
+  clock: deleteMeter,
+  target: deleteMeterFx,
 });
 
 uploadMeterFx.failData.watch((error) => {

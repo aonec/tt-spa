@@ -1,4 +1,4 @@
-import { useEvent, useStore } from 'effector-react';
+import { useUnit } from 'effector-react';
 import { EPersonType } from 'api/types';
 import React from 'react';
 import { FormModal } from 'ui-kit/Modals/FormModal/FormModal';
@@ -12,18 +12,27 @@ const { inputs, outputs } = editHomeownerService;
 const formId = 'edit-homeowner-modal';
 
 export const EditHomeownerContainer = () => {
-  const isModalOpen = useStore(outputs.$isModalOpen);
-  const isLoading = useStore(outputs.$isLoading);
-  const housingStockPayload = useStore(outputs.$housingStockPayload);
-  const samePersonalAccountNumderId = useStore(
-    outputs.$samePersonalAccountNumderId,
-  );
-  const isConfirmationModalOpen = useStore(outputs.$isConfirmationModalOpen);
-
-  const handleCloseModal = useEvent(inputs.closeEditHomeownerModal);
-  const handleEditHomeowner = useEvent(inputs.handleEditHomeowner);
-  const confirmationModalClose = useEvent(inputs.handleConfirmationModalClose);
-  const handleForced = useEvent(inputs.onForced);
+  const {
+    confirmationModalClose,
+    handleCloseModal,
+    handleEditHomeowner,
+    handleForced,
+    housingStockPayload,
+    isConfirmationModalOpen,
+    isLoading,
+    isModalOpen,
+    samePersonalAccountNumderId,
+  } = useUnit({
+    isModalOpen: outputs.$isModalOpen,
+    isLoading: outputs.$isLoading,
+    housingStockPayload: outputs.$housingStockPayload,
+    samePersonalAccountNumderId: outputs.$samePersonalAccountNumderId,
+    isConfirmationModalOpen: outputs.$isConfirmationModalOpen,
+    handleCloseModal: inputs.closeEditHomeownerModal,
+    handleEditHomeowner: inputs.handleEditHomeowner,
+    confirmationModalClose: inputs.handleConfirmationModalClose,
+    handleForced: inputs.onForced,
+  });
 
   const handleEditHomeownerPreparation = (payload: EditHomeownerPayload) => {
     if (!housingStockPayload?.id) return;
@@ -32,7 +41,7 @@ export const EditHomeownerContainer = () => {
       id: housingStockPayload?.id,
       name: payload.name,
       personalAccountNumber: payload.personalAccountNumber,
-      phoneNumber: payload.phoneNumber,
+      phoneNumbers: payload.phoneNumbers,
       paymentCode: payload.paymentCode,
       personType: String(payload.personType) as EPersonType,
       isMainOnApartment: payload.isMainOnApartment,

@@ -54,7 +54,7 @@ export const CreateSealAppointmentForm: FC<CreateSealAppointmentFormProps> = ({
           appointment?.homeownerFullName || mainHomeowner?.name || undefined,
         homeownerPhone:
           appointment?.homeownerPhone ||
-          mainHomeowner?.phoneNumber ||
+          _.first(mainHomeowner?.phoneNumbers || []) ||
           undefined,
         comment: appointment?.comment || undefined,
         date: appointment?.date || undefined,

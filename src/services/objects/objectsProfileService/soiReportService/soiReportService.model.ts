@@ -1,5 +1,5 @@
 import { createEffect, createEvent, createStore } from 'effector';
-import { combine, guard, sample } from 'effector';
+import { combine, sample } from 'effector';
 import { message } from 'antd';
 import {
   HouseManagementResponse,
@@ -68,7 +68,7 @@ const $selectedCity = createStore<string | null>(null)
 
 sample({
   source: $selectedCity,
-  clock: guard({
+  clock: sample({
     clock: combine($soiReportType, $selectedCity),
     filter: ([type, seletedCity]) =>
       type === SoiReportType.HouseManagement && Boolean(seletedCity),
@@ -79,7 +79,7 @@ sample({
 
 sample({
   source: $selectedCity,
-  clock: guard({
+  clock: sample({
     clock: combine($soiReportType, $selectedCity),
     filter: ([type, seletedCity]) =>
       type === SoiReportType.Address && Boolean(seletedCity),

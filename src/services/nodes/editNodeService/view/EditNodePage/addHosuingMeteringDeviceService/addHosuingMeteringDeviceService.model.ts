@@ -1,6 +1,6 @@
 import { createEffect, createEvent, createStore } from 'effector';
 import { message } from 'antd';
-import { forward, guard, sample } from 'effector';
+import { sample } from 'effector';
 import {
   CreatePipeHousingMeteringDeviceRequest,
   PipeNodeResponse,
@@ -54,7 +54,7 @@ const deviceCreated = createMeteringDeviceFx.doneData;
 
 deviceCreated.watch(() => message.success('Прибор успешно создан!'));
 
-guard({
+sample({
   source: $currentFormStep,
   clock: updateCommonDeviceRequestPayload,
   filter: (stepNumber) => stepNumber < EXTREAM_STEP_NUMBER,
@@ -81,9 +81,9 @@ sample({
   target: createMeteringDeviceFx,
 });
 
-forward({
-  from: createMeteringDeviceFx.doneData,
-  to: closeModal,
+sample({
+  clock: createMeteringDeviceFx.doneData,
+  target: closeModal,
 });
 
 createMeteringDeviceFx.failData.watch((error) =>

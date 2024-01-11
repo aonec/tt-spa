@@ -1,5 +1,5 @@
 import { createEffect, createEvent, createStore } from 'effector';
-import { forward, guard, sample } from 'effector';
+import { sample } from 'effector';
 import { createGate } from 'effector-react';
 import { ApartmentListResponsePagedList } from 'api/types';
 import { GetApartmentsListRequestPayload } from '../displayApartmentsListService/displayApartmentsListService.types';
@@ -46,16 +46,16 @@ $filters
   .reset(clearStores);
 
 sample({
-  clock: guard({
+  clock: sample({
     clock: $filters,
     filter: Boolean,
   }),
   target: getApartmentsListByPersonalNumber,
 });
 
-forward({
-  from: SearchPersonalNumberGate.close,
-  to: clearStores,
+sample({
+  clock: SearchPersonalNumberGate.close,
+  target: clearStores,
 });
 
 export const displayPersonalNumbersListService = {

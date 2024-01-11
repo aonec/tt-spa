@@ -1,5 +1,5 @@
 import { createEffect, createStore } from 'effector';
-import { forward } from 'effector';
+import { sample } from 'effector';
 import { createGate } from 'effector-react';
 import _ from 'lodash';
 import { BuildingFiltersResponse } from 'api/types';
@@ -30,9 +30,9 @@ $hosuingStockfilters
   .on(fetchHosuingStockFiltersFx.doneData, (_, filters) => filters)
   .reset(HousingStockFiltersGate.close);
 
-forward({
-  from: HousingStockFiltersGate.open,
-  to: fetchHosuingStockFiltersFx,
+sample({
+  clock: HousingStockFiltersGate.open,
+  target: fetchHosuingStockFiltersFx,
 });
 
 export const displayHousingStockFiltersService = {

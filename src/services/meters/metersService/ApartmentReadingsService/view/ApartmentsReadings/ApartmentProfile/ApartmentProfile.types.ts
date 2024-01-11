@@ -1,6 +1,8 @@
 import { ApartmentResponse, AppointmentResponse } from 'api/types';
 import {
+  EditPhoneNumberRequest,
   GetApartmentsRequestPayload,
+  RemovePhoneNumberRequest,
   UpdateApartmentRequestPayload,
   UpdateHomeownerRequestPayload,
 } from '../../../ApartmentReadingsService.types';
@@ -21,4 +23,6 @@ export type ApartmentProfileProps = {
   isUpdateHomeownerLoading: boolean;
   isApartmentFetched: boolean;
   nearestAppointment: AppointmentResponse | null;
+  addPhoneNumber: (payload: EditPhoneNumberRequest) => void;
+  deletePhoneNumber: (payload: RemovePhoneNumberRequest) => void;
 };

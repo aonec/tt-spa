@@ -1,5 +1,5 @@
 import { createEffect, createEvent, createStore } from 'effector';
-import { forward, sample } from 'effector';
+import { sample } from 'effector';
 import { BuildingWithTasksResponse, TaskResponse } from 'api/types';
 import { tasksProfileService } from '../tasksProfileService';
 import {
@@ -12,7 +12,7 @@ import {
   HousingStocksWithTasksFiltrationValues,
 } from './tasksMapService.types';
 import { getHousingStocksWithTasksRequestPayload } from './tasksMapService.utils';
-import { currentUserService } from 'services/currentUserService';
+import { currentOrganizationService } from 'services/currentOrganizationService';
 
 const applyFilters = createEvent<HousingStocksWithTasksFiltrationValues>();
 
@@ -71,9 +71,9 @@ sample({
   target: fetchHousingStocksWithTasksFx,
 });
 
-forward({
-  from: handleClickTask,
-  to: fetchTaskFx,
+sample({
+  clock: handleClickTask,
+  target: fetchTaskFx,
 });
 
 const $isLoadingHousingStocksWithTasks = fetchHousingStocksWithTasksFx.pending;
@@ -99,6 +99,6 @@ export const tasksMapService = {
     $isLoadingTask,
     $organizationUsers: tasksProfileService.outputs.$organizationUsers,
     $organizationCoordinates:
-      currentUserService.outputs.$organizationCoordinates,
+      currentOrganizationService.outputs.$organizationCoordinates,
   },
 };

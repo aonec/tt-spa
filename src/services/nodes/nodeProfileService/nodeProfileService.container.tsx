@@ -1,6 +1,6 @@
-import { useEvent, useStore } from 'effector-react';
+import { useUnit } from 'effector-react';
 import React from 'react';
-import { useHistory, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { ChangeNodeStatusContainer } from '../changeNodeStatusService';
 import { ChangeNodeTypeContainer } from '../changeNodeTypeService';
 import { nodeProfileService } from './nodeProfileService.model';
@@ -18,18 +18,26 @@ export const NodeProfileContainer = () => {
     section?: PipeNodeProfileSection;
   }>();
 
-  const history = useHistory();
+  const navigate = useNavigate();
 
-  const pipeNode = useStore(outputs.$pipeNode);
-  const isLoading = useStore(outputs.$isLoading);
-
-  const openChangeNodeStatusModal = useEvent(inputs.openChangeNodeStatusModal);
-  const openChangeNodeTypeModal = useEvent(inputs.openChangeNodeTypeModal);
+  const {
+    isLoading,
+    pipeNode,
+    openChangeNodeStatusModal,
+    openChangeNodeTypeModal,
+  } = useUnit({
+    pipeNode: outputs.$pipeNode,
+    isLoading: outputs.$isLoading,
+    openChangeNodeStatusModal: inputs.openChangeNodeStatusModal,
+    openChangeNodeTypeModal: inputs.openChangeNodeTypeModal,
+  });
 
   const handleChangeTab = (section: PipeNodeProfileSection) =>
-    history.replace(`/nodes/${nodeId}/${section}`);
+    navigate(`/nodes/${nodeId}/${section}`, {
+      replace: true,
+    });
 
-  const handleEditNode = () => history.push(`/nodes/${pipeNode?.id}/edit`);
+  const handleEditNode = () => navigate(`/nodes/${pipeNode?.id}/edit`);
 
   const isPermitionToEditsNode = usePermission([
     ESecuredIdentityRoleName.Administrator,

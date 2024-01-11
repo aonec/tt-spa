@@ -1,4 +1,4 @@
-import { createEffect, createStore, forward } from 'effector';
+import { createEffect, createStore, sample } from 'effector';
 import { createGate } from 'effector-react';
 import {
   EManagingFirmTaskFilterTypeNullableStringDictionaryItem,
@@ -41,9 +41,9 @@ const fetchPerpetratorIds = createEffect<
 
 export const TaskTypesGate = createGate();
 
-forward({
-  from: TaskTypesGate.open,
-  to: [fetchTaskTypesFx, fetchHousingManagments, fetchPerpetratorIds],
+sample({
+  clock: TaskTypesGate.open,
+  target: [fetchTaskTypesFx, fetchHousingManagments, fetchPerpetratorIds],
 });
 
 $taskTypes.on(fetchTaskTypesFx.doneData, (_, types) => types);

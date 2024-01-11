@@ -1,5 +1,5 @@
 import { createEffect, createEvent, createStore } from 'effector';
-import { guard, sample } from 'effector';
+import { sample } from 'effector';
 import {
   HouseManagementResponse,
   HousingStockResponse,
@@ -65,7 +65,7 @@ const fetchOrganzationFx = createEffect<void, OrganizationResponsePagedList>(
   getOrganizations,
 );
 
-guard({
+sample({
   source: $unloadSelectType,
   filter: (value) => value === UnloadingType.AllManagingFirm,
   target: fetchOrganzationFx,
@@ -76,7 +76,7 @@ const fetchHouseManagementsFx = createEffect<
   HouseManagementResponse[] | null
 >(getHouseManagements);
 
-guard({
+sample({
   source: $unloadSelectType,
   filter: (value) => value === UnloadingType.ByHouseManagement,
   target: fetchHouseManagementsFx,

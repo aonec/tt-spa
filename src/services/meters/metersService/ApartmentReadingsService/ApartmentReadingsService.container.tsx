@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { ApartmentsReadings } from './view/ApartmentsReadings';
 import { apartmentReadingsService } from './ApartmentReadingsService.model';
 import { useUnit } from 'effector-react';
-import { useHistory, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { ESecuredIdentityRoleName } from 'api/types';
 import { usePermission } from 'hooks/usePermission';
 import { SelectPersonalNumberActionContainer } from 'services/homeowner/personalNumber/selectPersonalNumberActionService';
@@ -12,7 +12,7 @@ import { getApartmentQuery } from './ApartmentReadingsService.api';
 const { inputs, outputs } = apartmentReadingsService;
 
 export const ApartmentReadingsContainer = () => {
-  const history = useHistory();
+  const navigate = useNavigate();
   const { id } = useParams<{ id: string }>();
 
   const {
@@ -33,6 +33,8 @@ export const ApartmentReadingsContainer = () => {
     allIndividualDeviceMountPlaces,
     isApartmentFetched,
     nearestAppointment,
+    removePhoneNumber,
+    addPhoneNumber,
   } = useUnit({
     printIssueCertificate: inputs.printIssueCertificate,
     isUpdateHomeownerLoading: outputs.$isUpdateHomeownerLoading,
@@ -51,6 +53,8 @@ export const ApartmentReadingsContainer = () => {
     allIndividualDeviceMountPlaces: outputs.$allIndividualDeviceMountPlaces,
     isApartmentFetched: getApartmentQuery.$succeeded,
     nearestAppointment: outputs.$apartmentAppointment,
+    removePhoneNumber: inputs.removePhoneNumber,
+    addPhoneNumber: inputs.addPhoneNumber,
   });
 
   const isPermitionToApartmentStatusPatch = usePermission([
@@ -64,9 +68,9 @@ export const ApartmentReadingsContainer = () => {
     return inputs.handleApartmentLoaded.watch(({ result: apartment }) => {
       if (!apartment || apartment.id === Number(id)) return;
 
-      history.push(`/meters/apartments/${apartment.id}`);
+      navigate(`/meters/apartments/${apartment.id}`);
     }).unsubscribe;
-  }, [history, id]);
+  }, [navigate, id]);
 
   const handlePrintIssueCertificate = () => {
     printIssueCertificate(Number(id));
@@ -97,6 +101,8 @@ export const ApartmentReadingsContainer = () => {
         isUpdateHomeownerLoading={isUpdateHomeownerLoading}
         isApartmentFetched={isApartmentFetched}
         nearestAppointment={nearestAppointment}
+        deletePhoneNumber={removePhoneNumber}
+        addPhoneNumber={addPhoneNumber}
       />
     </>
   );

@@ -1,6 +1,6 @@
 import { createEffect, createEvent, createStore } from 'effector';
 import { message } from 'antd';
-import { combine, forward, guard, sample } from 'effector';
+import { combine, sample } from 'effector';
 import dayjs from 'api/dayjs';
 import { IndividualDeviceListItemResponse } from 'api/types';
 import { EffectFailDataAxiosError } from 'types';
@@ -44,7 +44,7 @@ const $readings = createStore<BufferedReadingValues>({
   .reset(closeModal);
 
 sample({
-  source: guard({
+  source: sample({
     source: combine($selectedDevice, $readings, $readingDate),
     filter: ([device]) => Boolean(device),
   }),
@@ -64,9 +64,9 @@ sample({
   target: editReadingsHistoryFx,
 });
 
-forward({
-  from: editReadingsHistoryFx.doneData,
-  to: [
+sample({
+  clock: editReadingsHistoryFx.doneData,
+  target: [
     apartmentIndividualDevicesMetersService.inputs.refetchIndividualDevices,
     closeModal,
   ],

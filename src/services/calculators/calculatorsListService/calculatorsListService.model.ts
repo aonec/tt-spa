@@ -1,5 +1,5 @@
 import { createEffect, createEvent, createStore } from 'effector';
-import { forward, sample } from 'effector';
+import { sample } from 'effector';
 import { createGate } from 'effector-react';
 import { CalculatorIntoHousingStockResponse } from 'api/types';
 import { getCalculatorsList } from './calculatorsListService.api';
@@ -33,9 +33,9 @@ sample({
   target: fetchCalculatorsFx,
 });
 
-forward({
-  from: CalculatorsGate.state.map(({ buildingId }) => buildingId),
-  to: fetchCalculatorsFx,
+sample({
+  clock: CalculatorsGate.state.map(({ buildingId }) => buildingId),
+  target: fetchCalculatorsFx,
 });
 
 export const calculatorsListService = {

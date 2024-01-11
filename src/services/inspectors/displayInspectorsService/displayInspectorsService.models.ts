@@ -1,5 +1,5 @@
 import { createEffect, createStore } from 'effector';
-import { forward } from 'effector';
+import { sample } from 'effector';
 import { createGate } from 'effector-react';
 import { InspectorResponse } from 'api/types';
 import { getInspectors } from './displayInspectorsService.api';
@@ -25,9 +25,9 @@ $inspectorsList
   })
   .reset(InspectorsGate.close);
 
-forward({
-  from: InspectorsGate.open,
-  to: fetchInspectorsListFx,
+sample({
+  clock: InspectorsGate.open,
+  target: fetchInspectorsListFx,
 });
 
 export const displayInspectorsService = {

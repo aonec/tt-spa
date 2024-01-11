@@ -1,4 +1,4 @@
-import { useEvent, useStore } from 'effector-react';
+import { useUnit } from 'effector-react';
 import React, { FC } from 'react';
 import { PaginationSC } from './displayPersonalNumberListSevice.styled';
 import { displayPersonalNumbersListService } from './displayPersonalNumbersListService.model';
@@ -15,13 +15,21 @@ const { ExistingCitiesGate } = addressSearchService.gates;
 export const DisplayPersonalNumbersListContainer: FC<HeaderInject> = ({
   Header,
 }) => {
-  const cities = useStore(outputs.$cities);
-  const apartments = useStore(outputs.$apartments);
-  const isLoading = useStore(outputs.$isLoading);
-  const apartmentsListPage = useStore(outputs.$apartmentsListPage);
-
-  const handleSearch = useEvent(inputs.searchPersonalNumbers);
-  const handlePageNumberChanged = useEvent(inputs.setPageNumber);
+  const {
+    apartments,
+    apartmentsListPage,
+    cities,
+    handlePageNumberChanged,
+    handleSearch,
+    isLoading,
+  } = useUnit({
+    cities: outputs.$cities,
+    apartments: outputs.$apartments,
+    isLoading: outputs.$isLoading,
+    apartmentsListPage: outputs.$apartmentsListPage,
+    handleSearch: inputs.searchPersonalNumbers,
+    handlePageNumberChanged: inputs.setPageNumber,
+  });
 
   const isNotEmpty = apartments.length > 0;
 
