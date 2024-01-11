@@ -2807,6 +2807,15 @@ export interface HomeownerAccountRemovePhoneNumberRequest {
   phoneNumber: string;
 }
 
+export interface HomeownerAccountReplaceAllPhoneNumbersRequest {
+  phoneNumber: string;
+}
+
+export interface HomeownerAccountReplacePhoneNumberRequest {
+  oldPhoneNumber: string;
+  newPhoneNumber: string;
+}
+
 export interface HomeownerAccountReplaceRequest {
   /** @format uuid */
   replaceableAccountId: string;
@@ -2881,7 +2890,6 @@ export interface HomeownerAccountUpdateRequest {
   /** @format double */
   ownershipArea?: number | null;
   isMainOnApartment?: boolean | null;
-  phoneNumbers?: string[] | null;
 }
 
 export interface HomeownerCertificateResponse {
@@ -9463,6 +9471,54 @@ export class Api<
     ) =>
       this.request<string[], ErrorApiResponse>({
         path: `/api/HomeownerAccounts/${id}/RemovePhone`,
+        method: 'POST',
+        body: data,
+        secure: true,
+        type: ContentType.Json,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li><li>Администратор УК без назначений задач</li>
+     *
+     * @tags HomeownerAccounts
+     * @name HomeownerAccountsReplacePhoneCreate
+     * @summary HomeownersUpdate
+     * @request POST:/api/HomeownerAccounts/{id}/ReplacePhone
+     * @secure
+     */
+    homeownerAccountsReplacePhoneCreate: (
+      id: string,
+      data: HomeownerAccountReplacePhoneNumberRequest,
+      params: RequestParams = {},
+    ) =>
+      this.request<string[], ErrorApiResponse>({
+        path: `/api/HomeownerAccounts/${id}/ReplacePhone`,
+        method: 'POST',
+        body: data,
+        secure: true,
+        type: ContentType.Json,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li><li>Администратор УК без назначений задач</li>
+     *
+     * @tags HomeownerAccounts
+     * @name HomeownerAccountsReplaceAllPhonesCreate
+     * @summary HomeownersUpdate
+     * @request POST:/api/HomeownerAccounts/{id}/ReplaceAllPhones
+     * @secure
+     */
+    homeownerAccountsReplaceAllPhonesCreate: (
+      id: string,
+      data: HomeownerAccountReplaceAllPhoneNumbersRequest,
+      params: RequestParams = {},
+    ) =>
+      this.request<string[], ErrorApiResponse>({
+        path: `/api/HomeownerAccounts/${id}/ReplaceAllPhones`,
         method: 'POST',
         body: data,
         secure: true,
