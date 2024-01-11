@@ -5,7 +5,7 @@ import axios from 'api/axios';
 import { FeatureToggles, FeatureTogglesSet } from './developmentSettings.types';
 import { currentOrganizationService } from 'services/currentOrganizationService';
 import { OrganizationResponse } from 'api/types';
-import { loadFeatureToggles } from './developmentSettings.utils';
+import { prepareFeatureToggles } from './developmentSettings.utils';
 
 const $isDevSettingsModalOpen = createStore(false);
 
@@ -64,7 +64,7 @@ sample({
 
     if (!toggles) return null;
 
-    return loadFeatureToggles(toggles);
+    return prepareFeatureToggles(toggles);
   },
   target: setFeatureToggles,
 });

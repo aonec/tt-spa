@@ -7,7 +7,7 @@ const togglesDisctionary: {
   sealService: ['services', 'districtsManage'],
 };
 
-export const loadFeatureToggles = (
+export const prepareFeatureToggles = (
   featureToggles: FeatureTogglesResponse,
 ): FeatureTogglesSet => {
   return Object.entries(togglesDisctionary).reduce((acc, [key, toggles]) => {
