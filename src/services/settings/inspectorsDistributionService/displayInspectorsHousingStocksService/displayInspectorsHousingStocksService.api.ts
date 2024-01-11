@@ -1,12 +1,26 @@
-import { axios } from 'api/axios';
 import { GetInspectorsHousingStocksRequestParams } from './types';
-import { InspectorOnBuildingResponse } from 'api/types';
-import { createQuery } from '@farfetched/core';
-import { createEffect } from 'effector';
+import {
+  InspectorOnBuildingResponse,
+  InspectorOnBuildingResponseListSuccessApiResponse,
+} from 'api/types';
+import { createQueryWithAuth } from 'api/farfetched';
+import { Contract } from '@farfetched/core';
 
-export const getInspectorsHousingStocksQuery = createQuery({
-  effect: createEffect<
-    GetInspectorsHousingStocksRequestParams,
-    InspectorOnBuildingResponse[] | null
-  >(async (params) => await axios.get('Buildings/inspectors', { params })),
+const getInspectorsHousingContract: Contract<
+  unknown,
+  InspectorOnBuildingResponseListSuccessApiResponse
+> = {
+  isData: (res): res is InspectorOnBuildingResponseListSuccessApiResponse =>
+    Boolean(res),
+  getErrorMessages: () => ['Invalid data'],
+};
+
+export const getInspectorsHousingStocksQuery = createQueryWithAuth<
+  GetInspectorsHousingStocksRequestParams,
+  InspectorOnBuildingResponse[] | null
+>({
+  url: 'Buildings/inspectors',
+  response: {
+    contract: getInspectorsHousingContract,
+  },
 });
