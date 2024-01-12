@@ -8,7 +8,7 @@ import { requestFailed, setIsOnline } from './model';
 
 const method: 'GET' = 'GET';
 
-export function createQueryWithAuth<
+export function createQuery<
   Params extends object | void,
   Data,
   TransformedData = Data,

@@ -1,7 +1,7 @@
-import { createQueryWithAuth } from 'api/farfetched';
+import { createQuery } from 'api/farfetched';
 import { PipeNodeResponse } from 'api/types';
 
-export const getPipeNodeQuery = createQueryWithAuth<
+export const getPipeNodeQuery = createQuery<
   { pipeNodeId: number },
   PipeNodeResponse | null
 >({
