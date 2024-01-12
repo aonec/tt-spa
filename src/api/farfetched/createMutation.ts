@@ -10,7 +10,7 @@ import { developmentSettingsService } from 'services/developmentSettings/develop
 import { MutationFactoryParams, SuccessResponse } from './types';
 import { requestFailed, setIsOnline } from './model';
 
-export function createMutationWithAuth<
+export function createMutation<
   Params extends object | void,
   Data,
   TransformedData,

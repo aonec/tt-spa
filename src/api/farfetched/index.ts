@@ -1,2 +1,2 @@
-export { createMutationWithAuth } from './createMutationWithAuth';
+export { createMutation } from './createMutation';
 export { createQuery } from './createQuery';
