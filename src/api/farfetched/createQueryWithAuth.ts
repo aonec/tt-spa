@@ -3,7 +3,7 @@ import { sample } from 'effector';
 import { tokensService } from '../tokensService';
 import { developmentSettingsService } from 'services/developmentSettings/developmentSettings.models';
 import { authBarrier } from '../tokensService/tokensService.relations';
-import { QueryFactoryParams } from './types';
+import { QueryFactoryParams, SuccessResponse } from './types';
 import { requestFailed, setIsOnline } from './model';
 
 const method: 'GET' = 'GET';
@@ -14,7 +14,12 @@ export function createQueryWithAuth<
   TransformedData = Data,
 >({
   url,
-  response,
+  response = {
+    contract: {
+      isData: (res): res is SuccessResponse<Data> => Boolean(res),
+      getErrorMessages: () => ['Invalid data'],
+    },
+  },
   errorConverter,
 }: QueryFactoryParams<Params, Data, TransformedData>) {
   const query = createJsonQuery({

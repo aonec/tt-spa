@@ -7,7 +7,7 @@ export type QueryFactoryParams<
   TransformedData,
 > = {
   url: ((params: Params) => string) | string;
-  response: {
+  response?: {
     contract: Contract<unknown, { successResponse: Data | null }>;
     mapData?: (payload: {
       result: Data | null;
@@ -42,3 +42,5 @@ export type OperationFailDataError = {
     Text: string;
   };
 };
+
+export type SuccessResponse<T> = { successResponse: T };
