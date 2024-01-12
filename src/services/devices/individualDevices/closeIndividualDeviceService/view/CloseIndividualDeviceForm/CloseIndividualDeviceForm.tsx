@@ -23,9 +23,10 @@ export const CloseIndividualDeviceForm: FC<CloseIndividualDeviceFormProps> = ({
       <GroupWrapper>
         <FormItem label="Дата снятия прибора с учета">
           <DatePicker
+            picker="month"
+            format="MMMM YYYY"
             value={fields.closingDate.value}
             onChange={(date) => fields.closingDate.onChange(date)}
-            format="DD.MM.YYYY"
             disabledDate={(current) => {
               return current && current > dayjs().endOf('day');
             }}

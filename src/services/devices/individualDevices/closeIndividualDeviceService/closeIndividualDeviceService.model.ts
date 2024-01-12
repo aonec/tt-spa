@@ -56,9 +56,10 @@ sample({
   filter: Boolean,
   fn: ({ id }, form) => ({
     deviceId: id,
-    closingDate: form.closingDate
-      ? form.closingDate.format('YYYY-MM-DD')
-      : dayjs().format('YYYY-MM-DD'),
+    closingMonth: form.closingDate
+      ? form.closingDate?.month() + 1
+      : dayjs().month() + 1,
+    closingYear: form.closingDate?.year(),
     closingReason: form.closingReason,
     documentsIds: form.documentsIds.map((document) => document.id),
   }),
