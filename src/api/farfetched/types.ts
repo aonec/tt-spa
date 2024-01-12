@@ -26,9 +26,9 @@ export type MutationFactoryParams<
   url: ((params: Params) => string) | string;
   method: 'POST' | 'PUT' | 'PATCH' | 'DELETE';
   body?: Body;
-  response: {
+  response?: {
     contract: Contract<unknown, { successResponse: Data | null }>;
-    mapData: (payload: {
+    mapData?: (payload: {
       result: Data | null;
       params: Params;
     }) => TransformedData;

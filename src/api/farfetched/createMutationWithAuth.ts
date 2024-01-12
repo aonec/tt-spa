@@ -7,7 +7,7 @@ import {
 import { authBarrier } from '../tokensService/tokensService.relations';
 import { tokensService } from '../tokensService';
 import { developmentSettingsService } from 'services/developmentSettings/developmentSettings.models';
-import { MutationFactoryParams } from './types';
+import { MutationFactoryParams, SuccessResponse } from './types';
 import { requestFailed, setIsOnline } from './model';
 
 export function createMutationWithAuth<
@@ -17,7 +17,12 @@ export function createMutationWithAuth<
   Body,
 >({
   url,
-  response,
+  response = {
+    contract: {
+      isData: (res): res is SuccessResponse<Data> => Boolean(res),
+      getErrorMessages: () => ['Invalid data'],
+    },
+  },
   abort,
   method,
   body,
@@ -48,7 +53,9 @@ export function createMutationWithAuth<
     response: {
       ...response,
       mapData: ({ params, result }) =>
-        response.mapData({ params, result: result.successResponse }),
+        response.mapData
+          ? response.mapData({ params, result: result.successResponse })
+          : result.successResponse,
     },
     concurrency: {
       abort,
