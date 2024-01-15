@@ -2,7 +2,7 @@ import { VictoryLabelProps } from 'victory';
 
 export type GraphTooltipProps = VictoryLabelProps & {
   datum?: {
-    timeUtc: string;
+    time: string;
     value: number;
   };
   measure: string;
