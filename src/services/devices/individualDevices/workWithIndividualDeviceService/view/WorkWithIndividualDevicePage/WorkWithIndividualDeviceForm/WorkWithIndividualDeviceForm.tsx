@@ -78,6 +78,8 @@ export const WorkWithIndividualDeviceForm: FC<
     }
   }, [isCheck, fields.oldDeviceReadings.value, set]);
 
+  console.log(fields.newDeviceReadings.value);
+
   return (
     <Form>
       {!isCheck && (

@@ -29,6 +29,7 @@ export const CloseIndividualDeviceContainer = () => {
         <CloseIndividualDeviceForm
           form={forms.closeIndividualDeviceForm}
           formId={formId}
+          device={device}
         />
       }
     />

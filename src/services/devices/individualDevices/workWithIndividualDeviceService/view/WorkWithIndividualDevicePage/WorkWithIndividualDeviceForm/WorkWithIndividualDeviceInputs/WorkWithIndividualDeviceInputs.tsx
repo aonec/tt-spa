@@ -55,6 +55,7 @@ export const WorkWithIndividualDeviceInputs: FC<
   }, [isCanDown]);
 
   return (
+
     <Wrapper>
       <div>
         <TitleWrapper>{title}</TitleWrapper>

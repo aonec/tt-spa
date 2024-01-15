@@ -4,17 +4,23 @@ import { useForm } from 'effector-forms';
 import { Form } from 'antd';
 import { FormItem } from 'ui-kit/FormItem';
 import { DocumentsUploadContainer } from 'ui-kit/DocumentsService';
-import { EClosingReason, EDocumentType } from 'api/types';
+import {
+  EClosingReason,
+  EDocumentType,
+  EIndividualDeviceRateType,
+} from 'api/types';
 import { ErrorMessage } from 'ui-kit/ErrorMessage';
 import { Select } from 'ui-kit/Select';
 import { ClosingReasonsDictionary } from 'dictionaries';
 import dayjs from 'api/dayjs';
 import { DatePicker } from 'ui-kit/DatePicker';
 import { GroupWrapper } from './CloseIndividualDeviceForm.styled';
+import { WorkWithIndividualDeviceInputs } from 'services/devices/individualDevices/workWithIndividualDeviceService/view/WorkWithIndividualDevicePage/WorkWithIndividualDeviceForm/WorkWithIndividualDeviceInputs';
 
 export const CloseIndividualDeviceForm: FC<CloseIndividualDeviceFormProps> = ({
   form,
   formId,
+  device,
 }) => {
   const { errorText, fields, submit } = useForm(form);
 
@@ -50,13 +56,38 @@ export const CloseIndividualDeviceForm: FC<CloseIndividualDeviceFormProps> = ({
           <ErrorMessage>{errorText('closingReason')}</ErrorMessage>
         </FormItem>
       </GroupWrapper>
-      <DocumentsUploadContainer
+      {/* <DocumentsUploadContainer
         uniqId="close-individual-device"
         label="Добавьте акт снятия прибора с учета"
         type={EDocumentType.DeviceClosingAct}
         onChange={fields.documentsIds.onChange}
         documents={fields.documentsIds.value}
         max={6}
+      /> */}
+
+      <WorkWithIndividualDeviceInputs
+        title={'Закрываемый прибор'}
+        model={device?.model || ''}
+        resource={device?.resource || null}
+        serialNumber={device?.serialNumber || ''}
+        rateType={device?.rateType || EIndividualDeviceRateType.OneZone}
+        readings={{
+          "0": {
+            value1: '1',
+            value2: '2',
+            value3: '3',
+            value4: '4',
+            readingDate: '',
+          },
+          "-1": {
+            value1: '1',
+            value2: '2',
+            value3: '3',
+            value4: '4',
+            readingDate: '',
+          },
+        }}
+        onChange={(readings) => {}}
       />
     </Form>
   );
