@@ -17,7 +17,7 @@ export type GraphViewProps = {
 
 export type PreparedArchiveValues = {
   value: number;
-  timeUtc: string;
+  time: string;
 } & ArchivesDataGroupValue;
 
 export type GetTaskXPosPayload = {

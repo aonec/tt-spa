@@ -93,9 +93,8 @@ export const GraphView: React.FC<GraphViewProps> = ({
   }
 
   const archiveLength = preparedArchiveValues.length;
-
   const tickValues = formTicks(preparedArchiveValues, reportType);
-  const ticksData = tickValues.map((tick) => tick.timeUtc);
+  const ticksData = tickValues.map((tick) => tick.time);
 
   const measure = requiredArchiveValues?.measure;
 
@@ -169,7 +168,7 @@ export const GraphView: React.FC<GraphViewProps> = ({
 
         <VictoryArea
           name="graph"
-          sortKey="timeUtc"
+          sortKey="time"
           interpolation="monotoneX"
           labelComponent={
             <CustomTooltip
@@ -190,7 +189,7 @@ export const GraphView: React.FC<GraphViewProps> = ({
           labels={() => ''}
           style={tooltipStyle}
           data={preparedArchiveValues}
-          x="timeUtc"
+          x="time"
           y="value"
         />
         {isAverageLineRendered &&

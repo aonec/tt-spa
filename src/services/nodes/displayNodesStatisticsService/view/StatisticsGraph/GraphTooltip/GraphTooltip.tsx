@@ -16,7 +16,9 @@ export const GraphTooltip: React.FC<GraphTooltipProps> = (props) => {
         style={{ overflow: 'visible' }}
       >
         <TooltipBlock value={datum!.value}>
-          <DateBlock>{dayjs(datum?.timeUtc).format('DD.MM.YYYY')}</DateBlock>
+          <DateBlock>
+            {dayjs(datum?.time).utcOffset(0).format('DD.MM.YYYY')}
+          </DateBlock>
           <Value>
             {datum!.value.toFixed(3)} {measure}
           </Value>
