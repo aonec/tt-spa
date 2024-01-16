@@ -15,7 +15,7 @@ export const closeIndivididualDeviceMutation = createMutation({
   ),
 });
 
-export const fetchEditReadingsHistory = ({
+export const editReadingsHistory = ({
   deviceId,
   newReadings,
 }: EditReadingsHistoryPayload): Promise<void> =>

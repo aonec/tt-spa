@@ -4,19 +4,20 @@ import { getFilledArray } from 'utils/getFilledArray';
 import { getReadingValueKey } from '../../individualDeviceMetersInputService.utils';
 import { Input, InputWrapper, Wrapper } from './MetersInputsBlock.styled';
 import { BufferedReadingValues } from './MetersInputsBlock.types';
+import { fromEnter } from 'ui-kit/shared/DatePickerNative';
 
 export const MetersInputsBlockPure: FC<{
   rateNum: number;
   bufferedReadingValues: BufferedReadingValues;
+  handleReadingInputChange: (e: ChangeEvent<HTMLInputElement>) => void;
   isDisabled?: boolean;
   resource?: EResourceType;
-  handleReadingInputChange: (e: ChangeEvent<HTMLInputElement>) => void;
 }> = ({
   rateNum,
   bufferedReadingValues,
+  handleReadingInputChange,
   isDisabled,
   resource,
-  handleReadingInputChange,
 }) => {
   const inputsArray = useMemo(
     () =>
@@ -34,6 +35,9 @@ export const MetersInputsBlockPure: FC<{
               name={valueKey}
               placeholder={`T${index + 1}`}
               onChange={handleReadingInputChange}
+              onKeyDown={fromEnter(() => {
+                console.log({ readingValue: readingValue, valueKey: valueKey });
+              })}
             />
           </InputWrapper>
         );

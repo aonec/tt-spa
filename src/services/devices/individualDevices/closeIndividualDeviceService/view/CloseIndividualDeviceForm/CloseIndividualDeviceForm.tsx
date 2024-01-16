@@ -10,7 +10,7 @@ import { ClosingReasonsDictionary } from 'dictionaries';
 import dayjs from 'api/dayjs';
 import { DatePicker } from 'ui-kit/DatePicker';
 import { GroupWrapper } from './CloseIndividualDeviceForm.styled';
-import { WorkWithIndividualDeviceInputs } from 'services/devices/individualDevices/workWithIndividualDeviceService/view/WorkWithIndividualDevicePage/WorkWithIndividualDeviceForm/WorkWithIndividualDeviceInputs';
+import { IndividualDeviceCarouselInputsBar } from './IndividualDeviceCarouselInputsBar';
 
 export const CloseIndividualDeviceForm: FC<CloseIndividualDeviceFormProps> = ({
   form,
@@ -52,7 +52,7 @@ export const CloseIndividualDeviceForm: FC<CloseIndividualDeviceFormProps> = ({
         </FormItem>
       </GroupWrapper>
 
-      <WorkWithIndividualDeviceInputs
+      <IndividualDeviceCarouselInputsBar
         title={'Закрываемый прибор'}
         model={device?.model || ''}
         resource={device?.resource || null}
