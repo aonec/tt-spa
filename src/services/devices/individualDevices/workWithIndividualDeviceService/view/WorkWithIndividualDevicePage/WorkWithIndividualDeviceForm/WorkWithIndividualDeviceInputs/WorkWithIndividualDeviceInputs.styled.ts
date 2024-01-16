@@ -43,6 +43,7 @@ export const HeaderWrapper = styled.div`
   width: 100%;
 
   margin-bottom: 12px;
+  user-select: none;
 `;
 
 export const MonthWrapperWithMargin = styled(MonthWrapper)`

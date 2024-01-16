@@ -3,6 +3,7 @@ import { createMutation } from '@farfetched/core';
 import { createEffect } from 'effector';
 import { CloseIndividualDevicePayload } from './closeIndividualDeviceService.types';
 import { EffectFailDataAxiosError } from 'types';
+import { EditReadingsHistoryPayload } from 'services/meters/editReadingsHistoryService/editReadingsHistoryService.types';
 
 export const closeIndivididualDeviceMutation = createMutation({
   effect: createEffect<
@@ -13,3 +14,11 @@ export const closeIndivididualDeviceMutation = createMutation({
     axios.post(`IndividualDevices/${deviceId}/close`, payload),
   ),
 });
+
+export const fetchEditReadingsHistory = ({
+  deviceId,
+  newReadings,
+}: EditReadingsHistoryPayload): Promise<void> =>
+  axios.post(`IndividualDevices/${deviceId}/editReadingsHistory`, {
+    newReadings: [newReadings],
+  });

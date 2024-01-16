@@ -3,12 +3,7 @@ import { CloseIndividualDeviceFormProps } from './CloseIndividualDeviceForm.type
 import { useForm } from 'effector-forms';
 import { Form } from 'antd';
 import { FormItem } from 'ui-kit/FormItem';
-import { DocumentsUploadContainer } from 'ui-kit/DocumentsService';
-import {
-  EClosingReason,
-  EDocumentType,
-  EIndividualDeviceRateType,
-} from 'api/types';
+import { EClosingReason, EIndividualDeviceRateType } from 'api/types';
 import { ErrorMessage } from 'ui-kit/ErrorMessage';
 import { Select } from 'ui-kit/Select';
 import { ClosingReasonsDictionary } from 'dictionaries';
@@ -56,14 +51,6 @@ export const CloseIndividualDeviceForm: FC<CloseIndividualDeviceFormProps> = ({
           <ErrorMessage>{errorText('closingReason')}</ErrorMessage>
         </FormItem>
       </GroupWrapper>
-      {/* <DocumentsUploadContainer
-        uniqId="close-individual-device"
-        label="Добавьте акт снятия прибора с учета"
-        type={EDocumentType.DeviceClosingAct}
-        onChange={fields.documentsIds.onChange}
-        documents={fields.documentsIds.value}
-        max={6}
-      /> */}
 
       <WorkWithIndividualDeviceInputs
         title={'Закрываемый прибор'}
@@ -71,23 +58,10 @@ export const CloseIndividualDeviceForm: FC<CloseIndividualDeviceFormProps> = ({
         resource={device?.resource || null}
         serialNumber={device?.serialNumber || ''}
         rateType={device?.rateType || EIndividualDeviceRateType.OneZone}
-        readings={{
-          "0": {
-            value1: '1',
-            value2: '2',
-            value3: '3',
-            value4: '4',
-            readingDate: '',
-          },
-          "-1": {
-            value1: '1',
-            value2: '2',
-            value3: '3',
-            value4: '4',
-            readingDate: '',
-          },
+        readings={fields.deviceReadings.value}
+        onChange={(readings) => {
+          fields.deviceReadings.onChange(readings);
         }}
-        onChange={(readings) => {}}
       />
     </Form>
   );

@@ -7,6 +7,8 @@ import { createForm } from 'effector-forms';
 import dayjs from 'api/dayjs';
 import { Document } from 'ui-kit/DocumentsService';
 import { apartmentIndividualDevicesMetersService } from 'services/meters/apartmentIndividualDevicesMetersService';
+import { prepareDeviceReadings } from '../workWithIndividualDeviceService/workWithIndividualDeviceService.utils';
+import { PreparedForFormReadings } from '../workWithIndividualDeviceService/workWithIndividualDeviceService.types';
 
 const closeModal = createEvent();
 const openModal = createEvent<IndividualDeviceListItemResponse>();
@@ -41,8 +43,20 @@ const closeIndividualDeviceForm = createForm({
         },
       ],
     },
+    deviceReadings: {
+      init: prepareDeviceReadings([]) as {
+        [key: number]: PreparedForFormReadings;
+      },
+    },
     documentsIds: { init: [] as Document[] },
   },
+});
+
+sample({
+  // clock: openModal,
+  source: $closingDevice,
+  fn: (data) => prepareDeviceReadings(data?.readings || []),
+  target: closeIndividualDeviceForm.fields.deviceReadings.onChange,
 });
 
 sample({
