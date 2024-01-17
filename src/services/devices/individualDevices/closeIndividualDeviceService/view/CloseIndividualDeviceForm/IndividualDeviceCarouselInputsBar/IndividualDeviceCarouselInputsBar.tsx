@@ -5,13 +5,14 @@ import {
   HeaderWrapper,
   InputsWrapper,
   MonthWrapperWithMargin,
+  ReadingHistoryButtonWrapper,
   SerialNumberWrapper,
   TitleWrapper,
   Wrapper,
 } from './IndividualDeviceCarouselInputsBar.styled';
 import { ResourceIconLookup } from 'ui-kit/shared/ResourceIconLookup';
 import { getReadingsMonthByShift } from 'services/meters/apartmentIndividualDevicesMetersService/apartmentIndividualDevicesMetersService.utils';
-import { ChevronIcon } from 'ui-kit/icons';
+import { ChevronIcon, HistoryIcon } from 'ui-kit/icons';
 import {
   ArrowContainer,
   RightChevronIcon,
@@ -36,7 +37,7 @@ import { useUnit } from 'effector-react';
 import { useManagingFirmConsumptionRates } from 'services/meters/managementFirmConsumptionRatesService';
 import { apartmentIndividualDevicesMetersService } from 'services/meters/apartmentIndividualDevicesMetersService';
 import dayjs from 'dayjs';
-import { message } from 'antd';
+import { Tooltip, message } from 'antd';
 
 const { outputs, inputs } = individualDeviceMetersInputService;
 
@@ -302,7 +303,15 @@ export const IndividualDeviceCarouselInputsBar: FC<
           />
         </div>
       </InputsWrapper>
-      
+
+      <ReadingHistoryButtonWrapper>
+        <Tooltip title="История показаний">
+          <HistoryIcon
+            onClick={() => openReadingsHistoryModal(device!.id)}
+            style={{ cursor: 'pointer' }}
+          />
+        </Tooltip>
+      </ReadingHistoryButtonWrapper>
     </Wrapper>
   );
 };

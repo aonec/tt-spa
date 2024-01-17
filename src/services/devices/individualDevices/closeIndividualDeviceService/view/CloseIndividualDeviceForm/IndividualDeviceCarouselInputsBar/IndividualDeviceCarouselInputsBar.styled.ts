@@ -51,3 +51,7 @@ export const MonthWrapperWithMargin = styled(MonthWrapper)`
   width: 100%;
   justify-content: center;
 `;
+
+export const ReadingHistoryButtonWrapper = styled.div`
+  margin-top: 42px;
+`;
