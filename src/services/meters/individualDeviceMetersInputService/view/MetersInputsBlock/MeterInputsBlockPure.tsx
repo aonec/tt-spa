@@ -35,9 +35,6 @@ export const MetersInputsBlockPure: FC<{
               name={valueKey}
               placeholder={`T${index + 1}`}
               onChange={handleReadingInputChange}
-              onKeyDown={fromEnter(() => {
-                console.log({ readingValue: readingValue, valueKey: valueKey });
-              })}
             />
           </InputWrapper>
         );

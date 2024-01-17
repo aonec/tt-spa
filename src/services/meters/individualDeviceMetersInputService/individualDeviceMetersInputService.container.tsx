@@ -99,7 +99,7 @@ export const IndividualDeviceMetersInputContainer: FC<
     return managementFirmConsumptionRates[device.resource];
   }, [managementFirmConsumptionRates, device]);
 
-  const handleUploadReading: UploadReading = useCallback(
+   const handleUploadReading: UploadReading = useCallback(
     (readingPayload: MeterInputUploadReadingPayload, isPrevious?: boolean) => {
       return new Promise((resolve, rej) => {
         const result = validateReadings(

@@ -156,7 +156,9 @@ export const MetersInputsBlock: FC<MetersInputsBlockProps> = ({
 
       const isLastIndex = rateNum === index + 1;
 
-      if (!isValuesChanged || !isLastIndex) return next();
+      if (!isValuesChanged || !isLastIndex) {
+        return next();
+      }
 
       uploadReading(next);
     },
@@ -180,6 +182,7 @@ export const MetersInputsBlock: FC<MetersInputsBlockProps> = ({
         return (
           <InputWrapper key={index}>
             <Input
+              id={`${index}`}
               type="number"
               status={status}
               disabled={isDisabled}

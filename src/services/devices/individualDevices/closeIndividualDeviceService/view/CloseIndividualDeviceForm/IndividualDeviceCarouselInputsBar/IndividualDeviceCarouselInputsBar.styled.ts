@@ -40,7 +40,7 @@ export const InputsWrapper = styled.div`
 export const HeaderWrapper = styled.div`
   display: flex;
   justify-content: space-between;
-  width: 100%;
+  width: 200px;
 
   margin-bottom: 12px;
   user-select: none;

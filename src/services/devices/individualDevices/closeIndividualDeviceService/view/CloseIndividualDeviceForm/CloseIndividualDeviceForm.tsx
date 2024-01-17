@@ -54,6 +54,7 @@ export const CloseIndividualDeviceForm: FC<CloseIndividualDeviceFormProps> = ({
 
       <IndividualDeviceCarouselInputsBar
         title={'Закрываемый прибор'}
+        device={device}
         model={device?.model || ''}
         resource={device?.resource || null}
         serialNumber={device?.serialNumber || ''}
