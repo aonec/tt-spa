@@ -6,9 +6,10 @@ import {
   HomeownerAccountResponse,
 } from 'api/types';
 import {
-  EditPhoneNumberRequest,
+  AddPhoneNumberRequest,
   GetApartmentsRequestPayload,
   RemovePhoneNumberRequest,
+  ReplacePhoneNumberRequest,
   UpdateApartmentRequestPayload,
   UpdateHomeownerRequestPayload,
 } from './ApartmentReadingsService.types';
@@ -77,14 +78,13 @@ export const removePhoneNumberRequest = ({
 export const addPhoneNumberRequest = async ({
   id,
   phoneNumber,
-  oldPhoneNumber,
-}: EditPhoneNumberRequest): Promise<string[]> => {
-  if (oldPhoneNumber) {
-    await removePhoneNumberRequest({ id, phoneNumber: oldPhoneNumber });
-  }
-  const res: string[] = await axios.post(`HomeownerAccounts/${id}/AddPhone`, {
+}: AddPhoneNumberRequest): Promise<string[]> =>
+  axios.post(`HomeownerAccounts/${id}/AddPhone`, {
     phoneNumber,
   });
 
-  return res;
-};
+export const replacePhoneNumberRequest = ({
+  id,
+  ...body
+}: ReplacePhoneNumberRequest): Promise<string[]> =>
+  axios.post(`HomeownerAccounts/${id}/ReplacePhone`, body);

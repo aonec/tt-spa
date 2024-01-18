@@ -64,6 +64,7 @@ export const PhoneNumberField: FC<PhoneNumberFieldProps> = ({
   phoneNumbers,
   addPhoneNumber,
   deletePhoneNumber,
+  replacePhoneNumber,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedPhoneNumber, selectPhoneNumber] = useState<string | null>(
@@ -92,8 +93,17 @@ export const PhoneNumberField: FC<PhoneNumberFieldProps> = ({
     validateOnChange: false,
     validateOnMount: true,
     onSubmit: (values) => {
-      addPhoneNumber && addPhoneNumber(values);
       setIsEditing(false);
+
+      const { phoneNumber, oldPhoneNumber } = values;
+
+      if (oldPhoneNumber) {
+        return (
+          replacePhoneNumber &&
+          replacePhoneNumber({ oldPhoneNumber, phoneNumber })
+        );
+      }
+      addPhoneNumber && addPhoneNumber(phoneNumber);
     },
   });
 

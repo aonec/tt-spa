@@ -43,6 +43,7 @@ export const ApartmentProfile: FC<ApartmentProfileProps> = ({
   nearestAppointment,
   addPhoneNumber,
   deletePhoneNumber,
+  replacePhoneNumber,
 }) => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
@@ -168,6 +169,7 @@ export const ApartmentProfile: FC<ApartmentProfileProps> = ({
                 isUpdateHomeownerLoading={isUpdateHomeownerLoading}
                 addPhoneNumber={addPhoneNumber}
                 deletePhoneNumber={deletePhoneNumber}
+                replacePhoneNumber={replacePhoneNumber}
                 additionalHeaderInfo={
                   appointmentDate && (
                     <AppointmentTextWrapper>

@@ -175,12 +175,18 @@ sample({
 sample({
   source: $requestPayload,
   clock: handleSubmitForm,
+  filter: (payload) => Boolean(payload.title),
+  // Проверка типа идет выше
+  fn: (payload) => payload as CreatePipeNodeRequest,
   target: createPipeNodeFx,
 });
 
 sample({
   source: $requestPayload,
   clock: validateNode,
+  filter: (payload) => Boolean(payload.title),
+  // Проверка типа идет выше
+  fn: (payload) => payload as CreatePipeNodeRequest,
   target: validateNodeFx,
 });
 

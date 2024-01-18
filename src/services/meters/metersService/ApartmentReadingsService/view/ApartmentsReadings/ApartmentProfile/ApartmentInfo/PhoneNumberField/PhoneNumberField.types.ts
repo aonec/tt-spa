@@ -1,8 +1,9 @@
 export type PhoneNumberFieldProps = {
   phoneNumbers: string[];
-  addPhoneNumber?: (phone: {
+  addPhoneNumber?: (phoneNumber: string) => void;
+  replacePhoneNumber?: (phone: {
     phoneNumber: string;
-    oldPhoneNumber: string | null;
+    oldPhoneNumber: string;
   }) => void;
   deletePhoneNumber?: (payload: string) => void;
 };
