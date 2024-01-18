@@ -1324,12 +1324,7 @@ export interface CreateElectricHousingMeteringDeviceRequest {
 export interface CreateElectricNodeRequest {
   /** @format int32 */
   buildingId?: number;
-  /**
-   * @deprecated
-   * @format int32
-   */
-  number?: number;
-  title?: string | null;
+  title: string;
   /** @format int32 */
   nodeServiceZoneId?: number | null;
   registrationType?: ENodeRegistrationType;
@@ -1454,12 +1449,7 @@ export interface CreatePipeHousingMeteringDeviceRequest {
 export interface CreatePipeNodeRequest {
   /** @format int32 */
   buildingId?: number;
-  /**
-   * @deprecated
-   * @format int32
-   */
-  number?: number;
-  title?: string | null;
+  title: string;
   /** @format int32 */
   nodeServiceZoneId?: number | null;
   registrationType?: ENodeRegistrationType;
@@ -1551,6 +1541,11 @@ export interface DeviceCheckingDateExpirationConstructedReportResponse {
   homeownerPhoneNumbers: string[] | null;
   /** @deprecated */
   homeownerPhoneNumber: string | null;
+}
+
+export enum DeviceResource {
+  Electricity = 'Electricity',
+  Heat = 'Heat',
 }
 
 export interface DisableNodeWorkingRangeRequest {
@@ -2360,11 +2355,6 @@ export interface ElectricHousingMeteringDeviceResponseSuccessApiResponse {
 export interface ElectricNodeResponse {
   /** @format int32 */
   id: number;
-  /**
-   * @deprecated
-   * @format int32
-   */
-  number: number;
   title: string | null;
   registrationType: ENodeRegistrationType;
   commercialStatus: NodeCommercialStatusResponse | null;
@@ -3950,11 +3940,6 @@ export interface ManagementFirmEventDataElectricNodeResponse {
   /** @format int32 */
   id: number;
   title: string | null;
-  /**
-   * @deprecated
-   * @format int32
-   */
-  number: number;
   resource: EResourceType;
 }
 
@@ -3976,11 +3961,6 @@ export interface ManagementFirmEventDataPipeNodeResponse {
   /** @format int32 */
   id: number;
   title: string | null;
-  /**
-   * @deprecated
-   * @format int32
-   */
-  number: number;
   resource: EResourceType;
   /** @format int32 */
   entryNumber: number | null;
@@ -4195,11 +4175,6 @@ export interface NodeNetworkDeviceResponse {
 export interface NodeOnHousingStockResponse {
   /** @format int32 */
   id: number;
-  /**
-   * @deprecated
-   * @format int32
-   */
-  number: number;
   title: string | null;
   /** @format int32 */
   entryNumber: number | null;
@@ -4703,11 +4678,6 @@ export interface PipeHousingMeteringDeviceListResponse {
 export interface PipeHousingMeteringDeviceNodeResponse {
   /** @format int32 */
   id: number;
-  /**
-   * @deprecated
-   * @format int32
-   */
-  number: number;
   title: string | null;
 }
 
@@ -4766,11 +4736,6 @@ export interface PipeNodeHeatingSeasonListResponse {
 export interface PipeNodeIntoCalculatorResponse {
   /** @format int32 */
   id: number;
-  /**
-   * @deprecated
-   * @format int32
-   */
-  number: number;
   title: string | null;
   /** @format int32 */
   entryNumber: number | null;
@@ -4800,11 +4765,6 @@ export interface PipeNodeMeteringDeviceResponse {
 export interface PipeNodeResponse {
   /** @format int32 */
   id: number;
-  /**
-   * @deprecated
-   * @format int32
-   */
-  number: number;
   title: string | null;
   registrationType: ENodeRegistrationType;
   commercialStatus: NodeCommercialStatusResponse | null;
@@ -5769,11 +5729,6 @@ export interface UpdateElectricHousingMeteringDeviceRequest {
 }
 
 export interface UpdateElectricNodeRequest {
-  /**
-   * @deprecated
-   * @format int32
-   */
-  number?: number;
   title?: string | null;
   /** @format int32 */
   nodeServiceZoneId?: number | null;
@@ -5861,11 +5816,6 @@ export interface UpdatePipeHousingMeteringDeviceRequest {
 }
 
 export interface UpdatePipeNodeRequest {
-  /**
-   * @deprecated
-   * @format int32
-   */
-  number?: number;
   title?: string | null;
   /** @format int32 */
   nodeServiceZoneId?: number | null;
@@ -9030,11 +8980,11 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Администратор УК без назначений задач</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор</li><li>Старший оператор</li>
      *
      * @tags Exports
      * @name ExportsMilurDevicesList
-     * @summary IndividualDeviceReadingsRead
+     * @summary ErcExport
      * @request GET:/api/Exports/MilurDevices
      * @secure
      */
@@ -9044,6 +8994,7 @@ export class Api<
         startDate?: string;
         /** @format date-time */
         endDate?: string;
+        managementFirmIds?: number[];
       },
       params: RequestParams = {},
     ) =>
@@ -9057,20 +9008,17 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Администратор УК без назначений задач</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор</li><li>Старший оператор</li>
      *
      * @tags Exports
      * @name ExportsIndividualDeviceReadingsList
-     * @summary IndividualDeviceReadingsRead
+     * @summary ErcExport
      * @request GET:/api/Exports/IndividualDeviceReadings
      * @secure
      */
     exportsIndividualDeviceReadingsList: (
       query?: {
-        /** @format int32 */
-        year?: number;
-        /** @format int32 */
-        month?: number;
+        managementFirmIds?: number[];
       },
       params: RequestParams = {},
     ) =>
@@ -9084,20 +9032,17 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Администратор УК без назначений задач</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор</li><li>Старший оператор</li>
      *
      * @tags Exports
      * @name ExportsHousingDeviceReadingsList
-     * @summary IndividualDeviceReadingsRead
+     * @summary ErcExport
      * @request GET:/api/Exports/HousingDeviceReadings
      * @secure
      */
     exportsHousingDeviceReadingsList: (
       query?: {
-        /** @format int32 */
-        year?: number;
-        /** @format int32 */
-        month?: number;
+        managementFirmIds?: number[];
       },
       params: RequestParams = {},
     ) =>
@@ -13328,9 +13273,14 @@ export class Api<
      */
     reportsRunnerReportsList: (
       query: {
+        /** Первая/вторая половина года */
         yearRange: YearRangeType;
+        /** Ресурс ИПУ по которым собирается отчет */
+        resource: DeviceResource;
         /** Список Id домоуправлений */
         hmIds?: string[];
+        /** Список Id домов, приоритетный параметр */
+        houseIds?: number[];
       },
       params: RequestParams = {},
     ) =>

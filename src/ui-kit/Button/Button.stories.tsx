@@ -1,5 +1,5 @@
 import React from 'react';
-import { ComponentMeta, ComponentStory } from '@storybook/react';
+import { Meta, ComponentStory } from '@storybook/react';
 import { Button } from '.';
 import { SettingsIcon } from 'ui-kit/icons';
 
@@ -18,7 +18,7 @@ export default {
       defaultValue: 'primary',
     },
   },
-} as ComponentMeta<typeof Button>;
+} as Meta<typeof Button>;
 
 export const Basic: ComponentStory<typeof Button> = (args) => (
   <div style={{ width: 300, display: 'flex', justifyContent: 'center' }}>

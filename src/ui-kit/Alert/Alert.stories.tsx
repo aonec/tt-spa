@@ -1,9 +1,9 @@
 import React from 'react';
-import { ComponentMeta } from '@storybook/react';
+import { Meta } from '@storybook/react';
 import { Alert } from '.';
 import { AlertIconType, AlertType } from './Alert.types';
 
-const meta: ComponentMeta<typeof Alert> = {
+const meta: Meta<typeof Alert> = {
   title: 'Alert',
   component: Alert,
   parameters: { layout: 'centered' },

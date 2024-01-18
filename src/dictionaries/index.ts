@@ -6,6 +6,7 @@ import {
   ENodeCommercialAccountStatus,
   ENodeRegistrationType,
   EResourceType,
+  ESwitchingReason,
   ETaskEngineeringElement,
   EisTaskReasonType,
   EisTaskType,
@@ -70,6 +71,16 @@ export const ClosingReasonsDictionary: { [key in EClosingReason]: string } = {
   [EClosingReason.CheckingDate]: 'Выход поверки',
   [EClosingReason.None]: 'Нет',
 };
+
+export const SwitchingReasonsDictionary: { [key in ESwitchingReason]: string } =
+  {
+    [ESwitchingReason.Manually]: 'Плановая замена',
+    [ESwitchingReason.DeviceBroken]: 'Поломка',
+    [ESwitchingReason.CertificateIssued]: 'Выдана справка',
+    [ESwitchingReason.NoReadings]: 'Отсутствие показаний',
+    [ESwitchingReason.MaintainingStopped]: 'Остановлено',
+    [ESwitchingReason.CheckingDate]: 'Выход поверки',
+  };
 
 export const NodeStatusTextDictionary: {
   [key in ENodeCommercialAccountStatus]: string;
