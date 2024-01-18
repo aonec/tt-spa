@@ -1,8 +1,8 @@
 import React from 'react';
-import { ComponentMeta, ComponentStory } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react';
 import { Input } from './Input.styled';
 
-const meta: ComponentMeta<typeof Input> = {
+const meta: Meta<typeof Input> = {
   title: 'Input',
   component: Input,
   parameters: { layout: 'centered' },
@@ -10,12 +10,13 @@ const meta: ComponentMeta<typeof Input> = {
 
 export default meta;
 
-export const Overview: ComponentStory<typeof Input> = (args) => (
-  <div style={{ width: '300px', display: 'flex', justifyContent: 'center' }}>
-    <Input {...args} />
-  </div>
-);
-
-Overview.args = {
-  placeholder: 'Введите серийный номер',
+export const Overview: StoryObj<typeof Input> = {
+  render: (args) => (
+    <div style={{ width: '300px', display: 'flex', justifyContent: 'center' }}>
+      <Input {...args} />
+    </div>
+  ),
+  args: {
+    placeholder: 'Введите серийный номер',
+  },
 };
