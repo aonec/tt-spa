@@ -16,6 +16,7 @@ import {
   getApartments,
   getERPSources,
   getErpTaskDeadline,
+  getHomeownerAccounts,
   getResourceDisconnection,
   getTaskReasons,
 } from './addTaskFromDispatcherService.api';
@@ -28,6 +29,7 @@ import {
   ErpTaskDeadlineResponse,
   ErpTaskReasonGroupResponse,
   ErpTaskReasonItemResponse,
+  HomeownerAccountResponse,
   ResourceDisconnectingResponse,
   ResourceDisconnectingResponsePagedList,
   StreetWithBuildingNumbersResponsePagedList,
@@ -92,6 +94,10 @@ const getApartmentsFx = createEffect<
 
 const getApartmentHomeownerNamesFx = createEffect<number, string[]>(
   getApartmentHomeownerNames,
+);
+
+const getHomeownerAccountsFx = createEffect<number, HomeownerAccountResponse[]>(
+  getHomeownerAccounts,
 );
 
 const getResourceDisconnectionFx = createEffect<
@@ -286,7 +292,7 @@ sample({
 sample({
   clock: $selectedApartmentId,
   filter: Boolean,
-  target: getApartmentHomeownerNamesFx,
+  target: [getApartmentHomeownerNamesFx, getHomeownerAccountsFx],
 });
 
 const onSuccessCreation = createTaskFx.doneData;

@@ -6,13 +6,17 @@ import {
   ErpSourceResponse,
   ErpTaskDeadlineResponse,
   ErpTaskReasonGroupResponse,
+  HomeownerAccountAddPhoneNumberRequest,
+  HomeownerAccountResponse,
   ResourceDisconnectingResponsePagedList,
   StreetWithBuildingNumbersResponsePagedList,
 } from 'api/types';
 import {
+  AddPhoneRequestType,
   GetAddressesRequest,
   GetApartmentsRequest,
   GetResourceDisconnectionRequest,
+  ReplaceAllPhonesRequestType,
 } from './addTaskFromDispatcherService.types';
 
 export const createTask = (
@@ -65,4 +69,32 @@ export const getApartmentHomeownerNames = (
   return axios.get(`Apartments/${apartmentId}/HomeownerAccountNames`, {
     params: { isAlsoClosed: true },
   });
+};
+
+export const getHomeownerAccounts = (
+  apartmentId: number,
+): Promise<HomeownerAccountResponse[]> => {
+  return axios.get(`Apartments/${apartmentId}/HomeownerAccounts`, {
+    params: { IsClosed: true },
+  });
+};
+
+export const addPhone = ({
+  homeownerAccountId,
+  requestPayload,
+}: AddPhoneRequestType): Promise<File | null> => {
+  return axios.post(
+    `HomeownerAccounts/${homeownerAccountId}/AddPhone`,
+    requestPayload,
+  );
+};
+
+export const replaceAllPhones = ({
+  homeownerAccountId,
+  requestPayload,
+}: ReplaceAllPhonesRequestType): Promise<File | null> => {
+  return axios.post(
+    `HomeownerAccounts/${homeownerAccountId}/ReplaceAllPhones`,
+    requestPayload,
+  );
 };

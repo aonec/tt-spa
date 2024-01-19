@@ -2784,6 +2784,10 @@ export interface HomeownerAccountRemovePhoneNumberRequest {
   phoneNumber?: string | null;
 }
 
+export interface HomeownerAccountReplaceAllPhoneNumbersRequest {
+  phoneNumber: string;
+}
+
 export interface HomeownerAccountReplaceRequest {
   /** @format uuid */
   replaceableAccountId: string;
