@@ -74,6 +74,7 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
   handleSelectTaskType,
   isManualDeadlineRequired,
   selectedTaskReasonOption,
+  handleChangeSubscriberName,
 }) => {
   const initialSource = useMemo(() => ERPSources[0], [ERPSources]);
 
@@ -418,7 +419,10 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
               <AutoCompleteAntD
                 allowClear
                 value={values.subscriberName || undefined}
-                onChange={(value) => setFieldValue('subscriberName', value)}
+                onChange={(value) => {
+                  setFieldValue('subscriberName', value);
+                  handleChangeSubscriberName(value);
+                }}
                 options={apartmentHomeownerNames}
                 data-reading-input={dataKey}
                 onKeyDown={fromEnter(() => {

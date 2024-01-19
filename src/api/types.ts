@@ -2425,6 +2425,12 @@ export interface ErpSourceResponse {
   isSubscriberRequired: boolean;
 }
 
+export interface HomeownerAccountNameResponse {
+  /** @format uuid */
+  id: string;
+  name: string | null;
+}
+
 export interface ErpSourceResponseIEnumerableSuccessApiResponse {
   successResponse: ErpSourceResponse[] | null;
 }
@@ -6500,7 +6506,7 @@ export class Api<
       },
       params: RequestParams = {},
     ) =>
-      this.request<string[], ErrorApiResponse>({
+      this.request<HomeownerAccountNameResponse[], ErrorApiResponse>({
         path: `/api/Apartments/${apartmentId}/HomeownerAccountNames`,
         method: 'GET',
         query: query,

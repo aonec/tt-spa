@@ -7,6 +7,7 @@ import {
   ErpTaskDeadlineResponse,
   ErpTaskReasonGroupResponse,
   HomeownerAccountAddPhoneNumberRequest,
+  HomeownerAccountNameResponse,
   HomeownerAccountResponse,
   ResourceDisconnectingResponsePagedList,
   StreetWithBuildingNumbersResponsePagedList,
@@ -65,17 +66,9 @@ export const getAddresses = (
 
 export const getApartmentHomeownerNames = (
   apartmentId: number,
-): Promise<string[]> => {
+): Promise<HomeownerAccountNameResponse[]> => {
   return axios.get(`Apartments/${apartmentId}/HomeownerAccountNames`, {
-    params: { isAlsoClosed: true },
-  });
-};
-
-export const getHomeownerAccounts = (
-  apartmentId: number,
-): Promise<HomeownerAccountResponse[]> => {
-  return axios.get(`Apartments/${apartmentId}/HomeownerAccounts`, {
-    params: { IsClosed: true },
+    params: { isAlsoClosed: false },
   });
 };
 

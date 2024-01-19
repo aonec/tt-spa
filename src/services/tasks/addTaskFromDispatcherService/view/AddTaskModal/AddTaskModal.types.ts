@@ -29,4 +29,5 @@ export type AddTaskModalProps = {
   handleSelectTaskType: (payload: EisTaskType) => void;
   isManualDeadlineRequired: boolean;
   selectedTaskReasonOption: ErpTaskReasonItemResponse[];
+  handleChangeSubscriberName: (payload: string | null) => void;
 };

@@ -34,6 +34,7 @@ export type ExistingApartmentNumberType = {
 
 export type HomeownerNameOption = {
   value: string;
+  id: string;
 };
 
 export enum TaskTypes {

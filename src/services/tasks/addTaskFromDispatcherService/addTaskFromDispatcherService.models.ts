@@ -16,7 +16,6 @@ import {
   getApartments,
   getERPSources,
   getErpTaskDeadline,
-  getHomeownerAccounts,
   getResourceDisconnection,
   getTaskReasons,
 } from './addTaskFromDispatcherService.api';
@@ -29,7 +28,7 @@ import {
   ErpTaskDeadlineResponse,
   ErpTaskReasonGroupResponse,
   ErpTaskReasonItemResponse,
-  HomeownerAccountResponse,
+  HomeownerAccountNameResponse,
   ResourceDisconnectingResponse,
   ResourceDisconnectingResponsePagedList,
   StreetWithBuildingNumbersResponsePagedList,
@@ -63,6 +62,8 @@ const setSelectedHousingId = createEvent<string | null>();
 const setSelectedApartmentId = createEvent<number | null>();
 const setSelectedTaskReasonOption = createEvent<ErpTaskReasonItemResponse[]>();
 const setSelectedTaskReasonId = createEvent<string | null>();
+const setHomeownerAccountId = createEvent<string | null>();
+const handleChangeSubscriberName = createEvent<string | null>();
 
 const handleReset = createEvent();
 
@@ -92,13 +93,10 @@ const getApartmentsFx = createEffect<
   ApartmentListResponsePagedList
 >(getApartments);
 
-const getApartmentHomeownerNamesFx = createEffect<number, string[]>(
-  getApartmentHomeownerNames,
-);
-
-const getHomeownerAccountsFx = createEffect<number, HomeownerAccountResponse[]>(
-  getHomeownerAccounts,
-);
+const getApartmentHomeownerNamesFx = createEffect<
+  number,
+  HomeownerAccountNameResponse[]
+>(getApartmentHomeownerNames);
 
 const getResourceDisconnectionFx = createEffect<
   GetResourceDisconnectionRequest,
@@ -150,7 +148,10 @@ const $selectedTaskReasonId = createStore<string | null>(null)
 
 const $apartmentHomeownerNames = createStore<HomeownerNameOption[]>([])
   .on(getApartmentHomeownerNamesFx.doneData, (_, data) =>
-    data.map((name) => ({ value: name })),
+    data.map((nameResponse) => ({
+      value: nameResponse.name || '',
+      id: nameResponse.id,
+    })),
   )
   .reset(handleReset);
 
@@ -166,6 +167,11 @@ const $preparedApartmentNumbers = $existingApartmentNumbers.map((items) => {
       id: apartment.id,
     }));
 });
+
+const $homeownerAccountId = createStore<string | null>(null).on(
+  setHomeownerAccountId,
+  (_, homeownerAccountId) => homeownerAccountId,
+);
 
 sample({
   clock: handleCreateTask,
@@ -292,7 +298,22 @@ sample({
 sample({
   clock: $selectedApartmentId,
   filter: Boolean,
-  target: [getApartmentHomeownerNamesFx, getHomeownerAccountsFx],
+  target: getApartmentHomeownerNamesFx,
+});
+
+sample({
+  clock: handleChangeSubscriberName,
+  source: $apartmentHomeownerNames,
+  fn: (apartmentHomeownerNames, currentSubscriberName) => {
+    if (!currentSubscriberName) return null;
+
+    const matchedSubscriberId =
+      apartmentHomeownerNames.find(
+        (data) => data.value === currentSubscriberName,
+      )?.id || null;
+    return matchedSubscriberId;
+  },
+  target: setHomeownerAccountId,
 });
 
 const onSuccessCreation = createTaskFx.doneData;
@@ -325,6 +346,7 @@ export const addTaskFromDispatcherService = {
     handleSelectApartmentNumber,
     handleSelectTaskReason,
     handleSelectTaskType,
+    handleChangeSubscriberName,
   },
   outputs: {
     $isModalOpen,
