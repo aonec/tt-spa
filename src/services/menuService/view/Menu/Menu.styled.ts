@@ -4,9 +4,13 @@ export const Footer = styled.div`
   position: absolute;
   width: 206px;
   bottom: 16px;
+  padding: 16px 16px 0;
+  border-top: 1px solid #dcdee4;
+`;
+
+export const ExitButtonWrapper = styled.div`
   display: flex;
   justify-content: space-between;
-  padding: 0 16px;
 `;
 
 export const MenuItemWrapper = styled.div`
@@ -32,5 +36,19 @@ export const DevSettingsButton = styled.div`
 
   &:hover {
     background-color: #e5e5e5;
+  }
+`;
+
+export const UserGuideLink = styled.a`
+  margin-top: 12px;
+  display: block;
+  color: #272f5ab2;
+  font-size: 13px;
+  font-style: normal;
+  font-weight: 400;
+  transition: 0.2s;
+
+  &:hover {
+    color: rgb(24, 158, 233);
   }
 `;
