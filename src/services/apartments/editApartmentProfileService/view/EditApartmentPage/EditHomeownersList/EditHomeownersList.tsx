@@ -29,6 +29,7 @@ import {
   CloseHomeownerAccountContainer,
   closeHomeownerAccountService,
 } from './closeHomeownerAccountService';
+import { Tooltip } from 'antd';
 
 const {
   inputs: { openCreateHomeownerModal },
@@ -55,7 +56,7 @@ export const EditHomeownersList: FC<EditHomeownersListProps> = ({
       <EditHomeownerContainer />
       <CloseHomeownerAccountContainer />
       <Wrapper>
-        <List gridTemp="1fr 0.35fr 0.25fr 0.25fr">
+        <List gridTemp="1fr 0.35fr 0.35fr 0.25fr 0.25fr">
           {homeowners.map((homeowner) => {
             const payload: EditHomeownerFormPayload = {
               id: homeowner.id,
@@ -76,6 +77,9 @@ export const EditHomeownersList: FC<EditHomeownersListProps> = ({
                   {homeowner.isMainPersonalAccountNumber && <CrownIconSC />}
                 </PersonalAccountNumber>,
                 <PaymentCode>{homeowner.paymentCode}</PaymentCode>,
+                <Tooltip title={homeowner.phoneNumbers?.join(', ') || ''}>
+                  <PaymentCode>{homeowner.phoneNumbers?.[0]}</PaymentCode>
+                </Tooltip>,
                 <IconsWrapper>
                   <PencilIconSC
                     onClick={() => openEditHomeownerModal(payload)}
