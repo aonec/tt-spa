@@ -75,6 +75,11 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
   isManualDeadlineRequired,
   selectedTaskReasonOption,
   handleChangeSubscriberName,
+  handleChangePhoneNumber,
+  isSavePhoneNumberOpen,
+  handleSavePhoneNumber,
+  handleReplacePhoneNumber,
+  handleClosePhoneNumber,
 }) => {
   const initialSource = useMemo(() => ERPSources[0], [ERPSources]);
 
@@ -450,13 +455,19 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
               </AutoCompleteAntD>
             </FormItem>
             <FormItem label="Номер телефона">
-              <SavePhoneNumber phoneNumber={values.phoneNumber || null}>
+              <SavePhoneNumber
+                isOpen={isSavePhoneNumberOpen}
+                handleSavePhoneNumber={handleSavePhoneNumber}
+                handleReplacePhoneNumber={handleReplacePhoneNumber}
+                handleClosePhoneNumber={handleClosePhoneNumber}
+              >
                 <Input
                   placeholder="Введите"
                   value={values.phoneNumber || undefined}
-                  onChange={(value) =>
-                    setFieldValue('phoneNumber', value.target.value)
-                  }
+                  onChange={(value) => {
+                    setFieldValue('phoneNumber', value.target.value);
+                    handleChangePhoneNumber(value.target.value);
+                  }}
                   data-reading-input={dataKey}
                   onKeyDown={fromEnter(() => {
                     if (isOnlySubscriberRequired) {

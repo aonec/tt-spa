@@ -10,6 +10,7 @@ import dayjs from 'dayjs';
 import { message } from 'antd';
 import _ from 'lodash';
 import {
+  addPhone,
   createTask,
   getAddresses,
   getApartmentHomeownerNames,
@@ -18,6 +19,7 @@ import {
   getErpTaskDeadline,
   getResourceDisconnection,
   getTaskReasons,
+  replaceAllPhones,
 } from './addTaskFromDispatcherService.api';
 import {
   ApartmentListResponse,
@@ -36,11 +38,13 @@ import {
 import { EffectFailDataAxiosError } from 'types';
 import { AddTask } from './view/AddTaskModal/AddTaskForm/AddTaskForm.types';
 import {
+  AddPhoneRequestType,
   GetAddressesRequest,
   GetApartmentsRequest,
   GetResourceDisconnectionRequest,
   HomeownerNameOption,
   PreparedAddress,
+  ReplaceAllPhonesRequestType,
 } from './addTaskFromDispatcherService.types';
 import { prepareAddressesForTreeSelect } from './addTaskFromDispatcherService.utils';
 import { currentOrganizationService } from 'services/currentOrganizationService';
@@ -57,13 +61,18 @@ const handleSelectHousingAddress = createEvent<string>();
 const handleSelectApartmentNumber = createEvent<string>();
 const handleSelectTaskReason = createEvent<string>();
 const handleSelectTaskType = createEvent<EisTaskType>();
+const handleChangeSubscriberName = createEvent<string | null>();
+const handleChangePhoneNumber = createEvent<string | null>();
+const handleSavePhoneNumber = createEvent<void>();
+const handleReplacePhoneNumber = createEvent<void>();
+const handleClosePhoneNumber = createEvent<void>();
 
 const setSelectedHousingId = createEvent<string | null>();
 const setSelectedApartmentId = createEvent<number | null>();
 const setSelectedTaskReasonOption = createEvent<ErpTaskReasonItemResponse[]>();
 const setSelectedTaskReasonId = createEvent<string | null>();
 const setHomeownerAccountId = createEvent<string | null>();
-const handleChangeSubscriberName = createEvent<string | null>();
+const setPhoneNumberOpen = createEvent<boolean>();
 
 const handleReset = createEvent();
 
@@ -102,6 +111,12 @@ const getResourceDisconnectionFx = createEffect<
   GetResourceDisconnectionRequest,
   ResourceDisconnectingResponsePagedList
 >(getResourceDisconnection);
+
+const addPhoneFx = createEffect<AddPhoneRequestType, void>(addPhone);
+
+const replaceAllPhonesFx = createEffect<ReplaceAllPhonesRequestType, void>(
+  replaceAllPhones,
+);
 
 const $isModalOpen = createStore<boolean>(false)
   .on(handleOpenModal, () => true)
@@ -172,6 +187,15 @@ const $homeownerAccountId = createStore<string | null>(null).on(
   setHomeownerAccountId,
   (_, homeownerAccountId) => homeownerAccountId,
 );
+
+const $phoneNumber = createStore<string | null>(null).on(
+  handleChangePhoneNumber,
+  (_, phoneNumber) => phoneNumber,
+);
+
+const $isSavePhoneNumberOpen = createStore<boolean>(false)
+  .on(setPhoneNumberOpen, (_, isOpen) => isOpen)
+  .on(handleClosePhoneNumber, () => false);
 
 sample({
   clock: handleCreateTask,
@@ -316,6 +340,43 @@ sample({
   target: setHomeownerAccountId,
 });
 
+sample({
+  clock: [handleChangeSubscriberName, handleChangePhoneNumber],
+  source: [$phoneNumber, $homeownerAccountId],
+  fn: (sourceData) => {
+    if (!sourceData[0]) {
+      return false;
+    }
+    if (sourceData[0].length > 3 && Boolean(sourceData[1])) {
+      return true;
+    }
+    return false;
+  },
+  target: setPhoneNumberOpen,
+});
+
+sample({
+  clock: handleSavePhoneNumber,
+  source: [$phoneNumber, $homeownerAccountId],
+  fn: (sourceData) =>
+    ({
+      homeownerAccountId: sourceData[1],
+      requestPayload: { phoneNumber: sourceData[0] },
+    } as AddPhoneRequestType),
+  target: addPhoneFx,
+});
+
+sample({
+  clock: handleReplacePhoneNumber,
+  source: [$phoneNumber, $homeownerAccountId],
+  fn: (sourceData) =>
+    ({
+      homeownerAccountId: sourceData[1],
+      requestPayload: { phoneNumber: sourceData[0] },
+    } as ReplaceAllPhonesRequestType),
+  target: replaceAllPhonesFx,
+});
+
 const onSuccessCreation = createTaskFx.doneData;
 
 const $isCreatePending = createTaskFx.pending;
@@ -347,6 +408,10 @@ export const addTaskFromDispatcherService = {
     handleSelectTaskReason,
     handleSelectTaskType,
     handleChangeSubscriberName,
+    handleChangePhoneNumber,
+    handleSavePhoneNumber,
+    handleReplacePhoneNumber,
+    handleClosePhoneNumber,
   },
   outputs: {
     $isModalOpen,
@@ -359,6 +424,7 @@ export const addTaskFromDispatcherService = {
     $taskReasons,
     $selectedTaskReasonOption,
     $isManualDeadlineRequired,
+    $isSavePhoneNumberOpen,
   },
   gates: { PageGate, AddTaskDataFetchGate },
 };

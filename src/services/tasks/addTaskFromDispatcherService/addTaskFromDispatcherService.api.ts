@@ -75,7 +75,7 @@ export const getApartmentHomeownerNames = (
 export const addPhone = ({
   homeownerAccountId,
   requestPayload,
-}: AddPhoneRequestType): Promise<File | null> => {
+}: AddPhoneRequestType): Promise<void> => {
   return axios.post(
     `HomeownerAccounts/${homeownerAccountId}/AddPhone`,
     requestPayload,
@@ -85,7 +85,7 @@ export const addPhone = ({
 export const replaceAllPhones = ({
   homeownerAccountId,
   requestPayload,
-}: ReplaceAllPhonesRequestType): Promise<File | null> => {
+}: ReplaceAllPhonesRequestType): Promise<void> => {
   return axios.post(
     `HomeownerAccounts/${homeownerAccountId}/ReplaceAllPhones`,
     requestPayload,

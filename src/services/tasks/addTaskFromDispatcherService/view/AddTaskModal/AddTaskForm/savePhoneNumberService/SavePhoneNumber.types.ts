@@ -2,5 +2,8 @@ import { ReactNode } from 'react';
 
 export type SavePhoneNumberProps = {
   children: ReactNode;
-  phoneNumber: string | null;
+  isOpen: boolean;
+  handleSavePhoneNumber: () => void;
+  handleReplacePhoneNumber: () => void;
+  handleClosePhoneNumber: () => void;
 };

@@ -13,24 +13,32 @@ import { SavePhoneNumberProps } from './SavePhoneNumber.types';
 
 export const SavePhoneNumber: FC<SavePhoneNumberProps> = ({
   children,
-  phoneNumber,
+  isOpen,
+  handleSavePhoneNumber,
+  handleReplacePhoneNumber,
+  handleClosePhoneNumber,
 }) => {
   return (
     <Tooltip
+      open={isOpen}
       placement="topRight"
       title={
         <Wrapper>
-          <Title>
-            Вы обновили номер телефона. Хотите сохранить его в профиле квартиры?
-          </Title>
+          <Title>Хотите сохранить номер в профиле квартиры?</Title>
 
           <Buttons>
             <Left>
-              <ButtonWhite>Отмена</ButtonWhite>
+              <ButtonWhite onClick={() => handleClosePhoneNumber()}>
+                Отмена
+              </ButtonWhite>
             </Left>
             <Right>
-              <ButtonWhite>Заменить</ButtonWhite>
-              <ButtonBlue>Сохранить</ButtonBlue>
+              <ButtonWhite onClick={() => handleReplacePhoneNumber()}>
+                Заменить
+              </ButtonWhite>
+              <ButtonBlue onClick={() => handleSavePhoneNumber()}>
+                Сохранить
+              </ButtonBlue>
             </Right>
           </Buttons>
         </Wrapper>
