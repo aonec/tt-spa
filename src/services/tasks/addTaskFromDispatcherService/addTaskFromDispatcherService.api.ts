@@ -6,6 +6,7 @@ import {
   ErpSourceResponse,
   ErpTaskDeadlineResponse,
   ErpTaskReasonGroupResponse,
+  HomeownerAccountNameResponse,
   ResourceDisconnectingResponsePagedList,
   StreetWithBuildingNumbersResponsePagedList,
 } from 'api/types';
@@ -13,6 +14,7 @@ import {
   GetAddressesRequest,
   GetApartmentsRequest,
   GetResourceDisconnectionRequest,
+  ReplaceAllPhonesRequestType,
 } from './addTaskFromDispatcherService.types';
 
 export const createTask = (
@@ -61,8 +63,18 @@ export const getAddresses = (
 
 export const getApartmentHomeownerNames = (
   apartmentId: number,
-): Promise<string[]> => {
+): Promise<HomeownerAccountNameResponse[]> => {
   return axios.get(`Apartments/${apartmentId}/HomeownerAccountNames`, {
-    params: { isAlsoClosed: true },
+    params: { isAlsoClosed: false },
   });
+};
+
+export const replaceAllPhones = ({
+  homeownerAccountId,
+  requestPayload,
+}: ReplaceAllPhonesRequestType): Promise<void> => {
+  return axios.post(
+    `HomeownerAccounts/${homeownerAccountId}/ReplaceAllPhones`,
+    requestPayload,
+  );
 };

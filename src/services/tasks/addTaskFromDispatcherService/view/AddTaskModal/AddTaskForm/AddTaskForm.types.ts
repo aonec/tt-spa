@@ -6,6 +6,7 @@ import {
   ResourceDisconnectingResponse,
 } from 'api/types';
 import dayjs from 'dayjs';
+import { Event } from 'effector';
 import {
   ExistingApartmentNumberType,
   HomeownerNameOption,
@@ -55,6 +56,12 @@ export type AddTaskFormProps = {
   handleSelectTaskType: (payload: EisTaskType) => void;
   isManualDeadlineRequired: boolean;
   selectedTaskReasonOption: ErpTaskReasonItemResponse[];
+  handleChangeSubscriberName: (payload: string | null) => void;
+  handleChangePhoneNumber: (payload: string | null) => void;
+  isSavePhoneNumberOpen: boolean;
+  handleReplacePhoneNumber: () => void;
+  handleClosePhoneNumber: () => void;
+  onSuccessSavePhone: Event<void>;
 };
 
 export type AddressOption = {

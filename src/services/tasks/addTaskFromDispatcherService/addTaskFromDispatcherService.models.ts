@@ -18,6 +18,7 @@ import {
   getErpTaskDeadline,
   getResourceDisconnection,
   getTaskReasons,
+  replaceAllPhones,
 } from './addTaskFromDispatcherService.api';
 import {
   ApartmentListResponse,
@@ -28,6 +29,7 @@ import {
   ErpTaskDeadlineResponse,
   ErpTaskReasonGroupResponse,
   ErpTaskReasonItemResponse,
+  HomeownerAccountNameResponse,
   ResourceDisconnectingResponse,
   ResourceDisconnectingResponsePagedList,
   StreetWithBuildingNumbersResponsePagedList,
@@ -40,6 +42,7 @@ import {
   GetResourceDisconnectionRequest,
   HomeownerNameOption,
   PreparedAddress,
+  ReplaceAllPhonesRequestType,
 } from './addTaskFromDispatcherService.types';
 import { prepareAddressesForTreeSelect } from './addTaskFromDispatcherService.utils';
 import { currentOrganizationService } from 'services/currentOrganizationService';
@@ -56,11 +59,17 @@ const handleSelectHousingAddress = createEvent<string>();
 const handleSelectApartmentNumber = createEvent<string>();
 const handleSelectTaskReason = createEvent<string>();
 const handleSelectTaskType = createEvent<EisTaskType>();
+const handleChangeSubscriberName = createEvent<string | null>();
+const handleChangePhoneNumber = createEvent<string | null>();
+const handleReplacePhoneNumber = createEvent<void>();
+const handleClosePhoneNumber = createEvent<void>();
 
 const setSelectedHousingId = createEvent<string | null>();
 const setSelectedApartmentId = createEvent<number | null>();
 const setSelectedTaskReasonOption = createEvent<ErpTaskReasonItemResponse[]>();
 const setSelectedTaskReasonId = createEvent<string | null>();
+const setHomeownerAccountId = createEvent<string | null>();
+const setPhoneNumberOpen = createEvent<boolean>();
 
 const handleReset = createEvent();
 
@@ -90,14 +99,21 @@ const getApartmentsFx = createEffect<
   ApartmentListResponsePagedList
 >(getApartments);
 
-const getApartmentHomeownerNamesFx = createEffect<number, string[]>(
-  getApartmentHomeownerNames,
-);
+const getApartmentHomeownerNamesFx = createEffect<
+  number,
+  HomeownerAccountNameResponse[]
+>(getApartmentHomeownerNames);
 
 const getResourceDisconnectionFx = createEffect<
   GetResourceDisconnectionRequest,
   ResourceDisconnectingResponsePagedList
 >(getResourceDisconnection);
+
+const replaceAllPhonesFx = createEffect<
+  ReplaceAllPhonesRequestType,
+  void,
+  EffectFailDataAxiosError
+>(replaceAllPhones);
 
 const $isModalOpen = createStore<boolean>(false)
   .on(handleOpenModal, () => true)
@@ -144,7 +160,10 @@ const $selectedTaskReasonId = createStore<string | null>(null)
 
 const $apartmentHomeownerNames = createStore<HomeownerNameOption[]>([])
   .on(getApartmentHomeownerNamesFx.doneData, (_, data) =>
-    data.map((name) => ({ value: name })),
+    data.map((nameResponse) => ({
+      value: nameResponse.name || '',
+      id: nameResponse.id,
+    })),
   )
   .reset(handleReset);
 
@@ -160,6 +179,19 @@ const $preparedApartmentNumbers = $existingApartmentNumbers.map((items) => {
       id: apartment.id,
     }));
 });
+
+const $homeownerAccountId = createStore<string | null>(null)
+  .on(setHomeownerAccountId, (_, homeownerAccountId) => homeownerAccountId)
+  .reset(handleReset);
+
+const $phoneNumber = createStore<string | null>(null)
+  .on(handleChangePhoneNumber, (_, phoneNumber) => phoneNumber)
+  .reset(handleReset);
+
+const $isSavePhoneNumberOpen = createStore<boolean>(false)
+  .on(setPhoneNumberOpen, (_, isOpen) => isOpen)
+  .on(handleClosePhoneNumber, () => false)
+  .reset(handleReset);
 
 sample({
   clock: handleCreateTask,
@@ -289,6 +321,53 @@ sample({
   target: getApartmentHomeownerNamesFx,
 });
 
+sample({
+  clock: handleChangeSubscriberName,
+  source: $apartmentHomeownerNames,
+  fn: (apartmentHomeownerNames, currentSubscriberName) => {
+    if (!currentSubscriberName) return null;
+
+    const matchedSubscriberId =
+      apartmentHomeownerNames.find(
+        (data) => data.value === currentSubscriberName,
+      )?.id || null;
+    return matchedSubscriberId;
+  },
+  target: setHomeownerAccountId,
+});
+
+sample({
+  clock: [handleChangeSubscriberName, handleChangePhoneNumber],
+  source: [$phoneNumber, $homeownerAccountId],
+  fn: (sourceData) => {
+    if (!sourceData[0]) {
+      return false;
+    }
+    if (sourceData[0].length > 3 && Boolean(sourceData[1])) {
+      return true;
+    }
+    return false;
+  },
+  target: setPhoneNumberOpen,
+});
+
+sample({
+  clock: handleReplacePhoneNumber,
+  source: [$phoneNumber, $homeownerAccountId],
+  fn: (sourceData) =>
+    ({
+      homeownerAccountId: sourceData[1],
+      requestPayload: { phoneNumber: sourceData[0] },
+    } as ReplaceAllPhonesRequestType),
+  target: replaceAllPhonesFx,
+});
+
+sample({
+  clock: replaceAllPhonesFx.doneData,
+  fn: () => false,
+  target: setPhoneNumberOpen,
+});
+
 const onSuccessCreation = createTaskFx.doneData;
 
 const $isCreatePending = createTaskFx.pending;
@@ -310,6 +389,16 @@ createTaskFx.failData.watch((error) => {
   );
 });
 
+const onSuccessSavePhone = replaceAllPhonesFx.doneData;
+
+onSuccessSavePhone.watch(() => {
+  message.success('Успешно');
+});
+
+replaceAllPhonesFx.failData.watch(() => {
+  message.error('Ошибка сохранения телефона в профиль квартиры');
+});
+
 export const addTaskFromDispatcherService = {
   inputs: {
     handleOpenModal,
@@ -319,6 +408,11 @@ export const addTaskFromDispatcherService = {
     handleSelectApartmentNumber,
     handleSelectTaskReason,
     handleSelectTaskType,
+    handleChangeSubscriberName,
+    handleChangePhoneNumber,
+    handleReplacePhoneNumber,
+    handleClosePhoneNumber,
+    onSuccessSavePhone,
   },
   outputs: {
     $isModalOpen,
@@ -331,6 +425,7 @@ export const addTaskFromDispatcherService = {
     $taskReasons,
     $selectedTaskReasonOption,
     $isManualDeadlineRequired,
+    $isSavePhoneNumberOpen,
   },
   gates: { PageGate, AddTaskDataFetchGate },
 };
