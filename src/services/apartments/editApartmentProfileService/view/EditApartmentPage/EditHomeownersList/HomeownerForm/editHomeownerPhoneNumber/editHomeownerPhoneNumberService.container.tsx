@@ -28,6 +28,7 @@ export const EditHomeownerPhoneNumberContainer: FC<
       <EditHomeownerAccountGate id={accId} />
       <FormItem label="Телефон">
         <PhoneNumberFormField
+          isConfirmDeleting
           phoneNumbers={phoneNumbers}
           addPhoneNumber={(phoneNumber) => {
             addPhoneNumber({ id: accId, data: { phoneNumber } });
