@@ -61,8 +61,6 @@ export const EditHomeownersList: FC<EditHomeownersListProps> = ({
               id: homeowner.id,
               personalAccountNumber: homeowner.personalAccountNumber || '',
               name: homeowner.name || '',
-              // phoneNupmber: homeowner.phoneNumber || '',
-              phoneNumbers: [],
               paymentCode: homeowner.paymentCode || '',
               personType: String(homeowner.personType) as EPersonType,
               openAt: dayjs(homeowner.openAt),

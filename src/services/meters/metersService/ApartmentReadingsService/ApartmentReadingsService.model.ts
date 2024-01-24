@@ -8,9 +8,10 @@ import {
 } from 'api/types';
 import { SearchMode } from './view/ApartmentsReadings/ApartmentsReadings.types';
 import {
-  EditPhoneNumberRequest,
+  AddPhoneNumberRequest,
   GetApartmentsRequestPayload,
   RemovePhoneNumberRequest,
+  ReplacePhoneNumberRequest,
   UpdateApartmentRequestPayload,
   UpdateHomeownerRequestPayload,
 } from './ApartmentReadingsService.types';
@@ -21,6 +22,7 @@ import {
   patchHomeowner,
   putApartment,
   removePhoneNumberRequest,
+  replacePhoneNumberRequest,
 } from './ApartmentReadingsService.api';
 import { message } from 'antd';
 import { EffectFailDataAxiosError } from 'types';
@@ -40,7 +42,9 @@ const handleUpdateHomeowner = createEvent<UpdateHomeownerRequestPayload>();
 
 const removePhoneNumber = createEvent<RemovePhoneNumberRequest>();
 
-const addPhoneNumber = createEvent<EditPhoneNumberRequest>();
+const addPhoneNumber = createEvent<AddPhoneNumberRequest>();
+
+const replacePhoneNumber = createEvent<ReplacePhoneNumberRequest>();
 
 const setSelectedHomeownerName = createEvent<string | null>();
 
@@ -65,10 +69,16 @@ const removePhoneNumberFx = createEffect<
 >(removePhoneNumberRequest);
 
 const addPhoneNumberFx = createEffect<
-  EditPhoneNumberRequest,
+  AddPhoneNumberRequest,
   string[],
   EffectFailDataAxiosError
 >(addPhoneNumberRequest);
+
+const replacePhoneNumberFx = createEffect<
+  ReplacePhoneNumberRequest,
+  string[],
+  EffectFailDataAxiosError
+>(replacePhoneNumberRequest);
 
 const handleHomeownerUpdated = updateHomeownerFx.doneData;
 
@@ -95,7 +105,11 @@ const $apartment = createStore<ApartmentResponse | null>(null)
     return { ...prevApartment, homeownerAccounts: changedHomeowners || null };
   })
   .on(
-    [removePhoneNumberFx.done, addPhoneNumberFx.done],
+    [
+      removePhoneNumberFx.done,
+      addPhoneNumberFx.done,
+      replacePhoneNumberFx.done,
+    ],
     (apartment, { params, result: phoneNumbers }) => {
       if (!apartment) {
         return null;
@@ -160,6 +174,11 @@ sample({
 });
 
 sample({
+  clock: replacePhoneNumber,
+  target: replacePhoneNumberFx,
+});
+
+sample({
   clock: handleSearchApartment,
   target: getApartmentQuery.start,
 });
@@ -195,12 +214,11 @@ removePhoneNumberFx.doneData.watch(() =>
   message.success('Номер успешно удалён!'),
 );
 
-addPhoneNumberFx.done.watch(({ params }) => {
-  if (params.oldPhoneNumber) {
-    return message.success('Номер успешно изменён!');
-  }
-  return message.success('Номер успешно добавлен!');
-});
+addPhoneNumberFx.done.watch(() => message.success('Номер успешно добавлен!'));
+
+replacePhoneNumberFx.done.watch(() =>
+  message.success('Номер успешно изменён!'),
+);
 
 const $isLoadingApartment = getApartmentQuery.$pending;
 
@@ -246,6 +264,14 @@ addPhoneNumberFx.failData.watch((error) => {
   );
 });
 
+replacePhoneNumberFx.failData.watch((error) => {
+  return message.error(
+    error.response.data.error.Text ||
+      error.response.data.error.Message ||
+      'Произошла ошибка',
+  );
+});
+
 export const apartmentReadingsService = {
   inputs: {
     setSearchMode,
@@ -265,6 +291,7 @@ export const apartmentReadingsService = {
     handleUpdateHomeowner,
     removePhoneNumber,
     addPhoneNumber,
+    replacePhoneNumber,
   },
   outputs: {
     $searchMode,

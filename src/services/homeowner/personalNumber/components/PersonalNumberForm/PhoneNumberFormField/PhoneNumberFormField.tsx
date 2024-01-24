@@ -79,7 +79,7 @@ export const PhoneNumberFormField: FC<PhoneNumberFormFieldProps> = ({
                 setIsAdd(false);
               }}
             >
-              Сохранить
+              Добавить
             </Button>
           </ButtonsWrapper>
         </div>

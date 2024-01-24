@@ -1,5 +1,5 @@
 import React from 'react';
-import { ComponentMeta } from '@storybook/react';
+import { Meta } from '@storybook/react';
 import { HeaderInfoString } from '.';
 import { DeviceStatus } from '../IndividualDeviceInfo/DeviceStatus';
 
@@ -7,7 +7,7 @@ export default {
   title: 'HeaderInfoString',
   component: HeaderInfoString,
   parameters: { layout: 'centered' },
-} as ComponentMeta<typeof HeaderInfoString>;
+} as Meta<typeof HeaderInfoString>;
 
 export const Overview = () => (
   <HeaderInfoString>

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ComponentMeta } from '@storybook/react';
+import { Meta } from '@storybook/react';
 import { FilterExtendedSearch } from '.';
 import { actResourceNamesLookup } from 'utils/actResourceNamesLookup';
 import { EActResourceType } from 'api/types';
@@ -12,7 +12,7 @@ export default {
   title: 'FilterExtendedSearch',
   component: FilterExtendedSearch,
   parameters: { layout: 'centered' },
-} as ComponentMeta<typeof FilterExtendedSearch>;
+} as Meta<typeof FilterExtendedSearch>;
 
 export const Overview = () => {
   const [filters, setFilters] = useState<EActResourceType[]>([]);

@@ -4,6 +4,7 @@ import {
   ApartmentUpdateRequest,
   HomeownerAccountRemovePhoneNumberRequest,
   HomeownerAccountAddPhoneNumberRequest,
+  HomeownerAccountReplacePhoneNumberRequest,
 } from 'api/types';
 
 export type GetApartmentsRequestPayload = {
@@ -37,7 +38,11 @@ export type RemovePhoneNumberRequest =
     id: string;
   };
 
-export type EditPhoneNumberRequest = HomeownerAccountAddPhoneNumberRequest & {
+export type AddPhoneNumberRequest = HomeownerAccountAddPhoneNumberRequest & {
   id: string;
-  oldPhoneNumber: string | null;
 };
+
+export type ReplacePhoneNumberRequest =
+  HomeownerAccountReplacePhoneNumberRequest & {
+    id: string;
+  };

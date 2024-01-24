@@ -4,11 +4,12 @@ import {
   IndividualDeviceMountPlaceForFilterResponse,
 } from 'api/types';
 import {
-  EditPhoneNumberRequest,
+  AddPhoneNumberRequest,
   GetApartmentsRequestPayload,
   RemovePhoneNumberRequest,
   UpdateApartmentRequestPayload,
   UpdateHomeownerRequestPayload,
+  ReplacePhoneNumberRequest,
 } from '../../ApartmentReadingsService.types';
 
 export type ApartmentsReadingsProps = {
@@ -32,8 +33,9 @@ export type ApartmentsReadingsProps = {
   isUpdateHomeownerLoading: boolean;
   isApartmentFetched: boolean;
   nearestAppointment: AppointmentResponse | null;
-  addPhoneNumber: (payload: EditPhoneNumberRequest) => void;
+  addPhoneNumber: (payload: AddPhoneNumberRequest) => void;
   deletePhoneNumber: (payload: RemovePhoneNumberRequest) => void;
+  replacePhoneNumber: (payload: ReplacePhoneNumberRequest) => void;
 };
 
 export enum SearchMode {
