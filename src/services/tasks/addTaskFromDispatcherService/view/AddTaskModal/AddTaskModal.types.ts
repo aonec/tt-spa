@@ -11,6 +11,7 @@ import {
   HomeownerNameOption,
   PreparedAddress,
 } from '../../addTaskFromDispatcherService.types';
+import { Event } from 'effector';
 
 export type AddTaskModalProps = {
   isModalOpen: boolean;
@@ -34,4 +35,5 @@ export type AddTaskModalProps = {
   isSavePhoneNumberOpen: boolean;
   handleReplacePhoneNumber: () => void;
   handleClosePhoneNumber: () => void;
+  onSuccessSavePhone: Event<void>;
 };

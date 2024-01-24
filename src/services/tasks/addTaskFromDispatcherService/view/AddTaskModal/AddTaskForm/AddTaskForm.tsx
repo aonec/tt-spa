@@ -79,6 +79,7 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
   isSavePhoneNumberOpen,
   handleReplacePhoneNumber,
   handleClosePhoneNumber,
+  onSuccessSavePhone,
 }) => {
   const initialSource = useMemo(() => ERPSources[0], [ERPSources]);
 
@@ -147,6 +148,19 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
     !isSourceNumberRequired,
   ].every(Boolean);
 
+  const next = useSwitchInputOnEnter(dataKey, false, false);
+
+  useEffect(() => {
+    return onSuccessSavePhone.watch(() => {
+      if (isOnlySubscriberRequired) {
+        next(4);
+      } else {
+        next(5);
+      }
+      return;
+    }).unsubscribe;
+  }, [onSuccessSavePhone, isOnlySubscriberRequired, next]);
+
   useEffect(() => {
     setFieldValue('isSourceNumberRequired', isSourceNumberRequired);
   }, [isSourceNumberRequired, setFieldValue]);
@@ -162,8 +176,6 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
   useEffect(() => {
     setDisableSubmit(!isValid);
   }, [isValid, setDisableSubmit]);
-
-  const next = useSwitchInputOnEnter(dataKey, false, false);
 
   const preparedAddressOptions = useMemo(
     () =>
@@ -547,7 +559,10 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
               })}
               open={isReasonOpen}
               onBlur={() => setReasonOpen(false)}
-              onFocus={() => setReasonOpen(true)}
+              onFocus={() => {
+                setReasonOpen(true);
+                handleClosePhoneNumber();
+              }}
               onMouseDown={() => setReasonOpen(true)}
             >
               {taskReasonOptions.map((elem) => (

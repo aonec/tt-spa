@@ -109,9 +109,11 @@ const getResourceDisconnectionFx = createEffect<
   ResourceDisconnectingResponsePagedList
 >(getResourceDisconnection);
 
-const replaceAllPhonesFx = createEffect<ReplaceAllPhonesRequestType, void>(
-  replaceAllPhones,
-);
+const replaceAllPhonesFx = createEffect<
+  ReplaceAllPhonesRequestType,
+  void,
+  EffectFailDataAxiosError
+>(replaceAllPhones);
 
 const $isModalOpen = createStore<boolean>(false)
   .on(handleOpenModal, () => true)
@@ -178,19 +180,18 @@ const $preparedApartmentNumbers = $existingApartmentNumbers.map((items) => {
     }));
 });
 
-const $homeownerAccountId = createStore<string | null>(null).on(
-  setHomeownerAccountId,
-  (_, homeownerAccountId) => homeownerAccountId,
-);
+const $homeownerAccountId = createStore<string | null>(null)
+  .on(setHomeownerAccountId, (_, homeownerAccountId) => homeownerAccountId)
+  .reset(handleReset);
 
-const $phoneNumber = createStore<string | null>(null).on(
-  handleChangePhoneNumber,
-  (_, phoneNumber) => phoneNumber,
-);
+const $phoneNumber = createStore<string | null>(null)
+  .on(handleChangePhoneNumber, (_, phoneNumber) => phoneNumber)
+  .reset(handleReset);
 
 const $isSavePhoneNumberOpen = createStore<boolean>(false)
   .on(setPhoneNumberOpen, (_, isOpen) => isOpen)
-  .on(handleClosePhoneNumber, () => false);
+  .on(handleClosePhoneNumber, () => false)
+  .reset(handleReset);
 
 sample({
   clock: handleCreateTask,
@@ -361,6 +362,12 @@ sample({
   target: replaceAllPhonesFx,
 });
 
+sample({
+  clock: replaceAllPhonesFx.doneData,
+  fn: () => false,
+  target: setPhoneNumberOpen,
+});
+
 const onSuccessCreation = createTaskFx.doneData;
 
 const $isCreatePending = createTaskFx.pending;
@@ -382,6 +389,16 @@ createTaskFx.failData.watch((error) => {
   );
 });
 
+const onSuccessSavePhone = replaceAllPhonesFx.doneData;
+
+onSuccessSavePhone.watch(() => {
+  message.success('Успешно');
+});
+
+replaceAllPhonesFx.failData.watch(() => {
+  message.error('Ошибка сохранения телефона в профиль квартиры');
+});
+
 export const addTaskFromDispatcherService = {
   inputs: {
     handleOpenModal,
@@ -395,6 +412,7 @@ export const addTaskFromDispatcherService = {
     handleChangePhoneNumber,
     handleReplacePhoneNumber,
     handleClosePhoneNumber,
+    onSuccessSavePhone,
   },
   outputs: {
     $isModalOpen,

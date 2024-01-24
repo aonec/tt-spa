@@ -76,6 +76,7 @@ export const AddTaskFromDispatcherContainer = () => {
         isSavePhoneNumberOpen={isSavePhoneNumberOpen}
         handleReplacePhoneNumber={handleReplacePhoneNumber}
         handleClosePhoneNumber={handleClosePhoneNumber}
+        onSuccessSavePhone={inputs.onSuccessSavePhone}
       />
     </>
   );

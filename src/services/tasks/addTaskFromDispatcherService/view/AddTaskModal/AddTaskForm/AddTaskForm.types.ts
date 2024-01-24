@@ -6,6 +6,7 @@ import {
   ResourceDisconnectingResponse,
 } from 'api/types';
 import dayjs from 'dayjs';
+import { Event } from 'effector';
 import {
   ExistingApartmentNumberType,
   HomeownerNameOption,
@@ -60,6 +61,7 @@ export type AddTaskFormProps = {
   isSavePhoneNumberOpen: boolean;
   handleReplacePhoneNumber: () => void;
   handleClosePhoneNumber: () => void;
+  onSuccessSavePhone: Event<void>;
 };
 
 export type AddressOption = {
