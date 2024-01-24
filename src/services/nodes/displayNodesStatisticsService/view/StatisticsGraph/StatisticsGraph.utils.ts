@@ -108,7 +108,7 @@ export const getPreparedTaskData = ({
     amount: 1,
     isEmergency: task.isEmergency,
     isAllActive: !task.isClosed,
-    tasksInfo: {
+    taskInfo: {
       id: task.id,
       title: task.creationReason,
     },
