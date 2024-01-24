@@ -6,6 +6,7 @@ import { useUnit } from 'effector-react';
 import {
   addPhoneNumberMutation,
   homeownerAccountQuery,
+  removePhoneNumberMutation,
 } from './editHomeownerPhoneNumberService.api';
 import { EditHomeownerPhoneNumberContainerProps } from './editHomeownerPhoneNumberService.types';
 
@@ -18,6 +19,7 @@ export const EditHomeownerPhoneNumberContainer: FC<
 > = ({ accId }) => {
   const { data: homeowner } = useUnit(homeownerAccountQuery);
   const { start: addPhoneNumber } = useUnit(addPhoneNumberMutation);
+  const { start: removePhoneNumber } = useUnit(removePhoneNumberMutation);
 
   const phoneNumbers = homeowner?.phoneNumbers || [];
 
@@ -30,7 +32,12 @@ export const EditHomeownerPhoneNumberContainer: FC<
           addPhoneNumber={(phoneNumber) => {
             addPhoneNumber({ id: accId, data: { phoneNumber } });
           }}
-          deletePhoneNumber={(oldPhoneNumber) => {}}
+          deletePhoneNumber={(oldPhoneNumber) => {
+            removePhoneNumber({
+              id: accId,
+              data: { phoneNumber: oldPhoneNumber },
+            });
+          }}
         />
       </FormItem>
     </>
