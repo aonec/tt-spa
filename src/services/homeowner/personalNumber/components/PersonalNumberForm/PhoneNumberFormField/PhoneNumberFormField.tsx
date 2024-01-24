@@ -4,11 +4,11 @@ import { Select } from 'ui-kit/Select';
 import {
   ButtonsWrapper,
   TextWrapper,
+  TrashIconSC,
   ValueWrapper,
 } from './PhoneNumberFormField.styled';
 import { Button } from 'ui-kit/Button';
 import { Input } from 'ui-kit/Input';
-import { TrashIcon } from 'ui-kit/icons';
 const { Option } = Select;
 
 const addNewPhone = 'ADD_NEW_PHONE';
@@ -42,7 +42,7 @@ export const PhoneNumberFormField: FC<PhoneNumberFormFieldProps> = ({
             <Option value={phone} key={phone}>
               <ValueWrapper>
                 <TextWrapper>{phone}</TextWrapper>
-                <TrashIcon
+                <TrashIconSC
                   onClick={(e) => {
                     e.stopPropagation();
                     deletePhoneNumber(phone);

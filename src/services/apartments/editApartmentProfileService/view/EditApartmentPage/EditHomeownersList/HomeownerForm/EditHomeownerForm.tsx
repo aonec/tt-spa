@@ -18,6 +18,7 @@ import {
   EditHomeownerFormik,
 } from './EditHomeownerForm.types';
 import { PhoneNumberFormField } from 'services/homeowner/personalNumber/components/PersonalNumberForm/PhoneNumberFormField';
+import { EditHomeownerPhoneNumberContainer } from './editHomeownerPhoneNumber';
 
 export const EditHomeownerForm: FC<EditHomeownerFormProps> = ({
   formId,
@@ -109,6 +110,9 @@ export const EditHomeownerForm: FC<EditHomeownerFormProps> = ({
               }
             />
           </FormItem>
+        )}
+        {isEdit && initialValues?.id && (
+          <EditHomeownerPhoneNumberContainer accId={initialValues.id} />
         )}
         <FormItem label="Дата открытия лицевого счета">
           {!isEdit && (
