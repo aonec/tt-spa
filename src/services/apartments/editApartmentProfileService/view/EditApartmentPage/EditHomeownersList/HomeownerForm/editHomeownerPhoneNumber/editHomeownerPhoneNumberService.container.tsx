@@ -3,7 +3,10 @@ import { editHomeownerPhoneNumberService } from './editHomeownerPhoneNumberServi
 import { FormItem } from 'ui-kit/FormItem';
 import { PhoneNumberFormField } from 'services/homeowner/personalNumber/components/PersonalNumberForm/PhoneNumberFormField';
 import { useUnit } from 'effector-react';
-import { homeownerAccountQuery } from './editHomeownerPhoneNumberService.api';
+import {
+  addPhoneNumberMutation,
+  homeownerAccountQuery,
+} from './editHomeownerPhoneNumberService.api';
 import { EditHomeownerPhoneNumberContainerProps } from './editHomeownerPhoneNumberService.types';
 
 const {
@@ -14,6 +17,7 @@ export const EditHomeownerPhoneNumberContainer: FC<
   EditHomeownerPhoneNumberContainerProps
 > = ({ accId }) => {
   const { data: homeowner } = useUnit(homeownerAccountQuery);
+  const { start: addPhoneNumber } = useUnit(addPhoneNumberMutation);
 
   const phoneNumbers = homeowner?.phoneNumbers || [];
 
@@ -23,7 +27,9 @@ export const EditHomeownerPhoneNumberContainer: FC<
       <FormItem label="Телефон">
         <PhoneNumberFormField
           phoneNumbers={phoneNumbers}
-          addPhoneNumber={(phone) => {}}
+          addPhoneNumber={(phoneNumber) => {
+            addPhoneNumber({ id: accId, data: { phoneNumber } });
+          }}
           deletePhoneNumber={(oldPhoneNumber) => {}}
         />
       </FormItem>
