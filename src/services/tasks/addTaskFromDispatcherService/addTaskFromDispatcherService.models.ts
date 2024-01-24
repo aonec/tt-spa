@@ -10,7 +10,6 @@ import dayjs from 'dayjs';
 import { message } from 'antd';
 import _ from 'lodash';
 import {
-  addPhone,
   createTask,
   getAddresses,
   getApartmentHomeownerNames,
@@ -38,7 +37,6 @@ import {
 import { EffectFailDataAxiosError } from 'types';
 import { AddTask } from './view/AddTaskModal/AddTaskForm/AddTaskForm.types';
 import {
-  AddPhoneRequestType,
   GetAddressesRequest,
   GetApartmentsRequest,
   GetResourceDisconnectionRequest,
@@ -63,7 +61,6 @@ const handleSelectTaskReason = createEvent<string>();
 const handleSelectTaskType = createEvent<EisTaskType>();
 const handleChangeSubscriberName = createEvent<string | null>();
 const handleChangePhoneNumber = createEvent<string | null>();
-const handleSavePhoneNumber = createEvent<void>();
 const handleReplacePhoneNumber = createEvent<void>();
 const handleClosePhoneNumber = createEvent<void>();
 
@@ -111,8 +108,6 @@ const getResourceDisconnectionFx = createEffect<
   GetResourceDisconnectionRequest,
   ResourceDisconnectingResponsePagedList
 >(getResourceDisconnection);
-
-const addPhoneFx = createEffect<AddPhoneRequestType, void>(addPhone);
 
 const replaceAllPhonesFx = createEffect<ReplaceAllPhonesRequestType, void>(
   replaceAllPhones,
@@ -356,17 +351,6 @@ sample({
 });
 
 sample({
-  clock: handleSavePhoneNumber,
-  source: [$phoneNumber, $homeownerAccountId],
-  fn: (sourceData) =>
-    ({
-      homeownerAccountId: sourceData[1],
-      requestPayload: { phoneNumber: sourceData[0] },
-    } as AddPhoneRequestType),
-  target: addPhoneFx,
-});
-
-sample({
   clock: handleReplacePhoneNumber,
   source: [$phoneNumber, $homeownerAccountId],
   fn: (sourceData) =>
@@ -409,7 +393,6 @@ export const addTaskFromDispatcherService = {
     handleSelectTaskType,
     handleChangeSubscriberName,
     handleChangePhoneNumber,
-    handleSavePhoneNumber,
     handleReplacePhoneNumber,
     handleClosePhoneNumber,
   },

@@ -26,7 +26,6 @@ export const AddTaskFromDispatcherContainer = () => {
     handleChangeSubscriberName,
     handleChangePhoneNumber,
     isSavePhoneNumberOpen,
-    handleSavePhoneNumber,
     handleReplacePhoneNumber,
     handleClosePhoneNumber,
   } = useUnit({
@@ -48,7 +47,6 @@ export const AddTaskFromDispatcherContainer = () => {
     selectedTaskReasonOption: outputs.$selectedTaskReasonOption,
     handleChangeSubscriberName: inputs.handleChangeSubscriberName,
     handleChangePhoneNumber: inputs.handleChangePhoneNumber,
-    handleSavePhoneNumber: inputs.handleSavePhoneNumber,
     handleReplacePhoneNumber: inputs.handleReplacePhoneNumber,
     handleClosePhoneNumber: inputs.handleClosePhoneNumber,
     isSavePhoneNumberOpen: outputs.$isSavePhoneNumberOpen,
@@ -76,7 +74,6 @@ export const AddTaskFromDispatcherContainer = () => {
         handleChangeSubscriberName={handleChangeSubscriberName}
         handleChangePhoneNumber={handleChangePhoneNumber}
         isSavePhoneNumberOpen={isSavePhoneNumberOpen}
-        handleSavePhoneNumber={handleSavePhoneNumber}
         handleReplacePhoneNumber={handleReplacePhoneNumber}
         handleClosePhoneNumber={handleClosePhoneNumber}
       />

@@ -25,7 +25,6 @@ export const AddTaskModal: FC<AddTaskModalProps> = ({
   handleChangeSubscriberName,
   handleChangePhoneNumber,
   isSavePhoneNumberOpen,
-  handleSavePhoneNumber,
   handleReplacePhoneNumber,
   handleClosePhoneNumber,
 }) => {
@@ -59,7 +58,6 @@ export const AddTaskModal: FC<AddTaskModalProps> = ({
           handleChangeSubscriberName={handleChangeSubscriberName}
           handleChangePhoneNumber={handleChangePhoneNumber}
           isSavePhoneNumberOpen={isSavePhoneNumberOpen}
-          handleSavePhoneNumber={handleSavePhoneNumber}
           handleReplacePhoneNumber={handleReplacePhoneNumber}
           handleClosePhoneNumber={handleClosePhoneNumber}
         />

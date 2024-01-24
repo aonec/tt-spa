@@ -32,7 +32,6 @@ export type AddTaskModalProps = {
   handleChangeSubscriberName: (payload: string | null) => void;
   handleChangePhoneNumber: (payload: string | null) => void;
   isSavePhoneNumberOpen: boolean;
-  handleSavePhoneNumber: () => void;
   handleReplacePhoneNumber: () => void;
   handleClosePhoneNumber: () => void;
 };

@@ -77,7 +77,6 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
   handleChangeSubscriberName,
   handleChangePhoneNumber,
   isSavePhoneNumberOpen,
-  handleSavePhoneNumber,
   handleReplacePhoneNumber,
   handleClosePhoneNumber,
 }) => {
@@ -457,7 +456,6 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
             <FormItem label="Номер телефона">
               <SavePhoneNumber
                 isOpen={isSavePhoneNumberOpen}
-                handleSavePhoneNumber={handleSavePhoneNumber}
                 handleReplacePhoneNumber={handleReplacePhoneNumber}
                 handleClosePhoneNumber={handleClosePhoneNumber}
               >

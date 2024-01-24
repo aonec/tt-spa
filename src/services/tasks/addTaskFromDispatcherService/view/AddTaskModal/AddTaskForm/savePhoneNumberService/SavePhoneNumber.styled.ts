@@ -1,12 +1,13 @@
 import styled from 'styled-components';
 
 export const Wrapper = styled.div`
-  width: 240px;
+  width: 200px;
   height: 66px;
   padding: 0px 10px;
 `;
 
 export const Title = styled.div`
+
   color: #dcdee4;
   font-size: 12px;
   font-weight: 400;
@@ -18,6 +19,8 @@ export const Buttons = styled.div`
   display: flex;
   justify-content: space-between;
   padding-top: 6px;
+  padding-left: 10px;
+  padding-right: 10px;
 `;
 
 export const Left = styled.div``;

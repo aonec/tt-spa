@@ -1,6 +1,5 @@
 import {
   EisTaskType,
-  HomeownerAccountAddPhoneNumberRequest,
   HomeownerAccountReplaceAllPhoneNumbersRequest,
 } from 'api/types';
 
@@ -42,11 +41,6 @@ export enum TaskTypes {
   Emergency = 'Emergency',
   Planned = 'Planned',
 }
-
-export type AddPhoneRequestType = {
-  homeownerAccountId: string;
-  requestPayload: HomeownerAccountAddPhoneNumberRequest;
-};
 
 export type ReplaceAllPhonesRequestType = {
   homeownerAccountId: string;

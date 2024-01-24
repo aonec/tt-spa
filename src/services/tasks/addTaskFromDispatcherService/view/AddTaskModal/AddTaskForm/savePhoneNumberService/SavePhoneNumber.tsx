@@ -14,7 +14,6 @@ import { SavePhoneNumberProps } from './SavePhoneNumber.types';
 export const SavePhoneNumber: FC<SavePhoneNumberProps> = ({
   children,
   isOpen,
-  handleSavePhoneNumber,
   handleReplacePhoneNumber,
   handleClosePhoneNumber,
 }) => {
@@ -24,7 +23,9 @@ export const SavePhoneNumber: FC<SavePhoneNumberProps> = ({
       placement="topRight"
       title={
         <Wrapper>
-          <Title>Хотите сохранить номер в профиле квартиры?</Title>
+          <Title>
+            Сохранить номер телефона как основной в профиле картиры?
+          </Title>
 
           <Buttons>
             <Left>
@@ -33,10 +34,7 @@ export const SavePhoneNumber: FC<SavePhoneNumberProps> = ({
               </ButtonWhite>
             </Left>
             <Right>
-              <ButtonWhite onClick={() => handleReplacePhoneNumber()}>
-                Заменить
-              </ButtonWhite>
-              <ButtonBlue onClick={() => handleSavePhoneNumber()}>
+              <ButtonBlue onClick={() => handleReplacePhoneNumber()}>
                 Сохранить
               </ButtonBlue>
             </Right>

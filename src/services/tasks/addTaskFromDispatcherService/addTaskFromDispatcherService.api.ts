@@ -6,14 +6,11 @@ import {
   ErpSourceResponse,
   ErpTaskDeadlineResponse,
   ErpTaskReasonGroupResponse,
-  HomeownerAccountAddPhoneNumberRequest,
   HomeownerAccountNameResponse,
-  HomeownerAccountResponse,
   ResourceDisconnectingResponsePagedList,
   StreetWithBuildingNumbersResponsePagedList,
 } from 'api/types';
 import {
-  AddPhoneRequestType,
   GetAddressesRequest,
   GetApartmentsRequest,
   GetResourceDisconnectionRequest,
@@ -70,16 +67,6 @@ export const getApartmentHomeownerNames = (
   return axios.get(`Apartments/${apartmentId}/HomeownerAccountNames`, {
     params: { isAlsoClosed: false },
   });
-};
-
-export const addPhone = ({
-  homeownerAccountId,
-  requestPayload,
-}: AddPhoneRequestType): Promise<void> => {
-  return axios.post(
-    `HomeownerAccounts/${homeownerAccountId}/AddPhone`,
-    requestPayload,
-  );
 };
 
 export const replaceAllPhones = ({
