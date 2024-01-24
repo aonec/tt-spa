@@ -154,9 +154,9 @@ export const GraphView: React.FC<GraphViewProps> = ({
         />
 
         <VictoryScatter
-          data={taskStatistics.map((tasksByDate) =>
+          data={taskStatistics.map((taskByDate) =>
             getPreparedTaskData({
-              tasksByDate,
+              taskByDate,
               reportType,
               maxValue,
               minDate: ticksData[0],

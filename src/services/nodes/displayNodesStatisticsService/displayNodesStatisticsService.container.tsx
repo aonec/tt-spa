@@ -13,6 +13,7 @@ import { NodeStatisticsTable } from './view/NodeStatisticsTable';
 import { GraphFilterForm } from './view/StatisticsGraph/GraphFilterForm';
 import { GraphView } from './view/StatisticsGraph';
 import { GraphLegend } from './view/StatisticsGraph/GraphLegend';
+import { TaskStatisticsItem } from 'api/types';
 
 const { inputs, outputs, gates } = displayNodesStatisticsService;
 const { NodeInfoGate } = gates;
@@ -60,6 +61,14 @@ export const DisplayNodesStatisticsContainer: FC<
   );
 
   const archiveReadingExist = archive.length !== 0;
+  const preparedTasks = useMemo(
+    () =>
+      taskStatistics.reduce(
+        (acc, tasks) => [...acc, ...(tasks.value || [])],
+        [] as TaskStatisticsItem[],
+      ),
+    [taskStatistics],
+  );
 
   return (
     <>
@@ -82,7 +91,7 @@ export const DisplayNodesStatisticsContainer: FC<
                   graphParam={graphType}
                   data={archiveData}
                   reportType={currentArhiveFilter.ReportType}
-                  taskStatistics={taskStatistics}
+                  taskStatistics={preparedTasks}
                   wrapperId={wrapperId}
                   withFault={withFault}
                 />
