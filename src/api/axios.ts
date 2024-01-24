@@ -5,14 +5,18 @@ import { notification, message } from 'antd';
 import { cancellableUrl } from 'services/cancelRequestService/cancelRequestService.constants';
 import { cancelRequestService } from 'services/cancelRequestService';
 import { isUndefined } from 'lodash/fp';
-
-export const devUrl = 'https://stage.k8s.transparent-technology.ru/api/';
-
-export const baseURL = process.env.REACT_APP_API_URL || devUrl;
+import { tokensService } from './tokensService';
+import { developmentSettingsService } from 'services/developmentSettings/developmentSettings.models';
 
 export const isDevMode = process.env.DEV_SETTINGS !== 'DISABLED';
 
-axios.defaults.baseURL = baseURL;
+axios.defaults.baseURL = developmentSettingsService.outputs.$devUrl.getState();
+
+developmentSettingsService.outputs.$devUrl.watch((url) => {
+  axios.defaults.baseURL = url;
+
+  if (url) localStorage.setItem('dev-api-url', url);
+});
 
 axios.interceptors.request.use((req) => {
   req.headers.Authorization = `Bearer ${takeFromLocStor('token')}`;
@@ -43,8 +47,9 @@ axios.interceptors.response.use(
     if (url && checkUrl('(login|refresh)', url)) {
       const { token, refreshToken, roles, permissions } = data.successResponse;
 
-      saveToLocalStorage('token', token);
-      saveToLocalStorage('refreshToken', refreshToken);
+      tokensService.inputs.setToken(token);
+      tokensService.inputs.setRefreshToken(refreshToken);
+
       saveToLocalStorage('permissions', permissions);
       checkUrl('login', url) && saveToLocalStorage('roles', roles);
     }
@@ -85,9 +90,9 @@ axios.interceptors.response.use(
     }
 
     if (status === 401 && checkUrl('refresh', error.config.url)) {
-      localStorage.removeItem('token');
-      localStorage.removeItem('refreshToken');
-      window.location.replace('/login');
+      tokensService.inputs.deleteToken();
+      tokensService.inputs.deleteRefreshToken();
+      tokensService.inputs.redirectToLogin();
       return;
     }
 

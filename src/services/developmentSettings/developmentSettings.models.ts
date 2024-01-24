@@ -1,18 +1,16 @@
 import { createEvent, createStore } from 'effector';
 import { persist } from 'effector-storage/local';
 import { featureToggles } from 'featureToggles';
-import axios from 'api/axios';
 import { FeatureToggles } from './developmentSettings.types';
 
 const $isDevSettingsModalOpen = createStore(false);
 
+const devUrl = 'https://stage.k8s.transparent-technology.ru/api/';
 const devApiURL = localStorage.getItem('dev-api-url');
 
-if (devApiURL) {
-  axios.defaults.baseURL = devApiURL;
-}
+export const baseURL = process.env.REACT_APP_API_URL || devUrl;
 
-const apiURL = axios.defaults.baseURL;
+const apiURL = devApiURL || baseURL;
 
 const openDevSettingsModal = createEvent();
 const closeDevSettingsModal = createEvent();
@@ -36,12 +34,6 @@ const $devUrl = createStore(apiURL || '').on(setDevUrl, (_, devUrl) => devUrl);
 $isDevSettingsModalOpen
   .on(openDevSettingsModal, () => true)
   .reset(closeDevSettingsModal);
-
-$devUrl.watch((url) => {
-  axios.defaults.baseURL = url;
-
-  if (url) localStorage.setItem('dev-api-url', url);
-});
 
 export const developmentSettingsService = {
   inputs: {

@@ -11,8 +11,12 @@ const method: 'GET' = 'GET';
 export function createQueryWithAuth<
   Params extends object | void,
   Data,
-  TransformedData,
->({ url, response }: QueryFactoryParams<Params, Data, TransformedData>) {
+  TransformedData = Data,
+>({
+  url,
+  response,
+  errorConverter,
+}: QueryFactoryParams<Params, Data, TransformedData>) {
   const query = createJsonQuery({
     params: declareParams<Params>(),
     request: {
@@ -38,7 +42,9 @@ export function createQueryWithAuth<
     response: {
       ...response,
       mapData: ({ params, result }) =>
-        response.mapData({ params, result: result.successResponse }),
+        response.mapData
+          ? response.mapData({ params, result: result.successResponse })
+          : result.successResponse,
     },
     concurrency: {
       strategy: 'TAKE_EVERY',
@@ -55,6 +61,7 @@ export function createQueryWithAuth<
   sample({
     clock: query.finished.failure,
     fn: ({ error, params }) => ({
+      errorConverter,
       error,
       method,
       url: typeof url === 'function' ? url(params) : url,
