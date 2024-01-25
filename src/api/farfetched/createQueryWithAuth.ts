@@ -1,18 +1,22 @@
 import { applyBarrier, createJsonQuery, declareParams } from '@farfetched/core';
 import { sample } from 'effector';
 import { tokensService } from '../tokensService';
-import { developmentSettingsService } from 'services/developmentSettings/developmentSettings.models';
 import { authBarrier } from '../tokensService/tokensService.relations';
 import { QueryFactoryParams } from './types';
 import { requestFailed, setIsOnline } from './model';
+import { currentOrganizationService } from 'services/currentOrganizationService';
 
 const method: 'GET' = 'GET';
 
 export function createQueryWithAuth<
   Params extends object | void,
   Data,
-  TransformedData,
->({ url, response }: QueryFactoryParams<Params, Data, TransformedData>) {
+  TransformedData = Data,
+>({
+  url,
+  response,
+  errorConverter,
+}: QueryFactoryParams<Params, Data, TransformedData>) {
   const query = createJsonQuery({
     params: declareParams<Params>(),
     request: {
@@ -20,7 +24,7 @@ export function createQueryWithAuth<
       query: (params) =>
         params ? new URLSearchParams(Object.entries(params)).toString() : '',
       url: {
-        source: developmentSettingsService.outputs.$devUrl,
+        source: currentOrganizationService.outputs.$devUrl,
         fn: (params, baseUrl) =>
           new URL(
             typeof url === 'function' ? url(params) : url,
@@ -38,7 +42,9 @@ export function createQueryWithAuth<
     response: {
       ...response,
       mapData: ({ params, result }) =>
-        response.mapData({ params, result: result.successResponse }),
+        response.mapData
+          ? response.mapData({ params, result: result.successResponse })
+          : result.successResponse,
     },
     concurrency: {
       strategy: 'TAKE_EVERY',
@@ -55,6 +61,7 @@ export function createQueryWithAuth<
   sample({
     clock: query.finished.failure,
     fn: ({ error, params }) => ({
+      errorConverter,
       error,
       method,
       url: typeof url === 'function' ? url(params) : url,

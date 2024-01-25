@@ -1,4 +1,4 @@
-import { createEffect, createStore, sample } from 'effector';
+import { createEffect, createEvent, createStore, sample } from 'effector';
 import { createGate } from 'effector-react';
 import _ from 'lodash';
 import { getCurrentManagingFirm } from './currentOrganizationService.api';
@@ -57,6 +57,16 @@ const $organizationCoordinates = $currentManagingFirm.map(
   },
 );
 
+const devUrl = 'https://stage.k8s.transparent-technology.ru/api/';
+const devApiURL = localStorage.getItem('dev-api-url');
+
+export const baseURL = process.env.REACT_APP_API_URL || devUrl;
+
+const apiURL = devApiURL || baseURL;
+
+const setDevUrl = createEvent<string>();
+const $devUrl = createStore(apiURL || '').on(setDevUrl, (_, devUrl) => devUrl);
+
 sample({
   clock: CurrentManagingFirmGate.open,
   target: getCurrentManagingFirmFx,
@@ -69,6 +79,8 @@ export const currentOrganizationService = {
     $organizationCoordinates,
     $diametersConfig,
     $hasCorpuses,
+    $devUrl,
   },
   gates: { CurrentManagingFirmGate },
+  inputs: { setDevUrl },
 };
