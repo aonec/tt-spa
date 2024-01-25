@@ -70,9 +70,7 @@ export const SettingPage: FC<SettingPageProps> = ({
         ...(featureToggles.workingRanges
           ? [{ label: 'Рабочие диапазоны узлов', key: 'operatingRanges' }]
           : []),
-        ...(featureToggles.temperatureGraph
-          ? [{ label: 'Температурный график', key: 'temperatureGraph' }]
-          : []),
+        { label: 'Температурный график', key: 'temperatureGraph' },
       ];
     }
 
@@ -90,7 +88,6 @@ export const SettingPage: FC<SettingPageProps> = ({
     featureToggles.controllersDistribution,
     featureToggles.districtsManage,
     featureToggles.workingRanges,
-    featureToggles.temperatureGraph,
   ]);
 
   useEffect(() => {
@@ -100,7 +97,7 @@ export const SettingPage: FC<SettingPageProps> = ({
             key: 'operatingRanges',
             visible: featureToggles.workingRanges,
           },
-          { key: 'temperatureGraph', visible: featureToggles.temperatureGraph },
+          { key: 'temperatureGraph', visible: true },
         ]
       : [
           {
@@ -122,7 +119,6 @@ export const SettingPage: FC<SettingPageProps> = ({
     isAdminSettings,
     featureToggles.controllersDistribution,
     featureToggles.districtsManage,
-    featureToggles.temperatureGraph,
     featureToggles.workingRanges,
     navigate,
     pathname,
