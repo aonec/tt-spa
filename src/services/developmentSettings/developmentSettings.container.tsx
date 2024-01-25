@@ -3,6 +3,7 @@ import React, { FC } from 'react';
 import { developmentSettingsService } from './developmentSettings.models';
 import { DevelopmentSettingsModal } from './view/DevelopmentSettingsModal';
 import { DevelopmentSettingsContainerProps } from './developmentSettings.types';
+import { currentOrganizationService } from 'services/currentOrganizationService';
 
 const { inputs, outputs } = developmentSettingsService;
 
@@ -19,10 +20,10 @@ export const DevelopmentSettingsContainer: FC<
     resetFeatureToggles,
   } = useUnit({
     visible: outputs.$isDevSettingsModalOpen,
-    devUrl: outputs.$devUrl,
+    devUrl: currentOrganizationService.outputs.$devUrl,
     featureToggles: outputs.$featureToggles,
     closeDevSettingsModal: inputs.closeDevSettingsModal,
-    setDevUrl: inputs.setDevUrl,
+    setDevUrl: currentOrganizationService.inputs.setDevUrl,
     toggleFeature: inputs.toggleFeature,
     resetFeatureToggles: inputs.resetFeatureToggles,
   });

@@ -6,13 +6,13 @@ import { cancellableUrl } from 'services/cancelRequestService/cancelRequestServi
 import { cancelRequestService } from 'services/cancelRequestService';
 import { isUndefined } from 'lodash/fp';
 import { tokensService } from './tokensService';
-import { developmentSettingsService } from 'services/developmentSettings/developmentSettings.models';
+import { currentOrganizationService } from 'services/currentOrganizationService';
 
 export const isDevMode = process.env.DEV_SETTINGS !== 'DISABLED';
 
-axios.defaults.baseURL = developmentSettingsService.outputs.$devUrl.getState();
+axios.defaults.baseURL = currentOrganizationService.outputs.$devUrl.getState();
 
-developmentSettingsService.outputs.$devUrl.watch((url) => {
+currentOrganizationService.outputs.$devUrl.watch((url) => {
   axios.defaults.baseURL = url;
 
   if (url) localStorage.setItem('dev-api-url', url);

@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
-import { ComponentMeta } from '@storybook/react';
+import { Meta } from '@storybook/react';
 import { ListOpeningChevron } from '.';
 
 export default {
   title: 'ListOpeningChevron',
   component: ListOpeningChevron,
   parameters: { layout: 'centered' },
-} as ComponentMeta<typeof ListOpeningChevron>;
+} as Meta<typeof ListOpeningChevron>;
 
 export const Overview = () => {
   const [isOpen, setIsOpen] = useState(false);

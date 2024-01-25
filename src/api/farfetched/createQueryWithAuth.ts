@@ -1,10 +1,10 @@
 import { applyBarrier, createJsonQuery, declareParams } from '@farfetched/core';
 import { sample } from 'effector';
 import { tokensService } from '../tokensService';
-import { developmentSettingsService } from 'services/developmentSettings/developmentSettings.models';
 import { authBarrier } from '../tokensService/tokensService.relations';
 import { QueryFactoryParams } from './types';
 import { requestFailed, setIsOnline } from './model';
+import { currentOrganizationService } from 'services/currentOrganizationService';
 
 const method: 'GET' = 'GET';
 
@@ -24,7 +24,7 @@ export function createQueryWithAuth<
       query: (params) =>
         params ? new URLSearchParams(Object.entries(params)).toString() : '',
       url: {
-        source: developmentSettingsService.outputs.$devUrl,
+        source: currentOrganizationService.outputs.$devUrl,
         fn: (params, baseUrl) =>
           new URL(
             typeof url === 'function' ? url(params) : url,

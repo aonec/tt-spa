@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import { ComponentMeta, ComponentStory } from '@storybook/react';
+import { Meta, ComponentStory } from '@storybook/react';
 import { Segmented } from './Segmented';
 import { TasksPageSegment } from 'services/tasks/tasksProfileService/view/TasksProfile/TasksProfile.types';
 import { ListIcon, MapIcon } from 'ui-kit/icons';
 
-const meta: ComponentMeta<typeof Segmented> = {
+const meta: Meta<typeof Segmented> = {
   title: 'Segmented',
   component: Segmented,
   parameters: { layout: 'centered' },

@@ -1,14 +1,14 @@
 import React from 'react';
-import { ComponentMeta } from '@storybook/react';
+import { Meta } from '@storybook/react';
 import { PageHeader } from '.';
 import { DeviceIcon } from 'ui-kit/icons';
-import { HeaderTitleWrapper } from './PageHeader.styled.stories';
+import { HeaderTitleWrapper } from './PageHeader.stories.styled';
 
 export default {
   title: 'PageHeader',
   component: PageHeader,
   parameters: { layout: 'centered' },
-} as ComponentMeta<typeof PageHeader>;
+} as Meta<typeof PageHeader>;
 
 export const Overview = () => (
   <PageHeader

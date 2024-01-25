@@ -48,6 +48,7 @@ export const ApartmentInfo: FC<ApartmentInfoProps> = ({
   handleUpdateHomeowner,
   addPhoneNumber,
   deletePhoneNumber,
+  replacePhoneNumber,
 }) => {
   const filteredHomeowners = apartment.homeownerAccounts
     ?.filter((homeowner) => !homeowner.closedAt)
@@ -124,14 +125,28 @@ export const ApartmentInfo: FC<ApartmentInfoProps> = ({
     if (!activeHomeowner || !addPhoneNumber) {
       return;
     }
+    return (phoneNumber: string) =>
+      addPhoneNumber({ id: activeHomeowner, phoneNumber });
+  }, [addPhoneNumber, activeHomeowner]);
+
+  const handleReplacePhoneNumber = useMemo(() => {
+    if (!activeHomeowner || !replacePhoneNumber) {
+      return;
+    }
+
     return ({
       phoneNumber,
       oldPhoneNumber,
     }: {
       phoneNumber: string;
-      oldPhoneNumber: string | null;
-    }) => addPhoneNumber({ id: activeHomeowner, phoneNumber, oldPhoneNumber });
-  }, [addPhoneNumber, activeHomeowner]);
+      oldPhoneNumber: string;
+    }) =>
+      replacePhoneNumber({
+        id: activeHomeowner,
+        newPhoneNumber: phoneNumber,
+        oldPhoneNumber,
+      });
+  }, [activeHomeowner, replacePhoneNumber]);
 
   return (
     <>
@@ -253,6 +268,7 @@ export const ApartmentInfo: FC<ApartmentInfoProps> = ({
                 phoneNumbers={selectedHomeowner?.phoneNumbers || []}
                 addPhoneNumber={handleAddPhoneNumber}
                 deletePhoneNumber={handleRemovePhoneNumber}
+                replacePhoneNumber={handleReplacePhoneNumber}
               />
             </ExtraInfoWrapper>
           )}

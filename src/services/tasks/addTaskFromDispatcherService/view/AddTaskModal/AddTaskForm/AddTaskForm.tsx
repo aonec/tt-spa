@@ -50,6 +50,7 @@ import { useSwitchInputOnEnter } from 'hooks/useSwitchInputOnEnter';
 import { fromEnter } from 'ui-kit/shared/DatePickerNative';
 import { validationSchema } from './AddTaskForm.constants';
 import { DatePicker } from 'ui-kit/DatePicker';
+import { SavePhoneNumber } from './savePhoneNumberService';
 
 const {
   gates: { PageGate },
@@ -73,6 +74,12 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
   handleSelectTaskType,
   isManualDeadlineRequired,
   selectedTaskReasonOption,
+  handleChangeSubscriberName,
+  handleChangePhoneNumber,
+  isSavePhoneNumberOpen,
+  handleReplacePhoneNumber,
+  handleClosePhoneNumber,
+  onSuccessSavePhone,
 }) => {
   const initialSource = useMemo(() => ERPSources[0], [ERPSources]);
 
@@ -141,6 +148,19 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
     !isSourceNumberRequired,
   ].every(Boolean);
 
+  const next = useSwitchInputOnEnter(dataKey, false, false);
+
+  useEffect(() => {
+    return onSuccessSavePhone.watch(() => {
+      if (isOnlySubscriberRequired) {
+        next(4);
+      } else {
+        next(5);
+      }
+      return;
+    }).unsubscribe;
+  }, [onSuccessSavePhone, isOnlySubscriberRequired, next]);
+
   useEffect(() => {
     setFieldValue('isSourceNumberRequired', isSourceNumberRequired);
   }, [isSourceNumberRequired, setFieldValue]);
@@ -156,8 +176,6 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
   useEffect(() => {
     setDisableSubmit(!isValid);
   }, [isValid, setDisableSubmit]);
-
-  const next = useSwitchInputOnEnter(dataKey, false, false);
 
   const preparedAddressOptions = useMemo(
     () =>
@@ -417,7 +435,10 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
               <AutoCompleteAntD
                 allowClear
                 value={values.subscriberName || undefined}
-                onChange={(value) => setFieldValue('subscriberName', value)}
+                onChange={(value) => {
+                  setFieldValue('subscriberName', value);
+                  handleChangeSubscriberName(value);
+                }}
                 options={apartmentHomeownerNames}
                 data-reading-input={dataKey}
                 onKeyDown={fromEnter(() => {
@@ -445,21 +466,28 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
               </AutoCompleteAntD>
             </FormItem>
             <FormItem label="Номер телефона">
-              <Input
-                placeholder="Введите"
-                value={values.phoneNumber || undefined}
-                onChange={(value) =>
-                  setFieldValue('phoneNumber', value.target.value)
-                }
-                data-reading-input={dataKey}
-                onKeyDown={fromEnter(() => {
-                  if (isOnlySubscriberRequired) {
-                    next(4);
-                  } else {
-                    next(5);
-                  }
-                })}
-              />
+              <SavePhoneNumber
+                isOpen={isSavePhoneNumberOpen}
+                handleReplacePhoneNumber={handleReplacePhoneNumber}
+                handleClosePhoneNumber={handleClosePhoneNumber}
+              >
+                <Input
+                  placeholder="Введите"
+                  value={values.phoneNumber || undefined}
+                  onChange={(value) => {
+                    setFieldValue('phoneNumber', value.target.value);
+                    handleChangePhoneNumber(value.target.value);
+                  }}
+                  data-reading-input={dataKey}
+                  onKeyDown={fromEnter(() => {
+                    if (isOnlySubscriberRequired) {
+                      next(4);
+                    } else {
+                      next(5);
+                    }
+                  })}
+                />
+              </SavePhoneNumber>
             </FormItem>
           </GridContainer>
         )}
@@ -531,7 +559,10 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
               })}
               open={isReasonOpen}
               onBlur={() => setReasonOpen(false)}
-              onFocus={() => setReasonOpen(true)}
+              onFocus={() => {
+                setReasonOpen(true);
+                handleClosePhoneNumber();
+              }}
               onMouseDown={() => setReasonOpen(true)}
             >
               {taskReasonOptions.map((elem) => (

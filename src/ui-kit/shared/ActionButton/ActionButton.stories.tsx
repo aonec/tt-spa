@@ -1,18 +1,18 @@
 import React, { useState } from 'react';
-import { ComponentMeta, ComponentStory } from '@storybook/react';
+import { ComponentStory, Meta } from '@storybook/react';
 import { ActionButton } from '.';
 import {
   ButtonsWrapper,
   HeatIconSC,
   TimerIconSC,
   UploadIconSC,
-} from './ActionButton.styled.stories';
+} from './ActionButton.stories.styled';
 
 export default {
   title: 'ActionButton',
   component: ActionButton,
   parameters: { layout: 'centered' },
-} as ComponentMeta<typeof ActionButton>;
+} as Meta<typeof ActionButton>;
 
 export const Alone: ComponentStory<typeof ActionButton> = (args) => (
   <div style={{ width: 300 }}>

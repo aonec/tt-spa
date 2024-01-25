@@ -1,5 +1,5 @@
 import dayjs from 'api/dayjs';
-import { DateTimeTaskStatisticsItemArrayDictionaryItem } from 'api/types';
+import { TaskStatisticsItem } from 'api/types';
 import {
   GetTaskXPosPayload,
   ReportType,
@@ -13,15 +13,15 @@ export function prepareDataForNodeStatistic(
 ) {
   const data = sortArchiveArray(unsortedData);
 
-  const minTime = data[0].timeUtc;
-  const maxTime = data[data.length - 1].timeUtc;
+  const minTimeDayJs = dayjs(data[0].time).utcOffset(0);
+  const maxTime = data[data.length - 1].time;
 
   let elemsCount = 0;
 
   if (reportType === 'daily') {
-    elemsCount = dayjs(maxTime).diff(dayjs(minTime), 'day') + 1;
+    elemsCount = dayjs(maxTime).diff(minTimeDayJs, 'day') + 1;
   } else if (reportType === 'hourly') {
-    elemsCount = dayjs(maxTime).diff(dayjs(minTime), 'hour') + 1;
+    elemsCount = dayjs(maxTime).diff(minTimeDayJs, 'hour') + 1;
   }
 
   const result = [];
@@ -29,7 +29,7 @@ export function prepareDataForNodeStatistic(
   for (let iterator = 0, index = 0; iterator < elemsCount; iterator++) {
     let elem = {
       ...data[index],
-      timeUtc: dayjs(data[index].timeUtc).format(),
+      time: dayjs(data[index].time).utcOffset(0).format(),
     };
 
     if (elem.hasFault && !withFault) {
@@ -39,9 +39,9 @@ export function prepareDataForNodeStatistic(
     let diff = 0;
 
     if (reportType === 'daily') {
-      diff = dayjs(elem.timeUtc).diff(dayjs(minTime), 'day');
+      diff = dayjs(elem.time).diff(minTimeDayJs, 'day');
     } else if (reportType === 'hourly') {
-      diff = dayjs(elem.timeUtc).diff(dayjs(minTime), 'hour');
+      diff = dayjs(elem.time).diff(minTimeDayJs, 'hour');
     }
 
     if (diff === iterator) {
@@ -49,7 +49,7 @@ export function prepareDataForNodeStatistic(
       index++;
     } else {
       result.push({
-        timeUtc: dayjs(minTime).utcOffset(0).add(iterator, 'hour').format(),
+        time: minTimeDayJs.utcOffset(0).add(iterator, 'hour').format(),
         value: 0,
       });
     }
@@ -85,36 +85,33 @@ const getTaskXPos = (payload: GetTaskXPosPayload) => {
 };
 
 export const getPreparedTaskData = ({
-  tasksByDate,
+  taskByDate: task,
   maxValue,
   minDate,
   maxDate,
   reportType,
 }: {
-  tasksByDate: DateTimeTaskStatisticsItemArrayDictionaryItem;
+  taskByDate: TaskStatisticsItem;
   reportType: ReportType;
   maxValue: number;
   minDate: string;
   maxDate: string;
 }) => {
-  const tasksArr = tasksByDate.value || [];
-  const isAlone = tasksArr.length === 1;
-
   return {
     x: getTaskXPos({
-      currentData: isAlone ? tasksArr[0]?.creationTime : tasksByDate?.key,
+      currentData: task?.firstTriggerTime,
       minDate,
       maxDate,
       reportType,
     }),
     y: maxValue * 0.9,
-    amount: tasksArr.length,
-    isEmergency: tasksArr.filter((elem) => elem.isEmergency).length !== 0,
-    isAllActive: tasksArr.filter((elem) => elem.isClosed).length === 0,
-    tasksInfo: tasksArr.map((task) => ({
+    amount: 1,
+    isEmergency: task.isEmergency,
+    isAllActive: !task.isClosed,
+    taskInfo: {
       id: task.id,
       title: task.creationReason,
-    })),
+    },
   };
 };
 
@@ -138,8 +135,8 @@ const isDayMultiplyFive = (timeStamp: string): boolean => {
 
 export function sortArchiveArray<T>(archiveArr: (PreparedArchiveValues & T)[]) {
   const sortedArchive = archiveArr.sort((first, second) => {
-    const firstDate = dayjs(first.timeUtc);
-    const secondDate = dayjs(second.timeUtc);
+    const firstDate = dayjs(first.time);
+    const secondDate = dayjs(second.time);
     return firstDate.diff(secondDate);
   });
 
@@ -157,7 +154,7 @@ const formHourlyTicks = (
   return [
     sortedArchive[0],
     ...sortedArchive.filter(
-      (entry, index) => length - index > 3 && isHourMultiplySix(entry.timeUtc),
+      (entry, index) => length - index > 3 && isHourMultiplySix(entry.time),
     ),
     sortedArchive[sortedArchive.length - 1],
   ];
@@ -171,14 +168,14 @@ const formDailyTicks = (
 
   const length = sortedArchive.length;
   const multipleFives = sortedArchive.filter((entry) =>
-    isDayMultiplyFive(entry.timeUtc),
+    isDayMultiplyFive(entry.time),
   );
   const delta1 =
-    getDayFromTimeStamp(multipleFives[0].timeUtc) -
-    getDayFromTimeStamp(sortedArchive[0].timeUtc);
+    getDayFromTimeStamp(multipleFives[0].time) -
+    getDayFromTimeStamp(sortedArchive[0].time);
   const delta2 =
-    getDayFromTimeStamp(sortedArchive[length - 1].timeUtc) -
-    getDayFromTimeStamp(multipleFives[multipleFives.length - 1].timeUtc);
+    getDayFromTimeStamp(sortedArchive[length - 1].time) -
+    getDayFromTimeStamp(multipleFives[multipleFives.length - 1].time);
   const sliceParam1 = delta1 < 2 ? 1 : 0;
   const sliceParam2 =
     delta2 < 2 ? multipleFives.length - 1 : multipleFives.length;
@@ -209,11 +206,13 @@ export const getTickFormat = (
   reportType: ReportType,
   x: string,
 ) => {
+  const date = dayjs(x).utcOffset(0);
+
   if (reportType === 'daily') {
-    return dayjs(x).format('DD.MM');
+    return date.format('DD.MM');
   }
   if (archiveArrLength >= 97) {
-    return dayjs(x).format('H');
+    return date.format('H');
   }
-  return dayjs(x).format('HH:mm');
+  return date.format('HH:mm');
 };

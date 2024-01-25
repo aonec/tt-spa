@@ -2,7 +2,7 @@ import { Contract, createJsonMutation } from '@farfetched/core';
 import { combine } from 'effector';
 import { RefreshResponseSuccessApiResponse } from 'api/types';
 import { tokensService } from './tokensService.model';
-import { developmentSettingsService } from 'services/developmentSettings/developmentSettings.models';
+import { currentOrganizationService } from 'services/currentOrganizationService';
 
 const RefreshContract: Contract<unknown, RefreshResponseSuccessApiResponse> = {
   isData: (res): res is RefreshResponseSuccessApiResponse => Boolean(res),
@@ -13,7 +13,7 @@ export const refreshMutation = createJsonMutation({
   request: {
     method: 'POST',
     url: {
-      source: developmentSettingsService.outputs.$devUrl,
+      source: currentOrganizationService.outputs.$devUrl,
       fn: (_, baseUrl) => new URL('Auth/refreshToken', baseUrl).toString(),
     },
     body: {

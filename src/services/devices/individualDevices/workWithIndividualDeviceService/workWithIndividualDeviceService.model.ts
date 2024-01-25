@@ -13,6 +13,7 @@ import {
   EClosingReason,
   EIndividualDeviceRateType,
   EResourceType,
+  ESwitchingReason,
 } from 'api/types';
 import { getBitDepthAndScaleFactor } from 'utils/getBitDepthAndScaleFactor';
 import {
@@ -78,7 +79,7 @@ const deviceInfoForm = createForm({
       init: null as number | null,
     },
     oldDeviceClosingReason: {
-      init: null as EClosingReason | null,
+      init: null as EClosingReason | ESwitchingReason | null,
     },
 
     lastCommercialAccountingDate: {

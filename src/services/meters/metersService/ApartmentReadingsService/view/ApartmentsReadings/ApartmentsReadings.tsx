@@ -29,6 +29,7 @@ export const ApartmentsReadings: FC<ApartmentsReadingsProps> = ({
   nearestAppointment,
   addPhoneNumber,
   deletePhoneNumber,
+  replacePhoneNumber,
 }) => {
   const componentsDictionary: { [key in SearchMode]: ReactNode } = {
     [SearchMode.Apartment]: (
@@ -50,6 +51,7 @@ export const ApartmentsReadings: FC<ApartmentsReadingsProps> = ({
         nearestAppointment={nearestAppointment}
         addPhoneNumber={addPhoneNumber}
         deletePhoneNumber={deletePhoneNumber}
+        replacePhoneNumber={replacePhoneNumber}
       />
     ),
     [SearchMode.SerialNumber]: (

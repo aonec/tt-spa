@@ -6,9 +6,9 @@ import {
 } from '@farfetched/core';
 import { authBarrier } from '../tokensService/tokensService.relations';
 import { tokensService } from '../tokensService';
-import { developmentSettingsService } from 'services/developmentSettings/developmentSettings.models';
 import { MutationFactoryParams } from './types';
 import { requestFailed, setIsOnline } from './model';
+import { currentOrganizationService } from 'services/currentOrganizationService';
 
 export function createMutationWithAuth<
   Params extends object | void,
@@ -30,7 +30,7 @@ export function createMutationWithAuth<
       query: (params) =>
         params ? new URLSearchParams(Object.entries(params)).toString() : '',
       url: {
-        source: developmentSettingsService.outputs.$devUrl,
+        source: currentOrganizationService.outputs.$devUrl,
         fn: (params, baseUrl) =>
           new URL(
             typeof url === 'function' ? url(params) : url,
