@@ -1,6 +1,7 @@
 import { createEvent, createStore } from 'effector';
 import { featureToggles } from 'featureToggles';
 import { FeatureToggles, FeatureTogglesSet } from './developmentSettings.types';
+import { persist } from 'effector-storage/local';
 
 const $isDevSettingsModalOpen = createStore(false);
 

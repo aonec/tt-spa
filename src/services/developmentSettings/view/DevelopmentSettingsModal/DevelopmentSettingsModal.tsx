@@ -15,7 +15,7 @@ import {
 } from './DevelopmentSettingsModal.styled';
 import { DevelopmentSettingsModalProps } from './DevelopmentSettingsModal.types';
 import { urls } from './DevelopmentSettingsModal.constants';
-import { baseURL } from 'services/currentOrganizationService/currentOrganizationService.models';
+import { baseURL } from 'api';
 
 export const DevelopmentSettingsModal: FC<DevelopmentSettingsModalProps> = ({
   visible,
