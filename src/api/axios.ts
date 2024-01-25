@@ -1,18 +1,18 @@
 import axios from 'axios';
 import { createEvent, createStore } from 'effector';
+import { apiService } from 'api';
+import { tokensService } from './tokensService';
 import { forbiddenList } from '../utils/403handling';
 import { notification, message } from 'antd';
 import { cancellableUrl } from 'services/cancelRequestService/cancelRequestService.constants';
 import { cancelRequestService } from 'services/cancelRequestService';
 import { isUndefined } from 'lodash/fp';
-import { tokensService } from './tokensService';
-import { currentOrganizationService } from 'services/currentOrganizationService';
 
 export const isDevMode = false;
 
-axios.defaults.baseURL = currentOrganizationService.outputs.$devUrl.getState();
+axios.defaults.baseURL = apiService.outputs.$devUrl.getState();
 
-currentOrganizationService.outputs.$devUrl.watch((url) => {
+apiService.outputs.$devUrl.watch((url) => {
   axios.defaults.baseURL = url;
 
   if (url) localStorage.setItem('dev-api-url', url);
