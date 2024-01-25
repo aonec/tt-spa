@@ -29,7 +29,7 @@ import {
   CloseHomeownerAccountContainer,
   closeHomeownerAccountService,
 } from './closeHomeownerAccountService';
-import { Tooltip } from 'antd';
+import { Tooltip } from 'ui-kit/shared/Tooltip';
 
 const {
   inputs: { openCreateHomeownerModal },

@@ -17,9 +17,11 @@ const {
 export const EditHomeownerPhoneNumberContainer: FC<
   EditHomeownerPhoneNumberContainerProps
 > = ({ accId }) => {
-  const { data: homeowner } = useUnit(homeownerAccountQuery);
-  const { start: addPhoneNumber } = useUnit(addPhoneNumberMutation);
-  const { start: removePhoneNumber } = useUnit(removePhoneNumberMutation);
+  const { homeowner, addPhoneNumber, removePhoneNumber } = useUnit({
+    homeowner: homeownerAccountQuery.$data,
+    addPhoneNumber: addPhoneNumberMutation.start,
+    removePhoneNumber: removePhoneNumberMutation.start,
+  });
 
   const phoneNumbers = homeowner?.phoneNumbers || [];
 
