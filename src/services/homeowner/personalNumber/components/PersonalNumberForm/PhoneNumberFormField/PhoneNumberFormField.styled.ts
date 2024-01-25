@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { TrashIcon } from 'ui-kit/icons';
 
 export const ButtonsWrapper = styled.div`
   display: flex;
@@ -20,4 +21,8 @@ export const ValueWrapper = styled.div`
   align-items: center;
   width: 250px;
   justify-content: space-between;
+`;
+
+export const TrashIconSC = styled(TrashIcon)`
+  transform: translateX(36px);
 `;

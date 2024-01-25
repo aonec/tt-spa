@@ -1,5 +1,6 @@
 import { HomeownerAccountCreateRequest } from 'api/types';
 import { formInitialValues } from './EditHomeownerForm.constants';
+import { EditHomeownerFormPayload } from '../editHomeownerService/editHomeownerService.types';
 
 export type EditHomeownerPayload = Omit<
   typeof formInitialValues,
@@ -12,7 +13,7 @@ export type EditHomeownerFormik = EditHomeownerPayload & {
 
 export type EditHomeownerFormProps = {
   formId: string;
-  initialValues?: EditHomeownerPayload;
+  initialValues?: EditHomeownerFormPayload;
   handleCreateHomeowner?: (payload: HomeownerAccountCreateRequest) => void;
   handleEditHomeownerPreparation?: (payload: EditHomeownerPayload) => void;
   isEdit?: boolean;

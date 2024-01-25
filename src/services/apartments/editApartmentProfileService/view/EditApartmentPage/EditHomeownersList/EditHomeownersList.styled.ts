@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { CrownIcon, PencilIcon, TrashIcon } from 'ui-kit/icons';
 
 export const Wrapper = styled.div`
-  max-width: 616px;
+  max-width: 716px;
 `;
 
 export const Name = styled.div`
