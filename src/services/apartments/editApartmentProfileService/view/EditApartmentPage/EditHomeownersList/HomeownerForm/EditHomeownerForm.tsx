@@ -13,7 +13,11 @@ import {
   validationSchema,
 } from './EditHomeownerForm.constants';
 import { CheckBoxWrapper, FirstLineWrapper } from './EditHomeownerForm.styled';
-import { EditHomeownerFormProps } from './EditHomeownerForm.types';
+import {
+  EditHomeownerFormProps,
+  EditHomeownerFormik,
+} from './EditHomeownerForm.types';
+import { PhoneNumberFormField } from 'services/homeowner/personalNumber/components/PersonalNumberForm/PhoneNumberFormField';
 
 export const EditHomeownerForm: FC<EditHomeownerFormProps> = ({
   formId,
@@ -25,7 +29,7 @@ export const EditHomeownerForm: FC<EditHomeownerFormProps> = ({
   const { apartmentId } = useParams<{ apartmentId: string }>();
 
   const { values, handleChange, setFieldValue, handleSubmit, errors } =
-    useFormik({
+    useFormik<EditHomeownerFormik>({
       initialValues: initialValues || formInitialValues,
       onSubmit: (values) => {
         isEdit &&
@@ -33,7 +37,6 @@ export const EditHomeownerForm: FC<EditHomeownerFormProps> = ({
           handleEditHomeownerPreparation({
             personalAccountNumber: values.personalAccountNumber,
             name: values.name,
-            phoneNumber: values.phoneNumber,
             personType: values.personType,
             paymentCode: values.paymentCode,
             isMainOnApartment: values.isMainOnApartment,
@@ -45,7 +48,7 @@ export const EditHomeownerForm: FC<EditHomeownerFormProps> = ({
             apartmentId: Number(apartmentId),
             personalAccountNumber: values.personalAccountNumber,
             name: values.name,
-            phoneNumber: values.phoneNumber,
+            phoneNumbers: values.phoneNumbers,
             personType: values.personType || undefined,
             paymentCode: values.paymentCode || null,
             openAt: values.openAt?.toISOString()!,
@@ -86,14 +89,27 @@ export const EditHomeownerForm: FC<EditHomeownerFormProps> = ({
           />
           <ErrorMessage>{errors.paymentCode}</ErrorMessage>
         </FormItem>
-        <FormItem label="Телефон">
-          <Input
-            value={values.phoneNumber}
-            name="phoneNumber"
-            onChange={handleChange}
-            placeholder="Введите телефон"
-          />
-        </FormItem>
+        {!isEdit && (
+          <FormItem label="Телефон">
+            <PhoneNumberFormField
+              phoneNumbers={values.phoneNumbers || []}
+              addPhoneNumber={(phone) =>
+                setFieldValue('phoneNumbers', [
+                  ...(values.phoneNumbers || []),
+                  phone,
+                ])
+              }
+              deletePhoneNumber={(oldPhoneNumber) =>
+                setFieldValue(
+                  'phoneNumbers',
+                  (values.phoneNumbers || []).filter(
+                    (elem) => elem !== oldPhoneNumber,
+                  ),
+                )
+              }
+            />
+          </FormItem>
+        )}
         <FormItem label="Дата открытия лицевого счета">
           {!isEdit && (
             <>

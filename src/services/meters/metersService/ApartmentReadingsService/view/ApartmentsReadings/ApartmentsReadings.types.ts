@@ -1,11 +1,15 @@
 import {
   ApartmentResponse,
+  AppointmentResponse,
   IndividualDeviceMountPlaceForFilterResponse,
 } from 'api/types';
 import {
+  AddPhoneNumberRequest,
   GetApartmentsRequestPayload,
+  RemovePhoneNumberRequest,
   UpdateApartmentRequestPayload,
   UpdateHomeownerRequestPayload,
+  ReplacePhoneNumberRequest,
 } from '../../ApartmentReadingsService.types';
 
 export type ApartmentsReadingsProps = {
@@ -18,7 +22,7 @@ export type ApartmentsReadingsProps = {
   handlePauseApartment: () => void;
   handleCancelPauseApartment: () => void;
   openEditPersonalNumberModal: (payload: boolean) => boolean;
-  setSelectedHomeownerName: (payload: string) => void;
+  setSelectedHomeownerName: (payload: string | null) => void;
   selectedHomeownerName: string | null;
   isPermitionToApartmentStatusPatch: boolean;
   allIndividualDeviceMountPlaces:
@@ -28,6 +32,10 @@ export type ApartmentsReadingsProps = {
   handleUpdateHomeowner: (payload: UpdateHomeownerRequestPayload) => void;
   isUpdateHomeownerLoading: boolean;
   isApartmentFetched: boolean;
+  nearestAppointment: AppointmentResponse | null;
+  addPhoneNumber: (payload: AddPhoneNumberRequest) => void;
+  deletePhoneNumber: (payload: RemovePhoneNumberRequest) => void;
+  replacePhoneNumber: (payload: ReplacePhoneNumberRequest) => void;
 };
 
 export enum SearchMode {

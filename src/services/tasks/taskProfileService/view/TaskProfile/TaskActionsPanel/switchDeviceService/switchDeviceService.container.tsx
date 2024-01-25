@@ -1,5 +1,5 @@
 import React, { FC, useCallback } from 'react';
-import { useStore } from 'effector-react';
+import { useUnit } from 'effector-react';
 import { SwitchHousingMeteringDeviceRequest } from 'api/types';
 import { ActionComponentProps } from '../TaskActionsPanel.types';
 import { switchDeviceService } from './switchDeviceService.model';
@@ -11,8 +11,10 @@ const { CalculatorInfosGate } = gates;
 export const SwitchDeviceContainer: FC<ActionComponentProps> = ({
   handleChange,
 }) => {
-  const device = useStore(outputs.$device);
-  const calculatorInfos = useStore(outputs.$calculatorInfos);
+  const { calculatorInfos, device } = useUnit({
+    device: outputs.$device,
+    calculatorInfos: outputs.$calculatorInfos,
+  });
 
   const isCalculator = device?.type === 'Calculator';
 

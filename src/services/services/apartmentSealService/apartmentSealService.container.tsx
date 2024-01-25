@@ -1,18 +1,39 @@
-import React, { useEffect } from 'react';
-import { useHistory, useParams } from 'react-router';
+import React, { useEffect, useMemo } from 'react';
+import { useNavigate, useParams } from 'react-router';
 import { apartmentSealService } from './apartmentSealService.model';
 import { useUnit } from 'effector-react';
 import { ApartmentSealProfile } from './view/ApartmentSealProfile';
 import { CreateSealContainer, createSealService } from '../createSealService';
 import './apartmentSealService.relations';
-import { getApartmentQuery } from 'services/meters/metersService/ApartmentReadingsService/ApartmentReadingsService.api';
+import {
+  DeleteAppointmentContainer,
+  deleteAppointmentService,
+} from '../deleteAppointmentService';
+import {
+  existingDistrictsQuery,
+  getApartmentQuery,
+} from './apartmentSealService.api';
 
 const { inputs, outputs, gates } = apartmentSealService;
 const { ApartmentGate } = gates;
 
 export const ApartmentSealContainer = () => {
-  const history = useHistory();
+  const navigate = useNavigate();
   const { id } = useParams<{ id: string }>();
+
+  const { data: existingDistricts } = useUnit(existingDistrictsQuery);
+
+  const housesWithDistricts = useMemo(() => {
+    return (
+      existingDistricts?.reduce((acc, { houses }) => {
+        if (!houses) return acc;
+
+        const housesIds = houses.map(({ id }) => id!);
+
+        return [...acc, ...housesIds];
+      }, [] as number[]) || []
+    );
+  }, [existingDistricts]);
 
   const {
     apartment,
@@ -26,6 +47,7 @@ export const ApartmentSealContainer = () => {
     updateApartment,
     openCreateSealAppointmentModal,
     isApartmentFetched,
+    openRemoveAppointmentModal,
   } = useUnit({
     isApartmentLoading: outputs.$isApartmentLoading,
     isAppointmentLoading: outputs.$isSealAppointmentLoading,
@@ -36,6 +58,7 @@ export const ApartmentSealContainer = () => {
     searchApartment: inputs.handleSearchApartment,
     setSelectedHomeownerName: inputs.setSelectedHomeownerName,
     updateApartment: inputs.handleUpdateApartment,
+    openRemoveAppointmentModal: deleteAppointmentService.inputs.openModal,
     openCreateSealAppointmentModal: createSealService.inputs.openModal,
     isApartmentFetched: getApartmentQuery.$succeeded,
   });
@@ -44,14 +67,15 @@ export const ApartmentSealContainer = () => {
     return inputs.handleApartmentLoaded.watch(({ result: apartment }) => {
       if (!apartment || apartment.id === Number(id)) return;
 
-      history.push(`/services/seal/apartment/${apartment.id}`);
+      navigate(`/services/seal/apartment/${apartment.id}`);
     }).unsubscribe;
-  }, [history, id]);
+  }, [navigate, id]);
 
   return (
     <>
-      <ApartmentGate id={Number(id)} />
+      <ApartmentGate id={id ? Number(id) : undefined} />
       <CreateSealContainer />
+      <DeleteAppointmentContainer />
       <ApartmentSealProfile
         apartment={apartment}
         isLoadingApartment={isApartmentLoading}
@@ -64,6 +88,11 @@ export const ApartmentSealContainer = () => {
         nearestAppointment={nearestAppointment}
         isAppointmentLoading={isAppointmentLoading}
         isApartmentFetched={isApartmentFetched}
+        openRemoveAppointmentModal={() =>
+          nearestAppointment &&
+          openRemoveAppointmentModal(nearestAppointment.id)
+        }
+        housesWithDistricts={housesWithDistricts}
       />
     </>
   );

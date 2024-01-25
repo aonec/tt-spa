@@ -1,4 +1,4 @@
-import moment from 'moment';
+import dayjs from 'api/dayjs';
 import {
   IndividualDeviceReportRequestPaload,
   ReportDatePeriod,
@@ -19,34 +19,34 @@ export const getReportPayloadValues = ({ values }: ReportPayload) => values;
 
 const getDatePeriod = (
   reportDatePeriod: ReportDatePeriod | null,
-  dates: { from: moment.Moment | null; to: moment.Moment | null },
+  dates: { from: dayjs.Dayjs | null; to: dayjs.Dayjs | null },
 ) => {
   if (!reportDatePeriod) return null;
 
-  let from = moment(),
-    to = moment();
+  let from = dayjs(),
+    to = dayjs();
 
   if (reportDatePeriod === ReportDatePeriod.FromStartOfMonth) {
-    from = moment().startOf('month');
+    from = dayjs().startOf('month');
   }
 
   if (reportDatePeriod === ReportDatePeriod.PreviousMonth) {
-    from = moment().add(-1, 'month').startOf('month');
-    to = moment().add(-1, 'month').endOf('month');
+    from = dayjs().add(-1, 'month').startOf('month');
+    to = dayjs().add(-1, 'month').endOf('month');
   }
 
   if (reportDatePeriod === ReportDatePeriod.LastDay) {
-    from = moment().startOf('day');
-    to = moment().endOf('day');
+    from = dayjs().startOf('day');
+    to = dayjs().endOf('day');
   }
 
   if (reportDatePeriod === ReportDatePeriod.LastSevenDays) {
-    from = moment().add(-1, 'week').startOf('week');
+    from = dayjs().add(-1, 'week').startOf('week');
   }
 
   if (reportDatePeriod === ReportDatePeriod.AnyPeriod) {
-    from = moment(dates.from);
-    to = moment(dates.to);
+    from = dayjs(dates.from);
+    to = dayjs(dates.to);
   }
 
   return { from: from?.format('YYYY-MM-DD'), to: to?.format('YYYY-MM-DD') };
@@ -145,8 +145,8 @@ export const prepareHomeownersReportRequestPayload = (
 };
 
 const getCallCenterReportDatePeriod = (
-  from: null | moment.Moment,
-  to: null | moment.Moment,
+  from: null | dayjs.Dayjs,
+  to: null | dayjs.Dayjs,
 ) => {
   return {
     From: from?.utcOffset(0)?.format('YYYY-MM-DD'),
@@ -156,7 +156,7 @@ const getCallCenterReportDatePeriod = (
 
 const getEmployeeReportDatePeriod = (
   employeeReportDatePeriodType: EmployeeReportDatePeriodType,
-  employeeReportDate: moment.Moment | null,
+  employeeReportDate: dayjs.Dayjs | null,
 ) => {
   if (!employeeReportDate) return null;
 
@@ -177,7 +177,7 @@ export const prepareEmployeeReportRequestPayload = (
 
   if (!values.employeeReportType) return null;
 
-  const period = isCallCenterReport
+  let period = isCallCenterReport
     ? getCallCenterReportDatePeriod(values.from, values.to)
     : values.employeeReportDatePeriodType &&
       getEmployeeReportDatePeriod(
@@ -185,7 +185,12 @@ export const prepareEmployeeReportRequestPayload = (
         values.employeeReportDate,
       );
 
-  if (!period) return null;
+  if (!period) {
+    period = {
+      From: values.from?.utcOffset(0).format('YYYY-MM-DD'),
+      To: values.to?.utcOffset(0).format('YYYY-MM-DD'),
+    };
+  }
 
   return {
     employeeReportType: values.employeeReportType,

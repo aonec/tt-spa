@@ -1,8 +1,9 @@
+import { createEffect, createEvent, createStore } from 'effector';
 import { message } from 'antd';
-import { combine, createDomain, forward, guard, sample } from 'effector';
+import { combine, sample } from 'effector';
 import { delay, not } from 'patronum';
 import { createGate } from 'effector-react';
-import moment from 'moment';
+import dayjs from 'api/dayjs';
 import {
   EReportType,
   GroupReportFormResponse,
@@ -22,43 +23,41 @@ import { GroupReportRequestPayload } from './groupReportService.types';
 import { sendReportToEmailService } from './sendReportToEmailService';
 import { BlobResponseErrorType, EffectFailDataAxiosError } from 'types';
 
-const domain = createDomain('groupReportService');
+const openModal = createEvent();
+const closeModal = createEvent();
 
-const openModal = domain.createEvent();
-const closeModal = domain.createEvent();
-
-const $isOpen = domain
-  .createStore(false)
+const $isOpen = createStore(false)
   .on(openModal, () => true)
   .on(closeModal, () => false);
 
-const getReportFiltersFx = domain.createEffect<void, GroupReportFormResponse>(
+const getReportFiltersFx = createEffect<void, GroupReportFormResponse>(
   fetchFilters,
 );
-const $reportFilters = domain
-  .createStore<GroupReportFormResponse | null>(null)
-  .on(getReportFiltersFx.doneData, (_, filter) => filter);
+const $reportFilters = createStore<GroupReportFormResponse | null>(null).on(
+  getReportFiltersFx.doneData,
+  (_, filter) => filter,
+);
 
-const downloadGroupReportFx = domain.createEffect<
+const downloadGroupReportFx = createEffect<
   GroupReportRequestPayload,
   void,
   BlobResponseErrorType
 >(downloadGroupReportRequest);
 
-const getGroupReport = domain.createEvent<GroupReportRequestPayload>();
-const getGroupReportFx = domain.createEffect<GroupReportRequestPayload, string>(
+const getGroupReport = createEvent<GroupReportRequestPayload>();
+const getGroupReportFx = createEffect<GroupReportRequestPayload, string>(
   fetchGroupReport,
 );
-const sendByEmailFx = domain.createEffect<
+const sendByEmailFx = createEffect<
   SendGroupReportRequest,
   void,
   EffectFailDataAxiosError
 >(sendByEmail);
 
-const setGroupReportPayload =
-  domain.createEvent<Partial<GroupReportRequestPayload>>();
-const $downloadReportPayload =
-  domain.createStore<GroupReportRequestPayload | null>(null);
+const setGroupReportPayload = createEvent<Partial<GroupReportRequestPayload>>();
+const $downloadReportPayload = createStore<GroupReportRequestPayload | null>(
+  null,
+);
 
 const $isFiltersLoading = getReportFiltersFx.pending;
 const $isDownloading = combine(
@@ -70,7 +69,7 @@ const $isDownloading = combine(
 
 const GroupReportGate = createGate();
 
-guard({
+sample({
   clock: setGroupReportPayload,
   filter: (payload): payload is GroupReportRequestPayload =>
     Boolean(
@@ -83,46 +82,46 @@ guard({
   target: $downloadReportPayload,
 });
 
-guard({
+sample({
   clock: $downloadReportPayload,
   filter: (payload): payload is GroupReportRequestPayload => {
     const isExist = Boolean(payload);
     const { From, To, ReportType } = payload || {};
     const isNotTooLongDaily =
       ReportType === EReportType.Daily &&
-      moment(To).diff(moment(From), 'day') < MAX_DAILY_TYPE_DAYS;
+      dayjs(To).diff(dayjs(From), 'day') < MAX_DAILY_TYPE_DAYS;
     const isNotTooLongHourly =
       ReportType === EReportType.Hourly &&
-      moment(To).diff(moment(From), 'day') < MAX_HOURLY_TYPE_DAYS;
+      dayjs(To).diff(dayjs(From), 'day') < MAX_HOURLY_TYPE_DAYS;
 
     return isExist && (isNotTooLongDaily || isNotTooLongHourly);
   },
   target: downloadGroupReportFx,
 });
 
-guard({
+sample({
   clock: $downloadReportPayload,
   filter: (payload): payload is GroupReportRequestPayload => {
     const isExist = Boolean(payload);
     const { From, To, ReportType } = payload || {};
     const isTooLongDaily =
       ReportType === EReportType.Daily &&
-      moment(To).diff(moment(From), 'day') >= MAX_DAILY_TYPE_DAYS;
+      dayjs(To).diff(dayjs(From), 'day') >= MAX_DAILY_TYPE_DAYS;
     const isTooLongHourly =
       ReportType === EReportType.Hourly &&
-      moment(To).diff(moment(From), 'day') >= MAX_HOURLY_TYPE_DAYS;
+      dayjs(To).diff(dayjs(From), 'day') >= MAX_HOURLY_TYPE_DAYS;
 
     return isExist && (isTooLongDaily || isTooLongHourly);
   },
   target: sendReportToEmailService.inputs.openModal,
 });
 
-forward({
-  from: getGroupReport,
-  to: getGroupReportFx,
+sample({
+  clock: getGroupReport,
+  target: getGroupReportFx,
 });
 
-guard({
+sample({
   source: $reportFilters,
   clock: GroupReportGate.open,
   filter: (filter) => !Boolean(filter),
@@ -143,8 +142,7 @@ const delayedPendingByEmailFx = delay({
   timeout: 1000,
 });
 
-const $isSendByEmailWithError = domain
-  .createStore<boolean>(false)
+const $isSendByEmailWithError = createStore<boolean>(false)
   .on(sendByEmailFx.failData, (_, err) => Boolean(err))
   .reset([closeModal, sendByEmailFx]);
 

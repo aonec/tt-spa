@@ -1,5 +1,5 @@
 import { fromEnter } from 'ui-kit/shared/DatePickerNative';
-import { Tooltip } from 'antd';
+import { Tooltip } from 'ui-kit/shared/Tooltip';
 import React, {
   ChangeEvent,
   FC,
@@ -48,6 +48,7 @@ export const MetersInputsBlock: FC<MetersInputsBlockProps> = ({
   status: uploadingStatus,
   handleUploadReading,
   tooltip,
+  focusOnFirst = true,
 }) => {
   const [status, setStatus] = useState<MetersInputBlockStatus | null>(null);
 
@@ -71,7 +72,7 @@ export const MetersInputsBlock: FC<MetersInputsBlockProps> = ({
 
   const nextInput = useSwitchInputOnEnter(
     dataString,
-    !isPrevious && inputIndex === 0,
+    focusOnFirst && !isPrevious && inputIndex === 0,
   );
 
   const handleReadingInputFocus = useCallback(
@@ -222,7 +223,11 @@ export const MetersInputsBlock: FC<MetersInputsBlockProps> = ({
   return (
     <Tooltip title={tooltip}>
       <div>
-        <Wrapper className="meters-wrapper" resource={resource}>
+        <Wrapper
+          className="meters-wrapper"
+          data-test="meters-input"
+          resource={resource}
+        >
           {inputsArray}
         </Wrapper>
         <ReadingDate>{readingDate || 'Нет показаний'}</ReadingDate>

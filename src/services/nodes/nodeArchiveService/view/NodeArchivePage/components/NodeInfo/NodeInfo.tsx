@@ -15,7 +15,7 @@ export const NodeInfo: FC<NodeInfoProps> = ({ node }) => {
     <Wrap>
       <div>{address}</div>
       <ResourceIconLookup resource={node.resource} />
-      <div>Узел {node.number}</div>
+      <div>Узел {node.title}</div>
     </Wrap>
   );
 };

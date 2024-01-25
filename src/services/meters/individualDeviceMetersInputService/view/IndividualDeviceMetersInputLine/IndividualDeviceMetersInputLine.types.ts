@@ -22,4 +22,5 @@ export type IndividualDeviceMetersInputLineProps = {
     | undefined;
   editable?: boolean;
   apartmentId: number;
+  style?: React.CSSProperties;
 };

@@ -2,16 +2,19 @@ import React, { FC } from 'react';
 import { ResourceIconLookup } from 'ui-kit/shared/ResourceIconLookup';
 import {
   GroupWrapper,
-  LinkSC,
+  GoTo,
   StatisticWrapper,
   TextWrapper,
   TitleWrapper,
   Wrapper,
 } from './TaskPipeNodeInfo.styled';
 import { TaskPipeNodeInfoProps } from './TaskPipeNodeInfo.types';
+import { useNavigate } from 'react-router-dom';
 
 export const TaskPipeNodeInfo: FC<TaskPipeNodeInfoProps> = ({ pipeNode }) => {
-  const { resource, number, id } = pipeNode;
+  const { resource, title, id } = pipeNode;
+
+  const navigate = useNavigate();
 
   return (
     <Wrapper>
@@ -19,10 +22,15 @@ export const TaskPipeNodeInfo: FC<TaskPipeNodeInfoProps> = ({ pipeNode }) => {
       <StatisticWrapper>
         <GroupWrapper>
           <ResourceIconLookup resource={resource} />
-          <TextWrapper>Узел {number}</TextWrapper>
+          <TextWrapper>Узел {title}</TextWrapper>
         </GroupWrapper>
         <GroupWrapper>
-          <LinkSC to={`/nodes/${id}/stats`}>Перейти {'>'}</LinkSC>
+          <GoTo
+            onClick={() => navigate(`/nodes/${id}/stats`)}
+            data-test="task-pipe-node-link"
+          >
+            Перейти {'>'}
+          </GoTo>
         </GroupWrapper>
       </StatisticWrapper>
     </Wrapper>

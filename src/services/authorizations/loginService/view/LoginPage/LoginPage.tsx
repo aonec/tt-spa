@@ -68,6 +68,7 @@ export const LoginPage: FC<LoginPageProps> = ({
               autoFocus
               placeholder="Введите email"
               type="email"
+              name="email"
               readOnly={isLoading}
               value={values.email}
               onChange={(e) => {

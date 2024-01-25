@@ -3,10 +3,11 @@ import { CommunicationPipePayload } from '../addPipeNodeCommonDeviceService/addP
 
 export type CreateNodeFormPayload = Omit<
   CreatePipeNodeRequest,
-  'communicationPipes'
+  'communicationPipes' | 'title'
 > & {
   communicationPipes?: CommunicationPipePayload[];
   houseCategory?: EHouseCategory;
+  title?: string;
 };
 
 export type UpdateNodeFormPayloadCallback = (

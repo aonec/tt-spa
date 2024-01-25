@@ -1,5 +1,5 @@
 import React, { FC, useEffect, useMemo } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { PageHeader } from 'ui-kit/shared/PageHeader';
 import { SearchTasks } from '../SearchTasks';
 import { TasksList } from '../TasksList';
@@ -12,19 +12,17 @@ import {
   HeaderWrapper,
   HeaderContainer,
   Flex,
-  ButtonSC,
 } from './TasksProfile.styled';
 import { useUnit } from 'effector-react';
 import { Empty } from 'antd';
 import { TaskGroupingFilter } from 'api/types';
 import { Segmented } from 'ui-kit/Segmented';
-import { ListIcon, MapIcon, PlusSmallIcon } from 'ui-kit/icons';
+import { ListIcon, MapIcon } from 'ui-kit/icons';
 import { TasksMapContainer } from 'services/tasks/tasksMapService';
 import { WithLoader } from 'ui-kit/shared/WithLoader';
 import { developmentSettingsService } from 'services/developmentSettings/developmentSettings.models';
 import { TasksPageSegment, TasksProfileProps } from './TasksProfile.types';
-
-const { TabPane } = TabsSC;
+import { Button } from 'ui-kit/Button';
 
 export const TasksProfile: FC<TasksProfileProps> = ({
   handleExportTasksList,
@@ -53,7 +51,7 @@ export const TasksProfile: FC<TasksProfileProps> = ({
     featureToggles: developmentSettingsService.outputs.$featureToggles,
   });
 
-  const history = useHistory();
+  const navigate = useNavigate();
   const { executingTasksCount, observingTasksCount, totalItems } =
     pagedTasks || {};
 
@@ -70,7 +68,7 @@ export const TasksProfile: FC<TasksProfileProps> = ({
 
   useEffect(() => {
     if (isSpectator && grouptype === TaskGroupingFilter.Executing) {
-      history.push('/tasks/list/Observing');
+      navigate('/tasks/list/Observing');
     }
   });
 
@@ -108,6 +106,28 @@ export const TasksProfile: FC<TasksProfileProps> = ({
     </HeaderWrapper>
   );
 
+  const tabItems = useMemo(
+    () => [
+      ...(!isSpectator
+        ? [
+            {
+              label: executingTabText,
+              key: TaskGroupingFilter.Executing,
+            },
+          ]
+        : []),
+      {
+        label: observingTabText,
+        key: TaskGroupingFilter.Observing,
+      },
+      {
+        label: isPermissionToAddTask ? 'Закрытые' : 'Архив',
+        key: TaskGroupingFilter.Archived,
+      },
+    ],
+    [isSpectator, executingTabText, observingTabText, isPermissionToAddTask],
+  );
+
   return (
     <Wrapper>
       {tasksPageSegment === 'map' && header}
@@ -118,53 +138,19 @@ export const TasksProfile: FC<TasksProfileProps> = ({
               {header}
               {featureToggles.dispatcherAddTask && isPermissionToAddTask && (
                 <Flex>
-                  <ButtonSC
-                    size="small"
-                    type="ghost"
-                    onClick={handleOpenAddTaskModal}
-                  >
-                    <PlusSmallIcon />
-                  </ButtonSC>
+                  <Button onClick={handleOpenAddTaskModal}>
+                    + Создать задачу
+                  </Button>
                 </Flex>
               )}
             </HeaderContainer>
 
             <ContentWrapper>
-              {!isPermissionToAddTask ? (
-                <TabsSC activeKey={grouptype} onChange={history.push}>
-                  {!isSpectator && (
-                    <TabPane
-                      tab={executingTabText}
-                      key={TaskGroupingFilter.Executing}
-                    ></TabPane>
-                  )}
-                  <TabPane
-                    tab={observingTabText}
-                    key={TaskGroupingFilter.Observing}
-                  ></TabPane>
-                  <TabPane
-                    tab="Архив"
-                    key={TaskGroupingFilter.Archived}
-                  ></TabPane>
-                </TabsSC>
-              ) : (
-                <TabsSC activeKey={grouptype} onChange={history.push}>
-                  <TabPane
-                    tab={observingTabText}
-                    key={TaskGroupingFilter.Observing}
-                  ></TabPane>
-                  <TabPane
-                    tab="Закрытые"
-                    key={TaskGroupingFilter.Archived}
-                  ></TabPane>
-                  {!isSpectator && isHaveExecutingTasks && (
-                    <TabPane
-                      tab={executingTabText}
-                      key={TaskGroupingFilter.Executing}
-                    ></TabPane>
-                  )}
-                </TabsSC>
-              )}
+              <TabsSC
+                activeKey={grouptype}
+                onChange={(activeKey) => navigate(`/tasks/list/${activeKey}`)}
+                items={tabItems}
+              />
               <SearchTasks
                 onSubmit={handleSearch}
                 taskTypes={taskTypes}

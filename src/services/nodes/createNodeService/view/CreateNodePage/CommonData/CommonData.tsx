@@ -45,7 +45,7 @@ export const CommonData: FC<CommonDataProps> = ({
     useFormik({
       initialValues: {
         configuration: requestPayload.configuration || null,
-        number: requestPayload.number ? String(requestPayload.number) : '',
+        title: requestPayload.title ? String(requestPayload.title) : '',
         registrationType: requestPayload?.registrationType || null,
         nodeServiceZoneId: requestPayload.nodeServiceZoneId || null,
         commercialStatusRequest: requestPayload.commercialStatusRequest,
@@ -56,7 +56,7 @@ export const CommonData: FC<CommonDataProps> = ({
       onSubmit: (values) => {
         const {
           configuration,
-          number,
+          title,
           registrationType,
           nodeServiceZoneId,
           commercialStatusRequest,
@@ -64,8 +64,7 @@ export const CommonData: FC<CommonDataProps> = ({
         } = values;
 
         if (
-          !number ||
-          !nodeServiceZoneId ||
+          !title ||
           !configuration ||
           !registrationType ||
           !communicationPipes
@@ -75,7 +74,7 @@ export const CommonData: FC<CommonDataProps> = ({
 
         let payload: CreateNodeFormPayload = {
           configuration,
-          number: Number(number),
+          title: title,
           nodeServiceZoneId,
           registrationType,
           communicationPipes,
@@ -190,17 +189,16 @@ export const CommonData: FC<CommonDataProps> = ({
           </Select>
           <ErrorMessage>{errors.registrationType}</ErrorMessage>
         </FormItem>
-        <FormItem label="Номер узла">
-          <Input
-            placeholder="Введите"
-            name="number"
-            type="number"
-            value={values.number}
-            onChange={handleChange}
-          />
-          <ErrorMessage>{errors.number}</ErrorMessage>
-        </FormItem>
       </FirstLineWrapper>
+      <FormItem label="Название узла">
+        <Input
+          placeholder="Введите"
+          name="title"
+          value={values.title}
+          onChange={handleChange}
+        />
+        <ErrorMessage>{errors.title}</ErrorMessage>
+      </FormItem>
       <SecondLineWrapper>
         <FormItem label="Зона">
           <Select

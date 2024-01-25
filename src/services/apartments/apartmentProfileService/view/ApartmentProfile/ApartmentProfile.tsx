@@ -1,5 +1,5 @@
-import React, { FC, ReactNode } from 'react';
-import { useHistory } from 'react-router-dom';
+import React, { FC, ReactNode, useMemo } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { ActsCardContainer } from 'services/apartments/actsCardService';
 import { ApartmentActsListContainer } from 'services/apartments/apartmentActsListService';
 import { ApartmentIndividualDevicesMetersContainer } from 'services/meters/apartmentIndividualDevicesMetersService';
@@ -36,7 +36,7 @@ export const ApartmentProfile: FC<ApartmentProfileProps> = ({
   tabSection,
   isPermitionToEditApartment,
 }) => {
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const address = apartment?.housingStock?.address?.mainAddress;
   const additionalAddresses =
@@ -72,11 +72,11 @@ export const ApartmentProfile: FC<ApartmentProfileProps> = ({
               },
               {
                 key: 'Количество проживающих / зарегистрированных',
-                value: apartment.normativeNumberOfLiving,
+                value: apartment.numberOfLiving,
               },
               {
                 key: 'Нормативное количество проживающих',
-                value: apartment.numberOfLiving,
+                value: apartment.normativeNumberOfLiving,
               },
               {
                 key: 'Основной лицевой счет ',
@@ -116,6 +116,16 @@ export const ApartmentProfile: FC<ApartmentProfileProps> = ({
     [ApartmentSection.ActsJournal]: <ApartmentActsListContainer />,
   };
 
+  const tabItems = useMemo(
+    () => [
+      { label: 'Общие данные', key: ApartmentSection.CommonData },
+      { label: 'Собственники', key: ApartmentSection.Homeowners },
+      { label: 'Приборы учета', key: ApartmentSection.Testimony },
+      { label: 'Журнал актов', key: ApartmentSection.ActsJournal },
+    ],
+    [],
+  );
+
   return (
     <WithLoader isLoading={isApartmentLoading}>
       {apartment && (
@@ -127,8 +137,7 @@ export const ApartmentProfile: FC<ApartmentProfileProps> = ({
               menuButtons: [
                 {
                   title: 'Редактировать квартиру',
-                  onClick: () =>
-                    history.push(`/apartments/${apartment.id}/edit`),
+                  onClick: () => navigate(`/apartments/${apartment.id}/edit`),
                   hidden: !isPermitionToEditApartment,
                 },
               ],
@@ -150,30 +159,17 @@ export const ApartmentProfile: FC<ApartmentProfileProps> = ({
             <Tabs
               activeKey={tabSection}
               onChange={(activeKey) =>
-                history.push(
+                navigate(
                   `/apartments/${apartment.id}/${
                     activeKey as ApartmentSection
                   }`,
+                  {
+                    replace: true,
+                  },
                 )
               }
-            >
-              <Tabs.TabPane
-                tab="Общие данные"
-                key={ApartmentSection.CommonData}
-              />
-              <Tabs.TabPane
-                tab="Собственники"
-                key={ApartmentSection.Homeowners}
-              />
-              <Tabs.TabPane
-                tab="Приборы учета"
-                key={ApartmentSection.Testimony}
-              />
-              <Tabs.TabPane
-                tab="Журнал актов"
-                key={ApartmentSection.ActsJournal}
-              />
-            </Tabs>
+              items={tabItems}
+            />
           </TabsWrapper>
           <ContentWrapper>
             <BaseContentWrapper>

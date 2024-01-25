@@ -1,6 +1,6 @@
 import { Form } from 'antd';
 import { useFormik } from 'formik';
-import moment from 'moment';
+import dayjs from 'api/dayjs';
 import { EResourceType } from 'api/types';
 import React, { FC, useEffect } from 'react';
 import { FormItem } from 'ui-kit/FormItem';
@@ -11,7 +11,7 @@ import { ResourceSelect } from 'ui-kit/shared/ResourceSelect';
 import { DatePicker } from 'ui-kit/DatePicker';
 import { AddressTreeSelect } from 'ui-kit/shared/AddressTreeSelect';
 import { Select } from 'ui-kit/Select';
-import { useStore } from 'effector-react';
+import { useUnit } from 'effector-react';
 import { validationSchema } from './HeatIndividualDevicesReportForm.constants';
 import { ErrorMessage } from 'ui-kit/ErrorMessage';
 import { addressSearchService } from 'services/addressSearchService/addressSearchService.models';
@@ -26,18 +26,16 @@ export const HeatIndividualDevicesReportForm: FC<
   treeData,
   selectedBuilding,
 }) => {
-  const existingCities = useStore(addressSearchService.outputs.$existingCities);
+  const { existingCities } = useUnit({
+    existingCities: addressSearchService.outputs.$existingCities,
+  });
 
   const { values, handleSubmit, setFieldValue, errors } = useFormik({
     initialValues: {
       resource: EResourceType.Heat,
       Name: 'Сводный_отчёт_ИПУ',
       HousingStockIds: [],
-      date: moment()
-        .startOf('month')
-        .set('day', 15)
-        .utcOffset(0, true)
-        .format(),
+      date: dayjs().startOf('month').set('day', 15).utcOffset(0, true).format(),
     },
     validationSchema,
     validateOnBlur: false,
@@ -48,8 +46,8 @@ export const HeatIndividualDevicesReportForm: FC<
       handleDownloadModal({
         HousingStockIds,
         Name,
-        Month: Number(moment(date).format('MM')),
-        Year: Number(moment(date).format('YYYY')),
+        Month: Number(dayjs(date).format('MM')),
+        Year: Number(dayjs(date).format('YYYY')),
       });
     },
   });
@@ -109,7 +107,7 @@ export const HeatIndividualDevicesReportForm: FC<
             picker="month"
             format="MMMM YYYY"
             placeholder="Выберите"
-            value={moment(values.date)}
+            value={dayjs(values.date)}
             onChange={(date) =>
               setFieldValue(
                 'date',

@@ -1,19 +1,19 @@
+import { createEffect, createEvent, createStore } from 'effector';
 import { getConsuptionRates } from './managementFirmConsumptionRatesService.api';
 import { MangingFirmsConsumptionRatesDictionary } from './managementFirmConsumptionRatesService.types';
 import { EResourceTypeConsumptionRateResponseDictionaryItem } from 'api/types';
-import { createDomain, guard, sample } from 'effector';
+import { sample } from 'effector';
 
-const domain = createDomain('managementFirmConsumptionRatesService');
+const $consumptionRates = createStore<MangingFirmsConsumptionRatesDictionary>(
+  {},
+);
 
-const $consumptionRates =
-  domain.createStore<MangingFirmsConsumptionRatesDictionary>({});
-
-const fetchConsumptionRatesFx = domain.createEffect<
+const fetchConsumptionRatesFx = createEffect<
   number,
   EResourceTypeConsumptionRateResponseDictionaryItem[]
 >(getConsuptionRates);
 
-const loadManagemenFirmConsumptionRates = domain.createEvent<number>();
+const loadManagemenFirmConsumptionRates = createEvent<number>();
 
 $consumptionRates.on(
   fetchConsumptionRatesFx.done,
@@ -24,12 +24,13 @@ $consumptionRates.on(
 );
 
 sample({
-  clock: guard({
+  clock: sample({
     source: [$consumptionRates, fetchConsumptionRatesFx.inFlight],
     clock: loadManagemenFirmConsumptionRates,
     filter: ([consumptionRates, inFlight], managementFirmId) => {
-      const isLimitsForManagementFirmExists =
-        consumptionRates[managementFirmId];
+      const isLimitsForManagementFirmExists = (
+        consumptionRates as MangingFirmsConsumptionRatesDictionary
+      )[managementFirmId];
 
       return inFlight === 0 || !isLimitsForManagementFirmExists;
     },

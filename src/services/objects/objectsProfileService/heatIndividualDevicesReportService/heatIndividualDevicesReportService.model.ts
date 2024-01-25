@@ -1,4 +1,5 @@
-import { createDomain, forward, sample } from 'effector';
+import { createEffect, createEvent, createStore } from 'effector';
+import { sample } from 'effector';
 import {
   BuildingListResponse,
   StreetWithBuildingNumbersResponsePagedList,
@@ -11,33 +12,27 @@ import {
 } from './heatIndividualDevicesReportService.api';
 import { HeatIndividualDevicesReportPayload } from './heatIndividualDevicesReportService.types';
 
-const domain = createDomain('heatIndividualDevicesReportService');
+const clearStore = createEvent();
 
-const clearStore = domain.createEvent();
-
-const openModal = domain.createEvent<BuildingListResponse | void>();
-const closeModal = domain.createEvent();
-const $isOpen = domain
-  .createStore(false)
+const openModal = createEvent<BuildingListResponse | void>();
+const closeModal = createEvent();
+const $isOpen = createStore(false)
   .on(openModal, () => true)
   .reset(closeModal);
 
-const downloadReportFx = domain.createEffect<
-  HeatIndividualDevicesReportPayload,
-  void
->(fetchDownloadHeatIndividualDeviceReport);
-const downloadReport = domain.createEvent<HeatIndividualDevicesReportPayload>();
+const downloadReportFx = createEffect<HeatIndividualDevicesReportPayload, void>(
+  fetchDownloadHeatIndividualDeviceReport,
+);
+const downloadReport = createEvent<HeatIndividualDevicesReportPayload>();
 
 const $isLoading = downloadReportFx.pending;
 
-const $selectedBuilding = domain
-  .createStore<BuildingListResponse | null>(null)
+const $selectedBuilding = createStore<BuildingListResponse | null>(null)
   .on(openModal, (_, building) => building || null)
   .reset(closeModal);
 
-const selectCity = domain.createEvent<string>();
-const $selectedCity = domain
-  .createStore<string | null>(null)
+const selectCity = createEvent<string>();
+const $selectedCity = createStore<string | null>(null)
   .on(selectCity, (_, city) => city)
   .on(openModal, (prev, building) => {
     if (!building) return prev;
@@ -46,16 +41,16 @@ const $selectedCity = domain
   })
   .reset(clearStore);
 
-const getAddressesFx = domain.createEffect<
+const getAddressesFx = createEffect<
   string,
   StreetWithBuildingNumbersResponsePagedList
 >(fetchAddresses);
 
-const $treeData = domain
-  .createStore<TreeSelectElement[]>([])
+const $treeData = createStore<TreeSelectElement[]>([])
   .on(getAddressesFx.doneData, (_, data) =>
     prepareAddressesForTreeSelect({
       items: data.items || [],
+      isTreeCheckable: true,
     }),
   )
   .reset(clearStore);
@@ -71,9 +66,9 @@ sample({
   target: getAddressesFx,
 });
 
-forward({
-  from: downloadReportFx.doneData,
-  to: [closeModal, clearStore],
+sample({
+  clock: downloadReportFx.doneData,
+  target: [closeModal, clearStore],
 });
 
 export const heatIndividualDevicesReportService = {

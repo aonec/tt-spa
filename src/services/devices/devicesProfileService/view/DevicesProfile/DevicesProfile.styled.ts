@@ -1,34 +1,15 @@
-import { Slider, DatePicker } from 'antd';
+import { DatePicker } from 'antd';
 import styled from 'styled-components';
 const { RangePicker } = DatePicker;
 
 export const Wrapper = styled.div`
-  max-width: 960px;
-`;
-
-export const StyledSlider = styled(Slider)`
-  width: 95%;
-  &.ant-slider.ant-slider-with-marks {
-    margin-bottom: 12px !important;
-  }
-  &.ant-slider-mark-text {
-    font-size: 12px !important;
-  }
-  .ant-slider-mark-text-active {
-    color: #272f5ab2;
-  }
+  max-width: 1060px;
 `;
 
 export const StyledContainerFourItems = styled.div`
   display: grid;
   grid-template-columns: 4fr 4fr 1.9fr 1.9fr;
   gap: 15px;
-`;
-
-export const StyledContainerThreeItems = styled.div`
-  display: grid;
-  grid-template-columns: 4fr 4fr 4fr;
-  gap: 16px;
 `;
 
 export const StyledRangePicker = styled(RangePicker)<{ isShadow?: boolean }>`
@@ -44,16 +25,6 @@ export const StyledForm = styled.div`
   display: grid;
   grid-template-rows: 1fr 1fr;
   gap: 2px;
-`;
-
-export const StyledFormThreeRows = styled.div`
-  margin-bottom: 10px;
-  margin-top: 10px;
-  display: grid;
-  grid-template-rows: 1fr 1fr;
-  gap: 2px;
-  align-items: center;
-  gap: 5px;
 `;
 
 export const HeaderWrapper = styled.div`

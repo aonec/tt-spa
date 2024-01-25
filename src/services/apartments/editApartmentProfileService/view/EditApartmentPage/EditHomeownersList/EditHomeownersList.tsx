@@ -1,4 +1,4 @@
-import { useEvent } from 'effector-react';
+import { useUnit } from 'effector-react';
 import React, { FC } from 'react';
 import { List } from 'ui-kit/List';
 import { LinkButton } from 'ui-kit/shared/LinkButton';
@@ -22,7 +22,7 @@ import {
   Wrapper,
 } from './EditHomeownersList.styled';
 import { EditHomeownersListProps } from './EditHomeownersList.types';
-import moment from 'moment';
+import dayjs from 'api/dayjs';
 import { EPersonType } from 'api/types';
 import { EditHomeownerFormPayload } from './editHomeownerService/editHomeownerService.types';
 import {
@@ -45,7 +45,9 @@ const {
 export const EditHomeownersList: FC<EditHomeownersListProps> = ({
   homeowners,
 }) => {
-  const handleAddHomeowner = useEvent(openCreateHomeownerModal);
+  const { handleAddHomeowner } = useUnit({
+    handleAddHomeowner: openCreateHomeownerModal,
+  });
 
   return (
     <>
@@ -59,10 +61,9 @@ export const EditHomeownersList: FC<EditHomeownersListProps> = ({
               id: homeowner.id,
               personalAccountNumber: homeowner.personalAccountNumber || '',
               name: homeowner.name || '',
-              phoneNumber: homeowner.phoneNumber || '',
               paymentCode: homeowner.paymentCode || '',
               personType: String(homeowner.personType) as EPersonType,
-              openAt: moment(homeowner.openAt),
+              openAt: dayjs(homeowner.openAt),
               isMainOnApartment: homeowner.isMainPersonalAccountNumber,
             };
 

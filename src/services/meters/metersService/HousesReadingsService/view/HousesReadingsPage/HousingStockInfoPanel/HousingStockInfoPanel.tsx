@@ -15,7 +15,7 @@ export const HousingStockInfoPanel: FC<HousingStockInfoPanelProps> = ({
   const addressString = getBuildingAddress(housingStock, true);
 
   return (
-    <div>
+    <>
       <Title>{addressString}</Title>
       <Panel>
         <div>
@@ -27,6 +27,6 @@ export const HousingStockInfoPanel: FC<HousingStockInfoPanelProps> = ({
           <PanelInfoText>{housingStock.inspectedDay}</PanelInfoText>
         </div>
       </Panel>
-    </div>
+    </>
   );
 };

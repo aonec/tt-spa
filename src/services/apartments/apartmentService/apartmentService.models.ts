@@ -1,30 +1,25 @@
-import { createDomain, forward, sample } from 'effector';
+import { createEffect, createEvent, createStore } from 'effector';
+import { sample } from 'effector';
 import { createGate } from 'effector-react';
 import { ApartmentResponse } from 'api/types';
 import { getApartment } from './apartmentService.api';
 
-const domain = createDomain('apartmentService');
-
 const ApartmentGate = createGate<{ id: number }>();
 const ApartmentEditModeGate = createGate();
 
-const fetchApartmentFx = domain.createEffect<number, ApartmentResponse>(
-  getApartment,
-);
+const fetchApartmentFx = createEffect<number, ApartmentResponse>(getApartment);
 
-const refetchApartment = domain.createEvent();
+const refetchApartment = createEvent();
 
-const resetApartment = domain.createEvent();
+const resetApartment = createEvent();
 
-const switchApartmentEditMode = domain.createEvent();
+const switchApartmentEditMode = createEvent();
 
-const $apartmentEditMode = domain
-  .createStore(false)
+const $apartmentEditMode = createStore(false)
   .on(switchApartmentEditMode, (mode) => !mode)
   .reset(ApartmentEditModeGate.close);
 
-const $apartment = domain
-  .createStore<ApartmentResponse | null>(null)
+const $apartment = createStore<ApartmentResponse | null>(null)
   .on(fetchApartmentFx.doneData, (_, apartment) => {
     return apartment;
   })
@@ -36,9 +31,9 @@ sample({
   target: fetchApartmentFx,
 });
 
-forward({
-  from: ApartmentGate.close,
-  to: resetApartment,
+sample({
+  clock: ApartmentGate.close,
+  target: resetApartment,
 });
 
 export const apartmentService = {

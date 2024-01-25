@@ -21,7 +21,9 @@ export const NodeDevices: FC<NodeDevicesProps> = ({ node }) => {
       return (
         <MeteringDeviceWrapper key={housingDevice.id}>
           <TitleWrapper>
-            <DeviceLink to={`/housingMeteringDevices/${housingDevice.id}`}>
+            <DeviceLink
+              to={`/housingMeteringDevices/${housingDevice.id}/profile`}
+            >
               {`${housingDevice.model} `}
               <SerialNumber>({housingDevice.serialNumber})</SerialNumber>
             </DeviceLink>
@@ -55,7 +57,7 @@ export const NodeDevices: FC<NodeDevicesProps> = ({ node }) => {
             </ResourceIconWrapper>
 
             <NodeTitleWrapper>
-              <span>{`Узел ${node.number}`}</span>
+              <span>{`Узел ${node.title}`}</span>
               {isIncorrectConfig && <IncorrectConfigurationIconSC />}
             </NodeTitleWrapper>
           </DeviceLink>

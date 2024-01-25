@@ -5,7 +5,8 @@ export const Wrapper = styled.div`
 `;
 
 export const SegmentItem = styled.div<{ isActive?: boolean }>`
-  padding: 0 10px;
+  padding: 0 12px;
+  gap: 10px;
   height: 32px;
   display: flex;
   align-items: center;
@@ -47,9 +48,9 @@ export const SegmentItem = styled.div<{ isActive?: boolean }>`
   }
 `;
 
-export const SegmentTitle = styled.div`
-  margin-left: 10px;
-  font-weight: 400;
+export const SegmentTitle = styled.div<{ bold?: boolean }>`
+  /* margin-left: 10px; */
+  font-weight: ${({ bold }) => (bold ? '500' : '400')};
   font-size: 14px;
   line-height: 16px;
   white-space: nowrap;

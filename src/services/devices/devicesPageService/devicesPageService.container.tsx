@@ -1,10 +1,10 @@
 import React, { useCallback, useEffect } from 'react';
-import { useHistory, useParams } from 'react-router';
+import { useNavigate, useParams } from 'react-router';
 import { DevicesProfileTabsType } from './devicesPageService.types';
 import { DevicesPageProfile } from './view/DevicesPageProfile';
 import { ESecuredIdentityRoleName } from 'api/types';
 import { usePermission } from 'hooks/usePermission';
-import { useEvent } from 'effector-react';
+import { useUnit } from 'effector-react';
 import {
   DevicesReportContainer,
   devicesReportService,
@@ -13,31 +13,32 @@ import {
 export const DevicesPageContainer = () => {
   const { type } = useParams<{ type?: DevicesProfileTabsType }>();
 
-  const history = useHistory();
+  const navigate = useNavigate();
 
-  const openDownloadDevicesReportModal = useEvent(
-    devicesReportService.inputs.openModal,
-  );
+  const { openDownloadDevicesReportModal } = useUnit({
+    openDownloadDevicesReportModal: devicesReportService.inputs.openModal,
+  });
 
   const isPermitionToAddNode = usePermission([
     ESecuredIdentityRoleName.Administrator,
     ESecuredIdentityRoleName.ManagingFirmExecutor,
+    ESecuredIdentityRoleName.ManagingFirmSpectatingAdministrator,
   ]);
 
   useEffect(() => {
     if (type) return;
 
-    history.push(`/devices/${DevicesProfileTabsType.ODPU}`);
-  }, [type, history]);
+    navigate(`/devices/${DevicesProfileTabsType.ODPU}`);
+  }, [type, navigate]);
 
   const setDevicesType = useCallback(
     (type: DevicesProfileTabsType) => {
-      history.push(`/devices/${type}`);
+      navigate(`/devices/${type}`);
     },
-    [history],
+    [navigate],
   );
 
-  const handleAddNode = () => history.push('/devices/addNode');
+  const handleAddNode = () => navigate('/devices/addNode');
 
   return (
     <>

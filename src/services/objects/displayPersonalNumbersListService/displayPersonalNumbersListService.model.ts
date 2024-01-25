@@ -1,32 +1,29 @@
-import { createDomain, forward, guard, sample } from 'effector';
+import { createEffect, createEvent, createStore } from 'effector';
+import { sample } from 'effector';
 import { createGate } from 'effector-react';
 import { ApartmentListResponsePagedList } from 'api/types';
 import { GetApartmentsListRequestPayload } from '../displayApartmentsListService/displayApartmentsListService.types';
 import { getApartments } from './displayPersonalNumbersListService.api';
 import { addressSearchService } from 'services/addressSearchService/addressSearchService.models';
 
-const domain = createDomain('displayPersonalNumbersListService');
-
-const $apartmentsListPage =
-  domain.createStore<ApartmentListResponsePagedList | null>(null);
+const $apartmentsListPage = createStore<ApartmentListResponsePagedList | null>(
+  null,
+);
 const $apartments = $apartmentsListPage.map(
   (apartmentsResponse) => apartmentsResponse?.items || [],
 );
-const $filters = domain.createStore<GetApartmentsListRequestPayload | null>(
-  null,
-);
+const $filters = createStore<GetApartmentsListRequestPayload | null>(null);
 
-const setPageNumber = domain.createEvent<number>();
-const searchPersonalNumbers =
-  domain.createEvent<GetApartmentsListRequestPayload>();
-const getApartmentsListByPersonalNumber = domain.createEffect<
+const setPageNumber = createEvent<number>();
+const searchPersonalNumbers = createEvent<GetApartmentsListRequestPayload>();
+const getApartmentsListByPersonalNumber = createEffect<
   GetApartmentsListRequestPayload,
   ApartmentListResponsePagedList
 >(getApartments);
 
 const $isLoading = getApartmentsListByPersonalNumber.pending;
 
-const clearStores = domain.createEvent();
+const clearStores = createEvent();
 
 const SearchPersonalNumberGate = createGate();
 
@@ -49,16 +46,16 @@ $filters
   .reset(clearStores);
 
 sample({
-  clock: guard({
+  clock: sample({
     clock: $filters,
     filter: Boolean,
   }),
   target: getApartmentsListByPersonalNumber,
 });
 
-forward({
-  from: SearchPersonalNumberGate.close,
-  to: clearStores,
+sample({
+  clock: SearchPersonalNumberGate.close,
+  target: clearStores,
 });
 
 export const displayPersonalNumbersListService = {

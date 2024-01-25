@@ -1,4 +1,9 @@
 import React, { FC, useCallback, useEffect } from 'react';
+import { Switch, Form } from 'antd';
+import dayjs from 'api/dayjs';
+import { useParams } from 'react-router';
+import { useUnit } from 'effector-react';
+import { useForm } from 'effector-forms';
 import {
   FormWrapper,
   InputWrapper,
@@ -7,26 +12,20 @@ import {
 } from './WorkWithIndividualDeviceForm.styled';
 import { WorkWithIndividualDeviceFormProps } from './WorkWithIndividualDeviceForm.types';
 import { useSwitchInputOnEnter } from 'hooks/useSwitchInputOnEnter';
-import { Switch } from 'antd';
 import { DatePickerNative, fromEnter } from 'ui-kit/shared/DatePickerNative';
 import { WorkWithIndividualDeviceType } from '../../../workWithIndividualDeviceService.types';
 import { dataKey, getDataKey } from './WorkWithIndividualDeviceForm.utils';
-import { useForm } from 'effector-forms';
 import { Select } from 'ui-kit/Select';
 import { FormItem } from 'ui-kit/FormItem';
 import { ErrorMessage } from 'ui-kit/ErrorMessage';
 import { Input } from 'ui-kit/Input';
-import moment from 'moment';
 import { EIndividualDeviceRateType, EResourceType } from 'api/types';
-import { useParams } from 'react-router';
-import { useUnit } from 'effector-react';
 import { individualDeviceMountPlacesService } from 'services/devices/individualDeviceMountPlacesService';
-import { ClosingReasonsDictionary } from 'dictionaries';
+import { SwitchingReasonsDictionary } from 'dictionaries';
 import { ResourceSelect } from 'ui-kit/shared/ResourceSelect';
 import { Loader } from 'ui-kit/Loader';
 import { AutoComplete } from 'ui-kit/AutoComplete';
 import { WorkWithIndividualDeviceInputs } from './WorkWithIndividualDeviceInputs';
-import { Form } from 'antd';
 import { SpaceLine } from 'ui-kit/SpaceLine';
 import {
   NewIndividualDeviceTitleLookup,
@@ -64,7 +63,7 @@ export const WorkWithIndividualDeviceForm: FC<
   const isSerialNumberAllreadyExist =
     serialNumberForChecking[0]?.serialNumber === fields.serialNumber.value;
 
-  const next = useSwitchInputOnEnter(dataKey, true);
+  const next = useSwitchInputOnEnter(dataKey, true, false);
 
   const enterKeyDownHandler = useCallback(
     (index: number) => fromEnter(() => next(index)),
@@ -144,8 +143,8 @@ export const WorkWithIndividualDeviceForm: FC<
                 value={fields.model.value}
                 placeholder="Введите модель прибора"
                 onChange={(value) => {
-                  fields.model.onChange(value);
-                  handleFetchModels(value);
+                  fields.model.onChange(String(value));
+                  handleFetchModels(String(value));
                 }}
                 options={(models || []).map((elem) => ({ value: elem })) || []}
                 onKeyDown={enterKeyDownHandler(1)}
@@ -254,11 +253,13 @@ export const WorkWithIndividualDeviceForm: FC<
                 onChange={fields.oldDeviceClosingReason.onChange as any}
                 showAction={['focus']}
               >
-                {Object.entries(ClosingReasonsDictionary).map(([key, elem]) => (
-                  <Select.Option value={key} key={key}>
-                    {elem}
-                  </Select.Option>
-                ))}
+                {Object.entries(SwitchingReasonsDictionary).map(
+                  ([key, elem]) => (
+                    <Select.Option value={key} key={key}>
+                      {elem}
+                    </Select.Option>
+                  ),
+                )}
               </Select>
             </FormItem>
           </FormWrapper>
@@ -285,14 +286,12 @@ export const WorkWithIndividualDeviceForm: FC<
             dataKey={getDataKey(!isReopen)}
             onKeyDown={enterKeyDownHandler(isCheck ? 0 : 7)}
             disabled={isReopen}
-            onChange={(incomingValue: string) => {
-              const value = moment(incomingValue);
+            onChange={(incomingValue: string | null) => {
+              const value = dayjs(incomingValue);
 
               fields.lastCheckingDate.onChange(
                 value.utcOffset(0, true).toISOString(),
               );
-
-              const nextCheckingDate = moment(value);
 
               if (!fields.resource.value) return;
 
@@ -300,11 +299,13 @@ export const WorkWithIndividualDeviceForm: FC<
                 value?.year() +
                 (fields.resource.value === EResourceType.Electricity ? 16 : 6);
 
-              nextCheckingDate.set('year', nextYear);
+              const nextDate = value
+                .set('year', nextYear)
+                .utcOffset(0, true)
+                .toISOString();
 
-              fields.futureCheckingDate.onChange(
-                nextCheckingDate.utcOffset(0, true).toISOString(),
-              );
+              !Boolean(fields.futureCheckingDate.value) &&
+                fields.futureCheckingDate.onChange(nextDate);
             }}
             value={fields.lastCheckingDate.value}
           />
@@ -320,11 +321,11 @@ export const WorkWithIndividualDeviceForm: FC<
             dataKey={getDataKey(!isReopen)}
             onKeyDown={enterKeyDownHandler(isCheck ? 1 : 8)}
             disabled={isReopen}
-            onChange={(date) =>
+            onChange={(date) => {
               fields.futureCheckingDate.onChange(
-                moment(date).utcOffset(0, true).toISOString(),
-              )
-            }
+                dayjs(date).utcOffset(0, true).toISOString(),
+              );
+            }}
             value={fields.futureCheckingDate.value}
           />
           <ErrorMessage>

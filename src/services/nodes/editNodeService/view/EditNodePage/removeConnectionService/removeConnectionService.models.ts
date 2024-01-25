@@ -1,23 +1,21 @@
+import { createEffect, createEvent, createStore } from 'effector';
 import { message } from 'antd';
-import { createDomain, forward, sample } from 'effector';
+import { sample } from 'effector';
 import { PipeNodeResponse, UpdatePipeNodeRequest } from 'api/types';
 import { editNodeService } from 'services/nodes/editNodeService';
 import { EffectFailDataAxiosError } from 'types';
 import { fetchRemoveConnection } from './removeConnectionService.api';
 
-const domain = createDomain('removeConnectionService');
+const openModal = createEvent<PipeNodeResponse>();
+const closeModal = createEvent();
 
-const openModal = domain.createEvent<PipeNodeResponse>();
-const closeModal = domain.createEvent();
-
-const $node = domain
-  .createStore<PipeNodeResponse | null>(null)
+const $node = createStore<PipeNodeResponse | null>(null)
   .on(openModal, (_, node) => node)
   .reset(closeModal);
 const $isConfirmModalOpen = $node.map(Boolean);
 
-const removeConnection = domain.createEvent();
-const removeConnectionFx = domain.createEffect<
+const removeConnection = createEvent();
+const removeConnectionFx = createEffect<
   UpdatePipeNodeRequest & { nodeId: number },
   void,
   EffectFailDataAxiosError
@@ -31,14 +29,14 @@ sample({
     resource: node.resource,
     nodeId: node.id,
     disconnectFromCalculator: true,
-    number: node.number,
+    title: node.title,
   }),
   target: removeConnectionFx,
 });
 
-forward({
-  from: removeConnectionFx.doneData,
-  to: [editNodeService.inputs.refetchNode, closeModal],
+sample({
+  clock: removeConnectionFx.doneData,
+  target: [editNodeService.inputs.refetchNode, closeModal],
 });
 
 removeConnectionFx.doneData.watch(() => {

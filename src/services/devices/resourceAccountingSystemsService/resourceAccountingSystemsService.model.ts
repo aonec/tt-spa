@@ -1,21 +1,18 @@
-import { createDomain, forward } from 'effector';
+import { createEffect, createStore } from 'effector';
+import { sample } from 'effector';
 import { createGate } from 'effector-react';
 import { EResourceType, NodeOnHousingStockResponse } from 'api/types';
 import { getNodes } from './resourceAccountingSystemsService.api';
 import { sortNodes } from './resourceAccountingSystemsService.utils';
 import { meteringDevicesService } from './view/ResourceAccountingSystems/meteringDevicesService';
 
-const domain = createDomain('resourceAccountingSystemsService');
-
-const fetchNodesFx = domain.createEffect<
-  number,
-  NodeOnHousingStockResponse[] | null
->(getNodes);
+const fetchNodesFx = createEffect<number, NodeOnHousingStockResponse[] | null>(
+  getNodes,
+);
 
 const NodesGate = createGate<{ buildingId: number }>();
 
-const $nodes = domain
-  .createStore<NodeOnHousingStockResponse[] | null>(null)
+const $nodes = createStore<NodeOnHousingStockResponse[] | null>(null)
   .on(fetchNodesFx.doneData, (_, nodes) => {
     if (!nodes) return [];
 
@@ -25,9 +22,9 @@ const $nodes = domain
   })
   .reset(NodesGate.close);
 
-forward({
-  from: NodesGate.open.map(({ buildingId }) => buildingId),
-  to: fetchNodesFx,
+sample({
+  clock: NodesGate.open.map(({ buildingId }) => buildingId),
+  target: fetchNodesFx,
 });
 
 const $isLoading = fetchNodesFx.pending;

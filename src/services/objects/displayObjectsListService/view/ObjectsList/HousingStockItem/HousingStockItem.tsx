@@ -1,5 +1,5 @@
 import { ContextMenuButton } from 'ui-kit/ContextMenuButton/ContextMenuButton';
-import { Tooltip } from 'antd';
+import { Tooltip } from 'ui-kit/shared/Tooltip';
 import React, { FC, useMemo } from 'react';
 import { WarningIcon } from 'ui-kit/icons';
 import { getBuildingAddress } from 'utils/getBuildingAddress';
@@ -11,8 +11,10 @@ import {
 } from './HousingStockItem.styled';
 import { HousingStockItemProps } from './HousingStockItem.types';
 import { HouseCategoryDictionary } from 'services/objects/createObjectService/view/CreateObjectPage/CreateObjectMainInfoStage/createObjectMainInfoStage.constants';
-import { EHouseCategory } from 'api/types';
-import { useHistory } from 'react-router-dom';
+import { EHouseCategory, ESecuredIdentityRoleName } from 'api/types';
+import { useNavigate } from 'react-router-dom';
+import { ContextMenuButtonColor } from 'ui-kit/ContextMenuButton/ContextMenuButton.types';
+import { usePermission } from 'hooks/usePermission';
 
 export const HousingStockItem: FC<HousingStockItemProps> = ({
   housingStock,
@@ -20,10 +22,15 @@ export const HousingStockItem: FC<HousingStockItemProps> = ({
   openConsolidatedReportModal,
   openHeatIndividualDeviceReportModal,
   openResourceDisconnectionReportModal,
+  openDeleteBuildingModal,
 }) => {
   const address = getBuildingAddress(housingStock);
   const mainAddress = housingStock.address?.mainAddress;
-  const history = useHistory();
+  const navigate = useNavigate();
+  const isAdmin = usePermission([
+    ESecuredIdentityRoleName.Administrator,
+    ESecuredIdentityRoleName.ManagingFirmSpectatingAdministrator,
+  ]);
 
   const additionalAddressesString = useMemo(() => {
     const additionalAddresses = housingStock.address?.additionalAddresses || [];
@@ -73,7 +80,7 @@ export const HousingStockItem: FC<HousingStockItemProps> = ({
             {
               title: 'Посмотреть информацию',
               onClick: () =>
-                history.push(
+                navigate(
                   `/buildings/${buildingProfilePath}/${housingStock.id}`,
                 ),
             },
@@ -95,6 +102,12 @@ export const HousingStockItem: FC<HousingStockItemProps> = ({
               onClick: () => {
                 openResourceDisconnectionReportModal(housingStock);
               },
+            },
+            {
+              title: 'Удалить дом',
+              color: ContextMenuButtonColor.danger,
+              onClick: () => openDeleteBuildingModal(housingStock),
+              hidden: !isAdmin,
             },
           ]}
         />

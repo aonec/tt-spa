@@ -1,8 +1,9 @@
-import { Skeleton } from 'antd';
 import React, { FC } from 'react';
 import { FormModal } from 'ui-kit/Modals/FormModal/FormModal';
 import { CreateResourceDisconnectionForm } from '../CreateResourceDisconnectionForm';
 import { CreateResourceDisconnectionModalProps } from './CreateResourceDisconnectionModal.types';
+import { WithLoader } from 'ui-kit/shared/WithLoader';
+import { Skeleton } from 'antd';
 
 export const CreateResourceDisconnectionModal: FC<
   CreateResourceDisconnectionModalProps
@@ -26,6 +27,12 @@ export const CreateResourceDisconnectionModal: FC<
   selectCity,
   selectedCity,
   selectedBuilding,
+  handleCreateDisconnectionState,
+  dateFrom,
+  preselectedBuilding,
+  defaultResource,
+  preselectedBuildingData,
+  defaultCity,
 }) => {
   const buttonPlaceholder = isEdit
     ? 'Сохранить изменения'
@@ -41,7 +48,7 @@ export const CreateResourceDisconnectionModal: FC<
       title={modalTitle}
       submitBtnText={buttonPlaceholder}
       form={
-        <>
+        <WithLoader isLoading={isDisconnectionLoading}>
           {isDisconnectionLoading && <Skeleton active />}
           {!isDisconnectionLoading && (
             <CreateResourceDisconnectionForm
@@ -64,9 +71,16 @@ export const CreateResourceDisconnectionModal: FC<
               selectCity={selectCity}
               selectedCity={selectedCity}
               selectedBuilding={selectedBuilding}
+              handleCreateDisconnectionState={handleCreateDisconnectionState}
+              handleCloseModal={handleClose}
+              dateFrom={dateFrom}
+              preselectedBuilding={preselectedBuilding}
+              defaultResource={defaultResource}
+              preselectedBuildingData={preselectedBuildingData}
+              defaultCity={defaultCity}
             />
           )}
-        </>
+        </WithLoader>
       }
       formId="createResourceDisconnection"
     />

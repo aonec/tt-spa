@@ -1,4 +1,5 @@
-import { createDomain, forward } from 'effector';
+import { createEffect, createStore } from 'effector';
+import { sample } from 'effector';
 import {
   getContractors,
   getCurrentManagingFirm,
@@ -17,8 +18,6 @@ import { addContractorService } from 'services/contractors/addContractorService'
 import { deleteContractorService } from 'services/contractors/deleteContractorService';
 import { editContractorService } from 'services/contractors/editContractorService';
 
-const domain = createDomain('companyProfileService');
-
 const FetchingCurrentManagingFirmGate = createGate();
 const FetchingStaffGate = createGate();
 const FetchingContractorsGate = createGate();
@@ -33,56 +32,57 @@ const successDeleteContractor =
 const successEditContractor =
   editContractorService.inputs.editContractorSuccess;
 
-const fetchCurrentManagingFirmFx = domain.createEffect<
+const fetchCurrentManagingFirmFx = createEffect<
   void,
   OrganizationResponse | null
 >(getCurrentManagingFirm);
 
-const fetchStaffFx = domain.createEffect<
+const fetchStaffFx = createEffect<
   void,
   OrganizationUserListResponsePagedList | null
 >(getManagingFirmUsers);
 
-const fetchContractorsFx = domain.createEffect<
+const fetchContractorsFx = createEffect<
   void,
   ContractorListResponsePagedList | null
 >(getContractors);
 
-const $currentManagingFirm = domain
-  .createStore<OrganizationResponse | null>(null)
-  .on(fetchCurrentManagingFirmFx.doneData, (_, data) => data);
+const $currentManagingFirm = createStore<OrganizationResponse | null>(null).on(
+  fetchCurrentManagingFirmFx.doneData,
+  (_, data) => data,
+);
 
-const $staffList = domain
-  .createStore<OrganizationUserListResponsePagedList | null>(null)
-  .on(fetchStaffFx.doneData, (_, data) => data);
+const $staffList = createStore<OrganizationUserListResponsePagedList | null>(
+  null,
+).on(fetchStaffFx.doneData, (_, data) => data);
 
-const $contractorsList = domain
-  .createStore<ContractorListResponsePagedList | null>(null)
-  .on(fetchContractorsFx.doneData, (_, data) => data);
+const $contractorsList = createStore<ContractorListResponsePagedList | null>(
+  null,
+).on(fetchContractorsFx.doneData, (_, data) => data);
 
-forward({
-  from: FetchingCurrentManagingFirmGate.open,
-  to: fetchCurrentManagingFirmFx,
+sample({
+  clock: FetchingCurrentManagingFirmGate.open,
+  target: fetchCurrentManagingFirmFx,
 });
 
-forward({
-  from: [
+sample({
+  clock: [
     FetchingStaffGate.open,
     successDeleteEmployee,
     successUpdateStatus,
     successCreateEmloyee,
   ],
-  to: fetchStaffFx,
+  target: fetchStaffFx,
 });
 
-forward({
-  from: [
+sample({
+  clock: [
     FetchingContractorsGate.open,
     successAddContractor,
     successDeleteContractor,
     successEditContractor,
   ],
-  to: fetchContractorsFx,
+  target: fetchContractorsFx,
 });
 
 const $fetchStaffPending = fetchStaffFx.pending;

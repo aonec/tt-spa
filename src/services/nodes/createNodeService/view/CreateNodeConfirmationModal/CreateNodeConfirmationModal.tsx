@@ -31,7 +31,7 @@ import {
   NodeRegistrationTypeLookup,
   NodeStatusTextDictionary,
 } from 'dictionaries';
-import moment from 'moment';
+import dayjs from 'api/dayjs';
 import { IncorrectConfigAlert } from 'services/nodes/editNodeService/view/EditNodePage/IncorrectConfigAlert';
 
 export const CreateNodeConfirmationModal: FC<
@@ -55,10 +55,10 @@ export const CreateNodeConfirmationModal: FC<
       return '—';
     }
 
-    const start = moment(
+    const start = dayjs(
       requestPayload.commercialStatusRequest.startCommercialAccountingDate,
     );
-    const end = moment(
+    const end = dayjs(
       requestPayload.commercialStatusRequest.endCommercialAccountingDate,
     );
 
@@ -137,8 +137,8 @@ export const CreateNodeConfirmationModal: FC<
                 ? NodeRegistrationTypeLookup[requestPayload.registrationType]
                 : '',
             },
-            { key: 'Номер узла', value: requestPayload.number },
-            { key: 'Зона', value: serviceZone.name },
+            { key: 'Название узла', value: requestPayload.title },
+            { key: 'Зона', value: serviceZone?.name },
             {
               hidden: !requestPayload.commercialStatusRequest?.commercialStatus,
               key: 'Коммерческий учет показателей приборов',

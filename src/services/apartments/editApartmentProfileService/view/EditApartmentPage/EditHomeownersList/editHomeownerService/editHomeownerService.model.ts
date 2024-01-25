@@ -1,5 +1,6 @@
+import { createEffect, createEvent, createStore } from 'effector';
 import { editApartmentProfileService } from 'services/apartments/editApartmentProfileService/editApartmentProfileService.model';
-import { combine, createDomain, forward, sample } from 'effector';
+import { combine, sample } from 'effector';
 import {
   EditHomeownerFormPayload,
   EditHomeownerRequestPayload,
@@ -8,35 +9,31 @@ import { putHomeowner } from './editHomeownerService.api';
 import { EffectFailDataAxiosErrorDataApartmentId } from 'types';
 import { message } from 'antd';
 
-const domain = createDomain('editHomeownerService');
+const handleEditHomeowner = createEvent<EditHomeownerFormPayload>();
 
-const handleEditHomeowner = domain.createEvent<EditHomeownerFormPayload>();
-
-const editHomeownerFx = domain.createEffect<
+const editHomeownerFx = createEffect<
   EditHomeownerRequestPayload,
   void,
   EffectFailDataAxiosErrorDataApartmentId
 >(putHomeowner);
 
-const openEditHomeownerModal = domain.createEvent<EditHomeownerFormPayload>();
-const closeEditHomeownerModal = domain.createEvent();
+const openEditHomeownerModal = createEvent<EditHomeownerFormPayload>();
+const closeEditHomeownerModal = createEvent();
 
-const handleConfirmationModalClose = domain.createEvent();
-const onForced = domain.createEvent();
+const handleConfirmationModalClose = createEvent();
+const onForced = createEvent();
 
-const $housingStockPayload = domain
-  .createStore<EditHomeownerFormPayload | null>(null)
+const $housingStockPayload = createStore<EditHomeownerFormPayload | null>(null)
   .on(openEditHomeownerModal, (_, payload) => payload)
   .reset(closeEditHomeownerModal, editHomeownerFx.doneData);
 
 const $isModalOpen = $housingStockPayload.map(Boolean);
 
-const $editHomeownerFormData = domain
-  .createStore<EditHomeownerFormPayload | null>(null)
-  .on(handleEditHomeowner, (_, data) => data);
+const $editHomeownerFormData = createStore<EditHomeownerFormPayload | null>(
+  null,
+).on(handleEditHomeowner, (_, data) => data);
 
-const $samePersonalAccountNumderId = domain
-  .createStore<number | null>(null)
+const $samePersonalAccountNumderId = createStore<number | null>(null)
   .on(editHomeownerFx.failData, (prev, errData) => {
     if (errData.response.status === 409) {
       return errData.response.data.error.Data.ApartmentId;
@@ -47,8 +44,7 @@ const $samePersonalAccountNumderId = domain
 
 const $isConfirmationModalOpen = $samePersonalAccountNumderId.map(Boolean);
 
-const $isForced = domain
-  .createStore<boolean>(false)
+const $isForced = createStore<boolean>(false)
   .on(onForced, () => true)
   .reset(handleConfirmationModalClose);
 
@@ -68,7 +64,6 @@ sample({
         paymentCode,
         personType,
         personalAccountNumber,
-        phoneNumber,
       } = payloadData;
 
       const res: EditHomeownerRequestPayload = {
@@ -79,7 +74,6 @@ sample({
           paymentCode,
           personType,
           personalAccountNumber,
-          phoneNumber,
         },
         isForced: isForced,
       };
@@ -91,9 +85,9 @@ sample({
   target: editHomeownerFx,
 });
 
-forward({
-  from: editHomeownerFx.doneData,
-  to: [
+sample({
+  clock: editHomeownerFx.doneData,
+  target: [
     editApartmentProfileService.inputs.refetchAaprtment,
     handleConfirmationModalClose,
   ],

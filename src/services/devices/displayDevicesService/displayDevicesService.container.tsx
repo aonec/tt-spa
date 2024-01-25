@@ -1,23 +1,37 @@
-import { useEvent, useStore } from 'effector-react';
+import { useUnit } from 'effector-react';
 import React from 'react';
 import { displayDevicesService } from './displayDevicesService.models';
 import { DevicesList } from './view/DevicesList';
+import { getNodesListQuery } from './displayDevicesService.api';
 
 const { outputs, inputs } = displayDevicesService;
 
 export const DevicesListContainer = () => {
-  const housingStocksDevices = useStore(outputs.$devices);
-  const housingStocksAddressForSwitcher = useStore(outputs.$housingsByFilter);
-
-  const isLoading = useStore(outputs.$loading);
-  const total = useStore(outputs.$total);
-  const pageNumber = useStore(outputs.$pageNumber);
-  const pageSize = useStore(outputs.$pageSize);
-  const mainFilterSearchType = useStore(outputs.$devicesSearchType);
-
-  const setMainFilterSearchType = useEvent(inputs.setDevicesSearchType);
-  const setPageNumber = useEvent(inputs.setPageNumber);
-  const setAddressBySwither = useEvent(inputs.setDevicesProfileFilter);
+  const {
+    housingStocksAddressForSwitcher,
+    housingStocksDevices,
+    isLoading,
+    mainFilterSearchType,
+    pageNumber,
+    pageSize,
+    setAddressBySwither,
+    setMainFilterSearchType,
+    setPageNumber,
+    total,
+    isDevicesFetched,
+  } = useUnit({
+    housingStocksDevices: outputs.$devices,
+    housingStocksAddressForSwitcher: outputs.$housingsByFilter,
+    isLoading: outputs.$loading,
+    total: outputs.$total,
+    pageNumber: outputs.$pageNumber,
+    pageSize: outputs.$pageSize,
+    mainFilterSearchType: outputs.$devicesSearchType,
+    setMainFilterSearchType: inputs.setDevicesSearchType,
+    setPageNumber: inputs.setPageNumber,
+    setAddressBySwither: inputs.setDevicesProfileFilter,
+    isDevicesFetched: getNodesListQuery.$succeeded,
+  });
 
   return (
     <DevicesList
@@ -31,6 +45,7 @@ export const DevicesListContainer = () => {
       housingStocksAddressForSwitcher={housingStocksAddressForSwitcher}
       mainFilterSearchType={mainFilterSearchType}
       setMainFilterSearchType={setMainFilterSearchType}
+      isDevicesFetched={isDevicesFetched}
     />
   );
 };

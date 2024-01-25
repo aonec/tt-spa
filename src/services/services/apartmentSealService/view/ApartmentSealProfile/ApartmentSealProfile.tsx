@@ -2,7 +2,9 @@ import React, { FC, useCallback, useMemo } from 'react';
 import { ApartmentSealProfileProps } from './ApartmentSealProfile.types';
 import { WithLoader } from 'ui-kit/shared/WithLoader';
 import {
+  AdditionalInfoWrapper,
   AddressSearchContainerSC,
+  AlertWrapper,
   AppointmentTextWrapper,
   ContentWrapper,
 } from './ApartmentSealProfile.styled';
@@ -13,10 +15,13 @@ import {
   SearchFieldType,
 } from 'services/addressSearchService/view/AddressSearch/AddressSearch.types';
 import { IndividualDevicesList } from './IndividualDevicesList';
-import moment from 'moment';
+import dayjs from 'api/dayjs';
 import { SealBottomPanel } from '../SealBottomPanel';
 import { GoBack } from 'ui-kit/shared/GoBack';
 import { NothingFound } from 'ui-kit/shared/NothingFound';
+import { Alert } from 'ui-kit/Alert';
+import { AlertType } from 'ui-kit/Alert/Alert.types';
+import { getHousingStockItemAddress } from 'utils/getHousingStockItemAddress';
 
 export const ApartmentSealProfile: FC<ApartmentSealProfileProps> = ({
   apartment,
@@ -30,12 +35,18 @@ export const ApartmentSealProfile: FC<ApartmentSealProfileProps> = ({
   nearestAppointment,
   isAppointmentLoading,
   isApartmentFetched,
+  openRemoveAppointmentModal,
+  housesWithDistricts,
 }) => {
   const address = apartment?.housingStock?.address?.mainAddress;
+  const isAssigned = nearestAppointment?.controllerId;
+
+  const isAddressInDistrict =
+    address && housesWithDistricts.includes(address.housingStockId);
+
   const appointmentDate = useMemo(
     () =>
-      nearestAppointment &&
-      moment(nearestAppointment.date).format('DD.MM.YYYY'),
+      nearestAppointment && dayjs(nearestAppointment.date).format('DD.MM.YYYY'),
     [nearestAppointment],
   );
 
@@ -114,13 +125,29 @@ export const ApartmentSealProfile: FC<ApartmentSealProfileProps> = ({
                 handleUpdateApartment={updateApartment}
                 setSelectedHomeownerName={setSelectedHomeownerName}
                 additionalHeaderInfo={
-                  appointmentDate && (
-                    <AppointmentTextWrapper>
-                      Запись на опломбировку: {appointmentDate}
-                    </AppointmentTextWrapper>
-                  )
+                  <AdditionalInfoWrapper>
+                    {isAssigned && (
+                      <AppointmentTextWrapper>
+                        Задание уже выдано контролеру
+                      </AppointmentTextWrapper>
+                    )}
+                    {appointmentDate && (
+                      <AppointmentTextWrapper>
+                        Запись на опломбировку: {appointmentDate}
+                      </AppointmentTextWrapper>
+                    )}
+                  </AdditionalInfoWrapper>
                 }
               />
+              {isAddressInDistrict === false && (
+                <AlertWrapper>
+                  <Alert type={AlertType.danger}>
+                    Этот адрес не включен ни в один район, добавьте дом "
+                    {getHousingStockItemAddress(address!)}" в один из районов
+                    или создайте новый район.
+                  </Alert>
+                </AlertWrapper>
+              )}
               <IndividualDevicesList individualDevices={individualDevices} />
             </ContentWrapper>
             {!isAppointmentLoading && (
@@ -130,6 +157,7 @@ export const ApartmentSealProfile: FC<ApartmentSealProfileProps> = ({
                   handleOpenCreateSealAppointmentModal
                 }
                 isAppointmentExist={Boolean(nearestAppointment)}
+                openRemoveAppointmentModal={openRemoveAppointmentModal}
               />
             )}
           </>

@@ -1,4 +1,4 @@
-import { useEvent, useStore } from 'effector-react';
+import { useUnit } from 'effector-react';
 import React from 'react';
 import { FormModal } from 'ui-kit/Modals/FormModal/FormModal';
 import { createNodeServiceZoneService } from './createNodeServiceZoneService.model';
@@ -9,11 +9,12 @@ const { inputs, outputs } = createNodeServiceZoneService;
 const formId = 'create-service-zone-form';
 
 export const CreateNodeServiceZoneContainer = () => {
-  const isModalOpen = useStore(outputs.$isModalOpen);
-  const isLoading = useStore(outputs.$isLoading);
-
-  const handleSubmit = useEvent(inputs.handleCreateNodeServiceZone);
-  const handleClose = useEvent(inputs.closeCreateNodeServiceZoneModal);
+  const { handleClose, handleSubmit, isLoading, isModalOpen } = useUnit({
+    isModalOpen: outputs.$isModalOpen,
+    isLoading: outputs.$isLoading,
+    handleSubmit: inputs.handleCreateNodeServiceZone,
+    handleClose: inputs.closeCreateNodeServiceZoneModal,
+  });
 
   return (
     <FormModal

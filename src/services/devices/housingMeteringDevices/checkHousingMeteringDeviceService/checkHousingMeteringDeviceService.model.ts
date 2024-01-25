@@ -1,19 +1,18 @@
-import { createDomain, forward } from 'effector';
+import { createEffect, createEvent, createStore } from 'effector';
+import { sample } from 'effector';
 import { postCheckDevice } from './checkHousingMeteringDeviceService.api';
 import { CheckDeviceRequest } from 'api/types';
 import { EffectFailDataAxiosError } from 'types';
 import { message } from 'antd';
 
-const domain = createDomain('checkHousingMeteringDeviceService');
+const handleOpenModal = createEvent();
+const handleCloseModal = createEvent();
 
-const handleOpenModal = domain.createEvent();
-const handleCloseModal = domain.createEvent();
+const handleOnSubmit = createEvent<CheckDeviceRequest>();
 
-const handleOnSubmit = domain.createEvent<CheckDeviceRequest>();
+const handleUpdateDevice = createEvent();
 
-const handleUpdateDevice = domain.createEvent();
-
-const editCheckDateFx = domain.createEffect<
+const editCheckDateFx = createEffect<
   CheckDeviceRequest,
   void,
   EffectFailDataAxiosError
@@ -31,13 +30,12 @@ editCheckDateFx.failData.watch((error) => {
   );
 });
 
-forward({
-  from: handleOnSubmit,
-  to: editCheckDateFx,
+sample({
+  clock: handleOnSubmit,
+  target: editCheckDateFx,
 });
 
-const $isModalOpen = domain
-  .createStore<boolean>(false)
+const $isModalOpen = createStore<boolean>(false)
   .on(handleOpenModal, () => true)
   .on(handleCloseModal, () => false);
 

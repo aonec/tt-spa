@@ -1,4 +1,4 @@
-import { useStore } from 'effector-react';
+import { useUnit } from 'effector-react';
 import React, { FC, ReactNode, useMemo } from 'react';
 import { BaseInfoForm } from './BaseInfoForm';
 import { ConnectionSettingsForm } from './ConnectionSettingsForm';
@@ -7,7 +7,6 @@ import { Tabs } from 'ui-kit/Tabs';
 import { FormModal } from 'ui-kit/Modals/FormModal';
 import { CreateCalculatorModalProps } from './CreateCalculatorModal.types';
 import { CreateCalculatorModalFilesUploadForm } from './CreateCalculatorModalFilesUploadForm/CreateCalculatorModalFilesUploadForm';
-const { TabPane } = Tabs;
 
 const formIds: { [key in number]: string } = {
   1: 'create-calculator-modal-base-info',
@@ -28,7 +27,9 @@ export const CreateCalculatorModal: FC<CreateCalculatorModalProps> = ({
   isLoading,
   payload,
 }) => {
-  const calculatorTypes = useStore(outputs.$calculatorTypesSelectItems);
+  const { calculatorTypes } = useUnit({
+    calculatorTypes: outputs.$calculatorTypesSelectItems,
+  });
   const stepComponentDictionary: { [key: number]: ReactNode } = useMemo(
     () => ({
       1: (
@@ -57,18 +58,28 @@ export const CreateCalculatorModal: FC<CreateCalculatorModalProps> = ({
     [calculatorTypes, updatePayload, payload],
   );
 
+  const tabItems = useMemo(
+    () => [
+      { label: 'Шаг 1. Общие данные', key: '1' },
+      { label: 'Шаг 2. Настройка соединения', key: '2' },
+      { label: 'Шаг 3. Документы', key: '3' },
+    ],
+    [],
+  );
+
   const form = useMemo(() => {
     return (
       <>
-        <Tabs defaultActiveKey="1" activeKey={String(stepNumber)}>
-          <TabPane tab="Шаг 1. Общие данные" key="1"></TabPane>
-          <TabPane tab="Шаг 2. Настройка соединения" key="2"></TabPane>
-          <TabPane tab="Шаг 3. Документы" key="3"></TabPane>
-        </Tabs>
+        <Tabs
+          defaultActiveKey="1"
+          activeKey={String(stepNumber)}
+          items={tabItems}
+        />
+
         {stepComponentDictionary[stepNumber]}
       </>
     );
-  }, [stepNumber, stepComponentDictionary]);
+  }, [stepNumber, stepComponentDictionary, tabItems]);
 
   const submitBtnText = useMemo(
     () => (stepNumber === 3 ? 'Сохранить' : 'Далее'),

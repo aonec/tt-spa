@@ -1,10 +1,19 @@
 import _ from 'lodash';
-import moment from 'moment';
+import dayjs from 'api/dayjs';
 import {
   DateTimeDoubleDictionaryItem,
   StreetWithBuildingNumbersResponse,
 } from 'api/types';
 import { getFilledArray } from 'utils/getFilledArray';
+import {
+  ConsumptionDataForTwoMonth,
+  MonthConsumptionData,
+  ResourceConsumptionGraphDataType,
+  ResourceConsumptionGraphType,
+  SetConsumptionDataType,
+} from './resourceConsumptionService.types';
+import { BooleanTypesOfResourceConsumptionGraphForTwoMonth } from './view/ResourceConsumptionProfile/ResourceConsumptionProfile.types';
+import { prepareData } from 'utils/Graph.utils';
 
 export const prepareDataForConsumptionGraphWithLastValue = (
   dataArr: DateTimeDoubleDictionaryItem[],
@@ -16,14 +25,14 @@ export const prepareDataForConsumptionGraphWithLastValue = (
   if (!lastDate) {
     return prepareDataForConsumptionGraph(dataArr);
   }
-  const startOfMonth = moment(dataArr[0].key).startOf('month');
+  const startOfMonth = dayjs(dataArr[0].key).startOf('month');
   const emptyArray = getFilledArray(
-    moment(lastDate).diff(startOfMonth, 'd') + 1,
+    dayjs(lastDate).diff(startOfMonth, 'd') + 1,
     (index) => index + 1,
   );
 
   const objectOfData = dataArr.reduce((acc, elem) => {
-    const diff = String(moment(elem.key).diff(startOfMonth, 'day') + 1);
+    const diff = String(dayjs(elem.key).diff(startOfMonth, 'day') + 1);
 
     return { ...acc, [diff]: { ...elem, key: diff } };
   }, {} as { [key: string]: DateTimeDoubleDictionaryItem });
@@ -47,11 +56,11 @@ export const prepareDataForConsumptionGraph = (
   if (!dataArr.length) {
     return [];
   }
-  const startOfMonth = moment(dataArr[0].key).startOf('month');
+  const startOfMonth = dayjs(dataArr[0].key).startOf('month');
   const emptyArray = getFilledArray(31, (index) => index + 1);
 
   const objectOfData = dataArr.reduce((acc, elem) => {
-    const diff = String(moment(elem.key).diff(startOfMonth, 'day') + 1);
+    const diff = String(dayjs(elem.key).diff(startOfMonth, 'day') + 1);
 
     return { ...acc, [diff]: { ...elem, key: diff } };
   }, {} as { [key: string]: DateTimeDoubleDictionaryItem });
@@ -81,3 +90,108 @@ export const getAddressSearchData = (
     }, [] as { id: number; addressString: string }[]),
     'addressString',
   );
+
+export const setConsumptionData = (
+  prev: ConsumptionDataForTwoMonth | null,
+  fieldName: ResourceConsumptionGraphDataType,
+  data: SetConsumptionDataType,
+) => {
+  return {
+    ...(prev || {}),
+    [fieldName]: {
+      ...(prev?.[fieldName] || {}),
+      ...(data || {}),
+    },
+  };
+};
+
+const getCheckedCurrentMonthConsumption = (
+  consumptionData: ConsumptionDataForTwoMonth | null,
+  checked: BooleanTypesOfResourceConsumptionGraphForTwoMonth,
+  consumptionType: ResourceConsumptionGraphDataType,
+): MonthConsumptionData => {
+  return {
+    [ResourceConsumptionGraphType.Housing]: checked[consumptionType].housing
+      ? consumptionData?.[consumptionType]?.housing
+      : [],
+    [ResourceConsumptionGraphType.Normative]: checked[consumptionType].normative
+      ? consumptionData?.[consumptionType]?.normative
+      : [],
+    [ResourceConsumptionGraphType.Subscriber]: checked[consumptionType]
+      .subscriber
+      ? consumptionData?.[consumptionType]?.subscriber
+      : [],
+  };
+};
+
+const getCheckedConsumptionData = (
+  consumptionData: ConsumptionDataForTwoMonth | null,
+  checked: BooleanTypesOfResourceConsumptionGraphForTwoMonth,
+) => {
+  const checkedCurrentMonthConsumption = getCheckedCurrentMonthConsumption(
+    consumptionData,
+    checked,
+    ResourceConsumptionGraphDataType.currentMonthData,
+  );
+
+  const checkedPrevMonthConsumption = getCheckedCurrentMonthConsumption(
+    consumptionData,
+    checked,
+    ResourceConsumptionGraphDataType.prevMonthData,
+  );
+
+  const checkedAdditionalAddressConsumption = getCheckedCurrentMonthConsumption(
+    consumptionData,
+    checked,
+    ResourceConsumptionGraphDataType.additionalAddress,
+  );
+
+  return {
+    checkedCurrentMonthConsumption,
+    checkedPrevMonthConsumption,
+    checkedAdditionalAddressConsumption,
+  };
+};
+
+export const prepareDataForMinMaxCalculation = (
+  consumptionData: ConsumptionDataForTwoMonth | null,
+  checked: BooleanTypesOfResourceConsumptionGraphForTwoMonth,
+) => {
+  const {
+    checkedCurrentMonthConsumption,
+    checkedPrevMonthConsumption,
+    checkedAdditionalAddressConsumption,
+  } = getCheckedConsumptionData(consumptionData, checked);
+
+  const dataForMinMaxCalculation = [
+    ...Object.values(checkedCurrentMonthConsumption),
+    ...Object.values(checkedPrevMonthConsumption),
+    ...Object.values(checkedAdditionalAddressConsumption),
+  ].map(prepareData);
+
+  return dataForMinMaxCalculation;
+};
+
+export const getIsOnlyHousingDataEmpty = (
+  housingConsumptionData: ConsumptionDataForTwoMonth | null,
+) => {
+  const isCurrentMonthHousing =
+    housingConsumptionData?.currentMonthData?.housing?.length;
+  const isCurrentMonthNormative =
+    housingConsumptionData?.currentMonthData?.normative?.length;
+  const isCurrentMonthSubscriber =
+    housingConsumptionData?.currentMonthData?.subscriber?.length;
+  const isPrevMonthNormative =
+    housingConsumptionData?.prevMonthData?.normative?.length;
+  const isPrevMonthSubscriber =
+    housingConsumptionData?.prevMonthData?.subscriber?.length;
+
+  const isOtherDataNotEmpty = [
+    isCurrentMonthNormative,
+    isCurrentMonthSubscriber,
+    isPrevMonthNormative,
+    isPrevMonthSubscriber,
+  ].some(Boolean);
+
+  return Boolean(!isCurrentMonthHousing && isOtherDataNotEmpty);
+};

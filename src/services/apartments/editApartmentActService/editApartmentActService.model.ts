@@ -1,5 +1,6 @@
-import { combine, createDomain, forward, guard, sample } from 'effector';
-import { ApartmentActResponse } from 'api/types';
+import { createEffect, createEvent, createStore } from 'effector';
+import { combine, sample } from 'effector';
+import { ApartmentActResponse, EActResourceType, EActType } from 'api/types';
 import { apartmentActsListService } from '../apartmentActsListService';
 import {
   fetchDeleteActDocument,
@@ -9,28 +10,47 @@ import {
   EditActFormPayload,
   EditActRequestPayload,
 } from './editApartmentActService.types';
+import { createForm } from 'effector-forms';
+import { required } from 'api/formRules';
 
-const domain = createDomain('editApartmentActService');
+const openModal = createEvent<ApartmentActResponse>();
+const closeModal = createEvent();
 
-const openModal = domain.createEvent<ApartmentActResponse>();
-const closeModal = domain.createEvent();
-
-const $act = domain
-  .createStore<ApartmentActResponse | null>(null)
+const $act = createStore<ApartmentActResponse | null>(null)
   .on(openModal, (_, act) => act)
   .reset(closeModal);
 
 const $isModalOpen = $act.map(Boolean);
 
-const deleteActDocument = domain.createEvent();
-const deleteActDocumentFx = domain.createEffect<number, void>(
-  fetchDeleteActDocument,
-);
+const deleteActDocument = createEvent();
+const deleteActDocumentFx = createEffect<number, void>(fetchDeleteActDocument);
 
-const editAct = domain.createEvent<EditActFormPayload>();
-const editActFx = domain.createEffect<EditActRequestPayload, void>(
-  updateApartmentAct,
-);
+const editActForm = createForm<EditActFormPayload>({
+  fields: {
+    actJobDate: {
+      init: '' as string,
+      rules: [required()],
+    },
+    registryNumber: {
+      init: '' as string,
+      rules: [required()],
+    },
+    actResourceType: {
+      init: EActResourceType.All,
+      rules: [required()],
+    },
+    actType: {
+      init: EActType.Admission,
+      rules: [required()],
+    },
+    documentId: {
+      init: null,
+    },
+  },
+  validateOn: ['submit'],
+});
+
+const editActFx = createEffect<EditActRequestPayload, void>(updateApartmentAct);
 
 const $editActIsLoading = combine(
   editActFx.pending,
@@ -38,13 +58,24 @@ const $editActIsLoading = combine(
   (...loading) => loading.includes(true),
 );
 
-forward({
-  from: [editActFx.doneData, deleteActDocumentFx.doneData],
-  to: [apartmentActsListService.inputs.refetchApartmentActs, closeModal],
+sample({
+  clock: $act,
+  fn: (values) => ({ ...values, document: values?.document?.id }),
+  target: editActForm.setInitialForm,
 });
 
 sample({
-  source: guard({
+  clock: [editActFx.doneData, deleteActDocumentFx.doneData],
+  target: [apartmentActsListService.inputs.refetchApartmentActs, closeModal],
+});
+
+sample({
+  clock: closeModal,
+  target: editActForm.reset,
+});
+
+sample({
+  source: sample({
     source: $act.map((data) => data?.id),
     filter: Boolean,
   }),
@@ -53,11 +84,11 @@ sample({
 });
 
 sample({
-  source: guard({
+  source: sample({
     source: $act.map((data) => data?.id),
     filter: Boolean,
   }),
-  clock: editAct,
+  clock: editActForm.formValidated,
   fn: (actId, act) => ({ actId, act }),
   target: editActFx,
 });
@@ -66,12 +97,14 @@ export const editApartmentActService = {
   inputs: {
     closeModal,
     openModal,
-    editAct,
     deleteActDocument,
   },
   outputs: {
     $isModalOpen,
     $editActIsLoading,
     $act,
+  },
+  forms: {
+    editActForm,
   },
 };

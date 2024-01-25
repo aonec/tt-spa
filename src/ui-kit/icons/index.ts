@@ -86,6 +86,10 @@ import { ReactComponent as FilterIcon } from './svg/filterIcon.svg';
 import { ReactComponent as FilterIconBlue } from './svg/filterIconBlue.svg';
 import { ReactComponent as FilterIconTransparent } from './svg/filterIconTransparent.svg';
 import { ReactComponent as MapPaperIcon } from './svg/mapPaper.svg';
+import { ReactComponent as TemperatureIcon } from './svg/temperature.svg';
+import { ReactComponent as CheckedBoxIcon } from './svg/checkedBox.svg';
+import { ReactComponent as AscendingSortIcon } from './svg/ascendingSort.svg';
+import { ReactComponent as DescendingSortIcon } from './svg/descendingSort.svg';
 
 export {
   FinishIcon,
@@ -176,4 +180,8 @@ export {
   FilterIconBlue,
   FilterIconTransparent,
   MapPaperIcon,
+  TemperatureIcon,
+  CheckedBoxIcon,
+  AscendingSortIcon,
+  DescendingSortIcon,
 };

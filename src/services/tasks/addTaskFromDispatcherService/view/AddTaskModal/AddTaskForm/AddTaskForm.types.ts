@@ -1,53 +1,70 @@
 import {
   EisTaskType,
-  ErpExecutorResponse,
-  ErpTaskDeadlineResponse,
   ErpSourceResponse,
-  ErpWorkCategoryResponse,
-  ErpObjectResponse,
+  ErpTaskReasonGroupResponse,
+  ErpTaskReasonItemResponse,
+  ResourceDisconnectingResponse,
 } from 'api/types';
-import { GetTaskDeadlineRequest } from 'services/tasks/addTaskFromDispatcherService/addTaskFromDispatcherService.types';
+import dayjs from 'dayjs';
+import { Event } from 'effector';
+import {
+  ExistingApartmentNumberType,
+  HomeownerNameOption,
+  PreparedAddress,
+} from 'services/tasks/addTaskFromDispatcherService/addTaskFromDispatcherService.types';
 
 export type AddTask = {
   sourceId: string | null;
-  requestNumber: string | null;
+  requestNumber?: string | null;
   taskType: null | EisTaskType;
-  // categoryId: string | null;
   workTypeId: string | null;
 
-  requestDate: moment.Moment | null;
-  requestTime: string | null;
-
-  manualDeadlineDate: moment.Moment | null;
-  manualDeadlineTime: string | null;
+  requestDate: dayjs.Dayjs | null;
+  requestTime: dayjs.Dayjs | null;
 
   addressSearch: string;
-  selectedObjectAddress: string | null;
 
   apartmentNumber: string | null;
-  subscriberName: string | null;
-  phoneNumber: string | null;
-
-  leadId: string | null;
-  executorId: string | null;
-
-  taskDeadline: string | null;
+  subscriberName?: string | null;
+  phoneNumber?: string | null;
 
   taskDescription: string | null;
 
-  isPermittedToChangeDeadline: boolean;
+  taskReasonSearch: string | null;
+  taskReasonOrderNumber: number | null;
+  taskDeadlineDate?: dayjs.Dayjs | null;
+  taskDeadlineTime?: dayjs.Dayjs | null;
+
+  isSourceNumberRequired: boolean;
+  isSubscriberRequired: boolean;
+  isManualDeadlineRequired: boolean;
 };
 
 export type AddTaskFormProps = {
   formId: string;
   ERPSources: ErpSourceResponse[];
-  leadExecutors: ErpExecutorResponse[];
-  workCategories: ErpWorkCategoryResponse[];
-  ErpObjects: ErpObjectResponse[];
+  preparedForOptionsAddresses: PreparedAddress[];
   handleCreateTask: (payload: AddTask) => void;
   setDisableSubmit: React.Dispatch<React.SetStateAction<boolean>>;
-  choоseLeadExecutor: (payload: string) => void;
-  executors: ErpExecutorResponse[];
-  handleTaskDeadlineRequest: (payload: GetTaskDeadlineRequest) => void;
-  taskDeadline: ErpTaskDeadlineResponse | null;
+  handleSelectHousingAddress: (payload: string) => void;
+  existingApartmentNumbers: ExistingApartmentNumberType[];
+  resourceDisconnection: ResourceDisconnectingResponse[];
+  handleSelectApartmentNumber: (payload: string) => void;
+  apartmentHomeownerNames: HomeownerNameOption[];
+  taskReasons: ErpTaskReasonGroupResponse[];
+  handleSelectTaskReason: (payload: string) => void;
+  handleSelectTaskType: (payload: EisTaskType) => void;
+  isManualDeadlineRequired: boolean;
+  selectedTaskReasonOption: ErpTaskReasonItemResponse[];
+  handleChangeSubscriberName: (payload: string | null) => void;
+  handleChangePhoneNumber: (payload: string | null) => void;
+  isSavePhoneNumberOpen: boolean;
+  handleReplacePhoneNumber: () => void;
+  handleClosePhoneNumber: () => void;
+  onSuccessSavePhone: Event<void>;
+};
+
+export type AddressOption = {
+  value: string;
+  key: string;
 };

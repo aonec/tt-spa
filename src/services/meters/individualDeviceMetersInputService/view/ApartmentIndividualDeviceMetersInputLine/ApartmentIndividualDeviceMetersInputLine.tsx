@@ -1,4 +1,3 @@
-import { Tooltip } from 'antd';
 import React, { FC, useMemo } from 'react';
 import { HistoryIcon } from 'ui-kit/icons';
 import { ResourceIconLookup } from 'ui-kit/shared/ResourceIconLookup';
@@ -13,7 +12,6 @@ import {
 } from './ApartmentIndividualDeviceMetersInputLine.styled';
 import { ApartmentIndividualDeviceMetersInputLineProps } from './ApartmentIndividualDeviceMetersInputLine.types';
 import { getReadingValuesArray } from './ApartmentIndividualDeviceMetersInputLine.utils';
-import { ContextMenuButton } from 'ui-kit/ContextMenuButton/ContextMenuButton';
 
 export const ApartmentIndividualDeviceMetersInputLine: FC<
   ApartmentIndividualDeviceMetersInputLineProps
@@ -27,6 +25,7 @@ export const ApartmentIndividualDeviceMetersInputLine: FC<
   handleUploadReading,
   uploadingMetersStatuses,
   previousReadingByCurrentSliderIndex,
+  style,
 }) => {
   const isDeviceClosed = Boolean(device.closingDate);
 
@@ -59,20 +58,21 @@ export const ApartmentIndividualDeviceMetersInputLine: FC<
   }, [previousReading, currentReading, rateNum]);
 
   return (
-    <Wrapper>
+    <Wrapper style={style}>
       <div>{device.apartmentNumber}</div>
       <DeviceInfoWrapper>
         <div className="device-icon">
           <ResourceIconLookup resource={device.resource} />
         </div>
-        <Tooltip title={`${device.serialNumber} (${device.model})`}>
-          <div className="device-info-text">
-            <strong>{device.serialNumber}</strong>
-            <div>{device.model}</div>
-          </div>
-        </Tooltip>
+        {/* <Tooltip title={`${device.serialNumber} (${device.model})`}> */}
+        <div className="device-info-text">
+          <strong>{device.serialNumber}</strong>
+          <div>{device.model}</div>
+        </div>
+        {/* </Tooltip> */}
       </DeviceInfoWrapper>
       <MetersInputsBlock
+        focusOnFirst={false}
         handleUploadReading={handleUploadReading}
         reading={previousReading}
         rateType={device.rateType}
@@ -84,6 +84,7 @@ export const ApartmentIndividualDeviceMetersInputLine: FC<
         tooltip={(!previousReading && previousReadingTooltipTitle) || ''}
       />
       <MetersInputsBlock
+        focusOnFirst={false}
         handleUploadReading={handleUploadReading}
         reading={currentReading}
         rateType={device.rateType}
@@ -106,13 +107,13 @@ export const ApartmentIndividualDeviceMetersInputLine: FC<
           </div>
         )) || '-'}
       </ConsumptionWrapper>
-      <Tooltip title="История показаний" className="device-option">
-        <HistoryIcon
-          onClick={openReadingsHistoryModal}
-          style={{ cursor: 'pointer' }}
-        />
-      </Tooltip>
-      <ContextMenuButton size="small" />
+      {/* <Tooltip title="История показаний" className="device-option"> */}
+      <HistoryIcon
+        onClick={openReadingsHistoryModal}
+        style={{ cursor: 'pointer' }}
+      />
+      {/* </Tooltip> */}
+      {/* <ContextMenuButton size="small" /> */}
     </Wrapper>
   );
 };

@@ -1,4 +1,4 @@
-import moment from 'moment';
+import dayjs from 'api/dayjs';
 import { IndividualDeviceMountPlaceListResponse } from 'api/types';
 
 export const getMountPlaceById = (
@@ -13,7 +13,7 @@ export const getMountPlaceById = (
 export const getDate = (dateString: string | null) => {
   if (!dateString) return null;
 
-  const date = moment(dateString);
+  const date = dayjs(dateString);
 
   if (!date.isValid) return null;
 

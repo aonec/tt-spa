@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import moment from 'moment';
+import dayjs from 'api/dayjs';
 import { ResourceIconLookup } from 'ui-kit/shared/ResourceIconLookup';
 import { DeviceStatus } from 'ui-kit/shared/IndividualDeviceInfo/DeviceStatus';
 import { IndividualDeviceInfoExtendedProps } from './IndividualDeviceInfoExtended.types';
@@ -12,11 +12,12 @@ import {
   MountPlace,
   SerialNumberWrapper,
   LinkWrapper,
+  SealWrapper,
 } from './IndividualDeviceInfoExtended.styled';
 import { prepareDateForDateLine } from './IndividualDeviceInfoExtended.utils';
-import { Tooltip } from 'antd';
+import { Tooltip } from 'ui-kit/shared/Tooltip';
 import { individualDeviceMountPlacesService } from 'services/devices/individualDeviceMountPlacesService/individualDeviceMountPlacesService.model';
-import { useStore } from 'effector-react';
+import { useUnit } from 'effector-react';
 
 const { AllIndividualDeviceMountPlacesGate } =
   individualDeviceMountPlacesService.gates;
@@ -26,9 +27,11 @@ export const IndividualDeviceInfoExtended: FC<
 > = ({ device, onClick }) => {
   const isActive = device.closingDate === null;
 
-  const allIndividualDeviceMountPlaces = useStore(
-    individualDeviceMountPlacesService.outputs.$allIndividualDeviceMountPlaces,
-  );
+  const { allIndividualDeviceMountPlaces } = useUnit({
+    allIndividualDeviceMountPlaces:
+      individualDeviceMountPlacesService.outputs
+        .$allIndividualDeviceMountPlaces,
+  });
 
   const preparedLastCheckingDate = prepareDateForDateLine(
     device.lastCheckingDate,
@@ -75,11 +78,20 @@ export const IndividualDeviceInfoExtended: FC<
           {preparedFutureCheckingDate}
         </DateLineWrapper>
       </ApartmentInfo>
-      {device.closingDate && (
-        <ClosingDate>
-          {moment(device.closingDate).format('DD.MM.YYYY')}
-        </ClosingDate>
-      )}
+      <div>
+        {device.closingDate && (
+          <ClosingDate>
+            {dayjs(device.closingDate).format('DD.MM.YYYY')}
+          </ClosingDate>
+        )}
+        {device.sealNumber && (
+          <SealWrapper>
+            Пломба {device.sealNumber}{' '}
+            {device.sealInstallationDate &&
+              dayjs(device.sealInstallationDate).format('DD.MM.YYYY')}
+          </SealWrapper>
+        )}
+      </div>
     </Wrapper>
   );
 };

@@ -1,17 +1,16 @@
-import { createDomain, forward } from 'effector';
+import { createEffect, createEvent, createStore } from 'effector';
+import { sample } from 'effector';
 import { EffectFailDataAxiosError } from 'types';
 import { closeDevice } from './closeHousingMeteringDeviceService.api';
 import { CloseDeviceRequest } from 'api/types';
 import { message } from 'antd';
 
-const domain = createDomain('closeHousingMeteringDeviceService');
+const handleOpenModal = createEvent();
+const handleCloseModal = createEvent();
 
-const handleOpenModal = domain.createEvent();
-const handleCloseModal = domain.createEvent();
+const handleOnSubmit = createEvent<CloseDeviceRequest>();
 
-const handleOnSubmit = domain.createEvent<CloseDeviceRequest>();
-
-const closeHousingMeteringDeviceFx = domain.createEffect<
+const closeHousingMeteringDeviceFx = createEffect<
   CloseDeviceRequest,
   void,
   EffectFailDataAxiosError
@@ -30,13 +29,12 @@ closeHousingMeteringDeviceFx.failData.watch((error) => {
 
 const onSuccessClose = closeHousingMeteringDeviceFx.doneData;
 
-forward({
-  from: handleOnSubmit,
-  to: closeHousingMeteringDeviceFx,
+sample({
+  clock: handleOnSubmit,
+  target: closeHousingMeteringDeviceFx,
 });
 
-const $isModalOpen = domain
-  .createStore<boolean>(false)
+const $isModalOpen = createStore<boolean>(false)
   .on(handleOpenModal, () => true)
   .on(handleCloseModal, () => false);
 

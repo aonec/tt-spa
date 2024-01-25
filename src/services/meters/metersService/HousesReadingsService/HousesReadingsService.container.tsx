@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useUnit } from 'effector-react';
-import { useHistory, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { HousesReadingsPage } from './view/HousesReadingsPage';
 import { housesReadingsService } from './HousesReadingsService.model';
 import { ReadingsHistoryContainer } from 'services/meters/readingsHistoryService/readingsHistoryService.container';
@@ -13,7 +13,7 @@ const { HousingStockGate, InspectorGate } = gates;
 
 export const HousesReadingsContainer = () => {
   const { id } = useParams<{ id?: string }>();
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const housingStockId = Number(id) || null;
   const {
@@ -29,6 +29,7 @@ export const HousesReadingsContainer = () => {
     loadConsumptionRates,
     loadNextPageOfIndividualDevicesList,
     openReadingsHistoryModal,
+    totalItems,
   } = useUnit({
     housingStock: outputs.$housingStock,
     isHousingStockFetched: getHousingStockQuery.$succeeded,
@@ -43,6 +44,7 @@ export const HousesReadingsContainer = () => {
       inputs.loadNextPageOfIndividualDevicesList,
     loadConsumptionRates: inputs.loadManagemenFirmConsumptionRates,
     openReadingsHistoryModal: inputs.openReadingsHistoryModal,
+    totalItems: outputs.$totalItems,
   });
 
   const { managementFirmConsumptionRates } = useManagingFirmConsumptionRates(
@@ -52,30 +54,12 @@ export const HousesReadingsContainer = () => {
   );
 
   useEffect(() => {
-    const onScrollDown = () => {
-      if (isLoadingIndividualDevices) return;
-
-      const scrollHeight = document.body.scrollHeight - window.screen.height;
-
-      if (window.scrollY > scrollHeight - 200) {
-        loadNextPageOfIndividualDevicesList();
-      }
-    };
-
-    window.addEventListener('scroll', onScrollDown, true);
-
-    return () => {
-      window.removeEventListener('scroll', onScrollDown, true);
-    };
-  }, [loadNextPageOfIndividualDevicesList, isLoadingIndividualDevices]);
-
-  useEffect(() => {
     return inputs.handleHousingStockLoaded.watch(({ result: housingStock }) => {
       if (!housingStock || Number(id) === housingStock?.id) return;
 
-      history.push(`/meters/houses/${housingStock.id}`);
+      navigate(`/meters/houses/${housingStock.id}`);
     }).unsubscribe;
-  }, [history, id]);
+  }, [navigate, id]);
 
   return (
     <>
@@ -99,6 +83,7 @@ export const HousesReadingsContainer = () => {
         openReadingsHistoryModal={openReadingsHistoryModal}
         isAllDevicesLoaded={isAllDevicesLoaded}
         isHousingStockFetched={isHousingStockFetched}
+        totalItems={totalItems}
       />
     </>
   );

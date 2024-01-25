@@ -1,8 +1,8 @@
 import React from 'react';
-import { ComponentMeta } from '@storybook/react';
+import { Meta } from '@storybook/react';
 import { Loader } from './Loader';
 
-const meta: ComponentMeta<typeof Loader> = {
+const meta: Meta<typeof Loader> = {
   title: 'Loader',
   component: Loader,
   parameters: { layout: 'centered' },

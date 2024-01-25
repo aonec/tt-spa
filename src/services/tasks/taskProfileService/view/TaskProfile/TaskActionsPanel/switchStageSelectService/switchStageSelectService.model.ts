@@ -1,4 +1,5 @@
-import { createDomain, forward } from 'effector';
+import { createEffect, createStore } from 'effector';
+import { sample } from 'effector';
 import { createGate } from 'effector-react';
 import {
   StageListResponse,
@@ -6,23 +7,20 @@ import {
 } from 'api/types';
 import { getNextStages } from './switchStageSelectService.api';
 
-const domain = createDomain('switchStageSelectService');
-
-const fetchNextStagesFx = domain.createEffect<
+const fetchNextStagesFx = createEffect<
   number,
   StageListResponseWrappedListResponse
 >(getNextStages);
 
 const NextStagesGate = createGate<{ taskId: number }>();
 
-const $nextStages = domain
-  .createStore<StageListResponse[] | null>(null)
+const $nextStages = createStore<StageListResponse[] | null>(null)
   .on(fetchNextStagesFx.doneData, (_, { items }) => items)
   .reset(NextStagesGate.close);
 
-forward({
-  from: NextStagesGate.open.map(({ taskId }) => taskId),
-  to: fetchNextStagesFx,
+sample({
+  clock: NextStagesGate.open.map(({ taskId }) => taskId),
+  target: fetchNextStagesFx,
 });
 
 export const switchStageSelectService = {

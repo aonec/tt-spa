@@ -1,4 +1,4 @@
-import moment from 'moment';
+import dayjs from 'api/dayjs';
 import React, { RefObject, useEffect, useState } from 'react';
 import styled from 'styled-components';
 
@@ -35,17 +35,21 @@ export const DatePickerNative: React.FC<Props> = React.forwardRef(
     },
     ref,
   ) => {
-    const [innerValue, setInnerValue] = useState<any>();
-    const value = moment(incomingValue).toISOString(true);
-    const currentValueToMoment = moment(innerValue);
-    const isCurrentValueValid = currentValueToMoment.isValid();
+    const [innerValue, setInnerValue] = useState<string | null>(null);
+    const value = dayjs(incomingValue).format();
+    const currentValueTodayjs = innerValue ? dayjs(innerValue) : null;
+    const isCurrentValueValid = currentValueTodayjs
+      ? currentValueTodayjs.isValid()
+      : false;
 
     const setInitialInnerValue = () => {
-      setInnerValue(value ? moment(value).format('YYYY-MM-DD') : undefined);
+      setInnerValue(value ? dayjs(value).format('YYYY-MM-DD') : null);
     };
 
     function onChangeGlobal() {
-      if (innerValue) onChange && onChange(currentValueToMoment.toISOString());
+      if (innerValue && currentValueTodayjs && isCurrentValueValid) {
+        onChange && onChange(currentValueTodayjs.toISOString());
+      }
 
       if (isCurrentValueValid) setInitialInnerValue();
     }

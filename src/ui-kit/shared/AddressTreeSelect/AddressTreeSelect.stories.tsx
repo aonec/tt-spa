@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
-import { ComponentMeta } from '@storybook/react';
+import { Meta } from '@storybook/react';
 import { AddressTreeSelect } from '.';
 import {
   prepareAddressesForTreeSelect,
   prepareAddressesWithParentsForTreeSelect,
 } from './AddressTreeSelect.utils';
-import { TreeData } from './AddressTreeSelect.constants.stories';
-import { Wrapper } from './AddressTreeSelect.styled.stories';
+import { TreeData } from './AddressTreeSelect.stories.constants';
+import { Wrapper } from './AddressTreeSelect.stories.styled';
 import { FormItem } from 'ui-kit/FormItem';
 import { StreetWithBuildingNumbersResponse } from 'api/types';
 
@@ -14,7 +14,7 @@ export default {
   title: 'AddressTreeSelect',
   component: AddressTreeSelect,
   parameters: { layout: 'centered' },
-} as ComponentMeta<typeof AddressTreeSelect>;
+} as Meta<typeof AddressTreeSelect>;
 
 export const Form = () => {
   const [selectedIds, setSelectedIds] = useState<number[]>([]);
@@ -26,6 +26,7 @@ export const Form = () => {
           onChange={(ids) => setSelectedIds(ids)}
           treeData={prepareAddressesForTreeSelect({
             items: TreeData[0].streets as StreetWithBuildingNumbersResponse[],
+            isTreeCheckable: true,
           })}
         />
       </FormItem>

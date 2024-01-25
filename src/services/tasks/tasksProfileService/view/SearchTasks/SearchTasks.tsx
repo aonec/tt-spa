@@ -12,13 +12,13 @@ import { EManagingFirmTaskFilterType, TaskGroupingFilter } from 'api/types';
 import { ExtendedSearch } from 'ui-kit/ExtendedSearch';
 import { fromEnter } from 'ui-kit/shared/DatePickerNative';
 import { ArchiveTasksExtendedSearchForm } from './ArchiveTasksExtendedSearchForm';
-import { ToExecutionTasksExtendedSearchForm } from './ToExecutionTasksExtendedSearchForm';
 import { Wrapper } from './SearchTasks.styled';
 import { GetTasksListRequestPayload } from '../../tasksProfileService.types';
 import { SearchTasksProps } from './SearchTasks.types';
 import { Select } from 'ui-kit/Select';
 import { Input } from 'ui-kit/Input';
 import { addressSearchService } from 'services/addressSearchService/addressSearchService.models';
+import { ToExecutionTasksExtendedSearchForm } from './ToExecutionTasksExtendedSearchForm';
 
 const { ExistingCitiesGate, ExistingStreetsGate } = addressSearchService.gates;
 
@@ -73,6 +73,7 @@ export const SearchTasks: FC<SearchTasksProps> = ({
     },
     [setFieldValue],
   );
+
   const handleKeyDown = useMemo(
     () =>
       fromEnter((e) => {
@@ -82,17 +83,18 @@ export const SearchTasks: FC<SearchTasksProps> = ({
       }),
     [setFieldValue, handleSubmit],
   );
+
   const clearInput = useCallback(() => {
     setFieldValue('TaskId', '');
   }, [setFieldValue]);
 
   const { grouptype } = useParams<{ grouptype: TaskGroupingFilter }>();
 
-  const clearAllFilters = () => {
+  const clearAllFilters = useCallback(() => {
     clearFilters();
     resetForm();
-    changeFiltersByGroupType(grouptype);
-  };
+    grouptype && changeFiltersByGroupType(grouptype);
+  }, [clearFilters, resetForm, changeFiltersByGroupType, grouptype]);
 
   useEffect(() => {
     if (lastGroupTypeRef.current === currentFilter?.GroupType) {
@@ -109,6 +111,7 @@ export const SearchTasks: FC<SearchTasksProps> = ({
   }, [currentFilter?.GroupType, lastGroupTypeRef, clearInput]);
 
   const isArchived = currentFilter?.GroupType === 'Archived';
+
   return (
     <ExtendedSearch
       isOpen={isExtendedSearchOpen}
@@ -151,8 +154,9 @@ export const SearchTasks: FC<SearchTasksProps> = ({
         />
         <Select
           small
+          data-test="task-type-selector"
           placeholder="Тип задачи"
-          value={values.TaskType!}
+          value={values.TaskType || undefined}
           onChange={(value) => {
             setFieldValue('TaskType', value as EManagingFirmTaskFilterType);
             handleSubmit();
@@ -160,7 +164,7 @@ export const SearchTasks: FC<SearchTasksProps> = ({
         >
           {taskTypes &&
             taskTypes.map(({ value, key }) => (
-              <Select.Option key={key!} value={key!}>
+              <Select.Option key={key!} value={key || undefined}>
                 {value}
               </Select.Option>
             ))}

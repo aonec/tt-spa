@@ -1,6 +1,6 @@
-import React, { FC, useCallback, useEffect, useMemo, useState } from 'react';
-import { useEvent, useStore } from 'effector-react';
-import { Tooltip } from 'antd';
+import React, { FC, useEffect, useMemo, useState } from 'react';
+import { useUnit } from 'effector-react';
+import { Tooltip } from 'ui-kit/shared/Tooltip';
 import {
   AccountOpeningDate,
   AdditionalHeaderInfoWrapper,
@@ -29,11 +29,12 @@ import { ApartmentInfoProps } from './ApartmentInfo.types';
 import { ContextMenuButton } from 'ui-kit/ContextMenuButton/ContextMenuButton';
 import { getApartmentAddressString } from 'utils/getApartmentAddress';
 import { BriefcaseIcon, CrownIcon, HouseIcon, InfoIcon } from 'ui-kit/icons';
-import moment from 'moment';
+import dayjs from 'api/dayjs';
 import { apartmentInfoService } from './ApartmentInfo.model';
 import { PrintApartmentDevicesCertificateContainer } from 'services/apartments/printApartmentDevicesCertificateService';
 import { EditHomeownerField } from './EditHomeownerField';
 import { CommentField } from './CommentField';
+import { PhoneNumberField } from './PhoneNumberField';
 
 const { inputs, outputs } = apartmentInfoService;
 
@@ -45,6 +46,9 @@ export const ApartmentInfo: FC<ApartmentInfoProps> = ({
   additionalHeaderInfo,
   isUpdateHomeownerLoading,
   handleUpdateHomeowner,
+  addPhoneNumber,
+  deletePhoneNumber,
+  replacePhoneNumber,
 }) => {
   const filteredHomeowners = apartment.homeownerAccounts
     ?.filter((homeowner) => !homeowner.closedAt)
@@ -60,9 +64,10 @@ export const ApartmentInfo: FC<ApartmentInfoProps> = ({
 
   const [activeHomeowner, setActiveHomeowner] = useState(initialHomeownerId);
 
-  const togglePanel = useEvent(inputs.togglePanel);
-
-  const isPanelOpen = useStore(outputs.$isPanelOpen);
+  const { isPanelOpen, togglePanel } = useUnit({
+    togglePanel: inputs.togglePanel,
+    isPanelOpen: outputs.$isPanelOpen,
+  });
 
   const addressString = getApartmentAddressString(apartment);
 
@@ -73,13 +78,14 @@ export const ApartmentInfo: FC<ApartmentInfoProps> = ({
   );
 
   useEffect(() => {
-    selectedHomeowner?.name &&
-      setSelectedHomeownerName(selectedHomeowner?.name);
+    setSelectedHomeownerName(selectedHomeowner?.name || null);
   }, [selectedHomeowner, setSelectedHomeownerName]);
 
   const houseManagement = housingStock?.houseManagement;
 
-  const houseManagementName = `Домоуправление «${houseManagement?.name}»`;
+  const houseManagementName = houseManagement?.name
+    ? `Домоуправление «${houseManagement?.name}»`
+    : '';
 
   const houseManagementInfo = useMemo(() => {
     const phoneNumber = houseManagement?.phone
@@ -92,19 +98,55 @@ export const ApartmentInfo: FC<ApartmentInfoProps> = ({
     return `${phoneNumber} ${information}`;
   }, [houseManagement]);
 
-  const accountingOpeningDate = `открыт с ${moment(
+  const accountingOpeningDate = ` открыт с ${dayjs(
     selectedHomeowner?.openAt,
   ).format('DD.MM.YYYY')}`;
 
-  const updateHomeowner = useCallback(
-    (value: string, fieldName: string) =>
-      activeHomeowner &&
-      handleUpdateHomeowner?.({
+  const updateHomeowner = useMemo(() => {
+    if (!activeHomeowner || !handleUpdateHomeowner) {
+      return;
+    }
+    return (value: string, fieldName: string) =>
+      handleUpdateHomeowner({
         id: activeHomeowner,
         data: { [fieldName]: value },
-      }),
-    [activeHomeowner, handleUpdateHomeowner],
-  );
+      });
+  }, [activeHomeowner, handleUpdateHomeowner]);
+
+  const handleRemovePhoneNumber = useMemo(() => {
+    if (!activeHomeowner || !deletePhoneNumber) {
+      return;
+    }
+    return (phoneNumber: string) =>
+      deletePhoneNumber({ id: activeHomeowner, phoneNumber });
+  }, [deletePhoneNumber, activeHomeowner]);
+
+  const handleAddPhoneNumber = useMemo(() => {
+    if (!activeHomeowner || !addPhoneNumber) {
+      return;
+    }
+    return (phoneNumber: string) =>
+      addPhoneNumber({ id: activeHomeowner, phoneNumber });
+  }, [addPhoneNumber, activeHomeowner]);
+
+  const handleReplacePhoneNumber = useMemo(() => {
+    if (!activeHomeowner || !replacePhoneNumber) {
+      return;
+    }
+
+    return ({
+      phoneNumber,
+      oldPhoneNumber,
+    }: {
+      phoneNumber: string;
+      oldPhoneNumber: string;
+    }) =>
+      replacePhoneNumber({
+        id: activeHomeowner,
+        newPhoneNumber: phoneNumber,
+        oldPhoneNumber,
+      });
+  }, [activeHomeowner, replacePhoneNumber]);
 
   return (
     <>
@@ -176,7 +218,9 @@ export const ApartmentInfo: FC<ApartmentInfoProps> = ({
               <EditHomeownerField
                 title="Собственник"
                 value={selectedHomeowner?.name || null}
-                handleUpdate={(value) => updateHomeowner(value, 'name')}
+                handleUpdate={
+                  updateHomeowner && ((value) => updateHomeowner(value, 'name'))
+                }
                 isUpdateHomeownerLoading={isUpdateHomeownerLoading}
               />
               <div>
@@ -198,9 +242,9 @@ export const ApartmentInfo: FC<ApartmentInfoProps> = ({
 
                           <SubText>
                             Дата изменения:{' '}
-                            {moment(selectedHomeowner?.editedAt).format(
-                              'DD.MM.YYYY',
-                            )}
+                            {dayjs(
+                              selectedHomeowner?.editedAt || undefined,
+                            ).format('DD.MM.YYYY')}
                           </SubText>
                         </div>
                       }
@@ -220,11 +264,11 @@ export const ApartmentInfo: FC<ApartmentInfoProps> = ({
                 <InfoPanelLabel>Платежный код</InfoPanelLabel>
                 <ExtraInfoText>{selectedHomeowner?.paymentCode}</ExtraInfoText>
               </div>
-              <EditHomeownerField
-                title="Телефон"
-                value={selectedHomeowner?.phoneNumber || null}
-                handleUpdate={(value) => updateHomeowner(value, 'phoneNumber')}
-                isUpdateHomeownerLoading={isUpdateHomeownerLoading}
+              <PhoneNumberField
+                phoneNumbers={selectedHomeowner?.phoneNumbers || []}
+                addPhoneNumber={handleAddPhoneNumber}
+                deletePhoneNumber={handleRemovePhoneNumber}
+                replacePhoneNumber={handleReplacePhoneNumber}
               />
             </ExtraInfoWrapper>
           )}

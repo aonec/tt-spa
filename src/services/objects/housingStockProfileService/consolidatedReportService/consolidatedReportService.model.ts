@@ -1,25 +1,24 @@
-import { createDomain, forward } from 'effector';
+import { createEffect, createEvent, createStore } from 'effector';
+import { sample } from 'effector';
 import { message } from 'antd';
 import { EffectFailDataAxiosError } from 'types';
 import { GetConsolidatedReport } from './consolidatedReportService.types';
 import { getConsolidatedReport } from './consolidatedReportService.api';
 
-const domain = createDomain('consolidatedReportService');
+const openConsolidatedReportModal = createEvent();
+const closeConsolidatedReportModal = createEvent();
 
-const openConsolidatedReportModal = domain.createEvent();
-const closeConsolidatedReportModal = domain.createEvent();
+const handleSubmit = createEvent<GetConsolidatedReport>();
 
-const handleSubmit = domain.createEvent<GetConsolidatedReport>();
-
-const downloadConsolidatedReportFx = domain.createEffect<
+const downloadConsolidatedReportFx = createEffect<
   GetConsolidatedReport,
   void,
   EffectFailDataAxiosError
 >(getConsolidatedReport);
 
-forward({
-  from: handleSubmit,
-  to: downloadConsolidatedReportFx,
+sample({
+  clock: handleSubmit,
+  target: downloadConsolidatedReportFx,
 });
 
 downloadConsolidatedReportFx.failData.watch((error) => {
@@ -28,8 +27,7 @@ downloadConsolidatedReportFx.failData.watch((error) => {
   );
 });
 
-const $isModalOpen = domain
-  .createStore(false)
+const $isModalOpen = createStore(false)
   .on(openConsolidatedReportModal, () => true)
   .reset(closeConsolidatedReportModal, downloadConsolidatedReportFx.doneData);
 

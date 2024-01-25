@@ -10,6 +10,7 @@ export type TableColumn<T> = {
   render: (element: T, rowIndex: number) => ReactNode;
   hidden?: boolean;
   css?: (isHeader: boolean) => string;
+  sortedParam?: (first: T) => number | null;
 };
 
 export type TableProps<T> = {
@@ -18,5 +19,7 @@ export type TableProps<T> = {
   pagination?: Pagination;
   rowStyles?: string;
   headerStyles?: string;
-  onClick?: (elem: T) => void;
+  link?: (elem: T) => string;
+  isSticky?: boolean;
+  floating?: boolean;
 };

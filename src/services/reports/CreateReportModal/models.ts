@@ -1,29 +1,26 @@
+import { createEffect, createEvent, createStore } from 'effector';
 import axios from 'axios';
-import moment from 'moment';
+import dayjs from 'api/dayjs';
 import { message } from 'antd';
 import queryString from 'query-string';
-import { combine, createDomain, forward, sample } from 'effector';
+import { combine, sample } from 'effector';
 import { EClosingReason, EResourceType } from 'api/types';
 import { createForm } from 'effector-forms';
 import { reportsInputs } from '../models';
 import { getReportTypeTitleName, RangePeriod, ReportType } from './types';
 import { downloadURI } from './utils';
-import {
-  UnloadTypeFieldsDictionary,
-  ZippedReports,
-} from './CreateReport.constants';
+import { UnloadTypeFieldsDictionary } from './CreateReport.constants';
 import { reportsListService } from '../reportsListService';
 import { EffectFailDataAxiosError } from '../../../types/index';
 import { closedIndividualDevicesFormService } from './ReportFormInputs/closedIndividualDevicesFormService';
 
-const createReportDomain = createDomain('CreateReport');
+const openModalButtonClicked = createEvent();
+const closeModalButonClicked = createEvent();
 
-const openModalButtonClicked = createReportDomain.createEvent();
-const closeModalButonClicked = createReportDomain.createEvent();
-
-const $isModalOpen = createReportDomain
-  .createStore(false)
-  .on(reportsListService.inputs.openExistedReport, () => true);
+const $isModalOpen = createStore(false).on(
+  reportsListService.inputs.openExistedReport,
+  () => true,
+);
 
 export const form = createForm({
   fields: {
@@ -37,7 +34,7 @@ export const form = createForm({
       ],
     },
     period: {
-      init: null as moment.Moment | null,
+      init: null as dayjs.Dayjs | null,
     },
     rangePeriod: {
       init: [null, null] as RangePeriod,
@@ -55,7 +52,7 @@ export const form = createForm({
       init: null as string | null,
     },
     housingStockId: {
-      init: null as number | null,
+      init: null as string | null,
     },
     isWithoutApartments: {
       init: false,
@@ -73,10 +70,10 @@ sample({
       resources: values.resources
         ? (JSON.parse(values.resources) as EResourceType[])
         : [],
-      period: values.to ? moment(values.to) : null,
+      period: values.to ? dayjs(values.to) : null,
       rangePeriod: [
-        values.from ? moment(values.from) : null,
-        values.to ? moment(values.to) : null,
+        values.from ? dayjs(values.from) : null,
+        values.to ? dayjs(values.to) : null,
       ] as RangePeriod,
       isWithoutApartments:
         values.withoutApartmentsWithOpenDevicesByResources === 'True',
@@ -91,7 +88,7 @@ sample({
       houseManagementId:
         values.houseManagementId !== 'null' ? values.houseManagementId : null,
       housingStockId:
-        values.housingStockId !== 'null' ? Number(values.housingStockId) : null,
+        values.housingStockId !== 'null' ? values.housingStockId : null,
     };
 
     return formValues;
@@ -99,7 +96,7 @@ sample({
   target: form.setForm,
 });
 
-const createReportFx = createReportDomain.createEffect<
+const createReportFx = createEffect<
   {
     type: ReportType;
     date: {
@@ -128,8 +125,8 @@ const createReportFx = createReportDomain.createEffect<
   }) => {
     const res: string = await axios.get(`Reports/${type}Xlsx`, {
       params: {
-        From: date.From && moment(date.From).format('YYYY-MM-DD'),
-        To: date.To && moment(date.To).format('YYYY-MM-DD'),
+        From: date.From && dayjs(date.From).format('YYYY-MM-DD'),
+        To: date.To && dayjs(date.To).format('YYYY-MM-DD'),
         Resources: resources,
         ClosingReasons: closingReasons,
         HousingStockId: housingStockId,
@@ -147,31 +144,30 @@ const createReportFx = createReportDomain.createEffect<
 
     downloadURI(
       url,
-      `${getReportTypeTitleName(form.$values.getState().type!)}_${moment(
+      `${getReportTypeTitleName(form.$values.getState().type!)}_${dayjs(
         date.To,
       ).format('MMMM_YYYY')}`,
-      ZippedReports.includes(type),
     );
   },
 );
 
-forward({
-  from: createReportFx.doneData,
-  to: form.reset,
+sample({
+  clock: createReportFx.doneData,
+  target: form.reset,
 });
 
 $isModalOpen.reset(createReportFx.doneData);
 
-const createReport = createReportDomain.createEvent();
+const createReport = createEvent();
 
-forward({
-  from: createReportFx.doneData,
-  to: reportsListService.inputs.refetchReportsHistory,
+sample({
+  clock: createReportFx.doneData,
+  target: reportsListService.inputs.refetchReportsHistory,
 });
 
-forward({
-  from: form.formValidated,
-  to: createReport,
+sample({
+  clock: form.formValidated,
+  target: createReport,
 });
 
 const workingReports = [
@@ -181,11 +177,11 @@ const workingReports = [
 ];
 
 sample({
+  clock: createReport,
   source: combine(
     form.$values,
     closedIndividualDevicesFormService.outputs.$unloadSelectType,
   ),
-  clock: createReport,
   fn: ([
     {
       type,
@@ -208,8 +204,8 @@ sample({
     const key = unloadType && UnloadTypeFieldsDictionary[unloadType];
 
     if (workingReports.includes(type!)) {
-      const startOfPeriod = moment(period).startOf('month').toISOString();
-      const endOfPeriod = moment(period).endOf('month').toISOString();
+      const startOfPeriod = dayjs(period).startOf('month').toISOString();
+      const endOfPeriod = dayjs(period).endOf('month').toISOString();
       return { type: type!, date: { From: startOfPeriod, To: endOfPeriod } };
     }
 
@@ -232,9 +228,9 @@ $isModalOpen
   .on(openModalButtonClicked, () => true)
   .reset(closeModalButonClicked);
 
-forward({
-  from: reportsInputs.createReportButtonClicked,
-  to: openModalButtonClicked,
+sample({
+  clock: reportsInputs.createReportButtonClicked,
+  target: openModalButtonClicked,
 });
 
 createReportFx.failData.watch((error) => {

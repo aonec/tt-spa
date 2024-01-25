@@ -14,7 +14,7 @@ import { PageHeader } from 'ui-kit/shared/PageHeader';
 import { DatePicker } from 'ui-kit/DatePicker';
 import { useForm } from 'effector-forms';
 import { Table } from 'ui-kit/Table';
-import moment from 'moment';
+import dayjs from 'api/dayjs';
 import { DocumentLargeIcon, DownloadBlueIcon } from 'ui-kit/icons';
 import { ControllerResponse } from 'api/types';
 import { WithLoader } from 'ui-kit/shared/WithLoader';
@@ -35,10 +35,9 @@ export const AppointmentsJournalPage: FC<Props> = ({
   }, [controllersList]);
 
   const handleDownloadFile = useCallback(
-    (controllerId: string, date: string) => () => {
+    (assignmentId: string) => () => {
       downloadWorkFile({
-        controllerId,
-        date: moment(date).format('YYYY-MM-DD'),
+        assignmentId,
       });
     },
     [downloadWorkFile],
@@ -53,7 +52,7 @@ export const AppointmentsJournalPage: FC<Props> = ({
       <SearchWrapper>
         <DatePicker
           value={fields.from.value || undefined}
-          onChange={(value) => fields.from.onChange(value || moment())}
+          onChange={(value) => fields.from.onChange(value || dayjs())}
           small
           format="DD.MM.YYYY"
           placeholder="От"
@@ -76,7 +75,7 @@ export const AppointmentsJournalPage: FC<Props> = ({
                   label: 'Дата заявки',
                   size: '140px',
                   render: (assignment) => (
-                    <b>{moment(assignment.date).format('DD.MM.YYYY')}</b>
+                    <b>{dayjs(assignment.date).format('DD.MM.YYYY')}</b>
                   ),
                 },
                 {
@@ -104,7 +103,7 @@ export const AppointmentsJournalPage: FC<Props> = ({
                   label: 'Дата формирования',
                   size: '140px',
                   render: (assignment) =>
-                    moment(assignment.createDateTimeUtc).format('DD.MM.YYYY'),
+                    dayjs(assignment.createDateTimeUtc).format('DD.MM.YYYY'),
                 },
                 {
                   label: 'ФИО оператора',
@@ -125,10 +124,7 @@ export const AppointmentsJournalPage: FC<Props> = ({
                   size: '180px',
                   render: (assignment) => (
                     <DownloadButtonWrapper
-                      onClick={handleDownloadFile(
-                        assignment.controllerId,
-                        assignment.date,
-                      )}
+                      onClick={handleDownloadFile(assignment.id)}
                     >
                       <DownloadBlueIcon />
                       <div>Скачать задание</div>

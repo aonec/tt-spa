@@ -1,10 +1,4 @@
-import {
-  createDomain,
-  createEffect,
-  createEvent,
-  forward,
-  sample,
-} from 'effector';
+import { createStore, createEffect, createEvent, sample } from 'effector';
 import { createGate } from 'effector-react';
 import { message } from 'antd';
 import { EffectFailDataAxiosError } from 'types';
@@ -16,8 +10,6 @@ import { SetApartmentStatusRequest } from './pauseApartmentService.types';
 import { apartmentService } from '../apartmentService';
 import { apartmentProblemDevicesService } from '../apartmentProblemDevicesService';
 import { setApartmentStatus } from './pauseApartmentService.api';
-
-const domain = createDomain('pauseApartmentService');
 
 const PauseApartmentGate = createGate<{ id: number }>();
 
@@ -31,32 +23,31 @@ const pauseApartmentStatusFx = createEffect<
   EffectFailDataAxiosError
 >(setApartmentStatus);
 
-const pauseApartment = domain.createEvent<SetApartmentStatusRequest>();
+const pauseApartment = createEvent<SetApartmentStatusRequest>();
 
-const $isPauseApartmentModalVisible = domain
-  .createStore(false)
+const $isPauseApartmentModalVisible = createStore(false)
   .on(pauseApartmentButtonClicked, () => true)
   .reset(
     pauseApartmentModalCancelButtonClicked,
     pauseApartmentStatusFx.doneData,
   );
 
-forward({
-  from: pauseApartmentStatusFx.done,
-  to: apartmentService.inputs.refetchApartment,
+sample({
+  clock: pauseApartmentStatusFx.done,
+  target: apartmentService.inputs.refetchApartment,
 });
 
-forward({
-  from: [
+sample({
+  clock: [
     pauseApartmentStatusFx.doneData,
     pauseApartmentModalCancelButtonClicked,
   ],
-  to: apartmentProblemDevicesService.inputs.handleResetProblemDevices,
+  target: apartmentProblemDevicesService.inputs.handleResetProblemDevices,
 });
 
-forward({
-  from: pauseApartment,
-  to: pauseApartmentStatusFx,
+sample({
+  clock: pauseApartment,
+  target: pauseApartmentStatusFx,
 });
 
 sample({

@@ -1,5 +1,29 @@
 import { useCallback, useEffect } from 'react';
 
+const handleFocus = (node: HTMLInputElement): void => {
+  const isInput = node?.tagName === 'INPUT';
+
+  if (!isInput) {
+    const inputList = node?.getElementsByTagName('input');
+    inputList?.item(0)?.focus();
+    return;
+  }
+  node?.focus();
+  return;
+};
+
+const handleBlur = (node: HTMLInputElement): void => {
+  const isInput = node?.tagName === 'INPUT';
+
+  if (!isInput) {
+    const inputList = node?.getElementsByTagName('input');
+    inputList?.item(0)?.blur();
+    return;
+  }
+  node?.blur();
+  return;
+};
+
 export const useSwitchInputOnEnter = (
   name: string,
   focusOnFirst: boolean,
@@ -40,28 +64,4 @@ export const useSwitchInputOnEnter = (
   }, [focusOnFirst, next]);
 
   return next;
-};
-
-const handleFocus = (node: HTMLInputElement): void => {
-  const isInput = node.tagName === 'INPUT';
-
-  if (!isInput) {
-    const inputList = node.getElementsByTagName('input');
-    inputList.item(0)?.focus();
-    return;
-  }
-  node.focus();
-  return;
-};
-
-const handleBlur = (node: HTMLInputElement): void => {
-  const isInput = node.tagName === 'INPUT';
-
-  if (!isInput) {
-    const inputList = node.getElementsByTagName('input');
-    inputList.item(0)?.blur();
-    return;
-  }
-  node.blur();
-  return;
 };

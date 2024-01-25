@@ -1,4 +1,4 @@
-import { createDomain, sample } from 'effector';
+import { createEvent, createStore, sample } from 'effector';
 import { getInspectorsHousingStocksQuery } from './displayInspectorsHousingStocksService.api';
 import { GetInspectorsHousingStocksRequestParams } from './types';
 import { searchInspectorsHousingStockService } from '../searchInspectorsHousingStocksService/searchInspectorsHousingStockService.models';
@@ -7,19 +7,23 @@ import { createGate } from 'effector-react';
 const { startSearchInspectorsHousingStocks } =
   searchInspectorsHousingStockService.inputs;
 
-const domain = createDomain('displayInspectorsHousingStocksService');
-
 const DisplayInspectorsGate = createGate();
 
 const $loading = getInspectorsHousingStocksQuery.$pending;
 
 const handleGetInspectorsHousingStocks =
-  domain.createEvent<GetInspectorsHousingStocksRequestParams>();
+  createEvent<GetInspectorsHousingStocksRequestParams>();
 
 const $inspectorsHousingStocksList = getInspectorsHousingStocksQuery.$data;
 
+const $searchInspectorsFilter =
+  createStore<GetInspectorsHousingStocksRequestParams>({}).on(
+    startSearchInspectorsHousingStocks,
+    (_, params) => params,
+  );
+
 sample({
-  clock: startSearchInspectorsHousingStocks,
+  clock: $searchInspectorsFilter,
   target: getInspectorsHousingStocksQuery.start,
 });
 
@@ -34,6 +38,7 @@ export const displayInspectorsHousingStocksService = {
   },
   outputs: {
     $inspectorsHousingStocksList,
+    $searchInspectorsFilter,
     $loading,
   },
   gates: { DisplayInspectorsGate },

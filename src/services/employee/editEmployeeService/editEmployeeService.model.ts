@@ -1,4 +1,5 @@
-import { createDomain, forward } from 'effector';
+import { createEffect, createEvent } from 'effector';
+import { sample } from 'effector';
 import { editEmployee } from './editEmployeeService.api';
 import {
   OrganizationUserResponse,
@@ -10,14 +11,12 @@ import { employeeProfileService } from 'services/employee/employeeProfileService
 import { message } from 'antd';
 import { EffectFailDataAxiosError } from 'types';
 
-const domain = createDomain('editEmployeeService');
-
-const handleSubmit = domain.createEvent<{
+const handleSubmit = createEvent<{
   userId: number;
   form: OrganizationUserUpdateRequest;
 }>();
 
-const updateEmployeeFx = domain.createEffect<
+const updateEmployeeFx = createEffect<
   {
     userId: number;
     form: OrganizationUserUpdateRequest;
@@ -26,7 +25,7 @@ const updateEmployeeFx = domain.createEffect<
   EffectFailDataAxiosError
 >(editEmployee);
 
-forward({ from: handleSubmit, to: updateEmployeeFx });
+sample({ clock: handleSubmit, target: updateEmployeeFx });
 
 const $pending = updateEmployeeFx.pending;
 

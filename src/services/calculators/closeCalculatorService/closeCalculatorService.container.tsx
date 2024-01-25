@@ -1,23 +1,25 @@
-import { useEvent, useStore } from 'effector-react';
+import { useUnit } from 'effector-react';
 import React, { useEffect } from 'react';
 import { FormModal } from 'ui-kit/Modals/FormModal';
 import { closeCalculatorService } from './closeCalculatorService.model';
 import { CloseCalculatorForm } from './view/CloseCalculatorForm';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 const { inputs, outputs } = closeCalculatorService;
 
 export const CloseCalculatorContainer = () => {
-  const isOpen = useStore(outputs.$isModalOpen);
-  const calculator = useStore(outputs.$calculatorInfo);
+  const { calculator, handleCloseCalculator, handleCloseModal, isOpen } =
+    useUnit({
+      isOpen: outputs.$isModalOpen,
+      calculator: outputs.$calculatorInfo,
+      handleCloseModal: inputs.closeModal,
+      handleCloseCalculator: inputs.closeCalculator,
+    });
 
-  const handleCloseModal = useEvent(inputs.closeModal);
-  const handleCloseCalculator = useEvent(inputs.closeCalculator);
-
-  const navigate = useHistory();
+  const navigate = useNavigate();
 
   useEffect(() => {
-    return inputs.successClose.watch(() => navigate.goBack()).unsubscribe;
+    return inputs.successClose.watch(() => navigate(-1)).unsubscribe;
   }, [navigate]);
 
   if (!calculator) {

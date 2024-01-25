@@ -1,13 +1,13 @@
-import { StreetWithBuildingNumbersResponse } from 'api/types';
 import {
-  CheckedHousingStocksIdWithStreets,
+  CheckedHousingStocksWithStreets,
   CheckedHousingStocksIdWithStreetsHandler,
+  StreetWithPreparedBuildingNumbers,
 } from '../../../districtBordersByAddressService.types';
 
 export type AddressStreetGroupProps = {
-  address: StreetWithBuildingNumbersResponse;
-  checkedhousingStockIdsWithStreet: CheckedHousingStocksIdWithStreets[];
-  setHousingStockIdsWithStreet: (
+  address: StreetWithPreparedBuildingNumbers;
+  checkedhousingStocksWithStreet: CheckedHousingStocksWithStreets[];
+  setHousingStocksWithStreet: (
     payload: CheckedHousingStocksIdWithStreetsHandler,
   ) => void;
 };
@@ -19,4 +19,5 @@ export type ModifiedAddressShortResponse = {
   housingStockNumber: string | null;
   housingStockCorpus: string | null;
   corpus: string | null;
-}[];
+  isDistributed: boolean;
+};

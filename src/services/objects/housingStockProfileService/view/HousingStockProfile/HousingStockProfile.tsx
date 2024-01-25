@@ -1,5 +1,5 @@
 import React, { FC, ReactNode, useMemo } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { ResourceAccountingSystemsContainer } from 'services/devices/resourceAccountingSystemsService';
 import { GoBack } from 'ui-kit/shared/GoBack';
 import { getBuildingAddress } from 'utils/getBuildingAddress';
@@ -16,11 +16,10 @@ import {
 import { HousingStockProfileProps } from './HousingStockProfile.types';
 import { LinkCard } from 'ui-kit/shared/LinkCard';
 import { stringifyUrl } from 'query-string';
-const { TabPane } = TabsSC;
 
 export const HousingStockProfile: FC<HousingStockProfileProps> = ({
   housingStock,
-  currentGrouptype,
+  currentGrouptype = HousingStockProfileGrouptype.Common,
   setCurrentGrouptype,
   openCommonReport,
   isPermitionToAddNode,
@@ -28,7 +27,7 @@ export const HousingStockProfile: FC<HousingStockProfileProps> = ({
   isPermissionToEditHousingStock,
   resourceDisconnections,
 }) => {
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const { address } = housingStock;
   const addressString = getBuildingAddress(housingStock);
@@ -51,6 +50,18 @@ export const HousingStockProfile: FC<HousingStockProfileProps> = ({
     [housingStock, resourceDisconnections],
   );
 
+  const tabItems = useMemo(
+    () => [
+      { label: 'Общая информация', key: HousingStockProfileGrouptype.Common },
+      { label: 'Квартиры', key: HousingStockProfileGrouptype.Apartments },
+      {
+        label: 'Системы учета ресурсов',
+        key: HousingStockProfileGrouptype.Devices,
+      },
+    ],
+    [],
+  );
+
   return (
     <div>
       <GoBack />
@@ -61,9 +72,7 @@ export const HousingStockProfile: FC<HousingStockProfileProps> = ({
             {
               title: 'Добавить узел',
               onClick: () =>
-                history.push(
-                  `/buildings/livingProfile/${housingStock.id}/addNode`,
-                ),
+                navigate(`/buildings/livingProfile/${housingStock.id}/addNode`),
               hidden: !isPermitionToAddNode,
             },
             {
@@ -74,9 +83,7 @@ export const HousingStockProfile: FC<HousingStockProfileProps> = ({
             {
               title: 'Редактировать',
               onClick: () =>
-                history.push(
-                  `/buildings/livingProfile/${housingStock.id}/edit`,
-                ),
+                navigate(`/buildings/livingProfile/${housingStock.id}/edit`),
               hidden: !isPermissionToEditHousingStock,
             },
           ],
@@ -89,17 +96,9 @@ export const HousingStockProfile: FC<HousingStockProfileProps> = ({
           setCurrentGrouptype(grouptype as HousingStockProfileGrouptype)
         }
         activeKey={currentGrouptype}
-      >
-        <TabPane
-          tab="Общая информация"
-          key={HousingStockProfileGrouptype.Common}
-        />
-        <TabPane tab="Квартиры" key={HousingStockProfileGrouptype.Apartments} />
-        <TabPane
-          tab="Системы учета ресурсов"
-          key={HousingStockProfileGrouptype.Devices}
-        />
-      </TabsSC>
+        items={tabItems}
+      />
+
       <Wrapper>
         <ContentWrapper>{content[currentGrouptype]}</ContentWrapper>
         <div>

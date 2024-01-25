@@ -1,6 +1,5 @@
 import { EResourceType } from 'api/types';
 import {
-  ConsumptionDataForTwoMonth,
   MonthConsumptionData,
   ResourceConsumptionGraphDataType,
 } from '../../resourceConsumptionService.types';
@@ -10,14 +9,15 @@ import {
 } from '../ResourceConsumptionProfile/ResourceConsumptionProfile.types';
 
 export type ResourceConsumptionGraphProps = {
-  consumptionData:
-    | (ConsumptionDataForTwoMonth & {
-        [ResourceConsumptionGraphDataType.additionalAddress]: MonthConsumptionData | null;
-      })
-    | null;
   resource?: EResourceType;
   startOfMonth: string;
   checked: BooleanTypesOfResourceConsumptionGraphForTwoMonth;
-  additionalConsumptionData: MonthConsumptionData | null;
   selectedAddresses: SelectedAddresses;
+  isAdditionalAddressSelected: boolean;
+  consumptionData: {
+    [ResourceConsumptionGraphDataType.currentMonthData]?: MonthConsumptionData;
+    [ResourceConsumptionGraphDataType.prevMonthData]?: MonthConsumptionData;
+    [ResourceConsumptionGraphDataType.additionalAddress]: MonthConsumptionData | null;
+  };
+  dynamicMinMax: [number, number];
 };

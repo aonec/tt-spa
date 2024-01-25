@@ -1,9 +1,9 @@
 import React, { FC } from 'react';
 import { Cellphone, Name, Role, Wrapper } from './StaffItem.styled';
 import { StaffItemProps } from './StaffItem.types';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { sortUserRoles } from '../Staff.utils';
-import { Tooltip } from 'antd';
+import { Tooltip } from 'ui-kit/shared/Tooltip';
 import { ContextMenuButton } from 'ui-kit/ContextMenuButton/ContextMenuButton';
 import { usePhoneMask } from 'hooks/usePhoneMask';
 import { StaffStatus } from 'ui-kit/shared/StaffStatus/StaffStatus';
@@ -16,7 +16,7 @@ export const StaffItem: FC<StaffItemProps> = ({
   handleOpenDeleteModal,
   handleCatchEmployeeId,
 }) => {
-  const history = useHistory();
+  const navigate = useNavigate();
   const phoneMask = usePhoneMask();
 
   const { firstName, lastName, middleName, roles, id, cellphone, status } =
@@ -28,14 +28,16 @@ export const StaffItem: FC<StaffItemProps> = ({
     <Wrapper key={staff.id}>
       <Name
         onClick={() => {
-          history.push(`/userProfile/${id}`);
+          navigate(`/userProfile/${id}`);
         }}
       >
         {lastName} {firstName} {middleName}
       </Name>
 
       <Role>
-        <Tooltip title={rolesString}>{sortedRoles[0]?.value}</Tooltip>
+        <Tooltip color="" title={rolesString}>
+          {sortedRoles[0]?.value}
+        </Tooltip>
       </Role>
 
       <Cellphone>
@@ -47,7 +49,7 @@ export const StaffItem: FC<StaffItemProps> = ({
         menuButtons={[
           {
             title: 'Открыть профиль сотрудника',
-            onClick: () => history.push(`/userProfile/${id}`),
+            onClick: () => navigate(`/userProfile/${id}`),
           },
           {
             title: 'Изменить статус',
@@ -59,7 +61,7 @@ export const StaffItem: FC<StaffItemProps> = ({
           {
             title: 'Редактировать информацию о сотруднике',
             onClick: () =>
-              history.push(`/companyProfile/editManagingFirmUser/${id}`),
+              navigate(`/companyProfile/editManagingFirmUser/${id}`),
           },
           {
             title: 'Удалить сотрудника',

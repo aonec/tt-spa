@@ -1,4 +1,4 @@
-import { useStore } from 'effector-react';
+import { useUnit } from 'effector-react';
 import React, { FC, ReactElement, useCallback } from 'react';
 import {
   ActionComponentProps,
@@ -12,9 +12,10 @@ const { outputs } = emailNotifyService;
 
 export const EmailNotifyContainer: FC<ActionComponentProps> = ({
   handleChange,
-  type,
+  task,
 }) => {
-  const contractors = useStore(outputs.$contractors);
+  const type = task.type;
+  const { contractors } = useUnit({ contractors: outputs.$contractors });
 
   const handleContractorChange = useCallback(
     (contractorIds: number[]) => {
@@ -26,7 +27,7 @@ export const EmailNotifyContainer: FC<ActionComponentProps> = ({
         },
       }));
     },
-    [handleChange]
+    [handleChange],
   );
 
   const handleMessageChange = useCallback(
@@ -39,7 +40,7 @@ export const EmailNotifyContainer: FC<ActionComponentProps> = ({
         },
       }));
     },
-    [handleChange]
+    [handleChange],
   );
 
   const components: {

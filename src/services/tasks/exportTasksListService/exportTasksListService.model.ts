@@ -1,18 +1,17 @@
+import { createEffect, createEvent } from 'effector';
 import { downloadTasksList } from './exportTasksListService.api';
 import { message } from 'antd';
-import { createDomain, sample } from 'effector';
+import { sample } from 'effector';
 import { ExportTasksListRequestPayload } from './exportTasksListService.types';
 import { tasksProfileService } from '../tasksProfileService';
 import { EffectFailDataAxiosError } from 'types';
 
-const domain = createDomain('exportTasksListService');
-
-const exportTasksListFx = domain.createEffect<
+const exportTasksListFx = createEffect<
   ExportTasksListRequestPayload,
   void,
   EffectFailDataAxiosError
 >(downloadTasksList);
-const exportTasksList = domain.createEvent();
+const exportTasksList = createEvent();
 
 const $isLoading = exportTasksListFx.pending;
 
@@ -28,14 +27,16 @@ sample({
 exportTasksList.watch(() => message.info('Выгрузка задач...'));
 
 exportTasksListFx.done.watch(() =>
-  message.success('Список задач успешно выгружен!')
+  message.success('Список задач успешно выгружен!'),
 );
 
 exportTasksListFx.failData.watch(async (e) => {
   const data = JSON.parse(
-    await ((e.response.data as unknown) as {
-      text: () => Promise<string>;
-    }).text()
+    await (
+      e.response.data as unknown as {
+        text: () => Promise<string>;
+      }
+    ).text(),
   );
 
   message.error(data.error.Text);

@@ -1,6 +1,7 @@
+import { createEffect, createEvent, createStore } from 'effector';
 import { message } from 'antd';
-import { combine, createDomain, forward, guard, sample } from 'effector';
-import moment from 'moment';
+import { combine, sample } from 'effector';
+import dayjs from 'api/dayjs';
 import { IndividualDeviceListItemResponse } from 'api/types';
 import { EffectFailDataAxiosError } from 'types';
 import { apartmentIndividualDevicesMetersService } from '../apartmentIndividualDevicesMetersService';
@@ -9,38 +10,41 @@ import { fetchEditReadingsHistory } from './editReadingsHistoryService.api';
 import { ReadingDateFormat } from './editReadingsHistoryService.constants';
 import { EditReadingsHistoryPayload } from './editReadingsHistoryService.types';
 
-const domain = createDomain('editReadingsHistoryService');
-
-const editReadingsHistory = domain.createEvent();
-const editReadingsHistoryFx = domain.createEffect<
+const editReadingsHistory = createEvent();
+const editReadingsHistoryFx = createEffect<
   EditReadingsHistoryPayload,
   void,
   EffectFailDataAxiosError
 >(fetchEditReadingsHistory);
 
-const openModal = domain.createEvent<IndividualDeviceListItemResponse>();
-const closeModal = domain.createEvent();
+const openModal = createEvent<IndividualDeviceListItemResponse>();
+const closeModal = createEvent();
 
-const $selectedDevice = domain
-  .createStore<IndividualDeviceListItemResponse | null>(null)
+const $selectedDevice = createStore<IndividualDeviceListItemResponse | null>(
+  null,
+)
   .on(openModal, (_, device) => device)
   .reset(closeModal);
 const $isOpen = $selectedDevice.map((device) => Boolean(device));
 
-const setReadingDate = domain.createEvent<string>('');
-const $readingDate = domain
-  .createStore<string>(moment().startOf('month').format(ReadingDateFormat))
+const setReadingDate = createEvent<string>('');
+const $readingDate = createStore<string>(
+  dayjs().startOf('month').format(ReadingDateFormat),
+)
   .on(setReadingDate, (_, date) => date)
   .reset(closeModal);
 
-const setReadings = domain.createEvent<BufferedReadingValues>();
-const $readings = domain
-  .createStore<BufferedReadingValues>({ value1: '', value2: '', value3: '' })
+const setReadings = createEvent<BufferedReadingValues>();
+const $readings = createStore<BufferedReadingValues>({
+  value1: '',
+  value2: '',
+  value3: '',
+})
   .on(setReadings, (_, readings) => readings)
   .reset(closeModal);
 
 sample({
-  source: guard({
+  source: sample({
     source: combine($selectedDevice, $readings, $readingDate),
     filter: ([device]) => Boolean(device),
   }),
@@ -60,9 +64,9 @@ sample({
   target: editReadingsHistoryFx,
 });
 
-forward({
-  from: editReadingsHistoryFx.doneData,
-  to: [
+sample({
+  clock: editReadingsHistoryFx.doneData,
+  target: [
     apartmentIndividualDevicesMetersService.inputs.refetchIndividualDevices,
     closeModal,
   ],

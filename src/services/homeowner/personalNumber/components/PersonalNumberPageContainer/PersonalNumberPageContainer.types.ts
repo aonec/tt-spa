@@ -1,4 +1,5 @@
 import { ApartmentResponse } from 'api/types';
+import { ReactNode } from 'react';
 
 export type PersonalNumberPageContainerProps = {
   isLoading?: boolean;
@@ -10,4 +11,5 @@ export type PersonalNumberPageContainerProps = {
   isLastStage?: boolean;
   handleCheckApartmentExist?: () => void;
   isCheckApartLoading?: boolean;
+  children?: ReactNode;
 };

@@ -1,6 +1,6 @@
 import { ContextMenuButton } from 'ui-kit/ContextMenuButton/ContextMenuButton';
-import { Tooltip } from 'antd';
-import { useEvent, useStore } from 'effector-react';
+import { Tooltip } from 'ui-kit/shared/Tooltip';
+import { useUnit } from 'effector-react';
 import React, { FC } from 'react';
 import {
   AdditionalHomeownersCountTextWrapper,
@@ -33,9 +33,10 @@ export const IndividualDeviceListItemBySerialNumber: FC<
 > = ({ device }) => {
   const { serialNumber, address, homeowners } = device;
 
-  const openedDeviceId = useStore(outputs.$openedBlockId);
-
-  const toggleDevice = useEvent(inputs.toggleBlock);
+  const { openedDeviceId, toggleDevice } = useUnit({
+    openedDeviceId: outputs.$openedBlockId,
+    toggleDevice: inputs.toggleBlock,
+  });
 
   const addressString = getApartmentAddressForList(address);
   const additionalHomeownersCount = (homeowners?.length || 1) - 1;

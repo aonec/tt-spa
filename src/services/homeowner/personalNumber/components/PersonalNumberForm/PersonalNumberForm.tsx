@@ -1,7 +1,7 @@
 import React, { FC, useEffect } from 'react';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
-import moment from 'moment';
+import dayjs from 'api/dayjs';
 import {
   DeleteButton,
   FlexContainer,
@@ -21,6 +21,7 @@ import { Input } from 'ui-kit/Input';
 import { TrashIcon } from 'ui-kit/icons';
 import { Switch } from 'antd';
 import { PersonalNumberActions } from '../../selectPersonalNumberActionService/selectPersonalNumberActionService.types';
+import { PhoneNumberFormField } from './PhoneNumberFormField';
 
 export const PersonalNumberForm: FC<PersonalNumberFormProps> = ({
   type,
@@ -44,9 +45,8 @@ export const PersonalNumberForm: FC<PersonalNumberFormProps> = ({
     useFormik<PersonalNumberFormTypes>({
       initialValues: {
         name: ((isEdit || isSplit) && homeowner?.name) || '',
-        phoneNumber: (isEdit && homeowner?.phoneNumber) || '',
-        openAt:
-          (isEdit && moment(homeowner?.openAt).format('YYYY-MM-DD')) || '',
+        phoneNumbers: (isEdit && homeowner?.phoneNumbers) || [],
+        openAt: (isEdit && dayjs(homeowner?.openAt).format('YYYY-MM-DD')) || '',
         personalAccountNumber:
           (isEdit && homeowner?.personalAccountNumber) || '',
         paymentCode: (isEdit && homeowner?.paymentCode) || '',
@@ -94,7 +94,7 @@ export const PersonalNumberForm: FC<PersonalNumberFormProps> = ({
           handleSubmitAddNewApartmentStage({
             personalAccountNumber: data.personalAccountNumber,
             name: data.name,
-            phoneNumber: data.phoneNumber,
+            phoneNumbers: data.phoneNumbers,
             openAt: data.openAt,
             isMainOnApartment: data.isMainOnApartment,
             paymentCode: data.paymentCode,
@@ -114,7 +114,7 @@ export const PersonalNumberForm: FC<PersonalNumberFormProps> = ({
         <DatePickerNative
           value={values.openAt}
           onChange={(value) =>
-            setFieldValue('openAt', moment(value).format('YYYY-MM-DD'))
+            setFieldValue('openAt', dayjs(value).format('YYYY-MM-DD'))
           }
           disabled={isEdit}
         />
@@ -150,15 +150,27 @@ export const PersonalNumberForm: FC<PersonalNumberFormProps> = ({
           />
           <ErrorMessage>{errors.name}</ErrorMessage>
         </FormItem>
-        <FormItem label="Телефон">
-          <Input
-            placeholder="Введите телефон"
-            value={values.phoneNumber || undefined}
-            onChange={(value) =>
-              setFieldValue('phoneNumber', value.target.value)
-            }
-          />
-        </FormItem>
+        {!isEdit && (
+          <FormItem label="Телефон">
+            <PhoneNumberFormField
+              phoneNumbers={values.phoneNumbers || []}
+              addPhoneNumber={(phone) =>
+                setFieldValue('phoneNumbers', [
+                  ...(values.phoneNumbers || []),
+                  phone,
+                ])
+              }
+              deletePhoneNumber={(oldPhoneNumber) =>
+                setFieldValue(
+                  'phoneNumbers',
+                  (values.phoneNumbers || []).filter(
+                    (elem) => elem !== oldPhoneNumber,
+                  ),
+                )
+              }
+            />
+          </FormItem>
+        )}
       </GridContainerOwner>
       <FlexContainer>
         <SwitchWrapper

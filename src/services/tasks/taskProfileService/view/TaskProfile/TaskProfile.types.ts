@@ -22,4 +22,6 @@ export type TaskProfileProps = {
   deleteDocumentModalIsOpen: boolean;
   openDeleteDocumentModal: (id: number) => void;
   closeDeleteDocumentModal: () => void;
+  pushStageRequestPayload: StagePushRequest;
+  isApplication: boolean;
 };

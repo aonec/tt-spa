@@ -1,4 +1,3 @@
-import { EClosingReason } from 'api/types';
 import { UnloadingType } from '../../closedIndividualDevicesFormService.types';
 
 export const unloadingTypesDictionary: { [key in UnloadingType]: string } = {
@@ -11,11 +10,4 @@ export const unloadingTypesForLabelDictionary = {
   [UnloadingType.AllManagingFirm]: 'Список УК',
   [UnloadingType.ByHouseManagement]: 'Домоуправление',
   [UnloadingType.ByAddress]: 'Адрес',
-};
-
-export const closingReasonsDictionary = {
-  [EClosingReason.Manually]: 'Плановая замена',
-  [EClosingReason.DeviceBroken]: 'Поломка',
-  [EClosingReason.CertificateIssued]: 'Выдана справка',
-  [EClosingReason.ByLetter]: 'Письмо из УК',
 };

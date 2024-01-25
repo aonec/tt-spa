@@ -1,14 +1,15 @@
 import React, { FC, useMemo } from 'react';
 import { getTimeStringByUTC } from 'utils/getTimeStringByUTC';
 import {
+  Address,
   InfoWrapper,
-  LinkSC,
   RowWrapper,
   TaskBaseInfoWrapper,
   TitleWrapper,
 } from './TaskBaseInfo.styled';
 import { TaskBaseInfoProps } from './TaskBaseInfo.types';
 import { EHouseCategory } from 'api/types';
+import { useNavigate } from 'react-router-dom';
 
 export const TaskBaseInfo: FC<TaskBaseInfoProps> = ({ task }) => {
   const {
@@ -40,6 +41,8 @@ export const TaskBaseInfo: FC<TaskBaseInfoProps> = ({ task }) => {
     ? getTimeStringByUTC(creationTime)
     : '-';
 
+  const navigate = useNavigate();
+
   return (
     <TaskBaseInfoWrapper>
       <TitleWrapper>Информация о задаче</TitleWrapper>
@@ -54,11 +57,11 @@ export const TaskBaseInfo: FC<TaskBaseInfoProps> = ({ task }) => {
         </RowWrapper>
         <RowWrapper>
           <div>Дата создания</div>
-          <div>{preparedCreationTime}</div>
+          <div data-test="task-creation-time">{preparedCreationTime}</div>
         </RowWrapper>
         <RowWrapper>
           <div>Адрес</div>
-          <LinkSC to={linkPath}>{address}</LinkSC>
+          <Address onClick={() => navigate(linkPath)}>{address}</Address>
         </RowWrapper>
         {apartment && (
           <RowWrapper>

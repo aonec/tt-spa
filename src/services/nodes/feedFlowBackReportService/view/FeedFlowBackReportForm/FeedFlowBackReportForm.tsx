@@ -1,7 +1,7 @@
 import { ErrorMessage } from 'ui-kit/ErrorMessage';
 import { Form } from 'antd';
 import { useFormik } from 'formik';
-import moment from 'moment';
+import dayjs from 'api/dayjs';
 import { EResourceType } from 'api/types';
 import React, { FC } from 'react';
 import { FormItem } from 'ui-kit/FormItem';
@@ -27,7 +27,7 @@ export const FeedFlowBackReportForm: FC<FeedFlowBackReportFormProps> = ({
   const { values, handleChange, setFieldValue, handleSubmit, errors } =
     useFormik({
       initialValues: {
-        name: `Сводный_отчёт_по_обратной_магистрали_${moment().format(
+        name: `Сводный_отчёт_по_обратной_магистрали_${dayjs().format(
           'DD.MM.YYYY',
         )}`,
         city: null as null | string,
@@ -35,7 +35,7 @@ export const FeedFlowBackReportForm: FC<FeedFlowBackReportFormProps> = ({
         temperature: '',
       },
       onSubmit: (values) => {
-        if (!values.name || !values.temperature) {
+        if (!values.name || typeof values.temperature !== 'number') {
           return;
         }
 

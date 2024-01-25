@@ -1,4 +1,5 @@
-import { createDomain, sample } from 'effector';
+import { createEffect, createEvent, createStore } from 'effector';
+import { sample } from 'effector';
 import { message } from 'antd';
 import { HousingStockResponse } from 'api/types';
 import { EffectFailDataAxiosError } from 'types';
@@ -9,30 +10,25 @@ import {
   CurrentHousingStockUpdate,
   PatchHousingStockInspectorInfoPayload,
 } from './inspectorHousingStockService.types';
+import { getInspectorsHousingStocksQuery } from '../displayInspectorsHousingStocksService.api';
 
 const { $inspectorsList } = displayInspectorsService.outputs;
 
-const { $inspectorsHousingStocksList } =
+const { $inspectorsHousingStocksList, $searchInspectorsFilter } =
   displayInspectorsHousingStocksService.outputs;
 
-const inspectorHousingStockServiceDomain = createDomain(
-  'inspectorHousingStockService',
+const $currentHousingStockUpdates = createStore<CurrentHousingStockUpdate[]>(
+  [],
 );
 
-const $currentHousingStockUpdates =
-  inspectorHousingStockServiceDomain.createStore<CurrentHousingStockUpdate[]>(
-    [],
-  );
-
-const updateHousingStockInspectorInfoFx =
-  inspectorHousingStockServiceDomain.createEffect<
-    PatchHousingStockInspectorInfoPayload,
-    HousingStockResponse | null,
-    EffectFailDataAxiosError
-  >(patchHousingStockInspectorInfo);
+const updateHousingStockInspectorInfoFx = createEffect<
+  PatchHousingStockInspectorInfoPayload,
+  HousingStockResponse | null,
+  EffectFailDataAxiosError
+>(patchHousingStockInspectorInfo);
 
 const updateHousingStockInspectorInfo =
-  inspectorHousingStockServiceDomain.createEvent<PatchHousingStockInspectorInfoPayload>();
+  createEvent<PatchHousingStockInspectorInfoPayload>();
 
 updateHousingStockInspectorInfoFx.failData.watch((error) => {
   return message.error(
@@ -71,30 +67,11 @@ $currentHousingStockUpdates.on(
 
 $currentHousingStockUpdates.reset($inspectorsHousingStocksList);
 
-$inspectorsHousingStocksList.on(
-  updateHousingStockInspectorInfoFx.done,
-  (housingStocks, updatedHousingStock) => {
-    const updatedHousingStocks = housingStocks?.map((housingStock) => {
-      if (
-        housingStock.buildingId !== updatedHousingStock.params.housingStockId
-      ) {
-        return housingStock;
-      }
-
-      const { inspectorId, inspectedDay } = updatedHousingStock.params.data;
-
-      const res = {
-        ...housingStock,
-        inspectedDay: inspectedDay || housingStock.inspectedDay,
-        inspectorId: inspectorId,
-      };
-
-      return res;
-    });
-
-    return updatedHousingStocks;
-  },
-);
+sample({
+  source: $searchInspectorsFilter,
+  clock: updateHousingStockInspectorInfoFx.done,
+  target: getInspectorsHousingStocksQuery.start,
+});
 
 sample({
   clock: updateHousingStockInspectorInfo,

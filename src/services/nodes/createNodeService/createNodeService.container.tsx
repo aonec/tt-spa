@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo } from 'react';
-import { useHistory, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useUnit } from 'effector-react';
 import { createNodeService } from './createNodeService.model';
 import { CreateNodePage } from './view/CreateNodePage';
@@ -8,6 +8,7 @@ import { CreateNodeConfirmationModal } from './view/CreateNodeConfirmationModal'
 import { CreateCalculatorModalContainer } from 'services/calculators/createCalculatorModalService';
 import { addressSearchService } from 'services/addressSearchService/addressSearchService.models';
 import { EHouseCategory } from 'api/types';
+import { mountAddressService } from './view/CreateNodePage/MountAddress/MountAddress.models';
 
 const { inputs, outputs, gates } = createNodeService;
 const { CreateNodeGate } = gates;
@@ -29,7 +30,7 @@ export const CreateNodeContainer = () => {
     return null;
   }, [houseCategory]);
 
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const {
     building,
@@ -53,6 +54,7 @@ export const CreateNodeContainer = () => {
     updateRequestPayload,
     validateNode,
     validationResult,
+    mountBuilding,
   } = useUnit({
     isBuildingLoading: outputs.$isLoadingBuilding,
     building: outputs.$building,
@@ -75,13 +77,16 @@ export const CreateNodeContainer = () => {
     validateNode: inputs.validateNode,
     closeConfiramtionModal: inputs.closeConfiramtionModal,
     handleSubmitForm: inputs.handleSubmitForm,
+    mountBuilding: mountAddressService.outputs.$buildingListItem,
   });
 
   useEffect(() => {
     return inputs.handlePipeNodeCreated.watch((node) =>
-      history.push(`/nodes/${node.id}`),
+      navigate(`/nodes/${node.id}`),
     );
-  }, [history]);
+  }, [navigate]);
+
+  const preparedBuildingData = mountBuilding || building; //первый берет данные из сторы (случай входа на страницу из "приборы"), второй из запроса по данным из парамс
 
   return (
     <>
@@ -92,12 +97,12 @@ export const CreateNodeContainer = () => {
       <ExistingCitiesGate />
       <CreateNodeServiceZoneContainer />
       <CreateCalculatorModalContainer />
-      {building && selectedServiceZone && (
+      {preparedBuildingData && (
         <CreateNodeConfirmationModal
           isOpen={isConfirmationModalOpen}
           handleClose={() => closeConfiramtionModal()}
           requestPayload={requestPayload}
-          building={building}
+          building={preparedBuildingData}
           calculator={selectedCalculator}
           serviceZone={selectedServiceZone}
           handleSubmitForm={() => handleSubmitForm()}

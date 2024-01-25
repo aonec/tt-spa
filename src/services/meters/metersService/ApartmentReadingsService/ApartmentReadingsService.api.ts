@@ -2,10 +2,14 @@ import { axios } from 'api/axios';
 import {
   ApartmentListResponsePagedList,
   ApartmentResponse,
+  AppointmentResponse,
   HomeownerAccountResponse,
 } from 'api/types';
 import {
+  AddPhoneNumberRequest,
   GetApartmentsRequestPayload,
+  RemovePhoneNumberRequest,
+  ReplacePhoneNumberRequest,
   UpdateApartmentRequestPayload,
   UpdateHomeownerRequestPayload,
 } from './ApartmentReadingsService.types';
@@ -48,6 +52,11 @@ export const getApartmentQuery = createQuery({
   }),
 });
 
+export const getNearestAppointmentForApartment = (
+  ApartmentId: number,
+): Promise<AppointmentResponse[]> =>
+  axios.get('IndividualSeal/Appointments', { params: { ApartmentId } });
+
 export const putApartment = ({
   apartmentId,
   ...data
@@ -59,3 +68,23 @@ export const patchHomeowner = ({
   data,
 }: UpdateHomeownerRequestPayload): Promise<HomeownerAccountResponse> =>
   axios.put(`HomeownerAccounts/${id}`, data);
+
+export const removePhoneNumberRequest = ({
+  id,
+  phoneNumber,
+}: RemovePhoneNumberRequest): Promise<string[]> =>
+  axios.post(`HomeownerAccounts/${id}/RemovePhone`, { phoneNumber });
+
+export const addPhoneNumberRequest = async ({
+  id,
+  phoneNumber,
+}: AddPhoneNumberRequest): Promise<string[]> =>
+  axios.post(`HomeownerAccounts/${id}/AddPhone`, {
+    phoneNumber,
+  });
+
+export const replacePhoneNumberRequest = ({
+  id,
+  ...body
+}: ReplacePhoneNumberRequest): Promise<string[]> =>
+  axios.post(`HomeownerAccounts/${id}/ReplacePhone`, body);

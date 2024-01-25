@@ -23,7 +23,7 @@ import {
   PrepareReportRequestFunctionsDictionary,
 } from './reportViewService.constants';
 import { ReportNamesDictionary } from '../view/ReportsPage/ReportsPage.constants';
-import moment from 'moment';
+import dayjs from 'api/dayjs';
 
 export const getAddressesWithHouseManagements = (): Promise<
   HouseManagementWithStreetsResponse[]
@@ -35,7 +35,7 @@ export const getIndividualDevicesReport = (
 ): Promise<IndividualDevicesConstructedReportResponse[]> => {
   return axios.get('Reports/IndividualDevicesReport', {
     params: payload,
-    paramsSerializer: queryString.stringify,
+    paramsSerializer: (params) => queryString.stringify(params),
   });
 };
 
@@ -44,7 +44,7 @@ export const getActJournalReport = (
 ): Promise<ApartmentActsConstructedReportResponse> => {
   return axios.get('Reports/ApartmentActsReport', {
     params: payload,
-    paramsSerializer: queryString.stringify,
+    paramsSerializer: (params) => queryString.stringify(params),
   });
 };
 
@@ -53,7 +53,7 @@ export const getHousingMeteringDevicesReport = (
 ): Promise<HousingDevicesConstructedReportResponse[]> => {
   return axios.get('Reports/HousingDevicesReport', {
     params: payload,
-    paramsSerializer: queryString.stringify,
+    paramsSerializer: (params) => queryString.stringify(params),
   });
 };
 
@@ -62,7 +62,7 @@ export const getHomeownersReport = (
 ): Promise<HomeownersConstructedReportResponse[]> => {
   return axios.get('Reports/HomeownersReport', {
     params: payload,
-    paramsSerializer: queryString.stringify,
+    paramsSerializer: (params) => queryString.stringify(params),
   });
 };
 
@@ -83,6 +83,10 @@ export const downloadReportFile = async ({
   const reportUrl =
     employeeReportUrl || DownloadReportUrlsDictionary[reportType];
 
+  if (!reportUrl) {
+    return;
+  }
+
   const res: string = await axios.get(reportUrl, {
     params: payload,
     responseType: 'blob',
@@ -96,7 +100,7 @@ export const downloadReportFile = async ({
   const reportDatesString =
     payload?.From &&
     payload.To &&
-    `${moment(payload.From).format('DD.MM.YYYY')} — ${moment(payload.To).format(
+    `${dayjs(payload.From).format('DD.MM.YYYY')} — ${dayjs(payload.To).format(
       'DD.MM.YYYY',
     )}`;
 
@@ -114,7 +118,7 @@ export const getEmployeeReport = async ({
 }: EmployeeReportRequestPayload): Promise<EmployeeReportResponse> => {
   const data = await axios.get(`Reports/${employeeReportType}`, {
     params: { From, To },
-    paramsSerializer: queryString.stringify,
+    paramsSerializer: (params) => queryString.stringify(params),
   });
 
   return { [employeeReportType]: data };

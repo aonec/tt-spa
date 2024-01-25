@@ -1,19 +1,17 @@
-import { createDomain, forward } from 'effector';
+import { createEffect, createStore } from 'effector';
+import { sample } from 'effector';
 import { createGate } from 'effector-react';
 import { CalculatorInfoListResponse } from 'api/types';
 import { getCalculatorInfos } from './calculatorsInfoService.api';
 
-const domain = createDomain('calculatorsInfoService');
-
 const CalculatorInfosGate = createGate();
 
-const fetchCalculatorTypesFx = domain.createEffect<
+const fetchCalculatorTypesFx = createEffect<
   void,
   CalculatorInfoListResponse[] | null
 >(getCalculatorInfos);
 
-const $calculatorTypes = domain
-  .createStore<CalculatorInfoListResponse[] | null>(null)
+const $calculatorTypes = createStore<CalculatorInfoListResponse[] | null>(null)
   .on(fetchCalculatorTypesFx.doneData, (_, data) => {
     return data;
   })
@@ -30,9 +28,9 @@ const $calculatorTypesSelectItems = $calculatorTypes.map((types) => {
   }));
 });
 
-forward({
-  from: CalculatorInfosGate.open,
-  to: fetchCalculatorTypesFx,
+sample({
+  clock: CalculatorInfosGate.open,
+  target: fetchCalculatorTypesFx,
 });
 
 export const calculatorsInfoService = {

@@ -1,21 +1,19 @@
-import { createDomain, sample } from 'effector';
+import { createEffect, createEvent, createStore } from 'effector';
+import { sample } from 'effector';
 import { fetchDownloadDevicesReport } from './devicesReportService.api';
 import { DevicesReportPayload } from './devicesReportService.types';
 import { displayDevicesService } from '../displayDevicesService';
 import { BlobResponseErrorType } from 'types';
 import { message } from 'antd';
 
-const domain = createDomain('devicesReportService');
-
-const openModal = domain.createEvent();
-const closeModal = domain.createEvent();
-const $isOpen = domain
-  .createStore(false)
+const openModal = createEvent();
+const closeModal = createEvent();
+const $isOpen = createStore(false)
   .on(openModal, () => true)
   .reset(closeModal);
 
-const downloadDeviceReport = domain.createEvent<string>();
-const downloadDeviceReportFx = domain.createEffect<
+const downloadDeviceReport = createEvent<string>();
+const downloadDeviceReportFx = createEffect<
   DevicesReportPayload,
   void,
   BlobResponseErrorType

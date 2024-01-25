@@ -1,10 +1,13 @@
-import { BuildingListResponsePagedList, DistrictResponse } from 'api/types';
-import { OrganizationCoordinates } from 'services/currentUserService/currentUserService.types';
+import {
+  BuildingWithCoordinatesResponsePagedList,
+  DistrictResponse,
+} from 'api/types';
+import { OrganizationCoordinates } from 'services/currentOrganizationService/currentOrganizationService.types';
 
 export type Props = {
   districtId: string;
   organizationCoordinates: OrganizationCoordinates | null;
-  existingHousingStocks: BuildingListResponsePagedList | null;
+  existingHousingStocks: BuildingWithCoordinatesResponsePagedList | null;
   existingDistricts: DistrictResponse[] | null;
   isLoadingHousingStocks: boolean;
   isLoadingDistricts: boolean;

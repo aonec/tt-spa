@@ -1,5 +1,5 @@
 import { Alert } from 'ui-kit/Alert/Alert';
-import moment from 'moment';
+import dayjs from 'api/dayjs';
 import React, { FC } from 'react';
 import { actResourceNamesLookup } from 'utils/actResourceNamesLookup';
 import { AlertContent, AlertWrapper } from './ObjectDisconnectionAlerts.styled';
@@ -11,7 +11,7 @@ export const ObjectDisconnectionAlerts: FC<ObjectDisconnectionAlertsProps> = ({
 }) => {
   const disconnectionsAlert = disconnections.map((disconnection) => {
     const resourceName = actResourceNamesLookup[disconnection.resource];
-    const endDate = moment(disconnection.endDate).format('DD.MM.YYYY');
+    const endDate = dayjs(disconnection.endDate).format('DD.MM.YYYY');
 
     const dateText = disconnection.endDate ? ` до ${endDate}` : '';
 

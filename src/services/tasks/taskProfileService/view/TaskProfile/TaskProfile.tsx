@@ -17,6 +17,7 @@ import { TaskInfoWrapper, TaskWrapper, Wrapper } from './TaskProfile.styled';
 import { TaskProfileProps } from './TaskProfile.types';
 import { TaskProfileHeader } from './TaskProfileHeader';
 import { TaskStages } from './TaskStages';
+import { ApplicationInfoContainer } from '../../applicationInfoService';
 
 export const TaskProfile: FC<TaskProfileProps> = ({
   task,
@@ -37,6 +38,8 @@ export const TaskProfile: FC<TaskProfileProps> = ({
   closeDeleteDocumentModal,
   deleteDocumentModalIsOpen,
   openDeleteDocumentModal,
+  pushStageRequestPayload,
+  isApplication,
 }) => {
   const {
     individualDevices,
@@ -51,8 +54,8 @@ export const TaskProfile: FC<TaskProfileProps> = ({
 
   const apartmemtId = apartment?.id || 0;
 
-  const timeline = createTimeline(task);
-  const timer = createTimer(task);
+  const timeline = useMemo(() => createTimeline(task), [task]);
+  const timer = useMemo(() => createTimer(task), [task]);
 
   const name = useMemo(() => {
     if (!task.closingStatus) {
@@ -88,8 +91,9 @@ export const TaskProfile: FC<TaskProfileProps> = ({
             <TaskActionsPanel
               handlePushStage={pushStage}
               isLoading={isPushStageLoading || isLoadingTask}
-              taskType={task.type}
+              task={task}
               actions={taskActions}
+              pushStageRequestPayload={pushStageRequestPayload}
               handleChangePushStagePayload={handleChangePushStagePayload}
             />
           )}
@@ -112,24 +116,31 @@ export const TaskProfile: FC<TaskProfileProps> = ({
                 handleSetComment={handleSetComment}
                 commentText={commentText}
               />
-              <TaskBaseInfo task={task} />
-              {individualDevices && individualDevices.length !== 0 && (
-                <TaskIndividualDevicesList
-                  devices={individualDevices}
-                  apartmentId={apartmemtId}
-                />
+              {!isApplication && (
+                <>
+                  <TaskBaseInfo task={task} />
+                  {individualDevices && individualDevices.length !== 0 && (
+                    <TaskIndividualDevicesList
+                      devices={individualDevices}
+                      apartmentId={apartmemtId}
+                    />
+                  )}
+                  {device && <TaskDeviceInfo device={device} />}
+                  {pipeNode && <TaskPipeNodeInfo pipeNode={pipeNode} />}
+                  {relatedPipeNode && (
+                    <TaskPipeNodeInfo pipeNode={relatedPipeNode} />
+                  )}
+                </>
               )}
-              {device && <TaskDeviceInfo device={device} />}
-              {pipeNode && <TaskPipeNodeInfo pipeNode={pipeNode} />}
-              {relatedPipeNode && (
-                <TaskPipeNodeInfo pipeNode={relatedPipeNode} />
-              )}
+              {isApplication && <ApplicationInfoContainer task={task} />}
             </TaskInfoWrapper>
             <TaskStages
               handleRevertStage={handleRevertStage}
               stages={stages || []}
               isRevertStageLoading={isRevertStageLoading}
               isStageCanBeReverted={canBeReverted}
+              isEntryPoint={Boolean(task.currentStage?.isEntryPoint)}
+              task={task}
             />
           </TaskWrapper>
         </>

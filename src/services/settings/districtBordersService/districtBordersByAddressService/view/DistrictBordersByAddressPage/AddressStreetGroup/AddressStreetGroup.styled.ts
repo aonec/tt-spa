@@ -30,12 +30,13 @@ export const Street = styled.div<{ isChecked: boolean }>`
   font-weight: ${({ isChecked }) => (isChecked ? '500' : '400')};
 `;
 
-export const LeftBlock = styled.div`
+export const LeftBlock = styled.div<{ isCheckable: boolean }>`
   display: flex;
   align-items: center;
   gap: 16px;
 
-  cursor: pointer;
+  cursor: ${({ isCheckable }) => (isCheckable ? 'not-allowed' : 'pointer')};
+  ${({ isCheckable }) => isCheckable && 'opacity: 0.6;'}
 `;
 
 export const RightBlock = styled.div`
@@ -49,12 +50,14 @@ export const RightBlock = styled.div`
   }
 `;
 
-export const SelectedAddressCount = styled.div`
+export const SelectedAddressCount = styled.div<{ disabled: boolean }>`
   color: #686d8c;
   font-weight: 400;
   font-size: 16px;
 
   user-select: none;
+
+  ${({ disabled }) => disabled && 'opacity: 0.6;'}
 `;
 
 export const ChevronWrapper = styled.div`

@@ -1,32 +1,30 @@
+import { createEffect, createEvent, createStore } from 'effector';
 import { message } from 'antd';
-import { createDomain, forward, guard, sample } from 'effector';
+import { sample } from 'effector';
 import { CalculatorResponse, CheckDeviceRequest } from 'api/types';
 import { calculatorProfileService } from '../calculatorProfileService';
 import { fetchCloseCalculator } from './checkCalculatorService.api';
 import { CheckCalculatorFormik } from './checkCalculatorService.types';
 import { EffectFailDataAxiosError } from 'types';
 
-const domain = createDomain('checkCalculatorService');
+const openModal = createEvent<CalculatorResponse>();
+const closeModal = createEvent();
 
-const openModal = domain.createEvent<CalculatorResponse>();
-const closeModal = domain.createEvent();
-
-const $calculatorInfo = domain
-  .createStore<CalculatorResponse | null>(null)
+const $calculatorInfo = createStore<CalculatorResponse | null>(null)
   .on(openModal, (_, calculator) => calculator)
   .reset(closeModal);
 
 const $isModalOpen = $calculatorInfo.map(Boolean);
 
-const checkCalculator = domain.createEvent<CheckCalculatorFormik>();
-const checkCalculatorFx = domain.createEffect<
+const checkCalculator = createEvent<CheckCalculatorFormik>();
+const checkCalculatorFx = createEffect<
   CheckDeviceRequest,
   void,
   EffectFailDataAxiosError
 >(fetchCloseCalculator);
 
 sample({
-  source: guard({
+  source: sample({
     source: $calculatorInfo,
     filter: Boolean,
   }),
@@ -38,9 +36,9 @@ sample({
   target: checkCalculatorFx,
 });
 
-forward({
-  from: checkCalculatorFx.doneData,
-  to: [closeModal, calculatorProfileService.inputs.refetchCalculator],
+sample({
+  clock: checkCalculatorFx.doneData,
+  target: [closeModal, calculatorProfileService.inputs.refetchCalculator],
 });
 
 checkCalculatorFx.doneData.watch(() => {

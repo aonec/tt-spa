@@ -1,5 +1,6 @@
+import { createEffect, createEvent, createStore } from 'effector';
 import { createGate } from 'effector-react';
-import { combine, createDomain, guard, sample } from 'effector';
+import { combine, sample } from 'effector';
 import {
   getIndividualDeviceConsumptionsList,
   getIndividualDevicesList,
@@ -8,35 +9,28 @@ import { IndividualDeviceResponseFromDevicePage } from 'api/types';
 import { IndividualDeviceConsumptionGraphType } from './individualDevicesListService.constants';
 import { IndividualDeviceConsumptionForGraph } from './individualDevicesListService.types';
 
-const domain = createDomain('individualDevicesListService');
-
 const IndividualDevicesIds = createGate<{ devicesIds: number[] }>();
 
-const toggleBlock = domain.createEvent<number>();
+const toggleBlock = createEvent<number>();
 
-const fetchIndividualDevicesList = domain.createEffect(
-  getIndividualDevicesList,
-);
+const fetchIndividualDevicesList = createEffect(getIndividualDevicesList);
 
-const selectGraphType =
-  domain.createEvent<IndividualDeviceConsumptionGraphType>();
-const $graphType = domain
-  .createStore<IndividualDeviceConsumptionGraphType>(
-    IndividualDeviceConsumptionGraphType.BySixMonths,
-  )
-  .on(selectGraphType, (_, type) => type);
+const selectGraphType = createEvent<IndividualDeviceConsumptionGraphType>();
+const $graphType = createStore<IndividualDeviceConsumptionGraphType>(
+  IndividualDeviceConsumptionGraphType.BySixMonths,
+).on(selectGraphType, (_, type) => type);
 
-const fetchIndividualDeviceConsumptionsListFx = domain.createEffect<
+const fetchIndividualDeviceConsumptionsListFx = createEffect<
   number[],
   (IndividualDeviceConsumptionForGraph | null)[]
 >(getIndividualDeviceConsumptionsList);
-const $consumptionData = domain
-  .createStore<IndividualDeviceConsumptionForGraph[]>([])
-  .on(
-    fetchIndividualDeviceConsumptionsListFx.doneData,
-    (_, devicesList) =>
-      devicesList.filter(Boolean) as IndividualDeviceConsumptionForGraph[],
-  );
+const $consumptionData = createStore<IndividualDeviceConsumptionForGraph[]>(
+  [],
+).on(
+  fetchIndividualDeviceConsumptionsListFx.doneData,
+  (_, devicesList) =>
+    devicesList.filter(Boolean) as IndividualDeviceConsumptionForGraph[],
+);
 
 const $preparedData = combine($consumptionData, $graphType, (data, type) => {
   if (type === IndividualDeviceConsumptionGraphType.BySixMonths) {
@@ -48,20 +42,21 @@ const $preparedData = combine($consumptionData, $graphType, (data, type) => {
   return data;
 });
 
-const $individualDevicesList = domain
-  .createStore<IndividualDeviceResponseFromDevicePage[] | null>(null)
-  .on(fetchIndividualDevicesList.doneData, (_, data) => data);
+const $individualDevicesList = createStore<
+  IndividualDeviceResponseFromDevicePage[] | null
+>(null).on(fetchIndividualDevicesList.doneData, (_, data) => data);
 
-const $openedBlockId = domain
-  .createStore<number | null>(null)
-  .on(toggleBlock, (prevId, id) => (prevId === id ? null : id));
+const $openedBlockId = createStore<number | null>(null).on(
+  toggleBlock,
+  (prevId, id) => (prevId === id ? null : id),
+);
 
 const $isLoading = fetchIndividualDevicesList.pending;
 const $isConsumptionsLoading = fetchIndividualDeviceConsumptionsListFx.pending;
 
 sample({
   source: IndividualDevicesIds.state.map(({ devicesIds }) => devicesIds),
-  clock: guard({
+  clock: sample({
     source: $isLoading,
     clock: IndividualDevicesIds.state,
     filter: (isLoading, ids) => !isLoading && Boolean(ids?.devicesIds?.length),

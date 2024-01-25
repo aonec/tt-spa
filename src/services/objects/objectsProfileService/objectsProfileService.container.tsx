@@ -1,7 +1,7 @@
 import { useUnit } from 'effector-react';
 import { ESecuredIdentityRoleName } from 'api/types';
 import React, { useEffect } from 'react';
-import { useHistory, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { FeedFlowBackReportContainer } from 'services/nodes/feedFlowBackReportService';
 import { ChooseTypeOfResourceDisconnectionModalContainer } from 'services/resources/chooseTypeOfResourceDisconnectionModalService/chooseTypeOfResourceDisconnectionModalService.container';
 import { chooseTypeOfResourceDisconnectionModalService } from 'services/resources/chooseTypeOfResourceDisconnectionModalService/chooseTypeOfResourceDisconnectionModalService.model';
@@ -20,13 +20,14 @@ import {
   heatIndividualDevicesReportService,
 } from './heatIndividualDevicesReportService';
 import { FlowTemperatureDeviationReportContainer } from './flowTemperatureDeviationReport';
+import { DeleteObjectContainer } from '../deleteObjectService';
 
 const { inputs, outputs } = objectsProfileService;
 
 export const ObjectsProfileContainer = () => {
   const { searchType } = useParams<{ searchType?: SearchType }>();
 
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const {
     openSoiReportModal,
@@ -53,13 +54,14 @@ export const ObjectsProfileContainer = () => {
     pageSegment: outputs.$pageSegment,
   });
 
-  const handleCreateObject = () => history.push('/buildings/create');
+  const handleCreateObject = () => navigate('/buildings/create');
 
   const isPermitionToDownloadGroupReport = usePermission([
     ESecuredIdentityRoleName.Administrator,
     ESecuredIdentityRoleName.ManagingFirmExecutor,
     ESecuredIdentityRoleName.ManagingFirmSpectator,
     ESecuredIdentityRoleName.ManagingFirmSpectatorRestricted,
+    ESecuredIdentityRoleName.ManagingFirmSpectatingAdministrator,
   ]);
   const isPermitionToDownloadSOIReport = usePermission([
     ESecuredIdentityRoleName.Administrator,
@@ -69,27 +71,32 @@ export const ObjectsProfileContainer = () => {
     ESecuredIdentityRoleName.ManagingFirmSpectator,
     ESecuredIdentityRoleName.ManagingFirmSpectatorRestricted,
     ESecuredIdentityRoleName.ManagingFirmDispatcher,
+    ESecuredIdentityRoleName.ManagingFirmSpectatingAdministrator,
   ]);
   const isPermitionToDownloadFeedBackFlowReport = usePermission([
     ESecuredIdentityRoleName.Administrator,
     ESecuredIdentityRoleName.ManagingFirmExecutor,
+    ESecuredIdentityRoleName.ManagingFirmSpectatingAdministrator,
   ]);
   const isPermitionToCreateResourceDisconnection = usePermission([
     ESecuredIdentityRoleName.Administrator,
+    ESecuredIdentityRoleName.ManagingFirmSpectatingAdministrator,
   ]);
   const isPermitionToCreateObjectAndIPUReport = usePermission([
     ESecuredIdentityRoleName.Administrator,
+    ESecuredIdentityRoleName.ManagingFirmSpectatingAdministrator,
   ]);
   const isPermitionToCreateFeedFlowPipeTemperatureReport = usePermission([
     ESecuredIdentityRoleName.Administrator,
     ESecuredIdentityRoleName.ManagingFirmSpectator,
+    ESecuredIdentityRoleName.ManagingFirmSpectatingAdministrator,
   ]);
 
   useEffect(() => {
     if (!searchType) {
-      history.push(`/buildings/${SearchType.Houses}`);
+      navigate(`/buildings/${SearchType.Houses}`);
     }
-  }, [searchType, history]);
+  }, [searchType, navigate]);
 
   return (
     <>
@@ -100,6 +107,7 @@ export const ObjectsProfileContainer = () => {
       <FeedFlowBackReportContainer />
       <GroupReportContainer />
       <FlowTemperatureDeviationReportContainer />
+      <DeleteObjectContainer />
       <ObjectsProfile
         pageSegment={pageSegment}
         setSegment={setSegment}

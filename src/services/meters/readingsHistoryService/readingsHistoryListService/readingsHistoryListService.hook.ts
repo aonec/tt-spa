@@ -6,9 +6,9 @@ import {
   IndividualDeviceReadingsHistoryResponse,
   IndividualDeviceReadingsCreateRequest,
 } from 'api/types';
-import { useStore } from 'effector-react';
+import { useUnit } from 'effector-react';
 import axios from 'api/axios';
-import moment from 'moment';
+import dayjs from 'api/dayjs';
 import _ from 'lodash/fp';
 import { EffectFailDataAxiosError } from 'types';
 import { message } from 'antd';
@@ -26,9 +26,10 @@ export function useReadingHistoryValues() {
     [date: string]: RequestStatusShared;
   }>({});
 
-  const initialValues = useStore(
-    readingsHistoryService.outputs.$readingHistory,
-  );
+  const { initialValues, pendingHistory } = useUnit({
+    initialValues: readingsHistoryService.outputs.$readingHistory,
+    pendingHistory: readingsHistoryService.outputs.$isReadingsHistoryLoading,
+  });
 
   useEffect(() => {
     setBufferedValues(initialValues);
@@ -127,15 +128,15 @@ export function useReadingHistoryValues() {
 
   const uploadReading = useCallback(
     async (reading: IndividualDeviceReadingsCreateRequest) => {
-      const date = moment(reading.readingDate);
-      const dateString = `${date.month() + 2}.${date.year()}`;
+      const date = dayjs(reading.readingDate);
+      const dateString = date.add(1, 'month').format('M.YYYY');
 
       setUploadingReadingsStatuses((prev) => ({
         ...prev,
         [dateString]: 'pending',
       }));
       try {
-        await createReading(reading);
+        reading.value1 !== null && (await createReading(reading));
         readingsHistoryService.inputs.refetchReadingHistory(Number(deviceId));
 
         setUploadingReadingsStatuses((prev) => ({
@@ -157,10 +158,6 @@ export function useReadingHistoryValues() {
       }
     },
     [deviceId],
-  );
-
-  const pendingHistory = useStore(
-    readingsHistoryService.outputs.$isReadingsHistoryLoading,
   );
 
   useEffect(() => {

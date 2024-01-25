@@ -43,8 +43,17 @@ export const TasksListItem: FC<TasksListItemProps> = ({ task }) => {
     closingStatus,
     taskConfirmation,
     type,
+    creationReason,
   } = task;
   const taskName = currentStage ? currentStage.name : name;
+
+  const preparedTaskTitle = useMemo(() => {
+    if (!creationReason) {
+      return taskName;
+    }
+
+    return creationReason;
+  }, [creationReason, taskName]);
 
   const device = devices ? devices[0] : null;
 
@@ -79,18 +88,18 @@ export const TasksListItem: FC<TasksListItemProps> = ({ task }) => {
     return (
       <PipeNodeWrapper>
         <ResourceIconLookup resource={pipeNode.resource} />
-        <PipeNodeNameWrapper>Узел {pipeNode.number}</PipeNodeNameWrapper>
+        <PipeNodeNameWrapper>Узел {pipeNode.title}</PipeNodeNameWrapper>
       </PipeNodeWrapper>
     );
   }, [pipeNode]);
 
   return (
-    <Wrapper>
+    <Wrapper data-test="task-item">
       <Link to={`/tasks/profile/${id}`}>
         <TaskItemWrapper>
           <NameRowWrapper>
             <TaskNameWrapper className="task-item-title">
-              {taskName}
+              {preparedTaskTitle}
             </TaskNameWrapper>
             <span>{currentStage && name}</span>
           </NameRowWrapper>

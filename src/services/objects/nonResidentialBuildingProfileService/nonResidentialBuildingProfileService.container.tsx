@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { nonResidentialBuildingProfileService } from './nonResidentialBuildingProfileService.model';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import {
   nonResidentialBuildingQuery,
   resourceDisconnectionQuery,
@@ -11,42 +11,53 @@ import { NonResidentialBuildingProfile } from './view/NonResidentialBuildingProf
 import { usePermission } from 'hooks/usePermission';
 import { ESecuredIdentityRoleName } from 'api/types';
 import { ConsolidatedReportContainer } from '../housingStockProfileService/consolidatedReportService';
+import { NonResidentialBuildingProfileGrouptype } from './nonResidentialBuildingProfileService.constants';
 
-const { inputs, outputs, gates } = nonResidentialBuildingProfileService;
+const { inputs, gates } = nonResidentialBuildingProfileService;
 const { BuildingIdGate } = gates;
 
 export const NonResidentialBuildingProfileContainer = () => {
-  const { buildingId } = useParams<{ buildingId: string }>();
+  const { buildingId, section } = useParams<{
+    buildingId: string;
+    section?: NonResidentialBuildingProfileGrouptype;
+  }>();
+  const navigate = useNavigate();
 
   const {
-    currentGrouptype,
     isLoading,
     nonResidentialBuilding,
-    setGrouptype,
     openConsolidatedReportModal,
     resourceDisconnections,
   } = useUnit({
     isLoading: nonResidentialBuildingQuery.$pending,
     nonResidentialBuilding: nonResidentialBuildingQuery.$data,
     resourceDisconnections: resourceDisconnectionQuery.$data,
-    currentGrouptype: outputs.$currentGrouptype,
-    setGrouptype: inputs.setCurrentGroutype,
     openConsolidatedReportModal: inputs.openConsolidatedReportModal,
   });
 
   const isPermitionToAddNode = usePermission([
     ESecuredIdentityRoleName.Administrator,
     ESecuredIdentityRoleName.ManagingFirmExecutor,
+    ESecuredIdentityRoleName.ManagingFirmSpectatingAdministrator,
   ]);
   const isPermitionToDownloadConsolidatedReport = usePermission([
     ESecuredIdentityRoleName.Administrator,
     ESecuredIdentityRoleName.ManagingFirmExecutor,
     ESecuredIdentityRoleName.ManagingFirmSpectator,
     ESecuredIdentityRoleName.ManagingFirmSpectatorRestricted,
+    ESecuredIdentityRoleName.ManagingFirmSpectatingAdministrator,
   ]);
   const isPermissionToEditHousingStock = usePermission([
     ESecuredIdentityRoleName.Administrator,
   ]);
+
+  const setGrouptype = useCallback(
+    (section: NonResidentialBuildingProfileGrouptype) =>
+      navigate(`/buildings/nonResidentialProfile/${buildingId}/${section}`, {
+        replace: true,
+      }),
+    [navigate, buildingId],
+  );
 
   return (
     <>
@@ -57,7 +68,7 @@ export const NonResidentialBuildingProfileContainer = () => {
 
       <WithLoader isLoading={isLoading}>
         <NonResidentialBuildingProfile
-          currentGrouptype={currentGrouptype}
+          currentGrouptype={section}
           setGrouptype={setGrouptype}
           nonResidentialBuilding={nonResidentialBuilding}
           isPermitionToAddNode={isPermitionToAddNode}

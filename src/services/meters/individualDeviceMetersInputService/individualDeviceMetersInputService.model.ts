@@ -1,4 +1,5 @@
-import { createDomain, forward } from 'effector';
+import { createEffect, createEvent, createStore } from 'effector';
+import { sample } from 'effector';
 import { managementFirmConsumptionRatesService } from '../managementFirmConsumptionRatesService';
 import { apartmentIndividualDevicesMetersService } from '../apartmentIndividualDevicesMetersService/apartmentIndividualDevicesMetersService.model';
 import {
@@ -12,43 +13,41 @@ import {
 import { MetersInputBlockStatus } from './view/MetersInputsBlock/MetersInputsBlock.types';
 import { IndividualDeviceReadingsResponse } from 'api/types';
 import { message } from 'antd';
-import moment from 'moment';
+import dayjs from 'api/dayjs';
 import { EffectFailDataAxiosError } from 'types';
 import { confirmReadingService } from '../readingsHistoryService/confirmReadingService/confirmReadingService.model';
 
-const domain = createDomain('individualDeviceMetersInputService');
-
-const $uploadingMetersStatuses = domain.createStore<{
+const $uploadingMetersStatuses = createStore<{
   [deviceId: number]: {
     [sliderIndex: number]: MetersInputBlockStatus;
   };
 }>({});
 
-const uploadMeterFx = domain.createEffect<
+const uploadMeterFx = createEffect<
   UploadMeterPayload,
   IndividualDeviceReadingsResponse,
   EffectFailDataAxiosError
 >(({ meter }) => uploadReading(meter));
 
-const deleteMeterFx = domain.createEffect<DeleteMeterPayload, void>(
-  ({ meterId }) => removeReading(meterId),
+const deleteMeterFx = createEffect<DeleteMeterPayload, void>(({ meterId }) =>
+  removeReading(meterId),
 );
 
-const uploadMeter = domain.createEvent<UploadMeterPayload>();
+const uploadMeter = createEvent<UploadMeterPayload>();
 
-const deleteMeter = domain.createEvent<DeleteMeterPayload>();
+const deleteMeter = createEvent<DeleteMeterPayload>();
 
 const $devices =
   apartmentIndividualDevicesMetersService.outputs.$individualDevicesList;
 
-forward({
-  from: uploadMeter,
-  to: uploadMeterFx,
+sample({
+  clock: uploadMeter,
+  target: uploadMeterFx,
 });
 
-forward({
-  from: deleteMeter,
-  to: deleteMeterFx,
+sample({
+  clock: deleteMeter,
+  target: deleteMeterFx,
 });
 
 uploadMeterFx.failData.watch((error) => {
@@ -63,7 +62,7 @@ uploadMeterFx.failData.watch((error) => {
   }
 });
 
-const clearStatuses = domain.createEvent();
+const clearStatuses = createEvent();
 
 $uploadingMetersStatuses
   .on(uploadMeter, (state, { meter: { deviceId }, sliderIndex }) => ({
@@ -141,7 +140,7 @@ deleteMeterFx.done.watch(({ params: { deviceId, readingDate } }) => {
 
   if (!device) return;
 
-  const readingMonth = moment(readingDate).format('MMMM');
+  const readingMonth = dayjs(readingDate).format('MMMM');
 
   message.info(
     `Показание за ${readingMonth} на приборе ${device.model} (${device.serialNumber}) было удалено`,

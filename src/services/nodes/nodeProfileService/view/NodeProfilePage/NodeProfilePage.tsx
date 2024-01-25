@@ -6,7 +6,11 @@ import { HeaderInfoString } from 'ui-kit/shared/HeaderInfoString';
 import { ResourceIconLookup } from 'ui-kit/shared/ResourceIconLookup';
 import { LinkCard } from 'ui-kit/shared/LinkCard';
 import { WithLoader } from 'ui-kit/shared/WithLoader';
-import { ENodeRegistrationType, TaskGroupingFilter } from 'api/types';
+import {
+  ENodeRegistrationType,
+  ESecuredIdentityRoleName,
+  TaskGroupingFilter,
+} from 'api/types';
 import { DisplayNodesStatisticsContainer } from 'services/nodes/displayNodesStatisticsService';
 import {
   Title,
@@ -31,8 +35,7 @@ import { ContextMenuButtonColor } from 'ui-kit/ContextMenuButton/ContextMenuButt
 import { DisplayNodeChecksContainer } from 'services/nodes/displayNodeChecks';
 import { HousingMeteringDeviceReadingsContainer } from 'services/devices/housingMeteringDevices/housingMeteringDeviceReadingsService';
 import { getDeviceIds } from 'services/devices/housingMeteringDevices/housingMeteringDeviceReadingsService/housingMeteringDeviceReadingsService.utils';
-
-const { TabPane } = TabsSC;
+import { usePermission } from 'hooks/usePermission';
 
 export const NodeProfilePage: FC<NodeProfilePageProps> = ({
   isLoading,
@@ -113,6 +116,28 @@ export const NodeProfilePage: FC<NodeProfilePageProps> = ({
     return message.error('Технический тип узла нельзя изменить');
   }, [pipeNode, openChangeNodeTypeModal]);
 
+  const isShowArchiveButton = usePermission([
+    ESecuredIdentityRoleName.Administrator,
+    ESecuredIdentityRoleName.ManagingFirmExecutor,
+    ESecuredIdentityRoleName.ManagingFirmSpectator,
+    ESecuredIdentityRoleName.ManagingFirmSpectatorRestricted,
+    ESecuredIdentityRoleName.ManagingFirmSpectatingAdministrator,
+  ]);
+
+  const tabItems = useMemo(
+    () => [
+      { label: 'Общие данные', key: PipeNodeProfileSection.Common },
+      { label: 'Статистика', key: PipeNodeProfileSection.Stats },
+      ...(isShowReadingsTab
+        ? [{ label: 'Ввод показаний', key: PipeNodeProfileSection.Readings }]
+        : []),
+      { label: 'Настройки соединения', key: PipeNodeProfileSection.Connection },
+      { label: 'Подключенные приборы', key: PipeNodeProfileSection.Related },
+      { label: 'История проверок', key: PipeNodeProfileSection.Checks },
+    ],
+    [isShowReadingsTab],
+  );
+
   return (
     <WithLoader isLoading={isLoading}>
       {pipeNode && (
@@ -126,7 +151,7 @@ export const NodeProfilePage: FC<NodeProfilePageProps> = ({
                   style={{ transform: 'scale(1.2)' }}
                 />
                 <NodeNumberWrapper>
-                  Узел {pipeNode.number}
+                  Узел {pipeNode.title}
                   {isIncorrectConfig && (
                     <Tooltip title="Проверьте конфигурацию узла">
                       <IncorrectConfigurationIconSC />
@@ -175,36 +200,18 @@ export const NodeProfilePage: FC<NodeProfilePageProps> = ({
             onChange={(activeKey) =>
               handleChangeTab(activeKey as PipeNodeProfileSection)
             }
-          >
-            <TabPane tab="Общие данные" key={PipeNodeProfileSection.Common} />
-            <TabPane tab="Статистика" key={PipeNodeProfileSection.Stats} />
-            {isShowReadingsTab && (
-              <TabPane
-                tab="Ввод показаний"
-                key={PipeNodeProfileSection.Readings}
-              />
-            )}
-            <TabPane
-              tab="Настройки соединения"
-              key={PipeNodeProfileSection.Connection}
-            />
-            <TabPane
-              tab="Подключенные приборы"
-              key={PipeNodeProfileSection.Related}
-            />
-            <TabPane
-              tab="История проверок"
-              key={PipeNodeProfileSection.Checks}
-            />
-          </TabsSC>
+            items={tabItems}
+          />
           <Wrapper>
             {contentComponent}
             <div>
-              <LinkCard
-                text="Архив"
-                link={`/nodeArchive/${pipeNode.id}`}
-                showLink={true}
-              />
+              {isShowArchiveButton && (
+                <LinkCard
+                  text="Архив"
+                  link={`/nodeArchive/${pipeNode.id}`}
+                  showLink={true}
+                />
+              )}
               <LinkCard
                 text={`Задачи: ${pipeNode.numberOfTasks}`}
                 link={stringifyUrl({

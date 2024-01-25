@@ -4,6 +4,12 @@ import { Table } from 'ui-kit/Table';
 import { ApartmentNumber } from '../IndividualDevicesReport/IndividualDevicesReport.styled';
 import { getReportElemAddress } from '../ReportViewTable.utils';
 import { HomeownersReportProps } from './HomeownersReport.types';
+import { Tooltip } from 'ui-kit/shared/Tooltip';
+import {
+  FullAddressWrapper,
+  FullNameWrapper,
+  PhoneNumberWrapper,
+} from './HomeownersReport.styled';
 
 export const HomeownersReport: FC<HomeownersReportProps> = ({
   homeownersReportData,
@@ -32,17 +38,23 @@ export const HomeownersReport: FC<HomeownersReportProps> = ({
             const { addressString, number } = getReportElemAddress(elem);
 
             return (
-              <div>
+              <FullAddressWrapper>
                 <ApartmentNumber>Кв. №{number}</ApartmentNumber>
-                {addressString}
-              </div>
+                <Tooltip title={addressString}>{addressString}</Tooltip>
+              </FullAddressWrapper>
             );
           },
         },
         {
           label: 'ФИО',
           size: '270px',
-          render: (elem) => elem.homeownerFullName,
+          render: (elem) => (
+            <FullNameWrapper>
+              <Tooltip title={elem.homeownerFullName}>
+                {elem.homeownerFullName}
+              </Tooltip>
+            </FullNameWrapper>
+          ),
         },
         {
           label: 'Лицевой счет',
@@ -52,7 +64,13 @@ export const HomeownersReport: FC<HomeownersReportProps> = ({
         {
           label: 'Номер телефона',
           size: '170px',
-          render: (elem) => elem.homeownerPhoneNumber,
+          render: (elem) => (
+            <PhoneNumberWrapper>
+              <Tooltip title={(elem.homeownerPhoneNumbers || []).join(', ')}>
+                {(elem.homeownerPhoneNumbers || []).join(', ')}
+              </Tooltip>
+            </PhoneNumberWrapper>
+          ),
         },
       ]}
       elements={homeownersReportData}

@@ -6,6 +6,7 @@ import {
   CalculatorTitle,
   CalculatorWithStatusWrapper,
   DeviceLink,
+  NoCalculatorText,
   SerialNumber,
 } from './CalculatorNodes.styled';
 import {
@@ -16,7 +17,21 @@ import {
 import { NodeDevices } from './NodeDevices';
 import { DateRange } from 'ui-kit/shared/DateRange';
 
-export const CalculatorNodes: FC<CalculatorNodesProps> = ({ calculator }) => {
+export const CalculatorNodes: FC<CalculatorNodesProps> = ({ devices }) => {
+  const calculator = devices[0].calculator;
+  const devicesList = devices?.map((node) => (
+    <NodeDevices node={node} key={node.id} />
+  ));
+
+  if (!calculator) {
+    return (
+      <>
+        <NoCalculatorText>Нет вычислителя</NoCalculatorText>
+        {devicesList}
+      </>
+    );
+  }
+
   const { isConnected } = calculator;
   const isConnectionError = !(
     calculator.connection?.port && calculator.connection?.ipV4
@@ -26,7 +41,7 @@ export const CalculatorNodes: FC<CalculatorNodesProps> = ({ calculator }) => {
     <>
       <CalculatorTitle>
         <CalculatorWithStatusWrapper>
-          <DeviceLink to={`/calculators/${calculator.id}`}>
+          <DeviceLink to={`/calculators/${calculator.id}/profile`}>
             <CalculatorModelWrapper>
               <CalculatorIconWrapper>
                 <CalculatorIcon />
@@ -46,9 +61,7 @@ export const CalculatorNodes: FC<CalculatorNodesProps> = ({ calculator }) => {
         />
       </CalculatorTitle>
 
-      {calculator.nodes?.map((node) => (
-        <NodeDevices node={node} key={node.id} />
-      ))}
+      {devicesList}
     </>
   );
 };

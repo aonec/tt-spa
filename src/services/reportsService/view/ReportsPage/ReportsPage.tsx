@@ -11,12 +11,12 @@ import {
 } from './ReportsPage.styled';
 import { ReportsPageProps } from './ReportsPage.types';
 import { PageHeader } from 'ui-kit/shared/PageHeader';
-import { ReportsListContainer } from 'services/reports/reportsListService';
 import {
   ReportIconsDictionary,
   ReportNamesDictionary,
   reportsSelectItems,
 } from './ReportsPage.constants';
+import { ReportsListContainer } from 'services/reports/reportsListService';
 
 export const ReportsPage: FC<ReportsPageProps> = () => {
   const reportsListRef = useRef<HTMLDivElement>(null);

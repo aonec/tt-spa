@@ -1,4 +1,4 @@
-import { useEvent, useStore } from 'effector-react';
+import { useUnit } from 'effector-react';
 import React, { useEffect } from 'react';
 import { meteringDevicesService } from './meteringDevicesService.model';
 import { MeteringDevicesListModal } from './view/MeteringDevicesListModal';
@@ -6,13 +6,19 @@ import { MeteringDevicesListModal } from './view/MeteringDevicesListModal';
 const { inputs, outputs } = meteringDevicesService;
 
 export const MeteringDevicesContainer = () => {
-  const isModalOpen = useStore(outputs.$isModalOpen);
-
-  const isLoading = useStore(outputs.$isLoading);
-  const meterindDevicesList = useStore(outputs.$meterindDevicesList);
-  const pipeNode = useStore(outputs.$pipeNode);
-
-  const closeDevicesListModal = useEvent(inputs.closeDevicesListModal);
+  const {
+    closeDevicesListModal,
+    isLoading,
+    isModalOpen,
+    meterindDevicesList,
+    pipeNode,
+  } = useUnit({
+    isModalOpen: outputs.$isModalOpen,
+    isLoading: outputs.$isLoading,
+    meterindDevicesList: outputs.$meterindDevicesList,
+    pipeNode: outputs.$pipeNode,
+    closeDevicesListModal: inputs.closeDevicesListModal,
+  });
 
   useEffect(() => () => closeDevicesListModal(), [closeDevicesListModal]);
 

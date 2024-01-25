@@ -1,5 +1,4 @@
 import { SpaceLine } from 'ui-kit/SpaceLine';
-import { useFormik } from 'formik';
 import React, { FC } from 'react';
 import { Button } from 'ui-kit/Button';
 import { FormItem } from 'ui-kit/FormItem';
@@ -12,36 +11,16 @@ import {
   Wrapper,
 } from './EditCommonDataForm.styled';
 import { EditCommonDataFormProps } from './EditCommonDataForm.types';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import { useForm } from 'effector-forms';
 
 export const EditCommonDataForm: FC<EditCommonDataFormProps> = ({
-  apartment,
-  handleUpdateApartment,
   isUpdatingApartmentLoading,
+  form,
 }) => {
-  const { values, handleChange, handleSubmit } = useFormik({
-    initialValues: {
-      Square: apartment.square,
-      NumberOfLiving: apartment.numberOfLiving,
-      NormativeNumberOfLiving: apartment.normativeNumberOfLiving,
-      ColdWaterRiserCount: apartment.coldWaterRiserCount,
-      HotWaterRiserCount: apartment.hotWaterRiserCount,
-    },
-    onSubmit: (values) => {
-      handleUpdateApartment({
-        ApartmentId: apartment.id,
-        Square: Number(values.Square) || undefined,
-        NumberOfLiving: Number(values.NumberOfLiving) || undefined,
-        ColdWaterRiserCount: Number(values.ColdWaterRiserCount) || undefined,
-        HotWaterRiserCount: Number(values.HotWaterRiserCount) || undefined,
-        NormativeNumberOfLiving:
-          Number(values.NormativeNumberOfLiving) || undefined,
-      });
-    },
-    enableReinitialize: true,
-  });
+  const { fields, submit } = useForm(form);
 
-  const history = useHistory();
+  const navigate = useNavigate();
 
   return (
     <Wrapper>
@@ -49,8 +28,8 @@ export const EditCommonDataForm: FC<EditCommonDataFormProps> = ({
         <InputWithAddon
           type="number"
           placeholder="Введите площадь"
-          value={values.Square || undefined}
-          onChange={handleChange}
+          value={fields.Square.value || undefined}
+          onChange={(e) => fields.Square.onChange(e.target.value)}
           name="Square"
           addonAfter={
             <SquareAddonWrapper>
@@ -64,8 +43,10 @@ export const EditCommonDataForm: FC<EditCommonDataFormProps> = ({
           <Input
             type="number"
             placeholder="Введите количество"
-            value={values.ColdWaterRiserCount || undefined}
-            onChange={handleChange}
+            value={fields.ColdWaterRiserCount.value || undefined}
+            onChange={(e) =>
+              fields.ColdWaterRiserCount.onChange(e.target.value)
+            }
             name="ColdWaterRiserCount"
           />
         </FormItem>
@@ -73,8 +54,8 @@ export const EditCommonDataForm: FC<EditCommonDataFormProps> = ({
           <Input
             type="number"
             placeholder="Введите количество"
-            value={values.HotWaterRiserCount || undefined}
-            onChange={handleChange}
+            value={fields.HotWaterRiserCount.value || undefined}
+            onChange={(e) => fields.HotWaterRiserCount.onChange(e.target.value)}
             name="HotWaterRiserCount"
           />
         </FormItem>
@@ -82,8 +63,8 @@ export const EditCommonDataForm: FC<EditCommonDataFormProps> = ({
           <Input
             type="number"
             placeholder="Введите количество"
-            value={values.NumberOfLiving || undefined}
-            onChange={handleChange}
+            value={fields.NumberOfLiving.value || undefined}
+            onChange={(e) => fields.NumberOfLiving.onChange(e.target.value)}
             name="NumberOfLiving"
           />
         </FormItem>
@@ -91,20 +72,22 @@ export const EditCommonDataForm: FC<EditCommonDataFormProps> = ({
           <Input
             type="number"
             placeholder="Введите количество"
-            value={values.NormativeNumberOfLiving || undefined}
-            onChange={handleChange}
+            value={fields.NormativeNumberOfLiving.value || undefined}
+            onChange={(e) =>
+              fields.NormativeNumberOfLiving.onChange(e.target.value)
+            }
             name="NormativeNumberOfLiving"
           />
         </FormItem>
       </FieldsWrapper>
       <SpaceLine />
       <Footer>
-        <Button type="ghost" onClick={() => history.goBack()}>
+        <Button type="ghost" onClick={() => navigate(-1)}>
           Отмена
         </Button>
         <SaveButtonWrapper>
           <Button
-            onClick={() => handleSubmit()}
+            onClick={() => submit()}
             isLoading={isUpdatingApartmentLoading}
           >
             Сохранить

@@ -1,7 +1,7 @@
 import { SpaceLine } from 'ui-kit/SpaceLine';
-import { Tooltip } from 'antd';
-import moment from 'moment';
-import React, { FC, useState } from 'react';
+import { Tooltip } from 'ui-kit/shared/Tooltip';
+import dayjs from 'api/dayjs';
+import React, { FC, useMemo, useState } from 'react';
 import { GoBack } from 'ui-kit/shared/GoBack';
 import {
   BlockTitle,
@@ -18,20 +18,18 @@ import {
   СompetenceDiv,
 } from './EmployeeProfile.styled';
 import { EmployeeProfileProps } from './EmployeeProfile.types';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { sortUserRoles } from 'services/company/companyProfileService/view/CompanyProfile/Tabs/Staff/Staff.utils';
 import { usePhoneMask } from 'hooks/usePhoneMask';
 import { StaffStatus } from 'ui-kit/shared/StaffStatus/StaffStatus';
 import { ContextMenuButtonColor } from 'ui-kit/ContextMenuButton/ContextMenuButton.types';
-
-const { TabPane } = TabsSC;
 
 export const EmployeeProfile: FC<EmployeeProfileProps> = ({
   userData,
   handleOpenChangeStatusModal,
   handleOpenDeleteEmployeeModal,
 }) => {
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const userInitials = `${userData?.firstName || ''} ${
     userData?.middleName || ''
@@ -43,6 +41,14 @@ export const EmployeeProfile: FC<EmployeeProfileProps> = ({
   const rolesString = sortedRoles?.map(({ value }) => value).join(', ');
 
   const [currentTabKey, setTab] = useState('1');
+
+  const tabItems = useMemo(
+    () => [
+      { label: 'Общие данные', key: '1' },
+      { label: 'Статистика', key: '2' },
+    ],
+    [],
+  );
 
   return (
     <Wrapper>
@@ -58,7 +64,7 @@ export const EmployeeProfile: FC<EmployeeProfileProps> = ({
             {
               title: 'Редактировать информацию о сотруднике',
               onClick: () =>
-                history.push(
+                navigate(
                   `/companyProfile/editManagingFirmUser/${userData?.id}`,
                 ),
             },
@@ -74,10 +80,7 @@ export const EmployeeProfile: FC<EmployeeProfileProps> = ({
         <StaffStatus status={userData?.status?.type} />
       )}
 
-      <TabsSC activeKey={currentTabKey} onChange={setTab}>
-        <TabPane tab="Общие данные" key="1"></TabPane>
-        <TabPane tab="Статистика" key="2"></TabPane>
-      </TabsSC>
+      <TabsSC activeKey={currentTabKey} onChange={setTab} items={tabItems} />
 
       {currentTabKey === '1' && (
         <GridWrapper>
@@ -132,7 +135,7 @@ export const EmployeeProfile: FC<EmployeeProfileProps> = ({
               <FieldTitle>Дата начала работы</FieldTitle>
               <Field>
                 {(userData?.hireDate &&
-                  moment(userData?.hireDate).format('DD.MM.YYYY')) ||
+                  dayjs(userData?.hireDate).format('DD.MM.YYYY')) ||
                   'Нет данных'}
               </Field>
             </GridContainer>

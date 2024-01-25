@@ -2,7 +2,7 @@ import { axios } from 'api/axios';
 import { createMutation, createQuery } from '@farfetched/core';
 import { createEffect } from 'effector';
 import {
-  BuildingListResponsePagedList,
+  BuildingWithCoordinatesResponsePagedList,
   DistrictCreateRequest,
   DistrictResponse,
 } from 'api/types';
@@ -10,9 +10,9 @@ import { EffectFailDataAxiosError } from 'types';
 
 export const existingHousingStocksQuery = createQuery<
   void,
-  BuildingListResponsePagedList
+  BuildingWithCoordinatesResponsePagedList
 >({
-  handler: () => axios.get('Buildings'),
+  handler: () => axios.get('Buildings/Lite'),
 });
 
 export const existingDistrictsQuery = createQuery<

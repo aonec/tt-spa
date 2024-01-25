@@ -1,4 +1,5 @@
-import { createDomain, sample, split } from 'effector';
+import { createEffect, createEvent, createStore } from 'effector';
+import { sample, split } from 'effector';
 import { createGate } from 'effector-react';
 import {
   ApartmentResponse,
@@ -24,53 +25,43 @@ import { TasksPageSegment } from './view/TasksProfile/TasksProfile.types';
 import { addressSearchService } from 'services/addressSearchService/addressSearchService.models';
 import { addTaskFromDispatcherService } from '../addTaskFromDispatcherService';
 import { getAcceptableSearchParams } from './tasksProfileService.utils';
-
-const domain = createDomain('tasksProfileService');
+import { interval } from 'patronum';
 
 const TasksIsOpen = createGate();
 const InitialGate = createGate();
 
-const clearAddress = domain.createEvent();
-const clearFilters = domain.createEvent();
-const setPipeNodeId = domain.createEvent<{ pipeNodeId: string }>();
-const setTasksPageSegment = domain.createEvent<TasksPageSegment>();
-const setDeviceId = domain.createEvent<{ deviceId: string }>();
-const extendedSearchOpened = domain.createEvent();
-const extendedSearchClosed = domain.createEvent();
-const changeFiltersByGroupType = domain.createEvent<TaskGroupingFilter>();
-const changeGroupType = domain.createEvent<TaskGroupingFilter>();
-const changePageNumber = domain.createEvent<number>();
-const searchTasks = domain.createEvent<GetTasksListRequestPayload>();
+const clearAddress = createEvent();
+const clearFilters = createEvent();
+const setPipeNodeId = createEvent<{ pipeNodeId: string }>();
+const setTasksPageSegment = createEvent<TasksPageSegment>();
+const setDeviceId = createEvent<{ deviceId: string }>();
+const extendedSearchOpened = createEvent();
+const extendedSearchClosed = createEvent();
+const changeFiltersByGroupType = createEvent<TaskGroupingFilter>();
+const changeGroupType = createEvent<TaskGroupingFilter>();
+const changePageNumber = createEvent<number>();
+const searchTasks = createEvent<GetTasksListRequestPayload>();
 
 const SetCityGate = createGate<{ cities: string[] | null }>();
 
-const searchTasksFx = domain.createEffect<
-  GetTasksListRequestPayload | null,
-  TasksPagedList
->(getTasks);
+const getApartmentFx = createEffect<FiltersGatePayload, ApartmentResponse>(
+  fetchApartment,
+);
 
-const getApartmentFx = domain.createEffect<
-  FiltersGatePayload,
-  ApartmentResponse
->(fetchApartment);
-
-const $apartment = domain
-  .createStore<ApartmentResponse | null>(null)
+const $apartment = createStore<ApartmentResponse | null>(null)
   .on(getApartmentFx.doneData, (_, apartment) => apartment)
   .reset(clearAddress);
 
-const getHousingStockFx = domain.createEffect<
+const getHousingStockFx = createEffect<
   FiltersGatePayload,
   HousingStockResponse
 >(fetchHousingStock);
 
-const $housingStock = domain
-  .createStore<HousingStockResponse | null>(null)
+const $housingStock = createStore<HousingStockResponse | null>(null)
   .on(getHousingStockFx.doneData, (_, housingStock) => housingStock)
   .reset(clearAddress);
 
-const $searchState = domain
-  .createStore<GetTasksListRequestPayload>({})
+const $searchState = createStore<GetTasksListRequestPayload>({})
   .on(setPipeNodeId, (prev, { pipeNodeId }) => ({
     ...prev,
     PipeNodeId: Number(pipeNodeId),
@@ -101,30 +92,52 @@ const $searchState = domain
   }))
   .reset(clearFilters);
 
-const $tasksPagedData = domain
-  .createStore<TasksPagedList | null>(null)
-  .on(searchTasksFx.doneData, (_, tasksPaged) => tasksPaged);
+const startSearchTasks = createEvent();
+const searchTasksFx = createEffect<
+  GetTasksListRequestPayload | null,
+  TasksPagedList
+>(getTasks);
 
-const $isExtendedSearchOpen = domain
-  .createStore(false)
+const { tick: searchTasksTrigger } = interval({
+  start: startSearchTasks,
+  timeout: 40000,
+  stop: $searchState.updates,
+  leading: true,
+});
+
+sample({
+  source: $searchState,
+  clock: [searchTasksTrigger],
+  filter: (searchState) => Boolean(searchState.City && searchState.GroupType),
+  target: searchTasksFx,
+});
+
+sample({
+  source: InitialGate.state,
+  clock: $searchState,
+  filter: (isOpen) => Boolean(isOpen),
+  target: startSearchTasks,
+});
+
+const $tasksPagedData = createStore<TasksPagedList | null>(null).on(
+  searchTasksFx.doneData,
+  (_, tasksPaged) => tasksPaged,
+);
+
+const $isExtendedSearchOpen = createStore(false)
   .on(extendedSearchOpened, () => true)
   .reset(extendedSearchClosed);
 
-const $tasksPageSegment = domain
-  .createStore<TasksPageSegment>('list')
-  .on(setTasksPageSegment, (_, segment) => segment);
+const $tasksPageSegment = createStore<TasksPageSegment>('list').on(
+  setTasksPageSegment,
+  (_, segment) => segment,
+);
 
 const $isLoading = searchTasksFx.pending;
 
 sample({
   clock: TasksIsOpen.close,
   target: clearFilters,
-});
-
-sample({
-  clock: $searchState,
-  filter: (searchState) => Boolean(searchState.City && searchState.GroupType),
-  target: searchTasksFx,
 });
 
 split({

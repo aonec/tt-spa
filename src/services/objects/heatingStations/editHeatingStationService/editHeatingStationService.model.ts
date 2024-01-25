@@ -1,5 +1,6 @@
+import { createEffect, createEvent, createStore } from 'effector';
 import { message } from 'antd';
-import { createDomain, forward, guard, sample } from 'effector';
+import { sample } from 'effector';
 import { HeatingStationResponse, UpdateHeatingStationRequest } from 'api/types';
 import { addressSearchService } from 'services/addressSearchService/addressSearchService.models';
 import { EffectFailDataAxiosError } from 'types';
@@ -8,26 +9,23 @@ import { HeatingStation } from '../NewHeatingStationForm/NewHeatingStationForm.t
 import { editHeatingStation } from './editHeatingStationService.api';
 import { requestParams } from './editHeatingStationService.types';
 
-const domain = createDomain('editHeatingStationService');
-
-const handleEditHeatingStation = domain.createEvent<{
+const handleEditHeatingStation = createEvent<{
   id: string;
   data: HeatingStation;
 }>();
 
-const handleOpenModal = domain.createEvent();
-const handleCloseModal = domain.createEvent();
+const handleOpenModal = createEvent();
+const handleCloseModal = createEvent();
 
-const currentHeatingStatitonDataCapture =
-  domain.createEvent<HeatingStationResponse>();
+const currentHeatingStatitonDataCapture = createEvent<HeatingStationResponse>();
 
-const editHeatingStationFx = domain.createEffect<
+const editHeatingStationFx = createEffect<
   requestParams,
   HeatingStationResponse | null,
   EffectFailDataAxiosError
 >(editHeatingStation);
 
-guard({
+sample({
   clock: sample({
     clock: handleEditHeatingStation,
     fn: ({ id, data }) => {
@@ -54,21 +52,19 @@ editHeatingStationFx.failData.watch((error) =>
   message.error(error.response.data.error.Text),
 );
 
-forward({
-  from: editHeatingStationFx.doneData,
-  to: handleCloseModal,
+sample({
+  clock: editHeatingStationFx.doneData,
+  target: handleCloseModal,
 });
 
 const $existingCities = addressSearchService.outputs.$existingCities;
 const $existingStreets = addressSearchService.outputs.$existingStreets;
 
-const $isModalOpen = domain
-  .createStore<boolean>(false)
+const $isModalOpen = createStore<boolean>(false)
   .on(handleOpenModal, () => true)
   .on(handleCloseModal, () => false);
 
-const $currentHeatingStation = domain
-  .createStore<HeatingStationResponse | null>(null)
+const $currentHeatingStation = createStore<HeatingStationResponse | null>(null)
   .on(currentHeatingStatitonDataCapture, (_, id) => id)
   .reset(handleCloseModal);
 

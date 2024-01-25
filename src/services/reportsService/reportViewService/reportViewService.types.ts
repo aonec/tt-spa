@@ -13,6 +13,7 @@ import {
   EmployeeReportDatePeriodType,
   EmployeeReportType,
 } from './view/ReportViewPage/ReportFiltrationForm/ReportFiltrationForm.types';
+import dayjs from 'api/dayjs';
 
 export enum ReportDatePeriod {
   LastDay = 'LastDay',
@@ -29,15 +30,16 @@ export type ReportFiltrationFormValues = {
   resources: EResourceType[];
   actResources: EActResourceType[];
   reportOption: null | EIndividualDeviceReportOption;
-  from: null | moment.Moment;
-  to: null | moment.Moment;
+  from: null | dayjs.Dayjs;
+  to: null | dayjs.Dayjs;
   reportDatePeriod: null | ReportDatePeriod;
   closingReasons: EClosingReason[];
   showOnlyDuplicates: boolean;
   withoutApartmentsWithOpenDevicesByResources: boolean;
   employeeReportType: EmployeeReportType | null;
   employeeReportDatePeriodType: EmployeeReportDatePeriodType | null;
-  employeeReportDate: moment.Moment | null;
+  employeeReportDate: dayjs.Dayjs | null;
+  reportType?: ReportType;
 };
 
 export type ReportPayload = {

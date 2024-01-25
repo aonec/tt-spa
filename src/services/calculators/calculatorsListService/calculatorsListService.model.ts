@@ -1,21 +1,21 @@
-import { createDomain, forward, sample } from 'effector';
+import { createEffect, createEvent, createStore } from 'effector';
+import { sample } from 'effector';
 import { createGate } from 'effector-react';
 import { CalculatorIntoHousingStockResponse } from 'api/types';
 import { getCalculatorsList } from './calculatorsListService.api';
 
-const domain = createDomain('calculatorsListService');
-
 const CalculatorsGate = createGate<{ buildingId: number }>();
 
-const refetchCalculators = domain.createEvent();
+const refetchCalculators = createEvent();
 
-const fetchCalculatorsFx = domain.createEffect<
+const fetchCalculatorsFx = createEffect<
   number,
   CalculatorIntoHousingStockResponse[]
 >(getCalculatorsList);
 
-const $calculatorsList = domain
-  .createStore<CalculatorIntoHousingStockResponse[] | null>(null)
+const $calculatorsList = createStore<
+  CalculatorIntoHousingStockResponse[] | null
+>(null)
   .on(fetchCalculatorsFx.doneData, (_, data) => data)
   .reset(fetchCalculatorsFx.failData);
 
@@ -33,9 +33,9 @@ sample({
   target: fetchCalculatorsFx,
 });
 
-forward({
-  from: CalculatorsGate.state.map(({ buildingId }) => buildingId),
-  to: fetchCalculatorsFx,
+sample({
+  clock: CalculatorsGate.state.map(({ buildingId }) => buildingId),
+  target: fetchCalculatorsFx,
 });
 
 export const calculatorsListService = {

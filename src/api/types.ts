@@ -15,13 +15,10 @@ export interface AddApartmentActRequest {
   actType: EActType;
   registryNumber?: string | null;
   actResourceType: EActResourceType;
-
   /** @format date-time */
   actJobDate: string;
-
   /** @format int32 */
   apartmentId: number;
-
   /** @format int32 */
   documentId?: number | null;
 }
@@ -39,16 +36,13 @@ export interface AddNodeDocumentsRequest {
 export interface AddOrUpdateHeatingSeasonForHouseManagementRequest {
   /** @format date-time */
   startDate?: string;
-
   /** @format date-time */
   endDate?: string | null;
   houseCategory?: EHouseCategory | null;
   livingHouseType?: ELivingHouseType | null;
   nonResidentialHouseType?: ENonResidentialHouseType | null;
-
   /** @format int32 */
   documentId?: number;
-
   /** @format uuid */
   houseManagementId?: string;
   housingStockIds?: number[] | null;
@@ -58,19 +52,14 @@ export interface AddOrUpdateNodeWorkingRangeRequest {
   season: ENodeWorkingRangeSeason;
   nodeResourceType: EResourceType;
   typeWorkingRange: ENodeWorkingRangeType;
-
   /** @format int32 */
   buildingId?: number | null;
-
   /** @format uuid */
   housingManagementId?: string | null;
-
   /** @format int32 */
   nodeId?: number | null;
-
   /** @format float */
   min?: number | null;
-
   /** @format float */
   max?: number | null;
 }
@@ -82,7 +71,6 @@ export interface AddOrganizationModel {
   corpus?: string | null;
   houseNumber: string;
   timeZone: TimeSpan;
-
   /** @format uuid */
   responsibilityZoneId?: string | null;
   phoneNumber?: string | null;
@@ -90,7 +78,7 @@ export interface AddOrganizationModel {
 }
 
 export interface AddOrganizationUserModel {
-  email: string;
+  email?: string | null;
   lastName: string;
   firstName: string;
   middleName?: string | null;
@@ -104,10 +92,8 @@ export interface AddOrganizationUserWorkingStatusRequest {
   /** @format int32 */
   userId?: number;
   type?: EOrganizationUserWorkingStatusType;
-
   /** @format date-time */
   startDate?: string | null;
-
   /** @format date-time */
   endDate?: string | null;
   reassignments?: OrganizationUserTaskReassignment[] | null;
@@ -115,7 +101,6 @@ export interface AddOrganizationUserWorkingStatusRequest {
 
 export interface AddOrganizationUsersModel {
   addOrganizationRequest?: AddOrganizationModel | null;
-
   /** @format int32 */
   organizationId?: number | null;
   addOrganizationUserRequests: AddOrganizationUserModel[];
@@ -124,6 +109,7 @@ export interface AddOrganizationUsersModel {
 export interface AddressResponse {
   city: string | null;
   street: string | null;
+  /** @deprecated */
   housingStockNumber: string | null;
   buildingNumber: string | null;
 }
@@ -148,20 +134,16 @@ export interface AllNodeWorkingRangeResponseSuccessApiResponse {
 export interface ApartmentActResponse {
   /** @format int32 */
   id: number;
-
   /** @format date-time */
   actDateTime: string;
   actType: EActType;
   registryNumber: string | null;
   actResourceType: EActResourceType;
-
   /** @format date-time */
   actJobDate: string;
-
   /** @format date-time */
   deleteDateTime: string | null;
   apartment: FullAddressResponse | null;
-
   /** @format int32 */
   taskId: number | null;
   document: DocumentLiteResponse | null;
@@ -170,21 +152,16 @@ export interface ApartmentActResponse {
 export interface ApartmentActResponsePagedList {
   /** @format int32 */
   totalItems: number;
-
   /** @format int32 */
   pageNumber: number;
-
   /** @format int32 */
   pageSize: number;
-
   /** @format int32 */
   totalPages: number;
   hasPreviousPage: boolean;
   hasNextPage: boolean;
-
   /** @format int32 */
   nextPageNumber: number;
-
   /** @format int32 */
   previousPageNumber: number;
   items: ApartmentActResponse[] | null;
@@ -215,13 +192,11 @@ export interface ApartmentActsConstructedReportRowResponse {
   houseNumber: string | null;
   corpus: string | null;
   apartmentNumber: string | null;
-
   /** @format date-time */
   actDate: string;
   registryNumber: string | null;
   actType: EActType;
   resourceType: EActResourceType;
-
   /** @format date-time */
   actJobDate: string;
 }
@@ -246,21 +221,16 @@ export interface ApartmentByAddressFilterResponse {
 export interface ApartmentByAddressFilterResponsePagedList {
   /** @format int32 */
   totalItems: number;
-
   /** @format int32 */
   pageNumber: number;
-
   /** @format int32 */
   pageSize: number;
-
   /** @format int32 */
   totalPages: number;
   hasPreviousPage: boolean;
   hasNextPage: boolean;
-
   /** @format int32 */
   nextPageNumber: number;
-
   /** @format int32 */
   previousPageNumber: number;
   items: ApartmentByAddressFilterResponse[] | null;
@@ -273,14 +243,11 @@ export interface ApartmentByAddressFilterResponsePagedListSuccessApiResponse {
 export interface ApartmentCheckResponse {
   /** @format int32 */
   id: number;
-
   /** @format date-time */
   checkingDate: string;
   checkType: ECheckType;
-
   /** @format int32 */
   taskId: number | null;
-
   /** @format int32 */
   apartmentId: number;
   registryNumber: string | null;
@@ -295,21 +262,16 @@ export interface ApartmentCheckResponseListSuccessApiResponse {
 export interface ApartmentCheckResponsePagedList {
   /** @format int32 */
   totalItems: number;
-
   /** @format int32 */
   pageNumber: number;
-
   /** @format int32 */
   pageSize: number;
-
   /** @format int32 */
   totalPages: number;
   hasPreviousPage: boolean;
   hasNextPage: boolean;
-
   /** @format int32 */
   nextPageNumber: number;
-
   /** @format int32 */
   previousPageNumber: number;
   items: ApartmentCheckResponse[] | null;
@@ -327,23 +289,17 @@ export interface ApartmentCreateRequest {
   /** @format int32 */
   housingStockId: number;
   number: string;
-
   /** @format int32 */
   floor?: number | null;
-
   /** @format float */
   square?: number | null;
-
   /** @format int32 */
   numberOfLiving?: number | null;
-
   /** @format int32 */
   normativeNumberOfLiving?: number | null;
   comment?: string | null;
-
   /** @format int32 */
   coldWaterRiserCount?: number | null;
-
   /** @format int32 */
   hotWaterRiserCount?: number | null;
   homeownerAccount: HomeownerAccountCreateUnattachedRequest;
@@ -352,42 +308,34 @@ export interface ApartmentCreateRequest {
 export interface ApartmentListResponse {
   /** @format int32 */
   id: number;
+  housingStock: BuildingShortResponse | null;
   apartmentNumber: string | null;
   homeownerName: string | null;
-
   /** @format int32 */
   homeownersCount: number | null;
   personalAccountNumber: string | null;
   status: EApartmentStatus;
   tasksState: ETasksState;
-
   /** @format int32 */
   numberOfTasks: number;
-
   /** @format float */
   square: number | null;
   comment: string | null;
-  housingStock: BuildingListResponse | null;
 }
 
 export interface ApartmentListResponsePagedList {
   /** @format int32 */
   totalItems: number;
-
   /** @format int32 */
   pageNumber: number;
-
   /** @format int32 */
   pageSize: number;
-
   /** @format int32 */
   totalPages: number;
   hasPreviousPage: boolean;
   hasNextPage: boolean;
-
   /** @format int32 */
   nextPageNumber: number;
-
   /** @format int32 */
   previousPageNumber: number;
   items: ApartmentListResponse[] | null;
@@ -408,42 +356,31 @@ export interface ApartmentListStatusResponseSuccessApiResponse {
 export interface ApartmentResponse {
   /** @format int32 */
   id: number;
-
   /** @format double */
   coefficient: number | null;
   housingStock: HousingStockListResponse | null;
   comment: string | null;
   apartmentNumber: string | null;
   status: EApartmentStatus;
-
   /** @format float */
   square: number | null;
-
   /** @format uuid */
   mainHomeownerAccountId: string | null;
   homeownerAccounts: HomeownerAccountListResponse[] | null;
-
   /** @format int32 */
   numberOfLiving: number | null;
-
   /** @format int32 */
   normativeNumberOfLiving: number | null;
-
   /** @format int32 */
   floor: number | null;
-
   /** @format int32 */
   coldWaterRiserCount: number | null;
-
   /** @format int32 */
   hotWaterRiserCount: number | null;
-
   /** @format date-time */
   stoppedFrom: string | null;
-
   /** @format date-time */
   stoppedTo: string | null;
-
   /** @format int32 */
   deniedPermissionsCount: number | null;
   activeTaskIds: number[] | null;
@@ -460,10 +397,8 @@ export interface ApartmentStatusResponse {
 
 export interface ApartmentStatusSetRequest {
   status: EApartmentStatus;
-
   /** @format date-time */
   fromDate?: string | null;
-
   /** @format date-time */
   toDate?: string | null;
   documentIds?: number[] | null;
@@ -472,20 +407,15 @@ export interface ApartmentStatusSetRequest {
 export interface ApartmentUpdateRequest {
   /** @format double */
   square?: number | null;
-
   /** @format int32 */
   numberOfLiving?: number | null;
-
   /** @format int32 */
   normativeNumberOfLiving?: number | null;
-
   /** @format uuid */
   mainHomeownerAccountId?: string | null;
   comment?: string | null;
-
   /** @format int32 */
   coldWaterRiserCount?: number | null;
-
   /** @format int32 */
   hotWaterRiserCount?: number | null;
 }
@@ -493,13 +423,10 @@ export interface ApartmentUpdateRequest {
 export interface AppointmentAddress {
   /** @format int32 */
   houseId?: number;
-
   /** @format int32 */
   apartmentId?: number;
-
   /** @format double */
   latitude?: number | null;
-
   /** @format double */
   longitude?: number | null;
   city?: string | null;
@@ -512,10 +439,8 @@ export interface AppointmentAddress {
 export interface AppointmentCounterResponse {
   /** @format date-time */
   date: string;
-
   /** @format int32 */
   distributed: number;
-
   /** @format int32 */
   notDistributed: number;
 }
@@ -533,10 +458,8 @@ export interface AppointmentCreateRequest {
   apartmentId: number;
   homeownerFullName: string;
   homeownerPhone: string;
-
   /** @format date-time */
   date: string;
-
   /**
    * @format int32
    * @min 1
@@ -550,25 +473,19 @@ export interface AppointmentResponse {
   /** @format uuid */
   id: string;
   address: AppointmentAddress | null;
-
   /** @format uuid */
   controllerId: string | null;
-
   /** @format uuid */
   assignmentId: string | null;
   homeownerFullName: string | null;
   homeownerPhone: string | null;
-
   /** @format date-time */
   date: string;
-
   /** @format int32 */
   sealCountPlan: number;
   comment: string | null;
-
   /** @format date-time */
   createDateTimeUtc: string;
-
   /** @format date-time */
   modifiedDateTimeUtc: string | null;
 }
@@ -584,10 +501,8 @@ export interface AppointmentResponseSuccessApiResponse {
 export interface AppointmentUpdateRequest {
   homeownerFullName?: string | null;
   homeownerPhone?: string | null;
-
   /** @format date-time */
   date?: string | null;
-
   /**
    * @format int32
    * @min 1
@@ -599,7 +514,6 @@ export interface AppointmentUpdateRequest {
 
 export interface AppointmentsSetRequest {
   appointmentIds: string[];
-
   /** @format uuid */
   controllerId: string;
 }
@@ -631,10 +545,8 @@ export enum ArchivesDataGroupType {
 export interface ArchivesDataGroupValue {
   /** @format date-time */
   time?: string;
-
   /** @format date-time */
   timeUtc?: string;
-
   /** @format double */
   value?: number;
   hasFault?: boolean;
@@ -643,13 +555,10 @@ export interface ArchivesDataGroupValue {
 export interface ArchivesDataModel {
   reportType?: string | null;
   resource?: string | null;
-
   /** @format int32 */
   systemPipeCount?: number;
-
   /** @format double */
   deltaMassAccuracy?: number | null;
-
   /** @format double */
   averageDeltaMass?: number | null;
   data?: ArchivesDataGroup[] | null;
@@ -658,16 +567,12 @@ export interface ArchivesDataModel {
 export interface AssignmentResponse {
   /** @format uuid */
   id: string;
-
   /** @format date-time */
   date: string;
-
   /** @format date-time */
   createDateTimeUtc: string;
-
   /** @format uuid */
   controllerId: string;
-
   /** @format int32 */
   appointmentsCount: number;
   creatingUser: CreatingUser | null;
@@ -684,16 +589,12 @@ export interface AssignmentResponseSuccessApiResponse {
 export interface BaseIndividualDeviceReadingsCreateRequest {
   /** @format date-time */
   readingDate?: string | null;
-
   /** @format double */
   value1: number;
-
   /** @format double */
   value2?: number | null;
-
   /** @format double */
   value3?: number | null;
-
   /** @format double */
   value4?: number | null;
 }
@@ -714,6 +615,7 @@ export interface BuildingAddress {
 
 export interface BuildingAddressCreateRequest {
   district?: string | null;
+  /** @deprecated */
   city?: string | null;
   street: string;
   number: string;
@@ -723,7 +625,6 @@ export interface BuildingAddressCreateRequest {
 export interface BuildingAddressItemResponse {
   /** @format int32 */
   id: number;
-
   /** @format int32 */
   housingStockId: number;
   municipalDistrict: string | null;
@@ -773,15 +674,10 @@ export interface BuildingFiltersResponseSuccessApiResponse {
 export interface BuildingListResponse {
   /** @format int32 */
   id: number;
-
   /** @format int32 */
   managingFirmId: number;
-  inspectorId: number | null;
-  inspectedDay: string | null;
-
   /** @format int32 */
   numberOfTasks: number | null;
-
   /** @format int32 */
   numberOfApartments: number;
   houseCategory: EHouseCategory;
@@ -793,21 +689,16 @@ export interface BuildingListResponse {
 export interface BuildingListResponsePagedList {
   /** @format int32 */
   totalItems: number;
-
   /** @format int32 */
   pageNumber: number;
-
   /** @format int32 */
   pageSize: number;
-
   /** @format int32 */
   totalPages: number;
   hasPreviousPage: boolean;
   hasNextPage: boolean;
-
   /** @format int32 */
   nextPageNumber: number;
-
   /** @format int32 */
   previousPageNumber: number;
   items: BuildingListResponse[] | null;
@@ -820,7 +711,6 @@ export interface BuildingListResponsePagedListSuccessApiResponse {
 export interface BuildingShortResponse {
   /** @format int32 */
   id: number;
-
   /** @format int32 */
   managingFirmId: number;
   houseCategory: EHouseCategory;
@@ -830,12 +720,29 @@ export interface BuildingShortResponse {
 export interface BuildingWithCoordinatesResponse {
   /** @format int32 */
   id: number;
-
   /** @format int32 */
   managingFirmId: number;
   houseCategory: EHouseCategory;
   address: BuildingAddressResponse | null;
   coordinates: PointResponse | null;
+}
+
+export interface BuildingWithCoordinatesResponsePagedList {
+  /** @format int32 */
+  totalItems: number;
+  /** @format int32 */
+  pageNumber: number;
+  /** @format int32 */
+  pageSize: number;
+  /** @format int32 */
+  totalPages: number;
+  hasPreviousPage: boolean;
+  hasNextPage: boolean;
+  /** @format int32 */
+  nextPageNumber: number;
+  /** @format int32 */
+  previousPageNumber: number;
+  items: BuildingWithCoordinatesResponse[] | null;
 }
 
 export interface BuildingWithTasksResponse {
@@ -855,10 +762,8 @@ export interface CalculatorCommentResponse {
   /** @format int32 */
   id: number;
   text: string | null;
-
   /** @format date-time */
   lastModifiedDateTime: string;
-
   /** @format date-time */
   creationDateTime: string;
   lastModifiedUser: LastModifiedUserResponse | null;
@@ -901,7 +806,6 @@ export interface CalculatorIntoHousingStockResponse {
   id: number;
   serialNumber: string | null;
   model: string | null;
-
   /** @format int32 */
   calculatorInfoId: number | null;
 }
@@ -916,36 +820,27 @@ export interface CalculatorIntoNodeResponse {
   model: string | null;
   serialNumber: string | null;
   sealNumber: string | null;
-
   /** @format date-time */
   sealInstallationDate: string | null;
-
   /** @format int32 */
   managementFirmId: number | null;
-
   /** @format date-time */
   lastCheckingDate: string | null;
-
   /** @format date-time */
   futureCheckingDate: string | null;
-
   /** @format date-time */
   openingDate: string | null;
-
   /** @format date-time */
   closingDate: string | null;
   closingReason: EClosingReason;
   hasActiveTasks: boolean | null;
-
   /** @format int32 */
   bitDepth: number | null;
-
   /** @format double */
   scaleFactor: number | null;
   connection: MeteringDeviceConnection | null;
   isConnected: boolean | null;
   address: BuildingShortResponse | null;
-
   /** @format int32 */
   infoId: number | null;
 }
@@ -956,25 +851,19 @@ export interface CalculatorListResponse {
   model: string | null;
   serialNumber: string | null;
   sealNumber: string | null;
-
   /** @format date-time */
   sealInstallationDate: string | null;
   managementFirm: OrganizationResponse | null;
-
   /** @format date-time */
   lastCheckingDate: string | null;
-
   /** @format date-time */
   futureCheckingDate: string | null;
-
   /** @format date-time */
   closingDate: string | null;
   closingReason: EClosingReason;
   hasActiveTasks: boolean;
-
   /** @format int32 */
   bitDepth: number | null;
-
   /** @format double */
   scaleFactor: number | null;
   connection: MeteringDeviceConnection | null;
@@ -982,7 +871,6 @@ export interface CalculatorListResponse {
   address: BuildingShortResponse | null;
   nodes: PipeNodeIntoCalculatorResponse[] | null;
   documents: DocumentLiteResponse[] | null;
-
   /** @format int32 */
   numberOfTasks: number | null;
   comment: CalculatorCommentResponse | null;
@@ -991,21 +879,16 @@ export interface CalculatorListResponse {
 export interface CalculatorListResponsePagedList {
   /** @format int32 */
   totalItems: number;
-
   /** @format int32 */
   pageNumber: number;
-
   /** @format int32 */
   pageSize: number;
-
   /** @format int32 */
   totalPages: number;
   hasPreviousPage: boolean;
   hasNextPage: boolean;
-
   /** @format int32 */
   nextPageNumber: number;
-
   /** @format int32 */
   previousPageNumber: number;
   items: CalculatorListResponse[] | null;
@@ -1021,41 +904,31 @@ export interface CalculatorResponse {
   model: string | null;
   serialNumber: string | null;
   sealNumber: string | null;
-
   /** @format date-time */
   sealInstallationDate: string | null;
-
   /** @format int32 */
   managementFirmId: number | null;
-
   /** @format date-time */
   lastCheckingDate: string | null;
-
   /** @format date-time */
   futureCheckingDate: string | null;
-
   /** @format date-time */
   openingDate: string | null;
-
   /** @format date-time */
   closingDate: string | null;
   closingReason: EClosingReason;
   hasActiveTasks: boolean | null;
-
   /** @format int32 */
   bitDepth: number | null;
-
   /** @format double */
   scaleFactor: number | null;
   connection: MeteringDeviceConnection | null;
   isConnected: boolean | null;
   address: BuildingShortResponse | null;
-
   /** @format int32 */
   infoId: number | null;
   nodes: PipeNodeIntoCalculatorResponse[] | null;
   documents: DocumentResponse[] | null;
-
   /** @format int32 */
   numberOfTasks: number | null;
   comment: CalculatorCommentResponse | null;
@@ -1068,28 +941,20 @@ export interface CalculatorResponseSuccessApiResponse {
 export interface CallCenterWorkingConstructedReportResponse {
   managingFirm: string | null;
   houseManagement: string | null;
-
   /** @format int32 */
   coldWaterSupplyPlan: number;
-
   /** @format int32 */
   coldWaterSupplyValue: number;
-
   /** @format int32 */
   hotWaterSupplyPlan: number;
-
   /** @format int32 */
   hotWaterSupplyValue: number;
-
   /** @format int32 */
   electricityPlan: number;
-
   /** @format int32 */
   electricityValue: number;
-
   /** @format int32 */
   heatPlan: number;
-
   /** @format int32 */
   heatValue: number;
 }
@@ -1098,22 +963,12 @@ export interface CallCenterWorkingConstructedReportResponseIEnumerableSuccessApi
   successResponse: CallCenterWorkingConstructedReportResponse[] | null;
 }
 
-export interface CheckCurrentTransformerRequest {
-  /** @format date-time */
-  currentCheckingDate: string;
-
-  /** @format date-time */
-  futureCheckingDate: string;
-}
-
 export interface CheckDeviceRequest {
   /** @format int32 */
   deviceId: number;
   documentsIds?: number[] | null;
-
   /** @format date-time */
   currentCheckingDate: string;
-
   /** @format date-time */
   futureCheckingDate: string;
 }
@@ -1121,42 +976,46 @@ export interface CheckDeviceRequest {
 export interface CheckIndividualDeviceRequest {
   /** @format date-time */
   currentCheckingDate: string;
-
   /** @format date-time */
   futureCheckingDate: string;
   readingsBeforeCheck?: SwitchIndividualDeviceReadingsCreateRequest[] | null;
   readingsAfterCheck?: SwitchIndividualDeviceReadingsCreateRequest[] | null;
 }
 
-export interface CloseCurrentTransformerRequest {
-  /** @format date-time */
-  closingDate: string;
-  documentIds?: number[] | null;
-}
-
 export interface CloseDeviceRequest {
   /** @format int32 */
   deviceId: number;
   documentsIds?: number[] | null;
-
-  /** @format date-time */
+  /**
+   * @deprecated
+   * @format date-time
+   */
   closingDate?: string | null;
+  /** @format int32 */
+  closingMonth?: number | null;
+  /** @format int32 */
+  closingYear?: number | null;
   closingReason?: EClosingReason | null;
 }
 
 export interface CloseIndividualDeviceRequest {
-  /** @format date-time */
+  /**
+   * @deprecated
+   * @format date-time
+   */
   closingDate?: string | null;
+  /** @format int32 */
+  closingMonth?: number | null;
+  /** @format int32 */
+  closingYear?: number | null;
   closingReason?: EClosingReason | null;
   documentsIds?: number[] | null;
 }
 
 export interface ClosedDeviceOnOneOfRisersConstructedReportResponse {
   status: EConstructedReportDeviceStatus;
-
   /** @format date-time */
   checkingDate: string | null;
-
   /** @format date-time */
   closingDate: string | null;
   closingReason: EClosingReason | null;
@@ -1164,19 +1023,19 @@ export interface ClosedDeviceOnOneOfRisersConstructedReportResponse {
 
 export interface ClosedDevicesConstructedReportResponse {
   status: EConstructedReportDeviceStatus;
-
   /** @format date-time */
   checkingDate: string | null;
-
   /** @format date-time */
   closingDate: string | null;
   closingReason: EClosingReason | null;
+  homeownerPhoneNumbers: string[] | null;
+  /** @deprecated */
+  phoneNumber: string | null;
 }
 
 export interface CommunicationPipeForAddingDeviceListResponse {
   /** @format int32 */
   nodeId: number;
-
   /** @format int32 */
   entryNumber: number | null;
   magistralType: EMagistralType;
@@ -1190,7 +1049,6 @@ export interface CommunicationPipeForAddingDeviceListResponseSuccessApiResponse 
 export interface CommunicationPipeForAddingDeviceResponse {
   /** @format int32 */
   id: number;
-
   /** @format int32 */
   number: number;
 }
@@ -1198,11 +1056,9 @@ export interface CommunicationPipeForAddingDeviceResponse {
 export interface CommunicationPipeLiteResponse {
   /** @format int32 */
   id: number;
-
   /** @format int32 */
   number: number;
   magistral: string | null;
-
   /** @format int32 */
   diameter: number | null;
 }
@@ -1210,14 +1066,11 @@ export interface CommunicationPipeLiteResponse {
 export interface CommunicationPipeResponse {
   /** @format int32 */
   id: number;
-
   /** @format int32 */
   number: number;
-
   /** @format int32 */
   entryNumber: number | null;
   magistral: string | null;
-
   /** @format int32 */
   diameter: number | null;
   devices: PipeHousingMeteringDeviceListResponse[] | null;
@@ -1225,18 +1078,14 @@ export interface CommunicationPipeResponse {
 
 export interface ComposeGroupReportRequest {
   reportType?: EReportType;
-
   /** @format date-time */
   from?: string | null;
-
   /** @format date-time */
   to?: string | null;
   reportFormat?: EReportFormat;
   fileName: string;
-
   /** @format uuid */
   groupReportId?: string | null;
-
   /** @format uuid */
   houseManagementId?: string | null;
   nodeResourceTypes?: EResourceType[] | null;
@@ -1245,27 +1094,25 @@ export interface ComposeGroupReportRequest {
 
 export interface ConfirmRequest {
   token: string;
+  /** @minLength 6 */
   password: string;
 }
 
 export interface ConsumptionRateResponse {
   /** @format double */
   minimumConsumptionRatePerPerson: number | null;
-
   /** @format double */
   minimumConsumptionRate: number | null;
-
   /** @format double */
   minimumAverageConsumptionOverPastThreeMonth: number | null;
-
   /** @format double */
   maximumConsumptionRate: number | null;
 }
 
 export interface ContractorCreateRequest {
+  /** @minLength 2 */
   name?: string | null;
   cellphone?: string | null;
-
   /** @format email */
   email?: string | null;
 }
@@ -1281,21 +1128,16 @@ export interface ContractorListResponse {
 export interface ContractorListResponsePagedList {
   /** @format int32 */
   totalItems: number;
-
   /** @format int32 */
   pageNumber: number;
-
   /** @format int32 */
   pageSize: number;
-
   /** @format int32 */
   totalPages: number;
   hasPreviousPage: boolean;
   hasNextPage: boolean;
-
   /** @format int32 */
   nextPageNumber: number;
-
   /** @format int32 */
   previousPageNumber: number;
   items: ContractorListResponse[] | null;
@@ -1318,9 +1160,9 @@ export interface ContractorResponseSuccessApiResponse {
 }
 
 export interface ContractorUpdateRequest {
+  /** @minLength 2 */
   name?: string | null;
   cellphone?: string | null;
-
   /** @format email */
   email?: string | null;
 }
@@ -1359,7 +1201,6 @@ export interface CreateApartmentCheckRequest {
   /** @format date-time */
   checkingDate?: string;
   checkType?: ECheckType;
-
   /** @format int32 */
   documentId: number;
   registryNumber?: string | null;
@@ -1369,31 +1210,23 @@ export interface CreateApartmentCheckRequest {
 export interface CreateCalculatorRequest {
   serialNumber: string;
   sealNumber?: string | null;
-
   /** @format date-time */
   sealInstallationDate?: string | null;
-
   /** @format date-time */
   lastCheckingDate?: string | null;
-
   /** @format date-time */
   futureCheckingDate?: string | null;
   documentsIds?: number[] | null;
-
   /** @format int32 */
   bitDepth?: number | null;
-
   /** @format double */
   scaleFactor?: number | null;
-
   /** @format date-time */
   openingDate?: string | null;
   connection?: MeteringDeviceConnection | null;
   isConnected?: boolean;
-
   /** @format int32 */
   housingStockId: number;
-
   /** @format int32 */
   infoId: number;
   model?: string | null;
@@ -1403,98 +1236,45 @@ export interface CreateCommunicationPipeRequest {
   /** @format int32 */
   number?: number;
   magistral?: EMagistralType;
-
   /** @format int32 */
   diameter?: number;
   devices?: CreatePipeHousingMeteringDeviceInNodeRequest[] | null;
 }
 
-export interface CreateCurrentTransformerRequest {
-  /** @format date-time */
-  installationDate?: string | null;
-
-  /** @format int32 */
-  manufactureYear?: number;
-
-  /** @format int32 */
-  stateVerificationYear?: number;
-  stateVerificationQuarter?: EYearQuarter;
-
-  /** @format int32 */
-  stateVerificationIntervalYears?: number;
-
-  /** @format int32 */
-  nextStateVerificationYear?: number;
-  typeName?: string | null;
-  phase?: EPhaseType;
-  number?: string | null;
-
-  /** @format int32 */
-  primaryCurrentRatingAmperes?: number;
-
-  /** @format int32 */
-  secondaryCurrentRatingAmperes?: number;
-
-  /** @format int32 */
-  coefficient?: number;
-
-  /** @format int32 */
-  nodeId?: number | null;
-  documentIds?: number[] | null;
-  sealNumber?: string | null;
-
-  /** @format date-time */
-  sealInstallationDate?: string | null;
-}
-
 export interface CreateElectricHousingMeteringDeviceRequest {
   serialNumber: string;
   sealNumber?: string | null;
-
   /** @format date-time */
   sealInstallationDate?: string | null;
-
   /** @format date-time */
   lastCheckingDate?: string | null;
-
   /** @format date-time */
   futureCheckingDate?: string | null;
   documentsIds?: number[] | null;
-
   /** @format int32 */
   bitDepth?: number | null;
-
   /** @format double */
   scaleFactor?: number | null;
-
   /** @format date-time */
   openingDate?: string | null;
   housingMeteringDeviceType: EHousingMeteringDeviceType;
   model: string;
-
   /** @format double */
   minReadingsValue?: number | null;
-
   /** @format double */
   maxReadingsValue?: number | null;
-
   /** @format date-time */
   installationDate?: string | null;
-
   /** @format int32 */
   manufactureYear?: number;
-
   /** @format int32 */
   stateVerificationYear?: number | null;
   stateVerificationQuarter?: EYearQuarter | null;
-
   /** @format int32 */
   stateVerificationIntervalYears?: number;
-
   /** @format int32 */
   nextStateVerificationYear?: number | null;
   phaseNumber: EPhaseNumberType;
-
   /** @format int32 */
   nodeId?: number | null;
 }
@@ -1502,18 +1282,14 @@ export interface CreateElectricHousingMeteringDeviceRequest {
 export interface CreateElectricNodeRequest {
   /** @format int32 */
   buildingId?: number;
-
+  title: string;
   /** @format int32 */
-  number?: number;
-
-  /** @format int32 */
-  nodeServiceZoneId?: number;
+  nodeServiceZoneId?: number | null;
   registrationType?: ENodeRegistrationType;
   commercialStatusRequest?: NodeSetCommercialStatusRequest | null;
   technicalTypeRequest?: NodeSetTechnicalTypeRequest | null;
   locationName?: string | null;
   counter?: CreateElectricHousingMeteringDeviceRequest | null;
-  currentTransformers?: CreateCurrentTransformerRequest[] | null;
 }
 
 export interface CreateGroupReportRequest {
@@ -1524,13 +1300,10 @@ export interface CreateGroupReportRequest {
 export interface CreateHousingMeteringDeviceReadingsRequest {
   /** @format date-time */
   readingDate: string;
-
   /** @format double */
   value: number;
-
   /** @format double */
   nonResidentialRoomConsumption?: number | null;
-
   /** @format int32 */
   deviceId?: number;
 }
@@ -1538,30 +1311,24 @@ export interface CreateHousingMeteringDeviceReadingsRequest {
 export interface CreateIndividualDeviceRequest {
   model: string;
   serialNumber: string;
-
   /** @format date-time */
   lastCheckingDate: string;
-
   /** @format date-time */
   futureCheckingDate: string;
   sealNumber?: string | null;
-
   /** @format date-time */
   sealInstallationDate?: string | null;
-
-  /** @format int32 */
+  /**
+   * @format int32
+   * @min 4
+   * @max 10
+   */
   bitDepth: number;
-
-  /** @format double */
-  scaleFactor: number;
-
   /** @format date-time */
   openingDate?: string | null;
-
   /** @format int32 */
   apartmentId: number;
   resource: EResourceType;
-
   /** @format int32 */
   mountPlaceId?: number | null;
   rateType: EIndividualDeviceRateType;
@@ -1570,7 +1337,6 @@ export interface CreateIndividualDeviceRequest {
   connection?: MeteringDeviceConnection | null;
   isConnected?: boolean;
   isPolling?: boolean;
-
   /** @format int32 */
   contractorId?: number | null;
   documentsIds?: number[] | null;
@@ -1580,7 +1346,6 @@ export interface CreateNodeCheckRequest {
   /** @format date-time */
   checkingDate: string;
   checkType: ENodeCheckType;
-
   /** @format int32 */
   documentId?: number | null;
   registryNumber: string;
@@ -1589,31 +1354,23 @@ export interface CreateNodeCheckRequest {
 export interface CreatePipeHousingMeteringDeviceInNodeRequest {
   serialNumber: string;
   sealNumber?: string | null;
-
   /** @format date-time */
   sealInstallationDate?: string | null;
-
   /** @format date-time */
   lastCheckingDate?: string | null;
-
   /** @format date-time */
   futureCheckingDate?: string | null;
   documentsIds?: number[] | null;
-
   /** @format int32 */
   bitDepth?: number | null;
-
   /** @format double */
   scaleFactor?: number | null;
-
   /** @format date-time */
   openingDate?: string | null;
   housingMeteringDeviceType: EHousingMeteringDeviceType;
   model: string;
-
   /** @format double */
   minReadingsValue?: number | null;
-
   /** @format double */
   maxReadingsValue?: number | null;
 }
@@ -1621,37 +1378,27 @@ export interface CreatePipeHousingMeteringDeviceInNodeRequest {
 export interface CreatePipeHousingMeteringDeviceRequest {
   serialNumber: string;
   sealNumber?: string | null;
-
   /** @format date-time */
   sealInstallationDate?: string | null;
-
   /** @format date-time */
   lastCheckingDate?: string | null;
-
   /** @format date-time */
   futureCheckingDate?: string | null;
   documentsIds?: number[] | null;
-
   /** @format int32 */
   bitDepth?: number | null;
-
   /** @format double */
   scaleFactor?: number | null;
-
   /** @format date-time */
   openingDate?: string | null;
   housingMeteringDeviceType: EHousingMeteringDeviceType;
   model: string;
-
   /** @format double */
   minReadingsValue?: number | null;
-
   /** @format double */
   maxReadingsValue?: number | null;
-
   /** @format int32 */
   nodeId?: number;
-
   /** @format int32 */
   communicationPipeId?: number;
 }
@@ -1659,19 +1406,14 @@ export interface CreatePipeHousingMeteringDeviceRequest {
 export interface CreatePipeNodeRequest {
   /** @format int32 */
   buildingId?: number;
-
+  title: string;
   /** @format int32 */
-  number?: number;
-
-  /** @format int32 */
-  nodeServiceZoneId?: number;
+  nodeServiceZoneId?: number | null;
   registrationType?: ENodeRegistrationType;
   commercialStatusRequest?: NodeSetCommercialStatusRequest | null;
   technicalTypeRequest?: NodeSetTechnicalTypeRequest | null;
-
   /** @format int32 */
   entryNumber?: number | null;
-
   /** @format int32 */
   calculatorId?: number | null;
   configuration?: EPipeNodeConfig;
@@ -1686,59 +1428,6 @@ export interface CreatingUser {
   middleName?: string | null;
 }
 
-export interface CurrentTransformerResponse {
-  /** @format uuid */
-  id: string;
-
-  /** @format date-time */
-  installationDate: string | null;
-
-  /** @format int32 */
-  manufactureYear: number;
-
-  /** @format date-time */
-  lastCheckingDate: string | null;
-
-  /** @format date-time */
-  futureCheckingDate: string | null;
-
-  /** @format int32 */
-  stateVerificationYear: number;
-  stateVerificationQuarter: EYearQuarter;
-
-  /** @format int32 */
-  nextStateVerificationYear: number;
-
-  /** @format int32 */
-  stateVerificationIntervalYears: number;
-  typeName: string | null;
-  phase: EPhaseType;
-  number: string | null;
-
-  /** @format int32 */
-  primaryCurrentRatingAmperes: number;
-
-  /** @format int32 */
-  secondaryCurrentRatingAmperes: number;
-
-  /** @format int32 */
-  coefficient: number;
-  sealNumber: string | null;
-
-  /** @format date-time */
-  sealInstallationDate: string | null;
-
-  /** @format date-time */
-  closingDate: string | null;
-
-  /** @format int32 */
-  nodeId: number | null;
-}
-
-export interface CurrentTransformerResponseSuccessApiResponse {
-  successResponse: CurrentTransformerResponse | null;
-}
-
 export interface DataAfterSplittingHomeownerAccountResponse {
   splittedApartmentHomeownerAccount: HomeownerAccountResponse | null;
   newApartmentHomeownerAccount: HomeownerAccountResponse | null;
@@ -1751,7 +1440,6 @@ export interface DataAfterSplittingHomeownerAccountResponseSuccessApiResponse {
 export interface DateTimeDoubleDictionaryItem {
   /** @format date-time */
   key?: string;
-
   /** @format double */
   value?: number;
 }
@@ -1765,23 +1453,26 @@ export interface DateTimeTaskStatisticsItemArrayDictionaryItem {
 export interface DeviceCheckingDateExpirationConstructedReportResponse {
   /** @format date-time */
   lastCheckingDate: string;
-
   /** @format date-time */
   futureCheckingDate: string;
+  homeownerPhoneNumbers: string[] | null;
+  /** @deprecated */
   homeownerPhoneNumber: string | null;
+}
+
+export enum DeviceResource {
+  Electricity = 'Electricity',
+  Heat = 'Heat',
 }
 
 export interface DisableNodeWorkingRangeRequest {
   season: ENodeWorkingRangeSeason;
   nodeResourceType: EResourceType;
   typeWorkingRange: ENodeWorkingRangeType;
-
   /** @format int32 */
   buildingId?: number | null;
-
   /** @format uuid */
   housingManagementId?: string | null;
-
   /** @format int32 */
   nodeId?: number | null;
 }
@@ -1813,7 +1504,6 @@ export interface DocumentLiteResponse {
   /** @format int32 */
   id: number;
   name: string | null;
-
   /** @format date-time */
   uploadingTime: string;
   author: string | null;
@@ -1823,7 +1513,6 @@ export interface DocumentResponse {
   /** @format int32 */
   id: number;
   name: string | null;
-
   /** @format date-time */
   uploadingTime: string;
   url: string | null;
@@ -1981,6 +1670,8 @@ export enum EIndividualDeviceOrderRule {
   ApartmentNumber = 'ApartmentNumber',
   SerialNumber = 'SerialNumber',
   Address = 'Address',
+  BitDepth = 'BitDepth',
+  CheckingDate = 'CheckingDate',
 }
 
 export enum EIndividualDeviceRateType {
@@ -2069,6 +1760,8 @@ export enum EManagingFirmTaskFilterType {
   EmergencyApplication = 'EmergencyApplication',
   PlannedApplication = 'PlannedApplication',
   CurrentApplication = 'CurrentApplication',
+  ResourceDisconnecting = 'ResourceDisconnecting',
+  TemperatureNormativeDeviation = 'TemperatureNormativeDeviation',
 }
 
 export interface EManagingFirmTaskFilterTypeNullableStringDictionaryItem {
@@ -2092,6 +1785,11 @@ export enum EManagingFirmTaskType {
   MeasurementErrorNonCommercial = 'MeasurementErrorNonCommercial',
   IndividualDeviceCheckNoReadings = 'IndividualDeviceCheckNoReadings',
   RiserNoReadings = 'RiserNoReadings',
+  ResourceDisconnecting = 'ResourceDisconnecting',
+  CurrentApplicationUnassigned = 'CurrentApplicationUnassigned',
+  EmergencyApplicationUnassigned = 'EmergencyApplicationUnassigned',
+  PlannedApplicationUnassigned = 'PlannedApplicationUnassigned',
+  TemperatureNormativeDeviation = 'TemperatureNormativeDeviation',
 }
 
 export enum EMeteringDeviceType {
@@ -2200,12 +1898,6 @@ export enum EPhaseNumberType {
   ThreePhase = 'ThreePhase',
 }
 
-export enum EPhaseType {
-  A = 'A',
-  B = 'B',
-  C = 'C',
-}
-
 export enum EPipeNodeConfig {
   HeatNoRecharge = 'HeatNoRecharge',
   HotWaterSupplyNoBackflow = 'HotWaterSupplyNoBackflow',
@@ -2253,8 +1945,6 @@ export enum EReportName {
   InspectorsWorkingReport = 'InspectorsWorkingReport',
   CallCenterWorkingReport = 'CallCenterWorkingReport',
   HouseManagementsReport = 'HouseManagementsReport',
-  CheckingDatesReport = 'CheckingDatesReport',
-  ClosedDevicesReport = 'ClosedDevicesReport',
 }
 
 export enum EReportType {
@@ -2313,7 +2003,6 @@ export interface EResourceTypeConsumptionRateResponseDictionaryItemListSuccessAp
 
 export interface EResourceTypeDoubleDictionaryItem {
   key?: EResourceType;
-
   /** @format double */
   value?: number;
 }
@@ -2339,6 +2028,7 @@ export enum ESecuredIdentityRoleName {
   Controller = 'Controller',
   SeniorOperator = 'SeniorOperator',
   ManagingFirmSpectatorRestricted = 'ManagingFirmSpectatorRestricted',
+  ManagingFirmSpectatingAdministrator = 'ManagingFirmSpectatingAdministrator',
 }
 
 export interface ESecuredIdentityRoleNameStringDictionaryItem {
@@ -2375,6 +2065,9 @@ export enum EStageActionType {
   CompletionOrSwitch = 'CompletionOrSwitch',
   ClearManuallyAttachedParticipants = 'ClearManuallyAttachedParticipants',
   CloseIndividualDevices = 'CloseIndividualDevices',
+  CreateResourceDisconnecting = 'CreateResourceDisconnecting',
+  SetApplicationPostponeDate = 'SetApplicationPostponeDate',
+  SelectApplicationWorker = 'SelectApplicationWorker',
 }
 
 export enum EStageStatus {
@@ -2395,6 +2088,15 @@ export enum EStageType {
   Final = 'Final',
 }
 
+export enum ESwitchingReason {
+  Manually = 'Manually',
+  NoReadings = 'NoReadings',
+  DeviceBroken = 'DeviceBroken',
+  CheckingDate = 'CheckingDate',
+  CertificateIssued = 'CertificateIssued',
+  MaintainingStopped = 'MaintainingStopped',
+}
+
 export enum ETaskClosingStatus {
   Properly = 'Properly',
   Interrupted = 'Interrupted',
@@ -2410,6 +2112,8 @@ export enum ETaskConfirmationType {
   PipeRuptureNotConfirmAnomaly = 'PipeRuptureNotConfirm_Anomaly',
   PipeRuptureNotConfirmCalculatorMalfunction = 'PipeRuptureNotConfirm_CalculatorMalfunction',
   PipeRuptureNotConfirmPowerMalfunction = 'PipeRuptureNotConfirm_PowerMalfunction',
+  ResourceDisconnectingNotConfirm = 'ResourceDisconnectingNotConfirm',
+  FeedBackFlowTemperatureErrorNoted = 'FeedBackFlowTemperatureErrorNoted',
 }
 
 export interface ETaskConfirmationTypeStringDictionaryItem {
@@ -2430,6 +2134,8 @@ export enum ETaskCreateType {
   EmergencyApplication = 'EmergencyApplication',
   PlannedApplication = 'PlannedApplication',
   CurrentApplication = 'CurrentApplication',
+  ResourceDisconnecting = 'ResourceDisconnecting',
+  TemperatureNormativeDeviation = 'TemperatureNormativeDeviation',
 }
 
 export enum ETaskEngineeringElement {
@@ -2487,7 +2193,6 @@ export interface EditApartmentCheckRequest {
   /** @format date-time */
   checkingDate?: string | null;
   checkType?: ECheckType | null;
-
   /** @format int32 */
   documentId?: number | null;
   registryNumber?: string | null;
@@ -2496,6 +2201,14 @@ export interface EditApartmentCheckRequest {
 
 export interface EditIndividualDeviceReadingsHistoryRequest {
   newReadings?: SwitchIndividualDeviceReadingsCreateRequest[] | null;
+}
+
+export enum EisTaskReasonType {
+  Heat = 'Heat',
+  HotWaterSupply = 'HotWaterSupply',
+  ColdWaterSupply = 'ColdWaterSupply',
+  Electricity = 'Electricity',
+  TrafficControl = 'TrafficControl',
 }
 
 export enum EisTaskType {
@@ -2510,51 +2223,38 @@ export interface ElectricHousingMeteringDeviceResponse {
   model: string | null;
   serialNumber: string | null;
   sealNumber: string | null;
-
   /** @format date-time */
   sealInstallationDate: string | null;
-
   /** @format int32 */
   managementFirmId: number | null;
-
   /** @format date-time */
   lastCheckingDate: string | null;
-
   /** @format date-time */
   futureCheckingDate: string | null;
-
   /** @format date-time */
   openingDate: string | null;
-
   /** @format date-time */
   closingDate: string | null;
   closingReason: EClosingReason;
   hasActiveTasks: boolean | null;
-
   /** @format int32 */
   bitDepth: number | null;
-
   /** @format double */
   scaleFactor: number | null;
   resource: EResourceType;
   housingMeteringDeviceType: EHousingMeteringDeviceType;
   address: BuildingShortResponse | null;
   comment: HousingMeteringDeviceCommentResponse | null;
-
   /** @format int32 */
   manufactureYear: number;
-
   /** @format int32 */
   stateVerificationYear: number;
   stateVerificationQuarter: EYearQuarter;
-
   /** @format int32 */
   stateVerificationIntervalYears: number;
-
   /** @format int32 */
   nextStateVerificationYear: number;
   phaseNumber: EPhaseNumberType;
-
   /** @format int32 */
   nodeId: number | null;
 }
@@ -2566,92 +2266,117 @@ export interface ElectricHousingMeteringDeviceResponseSuccessApiResponse {
 export interface ElectricNodeResponse {
   /** @format int32 */
   id: number;
-
-  /** @format int32 */
-  number: number;
+  title: string | null;
   registrationType: ENodeRegistrationType;
   commercialStatus: NodeCommercialStatusResponse | null;
   resource: EResourceType;
   nodeServiceZone: NodeServiceZoneResponse | null;
-
   /** @format date-time */
   lastCommercialAccountingDate: string | null;
-
   /** @format date-time */
   futureCommercialAccountingDate: string | null;
-
   /** @format date-time */
   commercialAccountingDeregistrationDate: string | null;
-
   /** @format int32 */
   buildingId: number;
   address: BuildingShortResponse | null;
   documents: DocumentLiteResponse[] | null;
   locationName: string | null;
   counter: ElectricHousingMeteringDeviceResponse | null;
-  currentTransformers: CurrentTransformerResponse[] | null;
 }
 
 export interface ElectricNodeResponseSuccessApiResponse {
   successResponse: ElectricNodeResponse | null;
 }
 
-export interface ErpCreateTaskRequest {
+export interface ErpApplicationBrigadeMemberResponse {
   /** @format uuid */
-  workCategoryId: string;
-  taskType: EisTaskType;
-
-  /** @format uuid */
-  objectId: string;
-
-  /** @format uuid */
-  sourceId: string;
-  sourceNumber: string;
-
-  /** @format date-time */
-  sourceDateTime: string;
-
-  /** @format date-time */
-  taskDeadline: string;
-
-  /** @format uuid */
-  leadId: string;
-
-  /** @format uuid */
-  workerId: string;
-  subscriberPhoneNumber: string;
-  subscriberFullName: string;
-  taskDescription?: string | null;
-}
-
-export interface ErpExecutorResponse {
-  /** @format uuid */
-  id: string;
+  erpId: string;
   name: string | null;
 }
 
-export interface ErpObjectResponse {
+export interface ErpApplicationResponse {
   /** @format uuid */
   id: string;
-  address: string | null;
+  /** @format uuid */
+  erpId: string | null;
+  number: string | null;
+  type: EisTaskType;
+  comment: string | null;
+  description: string | null;
+  category: string | null;
+  source: string | null;
+  brigade: ErpApplicationBrigadeMemberResponse[] | null;
+}
+
+export interface ErpApplicationResponseSuccessApiResponse {
+  successResponse: ErpApplicationResponse | null;
+}
+
+export interface ErpCreateTaskRequest {
+  /** @format uuid */
+  taskReasonId: string;
+  /** @format int32 */
+  objectTtmId: number;
+  taskDescription?: string | null;
+  /** @format uuid */
+  sourceId: string;
+  sourceNumber?: string | null;
+  /** @format date-time */
+  sourceDateTime: string;
+  subscriberPhoneNumber?: string | null;
+  subscriberFullName?: string | null;
+  /** @format date-time */
+  taskDeadline?: string | null;
+}
+
+export interface ErpExecutorResponse {
+  /** @format int32 */
+  ttmId: number;
+  name: string | null;
+}
+
+export interface ErpExecutorResponseIEnumerableSuccessApiResponse {
+  successResponse: ErpExecutorResponse[] | null;
 }
 
 export interface ErpSourceResponse {
   /** @format uuid */
   id: string;
   name: string | null;
+  isSourceNumberRequired: boolean;
+  isSubscriberRequired: boolean;
+}
+
+export interface ErpSourceResponseIEnumerableSuccessApiResponse {
+  successResponse: ErpSourceResponse[] | null;
 }
 
 export interface ErpTaskDeadlineResponse {
   /** @format int32 */
-  deadlineInHours: number;
+  deadlineInHours: number | null;
 }
 
-export interface ErpWorkCategoryResponse {
+export interface ErpTaskDeadlineResponseSuccessApiResponse {
+  successResponse: ErpTaskDeadlineResponse | null;
+}
+
+export interface ErpTaskReasonGroupResponse {
+  /** @format int32 */
+  orderNumber: number;
+  type: EisTaskReasonType;
+  name: string | null;
+  items: ErpTaskReasonItemResponse[] | null;
+}
+
+export interface ErpTaskReasonGroupResponseIEnumerableSuccessApiResponse {
+  successResponse: ErpTaskReasonGroupResponse[] | null;
+}
+
+export interface ErpTaskReasonItemResponse {
   /** @format uuid */
   id: string;
-  name: string | null;
-  isDeadlineChangingPermitted: boolean;
+  taskType: EisTaskType;
 }
 
 export interface ErrorApiResponse {
@@ -2666,6 +2391,10 @@ export interface ErrorResponse {
   requestId: string | null;
 }
 
+export interface FeatureTogglesResponse {
+  sealService: boolean;
+}
+
 export interface FileContentResultSuccessApiResponse {
   /** @format binary */
   successResponse: File | null;
@@ -2678,12 +2407,10 @@ export interface FullAddressResponse {
   corpus: string | null;
   street: string | null;
   city: string | null;
-
   /** @format int32 */
   apartmentId: number | null;
   apartmentNumber: string | null;
   comment: string | null;
-  coordinates: PointResponse | null;
 }
 
 export interface GetDataForHousingConsumptionPlotResponse {
@@ -2755,7 +2482,6 @@ export interface GroupReportHousingStockResponse {
 export interface GroupReportResponse {
   /** @format uuid */
   id: string | null;
-
   /** @format uuid */
   houseManagementId: string | null;
   title: string | null;
@@ -2779,19 +2505,15 @@ export interface GuidSuccessApiResponse {
 export interface HeatingSeasonAdjustmentResponse {
   /** @format uuid */
   heatingSeasonId: string;
-
   /** @format uuid */
   adjustmentId: string;
-
   /** @format date-time */
   startsFrom: string;
-
   /** @format date-time */
   endsAt: string | null;
   houseCategory: EHouseCategory | null;
   livingHouseType: ELivingHouseType | null;
   nonResidentialHouseType: ENonResidentialHouseType | null;
-
   /** @format uuid */
   houseManagementId: string | null;
   buildingIds: number[] | null;
@@ -2802,7 +2524,6 @@ export interface HeatingSeasonHouseManagementListItemAdjustmentResponse {
   adjustmentId: string;
   titleParts: string[] | null;
   isOpening: boolean;
-
   /** @format date-time */
   triggerDate: string;
   houseCategory: EHouseCategory | null;
@@ -2820,15 +2541,12 @@ export interface HeatingSeasonHouseManagementListItemResponse {
 
 export interface HeatingSeasonListItemResponse {
   isInherited: boolean;
-
   /** @format uuid */
   adjustmentId: string | null;
   title: string | null;
-
   /** @format int32 */
   housingStocksCount: number;
   isOpening: boolean;
-
   /** @format date-time */
   triggerDate: string | null;
   houseCategory: EHouseCategory | null;
@@ -2850,7 +2568,6 @@ export interface HeatingSeasonPageResponseSuccessApiResponse {
 export interface HeatingSeasonResponse {
   /** @format uuid */
   heatingSeasonId: string;
-
   /** @format int32 */
   managementFirmId: number;
   adjustments: HeatingSeasonAdjustmentResponse[] | null;
@@ -2872,21 +2589,16 @@ export interface HeatingStationResponse {
 export interface HeatingStationResponsePagedList {
   /** @format int32 */
   totalItems: number;
-
   /** @format int32 */
   pageNumber: number;
-
   /** @format int32 */
   pageSize: number;
-
   /** @format int32 */
   totalPages: number;
   hasPreviousPage: boolean;
   hasNextPage: boolean;
-
   /** @format int32 */
   nextPageNumber: number;
-
   /** @format int32 */
   previousPageNumber: number;
   items: HeatingStationResponse[] | null;
@@ -2924,10 +2636,13 @@ export interface HomeownerAccount {
   isMain?: boolean;
 }
 
+export interface HomeownerAccountAddPhoneNumberRequest {
+  phoneNumber: string;
+}
+
 export interface HomeownerAccountCloseRequest {
   /** @format uuid */
   homeownerAccountId: string;
-
   /** @format date-time */
   closedAt: string;
 }
@@ -2935,17 +2650,14 @@ export interface HomeownerAccountCloseRequest {
 export interface HomeownerAccountCreateRequest {
   personalAccountNumber: string;
   name: string;
-  phoneNumber?: string | null;
+  phoneNumbers?: string[] | null;
   personType?: EPersonType;
-
   /** @format double */
   ownershipArea?: number | null;
-
   /** @format date-time */
   openAt: string;
   isMainOnApartment?: boolean;
   paymentCode?: string | null;
-
   /** @format int32 */
   apartmentId: number;
 }
@@ -2953,12 +2665,10 @@ export interface HomeownerAccountCreateRequest {
 export interface HomeownerAccountCreateUnattachedRequest {
   personalAccountNumber: string;
   name: string;
-  phoneNumber?: string | null;
+  phoneNumbers?: string[] | null;
   personType?: EPersonType;
-
   /** @format double */
   ownershipArea?: number | null;
-
   /** @format date-time */
   openAt: string;
   isMainOnApartment?: boolean;
@@ -2968,34 +2678,48 @@ export interface HomeownerAccountCreateUnattachedRequest {
 export interface HomeownerAccountListResponse {
   /** @format uuid */
   id: string;
-  phoneNumber: string | null;
+  phoneNumbers: string[] | null;
   name: string | null;
   personType: EPersonType;
   paymentCode: string | null;
   personalAccountNumber: string | null;
-
   /** @format double */
   ownershipArea: number;
-
   /** @format date-time */
   openAt: string;
-
   /** @format date-time */
   openAtFact: string;
-
   /** @format date-time */
   closedAt: string | null;
-
   /** @format date-time */
   editedAt: string | null;
   isMainPersonalAccountNumber: boolean;
   replacedByAccount: ReplacementAccount | null;
 }
 
+export interface HomeownerAccountNameResponse {
+  /** @format uuid */
+  id: string;
+  name: string | null;
+}
+
 export enum HomeownerAccountOrderRule {
   Street = 'Street',
   HomeownerName = 'HomeownerName',
   PaymentCode = 'PaymentCode',
+}
+
+export interface HomeownerAccountRemovePhoneNumberRequest {
+  phoneNumber: string;
+}
+
+export interface HomeownerAccountReplaceAllPhoneNumbersRequest {
+  phoneNumber: string;
+}
+
+export interface HomeownerAccountReplacePhoneNumberRequest {
+  oldPhoneNumber: string;
+  newPhoneNumber: string;
 }
 
 export interface HomeownerAccountReplaceRequest {
@@ -3007,25 +2731,20 @@ export interface HomeownerAccountReplaceRequest {
 export interface HomeownerAccountResponse {
   /** @format uuid */
   id: string;
-  phoneNumber: string | null;
+  phoneNumbers: string[] | null;
   name: string | null;
   personType: EPersonType;
   apartment: FullAddressResponse | null;
   paymentCode: string | null;
   personalAccountNumber: string | null;
-
   /** @format date-time */
   openAt: string;
-
   /** @format date-time */
   openAtFact: string;
-
   /** @format date-time */
   closedAt: string | null;
-
   /** @format date-time */
   editedAt: string | null;
-
   /** @format double */
   ownershipArea: number;
   replacedByAccount: ReplacementAccount | null;
@@ -3038,21 +2757,16 @@ export interface HomeownerAccountResponseICollectionSuccessApiResponse {
 export interface HomeownerAccountResponsePagedList {
   /** @format int32 */
   totalItems: number;
-
   /** @format int32 */
   pageNumber: number;
-
   /** @format int32 */
   pageSize: number;
-
   /** @format int32 */
   totalPages: number;
   hasPreviousPage: boolean;
   hasNextPage: boolean;
-
   /** @format int32 */
   nextPageNumber: number;
-
   /** @format int32 */
   previousPageNumber: number;
   items: HomeownerAccountResponse[] | null;
@@ -3078,9 +2792,7 @@ export interface HomeownerAccountUpdateRequest {
   personalAccountNumber?: string | null;
   paymentCode?: string | null;
   name?: string | null;
-  phoneNumber?: string | null;
   personType?: EPersonType | null;
-
   /** @format double */
   ownershipArea?: number | null;
   isMainOnApartment?: boolean | null;
@@ -3105,6 +2817,8 @@ export interface HomeownersConstructedReportResponse {
   apartmentNumber: string | null;
   homeownerFullName: string | null;
   homeownerAccountNumber: string | null;
+  homeownerPhoneNumbers: string[] | null;
+  /** @deprecated */
   homeownerPhoneNumber: string | null;
 }
 
@@ -3120,25 +2834,18 @@ export interface House {
 
 export interface HouseManagementConstructedReportResponse {
   houseManagementName: string | null;
-
   /** @format int32 */
   housingStocksCount: number;
-
   /** @format int32 */
   apartmentsCount: number;
-
   /** @format int32 */
   apartmentsWithIMDCount: number;
-
   /** @format int32 */
   coldWaterSupplyCount: number;
-
   /** @format int32 */
   hotWaterSupplyCount: number;
-
   /** @format int32 */
   electricityCount: number;
-
   /** @format int32 */
   heatCount: number;
 }
@@ -3177,7 +2884,6 @@ export interface HouseManagementWithStreetsResponseIEnumerableSuccessApiResponse
 export interface HousingDeviceReadingOnRiserResponse {
   /** @format double */
   value: number;
-
   /** @format date-time */
   readingDate: string;
 }
@@ -3191,15 +2897,12 @@ export interface HousingDevicesConstructedReportResponse {
   model: string | null;
   serialNumber: string | null;
   resource: EResourceType;
-
   /** @format date-time */
   lastCheckingDate: string | null;
-
   /** @format date-time */
   futureCheckingDate: string | null;
   currentReadings: HousingDeviceReadingOnRiserResponse | null;
   previousReadings: HousingDeviceReadingOnRiserResponse | null;
-
   /** @format double */
   consumption: number | null;
 }
@@ -3216,10 +2919,8 @@ export interface HousingMeteringDeviceCommentResponse {
   /** @format int32 */
   id: number;
   text: string | null;
-
   /** @format date-time */
   lastModifiedDateTime: string;
-
   /** @format date-time */
   creationDateTime: string;
   lastModifiedUser: LastModifiedUserResponse | null;
@@ -3235,30 +2936,22 @@ export interface HousingMeteringDeviceIncludingReadingsResponse {
   model: string | null;
   serialNumber: string | null;
   sealNumber: string | null;
-
   /** @format date-time */
   sealInstallationDate: string | null;
-
   /** @format int32 */
   managementFirmId: number | null;
-
   /** @format date-time */
   lastCheckingDate: string | null;
-
   /** @format date-time */
   futureCheckingDate: string | null;
-
   /** @format date-time */
   openingDate: string | null;
-
   /** @format date-time */
   closingDate: string | null;
   closingReason: EClosingReason;
   hasActiveTasks: boolean | null;
-
   /** @format int32 */
   bitDepth: number | null;
-
   /** @format double */
   scaleFactor: number | null;
   resource: EResourceType;
@@ -3271,21 +2964,16 @@ export interface HousingMeteringDeviceIncludingReadingsResponse {
 export interface HousingMeteringDeviceIncludingReadingsResponsePagedList {
   /** @format int32 */
   totalItems: number;
-
   /** @format int32 */
   pageNumber: number;
-
   /** @format int32 */
   pageSize: number;
-
   /** @format int32 */
   totalPages: number;
   hasPreviousPage: boolean;
   hasNextPage: boolean;
-
   /** @format int32 */
   nextPageNumber: number;
-
   /** @format int32 */
   previousPageNumber: number;
   items: HousingMeteringDeviceIncludingReadingsResponse[] | null;
@@ -3298,29 +2986,22 @@ export interface HousingMeteringDeviceIncludingReadingsResponsePagedListSuccessA
 export interface HousingMeteringDeviceReadingsHistoryItemResponse {
   /** @format uuid */
   id: string;
-
   /** @format double */
   value: number;
-
   /** @format double */
   nonResidentialRoomConsumption: number | null;
-
   /** @format date-time */
   readingDate: string;
-
   /** @format date-time */
   uploadDate: string;
-
   /** @format uuid */
   previousReadingsId: string | null;
   user: OrganizationUserShortResponse | null;
   isArchived: boolean;
   isRemoved: boolean;
-
   /** @format date-time */
   removedTime: string | null;
   removedByUser: OrganizationUserShortResponse | null;
-
   /** @format double */
   consumption: number;
 }
@@ -3336,32 +3017,24 @@ export interface HousingMeteringDeviceReadingsHistoryResponseSuccessApiResponse 
 export interface HousingMeteringDeviceReadingsIncludingPlacementResponse {
   /** @format uuid */
   id: string;
-
   /** @format double */
   value: number;
-
   /** @format double */
   nonResidentialRoomConsumption: number | null;
-
   /** @format date-time */
   readingDate: string;
-
   /** @format date-time */
   uploadDate: string;
-
   /** @format uuid */
   previousReadingsId: string | null;
   user: OrganizationUserShortResponse | null;
   isArchived: boolean;
   isRemoved: boolean;
-
   /** @format date-time */
   removedTime: string | null;
   removedByUser: OrganizationUserShortResponse | null;
-
   /** @format int32 */
   nodeId: number;
-
   /** @format int32 */
   deviceId: number;
   deviceModel: string | null;
@@ -3382,25 +3055,19 @@ export interface HousingMeteringDeviceReadingsMonthHistoryResponse {
 export interface HousingMeteringDeviceReadingsResponse {
   /** @format uuid */
   id: string;
-
   /** @format double */
   value: number;
-
   /** @format double */
   nonResidentialRoomConsumption: number | null;
-
   /** @format date-time */
   readingDate: string;
-
   /** @format date-time */
   uploadDate: string;
-
   /** @format uuid */
   previousReadingsId: string | null;
   user: OrganizationUserShortResponse | null;
   isArchived: boolean;
   isRemoved: boolean;
-
   /** @format date-time */
   removedTime: string | null;
   removedByUser: OrganizationUserShortResponse | null;
@@ -3425,43 +3092,37 @@ export interface HousingMeteringDeviceUpdateCommentRequest {
 export interface HousingStockCreateRequest {
   mainAddress: BuildingAddressCreateRequest;
   otherAddresses?: BuildingAddressCreateRequest[] | null;
-
   /** @format uuid */
   heatingStationId: string;
   coordinates?: PointResponse | null;
-
   /** @format uuid */
   houseManagementId?: string | null;
   livingHouseType?: ELivingHouseType | null;
-
   /** @format int32 */
   numberOfEntrances?: number | null;
-
   /** @format int32 */
   numberOfFloors?: number | null;
   isThereElevator?: boolean | null;
+  /**
+   * @minLength 6
+   * @maxLength 6
+   */
   index?: string | null;
   city?: string | null;
-
   /**
    * @format int32
    * @min 1800
    * @max 2100
    */
   constructionYear?: number | null;
-
   /** @format int32 */
   numberOfApartments?: number | null;
-
   /** @format double */
   totalLivingArea?: number | null;
-
   /** @format double */
   areaOfNonResidential?: number | null;
-
   /** @format double */
   houseArea?: number | null;
-
   /** @format double */
   totalArea?: number | null;
   hasIndividualHeatingStation?: boolean;
@@ -3470,56 +3131,39 @@ export interface HousingStockCreateRequest {
 export interface HousingStockListResponse {
   /** @format int32 */
   id: number;
-
   /** @format int32 */
   managingFirmId: number;
-
-  /** @format int32 */
-  numberOfTasks: number | null;
   managementFirm: ManagementFirmLiteResponse | null;
   address: BuildingAddressResponse | null;
-  coordinates: PointResponse | null;
   livingHouseType: ELivingHouseType;
   houseTypeString: string | null;
-
-  /** @format int32 */
-  numberOfApartments: number;
   houseManagement: HouseManagementResponse | null;
 }
 
 export interface HousingStockResponse {
   /** @format int32 */
   id: number;
-
   /** @format int32 */
   managingFirmId: number;
-
   /** @format uuid */
   fiasId: string | null;
   index: string | null;
   coordinates: PointResponse | null;
   livingHouseType: ELivingHouseType | null;
   houseTypeString: string | null;
-
   /** @format int32 */
   numberOfEntrances: number | null;
-
   /** @format int32 */
   numberOfFloors: number | null;
   isThereElevator: boolean | null;
-
   /** @format int32 */
   numberOfApartments: number | null;
-
   /** @format double */
   totalLivingArea: number | null;
-
   /** @format double */
   areaOfNonResidential: number | null;
-
   /** @format double */
   houseArea: number | null;
-
   /** @format double */
   totalArea: number | null;
   hasIndividualHeatingStation: boolean;
@@ -3527,17 +3171,13 @@ export interface HousingStockResponse {
   managementFirmName: string | null;
   managementFirmInfo: string | null;
   houseManagement: HouseManagementResponse | null;
-
   /** @format int32 */
   inspectorId: number | null;
-
   /** @format int32 */
   inspectedDay: number | null;
   address: BuildingAddressResponse | null;
-
   /** @format int32 */
   numberOfTasks: number;
-
   /** @format int32 */
   constructionYear: number | null;
 }
@@ -3551,37 +3191,32 @@ export interface HousingStockUpdateRequest {
   heatingStationId?: string | null;
   hasIndividualHeatingStation?: boolean | null;
   coordinates?: PointResponse | null;
-
   /** @format uuid */
   houseManagementId?: string | null;
-
   /** @format int32 */
   numberOfEntrances?: number | null;
-
   /** @format int32 */
   numberOfFloors?: number | null;
   isThereElevator?: boolean | null;
+  /**
+   * @minLength 6
+   * @maxLength 6
+   */
   index?: string | null;
-
   /**
    * @format int32
    * @min 1800
    * @max 2100
    */
   constructionYear?: number | null;
-
   /** @format int32 */
   numberOfApartments?: number | null;
-
   /** @format double */
   totalLivingArea?: number | null;
-
   /** @format double */
   areaOfNonResidential?: number | null;
-
   /** @format double */
   houseArea?: number | null;
-
   /** @format double */
   totalArea?: number | null;
 }
@@ -3589,7 +3224,6 @@ export interface HousingStockUpdateRequest {
 export interface HousingStockWithCoordinatesResponse {
   /** @format int32 */
   id: number;
-
   /** @format int32 */
   managingFirmId: number;
   address: BuildingAddressResponse | null;
@@ -3608,7 +3242,6 @@ export interface HousingStockWithTasksResponseIEnumerableSuccessApiResponse {
 export interface IndividualDeviceConsumption {
   /** @format double */
   consumption?: number;
-
   /** @format date-time */
   readingDate?: string;
 }
@@ -3616,7 +3249,6 @@ export interface IndividualDeviceConsumption {
 export interface IndividualDeviceConsumptionResponse {
   /** @format double */
   consumption: number | null;
-
   /** @format date-time */
   date: string;
 }
@@ -3640,45 +3272,37 @@ export interface IndividualDeviceListItemResponse {
   model: string | null;
   serialNumber: string | null;
   sealNumber: string | null;
-
   /** @format date-time */
   sealInstallationDate: string | null;
   managementFirm: OrganizationResponse | null;
-
   /** @format date-time */
   lastCheckingDate: string | null;
-
   /** @format date-time */
   futureCheckingDate: string | null;
-
   /** @format date-time */
   closingDate: string | null;
   closingReason: EClosingReason;
   hasActiveTasks: boolean;
-
   /** @format int32 */
   bitDepth: number | null;
-
   /** @format double */
   scaleFactor: number | null;
   resource: EResourceType;
+  /** @deprecated */
   mountPlace: string | null;
   deviceMountPlace: IndividualDeviceMountPlaceListResponse | null;
   rateType: EIndividualDeviceRateType;
   readings: IndividualDeviceReadingsResponse[] | null;
   hasMagneticSeal: boolean;
-
   /** @format date-time */
   magneticSealInstallationDate: string | null;
   magneticSealTypeName: string | null;
   isPolling: boolean;
   apartmentNumber: string | null;
-
   /** @format int32 */
   apartmentId: number;
   homeownerName: string | null;
   personalAccountNumber: string | null;
-
   /** @format int32 */
   contractorId: number | null;
 }
@@ -3686,21 +3310,16 @@ export interface IndividualDeviceListItemResponse {
 export interface IndividualDeviceListItemResponsePagedList {
   /** @format int32 */
   totalItems: number;
-
   /** @format int32 */
   pageNumber: number;
-
   /** @format int32 */
   pageSize: number;
-
   /** @format int32 */
   totalPages: number;
   hasPreviousPage: boolean;
   hasNextPage: boolean;
-
   /** @format int32 */
   nextPageNumber: number;
-
   /** @format int32 */
   previousPageNumber: number;
   items: IndividualDeviceListItemResponse[] | null;
@@ -3715,14 +3334,19 @@ export interface IndividualDeviceListResponseFromDevicePage {
   id?: number;
   model?: string | null;
   serialNumber?: string | null;
-  resourceType?: EResourceType;
-
   /** @format date-time */
   closingDate?: string | null;
-
+  closingReason?: EClosingReason | null;
+  resourceType?: EResourceType;
+  mountPlace?: string | null;
+  /** @format date-time */
+  lastCheckingDate?: string;
+  /** @format date-time */
+  futureCheckingDate?: string;
+  /** @format int32 */
+  bitDepth?: number | null;
   /** @format int32 */
   housingStockId?: number;
-
   /** @format int32 */
   apartmentId?: number;
   address?: ApartmentAddress | null;
@@ -3732,21 +3356,16 @@ export interface IndividualDeviceListResponseFromDevicePage {
 export interface IndividualDeviceListResponseFromDevicePagePagedList {
   /** @format int32 */
   totalItems: number;
-
   /** @format int32 */
   pageNumber: number;
-
   /** @format int32 */
   pageSize: number;
-
   /** @format int32 */
   totalPages: number;
   hasPreviousPage: boolean;
   hasNextPage: boolean;
-
   /** @format int32 */
   nextPageNumber: number;
-
   /** @format int32 */
   previousPageNumber: number;
   items: IndividualDeviceListResponseFromDevicePage[] | null;
@@ -3786,30 +3405,22 @@ export interface IndividualDeviceOnTaskResponse {
   model: string | null;
   serialNumber: string | null;
   sealNumber: string | null;
-
   /** @format date-time */
   sealInstallationDate: string | null;
-
   /** @format int32 */
   managementFirmId: number | null;
-
   /** @format date-time */
   lastCheckingDate: string | null;
-
   /** @format date-time */
   futureCheckingDate: string | null;
-
   /** @format date-time */
   openingDate: string | null;
-
   /** @format date-time */
   closingDate: string | null;
   closingReason: EClosingReason;
   hasActiveTasks: boolean | null;
-
   /** @format int32 */
   bitDepth: number | null;
-
   /** @format double */
   scaleFactor: number | null;
   address: FullAddressResponse | null;
@@ -3833,22 +3444,16 @@ export interface IndividualDeviceReadingsCreateListResponseSuccessApiResponse {
 export interface IndividualDeviceReadingsCreateRequest {
   /** @format double */
   value1: number;
-
   /** @format double */
   value2?: number | null;
-
   /** @format double */
   value3?: number | null;
-
   /** @format double */
   value4?: number | null;
-
   /** @format date-time */
   readingDate: string;
-
   /** @format int32 */
   deviceId: number;
-
   /** @format date-time */
   uploadTime?: string | null;
 }
@@ -3858,11 +3463,9 @@ export interface IndividualDeviceReadingsCreateResponse {
   readingId: number;
   date: string | null;
   resource: string | null;
-
   /** @format int32 */
   taskId: number | null;
   message: string | null;
-
   /** @format date-time */
   uploadDate: string;
   source: EIndividualDeviceReadingsSource;
@@ -3884,23 +3487,22 @@ export interface IndividualDeviceReadingsItemHistoryResponse {
   value2: string | null;
   value3: string | null;
   value4: string | null;
+  /** @deprecated */
   readingDate: string | null;
-
-  /** @format date-time */
+  /**
+   * @deprecated
+   * @format date-time
+   */
   readingDateTime: string;
-
   /** @format date-time */
   actualReadingDate: string;
-
   /** @format date-time */
   uploadTime: string;
-
   /** @format date-time */
   entryDate: string;
   source: EIndividualDeviceReadingsSource;
   user: OrganizationUserShortResponse | null;
   isRemoved: boolean;
-
   /** @format date-time */
   removedTime: string | null;
   removedByUser: OrganizationUserShortResponse | null;
@@ -3928,23 +3530,22 @@ export interface IndividualDeviceReadingsResponse {
   value2: string | null;
   value3: string | null;
   value4: string | null;
+  /** @deprecated */
   readingDate: string | null;
-
-  /** @format date-time */
+  /**
+   * @deprecated
+   * @format date-time
+   */
   readingDateTime: string;
-
   /** @format date-time */
   actualReadingDate: string;
-
   /** @format date-time */
   uploadTime: string;
-
   /** @format date-time */
   entryDate: string;
   source: EIndividualDeviceReadingsSource;
   user: OrganizationUserShortResponse | null;
   isRemoved: boolean;
-
   /** @format date-time */
   removedTime: string | null;
   removedByUser: OrganizationUserShortResponse | null;
@@ -3966,46 +3567,37 @@ export interface IndividualDeviceResponse {
   model: string | null;
   serialNumber: string | null;
   sealNumber: string | null;
-
   /** @format date-time */
   sealInstallationDate: string | null;
-
   /** @format int32 */
   managementFirmId: number | null;
-
   /** @format date-time */
   lastCheckingDate: string | null;
-
   /** @format date-time */
   futureCheckingDate: string | null;
-
   /** @format date-time */
   openingDate: string | null;
-
   /** @format date-time */
   closingDate: string | null;
   closingReason: EClosingReason;
   hasActiveTasks: boolean | null;
-
   /** @format int32 */
   bitDepth: number | null;
-
   /** @format double */
   scaleFactor: number | null;
   address: FullAddressResponse | null;
   resource: EResourceType;
+  /** @deprecated */
   mountPlace: string | null;
   deviceMountPlace: IndividualDeviceMountPlaceListResponse | null;
   rateType: EIndividualDeviceRateType;
   readings: IndividualDeviceReadingsResponse[] | null;
   hasMagneticSeal: boolean;
-
   /** @format date-time */
   magneticSealInstallationDate: string | null;
   magneticSealTypeName: string | null;
   measurableUnitString: string | null;
   isPolling: boolean;
-
   /** @format int32 */
   contractorId: number | null;
   connection: MeteringDeviceConnection | null;
@@ -4018,21 +3610,19 @@ export interface IndividualDeviceResponseFromDevicePage {
   model?: string | null;
   serialNumber?: string | null;
   resource?: EResourceType;
-
   /** @format date-time */
   closingDate?: string | null;
   mountPlace?: string | null;
-
   /** @format date-time */
   lastCheckingDate?: string;
-
   /** @format date-time */
   futureCheckingDate?: string;
   consumption?: IndividualDeviceConsumption | null;
   sealNumber?: string | null;
-
   /** @format date-time */
   sealInstallationDate?: string | null;
+  /** @format int32 */
+  bitDepth?: number | null;
 }
 
 export interface IndividualDeviceResponseFromDevicePageListSuccessApiResponse {
@@ -4061,30 +3651,22 @@ export interface IndividualDeviceWithExpiredCheckingDateResponse {
   model: string | null;
   serialNumber: string | null;
   sealNumber: string | null;
-
   /** @format date-time */
   sealInstallationDate: string | null;
-
   /** @format int32 */
   managementFirmId: number | null;
-
   /** @format date-time */
   lastCheckingDate: string | null;
-
   /** @format date-time */
   futureCheckingDate: string | null;
-
   /** @format date-time */
   openingDate: string | null;
-
   /** @format date-time */
   closingDate: string | null;
   closingReason: EClosingReason;
   hasActiveTasks: boolean | null;
-
   /** @format int32 */
   bitDepth: number | null;
-
   /** @format double */
   scaleFactor: number | null;
   resource: EResourceType;
@@ -4113,7 +3695,6 @@ export interface IndividualDevicesConstructedReportResponseIEnumerableSuccessApi
 
 export interface InspectorCreateRequest {
   fullName: string;
-
   /** @format int32 */
   readoutPlan: number;
 }
@@ -4124,14 +3705,11 @@ export interface InspectorOnBuildingResponse {
   street: string | null;
   corpus: string | null;
   number: string | null;
-
   /** @format uuid */
   houseManagementId: string | null;
   houseManagementName: string | null;
-
   /** @format int32 */
   inspectedDay: number | null;
-
   /** @format int32 */
   inspectorId: number | null;
 }
@@ -4149,7 +3727,6 @@ export interface InspectorResponse {
   /** @format int32 */
   id: number;
   fullName: string | null;
-
   /** @format int32 */
   readoutPlan: number;
 }
@@ -4161,21 +3738,16 @@ export interface InspectorResponseListSuccessApiResponse {
 export interface InspectorResponsePagedList {
   /** @format int32 */
   totalItems: number;
-
   /** @format int32 */
   pageNumber: number;
-
   /** @format int32 */
   pageSize: number;
-
   /** @format int32 */
   totalPages: number;
   hasPreviousPage: boolean;
   hasNextPage: boolean;
-
   /** @format int32 */
   nextPageNumber: number;
-
   /** @format int32 */
   previousPageNumber: number;
   items: InspectorResponse[] | null;
@@ -4191,14 +3763,12 @@ export interface InspectorResponseSuccessApiResponse {
 
 export interface InspectorUpdateRequest {
   fullName?: string | null;
-
   /** @format int32 */
   readoutPlan?: number | null;
 }
 
 export interface InspectorsConstructedReportResponse {
   name: string | null;
-
   /** @format int32 */
   dayPlan: number;
   counts: number[] | null;
@@ -4221,7 +3791,6 @@ export interface Int32SuccessApiResponse {
 export interface InvalidCheckingDatesConstructedReportResponse {
   /** @format date-time */
   lastCheckingDate: string;
-
   /** @format date-time */
   futureCheckingDate: string;
 }
@@ -4286,9 +3855,7 @@ export interface ManagementFirmEventDataDeviceResponse {
 export interface ManagementFirmEventDataElectricNodeResponse {
   /** @format int32 */
   id: number;
-
-  /** @format int32 */
-  number: number;
+  title: string | null;
   resource: EResourceType;
 }
 
@@ -4309,11 +3876,8 @@ export interface ManagementFirmEventDataIdResponse {
 export interface ManagementFirmEventDataPipeNodeResponse {
   /** @format int32 */
   id: number;
-
-  /** @format int32 */
-  number: number;
+  title: string | null;
   resource: EResourceType;
-
   /** @format int32 */
   entryNumber: number | null;
 }
@@ -4338,11 +3902,6 @@ export interface ManagementFirmEventDataTaskResponse {
 }
 
 export interface ManagementFirmFiltersConfigurationResponse {
-  /** @format int32 */
-  id: number;
-
-  /** @format int32 */
-  managementFirmId: number;
   hasHousingStockCorpuses: boolean;
   pipeDiameters: number[] | null;
 }
@@ -4360,7 +3919,6 @@ export interface ManagementFirmLiteResponse {
 export interface MeasurableIntervalResponse {
   /** @format double */
   maxValue: number | null;
-
   /** @format double */
   minValue: number | null;
   measurableUnit: string | null;
@@ -4368,10 +3926,8 @@ export interface MeasurableIntervalResponse {
 
 export interface MeteringDeviceConnection {
   ipV4?: string | null;
-
   /** @format int32 */
   port?: number | null;
-
   /** @format int32 */
   deviceAddress?: number | null;
 }
@@ -4380,24 +3936,19 @@ export interface MeteringDeviceListResponse {
   /** @format int32 */
   id: number;
   ipV4: string | null;
-
   /** @format int32 */
   port: number | null;
-
   /** @format int32 */
   deviceAddress: number | null;
   model: string | null;
   serialNumber: string | null;
   sealNumber: string | null;
-
   /** @format date-time */
   sealInstallationDate: string | null;
   type: string | null;
   resource: string | null;
-
   /** @format date-time */
   closingDate: string | null;
-
   /** @format date-time */
   futureCheckingDate: string | null;
 }
@@ -4409,21 +3960,16 @@ export interface MeteringDeviceListResponseIEnumerableSuccessApiResponse {
 export interface MeteringDeviceListResponsePagedList {
   /** @format int32 */
   totalItems: number;
-
   /** @format int32 */
   pageNumber: number;
-
   /** @format int32 */
   pageSize: number;
-
   /** @format int32 */
   totalPages: number;
   hasPreviousPage: boolean;
   hasNextPage: boolean;
-
   /** @format int32 */
   nextPageNumber: number;
-
   /** @format int32 */
   previousPageNumber: number;
   items: MeteringDeviceListResponse[] | null;
@@ -4439,39 +3985,28 @@ export interface MeteringDeviceResponse {
   model: string | null;
   serialNumber: string | null;
   sealNumber: string | null;
-
   /** @format date-time */
   sealInstallationDate: string | null;
-
   /** @format int32 */
   managementFirmId: number | null;
-
   /** @format date-time */
   lastCheckingDate: string | null;
-
   /** @format date-time */
   futureCheckingDate: string | null;
-
   /** @format date-time */
   openingDate: string | null;
-
   /** @format date-time */
   closingDate: string | null;
   closingReason: EClosingReason;
   hasActiveTasks: boolean | null;
-
   /** @format int32 */
   bitDepth: number | null;
-
   /** @format double */
   scaleFactor: number | null;
-
   /** @format int32 */
   housingStockId: number | null;
-
   /** @format int32 */
   nodeId: number | null;
-
   /** @format int32 */
   diameter: number | null;
   connection: MeteringDeviceConnection | null;
@@ -4493,14 +4028,11 @@ export interface MeteringDeviceSearchListResponse {
   model: string | null;
   serialNumber: string | null;
   sealNumber: string | null;
-
   /** @format date-time */
   sealInstallationDate: string | null;
   ipV4: string | null;
-
   /** @format int32 */
   port: number | null;
-
   /** @format int32 */
   deviceAddress: number | null;
   resource: EResourceType | null;
@@ -4513,7 +4045,6 @@ export interface MeteringDeviceSearchListResponseIEnumerableSuccessApiResponse {
 export interface NodeCheckResponse {
   /** @format int32 */
   id: number;
-
   /** @format date-time */
   checkingDate: string;
   checkType: ENodeCheckType;
@@ -4524,21 +4055,16 @@ export interface NodeCheckResponse {
 export interface NodeCheckResponsePagedList {
   /** @format int32 */
   totalItems: number;
-
   /** @format int32 */
   pageNumber: number;
-
   /** @format int32 */
   pageSize: number;
-
   /** @format int32 */
   totalPages: number;
   hasPreviousPage: boolean;
   hasNextPage: boolean;
-
   /** @format int32 */
   nextPageNumber: number;
-
   /** @format int32 */
   previousPageNumber: number;
   items: NodeCheckResponse[] | null;
@@ -4565,10 +4091,7 @@ export interface NodeNetworkDeviceResponse {
 export interface NodeOnHousingStockResponse {
   /** @format int32 */
   id: number;
-
-  /** @format int32 */
-  number: number;
-
+  title: string | null;
   /** @format int32 */
   entryNumber: number | null;
   status: ENodeCommercialAccountStatus;
@@ -4607,19 +4130,14 @@ export interface NodeServiceZoneResponseSuccessApiResponse {
 
 export interface NodeSetCommercialStatusRequest {
   commercialStatus?: ENodeCommercialAccountStatus;
-
   /** @format date-time */
   commercialAccountingDeregistrationDate?: string | null;
-
   /** @format date-time */
   commercialStatusChangingDate?: string | null;
-
   /** @format int32 */
   documentId?: number | null;
-
   /** @format date-time */
   startCommercialAccountingDate?: string | null;
-
   /** @format date-time */
   endCommercialAccountingDate?: string | null;
 }
@@ -4627,7 +4145,6 @@ export interface NodeSetCommercialStatusRequest {
 export interface NodeSetNotRegisteredRequest {
   /** @format int32 */
   documentId?: number | null;
-
   /** @format date-time */
   endCommercialAccountingDate?: string | null;
 }
@@ -4635,10 +4152,8 @@ export interface NodeSetNotRegisteredRequest {
 export interface NodeSetRegisteredRequest {
   /** @format int32 */
   documentId?: number;
-
   /** @format date-time */
   startCommercialAccountingDate?: string;
-
   /** @format date-time */
   endCommercialAccountingDate?: string;
 }
@@ -4652,7 +4167,6 @@ export interface NodeSetRegistrationTypeRequest {
 export interface NodeSetTechnicalTypeRequest {
   /** @format date-time */
   commercialAccountingDeregistrationDate?: string;
-
   /** @format int32 */
   documentId?: number | null;
 }
@@ -4660,21 +4174,16 @@ export interface NodeSetTechnicalTypeRequest {
 export interface NodesPagedList {
   /** @format int32 */
   totalItems: number;
-
   /** @format int32 */
   pageNumber: number;
-
   /** @format int32 */
   pageSize: number;
-
   /** @format int32 */
   totalPages: number;
   hasPreviousPage: boolean;
   hasNextPage: boolean;
-
   /** @format int32 */
   nextPageNumber: number;
-
   /** @format int32 */
   previousPageNumber: number;
   pipeNodes: PipeNodeResponse[] | null;
@@ -4688,29 +4197,28 @@ export interface NodesPagedListSuccessApiResponse {
 export interface NonResidentialBuildingCreateRequest {
   mainAddress: BuildingAddressCreateRequest;
   otherAddresses?: BuildingAddressCreateRequest[] | null;
-
   /** @format uuid */
   heatingStationId: string;
   coordinates?: PointResponse | null;
   nonResidentialHouseType?: ENonResidentialHouseType | null;
-
   /** @format int32 */
   numberOfFloors?: number | null;
   isThereElevator?: boolean | null;
   consumer?: string | null;
+  /**
+   * @minLength 6
+   * @maxLength 6
+   */
   index?: string | null;
   city?: string | null;
-
   /**
    * @format int32
    * @min 1800
    * @max 2100
    */
   constructionYear?: number | null;
-
   /** @format double */
   houseArea?: number | null;
-
   /** @format double */
   totalArea?: number | null;
   hasIndividualHeatingStation?: boolean;
@@ -4719,41 +4227,32 @@ export interface NonResidentialBuildingCreateRequest {
 export interface NonResidentialBuildingResponse {
   /** @format int32 */
   id: number;
-
   /** @format int32 */
   managingFirmId: number;
-
   /** @format uuid */
   fiasId: string | null;
   consumer: string | null;
   index: string | null;
   coordinates: PointResponse | null;
   houseTypeString: string | null;
-
   /** @format int32 */
   numberOfFloors: number | null;
   isThereElevator: boolean | null;
-
   /** @format double */
   houseArea: number | null;
-
   /** @format double */
   totalArea: number | null;
   hasIndividualHeatingStation: boolean;
   heatingStation: HeatingStationShortResponse | null;
   managementFirmName: string | null;
   managementFirmInfo: string | null;
-
   /** @format int32 */
   inspectorId: number | null;
-
   /** @format int32 */
   inspectedDay: number | null;
   address: BuildingAddressResponse | null;
-
   /** @format int32 */
   numberOfTasks: number;
-
   /** @format int32 */
   constructionYear: number | null;
 }
@@ -4767,23 +4266,23 @@ export interface NonResidentialBuildingUpdateRequest {
   heatingStationId?: string | null;
   hasIndividualHeatingStation?: boolean | null;
   coordinates?: PointResponse | null;
-
   /** @format int32 */
   numberOfFloors?: number | null;
   isThereElevator?: boolean | null;
   consumer?: string | null;
+  /**
+   * @minLength 6
+   * @maxLength 6
+   */
   index?: string | null;
-
   /**
    * @format int32
    * @min 1800
    * @max 2100
    */
   constructionYear?: number | null;
-
   /** @format double */
   houseArea?: number | null;
-
   /** @format double */
   totalArea?: number | null;
 }
@@ -4800,16 +4299,12 @@ export interface NumberIdResponseArraySuccessApiResponse {
 
 export interface OperatorsConstructedReportResponse {
   name: string | null;
-
   /** @format int32 */
   hotWaterSupplyCount: number;
-
   /** @format int32 */
   coldWaterSupplyCount: number;
-
   /** @format int32 */
   electricityCount: number;
-
   /** @format int32 */
   heatCount: number;
 }
@@ -4840,10 +4335,9 @@ export interface OrganizationResponse {
   workingTime: string | null;
   address: OrganizationAddressResponse | null;
   filtersConfiguration: ManagementFirmFiltersConfigurationResponse | null;
-
+  platformConfiguration: PlatformConfigurationResponse | null;
   /** @format double */
   latitude: number | null;
-
   /** @format double */
   longitude: number | null;
 }
@@ -4851,21 +4345,16 @@ export interface OrganizationResponse {
 export interface OrganizationResponsePagedList {
   /** @format int32 */
   totalItems: number;
-
   /** @format int32 */
   pageNumber: number;
-
   /** @format int32 */
   pageSize: number;
-
   /** @format int32 */
   totalPages: number;
   hasPreviousPage: boolean;
   hasNextPage: boolean;
-
   /** @format int32 */
   nextPageNumber: number;
-
   /** @format int32 */
   previousPageNumber: number;
   items: OrganizationResponse[] | null;
@@ -4898,6 +4387,7 @@ export interface OrganizationUpdateRequest {
 export interface OrganizationUserCreateRequest {
   /** @format email */
   email?: string | null;
+  /** @minLength 2 */
   firstName?: string | null;
   lastName?: string | null;
   middleName?: string | null;
@@ -4914,7 +4404,6 @@ export interface OrganizationUserCreateRequest {
 export interface OrganizationUserEventResponse {
   title: string | null;
   eventType: EManagementFirmEventType;
-
   /** @format date-time */
   eventTime: string;
   data: ManagementFirmEventDataResponse | null;
@@ -4928,7 +4417,6 @@ export interface OrganizationUserListResponse {
   lastName: string | null;
   middleName: string | null;
   cellphone: string | null;
-
   /** @format int32 */
   executingTaskCount: number;
   status: UserStatusResponse | null;
@@ -4938,21 +4426,16 @@ export interface OrganizationUserListResponse {
 export interface OrganizationUserListResponsePagedList {
   /** @format int32 */
   totalItems: number;
-
   /** @format int32 */
   pageNumber: number;
-
   /** @format int32 */
   pageSize: number;
-
   /** @format int32 */
   totalPages: number;
   hasPreviousPage: boolean;
   hasNextPage: boolean;
-
   /** @format int32 */
   nextPageNumber: number;
-
   /** @format int32 */
   previousPageNumber: number;
   items: OrganizationUserListResponse[] | null;
@@ -4974,16 +4457,12 @@ export interface OrganizationUserResponse {
   position: string | null;
   number: string | null;
   profilePhoto: DocumentResponse | null;
-
   /** @format date-time */
   hireDate: string | null;
-
   /** @format date-time */
   dismissalDate: string | null;
-
   /** @format date-time */
   suspendedFromDate: string | null;
-  organization: OrganizationResponse | null;
   status: UserStatusResponse | null;
   competences: UserCompetenceResponse[] | null;
   roles: ESecuredIdentityRoleNameStringDictionaryItem[] | null;
@@ -5008,16 +4487,12 @@ export interface OrganizationUserShortResponseSuccessApiResponse {
 export interface OrganizationUserStatisticsResponse {
   /** @format int32 */
   userId: number;
-
   /** @format int32 */
   openedTasksCount: number;
-
   /** @format int32 */
   closedTasksCount: number;
-
   /** @format int32 */
   expiredTasksCount: number;
-
   /** @format double */
   inTimeClosedTasksPercent: number;
   events: OrganizationUserEventResponse[] | null;
@@ -5029,7 +4504,6 @@ export interface OrganizationUserStatisticsResponseSuccessApiResponse {
 
 export interface OrganizationUserTaskReassignment {
   role?: ESecuredIdentityRoleName;
-
   /** @format int32 */
   userId?: number;
 }
@@ -5037,6 +4511,7 @@ export interface OrganizationUserTaskReassignment {
 export interface OrganizationUserUpdateRequest {
   /** @format email */
   email?: string | null;
+  /** @minLength 2 */
   firstName?: string | null;
   lastName?: string | null;
   middleName?: string | null;
@@ -5051,10 +4526,8 @@ export interface OrganizationUserUpdateRequest {
 
 export interface OrganizationUserWorkingStatusResponse {
   type: EOrganizationUserWorkingStatusType;
-
   /** @format date-time */
   startDate: string | null;
-
   /** @format date-time */
   endDate: string | null;
 }
@@ -5065,19 +4538,18 @@ export interface OrganizationUserWorkingStatusResponseSuccessApiResponse {
 
 export interface PipeHousingMeteringDeviceConnectionResponse {
   hub: PipeHousingMeteringDeviceHubConnectionResponse | null;
-
   /** @format int32 */
   calculatorId: number | null;
-
-  /** @format int32 */
+  /**
+   * @deprecated
+   * @format int32
+   */
   nodeId: number | null;
   node: PipeHousingMeteringDeviceNodeResponse | null;
   calculatorSerialNumber: string | null;
   calculatorModel: string | null;
-
   /** @format date-time */
   lastCheckingDate: string | null;
-
   /** @format date-time */
   futureCheckingDate: string | null;
   isActive: boolean | null;
@@ -5087,7 +4559,6 @@ export interface PipeHousingMeteringDeviceConnectionResponse {
 export interface PipeHousingMeteringDeviceHubConnectionResponse {
   /** @format int32 */
   entryNumber: number | null;
-
   /** @format int32 */
   pipeNumber: number | null;
   magistral: string | null;
@@ -5099,25 +4570,19 @@ export interface PipeHousingMeteringDeviceListResponse {
   model: string | null;
   serialNumber: string | null;
   sealNumber: string | null;
-
   /** @format date-time */
   sealInstallationDate: string | null;
   managementFirm: OrganizationResponse | null;
-
   /** @format date-time */
   lastCheckingDate: string | null;
-
   /** @format date-time */
   futureCheckingDate: string | null;
-
   /** @format date-time */
   closingDate: string | null;
   closingReason: EClosingReason;
   hasActiveTasks: boolean;
-
   /** @format int32 */
   bitDepth: number | null;
-
   /** @format double */
   scaleFactor: number | null;
   resource: EResourceType;
@@ -5129,9 +4594,7 @@ export interface PipeHousingMeteringDeviceListResponse {
 export interface PipeHousingMeteringDeviceNodeResponse {
   /** @format int32 */
   id: number;
-
-  /** @format int32 */
-  number: number;
+  title: string | null;
 }
 
 export interface PipeHousingMeteringDeviceResponse {
@@ -5140,37 +4603,28 @@ export interface PipeHousingMeteringDeviceResponse {
   model: string | null;
   serialNumber: string | null;
   sealNumber: string | null;
-
   /** @format date-time */
   sealInstallationDate: string | null;
-
   /** @format int32 */
   managementFirmId: number | null;
-
   /** @format date-time */
   lastCheckingDate: string | null;
-
   /** @format date-time */
   futureCheckingDate: string | null;
-
   /** @format date-time */
   openingDate: string | null;
-
   /** @format date-time */
   closingDate: string | null;
   closingReason: EClosingReason;
   hasActiveTasks: boolean | null;
-
   /** @format int32 */
   bitDepth: number | null;
-
   /** @format double */
   scaleFactor: number | null;
   resource: EResourceType;
   housingMeteringDeviceType: EHousingMeteringDeviceType;
   address: BuildingShortResponse | null;
   comment: HousingMeteringDeviceCommentResponse | null;
-
   /** @format int32 */
   diameter: number | null;
   communicationPipe: CommunicationPipeLiteResponse | null;
@@ -5184,10 +4638,8 @@ export interface PipeHousingMeteringDeviceResponseSuccessApiResponse {
 export interface PipeNodeHeatingSeasonListItemResponse {
   /** @format uuid */
   id: string;
-
   /** @format date-time */
   startDate: string;
-
   /** @format date-time */
   endDate: string | null;
 }
@@ -5200,20 +4652,15 @@ export interface PipeNodeHeatingSeasonListResponse {
 export interface PipeNodeIntoCalculatorResponse {
   /** @format int32 */
   id: number;
-
-  /** @format int32 */
-  number: number;
-
+  title: string | null;
   /** @format int32 */
   entryNumber: number | null;
   commercialStatus: NodeCommercialStatusResponse | null;
   resource: EResourceType;
   nodeServiceZone: NodeServiceZoneResponse | null;
   heatingSeason: PipeNodeHeatingSeasonListResponse | null;
-
   /** @format date-time */
   lastCommercialAccountingDate: string | null;
-
   /** @format date-time */
   futureCommercialAccountingDate: string | null;
   communicationPipes: CommunicationPipeResponse[] | null;
@@ -5226,7 +4673,6 @@ export interface PipeNodeMeteringDeviceResponse {
   model: string | null;
   serialNumber: string | null;
   hasActiveTasks: boolean;
-
   /** @format int32 */
   pipeNumber: number;
   magistral: EMagistralType;
@@ -5235,39 +4681,30 @@ export interface PipeNodeMeteringDeviceResponse {
 export interface PipeNodeResponse {
   /** @format int32 */
   id: number;
-
-  /** @format int32 */
-  number: number;
+  title: string | null;
   registrationType: ENodeRegistrationType;
   commercialStatus: NodeCommercialStatusResponse | null;
   resource: EResourceType;
   nodeServiceZone: NodeServiceZoneResponse | null;
-
   /** @format date-time */
   lastCommercialAccountingDate: string | null;
-
   /** @format date-time */
   futureCommercialAccountingDate: string | null;
-
   /** @format date-time */
   commercialAccountingDeregistrationDate: string | null;
-
   /** @format int32 */
   buildingId: number;
   address: BuildingShortResponse | null;
   documents: DocumentLiteResponse[] | null;
   heatingSeason: PipeNodeHeatingSeasonListResponse | null;
-
   /** @format int32 */
   calculatorId: number | null;
   calculator: CalculatorIntoNodeResponse | null;
   configuration: EPipeNodeConfig;
-
   /** @format int32 */
   entryNumber: number | null;
   communicationPipes: CommunicationPipeResponse[] | null;
   validationResult: PipeNodeValidationResultResponse | null;
-
   /** @format int32 */
   numberOfTasks: number;
 }
@@ -5286,10 +4723,13 @@ export interface PipeNodeValidationStatusResponse {
   validationResult: PipeNodeValidationResultResponse | null;
 }
 
+export interface PlatformConfigurationResponse {
+  featureToggles: FeatureTogglesResponse | null;
+}
+
 export interface PointResponse {
   /** @format double */
   latitude: number;
-
   /** @format double */
   longitude: number;
 }
@@ -5297,26 +4737,22 @@ export interface PointResponse {
 export interface ProblemDetails {
   type?: string | null;
   title?: string | null;
-
   /** @format int32 */
   status?: number | null;
   detail?: string | null;
   instance?: string | null;
+  [key: string]: any;
 }
 
 export interface ReadingOnRiserResponse {
   /** @format double */
   value1: number;
-
   /** @format double */
   value2: number | null;
-
   /** @format double */
   value3: number | null;
-
   /** @format double */
   value4: number | null;
-
   /** @format date-time */
   readingDate: string;
 }
@@ -5341,10 +4777,8 @@ export interface ReplacementAccount {
   /** @format uuid */
   id?: string;
   personalAccountNumber?: string | null;
-
   /** @format date-time */
   openAt?: string;
-
   /** @format date-time */
   openAtFact?: string;
 }
@@ -5356,7 +4790,6 @@ export interface ReportDataModel {
 
 export interface ReportEntry {
   dateTimeText?: string | null;
-
   /** @format date-time */
   dateTime?: string;
   values?: ReportEntryValue[] | null;
@@ -5364,7 +4797,6 @@ export interface ReportEntry {
 
 export interface ReportEntryValue {
   text?: string | null;
-
   /** @format double */
   doubleValue?: number | null;
 }
@@ -5377,31 +4809,23 @@ export interface ReportHeader {
 export interface ReportRequestHistoryPagedList {
   /** @format int32 */
   totalItems: number;
-
   /** @format int32 */
   pageNumber: number;
-
   /** @format int32 */
   pageSize: number;
-
   /** @format int32 */
   totalPages: number;
   hasPreviousPage: boolean;
   hasNextPage: boolean;
-
   /** @format int32 */
   nextPageNumber: number;
-
   /** @format int32 */
   previousPageNumber: number;
   items: ReportRequestHistoryResponse[] | null;
-
   /** @format int32 */
   totalActualReports: number | null;
-
   /** @format int32 */
   totalDeprecatedReports: number | null;
-
   /** @format int32 */
   totalReports: number | null;
 }
@@ -5409,10 +4833,8 @@ export interface ReportRequestHistoryPagedList {
 export interface ReportRequestHistoryResponse {
   /** @format int32 */
   id: number;
-
   /** @format int32 */
   userId: number;
-
   /** @format date-time */
   timeStamp: string;
   reportName: EReportName;
@@ -5424,18 +4846,14 @@ export interface ReportRequestHistoryResponse {
 export interface ResourceDisconnectingCreateRequest {
   resource: EResourceType;
   sender: string;
-
   /** @format uuid */
   heatingStationId?: string | null;
   disconnectingType: EResourceDisconnectingType;
   housingStockIds: number[];
-
   /** @format date-time */
   startDate: string;
-
   /** @format date-time */
   endDate?: string | null;
-
   /** @format int32 */
   documentId?: number | null;
 }
@@ -5457,15 +4875,12 @@ export interface ResourceDisconnectingResponse {
   id: string;
   resource: EResourceType;
   disconnectingType: ResourceDisconnectingTypeResponse | null;
-
   /** @format date-time */
   startDate: string;
-
   /** @format date-time */
   endDate: string | null;
   sender: string | null;
   heatingStation: HeatingStationShortResponse | null;
-
   /** @format int32 */
   managementFirmId: number;
   buildings: BuildingShortResponse[] | null;
@@ -5475,21 +4890,16 @@ export interface ResourceDisconnectingResponse {
 export interface ResourceDisconnectingResponsePagedList {
   /** @format int32 */
   totalItems: number;
-
   /** @format int32 */
   pageNumber: number;
-
   /** @format int32 */
   pageSize: number;
-
   /** @format int32 */
   totalPages: number;
   hasPreviousPage: boolean;
   hasNextPage: boolean;
-
   /** @format int32 */
   nextPageNumber: number;
-
   /** @format int32 */
   previousPageNumber: number;
   items: ResourceDisconnectingResponse[] | null;
@@ -5511,10 +4921,8 @@ export interface ResourceDisconnectingTypeResponse {
 export interface ResourceDisconnectingUpdateRequest {
   disconnectingType?: EResourceDisconnectingType | null;
   housingStockIds: number[];
-
   /** @format date-time */
   startDate: string;
-
   /** @format date-time */
   endDate?: string | null;
   sender?: string | null;
@@ -5531,6 +4939,7 @@ export enum SecuredIdentityRoleName {
   Controller = 'Controller',
   SeniorOperator = 'SeniorOperator',
   ManagingFirmSpectatorRestricted = 'ManagingFirmSpectatorRestricted',
+  ManagingFirmSpectatingAdministrator = 'ManagingFirmSpectatingAdministrator',
 }
 
 export interface SendGroupReportRequest {
@@ -5558,7 +4967,6 @@ export interface StageEmailNotifyRequest {
 export interface StageListResponse {
   /** @format int32 */
   id: number;
-
   /** @format int32 */
   number: number;
   name: string | null;
@@ -5566,10 +4974,8 @@ export interface StageListResponse {
   perpetrator: OrganizationUserShortResponse | null;
   status: EStageStatus;
   type: EStageType;
-
   /** @format date-time */
   closingTime: string | null;
-
   /** @format date-time */
   expectedCompletionTime: string | null;
   requiredUserRoles: string[] | null;
@@ -5585,13 +4991,10 @@ export interface StageListResponseWrappedListResponseSuccessApiResponse {
 
 export interface StagePushRequest {
   emailNotify?: StageEmailNotifyRequest | null;
-
   /** @format int32 */
   nextStageId?: number | null;
-
   /** @format int32 */
   nextPerpetratorId?: number | null;
-
   /** @format date-time */
   nextStageDeadline?: string | null;
   documentsIds?: number[] | null;
@@ -5599,15 +5002,17 @@ export interface StagePushRequest {
   deviceCloses?: CloseDeviceRequest[] | null;
   calculatorSwitch?: SwitchCalculatorRequest | null;
   housingMeteringDeviceSwitch?: SwitchHousingMeteringDeviceRequest | null;
+  resourceDisconnecting?: ResourceDisconnectingCreateRequest | null;
   readings?: IndividualDeviceReadingsCreateRequest[] | null;
   fixedReading?: IndividualDeviceReadingsCreateRequest | null;
-
   /** @format date-time */
   apartmentCheckDate?: string | null;
   taskConfirmation?: TaskConfirmationRequest | null;
-
   /** @format date-time */
   applicationCompletionDate?: string | null;
+  /** @format date-time */
+  applicationPostponeDate?: string | null;
+  /** @maxLength 1024 */
   comment?: string | null;
 }
 
@@ -5621,22 +5026,20 @@ export interface StageResponse {
   actions: EStageActionType[] | null;
   additionalActions: EStageActionType[] | null;
   allowedDocumentTypes: EDocumentType[] | null;
-
   /** @format date-time */
   closingTime: string | null;
-
   /** @format date-time */
   startingTime: string | null;
-
   /** @format date-time */
   expectedCompletionTime: string | null;
   timeStatus: EStageTimeStatus;
-
   /** @format double */
   timeProgress: number;
+  isEntryPoint: boolean;
 }
 
 export interface StageRevertRequest {
+  /** @maxLength 1024 */
   comment?: string | null;
 }
 
@@ -5654,21 +5057,16 @@ export interface StreetWithBuildingNumbersResponse {
 export interface StreetWithBuildingNumbersResponsePagedList {
   /** @format int32 */
   totalItems: number;
-
   /** @format int32 */
   pageNumber: number;
-
   /** @format int32 */
   pageSize: number;
-
   /** @format int32 */
   totalPages: number;
   hasPreviousPage: boolean;
   hasNextPage: boolean;
-
   /** @format int32 */
   nextPageNumber: number;
-
   /** @format int32 */
   previousPageNumber: number;
   items: StreetWithBuildingNumbersResponse[] | null;
@@ -5681,21 +5079,16 @@ export interface StreetWithBuildingNumbersResponsePagedListSuccessApiResponse {
 export interface StringPagedList {
   /** @format int32 */
   totalItems: number;
-
   /** @format int32 */
   pageNumber: number;
-
   /** @format int32 */
   pageSize: number;
-
   /** @format int32 */
   totalPages: number;
   hasPreviousPage: boolean;
   hasNextPage: boolean;
-
   /** @format int32 */
   nextPageNumber: number;
-
   /** @format int32 */
   previousPageNumber: number;
   items: string[] | null;
@@ -5711,34 +5104,30 @@ export interface StringSuccessApiResponse {
 
 export interface SubscriberStatisticsСonsumptionResponse {
   apartmentNumber: string | null;
-
   /** @format double */
   coldWaterSupplyConsumption: number | null;
-
   /** @format double */
   hotWaterSupplyConsumption: number | null;
-
-  /** @format double */
+  /**
+   * @deprecated
+   * @format double
+   */
   electricitySupplyConsumption: number | null;
-
   /** @format double */
   electricityConsumption: number | null;
-
   /** @format double */
   heatConsumption: number | null;
-
   /** @format date-time */
   dateLastTransmissionOfReading: string;
-
   /** @format date-time */
   dateLastCheck: string | null;
-
   /** @format int32 */
   housingStockId: number;
-
   /** @format int32 */
   apartmentId: number;
   homeownerAccountFullName: string | null;
+  homeownerAccountPhoneNumbers: string[] | null;
+  /** @deprecated */
   homeownerAccountPhoneNumber: string | null;
 }
 
@@ -5750,28 +5139,21 @@ export interface SwitchCalculatorRequest {
   /** @format int32 */
   deviceId: number;
   documentsIds?: number[] | null;
-
   /** @format int32 */
   newDeviceId?: number | null;
   serialNumber?: string | null;
   sealNumber?: string | null;
-
   /** @format date-time */
   sealInstallationDate?: string | null;
-
   /** @format date-time */
   lastCheckingDate?: string | null;
-
   /** @format date-time */
   futureCheckingDate?: string | null;
-
   /** @format date-time */
   openingDate?: string | null;
-
   /** @format int32 */
   contractorId?: number | null;
   oldDeviceClosingReason?: EClosingReason;
-
   /** @format int32 */
   calculatorInfoId?: number | null;
   connection?: MeteringDeviceConnection | null;
@@ -5782,40 +5164,29 @@ export interface SwitchElectricHousingDeviceRequest {
   deviceId: number;
   model: string;
   serialNumber: string;
-
   /** @format int32 */
   bitDepth: number;
-
   /** @format double */
   scaleFactor: number;
-
   /** @format date-time */
   openingDate: string;
-
   /** @format int32 */
   manufactureYear: number;
   stateVerificationQuarter?: EYearQuarter | null;
-
   /** @format int32 */
   stateVerificationYear?: number | null;
-
   /** @format int32 */
   nextStateVerificationYear?: number | null;
-
   /** @format int32 */
   stateVerificationIntervalYears: number;
   oldDeviceClosingReason?: EClosingReason;
   sealNumber?: string | null;
-
   /** @format date-time */
   sealInstallationDate?: string | null;
-
   /** @format date-time */
   lastCheckingDate?: string | null;
-
   /** @format date-time */
   futureCheckingDate?: string | null;
-
   /** @format int32 */
   contractorId?: number | null;
   oldDeviceReadings?: SwitchHousingDeviceReadingsCreateRequest[] | null;
@@ -5826,7 +5197,6 @@ export interface SwitchHeatingSeasonRequest {
   /** @format int32 */
   documentId?: number;
   isOpening?: boolean;
-
   /** @format date-time */
   triggerDate?: string;
   houseCategory?: EHouseCategory | null;
@@ -5837,10 +5207,8 @@ export interface SwitchHeatingSeasonRequest {
 export interface SwitchHousingDeviceReadingsCreateRequest {
   /** @format date-time */
   readingDate: string;
-
   /** @format double */
   value: number;
-
   /** @format double */
   nonResidentialRoomConsumption?: number | null;
 }
@@ -5849,31 +5217,23 @@ export interface SwitchHousingMeteringDeviceRequest {
   /** @format int32 */
   deviceId: number;
   documentsIds?: number[] | null;
-
   /** @format int32 */
   newDeviceId?: number | null;
   serialNumber?: string | null;
   sealNumber?: string | null;
-
   /** @format date-time */
   sealInstallationDate?: string | null;
-
   /** @format date-time */
   lastCheckingDate?: string | null;
-
   /** @format date-time */
   futureCheckingDate?: string | null;
-
   /** @format date-time */
   openingDate?: string | null;
-
   /** @format int32 */
   contractorId?: number | null;
   oldDeviceClosingReason?: EClosingReason;
-
   /** @format int32 */
   bitDepth?: number | null;
-
   /** @format double */
   scaleFactor?: number | null;
   model?: string | null;
@@ -5882,16 +5242,12 @@ export interface SwitchHousingMeteringDeviceRequest {
 export interface SwitchIndividualDeviceReadingsCreateRequest {
   /** @format double */
   value1: number;
-
   /** @format double */
   value2?: number | null;
-
   /** @format double */
   value3?: number | null;
-
   /** @format double */
   value4?: number | null;
-
   /** @format date-time */
   readingDate: string;
 }
@@ -5899,31 +5255,23 @@ export interface SwitchIndividualDeviceReadingsCreateRequest {
 export interface SwitchIndividualDeviceRequest {
   model: string;
   serialNumber: string;
-
   /** @format int32 */
   bitDepth: number;
-
   /** @format double */
   scaleFactor: number;
   rateType?: EIndividualDeviceRateType;
   sealNumber?: string | null;
-
   /** @format date-time */
   sealInstallationDate?: string | null;
-
   /** @format date-time */
   lastCheckingDate: string;
-
   /** @format date-time */
   futureCheckingDate: string;
-
   /** @format date-time */
   openingDate?: string | null;
-
   /** @format int32 */
   contractorId?: number | null;
-  oldDeviceClosingReason?: EClosingReason;
-
+  oldDeviceClosingReason?: ESwitchingReason;
   /** @format int32 */
   newDeviceMountPlaceId?: number | null;
   oldDeviceReadings?: SwitchIndividualDeviceReadingsCreateRequest[] | null;
@@ -5949,7 +5297,6 @@ export interface TaskCommentResponse {
   id: number;
   text: string | null;
   author: string | null;
-
   /** @format date-time */
   createdAt: string;
   canBeEdited: boolean;
@@ -5974,14 +5321,10 @@ export interface TaskCreateRequest {
   targetObject?: TaskCreationTargetObject | null;
   creationReason?: string | null;
   taskType?: ETaskCreateType;
-
   /** @format date-time */
   activationTriggerDateTimeUtc?: string | null;
-
   /** @format uuid */
   activationTriggerGuid?: string | null;
-  assignment?: TaskCreationAssignment | null;
-  application?: TaskCreationApplication | null;
 }
 
 export interface TaskCreateResponse {
@@ -5994,29 +5337,8 @@ export interface TaskCreateResponseSuccessApiResponse {
   successResponse: TaskCreateResponse | null;
 }
 
-export interface TaskCreationApplication {
-  number?: string | null;
-  sourceName?: string | null;
-  nomenclatureName?: string | null;
-
-  /** @format date-time */
-  creationTime?: string;
-
-  /** @format date-time */
-  executionDeadline?: string;
-}
-
-export interface TaskCreationAssignment {
-  /** @format int32 */
-  executorId?: number;
-
-  /** @format int32 */
-  observerId?: number | null;
-}
-
 export interface TaskCreationTargetObject {
   type?: ETaskTargetObjectRequestType;
-
   /** @format int32 */
   id?: number;
 }
@@ -6043,13 +5365,11 @@ export interface TaskListResponse {
   id: number;
   name: string | null;
   currentStage: StageResponse | null;
-
   /** @format date-time */
   creationTime: string | null;
-
+  creationReason: string | null;
   /** @format date-time */
   expectedCompletionTime: string | null;
-
   /** @format date-time */
   closingTime: string | null;
   type: EManagingFirmTaskType;
@@ -6060,7 +5380,6 @@ export interface TaskListResponse {
   devices: MeteringDeviceSearchListResponse[] | null;
   pipeNode: PipeNodeResponse | null;
   mainHomeowner: HomeownerAccountListResponse | null;
-
   /** @format int32 */
   totalHomeownersCount: number;
   buildingCoordinates: PointResponse | null;
@@ -6074,19 +5393,15 @@ export interface TaskResponse {
   type: EManagingFirmTaskType;
   creationReason: string | null;
   address: string | null;
-
   /** @format int32 */
   buildingId: number;
   houseCategory: EHouseCategory;
   isPerpetrator: boolean;
   perpetrator: OrganizationUserShortResponse | null;
-
   /** @format date-time */
   creationTime: string | null;
-
   /** @format date-time */
   expectedCompletionTime: string | null;
-
   /** @format date-time */
   closingTime: string | null;
   closingStatus: ETaskClosingStatus | null;
@@ -6106,6 +5421,7 @@ export interface TaskResponse {
     | null;
   buildingCoordinates: PointResponse | null;
   canBeReverted: boolean;
+  isApplicationTask: boolean;
 }
 
 export interface TaskResponseSuccessApiResponse {
@@ -6118,7 +5434,6 @@ export interface TaskShortResponse {
   type: EManagingFirmTaskType;
   typeString: string | null;
   creationReason: string | null;
-
   /** @format date-time */
   creationDate: string;
   targetObject: ETaskTargetObject;
@@ -6133,9 +5448,12 @@ export interface TaskStatisticsItem {
   isEmergency?: boolean;
   isClosed?: boolean;
   creationReason?: string | null;
-
   /** @format date-time */
   creationTime?: string;
+  /** @format date-time */
+  firstTriggerTime?: string;
+  /** @format date-time */
+  lastTriggerTime?: string | null;
 }
 
 export interface TaskStatisticsResponse {
@@ -6149,28 +5467,21 @@ export interface TaskStatisticsResponseSuccessApiResponse {
 export interface TasksPagedList {
   /** @format int32 */
   totalItems: number;
-
   /** @format int32 */
   pageNumber: number;
-
   /** @format int32 */
   pageSize: number;
-
   /** @format int32 */
   totalPages: number;
   hasPreviousPage: boolean;
   hasNextPage: boolean;
-
   /** @format int32 */
   nextPageNumber: number;
-
   /** @format int32 */
   previousPageNumber: number;
   items: TaskListResponse[] | null;
-
   /** @format int32 */
   executingTasksCount: number | null;
-
   /** @format int32 */
   observingTasksCount: number | null;
 }
@@ -6180,83 +5491,68 @@ export interface TasksPagedListSuccessApiResponse {
 }
 
 export interface TemperatureNormativeResponse {
-  /** @format int32 */
-  id: number;
-
-  /** @format double */
-  outdoorTemperature: number;
-
-  /** @format double */
-  dayFeedFlowTemperature: number;
-
-  /** @format double */
-  nightFeedFlowTemperature: number;
-
-  /** @format double */
-  dayFeedBackFlowTemperature: number;
-
-  /** @format double */
-  nightFeedBackFlowTemperature: number;
-
-  /** @format double */
-  heatFeedFlowTemperature: number;
+  rows: TemperatureNormativeRow[] | null;
 }
 
-export interface TemperatureNormativeResponseIEnumerableSuccessApiResponse {
-  successResponse: TemperatureNormativeResponse[] | null;
+export interface TemperatureNormativeResponseSuccessApiResponse {
+  successResponse: TemperatureNormativeResponse | null;
+}
+
+export interface TemperatureNormativeRow {
+  /** @format double */
+  outdoorTemperature?: number;
+  /** @format double */
+  dayFeedFlowTemperature?: number;
+  /** @format double */
+  nightFeedFlowTemperature?: number;
+  /** @format double */
+  dayFeedBackFlowTemperature?: number;
+  /** @format double */
+  nightFeedBackFlowTemperature?: number;
+  /** @format double */
+  heatFeedFlowTemperature?: number;
+}
+
+export interface TemperatureNormativeRowUpdate {
+  /** @format double */
+  outdoorTemperature: number;
+  /** @format double */
+  dayFeedFlowTemperature: number;
+  /** @format double */
+  nightFeedFlowTemperature: number;
+  /** @format double */
+  dayFeedBackFlowTemperature: number;
+  /** @format double */
+  nightFeedBackFlowTemperature: number;
+  /** @format double */
+  heatFeedFlowTemperature: number;
 }
 
 export interface TemperatureNormativeUpdateRequest {
-  /** @format int32 */
-  id?: number;
-
-  /** @format double */
-  dayFeedFlowTemperature: number;
-
-  /** @format double */
-  nightFeedFlowTemperature: number;
-
-  /** @format double */
-  dayFeedBackFlowTemperature: number;
-
-  /** @format double */
-  nightFeedBackFlowTemperature: number;
-
-  /** @format double */
-  heatFeedFlowTemperature: number;
+  updateRows?: TemperatureNormativeRowUpdate[] | null;
 }
 
 export interface TimeSpan {
   /** @format int64 */
   ticks?: number;
-
   /** @format int32 */
   days?: number;
-
   /** @format int32 */
   hours?: number;
-
   /** @format int32 */
   milliseconds?: number;
-
   /** @format int32 */
   minutes?: number;
-
   /** @format int32 */
   seconds?: number;
-
   /** @format double */
   totalDays?: number;
-
   /** @format double */
   totalHours?: number;
-
   /** @format double */
   totalMilliseconds?: number;
-
   /** @format double */
   totalMinutes?: number;
-
   /** @format double */
   totalSeconds?: number;
 }
@@ -6276,10 +5572,8 @@ export interface TokenResponseSuccessApiResponse {
 export interface TotalAppointmentCounterResponse {
   /** @format date-time */
   date: string;
-
   /** @format int32 */
   distributed: number;
-
   /** @format int32 */
   notDistributed: number;
   districtIds: string[] | null;
@@ -6293,13 +5587,10 @@ export interface UpdateApartmentActRequest {
   actType?: EActType | null;
   registryNumber?: string | null;
   actResourceType?: EActResourceType | null;
-
   /** @format date-time */
   actJobDate?: string | null;
-
   /** @format int32 */
   apartmentId?: number | null;
-
   /** @format int32 */
   documentId?: number | null;
 }
@@ -6308,10 +5599,8 @@ export interface UpdateCalculatorRequest {
   serialNumber?: string | null;
   isConnected?: boolean | null;
   connection?: MeteringDeviceConnection | null;
-
   /** @format date-time */
   lastCheckingDate?: string | null;
-
   /** @format date-time */
   futureCheckingDate?: string | null;
 }
@@ -6319,10 +5608,8 @@ export interface UpdateCalculatorRequest {
 export interface UpdateCommunicationPipeRequest {
   /** @format int32 */
   communicationPipeId?: number;
-
   /** @format int32 */
   number?: number | null;
-
   /** @format int32 */
   diameter?: number | null;
 }
@@ -6330,47 +5617,35 @@ export interface UpdateCommunicationPipeRequest {
 export interface UpdateElectricHousingMeteringDeviceRequest {
   serialNumber?: string | null;
   sealNumber?: string | null;
-
   /** @format date-time */
   sealInstallationDate?: string | null;
-
   /** @format int32 */
   bitDepth?: number | null;
-
   /** @format double */
   scaleFactor?: number | null;
   housingMeteringDeviceType?: EHousingMeteringDeviceType | null;
   resource?: EResourceType | null;
   model?: string | null;
-
   /** @format date-time */
   lastCheckingDate?: string | null;
-
   /** @format date-time */
   futureCheckingDate?: string | null;
-
   /** @format date-time */
   installationDate?: string | null;
-
   /** @format int32 */
   manufactureYear?: number | null;
-
   /** @format int32 */
   stateVerificationYear?: number | null;
   stateVerificationQuarter?: EYearQuarter | null;
-
   /** @format int32 */
   stateVerificationIntervalYears?: number | null;
-
   /** @format int32 */
   nextStateVerificationYear?: number | null;
   phaseNumber?: EPhaseNumberType | null;
 }
 
 export interface UpdateElectricNodeRequest {
-  /** @format int32 */
-  number?: number | null;
-
+  title?: string | null;
   /** @format int32 */
   nodeServiceZoneId?: number | null;
   locationName?: string | null;
@@ -6389,7 +5664,6 @@ export interface UpdateHouseManagementRequest {
 export interface UpdateHousingMeteringDeviceReadingsRequest {
   /** @format uuid */
   id?: string;
-
   /** @format double */
   nonResidentialRoomConsumption?: number;
 }
@@ -6397,32 +5671,33 @@ export interface UpdateHousingMeteringDeviceReadingsRequest {
 export interface UpdateIndividualDeviceRequest {
   serialNumber?: string | null;
   sealNumber?: string | null;
-
   /** @format date-time */
   sealInstallationDate?: string | null;
-
   /** @format int32 */
   bitDepth?: number | null;
-
   /** @format double */
   scaleFactor?: number | null;
   model?: string | null;
-
   /** @format int32 */
   mountPlaceId?: number | null;
   resource?: EResourceType | null;
   isPolling?: boolean | null;
-
   /** @format int32 */
   contractorId?: number | null;
   connection?: MeteringDeviceConnection | null;
   isConnected?: boolean;
 }
 
+export interface UpdateIndividualDeviceSealRequest {
+  serialNumber: string;
+  sealNumber: string;
+  /** @format date-time */
+  sealInstallationDate: string;
+}
+
 export interface UpdateInspectorOnBuildingRequest {
   /** @format int32 */
   inspectorId: number;
-
   /** @format int32 */
   inspectedDay?: number | null;
 }
@@ -6431,7 +5706,6 @@ export interface UpdateNodeCheckRequest {
   /** @format date-time */
   checkingDate?: string | null;
   checkType?: ENodeCheckType | null;
-
   /** @format int32 */
   documentId?: number | null;
   registryNumber?: string | null;
@@ -6440,40 +5714,30 @@ export interface UpdateNodeCheckRequest {
 export interface UpdatePipeHousingMeteringDeviceRequest {
   serialNumber?: string | null;
   sealNumber?: string | null;
-
   /** @format date-time */
   sealInstallationDate?: string | null;
-
   /** @format int32 */
   bitDepth?: number | null;
-
   /** @format double */
   scaleFactor?: number | null;
   housingMeteringDeviceType?: EHousingMeteringDeviceType | null;
   resource?: EResourceType | null;
   model?: string | null;
-
   /** @format date-time */
   lastCheckingDate?: string | null;
-
   /** @format date-time */
   futureCheckingDate?: string | null;
-
   /** @format int32 */
   communicationPipeId?: number;
 }
 
 export interface UpdatePipeNodeRequest {
-  /** @format int32 */
-  number?: number | null;
-
+  title?: string | null;
   /** @format int32 */
   nodeServiceZoneId?: number | null;
   communicationPipes?: UpdateCommunicationPipeRequest[] | null;
-
   /** @format int32 */
   entryNumber?: number | null;
-
   /** @format int32 */
   calculatorId?: number | null;
   disconnectFromCalculator?: boolean;
@@ -6488,10 +5752,8 @@ export interface UserCompetenceResponse {
 export interface UserStatusResponse {
   title: string | null;
   type: EOrganizationUserWorkingStatusType;
-
   /** @format date-time */
   startDate: string | null;
-
   /** @format date-time */
   endDate: string | null;
 }
@@ -6500,10 +5762,8 @@ export interface ValueNodeWorkingRangeListResponse {
   nodeWorkingRangeType: ENodeWorkingRangeType;
   measureUnit: string | null;
   relationType: EValueNodeWorkingRangeRelation;
-
   /** @format float */
   min: number | null;
-
   /** @format float */
   max: number | null;
 }
@@ -6513,10 +5773,8 @@ export interface ValueNodeWorkingRangeResponse {
   nodeResourceType: EResourceType;
   nodeWorkingRangeType: ENodeWorkingRangeType;
   measureUnit: string | null;
-
   /** @format float */
   min: number | null;
-
   /** @format float */
   max: number | null;
 }
@@ -6530,17 +5788,10 @@ export enum YearRangeType {
   SecondHalf = 'SecondHalf',
 }
 
-import axios, {
-  AxiosInstance,
-  AxiosRequestConfig,
-  AxiosResponse,
-  ResponseType,
-} from 'axios';
-
 export type QueryParamsType = Record<string | number, any>;
+export type ResponseFormat = keyof Omit<Body, 'body' | 'bodyUsed'>;
 
-export interface FullRequestParams
-  extends Omit<AxiosRequestConfig, 'data' | 'params' | 'url' | 'responseType'> {
+export interface FullRequestParams extends Omit<RequestInit, 'body'> {
   /** set parameter to `true` for call `securityWorker` for this request */
   secure?: boolean;
   /** request path */
@@ -6550,9 +5801,13 @@ export interface FullRequestParams
   /** query params */
   query?: QueryParamsType;
   /** format of response (i.e. response.json() -> format: "json") */
-  format?: ResponseType;
+  format?: ResponseFormat;
   /** request body */
   body?: unknown;
+  /** base url */
+  baseUrl?: string;
+  /** request cancellation token */
+  cancelToken?: CancelToken;
 }
 
 export type RequestParams = Omit<
@@ -6560,91 +5815,237 @@ export type RequestParams = Omit<
   'body' | 'method' | 'query' | 'path'
 >;
 
-export interface ApiConfig<SecurityDataType = unknown>
-  extends Omit<AxiosRequestConfig, 'data' | 'cancelToken'> {
+export interface ApiConfig<SecurityDataType = unknown> {
+  baseUrl?: string;
+  baseApiParams?: Omit<RequestParams, 'baseUrl' | 'cancelToken' | 'signal'>;
   securityWorker?: (
     securityData: SecurityDataType | null,
-  ) => Promise<AxiosRequestConfig | void> | AxiosRequestConfig | void;
+  ) => Promise<RequestParams | void> | RequestParams | void;
+  customFetch?: typeof fetch;
 }
+
+export interface HttpResponse<D extends unknown, E extends unknown = unknown>
+  extends Response {
+  data: D;
+  error: E;
+}
+
+type CancelToken = Symbol | string | number;
 
 export enum ContentType {
   Json = 'application/json',
   FormData = 'multipart/form-data',
   UrlEncoded = 'application/x-www-form-urlencoded',
+  Text = 'text/plain',
 }
 
 export class HttpClient<SecurityDataType = unknown> {
-  private instance: AxiosInstance;
+  public baseUrl: string = '';
   private securityData: SecurityDataType | null = null;
   private securityWorker?: ApiConfig<SecurityDataType>['securityWorker'];
+  private abortControllers = new Map<CancelToken, AbortController>();
+  private customFetch = (...fetchParams: Parameters<typeof fetch>) =>
+    fetch(...fetchParams);
 
-  constructor({
-    securityWorker,
-    ...axiosConfig
-  }: ApiConfig<SecurityDataType> = {}) {
-    this.instance = axios.create({
-      ...axiosConfig,
-      baseURL: axiosConfig.baseURL || '',
-    });
-    this.securityWorker = securityWorker;
+  private baseApiParams: RequestParams = {
+    credentials: 'same-origin',
+    headers: {},
+    redirect: 'follow',
+    referrerPolicy: 'no-referrer',
+  };
+
+  constructor(apiConfig: ApiConfig<SecurityDataType> = {}) {
+    Object.assign(this, apiConfig);
   }
 
   public setSecurityData = (data: SecurityDataType | null) => {
     this.securityData = data;
   };
 
-  private mergeRequestParams(
-    params1: AxiosRequestConfig,
-    params2?: AxiosRequestConfig,
-  ): AxiosRequestConfig {
+  protected encodeQueryParam(key: string, value: any) {
+    const encodedKey = encodeURIComponent(key);
+    return `${encodedKey}=${encodeURIComponent(
+      typeof value === 'number' ? value : `${value}`,
+    )}`;
+  }
+
+  protected addQueryParam(query: QueryParamsType, key: string) {
+    return this.encodeQueryParam(key, query[key]);
+  }
+
+  protected addArrayQueryParam(query: QueryParamsType, key: string) {
+    const value = query[key];
+    return value.map((v: any) => this.encodeQueryParam(key, v)).join('&');
+  }
+
+  protected toQueryString(rawQuery?: QueryParamsType): string {
+    const query = rawQuery || {};
+    const keys = Object.keys(query).filter(
+      (key) => 'undefined' !== typeof query[key],
+    );
+    return keys
+      .map((key) =>
+        Array.isArray(query[key])
+          ? this.addArrayQueryParam(query, key)
+          : this.addQueryParam(query, key),
+      )
+      .join('&');
+  }
+
+  protected addQueryParams(rawQuery?: QueryParamsType): string {
+    const queryString = this.toQueryString(rawQuery);
+    return queryString ? `?${queryString}` : '';
+  }
+
+  private contentFormatters: Record<ContentType, (input: any) => any> = {
+    [ContentType.Json]: (input: any) =>
+      input !== null && (typeof input === 'object' || typeof input === 'string')
+        ? JSON.stringify(input)
+        : input,
+    [ContentType.Text]: (input: any) =>
+      input !== null && typeof input !== 'string'
+        ? JSON.stringify(input)
+        : input,
+    [ContentType.FormData]: (input: any) =>
+      Object.keys(input || {}).reduce((formData, key) => {
+        const property = input[key];
+        formData.append(
+          key,
+          property instanceof Blob
+            ? property
+            : typeof property === 'object' && property !== null
+            ? JSON.stringify(property)
+            : `${property}`,
+        );
+        return formData;
+      }, new FormData()),
+    [ContentType.UrlEncoded]: (input: any) => this.toQueryString(input),
+  };
+
+  protected mergeRequestParams(
+    params1: RequestParams,
+    params2?: RequestParams,
+  ): RequestParams {
     return {
+      ...this.baseApiParams,
       ...params1,
       ...(params2 || {}),
       headers: {
+        ...(this.baseApiParams.headers || {}),
         ...(params1.headers || {}),
         ...((params2 && params2.headers) || {}),
       },
     };
   }
 
+  protected createAbortSignal = (
+    cancelToken: CancelToken,
+  ): AbortSignal | undefined => {
+    if (this.abortControllers.has(cancelToken)) {
+      const abortController = this.abortControllers.get(cancelToken);
+      if (abortController) {
+        return abortController.signal;
+      }
+      return void 0;
+    }
+
+    const abortController = new AbortController();
+    this.abortControllers.set(cancelToken, abortController);
+    return abortController.signal;
+  };
+
+  public abortRequest = (cancelToken: CancelToken) => {
+    const abortController = this.abortControllers.get(cancelToken);
+
+    if (abortController) {
+      abortController.abort();
+      this.abortControllers.delete(cancelToken);
+    }
+  };
+
   public request = async <T = any, E = any>({
+    body,
     secure,
     path,
     type,
     query,
-    format = 'json',
-    body,
+    format,
+    baseUrl,
+    cancelToken,
     ...params
-  }: FullRequestParams): Promise<AxiosResponse<T>> => {
+  }: FullRequestParams): Promise<HttpResponse<T, E>> => {
     const secureParams =
-      (secure &&
+      ((typeof secure === 'boolean' ? secure : this.baseApiParams.secure) &&
         this.securityWorker &&
         (await this.securityWorker(this.securityData))) ||
       {};
     const requestParams = this.mergeRequestParams(params, secureParams);
+    const queryString = query && this.toQueryString(query);
+    const payloadFormatter = this.contentFormatters[type || ContentType.Json];
+    const responseFormat = format || requestParams.format;
 
-    return this.instance.request({
-      ...requestParams,
-      headers: {
-        ...(type && type !== ContentType.FormData
-          ? { 'Content-Type': type }
-          : {}),
-        ...(requestParams.headers || {}),
+    return this.customFetch(
+      `${baseUrl || this.baseUrl || ''}${path}${
+        queryString ? `?${queryString}` : ''
+      }`,
+      {
+        ...requestParams,
+        headers: {
+          ...(requestParams.headers || {}),
+          ...(type && type !== ContentType.FormData
+            ? { 'Content-Type': type }
+            : {}),
+        },
+        signal:
+          (cancelToken
+            ? this.createAbortSignal(cancelToken)
+            : requestParams.signal) || null,
+        body:
+          typeof body === 'undefined' || body === null
+            ? null
+            : payloadFormatter(body),
       },
-      params: query,
-      responseType: format,
-      data: body,
-      url: path,
+    ).then(async (response) => {
+      const r = response as HttpResponse<T, E>;
+      r.data = null as unknown as T;
+      r.error = null as unknown as E;
+
+      const data = !responseFormat
+        ? r
+        : await response[responseFormat]()
+            .then((data) => {
+              if (r.ok) {
+                r.data = data;
+              } else {
+                r.error = data;
+              }
+              return r;
+            })
+            .catch((e) => {
+              r.error = e;
+              return r;
+            });
+
+      if (cancelToken) {
+        this.abortControllers.delete(cancelToken);
+      }
+
+      if (!response.ok) throw data;
+      return data;
     });
   };
 }
 
+/**
+ * @title Transparent Management Api
+ * @version 1.0
+ */
 export class Api<
   SecurityDataType extends unknown,
 > extends HttpClient<SecurityDataType> {
   api = {
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Администратор УК без назначений задач</li>
      *
      * @tags ApartmentActs
      * @name ApartmentActsList
@@ -6658,6 +6059,7 @@ export class Api<
         Street?: string;
         HousingStockNumber?: string;
         Corpus?: string;
+        /** @format int32 */
         ApartmentId?: number;
         ApartmentNumber?: string;
         ActTypes?: EActType[];
@@ -6666,10 +6068,14 @@ export class Api<
         ActJobDateOrderBy?: EOrderByRule;
         RegistryNumberOrderBy?: EOrderByRule;
         AddressOrderBy?: EOrderByRule;
+        /** @format int32 */
         PageNumber?: number;
+        /** @format int32 */
         PageSize?: number;
         OrderBy?: EOrderByRule;
+        /** @format int32 */
         Skip?: number;
+        /** @format int32 */
         Take?: number;
       },
       params: RequestParams = {},
@@ -6687,7 +6093,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Наблюдатель УК</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Наблюдатель УК</li><li>Администратор УК без назначений задач</li>
      *
      * @tags ApartmentActs
      * @name ApartmentActsCreate
@@ -6710,7 +6116,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Наблюдатель УК</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Наблюдатель УК</li><li>Администратор УК без назначений задач</li>
      *
      * @tags ApartmentActs
      * @name ApartmentActsUpdate
@@ -6734,7 +6140,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Наблюдатель УК</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Наблюдатель УК</li><li>Администратор УК без назначений задач</li>
      *
      * @tags ApartmentActs
      * @name ApartmentActsDelete
@@ -6752,7 +6158,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Наблюдатель УК</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Наблюдатель УК</li><li>Администратор УК без назначений задач</li>
      *
      * @tags ApartmentActs
      * @name ApartmentActsDeleteDocumentCreate
@@ -6772,7 +6178,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Администратор УК без назначений задач</li>
      *
      * @tags ApartmentActs
      * @name ApartmentActsActTypesList
@@ -6793,7 +6199,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Администратор УК без назначений задач</li>
      *
      * @tags ApartmentActs
      * @name ApartmentActsActResourceTypesList
@@ -6814,7 +6220,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li>
+     * @description Роли:<li>Администратор</li><li>Администратор УК без назначений задач</li>
      *
      * @tags Apartments
      * @name ApartmentsCreate
@@ -6837,7 +6243,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Администратор УК без назначений задач</li><li>Контролёр</li>
      *
      * @tags Apartments
      * @name ApartmentsList
@@ -6852,13 +6258,18 @@ export class Api<
         HousingStockNumber?: string;
         Corpus?: string;
         ApartmentNumber?: string;
+        /** @format int32 */
         HousingStockId?: number;
         Question?: string;
         IndividualDeviceSerialNumber?: string;
+        /** @format int32 */
         PageNumber?: number;
+        /** @format int32 */
         PageSize?: number;
         OrderBy?: EOrderByRule;
+        /** @format int32 */
         Skip?: number;
+        /** @format int32 */
         Take?: number;
       },
       params: RequestParams = {},
@@ -6876,7 +6287,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li>
+     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li><li>Администратор УК без назначений задач</li>
      *
      * @tags Apartments
      * @name ApartmentsUpdate
@@ -6900,7 +6311,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Администратор УК без назначений задач</li><li>Контролёр</li>
      *
      * @tags Apartments
      * @name ApartmentsDetail
@@ -6918,7 +6329,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Администратор УК без назначений задач</li><li>Контролёр</li>
      *
      * @tags Apartments
      * @name ApartmentsApartmentStatusList
@@ -6939,7 +6350,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Администратор УК без назначений задач</li><li>Контролёр</li>
      *
      * @tags Apartments
      * @name ApartmentsHomeownerAccountsDetail
@@ -6949,7 +6360,9 @@ export class Api<
      */
     apartmentsHomeownerAccountsDetail: (
       apartmentId: number,
-      query?: { IsClosed?: boolean },
+      query?: {
+        IsClosed?: boolean;
+      },
       params: RequestParams = {},
     ) =>
       this.request<
@@ -6965,7 +6378,33 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Администратор УК без назначений задач</li><li>Контролёр</li>
+     *
+     * @tags Apartments
+     * @name ApartmentsHomeownerAccountNamesDetail
+     * @summary HomeownersRead
+     * @request GET:/api/Apartments/{apartmentId}/HomeownerAccountNames
+     * @secure
+     */
+    apartmentsHomeownerAccountNamesDetail: (
+      apartmentId: number,
+      query?: {
+        /** @default false */
+        isAlsoClosed?: boolean;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<HomeownerAccountNameResponse[], ErrorApiResponse>({
+        path: `/api/Apartments/${apartmentId}/HomeownerAccountNames`,
+        method: 'GET',
+        query: query,
+        secure: true,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Администратор УК без назначений задач</li><li>Контролёр</li>
      *
      * @tags Apartments
      * @name ApartmentsApartmentChecksDetail
@@ -6976,10 +6415,14 @@ export class Api<
     apartmentsApartmentChecksDetail: (
       apartmentId: number,
       query?: {
+        /** @format int32 */
         PageNumber?: number;
+        /** @format int32 */
         PageSize?: number;
         OrderBy?: EOrderByRule;
+        /** @format int32 */
         Skip?: number;
+        /** @format int32 */
         Take?: number;
       },
       params: RequestParams = {},
@@ -6997,7 +6440,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Администратор УК без назначений задач</li><li>Контролёр</li>
      *
      * @tags Apartments
      * @name ApartmentsActsDetail
@@ -7006,7 +6449,10 @@ export class Api<
      * @secure
      */
     apartmentsActsDetail: (apartmentId: number, params: RequestParams = {}) =>
-      this.request<ApartmentCheckResponseListSuccessApiResponse, any>({
+      this.request<
+        ApartmentCheckResponseListSuccessApiResponse,
+        ErrorApiResponse
+      >({
         path: `/api/Apartments/${apartmentId}/Acts`,
         method: 'GET',
         secure: true,
@@ -7015,7 +6461,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li>
+     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li><li>Администратор УК без назначений задач</li>
      *
      * @tags Apartments
      * @name ApartmentsSetStatusProblemDevicesDetail
@@ -7027,7 +6473,9 @@ export class Api<
       apartmentId: number,
       query: {
         Status: EApartmentStatus;
+        /** @format date-time */
         FromDate?: string;
+        /** @format date-time */
         ToDate?: string;
         DocumentIds?: number[];
       },
@@ -7046,7 +6494,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li>
+     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li><li>Администратор УК без назначений задач</li>
      *
      * @tags Apartments
      * @name ApartmentsSetStatusPartialUpdate
@@ -7073,7 +6521,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Администратор УК без назначений задач</li><li>Контролёр</li>
      *
      * @tags Apartments
      * @name ApartmentsAddCheckCreate
@@ -7097,7 +6545,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Администратор УК без назначений задач</li><li>Контролёр</li>
      *
      * @tags Apartments
      * @name ApartmentsEditCheckUpdate
@@ -7122,7 +6570,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Администратор УК без назначений задач</li><li>Контролёр</li>
      *
      * @tags Apartments
      * @name ApartmentsRemoveCheckDelete
@@ -7144,7 +6592,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Администратор УК без назначений задач</li><li>Контролёр</li>
      *
      * @tags Apartments
      * @name ApartmentsDocumentsDetail
@@ -7185,7 +6633,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Администратор УК без назначений задач</li><li>Контролёр</li>
      *
      * @tags Apartments
      * @name ApartmentsFindApartmentIdList
@@ -7213,7 +6661,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Администратор УК без назначений задач</li><li>Контролёр</li>
      *
      * @tags Apartments
      * @name ApartmentsCheckTypesList
@@ -7234,7 +6682,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li>
+     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li><li>Администратор УК без назначений задач</li>
      *
      * @tags Appointments
      * @name IndividualSealAppointmentsList
@@ -7244,9 +6692,12 @@ export class Api<
      */
     individualSealAppointmentsList: (
       query: {
+        /** @format int32 */
         ApartmentId?: number;
-        'DistrictFilter.DistrictId': string;
-        'DistrictFilter.Date': string;
+        /** @format uuid */
+        districtFilterDistrictId: string;
+        /** @format date-time */
+        districtFilterDate: string;
       },
       params: RequestParams = {},
     ) =>
@@ -7262,7 +6713,7 @@ export class Api<
       ),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li>
+     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li><li>Администратор УК без назначений задач</li>
      *
      * @tags Appointments
      * @name IndividualSealAppointmentsCreate
@@ -7274,17 +6725,18 @@ export class Api<
       data: AppointmentCreateRequest,
       params: RequestParams = {},
     ) =>
-      this.request<void, ErrorApiResponse>({
+      this.request<string, ErrorApiResponse>({
         path: `/api/IndividualSeal/Appointments`,
         method: 'POST',
         body: data,
         secure: true,
         type: ContentType.Json,
+        format: 'json',
         ...params,
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li>
+     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li><li>Администратор УК без назначений задач</li>
      *
      * @tags Appointments
      * @name IndividualSealAppointmentsDetail
@@ -7305,7 +6757,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li>
+     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li><li>Администратор УК без назначений задач</li>
      *
      * @tags Appointments
      * @name IndividualSealAppointmentsUpdate
@@ -7328,7 +6780,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li>
+     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li><li>Администратор УК без назначений задач</li>
      *
      * @tags Appointments
      * @name IndividualSealAppointmentsDelete
@@ -7348,7 +6800,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li>
+     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li><li>Администратор УК без назначений задач</li>
      *
      * @tags Appointments
      * @name IndividualSealAppointmentsPlanningList
@@ -7357,7 +6809,14 @@ export class Api<
      * @secure
      */
     individualSealAppointmentsPlanningList: (
-      query: { districtId: string; from: string; to: string },
+      query: {
+        /** @format uuid */
+        districtId: string;
+        /** @format date-time */
+        from: string;
+        /** @format date-time */
+        to: string;
+      },
       params: RequestParams = {},
     ) =>
       this.request<
@@ -7373,7 +6832,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li>
+     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li><li>Администратор УК без назначений задач</li>
      *
      * @tags Appointments
      * @name IndividualSealAppointmentsNearestList
@@ -7394,7 +6853,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li>
+     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li><li>Администратор УК без назначений задач</li>
      *
      * @tags Appointments
      * @name IndividualSealAppointmentsCountingList
@@ -7403,7 +6862,12 @@ export class Api<
      * @secure
      */
     individualSealAppointmentsCountingList: (
-      query: { districtId: string; date: string },
+      query: {
+        /** @format uuid */
+        districtId: string;
+        /** @format date-time */
+        date: string;
+      },
       params: RequestParams = {},
     ) =>
       this.request<
@@ -7419,7 +6883,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li>
+     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li><li>Администратор УК без назначений задач</li>
      *
      * @tags Appointments
      * @name IndividualSealAppointmentsSetCreate
@@ -7444,7 +6908,7 @@ export class Api<
       ),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li>
+     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li><li>Администратор УК без назначений задач</li>
      *
      * @tags Assignments
      * @name IndividualSealAssignmentsList
@@ -7453,7 +6917,18 @@ export class Api<
      * @secure
      */
     individualSealAssignmentsList: (
-      query: { from: string; to?: string },
+      query: {
+        /**
+         * Начальная дата, включительно
+         * @format date-time
+         */
+        from: string;
+        /**
+         * Конечная дата, включительно. Может не указываться
+         * @format date-time
+         */
+        to?: string;
+      },
       params: RequestParams = {},
     ) =>
       this.request<AssignmentResponseListSuccessApiResponse, ErrorApiResponse>({
@@ -7466,7 +6941,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li>
+     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li><li>Администратор УК без назначений задач</li>
      *
      * @tags Assignments
      * @name IndividualSealAssignmentsDetail
@@ -7478,7 +6953,10 @@ export class Api<
       assignmentId: string,
       params: RequestParams = {},
     ) =>
-      this.request<AssignmentResponseSuccessApiResponse, ErrorApiResponse>({
+      this.request<
+        AssignmentResponseSuccessApiResponse,
+        ProblemDetails | ErrorApiResponse
+      >({
         path: `/api/IndividualSeal/Assignments/${assignmentId}`,
         method: 'GET',
         secure: true,
@@ -7487,7 +6965,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li>
+     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li><li>Администратор УК без назначений задач</li>
      *
      * @tags Assignments
      * @name IndividualSealAssignmentsDelete
@@ -7502,6 +6980,26 @@ export class Api<
       this.request<void, ErrorApiResponse>({
         path: `/api/IndividualSeal/Assignments/${assignmentId}`,
         method: 'DELETE',
+        secure: true,
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li><li>Администратор УК без назначений задач</li>
+     *
+     * @tags Assignments
+     * @name IndividualSealAssignmentsFileDetail
+     * @summary IndividualSealRead
+     * @request GET:/api/IndividualSeal/Assignments/{assignmentId}/File
+     * @secure
+     */
+    individualSealAssignmentsFileDetail: (
+      assignmentId: string,
+      params: RequestParams = {},
+    ) =>
+      this.request<void, ProblemDetails | ErrorApiResponse>({
+        path: `/api/IndividualSeal/Assignments/${assignmentId}/File`,
+        method: 'GET',
         secure: true,
         ...params,
       }),
@@ -7623,7 +7121,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Администратор УК без назначений задач</li><li>Контролёр</li>
      *
      * @tags Buildings
      * @name BuildingsExistingCitiesList
@@ -7634,10 +7132,14 @@ export class Api<
     buildingsExistingCitiesList: (
       query?: {
         City?: string;
+        /** @format int32 */
         PageNumber?: number;
+        /** @format int32 */
         PageSize?: number;
         OrderBy?: EOrderByRule;
+        /** @format int32 */
         Skip?: number;
+        /** @format int32 */
         Take?: number;
       },
       params: RequestParams = {},
@@ -7652,7 +7154,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Администратор УК без назначений задач</li><li>Контролёр</li>
      *
      * @tags Buildings
      * @name BuildingsExistingStreetsList
@@ -7664,10 +7166,14 @@ export class Api<
       query: {
         City: string;
         Street?: string;
+        /** @format int32 */
         PageNumber?: number;
+        /** @format int32 */
         PageSize?: number;
         OrderBy?: EOrderByRule;
+        /** @format int32 */
         Skip?: number;
+        /** @format int32 */
         Take?: number;
       },
       params: RequestParams = {},
@@ -7682,7 +7188,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Администратор УК без назначений задач</li><li>Контролёр</li>
      *
      * @tags Buildings
      * @name BuildingsExistingBuildingNumbersList
@@ -7691,7 +7197,10 @@ export class Api<
      * @secure
      */
     buildingsExistingBuildingNumbersList: (
-      query: { city: string; street: string },
+      query: {
+        city: string;
+        street: string;
+      },
       params: RequestParams = {},
     ) =>
       this.request<NumberIdResponseArraySuccessApiResponse, ErrorApiResponse>({
@@ -7704,7 +7213,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Администратор УК без назначений задач</li><li>Контролёр</li>
      *
      * @tags Buildings
      * @name BuildingsExistingStreetsWithBuildingNumbersList
@@ -7716,10 +7225,14 @@ export class Api<
       query: {
         City: string;
         Street?: string;
+        /** @format int32 */
         PageNumber?: number;
+        /** @format int32 */
         PageSize?: number;
         OrderBy?: EOrderByRule;
+        /** @format int32 */
         Skip?: number;
+        /** @format int32 */
         Take?: number;
       },
       params: RequestParams = {},
@@ -7737,7 +7250,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Администратор УК без назначений задач</li><li>Контролёр</li>
      *
      * @tags Buildings
      * @name BuildingsExistingStreetsWithBuildingNumbersWithHouseManagementList
@@ -7746,7 +7259,9 @@ export class Api<
      * @secure
      */
     buildingsExistingStreetsWithBuildingNumbersWithHouseManagementList: (
-      query?: { city?: string },
+      query?: {
+        city?: string;
+      },
       params: RequestParams = {},
     ) =>
       this.request<
@@ -7762,7 +7277,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Администратор УК без назначений задач</li><li>Контролёр</li>
      *
      * @tags Buildings
      * @name BuildingsExistingStreetsWithBuildingNumbersWithHeatingStationList
@@ -7785,7 +7300,54 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Администратор УК без назначений задач</li><li>Контролёр</li>
+     *
+     * @tags Buildings
+     * @name BuildingsLiteList
+     * @summary HousingStocksRead
+     * @request GET:/api/Buildings/Lite
+     * @secure
+     */
+    buildingsLiteList: (
+      query?: {
+        OrderRule?: EHousingStockOrderRule;
+        City?: string;
+        Street?: string;
+        BuildingNumber?: string;
+        Corpus?: string;
+        /** @format uuid */
+        HeatingStationId?: string;
+        /** @format double */
+        totalAreaMaxValue?: number;
+        /** @format double */
+        totalAreaMinValue?: number;
+        totalAreaMeasurableUnit?: string;
+        /** @format uuid */
+        HouseManagementId?: string;
+        HouseCategory?: EHouseCategory;
+        /** @format int32 */
+        PageNumber?: number;
+        /** @format int32 */
+        PageSize?: number;
+        OrderBy?: EOrderByRule;
+        /** @format int32 */
+        Skip?: number;
+        /** @format int32 */
+        Take?: number;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<BuildingWithCoordinatesResponsePagedList, ErrorApiResponse>({
+        path: `/api/Buildings/Lite`,
+        method: 'GET',
+        query: query,
+        secure: true,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Администратор УК без назначений задач</li><li>Контролёр</li>
      *
      * @tags Buildings
      * @name BuildingsList
@@ -7800,15 +7362,24 @@ export class Api<
         Street?: string;
         BuildingNumber?: string;
         Corpus?: string;
+        /** @format uuid */
         HeatingStationId?: string;
-        'TotalArea.MaxValue'?: number;
-        'TotalArea.MinValue'?: number;
-        'TotalArea.MeasurableUnit'?: string;
+        /** @format double */
+        totalAreaMaxValue?: number;
+        /** @format double */
+        totalAreaMinValue?: number;
+        totalAreaMeasurableUnit?: string;
+        /** @format uuid */
         HouseManagementId?: string;
+        HouseCategory?: EHouseCategory;
+        /** @format int32 */
         PageNumber?: number;
+        /** @format int32 */
         PageSize?: number;
         OrderBy?: EOrderByRule;
+        /** @format int32 */
         Skip?: number;
+        /** @format int32 */
         Take?: number;
       },
       params: RequestParams = {},
@@ -7826,7 +7397,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Администратор УК без назначений задач</li><li>Контролёр</li>
      *
      * @tags Buildings
      * @name BuildingsInspectorsList
@@ -7840,6 +7411,7 @@ export class Api<
         Street?: string;
         BuildingNumber?: string;
         HouseManagementName?: string;
+        /** @format int32 */
         InspectorId?: number;
       },
       params: RequestParams = {},
@@ -7857,7 +7429,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li>
+     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li><li>Администратор УК без назначений задач</li>
      *
      * @tags Buildings
      * @name BuildingsInspectorPartialUpdate
@@ -7880,7 +7452,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li>
+     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li><li>Администратор УК без назначений задач</li>
      *
      * @tags Buildings
      * @name BuildingsInspectorDelete
@@ -7900,7 +7472,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Администратор УК без назначений задач</li><li>Контролёр</li>
      *
      * @tags Buildings
      * @name BuildingsFiltersList
@@ -7920,7 +7492,7 @@ export class Api<
       ),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Администратор УК без назначений задач</li><li>Контролёр</li>
      *
      * @tags Buildings
      * @name BuildingsControllerDetail
@@ -7944,7 +7516,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Старший оператор</li>
+     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Администратор УК без назначений задач</li>
      *
      * @tags Buildings
      * @name BuildingsReassignControllerCreate
@@ -7969,7 +7541,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li>
+     * @description Роли:<li>Администратор</li><li>Администратор УК без назначений задач</li>
      *
      * @tags Buildings
      * @name BuildingsAddressesCreate
@@ -7992,7 +7564,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li>
+     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li><li>Администратор УК без назначений задач</li>
      *
      * @tags Buildings
      * @name BuildingsAddressesUpdate
@@ -8016,7 +7588,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li>
+     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li><li>Администратор УК без назначений задач</li>
      *
      * @tags Buildings
      * @name BuildingsAddressesDelete
@@ -8037,7 +7609,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Администратор УК без назначений задач</li><li>Контролёр</li>
      *
      * @tags Buildings
      * @name BuildingsNodesDetail
@@ -8058,7 +7630,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Администратор УК без назначений задач</li><li>Контролёр</li>
      *
      * @tags Buildings
      * @name BuildingsCalculatorsDetail
@@ -8072,7 +7644,7 @@ export class Api<
     ) =>
       this.request<
         CalculatorIntoHousingStockResponseArraySuccessApiResponse,
-        any
+        ErrorApiResponse
       >({
         path: `/api/Buildings/${buildingId}/Calculators`,
         method: 'GET',
@@ -8082,7 +7654,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Администратор УК без назначений задач</li><li>Контролёр</li>
      *
      * @tags Buildings
      * @name BuildingsBuildingsWithTasksList
@@ -8096,6 +7668,7 @@ export class Api<
         ResourceTypes?: EResourceType[];
         TimeStatus?: EStageTimeStatus;
         TaskType?: EManagingFirmTaskFilterType;
+        /** @format int32 */
         ExecutorId?: number;
       },
       params: RequestParams = {},
@@ -8113,7 +7686,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Администратор УК без назначений задач</li><li>Контролёр</li>
      *
      * @tags Buildings
      * @name BuildingsBuildingsByAddressList
@@ -8122,7 +7695,12 @@ export class Api<
      * @secure
      */
     buildingsBuildingsByAddressList: (
-      query: { City: string; Street: string; Number: string; Corpus?: string },
+      query: {
+        City: string;
+        Street: string;
+        Number: string;
+        Corpus?: string;
+      },
       params: RequestParams = {},
     ) =>
       this.request<
@@ -8138,7 +7716,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Наблюдатель УК</li><li>Диспетчер УК</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Наблюдатель УК</li><li>Диспетчер УК</li><li>Администратор УК без назначений задач</li>
      *
      * @tags CalculatorInfos
      * @name CalculatorInfosList
@@ -8159,7 +7737,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Администратор УК без назначений задач</li><li>Контролёр</li>
      *
      * @tags Calculators
      * @name CalculatorsExportLiteList
@@ -8177,7 +7755,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Администратор УК без назначений задач</li><li>Контролёр</li>
      *
      * @tags Calculators
      * @name CalculatorsExportList
@@ -8187,33 +7765,41 @@ export class Api<
      */
     calculatorsExportList: (
       query?: {
-        'Filter.DiameterRange.From'?: number;
-        'Filter.DiameterRange.To'?: number;
-        'Filter.PipeDiameters'?: number[];
-        'Filter.ExpiresCheckingDateAt'?: EExpiresDateAt;
-        'Filter.ExpiresAdmissionActDateAt'?: EExpiresDateAt;
-        'Filter.Resource'?: EResourceType;
-        'Filter.Model'?: string;
-        'Filter.CommercialDateRange.From'?: string;
-        'Filter.CommercialDateRange.To'?: string;
-        'Filter.Address.City'?: string;
-        'Filter.Address.Street'?: string;
-        'Filter.Address.HousingStockNumber'?: string;
-        'Filter.Address.Corpus'?: string;
-        'Filter.Address.HouseCategory'?: EHouseCategory;
-        'Filter.HousingStockId'?: number;
-        'Filter.NodeStatus'?: ENodeCommercialAccountStatus;
-        'Filter.NodeRegistrationType'?: ENodeRegistrationType;
+        filterPipeDiameters?: number[];
+        filterExpiresCheckingDateAt?: EExpiresDateAt;
+        filterExpiresAdmissionActDateAt?: EExpiresDateAt;
+        filterResource?: EResourceType;
+        filterModel?: string;
+        /** @format date-time */
+        filterCommercialDateRangeFrom?: string;
+        /** @format date-time */
+        filterCommercialDateRangeTo?: string;
+        filterAddressCity?: string;
+        filterAddressStreet?: string;
+        filterAddressHousingStockNumber?: string;
+        filterAddressCorpus?: string;
+        filterAddressHouseCategory?: EHouseCategory;
+        /**
+         * @deprecated
+         * @format int32
+         */
+        filterHousingStockId?: number;
+        filterNodeStatus?: ENodeCommercialAccountStatus;
+        filterNodeRegistrationType?: ENodeRegistrationType;
         Question?: string;
         OrderRule?: ECalculatorOrderRule;
         IsConnected?: boolean;
         CountTasks?: boolean;
         IsClosed?: boolean;
         FileName?: string;
+        /** @format int32 */
         PageNumber?: number;
+        /** @format int32 */
         PageSize?: number;
         OrderBy?: EOrderByRule;
+        /** @format int32 */
         Skip?: number;
+        /** @format int32 */
         Take?: number;
       },
       params: RequestParams = {},
@@ -8228,7 +7814,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Администратор УК без назначений задач</li><li>Контролёр</li>
      *
      * @tags Calculators
      * @name CalculatorsList
@@ -8238,33 +7824,41 @@ export class Api<
      */
     calculatorsList: (
       query?: {
-        'Filter.DiameterRange.From'?: number;
-        'Filter.DiameterRange.To'?: number;
-        'Filter.PipeDiameters'?: number[];
-        'Filter.ExpiresCheckingDateAt'?: EExpiresDateAt;
-        'Filter.ExpiresAdmissionActDateAt'?: EExpiresDateAt;
-        'Filter.Resource'?: EResourceType;
-        'Filter.Model'?: string;
-        'Filter.CommercialDateRange.From'?: string;
-        'Filter.CommercialDateRange.To'?: string;
-        'Filter.Address.City'?: string;
-        'Filter.Address.Street'?: string;
-        'Filter.Address.HousingStockNumber'?: string;
-        'Filter.Address.Corpus'?: string;
-        'Filter.Address.HouseCategory'?: EHouseCategory;
-        'Filter.HousingStockId'?: number;
-        'Filter.NodeStatus'?: ENodeCommercialAccountStatus;
-        'Filter.NodeRegistrationType'?: ENodeRegistrationType;
+        filterPipeDiameters?: number[];
+        filterExpiresCheckingDateAt?: EExpiresDateAt;
+        filterExpiresAdmissionActDateAt?: EExpiresDateAt;
+        filterResource?: EResourceType;
+        filterModel?: string;
+        /** @format date-time */
+        filterCommercialDateRangeFrom?: string;
+        /** @format date-time */
+        filterCommercialDateRangeTo?: string;
+        filterAddressCity?: string;
+        filterAddressStreet?: string;
+        filterAddressHousingStockNumber?: string;
+        filterAddressCorpus?: string;
+        filterAddressHouseCategory?: EHouseCategory;
+        /**
+         * @deprecated
+         * @format int32
+         */
+        filterHousingStockId?: number;
+        filterNodeStatus?: ENodeCommercialAccountStatus;
+        filterNodeRegistrationType?: ENodeRegistrationType;
         Question?: string;
         OrderRule?: ECalculatorOrderRule;
         IsConnected?: boolean;
         CountTasks?: boolean;
         IsClosed?: boolean;
         FileName?: string;
+        /** @format int32 */
         PageNumber?: number;
+        /** @format int32 */
         PageSize?: number;
         OrderBy?: EOrderByRule;
+        /** @format int32 */
         Skip?: number;
+        /** @format int32 */
         Take?: number;
       },
       params: RequestParams = {},
@@ -8282,7 +7876,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Администратор УК без назначений задач</li>
      *
      * @tags Calculators
      * @name CalculatorsCreate
@@ -8305,7 +7899,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Администратор УК без назначений задач</li><li>Контролёр</li>
      *
      * @tags Calculators
      * @name CalculatorsDetail
@@ -8323,7 +7917,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Администратор УК без назначений задач</li>
      *
      * @tags Calculators
      * @name CalculatorsUpdate
@@ -8347,7 +7941,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Администратор УК без назначений задач</li>
      *
      * @tags Calculators
      * @name CalculatorsCommentCreate
@@ -8374,7 +7968,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Администратор УК без назначений задач</li>
      *
      * @tags Calculators
      * @name CalculatorsCommentUpdate
@@ -8401,7 +7995,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Администратор УК без назначений задач</li>
      *
      * @tags Calculators
      * @name CalculatorsCommentDelete
@@ -8418,7 +8012,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Администратор УК без назначений задач</li>
      *
      * @tags Calculators
      * @name CalculatorsSwitchCreate
@@ -8441,7 +8035,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Администратор УК без назначений задач</li><li>Контролёр</li>
      *
      * @tags Calculators
      * @name CalculatorsFiltersList
@@ -8462,7 +8056,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Администратор УК без назначений задач</li><li>Контролёр</li>
      *
      * @tags Contractors
      * @name ContractorsList
@@ -8483,7 +8077,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li>
+     * @description Роли:<li>Администратор</li><li>Администратор УК без назначений задач</li>
      *
      * @tags Contractors
      * @name ContractorsCreate
@@ -8506,7 +8100,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Администратор УК без назначений задач</li><li>Контролёр</li>
      *
      * @tags Contractors
      * @name ContractorsDetail
@@ -8524,7 +8118,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li>
+     * @description Роли:<li>Администратор</li><li>Администратор УК без назначений задач</li>
      *
      * @tags Contractors
      * @name ContractorsUpdate
@@ -8548,7 +8142,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li>
+     * @description Роли:<li>Администратор</li><li>Администратор УК без назначений задач</li>
      *
      * @tags Contractors
      * @name ContractorsDelete
@@ -8565,7 +8159,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li>
+     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li><li>Администратор УК без назначений задач</li>
      *
      * @tags Controllers
      * @name IndividualSealControllersCreate
@@ -8588,7 +8182,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li>
+     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li><li>Администратор УК без назначений задач</li>
      *
      * @tags Controllers
      * @name IndividualSealControllersList
@@ -8606,7 +8200,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li>
+     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li><li>Администратор УК без назначений задач</li>
      *
      * @tags Controllers
      * @name IndividualSealControllersUpdate
@@ -8629,7 +8223,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li>
+     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li><li>Администратор УК без назначений задач</li>
      *
      * @tags Controllers
      * @name IndividualSealControllersDelete
@@ -8649,7 +8243,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li>
+     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li><li>Администратор УК без назначений задач</li>
      *
      * @tags Controllers
      * @name IndividualSealControllersWorkDetail
@@ -8659,7 +8253,10 @@ export class Api<
      */
     individualSealControllersWorkDetail: (
       controllerId: string,
-      query: { date: string },
+      query: {
+        /** @format date-time */
+        date: string;
+      },
       params: RequestParams = {},
     ) =>
       this.request<AppointmentResponseListSuccessApiResponse, ErrorApiResponse>(
@@ -8674,7 +8271,7 @@ export class Api<
       ),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li>
+     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li><li>Администратор УК без назначений задач</li>
      *
      * @tags Controllers
      * @name IndividualSealControllersWorkFileDetail
@@ -8684,7 +8281,10 @@ export class Api<
      */
     individualSealControllersWorkFileDetail: (
       controllerId: string,
-      query: { date: string },
+      query: {
+        /** @format date-time */
+        date: string;
+      },
       params: RequestParams = {},
     ) =>
       this.request<void, ErrorApiResponse>({
@@ -8696,152 +8296,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li>
-     *
-     * @tags CurrentTransformers
-     * @name CurrentTransformersDetail
-     * @summary CurrentTransformerRead
-     * @request GET:/api/CurrentTransformers/{currentTransformerId}
-     * @secure
-     */
-    currentTransformersDetail: (
-      currentTransformerId: string,
-      params: RequestParams = {},
-    ) =>
-      this.request<
-        CurrentTransformerResponseSuccessApiResponse,
-        ErrorApiResponse
-      >({
-        path: `/api/CurrentTransformers/${currentTransformerId}`,
-        method: 'GET',
-        secure: true,
-        format: 'json',
-        ...params,
-      }),
-
-    /**
-     * @description Роли:<li>Администратор</li>
-     *
-     * @tags CurrentTransformers
-     * @name CurrentTransformersUpdate
-     * @summary CurrentTransformerUpdate
-     * @request PUT:/api/CurrentTransformers/{currentTransformerId}
-     * @secure
-     */
-    currentTransformersUpdate: (
-      currentTransformerId: string,
-      query?: {
-        InstallationDate?: string;
-        ManufactureYear?: number;
-        StateVerificationYear?: number;
-        StateVerificationQuarter?: EYearQuarter;
-        StateVerificationIntervalYears?: number;
-        NextStateVerificationYear?: number;
-        TypeName?: string;
-        Phase?: EPhaseType;
-        Number?: string;
-        PrimaryCurrentRatingAmperes?: number;
-        SecondaryCurrentRatingAmperes?: number;
-        Coefficient?: number;
-        SealNumber?: string;
-        SealInstallationDate?: string;
-      },
-      params: RequestParams = {},
-    ) =>
-      this.request<
-        CurrentTransformerResponseSuccessApiResponse,
-        ErrorApiResponse
-      >({
-        path: `/api/CurrentTransformers/${currentTransformerId}`,
-        method: 'PUT',
-        query: query,
-        secure: true,
-        format: 'json',
-        ...params,
-      }),
-
-    /**
-     * @description Роли:<li>Администратор</li>
-     *
-     * @tags CurrentTransformers
-     * @name CurrentTransformersCreate
-     * @summary CurrentTransformerCreate
-     * @request POST:/api/CurrentTransformers
-     * @secure
-     */
-    currentTransformersCreate: (
-      data: CreateCurrentTransformerRequest,
-      params: RequestParams = {},
-    ) =>
-      this.request<
-        CurrentTransformerResponseSuccessApiResponse,
-        ErrorApiResponse
-      >({
-        path: `/api/CurrentTransformers`,
-        method: 'POST',
-        body: data,
-        secure: true,
-        type: ContentType.Json,
-        format: 'json',
-        ...params,
-      }),
-
-    /**
-     * @description Роли:<li>Администратор</li>
-     *
-     * @tags CurrentTransformers
-     * @name CurrentTransformersCloseCreate
-     * @summary CurrentTransformerUpdate
-     * @request POST:/api/CurrentTransformers/{currentTransformerId}/close
-     * @secure
-     */
-    currentTransformersCloseCreate: (
-      currentTransformerId: string,
-      data: CloseCurrentTransformerRequest,
-      params: RequestParams = {},
-    ) =>
-      this.request<
-        CurrentTransformerResponseSuccessApiResponse,
-        ErrorApiResponse
-      >({
-        path: `/api/CurrentTransformers/${currentTransformerId}/close`,
-        method: 'POST',
-        body: data,
-        secure: true,
-        type: ContentType.Json,
-        format: 'json',
-        ...params,
-      }),
-
-    /**
-     * @description Роли:<li>Администратор</li>
-     *
-     * @tags CurrentTransformers
-     * @name CurrentTransformersCheckCreate
-     * @summary CurrentTransformerUpdate
-     * @request POST:/api/CurrentTransformers/{currentTransformerId}/check
-     * @secure
-     */
-    currentTransformersCheckCreate: (
-      currentTransformerId: string,
-      data: CheckCurrentTransformerRequest,
-      params: RequestParams = {},
-    ) =>
-      this.request<
-        CurrentTransformerResponseSuccessApiResponse,
-        ErrorApiResponse
-      >({
-        path: `/api/CurrentTransformers/${currentTransformerId}/check`,
-        method: 'POST',
-        body: data,
-        secure: true,
-        type: ContentType.Json,
-        format: 'json',
-        ...params,
-      }),
-
-    /**
-     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li>
+     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li><li>Администратор УК без назначений задач</li>
      *
      * @tags Districts
      * @name IndividualSealDistrictsList
@@ -8850,7 +8305,10 @@ export class Api<
      * @secure
      */
     individualSealDistrictsList: (
-      query?: { HouseId?: number },
+      query?: {
+        /** @format int32 */
+        HouseId?: number;
+      },
       params: RequestParams = {},
     ) =>
       this.request<DistrictResponseListSuccessApiResponse, ErrorApiResponse>({
@@ -8863,11 +8321,11 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li>
+     * @description Роли:<li>Администратор</li><li>Старший оператор</li>
      *
      * @tags Districts
      * @name IndividualSealDistrictsCreate
-     * @summary IndividualSealReadWrite
+     * @summary IndividualSealDistrictReadWrite
      * @request POST:/api/IndividualSeal/Districts
      * @secure
      */
@@ -8875,27 +8333,34 @@ export class Api<
       data: DistrictCreateRequest,
       params: RequestParams = {},
     ) =>
-      this.request<void, ErrorApiResponse>({
+      this.request<string, ErrorApiResponse>({
         path: `/api/IndividualSeal/Districts`,
         method: 'POST',
         body: data,
         secure: true,
         type: ContentType.Json,
+        format: 'json',
         ...params,
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li>
+     * @description Роли:<li>Администратор</li><li>Старший оператор</li>
      *
      * @tags Districts
      * @name IndividualSealDistrictsDelete
-     * @summary IndividualSealReadWrite
+     * @summary IndividualSealDistrictReadWrite
      * @request DELETE:/api/IndividualSeal/Districts/{districtId}
      * @secure
      */
     individualSealDistrictsDelete: (
       districtId: string,
-      query?: { forced?: boolean },
+      query?: {
+        /**
+         * Удалить вместе с домами
+         * @default false
+         */
+        forced?: boolean;
+      },
       params: RequestParams = {},
     ) =>
       this.request<void, ErrorApiResponse>({
@@ -8907,11 +8372,11 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li>
+     * @description Роли:<li>Администратор</li><li>Старший оператор</li>
      *
      * @tags Districts
      * @name IndividualSealDistrictsUpdate
-     * @summary IndividualSealReadWrite
+     * @summary IndividualSealDistrictReadWrite
      * @request PUT:/api/IndividualSeal/Districts/{districtId}
      * @secure
      */
@@ -8930,11 +8395,11 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li>
+     * @description Роли:<li>Администратор</li><li>Старший оператор</li>
      *
      * @tags Districts
      * @name IndividualSealDistrictsAddHouseCreate
-     * @summary IndividualSealReadWrite
+     * @summary IndividualSealDistrictReadWrite
      * @request POST:/api/IndividualSeal/Districts/{districtId}/AddHouse
      * @secure
      */
@@ -8953,7 +8418,30 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор</li><li>Старший оператор</li>
+     *
+     * @tags Districts
+     * @name IndividualSealDistrictsDeleteHouseCreate
+     * @summary IndividualSealDistrictReadWrite
+     * @request POST:/api/IndividualSeal/Districts/{districtId}/DeleteHouse
+     * @secure
+     */
+    individualSealDistrictsDeleteHouseCreate: (
+      districtId: string,
+      data: number,
+      params: RequestParams = {},
+    ) =>
+      this.request<void, ErrorApiResponse>({
+        path: `/api/IndividualSeal/Districts/${districtId}/DeleteHouse`,
+        method: 'POST',
+        body: data,
+        secure: true,
+        type: ContentType.Json,
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Администратор УК без назначений задач</li><li>Контролёр</li>
      *
      * @tags Documents
      * @name DocumentsTypesList
@@ -8964,7 +8452,7 @@ export class Api<
     documentsTypesList: (params: RequestParams = {}) =>
       this.request<
         EDocumentTypeStringDictionaryItemListSuccessApiResponse,
-        any
+        ErrorApiResponse
       >({
         path: `/api/Documents/types`,
         method: 'GET',
@@ -8974,7 +8462,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Администратор УК без назначений задач</li><li>Контролёр</li>
      *
      * @tags Documents
      * @name DocumentsUploadCreate
@@ -8983,7 +8471,12 @@ export class Api<
      * @secure
      */
     documentsUploadCreate: (
-      data: { file?: File[]; type?: EDocumentType },
+      data: {
+        /** @minItems 1 */
+        file?: File[];
+        /** @default "Common" */
+        type?: EDocumentType;
+      },
       params: RequestParams = {},
     ) =>
       this.request<
@@ -9000,7 +8493,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Администратор УК без назначений задач</li><li>Контролёр</li>
      *
      * @tags Documents
      * @name DocumentsDetail
@@ -9018,7 +8511,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Администратор УК без назначений задач</li><li>Контролёр</li>
      *
      * @tags Documents
      * @name DocumentsDelete
@@ -9035,7 +8528,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Администратор УК без назначений задач</li><li>Контролёр</li>
      *
      * @tags ElectricHousingMeteringDevices
      * @name ElectricHousingMeteringDevicesDetail
@@ -9049,7 +8542,7 @@ export class Api<
     ) =>
       this.request<
         ElectricHousingMeteringDeviceResponseSuccessApiResponse,
-        any
+        ErrorApiResponse
       >({
         path: `/api/ElectricHousingMeteringDevices/${deviceId}`,
         method: 'GET',
@@ -9059,7 +8552,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Администратор УК без назначений задач</li>
      *
      * @tags ElectricHousingMeteringDevices
      * @name ElectricHousingMeteringDevicesUpdate
@@ -9074,7 +8567,7 @@ export class Api<
     ) =>
       this.request<
         ElectricHousingMeteringDeviceResponseSuccessApiResponse,
-        any
+        ErrorApiResponse
       >({
         path: `/api/ElectricHousingMeteringDevices/${deviceId}`,
         method: 'PUT',
@@ -9086,7 +8579,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Администратор УК без назначений задач</li>
      *
      * @tags ElectricHousingMeteringDevices
      * @name ElectricHousingMeteringDevicesCreate
@@ -9100,7 +8593,7 @@ export class Api<
     ) =>
       this.request<
         ElectricHousingMeteringDeviceResponseSuccessApiResponse,
-        any
+        ErrorApiResponse
       >({
         path: `/api/ElectricHousingMeteringDevices`,
         method: 'POST',
@@ -9112,7 +8605,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Администратор УК без назначений задач</li>
      *
      * @tags ElectricHousingMeteringDevices
      * @name ElectricHousingMeteringDevicesSwitchCreate
@@ -9126,7 +8619,7 @@ export class Api<
     ) =>
       this.request<
         ElectricHousingMeteringDeviceResponseSuccessApiResponse,
-        any
+        ErrorApiResponse
       >({
         path: `/api/ElectricHousingMeteringDevices/switch`,
         method: 'POST',
@@ -9138,7 +8631,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Диспетчер УК</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Диспетчер УК</li><li>Администратор УК без назначений задач</li>
      *
      * @tags ElectricNodes
      * @name ElectricNodesDetail
@@ -9156,7 +8649,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Администратор УК без назначений задач</li>
      *
      * @tags ElectricNodes
      * @name ElectricNodesUpdate
@@ -9180,7 +8673,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Администратор УК без назначений задач</li>
      *
      * @tags ElectricNodes
      * @name ElectricNodesCreate
@@ -9203,7 +8696,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Администратор УК без назначений задач</li>
      *
      * @tags ElectricNodes
      * @name ElectricNodesSetRegisteredStatusCreate
@@ -9226,7 +8719,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Администратор УК без назначений задач</li>
      *
      * @tags ElectricNodes
      * @name ElectricNodesSetNotRegisteredStatusCreate
@@ -9249,16 +8742,22 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор</li><li>Старший оператор</li>
      *
      * @tags Exports
      * @name ExportsMilurDevicesList
-     * @summary IndividualDeviceReadingsRead
+     * @summary ErcExport
      * @request GET:/api/Exports/MilurDevices
      * @secure
      */
     exportsMilurDevicesList: (
-      query?: { startDate?: string; endDate?: string },
+      query?: {
+        /** @format date-time */
+        startDate?: string;
+        /** @format date-time */
+        endDate?: string;
+        managementFirmIds?: number[];
+      },
       params: RequestParams = {},
     ) =>
       this.request<FileContentResultSuccessApiResponse, ErrorApiResponse>({
@@ -9271,16 +8770,18 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор</li><li>Старший оператор</li>
      *
      * @tags Exports
      * @name ExportsIndividualDeviceReadingsList
-     * @summary IndividualDeviceReadingsRead
+     * @summary ErcExport
      * @request GET:/api/Exports/IndividualDeviceReadings
      * @secure
      */
     exportsIndividualDeviceReadingsList: (
-      query?: { year?: number; month?: number },
+      query?: {
+        managementFirmIds?: number[];
+      },
       params: RequestParams = {},
     ) =>
       this.request<FileContentResultSuccessApiResponse, ErrorApiResponse>({
@@ -9293,16 +8794,18 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор</li><li>Старший оператор</li>
      *
      * @tags Exports
      * @name ExportsHousingDeviceReadingsList
-     * @summary IndividualDeviceReadingsRead
+     * @summary ErcExport
      * @request GET:/api/Exports/HousingDeviceReadings
      * @secure
      */
     exportsHousingDeviceReadingsList: (
-      query?: { year?: number; month?: number },
+      query?: {
+        managementFirmIds?: number[];
+      },
       params: RequestParams = {},
     ) =>
       this.request<FileContentResultSuccessApiResponse, ErrorApiResponse>({
@@ -9315,7 +8818,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li>
+     * @description Роли:<li>Администратор</li><li>Администратор УК без назначений задач</li>
      *
      * @tags HeatingSeasons
      * @name HeatingSeasonsList
@@ -9336,7 +8839,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li>
+     * @description Роли:<li>Администратор</li><li>Администратор УК без назначений задач</li>
      *
      * @tags HeatingSeasons
      * @name HeatingSeasonsUpdate
@@ -9346,7 +8849,9 @@ export class Api<
      */
     heatingSeasonsUpdate: (
       query?: {
+        /** @format date-time */
         StartDate?: string;
+        /** @format date-time */
         EndDate?: string;
         HouseCategory?: EHouseCategory;
         LivingHouseType?: ELivingHouseType;
@@ -9364,7 +8869,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li>
+     * @description Роли:<li>Администратор</li><li>Администратор УК без назначений задач</li>
      *
      * @tags HeatingSeasons
      * @name HeatingSeasonsSwitchCreate
@@ -9387,7 +8892,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li>
+     * @description Роли:<li>Администратор</li><li>Администратор УК без назначений задач</li>
      *
      * @tags HeatingSeasons
      * @name HeatingSeasonsAddOrUpdateForHouseManagementCreate
@@ -9410,7 +8915,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Администратор УК без назначений задач</li>
      *
      * @tags HeatingStation
      * @name HeatingStationList
@@ -9431,7 +8936,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li>
+     * @description Роли:<li>Администратор</li><li>Администратор УК без назначений задач</li>
      *
      * @tags HeatingStation
      * @name HeatingStationCreate
@@ -9454,7 +8959,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Администратор УК без назначений задач</li>
      *
      * @tags HeatingStation
      * @name HeatingStationDetail
@@ -9472,7 +8977,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li>
+     * @description Роли:<li>Администратор</li><li>Администратор УК без назначений задач</li>
      *
      * @tags HeatingStation
      * @name HeatingStationUpdate
@@ -9496,7 +9001,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li>
+     * @description Роли:<li>Администратор</li><li>Администратор УК без назначений задач</li>
      *
      * @tags HeatingStation
      * @name HeatingStationDelete
@@ -9513,7 +9018,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Администратор УК без назначений задач</li><li>Контролёр</li>
      *
      * @tags HomeownerAccounts
      * @name HomeownerAccountsList
@@ -9527,10 +9032,14 @@ export class Api<
         PaymentCode?: string;
         OrderRule?: HomeownerAccountOrderRule;
         Status?: StatusType;
+        /** @format int32 */
         PageNumber?: number;
+        /** @format int32 */
         PageSize?: number;
         OrderBy?: OrderByRule;
+        /** @format int32 */
         Skip?: number;
+        /** @format int32 */
         Take?: number;
       },
       params: RequestParams = {},
@@ -9548,7 +9057,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li>
+     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li><li>Администратор УК без назначений задач</li>
      *
      * @tags HomeownerAccounts
      * @name HomeownerAccountsCreate
@@ -9558,7 +9067,9 @@ export class Api<
      */
     homeownerAccountsCreate: (
       data: HomeownerAccountCreateRequest,
-      query?: { isForced?: boolean },
+      query?: {
+        isForced?: boolean;
+      },
       params: RequestParams = {},
     ) =>
       this.request<
@@ -9576,7 +9087,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Администратор УК без назначений задач</li><li>Контролёр</li>
      *
      * @tags HomeownerAccounts
      * @name HomeownerAccountsDetail
@@ -9597,7 +9108,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li>
+     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li><li>Администратор УК без назначений задач</li>
      *
      * @tags HomeownerAccounts
      * @name HomeownerAccountsUpdate
@@ -9608,7 +9119,9 @@ export class Api<
     homeownerAccountsUpdate: (
       id: string,
       data: HomeownerAccountUpdateRequest,
-      query?: { isForced?: boolean },
+      query?: {
+        isForced?: boolean;
+      },
       params: RequestParams = {},
     ) =>
       this.request<
@@ -9626,7 +9139,103 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li>
+     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li><li>Администратор УК без назначений задач</li>
+     *
+     * @tags HomeownerAccounts
+     * @name HomeownerAccountsAddPhoneCreate
+     * @summary HomeownersUpdate
+     * @request POST:/api/HomeownerAccounts/{id}/AddPhone
+     * @secure
+     */
+    homeownerAccountsAddPhoneCreate: (
+      id: string,
+      data: HomeownerAccountAddPhoneNumberRequest,
+      params: RequestParams = {},
+    ) =>
+      this.request<string[], ErrorApiResponse>({
+        path: `/api/HomeownerAccounts/${id}/AddPhone`,
+        method: 'POST',
+        body: data,
+        secure: true,
+        type: ContentType.Json,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li><li>Администратор УК без назначений задач</li>
+     *
+     * @tags HomeownerAccounts
+     * @name HomeownerAccountsRemovePhoneCreate
+     * @summary HomeownersUpdate
+     * @request POST:/api/HomeownerAccounts/{id}/RemovePhone
+     * @secure
+     */
+    homeownerAccountsRemovePhoneCreate: (
+      id: string,
+      data: HomeownerAccountRemovePhoneNumberRequest,
+      params: RequestParams = {},
+    ) =>
+      this.request<string[], ErrorApiResponse>({
+        path: `/api/HomeownerAccounts/${id}/RemovePhone`,
+        method: 'POST',
+        body: data,
+        secure: true,
+        type: ContentType.Json,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li><li>Администратор УК без назначений задач</li>
+     *
+     * @tags HomeownerAccounts
+     * @name HomeownerAccountsReplacePhoneCreate
+     * @summary HomeownersUpdate
+     * @request POST:/api/HomeownerAccounts/{id}/ReplacePhone
+     * @secure
+     */
+    homeownerAccountsReplacePhoneCreate: (
+      id: string,
+      data: HomeownerAccountReplacePhoneNumberRequest,
+      params: RequestParams = {},
+    ) =>
+      this.request<string[], ErrorApiResponse>({
+        path: `/api/HomeownerAccounts/${id}/ReplacePhone`,
+        method: 'POST',
+        body: data,
+        secure: true,
+        type: ContentType.Json,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li><li>Диспетчер УК</li><li>Администратор УК без назначений задач</li>
+     *
+     * @tags HomeownerAccounts
+     * @name HomeownerAccountsReplaceAllPhonesCreate
+     * @summary HomeownerReplaceAllPhones
+     * @request POST:/api/HomeownerAccounts/{id}/ReplaceAllPhones
+     * @secure
+     */
+    homeownerAccountsReplaceAllPhonesCreate: (
+      id: string,
+      data: HomeownerAccountReplaceAllPhoneNumbersRequest,
+      params: RequestParams = {},
+    ) =>
+      this.request<string[], ErrorApiResponse>({
+        path: `/api/HomeownerAccounts/${id}/ReplaceAllPhones`,
+        method: 'POST',
+        body: data,
+        secure: true,
+        type: ContentType.Json,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li><li>Администратор УК без назначений задач</li>
      *
      * @tags HomeownerAccounts
      * @name HomeownerAccountsCloseCreate
@@ -9648,7 +9257,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li>
+     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li><li>Администратор УК без назначений задач</li>
      *
      * @tags HomeownerAccounts
      * @name HomeownerAccountsReplaceCreate
@@ -9658,7 +9267,9 @@ export class Api<
      */
     homeownerAccountsReplaceCreate: (
       data: HomeownerAccountReplaceRequest,
-      query?: { isForced?: boolean },
+      query?: {
+        isForced?: boolean;
+      },
       params: RequestParams = {},
     ) =>
       this.request<
@@ -9676,7 +9287,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Администратор УК без назначений задач</li><li>Контролёр</li>
      *
      * @tags HomeownerAccounts
      * @name HomeownerAccountsCertificateDetail
@@ -9700,7 +9311,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li>
+     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li><li>Администратор УК без назначений задач</li>
      *
      * @tags HomeownerAccounts
      * @name HomeownerAccountsSplitCreate
@@ -9710,7 +9321,9 @@ export class Api<
      */
     homeownerAccountsSplitCreate: (
       data: HomeownerAccountSplitRequest,
-      query?: { isForced?: boolean },
+      query?: {
+        isForced?: boolean;
+      },
       params: RequestParams = {},
     ) =>
       this.request<
@@ -9728,7 +9341,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li>
+     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li><li>Администратор УК без назначений задач</li>
      *
      * @tags HouseManagements
      * @name HouseManagementsCreate
@@ -9754,7 +9367,7 @@ export class Api<
       ),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Администратор УК без назначений задач</li><li>Контролёр</li>
      *
      * @tags HouseManagements
      * @name HouseManagementsList
@@ -9763,7 +9376,9 @@ export class Api<
      * @secure
      */
     houseManagementsList: (
-      query?: { City?: string },
+      query?: {
+        City?: string;
+      },
       params: RequestParams = {},
     ) =>
       this.request<
@@ -9779,7 +9394,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li>
+     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li><li>Администратор УК без назначений задач</li>
      *
      * @tags HousingMeteringDeviceReadings
      * @name HousingMeteringDeviceReadingsList
@@ -9788,7 +9403,10 @@ export class Api<
      * @secure
      */
     housingMeteringDeviceReadingsList: (
-      query?: { nodeId?: number },
+      query?: {
+        /** @format int32 */
+        nodeId?: number;
+      },
       params: RequestParams = {},
     ) =>
       this.request<
@@ -9804,7 +9422,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li>
+     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li><li>Администратор УК без назначений задач</li>
      *
      * @tags HousingMeteringDeviceReadings
      * @name HousingMeteringDeviceReadingsCreate
@@ -9818,7 +9436,7 @@ export class Api<
     ) =>
       this.request<
         HousingMeteringDeviceReadingsIncludingPlacementResponseSuccessApiResponse,
-        any
+        ErrorApiResponse
       >({
         path: `/api/HousingMeteringDeviceReadings`,
         method: 'POST',
@@ -9830,7 +9448,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li>
+     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li><li>Администратор УК без назначений задач</li>
      *
      * @tags HousingMeteringDeviceReadings
      * @name HousingMeteringDeviceReadingsUpdate
@@ -9844,7 +9462,7 @@ export class Api<
     ) =>
       this.request<
         HousingMeteringDeviceReadingsIncludingPlacementResponseSuccessApiResponse,
-        any
+        ErrorApiResponse
       >({
         path: `/api/HousingMeteringDeviceReadings`,
         method: 'PUT',
@@ -9856,7 +9474,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li>
+     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li><li>Администратор УК без назначений задач</li>
      *
      * @tags HousingMeteringDeviceReadings
      * @name HousingMeteringDeviceReadingsRemoveCreate
@@ -9880,7 +9498,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li>
+     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li><li>Администратор УК без назначений задач</li>
      *
      * @tags HousingMeteringDeviceReadings
      * @name HousingMeteringDeviceReadingsSyncReadingsFromArchivesCreate
@@ -9889,10 +9507,15 @@ export class Api<
      * @secure
      */
     housingMeteringDeviceReadingsSyncReadingsFromArchivesCreate: (
-      query?: { from?: string; to?: string },
+      query?: {
+        /** @format date-time */
+        from?: string;
+        /** @format date-time */
+        to?: string;
+      },
       params: RequestParams = {},
     ) =>
-      this.request<void, any>({
+      this.request<any, ErrorApiResponse>({
         path: `/api/HousingMeteringDeviceReadings/SyncReadingsFromArchives`,
         method: 'POST',
         query: query,
@@ -9901,7 +9524,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Администратор УК без назначений задач</li><li>Контролёр</li>
      *
      * @tags HousingMeteringDevices
      * @name HousingMeteringDevicesList
@@ -9916,10 +9539,14 @@ export class Api<
         HousingStockNumber?: string;
         Corpus?: string;
         Resource?: EResourceType;
+        /** @format int32 */
         PageNumber?: number;
+        /** @format int32 */
         PageSize?: number;
         OrderBy?: EOrderByRule;
+        /** @format int32 */
         Skip?: number;
+        /** @format int32 */
         Take?: number;
       },
       params: RequestParams = {},
@@ -9937,7 +9564,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Администратор УК без назначений задач</li><li>Контролёр</li>
      *
      * @tags HousingMeteringDevices
      * @name HousingMeteringDevicesCommentDetail
@@ -9961,7 +9588,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Администратор УК без назначений задач</li>
      *
      * @tags HousingMeteringDevices
      * @name HousingMeteringDevicesCommentCreate
@@ -9988,7 +9615,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Администратор УК без назначений задач</li>
      *
      * @tags HousingMeteringDevices
      * @name HousingMeteringDevicesCommentUpdate
@@ -10015,7 +9642,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Администратор УК без назначений задач</li>
      *
      * @tags HousingMeteringDevices
      * @name HousingMeteringDevicesCommentDelete
@@ -10035,7 +9662,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li>
+     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li><li>Администратор УК без назначений задач</li>
      *
      * @tags HousingMeteringDevices
      * @name HousingMeteringDevicesReadingsHistoryDetail
@@ -10078,7 +9705,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li>
+     * @description Роли:<li>Администратор</li><li>Администратор УК без назначений задач</li>
      *
      * @tags HousingStocks
      * @name HousingStocksCreate
@@ -10101,7 +9728,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li>
+     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li><li>Администратор УК без назначений задач</li>
      *
      * @tags HousingStocks
      * @name HousingStocksUpdate
@@ -10125,7 +9752,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Администратор УК без назначений задач</li><li>Контролёр</li>
      *
      * @tags HousingStocks
      * @name HousingStocksDetail
@@ -10143,12 +9770,30 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li>
+     * @description Роли:<li>Администратор</li><li>Администратор УК без назначений задач</li>
+     *
+     * @tags HousingStocks
+     * @name HousingStocksDelete
+     * @summary HousingStocksDelete
+     * @request DELETE:/api/HousingStocks/{housingStockId}
+     * @secure
+     */
+    housingStocksDelete: (housingStockId: number, params: RequestParams = {}) =>
+      this.request<void, ErrorApiResponse>({
+        path: `/api/HousingStocks/${housingStockId}`,
+        method: 'DELETE',
+        secure: true,
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Администратор</li><li>Администратор УК без назначений задач</li>
      *
      * @tags HousingStocks
      * @name HousingStocksAddressesCreate
      * @summary HousingStocksCreate
      * @request POST:/api/HousingStocks/{housingStockId}/Addresses
+     * @deprecated
      * @secure
      */
     housingStocksAddressesCreate: (
@@ -10166,12 +9811,13 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li>
+     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li><li>Администратор УК без назначений задач</li>
      *
      * @tags HousingStocks
      * @name HousingStocksAddressesUpdate
      * @summary HousingStocksUpdate
      * @request PUT:/api/HousingStocks/{housingStockId}/Addresses/{addressId}
+     * @deprecated
      * @secure
      */
     housingStocksAddressesUpdate: (
@@ -10190,12 +9836,13 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li>
+     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li><li>Администратор УК без назначений задач</li>
      *
      * @tags HousingStocks
      * @name HousingStocksAddressesDelete
      * @summary HousingStocksUpdate
      * @request DELETE:/api/HousingStocks/{housingStockId}/Addresses/{addressId}
+     * @deprecated
      * @secure
      */
     housingStocksAddressesDelete: (
@@ -10211,12 +9858,13 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Администратор УК без назначений задач</li><li>Контролёр</li>
      *
      * @tags HousingStocks
      * @name HousingStocksNodesDetail
      * @summary HousingStocksRead
      * @request GET:/api/HousingStocks/{housingStockId}/Nodes
+     * @deprecated
      * @secure
      */
     housingStocksNodesDetail: (
@@ -10235,12 +9883,13 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Администратор УК без назначений задач</li><li>Контролёр</li>
      *
      * @tags HousingStocks
      * @name HousingStocksCalculatorsDetail
      * @summary MeteringDevicesRead
      * @request GET:/api/HousingStocks/{housingStockId}/Calculators
+     * @deprecated
      * @secure
      */
     housingStocksCalculatorsDetail: (
@@ -10249,7 +9898,7 @@ export class Api<
     ) =>
       this.request<
         CalculatorIntoHousingStockResponseArraySuccessApiResponse,
-        any
+        ErrorApiResponse
       >({
         path: `/api/HousingStocks/${housingStockId}/Calculators`,
         method: 'GET',
@@ -10259,7 +9908,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Администратор УК без назначений задач</li><li>Контролёр</li>
      *
      * @tags HousingStocks
      * @name HousingStocksExistingApartmentNumberDetail
@@ -10280,7 +9929,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Администратор УК без назначений задач</li><li>Контролёр</li>
      *
      * @tags HousingStocks
      * @name HousingStocksDoesApartmentExistDetail
@@ -10302,12 +9951,13 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Администратор УК без назначений задач</li><li>Контролёр</li>
      *
      * @tags HousingStocks
      * @name HousingStocksHousingStockWithTasksList
      * @summary HousingStocksRead
      * @request GET:/api/HousingStocks/HousingStockWithTasks
+     * @deprecated
      * @secure
      */
     housingStocksHousingStockWithTasksList: (
@@ -10316,6 +9966,7 @@ export class Api<
         ResourceTypes?: EResourceType[];
         TimeStatus?: EStageTimeStatus;
         TaskType?: EManagingFirmTaskFilterType;
+        /** @format int32 */
         ExecutorId?: number;
       },
       params: RequestParams = {},
@@ -10346,6 +9997,7 @@ export class Api<
         ContentType?: string;
         ContentDisposition?: string;
         Headers?: Record<string, string[]>;
+        /** @format int64 */
         Length?: number;
         Name?: string;
         FileName?: string;
@@ -10395,11 +10047,15 @@ export class Api<
      * @secure
      */
     importsImportOrganizationCreate: (
-      query: { managementFirmId: number },
+      query: {
+        /** @format int32 */
+        managementFirmId: number;
+      },
       data: {
         ContentType?: string;
         ContentDisposition?: string;
         Headers?: Record<string, string[]>;
+        /** @format int64 */
         Length?: number;
         Name?: string;
         FileName?: string;
@@ -10426,11 +10082,15 @@ export class Api<
      * @secure
      */
     importsImportIndividualDeviceCreate: (
-      query: { housingStockId: number },
+      query: {
+        /** @format int32 */
+        housingStockId: number;
+      },
       data: {
         ContentType?: string;
         ContentDisposition?: string;
         Headers?: Record<string, string[]>;
+        /** @format int64 */
         Length?: number;
         Name?: string;
         FileName?: string;
@@ -10461,13 +10121,14 @@ export class Api<
         ContentType?: string;
         ContentDisposition?: string;
         Headers?: Record<string, string[]>;
+        /** @format int64 */
         Length?: number;
         Name?: string;
         FileName?: string;
       },
       params: RequestParams = {},
     ) =>
-      this.request<void, any>({
+      this.request<any, ErrorApiResponse>({
         path: `/api/Imports/ImportOrganizationWithoutNodes`,
         method: 'POST',
         body: data,
@@ -10477,7 +10138,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Администратор УК без назначений задач</li><li>Контролёр</li>
      *
      * @tags Individual
      * @name DevicesIndividualHouseList
@@ -10486,7 +10147,12 @@ export class Api<
      * @secure
      */
     devicesIndividualHouseList: (
-      query: { City: string; Street: string; Number: string; Corpus?: string },
+      query: {
+        City: string;
+        Street: string;
+        Number: string;
+        Corpus?: string;
+      },
       params: RequestParams = {},
     ) =>
       this.request<
@@ -10502,7 +10168,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Администратор УК без назначений задач</li><li>Контролёр</li>
      *
      * @tags Individual
      * @name DevicesIndividualApartmentsList
@@ -10512,19 +10178,24 @@ export class Api<
      */
     devicesIndividualApartmentsList: (
       query: {
+        /** @format int32 */
         HousingStockId: number;
         ApartmentNumber?: string;
-        'DeviceFilter.Resource'?: EResourceType;
-        'DeviceFilter.Model'?: string;
-        'DeviceFilter.ClosingReason'?: EClosingReason;
-        'DeviceFilter.MountPlace'?: string;
-        'DeviceFilter.ApartmentStatus'?: EApartmentStatus;
-        'DeviceFilter.ExpiresCheckingDateAt'?: EExpiresDateAt;
-        'DeviceFilter.IsAlsoClosing'?: boolean;
+        deviceFilterResource?: EResourceType;
+        deviceFilterModel?: string;
+        deviceFilterClosingReason?: EClosingReason;
+        deviceFilterMountPlace?: string;
+        deviceFilterApartmentStatus?: EApartmentStatus;
+        deviceFilterExpiresCheckingDateAt?: EExpiresDateAt;
+        deviceFilterIsAlsoClosing?: boolean;
+        /** @format int32 */
         PageNumber?: number;
+        /** @format int32 */
         PageSize?: number;
         OrderBy?: EOrderByRule;
+        /** @format int32 */
         Skip?: number;
+        /** @format int32 */
         Take?: number;
       },
       params: RequestParams = {},
@@ -10542,7 +10213,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Администратор УК без назначений задач</li><li>Контролёр</li>
      *
      * @tags Individual
      * @name DevicesIndividualApartmentsDevicesDetail
@@ -10566,7 +10237,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Администратор УК без назначений задач</li><li>Контролёр</li>
      *
      * @tags Individual
      * @name DevicesIndividualDetail
@@ -10587,7 +10258,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Администратор УК без назначений задач</li><li>Контролёр</li>
      *
      * @tags Individual
      * @name DevicesIndividualList
@@ -10610,10 +10281,14 @@ export class Api<
         ExpiresCheckingDateAt?: EExpiresDateAt;
         IsAlsoClosing?: boolean;
         OrderRule?: EIndividualDeviceOrderRule;
+        /** @format int32 */
         PageNumber?: number;
+        /** @format int32 */
         PageSize?: number;
         OrderBy?: EOrderByRule;
+        /** @format int32 */
         Skip?: number;
+        /** @format int32 */
         Take?: number;
       },
       params: RequestParams = {},
@@ -10631,7 +10306,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Администратор УК без назначений задач</li><li>Контролёр</li>
      *
      * @tags IndividualDeviceMountPlaces
      * @name IndividualDeviceMountPlacesList
@@ -10640,7 +10315,10 @@ export class Api<
      * @secure
      */
     individualDeviceMountPlacesList: (
-      query: { apartmentId: number },
+      query: {
+        /** @format int32 */
+        apartmentId: number;
+      },
       params: RequestParams = {},
     ) =>
       this.request<
@@ -10656,7 +10334,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Администратор УК без назначений задач</li><li>Контролёр</li>
      *
      * @tags IndividualDeviceMountPlaces
      * @name IndividualDeviceMountPlacesAllList
@@ -10753,7 +10431,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Диспетчер УК</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Диспетчер УК</li><li>Администратор УК без назначений задач</li>
      *
      * @tags IndividualDeviceReadings
      * @name IndividualDeviceReadingsDataForSubscriberAndNormativeConsumptionPlotList
@@ -10765,7 +10443,9 @@ export class Api<
       query: {
         HousingStockIds: number[];
         ResourceType: EResourceType;
+        /** @format date-time */
         From: string;
+        /** @format date-time */
         To: string;
       },
       params: RequestParams = {},
@@ -10783,7 +10463,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Администратор УК без назначений задач</li><li>Контролёр</li>
      *
      * @tags IndividualDevices
      * @name IndividualDevicesDetail
@@ -10804,7 +10484,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Администратор УК без назначений задач</li>
      *
      * @tags IndividualDevices
      * @name IndividualDevicesUpdate
@@ -10817,7 +10497,10 @@ export class Api<
       data: UpdateIndividualDeviceRequest,
       params: RequestParams = {},
     ) =>
-      this.request<MeteringDeviceResponseSuccessApiResponse, ErrorApiResponse>({
+      this.request<
+        IndividualDeviceResponseSuccessApiResponse,
+        ErrorApiResponse
+      >({
         path: `/api/IndividualDevices/${deviceId}`,
         method: 'PUT',
         body: data,
@@ -10828,7 +10511,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Администратор УК без назначений задач</li><li>Контролёр</li>
      *
      * @tags IndividualDevices
      * @name IndividualDevicesList
@@ -10838,19 +10521,27 @@ export class Api<
      */
     individualDevicesList: (
       query?: {
+        /** @format int32 */
         ApartmentId?: number;
+        /** @format int32 */
         HousingStockId?: number;
         Resource?: EResourceType;
+        /** @format date-time */
         LastReadingsMonth?: string;
+        /** @format int32 */
         TakeReadings?: number;
         ApartmentIds?: number[];
         IsOpened?: boolean;
         SerialNumber?: string;
         OrderRule?: EIndividualDeviceOrderRule;
+        /** @format int32 */
         PageNumber?: number;
+        /** @format int32 */
         PageSize?: number;
         OrderBy?: EOrderByRule;
+        /** @format int32 */
         Skip?: number;
+        /** @format int32 */
         Take?: number;
       },
       params: RequestParams = {},
@@ -10868,7 +10559,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li>
+     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li><li>Администратор УК без назначений задач</li>
      *
      * @tags IndividualDevices
      * @name IndividualDevicesCreate
@@ -10880,9 +10571,39 @@ export class Api<
       data: CreateIndividualDeviceRequest,
       params: RequestParams = {},
     ) =>
-      this.request<MeteringDeviceResponseSuccessApiResponse, ErrorApiResponse>({
+      this.request<
+        IndividualDeviceResponseSuccessApiResponse,
+        ErrorApiResponse
+      >({
         path: `/api/IndividualDevices`,
         method: 'POST',
+        body: data,
+        secure: true,
+        type: ContentType.Json,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Исполнитель УК</li>
+     *
+     * @tags IndividualDevices
+     * @name IndividualDevicesSealUpdate
+     * @summary IndividualDeviceUpdateSeal
+     * @request PUT:/api/IndividualDevices/{deviceId}/seal
+     * @secure
+     */
+    individualDevicesSealUpdate: (
+      deviceId: number,
+      data: UpdateIndividualDeviceSealRequest,
+      params: RequestParams = {},
+    ) =>
+      this.request<
+        IndividualDeviceResponseSuccessApiResponse,
+        ErrorApiResponse
+      >({
+        path: `/api/IndividualDevices/${deviceId}/seal`,
+        method: 'PUT',
         body: data,
         secure: true,
         type: ContentType.Json,
@@ -10942,7 +10663,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Администратор УК без назначений задач</li>
      *
      * @tags IndividualDevices
      * @name IndividualDevicesSwitchMagneticSealCreate
@@ -10969,7 +10690,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Администратор УК без назначений задач</li>
      *
      * @tags IndividualDevices
      * @name IndividualDevicesSetMagneticSealCreate
@@ -10996,7 +10717,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li>
+     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li><li>Администратор УК без назначений задач</li>
      *
      * @tags IndividualDevices
      * @name IndividualDevicesSwitchCreate
@@ -11023,7 +10744,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Администратор УК без назначений задач</li>
      *
      * @tags IndividualDevices
      * @name IndividualDevicesCheckCreate
@@ -11050,7 +10771,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Администратор УК без назначений задач</li><li>Контролёр</li>
      *
      * @tags IndividualDevices
      * @name IndividualDevicesReadingsHistoryDetail
@@ -11106,7 +10827,10 @@ export class Api<
      * @secure
      */
     individualDevicesCreateTaskForDeviceWithoutReadingsCreate: (
-      query?: { fromDate?: string },
+      query?: {
+        /** @format date-time */
+        fromDate?: string;
+      },
       params: RequestParams = {},
     ) =>
       this.request<void, ErrorApiResponse>({
@@ -11176,7 +10900,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Администратор УК без назначений задач</li><li>Контролёр</li>
      *
      * @tags IndividualDevices
      * @name IndividualDevicesConsumptionDetail
@@ -11200,7 +10924,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Оператор</li>
+     * @description Роли:<li>Администратор</li><li>Оператор</li><li>Администратор УК без назначений задач</li>
      *
      * @tags Inspectors
      * @name InspectorsList
@@ -11218,7 +10942,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Оператор</li>
+     * @description Роли:<li>Администратор</li><li>Оператор</li><li>Администратор УК без назначений задач</li>
      *
      * @tags Inspectors
      * @name InspectorsCreate
@@ -11241,7 +10965,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Оператор</li>
+     * @description Роли:<li>Администратор</li><li>Оператор</li><li>Администратор УК без назначений задач</li>
      *
      * @tags Inspectors
      * @name InspectorsDetail
@@ -11262,7 +10986,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Оператор</li>
+     * @description Роли:<li>Администратор</li><li>Оператор</li><li>Администратор УК без назначений задач</li>
      *
      * @tags Inspectors
      * @name InspectorsPartialUpdate
@@ -11286,7 +11010,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Оператор</li>
+     * @description Роли:<li>Администратор</li><li>Оператор</li><li>Администратор УК без назначений задач</li>
      *
      * @tags Inspectors
      * @name InspectorsDelete
@@ -11303,7 +11027,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Оператор</li>
+     * @description Роли:<li>Администратор</li><li>Оператор</li><li>Администратор УК без назначений задач</li>
      *
      * @tags Inspectors
      * @name InspectorsHousingStocksPartialUpdate
@@ -11327,7 +11051,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Оператор</li>
+     * @description Роли:<li>Администратор</li><li>Оператор</li><li>Администратор УК без назначений задач</li>
      *
      * @tags Inspectors
      * @name InspectorsHousingStocksDelete
@@ -11348,7 +11072,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Администратор УК без назначений задач</li><li>Контролёр</li>
      *
      * @tags ManagingFirms
      * @name ManagingFirmsConsumptionRatesDetail
@@ -11372,7 +11096,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Администратор УК без назначений задач</li><li>Контролёр</li>
      *
      * @tags MeteringDevices
      * @name MeteringDevicesList
@@ -11386,14 +11110,21 @@ export class Api<
         PersonalAccountNumber?: string;
         SerialNumber?: string;
         SealNumber?: string;
+        /** @format date-time */
         SealInstallationDate?: string;
         DeviceTypes?: string[];
+        /** @format int32 */
         ApartmentId?: number;
+        /** @format int32 */
         HousingStockId?: number;
+        /** @format int32 */
         PageNumber?: number;
+        /** @format int32 */
         PageSize?: number;
         OrderBy?: EOrderByRule;
+        /** @format int32 */
         Skip?: number;
+        /** @format int32 */
         Take?: number;
       },
       params: RequestParams = {},
@@ -11411,7 +11142,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Администратор УК без назначений задач</li><li>Контролёр</li>
      *
      * @tags MeteringDevices
      * @name MeteringDevicesSearchList
@@ -11424,6 +11155,7 @@ export class Api<
         DeviceType?: string;
         Status?: string;
         Question?: string;
+        /** @format int32 */
         Take?: number;
       },
       params: RequestParams = {},
@@ -11441,7 +11173,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Администратор УК без назначений задач</li><li>Контролёр</li>
      *
      * @tags MeteringDevices
      * @name MeteringDevicesDetail
@@ -11462,7 +11194,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Администратор УК без назначений задач</li><li>Контролёр</li>
      *
      * @tags MeteringDevices
      * @name MeteringDevicesRelatedList
@@ -11471,7 +11203,12 @@ export class Api<
      * @secure
      */
     meteringDevicesRelatedList: (
-      query: { DeviceId: number; PipeNumber?: number },
+      query: {
+        /** @format int32 */
+        DeviceId: number;
+        /** @format int32 */
+        PipeNumber?: number;
+      },
       params: RequestParams = {},
     ) =>
       this.request<
@@ -11487,7 +11224,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Администратор УК без назначений задач</li>
      *
      * @tags MeteringDevices
      * @name MeteringDevicesCloseCreate
@@ -11509,7 +11246,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Администратор УК без назначений задач</li>
      *
      * @tags MeteringDevices
      * @name MeteringDevicesCheckCreate
@@ -11531,7 +11268,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Администратор УК без назначений задач</li><li>Контролёр</li>
      *
      * @tags MeteringDevices
      * @name MeteringDevicesExistingModelsList
@@ -11543,10 +11280,14 @@ export class Api<
       query?: {
         Type?: EMeteringDeviceType;
         Text?: string;
+        /** @format int32 */
         PageNumber?: number;
+        /** @format int32 */
         PageSize?: number;
         OrderBy?: EOrderByRule;
+        /** @format int32 */
         Skip?: number;
+        /** @format int32 */
         Take?: number;
       },
       params: RequestParams = {},
@@ -11561,7 +11302,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Диспетчер УК</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Диспетчер УК</li><li>Администратор УК без назначений задач</li>
      *
      * @tags Nodes
      * @name NodesList
@@ -11571,34 +11312,41 @@ export class Api<
      */
     nodesList: (
       query?: {
+        /** @format int32 */
         CalculatorId?: number;
         IsConnected?: boolean;
+        /** @format int32 */
         BuildingId?: number;
-        'Address.City'?: string;
-        'Address.Street'?: string;
-        'Address.HousingStockNumber'?: string;
-        'Address.Corpus'?: string;
-        'Address.HouseCategory'?: EHouseCategory;
+        addressCity?: string;
+        addressStreet?: string;
+        addressHousingStockNumber?: string;
+        addressCorpus?: string;
+        addressHouseCategory?: EHouseCategory;
         Resource?: EResourceType;
         RegistrationType?: ENodeRegistrationType;
         CommercialStatus?: ENodeCommercialAccountStatus;
-        'DevicesFilter.ExpiresCheckingDateAt'?: EExpiresDateAt;
-        'DevicesFilter.Model'?: string;
-        'DevicesFilter.Question'?: string;
-        'DevicesFilter.DiameterRange.From'?: number;
-        'DevicesFilter.DiameterRange.To'?: number;
-        'DevicesFilter.PipeDiameters'?: number[];
-        'CommercialDateRange.From'?: string;
-        'CommercialDateRange.To'?: string;
+        devicesFilterExpiresCheckingDateAt?: EExpiresDateAt;
+        devicesFilterModel?: string;
+        devicesFilterQuestion?: string;
+        devicesFilterPipeDiameters?: number[];
+        /** @format date-time */
+        commercialDateRangeFrom?: string;
+        /** @format date-time */
+        commercialDateRangeTo?: string;
+        ExpiresAdmissionActDateAt?: EExpiresDateAt;
+        /** @format int32 */
         PageNumber?: number;
+        /** @format int32 */
         PageSize?: number;
         OrderBy?: EOrderByRule;
+        /** @format int32 */
         Skip?: number;
+        /** @format int32 */
         Take?: number;
       },
       params: RequestParams = {},
     ) =>
-      this.request<NodesPagedListSuccessApiResponse, any>({
+      this.request<NodesPagedListSuccessApiResponse, ErrorApiResponse>({
         path: `/api/Nodes`,
         method: 'GET',
         query: query,
@@ -11608,7 +11356,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Администратор УК без назначений задач</li>
      *
      * @tags Nodes
      * @name NodesDocumentsCreate
@@ -11631,7 +11379,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Администратор УК без назначений задач</li>
      *
      * @tags Nodes
      * @name NodesChecksDetail
@@ -11642,10 +11390,14 @@ export class Api<
     nodesChecksDetail: (
       nodeId: number,
       query?: {
+        /** @format int32 */
         PageNumber?: number;
+        /** @format int32 */
         PageSize?: number;
         OrderBy?: EOrderByRule;
+        /** @format int32 */
         Skip?: number;
+        /** @format int32 */
         Take?: number;
       },
       params: RequestParams = {},
@@ -11663,7 +11415,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Администратор УК без назначений задач</li>
      *
      * @tags Nodes
      * @name NodesChecksCreate
@@ -11687,7 +11439,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Администратор УК без назначений задач</li>
      *
      * @tags Nodes
      * @name NodesChecksUpdate
@@ -11712,7 +11464,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Администратор УК без назначений задач</li>
      *
      * @tags Nodes
      * @name NodesChecksDelete
@@ -11734,7 +11486,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Администратор УК без назначений задач</li>
      *
      * @tags Nodes
      * @name NodesStatisticsDetail
@@ -11746,7 +11498,9 @@ export class Api<
       nodeId: number,
       query?: {
         ReportType?: EReportType;
+        /** @format date-time */
         From?: string;
+        /** @format date-time */
         To?: string;
         ReportFormat?: EReportFormat;
       },
@@ -11762,7 +11516,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Администратор УК без назначений задач</li>
      *
      * @tags Nodes
      * @name NodesTaskStatisticsDetail
@@ -11772,7 +11526,13 @@ export class Api<
      */
     nodesTaskStatisticsDetail: (
       nodeId: number,
-      query?: { ReportType?: EReportType; From?: string; To?: string },
+      query?: {
+        ReportType?: EReportType;
+        /** @format date-time */
+        From?: string;
+        /** @format date-time */
+        To?: string;
+      },
       params: RequestParams = {},
     ) =>
       this.request<TaskStatisticsResponseSuccessApiResponse, ErrorApiResponse>({
@@ -11785,7 +11545,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Диспетчер УК</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Диспетчер УК</li><li>Администратор УК без назначений задач</li>
      *
      * @tags Nodes
      * @name NodesDataForHousingConsumptionPlotList
@@ -11797,7 +11557,9 @@ export class Api<
       query: {
         BuildingIds?: number[];
         ResourceType: EResourceType;
+        /** @format date-time */
         From: string;
+        /** @format date-time */
         To: string;
       },
       params: RequestParams = {},
@@ -11815,7 +11577,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Диспетчер УК</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Диспетчер УК</li><li>Администратор УК без назначений задач</li>
      *
      * @tags Nodes
      * @name NodesSummaryHousingConsumptionsByResourcesList
@@ -11824,7 +11586,13 @@ export class Api<
      * @secure
      */
     nodesSummaryHousingConsumptionsByResourcesList: (
-      query: { BuildingIds?: number[]; From: string; To: string },
+      query: {
+        BuildingIds?: number[];
+        /** @format date-time */
+        From: string;
+        /** @format date-time */
+        To: string;
+      },
       params: RequestParams = {},
     ) =>
       this.request<
@@ -11840,7 +11608,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Администратор УК без назначений задач</li><li>Контролёр</li>
      *
      * @tags NodeServiceZones
      * @name NodeServiceZonesList
@@ -11861,7 +11629,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Администратор УК без назначений задач</li>
      *
      * @tags NodeServiceZones
      * @name NodeServiceZonesCreate
@@ -11886,7 +11654,7 @@ export class Api<
       ),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Администратор УК без назначений задач</li><li>Контролёр</li>
      *
      * @tags NodeServiceZones
      * @name NodeServiceZonesDetail
@@ -11909,7 +11677,7 @@ export class Api<
       ),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Администратор УК без назначений задач</li>
      *
      * @tags NodeServiceZones
      * @name NodeServiceZonesUpdate
@@ -11935,7 +11703,7 @@ export class Api<
       ),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Администратор УК без назначений задач</li>
      *
      * @tags NodeServiceZones
      * @name NodeServiceZonesDelete
@@ -11955,7 +11723,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Диспетчер УК</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Диспетчер УК</li><li>Администратор УК без назначений задач</li>
      *
      * @tags NodeWorkingRange
      * @name NodeWorkingRangeList
@@ -11983,7 +11751,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Диспетчер УК</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Диспетчер УК</li><li>Администратор УК без назначений задач</li>
      *
      * @tags NodeWorkingRange
      * @name NodeWorkingRangeHouseManagementDetail
@@ -12012,7 +11780,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Диспетчер УК</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Диспетчер УК</li><li>Администратор УК без назначений задач</li>
      *
      * @tags NodeWorkingRange
      * @name NodeWorkingRangeHousingStockDetail
@@ -12041,7 +11809,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Диспетчер УК</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Диспетчер УК</li><li>Администратор УК без назначений задач</li>
      *
      * @tags NodeWorkingRange
      * @name NodeWorkingRangeNodeDetail
@@ -12051,7 +11819,9 @@ export class Api<
      */
     nodeWorkingRangeNodeDetail: (
       nodeId: number,
-      query: { season: ENodeWorkingRangeSeason },
+      query: {
+        season: ENodeWorkingRangeSeason;
+      },
       params: RequestParams = {},
     ) =>
       this.request<
@@ -12067,7 +11837,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li>
+     * @description Роли:<li>Администратор</li><li>Администратор УК без назначений задач</li>
      *
      * @tags NodeWorkingRange
      * @name NodeWorkingRangeAddOrUpdateCreate
@@ -12093,7 +11863,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li>
+     * @description Роли:<li>Администратор</li><li>Администратор УК без назначений задач</li>
      *
      * @tags NodeWorkingRange
      * @name NodeWorkingRangeDisableDelete
@@ -12115,7 +11885,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Диспетчер УК</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Диспетчер УК</li><li>Администратор УК без назначений задач</li>
      *
      * @tags NodeWorkingRange
      * @name NodeWorkingRangeTypesList
@@ -12136,7 +11906,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li>
+     * @description Роли:<li>Администратор</li><li>Администратор УК без назначений задач</li>
      *
      * @tags NonResidentialBuildings
      * @name NonResidentialBuildingsCreate
@@ -12162,7 +11932,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li>
+     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li><li>Администратор УК без назначений задач</li>
      *
      * @tags NonResidentialBuildings
      * @name NonResidentialBuildingsUpdate
@@ -12189,7 +11959,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Администратор УК без назначений задач</li><li>Контролёр</li>
      *
      * @tags NonResidentialBuildings
      * @name NonResidentialBuildingsDetail
@@ -12213,7 +11983,27 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Диспетчер УК</li>
+     * @description Роли:<li>Администратор</li><li>Администратор УК без назначений задач</li>
+     *
+     * @tags NonResidentialBuildings
+     * @name NonResidentialBuildingsDelete
+     * @summary NonResidentialBuildingsDelete
+     * @request DELETE:/api/NonResidentialBuildings/{buildingId}
+     * @secure
+     */
+    nonResidentialBuildingsDelete: (
+      buildingId: number,
+      params: RequestParams = {},
+    ) =>
+      this.request<void, ErrorApiResponse>({
+        path: `/api/NonResidentialBuildings/${buildingId}`,
+        method: 'DELETE',
+        secure: true,
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Администратор</li><li>Диспетчер УК</li><li>Администратор УК без назначений задач</li>
      *
      * @tags OrganizationCompetences
      * @name OrganizationCompetencesList
@@ -12234,7 +12024,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li>
+     * @description Роли:<li>Администратор</li><li>Администратор УК без назначений задач</li>
      *
      * @tags OrganizationCompetences
      * @name OrganizationCompetencesDelete
@@ -12261,10 +12051,14 @@ export class Api<
      */
     organizationsList: (
       query?: {
+        /** @format int32 */
         PageNumber?: number;
+        /** @format int32 */
         PageSize?: number;
         OrderBy?: EOrderByRule;
+        /** @format int32 */
         Skip?: number;
+        /** @format int32 */
         Take?: number;
       },
       params: RequestParams = {},
@@ -12282,7 +12076,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Администратор УК без назначений задач</li><li>Контролёр</li>
      *
      * @tags Organizations
      * @name OrganizationsCurrentList
@@ -12300,7 +12094,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li>
+     * @description Роли:<li>Администратор</li><li>Администратор УК без назначений задач</li>
      *
      * @tags Organizations
      * @name OrganizationsUpdate
@@ -12324,7 +12118,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Администратор УК без назначений задач</li><li>Контролёр</li>
      *
      * @tags OrganizationUsers
      * @name OrganizationUsersList
@@ -12338,10 +12132,14 @@ export class Api<
         IsSuspended?: boolean;
         RoleNames?: ESecuredIdentityRoleName[];
         WorkingStatusType?: EOrganizationUserWorkingStatusType;
+        /** @format int32 */
         PageNumber?: number;
+        /** @format int32 */
         PageSize?: number;
         OrderBy?: EOrderByRule;
+        /** @format int32 */
         Skip?: number;
+        /** @format int32 */
         Take?: number;
       },
       params: RequestParams = {},
@@ -12359,7 +12157,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li>
+     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li><li>Администратор УК без назначений задач</li>
      *
      * @tags OrganizationUsers
      * @name OrganizationUsersCreate
@@ -12385,7 +12183,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Администратор УК без назначений задач</li><li>Контролёр</li>
      *
      * @tags OrganizationUsers
      * @name OrganizationUsersDetail
@@ -12406,7 +12204,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li>
+     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li><li>Администратор УК без назначений задач</li>
      *
      * @tags OrganizationUsers
      * @name OrganizationUsersUpdate
@@ -12433,7 +12231,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Администратор УК без назначений задач</li><li>Контролёр</li>
      *
      * @tags OrganizationUsers
      * @name OrganizationUsersTasksDetail
@@ -12445,10 +12243,14 @@ export class Api<
       userId: number,
       query?: {
         CurrentStageRequiredUserRole?: ESecuredIdentityRoleName;
+        /** @format int32 */
         PageNumber?: number;
+        /** @format int32 */
         PageSize?: number;
         OrderBy?: EOrderByRule;
+        /** @format int32 */
         Skip?: number;
+        /** @format int32 */
         Take?: number;
       },
       params: RequestParams = {},
@@ -12463,7 +12265,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Администратор УК без назначений задач</li><li>Контролёр</li>
      *
      * @tags OrganizationUsers
      * @name OrganizationUsersCurrentList
@@ -12484,7 +12286,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li>
+     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li><li>Администратор УК без назначений задач</li>
      *
      * @tags OrganizationUsers
      * @name OrganizationUsersSuspendCreate
@@ -12508,7 +12310,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li>
+     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li><li>Администратор УК без назначений задач</li>
      *
      * @tags OrganizationUsers
      * @name OrganizationUsersAddressesResetCreate
@@ -12525,7 +12327,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Администратор УК без назначений задач</li>
      *
      * @tags OrganizationUsers
      * @name OrganizationUsersRoleTypesList
@@ -12546,7 +12348,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Администратор УК без назначений задач</li><li>Контролёр</li>
      *
      * @tags OrganizationUsers
      * @name OrganizationUsersStatisticsDetail
@@ -12556,7 +12358,12 @@ export class Api<
      */
     organizationUsersStatisticsDetail: (
       userId: number,
-      query?: { From?: string; To?: string },
+      query?: {
+        /** @format date-time */
+        From?: string;
+        /** @format date-time */
+        To?: string;
+      },
       params: RequestParams = {},
     ) =>
       this.request<
@@ -12572,7 +12379,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Диспетчер УК</li>
+     * @description Роли:<li>Администратор</li><li>Диспетчер УК</li><li>Администратор УК без назначений задач</li>
      *
      * @tags OrganizationUserWorkingStatuses
      * @name OrganizationUserWorkingStatusesList
@@ -12593,7 +12400,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li>
+     * @description Роли:<li>Администратор</li><li>Администратор УК без назначений задач</li>
      *
      * @tags OrganizationUserWorkingStatuses
      * @name OrganizationUserWorkingStatusesCreate
@@ -12619,7 +12426,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Администратор УК без назначений задач</li><li>Контролёр</li>
      *
      * @tags PipeHousingMeteringDevices
      * @name PipeHousingMeteringDevicesDetail
@@ -12643,7 +12450,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Администратор УК без назначений задач</li>
      *
      * @tags PipeHousingMeteringDevices
      * @name PipeHousingMeteringDevicesUpdate
@@ -12667,7 +12474,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Администратор УК без назначений задач</li>
      *
      * @tags PipeHousingMeteringDevices
      * @name PipeHousingMeteringDevicesDelete
@@ -12679,7 +12486,7 @@ export class Api<
       deviceId: number,
       params: RequestParams = {},
     ) =>
-      this.request<void, any>({
+      this.request<any, ErrorApiResponse>({
         path: `/api/PipeHousingMeteringDevices/${deviceId}`,
         method: 'DELETE',
         secure: true,
@@ -12687,7 +12494,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Администратор УК без назначений задач</li>
      *
      * @tags PipeHousingMeteringDevices
      * @name PipeHousingMeteringDevicesCreate
@@ -12710,7 +12517,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Диспетчер УК</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Диспетчер УК</li><li>Администратор УК без назначений задач</li>
      *
      * @tags PipeNodes
      * @name PipeNodesDetail
@@ -12728,7 +12535,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Администратор УК без назначений задач</li>
      *
      * @tags PipeNodes
      * @name PipeNodesUpdate
@@ -12752,7 +12559,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Диспетчер УК</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Диспетчер УК</li><li>Администратор УК без назначений задач</li>
      *
      * @tags PipeNodes
      * @name PipeNodesValidateCreate
@@ -12764,7 +12571,7 @@ export class Api<
       data: CreatePipeNodeRequest,
       params: RequestParams = {},
     ) =>
-      this.request<PipeNodeValidationResultResponse, any>({
+      this.request<PipeNodeValidationResultResponse, ErrorApiResponse>({
         path: `/api/PipeNodes/validate`,
         method: 'POST',
         body: data,
@@ -12775,7 +12582,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Администратор УК без назначений задач</li>
      *
      * @tags PipeNodes
      * @name PipeNodesCreate
@@ -12798,7 +12605,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Администратор УК без назначений задач</li>
      *
      * @tags PipeNodes
      * @name PipeNodesSetCommercialStatusCreate
@@ -12821,7 +12628,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Администратор УК без назначений задач</li>
      *
      * @tags PipeNodes
      * @name PipeNodesSetRegistrationTypeCreate
@@ -12844,7 +12651,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Диспетчер УК</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Диспетчер УК</li><li>Администратор УК без назначений задач</li>
      *
      * @tags PipeNodes
      * @name PipeNodesPipesForAddingDeviceDetail
@@ -12855,6 +12662,7 @@ export class Api<
     pipeNodesPipesForAddingDeviceDetail: (
       pipeNodeId: number,
       query: {
+        /** @format int32 */
         entryNumber: number;
         magistralType: EMagistralType;
         housingMeteringDeviceType: EHousingMeteringDeviceType;
@@ -12874,7 +12682,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Диспетчер УК</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Диспетчер УК</li><li>Администратор УК без назначений задач</li>
      *
      * @tags PipeNodes
      * @name PipeNodesPipeMagistralTypesList
@@ -12883,12 +12691,14 @@ export class Api<
      * @secure
      */
     pipeNodesPipeMagistralTypesList: (
-      query?: { resource?: EResourceType },
+      query?: {
+        resource?: EResourceType;
+      },
       params: RequestParams = {},
     ) =>
       this.request<
         EMagistralTypeStringDictionaryItemListSuccessApiResponse,
-        any
+        ErrorApiResponse
       >({
         path: `/api/PipeNodes/PipeMagistralTypes`,
         method: 'GET',
@@ -12899,7 +12709,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Диспетчер УК</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Диспетчер УК</li><li>Администратор УК без назначений задач</li>
      *
      * @tags PipeNodes
      * @name PipeNodesMeteringDevicesDetail
@@ -12911,7 +12721,7 @@ export class Api<
       pipeNodeId: number,
       params: RequestParams = {},
     ) =>
-      this.request<PipeNodeMeteringDeviceResponse[], any>({
+      this.request<PipeNodeMeteringDeviceResponse[], ErrorApiResponse>({
         path: `/api/PipeNodes/${pipeNodeId}/MeteringDevices`,
         method: 'GET',
         secure: true,
@@ -12920,7 +12730,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Диспетчер УК</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Диспетчер УК</li><li>Администратор УК без назначений задач</li>
      *
      * @tags PipeNodes
      * @name PipeNodesPipesDetail
@@ -12929,7 +12739,7 @@ export class Api<
      * @secure
      */
     pipeNodesPipesDetail: (pipeNodeId: number, params: RequestParams = {}) =>
-      this.request<CommunicationPipeLiteResponse[], any>({
+      this.request<CommunicationPipeLiteResponse[], ErrorApiResponse>({
         path: `/api/PipeNodes/${pipeNodeId}/Pipes`,
         method: 'GET',
         secure: true,
@@ -12938,7 +12748,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Администратор УК без назначений задач</li>
      *
      * @tags Reports
      * @name ReportsList
@@ -12958,7 +12768,7 @@ export class Api<
       ),
 
     /**
-     * @description Роли:<li>Администратор</li>
+     * @description Роли:<li>Администратор</li><li>Администратор УК без назначений задач</li>
      *
      * @tags Reports
      * @name ReportsCreate
@@ -12981,7 +12791,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Администратор УК без назначений задач</li>
      *
      * @tags Reports
      * @name ReportsReportDataList
@@ -12991,9 +12801,12 @@ export class Api<
      */
     reportsReportDataList: (
       query?: {
+        /** @format int32 */
         NodeId?: number;
         ReportType?: EReportType;
+        /** @format date-time */
         From?: string;
+        /** @format date-time */
         To?: string;
         ReportFormat?: EReportFormat;
       },
@@ -13009,7 +12822,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Администратор УК без назначений задач</li>
      *
      * @tags Reports
      * @name ReportsReportList
@@ -13019,9 +12832,12 @@ export class Api<
      */
     reportsReportList: (
       query?: {
+        /** @format int32 */
         NodeId?: number;
         ReportType?: EReportType;
+        /** @format date-time */
         From?: string;
+        /** @format date-time */
         To?: string;
         ReportFormat?: EReportFormat;
       },
@@ -13036,7 +12852,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Администратор УК без назначений задач</li>
      *
      * @tags Reports
      * @name ReportsConsolidatedReportList
@@ -13045,10 +12861,12 @@ export class Api<
      * @secure
      */
     reportsConsolidatedReportList: (
-      query?: {
-        CalculatorsId?: number[];
+      query: {
+        CalculatorsId: number[];
         ReportType?: EReportType;
+        /** @format date-time */
         From?: string;
+        /** @format date-time */
         To?: string;
         ReportFormat?: EReportFormat;
       },
@@ -13063,7 +12881,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Администратор УК без назначений задач</li>
      *
      * @tags Reports
      * @name ReportsGroupReportList
@@ -13074,12 +12892,16 @@ export class Api<
     reportsGroupReportList: (
       query: {
         FileName: string;
+        /** @format uuid */
         GroupReportId?: string;
+        /** @format uuid */
         HouseManagementId?: string;
         NodeResourceTypes?: EResourceType[];
         NodeStatus?: ENodeCommercialAccountStatus;
         ReportType?: EReportType;
+        /** @format date-time */
         From?: string;
+        /** @format date-time */
         To?: string;
         ReportFormat?: EReportFormat;
       },
@@ -13095,7 +12917,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Администратор УК без назначений задач</li>
      *
      * @tags Reports
      * @name ReportsSendGroupReportCreate
@@ -13123,10 +12945,17 @@ export class Api<
      * @name ReportsCheckingDatesReportXlsxList
      * @summary ReadingReportForOperator
      * @request GET:/api/Reports/CheckingDatesReportXlsx
+     * @deprecated
      * @secure
      */
     reportsCheckingDatesReportXlsxList: (
-      query: { To?: string; From?: string; Resources: EResourceType[] },
+      query: {
+        /** @format date-time */
+        To?: string;
+        /** @format date-time */
+        From?: string;
+        Resources: EResourceType[];
+      },
       params: RequestParams = {},
     ) =>
       this.request<File, ErrorApiResponse>({
@@ -13142,41 +12971,25 @@ export class Api<
      * @description Роли:<li>Старший оператор</li><li>Оператор</li>
      *
      * @tags Reports
-     * @name ReportsReadingsReportList
-     * @summary ReadingReportForOperator
-     * @request GET:/api/Reports/ReadingsReport
-     * @secure
-     */
-    reportsReadingsReportList: (
-      query?: { MonthsFromNow?: number },
-      params: RequestParams = {},
-    ) =>
-      this.request<File, ErrorApiResponse>({
-        path: `/api/Reports/ReadingsReport`,
-        method: 'GET',
-        query: query,
-        secure: true,
-        format: 'json',
-        ...params,
-      }),
-
-    /**
-     * @description Роли:<li>Старший оператор</li><li>Оператор</li>
-     *
-     * @tags Reports
      * @name ReportsClosedDevicesReportXlsxList
      * @summary ReadingReportForOperator
      * @request GET:/api/Reports/ClosedDevicesReportXlsx
+     * @deprecated
      * @secure
      */
     reportsClosedDevicesReportXlsxList: (
       query?: {
+        /** @format int32 */
         ManagementFirmId?: number;
+        /** @format uuid */
         HouseManagementId?: string;
+        /** @format int32 */
         HousingStockId?: number;
         Resources?: EResourceType[];
         ClosingReasons?: EClosingReason[];
+        /** @format date-time */
         From?: string;
+        /** @format date-time */
         To?: string;
         WithoutApartmentsWithOpenDevicesByResources?: boolean;
       },
@@ -13221,7 +13034,16 @@ export class Api<
      * @secure
      */
     reportsRunnerReportsList: (
-      query: { yearRange: YearRangeType; hmIds?: string[] },
+      query: {
+        /** Первая/вторая половина года */
+        yearRange: YearRangeType;
+        /** Ресурс ИПУ по которым собирается отчет */
+        resource: DeviceResource;
+        /** Список Id домоуправлений */
+        hmIds?: string[];
+        /** Список Id домов, приоритетный параметр */
+        houseIds?: number[];
+      },
       params: RequestParams = {},
     ) =>
       this.request<File, ErrorApiResponse>({
@@ -13234,25 +13056,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Старший оператор</li><li>Оператор</li>
-     *
-     * @tags Reports
-     * @name ReportsHomeownerAccountsForErcList
-     * @summary ReadingReportForOperator
-     * @request GET:/api/Reports/HomeownerAccountsForErc
-     * @secure
-     */
-    reportsHomeownerAccountsForErcList: (params: RequestParams = {}) =>
-      this.request<File, ErrorApiResponse>({
-        path: `/api/Reports/HomeownerAccountsForErc`,
-        method: 'GET',
-        secure: true,
-        format: 'json',
-        ...params,
-      }),
-
-    /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Администратор УК без назначений задач</li>
      *
      * @tags Reports
      * @name ReportsSoiReportList
@@ -13262,12 +13066,17 @@ export class Api<
      */
     reportsSoiReportList: (
       query?: {
+        /** @format uuid */
         HouseManagementId?: string;
+        /** @format int32 */
         HousingStockId?: number;
         Resource?: EResourceType;
+        /** @format int32 */
         Month?: number;
+        /** @format int32 */
         Year?: number;
         Period?: ESoiReportPeriod;
+        /** @format double */
         NormativePerPerson?: number;
       },
       params: RequestParams = {},
@@ -13282,7 +13091,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Наблюдатель УК</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Наблюдатель УК</li><li>Администратор УК без назначений задач</li>
      *
      * @tags Reports
      * @name ReportsFeedBackFlowTemperatureReportList
@@ -13291,7 +13100,12 @@ export class Api<
      * @secure
      */
     reportsFeedBackFlowTemperatureReportList: (
-      query?: { HouseManagementId?: string; OutdoorTemperature?: number },
+      query?: {
+        /** @format uuid */
+        HouseManagementId?: string;
+        /** @format double */
+        OutdoorTemperature?: number;
+      },
       params: RequestParams = {},
     ) =>
       this.request<File, ErrorApiResponse>({
@@ -13317,10 +13131,14 @@ export class Api<
         ReportNameText?: string;
         ReportName?: EReportName;
         IsActual?: boolean;
+        /** @format int32 */
         PageNumber?: number;
+        /** @format int32 */
         PageSize?: number;
         OrderBy?: EOrderByRule;
+        /** @format int32 */
         Skip?: number;
+        /** @format int32 */
         Take?: number;
       },
       params: RequestParams = {},
@@ -13335,7 +13153,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li>
+     * @description Роли:<li>Администратор</li><li>Администратор УК без назначений задач</li>
      *
      * @tags Reports
      * @name ReportsHeatIndividualDevicesReportList
@@ -13344,7 +13162,13 @@ export class Api<
      * @secure
      */
     reportsHeatIndividualDevicesReportList: (
-      query: { HousingStockIds: number[]; Month: number; Year: number },
+      query: {
+        HousingStockIds: number[];
+        /** @format int32 */
+        Month: number;
+        /** @format int32 */
+        Year: number;
+      },
       params: RequestParams = {},
     ) =>
       this.request<File, ErrorApiResponse>({
@@ -13357,7 +13181,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Наблюдатель УК</li>
+     * @description Роли:<li>Администратор</li><li>Наблюдатель УК</li><li>Администратор УК без назначений задач</li>
      *
      * @tags Reports
      * @name ReportsFeedFlowPipeTemperatureReportList
@@ -13366,46 +13190,16 @@ export class Api<
      * @secure
      */
     reportsFeedFlowPipeTemperatureReportList: (
-      query?: { HouseManagementId?: string; LimitTemperature?: number },
+      query?: {
+        /** @format uuid */
+        HouseManagementId?: string;
+        /** @format double */
+        LimitTemperature?: number;
+      },
       params: RequestParams = {},
     ) =>
       this.request<File, ErrorApiResponse>({
         path: `/api/Reports/FeedFlowPipeTemperatureReport`,
-        method: 'GET',
-        query: query,
-        secure: true,
-        format: 'json',
-        ...params,
-      }),
-
-    /**
-     * @description Роли:<li>Старший оператор</li><li>Оператор</li>
-     *
-     * @tags Reports
-     * @name ReportsIndividualDevicesReportList
-     * @summary ReadingReportForOperator
-     * @request GET:/api/Reports/IndividualDevicesReport
-     * @secure
-     */
-    reportsIndividualDevicesReportList: (
-      query: {
-        HouseManagementId?: string;
-        HousingStockId?: number;
-        HousingStocksIds?: number[];
-        ReportOption: EIndividualDeviceReportOption;
-        Resources?: EResourceType[];
-        From?: string;
-        To?: string;
-        ClosingReasons?: EClosingReason[];
-        WithoutApartmentsWithOpenDevicesByResources?: boolean;
-      },
-      params: RequestParams = {},
-    ) =>
-      this.request<
-        IndividualDevicesConstructedReportResponseIEnumerableSuccessApiResponse,
-        ErrorApiResponse
-      >({
-        path: `/api/Reports/IndividualDevicesReport`,
         method: 'GET',
         query: query,
         secure: true,
@@ -13424,11 +13218,18 @@ export class Api<
      */
     reportsApartmentActsReportList: (
       query?: {
+        /** @format uuid */
         HouseManagementId?: string;
+        /**
+         * @deprecated
+         * @format int32
+         */
         HousingStockId?: number;
         HousingStocksIds?: number[];
         Resources?: EActResourceType[];
+        /** @format date-time */
         From?: string;
+        /** @format date-time */
         To?: string;
       },
       params: RequestParams = {},
@@ -13449,6 +13250,42 @@ export class Api<
      * @description Роли:<li>Старший оператор</li><li>Оператор</li>
      *
      * @tags Reports
+     * @name ReportsApartmentActsReportXlsxList
+     * @summary ReadingReportForOperator
+     * @request GET:/api/Reports/ApartmentActsReportXlsx
+     * @secure
+     */
+    reportsApartmentActsReportXlsxList: (
+      query?: {
+        /** @format uuid */
+        HouseManagementId?: string;
+        /**
+         * @deprecated
+         * @format int32
+         */
+        HousingStockId?: number;
+        HousingStocksIds?: number[];
+        Resources?: EActResourceType[];
+        /** @format date-time */
+        From?: string;
+        /** @format date-time */
+        To?: string;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<FileContentResultSuccessApiResponse, ErrorApiResponse>({
+        path: `/api/Reports/ApartmentActsReportXlsx`,
+        method: 'GET',
+        query: query,
+        secure: true,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Старший оператор</li><li>Оператор</li>
+     *
+     * @tags Reports
      * @name ReportsHousingDevicesReportList
      * @summary ReadingReportForOperator
      * @request GET:/api/Reports/HousingDevicesReport
@@ -13456,11 +13293,18 @@ export class Api<
      */
     reportsHousingDevicesReportList: (
       query: {
+        /** @format uuid */
         HouseManagementId?: string;
+        /**
+         * @deprecated
+         * @format int32
+         */
         HousingStockId?: number;
         HousingStocksIds?: number[];
         Resources?: EResourceType[];
+        /** @format date-time */
         From: string;
+        /** @format date-time */
         To: string;
       },
       params: RequestParams = {},
@@ -13481,6 +13325,42 @@ export class Api<
      * @description Роли:<li>Старший оператор</li><li>Оператор</li>
      *
      * @tags Reports
+     * @name ReportsHousingDevicesReportXlsxList
+     * @summary ReadingReportForOperator
+     * @request GET:/api/Reports/HousingDevicesReportXlsx
+     * @secure
+     */
+    reportsHousingDevicesReportXlsxList: (
+      query: {
+        /** @format uuid */
+        HouseManagementId?: string;
+        /**
+         * @deprecated
+         * @format int32
+         */
+        HousingStockId?: number;
+        HousingStocksIds?: number[];
+        Resources?: EResourceType[];
+        /** @format date-time */
+        From: string;
+        /** @format date-time */
+        To: string;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<FileContentResultSuccessApiResponse, ErrorApiResponse>({
+        path: `/api/Reports/HousingDevicesReportXlsx`,
+        method: 'GET',
+        query: query,
+        secure: true,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Старший оператор</li><li>Оператор</li>
+     *
+     * @tags Reports
      * @name ReportsHomeownersReportList
      * @summary ReadingReportForOperator
      * @request GET:/api/Reports/HomeownersReport
@@ -13488,7 +13368,12 @@ export class Api<
      */
     reportsHomeownersReportList: (
       query: {
+        /** @format uuid */
         HouseManagementId?: string;
+        /**
+         * @deprecated
+         * @format int32
+         */
         HousingStockId?: number;
         HousingStocksIds?: number[];
         ShowOnlyDuplicates: boolean;
@@ -13511,96 +13396,6 @@ export class Api<
      * @description Роли:<li>Старший оператор</li><li>Оператор</li>
      *
      * @tags Reports
-     * @name ReportsIndividualDevicesReportXlsxList
-     * @summary ReadingReportForOperator
-     * @request GET:/api/Reports/IndividualDevicesReportXlsx
-     * @secure
-     */
-    reportsIndividualDevicesReportXlsxList: (
-      query: {
-        HouseManagementId?: string;
-        HousingStockId?: number;
-        HousingStocksIds?: number[];
-        ReportOption: EIndividualDeviceReportOption;
-        Resources?: EResourceType[];
-        From?: string;
-        To?: string;
-        ClosingReasons?: EClosingReason[];
-        WithoutApartmentsWithOpenDevicesByResources?: boolean;
-      },
-      params: RequestParams = {},
-    ) =>
-      this.request<FileContentResultSuccessApiResponse, ErrorApiResponse>({
-        path: `/api/Reports/IndividualDevicesReportXlsx`,
-        method: 'GET',
-        query: query,
-        secure: true,
-        format: 'json',
-        ...params,
-      }),
-
-    /**
-     * @description Роли:<li>Старший оператор</li><li>Оператор</li>
-     *
-     * @tags Reports
-     * @name ReportsApartmentActsReportXlsxList
-     * @summary ReadingReportForOperator
-     * @request GET:/api/Reports/ApartmentActsReportXlsx
-     * @secure
-     */
-    reportsApartmentActsReportXlsxList: (
-      query?: {
-        HouseManagementId?: string;
-        HousingStockId?: number;
-        HousingStocksIds?: number[];
-        Resources?: EActResourceType[];
-        From?: string;
-        To?: string;
-      },
-      params: RequestParams = {},
-    ) =>
-      this.request<FileContentResultSuccessApiResponse, ErrorApiResponse>({
-        path: `/api/Reports/ApartmentActsReportXlsx`,
-        method: 'GET',
-        query: query,
-        secure: true,
-        format: 'json',
-        ...params,
-      }),
-
-    /**
-     * @description Роли:<li>Старший оператор</li><li>Оператор</li>
-     *
-     * @tags Reports
-     * @name ReportsHousingDevicesReportXlsxList
-     * @summary ReadingReportForOperator
-     * @request GET:/api/Reports/HousingDevicesReportXlsx
-     * @secure
-     */
-    reportsHousingDevicesReportXlsxList: (
-      query: {
-        HouseManagementId?: string;
-        HousingStockId?: number;
-        HousingStocksIds?: number[];
-        Resources?: EResourceType[];
-        From: string;
-        To: string;
-      },
-      params: RequestParams = {},
-    ) =>
-      this.request<FileContentResultSuccessApiResponse, ErrorApiResponse>({
-        path: `/api/Reports/HousingDevicesReportXlsx`,
-        method: 'GET',
-        query: query,
-        secure: true,
-        format: 'json',
-        ...params,
-      }),
-
-    /**
-     * @description Роли:<li>Старший оператор</li><li>Оператор</li>
-     *
-     * @tags Reports
      * @name ReportsHomeownersReportXlsxList
      * @summary ReadingReportForOperator
      * @request GET:/api/Reports/HomeownersReportXlsx
@@ -13608,7 +13403,12 @@ export class Api<
      */
     reportsHomeownersReportXlsxList: (
       query: {
+        /** @format uuid */
         HouseManagementId?: string;
+        /**
+         * @deprecated
+         * @format int32
+         */
         HousingStockId?: number;
         HousingStocksIds?: number[];
         ShowOnlyDuplicates: boolean;
@@ -13628,13 +13428,99 @@ export class Api<
      * @description Роли:<li>Старший оператор</li><li>Оператор</li>
      *
      * @tags Reports
+     * @name ReportsIndividualDevicesReportList
+     * @summary ReadingReportForOperator
+     * @request GET:/api/Reports/IndividualDevicesReport
+     * @secure
+     */
+    reportsIndividualDevicesReportList: (
+      query: {
+        /** @format uuid */
+        HouseManagementId?: string;
+        /**
+         * @deprecated
+         * @format int32
+         */
+        HousingStockId?: number;
+        HousingStocksIds?: number[];
+        ReportOption: EIndividualDeviceReportOption;
+        Resources?: EResourceType[];
+        /** @format date-time */
+        From?: string;
+        /** @format date-time */
+        To?: string;
+        ClosingReasons?: EClosingReason[];
+        WithoutApartmentsWithOpenDevicesByResources?: boolean;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<
+        IndividualDevicesConstructedReportResponseIEnumerableSuccessApiResponse,
+        ErrorApiResponse
+      >({
+        path: `/api/Reports/IndividualDevicesReport`,
+        method: 'GET',
+        query: query,
+        secure: true,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Старший оператор</li><li>Оператор</li>
+     *
+     * @tags Reports
+     * @name ReportsIndividualDevicesReportXlsxList
+     * @summary ReadingReportForOperator
+     * @request GET:/api/Reports/IndividualDevicesReportXlsx
+     * @secure
+     */
+    reportsIndividualDevicesReportXlsxList: (
+      query: {
+        /** @format uuid */
+        HouseManagementId?: string;
+        /**
+         * @deprecated
+         * @format int32
+         */
+        HousingStockId?: number;
+        HousingStocksIds?: number[];
+        ReportOption: EIndividualDeviceReportOption;
+        Resources?: EResourceType[];
+        /** @format date-time */
+        From?: string;
+        /** @format date-time */
+        To?: string;
+        ClosingReasons?: EClosingReason[];
+        WithoutApartmentsWithOpenDevicesByResources?: boolean;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<FileContentResultSuccessApiResponse, ErrorApiResponse>({
+        path: `/api/Reports/IndividualDevicesReportXlsx`,
+        method: 'GET',
+        query: query,
+        secure: true,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Старший оператор</li><li>Оператор</li>
+     *
+     * @tags Reports
      * @name ReportsOperatorsWorkingReportList
      * @summary ReadingReportForOperator
      * @request GET:/api/Reports/OperatorsWorkingReport
      * @secure
      */
     reportsOperatorsWorkingReportList: (
-      query?: { From?: string; To?: string },
+      query?: {
+        /** @format date-time */
+        From?: string;
+        /** @format date-time */
+        To?: string;
+      },
       params: RequestParams = {},
     ) =>
       this.request<
@@ -13653,13 +13539,45 @@ export class Api<
      * @description Роли:<li>Старший оператор</li><li>Оператор</li>
      *
      * @tags Reports
+     * @name ReportsOperatorsWorkingReportXlsxList
+     * @summary ReadingReportForOperator
+     * @request GET:/api/Reports/OperatorsWorkingReportXlsx
+     * @secure
+     */
+    reportsOperatorsWorkingReportXlsxList: (
+      query?: {
+        /** @format date-time */
+        From?: string;
+        /** @format date-time */
+        To?: string;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<File, ErrorApiResponse>({
+        path: `/api/Reports/OperatorsWorkingReportXlsx`,
+        method: 'GET',
+        query: query,
+        secure: true,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Старший оператор</li><li>Оператор</li>
+     *
+     * @tags Reports
      * @name ReportsInspectorsWorkingReportList
      * @summary ReadingReportForOperator
      * @request GET:/api/Reports/InspectorsWorkingReport
      * @secure
      */
     reportsInspectorsWorkingReportList: (
-      query?: { From?: string; To?: string },
+      query?: {
+        /** @format date-time */
+        From?: string;
+        /** @format date-time */
+        To?: string;
+      },
       params: RequestParams = {},
     ) =>
       this.request<
@@ -13678,13 +13596,45 @@ export class Api<
      * @description Роли:<li>Старший оператор</li><li>Оператор</li>
      *
      * @tags Reports
+     * @name ReportsInspectorsWorkingReportXlsxList
+     * @summary ReadingReportForOperator
+     * @request GET:/api/Reports/InspectorsWorkingReportXlsx
+     * @secure
+     */
+    reportsInspectorsWorkingReportXlsxList: (
+      query?: {
+        /** @format date-time */
+        From?: string;
+        /** @format date-time */
+        To?: string;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<File, ErrorApiResponse>({
+        path: `/api/Reports/InspectorsWorkingReportXlsx`,
+        method: 'GET',
+        query: query,
+        secure: true,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Старший оператор</li><li>Оператор</li>
+     *
+     * @tags Reports
      * @name ReportsCallCenterWorkingReportList
      * @summary ReadingReportForOperator
      * @request GET:/api/Reports/CallCenterWorkingReport
      * @secure
      */
     reportsCallCenterWorkingReportList: (
-      query?: { From?: string; To?: string },
+      query?: {
+        /** @format date-time */
+        From?: string;
+        /** @format date-time */
+        To?: string;
+      },
       params: RequestParams = {},
     ) =>
       this.request<
@@ -13703,13 +13653,45 @@ export class Api<
      * @description Роли:<li>Старший оператор</li><li>Оператор</li>
      *
      * @tags Reports
+     * @name ReportsCallCenterWorkingReportXlsxList
+     * @summary ReadingReportForOperator
+     * @request GET:/api/Reports/CallCenterWorkingReportXlsx
+     * @secure
+     */
+    reportsCallCenterWorkingReportXlsxList: (
+      query?: {
+        /** @format date-time */
+        From?: string;
+        /** @format date-time */
+        To?: string;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<File, ErrorApiResponse>({
+        path: `/api/Reports/CallCenterWorkingReportXlsx`,
+        method: 'GET',
+        query: query,
+        secure: true,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Старший оператор</li><li>Оператор</li>
+     *
+     * @tags Reports
      * @name ReportsHouseManagementsReportList
      * @summary ReadingReportForOperator
      * @request GET:/api/Reports/HouseManagementsReport
      * @secure
      */
     reportsHouseManagementsReportList: (
-      query?: { From?: string; To?: string },
+      query?: {
+        /** @format date-time */
+        From?: string;
+        /** @format date-time */
+        To?: string;
+      },
       params: RequestParams = {},
     ) =>
       this.request<
@@ -13728,79 +13710,18 @@ export class Api<
      * @description Роли:<li>Старший оператор</li><li>Оператор</li>
      *
      * @tags Reports
-     * @name ReportsOperatorsWorkingReportXlsxList
-     * @summary ReadingReportForOperator
-     * @request GET:/api/Reports/OperatorsWorkingReportXlsx
-     * @secure
-     */
-    reportsOperatorsWorkingReportXlsxList: (
-      query?: { From?: string; To?: string },
-      params: RequestParams = {},
-    ) =>
-      this.request<File, ErrorApiResponse>({
-        path: `/api/Reports/OperatorsWorkingReportXlsx`,
-        method: 'GET',
-        query: query,
-        secure: true,
-        format: 'json',
-        ...params,
-      }),
-
-    /**
-     * @description Роли:<li>Старший оператор</li><li>Оператор</li>
-     *
-     * @tags Reports
-     * @name ReportsInspectorsWorkingReportXlsxList
-     * @summary ReadingReportForOperator
-     * @request GET:/api/Reports/InspectorsWorkingReportXlsx
-     * @secure
-     */
-    reportsInspectorsWorkingReportXlsxList: (
-      query?: { From?: string; To?: string },
-      params: RequestParams = {},
-    ) =>
-      this.request<File, ErrorApiResponse>({
-        path: `/api/Reports/InspectorsWorkingReportXlsx`,
-        method: 'GET',
-        query: query,
-        secure: true,
-        format: 'json',
-        ...params,
-      }),
-
-    /**
-     * @description Роли:<li>Старший оператор</li><li>Оператор</li>
-     *
-     * @tags Reports
-     * @name ReportsCallCenterWorkingReportXlsxList
-     * @summary ReadingReportForOperator
-     * @request GET:/api/Reports/CallCenterWorkingReportXlsx
-     * @secure
-     */
-    reportsCallCenterWorkingReportXlsxList: (
-      query?: { From?: string; To?: string },
-      params: RequestParams = {},
-    ) =>
-      this.request<File, ErrorApiResponse>({
-        path: `/api/Reports/CallCenterWorkingReportXlsx`,
-        method: 'GET',
-        query: query,
-        secure: true,
-        format: 'json',
-        ...params,
-      }),
-
-    /**
-     * @description Роли:<li>Старший оператор</li><li>Оператор</li>
-     *
-     * @tags Reports
      * @name ReportsHouseManagementsReportXlsxList
      * @summary ReadingReportForOperator
      * @request GET:/api/Reports/HouseManagementsReportXlsx
      * @secure
      */
     reportsHouseManagementsReportXlsxList: (
-      query?: { From?: string; To?: string },
+      query?: {
+        /** @format date-time */
+        From?: string;
+        /** @format date-time */
+        To?: string;
+      },
       params: RequestParams = {},
     ) =>
       this.request<File, ErrorApiResponse>({
@@ -13813,7 +13734,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Администратор УК без назначений задач</li>
      *
      * @tags ResourceDisconnecting
      * @name ResourceDisconnectingList
@@ -13827,12 +13748,17 @@ export class Api<
         Resource?: EResourceType;
         DisconnectingType?: EResourceDisconnectingType;
         OrderRule?: EResourceDisconnectingOrderRule;
-        HousingStockId?: number;
+        /** @format int32 */
+        BuildingId?: number;
         Status?: EResourceDisconnectingStatus;
+        /** @format int32 */
         PageNumber?: number;
+        /** @format int32 */
         PageSize?: number;
         OrderBy?: EOrderByRule;
+        /** @format int32 */
         Skip?: number;
+        /** @format int32 */
         Take?: number;
       },
       params: RequestParams = {},
@@ -13850,7 +13776,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li>
+     * @description Роли:<li>Администратор</li><li>Администратор УК без назначений задач</li>
      *
      * @tags ResourceDisconnecting
      * @name ResourceDisconnectingCreate
@@ -13876,7 +13802,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Администратор УК без назначений задач</li>
      *
      * @tags ResourceDisconnecting
      * @name ResourceDisconnectingDetail
@@ -13897,7 +13823,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li>
+     * @description Роли:<li>Администратор</li><li>Администратор УК без назначений задач</li>
      *
      * @tags ResourceDisconnecting
      * @name ResourceDisconnectingCreate2
@@ -13926,7 +13852,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li>
+     * @description Роли:<li>Администратор</li><li>Администратор УК без назначений задач</li>
      *
      * @tags ResourceDisconnecting
      * @name ResourceDisconnectingDelete
@@ -13943,7 +13869,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li>
+     * @description Роли:<li>Администратор</li><li>Администратор УК без назначений задач</li>
      *
      * @tags ResourceDisconnecting
      * @name ResourceDisconnectingAddDocumentCreate
@@ -13964,7 +13890,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li>
+     * @description Роли:<li>Администратор</li><li>Администратор УК без назначений задач</li>
      *
      * @tags ResourceDisconnecting
      * @name ResourceDisconnectingDeleteDocumentCreate
@@ -13984,7 +13910,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li>
+     * @description Роли:<li>Администратор</li><li>Администратор УК без назначений задач</li>
      *
      * @tags ResourceDisconnecting
      * @name ResourceDisconnectingCompleteCreate
@@ -14004,7 +13930,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Администратор УК без назначений задач</li>
      *
      * @tags ResourceDisconnecting
      * @name ResourceDisconnectingFiltersList
@@ -14025,7 +13951,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Администратор УК без назначений задач</li>
      *
      * @tags SubscriberStatistics
      * @name SubscriberStatisticsList
@@ -14035,25 +13961,62 @@ export class Api<
      */
     subscriberStatisticsList: (
       query: {
+        /** @format int32 */
         HousingStockId: number;
+        /** @format int32 */
         MonthOfLastTransmission?: number;
+        /** @format int32 */
         YearOfLastTransmission?: number;
+        /** @format date-time */
         DateLastCheckFrom?: string;
+        /** @format date-time */
         DateLastCheckTo?: string;
+        /**
+         * @deprecated
+         * @format double
+         */
         HotWaterSupplyConsumptionFrom?: number;
+        /**
+         * @deprecated
+         * @format double
+         */
         HotWaterSupplyConsumptionTo?: number;
+        /**
+         * @deprecated
+         * @format double
+         */
         ColdWaterSupplyConsumptionFrom?: number;
+        /**
+         * @deprecated
+         * @format double
+         */
         ColdWaterSupplyConsumptionTo?: number;
+        /**
+         * @deprecated
+         * @format double
+         */
         ElectricitySupplyConsumptionFrom?: number;
+        /**
+         * @deprecated
+         * @format double
+         */
         ElectricitySupplyConsumptionTo?: number;
-        'HotWaterSupplyFilter.From'?: number;
-        'HotWaterSupplyFilter.To'?: number;
-        'ColdWaterSupplyFilter.From'?: number;
-        'ColdWaterSupplyFilter.To'?: number;
-        'ElectricityFilter.From'?: number;
-        'ElectricityFilter.To'?: number;
-        'HeatFilter.From'?: number;
-        'HeatFilter.To'?: number;
+        /** @format double */
+        hotWaterSupplyFilterFrom?: number;
+        /** @format double */
+        hotWaterSupplyFilterTo?: number;
+        /** @format double */
+        coldWaterSupplyFilterFrom?: number;
+        /** @format double */
+        coldWaterSupplyFilterTo?: number;
+        /** @format double */
+        electricityFilterFrom?: number;
+        /** @format double */
+        electricityFilterTo?: number;
+        /** @format double */
+        heatFilterFrom?: number;
+        /** @format double */
+        heatFilterTo?: number;
       },
       params: RequestParams = {},
     ) =>
@@ -14070,7 +14033,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Администратор УК без назначений задач</li>
      *
      * @tags SubscriberStatistics
      * @name SubscriberStatisticsExportList
@@ -14080,25 +14043,62 @@ export class Api<
      */
     subscriberStatisticsExportList: (
       query: {
+        /** @format int32 */
         HousingStockId: number;
+        /** @format int32 */
         MonthOfLastTransmission?: number;
+        /** @format int32 */
         YearOfLastTransmission?: number;
+        /** @format date-time */
         DateLastCheckFrom?: string;
+        /** @format date-time */
         DateLastCheckTo?: string;
+        /**
+         * @deprecated
+         * @format double
+         */
         HotWaterSupplyConsumptionFrom?: number;
+        /**
+         * @deprecated
+         * @format double
+         */
         HotWaterSupplyConsumptionTo?: number;
+        /**
+         * @deprecated
+         * @format double
+         */
         ColdWaterSupplyConsumptionFrom?: number;
+        /**
+         * @deprecated
+         * @format double
+         */
         ColdWaterSupplyConsumptionTo?: number;
+        /**
+         * @deprecated
+         * @format double
+         */
         ElectricitySupplyConsumptionFrom?: number;
+        /**
+         * @deprecated
+         * @format double
+         */
         ElectricitySupplyConsumptionTo?: number;
-        'HotWaterSupplyFilter.From'?: number;
-        'HotWaterSupplyFilter.To'?: number;
-        'ColdWaterSupplyFilter.From'?: number;
-        'ColdWaterSupplyFilter.To'?: number;
-        'ElectricityFilter.From'?: number;
-        'ElectricityFilter.To'?: number;
-        'HeatFilter.From'?: number;
-        'HeatFilter.To'?: number;
+        /** @format double */
+        hotWaterSupplyFilterFrom?: number;
+        /** @format double */
+        hotWaterSupplyFilterTo?: number;
+        /** @format double */
+        coldWaterSupplyFilterFrom?: number;
+        /** @format double */
+        coldWaterSupplyFilterTo?: number;
+        /** @format double */
+        electricityFilterFrom?: number;
+        /** @format double */
+        electricityFilterTo?: number;
+        /** @format double */
+        heatFilterFrom?: number;
+        /** @format double */
+        heatFilterTo?: number;
       },
       params: RequestParams = {},
     ) =>
@@ -14112,7 +14112,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Администратор УК без назначений задач</li><li>Контролёр</li>
      *
      * @tags Tasks
      * @name TasksExportList
@@ -14123,14 +14123,20 @@ export class Api<
     tasksExportList: (
       query?: {
         TargetType?: ETaskTargetType;
+        /** @format int32 */
         TaskId?: number;
         TaskType?: EManagingFirmTaskFilterType;
         GroupType?: TaskGroupingFilter;
+        /** @format uuid */
         HouseManagementId?: string;
+        /** @format int32 */
         DeviceId?: number;
+        /** @format int32 */
         HousingStockId?: number;
+        /** @format int32 */
         ApartmentId?: number;
         HasChanged?: boolean;
+        /** @format int32 */
         PipeNodeId?: number;
         ClosingStatuses?: ETaskClosingStatus[];
         TimeStatus?: EStageTimeStatus;
@@ -14141,10 +14147,16 @@ export class Api<
         HousingStockNumber?: string;
         Corpus?: string;
         ApartmentNumber?: string;
+        /** @format int32 */
+        PerpetratorId?: number;
+        /** @format int32 */
         PageNumber?: number;
+        /** @format int32 */
         PageSize?: number;
         OrderBy?: EOrderByRule;
+        /** @format int32 */
         Skip?: number;
+        /** @format int32 */
         Take?: number;
       },
       params: RequestParams = {},
@@ -14159,7 +14171,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Администратор УК без назначений задач</li><li>Контролёр</li>
      *
      * @tags Tasks
      * @name TasksList
@@ -14170,14 +14182,20 @@ export class Api<
     tasksList: (
       query?: {
         TargetType?: ETaskTargetType;
+        /** @format int32 */
         TaskId?: number;
         TaskType?: EManagingFirmTaskFilterType;
         GroupType?: TaskGroupingFilter;
+        /** @format uuid */
         HouseManagementId?: string;
+        /** @format int32 */
         DeviceId?: number;
+        /** @format int32 */
         HousingStockId?: number;
+        /** @format int32 */
         ApartmentId?: number;
         HasChanged?: boolean;
+        /** @format int32 */
         PipeNodeId?: number;
         ClosingStatuses?: ETaskClosingStatus[];
         TimeStatus?: EStageTimeStatus;
@@ -14188,10 +14206,16 @@ export class Api<
         HousingStockNumber?: string;
         Corpus?: string;
         ApartmentNumber?: string;
+        /** @format int32 */
+        PerpetratorId?: number;
+        /** @format int32 */
         PageNumber?: number;
+        /** @format int32 */
         PageSize?: number;
         OrderBy?: EOrderByRule;
+        /** @format int32 */
         Skip?: number;
+        /** @format int32 */
         Take?: number;
       },
       params: RequestParams = {},
@@ -14206,7 +14230,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Администратор УК без назначений задач</li><li>Контролёр</li>
      *
      * @tags Tasks
      * @name TasksDetail
@@ -14327,7 +14351,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Администратор УК без назначений задач</li><li>Контролёр</li>
      *
      * @tags Tasks
      * @name TasksNextStagesDetail
@@ -14348,7 +14372,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Администратор УК без назначений задач</li><li>Контролёр</li>
      *
      * @tags Tasks
      * @name TasksCommentsCreate
@@ -14372,7 +14396,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Диспетчер УК</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Диспетчер УК</li><li>Администратор УК без назначений задач</li><li>Контролёр</li>
      *
      * @tags Tasks
      * @name TasksCommentsUpdate
@@ -14397,7 +14421,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Диспетчер УК</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Диспетчер УК</li><li>Администратор УК без назначений задач</li><li>Контролёр</li>
      *
      * @tags Tasks
      * @name TasksCommentsDelete
@@ -14439,7 +14463,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Администратор УК без назначений задач</li><li>Контролёр</li>
      *
      * @tags Tasks
      * @name TasksFiltersList
@@ -14457,7 +14481,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Администратор УК без назначений задач</li><li>Контролёр</li>
      *
      * @tags Tasks
      * @name TasksExportLiteList
@@ -14468,14 +14492,20 @@ export class Api<
     tasksExportLiteList: (
       query?: {
         TargetType?: ETaskTargetType;
+        /** @format int32 */
         TaskId?: number;
         TaskType?: EManagingFirmTaskFilterType;
         GroupType?: TaskGroupingFilter;
+        /** @format uuid */
         HouseManagementId?: string;
+        /** @format int32 */
         DeviceId?: number;
+        /** @format int32 */
         HousingStockId?: number;
+        /** @format int32 */
         ApartmentId?: number;
         HasChanged?: boolean;
+        /** @format int32 */
         PipeNodeId?: number;
         ClosingStatuses?: ETaskClosingStatus[];
         TimeStatus?: EStageTimeStatus;
@@ -14486,10 +14516,16 @@ export class Api<
         HousingStockNumber?: string;
         Corpus?: string;
         ApartmentNumber?: string;
+        /** @format int32 */
+        PerpetratorId?: number;
+        /** @format int32 */
         PageNumber?: number;
+        /** @format int32 */
         PageSize?: number;
         OrderBy?: EOrderByRule;
+        /** @format int32 */
         Skip?: number;
+        /** @format int32 */
         Take?: number;
       },
       params: RequestParams = {},
@@ -14504,7 +14540,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Администратор УК без назначений задач</li><li>Контролёр</li>
      *
      * @tags Tasks
      * @name TasksErpSourcesList
@@ -14513,7 +14549,10 @@ export class Api<
      * @secure
      */
     tasksErpSourcesList: (params: RequestParams = {}) =>
-      this.request<ErpSourceResponse[], ErrorApiResponse>({
+      this.request<
+        ErpSourceResponseIEnumerableSuccessApiResponse,
+        ErrorApiResponse
+      >({
         path: `/api/Tasks/ErpSources`,
         method: 'GET',
         secure: true,
@@ -14522,17 +14561,20 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Администратор УК без назначений задач</li><li>Контролёр</li>
      *
      * @tags Tasks
-     * @name TasksErpWorkCategoriesList
+     * @name TasksErpTaskReasonsList
      * @summary TasksRead
-     * @request GET:/api/Tasks/ErpWorkCategories
+     * @request GET:/api/Tasks/ErpTaskReasons
      * @secure
      */
-    tasksErpWorkCategoriesList: (params: RequestParams = {}) =>
-      this.request<ErpWorkCategoryResponse[], ErrorApiResponse>({
-        path: `/api/Tasks/ErpWorkCategories`,
+    tasksErpTaskReasonsList: (params: RequestParams = {}) =>
+      this.request<
+        ErpTaskReasonGroupResponseIEnumerableSuccessApiResponse,
+        ErrorApiResponse
+      >({
+        path: `/api/Tasks/ErpTaskReasons`,
         method: 'GET',
         secure: true,
         format: 'json',
@@ -14540,17 +14582,17 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Администратор УК без назначений задач</li><li>Контролёр</li>
      *
      * @tags Tasks
-     * @name TasksErpLeadsList
+     * @name TasksApplicationDetail
      * @summary TasksRead
-     * @request GET:/api/Tasks/ErpLeads
+     * @request GET:/api/Tasks/{taskId}/application
      * @secure
      */
-    tasksErpLeadsList: (params: RequestParams = {}) =>
-      this.request<ErpExecutorResponse[], ErrorApiResponse>({
-        path: `/api/Tasks/ErpLeads`,
+    tasksApplicationDetail: (taskId: number, params: RequestParams = {}) =>
+      this.request<ErpApplicationResponseSuccessApiResponse, ErrorApiResponse>({
+        path: `/api/Tasks/${taskId}/application`,
         method: 'GET',
         secure: true,
         format: 'json',
@@ -14558,39 +14600,23 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Администратор УК без назначений задач</li><li>Контролёр</li>
      *
      * @tags Tasks
-     * @name TasksErpExecutorsForLeadList
+     * @name TasksApplicationBrigadeDetail
      * @summary TasksRead
-     * @request GET:/api/Tasks/ErpExecutorsForLead
+     * @request GET:/api/Tasks/{taskId}/application/brigade
      * @secure
      */
-    tasksErpExecutorsForLeadList: (
-      query: { LeadId: string },
+    tasksApplicationBrigadeDetail: (
+      taskId: number,
       params: RequestParams = {},
     ) =>
-      this.request<ErpExecutorResponse[], ErrorApiResponse>({
-        path: `/api/Tasks/ErpExecutorsForLead`,
-        method: 'GET',
-        query: query,
-        secure: true,
-        format: 'json',
-        ...params,
-      }),
-
-    /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
-     *
-     * @tags Tasks
-     * @name TasksErpObjectsList
-     * @summary TasksRead
-     * @request GET:/api/Tasks/ErpObjects
-     * @secure
-     */
-    tasksErpObjectsList: (params: RequestParams = {}) =>
-      this.request<ErpObjectResponse[], ErrorApiResponse>({
-        path: `/api/Tasks/ErpObjects`,
+      this.request<
+        ErpExecutorResponseIEnumerableSuccessApiResponse,
+        ErrorApiResponse
+      >({
+        path: `/api/Tasks/${taskId}/application/brigade`,
         method: 'GET',
         secure: true,
         format: 'json',
@@ -14598,7 +14624,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Администратор УК без назначений задач</li><li>Контролёр</li>
      *
      * @tags Tasks
      * @name TasksErpTaskDeadlineList
@@ -14607,17 +14633,22 @@ export class Api<
      * @secure
      */
     tasksErpTaskDeadlineList: (
-      query: { WorkCategoryId: string; TaskType: EisTaskType },
+      query: {
+        /** @format uuid */
+        TaskReasonId: string;
+      },
       params: RequestParams = {},
     ) =>
-      this.request<ErpTaskDeadlineResponse[], ErrorApiResponse>({
-        path: `/api/Tasks/ErpTaskDeadline`,
-        method: 'GET',
-        query: query,
-        secure: true,
-        format: 'json',
-        ...params,
-      }),
+      this.request<ErpTaskDeadlineResponseSuccessApiResponse, ErrorApiResponse>(
+        {
+          path: `/api/Tasks/ErpTaskDeadline`,
+          method: 'GET',
+          query: query,
+          secure: true,
+          format: 'json',
+          ...params,
+        },
+      ),
 
     /**
      * @description Роли:<li>Диспетчер УК</li>
@@ -14632,29 +14663,28 @@ export class Api<
       data: ErpCreateTaskRequest,
       params: RequestParams = {},
     ) =>
-      this.request<File, ErrorApiResponse>({
+      this.request<void, ErrorApiResponse>({
         path: `/api/Tasks/ErpCreateTask`,
         method: 'POST',
         body: data,
         secure: true,
         type: ContentType.Json,
-        format: 'json',
         ...params,
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li>
+     * @description Роли:<li>Администратор</li><li>Администратор УК без назначений задач</li>
      *
      * @tags TemperatureNormative
      * @name TemperatureNormativeList
-     * @summary ResourceDisconnectingRead
+     * @summary TemperatureNormativeRead
      * @request GET:/api/TemperatureNormative
      * @secure
      */
     temperatureNormativeList: (params: RequestParams = {}) =>
       this.request<
-        TemperatureNormativeResponseIEnumerableSuccessApiResponse,
-        any
+        TemperatureNormativeResponseSuccessApiResponse,
+        ErrorApiResponse
       >({
         path: `/api/TemperatureNormative`,
         method: 'GET',
@@ -14664,11 +14694,11 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li>
+     * @description Роли:<li>Администратор</li><li>Администратор УК без назначений задач</li>
      *
      * @tags TemperatureNormative
      * @name TemperatureNormativeUpdate
-     * @summary ResourceDisconnectingUpdate
+     * @summary TemperatureNormativeWrite
      * @request PUT:/api/TemperatureNormative
      * @secure
      */
@@ -14676,12 +14706,16 @@ export class Api<
       data: TemperatureNormativeUpdateRequest,
       params: RequestParams = {},
     ) =>
-      this.request<any, ErrorApiResponse>({
+      this.request<
+        TemperatureNormativeResponseSuccessApiResponse,
+        ErrorApiResponse
+      >({
         path: `/api/TemperatureNormative`,
         method: 'PUT',
         body: data,
         secure: true,
         type: ContentType.Json,
+        format: 'json',
         ...params,
       }),
   };

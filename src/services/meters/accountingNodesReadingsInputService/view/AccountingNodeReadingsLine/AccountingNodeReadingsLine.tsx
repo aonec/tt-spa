@@ -9,9 +9,9 @@ import {
 } from './AccountingNodeReadingsLine.styled';
 import { AccountingNodeReadingsLineProps } from './AccountingNodeReadingsLine.types';
 import { ResourceIconLookup } from 'ui-kit/shared/ResourceIconLookup';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { ContextMenuButton } from 'ui-kit/ContextMenuButton';
-import moment from 'moment';
+import dayjs from 'api/dayjs';
 import { round } from 'utils/round';
 import { useNodeReadings } from './AccountingNodeReadingsLine.hook';
 import { getNodeReadingValue } from './AccountingNodeReadingsLine.utils';
@@ -30,7 +30,7 @@ export const AccountingNodeReadingsLine: FC<
   readings,
   handleUpdateReadingsSum,
 }) => {
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const {
     currentReading,
@@ -57,7 +57,7 @@ export const AccountingNodeReadingsLine: FC<
     if (!previousExistingReadingBySliderIndex) {
       return null;
     }
-    const month = moment(
+    const month = dayjs(
       previousExistingReadingBySliderIndex.readingDate,
     ).format('MMMM');
 
@@ -65,13 +65,13 @@ export const AccountingNodeReadingsLine: FC<
   }, [previousExistingReadingBySliderIndex]);
 
   const handleChangeODPU = useCallback(
-    () => history.push(`/changeODPU/${device.id}`),
-    [history, device.id],
+    () => navigate(`/changeODPU/${device.id}`),
+    [navigate, device.id],
   );
 
   const handleEditODPU = useCallback(
-    () => history.push(`/electricNode/${device.id}/edit`),
-    [history, device.id],
+    () => navigate(`/electricNode/${device.id}/edit`),
+    [navigate, device.id],
   );
 
   useEffect(() => {
@@ -94,12 +94,12 @@ export const AccountingNodeReadingsLine: FC<
       </DeviceInfo>
       <div>{device?.scaleFactor}</div>
       <AccountingNodeReadingsInputBlock
-        handleSendReading={(payload) =>
+        handleSendReading={(payload) => {
           handleValidateReading({
             ...payload,
             reading: previousReadingReadingBySliderIndex,
-          })
-        }
+          });
+        }}
         readingValue={getNodeReadingValue(previousReadingReadingBySliderIndex)}
         readingDate={previousReadingReadingBySliderIndex?.readingDate}
         sliderIndex={sliderIndex}
@@ -114,12 +114,12 @@ export const AccountingNodeReadingsLine: FC<
       />
 
       <AccountingNodeReadingsInputBlock
-        handleSendReading={(payload) =>
+        handleSendReading={(payload) => {
           handleValidateReading({
             ...payload,
             reading: currentReading,
-          })
-        }
+          });
+        }}
         readingValue={getNodeReadingValue(currentReading)}
         readingDate={currentReading?.readingDate}
         resource={device.resource}
@@ -137,12 +137,12 @@ export const AccountingNodeReadingsLine: FC<
       <div>{consumption}</div>
       {currentReading ? (
         <AccountingNodeReadingsInputBlock
-          handleSendReading={({ value }) =>
+          handleSendReading={({ value }) => {
             handleSendNonResConsumption({
               oldReadingId: currentReading.id,
               nonResidentialRoomConsumption: value || 0,
-            })
-          }
+            });
+          }}
           readingValue={currentReading.nonResidentialRoomConsumption}
           sliderIndex={-1}
           status={deviceNonResConsumptionInputStatuses[currentReading.id]}

@@ -1,27 +1,24 @@
+import { createEffect, createEvent, createStore } from 'effector';
 import { message } from 'antd';
-import { createDomain, forward, guard } from 'effector';
+import { sample } from 'effector';
 import { NodeSetRegistrationTypeRequest, PipeNodeResponse } from 'api/types';
 import { EffectFailDataAxiosError } from 'types';
 import { fetchChangeNodeType } from './changeNodeTypeService.api';
 import { ChangeNodeTypePayload } from './changeNodeTypeService.types';
 
-const domain = createDomain('changeNodeTypeService');
+const openModal = createEvent<PipeNodeResponse>();
+const closeModal = createEvent();
 
-const openModal = domain.createEvent<PipeNodeResponse>();
-const closeModal = domain.createEvent();
-
-const $node = domain
-  .createStore<PipeNodeResponse | null>(null)
+const $node = createStore<PipeNodeResponse | null>(null)
   .on(openModal, (_, node) => node)
   .reset(closeModal);
 
 const $isOpen = $node.map((node) => Boolean(node));
 
-const clearPayload = domain.createEvent();
+const clearPayload = createEvent();
 
-const setNodeTypePayload = domain.createEvent<NodeSetRegistrationTypeRequest>();
-const $changeNodeTypePayload = domain
-  .createStore<Partial<ChangeNodeTypePayload>>({})
+const setNodeTypePayload = createEvent<NodeSetRegistrationTypeRequest>();
+const $changeNodeTypePayload = createStore<Partial<ChangeNodeTypePayload>>({})
   .on($node, (_, node) => ({ nodeId: node?.id }))
   .on(setNodeTypePayload, (oldData, data) => ({
     ...data,
@@ -29,7 +26,7 @@ const $changeNodeTypePayload = domain
   }))
   .reset(clearPayload);
 
-const changeNodeTypeFx = domain.createEffect<
+const changeNodeTypeFx = createEffect<
   ChangeNodeTypePayload,
   void,
   EffectFailDataAxiosError
@@ -45,18 +42,18 @@ changeNodeTypeFx.failData.watch((error) => {
   );
 });
 
-guard({
+sample({
   clock: $node,
   filter: (node) => !Boolean(node),
   target: clearPayload,
 });
 
-forward({
-  from: changeNodeTypeFx.doneData,
-  to: closeModal,
+sample({
+  clock: changeNodeTypeFx.doneData,
+  target: closeModal,
 });
 
-guard({
+sample({
   clock: $changeNodeTypePayload,
   filter: (payload): payload is ChangeNodeTypePayload =>
     Boolean(

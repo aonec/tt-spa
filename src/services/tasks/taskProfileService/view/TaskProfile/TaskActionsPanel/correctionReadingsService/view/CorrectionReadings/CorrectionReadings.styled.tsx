@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, ReactNode } from 'react';
 import styled from 'styled-components';
 
 export const Wrapper = styled.div``;
@@ -25,7 +25,10 @@ export const InfoBlockValue = styled.div`
   line-height: 20px;
 `;
 
-export const InfoBlock: FC<{ title: string }> = ({ title, children }) => {
+export const InfoBlock: FC<{ title: string; children: ReactNode }> = ({
+  title,
+  children,
+}) => {
   return (
     <div>
       <InfoBlockTitle>{title}</InfoBlockTitle>

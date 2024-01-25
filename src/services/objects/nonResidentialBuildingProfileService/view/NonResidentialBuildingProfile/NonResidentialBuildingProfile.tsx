@@ -13,15 +13,13 @@ import { GoBack } from 'ui-kit/shared/GoBack';
 import { NonResidentialBuildingProfileGrouptype } from '../../nonResidentialBuildingProfileService.constants';
 import { NonResidentialBuildingInfo } from '../NonResidentialBuildingInfo';
 import { ResourceAccountingSystemsContainer } from 'services/devices/resourceAccountingSystemsService';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { LinkCard } from 'ui-kit/shared/LinkCard';
-
-const { TabPane } = TabsSC;
 
 export const NonResidentialBuildingProfile: FC<
   NonResidentialBuildingProfileProps
 > = ({
-  currentGrouptype,
+  currentGrouptype = NonResidentialBuildingProfileGrouptype.Common,
   setGrouptype,
   nonResidentialBuilding,
   isPermissionToEditHousingStock,
@@ -30,7 +28,7 @@ export const NonResidentialBuildingProfile: FC<
   openConsolidatedReportModal,
   resourceDisconnections,
 }) => {
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const content: {
     [key in NonResidentialBuildingProfileGrouptype]: ReactNode;
@@ -47,6 +45,20 @@ export const NonResidentialBuildingProfile: FC<
       ),
     }),
     [nonResidentialBuilding, resourceDisconnections],
+  );
+
+  const tabItems = useMemo(
+    () => [
+      {
+        label: 'Общая информация',
+        key: NonResidentialBuildingProfileGrouptype.Common,
+      },
+      {
+        label: 'Системы учета ресурсов',
+        key: NonResidentialBuildingProfileGrouptype.Devices,
+      },
+    ],
+    [],
   );
 
   if (!nonResidentialBuilding) {
@@ -78,7 +90,7 @@ export const NonResidentialBuildingProfile: FC<
             {
               title: 'Добавить узел',
               onClick: () =>
-                history.push(
+                navigate(
                   `/buildings/nonResidentialProfile/${nonResidentialBuilding.id}/addNode`,
                 ),
               hidden: !isPermitionToAddNode,
@@ -91,7 +103,7 @@ export const NonResidentialBuildingProfile: FC<
             {
               title: 'Редактировать',
               onClick: () =>
-                history.push(
+                navigate(
                   `/buildings/nonResidentialProfile/${nonResidentialBuilding.id}/edit`,
                 ),
               hidden: !isPermissionToEditHousingStock,
@@ -105,16 +117,8 @@ export const NonResidentialBuildingProfile: FC<
           setGrouptype(grouptype as NonResidentialBuildingProfileGrouptype)
         }
         activeKey={currentGrouptype}
-      >
-        <TabPane
-          tab="Общая информация"
-          key={NonResidentialBuildingProfileGrouptype.Common}
-        />
-        <TabPane
-          tab="Системы учета ресурсов"
-          key={NonResidentialBuildingProfileGrouptype.Devices}
-        />
-      </TabsSC>
+        items={tabItems}
+      />
       <Wrapper>
         <ContentWrapper>{content[currentGrouptype]}</ContentWrapper>
         <div>

@@ -1,6 +1,6 @@
 import { message } from 'antd';
-import { useEvent, useStore } from 'effector-react';
-import moment from 'moment';
+import { useUnit } from 'effector-react';
+import dayjs from 'api/dayjs';
 import { IndividualDeviceReadingsResponse } from 'api/types';
 import React, { FC, useCallback, useMemo } from 'react';
 import { individualDeviceMetersInputService } from './individualDeviceMetersInputService.model';
@@ -35,21 +35,25 @@ export const IndividualDeviceMetersInputContainer: FC<
   isHousingStocksReadingInputs,
   devices,
   editable,
+  style,
+  shift = 0,
 }) => {
-  const uploadingMetersDevicesStatuses = useStore(
-    outputs.$uploadingMetersStatuses,
-  );
+  const {
+    deleteMeter,
+    openConfirmReadingModal,
+    uploadMeter,
+    uploadingMetersDevicesStatuses,
+  } = useUnit({
+    uploadingMetersDevicesStatuses: outputs.$uploadingMetersStatuses,
+    openConfirmReadingModal: inputs.openConfirmReadingModal,
+    uploadMeter: inputs.uploadMeter,
+    deleteMeter: inputs.deleteMeter,
+  });
 
   const uploadingMetersStatuses = useMemo(
     () => uploadingMetersDevicesStatuses[device.id] || {},
     [device.id, uploadingMetersDevicesStatuses],
   );
-
-  const openConfirmReadingModal = useEvent(inputs.openConfirmReadingModal);
-
-  const uploadMeter = useEvent(inputs.uploadMeter);
-
-  const deleteMeter = useEvent(inputs.deleteMeter);
 
   const previousReadingByCurrentSliderIndex = useMemo(() => {
     if (!device.readings) return;
@@ -78,10 +82,9 @@ export const IndividualDeviceMetersInputContainer: FC<
     [openReadingsHistoryModalById, device.id],
   );
 
-  const inputIndex = useMemo(
-    () => getInputIndex(deviceIndex, devices),
-    [deviceIndex, devices],
-  );
+  const inputIndex = useMemo(() => {
+    return getInputIndex(deviceIndex, devices) - getInputIndex(shift, devices);
+  }, [deviceIndex, devices, shift]);
 
   const deviceRateNum = useMemo(
     () => getRateNum(device.rateType),
@@ -127,9 +130,7 @@ export const IndividualDeviceMetersInputContainer: FC<
         if (result.type === ValidationReadingsResultType.EmptyValues) {
           const meterId = readingPayload.meterId;
 
-          const readingMonth = moment(readingPayload.readingDate).format(
-            'MMMM',
-          );
+          const readingMonth = dayjs(readingPayload.readingDate).format('MMMM');
 
           openConfirmReadingModal({
             title: (
@@ -239,6 +240,7 @@ export const IndividualDeviceMetersInputContainer: FC<
       previousReadingByCurrentSliderIndex={previousReadingByCurrentSliderIndex}
       editable={editable}
       apartmentId={device.apartmentId}
+      style={style}
     />
   );
 };

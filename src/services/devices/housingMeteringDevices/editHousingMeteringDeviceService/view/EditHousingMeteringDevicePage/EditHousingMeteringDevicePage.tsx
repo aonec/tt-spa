@@ -1,6 +1,6 @@
 import { PageHeader } from 'ui-kit/shared/PageHeader';
-import React, { FC } from 'react';
-import { useHistory } from 'react-router-dom';
+import React, { FC, useMemo } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { GoBack } from 'ui-kit/shared/GoBack';
 import { HeaderInfoString } from 'ui-kit/shared/HeaderInfoString';
 import { DeviceStatus } from 'ui-kit/shared/IndividualDeviceInfo/DeviceStatus';
@@ -31,8 +31,16 @@ export const EditHousingMeteringDevicePage: FC<
   const address = housingMeteringDevice?.address?.address?.mainAddress;
   const isActive = !Boolean(housingMeteringDevice?.closingDate);
 
-  const history = useHistory();
-  const onCancel = () => history.goBack();
+  const navigate = useNavigate();
+  const onCancel = () => navigate(-1);
+
+  const tabItems = useMemo(
+    () => [
+      { label: 'Общие данные', key: EditHousingMeteringDeviceTabs.CommonInfo },
+      { label: 'Документы', key: EditHousingMeteringDeviceTabs.Documents },
+    ],
+    [],
+  );
 
   return (
     <Wrapper>
@@ -50,7 +58,7 @@ export const EditHousingMeteringDevicePage: FC<
               {address?.city}
               {address && getHousingStockItemAddress(address)}
               <div>
-                Узел {housingMeteringDevice?.hubConnection?.node?.number}
+                Узел {housingMeteringDevice?.hubConnection?.node?.title}
               </div>
               <DeviceStatus isActive={isActive} />
             </HeaderInfoString>
@@ -63,16 +71,8 @@ export const EditHousingMeteringDevicePage: FC<
           handleChangeTab(value as EditHousingMeteringDeviceTabs);
         }}
         activeKey={currentTab}
-      >
-        <Tabs.TabPane
-          tab="Общие данные"
-          key={EditHousingMeteringDeviceTabs.CommonInfo}
-        />
-        <Tabs.TabPane
-          tab="Документы"
-          key={EditHousingMeteringDeviceTabs.Documents}
-        />
-      </Tabs>
+        items={tabItems}
+      />
 
       {currentTab === EditHousingMeteringDeviceTabs.CommonInfo && (
         <EditHousingMeteringDeviceCommonInfo

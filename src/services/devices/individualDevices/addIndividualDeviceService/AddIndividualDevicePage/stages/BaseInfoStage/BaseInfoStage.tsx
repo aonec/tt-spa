@@ -25,10 +25,10 @@ import {
 } from 'api/types';
 import { DatePickerNative } from 'ui-kit/shared/DatePickerNative';
 import { getIndividualDeviceRateNumByName } from 'utils/getIndividualDeviceRateNumByName';
-import moment from 'moment';
+import dayjs from 'api/dayjs';
 import { getBitDepthAndScaleFactor } from 'utils/getBitDepthAndScaleFactor';
 import { addIndividualDeviceService } from '../../../addIndividualDeviceService.model';
-import { useHistory, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { Button } from 'ui-kit/Button';
 
 const {
@@ -55,7 +55,6 @@ export const BaseInfoStage: FC<BaseInfoStageProps> = ({
         formData?.futureCheckingDate || (null as string | null),
       openingDate: formData?.openingDate || (null as string | null),
       bitDepth: formData?.bitDepth || (null as number | null),
-      scaleFactor: formData?.scaleFactor || (null as number | null),
       apartmentId: apartmentId as number | null,
       mountPlaceId: formData?.mountPlaceId || (null as number | null),
       model: formData?.model || '',
@@ -171,7 +170,7 @@ export const BaseInfoStage: FC<BaseInfoStageProps> = ({
   });
 
   const { id } = useParams<{ id: string }>();
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const isSerialNumberAllreadyExist =
     serialNumberForChecking?.items?.[0]?.serialNumber === values.serialNumber;
@@ -194,13 +193,13 @@ export const BaseInfoStage: FC<BaseInfoStageProps> = ({
       <FormItem label="Дата последней поверки прибора">
         <DatePickerNative
           onChange={(incomingValue: string) => {
-            const value = moment(incomingValue);
+            const value = dayjs(incomingValue);
 
             const formattedDate = value.format('YYYY-MM-DD');
 
             setFieldValue('lastCheckingDate', formattedDate);
 
-            const nextCheckingDate = moment(formattedDate);
+            const nextCheckingDate = dayjs(formattedDate);
 
             if (!values.resource) return;
 
@@ -224,7 +223,7 @@ export const BaseInfoStage: FC<BaseInfoStageProps> = ({
           onChange={(value) =>
             setFieldValue(
               'futureCheckingDate',
-              moment(value).format('YYYY-MM-DD'),
+              dayjs(value).format('YYYY-MM-DD'),
             )
           }
           value={values.futureCheckingDate}
@@ -306,7 +305,7 @@ export const BaseInfoStage: FC<BaseInfoStageProps> = ({
             placeholder="Введите модель прибора"
             onChange={(value) => {
               setFieldValue('model', value);
-              handleFetchModels(value);
+              handleFetchModels(String(value));
             }}
             options={modelNames?.map((elem) => ({ value: elem })) || []}
           />
@@ -358,19 +357,6 @@ export const BaseInfoStage: FC<BaseInfoStageProps> = ({
             value={values.bitDepth || undefined}
           />
           <ErrorMessage>{errors.bitDepth}</ErrorMessage>
-        </FormItem>
-
-        <FormItem label="Множитель">
-          <Input
-            type="number"
-            placeholder="Введите множитель прибора"
-            name="scaleFactor"
-            onChange={(value) =>
-              setFieldValue('scaleFactor', value.target.value)
-            }
-            value={values.scaleFactor || undefined}
-          />
-          <ErrorMessage>{errors.scaleFactor}</ErrorMessage>
         </FormItem>
       </FormWrap>
 
@@ -436,7 +422,7 @@ export const BaseInfoStage: FC<BaseInfoStageProps> = ({
       <FormItem label="Дата ввода в эксплуатацию">
         <DatePickerNative
           onChange={(value) =>
-            setFieldValue('openingDate', moment(value).format('YYYY-MM-DD'))
+            setFieldValue('openingDate', dayjs(value).format('YYYY-MM-DD'))
           }
           value={values.openingDate}
         />
@@ -470,7 +456,7 @@ export const BaseInfoStage: FC<BaseInfoStageProps> = ({
             onChange={(value) =>
               setFieldValue(
                 'sealInstallationDate',
-                moment(value).format('YYYY-MM-DD'),
+                dayjs(value).format('YYYY-MM-DD'),
               )
             }
             value={values.sealInstallationDate}
@@ -493,7 +479,7 @@ export const BaseInfoStage: FC<BaseInfoStageProps> = ({
       </FormItem>
 
       <Footer>
-        <Button type="ghost" onClick={history.goBack}>
+        <Button type="ghost" onClick={() => navigate(-1)}>
           Отмена
         </Button>
         <Button onClick={() => handleSubmit()}>Далее</Button>

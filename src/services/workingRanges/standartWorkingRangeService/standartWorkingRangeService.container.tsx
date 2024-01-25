@@ -1,23 +1,24 @@
 import React from 'react';
 import { StandartWorkingRange } from './view/StandartWorkingRange';
 import { standartWorkingRangeService } from './standartWorkingRangeService.model';
-import { useEvent, useStore } from 'effector-react';
+import { useUnit } from 'effector-react';
 
 const { inputs, outputs } = standartWorkingRangeService;
 
 export const StandartWorkingRangeContainer = () => {
-  const standartWorkingRange = useStore(outputs.$standartWorkingRange);
-  const isLoading = useStore(outputs.$isLoading);
-
-  const handleOnSearchDataChange = useEvent(inputs.handleOnSearchDataChange);
+  const { handleOnSearchDataChange, isLoading, standartWorkingRange } = useUnit(
+    {
+      standartWorkingRange: outputs.$standartWorkingRange,
+      isLoading: outputs.$isLoading,
+      handleOnSearchDataChange: inputs.handleOnSearchDataChange,
+    },
+  );
 
   return (
-    <>
-      <StandartWorkingRange
-        standartWorkingRange={standartWorkingRange}
-        handleOnSearchDataChange={handleOnSearchDataChange}
-        isLoading={isLoading}
-      />
-    </>
+    <StandartWorkingRange
+      standartWorkingRange={standartWorkingRange}
+      handleOnSearchDataChange={handleOnSearchDataChange}
+      isLoading={isLoading}
+    />
   );
 };

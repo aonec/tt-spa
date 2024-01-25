@@ -1,7 +1,7 @@
-import { BuildingListResponse } from 'api/types';
+import { BuildingWithCoordinatesResponse } from 'api/types';
 
 export type SelectedHousingStocksProps = {
-  housesInDistrict: BuildingListResponse[];
+  housesInDistrict: BuildingWithCoordinatesResponse[];
   isLoading: boolean;
   selectedHousingStocks: number[];
   toggleHousingStock: (id: number) => void;

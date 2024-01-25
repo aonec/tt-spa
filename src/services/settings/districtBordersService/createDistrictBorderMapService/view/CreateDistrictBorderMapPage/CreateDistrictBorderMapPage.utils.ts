@@ -1,20 +1,56 @@
-import { BuildingListResponsePagedList } from 'api/types';
+import {
+  BuildingWithCoordinatesResponsePagedList,
+  HousingStockResponse,
+} from 'api/types';
 import { DistrictColor, DistrictData } from 'types';
 import housingStockMiniPlacemark from 'hooks/ymaps/placemarks/housingStockMiniPlacemark.svg';
+import housingStockActiveMiniPlacemark from 'hooks/ymaps/placemarks/housingStockActiveMiniPlacemark.svg';
 import housingStockPlacemark from 'hooks/ymaps/placemarks/housingStockPlacemark.svg';
 import inactiveHousingStockPlacemark from 'hooks/ymaps/placemarks/inactiveHousingStockPlacemark.svg';
 import { isPointInsidePolygon } from 'utils/isPointInsidePolygon';
 
 export const getBuildingPlacmearks = (
-  housingStocks: BuildingListResponsePagedList | null,
+  housingStocks: BuildingWithCoordinatesResponsePagedList | null,
+  housesInDistrict: number[],
+  selectedHouses: number[],
+  toggleHouse: (id: number) => void,
+  activeHouses?: number[] | null,
+) => {
+  if (!housingStocks?.items) return [];
+
+  return housingStocks.items.map((elem) => {
+    const isHouseInsideDistrict = housesInDistrict.includes(elem.id);
+    const isHouseSelected = selectedHouses.includes(elem.id);
+    const isHouseActive = activeHouses?.includes(elem.id);
+
+    return {
+      placemarkIconLink: isHouseInsideDistrict
+        ? isHouseSelected
+          ? housingStockPlacemark
+          : inactiveHousingStockPlacemark
+        : isHouseActive
+        ? housingStockActiveMiniPlacemark
+        : housingStockMiniPlacemark,
+      coords: [
+        elem.coordinates?.latitude || 0,
+        elem.coordinates?.longitude || 0,
+      ] as [number, number],
+      onClick: () => toggleHouse(elem.id),
+      size: isHouseInsideDistrict ? [51, 51] : [24, 24],
+    };
+  });
+};
+
+export const getHousesPlacmearks = (
+  housingStocks: HousingStockResponse[] | null,
   housesInDistrict: number[],
   selectedHouses: number[],
   toggleHouse: (id: number) => void,
   renderTasksCount?: boolean,
 ) => {
-  if (!housingStocks?.items) return [];
+  if (!housingStocks) return [];
 
-  return housingStocks.items.map((elem) => {
+  return housingStocks.map((elem) => {
     const isHouseInsideDistrict = housesInDistrict.includes(elem.id);
     const isHouseSelected = selectedHouses.includes(elem.id);
 
@@ -37,7 +73,7 @@ export const getBuildingPlacmearks = (
 
 export const getSelectedHouses = (
   workingDistrict: ymaps.Polygon | null,
-  existingHousingStocks: BuildingListResponsePagedList | null,
+  existingHousingStocks: BuildingWithCoordinatesResponsePagedList | null,
 ) => {
   const coordinates = workingDistrict?.geometry?.getCoordinates();
 

@@ -1,8 +1,13 @@
 import { useSwitchInputOnEnter } from 'hooks/useSwitchInputOnEnter';
 import { fromEnter } from 'ui-kit/shared/DatePickerNative';
 import { useFormik } from 'formik';
-import { EActResourceType, EApartmentStatus } from 'api/types';
-import React, { FC, useCallback } from 'react';
+import {
+  EActResourceType,
+  EApartmentStatus,
+  EIndividualDeviceOrderRule,
+  EOrderByRule,
+} from 'api/types';
+import React, { FC, useCallback, useState } from 'react';
 import { DevicesSearchType } from 'services/devices/devicesPageService/devicesPageService.types';
 import { SearchIcon } from 'ui-kit/icons';
 import { ResourceInfo } from 'ui-kit/shared/ResourceInfo';
@@ -10,8 +15,13 @@ import { IndividualDevicesExtendedSearch } from '../../../IndividualDevicesExten
 import { apartmentStatusesLookup } from '../../../IndividualDevicesExtendedSearch/IndividualDevicesExtendedSearch.constants';
 import { IndividualDeviceSearchbySerialNumberPayload } from '../../individualDevicesViesBySerialNumberService.types';
 import {
+  AscendingSortIconSC,
   CheckboxSC,
+  DescendingSortIconSC,
   SearchFieldsWrapper,
+  SelectSC,
+  SortByWrapper,
+  TextWrapper,
   Wrapper,
 } from './SerialNumberSearch.styled';
 import { IndividualDevicesViewBySerialNumberSearchProps } from './SerialNumberSearch.types';
@@ -23,6 +33,7 @@ import { Button } from 'ui-kit/Button';
 export const IndividualDevicesViewBySerialNumberSearch: FC<
   IndividualDevicesViewBySerialNumberSearchProps
 > = ({ filter, setFilter, clearSearchPayload, mountPlaces }) => {
+  const [isExendedSearchOpen, setIsExendedSearchOpen] = useState(false);
   const next = useSwitchInputOnEnter('searchBySerialNumber', true);
 
   const { values, setFieldValue, handleSubmit, setValues, resetForm } =
@@ -54,6 +65,22 @@ export const IndividualDevicesViewBySerialNumberSearch: FC<
     [next, handleSubmit],
   );
 
+  const handleSelectOrderRule = useCallback(
+    (selectString: string | undefined) => {
+      if (!selectString) {
+        setFieldValue('OrderRule', undefined);
+        setFieldValue('OrderBy', undefined);
+      } else {
+        const [OrderRule, OrderBy] = selectString.split(';');
+        setFieldValue('OrderRule', OrderRule);
+        setFieldValue('OrderBy', OrderBy);
+      }
+
+      handleSubmit();
+    },
+    [setFieldValue, handleSubmit],
+  );
+
   return (
     <Wrapper>
       <IndividualDevicesExtendedSearch
@@ -65,6 +92,8 @@ export const IndividualDevicesViewBySerialNumberSearch: FC<
         }}
         values={values}
         mountPlaces={mountPlaces}
+        isOpen={isExendedSearchOpen}
+        setIsOpen={setIsExendedSearchOpen}
       >
         <SearchFieldsWrapper>
           <Input
@@ -117,15 +146,50 @@ export const IndividualDevicesViewBySerialNumberSearch: FC<
               </Select.Option>
             ))}
           </Select>
-          <CheckboxSC
-            checked={values.IsAlsoClosing}
-            onChange={(e) => {
-              setFieldValue('IsAlsoClosing', e.target.checked);
-              handleSubmit();
-            }}
-          >
-            Закрытые приборы
-          </CheckboxSC>
+          <SortByWrapper>
+            <TextWrapper>Сортировать по:</TextWrapper>
+            <SelectSC
+              small
+              data-reading-input={'searchBySerialNumber'}
+              onKeyDown={fromEnter(() => next(3))}
+              showAction={['focus']}
+              onChange={(value) =>
+                handleSelectOrderRule(value as string | undefined)
+              }
+              placeholder={'Выберите'}
+              value={
+                values.OrderBy
+                  ? `${values.OrderRule};${values.OrderBy}`
+                  : undefined
+              }
+              allowClear
+            >
+              <SelectSC.Option
+                small
+                value={`${EIndividualDeviceOrderRule.CheckingDate};${EOrderByRule.Descending}`}
+              >
+                <DescendingSortIconSC /> Дате поверки
+              </SelectSC.Option>
+              <SelectSC.Option
+                small
+                value={`${EIndividualDeviceOrderRule.CheckingDate};${EOrderByRule.Ascending}`}
+              >
+                <AscendingSortIconSC /> Дате поверки
+              </SelectSC.Option>
+              <SelectSC.Option
+                small
+                value={`${EIndividualDeviceOrderRule.BitDepth};${EOrderByRule.Descending}`}
+              >
+                <DescendingSortIconSC /> Разрядности
+              </SelectSC.Option>
+              <SelectSC.Option
+                small
+                value={`${EIndividualDeviceOrderRule.BitDepth};${EOrderByRule.Ascending}`}
+              >
+                <AscendingSortIconSC /> Разрядности
+              </SelectSC.Option>
+            </SelectSC>
+          </SortByWrapper>
           <Button
             type="ghost"
             onClick={() => {
@@ -139,6 +203,17 @@ export const IndividualDevicesViewBySerialNumberSearch: FC<
           </Button>
         </SearchFieldsWrapper>
       </IndividualDevicesExtendedSearch>
+      {!isExendedSearchOpen && (
+        <CheckboxSC
+          checked={values.IsAlsoClosing}
+          onChange={(e) => {
+            setFieldValue('IsAlsoClosing', e.target.checked);
+            handleSubmit();
+          }}
+        >
+          Закрытые приборы
+        </CheckboxSC>
+      )}
     </Wrapper>
   );
 };

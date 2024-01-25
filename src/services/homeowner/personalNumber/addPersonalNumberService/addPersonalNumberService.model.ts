@@ -1,4 +1,5 @@
-import { createDomain, sample } from 'effector';
+import { createEffect, createEvent, createStore } from 'effector';
+import { sample } from 'effector';
 import { message } from 'antd';
 import { apartmentProfileService } from 'services/apartments/apartmentProfileService';
 import { EffectFailDataAxiosErrorDataApartmentId } from 'types';
@@ -6,25 +7,21 @@ import { addHomeowner } from './addPersonalNumberService.api';
 import { PersonalNumberFormTypes } from '../components/PersonalNumberForm/PersonalNumberForm.types';
 import { AddHomeownerRequestPayload } from './addPersonalNumberService.types';
 
-const domain = createDomain('addPersonalNumberService');
+const handleAddPersonalNumber = createEvent<PersonalNumberFormTypes>();
 
-const handleAddPersonalNumber = domain.createEvent<PersonalNumberFormTypes>();
-
-const onForced = domain.createEvent();
-const handleConfirmationModalClose = domain.createEvent();
-const $isForced = domain
-  .createStore<boolean>(false)
+const onForced = createEvent();
+const handleConfirmationModalClose = createEvent();
+const $isForced = createStore<boolean>(false)
   .on(onForced, () => true)
   .reset(handleConfirmationModalClose);
 
-const addPersonalNumberFx = domain.createEffect<
+const addPersonalNumberFx = createEffect<
   AddHomeownerRequestPayload,
   void,
   EffectFailDataAxiosErrorDataApartmentId
 >(addHomeowner);
 
-const $samePersonalAccountNumderId = domain
-  .createStore<number | null>(null)
+const $samePersonalAccountNumderId = createStore<number | null>(null)
   .on(addPersonalNumberFx.failData, (prev, errData) => {
     if (errData.response.status === 409) {
       return errData.response.data.error.Data.ApartmentId;
@@ -39,19 +36,19 @@ sample({
   clock: handleAddPersonalNumber,
   source: $isForced,
   filter: (_, formData) => Boolean(formData.apartmentId),
-  fn: (isForced, formData) =>
-    ({
-      body: {
-        apartmentId: formData.apartmentId,
-        name: formData.name,
-        openAt: formData.openAt,
-        personalAccountNumber: formData.personalAccountNumber,
-        isMainOnApartment: formData.isMainOnApartment,
-        paymentCode: formData.paymentCode,
-        phoneNumber: formData.phoneNumber,
-      },
-      isForced,
-    } as AddHomeownerRequestPayload),
+  fn: (isForced, formData) => ({
+    body: {
+      //Проверка типа выше
+      apartmentId: formData.apartmentId as number,
+      name: formData.name,
+      openAt: formData.openAt,
+      personalAccountNumber: formData.personalAccountNumber,
+      isMainOnApartment: formData.isMainOnApartment,
+      paymentCode: formData.paymentCode,
+      phoneNumbers: formData.phoneNumbers,
+    },
+    isForced,
+  }),
   target: addPersonalNumberFx,
 });
 

@@ -1,4 +1,4 @@
-import moment from 'moment';
+import dayjs from 'api/dayjs';
 import { ReportType } from './view/StatisticsGraph/StatisticsGraph.types';
 
 export type DisplayNodesStatisticsContainerProps = {
@@ -16,8 +16,8 @@ export type TasksStatisticPayload = DateRange & {
 };
 
 export type FormikDateRange = {
-  From: moment.Moment | null;
-  To: moment.Moment | null;
+  From: dayjs.Dayjs | null;
+  To: dayjs.Dayjs | null;
 };
 
 export type DateRange = {

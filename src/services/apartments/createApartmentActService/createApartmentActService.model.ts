@@ -1,27 +1,52 @@
-import { createDomain, forward, sample } from 'effector';
-import { AddApartmentActRequest } from 'api/types';
+import { createEffect, createEvent, createStore } from 'effector';
+import { sample } from 'effector';
+import { AddApartmentActRequest, EActResourceType, EActType } from 'api/types';
 import { apartmentActsListService } from '../apartmentActsListService';
 import { postApartmentAct } from './createApartmentActService.api';
 import { CreateActFormPayload } from './createApartmentActService.types';
+import { createForm } from 'effector-forms';
+import { required } from 'api/formRules';
 
-const domain = createDomain('createApartmentActService');
-
-const $isModalOpen = domain.createStore(false);
-const openModal = domain.createEvent();
-const closeModal = domain.createEvent();
+const $isModalOpen = createStore(false);
+const openModal = createEvent();
+const closeModal = createEvent();
 
 $isModalOpen.on(openModal, () => true).reset(closeModal);
 
-const createAct = domain.createEvent<CreateActFormPayload>();
-const createActFx = domain.createEffect<AddApartmentActRequest, void>(
+const createActFx = createEffect<AddApartmentActRequest, void>(
   postApartmentAct,
 );
+
+const createActForm = createForm<CreateActFormPayload>({
+  fields: {
+    actJobDate: {
+      init: '' as string,
+      rules: [required()],
+    },
+    registryNumber: {
+      init: '' as string,
+      rules: [required()],
+    },
+    actResourceType: {
+      init: EActResourceType.All,
+      rules: [required()],
+    },
+    actType: {
+      init: EActType.Admission,
+      rules: [required()],
+    },
+    documentId: {
+      init: null,
+    },
+  },
+  validateOn: ['submit'],
+});
 
 const $createActIsLoading = createActFx.pending;
 
 sample({
   source: apartmentActsListService.gates.ApartmentActsListGate.state,
-  clock: createAct,
+  clock: createActForm.formValidated,
   fn: (apartmentId, createActPayload) => ({
     ...apartmentId,
     ...createActPayload,
@@ -29,19 +54,26 @@ sample({
   target: createActFx,
 });
 
-forward({
-  from: createActFx.doneData,
-  to: [apartmentActsListService.inputs.refetchApartmentActs, closeModal],
+sample({
+  clock: createActFx.doneData,
+  target: [apartmentActsListService.inputs.refetchApartmentActs, closeModal],
+});
+
+sample({
+  clock: closeModal,
+  target: createActForm.reset,
 });
 
 export const createApartmentActService = {
   inputs: {
     openModal,
     closeModal,
-    createAct,
   },
   outputs: {
     $isModalOpen,
     $createActIsLoading,
+  },
+  forms: {
+    createActForm,
   },
 };

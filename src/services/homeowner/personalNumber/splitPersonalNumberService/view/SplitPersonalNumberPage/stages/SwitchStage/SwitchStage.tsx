@@ -16,7 +16,8 @@ import { DatePickerNative } from 'ui-kit/shared/DatePickerNative';
 import { ErrorMessage } from 'ui-kit/ErrorMessage';
 import { Input } from 'ui-kit/Input';
 import { Switch } from 'antd';
-import moment from 'moment';
+import dayjs from 'api/dayjs';
+import { PhoneNumberFormField } from 'services/homeowner/personalNumber/components/PersonalNumberForm/PhoneNumberFormField';
 
 export const SwitchStage: FC<SwitchStageProps> = ({
   homeowner,
@@ -27,7 +28,7 @@ export const SwitchStage: FC<SwitchStageProps> = ({
   const { values, setFieldValue, errors, handleSubmit } = useFormik({
     initialValues: {
       name: switchStageData?.form.name || '',
-      phoneNumber: switchStageData?.form.phoneNumber || '',
+      phoneNumbers: switchStageData?.form.phoneNumbers || [],
       openAt: switchStageData?.form.openAt || '',
       personalAccountNumber: switchStageData?.form.personalAccountNumber || '',
       paymentCode: switchStageData?.form.paymentCode || '',
@@ -50,7 +51,7 @@ export const SwitchStage: FC<SwitchStageProps> = ({
           form: {
             personalAccountNumber: data.personalAccountNumber,
             name: data.name,
-            phoneNumber: data.phoneNumber,
+            phoneNumbers: data.phoneNumbers,
             openAt: data.openAt,
             isMainOnApartment: data.isMainOnApartment,
             paymentCode: data.paymentCode,
@@ -72,7 +73,7 @@ export const SwitchStage: FC<SwitchStageProps> = ({
         <DatePickerNative
           value={values.openAt}
           onChange={(value) =>
-            setFieldValue('openAt', moment(value).format('YYYY-MM-DD'))
+            setFieldValue('openAt', dayjs(value).format('YYYY-MM-DD'))
           }
         />
         <ErrorMessage>{errors.openAt}</ErrorMessage>
@@ -108,11 +109,21 @@ export const SwitchStage: FC<SwitchStageProps> = ({
           <ErrorMessage>{errors.name}</ErrorMessage>
         </FormItem>
         <FormItem label="Телефон">
-          <Input
-            placeholder="Введите телефон"
-            value={values.phoneNumber || undefined}
-            onChange={(value) =>
-              setFieldValue('phoneNumber', value.target.value)
+          <PhoneNumberFormField
+            phoneNumbers={values.phoneNumbers || []}
+            deletePhoneNumber={(oldPhoneNumber) =>
+              setFieldValue(
+                'phoneNumbers',
+                (values.phoneNumbers || []).filter(
+                  (elem) => elem !== oldPhoneNumber,
+                ),
+              )
+            }
+            addPhoneNumber={(phone) =>
+              setFieldValue('phoneNumbers', [
+                ...(values.phoneNumbers || []),
+                phone,
+              ])
             }
           />
         </FormItem>

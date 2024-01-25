@@ -1,4 +1,5 @@
-import { combine, createDomain, sample } from 'effector';
+import { createEffect, createEvent, createStore } from 'effector';
+import { combine, sample } from 'effector';
 import { fetchCreateCalculator } from './createCalculatorModalService.api';
 import { CreateCalculatorRequest, MeteringDeviceResponse } from 'api/types';
 import { EffectFailDataAxiosError } from 'types';
@@ -6,24 +7,20 @@ import { message } from 'antd';
 import { CreateCalculatorPayload } from './view/CreateCalculatorModal/CreateCalculatorModal.types';
 import { calculatorsListService } from 'services/calculators/calculatorsListService';
 
-const domain = createDomain('createCalculatorModalService');
+const openModal = createEvent<number>();
+const closeModal = createEvent();
 
-const openModal = domain.createEvent<number>();
-const closeModal = domain.createEvent();
-
-const $housingStockId = domain
-  .createStore<number | null>(null)
+const $housingStockId = createStore<number | null>(null)
   .on(openModal, (_, id) => id)
   .reset(closeModal);
 const $isOpen = $housingStockId.map(Boolean);
 
-const handleSubmitForm = domain.createEvent();
+const handleSubmitForm = createEvent();
 
-const goNextStep = domain.createEvent();
-const goPrevStep = domain.createEvent();
+const goNextStep = createEvent();
+const goPrevStep = createEvent();
 
-const $stepNumber = domain
-  .createStore(1)
+const $stepNumber = createStore(1)
   .on(goNextStep, (step) => step + 1)
   .on(goPrevStep, (step) => {
     if (step > 1) {
@@ -33,7 +30,7 @@ const $stepNumber = domain
   })
   .reset(closeModal);
 
-const createCalculatorFx = domain.createEffect<
+const createCalculatorFx = createEffect<
   CreateCalculatorRequest,
   MeteringDeviceResponse,
   EffectFailDataAxiosError
@@ -42,11 +39,10 @@ const createCalculatorFx = domain.createEffect<
 const calculatorCreated = createCalculatorFx.doneData;
 const $isLoading = createCalculatorFx.pending;
 
-const updateRequestPayload = domain.createEvent<CreateCalculatorPayload>();
-const $requestPayload = domain
-  .createStore<CreateCalculatorPayload>({
-    isConnected: false,
-  })
+const updateRequestPayload = createEvent<CreateCalculatorPayload>();
+const $requestPayload = createStore<CreateCalculatorPayload>({
+  isConnected: false,
+})
   .on(updateRequestPayload, (prev, data) => ({ ...prev, ...data }))
   .reset(closeModal);
 

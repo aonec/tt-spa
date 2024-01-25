@@ -1,6 +1,6 @@
 import { DatePickerNative, fromEnter } from 'ui-kit/shared/DatePickerNative';
 import { useFormik } from 'formik';
-import moment from 'moment';
+import dayjs from 'api/dayjs';
 import React, { ChangeEvent, FC, useCallback, useEffect } from 'react';
 import { Button } from 'ui-kit/Button';
 import {
@@ -76,7 +76,7 @@ export const AddNewActForm: FC<AddNewActFormProps> = ({
   return (
     <>
       <Wrapper>
-        <ActDate>{moment().format('DD.MM.YYYY')}</ActDate>
+        <ActDate>{dayjs().format('DD.MM.YYYY')}</ActDate>
         <Input
           small
           value={values.registryNumber || undefined}

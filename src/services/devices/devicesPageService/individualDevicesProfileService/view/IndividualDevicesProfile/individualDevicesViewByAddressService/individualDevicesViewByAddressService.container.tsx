@@ -1,5 +1,5 @@
 import { Pagination } from 'antd';
-import { useEvent, useStore } from 'effector-react';
+import { useUnit } from 'effector-react';
 import React, { FC } from 'react';
 import { APARTMENTS_LIST_PAGE_SIZE } from './individualDevicesViewByAddressService.constatnts';
 import { individualDevicesViewByAddressService } from './individualDevicesViewByAddressService.model';
@@ -14,26 +14,34 @@ const { IndividualDevicesSearchGate } = gates;
 export const IndividualDevicesViewByAddressContainer: FC<HeaderInject> = ({
   Header,
 }) => {
-  const housingsByFilter = useStore(outputs.$housingsByFilter);
-  const isHousingsByFilterLoading = useStore(
-    outputs.$isHousingsByFilterLoading,
-  );
-  const individualDevicesApartmentsPagedData = useStore(
-    outputs.$individualDevicesApartmentsPagedData,
-  );
-  const isIndividualDevicesApartmentsLoading = useStore(
-    outputs.$isIndividualDevicesApartmentsLoading,
-  );
-  const filters = useStore(outputs.$individualDeviceSearchRequestPayload);
-  const pageNumber = useStore(outputs.$pageNumber);
-  const mountPlaces = useStore(outputs.$mountPlaces);
-
-  const setIndividualDeviceSearchRequestPayload = useEvent(
-    inputs.setIndividualDeviceSearchRequestPayload,
-  );
-  const updateSearchPayload = useEvent(inputs.updateSearchPayload);
-  const clearSearchPayload = useEvent(inputs.clearSearchPayload);
-  const setPageNumber = useEvent(inputs.setPageNumber);
+  const {
+    clearSearchPayload,
+    filters,
+    housingsByFilter,
+    individualDevicesApartmentsPagedData,
+    isHousingsByFilterLoading,
+    isIndividualDevicesApartmentsLoading,
+    mountPlaces,
+    pageNumber,
+    setIndividualDeviceSearchRequestPayload,
+    setPageNumber,
+    updateSearchPayload,
+  } = useUnit({
+    housingsByFilter: outputs.$housingsByFilter,
+    isHousingsByFilterLoading: outputs.$isHousingsByFilterLoading,
+    individualDevicesApartmentsPagedData:
+      outputs.$individualDevicesApartmentsPagedData,
+    isIndividualDevicesApartmentsLoading:
+      outputs.$isIndividualDevicesApartmentsLoading,
+    filters: outputs.$individualDeviceSearchRequestPayload,
+    pageNumber: outputs.$pageNumber,
+    mountPlaces: outputs.$mountPlaces,
+    setIndividualDeviceSearchRequestPayload:
+      inputs.setIndividualDeviceSearchRequestPayload,
+    updateSearchPayload: inputs.updateSearchPayload,
+    clearSearchPayload: inputs.clearSearchPayload,
+    setPageNumber: inputs.setPageNumber,
+  });
 
   return (
     <Wrapper>

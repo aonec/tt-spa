@@ -1,4 +1,4 @@
-import React, { FC, useMemo } from 'react';
+import React, { FC, ReactNode, useMemo } from 'react';
 import { TabsSC } from './StatisticProfile.styled';
 import { StatisticProfileProps } from './StatisticProfile.types';
 import { PageHeader } from 'ui-kit/shared/PageHeader';
@@ -6,10 +6,9 @@ import { ResourceConsumptionContainer } from 'services/resources/resourceConsump
 import { StatisticProfileGrouptype } from '../../statisticsProfileService.types';
 import { SubscribersConsumptionSearchType } from 'services/statistics/subscribersConsumptionService/subscribersConsumptionService.types';
 import { SubscribersConsumptionContainer } from 'services/statistics/subscribersConsumptionService';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { ResourceDisablingScheduleContainer } from 'services/settings/resourcesDisablingScheduleService/ResourceDisablingScheduleContainer';
 import { chooseTypeOfResourceDisconnectionModalService } from 'services/resources/chooseTypeOfResourceDisconnectionModalService';
-const { TabPane } = TabsSC;
 
 export const StatisticProfile: FC<StatisticProfileProps> = ({
   handleOpenExportStatisticModal,
@@ -19,7 +18,7 @@ export const StatisticProfile: FC<StatisticProfileProps> = ({
   housingStockId,
   housingStockAddress,
 }) => {
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const menuButtons = useMemo(() => {
     if (grouptype === StatisticProfileGrouptype.disabledResources) {
@@ -64,35 +63,46 @@ export const StatisticProfile: FC<StatisticProfileProps> = ({
     housingStockAddress,
   ]);
 
+  const tabItems = useMemo(
+    () => [
+      {
+        label: 'Анализ потребления ресурсов',
+        key: StatisticProfileGrouptype.resourceConsumption,
+      },
+      {
+        label: 'Учет абонентского потребления',
+        key: StatisticProfileGrouptype.subscribersConsumption,
+      },
+      {
+        label: 'Отключение ресурсов',
+        key: StatisticProfileGrouptype.disabledResources,
+      },
+    ],
+    [],
+  );
+
+  const components: { [key in StatisticProfileGrouptype]: ReactNode } = {
+    [StatisticProfileGrouptype.resourceConsumption]: (
+      <ResourceConsumptionContainer />
+    ),
+    [StatisticProfileGrouptype.disabledResources]: (
+      <ResourceDisablingScheduleContainer />
+    ),
+    [StatisticProfileGrouptype.subscribersConsumption]: (
+      <SubscribersConsumptionContainer />
+    ),
+  };
+
   return (
     <>
-      <PageHeader title="Статистика" contextMenu={{ menuButtons }} />
+      <PageHeader title="Статистика и данные" contextMenu={{ menuButtons }} />
 
       <TabsSC
         activeKey={grouptype}
-        onChange={(value) => history.push(`/statistics/${value}`)}
-      >
-        <TabPane
-          tab="Анализ потребления ресурсов"
-          key={StatisticProfileGrouptype.resourceConsumption}
-        >
-          <ResourceConsumptionContainer />
-        </TabPane>
-        <TabPane
-          style={{ overflow: 'none' }}
-          tab="Учет абонентского потребления"
-          key={StatisticProfileGrouptype.subscribersConsumption}
-        >
-          <SubscribersConsumptionContainer />
-        </TabPane>
-
-        <TabPane
-          tab="Отключение ресурсов"
-          key={StatisticProfileGrouptype.disabledResources}
-        >
-          <ResourceDisablingScheduleContainer />
-        </TabPane>
-      </TabsSC>
+        onChange={(value) => navigate(`/statistics/${value}`)}
+        items={tabItems}
+      />
+      {components[grouptype]}
     </>
   );
 };

@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { useEvent, useStore } from 'effector-react';
+import { useUnit } from 'effector-react';
 import { individualDevicesListService } from './individualDevicesListService.model';
 import { IndividualDevicesListContainerProps } from './individualDevicesListService.types';
 import { IndividualDevicesList } from './view/IndividualDevicesList';
@@ -13,13 +13,21 @@ const {
 export const IndividualDevicesListContainer: FC<
   IndividualDevicesListContainerProps
 > = ({ devicesIds, apartmentId }) => {
-  const isLoading = useStore(outputs.$isLoading);
-  const individualDevicesList = useStore(outputs.$individualDevicesList);
-  const deviceConsumptionGraphType = useStore(outputs.$graphType);
-  const graphData = useStore(outputs.$preparedData);
-  const isConsumptionsLoading = useStore(outputs.$isConsumptionsLoading);
-
-  const selectDeviceConsumptionGraphType = useEvent(inputs.selectGraphType);
+  const {
+    deviceConsumptionGraphType,
+    graphData,
+    individualDevicesList,
+    isConsumptionsLoading,
+    isLoading,
+    selectDeviceConsumptionGraphType,
+  } = useUnit({
+    isLoading: outputs.$isLoading,
+    individualDevicesList: outputs.$individualDevicesList,
+    deviceConsumptionGraphType: outputs.$graphType,
+    graphData: outputs.$preparedData,
+    isConsumptionsLoading: outputs.$isConsumptionsLoading,
+    selectDeviceConsumptionGraphType: inputs.selectGraphType,
+  });
 
   return (
     <>

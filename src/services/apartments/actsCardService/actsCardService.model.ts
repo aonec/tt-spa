@@ -1,4 +1,5 @@
-import { createDomain, forward } from 'effector';
+import { createEffect, createEvent, createStore } from 'effector';
+import { sample } from 'effector';
 import { createGate } from 'effector-react';
 import {
   ApartmentActResponse,
@@ -7,16 +8,13 @@ import {
 } from 'api/types';
 import { fetchPreviousActs, fetchSaveFile } from './actsCardService.api';
 
-const domain = createDomain('actsCardService');
+const $acts = createStore<ApartmentActResponse[]>([]);
+const getPreviousActs = createEffect<number, ApartmentActResponsePagedList>(
+  fetchPreviousActs,
+);
 
-const $acts = domain.createStore<ApartmentActResponse[]>([]);
-const getPreviousActs = domain.createEffect<
-  number,
-  ApartmentActResponsePagedList
->(fetchPreviousActs);
-
-const saveFile = domain.createEvent<DocumentResponse>();
-const saveFileFx = domain.createEffect<DocumentResponse, void>(fetchSaveFile);
+const saveFile = createEvent<DocumentResponse>();
+const saveFileFx = createEffect<DocumentResponse, void>(fetchSaveFile);
 
 $acts.on(
   getPreviousActs.doneData,
@@ -25,14 +23,14 @@ $acts.on(
 
 const ActsCardGate = createGate<{ apartmentId: number }>();
 
-forward({
-  from: ActsCardGate.open.map(({ apartmentId }) => apartmentId),
-  to: getPreviousActs,
+sample({
+  clock: ActsCardGate.open.map(({ apartmentId }) => apartmentId),
+  target: getPreviousActs,
 });
 
-forward({
-  from: saveFile,
-  to: saveFileFx,
+sample({
+  clock: saveFile,
+  target: saveFileFx,
 });
 
 export const actsCardService = {

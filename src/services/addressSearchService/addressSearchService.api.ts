@@ -1,7 +1,10 @@
 import { axios } from 'api/axios';
-import { StringPagedList } from 'api/types';
+import { ApartmentListResponsePagedList, StringPagedList } from 'api/types';
 import queryString from 'query-string';
-import { GetExistingSteetRequestParams } from './addressSearchService.types';
+import {
+  GetApartmentsRequest,
+  GetExistingSteetRequestParams,
+} from './addressSearchService.types';
 
 export const getExistingCities = async () => {
   const res: StringPagedList = await axios.get('Buildings/ExistingCities');
@@ -14,8 +17,16 @@ export const getExistingStreets = async (
 ): Promise<string[]> => {
   const res: { items: string[] } = await axios.get(
     `Buildings/ExistingStreets`,
-    { params, paramsSerializer: queryString.stringify },
+    { params, paramsSerializer: (params) => queryString.stringify(params) },
   );
 
   return res.items;
+};
+
+export const getApartments = (
+  params: GetApartmentsRequest,
+): Promise<ApartmentListResponsePagedList> => {
+  return axios.get('Apartments', {
+    params,
+  });
 };

@@ -1,5 +1,5 @@
 import React, { FC, useCallback, useMemo } from 'react';
-import { Tooltip } from 'antd';
+import { Tooltip } from 'ui-kit/shared/Tooltip';
 import { HousingStockCalculatorsProps } from './HousingStockCalculators.types';
 import { EHouseCategory, BuildingAddress } from 'api/types';
 import { DevicesSearchType } from 'services/devices/devicesPageService/devicesPageService.types';
@@ -31,20 +31,25 @@ export const HousingStockCalculators: FC<HousingStockCalculatorsProps> = ({
         setMainFilterSearchType(DevicesSearchType.Address);
       }
       setAddressBySwither({
-        'Filter.Address.City': address.city || undefined,
-        'Filter.Address.Street': address.street || undefined,
-        'Filter.Address.HousingStockNumber': address.houseNumber || undefined,
-        'Filter.Address.Corpus': address.houseCorpus || undefined,
+        'Address.City': address.city || undefined,
+        'Address.Street': address.street || undefined,
+        'Address.HousingStockNumber': address.houseNumber || undefined,
+        'Address.Corpus': address.houseCorpus || undefined,
       });
     },
     [setAddressBySwither, mainFilterSearchType, setMainFilterSearchType],
   );
 
-  const calculators = housingStockDevices.devices;
+  const pipeNodeDevicesGroupedByCalculator = housingStockDevices.devices;
 
-  const calculatorNodesList = calculators.map((calculator) => (
-    <CalculatorNodes calculator={calculator} key={calculator.id} />
-  ));
+  const calculatorNodesList = pipeNodeDevicesGroupedByCalculator.map(
+    (pipeNodeDevices) => (
+      <CalculatorNodes
+        devices={pipeNodeDevices}
+        key={pipeNodeDevices[0].calculatorId}
+      />
+    ),
+  );
 
   const buildingProfilePath = useMemo(() => {
     if (housingStockDevices.building?.houseCategory === EHouseCategory.Living) {

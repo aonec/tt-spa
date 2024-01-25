@@ -17,14 +17,15 @@ export const pipeValidationSchema = Yup.object().shape({
     .min(1, 'Номер трубы должен быть не меньше 1')
     .max(10, 'Номер трубы должен быть не больше 10')
     .required('Укажите номер для трубы'),
-  diameter: Yup.number().required('Укажите диаметр для трубы'),
+  diameter: Yup.number()
+    .required('Укажите диаметр для трубы')
+    .min(15, 'Диаметр трубы должен быть не меньше 15'),
 });
 
 export const validationSchema = Yup.object().shape({
   configuration: Yup.string().nullable().required('Это поле обязательное'),
   registrationType: Yup.string().nullable().required('Это поле обязательное'),
-  nodeServiceZoneId: Yup.string().nullable().required('Это поле обязательное'),
-  number: Yup.string().required('Это поле обязательное'),
+  title: Yup.string().required('Это поле обязательное'),
   communicationPipes: Yup.array().of(pipeValidationSchema),
   commercialStatusRequest: Yup.object()
     .nullable()

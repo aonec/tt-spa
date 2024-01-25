@@ -1,4 +1,4 @@
-import React, { FC, useMemo } from 'react';
+import React, { FC, useCallback, useMemo } from 'react';
 import { intersection } from 'lodash';
 import { DistrictData } from 'types';
 import { MapWrapper } from './DistrictsMap.styled';
@@ -12,6 +12,8 @@ import warningInactivePlacemark from 'hooks/ymaps/placemarks/warningInactivePlac
 import warningAvtivePlacemark from 'hooks/ymaps/placemarks/warningActivePlacemark.svg';
 
 import { DistributeAppointmentsPanel } from '../DistributeAppointmentsPanel';
+import { findPolygonCenter } from 'utils/findPolygonCenter';
+import { MapZoomControl } from 'ui-kit/shared/MapZoomControl';
 
 export const DistrictsMap: FC<Props> = ({
   districtsList,
@@ -37,27 +39,44 @@ export const DistrictsMap: FC<Props> = ({
     return districtsList.filter((elem) => elem.id === selectedDistrict);
   }, [districtsList, selectedDistrict]);
 
+  const handleClickDistrict = useCallback(
+    (district: DistrictData) => {
+      const districtCenter = findPolygonCenter(district.coordinates[0]);
+
+      map?.setCenter(districtCenter, undefined, { duration: 200 });
+
+      handleSelectDistrict(district.id);
+    },
+    [handleSelectDistrict, map],
+  );
+
   const districtsDataList: DistrictData[] = useMemo(() => {
     return getPayloadFromDistricts(filteredDistrictsList).map((elem) => {
       const districtAppointmentsCounting = appointmentsCounting?.[elem.id];
-      const count = districtAppointmentsCounting?.notDistributed || 0;
+      const countOfNotDistributed =
+        districtAppointmentsCounting?.notDistributed || 0;
+      const totalCount =
+        countOfNotDistributed +
+        (districtAppointmentsCounting?.distributed || 0);
 
       const isShowName = selectedDistrict !== elem.id;
 
       const name = isShowName
-        ? `${elem.name} ${count ? `(${count})` : ''}`
+        ? `${elem.name} ${
+            totalCount ? `(${countOfNotDistributed}/${totalCount})` : ''
+          }`
         : '';
 
       return {
         ...elem,
         name,
-        onClick: handleSelectDistrict,
+        onClick: () => handleClickDistrict(elem),
       };
     });
   }, [
     appointmentsCounting,
     filteredDistrictsList,
-    handleSelectDistrict,
+    handleClickDistrict,
     selectedDistrict,
   ]);
 
@@ -112,6 +131,7 @@ export const DistrictsMap: FC<Props> = ({
         />
       )}
       <div ref={mapRef} style={{ width: '100%', height: '83vh' }} />
+      {map && <MapZoomControl map={map} />}
     </MapWrapper>
   );
 };

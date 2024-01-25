@@ -1,18 +1,15 @@
-import { useStore } from 'effector-react';
-import { useFormik } from 'formik';
-import { last } from 'lodash';
+import { useUnit } from 'effector-react';
+import { isEmpty, last } from 'lodash';
 import React, { FC, useEffect, useMemo } from 'react';
-import { currentUserService } from 'services/currentUserService';
 import { addressSearchService } from './addressSearchService.models';
 import { AddressSearchContainerProps } from './addressSearchService.types';
 import { AddressSearch } from './view/AddressSearch';
-import {
-  AddressSearchValues,
-  SearchFieldType,
-} from './view/AddressSearch/AddressSearch.types';
+import { SearchFieldType } from './view/AddressSearch/AddressSearch.types';
+import { useForm } from 'effector-forms';
+import { currentOrganizationService } from 'services/currentOrganizationService';
 
-const { gates, outputs } = addressSearchService;
-const { ExistingCitiesGate, ExistingStreetsGate } = gates;
+const { gates, outputs, forms, inputs } = addressSearchService;
+const { ExistingCitiesGate, ExistingStreetsGate, AddressSearchGate } = gates;
 
 export const AddressSearchContainer: FC<AddressSearchContainerProps> = ({
   fields,
@@ -24,26 +21,70 @@ export const AddressSearchContainer: FC<AddressSearchContainerProps> = ({
   onChange,
   className,
   isError = false,
+  isFocus = false,
+  autoBurn = false,
 }) => {
-  const { values, handleSubmit, setFieldValue } =
-    useFormik<AddressSearchValues>({
-      initialValues: initialValues || {
-        city: '',
-        street: '',
-        house: '',
-        corpus: '',
-        apartment: '',
-        question: '',
-      },
-      enableReinitialize: true,
-      onSubmit: (values) => {
-        onSubmit?.(values);
-      },
-    });
+  const {
+    cities,
+    hasCorpuses,
+    streets,
+    handleSearchApartNumber,
+    setWithApartment,
+    existingApartmentNumbers,
+    setInitialValues,
+    verifiedInitialValues,
+  } = useUnit({
+    cities: outputs.$existingCities,
+    streets: outputs.$existingStreets,
+    hasCorpuses: currentOrganizationService.outputs.$hasCorpuses,
+    handleSearchApartNumber: inputs.handleSearchApartNumber,
+    setWithApartment: inputs.setWithApartment,
+    existingApartmentNumbers: outputs.$existingApartmentNumbers,
+    setInitialValues: inputs.setInitialValues,
+    verifiedInitialValues: outputs.$verifiedInitialValues,
+  });
 
-  const cities = useStore(outputs.$existingCities);
-  const streets = useStore(outputs.$existingStreets);
-  const hasCorpuses = useStore(currentUserService.outputs.$hasCorpuses);
+  const {
+    fields: fieldsOfForm,
+    setForm,
+    values,
+    submit,
+    set,
+  } = useForm(forms.addressSearchForm);
+
+  useEffect(
+    () =>
+      forms.addressSearchForm.formValidated.watch((values) => {
+        onSubmit && onSubmit(values);
+      }).unsubscribe,
+    [onSubmit, values],
+  );
+
+  useEffect(() => {
+    setInitialValues(initialValues || null);
+  }, [initialValues, setInitialValues]);
+
+  useEffect(() => {
+    if (verifiedInitialValues) {
+      setForm({
+        apartment: verifiedInitialValues.apartment || '',
+        corpus: verifiedInitialValues.corpus || '',
+        house: verifiedInitialValues.house || '',
+        question: verifiedInitialValues.question || '',
+        street: verifiedInitialValues.street || '',
+        city: verifiedInitialValues.city || '',
+      });
+    }
+    if (!verifiedInitialValues || isEmpty(verifiedInitialValues)) {
+      setForm({
+        apartment: '',
+        corpus: '',
+        house: '',
+        question: '',
+        street: '',
+      });
+    }
+  }, [setForm, verifiedInitialValues]);
 
   const preparedFields = useMemo(
     () =>
@@ -57,17 +98,27 @@ export const AddressSearchContainer: FC<AddressSearchContainerProps> = ({
   );
 
   useEffect(() => {
-    if (!cities?.length || initialValues?.city) return;
+    const withApartment = preparedFields.some(
+      (searchField) => searchField === SearchFieldType.Apartment,
+    );
+    setWithApartment(withApartment);
+  }, [preparedFields, setWithApartment]);
 
-    setFieldValue('city', last(cities));
+  useEffect(() => {
+    if (!cities?.length || verifiedInitialValues?.city) return;
+
+    set({ city: last(cities) || '' });
 
     if (onChange) onChange('city', last(cities) || '');
 
-    handleSubmit();
-  }, [cities, initialValues, setFieldValue, onChange, handleSubmit]);
+    if (autoBurn) {
+      submit();
+    }
+  }, [cities, verifiedInitialValues, set, onChange, submit, autoBurn]);
 
-  const handleChange = (key: string, value: string) => {
-    setFieldValue(key, value);
+  const handleChange = (key: SearchFieldType, value: string) => {
+    fieldsOfForm[key]?.onChange(value);
+
     if (onChange) {
       return onChange(key, value);
     }
@@ -76,19 +127,23 @@ export const AddressSearchContainer: FC<AddressSearchContainerProps> = ({
   return (
     <>
       <ExistingCitiesGate />
+      <AddressSearchGate />
       <ExistingStreetsGate City={values.city} />
       <AddressSearch
         cities={cities || []}
         streets={streets}
-        handleChange={handleChange}
         values={values}
-        handleSubmit={handleSubmit}
+        handleSubmit={submit}
         fields={preparedFields}
         customTemplate={customTemplate}
         showLabels={showLabels}
         disabledFields={disabledFields}
         className={className}
         isError={isError}
+        handleChange={handleChange}
+        isFocus={isFocus}
+        handleSearchApartNumber={handleSearchApartNumber}
+        existingApartmentNumbers={existingApartmentNumbers}
       />
     </>
   );

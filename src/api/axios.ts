@@ -1,20 +1,37 @@
 import axios from 'axios';
 import { createEvent, createStore } from 'effector';
 import { forbiddenList } from '../utils/403handling';
-import { message } from 'antd';
-
-export const devUrl = 'https://demo.k8s.transparent-technology.ru/api/';
-
-export const baseURL = process.env.REACT_APP_API_URL || devUrl;
+import { notification, message } from 'antd';
+import { cancellableUrl } from 'services/cancelRequestService/cancelRequestService.constants';
+import { cancelRequestService } from 'services/cancelRequestService';
+import { isUndefined } from 'lodash/fp';
+import { tokensService } from './tokensService';
+import { currentOrganizationService } from 'services/currentOrganizationService';
 
 export const isDevMode = process.env.DEV_SETTINGS !== 'DISABLED';
 
-axios.defaults.baseURL = baseURL;
+axios.defaults.baseURL = currentOrganizationService.outputs.$devUrl.getState();
+
+currentOrganizationService.outputs.$devUrl.watch((url) => {
+  axios.defaults.baseURL = url;
+
+  if (url) localStorage.setItem('dev-api-url', url);
+});
 
 axios.interceptors.request.use((req) => {
   req.headers.Authorization = `Bearer ${takeFromLocStor('token')}`;
+  req.headers['x-user-path'] = window.location.pathname || 'none';
 
-  if (req.url && checkUrl('refresh', req.url)) {
+  if (req.url && cancellableUrl.some((regex) => regex.test(req.url!))) {
+    cancelRequestService.inputs.cancelRequest(req.url);
+
+    const token = axios.CancelToken.source();
+    req.cancelToken = token.token;
+
+    cancelRequestService.inputs.setToken({ url: req.url, token: token });
+  }
+
+  if (req.url && checkUrl('refreshToken', req.url)) {
     req.data = {
       token: takeFromLocStor('token'),
       refreshToken: takeFromLocStor('refreshToken'),
@@ -30,8 +47,9 @@ axios.interceptors.response.use(
     if (url && checkUrl('(login|refresh)', url)) {
       const { token, refreshToken, roles, permissions } = data.successResponse;
 
-      saveToLocalStorage('token', token);
-      saveToLocalStorage('refreshToken', refreshToken);
+      tokensService.inputs.setToken(token);
+      tokensService.inputs.setRefreshToken(refreshToken);
+
       saveToLocalStorage('permissions', permissions);
       checkUrl('login', url) && saveToLocalStorage('roles', roles);
     }
@@ -41,12 +59,21 @@ axios.interceptors.response.use(
       saveToLocalStorage('user', user);
     }
 
+    setIsOnline();
     const res = data.successResponse ?? data ?? {};
 
     return res;
   },
   (error) => {
     const status = error?.response?.status;
+
+    if (!axios.isCancel(error) && isUndefined(status) && $isOnline.getState()) {
+      notification.error({
+        description: 'Проверьте свое подключение к интернету',
+        message: 'Ошибка связи',
+      });
+      setIsOffline();
+    }
 
     if (
       status === 403 &&
@@ -63,9 +90,9 @@ axios.interceptors.response.use(
     }
 
     if (status === 401 && checkUrl('refresh', error.config.url)) {
-      localStorage.removeItem('token');
-      localStorage.removeItem('refreshToken');
-      window.location.replace('/login');
+      tokensService.inputs.deleteToken();
+      tokensService.inputs.deleteRefreshToken();
+      tokensService.inputs.redirectToLogin();
       return;
     }
 
@@ -75,11 +102,15 @@ axios.interceptors.response.use(
       return new Promise((resolve) => {
         if (!$isRefreshRunning.getState()) {
           setIsRefreshRunning(true);
-          axios.post('/auth/refreshToken').then(() => {
-            setIsRefreshRunning(false);
+          const isRefreshTokenExist = Boolean(takeFromLocStor('refreshToken'));
 
-            return resolve(axios(config));
-          });
+          if (isRefreshTokenExist) {
+            axios.post('/auth/refreshToken').then(() => {
+              setIsRefreshRunning(false);
+
+              return resolve(axios(config));
+            });
+          }
         } else {
           const subscription = $isRefreshRunning.watch((isRefreshStop) => {
             if (!isRefreshStop) {
@@ -111,11 +142,17 @@ function checkUrl(str: string, url: string) {
   return new RegExp(str, 'gi').test(url);
 }
 
-export const $isRefreshRunning = createStore(false);
+const setIsRefreshRunning = createEvent<boolean>();
+const $isRefreshRunning = createStore(false).on(
+  setIsRefreshRunning,
+  (_, value) => value,
+);
 
-export const setIsRefreshRunning = createEvent<boolean>();
-
-$isRefreshRunning.on(setIsRefreshRunning, (_, value) => value);
+const setIsOffline = createEvent();
+const setIsOnline = createEvent();
+const $isOnline = createStore(true)
+  .on(setIsOffline, () => false)
+  .on(setIsOnline, () => true);
 
 export default axios;
 

@@ -1,4 +1,5 @@
-import { createDomain, guard, sample } from 'effector';
+import { createEffect, createEvent, createStore } from 'effector';
+import { sample } from 'effector';
 import { EditCalculatorTabs } from './view/EditCalculatorPage/EditCalculatorPage.types';
 import { calculatorProfileService } from '../calculatorProfileService';
 import {
@@ -18,45 +19,42 @@ import { createGate } from 'effector-react';
 import { message } from 'antd';
 import { calculatorsInfoService } from '../calculatorsInfoService';
 
-const domain = createDomain('editCalculatorService');
+const handleChangeTab = createEvent<EditCalculatorTabs>();
 
-const handleChangeTab = domain.createEvent<EditCalculatorTabs>();
+const handleSubmit = createEvent<UpdateCalculatorRequest>();
 
-const handleSubmit = domain.createEvent<UpdateCalculatorRequest>();
-
-const handleAlreadyExistingConnection = domain.createEvent<{ id: number }>();
-const handleExisingConnectionError = domain.createEvent();
-const handleCloseModal = domain.createEvent();
+const handleAlreadyExistingConnection = createEvent<{ id: number }>();
+const handleExisingConnectionError = createEvent();
+const handleCloseModal = createEvent();
 
 const SaveDeviceIdGate = createGate<{ deviceId: number }>();
 
-const editCalculatorFx = domain.createEffect<
+const editCalculatorFx = createEffect<
   { deviceId: number; form: UpdateCalculatorRequest },
   MeteringDeviceResponse | null,
   EffectFailDataAxiosErrorDataId
 >(putCalculator);
 
-const getSameConnectionCalculatorFx = domain.createEffect<
+const getSameConnectionCalculatorFx = createEffect<
   number,
   CalculatorResponse | null,
   EffectFailDataAxiosError
 >(getAlreadyExistingConnectionCalculator);
 
-const $currentTab = domain
-  .createStore<EditCalculatorTabs>(EditCalculatorTabs.CommonInfo)
-  .on(handleChangeTab, (_, tab) => tab);
+const $currentTab = createStore<EditCalculatorTabs>(
+  EditCalculatorTabs.CommonInfo,
+).on(handleChangeTab, (_, tab) => tab);
 
-const $isModalOpen = domain
-  .createStore<boolean>(false)
+const $isModalOpen = createStore<boolean>(false)
   .on(handleExisingConnectionError, () => true)
   .on(handleCloseModal, () => false);
 
-const $sameConnectionCalculator = domain
-  .createStore<CalculatorResponse | null>(null)
-  .on(
-    getSameConnectionCalculatorFx.doneData,
-    (_, calculatorData) => calculatorData,
-  );
+const $sameConnectionCalculator = createStore<CalculatorResponse | null>(
+  null,
+).on(
+  getSameConnectionCalculatorFx.doneData,
+  (_, calculatorData) => calculatorData,
+);
 
 sample({
   clock: handleSubmit,
@@ -71,7 +69,7 @@ const editCalculatorSuccess = editCalculatorFx.doneData;
 const editCalculatorFailData = editCalculatorFx.failData;
 
 sample({
-  clock: guard({
+  clock: sample({
     clock: editCalculatorFailData,
     filter: (errorData) => {
       return errorData.response.status === 409;

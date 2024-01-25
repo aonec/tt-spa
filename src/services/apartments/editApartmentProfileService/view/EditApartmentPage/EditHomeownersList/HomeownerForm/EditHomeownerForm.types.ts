@@ -1,7 +1,14 @@
 import { HomeownerAccountCreateRequest } from 'api/types';
 import { formInitialValues } from './EditHomeownerForm.constants';
 
-export type EditHomeownerPayload = typeof formInitialValues;
+export type EditHomeownerPayload = Omit<
+  typeof formInitialValues,
+  'phoneNumbers'
+>;
+
+export type EditHomeownerFormik = EditHomeownerPayload & {
+  phoneNumbers?: string[];
+};
 
 export type EditHomeownerFormProps = {
   formId: string;

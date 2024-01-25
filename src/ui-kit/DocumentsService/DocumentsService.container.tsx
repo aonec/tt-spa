@@ -10,7 +10,7 @@ import { DocumentsList } from './view/DocumentsList';
 import { ESecuredIdentityRoleName } from 'api/types';
 import { usePermission } from 'hooks/usePermission';
 import { documentService } from './DocumentsService.model';
-import { useEvent } from 'effector-react';
+import { useUnit } from 'effector-react';
 
 const accept =
   'application/msword, application/vnd.ms-excel, application/pdf, image/*';
@@ -35,6 +35,7 @@ export const DocumentsUploadContainer: FC<DocumentsUploadContainerProps> = ({
     ESecuredIdentityRoleName.ManagingFirmExecutor,
     ESecuredIdentityRoleName.ManagingFirmDispatcher,
     ESecuredIdentityRoleName.Controller,
+    ESecuredIdentityRoleName.ManagingFirmSpectatingAdministrator,
   ]);
 
   const { handleFile, isLoading, removeDocument } = useDocumentsUpload(
@@ -42,7 +43,7 @@ export const DocumentsUploadContainer: FC<DocumentsUploadContainerProps> = ({
     onChange,
   );
 
-  const setIsLoading = useEvent(inputs.setIsLoading);
+  const { setIsLoading } = useUnit({ setIsLoading: inputs.setIsLoading });
 
   useEffect(() => {
     setIsLoading(isLoading);

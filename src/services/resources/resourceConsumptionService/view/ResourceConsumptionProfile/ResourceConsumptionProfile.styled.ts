@@ -10,3 +10,7 @@ export const GraphWrapper = styled.div`
   flex-direction: column;
   flex-grow: 1;
 `;
+
+export const HousingDataEmptyAlert = styled.div`
+  margin-bottom: 20px;
+`;

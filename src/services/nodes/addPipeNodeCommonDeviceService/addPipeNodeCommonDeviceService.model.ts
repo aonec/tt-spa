@@ -1,43 +1,38 @@
-import { createDomain, forward, guard, sample } from 'effector';
+import { createEvent, createStore } from 'effector';
+import { sample } from 'effector';
 import { EXTREAM_STEP_NUMBER } from './addPipeNodeCommonDeviceService.constants';
 import { CreateCommonDevicePartitial } from './addPipeNodeCommonDeviceService.types';
 
-const domain = createDomain('addPipeNodeCommonDeviceService');
-
 const updateCommonDeviceRequestPayload =
-  domain.createEvent<CreateCommonDevicePartitial>();
+  createEvent<CreateCommonDevicePartitial>();
 
-const goNextStep = domain.createEvent();
-const goPrevStep = domain.createEvent();
+const goNextStep = createEvent();
+const goPrevStep = createEvent();
 
-const openAddCommonDeviceModal = domain.createEvent();
-const closeAddCommonDeviceModal = domain.createEvent();
+const openAddCommonDeviceModal = createEvent();
+const closeAddCommonDeviceModal = createEvent();
 
-const handleFormComplete = domain.createEvent();
+const handleFormComplete = createEvent();
 
-const handleMeteringDeviceCreated =
-  domain.createEvent<CreateCommonDevicePartitial>();
+const handleMeteringDeviceCreated = createEvent<CreateCommonDevicePartitial>();
 
-const $requestPayload = domain
-  .createStore<CreateCommonDevicePartitial>({})
+const $requestPayload = createStore<CreateCommonDevicePartitial>({})
   .on(updateCommonDeviceRequestPayload, (prev, payload) => ({
     ...prev,
     ...payload,
   }))
   .reset(closeAddCommonDeviceModal);
 
-const $isModalOpen = domain
-  .createStore(false)
+const $isModalOpen = createStore(false)
   .on(openAddCommonDeviceModal, () => true)
   .reset(closeAddCommonDeviceModal);
 
-const $currentFormStep = domain
-  .createStore<number>(0)
+const $currentFormStep = createStore<number>(0)
   .on(goNextStep, (prev) => prev + 1)
   .on(goPrevStep, (prev) => prev - 1)
   .reset(closeAddCommonDeviceModal);
 
-guard({
+sample({
   source: $currentFormStep,
   clock: updateCommonDeviceRequestPayload,
   filter: (stepNumber) => stepNumber < EXTREAM_STEP_NUMBER,
@@ -50,9 +45,9 @@ sample({
   target: handleMeteringDeviceCreated,
 });
 
-forward({
-  from: handleMeteringDeviceCreated,
-  to: closeAddCommonDeviceModal,
+sample({
+  clock: handleMeteringDeviceCreated,
+  target: closeAddCommonDeviceModal,
 });
 
 export const addPipeNodeCommonDeviceService = {

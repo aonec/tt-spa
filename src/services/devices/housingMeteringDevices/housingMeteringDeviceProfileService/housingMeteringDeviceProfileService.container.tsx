@@ -1,47 +1,64 @@
-import { useEvent, useStore } from 'effector-react';
-import React from 'react';
-import { useParams } from 'react-router-dom';
+import { useUnit } from 'effector-react';
+import React, { useCallback } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import { WithLoader } from 'ui-kit/shared/WithLoader';
 import { housingMeteringDeviceProfileService } from './housingMeteringDeviceProfileService.model';
 import { HousingMeteringDeviceProfile } from './view/HousingMeteringDeviceProfile';
 import { ESecuredIdentityRoleName } from 'api/types';
 import { usePermission } from 'hooks/usePermission';
+import { HousingProfileTabs } from './housingMeteringDeviceProfileService.types';
 
 const { inputs, outputs, gates } = housingMeteringDeviceProfileService;
 const { FetchHousingMeteringDeviceGate } = gates;
 
 export const HousingMeteringDeviceProfileContainer = () => {
-  const { deviceId } = useParams<{ deviceId: string }>();
+  const { deviceId, section } = useParams<{
+    deviceId: string;
+    section?: HousingProfileTabs;
+  }>();
 
-  const handleChangeTab = useEvent(inputs.handleChangeTab);
+  const navigate = useNavigate();
 
-  const handleCheckModalOpen = useEvent(inputs.handleCheckModalOpen);
-
-  const handleDeviceClosingModalOpen = useEvent(
-    inputs.handleDeviceClosingModalOpen,
-  );
-
-  const housingMeteringDevice = useStore(outputs.$housingMeteringDevice);
-  const housingMeteringDeviceTasks = useStore(
-    outputs.$housingMeteringDeviceTask,
-  );
-
-  const currentTab = useStore(outputs.$currentTab);
-  const pending = useStore(outputs.$pending);
-  const tasksPending = useStore(outputs.$tasksPending);
+  const {
+    handleCheckModalOpen,
+    handleDeviceClosingModalOpen,
+    housingMeteringDevice,
+    housingMeteringDeviceTasks,
+    pending,
+    tasksPending,
+  } = useUnit({
+    handleCheckModalOpen: inputs.handleCheckModalOpen,
+    handleDeviceClosingModalOpen: inputs.handleDeviceClosingModalOpen,
+    housingMeteringDevice: outputs.$housingMeteringDevice,
+    housingMeteringDeviceTasks: outputs.$housingMeteringDeviceTask,
+    pending: outputs.$pending,
+    tasksPending: outputs.$tasksPending,
+  });
 
   const isPermitionToCheckHousingMeteringDevice = usePermission([
     ESecuredIdentityRoleName.Administrator,
     ESecuredIdentityRoleName.ManagingFirmExecutor,
+    ESecuredIdentityRoleName.ManagingFirmSpectatingAdministrator,
   ]);
   const isPermitionToCloseHousingMeteringDevice =
     isPermitionToCheckHousingMeteringDevice;
   const isPermitionToEditHousingMeteringDevice = usePermission([
     ESecuredIdentityRoleName.Administrator,
     ESecuredIdentityRoleName.ManagingFirmExecutor,
+    ESecuredIdentityRoleName.ManagingFirmSpectatingAdministrator,
     ESecuredIdentityRoleName.SeniorOperator,
     ESecuredIdentityRoleName.Operator,
   ]);
+
+  const setGrouptype = useCallback(
+    (section: HousingProfileTabs) =>
+      navigate(`/housingMeteringDevices/${deviceId}/profile/${section}`, {
+        replace: true,
+      }),
+    [navigate, deviceId],
+  );
+
+  if (!deviceId) return null;
 
   return (
     <>
@@ -50,8 +67,8 @@ export const HousingMeteringDeviceProfileContainer = () => {
         <HousingMeteringDeviceProfile
           deviceId={deviceId}
           housingMeteringDevice={housingMeteringDevice}
-          currentTab={currentTab}
-          handleChangeTab={handleChangeTab}
+          currentTab={section}
+          handleChangeTab={setGrouptype}
           housingMeteringDeviceTasks={housingMeteringDeviceTasks}
           handleCheckModalOpen={() => handleCheckModalOpen()}
           handleDeviceClosingModalOpen={() => handleDeviceClosingModalOpen()}

@@ -1,6 +1,10 @@
 import { countSimilarityPoints } from 'utils/countSimilarityPoints';
 
-export function useAutocomplete(street: string | null, streets: string[]) {
+export function useAutocomplete(
+  street: string | null,
+  streets: string[],
+  amount: number = 1,
+) {
   if (street === null) {
     return null;
   }
@@ -9,11 +13,14 @@ export function useAutocomplete(street: string | null, streets: string[]) {
 
   return {
     bestMatch: sortedAddress[0]?.value || '',
-    options: street ? sortedAddress.slice(0, 1) : [],
+    options: street ? sortedAddress.slice(0, amount) : [],
   };
 }
 
-function sortAddressBySimilarity(addressSearch: string, streets: string[]) {
+export function sortAddressBySimilarity(
+  addressSearch: string,
+  streets: string[],
+) {
   return streets
     .sort((a, b) => {
       const aPoints = countSimilarityPoints(addressSearch, a);

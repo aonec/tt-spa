@@ -70,13 +70,14 @@ export const DistributeRecordsPage: FC<Props> = ({
         <DatePicker
           disabled={!appointmentDate}
           value={getDatePickerValue(appointmentDate)}
-          onChange={(date) =>
-            date && handleSetAppointmentDate(date.format('YYYY-MM-DD'))
-          }
+          onChange={(date) => {
+            date && handleSetAppointmentDate(date.format('YYYY-MM-DD'));
+          }}
           small
           style={{ width: 240 }}
           format="DD.MM.YYYY"
           allowClear={false}
+          showToday={false}
         />
       </FiltrationWrapper>
       <DistrictsMap

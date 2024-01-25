@@ -1,29 +1,25 @@
-import { createDomain, forward, sample } from 'effector';
+import { createEffect, createEvent, createStore } from 'effector';
+import { sample } from 'effector';
 import { HomeownerAccountCloseRequest } from 'api/types';
 import { editApartmentProfileService } from 'services/apartments/editApartmentProfileService/editApartmentProfileService.model';
 import { postCloseHomeownerApartment } from './closeHomeownerAccountService.api';
 import { message } from 'antd';
 import { EffectFailDataAxiosError } from 'types';
 
-const domain = createDomain('closeHomeownerAccountService');
-
 const handleCloseHomeownerAccount =
-  domain.createEvent<
-    Omit<HomeownerAccountCloseRequest, 'homeownerAccountId'>
-  >();
+  createEvent<Omit<HomeownerAccountCloseRequest, 'homeownerAccountId'>>();
 
-const closeHomeownerAccountFx = domain.createEffect<
+const closeHomeownerAccountFx = createEffect<
   HomeownerAccountCloseRequest,
   void,
   EffectFailDataAxiosError
 >(postCloseHomeownerApartment);
 
-const openClosingHomeownerModal = domain.createEvent<string>();
+const openClosingHomeownerModal = createEvent<string>();
 
-const closeClosingHomeownerModal = domain.createEvent();
+const closeClosingHomeownerModal = createEvent();
 
-const $homeownerId = domain
-  .createStore<string | null>(null)
+const $homeownerId = createStore<string | null>(null)
   .on(openClosingHomeownerModal, (_, id) => id)
   .reset(closeClosingHomeownerModal, closeHomeownerAccountFx.doneData);
 
@@ -39,9 +35,9 @@ sample({
   target: closeHomeownerAccountFx,
 });
 
-forward({
-  from: closeHomeownerAccountFx.doneData,
-  to: editApartmentProfileService.inputs.refetchAaprtment,
+sample({
+  clock: closeHomeownerAccountFx.doneData,
+  target: editApartmentProfileService.inputs.refetchAaprtment,
 });
 
 closeHomeownerAccountFx.failData.watch((error) => {

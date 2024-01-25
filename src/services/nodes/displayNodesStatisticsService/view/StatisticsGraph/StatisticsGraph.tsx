@@ -80,11 +80,10 @@ export const GraphView: React.FC<GraphViewProps> = ({
       return null;
     }
     const firstlyPreparedData = prepareData(archiveValues);
-    const finallyData = prepareDataForNodeStatistic(
-      firstlyPreparedData,
-      reportType,
-      withFault,
-    );
+
+    const finallyData =
+      firstlyPreparedData &&
+      prepareDataForNodeStatistic(firstlyPreparedData, reportType, withFault);
 
     return finallyData;
   }, [requiredArchiveValues, reportType, withFault]);
@@ -94,9 +93,8 @@ export const GraphView: React.FC<GraphViewProps> = ({
   }
 
   const archiveLength = preparedArchiveValues.length;
-
   const tickValues = formTicks(preparedArchiveValues, reportType);
-  const ticksData = tickValues.map((tick) => tick.timeUtc);
+  const ticksData = tickValues.map((tick) => tick.time);
 
   const measure = requiredArchiveValues?.measure;
 
@@ -155,9 +153,9 @@ export const GraphView: React.FC<GraphViewProps> = ({
         />
 
         <VictoryScatter
-          data={taskStatistics.map((tasksByDate) =>
+          data={taskStatistics.map((taskByDate) =>
             getPreparedTaskData({
-              tasksByDate,
+              taskByDate,
               reportType,
               maxValue,
               minDate: ticksData[0],
@@ -170,7 +168,7 @@ export const GraphView: React.FC<GraphViewProps> = ({
 
         <VictoryArea
           name="graph"
-          sortKey="timeUtc"
+          sortKey="time"
           interpolation="monotoneX"
           labelComponent={
             <CustomTooltip
@@ -191,10 +189,12 @@ export const GraphView: React.FC<GraphViewProps> = ({
           labels={() => ''}
           style={tooltipStyle}
           data={preparedArchiveValues}
-          x="timeUtc"
+          x="time"
           y="value"
         />
-        {isAverageLineRendered && Number.isFinite(averageDeltaMass) ? (
+        {isAverageLineRendered &&
+        averageDeltaMass &&
+        Number.isFinite(averageDeltaMass) ? (
           <VictoryLine
             samples={1}
             y={() => averageDeltaMass}

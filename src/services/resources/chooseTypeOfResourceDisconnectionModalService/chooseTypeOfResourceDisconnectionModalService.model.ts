@@ -1,22 +1,19 @@
-import { createDomain, sample } from 'effector';
+import { createEvent, createStore } from 'effector';
+import { sample } from 'effector';
 import { BuildingListResponse, EResourceDisconnectingType } from 'api/types';
 import { editResourceDisconnectionService } from '../editResourceDisconnectionService';
 
-const domain = createDomain('chooseTypeOfResourceDisconnectionModalService');
+const openModal = createEvent<BuildingListResponse | void>();
+const closeModal = createEvent();
+const submitModal = createEvent();
 
-const openModal = domain.createEvent<BuildingListResponse | void>();
-const closeModal = domain.createEvent();
-const submitModal = domain.createEvent();
-
-const $isModalOpen = domain
-  .createStore(false)
+const $isModalOpen = createStore(false)
   .on(openModal, () => true)
   .reset(closeModal);
 
-const setInterHeatingSeason = domain.createEvent();
-const clearInterHeatingSeason = domain.createEvent();
-const $isInterHeatingSeason = domain
-  .createStore(false)
+const setInterHeatingSeason = createEvent();
+const clearInterHeatingSeason = createEvent();
+const $isInterHeatingSeason = createStore(false)
   .on(
     editResourceDisconnectionService.outputs.$resourceDisconnection,
     (_, disconnection) => {

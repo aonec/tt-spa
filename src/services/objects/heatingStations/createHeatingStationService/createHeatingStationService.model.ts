@@ -1,5 +1,6 @@
+import { createEffect, createEvent, createStore } from 'effector';
 import { message } from 'antd';
-import { createDomain, forward, guard, sample } from 'effector';
+import { sample } from 'effector';
 import {
   AddHeatingStationRequest,
   CreateAddressRequest,
@@ -11,20 +12,18 @@ import { HeatingStationTypeRequestDictionary } from '../NewHeatingStationForm/ne
 import { HeatingStation } from '../NewHeatingStationForm/NewHeatingStationForm.types';
 import { postHeatingStation } from './createHeatingStationService.api';
 
-const domain = createDomain('createHeatingStationService');
+const handleCreateHeatingStation = createEvent<HeatingStation>();
 
-const handleCreateHeatingStation = domain.createEvent<HeatingStation>();
+const handleOpenModal = createEvent();
+const handleCloseModal = createEvent();
 
-const handleOpenModal = domain.createEvent();
-const handleCloseModal = domain.createEvent();
-
-const createHeatingStationFx = domain.createEffect<
+const createHeatingStationFx = createEffect<
   AddHeatingStationRequest,
   HeatingStationResponse | null,
   EffectFailDataAxiosError
 >(postHeatingStation);
 
-guard({
+sample({
   clock: sample({
     clock: handleCreateHeatingStation,
     fn: (data: HeatingStation) => {
@@ -56,16 +55,15 @@ createHeatingStationFx.failData.watch((error) =>
   message.error(error.response.data.error.Text),
 );
 
-forward({
-  from: createHeatingStationFx.doneData,
-  to: handleCloseModal,
+sample({
+  clock: createHeatingStationFx.doneData,
+  target: handleCloseModal,
 });
 
 const $existingCities = addressSearchService.outputs.$existingCities;
 const $existingStreets = addressSearchService.outputs.$existingStreets;
 
-const $isModalOpen = domain
-  .createStore<boolean>(false)
+const $isModalOpen = createStore<boolean>(false)
   .on(handleOpenModal, () => true)
   .on(handleCloseModal, () => false);
 

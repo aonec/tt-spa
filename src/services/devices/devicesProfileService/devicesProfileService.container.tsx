@@ -2,11 +2,11 @@ import { useUnit } from 'effector-react';
 import React, { FC, useEffect, useRef } from 'react';
 import { displayDevicesService } from '../displayDevicesService';
 import { DevicesProfile } from './view/DevicesProfile';
-import { currentUserService } from 'services/currentUserService';
 import { DevicesSearchType } from '../devicesPageService/devicesPageService.types';
 import { HeaderInject } from 'services/objects/objectsProfileService/view/ObjectsProfile/ObjectsProfile.types';
 import { devicesReportService } from '../devicesReportService';
-import { getCalculatorsListQuery } from '../displayDevicesService/displayDevicesService.api';
+import { getNodesListQuery } from '../displayDevicesService/displayDevicesService.api';
+import { currentOrganizationService } from 'services/currentOrganizationService';
 
 const { outputs, inputs, gates } = displayDevicesService;
 const CalculatorsGate = gates.CalculatorsGate;
@@ -30,10 +30,12 @@ export const DevicesProfileContainer: FC<HeaderInject> = ({ Header }) => {
     setSerialNumber,
     devices,
     isDevicesFetched,
+    calculatorsModels,
+    handleFetchModels,
   } = useUnit({
     isOpen: outputs.$isExtendedSearchOpen,
     searchState: outputs.$searchPayload,
-    diametersConfig: currentUserService.outputs.$diametersConfig,
+    diametersConfig: currentOrganizationService.outputs.$diametersConfig,
     devicesSearchType: outputs.$devicesSearchType,
     serialNumber: outputs.$serialNumber,
     setSerialNumber: inputs.setSerialNumber,
@@ -44,7 +46,9 @@ export const DevicesProfileContainer: FC<HeaderInject> = ({ Header }) => {
     open: inputs.extendedSearchOpened,
     openDownloadDevicesReportModal: devicesReportService.inputs.openModal,
     devices: outputs.$devices,
-    isDevicesFetched: getCalculatorsListQuery.$succeeded,
+    isDevicesFetched: getNodesListQuery.$succeeded,
+    calculatorsModels: outputs.$calculatorsModels,
+    handleFetchModels: inputs.handleFetchModels,
   });
 
   const isEmpty = Boolean(!devices.length);
@@ -58,9 +62,9 @@ export const DevicesProfileContainer: FC<HeaderInject> = ({ Header }) => {
     }
     if (prevSearchType.current === DevicesSearchType.Address) {
       setDevicesProfileFilter({
-        'Filter.Address.Corpus': undefined,
-        'Filter.Address.HousingStockNumber': undefined,
-        'Filter.Address.Street': undefined,
+        'Address.Corpus': undefined,
+        'Address.HousingStockNumber': undefined,
+        'Address.Street': undefined,
       });
     }
     prevSearchType.current = devicesSearchType;
@@ -83,6 +87,8 @@ export const DevicesProfileContainer: FC<HeaderInject> = ({ Header }) => {
         setDevicesSearchType={setDevicesSearchType}
         serialNumber={serialNumber}
         setSerialNumber={setSerialNumber}
+        calculatorsModels={calculatorsModels}
+        handleFetchModels={handleFetchModels}
         isSearchError={isEmpty && isDevicesFetched}
       />
     </>

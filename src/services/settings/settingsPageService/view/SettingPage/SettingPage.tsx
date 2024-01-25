@@ -1,8 +1,8 @@
-import React, { FC, useMemo } from 'react';
+import React, { FC, ReactNode, useEffect, useMemo } from 'react';
 import { useUnit } from 'effector-react';
-import { useHistory, useLocation, useParams } from 'react-router-dom';
+import { useNavigate, useLocation, useParams } from 'react-router-dom';
 import { TabsSC } from './SettingPage.styled';
-import { SettingPageProps } from './SettingPage.types';
+import { SettingPageProps, SettingsPageSection } from './SettingPage.types';
 import { inspectorAddressesResetService } from 'services/settings/inspectorsDistributionService/inspectorAddressesResetService/inspectorAddressesResetService.models';
 import { InspectorsDistributionPage } from 'services/settings/inspectorsDistributionService/views/InspectorsDistributionPage';
 import { InspectorAddressesResetModalContainer } from 'services/settings/inspectorsDistributionService/inspectorAddressesResetService/InspectorAddressesResetModalContainer';
@@ -10,22 +10,34 @@ import { PageHeader } from 'ui-kit/shared/PageHeader';
 import { WorkingRangeTab } from 'services/workingRanges/WorkingRangeTab';
 import { DistrictBordersContainer } from 'services/settings/districtBordersService';
 import { developmentSettingsService } from 'services/developmentSettings/developmentSettings.models';
+import { TemperatureGraphContainer } from 'services/settings/temperatureGraphService';
 
 export const SettingPage: FC<SettingPageProps> = ({
   handleReassingInspector,
+  handleEditTemperatureNormative,
+  isAdminSettings,
 }) => {
   const { featureToggles } = useUnit({
     featureToggles: developmentSettingsService.outputs.$featureToggles,
   });
 
-  const { section } = useParams<{ section: string }>();
-  const history = useHistory();
+  const { section } = useParams<{ section: SettingsPageSection }>();
+
+  const navigate = useNavigate();
   const { pathname } = useLocation();
-  const adminSettings = pathname.split('/')[1] === 'adminSettings';
+  const isTemperatureGraphTab = pathname.split('/')[2] === 'temperatureGraph';
+
+  const pagePath = isAdminSettings ? 'adminSettings' : 'settings';
 
   const menuButtons = useMemo(() => {
-    if (adminSettings) {
-      return [];
+    if (isAdminSettings) {
+      return [
+        {
+          title: 'Редактировать температурный график',
+          onClick: () => handleEditTemperatureNormative(true),
+          hidden: !isTemperatureGraphTab,
+        },
+      ];
     }
     return [
       {
@@ -37,63 +49,108 @@ export const SettingPage: FC<SettingPageProps> = ({
         onClick: handleReassingInspector,
       },
     ];
-  }, [adminSettings, handleReassingInspector]);
-
-  const settingsComponent = useMemo(() => {
-    if (adminSettings) {
-      return (
-        <>
-          {featureToggles.workingRanges && (
-            <TabsSC.TabPane tab="Рабочие диапазоны узлов" key="operatingRanges">
-              <WorkingRangeTab />
-            </TabsSC.TabPane>
-          )}
-          {featureToggles.districtsManage && (
-            <TabsSC.TabPane tab="Границы районов" key="districtBorder">
-              <DistrictBordersContainer />
-            </TabsSC.TabPane>
-          )}
-        </>
-      );
-    }
-    return (
-      <>
-        {featureToggles.controllersDistribution && (
-          <TabsSC.TabPane
-            tab="Распределение контролеров"
-            key="controllers"
-          ></TabsSC.TabPane>
-        )}
-        <TabsSC.TabPane tab="Распределение инспекторов" key="inspectors">
-          <InspectorsDistributionPage />
-        </TabsSC.TabPane>
-        {featureToggles.districtsManage && (
-          <TabsSC.TabPane tab="Границы районов" key="districtBorder">
-            <DistrictBordersContainer />
-          </TabsSC.TabPane>
-        )}
-      </>
-    );
   }, [
-    adminSettings,
+    isAdminSettings,
+    handleReassingInspector,
+    handleEditTemperatureNormative,
+    isTemperatureGraphTab,
+  ]);
+
+  const components: { [key in SettingsPageSection]: ReactNode } = {
+    [SettingsPageSection.operatingRanges]: <WorkingRangeTab />,
+    [SettingsPageSection.temperatureGraph]: <TemperatureGraphContainer />,
+    [SettingsPageSection.districtBorder]: <DistrictBordersContainer />,
+    [SettingsPageSection.controllers]: <></>,
+    [SettingsPageSection.inspectors]: <InspectorsDistributionPage />,
+  };
+
+  const tabItems = useMemo(() => {
+    if (isAdminSettings) {
+      return [
+        ...(featureToggles.workingRanges
+          ? [{ label: 'Рабочие диапазоны узлов', key: 'operatingRanges' }]
+          : []),
+        ...(featureToggles.temperatureGraph
+          ? [{ label: 'Температурный график', key: 'temperatureGraph' }]
+          : []),
+      ];
+    }
+
+    return [
+      ...(featureToggles.districtsManage
+        ? [{ label: 'Границы районов', key: 'districtBorder' }]
+        : []),
+      ...(featureToggles.controllersDistribution
+        ? [{ label: 'Распределение контролеров', key: 'controllers' }]
+        : []),
+      { label: 'Распределение инспекторов', key: 'inspectors' },
+    ];
+  }, [
+    isAdminSettings,
     featureToggles.controllersDistribution,
     featureToggles.districtsManage,
     featureToggles.workingRanges,
+    featureToggles.temperatureGraph,
   ]);
+
+  useEffect(() => {
+    const keys: { key: string; visible: boolean }[] = isAdminSettings
+      ? [
+          {
+            key: 'operatingRanges',
+            visible: featureToggles.workingRanges,
+          },
+          { key: 'temperatureGraph', visible: featureToggles.temperatureGraph },
+        ]
+      : [
+          {
+            key: 'districtBorder',
+            visible: featureToggles.districtsManage,
+          },
+          {
+            key: 'controllers',
+            visible: featureToggles.controllersDistribution,
+          },
+          { key: 'inspectors', visible: true },
+        ];
+
+    const path = keys.find((elem) => elem.visible);
+
+    if (pathname.split('/').length === 2 && path)
+      navigate(`/${pagePath}/${path.key}`);
+  }, [
+    isAdminSettings,
+    featureToggles.controllersDistribution,
+    featureToggles.districtsManage,
+    featureToggles.temperatureGraph,
+    featureToggles.workingRanges,
+    navigate,
+    pathname,
+    pagePath,
+  ]);
+
+  if (!section) return null;
 
   return (
     <>
       <InspectorAddressesResetModalContainer />
 
       <PageHeader
-        title="Настройки"
+        title={isAdminSettings ? 'Настройки' : 'Настройки оператора'}
         contextMenu={{
           menuButtons,
         }}
       />
-      <TabsSC activeKey={section} onChange={history.push}>
-        {settingsComponent}
-      </TabsSC>
+      <TabsSC
+        activeKey={section}
+        onChange={(key) =>
+          navigate(`/${pagePath}/${key}`, {
+            replace: true,
+          })
+        }
+        items={tabItems}
+      />
+      {components[section]}
     </>
   );
 };

@@ -18,7 +18,7 @@ export const NodeArchiveContainer = () => {
   return (
     <>
       <NodeArchiveGate />
-      <WithLoader isLoading={loading}>
+      <WithLoader isLoading={loading} maxWidth="500px">
         <NodeArchiveList
           data={nodeArchiveData}
           withFaultReadings={withFaultReadings}

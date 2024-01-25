@@ -19,7 +19,6 @@ import { prepareAddressesTreeData } from './ReportFiltrationForm.utils';
 import { SelectMultiple } from 'ui-kit/SelectMultiple';
 import {
   EActResourceType,
-  EClosingReason,
   EIndividualDeviceReportOption,
   EResourceType,
 } from 'api/types';
@@ -267,6 +266,7 @@ export const ReportFiltrationForm: FC<ReportFiltrationFormProps> = ({
             <FormItem label="Ресурс">
               {!isShowActResourcesSelect && (
                 <SelectMultiple
+                  showSearch={false}
                   placeholder="Выберите"
                   value={values.resources || undefined}
                   onChange={(value) => setFieldValue('resources', value)}
@@ -323,16 +323,13 @@ export const ReportFiltrationForm: FC<ReportFiltrationFormProps> = ({
                     value={values.closingReasons || undefined}
                     onChange={(value) => setFieldValue('closingReasons', value)}
                   >
-                    {[
-                      EClosingReason.Manually,
-                      EClosingReason.DeviceBroken,
-                      EClosingReason.CertificateIssued,
-                      EClosingReason.ByLetter,
-                    ].map((reportOption) => (
-                      <Select.Option key={reportOption} value={reportOption}>
-                        {ClosingReasonsDictionary[reportOption]}
-                      </Select.Option>
-                    ))}
+                    {Object.entries(ClosingReasonsDictionary).map(
+                      ([key, value]) => (
+                        <Select.Option key={key} value={key}>
+                          {value}
+                        </Select.Option>
+                      ),
+                    )}
                   </SelectMultiple>
                 </FormItem>
               )}
@@ -372,6 +369,7 @@ export const ReportFiltrationForm: FC<ReportFiltrationFormProps> = ({
               </FormItem>
               <PeriodPickerWrapprer>
                 <RangePicker
+                  small
                   disabled={
                     values.reportDatePeriod !== ReportDatePeriod.AnyPeriod
                   }

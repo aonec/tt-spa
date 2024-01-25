@@ -1,7 +1,7 @@
 import { ErrorMessage } from 'ui-kit/ErrorMessage';
 import { Switch } from 'antd';
 import { LabeledValue } from 'antd/lib/select';
-import moment from 'moment';
+import dayjs from 'api/dayjs';
 import React, { FC, useEffect, useMemo } from 'react';
 import { DatePicker } from 'ui-kit/DatePicker';
 import { FormItem } from 'ui-kit/FormItem';
@@ -93,7 +93,7 @@ export const RegularUnloading: FC<RegularUnloadingProps> = ({
               <DatePicker
                 value={
                   values['Subscription.TriggerAt']
-                    ? moment(values['Subscription.TriggerAt'])
+                    ? dayjs(values['Subscription.TriggerAt'])
                     : undefined
                 }
                 placeholder={'Введите дату'}

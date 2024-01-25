@@ -1,13 +1,13 @@
+import { createEvent, createStore } from 'effector';
 import { createGate } from 'effector-react';
 import { getApartmentsQuery } from './displayApartmentsListService.api';
-import { createDomain, sample, guard, forward } from 'effector';
+import { sample } from 'effector';
 import { ApartmentListResponsePagedList } from 'api/types';
 import { SearchApartmentsPayload } from './displayApartmentsListService.types';
 
-const domain = createDomain('displayApartmentsListService');
-
-const $apartmentsPagedList =
-  domain.store<ApartmentListResponsePagedList | null>(null);
+const $apartmentsPagedList = createStore<ApartmentListResponsePagedList | null>(
+  null,
+);
 
 const $apartmentsList = $apartmentsPagedList.map((data) => data?.items || []);
 const $pagedInfo = $apartmentsPagedList.map((data) => ({
@@ -16,22 +16,23 @@ const $pagedInfo = $apartmentsPagedList.map((data) => ({
   pageSize: data?.pageSize,
 }));
 
-const searchApartments = domain.createEvent<SearchApartmentsPayload>();
+const searchApartments = createEvent<SearchApartmentsPayload>();
 
-const $searchApartmentsPayload =
-  domain.createStore<SearchApartmentsPayload | null>(null);
+const $searchApartmentsPayload = createStore<SearchApartmentsPayload | null>(
+  null,
+);
 
 const $isLoading = getApartmentsQuery.$pending;
 
-const setPageNumber = domain.createEvent<number>();
+const setPageNumber = createEvent<number>();
 
-const clearSearchPayload = domain.createEvent();
+const clearSearchPayload = createEvent();
 
 const ApartmentsListGate = createGate();
 
-forward({
-  from: ApartmentsListGate.close,
-  to: clearSearchPayload,
+sample({
+  clock: ApartmentsListGate.close,
+  target: clearSearchPayload,
 });
 
 $searchApartmentsPayload
@@ -48,7 +49,7 @@ $apartmentsPagedList
   .reset(clearSearchPayload);
 
 sample({
-  clock: guard({
+  clock: sample({
     clock: $searchApartmentsPayload,
     filter: Boolean,
   }),

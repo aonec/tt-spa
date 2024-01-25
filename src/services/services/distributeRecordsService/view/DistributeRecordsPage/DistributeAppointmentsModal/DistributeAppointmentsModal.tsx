@@ -1,5 +1,5 @@
 import React, { FC, useCallback, useEffect, useState } from 'react';
-import moment from 'moment';
+import dayjs from 'api/dayjs';
 import { Props } from './DistributeAppointmentsModal.types';
 import { FormModal } from 'ui-kit/Modals/FormModal';
 import { FormItem } from 'ui-kit/FormItem';
@@ -29,7 +29,9 @@ export const DistributeAppointmentsModal: FC<Props> = ({
 
   useEffect(() => {
     return createIndividualSealControllerMutation.finished.success.watch(
-      ({ result }) => setControllerId(result),
+      async ({ result }) => {
+        setControllerId(result);
+      },
     ).unsubscribe;
   }, []);
 
@@ -84,7 +86,7 @@ export const DistributeAppointmentsModal: FC<Props> = ({
               <DatePicker
                 placeholder="Выберите"
                 format="DD.MM.YYYY"
-                value={appointmentDate ? moment(appointmentDate) : undefined}
+                value={appointmentDate ? dayjs(appointmentDate) : undefined}
                 disabled
               />
             </FormItem>

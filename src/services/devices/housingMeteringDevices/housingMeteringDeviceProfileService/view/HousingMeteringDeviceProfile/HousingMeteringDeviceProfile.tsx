@@ -1,5 +1,5 @@
-import React, { FC } from 'react';
-import { useHistory } from 'react-router-dom';
+import React, { FC, useMemo } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { stringifyUrl } from 'query-string';
 
 import { GoBack } from 'ui-kit/shared/GoBack';
@@ -30,14 +30,12 @@ import { HousingMeteringDeviceProfileProps } from './HousingMeteringDeviceProfil
 import { ContextMenuButtonColor } from 'ui-kit/ContextMenuButton/ContextMenuButton.types';
 import { TaskGroupingFilter } from 'api/types';
 
-const { TabPane } = TabsSC;
-
 export const HousingMeteringDeviceProfile: FC<
   HousingMeteringDeviceProfileProps
 > = ({
   deviceId,
   housingMeteringDevice,
-  currentTab,
+  currentTab = HousingProfileTabs.CommonInfo,
   handleChangeTab,
   housingMeteringDeviceTasks,
   handleCheckModalOpen,
@@ -46,7 +44,7 @@ export const HousingMeteringDeviceProfile: FC<
   isPermitionToCloseHousingMeteringDevice,
   isPermitionToEditHousingMeteringDevice,
 }) => {
-  const { push } = useHistory();
+  const navigate = useNavigate();
 
   const deviceAddress = housingMeteringDevice?.address?.address?.mainAddress;
   const deviceModel = housingMeteringDevice?.model;
@@ -55,6 +53,18 @@ export const HousingMeteringDeviceProfile: FC<
   const resource = housingMeteringDevice?.resource;
 
   const tasksCount = housingMeteringDeviceTasks?.items?.length || 0;
+
+  const tabItems = useMemo(
+    () => [
+      { label: 'Общие данные', key: HousingProfileTabs.CommonInfo },
+      {
+        label: 'Настройки соединения',
+        key: HousingProfileTabs.ConnectionSettings,
+      },
+      { label: 'Документы', key: HousingProfileTabs.Documents },
+    ],
+    [],
+  );
 
   return (
     <>
@@ -83,7 +93,7 @@ export const HousingMeteringDeviceProfile: FC<
                 {deviceAddress?.city}
                 {deviceAddress && getHousingStockItemAddress(deviceAddress)}
                 <div>
-                  Узел {housingMeteringDevice?.hubConnection?.node?.number}
+                  Узел {housingMeteringDevice?.hubConnection?.node?.title}
                 </div>
                 {isActive !== undefined && isActive !== null && (
                   <DeviceStatus isActive={isActive} />
@@ -96,7 +106,7 @@ export const HousingMeteringDeviceProfile: FC<
               {
                 title: 'Редактировать ОДПУ',
                 onClick: () => {
-                  push(`/housingMeteringDevices/${deviceId}/edit`);
+                  navigate(`/housingMeteringDevices/${deviceId}/edit`);
                 },
                 hidden: !isPermitionToEditHousingMeteringDevice,
               },
@@ -120,14 +130,8 @@ export const HousingMeteringDeviceProfile: FC<
             handleChangeTab(value as HousingProfileTabs);
           }}
           activeKey={currentTab}
-        >
-          <TabPane tab="Общие данные" key={HousingProfileTabs.CommonInfo} />
-          <TabPane
-            tab="Настройки соединения"
-            key={HousingProfileTabs.ConnectionSettings}
-          />
-          <TabPane tab="Документы" key={HousingProfileTabs.Documents} />
-        </TabsSC>
+          items={tabItems}
+        />
 
         <PageGridContainer>
           {currentTab === HousingProfileTabs.CommonInfo && (

@@ -1,4 +1,4 @@
-import { Tooltip } from 'antd';
+import { Tooltip } from 'ui-kit/shared/Tooltip';
 import React, { FC, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { DeviceIcon } from 'ui-kit/icons';
@@ -9,11 +9,13 @@ import {
   DeviceIconWrapper,
   IncorrectConfigurationIconSC,
   NoCalculatorTextWrapper,
+  NodeEntryNumber,
   NodeInfo,
   NodeInfoWrapper,
   NodeName,
   NodeServiceZone,
   NodeStatusWrapper,
+  NodeZoneWrapper,
   ResourceIconWrapper,
   Wrapper,
   ZoneWrapper,
@@ -34,16 +36,20 @@ export const NodeItem: FC<NodeItemProps> = ({
     const nodeInfo = (
       <BaseNodeInfo>
         <Link to={`/nodes/${node.id}`}>
-          <NodeName>
-            Узел {node.number}
-            {isIncorrectConfig && <IncorrectConfigurationIconSC />}
-          </NodeName>
-          <NodeServiceZone isZoneExist={Boolean(node.serviceZone?.name)}>
-            <div>{node.entryNumber && `Ввод ${node.entryNumber}, `}</div>
-            <ZoneWrapper>
-              {node.serviceZone?.name || 'Зона не указана'}
-            </ZoneWrapper>
-          </NodeServiceZone>
+          <NodeZoneWrapper>
+            <NodeName>
+              Узел {node.title}
+              {isIncorrectConfig && <IncorrectConfigurationIconSC />}{' '}
+              <NodeEntryNumber>
+                {node.entryNumber && `Ввод ${node.entryNumber}`}
+              </NodeEntryNumber>
+            </NodeName>
+            <NodeServiceZone isZoneExist={Boolean(node.serviceZone?.name)}>
+              <ZoneWrapper>
+                {node.serviceZone?.name || 'Зона не указана'}
+              </ZoneWrapper>
+            </NodeServiceZone>
+          </NodeZoneWrapper>
         </Link>
         <Tooltip title="Показать приборы">
           <DeviceIconWrapper>

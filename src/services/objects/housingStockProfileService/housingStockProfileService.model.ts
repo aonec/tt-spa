@@ -1,4 +1,5 @@
-import { createDomain, forward } from 'effector';
+import { createEffect, createEvent, createStore } from 'effector';
+import { sample } from 'effector';
 import { createGate } from 'effector-react';
 import {
   ESecuredIdentityRoleName,
@@ -10,20 +11,17 @@ import {
   fetchHousingStock,
   fetchResourceDisconnectionOnHousingStock,
 } from './housingStockProfileService.api';
-import { HousingStockProfileGrouptype } from './housingStockProfileService.constants';
 import { consolidatedReportService } from './consolidatedReportService';
 import { currentUserService } from 'services/currentUserService';
 
-const domain = createDomain('objectProfileService');
 const ObjectProfileIdGate = createGate<{ objectId: number }>();
 
-const handleFetchHousingStock = domain.createEvent<number>();
+const handleFetchHousingStock = createEvent<number>();
 
-const getHousingStockFx = domain.createEffect<number, HousingStockResponse>(
+const getHousingStockFx = createEffect<number, HousingStockResponse>(
   fetchHousingStock,
 );
-const $housingStock = domain
-  .createStore<HousingStockResponse | null>(null)
+const $housingStock = createStore<HousingStockResponse | null>(null)
   .on(getHousingStockFx.doneData, (_, housingStock) => housingStock)
   .reset(ObjectProfileIdGate.close);
 
@@ -38,18 +36,20 @@ const $housingStockId = $housingStock.map((housingStock) => {
 const $isAdministrator = currentUserService.outputs.$currentUser.map((user) => {
   const roles = user?.roles || [];
   const rolesKeys = roles.map(({ key }) => key);
-  const isAdministrator = rolesKeys.includes(
-    ESecuredIdentityRoleName.Administrator,
-  );
+  const isAdministrator =
+    rolesKeys.includes(ESecuredIdentityRoleName.Administrator) ||
+    rolesKeys.includes(
+      ESecuredIdentityRoleName.ManagingFirmSpectatingAdministrator,
+    );
 
   return isAdministrator;
 });
 
-const $resourceDisconnections = domain.createStore<
-  ResourceDisconnectingResponse[]
->([]);
+const $resourceDisconnections = createStore<ResourceDisconnectingResponse[]>(
+  [],
+);
 
-const getResourceDisconnectionsFx = domain.createEffect<
+const getResourceDisconnectionsFx = createEffect<
   number,
   ResourceDisconnectingResponsePagedList
 >(fetchResourceDisconnectionOnHousingStock);
@@ -61,39 +61,24 @@ $resourceDisconnections
   )
   .reset(ObjectProfileIdGate.close);
 
-const resetGrouptype = domain.createEvent();
-const setCurrentGroutype = domain.createEvent<HousingStockProfileGrouptype>();
-
-const $currentGrouptype = domain
-  .createStore<HousingStockProfileGrouptype>(
-    HousingStockProfileGrouptype.Common,
-  )
-  .on(setCurrentGroutype, (_, grouptype) => grouptype);
-
 const $isLoading = getHousingStockFx.pending;
 
 const FetchObjectGate = createGate<{ objectId: number }>();
 
-forward({
-  from: ObjectProfileIdGate.open.map(({ objectId }) => objectId),
-  to: [getResourceDisconnectionsFx, getHousingStockFx],
+sample({
+  clock: ObjectProfileIdGate.open.map(({ objectId }) => objectId),
+  target: [getResourceDisconnectionsFx, getHousingStockFx],
 });
 
-forward({
-  from: FetchObjectGate.open.map(({ objectId }) => objectId),
-  to: getHousingStockFx,
+sample({
+  clock: FetchObjectGate.open.map(({ objectId }) => objectId),
+  target: getHousingStockFx,
 });
 
-forward({
-  from: ObjectProfileIdGate.close,
-  to: resetGrouptype,
-});
-
-forward({ from: handleFetchHousingStock, to: getHousingStockFx });
+sample({ clock: handleFetchHousingStock, target: getHousingStockFx });
 
 export const housingStockProfileService = {
   inputs: {
-    setCurrentGroutype,
     openConsolidatedReportModal:
       consolidatedReportService.inputs.openConsolidatedReportModal,
     handleFetchHousingStock,
@@ -101,7 +86,6 @@ export const housingStockProfileService = {
   outputs: {
     $housingStock,
     $isLoading,
-    $currentGrouptype,
     $taskCount,
     $housingStockId,
     $isAdministrator,

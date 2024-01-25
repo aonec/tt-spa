@@ -1,4 +1,4 @@
-import { Tooltip } from 'antd';
+import { Tooltip } from 'ui-kit/shared/Tooltip';
 import React, { FC } from 'react';
 import { TaskPointProps } from './TaskPoint.types';
 import { getTaskDotStyle, getTaskTextStyle } from './TaskPoint.utils';
@@ -13,7 +13,7 @@ export const TaskPoint: FC<TaskPointProps> = ({ scale, datum }) => {
   if (!scale || !datum) {
     return null;
   }
-  const { isEmergency, x, y, amount, tasksInfo } = datum;
+  const { isEmergency, x, y, amount, taskInfo } = datum;
 
   const xPos = scale.x(x);
   const yPos = scale.y(y);
@@ -32,9 +32,7 @@ export const TaskPoint: FC<TaskPointProps> = ({ scale, datum }) => {
       <Tooltip
         title={
           <div>
-            {tasksInfo.map((task) => (
-              <TaskPointHint task={task} key={task.id} />
-            ))}
+            <TaskPointHint task={taskInfo} />
           </div>
         }
       >

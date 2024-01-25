@@ -1,29 +1,26 @@
+import { createEffect, createEvent, createStore } from 'effector';
 import { resourceDisablingScheduleServiceService } from 'services/settings/resourcesDisablingScheduleService/ResourceDisablingScheduleService.model';
 import { message } from 'antd';
-import { createDomain, forward, guard, sample } from 'effector';
+import { sample } from 'effector';
 import { EffectFailDataAxiosError } from 'types';
 import { fetchCompleteResourceDisconnecting } from './completeResourceDisconnectionService.api';
 
-const domain = createDomain('completeResourceDisconnectionService');
+const openModal = createEvent<{ id: string; endDate: string | null }>();
+const closeModal = createEvent();
 
-const openModal = domain.createEvent<{ id: string; endDate: string | null }>();
-const closeModal = domain.createEvent();
-
-const $resourceDisconnectionId = domain
-  .createStore<string>('')
+const $resourceDisconnectionId = createStore<string>('')
   .on(openModal, (_, payload) => payload.id)
   .reset(closeModal);
 
-const $endDate = domain
-  .createStore<null | string>(null)
+const $endDate = createStore<null | string>(null)
   .on(openModal, (_, payload) => payload.endDate)
   .reset(closeModal);
 
 const $isModalOpen = $resourceDisconnectionId.map(Boolean);
 
-const completeResourceDisconnection = domain.createEvent();
+const completeResourceDisconnection = createEvent();
 
-const completeResourceDisconnectionFx = domain.createEffect<
+const completeResourceDisconnectionFx = createEffect<
   string,
   void,
   EffectFailDataAxiosError
@@ -33,7 +30,7 @@ const $completeResourceDisconnectionIsLoading =
   completeResourceDisconnectionFx.pending;
 
 sample({
-  clock: guard({
+  clock: sample({
     source: $resourceDisconnectionId,
     clock: completeResourceDisconnection,
     filter: Boolean,
@@ -41,9 +38,9 @@ sample({
   target: completeResourceDisconnectionFx,
 });
 
-forward({
-  from: completeResourceDisconnectionFx.doneData,
-  to: [
+sample({
+  clock: completeResourceDisconnectionFx.doneData,
+  target: [
     closeModal,
     resourceDisablingScheduleServiceService.inputs
       .refetchResourceDisconnections,

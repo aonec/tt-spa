@@ -1,6 +1,6 @@
-import { useEvent, useStore } from 'effector-react';
+import { useUnit } from 'effector-react';
 import React, { useEffect } from 'react';
-import { useHistory, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { EditPersonalNumberPage } from './view/EditPersonalNumberPage';
 import { editPersonalNumberService } from './editPersonalNumberService.model';
 import { ConfirmationAddingExistingPersonalNumber } from '../components/ConfirmationAddingExistingPersonalNumberModal';
@@ -17,46 +17,51 @@ export const EditPersonalNumberContainer = () => {
   const apartmentId = id;
 
   const { homeownerId } = useParams<{ homeownerId: string }>();
-  const history = useHistory();
+  const navigate = useNavigate();
 
-  const isLoading = useStore(outputs.$isLoading);
-  const isLoadingClosingAccount = useStore(outputs.$isLoadingClosingAccount);
-  const apartment = useStore(outputs.$apartment);
+  const {
+    apartment,
+    isLoading,
+    isLoadingClosingAccount,
+    confirmationModalClose,
+    handleCloseHomeownerAccount,
+    handleEditHomeownerAccount,
+    handleForced,
+    isConfirmationModalOpen,
+    isVisibleCloseHomeownerAccountModalf,
+    samePersonalAccountNumderId,
+    setVisibleCloseHomeownerAccountModal,
+  } = useUnit({
+    isLoading: outputs.$isLoading,
+    isLoadingClosingAccount: outputs.$isLoadingClosingAccount,
+    apartment: outputs.$apartment,
+    isVisibleCloseHomeownerAccountModalf:
+      outputs.$isVisibleCloseHomeownerAccountModal,
+    isConfirmationModalOpen: outputs.$isConfirmationModalOpen,
+    samePersonalAccountNumderId: outputs.$samePersonalAccountNumderId,
+    confirmationModalClose: inputs.handleConfirmationModalClose,
+    handleForced: inputs.onForced,
+    handleEditHomeownerAccount: inputs.handleEditHomeownerAccount,
+    handleCloseHomeownerAccount: inputs.handleCloseHomeownerAccount,
+    setVisibleCloseHomeownerAccountModal:
+      inputs.setVisibleCloseHomeownerAccountModal,
+  });
+
   const homeowner = apartment?.homeownerAccounts?.find(
     (homeownerAccount) => homeownerAccount.id === homeownerId,
   );
 
-  const isVisibleCloseHomeownerAccountModalf = useStore(
-    outputs.$isVisibleCloseHomeownerAccountModal,
-  );
-  const isConfirmationModalOpen = useStore(outputs.$isConfirmationModalOpen);
-  const samePersonalAccountNumderId = useStore(
-    outputs.$samePersonalAccountNumderId,
-  );
-  const confirmationModalClose = useEvent(inputs.handleConfirmationModalClose);
-  const handleForced = useEvent(inputs.onForced);
-
-  const handleEditHomeownerAccount = useEvent(
-    inputs.handleEditHomeownerAccount,
-  );
-  const handleCloseHomeownerAccount = useEvent(
-    inputs.handleCloseHomeownerAccount,
-  );
-  const setVisibleCloseHomeownerAccountModal = useEvent(
-    inputs.setVisibleCloseHomeownerAccountModal,
-  );
-
   useEffect(() => {
     return inputs.successEditHomeownerAccount.watch(() => {
-      history.push(`/meters/apartments/${apartmentId}`);
+      navigate(`/meters/apartments/${apartmentId}`);
     }).unsubscribe;
-  }, [history, apartmentId]);
+  }, [navigate, apartmentId]);
 
   useEffect(() => {
     return inputs.successCloseHomeownerAccount.watch(() => {
-      history.push(`/meters/apartments/${apartmentId}`);
+      navigate(`/meters/apartments/${apartmentId}`);
     }).unsubscribe;
-  }, [history, apartmentId]);
+  }, [navigate, apartmentId]);
 
   return (
     <>

@@ -1,5 +1,5 @@
 import { EResourceType } from 'api/types';
-import moment from 'moment';
+import dayjs from 'api/dayjs';
 import {
   IndividualDeviceReadingsResponse,
   IndividualDeviceListItemResponse,
@@ -27,9 +27,9 @@ export function getPreparedReadingsDictionary(
   return readings.reduce((acc, elem) => {
     const dateFormat = 'YYYY-MM';
 
-    const currentMonthDate = moment(moment().format(dateFormat), dateFormat);
-    const readingMonthDate = moment(
-      moment(elem.readingDateTime).format(dateFormat),
+    const currentMonthDate = dayjs(dayjs().format(dateFormat), dateFormat);
+    const readingMonthDate = dayjs(
+      dayjs(elem.readingDateTime).format(dateFormat),
     );
 
     if (currentMonthDate.diff(readingMonthDate, 'months') > 11) return acc;

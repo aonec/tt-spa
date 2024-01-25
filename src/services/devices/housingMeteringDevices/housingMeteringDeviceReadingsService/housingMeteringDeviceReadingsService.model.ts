@@ -1,7 +1,8 @@
+import { createEffect, createEvent, createStore } from 'effector';
 import { message } from 'antd';
-import { createDomain, forward, sample } from 'effector';
+import { sample } from 'effector';
 import { createGate } from 'effector-react';
-import moment from 'moment';
+import dayjs from 'api/dayjs';
 import {
   CreateHousingMeteringDeviceReadingsRequest,
   EResourceType,
@@ -14,25 +15,23 @@ import {
   fetchHousingMeteringDeviceReadings,
 } from './housingMeteringDeviceReadingsService.api';
 
-const domain = createDomain('housingMeteringDeviceReadingsService');
-
-const getHousingMeteringDeviceReadingsFx = domain.createEffect<
+const getHousingMeteringDeviceReadingsFx = createEffect<
   number,
   GetHousingMeteringDeviceReadingsResponse
 >(fetchHousingMeteringDeviceReadings);
 
-const createReading =
-  domain.createEvent<CreateHousingMeteringDeviceReadingsRequest>();
-const createReadingFx = domain.createEffect<
+const createReading = createEvent<CreateHousingMeteringDeviceReadingsRequest>();
+const createReadingFx = createEffect<
   CreateHousingMeteringDeviceReadingsRequest,
   HousingMeteringDeviceReadingsIncludingPlacementResponse,
   EffectFailDataAxiosError
 >(createHousingMeteringDeviceReading);
 
-const clearStore = domain.createEvent();
+const clearStore = createEvent();
 
-const $readings = domain
-  .createStore<HousingMeteringDeviceReadingsIncludingPlacementResponse[]>([])
+const $readings = createStore<
+  HousingMeteringDeviceReadingsIncludingPlacementResponse[]
+>([])
   .on(getHousingMeteringDeviceReadingsFx.doneData, (_, response) =>
     (response.items || []).filter(
       (reading) => !reading.isArchived && !reading.isRemoved,
@@ -40,29 +39,30 @@ const $readings = domain
   )
   .reset(clearStore);
 
-const setResource = domain.createEvent<EResourceType>();
-const $isColdWater = domain
-  .createStore(false)
-  .on(setResource, (_, resource) => resource === EResourceType.ColdWaterSupply);
+const setResource = createEvent<EResourceType>();
+const $isColdWater = createStore(false).on(
+  setResource,
+  (_, resource) => resource === EResourceType.ColdWaterSupply,
+);
 
 const $isLoading = getHousingMeteringDeviceReadingsFx.pending;
 
 const NodeIdGate = createGate<{ nodeId: number }>();
 const NodeResourceGate = createGate<{ resource: EResourceType }>();
 
-forward({
-  from: NodeIdGate.open.map(({ nodeId }) => nodeId),
-  to: getHousingMeteringDeviceReadingsFx,
+sample({
+  clock: NodeIdGate.open.map(({ nodeId }) => nodeId),
+  target: getHousingMeteringDeviceReadingsFx,
 });
 
-forward({
-  from: NodeResourceGate.state.map(({ resource }) => resource),
-  to: setResource,
+sample({
+  clock: NodeResourceGate.state.map(({ resource }) => resource),
+  target: setResource,
 });
 
-forward({
-  from: createReading,
-  to: createReadingFx,
+sample({
+  clock: createReading,
+  target: createReadingFx,
 });
 
 sample({
@@ -71,9 +71,9 @@ sample({
   target: getHousingMeteringDeviceReadingsFx,
 });
 
-forward({
-  from: NodeIdGate.close,
-  to: clearStore,
+sample({
+  clock: NodeIdGate.close,
+  target: clearStore,
 });
 
 const createReadingFailed = createReadingFx.failData;
@@ -84,7 +84,7 @@ createReadingFailed.watch((error) =>
 
 createReadingFx.done.watch(({ params }) =>
   message.success(
-    `Показание за ${moment(params.readingDate).format('MMMM YYYY')} сохранено!`,
+    `Показание за ${dayjs(params.readingDate).format('MMMM YYYY')} сохранено!`,
   ),
 );
 

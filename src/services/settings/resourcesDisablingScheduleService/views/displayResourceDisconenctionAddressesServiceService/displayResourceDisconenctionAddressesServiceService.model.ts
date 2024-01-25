@@ -1,35 +1,25 @@
-import { createDomain } from 'effector';
-import { groupBy } from 'lodash';
-import {
-  BuildingShortResponse,
-  ResourceDisconnectingResponse,
-} from 'api/types';
+import { createEvent, createStore } from 'effector';
+import { ResourceDisconnectingResponse } from 'api/types';
+import { StreetWithBuildings } from './views/AddressesList/AddressesList.types';
+import { prepareAddresses } from './displayResourceDisconenctionAddressesServiceService.utils';
 
-const domain = createDomain(
-  'displayResourceDisconenctionAddressesServiceService',
-);
+const openModal = createEvent<ResourceDisconnectingResponse>();
+const closeModal = createEvent();
 
-const openModal = domain.createEvent<ResourceDisconnectingResponse>();
-const closeModal = domain.createEvent();
-
-const $disconnection = domain
-  .createStore<ResourceDisconnectingResponse | null>(null)
+const $disconnection = createStore<ResourceDisconnectingResponse | null>(null)
   .on(openModal, (_, disconnection) => disconnection)
   .reset(closeModal);
 
-const $addresses = domain
-  .createStore<[string, BuildingShortResponse[]][]>([])
+const $addresses = createStore<StreetWithBuildings[]>([])
   .on(openModal, (_, disconnection) => {
     if (!disconnection) {
       return [];
     }
 
     const buildings = disconnection.buildings || [];
-    const preparedHousingStocks = groupBy(
-      buildings,
-      'address.mainAddress.street',
-    );
-    return Object.entries(preparedHousingStocks);
+    const result = prepareAddresses(buildings);
+
+    return result;
   })
   .reset(closeModal);
 

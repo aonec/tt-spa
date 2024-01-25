@@ -1,4 +1,4 @@
-import { AppointmentCounterResponse } from 'api/types';
+import { AppointmentCounterResponse, ControllerResponse } from 'api/types';
 
 export type GetDistrictAppointmentsRequestPayload = {
   districtId: string;
@@ -12,4 +12,10 @@ export type AppointmentsCountingByDistrictsResponse = {
 export type GetDistrictsAppointmentsCountingRequestPayload = {
   districtIds: string[];
   date: string;
+};
+
+export type DownloadTaskDocumentRequestPayload = {
+  documentResponse: string;
+  appointmentDate: string;
+  controller: ControllerResponse;
 };

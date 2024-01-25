@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useMemo } from 'react';
 import {
   GridContainer,
   MarginTop,
@@ -40,7 +40,19 @@ export const ConsumptionReportCalculatorForm: FC<
 
   const nodesList = calculator?.nodes || [];
   const nodeGroups = _.groupBy(nodesList, 'resource');
+
+  const order = [
+    EResourceType.Heat,
+    EResourceType.HotWaterSupply,
+    EResourceType.ColdWaterSupply,
+    EResourceType.Electricity,
+  ];
+
   const resources = Object.keys(nodeGroups) as EResourceType[];
+
+  const resourcesSortedByOrder = resources.sort(
+    (a, b) => order.indexOf(a) - order.indexOf(b),
+  );
 
   const nodeIdForSono = calculator?.nodes && calculator.nodes[0].id;
 
@@ -52,7 +64,7 @@ export const ConsumptionReportCalculatorForm: FC<
       nodeId: isSono ? nodeIdForSono : null,
       customPeriodDisabled: true,
       withNS: false,
-      currentResourceType: resources[0],
+      currentResourceType: resourcesSortedByOrder[0],
       reportName: reportName,
     },
     validateOnChange: false,
@@ -88,7 +100,7 @@ export const ConsumptionReportCalculatorForm: FC<
   const currentGroup = nodeGroups[values.currentResourceType];
 
   const options = currentGroup.map((node) => {
-    const { id, number, communicationPipes } = node;
+    const { id, title, communicationPipes } = node;
 
     const devicesList = _.flatten(
       communicationPipes?.map((communicationPipe) => {
@@ -105,10 +117,30 @@ export const ConsumptionReportCalculatorForm: FC<
       .map((device) => `${device?.model} (${device?.serialNumber})`)
       .join(', ');
 
-    const label = `Узел ${number}: ${calculator?.model} (${calculator?.serialNumber}) ${devicesString}`;
+    const label = `Узел ${title}: ${calculator?.model} (${calculator?.serialNumber}) ${devicesString}`;
 
     return { value: id, label };
   });
+
+  const tabItems = useMemo(() => {
+    if (!resourcesSortedByOrder?.length) {
+      return [];
+    }
+
+    return resourcesSortedByOrder.map((resource) => {
+      const resourceName = ResourceNamesDictionary[resource];
+
+      return {
+        label: (
+          <StyledTab>
+            <ResourceIconLookup resource={resource} />
+            <div> {resourceName} </div>
+          </StyledTab>
+        ),
+        key: resource,
+      };
+    });
+  }, [resourcesSortedByOrder]);
 
   return (
     <Form id={formId} onSubmitCapture={handleSubmit}>
@@ -118,23 +150,8 @@ export const ConsumptionReportCalculatorForm: FC<
           setFieldValue('nodeId', null);
         }}
         activeKey={values.currentResourceType}
-      >
-        {resources &&
-          resources.map((resource) => {
-            const resourceName = ResourceNamesDictionary[resource];
-            return (
-              <Tabs.TabPane
-                tab={
-                  <StyledTab>
-                    <ResourceIconLookup resource={resource} />
-                    <div> {resourceName} </div>
-                  </StyledTab>
-                }
-                key={resource}
-              />
-            );
-          })}
-      </Tabs>
+        items={tabItems}
+      />
 
       <FormItem label="Название отчета">
         <Input

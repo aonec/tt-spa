@@ -1,4 +1,4 @@
-import moment from 'moment';
+import dayjs from 'api/dayjs';
 import React, { FC, useCallback, useMemo, useState } from 'react';
 import { MetersInputsBlockPure } from 'services/meters/individualDeviceMetersInputService/view/MetersInputsBlock/MeterInputsBlockPure';
 import { getRateNum } from 'services/meters/individualDeviceMetersInputService/view/MetersInputsBlock/MetersInputsBlock.utils';
@@ -31,19 +31,19 @@ export const EditReadingsHistoryModal: FC<EditReadingsHistoryModalProps> = ({
   const rateNum = rateType ? getRateNum(rateType) : 0;
 
   const isCanUp = useMemo(
-    () => moment().startOf('month').diff(readingDate, 'month') !== 0,
+    () => dayjs().startOf('month').diff(readingDate, 'month') !== 0,
     [readingDate],
   );
 
   const upMonth = useCallback(() => {
     if (isCanUp) {
-      const date = moment(readingDate, ReadingDateFormat).add(1, 'month');
+      const date = dayjs(readingDate, ReadingDateFormat).add(1, 'month');
       setReadingDate(date.format(ReadingDateFormat));
     }
   }, [setReadingDate, readingDate, isCanUp]);
 
   const downMonth = useCallback(() => {
-    const date = moment(readingDate, ReadingDateFormat).subtract(1, 'month');
+    const date = dayjs(readingDate, ReadingDateFormat).subtract(1, 'month');
     setReadingDate(date.format(ReadingDateFormat));
   }, [setReadingDate, readingDate]);
 
@@ -55,7 +55,7 @@ export const EditReadingsHistoryModal: FC<EditReadingsHistoryModalProps> = ({
 
   return (
     <FormModal
-      formId="edit-readings-history-modal"
+      formId="edit-readings-navigate-modal"
       title="Ввод показаний за произвольный период"
       onCancel={handleCloseModal}
       submitBtnText="Сохранить показание"
@@ -70,7 +70,7 @@ export const EditReadingsHistoryModal: FC<EditReadingsHistoryModalProps> = ({
                 <ChevronIcon />
               </ArrowContainer>
               <DatePickerSC
-                value={moment(readingDate, ReadingDateFormat)}
+                value={dayjs(readingDate, ReadingDateFormat)}
                 format="MMMM YYYY"
                 picker="month"
                 isActive={isActive}
@@ -81,13 +81,13 @@ export const EditReadingsHistoryModal: FC<EditReadingsHistoryModalProps> = ({
                   const selectedMonth = date
                     ?.startOf('month')
                     .format(ReadingDateFormat);
-                  const currentDate = moment()
+                  const currentDate = dayjs()
                     .startOf('month')
                     .format(ReadingDateFormat);
                   setReadingDate(selectedMonth || currentDate);
                 }}
                 disabledDate={(month) => {
-                  const currentMonth = moment().startOf('month');
+                  const currentMonth = dayjs().startOf('month');
                   const selectedMonth = month.startOf('month');
                   const diff = currentMonth.diff(selectedMonth, 'month');
                   return diff < 0;

@@ -1,4 +1,4 @@
-import React, { FC, useEffect } from 'react';
+import React, { FC, useEffect, useMemo } from 'react';
 import {
   ErrorBlockGrid,
   ErrorFieldName,
@@ -28,8 +28,6 @@ import { GoBack } from 'ui-kit/shared/GoBack';
 import { WithLoader } from 'ui-kit/shared/WithLoader';
 import { ResourceSelectSC } from 'ui-kit/shared/ResourceSelectSC';
 import { Select } from 'ui-kit/Select';
-
-const { TabPane } = TabsSC;
 
 export const UniqueWorkingRange: FC<UniqueWorkingRangeProps> = ({
   handleOnSearchDataChange,
@@ -79,43 +77,76 @@ export const UniqueWorkingRange: FC<UniqueWorkingRangeProps> = ({
         ENodeWorkingRangeType.DeltaMassOfMagistral,
     );
 
+  const handleOnSubmit = (data: UniqueWorkingRangeType) => {
+    const { housingStockIdHash, nodeId, nodeResourceType, season } = data;
+
+    const chosenBuilding = preparedAddresses
+      .flatMap((addressStreet) => addressStreet.children)
+      .find((preparedAddress) => preparedAddress?.value === housingStockIdHash);
+
+    const housingStockId = chosenBuilding?.buildingId;
+
+    !nodeId &&
+      housingStockId &&
+      handleOnSearchDataChange({
+        nodeResourceType,
+        season,
+        housingStockId,
+      });
+
+    nodeId && handleNodeChoosen({ season, nodeId });
+  };
+
   const { values, handleSubmit, setFieldValue } =
     useFormik<UniqueWorkingRangeType>({
       initialValues: {
         nodeResourceType: EResourceType.ColdWaterSupply,
         season: ENodeWorkingRangeSeason.HeatingSeason,
-        housingStockId: null,
+        housingStockIdHash: null,
         nodeId: null,
       },
       enableReinitialize: true,
-      onSubmit: (data) => {
-        const { housingStockId, nodeId, nodeResourceType, season } = data;
-
-        !nodeId &&
-          housingStockId &&
-          handleOnSearchDataChange({
-            nodeResourceType,
-            season,
-            housingStockId,
-          });
-
-        nodeId && handleNodeChoosen({ season, nodeId });
-      },
+      onSubmit: (data) => handleOnSubmit(data),
     });
 
+  const housingStockId = useMemo(() => {
+    const chosenBuilding = preparedAddresses
+      .flatMap((addressStreet) => addressStreet.children)
+      .find(
+        (preparedAddress) =>
+          preparedAddress?.value === values.housingStockIdHash,
+      );
+
+    return chosenBuilding?.buildingId;
+  }, [values.housingStockIdHash, preparedAddresses]);
+
   useEffect(() => {
-    values.housingStockId && handleFetchNodes(values.housingStockId);
-  }, [values.housingStockId, handleFetchNodes]);
+    housingStockId && handleFetchNodes(housingStockId);
+  }, [housingStockId, handleFetchNodes]);
 
   const preparedNodes = nodes?.reduce((acc, node) => {
     if (node.resource === values.nodeResourceType) {
-      return [...acc, { value: node.id, nodeNumber: node.number }];
+      return [...acc, { value: node.id, nodeTitle: node.title }];
     }
     return acc;
-  }, [] as { value: number; nodeNumber: number }[]);
+  }, [] as { value: number; nodeTitle: string | null }[]);
 
   const isElectricity =
     (values.nodeResourceType as EResourceType) === EResourceType.Electricity;
+
+  const tabItems = useMemo(
+    () => [
+      {
+        label: 'Отопительный сезон',
+        key: ENodeWorkingRangeSeason.HeatingSeason,
+      },
+      {
+        label: 'Межотопительный сезон',
+        key: ENodeWorkingRangeSeason.InterHeating,
+      },
+    ],
+    [],
+  );
 
   return (
     <>
@@ -127,16 +158,8 @@ export const UniqueWorkingRange: FC<UniqueWorkingRangeProps> = ({
           handleSubmit();
         }}
         activeKey={values.season}
-      >
-        <TabPane
-          tab="Отопительный сезон"
-          key={ENodeWorkingRangeSeason.HeatingSeason}
-        />
-        <TabPane
-          tab="Межотопительный сезон"
-          key={ENodeWorkingRangeSeason.InterHeating}
-        />
-      </TabsSC>
+        items={tabItems}
+      />
 
       <FilterBlock>
         <ResourceSelectSC
@@ -167,9 +190,9 @@ export const UniqueWorkingRange: FC<UniqueWorkingRangeProps> = ({
 
         <TreeSelectSC
           placeholder="Выберите улицу"
-          value={values.housingStockId || undefined}
+          value={values.housingStockIdHash || undefined}
           onChange={(value) => {
-            setFieldValue('housingStockId', value || null);
+            setFieldValue('housingStockIdHash', value || null);
             handleSubmit();
             setFieldValue('nodeId', null);
           }}
@@ -190,7 +213,7 @@ export const UniqueWorkingRange: FC<UniqueWorkingRangeProps> = ({
         >
           {preparedNodes?.map((node) => (
             <Select.Option key={node.value} value={node.value}>
-              {`Узел  ${node.nodeNumber}`}
+              {`Узел  ${node.nodeTitle}`}
             </Select.Option>
           ))}
         </Select>

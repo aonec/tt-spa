@@ -13,7 +13,7 @@ import { MainInfoProps } from './MainInfo.types';
 import { FormItem } from 'ui-kit/FormItem';
 import { Select } from 'ui-kit/Select';
 import { UpdateIndividualDeviceRequest } from 'api/types';
-import moment from 'moment';
+import dayjs from 'api/dayjs';
 import { Input } from 'ui-kit/Input';
 import { DatePicker } from 'ui-kit/DatePicker';
 import { Button } from 'ui-kit/Button';
@@ -54,13 +54,11 @@ export const MainInfo: FC<MainInfoProps> = ({
       bitDepth: bitDepth,
       scaleFactor: scaleFactor,
       isPolling: isPolling,
-      lastCheckingDate: lastCheckingDate ? moment(lastCheckingDate) : null,
-      futureCheckingDate: futureCheckingDate
-        ? moment(futureCheckingDate)
-        : null,
+      lastCheckingDate: lastCheckingDate ? dayjs(lastCheckingDate) : null,
+      futureCheckingDate: futureCheckingDate ? dayjs(futureCheckingDate) : null,
       sealNumber: sealNumber,
       sealInstallationDate: sealInstallationDate
-        ? moment(sealInstallationDate)
+        ? dayjs(sealInstallationDate)
         : null,
     },
     enableReinitialize: true,
@@ -72,10 +70,9 @@ export const MainInfo: FC<MainInfoProps> = ({
         bitDepth: Number(data.bitDepth),
         scaleFactor: Number(data.scaleFactor),
         sealNumber: data.sealNumber,
-        sealInstallationDate: moment(
-          values.sealInstallationDate,
-          'DD.MM.YYYY',
-        ).toISOString(true),
+        sealInstallationDate: !values.sealInstallationDate
+          ? null
+          : dayjs(values.sealInstallationDate, 'DD.MM.YYYY').format(),
         mountPlaceId: data.mountPlaceId,
         isPolling: data.isPolling,
       };
@@ -133,32 +130,17 @@ export const MainInfo: FC<MainInfoProps> = ({
         </Select>
       </FormItem>
 
-      <GridContainer>
-        <FormItem label="Разрядность">
-          <Input
-            disabled={!isOperator}
-            placeholder="Укажите разрядность"
-            type="number"
-            onChange={(value) => setFieldValue('bitDepth', value.target.value)}
-            value={values.bitDepth || undefined}
-            data-reading-input={dataKey}
-            onKeyDown={fromEnter(() => next(3))}
-          />
-        </FormItem>
-        <FormItem label="Множитель">
-          <Input
-            disabled={!isOperator}
-            placeholder="Укажите множитель"
-            type="number"
-            onChange={(value) =>
-              setFieldValue('scaleFactor', value.target.value)
-            }
-            value={values.scaleFactor || undefined}
-            data-reading-input={dataKey}
-            onKeyDown={fromEnter(() => next(4))}
-          />
-        </FormItem>
-      </GridContainer>
+      <FormItem label="Разрядность">
+        <Input
+          disabled={!isOperator}
+          placeholder="Укажите разрядность"
+          type="number"
+          onChange={(value) => setFieldValue('bitDepth', value.target.value)}
+          value={values.bitDepth || undefined}
+          data-reading-input={dataKey}
+          onKeyDown={fromEnter(() => next(3))}
+        />
+      </FormItem>
 
       {isOperator && (
         <SwitchWrapper>
@@ -170,20 +152,34 @@ export const MainInfo: FC<MainInfoProps> = ({
         </SwitchWrapper>
       )}
 
+      <FormItem label="Дата поверки">
+        <DatePicker
+          disabled
+          value={dayjs(values.lastCheckingDate)}
+          format="DD.MM.YYYY"
+        />
+      </FormItem>
+      <FormItem label="Дата Следующей поверки">
+        <DatePicker
+          disabled
+          value={dayjs(values.futureCheckingDate)}
+          format="DD.MM.YYYY"
+        />
+      </FormItem>
       <SpaceLine />
 
       <GridContainer>
         <FormItem label="Дата поверки">
           <DatePicker
             disabled
-            value={moment(values.lastCheckingDate)}
+            value={dayjs(values.lastCheckingDate)}
             format="DD.MM.YYYY"
           />
         </FormItem>
         <FormItem label="Дата Следующей поверки">
           <DatePicker
             disabled
-            value={moment(values.futureCheckingDate)}
+            value={dayjs(values.futureCheckingDate)}
             format="DD.MM.YYYY"
           />
         </FormItem>

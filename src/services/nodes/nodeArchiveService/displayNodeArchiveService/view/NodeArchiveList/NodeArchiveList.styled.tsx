@@ -4,13 +4,10 @@ import { Checkbox } from 'antd';
 
 export const columnWidth = `120px`;
 
-export const ListWrapper = styled.div`
-  width: 100%;
-  overflow-x: auto;
-`;
-
 export const Wrapper = styled.div`
-  width: 800px;
+  overflow-y: auto;
+  overflow-x: auto;
+  height: calc(100vh - 160px);
 `;
 
 export const Header = styled.div<{ columnsCount: number }>`
@@ -23,9 +20,27 @@ export const Header = styled.div<{ columnsCount: number }>`
   grid-gap: 8px;
   align-items: center;
   padding: 0 8px;
-  margin-top: 8px;
 `;
 
 export const CheckboxSC = styled(Checkbox)`
   color: #272f5ae5;
+  background-color: #fff;
+  padding-bottom: 8px;
+  position: sticky;
+  left: 0px;
+`;
+
+export const StickyWrapper = styled.div`
+  position: sticky;
+  top: 0px;
+  background-color: #fff;
+  z-index: 10;
+  width: fit-content;
+`;
+
+export const FirstColumn = styled.div`
+  position: sticky;
+  top: 0px;
+  left: 0px;
+  background-color: rgba(243, 245, 246, 1);
 `;

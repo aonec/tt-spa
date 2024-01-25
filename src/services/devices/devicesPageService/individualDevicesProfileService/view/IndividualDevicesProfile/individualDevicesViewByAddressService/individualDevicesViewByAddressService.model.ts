@@ -1,4 +1,5 @@
-import { combine, createDomain, guard, Store } from 'effector';
+import { createEffect, createEvent, createStore } from 'effector';
+import { combine, sample, Store } from 'effector';
 import { createGate } from 'effector-react';
 import {
   ApartmentByAddressFilterResponsePagedList,
@@ -21,49 +22,45 @@ import {
 import { EffectFailDataAxiosError } from 'types';
 import { message } from 'antd';
 
-const domain = createDomain('individualDevicesViewByAddressService');
-
 const setIndividualDeviceSearchRequestPayload =
-  domain.createEvent<SearchIndividualDevicesRequestPayload>();
+  createEvent<SearchIndividualDevicesRequestPayload>();
 
 const updateSearchPayload =
-  domain.createEvent<SearchIndividualDevicesRequestPayload>();
+  createEvent<SearchIndividualDevicesRequestPayload>();
 
 const IndividualDevicesSearchGate = createGate();
 
-const clearSearchPayload = domain.createEvent();
+const clearSearchPayload = createEvent();
 
-const setPageNumber = domain.createEvent<number>();
+const setPageNumber = createEvent<number>();
 
-const fetchHousingsByFilterFx = domain.createEffect<
+const fetchHousingsByFilterFx = createEffect<
   GetHousingByFilterRequestPayload,
   BuildingByFilterResponse | null,
   EffectFailDataAxiosError
 >(getHousingsByFilter);
 
-const fetchIndividualDevicesApartments = domain.createEffect<
+const fetchIndividualDevicesApartments = createEffect<
   GetIndividualDevicesApartments,
   ApartmentByAddressFilterResponsePagedList | null
 >(getIndividualDevicesApartments);
 
-const $individualDeviceSearchRequestPayload = domain
-  .createStore<SearchIndividualDevicesRequestPayload>(searchInitialValues)
-  .on(setIndividualDeviceSearchRequestPayload, (_, data) => data)
-  .on(updateSearchPayload, (prev, data) => ({ ...prev, ...data }))
-  .reset(clearSearchPayload);
+const $individualDeviceSearchRequestPayload =
+  createStore<SearchIndividualDevicesRequestPayload>(searchInitialValues)
+    .on(setIndividualDeviceSearchRequestPayload, (_, data) => data)
+    .on(updateSearchPayload, (prev, data) => ({ ...prev, ...data }))
+    .reset(clearSearchPayload);
 
-const $housingsByFilter = domain
-  .createStore<BuildingByFilterResponse | null>(null)
+const $housingsByFilter = createStore<BuildingByFilterResponse | null>(null)
   .on(fetchHousingsByFilterFx.doneData, (_, data) => data)
   .reset(clearSearchPayload);
 
-const $individualDevicesApartmentsPagedData = domain
-  .createStore<ApartmentByAddressFilterResponsePagedList | null>(null)
-  .on(fetchIndividualDevicesApartments.doneData, (_, data) => data)
-  .reset(clearSearchPayload, fetchIndividualDevicesApartments.failData);
+const $individualDevicesApartmentsPagedData =
+  createStore<ApartmentByAddressFilterResponsePagedList | null>(null)
+    .on(fetchIndividualDevicesApartments.doneData, (_, data) => data)
+    .reset(clearSearchPayload, fetchIndividualDevicesApartments.failData);
 
-const $pageNumber = domain
-  .createStore<number>(1)
+const $pageNumber = createStore<number>(1)
   .on(setPageNumber, (_, pageNumber) => pageNumber)
   .reset($individualDeviceSearchRequestPayload);
 
@@ -81,7 +78,7 @@ const $getHousingsByFilterRequestPayload: Store<GetHousingByFilterRequestPayload
     return payload;
   });
 
-guard({
+sample({
   clock: $getHousingsByFilterRequestPayload,
   filter: (payload): payload is GetHousingByFilterRequestPayload =>
     Boolean(payload),
@@ -117,7 +114,7 @@ const $getIndividualDevicesApartmentsRequestPayload: Store<GetIndividualDevicesA
     return payload;
   });
 
-guard({
+sample({
   clock: $getIndividualDevicesApartmentsRequestPayload,
   filter: (payload): payload is GetIndividualDevicesApartments =>
     Boolean(payload),

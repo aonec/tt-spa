@@ -7,7 +7,7 @@ import { ConnectedDevicesProps } from './ConnectedDevices.types';
 import { SpaceLine } from 'ui-kit/SpaceLine';
 import { Empty } from 'antd';
 import { addConnectedCommonDevicesService } from './ConnectedDevices.models';
-import { useEvent } from 'effector-react';
+import { useUnit } from 'effector-react';
 import { AddPipeNodeCommonDeviceContainer } from 'services/nodes/addPipeNodeCommonDeviceService';
 import {
   CommunicationPipePayload,
@@ -33,7 +33,9 @@ export const ConnectedDevices: FC<ConnectedDevicesProps> = ({
   validateNode,
   isValidationLoading,
 }) => {
-  const openAddCommonDeviceModal = useEvent(inputs.openAddCommonDeviceModal);
+  const { openAddCommonDeviceModal } = useUnit({
+    openAddCommonDeviceModal: inputs.openAddCommonDeviceModal,
+  });
 
   const [communicationPipes, setCommunicationPipes] = useState<
     CommunicationPipePayload[]
@@ -81,10 +83,6 @@ export const ConnectedDevices: FC<ConnectedDevicesProps> = ({
     updateRequestPayload({ communicationPipes });
   }, [communicationPipes, updateRequestPayload]);
 
-  const handleDeletePipe = (pipeId: string) => {
-    setCommunicationPipes((prev) => prev.filter((elem) => elem.id !== pipeId));
-  };
-
   const handleDeleteDevice = (pipeId: string, deviceIndex: number) => {
     setCommunicationPipes((prev) =>
       prev.map((pipe) => {
@@ -125,7 +123,6 @@ export const ConnectedDevices: FC<ConnectedDevicesProps> = ({
                 configuration={configuration}
                 key={pipe.id}
                 pipe={pipe}
-                handleDeletePipe={handleDeletePipe}
                 handleDeleteDevice={handleDeleteDevice}
                 isNodeConfigWithoutODPU={isNodeConfigWithoutODPU}
               />

@@ -1,4 +1,5 @@
-import { createDomain, sample } from 'effector';
+import { createEvent, createStore } from 'effector';
+import { sample } from 'effector';
 import { createGate } from 'effector-react';
 import { message } from 'antd';
 import {
@@ -6,20 +7,21 @@ import {
   existingDistrictsQuery,
   updateDistrictMutation,
 } from './manageDistrictsMapService.api';
-import { currentUserService } from 'services/currentUserService';
 import { DistrictsPageSegment } from './ManageDistrictPage/ManageDistrictPage.types';
-
-const domain = createDomain('manageDistrictsMapService');
+import { addHouseToDistrictMutation } from './ManageDistrictPage/ManageDistrictsList/addHouseToDistrict/addHouseToDistrictService.api';
+import { deleteHouseInDistrictMutation } from './ManageDistrictPage/ManageDistrictsList/deleteHouseInDistrict/deleteHouseInDistrictService.api';
+import { currentOrganizationService } from 'services/currentOrganizationService';
 
 const ManageDistrictsGate = createGate();
 
-const handleDeleteDistrict = domain.createEvent<string>();
+const handleDeleteDistrict = createEvent<string>();
 
-const setDistrictsPageSegment = domain.createEvent<DistrictsPageSegment>();
+const setDistrictsPageSegment = createEvent<DistrictsPageSegment>();
 
-const $districtsPageSegment = domain
-  .createStore<DistrictsPageSegment>('list')
-  .on(setDistrictsPageSegment, (_, segment) => segment);
+const $districtsPageSegment = createStore<DistrictsPageSegment>('list').on(
+  setDistrictsPageSegment,
+  (_, segment) => segment,
+);
 
 sample({
   clock: ManageDistrictsGate.open,
@@ -47,6 +49,8 @@ sample({
   clock: [
     deleteDistrictMutation.finished.success,
     updateDistrictMutation.finished.success,
+    addHouseToDistrictMutation.finished.success,
+    deleteHouseInDistrictMutation.finished.success,
   ],
   target: existingDistrictsQuery.start,
 });
@@ -63,7 +67,7 @@ export const manageDistrictsMapService = {
   },
   outputs: {
     $organizationCoordinates:
-      currentUserService.outputs.$organizationCoordinates,
+      currentOrganizationService.outputs.$organizationCoordinates,
     $districtsPageSegment,
   },
   gates: { ManageDistrictsGate },

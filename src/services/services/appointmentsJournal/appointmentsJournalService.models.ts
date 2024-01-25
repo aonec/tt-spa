@@ -1,6 +1,6 @@
-import { forward, sample } from 'effector';
+import { sample } from 'effector';
 import { createForm } from 'effector-forms';
-import moment from 'moment';
+import dayjs from 'api/dayjs';
 import { individualSealAssignmentsQuery } from './appointmentsJournalService.api';
 import { createGate } from 'effector-react';
 import { individualSealControllersQuery } from '../distributeRecordsService/distributeRecordsService.api';
@@ -9,8 +9,8 @@ const AssignmentsJournalGate = createGate();
 
 const searchForm = createForm({
   fields: {
-    from: { init: moment() as moment.Moment },
-    to: { init: null as null | moment.Moment },
+    from: { init: dayjs() as dayjs.Dayjs },
+    to: { init: null as null | dayjs.Dayjs },
   },
 });
 
@@ -24,9 +24,9 @@ sample({
   target: individualSealAssignmentsQuery.start,
 });
 
-forward({
-  from: AssignmentsJournalGate.open,
-  to: individualSealControllersQuery.start,
+sample({
+  clock: AssignmentsJournalGate.open,
+  target: individualSealControllersQuery.start,
 });
 
 export const appointmentsJournalService = {

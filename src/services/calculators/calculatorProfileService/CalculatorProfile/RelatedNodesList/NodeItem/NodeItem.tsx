@@ -12,7 +12,7 @@ import {
 } from './NodeItem.styled';
 import { NodeItemProps } from './NodeItem.types';
 import { Link } from 'react-router-dom';
-import { Tooltip } from 'antd';
+import { Tooltip } from 'ui-kit/shared/Tooltip';
 import { DeviceIcon } from 'ui-kit/icons';
 import { ResourceIconLookup } from 'ui-kit/shared/ResourceIconLookup';
 import { NodeStatus } from 'services/devices/resourceAccountingSystemsService/view/ResourceAccountingSystems/NodesGroup/NodeItem/NodeStatus';
@@ -21,7 +21,7 @@ export const NodeItem: FC<NodeItemProps> = ({ node, openDevicesListModal }) => {
   const nodeInfo = (
     <BaseNodeInfo>
       <Link to={`/nodes/${node?.id}`}>
-        <NodeName>Узел {node?.number}</NodeName>
+        <NodeName>Узел {node?.title}</NodeName>
         <AdditionalInfo>
           Ввод {node?.communicationPipes?.[0]?.entryNumber},{' '}
           {node?.nodeServiceZone?.name}

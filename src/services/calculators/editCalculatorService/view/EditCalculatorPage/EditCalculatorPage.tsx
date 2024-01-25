@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useMemo } from 'react';
 import {
   CalculatorModel,
   CalculatorNumber,
@@ -11,7 +11,7 @@ import {
   EditCalculatorPageProps,
   EditCalculatorTabs,
 } from './EditCalculatorPage.types';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { GoBack } from 'ui-kit/shared/GoBack';
 import { PageHeader } from 'ui-kit/shared/PageHeader';
 import { HeaderInfoString } from 'ui-kit/shared/HeaderInfoString';
@@ -34,8 +34,17 @@ export const EditCalculatorPage: FC<EditCalculatorPageProps> = ({
 }) => {
   const address = calculator?.address?.address?.mainAddress;
 
-  const history = useHistory();
-  const onCancel = () => history.goBack();
+  const navigate = useNavigate();
+  const onCancel = () => navigate(-1);
+
+  const tabItems = useMemo(
+    () => [
+      { label: 'Общие данные', key: EditCalculatorTabs.CommonInfo },
+      { label: 'Настройки соединения', key: EditCalculatorTabs.Connection },
+      { label: 'Документы', key: EditCalculatorTabs.Documents },
+    ],
+    [],
+  );
 
   return (
     <Wrapper>
@@ -67,17 +76,9 @@ export const EditCalculatorPage: FC<EditCalculatorPageProps> = ({
               handleChangeTab(value as EditCalculatorTabs);
             }}
             activeKey={currentTab}
-          >
-            <Tabs.TabPane
-              tab="Общие данные"
-              key={EditCalculatorTabs.CommonInfo}
-            />
-            <Tabs.TabPane
-              tab="Настройки соединения"
-              key={EditCalculatorTabs.Connection}
-            />
-            <Tabs.TabPane tab="Документы" key={EditCalculatorTabs.Documents} />
-          </Tabs>
+            items={tabItems}
+          />
+
           {currentTab === EditCalculatorTabs.CommonInfo && (
             <EditMainInfo
               calculator={calculator}

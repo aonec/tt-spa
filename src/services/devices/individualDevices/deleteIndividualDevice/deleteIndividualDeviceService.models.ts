@@ -1,21 +1,20 @@
-import { createDomain, sample } from 'effector';
+import { createEvent, createStore } from 'effector';
+import { sample } from 'effector';
 import { IndividualDeviceListItemResponse } from 'api/types';
 import { apartmentIndividualDevicesMetersService } from 'services/meters/apartmentIndividualDevicesMetersService';
 import { message } from 'antd';
 import { deleteIndividualDeviceMutation } from './deleteIndividualDeviceService.api';
 
-const domain = createDomain('deleteIndividualDeviceService');
-
-const deleteIndividualDevice = domain.createEvent();
+const deleteIndividualDevice = createEvent();
 
 const individualDeviceDeleted = deleteIndividualDeviceMutation.finished.success;
 
-const openModal = domain.createEvent<IndividualDeviceListItemResponse>();
-const closeModal = domain.createEvent();
-const $currentIndividualDevice = domain
-  .createStore<IndividualDeviceListItemResponse | null>(null)
-  .on(openModal, (_, device) => device)
-  .reset(closeModal, individualDeviceDeleted);
+const openModal = createEvent<IndividualDeviceListItemResponse>();
+const closeModal = createEvent();
+const $currentIndividualDevice =
+  createStore<IndividualDeviceListItemResponse | null>(null)
+    .on(openModal, (_, device) => device)
+    .reset(closeModal, individualDeviceDeleted);
 
 const $isModalOpen = $currentIndividualDevice.map(Boolean);
 

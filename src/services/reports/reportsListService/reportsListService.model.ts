@@ -1,52 +1,52 @@
-import { combine, createDomain, sample, forward } from 'effector';
+import { createEffect, createEvent, createStore } from 'effector';
+import { combine, sample } from 'effector';
 import { createGate } from 'effector-react';
 import { EOrderByRule, ReportRequestHistoryPagedList } from 'api/types';
 import { getReportsHistoryList } from './reportsListService.api';
 import { PAGE_SIZE } from './reportsListService.constants';
 import { GetReportsHistoryListRequestPayload } from './reportsListService.types';
 
-const domain = createDomain('reportsListService');
-
-const fetchReportsHistoryList = domain.createEffect<
+const fetchReportsHistoryList = createEffect<
   GetReportsHistoryListRequestPayload,
   ReportRequestHistoryPagedList
 >(getReportsHistoryList);
 
 const ReportsHistoryGate = createGate();
 
-const refetchReportsHistory = domain.createEvent();
+const refetchReportsHistory = createEvent();
 
-const openExistedReport = domain.createEvent<Record<string, string>>();
+const openExistedReport = createEvent<Record<string, string>>();
 
-const $reportsHistoryPagedData = domain
-  .createStore<ReportRequestHistoryPagedList | null>(null)
-  .on(fetchReportsHistoryList.doneData, (_, data) => data)
-  .reset(ReportsHistoryGate.close);
+const $reportsHistoryPagedData =
+  createStore<ReportRequestHistoryPagedList | null>(null)
+    .on(fetchReportsHistoryList.doneData, (_, data) => data)
+    .reset(ReportsHistoryGate.close);
 
-const setIsShowActual = domain.createEvent<boolean>();
+const setIsShowActual = createEvent<boolean>();
 
-const $isShowActual = domain
-  .createStore(true)
-  .on(setIsShowActual, (_, isShow) => isShow);
+const $isShowActual = createStore(true).on(
+  setIsShowActual,
+  (_, isShow) => isShow,
+);
 
-const setReportNameText = domain.createEvent<string>();
+const setReportNameText = createEvent<string>();
 
-const $reportNameText = domain
-  .createStore<string>('')
-  .on(setReportNameText, (_, text) => text);
+const $reportNameText = createStore<string>('').on(
+  setReportNameText,
+  (_, text) => text,
+);
 
-const setPageNumber = domain.createEvent<number>();
+const setPageNumber = createEvent<number>();
 
-const $pageNumber = domain
-  .createStore<number>(1)
+const $pageNumber = createStore<number>(1)
   .on(setPageNumber, (_, pageNumber) => pageNumber)
   .reset($isShowActual, $reportNameText, $reportNameText);
 
 const $requestPayload = combine($isShowActual, $pageNumber, $reportNameText);
 
-forward({
-  from: $requestPayload,
-  to: refetchReportsHistory,
+sample({
+  clock: $requestPayload,
+  target: refetchReportsHistory,
 });
 
 sample({

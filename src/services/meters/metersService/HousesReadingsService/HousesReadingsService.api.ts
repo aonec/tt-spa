@@ -5,7 +5,7 @@ import {
   GetIndividualDevicesListRequestPayload,
 } from './HousesReadingsService.types';
 import {
-  BuildingListResponsePagedList,
+  BuildingWithCoordinatesResponsePagedList,
   HousingStockResponse,
   IndividualDeviceListItemResponsePagedList,
 } from 'api/types';
@@ -16,8 +16,8 @@ import { EffectFailDataAxiosError } from 'types';
 const getHousingStockId = async (
   params: GetHousingStocksListRequestPayload,
 ): Promise<number | null> => {
-  const res: BuildingListResponsePagedList | null = await axios.get(
-    'Buildings',
+  const res: BuildingWithCoordinatesResponsePagedList | null = await axios.get(
+    'Buildings/Lite',
     {
       params: { ...params, PageSize: 1, PageNumber: 1 },
     },

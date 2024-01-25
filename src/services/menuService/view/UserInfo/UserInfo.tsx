@@ -1,4 +1,4 @@
-import { Tooltip } from 'antd';
+import { Tooltip } from 'ui-kit/shared/Tooltip';
 import React, { FC, useMemo } from 'react';
 import {
   UserEmail,
@@ -10,24 +10,30 @@ import {
 } from './UserInfo.styled';
 import { UserInfoProps } from './UserInfo.types';
 
-export const UserInfo: FC<UserInfoProps> = ({ isLoading, currentUser }) => {
+export const UserInfo: FC<UserInfoProps> = ({
+  isLoading,
+  currentUser,
+  currentManagingFirm,
+}) => {
   const userEmail = useMemo(() => {
     if (!currentUser) {
       return <UserLoader active={isLoading} />;
     }
 
-    return <UserEmail>{currentUser.email}</UserEmail>;
+    return (
+      <Tooltip title={currentUser.email}>
+        <UserEmail>{currentUser.email}</UserEmail>
+      </Tooltip>
+    );
   }, [currentUser, isLoading]);
 
   return (
     <UserInfoWrapper>
       <UserEmailWrapper>
         <UserIconSC />
-        <Tooltip title={currentUser?.email}>{userEmail}</Tooltip>
+        {userEmail}
       </UserEmailWrapper>
-      <UserManagingFirmName>
-        {currentUser?.organization?.name}
-      </UserManagingFirmName>
+      <UserManagingFirmName>{currentManagingFirm?.name}</UserManagingFirmName>
     </UserInfoWrapper>
   );
 };

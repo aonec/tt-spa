@@ -1,28 +1,27 @@
-import { createDomain, forward, guard } from 'effector';
+import { createEffect, createStore } from 'effector';
+import { sample } from 'effector';
 import { createGate } from 'effector-react';
 import { ESecuredIdentityRoleNameStringDictionaryItem } from 'api/types';
 import { fetchUserRoles } from './rolesService.api';
 
-const domain = createDomain('rolesService');
-
 const UserRolesGate = createGate();
 
-const fetchUserRolesFx = domain.createEffect<
+const fetchUserRolesFx = createEffect<
   void,
   ESecuredIdentityRoleNameStringDictionaryItem[] | null
 >(fetchUserRoles);
 
-const $userRoles = domain
-  .createStore<ESecuredIdentityRoleNameStringDictionaryItem[] | null>(null)
-  .on(fetchUserRolesFx.doneData, (_, userRoles) => userRoles);
+const $userRoles = createStore<
+  ESecuredIdentityRoleNameStringDictionaryItem[] | null
+>(null).on(fetchUserRolesFx.doneData, (_, userRoles) => userRoles);
 
-forward({
-  from: guard({
+sample({
+  clock: sample({
     clock: UserRolesGate.open,
     source: $userRoles,
     filter: (userRoles) => userRoles === null,
   }),
-  to: fetchUserRolesFx,
+  target: fetchUserRolesFx,
 });
 
 export const rolesService = {

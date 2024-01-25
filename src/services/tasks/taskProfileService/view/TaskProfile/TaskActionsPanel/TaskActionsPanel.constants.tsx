@@ -19,6 +19,9 @@ import { CloseDevicesContainer } from './CloseDeviceService';
 import { CommentContainer } from './commentService';
 import { AttachDocumentContainer } from './attachDocumentService';
 import { SwitchDeviceContainer } from './switchDeviceService';
+import { AddResourceDisconnectionContainer } from './addResourceDisconnectionService';
+import { SetExecutionPostponedDateContainer } from './setExecutionPostponedDateService';
+import { SelectApplicationWorkerContainer } from './selectApplicationWorkerService';
 
 export const taskActionsComponents: TaskActionsComponent[] = [
   {
@@ -85,6 +88,11 @@ export const taskActionsComponents: TaskActionsComponent[] = [
     position: TaskPanelInputPositionType.Full,
   },
   {
+    actionType: EStageActionType.CreateResourceDisconnecting,
+    Component: AddResourceDisconnectionContainer,
+    position: TaskPanelInputPositionType.Full,
+  },
+  {
     actionType: EStageActionType.AddComment,
     Component: CommentContainer,
     position: TaskPanelInputPositionType.Full,
@@ -93,6 +101,16 @@ export const taskActionsComponents: TaskActionsComponent[] = [
     actionType: EStageActionType.SwitchDevices,
     Component: SwitchDeviceContainer,
     position: TaskPanelInputPositionType.Full,
+  },
+  {
+    actionType: EStageActionType.SetApplicationPostponeDate,
+    Component: SetExecutionPostponedDateContainer,
+    position: TaskPanelInputPositionType.Full,
+  },
+  {
+    actionType: EStageActionType.SelectApplicationWorker,
+    Component: SelectApplicationWorkerContainer,
+    position: TaskPanelInputPositionType.Bottom,
   },
 ];
 

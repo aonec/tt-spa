@@ -1,5 +1,6 @@
+import { createEffect, createEvent, createStore } from 'effector';
 import { message } from 'antd';
-import { createDomain, forward, guard, sample } from 'effector';
+import { sample } from 'effector';
 import { createGate } from 'effector-react';
 import { HouseManagementResponse } from 'api/types';
 import { EffectFailDataAxiosError } from 'types';
@@ -14,18 +15,16 @@ import {
 } from './createObjectService.types';
 import { IsElevatorDictionaryBoolean } from './view/CreateObjectPage/CreateObjectFinalStageModal/CreateObjectFinalStageModal.constants';
 
-const domain = createDomain('createObjectService');
+const goBackStage = createEvent();
 
-const goBackStage = domain.createEvent();
+const goNextStage = createEvent();
 
-const goNextStage = domain.createEvent();
+const handleSubmitCreateObject = createEvent<ObjectCreateSubmitData>();
 
-const handleSubmitCreateObject = domain.createEvent<ObjectCreateSubmitData>();
+const handlePostCreateObject = createEvent();
 
-const handlePostCreateObject = domain.createEvent();
-
-const closePreviewModal = domain.createEvent();
-const openPreviewModal = domain.createEvent();
+const closePreviewModal = createEvent();
+const openPreviewModal = createEvent();
 
 const openEditHeatingStationModal =
   editHeatingStationService.inputs.handleOpenModal;
@@ -36,7 +35,7 @@ const heatingStationCapture =
 const handleHeatindStationModalOpen =
   createHeatingStationService.inputs.handleOpenModal;
 
-const resetter = domain.createEvent();
+const resetter = createEvent();
 
 const HouseManagementsFetchGate = createGate();
 const PageCloseGate = createGate();
@@ -44,12 +43,12 @@ const PageCloseGate = createGate();
 const HeatingStationsFetchGate =
   displayHeatingStationsService.gates.HeatingStationsFetchGate;
 
-const fetchHouseManagementsFx = domain.createEffect<
+const fetchHouseManagementsFx = createEffect<
   void,
   HouseManagementResponse[] | null
 >(getHouseManagements);
 
-const createObjectFx = domain.createEffect<
+const createObjectFx = createEffect<
   CreateBuildingRequest,
   CreateBuildingResponse,
   EffectFailDataAxiosError
@@ -57,49 +56,46 @@ const createObjectFx = domain.createEffect<
 
 const handleCreateObjectSuccessDone = createObjectFx.doneData;
 
-const $createObjectData = domain
-  .createStore<ObjectCreateSubmitData | null>(null)
+const $createObjectData = createStore<ObjectCreateSubmitData | null>(null)
   .on(handleSubmitCreateObject, (oldData, newData) => ({
     ...oldData,
     ...newData,
   }))
   .reset(resetter);
 
-const $stageNumber = domain
-  .createStore<number>(1)
+const $stageNumber = createStore<number>(1)
   .on(goNextStage, (stageNumber) => stageNumber + 1)
   .on(goBackStage, (stageNumber) => stageNumber - 1)
   .reset(resetter);
 
-guard({
+sample({
   source: $stageNumber,
   clock: handleSubmitCreateObject,
   filter: (stageNumber) => stageNumber < 3,
   target: goNextStage,
 });
 
-const $houseManagements = domain
-  .createStore<HouseManagementResponse[] | null>(null)
-  .on(fetchHouseManagementsFx.doneData, (_, data) => data);
+const $houseManagements = createStore<HouseManagementResponse[] | null>(
+  null,
+).on(fetchHouseManagementsFx.doneData, (_, data) => data);
 
-const $isPreviewModalOpen = domain
-  .createStore<boolean>(false)
+const $isPreviewModalOpen = createStore<boolean>(false)
   .on(openPreviewModal, () => true)
   .reset(resetter, closePreviewModal);
 
 const $heatingStations = displayHeatingStationsService.outputs.$heatingStations;
 
-forward({
-  from: HouseManagementsFetchGate.open,
-  to: fetchHouseManagementsFx,
+sample({
+  clock: HouseManagementsFetchGate.open,
+  target: fetchHouseManagementsFx,
 });
 
-forward({
-  from: PageCloseGate.close,
-  to: resetter,
+sample({
+  clock: PageCloseGate.close,
+  target: resetter,
 });
 
-guard({
+sample({
   clock: sample({
     source: $createObjectData,
     clock: handlePostCreateObject,

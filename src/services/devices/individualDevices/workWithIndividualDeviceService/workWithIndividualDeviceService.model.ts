@@ -1,4 +1,5 @@
-import { combine, createDomain, sample, split } from 'effector';
+import { createEvent } from 'effector';
+import { combine, sample, split } from 'effector';
 import { createGate } from 'effector-react';
 import {
   CheckIndividualDevicePayload,
@@ -12,6 +13,7 @@ import {
   EClosingReason,
   EIndividualDeviceRateType,
   EResourceType,
+  ESwitchingReason,
 } from 'api/types';
 import { getBitDepthAndScaleFactor } from 'utils/getBitDepthAndScaleFactor';
 import {
@@ -24,16 +26,13 @@ import {
   prepareDeviceReadings,
 } from './workWithIndividualDeviceService.utils';
 import { message } from 'antd';
-import moment from 'moment';
+import dayjs from 'api/dayjs';
 
 const WorkWithIndividualDeviceGate = createGate<{
   type: WorkWithIndividualDeviceType;
 }>();
 
-const domain = createDomain('workWithIndividualDeviceService');
-
 const deviceInfoForm = createForm({
-  domain,
   fields: {
     model: {
       init: '',
@@ -80,7 +79,7 @@ const deviceInfoForm = createForm({
       init: null as number | null,
     },
     oldDeviceClosingReason: {
-      init: null as EClosingReason | null,
+      init: null as EClosingReason | ESwitchingReason | null,
     },
 
     lastCommercialAccountingDate: {
@@ -169,13 +168,13 @@ const $individualDevice =
 
 const deviceChecked = checkIndividualDeviceMutation.finished.success;
 const deviceSwitched = switchIndividualDeviceMutation.finished.success;
-const actionSucceed = domain.createEvent<WorkWithIndividualDeviceType>();
+const actionSucceed = createEvent<WorkWithIndividualDeviceType>();
 
-const fetchSerialNumberForCheck = domain.createEvent<string>();
+const fetchSerialNumberForCheck = createEvent<string>();
 
-const submitAction = domain.createEvent();
-const switchIndividualDevice = domain.createEvent();
-const checkIndividualDevice = domain.createEvent();
+const submitAction = createEvent();
+const switchIndividualDevice = createEvent();
+const checkIndividualDevice = createEvent();
 
 split({
   source: WorkWithIndividualDeviceGate.state.map(({ type }) => type),
@@ -237,17 +236,19 @@ const checkIndividualDevicePayload = combine(
     rateType: info.rateType,
     model: info.model,
     contractorId: info.contractorId,
-    sealInstallationDate: info.sealInstallationDate,
+    sealInstallationDate: info.sealInstallationDate
+      ? dayjs(info.sealInstallationDate).utcOffset(0, true).toISOString()
+      : null,
     sealNumber: info.sealNumber,
     oldDeviceClosingReason: info.oldDeviceClosingReason || undefined,
     isPolling: info.isPolling,
 
-    lastCheckingDate: moment(info.lastCheckingDate)
-      .utcOffset(0, true)
-      .toISOString(true),
-    futureCheckingDate: moment(info.futureCheckingDate)
-      .utcOffset(0, true)
-      .toISOString(),
+    lastCheckingDate: info.lastCheckingDate
+      ? dayjs(info.lastCheckingDate).utcOffset(0).toISOString()
+      : null,
+    futureCheckingDate: info.futureCheckingDate
+      ? dayjs(info.futureCheckingDate).utcOffset(0).toISOString()
+      : null,
     bitDepth: Number(info.bitDepth),
     scaleFactor: Number(info.scaleFactor),
     oldDeviceReadings: compareReadingsArrWithSameIndex(

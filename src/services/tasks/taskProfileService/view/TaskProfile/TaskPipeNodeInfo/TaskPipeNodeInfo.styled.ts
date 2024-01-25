@@ -1,4 +1,3 @@
-import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 export const Wrapper = styled.div`
@@ -37,6 +36,7 @@ export const TextWrapper = styled.div`
   color: #272f5a;
 `;
 
-export const LinkSC = styled(Link)`
+export const GoTo = styled.div`
   color: #189ee9;
+  cursor: pointer;
 `;

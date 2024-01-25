@@ -34,7 +34,7 @@ export const Dialog: FC<DialogProps> = ({
           {children}
         </>
       }
-      visible={isOpen}
+      open={isOpen}
       onOk={onSubmit}
       onCancel={onCancel}
       width={800}

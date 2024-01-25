@@ -1,53 +1,47 @@
-import { combine, createDomain, guard, sample } from 'effector';
+import { createEffect, createEvent, createStore } from 'effector';
+import { combine, sample } from 'effector';
 import { createGate } from 'effector-react';
 import { PipeHousingMeteringDeviceResponse, TasksPagedList } from 'api/types';
 import {
   getDeviceTasks,
   getHousingMeteringDevice,
 } from './housingMeteringDeviceProfileService.api';
-import { HousingProfileTabs } from './housingMeteringDeviceProfileService.types';
 import { checkHousingMeteringDeviceService } from '../checkHousingMeteringDeviceService';
 import { closeHousingMeteringDeviceService } from '../closeHousingMeteringDeviceService';
 import { EffectFailDataAxiosError } from 'types';
 import { message } from 'antd';
 
-const domain = createDomain('housingMeteringDeviceProfileService');
-
-const handleChangeTab = domain.createEvent<HousingProfileTabs>();
-
-const handleHousingMeteringDeviceUpdate = domain.createEvent();
+const handleHousingMeteringDeviceUpdate = createEvent();
 
 const handleCheckDateUpdate =
   checkHousingMeteringDeviceService.inputs.handleUpdateDevice;
 
 const FetchHousingMeteringDeviceGate = createGate<{ deviceId: number }>();
 
-const fetchHousingMeteringDeviceFx = domain.createEffect<
+const fetchHousingMeteringDeviceFx = createEffect<
   number,
   PipeHousingMeteringDeviceResponse,
   EffectFailDataAxiosError
 >(getHousingMeteringDevice);
 
-const fetchHousingMeteringDeviceTasksFx = domain.createEffect<
-  number,
-  TasksPagedList
->(getDeviceTasks);
+const fetchHousingMeteringDeviceTasksFx = createEffect<number, TasksPagedList>(
+  getDeviceTasks,
+);
 
-const $housingMeteringDevice = domain
-  .createStore<PipeHousingMeteringDeviceResponse | null>(null)
-  .on(fetchHousingMeteringDeviceFx.doneData, (_, data) => data);
+const $housingMeteringDevice =
+  createStore<PipeHousingMeteringDeviceResponse | null>(null).on(
+    fetchHousingMeteringDeviceFx.doneData,
+    (_, data) => data,
+  );
 
-const $housingMeteringDeviceTask = domain
-  .createStore<TasksPagedList | null>(null)
-  .on(fetchHousingMeteringDeviceTasksFx.doneData, (_, data) => data);
-
-const $currentTab = domain
-  .createStore<HousingProfileTabs>(HousingProfileTabs.CommonInfo)
-  .on(handleChangeTab, (_, tab) => tab);
+const $housingMeteringDeviceTask = createStore<TasksPagedList | null>(null).on(
+  fetchHousingMeteringDeviceTasksFx.doneData,
+  (_, data) => data,
+);
 
 sample({
   source: FetchHousingMeteringDeviceGate.state,
-  clock: guard({
+  clock: sample({
     source: combine(
       $housingMeteringDevice,
       FetchHousingMeteringDeviceGate.state,
@@ -87,7 +81,6 @@ const $tasksPending = fetchHousingMeteringDeviceTasksFx.pending;
 
 export const housingMeteringDeviceProfileService = {
   inputs: {
-    handleChangeTab,
     handleHousingMeteringDeviceUpdate,
     handleCheckModalOpen:
       checkHousingMeteringDeviceService.inputs.handleOpenModal,
@@ -96,7 +89,6 @@ export const housingMeteringDeviceProfileService = {
   },
   outputs: {
     $housingMeteringDevice,
-    $currentTab,
     $housingMeteringDeviceTask,
     $pending,
     $tasksPending,

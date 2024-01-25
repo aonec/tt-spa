@@ -1,4 +1,4 @@
-import { useEvent, useStore } from 'effector-react';
+import { useUnit } from 'effector-react';
 import React from 'react';
 import { useParams } from 'react-router';
 import { resourceAccountingSystemsService } from './resourceAccountingSystemsService.model';
@@ -11,11 +11,11 @@ const { NodesGate } = gates;
 
 export const ResourceAccountingSystemsContainer = () => {
   const { buildingId } = useParams<{ buildingId: string }>();
-
-  const nodes = useStore(outputs.$nodes);
-  const isLoading = useStore(outputs.$isLoading);
-
-  const openDevicesListModal = useEvent(inputs.openDevicesListModal);
+  const { isLoading, nodes, openDevicesListModal } = useUnit({
+    nodes: outputs.$nodes,
+    isLoading: outputs.$isLoading,
+    openDevicesListModal: inputs.openDevicesListModal,
+  });
 
   return (
     <>

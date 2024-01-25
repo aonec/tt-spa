@@ -34,7 +34,7 @@ export const getIndividualDevicesModels = async (
 
   const res: { items: string[] } = await axios.get(path, {
     params,
-    paramsSerializer: queryString.stringify,
+    paramsSerializer: (params) => queryString.stringify(params),
   });
 
   return res.items;

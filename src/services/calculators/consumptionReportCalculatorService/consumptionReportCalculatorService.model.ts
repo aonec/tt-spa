@@ -1,25 +1,24 @@
-import { createDomain, forward } from 'effector';
+import { createEffect, createEvent, createStore } from 'effector';
+import { sample } from 'effector';
 import { getReport } from './consumptionReportCalculatorService.api';
 import { GetCalculatorReportParams } from './consumptionReportCalculatorService.types';
 import { message } from 'antd';
 import { BlobResponseErrorType } from 'types';
 
-const domain = createDomain('consumptionReportCalculatorService');
+const handleModalOpen = createEvent();
+const handleModalClose = createEvent();
 
-const handleModalOpen = domain.createEvent();
-const handleModalClose = domain.createEvent();
+const handleSubmit = createEvent<GetCalculatorReportParams>();
 
-const handleSubmit = domain.createEvent<GetCalculatorReportParams>();
-
-const fetchReportFx = domain.createEffect<
+const fetchReportFx = createEffect<
   GetCalculatorReportParams,
   void,
   BlobResponseErrorType
 >(getReport);
 
-forward({
-  from: handleSubmit,
-  to: fetchReportFx,
+sample({
+  clock: handleSubmit,
+  target: fetchReportFx,
 });
 
 const handleSuccess = fetchReportFx.doneData;
@@ -33,8 +32,7 @@ fetchReportFx.failData.watch(async (error) => {
 
 const $isLoading = fetchReportFx.pending;
 
-const $isModalOpen = domain
-  .createStore<boolean>(false)
+const $isModalOpen = createStore<boolean>(false)
   .on(handleModalOpen, () => true)
   .on(handleModalClose, () => false)
   .reset(handleSuccess);

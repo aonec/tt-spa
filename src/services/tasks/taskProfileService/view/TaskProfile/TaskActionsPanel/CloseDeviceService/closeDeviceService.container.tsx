@@ -1,6 +1,6 @@
 import React from 'react';
-import { useStore } from 'effector-react';
-import moment from 'moment';
+import { useUnit } from 'effector-react';
+import dayjs from 'api/dayjs';
 import { FC, useEffect, useState } from 'react';
 import { CloseDevicesContainerProps } from './closeDeviceService.types';
 import { closeDeviceService } from './closeDevicesService.models';
@@ -39,14 +39,14 @@ export const CloseDevicesContainer: FC<CloseDevicesContainerProps> = ({
     handleChange({
       deviceCloses: selectedDevices.map(({ id, closingDate }) => ({
         deviceId: id,
-        closingDate: moment(closingDate).toISOString(true),
+        closingDate: dayjs(closingDate).format(),
       })),
     });
   }, [selectedDevices, handleChange]);
 
-  const individualDevices = useStore(
-    closeDeviceService.outputs.$individualDevices,
-  );
+  const { individualDevices } = useUnit({
+    individualDevices: closeDeviceService.outputs.$individualDevices,
+  });
 
   return (
     <CloseDevices

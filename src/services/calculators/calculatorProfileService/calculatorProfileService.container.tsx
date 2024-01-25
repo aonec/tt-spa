@@ -1,6 +1,6 @@
-import { useEvent, useStore } from 'effector-react';
-import React from 'react';
-import { useParams } from 'react-router-dom';
+import { useUnit } from 'effector-react';
+import React, { useCallback } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import { WithLoader } from 'ui-kit/shared/WithLoader';
 import {
   CheckCalculatorContainer,
@@ -15,33 +15,47 @@ import { calculatorProfileService } from './calculatorProfileService.model';
 import { ConsumptionReportCalculatorContainer } from '../consumptionReportCalculatorService';
 import { ESecuredIdentityRoleName } from 'api/types';
 import { usePermission } from 'hooks/usePermission';
+import { CalculatorProfileGrouptype } from './calculatorProfileService.constants';
 
 const { gates, inputs, outputs } = calculatorProfileService;
 const { CalculatorIdGate } = gates;
 
 export const CalculatorProfileContainer = () => {
-  const { deviceId } = useParams<{ deviceId: string }>();
+  const { deviceId, section } = useParams<{
+    deviceId: string;
+    section?: CalculatorProfileGrouptype;
+  }>();
+  const navigate = useNavigate();
 
-  const isLoading = useStore(outputs.$isLoading);
-  const calculator = useStore(outputs.$calculator);
-  const currentGrouptype = useStore(outputs.$currentCalculatorGrouptype);
-
-  const setGrouptype = useEvent(inputs.setCalculatorGrouptype);
-  const handleOpenCloseCalculatorModal = useEvent(
-    closeCalculatorService.inputs.openModal,
-  );
-  const handleOpenCheckCalculatorModal = useEvent(
-    checkCalculatorService.inputs.openModal,
-  );
-  const handleOpenConsumptionReportModal = useEvent(
-    inputs.handleConsumptionReportModalOpen,
-  );
-  const openDevicesListModal = useEvent(inputs.openDevicesListModal);
+  const {
+    calculator,
+    handleOpenCheckCalculatorModal,
+    handleOpenCloseCalculatorModal,
+    handleOpenConsumptionReportModal,
+    isLoading,
+    openDevicesListModal,
+  } = useUnit({
+    isLoading: outputs.$isLoading,
+    calculator: outputs.$calculator,
+    handleOpenCloseCalculatorModal: closeCalculatorService.inputs.openModal,
+    handleOpenCheckCalculatorModal: checkCalculatorService.inputs.openModal,
+    handleOpenConsumptionReportModal: inputs.handleConsumptionReportModalOpen,
+    openDevicesListModal: inputs.openDevicesListModal,
+  });
 
   const isPermitionToCalculatorActions = usePermission([
     ESecuredIdentityRoleName.Administrator,
     ESecuredIdentityRoleName.ManagingFirmExecutor,
+    ESecuredIdentityRoleName.ManagingFirmSpectatingAdministrator,
   ]);
+
+  const setGrouptype = useCallback(
+    (section: CalculatorProfileGrouptype) =>
+      navigate(`/calculators/${deviceId}/profile/${section}`, {
+        replace: true,
+      }),
+    [navigate, deviceId],
+  );
 
   return (
     <>
@@ -53,7 +67,7 @@ export const CalculatorProfileContainer = () => {
         {calculator && (
           <CalculatorProfile
             calculator={calculator}
-            currentGrouptype={currentGrouptype}
+            currentGrouptype={section}
             setGrouptype={setGrouptype}
             handleOpenCloseCalculatorModal={handleOpenCloseCalculatorModal}
             handleOpenCheckCalculatorModal={handleOpenCheckCalculatorModal}

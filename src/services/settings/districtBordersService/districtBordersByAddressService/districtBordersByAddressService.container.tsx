@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo } from 'react';
-import { useEvent, useStore, useUnit } from 'effector-react';
+import { useUnit } from 'effector-react';
 import { DistrictBordersByAddressPage } from './view/DistrictBordersByAddressPage/DistrictBordersByAddressPage';
 import { districtBordersByAddressService } from './districtBordersByAddressService.model';
 import {
@@ -7,36 +7,46 @@ import {
   getFilteredAddresses,
 } from './districtBordersByAddressService.utils';
 import { existingHousingStocksQuery } from '../createDistrictBorderMapService/createDistrictBorderMapService.api';
+import {
+  ShowSelectedAddressesContainer,
+  showSelectedAddressesService,
+} from '../showSelectedAddressesService';
 
-const {
-  inputs,
-  outputs,
-  gates: { DistrictBordersByAddressPageGate },
-} = districtBordersByAddressService;
+const { inputs, outputs } = districtBordersByAddressService;
+const { DistrictBordersByAddressPageGate } =
+  districtBordersByAddressService.gates;
 
 export const DistrictBordersByAddressContainer = () => {
-  const handleFetchAddress = useEvent(inputs.handleFetchAddress);
-  const setFilter = useEvent(inputs.setFilter);
-  const setHousingStockIdsWithStreet = useEvent(
-    inputs.setHousingStockIdsWithStreet,
-  );
-  const handleOpenDistrictEditer = useEvent(inputs.handleOpenDistrictEditer);
-  const setPoligon = useEvent(inputs.setPoligon);
+  const {
+    addresses,
+    checkedhousingStockIdsWithStreet,
+    filterData,
+    handleOpenDistrictEditer,
+    selectCity,
+    setFilter,
+    setHousingStockIdsWithStreet,
+    setPoligon,
+    openShowAddressesModal,
+    isLoading,
+  } = useUnit({
+    selectCity: inputs.selectCity,
+    setFilter: inputs.setFilter,
+    setHousingStockIdsWithStreet: inputs.setHousingStockIdsWithStreet,
+    handleOpenDistrictEditer: inputs.handleOpenDistrictEditer,
+    setPoligon: inputs.setPoligon,
+    addresses: outputs.$addresses,
+    filterData: outputs.$filter,
+    checkedhousingStockIdsWithStreet: outputs.$checkedhousingStockIdsWithStreet,
+    openShowAddressesModal: showSelectedAddressesService.inputs.openModal,
+    isLoading: outputs.$isLoading,
+  });
 
-  const addresses = useStore(outputs.$addresses);
-  const filterData = useStore(outputs.$filter);
-  const checkedhousingStockIdsWithStreet = useStore(
-    outputs.$checkedhousingStockIdsWithStreet,
-  );
   const { data: housingStocksWithCoordinates } = useUnit(
     existingHousingStocksQuery,
   );
 
-  const cityInFilter = filterData?.city;
-
-  const checkedhousingStockIds = checkedhousingStockIdsWithStreet.reduce(
-    (acc, current) => [...acc, ...current.housingStocksId],
-    [] as number[],
+  const checkedhousingStockIds = checkedhousingStockIdsWithStreet.flatMap(
+    (current) => current.addresses.map((elem) => elem.buildingId),
   );
 
   const isAllowedToEditer = checkedhousingStockIds.length > 2;
@@ -79,15 +89,21 @@ export const DistrictBordersByAddressContainer = () => {
   return (
     <>
       <DistrictBordersByAddressPageGate />
+      <ShowSelectedAddressesContainer />
       <DistrictBordersByAddressPage
-        handleFetchAddress={handleFetchAddress}
+        selectCity={selectCity}
         addresses={filteredAddress}
         setFilter={setFilter}
-        setHousingStockIdsWithStreet={setHousingStockIdsWithStreet}
-        checkedhousingStockIdsWithStreet={checkedhousingStockIdsWithStreet}
+        setHousingStocksWithStreet={setHousingStockIdsWithStreet}
+        checkedhousingStocksWithStreet={checkedhousingStockIdsWithStreet}
         handleOpenDistrictEditer={handleOpenDistrictEditer}
         isAllowedToEditer={isAllowedToEditer}
-        cityInFilter={cityInFilter}
+        filter={filterData}
+        openShowAddressesModal={() =>
+          openShowAddressesModal(checkedhousingStockIdsWithStreet)
+        }
+        checkedAddressesAmount={checkedhousingStockIds.length}
+        isLoading={isLoading}
       />
     </>
   );

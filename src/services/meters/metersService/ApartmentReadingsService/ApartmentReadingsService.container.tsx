@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { ApartmentsReadings } from './view/ApartmentsReadings';
 import { apartmentReadingsService } from './ApartmentReadingsService.model';
 import { useUnit } from 'effector-react';
-import { useHistory, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { ESecuredIdentityRoleName } from 'api/types';
 import { usePermission } from 'hooks/usePermission';
 import { SelectPersonalNumberActionContainer } from 'services/homeowner/personalNumber/selectPersonalNumberActionService';
@@ -12,7 +12,7 @@ import { getApartmentQuery } from './ApartmentReadingsService.api';
 const { inputs, outputs } = apartmentReadingsService;
 
 export const ApartmentReadingsContainer = () => {
-  const history = useHistory();
+  const navigate = useNavigate();
   const { id } = useParams<{ id: string }>();
 
   const {
@@ -32,6 +32,10 @@ export const ApartmentReadingsContainer = () => {
     selectedHomeownerName,
     allIndividualDeviceMountPlaces,
     isApartmentFetched,
+    nearestAppointment,
+    removePhoneNumber,
+    addPhoneNumber,
+    replacePhoneNumber,
   } = useUnit({
     printIssueCertificate: inputs.printIssueCertificate,
     isUpdateHomeownerLoading: outputs.$isUpdateHomeownerLoading,
@@ -49,21 +53,26 @@ export const ApartmentReadingsContainer = () => {
     selectedHomeownerName: outputs.$selectedHomeownerName,
     allIndividualDeviceMountPlaces: outputs.$allIndividualDeviceMountPlaces,
     isApartmentFetched: getApartmentQuery.$succeeded,
+    nearestAppointment: outputs.$apartmentAppointment,
+    removePhoneNumber: inputs.removePhoneNumber,
+    addPhoneNumber: inputs.addPhoneNumber,
+    replacePhoneNumber: inputs.replacePhoneNumber,
   });
 
   const isPermitionToApartmentStatusPatch = usePermission([
     ESecuredIdentityRoleName.Administrator,
     ESecuredIdentityRoleName.SeniorOperator,
     ESecuredIdentityRoleName.Operator,
+    ESecuredIdentityRoleName.ManagingFirmSpectatingAdministrator,
   ]);
 
   useEffect(() => {
     return inputs.handleApartmentLoaded.watch(({ result: apartment }) => {
       if (!apartment || apartment.id === Number(id)) return;
 
-      history.push(`/meters/apartments/${apartment.id}`);
+      navigate(`/meters/apartments/${apartment.id}`);
     }).unsubscribe;
-  }, [history, id]);
+  }, [navigate, id]);
 
   const handlePrintIssueCertificate = () => {
     printIssueCertificate(Number(id));
@@ -93,6 +102,10 @@ export const ApartmentReadingsContainer = () => {
         handleUpdateHomeowner={handleUpdateHomeowner}
         isUpdateHomeownerLoading={isUpdateHomeownerLoading}
         isApartmentFetched={isApartmentFetched}
+        nearestAppointment={nearestAppointment}
+        deletePhoneNumber={removePhoneNumber}
+        addPhoneNumber={addPhoneNumber}
+        replacePhoneNumber={replacePhoneNumber}
       />
     </>
   );

@@ -1,4 +1,4 @@
-import { useEvent, useStore } from 'effector-react';
+import { useUnit } from 'effector-react';
 import React from 'react';
 import { useParams } from 'react-router-dom';
 import {
@@ -26,25 +26,31 @@ export const ApartmentActsListContainer = () => {
 
   const { ApartmentActsListGate } = gates;
 
-  const documents = useStore(outputs.$filteredActsList);
-  const isLoading = useStore(outputs.$isLoading);
-  const selectedFilters = useStore(outputs.$actsFilter);
-
-  const handleOpeningCreateActModal = useEvent(
-    createApartmentActService.inputs.openModal,
-  );
-  const handleOpeningDeleteActModal = useEvent(
-    deleteApartmentActService.inputs.openModal,
-  );
-  const handleOpeningEditActModal = useEvent(
-    editApartmentActService.inputs.openModal,
-  );
-  const handleSaveFile = useEvent(inputs.saveFile);
-  const updateTypes = useEvent(inputs.updateType);
-  const updateResources = useEvent(inputs.updateResources);
+  const {
+    documents,
+    isLoading,
+    selectedFilters,
+    handleOpeningCreateActModal,
+    handleOpeningDeleteActModal,
+    handleOpeningEditActModal,
+    handleSaveFile,
+    updateResources,
+    updateTypes,
+  } = useUnit({
+    documents: outputs.$filteredActsList,
+    isLoading: outputs.$isLoading,
+    selectedFilters: outputs.$actsFilter,
+    handleOpeningCreateActModal: createApartmentActService.inputs.openModal,
+    handleOpeningDeleteActModal: deleteApartmentActService.inputs.openModal,
+    handleOpeningEditActModal: editApartmentActService.inputs.openModal,
+    handleSaveFile: inputs.saveFile,
+    updateTypes: inputs.updateType,
+    updateResources: inputs.updateResources,
+  });
 
   const isPermitionToChangeApartmentAct = usePermission([
     ESecuredIdentityRoleName.Administrator,
+    ESecuredIdentityRoleName.ManagingFirmSpectatingAdministrator,
     ESecuredIdentityRoleName.ManagingFirmExecutor,
     ESecuredIdentityRoleName.SeniorOperator,
     ESecuredIdentityRoleName.ManagingFirmSpectator,

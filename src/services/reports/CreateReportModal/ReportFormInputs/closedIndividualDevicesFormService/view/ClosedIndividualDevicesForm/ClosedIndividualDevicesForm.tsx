@@ -16,11 +16,11 @@ import {
 } from './ClosedIndividualDevicesForm.styled';
 import { ClosedIndividualDevicesFormProps } from './ClosedIndividualDevicesForm.types';
 import {
-  closingReasonsDictionary,
   unloadingTypesDictionary,
   unloadingTypesForLabelDictionary,
 } from './ClosedIndividualDevicesFormService.constants';
 import { SelectMultiple } from 'ui-kit/SelectMultiple';
+import { ClosingReasonsDictionary } from 'dictionaries';
 
 export const ClosedIndividualDevicesForm: FC<
   ClosedIndividualDevicesFormProps
@@ -66,7 +66,7 @@ export const ClosedIndividualDevicesForm: FC<
     existingCities.length > 1 && unloadSelectType === UnloadingType.ByAddress;
 
   useEffect(() => {
-    housingStockId && handleFetchHousingStockData(housingStockId);
+    housingStockId && handleFetchHousingStockData(Number(housingStockId));
   }, [housingStockId, handleFetchHousingStockData]);
 
   return (
@@ -113,10 +113,10 @@ export const ClosedIndividualDevicesForm: FC<
               placeholder="Выберите из списка"
               showSearch
               showArrow
-              treeCheckable={false}
               treeData={preparedAddresses}
-              value={housingStockId || undefined}
-              onChange={(value) => handleChangeHousingStockId(value as number)}
+              value={Number(housingStockId) || undefined}
+              onChange={(value) => handleChangeHousingStockId(value as string)}
+              treeCheckable={false}
             />
           </FormItem>
         )}
@@ -170,7 +170,7 @@ export const ClosedIndividualDevicesForm: FC<
             handleChangeClosingReasons(value as EClosingReason[])
           }
         >
-          {Object.entries(closingReasonsDictionary).map(([key, elem]) => (
+          {Object.entries(ClosingReasonsDictionary).map(([key, elem]) => (
             <Select.Option value={key} key={key}>
               {elem}
             </Select.Option>

@@ -1,16 +1,7 @@
 import React from 'react';
-import { format } from 'date-fns';
 import { DateBlock, Pointer, TooltipBlock, Value } from './GraphTooltip.styled';
 import { GraphTooltipProps } from './Graphtooltip.types';
-
-const formatDate = (timeStamp: string): Date => {
-  const dateObject = new Date(timeStamp);
-  const millisecondsInHour = 60 * 1000;
-  const date = new Date(
-    dateObject.valueOf() + dateObject.getTimezoneOffset() * millisecondsInHour,
-  );
-  return date;
-};
+import dayjs from 'dayjs';
 
 export const GraphTooltip: React.FC<GraphTooltipProps> = (props) => {
   const { datum, x, y, measure } = props;
@@ -26,7 +17,7 @@ export const GraphTooltip: React.FC<GraphTooltipProps> = (props) => {
       >
         <TooltipBlock value={datum!.value}>
           <DateBlock>
-            {format(formatDate(datum!.timeUtc), 'dd.MM.yyyy')}
+            {dayjs(datum?.time).utcOffset(0).format('DD.MM.YYYY')}
           </DateBlock>
           <Value>
             {datum!.value.toFixed(3)} {measure}

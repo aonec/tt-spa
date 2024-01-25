@@ -1,16 +1,15 @@
-import { createDomain, guard, sample } from 'effector';
+import { createEffect, createStore } from 'effector';
+import { sample } from 'effector';
 import { createGate } from 'effector-react';
 import { ResourceDisconnectingFilterResponse } from 'api/types';
 import { fetchResourceDisconnectionFilters } from './resourceDisconnectionFiltersService.api';
 import { EffectFailDataAxiosError } from 'types';
 import { message } from 'antd';
 
-const domain = createDomain('resourceDisconnectionFiltersService');
-
 const $resourceDisconnectionFilters =
-  domain.createStore<ResourceDisconnectingFilterResponse | null>(null);
+  createStore<ResourceDisconnectingFilterResponse | null>(null);
 
-const getResourceDisconnectionFiltersFx = domain.createEffect<
+const getResourceDisconnectionFiltersFx = createEffect<
   void,
   ResourceDisconnectingFilterResponse,
   EffectFailDataAxiosError
@@ -24,7 +23,7 @@ $resourceDisconnectionFilters.on(
 const ResourceDisconnectigFiltersGate = createGate();
 
 sample({
-  clock: guard({
+  clock: sample({
     source: $resourceDisconnectionFilters,
     clock: ResourceDisconnectigFiltersGate.open,
     filter: (source) => !source,

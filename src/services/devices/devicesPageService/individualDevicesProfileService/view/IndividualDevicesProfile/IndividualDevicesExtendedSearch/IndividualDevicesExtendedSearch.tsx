@@ -1,14 +1,18 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useCallback } from 'react';
 import { ExtendedSearch } from 'ui-kit/ExtendedSearch';
 import { AddressSearchContainer } from 'services/addressSearchService';
 import { SearchFieldType } from 'services/addressSearchService/view/AddressSearch/AddressSearch.types';
-import { IndividualDevicesExtendedSearchProps } from './IndividualDevicesExtendedSearch.types';
+import {
+  EExpiresDateAtExtended,
+  IndividualDevicesExtendedSearchProps,
+} from './IndividualDevicesExtendedSearch.types';
 import { SearchIndividualDevicesParams } from '../../../individualDevicesProfileService.types';
 import {
   FirstLineWrapper,
   ResourceNameWrapper,
   ResourceOptionWrapper,
   SecondLineWrapper,
+  ThirdLineWrapper,
 } from './IndividualDevicesExtendedSearch.styled';
 import { FormItem } from 'ui-kit/FormItem';
 import { SearchIcon } from 'ui-kit/icons';
@@ -16,8 +20,7 @@ import { useFormik } from 'formik';
 import { EApartmentStatus, EResourceType } from 'api/types';
 import {
   apartmentStatusesLookup,
-  closingReasonLookup,
-  expiresCheckingDateAtLookup,
+  expiresCheckingDateAt,
   formTranslateLookup,
   resourcesNamesLookup,
 } from './IndividualDevicesExtendedSearch.constants';
@@ -25,6 +28,8 @@ import { ResourceIconLookup } from 'ui-kit/shared/ResourceIconLookup';
 import { DevicesSearchType } from 'services/devices/devicesPageService/devicesPageService.types';
 import { Select } from 'ui-kit/Select';
 import { Input } from 'ui-kit/Input';
+import { ClosingReasonsDictionary } from 'dictionaries';
+import { Segmented } from 'ui-kit/Segmented';
 
 export const IndividualDevicesExtendedSearch: FC<
   IndividualDevicesExtendedSearchProps
@@ -35,15 +40,28 @@ export const IndividualDevicesExtendedSearch: FC<
   values: filters,
   handleClear,
   mountPlaces,
+  isOpen,
+  setIsOpen,
 }) => {
-  const [isOpen, setIsOpen] = useState(false);
-
   const { values, setFieldValue, handleSubmit, resetForm } =
     useFormik<SearchIndividualDevicesParams>({
       initialValues: filters,
-      onSubmit: handleApply,
+      onSubmit: (values) =>
+        handleApply({
+          ...values,
+          IsAlsoClosing: Boolean(values.ClosingReason),
+        }),
       enableReinitialize: true,
     });
+
+  const handleSelectExpiredDate = useCallback(
+    (value: EExpiresDateAtExtended) => {
+      const preparedValue = value === EExpiresDateAtExtended.All ? null : value;
+
+      setFieldValue('ExpiresCheckingDateAt', preparedValue);
+    },
+    [setFieldValue],
+  );
 
   return (
     <ExtendedSearch
@@ -188,7 +206,7 @@ export const IndividualDevicesExtendedSearch: FC<
                 }
                 allowClear
               >
-                {Object.entries(closingReasonLookup).map(
+                {Object.entries(ClosingReasonsDictionary).map(
                   ([closingReason, text]) => (
                     <Select key={closingReason} value={closingReason}>
                       {text}
@@ -197,26 +215,32 @@ export const IndividualDevicesExtendedSearch: FC<
                 )}
               </Select>
             </FormItem>
-            <FormItem label="Дата окoнчания поверки">
+          </SecondLineWrapper>
+          <FormItem label="Дата">
+            <ThirdLineWrapper>
               <Select
                 small
-                placeholder="Дата окoнчания поверки"
-                value={values.ExpiresCheckingDateAt || undefined}
+                placeholder="Выберите"
+                value={null}
                 onChange={(value) =>
                   setFieldValue('ExpiresCheckingDateAt', value || null)
                 }
                 allowClear
+                disabled
               >
-                {Object.entries(expiresCheckingDateAtLookup).map(
-                  ([key, value]) => (
-                    <Select key={key} value={key}>
-                      {value}
-                    </Select>
-                  ),
-                )}
+                <Select.Option value={null}>Оканчания поверки</Select.Option>
               </Select>
-            </FormItem>
-          </SecondLineWrapper>
+              <Segmented<EExpiresDateAtExtended>
+                active={
+                  values.ExpiresCheckingDateAt
+                    ? EExpiresDateAtExtended[values.ExpiresCheckingDateAt]
+                    : EExpiresDateAtExtended.All
+                }
+                items={expiresCheckingDateAt}
+                onChange={handleSelectExpiredDate}
+              />
+            </ThirdLineWrapper>
+          </FormItem>
         </>
       }
     >

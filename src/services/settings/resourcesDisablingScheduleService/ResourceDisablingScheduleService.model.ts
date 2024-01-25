@@ -1,4 +1,5 @@
-import { createDomain, guard, sample } from 'effector';
+import { createEffect, createEvent, createStore } from 'effector';
+import { sample } from 'effector';
 import { createGate } from 'effector-react';
 
 import { ResourceDisconnectingResponsePagedList } from 'api/types';
@@ -7,25 +8,24 @@ import { fetchDisablingResources } from './ResourcesDisablingScheduleService.api
 import { addressSearchService } from 'services/addressSearchService/addressSearchService.models';
 import _ from 'lodash';
 
-const domain = createDomain('ResourceDisablingScheduleService');
-
 const resourceDisablingGate = createGate<DisablingResourcesProps>();
 
-const setFilters = domain.createEvent<DisablingResourcesProps>();
-const setPage = domain.createEvent<number>();
+const setFilters = createEvent<DisablingResourcesProps>();
+const setPage = createEvent<number>();
 
-const refetchResourceDisconnections = domain.createEvent();
-const getResourceDisconnectionsFx = domain.createEffect<
+const refetchResourceDisconnections = createEvent();
+const getResourceDisconnectionsFx = createEffect<
   DisablingResourcesProps,
   ResourceDisconnectingResponsePagedList
 >(fetchDisablingResources);
 
-const $disablingResources = domain
-  .createStore<ResourceDisconnectingResponsePagedList | null>(null)
-  .on(getResourceDisconnectionsFx.doneData, (_, resources) => resources);
+const $disablingResources =
+  createStore<ResourceDisconnectingResponsePagedList | null>(null).on(
+    getResourceDisconnectionsFx.doneData,
+    (_, resources) => resources,
+  );
 
-const $filters = domain
-  .createStore<DisablingResourcesProps>({ PageSize: 12 })
+const $filters = createStore<DisablingResourcesProps>({ PageSize: 12 })
   .on(setFilters, (_, filters) => {
     return {
       ...filters,
@@ -54,7 +54,7 @@ sample({
 
 sample({
   source: $filters,
-  clock: guard({
+  clock: sample({
     source: resourceDisablingGate.status,
     clock: refetchResourceDisconnections,
     filter: (isOpen) => isOpen,

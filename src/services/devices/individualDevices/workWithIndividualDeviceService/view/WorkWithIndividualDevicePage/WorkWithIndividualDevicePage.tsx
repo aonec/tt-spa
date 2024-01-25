@@ -14,7 +14,7 @@ import { Empty } from 'antd';
 import { getApartmentFromFullAddress } from 'utils/getApartmentFromFullAddress';
 import { ResourceIconLookup } from 'ui-kit/shared/ResourceIconLookup';
 import { WorkWithIndividualDeviceForm } from './WorkWithIndividualDeviceForm';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { Button } from 'ui-kit/Button';
 
 export const WorkWithIndividualDevicePage: FC<
@@ -30,7 +30,7 @@ export const WorkWithIndividualDevicePage: FC<
   handleFetchModels,
   models,
 }) => {
-  const history = useHistory();
+  const navigate = useNavigate();
 
   return (
     <>
@@ -67,7 +67,7 @@ export const WorkWithIndividualDevicePage: FC<
               individualDevice={individualDevice}
             />
             <FooterWrapper>
-              <Button type="ghost" onClick={history.goBack}>
+              <Button type="ghost" onClick={() => navigate(-1)}>
                 Отмена
               </Button>
               <Button onClick={() => form.submit()}>Далее</Button>

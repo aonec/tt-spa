@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { Tooltip } from 'antd';
+import { Tooltip } from 'ui-kit/shared/Tooltip';
 import { ConfirmUsingExistingApartmentFormProps } from './ConfirmUsingExistingApartmentForm.types';
 import { WithLoader } from 'ui-kit/shared/WithLoader';
 import { getApartmentAddressString } from 'utils/getApartmentAddress';
@@ -39,7 +39,9 @@ export const ConfirmUsingExistingApartmentForm: FC<
         <>
           <FlexContainer>
             {apartment?.homeownerAccounts?.map((elem) => (
-              <Tooltip title={`${elem.name}, ${elem.phoneNumber}`}>
+              <Tooltip
+                title={`${elem.name}, ${(elem.phoneNumbers || []).toString()}`}
+              >
                 <PersonalNumber>{elem.personalAccountNumber}</PersonalNumber>
               </Tooltip>
             ))}

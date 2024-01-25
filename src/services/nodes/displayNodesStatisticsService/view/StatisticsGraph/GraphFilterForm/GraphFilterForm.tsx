@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import moment from 'moment';
+import dayjs from 'api/dayjs';
 import { useFormik } from 'formik';
 import { Form, Radio, Tooltip } from 'antd';
 import {
@@ -26,6 +26,8 @@ import { ReportType } from '../StatisticsGraph.types';
 import { SortingIcon } from 'ui-kit/icons';
 import { Select } from 'ui-kit/Select';
 
+const rangeWrapperId = 'node-statistics-filter-wrapper';
+
 export const GraphFilterForm: React.FC<GraphFilterFormProps> = ({
   setGraphParam,
   currentGraphParam,
@@ -50,8 +52,8 @@ export const GraphFilterForm: React.FC<GraphFilterFormProps> = ({
   >({
     initialValues: {
       ReportType: currentFilter.ReportType,
-      From: moment(currentFilter.From),
-      To: moment(currentFilter.To),
+      From: dayjs(currentFilter.From),
+      To: dayjs(currentFilter.To),
     },
     enableReinitialize: true,
     validationSchema: yup.object().shape({
@@ -99,6 +101,7 @@ export const GraphFilterForm: React.FC<GraphFilterFormProps> = ({
         <ClosedFilterWrapper>
           <Tooltip title="Настройка параметров">
             <ButtonSC
+              data-test={'node-graph-filter-button'}
               onClick={() => openModal()}
               icon={<SortingIcon />}
               style={{ marginRight: 16 }}
@@ -121,19 +124,23 @@ export const GraphFilterForm: React.FC<GraphFilterFormProps> = ({
               <Tooltip title="Настройка параметров">
                 <ButtonSC
                   onClick={() => setIsActive((state) => !state)}
-                  style={{ marginBottom: 8 }}
                   icon={<SortingIcon />}
                 />
               </Tooltip>
               <FormItem label="Произвольный период">
-                <RangeWrapper id="div">
+                <RangeWrapper id={rangeWrapperId}>
                   <DatePicker.RangePicker
-                    getPopupContainer={() => document.getElementById('div')!}
+                    getPopupContainer={() =>
+                      document.getElementById(rangeWrapperId)!
+                    }
                     name="dateRange"
                     format="DD MMMM YYYY"
                     style={{ marginRight: 16 }}
                     disabledDate={(date) => {
-                      const currentDay = moment().startOf('day');
+                      if (!date) {
+                        return false;
+                      }
+                      const currentDay = dayjs().startOf('day');
                       const diff = currentDay.diff(date.startOf('day'));
                       return diff < 0;
                     }}
@@ -148,25 +155,25 @@ export const GraphFilterForm: React.FC<GraphFilterFormProps> = ({
                     }}
                     ranges={{
                       [RangeOptions.LastDay]: [
-                        moment().startOf('day'),
-                        moment().endOf('day'),
+                        dayjs().startOf('day'),
+                        dayjs().endOf('day'),
                       ],
                       [RangeOptions.LastWeek]: [
-                        moment().subtract(1, 'week').set({
-                          hour: 0,
-                          minute: 0,
-                          second: 0,
-                          millisecond: 0,
-                        }),
-                        moment().startOf('day'),
+                        dayjs()
+                          .subtract(1, 'week')
+                          .set('hour', 0)
+                          .set('minute', 0)
+                          .set('second', 0)
+                          .set('millisecond', 0),
+                        dayjs().startOf('day'),
                       ],
                       [RangeOptions.ThisMonth]: [
-                        moment().startOf('month'),
-                        moment().startOf('day'),
+                        dayjs().startOf('month'),
+                        dayjs().startOf('day'),
                       ],
                       [RangeOptions.LastMonth]: [
-                        moment().startOf('month').subtract(1, 'months'),
-                        moment().subtract(1, 'months').endOf('month'),
+                        dayjs().startOf('month').subtract(1, 'months'),
+                        dayjs().subtract(1, 'months').endOf('month'),
                       ],
                     }}
                   />

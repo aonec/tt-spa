@@ -1,4 +1,5 @@
-import { createDomain, forward } from 'effector';
+import { createEffect, createEvent, createStore } from 'effector';
+import { sample } from 'effector';
 import {
   AllNodeWorkingRangeResponse,
   ENodeWorkingRangeSeason,
@@ -12,23 +13,21 @@ import {
 import { EffectFailDataAxiosError } from 'types';
 import { createGate } from 'effector-react';
 
-const domain = createDomain('groupWorkingRangeService');
+const getHouseManagementsFx = createEffect<void, HouseManagementResponse[]>(
+  fetchHouseManagements,
+);
+const $houseManagements = createStore<HouseManagementResponse[]>([]).on(
+  getHouseManagementsFx.doneData,
+  (_, managements) => managements,
+);
 
-const getHouseManagementsFx = domain.createEffect<
-  void,
-  HouseManagementResponse[]
->(fetchHouseManagements);
-const $houseManagements = domain
-  .createStore<HouseManagementResponse[]>([])
-  .on(getHouseManagementsFx.doneData, (_, managements) => managements);
-
-const handleOnSearchDataChange = domain.createEvent<{
+const handleOnSearchDataChange = createEvent<{
   nodeResourceType: EResourceType;
   season: ENodeWorkingRangeSeason;
   houseManagementId: string;
 }>();
 
-const getGroupWorkingRangeFx = domain.createEffect<
+const getGroupWorkingRangeFx = createEffect<
   {
     nodeResourceType: EResourceType;
     season: ENodeWorkingRangeSeason;
@@ -38,22 +37,22 @@ const getGroupWorkingRangeFx = domain.createEffect<
   EffectFailDataAxiosError
 >(getGroupWorkingRange);
 
-const $groupWorkingRange = domain
-  .createStore<AllNodeWorkingRangeResponse | null>(null)
-  .on(getGroupWorkingRangeFx.doneData, (_, range) => range);
+const $groupWorkingRange = createStore<AllNodeWorkingRangeResponse | null>(
+  null,
+).on(getGroupWorkingRangeFx.doneData, (_, range) => range);
 
 const GroupWorkingRangeGate = createGate();
 
 const $isLoading = getGroupWorkingRangeFx.pending;
 
-forward({
-  from: handleOnSearchDataChange,
-  to: getGroupWorkingRangeFx,
+sample({
+  clock: handleOnSearchDataChange,
+  target: getGroupWorkingRangeFx,
 });
 
-forward({
-  from: GroupWorkingRangeGate.open,
-  to: getHouseManagementsFx,
+sample({
+  clock: GroupWorkingRangeGate.open,
+  target: getHouseManagementsFx,
 });
 
 export const groupWorkingRangeService = {

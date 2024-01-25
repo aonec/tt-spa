@@ -24,7 +24,7 @@ export type CorrectReadingValuesValidationResult = {
     validated: boolean;
     index: number;
     difference: number;
-    currentValue: number;
+    currentValue: number | null;
     prevValue: number;
   }[];
   limit?: number;

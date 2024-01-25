@@ -1,6 +1,6 @@
 import { ErrorMessage } from 'ui-kit/ErrorMessage';
 import { useFormik } from 'formik';
-import moment from 'moment';
+import dayjs from 'api/dayjs';
 import React, { FC, useCallback, useEffect, useState } from 'react';
 import { Button } from 'ui-kit/Button';
 import { FormItem } from 'ui-kit/FormItem';
@@ -18,7 +18,7 @@ import {
   Wrapper,
 } from './ResourceConsumptionFilter.styled';
 import { ResourceConsumptionFilterProps } from './ResourceConsumptionFilter.types';
-import { useStore } from 'effector-react';
+import { useUnit } from 'effector-react';
 import { ConsumptionDataFilter } from '../../resourceConsumptionFilterService.types';
 import { Select } from 'ui-kit/Select';
 import { resourceConsumptionFilterService } from '../../resourceConsumptionFilterService.model';
@@ -39,7 +39,9 @@ export const ResourceConsumptionFilter: FC<ResourceConsumptionFilterProps> = ({
   isLoading,
   handleClearSummary,
 }) => {
-  const existingCities = useStore(addressSearchService.outputs.$existingCities);
+  const { existingCities } = useUnit({
+    existingCities: addressSearchService.outputs.$existingCities,
+  });
   const [isAdditionalAddress, setIsAdditionalAddress] = useState(false);
 
   const { values, setFieldValue, submitForm, errors, setValues } = useFormik<
@@ -68,7 +70,7 @@ export const ResourceConsumptionFilter: FC<ResourceConsumptionFilterProps> = ({
       setFilter({
         ...values,
         BuildingIds,
-        To: moment(values.From).endOf('month').utcOffset(0, true).format(),
+        To: dayjs(values.From).endOf('month').utcOffset(0, true).format(),
       });
     },
   });
@@ -120,7 +122,7 @@ export const ResourceConsumptionFilter: FC<ResourceConsumptionFilterProps> = ({
         <FormWrapper>
           <FormItem label="Период">
             <DatePickerSC
-              value={moment(values.From)}
+              value={dayjs(values.From)}
               onChange={(date) =>
                 setFieldValue(
                   'From',
@@ -130,7 +132,7 @@ export const ResourceConsumptionFilter: FC<ResourceConsumptionFilterProps> = ({
               picker="month"
               format={'MMMM YYYY'}
               disabledDate={(month) => {
-                const currentMonth = moment().startOf('month');
+                const currentMonth = dayjs().startOf('month');
                 const selectedMonth = month.startOf('month');
                 const diff = currentMonth.diff(selectedMonth, 'month');
                 return diff < 0;
@@ -182,6 +184,7 @@ export const ResourceConsumptionFilter: FC<ResourceConsumptionFilterProps> = ({
             placeholder="Выберите из списка"
             onChange={(ids) => setFieldValue('BuildingIds', ids)}
             selectedHousingStockIds={values.BuildingIds}
+            placement="topLeft"
           />
           <ErrorMessage>{errors.BuildingIds}</ErrorMessage>
         </FormItem>
@@ -203,6 +206,7 @@ export const ResourceConsumptionFilter: FC<ResourceConsumptionFilterProps> = ({
                   setFieldValue('AdditionalHousingStockIds', ids)
                 }
                 selectedHousingStockIds={values.AdditionalHousingStockIds}
+                placement="topLeft"
               />
               <TrashIconSC
                 onClick={() => {

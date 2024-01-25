@@ -1,4 +1,4 @@
-import React, { FC, useCallback, useEffect, useMemo } from 'react';
+import React, { FC, useCallback, useEffect, useMemo, useState } from 'react';
 import { Button } from 'ui-kit/Button';
 import { PencilIcon } from 'ui-kit/icons';
 import { useYMaps } from 'hooks/ymaps/useYMaps';
@@ -19,6 +19,10 @@ import { useForm } from 'effector-forms';
 import { createDistrictBorderMapService } from '../../createDistrictBorderMapService.models';
 import { CreateDistrictFormPanel } from './CreateDistrictFormPanel';
 import { getPayloadFromDistricts } from 'utils/districtsData';
+import { findPolygonCenter } from 'utils/findPolygonCenter';
+import { MapZoomControl } from 'ui-kit/shared/MapZoomControl';
+import { SearchAddresses } from './SearchAddresses/SearchAddresses';
+import { BuildingWithCoordinatesResponse } from 'api/types';
 
 const { forms } = createDistrictBorderMapService;
 
@@ -28,9 +32,11 @@ export const CreateDistrictBorderMapPage: FC<Props> = ({
   handleCreateDistrict,
   preselectedDistrictPayload,
   organizationCoordinates,
+  isLoadingPostDistrict,
 }) => {
   const { map, mapRef } = useYMaps(organizationCoordinates);
-
+  const [searchBuilding, setSearchBuilding] =
+    useState<BuildingWithCoordinatesResponse | null>(null);
   const { fields } = useForm(forms.createDistrictForm);
 
   const toggleHouse = useCallback(
@@ -71,6 +77,14 @@ export const CreateDistrictBorderMapPage: FC<Props> = ({
     [savedDistricts],
   );
 
+  useEffect(() => {
+    if (!preselectedDistrictPayload?.polygon || !map) return;
+
+    const center = findPolygonCenter(preselectedDistrictPayload.polygon);
+
+    map.setCenter(center, 15);
+  }, [map, preselectedDistrictPayload]);
+
   useMemo(() => {
     if (!preselectedDistrictPayload || !workingDistrict) return;
 
@@ -102,11 +116,13 @@ export const CreateDistrictBorderMapPage: FC<Props> = ({
         housesInDistrict.map(({ id }) => id),
         fields.selectedHouses.value,
         toggleHouse,
+        searchBuilding && [searchBuilding.id],
       ),
     [
       existingHousingStocks,
       fields.selectedHouses.value,
       housesInDistrict,
+      searchBuilding,
       toggleHouse,
     ],
   );
@@ -119,6 +135,21 @@ export const CreateDistrictBorderMapPage: FC<Props> = ({
         <div>
           <GoBack />
         </div>
+        <SearchAddresses
+          handleSelect={(building) => {
+            const center = [
+              building.coordinates?.latitude!,
+              building.coordinates?.longitude!,
+            ];
+
+            setSearchBuilding(building);
+
+            const MAP_ZOOM = 17;
+
+            map?.setCenter(center, MAP_ZOOM, { duration: 200 });
+          }}
+          existingHousingStocks={existingHousingStocks}
+        />
         <ControlButtonsWrapper>
           {fields.isEditing.value && (
             <Button onClick={() => fields.isEditing.onChange(false)}>
@@ -138,7 +169,7 @@ export const CreateDistrictBorderMapPage: FC<Props> = ({
       <MapWrapper>
         {!fields.isEditing.value && (
           <CreateDistrictFormPanel
-            isLoadingCreatingDistrict={false}
+            isLoadingCreatingDistrict={isLoadingPostDistrict}
             isLoadingHousingStocks={false}
             selectedHousingStocks={fields.selectedHouses.value}
             housingStocksInDistrict={housesInDistrict}
@@ -157,6 +188,7 @@ export const CreateDistrictBorderMapPage: FC<Props> = ({
           />
         )}
         <div ref={mapRef} style={{ width: '100%', height: '86vh' }} />
+        {map && <MapZoomControl map={map} />}
       </MapWrapper>
     </div>
   );

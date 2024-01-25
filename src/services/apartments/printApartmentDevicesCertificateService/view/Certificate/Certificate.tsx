@@ -1,7 +1,7 @@
 /* eslint-disable react/jsx-filename-extension */
 import React, { FC, useState } from 'react';
 import { useEffect } from 'react';
-import moment from 'moment';
+import dayjs from 'api/dayjs';
 import { Props } from './Certificate.types';
 
 export const Certificate: FC<Props> = ({ certificate }) => {
@@ -12,7 +12,7 @@ export const Certificate: FC<Props> = ({ certificate }) => {
 
   useEffect(() => setFullName(name), [name]);
 
-  const strDate = moment().format('DD MMMM YYYY');
+  const strDate = dayjs().format('DD MMMM YYYY');
 
   return (
     <div

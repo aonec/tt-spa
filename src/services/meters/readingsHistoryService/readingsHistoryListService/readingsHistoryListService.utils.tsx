@@ -7,18 +7,18 @@ import {
   IndividualDeviceReadingsItemHistoryResponse,
   IndividualDeviceResponse,
 } from 'api/types';
-import moment from 'moment';
+import dayjs from 'api/dayjs';
 import _, { round } from 'lodash';
 import { getMeasurementUnit } from 'services/meters/individualDeviceMetersInputService/individualDeviceMetersInputService.utils';
 import { CorrectReadingValuesValidationResult } from './readingsHistoryListService.types';
 import { confirmReadingService } from '../confirmReadingService/confirmReadingService.model';
 
 export function getNewReadingDate(month: number, year: number) {
-  const date = moment(`${15}.${month}.${year}`, 'DD.MM.YYYY');
+  const monthStr = month < 10 ? `0${month}` : `${month}`;
 
-  date.set('month', month - 2);
+  const date = dayjs(`${15}.${monthStr}.${year}`, 'DD.MM.YYYY');
 
-  return date.toISOString();
+  return date.subtract(1, 'month').toISOString();
 }
 
 export function validateReadings(
@@ -36,14 +36,15 @@ export function validateReadings(
     (acc, elem, index) => {
       if (index + 1 > rateNum) return acc;
 
-      const currentValue = Number(elem) || 0;
+      const currentValue = elem;
       const prevValue = Number(prevValues[index]) || 0;
 
-      const isDown = currentValue < prevValue;
-      const isUp = currentValue - prevValue > limit;
-      const type: 'up' | 'down' | null = isUp ? 'up' : isDown ? 'down' : null;
-      const difference = currentValue - prevValue;
+      const currentValueNull = currentValue || 0;
 
+      const isDown = currentValueNull < prevValue;
+      const isUp = currentValueNull - prevValue > limit;
+      const type: 'up' | 'down' | null = isUp ? 'up' : isDown ? 'down' : null;
+      const difference = currentValueNull - prevValue;
       const validated = acc.validated && !isDown && !isUp;
 
       return {

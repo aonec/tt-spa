@@ -40,3 +40,9 @@ export const CalculatorIconWrapper = styled.div`
   display: flex;
   align-items: center;
 `;
+
+export const NoCalculatorText = styled(CalculatorTitle)`
+  font-weight: 500;
+  font-size: 16px;
+  color: #272f5a;
+`;

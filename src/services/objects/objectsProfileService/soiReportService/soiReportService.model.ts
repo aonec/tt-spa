@@ -1,4 +1,6 @@
-import { combine, createDomain, forward, guard, sample } from 'effector';
+import { createEffect, createEvent, createStore } from 'effector';
+import { combine, sample } from 'effector';
+import { message } from 'antd';
 import {
   HouseManagementResponse,
   StreetWithBuildingNumbersResponsePagedList,
@@ -14,66 +16,59 @@ import {
   SoiReportType,
 } from './soiReportService.types';
 import { BlobResponseErrorType } from 'types';
-import { message } from 'antd';
 import { GetAddressesWithCityRequestPayload } from 'services/workingRanges/uniqueWorkingRangeService/uniqueWorkingRangeService.types';
 import { addressSearchService } from 'services/addressSearchService/addressSearchService.models';
 
-const domain = createDomain('soiReportService');
+const openSoiReportModal = createEvent();
 
-const openSoiReportModal = domain.createEvent();
+const closeSoiReportModal = createEvent();
 
-const closeSoiReportModal = domain.createEvent();
+const createSoiReport = createEvent<CreateSoiReportRequestPayload>();
 
-const createSoiReport = domain.createEvent<CreateSoiReportRequestPayload>();
-
-const fetchHouseManagementFx = domain.createEffect<
+const fetchHouseManagementFx = createEffect<
   GetHouseManagementsRequestPayload,
   HouseManagementResponse[]
 >(getHouseManagements);
 
-const fetchAdressesFx = domain.createEffect<
+const fetchAdressesFx = createEffect<
   GetAddressesWithCityRequestPayload,
   StreetWithBuildingNumbersResponsePagedList
 >(getAdresses);
 
-const createSoiReportFx = domain.createEffect<
+const createSoiReportFx = createEffect<
   CreateSoiReportRequestPayload,
   void,
   BlobResponseErrorType
 >(getSoiReport);
 
-const $addressesPagedList = domain
-  .createStore<StreetWithBuildingNumbersResponsePagedList | null>(null)
-  .on(fetchAdressesFx.doneData, (_, data) => data)
-  .reset(closeSoiReportModal);
+const $addressesPagedList =
+  createStore<StreetWithBuildingNumbersResponsePagedList | null>(null)
+    .on(fetchAdressesFx.doneData, (_, data) => data)
+    .reset(closeSoiReportModal);
 
-const $houseManagements = domain
-  .createStore<HouseManagementResponse[] | null>(null)
+const $houseManagements = createStore<HouseManagementResponse[] | null>(null)
   .on(fetchHouseManagementFx.doneData, (_, list) => list)
   .reset(closeSoiReportModal);
 
-const $isModalOpen = domain
-  .createStore(false)
+const $isModalOpen = createStore(false)
   .on(openSoiReportModal, () => true)
   .reset(closeSoiReportModal);
 
-const setSoiReportType = domain.createEvent<SoiReportType>();
+const setSoiReportType = createEvent<SoiReportType>();
 
-const $soiReportType = domain
-  .createStore<SoiReportType | null>(null)
+const $soiReportType = createStore<SoiReportType | null>(null)
   .on(setSoiReportType, (_, type) => type)
   .reset(closeSoiReportModal);
 
-const setSelectedCity = domain.createEvent<string>();
+const setSelectedCity = createEvent<string>();
 
-const $selectedCity = domain
-  .createStore<string | null>(null)
+const $selectedCity = createStore<string | null>(null)
   .on(setSelectedCity, (_, city) => city)
   .reset(closeSoiReportModal);
 
 sample({
   source: $selectedCity,
-  clock: guard({
+  clock: sample({
     clock: combine($soiReportType, $selectedCity),
     filter: ([type, seletedCity]) =>
       type === SoiReportType.HouseManagement && Boolean(seletedCity),
@@ -84,7 +79,7 @@ sample({
 
 sample({
   source: $selectedCity,
-  clock: guard({
+  clock: sample({
     clock: combine($soiReportType, $selectedCity),
     filter: ([type, seletedCity]) =>
       type === SoiReportType.Address && Boolean(seletedCity),
@@ -93,9 +88,9 @@ sample({
   target: fetchAdressesFx,
 });
 
-forward({
-  from: createSoiReport,
-  to: createSoiReportFx,
+sample({
+  clock: createSoiReport,
+  target: createSoiReportFx,
 });
 
 createSoiReportFx.failData.watch(async (error) => {

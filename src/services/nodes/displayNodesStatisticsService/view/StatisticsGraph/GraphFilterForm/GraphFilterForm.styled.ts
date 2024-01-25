@@ -81,4 +81,8 @@ export const ClosedFilterWrapper = styled.div`
 
 export const ButtonSC = styled(Button)`
   border-radius: 4px;
+  margin-right: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;

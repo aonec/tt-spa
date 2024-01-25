@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useCallback } from 'react';
 import {
   HalfSizeActionsWrapper,
   PushStageButtonWrapper,
@@ -18,23 +18,28 @@ import { taskActionInfoComponents } from './TaskActionsPanel.constants';
 
 export const TaskActionsPanel: FC<TaskActionsPanelProps> = ({
   actions,
-  taskType,
+  task,
   handlePushStage,
   isLoading,
   handleChangePushStagePayload,
+  pushStageRequestPayload,
 }) => {
-  const {
-    halfSizeActions,
-    fullSizeActions,
-    bottomActions,
-  } = useTaskPanelActions(actions);
+  let { halfSizeActions, fullSizeActions, bottomActions } =
+    useTaskPanelActions(actions);
 
-  const renderTaskAction = ({ Component, type }: TaskActionsComponent) => (
-    <Component handleChange={handleChangePushStagePayload} type={type} />
+  const renderTaskAction = useCallback(
+    ({ Component }: TaskActionsComponent) => (
+      <Component
+        task={task}
+        handleChange={handleChangePushStagePayload}
+        pushStageRequestPayload={pushStageRequestPayload}
+      />
+    ),
+    [task, handleChangePushStagePayload, pushStageRequestPayload],
   );
 
   const actionInfoComponents = taskActionInfoComponents.filter(
-    (elem) => elem.taskType === taskType && actions.includes(elem.action)
+    (elem) => elem.taskType === task.type && actions.includes(elem.action),
   );
 
   return (

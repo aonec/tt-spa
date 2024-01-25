@@ -1,17 +1,16 @@
-import { createDomain, forward } from 'effector';
+import { createEffect, createEvent, createStore } from 'effector';
+import { sample } from 'effector';
 import { ContractorCreateRequest, ContractorResponse } from 'api/types';
 import { createContractor } from './addContractorService.api';
 import { message } from 'antd';
 import { EffectFailDataAxiosError } from 'types';
 
-const domain = createDomain('addContractorService');
+const handleOpenModal = createEvent();
+const handleCloseModal = createEvent();
 
-const handleOpenModal = domain.createEvent();
-const handleCloseModal = domain.createEvent();
+const handleAddcontractor = createEvent<ContractorCreateRequest>();
 
-const handleAddcontractor = domain.createEvent<ContractorCreateRequest>();
-
-const addContractorFx = domain.createEffect<
+const addContractorFx = createEffect<
   ContractorCreateRequest,
   ContractorResponse,
   EffectFailDataAxiosError
@@ -19,15 +18,14 @@ const addContractorFx = domain.createEffect<
 
 const addContractorSuccess = addContractorFx.doneData;
 
-const $isModalOpen = domain
-  .createStore<boolean>(false)
+const $isModalOpen = createStore<boolean>(false)
   .on(handleOpenModal, () => true)
   .on(handleCloseModal, () => false)
   .reset(addContractorSuccess);
 
-forward({
-  from: handleAddcontractor,
-  to: addContractorFx,
+sample({
+  clock: handleAddcontractor,
+  target: addContractorFx,
 });
 
 addContractorFx.failData.watch((error) =>

@@ -1,5 +1,5 @@
 import { Empty } from 'antd';
-import moment from 'moment';
+import dayjs from 'api/dayjs';
 import React, { FC } from 'react';
 import { ResourceIconLookup } from 'ui-kit/shared/ResourceIconLookup';
 import { Table } from 'ui-kit/Table';
@@ -11,8 +11,10 @@ import {
   DeviceModel,
   DeviceSerialNumber,
   DeviceWrapper,
+  FullAddressWrapper,
 } from './HousingMeteringDevicesReport.styled';
 import { HousingMeteringDevicesReportProps } from './HousingMeteringDevicesReport.types';
+import { Tooltip } from 'ui-kit/shared/Tooltip';
 
 export const HousingMeteringDevicesReport: FC<
   HousingMeteringDevicesReportProps
@@ -47,10 +49,10 @@ export const HousingMeteringDevicesReport: FC<
               );
 
               return (
-                <div>
+                <FullAddressWrapper>
                   <ApartmentNumber>Дом №{number}</ApartmentNumber>
-                  {addressString}
-                </div>
+                  <Tooltip title={addressString}>{addressString}</Tooltip>
+                </FullAddressWrapper>
               );
             },
           },
@@ -67,10 +69,10 @@ export const HousingMeteringDevicesReport: FC<
                   </DeviceWrapper>
                   <DeviceCheckingDates>
                     {elem.lastCheckingDate &&
-                      moment(elem.lastCheckingDate).format('DD.MM.YYYY')}
+                      dayjs(elem.lastCheckingDate).format('DD.MM.YYYY')}
                     {` — `}
                     {elem.futureCheckingDate &&
-                      moment(elem.futureCheckingDate).format('DD.MM.YYYY')}
+                      dayjs(elem.futureCheckingDate).format('DD.MM.YYYY')}
                   </DeviceCheckingDates>
                 </div>
               );
