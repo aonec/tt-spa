@@ -1,26 +1,37 @@
-import { applyBarrier, createJsonQuery, declareParams } from '@farfetched/core';
 import { sample } from 'effector';
-import { tokensService } from '../tokensService';
+import {
+  createJsonMutation,
+  declareParams,
+  applyBarrier,
+} from '@farfetched/core';
 import { authBarrier } from '../tokensService/tokensService.relations';
-import { QueryFactoryParams } from './types';
+import { tokensService } from '../tokensService';
+import { MutationFactoryParams, SuccessResponse } from './types';
 import { requestFailed, setIsOnline } from './model';
 import { currentOrganizationService } from 'services/currentOrganizationService';
 
-const method: 'GET' = 'GET';
-
-export function createQueryWithAuth<
+export function createMutation<
   Params extends object | void,
   Data,
-  TransformedData = Data,
+  TransformedData,
+  Body,
 >({
   url,
-  response,
-  errorConverter,
-}: QueryFactoryParams<Params, Data, TransformedData>) {
-  const query = createJsonQuery({
+  response = {
+    contract: {
+      isData: (res): res is SuccessResponse<Data> => Boolean(res),
+      getErrorMessages: () => ['Invalid data'],
+    },
+  },
+  abort,
+  method,
+  body,
+}: MutationFactoryParams<Params, Data, TransformedData, Body>) {
+  const mutation = createJsonMutation({
     params: declareParams<Params>(),
     request: {
       method,
+      body: body && body,
       query: (params) =>
         params ? new URLSearchParams(Object.entries(params)).toString() : '',
       url: {
@@ -47,21 +58,20 @@ export function createQueryWithAuth<
           : result.successResponse,
     },
     concurrency: {
-      strategy: 'TAKE_EVERY',
+      abort,
     },
   });
 
-  applyBarrier(query, { barrier: authBarrier });
+  applyBarrier(mutation, { barrier: authBarrier });
 
   sample({
-    clock: query.finished.success,
+    clock: mutation.finished.success,
     target: setIsOnline,
   });
 
   sample({
-    clock: query.finished.failure,
+    clock: mutation.finished.failure,
     fn: ({ error, params }) => ({
-      errorConverter,
       error,
       method,
       url: typeof url === 'function' ? url(params) : url,
@@ -69,5 +79,5 @@ export function createQueryWithAuth<
     target: requestFailed,
   });
 
-  return query;
+  return mutation;
 }

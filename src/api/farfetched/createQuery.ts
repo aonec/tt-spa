@@ -1,32 +1,31 @@
+import { applyBarrier, createJsonQuery, declareParams } from '@farfetched/core';
 import { sample } from 'effector';
-import {
-  createJsonMutation,
-  declareParams,
-  applyBarrier,
-} from '@farfetched/core';
-import { authBarrier } from '../tokensService/tokensService.relations';
 import { tokensService } from '../tokensService';
-import { MutationFactoryParams } from './types';
+import { authBarrier } from '../tokensService/tokensService.relations';
+import { QueryFactoryParams, SuccessResponse } from './types';
 import { requestFailed, setIsOnline } from './model';
 import { currentOrganizationService } from 'services/currentOrganizationService';
 
-export function createMutationWithAuth<
+const method: 'GET' = 'GET';
+
+export function createQuery<
   Params extends object | void,
   Data,
-  TransformedData,
-  Body,
+  TransformedData = Data,
 >({
   url,
-  response,
-  abort,
-  method,
-  body,
-}: MutationFactoryParams<Params, Data, TransformedData, Body>) {
-  const mutation = createJsonMutation({
+  response = {
+    contract: {
+      isData: (res): res is SuccessResponse<Data> => Boolean(res),
+      getErrorMessages: () => ['Invalid data'],
+    },
+  },
+  errorConverter,
+}: QueryFactoryParams<Params, Data, TransformedData>) {
+  const query = createJsonQuery({
     params: declareParams<Params>(),
     request: {
       method,
-      body: body && body,
       query: (params) =>
         params ? new URLSearchParams(Object.entries(params)).toString() : '',
       url: {
@@ -48,23 +47,26 @@ export function createMutationWithAuth<
     response: {
       ...response,
       mapData: ({ params, result }) =>
-        response.mapData({ params, result: result.successResponse }),
+        response.mapData
+          ? response.mapData({ params, result: result.successResponse })
+          : result.successResponse,
     },
     concurrency: {
-      abort,
+      strategy: 'TAKE_EVERY',
     },
   });
 
-  applyBarrier(mutation, { barrier: authBarrier });
+  applyBarrier(query, { barrier: authBarrier });
 
   sample({
-    clock: mutation.finished.success,
+    clock: query.finished.success,
     target: setIsOnline,
   });
 
   sample({
-    clock: mutation.finished.failure,
+    clock: query.finished.failure,
     fn: ({ error, params }) => ({
+      errorConverter,
       error,
       method,
       url: typeof url === 'function' ? url(params) : url,
@@ -72,5 +74,5 @@ export function createMutationWithAuth<
     target: requestFailed,
   });
 
-  return mutation;
+  return query;
 }
