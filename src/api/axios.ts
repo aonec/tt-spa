@@ -8,7 +8,7 @@ import { isUndefined } from 'lodash/fp';
 import { tokensService } from './tokensService';
 import { currentOrganizationService } from 'services/currentOrganizationService';
 
-export const isDevMode = process.env.DEV_SETTINGS !== 'DISABLED';
+export const isDevMode = false;
 
 axios.defaults.baseURL = currentOrganizationService.outputs.$devUrl.getState();
 

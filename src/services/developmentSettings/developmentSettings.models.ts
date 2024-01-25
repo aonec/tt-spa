@@ -1,5 +1,4 @@
 import { createEvent, createStore } from 'effector';
-import { persist } from 'effector-storage/local';
 import { featureToggles } from 'featureToggles';
 import { FeatureToggles, FeatureTogglesSet } from './developmentSettings.types';
 
