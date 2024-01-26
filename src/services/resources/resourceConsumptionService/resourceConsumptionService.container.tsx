@@ -75,7 +75,7 @@ export const ResourceConsumptionContainer = () => {
         },
       });
     }
-  }, [housingConsumptionData]);
+  }, [housingConsumptionData, setSelectedGraphTypes]);
 
   const preparedHousingConsumptionData: AllConsumptionDataWithNullableAdditionalAddress =
     useMemo(() => {

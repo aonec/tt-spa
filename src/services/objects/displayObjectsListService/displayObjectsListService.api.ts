@@ -1,12 +1,10 @@
-import { axios } from 'api/axios';
 import { BuildingListResponsePagedList } from 'api/types';
 import { GetHousingStocksRequestPayload } from './displayObjectsListService.types';
-import { createQuery } from '@farfetched/core';
-import { createEffect } from 'effector';
+import { createQuery } from 'api/farfetched/createQuery';
 
-export const getBuildingsQuery = createQuery({
-  effect: createEffect<
-    GetHousingStocksRequestPayload,
-    BuildingListResponsePagedList
-  >(async (params) => await axios.get('Buildings', { params })),
+export const getBuildingsQuery = createQuery<
+  GetHousingStocksRequestPayload,
+  BuildingListResponsePagedList
+>({
+  url: 'Buildings',
 });
