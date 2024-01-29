@@ -37,15 +37,6 @@ export const InputsWrapper = styled.div`
   gap: 16px;
 `;
 
-export const HeaderWrapper = styled.div`
-  display: flex;
-  justify-content: space-between;
-  width: 200px;
-
-  margin-bottom: 12px;
-  user-select: none;
-`;
-
 export const MonthWrapperWithMargin = styled(MonthWrapper)`
   margin-bottom: 12px;
   width: 100%;

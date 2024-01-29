@@ -6,6 +6,8 @@ import {
 import { UploadReading } from '../../individualDeviceMetersInputService.types';
 
 export type MetersInputsBlockProps = {
+  inputIndex: number;
+  handleUploadReading?: UploadReading;
   resource?: EResourceType;
   status?: MetersInputBlockStatus;
   rateType: EIndividualDeviceRateType;
@@ -13,8 +15,6 @@ export type MetersInputsBlockProps = {
   sliderIndex: number;
   isPrevious?: boolean;
   isDisabled?: boolean;
-  inputIndex: number;
-  handleUploadReading: UploadReading;
   tooltip?: string;
   focusOnFirst?: boolean;
 };
