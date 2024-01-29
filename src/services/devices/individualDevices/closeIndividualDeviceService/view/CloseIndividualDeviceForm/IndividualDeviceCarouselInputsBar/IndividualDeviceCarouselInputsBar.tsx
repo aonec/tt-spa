@@ -1,10 +1,12 @@
 import React, { FC, useCallback, useMemo, useState } from 'react';
 import { IndividualDeviceCarouselInputsBarProps } from './IndividualDeviceCarouselInputsBar.types';
 import {
+  DeviceInfoWrapper,
   GroupWrapper,
   InputsWrapper,
-  MonthWrapperWithMargin,
+  MonthWrapper,
   ReadingHistoryButtonWrapper,
+  RightBlock,
   SerialNumberWrapper,
   TitleWrapper,
   Wrapper,
@@ -21,17 +23,7 @@ import { Tooltip } from 'antd';
 
 export const IndividualDeviceCarouselInputsBar: FC<
   IndividualDeviceCarouselInputsBarProps
-> = ({
-  resource,
-  rateType,
-  title,
-  model,
-  serialNumber,
-  readings,
-  onChange,
-  disabled = false,
-  device,
-}) => {
+> = ({ resource, title, model, serialNumber, readings, device }) => {
   const { openReadingsHistoryModal } = useUnit({
     openReadingsHistoryModal:
       apartmentIndividualDevicesMetersService.inputs.openReadingsHistoryModal,
@@ -50,7 +42,7 @@ export const IndividualDeviceCarouselInputsBar: FC<
 
   return (
     <Wrapper>
-      <div>
+      <DeviceInfoWrapper>
         <TitleWrapper>{title}</TitleWrapper>
         <GroupWrapper>
           {resource && <ResourceIconLookup resource={resource} />}
@@ -59,12 +51,11 @@ export const IndividualDeviceCarouselInputsBar: FC<
           </SerialNumberWrapper>
           {model || 'Модель'}
         </GroupWrapper>
-      </div>
-      <InputsWrapper>
-        <div>
-          <MonthWrapperWithMargin>
-            {getReadingsMonthByShift(-1)}
-          </MonthWrapperWithMargin>
+      </DeviceInfoWrapper>
+
+      <RightBlock>
+        <InputsWrapper>
+          <MonthWrapper>{getReadingsMonthByShift(-1)}</MonthWrapper>
           <MetersInputsBlock
             reading={currentReading}
             rateType={device!.rateType}
@@ -72,17 +63,19 @@ export const IndividualDeviceCarouselInputsBar: FC<
             inputIndex={0}
             isDisabled
           />
-        </div>
-      </InputsWrapper>
+        </InputsWrapper>
 
-      <ReadingHistoryButtonWrapper>
-        <Tooltip title="История показаний">
-          <HistoryIcon
-            onClick={() => openReadingsHistoryModal(device!.id)}
-            style={{ cursor: 'pointer' }}
-          />
-        </Tooltip>
-      </ReadingHistoryButtonWrapper>
+        <ReadingHistoryButtonWrapper>
+          <Tooltip title="История показаний">
+            <HistoryIcon
+              onClick={() => openReadingsHistoryModal(device!.id)}
+              style={{ cursor: 'pointer' }}
+            />
+          </Tooltip>
+        </ReadingHistoryButtonWrapper>
+        
+      </RightBlock>
+
     </Wrapper>
   );
 };

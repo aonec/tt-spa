@@ -53,13 +53,6 @@ const closeIndividualDeviceForm = createForm({
 });
 
 sample({
-  // clock: openModal,
-  source: $closingDevice,
-  fn: (data) => prepareDeviceReadings(data?.readings || []),
-  target: closeIndividualDeviceForm.fields.deviceReadings.onChange,
-});
-
-sample({
   clock: closeIndivididualDeviceMutation.finished.success,
   target: closeModal,
 });

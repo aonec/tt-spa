@@ -3,7 +3,7 @@ import { CloseIndividualDeviceFormProps } from './CloseIndividualDeviceForm.type
 import { useForm } from 'effector-forms';
 import { Form } from 'antd';
 import { FormItem } from 'ui-kit/FormItem';
-import { EClosingReason, EIndividualDeviceRateType } from 'api/types';
+import { EClosingReason } from 'api/types';
 import { ErrorMessage } from 'ui-kit/ErrorMessage';
 import { Select } from 'ui-kit/Select';
 import { ClosingReasonsDictionary } from 'dictionaries';
@@ -58,11 +58,7 @@ export const CloseIndividualDeviceForm: FC<CloseIndividualDeviceFormProps> = ({
         model={device?.model || ''}
         resource={device?.resource || null}
         serialNumber={device?.serialNumber || ''}
-        rateType={device?.rateType || EIndividualDeviceRateType.OneZone}
         readings={fields.deviceReadings.value}
-        onChange={(readings) => {
-          fields.deviceReadings.onChange(readings);
-        }}
       />
     </Form>
   );

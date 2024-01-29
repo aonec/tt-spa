@@ -1,10 +1,9 @@
 import styled from 'styled-components';
-import { MonthWrapper } from 'services/devices/housingMeteringDevices/housingMeteringDeviceReadingsService/view/MeteringDeviceMonthReading/MeteringDeviceMonthReading.styled';
 
 export const Wrapper = styled.div`
   display: flex;
-  justify-content: space-between;
-  padding: 16px 24px;
+  justify-content: space-around;
+  padding: 16px 0px;
   margin: 8px 0px;
 
   box-shadow: 0px 8px 16px 0px rgba(78, 93, 146, 0.08),
@@ -33,16 +32,28 @@ export const SerialNumberWrapper = styled.div`
 
 export const InputsWrapper = styled.div`
   display: flex;
+  flex-direction: column;
   align-items: center;
   gap: 16px;
 `;
 
-export const MonthWrapperWithMargin = styled(MonthWrapper)`
-  margin-bottom: 12px;
-  width: 100%;
-  justify-content: center;
+export const MonthWrapper = styled.div`
+  font-size: 16px;
+  font-weight: 500;
+
+  color: #272f5a;
+  text-transform: capitalize;
 `;
 
 export const ReadingHistoryButtonWrapper = styled.div`
-  margin-top: 42px;
+  margin-top: 50px;
+  margin-left: 26px;
+`;
+
+export const DeviceInfoWrapper = styled.div`
+  margin-top: 8px;
+`;
+
+export const RightBlock = styled.div`
+  display: flex;
 `;
