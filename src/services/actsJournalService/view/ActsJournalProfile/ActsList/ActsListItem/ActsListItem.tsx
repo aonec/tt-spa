@@ -15,9 +15,11 @@ export const ActsListItem: FC<ActsListItemProps> = ({ act }) => {
       <div>{act.registryNumber}</div>
       <div>{ActTypesNamesLookup[act.actType]}</div>
       <ResourceInfo resource={act.actResourceType} />
-      <ActAddress to={`/meters/apartments/${act.apartment?.apartmentId}`}>
-        {actAddress}
-      </ActAddress>
+      {act.apartment?.apartmentId && (
+        <ActAddress to={`/meters/apartments/${act.apartment.apartmentId}`}>
+          {actAddress}
+        </ActAddress>
+      )}
       <div>{dayjs(act.actJobDate).format('DD.MM.YYYY')}</div>
     </Wrapper>
   );
