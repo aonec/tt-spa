@@ -21,6 +21,7 @@ import { TypeAddressToStart } from 'ui-kit/shared/TypeToStart';
 import { EApartmentStatus } from 'api/types';
 import { NothingFound } from 'ui-kit/shared/NothingFound';
 import dayjs from 'dayjs';
+import { ApartmentReadingsActsJournalContainer } from './apartmentReadingsActsJournal';
 
 const { gates } = apartmentReadingsService;
 const { ApartmentGate } = gates;
@@ -192,6 +193,9 @@ export const ApartmentProfile: FC<ApartmentProfileProps> = ({
                 />
               </ReadingsWrapper>
             </ContentWrapper>
+          )}
+          {id && (
+            <ApartmentReadingsActsJournalContainer apartmentId={Number(id)} />
           )}
         </WithLoader>
       </div>
