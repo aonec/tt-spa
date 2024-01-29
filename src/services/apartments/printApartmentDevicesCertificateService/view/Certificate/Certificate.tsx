@@ -4,7 +4,7 @@ import { useEffect } from 'react';
 import dayjs from 'api/dayjs';
 import { Props } from './Certificate.types';
 
-export const Certificate: FC<Props> = ({ certificate }) => {
+export const Certificate: FC<Props> = ({ certificate, isPJKH }) => {
   const { fullName: name, address, individualDevices: devices } = certificate;
   const { city, street, buildingNumber, apartmentNumber } = address || {};
 
@@ -43,9 +43,20 @@ export const Certificate: FC<Props> = ({ certificate }) => {
             textAlign: 'center',
           }}
         >
-          от абонентского отдела
-          <br />
-          ООО "Инженерный центр - НК"
+          {!isPJKH && (
+            <>
+              от абонентского отдела
+              <br />
+              ООО "Инженерный центр - НК"
+            </>
+          )}
+          {isPJKH && (
+            <>
+              отдел по работе с ИПУ
+              <br />
+              ООО УК "ПЖКХ-17"
+            </>
+          )}
         </div>
         <div style={{ paddingTop: '24px', float: 'left' }}>дана: </div>
         <div
@@ -218,13 +229,23 @@ export const Certificate: FC<Props> = ({ certificate }) => {
           </tbody>
         </table>
         <div style={{ paddingTop: '36px', float: 'left', fontWeight: 'bold' }}>
-          Заместитель генерального директора
-          <br />
-          по работе с населением
+          {!isPJKH && (
+            <>
+              Заместитель генерального директора
+              <br />
+              по работе с населением
+            </>
+          )}
+          {isPJKH && (
+            <>
+              Специалист по работе
+              <br />с населением
+            </>
+          )}
         </div>
         <div style={{ paddingTop: '36px', float: 'right', fontWeight: 'bold' }}>
           <br />
-          _______________ О.В. Филиппова
+          _______________ {!isPJKH && 'О.В. Филиппова'}
         </div>
       </div>
     </div>

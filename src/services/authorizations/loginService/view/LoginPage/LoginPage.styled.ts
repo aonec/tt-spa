@@ -88,4 +88,10 @@ export const ButtonDevSettings = styled(Button).attrs({
   size: 'small',
 })`
   color: white !important;
+
+  &:hover {
+    color: white !important;
+
+    box-shadow: 3px 3px 0px #ffffff39 !important;
+  }
 `;

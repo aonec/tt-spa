@@ -1,10 +1,11 @@
 import { ApartmentResponse } from 'api/types';
 import { ReactNode } from 'react';
 import {
-  EditPhoneNumberRequest,
+  AddPhoneNumberRequest,
   RemovePhoneNumberRequest,
   UpdateApartmentRequestPayload,
   UpdateHomeownerRequestPayload,
+  ReplacePhoneNumberRequest,
 } from 'services/meters/metersService/ApartmentReadingsService/ApartmentReadingsService.types';
 import { ContextMenuElement } from 'ui-kit/ContextMenuButton/ContextMenuButton.types';
 
@@ -16,6 +17,7 @@ export type ApartmentInfoProps = {
   additionalHeaderInfo?: ReactNode;
   handleUpdateHomeowner?: (payload: UpdateHomeownerRequestPayload) => void;
   isUpdateHomeownerLoading?: boolean;
-  addPhoneNumber?: (payload: EditPhoneNumberRequest) => void;
+  addPhoneNumber?: (payload: AddPhoneNumberRequest) => void;
   deletePhoneNumber?: (payload: RemovePhoneNumberRequest) => void;
+  replacePhoneNumber?: (payload: ReplacePhoneNumberRequest) => void;
 };

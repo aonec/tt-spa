@@ -1,21 +1,21 @@
 import React from 'react';
-import { ComponentMeta, ComponentStory } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react';
 import { WithLoader } from '.';
-import { Wrapper } from './WithLoader.styled.stories';
+import { Wrapper } from './WithLoader.stories.styled';
 
 export default {
   title: 'WithLoader',
   component: WithLoader,
   parameters: { layout: 'centered' },
-  argTypes: {
-    isLoading: {
-      defaultValue: true,
-    },
-  },
-} as ComponentMeta<typeof WithLoader>;
+} as Meta<typeof WithLoader>;
 
-export const Overview: ComponentStory<typeof WithLoader> = (args) => (
-  <Wrapper>
-    <WithLoader {...args}>Children </WithLoader>
-  </Wrapper>
-);
+export const Overview: StoryObj<typeof WithLoader> = {
+  render: (args) => (
+    <Wrapper>
+      <WithLoader {...args}>Children </WithLoader>
+    </Wrapper>
+  ),
+  args: {
+    isLoading: true,
+  },
+};

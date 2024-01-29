@@ -7,6 +7,7 @@ import { FormModal } from 'ui-kit/Modals/FormModal';
 import ReactToPrint from 'react-to-print';
 import { Button } from 'ui-kit/Button';
 import { WithLoader } from 'ui-kit/shared/WithLoader';
+import { currentOrganizationService } from 'services/currentOrganizationService';
 
 const { inputs, outputs, gates } = printApartmentDevicesCertificateService;
 const { HomeownerCerificateGate } = gates;
@@ -14,6 +15,12 @@ const { HomeownerCerificateGate } = gates;
 export const PrintApartmentDevicesCertificateContainer: FC<Props> = ({
   homeownerId,
 }) => {
+  const currentManagingFirm = useUnit(
+    currentOrganizationService.outputs.$currentManagingFirm,
+  );
+
+  const isPJKH = currentManagingFirm?.id === 4;
+
   const {
     closeIssueCertificateModalButtonClicked,
     homeownerCertificate,
@@ -52,7 +59,10 @@ export const PrintApartmentDevicesCertificateContainer: FC<Props> = ({
           <WithLoader isLoading={isLoading}>
             {homeownerCertificate && !isLoading && (
               <div style={{ marginBottom: 70 }} ref={certificateRef}>
-                <Certificate certificate={homeownerCertificate} />
+                <Certificate
+                  certificate={homeownerCertificate}
+                  isPJKH={isPJKH}
+                />
               </div>
             )}
           </WithLoader>

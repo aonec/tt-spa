@@ -1,34 +1,29 @@
-import { createEffect, createStore } from 'effector';
 import { sample } from 'effector';
 import { createGate } from 'effector-react';
-import { PipeNodeResponse } from 'api/types';
 import { changeNodeStatusService } from '../changeNodeStatusService';
 import { changeNodeTypeService } from '../changeNodeTypeService';
-import { getPipeNode } from './nodeProfileService.api';
+import { getPipeNodeQuery } from './nodeProfileService.api';
 
 const PipeNodeGate = createGate<{ pipeNodeId: number }>();
 
-const fetchPipeNodeFx = createEffect<number, PipeNodeResponse>(getPipeNode);
-
-const $pipeNode = createStore<PipeNodeResponse | null>(null)
-  .on(fetchPipeNodeFx.doneData, (_, pipeNode) => pipeNode)
-  .reset(PipeNodeGate.close);
-
 sample({
-  clock: PipeNodeGate.open.map(({ pipeNodeId }) => pipeNodeId),
-  target: fetchPipeNodeFx,
+  clock: PipeNodeGate.close,
+  target: getPipeNodeQuery.reset,
 });
 
 sample({
-  source: PipeNodeGate.state.map(({ pipeNodeId }) => pipeNodeId),
+  clock: PipeNodeGate.open,
+  target: getPipeNodeQuery.start,
+});
+
+sample({
+  source: PipeNodeGate.state,
   clock: [
     changeNodeStatusService.inputs.changeNodeStatusFx.doneData,
     changeNodeTypeService.inputs.changeNodeTypeFx.doneData,
   ],
-  target: fetchPipeNodeFx,
+  target: getPipeNodeQuery.start,
 });
-
-const $isLoading = fetchPipeNodeFx.pending;
 
 export const nodeProfileService = {
   inputs: {
@@ -36,8 +31,8 @@ export const nodeProfileService = {
     openChangeNodeTypeModal: changeNodeTypeService.inputs.openModal,
   },
   outputs: {
-    $pipeNode,
-    $isLoading,
+    $pipeNode: getPipeNodeQuery.$data,
+    $isLoading: getPipeNodeQuery.$pending,
   },
   gates: {
     PipeNodeGate,

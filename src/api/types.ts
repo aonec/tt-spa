@@ -963,13 +963,6 @@ export interface CallCenterWorkingConstructedReportResponseIEnumerableSuccessApi
   successResponse: CallCenterWorkingConstructedReportResponse[] | null;
 }
 
-export interface CheckCurrentTransformerRequest {
-  /** @format date-time */
-  currentCheckingDate: string;
-  /** @format date-time */
-  futureCheckingDate: string;
-}
-
 export interface CheckDeviceRequest {
   /** @format int32 */
   deviceId: number;
@@ -987,12 +980,6 @@ export interface CheckIndividualDeviceRequest {
   futureCheckingDate: string;
   readingsBeforeCheck?: SwitchIndividualDeviceReadingsCreateRequest[] | null;
   readingsAfterCheck?: SwitchIndividualDeviceReadingsCreateRequest[] | null;
-}
-
-export interface CloseCurrentTransformerRequest {
-  /** @format date-time */
-  closingDate: string;
-  documentIds?: number[] | null;
 }
 
 export interface CloseDeviceRequest {
@@ -1254,35 +1241,6 @@ export interface CreateCommunicationPipeRequest {
   devices?: CreatePipeHousingMeteringDeviceInNodeRequest[] | null;
 }
 
-export interface CreateCurrentTransformerRequest {
-  /** @format date-time */
-  installationDate?: string | null;
-  /** @format int32 */
-  manufactureYear?: number;
-  /** @format int32 */
-  stateVerificationYear?: number;
-  stateVerificationQuarter?: EYearQuarter;
-  /** @format int32 */
-  stateVerificationIntervalYears?: number;
-  /** @format int32 */
-  nextStateVerificationYear?: number;
-  typeName?: string | null;
-  phase?: EPhaseType;
-  number?: string | null;
-  /** @format int32 */
-  primaryCurrentRatingAmperes?: number;
-  /** @format int32 */
-  secondaryCurrentRatingAmperes?: number;
-  /** @format int32 */
-  coefficient?: number;
-  /** @format int32 */
-  nodeId?: number | null;
-  documentIds?: number[] | null;
-  sealNumber?: string | null;
-  /** @format date-time */
-  sealInstallationDate?: string | null;
-}
-
 export interface CreateElectricHousingMeteringDeviceRequest {
   serialNumber: string;
   sealNumber?: string | null;
@@ -1324,12 +1282,7 @@ export interface CreateElectricHousingMeteringDeviceRequest {
 export interface CreateElectricNodeRequest {
   /** @format int32 */
   buildingId?: number;
-  /**
-   * @deprecated
-   * @format int32
-   */
-  number?: number;
-  title?: string | null;
+  title: string;
   /** @format int32 */
   nodeServiceZoneId?: number | null;
   registrationType?: ENodeRegistrationType;
@@ -1337,7 +1290,6 @@ export interface CreateElectricNodeRequest {
   technicalTypeRequest?: NodeSetTechnicalTypeRequest | null;
   locationName?: string | null;
   counter?: CreateElectricHousingMeteringDeviceRequest | null;
-  currentTransformers?: CreateCurrentTransformerRequest[] | null;
 }
 
 export interface CreateGroupReportRequest {
@@ -1454,12 +1406,7 @@ export interface CreatePipeHousingMeteringDeviceRequest {
 export interface CreatePipeNodeRequest {
   /** @format int32 */
   buildingId?: number;
-  /**
-   * @deprecated
-   * @format int32
-   */
-  number?: number;
-  title?: string | null;
+  title: string;
   /** @format int32 */
   nodeServiceZoneId?: number | null;
   registrationType?: ENodeRegistrationType;
@@ -1479,46 +1426,6 @@ export interface CreatingUser {
   firstName?: string | null;
   lastName?: string | null;
   middleName?: string | null;
-}
-
-export interface CurrentTransformerResponse {
-  /** @format uuid */
-  id: string;
-  /** @format date-time */
-  installationDate: string | null;
-  /** @format int32 */
-  manufactureYear: number;
-  /** @format date-time */
-  lastCheckingDate: string | null;
-  /** @format date-time */
-  futureCheckingDate: string | null;
-  /** @format int32 */
-  stateVerificationYear: number;
-  stateVerificationQuarter: EYearQuarter;
-  /** @format int32 */
-  nextStateVerificationYear: number;
-  /** @format int32 */
-  stateVerificationIntervalYears: number;
-  typeName: string | null;
-  phase: EPhaseType;
-  number: string | null;
-  /** @format int32 */
-  primaryCurrentRatingAmperes: number;
-  /** @format int32 */
-  secondaryCurrentRatingAmperes: number;
-  /** @format int32 */
-  coefficient: number;
-  sealNumber: string | null;
-  /** @format date-time */
-  sealInstallationDate: string | null;
-  /** @format date-time */
-  closingDate: string | null;
-  /** @format int32 */
-  nodeId: number | null;
-}
-
-export interface CurrentTransformerResponseSuccessApiResponse {
-  successResponse: CurrentTransformerResponse | null;
 }
 
 export interface DataAfterSplittingHomeownerAccountResponse {
@@ -1551,6 +1458,11 @@ export interface DeviceCheckingDateExpirationConstructedReportResponse {
   homeownerPhoneNumbers: string[] | null;
   /** @deprecated */
   homeownerPhoneNumber: string | null;
+}
+
+export enum DeviceResource {
+  Electricity = 'Electricity',
+  Heat = 'Heat',
 }
 
 export interface DisableNodeWorkingRangeRequest {
@@ -1986,12 +1898,6 @@ export enum EPhaseNumberType {
   ThreePhase = 'ThreePhase',
 }
 
-export enum EPhaseType {
-  A = 'A',
-  B = 'B',
-  C = 'C',
-}
-
 export enum EPipeNodeConfig {
   HeatNoRecharge = 'HeatNoRecharge',
   HotWaterSupplyNoBackflow = 'HotWaterSupplyNoBackflow',
@@ -2360,11 +2266,6 @@ export interface ElectricHousingMeteringDeviceResponseSuccessApiResponse {
 export interface ElectricNodeResponse {
   /** @format int32 */
   id: number;
-  /**
-   * @deprecated
-   * @format int32
-   */
-  number: number;
   title: string | null;
   registrationType: ENodeRegistrationType;
   commercialStatus: NodeCommercialStatusResponse | null;
@@ -2382,7 +2283,6 @@ export interface ElectricNodeResponse {
   documents: DocumentLiteResponse[] | null;
   locationName: string | null;
   counter: ElectricHousingMeteringDeviceResponse | null;
-  currentTransformers: CurrentTransformerResponse[] | null;
 }
 
 export interface ElectricNodeResponseSuccessApiResponse {
@@ -2737,7 +2637,7 @@ export interface HomeownerAccount {
 }
 
 export interface HomeownerAccountAddPhoneNumberRequest {
-  phoneNumber?: string | null;
+  phoneNumber: string;
 }
 
 export interface HomeownerAccountCloseRequest {
@@ -2797,6 +2697,12 @@ export interface HomeownerAccountListResponse {
   replacedByAccount: ReplacementAccount | null;
 }
 
+export interface HomeownerAccountNameResponse {
+  /** @format uuid */
+  id: string;
+  name: string | null;
+}
+
 export enum HomeownerAccountOrderRule {
   Street = 'Street',
   HomeownerName = 'HomeownerName',
@@ -2804,7 +2710,16 @@ export enum HomeownerAccountOrderRule {
 }
 
 export interface HomeownerAccountRemovePhoneNumberRequest {
-  phoneNumber?: string | null;
+  phoneNumber: string;
+}
+
+export interface HomeownerAccountReplaceAllPhoneNumbersRequest {
+  phoneNumber: string;
+}
+
+export interface HomeownerAccountReplacePhoneNumberRequest {
+  oldPhoneNumber: string;
+  newPhoneNumber: string;
 }
 
 export interface HomeownerAccountReplaceRequest {
@@ -3941,11 +3856,6 @@ export interface ManagementFirmEventDataElectricNodeResponse {
   /** @format int32 */
   id: number;
   title: string | null;
-  /**
-   * @deprecated
-   * @format int32
-   */
-  number: number;
   resource: EResourceType;
 }
 
@@ -3967,11 +3877,6 @@ export interface ManagementFirmEventDataPipeNodeResponse {
   /** @format int32 */
   id: number;
   title: string | null;
-  /**
-   * @deprecated
-   * @format int32
-   */
-  number: number;
   resource: EResourceType;
   /** @format int32 */
   entryNumber: number | null;
@@ -4186,11 +4091,6 @@ export interface NodeNetworkDeviceResponse {
 export interface NodeOnHousingStockResponse {
   /** @format int32 */
   id: number;
-  /**
-   * @deprecated
-   * @format int32
-   */
-  number: number;
   title: string | null;
   /** @format int32 */
   entryNumber: number | null;
@@ -4694,11 +4594,6 @@ export interface PipeHousingMeteringDeviceListResponse {
 export interface PipeHousingMeteringDeviceNodeResponse {
   /** @format int32 */
   id: number;
-  /**
-   * @deprecated
-   * @format int32
-   */
-  number: number;
   title: string | null;
 }
 
@@ -4757,11 +4652,6 @@ export interface PipeNodeHeatingSeasonListResponse {
 export interface PipeNodeIntoCalculatorResponse {
   /** @format int32 */
   id: number;
-  /**
-   * @deprecated
-   * @format int32
-   */
-  number: number;
   title: string | null;
   /** @format int32 */
   entryNumber: number | null;
@@ -4791,11 +4681,6 @@ export interface PipeNodeMeteringDeviceResponse {
 export interface PipeNodeResponse {
   /** @format int32 */
   id: number;
-  /**
-   * @deprecated
-   * @format int32
-   */
-  number: number;
   title: string | null;
   registrationType: ENodeRegistrationType;
   commercialStatus: NodeCommercialStatusResponse | null;
@@ -5760,11 +5645,6 @@ export interface UpdateElectricHousingMeteringDeviceRequest {
 }
 
 export interface UpdateElectricNodeRequest {
-  /**
-   * @deprecated
-   * @format int32
-   */
-  number?: number;
   title?: string | null;
   /** @format int32 */
   nodeServiceZoneId?: number | null;
@@ -5852,11 +5732,6 @@ export interface UpdatePipeHousingMeteringDeviceRequest {
 }
 
 export interface UpdatePipeNodeRequest {
-  /**
-   * @deprecated
-   * @format int32
-   */
-  number?: number;
   title?: string | null;
   /** @format int32 */
   nodeServiceZoneId?: number | null;
@@ -6519,7 +6394,7 @@ export class Api<
       },
       params: RequestParams = {},
     ) =>
-      this.request<string[], ErrorApiResponse>({
+      this.request<HomeownerAccountNameResponse[], ErrorApiResponse>({
         path: `/api/Apartments/${apartmentId}/HomeownerAccountNames`,
         method: 'GET',
         query: query,
@@ -8423,160 +8298,6 @@ export class Api<
     /**
      * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li><li>Администратор УК без назначений задач</li>
      *
-     * @tags CurrentTransformers
-     * @name CurrentTransformersDetail
-     * @summary CurrentTransformerRead
-     * @request GET:/api/CurrentTransformers/{currentTransformerId}
-     * @secure
-     */
-    currentTransformersDetail: (
-      currentTransformerId: string,
-      params: RequestParams = {},
-    ) =>
-      this.request<
-        CurrentTransformerResponseSuccessApiResponse,
-        ErrorApiResponse
-      >({
-        path: `/api/CurrentTransformers/${currentTransformerId}`,
-        method: 'GET',
-        secure: true,
-        format: 'json',
-        ...params,
-      }),
-
-    /**
-     * @description Роли:<li>Администратор</li><li>Администратор УК без назначений задач</li>
-     *
-     * @tags CurrentTransformers
-     * @name CurrentTransformersUpdate
-     * @summary CurrentTransformerUpdate
-     * @request PUT:/api/CurrentTransformers/{currentTransformerId}
-     * @secure
-     */
-    currentTransformersUpdate: (
-      currentTransformerId: string,
-      query?: {
-        /** @format date-time */
-        InstallationDate?: string;
-        /** @format int32 */
-        ManufactureYear?: number;
-        /** @format int32 */
-        StateVerificationYear?: number;
-        StateVerificationQuarter?: EYearQuarter;
-        /** @format int32 */
-        StateVerificationIntervalYears?: number;
-        /** @format int32 */
-        NextStateVerificationYear?: number;
-        TypeName?: string;
-        Phase?: EPhaseType;
-        Number?: string;
-        /** @format int32 */
-        PrimaryCurrentRatingAmperes?: number;
-        /** @format int32 */
-        SecondaryCurrentRatingAmperes?: number;
-        /** @format int32 */
-        Coefficient?: number;
-        SealNumber?: string;
-        /** @format date-time */
-        SealInstallationDate?: string;
-      },
-      params: RequestParams = {},
-    ) =>
-      this.request<
-        CurrentTransformerResponseSuccessApiResponse,
-        ErrorApiResponse
-      >({
-        path: `/api/CurrentTransformers/${currentTransformerId}`,
-        method: 'PUT',
-        query: query,
-        secure: true,
-        format: 'json',
-        ...params,
-      }),
-
-    /**
-     * @description Роли:<li>Администратор</li><li>Администратор УК без назначений задач</li>
-     *
-     * @tags CurrentTransformers
-     * @name CurrentTransformersCreate
-     * @summary CurrentTransformerCreate
-     * @request POST:/api/CurrentTransformers
-     * @secure
-     */
-    currentTransformersCreate: (
-      data: CreateCurrentTransformerRequest,
-      params: RequestParams = {},
-    ) =>
-      this.request<
-        CurrentTransformerResponseSuccessApiResponse,
-        ErrorApiResponse
-      >({
-        path: `/api/CurrentTransformers`,
-        method: 'POST',
-        body: data,
-        secure: true,
-        type: ContentType.Json,
-        format: 'json',
-        ...params,
-      }),
-
-    /**
-     * @description Роли:<li>Администратор</li><li>Администратор УК без назначений задач</li>
-     *
-     * @tags CurrentTransformers
-     * @name CurrentTransformersCloseCreate
-     * @summary CurrentTransformerUpdate
-     * @request POST:/api/CurrentTransformers/{currentTransformerId}/close
-     * @secure
-     */
-    currentTransformersCloseCreate: (
-      currentTransformerId: string,
-      data: CloseCurrentTransformerRequest,
-      params: RequestParams = {},
-    ) =>
-      this.request<
-        CurrentTransformerResponseSuccessApiResponse,
-        ErrorApiResponse
-      >({
-        path: `/api/CurrentTransformers/${currentTransformerId}/close`,
-        method: 'POST',
-        body: data,
-        secure: true,
-        type: ContentType.Json,
-        format: 'json',
-        ...params,
-      }),
-
-    /**
-     * @description Роли:<li>Администратор</li><li>Администратор УК без назначений задач</li>
-     *
-     * @tags CurrentTransformers
-     * @name CurrentTransformersCheckCreate
-     * @summary CurrentTransformerUpdate
-     * @request POST:/api/CurrentTransformers/{currentTransformerId}/check
-     * @secure
-     */
-    currentTransformersCheckCreate: (
-      currentTransformerId: string,
-      data: CheckCurrentTransformerRequest,
-      params: RequestParams = {},
-    ) =>
-      this.request<
-        CurrentTransformerResponseSuccessApiResponse,
-        ErrorApiResponse
-      >({
-        path: `/api/CurrentTransformers/${currentTransformerId}/check`,
-        method: 'POST',
-        body: data,
-        secure: true,
-        type: ContentType.Json,
-        format: 'json',
-        ...params,
-      }),
-
-    /**
-     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li><li>Администратор УК без назначений задач</li>
-     *
      * @tags Districts
      * @name IndividualSealDistrictsList
      * @summary IndividualSealRead
@@ -9021,11 +8742,11 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Администратор УК без назначений задач</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор</li><li>Старший оператор</li>
      *
      * @tags Exports
      * @name ExportsMilurDevicesList
-     * @summary IndividualDeviceReadingsRead
+     * @summary ErcExport
      * @request GET:/api/Exports/MilurDevices
      * @secure
      */
@@ -9035,6 +8756,7 @@ export class Api<
         startDate?: string;
         /** @format date-time */
         endDate?: string;
+        managementFirmIds?: number[];
       },
       params: RequestParams = {},
     ) =>
@@ -9048,20 +8770,17 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Администратор УК без назначений задач</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор</li><li>Старший оператор</li>
      *
      * @tags Exports
      * @name ExportsIndividualDeviceReadingsList
-     * @summary IndividualDeviceReadingsRead
+     * @summary ErcExport
      * @request GET:/api/Exports/IndividualDeviceReadings
      * @secure
      */
     exportsIndividualDeviceReadingsList: (
       query?: {
-        /** @format int32 */
-        year?: number;
-        /** @format int32 */
-        month?: number;
+        managementFirmIds?: number[];
       },
       params: RequestParams = {},
     ) =>
@@ -9075,20 +8794,17 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Администратор УК без назначений задач</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор</li><li>Старший оператор</li>
      *
      * @tags Exports
      * @name ExportsHousingDeviceReadingsList
-     * @summary IndividualDeviceReadingsRead
+     * @summary ErcExport
      * @request GET:/api/Exports/HousingDeviceReadings
      * @secure
      */
     exportsHousingDeviceReadingsList: (
       query?: {
-        /** @format int32 */
-        year?: number;
-        /** @format int32 */
-        month?: number;
+        managementFirmIds?: number[];
       },
       params: RequestParams = {},
     ) =>
@@ -9462,6 +9178,54 @@ export class Api<
     ) =>
       this.request<string[], ErrorApiResponse>({
         path: `/api/HomeownerAccounts/${id}/RemovePhone`,
+        method: 'POST',
+        body: data,
+        secure: true,
+        type: ContentType.Json,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li><li>Администратор УК без назначений задач</li>
+     *
+     * @tags HomeownerAccounts
+     * @name HomeownerAccountsReplacePhoneCreate
+     * @summary HomeownersUpdate
+     * @request POST:/api/HomeownerAccounts/{id}/ReplacePhone
+     * @secure
+     */
+    homeownerAccountsReplacePhoneCreate: (
+      id: string,
+      data: HomeownerAccountReplacePhoneNumberRequest,
+      params: RequestParams = {},
+    ) =>
+      this.request<string[], ErrorApiResponse>({
+        path: `/api/HomeownerAccounts/${id}/ReplacePhone`,
+        method: 'POST',
+        body: data,
+        secure: true,
+        type: ContentType.Json,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li><li>Диспетчер УК</li><li>Администратор УК без назначений задач</li>
+     *
+     * @tags HomeownerAccounts
+     * @name HomeownerAccountsReplaceAllPhonesCreate
+     * @summary HomeownerReplaceAllPhones
+     * @request POST:/api/HomeownerAccounts/{id}/ReplaceAllPhones
+     * @secure
+     */
+    homeownerAccountsReplaceAllPhonesCreate: (
+      id: string,
+      data: HomeownerAccountReplaceAllPhoneNumbersRequest,
+      params: RequestParams = {},
+    ) =>
+      this.request<string[], ErrorApiResponse>({
+        path: `/api/HomeownerAccounts/${id}/ReplaceAllPhones`,
         method: 'POST',
         body: data,
         secure: true,
@@ -13271,9 +13035,14 @@ export class Api<
      */
     reportsRunnerReportsList: (
       query: {
+        /** Первая/вторая половина года */
         yearRange: YearRangeType;
+        /** Ресурс ИПУ по которым собирается отчет */
+        resource: DeviceResource;
         /** Список Id домоуправлений */
         hmIds?: string[];
+        /** Список Id домов, приоритетный параметр */
+        houseIds?: number[];
       },
       params: RequestParams = {},
     ) =>
