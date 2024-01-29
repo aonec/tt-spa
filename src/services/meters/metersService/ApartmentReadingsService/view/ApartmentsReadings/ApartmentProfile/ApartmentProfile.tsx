@@ -194,7 +194,7 @@ export const ApartmentProfile: FC<ApartmentProfileProps> = ({
               </ReadingsWrapper>
             </ContentWrapper>
           )}
-          {id && (
+          {id && apartment && (
             <ApartmentReadingsActsJournalContainer apartmentId={Number(id)} />
           )}
         </WithLoader>

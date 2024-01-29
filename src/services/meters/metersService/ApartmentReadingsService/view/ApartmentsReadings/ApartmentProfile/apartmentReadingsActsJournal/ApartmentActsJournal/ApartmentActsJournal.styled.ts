@@ -24,7 +24,7 @@ export const ListWrapper = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   grid-gap: 8px;
-  margin-top: 8px;
+  margin-top: 12px;
 `;
 
 export const SkeletonSC = styled(Skeleton.Input)`

@@ -4,6 +4,7 @@ import { ApartmentActsContainer } from './apartmentReadingsActsJournalService.ty
 import { ApartmentActsJournal } from './ApartmentActsJournal';
 import { useUnit } from 'effector-react';
 import { apartmentActsListQuery } from './apartmentReadingsActsJournalService.api';
+import { actsCardService } from 'services/apartments/actsCardService';
 
 const {
   gates: { ApartmentActsGate },
@@ -12,9 +13,10 @@ const {
 export const ApartmentReadingsActsJournalContainer: FC<
   ApartmentActsContainer
 > = ({ apartmentId }) => {
-  const { apartmentActs, isLoading } = useUnit({
+  const { apartmentActs, isLoading, handleSaveFile } = useUnit({
     apartmentActs: apartmentActsListQuery.$data,
     isLoading: apartmentActsListQuery.$pending,
+    handleSaveFile: actsCardService.inputs.saveFile,
   });
 
   return (
@@ -24,6 +26,7 @@ export const ApartmentReadingsActsJournalContainer: FC<
         apartmentActs={apartmentActs}
         isLoading={isLoading}
         apartmentId={apartmentId}
+        handleSaveFile={handleSaveFile}
       />
     </>
   );
