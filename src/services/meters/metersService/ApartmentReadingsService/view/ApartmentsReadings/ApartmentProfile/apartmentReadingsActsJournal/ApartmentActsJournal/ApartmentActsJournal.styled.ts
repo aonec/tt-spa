@@ -21,6 +21,7 @@ export const Title = styled.div`
 `;
 
 export const ListWrapper = styled.div`
+  width: 100%;
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   grid-gap: 8px;

@@ -8,7 +8,7 @@ import {
   LinkButton,
 } from './ApartmentActsJournal.styled';
 import { Props } from './ApartmentActsJournal.types';
-import { Skeleton } from 'antd';
+import { Empty, Skeleton } from 'antd';
 import { DocumentIcon } from 'ui-kit/icons';
 import { ApartmentActItem } from './ApartmentActItem';
 
@@ -49,6 +49,9 @@ export const ApartmentActsJournal: FC<Props> = ({
           />
         ))}
       </ListWrapper>
+      {!acts.length && (
+        <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description="Нет актов" />
+      )}
     </>
   );
 
