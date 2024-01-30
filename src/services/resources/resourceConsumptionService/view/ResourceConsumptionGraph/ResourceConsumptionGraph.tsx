@@ -14,6 +14,7 @@ import {
 import { ResourceConsumptionGraphColorsMeasure } from './ResourceConsumptionGraph.constants';
 import {
   getCurrentDataStyle,
+  NoDataNotificationWrapper,
   Wrapper,
 } from './ResourceConsumptionGraph.styled';
 import { ResourceConsumptionGraphProps } from './ResourceConsumptionGraph.types';
@@ -146,7 +147,6 @@ export const ResourceConsumptionGraph: FC<ResourceConsumptionGraphProps> = ({
   );
 
   if (!resource || !consumptionData || isConsumptionDataItemsEmpty) {
-    console.log('first');
     return (
       <Wrapper id="graphWrapper">
         <VictoryChart
@@ -164,7 +164,7 @@ export const ResourceConsumptionGraph: FC<ResourceConsumptionGraphProps> = ({
           containerComponent={<VictoryVoronoiContainer />}
         >
           <VictoryAxis
-            tickComponent={<TickComponent  />}
+            tickComponent={<TickComponent />}
             tickFormat={(day) => {
               if (day !== 1) {
                 return '';
@@ -179,7 +179,10 @@ export const ResourceConsumptionGraph: FC<ResourceConsumptionGraphProps> = ({
             style={verticalAxisStyle}
           />
         </VictoryChart>
-        Нет данных за выбранный период. Пожалуйста, измените период для формирования новой статистики.
+        <NoDataNotificationWrapper>
+          Нет данных за выбранный период. Пожалуйста, измените период для
+          формирования новой статистики.
+        </NoDataNotificationWrapper>
       </Wrapper>
     );
   }

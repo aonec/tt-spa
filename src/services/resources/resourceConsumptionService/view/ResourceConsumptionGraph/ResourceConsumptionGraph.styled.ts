@@ -28,3 +28,7 @@ export const ZeroLineStyle = {
     fill: '#272F5AB2',
   },
 };
+
+export const NoDataNotificationWrapper = styled.div`
+  margin-top: 6px;
+`;
