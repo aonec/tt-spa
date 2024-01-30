@@ -7,7 +7,7 @@ export const Wrapper = styled.div`
     overflow: visible !important;
   }
 
-  padding-bottom: 48px;
+  padding-bottom: 36px;
 `;
 
 export const getCurrentDataStyle = (resource: EResourceType) => ({

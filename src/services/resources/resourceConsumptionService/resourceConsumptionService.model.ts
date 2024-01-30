@@ -2,7 +2,6 @@ import { createEffect, createEvent, createStore } from 'effector';
 import { combine, sample } from 'effector';
 import { createGate } from 'effector-react';
 import dayjs from 'api/dayjs';
-import { isEmpty } from 'lodash';
 import axios, { CancelTokenSource } from 'axios';
 import { GetSummaryHousingConsumptionsByResourcesResponse } from 'api/types';
 import { initialSelectedGraphTypes } from './resourceConsumptionService.constants';
@@ -29,7 +28,10 @@ import {
   prepareDataForMinMaxCalculation,
   setConsumptionData,
 } from './resourceConsumptionService.utils';
-import { getMinAndMaxForResourceConsumptionGraph } from './view/ResourceConsumptionGraph/ResourceConsumptionGraph.utils';
+import {
+  getMinAndMaxForResourceConsumptionGraph,
+  hasNoConsecutiveNumbers,
+} from './view/ResourceConsumptionGraph/ResourceConsumptionGraph.utils';
 
 const clearData = createEvent();
 
@@ -300,7 +302,7 @@ sample({
   source: $dynamicMinMax,
   clock: $dataForMinMaxCalculation,
   filter: (_, dataForMinMaxCalculation) => {
-    const isHaveDataForMinMaxCalculation = !isEmpty(
+    const isHaveDataForMinMaxCalculation = !hasNoConsecutiveNumbers(
       dataForMinMaxCalculation?.flat(),
     );
     return isHaveDataForMinMaxCalculation;

@@ -1,5 +1,4 @@
 import React, { FC, useEffect, useMemo, useState } from 'react';
-import { GraphEmptyData } from 'services/nodes/displayNodesStatisticsService/view/GraphEmptyData';
 import {
   VictoryArea,
   VictoryAxis,
@@ -27,8 +26,6 @@ import {
   verticalAxisStyle,
 } from 'services/nodes/displayNodesStatisticsService/view/StatisticsGraph/StatisticsGraph.styled';
 import { CustomTooltip } from 'ui-kit/shared/GraphComponents/CustomTooltip';
-import { useUnit } from 'effector-react';
-import { developmentSettingsService } from 'services/developmentSettings/developmentSettings.models';
 
 const height = 360;
 
@@ -40,9 +37,6 @@ export const ResourceConsumptionGraph: FC<ResourceConsumptionGraphProps> = ({
   selectedAddresses,
   dynamicMinMax,
 }) => {
-  const { featureToggles } = useUnit({
-    featureToggles: developmentSettingsService.outputs.$featureToggles,
-  });
   const [width, setWidth] = useState(0);
 
   const additionalAddressConsumptionData =
@@ -152,7 +146,42 @@ export const ResourceConsumptionGraph: FC<ResourceConsumptionGraphProps> = ({
   );
 
   if (!resource || !consumptionData || isConsumptionDataItemsEmpty) {
-    return <GraphEmptyData />;
+    console.log('first');
+    return (
+      <Wrapper id="graphWrapper">
+        <VictoryChart
+          padding={{ top: 0, bottom: 0, left: 26, right: 0 }}
+          domain={{ y: dynamicMinMax }}
+          style={{
+            parent: {
+              overflow: 'visible',
+              height,
+            },
+          }}
+          height={height}
+          width={width}
+          theme={VictoryTheme.material}
+          containerComponent={<VictoryVoronoiContainer />}
+        >
+          <VictoryAxis
+            tickComponent={<TickComponent  />}
+            tickFormat={(day) => {
+              if (day !== 1) {
+                return '';
+              }
+              return day;
+            }}
+            style={horizontalAxisStyle}
+          />
+          <VictoryAxis
+            domain={dynamicMinMax}
+            dependentAxis
+            style={verticalAxisStyle}
+          />
+        </VictoryChart>
+        Нет данных за выбранный период. Пожалуйста, измените период для формирования новой статистики.
+      </Wrapper>
+    );
   }
 
   return (
@@ -172,13 +201,6 @@ export const ResourceConsumptionGraph: FC<ResourceConsumptionGraphProps> = ({
         width={width}
         theme={VictoryTheme.material}
         containerComponent={<VictoryVoronoiContainer />}
-        animate={
-          featureToggles.chartAnimation && {
-            onLoad: { duration: 1000 },
-            duration: 400,
-            easing: 'bounce',
-          }
-        }
       >
         <VictoryAxis
           tickComponent={<TickComponent />}
