@@ -21,7 +21,6 @@ import { ResourceConsumptionGraphProps } from './ResourceConsumptionGraph.types'
 import { getGraphTypeColors } from './ResourceConsumptionGraph.utils';
 import { ResourceConsumptionGraphTooltip } from './ResourceConsumptionGraphTooltip';
 import { GraphGradient } from 'ui-kit/shared/GraphComponents/GraphGradient';
-import { TickComponent } from 'ui-kit/shared/GraphComponents/TickComponent';
 import {
   horizontalAxisStyle,
   verticalAxisStyle,
@@ -49,19 +48,6 @@ export const ResourceConsumptionGraph: FC<ResourceConsumptionGraphProps> = ({
         (additionalAddressConsumptionData &&
           typeOfData === ResourceConsumptionGraphDataType.prevMonthData) ||
         !selectedAddresses.additionalAddress;
-
-      const hideCurrentMonthData =
-        typeOfData === ResourceConsumptionGraphDataType.currentMonthData &&
-        !selectedAddresses.currentAddress;
-
-      if (
-        !consumptionData ||
-        !resource ||
-        // isAdditionalAddress ||разобраться с доп адресами в следующей задаче
-        hideCurrentMonthData
-      ) {
-        return null;
-      }
 
       const monthData = consumptionData[typeOfData];
 
@@ -91,6 +77,21 @@ export const ResourceConsumptionGraph: FC<ResourceConsumptionGraphProps> = ({
         ) {
           return (
             <VictoryLine
+              labelComponent={
+                <CustomTooltip
+                  flyoutStyle={{ fill: 'var(--main-100)' }}
+                  style={{ fill: '#fff' }}
+                  height={height}
+                  flyoutComponent={
+                    <ResourceConsumptionGraphTooltip
+                      startOfMonth={startOfMonth}
+                      measure={ResourceConsumptionGraphColorsMeasure[resource!]}
+                    />
+                  }
+                  minValue={dynamicMinMax[0]}
+                  maxValue={dynamicMinMax[1]}
+                />
+              }
               key={key}
               data={data}
               interpolation="monotoneX"
@@ -147,43 +148,45 @@ export const ResourceConsumptionGraph: FC<ResourceConsumptionGraphProps> = ({
   );
 
   if (!resource || !consumptionData || isConsumptionDataItemsEmpty) {
+    console.log('first');
     return (
-      <Wrapper id="graphWrapper">
-        <VictoryChart
-          padding={{ top: 0, bottom: 0, left: 26, right: 0 }}
-          domain={{ y: dynamicMinMax }}
-          style={{
-            parent: {
-              overflow: 'visible',
-              height,
-            },
-          }}
-          height={height}
-          width={width}
-          theme={VictoryTheme.material}
-          containerComponent={<VictoryVoronoiContainer />}
-        >
-          <VictoryAxis
-            tickComponent={<TickComponent />}
-            tickFormat={(day) => {
-              if (day !== 1) {
-                return '';
-              }
-              return day;
+      <>
+        <Wrapper id="graphWrapper">
+          <VictoryChart
+            padding={{ top: 0, bottom: 0, left: 26, right: 0 }}
+            domain={{ y: dynamicMinMax }}
+            style={{
+              parent: {
+                overflow: 'visible',
+                height,
+              },
             }}
-            style={horizontalAxisStyle}
-          />
-          <VictoryAxis
-            domain={dynamicMinMax}
-            dependentAxis
-            style={verticalAxisStyle}
-          />
-        </VictoryChart>
+            height={height}
+            width={width}
+            theme={VictoryTheme.material}
+            containerComponent={<VictoryVoronoiContainer />}
+          >
+            <VictoryAxis
+              tickValues={[
+                0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17,
+                18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31,
+              ]}
+              tickFormat={(day) => {
+                if (day % 5) {
+                  return '';
+                }
+                return day;
+              }}
+              style={horizontalAxisStyle}
+            />
+            <VictoryAxis dependentAxis style={verticalAxisStyle} />
+          </VictoryChart>
+        </Wrapper>
         <NoDataNotificationWrapper>
           Нет данных за выбранный период. Пожалуйста, измените период для
           формирования новой статистики.
         </NoDataNotificationWrapper>
-      </Wrapper>
+      </>
     );
   }
 
@@ -206,8 +209,14 @@ export const ResourceConsumptionGraph: FC<ResourceConsumptionGraphProps> = ({
         containerComponent={<VictoryVoronoiContainer />}
       >
         <VictoryAxis
-          tickComponent={<TickComponent />}
+          tickValues={[
+            0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18,
+            19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31,
+          ]}
           tickFormat={(day) => {
+            if (day == 0) {
+              return day;
+            }
             if (day % 5) {
               return '';
             }

@@ -8,7 +8,7 @@ export const initialSelectedGraphTypes: BooleanTypesOfResourceConsumptionGraphFo
       subscriber: false,
     },
     prevMonthData: {
-      housing: true,
+      housing: false,
       normative: false,
       subscriber: false,
     },

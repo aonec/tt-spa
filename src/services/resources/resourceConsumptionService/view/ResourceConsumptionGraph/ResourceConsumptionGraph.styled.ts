@@ -7,7 +7,7 @@ export const Wrapper = styled.div`
     overflow: visible !important;
   }
 
-  padding-bottom: 36px;
+  margin-bottom: 36px;
 `;
 
 export const getCurrentDataStyle = (resource: EResourceType) => ({
@@ -30,5 +30,5 @@ export const ZeroLineStyle = {
 };
 
 export const NoDataNotificationWrapper = styled.div`
-  margin-top: 6px;
+  margin-bottom: 12px;
 `;

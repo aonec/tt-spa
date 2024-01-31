@@ -56,7 +56,7 @@ export const ResourceConsumptionContainer = () => {
   });
 
   useEffect(() => {
-    if (getIsOnlyHousingDataEmpty(housingConsumptionData)) {
+    if ( getIsOnlyHousingDataEmpty(housingConsumptionData)) {
       setSelectedGraphTypes({
         [ResourceConsumptionGraphDataType.currentMonthData]: {
           housing: true,

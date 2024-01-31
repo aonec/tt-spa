@@ -15,41 +15,6 @@ import {
 import { BooleanTypesOfResourceConsumptionGraphForTwoMonth } from './view/ResourceConsumptionProfile/ResourceConsumptionProfile.types';
 import { prepareData } from 'utils/Graph.utils';
 
-export const prepareDataForConsumptionGraphWithLastValue = (
-  dataArr: DateTimeDoubleDictionaryItem[],
-  lastDate?: string,
-) => {
-  if (!dataArr.length) {
-    return [];
-  }
-  if (!lastDate) {
-    return prepareDataForConsumptionGraph(dataArr);
-  }
-  const startOfMonth = dayjs(dataArr[0].key).startOf('month');
-  const emptyArray = getFilledArray(
-    dayjs(lastDate).diff(startOfMonth, 'd') + 1,
-    (index) => index + 1,
-  );
-
-  const objectOfData = dataArr.reduce((acc, elem) => {
-    const diff = String(dayjs(elem.key).diff(startOfMonth, 'day') + 1);
-
-    return { ...acc, [diff]: { ...elem, key: diff } };
-  }, {} as { [key: string]: DateTimeDoubleDictionaryItem });
-
-  let lastValue: null | number = null;
-
-  return emptyArray.map((day) => {
-    const foundValue = objectOfData[day];
-
-    if (!foundValue) {
-      return { key: String(day), value: lastValue };
-    }
-    lastValue = foundValue.value || null;
-    return foundValue;
-  });
-};
-
 export const prepareDataForConsumptionGraph = (
   dataArr: DateTimeDoubleDictionaryItem[],
 ) => {
@@ -65,14 +30,17 @@ export const prepareDataForConsumptionGraph = (
     return { ...acc, [diff]: { ...elem, key: diff } };
   }, {} as { [key: string]: DateTimeDoubleDictionaryItem });
 
-  return emptyArray.map((day) => {
-    const foundValue = objectOfData[day];
+  return [
+    { key: '0', value: 0 },
+    ...emptyArray.map((day) => {
+      const foundValue = objectOfData[day];
 
-    if (!foundValue) {
-      return { key: String(day), value: null };
-    }
-    return foundValue;
-  });
+      if (!foundValue) {
+        return { key: String(day), value: null };
+      }
+      return foundValue;
+    }),
+  ];
 };
 
 export const getAddressSearchData = (
