@@ -43,21 +43,6 @@ const $selectedResourceForColor = createStore<EResourceType>(
   EResourceType.ColdWaterSupply,
 );
 
-// sample({
-//   clock: resourceConsumptionService.outputs.$isAllDataAreLoading,
-
-//   source: [$selectedResource, $prevSelectedResource],
-//   fn: (source, clock) => {
-//     console.log("first")
-//     if (clock) {
-//       return source[1];
-//     } else {
-//       return source[0];
-//     }
-//   },
-//   target: $selectedResourceWithDeley,
-// });
-
 const setFilter = createEvent<ConsumptionDataFilter>();
 const $resourceConsumptionFilter = createStore<ConsumptionDataFilter>({
   From: dayjs().startOf('month').utcOffset(0, true).format(),
