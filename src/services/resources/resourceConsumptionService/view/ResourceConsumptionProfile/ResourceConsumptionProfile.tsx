@@ -28,6 +28,7 @@ export const ResourceConsumptionProfile: FC<
   summaryConsumption,
   isSummaryLoading,
   resource,
+  resourceForColor,
   isHousingLoading,
   isNormativeAndSubscriberLoading,
   isPrevHousingLoading,
@@ -35,6 +36,7 @@ export const ResourceConsumptionProfile: FC<
   isAdditionalAddressSelected,
   dynamicMinMax,
   isOnlyHousingDataEmpty,
+  isAllDataAreLoading,
 }) => {
   const [selectedAddresses, setSelectedAddresses] = useState<SelectedAddresses>(
     initialSelectedAddresses,
@@ -57,11 +59,13 @@ export const ResourceConsumptionProfile: FC<
           <ResourceConsumptionGraph
             consumptionData={housingConsumptionData}
             resource={resource}
+            resourceForColor={resourceForColor}
             startOfMonth={resourceConsumptionFilter?.From || ''}
             checked={selectedGraphTypes}
             selectedAddresses={selectedAddresses}
             isAdditionalAddressSelected={isAdditionalAddressSelected}
             dynamicMinMax={dynamicMinMax}
+            isAllDataAreLoading={isAllDataAreLoading}
           />
 
           {isOnlyHousingDataEmpty && (

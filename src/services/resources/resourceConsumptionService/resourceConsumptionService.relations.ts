@@ -115,3 +115,16 @@ sample({
   clock: resourceConsumptionService.gates.ResourceConsumptionGate.close,
   target: resourceConsumptionFilterService.inputs.clearFilter,
 });
+
+sample({
+  clock: [
+    resourceConsumptionService.inputs.getHousingConsumptionSuccess,
+    resourceConsumptionService.inputs.getPrevHousingConsumptionSuccess,
+    resourceConsumptionService.inputs
+      .getNormativeAndSubscriberConsumptionSuccess,
+    resourceConsumptionService.inputs
+      .getPrevNormativeAndSubscriberConsumptionSuccess,
+  ],
+  source: resourceConsumptionFilterService.outputs.$selectedResource,
+  target: resourceConsumptionFilterService.outputs.$selectedResourceForColor,
+});

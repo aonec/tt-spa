@@ -32,10 +32,12 @@ const height = 360;
 export const ResourceConsumptionGraph: FC<ResourceConsumptionGraphProps> = ({
   consumptionData,
   resource,
+  resourceForColor,
   startOfMonth,
   checked,
   selectedAddresses,
   dynamicMinMax,
+  isAllDataAreLoading,
 }) => {
   const [width, setWidth] = useState(0);
 
@@ -77,21 +79,6 @@ export const ResourceConsumptionGraph: FC<ResourceConsumptionGraphProps> = ({
         ) {
           return (
             <VictoryLine
-              labelComponent={
-                <CustomTooltip
-                  flyoutStyle={{ fill: 'var(--main-100)' }}
-                  style={{ fill: '#fff' }}
-                  height={height}
-                  flyoutComponent={
-                    <ResourceConsumptionGraphTooltip
-                      startOfMonth={startOfMonth}
-                      measure={ResourceConsumptionGraphColorsMeasure[resource!]}
-                    />
-                  }
-                  minValue={dynamicMinMax[0]}
-                  maxValue={dynamicMinMax[1]}
-                />
-              }
               key={key}
               data={data}
               interpolation="monotoneX"
@@ -100,7 +87,7 @@ export const ResourceConsumptionGraph: FC<ResourceConsumptionGraphProps> = ({
               style={{
                 data: {
                   stroke: getGraphTypeColors({
-                    resource,
+                    resource: resourceForColor,
                     type: key as ResourceConsumptionGraphType,
                     isOpacityNeed:
                       typeOfData !==
@@ -117,10 +104,10 @@ export const ResourceConsumptionGraph: FC<ResourceConsumptionGraphProps> = ({
     });
   }, [
     consumptionData,
-    resource,
     checked,
     selectedAddresses,
     additionalAddressConsumptionData,
+    resourceForColor,
   ]);
 
   useEffect(() => {
@@ -148,7 +135,6 @@ export const ResourceConsumptionGraph: FC<ResourceConsumptionGraphProps> = ({
   );
 
   if (!resource || !consumptionData || isConsumptionDataItemsEmpty) {
-    console.log('first');
     return (
       <>
         <Wrapper id="graphWrapper">
@@ -191,12 +177,13 @@ export const ResourceConsumptionGraph: FC<ResourceConsumptionGraphProps> = ({
   }
 
   return (
-    <Wrapper id="graphWrapper">
-      <GraphGradient resource={resource} />
+    <Wrapper id="graphWrapper" isLoading={isAllDataAreLoading}>
+      <GraphGradient resource={resourceForColor} />
 
       <VictoryChart
+        domain={{ y: dynamicMinMax, x: [-1, 32] }}
         padding={{ top: 0, bottom: 0, left: 26, right: 0 }}
-        domain={{ y: dynamicMinMax }}
+        domainPadding={{ x: [-50, 0] }}
         style={{
           parent: {
             overflow: 'visible',
@@ -209,12 +196,8 @@ export const ResourceConsumptionGraph: FC<ResourceConsumptionGraphProps> = ({
         containerComponent={<VictoryVoronoiContainer />}
       >
         <VictoryAxis
-          tickValues={[
-            0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18,
-            19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31,
-          ]}
           tickFormat={(day) => {
-            if (day == 0) {
+            if (day === 0) {
               return day;
             }
             if (day % 5) {
@@ -236,7 +219,7 @@ export const ResourceConsumptionGraph: FC<ResourceConsumptionGraphProps> = ({
             x="key"
             y="value"
             interpolation="monotoneX"
-            style={getCurrentDataStyle(resource)}
+            style={getCurrentDataStyle(resourceForColor)}
             labels={() => ''}
             labelComponent={
               <CustomTooltip

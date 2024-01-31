@@ -158,7 +158,7 @@ const $housingConsumptionData = createStore<ConsumptionDataForTwoMonth | null>(
         data,
       ),
   )
-  .reset([clearData, getConsumptionData]);
+  .reset([clearData]);
 
 const getAdditionalConsumptionData = createEvent<ConsumptionDataPayload>();
 
@@ -183,7 +183,7 @@ const $dataForMinMaxCalculation = combine(
   prepareDataForMinMaxCalculation,
 );
 
-const $dynamicMinMax = createStore<[number, number]>([0, 0]);
+const $dynamicMinMax = createStore<[number, number]>([0, 90]);
 
 const $isOnlyHousingDataEmpty = $housingConsumptionData.map(
   getIsOnlyHousingDataEmpty,
@@ -219,6 +219,14 @@ const $isLoadingFromApi = combine(
 const $isLoading = createStore(true).on(
   $isLoadingFromApi,
   (_, isLoading) => isLoading,
+);
+
+const $isAllDataAreLoading = combine(
+  $isHousingLoading,
+  $isPrevHousingLoading,
+  $isNormativeAndSubscriberLoading,
+  $isPrevNormativeAndSubscriberLoading,
+  (...loadings) => loadings.every((loading) => loading),
 );
 
 const cancelPrevMonthRequests = createEvent<{
@@ -361,6 +369,14 @@ sample({
   target: setToken,
 });
 
+const getHousingConsumptionSuccess = getHousingConsumptionPlotFx.doneData;
+const getPrevHousingConsumptionSuccess =
+  getPrevHousingConsumptionPlotFx.doneData;
+const getPrevNormativeAndSubscriberConsumptionSuccess =
+  getPrevNormativeAndSubscriberConsumptionDataFx.doneData;
+const getNormativeAndSubscriberConsumptionSuccess =
+  getNormativeAndSubscriberConsumptionDataFx.doneData;
+
 export const resourceConsumptionService = {
   inputs: {
     getConsumptionData,
@@ -370,6 +386,10 @@ export const resourceConsumptionService = {
     setSelectedGraphTypes,
     clearAdditionalAddressData,
     getSummaryConsumptions,
+    getHousingConsumptionSuccess,
+    getPrevHousingConsumptionSuccess,
+    getPrevNormativeAndSubscriberConsumptionSuccess,
+    getNormativeAndSubscriberConsumptionSuccess,
   },
   outputs: {
     $housingConsumptionData,
@@ -384,6 +404,7 @@ export const resourceConsumptionService = {
     $isAdditionalAddressSelected,
     $dynamicMinMax,
     $isOnlyHousingDataEmpty,
+    $isAllDataAreLoading,
   },
   gates: { ResourceConsumptionGate },
 };

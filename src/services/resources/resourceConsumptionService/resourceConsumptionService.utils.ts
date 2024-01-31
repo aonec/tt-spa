@@ -14,6 +14,7 @@ import {
 } from './resourceConsumptionService.types';
 import { BooleanTypesOfResourceConsumptionGraphForTwoMonth } from './view/ResourceConsumptionProfile/ResourceConsumptionProfile.types';
 import { prepareData } from 'utils/Graph.utils';
+import { hasNoConsecutiveNumbers } from './view/ResourceConsumptionGraph/ResourceConsumptionGraph.utils';
 
 export const prepareDataForConsumptionGraph = (
   dataArr: DateTimeDoubleDictionaryItem[],
@@ -143,16 +144,21 @@ export const prepareDataForMinMaxCalculation = (
 export const getIsOnlyHousingDataEmpty = (
   housingConsumptionData: ConsumptionDataForTwoMonth | null,
 ) => {
-  const isCurrentMonthHousing =
-    housingConsumptionData?.currentMonthData?.housing?.length;
-  const isCurrentMonthNormative =
-    housingConsumptionData?.currentMonthData?.normative?.length;
-  const isCurrentMonthSubscriber =
-    housingConsumptionData?.currentMonthData?.subscriber?.length;
-  const isPrevMonthNormative =
-    housingConsumptionData?.prevMonthData?.normative?.length;
-  const isPrevMonthSubscriber =
-    housingConsumptionData?.prevMonthData?.subscriber?.length;
+  const isCurrentMonthHousing = !hasNoConsecutiveNumbers(
+    housingConsumptionData?.currentMonthData?.housing || [],
+  );
+  const isCurrentMonthNormative = !hasNoConsecutiveNumbers(
+    housingConsumptionData?.currentMonthData?.normative || [],
+  );
+  const isCurrentMonthSubscriber = !hasNoConsecutiveNumbers(
+    housingConsumptionData?.currentMonthData?.subscriber || [],
+  );
+  const isPrevMonthNormative = !hasNoConsecutiveNumbers(
+    housingConsumptionData?.prevMonthData?.normative || [],
+  );
+  const isPrevMonthSubscriber = !hasNoConsecutiveNumbers(
+    housingConsumptionData?.prevMonthData?.subscriber || [],
+  );
 
   const isOtherDataNotEmpty = [
     isCurrentMonthNormative,

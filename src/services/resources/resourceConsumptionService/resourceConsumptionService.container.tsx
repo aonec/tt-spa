@@ -34,6 +34,8 @@ export const ResourceConsumptionContainer = () => {
     isLoading,
     dynamicMinMax,
     isOnlyHousingDataEmpty,
+    isAllDataAreLoading,
+    selectedResourceForColor,
   } = useUnit({
     setSelectedGraphTypes: inputs.setSelectedGraphTypes,
     setResource: resourceConsumptionFilterService.inputs.setResource,
@@ -41,6 +43,8 @@ export const ResourceConsumptionContainer = () => {
     summaryConsumption: outputs.$summaryConsumption,
     housingConsumptionData: outputs.$housingConsumptionData,
     resource: resourceConsumptionFilterService.outputs.$selectedResource,
+    selectedResourceForColor:
+      resourceConsumptionFilterService.outputs.$selectedResourceForColor,
     resourceConsumptionFilter:
       resourceConsumptionFilterService.outputs.$resourceConsumptionFilter,
     isAdditionalAddressSelected: outputs.$isAdditionalAddressSelected,
@@ -53,10 +57,11 @@ export const ResourceConsumptionContainer = () => {
     isLoading: outputs.$isLoading,
     dynamicMinMax: outputs.$dynamicMinMax,
     isOnlyHousingDataEmpty: outputs.$isOnlyHousingDataEmpty,
+    isAllDataAreLoading: outputs.$isAllDataAreLoading,
   });
 
   useEffect(() => {
-    if ( getIsOnlyHousingDataEmpty(housingConsumptionData)) {
+    if (getIsOnlyHousingDataEmpty(housingConsumptionData)) {
       setSelectedGraphTypes({
         [ResourceConsumptionGraphDataType.currentMonthData]: {
           housing: true,
@@ -104,6 +109,7 @@ export const ResourceConsumptionContainer = () => {
         summaryConsumption={summaryConsumption}
         isSummaryLoading={isSummaryLoading}
         resource={resource}
+        resourceForColor={selectedResourceForColor}
         isPrevNormativeAndSubscriberLoading={
           isPrevNormativeAndSubscriberLoading
         }
@@ -113,6 +119,7 @@ export const ResourceConsumptionContainer = () => {
         isAdditionalAddressSelected={isAdditionalAddressSelected}
         dynamicMinMax={dynamicMinMax}
         isOnlyHousingDataEmpty={isOnlyHousingDataEmpty}
+        isAllDataAreLoading={isAllDataAreLoading}
       />
     </>
   );
