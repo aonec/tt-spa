@@ -21,7 +21,7 @@ export const GroupWrapper = styled.div`
   gap: 8px;
   margin-top: 12px;
 
-  font-size: 16px;
+  font-size: 18px;
   color: #272f5ab2;
 `;
 

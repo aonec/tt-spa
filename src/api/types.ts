@@ -1935,6 +1935,24 @@ export interface EPipeNodeValidationMessageStringDictionaryItem {
   value?: string | null;
 }
 
+export enum EPollActionType {
+  DuplicateReadings = 'DuplicateReadings',
+  IndividualCreateTasksWithoutReadings = 'IndividualCreateTasksWithoutReadings',
+  IndividualCloseWithoutReadings = 'IndividualCloseWithoutReadings',
+  IndividualCloseByCheckDate = 'IndividualCloseByCheckDate',
+  HousingCloseByCheckDate = 'HousingCloseByCheckDate',
+  IndividualExport = 'IndividualExport',
+  HousingExport = 'HousingExport',
+  MilurExport = 'MilurExport',
+}
+
+export enum EPollState {
+  Pending = 'Pending',
+  Running = 'Running',
+  Error = 'Error',
+  Done = 'Done',
+}
+
 export enum EReportFormat {
   Consumption = 'Consumption',
   Rso = 'Rso',
@@ -3555,6 +3573,27 @@ export interface IndividualDeviceReadingsResponseSuccessApiResponse {
   successResponse: IndividualDeviceReadingsResponse | null;
 }
 
+export interface IndividualDeviceReadingsSlimResponse {
+  /** @format int32 */
+  id: number;
+  value1: string | null;
+  value2: string | null;
+  value3: string | null;
+  value4: string | null;
+  /** @format date-time */
+  actualReadingDate: string;
+  /** @format date-time */
+  uploadTime: string;
+  /** @format date-time */
+  entryDate: string;
+  source: EIndividualDeviceReadingsSource;
+  user: OrganizationUserShortResponse | null;
+}
+
+export interface IndividualDeviceReadingsSlimResponseSuccessApiResponse {
+  successResponse: IndividualDeviceReadingsSlimResponse | null;
+}
+
 export interface IndividualDeviceReadingsYearHistoryResponse {
   /** @format int32 */
   year: number;
@@ -4725,6 +4764,7 @@ export interface PipeNodeValidationStatusResponse {
 
 export interface PlatformConfigurationResponse {
   featureToggles: FeatureTogglesResponse | null;
+  defaultCity: string | null;
 }
 
 export interface PointResponse {
@@ -4732,6 +4772,34 @@ export interface PointResponse {
   latitude: number;
   /** @format double */
   longitude: number;
+}
+
+export enum PollCommand {
+  GetById = 'GetById',
+  GetLast = 'GetLast',
+  Create = 'Create',
+}
+
+export interface PollResponse {
+  /** @format int32 */
+  id: number;
+  /** @format date-time */
+  createdAt: string;
+  /** @format int32 */
+  userId: number;
+  /** @format int32 */
+  organizationId: number;
+  status: EPollState;
+  /** @format date-time */
+  runningAt: string | null;
+  /** @format date-time */
+  doneAt: string | null;
+  actionType: EPollActionType;
+  hasFile: boolean;
+}
+
+export interface PollResponseSuccessApiResponse {
+  successResponse: PollResponse | null;
 }
 
 export interface ProblemDetails {
@@ -6624,11 +6692,20 @@ export class Api<
      * @request POST:/api/Apartments/DuplicateReadings
      * @secure
      */
-    apartmentsDuplicateReadingsCreate: (params: RequestParams = {}) =>
-      this.request<void, ErrorApiResponse>({
+    apartmentsDuplicateReadingsCreate: (
+      query?: {
+        Command?: PollCommand;
+        /** @format int32 */
+        PollId?: number;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<PollResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/Apartments/DuplicateReadings`,
         method: 'POST',
+        query: query,
         secure: true,
+        format: 'json',
         ...params,
       }),
 
@@ -8528,6 +8605,23 @@ export class Api<
       }),
 
     /**
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Администратор УК без назначений задач</li><li>Контролёр</li>
+     *
+     * @tags Documents
+     * @name DocumentsPollArtifactDetail
+     * @summary IndividualDeviceReadingsRead
+     * @request GET:/api/Documents/poll/{id}/artifact
+     * @secure
+     */
+    documentsPollArtifactDetail: (id: number, params: RequestParams = {}) =>
+      this.request<void, ErrorApiResponse>({
+        path: `/api/Documents/poll/${id}/artifact`,
+        method: 'GET',
+        secure: true,
+        ...params,
+      }),
+
+    /**
      * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Администратор УК без назначений задач</li><li>Контролёр</li>
      *
      * @tags ElectricHousingMeteringDevices
@@ -8753,14 +8847,17 @@ export class Api<
     exportsMilurDevicesList: (
       query?: {
         /** @format date-time */
-        startDate?: string;
+        StartDate?: string;
         /** @format date-time */
-        endDate?: string;
-        managementFirmIds?: number[];
+        EndDate?: string;
+        ManagementFirmIds?: number[];
+        Command?: PollCommand;
+        /** @format int32 */
+        PollId?: number;
       },
       params: RequestParams = {},
     ) =>
-      this.request<FileContentResultSuccessApiResponse, ErrorApiResponse>({
+      this.request<PollResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/Exports/MilurDevices`,
         method: 'GET',
         query: query,
@@ -8780,11 +8877,18 @@ export class Api<
      */
     exportsIndividualDeviceReadingsList: (
       query?: {
-        managementFirmIds?: number[];
+        /** @format int32 */
+        Year?: number;
+        /** @format int32 */
+        Month?: number;
+        ManagementFirmIds?: number[];
+        Command?: PollCommand;
+        /** @format int32 */
+        PollId?: number;
       },
       params: RequestParams = {},
     ) =>
-      this.request<FileContentResultSuccessApiResponse, ErrorApiResponse>({
+      this.request<PollResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/Exports/IndividualDeviceReadings`,
         method: 'GET',
         query: query,
@@ -8804,11 +8908,18 @@ export class Api<
      */
     exportsHousingDeviceReadingsList: (
       query?: {
-        managementFirmIds?: number[];
+        /** @format int32 */
+        Year?: number;
+        /** @format int32 */
+        Month?: number;
+        ManagementFirmIds?: number[];
+        Command?: PollCommand;
+        /** @format int32 */
+        PollId?: number;
       },
       params: RequestParams = {},
     ) =>
-      this.request<FileContentResultSuccessApiResponse, ErrorApiResponse>({
+      this.request<PollResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/Exports/HousingDeviceReadings`,
         method: 'GET',
         query: query,
@@ -9695,12 +9806,19 @@ export class Api<
      * @secure
      */
     housingMeteringDevicesCloseDevicesByCheckingDateCreate: (
+      query?: {
+        Command?: PollCommand;
+        /** @format int32 */
+        PollId?: number;
+      },
       params: RequestParams = {},
     ) =>
-      this.request<void, ErrorApiResponse>({
+      this.request<PollResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/HousingMeteringDevices/closeDevicesByCheckingDate`,
         method: 'POST',
+        query: query,
         secure: true,
+        format: 'json',
         ...params,
       }),
 
@@ -10829,15 +10947,19 @@ export class Api<
     individualDevicesCreateTaskForDeviceWithoutReadingsCreate: (
       query?: {
         /** @format date-time */
-        fromDate?: string;
+        FromDate?: string;
+        Command?: PollCommand;
+        /** @format int32 */
+        PollId?: number;
       },
       params: RequestParams = {},
     ) =>
-      this.request<void, ErrorApiResponse>({
+      this.request<PollResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/IndividualDevices/createTaskForDeviceWithoutReadings`,
         method: 'POST',
         query: query,
         secure: true,
+        format: 'json',
         ...params,
       }),
 
@@ -10851,12 +10973,20 @@ export class Api<
      * @secure
      */
     individualDevicesCloseDevicesWithoutReadingsCreate: (
+      query?: {
+        ManagementFirmIds?: number[];
+        Command?: PollCommand;
+        /** @format int32 */
+        PollId?: number;
+      },
       params: RequestParams = {},
     ) =>
-      this.request<void, ErrorApiResponse>({
+      this.request<PollResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/IndividualDevices/closeDevicesWithoutReadings`,
         method: 'POST',
+        query: query,
         secure: true,
+        format: 'json',
         ...params,
       }),
 
@@ -10870,12 +11000,19 @@ export class Api<
      * @secure
      */
     individualDevicesCloseDevicesByCheckingDateCreate: (
+      query?: {
+        Command?: PollCommand;
+        /** @format int32 */
+        PollId?: number;
+      },
       params: RequestParams = {},
     ) =>
-      this.request<void, ErrorApiResponse>({
+      this.request<PollResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/IndividualDevices/closeDevicesByCheckingDate`,
         method: 'POST',
+        query: query,
         secure: true,
+        format: 'json',
         ...params,
       }),
 
@@ -10917,6 +11054,30 @@ export class Api<
         ErrorApiResponse
       >({
         path: `/api/IndividualDevices/${deviceId}/Consumption`,
+        method: 'GET',
+        secure: true,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Администратор УК без назначений задач</li><li>Контролёр</li>
+     *
+     * @tags IndividualDevices
+     * @name IndividualDevicesLastReadingDetail
+     * @summary IndividualDeviceReadingsRead
+     * @request GET:/api/IndividualDevices/{deviceId}/LastReading
+     * @secure
+     */
+    individualDevicesLastReadingDetail: (
+      deviceId: number,
+      params: RequestParams = {},
+    ) =>
+      this.request<
+        IndividualDeviceReadingsSlimResponseSuccessApiResponse,
+        ErrorApiResponse
+      >({
+        path: `/api/IndividualDevices/${deviceId}/LastReading`,
         method: 'GET',
         secure: true,
         format: 'json',

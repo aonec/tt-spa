@@ -4,7 +4,6 @@ import { getFilledArray } from 'utils/getFilledArray';
 import { getReadingValueKey } from '../../individualDeviceMetersInputService.utils';
 import { Input, InputWrapper, Wrapper } from './MetersInputsBlock.styled';
 import { BufferedReadingValues } from './MetersInputsBlock.types';
-import { fromEnter } from 'ui-kit/shared/DatePickerNative';
 
 export const MetersInputsBlockPure: FC<{
   rateNum: number;

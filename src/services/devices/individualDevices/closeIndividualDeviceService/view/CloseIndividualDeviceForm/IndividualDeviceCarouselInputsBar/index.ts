@@ -1,1 +1,0 @@
-export { IndividualDeviceCarouselInputsBar } from './IndividualDeviceCarouselInputsBar'

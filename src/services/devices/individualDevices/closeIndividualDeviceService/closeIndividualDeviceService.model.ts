@@ -1,7 +1,14 @@
-import { createEvent, createStore } from 'effector';
+import { createEffect, createEvent, createStore } from 'effector';
 import { sample } from 'effector';
-import { EClosingReason, IndividualDeviceListItemResponse } from 'api/types';
-import { closeIndivididualDeviceMutation } from './closeIndividualDeviceService.api';
+import {
+  EClosingReason,
+  IndividualDeviceListItemResponse,
+  IndividualDeviceReadingsSlimResponse,
+} from 'api/types';
+import {
+  closeIndivididualDeviceMutation,
+  getLastReading,
+} from './closeIndividualDeviceService.api';
 import { message } from 'antd';
 import { createForm } from 'effector-forms';
 import dayjs from 'api/dayjs';
@@ -13,6 +20,11 @@ import { PreparedForFormReadings } from '../workWithIndividualDeviceService/work
 const closeModal = createEvent();
 const openModal = createEvent<IndividualDeviceListItemResponse>();
 
+const getLastReadingFx = createEffect<
+  string,
+  IndividualDeviceReadingsSlimResponse
+>(getLastReading);
+
 const $closingDevice = createStore<IndividualDeviceListItemResponse | null>(
   null,
 )
@@ -20,6 +32,10 @@ const $closingDevice = createStore<IndividualDeviceListItemResponse | null>(
   .reset(closeModal);
 
 const $isOpen = $closingDevice.map(Boolean);
+
+const $lastReading = createStore<IndividualDeviceReadingsSlimResponse | null>(
+  null,
+).on(getLastReadingFx.doneData, (_, reading) => reading);
 
 const closeIndividualDeviceForm = createForm({
   fields: {
@@ -84,6 +100,13 @@ sample({
   target: closeIndividualDeviceForm.reset,
 });
 
+sample({
+  clock: openModal,
+  filter: (device) => Boolean(device?.id),
+  fn: (device) => String(device?.id),
+  target: getLastReadingFx,
+});
+
 closeIndivididualDeviceMutation.finished.failure.watch(({ error }) => {
   return message.error(
     error.response.data.error.Text ||
@@ -102,6 +125,7 @@ export const closeIndividualDeviceService = {
     $isOpen,
     $closingDevice,
     $isLoading: closeIndivididualDeviceMutation.$pending,
+    $lastReading,
   },
   forms: { closeIndividualDeviceForm },
 };

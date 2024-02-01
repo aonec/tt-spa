@@ -2,17 +2,21 @@ import {
   EIndividualDeviceRateType,
   EResourceType,
   IndividualDeviceReadingsResponse,
+  IndividualDeviceReadingsSlimResponse,
 } from 'api/types';
 import { UploadReading } from '../../individualDeviceMetersInputService.types';
 
 export type MetersInputsBlockProps = {
   inputIndex: number;
+  rateType: EIndividualDeviceRateType;
+  sliderIndex: number;
   handleUploadReading?: UploadReading;
   resource?: EResourceType;
   status?: MetersInputBlockStatus;
-  rateType: EIndividualDeviceRateType;
-  reading?: IndividualDeviceReadingsResponse;
-  sliderIndex: number;
+  reading?:
+    | IndividualDeviceReadingsResponse
+    | IndividualDeviceReadingsSlimResponse
+    | null;
   isPrevious?: boolean;
   isDisabled?: boolean;
   tooltip?: string;

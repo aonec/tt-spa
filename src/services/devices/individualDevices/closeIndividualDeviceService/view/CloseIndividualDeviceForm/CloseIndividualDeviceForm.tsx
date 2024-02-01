@@ -10,12 +10,13 @@ import { ClosingReasonsDictionary } from 'dictionaries';
 import dayjs from 'api/dayjs';
 import { DatePicker } from 'ui-kit/DatePicker';
 import { GroupWrapper } from './CloseIndividualDeviceForm.styled';
-import { IndividualDeviceCarouselInputsBar } from './IndividualDeviceCarouselInputsBar';
+import { IndividualDeviceLastReadingBar } from './IndividualDeviceLastReadingBar';
 
 export const CloseIndividualDeviceForm: FC<CloseIndividualDeviceFormProps> = ({
   form,
   formId,
   device,
+  lastReading,
 }) => {
   const { errorText, fields, submit } = useForm(form);
 
@@ -52,13 +53,13 @@ export const CloseIndividualDeviceForm: FC<CloseIndividualDeviceFormProps> = ({
         </FormItem>
       </GroupWrapper>
 
-      <IndividualDeviceCarouselInputsBar
+      <IndividualDeviceLastReadingBar
         title={'Закрываемый прибор'}
         device={device}
         model={device?.model || ''}
         resource={device?.resource || null}
         serialNumber={device?.serialNumber || ''}
-        readings={fields.deviceReadings.value}
+        lastReading={lastReading}
       />
     </Form>
   );
