@@ -85,14 +85,18 @@ sample({
 
     const closingDateStartOfMonth = closingDate?.startOf('month');
 
-    const datesDiff = closingDateStartOfMonth?.diff(lastReadingDate, 'month');
+    const monthDiffNumber = closingDateStartOfMonth?.diff(
+      lastReadingDate,
+      'month',
+    );
 
-    console.log({
-      datesDiff,
-      closingDateStartOfMonth: closingDateStartOfMonth?.format(),
-      lastReadingDate: lastReadingDate.format(),
-    });
-    return true;
+    if (monthDiffNumber === undefined) return false;
+
+    if (monthDiffNumber <= 0) {
+      return true;
+    } else {
+      return false;
+    }
   },
   target: $isBannerShown,
 });
@@ -155,6 +159,7 @@ export const closeIndividualDeviceService = {
     $closingDevice,
     $isLoading: closeIndivididualDeviceMutation.$pending,
     $lastReading,
+    $isBannerShown,
   },
   forms: { closeIndividualDeviceForm },
 };

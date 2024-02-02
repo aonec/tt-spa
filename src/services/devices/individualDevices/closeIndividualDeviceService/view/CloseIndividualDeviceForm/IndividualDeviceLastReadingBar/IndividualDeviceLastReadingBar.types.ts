@@ -11,4 +11,5 @@ export type IndividualDeviceLastReadingBarProps = {
   resource: EResourceType | null;
   device: IndividualDeviceListItemResponse | null;
   lastReading: IndividualDeviceReadingsSlimResponse | null;
+  openReadingsHistoryModal: (payload: number) => void;
 };

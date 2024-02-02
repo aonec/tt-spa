@@ -1,5 +1,4 @@
 import React, { FC } from 'react';
-import { useUnit } from 'effector-react';
 import { Tooltip } from 'antd';
 import dayjs from 'dayjs';
 import { IndividualDeviceLastReadingBarProps } from './IndividualDeviceLastReadingBar.types';
@@ -17,16 +16,18 @@ import {
 import { ResourceIconLookup } from 'ui-kit/shared/ResourceIconLookup';
 import { HistoryIcon } from 'ui-kit/icons';
 import { MetersInputsBlock } from 'services/meters/individualDeviceMetersInputService/view/MetersInputsBlock';
-import { apartmentIndividualDevicesMetersService } from 'services/meters/apartmentIndividualDevicesMetersService';
 
 export const IndividualDeviceLastReadingBar: FC<
   IndividualDeviceLastReadingBarProps
-> = ({ resource, title, model, serialNumber, device, lastReading }) => {
-  const { openReadingsHistoryModal } = useUnit({
-    openReadingsHistoryModal:
-      apartmentIndividualDevicesMetersService.inputs.openReadingsHistoryModal,
-  });
-
+> = ({
+  resource,
+  title,
+  model,
+  serialNumber,
+  device,
+  lastReading,
+  openReadingsHistoryModal,
+}) => {
   return (
     <Wrapper>
       <DeviceInfoWrapper>

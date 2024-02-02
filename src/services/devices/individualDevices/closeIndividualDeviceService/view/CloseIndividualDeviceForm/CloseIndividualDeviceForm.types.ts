@@ -9,4 +9,6 @@ export type CloseIndividualDeviceFormProps = {
   formId: string;
   device: IndividualDeviceListItemResponse | null;
   lastReading: IndividualDeviceReadingsSlimResponse | null;
+  isBannerShown: boolean;
+  openReadingsHistoryModal: (payload: number) => void;
 };
