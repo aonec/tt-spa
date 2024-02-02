@@ -33,9 +33,6 @@ export const HistoryButton = styled.div`
   transition: 0.2s;
   cursor: pointer;
   user-select: none;
-
-  &:hover {
-  }
 `;
 
 export const AlertTitle = styled.div`
