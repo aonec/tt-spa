@@ -1,4 +1,4 @@
-import { createEffect, createEvent, createStore } from 'effector';
+import { combine, createEffect, createEvent, createStore } from 'effector';
 import { sample } from 'effector';
 import {
   EClosingReason,
@@ -35,7 +35,11 @@ const $isOpen = $closingDevice.map(Boolean);
 
 const $lastReading = createStore<IndividualDeviceReadingsSlimResponse | null>(
   null,
-).on(getLastReadingFx.doneData, (_, reading) => reading);
+)
+  .on(getLastReadingFx.doneData, (_, reading) => reading)
+  .reset(closeModal);
+
+const $isBannerShown = createStore<boolean>(false);
 
 const closeIndividualDeviceForm = createForm({
   fields: {
@@ -66,6 +70,31 @@ const closeIndividualDeviceForm = createForm({
     },
     documentsIds: { init: [] as Document[] },
   },
+});
+
+sample({
+  source: combine(
+    closeIndividualDeviceForm.fields.closingDate.$value,
+    $lastReading,
+    (closingDate, lastReading) => ({ closingDate, lastReading }),
+  ),
+  fn: ({ closingDate, lastReading }) => {
+    const lastReadingDate = dayjs(lastReading?.actualReadingDate).startOf(
+      'month',
+    );
+
+    const closingDateStartOfMonth = closingDate?.startOf('month');
+
+    const datesDiff = closingDateStartOfMonth?.diff(lastReadingDate, 'month');
+
+    console.log({
+      datesDiff,
+      closingDateStartOfMonth: closingDateStartOfMonth?.format(),
+      lastReadingDate: lastReadingDate.format(),
+    });
+    return true;
+  },
+  target: $isBannerShown,
 });
 
 sample({
