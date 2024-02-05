@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { ActDate, Wrapper } from './ActsListItem.styled';
+import { ActAddress, ActDate, Wrapper } from './ActsListItem.styled';
 import { ActsListItemProps } from './ActsListItem.types';
 import dayjs from 'api/dayjs';
 import { ActTypesNamesLookup } from 'dictionaries';
@@ -15,7 +15,11 @@ export const ActsListItem: FC<ActsListItemProps> = ({ act }) => {
       <div>{act.registryNumber}</div>
       <div>{ActTypesNamesLookup[act.actType]}</div>
       <ResourceInfo resource={act.actResourceType} />
-      <div>{actAddress}</div>
+      {act.apartment?.apartmentId && (
+        <ActAddress to={`/meters/apartments/${act.apartment.apartmentId}`}>
+          {actAddress}
+        </ActAddress>
+      )}
       <div>{dayjs(act.actJobDate).format('DD.MM.YYYY')}</div>
     </Wrapper>
   );

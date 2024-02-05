@@ -223,7 +223,6 @@ export const ResourceConsumptionGraph: FC<ResourceConsumptionGraphProps> = ({
           dependentAxis
           style={verticalAxisStyle}
         />
-        {lines}
         {checked.currentMonthData.housing && (
           <VictoryArea
             data={consumptionData.currentMonthData?.housing}
@@ -249,6 +248,7 @@ export const ResourceConsumptionGraph: FC<ResourceConsumptionGraphProps> = ({
             }
           />
         )}
+        {lines}
       </VictoryChart>
     </Wrapper>
   );
