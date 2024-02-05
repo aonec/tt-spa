@@ -111,21 +111,43 @@ const getAdditionalNormativeAndSubscriberConsumptionDataFx = createEffect<
   EffectFailDataAxiosError
 >(fetchNormativeAndSubscriberConsumptionData);
 
+const setFirstDataCame = createEvent<boolean>();
+const $isFirstDataCame = createStore(false)
+  .on(setFirstDataCame, (_, data) => data)
+  .reset(getConsumptionData);
+
+sample({
+  clock: [
+    getPrevHousingConsumptionPlotFx.doneData,
+    getPrevNormativeAndSubscriberConsumptionDataFx.doneData,
+    getHousingConsumptionPlotFx.doneData,
+    getNormativeAndSubscriberConsumptionDataFx.doneData,
+    getAdditionalHousingConsumptionPlotFx.doneData,
+    getAdditionalNormativeAndSubscriberConsumptionDataFx.doneData,
+  ],
+  fn: () => true,
+  target: $isFirstDataCame,
+});
+
 const $housingConsumptionData = createStore<ConsumptionDataForTwoMonth | null>(
   null,
 )
-  .on(getPrevHousingConsumptionPlotFx.doneData, (prev, data) =>
-    setConsumptionData(
+  .on(getPrevHousingConsumptionPlotFx.doneData, (prev, data) => {
+    const housingConsumptionData = setConsumptionData(
       prev,
       ResourceConsumptionGraphDataType.prevMonthData,
       data,
-    ),
-  )
+      $isFirstDataCame.getState(),
+    );
+    setFirstDataCame(true);
+    return housingConsumptionData;
+  })
   .on(getPrevNormativeAndSubscriberConsumptionDataFx.doneData, (prev, data) =>
     setConsumptionData(
       prev,
       ResourceConsumptionGraphDataType.prevMonthData,
       data,
+      $isFirstDataCame.getState(),
     ),
   )
   .on(getHousingConsumptionPlotFx.doneData, (prev, data) =>
@@ -133,6 +155,7 @@ const $housingConsumptionData = createStore<ConsumptionDataForTwoMonth | null>(
       prev,
       ResourceConsumptionGraphDataType.currentMonthData,
       data,
+      $isFirstDataCame.getState(),
     ),
   )
   .on(getNormativeAndSubscriberConsumptionDataFx.doneData, (prev, data) =>
@@ -140,6 +163,7 @@ const $housingConsumptionData = createStore<ConsumptionDataForTwoMonth | null>(
       prev,
       ResourceConsumptionGraphDataType.currentMonthData,
       data,
+      $isFirstDataCame.getState(),
     ),
   )
   .on(getAdditionalHousingConsumptionPlotFx.doneData, (prev, data) =>
@@ -147,6 +171,7 @@ const $housingConsumptionData = createStore<ConsumptionDataForTwoMonth | null>(
       prev,
       ResourceConsumptionGraphDataType.additionalAddress,
       data,
+      $isFirstDataCame.getState(),
     ),
   )
   .on(
@@ -156,9 +181,12 @@ const $housingConsumptionData = createStore<ConsumptionDataForTwoMonth | null>(
         prev,
         ResourceConsumptionGraphDataType.additionalAddress,
         data,
+        $isFirstDataCame.getState(),
       ),
   )
-  .reset([clearData]);
+  .reset(clearData);
+
+$housingConsumptionData.watch((data) => console.log(data));
 
 const getAdditionalConsumptionData = createEvent<ConsumptionDataPayload>();
 

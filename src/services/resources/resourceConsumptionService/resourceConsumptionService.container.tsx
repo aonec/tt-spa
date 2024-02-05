@@ -60,28 +60,6 @@ export const ResourceConsumptionContainer = () => {
     isAllDataAreLoading: outputs.$isAllDataAreLoading,
   });
 
-  useEffect(() => {
-    if (getIsOnlyHousingDataEmpty(housingConsumptionData)) {
-      setSelectedGraphTypes({
-        [ResourceConsumptionGraphDataType.currentMonthData]: {
-          housing: true,
-          normative: true,
-          subscriber: true,
-        },
-        [ResourceConsumptionGraphDataType.prevMonthData]: {
-          housing: true,
-          normative: true,
-          subscriber: true,
-        },
-        [ResourceConsumptionGraphDataType.additionalAddress]: {
-          housing: false,
-          normative: false,
-          subscriber: false,
-        },
-      });
-    }
-  }, [housingConsumptionData, setSelectedGraphTypes]);
-
   const preparedHousingConsumptionData: AllConsumptionDataWithNullableAdditionalAddress =
     useMemo(() => {
       if (housingConsumptionData?.additionalAddress) {

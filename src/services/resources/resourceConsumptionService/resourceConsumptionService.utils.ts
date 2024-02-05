@@ -64,7 +64,17 @@ export const setConsumptionData = (
   prev: ConsumptionDataForTwoMonth | null,
   fieldName: ResourceConsumptionGraphDataType,
   data: SetConsumptionDataType,
+  isFirstDataCame: boolean,
 ) => {
+  if (!isFirstDataCame) {
+    return {
+      [fieldName]: {
+        ...(prev?.[fieldName] || {}),
+        ...(data || {}),
+      },
+    };
+  }
+
   return {
     ...(prev || {}),
     [fieldName]: {
