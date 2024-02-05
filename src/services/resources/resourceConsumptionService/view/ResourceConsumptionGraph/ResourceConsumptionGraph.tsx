@@ -18,7 +18,10 @@ import {
   Wrapper,
 } from './ResourceConsumptionGraph.styled';
 import { ResourceConsumptionGraphProps } from './ResourceConsumptionGraph.types';
-import { getGraphTypeColors } from './ResourceConsumptionGraph.utils';
+import {
+  getGraphTypeColors,
+  hasNoConsecutiveNumbers,
+} from './ResourceConsumptionGraph.utils';
 import { ResourceConsumptionGraphTooltip } from './ResourceConsumptionGraphTooltip';
 import { GraphGradient } from 'ui-kit/shared/GraphComponents/GraphGradient';
 import {
@@ -124,12 +127,20 @@ export const ResourceConsumptionGraph: FC<ResourceConsumptionGraphProps> = ({
   const isConsumptionDataItemsEmpty = useMemo(
     () =>
       [
-        consumptionData.currentMonthData?.housing?.length === 0,
-        consumptionData.currentMonthData?.normative?.length === 0,
-        consumptionData.currentMonthData?.subscriber?.length === 0,
-        consumptionData.prevMonthData?.housing?.length === 0,
-        consumptionData.prevMonthData?.normative?.length === 0,
-        consumptionData.prevMonthData?.subscriber?.length === 0,
+        hasNoConsecutiveNumbers(
+          consumptionData.currentMonthData?.housing || [],
+        ),
+        hasNoConsecutiveNumbers(
+          consumptionData.currentMonthData?.normative || [],
+        ),
+        hasNoConsecutiveNumbers(
+          consumptionData.currentMonthData?.subscriber || [],
+        ),
+        hasNoConsecutiveNumbers(consumptionData.prevMonthData?.housing || []),
+        hasNoConsecutiveNumbers(consumptionData.prevMonthData?.normative || []),
+        hasNoConsecutiveNumbers(
+          consumptionData.prevMonthData?.subscriber || [],
+        ),
       ].every(Boolean),
     [consumptionData],
   );

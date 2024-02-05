@@ -1,5 +1,5 @@
 import { Checkbox } from 'antd';
-import React, { FC, useMemo } from 'react';
+import React, { FC } from 'react';
 import {
   Circle,
   GroupWrapper,

@@ -4,8 +4,8 @@ export const initialSelectedGraphTypes: BooleanTypesOfResourceConsumptionGraphFo
   {
     currentMonthData: {
       housing: true,
-      normative: false,
-      subscriber: false,
+      normative: true,
+      subscriber: true,
     },
     prevMonthData: {
       housing: false,
