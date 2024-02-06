@@ -4,6 +4,13 @@ import {
   BuildingWithCoordinatesResponsePagedList,
   DistrictResponse,
 } from 'api/types';
+import { createMutation } from '@farfetched/core';
+import { createEffect } from 'effector';
+import { EffectFailDataAxiosError } from 'types';
+import {
+  AddHouseToDistrictRequestPayload,
+  DeleteHouseInDistrictRequestPayload,
+} from './editDistrictBordersService.types';
 
 export const existingHousingStocksQuery = createQuery<
   void,
@@ -27,3 +34,30 @@ export const existingDistrictsQuery = createQuery<
   },
 });
 
+export const deleteHouseInDistrictMutation = createMutation({
+  effect: createEffect<
+    DeleteHouseInDistrictRequestPayload,
+    void,
+    EffectFailDataAxiosError
+  >((params) =>
+    axios.post(
+      `/IndividualSeal/Districts/${params.districtId}/DeleteHouse`,
+      params.buildingId,
+      { headers: { 'Content-Type': `application/json` } },
+    ),
+  ),
+});
+
+export const addHouseToDistrictMutation = createMutation({
+  effect: createEffect<
+    AddHouseToDistrictRequestPayload,
+    void,
+    EffectFailDataAxiosError
+  >((params) =>
+    axios.post(
+      `/IndividualSeal/Districts/${params.districtId}/AddHouse`,
+      params.data,
+      { headers: { 'Content-Type': `application/json` } },
+    ),
+  ),
+});

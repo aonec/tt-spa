@@ -15,6 +15,8 @@ export type Props = {
   isLoadingDistricts: boolean;
   isLoadingUpdateDistrict: boolean;
   handleUpdateDistrictBorder: (coordinates: number[][]) => void;
+  handleAddHouse: (housesToAdd: number[]) => void;
+  handleDeleteHouse: (housesToDelete: number[]) => void;
 };
 
 export type EditindDistrictArrayType = {

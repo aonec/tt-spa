@@ -26,6 +26,8 @@ export const EditDistrictBordersMap: FC<Props> = ({
   existingHousingStocks,
   isLoadingUpdateDistrict,
   handleUpdateDistrictBorder,
+  handleAddHouse,
+  handleDeleteHouse,
 }) => {
   const { map, mapRef } = useYMaps(organizationCoordinates);
 
@@ -141,14 +143,22 @@ export const EditDistrictBordersMap: FC<Props> = ({
     housesByServer,
   );
 
-  console.log({ housesByServer, housesByFront });
-  console.log({ housesForDelete, housesForAdd });
-
   const handleUpdate = useCallback(() => {
     if (!bufferedPolygonCoordinates) return;
 
+    handleDeleteHouse(housesForDelete);
+
+    handleAddHouse(housesForAdd);
+
     handleUpdateDistrictBorder(bufferedPolygonCoordinates[0]);
-  }, [bufferedPolygonCoordinates, handleUpdateDistrictBorder]);
+  }, [
+    bufferedPolygonCoordinates,
+    handleUpdateDistrictBorder,
+    handleAddHouse,
+    handleDeleteHouse,
+    housesForAdd,
+    housesForDelete,
+  ]);
 
   return (
     <div>
