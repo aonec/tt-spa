@@ -26,3 +26,4 @@ export const existingDistrictsQuery = createQuery<
     return districts.reverse();
   },
 });
+
