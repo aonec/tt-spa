@@ -13,10 +13,11 @@ import { sortBy } from 'lodash';
 import { Button } from 'ui-kit/Button';
 
 export const SelectedHousingStocksPanel: FC<SelectedHousingStocksProps> = ({
-  housesInDistrict,
   handleCancel,
   isLoading,
   handleUpdate,
+  housesInDistrict,
+  editindDistrictArray,
 }) => {
   return (
     <Wrapper>

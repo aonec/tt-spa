@@ -17,6 +17,7 @@ import { Header, MapWrapper } from './EditDistrictBordersMap.styled';
 import { Props } from './EditDistrictBordersMap.types';
 import { SelectedHousingStocksPanel } from './SelectedHousingStocksPanel';
 import { MapZoomControl } from 'ui-kit/shared/MapZoomControl';
+import { compareHouses } from '../editDistrictBordersService.utils';
 
 export const EditDistrictBordersMap: FC<Props> = ({
   organizationCoordinates,
@@ -25,6 +26,8 @@ export const EditDistrictBordersMap: FC<Props> = ({
   existingHousingStocks,
   isLoadingUpdateDistrict,
   handleUpdateDistrictBorder,
+  handleAddHouse,
+  handleDeleteHouse,
 }) => {
   const { map, mapRef } = useYMaps(organizationCoordinates);
 
@@ -124,11 +127,38 @@ export const EditDistrictBordersMap: FC<Props> = ({
     setIsEditing(false);
   }, [editingdDistrictPolygon?.geometry]);
 
+  const housesByFront = housesInDistrict.reduce((acc: number[], house) => {
+    return [...acc, house.id];
+  }, []);
+
+  const housesByServer = editindDistrictArray?.[0]?.houses?.reduce(
+    (acc, house) => {
+      return [...acc, house.id as number];
+    },
+    [] as number[],
+  );
+
+  const { housesForDelete, housesForAdd } = compareHouses(
+    housesByFront,
+    housesByServer,
+  );
+
   const handleUpdate = useCallback(() => {
     if (!bufferedPolygonCoordinates) return;
 
+    handleDeleteHouse(housesForDelete);
+
+    handleAddHouse(housesForAdd);
+
     handleUpdateDistrictBorder(bufferedPolygonCoordinates[0]);
-  }, [bufferedPolygonCoordinates, handleUpdateDistrictBorder]);
+  }, [
+    bufferedPolygonCoordinates,
+    handleUpdateDistrictBorder,
+    handleAddHouse,
+    handleDeleteHouse,
+    housesForAdd,
+    housesForDelete,
+  ]);
 
   return (
     <div>
@@ -150,6 +180,7 @@ export const EditDistrictBordersMap: FC<Props> = ({
             handleCancel={() => setIsEditing(true)}
             isLoading={isLoadingUpdateDistrict}
             handleUpdate={handleUpdate}
+            editindDistrictArray={editindDistrictArray}
           />
         )}
         <div ref={mapRef} style={{ width: '100%', height: '86vh' }} />
