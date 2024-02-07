@@ -21,8 +21,6 @@ sample({
   target: [existingHousingStocksQuery.start, existingDistrictsQuery.start],
 });
 
-$isFailure.watch((data) => console.log({ fail: data }));
-
 $isFailure.watch((isFailure) => {
   if (isFailure) {
     message.error(
