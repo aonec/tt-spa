@@ -116,6 +116,172 @@ const $isFirstDataCame = createStore(false)
   .on(setFirstDataCame, (_, data) => data)
   .reset(getConsumptionData);
 
+const $housingConsumptionData = createStore<ConsumptionDataForTwoMonth | null>(
+  null,
+).reset(clearData);
+
+sample({
+  clock: getHousingConsumptionPlotFx.doneData,
+  source: combine(
+    $housingConsumptionData,
+    $isFirstDataCame,
+    (prevHousingConsumptionData, isFirstDataCame) => ({
+      prevHousingConsumptionData,
+      isFirstDataCame,
+    }),
+  ),
+  fn: (source, consumptionData) => {
+    if (!source.isFirstDataCame) {
+      return setConsumptionData(
+        {},
+        ResourceConsumptionGraphDataType.currentMonthData,
+        consumptionData,
+      );
+    }
+
+    return setConsumptionData(
+      source.prevHousingConsumptionData,
+      ResourceConsumptionGraphDataType.currentMonthData,
+      consumptionData,
+    );
+  },
+  target: $housingConsumptionData,
+});
+sample({
+  clock: getPrevHousingConsumptionPlotFx.doneData,
+  source: combine(
+    $housingConsumptionData,
+    $isFirstDataCame,
+    (prevHousingConsumptionData, isFirstDataCame) => ({
+      prevHousingConsumptionData,
+      isFirstDataCame,
+    }),
+  ),
+  fn: (source, consumptionData) => {
+    if (!source.isFirstDataCame) {
+      return setConsumptionData(
+        {},
+        ResourceConsumptionGraphDataType.prevMonthData,
+        consumptionData,
+      );
+    }
+
+    return setConsumptionData(
+      source.prevHousingConsumptionData,
+      ResourceConsumptionGraphDataType.prevMonthData,
+      consumptionData,
+    );
+  },
+  target: $housingConsumptionData,
+});
+sample({
+  clock: getNormativeAndSubscriberConsumptionDataFx.doneData,
+  source: combine(
+    $housingConsumptionData,
+    $isFirstDataCame,
+    (prevHousingConsumptionData, isFirstDataCame) => ({
+      prevHousingConsumptionData,
+      isFirstDataCame,
+    }),
+  ),
+  fn: (source, consumptionData) => {
+    if (!source.isFirstDataCame) {
+      return setConsumptionData(
+        {},
+        ResourceConsumptionGraphDataType.currentMonthData,
+        consumptionData,
+      );
+    }
+
+    return setConsumptionData(
+      source.prevHousingConsumptionData,
+      ResourceConsumptionGraphDataType.currentMonthData,
+      consumptionData,
+    );
+  },
+  target: $housingConsumptionData,
+});
+sample({
+  clock: getPrevNormativeAndSubscriberConsumptionDataFx.doneData,
+  source: combine(
+    $housingConsumptionData,
+    $isFirstDataCame,
+    (prevHousingConsumptionData, isFirstDataCame) => ({
+      prevHousingConsumptionData,
+      isFirstDataCame,
+    }),
+  ),
+  fn: (source, consumptionData) => {
+    if (!source.isFirstDataCame) {
+      return setConsumptionData(
+        {},
+        ResourceConsumptionGraphDataType.prevMonthData,
+        consumptionData,
+      );
+    }
+
+    return setConsumptionData(
+      source.prevHousingConsumptionData,
+      ResourceConsumptionGraphDataType.prevMonthData,
+      consumptionData,
+    );
+  },
+  target: $housingConsumptionData,
+});
+sample({
+  clock: getAdditionalHousingConsumptionPlotFx.doneData,
+  source: combine(
+    $housingConsumptionData,
+    $isFirstDataCame,
+    (prevHousingConsumptionData, isFirstDataCame) => ({
+      prevHousingConsumptionData,
+      isFirstDataCame,
+    }),
+  ),
+  fn: (source, consumptionData) => {
+    if (!source.isFirstDataCame) {
+      return setConsumptionData(
+        {},
+        ResourceConsumptionGraphDataType.additionalAddress,
+        consumptionData,
+      );
+    }
+
+    return setConsumptionData(
+      source.prevHousingConsumptionData,
+      ResourceConsumptionGraphDataType.additionalAddress,
+      consumptionData,
+    );
+  },
+  target: $housingConsumptionData,
+});
+sample({
+  clock: getAdditionalNormativeAndSubscriberConsumptionDataFx.doneData,
+  source: combine(
+    $housingConsumptionData,
+    $isFirstDataCame,
+    (prevHousingConsumptionData, isFirstDataCame) => ({
+      prevHousingConsumptionData,
+      isFirstDataCame,
+    }),
+  ),
+  fn: (source, consumptionData) => {
+    if (!source.isFirstDataCame) {
+      return setConsumptionData(
+        {},
+        ResourceConsumptionGraphDataType.additionalAddress,
+        consumptionData,
+      );
+    }
+
+    return setConsumptionData(
+      source.prevHousingConsumptionData,
+      ResourceConsumptionGraphDataType.additionalAddress,
+      consumptionData,
+    );
+  },
+  target: $housingConsumptionData,
+});
 sample({
   clock: [
     getPrevHousingConsumptionPlotFx.doneData,
@@ -128,65 +294,6 @@ sample({
   fn: () => true,
   target: $isFirstDataCame,
 });
-
-const $housingConsumptionData = createStore<ConsumptionDataForTwoMonth | null>(
-  null,
-)
-  .on(getPrevHousingConsumptionPlotFx.doneData, (prev, data) => {
-    const housingConsumptionData = setConsumptionData(
-      prev,
-      ResourceConsumptionGraphDataType.prevMonthData,
-      data,
-      $isFirstDataCame.getState(),
-    );
-    setFirstDataCame(true);
-    return housingConsumptionData;
-  })
-  .on(getPrevNormativeAndSubscriberConsumptionDataFx.doneData, (prev, data) =>
-    setConsumptionData(
-      prev,
-      ResourceConsumptionGraphDataType.prevMonthData,
-      data,
-      $isFirstDataCame.getState(),
-    ),
-  )
-  .on(getHousingConsumptionPlotFx.doneData, (prev, data) =>
-    setConsumptionData(
-      prev,
-      ResourceConsumptionGraphDataType.currentMonthData,
-      data,
-      $isFirstDataCame.getState(),
-    ),
-  )
-  .on(getNormativeAndSubscriberConsumptionDataFx.doneData, (prev, data) =>
-    setConsumptionData(
-      prev,
-      ResourceConsumptionGraphDataType.currentMonthData,
-      data,
-      $isFirstDataCame.getState(),
-    ),
-  )
-  .on(getAdditionalHousingConsumptionPlotFx.doneData, (prev, data) =>
-    setConsumptionData(
-      prev,
-      ResourceConsumptionGraphDataType.additionalAddress,
-      data,
-      $isFirstDataCame.getState(),
-    ),
-  )
-  .on(
-    getAdditionalNormativeAndSubscriberConsumptionDataFx.doneData,
-    (prev, data) =>
-      setConsumptionData(
-        prev,
-        ResourceConsumptionGraphDataType.additionalAddress,
-        data,
-        $isFirstDataCame.getState(),
-      ),
-  )
-  .reset(clearData);
-
-$housingConsumptionData.watch((data) => console.log(data));
 
 const getAdditionalConsumptionData = createEvent<ConsumptionDataPayload>();
 
