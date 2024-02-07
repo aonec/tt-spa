@@ -28,6 +28,7 @@ import {
   ErpTaskDeadlineResponse,
   ErpTaskReasonGroupResponse,
   ErpTaskReasonItemResponse,
+  HomeownerAccountNameResponse,
   ResourceDisconnectingResponse,
   ResourceDisconnectingResponsePagedList,
   StreetWithBuildingNumbersResponsePagedList,
@@ -90,9 +91,10 @@ const getApartmentsFx = createEffect<
   ApartmentListResponsePagedList
 >(getApartments);
 
-const getApartmentHomeownerNamesFx = createEffect<number, string[]>(
-  getApartmentHomeownerNames,
-);
+const getApartmentHomeownerNamesFx = createEffect<
+  number,
+  HomeownerAccountNameResponse[]
+>(getApartmentHomeownerNames);
 
 const getResourceDisconnectionFx = createEffect<
   GetResourceDisconnectionRequest,
@@ -144,7 +146,10 @@ const $selectedTaskReasonId = createStore<string | null>(null)
 
 const $apartmentHomeownerNames = createStore<HomeownerNameOption[]>([])
   .on(getApartmentHomeownerNamesFx.doneData, (_, data) =>
-    data.map((name) => ({ value: name })),
+    data.map((nameResponse) => ({
+      value: nameResponse.name || '',
+      key: nameResponse.id,
+    })),
   )
   .reset(handleReset);
 

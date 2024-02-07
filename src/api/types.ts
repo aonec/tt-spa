@@ -1521,6 +1521,12 @@ export interface CurrentTransformerResponseSuccessApiResponse {
   successResponse: CurrentTransformerResponse | null;
 }
 
+export interface HomeownerAccountNameResponse {
+  /** @format uuid */
+  id: string;
+  name: string | null;
+}
+
 export interface DataAfterSplittingHomeownerAccountResponse {
   splittedApartmentHomeownerAccount: HomeownerAccountResponse | null;
   newApartmentHomeownerAccount: HomeownerAccountResponse | null;
@@ -6519,7 +6525,7 @@ export class Api<
       },
       params: RequestParams = {},
     ) =>
-      this.request<string[], ErrorApiResponse>({
+      this.request<HomeownerAccountNameResponse[], ErrorApiResponse>({
         path: `/api/Apartments/${apartmentId}/HomeownerAccountNames`,
         method: 'GET',
         query: query,
