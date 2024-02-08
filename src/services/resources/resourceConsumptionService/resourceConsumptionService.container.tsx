@@ -1,5 +1,5 @@
 import { useUnit } from 'effector-react';
-import React, { useEffect, useMemo } from 'react';
+import React, { useMemo } from 'react';
 import { resourceConsumptionService } from './resourceConsumptionService.model';
 import { ResourceConsumptionProfile } from './view/ResourceConsumptionProfile';
 import './resourceConsumptionService.relations';
@@ -10,7 +10,6 @@ import {
   MonthConsumptionData,
   ResourceConsumptionGraphDataType,
 } from './resourceConsumptionService.types';
-import { getIsOnlyHousingDataEmpty } from './resourceConsumptionService.utils';
 
 const { inputs, outputs, gates } = resourceConsumptionService;
 const { ResourceConsumptionGate } = gates;
