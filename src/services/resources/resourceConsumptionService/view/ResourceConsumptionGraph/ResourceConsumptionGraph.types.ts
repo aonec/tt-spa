@@ -22,4 +22,5 @@ export type ResourceConsumptionGraphProps = {
   };
   dynamicMinMax: [number, number];
   isAllDataAreLoading: boolean;
+  isDataAreLoading: boolean;
 };

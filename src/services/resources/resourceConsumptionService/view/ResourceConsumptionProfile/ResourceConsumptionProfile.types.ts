@@ -34,6 +34,7 @@ export type ResourceConsumptionProfileProps = {
   dynamicMinMax: [number, number];
   isOnlyHousingDataEmpty: boolean;
   isAllDataAreLoading: boolean;
+  isDataAreLoading: boolean;
 };
 
 export type BooleanTypesOfResourceConsumptionGraphForTwoMonth = {

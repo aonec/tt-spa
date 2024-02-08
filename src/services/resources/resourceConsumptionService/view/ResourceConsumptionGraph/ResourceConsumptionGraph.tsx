@@ -41,6 +41,7 @@ export const ResourceConsumptionGraph: FC<ResourceConsumptionGraphProps> = ({
   selectedAddresses,
   dynamicMinMax,
   isAllDataAreLoading,
+  isDataAreLoading,
 }) => {
   const [width, setWidth] = useState(0);
 
@@ -141,11 +142,11 @@ export const ResourceConsumptionGraph: FC<ResourceConsumptionGraphProps> = ({
         hasNoConsecutiveNumbers(
           consumptionData.prevMonthData?.subscriber || [],
         ),
-      ].every(Boolean),
-    [consumptionData],
+      ].every(Boolean) && !isDataAreLoading,
+    [consumptionData, isDataAreLoading],
   );
 
-  if (!resource || !consumptionData || isConsumptionDataItemsEmpty) {
+  if (isConsumptionDataItemsEmpty) {
     return (
       <>
         <Wrapper id="graphWrapper">

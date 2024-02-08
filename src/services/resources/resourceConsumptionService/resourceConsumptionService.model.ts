@@ -122,25 +122,20 @@ const $housingConsumptionData = createStore<ConsumptionDataForTwoMonth | null>(
 
 sample({
   clock: getHousingConsumptionPlotFx.doneData,
-  source: combine(
+  source: {
     $housingConsumptionData,
     $isFirstDataCame,
-    (prevHousingConsumptionData, isFirstDataCame) => ({
-      prevHousingConsumptionData,
-      isFirstDataCame,
-    }),
-  ),
+  },
   fn: (source, consumptionData) => {
-    if (!source.isFirstDataCame) {
+    if (!source.$isFirstDataCame) {
       return setConsumptionData(
         {},
         ResourceConsumptionGraphDataType.currentMonthData,
         consumptionData,
       );
     }
-
     return setConsumptionData(
-      source.prevHousingConsumptionData,
+      source.$housingConsumptionData,
       ResourceConsumptionGraphDataType.currentMonthData,
       consumptionData,
     );
@@ -149,25 +144,20 @@ sample({
 });
 sample({
   clock: getPrevHousingConsumptionPlotFx.doneData,
-  source: combine(
+  source: {
     $housingConsumptionData,
     $isFirstDataCame,
-    (prevHousingConsumptionData, isFirstDataCame) => ({
-      prevHousingConsumptionData,
-      isFirstDataCame,
-    }),
-  ),
+  },
   fn: (source, consumptionData) => {
-    if (!source.isFirstDataCame) {
+    if (!source.$isFirstDataCame) {
       return setConsumptionData(
         {},
         ResourceConsumptionGraphDataType.prevMonthData,
         consumptionData,
       );
     }
-
     return setConsumptionData(
-      source.prevHousingConsumptionData,
+      source.$housingConsumptionData,
       ResourceConsumptionGraphDataType.prevMonthData,
       consumptionData,
     );
@@ -176,25 +166,20 @@ sample({
 });
 sample({
   clock: getNormativeAndSubscriberConsumptionDataFx.doneData,
-  source: combine(
+  source: {
     $housingConsumptionData,
     $isFirstDataCame,
-    (prevHousingConsumptionData, isFirstDataCame) => ({
-      prevHousingConsumptionData,
-      isFirstDataCame,
-    }),
-  ),
+  },
   fn: (source, consumptionData) => {
-    if (!source.isFirstDataCame) {
+    if (!source.$isFirstDataCame) {
       return setConsumptionData(
         {},
         ResourceConsumptionGraphDataType.currentMonthData,
         consumptionData,
       );
     }
-
     return setConsumptionData(
-      source.prevHousingConsumptionData,
+      source.$housingConsumptionData,
       ResourceConsumptionGraphDataType.currentMonthData,
       consumptionData,
     );
@@ -203,25 +188,20 @@ sample({
 });
 sample({
   clock: getPrevNormativeAndSubscriberConsumptionDataFx.doneData,
-  source: combine(
+  source: {
     $housingConsumptionData,
     $isFirstDataCame,
-    (prevHousingConsumptionData, isFirstDataCame) => ({
-      prevHousingConsumptionData,
-      isFirstDataCame,
-    }),
-  ),
+  },
   fn: (source, consumptionData) => {
-    if (!source.isFirstDataCame) {
+    if (!source.$isFirstDataCame) {
       return setConsumptionData(
         {},
         ResourceConsumptionGraphDataType.prevMonthData,
         consumptionData,
       );
     }
-
     return setConsumptionData(
-      source.prevHousingConsumptionData,
+      source.$housingConsumptionData,
       ResourceConsumptionGraphDataType.prevMonthData,
       consumptionData,
     );
@@ -230,25 +210,20 @@ sample({
 });
 sample({
   clock: getAdditionalHousingConsumptionPlotFx.doneData,
-  source: combine(
+  source: {
     $housingConsumptionData,
     $isFirstDataCame,
-    (prevHousingConsumptionData, isFirstDataCame) => ({
-      prevHousingConsumptionData,
-      isFirstDataCame,
-    }),
-  ),
+  },
   fn: (source, consumptionData) => {
-    if (!source.isFirstDataCame) {
+    if (!source.$isFirstDataCame) {
       return setConsumptionData(
         {},
         ResourceConsumptionGraphDataType.additionalAddress,
         consumptionData,
       );
     }
-
     return setConsumptionData(
-      source.prevHousingConsumptionData,
+      source.$housingConsumptionData,
       ResourceConsumptionGraphDataType.additionalAddress,
       consumptionData,
     );
@@ -257,25 +232,20 @@ sample({
 });
 sample({
   clock: getAdditionalNormativeAndSubscriberConsumptionDataFx.doneData,
-  source: combine(
+  source: {
     $housingConsumptionData,
     $isFirstDataCame,
-    (prevHousingConsumptionData, isFirstDataCame) => ({
-      prevHousingConsumptionData,
-      isFirstDataCame,
-    }),
-  ),
+  },
   fn: (source, consumptionData) => {
-    if (!source.isFirstDataCame) {
+    if (!source.$isFirstDataCame) {
       return setConsumptionData(
         {},
         ResourceConsumptionGraphDataType.additionalAddress,
         consumptionData,
       );
     }
-
     return setConsumptionData(
-      source.prevHousingConsumptionData,
+      source.$housingConsumptionData,
       ResourceConsumptionGraphDataType.additionalAddress,
       consumptionData,
     );
@@ -362,6 +332,14 @@ const $isAllDataAreLoading = combine(
   $isNormativeAndSubscriberLoading,
   $isPrevNormativeAndSubscriberLoading,
   (...loadings) => loadings.every((loading) => loading),
+);
+
+const $isDataAreLoading = combine(
+  $isHousingLoading,
+  $isPrevHousingLoading,
+  $isNormativeAndSubscriberLoading,
+  $isPrevNormativeAndSubscriberLoading,
+  (...loadings) => loadings.includes(true),
 );
 
 const cancelPrevMonthRequests = createEvent<{
@@ -540,6 +518,7 @@ export const resourceConsumptionService = {
     $dynamicMinMax,
     $isOnlyHousingDataEmpty,
     $isAllDataAreLoading,
+    $isDataAreLoading,
   },
   gates: { ResourceConsumptionGate },
 };
