@@ -39,8 +39,6 @@ const $lastReading = createStore<IndividualDeviceReadingsSlimResponse | null>(
   .on(getLastReadingFx.doneData, (_, reading) => reading)
   .reset(closeModal);
 
-const $isBannerShown = createStore<boolean>(false);
-
 const closeIndividualDeviceForm = createForm({
   fields: {
     closingDate: {
@@ -72,13 +70,12 @@ const closeIndividualDeviceForm = createForm({
   },
 });
 
-sample({
-  source: combine(
-    closeIndividualDeviceForm.fields.closingDate.$value,
-    $lastReading,
-    (closingDate, lastReading) => ({ closingDate, lastReading }),
-  ),
-  fn: ({ closingDate, lastReading }) => {
+const $isBannerShown = combine(
+  {
+    closingDate: closeIndividualDeviceForm.fields.closingDate.$value,
+    lastReading: $lastReading,
+  },
+  ({ closingDate, lastReading }) => {
     const lastReadingDate = dayjs(lastReading?.actualReadingDate).startOf(
       'month',
     );
@@ -92,14 +89,9 @@ sample({
 
     if (monthDiffNumber === undefined) return false;
 
-    if (monthDiffNumber <= 0) {
-      return true;
-    } else {
-      return false;
-    }
+    return monthDiffNumber <= 0;
   },
-  target: $isBannerShown,
-});
+);
 
 sample({
   clock: closeIndivididualDeviceMutation.finished.success,
