@@ -62,6 +62,10 @@ export const HousingStockItem: FC<HousingStockItemProps> = ({
             {inspector.fullName}
           </Select.Option>
         ))}
+
+        <Select.Option key={'addInspector'} value={''}>
+          + Добавить инспектора
+        </Select.Option>
       </Select>
     </Wrap>
   );
