@@ -35,7 +35,7 @@ export const ResourceConsumptionContainer = () => {
     isOnlyHousingDataEmpty,
     isAllDataAreLoading,
     selectedResourceForColor,
-    isDataAreLoading,
+    isDataLoading,
   } = useUnit({
     setSelectedGraphTypes: inputs.setSelectedGraphTypes,
     setResource: resourceConsumptionFilterService.inputs.setResource,
@@ -58,7 +58,7 @@ export const ResourceConsumptionContainer = () => {
     dynamicMinMax: outputs.$dynamicMinMax,
     isOnlyHousingDataEmpty: outputs.$isOnlyHousingDataEmpty,
     isAllDataAreLoading: outputs.$isAllDataAreLoading,
-    isDataAreLoading: outputs.$isDataAreLoading,
+    isDataLoading: outputs.$isDataLoading,
   });
 
   const preparedHousingConsumptionData: AllConsumptionDataWithNullableAdditionalAddress =
@@ -99,7 +99,7 @@ export const ResourceConsumptionContainer = () => {
         dynamicMinMax={dynamicMinMax}
         isOnlyHousingDataEmpty={isOnlyHousingDataEmpty}
         isAllDataAreLoading={isAllDataAreLoading}
-        isDataAreLoading={isDataAreLoading}
+        isDataLoading={isDataLoading}
       />
     </>
   );

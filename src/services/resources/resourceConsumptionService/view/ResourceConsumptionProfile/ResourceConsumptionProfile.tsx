@@ -37,7 +37,7 @@ export const ResourceConsumptionProfile: FC<
   dynamicMinMax,
   isOnlyHousingDataEmpty,
   isAllDataAreLoading,
-  isDataAreLoading,
+  isDataLoading,
 }) => {
   const [selectedAddresses, setSelectedAddresses] = useState<SelectedAddresses>(
     initialSelectedAddresses,
@@ -67,7 +67,7 @@ export const ResourceConsumptionProfile: FC<
             isAdditionalAddressSelected={isAdditionalAddressSelected}
             dynamicMinMax={dynamicMinMax}
             isAllDataAreLoading={isAllDataAreLoading}
-            isDataAreLoading={isDataAreLoading}
+            isDataLoading={isDataLoading}
           />
 
           {isOnlyHousingDataEmpty && (

@@ -128,12 +128,12 @@ sample({
 
 sample({
   clock: [
-    resourceConsumptionService.inputs.getHousingConsumptionSuccess,
-    resourceConsumptionService.inputs.getPrevHousingConsumptionSuccess,
+    resourceConsumptionService.inputs.handleHousingConsumptionSuccess,
+    resourceConsumptionService.inputs.handlePrevHousingConsumptionSuccess,
     resourceConsumptionService.inputs
-      .getNormativeAndSubscriberConsumptionSuccess,
+      .handleNormativeAndSubscriberConsumptionSuccess,
     resourceConsumptionService.inputs
-      .getPrevNormativeAndSubscriberConsumptionSuccess,
+      .handlePrevNormativeAndSubscriberConsumptionSuccess,
   ],
   source: resourceConsumptionFilterService.outputs.$selectedResource,
   target: resourceConsumptionFilterService.outputs.$selectedResourceForColor,

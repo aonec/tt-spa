@@ -60,7 +60,7 @@ export const getAddressSearchData = (
     'addressString',
   );
 
-export const setConsumptionData = (
+export const getConsumptionData = (
   prev: ConsumptionDataForTwoMonth | null,
   fieldName: ResourceConsumptionGraphDataType,
   data: SetConsumptionDataType,
