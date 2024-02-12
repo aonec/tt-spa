@@ -290,7 +290,7 @@ const $isLoading = createStore(true).on(
   (_, isLoading) => isLoading,
 );
 
-const $isAllDataAreLoading = combine(
+const $isAllDataLoading = combine(
   $isHousingLoading,
   $isPrevHousingLoading,
   $isNormativeAndSubscriberLoading,
@@ -481,7 +481,7 @@ export const resourceConsumptionService = {
     $isAdditionalAddressSelected,
     $dynamicMinMax: $dynamicYMinMax,
     $isOnlyHousingDataEmpty,
-    $isAllDataAreLoading,
+    $isAllDataLoading,
     $isDataLoading,
   },
   gates: { ResourceConsumptionGate },

@@ -33,7 +33,7 @@ export const ResourceConsumptionContainer = () => {
     isLoading,
     dynamicMinMax,
     isOnlyHousingDataEmpty,
-    isAllDataAreLoading,
+    isAllDataLoading,
     selectedResourceForColor,
     isDataLoading,
   } = useUnit({
@@ -57,7 +57,7 @@ export const ResourceConsumptionContainer = () => {
     isLoading: outputs.$isLoading,
     dynamicMinMax: outputs.$dynamicMinMax,
     isOnlyHousingDataEmpty: outputs.$isOnlyHousingDataEmpty,
-    isAllDataAreLoading: outputs.$isAllDataAreLoading,
+    isAllDataLoading: outputs.$isAllDataLoading,
     isDataLoading: outputs.$isDataLoading,
   });
 
@@ -98,7 +98,7 @@ export const ResourceConsumptionContainer = () => {
         isAdditionalAddressSelected={isAdditionalAddressSelected}
         dynamicMinMax={dynamicMinMax}
         isOnlyHousingDataEmpty={isOnlyHousingDataEmpty}
-        isAllDataAreLoading={isAllDataAreLoading}
+        isAllDataLoading={isAllDataLoading}
         isDataLoading={isDataLoading}
       />
     </>

@@ -33,7 +33,7 @@ export type ResourceConsumptionProfileProps = {
   };
   dynamicMinMax: [number, number];
   isOnlyHousingDataEmpty: boolean;
-  isAllDataAreLoading: boolean;
+  isAllDataLoading: boolean;
   isDataLoading: boolean;
 };
 

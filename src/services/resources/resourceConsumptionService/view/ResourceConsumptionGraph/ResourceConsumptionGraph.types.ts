@@ -21,6 +21,6 @@ export type ResourceConsumptionGraphProps = {
     [ResourceConsumptionGraphDataType.additionalAddress]: MonthConsumptionData | null;
   };
   dynamicMinMax: [number, number];
-  isAllDataAreLoading: boolean;
+  isAllDataLoading: boolean;
   isDataLoading: boolean;
 };

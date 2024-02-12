@@ -40,7 +40,7 @@ export const ResourceConsumptionGraph: FC<ResourceConsumptionGraphProps> = ({
   checked,
   selectedAddresses,
   dynamicMinMax,
-  isAllDataAreLoading,
+  isAllDataLoading,
   isDataLoading,
 }) => {
   const [width, setWidth] = useState(0);
@@ -189,7 +189,7 @@ export const ResourceConsumptionGraph: FC<ResourceConsumptionGraphProps> = ({
   }
 
   return (
-    <Wrapper id="graphWrapper" isLoading={isAllDataAreLoading}>
+    <Wrapper id="graphWrapper" isLoading={isAllDataLoading}>
       <GraphGradient resource={resourceForColor} />
 
       <VictoryChart
