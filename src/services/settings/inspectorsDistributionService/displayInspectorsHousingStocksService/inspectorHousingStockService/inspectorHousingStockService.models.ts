@@ -31,12 +31,8 @@ const updateHousingStockInspectorInfoFx = createEffect<
 const updateHousingStockInspectorInfo =
   createEvent<PatchHousingStockInspectorInfoPayload>();
 
-updateHousingStockInspectorInfoFx.failData.watch((error) => {
-  return message.error(
-    error.response.data.error.Text ||
-      error.response.data.error.Message ||
-      'Произошла ошибка смены инспектора',
-  );
+updateHousingStockInspectorInfoFx.failData.watch(() => {
+  message.error('Произошла ошибка смены инспектора');
 });
 
 $currentHousingStockUpdates.on(
