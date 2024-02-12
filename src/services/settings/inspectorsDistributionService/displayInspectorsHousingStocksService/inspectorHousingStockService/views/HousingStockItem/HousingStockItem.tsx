@@ -1,6 +1,11 @@
 import { RefSelectProps } from 'antd/lib/select';
 import React, { FC, useRef } from 'react';
-import { Address, Wrap } from './HousingStockItem.styled';
+import {
+  AddInspecor,
+  Address,
+  SelectOptionSc,
+  Wrap,
+} from './HousingStockItem.styled';
 import { HousingStockItemProps } from './HousingStockItem.types';
 import { Select } from 'ui-kit/Select';
 
@@ -56,6 +61,7 @@ export const HousingStockItem: FC<HousingStockItemProps> = ({
           updateHousingStock({ inspectorId: value as number });
         }}
         small
+        open
       >
         {inspectors?.map((inspector) => (
           <Select.Option key={inspector.id} value={inspector.id}>
@@ -63,8 +69,10 @@ export const HousingStockItem: FC<HousingStockItemProps> = ({
           </Select.Option>
         ))}
 
-        <Select.Option key={'addInspector'} value={''}>
-          + Добавить инспектора
+        <Select.Option key={'addInspector'}>
+          <AddInspecor onClick={() => console.log('first')}>
+            + Добавить инспектора
+          </AddInspecor>
         </Select.Option>
       </Select>
     </Wrap>
