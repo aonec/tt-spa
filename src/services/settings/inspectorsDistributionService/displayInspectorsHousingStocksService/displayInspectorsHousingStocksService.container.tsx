@@ -5,6 +5,10 @@ import { InspectorsHousingStocksList } from './views/InspectorsHousingStocksList
 import { inspectorHousingStockService } from './inspectorHousingStockService/inspectorHousingStockService.models';
 import { range } from 'lodash';
 import { getInspectorsHousingStocksQuery } from './displayInspectorsHousingStocksService.api';
+import {
+  AddInspectorContainer,
+  addInspectorService,
+} from '../addInspectorService';
 
 const { DisplayInspectorsGate } = displayInspectorsHousingStocksService.gates;
 
@@ -16,6 +20,7 @@ export const InspectorsHousingStocksListContainer: FC = () => {
     updateHousingStock,
     updateInfo,
     isInspectorsFetched,
+    handleOpenAddInspector,
   } = useUnit({
     housingStocks:
       displayInspectorsHousingStocksService.outputs
@@ -27,6 +32,7 @@ export const InspectorsHousingStocksListContainer: FC = () => {
     updateHousingStock:
       inspectorHousingStockService.inputs.updateHousingStockInspectorInfo,
     isInspectorsFetched: getInspectorsHousingStocksQuery.$succeeded,
+    handleOpenAddInspector: addInspectorService.inputs.setBuldingId,
   });
 
   const days = range(15, 26, 1);
@@ -34,6 +40,7 @@ export const InspectorsHousingStocksListContainer: FC = () => {
   return (
     <>
       <DisplayInspectorsGate />
+      <AddInspectorContainer />
       <InspectorsHousingStocksList
         loading={loading}
         housingStocks={housingStocks}
@@ -42,6 +49,7 @@ export const InspectorsHousingStocksListContainer: FC = () => {
         updateHousingStock={updateHousingStock}
         updateInfo={updateInfo}
         isInspectorsFetched={isInspectorsFetched}
+        handleOpenAddInspector={handleOpenAddInspector}
       />
     </>
   );

@@ -11,6 +11,7 @@ import {
   PatchHousingStockInspectorInfoPayload,
 } from './inspectorHousingStockService.types';
 import { getInspectorsHousingStocksQuery } from '../displayInspectorsHousingStocksService.api';
+import { addInspectorService } from '../../addInspectorService';
 
 const { $inspectorsList } = displayInspectorsService.outputs;
 
@@ -34,7 +35,7 @@ updateHousingStockInspectorInfoFx.failData.watch((error) => {
   return message.error(
     error.response.data.error.Text ||
       error.response.data.error.Message ||
-      'Произошла ошибка',
+      'Произошла ошибка смены инспектора',
   );
 });
 
@@ -76,6 +77,22 @@ sample({
 sample({
   clock: updateHousingStockInspectorInfo,
   target: updateHousingStockInspectorInfoFx,
+});
+
+sample({
+  clock: addInspectorService.inputs.handleSuccessAddInspector,
+  source: addInspectorService.outputs.$buildingId,
+  fn: (buildingId, { id }) =>
+    ({
+      housingStockId: buildingId,
+      data: { inspectorId: id },
+    } as PatchHousingStockInspectorInfoPayload),
+  target: updateHousingStockInspectorInfoFx,
+});
+
+sample({
+  clock: addInspectorService.inputs.handleSuccessAddInspector,
+  target: displayInspectorsService.inputs.fetchInspectorsListFx,
 });
 
 export const inspectorHousingStockService = {

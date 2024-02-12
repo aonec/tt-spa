@@ -1,11 +1,6 @@
 import { RefSelectProps } from 'antd/lib/select';
 import React, { FC, useRef } from 'react';
-import {
-  AddInspecor,
-  Address,
-  SelectOptionSc,
-  Wrap,
-} from './HousingStockItem.styled';
+import { AddInspecor, Address, Wrap } from './HousingStockItem.styled';
 import { HousingStockItemProps } from './HousingStockItem.types';
 import { Select } from 'ui-kit/Select';
 
@@ -15,6 +10,7 @@ export const HousingStockItem: FC<HousingStockItemProps> = ({
   days,
   updateInfo,
   updateHousingStock,
+  handleOpenAddInspector,
 }) => {
   const inspectedDatSelectRef = useRef<RefSelectProps | null>(null);
   const inspectorSelectRef = useRef<RefSelectProps | null>(null);
@@ -58,10 +54,9 @@ export const HousingStockItem: FC<HousingStockItemProps> = ({
         }}
         onChange={(value) => {
           inspectorSelectRef?.current?.blur();
-          updateHousingStock({ inspectorId: value as number });
+          value && updateHousingStock({ inspectorId: value as number });
         }}
         small
-        open
       >
         {inspectors?.map((inspector) => (
           <Select.Option key={inspector.id} value={inspector.id}>
@@ -69,8 +64,10 @@ export const HousingStockItem: FC<HousingStockItemProps> = ({
           </Select.Option>
         ))}
 
-        <Select.Option key={'addInspector'}>
-          <AddInspecor onClick={() => console.log('first')}>
+        <Select.Option>
+          <AddInspecor
+            onClick={() => handleOpenAddInspector(housingStock.buildingId)}
+          >
             + Добавить инспектора
           </AddInspecor>
         </Select.Option>
