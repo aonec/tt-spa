@@ -89,7 +89,7 @@ const $isBannerShown = combine(
 
     if (monthDiffNumber === undefined) return false;
 
-    return monthDiffNumber <= 0;
+    return monthDiffNumber <= -1;
   },
 );
 
