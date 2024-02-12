@@ -80,6 +80,9 @@ const $isLoadingHousingStocksWithTasks = fetchHousingStocksWithTasksFx.pending;
 
 const $isLoadingTask = fetchTaskFx.pending;
 
+const $organizationCoordinates =
+  currentOrganizationService.outputs.$organizationCoordinates;
+
 export const tasksMapService = {
   inputs: {
     applyFilters,
@@ -98,7 +101,6 @@ export const tasksMapService = {
     $task,
     $isLoadingTask,
     $organizationUsers: tasksProfileService.outputs.$organizationUsers,
-    $organizationCoordinates:
-      currentOrganizationService.outputs.$organizationCoordinates,
+    $organizationCoordinates,
   },
 };

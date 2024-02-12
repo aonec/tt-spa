@@ -94,4 +94,8 @@ export const ButtonDevSettings = styled(Button).attrs({
 
     box-shadow: 3px 3px 0px #ffffff39 !important;
   }
+
+  &:focus {
+    color: white !important;
+  }
 `;

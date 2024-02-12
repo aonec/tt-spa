@@ -1,0 +1,1 @@
+export { ApartmentActsJournal } from './ApartmentActsJournal';

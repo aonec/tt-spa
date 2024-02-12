@@ -15,7 +15,7 @@ export type SearchInspectorsHousingStocksProps = {
     Street: string;
     BuildingNumber: string;
     HouseManagement: string;
-    InspectorId: number | null;
+    InspectorId: string;
   }>;
   isSearchError: boolean;
 };

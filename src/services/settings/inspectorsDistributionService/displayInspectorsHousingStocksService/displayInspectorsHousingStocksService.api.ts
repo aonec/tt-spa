@@ -3,7 +3,7 @@ import {
   InspectorOnBuildingResponse,
   InspectorOnBuildingResponseListSuccessApiResponse,
 } from 'api/types';
-import { createQueryWithAuth } from 'api/farfetched';
+import { createQuery } from 'api/farfetched';
 import { Contract } from '@farfetched/core';
 
 const getInspectorsHousingContract: Contract<
@@ -15,7 +15,7 @@ const getInspectorsHousingContract: Contract<
   getErrorMessages: () => ['Invalid data'],
 };
 
-export const getInspectorsHousingStocksQuery = createQueryWithAuth<
+export const getInspectorsHousingStocksQuery = createQuery<
   GetInspectorsHousingStocksRequestParams,
   InspectorOnBuildingResponse[] | null
 >({

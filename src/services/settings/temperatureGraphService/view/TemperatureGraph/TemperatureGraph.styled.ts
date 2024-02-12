@@ -56,15 +56,10 @@ export const InputsContainer = styled.div`
 
 export const Footer = styled.div`
   display: flex;
-  align-items: center;
+  align-items: end;
   justify-content: flex-end;
   gap: 16px;
-  padding: 0 50px;
-  height: 80px;
-  width: 320px;
+  padding: 0 30px;
+  height: 280px;
   background-color: white;
-
-  position: fixed;
-  right: 16.5vw;
-  bottom: 0vh;
 `;

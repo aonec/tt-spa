@@ -40,14 +40,24 @@ sample({
 });
 
 sample({
-  source: resourceConsumptionFilterService.outputs.$houseManagements.map(
-    (houseManagements) => _.last(houseManagements)?.id || null,
-  ),
   clock: [
     resourceConsumptionFilterService.outputs.$houseManagements,
     resourceConsumptionService.gates.ResourceConsumptionGate.open,
   ],
-  filter: Boolean,
+  source: resourceConsumptionFilterService.outputs.$houseManagements,
+  fn: (houseManagements) => {
+    const isHasGoldHouseManagement = Boolean(
+      houseManagements.find(
+        (houseManagement) =>
+          houseManagement.id === 'c5760f48-6ea0-4267-a643-e84cfc78d9d0',
+      )?.id,
+    );
+    if (isHasGoldHouseManagement) {
+      return 'c5760f48-6ea0-4267-a643-e84cfc78d9d0';
+    } else {
+      return _.last(houseManagements)?.id || null;
+    }
+  },
   target: resourceConsumptionFilterService.inputs.selectHouseManagememt,
 });
 

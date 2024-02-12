@@ -7,7 +7,7 @@ export type QueryFactoryParams<
   TransformedData,
 > = {
   url: ((params: Params) => string) | string;
-  response: {
+  response?: {
     contract: Contract<unknown, { successResponse: Data | null }>;
     mapData?: (payload: {
       result: Data | null;
@@ -26,9 +26,9 @@ export type MutationFactoryParams<
   url: ((params: Params) => string) | string;
   method: 'POST' | 'PUT' | 'PATCH' | 'DELETE';
   body?: Body;
-  response: {
+  response?: {
     contract: Contract<unknown, { successResponse: Data | null }>;
-    mapData: (payload: {
+    mapData?: (payload: {
       result: Data | null;
       params: Params;
     }) => TransformedData;
@@ -42,3 +42,5 @@ export type OperationFailDataError = {
     Text: string;
   };
 };
+
+export type SuccessResponse<T> = { successResponse: T };

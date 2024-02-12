@@ -23,12 +23,12 @@ export const SelectGraphType: FC<SelectGraphTypeProps> = ({
   );
 
   const isDataEmpty = useMemo(() => {
-    if (!consumptionData) return false;
+    if (!consumptionData) return true;
 
     const { normative, housing, subscriber } = consumptionData;
 
-    return [normative, housing, subscriber].every(
-      (consumption) => consumption?.length === 0,
+    return [normative, housing, subscriber].every((consumption) =>
+      Boolean(consumption && hasNoConsecutiveNumbers(consumption!)),
     );
   }, [consumptionData]);
 

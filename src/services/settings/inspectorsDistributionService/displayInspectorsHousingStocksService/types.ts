@@ -3,5 +3,5 @@ export type GetInspectorsHousingStocksRequestParams = {
   Street?: string;
   BuildingNumber?: string;
   HouseManagement?: string;
-  InspectorId?: number | null;
+  InspectorId?: string;
 };

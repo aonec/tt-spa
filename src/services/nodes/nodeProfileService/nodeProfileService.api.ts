@@ -1,22 +1,9 @@
-import { Contract } from '@farfetched/core';
-import { createQueryWithAuth } from 'api/farfetched';
-import {
-  PipeNodeResponse,
-  PipeNodeResponseSuccessApiResponse,
-} from 'api/types';
+import { createQuery } from 'api/farfetched';
+import { PipeNodeResponse } from 'api/types';
 
-const PipeNodeContract: Contract<unknown, PipeNodeResponseSuccessApiResponse> =
-  {
-    isData: (res): res is PipeNodeResponseSuccessApiResponse => Boolean(res),
-    getErrorMessages: () => ['Invalid data'],
-  };
-
-export const getPipeNodeQuery = createQueryWithAuth<
+export const getPipeNodeQuery = createQuery<
   { pipeNodeId: number },
   PipeNodeResponse | null
 >({
   url: ({ pipeNodeId }) => `PipeNodes/${pipeNodeId}`,
-  response: {
-    contract: PipeNodeContract,
-  },
 });

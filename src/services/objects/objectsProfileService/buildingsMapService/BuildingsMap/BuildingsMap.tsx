@@ -26,8 +26,9 @@ import { MapZoomControl } from 'ui-kit/shared/MapZoomControl';
 export const BuildingsMap: FC<Props> = ({
   isLoading,
   existingHousingStocks,
+  organizationCoordinates,
 }) => {
-  const { mapRef, map } = useYMaps();
+  const { mapRef, map } = useYMaps(organizationCoordinates);
 
   const [selectedBuildingId, setSelectedBuilding] = useState<number | null>(
     null,
