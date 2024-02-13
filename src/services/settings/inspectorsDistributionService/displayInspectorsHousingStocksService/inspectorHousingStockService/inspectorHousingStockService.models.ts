@@ -77,6 +77,11 @@ sample({
 
 sample({
   clock: addInspectorService.inputs.handleSuccessAddInspector,
+  target: displayInspectorsService.inputs.fetchInspectorsListFx,
+});
+
+sample({
+  clock: addInspectorService.inputs.handleSuccessAddInspector,
   source: addInspectorService.outputs.$buildingId,
   fn: (buildingId, { id }) =>
     ({
@@ -88,7 +93,8 @@ sample({
 
 sample({
   clock: addInspectorService.inputs.handleSuccessAddInspector,
-  target: displayInspectorsService.inputs.fetchInspectorsListFx,
+  fn: () => null,
+  target: addInspectorService.outputs.$buildingId,
 });
 
 export const inspectorHousingStockService = {

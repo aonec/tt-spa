@@ -14,11 +14,14 @@ const addInspectorFx = createEffect<
   EffectFailDataAxiosError
 >(addInspector);
 
+const handleSuccessAddInspector = addInspectorFx.doneData;
+
 const $isLoading = addInspectorFx.pending;
 
-const $buildingId = createStore<number | null>(null)
-  .on(setBuldingId, (_, id) => id)
-  .reset(addInspectorFx.doneData);
+const $buildingId = createStore<number | null>(null).on(
+  setBuldingId,
+  (_, id) => id,
+);
 
 const $isOpen = $buildingId.map(Boolean);
 
@@ -27,7 +30,7 @@ sample({
   target: addInspectorFx,
 });
 
-const handleSuccessAddInspector = addInspectorFx.doneData;
+
 
 addInspectorFx.failData.watch((error) => {
   return message.error(
