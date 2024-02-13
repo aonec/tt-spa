@@ -23,6 +23,7 @@ export const AddressSearchContainer: FC<AddressSearchContainerProps> = ({
   isError = false,
   isFocus = false,
   autoBurn = false,
+  isCityPreselected = true,
 }) => {
   const {
     cities,
@@ -107,14 +108,23 @@ export const AddressSearchContainer: FC<AddressSearchContainerProps> = ({
   useEffect(() => {
     if (!cities?.length || verifiedInitialValues?.city) return;
 
-    set({ city: last(cities) || '' });
-
-    if (onChange) onChange('city', last(cities) || '');
+    if (isCityPreselected) {
+      set({ city: last(cities) || '' });
+      if (onChange) onChange('city', last(cities) || '');
+    }
 
     if (autoBurn) {
       submit();
     }
-  }, [cities, verifiedInitialValues, set, onChange, submit, autoBurn]);
+  }, [
+    cities,
+    verifiedInitialValues,
+    set,
+    onChange,
+    submit,
+    autoBurn,
+    isCityPreselected,
+  ]);
 
   const handleChange = (key: SearchFieldType, value: string) => {
     fieldsOfForm[key]?.onChange(value);
