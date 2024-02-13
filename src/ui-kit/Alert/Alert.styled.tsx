@@ -6,7 +6,10 @@ export const IconWrapper = styled.div<{ color?: string }>`
   }
 `;
 
-export const AlertWrap = styled.div<{ color?: string; centered?: boolean }>`
+export const AlertWrap = styled.div<{
+  color?: string;
+  centered?: boolean;
+}>`
   display: flex;
   align-items: flex-start;
   align-items: ${({ centered }) => (centered ? 'center' : 'flex-start')};

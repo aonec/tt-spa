@@ -1,14 +1,15 @@
 import {
+  EResourceType,
   IndividualDeviceListItemResponse,
   IndividualDeviceReadingsSlimResponse,
 } from 'api/types';
-import { CloseIndividualDeviceFormType } from '../../closeIndividualDeviceService.types';
 
-export type CloseIndividualDeviceFormProps = {
-  form: CloseIndividualDeviceFormType;
-  formId: string;
+export type IndividualDeviceLastReadingBarProps = {
+  model: string;
+  serialNumber: string;
+  title: string;
+  resource: EResourceType | null;
   device: IndividualDeviceListItemResponse | null;
   lastReading: IndividualDeviceReadingsSlimResponse | null;
-  isBannerShown: boolean;
   openReadingsHistoryModal: (payload: number) => void;
 };

@@ -8,15 +8,15 @@ import { BufferedReadingValues } from './MetersInputsBlock.types';
 export const MetersInputsBlockPure: FC<{
   rateNum: number;
   bufferedReadingValues: BufferedReadingValues;
+  handleReadingInputChange: (e: ChangeEvent<HTMLInputElement>) => void;
   isDisabled?: boolean;
   resource?: EResourceType;
-  handleReadingInputChange: (e: ChangeEvent<HTMLInputElement>) => void;
 }> = ({
   rateNum,
   bufferedReadingValues,
+  handleReadingInputChange,
   isDisabled,
   resource,
-  handleReadingInputChange,
 }) => {
   const inputsArray = useMemo(
     () =>

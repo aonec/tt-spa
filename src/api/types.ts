@@ -1843,6 +1843,7 @@ export enum ENodeWorkingRangeType {
   MassOfFeedFlowMagistral = 'MassOfFeedFlowMagistral',
   MassOfFeedBackFlowMagistral = 'MassOfFeedBackFlowMagistral',
   DeltaMassOfMagistral = 'DeltaMassOfMagistral',
+  TemperatureDeviation = 'TemperatureDeviation',
 }
 
 export interface ENodeWorkingRangeTypeStringDictionaryItem {
@@ -3573,6 +3574,27 @@ export interface IndividualDeviceReadingsResponseSuccessApiResponse {
   successResponse: IndividualDeviceReadingsResponse | null;
 }
 
+export interface IndividualDeviceReadingsSlimResponse {
+  /** @format int32 */
+  id: number;
+  value1: string | null;
+  value2: string | null;
+  value3: string | null;
+  value4: string | null;
+  /** @format date-time */
+  actualReadingDate: string;
+  /** @format date-time */
+  uploadTime: string;
+  /** @format date-time */
+  entryDate: string;
+  source: EIndividualDeviceReadingsSource;
+  user: OrganizationUserShortResponse | null;
+}
+
+export interface IndividualDeviceReadingsSlimResponseSuccessApiResponse {
+  successResponse: IndividualDeviceReadingsSlimResponse | null;
+}
+
 export interface IndividualDeviceReadingsYearHistoryResponse {
   /** @format int32 */
   year: number;
@@ -4743,6 +4765,7 @@ export interface PipeNodeValidationStatusResponse {
 
 export interface PlatformConfigurationResponse {
   featureToggles: FeatureTogglesResponse | null;
+  defaultCity: string | null;
 }
 
 export interface PointResponse {
@@ -5536,6 +5559,11 @@ export interface TasksPagedListSuccessApiResponse {
   successResponse: TasksPagedList | null;
 }
 
+export interface TemperatureNormativeDeleteRequest {
+  outdoorTemperatures?: number[] | null;
+  all?: boolean;
+}
+
 export interface TemperatureNormativeResponse {
   rows: TemperatureNormativeRow[] | null;
 }
@@ -5545,7 +5573,7 @@ export interface TemperatureNormativeResponseSuccessApiResponse {
 }
 
 export interface TemperatureNormativeRow {
-  /** @format double */
+  /** @format int32 */
   outdoorTemperature?: number;
   /** @format double */
   dayFeedFlowTemperature?: number;
@@ -5560,7 +5588,7 @@ export interface TemperatureNormativeRow {
 }
 
 export interface TemperatureNormativeRowUpdate {
-  /** @format double */
+  /** @format int32 */
   outdoorTemperature: number;
   /** @format double */
   dayFeedFlowTemperature: number;
@@ -6139,7 +6167,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Наблюдатель УК</li><li>Администратор УК без назначений задач</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Администратор УК без назначений задач</li>
      *
      * @tags ApartmentActs
      * @name ApartmentActsCreate
@@ -6162,7 +6190,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Наблюдатель УК</li><li>Администратор УК без назначений задач</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Администратор УК без назначений задач</li>
      *
      * @tags ApartmentActs
      * @name ApartmentActsUpdate
@@ -6186,7 +6214,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Наблюдатель УК</li><li>Администратор УК без назначений задач</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Администратор УК без назначений задач</li>
      *
      * @tags ApartmentActs
      * @name ApartmentActsDelete
@@ -6204,7 +6232,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Наблюдатель УК</li><li>Администратор УК без назначений задач</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Администратор УК без назначений задач</li>
      *
      * @tags ApartmentActs
      * @name ApartmentActsDeleteDocumentCreate
@@ -11039,6 +11067,30 @@ export class Api<
       }),
 
     /**
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Администратор УК без назначений задач</li><li>Контролёр</li>
+     *
+     * @tags IndividualDevices
+     * @name IndividualDevicesLastReadingDetail
+     * @summary IndividualDeviceReadingsRead
+     * @request GET:/api/IndividualDevices/{deviceId}/LastReading
+     * @secure
+     */
+    individualDevicesLastReadingDetail: (
+      deviceId: number,
+      params: RequestParams = {},
+    ) =>
+      this.request<
+        IndividualDeviceReadingsSlimResponseSuccessApiResponse,
+        ErrorApiResponse
+      >({
+        path: `/api/IndividualDevices/${deviceId}/LastReading`,
+        method: 'GET',
+        secure: true,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
      * @description Роли:<li>Администратор</li><li>Оператор</li><li>Администратор УК без назначений задач</li>
      *
      * @tags Inspectors
@@ -11204,6 +11256,130 @@ export class Api<
         ErrorApiResponse
       >({
         path: `/api/ManagingFirms/${managingFirmId}/ConsumptionRates`,
+        method: 'GET',
+        secure: true,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Администратор</li><li>Администратор УК без назначений задач</li>
+     *
+     * @tags ManagingFirms
+     * @name ManagingFirmsTemperatureNormativesList
+     * @summary TemperatureNormativeRead
+     * @request GET:/api/ManagingFirms/TemperatureNormatives
+     * @secure
+     */
+    managingFirmsTemperatureNormativesList: (params: RequestParams = {}) =>
+      this.request<
+        TemperatureNormativeResponseSuccessApiResponse,
+        ErrorApiResponse
+      >({
+        path: `/api/ManagingFirms/TemperatureNormatives`,
+        method: 'GET',
+        secure: true,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Администратор</li><li>Администратор УК без назначений задач</li>
+     *
+     * @tags ManagingFirms
+     * @name ManagingFirmsTemperatureNormativesDelete
+     * @summary TemperatureNormativeWrite
+     * @request DELETE:/api/ManagingFirms/TemperatureNormatives
+     * @secure
+     */
+    managingFirmsTemperatureNormativesDelete: (
+      data: TemperatureNormativeDeleteRequest,
+      params: RequestParams = {},
+    ) =>
+      this.request<ApartmentActResponseSuccessApiResponse, ErrorApiResponse>({
+        path: `/api/ManagingFirms/TemperatureNormatives`,
+        method: 'DELETE',
+        body: data,
+        secure: true,
+        type: ContentType.Json,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Администратор</li><li>Администратор УК без назначений задач</li>
+     *
+     * @tags ManagingFirms
+     * @name ManagingFirmsTemperatureNormativesCreateOrUpdateCreate
+     * @summary TemperatureNormativeWrite
+     * @request POST:/api/ManagingFirms/TemperatureNormatives/CreateOrUpdate
+     * @secure
+     */
+    managingFirmsTemperatureNormativesCreateOrUpdateCreate: (
+      data: TemperatureNormativeUpdateRequest,
+      params: RequestParams = {},
+    ) =>
+      this.request<
+        TemperatureNormativeResponseSuccessApiResponse,
+        ErrorApiResponse
+      >({
+        path: `/api/ManagingFirms/TemperatureNormatives/CreateOrUpdate`,
+        method: 'POST',
+        body: data,
+        secure: true,
+        type: ContentType.Json,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Администратор</li><li>Администратор УК без назначений задач</li>
+     *
+     * @tags ManagingFirms
+     * @name ManagingFirmsTemperatureNormativesCreateOrUpdateFromFileCreate
+     * @summary TemperatureNormativeWrite
+     * @request POST:/api/ManagingFirms/TemperatureNormatives/CreateOrUpdateFromFile
+     * @secure
+     */
+    managingFirmsTemperatureNormativesCreateOrUpdateFromFileCreate: (
+      data: {
+        ContentType?: string;
+        ContentDisposition?: string;
+        Headers?: Record<string, string[]>;
+        /** @format int64 */
+        Length?: number;
+        Name?: string;
+        FileName?: string;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<
+        TemperatureNormativeResponseSuccessApiResponse,
+        ErrorApiResponse
+      >({
+        path: `/api/ManagingFirms/TemperatureNormatives/CreateOrUpdateFromFile`,
+        method: 'POST',
+        body: data,
+        secure: true,
+        type: ContentType.FormData,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Администратор</li><li>Администратор УК без назначений задач</li>
+     *
+     * @tags ManagingFirms
+     * @name ManagingFirmsTemperatureNormativesTemplateFileList
+     * @summary TemperatureNormativeRead
+     * @request GET:/api/ManagingFirms/TemperatureNormatives/TemplateFile
+     * @secure
+     */
+    managingFirmsTemperatureNormativesTemplateFileList: (
+      params: RequestParams = {},
+    ) =>
+      this.request<File, ErrorApiResponse>({
+        path: `/api/ManagingFirms/TemperatureNormatives/TemplateFile`,
         method: 'GET',
         secure: true,
         format: 'json',
@@ -14794,6 +14970,7 @@ export class Api<
      * @name TemperatureNormativeList
      * @summary TemperatureNormativeRead
      * @request GET:/api/TemperatureNormative
+     * @deprecated
      * @secure
      */
     temperatureNormativeList: (params: RequestParams = {}) =>
@@ -14815,6 +14992,7 @@ export class Api<
      * @name TemperatureNormativeUpdate
      * @summary TemperatureNormativeWrite
      * @request PUT:/api/TemperatureNormative
+     * @deprecated
      * @secure
      */
     temperatureNormativeUpdate: (

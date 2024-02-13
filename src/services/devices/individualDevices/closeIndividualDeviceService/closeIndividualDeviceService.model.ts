@@ -1,15 +1,29 @@
-import { createEvent, createStore } from 'effector';
+import { combine, createEffect, createEvent, createStore } from 'effector';
 import { sample } from 'effector';
-import { EClosingReason, IndividualDeviceListItemResponse } from 'api/types';
-import { closeIndivididualDeviceMutation } from './closeIndividualDeviceService.api';
+import {
+  EClosingReason,
+  IndividualDeviceListItemResponse,
+  IndividualDeviceReadingsSlimResponse,
+} from 'api/types';
+import {
+  closeIndivididualDeviceMutation,
+  getLastReading,
+} from './closeIndividualDeviceService.api';
 import { message } from 'antd';
 import { createForm } from 'effector-forms';
 import dayjs from 'api/dayjs';
 import { Document } from 'ui-kit/DocumentsService';
 import { apartmentIndividualDevicesMetersService } from 'services/meters/apartmentIndividualDevicesMetersService';
+import { prepareDeviceReadings } from '../workWithIndividualDeviceService/workWithIndividualDeviceService.utils';
+import { PreparedForFormReadings } from '../workWithIndividualDeviceService/workWithIndividualDeviceService.types';
 
 const closeModal = createEvent();
 const openModal = createEvent<IndividualDeviceListItemResponse>();
+
+const getLastReadingFx = createEffect<
+  string,
+  IndividualDeviceReadingsSlimResponse
+>(getLastReading);
 
 const $closingDevice = createStore<IndividualDeviceListItemResponse | null>(
   null,
@@ -18,6 +32,12 @@ const $closingDevice = createStore<IndividualDeviceListItemResponse | null>(
   .reset(closeModal);
 
 const $isOpen = $closingDevice.map(Boolean);
+
+const $lastReading = createStore<IndividualDeviceReadingsSlimResponse | null>(
+  null,
+)
+  .on(getLastReadingFx.doneData, (_, reading) => reading)
+  .reset(closeModal);
 
 const closeIndividualDeviceForm = createForm({
   fields: {
@@ -41,9 +61,37 @@ const closeIndividualDeviceForm = createForm({
         },
       ],
     },
+    deviceReadings: {
+      init: prepareDeviceReadings([]) as {
+        [key: number]: PreparedForFormReadings;
+      },
+    },
     documentsIds: { init: [] as Document[] },
   },
 });
+
+const $isBannerShown = combine(
+  {
+    closingDate: closeIndividualDeviceForm.fields.closingDate.$value,
+    lastReading: $lastReading,
+  },
+  ({ closingDate, lastReading }) => {
+    const lastReadingDate = dayjs(lastReading?.actualReadingDate).startOf(
+      'month',
+    );
+
+    const closingDateStartOfMonth = closingDate?.startOf('month');
+
+    const monthDiffNumber = closingDateStartOfMonth?.diff(
+      lastReadingDate,
+      'month',
+    );
+
+    if (monthDiffNumber === undefined) return false;
+
+    return monthDiffNumber <= -1;
+  },
+);
 
 sample({
   clock: closeIndivididualDeviceMutation.finished.success,
@@ -56,9 +104,10 @@ sample({
   filter: Boolean,
   fn: ({ id }, form) => ({
     deviceId: id,
-    closingDate: form.closingDate
-      ? form.closingDate.format('YYYY-MM-DD')
-      : dayjs().format('YYYY-MM-DD'),
+    closingMonth: form.closingDate
+      ? form.closingDate?.month() + 1
+      : dayjs().month() + 1,
+    closingYear: form.closingDate?.year(),
     closingReason: form.closingReason,
     documentsIds: form.documentsIds.map((document) => document.id),
   }),
@@ -74,6 +123,13 @@ sample({
 sample({
   clock: closeModal,
   target: closeIndividualDeviceForm.reset,
+});
+
+sample({
+  clock: openModal,
+  filter: (device) => Boolean(device?.id),
+  fn: (device) => String(device?.id),
+  target: getLastReadingFx,
 });
 
 closeIndivididualDeviceMutation.finished.failure.watch(({ error }) => {
@@ -94,6 +150,8 @@ export const closeIndividualDeviceService = {
     $isOpen,
     $closingDevice,
     $isLoading: closeIndivididualDeviceMutation.$pending,
+    $lastReading,
+    $isBannerShown,
   },
   forms: { closeIndividualDeviceForm },
 };
