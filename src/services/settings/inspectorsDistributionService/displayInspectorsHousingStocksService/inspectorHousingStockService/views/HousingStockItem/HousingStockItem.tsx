@@ -30,6 +30,7 @@ export const HousingStockItem: FC<HousingStockItemProps> = ({
           borderColor: updateInfo?.status === 'failed' ? 'red' : void 0,
         }}
         small
+        virtual={false}
         onChange={(value) => {
           inspectedDatSelectRef?.current?.blur();
           updateHousingStock({
@@ -46,7 +47,7 @@ export const HousingStockItem: FC<HousingStockItemProps> = ({
       </Select>
       <Select
         ref={inspectorSelectRef}
-        placeholder="Контролер"
+        placeholder="Инспектор"
         disabled={updateInfo?.status === 'loading'}
         value={housingStock.inspectorId || void 0}
         style={{
@@ -57,20 +58,23 @@ export const HousingStockItem: FC<HousingStockItemProps> = ({
           value && updateHousingStock({ inspectorId: value as number });
         }}
         small
+        virtual={false}
+        dropdownRender={(menu) => (
+          <>
+            {menu}
+            <AddInspecor
+              onClick={() => handleOpenAddInspector(housingStock.buildingId)}
+            >
+              + Добавить инспектора
+            </AddInspecor>
+          </>
+        )}
       >
         {inspectors?.map((inspector) => (
           <Select.Option key={inspector.id} value={inspector.id}>
             {inspector.fullName}
           </Select.Option>
         ))}
-
-        <Select.Option>
-          <AddInspecor
-            onClick={() => handleOpenAddInspector(housingStock.buildingId)}
-          >
-            + Добавить инспектора
-          </AddInspecor>
-        </Select.Option>
       </Select>
     </Wrap>
   );
