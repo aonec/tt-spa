@@ -111,111 +111,98 @@ const getAdditionalNormativeAndSubscriberConsumptionDataFx = createEffect<
   EffectFailDataAxiosError
 >(fetchNormativeAndSubscriberConsumptionData);
 
-const setFirstDataCame = createEvent<boolean>();
-const $isFirstDataCame = createStore(false)
-  .on(setFirstDataCame, (_, data) => data)
-  .reset(fetchConsumptionData);
+const $isFirstDataCame = createStore(false).reset(fetchConsumptionData);
 
 const $housingConsumptionData = createStore<ConsumptionDataForTwoMonth | null>(
   null,
 ).reset(clearData);
 
+const $prevConsuptionData = combine(
+  {
+    housingConsumptionData: $housingConsumptionData,
+    isFirstDataCame: $isFirstDataCame,
+  },
+  ({ housingConsumptionData, isFirstDataCame }) => {
+    if (isFirstDataCame) {
+      return housingConsumptionData;
+    } else {
+      return {};
+    }
+  },
+);
+
 sample({
   clock: getHousingConsumptionPlotFx.doneData,
-  source: {
-    housingConsumptionData: $housingConsumptionData,
-    isFirstDataCame: $isFirstDataCame,
-  },
-  fn: ({ housingConsumptionData, isFirstDataCame }, consumptionData) => {
-    const preparedPrevData = isFirstDataCame ? housingConsumptionData : {};
-    return getConsumptionData(
-      preparedPrevData,
+  source: $prevConsuptionData,
+  fn: (prevConsuptionData, consumptionData) =>
+    getConsumptionData(
+      prevConsuptionData,
       ResourceConsumptionGraphDataType.currentMonthData,
       consumptionData,
-    );
-  },
+    ),
   target: $housingConsumptionData,
 });
+
 sample({
   clock: getPrevHousingConsumptionPlotFx.doneData,
-  source: {
-    housingConsumptionData: $housingConsumptionData,
-    isFirstDataCame: $isFirstDataCame,
-  },
-  fn: ({ housingConsumptionData, isFirstDataCame }, consumptionData) => {
-    const preparedPrevData = isFirstDataCame ? housingConsumptionData : {};
-    return getConsumptionData(
-      preparedPrevData,
+  source: $prevConsuptionData,
+  fn: (prevConsuptionData, consumptionData) =>
+    getConsumptionData(
+      prevConsuptionData,
       ResourceConsumptionGraphDataType.prevMonthData,
       consumptionData,
-    );
-  },
+    ),
   target: $housingConsumptionData,
 });
+
 sample({
   clock: getNormativeAndSubscriberConsumptionDataFx.doneData,
-  source: {
-    housingConsumptionData: $housingConsumptionData,
-    isFirstDataCame: $isFirstDataCame,
-  },
-  fn: ({ housingConsumptionData, isFirstDataCame }, consumptionData) => {
-    const preparedPrevData = isFirstDataCame ? housingConsumptionData : {};
-    return getConsumptionData(
-      preparedPrevData,
+  source: $prevConsuptionData,
+  fn: (prevConsuptionData, consumptionData) =>
+    getConsumptionData(
+      prevConsuptionData,
       ResourceConsumptionGraphDataType.currentMonthData,
       consumptionData,
-    );
-  },
+    ),
   target: $housingConsumptionData,
 });
+
 sample({
   clock: getPrevNormativeAndSubscriberConsumptionDataFx.doneData,
-  source: {
-    housingConsumptionData: $housingConsumptionData,
-    isFirstDataCame: $isFirstDataCame,
-  },
-  fn: ({ housingConsumptionData, isFirstDataCame }, consumptionData) => {
-    const preparedPrevData = isFirstDataCame ? housingConsumptionData : {};
-    return getConsumptionData(
-      preparedPrevData,
+  source: $prevConsuptionData,
+  fn: (prevConsuptionData, consumptionData) =>
+    getConsumptionData(
+      prevConsuptionData,
       ResourceConsumptionGraphDataType.prevMonthData,
       consumptionData,
-    );
-  },
+    ),
   target: $housingConsumptionData,
 });
+
 sample({
   clock: getAdditionalHousingConsumptionPlotFx.doneData,
-  source: {
-    housingConsumptionData: $housingConsumptionData,
-    isFirstDataCame: $isFirstDataCame,
-  },
-  fn: ({ housingConsumptionData, isFirstDataCame }, consumptionData) => {
-    const preparedPrevData = isFirstDataCame ? housingConsumptionData : {};
-    return getConsumptionData(
-      preparedPrevData,
+  source: $prevConsuptionData,
+  fn: (prevConsuptionData, consumptionData) =>
+    getConsumptionData(
+      prevConsuptionData,
       ResourceConsumptionGraphDataType.additionalAddress,
       consumptionData,
-    );
-  },
+    ),
   target: $housingConsumptionData,
 });
+
 sample({
   clock: getAdditionalNormativeAndSubscriberConsumptionDataFx.doneData,
-  source: {
-    housingConsumptionData: $housingConsumptionData,
-    isFirstDataCame: $isFirstDataCame,
-  },
-  fn: ({ housingConsumptionData, isFirstDataCame }, consumptionData) => {
-    const preparedPrevData = isFirstDataCame ? housingConsumptionData : {};
-    return getConsumptionData(
-      preparedPrevData,
+  source: $prevConsuptionData,
+  fn: (prevConsuptionData, consumptionData) =>
+    getConsumptionData(
+      prevConsuptionData,
       ResourceConsumptionGraphDataType.additionalAddress,
       consumptionData,
-    );
-  },
+    ),
   target: $housingConsumptionData,
 });
+
 sample({
   clock: [
     getPrevHousingConsumptionPlotFx.doneData,
