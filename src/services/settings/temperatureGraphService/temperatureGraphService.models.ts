@@ -4,7 +4,8 @@ import { sortBy } from 'lodash';
 import { message } from 'antd';
 import {
   getTemperatureNormative,
-  putTemperatureNormative,
+  createOrUpdateTemperatureNormative,
+  getTemplateFile,
 } from './temperatureGraphService.api';
 import {
   TemperatureNormativeResponse,
@@ -19,6 +20,10 @@ const TemperatureGraphGate = createGate();
 
 const handleEditTemperatureNormative = createEvent<boolean>();
 
+const handleGetTemplateFile = createEvent();
+
+const setModalOpen = createEvent<boolean>();
+
 const setEditedTemperatureNormative =
   createEvent<TemperatureNormativeUpdateRequest>();
 
@@ -27,11 +32,13 @@ const getTemperatureNormativeFx = createEffect<
   TemperatureNormativeResponse
 >(getTemperatureNormative);
 
-const putTemperatureNormativeFx = createEffect<
+const updateTemperatureNormativeFx = createEffect<
   TemperatureNormativeUpdateRequest,
   TemperatureNormativeResponse,
   EffectFailDataAxiosErrorDataTemperatureGraph
->(putTemperatureNormative);
+>(createOrUpdateTemperatureNormative);
+
+const getTemplateFileFx = createEffect(getTemplateFile);
 
 const $temperatureNormative = createStore<TemperatureNormativeRow[]>([])
   .on(getTemperatureNormativeFx.doneData, (_, normativeData) => {
@@ -44,7 +51,7 @@ const $temperatureNormative = createStore<TemperatureNormativeRow[]>([])
       }
     });
   })
-  .on(putTemperatureNormativeFx.doneData, (_, normativeData) => {
+  .on(updateTemperatureNormativeFx.doneData, (_, normativeData) => {
     const rowsArr = normativeData.rows || [];
     return sortBy(rowsArr, (rowData) => {
       if (rowData.outdoorTemperature || rowData.outdoorTemperature === 0) {
@@ -63,11 +70,11 @@ const $editedTemperatureNormative =
 
 const $isEditing = createStore<boolean>(false)
   .on(handleEditTemperatureNormative, (_, isEdit) => isEdit)
-  .on(putTemperatureNormativeFx.doneData, () => false)
+  .on(updateTemperatureNormativeFx.doneData, () => false)
   .reset(TemperatureGraphGate.close);
 
 const $errorColumns = createStore<ErrorColumnType[]>([]).on(
-  putTemperatureNormativeFx.failData,
+  updateTemperatureNormativeFx.failData,
   (_, error) => {
     const errorsArr = Object.entries(error.response.data.error.Data);
     const preparedErrorsArr = errorsArr.map((err) => {
@@ -94,17 +101,27 @@ const $errorColumns = createStore<ErrorColumnType[]>([]).on(
   },
 );
 
-const $isLoading = putTemperatureNormativeFx.pending;
+const $isLoading = updateTemperatureNormativeFx.pending;
+
+const $isModalOpen = createStore<boolean>(false).on(
+  setModalOpen,
+  (_, data) => data,
+);
 
 sample({ clock: TemperatureGraphGate.open, target: getTemperatureNormativeFx });
 
 sample({
   clock: $editedTemperatureNormative,
   filter: Boolean,
-  target: putTemperatureNormativeFx,
+  target: updateTemperatureNormativeFx,
 });
 
-putTemperatureNormativeFx.failData.watch((error) => {
+sample({
+  clock: handleGetTemplateFile,
+  target: getTemplateFileFx,
+});
+
+updateTemperatureNormativeFx.failData.watch((error) => {
   message.error(
     error.response.data.error.Text ||
       error.response.data.error.Message ||
@@ -113,7 +130,18 @@ putTemperatureNormativeFx.failData.watch((error) => {
 });
 
 export const temperatureGraphService = {
-  inputs: { handleEditTemperatureNormative, setEditedTemperatureNormative },
-  outputs: { $temperatureNormative, $isEditing, $isLoading, $errorColumns },
+  inputs: {
+    handleEditTemperatureNormative,
+    setEditedTemperatureNormative,
+    setModalOpen,
+    handleGetTemplateFile,
+  },
+  outputs: {
+    $temperatureNormative,
+    $isEditing,
+    $isLoading,
+    $errorColumns,
+    $isModalOpen,
+  },
   gates: { TemperatureGraphGate },
 };

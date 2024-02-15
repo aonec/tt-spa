@@ -10,10 +10,15 @@ const { inputs } = settingsPageService;
 export const SettingsPageContainer: FC<{ isAdminSettings?: boolean }> = ({
   isAdminSettings = false,
 }) => {
-  const { handleEditTemperatureNormative, handleReassingInspector } = useUnit({
+  const {
+    handleEditTemperatureNormative,
+    handleReassingInspector,
+    setModalOpen,
+  } = useUnit({
     handleEditTemperatureNormative:
       temperatureGraphService.inputs.handleEditTemperatureNormative,
     handleReassingInspector: inputs.reassingInspector,
+    setModalOpen: temperatureGraphService.inputs.setModalOpen,
   });
 
   return (
@@ -23,6 +28,7 @@ export const SettingsPageContainer: FC<{ isAdminSettings?: boolean }> = ({
         handleReassingInspector={() => handleReassingInspector()}
         handleEditTemperatureNormative={handleEditTemperatureNormative}
         isAdminSettings={isAdminSettings}
+        setModalOpen={setModalOpen}
       />
     </>
   );

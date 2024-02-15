@@ -1,7 +1,5 @@
 import { saveAs } from 'file-saver';
-
 import { axios } from 'api/axios';
-
 import { Document } from './DocumentsService.types';
 
 export async function uploadDocument(file: File, type = 'AdditionalMaterials') {

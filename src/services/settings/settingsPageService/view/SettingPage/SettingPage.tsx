@@ -16,6 +16,7 @@ export const SettingPage: FC<SettingPageProps> = ({
   handleReassingInspector,
   handleEditTemperatureNormative,
   isAdminSettings,
+  setModalOpen,
 }) => {
   const { featureToggles } = useUnit({
     featureToggles: developmentSettingsService.outputs.$featureToggles,
@@ -35,6 +36,11 @@ export const SettingPage: FC<SettingPageProps> = ({
         {
           title: 'Редактировать температурный график',
           onClick: () => handleEditTemperatureNormative(true),
+          hidden: !isTemperatureGraphTab,
+        },
+        {
+          title: 'Загрузить новый температурный график',
+          onClick: () => setModalOpen(true),
           hidden: !isTemperatureGraphTab,
         },
       ];

@@ -19,9 +19,8 @@ export function useDocumentsUpload(
       onChange([...documents, document]);
     } catch (e) {
       message.error(
-        (e as unknown as EffectFailDataAxiosError).response.data.error.Text ||
-          (e as unknown as EffectFailDataAxiosError).response.data.error
-            .Message ||
+        (e as EffectFailDataAxiosError).response.data.error.Text ||
+          (e as EffectFailDataAxiosError).response.data.error.Message ||
           'Не удалось загрузить документ',
       );
     }

@@ -15,7 +15,7 @@ import {
 
 export const Alert: React.FC<AlertProps> = ({
   children,
-  icon = AlertIconType.info,
+  icon,
   type = AlertType.default,
   centered,
 }) => {
@@ -26,14 +26,12 @@ export const Alert: React.FC<AlertProps> = ({
     [AlertIconType.incorrect]: IncorrectConfigurationIcon,
   };
 
-  const Icon = icons[icon];
+  const Icon = icon && icons[icon];
   const color = AlertColorLookup[type];
 
   return (
     <AlertWrap color={color} centered={centered}>
-      <IconWrapper color={color}>
-        <Icon />
-      </IconWrapper>
+      <IconWrapper color={color}>{Icon ? <Icon /> : null}</IconWrapper>
       <Wide>{children}</Wide>
     </AlertWrap>
   );

@@ -2,6 +2,7 @@ import React from 'react';
 import { TemperatureGraph } from './view/TemperatureGraph';
 import { temperatureGraphService } from './temperatureGraphService.models';
 import { useUnit } from 'effector-react';
+import { AddTemperatureFileModal } from './view/AddTemperatureFileModal';
 
 const {
   inputs,
@@ -17,6 +18,9 @@ export const TemperatureGraphContainer = () => {
     setEditedTemperatureNormative,
     isLoading,
     errorColumns,
+    isModalOpen,
+    setModalOpen,
+    handleGetTemplateFile,
   } = useUnit({
     temperatureNormative: outputs.$temperatureNormative,
     isEditing: outputs.$isEditing,
@@ -24,10 +28,18 @@ export const TemperatureGraphContainer = () => {
     setEditedTemperatureNormative: inputs.setEditedTemperatureNormative,
     isLoading: outputs.$isLoading,
     errorColumns: outputs.$errorColumns,
+    isModalOpen: outputs.$isModalOpen,
+    setModalOpen: inputs.setModalOpen,
+    handleGetTemplateFile: inputs.handleGetTemplateFile,
   });
   return (
     <>
       <TemperatureGraphGate />
+      <AddTemperatureFileModal
+        isModalOpen={isModalOpen}
+        setModalOpen={setModalOpen}
+        handleGetTemplateFile={handleGetTemplateFile}
+      />
       <TemperatureGraph
         temperatureNormative={temperatureNormative}
         isEditing={isEditing}

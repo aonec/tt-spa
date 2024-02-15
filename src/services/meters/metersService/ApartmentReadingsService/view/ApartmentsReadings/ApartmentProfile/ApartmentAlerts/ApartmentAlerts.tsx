@@ -115,7 +115,7 @@ export const ApartmentAlerts: FC<ApartmentAlertsProps> = ({
 
       return (
         <ApartmentAlertWrapper key={homeownerAccount.id}>
-          <Alert>
+          <Alert icon={AlertIconType.info}>
             <AlertContent>
               <div>
                 Добавлен новый номер лицевого счёта квартиры{' '}
