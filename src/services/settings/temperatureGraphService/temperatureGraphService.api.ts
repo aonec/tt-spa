@@ -15,21 +15,17 @@ export const createOrUpdateTemperatureNormative = (
 ): Promise<TemperatureNormativeResponse> =>
   axios.post('ManagingFirms/TemperatureNormatives/CreateOrUpdate', data);
 
-export async function createOrUpdateFromFile(
+export function createOrUpdateFromFile(
   file: File,
-  type = 'AdditionalMaterials',
-) {
+): Promise<TemperatureNormativeResponse> {
   const formData = new FormData();
 
-  formData.append('type', type);
   formData.append('file', file);
 
-  const res: Document[] = await axios.post(
+  return axios.post(
     'ManagingFirms/TemperatureNormatives/CreateOrUpdateFromFile',
     formData,
   );
-
-  return res[0];
 }
 
 export const getTemplateFile = async (): Promise<void> => {

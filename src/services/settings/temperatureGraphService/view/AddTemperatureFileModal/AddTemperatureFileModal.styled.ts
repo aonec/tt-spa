@@ -1,6 +1,12 @@
 import styled from 'styled-components';
 import { Button } from 'ui-kit/Button';
 
+export const FormWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+`;
+
 export const ButtonFloat = styled(Button)`
   min-width: 256px;
 `;

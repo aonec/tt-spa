@@ -6,6 +6,7 @@ import {
   getTemperatureNormative,
   createOrUpdateTemperatureNormative,
   getTemplateFile,
+  createOrUpdateFromFile,
 } from './temperatureGraphService.api';
 import {
   TemperatureNormativeResponse,
@@ -37,6 +38,12 @@ const updateTemperatureNormativeFx = createEffect<
   TemperatureNormativeResponse,
   EffectFailDataAxiosErrorDataTemperatureGraph
 >(createOrUpdateTemperatureNormative);
+
+const createOrUpdateFromFileFx = createEffect<
+  File,
+  TemperatureNormativeResponse,
+  EffectFailDataAxiosErrorDataTemperatureGraph
+>(createOrUpdateFromFile);
 
 const getTemplateFileFx = createEffect(getTemplateFile);
 
@@ -103,6 +110,8 @@ const $errorColumns = createStore<ErrorColumnType[]>([]).on(
 
 const $isLoading = updateTemperatureNormativeFx.pending;
 
+const $isFileLoading = createOrUpdateFromFileFx.pending;
+
 const $isModalOpen = createStore<boolean>(false).on(
   setModalOpen,
   (_, data) => data,
@@ -142,6 +151,7 @@ export const temperatureGraphService = {
     $isLoading,
     $errorColumns,
     $isModalOpen,
+    $isFileLoading
   },
   gates: { TemperatureGraphGate },
 };

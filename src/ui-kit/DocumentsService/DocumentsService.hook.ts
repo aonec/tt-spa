@@ -8,13 +8,14 @@ import { EffectFailDataAxiosError } from 'types';
 export function useDocumentsUpload(
   documents: Document[],
   onChange: (documents: Document[]) => void,
+  url?: string,
 ) {
   const [isLoading, setIsLoading] = useState(false);
 
   async function handleFile(file: File, type?: EDocumentType) {
     setIsLoading(true);
     try {
-      const document = await uploadDocument(file, type);
+      const document = await uploadDocument(file, type, url);
 
       onChange([...documents, document]);
     } catch (e) {
