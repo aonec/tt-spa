@@ -1,5 +1,5 @@
 import { useUnit } from 'effector-react';
-import React, { useEffect, useMemo } from 'react';
+import React, { useMemo } from 'react';
 import { resourceConsumptionService } from './resourceConsumptionService.model';
 import { ResourceConsumptionProfile } from './view/ResourceConsumptionProfile';
 import './resourceConsumptionService.relations';
@@ -10,7 +10,6 @@ import {
   MonthConsumptionData,
   ResourceConsumptionGraphDataType,
 } from './resourceConsumptionService.types';
-import { getIsOnlyHousingDataEmpty } from './resourceConsumptionService.utils';
 
 const { inputs, outputs, gates } = resourceConsumptionService;
 const { ResourceConsumptionGate } = gates;
@@ -34,6 +33,9 @@ export const ResourceConsumptionContainer = () => {
     isLoading,
     dynamicMinMax,
     isOnlyHousingDataEmpty,
+    isAllDataLoading,
+    selectedResourceForColor,
+    isDataLoading,
   } = useUnit({
     setSelectedGraphTypes: inputs.setSelectedGraphTypes,
     setResource: resourceConsumptionFilterService.inputs.setResource,
@@ -41,6 +43,8 @@ export const ResourceConsumptionContainer = () => {
     summaryConsumption: outputs.$summaryConsumption,
     housingConsumptionData: outputs.$housingConsumptionData,
     resource: resourceConsumptionFilterService.outputs.$selectedResource,
+    selectedResourceForColor:
+      resourceConsumptionFilterService.outputs.$selectedResourceForColor,
     resourceConsumptionFilter:
       resourceConsumptionFilterService.outputs.$resourceConsumptionFilter,
     isAdditionalAddressSelected: outputs.$isAdditionalAddressSelected,
@@ -53,29 +57,9 @@ export const ResourceConsumptionContainer = () => {
     isLoading: outputs.$isLoading,
     dynamicMinMax: outputs.$dynamicMinMax,
     isOnlyHousingDataEmpty: outputs.$isOnlyHousingDataEmpty,
+    isAllDataLoading: outputs.$isAllDataLoading,
+    isDataLoading: outputs.$isDataLoading,
   });
-
-  useEffect(() => {
-    if (getIsOnlyHousingDataEmpty(housingConsumptionData)) {
-      setSelectedGraphTypes({
-        [ResourceConsumptionGraphDataType.currentMonthData]: {
-          housing: true,
-          normative: true,
-          subscriber: true,
-        },
-        [ResourceConsumptionGraphDataType.prevMonthData]: {
-          housing: true,
-          normative: true,
-          subscriber: true,
-        },
-        [ResourceConsumptionGraphDataType.additionalAddress]: {
-          housing: false,
-          normative: false,
-          subscriber: false,
-        },
-      });
-    }
-  }, [housingConsumptionData, setSelectedGraphTypes]);
 
   const preparedHousingConsumptionData: AllConsumptionDataWithNullableAdditionalAddress =
     useMemo(() => {
@@ -104,6 +88,7 @@ export const ResourceConsumptionContainer = () => {
         summaryConsumption={summaryConsumption}
         isSummaryLoading={isSummaryLoading}
         resource={resource}
+        resourceForColor={selectedResourceForColor}
         isPrevNormativeAndSubscriberLoading={
           isPrevNormativeAndSubscriberLoading
         }
@@ -113,6 +98,8 @@ export const ResourceConsumptionContainer = () => {
         isAdditionalAddressSelected={isAdditionalAddressSelected}
         dynamicMinMax={dynamicMinMax}
         isOnlyHousingDataEmpty={isOnlyHousingDataEmpty}
+        isAllDataLoading={isAllDataLoading}
+        isDataLoading={isDataLoading}
       />
     </>
   );

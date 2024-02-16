@@ -9,7 +9,8 @@ import {
 } from '../ResourceConsumptionProfile/ResourceConsumptionProfile.types';
 
 export type ResourceConsumptionGraphProps = {
-  resource?: EResourceType;
+  resource: EResourceType;
+  resourceForColor: EResourceType;
   startOfMonth: string;
   checked: BooleanTypesOfResourceConsumptionGraphForTwoMonth;
   selectedAddresses: SelectedAddresses;
@@ -20,4 +21,6 @@ export type ResourceConsumptionGraphProps = {
     [ResourceConsumptionGraphDataType.additionalAddress]: MonthConsumptionData | null;
   };
   dynamicMinMax: [number, number];
+  isAllDataLoading: boolean;
+  isDataLoading: boolean;
 };

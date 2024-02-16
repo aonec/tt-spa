@@ -2,12 +2,13 @@ import { EResourceType } from 'api/types';
 import styled from 'styled-components';
 import { GraphColorLookup } from 'utils/Graph.utils';
 
-export const Wrapper = styled.div`
+export const Wrapper = styled.div<{ isLoading?: boolean }>`
   svg {
     overflow: visible !important;
   }
 
-  padding-bottom: 48px;
+  margin-bottom: 36px;
+  opacity: ${({ isLoading }) => (isLoading ? '0.5' : '1')};
 `;
 
 export const getCurrentDataStyle = (resource: EResourceType) => ({
@@ -28,3 +29,7 @@ export const ZeroLineStyle = {
     fill: '#272F5AB2',
   },
 };
+
+export const NoDataNotificationWrapper = styled.div`
+  margin-bottom: 12px;
+`;
