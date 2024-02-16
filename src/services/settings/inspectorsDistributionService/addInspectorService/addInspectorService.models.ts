@@ -30,8 +30,6 @@ sample({
   target: addInspectorFx,
 });
 
-
-
 addInspectorFx.failData.watch((error) => {
   return message.error(
     error.response.data.error.Text ||
