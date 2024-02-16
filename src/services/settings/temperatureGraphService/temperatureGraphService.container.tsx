@@ -22,6 +22,9 @@ export const TemperatureGraphContainer = () => {
     setModalOpen,
     handleGetTemplateFile,
     isFileLoading,
+    handlePostTemplateFile,
+    file,
+    setFile,
   } = useUnit({
     temperatureNormative: outputs.$temperatureNormative,
     isEditing: outputs.$isEditing,
@@ -33,6 +36,9 @@ export const TemperatureGraphContainer = () => {
     setModalOpen: inputs.setModalOpen,
     handleGetTemplateFile: inputs.handleGetTemplateFile,
     isFileLoading: outputs.$isFileLoading,
+    handlePostTemplateFile: inputs.handlePostTemplateFile,
+    setFile: inputs.setFile,
+    file: outputs.$file,
   });
   return (
     <>
@@ -42,7 +48,9 @@ export const TemperatureGraphContainer = () => {
         setModalOpen={setModalOpen}
         handleGetTemplateFile={handleGetTemplateFile}
         isFileLoading={isFileLoading}
-
+        handlePostTemplateFile={handlePostTemplateFile}
+        file={file}
+        setFile={setFile}
       />
       <TemperatureGraph
         temperatureNormative={temperatureNormative}

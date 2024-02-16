@@ -23,10 +23,14 @@ const handleEditTemperatureNormative = createEvent<boolean>();
 
 const handleGetTemplateFile = createEvent();
 
+const handlePostTemplateFile = createEvent<File>();
+
 const setModalOpen = createEvent<boolean>();
 
 const setEditedTemperatureNormative =
   createEvent<TemperatureNormativeUpdateRequest>();
+
+const setFile = createEvent<File | null>();
 
 const getTemperatureNormativeFx = createEffect<
   void,
@@ -45,6 +49,8 @@ const createOrUpdateFromFileFx = createEffect<
   EffectFailDataAxiosErrorDataTemperatureGraph
 >(createOrUpdateFromFile);
 
+const handleSuccessUpdateFromFile = createOrUpdateFromFileFx.doneData;
+
 const getTemplateFileFx = createEffect(getTemplateFile);
 
 const $temperatureNormative = createStore<TemperatureNormativeRow[]>([])
@@ -60,6 +66,16 @@ const $temperatureNormative = createStore<TemperatureNormativeRow[]>([])
   })
   .on(updateTemperatureNormativeFx.doneData, (_, normativeData) => {
     const rowsArr = normativeData.rows || [];
+    return sortBy(rowsArr, (rowData) => {
+      if (rowData.outdoorTemperature || rowData.outdoorTemperature === 0) {
+        return rowData.outdoorTemperature * -1;
+      } else {
+        return null;
+      }
+    });
+  })
+  .on(handleSuccessUpdateFromFile, (_, normativeDataFromFile) => {
+    const rowsArr = normativeDataFromFile.rows || [];
     return sortBy(rowsArr, (rowData) => {
       if (rowData.outdoorTemperature || rowData.outdoorTemperature === 0) {
         return rowData.outdoorTemperature * -1;
@@ -112,10 +128,13 @@ const $isLoading = updateTemperatureNormativeFx.pending;
 
 const $isFileLoading = createOrUpdateFromFileFx.pending;
 
-const $isModalOpen = createStore<boolean>(false).on(
-  setModalOpen,
-  (_, data) => data,
-);
+const $isModalOpen = createStore<boolean>(false)
+  .on(setModalOpen, (_, data) => data)
+  .reset(handleSuccessUpdateFromFile);
+
+const $file = createStore<File | null>(null)
+  .on(setFile, (_, file) => file)
+  .reset(handleSuccessUpdateFromFile);
 
 sample({ clock: TemperatureGraphGate.open, target: getTemperatureNormativeFx });
 
@@ -128,6 +147,11 @@ sample({
 sample({
   clock: handleGetTemplateFile,
   target: getTemplateFileFx,
+});
+
+sample({
+  clock: handlePostTemplateFile,
+  target: createOrUpdateFromFileFx,
 });
 
 updateTemperatureNormativeFx.failData.watch((error) => {
@@ -144,6 +168,8 @@ export const temperatureGraphService = {
     setEditedTemperatureNormative,
     setModalOpen,
     handleGetTemplateFile,
+    handlePostTemplateFile,
+    setFile,
   },
   outputs: {
     $temperatureNormative,
@@ -151,7 +177,8 @@ export const temperatureGraphService = {
     $isLoading,
     $errorColumns,
     $isModalOpen,
-    $isFileLoading
+    $isFileLoading,
+    $file,
   },
   gates: { TemperatureGraphGate },
 };

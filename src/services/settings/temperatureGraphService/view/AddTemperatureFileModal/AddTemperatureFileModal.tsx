@@ -1,35 +1,49 @@
-import React, { FC, useState } from 'react';
-import { AddTemperatureFileModalProps } from './AddTemperatureFileModal.types';
+import React, { FC } from 'react';
 import { FormModal } from 'ui-kit/Modals/FormModal';
-import {
-  LeftBlock,
-  ButtonFloat,
-  RightBlock,
-  AlertWrapper,
-  FormWrapper,
-} from './AddTemperatureFileModal.styled';
 import { Alert } from 'ui-kit/Alert';
 import { DocumentBlueIcon } from 'ui-kit/icons';
-import { Document, DocumentsUploadContainer } from 'ui-kit/DocumentsService';
+import { DocumentPreload } from 'ui-kit/DocumentPreload';
+import { AddTemperatureFileModalProps } from './AddTemperatureFileModal.types';
+import {
+  AlertWrapper,
+  ButtonFloat,
+  FormWrapper,
+  LeftBlock,
+  RightBlock,
+} from './AddTemperatureFileModal.styled';
 
 const formId = 'Add-Temperature-File-Modal';
+const accept =
+  'application/msword, application/vnd.ms-excel, application/pdf, image/*';
 
 export const AddTemperatureFileModal: FC<AddTemperatureFileModalProps> = ({
   isModalOpen,
   setModalOpen,
   handleGetTemplateFile,
   isFileLoading,
+  handlePostTemplateFile,
+  file,
+  setFile,
 }) => {
-  const [document, setDocument] = useState<Document | null>(null);
+  const handleSubmit = () => {
+    file && handlePostTemplateFile(file);
+  };
 
   return (
     <FormModal
-      loading={isFileLoading}
       title="Загрузить новый температурный график"
       visible={isModalOpen}
       onCancel={() => setModalOpen(false)}
       formId={formId}
-      customSubmit={<ButtonFloat>Загрузить график</ButtonFloat>}
+      customSubmit={
+        <ButtonFloat
+          disabled={!Boolean(file)}
+          onClick={handleSubmit}
+          isLoading={isFileLoading}
+        >
+          Загрузить график
+        </ButtonFloat>
+      }
       form={
         <FormWrapper>
           <Alert centered>
@@ -44,15 +58,12 @@ export const AddTemperatureFileModal: FC<AddTemperatureFileModalProps> = ({
             </AlertWrapper>
           </Alert>
 
-          <DocumentsUploadContainer
+          <DocumentPreload
             label="Перетащите файл или загрузите его с компьютера"
             uniqId="temperature-file"
-            documents={document ? [document] : []}
-            onChange={(value) => {
-              setDocument(value[0]);
-            }}
-            max={1}
-            url="ManagingFirms/TemperatureNormatives/CreateOrUpdateFromFile"
+            file={file}
+            setFile={setFile}
+            accept={accept}
           />
         </FormWrapper>
       }
