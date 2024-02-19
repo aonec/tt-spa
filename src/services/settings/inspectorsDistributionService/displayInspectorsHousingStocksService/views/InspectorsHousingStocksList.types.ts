@@ -14,4 +14,5 @@ export type InspectorsHosuingsStocksListProps = {
   ) => void;
   updateInfo: CurrentHousingStockUpdate[];
   isInspectorsFetched: boolean;
+  handleOpenAddInspector: (payload: number | null) => void;
 };

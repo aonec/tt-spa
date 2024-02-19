@@ -1,6 +1,6 @@
 import { RefSelectProps } from 'antd/lib/select';
 import React, { FC, useRef } from 'react';
-import { Address, Wrap } from './HousingStockItem.styled';
+import { AddInspecor, Address, Wrap } from './HousingStockItem.styled';
 import { HousingStockItemProps } from './HousingStockItem.types';
 import { Select } from 'ui-kit/Select';
 
@@ -10,6 +10,7 @@ export const HousingStockItem: FC<HousingStockItemProps> = ({
   days,
   updateInfo,
   updateHousingStock,
+  handleOpenAddInspector,
 }) => {
   const inspectedDatSelectRef = useRef<RefSelectProps | null>(null);
   const inspectorSelectRef = useRef<RefSelectProps | null>(null);
@@ -29,6 +30,7 @@ export const HousingStockItem: FC<HousingStockItemProps> = ({
           borderColor: updateInfo?.status === 'failed' ? 'red' : void 0,
         }}
         small
+        virtual={false}
         onChange={(value) => {
           inspectedDatSelectRef?.current?.blur();
           updateHousingStock({
@@ -45,7 +47,7 @@ export const HousingStockItem: FC<HousingStockItemProps> = ({
       </Select>
       <Select
         ref={inspectorSelectRef}
-        placeholder="Контролер"
+        placeholder="Инспектор"
         disabled={updateInfo?.status === 'loading'}
         value={housingStock.inspectorId || void 0}
         style={{
@@ -53,9 +55,20 @@ export const HousingStockItem: FC<HousingStockItemProps> = ({
         }}
         onChange={(value) => {
           inspectorSelectRef?.current?.blur();
-          updateHousingStock({ inspectorId: value as number });
+          value && updateHousingStock({ inspectorId: value as number });
         }}
         small
+        virtual={false}
+        dropdownRender={(menu) => (
+          <>
+            {menu}
+            <AddInspecor
+              onClick={() => handleOpenAddInspector(housingStock.buildingId)}
+            >
+              + Добавить инспектора
+            </AddInspecor>
+          </>
+        )}
       >
         {inspectors?.map((inspector) => (
           <Select.Option key={inspector.id} value={inspector.id}>
