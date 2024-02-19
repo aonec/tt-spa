@@ -55,7 +55,10 @@ export const TaskProfile: FC<TaskProfileProps> = ({
   const apartmemtId = apartment?.id || 0;
 
   const timeline = useMemo(() => createTimeline(task), [task]);
-  const timer = useMemo(() => createTimer(task), [task]);
+  const timer = useMemo(
+    () => createTimer(task, isApplication),
+    [task, isApplication],
+  );
 
   const name = useMemo(() => {
     if (!task.closingStatus) {
@@ -86,6 +89,7 @@ export const TaskProfile: FC<TaskProfileProps> = ({
             timer={timer}
             taskName={taskName || ''}
             pipeNode={pipeNode}
+            isApplication={isApplication}
           />
           {task.type && isViewerExecutor && (
             <TaskActionsPanel

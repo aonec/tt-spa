@@ -1,9 +1,10 @@
 import React, { FC } from 'react';
-import { IconLookup } from './Timer.constants';
-import { TimeWrapper, Wrapper } from './Timer.styled';
-import { TimerClosingStatus, TimerProps } from './Timer.types';
+import { TimeWrapper, Wrapper } from './ApplicationTimer.styled';
+import { ApplicationTimerProps } from './ApplicationTimer.types';
+import { IconLookup } from 'ui-kit/shared/Timer/Timer.constants';
+import { TimerClosingStatus } from 'ui-kit/shared/Timer/Timer.types';
 
-export const Timer: FC<TimerProps> = ({ timer }) => {
+export const ApplicationTimer: FC<ApplicationTimerProps> = ({ timer }) => {
   const Icon = IconLookup.find((elem) => elem.icon === timer?.icon)?.element;
   const taskIsFailed = timer?.closingStatus === TimerClosingStatus.Overdue;
   return (

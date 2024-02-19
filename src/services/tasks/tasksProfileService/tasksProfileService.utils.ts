@@ -62,7 +62,10 @@ export const createTimeline = (
   };
 };
 
-export const createTimer = (task: TaskListResponse | TaskResponse) => {
+export const createTimer = (
+  task: TaskListResponse | TaskResponse,
+  isApplication: boolean = false,
+) => {
   const {
     closingTime,
     currentStage,
@@ -72,8 +75,18 @@ export const createTimer = (task: TaskListResponse | TaskResponse) => {
   } = task;
 
   if (!closingTime) {
-    const ext = currentStage?.expectedCompletionTime;
+    const ext = isApplication
+      ? expectedCompletionTime
+      : currentStage?.expectedCompletionTime;
     const isFailed = new Date(ext!).valueOf() - Date.now() < 0;
+
+    const getStatusDescription = () => {
+      if (isApplication) {
+        return isFailed ? 'Задача просрочена:' : 'Время на задачу:';
+      } else {
+        return isFailed ? 'Этап просрочен:' : 'Время на этап:';
+      }
+    };
 
     return {
       stage: {
@@ -83,7 +96,7 @@ export const createTimer = (task: TaskListResponse | TaskResponse) => {
         isFailed,
         deadlineDate: `(до ${new Date(ext!).toLocaleDateString()})`,
       },
-      statusDescription: isFailed ? 'Этап просрочен:' : 'Время на этап:',
+      statusDescription: getStatusDescription(),
       icon: 'timer',
     };
   }
@@ -100,12 +113,12 @@ export const createTimer = (task: TaskListResponse | TaskResponse) => {
   const start = creationTime;
   const deadline = expectedCompletionTime;
   const finish = closingTime;
-  const diffTime = new Date(deadline!).valueOf() - new Date(finish!).valueOf();
+  const diffTime = new Date(deadline!).valueOf() - new Date(finish).valueOf();
 
   const diffTimeStr = getFormatedTime(Math.abs(diffTime));
 
   const executionTime = getFormatedTime(
-    new Date(finish!).valueOf() - new Date(start!).valueOf(),
+    new Date(finish).valueOf() - new Date(start!).valueOf(),
   );
 
   if (diffTime < 0) {

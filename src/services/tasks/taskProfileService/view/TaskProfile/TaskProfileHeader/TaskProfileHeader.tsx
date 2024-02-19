@@ -17,6 +17,7 @@ import {
   Wrapper,
 } from './TaskProfileHeader.styled';
 import { TaskProfileHeaderProps } from './TaskProfileHeader.types';
+import { ApplicationTimer } from './ApplicationTimer';
 
 export const TaskProfileHeader: FC<TaskProfileHeaderProps> = ({
   name,
@@ -26,6 +27,7 @@ export const TaskProfileHeader: FC<TaskProfileHeaderProps> = ({
   timer,
   taskName,
   pipeNode,
+  isApplication,
 }) => {
   const lineColor = timer.closingStatus && LineColors[timer.closingStatus];
 
@@ -48,6 +50,30 @@ export const TaskProfileHeader: FC<TaskProfileHeaderProps> = ({
     }
     return <CalculatorIcon />;
   }, [devices, nodeDevice, pipeNode]);
+
+  if (isApplication) {
+    return (
+      <Wrapper>
+        <HeaderWrapper>
+          {DeviceIcon && <DeviceIconWrapper>{DeviceIcon}</DeviceIconWrapper>}
+          <PageHeaderWrapper>{name}</PageHeaderWrapper>
+        </HeaderWrapper>
+        {timeline && (
+          <TimelineRowWrapper>
+            <InfoWrapper>
+              {taskName}
+              <div>Время на этап</div>
+            </InfoWrapper>
+
+            <TimeLine timeline={timeline} />
+          </TimelineRowWrapper>
+        )}
+        <TimerRowWrapper>
+          <Timer timer={timer} />
+        </TimerRowWrapper>
+      </Wrapper>
+    );
+  }
 
   return (
     <Wrapper>
