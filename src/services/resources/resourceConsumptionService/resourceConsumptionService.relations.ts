@@ -4,6 +4,7 @@ import { resourceConsumptionFilterService } from './resourceConsumptionFilterSer
 import { resourceConsumptionService } from './resourceConsumptionService.model';
 import { ConsumptionDataPayload } from './resourceConsumptionService.types';
 import { addressSearchService } from 'services/addressSearchService/addressSearchService.models';
+import { currentOrganizationService } from 'services/currentOrganizationService';
 
 sample({
   source: resourceConsumptionFilterService.outputs.$resourceConsumptionFilter,
@@ -24,8 +25,11 @@ sample({
 
 sample({
   source: sample({
-    source: addressSearchService.outputs.$existingCities,
-    fn: (cities) => _.last(cities) || null,
+    source: combine(
+      addressSearchService.outputs.$existingCities,
+      currentOrganizationService.outputs.$defaultCity,
+    ),
+    fn: ([cities, defaultCity]) => defaultCity || _.last(cities) || null,
   }),
   clock: sample({
     source: resourceConsumptionService.gates.ResourceConsumptionGate.open,

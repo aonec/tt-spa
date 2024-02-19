@@ -3,4 +3,5 @@ import { GetApartmentsListRequestPayload } from 'services/objects/displayApartme
 export type PersonalNumbersSearchProps = {
   handleSearch: (params: GetApartmentsListRequestPayload) => void;
   cities: string[] | null;
+  defaultCity: string | null;
 };

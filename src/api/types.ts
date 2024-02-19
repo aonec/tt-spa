@@ -1790,6 +1790,9 @@ export enum EManagingFirmTaskType {
   EmergencyApplicationUnassigned = 'EmergencyApplicationUnassigned',
   PlannedApplicationUnassigned = 'PlannedApplicationUnassigned',
   TemperatureNormativeDeviation = 'TemperatureNormativeDeviation',
+  CurrentApplicationUnassigned2 = 'CurrentApplicationUnassigned_2',
+  EmergencyApplicationUnassigned2 = 'EmergencyApplicationUnassigned_2',
+  PlannedApplicationUnassigned2 = 'PlannedApplicationUnassigned_2',
 }
 
 export enum EMeteringDeviceType {
@@ -5077,8 +5080,6 @@ export interface StagePushRequest {
   /** @format date-time */
   apartmentCheckDate?: string | null;
   taskConfirmation?: TaskConfirmationRequest | null;
-  /** @format date-time */
-  applicationCompletionDate?: string | null;
   /** @format date-time */
   applicationPostponeDate?: string | null;
   /** @maxLength 1024 */

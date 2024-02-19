@@ -16,6 +16,7 @@ import { Document } from 'ui-kit/DocumentsService';
 import { apartmentIndividualDevicesMetersService } from 'services/meters/apartmentIndividualDevicesMetersService';
 import { prepareDeviceReadings } from '../workWithIndividualDeviceService/workWithIndividualDeviceService.utils';
 import { PreparedForFormReadings } from '../workWithIndividualDeviceService/workWithIndividualDeviceService.types';
+import { readingsHistoryService } from 'services/meters/readingsHistoryService/readingsHistoryService.model';
 
 const closeModal = createEvent();
 const openModal = createEvent<IndividualDeviceListItemResponse>();
@@ -128,7 +129,15 @@ sample({
 sample({
   clock: openModal,
   filter: (device) => Boolean(device?.id),
-  fn: (device) => String(device?.id),
+  fn: (device) => String(device.id),
+  target: getLastReadingFx,
+});
+
+sample({
+  clock: readingsHistoryService.inputs.closeReadingsHistoryModal,
+  source: $closingDevice,
+  filter: (closingDevice) => Boolean(closingDevice),
+  fn: (closingDevice) => String(closingDevice?.id),
   target: getLastReadingFx,
 });
 

@@ -34,6 +34,7 @@ export const AddressSearchContainer: FC<AddressSearchContainerProps> = ({
     existingApartmentNumbers,
     setInitialValues,
     verifiedInitialValues,
+    defaultOrganizationCity,
   } = useUnit({
     cities: outputs.$existingCities,
     streets: outputs.$existingStreets,
@@ -43,6 +44,7 @@ export const AddressSearchContainer: FC<AddressSearchContainerProps> = ({
     existingApartmentNumbers: outputs.$existingApartmentNumbers,
     setInitialValues: inputs.setInitialValues,
     verifiedInitialValues: outputs.$verifiedInitialValues,
+    defaultOrganizationCity: currentOrganizationService.outputs.$defaultCity,
   });
 
   const {
@@ -108,9 +110,11 @@ export const AddressSearchContainer: FC<AddressSearchContainerProps> = ({
   useEffect(() => {
     if (!cities?.length || verifiedInitialValues?.city) return;
 
+    const defaultCity = defaultOrganizationCity || last(cities) || '';
+
     if (isCityPreselected) {
-      set({ city: last(cities) || '' });
-      if (onChange) onChange('city', last(cities) || '');
+      set({ city: defaultCity });
+      if (onChange) onChange('city', defaultCity);
     }
 
     if (autoBurn) {
@@ -124,6 +128,7 @@ export const AddressSearchContainer: FC<AddressSearchContainerProps> = ({
     submit,
     autoBurn,
     isCityPreselected,
+    defaultOrganizationCity,
   ]);
 
   const handleChange = (key: SearchFieldType, value: string) => {
