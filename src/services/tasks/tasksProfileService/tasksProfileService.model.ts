@@ -42,8 +42,6 @@ const changeGroupType = createEvent<TaskGroupingFilter>();
 const changePageNumber = createEvent<number>();
 const searchTasks = createEvent<GetTasksListRequestPayload>();
 
-const SetCityGate = createGate<{ cities: string[] | null }>();
-
 const getApartmentFx = createEffect<FiltersGatePayload, ApartmentResponse>(
   fetchApartment,
 );
@@ -86,10 +84,6 @@ const $searchState = createStore<GetTasksListRequestPayload>({})
     PageNumber: 1,
   }))
   .on(changePageNumber, (filters, PageNumber) => ({ ...filters, PageNumber }))
-  .on(SetCityGate.state, (prev, { cities }) => ({
-    ...prev,
-    City: cities?.length ? cities[cities.length - 1] : undefined,
-  }))
   .reset(clearFilters);
 
 const startSearchTasks = createEvent();
@@ -107,8 +101,8 @@ const { tick: searchTasksTrigger } = interval({
 
 sample({
   source: $searchState,
-  clock: [searchTasksTrigger],
-  filter: (searchState) => Boolean(searchState.City && searchState.GroupType),
+  clock: searchTasksTrigger,
+  filter: (searchState) => Boolean(searchState.GroupType),
   target: searchTasksFx,
 });
 
@@ -185,6 +179,5 @@ export const tasksProfileService = {
   gates: {
     TasksIsOpen,
     InitialGate,
-    SetCityGate,
   },
 };

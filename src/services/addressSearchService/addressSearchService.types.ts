@@ -17,6 +17,7 @@ export type AddressSearchContainerProps = {
   isError?: boolean;
   isFocus?: boolean;
   autoBurn?: boolean;
+  isCityPreselected?: boolean;
 };
 
 export type GetExistingSteetRequestParams = {

@@ -23,6 +23,7 @@ export const AddressSearchContainer: FC<AddressSearchContainerProps> = ({
   isError = false,
   isFocus = false,
   autoBurn = false,
+  isCityPreselected = true,
 }) => {
   const {
     cities,
@@ -111,9 +112,10 @@ export const AddressSearchContainer: FC<AddressSearchContainerProps> = ({
 
     const defaultCity = defaultOrganizationCity || last(cities) || '';
 
-    set({ city: defaultCity });
-
-    if (onChange) onChange('city', defaultCity);
+    if (isCityPreselected) {
+      set({ city: defaultCity });
+      if (onChange) onChange('city', defaultCity);
+    }
 
     if (autoBurn) {
       submit();
@@ -125,6 +127,7 @@ export const AddressSearchContainer: FC<AddressSearchContainerProps> = ({
     onChange,
     submit,
     autoBurn,
+    isCityPreselected,
     defaultOrganizationCity,
   ]);
 

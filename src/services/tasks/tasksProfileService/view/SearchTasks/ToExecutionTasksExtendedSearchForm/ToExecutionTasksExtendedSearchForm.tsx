@@ -95,6 +95,7 @@ export const ToExecutionTasksExtendedSearchForm: FC<
     <ToExecutionWrapper>
       <StyledContainerAdressSection>
         <AddressSearchContainer
+          isCityPreselected={false}
           onChange={(key, value) =>
             setFieldValue(AddressSearchFieldsNameLookup[key], value)
           }

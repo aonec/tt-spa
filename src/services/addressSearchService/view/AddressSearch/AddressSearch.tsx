@@ -5,9 +5,9 @@ import { FormItem } from 'ui-kit/FormItem';
 import { SearchFieldsLabels } from './AddressSearch.constants';
 import { Wrapper, InputSC, AutoCompleteSC } from './AddressSearch.styled';
 import { AddressSearchProps, SearchFieldType } from './AddressSearch.types';
-import { Select } from 'ui-kit/Select';
 import { useSwitchInputOnEnter } from 'hooks/useSwitchInputOnEnter';
 import { useAutocomplete } from 'hooks/useAutocomplete';
+import { Select } from 'ui-kit/Select';
 
 const dataKey = 'search-address-inputs';
 
@@ -43,8 +43,8 @@ export const AddressSearch: FC<AddressSearchProps> = ({
 
   const citySearch = (index: number, isDisabled?: boolean) => (
     <Select
-      small
       placeholder="Город"
+      small
       onKeyDown={fromEnter(() => next(index))}
       data-reading-input={dataKey}
       onChange={(value) => {
@@ -56,7 +56,7 @@ export const AddressSearch: FC<AddressSearchProps> = ({
 
         handleSubmit();
       }}
-      value={values.city}
+      value={values.city || undefined}
       style={{ minWidth: 180 }}
       disabled={isDisabled || !cities.length}
     >

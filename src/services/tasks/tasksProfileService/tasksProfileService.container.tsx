@@ -11,7 +11,6 @@ import { getAddressObject, prepareData } from './tasksProfileService.utils';
 import { TaskType } from './view/TasksListItem/TasksListItem.types';
 import { TasksProfile } from './view/TasksProfile';
 import queryString from 'query-string';
-import { addressSearchService } from 'services/addressSearchService/addressSearchService.models';
 import { TaskTypesGate } from '../taskTypesService/taskTypesService.model';
 import {
   AddTaskFromDispatcherContainer,
@@ -20,9 +19,8 @@ import {
 import { usePermission } from 'hooks/usePermission';
 import { exportTasksListService } from '../exportTasksListService';
 
-const { ExistingCitiesGate } = addressSearchService.gates;
 const { inputs, outputs, gates } = tasksProfileService;
-const { InitialGate, SetCityGate } = gates;
+const { InitialGate } = gates;
 const { AddTaskDataFetchGate } = addTaskFromDispatcherService.gates;
 
 export const TasksProfileContainer = () => {
@@ -52,7 +50,6 @@ export const TasksProfileContainer = () => {
     clearAddress,
     setTasksPageSegment,
     handleOpenAddTaskModal,
-    existingCities,
   } = useUnit({
     taskTypes: outputs.$taskTypes,
     housingManagments: outputs.$housingManagments,
@@ -75,7 +72,6 @@ export const TasksProfileContainer = () => {
     clearAddress: inputs.clearAddress,
     setTasksPageSegment: inputs.setTasksPageSegment,
     handleOpenAddTaskModal: inputs.handleOpenAddTaskModal,
-    existingCities: addressSearchService.outputs.$existingCities,
   });
 
   const isSpectator = usePermission([
@@ -159,8 +155,6 @@ export const TasksProfileContainer = () => {
     <>
       {isPermissionToAddTask && <AddTaskDataFetchGate />}
       <InitialGate />
-      <ExistingCitiesGate />
-      <SetCityGate cities={existingCities} />
       <TaskTypesGate />
 
       {isPermissionToAddTask && <AddTaskFromDispatcherContainer />}
