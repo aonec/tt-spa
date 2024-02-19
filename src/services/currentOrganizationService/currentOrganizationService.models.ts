@@ -63,6 +63,10 @@ sample({
   target: getCurrentManagingFirmFx,
 });
 
+const $defaultCity = $currentManagingFirm.map(
+  (firm) => firm?.platformConfiguration?.defaultCity || null,
+);
+
 export const currentOrganizationService = {
   outputs: {
     $currentManagingFirm,
@@ -71,6 +75,7 @@ export const currentOrganizationService = {
     $diametersConfig,
     $hasCorpuses,
     $devUrl: apiService.outputs.$devUrl,
+    $defaultCity,
   },
   gates: { CurrentManagingFirmGate },
   inputs: { setDevUrl: apiService.inputs.setDevUrl },

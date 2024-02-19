@@ -13,11 +13,12 @@ import { PersonalNumbersSearchProps } from './PersonalNumbersSearch.types';
 export const PersonalNumbersSearch: FC<PersonalNumbersSearchProps> = ({
   handleSearch,
   cities,
+  defaultCity,
 }) => {
   const { values, handleSubmit, setFieldValue } = useFormik({
     initialValues: {
       Question: '',
-      City: cities?.[0] || '',
+      City: defaultCity || cities?.[0] || '',
     },
     onSubmit: handleSearch,
     enableReinitialize: true,
