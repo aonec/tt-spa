@@ -3,12 +3,40 @@ import {
   TemperatureNormativeResponse,
   TemperatureNormativeUpdateRequest,
 } from 'api/types';
+import { Document } from 'ui-kit/DocumentsService';
+import { downloadURI } from 'utils/downloadByURL';
 
 export const getTemperatureNormative =
   (): Promise<TemperatureNormativeResponse> =>
-    axios.get('/TemperatureNormative');
+    axios.get('ManagingFirms/TemperatureNormatives');
 
-export const putTemperatureNormative = (
+export const createOrUpdateTemperatureNormative = (
   data: TemperatureNormativeUpdateRequest,
 ): Promise<TemperatureNormativeResponse> =>
-  axios.put('/TemperatureNormative', data);
+  axios.post('ManagingFirms/TemperatureNormatives/CreateOrUpdate', data);
+
+export function createOrUpdateFromFile(
+  file: File,
+): Promise<TemperatureNormativeResponse> {
+  const formData = new FormData();
+
+  formData.append('file', file);
+
+  return axios.post(
+    'ManagingFirms/TemperatureNormatives/CreateOrUpdateFromFile',
+    formData,
+  );
+}
+
+export const getTemplateFile = async (): Promise<void> => {
+  const res: string = await axios.get(
+    'ManagingFirms/TemperatureNormatives/TemplateFile',
+    {
+      responseType: 'blob',
+    },
+  );
+
+  const fileURL = window.URL.createObjectURL(new Blob([res]));
+
+  downloadURI(fileURL, `Температурный график`);
+};

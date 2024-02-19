@@ -9,6 +9,7 @@ import {
 } from './EditedAccountsAlert.styled';
 import { EditedAccountsAlertProps } from './EditedAccountsAlert.types';
 import { Alert } from 'ui-kit/Alert/Alert';
+import { AlertIconType } from 'ui-kit/Alert/Alert.types';
 
 export const EditedAccountsAlert: FC<EditedAccountsAlertProps> = ({
   recentlyEditedAccount,
@@ -17,7 +18,7 @@ export const EditedAccountsAlert: FC<EditedAccountsAlertProps> = ({
   const preparedDate = dayjs(editedAt).format('DD.MM.YYYY');
   return (
     <ApartmentAlertWrapper>
-      <Alert>
+      <Alert icon={AlertIconType.info}>
         <AlertContent>
           <AlertTextWrapper>
             Лицевой счёт квартиры был отредактирован{' '}

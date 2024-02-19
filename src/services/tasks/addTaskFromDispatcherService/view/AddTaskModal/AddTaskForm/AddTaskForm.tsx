@@ -51,6 +51,7 @@ import { fromEnter } from 'ui-kit/shared/DatePickerNative';
 import { validationSchema } from './AddTaskForm.constants';
 import { DatePicker } from 'ui-kit/DatePicker';
 import { SavePhoneNumber } from './savePhoneNumberService';
+import { AlertIconType } from 'ui-kit/Alert/Alert.types';
 
 const {
   gates: { PageGate },
@@ -494,7 +495,7 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
 
         {Boolean(resourceDisconnection.length) &&
           resourceDisconnection.map((disconnection) => (
-            <Alert centered>
+            <Alert centered icon={AlertIconType.info}>
               {getResourceDisconnectionAlert(
                 disconnection.disconnectingType,
                 disconnection.resource,

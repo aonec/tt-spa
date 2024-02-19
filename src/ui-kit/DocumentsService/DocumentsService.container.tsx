@@ -25,6 +25,7 @@ export const DocumentsUploadContainer: FC<DocumentsUploadContainerProps> = ({
   label,
   type,
   componentType = DocumentsUploadComponentType.DragAndDrop,
+  url,
 }) => {
   if (!documents) {
     documents = [];
@@ -41,6 +42,7 @@ export const DocumentsUploadContainer: FC<DocumentsUploadContainerProps> = ({
   const { handleFile, isLoading, removeDocument } = useDocumentsUpload(
     documents,
     onChange,
+    url,
   );
 
   const { setIsLoading } = useUnit({ setIsLoading: inputs.setIsLoading });

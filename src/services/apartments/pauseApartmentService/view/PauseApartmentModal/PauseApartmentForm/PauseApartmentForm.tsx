@@ -20,6 +20,7 @@ import {
 } from 'api/types';
 import { pauseApartmentService } from 'services/apartments/pauseApartmentService/pauseApartmentService.models';
 import { Form } from 'antd';
+import { AlertIconType } from 'ui-kit/Alert/Alert.types';
 
 const {
   gates: { ProblemDevicesGate },
@@ -98,7 +99,7 @@ export const PauseApartmentForm: FC<Props> = ({
 
         {problemDevices.map((elem) => (
           <>
-            <Alert>
+            <Alert icon={AlertIconType.info}>
               {dayjs(elem.futureCheckingDate).format('DD.MM.YYYY')} выходит срок
               поверки у прибора <b> {elem.model}</b> ({elem.serialNumber})
             </Alert>
