@@ -6,7 +6,7 @@ export const Wrapper = styled.div<{ active: boolean }>`
 
   align-items: flex-start;
 
-  height: 72px;
+  height: 66px;
   width: 100%;
 
   min-width: 160px;

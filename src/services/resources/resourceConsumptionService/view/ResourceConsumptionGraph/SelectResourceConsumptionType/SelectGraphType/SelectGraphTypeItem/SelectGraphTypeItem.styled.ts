@@ -15,16 +15,16 @@ export const GroupWrapper = styled.div<{
   color: #272f5ae5;
 
   user-select: none;
-  cursor: ${({ disabled }) => (disabled ? 'wait' : 'pointer')};
+  cursor: ${({ disabled }) => (disabled ? ' not-allowed;' : 'pointer')};
 `;
 
 export const OpacityWrapper = styled.div<{
-  isLoading?: boolean;
+  disabled?: boolean;
 }>`
   display: flex;
   align-items: center;
   gap: 8px;
-  opacity: ${({ isLoading }) => (isLoading ? '0.7' : '1.2')};
+  opacity: ${({ disabled }) => (disabled ? '0.7' : '1.2')};
 `;
 
 export const Circle = styled.div<{ color: string }>`
