@@ -1,4 +1,4 @@
-import React, { FC, useCallback, useMemo } from 'react';
+import React, { FC, useCallback } from 'react';
 import { ResourceConsumptionGraphType } from 'services/resources/resourceConsumptionService/resourceConsumptionService.types';
 import { TypeNameLookup } from './SelectGraphType.constants';
 import { SelectTitle, Wrapper } from './SelectGraphType.styled';
@@ -21,20 +21,6 @@ export const SelectGraphType: FC<SelectGraphTypeProps> = ({
       handleSetChecked({ ...checked, [key]: newChecked }),
     [checked, handleSetChecked],
   );
-
-  const isDataEmpty = useMemo(() => {
-    if (!consumptionData) return true;
-
-    const { normative, housing, subscriber } = consumptionData;
-
-    return [normative, housing, subscriber].every((consumption) =>
-      Boolean(consumption && hasNoConsecutiveNumbers(consumption!)),
-    );
-  }, [consumptionData]);
-
-  if (isDataEmpty) {
-    return <Wrapper></Wrapper>;
-  }
 
   return (
     <Wrapper>

@@ -17,15 +17,15 @@ export const SelectGraphTypeItem: FC<SelectGraphTypeItemProps> = ({
   isLoading,
   isConsumptionDataEmpty,
 }) => {
-  if (isConsumptionDataEmpty) return null;
+  const isActive = !isConsumptionDataEmpty && !disabled;
 
   return (
     <GroupWrapper
-      onClick={() => !disabled && setChecked(!checked)}
-      disabled={disabled}
+      onClick={() => isActive && setChecked(!checked)}
+      disabled={isConsumptionDataEmpty || disabled}
     >
-      <OpacityWrapper isLoading={isLoading}>
-        <Checkbox disabled={disabled} checked={checked} />
+      <OpacityWrapper disabled={!isActive}>
+        <Checkbox disabled={!isActive} checked={checked} />
         <Circle color={color} />
         {text}
       </OpacityWrapper>

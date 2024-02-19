@@ -15,12 +15,12 @@ export function getMinAndMaxForResourceConsumptionGraph<T>(
 }
 
 export const getGraphTypeColors = ({
-  resource,
   type,
   isOpacityNeed,
+  resource = EResourceType.ColdWaterSupply,
 }: {
-  resource: EResourceType;
   type: ResourceConsumptionGraphType;
+  resource?: EResourceType;
   isOpacityNeed?: boolean;
 }) => {
   let color = ResourceConsumptionGraphColors[type];
