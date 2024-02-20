@@ -3,7 +3,6 @@ import {
   TemperatureNormativeResponse,
   TemperatureNormativeUpdateRequest,
 } from 'api/types';
-import { Document } from 'ui-kit/DocumentsService';
 import { downloadURI } from 'utils/downloadByURL';
 
 export const getTemperatureNormative =

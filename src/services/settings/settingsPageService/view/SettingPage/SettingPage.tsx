@@ -58,8 +58,9 @@ export const SettingPage: FC<SettingPageProps> = ({
   }, [
     isAdminSettings,
     handleReassingInspector,
-    handleEditTemperatureNormative,
     isTemperatureGraphTab,
+    handleEditTemperatureNormative,
+    setModalOpen,
   ]);
 
   const components: { [key in SettingsPageSection]: ReactNode } = {
