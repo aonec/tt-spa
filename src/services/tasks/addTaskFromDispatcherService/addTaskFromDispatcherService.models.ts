@@ -244,11 +244,10 @@ sample({
 });
 
 sample({
-  clock: AddTaskDataFetchGate.open,
-  source: currentOrganizationService.outputs.$userCity,
+  source: currentOrganizationService.outputs.$defaultCity,
   filter: Boolean,
-  fn: (userCity) => ({
-    City: userCity,
+  fn: (defaultCity) => ({
+    City: defaultCity,
   }),
   target: getAddressesFx,
 });
