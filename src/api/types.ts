@@ -420,6 +420,15 @@ export interface ApartmentUpdateRequest {
   hotWaterRiserCount?: number | null;
 }
 
+export interface ApplicationUserResponse {
+  /** @format int32 */
+  id: number;
+  email: string | null;
+  firstName: string | null;
+  lastName: string | null;
+  middleName: string | null;
+}
+
 export interface AppointmentAddress {
   /** @format int32 */
   houseId?: number;
@@ -2328,6 +2337,8 @@ export interface ErpApplicationResponse {
   description: string | null;
   category: string | null;
   source: string | null;
+  creator: ApplicationUserResponse | null;
+  responsible: ApplicationUserResponse | null;
   brigade: ErpApplicationBrigadeMemberResponse[] | null;
 }
 
@@ -3738,8 +3749,6 @@ export interface IndividualDevicesConstructedReportResponseIEnumerableSuccessApi
 
 export interface InspectorCreateRequest {
   fullName: string;
-  /** @format int32 */
-  readoutPlan: number;
 }
 
 export interface InspectorOnBuildingResponse {
@@ -3770,8 +3779,6 @@ export interface InspectorResponse {
   /** @format int32 */
   id: number;
   fullName: string | null;
-  /** @format int32 */
-  readoutPlan: number;
 }
 
 export interface InspectorResponseListSuccessApiResponse {
@@ -3806,8 +3813,6 @@ export interface InspectorResponseSuccessApiResponse {
 
 export interface InspectorUpdateRequest {
   fullName?: string | null;
-  /** @format int32 */
-  readoutPlan?: number | null;
 }
 
 export interface InspectorsConstructedReportResponse {

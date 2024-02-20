@@ -21,7 +21,7 @@ export const AddInspectorForm: FC<AddInspectorFormProps> = ({
       onSubmit: ({ firstName, lastName, midleName }) => {
         const fullName = `${lastName} ${firstName} ${midleName}`;
 
-        handleAddInspector({ fullName, readoutPlan: 0 });
+        handleAddInspector({ fullName });
       },
       validationSchema: Yup.object().shape({
         lastName: Yup.string().required('Это поле обязательное'),
