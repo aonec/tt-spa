@@ -86,7 +86,7 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
 
   const { values, handleSubmit, setFieldValue, isValid } = useFormik<AddTask>({
     initialValues: {
-      sourceId: initialSource.id,
+      sourceId: initialSource?.id || null,
       requestNumber: null,
       taskType: null,
       workTypeId: null,
@@ -115,8 +115,8 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
   });
 
   const isInitialSource = useMemo(
-    () => values.sourceId === initialSource.id,
-    [values.sourceId, initialSource.id],
+    () => values.sourceId === initialSource?.id,
+    [values.sourceId, initialSource?.id],
   );
 
   const selectedSource = useMemo(() => {
