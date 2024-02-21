@@ -3,6 +3,7 @@ import { ApplicationBaseInfoProps } from './ApplicationBaseInfo.types';
 import { CommonInfo } from 'ui-kit/shared/CommonInfo';
 import { LinkSC } from './ApplicationBaseInfo.styled';
 import { TaskTypeDictionary } from 'dictionaries';
+import { getApplicationUserName } from './ApplicationBaseinfo.utils';
 
 export const ApplicationBaseInfo: FC<ApplicationBaseInfoProps> = ({
   applicationInfo,
@@ -46,6 +47,14 @@ export const ApplicationBaseInfo: FC<ApplicationBaseInfoProps> = ({
         {
           key: 'Комментарий к заявке',
           value: applicationInfo?.comment,
+        },
+        {
+          key: 'Ответственный исполнитель',
+          value: getApplicationUserName(applicationInfo?.responsible),
+        },
+        {
+          key: 'Диспетчер',
+          value: getApplicationUserName(applicationInfo?.creator),
         },
       ]}
     />
