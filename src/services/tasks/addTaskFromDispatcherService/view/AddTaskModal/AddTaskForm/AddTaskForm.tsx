@@ -163,6 +163,10 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
   }, [onSuccessSavePhone, isOnlySubscriberRequired, next]);
 
   useEffect(() => {
+    handleChangePhoneNumber(values?.phoneNumber || null);
+  }, [values.phoneNumber, handleChangePhoneNumber]);
+
+  useEffect(() => {
     setFieldValue('isSourceNumberRequired', isSourceNumberRequired);
   }, [isSourceNumberRequired, setFieldValue]);
 
@@ -371,10 +375,16 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
         <GridContainerAsymmetricRight>
           <FormItem label="Адрес">
             <AutoCompleteAntD
+              defaultActiveFirstOption
               showSearch
               allowClear
               value={values.addressSearch}
-              onChange={(value) => setFieldValue('addressSearch', value)}
+              onChange={(value) => {
+                setFieldValue('addressSearch', value);
+                setFieldValue('apartmentNumber', null);
+                setFieldValue('subscriberName', null);
+                setFieldValue('phoneNumber', null);
+              }}
               onSelect={(value) => {
                 setFieldValue('selectedObjectAddress', value);
                 handleSelectHousingAddress(value);
@@ -403,8 +413,13 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
 
           <FormItem label="Номер квартиры">
             <AutoCompleteAntD
+              defaultActiveFirstOption
               value={values.apartmentNumber}
-              onChange={(value) => setFieldValue('apartmentNumber', value)}
+              onChange={(value) => {
+                setFieldValue('apartmentNumber', value);
+                setFieldValue('subscriberName', null);
+                setFieldValue('phoneNumber', null);
+              }}
               onSelect={(value) => {
                 setFieldValue('apartmentNumber', value);
                 handleSelectApartmentNumber(value);
@@ -434,10 +449,12 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
           <GridContainer>
             <FormItem label="ФИО абонента">
               <AutoCompleteAntD
+                defaultActiveFirstOption
                 allowClear
                 value={values.subscriberName || undefined}
                 onChange={(value) => {
                   setFieldValue('subscriberName', value);
+                  setFieldValue('phoneNumber', null);
                   handleChangeSubscriberName(value);
                 }}
                 options={apartmentHomeownerNames}
@@ -477,7 +494,6 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
                   value={values.phoneNumber || undefined}
                   onChange={(value) => {
                     setFieldValue('phoneNumber', value.target.value);
-                    handleChangePhoneNumber(value.target.value);
                   }}
                   data-reading-input={dataKey}
                   onKeyDown={fromEnter(() => {
@@ -649,6 +665,7 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
 
         <FormItem label="Описание проблемы">
           <TextareaSC
+            data-reading-input={dataKey}
             placeholder="Кратко опишите проблему"
             value={values.taskDescription || undefined}
             onChange={(value) =>

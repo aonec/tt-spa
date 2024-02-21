@@ -2,12 +2,19 @@ import { useCallback, useEffect } from 'react';
 
 const handleFocus = (node: HTMLInputElement): void => {
   const isInput = node?.tagName === 'INPUT';
+  const isTextarea = node?.tagName === 'TEXTAREA';
+
+  if (isTextarea) {
+    node?.focus();
+    return;
+  }
 
   if (!isInput) {
     const inputList = node?.getElementsByTagName('input');
     inputList?.item(0)?.focus();
     return;
   }
+
   node?.focus();
   return;
 };
