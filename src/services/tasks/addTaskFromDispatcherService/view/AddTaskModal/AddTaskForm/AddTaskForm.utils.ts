@@ -3,9 +3,9 @@ import {
   PreparedAddress,
 } from 'services/tasks/addTaskFromDispatcherService/addTaskFromDispatcherService.types';
 import { AddTask, AddressOption } from './AddTaskForm.types';
-import { countSimilarityPoints } from 'utils/countSimilarityPoints';
 import _ from 'lodash';
 import { ErpTaskReasonGroupResponse } from 'api/types';
+import { TaskReasonTypeDictionary } from 'dictionaries';
 
 export function preparedAddressOption(
   addressSearch: string,
@@ -81,19 +81,51 @@ export function autocompleteReason(
     return reasons;
   }
 
-  return filterReasonBySimilarity(search, reasons);
+  return sortReasonBySimilarity(search, reasons);
 }
 
-function filterReasonBySimilarity(
+function sortReasonBySimilarity(
   search: string,
   reasons: ErpTaskReasonGroupResponse[],
 ) {
-  return reasons.sort((a, b) => {
-    const bPoints = countSimilarityPoints(search, b.name!);
-    const aPoints = countSimilarityPoints(search, a.name!);
+  return reasons.sort((aReason, bReason) => {
+    const aReasonWithResource = `${TaskReasonTypeDictionary[aReason.type]} ${
+      aReason.name
+    }`;
+    const bReasonWithResource = `${TaskReasonTypeDictionary[bReason.type]} ${
+      bReason.name
+    }`;
 
-    return bPoints - aPoints;
+    const aReasonPoints = countSimilarityPoints(search, aReasonWithResource);
+    const bReasonPoints = countSimilarityPoints(search, bReasonWithResource);
+
+    return bReasonPoints - aReasonPoints;
   });
+}
+
+function countSimilarityPoints(search: string, string: string) {
+  let street = string.toLowerCase();
+
+  const searchArr = search.toLowerCase().split(' ').filter(Boolean);
+
+  let points = 0;
+  const indexOfOverlaping = street
+    .split(' ')
+    .findIndex((elem) => elem.indexOf(search.toLowerCase()) === 0);
+
+  if (indexOfOverlaping !== -1) {
+    points += indexOfOverlaping ? 1 : 2;
+  }
+
+  points += searchArr.reduce((points, searchSlice) => {
+    if (street.includes(searchSlice)) {
+      street = street.replace(searchSlice, '');
+      return points + 1;
+    }
+    return points;
+  }, 0);
+
+  return points;
 }
 
 export const filterData = (data: AddTask) => {
