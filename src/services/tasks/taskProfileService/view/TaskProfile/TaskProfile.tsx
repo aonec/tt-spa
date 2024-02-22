@@ -64,7 +64,13 @@ export const TaskProfile: FC<TaskProfileProps> = ({
     return task.name;
   }, [task]);
 
-  const taskActions = task.currentStage?.actions || [];
+  const taskActions = useMemo(
+    () => [
+      ...(task.currentStage?.actions || []),
+      ...(task.currentStage?.additionalActions || []),
+    ],
+    [task.currentStage?.actions, task.currentStage?.additionalActions],
+  );
 
   return (
     <Wrapper>
