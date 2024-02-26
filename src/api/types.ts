@@ -1855,7 +1855,6 @@ export enum ENodeWorkingRangeType {
   MassOfFeedFlowMagistral = 'MassOfFeedFlowMagistral',
   MassOfFeedBackFlowMagistral = 'MassOfFeedBackFlowMagistral',
   DeltaMassOfMagistral = 'DeltaMassOfMagistral',
-  TemperatureDeviation = 'TemperatureDeviation',
 }
 
 export interface ENodeWorkingRangeTypeStringDictionaryItem {
@@ -5571,6 +5570,10 @@ export interface TemperatureNormativeDeleteRequest {
 }
 
 export interface TemperatureNormativeResponse {
+  /** @format int32 */
+  upTemperatureDeviationPercentLimit: number;
+  /** @format int32 */
+  downTemperatureDeviationPercentLimit: number;
   rows: TemperatureNormativeRow[] | null;
 }
 
@@ -5609,6 +5612,10 @@ export interface TemperatureNormativeRowUpdate {
 }
 
 export interface TemperatureNormativeUpdateRequest {
+  /** @format int32 */
+  upTemperatureDeviationPercentLimit?: number | null;
+  /** @format int32 */
+  downTemperatureDeviationPercentLimit?: number | null;
   updateRows?: TemperatureNormativeRowUpdate[] | null;
 }
 
@@ -11302,13 +11309,12 @@ export class Api<
       data: TemperatureNormativeDeleteRequest,
       params: RequestParams = {},
     ) =>
-      this.request<ApartmentActResponseSuccessApiResponse, ErrorApiResponse>({
+      this.request<void, ErrorApiResponse>({
         path: `/api/ManagingFirms/TemperatureNormatives`,
         method: 'DELETE',
         body: data,
         secure: true,
         type: ContentType.Json,
-        format: 'json',
         ...params,
       }),
 
