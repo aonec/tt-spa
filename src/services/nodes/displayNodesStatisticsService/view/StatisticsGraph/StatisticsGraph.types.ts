@@ -1,7 +1,7 @@
 import {
   ArchivesDataGroupValue,
   ArchivesDataModel,
-  DateTimeTaskStatisticsItemArrayDictionaryItem,
+  TaskStatisticsItem,
 } from 'api/types';
 
 export type ReportType = 'hourly' | 'daily' | 'monthly';
@@ -10,7 +10,7 @@ export type GraphViewProps = {
   graphParam: string;
   data: ArchivesDataModel;
   reportType: ReportType;
-  taskStatistics: DateTimeTaskStatisticsItemArrayDictionaryItem[];
+  taskStatistics: TaskStatisticsItem[];
   wrapperId: string;
   withFault: boolean;
 };

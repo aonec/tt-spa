@@ -11,6 +11,7 @@ import {
   PatchHousingStockInspectorInfoPayload,
 } from './inspectorHousingStockService.types';
 import { getInspectorsHousingStocksQuery } from '../displayInspectorsHousingStocksService.api';
+import { addInspectorService } from '../../addInspectorService';
 
 const { $inspectorsList } = displayInspectorsService.outputs;
 
@@ -30,12 +31,8 @@ const updateHousingStockInspectorInfoFx = createEffect<
 const updateHousingStockInspectorInfo =
   createEvent<PatchHousingStockInspectorInfoPayload>();
 
-updateHousingStockInspectorInfoFx.failData.watch((error) => {
-  return message.error(
-    error.response.data.error.Text ||
-      error.response.data.error.Message ||
-      'Произошла ошибка',
-  );
+updateHousingStockInspectorInfoFx.failData.watch(() => {
+  message.error('Произошла ошибка смены инспектора');
 });
 
 $currentHousingStockUpdates.on(
@@ -76,6 +73,28 @@ sample({
 sample({
   clock: updateHousingStockInspectorInfo,
   target: updateHousingStockInspectorInfoFx,
+});
+
+sample({
+  clock: addInspectorService.inputs.handleSuccessAddInspector,
+  target: displayInspectorsService.inputs.fetchInspectorsListFx,
+});
+
+sample({
+  clock: addInspectorService.inputs.handleSuccessAddInspector,
+  source: addInspectorService.outputs.$buildingId,
+  fn: (buildingId, { id }) =>
+    ({
+      housingStockId: buildingId,
+      data: { inspectorId: id },
+    } as PatchHousingStockInspectorInfoPayload),
+  target: updateHousingStockInspectorInfoFx,
+});
+
+sample({
+  clock: addInspectorService.inputs.handleSuccessAddInspector,
+  fn: () => null,
+  target: addInspectorService.outputs.$buildingId,
 });
 
 export const inspectorHousingStockService = {

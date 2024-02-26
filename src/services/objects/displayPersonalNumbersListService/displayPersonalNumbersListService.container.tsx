@@ -7,6 +7,7 @@ import { PersonalNumbersSearch } from './view/PersonalNumbersSearch';
 import { HeaderInject } from '../objectsProfileService/view/ObjectsProfile/ObjectsProfile.types';
 import { SizeWrapper } from '../objectsProfileService/view/ObjectsProfile/ObjectsProfile.styled';
 import { addressSearchService } from 'services/addressSearchService/addressSearchService.models';
+import { currentOrganizationService } from 'services/currentOrganizationService';
 
 const { inputs, outputs, gates } = displayPersonalNumbersListService;
 const { SearchPersonalNumberGate } = gates;
@@ -22,6 +23,7 @@ export const DisplayPersonalNumbersListContainer: FC<HeaderInject> = ({
     handlePageNumberChanged,
     handleSearch,
     isLoading,
+    defaultCity,
   } = useUnit({
     cities: outputs.$cities,
     apartments: outputs.$apartments,
@@ -29,6 +31,7 @@ export const DisplayPersonalNumbersListContainer: FC<HeaderInject> = ({
     apartmentsListPage: outputs.$apartmentsListPage,
     handleSearch: inputs.searchPersonalNumbers,
     handlePageNumberChanged: inputs.setPageNumber,
+    defaultCity: currentOrganizationService.outputs.$defaultCity,
   });
 
   const isNotEmpty = apartments.length > 0;
@@ -38,7 +41,11 @@ export const DisplayPersonalNumbersListContainer: FC<HeaderInject> = ({
       <SearchPersonalNumberGate />
       <ExistingCitiesGate />
       <Header>
-        <PersonalNumbersSearch handleSearch={handleSearch} cities={cities} />
+        <PersonalNumbersSearch
+          handleSearch={handleSearch}
+          cities={cities}
+          defaultCity={defaultCity}
+        />
       </Header>
       <SizeWrapper>
         <PersonalNumbersList apartments={apartments} isLoading={isLoading} />

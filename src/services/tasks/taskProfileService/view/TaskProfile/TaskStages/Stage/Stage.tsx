@@ -88,7 +88,7 @@ export const Stage: FC<StageProps> = ({
 
       <StageInfoWrapper isActive={inProgress}>
         <StageNameWrapper>{name}</StageNameWrapper>
-        {!inProgress && perpetrator && (
+        {perpetrator && (
           <PerpetratorWrapper>
             <div>{perpetrator.name}</div>
             <div>{preparedClosingTime}</div>

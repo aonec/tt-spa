@@ -40,6 +40,7 @@ import { ReportType } from '../view/ReportsPage/ReportsPage.types';
 import { BlobResponseErrorType, EffectFailDataAxiosError } from 'types';
 import { message } from 'antd';
 import { addressSearchService } from 'services/addressSearchService/addressSearchService.models';
+import { currentOrganizationService } from 'services/currentOrganizationService';
 
 const ReportViewGate = createGate<{ reportType: ReportType }>();
 
@@ -98,6 +99,8 @@ const setFiltrationValues = createEvent<ReportFiltrationFormValues>();
 
 const clearFiltrationValues = createEvent();
 
+const setCityFilter = createEvent<string>();
+
 const $addressesWithHouseManagements = createStore<
   HouseManagementWithStreetsResponse[]
 >([])
@@ -122,7 +125,15 @@ const $filtrationValues = createStore<ReportFiltrationFormValues>({
   employeeReportDate: null,
 })
   .on(setFiltrationValues, (_, values) => values)
+  .on(setCityFilter, (prev, city) => ({ ...prev, city }))
   .reset(ReportViewGate.close, clearFiltrationValues);
+
+sample({
+  clock: ReportViewGate.open,
+  source: currentOrganizationService.outputs.$defaultCity,
+  filter: Boolean,
+  target: setCityFilter,
+});
 
 const $individualDevicesReportData = createStore<
   IndividualDevicesConstructedReportResponse[] | null

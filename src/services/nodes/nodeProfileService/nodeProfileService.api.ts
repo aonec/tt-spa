@@ -1,5 +1,9 @@
-import { axios } from 'api/axios';
+import { createQuery } from 'api/farfetched';
 import { PipeNodeResponse } from 'api/types';
 
-export const getPipeNode = (pipeNodeId: number): Promise<PipeNodeResponse> =>
-  axios.get(`PipeNodes/${pipeNodeId}`);
+export const getPipeNodeQuery = createQuery<
+  { pipeNodeId: number },
+  PipeNodeResponse | null
+>({
+  url: ({ pipeNodeId }) => `PipeNodes/${pipeNodeId}`,
+});

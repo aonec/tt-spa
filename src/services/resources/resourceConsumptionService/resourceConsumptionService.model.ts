@@ -2,7 +2,6 @@ import { createEffect, createEvent, createStore } from 'effector';
 import { combine, sample } from 'effector';
 import { createGate } from 'effector-react';
 import dayjs from 'api/dayjs';
-import { isEmpty } from 'lodash';
 import axios, { CancelTokenSource } from 'axios';
 import { GetSummaryHousingConsumptionsByResourcesResponse } from 'api/types';
 import { initialSelectedGraphTypes } from './resourceConsumptionService.constants';
@@ -27,9 +26,12 @@ import {
 import {
   getIsOnlyHousingDataEmpty,
   prepareDataForMinMaxCalculation,
-  setConsumptionData,
+  getConsumptionData,
 } from './resourceConsumptionService.utils';
-import { getMinAndMaxForResourceConsumptionGraph } from './view/ResourceConsumptionGraph/ResourceConsumptionGraph.utils';
+import {
+  getMinAndMaxForResourceConsumptionGraph,
+  hasNoConsecutiveNumbers,
+} from './view/ResourceConsumptionGraph/ResourceConsumptionGraph.utils';
 
 const clearData = createEvent();
 
@@ -45,7 +47,7 @@ const getSummaryHousingConsumptionsFx = createEffect<
   EffectFailDataAxiosError
 >(fetchSummaryHousingConsumptions);
 
-const getConsumptionData = createEvent<ConsumptionDataPayload>();
+const fetchConsumptionData = createEvent<ConsumptionDataPayload>();
 /**
  * одпу
  */
@@ -109,54 +111,110 @@ const getAdditionalNormativeAndSubscriberConsumptionDataFx = createEffect<
   EffectFailDataAxiosError
 >(fetchNormativeAndSubscriberConsumptionData);
 
+const $isFirstDataCame = createStore(false).reset(fetchConsumptionData);
+
 const $housingConsumptionData = createStore<ConsumptionDataForTwoMonth | null>(
   null,
-)
-  .on(getPrevHousingConsumptionPlotFx.doneData, (prev, data) =>
-    setConsumptionData(
-      prev,
-      ResourceConsumptionGraphDataType.prevMonthData,
-      data,
-    ),
-  )
-  .on(getPrevNormativeAndSubscriberConsumptionDataFx.doneData, (prev, data) =>
-    setConsumptionData(
-      prev,
-      ResourceConsumptionGraphDataType.prevMonthData,
-      data,
-    ),
-  )
-  .on(getHousingConsumptionPlotFx.doneData, (prev, data) =>
-    setConsumptionData(
-      prev,
+).reset(clearData);
+
+const $prevConsuptionData = combine(
+  {
+    housingConsumptionData: $housingConsumptionData,
+    isFirstDataCame: $isFirstDataCame,
+  },
+  ({ housingConsumptionData, isFirstDataCame }) => {
+    if (isFirstDataCame) {
+      return housingConsumptionData;
+    } else {
+      return {};
+    }
+  },
+);
+
+sample({
+  clock: getHousingConsumptionPlotFx.doneData,
+  source: $prevConsuptionData,
+  fn: (prevConsuptionData, consumptionData) =>
+    getConsumptionData(
+      prevConsuptionData,
       ResourceConsumptionGraphDataType.currentMonthData,
-      data,
+      consumptionData,
     ),
-  )
-  .on(getNormativeAndSubscriberConsumptionDataFx.doneData, (prev, data) =>
-    setConsumptionData(
-      prev,
+  target: $housingConsumptionData,
+});
+
+sample({
+  clock: getPrevHousingConsumptionPlotFx.doneData,
+  source: $prevConsuptionData,
+  fn: (prevConsuptionData, consumptionData) =>
+    getConsumptionData(
+      prevConsuptionData,
+      ResourceConsumptionGraphDataType.prevMonthData,
+      consumptionData,
+    ),
+  target: $housingConsumptionData,
+});
+
+sample({
+  clock: getNormativeAndSubscriberConsumptionDataFx.doneData,
+  source: $prevConsuptionData,
+  fn: (prevConsuptionData, consumptionData) =>
+    getConsumptionData(
+      prevConsuptionData,
       ResourceConsumptionGraphDataType.currentMonthData,
-      data,
+      consumptionData,
     ),
-  )
-  .on(getAdditionalHousingConsumptionPlotFx.doneData, (prev, data) =>
-    setConsumptionData(
-      prev,
+  target: $housingConsumptionData,
+});
+
+sample({
+  clock: getPrevNormativeAndSubscriberConsumptionDataFx.doneData,
+  source: $prevConsuptionData,
+  fn: (prevConsuptionData, consumptionData) =>
+    getConsumptionData(
+      prevConsuptionData,
+      ResourceConsumptionGraphDataType.prevMonthData,
+      consumptionData,
+    ),
+  target: $housingConsumptionData,
+});
+
+sample({
+  clock: getAdditionalHousingConsumptionPlotFx.doneData,
+  source: $prevConsuptionData,
+  fn: (prevConsuptionData, consumptionData) =>
+    getConsumptionData(
+      prevConsuptionData,
       ResourceConsumptionGraphDataType.additionalAddress,
-      data,
+      consumptionData,
     ),
-  )
-  .on(
+  target: $housingConsumptionData,
+});
+
+sample({
+  clock: getAdditionalNormativeAndSubscriberConsumptionDataFx.doneData,
+  source: $prevConsuptionData,
+  fn: (prevConsuptionData, consumptionData) =>
+    getConsumptionData(
+      prevConsuptionData,
+      ResourceConsumptionGraphDataType.additionalAddress,
+      consumptionData,
+    ),
+  target: $housingConsumptionData,
+});
+
+sample({
+  clock: [
+    getPrevHousingConsumptionPlotFx.doneData,
+    getPrevNormativeAndSubscriberConsumptionDataFx.doneData,
+    getHousingConsumptionPlotFx.doneData,
+    getNormativeAndSubscriberConsumptionDataFx.doneData,
+    getAdditionalHousingConsumptionPlotFx.doneData,
     getAdditionalNormativeAndSubscriberConsumptionDataFx.doneData,
-    (prev, data) =>
-      setConsumptionData(
-        prev,
-        ResourceConsumptionGraphDataType.additionalAddress,
-        data,
-      ),
-  )
-  .reset([clearData, getConsumptionData]);
+  ],
+  fn: () => true,
+  target: $isFirstDataCame,
+});
 
 const getAdditionalConsumptionData = createEvent<ConsumptionDataPayload>();
 
@@ -181,7 +239,7 @@ const $dataForMinMaxCalculation = combine(
   prepareDataForMinMaxCalculation,
 );
 
-const $dynamicMinMax = createStore<[number, number]>([0, 0]);
+const $dynamicYMinMax = createStore<[number, number]>([0, 90]);
 
 const $isOnlyHousingDataEmpty = $housingConsumptionData.map(
   getIsOnlyHousingDataEmpty,
@@ -219,6 +277,22 @@ const $isLoading = createStore(true).on(
   (_, isLoading) => isLoading,
 );
 
+const $isAllDataLoading = combine(
+  $isHousingLoading,
+  $isPrevHousingLoading,
+  $isNormativeAndSubscriberLoading,
+  $isPrevNormativeAndSubscriberLoading,
+  (...loadings) => loadings.every((loading) => loading),
+);
+
+const $isDataLoading = combine(
+  $isHousingLoading,
+  $isPrevHousingLoading,
+  $isNormativeAndSubscriberLoading,
+  $isPrevNormativeAndSubscriberLoading,
+  (...loadings) => loadings.includes(true),
+);
+
 const cancelPrevMonthRequests = createEvent<{
   token: CancelTokenSource;
 }>();
@@ -254,7 +328,7 @@ sample({
 });
 
 sample({
-  clock: getConsumptionData,
+  clock: fetchConsumptionData,
   fn: (params) => ({ params, token: axios.CancelToken.source() }),
   target: [
     getHousingConsumptionPlotFx,
@@ -274,7 +348,7 @@ sample({
 });
 
 sample({
-  clock: getConsumptionData,
+  clock: fetchConsumptionData,
   source: $isAdditionalAddressSelected,
   filter: (isAdditionalAddressSelected) => !isAdditionalAddressSelected,
   fn: (_, params) => {
@@ -297,10 +371,10 @@ sample({
 });
 
 sample({
-  source: $dynamicMinMax,
+  source: $dynamicYMinMax,
   clock: $dataForMinMaxCalculation,
   filter: (_, dataForMinMaxCalculation) => {
-    const isHaveDataForMinMaxCalculation = !isEmpty(
+    const isHaveDataForMinMaxCalculation = !hasNoConsecutiveNumbers(
       dataForMinMaxCalculation?.flat(),
     );
     return isHaveDataForMinMaxCalculation;
@@ -315,7 +389,7 @@ sample({
       ? ([minValue, maxValue] as [number, number])
       : dynamicMinMax;
   },
-  target: $dynamicMinMax,
+  target: $dynamicYMinMax,
 });
 
 sample({
@@ -359,15 +433,27 @@ sample({
   target: setToken,
 });
 
+const handleHousingConsumptionSuccess = getHousingConsumptionPlotFx.doneData;
+const handlePrevHousingConsumptionSuccess =
+  getPrevHousingConsumptionPlotFx.doneData;
+const handlePrevNormativeAndSubscriberConsumptionSuccess =
+  getPrevNormativeAndSubscriberConsumptionDataFx.doneData;
+const handleNormativeAndSubscriberConsumptionSuccess =
+  getNormativeAndSubscriberConsumptionDataFx.doneData;
+
 export const resourceConsumptionService = {
   inputs: {
-    getConsumptionData,
+    getConsumptionData: fetchConsumptionData,
     getAdditionalConsumptionData,
     clearData,
     clearSummary,
     setSelectedGraphTypes,
     clearAdditionalAddressData,
     getSummaryConsumptions,
+    handleHousingConsumptionSuccess,
+    handlePrevHousingConsumptionSuccess,
+    handlePrevNormativeAndSubscriberConsumptionSuccess,
+    handleNormativeAndSubscriberConsumptionSuccess,
   },
   outputs: {
     $housingConsumptionData,
@@ -380,8 +466,10 @@ export const resourceConsumptionService = {
     $isPrevHousingLoading,
     $isPrevNormativeAndSubscriberLoading,
     $isAdditionalAddressSelected,
-    $dynamicMinMax,
+    $dynamicMinMax: $dynamicYMinMax,
     $isOnlyHousingDataEmpty,
+    $isAllDataLoading,
+    $isDataLoading,
   },
   gates: { ResourceConsumptionGate },
 };

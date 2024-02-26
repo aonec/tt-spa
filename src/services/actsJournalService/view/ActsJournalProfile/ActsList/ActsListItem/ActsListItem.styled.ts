@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { actsJournalColumnsGridTemplate } from '../../ActsJournalProfile.constants';
+import { Link } from 'react-router-dom';
 
 export const Wrapper = styled.div`
   display: grid;
@@ -20,4 +21,18 @@ export const ActDate = styled.div`
   color: rgba(39, 47, 90, 1);
   font-weight: bold;
   font-size: 14px;
+`;
+
+export const ActAddress = styled(Link)`
+  color: #189ee9;
+
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 16px;
+  transition: 0.2s;
+
+  &:hover {
+    color: #38437a;
+  }
 `;

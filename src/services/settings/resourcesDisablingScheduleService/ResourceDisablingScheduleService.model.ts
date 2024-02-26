@@ -1,12 +1,10 @@
 import { createEffect, createEvent, createStore } from 'effector';
 import { sample } from 'effector';
 import { createGate } from 'effector-react';
-
 import { ResourceDisconnectingResponsePagedList } from 'api/types';
 import { DisablingResourcesProps } from './ResourceDisablingScheduleContainer.types';
 import { fetchDisablingResources } from './ResourcesDisablingScheduleService.api';
-import { addressSearchService } from 'services/addressSearchService/addressSearchService.models';
-import _ from 'lodash';
+import { currentOrganizationService } from 'services/currentOrganizationService';
 
 const resourceDisablingGate = createGate<DisablingResourcesProps>();
 
@@ -46,9 +44,9 @@ sample({
 });
 
 sample({
-  clock: addressSearchService.outputs.$existingCities,
+  source: currentOrganizationService.outputs.$defaultCity,
   filter: Boolean,
-  fn: (cities) => ({ City: _.last(cities) }),
+  fn: (City) => ({ City }),
   target: setFilters,
 });
 

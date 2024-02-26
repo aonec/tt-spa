@@ -14,41 +14,7 @@ import {
 } from './resourceConsumptionService.types';
 import { BooleanTypesOfResourceConsumptionGraphForTwoMonth } from './view/ResourceConsumptionProfile/ResourceConsumptionProfile.types';
 import { prepareData } from 'utils/Graph.utils';
-
-export const prepareDataForConsumptionGraphWithLastValue = (
-  dataArr: DateTimeDoubleDictionaryItem[],
-  lastDate?: string,
-) => {
-  if (!dataArr.length) {
-    return [];
-  }
-  if (!lastDate) {
-    return prepareDataForConsumptionGraph(dataArr);
-  }
-  const startOfMonth = dayjs(dataArr[0].key).startOf('month');
-  const emptyArray = getFilledArray(
-    dayjs(lastDate).diff(startOfMonth, 'd') + 1,
-    (index) => index + 1,
-  );
-
-  const objectOfData = dataArr.reduce((acc, elem) => {
-    const diff = String(dayjs(elem.key).diff(startOfMonth, 'day') + 1);
-
-    return { ...acc, [diff]: { ...elem, key: diff } };
-  }, {} as { [key: string]: DateTimeDoubleDictionaryItem });
-
-  let lastValue: null | number = null;
-
-  return emptyArray.map((day) => {
-    const foundValue = objectOfData[day];
-
-    if (!foundValue) {
-      return { key: String(day), value: lastValue };
-    }
-    lastValue = foundValue.value || null;
-    return foundValue;
-  });
-};
+import { hasNoConsecutiveNumbers } from './view/ResourceConsumptionGraph/ResourceConsumptionGraph.utils';
 
 export const prepareDataForConsumptionGraph = (
   dataArr: DateTimeDoubleDictionaryItem[],
@@ -65,14 +31,17 @@ export const prepareDataForConsumptionGraph = (
     return { ...acc, [diff]: { ...elem, key: diff } };
   }, {} as { [key: string]: DateTimeDoubleDictionaryItem });
 
-  return emptyArray.map((day) => {
-    const foundValue = objectOfData[day];
+  return [
+    { key: '0', value: 0 },
+    ...emptyArray.map((day) => {
+      const foundValue = objectOfData[day];
 
-    if (!foundValue) {
-      return { key: String(day), value: null };
-    }
-    return foundValue;
-  });
+      if (!foundValue) {
+        return { key: String(day), value: null };
+      }
+      return foundValue;
+    }),
+  ];
 };
 
 export const getAddressSearchData = (
@@ -91,7 +60,7 @@ export const getAddressSearchData = (
     'addressString',
   );
 
-export const setConsumptionData = (
+export const getConsumptionData = (
   prev: ConsumptionDataForTwoMonth | null,
   fieldName: ResourceConsumptionGraphDataType,
   data: SetConsumptionDataType,
@@ -175,16 +144,21 @@ export const prepareDataForMinMaxCalculation = (
 export const getIsOnlyHousingDataEmpty = (
   housingConsumptionData: ConsumptionDataForTwoMonth | null,
 ) => {
-  const isCurrentMonthHousing =
-    housingConsumptionData?.currentMonthData?.housing?.length;
-  const isCurrentMonthNormative =
-    housingConsumptionData?.currentMonthData?.normative?.length;
-  const isCurrentMonthSubscriber =
-    housingConsumptionData?.currentMonthData?.subscriber?.length;
-  const isPrevMonthNormative =
-    housingConsumptionData?.prevMonthData?.normative?.length;
-  const isPrevMonthSubscriber =
-    housingConsumptionData?.prevMonthData?.subscriber?.length;
+  const isCurrentMonthHousing = !hasNoConsecutiveNumbers(
+    housingConsumptionData?.currentMonthData?.housing || [],
+  );
+  const isCurrentMonthNormative = !hasNoConsecutiveNumbers(
+    housingConsumptionData?.currentMonthData?.normative || [],
+  );
+  const isCurrentMonthSubscriber = !hasNoConsecutiveNumbers(
+    housingConsumptionData?.currentMonthData?.subscriber || [],
+  );
+  const isPrevMonthNormative = !hasNoConsecutiveNumbers(
+    housingConsumptionData?.prevMonthData?.normative || [],
+  );
+  const isPrevMonthSubscriber = !hasNoConsecutiveNumbers(
+    housingConsumptionData?.prevMonthData?.subscriber || [],
+  );
 
   const isOtherDataNotEmpty = [
     isCurrentMonthNormative,

@@ -52,7 +52,7 @@ export const SearchTasks: FC<SearchTasksProps> = ({
         PerpetratorId: currentFilter?.PerpetratorId,
         Resource: currentFilter?.Resource,
         EngineeringElement: currentFilter?.EngineeringElement,
-        City: currentFilter?.City || '',
+        City: currentFilter?.City,
         Street: currentFilter?.Street,
         HousingStockNumber: currentFilter?.HousingStockNumber,
         Corpus: currentFilter?.Corpus,
@@ -140,8 +140,8 @@ export const SearchTasks: FC<SearchTasksProps> = ({
         </>
       }
     >
-      <ExistingStreetsGate City={values.City} />
       <ExistingCitiesGate />
+      <ExistingStreetsGate City={values.City} />
       <Wrapper>
         <Input
           small

@@ -19,6 +19,7 @@ export type ResourceConsumptionProfileProps = {
   ) => void;
   summaryConsumption: GetSummaryHousingConsumptionsByResourcesResponse | null;
   resource: EResourceType;
+  resourceForColor: EResourceType;
   isSummaryLoading: boolean;
   isPrevNormativeAndSubscriberLoading: boolean;
   isPrevHousingLoading: boolean;
@@ -32,6 +33,8 @@ export type ResourceConsumptionProfileProps = {
   };
   dynamicMinMax: [number, number];
   isOnlyHousingDataEmpty: boolean;
+  isAllDataLoading: boolean;
+  isDataLoading: boolean;
 };
 
 export type BooleanTypesOfResourceConsumptionGraphForTwoMonth = {

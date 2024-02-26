@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ComponentMeta } from '@storybook/react';
+import { Meta } from '@storybook/react';
 import { CommentPanel } from '.';
 import dayjs from 'api/dayjs';
 
@@ -7,7 +7,7 @@ export default {
   title: 'CommentPanel',
   component: CommentPanel,
   parameters: { layout: 'centered' },
-} as ComponentMeta<typeof CommentPanel>;
+} as Meta<typeof CommentPanel>;
 
 export const HavePermission = () => {
   const [comment, setComment] = useState<string | null>(

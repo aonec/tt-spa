@@ -17,7 +17,7 @@ export const EditHomeownerContainer = () => {
     handleCloseModal,
     handleEditHomeowner,
     handleForced,
-    housingStockPayload,
+    homeownerPayload,
     isConfirmationModalOpen,
     isLoading,
     isModalOpen,
@@ -25,7 +25,7 @@ export const EditHomeownerContainer = () => {
   } = useUnit({
     isModalOpen: outputs.$isModalOpen,
     isLoading: outputs.$isLoading,
-    housingStockPayload: outputs.$housingStockPayload,
+    homeownerPayload: outputs.$housingStockPayload,
     samePersonalAccountNumderId: outputs.$samePersonalAccountNumderId,
     isConfirmationModalOpen: outputs.$isConfirmationModalOpen,
     handleCloseModal: inputs.closeEditHomeownerModal,
@@ -35,13 +35,12 @@ export const EditHomeownerContainer = () => {
   });
 
   const handleEditHomeownerPreparation = (payload: EditHomeownerPayload) => {
-    if (!housingStockPayload?.id) return;
+    if (!homeownerPayload?.id) return;
 
     handleEditHomeowner({
-      id: housingStockPayload?.id,
+      id: homeownerPayload?.id,
       name: payload.name,
       personalAccountNumber: payload.personalAccountNumber,
-      phoneNumbers: payload.phoneNumbers,
       paymentCode: payload.paymentCode,
       personType: String(payload.personType) as EPersonType,
       isMainOnApartment: payload.isMainOnApartment,
@@ -59,11 +58,11 @@ export const EditHomeownerContainer = () => {
         formId={formId}
         loading={isLoading}
         form={
-          housingStockPayload && (
+          homeownerPayload && (
             <EditHomeownerForm
               formId={formId}
               handleEditHomeownerPreparation={handleEditHomeownerPreparation}
-              initialValues={housingStockPayload}
+              initialValues={homeownerPayload}
               isEdit={isModalOpen}
             />
           )

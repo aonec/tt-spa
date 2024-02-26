@@ -4,6 +4,7 @@ import _ from 'lodash';
 import { getCurrentManagingFirm } from './currentOrganizationService.api';
 import { OrganizationResponse } from 'api/types';
 import { OrganizationCoordinates } from './currentOrganizationService.types';
+import { apiService } from 'api';
 
 const CurrentManagingFirmGate = createGate();
 
@@ -62,6 +63,10 @@ sample({
   target: getCurrentManagingFirmFx,
 });
 
+const $defaultCity = $currentManagingFirm.map(
+  (firm) => firm?.platformConfiguration?.defaultCity || null,
+);
+
 export const currentOrganizationService = {
   outputs: {
     $currentManagingFirm,
@@ -69,6 +74,9 @@ export const currentOrganizationService = {
     $organizationCoordinates,
     $diametersConfig,
     $hasCorpuses,
+    $devUrl: apiService.outputs.$devUrl,
+    $defaultCity,
   },
   gates: { CurrentManagingFirmGate },
+  inputs: { setDevUrl: apiService.inputs.setDevUrl },
 };

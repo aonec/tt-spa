@@ -4,6 +4,6 @@ export const TypeNameLookup: {
   [key in ResourceConsumptionGraphType]: string;
 } = {
   [ResourceConsumptionGraphType.Housing]: 'Общедомовое потребление',
-  [ResourceConsumptionGraphType.Normative]: 'Нормативное потребление ',
-  [ResourceConsumptionGraphType.Subscriber]: 'Абонентское потребление ',
+  [ResourceConsumptionGraphType.Normative]: 'Нормативное потребление',
+  [ResourceConsumptionGraphType.Subscriber]: 'Абонентское потребление',
 };

@@ -32,11 +32,16 @@ const $houseManagements = createStore<HouseManagementWithStreetsResponse[]>([])
   .reset(resourceConsumptionService.gates.ResourceConsumptionGate.close);
 
 const setResource = createEvent<EResourceType>();
+
 const $selectedResource = createStore<EResourceType>(
   EResourceType.ColdWaterSupply,
 )
   .on(setResource, (_, resource) => resource)
   .reset(clearFilter);
+
+const $selectedResourceForColor = createStore<EResourceType>(
+  EResourceType.ColdWaterSupply,
+);
 
 const setFilter = createEvent<ConsumptionDataFilter>();
 const $resourceConsumptionFilter = createStore<ConsumptionDataFilter>({
@@ -111,5 +116,6 @@ export const resourceConsumptionFilterService = {
     $houseManagements,
     $resourceConsumptionFilter,
     $selectedResource,
+    $selectedResourceForColor,
   },
 };

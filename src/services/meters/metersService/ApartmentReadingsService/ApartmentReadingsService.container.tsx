@@ -35,6 +35,7 @@ export const ApartmentReadingsContainer = () => {
     nearestAppointment,
     removePhoneNumber,
     addPhoneNumber,
+    replacePhoneNumber,
   } = useUnit({
     printIssueCertificate: inputs.printIssueCertificate,
     isUpdateHomeownerLoading: outputs.$isUpdateHomeownerLoading,
@@ -55,6 +56,7 @@ export const ApartmentReadingsContainer = () => {
     nearestAppointment: outputs.$apartmentAppointment,
     removePhoneNumber: inputs.removePhoneNumber,
     addPhoneNumber: inputs.addPhoneNumber,
+    replacePhoneNumber: inputs.replacePhoneNumber,
   });
 
   const isPermitionToApartmentStatusPatch = usePermission([
@@ -103,6 +105,7 @@ export const ApartmentReadingsContainer = () => {
         nearestAppointment={nearestAppointment}
         deletePhoneNumber={removePhoneNumber}
         addPhoneNumber={addPhoneNumber}
+        replacePhoneNumber={replacePhoneNumber}
       />
     </>
   );

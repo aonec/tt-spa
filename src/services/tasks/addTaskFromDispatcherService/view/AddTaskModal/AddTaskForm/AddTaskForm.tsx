@@ -50,6 +50,8 @@ import { useSwitchInputOnEnter } from 'hooks/useSwitchInputOnEnter';
 import { fromEnter } from 'ui-kit/shared/DatePickerNative';
 import { validationSchema } from './AddTaskForm.constants';
 import { DatePicker } from 'ui-kit/DatePicker';
+import { SavePhoneNumber } from './savePhoneNumberService';
+import { AlertIconType } from 'ui-kit/Alert/Alert.types';
 
 const {
   gates: { PageGate },
@@ -73,12 +75,18 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
   handleSelectTaskType,
   isManualDeadlineRequired,
   selectedTaskReasonOption,
+  handleChangeSubscriberName,
+  handleChangePhoneNumber,
+  isSavePhoneNumberOpen,
+  handleReplacePhoneNumber,
+  handleClosePhoneNumber,
+  onSuccessSavePhone,
 }) => {
   const initialSource = useMemo(() => ERPSources[0], [ERPSources]);
 
   const { values, handleSubmit, setFieldValue, isValid } = useFormik<AddTask>({
     initialValues: {
-      sourceId: initialSource.id,
+      sourceId: initialSource?.id || null,
       requestNumber: null,
       taskType: null,
       workTypeId: null,
@@ -107,8 +115,8 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
   });
 
   const isInitialSource = useMemo(
-    () => values.sourceId === initialSource.id,
-    [values.sourceId, initialSource.id],
+    () => values.sourceId === initialSource?.id,
+    [values.sourceId, initialSource?.id],
   );
 
   const selectedSource = useMemo(() => {
@@ -141,6 +149,23 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
     !isSourceNumberRequired,
   ].every(Boolean);
 
+  const next = useSwitchInputOnEnter(dataKey, false, false);
+
+  useEffect(() => {
+    return onSuccessSavePhone.watch(() => {
+      if (isOnlySubscriberRequired) {
+        next(4);
+      } else {
+        next(5);
+      }
+      return;
+    }).unsubscribe;
+  }, [onSuccessSavePhone, isOnlySubscriberRequired, next]);
+
+  useEffect(() => {
+    handleChangePhoneNumber(values?.phoneNumber || null);
+  }, [values.phoneNumber, handleChangePhoneNumber]);
+
   useEffect(() => {
     setFieldValue('isSourceNumberRequired', isSourceNumberRequired);
   }, [isSourceNumberRequired, setFieldValue]);
@@ -156,8 +181,6 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
   useEffect(() => {
     setDisableSubmit(!isValid);
   }, [isValid, setDisableSubmit]);
-
-  const next = useSwitchInputOnEnter(dataKey, false, false);
 
   const preparedAddressOptions = useMemo(
     () =>
@@ -352,10 +375,16 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
         <GridContainerAsymmetricRight>
           <FormItem label="Адрес">
             <AutoCompleteAntD
+              defaultActiveFirstOption
               showSearch
               allowClear
               value={values.addressSearch}
-              onChange={(value) => setFieldValue('addressSearch', value)}
+              onChange={(value) => {
+                setFieldValue('addressSearch', value);
+                setFieldValue('apartmentNumber', null);
+                setFieldValue('subscriberName', null);
+                setFieldValue('phoneNumber', null);
+              }}
               onSelect={(value) => {
                 setFieldValue('selectedObjectAddress', value);
                 handleSelectHousingAddress(value);
@@ -384,8 +413,13 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
 
           <FormItem label="Номер квартиры">
             <AutoCompleteAntD
+              defaultActiveFirstOption
               value={values.apartmentNumber}
-              onChange={(value) => setFieldValue('apartmentNumber', value)}
+              onChange={(value) => {
+                setFieldValue('apartmentNumber', value);
+                setFieldValue('subscriberName', null);
+                setFieldValue('phoneNumber', null);
+              }}
               onSelect={(value) => {
                 setFieldValue('apartmentNumber', value);
                 handleSelectApartmentNumber(value);
@@ -415,9 +449,14 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
           <GridContainer>
             <FormItem label="ФИО абонента">
               <AutoCompleteAntD
+                defaultActiveFirstOption
                 allowClear
                 value={values.subscriberName || undefined}
-                onChange={(value) => setFieldValue('subscriberName', value)}
+                onChange={(value) => {
+                  setFieldValue('subscriberName', value);
+                  setFieldValue('phoneNumber', null);
+                  handleChangeSubscriberName(value);
+                }}
                 options={apartmentHomeownerNames}
                 data-reading-input={dataKey}
                 onKeyDown={fromEnter(() => {
@@ -445,28 +484,34 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
               </AutoCompleteAntD>
             </FormItem>
             <FormItem label="Номер телефона">
-              <Input
-                placeholder="Введите"
-                value={values.phoneNumber || undefined}
-                onChange={(value) =>
-                  setFieldValue('phoneNumber', value.target.value)
-                }
-                data-reading-input={dataKey}
-                onKeyDown={fromEnter(() => {
-                  if (isOnlySubscriberRequired) {
-                    next(4);
-                  } else {
-                    next(5);
-                  }
-                })}
-              />
+              <SavePhoneNumber
+                isOpen={isSavePhoneNumberOpen}
+                handleReplacePhoneNumber={handleReplacePhoneNumber}
+                handleClosePhoneNumber={handleClosePhoneNumber}
+              >
+                <Input
+                  placeholder="Введите"
+                  value={values.phoneNumber || undefined}
+                  onChange={(value) => {
+                    setFieldValue('phoneNumber', value.target.value);
+                  }}
+                  data-reading-input={dataKey}
+                  onKeyDown={fromEnter(() => {
+                    if (isOnlySubscriberRequired) {
+                      next(4);
+                    } else {
+                      next(5);
+                    }
+                  })}
+                />
+              </SavePhoneNumber>
             </FormItem>
           </GridContainer>
         )}
 
         {Boolean(resourceDisconnection.length) &&
           resourceDisconnection.map((disconnection) => (
-            <Alert centered>
+            <Alert centered icon={AlertIconType.info}>
               {getResourceDisconnectionAlert(
                 disconnection.disconnectingType,
                 disconnection.resource,
@@ -531,7 +576,10 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
               })}
               open={isReasonOpen}
               onBlur={() => setReasonOpen(false)}
-              onFocus={() => setReasonOpen(true)}
+              onFocus={() => {
+                setReasonOpen(true);
+                handleClosePhoneNumber();
+              }}
               onMouseDown={() => setReasonOpen(true)}
             >
               {taskReasonOptions.map((elem) => (
@@ -617,6 +665,7 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
 
         <FormItem label="Описание проблемы">
           <TextareaSC
+            data-reading-input={dataKey}
             placeholder="Кратко опишите проблему"
             value={values.taskDescription || undefined}
             onChange={(value) =>

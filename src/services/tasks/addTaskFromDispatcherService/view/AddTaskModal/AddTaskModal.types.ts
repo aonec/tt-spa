@@ -11,6 +11,7 @@ import {
   HomeownerNameOption,
   PreparedAddress,
 } from '../../addTaskFromDispatcherService.types';
+import { Event } from 'effector';
 
 export type AddTaskModalProps = {
   isModalOpen: boolean;
@@ -29,4 +30,10 @@ export type AddTaskModalProps = {
   handleSelectTaskType: (payload: EisTaskType) => void;
   isManualDeadlineRequired: boolean;
   selectedTaskReasonOption: ErpTaskReasonItemResponse[];
+  handleChangeSubscriberName: (payload: string | null) => void;
+  handleChangePhoneNumber: (payload: string | null) => void;
+  isSavePhoneNumberOpen: boolean;
+  handleReplacePhoneNumber: () => void;
+  handleClosePhoneNumber: () => void;
+  onSuccessSavePhone: Event<void>;
 };

@@ -9,10 +9,7 @@ import {
   GetDataForIndividualDevicesConsumptionPlotResponse,
   GetSummaryHousingConsumptionsByResourcesResponse,
 } from 'api/types';
-import {
-  prepareDataForConsumptionGraph,
-  prepareDataForConsumptionGraphWithLastValue,
-} from './resourceConsumptionService.utils';
+import { prepareDataForConsumptionGraph } from './resourceConsumptionService.utils';
 
 export const fetchSummaryHousingConsumptions = ({
   params,
@@ -74,11 +71,11 @@ export const fetchNormativeAndSubscriberConsumptionData = async ({
     );
 
   const normative: ResourceConsumptionWithNull[] =
-    prepareDataForConsumptionGraphWithLastValue(
+    prepareDataForConsumptionGraph(
       normativeAndSubscriberData.normativeConsumption || [],
     );
   const subscriber: ResourceConsumptionWithNull[] =
-    prepareDataForConsumptionGraphWithLastValue(
+    prepareDataForConsumptionGraph(
       normativeAndSubscriberData.subscriberConsumption || [],
     );
 

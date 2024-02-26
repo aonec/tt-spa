@@ -24,7 +24,7 @@ const searchForm = createForm({
       init: '',
     },
     InspectorId: {
-      init: null as number | null,
+      init: '',
     },
   },
 });

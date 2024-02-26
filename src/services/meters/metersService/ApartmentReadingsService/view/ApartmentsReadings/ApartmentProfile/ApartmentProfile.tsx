@@ -21,6 +21,7 @@ import { TypeAddressToStart } from 'ui-kit/shared/TypeToStart';
 import { EApartmentStatus } from 'api/types';
 import { NothingFound } from 'ui-kit/shared/NothingFound';
 import dayjs from 'dayjs';
+import { ApartmentReadingsActsJournalContainer } from './apartmentReadingsActsJournal';
 
 const { gates } = apartmentReadingsService;
 const { ApartmentGate } = gates;
@@ -43,6 +44,7 @@ export const ApartmentProfile: FC<ApartmentProfileProps> = ({
   nearestAppointment,
   addPhoneNumber,
   deletePhoneNumber,
+  replacePhoneNumber,
 }) => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
@@ -168,6 +170,7 @@ export const ApartmentProfile: FC<ApartmentProfileProps> = ({
                 isUpdateHomeownerLoading={isUpdateHomeownerLoading}
                 addPhoneNumber={addPhoneNumber}
                 deletePhoneNumber={deletePhoneNumber}
+                replacePhoneNumber={replacePhoneNumber}
                 additionalHeaderInfo={
                   appointmentDate && (
                     <AppointmentTextWrapper>
@@ -190,6 +193,9 @@ export const ApartmentProfile: FC<ApartmentProfileProps> = ({
                 />
               </ReadingsWrapper>
             </ContentWrapper>
+          )}
+          {apartment && (
+            <ApartmentReadingsActsJournalContainer apartmentId={apartment.id} />
           )}
         </WithLoader>
       </div>

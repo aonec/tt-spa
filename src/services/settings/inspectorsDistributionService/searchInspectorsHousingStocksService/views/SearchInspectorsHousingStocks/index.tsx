@@ -44,7 +44,7 @@ export const SearchInspectorsHousingStocks: FC<
                     if (!value) {
                       form.fields.InspectorId.reset();
                     } else {
-                      form.fields.InspectorId.onChange(value as number);
+                      form.fields.InspectorId.onChange(value as string);
                     }
                   }}
                   allowClear

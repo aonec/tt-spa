@@ -2,6 +2,8 @@ import React, { useEffect, useMemo } from 'react';
 import { EditDistrictBordersMap } from './EditDistrictBordersMap';
 import { useUnit } from 'effector-react';
 import {
+  addHouseToDistrictMutation,
+  deleteHouseInDistrictMutation,
   existingDistrictsQuery,
   existingHousingStocksQuery,
 } from './editDistrictBordersService.api';
@@ -39,6 +41,10 @@ export const EditDistrictBordersContainer = () => {
     updateDistrictMutation,
   );
 
+  const { start: addHouse } = useUnit(addHouseToDistrictMutation);
+
+  const { start: deleteHouse } = useUnit(deleteHouseInDistrictMutation);
+
   const districtData = useMemo(() => {
     const district = existingDistricts?.find((elem) => elem.id === id) || null;
 
@@ -58,6 +64,22 @@ export const EditDistrictBordersContainer = () => {
           districtPolygonCoordinates: coordinates,
         }),
       });
+  };
+
+  const handleAddHouse = (housesToAdd: number[]) => {
+    const districtId = id;
+    if (!districtId) return;
+
+    housesToAdd.map((houseId) => addHouse({ districtId, data: houseId }));
+  };
+
+  const handleDeleteHouse = (housesToDelete: number[]) => {
+    const districtId = id;
+    if (!districtId) return;
+
+    housesToDelete.map((houseId) =>
+      deleteHouse({ districtId, buildingId: houseId }),
+    );
   };
 
   useEffect(() => {
@@ -80,6 +102,8 @@ export const EditDistrictBordersContainer = () => {
         isLoadingDistricts={isLoadingDistricts}
         isLoadingUpdateDistrict={isLoadingUpdateDistrict}
         handleUpdateDistrictBorder={handleUpdateDistrictBorder}
+        handleAddHouse={handleAddHouse}
+        handleDeleteHouse={handleDeleteHouse}
       />
     </>
   );

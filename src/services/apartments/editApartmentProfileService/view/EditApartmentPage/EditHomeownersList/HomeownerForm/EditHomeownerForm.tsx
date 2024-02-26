@@ -13,7 +13,12 @@ import {
   validationSchema,
 } from './EditHomeownerForm.constants';
 import { CheckBoxWrapper, FirstLineWrapper } from './EditHomeownerForm.styled';
-import { EditHomeownerFormProps } from './EditHomeownerForm.types';
+import {
+  EditHomeownerFormProps,
+  EditHomeownerFormik,
+} from './EditHomeownerForm.types';
+import { PhoneNumberFormField } from 'services/homeowner/personalNumber/components/PersonalNumberForm/PhoneNumberFormField';
+import { EditHomeownerPhoneNumberContainer } from './editHomeownerPhoneNumber';
 
 export const EditHomeownerForm: FC<EditHomeownerFormProps> = ({
   formId,
@@ -25,19 +30,19 @@ export const EditHomeownerForm: FC<EditHomeownerFormProps> = ({
   const { apartmentId } = useParams<{ apartmentId: string }>();
 
   const { values, handleChange, setFieldValue, handleSubmit, errors } =
-    useFormik({
+    useFormik<EditHomeownerFormik>({
       initialValues: initialValues || formInitialValues,
       onSubmit: (values) => {
-        // isEdit &&
-        //   handleEditHomeownerPreparation &&
-        //   handleEditHomeownerPreparation({
-        //     personalAccountNumber: values.personalAccountNumber,
-        //     name: values.name,
-        //     personType: values.personType,
-        //     paymentCode: values.paymentCode,
-        //     isMainOnApartment: values.isMainOnApartment,
-        //     openAt: values.openAt,
-        //   });
+        isEdit &&
+          handleEditHomeownerPreparation &&
+          handleEditHomeownerPreparation({
+            personalAccountNumber: values.personalAccountNumber,
+            name: values.name,
+            personType: values.personType,
+            paymentCode: values.paymentCode,
+            isMainOnApartment: values.isMainOnApartment,
+            openAt: values.openAt,
+          });
 
         handleCreateHomeowner &&
           handleCreateHomeowner({
@@ -85,14 +90,30 @@ export const EditHomeownerForm: FC<EditHomeownerFormProps> = ({
           />
           <ErrorMessage>{errors.paymentCode}</ErrorMessage>
         </FormItem>
-        <FormItem label="Телефон">
-          {/* <Input
-            value={values.phoneNumber}
-            name="phoneNumber"
-            onChange={handleChange}
-            placeholder="Введите телефон"
-          /> */}
-        </FormItem>
+        {!isEdit && (
+          <FormItem label="Телефон">
+            <PhoneNumberFormField
+              phoneNumbers={values.phoneNumbers || []}
+              addPhoneNumber={(phone) =>
+                setFieldValue('phoneNumbers', [
+                  ...(values.phoneNumbers || []),
+                  phone,
+                ])
+              }
+              deletePhoneNumber={(oldPhoneNumber) =>
+                setFieldValue(
+                  'phoneNumbers',
+                  (values.phoneNumbers || []).filter(
+                    (elem) => elem !== oldPhoneNumber,
+                  ),
+                )
+              }
+            />
+          </FormItem>
+        )}
+        {isEdit && initialValues?.id && (
+          <EditHomeownerPhoneNumberContainer accId={initialValues.id} />
+        )}
         <FormItem label="Дата открытия лицевого счета">
           {!isEdit && (
             <>

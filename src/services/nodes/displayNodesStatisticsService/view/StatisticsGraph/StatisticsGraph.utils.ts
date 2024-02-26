@@ -1,5 +1,5 @@
 import dayjs from 'api/dayjs';
-import { DateTimeTaskStatisticsItemArrayDictionaryItem } from 'api/types';
+import { TaskStatisticsItem } from 'api/types';
 import {
   GetTaskXPosPayload,
   ReportType,
@@ -85,36 +85,33 @@ const getTaskXPos = (payload: GetTaskXPosPayload) => {
 };
 
 export const getPreparedTaskData = ({
-  tasksByDate,
+  taskByDate: task,
   maxValue,
   minDate,
   maxDate,
   reportType,
 }: {
-  tasksByDate: DateTimeTaskStatisticsItemArrayDictionaryItem;
+  taskByDate: TaskStatisticsItem;
   reportType: ReportType;
   maxValue: number;
   minDate: string;
   maxDate: string;
 }) => {
-  const tasksArr = tasksByDate.value || [];
-  const isAlone = tasksArr.length === 1;
-
   return {
     x: getTaskXPos({
-      currentData: isAlone ? tasksArr[0]?.firstTriggerTime : tasksByDate?.key,
+      currentData: task?.firstTriggerTime,
       minDate,
       maxDate,
       reportType,
     }),
     y: maxValue * 0.9,
-    amount: tasksArr.length,
-    isEmergency: tasksArr.filter((elem) => elem.isEmergency).length !== 0,
-    isAllActive: tasksArr.filter((elem) => elem.isClosed).length === 0,
-    tasksInfo: tasksArr.map((task) => ({
+    amount: 1,
+    isEmergency: task.isEmergency,
+    isAllActive: !task.isClosed,
+    taskInfo: {
       id: task.id,
       title: task.creationReason,
-    })),
+    },
   };
 };
 

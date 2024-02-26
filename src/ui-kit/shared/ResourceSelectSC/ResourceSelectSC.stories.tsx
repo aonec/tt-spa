@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ComponentMeta, ComponentStory } from '@storybook/react';
+import { Meta, ComponentStory } from '@storybook/react';
 import { ResourceSelectSC } from '.';
 import { EResourceType } from 'api/types';
 import { FormItem } from 'ui-kit/FormItem';
@@ -8,7 +8,7 @@ export default {
   title: 'ResourceSelect',
   component: ResourceSelectSC,
   parameters: { layout: 'centered' },
-} as ComponentMeta<typeof ResourceSelectSC>;
+} as Meta<typeof ResourceSelectSC>;
 
 export const Search: ComponentStory<typeof ResourceSelectSC> = () => {
   const [resource, setResource] = useState<EResourceType | null>(null);

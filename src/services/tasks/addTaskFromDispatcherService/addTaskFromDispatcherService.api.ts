@@ -14,6 +14,7 @@ import {
   GetAddressesRequest,
   GetApartmentsRequest,
   GetResourceDisconnectionRequest,
+  ReplaceAllPhonesRequestType,
 } from './addTaskFromDispatcherService.types';
 
 export const createTask = (
@@ -66,4 +67,14 @@ export const getApartmentHomeownerNames = (
   return axios.get(`Apartments/${apartmentId}/HomeownerAccountNames`, {
     params: { isAlsoClosed: false },
   });
+};
+
+export const replaceAllPhones = ({
+  homeownerAccountId,
+  requestPayload,
+}: ReplaceAllPhonesRequestType): Promise<void> => {
+  return axios.post(
+    `HomeownerAccounts/${homeownerAccountId}/ReplaceAllPhones`,
+    requestPayload,
+  );
 };

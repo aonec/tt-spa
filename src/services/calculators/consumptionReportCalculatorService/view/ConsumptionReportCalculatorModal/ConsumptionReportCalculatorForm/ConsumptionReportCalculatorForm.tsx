@@ -40,7 +40,19 @@ export const ConsumptionReportCalculatorForm: FC<
 
   const nodesList = calculator?.nodes || [];
   const nodeGroups = _.groupBy(nodesList, 'resource');
+
+  const order = [
+    EResourceType.Heat,
+    EResourceType.HotWaterSupply,
+    EResourceType.ColdWaterSupply,
+    EResourceType.Electricity,
+  ];
+
   const resources = Object.keys(nodeGroups) as EResourceType[];
+
+  const resourcesSortedByOrder = resources.sort(
+    (a, b) => order.indexOf(a) - order.indexOf(b),
+  );
 
   const nodeIdForSono = calculator?.nodes && calculator.nodes[0].id;
 
@@ -52,7 +64,7 @@ export const ConsumptionReportCalculatorForm: FC<
       nodeId: isSono ? nodeIdForSono : null,
       customPeriodDisabled: true,
       withNS: false,
-      currentResourceType: resources[0],
+      currentResourceType: resourcesSortedByOrder[0],
       reportName: reportName,
     },
     validateOnChange: false,
@@ -111,11 +123,11 @@ export const ConsumptionReportCalculatorForm: FC<
   });
 
   const tabItems = useMemo(() => {
-    if (!resources?.length) {
+    if (!resourcesSortedByOrder?.length) {
       return [];
     }
 
-    return resources.map((resource) => {
+    return resourcesSortedByOrder.map((resource) => {
       const resourceName = ResourceNamesDictionary[resource];
 
       return {
@@ -128,7 +140,7 @@ export const ConsumptionReportCalculatorForm: FC<
         key: resource,
       };
     });
-  }, [resources]);
+  }, [resourcesSortedByOrder]);
 
   return (
     <Form id={formId} onSubmitCapture={handleSubmit}>

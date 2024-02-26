@@ -16,6 +16,7 @@ export const SettingPage: FC<SettingPageProps> = ({
   handleReassingInspector,
   handleEditTemperatureNormative,
   isAdminSettings,
+  setModalOpen,
 }) => {
   const { featureToggles } = useUnit({
     featureToggles: developmentSettingsService.outputs.$featureToggles,
@@ -37,6 +38,11 @@ export const SettingPage: FC<SettingPageProps> = ({
           onClick: () => handleEditTemperatureNormative(true),
           hidden: !isTemperatureGraphTab,
         },
+        {
+          title: 'Загрузить новый температурный график',
+          onClick: () => setModalOpen(true),
+          hidden: !isTemperatureGraphTab,
+        },
       ];
     }
     return [
@@ -52,8 +58,9 @@ export const SettingPage: FC<SettingPageProps> = ({
   }, [
     isAdminSettings,
     handleReassingInspector,
-    handleEditTemperatureNormative,
     isTemperatureGraphTab,
+    handleEditTemperatureNormative,
+    setModalOpen,
   ]);
 
   const components: { [key in SettingsPageSection]: ReactNode } = {
@@ -70,9 +77,7 @@ export const SettingPage: FC<SettingPageProps> = ({
         ...(featureToggles.workingRanges
           ? [{ label: 'Рабочие диапазоны узлов', key: 'operatingRanges' }]
           : []),
-        ...(featureToggles.temperatureGraph
-          ? [{ label: 'Температурный график', key: 'temperatureGraph' }]
-          : []),
+        { label: 'Температурный график', key: 'temperatureGraph' },
       ];
     }
 
@@ -90,7 +95,6 @@ export const SettingPage: FC<SettingPageProps> = ({
     featureToggles.controllersDistribution,
     featureToggles.districtsManage,
     featureToggles.workingRanges,
-    featureToggles.temperatureGraph,
   ]);
 
   useEffect(() => {
@@ -100,7 +104,7 @@ export const SettingPage: FC<SettingPageProps> = ({
             key: 'operatingRanges',
             visible: featureToggles.workingRanges,
           },
-          { key: 'temperatureGraph', visible: featureToggles.temperatureGraph },
+          { key: 'temperatureGraph', visible: true },
         ]
       : [
           {
@@ -122,7 +126,6 @@ export const SettingPage: FC<SettingPageProps> = ({
     isAdminSettings,
     featureToggles.controllersDistribution,
     featureToggles.districtsManage,
-    featureToggles.temperatureGraph,
     featureToggles.workingRanges,
     navigate,
     pathname,

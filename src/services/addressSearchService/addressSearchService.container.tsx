@@ -23,6 +23,7 @@ export const AddressSearchContainer: FC<AddressSearchContainerProps> = ({
   isError = false,
   isFocus = false,
   autoBurn = false,
+  isCityPreselected = true,
 }) => {
   const {
     cities,
@@ -33,6 +34,7 @@ export const AddressSearchContainer: FC<AddressSearchContainerProps> = ({
     existingApartmentNumbers,
     setInitialValues,
     verifiedInitialValues,
+    defaultOrganizationCity,
   } = useUnit({
     cities: outputs.$existingCities,
     streets: outputs.$existingStreets,
@@ -42,6 +44,7 @@ export const AddressSearchContainer: FC<AddressSearchContainerProps> = ({
     existingApartmentNumbers: outputs.$existingApartmentNumbers,
     setInitialValues: inputs.setInitialValues,
     verifiedInitialValues: outputs.$verifiedInitialValues,
+    defaultOrganizationCity: currentOrganizationService.outputs.$defaultCity,
   });
 
   const {
@@ -107,14 +110,26 @@ export const AddressSearchContainer: FC<AddressSearchContainerProps> = ({
   useEffect(() => {
     if (!cities?.length || verifiedInitialValues?.city) return;
 
-    set({ city: last(cities) || '' });
+    const defaultCity = defaultOrganizationCity || last(cities) || '';
 
-    if (onChange) onChange('city', last(cities) || '');
+    if (isCityPreselected) {
+      set({ city: defaultCity });
+      if (onChange) onChange('city', defaultCity);
+    }
 
     if (autoBurn) {
       submit();
     }
-  }, [cities, verifiedInitialValues, set, onChange, submit, autoBurn]);
+  }, [
+    cities,
+    verifiedInitialValues,
+    set,
+    onChange,
+    submit,
+    autoBurn,
+    isCityPreselected,
+    defaultOrganizationCity,
+  ]);
 
   const handleChange = (key: SearchFieldType, value: string) => {
     fieldsOfForm[key]?.onChange(value);

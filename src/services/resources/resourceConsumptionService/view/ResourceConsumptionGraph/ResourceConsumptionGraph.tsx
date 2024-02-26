@@ -1,5 +1,4 @@
 import React, { FC, useEffect, useMemo, useState } from 'react';
-import { GraphEmptyData } from 'services/nodes/displayNodesStatisticsService/view/GraphEmptyData';
 import {
   VictoryArea,
   VictoryAxis,
@@ -12,37 +11,41 @@ import {
   ResourceConsumptionGraphDataType,
   ResourceConsumptionGraphType,
 } from '../../resourceConsumptionService.types';
-import { ResourceConsumptionGraphColorsMeasure } from './ResourceConsumptionGraph.constants';
+import {
+  ResourceConsumptionGraphColorsMeasure,
+  tickValues,
+} from './ResourceConsumptionGraph.constants';
 import {
   getCurrentDataStyle,
+  NoDataNotificationWrapper,
   Wrapper,
 } from './ResourceConsumptionGraph.styled';
 import { ResourceConsumptionGraphProps } from './ResourceConsumptionGraph.types';
-import { getGraphTypeColors } from './ResourceConsumptionGraph.utils';
+import {
+  getGraphTypeColors,
+  hasNoConsecutiveNumbers,
+} from './ResourceConsumptionGraph.utils';
 import { ResourceConsumptionGraphTooltip } from './ResourceConsumptionGraphTooltip';
 import { GraphGradient } from 'ui-kit/shared/GraphComponents/GraphGradient';
-import { TickComponent } from 'ui-kit/shared/GraphComponents/TickComponent';
 import {
   horizontalAxisStyle,
   verticalAxisStyle,
 } from 'services/nodes/displayNodesStatisticsService/view/StatisticsGraph/StatisticsGraph.styled';
 import { CustomTooltip } from 'ui-kit/shared/GraphComponents/CustomTooltip';
-import { useUnit } from 'effector-react';
-import { developmentSettingsService } from 'services/developmentSettings/developmentSettings.models';
 
 const height = 360;
 
 export const ResourceConsumptionGraph: FC<ResourceConsumptionGraphProps> = ({
   consumptionData,
   resource,
+  resourceForColor,
   startOfMonth,
   checked,
   selectedAddresses,
   dynamicMinMax,
+  isAllDataLoading,
+  isDataLoading,
 }) => {
-  const { featureToggles } = useUnit({
-    featureToggles: developmentSettingsService.outputs.$featureToggles,
-  });
   const [width, setWidth] = useState(0);
 
   const additionalAddressConsumptionData =
@@ -54,19 +57,6 @@ export const ResourceConsumptionGraph: FC<ResourceConsumptionGraphProps> = ({
         (additionalAddressConsumptionData &&
           typeOfData === ResourceConsumptionGraphDataType.prevMonthData) ||
         !selectedAddresses.additionalAddress;
-
-      const hideCurrentMonthData =
-        typeOfData === ResourceConsumptionGraphDataType.currentMonthData &&
-        !selectedAddresses.currentAddress;
-
-      if (
-        !consumptionData ||
-        !resource ||
-        // isAdditionalAddress ||разобраться с доп адресами в следующей задаче
-        hideCurrentMonthData
-      ) {
-        return null;
-      }
 
       const monthData = consumptionData[typeOfData];
 
@@ -104,7 +94,7 @@ export const ResourceConsumptionGraph: FC<ResourceConsumptionGraphProps> = ({
               style={{
                 data: {
                   stroke: getGraphTypeColors({
-                    resource,
+                    resource: resourceForColor,
                     type: key as ResourceConsumptionGraphType,
                     isOpacityNeed:
                       typeOfData !==
@@ -121,10 +111,10 @@ export const ResourceConsumptionGraph: FC<ResourceConsumptionGraphProps> = ({
     });
   }, [
     consumptionData,
-    resource,
     checked,
     selectedAddresses,
     additionalAddressConsumptionData,
+    resourceForColor,
   ]);
 
   useEffect(() => {
@@ -141,27 +131,71 @@ export const ResourceConsumptionGraph: FC<ResourceConsumptionGraphProps> = ({
   const isConsumptionDataItemsEmpty = useMemo(
     () =>
       [
-        consumptionData.currentMonthData?.housing?.length === 0,
-        consumptionData.currentMonthData?.normative?.length === 0,
-        consumptionData.currentMonthData?.subscriber?.length === 0,
-        consumptionData.prevMonthData?.housing?.length === 0,
-        consumptionData.prevMonthData?.normative?.length === 0,
-        consumptionData.prevMonthData?.subscriber?.length === 0,
-      ].every(Boolean),
-    [consumptionData],
+        hasNoConsecutiveNumbers(
+          consumptionData.currentMonthData?.housing || [],
+        ),
+        hasNoConsecutiveNumbers(
+          consumptionData.currentMonthData?.normative || [],
+        ),
+        hasNoConsecutiveNumbers(
+          consumptionData.currentMonthData?.subscriber || [],
+        ),
+        hasNoConsecutiveNumbers(consumptionData.prevMonthData?.housing || []),
+        hasNoConsecutiveNumbers(consumptionData.prevMonthData?.normative || []),
+        hasNoConsecutiveNumbers(
+          consumptionData.prevMonthData?.subscriber || [],
+        ),
+      ].every(Boolean) && !isDataLoading,
+    [consumptionData, isDataLoading],
   );
 
-  if (!resource || !consumptionData || isConsumptionDataItemsEmpty) {
-    return <GraphEmptyData />;
+  if (isConsumptionDataItemsEmpty) {
+    return (
+      <>
+        <Wrapper id="graphWrapper">
+          <VictoryChart
+            padding={{ top: 0, bottom: 0, left: 26, right: 0 }}
+            domain={{ y: dynamicMinMax }}
+            style={{
+              parent: {
+                overflow: 'visible',
+                height,
+              },
+            }}
+            height={height}
+            width={width}
+            theme={VictoryTheme.material}
+            containerComponent={<VictoryVoronoiContainer />}
+          >
+            <VictoryAxis
+              tickValues={tickValues}
+              tickFormat={(day) => {
+                if (day % 5) {
+                  return '';
+                }
+                return day;
+              }}
+              style={horizontalAxisStyle}
+            />
+            <VictoryAxis dependentAxis style={verticalAxisStyle} />
+          </VictoryChart>
+        </Wrapper>
+        <NoDataNotificationWrapper>
+          Нет данных за выбранный период. Пожалуйста, измените период для
+          формирования новой статистики.
+        </NoDataNotificationWrapper>
+      </>
+    );
   }
 
   return (
-    <Wrapper id="graphWrapper">
-      <GraphGradient resource={resource} />
+    <Wrapper id="graphWrapper" isLoading={isAllDataLoading}>
+      <GraphGradient resource={resourceForColor} />
 
       <VictoryChart
+        domain={{ y: dynamicMinMax, x: [-1, 32] }}
         padding={{ top: 0, bottom: 0, left: 26, right: 0 }}
-        domain={{ y: dynamicMinMax }}
+        domainPadding={{ x: [-50, 0] }}
         style={{
           parent: {
             overflow: 'visible',
@@ -172,17 +206,12 @@ export const ResourceConsumptionGraph: FC<ResourceConsumptionGraphProps> = ({
         width={width}
         theme={VictoryTheme.material}
         containerComponent={<VictoryVoronoiContainer />}
-        animate={
-          featureToggles.chartAnimation && {
-            onLoad: { duration: 1000 },
-            duration: 400,
-            easing: 'bounce',
-          }
-        }
       >
         <VictoryAxis
-          tickComponent={<TickComponent />}
           tickFormat={(day) => {
+            if (day === 0) {
+              return day;
+            }
             if (day % 5) {
               return '';
             }
@@ -195,14 +224,13 @@ export const ResourceConsumptionGraph: FC<ResourceConsumptionGraphProps> = ({
           dependentAxis
           style={verticalAxisStyle}
         />
-        {lines}
         {checked.currentMonthData.housing && (
           <VictoryArea
             data={consumptionData.currentMonthData?.housing}
             x="key"
             y="value"
             interpolation="monotoneX"
-            style={getCurrentDataStyle(resource)}
+            style={getCurrentDataStyle(resourceForColor)}
             labels={() => ''}
             labelComponent={
               <CustomTooltip
@@ -221,6 +249,7 @@ export const ResourceConsumptionGraph: FC<ResourceConsumptionGraphProps> = ({
             }
           />
         )}
+        {lines}
       </VictoryChart>
     </Wrapper>
   );
