@@ -13,8 +13,7 @@ import {
 } from './AddTemperatureFileModal.styled';
 
 const formId = 'Add-Temperature-File-Modal';
-const accept =
-  'application/msword, application/vnd.ms-excel, application/pdf, image/*';
+const accept = '.xlsx';
 
 export const AddTemperatureFileModal: FC<AddTemperatureFileModalProps> = ({
   isModalOpen,
