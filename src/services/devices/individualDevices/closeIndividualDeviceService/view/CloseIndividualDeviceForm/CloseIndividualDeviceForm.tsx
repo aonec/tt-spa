@@ -62,7 +62,9 @@ export const CloseIndividualDeviceForm: FC<CloseIndividualDeviceFormProps> = ({
               value={fields.closingDate.value}
               onChange={(date) => fields.closingDate.onChange(date)}
               disabledDate={(current) => {
-                return current && current > dayjs().endOf('day');
+                return (
+                  current && current > dayjs().add(1, 'month').endOf('month')
+                );
               }}
             />
             <ErrorMessage>{errorText('closingDate')}</ErrorMessage>
