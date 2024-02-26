@@ -87,7 +87,7 @@ export const ChangeODPUForm: FC<ChangeODPUFormProps> = ({
   );
 
   return (
-    <FormSC onSubmitCapture={submitForm}>
+    <FormSC>
       <BaseInfoWrapper>
         <div id="resourceType">
           <FormItem label="Тип ресурса">
@@ -283,7 +283,7 @@ export const ChangeODPUForm: FC<ChangeODPUFormProps> = ({
         </FormItem>
       </SealInfoWrapper>
       <ButtonsWrapper>
-        <Button disabled={isLoading}>
+        <Button disabled={isLoading} onClick={submitForm}>
           {isLoading && 'Загрузка...'}
           {!isLoading && 'Сохранить'}
         </Button>
