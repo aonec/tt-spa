@@ -23,4 +23,5 @@ export type ResourceConsumptionGraphProps = {
   dynamicMinMax: [number, number];
   isAllDataLoading: boolean;
   isDataLoading: boolean;
+  isOnlyHousingDataEmpty: boolean;
 };
