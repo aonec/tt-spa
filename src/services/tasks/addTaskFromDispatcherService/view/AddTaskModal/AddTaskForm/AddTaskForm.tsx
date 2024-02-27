@@ -16,6 +16,7 @@ import {
   ResourseTypeWrapper,
   SearchIconSc,
   SelectCaret,
+  SelectExpandable,
   TextareaSC,
   TimePickerLarge,
   TimePickerMedium,
@@ -523,10 +524,11 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
 
         <ContainerWithOutline>
           <FormItem label="Причина обращения">
-            <Select
+            <SelectExpandable
               showSearch
               allowClear
-              virtual={true}
+              filterOption={false}
+              virtual
               placeholder="Начните вводить"
               value={values.taskReasonOrderNumber}
               onClear={() => {
@@ -583,11 +585,9 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
               onMouseDown={() => setReasonOpen(true)}
             >
               {taskReasonOptions.map((elem) => (
-                <Select.Option key={elem.key} value={elem.value}>
-                  {elem.label}
-                </Select.Option>
+                <Select.Option value={elem.value}>{elem.label}</Select.Option>
               ))}
-            </Select>
+            </SelectExpandable>
           </FormItem>
 
           <FormItem label="Тип заявки">

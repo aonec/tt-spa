@@ -173,3 +173,15 @@ export const DatePickerSc = styled(DatePicker)`
     font-size: 18px !important;
   }
 `;
+
+export const SelectExpandable = styled(Select)`
+  caret-color: transparent;
+
+  height: fit-content !important;
+
+  .ant-select-selection-item {
+    &::after {
+      display: none !important;
+    }
+  }
+`;

@@ -3,9 +3,10 @@ import {
   PreparedAddress,
 } from 'services/tasks/addTaskFromDispatcherService/addTaskFromDispatcherService.types';
 import { AddTask, AddressOption } from './AddTaskForm.types';
-import { countSimilarityPoints } from 'utils/countSimilarityPoints';
 import _ from 'lodash';
 import { ErpTaskReasonGroupResponse } from 'api/types';
+import { TaskReasonTypeDictionary } from 'dictionaries';
+import { countSimilarityPoints } from 'utils/countSimilarityPoints';
 
 export function preparedAddressOption(
   addressSearch: string,
@@ -81,18 +82,25 @@ export function autocompleteReason(
     return reasons;
   }
 
-  return filterReasonBySimilarity(search, reasons);
+  return sortReasonBySimilarity(search, reasons);
 }
 
-function filterReasonBySimilarity(
+function sortReasonBySimilarity(
   search: string,
   reasons: ErpTaskReasonGroupResponse[],
 ) {
-  return reasons.sort((a, b) => {
-    const bPoints = countSimilarityPoints(search, b.name!);
-    const aPoints = countSimilarityPoints(search, a.name!);
+  return reasons.sort((aReason, bReason) => {
+    const aReasonWithResource = `${TaskReasonTypeDictionary[aReason.type]} ${
+      aReason.name
+    }`;
+    const bReasonWithResource = `${TaskReasonTypeDictionary[bReason.type]} ${
+      bReason.name
+    }`;
 
-    return bPoints - aPoints;
+    const aReasonPoints = countSimilarityPoints(search, aReasonWithResource);
+    const bReasonPoints = countSimilarityPoints(search, bReasonWithResource);
+
+    return bReasonPoints - aReasonPoints;
   });
 }
 
