@@ -1,5 +1,5 @@
 import { createEffect, createEvent, createStore } from 'effector';
-import { combine, sample } from 'effector';
+import { sample } from 'effector';
 import { addAct, fetchActs } from './actsJournalService.api';
 import {
   AddApartmentActRequest,
@@ -8,10 +8,8 @@ import {
 import { message } from 'antd';
 import { createGate } from 'effector-react';
 import { ActsJournalRequestParams } from './actsJournalService.types';
-import { last } from 'lodash';
 import dayjs from 'api/dayjs';
 import { addressIdSearchService } from './addressIdSearchService';
-import { addressSearchService } from 'services/addressSearchService/addressSearchService.models';
 
 const ActsJournalGate = createGate();
 
@@ -57,12 +55,6 @@ actCreated.watch(() => message.success('Акт успешно добавлен')
 createActFx.failData.watch(() => message.error('Ошибка при добавлении акта'));
 
 sample({
-  clock: addressSearchService.outputs.$existingCities,
-  fn: (cities) => ({ City: last(cities) }),
-  target: updateActsFilter,
-});
-
-sample({
   source: sample({
     source: addressIdSearchService.outputs.$apartmentSearchId,
     filter: Boolean,
@@ -83,17 +75,8 @@ sample({
 
 sample({
   clock: getActs,
-  source: combine(
-    $actsFilter,
-    ActsJournalGate.status,
-    (actsFilter, gateStatus) => ({
-      actsFilter,
-      gateStatus,
-    }),
-  ),
-  filter: ({ actsFilter, gateStatus }) => {
-    return Boolean(actsFilter.City) && gateStatus;
-  },
+  source: { actsFilter: $actsFilter, gateStatus: ActsJournalGate.status },
+  filter: ({ gateStatus }) => gateStatus,
   fn: ({ actsFilter }) => actsFilter,
   target: getActsFx,
 });
