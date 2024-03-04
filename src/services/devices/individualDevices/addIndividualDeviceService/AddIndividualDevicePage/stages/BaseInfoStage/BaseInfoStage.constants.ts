@@ -1,5 +1,5 @@
 import { EIndividualDeviceRateType } from 'api/types';
-import dayjs from 'dayjs';
+import { checkingDateTest } from 'services/devices/individualDevices/workWithIndividualDeviceService/workWithIndividualDeviceService.utils';
 import * as yup from 'yup';
 
 export const validationSchema = yup.object().shape({
@@ -7,11 +7,13 @@ export const validationSchema = yup.object().shape({
   lastCheckingDate: yup
     .string()
     .nullable()
-    .test('checking-date-down', 'Дата должна быть позднее 2000', (data) =>
-      data ? dayjs(data).year() >= 2000 : true,
-    )
+    .test('checking-date-down', 'некорректная дата', checkingDateTest)
     .required('Это поле обязательно'),
-  futureCheckingDate: yup.string().nullable().required('Это поле обязательно'),
+  futureCheckingDate: yup
+    .string()
+    .nullable()
+    .test('checking-date-down', 'некорректная дата', checkingDateTest)
+    .required('Это поле обязательно'),
   model: yup.string().required('Это поле обязательно'),
   rateType: yup.string().required('Это поле обязательно'),
   resource: yup.string().nullable().required('Это поле обязательно'),
