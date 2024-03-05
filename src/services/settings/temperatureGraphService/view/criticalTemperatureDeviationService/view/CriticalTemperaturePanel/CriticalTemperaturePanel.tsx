@@ -2,6 +2,8 @@ import React, { FC } from 'react';
 import {
   Block,
   ButtonSc,
+  TemperatureBlock,
+  TemperatureDevider,
   TemperatureValue,
   Wrapper,
 } from './CriticalTemperaturePanel.styled';
@@ -18,7 +20,11 @@ export const CriticalTemperaturePanel: FC<
         Критичное отклонение температуры обратной магистрали от графика
       </Block>
       <Block>
-        <TemperatureValue>5°C</TemperatureValue>
+        <TemperatureBlock>
+          <TemperatureValue>5°C</TemperatureValue>
+          <TemperatureDevider>/</TemperatureDevider>
+          <TemperatureValue>10°C</TemperatureValue>
+        </TemperatureBlock>
         <ButtonSc size="small" type="ghost">
           <PencilIcon />
         </ButtonSc>

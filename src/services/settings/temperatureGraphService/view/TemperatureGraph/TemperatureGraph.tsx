@@ -31,6 +31,7 @@ import {
   TemperatureNormativeUpdateRequest,
 } from 'api/types';
 import { ErrorColumnType } from '../../temperatureGraphService.types';
+import { CriticalTemperaturePanel } from '../criticalTemperatureDeviationService/view/CriticalTemperaturePanel';
 
 export const TemperatureGraph: FC<TemperatureGraphProps> = ({
   temperatureNormative: initialTemperatureNormatives,
@@ -273,6 +274,8 @@ export const TemperatureGraph: FC<TemperatureGraphProps> = ({
 
   return (
     <PageWrapper>
+      <CriticalTemperaturePanel />
+
       <Table
         isSticky
         columns={[
