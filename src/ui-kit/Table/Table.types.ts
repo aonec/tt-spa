@@ -17,7 +17,7 @@ export type TableProps<T> = {
   columns: TableColumn<T>[];
   elements: T[];
   pagination?: Pagination;
-  rowStyles?: string;
+  rowStyles?: ((rowData: T) => string) | string;
   headerStyles?: string;
   link?: (elem: T) => string;
   isSticky?: boolean;

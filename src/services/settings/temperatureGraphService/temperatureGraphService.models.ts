@@ -7,8 +7,10 @@ import {
   createOrUpdateTemperatureNormative,
   getTemplateFile,
   createOrUpdateFromFile,
+  deleteTemperatureNormativesMutation,
 } from './temperatureGraphService.api';
 import {
+  TemperatureNormativeDeleteRequest,
   TemperatureNormativeResponse,
   TemperatureNormativeRow,
   TemperatureNormativeUpdateRequest,
@@ -26,6 +28,10 @@ const handleGetTemplateFile = createEvent();
 const handlePostTemplateFile = createEvent<File>();
 
 const setModalOpen = createEvent<boolean>();
+
+const toggleDeletingRows = createEvent<number | null>();
+
+const handleDeleteRows = createEvent();
 
 const setEditedTemperatureNormative =
   createEvent<TemperatureNormativeUpdateRequest>();
@@ -124,6 +130,14 @@ const $errorColumns = createStore<ErrorColumnType[]>([]).on(
   },
 );
 
+const $deletingRowIds = createStore<number[]>([])
+  .on(toggleDeletingRows, (prev, id) => {
+    if (typeof id !== 'number') return [];
+
+    return prev.includes(id) ? prev.filter((e) => e !== id) : [...prev, id];
+  })
+  .reset(deleteTemperatureNormativesMutation.finished.success);
+
 const $isLoading = updateTemperatureNormativeFx.pending;
 
 const $isFileLoading = createOrUpdateFromFileFx.pending;
@@ -136,7 +150,13 @@ const $file = createStore<File | null>(null)
   .on(setFile, (_, file) => file)
   .reset(handleSuccessUpdateFromFile);
 
-sample({ clock: TemperatureGraphGate.open, target: getTemperatureNormativeFx });
+sample({
+  clock: [
+    TemperatureGraphGate.open,
+    deleteTemperatureNormativesMutation.finished.success,
+  ],
+  target: getTemperatureNormativeFx,
+});
 
 sample({
   clock: $editedTemperatureNormative,
@@ -170,6 +190,19 @@ createOrUpdateFromFileFx.failData.watch((error) => {
   );
 });
 
+sample({
+  source: $deletingRowIds,
+  clock: handleDeleteRows,
+  fn: (ids): TemperatureNormativeDeleteRequest => ({
+    outdoorTemperatures: ids,
+  }),
+  target: deleteTemperatureNormativesMutation.start,
+});
+
+deleteTemperatureNormativesMutation.finished.success.watch(() => {
+  message.success('Удалено!');
+});
+
 export const temperatureGraphService = {
   inputs: {
     handleEditTemperatureNormative,
@@ -178,6 +211,8 @@ export const temperatureGraphService = {
     handleGetTemplateFile,
     handlePostTemplateFile,
     setFile,
+    toggleDeletingRows,
+    handleDeleteRows,
   },
   outputs: {
     $temperatureNormative,
@@ -187,6 +222,7 @@ export const temperatureGraphService = {
     $isModalOpen,
     $isFileLoading,
     $file,
+    $deletingRowIds,
   },
   gates: { TemperatureGraphGate },
 };

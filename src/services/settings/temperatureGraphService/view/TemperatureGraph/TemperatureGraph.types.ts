@@ -13,6 +13,10 @@ export type TemperatureGraphProps = {
   ) => void;
   isLoading: boolean;
   errorColumns: ErrorColumnType[];
+  toggleDeletingRows: (payload: number | null) => void;
+  deletingRowIds: number[];
+  handleDeleteRows: () => void;
+  isLoadingDeliting: boolean;
 };
 
 export enum ETemteratureTypes {

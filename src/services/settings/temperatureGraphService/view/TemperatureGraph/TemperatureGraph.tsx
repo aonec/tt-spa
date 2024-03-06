@@ -24,6 +24,7 @@ import {
   WrapperTime,
   WrapperUnderscore,
   WrapperValue,
+  activeRowCSS,
 } from './TemperatureGraph.styled';
 import { Button } from 'ui-kit/Button';
 import {
@@ -31,6 +32,8 @@ import {
   TemperatureNormativeUpdateRequest,
 } from 'api/types';
 import { ErrorColumnType } from '../../temperatureGraphService.types';
+import { ContextMenuButton } from 'ui-kit/ContextMenuButton';
+import { ContextMenuButtonColor } from 'ui-kit/ContextMenuButton/ContextMenuButton.types';
 
 export const TemperatureGraph: FC<TemperatureGraphProps> = ({
   temperatureNormative: initialTemperatureNormatives,
@@ -39,6 +42,10 @@ export const TemperatureGraph: FC<TemperatureGraphProps> = ({
   setEditedTemperatureNormative,
   isLoading,
   errorColumns,
+  deletingRowIds,
+  toggleDeletingRows,
+  handleDeleteRows,
+  isLoadingDeliting,
 }) => {
   const { values, setFieldValue, handleSubmit, handleReset } = useFormik<{
     temperatureNormativesArr: TemperatureNormativeRow[];
@@ -53,6 +60,8 @@ export const TemperatureGraph: FC<TemperatureGraphProps> = ({
       setEditedTemperatureNormative(requestData);
     },
   });
+
+  const isDeletingMod = Boolean(deletingRowIds.length);
 
   const [columnErrors, setColumnErrors] = useState<ErrorColumnType[]>([]);
 
@@ -274,6 +283,15 @@ export const TemperatureGraph: FC<TemperatureGraphProps> = ({
   return (
     <PageWrapper>
       <Table
+        rowStyles={(rowData) => {
+          if (typeof rowData?.outdoorTemperature !== 'number') return '';
+
+          const isDeleted = deletingRowIds.includes(
+            rowData?.outdoorTemperature,
+          );
+
+          return isDeleted ? activeRowCSS : '';
+        }}
         isSticky
         columns={[
           {
@@ -349,6 +367,41 @@ export const TemperatureGraph: FC<TemperatureGraphProps> = ({
                 ETemteratureTypes.nightFeedBackFlowTemperature,
               ),
           },
+          {
+            label: '',
+            size: '60px',
+            hidden: isEditing,
+            render: (data) => {
+              const outdorTemperature = data.outdoorTemperature;
+
+              if (typeof outdorTemperature !== 'number') return null;
+
+              const isSelected = deletingRowIds.includes(outdorTemperature);
+
+              const contextMenu = (
+                <ContextMenuButton
+                  size="small"
+                  menuButtons={[
+                    {
+                      title: 'Добавить строку выше',
+                      hidden: isDeletingMod,
+                    },
+                    {
+                      title: 'Добавить строку ниже',
+                      hidden: isDeletingMod,
+                    },
+                    {
+                      title: isSelected ? 'Отменить' : 'Удалить строку',
+                      color: ContextMenuButtonColor.danger,
+                      onClick: () => toggleDeletingRows(outdorTemperature),
+                    },
+                  ]}
+                />
+              );
+
+              return contextMenu;
+            },
+          },
         ]}
         elements={values.temperatureNormativesArr}
       />
@@ -371,6 +424,21 @@ export const TemperatureGraph: FC<TemperatureGraphProps> = ({
             disabled={Boolean(columnErrors.length)}
           >
             Сохранить
+          </Button>
+        </Footer>
+      )}
+      {Boolean(deletingRowIds.length) && (
+        <Footer>
+          <Button type="ghost" onClick={() => toggleDeletingRows(null)}>
+            Отмена
+          </Button>
+          <Button
+            type="danger"
+            isLoading={isLoadingDeliting}
+            onClick={handleDeleteRows}
+            disabled={Boolean(columnErrors.length)}
+          >
+            Удалить
           </Button>
         </Footer>
       )}

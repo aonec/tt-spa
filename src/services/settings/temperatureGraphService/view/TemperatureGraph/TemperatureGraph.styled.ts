@@ -4,7 +4,7 @@ import { Input } from 'ui-kit/Input';
 export const PageWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  width: 980px;
+  width: min-content;
   height: 78vh;
   overflow-y: hidden;
   overflow-x: hidden;
@@ -59,7 +59,10 @@ export const Footer = styled.div`
   align-items: end;
   justify-content: flex-end;
   gap: 16px;
-  padding: 0 30px;
   height: 280px;
   background-color: white;
+`;
+
+export const activeRowCSS = `
+  background-color: #ffe8e8;
 `;

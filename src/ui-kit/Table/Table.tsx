@@ -22,7 +22,7 @@ export function Table<T>({
   columns,
   elements,
   pagination,
-  rowStyles,
+  rowStyles: rowStylesPayload,
   headerStyles,
   isSticky,
   link,
@@ -45,6 +45,11 @@ export function Table<T>({
 
   const renderRow = useCallback(
     (elem: T, rowIndex: number) => {
+      const rowStyles =
+        typeof rowStylesPayload === 'function'
+          ? rowStylesPayload(elem)
+          : rowStylesPayload;
+
       const columns = filteredColumns.map((column, columnIndex) => (
         <TableElement key={columnIndex} css={column.css?.(false)}>
           {column.render(elem, rowIndex)}
@@ -64,7 +69,7 @@ export function Table<T>({
         </Row>
       );
     },
-    [link, rowStyles, temp, filteredColumns],
+    [rowStylesPayload, filteredColumns, link, temp],
   );
 
   const sortedRows = useMemo(() => {
