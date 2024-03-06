@@ -16,8 +16,9 @@ import {
   tickValues,
 } from './ResourceConsumptionGraph.constants';
 import {
+  AlertTitle,
+  AlertWrapper,
   getCurrentDataStyle,
-  NoDataNotificationWrapper,
   Wrapper,
 } from './ResourceConsumptionGraph.styled';
 import { ResourceConsumptionGraphProps } from './ResourceConsumptionGraph.types';
@@ -32,6 +33,8 @@ import {
   verticalAxisStyle,
 } from 'services/nodes/displayNodesStatisticsService/view/StatisticsGraph/StatisticsGraph.styled';
 import { CustomTooltip } from 'ui-kit/shared/GraphComponents/CustomTooltip';
+import { Alert } from 'ui-kit/Alert';
+import { AlertIconType, AlertType } from 'ui-kit/Alert/Alert.types';
 
 const height = 360;
 
@@ -45,6 +48,7 @@ export const ResourceConsumptionGraph: FC<ResourceConsumptionGraphProps> = ({
   dynamicMinMax,
   isAllDataLoading,
   isDataLoading,
+  isOnlyHousingDataEmpty,
 }) => {
   const [width, setWidth] = useState(0);
 
@@ -153,16 +157,25 @@ export const ResourceConsumptionGraph: FC<ResourceConsumptionGraphProps> = ({
     return (
       <>
         <Wrapper id="graphWrapper">
+          <AlertWrapper>
+            <Alert
+              centered
+              type={AlertType.danger}
+              icon={AlertIconType.warning}
+            >
+              <AlertTitle>Нет данных за выбранный период</AlertTitle>
+            </Alert>
+          </AlertWrapper>
           <VictoryChart
             padding={{ top: 0, bottom: 0, left: 26, right: 0 }}
             domain={{ y: dynamicMinMax }}
             style={{
               parent: {
                 overflow: 'visible',
-                height,
+                height: 300,
               },
             }}
-            height={height}
+            height={300}
             width={width}
             theme={VictoryTheme.material}
             containerComponent={<VictoryVoronoiContainer />}
@@ -180,18 +193,21 @@ export const ResourceConsumptionGraph: FC<ResourceConsumptionGraphProps> = ({
             <VictoryAxis dependentAxis style={verticalAxisStyle} />
           </VictoryChart>
         </Wrapper>
-        <NoDataNotificationWrapper>
-          Нет данных за выбранный период. Пожалуйста, измените период для
-          формирования новой статистики.
-        </NoDataNotificationWrapper>
       </>
     );
   }
 
   return (
     <Wrapper id="graphWrapper" isLoading={isAllDataLoading}>
-      <GraphGradient resource={resourceForColor} />
+      {isOnlyHousingDataEmpty && (
+        <AlertWrapper>
+          <Alert centered type={AlertType.default} icon={AlertIconType.warning}>
+            <AlertTitle>Нет данных по общедомовому потреблению.</AlertTitle>
+          </Alert>
+        </AlertWrapper>
+      )}
 
+      <GraphGradient resource={resourceForColor} />
       <VictoryChart
         domain={{ y: dynamicMinMax, x: [-1, 32] }}
         padding={{ top: 0, bottom: 0, left: 26, right: 0 }}
@@ -199,10 +215,10 @@ export const ResourceConsumptionGraph: FC<ResourceConsumptionGraphProps> = ({
         style={{
           parent: {
             overflow: 'visible',
-            height,
+            height: isOnlyHousingDataEmpty ? 300 : height,
           },
         }}
-        height={height}
+        height={isOnlyHousingDataEmpty ? 300 : height}
         width={width}
         theme={VictoryTheme.material}
         containerComponent={<VictoryVoronoiContainer />}
