@@ -25,6 +25,7 @@ export const TemperatureGraphContainer = () => {
     handlePostTemplateFile,
     file,
     setFile,
+    temperatureLimits,
   } = useUnit({
     temperatureNormative: outputs.$temperatureNormative,
     isEditing: outputs.$isEditing,
@@ -39,6 +40,7 @@ export const TemperatureGraphContainer = () => {
     handlePostTemplateFile: inputs.handlePostTemplateFile,
     setFile: inputs.setFile,
     file: outputs.$file,
+    temperatureLimits: outputs.$temperatureLimits,
   });
   return (
     <>
@@ -59,6 +61,7 @@ export const TemperatureGraphContainer = () => {
         setEditedTemperatureNormative={setEditedTemperatureNormative}
         isLoading={isLoading}
         errorColumns={errorColumns}
+        temperatureLimits={temperatureLimits}
       />
     </>
   );

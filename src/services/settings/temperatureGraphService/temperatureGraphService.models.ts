@@ -15,7 +15,10 @@ import {
 } from 'api/types';
 import { EffectFailDataAxiosErrorDataTemperatureGraph } from 'types';
 import { EDayPartError } from './view/TemperatureGraph/TemperatureGraph.types';
-import { ErrorColumnType } from './temperatureGraphService.types';
+import {
+  ErrorColumnType,
+  TemperatureLimitsType,
+} from './temperatureGraphService.types';
 
 const TemperatureGraphGate = createGate();
 
@@ -52,6 +55,37 @@ const createOrUpdateFromFileFx = createEffect<
 const handleSuccessUpdateFromFile = createOrUpdateFromFileFx.doneData;
 
 const getTemplateFileFx = createEffect(getTemplateFile);
+
+const $temperatureLimits = createStore<TemperatureLimitsType>({
+  min: null,
+  max: null,
+})
+  .on(
+    getTemperatureNormativeFx.doneData,
+    (
+      _,
+      {
+        downTemperatureDeviationPercentLimit,
+        upTemperatureDeviationPercentLimit,
+      },
+    ) => ({
+      min: upTemperatureDeviationPercentLimit,
+      max: downTemperatureDeviationPercentLimit,
+    }),
+  )
+  .on(
+    updateTemperatureNormativeFx.doneData,
+    (
+      _,
+      {
+        downTemperatureDeviationPercentLimit,
+        upTemperatureDeviationPercentLimit,
+      },
+    ) => ({
+      min: upTemperatureDeviationPercentLimit,
+      max: downTemperatureDeviationPercentLimit,
+    }),
+  );
 
 const $temperatureNormative = createStore<TemperatureNormativeRow[]>([])
   .on(getTemperatureNormativeFx.doneData, (_, normativeData) => {
@@ -187,6 +221,7 @@ export const temperatureGraphService = {
     $isModalOpen,
     $isFileLoading,
     $file,
+    $temperatureLimits,
   },
   gates: { TemperatureGraphGate },
 };

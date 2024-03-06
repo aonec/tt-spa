@@ -2,7 +2,10 @@ import {
   TemperatureNormativeRow,
   TemperatureNormativeUpdateRequest,
 } from 'api/types';
-import { ErrorColumnType } from '../../temperatureGraphService.types';
+import {
+  ErrorColumnType,
+  TemperatureLimitsType,
+} from '../../temperatureGraphService.types';
 
 export type TemperatureGraphProps = {
   temperatureNormative: TemperatureNormativeRow[];
@@ -13,6 +16,7 @@ export type TemperatureGraphProps = {
   ) => void;
   isLoading: boolean;
   errorColumns: ErrorColumnType[];
+  temperatureLimits: TemperatureLimitsType;
 };
 
 export enum ETemteratureTypes {

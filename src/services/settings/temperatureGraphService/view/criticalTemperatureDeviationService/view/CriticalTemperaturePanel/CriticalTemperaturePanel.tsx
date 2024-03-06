@@ -10,9 +10,9 @@ import {
 import { CriticalTemperaturePanelProps } from './CriticalTemperaturePanel.types';
 import { PencilIcon, TemperatureIcon } from 'ui-kit/icons';
 
-export const CriticalTemperaturePanel: FC<
-  CriticalTemperaturePanelProps
-> = () => {
+export const CriticalTemperaturePanel: FC<CriticalTemperaturePanelProps> = ({
+  temperatureLimits,
+}) => {
   return (
     <Wrapper>
       <Block>
@@ -21,9 +21,9 @@ export const CriticalTemperaturePanel: FC<
       </Block>
       <Block>
         <TemperatureBlock>
-          <TemperatureValue>5°C</TemperatureValue>
+          <TemperatureValue>{temperatureLimits.min}%</TemperatureValue>
           <TemperatureDevider>/</TemperatureDevider>
-          <TemperatureValue>10°C</TemperatureValue>
+          <TemperatureValue>{temperatureLimits.max}%</TemperatureValue>
         </TemperatureBlock>
         <ButtonSc size="small" type="ghost">
           <PencilIcon />
