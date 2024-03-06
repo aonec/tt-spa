@@ -2,4 +2,5 @@ import { TemperatureLimitsType } from 'services/settings/temperatureGraphService
 
 export type CriticalTemperaturePanelProps = {
   temperatureLimits: TemperatureLimitsType;
+  setEditDeviationModalOpen: (payload: boolean) => void;
 };

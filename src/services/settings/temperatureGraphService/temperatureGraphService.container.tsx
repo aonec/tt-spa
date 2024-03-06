@@ -3,6 +3,7 @@ import { TemperatureGraph } from './view/TemperatureGraph';
 import { temperatureGraphService } from './temperatureGraphService.models';
 import { useUnit } from 'effector-react';
 import { AddTemperatureFileModal } from './view/AddTemperatureFileModal';
+import { EditDeviationModal } from './view/EditDeviationModal';
 
 const {
   inputs,
@@ -18,14 +19,16 @@ export const TemperatureGraphContainer = () => {
     setEditedTemperatureNormative,
     isLoading,
     errorColumns,
-    isModalOpen,
-    setModalOpen,
+    isUploadModalOpen,
+    setUploadModalOpen,
     handleGetTemplateFile,
     isFileLoading,
     handlePostTemplateFile,
     file,
     setFile,
     temperatureLimits,
+    isDeviationEditModalOpen,
+    setEditDeviationModalOpen,
   } = useUnit({
     temperatureNormative: outputs.$temperatureNormative,
     isEditing: outputs.$isEditing,
@@ -33,26 +36,33 @@ export const TemperatureGraphContainer = () => {
     setEditedTemperatureNormative: inputs.setEditedTemperatureNormative,
     isLoading: outputs.$isLoading,
     errorColumns: outputs.$errorColumns,
-    isModalOpen: outputs.$isModalOpen,
-    setModalOpen: inputs.setModalOpen,
+    isUploadModalOpen: outputs.$isUploadModalOpen,
+    setUploadModalOpen: inputs.setUploadModalOpen,
     handleGetTemplateFile: inputs.handleGetTemplateFile,
     isFileLoading: outputs.$isFileLoading,
     handlePostTemplateFile: inputs.handlePostTemplateFile,
     setFile: inputs.setFile,
     file: outputs.$file,
     temperatureLimits: outputs.$temperatureLimits,
+    isDeviationEditModalOpen: outputs.$isDeviationEditModalOpen,
+    setEditDeviationModalOpen: inputs.setEditDeviationModalOpen,
   });
   return (
     <>
       <TemperatureGraphGate />
       <AddTemperatureFileModal
-        isModalOpen={isModalOpen}
-        setModalOpen={setModalOpen}
+        isModalOpen={isUploadModalOpen}
+        setModalOpen={setUploadModalOpen}
         handleGetTemplateFile={handleGetTemplateFile}
         isFileLoading={isFileLoading}
         handlePostTemplateFile={handlePostTemplateFile}
         file={file}
         setFile={setFile}
+      />
+      <EditDeviationModal
+        isOpen={isDeviationEditModalOpen}
+        setModalOpen={setEditDeviationModalOpen}
+        temperatureLimits={temperatureLimits}
       />
       <TemperatureGraph
         temperatureNormative={temperatureNormative}
@@ -62,6 +72,7 @@ export const TemperatureGraphContainer = () => {
         isLoading={isLoading}
         errorColumns={errorColumns}
         temperatureLimits={temperatureLimits}
+        setEditDeviationModalOpen={setEditDeviationModalOpen}
       />
     </>
   );

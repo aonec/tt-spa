@@ -12,6 +12,7 @@ import { PencilIcon, TemperatureIcon } from 'ui-kit/icons';
 
 export const CriticalTemperaturePanel: FC<CriticalTemperaturePanelProps> = ({
   temperatureLimits,
+  setEditDeviationModalOpen,
 }) => {
   return (
     <Wrapper>
@@ -26,7 +27,7 @@ export const CriticalTemperaturePanel: FC<CriticalTemperaturePanelProps> = ({
           <TemperatureValue>{temperatureLimits.max}%</TemperatureValue>
         </TemperatureBlock>
         <ButtonSc size="small" type="ghost">
-          <PencilIcon />
+          <PencilIcon onClick={() => setEditDeviationModalOpen(true)} />
         </ButtonSc>
       </Block>
     </Wrapper>

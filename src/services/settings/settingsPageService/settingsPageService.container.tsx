@@ -18,7 +18,7 @@ export const SettingsPageContainer: FC<{ isAdminSettings?: boolean }> = ({
     handleEditTemperatureNormative:
       temperatureGraphService.inputs.handleEditTemperatureNormative,
     handleReassingInspector: inputs.reassingInspector,
-    setModalOpen: temperatureGraphService.inputs.setModalOpen,
+    setModalOpen: temperatureGraphService.inputs.setUploadModalOpen,
   });
 
   return (

@@ -17,6 +17,7 @@ export type TemperatureGraphProps = {
   isLoading: boolean;
   errorColumns: ErrorColumnType[];
   temperatureLimits: TemperatureLimitsType;
+  setEditDeviationModalOpen: (payload: boolean) => void;
 };
 
 export enum ETemteratureTypes {

@@ -28,7 +28,9 @@ const handleGetTemplateFile = createEvent();
 
 const handlePostTemplateFile = createEvent<File>();
 
-const setModalOpen = createEvent<boolean>();
+const setUploadModalOpen = createEvent<boolean>();
+
+const setEditDeviationModalOpen = createEvent<boolean>();
 
 const setEditedTemperatureNormative =
   createEvent<TemperatureNormativeUpdateRequest>();
@@ -162,9 +164,13 @@ const $isLoading = updateTemperatureNormativeFx.pending;
 
 const $isFileLoading = createOrUpdateFromFileFx.pending;
 
-const $isModalOpen = createStore<boolean>(false)
-  .on(setModalOpen, (_, data) => data)
+const $isUploadModalOpen = createStore<boolean>(false)
+  .on(setUploadModalOpen, (_, data) => data)
   .reset(handleSuccessUpdateFromFile);
+
+const $isDeviationEditModalOpen = createStore<boolean>(false)
+  .on(setEditDeviationModalOpen, (_, data) => data)
+  .reset(updateTemperatureNormativeFx.doneData);
 
 const $file = createStore<File | null>(null)
   .on(setFile, (_, file) => file)
@@ -208,20 +214,22 @@ export const temperatureGraphService = {
   inputs: {
     handleEditTemperatureNormative,
     setEditedTemperatureNormative,
-    setModalOpen,
+    setUploadModalOpen,
     handleGetTemplateFile,
     handlePostTemplateFile,
     setFile,
+    setEditDeviationModalOpen,
   },
   outputs: {
     $temperatureNormative,
     $isEditing,
     $isLoading,
     $errorColumns,
-    $isModalOpen,
+    $isUploadModalOpen,
     $isFileLoading,
     $file,
     $temperatureLimits,
+    $isDeviationEditModalOpen,
   },
   gates: { TemperatureGraphGate },
 };

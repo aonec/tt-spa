@@ -41,6 +41,7 @@ export const TemperatureGraph: FC<TemperatureGraphProps> = ({
   isLoading,
   errorColumns,
   temperatureLimits,
+  setEditDeviationModalOpen,
 }) => {
   const { values, setFieldValue, handleSubmit, handleReset } = useFormik<{
     temperatureNormativesArr: TemperatureNormativeRow[];
@@ -275,7 +276,10 @@ export const TemperatureGraph: FC<TemperatureGraphProps> = ({
 
   return (
     <PageWrapper>
-      <CriticalTemperaturePanel temperatureLimits={temperatureLimits} />
+      <CriticalTemperaturePanel
+        temperatureLimits={temperatureLimits}
+        setEditDeviationModalOpen={setEditDeviationModalOpen}
+      />
 
       <Table
         isSticky
