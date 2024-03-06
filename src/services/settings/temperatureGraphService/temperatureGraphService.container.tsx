@@ -63,6 +63,7 @@ export const TemperatureGraphContainer = () => {
         isOpen={isDeviationEditModalOpen}
         setModalOpen={setEditDeviationModalOpen}
         temperatureLimits={temperatureLimits}
+        handleEdit={setEditedTemperatureNormative}
       />
       <TemperatureGraph
         temperatureNormative={temperatureNormative}

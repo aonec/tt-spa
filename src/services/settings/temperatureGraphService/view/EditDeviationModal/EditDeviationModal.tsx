@@ -1,5 +1,11 @@
 import React, { FC } from 'react';
-import { Descriprion, Wrapper } from './EditDeviationModal.styled';
+import * as Yup from 'yup';
+import { useFormik } from 'formik';
+import {
+  Descriprion,
+  FormWrapper,
+  OneValueWrapper,
+} from './EditDeviationModal.styled';
 import { EditDeviationModalProps } from './EditDeviationModal.types';
 import { FormModal } from 'ui-kit/Modals/FormModal';
 import { FormItem } from 'ui-kit/FormItem';
@@ -12,7 +18,22 @@ export const EditDeviationModal: FC<EditDeviationModalProps> = ({
   isOpen,
   setModalOpen,
   temperatureLimits,
+  handleEdit,
 }) => {
+  const { values, setFieldValue, handleSubmit, isValid } = useFormik({
+    initialValues: { min: null, max: null },
+    onSubmit: ({ max, min }) => {
+      handleEdit({
+        downTemperatureDeviationPercentLimit: max,
+        upTemperatureDeviationPercentLimit: min,
+      });
+    },
+    validationSchema: Yup.object().shape({
+      min: Yup.number().required(),
+      max: Yup.number().required(),
+    }),
+  });
+
   return (
     <FormModal
       title="Min и max отклонение температуры"
@@ -20,17 +41,44 @@ export const EditDeviationModal: FC<EditDeviationModalProps> = ({
       onCancel={() => setModalOpen(false)}
       formId={formId}
       submitBtnText="Сохранить изменения"
+      disabled={!isValid}
       form={
-        <Wrapper>
+        <Form id={formId} onSubmitCapture={() => handleSubmit()}>
           <Descriprion>
             Данные значения будут использоваться в алгоритме для выявления
             перетопов и недотопов на узлах.
           </Descriprion>
 
-          <Form.Item label="Текущее min значение" colon={false}>
-            <Input />
-          </Form.Item>
-        </Wrapper>
+          <FormWrapper>
+            <OneValueWrapper>
+              <FormItem label="Текущее min значение">
+                <Input value={temperatureLimits.min || undefined} disabled />
+              </FormItem>
+              <FormItem label="Новое min значение">
+                <Input
+                  type="number"
+                  placeholder="Введите"
+                  value={values.min || undefined}
+                  onChange={(value) => setFieldValue('min', value.target.value)}
+                />
+              </FormItem>
+            </OneValueWrapper>
+
+            <OneValueWrapper>
+              <FormItem label="Текущее max значение">
+                <Input value={temperatureLimits.max || undefined} disabled />
+              </FormItem>
+              <FormItem label="Новое max значение">
+                <Input
+                  type="number"
+                  placeholder="Введите"
+                  value={values.max || undefined}
+                  onChange={(value) => setFieldValue('max', value.target.value)}
+                />
+              </FormItem>
+            </OneValueWrapper>
+          </FormWrapper>
+        </Form>
       }
     />
   );

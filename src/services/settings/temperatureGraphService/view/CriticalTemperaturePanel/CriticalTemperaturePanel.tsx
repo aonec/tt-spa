@@ -26,8 +26,12 @@ export const CriticalTemperaturePanel: FC<CriticalTemperaturePanelProps> = ({
           <TemperatureDevider>/</TemperatureDevider>
           <TemperatureValue>{temperatureLimits.max}%</TemperatureValue>
         </TemperatureBlock>
-        <ButtonSc size="small" type="ghost">
-          <PencilIcon onClick={() => setEditDeviationModalOpen(true)} />
+        <ButtonSc
+          size="small"
+          type="ghost"
+          onClick={() => setEditDeviationModalOpen(true)}
+        >
+          <PencilIcon />
         </ButtonSc>
       </Block>
     </Wrapper>
