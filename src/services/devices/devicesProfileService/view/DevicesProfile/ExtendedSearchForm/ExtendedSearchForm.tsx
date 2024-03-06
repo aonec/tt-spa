@@ -69,6 +69,7 @@ export const ExtendedSearchForm: FC<ExtendedSearchFormProps> = ({
   return (
     <StyledFormThreeRows>
       <AddressSearchContainer
+        isCityPreselected={false}
         onChange={(key, value) =>
           setFieldValue(DeviceAddressSearchFieldsNameLookup[key], value)
         }

@@ -39,6 +39,7 @@ export const ActsJournalProfile: FC<ActsJournalProfileProps> = ({
         <StickyWrapper>
           <HeaderWrapper>
             <AddressSearchContainer
+              isCityPreselected={false}
               fields={[
                 SearchFieldType.City,
                 SearchFieldType.Street,
