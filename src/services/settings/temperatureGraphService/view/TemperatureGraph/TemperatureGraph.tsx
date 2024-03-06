@@ -31,6 +31,8 @@ import {
   TemperatureNormativeUpdateRequest,
 } from 'api/types';
 import { ErrorColumnType } from '../../temperatureGraphService.types';
+import { ContextMenuButton } from 'ui-kit/ContextMenuButton';
+import { ContextMenuButtonColor } from 'ui-kit/ContextMenuButton/ContextMenuButton.types';
 
 export const TemperatureGraph: FC<TemperatureGraphProps> = ({
   temperatureNormative: initialTemperatureNormatives,
@@ -348,6 +350,29 @@ export const TemperatureGraph: FC<TemperatureGraphProps> = ({
                 ETemteratureTypes.dayFeedBackFlowTemperature,
                 ETemteratureTypes.nightFeedBackFlowTemperature,
               ),
+          },
+          {
+            label: '',
+            size: '60px',
+            render: () => {
+              return (
+                <ContextMenuButton
+                  size="small"
+                  menuButtons={[
+                    {
+                      title: 'Добавить строку выше',
+                    },
+                    {
+                      title: 'Добавить строку ниже',
+                    },
+                    {
+                      title: 'Удалить строку',
+                      color: ContextMenuButtonColor.danger,
+                    },
+                  ]}
+                />
+              );
+            },
           },
         ]}
         elements={values.temperatureNormativesArr}

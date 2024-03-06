@@ -4,7 +4,7 @@ import { Input } from 'ui-kit/Input';
 export const PageWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  width: 980px;
+  width: 1100px;
   height: 78vh;
   overflow-y: hidden;
   overflow-x: hidden;

@@ -65,7 +65,7 @@ export const TableElement = styled.div<{ css?: string }>`
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
-  padding-left: 16px;
+  padding: 0 16px;
   height: 100%;
   display: flex;
   align-items: center;
