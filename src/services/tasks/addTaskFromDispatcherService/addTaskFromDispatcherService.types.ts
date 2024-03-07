@@ -36,13 +36,12 @@ export type HomeownerNameOption = {
   id: string;
 };
 
-export enum TaskTypes {
-  Current = 'Current',
-  Emergency = 'Emergency',
-  Planned = 'Planned',
-}
-
 export type ReplaceAllPhonesRequestType = {
   homeownerAccountId: string;
   requestPayload: HomeownerAccountReplaceAllPhoneNumbersRequest;
+};
+
+export type DeadlineRequest = {
+  TaskReasonId: string;
+  TaskType?: EisTaskType;
 };

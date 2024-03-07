@@ -58,7 +58,6 @@ export const TaskReasonTypeDictionary: {
   [EisTaskReasonType.HotWaterSupply]: 'ГВС',
   [EisTaskReasonType.Electricity]: 'ЭЭ',
   [EisTaskReasonType.Heat]: 'Отопление',
-  [EisTaskReasonType.TrafficControl]: 'Контроль',
 };
 
 export const ClosingReasonsDictionary: { [key in EClosingReason]: string } = {
@@ -158,6 +157,5 @@ export const DistrictColorsList: DistrictColorData[] = [
 
 export const TaskTypeDictionary: { [key in EisTaskType]: string } = {
   [EisTaskType.Current]: 'Текущая',
-  [EisTaskType.Planned]: 'Плановая',
   [EisTaskType.Emergency]: 'Аварийная',
 };
