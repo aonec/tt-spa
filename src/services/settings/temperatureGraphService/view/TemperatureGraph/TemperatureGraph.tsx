@@ -17,8 +17,6 @@ import {
   Footer,
   InputSc,
   InputsContainer,
-  NewLineCiolumnWrapper,
-  NewLineWrapper,
   PageWrapper,
   PlusIconSC,
   WrapperCelsius,
@@ -37,8 +35,8 @@ import {
 import { ErrorColumnType } from '../../temperatureGraphService.types';
 import { ContextMenuButton } from 'ui-kit/ContextMenuButton';
 import { ContextMenuButtonColor } from 'ui-kit/ContextMenuButton/ContextMenuButton.types';
-import { Input } from 'ui-kit/Input';
-import { CheckLg, DashLg, TrashFill } from 'react-bootstrap-icons';
+import { CheckLg, DashLg } from 'react-bootstrap-icons';
+import { NewTemperatureRowForm } from './NewTemperatureRowForm';
 
 export const TemperatureGraph: FC<TemperatureGraphProps> = ({
   temperatureNormative: initialTemperatureNormatives,
@@ -290,30 +288,11 @@ export const TemperatureGraph: FC<TemperatureGraphProps> = ({
   return (
     <PageWrapper>
       <Table
-        ExtraHeader={({ temp }) => {
-          if (!isNewLine) return null;
-
-          return (
-            <NewLineWrapper temp={temp}>
-              <Input placeholder="Т наружного воздуха" small />
-              <NewLineCiolumnWrapper>
-                <Input placeholder="День" small />
-                <Input placeholder="Ночь" small />
-              </NewLineCiolumnWrapper>
-              <Input placeholder="Т подающая" small />
-              <NewLineCiolumnWrapper>
-                <Input placeholder="День" small />
-                <Input placeholder="Ночь" small />
-              </NewLineCiolumnWrapper>
-              <Button
-                type="danger"
-                onClick={() => setIsNewLine(false)}
-                icon={<TrashFill />}
-                size="small"
-              />
-            </NewLineWrapper>
-          );
-        }}
+        extraHeader={
+          isNewLine && (
+            <NewTemperatureRowForm temp={'190px 280px 160px 280px 60px'} />
+          )
+        }
         rowStyles={(rowData) => {
           if (typeof rowData?.outdoorTemperature !== 'number') return '';
 

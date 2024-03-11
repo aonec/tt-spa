@@ -28,7 +28,7 @@ export function Table<T>({
   isSticky,
   link,
   floating = false,
-  ExtraHeader,
+  extraHeader,
 }: PropsWithChildren<TableProps<T>>) {
   const pageSize = pagination?.pageSize || Infinity;
 
@@ -115,7 +115,7 @@ export function Table<T>({
         <Header temp={temp} css={headerStyles}>
           {columnsComponent}
         </Header>
-        {ExtraHeader && <ExtraHeader temp={temp} />}
+        {extraHeader}
       </HeaderWrapper>
       <div>
         {sortedRows
