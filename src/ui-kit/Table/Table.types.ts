@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import { FC, ReactNode } from 'react';
 
 export type Pagination = {
   pageSize: number;
@@ -22,4 +22,5 @@ export type TableProps<T> = {
   link?: (elem: T) => string;
   isSticky?: boolean;
   floating?: boolean;
+  ExtraHeader?: FC<{ temp: string }>;
 };

@@ -17,7 +17,10 @@ import {
   Footer,
   InputSc,
   InputsContainer,
+  NewLineCiolumnWrapper,
+  NewLineWrapper,
   PageWrapper,
+  PlusIconSC,
   WrapperCelsius,
   WrapperMultiHeader,
   WrapperT3,
@@ -34,6 +37,8 @@ import {
 import { ErrorColumnType } from '../../temperatureGraphService.types';
 import { ContextMenuButton } from 'ui-kit/ContextMenuButton';
 import { ContextMenuButtonColor } from 'ui-kit/ContextMenuButton/ContextMenuButton.types';
+import { Input } from 'ui-kit/Input';
+import { CheckLg, DashLg, TrashFill } from 'react-bootstrap-icons';
 
 export const TemperatureGraph: FC<TemperatureGraphProps> = ({
   temperatureNormative: initialTemperatureNormatives,
@@ -60,6 +65,8 @@ export const TemperatureGraph: FC<TemperatureGraphProps> = ({
       setEditedTemperatureNormative(requestData);
     },
   });
+
+  const [isNewLine, setIsNewLine] = useState(false);
 
   const isDeletingMod = Boolean(deletingRowIds.length);
 
@@ -283,6 +290,30 @@ export const TemperatureGraph: FC<TemperatureGraphProps> = ({
   return (
     <PageWrapper>
       <Table
+        ExtraHeader={({ temp }) => {
+          if (!isNewLine) return null;
+
+          return (
+            <NewLineWrapper temp={temp}>
+              <Input placeholder="Т наружного воздуха" small />
+              <NewLineCiolumnWrapper>
+                <Input placeholder="День" small />
+                <Input placeholder="Ночь" small />
+              </NewLineCiolumnWrapper>
+              <Input placeholder="Т подающая" small />
+              <NewLineCiolumnWrapper>
+                <Input placeholder="День" small />
+                <Input placeholder="Ночь" small />
+              </NewLineCiolumnWrapper>
+              <Button
+                type="danger"
+                onClick={() => setIsNewLine(false)}
+                icon={<TrashFill />}
+                size="small"
+              />
+            </NewLineWrapper>
+          );
+        }}
         rowStyles={(rowData) => {
           if (typeof rowData?.outdoorTemperature !== 'number') return '';
 
@@ -345,7 +376,6 @@ export const TemperatureGraph: FC<TemperatureGraphProps> = ({
                 <WrapperValue>{data.heatFeedFlowTemperature}</WrapperValue>
               ),
           },
-
           {
             label: (
               <WrapperMultiHeader>
@@ -368,7 +398,17 @@ export const TemperatureGraph: FC<TemperatureGraphProps> = ({
               ),
           },
           {
-            label: '',
+            label: (
+              <>
+                {!(isDeletingMod || isNewLine) && (
+                  <Button
+                    icon={<PlusIconSC />}
+                    size="small"
+                    onClick={() => setIsNewLine(true)}
+                  />
+                )}
+              </>
+            ),
             size: '60px',
             hidden: isEditing,
             render: (data) => {
@@ -378,28 +418,44 @@ export const TemperatureGraph: FC<TemperatureGraphProps> = ({
 
               const isSelected = deletingRowIds.includes(outdorTemperature);
 
+              const toggleDeletion = () =>
+                toggleDeletingRows(outdorTemperature);
+
               const contextMenu = (
                 <ContextMenuButton
                   size="small"
                   menuButtons={[
                     {
-                      title: 'Добавить строку выше',
-                      hidden: isDeletingMod,
-                    },
-                    {
-                      title: 'Добавить строку ниже',
-                      hidden: isDeletingMod,
-                    },
-                    {
-                      title: isSelected ? 'Отменить' : 'Удалить строку',
+                      title: 'Удалить строку',
                       color: ContextMenuButtonColor.danger,
-                      onClick: () => toggleDeletingRows(outdorTemperature),
+                      hidden: isNewLine,
+                      onClick: toggleDeletion,
                     },
                   ]}
                 />
               );
 
-              return contextMenu;
+              if (!isDeletingMod) return contextMenu;
+
+              if (!isSelected)
+                return (
+                  <Button
+                    type="ghost"
+                    size="small"
+                    icon={<CheckLg />}
+                    onClick={toggleDeletion}
+                  />
+                );
+
+              if (isSelected)
+                return (
+                  <Button
+                    size="small"
+                    type="danger"
+                    icon={<DashLg />}
+                    onClick={toggleDeletion}
+                  />
+                );
             },
           },
         ]}

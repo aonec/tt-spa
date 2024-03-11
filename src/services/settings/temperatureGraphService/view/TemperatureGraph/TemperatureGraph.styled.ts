@@ -1,3 +1,4 @@
+import { Plus } from 'react-bootstrap-icons';
 import styled from 'styled-components';
 import { Input } from 'ui-kit/Input';
 
@@ -65,4 +66,25 @@ export const Footer = styled.div`
 
 export const activeRowCSS = `
   background-color: #ffe8e8;
+`;
+
+export const NewLineWrapper = styled.div<{ temp: string }>`
+  background: #f2faffff;
+  display: grid;
+  align-items: center;
+  grid-template-columns: ${({ temp }) => temp};
+  height: 50px;
+  gap: 16px;
+  padding-left: 16px;
+  width: calc(100% - 16px);
+`;
+
+export const NewLineCiolumnWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 16px;
+`;
+
+export const PlusIconSC = styled(Plus)`
+  transform: scale(2);
 `;

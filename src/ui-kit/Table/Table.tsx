@@ -6,6 +6,7 @@ import React, {
 } from 'react';
 import {
   Header,
+  HeaderWrapper,
   PaginationWrapper,
   Row,
   RowLink,
@@ -27,6 +28,7 @@ export function Table<T>({
   isSticky,
   link,
   floating = false,
+  ExtraHeader,
 }: PropsWithChildren<TableProps<T>>) {
   const pageSize = pagination?.pageSize || Infinity;
 
@@ -109,9 +111,12 @@ export function Table<T>({
 
   return (
     <Wrapper floating={floating}>
-      <Header temp={temp} css={headerStyles} isSticky={isSticky}>
-        {columnsComponent}
-      </Header>
+      <HeaderWrapper isSticky={isSticky}>
+        <Header temp={temp} css={headerStyles}>
+          {columnsComponent}
+        </Header>
+        {ExtraHeader && <ExtraHeader temp={temp} />}
+      </HeaderWrapper>
       <div>
         {sortedRows
           .slice(start, end)

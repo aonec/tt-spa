@@ -14,10 +14,13 @@ const stickyHeaderCss = css`
   z-index: 10;
 `;
 
+export const HeaderWrapper = styled.div<{ isSticky?: boolean }>`
+  ${({ isSticky }) => (isSticky ? stickyHeaderCss : '')}
+`;
+
 export const Header = styled.div<{
   temp: string;
   css?: string;
-  isSticky?: boolean;
 }>`
   width: max-content;
   background: #f3f5f6;
@@ -30,7 +33,6 @@ export const Header = styled.div<{
   font-size: 12px;
   align-items: center;
   ${({ css }) => css || ''}
-  ${({ isSticky }) => (isSticky ? stickyHeaderCss : '')}
 `;
 
 const RowStyle = css<{ temp: string; css?: string }>`
