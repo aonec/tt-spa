@@ -220,9 +220,7 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
   );
 
   const taskTypeOptions = useMemo(() => {
-    const allowedTaskTypes = selectedTaskReasonOption.map(
-      (item) => item.taskType,
-    );
+    const allowedTaskTypes = selectedTaskReasonOption?.taskTypes || [];
 
     return allowedTaskTypes.map((taskType) => ({
       label: TaskTypeDictionary[taskType],
@@ -304,9 +302,6 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
   const statusTaskType = useMemo(() => {
     if (values.taskType === EisTaskType.Emergency) {
       return 'error';
-    }
-    if (values.taskType === EisTaskType.Planned) {
-      return 'warning';
     }
     return '';
   }, [values.taskType]);

@@ -2,7 +2,6 @@ import {
   EisTaskType,
   ErpSourceResponse,
   ErpTaskReasonGroupResponse,
-  ErpTaskReasonItemResponse,
   ResourceDisconnectingResponse,
 } from 'api/types';
 import { AddTask } from './AddTaskForm/AddTaskForm.types';
@@ -29,7 +28,7 @@ export type AddTaskModalProps = {
   handleSelectTaskReason: (payload: string) => void;
   handleSelectTaskType: (payload: EisTaskType) => void;
   isManualDeadlineRequired: boolean;
-  selectedTaskReasonOption: ErpTaskReasonItemResponse[];
+  selectedTaskReasonOption: ErpTaskReasonGroupResponse | null;
   handleChangeSubscriberName: (payload: string | null) => void;
   handleChangePhoneNumber: (payload: string | null) => void;
   isSavePhoneNumberOpen: boolean;

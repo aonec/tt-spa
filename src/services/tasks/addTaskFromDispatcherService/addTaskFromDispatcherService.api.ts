@@ -11,6 +11,7 @@ import {
   StreetWithBuildingNumbersResponsePagedList,
 } from 'api/types';
 import {
+  DeadlineRequest,
   GetAddressesRequest,
   GetApartmentsRequest,
   GetResourceDisconnectionRequest,
@@ -28,9 +29,9 @@ export const getERPSources = (): Promise<ErpSourceResponse[]> => {
 };
 
 export const getErpTaskDeadline = (
-  TaskReasonId: string,
+  request: DeadlineRequest,
 ): Promise<ErpTaskDeadlineResponse> => {
-  return axios.get('Tasks/ErpTaskDeadline', { params: { TaskReasonId } });
+  return axios.get('Tasks/ErpTaskDeadline', { params: request });
 };
 
 export const getTaskReasons = (): Promise<ErpTaskReasonGroupResponse[]> => {
