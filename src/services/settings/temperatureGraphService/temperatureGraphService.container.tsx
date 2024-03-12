@@ -30,6 +30,7 @@ export const TemperatureGraphContainer = () => {
     toggleDeletingRows,
     handleDeleteRows,
     isLoadingDeliting,
+    handleCreateRow,
   } = useUnit({
     temperatureNormative: outputs.$temperatureNormative,
     isEditing: outputs.$isEditing,
@@ -48,6 +49,7 @@ export const TemperatureGraphContainer = () => {
     toggleDeletingRows: inputs.toggleDeletingRows,
     handleDeleteRows: inputs.handleDeleteRows,
     isLoadingDeliting: deleteTemperatureNormativesMutation.$pending,
+    handleCreateRow: inputs.handleCreateRow,
   });
   return (
     <>
@@ -72,6 +74,7 @@ export const TemperatureGraphContainer = () => {
         toggleDeletingRows={toggleDeletingRows}
         handleDeleteRows={handleDeleteRows}
         isLoadingDeliting={isLoadingDeliting}
+        handleCreateRow={handleCreateRow}
       />
     </>
   );

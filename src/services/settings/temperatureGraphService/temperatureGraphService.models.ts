@@ -13,6 +13,7 @@ import {
   TemperatureNormativeDeleteRequest,
   TemperatureNormativeResponse,
   TemperatureNormativeRow,
+  TemperatureNormativeRowUpdate,
   TemperatureNormativeUpdateRequest,
 } from 'api/types';
 import { EffectFailDataAxiosErrorDataTemperatureGraph } from 'types';
@@ -32,6 +33,8 @@ const setModalOpen = createEvent<boolean>();
 const toggleDeletingRows = createEvent<number | null>();
 
 const handleDeleteRows = createEvent();
+
+const handleCreateRow = createEvent<TemperatureNormativeRowUpdate>();
 
 const setEditedTemperatureNormative =
   createEvent<TemperatureNormativeUpdateRequest>();
@@ -165,6 +168,14 @@ sample({
 });
 
 sample({
+  clock: handleCreateRow,
+  fn: (newRowPayload): TemperatureNormativeUpdateRequest => ({
+    updateRows: [newRowPayload],
+  }),
+  target: updateTemperatureNormativeFx,
+});
+
+sample({
   clock: handleGetTemplateFile,
   target: getTemplateFileFx,
 });
@@ -213,6 +224,8 @@ export const temperatureGraphService = {
     setFile,
     toggleDeletingRows,
     handleDeleteRows,
+    handleCreateRow,
+    updateTemperatureNormativeFx,
   },
   outputs: {
     $temperatureNormative,

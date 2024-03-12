@@ -37,6 +37,7 @@ import { ContextMenuButton } from 'ui-kit/ContextMenuButton';
 import { ContextMenuButtonColor } from 'ui-kit/ContextMenuButton/ContextMenuButton.types';
 import { CheckLg, DashLg } from 'react-bootstrap-icons';
 import { NewTemperatureRowForm } from './NewTemperatureRowForm';
+import { temperatureGraphService } from '../../temperatureGraphService.models';
 
 export const TemperatureGraph: FC<TemperatureGraphProps> = ({
   temperatureNormative: initialTemperatureNormatives,
@@ -49,6 +50,7 @@ export const TemperatureGraph: FC<TemperatureGraphProps> = ({
   toggleDeletingRows,
   handleDeleteRows,
   isLoadingDeliting,
+  handleCreateRow,
 }) => {
   const { values, setFieldValue, handleSubmit, handleReset } = useFormik<{
     temperatureNormativesArr: TemperatureNormativeRow[];
@@ -65,6 +67,15 @@ export const TemperatureGraph: FC<TemperatureGraphProps> = ({
   });
 
   const [isNewLine, setIsNewLine] = useState(false);
+
+  useEffect(() => {
+    return temperatureGraphService.inputs.updateTemperatureNormativeFx.doneData.watch(
+      () => {
+        setIsNewLine(false);
+        message.success('Новая строка сохранена!');
+      },
+    ).unsubscribe;
+  }, [setIsNewLine]);
 
   const isDeletingMod = Boolean(deletingRowIds.length);
 
@@ -290,7 +301,11 @@ export const TemperatureGraph: FC<TemperatureGraphProps> = ({
       <Table
         extraHeader={
           isNewLine && (
-            <NewTemperatureRowForm temp={'190px 280px 160px 280px 60px'} />
+            <NewTemperatureRowForm
+              onCancel={() => setIsNewLine(false)}
+              temp={'190px 280px 160px 280px 60px'}
+              handleCreateRow={handleCreateRow}
+            />
           )
         }
         rowStyles={(rowData) => {

@@ -1,5 +1,6 @@
 import {
   TemperatureNormativeRow,
+  TemperatureNormativeRowUpdate,
   TemperatureNormativeUpdateRequest,
 } from 'api/types';
 import { ErrorColumnType } from '../../temperatureGraphService.types';
@@ -17,6 +18,7 @@ export type TemperatureGraphProps = {
   deletingRowIds: number[];
   handleDeleteRows: () => void;
   isLoadingDeliting: boolean;
+  handleCreateRow: (payload: TemperatureNormativeRowUpdate) => void;
 };
 
 export enum ETemteratureTypes {
