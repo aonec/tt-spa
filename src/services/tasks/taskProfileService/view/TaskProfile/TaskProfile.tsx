@@ -92,6 +92,7 @@ export const TaskProfile: FC<TaskProfileProps> = ({
             timer={timer}
             taskName={taskName || ''}
             pipeNode={pipeNode}
+            isApplication={isApplication}
           />
           {task.type && isViewerExecutor && (
             <TaskActionsPanel

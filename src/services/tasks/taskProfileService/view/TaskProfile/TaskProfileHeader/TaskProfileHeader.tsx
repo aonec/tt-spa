@@ -26,6 +26,7 @@ export const TaskProfileHeader: FC<TaskProfileHeaderProps> = ({
   timer,
   taskName,
   pipeNode,
+  isApplication,
 }) => {
   const lineColor = timer.closingStatus && LineColors[timer.closingStatus];
 
@@ -49,6 +50,33 @@ export const TaskProfileHeader: FC<TaskProfileHeaderProps> = ({
     return <CalculatorIcon />;
   }, [devices, nodeDevice, pipeNode]);
 
+  const stageStatusDescription = timer.statusDescription;
+  const stageRemainingTime = timer.stage?.remainingTime || '';
+  const stageDeadlineDate = timer.stage?.deadlineDate || '';
+
+  const taskRemainingTime = timeline?.remainingTime || '';
+  const taskDeadlineDate = timeline?.deadlineDate || '';
+
+  if (isApplication && timeline) {
+    timeline = {
+      ...timeline,
+      remainingTime: stageRemainingTime,
+      deadlineDate: stageDeadlineDate,
+    };
+  }
+
+  if (isApplication) {
+    timer = {
+      ...timer,
+      statusDescription: 'Время на задачу:',
+      stage: {
+        ...timer.stage,
+        remainingTime: taskRemainingTime,
+        deadlineDate: taskDeadlineDate,
+      },
+    };
+  }
+
   return (
     <Wrapper>
       <HeaderWrapper>
@@ -59,7 +87,9 @@ export const TaskProfileHeader: FC<TaskProfileHeaderProps> = ({
         <TimelineRowWrapper>
           <InfoWrapper>
             {taskName}
-            <div>Время на задачу</div>
+            <div>
+              {isApplication ? stageStatusDescription : 'Время на задачу'}{' '}
+            </div>
           </InfoWrapper>
 
           <TimeLine timeline={timeline} />
