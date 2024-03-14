@@ -41,11 +41,11 @@ export const prepareData = (tasks: TaskListResponse[], grouptype: string) =>
 export const createTimeline = (
   task: TaskListResponse | TaskResponse,
 ): Timeline | null => {
-  const { closingTime, expectedCompletionTime, currentStage } = task;
+  const { closingTime, currentStage } = task;
 
   if (closingTime) return null;
 
-  const deadline = new Date(expectedCompletionTime!);
+  const deadline = new Date(currentStage?.expectedCompletionTime || '');
   const current = Date.now();
 
   const remainingTime = getFormatedTime(deadline.valueOf() - current);
@@ -63,16 +63,11 @@ export const createTimeline = (
 };
 
 export const createTimer = (task: TaskListResponse | TaskResponse) => {
-  const {
-    closingTime,
-    currentStage,
-    closingStatus,
-    creationTime,
-    expectedCompletionTime,
-  } = task;
+  const { closingTime, closingStatus, creationTime, expectedCompletionTime } =
+    task;
 
   if (!closingTime) {
-    const ext = currentStage?.expectedCompletionTime;
+    const ext = expectedCompletionTime;
     const isFailed = new Date(ext!).valueOf() - Date.now() < 0;
 
     return {
