@@ -14,9 +14,10 @@ import {
   Wrapper,
 } from './Table.styled';
 import { TableProps } from './Table.types';
-import { Empty, Pagination } from 'antd';
+import { Empty } from 'antd';
 import { EOrderByRule } from 'api/types';
 import _ from 'lodash';
+import { Pagination } from 'ui-kit/Pagination';
 
 export function Table<T>({
   columns,
