@@ -31,6 +31,7 @@ export const ActsList: FC<ActsListProps> = ({
             total={actsPagedData.totalItems}
             pageSize={actsPagedData.pageSize}
             onChange={(PageNumber) => setPageNumber(PageNumber)}
+            hideOnSinglePage
           />
         </>
       )}
