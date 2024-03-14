@@ -21,15 +21,11 @@ export const InspectorsWorkingReportTable: FC<
         },
         {
           label: 'Контролер',
-          size: '190px',
+          size: '220px',
           render: (elem) => elem.name,
           css: getNameColumnCSS,
         },
-        {
-          label: 'Ежедневный план',
-          size: '120px',
-          render: (elem) => elem.dayPlan,
-        },
+
         ...getFilledArray(11, (index) => {
           return {
             label: `${index + 16}`,
