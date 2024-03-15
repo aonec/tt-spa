@@ -19,7 +19,7 @@ export const getInspectorsHousingStocksQuery = createQuery<
   GetInspectorsHousingStocksRequestParams,
   InspectorOnBuildingResponse[] | null
 >({
-  url: 'Buildings/inspectors',
+  url: '/api/Buildings/inspectors',
   response: {
     contract: getInspectorsHousingContract,
   },
