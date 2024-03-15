@@ -11,6 +11,15 @@ export const Wrapper = styled.div<{ isLoading?: boolean }>`
   opacity: ${({ isLoading }) => (isLoading ? '0.5' : '1')};
 `;
 
+export const AlertWrapper = styled.div`
+  margin-top: 16px;
+  margin-bottom: 10px;
+`;
+
+export const AlertTitle = styled.div`
+  line-height: 30px;
+`;
+
 export const getCurrentDataStyle = (resource: EResourceType) => ({
   parent: { overflow: 'visible' },
   data: {
@@ -29,7 +38,3 @@ export const ZeroLineStyle = {
     fill: '#272F5AB2',
   },
 };
-
-export const NoDataNotificationWrapper = styled.div`
-  margin-bottom: 12px;
-`;

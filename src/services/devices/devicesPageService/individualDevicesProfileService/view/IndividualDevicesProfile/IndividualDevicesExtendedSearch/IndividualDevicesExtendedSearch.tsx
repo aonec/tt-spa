@@ -79,6 +79,7 @@ export const IndividualDevicesExtendedSearch: FC<
       extendedSearchContent={
         <>
           <AddressSearchContainer
+            isCityPreselected={false}
             initialValues={{
               city: values.City,
               street: values.Street,

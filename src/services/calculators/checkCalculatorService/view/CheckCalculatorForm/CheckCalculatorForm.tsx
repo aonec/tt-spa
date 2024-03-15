@@ -9,6 +9,7 @@ import { CheckCalculatorFormProps } from './CheckCalculatorForm.types';
 import { Wrapper } from './CheckCalculatorForm.styled';
 import { ErrorMessage } from 'ui-kit/ErrorMessage';
 import * as yup from 'yup';
+import { checkingDateTest } from 'services/devices/individualDevices/workWithIndividualDeviceService/workWithIndividualDeviceService.utils';
 
 export const CheckCalculatorForm: FC<CheckCalculatorFormProps> = ({
   formId,
@@ -21,8 +22,14 @@ export const CheckCalculatorForm: FC<CheckCalculatorFormProps> = ({
         futureCheckingDate: dayjs().add(4, 'year').format(),
       },
       validationSchema: yup.object().shape({
-        currentCheckingDate: yup.string().required('Это поле обязательно'),
-        futureCheckingDate: yup.string().required('Это поле обязательно'),
+        currentCheckingDate: yup
+          .string()
+          .test('checking-date-down', 'некорректная дата', checkingDateTest)
+          .required('Это поле обязательно'),
+        futureCheckingDate: yup
+          .string()
+          .test('checking-date-down', 'некорректная дата', checkingDateTest)
+          .required('Это поле обязательно'),
       }),
       validateOnBlur: false,
       validateOnChange: false,

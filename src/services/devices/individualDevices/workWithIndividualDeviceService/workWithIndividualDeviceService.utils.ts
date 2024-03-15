@@ -115,3 +115,12 @@ const getPreparedReadingsOfIndividualDevice = (
     value4: value4 ? Number(value4) : null,
   };
 };
+
+export const checkingDateTest = (date?: string | null) => {
+  if (!date) return true;
+
+  const dateYear = dayjs(date).year();
+  const currentYear = dayjs().year();
+
+  return dateYear >= 2000 && dateYear <= currentYear + 20;
+};

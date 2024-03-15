@@ -2,7 +2,6 @@ import {
   EisTaskType,
   ErpSourceResponse,
   ErpTaskReasonGroupResponse,
-  ErpTaskReasonItemResponse,
   ResourceDisconnectingResponse,
 } from 'api/types';
 import dayjs from 'dayjs';
@@ -55,7 +54,7 @@ export type AddTaskFormProps = {
   handleSelectTaskReason: (payload: string) => void;
   handleSelectTaskType: (payload: EisTaskType) => void;
   isManualDeadlineRequired: boolean;
-  selectedTaskReasonOption: ErpTaskReasonItemResponse[];
+  selectedTaskReasonOption: ErpTaskReasonGroupResponse | null;
   handleChangeSubscriberName: (payload: string | null) => void;
   handleChangePhoneNumber: (payload: string | null) => void;
   isSavePhoneNumberOpen: boolean;

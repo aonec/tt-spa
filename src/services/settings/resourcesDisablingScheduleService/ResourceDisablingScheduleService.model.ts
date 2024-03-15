@@ -4,7 +4,6 @@ import { createGate } from 'effector-react';
 import { ResourceDisconnectingResponsePagedList } from 'api/types';
 import { DisablingResourcesProps } from './ResourceDisablingScheduleContainer.types';
 import { fetchDisablingResources } from './ResourcesDisablingScheduleService.api';
-import { currentOrganizationService } from 'services/currentOrganizationService';
 
 const resourceDisablingGate = createGate<DisablingResourcesProps>();
 
@@ -38,16 +37,7 @@ const $filters = createStore<DisablingResourcesProps>({ PageSize: 12 })
 sample({
   source: $filters,
   clock: [resourceDisablingGate.open, $filters, refetchResourceDisconnections],
-  fn: (filters) => filters,
-  filter: (filters) => Boolean(filters.City),
   target: getResourceDisconnectionsFx,
-});
-
-sample({
-  source: currentOrganizationService.outputs.$defaultCity,
-  filter: Boolean,
-  fn: (City) => ({ City }),
-  target: setFilters,
 });
 
 sample({

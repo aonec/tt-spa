@@ -16,6 +16,7 @@ import {
   ResourseTypeWrapper,
   SearchIconSc,
   SelectCaret,
+  SelectExpandable,
   TextareaSC,
   TimePickerLarge,
   TimePickerMedium,
@@ -84,35 +85,36 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
 }) => {
   const initialSource = useMemo(() => ERPSources[0], [ERPSources]);
 
-  const { values, handleSubmit, setFieldValue, isValid } = useFormik<AddTask>({
-    initialValues: {
-      sourceId: initialSource?.id || null,
-      requestNumber: null,
-      taskType: null,
-      workTypeId: null,
-      requestDate: dayjs(),
-      requestTime: dayjs(),
-      addressSearch: '',
-      apartmentNumber: null,
-      subscriberName: null,
-      phoneNumber: null,
-      taskDescription: null,
-      taskReasonSearch: null,
-      taskReasonOrderNumber: null,
-      taskDeadlineDate: null,
-      taskDeadlineTime: dayjs(),
-      isSourceNumberRequired: initialSource?.isSourceNumberRequired || false,
-      isSubscriberRequired: initialSource?.isSubscriberRequired || false,
-      isManualDeadlineRequired: isManualDeadlineRequired,
-    },
-    validateOnBlur: true,
-    validateOnMount: true,
-    validationSchema,
-    onSubmit: (data) => {
-      const filteredData = filterData(data);
-      handleCreateTask(filteredData);
-    },
-  });
+  const { values, handleSubmit, setFieldValue, isValid, setValues } =
+    useFormik<AddTask>({
+      initialValues: {
+        sourceId: initialSource?.id || null,
+        requestNumber: null,
+        taskType: null,
+        workTypeId: null,
+        requestDate: dayjs(),
+        requestTime: dayjs(),
+        addressSearch: '',
+        apartmentNumber: null,
+        subscriberName: null,
+        phoneNumber: null,
+        taskDescription: null,
+        taskReasonSearch: null,
+        taskReasonOrderNumber: null,
+        taskDeadlineDate: null,
+        taskDeadlineTime: dayjs(),
+        isSourceNumberRequired: initialSource?.isSourceNumberRequired || false,
+        isSubscriberRequired: initialSource?.isSubscriberRequired || false,
+        isManualDeadlineRequired: isManualDeadlineRequired,
+      },
+      validateOnBlur: true,
+      validateOnMount: true,
+      validationSchema,
+      onSubmit: (data) => {
+        const filteredData = filterData(data);
+        handleCreateTask(filteredData);
+      },
+    });
 
   const isInitialSource = useMemo(
     () => values.sourceId === initialSource?.id,
@@ -218,9 +220,7 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
   );
 
   const taskTypeOptions = useMemo(() => {
-    const allowedTaskTypes = selectedTaskReasonOption.map(
-      (item) => item.taskType,
-    );
+    const allowedTaskTypes = selectedTaskReasonOption?.taskTypes || [];
 
     return allowedTaskTypes.map((taskType) => ({
       label: TaskTypeDictionary[taskType],
@@ -303,9 +303,6 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
     if (values.taskType === EisTaskType.Emergency) {
       return 'error';
     }
-    if (values.taskType === EisTaskType.Planned) {
-      return 'warning';
-    }
     return '';
   }, [values.taskType]);
 
@@ -380,10 +377,13 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
               allowClear
               value={values.addressSearch}
               onChange={(value) => {
-                setFieldValue('addressSearch', value);
-                setFieldValue('apartmentNumber', null);
-                setFieldValue('subscriberName', null);
-                setFieldValue('phoneNumber', null);
+                setValues({
+                  ...values,
+                  addressSearch: value,
+                  apartmentNumber: null,
+                  subscriberName: null,
+                  phoneNumber: null,
+                });
               }}
               onSelect={(value) => {
                 setFieldValue('selectedObjectAddress', value);
@@ -416,9 +416,12 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
               defaultActiveFirstOption
               value={values.apartmentNumber}
               onChange={(value) => {
-                setFieldValue('apartmentNumber', value);
-                setFieldValue('subscriberName', null);
-                setFieldValue('phoneNumber', null);
+                setValues({
+                  ...values,
+                  apartmentNumber: value,
+                  subscriberName: null,
+                  phoneNumber: null,
+                });
               }}
               onSelect={(value) => {
                 setFieldValue('apartmentNumber', value);
@@ -523,10 +526,11 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
 
         <ContainerWithOutline>
           <FormItem label="Причина обращения">
-            <Select
+            <SelectExpandable
               showSearch
               allowClear
-              virtual={true}
+              filterOption={false}
+              virtual
               placeholder="Начните вводить"
               value={values.taskReasonOrderNumber}
               onClear={() => {
@@ -583,11 +587,9 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
               onMouseDown={() => setReasonOpen(true)}
             >
               {taskReasonOptions.map((elem) => (
-                <Select.Option key={elem.key} value={elem.value}>
-                  {elem.label}
-                </Select.Option>
+                <Select.Option value={elem.value}>{elem.label}</Select.Option>
               ))}
-            </Select>
+            </SelectExpandable>
           </FormItem>
 
           <FormItem label="Тип заявки">
@@ -597,9 +599,12 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
               placeholder="Начните вводить"
               value={values.taskType}
               onChange={(value) => {
-                setFieldValue('taskType', value);
-                setFieldValue('taskDeadlineDate', null);
-                setFieldValue('taskDeadlineTime', null);
+                setValues({
+                  ...values,
+                  taskType: value as EisTaskType | null,
+                  taskDeadlineDate: null,
+                  taskDeadlineTime: null,
+                });
               }}
               optionLabelProp="label"
               options={taskTypeOptions}
