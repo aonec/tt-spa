@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useMemo } from 'react';
 import { CalculatorIcon } from 'ui-kit/icons';
 import { ResourceIconLookup } from 'ui-kit/shared/ResourceIconLookup';
 import { getPreparedDate } from '../TaskIndividualDevicesList/DeviceInfo/DeviceInfo.utils';
@@ -23,6 +23,7 @@ export const TaskDeviceInfo: FC<TaskDeviceInfoProps> = ({ device }) => {
     lastCheckingDate,
     futureCheckingDate,
     diameter,
+    type,
   } = device;
 
   const openingDateText = getPreparedDate(openingDate);
@@ -35,13 +36,30 @@ export const TaskDeviceInfo: FC<TaskDeviceInfoProps> = ({ device }) => {
   ) : (
     <CalculatorIcon />
   );
-  const path = resource ? 'housingMeteringDevices' : 'calculators';
+
+  const path = useMemo(() => {
+    if (!type) return null;
+
+    const houseMeteringDevice = `housingMeteringDevices/${id}/profile`;
+
+    const paths = {
+      FlowMeter: houseMeteringDevice,
+      TemperatureSensor: houseMeteringDevice,
+      WeatherController: houseMeteringDevice,
+      PressureMeter: houseMeteringDevice,
+      Counter: houseMeteringDevice,
+      Calculator: `calculators/${id}/profile`,
+      Individual: `individualDeviceProfile/${id}`,
+    };
+
+    return paths[type as keyof typeof paths];
+  }, [id, type]);
 
   const navigate = useNavigate();
 
   return (
     <Wrapper>
-      <TitleWrapper onClick={() => navigate(`/${path}/${id}/profile`)}>
+      <TitleWrapper onClick={() => path && navigate(`/${path}`)}>
         {icon}
         <SerialNumber>{serialNumber}</SerialNumber>
         <Model>({model})</Model>
