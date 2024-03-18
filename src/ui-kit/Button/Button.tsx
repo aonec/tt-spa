@@ -27,7 +27,7 @@ export const Button: FC<ButtonProps> = (props) => {
       htmlType={htmlType}
     >
       {props.children}
-      {icon && !isLoading && icon}
+      {!isLoading && icon}
       {isLoading && <Loader show />}
     </ButtonSC>
   );
