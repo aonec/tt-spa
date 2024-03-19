@@ -10,9 +10,17 @@ import { AccessDeniedPageProps } from './AccessDeniedPage.types';
 import { ReactComponent as Page403Icon } from './assets/403.svg';
 import { Button } from 'ui-kit/Button';
 import { useNavigate } from 'react-router-dom';
+import { currentUserService } from 'services/currentUserService';
+import { useUnit } from 'effector-react';
 
 export const AccessDeniedPage: FC<AccessDeniedPageProps> = () => {
   const navigate = useNavigate();
+
+  const currentUser = useUnit(currentUserService.outputs.$currentUser);
+
+  if (!currentUser) {
+    return null;
+  }
 
   return (
     <Wrapper>
