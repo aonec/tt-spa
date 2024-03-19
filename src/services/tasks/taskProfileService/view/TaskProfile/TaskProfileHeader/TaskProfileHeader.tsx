@@ -51,11 +51,6 @@ export const TaskProfileHeader: FC<TaskProfileHeaderProps> = ({
 
   const stageStatusDescription = timer.statusDescription;
 
-  timer = {
-    ...timer,
-    statusDescription: 'Время на задачу:',
-  };
-
   return (
     <Wrapper>
       <HeaderWrapper>
@@ -74,7 +69,7 @@ export const TaskProfileHeader: FC<TaskProfileHeaderProps> = ({
       )}
       <TimerRowWrapper>
         {!timeline && <Line color={lineColor} />}
-        <Timer timer={timer} />
+        <Timer timer={timer} statusDescription="Время на задачу:" />
       </TimerRowWrapper>
     </Wrapper>
   );

@@ -2,6 +2,7 @@ import { Timeline } from '../TimeLine/TimeLine.types';
 
 export type TimerProps = {
   timer: Timer;
+  statusDescription?: string;
 };
 
 export type Timer = {
