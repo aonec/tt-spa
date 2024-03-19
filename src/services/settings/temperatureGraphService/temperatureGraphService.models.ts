@@ -61,56 +61,27 @@ const getTemplateFileFx = createEffect(getTemplateFile);
 const $temperatureLimits = createStore<TemperatureLimitsType>({
   min: null,
   max: null,
-})
-  .on(
-    getTemperatureNormativeFx.doneData,
-    (
-      _,
-      {
-        downTemperatureDeviationPercentLimit,
-        upTemperatureDeviationPercentLimit,
-      },
-    ) => ({
-      min: upTemperatureDeviationPercentLimit,
-      max: downTemperatureDeviationPercentLimit,
-    }),
-  )
-  .on(
-    updateTemperatureNormativeFx.doneData,
-    (
-      _,
-      {
-        downTemperatureDeviationPercentLimit,
-        upTemperatureDeviationPercentLimit,
-      },
-    ) => ({
-      min: upTemperatureDeviationPercentLimit,
-      max: downTemperatureDeviationPercentLimit,
-    }),
-  );
+}).on(
+  [updateTemperatureNormativeFx.doneData, getTemperatureNormativeFx.doneData],
+  (
+    _,
+    {
+      downTemperatureDeviationPercentLimit,
+      upTemperatureDeviationPercentLimit,
+    },
+  ) => ({
+    min: upTemperatureDeviationPercentLimit,
+    max: downTemperatureDeviationPercentLimit,
+  }),
+);
 
-const $temperatureNormative = createStore<TemperatureNormativeRow[]>([])
-  .on(getTemperatureNormativeFx.doneData, (_, normativeData) => {
-    const rowsArr = normativeData.rows || [];
-    return sortBy(rowsArr, (rowData) => {
-      if (rowData.outdoorTemperature || rowData.outdoorTemperature === 0) {
-        return rowData.outdoorTemperature * -1;
-      } else {
-        return null;
-      }
-    });
-  })
-  .on(updateTemperatureNormativeFx.doneData, (_, normativeData) => {
-    const rowsArr = normativeData.rows || [];
-    return sortBy(rowsArr, (rowData) => {
-      if (rowData.outdoorTemperature || rowData.outdoorTemperature === 0) {
-        return rowData.outdoorTemperature * -1;
-      } else {
-        return null;
-      }
-    });
-  })
-  .on(handleSuccessUpdateFromFile, (_, normativeDataFromFile) => {
+const $temperatureNormative = createStore<TemperatureNormativeRow[]>([]).on(
+  [
+    handleSuccessUpdateFromFile,
+    updateTemperatureNormativeFx.doneData,
+    getTemperatureNormativeFx.doneData,
+  ],
+  (_, normativeDataFromFile) => {
     const rowsArr = normativeDataFromFile.rows || [];
     return sortBy(rowsArr, (rowData) => {
       if (rowData.outdoorTemperature || rowData.outdoorTemperature === 0) {
@@ -119,7 +90,8 @@ const $temperatureNormative = createStore<TemperatureNormativeRow[]>([])
         return null;
       }
     });
-  });
+  },
+);
 
 const $editedTemperatureNormative =
   createStore<TemperatureNormativeUpdateRequest | null>(null).on(
