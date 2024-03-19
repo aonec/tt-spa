@@ -29,9 +29,6 @@ export const IndividualDevicesReport: FC<IndividualDevicesReportProps> = ({
   const isDeviceCheckingDateExpirationOption =
     reportOption === EIndividualDeviceReportOption.DeviceCheckingDateExpiration;
 
-  const isSkippedReadingOnOneOfRisersOption =
-    reportOption === EIndividualDeviceReportOption.SkippedReadingOnOneOfRisers;
-
   const isClosedDeviceOnOneOfRisersOption =
     reportOption === EIndividualDeviceReportOption.ClosedDeviceOnOneOfRisers;
 
@@ -117,22 +114,6 @@ export const IndividualDevicesReport: FC<IndividualDevicesReportProps> = ({
               ).join(', ')}
             </PhoneNumber>
           ),
-        },
-        {
-          label: 'Показание',
-          size: '150px',
-          hidden: !isSkippedReadingOnOneOfRisersOption,
-          render: (elem) => {
-            const reading = elem.skippedReadingOnOneOfRisersOption?.reading;
-
-            if (!reading) return null;
-
-            return Object.values(reading)
-              .filter((readingValue) => typeof readingValue === 'number')
-              .map((readingValue, index) => (
-                <div key={index}>{readingValue}</div>
-              ));
-          },
         },
         {
           label: 'Дата поверки',

@@ -1703,7 +1703,6 @@ export enum EIndividualDeviceReadingsSource {
 
 export enum EIndividualDeviceReportOption {
   InvalidCheckingDates = 'InvalidCheckingDates',
-  SkippedReadingOnOneOfRisers = 'SkippedReadingOnOneOfRisers',
   ClosedDeviceOnOneOfRisers = 'ClosedDeviceOnOneOfRisers',
   DeviceCheckingDateExpiration = 'DeviceCheckingDateExpiration',
   ClosedDevices = 'ClosedDevices',
