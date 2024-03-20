@@ -1,4 +1,4 @@
-import { Pagination } from 'antd';
+import { Pagination } from 'ui-kit/Pagination';
 import styled from 'styled-components';
 
 export const PaginationSC = styled(Pagination)`

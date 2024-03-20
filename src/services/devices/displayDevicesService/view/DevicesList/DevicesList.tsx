@@ -1,4 +1,4 @@
-import { Pagination } from 'antd';
+import { Pagination } from 'ui-kit/Pagination';
 import { Empty } from 'antd';
 import React, { FC, useMemo } from 'react';
 import { DevicesListProps } from './DevicesList.types';
