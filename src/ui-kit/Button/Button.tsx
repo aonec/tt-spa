@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import { ButtonProps } from './Button.types';
-import { ButtonSC, IconWrapper } from './Button.styled';
+import { ButtonSC } from './Button.styled';
 import { Loader } from 'ui-kit/Loader';
 
 export const Button: FC<ButtonProps> = (props) => {
@@ -27,12 +27,8 @@ export const Button: FC<ButtonProps> = (props) => {
       htmlType={htmlType}
     >
       {props.children}
-      {icon && !isLoading && <IconWrapper>{icon}</IconWrapper>}
-      {isLoading && (
-        <IconWrapper>
-          <Loader show />
-        </IconWrapper>
-      )}
+      {!isLoading && icon}
+      {isLoading && <Loader show />}
     </ButtonSC>
   );
 };

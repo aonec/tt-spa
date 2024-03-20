@@ -1,10 +1,11 @@
+import { Plus } from 'react-bootstrap-icons';
 import styled from 'styled-components';
 import { Input } from 'ui-kit/Input';
 
 export const PageWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  width: 980px;
+  width: min-content;
   height: 78vh;
   overflow-y: hidden;
   overflow-x: hidden;
@@ -59,7 +60,30 @@ export const Footer = styled.div`
   align-items: end;
   justify-content: flex-end;
   gap: 16px;
-  padding: 0 30px;
   height: 280px;
   background-color: white;
+`;
+
+export const activeRowCSS = `
+  background-color: #ffe8e8;
+`;
+
+export const NewLineWrapper = styled.div<{ temp: string }>`
+  background: #f2faffff;
+  display: grid;
+  grid-template-columns: ${({ temp }) => temp};
+  padding-top: 8px;
+  min-height: 50px;
+  gap: 16px;
+  padding-left: 16px;
+  width: calc(100% - 16px);
+`;
+
+export const NewLineCiolumnWrapper = styled.div`
+  display: flex;
+  gap: 16px;
+`;
+
+export const PlusIconSC = styled(Plus)`
+  transform: scale(2);
 `;
