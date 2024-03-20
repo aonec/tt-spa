@@ -1,7 +1,6 @@
 import React, { FC } from 'react';
 import { Switch } from 'antd';
 import { useFormik } from 'formik';
-import * as yup from 'yup';
 import { BaseInfoStageProps } from './BaseInfoStage.types';
 import {
   Footer,
@@ -30,6 +29,7 @@ import { getBitDepthAndScaleFactor } from 'utils/getBitDepthAndScaleFactor';
 import { addIndividualDeviceService } from '../../../addIndividualDeviceService.model';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Button } from 'ui-kit/Button';
+import { validationSchema } from './BaseInfoStage.constants';
 
 const {
   gates: { ContractorsGate, IndividualDeviceMountPlacesGate },
@@ -80,67 +80,7 @@ export const BaseInfoStage: FC<BaseInfoStageProps> = ({
       contractorId: formData?.contractorId || (null as number | null),
       isPolling: formData?.isPolling || false,
     },
-    validationSchema: yup.object().shape({
-      serialNumber: yup.string().required('Это поле обязательно'),
-      lastCheckingDate: yup
-        .string()
-        .nullable()
-        .required('Это поле обязательно'),
-      futureCheckingDate: yup
-        .string()
-        .nullable()
-        .required('Это поле обязательно'),
-      model: yup.string().required('Это поле обязательно'),
-      rateType: yup.string().required('Это поле обязательно'),
-      resource: yup.string().nullable().required('Это поле обязательно'),
-      bitDepth: yup.number().nullable().required('Это поле обязательно'),
-      scaleFactor: yup.number().nullable().required('Это поле обязательно'),
-      startupReadings1: yup
-        .number()
-        .nullable()
-        .required('Это поле обязательно'),
-      startupReadings2: yup
-        .number()
-        .nullable()
-        .when('rateType', {
-          is: EIndividualDeviceRateType.TwoZone,
-          then: yup.number().required('Это поле обязательно'),
-        })
-        .when('rateType', {
-          is: EIndividualDeviceRateType.ThreeZone,
-          then: yup.number().required('Это поле обязательно'),
-        }),
-      startupReadings3: yup
-        .number()
-        .nullable()
-        .when('rateType', {
-          is: EIndividualDeviceRateType.ThreeZone,
-          then: yup.number().required('Это поле обязательно'),
-        }),
-
-      defaultReadings1: yup
-        .number()
-        .nullable()
-        .required('Это поле обязательно'),
-      defaultReadings2: yup
-        .number()
-        .nullable()
-        .when('rateType', {
-          is: EIndividualDeviceRateType.TwoZone,
-          then: yup.number().required('Это поле обязательно'),
-        })
-        .when('rateType', {
-          is: EIndividualDeviceRateType.ThreeZone,
-          then: yup.number().required('Это поле обязательно'),
-        }),
-      defaultReadings3: yup
-        .number()
-        .nullable()
-        .when('rateType', {
-          is: EIndividualDeviceRateType.ThreeZone,
-          then: yup.number().required('Это поле обязательно'),
-        }),
-    }),
+    validationSchema,
     validateOnBlur: false,
     validateOnChange: false,
     enableReinitialize: true,
@@ -199,15 +139,10 @@ export const BaseInfoStage: FC<BaseInfoStageProps> = ({
 
             setFieldValue('lastCheckingDate', formattedDate);
 
-            const nextCheckingDate = dayjs(formattedDate);
-
-            if (!values.resource) return;
-
-            const nextYear =
-              value?.year() +
-              (values.resource === EResourceType.Electricity ? 16 : 6);
-
-            nextCheckingDate.set('year', nextYear);
+            const nextCheckingDate = dayjs(formattedDate).add(
+              values.resource === EResourceType.Electricity ? 16 : 6,
+              'year',
+            );
 
             const formattedNextCheckingDate =
               nextCheckingDate.format('YYYY-MM-DD');

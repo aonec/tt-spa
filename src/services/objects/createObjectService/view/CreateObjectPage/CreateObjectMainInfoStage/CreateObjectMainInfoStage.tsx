@@ -75,7 +75,7 @@ export const CreateObjectMainInfoStage: FC<CreateObjectMainInfoStageProps> = ({
     [createObjectData],
   );
 
-  const { values, handleSubmit, setFieldValue, errors } =
+  const { values, handleSubmit, setFieldValue, errors, setValues } =
     useFormik<ObjectMainInfoValues>({
       initialValues,
       enableReinitialize: true,
@@ -116,9 +116,12 @@ export const CreateObjectMainInfoStage: FC<CreateObjectMainInfoStageProps> = ({
             <Select
               placeholder="Выберите из списка"
               onChange={(value) => {
-                setFieldValue('objectCategory', value);
-                setFieldValue('livingHouseType', null);
-                setFieldValue('nonResidentialHouseType', null);
+                setValues({
+                  ...values,
+                  objectCategory: value as EHouseCategory | null,
+                  livingHouseType: null,
+                  nonResidentialHouseType: null,
+                });
               }}
               value={values.objectCategory || undefined}
             >

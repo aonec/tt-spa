@@ -1703,7 +1703,6 @@ export enum EIndividualDeviceReadingsSource {
 
 export enum EIndividualDeviceReportOption {
   InvalidCheckingDates = 'InvalidCheckingDates',
-  SkippedReadingOnOneOfRisers = 'SkippedReadingOnOneOfRisers',
   ClosedDeviceOnOneOfRisers = 'ClosedDeviceOnOneOfRisers',
   DeviceCheckingDateExpiration = 'DeviceCheckingDateExpiration',
   ClosedDevices = 'ClosedDevices',
@@ -2238,13 +2237,11 @@ export enum EisTaskReasonType {
   HotWaterSupply = 'HotWaterSupply',
   ColdWaterSupply = 'ColdWaterSupply',
   Electricity = 'Electricity',
-  TrafficControl = 'TrafficControl',
 }
 
 export enum EisTaskType {
-  Emergency = 'Emergency',
-  Planned = 'Planned',
   Current = 'Current',
+  Emergency = 'Emergency',
 }
 
 export interface ElectricHousingMeteringDeviceResponse {
@@ -2332,6 +2329,7 @@ export interface ErpApplicationResponse {
   erpId: string | null;
   number: string | null;
   type: EisTaskType;
+  reason: string | null;
   comment: string | null;
   description: string | null;
   category: string | null;
@@ -2350,12 +2348,13 @@ export interface ErpCreateTaskRequest {
   taskReasonId: string;
   /** @format int32 */
   objectTtmId: number;
-  taskDescription?: string | null;
   /** @format uuid */
   sourceId: string;
-  sourceNumber?: string | null;
   /** @format date-time */
   sourceDateTime: string;
+  taskType?: EisTaskType | null;
+  taskDescription?: string | null;
+  sourceNumber?: string | null;
   subscriberPhoneNumber?: string | null;
   subscriberFullName?: string | null;
   /** @format date-time */
@@ -2394,10 +2393,13 @@ export interface ErpTaskDeadlineResponseSuccessApiResponse {
 }
 
 export interface ErpTaskReasonGroupResponse {
+  id: string | null;
   /** @format int32 */
   orderNumber: number;
   type: EisTaskReasonType;
   name: string | null;
+  taskTypes: EisTaskType[] | null;
+  /** @deprecated */
   items: ErpTaskReasonItemResponse[] | null;
 }
 
@@ -14939,6 +14941,7 @@ export class Api<
       query: {
         /** @format uuid */
         TaskReasonId: string;
+        TaskType?: EisTaskType;
       },
       params: RequestParams = {},
     ) =>

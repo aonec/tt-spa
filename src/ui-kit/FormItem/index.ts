@@ -1,1 +1,1 @@
-export { FormItem } from './FormItem.styled';
+export { FormItem } from './FormItem';

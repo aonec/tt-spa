@@ -312,6 +312,7 @@ export const WorkWithIndividualDeviceForm: FC<
           <ErrorMessage>
             {fields.lastCheckingDate.errorText({
               required: 'Это поле обязательное',
+              incorrect: 'некорректная дата',
             })}
           </ErrorMessage>
         </FormItem>
@@ -331,6 +332,7 @@ export const WorkWithIndividualDeviceForm: FC<
           <ErrorMessage>
             {fields.futureCheckingDate.errorText({
               required: 'Это поле обязательное',
+              incorrect: 'некорректная дата',
             })}
           </ErrorMessage>
         </FormItem>

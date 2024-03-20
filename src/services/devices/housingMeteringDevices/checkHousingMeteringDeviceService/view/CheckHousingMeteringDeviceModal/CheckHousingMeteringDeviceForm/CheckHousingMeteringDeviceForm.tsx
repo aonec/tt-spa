@@ -12,6 +12,7 @@ import { CheckDeviceRequest } from 'api/types';
 import { FormItem } from 'ui-kit/FormItem';
 import { DatePicker } from 'ui-kit/DatePicker';
 import { Form } from 'antd';
+import { checkingDateTest } from 'services/devices/individualDevices/workWithIndividualDeviceService/workWithIndividualDeviceService.utils';
 
 export const CheckHousingMeteringDeviceForm: FC<
   CheckHousingMeteringDeviceFormProps
@@ -26,10 +27,15 @@ export const CheckHousingMeteringDeviceForm: FC<
       },
       validationSchema: yup.object({
         deviceId: yup.number().required('Не передан идентификатор устройства'),
-        lastCheckingDate: yup.string().nullable().required('Обязательное поле'),
+        lastCheckingDate: yup
+          .string()
+          .nullable()
+          .test('checking-date-down', 'некорректная дата', checkingDateTest)
+          .required('Обязательное поле'),
         futureCheckingDate: yup
           .string()
           .nullable()
+          .test('checking-date-down', 'некорректная дата', checkingDateTest)
           .required('Обязательное поле'),
       }),
       onSubmit: () => {

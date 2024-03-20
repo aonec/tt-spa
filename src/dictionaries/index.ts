@@ -29,8 +29,6 @@ export const ReportOptionsDictionary: {
     'Отчет по выходу поверки приборов',
   [EIndividualDeviceReportOption.InvalidCheckingDates]:
     'Некорректные даты поверки приборов',
-  [EIndividualDeviceReportOption.SkippedReadingOnOneOfRisers]:
-    'Отчет по пропущенным показаниям на одном из стояков',
 };
 
 export const ResourceShortNamesDictionary: {
@@ -58,7 +56,6 @@ export const TaskReasonTypeDictionary: {
   [EisTaskReasonType.HotWaterSupply]: 'ГВС',
   [EisTaskReasonType.Electricity]: 'ЭЭ',
   [EisTaskReasonType.Heat]: 'Отопление',
-  [EisTaskReasonType.TrafficControl]: 'Контроль',
 };
 
 export const ClosingReasonsDictionary: { [key in EClosingReason]: string } = {
@@ -158,6 +155,5 @@ export const DistrictColorsList: DistrictColorData[] = [
 
 export const TaskTypeDictionary: { [key in EisTaskType]: string } = {
   [EisTaskType.Current]: 'Текущая',
-  [EisTaskType.Planned]: 'Плановая',
   [EisTaskType.Emergency]: 'Аварийная',
 };

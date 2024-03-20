@@ -28,7 +28,6 @@ import {
   ErpSourceResponse,
   ErpTaskDeadlineResponse,
   ErpTaskReasonGroupResponse,
-  ErpTaskReasonItemResponse,
   HomeownerAccountNameResponse,
   ResourceDisconnectingResponse,
   ResourceDisconnectingResponsePagedList,
@@ -37,6 +36,7 @@ import {
 import { EffectFailDataAxiosError } from 'types';
 import { AddTask } from './view/AddTaskModal/AddTaskForm/AddTaskForm.types';
 import {
+  DeadlineRequest,
   GetAddressesRequest,
   GetApartmentsRequest,
   GetResourceDisconnectionRequest,
@@ -66,8 +66,8 @@ const handleClosePhoneNumber = createEvent<void>();
 
 const setSelectedHousingId = createEvent<string | null>();
 const setSelectedApartmentId = createEvent<number | null>();
-const setSelectedTaskReasonOption = createEvent<ErpTaskReasonItemResponse[]>();
-const setSelectedTaskReasonId = createEvent<string | null>();
+const setSelectedTaskReasonOption =
+  createEvent<ErpTaskReasonGroupResponse | null>();
 const setHomeownerAccountId = createEvent<string | null>();
 const setPhoneNumberOpen = createEvent<boolean>();
 
@@ -85,9 +85,10 @@ const getTaskReasonsFx = createEffect<void, ErpTaskReasonGroupResponse[]>(
   getTaskReasons,
 );
 
-const getErpTaskDeadlineFx = createEffect<string, ErpTaskDeadlineResponse>(
-  getErpTaskDeadline,
-);
+const getErpTaskDeadlineFx = createEffect<
+  DeadlineRequest,
+  ErpTaskDeadlineResponse
+>(getErpTaskDeadline);
 
 const getAddressesFx = createEffect<
   GetAddressesRequest,
@@ -150,12 +151,13 @@ const $selectedApartmentId = createStore<number | null>(null)
   .on(setSelectedApartmentId, (_, id) => id)
   .reset(handleReset);
 
-const $selectedTaskReasonOption = createStore<ErpTaskReasonItemResponse[]>([])
-  .on(setSelectedTaskReasonOption, (_, taskReasonOption) => taskReasonOption)
-  .reset(handleReset);
+const $selectedTaskReasonOption =
+  createStore<ErpTaskReasonGroupResponse | null>(null)
+    .on(setSelectedTaskReasonOption, (_, taskReasonOption) => taskReasonOption)
+    .reset(handleReset);
 
-const $selectedTaskReasonId = createStore<string | null>(null)
-  .on(setSelectedTaskReasonId, (_, id) => id)
+const $selectedTaskType = createStore<EisTaskType | null>(null)
+  .on(handleSelectTaskType, (_, type) => type)
   .reset(handleReset);
 
 const $apartmentHomeownerNames = createStore<HomeownerNameOption[]>([])
@@ -197,10 +199,10 @@ sample({
   clock: handleCreateTask,
   source: combine(
     $selectedHousingStockId,
-    $selectedTaskReasonId,
-    (selectedHousingStockId, selectedTaskReasonId) => ({
+    $selectedTaskReasonOption,
+    (selectedHousingStockId, selectedTaskReasonOption) => ({
       selectedHousingStockId,
-      selectedTaskReasonId,
+      selectedTaskReasonId: selectedTaskReasonOption?.id,
     }),
   ),
   fn: (source, data) => {
@@ -283,21 +285,25 @@ sample({
     const selectedOption = taskReasons.find(
       (optionItem) => optionItem.name === selectedTaskReason,
     );
-    return selectedOption?.items || [];
+    return selectedOption || null;
   },
   target: setSelectedTaskReasonOption,
 });
 
 sample({
   clock: handleSelectTaskType,
-  source: $selectedTaskReasonOption,
-  fn: (taskReason, selectedTaskType) => {
-    const taskReasonFromTaskType = taskReason.find(
-      (taskReasonItem) => taskReasonItem.taskType === selectedTaskType,
-    );
-    return taskReasonFromTaskType?.id || null;
+  source: {
+    selectedTaskReasonOption: $selectedTaskReasonOption,
+    selectedTaskType: $selectedTaskType,
   },
-  target: [setSelectedTaskReasonId, getErpTaskDeadlineFx],
+  filter: ({ selectedTaskReasonOption }) =>
+    Boolean(selectedTaskReasonOption?.id),
+  fn: ({ selectedTaskReasonOption, selectedTaskType }) =>
+    ({
+      TaskReasonId: selectedTaskReasonOption?.id!,
+      TaskType: selectedTaskType || undefined,
+    } as DeadlineRequest),
+  target: getErpTaskDeadlineFx,
 });
 
 sample({

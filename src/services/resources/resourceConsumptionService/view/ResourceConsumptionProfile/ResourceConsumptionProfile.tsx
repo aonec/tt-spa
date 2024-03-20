@@ -4,11 +4,7 @@ import { ResourceConsumptionGraph } from '../ResourceConsumptionGraph';
 import { SelectResourceConsumptionType } from '../ResourceConsumptionGraph/SelectResourceConsumptionType';
 import { SelectResource } from '../SelectResource';
 import { initialSelectedAddresses } from './ResourceConsumptionProfile.constants';
-import {
-  GraphWrapper,
-  HousingDataEmptyAlert,
-  Wrapper,
-} from './ResourceConsumptionProfile.styled';
+import { GraphWrapper, Wrapper } from './ResourceConsumptionProfile.styled';
 import {
   ResourceConsumptionProfileProps,
   SelectedAddresses,
@@ -68,14 +64,8 @@ export const ResourceConsumptionProfile: FC<
             dynamicMinMax={dynamicMinMax}
             isAllDataLoading={isAllDataLoading}
             isDataLoading={isDataLoading}
+            isOnlyHousingDataEmpty={isOnlyHousingDataEmpty}
           />
-
-          {isOnlyHousingDataEmpty && (
-            <HousingDataEmptyAlert>
-              Нет данных по общедомовому потреблению за выбранный период.
-              Пожалуйста, измените период для формирования новой статистики.
-            </HousingDataEmptyAlert>
-          )}
 
           <SelectResourceConsumptionType
             disabled={getDisabledGraphTypes(housingConsumptionData)}

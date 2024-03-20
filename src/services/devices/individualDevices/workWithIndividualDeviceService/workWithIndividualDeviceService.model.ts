@@ -22,6 +22,7 @@ import {
   switchIndividualDeviceMutation,
 } from './workWithIndividualDeviceService.api';
 import {
+  checkingDateTest,
   compareReadingsArrWithSameIndex,
   prepareDeviceReadings,
 } from './workWithIndividualDeviceService.utils';
@@ -64,6 +65,10 @@ const deviceInfoForm = createForm({
           name: 'required',
           validator: Boolean,
         },
+        {
+          name: 'incorrect',
+          validator: checkingDateTest,
+        },
       ],
     },
     futureCheckingDate: {
@@ -72,6 +77,10 @@ const deviceInfoForm = createForm({
         {
           name: 'required',
           validator: Boolean,
+        },
+        {
+          name: 'incorrect',
+          validator: checkingDateTest,
         },
       ],
     },
