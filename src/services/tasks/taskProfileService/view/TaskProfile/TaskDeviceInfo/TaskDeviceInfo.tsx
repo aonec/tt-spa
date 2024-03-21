@@ -1,4 +1,4 @@
-import React, { FC, useMemo } from 'react';
+import React, { FC, useCallback, useMemo } from 'react';
 import { CalculatorIcon } from 'ui-kit/icons';
 import { ResourceIconLookup } from 'ui-kit/shared/ResourceIconLookup';
 import { getPreparedDate } from '../TaskIndividualDevicesList/DeviceInfo/DeviceInfo.utils';
@@ -57,9 +57,15 @@ export const TaskDeviceInfo: FC<TaskDeviceInfoProps> = ({ device }) => {
 
   const navigate = useNavigate();
 
+  const handleClickTitle = useCallback(() => {
+    if (!path) return;
+
+    navigate(`/${path}`);
+  }, [navigate, path]);
+
   return (
     <Wrapper>
-      <TitleWrapper onClick={() => path && navigate(`/${path}`)}>
+      <TitleWrapper onClick={handleClickTitle}>
         {icon}
         <SerialNumber>{serialNumber}</SerialNumber>
         <Model>({model})</Model>
