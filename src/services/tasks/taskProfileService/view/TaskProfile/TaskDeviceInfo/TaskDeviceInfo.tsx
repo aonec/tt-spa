@@ -1,4 +1,4 @@
-import React, { FC, useCallback, useMemo } from 'react';
+import React, { FC, useCallback } from 'react';
 import { CalculatorIcon } from 'ui-kit/icons';
 import { ResourceIconLookup } from 'ui-kit/shared/ResourceIconLookup';
 import { getPreparedDate } from '../TaskIndividualDevicesList/DeviceInfo/DeviceInfo.utils';
@@ -37,7 +37,9 @@ export const TaskDeviceInfo: FC<TaskDeviceInfoProps> = ({ device }) => {
     <CalculatorIcon />
   );
 
-  const path = useMemo(() => {
+  const navigate = useNavigate();
+
+  const handleClickTitle = useCallback(() => {
     if (!type) return null;
 
     const houseMeteringDevice = `housingMeteringDevices/${id}/profile`;
@@ -52,16 +54,12 @@ export const TaskDeviceInfo: FC<TaskDeviceInfoProps> = ({ device }) => {
       Individual: `individualDeviceProfile/${id}`,
     };
 
-    return paths[type as keyof typeof paths];
-  }, [id, type]);
+    const path = paths[type as keyof typeof paths];
 
-  const navigate = useNavigate();
-
-  const handleClickTitle = useCallback(() => {
     if (!path) return;
 
     navigate(`/${path}`);
-  }, [navigate, path]);
+  }, [id, navigate, type]);
 
   return (
     <Wrapper>
