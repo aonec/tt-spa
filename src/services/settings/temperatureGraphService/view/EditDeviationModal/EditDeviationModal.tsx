@@ -48,7 +48,7 @@ export const EditDeviationModal: FC<EditDeviationModalProps> = ({
 
   return (
     <FormModal
-      title="Min и max отклонение температуры"
+      title="Допустимое отклонение от температурного графика"
       visible={isOpen}
       onCancel={() => setModalOpenMemoized(false)}
       formId={formId}
@@ -63,10 +63,10 @@ export const EditDeviationModal: FC<EditDeviationModalProps> = ({
 
           <FormWrapper>
             <OneValueWrapper>
-              <FormItem label="Текущее min значение">
+              <FormItem label="Допустимый % превыш.">
                 <Input value={temperatureLimits.min || undefined} disabled />
               </FormItem>
-              <FormItem label="Новое min значение">
+              <FormItem label="Новый % превыш.">
                 <Input
                   type="number"
                   placeholder="Введите"
@@ -77,10 +77,10 @@ export const EditDeviationModal: FC<EditDeviationModalProps> = ({
             </OneValueWrapper>
 
             <OneValueWrapper>
-              <FormItem label="Текущее max значение">
+              <FormItem label="Допустимый % заниж.">
                 <Input value={temperatureLimits.max || undefined} disabled />
               </FormItem>
-              <FormItem label="Новое max значение">
+              <FormItem label="Новый % заниж.">
                 <Input
                   type="number"
                   placeholder="Введите"

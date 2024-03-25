@@ -18,7 +18,7 @@ export const CriticalTemperaturePanel: FC<CriticalTemperaturePanelProps> = ({
     <Wrapper>
       <Block>
         <TemperatureIcon />
-        Критичное отклонение температуры обратной магистрали от графика
+        Min и max отклонение от температурного графика
       </Block>
       <Block>
         <TemperatureBlock>
