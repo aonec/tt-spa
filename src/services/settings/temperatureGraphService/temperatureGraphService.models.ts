@@ -7,10 +7,13 @@ import {
   createOrUpdateTemperatureNormative,
   getTemplateFile,
   createOrUpdateFromFile,
+  deleteTemperatureNormativesMutation,
 } from './temperatureGraphService.api';
 import {
+  TemperatureNormativeDeleteRequest,
   TemperatureNormativeResponse,
   TemperatureNormativeRow,
+  TemperatureNormativeRowUpdate,
   TemperatureNormativeUpdateRequest,
 } from 'api/types';
 import { EffectFailDataAxiosErrorDataTemperatureGraph } from 'types';
@@ -31,6 +34,12 @@ const handlePostTemplateFile = createEvent<File>();
 const setUploadModalOpen = createEvent<boolean>();
 
 const setEditDeviationModalOpen = createEvent<boolean>();
+
+const toggleDeletingRows = createEvent<number | null>();
+
+const handleDeleteRows = createEvent();
+
+const handleCreateRow = createEvent<TemperatureNormativeRowUpdate>();
 
 const setEditedTemperatureNormative =
   createEvent<TemperatureNormativeUpdateRequest>();
@@ -132,6 +141,14 @@ const $errorColumns = createStore<ErrorColumnType[]>([]).on(
   },
 );
 
+const $deletingRowIds = createStore<number[]>([])
+  .on(toggleDeletingRows, (prev, id) => {
+    if (typeof id !== 'number') return [];
+
+    return prev.includes(id) ? prev.filter((e) => e !== id) : [...prev, id];
+  })
+  .reset(deleteTemperatureNormativesMutation.finished.success);
+
 const $isLoading = updateTemperatureNormativeFx.pending;
 
 const $isFileLoading = createOrUpdateFromFileFx.pending;
@@ -148,11 +165,25 @@ const $file = createStore<File | null>(null)
   .on(setFile, (_, file) => file)
   .reset(handleSuccessUpdateFromFile);
 
-sample({ clock: TemperatureGraphGate.open, target: getTemperatureNormativeFx });
+sample({
+  clock: [
+    TemperatureGraphGate.open,
+    deleteTemperatureNormativesMutation.finished.success,
+  ],
+  target: getTemperatureNormativeFx,
+});
 
 sample({
   clock: $editedTemperatureNormative,
   filter: Boolean,
+  target: updateTemperatureNormativeFx,
+});
+
+sample({
+  clock: handleCreateRow,
+  fn: (newRowPayload): TemperatureNormativeUpdateRequest => ({
+    updateRows: [newRowPayload],
+  }),
   target: updateTemperatureNormativeFx,
 });
 
@@ -182,6 +213,19 @@ createOrUpdateFromFileFx.failData.watch((error) => {
   );
 });
 
+sample({
+  source: $deletingRowIds,
+  clock: handleDeleteRows,
+  fn: (ids): TemperatureNormativeDeleteRequest => ({
+    outdoorTemperatures: ids,
+  }),
+  target: deleteTemperatureNormativesMutation.start,
+});
+
+deleteTemperatureNormativesMutation.finished.success.watch(() => {
+  message.success('Удалено!');
+});
+
 export const temperatureGraphService = {
   inputs: {
     handleEditTemperatureNormative,
@@ -191,6 +235,10 @@ export const temperatureGraphService = {
     handlePostTemplateFile,
     setFile,
     setEditDeviationModalOpen,
+    toggleDeletingRows,
+    handleDeleteRows,
+    handleCreateRow,
+    updateTemperatureNormativeFx,
   },
   outputs: {
     $temperatureNormative,
@@ -202,6 +250,7 @@ export const temperatureGraphService = {
     $file,
     $temperatureLimits,
     $isDeviationEditModalOpen,
+    $deletingRowIds,
   },
   gates: { TemperatureGraphGate },
 };

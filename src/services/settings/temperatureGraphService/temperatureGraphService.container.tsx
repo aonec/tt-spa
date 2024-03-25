@@ -4,6 +4,7 @@ import { temperatureGraphService } from './temperatureGraphService.models';
 import { useUnit } from 'effector-react';
 import { AddTemperatureFileModal } from './view/AddTemperatureFileModal';
 import { EditDeviationModal } from './view/EditDeviationModal';
+import { deleteTemperatureNormativesMutation } from './temperatureGraphService.api';
 
 const {
   inputs,
@@ -29,6 +30,11 @@ export const TemperatureGraphContainer = () => {
     temperatureLimits,
     isDeviationEditModalOpen,
     setEditDeviationModalOpen,
+    deletingRowIds,
+    toggleDeletingRows,
+    handleDeleteRows,
+    isLoadingDeliting,
+    handleCreateRow,
   } = useUnit({
     temperatureNormative: outputs.$temperatureNormative,
     isEditing: outputs.$isEditing,
@@ -46,6 +52,11 @@ export const TemperatureGraphContainer = () => {
     temperatureLimits: outputs.$temperatureLimits,
     isDeviationEditModalOpen: outputs.$isDeviationEditModalOpen,
     setEditDeviationModalOpen: inputs.setEditDeviationModalOpen,
+    deletingRowIds: outputs.$deletingRowIds,
+    toggleDeletingRows: inputs.toggleDeletingRows,
+    handleDeleteRows: inputs.handleDeleteRows,
+    isLoadingDeliting: deleteTemperatureNormativesMutation.$pending,
+    handleCreateRow: inputs.handleCreateRow,
   });
   return (
     <>
@@ -74,6 +85,11 @@ export const TemperatureGraphContainer = () => {
         errorColumns={errorColumns}
         temperatureLimits={temperatureLimits}
         setEditDeviationModalOpen={setEditDeviationModalOpen}
+        deletingRowIds={deletingRowIds}
+        toggleDeletingRows={toggleDeletingRows}
+        handleDeleteRows={handleDeleteRows}
+        isLoadingDeliting={isLoadingDeliting}
+        handleCreateRow={handleCreateRow}
       />
     </>
   );
