@@ -33,6 +33,7 @@ import {
   TemperatureNormativeUpdateRequest,
 } from 'api/types';
 import { ErrorColumnType } from '../../temperatureGraphService.types';
+import { CriticalTemperaturePanel } from '../CriticalTemperaturePanel';
 import { ContextMenuButton } from 'ui-kit/ContextMenuButton';
 import { ContextMenuButtonColor } from 'ui-kit/ContextMenuButton/ContextMenuButton.types';
 import { CheckLg, DashLg } from 'react-bootstrap-icons';
@@ -46,6 +47,8 @@ export const TemperatureGraph: FC<TemperatureGraphProps> = ({
   setEditedTemperatureNormative,
   isLoading,
   errorColumns,
+  temperatureLimits,
+  setEditDeviationModalOpen,
   deletingRowIds,
   toggleDeletingRows,
   handleDeleteRows,
@@ -298,6 +301,11 @@ export const TemperatureGraph: FC<TemperatureGraphProps> = ({
 
   return (
     <PageWrapper>
+      <CriticalTemperaturePanel
+        temperatureLimits={temperatureLimits}
+        setEditDeviationModalOpen={setEditDeviationModalOpen}
+      />
+
       <Table
         extraHeader={
           isNewLine && (

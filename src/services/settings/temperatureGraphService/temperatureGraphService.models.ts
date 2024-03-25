@@ -18,7 +18,10 @@ import {
 } from 'api/types';
 import { EffectFailDataAxiosErrorDataTemperatureGraph } from 'types';
 import { EDayPartError } from './view/TemperatureGraph/TemperatureGraph.types';
-import { ErrorColumnType } from './temperatureGraphService.types';
+import {
+  ErrorColumnType,
+  TemperatureLimitsType,
+} from './temperatureGraphService.types';
 
 const TemperatureGraphGate = createGate();
 
@@ -28,7 +31,9 @@ const handleGetTemplateFile = createEvent();
 
 const handlePostTemplateFile = createEvent<File>();
 
-const setModalOpen = createEvent<boolean>();
+const setUploadModalOpen = createEvent<boolean>();
+
+const setEditDeviationModalOpen = createEvent<boolean>();
 
 const toggleDeletingRows = createEvent<number | null>();
 
@@ -62,28 +67,30 @@ const handleSuccessUpdateFromFile = createOrUpdateFromFileFx.doneData;
 
 const getTemplateFileFx = createEffect(getTemplateFile);
 
-const $temperatureNormative = createStore<TemperatureNormativeRow[]>([])
-  .on(getTemperatureNormativeFx.doneData, (_, normativeData) => {
-    const rowsArr = normativeData.rows || [];
-    return sortBy(rowsArr, (rowData) => {
-      if (rowData.outdoorTemperature || rowData.outdoorTemperature === 0) {
-        return rowData.outdoorTemperature * -1;
-      } else {
-        return null;
-      }
-    });
-  })
-  .on(updateTemperatureNormativeFx.doneData, (_, normativeData) => {
-    const rowsArr = normativeData.rows || [];
-    return sortBy(rowsArr, (rowData) => {
-      if (rowData.outdoorTemperature || rowData.outdoorTemperature === 0) {
-        return rowData.outdoorTemperature * -1;
-      } else {
-        return null;
-      }
-    });
-  })
-  .on(handleSuccessUpdateFromFile, (_, normativeDataFromFile) => {
+const $temperatureLimits = createStore<TemperatureLimitsType>({
+  min: null,
+  max: null,
+}).on(
+  [updateTemperatureNormativeFx.doneData, getTemperatureNormativeFx.doneData],
+  (
+    _,
+    {
+      downTemperatureDeviationPercentLimit,
+      upTemperatureDeviationPercentLimit,
+    },
+  ) => ({
+    min: upTemperatureDeviationPercentLimit,
+    max: downTemperatureDeviationPercentLimit,
+  }),
+);
+
+const $temperatureNormative = createStore<TemperatureNormativeRow[]>([]).on(
+  [
+    handleSuccessUpdateFromFile,
+    updateTemperatureNormativeFx.doneData,
+    getTemperatureNormativeFx.doneData,
+  ],
+  (_, normativeDataFromFile) => {
     const rowsArr = normativeDataFromFile.rows || [];
     return sortBy(rowsArr, (rowData) => {
       if (rowData.outdoorTemperature || rowData.outdoorTemperature === 0) {
@@ -92,7 +99,8 @@ const $temperatureNormative = createStore<TemperatureNormativeRow[]>([])
         return null;
       }
     });
-  });
+  },
+);
 
 const $editedTemperatureNormative =
   createStore<TemperatureNormativeUpdateRequest | null>(null).on(
@@ -145,9 +153,13 @@ const $isLoading = updateTemperatureNormativeFx.pending;
 
 const $isFileLoading = createOrUpdateFromFileFx.pending;
 
-const $isModalOpen = createStore<boolean>(false)
-  .on(setModalOpen, (_, data) => data)
+const $isUploadModalOpen = createStore<boolean>(false)
+  .on(setUploadModalOpen, (_, data) => data)
   .reset(handleSuccessUpdateFromFile);
+
+const $isDeviationEditModalOpen = createStore<boolean>(false)
+  .on(setEditDeviationModalOpen, (_, data) => data)
+  .reset(updateTemperatureNormativeFx.doneData);
 
 const $file = createStore<File | null>(null)
   .on(setFile, (_, file) => file)
@@ -218,10 +230,11 @@ export const temperatureGraphService = {
   inputs: {
     handleEditTemperatureNormative,
     setEditedTemperatureNormative,
-    setModalOpen,
+    setUploadModalOpen,
     handleGetTemplateFile,
     handlePostTemplateFile,
     setFile,
+    setEditDeviationModalOpen,
     toggleDeletingRows,
     handleDeleteRows,
     handleCreateRow,
@@ -232,9 +245,11 @@ export const temperatureGraphService = {
     $isEditing,
     $isLoading,
     $errorColumns,
-    $isModalOpen,
+    $isUploadModalOpen,
     $isFileLoading,
     $file,
+    $temperatureLimits,
+    $isDeviationEditModalOpen,
     $deletingRowIds,
   },
   gates: { TemperatureGraphGate },

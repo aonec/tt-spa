@@ -3,7 +3,10 @@ import {
   TemperatureNormativeRowUpdate,
   TemperatureNormativeUpdateRequest,
 } from 'api/types';
-import { ErrorColumnType } from '../../temperatureGraphService.types';
+import {
+  ErrorColumnType,
+  TemperatureLimitsType,
+} from '../../temperatureGraphService.types';
 
 export type TemperatureGraphProps = {
   temperatureNormative: TemperatureNormativeRow[];
@@ -14,6 +17,8 @@ export type TemperatureGraphProps = {
   ) => void;
   isLoading: boolean;
   errorColumns: ErrorColumnType[];
+  temperatureLimits: TemperatureLimitsType;
+  setEditDeviationModalOpen: (payload: boolean) => void;
   toggleDeletingRows: (payload: number | null) => void;
   deletingRowIds: number[];
   handleDeleteRows: () => void;
