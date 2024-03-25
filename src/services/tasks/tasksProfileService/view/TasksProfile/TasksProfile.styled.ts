@@ -1,5 +1,6 @@
-import { Pagination, Tabs } from 'antd';
+import { Tabs } from 'antd';
 import styled from 'styled-components';
+import { Pagination } from 'ui-kit/Pagination';
 
 export const Wrapper = styled.div`
   margin-top: -16px;

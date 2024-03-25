@@ -1,4 +1,4 @@
-import { Pagination } from 'antd';
+import { Pagination } from 'ui-kit/Pagination';
 import { useUnit } from 'effector-react';
 import React, { FC } from 'react';
 import { displayApartmentsListService } from './displayApartmentsListService.model';

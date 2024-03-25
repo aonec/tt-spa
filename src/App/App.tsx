@@ -1,7 +1,7 @@
 import React, { FC, useMemo } from 'react';
 import { Bootstrap } from './Bootstrap';
 import { useRoutes } from 'react-router-dom';
-import { useStore } from 'effector-react';
+import { useUnit } from 'effector-react';
 import 'dayjs/locale/ru';
 import 'css/index.scss';
 import 'css/styles.css';
@@ -11,7 +11,7 @@ import { currentUserService } from 'services/currentUserService';
 const { outputs } = currentUserService;
 
 export const App: FC = () => {
-  const roles = useStore(outputs.$currentUserRoles);
+  const roles = useUnit(outputs.$currentUserRoles);
 
   const routes = useMemo(() => getRoutes(roles), [roles]);
 
