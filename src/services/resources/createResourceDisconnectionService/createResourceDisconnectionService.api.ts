@@ -33,5 +33,5 @@ export const preselectedBuildingQuery = createQuery<
   number,
   HousingStockResponse
 >({
-  handler: (id) => axios.get(`HousingStocks/${id}`),
+  handler: (id) => axios.get(`Buildings/${id}`),
 });
