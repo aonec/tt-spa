@@ -91,7 +91,7 @@ export const getTaskPlacemarkerLink = (
 };
 
 const applicationTypes = [
-  EManagingFirmTaskType.PlannedApplication,
+  // EManagingFirmTaskType.PlannedApplication,
   EManagingFirmTaskType.CurrentApplication,
   EManagingFirmTaskType.EmergencyApplication,
 ];

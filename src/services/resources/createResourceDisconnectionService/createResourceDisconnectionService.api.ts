@@ -1,9 +1,9 @@
 import { createQuery } from '@farfetched/core';
 import { axios } from 'api/axios';
 import {
+  BuildingShortResponse,
   HeatingStationWithStreetsResponse,
   HouseManagementWithStreetsResponse,
-  HousingStockResponse,
   ResourceDisconnectingCreateRequest,
   StreetWithBuildingNumbersResponsePagedList,
 } from 'api/types';
@@ -31,7 +31,7 @@ export const fetchExistingBuildingsWithHeatingStation = (): Promise<
 
 export const preselectedBuildingQuery = createQuery<
   number,
-  HousingStockResponse
+  BuildingShortResponse
 >({
   handler: (id) => axios.get(`Buildings/${id}`),
 });
