@@ -40,7 +40,7 @@ export const TaskDeviceInfo: FC<TaskDeviceInfoProps> = ({ device }) => {
   const navigate = useNavigate();
 
   const handleClickTitle = useCallback(() => {
-    if (!type) return null;
+    if (!type) return;
 
     const houseMeteringDevice = `housingMeteringDevices/${id}/profile`;
 
