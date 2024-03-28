@@ -8,18 +8,27 @@ import React, {
 } from 'react';
 import { useFormik } from 'formik';
 import { useParams } from 'react-router-dom';
-import { EManagingFirmTaskFilterType, TaskGroupingFilter } from 'api/types';
+import {
+  EManagingFirmTaskFilterType,
+  TaskGroupingFilter,
+  TaskPaginationOrderRule,
+} from 'api/types';
 import { ExtendedSearch } from 'ui-kit/ExtendedSearch';
 import { fromEnter } from 'ui-kit/shared/DatePickerNative';
 import { ArchiveTasksExtendedSearchForm } from './ArchiveTasksExtendedSearchForm';
-import { DescendingSortIconSC, SortContainer, SortTitle, Wrapper } from './SearchTasks.styled';
+import {
+  DescendingSortIconSC,
+  SortContainer,
+  SortTitle,
+  Wrapper,
+} from './SearchTasks.styled';
 import { GetTasksListRequestPayload } from '../../tasksProfileService.types';
 import { SearchTasksProps } from './SearchTasks.types';
 import { Select } from 'ui-kit/Select';
 import { Input } from 'ui-kit/Input';
 import { addressSearchService } from 'services/addressSearchService/addressSearchService.models';
 import { ToExecutionTasksExtendedSearchForm } from './ToExecutionTasksExtendedSearchForm';
-import { AscendingSortIcon, DescendingSortIcon, SortingIcon } from 'ui-kit/icons';
+import { TaskPaginationOrderRuleDictionary } from './SearchTasks.constants';
 
 const { ExistingCitiesGate, ExistingStreetsGate } = addressSearchService.gates;
 
@@ -61,6 +70,7 @@ export const SearchTasks: FC<SearchTasksProps> = ({
         PageNumber: currentFilter?.PageNumber,
         PageSize: currentFilter?.PageSize,
         OrderBy: currentFilter?.OrderBy,
+        OrderRule: currentFilter?.OrderRule,
       },
       enableReinitialize: true,
       onSubmit,
@@ -177,18 +187,17 @@ export const SearchTasks: FC<SearchTasksProps> = ({
             small
             data-test="task-type-selector"
             placeholder={<DescendingSortIconSC />}
-            value={values.TaskType || undefined}
+            value={values.OrderRule || undefined}
             onChange={(value) => {
-              setFieldValue('TaskType', value as EManagingFirmTaskFilterType);
+              setFieldValue('OrderRule', value as TaskPaginationOrderRule);
               handleSubmit();
             }}
           >
-            {taskTypes &&
-              taskTypes.map(({ value, key }) => (
-                <Select.Option key={key!} value={key || undefined}>
-                  {value}
-                </Select.Option>
-              ))}
+            {Object.values(TaskPaginationOrderRule).map((rule) => (
+              <Select.Option key={rule} value={rule || undefined}>
+                {TaskPaginationOrderRuleDictionary[rule]}
+              </Select.Option>
+            ))}
           </Select>
         </SortContainer>
       </Wrapper>
