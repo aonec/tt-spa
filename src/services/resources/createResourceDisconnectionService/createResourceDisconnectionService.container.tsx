@@ -94,12 +94,12 @@ export const CreateResourceDisconnectionContainer: FC<
   const defaultCity = building?.address?.mainAddress?.city;
 
   useEffect(() => {
-    if (preselectedBuilding) {
+    if (preselectedBuilding && isOpen) {
       fetchPreseelcetedBuilding(preselectedBuilding);
 
       return preselectedBuildingQuery.reset;
     }
-  }, [fetchPreseelcetedBuilding, preselectedBuilding]);
+  }, [fetchPreseelcetedBuilding, preselectedBuilding, isOpen]);
 
   useEffect(() => {
     if (handleComplete) {
