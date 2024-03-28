@@ -12,13 +12,14 @@ import { EManagingFirmTaskFilterType, TaskGroupingFilter } from 'api/types';
 import { ExtendedSearch } from 'ui-kit/ExtendedSearch';
 import { fromEnter } from 'ui-kit/shared/DatePickerNative';
 import { ArchiveTasksExtendedSearchForm } from './ArchiveTasksExtendedSearchForm';
-import { Wrapper } from './SearchTasks.styled';
+import { DescendingSortIconSC, SortContainer, SortTitle, Wrapper } from './SearchTasks.styled';
 import { GetTasksListRequestPayload } from '../../tasksProfileService.types';
 import { SearchTasksProps } from './SearchTasks.types';
 import { Select } from 'ui-kit/Select';
 import { Input } from 'ui-kit/Input';
 import { addressSearchService } from 'services/addressSearchService/addressSearchService.models';
 import { ToExecutionTasksExtendedSearchForm } from './ToExecutionTasksExtendedSearchForm';
+import { AscendingSortIcon, DescendingSortIcon, SortingIcon } from 'ui-kit/icons';
 
 const { ExistingCitiesGate, ExistingStreetsGate } = addressSearchService.gates;
 
@@ -169,6 +170,27 @@ export const SearchTasks: FC<SearchTasksProps> = ({
               </Select.Option>
             ))}
         </Select>
+
+        <SortContainer>
+          <SortTitle>Сортировать по:</SortTitle>
+          <Select
+            small
+            data-test="task-type-selector"
+            placeholder={<DescendingSortIconSC />}
+            value={values.TaskType || undefined}
+            onChange={(value) => {
+              setFieldValue('TaskType', value as EManagingFirmTaskFilterType);
+              handleSubmit();
+            }}
+          >
+            {taskTypes &&
+              taskTypes.map(({ value, key }) => (
+                <Select.Option key={key!} value={key || undefined}>
+                  {value}
+                </Select.Option>
+              ))}
+          </Select>
+        </SortContainer>
       </Wrapper>
     </ExtendedSearch>
   );
