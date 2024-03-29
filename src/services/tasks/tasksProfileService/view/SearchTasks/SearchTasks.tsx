@@ -10,6 +10,7 @@ import { useFormik } from 'formik';
 import { useParams } from 'react-router-dom';
 import {
   EManagingFirmTaskFilterType,
+  EOrderByRule,
   TaskGroupingFilter,
   TaskPaginationOrderRule,
 } from 'api/types';
@@ -17,6 +18,7 @@ import { ExtendedSearch } from 'ui-kit/ExtendedSearch';
 import { fromEnter } from 'ui-kit/shared/DatePickerNative';
 import { ArchiveTasksExtendedSearchForm } from './ArchiveTasksExtendedSearchForm';
 import {
+  AscendingSortIconSC,
   DescendingSortIconSC,
   SortContainer,
   SortTitle,
@@ -28,7 +30,6 @@ import { Select } from 'ui-kit/Select';
 import { Input } from 'ui-kit/Input';
 import { addressSearchService } from 'services/addressSearchService/addressSearchService.models';
 import { ToExecutionTasksExtendedSearchForm } from './ToExecutionTasksExtendedSearchForm';
-import { TaskPaginationOrderRuleDictionary } from './SearchTasks.constants';
 
 const { ExistingCitiesGate, ExistingStreetsGate } = addressSearchService.gates;
 
@@ -123,6 +124,22 @@ export const SearchTasks: FC<SearchTasksProps> = ({
 
   const isArchived = currentFilter?.GroupType === 'Archived';
 
+  const handleSelectOrderRule = useCallback(
+    (selectString: string | undefined) => {
+      if (!selectString) {
+        setFieldValue('OrderRule', undefined);
+        setFieldValue('OrderBy', undefined);
+      } else {
+        const [OrderRule, OrderBy] = selectString.split(';');
+        setFieldValue('OrderRule', OrderRule);
+        setFieldValue('OrderBy', OrderBy);
+      }
+
+      handleSubmit();
+    },
+    [setFieldValue, handleSubmit],
+  );
+
   return (
     <ExtendedSearch
       isOpen={isExtendedSearchOpen}
@@ -185,19 +202,55 @@ export const SearchTasks: FC<SearchTasksProps> = ({
           <SortTitle>Сортировать по:</SortTitle>
           <Select
             small
-            data-test="task-type-selector"
-            placeholder={<DescendingSortIconSC />}
-            value={values.OrderRule || undefined}
-            onChange={(value) => {
-              setFieldValue('OrderRule', value as TaskPaginationOrderRule);
-              handleSubmit();
-            }}
+            allowClear
+            placeholder={'Выберите'}
+            onChange={(value) =>
+              handleSelectOrderRule(value as string | undefined)
+            }
+            value={
+              values.OrderBy
+                ? `${values.OrderRule};${values.OrderBy}`
+                : undefined
+            }
           >
-            {Object.values(TaskPaginationOrderRule).map((rule) => (
-              <Select.Option key={rule} value={rule || undefined}>
-                {TaskPaginationOrderRuleDictionary[rule]}
-              </Select.Option>
-            ))}
+            <Select.Option
+              small
+              value={`${TaskPaginationOrderRule.ConfirmationTime};${EOrderByRule.Ascending}`}
+            >
+              <DescendingSortIconSC /> Дате подтверждения
+            </Select.Option>
+            <Select.Option
+              small
+              value={`${TaskPaginationOrderRule.ConfirmationTime};${EOrderByRule.Descending}`}
+            >
+              <AscendingSortIconSC /> Дате подтверждения
+            </Select.Option>
+
+            <Select.Option
+              small
+              value={`${TaskPaginationOrderRule.CreationTime};${EOrderByRule.Ascending}`}
+            >
+              <DescendingSortIconSC /> Дате создания
+            </Select.Option>
+            <Select.Option
+              small
+              value={`${TaskPaginationOrderRule.CreationTime};${EOrderByRule.Descending}`}
+            >
+              <AscendingSortIconSC /> Дате создания
+            </Select.Option>
+
+            <Select.Option
+              small
+              value={`${TaskPaginationOrderRule.TimeStatus};${EOrderByRule.Ascending}`}
+            >
+              <DescendingSortIconSC /> Статусу выполнения
+            </Select.Option>
+            <Select.Option
+              small
+              value={`${TaskPaginationOrderRule.TimeStatus};${EOrderByRule.Descending}`}
+            >
+              <AscendingSortIconSC /> Статусу выполнения
+            </Select.Option>
           </Select>
         </SortContainer>
       </Wrapper>

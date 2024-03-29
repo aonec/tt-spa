@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { DescendingSortIcon } from 'ui-kit/icons';
+import { AscendingSortIcon, DescendingSortIcon } from 'ui-kit/icons';
 
 export const Wrapper = styled.div`
   display: grid;
@@ -28,5 +28,9 @@ export const SortTitle = styled.div`
 `;
 
 export const DescendingSortIconSC = styled(DescendingSortIcon)`
-  margin-top: 6px;
+  transform: translateY(4px);
+`;
+
+export const AscendingSortIconSC = styled(AscendingSortIcon)`
+  transform: translateY(4px);
 `;
