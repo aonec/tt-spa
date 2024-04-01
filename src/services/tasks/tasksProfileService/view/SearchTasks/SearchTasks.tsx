@@ -8,7 +8,7 @@ import React, {
 } from 'react';
 import { useFormik } from 'formik';
 import { useParams } from 'react-router-dom';
-import { EManagingFirmTaskFilterType, TaskGroupingFilter } from 'api/types';
+import { TaskGroupingFilter } from 'api/types';
 import { ExtendedSearch } from 'ui-kit/ExtendedSearch';
 import { fromEnter } from 'ui-kit/shared/DatePickerNative';
 import { ArchiveTasksExtendedSearchForm } from './ArchiveTasksExtendedSearchForm';
@@ -158,7 +158,7 @@ export const SearchTasks: FC<SearchTasksProps> = ({
           placeholder="Тип задачи"
           value={values.TaskType || undefined}
           onChange={(value) => {
-            setFieldValue('TaskType', value as EManagingFirmTaskFilterType);
+            setFieldValue('TaskType', value);
             handleSubmit();
           }}
         >

@@ -27,6 +27,7 @@ import { addTaskFromDispatcherService } from '../addTaskFromDispatcherService';
 import { getAcceptableSearchParams } from './tasksProfileService.utils';
 import { interval } from 'patronum';
 import { taskProfileService } from '../taskProfileService';
+import _ from 'lodash';
 
 const TasksIsOpen = createGate();
 const InitialGate = createGate();
@@ -108,7 +109,18 @@ sample({
   clock: searchTasksTrigger,
   filter: ({ isTaskProfileOpen, searchState }) =>
     !isTaskProfileOpen && Boolean(searchState.GroupType),
-  fn: ({ isTaskProfileOpen, searchState }) => searchState,
+
+  fn: ({ isTaskProfileOpen, searchState }) => {
+    const filteredData = _.omitBy(searchState, _.isNil);
+
+    const filteredDataByNull = _.omitBy(
+      filteredData,
+      (value) => value === 'null',
+    );
+
+    return filteredDataByNull;
+  },
+
   target: searchTasksFx,
 });
 
