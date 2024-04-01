@@ -17,19 +17,14 @@ import {
 import { ExtendedSearch } from 'ui-kit/ExtendedSearch';
 import { fromEnter } from 'ui-kit/shared/DatePickerNative';
 import { ArchiveTasksExtendedSearchForm } from './ArchiveTasksExtendedSearchForm';
-import {
-  AscendingSortIconSC,
-  DescendingSortIconSC,
-  SortContainer,
-  SortTitle,
-  Wrapper,
-} from './SearchTasks.styled';
+import { SortContainer, SortTitle, Wrapper } from './SearchTasks.styled';
 import { GetTasksListRequestPayload } from '../../tasksProfileService.types';
 import { SearchTasksProps } from './SearchTasks.types';
 import { Select } from 'ui-kit/Select';
 import { Input } from 'ui-kit/Input';
 import { addressSearchService } from 'services/addressSearchService/addressSearchService.models';
 import { ToExecutionTasksExtendedSearchForm } from './ToExecutionTasksExtendedSearchForm';
+import { Sort } from 'ui-kit/Sort';
 
 const { ExistingCitiesGate, ExistingStreetsGate } = addressSearchService.gates;
 
@@ -124,21 +119,21 @@ export const SearchTasks: FC<SearchTasksProps> = ({
 
   const isArchived = currentFilter?.GroupType === 'Archived';
 
-  const handleSelectOrderRule = useCallback(
-    (selectString: string | undefined) => {
-      if (!selectString) {
-        setFieldValue('OrderRule', undefined);
-        setFieldValue('OrderBy', undefined);
-      } else {
-        const [OrderRule, OrderBy] = selectString.split(';');
-        setFieldValue('OrderRule', OrderRule);
-        setFieldValue('OrderBy', OrderBy);
-      }
-
+  const handleSortChange = () => {
+    if (values.OrderBy === EOrderByRule.Ascending) {
+      setFieldValue('OrderBy', EOrderByRule.Descending);
       handleSubmit();
-    },
-    [setFieldValue, handleSubmit],
-  );
+      return;
+    }
+    if (values.OrderBy === EOrderByRule.Descending) {
+      setFieldValue('OrderBy', EOrderByRule.Ascending);
+      handleSubmit();
+      return;
+    }
+    setFieldValue('OrderBy', EOrderByRule.Descending);
+    handleSubmit();
+    return;
+  };
 
   return (
     <ExtendedSearch
@@ -204,54 +199,29 @@ export const SearchTasks: FC<SearchTasksProps> = ({
             small
             allowClear
             placeholder={'Выберите'}
-            onChange={(value) =>
-              handleSelectOrderRule(value as string | undefined)
-            }
-            value={
-              values.OrderBy
-                ? `${values.OrderRule};${values.OrderBy}`
-                : undefined
-            }
+            onChange={(value) => {
+              setFieldValue('OrderRule', value);
+              handleSubmit();
+            }}
+            value={values.OrderRule}
           >
             <Select.Option
               small
-              value={`${TaskPaginationOrderRule.ConfirmationTime};${EOrderByRule.Ascending}`}
+              value={TaskPaginationOrderRule.ConfirmationTime}
             >
-              <DescendingSortIconSC /> Дате подтверждения
-            </Select.Option>
-            <Select.Option
-              small
-              value={`${TaskPaginationOrderRule.ConfirmationTime};${EOrderByRule.Descending}`}
-            >
-              <AscendingSortIconSC /> Дате подтверждения
+              Дате подтверждения
             </Select.Option>
 
-            <Select.Option
-              small
-              value={`${TaskPaginationOrderRule.CreationTime};${EOrderByRule.Ascending}`}
-            >
-              <DescendingSortIconSC /> Дате создания
-            </Select.Option>
-            <Select.Option
-              small
-              value={`${TaskPaginationOrderRule.CreationTime};${EOrderByRule.Descending}`}
-            >
-              <AscendingSortIconSC /> Дате создания
+            <Select.Option small value={TaskPaginationOrderRule.CreationTime}>
+              Дате создания
             </Select.Option>
 
-            <Select.Option
-              small
-              value={`${TaskPaginationOrderRule.TimeStatus};${EOrderByRule.Ascending}`}
-            >
-              <DescendingSortIconSC /> Статусу выполнения
-            </Select.Option>
-            <Select.Option
-              small
-              value={`${TaskPaginationOrderRule.TimeStatus};${EOrderByRule.Descending}`}
-            >
-              <AscendingSortIconSC /> Статусу выполнения
+            <Select.Option small value={TaskPaginationOrderRule.TimeStatus}>
+              Статусу выполнения
             </Select.Option>
           </Select>
+
+          <Sort value={values.OrderBy} handleChange={handleSortChange} />
         </SortContainer>
       </Wrapper>
     </ExtendedSearch>

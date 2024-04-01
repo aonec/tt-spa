@@ -1,9 +1,8 @@
 import styled from 'styled-components';
-import { AscendingSortIcon, DescendingSortIcon } from 'ui-kit/icons';
 
 export const Wrapper = styled.div`
   display: grid;
-  grid-template-columns: 4fr 2.5fr 3fr;
+  grid-template-columns: 3fr 3fr 4fr;
   gap: 16px;
 `;
 
@@ -15,7 +14,7 @@ export const StyledFormThreeRows = styled.div`
 
 export const SortContainer = styled.div`
   display: grid;
-  grid-template-columns: 1fr 1.5fr;
+  grid-template-columns: 1fr 1.5fr 0.5fr;
   gap: 6px;
   align-items: center;
 `;
@@ -25,12 +24,4 @@ export const SortTitle = styled.div`
   font-size: 14px;
   font-weight: 400;
   line-height: 16px;
-`;
-
-export const DescendingSortIconSC = styled(DescendingSortIcon)`
-  transform: translateY(4px);
-`;
-
-export const AscendingSortIconSC = styled(AscendingSortIcon)`
-  transform: translateY(4px);
 `;
