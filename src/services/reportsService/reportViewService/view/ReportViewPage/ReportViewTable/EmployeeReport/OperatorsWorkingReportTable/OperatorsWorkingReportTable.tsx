@@ -18,6 +18,7 @@ export const OperatorsWorkingReportTable: FC<
 
   return (
     <Table
+      isSticky
       columns={[
         {
           label: '№',

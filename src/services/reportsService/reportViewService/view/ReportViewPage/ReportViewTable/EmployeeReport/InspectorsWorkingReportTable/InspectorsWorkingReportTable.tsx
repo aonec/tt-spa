@@ -13,6 +13,7 @@ export const InspectorsWorkingReportTable: FC<
 
   return (
     <Table
+      isSticky
       columns={[
         {
           label: '№',

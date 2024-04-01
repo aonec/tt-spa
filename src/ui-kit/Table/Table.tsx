@@ -111,19 +111,21 @@ export function Table<T>({
   );
 
   return (
-    <Wrapper floating={floating}>
-      <HeaderWrapper isSticky={isSticky}>
-        <Header temp={temp} css={headerStyles}>
-          {columnsComponent}
-        </Header>
-        {extraHeader}
-      </HeaderWrapper>
-      <div>
-        {sortedRows
-          .slice(start, end)
-          .map((elem, rowIndex) => renderRow(elem, rowIndex))}
-      </div>
-      {!elements.length && <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />}
+    <div>
+      <Wrapper floating={floating} isSticky={isSticky}>
+        <HeaderWrapper isSticky={isSticky}>
+          <Header temp={temp} css={headerStyles}>
+            {columnsComponent}
+          </Header>
+          {extraHeader}
+        </HeaderWrapper>
+        <div>
+          {sortedRows
+            .slice(start, end)
+            .map((elem, rowIndex) => renderRow(elem, rowIndex))}
+        </div>
+        {!elements.length && <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />}
+      </Wrapper>
       {Boolean(elements.length) && pagination && (
         <PaginationWrapper>
           <Pagination
@@ -135,6 +137,6 @@ export function Table<T>({
           />
         </PaginationWrapper>
       )}
-    </Wrapper>
+    </div>
   );
 }
