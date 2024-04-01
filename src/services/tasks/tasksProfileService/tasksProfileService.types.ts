@@ -48,3 +48,9 @@ export const TimeStatusesLookUp: { [key in EStageTimeStatus]: string } = {
   [EStageTimeStatus.RunningOut]: 'Истекает',
   [EStageTimeStatus.Expired]: 'Просроченно',
 };
+
+export type TasksSummaryData = {
+  runningOutTasksCount: number | null;
+  expiredTasksCount: number | null;
+  executingTasksCount: number | null;
+};
