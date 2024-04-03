@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useCallback } from 'react';
 import { CalculatorIcon } from 'ui-kit/icons';
 import { ResourceIconLookup } from 'ui-kit/shared/ResourceIconLookup';
 import { getPreparedDate } from '../TaskIndividualDevicesList/DeviceInfo/DeviceInfo.utils';
@@ -23,6 +23,7 @@ export const TaskDeviceInfo: FC<TaskDeviceInfoProps> = ({ device }) => {
     lastCheckingDate,
     futureCheckingDate,
     diameter,
+    type,
   } = device;
 
   const openingDateText = getPreparedDate(openingDate);
@@ -35,13 +36,34 @@ export const TaskDeviceInfo: FC<TaskDeviceInfoProps> = ({ device }) => {
   ) : (
     <CalculatorIcon />
   );
-  const path = resource ? 'housingMeteringDevices' : 'calculators';
 
   const navigate = useNavigate();
 
+  const handleClickTitle = useCallback(() => {
+    if (!type) return;
+
+    const houseMeteringDevice = `housingMeteringDevices/${id}/profile`;
+
+    const paths = {
+      FlowMeter: houseMeteringDevice,
+      TemperatureSensor: houseMeteringDevice,
+      WeatherController: houseMeteringDevice,
+      PressureMeter: houseMeteringDevice,
+      Counter: houseMeteringDevice,
+      Calculator: `calculators/${id}/profile`,
+      Individual: `individualDeviceProfile/${id}`,
+    };
+
+    const path = paths[type as keyof typeof paths];
+
+    if (!path) return;
+
+    navigate(`/${path}`);
+  }, [id, navigate, type]);
+
   return (
     <Wrapper>
-      <TitleWrapper onClick={() => navigate(`/${path}/${id}/profile`)}>
+      <TitleWrapper onClick={handleClickTitle}>
         {icon}
         <SerialNumber>{serialNumber}</SerialNumber>
         <Model>({model})</Model>

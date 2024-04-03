@@ -33,6 +33,10 @@ export const ApplicationBaseInfo: FC<ApplicationBaseInfoProps> = ({
           value: applicationInfo?.category,
         },
         {
+          key: 'Причина обращения',
+          value: applicationInfo?.reason,
+        },
+        {
           key: 'Адрес',
           value: (
             <LinkSC to={addressLinkPath} target="_blank">

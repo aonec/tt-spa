@@ -6,6 +6,7 @@ import React, {
 } from 'react';
 import {
   Header,
+  HeaderWrapper,
   PaginationWrapper,
   Row,
   RowLink,
@@ -14,19 +15,21 @@ import {
   Wrapper,
 } from './Table.styled';
 import { TableProps } from './Table.types';
-import { Empty, Pagination } from 'antd';
+import { Empty } from 'antd';
 import { EOrderByRule } from 'api/types';
 import _ from 'lodash';
+import { Pagination } from 'ui-kit/Pagination';
 
 export function Table<T>({
   columns,
   elements,
   pagination,
-  rowStyles,
+  rowStyles: rowStylesPayload,
   headerStyles,
   isSticky,
   link,
   floating = false,
+  extraHeader,
 }: PropsWithChildren<TableProps<T>>) {
   const pageSize = pagination?.pageSize || Infinity;
 
@@ -45,6 +48,11 @@ export function Table<T>({
 
   const renderRow = useCallback(
     (elem: T, rowIndex: number) => {
+      const rowStyles =
+        typeof rowStylesPayload === 'function'
+          ? rowStylesPayload(elem)
+          : rowStylesPayload;
+
       const columns = filteredColumns.map((column, columnIndex) => (
         <TableElement key={columnIndex} css={column.css?.(false)}>
           {column.render(elem, rowIndex)}
@@ -64,7 +72,7 @@ export function Table<T>({
         </Row>
       );
     },
-    [link, rowStyles, temp, filteredColumns],
+    [rowStylesPayload, filteredColumns, link, temp],
   );
 
   const sortedRows = useMemo(() => {
@@ -104,9 +112,12 @@ export function Table<T>({
 
   return (
     <Wrapper floating={floating}>
-      <Header temp={temp} css={headerStyles} isSticky={isSticky}>
-        {columnsComponent}
-      </Header>
+      <HeaderWrapper isSticky={isSticky}>
+        <Header temp={temp} css={headerStyles}>
+          {columnsComponent}
+        </Header>
+        {extraHeader}
+      </HeaderWrapper>
       <div>
         {sortedRows
           .slice(start, end)

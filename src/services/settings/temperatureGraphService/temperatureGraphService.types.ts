@@ -9,3 +9,8 @@ export const ColumnErrDictionary = {
 export type ErrorColumnType = {
   [outdoorTemperature: number]: EDayPartError[];
 };
+
+export type TemperatureLimitsType = {
+  min: number | null;
+  max: number | null;
+};
