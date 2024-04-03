@@ -34,6 +34,7 @@ export type TasksProfileProps = {
   handleOpenAddTaskModal: () => void;
   isPermissionToAddTask: boolean;
   tasksSummaryData: TasksSummaryData;
+  isPermissionToShowSummary: boolean;
 };
 
 export type TasksPageSegment = 'list' | 'map';

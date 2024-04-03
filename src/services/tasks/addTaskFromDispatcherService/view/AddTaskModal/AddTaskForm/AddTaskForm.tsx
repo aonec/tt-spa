@@ -34,7 +34,6 @@ import {
   EisTaskType,
   ResourceDisconnectingTypeResponse,
 } from 'api/types';
-import { addTaskFromDispatcherService } from 'services/tasks/addTaskFromDispatcherService/addTaskFromDispatcherService.models';
 import {
   ResourceShortNamesDictionary,
   TaskReasonTypeDictionary,
@@ -53,6 +52,7 @@ import { validationSchema } from './AddTaskForm.constants';
 import { DatePicker } from 'ui-kit/DatePicker';
 import { SavePhoneNumber } from './savePhoneNumberService';
 import { AlertIconType } from 'ui-kit/Alert/Alert.types';
+import { addTaskFromDispatcherService } from 'services/tasks/addTaskFromDispatcherService';
 
 const {
   gates: { PageGate },

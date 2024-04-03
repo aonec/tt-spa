@@ -48,6 +48,7 @@ export const TasksProfile: FC<TasksProfileProps> = ({
   handleOpenAddTaskModal,
   isPermissionToAddTask,
   tasksSummaryData,
+  isPermissionToShowSummary,
 }) => {
   const { featureToggles } = useUnit({
     featureToggles: developmentSettingsService.outputs.$featureToggles,
@@ -168,10 +169,12 @@ export const TasksProfile: FC<TasksProfileProps> = ({
             </ContentWrapper>
           </FiltrationWrapper>
           <ContentWrapper>
-            <TasksSummary
-              tasksSummaryData={tasksSummaryData}
-              isLoading={isLoading}
-            />
+            {isPermissionToShowSummary && (
+              <TasksSummary
+                tasksSummaryData={tasksSummaryData}
+                isLoading={isLoading}
+              />
+            )}
             <WithLoader isLoading={isLoading}>
               {Boolean(tasks?.length) ? (
                 tasksList
