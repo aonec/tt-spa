@@ -7,6 +7,7 @@ import {
   ETaskTargetType,
   EStageTimeStatus,
   TaskGroupingFilter,
+  TaskPaginationOrderRule,
 } from 'api/types';
 
 export type GetTasksListRequestPayload = {
@@ -34,6 +35,7 @@ export type GetTasksListRequestPayload = {
   PageNumber?: number;
   PageSize?: number;
   OrderBy?: EOrderByRule;
+  OrderRule?: TaskPaginationOrderRule;
 };
 
 export type FiltersGatePayload = {
