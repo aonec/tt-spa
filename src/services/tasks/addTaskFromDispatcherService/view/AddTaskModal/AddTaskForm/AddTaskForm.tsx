@@ -372,18 +372,19 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
         <GridContainerAsymmetricRight>
           <FormItem label="Адрес">
             <AutoCompleteAntD
-              defaultActiveFirstOption
+              // defaultActiveFirstOption
               showSearch
               allowClear
               value={values.addressSearch}
               onChange={(value) => {
-                setValues({
-                  ...values,
-                  addressSearch: value,
-                  apartmentNumber: null,
-                  subscriberName: null,
-                  phoneNumber: null,
-                });
+                // setValues({
+                //   ...values,
+                //   addressSearch: value,
+                //   apartmentNumber: null,
+                //   subscriberName: null,
+                //   phoneNumber: null,
+                // });]
+                setFieldValue('addressSearch', value);
               }}
               onSelect={(value) => {
                 setFieldValue('selectedObjectAddress', value);
