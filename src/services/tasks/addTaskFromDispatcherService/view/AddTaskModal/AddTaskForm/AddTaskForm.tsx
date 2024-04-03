@@ -34,7 +34,6 @@ import {
   EisTaskType,
   ResourceDisconnectingTypeResponse,
 } from 'api/types';
-import { addTaskFromDispatcherService } from 'services/tasks/addTaskFromDispatcherService/addTaskFromDispatcherService.models';
 import {
   ResourceShortNamesDictionary,
   TaskReasonTypeDictionary,
