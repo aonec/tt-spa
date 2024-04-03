@@ -50,6 +50,7 @@ export const TasksProfileContainer = () => {
     clearAddress,
     setTasksPageSegment,
     handleOpenAddTaskModal,
+    tasksSummaryData,
   } = useUnit({
     taskTypes: outputs.$taskTypes,
     housingManagments: outputs.$housingManagments,
@@ -72,6 +73,7 @@ export const TasksProfileContainer = () => {
     clearAddress: inputs.clearAddress,
     setTasksPageSegment: inputs.setTasksPageSegment,
     handleOpenAddTaskModal: inputs.handleOpenAddTaskModal,
+    tasksSummaryData: outputs.$tasksSummaryData,
   });
 
   const isSpectator = usePermission([
@@ -180,6 +182,7 @@ export const TasksProfileContainer = () => {
         setTasksPageSegment={setTasksPageSegment}
         handleOpenAddTaskModal={handleOpenAddTaskModal}
         isPermissionToAddTask={isPermissionToAddTask}
+        tasksSummaryData={tasksSummaryData}
       />
     </>
   );

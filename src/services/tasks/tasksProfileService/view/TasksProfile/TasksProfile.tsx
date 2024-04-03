@@ -23,6 +23,7 @@ import { WithLoader } from 'ui-kit/shared/WithLoader';
 import { developmentSettingsService } from 'services/developmentSettings/developmentSettings.models';
 import { TasksPageSegment, TasksProfileProps } from './TasksProfile.types';
 import { Button } from 'ui-kit/Button';
+import { TasksSummary } from '../TasksSummary';
 
 export const TasksProfile: FC<TasksProfileProps> = ({
   handleExportTasksList,
@@ -46,6 +47,7 @@ export const TasksProfile: FC<TasksProfileProps> = ({
   setTasksPageSegment,
   handleOpenAddTaskModal,
   isPermissionToAddTask,
+  tasksSummaryData,
 }) => {
   const { featureToggles } = useUnit({
     featureToggles: developmentSettingsService.outputs.$featureToggles,
@@ -166,6 +168,10 @@ export const TasksProfile: FC<TasksProfileProps> = ({
             </ContentWrapper>
           </FiltrationWrapper>
           <ContentWrapper>
+            <TasksSummary
+              tasksSummaryData={tasksSummaryData}
+              isLoading={isLoading}
+            />
             <WithLoader isLoading={isLoading}>
               {Boolean(tasks?.length) ? (
                 tasksList

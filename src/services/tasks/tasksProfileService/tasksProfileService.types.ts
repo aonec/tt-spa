@@ -7,6 +7,7 @@ import {
   ETaskTargetType,
   EStageTimeStatus,
   TaskGroupingFilter,
+  TaskPaginationOrderRule,
 } from 'api/types';
 
 export type GetTasksListRequestPayload = {
@@ -34,6 +35,7 @@ export type GetTasksListRequestPayload = {
   PageNumber?: number;
   PageSize?: number;
   OrderBy?: EOrderByRule;
+  OrderRule?: TaskPaginationOrderRule;
 };
 
 export type FiltersGatePayload = {
@@ -47,4 +49,10 @@ export const TimeStatusesLookUp: { [key in EStageTimeStatus]: string } = {
   [EStageTimeStatus.Normal]: 'Нормально',
   [EStageTimeStatus.RunningOut]: 'Истекает',
   [EStageTimeStatus.Expired]: 'Просроченно',
+};
+
+export type TasksSummaryData = {
+  runningOutTasksCount: number | null;
+  expiredTasksCount: number | null;
+  executingTasksCount: number | null;
 };
