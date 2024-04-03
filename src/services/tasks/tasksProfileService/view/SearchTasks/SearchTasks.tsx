@@ -8,17 +8,22 @@ import React, {
 } from 'react';
 import { useFormik } from 'formik';
 import { useParams } from 'react-router-dom';
-import { TaskGroupingFilter } from 'api/types';
+import {
+  EOrderByRule,
+  TaskGroupingFilter,
+  TaskPaginationOrderRule,
+} from 'api/types';
 import { ExtendedSearch } from 'ui-kit/ExtendedSearch';
 import { fromEnter } from 'ui-kit/shared/DatePickerNative';
 import { ArchiveTasksExtendedSearchForm } from './ArchiveTasksExtendedSearchForm';
-import { Wrapper } from './SearchTasks.styled';
+import { SortContainer, SortTitle, Wrapper } from './SearchTasks.styled';
 import { GetTasksListRequestPayload } from '../../tasksProfileService.types';
 import { SearchTasksProps } from './SearchTasks.types';
 import { Select } from 'ui-kit/Select';
 import { Input } from 'ui-kit/Input';
 import { addressSearchService } from 'services/addressSearchService/addressSearchService.models';
 import { ToExecutionTasksExtendedSearchForm } from './ToExecutionTasksExtendedSearchForm';
+import { Sort } from 'ui-kit/Sort';
 
 const { ExistingCitiesGate, ExistingStreetsGate } = addressSearchService.gates;
 
@@ -60,6 +65,7 @@ export const SearchTasks: FC<SearchTasksProps> = ({
         PageNumber: currentFilter?.PageNumber,
         PageSize: currentFilter?.PageSize,
         OrderBy: currentFilter?.OrderBy,
+        OrderRule: currentFilter?.OrderRule,
       },
       enableReinitialize: true,
       onSubmit,
@@ -111,6 +117,22 @@ export const SearchTasks: FC<SearchTasksProps> = ({
   }, [currentFilter?.GroupType, lastGroupTypeRef, clearInput]);
 
   const isArchived = currentFilter?.GroupType === 'Archived';
+
+  const handleSortChange = () => {
+    if (values.OrderBy === EOrderByRule.Ascending) {
+      setFieldValue('OrderBy', EOrderByRule.Descending);
+      handleSubmit();
+      return;
+    }
+    if (values.OrderBy === EOrderByRule.Descending) {
+      setFieldValue('OrderBy', EOrderByRule.Ascending);
+      handleSubmit();
+      return;
+    }
+    setFieldValue('OrderBy', EOrderByRule.Descending);
+    handleSubmit();
+    return;
+  };
 
   return (
     <ExtendedSearch
@@ -169,6 +191,37 @@ export const SearchTasks: FC<SearchTasksProps> = ({
               </Select.Option>
             ))}
         </Select>
+
+        <SortContainer>
+          <SortTitle>Сортировать по:</SortTitle>
+          <Select
+            small
+            allowClear
+            placeholder={'Выберите'}
+            onChange={(value) => {
+              setFieldValue('OrderRule', value);
+              handleSubmit();
+            }}
+            value={values.OrderRule}
+          >
+            <Select.Option
+              small
+              value={TaskPaginationOrderRule.ConfirmationTime}
+            >
+              Дате подтверждения
+            </Select.Option>
+
+            <Select.Option small value={TaskPaginationOrderRule.CreationTime}>
+              Дате создания
+            </Select.Option>
+
+            <Select.Option small value={TaskPaginationOrderRule.TimeStatus}>
+              Статусу выполнения
+            </Select.Option>
+          </Select>
+
+          <Sort value={values.OrderBy} handleChange={handleSortChange} />
+        </SortContainer>
       </Wrapper>
     </ExtendedSearch>
   );

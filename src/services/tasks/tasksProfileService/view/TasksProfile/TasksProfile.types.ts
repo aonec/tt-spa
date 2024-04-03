@@ -5,7 +5,10 @@ import {
   TaskGroupingFilter,
   TasksPagedList,
 } from 'api/types';
-import { GetTasksListRequestPayload } from '../../tasksProfileService.types';
+import {
+  GetTasksListRequestPayload,
+  TasksSummaryData,
+} from '../../tasksProfileService.types';
 import { TaskType } from '../TasksListItem/TasksListItem.types';
 
 export type TasksProfileProps = {
@@ -30,6 +33,7 @@ export type TasksProfileProps = {
   setTasksPageSegment: (segment: TasksPageSegment) => void;
   handleOpenAddTaskModal: () => void;
   isPermissionToAddTask: boolean;
+  tasksSummaryData: TasksSummaryData;
 };
 
 export type TasksPageSegment = 'list' | 'map';

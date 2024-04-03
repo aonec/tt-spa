@@ -136,6 +136,12 @@ const $tasksPagedData = createStore<TasksPagedList | null>(null).on(
   (_, tasksPaged) => tasksPaged,
 );
 
+const $tasksSummaryData = $tasksPagedData.map((data) => ({
+  runningOutTasksCount: data?.runningOutTasksCount || null,
+  expiredTasksCount: data?.expiredTasksCount || null,
+  executingTasksCount: data?.executingTasksCount || null,
+}));
+
 const $isExtendedSearchOpen = createStore(false)
   .on(extendedSearchOpened, () => true)
   .reset(extendedSearchClosed);
@@ -193,6 +199,7 @@ export const tasksProfileService = {
     $housingStock,
     $tasksPageSegment,
     $existingCities: addressSearchService.outputs.$existingCities,
+    $tasksSummaryData,
   },
   gates: {
     TasksIsOpen,
