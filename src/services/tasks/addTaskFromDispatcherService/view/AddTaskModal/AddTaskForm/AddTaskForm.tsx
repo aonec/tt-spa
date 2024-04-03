@@ -407,7 +407,12 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
                 }
               })}
             >
-              <Input prefix={<SearchIconSc />} placeholder="Начните вводить " />
+              <Input
+                prefix={<SearchIconSc />}
+                onChange={(e) => setFieldValue('addressSearch', e.target.value)}
+                value={values.addressSearch}
+                placeholder="Начните вводить"
+              />
             </AutoCompleteAntD>
           </FormItem>
 
