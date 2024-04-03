@@ -129,6 +129,8 @@ const $documents = createStore<DocumentResponse[]>([])
 
 const $isLoading = getTasksFx.pending;
 
+const $isTaskProfileOpen = TaskIdGate.state.map((data) => Boolean(data.taskId));
+
 sample({
   clock: TaskIdGate.open.map(({ taskId }) => taskId),
   target: getTasksFx,
@@ -250,6 +252,7 @@ export const taskProfileService = {
     $isRevertStageLoading,
     $pushStageRequestPayload,
     $deleteDocumentModalIsOpen,
+    $isTaskProfileOpen,
   },
   gates: { TaskIdGate, RelatedNodeIdGate },
 };

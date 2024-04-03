@@ -29,6 +29,19 @@ export const Block = styled.div`
   gap: 16px;
 `;
 
+export const TemperatureDevider = styled.div`
+  color: rgba(39, 47, 90, 0.9);
+  font-size: 14px;
+  font-weight: 900;
+  line-height: 16px;
+`;
+
+export const TemperatureBlock = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 6px;
+`;
+
 export const ButtonSc = styled(Button)`
   padding: 0px 10px;
 `;

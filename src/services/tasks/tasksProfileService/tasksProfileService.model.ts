@@ -26,6 +26,7 @@ import { addressSearchService } from 'services/addressSearchService/addressSearc
 import { addTaskFromDispatcherService } from '../addTaskFromDispatcherService';
 import { getAcceptableSearchParams } from './tasksProfileService.utils';
 import { interval } from 'patronum';
+import { taskProfileService } from '../taskProfileService';
 
 const TasksIsOpen = createGate();
 const InitialGate = createGate();
@@ -100,9 +101,14 @@ const { tick: searchTasksTrigger } = interval({
 });
 
 sample({
-  source: $searchState,
+  source: {
+    searchState: $searchState,
+    isTaskProfileOpen: taskProfileService.outputs.$isTaskProfileOpen,
+  },
   clock: searchTasksTrigger,
-  filter: (searchState) => Boolean(searchState.GroupType),
+  filter: ({ isTaskProfileOpen, searchState }) =>
+    !isTaskProfileOpen && Boolean(searchState.GroupType),
+  fn: ({ isTaskProfileOpen, searchState }) => searchState,
   target: searchTasksFx,
 });
 

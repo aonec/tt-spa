@@ -1,8 +1,11 @@
+import { createMutation } from '@farfetched/core';
 import { axios } from 'api/axios';
 import {
+  TemperatureNormativeDeleteRequest,
   TemperatureNormativeResponse,
   TemperatureNormativeUpdateRequest,
 } from 'api/types';
+import { createEffect } from 'effector';
 import { downloadURI } from 'utils/downloadByURL';
 
 export const getTemperatureNormative =
@@ -39,3 +42,9 @@ export const getTemplateFile = async (): Promise<void> => {
 
   downloadURI(fileURL, `Температурный график`);
 };
+
+export const deleteTemperatureNormativesMutation = createMutation({
+  handler: createEffect<TemperatureNormativeDeleteRequest, void>((payload) =>
+    axios.delete('ManagingFirms/TemperatureNormatives', { data: payload }),
+  ),
+});

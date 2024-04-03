@@ -29,8 +29,6 @@ export const ReportOptionsDictionary: {
     'Отчет по выходу поверки приборов',
   [EIndividualDeviceReportOption.InvalidCheckingDates]:
     'Некорректные даты поверки приборов',
-  [EIndividualDeviceReportOption.SkippedReadingOnOneOfRisers]:
-    'Отчет по пропущенным показаниям на одном из стояков',
 };
 
 export const ResourceShortNamesDictionary: {
