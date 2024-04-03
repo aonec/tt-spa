@@ -27,6 +27,7 @@ import { addTaskFromDispatcherService } from '../addTaskFromDispatcherService';
 import { getAcceptableSearchParams } from './tasksProfileService.utils';
 import { interval } from 'patronum';
 import { taskProfileService } from '../taskProfileService';
+import _ from 'lodash';
 
 const TasksIsOpen = createGate();
 const InitialGate = createGate();
@@ -108,7 +109,18 @@ sample({
   clock: searchTasksTrigger,
   filter: ({ isTaskProfileOpen, searchState }) =>
     !isTaskProfileOpen && Boolean(searchState.GroupType),
-  fn: ({ isTaskProfileOpen, searchState }) => searchState,
+
+  fn: ({ isTaskProfileOpen, searchState }) => {
+    const filteredData = _.omitBy(searchState, _.isNil);
+
+    const filteredDataByNull = _.omitBy(
+      filteredData,
+      (value) => value === 'null',
+    );
+
+    return filteredDataByNull;
+  },
+
   target: searchTasksFx,
 });
 
@@ -123,6 +135,12 @@ const $tasksPagedData = createStore<TasksPagedList | null>(null).on(
   searchTasksFx.doneData,
   (_, tasksPaged) => tasksPaged,
 );
+
+const $tasksSummaryData = $tasksPagedData.map((data) => ({
+  runningOutTasksCount: data?.runningOutTasksCount || null,
+  expiredTasksCount: data?.expiredTasksCount || null,
+  executingTasksCount: data?.executingTasksCount || null,
+}));
 
 const $isExtendedSearchOpen = createStore(false)
   .on(extendedSearchOpened, () => true)
@@ -181,6 +199,7 @@ export const tasksProfileService = {
     $housingStock,
     $tasksPageSegment,
     $existingCities: addressSearchService.outputs.$existingCities,
+    $tasksSummaryData,
   },
   gates: {
     TasksIsOpen,
