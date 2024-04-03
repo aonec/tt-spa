@@ -12,12 +12,15 @@ persist({ store: $token, key: 'token' });
 
 const deleteRefreshToken = createEvent();
 const setRefreshToken = createEvent<string>();
+
 const $refreshToken = createStore<string | null>(null)
   .on(setRefreshToken, (_, token) => token)
   .reset(deleteRefreshToken);
+
 persist({ store: $refreshToken, key: 'refreshToken' });
 
 const redirectToLogin = createEvent();
+
 redirectToLogin.watch(() => window.location.replace('/login'));
 
 const tokenExpired = createEvent();
