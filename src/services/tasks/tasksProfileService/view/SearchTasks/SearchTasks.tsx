@@ -9,7 +9,6 @@ import React, {
 import { useFormik } from 'formik';
 import { useParams } from 'react-router-dom';
 import {
-  EManagingFirmTaskFilterType,
   EOrderByRule,
   TaskGroupingFilter,
   TaskPaginationOrderRule,
@@ -181,7 +180,7 @@ export const SearchTasks: FC<SearchTasksProps> = ({
           placeholder="Тип задачи"
           value={values.TaskType || undefined}
           onChange={(value) => {
-            setFieldValue('TaskType', value as EManagingFirmTaskFilterType);
+            setFieldValue('TaskType', value);
             handleSubmit();
           }}
         >
