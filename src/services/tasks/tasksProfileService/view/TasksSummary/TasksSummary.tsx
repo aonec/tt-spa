@@ -12,14 +12,6 @@ export const TasksSummary: FC<Props> = ({ tasksSummaryData, isLoading }) => {
   return (
     <Wrapper>
       <Panel>
-        <Title> Активно:</Title>
-        {isLoading ? (
-          <SkeletonSC active />
-        ) : (
-          <Count>{tasksSummaryData.executingTasksCount || 0} задач</Count>
-        )}
-      </Panel>
-      <Panel>
         <Title> Истекает:</Title>
         {isLoading ? (
           <SkeletonSC active />
