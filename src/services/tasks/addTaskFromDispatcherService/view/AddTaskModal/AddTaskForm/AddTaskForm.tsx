@@ -383,8 +383,8 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
                 //   apartmentNumber: null,
                 //   subscriberName: null,
                 //   phoneNumber: null,
-                // });]
-                setFieldValue('addressSearch', value);
+                // });
+                // setFieldValue('addressSearch', value);
               }}
               onSelect={(value) => {
                 setFieldValue('selectedObjectAddress', value);
@@ -408,7 +408,12 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
                 }
               })}
             >
-              <Input prefix={<SearchIconSc />} placeholder="Начните вводить " />
+              <Input
+                prefix={<SearchIconSc />}
+                onChange={(e) => setFieldValue('addressSearch', e.target.value)}
+                value={values.addressSearch}
+                placeholder="Начните вводить"
+              />
             </AutoCompleteAntD>
           </FormItem>
 
