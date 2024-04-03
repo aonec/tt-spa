@@ -153,6 +153,10 @@ export const TasksProfileContainer = () => {
     ESecuredIdentityRoleName.ManagingFirmDispatcher,
   ]);
 
+  const isPermissionToShowSummary = usePermission([
+    ESecuredIdentityRoleName.ManagingFirmSpectator,
+  ]);
+
   return (
     <>
       {isPermissionToAddTask && <AddTaskDataFetchGate />}
@@ -183,6 +187,7 @@ export const TasksProfileContainer = () => {
         handleOpenAddTaskModal={handleOpenAddTaskModal}
         isPermissionToAddTask={isPermissionToAddTask}
         tasksSummaryData={tasksSummaryData}
+        isPermissionToShowSummary={isPermissionToShowSummary}
       />
     </>
   );
