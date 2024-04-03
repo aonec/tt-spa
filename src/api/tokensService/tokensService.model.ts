@@ -3,9 +3,11 @@ import { persist } from 'effector-storage/local';
 
 const deleteToken = createEvent();
 const setToken = createEvent<string>();
+
 const $token = createStore<string | null>(null)
   .on(setToken, (_, token) => token)
   .reset(deleteToken);
+
 persist({ store: $token, key: 'token' });
 
 const deleteRefreshToken = createEvent();
@@ -24,6 +26,8 @@ const $isActive = createStore(false)
   .on(tokenExpired, () => true)
   .on(tokenActive, () => false);
 
+const $isAuth = $token.map(Boolean);
+
 export const tokensService = {
   inputs: {
     setToken,
@@ -38,5 +42,6 @@ export const tokensService = {
     $token,
     $refreshToken,
     $isActive,
+    $isAuth,
   },
 };
