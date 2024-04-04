@@ -108,9 +108,10 @@ const $addressesWithHouseManagements = createStore<
   .reset(AddressesWithHouseManagementsGate.close);
 
 const $filtrationValues = createStore<ReportFiltrationFormValues>({
+  exportType: null,
   city: null,
   houseManagement: null,
-  housingStockIds: [],
+  housingStockId: null,
   resources: [],
   reportOption: null,
   from: null,

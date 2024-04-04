@@ -1955,6 +1955,7 @@ export enum EPollActionType {
   IndividualExport = 'IndividualExport',
   HousingExport = 'HousingExport',
   MilurExport = 'MilurExport',
+  OpenIndividualDevicesReport = 'OpenIndividualDevicesReport',
 }
 
 export enum EPollState {
@@ -13513,6 +13514,32 @@ export class Api<
     ) =>
       this.request<File, ErrorApiResponse>({
         path: `/api/Reports/FeedFlowPipeTemperatureReport`,
+        method: 'GET',
+        query: query,
+        secure: true,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Администратор</li><li>Администратор УК без назначений задач</li>
+     *
+     * @tags Reports
+     * @name ReportsOpenIndividualDevicesReportList
+     * @summary IndividualDevicesReportCreate
+     * @request GET:/api/Reports/OpenIndividualDevicesReport
+     * @secure
+     */
+    reportsOpenIndividualDevicesReportList: (
+      query?: {
+        Command?: PollCommand;
+        /** @format int32 */
+        PollId?: number;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<PollResponseSuccessApiResponse, ErrorApiResponse>({
+        path: `/api/Reports/OpenIndividualDevicesReport`,
         method: 'GET',
         query: query,
         secure: true,

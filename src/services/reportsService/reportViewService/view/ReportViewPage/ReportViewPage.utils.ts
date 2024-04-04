@@ -48,12 +48,9 @@ export const getFiltersList = (
 ) => {
   const resourcesText = getResourcesText(filtrationValues.resources);
 
-  const selectedAddress = filtrationValues.housingStockIds.length
-    ? `${getCountText(
-        filtrationValues.housingStockIds.length,
-        selectedCountTexts,
-      )} ${filtrationValues.housingStockIds.length} ${getCountText(
-        filtrationValues.housingStockIds.length,
+  const selectedAddress = filtrationValues.housingStockId
+    ? `${getCountText(1, selectedCountTexts)} ${1} ${getCountText(
+        1,
         addressesCountTexts,
       )}`
     : null;

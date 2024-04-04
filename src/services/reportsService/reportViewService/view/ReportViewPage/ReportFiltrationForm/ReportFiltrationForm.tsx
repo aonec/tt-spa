@@ -30,12 +30,10 @@ import {
 } from 'dictionaries';
 import { RangePicker } from 'ui-kit/RangePicker';
 import {
-  addressesCountTexts,
   EmployeeReportDatePeriodDictionary,
   EmployeeReportDatePeriodTypesDictionary,
   EmployeeReportTypesDictionary,
   ReportPeriodDictionary,
-  selectedCountTexts,
 } from './ReportFiltrationForm.constants';
 import {
   ReportDatePeriod,
@@ -44,7 +42,6 @@ import {
 import { ReportType } from 'services/reportsService/view/ReportsPage/ReportsPage.types';
 import { actResourceNamesLookup } from 'utils/actResourceNamesLookup';
 import { TreeSelect } from 'ui-kit/TreeSelect';
-import { getCountText } from 'utils/getCountText';
 import { DatePicker } from 'ui-kit/DatePicker';
 
 const { gates, inputs } = reportViewService;
@@ -186,7 +183,7 @@ export const ReportFiltrationForm: FC<ReportFiltrationFormProps> = ({
           <FormItem label="Город">
             <Select
               placeholder="Выберите из списка"
-              value={values.city || undefined}
+              value={values.city}
               onChange={(value) => setFieldValue('city', value)}
             >
               {existingCities?.map((city) => (
@@ -198,7 +195,7 @@ export const ReportFiltrationForm: FC<ReportFiltrationFormProps> = ({
           </FormItem>
           <FormItem label="Домоуправление">
             <Select
-              value={values.houseManagement || undefined}
+              value={values.houseManagement}
               placeholder="Выберите из списка"
               onChange={(value) => {
                 setFieldValue('houseManagement', value || null);
@@ -237,29 +234,13 @@ export const ReportFiltrationForm: FC<ReportFiltrationFormProps> = ({
           <FormItem label="Адрес">
             <TreeSelect
               treeData={addressesTreeData}
-              showSearch
-              showArrow
               placeholder="Выберите адрес"
               showCheckedStrategy="SHOW_CHILD"
-              treeCheckable
               maxTagCount={0}
-              maxTagPlaceholder={() => {
-                const addressesCountText = getCountText(
-                  values.housingStockIds.length,
-                  addressesCountTexts,
-                );
-
-                const selectedCountText = getCountText(
-                  values.housingStockIds.length,
-                  selectedCountTexts,
-                );
-
-                return `${selectedCountText} ${values.housingStockIds.length} ${addressesCountText}`;
+              value={values.housingStockId}
+              onChange={(housingStocksId) => {
+                setFieldValue('housingStockId', housingStocksId);
               }}
-              value={values.housingStockIds}
-              onChange={(housingStocksIds) =>
-                setFieldValue('housingStockIds', housingStocksIds)
-              }
             />
           </FormItem>
           {isShowResourcesField && (

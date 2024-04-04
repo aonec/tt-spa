@@ -23,10 +23,17 @@ export enum ReportDatePeriod {
   AnyPeriod = 'AnyPeriod',
 }
 
-export type ReportFiltrationFormValues = {
+export enum ExportReportType {
+  ManagementFirm = 'ManagementFirm',
+  HouseManagement = 'HouseManagement',
+  Address = 'Address',
+}
+
+export interface ReportFiltrationFormValues {
+  exportType: ExportReportType | null;
   city: null | string;
   houseManagement: null | string;
-  housingStockIds: number[];
+  housingStockId: number | null;
   resources: EResourceType[];
   actResources: EActResourceType[];
   reportOption: null | EIndividualDeviceReportOption;
@@ -40,56 +47,51 @@ export type ReportFiltrationFormValues = {
   employeeReportDatePeriodType: EmployeeReportDatePeriodType | null;
   employeeReportDate: dayjs.Dayjs | null;
   reportType?: ReportType;
-};
+}
 
-export type ReportPayload = {
+export interface AddressSearch {
+  HouseManagementId: null | string;
+  HousingStockId: number | null;
+}
+
+export interface ReportPayload {
   values: ReportFiltrationFormValues;
   reportType: ReportType;
-};
+}
 
-export type IndividualDeviceReportRequestPaload = {
-  HouseManagementId?: string;
-  HousingStocksIds?: number[];
+export interface IndividualDeviceReportRequestPaload extends AddressSearch {
   ReportOption: EIndividualDeviceReportOption;
   Resources?: EResourceType[];
   From?: string;
   To?: string;
   ClosingReasons?: EClosingReason[];
   WithoutApartmentsWithOpenDevicesByResources?: boolean;
-};
+}
 
-export type ActsJournalReportRequestPayload = {
-  HouseManagementId?: string;
-  HousingStockId?: number;
+export interface ActsJournalReportRequestPayload extends AddressSearch {
   Resources?: EActResourceType[];
-  HousingStocksIds?: number[];
   From?: string;
   To?: string;
-};
+}
 
-export type HousingMeteringDevicesReportRequestPayload = {
-  HouseManagementId?: string;
-  HousingStockId?: number;
-  HousingStocksIds?: number[];
+export interface HousingMeteringDevicesReportRequestPayload
+  extends AddressSearch {
   Resources?: EResourceType[];
   From: string;
   To: string;
-};
+}
 
-export type HomeownersReportRequestPayload = {
-  HouseManagementId?: string;
-  HousingStockId?: number;
-  HousingStocksIds?: number[];
+export interface HomeownersReportRequestPayload extends AddressSearch {
   ShowOnlyDuplicates: boolean;
   From?: string;
   To?: string;
-};
+}
 
-export type EmployeeReportRequestPayload = {
+export interface EmployeeReportRequestPayload {
   employeeReportType: EmployeeReportType;
   From?: string;
   To?: string;
-};
+}
 
 export type EmployeeReportResponse = {
   [EmployeeReportType.OperatorsWorkingReport]?: OperatorsConstructedReportResponse[];

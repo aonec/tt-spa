@@ -39,8 +39,10 @@ export const prepareAddressesTreeData = (
       value: houseManagement.id,
       title: houseManagement.name,
       key: houseManagement.id,
+      selectable: false,
       children:
         houseManagement.streets?.map((street) => ({
+          selectable: false,
           value: `${street.street} ${houseManagement.id}`,
           title: street.street || '',
           key: `${street.street} ${houseManagement.id}`,
