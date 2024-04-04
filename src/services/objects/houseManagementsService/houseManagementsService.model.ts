@@ -17,7 +17,10 @@ const $houseManagements = createStore<HouseManagementResponse[] | null>(
 ).on(fetchHouseManagementFx.doneData, (_, list) => list);
 
 sample({
+  source: $houseManagements,
   clock: HouseManagementsGate.state,
+  filter: (houseManagements) => !houseManagements,
+  fn: (_, payload) => payload,
   target: fetchHouseManagementFx,
 });
 

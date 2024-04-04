@@ -1,6 +1,7 @@
 import {
   HouseManagementResponse,
   HouseManagementWithStreetsResponse,
+  OrganizationResponsePagedList,
 } from 'api/types';
 import { ReportFiltrationFormValues } from 'services/reportsService/reportViewService/reportViewService.types';
 import { ReportType } from 'services/reportsService/view/ReportsPage/ReportsPage.types';
@@ -13,6 +14,7 @@ export type ReportFiltrationFormProps = {
   formId: string;
   setFiltrationValues: (payload: ReportFiltrationFormValues) => void;
   reportType: ReportType;
+  organizations: OrganizationResponsePagedList | null;
 };
 
 export type Address = {

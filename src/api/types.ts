@@ -13558,15 +13558,14 @@ export class Api<
      */
     reportsApartmentActsReportList: (
       query?: {
+        /** @format int32 */
+        ManagementFirmId?: number;
         /** @format uuid */
         HouseManagementId?: string;
-        /**
-         * @deprecated
-         * @format int32
-         */
+        /** @format int32 */
         HousingStockId?: number;
-        HousingStocksIds?: number[];
         Resources?: EActResourceType[];
+        ActType?: EActType;
         /** @format date-time */
         From?: string;
         /** @format date-time */
@@ -13597,15 +13596,14 @@ export class Api<
      */
     reportsApartmentActsReportXlsxList: (
       query?: {
+        /** @format int32 */
+        ManagementFirmId?: number;
         /** @format uuid */
         HouseManagementId?: string;
-        /**
-         * @deprecated
-         * @format int32
-         */
+        /** @format int32 */
         HousingStockId?: number;
-        HousingStocksIds?: number[];
         Resources?: EActResourceType[];
+        ActType?: EActType;
         /** @format date-time */
         From?: string;
         /** @format date-time */
@@ -13633,14 +13631,12 @@ export class Api<
      */
     reportsHousingDevicesReportList: (
       query: {
+        /** @format int32 */
+        ManagementFirmId?: number;
         /** @format uuid */
         HouseManagementId?: string;
-        /**
-         * @deprecated
-         * @format int32
-         */
+        /** @format int32 */
         HousingStockId?: number;
-        HousingStocksIds?: number[];
         Resources?: EResourceType[];
         /** @format date-time */
         From: string;
@@ -13672,14 +13668,12 @@ export class Api<
      */
     reportsHousingDevicesReportXlsxList: (
       query: {
+        /** @format int32 */
+        ManagementFirmId?: number;
         /** @format uuid */
         HouseManagementId?: string;
-        /**
-         * @deprecated
-         * @format int32
-         */
+        /** @format int32 */
         HousingStockId?: number;
-        HousingStocksIds?: number[];
         Resources?: EResourceType[];
         /** @format date-time */
         From: string;
@@ -13708,14 +13702,12 @@ export class Api<
      */
     reportsHomeownersReportList: (
       query: {
+        /** @format int32 */
+        ManagementFirmId?: number;
         /** @format uuid */
         HouseManagementId?: string;
-        /**
-         * @deprecated
-         * @format int32
-         */
+        /** @format int32 */
         HousingStockId?: number;
-        HousingStocksIds?: number[];
         ShowOnlyDuplicates: boolean;
       },
       params: RequestParams = {},
@@ -13743,14 +13735,12 @@ export class Api<
      */
     reportsHomeownersReportXlsxList: (
       query: {
+        /** @format int32 */
+        ManagementFirmId?: number;
         /** @format uuid */
         HouseManagementId?: string;
-        /**
-         * @deprecated
-         * @format int32
-         */
+        /** @format int32 */
         HousingStockId?: number;
-        HousingStocksIds?: number[];
         ShowOnlyDuplicates: boolean;
       },
       params: RequestParams = {},
@@ -13775,14 +13765,12 @@ export class Api<
      */
     reportsIndividualDevicesReportList: (
       query: {
+        /** @format int32 */
+        ManagementFirmId?: number;
         /** @format uuid */
         HouseManagementId?: string;
-        /**
-         * @deprecated
-         * @format int32
-         */
+        /** @format int32 */
         HousingStockId?: number;
-        HousingStocksIds?: number[];
         ReportOption: EIndividualDeviceReportOption;
         Resources?: EResourceType[];
         /** @format date-time */
@@ -13817,14 +13805,12 @@ export class Api<
      */
     reportsIndividualDevicesReportXlsxList: (
       query: {
+        /** @format int32 */
+        ManagementFirmId?: number;
         /** @format uuid */
         HouseManagementId?: string;
-        /**
-         * @deprecated
-         * @format int32
-         */
+        /** @format int32 */
         HousingStockId?: number;
-        HousingStocksIds?: number[];
         ReportOption: EIndividualDeviceReportOption;
         Resources?: EResourceType[];
         /** @format date-time */

@@ -32,6 +32,7 @@ export enum ExportReportType {
 export interface ReportFiltrationFormValues {
   exportType: ExportReportType | null;
   city: null | string;
+  organizationId: null | number;
   houseManagement: null | string;
   housingStockId: number | null;
   resources: EResourceType[];

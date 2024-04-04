@@ -36,6 +36,7 @@ import {
   ReportPeriodDictionary,
 } from './ReportFiltrationForm.constants';
 import {
+  ExportReportType,
   ReportDatePeriod,
   ReportFiltrationFormValues,
 } from 'services/reportsService/reportViewService/reportViewService.types';
@@ -43,6 +44,7 @@ import { ReportType } from 'services/reportsService/view/ReportsPage/ReportsPage
 import { actResourceNamesLookup } from 'utils/actResourceNamesLookup';
 import { TreeSelect } from 'ui-kit/TreeSelect';
 import { DatePicker } from 'ui-kit/DatePicker';
+import { ExportReportTypeTranslatesLookup } from 'services/reportsService/reportViewService/reportViewService.constants';
 
 const { gates, inputs } = reportViewService;
 const { HouseManagementsGate } = gates;
@@ -55,6 +57,7 @@ export const ReportFiltrationForm: FC<ReportFiltrationFormProps> = ({
   formId,
   setFiltrationValues,
   reportType,
+  organizations,
 }) => {
   const { values, setFieldValue, handleSubmit, resetForm } =
     useFormik<ReportFiltrationFormValues>({
@@ -193,56 +196,91 @@ export const ReportFiltrationForm: FC<ReportFiltrationFormProps> = ({
               ))}
             </Select>
           </FormItem>
-          <FormItem label="Домоуправление">
+          <FormItem label="Тип выгрузки">
             <Select
-              value={values.houseManagement}
-              placeholder="Выберите из списка"
-              onChange={(value) => {
-                setFieldValue('houseManagement', value || null);
-
-                const houseManagement = addressesWithHouseManagements.find(
-                  (elem) => elem.id === value,
-                );
-
-                const selectedHouseManagementHousingStocksIds = (
-                  houseManagement?.streets || []
-                ).reduce(
-                  (acc, street) => [
-                    ...acc,
-                    ...(street.addresses || []).map((elem) => elem.buildingId),
-                  ],
-                  [] as number[],
-                );
-
-                setFieldValue(
-                  'housingStockIds',
-                  selectedHouseManagementHousingStocksIds,
-                );
-              }}
-              allowClear
+              placeholder="Выберите"
+              value={values.exportType}
+              onChange={(exportType) => setFieldValue('exportType', exportType)}
             >
-              {houseManagements?.map((houseManagement) => (
-                <Select.Option
-                  key={houseManagement.id}
-                  value={houseManagement.id}
-                >
-                  {houseManagement.name}
+              {Object.values(ExportReportType).map((reportType) => (
+                <Select.Option key={reportType} value={reportType}>
+                  {ExportReportTypeTranslatesLookup[reportType]}
                 </Select.Option>
               ))}
             </Select>
           </FormItem>
-          <FormItem label="Адрес">
-            <TreeSelect
-              treeData={addressesTreeData}
-              placeholder="Выберите адрес"
-              showCheckedStrategy="SHOW_CHILD"
-              maxTagCount={0}
-              value={values.housingStockId}
-              onChange={(housingStocksId) => {
-                setFieldValue('housingStockId', housingStocksId);
-              }}
-            />
-          </FormItem>
+          {values.exportType === ExportReportType.ManagementFirm && (
+            <FormItem label="Список УК">
+              <Select
+                placeholder="Выберите"
+                value={values.organizationId}
+                onChange={(id) => setFieldValue('organizationId', id)}
+              >
+                {organizations?.items?.map((organization) => (
+                  <Select.Option key={organization.id} value={organization.id}>
+                    {organization.name}
+                  </Select.Option>
+                ))}
+              </Select>
+            </FormItem>
+          )}
+          {values.exportType === ExportReportType.HouseManagement && (
+            <FormItem label="Домоуправление">
+              <Select
+                value={values.houseManagement}
+                placeholder="Выберите из списка"
+                onChange={(value) => {
+                  setFieldValue('houseManagement', value || null);
+
+                  const houseManagement = addressesWithHouseManagements.find(
+                    (elem) => elem.id === value,
+                  );
+
+                  const selectedHouseManagementHousingStocksIds = (
+                    houseManagement?.streets || []
+                  ).reduce(
+                    (acc, street) => [
+                      ...acc,
+                      ...(street.addresses || []).map(
+                        (elem) => elem.buildingId,
+                      ),
+                    ],
+                    [] as number[],
+                  );
+
+                  setFieldValue(
+                    'housingStockIds',
+                    selectedHouseManagementHousingStocksIds,
+                  );
+                }}
+                allowClear
+              >
+                {houseManagements?.map((houseManagement) => (
+                  <Select.Option
+                    key={houseManagement.id}
+                    value={houseManagement.id}
+                  >
+                    {houseManagement.name}
+                  </Select.Option>
+                ))}
+              </Select>
+            </FormItem>
+          )}
+          {values.exportType === ExportReportType.Address && (
+            <FormItem label="Адрес">
+              <TreeSelect
+                treeData={addressesTreeData}
+                placeholder="Выберите адрес"
+                showCheckedStrategy="SHOW_CHILD"
+                maxTagCount={0}
+                value={values.housingStockId}
+                onChange={(housingStocksId) => {
+                  setFieldValue('housingStockId', housingStocksId);
+                }}
+              />
+            </FormItem>
+          )}
+          {!values.exportType && <div />}
           {isShowResourcesField && (
             <FormItem label="Ресурс">
               {!isShowActResourcesSelect && (
