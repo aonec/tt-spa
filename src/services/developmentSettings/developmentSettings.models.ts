@@ -39,8 +39,14 @@ persist<FeatureToggles>({
       originalKeys.includes(key),
     );
 
-    return toggles.reduce(
-      (acc, [key, value]) => ({ ...acc, [key]: value }),
+    const togglesKeys = toggles.map(([key]) => key);
+
+    const newToggles = originalKeys
+      .filter((key) => !togglesKeys.includes(key))
+      .map((key) => [key, featureToggles[key as keyof FeatureToggles]]);
+
+    return [...toggles, ...newToggles].reduce(
+      (acc, [key, value]) => ({ ...acc, [key as keyof FeatureToggles]: value }),
       {},
     );
   },
