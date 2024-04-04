@@ -27,7 +27,40 @@ const $featureToggles = createStore<FeatureToggles>(featureToggles)
       : prev,
   );
 
-persist({ store: $featureToggles, key: 'featureToggles' });
+persist<FeatureToggles>({
+  store: $featureToggles,
+  key: 'featureToggles',
+  deserialize: (value) => {
+    const originalKeys = Object.keys(featureToggles);
+
+    const data = JSON.parse(value);
+
+    const toggles = Object.entries(data).filter(([key]) =>
+      originalKeys.includes(key),
+    );
+
+    return toggles.reduce(
+      (acc, [key, value]) => ({ ...acc, [key]: value }),
+      {},
+    );
+  },
+  serialize: (data) => {
+    const originalKeys = Object.keys(featureToggles);
+
+    const toggles = Object.entries(data).filter(([key]) =>
+      originalKeys.includes(key),
+    );
+
+    const features = toggles.reduce(
+      (acc, [key, value]) => ({ ...acc, [key]: value }),
+      {},
+    );
+
+    const dataString = JSON.stringify(features);
+
+    return dataString;
+  },
+});
 
 $isDevSettingsModalOpen
   .on(openDevSettingsModal, () => true)
