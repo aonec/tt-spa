@@ -1,8 +1,6 @@
 import React, { FC, useMemo } from 'react';
 import {
-  createTimeline,
   createTimelineForTaskHeader,
-  createTimer,
   createTimerForTaskHeader,
 } from 'services/tasks/tasksProfileService/tasksProfileService.utils';
 import { Dialog } from 'ui-kit/shared/Dialog/Dialog';
