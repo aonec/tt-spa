@@ -16,6 +16,8 @@ import {
 import { DevelopmentSettingsModalProps } from './DevelopmentSettingsModal.types';
 import { urls } from './DevelopmentSettingsModal.constants';
 import { baseURL } from 'api';
+import { FeatureTogglesTranslates } from 'services/developmentSettings/developmentSettings.constants';
+import { FeatureToggles } from 'services/developmentSettings/developmentSettings.types';
 
 export const DevelopmentSettingsModal: FC<DevelopmentSettingsModalProps> = ({
   visible,
@@ -84,7 +86,7 @@ export const DevelopmentSettingsModal: FC<DevelopmentSettingsModalProps> = ({
                       isActive={isActive}
                       key={key}
                     >
-                      {key}
+                      {FeatureTogglesTranslates[key as keyof FeatureToggles]}
                     </FeatureToggle>
                   );
                 })}
@@ -99,7 +101,7 @@ export const DevelopmentSettingsModal: FC<DevelopmentSettingsModalProps> = ({
               </FeatureTogglesWrapper>
             </FormItem>
           )}
-          <Badge>TT frontend team {dayjs().format('YYYY')} [ver: 1.1.0]</Badge>
+          <Badge>TT frontend team {dayjs().format('YYYY')} [ver: 1.1.2]</Badge>
         </>
       }
       centered

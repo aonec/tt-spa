@@ -1,4 +1,4 @@
-import { Pagination } from 'antd';
+import { Pagination } from 'ui-kit/Pagination';
 import { useUnit } from 'effector-react';
 import React, { useEffect, useMemo } from 'react';
 import dayjs from 'dayjs';

@@ -1,5 +1,5 @@
 import { Navigate, Outlet } from 'react-router-dom';
-import React from 'react';
+import React, { useMemo } from 'react';
 import { Layout, PageWrapper } from './Router.styled';
 import { Panel } from 'App/Panel';
 import {
@@ -68,6 +68,8 @@ import {
   tasksProfileService,
 } from 'services/tasks/tasksProfileService';
 import { currentOrganizationService } from 'services/currentOrganizationService';
+import { useUnit } from 'effector-react';
+import { tokensService } from 'api/tokensService';
 
 const {
   gates: { CurrentUserGate },
@@ -76,8 +78,6 @@ const {
   gates: { CurrentManagingFirmGate },
 } = currentOrganizationService;
 
-const featureToggles =
-  developmentSettingsService.outputs.$featureToggles.getState();
 const { TasksIsOpen } = tasksProfileService.gates;
 const { DistrictBordersGroupPageGate } = districtBordersByAddressService.gates;
 
@@ -114,9 +114,15 @@ const DistrictBordersRouterWrapper = () => {
   );
 };
 
-export const getRoutes = (
+export const useRoutes = (
   currentUserRoles: ESecuredIdentityRoleNameStringDictionaryItem[],
 ) => {
+  const { isAuth } = useUnit({ isAuth: tokensService.outputs.$isAuth });
+
+  const featureToggles = useUnit(
+    developmentSettingsService.outputs.$featureToggles,
+  );
+
   const roles =
     currentUserRoles?.reduce((acc, { key }) => {
       if (!key) {
@@ -155,13 +161,13 @@ export const getRoutes = (
     ESecuredIdentityRoleName.ManagingFirmSpectatorRestricted,
   );
 
-  const redirectRoute = (() => {
-    if (!roles.length) return '/login';
+  const redirectRoute = useMemo(() => {
+    if (!isAuth) return '/login';
 
-    const defaultPath = '/tasks/';
+    const defaultPath = '/tasks';
 
     return isSeniorOperator || isOperator ? '/meters/apartments' : defaultPath;
-  })();
+  }, [isOperator, isSeniorOperator, isAuth]);
 
   const initialTasksPath = isSpectator
     ? `/tasks/list/${TaskGroupingFilter.Observing}`
@@ -174,14 +180,31 @@ export const getRoutes = (
     isSpectatingAdministrator ||
     isRescrictedSpectator;
 
+  if (!isAuth) {
+    return [
+      {
+        path: '/login',
+        element: <LoginContainer />,
+      },
+      {
+        path: '/registration*',
+        element: <RegistrationContainer />,
+      },
+      {
+        path: '*',
+        element: <Navigate replace to={redirectRoute} />,
+      },
+    ];
+  }
+
   return [
-    {
-      path: '/login',
-      element: <LoginContainer />,
-    },
     {
       path: '/registration*',
       element: <RegistrationContainer />,
+    },
+    {
+      path: '*',
+      element: <Navigate replace to={redirectRoute} />,
     },
     {
       path: '/',
@@ -268,7 +291,10 @@ export const getRoutes = (
           ],
         },
 
-        { path: '/tasks', element: <Navigate replace to={initialTasksPath} /> },
+        {
+          path: '/tasks',
+          element: <Navigate replace to={initialTasksPath} />,
+        },
         {
           path: '/tasks',
           element: <TasksRouterWrapper />,

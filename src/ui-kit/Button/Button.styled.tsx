@@ -44,14 +44,10 @@ const sizesOfButton: {
   },
   small: {
     height: 32,
-    padding: 14,
+    padding: 9.5,
     fontSize: 13,
   },
 };
-
-export const IconWrapper = styled.div`
-  margin-left: 10px;
-`;
 
 interface Button {
   btnType: ButtonStyleType;
@@ -63,6 +59,7 @@ export const ButtonSC = styled(ButtonAntd)<Button>`
   display: flex;
   justify-content: center;
   align-items: center;
+  gap: 8px;
   width: ${({ floating }) => (floating ? '100%' : 'min-content')} !important;
 
   border-radius: 4px;

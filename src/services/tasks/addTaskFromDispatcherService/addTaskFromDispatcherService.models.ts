@@ -46,6 +46,7 @@ import {
 } from './addTaskFromDispatcherService.types';
 import { prepareAddressesForTreeSelect } from './addTaskFromDispatcherService.utils';
 import { currentOrganizationService } from 'services/currentOrganizationService';
+import { addressSearchService } from 'services/addressSearchService/addressSearchService.models';
 
 const PageGate = createGate();
 const AddTaskDataFetchGate = createGate();
@@ -246,11 +247,16 @@ sample({
 });
 
 sample({
-  source: currentOrganizationService.outputs.$defaultCity,
-  filter: Boolean,
-  fn: (defaultCity) => ({
-    City: defaultCity,
-  }),
+  source: {
+    defaultCity: currentOrganizationService.outputs.$defaultCity,
+    existingCities: addressSearchService.outputs.$existingCities,
+  },
+  fn: ({ defaultCity, existingCities }) => {
+    const cityFromAddressSearchService = _.last(existingCities) || '';
+    return {
+      City: defaultCity || cityFromAddressSearchService,
+    };
+  },
   target: getAddressesFx,
 });
 
@@ -400,8 +406,12 @@ onSuccessSavePhone.watch(() => {
   message.success('Успешно');
 });
 
-replaceAllPhonesFx.failData.watch(() => {
-  message.error('Ошибка сохранения телефона в профиль квартиры');
+replaceAllPhonesFx.failData.watch((error) => {
+  message.error(
+    error.response.data.error.Text ||
+      error.response.data.error.Message ||
+      'Ошибка сохранения телефона в профиль квартиры',
+  );
 });
 
 export const addTaskFromDispatcherService = {

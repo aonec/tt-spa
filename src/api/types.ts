@@ -726,6 +726,10 @@ export interface BuildingShortResponse {
   address: BuildingAddressResponse | null;
 }
 
+export interface BuildingShortResponseSuccessApiResponse {
+  successResponse: BuildingShortResponse | null;
+}
+
 export interface BuildingWithCoordinatesResponse {
   /** @format int32 */
   id: number;
@@ -1703,7 +1707,6 @@ export enum EIndividualDeviceReadingsSource {
 
 export enum EIndividualDeviceReportOption {
   InvalidCheckingDates = 'InvalidCheckingDates',
-  SkippedReadingOnOneOfRisers = 'SkippedReadingOnOneOfRisers',
   ClosedDeviceOnOneOfRisers = 'ClosedDeviceOnOneOfRisers',
   DeviceCheckingDateExpiration = 'DeviceCheckingDateExpiration',
   ClosedDevices = 'ClosedDevices',
@@ -1767,7 +1770,6 @@ export enum EManagingFirmTaskFilterType {
   IndividualDeviceCheckNoReadings = 'IndividualDeviceCheckNoReadings',
   RiserNoReadings = 'RiserNoReadings',
   EmergencyApplication = 'EmergencyApplication',
-  PlannedApplication = 'PlannedApplication',
   CurrentApplication = 'CurrentApplication',
   ResourceDisconnecting = 'ResourceDisconnecting',
   TemperatureNormativeDeviation = 'TemperatureNormativeDeviation',
@@ -1789,7 +1791,6 @@ export enum EManagingFirmTaskType {
   CurrentApplication = 'CurrentApplication',
   EmergencyApplication = 'EmergencyApplication',
   IndividualDeviceReadingsCheck = 'IndividualDeviceReadingsCheck',
-  PlannedApplication = 'PlannedApplication',
   MeasurementErrorCommercial = 'MeasurementErrorCommercial',
   MeasurementErrorNonCommercial = 'MeasurementErrorNonCommercial',
   IndividualDeviceCheckNoReadings = 'IndividualDeviceCheckNoReadings',
@@ -1797,11 +1798,9 @@ export enum EManagingFirmTaskType {
   ResourceDisconnecting = 'ResourceDisconnecting',
   CurrentApplicationUnassigned = 'CurrentApplicationUnassigned',
   EmergencyApplicationUnassigned = 'EmergencyApplicationUnassigned',
-  PlannedApplicationUnassigned = 'PlannedApplicationUnassigned',
   TemperatureNormativeDeviation = 'TemperatureNormativeDeviation',
   CurrentApplicationUnassigned2 = 'CurrentApplicationUnassigned_2',
   EmergencyApplicationUnassigned2 = 'EmergencyApplicationUnassigned_2',
-  PlannedApplicationUnassigned2 = 'PlannedApplicationUnassigned_2',
 }
 
 export enum EMeteringDeviceType {
@@ -2162,7 +2161,6 @@ export enum ETaskCreateType {
   IndividualDeviceCheckNoReadings = 'IndividualDeviceCheckNoReadings',
   RiserNoReadings = 'RiserNoReadings',
   EmergencyApplication = 'EmergencyApplication',
-  PlannedApplication = 'PlannedApplication',
   CurrentApplication = 'CurrentApplication',
   ResourceDisconnecting = 'ResourceDisconnecting',
   TemperatureNormativeDeviation = 'TemperatureNormativeDeviation',
@@ -2353,7 +2351,7 @@ export interface ErpCreateTaskRequest {
   sourceId: string;
   /** @format date-time */
   sourceDateTime: string;
-  taskType?: EisTaskType | null;
+  taskType: EisTaskType;
   taskDescription?: string | null;
   sourceNumber?: string | null;
   subscriberPhoneNumber?: string | null;
@@ -2400,18 +2398,10 @@ export interface ErpTaskReasonGroupResponse {
   type: EisTaskReasonType;
   name: string | null;
   taskTypes: EisTaskType[] | null;
-  /** @deprecated */
-  items: ErpTaskReasonItemResponse[] | null;
 }
 
 export interface ErpTaskReasonGroupResponseIEnumerableSuccessApiResponse {
   successResponse: ErpTaskReasonGroupResponse[] | null;
-}
-
-export interface ErpTaskReasonItemResponse {
-  /** @format uuid */
-  id: string;
-  taskType: EisTaskType;
 }
 
 export interface ErrorApiResponse {
@@ -3739,7 +3729,6 @@ export interface IndividualDevicesConstructedReportResponse {
   serialNumber: string | null;
   model: string | null;
   invalidCheckingDatesOption: InvalidCheckingDatesConstructedReportResponse | null;
-  skippedReadingOnOneOfRisersOption: SkippedReadingOnOneOfRisersConstructedReportResponse | null;
   closedDeviceOnOneOfRisersOption: ClosedDeviceOnOneOfRisersConstructedReportResponse | null;
   deviceCheckingDateExpirationOption: DeviceCheckingDateExpirationConstructedReportResponse | null;
   closedDevicesOption: ClosedDevicesConstructedReportResponse | null;
@@ -3819,7 +3808,10 @@ export interface InspectorUpdateRequest {
 
 export interface InspectorsConstructedReportResponse {
   name: string | null;
-  /** @format int32 */
+  /**
+   * @deprecated
+   * @format int32
+   */
   dayPlan: number;
   counts: number[] | null;
 }
@@ -4823,19 +4815,6 @@ export interface ProblemDetails {
   [key: string]: any;
 }
 
-export interface ReadingOnRiserResponse {
-  /** @format double */
-  value1: number;
-  /** @format double */
-  value2: number | null;
-  /** @format double */
-  value3: number | null;
-  /** @format double */
-  value4: number | null;
-  /** @format date-time */
-  readingDate: string;
-}
-
 export interface RefreshResponse {
   token: string | null;
   refreshToken: string | null;
@@ -5032,10 +5011,6 @@ export interface SetMagneticSealRequest {
   magneticSealInstallationDate?: string | null;
   magneticSealTypeName?: string | null;
   isInstalled?: boolean;
-}
-
-export interface SkippedReadingOnOneOfRisersConstructedReportResponse {
-  reading: ReadingOnRiserResponse | null;
 }
 
 export interface StageEmailNotifyRequest {
@@ -5463,6 +5438,12 @@ export interface TaskListResponse {
   taskConfirmation: TaskConfirmationResponse | null;
 }
 
+export enum TaskPaginationOrderRule {
+  CreationTime = 'CreationTime',
+  ConfirmationTime = 'ConfirmationTime',
+  TimeStatus = 'TimeStatus',
+}
+
 export interface TaskResponse {
   /** @format int32 */
   id: number;
@@ -5499,6 +5480,10 @@ export interface TaskResponse {
   buildingCoordinates: PointResponse | null;
   canBeReverted: boolean;
   isApplicationTask: boolean;
+  /** @format date-time */
+  firstTrigger: string;
+  /** @format date-time */
+  lastTrigger: string | null;
 }
 
 export interface TaskResponseSuccessApiResponse {
@@ -5561,6 +5546,10 @@ export interface TasksPagedList {
   executingTasksCount: number | null;
   /** @format int32 */
   observingTasksCount: number | null;
+  /** @format int32 */
+  runningOutTasksCount: number | null;
+  /** @format int32 */
+  expiredTasksCount: number | null;
 }
 
 export interface TasksPagedListSuccessApiResponse {
@@ -7216,6 +7205,24 @@ export class Api<
         body: data,
         secure: true,
         type: ContentType.Json,
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Администратор УК без назначений задач</li><li>Контролёр</li>
+     *
+     * @tags Buildings
+     * @name BuildingsDetail
+     * @summary HousingStocksRead
+     * @request GET:/api/Buildings/{buildingId}
+     * @secure
+     */
+    buildingsDetail: (buildingId: number, params: RequestParams = {}) =>
+      this.request<BuildingShortResponseSuccessApiResponse, ErrorApiResponse>({
+        path: `/api/Buildings/${buildingId}`,
+        method: 'GET',
+        secure: true,
+        format: 'json',
         ...params,
       }),
 
@@ -14455,6 +14462,7 @@ export class Api<
         ApartmentNumber?: string;
         /** @format int32 */
         PerpetratorId?: number;
+        OrderRule?: TaskPaginationOrderRule;
         /** @format int32 */
         PageNumber?: number;
         /** @format int32 */
@@ -14514,6 +14522,7 @@ export class Api<
         ApartmentNumber?: string;
         /** @format int32 */
         PerpetratorId?: number;
+        OrderRule?: TaskPaginationOrderRule;
         /** @format int32 */
         PageNumber?: number;
         /** @format int32 */
@@ -14824,6 +14833,7 @@ export class Api<
         ApartmentNumber?: string;
         /** @format int32 */
         PerpetratorId?: number;
+        OrderRule?: TaskPaginationOrderRule;
         /** @format int32 */
         PageNumber?: number;
         /** @format int32 */
@@ -14942,7 +14952,7 @@ export class Api<
       query: {
         /** @format uuid */
         TaskReasonId: string;
-        TaskType?: EisTaskType;
+        TaskType: EisTaskType;
       },
       params: RequestParams = {},
     ) =>

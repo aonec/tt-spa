@@ -8,7 +8,7 @@ import { cancellableUrl } from 'services/cancelRequestService/cancelRequestServi
 import { cancelRequestService } from 'services/cancelRequestService';
 import { isUndefined } from 'lodash/fp';
 
-export const isDevMode = process.env.DEV_SETTINGS !== 'DISABLED';
+export const isDevMode = true;
 
 axios.defaults.baseURL = apiService.outputs.$devUrl.getState();
 

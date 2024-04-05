@@ -10,7 +10,10 @@ import { PageHeader } from 'ui-kit/shared/PageHeader';
 import { WorkingRangeTab } from 'services/workingRanges/WorkingRangeTab';
 import { DistrictBordersContainer } from 'services/settings/districtBordersService';
 import { developmentSettingsService } from 'services/developmentSettings/developmentSettings.models';
-import { TemperatureGraphContainer } from 'services/settings/temperatureGraphService';
+import {
+  TemperatureGraphContainer,
+  temperatureGraphService,
+} from 'services/settings/temperatureGraphService';
 
 export const SettingPage: FC<SettingPageProps> = ({
   handleReassingInspector,
@@ -18,9 +21,12 @@ export const SettingPage: FC<SettingPageProps> = ({
   isAdminSettings,
   setModalOpen,
 }) => {
-  const { featureToggles } = useUnit({
+  const { featureToggles, deletingRowIds } = useUnit({
     featureToggles: developmentSettingsService.outputs.$featureToggles,
+    deletingRowIds: temperatureGraphService.outputs.$deletingRowIds,
   });
+
+  const isDeletingTemperatureNormativesMod = Boolean(deletingRowIds.length);
 
   const { section } = useParams<{ section: SettingsPageSection }>();
 
@@ -32,18 +38,20 @@ export const SettingPage: FC<SettingPageProps> = ({
 
   const menuButtons = useMemo(() => {
     if (isAdminSettings) {
-      return [
-        {
-          title: 'Редактировать температурный график',
-          onClick: () => handleEditTemperatureNormative(true),
-          hidden: !isTemperatureGraphTab,
-        },
-        {
-          title: 'Загрузить новый температурный график',
-          onClick: () => setModalOpen(true),
-          hidden: !isTemperatureGraphTab,
-        },
-      ];
+      return isDeletingTemperatureNormativesMod
+        ? []
+        : [
+            {
+              title: 'Редактировать температурный график',
+              onClick: () => handleEditTemperatureNormative(true),
+              hidden: !isTemperatureGraphTab,
+            },
+            {
+              title: 'Загрузить новый температурный график',
+              onClick: () => setModalOpen(true),
+              hidden: !isTemperatureGraphTab,
+            },
+          ];
     }
     return [
       {
@@ -58,6 +66,7 @@ export const SettingPage: FC<SettingPageProps> = ({
   }, [
     isAdminSettings,
     handleReassingInspector,
+    isDeletingTemperatureNormativesMod,
     isTemperatureGraphTab,
     handleEditTemperatureNormative,
     setModalOpen,

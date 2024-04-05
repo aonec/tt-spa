@@ -1,4 +1,4 @@
-import { Pagination } from 'antd';
+import { Pagination } from 'ui-kit/Pagination';
 import { useUnit } from 'effector-react';
 import React, { FC } from 'react';
 import { APARTMENTS_LIST_PAGE_SIZE } from './individualDevicesViewByAddressService.constatnts';
