@@ -69,7 +69,7 @@ export const TaskProfileHeader: FC<TaskProfileHeaderProps> = ({
       )}
       <TimerRowWrapper>
         {!timeline && <Line color={lineColor} />}
-        <Timer timer={timer} statusDescription="Время на задачу:" />
+        <Timer timer={timer} />
       </TimerRowWrapper>
     </Wrapper>
   );

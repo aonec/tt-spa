@@ -2,7 +2,6 @@ import { Timeline } from '../TimeLine/TimeLine.types';
 
 export type TimerProps = {
   timer: Timer;
-  statusDescription?: string;
 };
 
 export type Timer = {
@@ -12,6 +11,7 @@ export type Timer = {
   diffTime?: string;
   executionTime?: string;
   closingStatus?: TimerClosingStatus;
+  label?: string;
 };
 
 export enum TimerClosingStatus {

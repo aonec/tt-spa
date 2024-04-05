@@ -3,7 +3,7 @@ import { IconLookup } from './Timer.constants';
 import { TimeWrapper, Wrapper } from './Timer.styled';
 import { TimerClosingStatus, TimerProps } from './Timer.types';
 
-export const Timer: FC<TimerProps> = ({ timer, statusDescription }) => {
+export const Timer: FC<TimerProps> = ({ timer }) => {
   const Icon = IconLookup.find((elem) => elem.icon === timer?.icon)?.element;
   const taskIsFailed = timer?.closingStatus === TimerClosingStatus.Overdue;
 
@@ -11,7 +11,7 @@ export const Timer: FC<TimerProps> = ({ timer, statusDescription }) => {
     <Wrapper>
       {Icon && <Icon />}
       <TimeWrapper className="status" fail={taskIsFailed}>
-        {statusDescription || timer.statusDescription}
+        {timer.label || timer.statusDescription}
       </TimeWrapper>
       {!taskIsFailed && (
         <TimeWrapper fail={timer.stage?.isFailed}>
