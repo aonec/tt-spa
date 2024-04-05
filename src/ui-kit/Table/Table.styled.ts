@@ -2,10 +2,18 @@ import { Link } from 'react-router-dom';
 import { SortButton } from 'services/actsJournalService/view/ActsJournalProfile/ActsListHeader/SortButton';
 import styled, { css } from 'styled-components';
 
-export const Wrapper = styled.div<{ floating: boolean }>`
+const stickyWrapperCss = css`
+  max-height: 64vh;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+`;
+
+export const Wrapper = styled.div<{ floating: boolean; isSticky?: boolean }>`
   max-width: 1200px;
   overflow-x: auto;
   width: ${({ floating }) => (floating ? '100%' : 'min-content')};
+  ${({ isSticky }) => (isSticky ? stickyWrapperCss : '')}
 `;
 
 const stickyHeaderCss = css`

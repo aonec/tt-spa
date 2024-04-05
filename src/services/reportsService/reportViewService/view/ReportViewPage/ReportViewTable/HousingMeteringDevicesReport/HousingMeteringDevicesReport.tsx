@@ -31,6 +31,7 @@ export const HousingMeteringDevicesReport: FC<
   return (
     <>
       <Table
+        isSticky
         columns={[
           {
             label: 'Домоуправление',

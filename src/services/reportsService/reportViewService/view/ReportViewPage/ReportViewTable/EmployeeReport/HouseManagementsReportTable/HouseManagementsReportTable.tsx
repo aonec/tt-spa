@@ -11,6 +11,7 @@ export const HouseManagementsReportTable: FC<
 
   return (
     <Table
+      isSticky
       columns={[
         {
           label: '№',
