@@ -11,6 +11,7 @@ export type Timer = {
   diffTime?: string;
   executionTime?: string;
   closingStatus?: TimerClosingStatus;
+  label?: string;
 };
 
 export enum TimerClosingStatus {

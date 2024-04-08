@@ -11,7 +11,7 @@ export const Timer: FC<TimerProps> = ({ timer }) => {
     <Wrapper>
       {Icon && <Icon />}
       <TimeWrapper className="status" fail={taskIsFailed}>
-        {timer.statusDescription}
+        {timer.label || timer.statusDescription}
       </TimeWrapper>
       {!taskIsFailed && (
         <TimeWrapper fail={timer.stage?.isFailed}>
