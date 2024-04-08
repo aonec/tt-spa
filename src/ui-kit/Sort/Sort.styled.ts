@@ -4,14 +4,19 @@ import { AscendingSortIcon } from 'ui-kit/icons';
 export const Wrapper = styled.div`
   display: flex;
   align-items: center;
+  width: 32px;
+  height: 32px;
+  min-width: 32px;
+  border: 1px solid #dcdee4;
   justify-content: center;
-
-  height: 28px;
-  width: 30px;
   border-radius: 4px;
-  border: 1px solid rgb(220, 222, 228);
-  color: rgb(37, 47, 90);
   cursor: pointer;
+  transition: 0.2s;
+
+  &:hover {
+    border-color: #189ee9;
+    background-color: #189ce91e;
+  }
 `;
 
 export const DescendingSortIconSC = styled(AscendingSortIcon)<{

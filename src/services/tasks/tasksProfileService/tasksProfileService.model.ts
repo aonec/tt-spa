@@ -3,8 +3,10 @@ import { sample, split } from 'effector';
 import { createGate } from 'effector-react';
 import {
   ApartmentResponse,
+  EOrderByRule,
   HousingStockResponse,
   TaskGroupingFilter,
+  TaskPaginationOrderRule,
   TasksPagedList,
 } from 'api/types';
 import {
@@ -61,7 +63,10 @@ const $housingStock = createStore<HousingStockResponse | null>(null)
   .on(getHousingStockFx.doneData, (_, housingStock) => housingStock)
   .reset(clearAddress);
 
-const $searchState = createStore<GetTasksListRequestPayload>({})
+const $searchState = createStore<GetTasksListRequestPayload>({
+  OrderRule: TaskPaginationOrderRule.CreationTime,
+  OrderBy: EOrderByRule.Ascending,
+})
   .on(setPipeNodeId, (prev, { pipeNodeId }) => ({
     ...prev,
     PipeNodeId: Number(pipeNodeId),
