@@ -119,19 +119,14 @@ export const SearchTasks: FC<SearchTasksProps> = ({
   const isArchived = currentFilter?.GroupType === 'Archived';
 
   const handleSortChange = () => {
-    if (values.OrderBy === EOrderByRule.Ascending) {
-      setFieldValue('OrderBy', EOrderByRule.Descending);
-      handleSubmit();
-      return;
-    }
+    let order = EOrderByRule.Descending;
+
     if (values.OrderBy === EOrderByRule.Descending) {
-      setFieldValue('OrderBy', EOrderByRule.Ascending);
-      handleSubmit();
-      return;
+      order = EOrderByRule.Ascending;
     }
-    setFieldValue('OrderBy', EOrderByRule.Descending);
+
+    setFieldValue('OrderBy', order);
     handleSubmit();
-    return;
   };
 
   return (
