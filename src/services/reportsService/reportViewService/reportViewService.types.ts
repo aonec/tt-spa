@@ -51,7 +51,8 @@ export interface ReportFiltrationFormValues {
 }
 
 export interface AddressSearch {
-  HouseManagementId: null | string;
+  ManagementFirmId: number | null;
+  HouseManagementId: string | null;
   HousingStockId: number | null;
 }
 
