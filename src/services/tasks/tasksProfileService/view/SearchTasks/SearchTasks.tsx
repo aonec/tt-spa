@@ -191,7 +191,6 @@ export const SearchTasks: FC<SearchTasksProps> = ({
           <SortTitle>Сортировать по:</SortTitle>
           <Select
             small
-            allowClear
             placeholder={'Выберите'}
             onChange={(value) => {
               setFieldValue('OrderRule', value);

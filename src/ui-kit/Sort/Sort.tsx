@@ -10,11 +10,8 @@ export const Sort: FC<Props> = ({ handleChange, value }) => {
   );
 
   return (
-    <Wrapper>
-      <DescendingSortIconSC
-        isAscending={!isDescending}
-        onClick={handleChange}
-      />
+    <Wrapper onClick={handleChange}>
+      <DescendingSortIconSC isAscending={!isDescending} />
     </Wrapper>
   );
 };
