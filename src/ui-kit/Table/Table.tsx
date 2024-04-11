@@ -112,6 +112,9 @@ export function Table<T>({
 
   return (
     <div>
+      {/* <OverlayScrollbarsComponent
+        options={{ scrollbars: { autoHide: 'never', visibility: 'visible' } }}
+      > */}
       <Wrapper floating={floating} isSticky={isSticky}>
         <HeaderWrapper isSticky={isSticky}>
           <Header temp={temp} css={headerStyles}>
@@ -126,6 +129,8 @@ export function Table<T>({
         </div>
         {!elements.length && <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />}
       </Wrapper>
+      {/* </OverlayScrollbarsComponent> */}
+
       {Boolean(elements.length) && pagination && (
         <PaginationWrapper>
           <Pagination

@@ -10,10 +10,52 @@ const stickyWrapperCss = css`
 `;
 
 export const Wrapper = styled.div<{ floating: boolean; isSticky?: boolean }>`
-  max-width: 1200px;
+  max-width: 1000px;
   overflow-x: auto;
+
   width: ${({ floating }) => (floating ? '100%' : 'min-content')};
   ${({ isSticky }) => (isSticky ? stickyWrapperCss : '')}
+
+  &::-webkit-scrollbar:horizontal {
+    height: 20px;
+  }
+
+  &::-webkit-scrollbar-track:horizontal {
+    background-color: #f3f5f6;
+  }
+
+  &::-webkit-scrollbar-thumb:horizontal {
+    background-color: #dcdee4;
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(112, 112, 112, 0.4);
+
+    cursor: pointer;
+    user-select: none;
+  }
+
+  &::-webkit-scrollbar-button:horizontal {
+    display: block;
+    background-color: white;
+    border: 1px solid #dcdee4;
+    background-repeat: no-repeat;
+    background-size: 50%;
+  }
+
+  &::-webkit-scrollbar-button:horizontal:start:decrement {
+    width: 32px;
+    background-position: center;
+    background-image: url(CheckedBoxIcon);
+  }
+  /* 
+  &::-webkit-scrollbar-button:horizontal:start:increment {
+    display: none;
+  }
+
+  &::-webkit-scrollbar-button:horizontal:end:decrement {
+    display: none;
+  } */
 `;
 
 const stickyHeaderCss = css`
