@@ -1,6 +1,8 @@
+import styled, { css } from 'styled-components';
 import { Link } from 'react-router-dom';
 import { SortButton } from 'services/actsJournalService/view/ActsJournalProfile/ActsListHeader/SortButton';
-import styled, { css } from 'styled-components';
+import arrowLeft from '../icons/svg/arrowLeft.svg';
+import arrowRight from '../icons/svg/arrowRight.svg';
 
 const stickyWrapperCss = css`
   max-height: 64vh;
@@ -10,7 +12,7 @@ const stickyWrapperCss = css`
 `;
 
 export const Wrapper = styled.div<{ floating: boolean; isSticky?: boolean }>`
-  max-width: 1000px;
+  max-width: 1200px;
   overflow-x: auto;
 
   width: ${({ floating }) => (floating ? '100%' : 'min-content')};
@@ -51,13 +53,13 @@ export const Wrapper = styled.div<{ floating: boolean; isSticky?: boolean }>`
     border-start-start-radius: 6px;
     border-end-start-radius: 6px;
 
-    background-image: url('src/ui-kit/icons/svg/chevron.svg');
+    background-image: url(${arrowLeft});
   }
   &::-webkit-scrollbar-button:horizontal:end:increment {
     border-end-end-radius: 6px;
     border-start-end-radius: 6px;
 
-    background-image: url('src/ui-kit/icons/svg/chevron.svg');
+    background-image: url(${arrowRight});
   }
 
   &::-webkit-scrollbar-button:horizontal:start:increment {
