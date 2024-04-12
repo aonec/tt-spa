@@ -49,7 +49,7 @@ export const getFiltersList = (
   const resourcesText = getResourcesText(filtrationValues.resources);
 
   const selectedAddress = filtrationValues.housingStockId
-    ? `${getCountText(1, selectedCountTexts)} ${1} ${getCountText(
+    ? `${getCountText(1, selectedCountTexts)} 1 ${getCountText(
         1,
         addressesCountTexts,
       )}`
