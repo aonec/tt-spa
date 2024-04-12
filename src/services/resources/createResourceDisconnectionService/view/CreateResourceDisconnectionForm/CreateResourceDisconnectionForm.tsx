@@ -117,7 +117,9 @@ export const CreateResourceDisconnectionForm: FC<
         resource,
         disconnectingType,
         startDate: getDate(formValues.startDate, formValues.startHour),
-        endDate: getDate(formValues.endDate, formValues.endHour),
+        endDate: isInterHeatingSeason
+          ? null
+          : getDate(formValues.endDate, formValues.endHour),
         housingStockIds: preparedHousingStockIds,
         heatingStationId: formValues.heatingStationId || null,
         sender: formValues.sender,
