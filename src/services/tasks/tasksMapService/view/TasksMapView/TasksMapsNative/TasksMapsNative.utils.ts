@@ -4,8 +4,8 @@ import {
   TaskShortResponse,
   EActResourceType,
   EResourceType,
-  ETaskTargetObject,
   EManagingFirmTaskType,
+  ETaskTargetObjectType,
 } from 'api/types';
 import { round } from 'utils/round';
 import {
@@ -50,7 +50,7 @@ const getPlacemarkSvgCodeText = (tasks: TaskShortResponse[]) => {
 
   const taskExample = tasks[0];
 
-  if (taskExample.targetObject === ETaskTargetObject.Calculator) {
+  if (taskExample.targetObject === ETaskTargetObjectType.Calculator) {
     return CalculatorPlacemark;
   }
 
@@ -101,7 +101,7 @@ export const getHousingStockTaskType = (
   if (applicationTypes.includes(task.type))
     return HousingStockTaskMarkerType.Application;
 
-  if (task.targetObject === ETaskTargetObject.Calculator)
+  if (task.targetObject === ETaskTargetObjectType.Calculator)
     return HousingStockTaskMarkerType.Calculator;
 
   const resources = uniq(task.resourceTypes || []);
