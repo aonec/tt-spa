@@ -26,6 +26,7 @@ export const Wrap = styled.div`
   font-size: 12px;
   padding: 10px 20px;
   height: 49px;
+  margin-top: 16px;
 `;
 
 export const GroupWrapper = styled.div`
