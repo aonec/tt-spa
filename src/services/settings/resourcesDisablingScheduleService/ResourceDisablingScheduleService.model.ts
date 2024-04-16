@@ -2,17 +2,21 @@ import { createEffect, createEvent, createStore } from 'effector';
 import { sample } from 'effector';
 import { createGate } from 'effector-react';
 import { ResourceDisconnectingResponsePagedList } from 'api/types';
-import { DisablingResourcesProps } from './ResourceDisablingScheduleService.types';
+import {
+  DisablingResourcesFilters,
+  DisablingResourcesQueryParams,
+} from './ResourceDisablingScheduleService.types';
 import { fetchDisablingResources } from './ResourceDisablingScheduleService.api';
+import { getResourceDisconnectionQueryParams } from './ResourceDisablingScheduleService.utils';
 
-const resourceDisablingGate = createGate<DisablingResourcesProps>();
+const resourceDisablingGate = createGate<DisablingResourcesFilters>();
 
-const setFilters = createEvent<DisablingResourcesProps>();
+const setFilters = createEvent<DisablingResourcesFilters>();
 const setPage = createEvent<number>();
 
 const refetchResourceDisconnections = createEvent();
 const getResourceDisconnectionsFx = createEffect<
-  DisablingResourcesProps,
+  DisablingResourcesQueryParams,
   ResourceDisconnectingResponsePagedList
 >(fetchDisablingResources);
 
@@ -22,7 +26,7 @@ const $disablingResources =
     (_, resources) => resources,
   );
 
-const $filters = createStore<DisablingResourcesProps>({ PageSize: 12 })
+const $filters = createStore<DisablingResourcesFilters>({ PageSize: 12 })
   .on(setFilters, (_, filters) => {
     return {
       ...filters,
@@ -37,6 +41,7 @@ const $filters = createStore<DisablingResourcesProps>({ PageSize: 12 })
 sample({
   source: $filters,
   clock: [resourceDisablingGate.open, $filters, refetchResourceDisconnections],
+  fn: getResourceDisconnectionQueryParams,
   target: getResourceDisconnectionsFx,
 });
 
@@ -47,7 +52,7 @@ sample({
     clock: refetchResourceDisconnections,
     filter: (isOpen) => isOpen,
   }),
-  fn: (filters) => filters,
+  fn: getResourceDisconnectionQueryParams,
   target: getResourceDisconnectionsFx,
 });
 

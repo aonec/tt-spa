@@ -6,7 +6,7 @@ import {
   SortLable,
   StyledDisablingResourcesSearchHeader,
 } from './DisablingResourcesSearchHeader.styled';
-import { DisablingResourcesProps } from '../../ResourceDisablingScheduleService.types';
+import { DisablingResourcesFilters } from '../../ResourceDisablingScheduleService.types';
 import { DisablingResourcesSearchProps } from './DisablingResourcesSearchHeader.types';
 import { ResourceDisconnectingClassLookUp } from './DisablingResourcesSearchHeader.utils';
 import { Select } from 'ui-kit/Select';
@@ -29,7 +29,7 @@ export const DisablingResourcesSearch: React.FC<
   const [isOpen, setIsOpen] = useState(false);
 
   const { values, handleSubmit, setFieldValue, setValues, resetForm } =
-    useFormik<DisablingResourcesProps>({
+    useFormik<DisablingResourcesFilters>({
       initialValues: {
         city: filters.city,
         street: filters.street,
