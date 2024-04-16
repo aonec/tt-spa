@@ -5,6 +5,19 @@ export const StyledDisablingResourcesSearchHeader = styled.div`
   width: 100%;
   display: grid;
   align-items: center;
-  grid-template-columns: 1.5fr 1.5fr 0.65fr 1.5fr;
+  grid-template-columns: 2.9fr 0.55fr 1fr;
   gap: 16px;
+`;
+
+export const SortLable = styled.div`
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-align: right;
+`;
+
+export const ExtendedSearchContent = styled.div`
+  display: grid;
+  grid-template-columns: 1fr 1fr 1.05fr;
+  gap: 0 15px;
 `;
