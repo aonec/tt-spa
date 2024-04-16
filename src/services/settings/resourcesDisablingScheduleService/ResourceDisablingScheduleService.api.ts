@@ -1,8 +1,8 @@
 import { axios } from 'api/axios';
 import { ResourceDisconnectingResponsePagedList } from 'api/types';
-import { DisablingResourcesProps } from './ResourceDisablingScheduleContainer.types';
+import { DisablingResourcesQueryParams } from './ResourceDisablingScheduleService.types';
 
 export const fetchDisablingResources = (
-  params: DisablingResourcesProps | unknown,
+  params: DisablingResourcesQueryParams,
 ): Promise<ResourceDisconnectingResponsePagedList> =>
   axios.get('ResourceDisconnecting', { params });

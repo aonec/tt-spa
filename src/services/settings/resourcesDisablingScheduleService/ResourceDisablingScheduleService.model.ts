@@ -2,8 +2,8 @@ import { createEffect, createEvent, createStore } from 'effector';
 import { sample } from 'effector';
 import { createGate } from 'effector-react';
 import { ResourceDisconnectingResponsePagedList } from 'api/types';
-import { DisablingResourcesProps } from './ResourceDisablingScheduleContainer.types';
-import { fetchDisablingResources } from './ResourcesDisablingScheduleService.api';
+import { DisablingResourcesProps } from './ResourceDisablingScheduleService.types';
+import { fetchDisablingResources } from './ResourceDisablingScheduleService.api';
 
 const resourceDisablingGate = createGate<DisablingResourcesProps>();
 

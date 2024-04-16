@@ -6,7 +6,7 @@ import {
   SortLable,
   StyledDisablingResourcesSearchHeader,
 } from './DisablingResourcesSearchHeader.styled';
-import { DisablingResourcesProps } from '../../ResourceDisablingScheduleContainer.types';
+import { DisablingResourcesProps } from '../../ResourceDisablingScheduleService.types';
 import { DisablingResourcesSearchProps } from './DisablingResourcesSearchHeader.types';
 import { ResourceDisconnectingClassLookUp } from './DisablingResourcesSearchHeader.utils';
 import { Select } from 'ui-kit/Select';
@@ -31,11 +31,10 @@ export const DisablingResourcesSearch: React.FC<
   const { values, handleSubmit, setFieldValue, setValues, resetForm } =
     useFormik<DisablingResourcesProps>({
       initialValues: {
-        addressCity: filters.addressCity,
-        addressStreet: filters.addressStreet,
-        addressHousingStockNumber: filters.addressHousingStockNumber,
-        addressCorpus: filters.addressCorpus,
-
+        city: filters.city,
+        street: filters.street,
+        house: filters.house,
+        corpus: filters.corpus,
         Resource: filters.Resource,
         DisconnectingType: filters.DisconnectingType,
         OrderBy: filters.OrderBy,
@@ -50,11 +49,13 @@ export const DisablingResourcesSearch: React.FC<
   }, [handleSubmit, deouncedFiltes]);
 
   const addressFilters = useMemo<AddressSearchValues>(() => {
+    const { city, street, house, corpus } = values;
+
     return {
-      city: values.addressCity,
-      street: values.addressStreet,
-      house: values.addressHousingStockNumber,
-      corpus: values.addressCorpus,
+      city,
+      street,
+      house,
+      corpus,
     };
   }, [values]);
 
