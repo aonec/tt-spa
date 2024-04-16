@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { useFormik } from 'formik';
 import { EResourceDisconnectingType, EResourceType } from 'api/types';
 import {
@@ -14,35 +14,68 @@ import { FormItem } from 'ui-kit/FormItem';
 import { actResourceNamesLookup } from 'utils/actResourceNamesLookup';
 import { ExtendedSearch } from 'ui-kit/ExtendedSearch';
 import { AddressSearchContainer } from 'services/addressSearchService';
-import { SearchFieldType } from 'services/addressSearchService/view/AddressSearch/AddressSearch.types';
+import {
+  AddressSearchValues,
+  SearchFieldType,
+} from 'services/addressSearchService/view/AddressSearch/AddressSearch.types';
 import { Input } from 'ui-kit/Input';
+import { useDebounce } from 'hooks/useDebounce';
 
 const { Option } = Select;
 
 export const DisablingResourcesSearch: React.FC<
   DisablingResourcesSearchProps
-> = ({ applyFilters, cities, filters }) => {
+> = ({ applyFilters, filters }) => {
   const [isOpen, setIsOpen] = useState(false);
 
-  const { values, handleSubmit, setFieldValue } =
+  const { values, handleSubmit, setFieldValue, setValues, resetForm } =
     useFormik<DisablingResourcesProps>({
       initialValues: {
-        City: filters?.City,
-        Resource: filters?.Resource,
-        DisconnectingType: filters?.DisconnectingType,
-        OrderRule: filters?.OrderRule,
-        HousingStockId: filters?.HousingStockId,
-        Status: filters?.Status,
-        PageNumber: filters?.PageNumber,
-        PageSize: filters?.PageSize,
-        OrderBy: filters?.OrderBy,
+        addressCity: filters.addressCity,
+        addressStreet: filters.addressStreet,
+        addressHousingStockNumber: filters.addressHousingStockNumber,
+        addressCorpus: filters.addressCorpus,
+
+        Resource: filters.Resource,
+        DisconnectingType: filters.DisconnectingType,
+        OrderBy: filters.OrderBy,
       },
-      enableReinitialize: true,
       onSubmit: applyFilters,
     });
 
+  const deouncedFiltes = useDebounce(values, 500);
+
+  useEffect(() => {
+    handleSubmit();
+  }, [handleSubmit, deouncedFiltes]);
+
+  const addressFilters = useMemo<AddressSearchValues>(() => {
+    return {
+      city: values.addressCity,
+      street: values.addressStreet,
+      house: values.addressHousingStockNumber,
+      corpus: values.addressCorpus,
+    };
+  }, [values]);
+
+  const setAddressFilters = useCallback(
+    (values: Partial<AddressSearchValues>) => {
+      const newValues = {
+        addressCity: values.city,
+        addressStreet: values.street,
+        addressHousingStockNumber: values.house,
+        addressCorpus: values.corpus,
+      };
+
+      setValues((prev) => ({ ...prev, ...newValues }));
+    },
+    [setValues],
+  );
+
   const addressSearch = (
     <AddressSearchContainer
+      initialValues={addressFilters}
+      handleSubmit={setAddressFilters}
       showLabels={isOpen}
       customTemplate={[
         {
@@ -76,6 +109,8 @@ export const DisablingResourcesSearch: React.FC<
       isOpen={isOpen}
       handleOpen={() => setIsOpen(true)}
       handleClose={() => setIsOpen(false)}
+      handleApply={() => setIsOpen(false)}
+      handleClear={resetForm}
       isPaddingSearch={false}
       extendedSearchContent={
         <>
@@ -89,7 +124,6 @@ export const DisablingResourcesSearch: React.FC<
                 defaultValue={''}
                 onChange={(value) => {
                   setFieldValue('Resource', value);
-                  handleSubmit();
                 }}
               >
                 <Option value={''}>{'Все типы ресурсов'}</Option>
@@ -110,7 +144,6 @@ export const DisablingResourcesSearch: React.FC<
                 defaultValue={''}
                 onChange={(value) => {
                   setFieldValue('DisconnectingType', value);
-                  handleSubmit();
                 }}
               >
                 <Option value={''}>{'Все классы отключения'}</Option>
@@ -147,7 +180,6 @@ export const DisablingResourcesSearch: React.FC<
           placeholder="Дате отключения"
           onChange={(value) => {
             setFieldValue('OrderBy', value);
-            handleSubmit();
           }}
         >
           <Option value="Descending">Дате отключения (уб.)</Option>

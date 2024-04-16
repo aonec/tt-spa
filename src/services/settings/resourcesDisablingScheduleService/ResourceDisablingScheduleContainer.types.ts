@@ -7,13 +7,22 @@ import {
 } from 'api/types';
 
 export type DisablingResourcesProps = {
-  City?: string;
+  addressCity?: string;
+  addressStreet?: string;
+  addressHousingStockNumber?: string;
+  addressCorpus?: string;
   Resource?: EResourceType;
+  HouseManagementId?: string;
+  Sender?: string;
+  From?: string;
+  To?: string;
   DisconnectingType?: EResourceDisconnectingType;
   OrderRule?: EResourceDisconnectingOrderRule;
-  HousingStockId?: number;
+  BuildingId?: number;
   Status?: EResourceDisconnectingStatus;
   PageNumber?: number;
   PageSize?: number;
   OrderBy?: EOrderByRule;
+  Skip?: number;
+  Take?: number;
 };
