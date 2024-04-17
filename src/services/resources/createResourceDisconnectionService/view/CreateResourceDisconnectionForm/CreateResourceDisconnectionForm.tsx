@@ -146,7 +146,9 @@ export const CreateResourceDisconnectionForm: FC<
         return handleEditResourceDisconnection({
           disconnectingType,
           startDate: getDate(formValues.startDate, formValues.startHour),
-          endDate: getDate(formValues.endDate, formValues.endHour),
+          endDate: isInterHeatingSeason
+            ? null
+            : getDate(formValues.endDate, formValues.endHour),
           housingStockIds: preparedHousingStockIds,
           sender: formValues.sender,
         });
@@ -174,7 +176,7 @@ export const CreateResourceDisconnectionForm: FC<
     useFormik<CreateResourceDisconnectionFormTypes>({
       initialValues,
       validationSchema: createResourceDisconnectionValidationSchema,
-      enableReinitialize: true,
+      enableReinitialize: false,
       validateOnChange: false,
       validateOnBlur: false,
       onSubmit: handleSubmitFormik,
@@ -209,32 +211,10 @@ export const CreateResourceDisconnectionForm: FC<
   }, [defaultResource, setFieldValue]);
 
   useEffect(() => {
-    setFieldValue('housingStockIds', [
-      ...(selectedBuilding?.id ? [selectedBuilding.id] : []),
-      ...(preselectedBuilding ? [preselectedBuilding] : []),
-    ]);
-  }, [treeData, setFieldValue, selectedBuilding, preselectedBuilding]);
-
-  useEffect(() => {
     if (!values.startDate) {
       setFieldValue('endDate', '');
     }
   }, [values.startDate, setFieldValue]);
-
-  useEffect(() => {
-    if (!resourceDisconnection || treeData.length === 0) {
-      return;
-    }
-    const housingStocks = resourceDisconnection.buildings || [];
-    const housingStockIds = housingStocks.map(
-      (housingstock) => housingstock.id,
-    );
-
-    setFieldValue('housingStockIds', [
-      housingStockIds,
-      ...(preselectedBuilding ? [preselectedBuilding] : []),
-    ]);
-  }, [treeData, setFieldValue, resourceDisconnection, preselectedBuilding]);
 
   useEffect(() => {
     if (!isInterHeatingSeason) {
