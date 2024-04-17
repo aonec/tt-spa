@@ -61,14 +61,7 @@ export const DisablingResourcesSearch: React.FC<
 
   const setAddressFilters = useCallback(
     (values: Partial<AddressSearchValues>) => {
-      const newValues = {
-        addressCity: values.city,
-        addressStreet: values.street,
-        addressHousingStockNumber: values.house,
-        addressCorpus: values.corpus,
-      };
-
-      setValues((prev) => ({ ...prev, ...newValues }));
+      setValues((prev) => ({ ...prev, ...values }));
     },
     [setValues],
   );

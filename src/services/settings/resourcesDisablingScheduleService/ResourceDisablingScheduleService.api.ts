@@ -4,5 +4,6 @@ import { DisablingResourcesQueryParams } from './ResourceDisablingScheduleServic
 
 export const fetchDisablingResources = (
   params: DisablingResourcesQueryParams,
-): Promise<ResourceDisconnectingResponsePagedList> =>
-  axios.get('ResourceDisconnecting', { params });
+): Promise<ResourceDisconnectingResponsePagedList> => {
+  return axios.get('ResourceDisconnecting', { params });
+};
