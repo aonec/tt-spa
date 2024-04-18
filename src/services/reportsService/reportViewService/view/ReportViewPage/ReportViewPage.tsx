@@ -39,6 +39,7 @@ export const ReportViewPage: FC<ReportViewPageProps> = ({
   isReportFileDownloading,
   clearFiltrationValues,
   emloyeeReportData,
+  organizations,
 }) => {
   const [isOpen, setIsOpen] = useState(true);
 
@@ -82,6 +83,7 @@ export const ReportViewPage: FC<ReportViewPageProps> = ({
               formId={formId}
               setFiltrationValues={setFiltrationValues}
               reportType={reportType}
+              organizations={organizations}
             />
           }
         >

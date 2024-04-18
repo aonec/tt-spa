@@ -4,6 +4,10 @@ import { ReportType } from '../view/ReportsPage/ReportsPage.types';
 import { ReportViewPage } from './view/ReportViewPage';
 import { reportViewService } from './reportViewService.model';
 import { useUnit } from 'effector-react';
+import {
+  organizationsService,
+  organizationsQuery,
+} from 'services/organizations';
 
 const { inputs, outputs, gates } = reportViewService;
 const {
@@ -11,6 +15,9 @@ const {
   AddressesWithHouseManagementsGate,
   ReportViewGate,
 } = gates;
+const {
+  gates: { OrganizationsGate },
+} = organizationsService;
 
 export const ReportViewContainer = () => {
   const { reportType } = useParams<{ reportType: ReportType }>();
@@ -29,6 +36,7 @@ export const ReportViewContainer = () => {
     isLoadingReport,
     isReportFileDownloading,
     setFiltrationValues,
+    organizations,
   } = useUnit({
     setFiltrationValues: inputs.setFiltrationValues,
     downloadReport: inputs.downloadReport,
@@ -44,12 +52,14 @@ export const ReportViewContainer = () => {
     homeownersReportData: outputs.$homeownersReportData,
     emloyeeReportData: outputs.$emloyeeReportData,
     isReportFileDownloading: outputs.$isReportFileDownloading,
+    organizations: organizationsQuery.$data,
   });
 
   if (!reportType) return null;
 
   return (
     <>
+      <OrganizationsGate />
       <ReportViewGate reportType={reportType} />
       <AddressesWithHouseManagementsGate />
       <ExistingCitiesGate />
@@ -69,6 +79,7 @@ export const ReportViewContainer = () => {
         isReportFileDownloading={isReportFileDownloading}
         downloadReport={() => downloadReport()}
         clearFiltrationValues={() => clearFiltrationValues()}
+        organizations={organizations}
       />
     </>
   );
