@@ -176,7 +176,6 @@ export const CreateResourceDisconnectionForm: FC<
     useFormik<CreateResourceDisconnectionFormTypes>({
       initialValues,
       validationSchema: createResourceDisconnectionValidationSchema,
-      enableReinitialize: false,
       validateOnChange: false,
       validateOnBlur: false,
       onSubmit: handleSubmitFormik,
