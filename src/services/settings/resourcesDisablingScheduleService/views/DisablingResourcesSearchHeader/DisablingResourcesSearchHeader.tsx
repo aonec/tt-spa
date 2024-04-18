@@ -22,6 +22,7 @@ import {
 import { Input } from 'ui-kit/Input';
 import { useDebounce } from 'hooks/useDebounce';
 import { ResourceIconLookup } from 'ui-kit/shared/ResourceIconLookup';
+import { pick } from 'lodash';
 
 const { Option } = Select;
 
@@ -70,7 +71,9 @@ export const DisablingResourcesSearch: React.FC<
 
   const setAddressFilters = useCallback(
     (values: Partial<AddressSearchValues>) => {
-      setValues((prev) => ({ ...prev, ...values }));
+      const pickedValues = pick(values, ['city', 'street', 'house', 'corpus']);
+
+      setValues((prev) => ({ ...prev, ...pickedValues }));
     },
     [setValues],
   );

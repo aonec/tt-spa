@@ -1,3 +1,4 @@
+import { EResourceDisconnectingOrderRule } from 'api/types';
 import {
   DisablingResourcesFilters,
   DisablingResourcesQueryParams,
@@ -14,5 +15,6 @@ export function getResourceDisconnectionQueryParams(
     'Address.Street': street,
     'Address.HousingStockNumber': house,
     'Address.Corpus': corpus,
+    OrderRule: EResourceDisconnectingOrderRule.StartDate,
   };
 }
