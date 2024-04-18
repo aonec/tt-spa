@@ -21,3 +21,9 @@ export const ExtendedSearchContent = styled.div`
   grid-template-columns: 1fr 1fr 1.05fr;
   gap: 0 15px;
 `;
+
+export const ResourceOption = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 8px;
+`;

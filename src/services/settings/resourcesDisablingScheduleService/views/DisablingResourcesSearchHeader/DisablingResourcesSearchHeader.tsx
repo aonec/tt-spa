@@ -3,6 +3,7 @@ import { useFormik } from 'formik';
 import { EResourceDisconnectingType, EResourceType } from 'api/types';
 import {
   ExtendedSearchContent,
+  ResourceOption,
   SortLable,
   StyledDisablingResourcesSearchHeader,
 } from './DisablingResourcesSearchHeader.styled';
@@ -20,27 +21,35 @@ import {
 } from 'services/addressSearchService/view/AddressSearch/AddressSearch.types';
 import { Input } from 'ui-kit/Input';
 import { useDebounce } from 'hooks/useDebounce';
+import { ResourceIconLookup } from 'ui-kit/shared/ResourceIconLookup';
 
 const { Option } = Select;
 
 export const DisablingResourcesSearch: React.FC<
   DisablingResourcesSearchProps
-> = ({ applyFilters, filters }) => {
+> = ({ applyFilters, filters, houseManagements }) => {
   const [isOpen, setIsOpen] = useState(false);
 
-  const { values, handleSubmit, setFieldValue, setValues, resetForm } =
-    useFormik<DisablingResourcesFilters>({
-      initialValues: {
-        city: filters.city,
-        street: filters.street,
-        house: filters.house,
-        corpus: filters.corpus,
-        Resource: filters.Resource,
-        DisconnectingType: filters.DisconnectingType,
-        OrderBy: filters.OrderBy,
-      },
-      onSubmit: applyFilters,
-    });
+  const {
+    values,
+    handleSubmit,
+    setFieldValue,
+    setValues,
+    resetForm,
+    handleChange,
+  } = useFormik<DisablingResourcesFilters>({
+    initialValues: {
+      city: filters.city,
+      street: filters.street,
+      house: filters.house,
+      corpus: filters.corpus,
+      Resource: filters.Resource,
+      DisconnectingType: filters.DisconnectingType,
+      OrderBy: filters.OrderBy,
+      Sender: filters.Sender,
+    },
+    onSubmit: applyFilters,
+  });
 
   const deouncedFiltes = useDebounce(values, 500);
 
@@ -123,8 +132,11 @@ export const DisablingResourcesSearch: React.FC<
                 <Option value={''}>{'Все типы ресурсов'}</Option>
                 {Object.keys(EResourceType).map((el) => {
                   return (
-                    <Option value={el}>
-                      {actResourceNamesLookup[el as EResourceType]}
+                    <Option value={el} key={el}>
+                      <ResourceOption>
+                        <ResourceIconLookup resource={el as EResourceType} />
+                        {actResourceNamesLookup[el as EResourceType]}
+                      </ResourceOption>
                     </Option>
                   );
                 })}
@@ -155,10 +167,28 @@ export const DisablingResourcesSearch: React.FC<
               </Select>
             </FormItem>
             <FormItem label="Домоуправление">
-              <Select small placeholder="Выберите"></Select>
+              <Select
+                small
+                placeholder="Выберите"
+                value={values.HouseManagementId}
+                allowClear
+                onChange={(id) => setFieldValue('HouseManagementId', id)}
+              >
+                {houseManagements.map((houseManagement) => (
+                  <Select.Option key={houseManagement.id}>
+                    {houseManagement.name}
+                  </Select.Option>
+                ))}
+              </Select>
             </FormItem>
             <FormItem label="Отправитель">
-              <Input small placeholder="Отправитель" />
+              <Input
+                small
+                placeholder="Отправитель"
+                value={values.Sender}
+                name="Sender"
+                onChange={handleChange}
+              />
             </FormItem>
           </ExtendedSearchContent>
         </>
