@@ -4,16 +4,13 @@ import {
 } from 'dictionaries';
 import { HouseManagementResponse, EResourceType } from 'api/types';
 import {
-  addressesCountTexts,
   EmployeeReportTypesDictionary,
   ReportPeriodDictionary,
-  selectedCountTexts,
 } from './ReportFiltrationForm/ReportFiltrationForm.constants';
 import {
   ReportDatePeriod,
   ReportFiltrationFormValues,
 } from '../../reportViewService.types';
-import { getCountText } from 'utils/getCountText';
 import {
   EmployeeReportDatePeriodType,
   EmployeeReportType,
@@ -47,13 +44,6 @@ export const getFiltersList = (
   houseManagements: HouseManagementResponse[] | null,
 ) => {
   const resourcesText = getResourcesText(filtrationValues.resources);
-
-  const selectedAddress = filtrationValues.housingStockId
-    ? `${getCountText(1, selectedCountTexts)} 1 ${getCountText(
-        1,
-        addressesCountTexts,
-      )}`
-    : null;
 
   const houseManagement = houseManagements?.find(
     (houseManagement) =>
@@ -97,7 +87,6 @@ export const getFiltersList = (
   return [
     filtrationValues.city,
     houseManagement?.name || null,
-    selectedAddress,
     resourcesText,
     employeeReportType,
     period,
