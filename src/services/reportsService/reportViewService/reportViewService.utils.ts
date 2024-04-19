@@ -48,6 +48,19 @@ const getDatePeriod = (
     from = dayjs().add(-1, 'week').startOf('week');
   }
 
+  if (reportDatePeriod === ReportDatePeriod.Expired) {
+    from = dayjs().add(-20, 'years');
+  }
+
+  if (reportDatePeriod === ReportDatePeriod.ExpiresInNextMonth) {
+    from = dayjs().startOf('month');
+    to = dayjs().endOf('month');
+  }
+  if (reportDatePeriod === ReportDatePeriod.ExpiresInNextTwoMonth) {
+    from = dayjs().add(1, 'month').startOf('month');
+    to = dayjs().add(2, 'month').endOf('month');
+  }
+
   if (reportDatePeriod === ReportDatePeriod.AnyPeriod) {
     from = dates.from ? dayjs(dates.from) : null;
     to = dates.from ? dayjs(dates.to) : null;
