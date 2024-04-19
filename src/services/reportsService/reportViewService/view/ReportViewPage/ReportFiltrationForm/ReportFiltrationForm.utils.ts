@@ -1,9 +1,13 @@
 import {
+  EIndividualDeviceReportOption,
+  EResourceType,
   HouseManagementWithStreetsResponse,
   StreetWithBuildingNumbersResponse,
 } from 'api/types';
 import { getAddressSearchData } from 'services/resources/resourceConsumptionService/resourceConsumptionService.utils';
 import { Address } from './ReportFiltrationForm.types';
+import { ReportType } from 'services/reportsService/view/ReportsPage/ReportsPage.types';
+import { ReportDatePeriod } from 'services/reportsService/reportViewService/reportViewService.types';
 
 export const getAddresses = (
   houseManagements: HouseManagementWithStreetsResponse[],
@@ -58,4 +62,35 @@ export const prepareAddressesTreeData = (
     }));
 
   return addressesTreeData;
+};
+
+export const getAvailableResource = (reportType: ReportType) => {
+  if (reportType === ReportType.HousingDevices) {
+    return [EResourceType.Electricity];
+  }
+
+  return Object.values(EResourceType);
+};
+
+export const getAvailableReportDatePeriod = (
+  reportOption: EIndividualDeviceReportOption | null,
+) => {
+  if (
+    reportOption === EIndividualDeviceReportOption.DeviceCheckingDateExpiration
+  ) {
+    return [
+      ReportDatePeriod.Expired,
+      ReportDatePeriod.ExpiresInNextMonth,
+      ReportDatePeriod.ExpiresInNextTwoMonth,
+      ReportDatePeriod.AnyPeriod,
+    ];
+  }
+
+  return [
+    ReportDatePeriod.LastDay,
+    ReportDatePeriod.LastSevenDays,
+    ReportDatePeriod.FromStartOfMonth,
+    ReportDatePeriod.PreviousMonth,
+    ReportDatePeriod.AnyPeriod,
+  ];
 };

@@ -20,6 +20,9 @@ export enum ReportDatePeriod {
   LastSevenDays = 'LastSevenDays',
   FromStartOfMonth = 'FromStartOfMonth',
   PreviousMonth = 'PreviousMonth',
+  Expired = 'Expired',
+  ExpiresInNextMonth = 'ExpiresInNextMonth',
+  ExpiresInNextTwoMonth = 'ExpiresInNextTwoMonth',
   AnyPeriod = 'AnyPeriod',
 }
 
@@ -64,29 +67,29 @@ export interface ReportPayload {
 export interface IndividualDeviceReportRequestPaload extends AddressSearch {
   ReportOption: EIndividualDeviceReportOption;
   Resources?: EResourceType[];
-  From?: string;
-  To?: string;
+  From?: string | null;
+  To?: string | null;
   ClosingReasons?: EClosingReason[];
   WithoutApartmentsWithOpenDevicesByResources?: boolean;
 }
 
 export interface ActsJournalReportRequestPayload extends AddressSearch {
   Resources?: EActResourceType[];
-  From?: string;
-  To?: string;
+  From?: string | null;
+  To?: string | null;
 }
 
 export interface HousingMeteringDevicesReportRequestPayload
   extends AddressSearch {
   Resources?: EResourceType[];
-  From: string;
-  To: string;
+  From: string | null;
+  To: string | null;
 }
 
 export interface HomeownersReportRequestPayload extends AddressSearch {
   ShowOnlyDuplicates: boolean;
-  From?: string;
-  To?: string;
+  From?: string | null;
+  To?: string | null;
 }
 
 export interface EmployeeReportRequestPayload {

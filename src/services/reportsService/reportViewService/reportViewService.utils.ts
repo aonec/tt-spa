@@ -21,11 +21,14 @@ export const getReportPayloadValues = ({ values }: ReportPayload) => values;
 const getDatePeriod = (
   reportDatePeriod: ReportDatePeriod | null,
   dates: { from: dayjs.Dayjs | null; to: dayjs.Dayjs | null },
-) => {
+): {
+  from: string | null;
+  to: string | null;
+} | null => {
   if (!reportDatePeriod) return null;
 
-  let from = dayjs(),
-    to = dayjs();
+  let from: dayjs.Dayjs | null = dayjs(),
+    to: dayjs.Dayjs | null = dayjs();
 
   if (reportDatePeriod === ReportDatePeriod.FromStartOfMonth) {
     from = dayjs().startOf('month');
@@ -46,11 +49,14 @@ const getDatePeriod = (
   }
 
   if (reportDatePeriod === ReportDatePeriod.AnyPeriod) {
-    from = dayjs(dates.from);
-    to = dayjs(dates.to);
+    from = dates.from ? dayjs(dates.from) : null;
+    to = dates.from ? dayjs(dates.to) : null;
   }
 
-  return { from: from?.format('YYYY-MM-DD'), to: to?.format('YYYY-MM-DD') };
+  return {
+    from: from?.format('YYYY-MM-DD') || null,
+    to: to?.format('YYYY-MM-DD') || null,
+  };
 };
 
 const getAddressId = (values: ReportFiltrationFormValues) => {

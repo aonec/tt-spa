@@ -1,4 +1,4 @@
-import React, { FC, useEffect } from 'react';
+import React, { FC, useEffect, useMemo } from 'react';
 import { Checkbox, Form, Radio, Space } from 'antd';
 import { useFormik } from 'formik';
 import {
@@ -15,13 +15,13 @@ import {
 import { FormItem } from 'ui-kit/FormItem';
 import { Select } from 'ui-kit/Select';
 import { reportViewService } from 'services/reportsService/reportViewService/reportViewService.model';
-import { prepareAddressesTreeData } from './ReportFiltrationForm.utils';
-import { SelectMultiple } from 'ui-kit/SelectMultiple';
 import {
-  EActResourceType,
-  EIndividualDeviceReportOption,
-  EResourceType,
-} from 'api/types';
+  getAvailableReportDatePeriod,
+  getAvailableResource,
+  prepareAddressesTreeData,
+} from './ReportFiltrationForm.utils';
+import { SelectMultiple } from 'ui-kit/SelectMultiple';
+import { EActResourceType, EIndividualDeviceReportOption } from 'api/types';
 import { ResourceIconLookup } from 'ui-kit/shared/ResourceIconLookup';
 import {
   ClosingReasonsDictionary,
@@ -68,6 +68,15 @@ export const ReportFiltrationForm: FC<ReportFiltrationFormProps> = ({
       },
     });
 
+  const availableResources = useMemo(
+    () => getAvailableResource(reportType),
+    [reportType],
+  );
+  const availableReportDatePeriod = useMemo(
+    () => getAvailableReportDatePeriod(values.reportOption),
+    [values.reportOption],
+  );
+
   useEffect(() => {
     return inputs.clearFiltrationValues.watch(() => resetForm()).unsubscribe;
   }, [resetForm]);
@@ -76,6 +85,13 @@ export const ReportFiltrationForm: FC<ReportFiltrationFormProps> = ({
     addressesWithHouseManagements,
     values.houseManagement,
   );
+
+  const isClosedDeviceOnOneOfRisers = useMemo(() => {
+    return (
+      values.reportOption ===
+      EIndividualDeviceReportOption.ClosedDeviceOnOneOfRisers
+    );
+  }, [values.reportOption]);
 
   const isEmployeeReport = reportType === ReportType.Employee;
 
@@ -283,23 +299,21 @@ export const ReportFiltrationForm: FC<ReportFiltrationFormProps> = ({
           {!values.exportType && <div />}
           {isShowResourcesField && (
             <FormItem label="Ресурс">
-              {!isShowActResourcesSelect && (
-                <SelectMultiple
-                  showSearch={false}
-                  placeholder="Выберите"
-                  value={values.resources || undefined}
-                  onChange={(value) => setFieldValue('resources', value)}
-                >
-                  {Object.values(EResourceType).map((resource) => (
-                    <SelectMultiple.Option key={resource} value={resource}>
-                      <ResourceOption>
-                        <ResourceIconLookup resource={resource} />
-                        <div>{ResourceShortNamesDictionary[resource]}</div>
-                      </ResourceOption>
-                    </SelectMultiple.Option>
-                  ))}
-                </SelectMultiple>
-              )}
+              <SelectMultiple
+                showSearch={false}
+                placeholder="Выберите"
+                value={values.resources || undefined}
+                onChange={(value) => setFieldValue('resources', value)}
+              >
+                {availableResources.map((resource) => (
+                  <SelectMultiple.Option key={resource} value={resource} di>
+                    <ResourceOption>
+                      <ResourceIconLookup resource={resource} />
+                      <div>{ResourceShortNamesDictionary[resource]}</div>
+                    </ResourceOption>
+                  </SelectMultiple.Option>
+                ))}
+              </SelectMultiple>
               {isShowActResourcesSelect && (
                 <SelectMultiple
                   placeholder="Выберите"
@@ -376,9 +390,10 @@ export const ReportFiltrationForm: FC<ReportFiltrationFormProps> = ({
                   onChange={(event) =>
                     setFieldValue('reportDatePeriod', event.target.value)
                   }
+                  disabled={isClosedDeviceOnOneOfRisers}
                 >
                   <Space direction="vertical">
-                    {Object.values(ReportDatePeriod).map((period) => (
+                    {availableReportDatePeriod.map((period) => (
                       <Radio key={period} value={period}>
                         {ReportPeriodDictionary[period]}
                       </Radio>
@@ -390,13 +405,14 @@ export const ReportFiltrationForm: FC<ReportFiltrationFormProps> = ({
                 <RangePicker
                   small
                   disabled={
-                    values.reportDatePeriod !== ReportDatePeriod.AnyPeriod
+                    values.reportDatePeriod !== ReportDatePeriod.AnyPeriod ||
+                    isClosedDeviceOnOneOfRisers
                   }
                   value={[values.from, values.to]}
                   format="DD.MM.YYYY"
                   onChange={(dates) => {
-                    setFieldValue('from', dates?.[0]);
-                    setFieldValue('to', dates?.[1]);
+                    setFieldValue('from', dates?.[0] || null);
+                    setFieldValue('to', dates?.[1] || null);
                   }}
                 />
               </PeriodPickerWrapprer>
