@@ -1,5 +1,8 @@
 import { ReportType } from '../view/ReportsPage/ReportsPage.types';
-import { ReportFiltrationFormValues } from './reportViewService.types';
+import {
+  ExportReportType,
+  ReportFiltrationFormValues,
+} from './reportViewService.types';
 import {
   prepareActJournalReportRequestPayload,
   prepareEmployeeReportRequestPayload,
@@ -43,4 +46,12 @@ export const PrepareReportRequestFunctionsDictionary: {
   [ReportType.HousingDevices]:
     prepareHousingMeteringDevicesReportRequestPayload,
   [ReportType.IndividualDevices]: prepareIndividualDevicesReportRequestPayload,
+};
+
+export const ExportReportTypeTranslatesLookup: {
+  [key in keyof typeof ExportReportType]: string;
+} = {
+  [ExportReportType.ManagementFirm]: 'По всей УК',
+  [ExportReportType.HouseManagement]: 'По домоуправлению',
+  [ExportReportType.Address]: 'По адресу',
 };

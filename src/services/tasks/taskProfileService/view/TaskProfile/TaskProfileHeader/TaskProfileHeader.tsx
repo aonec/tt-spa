@@ -49,6 +49,8 @@ export const TaskProfileHeader: FC<TaskProfileHeaderProps> = ({
     return <CalculatorIcon />;
   }, [devices, nodeDevice, pipeNode]);
 
+  const stageStatusDescription = timer.statusDescription;
+
   return (
     <Wrapper>
       <HeaderWrapper>
@@ -59,7 +61,7 @@ export const TaskProfileHeader: FC<TaskProfileHeaderProps> = ({
         <TimelineRowWrapper>
           <InfoWrapper>
             {taskName}
-            <div>Время на задачу</div>
+            <div>{stageStatusDescription}</div>
           </InfoWrapper>
 
           <TimeLine timeline={timeline} />

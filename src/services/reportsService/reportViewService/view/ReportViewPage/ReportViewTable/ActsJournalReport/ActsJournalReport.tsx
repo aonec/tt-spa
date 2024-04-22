@@ -85,6 +85,7 @@ export const ActsJournalReport: FC<ActsJournalReportProps> = ({
         ]}
         elements={actJournalReportData?.rows || []}
         pagination={{ pageSize: 50 }}
+        isSticky
       />
       {actJournalReportData.rows && (
         <ActsCountPanel count={actJournalReportData.rows.length} />

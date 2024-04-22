@@ -5,6 +5,7 @@ import {
   HouseManagementWithStreetsResponse,
   HousingDevicesConstructedReportResponse,
   IndividualDevicesConstructedReportResponse,
+  OrganizationResponsePagedList,
 } from 'api/types';
 import { ReportType } from '../../../view/ReportsPage/ReportsPage.types';
 import {
@@ -32,4 +33,5 @@ export type ReportViewPageProps = {
   isReportFileDownloading: boolean;
   clearFiltrationValues: () => void;
   emloyeeReportData: EmployeeReportResponse | null;
+  organizations: OrganizationResponsePagedList | null;
 };

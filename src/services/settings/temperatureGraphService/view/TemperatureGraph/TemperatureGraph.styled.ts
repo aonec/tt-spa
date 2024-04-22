@@ -3,11 +3,7 @@ import styled from 'styled-components';
 import { Input } from 'ui-kit/Input';
 
 export const PageWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
   width: min-content;
-  height: 78vh;
-  overflow-y: hidden;
   overflow-x: hidden;
 `;
 

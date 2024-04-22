@@ -38,6 +38,97 @@ export const prepareData = (tasks: TaskListResponse[], grouptype: string) =>
     showExecutor: grouptype === 'Observing',
   }));
 
+export const createTimelineForTaskHeader = (
+  task: TaskListResponse | TaskResponse,
+): Timeline | null => {
+  const { closingTime, currentStage } = task;
+
+  if (closingTime) return null;
+
+  const deadline = new Date(currentStage?.expectedCompletionTime || '');
+  const current = Date.now();
+
+  const remainingTime = getFormatedTime(deadline.valueOf() - current);
+  const isFailed = deadline.valueOf() - current < 0;
+
+  return {
+    timelineStyle: {
+      color: ColorLookup[currentStage?.timeStatus!],
+      width: `${currentStage?.timeProgress!}%`,
+    },
+    deadlineDate: `(до ${new Date(deadline).toLocaleDateString()})`,
+    remainingTime,
+    isFailed,
+  };
+};
+
+export const createTimerForTaskHeader = (
+  task: TaskListResponse | TaskResponse,
+) => {
+  const { closingTime, closingStatus, creationTime, expectedCompletionTime } =
+    task;
+
+  if (!closingTime) {
+    const ext = expectedCompletionTime;
+    const isFailed = new Date(ext!).valueOf() - Date.now() < 0;
+
+    return {
+      stage: {
+        remainingTime: getFormatedTime(
+          Math.abs(new Date(ext!).valueOf() - Date.now()),
+        ),
+        isFailed,
+        deadlineDate: `(до ${new Date(ext!).toLocaleDateString()})`,
+      },
+      statusDescription: isFailed ? 'Этап просрочен:' : 'Время на этап:',
+      icon: 'timer',
+      label: 'Время на задачу:',
+    };
+  }
+
+  if (closingStatus === 'Interrupted') {
+    return {
+      stage: null,
+      icon: closingStatus,
+      statusDescription: 'Закрыта автоматически',
+      closingStatus: TimerClosingStatus.ClosedAutomatically,
+      label: 'Время на задачу:',
+    };
+  }
+
+  const start = creationTime;
+  const deadline = expectedCompletionTime;
+  const finish = closingTime;
+  const diffTime = new Date(deadline!).valueOf() - new Date(finish!).valueOf();
+
+  const diffTimeStr = getFormatedTime(Math.abs(diffTime));
+
+  const executionTime = getFormatedTime(
+    new Date(finish!).valueOf() - new Date(start!).valueOf(),
+  );
+
+  if (diffTime < 0) {
+    return {
+      stage: null,
+      diffTime: diffTimeStr,
+      icon: 'redTimer',
+      statusDescription: 'Просрочена на:',
+      closingStatus: TimerClosingStatus.Overdue,
+      label: 'Время на задачу:',
+    };
+  }
+
+  return {
+    closingStatus: TimerClosingStatus.Done,
+    stage: null,
+    diffTime: `(+${diffTimeStr})`,
+    executionTime,
+    icon: ETaskClosingStatus.Properly,
+    statusDescription: 'Выполнено за:',
+    label: 'Время на задачу:',
+  };
+};
+
 export const createTimeline = (
   task: TaskListResponse | TaskResponse,
 ): Timeline | null => {

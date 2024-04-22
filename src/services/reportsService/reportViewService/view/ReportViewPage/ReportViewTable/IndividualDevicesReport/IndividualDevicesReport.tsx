@@ -49,6 +49,7 @@ export const IndividualDevicesReport: FC<IndividualDevicesReportProps> = ({
 
   return (
     <Table
+      isSticky
       columns={[
         {
           label: 'Адрес',

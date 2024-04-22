@@ -78,8 +78,6 @@ const {
   gates: { CurrentManagingFirmGate },
 } = currentOrganizationService;
 
-const featureToggles =
-  developmentSettingsService.outputs.$featureToggles.getState();
 const { TasksIsOpen } = tasksProfileService.gates;
 const { DistrictBordersGroupPageGate } = districtBordersByAddressService.gates;
 
@@ -120,6 +118,10 @@ export const useRoutes = (
   currentUserRoles: ESecuredIdentityRoleNameStringDictionaryItem[],
 ) => {
   const { isAuth } = useUnit({ isAuth: tokensService.outputs.$isAuth });
+
+  const featureToggles = useUnit(
+    developmentSettingsService.outputs.$featureToggles,
+  );
 
   const roles =
     currentUserRoles?.reduce((acc, { key }) => {

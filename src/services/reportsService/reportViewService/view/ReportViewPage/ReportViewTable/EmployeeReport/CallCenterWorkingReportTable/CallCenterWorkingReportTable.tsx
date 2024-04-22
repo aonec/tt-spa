@@ -47,6 +47,7 @@ export const CallCenterWorkingReportTable: FC<
 
   return (
     <Table
+      isSticky
       columns={[
         {
           label: '№',

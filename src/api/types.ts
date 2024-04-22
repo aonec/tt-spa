@@ -1955,6 +1955,7 @@ export enum EPollActionType {
   IndividualExport = 'IndividualExport',
   HousingExport = 'HousingExport',
   MilurExport = 'MilurExport',
+  OpenIndividualDevicesReport = 'OpenIndividualDevicesReport',
 }
 
 export enum EPollState {
@@ -2172,12 +2173,13 @@ export enum ETaskEngineeringElement {
   HouseNetwork = 'HouseNetwork',
 }
 
-export enum ETaskTargetObject {
-  IndividualDevice = 'IndividualDevice',
-  PipeHousingDevice = 'PipeHousingDevice',
+export enum ETaskTargetObjectInfo {
+  ColdWaterSupply = 'ColdWaterSupply',
+  HotWaterSupply = 'HotWaterSupply',
+  Electricity = 'Electricity',
+  Heat = 'Heat',
+  MultipleResources = 'MultipleResources',
   Calculator = 'Calculator',
-  PipeNode = 'PipeNode',
-  Application = 'Application',
 }
 
 export enum ETaskTargetObjectRequestType {
@@ -2187,6 +2189,14 @@ export enum ETaskTargetObjectRequestType {
   Building = 'Building',
   Reading = 'Reading',
   IndividualDevice = 'IndividualDevice',
+}
+
+export enum ETaskTargetObjectType {
+  IndividualDevice = 'IndividualDevice',
+  PipeHousingDevice = 'PipeHousingDevice',
+  Calculator = 'Calculator',
+  PipeNode = 'PipeNode',
+  Application = 'Application',
 }
 
 export enum ETaskTargetType {
@@ -4984,6 +4994,8 @@ export interface ResourceDisconnectingUpdateRequest {
   /** @format date-time */
   endDate?: string | null;
   sender?: string | null;
+  /** @format int32 */
+  documentId?: number | null;
 }
 
 export enum SecuredIdentityRoleName {
@@ -5412,29 +5424,36 @@ export enum TaskGroupingFilter {
   Revertable = 'Revertable',
 }
 
+export interface TaskListAddress {
+  buildingNumber?: string | null;
+  corpus?: string | null;
+  street?: string | null;
+  city?: string | null;
+  apartmentNumber?: string | null;
+}
+
 export interface TaskListResponse {
   /** @format int32 */
   id: number;
   name: string | null;
-  currentStage: StageResponse | null;
+  type: EManagingFirmTaskType;
+  creationReason: string | null;
   /** @format date-time */
   creationTime: string | null;
-  creationReason: string | null;
   /** @format date-time */
   expectedCompletionTime: string | null;
   /** @format date-time */
   closingTime: string | null;
-  type: EManagingFirmTaskType;
   closingStatus: ETaskClosingStatus | null;
-  address: FullAddressResponse | null;
+  currentStage: StageResponse | null;
+  address: TaskListAddress | null;
+  /** @deprecated */
   perpetrator: OrganizationUserShortResponse | null;
-  hasChanged: boolean;
+  /** @deprecated */
   devices: MeteringDeviceSearchListResponse[] | null;
+  /** @deprecated */
   pipeNode: PipeNodeResponse | null;
-  mainHomeowner: HomeownerAccountListResponse | null;
-  /** @format int32 */
-  totalHomeownersCount: number;
-  buildingCoordinates: PointResponse | null;
+  targetObject: TaskTargetObjectResponse | null;
   taskConfirmation: TaskConfirmationResponse | null;
 }
 
@@ -5498,7 +5517,7 @@ export interface TaskShortResponse {
   creationReason: string | null;
   /** @format date-time */
   creationDate: string;
-  targetObject: ETaskTargetObject;
+  targetObject: ETaskTargetObjectType;
   resourceTypes: EResourceType[] | null;
   executor: OrganizationUserShortResponse | null;
   apartmentNumber: string | null;
@@ -5526,6 +5545,12 @@ export interface TaskStatisticsResponseSuccessApiResponse {
   successResponse: TaskStatisticsResponse | null;
 }
 
+export interface TaskTargetObjectResponse {
+  targetObjectInfo: ETaskTargetObjectInfo;
+  title: string | null;
+  model: string | null;
+}
+
 export interface TasksPagedList {
   /** @format int32 */
   totalItems: number;
@@ -5546,6 +5571,8 @@ export interface TasksPagedList {
   executingTasksCount: number | null;
   /** @format int32 */
   observingTasksCount: number | null;
+  /** @format int32 */
+  activeTasksCount: number | null;
   /** @format int32 */
   runningOutTasksCount: number | null;
   /** @format int32 */
@@ -7043,7 +7070,7 @@ export class Api<
     ) =>
       this.request<
         AssignmentResponseSuccessApiResponse,
-        ProblemDetails | ErrorApiResponse
+        ErrorApiResponse | ProblemDetails
       >({
         path: `/api/IndividualSeal/Assignments/${assignmentId}`,
         method: 'GET',
@@ -7085,7 +7112,7 @@ export class Api<
       assignmentId: string,
       params: RequestParams = {},
     ) =>
-      this.request<void, ProblemDetails | ErrorApiResponse>({
+      this.request<void, ErrorApiResponse | ProblemDetails>({
         path: `/api/IndividualSeal/Assignments/${assignmentId}/File`,
         method: 'GET',
         secure: true,
@@ -10395,7 +10422,7 @@ export class Api<
     devicesIndividualDetail: (deviceId: number, params: RequestParams = {}) =>
       this.request<
         IndividualDeviceResponseFromDevicePageSuccessApiResponse,
-        ProblemDetails | ErrorApiResponse
+        ErrorApiResponse | ProblemDetails
       >({
         path: `/api/Devices/Individual/${deviceId}`,
         method: 'GET',
@@ -13521,6 +13548,32 @@ export class Api<
       }),
 
     /**
+     * @description Роли:<li>Администратор</li><li>Администратор УК без назначений задач</li>
+     *
+     * @tags Reports
+     * @name ReportsOpenIndividualDevicesReportList
+     * @summary IndividualDevicesReportCreate
+     * @request GET:/api/Reports/OpenIndividualDevicesReport
+     * @secure
+     */
+    reportsOpenIndividualDevicesReportList: (
+      query?: {
+        Command?: PollCommand;
+        /** @format int32 */
+        PollId?: number;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<PollResponseSuccessApiResponse, ErrorApiResponse>({
+        path: `/api/Reports/OpenIndividualDevicesReport`,
+        method: 'GET',
+        query: query,
+        secure: true,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
      * @description Роли:<li>Старший оператор</li><li>Оператор</li>
      *
      * @tags Reports
@@ -13531,15 +13584,14 @@ export class Api<
      */
     reportsApartmentActsReportList: (
       query?: {
+        /** @format int32 */
+        ManagementFirmId?: number;
         /** @format uuid */
         HouseManagementId?: string;
-        /**
-         * @deprecated
-         * @format int32
-         */
+        /** @format int32 */
         HousingStockId?: number;
-        HousingStocksIds?: number[];
         Resources?: EActResourceType[];
+        ActType?: EActType;
         /** @format date-time */
         From?: string;
         /** @format date-time */
@@ -13570,15 +13622,14 @@ export class Api<
      */
     reportsApartmentActsReportXlsxList: (
       query?: {
+        /** @format int32 */
+        ManagementFirmId?: number;
         /** @format uuid */
         HouseManagementId?: string;
-        /**
-         * @deprecated
-         * @format int32
-         */
+        /** @format int32 */
         HousingStockId?: number;
-        HousingStocksIds?: number[];
         Resources?: EActResourceType[];
+        ActType?: EActType;
         /** @format date-time */
         From?: string;
         /** @format date-time */
@@ -13606,14 +13657,12 @@ export class Api<
      */
     reportsHousingDevicesReportList: (
       query: {
+        /** @format int32 */
+        ManagementFirmId?: number;
         /** @format uuid */
         HouseManagementId?: string;
-        /**
-         * @deprecated
-         * @format int32
-         */
+        /** @format int32 */
         HousingStockId?: number;
-        HousingStocksIds?: number[];
         Resources?: EResourceType[];
         /** @format date-time */
         From: string;
@@ -13645,14 +13694,12 @@ export class Api<
      */
     reportsHousingDevicesReportXlsxList: (
       query: {
+        /** @format int32 */
+        ManagementFirmId?: number;
         /** @format uuid */
         HouseManagementId?: string;
-        /**
-         * @deprecated
-         * @format int32
-         */
+        /** @format int32 */
         HousingStockId?: number;
-        HousingStocksIds?: number[];
         Resources?: EResourceType[];
         /** @format date-time */
         From: string;
@@ -13681,14 +13728,12 @@ export class Api<
      */
     reportsHomeownersReportList: (
       query: {
+        /** @format int32 */
+        ManagementFirmId?: number;
         /** @format uuid */
         HouseManagementId?: string;
-        /**
-         * @deprecated
-         * @format int32
-         */
+        /** @format int32 */
         HousingStockId?: number;
-        HousingStocksIds?: number[];
         ShowOnlyDuplicates: boolean;
       },
       params: RequestParams = {},
@@ -13716,14 +13761,12 @@ export class Api<
      */
     reportsHomeownersReportXlsxList: (
       query: {
+        /** @format int32 */
+        ManagementFirmId?: number;
         /** @format uuid */
         HouseManagementId?: string;
-        /**
-         * @deprecated
-         * @format int32
-         */
+        /** @format int32 */
         HousingStockId?: number;
-        HousingStocksIds?: number[];
         ShowOnlyDuplicates: boolean;
       },
       params: RequestParams = {},
@@ -13748,14 +13791,12 @@ export class Api<
      */
     reportsIndividualDevicesReportList: (
       query: {
+        /** @format int32 */
+        ManagementFirmId?: number;
         /** @format uuid */
         HouseManagementId?: string;
-        /**
-         * @deprecated
-         * @format int32
-         */
+        /** @format int32 */
         HousingStockId?: number;
-        HousingStocksIds?: number[];
         ReportOption: EIndividualDeviceReportOption;
         Resources?: EResourceType[];
         /** @format date-time */
@@ -13790,14 +13831,12 @@ export class Api<
      */
     reportsIndividualDevicesReportXlsxList: (
       query: {
+        /** @format int32 */
+        ManagementFirmId?: number;
         /** @format uuid */
         HouseManagementId?: string;
-        /**
-         * @deprecated
-         * @format int32
-         */
+        /** @format int32 */
         HousingStockId?: number;
-        HousingStocksIds?: number[];
         ReportOption: EIndividualDeviceReportOption;
         Resources?: EResourceType[];
         /** @format date-time */
@@ -14057,8 +14096,18 @@ export class Api<
      */
     resourceDisconnectingList: (
       query?: {
-        City?: string;
+        addressCity?: string;
+        addressStreet?: string;
+        addressHousingStockNumber?: string;
+        addressCorpus?: string;
         Resource?: EResourceType;
+        /** @format uuid */
+        HouseManagementId?: string;
+        Sender?: string;
+        /** @format date-time */
+        From?: string;
+        /** @format date-time */
+        To?: string;
         DisconnectingType?: EResourceDisconnectingType;
         OrderRule?: EResourceDisconnectingOrderRule;
         /** @format int32 */
@@ -14428,66 +14477,6 @@ export class Api<
      * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Администратор УК без назначений задач</li><li>Контролёр</li>
      *
      * @tags Tasks
-     * @name TasksExportList
-     * @summary TasksRead
-     * @request GET:/api/Tasks/Export
-     * @secure
-     */
-    tasksExportList: (
-      query?: {
-        TargetType?: ETaskTargetType;
-        /** @format int32 */
-        TaskId?: number;
-        TaskType?: EManagingFirmTaskFilterType;
-        GroupType?: TaskGroupingFilter;
-        /** @format uuid */
-        HouseManagementId?: string;
-        /** @format int32 */
-        DeviceId?: number;
-        /** @format int32 */
-        HousingStockId?: number;
-        /** @format int32 */
-        ApartmentId?: number;
-        HasChanged?: boolean;
-        /** @format int32 */
-        PipeNodeId?: number;
-        ClosingStatuses?: ETaskClosingStatus[];
-        TimeStatus?: EStageTimeStatus;
-        Resource?: EResourceType;
-        EngineeringElement?: ETaskEngineeringElement;
-        City?: string;
-        Street?: string;
-        HousingStockNumber?: string;
-        Corpus?: string;
-        ApartmentNumber?: string;
-        /** @format int32 */
-        PerpetratorId?: number;
-        OrderRule?: TaskPaginationOrderRule;
-        /** @format int32 */
-        PageNumber?: number;
-        /** @format int32 */
-        PageSize?: number;
-        OrderBy?: EOrderByRule;
-        /** @format int32 */
-        Skip?: number;
-        /** @format int32 */
-        Take?: number;
-      },
-      params: RequestParams = {},
-    ) =>
-      this.request<File, ErrorApiResponse>({
-        path: `/api/Tasks/Export`,
-        method: 'GET',
-        query: query,
-        secure: true,
-        format: 'json',
-        ...params,
-      }),
-
-    /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Администратор УК без назначений задач</li><li>Контролёр</li>
-     *
-     * @tags Tasks
      * @name TasksList
      * @summary TasksRead
      * @request GET:/api/Tasks
@@ -14631,13 +14620,12 @@ export class Api<
       data: StagePushRequest,
       params: RequestParams = {},
     ) =>
-      this.request<TaskResponseSuccessApiResponse, ErrorApiResponse>({
+      this.request<void, ErrorApiResponse>({
         path: `/api/Tasks/${taskId}/PushStage`,
         method: 'POST',
         body: data,
         secure: true,
         type: ContentType.Json,
-        format: 'json',
         ...params,
       }),
 
@@ -14655,13 +14643,12 @@ export class Api<
       data: StageRevertRequest,
       params: RequestParams = {},
     ) =>
-      this.request<TaskResponseSuccessApiResponse, ErrorApiResponse>({
+      this.request<void, ErrorApiResponse>({
         path: `/api/Tasks/${taskId}/RevertStage`,
         method: 'POST',
         body: data,
         secure: true,
         type: ContentType.Json,
-        format: 'json',
         ...params,
       }),
 

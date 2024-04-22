@@ -25,6 +25,7 @@ export const HomeownersReport: FC<HomeownersReportProps> = ({
 
   return (
     <Table
+      isSticky
       columns={[
         {
           label: 'Домоуправление',

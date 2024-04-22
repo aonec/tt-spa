@@ -2,7 +2,6 @@ import React, { FC, ReactNode } from 'react';
 import { ReportViewTableProps } from './ReportViewTable.types';
 import { ReportType } from 'services/reportsService/view/ReportsPage/ReportsPage.types';
 import { IndividualDevicesReport } from './IndividualDevicesReport';
-import { Wrapper } from './ReportViewTable.styled';
 import { ActsJournalReport } from './ActsJournalReport';
 import { HousingMeteringDevicesReport } from './HousingMeteringDevicesReport';
 import { HomeownersReport } from './HomeownersReport';
@@ -44,5 +43,5 @@ export const ReportViewTable: FC<ReportViewTableProps> = ({
     ),
   };
 
-  return <Wrapper>{reportTableComponents[reportType]}</Wrapper>;
+  return <>{reportTableComponents[reportType]}</>;
 };
