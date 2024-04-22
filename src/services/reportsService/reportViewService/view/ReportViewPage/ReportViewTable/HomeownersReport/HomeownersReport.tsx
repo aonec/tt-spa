@@ -51,7 +51,7 @@ export const HomeownersReport: FC<HomeownersReportProps> = ({
           size: '270px',
           render: (elem) => (
             <FullNameWrapper>
-              <Tooltip title={elem.homeownerFullName}>
+              <Tooltip zIndex={10} title={elem.homeownerFullName}>
                 {elem.homeownerFullName}
               </Tooltip>
             </FullNameWrapper>

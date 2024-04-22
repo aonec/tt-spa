@@ -91,6 +91,7 @@ import { ReactComponent as CheckedBoxIcon } from './svg/checkedBox.svg';
 import { ReactComponent as AscendingSortIcon } from './svg/ascendingSort.svg';
 import { ReactComponent as DescendingSortIcon } from './svg/descendingSort.svg';
 import { ReactComponent as DocumentBlueIcon } from './svg/documentBlue.svg';
+import { ReactComponent as ArrowTopIcon } from './svg/arrowTop.svg';
 
 export {
   FinishIcon,
@@ -186,4 +187,5 @@ export {
   AscendingSortIcon,
   DescendingSortIcon,
   DocumentBlueIcon,
+  ArrowTopIcon,
 };

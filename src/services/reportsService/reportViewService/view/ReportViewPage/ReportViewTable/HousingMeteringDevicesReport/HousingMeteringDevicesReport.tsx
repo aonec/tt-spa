@@ -52,7 +52,9 @@ export const HousingMeteringDevicesReport: FC<
               return (
                 <FullAddressWrapper>
                   <ApartmentNumber>Дом №{number}</ApartmentNumber>
-                  <Tooltip title={addressString}>{addressString}</Tooltip>
+                  <Tooltip zIndex={10} title={addressString}>
+                    {addressString}
+                  </Tooltip>
                 </FullAddressWrapper>
               );
             },

@@ -164,6 +164,12 @@ export const ReportFiltrationForm: FC<ReportFiltrationFormProps> = ({
                   !values.employeeReportType ||
                   !values.employeeReportDatePeriodType
                 }
+                disabledDate={(selectableDate) => {
+                  const selectableYear = selectableDate.year();
+                  const currentYear = dayjs().year();
+
+                  return selectableYear > currentYear;
+                }}
               />
             )}
             {isCallCenterReport && (
@@ -173,6 +179,12 @@ export const ReportFiltrationForm: FC<ReportFiltrationFormProps> = ({
                 onChange={(dates) => {
                   setFieldValue('from', dates?.[0]);
                   setFieldValue('to', dates?.[1]);
+                }}
+                disabledDate={(selectableDate) => {
+                  const selectableYear = selectableDate.year();
+                  const currentYear = dayjs().year();
+
+                  return selectableYear > currentYear;
                 }}
               />
             )}
