@@ -56,7 +56,8 @@ sample({
 });
 
 sample({
-  clock: NodeResourceGate.state.map(({ resource }) => resource),
+  clock: NodeResourceGate.state.map(({ resource }) => resource || null),
+  filter: (resource): resource is EResourceType => Boolean(resource),
   target: setResource,
 });
 
@@ -66,7 +67,8 @@ sample({
 });
 
 sample({
-  source: NodeIdGate.state.map(({ nodeId }) => nodeId),
+  source: NodeIdGate.state.map(({ nodeId }) => nodeId || null),
+  filter: (id): id is number => Boolean(id),
   clock: createReadingFx.doneData,
   target: getHousingMeteringDeviceReadingsFx,
 });

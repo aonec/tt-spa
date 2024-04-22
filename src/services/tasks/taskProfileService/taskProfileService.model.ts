@@ -137,7 +137,8 @@ sample({
 });
 
 sample({
-  source: TaskIdGate.state.map(({ taskId }) => taskId),
+  source: TaskIdGate.state.map(({ taskId }) => taskId || null),
+  filter: (id): id is number => Boolean(id),
   clock: refetchTask,
   target: getTasksFx,
 });
@@ -166,7 +167,8 @@ sample({
 });
 
 sample({
-  clock: RelatedNodeIdGate.state.map(({ nodeId }) => nodeId),
+  clock: RelatedNodeIdGate.state.map(({ nodeId }) => nodeId || null),
+  filter: (id): id is number => Boolean(id),
   target: getNodeFx,
 });
 
@@ -210,7 +212,7 @@ sample({
 });
 
 sample({
-  source: $task.map((task) => task?.id),
+  source: $task.map((task) => task?.id || null),
   clock: handleRevertStage,
   filter: (id): id is number => Boolean(id),
   target: revertStageFx,

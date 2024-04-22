@@ -65,7 +65,7 @@ sample({
 });
 
 sample({
-  source: NodeIdGate.state.map(({ nodeId }) => nodeId),
+  source: NodeIdGate.state.map(({ nodeId }) => nodeId, { skipVoid: false }),
   clock: [NodeIdGate.open, refetchNode],
   target: getNodeFx,
 });
@@ -91,7 +91,7 @@ sample({
 });
 
 sample({
-  source: NodeIdGate.state.map(({ nodeId }) => nodeId),
+  source: NodeIdGate.state.map(({ nodeId }) => nodeId, { skipVoid: false }),
   clock: updateNode,
   fn: (pipeNodeId, payload) => ({ pipeNodeId, payload }),
   target: updateNodeFx,

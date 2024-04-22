@@ -25,7 +25,7 @@ sample({
 });
 
 sample({
-  source: $currentIndividualDevice.map((device) => device?.id),
+  source: $currentIndividualDevice.map((device) => device?.id || null),
   clock: deleteIndividualDevice,
   filter: Boolean,
   target: deleteIndividualDeviceMutation.start,

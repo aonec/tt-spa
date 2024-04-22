@@ -27,7 +27,7 @@ const $documents = createStore<DocumentLiteResponse[]>([])
 
 sample({
   source: sample({
-    source: editNodeService.outputs.$node.map((node) => node?.id),
+    source: editNodeService.outputs.$node.map((node) => node?.id || null),
     filter: Boolean,
   }),
   clock: updateDocuments,

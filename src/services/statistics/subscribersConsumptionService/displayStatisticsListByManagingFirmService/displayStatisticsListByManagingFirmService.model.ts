@@ -115,8 +115,8 @@ sample({
 });
 
 sample({
-  clock: addressSearchService.outputs.$existingCities.map((cities) =>
-    _.last(cities),
+  clock: addressSearchService.outputs.$existingCities.map(
+    (cities) => _.last(cities) || null,
   ),
   filter: Boolean,
   target: selectCity,

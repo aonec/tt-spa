@@ -82,7 +82,7 @@ sample({
 });
 
 sample({
-  source: $apartment.map((apartment) => apartment?.housingStock?.id),
+  source: $apartment.map((apartment) => apartment?.housingStock?.id || null),
   filter: Boolean,
   clock: openModal,
   target: getDistrictFx,

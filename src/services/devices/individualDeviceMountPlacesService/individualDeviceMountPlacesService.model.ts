@@ -38,8 +38,9 @@ const IndividualDeviceMountPlacesGate = createGate<{
 
 sample({
   source: IndividualDeviceMountPlacesGate.state.map(
-    (params) => params.apartmentId,
+    (params) => params.apartmentId || null,
   ),
+  filter: (id): id is number => Boolean(id),
   clock: IndividualDeviceMountPlacesGate.state,
   target: fetchIndividualDeviceFxMountPlacesFx,
 });

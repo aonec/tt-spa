@@ -3,8 +3,10 @@ import { taskProfileService } from 'services/tasks/taskProfileService/taskProfil
 export const completionStageService = {
   outputs: {
     $taskConfirmationTypes: taskProfileService.outputs.$task.map(
-      (task) => task?.allowableConfirmationTypes
+      (task) => task?.allowableConfirmationTypes || null,
     ),
-    $taskType: taskProfileService.outputs.$task.map((task) => task?.type),
+    $taskType: taskProfileService.outputs.$task.map(
+      (task) => task?.type || null,
+    ),
   },
 };

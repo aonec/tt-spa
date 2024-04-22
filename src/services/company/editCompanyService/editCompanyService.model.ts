@@ -34,7 +34,7 @@ const $isUpdating = updateOrganizationFx.pending;
 
 sample({
   source: sample({
-    source: $currentManagingFirm.map((firm) => firm?.id),
+    source: $currentManagingFirm.map((firm) => firm?.id || null),
     filter: (id): id is number => Boolean(id),
   }),
   clock: updateOrganization,

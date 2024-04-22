@@ -134,7 +134,7 @@ sample({
   })),
   clock: sample({
     source: CreateNodeGate.state,
-    clock: $requestPayload.map(({ buildingId }) => buildingId),
+    clock: $requestPayload.map(({ buildingId }) => buildingId || null),
     filter: ({ buildingId }) => !buildingId,
   }),
   filter: (payload): payload is GetBuildingPayload =>

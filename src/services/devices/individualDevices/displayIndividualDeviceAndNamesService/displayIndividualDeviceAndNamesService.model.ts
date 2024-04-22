@@ -51,7 +51,7 @@ const $isFetchSerialNumberLoading = fetchSerialNumberForCheckFx.pending;
 
 sample({
   clock: IndividualDeviceGate.open,
-  source: IndividualDeviceGate.state.map((state) => state.id),
+  source: IndividualDeviceGate.state.map((state) => state.id || null),
   filter: Boolean,
   target: fetchIndividualDeviceFx,
 });

@@ -49,14 +49,18 @@ sample({
 });
 
 sample({
-  source: CalculatorIdGate.state.map(({ calculatorId }) => calculatorId),
+  source: CalculatorIdGate.state.map(({ calculatorId }) => calculatorId, {
+    skipVoid: false,
+  }),
   clock: createComment,
   fn: (deviceId, text) => ({ deviceId, text }),
   target: createCommentFx,
 });
 
 sample({
-  source: CalculatorIdGate.state.map(({ calculatorId }) => calculatorId),
+  source: CalculatorIdGate.state.map(({ calculatorId }) => calculatorId, {
+    skipVoid: false,
+  }),
   clock: editComment,
   fn: (deviceId, text) => ({ deviceId, text }),
   target: editCommentFx,

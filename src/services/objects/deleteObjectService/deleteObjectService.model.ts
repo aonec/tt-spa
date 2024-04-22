@@ -56,7 +56,9 @@ const $isLoading = combine(
 );
 
 split({
-  source: $building.map((building) => building?.houseCategory),
+  source: $building.map((building) => building?.houseCategory, {
+    skipVoid: false,
+  }),
   clock: deleteBuilding,
   match: (type: EHouseCategory | undefined): EHouseCategory =>
     type || EHouseCategory.Living,

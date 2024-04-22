@@ -63,6 +63,7 @@ export const displayNodeArchiveService = {
     $node: nodeProfileService.outputs.$pipeNode,
     $nodeId: nodeProfileService.gates.PipeNodeGate.state.map(
       ({ pipeNodeId }) => pipeNodeId,
+      { skipVoid: false },
     ),
     $withFaultReadings,
   },

@@ -76,7 +76,7 @@ sample({
 
 sample({
   source: sample({
-    source: $act.map((data) => data?.id),
+    source: $act.map((data) => data?.id || null),
     filter: Boolean,
   }),
   clock: deleteActDocument,
@@ -85,7 +85,7 @@ sample({
 
 sample({
   source: sample({
-    source: $act.map((data) => data?.id),
+    source: $act.map((data) => data?.id || null),
     filter: Boolean,
   }),
   clock: editActForm.formValidated,

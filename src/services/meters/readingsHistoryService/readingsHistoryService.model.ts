@@ -37,7 +37,8 @@ sample({
 
 sample({
   clock: refetchReadingHistory,
-  source: ReadingHistoryGate.state.map((value) => value.deviceId),
+  source: ReadingHistoryGate.state.map((value) => value.deviceId || null),
+  filter: (id): id is number => Boolean(id),
   target: fetchReadingHistoryFx,
 });
 

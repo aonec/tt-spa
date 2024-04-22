@@ -23,7 +23,7 @@ const $isConfirmReadingInputModalOpen =
   $onConfirmReadingInputCallback.map(Boolean);
 
 const $confirmModalTitle = $onConfirmReadingInputCallback.map(
-  (state) => state?.title,
+  (state) => state?.title || null,
 );
 
 sample({

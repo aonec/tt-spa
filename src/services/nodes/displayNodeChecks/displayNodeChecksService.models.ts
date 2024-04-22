@@ -21,7 +21,8 @@ sample({
 });
 
 sample({
-  source: NodeChecksGate.state.map(({ nodeId }) => nodeId),
+  source: NodeChecksGate.state.map(({ nodeId }) => nodeId || null),
+  filter: (id): id is number => Boolean(id),
   clock: refetchNodeChecks,
   target: getNodeChecksFx,
 });

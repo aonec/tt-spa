@@ -43,7 +43,7 @@ sample({
 
 sample({
   source: sample({
-    source: $node.map((node) => node?.id),
+    source: $node.map((node) => node?.id || null),
     filter: Boolean,
   }),
   clock: changeNodeStatus,

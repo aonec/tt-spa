@@ -186,7 +186,9 @@ const switchIndividualDevice = createEvent();
 const checkIndividualDevice = createEvent();
 
 split({
-  source: WorkWithIndividualDeviceGate.state.map(({ type }) => type),
+  source: WorkWithIndividualDeviceGate.state.map(({ type }) => type, {
+    skipVoid: false,
+  }),
   clock: submitAction,
   match: (type: WorkWithIndividualDeviceType): WorkWithIndividualDeviceType =>
     type,
@@ -198,7 +200,9 @@ split({
 });
 
 sample({
-  source: WorkWithIndividualDeviceGate.state.map(({ type }) => type),
+  source: WorkWithIndividualDeviceGate.state.map(({ type }) => type, {
+    skipVoid: false,
+  }),
   clock: [deviceChecked, deviceSwitched],
   target: actionSucceed,
 });
