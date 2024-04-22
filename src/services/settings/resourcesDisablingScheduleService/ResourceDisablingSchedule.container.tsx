@@ -20,9 +20,13 @@ import {
 import { addressSearchService } from 'services/addressSearchService/addressSearchService.models';
 import { usePermission } from 'hooks/usePermission';
 import { ESecuredIdentityRoleName } from 'api/types';
+import { houseManagementsService } from 'services/objects/houseManagementsService';
 
 const { inputs, outputs, gates } = resourceDisablingScheduleServiceService;
 const { ExistingCitiesGate } = addressSearchService.gates;
+const {
+  gates: { HouseManagementsGate },
+} = houseManagementsService;
 
 export const ResourceDisablingScheduleContainer = () => {
   const DisablingResouresGate = gates.resourceDisablingGate;
@@ -37,7 +41,7 @@ export const ResourceDisablingScheduleContainer = () => {
     openEditDisconnectionModal,
     resources,
     setPage,
-    cities,
+    houseManagements,
   } = useUnit({
     resources: outputs.$disablingResources,
     loading: outputs.$loading,
@@ -52,7 +56,7 @@ export const ResourceDisablingScheduleContainer = () => {
       editResourceDisconnectionService.inputs.openEditModal,
     openDissconectionAddressesModal:
       displayResourceDisconenctionAddressesServiceService.inputs.openModal,
-    cities: addressSearchService.outputs.$existingCities,
+    houseManagements: houseManagementsService.outputs.$houseManagements,
   });
 
   const isPermitionToChangeResourceDisabling = usePermission([
@@ -64,6 +68,7 @@ export const ResourceDisablingScheduleContainer = () => {
     <DisablingResourceWrapperContainer>
       <ExistingCitiesGate />
       <DisablingResouresGate />
+      <HouseManagementsGate />
       <CompleteResourceDisconnectionContainer />
       <DeleteResourceDisconnectionContainer />
       <DisplayResourceDisconenctionAddressesServiceContainer />
@@ -71,7 +76,7 @@ export const ResourceDisablingScheduleContainer = () => {
       <DisablingResourcesSearch
         filters={filters}
         applyFilters={setFilters}
-        cities={cities}
+        houseManagements={houseManagements || []}
       />
       <DisablingResourcesList
         resources={resources}

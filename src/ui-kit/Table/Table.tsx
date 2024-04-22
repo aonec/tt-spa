@@ -126,6 +126,7 @@ export function Table<T>({
         </div>
         {!elements.length && <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />}
       </Wrapper>
+
       {Boolean(elements.length) && pagination && (
         <PaginationWrapper>
           <Pagination

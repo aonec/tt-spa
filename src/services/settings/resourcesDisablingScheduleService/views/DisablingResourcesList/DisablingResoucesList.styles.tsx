@@ -1,3 +1,4 @@
+import { Skeleton } from 'antd';
 import styled from 'styled-components';
 
 export const DisablingResourceWrapperContainer = styled.div`
@@ -26,6 +27,7 @@ export const Wrap = styled.div`
   font-size: 12px;
   padding: 10px 20px;
   height: 49px;
+  margin-top: 16px;
 `;
 
 export const GroupWrapper = styled.div`
@@ -40,4 +42,8 @@ export const PaginationWrapper = styled.div`
   align-items: center;
   flex-direction: row-reverse;
   padding: 15px 0px;
+`;
+
+export const SkeletonSC = styled(Skeleton)`
+  margin-top: 16px;
 `;

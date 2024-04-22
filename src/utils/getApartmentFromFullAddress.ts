@@ -1,7 +1,7 @@
-import { FullAddressResponse } from 'api/types';
+import { FullAddressResponse, TaskListAddress } from 'api/types';
 
 export const getApartmentFromFullAddress = (
-  address: FullAddressResponse | null,
+  address: FullAddressResponse | TaskListAddress | null,
   isCityNeeded?: boolean,
 ) => {
   if (!address) return null;
