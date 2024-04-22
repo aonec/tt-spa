@@ -299,21 +299,23 @@ export const ReportFiltrationForm: FC<ReportFiltrationFormProps> = ({
           {!values.exportType && <div />}
           {isShowResourcesField && (
             <FormItem label="Ресурс">
-              <SelectMultiple
-                showSearch={false}
-                placeholder="Выберите"
-                value={values.resources || undefined}
-                onChange={(value) => setFieldValue('resources', value)}
-              >
-                {availableResources.map((resource) => (
-                  <SelectMultiple.Option key={resource} value={resource} di>
-                    <ResourceOption>
-                      <ResourceIconLookup resource={resource} />
-                      <div>{ResourceShortNamesDictionary[resource]}</div>
-                    </ResourceOption>
-                  </SelectMultiple.Option>
-                ))}
-              </SelectMultiple>
+              {!isShowActResourcesSelect && (
+                <SelectMultiple
+                  showSearch={false}
+                  placeholder="Выберите"
+                  value={values.resources || undefined}
+                  onChange={(value) => setFieldValue('resources', value)}
+                >
+                  {availableResources.map((resource) => (
+                    <SelectMultiple.Option key={resource} value={resource} di>
+                      <ResourceOption>
+                        <ResourceIconLookup resource={resource} />
+                        <div>{ResourceShortNamesDictionary[resource]}</div>
+                      </ResourceOption>
+                    </SelectMultiple.Option>
+                  ))}
+                </SelectMultiple>
+              )}
               {isShowActResourcesSelect && (
                 <SelectMultiple
                   placeholder="Выберите"
