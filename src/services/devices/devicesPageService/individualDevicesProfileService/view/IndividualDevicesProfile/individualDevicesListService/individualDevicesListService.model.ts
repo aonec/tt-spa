@@ -55,7 +55,7 @@ const $isLoading = fetchIndividualDevicesList.pending;
 const $isConsumptionsLoading = fetchIndividualDeviceConsumptionsListFx.pending;
 
 sample({
-  source: IndividualDevicesIds.state.map(({ devicesIds }) => devicesIds),
+  source: IndividualDevicesIds.state.map(({ devicesIds }) => devicesIds || []),
   clock: sample({
     source: $isLoading,
     clock: IndividualDevicesIds.state,

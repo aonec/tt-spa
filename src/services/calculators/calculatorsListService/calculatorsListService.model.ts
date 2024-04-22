@@ -28,13 +28,14 @@ sample({
 
 sample({
   clock: refetchCalculators,
-  source: CalculatorsGate.state.map(({ buildingId }) => buildingId),
-  filter: (buildingId) => Boolean(buildingId),
+  source: CalculatorsGate.state.map(({ buildingId }) => buildingId || null),
+  filter: (buildingId): buildingId is number => Boolean(buildingId),
   target: fetchCalculatorsFx,
 });
 
 sample({
-  clock: CalculatorsGate.state.map(({ buildingId }) => buildingId),
+  clock: CalculatorsGate.state.map(({ buildingId }) => buildingId || null),
+  filter: (id): id is number => Boolean(id),
   target: fetchCalculatorsFx,
 });
 

@@ -24,8 +24,8 @@ const $homeownerCertificate = createStore<HomeownerCertificateResponse | null>(
 ).on(fetchHomeownerCertificateFx.doneData, (_, certificate) => certificate);
 
 sample({
-  source: HomeownerCerificateGate.state.map((values) => values.id),
   clock: HomeownerCerificateGate.open,
+  source: HomeownerCerificateGate.state.map((values) => values.id || null),
   filter: Boolean,
   target: fetchHomeownerCertificateFx,
 });

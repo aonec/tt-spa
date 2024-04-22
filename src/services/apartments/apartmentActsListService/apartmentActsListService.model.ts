@@ -67,13 +67,19 @@ sample({
 });
 
 sample({
-  source: ApartmentActsListGate.state.map(({ apartmentId }) => apartmentId),
   clock: refetchApartmentActs,
+  source: ApartmentActsListGate.state.map(
+    ({ apartmentId }) => apartmentId || null,
+  ),
+  filter: (id): id is number => Boolean(id),
   target: fetchActsListFx,
 });
 
 sample({
-  clock: ApartmentActsListGate.state.map(({ apartmentId }) => apartmentId),
+  clock: ApartmentActsListGate.state.map(
+    ({ apartmentId }) => apartmentId || null,
+  ),
+  filter: (id): id is number => Boolean(id),
   target: fetchActsListFx,
 });
 

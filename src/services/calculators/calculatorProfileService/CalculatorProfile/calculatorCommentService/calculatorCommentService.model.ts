@@ -40,8 +40,11 @@ const $commentResponseData = createStore<CalculatorCommentResponse | null>(null)
   .on(editCommentFx.doneData, (_, comment) => comment);
 
 sample({
-  source: CalculatorIdGate.state.map(({ calculatorId }) => calculatorId),
   clock: removeComment,
+  source: CalculatorIdGate.state.map(
+    ({ calculatorId }) => calculatorId || null,
+  ),
+  filter: (id): id is number => Boolean(id),
   target: removeCommentFx,
 });
 

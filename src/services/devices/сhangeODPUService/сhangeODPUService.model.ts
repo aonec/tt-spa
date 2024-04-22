@@ -38,7 +38,8 @@ const $isLoadingSwitch = switchHousingMeteringDeviceFx.pending;
 $oldDevice.on(getHousingMeteringDeviceFx.doneData, (_, device) => device);
 
 sample({
-  clock: OldDeviceIdGate.state.map(({ oldDeviceId }) => oldDeviceId),
+  clock: OldDeviceIdGate.state.map(({ oldDeviceId }) => oldDeviceId || null),
+  filter: (id): id is number => Boolean(id),
   target: getHousingMeteringDeviceFx,
 });
 

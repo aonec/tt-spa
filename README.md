@@ -34,7 +34,7 @@
 ### deleteIndividualDeviceService.models.ts
 Объявляются базовые компоненты сервиса, описывются связи внутри сервиса, экспортится объект модели с полями inputs и outputs 
 ```ts
-import { createDomain, guard } from 'effector';
+import { createDomain, sample } from 'effector';
 import { IndividualDeviceListItemResponse } from 'api/types';
 import { deleteDevice } from './deleteIndividualDeviceService.api';
 
@@ -64,7 +64,7 @@ $currentIndividualDevice
   .on(deleteDeviceModalOpened, (_, device) => device)
   .reset(deleteDeviceModalClosed, deleteIndividualDeviceFx.doneData);
 
-guard({
+sample({
   source: $currentIndividualDevice.map((device) => device?.id),
   clock: acceptDeleteDevice,
   filter: (id): id is number => typeof id === 'number',

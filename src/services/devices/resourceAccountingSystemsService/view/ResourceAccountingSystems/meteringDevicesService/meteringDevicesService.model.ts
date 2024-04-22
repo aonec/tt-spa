@@ -33,7 +33,7 @@ const $meterindDevicesList = createStore<
   .reset(clearMeteringDevicesList);
 
 sample({
-  clock: $pipeNode.map((node) => node?.id),
+  clock: $pipeNode.map((node) => node?.id || null),
   filter: (id): id is number => typeof id === 'number',
   target: fetchMeteringDevices,
 });

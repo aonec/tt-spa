@@ -32,11 +32,15 @@ const $currentSegment = createStore<SegmentType>('cells').on(
 );
 
 sample({
-  source: ApartmentsListGate.state.map(({ housingStockId }) => housingStockId),
+  source: ApartmentsListGate.state.map(
+    ({ housingStockId }) => housingStockId || null,
+  ),
   clock: sample({
     source: combine(
       $apartmentsPagedList,
-      ApartmentsListGate.state.map(({ housingStockId }) => housingStockId),
+      ApartmentsListGate.state.map(
+        ({ housingStockId }) => housingStockId || null,
+      ),
     ),
     clock: ApartmentsListGate.open,
     filter: ([apartmentsPagedList, housingStockId]) => {
@@ -46,6 +50,7 @@ sample({
       return apartmentHosuingStockId !== housingStockId;
     },
   }),
+  filter: (id): id is number => Boolean(id),
   target: fetchApartmentsList,
 });
 

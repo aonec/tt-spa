@@ -44,8 +44,9 @@ sample({
 });
 
 sample({
-  source: ApartmentGate.state.map(({ apartmentId }) => apartmentId),
   clock: refetchAaprtment,
+  source: ApartmentGate.state.map(({ apartmentId }) => apartmentId || null),
+  filter: (id): id is number => Boolean(id),
   target: fetchApartmentFx,
 });
 
