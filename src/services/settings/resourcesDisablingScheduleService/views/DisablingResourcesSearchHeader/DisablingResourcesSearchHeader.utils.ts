@@ -9,5 +9,4 @@ export const ResourceDisconnectingClassLookUp: {
   [EResourceDisconnectingType.Preventive]: 'Профилактическое',
   [EResourceDisconnectingType.Repair]: 'КАП Ремонт',
   [EResourceDisconnectingType.InterHeatingSeason]: 'Межотопительный сезон',
-  [EResourceDisconnectingType.InterHeatingSeason]: 'Межотопительный',
 };

@@ -1,8 +1,9 @@
 import React, { useMemo } from 'react';
-import { Divider, Pagination, Skeleton } from 'antd';
+import { Divider, Pagination } from 'antd';
 import {
   GroupWrapper,
   PaginationWrapper,
+  SkeletonSC,
   Wrap,
 } from './DisablingResoucesList.styles';
 import { DisablingListProps } from './DisablingResourcesList.types';
@@ -22,7 +23,7 @@ export const DisablingResourcesList: React.FC<DisablingListProps> = ({
 
   const list = useMemo(() => {
     if (loading) {
-      return <Skeleton active />;
+      return <SkeletonSC active />;
     }
     return (
       <>
