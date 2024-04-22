@@ -21,9 +21,14 @@ import {
   prepareAddressesTreeData,
 } from './ReportFiltrationForm.utils';
 import { SelectMultiple } from 'ui-kit/SelectMultiple';
-import { EActResourceType, EIndividualDeviceReportOption } from 'api/types';
+import {
+  EActResourceType,
+  EActType,
+  EIndividualDeviceReportOption,
+} from 'api/types';
 import { ResourceIconLookup } from 'ui-kit/shared/ResourceIconLookup';
 import {
+  ActTypeDictionary,
   ClosingReasonsDictionary,
   ReportOptionsDictionary,
   ResourceShortNamesDictionary,
@@ -94,6 +99,8 @@ export const ReportFiltrationForm: FC<ReportFiltrationFormProps> = ({
   }, [values.reportOption]);
 
   const isEmployeeReport = reportType === ReportType.Employee;
+
+  const isActsJournalReport = reportType === ReportType.ActsJournal;
 
   const isCallCenterReport =
     values.employeeReportType === EmployeeReportType.CallCenterWorkingReport;
@@ -334,6 +341,23 @@ export const ReportFiltrationForm: FC<ReportFiltrationFormProps> = ({
               )}
             </FormItem>
           )}
+
+          {isActsJournalReport && (
+            <FormItem label="Тип документа">
+              <Select
+                placeholder="Выберите из списка"
+                value={values.actType || undefined}
+                onChange={(value) => setFieldValue('actType', value)}
+              >
+                {Object.values(EActType).map((actType) => (
+                  <Select.Option key={actType} value={actType}>
+                    {ActTypeDictionary[actType]}
+                  </Select.Option>
+                ))}
+              </Select>
+            </FormItem>
+          )}
+
           {isShowReportOptionSelect && (
             <>
               <FormItem label="Вид отчета">

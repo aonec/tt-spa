@@ -157,3 +157,13 @@ export const TaskTypeDictionary: { [key in EisTaskType]: string } = {
   [EisTaskType.Current]: 'Текущая',
   [EisTaskType.Emergency]: 'Аварийная',
 };
+
+export const ActTypeDictionary: { [key in EActType]: string } = {
+  [EActType.PlannedCheck]: 'Плановая проверка',
+  [EActType.UnplannedCheck]: 'Внеплановая проверка',
+  [EActType.ResourceDisconnect]: 'Отключение ресурса',
+  [EActType.ResourceConnect]: 'Подключение ресурса',
+  [EActType.HomeownerAccountCertificate]: 'Справка о лицевом счете',
+  [EActType.Admission]: 'Акт допуска',
+  [EActType.NonAdmission]: 'Акт недопуска',
+};

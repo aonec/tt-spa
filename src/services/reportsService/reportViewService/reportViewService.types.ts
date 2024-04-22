@@ -1,6 +1,7 @@
 import {
   CallCenterWorkingConstructedReportResponse,
   EActResourceType,
+  EActType,
   EClosingReason,
   EIndividualDeviceReportOption,
   EResourceType,
@@ -51,6 +52,7 @@ export interface ReportFiltrationFormValues {
   employeeReportDatePeriodType: EmployeeReportDatePeriodType | null;
   employeeReportDate: dayjs.Dayjs | null;
   reportType?: ReportType;
+  actType?: EActType | null;
 }
 
 export interface AddressSearch {
@@ -77,6 +79,7 @@ export interface ActsJournalReportRequestPayload extends AddressSearch {
   Resources?: EActResourceType[];
   From?: string | null;
   To?: string | null;
+  ActType?: EActType | null;
 }
 
 export interface HousingMeteringDevicesReportRequestPayload

@@ -135,6 +135,7 @@ export const prepareActJournalReportRequestPayload = (
     From: dates?.from,
     To: dates?.to,
     Resources: values.actResources,
+    ActType: values.actType,
   };
 };
 
