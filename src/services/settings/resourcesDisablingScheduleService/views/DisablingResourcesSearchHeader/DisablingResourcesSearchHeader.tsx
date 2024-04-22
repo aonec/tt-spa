@@ -20,7 +20,6 @@ import {
   SearchFieldType,
 } from 'services/addressSearchService/view/AddressSearch/AddressSearch.types';
 import { Input } from 'ui-kit/Input';
-import { useDebounce } from 'hooks/useDebounce';
 import { ResourceIconLookup } from 'ui-kit/shared/ResourceIconLookup';
 import { pick } from 'lodash';
 
@@ -52,11 +51,9 @@ export const DisablingResourcesSearch: React.FC<
     onSubmit: applyFilters,
   });
 
-  const deouncedFiltes = useDebounce(values, 500);
-
   useEffect(() => {
     handleSubmit();
-  }, [handleSubmit, deouncedFiltes]);
+  }, [handleSubmit, values]);
 
   const addressFilters = useMemo<AddressSearchValues>(() => {
     const { city, street, house, corpus } = values;

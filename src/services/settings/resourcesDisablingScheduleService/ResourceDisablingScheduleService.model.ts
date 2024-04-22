@@ -8,11 +8,15 @@ import {
 } from './ResourceDisablingScheduleService.types';
 import { fetchDisablingResources } from './ResourceDisablingScheduleService.api';
 import { getResourceDisconnectionQueryParams } from './ResourceDisablingScheduleService.utils';
+import { debounce } from 'patronum';
 
 const resourceDisablingGate = createGate<DisablingResourcesFilters>();
 
 const setFilters = createEvent<DisablingResourcesFilters>();
 const setPage = createEvent<number>();
+
+const handleSubmit = createEvent<DisablingResourcesQueryParams>();
+const debouncedSubmit = debounce({ source: handleSubmit, timeout: 500 });
 
 const refetchResourceDisconnections = createEvent();
 const getResourceDisconnectionsFx = createEffect<
@@ -42,7 +46,7 @@ sample({
   source: $filters,
   clock: [resourceDisablingGate.open, $filters, refetchResourceDisconnections],
   fn: getResourceDisconnectionQueryParams,
-  target: getResourceDisconnectionsFx,
+  target: handleSubmit,
 });
 
 sample({
@@ -53,6 +57,11 @@ sample({
     filter: (isOpen) => isOpen,
   }),
   fn: getResourceDisconnectionQueryParams,
+  target: handleSubmit,
+});
+
+sample({
+  clock: debouncedSubmit,
   target: getResourceDisconnectionsFx,
 });
 
