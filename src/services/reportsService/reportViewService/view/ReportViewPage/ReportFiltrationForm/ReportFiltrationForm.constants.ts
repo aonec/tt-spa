@@ -10,6 +10,9 @@ export const ReportPeriodDictionary: { [key in ReportDatePeriod]: string } = {
   [ReportDatePeriod.LastSevenDays]: 'Последние 7 дней',
   [ReportDatePeriod.FromStartOfMonth]: 'С начала месяца',
   [ReportDatePeriod.PreviousMonth]: 'За прошлый месяц',
+  [ReportDatePeriod.Expired]: 'Истекла',
+  [ReportDatePeriod.ExpiresInNextMonth]: 'Истекает в этом месяце',
+  [ReportDatePeriod.ExpiresInNextTwoMonth]: 'Истекает в следующие 2 месяца',
   [ReportDatePeriod.AnyPeriod]: 'Произвольный период',
 };
 
