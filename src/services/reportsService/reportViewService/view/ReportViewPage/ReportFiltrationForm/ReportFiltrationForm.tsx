@@ -92,6 +92,14 @@ export const ReportFiltrationForm: FC<ReportFiltrationFormProps> = ({
     values.houseManagement,
   );
 
+  useEffect(() => {
+    if (organizations?.items?.length === 1) {
+      const singularOrganization = organizations?.items[0];
+
+      setFieldValue('organizationId', singularOrganization.id);
+    }
+  }, [organizations, setFieldValue, values.exportType]);
+
   const isClosedDeviceOnOneOfRisers = useMemo(() => {
     return (
       values.reportOption ===
