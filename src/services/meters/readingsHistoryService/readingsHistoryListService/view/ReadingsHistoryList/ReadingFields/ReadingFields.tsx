@@ -5,6 +5,7 @@ import {
   EditableFieldWrap,
   FieldsWrap,
   Prefix,
+  Suffix,
   ValueLine,
 } from './ReadingFields.styled';
 import { ReadingFieldsProps } from './ReadingFields.types';
@@ -88,15 +89,17 @@ export const RenderReadingFields: React.FC<ReadingFieldsProps> = (props) => {
         isOnlyOne={isOnlyOne || values?.length === 1}
         status={status!}
       >
+        <Prefix>{prefix}</Prefix>
         <EditableField
           type="number"
           disabled={!editable}
           className={`history-reading-field`}
-          value={String(value)}
-          suffix={globalSuffix}
-          prefix={<Prefix>{prefix}</Prefix>}
-          onChange={(e) => onChangeHandler(e, index)}
+          value={value ? String(value) : undefined}
+          onChange={(e) => {
+            onChangeHandler(e, index);
+          }}
         />
+        <Suffix>{globalSuffix}</Suffix>
       </EditableFieldWrap>
     );
   };

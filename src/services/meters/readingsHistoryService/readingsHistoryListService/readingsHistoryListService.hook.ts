@@ -1,6 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
 import { IndividualDeviceReadingsYearHistoryResponse } from 'api/types';
-
 import { useParams } from 'react-router-dom';
 import {
   IndividualDeviceReadingsHistoryResponse,
@@ -197,9 +196,12 @@ export function useOpenedYears(
         years?.map((elem) => ({
           year: elem.year,
           open: true,
-          openedMonths: [],
+          openedMonths:
+            openedYears.find((openedYear) => openedYear.year === elem.year)
+              ?.openedMonths || [],
         })) || [],
       ),
+    // eslint-disable-next-line
     [years],
   );
 
