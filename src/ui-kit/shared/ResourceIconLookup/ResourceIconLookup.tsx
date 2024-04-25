@@ -1,7 +1,12 @@
-import { EActResourceType, EResourceType } from 'api/types';
+import {
+  EActResourceType,
+  EResourceType,
+  ETaskTargetObjectInfo,
+} from 'api/types';
 import React, { FC } from 'react';
 import {
   AllResourcesIcon,
+  CalculatorIcon,
   ColdWaterSupplyIcon,
   ElectricityIcon,
   HeatIcon,
@@ -14,7 +19,9 @@ export const resourceIconLookup: Icons = {
   [EResourceType.HotWaterSupply]: HotWaterSupplyIcon,
   [EResourceType.Electricity]: ElectricityIcon,
   [EActResourceType.All]: AllResourcesIcon,
+  [ETaskTargetObjectInfo.MultipleResources]: AllResourcesIcon,
   [EActResourceType.Heat]: HeatIcon,
+  [ETaskTargetObjectInfo.Calculator]: CalculatorIcon,
 };
 
 export const ResourceIconLookup: FC<ResourceIconLookupProps> = ({
