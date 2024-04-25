@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom';
 import { SortButton } from 'services/actsJournalService/view/ActsJournalProfile/ActsListHeader/SortButton';
 import arrowLeft from '../icons/svg/arrowLeft.svg';
 import arrowRight from '../icons/svg/arrowRight.svg';
+import arrowTop from '../icons/svg/arrowTop.svg';
+import arrowBottom from '../icons/svg/arrowBottom2.svg';
 
 const stickyWrapperCss = css`
   max-height: 64vh;
@@ -18,17 +20,18 @@ export const Wrapper = styled.div<{ floating: boolean; isSticky?: boolean }>`
   width: ${({ floating }) => (floating ? '100%' : 'min-content')};
   ${({ isSticky }) => (isSticky ? stickyWrapperCss : '')}
 
-  &::-webkit-scrollbar:horizontal {
+  &::-webkit-scrollbar {
     height: 26px;
+    width: 26px;
   }
 
-  &::-webkit-scrollbar-track:horizontal {
+  &::-webkit-scrollbar-track {
     background-color: #f3f5f6;
     border-top: 1px solid #dcdee4;
     border-bottom: 1px solid #dcdee4;
   }
 
-  &::-webkit-scrollbar-thumb:horizontal {
+  &::-webkit-scrollbar-thumb {
     border: solid 5px transparent;
     background-clip: content-box;
     background-color: #dcdee4;
@@ -36,12 +39,12 @@ export const Wrapper = styled.div<{ floating: boolean; isSticky?: boolean }>`
   }
 
   &::-webkit-scrollbar-thumb:hover {
-    background-color: rgba(112, 112, 112, 0.4);
+    background-color: rgba(112, 112, 112, 0.5);
     cursor: pointer;
     user-select: none;
   }
 
-  &::-webkit-scrollbar-button:horizontal {
+  &::-webkit-scrollbar-button {
     width: 28px;
     background-color: #fff;
     border: 1px solid #dcdee4;
@@ -62,12 +65,25 @@ export const Wrapper = styled.div<{ floating: boolean; isSticky?: boolean }>`
     background-image: url(${arrowRight});
   }
 
-  &::-webkit-scrollbar-button:horizontal:start:increment {
+  &::-webkit-scrollbar-button:vertical:start:decrement {
+    border-start-end-radius: 6px;
+    border-start-start-radius: 6px;
+    height: 24px;
+    background-image: url(${arrowTop});
+  }
+  &::-webkit-scrollbar-button:vertical:end:increment {
+    border-end-end-radius: 6px;
+    border-end-start-radius: 6px;
+    height: 24px;
+    background-image: url(${arrowBottom});
+  }
+
+  &::-webkit-scrollbar-button:start:increment {
     width: 0px;
     display: none;
   }
 
-  &::-webkit-scrollbar-button:horizontal:end:decrement {
+  &::-webkit-scrollbar-button:end:decrement {
     width: 0px;
     display: none;
   }

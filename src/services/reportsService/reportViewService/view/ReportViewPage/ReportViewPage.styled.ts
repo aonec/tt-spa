@@ -8,8 +8,13 @@ export const Wrapper = styled.div`
 `;
 
 export const ExtendedSearchWrapper = styled.div`
-  margin-top: 32px;
-  margin-bottom: 16px;
+  padding-bottom: 10px;
+`;
+
+export const HeaderWrapper = styled.div`
+  position: relative;
+  z-index: 110;
+  background-color: #fff;
 `;
 
 export const FiltrationInfoWrapper = styled.div`
@@ -59,4 +64,5 @@ export const ButtonSC = styled(Button)`
 
 export const PageHaderSC = styled(PageHeader)`
   margin-top: 16px;
+  margin-bottom: 32px;
 `;

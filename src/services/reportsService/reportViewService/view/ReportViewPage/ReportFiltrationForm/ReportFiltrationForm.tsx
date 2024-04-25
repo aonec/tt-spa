@@ -50,6 +50,7 @@ import { actResourceNamesLookup } from 'utils/actResourceNamesLookup';
 import { TreeSelect } from 'ui-kit/TreeSelect';
 import { DatePicker } from 'ui-kit/DatePicker';
 import { ExportReportTypeTranslatesLookup } from 'services/reportsService/reportViewService/reportViewService.constants';
+import dayjs from 'dayjs';
 
 const { gates, inputs } = reportViewService;
 const { HouseManagementsGate } = gates;
@@ -90,6 +91,14 @@ export const ReportFiltrationForm: FC<ReportFiltrationFormProps> = ({
     addressesWithHouseManagements,
     values.houseManagement,
   );
+
+  useEffect(() => {
+    if (organizations?.items?.length === 1) {
+      const singularOrganization = organizations?.items[0];
+
+      setFieldValue('organizationId', singularOrganization.id);
+    }
+  }, [organizations, setFieldValue, values.exportType]);
 
   const isClosedDeviceOnOneOfRisers = useMemo(() => {
     return (
@@ -163,6 +172,12 @@ export const ReportFiltrationForm: FC<ReportFiltrationFormProps> = ({
                   !values.employeeReportType ||
                   !values.employeeReportDatePeriodType
                 }
+                disabledDate={(selectableDate) => {
+                  const selectableYear = selectableDate.year();
+                  const currentYear = dayjs().year();
+
+                  return selectableYear > currentYear;
+                }}
               />
             )}
             {isCallCenterReport && (
@@ -172,6 +187,12 @@ export const ReportFiltrationForm: FC<ReportFiltrationFormProps> = ({
                 onChange={(dates) => {
                   setFieldValue('from', dates?.[0]);
                   setFieldValue('to', dates?.[1]);
+                }}
+                disabledDate={(selectableDate) => {
+                  const selectableYear = selectableDate.year();
+                  const currentYear = dayjs().year();
+
+                  return selectableYear > currentYear;
                 }}
               />
             )}
@@ -223,7 +244,11 @@ export const ReportFiltrationForm: FC<ReportFiltrationFormProps> = ({
             <Select
               placeholder="Выберите"
               value={values.exportType}
-              onChange={(exportType) => setFieldValue('exportType', exportType)}
+              onChange={(exportType) => {
+                setFieldValue('exportType', exportType);
+                setFieldValue('houseManagement', null);
+                setFieldValue('organizationId', null);
+              }}
             >
               {Object.values(ExportReportType).map((reportType) => (
                 <Select.Option key={reportType} value={reportType}>
@@ -430,6 +455,12 @@ export const ReportFiltrationForm: FC<ReportFiltrationFormProps> = ({
               <PeriodPickerWrapprer>
                 <RangePicker
                   small
+                  disabledDate={(selectableDate) => {
+                    const selectableYear = selectableDate.year();
+                    const currentYear = dayjs().year();
+
+                    return selectableYear > currentYear;
+                  }}
                   disabled={
                     values.reportDatePeriod !== ReportDatePeriod.AnyPeriod ||
                     isClosedDeviceOnOneOfRisers
