@@ -193,15 +193,15 @@ export function useOpenedYears(
   useEffect(
     () =>
       setOpenedYears(
-        years?.map((elem) => ({
-          year: elem.year,
-          open: true,
-          openedMonths:
-            openedYears.find((openedYear) => openedYear.year === elem.year)
-              ?.openedMonths || [],
-        })) || [],
+        (prev) =>
+          years?.map((elem) => ({
+            year: elem.year,
+            open: true,
+            openedMonths:
+              prev.find((openedYear) => openedYear.year === elem.year)
+                ?.openedMonths || [],
+          })) || [],
       ),
-    // eslint-disable-next-line
     [years],
   );
 
