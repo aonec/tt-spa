@@ -12,15 +12,21 @@ import {
 } from './EditCommonDataForm.styled';
 import { EditCommonDataFormProps } from './EditCommonDataForm.types';
 import { useNavigate } from 'react-router-dom';
-import { useForm } from 'effector-forms';
+import { useFormik } from 'formik';
 
 export const EditCommonDataForm: FC<EditCommonDataFormProps> = ({
   isUpdatingApartmentLoading,
-  form,
+  initialValues,
+  handleEditCommonData,
 }) => {
-  const { fields, submit } = useForm(form);
-
   const navigate = useNavigate();
+
+  const { values, setFieldValue, handleSubmit } = useFormik({
+    initialValues,
+    onSubmit: (data) => {
+      handleEditCommonData(data);
+    },
+  });
 
   return (
     <Wrapper>
@@ -28,8 +34,8 @@ export const EditCommonDataForm: FC<EditCommonDataFormProps> = ({
         <InputWithAddon
           type="number"
           placeholder="Введите площадь"
-          value={fields.Square.value || undefined}
-          onChange={(e) => fields.Square.onChange(e.target.value)}
+          value={values.Square || undefined}
+          onChange={(e) => setFieldValue('Square', e.target.value)}
           name="Square"
           addonAfter={
             <SquareAddonWrapper>
@@ -43,9 +49,9 @@ export const EditCommonDataForm: FC<EditCommonDataFormProps> = ({
           <Input
             type="number"
             placeholder="Введите количество"
-            value={fields.ColdWaterRiserCount.value || undefined}
+            value={values.ColdWaterRiserCount || undefined}
             onChange={(e) =>
-              fields.ColdWaterRiserCount.onChange(e.target.value)
+              setFieldValue('ColdWaterRiserCount', e.target.value)
             }
             name="ColdWaterRiserCount"
           />
@@ -54,8 +60,10 @@ export const EditCommonDataForm: FC<EditCommonDataFormProps> = ({
           <Input
             type="number"
             placeholder="Введите количество"
-            value={fields.HotWaterRiserCount.value || undefined}
-            onChange={(e) => fields.HotWaterRiserCount.onChange(e.target.value)}
+            value={values.HotWaterRiserCount || undefined}
+            onChange={(e) =>
+              setFieldValue('HotWaterRiserCount', e.target.value)
+            }
             name="HotWaterRiserCount"
           />
         </FormItem>
@@ -63,8 +71,8 @@ export const EditCommonDataForm: FC<EditCommonDataFormProps> = ({
           <Input
             type="number"
             placeholder="Введите количество"
-            value={fields.NumberOfLiving.value || undefined}
-            onChange={(e) => fields.NumberOfLiving.onChange(e.target.value)}
+            value={values.NumberOfLiving || undefined}
+            onChange={(e) => setFieldValue('NumberOfLiving', e.target.value)}
             name="NumberOfLiving"
           />
         </FormItem>
@@ -72,9 +80,9 @@ export const EditCommonDataForm: FC<EditCommonDataFormProps> = ({
           <Input
             type="number"
             placeholder="Введите количество"
-            value={fields.NormativeNumberOfLiving.value || undefined}
+            value={values.NormativeNumberOfLiving || undefined}
             onChange={(e) =>
-              fields.NormativeNumberOfLiving.onChange(e.target.value)
+              setFieldValue('NormativeNumberOfLiving', e.target.value)
             }
             name="NormativeNumberOfLiving"
           />
@@ -87,7 +95,7 @@ export const EditCommonDataForm: FC<EditCommonDataFormProps> = ({
         </Button>
         <SaveButtonWrapper>
           <Button
-            onClick={() => submit()}
+            onClick={() => handleSubmit()}
             isLoading={isUpdatingApartmentLoading}
           >
             Сохранить
