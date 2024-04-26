@@ -1,6 +1,7 @@
 import { Form } from 'antd';
 import { EActResourceType, EActType, EDocumentType } from 'api/types';
 import React, { FC, useState } from 'react';
+import * as yup from 'yup';
 import { ResourceInfo } from 'ui-kit/shared/ResourceInfo';
 import {
   DatePickerSC,
@@ -31,7 +32,13 @@ export const CreateApartmentActForm: FC<CreateApartmentActFormProps> = ({
       actType: EActType.Admission,
       documentId: null,
     },
-    // validate: true ,
+    validationSchema: yup.object().shape({
+      actJobDate: yup.string().required('Это поле обязательно'),
+      registryNumber: yup.string().required('Это поле обязательно'),
+      actResourceType: yup.string().required('Это поле обязательно'),
+      actType: yup.string().required('Это поле обязательно'),
+    }),
+    validateOnChange: false,
     onSubmit: (data) => {
       handleSubmitForm(data);
     },
