@@ -1,7 +1,6 @@
 import { Form } from 'antd';
 import { EActResourceType, EActType, EDocumentType } from 'api/types';
 import React, { FC, useState } from 'react';
-import * as yup from 'yup';
 import { ResourceInfo } from 'ui-kit/shared/ResourceInfo';
 import {
   DatePickerSC,
@@ -19,6 +18,7 @@ import { Select } from 'ui-kit/Select';
 import { ActTypesNamesLookup } from 'dictionaries';
 import { getDatePickerValue } from 'utils/getDatePickerValue';
 import { useFormik } from 'formik';
+import * as yup from 'yup';
 
 export const CreateApartmentActForm: FC<CreateApartmentActFormProps> = ({
   formId,

@@ -5,7 +5,7 @@ import { useUnit } from 'effector-react';
 import { CloseIndividualDeviceForm } from './view/CloseIndividualDeviceForm';
 import { apartmentIndividualDevicesMetersService } from 'services/meters/apartmentIndividualDevicesMetersService';
 
-const { forms, inputs, outputs } = closeIndividualDeviceService;
+const { inputs, outputs } = closeIndividualDeviceService;
 const formId = 'close-individual-device-form';
 
 export const CloseIndividualDeviceContainer = () => {
@@ -17,6 +17,8 @@ export const CloseIndividualDeviceContainer = () => {
     lastReading,
     isBannerShown,
     openReadingsHistoryModal,
+    handleSubmitForm,
+    handleSetClosingDate,
   } = useUnit({
     device: outputs.$closingDevice,
     isOpen: outputs.$isOpen,
@@ -26,6 +28,8 @@ export const CloseIndividualDeviceContainer = () => {
     isBannerShown: outputs.$isBannerShown,
     openReadingsHistoryModal:
       apartmentIndividualDevicesMetersService.inputs.openReadingsHistoryModal,
+    handleSubmitForm: inputs.handleSubmitForm,
+    handleSetClosingDate: inputs.handleSetClosingDate,
   });
 
   return (
@@ -41,12 +45,13 @@ export const CloseIndividualDeviceContainer = () => {
       disabled={isBannerShown}
       form={
         <CloseIndividualDeviceForm
-          form={forms.closeIndividualDeviceForm}
           formId={formId}
           device={device}
           lastReading={lastReading}
           isBannerShown={isBannerShown}
           openReadingsHistoryModal={openReadingsHistoryModal}
+          handleSubmitForm={handleSubmitForm}
+          handleSetClosingDate={handleSetClosingDate}
         />
       }
     />
