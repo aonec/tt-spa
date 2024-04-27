@@ -74,9 +74,11 @@ sample({
   target: editActForm.reset,
 });
 
+const $actId = $act.map((act) => act?.id || null);
+
 sample({
   source: sample({
-    source: $act.map((data) => data?.id || null),
+    source: $actId,
     filter: Boolean,
   }),
   clock: deleteActDocument,

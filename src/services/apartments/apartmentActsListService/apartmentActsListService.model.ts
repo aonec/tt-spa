@@ -66,11 +66,13 @@ sample({
   target: saveFileFx,
 });
 
+const $apartmentId = ApartmentActsListGate.state.map(
+  ({ apartmentId }) => apartmentId || null,
+);
+
 sample({
   clock: refetchApartmentActs,
-  source: ApartmentActsListGate.state.map(
-    ({ apartmentId }) => apartmentId || null,
-  ),
+  source: $apartmentId,
   filter: (id): id is number => Boolean(id),
   target: fetchActsListFx,
 });
