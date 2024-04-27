@@ -15,6 +15,7 @@ export type IndividualDevicesExtendedSearchProps = {
 };
 
 export enum EExpiresDateAtExtended {
+  CurrentMonth = 'CurrentMonth',
   NextMonth = 'NextMonth',
   NextTwoMonth = 'NextTwoMonth',
   Past = 'Past',

@@ -64,30 +64,6 @@ export interface AddOrUpdateNodeWorkingRangeRequest {
   max?: number | null;
 }
 
-export interface AddOrganizationModel {
-  name: string;
-  city: string;
-  street: string;
-  corpus?: string | null;
-  houseNumber: string;
-  timeZone: TimeSpan;
-  /** @format uuid */
-  responsibilityZoneId?: string | null;
-  phoneNumber?: string | null;
-  type: OrganizationType;
-}
-
-export interface AddOrganizationUserModel {
-  email?: string | null;
-  lastName: string;
-  firstName: string;
-  middleName?: string | null;
-  phoneNumber?: string | null;
-  department?: string | null;
-  roles: SecuredIdentityRoleName[];
-  position?: string | null;
-}
-
 export interface AddOrganizationUserWorkingStatusRequest {
   /** @format int32 */
   userId?: number;
@@ -97,13 +73,6 @@ export interface AddOrganizationUserWorkingStatusRequest {
   /** @format date-time */
   endDate?: string | null;
   reassignments?: OrganizationUserTaskReassignment[] | null;
-}
-
-export interface AddOrganizationUsersModel {
-  addOrganizationRequest?: AddOrganizationModel | null;
-  /** @format int32 */
-  organizationId?: number | null;
-  addOrganizationUserRequests: AddOrganizationUserModel[];
 }
 
 export interface AddressResponse {
@@ -1650,6 +1619,7 @@ export interface EDocumentTypeStringDictionaryItemListSuccessApiResponse {
 }
 
 export enum EExpiresDateAt {
+  CurrentMonth = 'CurrentMonth',
   NextMonth = 'NextMonth',
   NextTwoMonth = 'NextTwoMonth',
   Past = 'Past',
@@ -4420,12 +4390,6 @@ export interface OrganizationResponseSuccessApiResponse {
   successResponse: OrganizationResponse | null;
 }
 
-export enum OrganizationType {
-  ManagementFirm = 'ManagementFirm',
-  CallCenter = 'CallCenter',
-  ControllerFirm = 'ControllerFirm',
-}
-
 export interface OrganizationUpdateRequest {
   name?: string | null;
   city?: string | null;
@@ -4996,20 +4960,6 @@ export interface ResourceDisconnectingUpdateRequest {
   sender?: string | null;
   /** @format int32 */
   documentId?: number | null;
-}
-
-export enum SecuredIdentityRoleName {
-  Administrator = 'Administrator',
-  ManagingFirmExecutor = 'ManagingFirmExecutor',
-  Homeowner = 'Homeowner',
-  Operator = 'Operator',
-  Admin = 'Admin',
-  ManagingFirmSpectator = 'ManagingFirmSpectator',
-  ManagingFirmDispatcher = 'ManagingFirmDispatcher',
-  Controller = 'Controller',
-  SeniorOperator = 'SeniorOperator',
-  ManagingFirmSpectatorRestricted = 'ManagingFirmSpectatorRestricted',
-  ManagingFirmSpectatingAdministrator = 'ManagingFirmSpectatingAdministrator',
 }
 
 export interface SendGroupReportRequest {
@@ -5636,31 +5586,6 @@ export interface TemperatureNormativeUpdateRequest {
   /** @format int32 */
   downTemperatureDeviationPercentLimit?: number | null;
   updateRows?: TemperatureNormativeRowUpdate[] | null;
-}
-
-export interface TimeSpan {
-  /** @format int64 */
-  ticks?: number;
-  /** @format int32 */
-  days?: number;
-  /** @format int32 */
-  hours?: number;
-  /** @format int32 */
-  milliseconds?: number;
-  /** @format int32 */
-  minutes?: number;
-  /** @format int32 */
-  seconds?: number;
-  /** @format double */
-  totalDays?: number;
-  /** @format double */
-  totalHours?: number;
-  /** @format double */
-  totalMilliseconds?: number;
-  /** @format double */
-  totalMinutes?: number;
-  /** @format double */
-  totalSeconds?: number;
 }
 
 export interface TokenResponse {
@@ -10154,160 +10079,6 @@ export class Api<
         query: query,
         secure: true,
         format: 'json',
-        ...params,
-      }),
-
-    /**
-     * @description Роли:<li>Администратор системы</li>
-     *
-     * @tags Imports
-     * @name ImportsAddOrganizationUsersFromFileCreate
-     * @summary DataMigration
-     * @request POST:/api/Imports/AddOrganizationUsersFromFile
-     * @secure
-     */
-    importsAddOrganizationUsersFromFileCreate: (
-      data: {
-        ContentType?: string;
-        ContentDisposition?: string;
-        Headers?: Record<string, string[]>;
-        /** @format int64 */
-        Length?: number;
-        Name?: string;
-        FileName?: string;
-      },
-      params: RequestParams = {},
-    ) =>
-      this.request<string, ErrorApiResponse>({
-        path: `/api/Imports/AddOrganizationUsersFromFile`,
-        method: 'POST',
-        body: data,
-        secure: true,
-        type: ContentType.FormData,
-        format: 'json',
-        ...params,
-      }),
-
-    /**
-     * @description Роли:<li>Администратор системы</li>
-     *
-     * @tags Imports
-     * @name ImportsAddOrganizationUsersCreate
-     * @summary DataMigration
-     * @request POST:/api/Imports/AddOrganizationUsers
-     * @secure
-     */
-    importsAddOrganizationUsersCreate: (
-      data: AddOrganizationUsersModel,
-      params: RequestParams = {},
-    ) =>
-      this.request<string, ErrorApiResponse>({
-        path: `/api/Imports/AddOrganizationUsers`,
-        method: 'POST',
-        body: data,
-        secure: true,
-        type: ContentType.Json,
-        format: 'json',
-        ...params,
-      }),
-
-    /**
-     * @description Роли:<li>Администратор системы</li>
-     *
-     * @tags Imports
-     * @name ImportsImportOrganizationCreate
-     * @summary DataMigration
-     * @request POST:/api/Imports/ImportOrganization
-     * @secure
-     */
-    importsImportOrganizationCreate: (
-      query: {
-        /** @format int32 */
-        managementFirmId: number;
-      },
-      data: {
-        ContentType?: string;
-        ContentDisposition?: string;
-        Headers?: Record<string, string[]>;
-        /** @format int64 */
-        Length?: number;
-        Name?: string;
-        FileName?: string;
-      },
-      params: RequestParams = {},
-    ) =>
-      this.request<void, ErrorApiResponse>({
-        path: `/api/Imports/ImportOrganization`,
-        method: 'POST',
-        query: query,
-        body: data,
-        secure: true,
-        type: ContentType.FormData,
-        ...params,
-      }),
-
-    /**
-     * @description Роли:<li>Администратор системы</li>
-     *
-     * @tags Imports
-     * @name ImportsImportIndividualDeviceCreate
-     * @summary DataMigration
-     * @request POST:/api/Imports/ImportIndividualDevice
-     * @secure
-     */
-    importsImportIndividualDeviceCreate: (
-      query: {
-        /** @format int32 */
-        housingStockId: number;
-      },
-      data: {
-        ContentType?: string;
-        ContentDisposition?: string;
-        Headers?: Record<string, string[]>;
-        /** @format int64 */
-        Length?: number;
-        Name?: string;
-        FileName?: string;
-      },
-      params: RequestParams = {},
-    ) =>
-      this.request<void, ErrorApiResponse>({
-        path: `/api/Imports/ImportIndividualDevice`,
-        method: 'POST',
-        query: query,
-        body: data,
-        secure: true,
-        type: ContentType.FormData,
-        ...params,
-      }),
-
-    /**
-     * @description Роли:<li>Администратор системы</li>
-     *
-     * @tags Imports
-     * @name ImportsImportOrganizationWithoutNodesCreate
-     * @summary DataMigration
-     * @request POST:/api/Imports/ImportOrganizationWithoutNodes
-     * @secure
-     */
-    importsImportOrganizationWithoutNodesCreate: (
-      data: {
-        ContentType?: string;
-        ContentDisposition?: string;
-        Headers?: Record<string, string[]>;
-        /** @format int64 */
-        Length?: number;
-        Name?: string;
-        FileName?: string;
-      },
-      params: RequestParams = {},
-    ) =>
-      this.request<any, ErrorApiResponse>({
-        path: `/api/Imports/ImportOrganizationWithoutNodes`,
-        method: 'POST',
-        body: data,
-        secure: true,
-        type: ContentType.FormData,
         ...params,
       }),
 

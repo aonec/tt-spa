@@ -223,8 +223,8 @@ export const ExtendedSearchForm: FC<ExtendedSearchFormProps> = ({
                 name: '',
               },
               {
-                title: 'В ближайший месяц',
-                name: EExpiresDateAt.NextMonth,
+                title: 'В этом месяце',
+                name: EExpiresDateAt.CurrentMonth,
               },
               {
                 title: 'В ближайшие 2 месяца',
