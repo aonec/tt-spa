@@ -102,7 +102,7 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
         taskReasonSearch: null,
         taskReasonOrderNumber: null,
         taskDeadlineDate: null,
-        taskDeadlineTime: dayjs(),
+        taskDeadlineTime: dayjs().subtract(2, 'hours'),
         isSourceNumberRequired: initialSource?.isSourceNumberRequired || false,
         isSubscriberRequired: initialSource?.isSubscriberRequired || false,
         isManualDeadlineRequired: isManualDeadlineRequired,
@@ -309,6 +309,7 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
   const [isNameOpen, setNameOpen] = useState(false);
   const [isReasonOpen, setReasonOpen] = useState(false);
   const [isTaskTypeOpen, setTaskTypeOpen] = useState(false);
+  const [isDatePickerOpen, setDatePickerOpen] = useState(false);
 
   return (
     <>
@@ -608,7 +609,6 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
                   ...values,
                   taskType: value as EisTaskType | null,
                   taskDeadlineDate: null,
-                  taskDeadlineTime: null,
                 });
               }}
               optionLabelProp="label"
@@ -651,26 +651,86 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
             />
           </FormItem>
 
-          {values.isManualDeadlineRequired && (
-            <FormItem label="Срок выполнения">
-              <GridContainerAsymmetricThreeColumn>
-                <DatePicker
-                  allowClear
-                  format="DD.MM.YYYY"
-                  value={values.taskDeadlineDate}
-                  onChange={(value) => setFieldValue('taskDeadlineDate', value)}
-                />
+          <FormItem label="Срок выполнения">
+            <GridContainerAsymmetricThreeColumn>
+              <DatePicker
+                data-reading-input={dataKey}
+                allowClear
+                format="DD.MM.YYYY"
+                open={isDatePickerOpen}
+                onBlur={() => setDatePickerOpen(false)}
+                onFocus={() => setDatePickerOpen(true)}
+                onMouseDown={() => setDatePickerOpen(true)}
+                value={values.taskDeadlineDate}
+                onChange={(value) => setFieldValue('taskDeadlineDate', value)}
+                onKeyDown={fromEnter(() => {
+                  if (isNoAdditionalFieldsRequired) {
+                    next(5);
+                  }
+                  if (isOnlySourceNumberRequired) {
+                    next(6);
+                  }
+                  if (isOnlySubscriberRequired) {
+                    next(7);
+                  }
+                  if (isSubscriberAndSourceNumberRequired) {
+                    next(8);
+                  }
+                })}
+                onSelect={() => {
+                  if (isNoAdditionalFieldsRequired) {
+                    next(5);
+                  }
+                  if (isOnlySourceNumberRequired) {
+                    next(6);
+                  }
+                  if (isOnlySubscriberRequired) {
+                    next(7);
+                  }
+                  if (isSubscriberAndSourceNumberRequired) {
+                    next(8);
+                  }
+                }}
+              />
 
-                <TimePickerMedium
-                  value={values.taskDeadlineTime || undefined}
-                  onChange={(value) => {
-                    setFieldValue('taskDeadlineTime', value);
-                  }}
-                />
-                <div></div>
-              </GridContainerAsymmetricThreeColumn>
-            </FormItem>
-          )}
+              <TimePickerMedium
+                data-reading-input={dataKey}
+                value={values.taskDeadlineTime || undefined}
+                onChange={(value) => {
+                  setFieldValue('taskDeadlineTime', value);
+                }}
+                onKeyDown={fromEnter(() => {
+                  if (isNoAdditionalFieldsRequired) {
+                    next(6);
+                  }
+                  if (isOnlySourceNumberRequired) {
+                    next(7);
+                  }
+                  if (isOnlySubscriberRequired) {
+                    next(8);
+                  }
+                  if (isSubscriberAndSourceNumberRequired) {
+                    next(9);
+                  }
+                })}
+                onSelect={() => {
+                  if (isNoAdditionalFieldsRequired) {
+                    next(6);
+                  }
+                  if (isOnlySourceNumberRequired) {
+                    next(7);
+                  }
+                  if (isOnlySubscriberRequired) {
+                    next(8);
+                  }
+                  if (isSubscriberAndSourceNumberRequired) {
+                    next(9);
+                  }
+                }}
+              />
+              <div></div>
+            </GridContainerAsymmetricThreeColumn>
+          </FormItem>
         </ContainerWithOutline>
 
         <FormItem label="Описание проблемы">
