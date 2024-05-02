@@ -19,6 +19,7 @@ export type ExpiresCheckingPeriodSegmented =
   | EExpiresDateAt.NextMonth
   | EExpiresDateAt.NextTwoMonth
   | EExpiresDateAt.Past
+  | EExpiresDateAt.CurrentMonth
   | '';
 
 export enum ESelectedDateType {
