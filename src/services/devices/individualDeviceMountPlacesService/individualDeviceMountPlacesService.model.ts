@@ -36,10 +36,13 @@ const IndividualDeviceMountPlacesGate = createGate<{
   apartmentId: number;
 }>();
 
+const $apartmentId = IndividualDeviceMountPlacesGate.state.map(
+  (params) => params.apartmentId || null,
+);
+
 sample({
-  source: IndividualDeviceMountPlacesGate.state.map(
-    (params) => params.apartmentId,
-  ),
+  source: $apartmentId,
+  filter: Boolean,
   clock: IndividualDeviceMountPlacesGate.state,
   target: fetchIndividualDeviceFxMountPlacesFx,
 });

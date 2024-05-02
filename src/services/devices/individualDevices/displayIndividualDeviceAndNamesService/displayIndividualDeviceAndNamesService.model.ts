@@ -49,9 +49,11 @@ const $isIndividualDeviceLoading = fetchIndividualDeviceFx.pending;
 const $isIndividualDeviceNamesLoading = fetchIndividualDeviceNamesFx.pending;
 const $isFetchSerialNumberLoading = fetchSerialNumberForCheckFx.pending;
 
+const $deviceId = IndividualDeviceGate.state.map((state) => state.id || null);
+
 sample({
   clock: IndividualDeviceGate.open,
-  source: IndividualDeviceGate.state.map((state) => state.id),
+  source: $deviceId,
   filter: Boolean,
   target: fetchIndividualDeviceFx,
 });

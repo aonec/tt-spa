@@ -32,11 +32,11 @@ const EditCompanyGate = createGate();
 const $isOrganizationLoading = getCurrentManagingFirmFx.pending;
 const $isUpdating = updateOrganizationFx.pending;
 
+const $firmId = $currentManagingFirm.map((firm) => firm?.id || null);
+
 sample({
-  source: sample({
-    source: $currentManagingFirm.map((firm) => firm?.id),
-    filter: (id): id is number => Boolean(id),
-  }),
+  source: $firmId,
+  filter: Boolean,
   clock: updateOrganization,
   fn: (managingFirmId, payload) => ({ managingFirmId, ...payload }),
   target: updateOrganizationFx,

@@ -30,14 +30,20 @@ const $readingHistory =
     .on(fetchReadingHistoryFx.doneData, (_, historyData) => historyData)
     .reset(ReadingHistoryGate.close);
 
+const $devuceId = ReadingHistoryGate.state.map(
+  (value) => value.deviceId || null,
+);
+
 sample({
-  clock: ReadingHistoryGate.open.map(({ deviceId }) => deviceId),
+  clock: $devuceId,
+  filter: Boolean,
   target: fetchReadingHistoryFx,
 });
 
 sample({
   clock: refetchReadingHistory,
-  source: ReadingHistoryGate.state.map((value) => value.deviceId),
+  source: $devuceId,
+  filter: Boolean,
   target: fetchReadingHistoryFx,
 });
 

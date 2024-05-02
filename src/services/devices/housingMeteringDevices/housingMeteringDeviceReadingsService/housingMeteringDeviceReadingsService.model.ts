@@ -50,13 +50,21 @@ const $isLoading = getHousingMeteringDeviceReadingsFx.pending;
 const NodeIdGate = createGate<{ nodeId: number }>();
 const NodeResourceGate = createGate<{ resource: EResourceType }>();
 
+const $nodeId = NodeIdGate.open.map(({ nodeId }) => nodeId || null);
+const $nodeResource = NodeResourceGate.state.map(
+  ({ resource }) => resource || null,
+);
+
 sample({
-  clock: NodeIdGate.open.map(({ nodeId }) => nodeId),
+  source: $nodeId,
+  clock: NodeIdGate.open,
+  filter: Boolean,
   target: getHousingMeteringDeviceReadingsFx,
 });
 
 sample({
-  clock: NodeResourceGate.state.map(({ resource }) => resource),
+  clock: $nodeResource,
+  filter: Boolean,
   target: setResource,
 });
 
@@ -66,7 +74,8 @@ sample({
 });
 
 sample({
-  source: NodeIdGate.state.map(({ nodeId }) => nodeId),
+  source: $nodeId,
+  filter: Boolean,
   clock: createReadingFx.doneData,
   target: getHousingMeteringDeviceReadingsFx,
 });
