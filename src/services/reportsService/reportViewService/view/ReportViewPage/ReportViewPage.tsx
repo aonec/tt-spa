@@ -6,6 +6,7 @@ import {
   FiltrationInfoList,
   FiltrationInfoWrapper,
   HeaderTitleWrapper,
+  HeaderWrapper,
   PageHaderSC,
   Wrapper,
 } from './ReportViewPage.styled';
@@ -57,57 +58,59 @@ export const ReportViewPage: FC<ReportViewPageProps> = ({
 
   return (
     <Wrapper>
-      <GoBack />
-      <PageHaderSC
-        title={
-          <HeaderTitleWrapper>
-            {ReportIconsDictionary[reportType]}
-            <div>{ReportNamesDictionary[reportType]}</div>
-          </HeaderTitleWrapper>
-        }
-      />
-      <ExtendedSearchWrapper>
-        <ExtendedSearch
-          isOpen={isOpen}
-          handleOpen={() => setIsOpen(true)}
-          handleClose={() => setIsOpen(false)}
-          handleApply={handleApply}
-          handleClear={clearFiltrationValues}
-          isShowClearButton
-          extendedSearchContent={
-            <ReportFiltrationForm
-              existingCities={existingCities}
-              houseManagements={houseManagements}
-              addressesWithHouseManagements={addressesWithHouseManagements}
-              filtrationValues={filtrationValues}
-              formId={formId}
-              setFiltrationValues={setFiltrationValues}
-              reportType={reportType}
-              organizations={organizations}
-            />
+      <HeaderWrapper>
+        <GoBack />
+        <PageHaderSC
+          title={
+            <HeaderTitleWrapper>
+              {ReportIconsDictionary[reportType]}
+              <div>{ReportNamesDictionary[reportType]}</div>
+            </HeaderTitleWrapper>
           }
-        >
-          <FiltrationInfoWrapper>
-            <FiltrationInfoList>
-              {Boolean(filtersViewArray.length) &&
-                filtersViewArray.map((text) => (
-                  <FiltrationInfoItem key={text}>{text}</FiltrationInfoItem>
-                ))}
-              {!filtersViewArray.length && (
-                <FiltrationInfoItem>Фильтры не выбраны</FiltrationInfoItem>
-              )}
-            </FiltrationInfoList>
-            <ButtonSC
-              size="small"
-              onClick={downloadReport}
-              disabled={isLoadingReport}
-              isLoading={isReportFileDownloading}
-            >
-              Скачать отчет
-            </ButtonSC>
-          </FiltrationInfoWrapper>
-        </ExtendedSearch>
-      </ExtendedSearchWrapper>
+        />
+        <ExtendedSearchWrapper>
+          <ExtendedSearch
+            isOpen={isOpen}
+            handleOpen={() => setIsOpen(true)}
+            handleClose={() => setIsOpen(false)}
+            handleApply={handleApply}
+            handleClear={clearFiltrationValues}
+            isShowClearButton
+            extendedSearchContent={
+              <ReportFiltrationForm
+                existingCities={existingCities}
+                houseManagements={houseManagements}
+                addressesWithHouseManagements={addressesWithHouseManagements}
+                filtrationValues={filtrationValues}
+                formId={formId}
+                setFiltrationValues={setFiltrationValues}
+                reportType={reportType}
+                organizations={organizations}
+              />
+            }
+          >
+            <FiltrationInfoWrapper>
+              <FiltrationInfoList>
+                {Boolean(filtersViewArray.length) &&
+                  filtersViewArray.map((text) => (
+                    <FiltrationInfoItem key={text}>{text}</FiltrationInfoItem>
+                  ))}
+                {!filtersViewArray.length && (
+                  <FiltrationInfoItem>Фильтры не выбраны</FiltrationInfoItem>
+                )}
+              </FiltrationInfoList>
+              <ButtonSC
+                size="small"
+                onClick={downloadReport}
+                disabled={isLoadingReport}
+                isLoading={isReportFileDownloading}
+              >
+                Скачать отчет
+              </ButtonSC>
+            </FiltrationInfoWrapper>
+          </ExtendedSearch>
+        </ExtendedSearchWrapper>
+      </HeaderWrapper>
       <WithLoader isLoading={isLoadingReport}>
         <ReportViewTable
           reportType={reportType}

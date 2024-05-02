@@ -1,10 +1,10 @@
 import styled from 'styled-components';
 import { CloseIcon } from 'ui-kit/icons';
 
-export const SearchWrap = styled.div`
+export const SearchWrap = styled.div<{ isPaddingSearch: boolean }>`
   display: flex;
   align-items: center;
-  padding: 0 0 16px;
+  ${({ isPaddingSearch }) => isPaddingSearch && 'padding: 0 0 16px;'}
 `;
 
 export const ExtendedSearchButton = styled.div`

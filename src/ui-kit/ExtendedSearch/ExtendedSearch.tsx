@@ -28,6 +28,7 @@ export const ExtendedSearch: FC<ExtendedSearchProps> = ({
   disabled = false,
   isShowClearButton = true,
   title,
+  isPaddingSearch = true,
 }) => {
   if (isOpen) {
     return (
@@ -60,7 +61,7 @@ export const ExtendedSearch: FC<ExtendedSearchProps> = ({
   }
 
   return (
-    <SearchWrap>
+    <SearchWrap isPaddingSearch={isPaddingSearch}>
       {!disabled && (
         <ExtendedSearchButton onClick={handleOpen}>
           <FilerIcon />

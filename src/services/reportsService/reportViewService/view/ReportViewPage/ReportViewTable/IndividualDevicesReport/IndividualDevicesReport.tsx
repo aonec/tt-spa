@@ -60,7 +60,9 @@ export const IndividualDevicesReport: FC<IndividualDevicesReportProps> = ({
             return (
               <FullAddressWrapper>
                 <ApartmentNumber>Кв. №{number}</ApartmentNumber>
-                <Tooltip title={addressString}>{addressString}</Tooltip>
+                <Tooltip zIndex={10} title={addressString}>
+                  {addressString}
+                </Tooltip>
               </FullAddressWrapper>
             );
           },
