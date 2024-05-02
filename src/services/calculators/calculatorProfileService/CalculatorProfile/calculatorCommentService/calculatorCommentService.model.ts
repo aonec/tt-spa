@@ -39,29 +39,29 @@ const $commentResponseData = createStore<CalculatorCommentResponse | null>(null)
   .on(createCommentFx.doneData, (_, comment) => comment)
   .on(editCommentFx.doneData, (_, comment) => comment);
 
+const $calculatorId = CalculatorIdGate.state.map(
+  ({ calculatorId }) => calculatorId || null,
+);
+
 sample({
   clock: removeComment,
-  source: CalculatorIdGate.state.map(
-    ({ calculatorId }) => calculatorId || null,
-  ),
-  filter: (id): id is number => Boolean(id),
+  source: $calculatorId,
+  filter: Boolean,
   target: removeCommentFx,
 });
 
 sample({
-  source: CalculatorIdGate.state.map(({ calculatorId }) => calculatorId, {
-    skipVoid: false,
-  }),
+  source: $calculatorId,
   clock: createComment,
+  filter: Boolean,
   fn: (deviceId, text) => ({ deviceId, text }),
   target: createCommentFx,
 });
 
 sample({
-  source: CalculatorIdGate.state.map(({ calculatorId }) => calculatorId, {
-    skipVoid: false,
-  }),
+  source: $calculatorId,
   clock: editComment,
+  filter: Boolean,
   fn: (deviceId, text) => ({ deviceId, text }),
   target: editCommentFx,
 });

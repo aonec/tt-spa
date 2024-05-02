@@ -33,6 +33,10 @@ const WorkWithIndividualDeviceGate = createGate<{
   type: WorkWithIndividualDeviceType;
 }>();
 
+const $deviceType = WorkWithIndividualDeviceGate.state.map(
+  ({ type }) => type || null,
+);
+
 const deviceInfoForm = createForm({
   fields: {
     model: {
@@ -186,9 +190,7 @@ const switchIndividualDevice = createEvent();
 const checkIndividualDevice = createEvent();
 
 split({
-  source: WorkWithIndividualDeviceGate.state.map(({ type }) => type, {
-    skipVoid: false,
-  }),
+  source: $deviceType,
   clock: submitAction,
   match: (type: WorkWithIndividualDeviceType): WorkWithIndividualDeviceType =>
     type,
@@ -200,9 +202,7 @@ split({
 });
 
 sample({
-  source: WorkWithIndividualDeviceGate.state.map(({ type }) => type, {
-    skipVoid: false,
-  }),
+  source: $deviceType,
   clock: [deviceChecked, deviceSwitched],
   target: actionSucceed,
 });
@@ -295,12 +295,11 @@ sample({
 });
 
 sample({
-  clock: combine(
-    $individualDevice,
-    WorkWithIndividualDeviceGate.state,
-    (device, gate) => ({ device, gate }),
-  ),
-  fn: ({ device: values, gate }) => {
+  clock: combine($individualDevice, $deviceType, (device, type) => ({
+    device,
+    type,
+  })),
+  fn: ({ device: values, type }) => {
     if (!values) return {};
 
     const { bitDepth, scaleFactor } = getBitDepthAndScaleFactor(
@@ -308,9 +307,9 @@ sample({
     );
     const oldDeviceReadings = prepareDeviceReadings(values.readings || []);
 
-    const isCheck = gate.type === WorkWithIndividualDeviceType.check;
-    const isSwitch = gate.type === WorkWithIndividualDeviceType.switch;
-    const isReopen = gate.type === WorkWithIndividualDeviceType.reopen;
+    const isCheck = type === WorkWithIndividualDeviceType.check;
+    const isSwitch = type === WorkWithIndividualDeviceType.switch;
+    const isReopen = type === WorkWithIndividualDeviceType.reopen;
 
     const serialNumberAfterString = isReopen ? '*' : '';
 

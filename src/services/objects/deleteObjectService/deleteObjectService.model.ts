@@ -55,13 +55,14 @@ const $isLoading = combine(
   (...isLoading) => isLoading.some((isLoading) => isLoading),
 );
 
+const $houseCategory = $building.map(
+  (building) => building?.houseCategory || EHouseCategory.Living,
+);
+
 split({
-  source: $building.map((building) => building?.houseCategory, {
-    skipVoid: false,
-  }),
+  source: $houseCategory,
   clock: deleteBuilding,
-  match: (type: EHouseCategory | undefined): EHouseCategory =>
-    type || EHouseCategory.Living,
+  match: (type) => type,
   cases: {
     [EHouseCategory.Living]: deleteLivingBuilding,
     [EHouseCategory.NonResidential]: deleteNonResidentialBuilding,

@@ -66,18 +66,21 @@ sample({
   target: getPipesFx,
 });
 
+const $deviceId = EditMeteringDeviceGate.state.map(({ deviceId }) => deviceId, {
+  skipVoid: false,
+});
+
 sample({
   clock: handleSubmitForm,
-  source: EditMeteringDeviceGate.state.map(({ deviceId }) => deviceId, {
-    skipVoid: false,
-  }),
-  filter: (id): id is number => Boolean(id),
+  source: $deviceId,
+  filter: Boolean,
   fn: (deviceId, payload) => ({ deviceId, ...payload }),
   target: editHousingMeteringDeviceFx,
 });
 
 sample({
-  clock: EditMeteringDeviceGate.open.map(({ deviceId }) => deviceId),
+  source: $deviceId,
+  clock: EditMeteringDeviceGate.open,
   target: getHousingMeteringDeviceFx,
 });
 

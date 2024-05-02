@@ -32,9 +32,11 @@ const $meterindDevicesList = createStore<
   .on(fetchMeteringDevices.doneData, (_, meteringDevices) => meteringDevices)
   .reset(clearMeteringDevicesList);
 
+const $pipeNodeId = $pipeNode.map((node) => node?.id || null);
+
 sample({
-  clock: $pipeNode.map((node) => node?.id || null),
-  filter: (id): id is number => typeof id === 'number',
+  clock: $pipeNodeId,
+  filter: Boolean,
   target: fetchMeteringDevices,
 });
 

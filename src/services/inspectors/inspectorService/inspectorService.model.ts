@@ -16,9 +16,11 @@ $inspector
   .on(fetchInspectorFx.doneData, (_, inspector) => inspector)
   .reset(InspectorGate.close);
 
+const $inspectorId = InspectorGate.state.map(({ id }) => id || null);
+
 sample({
-  clock: InspectorGate.state.map(({ id }) => id || null),
-  filter: (id): id is number => Boolean(id),
+  clock: $inspectorId,
+  filter: Boolean,
   target: fetchInspectorFx,
 });
 

@@ -81,8 +81,12 @@ sample({
   target: districtAppoinmtentsOnMonthQuery.start,
 });
 
+const $housingStockId = $apartment.map(
+  (apartment) => apartment?.housingStock?.id || null,
+);
+
 sample({
-  source: $apartment.map((apartment) => apartment?.housingStock?.id || null),
+  source: $housingStockId,
   filter: Boolean,
   clock: openModal,
   target: getDistrictFx,

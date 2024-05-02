@@ -15,6 +15,7 @@ displayNodeArchiveService.outputs.$nodeArchiveData
 
 sample({
   source: displayNodeArchiveService.outputs.$nodeId,
+  filter: Boolean,
   clock: displayNodeArchiveService.inputs.loadNodeArchiveData,
   fn: (nodeId, payload) => ({
     NodeId: nodeId,

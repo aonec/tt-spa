@@ -64,8 +64,11 @@ sample({
   target: clearStore,
 });
 
+const $nodeId = NodeIdGate.state.map(({ nodeId }) => nodeId || null);
+
 sample({
-  source: NodeIdGate.state.map(({ nodeId }) => nodeId, { skipVoid: false }),
+  source: $nodeId,
+  filter: Boolean,
   clock: [NodeIdGate.open, refetchNode],
   target: getNodeFx,
 });
@@ -91,7 +94,8 @@ sample({
 });
 
 sample({
-  source: NodeIdGate.state.map(({ nodeId }) => nodeId, { skipVoid: false }),
+  source: $nodeId,
+  filter: Boolean,
   clock: updateNode,
   fn: (pipeNodeId, payload) => ({ pipeNodeId, payload }),
   target: updateNodeFx,

@@ -38,15 +38,21 @@ const editApartmentCommonInfoForm = createForm({
   validateOn: ['submit'],
 });
 
+const $apartmentId = ApartmentGate.state.map(
+  ({ apartmentId }) => apartmentId || null,
+);
+
 sample({
-  clock: ApartmentGate.open.map(({ apartmentId }) => apartmentId),
+  source: $apartmentId,
+  clock: ApartmentGate.open,
+  filter: Boolean,
   target: fetchApartmentFx,
 });
 
 sample({
   clock: refetchAaprtment,
-  source: ApartmentGate.state.map(({ apartmentId }) => apartmentId || null),
-  filter: (id): id is number => Boolean(id),
+  source: $apartmentId,
+  filter: Boolean,
   target: fetchApartmentFx,
 });
 

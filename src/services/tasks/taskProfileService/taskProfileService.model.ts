@@ -131,14 +131,18 @@ const $isLoading = getTasksFx.pending;
 
 const $isTaskProfileOpen = TaskIdGate.state.map((data) => Boolean(data.taskId));
 
+const $taskGateId = TaskIdGate.state.map(({ taskId }) => taskId || null);
+
 sample({
-  clock: TaskIdGate.open.map(({ taskId }) => taskId),
+  source: $taskGateId,
+  filter: Boolean,
+  clock: TaskIdGate.open,
   target: getTasksFx,
 });
 
 sample({
-  source: TaskIdGate.state.map(({ taskId }) => taskId || null),
-  filter: (id): id is number => Boolean(id),
+  source: $taskGateId,
+  filter: Boolean,
   clock: refetchTask,
   target: getTasksFx,
 });
@@ -166,9 +170,11 @@ sample({
   target: closeDeleteDocumentModal,
 });
 
+const $nodeId = RelatedNodeIdGate.state.map(({ nodeId }) => nodeId || null);
+
 sample({
-  clock: RelatedNodeIdGate.state.map(({ nodeId }) => nodeId || null),
-  filter: (id): id is number => Boolean(id),
+  clock: $nodeId,
+  filter: Boolean,
   target: getNodeFx,
 });
 
@@ -211,10 +217,12 @@ sample({
   target: pushStageFx,
 });
 
+const $taskId = $task.map((task) => task?.id || null);
+
 sample({
-  source: $task.map((task) => task?.id || null),
+  source: $taskId,
   clock: handleRevertStage,
-  filter: (id): id is number => Boolean(id),
+  filter: Boolean,
   target: revertStageFx,
 });
 

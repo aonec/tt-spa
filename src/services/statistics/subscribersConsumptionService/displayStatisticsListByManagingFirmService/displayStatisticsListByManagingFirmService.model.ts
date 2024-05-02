@@ -114,10 +114,12 @@ sample({
   target: getHousingStocksFx,
 });
 
+const $defaultCity = addressSearchService.outputs.$existingCities.map(
+  (cities) => _.last(cities) || null,
+);
+
 sample({
-  clock: addressSearchService.outputs.$existingCities.map(
-    (cities) => _.last(cities) || null,
-  ),
+  clock: $defaultCity,
   filter: Boolean,
   target: selectCity,
 });

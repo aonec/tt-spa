@@ -21,21 +21,26 @@ const $calculatorsList = createStore<
 
 const $loading = fetchCalculatorsFx.pending;
 
+const $calculatorId = CalculatorsGate.state.map(
+  ({ buildingId }) => buildingId || null,
+);
+
 sample({
-  clock: CalculatorsGate.open.map(({ buildingId }) => buildingId),
+  clock: $calculatorId,
+  filter: Boolean,
   target: fetchCalculatorsFx,
 });
 
 sample({
   clock: refetchCalculators,
-  source: CalculatorsGate.state.map(({ buildingId }) => buildingId || null),
-  filter: (buildingId): buildingId is number => Boolean(buildingId),
+  source: $calculatorId,
+  filter: Boolean,
   target: fetchCalculatorsFx,
 });
 
 sample({
-  clock: CalculatorsGate.state.map(({ buildingId }) => buildingId || null),
-  filter: (id): id is number => Boolean(id),
+  clock: $calculatorId,
+  filter: Boolean,
   target: fetchCalculatorsFx,
 });
 

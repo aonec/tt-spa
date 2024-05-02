@@ -49,6 +49,10 @@ const $preparedReadings = combine(
 
 const $loading = fetchNodeArchiveDataFx.pending;
 
+const $nodeId = nodeProfileService.gates.PipeNodeGate.state.map(
+  ({ pipeNodeId }) => pipeNodeId || null,
+);
+
 export const displayNodeArchiveService = {
   inputs: {
     fetchNodeArchiveDataFx,
@@ -61,10 +65,7 @@ export const displayNodeArchiveService = {
     $preparedReadings,
     $loading,
     $node: nodeProfileService.outputs.$pipeNode,
-    $nodeId: nodeProfileService.gates.PipeNodeGate.state.map(
-      ({ pipeNodeId }) => pipeNodeId,
-      { skipVoid: false },
-    ),
+    $nodeId,
     $withFaultReadings,
   },
 };
