@@ -9,6 +9,7 @@ import { getApartmentFromFullAddress } from 'utils/getApartmentFromFullAddress';
 import { PipeRuptureConclusion } from './PipeRuptureConclusion';
 import {
   DeviceInfoWrapper,
+  ExecutorWrapper,
   InfoBlockWrapper,
   InfoWrapper,
   NameRowWrapper,
@@ -90,10 +91,10 @@ export const TasksListItem: FC<TasksListItemProps> = ({ task }) => {
               <PipeRuptureConclusion taskConfirmation={taskConfirmation} />
             )}
             {showExecutor && (
-              <>
+              <ExecutorWrapper>
                 <UserIcon />
                 <TextWrapper>{currentStage?.perpetrator?.name}</TextWrapper>
-              </>
+              </ExecutorWrapper>
             )}
           </TimerRowWrapper>
           <InfoWrapper>

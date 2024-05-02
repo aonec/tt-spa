@@ -99,3 +99,9 @@ export const Wrapper = styled.div`
     margin-top: 0px;
   }
 `;
+
+export const ExecutorWrapper = styled.div`
+  display: flex;
+  gap: 8px;
+  padding: 0px 16px;
+`;
