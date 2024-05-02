@@ -29,11 +29,5 @@ export const validationSchema = yup.object().shape({
       is: true,
       then: yup.string().nullable().required('Обязательное поле'),
     }),
-  taskDeadlineDate: yup
-    .string()
-    .nullable()
-    .when('isManualDeadlineRequired', {
-      is: true,
-      then: yup.string().nullable().required('Обязательное поле'),
-    }),
+  taskDeadlineDate: yup.string().nullable().required('Обязательное поле'),
 });

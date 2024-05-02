@@ -7,7 +7,7 @@ import { StatisticProfileGrouptype } from '../../statisticsProfileService.types'
 import { SubscribersConsumptionSearchType } from 'services/statistics/subscribersConsumptionService/subscribersConsumptionService.types';
 import { SubscribersConsumptionContainer } from 'services/statistics/subscribersConsumptionService';
 import { useNavigate } from 'react-router-dom';
-import { ResourceDisablingScheduleContainer } from 'services/settings/resourcesDisablingScheduleService/ResourceDisablingScheduleContainer';
+import { ResourceDisablingScheduleContainer } from 'services/settings/resourcesDisablingScheduleService/ResourceDisablingSchedule.container';
 import { chooseTypeOfResourceDisconnectionModalService } from 'services/resources/chooseTypeOfResourceDisconnectionModalService';
 
 export const StatisticProfile: FC<StatisticProfileProps> = ({

@@ -14096,6 +14096,8 @@ export class Api<
      */
     resourceDisconnectingList: (
       query?: {
+        /** @deprecated */
+        City?: string;
         addressCity?: string;
         addressStreet?: string;
         addressHousingStockNumber?: string;
@@ -14159,6 +14161,57 @@ export class Api<
         body: data,
         secure: true,
         type: ContentType.Json,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Администратор УК без назначений задач</li>
+     *
+     * @tags ResourceDisconnecting
+     * @name ResourceDisconnectingExportList
+     * @summary ResourceDisconnectingRead
+     * @request GET:/api/ResourceDisconnecting/Export
+     * @secure
+     */
+    resourceDisconnectingExportList: (
+      query?: {
+        /** @deprecated */
+        City?: string;
+        addressCity?: string;
+        addressStreet?: string;
+        addressHousingStockNumber?: string;
+        addressCorpus?: string;
+        Resource?: EResourceType;
+        /** @format uuid */
+        HouseManagementId?: string;
+        Sender?: string;
+        /** @format date-time */
+        From?: string;
+        /** @format date-time */
+        To?: string;
+        DisconnectingType?: EResourceDisconnectingType;
+        OrderRule?: EResourceDisconnectingOrderRule;
+        /** @format int32 */
+        BuildingId?: number;
+        Status?: EResourceDisconnectingStatus;
+        /** @format int32 */
+        PageNumber?: number;
+        /** @format int32 */
+        PageSize?: number;
+        OrderBy?: EOrderByRule;
+        /** @format int32 */
+        Skip?: number;
+        /** @format int32 */
+        Take?: number;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<File, ErrorApiResponse>({
+        path: `/api/ResourceDisconnecting/Export`,
+        method: 'GET',
+        query: query,
+        secure: true,
         format: 'json',
         ...params,
       }),

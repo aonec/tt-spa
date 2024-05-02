@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { CalendarIcon, MapIcon, TimerIcon, UserIcon } from 'ui-kit/icons';
+import { TimerIcon } from 'ui-kit/icons';
 
 export const TaskItemWrapper = styled.div`
   width: 100%;
@@ -47,11 +47,13 @@ export const TimerRowWrapper = styled.div`
 export const DeviceInfoWrapper = styled.div`
   display: flex;
   align-items: center;
+  gap: 8px;
 `;
 
 export const InfoBlockWrapper = styled.div`
   display: flex;
   align-items: center;
+  gap: 8px;
 
   svg:nth-child(1) {
     margin-left: 0px !important;
@@ -76,23 +78,12 @@ export const TimeWrapper = styled.span<{ fail?: boolean }>`
 
 export const SerialNumberWrapper = styled.span`
   font-weight: 600;
-  margin-left: 8px;
 `;
 
-export const TextWrapper = styled.span`
-  margin-left: 8px;
-`;
-
-export const MapIconSC = styled(MapIcon)`
-  margin-left: 16px;
-`;
-
-export const CalendarIconSC = styled(CalendarIcon)`
-  margin-left: 8px;
-`;
-
-export const UserIconSC = styled(UserIcon)`
-  margin-left: 8px;
+export const TextWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 8px;
 `;
 
 export const RedTimerIcon = styled(TimerIcon)`
@@ -107,15 +98,4 @@ export const Wrapper = styled.div`
   &:first-child {
     margin-top: 0px;
   }
-`;
-
-export const PipeNodeWrapper = styled.div`
-  display: flex;
-  align-items: center;
-`;
-
-export const PipeNodeNameWrapper = styled.div`
-  margin-left: 8px;
-  font-weight: 600;
-  color: #272f5acc;
 `;

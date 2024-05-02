@@ -12,7 +12,6 @@ import {
 } from './DisablingResourceItem.styles';
 import { StyledFontLarge, TimeElement } from '../DisablingResoucesList.styles';
 import { declOfNum } from '../DisablingResourcesList.utils';
-import { ResourceDisconnectingClassLookUp } from '../../DisablingResourcesSearchHeader/DisablingResourcesSearchHeader.utils';
 import { RenderApartmentProps } from './DisablingResourceItem.types';
 import { ResourceInfo } from 'ui-kit/shared/ResourceInfo';
 import { ContextMenuButtonColor } from 'ui-kit/ContextMenuButton/ContextMenuButton.types';
@@ -73,10 +72,7 @@ export const DisablingResourceItem: React.FC<RenderApartmentProps> = ({
       <StyledTextElement>
         {!isMinimized && (heatingStation?.name || 'Нет')}
       </StyledTextElement>
-      <StyledTextElement>
-        {isMinimized &&
-          ResourceDisconnectingClassLookUp[disconnectingType?.value!]}
-      </StyledTextElement>
+      <StyledTextElement>{disconnectingType?.description}</StyledTextElement>
 
       <SenderColumn>
         <Popover content={sender}>
