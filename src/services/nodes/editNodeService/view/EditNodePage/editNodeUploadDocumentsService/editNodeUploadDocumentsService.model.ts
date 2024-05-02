@@ -25,11 +25,11 @@ const $documents = createStore<DocumentLiteResponse[]>([])
   .on(editNodeService.outputs.$node, (_, node) => node?.documents || [])
   .on(updateDocuments, (_, documents) => documents);
 
+const $nodeId = editNodeService.outputs.$node.map((node) => node?.id || null);
+
 sample({
-  source: sample({
-    source: editNodeService.outputs.$node.map((node) => node?.id || null),
-    filter: Boolean,
-  }),
+  source: $nodeId,
+  filter: Boolean,
   clock: updateDocuments,
   fn: (nodeId, documents) => ({
     nodeId,

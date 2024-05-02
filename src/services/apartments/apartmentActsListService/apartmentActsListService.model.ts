@@ -73,15 +73,13 @@ const $apartmentId = ApartmentActsListGate.state.map(
 sample({
   clock: refetchApartmentActs,
   source: $apartmentId,
-  filter: (id): id is number => Boolean(id),
+  filter: Boolean,
   target: fetchActsListFx,
 });
 
 sample({
-  clock: ApartmentActsListGate.state.map(
-    ({ apartmentId }) => apartmentId || null,
-  ),
-  filter: (id): id is number => Boolean(id),
+  clock: $apartmentId,
+  filter: Boolean,
   target: fetchActsListFx,
 });
 

@@ -86,10 +86,8 @@ sample({
 });
 
 sample({
-  source: sample({
-    source: $act.map((data) => data?.id || null),
-    filter: Boolean,
-  }),
+  source: $actId,
+  filter: Boolean,
   clock: editActForm.formValidated,
   fn: (actId, act) => ({ actId, act }),
   target: editActFx,
