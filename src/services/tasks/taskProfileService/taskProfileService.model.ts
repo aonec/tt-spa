@@ -80,9 +80,11 @@ const $pipeNode = createStore<PipeNodeResponse | null>(null).on(
 );
 
 const addComment = createEvent();
-const addCommentFx = createEffect<AddCommentRequest, TaskCommentResponse>(
-  fetchAddComment,
-);
+const addCommentFx = createEffect<
+  AddCommentRequest,
+  TaskCommentResponse,
+  EffectFailDataAxiosError
+>(fetchAddComment);
 
 const $task = createStore<TaskResponse | null>(null)
   .on(getTasksFx.doneData, (_, task) => task)
@@ -238,6 +240,14 @@ sample({
 });
 
 const $isRevertStageLoading = revertStageFx.pending;
+
+addCommentFx.failData.watch((error) => {
+  message.error(
+    error.response.data.error.Text ||
+      error.response.data.error.Message ||
+      'Произошла ошибка',
+  );
+});
 
 export const taskProfileService = {
   inputs: {
