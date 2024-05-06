@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { FC, useMemo } from 'react';
 import { workWithIndividualDeviceSubmitActionService } from './workWithIndividualDeviceSubmitActionService.model';
 import { FormModal } from 'ui-kit/Modals/FormModal';
 import { useUnit } from 'effector-react';
@@ -6,10 +6,13 @@ import { WorkWithIndividualDeviceType } from '../workWithIndividualDeviceService
 import { WorkWithIndividualDeviceSubmitActionForm } from './view/WorkWithIndividualDeviceSubmitActionForm';
 import { displayContractorsService } from 'services/contractors/displayContractorsService';
 import { individualDeviceMountPlacesService } from 'services/devices/individualDeviceMountPlacesService';
+import { WorkWithIndividualDeviceFormType } from '../view/WorkWithIndividualDevicePage/WorkWithIndividualDeviceForm/WorkWithIndividualDeviceForm.types';
 
-const { inputs, outputs, forms } = workWithIndividualDeviceSubmitActionService;
+const { inputs, outputs } = workWithIndividualDeviceSubmitActionService;
 
-export const WorkWithIndividualDeviceSubmitActionContainer = () => {
+export const WorkWithIndividualDeviceSubmitActionContainer: FC<{
+  deviceInfoForm: WorkWithIndividualDeviceFormType | null;
+}> = ({ deviceInfoForm }) => {
   const {
     isOpen,
     closeModal,
@@ -61,7 +64,7 @@ export const WorkWithIndividualDeviceSubmitActionContainer = () => {
         <>
           {individualDevice && (
             <WorkWithIndividualDeviceSubmitActionForm
-              form={forms.deviceInfoForm}
+              form={deviceInfoForm}
               contractors={contractors}
               mountPlaces={mountPlaces}
               typeOfAction={typeOfAction}

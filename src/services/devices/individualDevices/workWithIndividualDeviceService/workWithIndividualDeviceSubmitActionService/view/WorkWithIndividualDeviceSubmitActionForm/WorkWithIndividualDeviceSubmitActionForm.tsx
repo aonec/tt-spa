@@ -1,6 +1,5 @@
 import React, { FC } from 'react';
 import { WorkWithIndividualDeviceSubmitActionFormProps } from './WorkWithIndividualDeviceSubmitActionForm.types';
-import { useForm } from 'effector-forms';
 import { Title } from './WorkWithIndividualDeviceSubmitActionForm.styled';
 import { CommonInfo } from 'ui-kit/shared/CommonInfo';
 import { getTimeStringByUTC } from 'utils/getTimeStringByUTC';
@@ -14,10 +13,10 @@ import {
 
 export const WorkWithIndividualDeviceSubmitActionForm: FC<
   WorkWithIndividualDeviceSubmitActionFormProps
-> = ({ form, contractors, mountPlaces, typeOfAction, individualDevice }) => {
-  const { fields } = useForm(form);
-
+> = ({ contractors, mountPlaces, typeOfAction, individualDevice, form }) => {
   const isCheck = typeOfAction === WorkWithIndividualDeviceType.check;
+
+  if (!form) return null;
 
   return (
     <>
@@ -27,76 +26,68 @@ export const WorkWithIndividualDeviceSubmitActionForm: FC<
           {
             key: 'Ресурс',
             value: (
-              <>
-                {fields.resource.value && (
-                  <ResourceInfo resource={fields.resource.value} />
-                )}
-              </>
+              <>{form.resource && <ResourceInfo resource={form.resource} />}</>
             ),
           },
           {
             key: 'Модель прибора',
-            value: fields.model.value,
+            value: form.model,
           },
-          { key: 'Серийный номер', value: fields.serialNumber.value },
+          { key: 'Серийный номер', value: form.serialNumber },
           {
             key: 'Место установки',
             value:
-              fields.mountPlaceId.value &&
-              (mountPlaces || []).find(
-                (elem) => elem.id === fields.mountPlaceId.value,
-              )?.description,
+              form.mountPlaceId &&
+              (mountPlaces || []).find((elem) => elem.id === form.mountPlaceId)
+                ?.description,
           },
           {
             key: 'Разрядность',
-            value: fields.bitDepth.value,
+            value: form.bitDepth,
           },
           {
             key: 'Множитель',
-            value: fields.scaleFactor.value,
+            value: form.scaleFactor,
           },
           {
             key: 'Дата ввода в эксплуатацию',
             value:
-              fields.lastCommercialAccountingDate.value &&
+              form.lastCommercialAccountingDate &&
               getTimeStringByUTC(
-                fields.lastCommercialAccountingDate.value,
+                form.lastCommercialAccountingDate,
                 'DD.MM.YYYY',
               ),
           },
           {
             key: 'Диспетчеризация',
-            value: fields.isPolling.value ? 'Да' : 'Нет',
+            value: form.isPolling ? 'Да' : 'Нет',
           },
           {
             key: 'Дата последней поверки прибора',
             value:
-              fields.lastCheckingDate.value &&
-              getTimeStringByUTC(fields.lastCheckingDate.value, 'DD.MM.YYYY'),
+              form.lastCheckingDate &&
+              getTimeStringByUTC(form.lastCheckingDate, 'DD.MM.YYYY'),
           },
           {
             key: 'Дата следующей поверки прибора',
             value:
-              fields.futureCheckingDate.value &&
-              getTimeStringByUTC(fields.futureCheckingDate.value, 'DD.MM.YYYY'),
+              form.futureCheckingDate &&
+              getTimeStringByUTC(form.futureCheckingDate, 'DD.MM.YYYY'),
           },
           {
             key: 'Пломба',
-            value: fields.sealNumber.value,
+            value: form.sealNumber,
           },
           {
             key: 'Дата установки пломбы',
             value:
-              fields.sealInstallationDate.value &&
-              getTimeStringByUTC(
-                fields.sealInstallationDate.value,
-                'DD.MM.YYYY',
-              ),
+              form.sealInstallationDate &&
+              getTimeStringByUTC(form.sealInstallationDate, 'DD.MM.YYYY'),
           },
           {
             key: 'Монтажная организация',
             value: (contractors || []).find(
-              (elem) => elem.id === fields.contractorId.value,
+              (elem) => elem.id === form.contractorId,
             )?.name,
           },
         ]}
@@ -109,18 +100,18 @@ export const WorkWithIndividualDeviceSubmitActionForm: FC<
           resource={individualDevice.resource}
           serialNumber={individualDevice.serialNumber || ''}
           rateType={individualDevice.rateType}
-          readings={fields.oldDeviceReadings.value}
+          readings={form.oldDeviceReadings}
           title={OldIndividualDeviceTitleLookup[typeOfAction]}
           disabled
         />
       )}
 
       <WorkWithIndividualDeviceInputs
-        model={fields.model.value}
-        resource={fields.resource.value}
-        serialNumber={fields.serialNumber.value}
-        rateType={fields.rateType.value}
-        readings={fields.newDeviceReadings.value}
+        model={form.model}
+        resource={form.resource}
+        serialNumber={form.serialNumber}
+        rateType={form.rateType}
+        readings={form.newDeviceReadings}
         title={NewIndividualDeviceTitleLookup[typeOfAction]}
         disabled
       />

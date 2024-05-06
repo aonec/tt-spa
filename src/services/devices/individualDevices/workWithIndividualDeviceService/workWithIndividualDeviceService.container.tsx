@@ -11,7 +11,7 @@ import { displayIndividualDeviceAndNamesService } from '../displayIndividualDevi
 import { WorkWithIndividualDeviceSubmitActionContainer } from './workWithIndividualDeviceSubmitActionService';
 import { useNavigate } from 'react-router-dom';
 
-const { gates, inputs, outputs, forms } = workWithIndividualDeviceService;
+const { gates, inputs, outputs } = workWithIndividualDeviceService;
 const { WorkWithIndividualDeviceGate, IndividualDeviceGate } = gates;
 const { ContractorsGate } = displayContractorsService.gates;
 
@@ -28,6 +28,8 @@ export const WorkWithIndividualDeviceContainer: FC<
     handleFetchSerialNumberForCheck,
     handleFetchModels,
     models,
+    handleSubmitForm,
+    deviceInfoForm,
   } = useUnit({
     individualDevice: outputs.$individualDevice,
     isDeviceLoading: outputs.$isDeviceLoading,
@@ -37,6 +39,8 @@ export const WorkWithIndividualDeviceContainer: FC<
       displayIndividualDeviceAndNamesService.inputs.handleFetchModels,
     models:
       displayIndividualDeviceAndNamesService.outputs.$individualDevicesNames,
+    handleSubmitForm: inputs.handleSubmitForm,
+    deviceInfoForm: outputs.$deviceInfoForm,
   });
 
   const { data: serialNumberForChecking, pending: isSerialNumberLoading } =
@@ -51,18 +55,19 @@ export const WorkWithIndividualDeviceContainer: FC<
       <WorkWithIndividualDeviceGate type={type} />
       <IndividualDeviceGate id={Number(deviceId)} />
       <ContractorsGate />
-      <WorkWithIndividualDeviceSubmitActionContainer />
+      <WorkWithIndividualDeviceSubmitActionContainer deviceInfoForm={deviceInfoForm} />
       <WithLoader isLoading={isDeviceLoading}>
         <WorkWithIndividualDevicePage
           individualDevice={individualDevice}
           type={type}
-          form={forms.deviceInfoForm}
           contractors={contractors}
           handleFetchSerialNumberForCheck={handleFetchSerialNumberForCheck}
           handleFetchModels={handleFetchModels}
           serialNumberForChecking={serialNumberForChecking || []}
           isSerialNumberLoading={isSerialNumberLoading}
           models={models}
+          onSubmitCapture={inputs.onSubmitCapture}
+          handleSubmitForm={handleSubmitForm}
         />
       </WithLoader>
     </>

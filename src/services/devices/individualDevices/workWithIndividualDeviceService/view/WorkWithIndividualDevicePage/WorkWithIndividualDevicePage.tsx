@@ -22,13 +22,14 @@ export const WorkWithIndividualDevicePage: FC<
 > = ({
   individualDevice,
   type,
-  form,
   contractors,
   handleFetchSerialNumberForCheck,
   serialNumberForChecking,
   isSerialNumberLoading,
   handleFetchModels,
   models,
+  onSubmitCapture,
+  handleSubmitForm,
 }) => {
   const navigate = useNavigate();
 
@@ -57,7 +58,6 @@ export const WorkWithIndividualDevicePage: FC<
           <ContentWrapper>
             <WorkWithIndividualDeviceForm
               type={type}
-              form={form}
               contractors={contractors}
               handleFetchSerialNumberForCheck={handleFetchSerialNumberForCheck}
               serialNumberForChecking={serialNumberForChecking}
@@ -65,12 +65,14 @@ export const WorkWithIndividualDevicePage: FC<
               handleFetchModels={handleFetchModels}
               models={models}
               individualDevice={individualDevice}
+              onSubmitCapture={onSubmitCapture}
+              handleSubmitForm={handleSubmitForm}
             />
             <FooterWrapper>
               <Button type="ghost" onClick={() => navigate(-1)}>
                 Отмена
               </Button>
-              <Button onClick={() => form.submit()}>Далее</Button>
+              <Button onClick={() => onSubmitCapture()}>Далее</Button>
             </FooterWrapper>
           </ContentWrapper>
         </>

@@ -1,4 +1,4 @@
-import { createEvent } from 'effector';
+import { createEvent, createStore } from 'effector';
 import { combine, sample, split } from 'effector';
 import { createGate } from 'effector-react';
 import {
@@ -28,10 +28,21 @@ import {
 } from './workWithIndividualDeviceService.utils';
 import { message } from 'antd';
 import dayjs from 'api/dayjs';
+import { WorkWithIndividualDeviceFormType } from './view/WorkWithIndividualDevicePage/WorkWithIndividualDeviceForm/WorkWithIndividualDeviceForm.types';
 
 const WorkWithIndividualDeviceGate = createGate<{
   type: WorkWithIndividualDeviceType;
 }>();
+
+const onSubmitCapture = createEvent();
+
+const handleSubmitForm = createEvent<WorkWithIndividualDeviceFormType>();
+
+const $deviceInfoForm = createStore<WorkWithIndividualDeviceFormType | null>(
+  null,
+).on(handleSubmitForm, (_, formData) => formData);
+
+$deviceInfoForm.watch((data) => console.log(data));
 
 const deviceInfoForm = createForm({
   fields: {
@@ -360,16 +371,18 @@ export const workWithIndividualDeviceService = {
     fetchSerialNumberForCheck,
     submitAction,
     actionSucceed,
+    onSubmitCapture,
+    handleSubmitForm,
   },
   outputs: {
     $individualDevice,
     $isDeviceLoading:
       displayIndividualDeviceAndNamesService.outputs.$isIndividualDeviceLoading,
+    $deviceInfoForm,
   },
   gates: {
     WorkWithIndividualDeviceGate,
     IndividualDeviceGate:
       displayIndividualDeviceAndNamesService.gates.IndividualDeviceGate,
   },
-  forms: { deviceInfoForm },
 };

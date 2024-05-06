@@ -22,7 +22,7 @@ sample({
 });
 
 sample({
-  clock: workWithIndividualDeviceService.forms.deviceInfoForm.formValidated,
+  clock: workWithIndividualDeviceService.inputs.handleSubmitForm,
   target: openModal,
 });
 
@@ -42,8 +42,5 @@ export const workWithIndividualDeviceSubmitActionService = {
     $typeOfAction,
     $individualDevice:
       displayIndividualDeviceAndNamesService.outputs.$individualDevice,
-  },
-  forms: {
-    deviceInfoForm: workWithIndividualDeviceService.forms.deviceInfoForm,
   },
 };
