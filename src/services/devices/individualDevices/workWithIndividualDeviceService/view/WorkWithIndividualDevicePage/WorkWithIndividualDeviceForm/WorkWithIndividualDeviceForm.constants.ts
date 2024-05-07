@@ -1,5 +1,8 @@
 import * as yup from 'yup';
-import { WorkWithIndividualDeviceType } from '../../../workWithIndividualDeviceService.types';
+import {
+  PreparedForFormReadings,
+  WorkWithIndividualDeviceType,
+} from '../../../workWithIndividualDeviceService.types';
 import {
   checkingDateTest,
   compareReadingsArrWithSameIndex,
@@ -45,16 +48,56 @@ export const validationSchema = yup.object().shape({
 
   newDeviceReadings: yup
     .object()
-    .when('type', {
-      is: (type) => type === 'check',
-      then: yup.object().required('Это поле обязательное'),
-    })
-    .test('newDeviceReadingsTest', 'ошибка 1', (value) => {
-      return Boolean(
-        compareReadingsArrWithSameIndex(
-          Object.values(value!),
-          Object.values(prepareDeviceReadings([])),
-        )?.length,
-      );
-    }),
+    .nullable()
+    // .when('type', {
+    //   is: (type) => type === 'check',
+    //   then: yup.object().required('Введите хотя бы одно показание'),
+    // })
+    .test(
+      'newDeviceReadingsTest',
+      'Это поле обязательно для заполнения',
+      (value) => {
+        return Boolean(
+          compareReadingsArrWithSameIndex(
+            Object.values(value!),
+            Object.values(prepareDeviceReadings([])),
+          )?.length,
+        );
+      },
+    )
+    .test(
+      'newDeviceReadingsTest2',
+      'Введенное показание не может быть меньше предыдущего',
+      (value: any) => {
+        return !Object.entries(value!)
+          .map(([index, elem]) => {
+            let isValid: boolean = true;
+
+            for (let i = Number(index) + 1; i < 8; ++i) {
+              const prev = value[i];
+              if (!prev) {
+                continue;
+              }
+              const { value1, value2, value3, value4 } = elem as PreparedForFormReadings;
+              if (value1) {
+                isValid = isValid && Number(value1) >= Number(prev.value1);
+              }
+              if (value2) {
+                isValid = isValid && Number(value2) >= Number(prev.value2);
+              }
+              if (value3) {
+                isValid = isValid && Number(value3) >= Number(prev.value3);
+              }
+              if (value4) {
+                isValid = isValid && Number(value4) >= Number(prev.value4);
+              }
+            }
+
+            return isValid;
+          })
+          .includes(false);
+      },
+    ),
 });
+
+// 'Введенное показание не может быть меньше предыдущего',
