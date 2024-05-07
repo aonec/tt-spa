@@ -9,13 +9,16 @@ import {
   UserLoader,
 } from './UserInfo.styled';
 import { UserInfoProps } from './UserInfo.types';
-import { useNavigate } from 'react-router-dom';
+import { useMatch, useNavigate } from 'react-router-dom';
 
 export const UserInfo: FC<UserInfoProps> = ({
   isLoading,
   currentUser,
   currentManagingFirm,
 }) => {
+  const isActive = useMatch('/currentUserProfile/:section?');
+  console.log({ isActive });
+
   const userEmail = useMemo(() => {
     if (!currentUser) {
       return <UserLoader active={isLoading} />;
