@@ -32,6 +32,7 @@ import { SpaceLine } from 'ui-kit/SpaceLine';
 import {
   NewIndividualDeviceTitleLookup,
   OldIndividualDeviceTitleLookup,
+  validationSchema,
 } from './WorkWithIndividualDeviceForm.constants';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
@@ -67,8 +68,8 @@ export const WorkWithIndividualDeviceForm: FC<
   const { values, setFieldValue, errors, handleSubmit } =
     useFormik<WorkWithIndividualDeviceFormType>({
       initialValues: {
-        model: '',
-        serialNumber: '',
+        model: null,
+        serialNumber: null,
         bitDepth: null,
         scaleFactor: null,
         rateType: EIndividualDeviceRateType.OneZone,
@@ -86,9 +87,7 @@ export const WorkWithIndividualDeviceForm: FC<
         newDeviceReadings: prepareDeviceReadings([]),
         resource: null,
       },
-      validationSchema: yup.object().shape({
-        // actJobDate: yup.string().required('Это поле обязательно'),
-      }),
+      validationSchema,
       onSubmit: (data) => {
         handleSubmitForm(data);
       },
@@ -149,7 +148,7 @@ export const WorkWithIndividualDeviceForm: FC<
                 disabled={!isSwitch}
                 type="text"
                 placeholder="Введите серийный номер прибора"
-                value={values.serialNumber}
+                value={values.serialNumber || undefined}
                 onChange={(e) => setFieldValue('serialNumber', e.target.value)}
                 name="serialNumber"
                 onKeyDown={enterKeyDownHandler(0)}
@@ -350,17 +349,17 @@ export const WorkWithIndividualDeviceForm: FC<
       <SpaceLine />
 
       {!isCheck && (
-        <WorkWithIndividualDeviceInputs
-          model={individualDevice.model || ''}
-          resource={individualDevice.resource}
-          serialNumber={individualDevice.serialNumber || ''}
-          rateType={individualDevice.rateType}
-          readings={values.oldDeviceReadings}
-          onChange={(readings) => {
-            setFieldValue('oldDeviceReadings', readings);
-          }}
-          title={OldIndividualDeviceTitleLookup[type]}
-        />
+          <WorkWithIndividualDeviceInputs
+            model={individualDevice.model || ''}
+            resource={individualDevice.resource}
+            serialNumber={individualDevice.serialNumber || ''}
+            rateType={individualDevice.rateType}
+            readings={values.oldDeviceReadings}
+            onChange={(readings) => {
+              setFieldValue('oldDeviceReadings', readings);
+            }}
+            title={OldIndividualDeviceTitleLookup[type]}
+          />
       )}
 
       <WorkWithIndividualDeviceInputs
@@ -372,7 +371,7 @@ export const WorkWithIndividualDeviceForm: FC<
         onChange={(readings) => setFieldValue('newDeviceReadings', readings)}
         title={NewIndividualDeviceTitleLookup[type]}
       />
-      {/* <ErrorMessage>{errors.newDeviceReadings}</ErrorMessage> */}
+      <ErrorMessage>{errors.newDeviceReadings as string}</ErrorMessage>
 
       <SpaceLine />
 

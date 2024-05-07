@@ -1,6 +1,11 @@
 import * as yup from 'yup';
 import { WorkWithIndividualDeviceType } from '../../../workWithIndividualDeviceService.types';
-import { checkingDateTest } from '../../../workWithIndividualDeviceService.utils';
+import {
+  checkingDateTest,
+  compareReadingsArrWithSameIndex,
+  prepareDeviceReadings,
+} from '../../../workWithIndividualDeviceService.utils';
+import dayjs from 'dayjs';
 
 export const OldIndividualDeviceTitleLookup: {
   [key in WorkWithIndividualDeviceType]: string;
@@ -19,29 +24,37 @@ export const NewIndividualDeviceTitleLookup: {
 };
 
 export const validationSchema = yup.object().shape({
-  serialNumber: yup.string().required('Это поле обязательное'),
-  rateType: yup.string().required('Это поле обязательное'),
+  serialNumber: yup.string().nullable().required('Это поле обязательное'),
+  rateType: yup.string().nullable().required('Это поле обязательное'),
 
   lastCheckingDate: yup
     .string()
-    .when('lastCheckingDate', {
-      is: checkingDateTest,
-      then: yup.number().required('Это поле обязательно'),
-    })
-    .required('Это поле обязательное'),
+    .nullable()
+    .required('Это поле обязательно для заполнения')
+    .test('checkingDateTest', 'Некорректная дата', (value) =>
+      checkingDateTest(value),
+    ),
 
-  dayFeedBackFlowTemperature: yup
-    .number()
-    .max(200, 'превышает 200°')
-    .min(0, 'ниже 0°')
-    .when('dayFeedFlowTemperature', (value) => {
-      if (value) {
-        return yup
-          .number()
-          .max(200, 'превышает 200°')
-          .min(0, 'ниже 0°')
-          .lessThan(value, 'Выше подающей');
-      }
+  futureCheckingDate: yup
+    .string()
+    .nullable()
+    .required('Это поле обязательно для заполнения')
+    .test('checkingDateTest', 'Некорректная дата', (value) =>
+      checkingDateTest(value),
+    ),
+
+  newDeviceReadings: yup
+    .object()
+    .when('type', {
+      is: (type) => type === 'check',
+      then: yup.object().required('Это поле обязательное'),
     })
-    .required('Это поле обязательное'),
+    .test('newDeviceReadingsTest', 'ошибка 1', (value) => {
+      return Boolean(
+        compareReadingsArrWithSameIndex(
+          Object.values(value!),
+          Object.values(prepareDeviceReadings([])),
+        )?.length,
+      );
+    }),
 });

@@ -27,8 +27,8 @@ export type WorkWithIndividualDeviceFormProps = {
 };
 
 export type WorkWithIndividualDeviceFormType = {
-  model: string;
-  serialNumber: string;
+  model: string | null;
+  serialNumber: string | null;
   bitDepth: number | null;
   scaleFactor: number | null;
   rateType: EIndividualDeviceRateType;
