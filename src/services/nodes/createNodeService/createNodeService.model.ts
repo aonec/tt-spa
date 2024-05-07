@@ -127,6 +127,8 @@ sample({
   target: fetchBuildingFx,
 });
 
+const $buildingId = $requestPayload.map(({ buildingId }) => buildingId || null);
+
 sample({
   source: $requestPayload.map(({ buildingId, houseCategory }) => ({
     buildingId,
@@ -134,8 +136,8 @@ sample({
   })),
   clock: sample({
     source: CreateNodeGate.state,
-    clock: $requestPayload.map(({ buildingId }) => buildingId),
-    filter: ({ buildingId }) => !buildingId,
+    clock: $buildingId,
+    filter: Boolean,
   }),
   filter: (payload): payload is GetBuildingPayload =>
     Boolean(payload.houseCategory),

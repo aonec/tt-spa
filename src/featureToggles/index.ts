@@ -1,5 +1,5 @@
 export const featureToggles = {
-  reportsConstructor: false,
+  reportsConstructor: true,
   workingRanges: false,
   dispatcherAddTask: true,
   services: true,

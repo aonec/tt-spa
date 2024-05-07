@@ -20,7 +20,7 @@ export const TaskComments: FC<TaskCommentsProps> = ({
   commentText,
 }) => {
   const isCurrentCommentEmpty = commentText === '';
-  const disabled = isCurrentCommentEmpty || !isPerpetrator;
+  const disabled = isCurrentCommentEmpty;
 
   return (
     <Wrapper>

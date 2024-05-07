@@ -59,20 +59,28 @@ const $isLoading = combine(
 const EditMeteringDeviceGate = createGate<{ deviceId: number }>();
 
 sample({
-  clock: $housingMeteringDevice.map((device) => device?.hubConnection?.nodeId),
+  clock: $housingMeteringDevice.map(
+    (device) => device?.hubConnection?.node?.id || null,
+  ),
   filter: Boolean,
   target: getPipesFx,
 });
 
+const $deviceId = EditMeteringDeviceGate.state.map(({ deviceId }) => deviceId, {
+  skipVoid: false,
+});
+
 sample({
-  source: EditMeteringDeviceGate.state.map(({ deviceId }) => deviceId),
   clock: handleSubmitForm,
+  source: $deviceId,
+  filter: Boolean,
   fn: (deviceId, payload) => ({ deviceId, ...payload }),
   target: editHousingMeteringDeviceFx,
 });
 
 sample({
-  clock: EditMeteringDeviceGate.open.map(({ deviceId }) => deviceId),
+  source: $deviceId,
+  clock: EditMeteringDeviceGate.open,
   target: getHousingMeteringDeviceFx,
 });
 

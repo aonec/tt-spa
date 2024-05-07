@@ -25,9 +25,12 @@ const $apartment = createStore<ApartmentResponse | null>(null)
   })
   .reset(resetApartment);
 
+const $apartmentId = ApartmentGate.state.map((state) => state.id || null);
+
 sample({
   clock: ApartmentGate.open,
-  source: ApartmentGate.state.map((state) => state.id),
+  source: $apartmentId,
+  filter: (id): id is number => Boolean(id),
   target: fetchApartmentFx,
 });
 

@@ -15,13 +15,18 @@ const $nodeChecks = createStore<NodeCheckResponse[]>([]).on(
 
 const NodeChecksGate = createGate<{ nodeId: number }>();
 
+const $nodeId = NodeChecksGate.state.map(({ nodeId }) => nodeId || null);
+
 sample({
-  clock: NodeChecksGate.open.map(({ nodeId }) => nodeId),
+  clock: NodeChecksGate.open,
+  source: $nodeId,
+  filter: Boolean,
   target: getNodeChecksFx,
 });
 
 sample({
-  source: NodeChecksGate.state.map(({ nodeId }) => nodeId),
+  source: $nodeId,
+  filter: Boolean,
   clock: refetchNodeChecks,
   target: getNodeChecksFx,
 });

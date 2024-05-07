@@ -54,13 +54,19 @@ const $openedBlockId = createStore<number | null>(null).on(
 const $isLoading = fetchIndividualDevicesList.pending;
 const $isConsumptionsLoading = fetchIndividualDeviceConsumptionsListFx.pending;
 
+const $devicesIds = IndividualDevicesIds.state.map(
+  ({ devicesIds }) => devicesIds || [],
+);
+
+const handleFetchDevices = sample({
+  source: $isLoading,
+  clock: IndividualDevicesIds.state,
+  filter: (isLoading, ids) => !isLoading && Boolean(ids?.devicesIds?.length),
+});
+
 sample({
-  source: IndividualDevicesIds.state.map(({ devicesIds }) => devicesIds),
-  clock: sample({
-    source: $isLoading,
-    clock: IndividualDevicesIds.state,
-    filter: (isLoading, ids) => !isLoading && Boolean(ids?.devicesIds?.length),
-  }),
+  source: $devicesIds,
+  clock: handleFetchDevices,
   target: [fetchIndividualDevicesList, fetchIndividualDeviceConsumptionsListFx],
 });
 

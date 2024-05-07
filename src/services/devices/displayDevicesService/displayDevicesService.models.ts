@@ -96,9 +96,9 @@ $nodesPagedData
   .on(getNodesListQuery.$data, (_, data) => data)
   .reset([getNodesListQuery.finished.failure, clearCalculators]);
 
-const $total = $nodesPagedData.map((state) => state?.totalItems);
-const $pageNumber = $nodesPagedData.map((state) => state?.pageNumber);
-const $pageSize = $nodesPagedData.map((state) => state?.pageSize);
+const $total = $nodesPagedData.map((state) => state?.totalItems || null);
+const $pageNumber = $nodesPagedData.map((state) => state?.pageNumber || null);
+const $pageSize = $nodesPagedData.map((state) => state?.pageSize || null);
 
 const setPageNumber = createEvent<number>();
 
