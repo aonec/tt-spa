@@ -15,6 +15,8 @@ export const UserIconSC = styled(UserIcon)`
 export const UserEmailWrapper = styled.div`
   display: flex;
   align-items: center;
+
+  cursor: pointer;
 `;
 
 export const UserEmail = styled.div`
@@ -26,6 +28,10 @@ export const UserEmail = styled.div`
   white-space: nowrap;
   color: #272f5a;
   transition: 0.2s;
+
+  &:hover {
+    color: #189ee9;
+  }
 `;
 
 export const UserManagingFirmName = styled.div`

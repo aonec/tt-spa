@@ -9,6 +9,7 @@ import {
   UserLoader,
 } from './UserInfo.styled';
 import { UserInfoProps } from './UserInfo.types';
+import { useNavigate } from 'react-router-dom';
 
 export const UserInfo: FC<UserInfoProps> = ({
   isLoading,
@@ -27,9 +28,13 @@ export const UserInfo: FC<UserInfoProps> = ({
     );
   }, [currentUser, isLoading]);
 
+  const navigate = useNavigate();
+
   return (
     <UserInfoWrapper>
-      <UserEmailWrapper>
+      <UserEmailWrapper
+        onClick={() => navigate('/currentUserProfile/mainInfo')}
+      >
         <UserIconSC />
         {userEmail}
       </UserEmailWrapper>
