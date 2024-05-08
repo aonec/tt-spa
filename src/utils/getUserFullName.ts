@@ -7,9 +7,9 @@ type Name = {
 export const getUserFullName = (name: Name) => {
   const { firstname, lastname, middlename } = name;
 
-  const firstnameText = firstname ? `${firstname}` : '';
+  const firstnameText = firstname ? ` ${firstname}` : '';
   const lastnameText = lastname ? ` ${lastname}` : '';
   const middlenameText = middlename ? ` ${middlename}` : '';
 
-  return `${firstnameText}${middlenameText}${lastnameText}`;
+  return `${lastnameText}${firstnameText}${middlenameText}`;
 };
