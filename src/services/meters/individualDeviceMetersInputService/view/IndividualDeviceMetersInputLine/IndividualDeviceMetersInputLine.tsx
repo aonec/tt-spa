@@ -20,7 +20,7 @@ import { apartmentIndividualDevicesMetersService } from 'services/meters/apartme
 import { editReadingsHistoryService } from 'services/meters/editReadingsHistoryService';
 import { SelectSwitchDeviceTypeModal } from './SelectSwitchDeviceTypeModal';
 import { IndividualDeviceInfoExtended } from 'ui-kit/shared/IndividualDeviceInfoExtended';
-import { currentUserService } from 'services/currentUserService';
+import { currentUserService } from 'services/currentUser/currentUserService';
 import {
   ContextMenuButtonColor,
   ContextMenuElement,

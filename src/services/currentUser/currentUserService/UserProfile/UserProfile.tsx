@@ -26,7 +26,7 @@ export const UserProfile: FC<Props> = ({ currentUser }) => {
           menuButtons: [
             {
               title: 'Редактировать',
-              // onClick: () => handleEditUser(),
+              onClick: () => navigate(`/currentUserEdit/${currentUser?.id}`),
               hidden: UserProfileSection.Notifications === section,
             },
           ],

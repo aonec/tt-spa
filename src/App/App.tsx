@@ -6,7 +6,7 @@ import 'dayjs/locale/ru';
 import 'css/index.scss';
 import 'css/styles.css';
 import { useRoutes } from './router/router';
-import { currentUserService } from 'services/currentUserService';
+import { currentUserService } from 'services/currentUser/currentUserService';
 
 const { outputs } = currentUserService;
 

@@ -12,7 +12,7 @@ import {
   fetchResourceDisconnectionOnHousingStock,
 } from './housingStockProfileService.api';
 import { consolidatedReportService } from './consolidatedReportService';
-import { currentUserService } from 'services/currentUserService';
+import { currentUserService } from 'services/currentUser/currentUserService';
 
 const ObjectProfileIdGate = createGate<{ objectId: number }>();
 
