@@ -16,8 +16,7 @@ export const UserInfo: FC<UserInfoProps> = ({
   currentUser,
   currentManagingFirm,
 }) => {
-  const isActive = useMatch('/currentUserProfile/:section?');
-  console.log({ isActive });
+  const isActive = Boolean(useMatch('/currentUserProfile/:section?'));
 
   const userEmail = useMemo(() => {
     if (!currentUser) {
@@ -26,10 +25,10 @@ export const UserInfo: FC<UserInfoProps> = ({
 
     return (
       <Tooltip title={currentUser.email}>
-        <UserEmail>{currentUser.email}</UserEmail>
+        <UserEmail isActive={isActive}>{currentUser.email}</UserEmail>
       </Tooltip>
     );
-  }, [currentUser, isLoading]);
+  }, [currentUser, isLoading, isActive]);
 
   const navigate = useNavigate();
 
