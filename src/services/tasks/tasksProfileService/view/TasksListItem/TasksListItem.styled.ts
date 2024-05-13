@@ -84,6 +84,14 @@ export const TextWrapper = styled.div`
   display: flex;
   align-items: center;
   gap: 8px;
+  font-weight: 400;
+`;
+
+export const AddressWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 500;
 `;
 
 export const RedTimerIcon = styled(TimerIcon)`
