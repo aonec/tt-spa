@@ -1,15 +1,23 @@
-type Name = {
-  firstname: string | null | undefined;
-  middlename: string | null | undefined;
-  lastname: string | null | undefined;
+type UserInfo = {
+  firstname: string | null;
+  middlename: string | null;
+  lastname: string | null;
 };
 
-export const getUserFullName = (name: Name) => {
+export const getUserFullName = (name: UserInfo) => {
   const { firstname, lastname, middlename } = name;
 
-  const firstnameText = firstname ? `${firstname}` : '';
-  const lastnameText = lastname ? ` ${lastname}` : '';
-  const middlenameText = middlename ? ` ${middlename}` : '';
+  let result = '';
 
-  return `${firstnameText}${middlenameText}${lastnameText}`;
+  if (firstname) {
+    result += `${firstname} `;
+  }
+  if (lastname) {
+    result += `${lastname} `;
+  }
+  if (middlename) {
+    result += `${middlename} `;
+  }
+
+  return result;
 };
