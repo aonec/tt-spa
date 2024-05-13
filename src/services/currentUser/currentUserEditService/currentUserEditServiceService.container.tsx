@@ -9,12 +9,14 @@ import { rolesService } from 'services/employee/rolesService';
 const { inputs, outputs } = currentUserEditServiceService;
 
 export const CurrentUserEditServiceContainer = () => {
-  const { user, competencesCatalog, userRoles, handleEdit } = useUnit({
-    user: currentUserService.outputs.$currentUser,
-    competencesCatalog: competencesService.outputs.$competencesCatalog,
-    userRoles: rolesService.outputs.$userRoles,
-    handleEdit: inputs.handleEdit,
-  });
+  const { user, competencesCatalog, userRoles, handleEdit, isLoading } =
+    useUnit({
+      user: currentUserService.outputs.$currentUser,
+      competencesCatalog: competencesService.outputs.$competencesCatalog,
+      userRoles: rolesService.outputs.$userRoles,
+      handleEdit: inputs.handleEdit,
+      isLoading: outputs.isLoading,
+    });
 
   const multipleSelectionCompetences =
     competencesCatalog?.map((elem) => ({
@@ -34,6 +36,7 @@ export const CurrentUserEditServiceContainer = () => {
       multipleSelectionCompetences={multipleSelectionCompetences}
       multipleSelectionUserRoles={multipleSelectionUserRoles}
       handleEdit={handleEdit}
+      isLoading={isLoading}
     />
   );
 };

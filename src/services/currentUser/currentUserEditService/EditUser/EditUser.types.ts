@@ -12,4 +12,5 @@ export type Props = {
     value: ESecuredIdentityRoleName | undefined;
   }[];
   handleEdit: (payload: EditPayloud) => void;
+  isLoading: boolean;
 };

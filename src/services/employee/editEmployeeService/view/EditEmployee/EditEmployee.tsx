@@ -121,7 +121,6 @@ export const EditEmployee: FC<EditEmployeeProps> = ({
             value={values.email || undefined}
             onChange={(value) => setFieldValue('email', value.target.value)}
           />
-          <ErrorMessage></ErrorMessage>
         </FormItem>
         <FormItem label="Контактный телефон">
           <Input
@@ -140,7 +139,6 @@ export const EditEmployee: FC<EditEmployeeProps> = ({
               )
             }
           />
-          <ErrorMessage></ErrorMessage>
         </FormItem>
 
         <FormItem label="Роль в системе">
@@ -151,7 +149,7 @@ export const EditEmployee: FC<EditEmployeeProps> = ({
             }}
             value={values.roleTypes || undefined}
           >
-            {multipleSelectionUserRoles?.map((elem, i) => (
+            {multipleSelectionUserRoles?.map((elem) => (
               <SelectMultiple.Option value={elem.value || ''} key={elem.value}>
                 {elem.label}
               </SelectMultiple.Option>
@@ -174,8 +172,8 @@ export const EditEmployee: FC<EditEmployeeProps> = ({
         </FormItem>
 
         <Footer>
-          <Button onClick={() => handleSubmit()} disabled={isPending}>
-            {isPending ? <Loader show /> : 'Сохранить'}
+          <Button onClick={() => handleSubmit()} isLoading={isPending}>
+            Сохранить
           </Button>
           <Button type="ghost" onClick={onCancel}>
             Отмена

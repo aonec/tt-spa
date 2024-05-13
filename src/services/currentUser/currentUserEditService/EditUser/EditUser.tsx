@@ -21,6 +21,7 @@ export const EditUser: FC<Props> = ({
   multipleSelectionCompetences,
   multipleSelectionUserRoles,
   handleEdit,
+  isLoading,
 }) => {
   const params = useParams<{ id: string }>();
   const userId = Number(params.id);
@@ -56,6 +57,10 @@ export const EditUser: FC<Props> = ({
         .nullable()
         .min(2, 'Минимум два символа')
         .required('Обязательное поле'),
+      roleTypes: yup
+        .array()
+        .min(1, 'Выберите роль')
+        .required('Обязательное поле'),
     }),
     validateOnChange: false,
     onSubmit: (data) => {
@@ -78,6 +83,8 @@ export const EditUser: FC<Props> = ({
   const firstnameIntial = user?.firstName ? `${user.firstName[0]}. ` : '';
   const lastname = user?.lastName ? `${user?.lastName} ` : '';
   const fullNameInitials = `${lastname}${firstnameIntial}${middlenameIntial}`;
+
+  console.log({ multipleSelectionUserRoles });
 
   return (
     <>
@@ -124,7 +131,6 @@ export const EditUser: FC<Props> = ({
             value={values.email || undefined}
             onChange={(value) => setFieldValue('email', value.target.value)}
           />
-          <ErrorMessage></ErrorMessage>
         </FormItem>
         <FormItem label="Контактный телефон">
           <Input
@@ -143,7 +149,6 @@ export const EditUser: FC<Props> = ({
               )
             }
           />
-          <ErrorMessage></ErrorMessage>
         </FormItem>
 
         <FormItem label="Роль в системе">
@@ -154,12 +159,13 @@ export const EditUser: FC<Props> = ({
             }}
             value={values.roleTypes || undefined}
           >
-            {multipleSelectionUserRoles?.map((elem, i) => (
+            {multipleSelectionUserRoles?.map((elem) => (
               <SelectMultiple.Option value={elem.value || ''} key={elem.value}>
                 {elem.label}
               </SelectMultiple.Option>
             ))}
           </SelectMultiple>
+          <ErrorMessage>{errors.roleTypes}</ErrorMessage>
         </FormItem>
 
         <FormItem label="Компетенции">
@@ -177,7 +183,9 @@ export const EditUser: FC<Props> = ({
         </FormItem>
 
         <Footer>
-          <Button onClick={() => handleSubmit()}>Cохранить</Button>
+          <Button onClick={() => handleSubmit()} isLoading={isLoading}>
+            Cохранить
+          </Button>
           <Button type="ghost" onClick={onCancel}>
             Отмена
           </Button>

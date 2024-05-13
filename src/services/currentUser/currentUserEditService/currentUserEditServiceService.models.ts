@@ -17,7 +17,11 @@ sample({
   target: editUserFx,
 });
 
+const isLoading = editUserFx.pending;
+
+const handleUpdateUser = editUserFx.doneData;
+
 export const currentUserEditServiceService = {
-  inputs: {handleEdit},
-  outputs: {},
+  inputs: { handleEdit, handleUpdateUser },
+  outputs: { isLoading },
 };
