@@ -84,8 +84,6 @@ export const EditUser: FC<Props> = ({
   const lastname = user?.lastName ? `${user?.lastName} ` : '';
   const fullNameInitials = `${lastname}${firstnameIntial}${middlenameIntial}`;
 
-  console.log({ multipleSelectionUserRoles });
-
   return (
     <>
       <GoBack />

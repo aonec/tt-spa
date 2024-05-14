@@ -5,18 +5,28 @@ import { useUnit } from 'effector-react';
 import { currentUserService } from '../currentUserService';
 import { competencesService } from 'services/employee/competencesService';
 import { rolesService } from 'services/employee/rolesService';
+import _ from 'lodash';
 
 const { inputs, outputs } = currentUserEditServiceService;
 
 export const CurrentUserEditServiceContainer = () => {
-  const { user, competencesCatalog, userRoles, handleEdit, isLoading } =
-    useUnit({
-      user: currentUserService.outputs.$currentUser,
-      competencesCatalog: competencesService.outputs.$competencesCatalog,
-      userRoles: rolesService.outputs.$userRoles,
-      handleEdit: inputs.handleEdit,
-      isLoading: outputs.isLoading,
-    });
+  const {
+    user,
+    competencesCatalog,
+    userChangeableRoles,
+    handleEdit,
+    isLoading,
+  } = useUnit({
+    user: currentUserService.outputs.$currentUser,
+    competencesCatalog: competencesService.outputs.$competencesCatalog,
+    userChangeableRoles: rolesService.outputs.$userRoles,
+    handleEdit: inputs.handleEdit,
+    isLoading: outputs.isLoading,
+  });
+
+  const userCurrentRoles = user?.roles || [];
+  const userTotalRoles = [...(userChangeableRoles || []), ...userCurrentRoles]; //смешиваем возможные и текущие роли
+  const uniqUserTotalRoles = _.uniqBy(userTotalRoles, 'key'); //удаление дупликатов ролей
 
   const multipleSelectionCompetences =
     competencesCatalog?.map((elem) => ({
@@ -24,11 +34,10 @@ export const CurrentUserEditServiceContainer = () => {
       value: elem.id,
     })) || [];
 
-  const multipleSelectionUserRoles =
-    userRoles?.map((elem) => ({
-      label: elem.value,
-      value: elem.key,
-    })) || [];
+  const multipleSelectionUserRoles = uniqUserTotalRoles.map((elem) => ({
+    label: elem.value || null,
+    value: elem.key || null,
+  }));
 
   return (
     <EditUser

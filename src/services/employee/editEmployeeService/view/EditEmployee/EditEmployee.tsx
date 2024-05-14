@@ -8,7 +8,6 @@ import { useFormik } from 'formik';
 import { GoBack } from 'ui-kit/shared/GoBack';
 import { Button } from 'ui-kit/Button';
 import { useNavigate, useParams } from 'react-router-dom';
-import { Loader } from 'ui-kit/Loader';
 import {
   ESecuredIdentityRoleName,
   OrganizationUserUpdateRequest,

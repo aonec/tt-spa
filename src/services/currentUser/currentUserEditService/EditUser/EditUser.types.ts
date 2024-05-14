@@ -8,8 +8,8 @@ export type Props = {
     value: string;
   }[];
   multipleSelectionUserRoles: {
-    label: string | null | undefined;
-    value: ESecuredIdentityRoleName | undefined;
+    label: string | null;
+    value: ESecuredIdentityRoleName | null;
   }[];
   handleEdit: (payload: EditPayloud) => void;
   isLoading: boolean;
