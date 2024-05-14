@@ -156,6 +156,7 @@ export const EditUser: FC<Props> = ({
               setFieldValue('roleTypes', value);
             }}
             value={values.roleTypes || undefined}
+            disabled
           >
             {multipleSelectionUserRoles?.map((elem) => (
               <SelectMultiple.Option value={elem.value || ''} key={elem.value}>
