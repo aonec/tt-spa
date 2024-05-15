@@ -17,6 +17,7 @@ export const StatisticProfile: FC<StatisticProfileProps> = ({
   searchType,
   housingStockId,
   housingStockAddress,
+  handleClickExportResourceDisconnecting,
 }) => {
   const navigate = useNavigate();
 
@@ -27,6 +28,10 @@ export const StatisticProfile: FC<StatisticProfileProps> = ({
           title: 'Создать отключение ресурса',
           onClick:
             chooseTypeOfResourceDisconnectionModalService.inputs.openModal,
+        },
+        {
+          title: 'Выгрузить текущий график отключений',
+          onClick: handleClickExportResourceDisconnecting,
         },
       ];
     }
@@ -56,11 +61,12 @@ export const StatisticProfile: FC<StatisticProfileProps> = ({
     return;
   }, [
     grouptype,
+    searchType,
+    handleClickExportResourceDisconnecting,
     housingStockId,
+    housingStockAddress,
     handleOpenExportStatisticModal,
     setFileName,
-    searchType,
-    housingStockAddress,
   ]);
 
   const tabItems = useMemo(
