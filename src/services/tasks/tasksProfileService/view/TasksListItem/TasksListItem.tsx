@@ -8,6 +8,7 @@ import { Timer } from 'ui-kit/shared/Timer';
 import { getApartmentFromFullAddress } from 'utils/getApartmentFromFullAddress';
 import { PipeRuptureConclusion } from './PipeRuptureConclusion';
 import {
+  AddressWrapper,
   DeviceInfoWrapper,
   ExecutorWrapper,
   InfoBlockWrapper,
@@ -101,9 +102,9 @@ export const TasksListItem: FC<TasksListItemProps> = ({ task }) => {
             <InfoBlockWrapper>
               {targetObjectInfo}
               <MapIcon />
-              <TextWrapper>
+              <AddressWrapper>
                 {getApartmentFromFullAddress(address, true)}
-              </TextWrapper>
+              </AddressWrapper>
             </InfoBlockWrapper>
             <TextWrapper>
               <NumberIcon />
