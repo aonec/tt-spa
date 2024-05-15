@@ -9,12 +9,15 @@ import {
   UserLoader,
 } from './UserInfo.styled';
 import { UserInfoProps } from './UserInfo.types';
+import { useMatch, useNavigate } from 'react-router-dom';
 
 export const UserInfo: FC<UserInfoProps> = ({
   isLoading,
   currentUser,
   currentManagingFirm,
 }) => {
+  const isActive = Boolean(useMatch('/currentUserProfile/:section?'));
+
   const userEmail = useMemo(() => {
     if (!currentUser) {
       return <UserLoader active={isLoading} />;
@@ -22,14 +25,18 @@ export const UserInfo: FC<UserInfoProps> = ({
 
     return (
       <Tooltip title={currentUser.email}>
-        <UserEmail>{currentUser.email}</UserEmail>
+        <UserEmail isActive={isActive}>{currentUser.email}</UserEmail>
       </Tooltip>
     );
-  }, [currentUser, isLoading]);
+  }, [currentUser, isLoading, isActive]);
+
+  const navigate = useNavigate();
 
   return (
     <UserInfoWrapper>
-      <UserEmailWrapper>
+      <UserEmailWrapper
+        onClick={() => navigate('/currentUserProfile/mainInfo')}
+      >
         <UserIconSC />
         {userEmail}
       </UserEmailWrapper>

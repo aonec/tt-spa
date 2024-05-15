@@ -70,6 +70,7 @@ import {
 import { currentOrganizationService } from 'services/currentOrganizationService';
 import { useUnit } from 'effector-react';
 import { tokensService } from 'api/tokensService';
+import { UserProfileContainer } from 'services/currentUserService/currentUserService.container';
 
 const {
   gates: { CurrentUserGate },
@@ -396,6 +397,10 @@ export const useRoutes = (
           ) : (
             <AccessDeniedPage />
           ),
+        },
+        {
+          path: '/currentUserProfile/:section?',
+          element: <UserProfileContainer />,
         },
         {
           path: '/calculators/:deviceId/edit',
