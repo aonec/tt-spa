@@ -10,6 +10,7 @@ import { CreateResourceDisconnectionContainer } from 'services/resources/createR
 import { ChooseTypeOfResourceDisconnectionModalContainer } from 'services/resources/chooseTypeOfResourceDisconnectionModalService/chooseTypeOfResourceDisconnectionModalService.container';
 import { resourceDisablingScheduleServiceService } from 'services/settings/resourcesDisablingScheduleService/ResourceDisablingScheduleService.model';
 import { exportResourceDisconnectionsService } from 'services/resources/exportResourceDisconnections';
+import { getResourceDisconnectionQueryParams } from 'services/settings/resourcesDisablingScheduleService/ResourceDisablingScheduleService.utils';
 
 export const StatisticsProfileContainer = () => {
   const { grouptype, searchType } = useParams<{
@@ -43,7 +44,9 @@ export const StatisticsProfileContainer = () => {
   });
 
   const handleClickExportResourceDisconnecting = useCallback(() => {
-    handleExportResourceDisconnections(resourceDisconnectingfilters);
+    handleExportResourceDisconnections(
+      getResourceDisconnectionQueryParams(resourceDisconnectingfilters),
+    );
   }, [resourceDisconnectingfilters, handleExportResourceDisconnections]);
 
   return (
