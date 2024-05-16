@@ -52,7 +52,9 @@ export const HousingMeteringDevicesReport: FC<
               return (
                 <FullAddressWrapper>
                   <ApartmentNumber>Дом №{number}</ApartmentNumber>
-                  <Tooltip title={addressString}>{addressString}</Tooltip>
+                  <Tooltip zIndex={10} title={addressString}>
+                    {addressString}
+                  </Tooltip>
                 </FullAddressWrapper>
               );
             },
@@ -80,14 +82,14 @@ export const HousingMeteringDevicesReport: FC<
             },
           },
           {
-            label: 'Начало месяца',
+            label: 'Предыдущее показание',
             size: '120px',
             render: (elem) => {
               return elem.previousReadings?.value;
             },
           },
           {
-            label: 'Конец месяца',
+            label: 'Текущее показание',
             size: '120px',
             render: (elem) => {
               return elem.currentReadings?.value;

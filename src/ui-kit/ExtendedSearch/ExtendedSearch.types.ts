@@ -11,4 +11,5 @@ export type ExtendedSearchProps = {
   isShowClearButton?: boolean;
   title?: string;
   children?: ReactNode;
+  isPaddingSearch?: boolean;
 };

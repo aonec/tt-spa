@@ -50,11 +50,13 @@ export const CompletionStageContainer: FC<ActionComponentProps> = ({
 
   return (
     <>
-      <CompletionSelect
-        taskConfirmationTypes={taskConfirmationTypes}
-        handleChangeConfirmation={handleChangeConfirmationType}
-        taskType={taskType}
-      />
+      {taskType && (
+        <CompletionSelect
+          taskConfirmationTypes={taskConfirmationTypes}
+          handleChangeConfirmation={handleChangeConfirmationType}
+          taskType={taskType}
+        />
+      )}
       <CompletionComment
         disabled={!payload.taskConfirmation?.type}
         handleChangeComment={handleChangeComment}

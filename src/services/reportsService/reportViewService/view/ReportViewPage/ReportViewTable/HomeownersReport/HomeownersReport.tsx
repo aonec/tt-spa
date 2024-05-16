@@ -41,7 +41,9 @@ export const HomeownersReport: FC<HomeownersReportProps> = ({
             return (
               <FullAddressWrapper>
                 <ApartmentNumber>Кв. №{number}</ApartmentNumber>
-                <Tooltip title={addressString}>{addressString}</Tooltip>
+                <Tooltip zIndex={10} title={addressString}>
+                  {addressString}
+                </Tooltip>
               </FullAddressWrapper>
             );
           },
@@ -51,7 +53,7 @@ export const HomeownersReport: FC<HomeownersReportProps> = ({
           size: '270px',
           render: (elem) => (
             <FullNameWrapper>
-              <Tooltip title={elem.homeownerFullName}>
+              <Tooltip zIndex={10} title={elem.homeownerFullName}>
                 {elem.homeownerFullName}
               </Tooltip>
             </FullNameWrapper>
@@ -67,7 +69,10 @@ export const HomeownersReport: FC<HomeownersReportProps> = ({
           size: '170px',
           render: (elem) => (
             <PhoneNumberWrapper>
-              <Tooltip title={(elem.homeownerPhoneNumbers || []).join(', ')}>
+              <Tooltip
+                zIndex={10}
+                title={(elem.homeownerPhoneNumbers || []).join(', ')}
+              >
                 {(elem.homeownerPhoneNumbers || []).join(', ')}
               </Tooltip>
             </PhoneNumberWrapper>

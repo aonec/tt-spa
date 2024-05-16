@@ -1,28 +1,24 @@
-import _ from 'lodash';
-import { EActResourceType, EManagingFirmTaskType } from 'api/types';
+import { EManagingFirmTaskType } from 'api/types';
 import React, { FC, useMemo } from 'react';
 import { Link } from 'react-router-dom';
-import { CalculatorIcon, NumberIcon } from 'ui-kit/icons';
+import { CalendarIcon, MapIcon, NumberIcon, UserIcon } from 'ui-kit/icons';
 import { ResourceIconLookup } from 'ui-kit/shared/ResourceIconLookup';
 import { TimeLine } from 'ui-kit/shared/TimeLine';
 import { Timer } from 'ui-kit/shared/Timer';
 import { getApartmentFromFullAddress } from 'utils/getApartmentFromFullAddress';
 import { PipeRuptureConclusion } from './PipeRuptureConclusion';
 import {
-  CalendarIconSC,
+  AddressWrapper,
   DeviceInfoWrapper,
+  ExecutorWrapper,
   InfoBlockWrapper,
   InfoWrapper,
-  MapIconSC,
   NameRowWrapper,
-  PipeNodeNameWrapper,
-  PipeNodeWrapper,
   SerialNumberWrapper,
   TaskItemWrapper,
   TaskNameWrapper,
   TextWrapper,
   TimerRowWrapper,
-  UserIconSC,
   Wrapper,
 } from './TasksListItem.styled';
 import { TasksListItemProps } from './TasksListItem.types';
@@ -34,16 +30,14 @@ export const TasksListItem: FC<TasksListItemProps> = ({ task }) => {
     timeline,
     timer,
     showExecutor,
-    perpetrator,
-    devices,
     id,
     formatedCreationTime,
     address,
-    pipeNode,
     closingStatus,
     taskConfirmation,
     type,
     creationReason,
+    targetObject,
   } = task;
   const taskName = currentStage ? currentStage.name : name;
 
@@ -55,24 +49,11 @@ export const TasksListItem: FC<TasksListItemProps> = ({ task }) => {
     return creationReason;
   }, [creationReason, taskName]);
 
-  const device = devices ? devices[0] : null;
-
   const DeviceIcon = useMemo(() => {
-    if (!devices) {
-      return null;
-    }
+    if (!targetObject) return null;
 
-    const device = devices[0];
-
-    const allDevicesResource = devices.map((device) => device?.resource);
-    const isUniq = _.uniq(allDevicesResource).length === 1;
-    const iconType = isUniq ? device?.resource : EActResourceType.All;
-
-    if (iconType) {
-      return <ResourceIconLookup resource={iconType} />;
-    }
-    return <CalculatorIcon />;
-  }, [devices]);
+    return <ResourceIconLookup resource={targetObject.targetObjectInfo} />;
+  }, [targetObject]);
 
   const isPipeRuptureArchived = useMemo(
     () =>
@@ -82,16 +63,17 @@ export const TasksListItem: FC<TasksListItemProps> = ({ task }) => {
     [closingStatus, taskConfirmation, type],
   );
 
-  const pipeNodeInfo = useMemo(() => {
-    if (!pipeNode) return null;
+  const targetObjectInfo = useMemo(() => {
+    if (!targetObject) return null;
 
     return (
-      <PipeNodeWrapper>
-        <ResourceIconLookup resource={pipeNode.resource} />
-        <PipeNodeNameWrapper>Узел {pipeNode.title}</PipeNodeNameWrapper>
-      </PipeNodeWrapper>
+      <DeviceInfoWrapper>
+        {DeviceIcon}
+        <SerialNumberWrapper>{targetObject.title}</SerialNumberWrapper>
+        <TextWrapper>{targetObject.model}</TextWrapper>
+      </DeviceInfoWrapper>
     );
-  }, [pipeNode]);
+  }, [DeviceIcon, targetObject]);
 
   return (
     <Wrapper data-test="task-item">
@@ -110,36 +92,26 @@ export const TasksListItem: FC<TasksListItemProps> = ({ task }) => {
               <PipeRuptureConclusion taskConfirmation={taskConfirmation} />
             )}
             {showExecutor && (
-              <>
-                <UserIconSC />
-                <TextWrapper>{perpetrator?.name}</TextWrapper>
-              </>
+              <ExecutorWrapper>
+                <UserIcon />
+                <TextWrapper>{currentStage?.perpetrator?.name}</TextWrapper>
+              </ExecutorWrapper>
             )}
           </TimerRowWrapper>
           <InfoWrapper>
             <InfoBlockWrapper>
-              {device && (
-                <DeviceInfoWrapper>
-                  {DeviceIcon}
-                  <SerialNumberWrapper>
-                    {device.serialNumber}
-                  </SerialNumberWrapper>
-                  <TextWrapper>{device.model}</TextWrapper>
-                </DeviceInfoWrapper>
-              )}
-              {pipeNodeInfo}
-
-              <MapIconSC />
-              <TextWrapper>
+              {targetObjectInfo}
+              <MapIcon />
+              <AddressWrapper>
                 {getApartmentFromFullAddress(address, true)}
-              </TextWrapper>
+              </AddressWrapper>
             </InfoBlockWrapper>
-            <div>
+            <TextWrapper>
               <NumberIcon />
-              <TextWrapper>{id}</TextWrapper>
-              <CalendarIconSC />
-              <TextWrapper>{formatedCreationTime}</TextWrapper>
-            </div>
+              <div>{id}</div>
+              <CalendarIcon />
+              <div>{formatedCreationTime}</div>
+            </TextWrapper>
           </InfoWrapper>
         </TaskItemWrapper>
       </Link>

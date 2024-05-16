@@ -42,7 +42,9 @@ const $deviceInfoForm = createStore<WorkWithIndividualDeviceFormType | null>(
   null,
 ).on(handleSubmitForm, (_, formData) => formData);
 
-$deviceInfoForm.watch((data) => console.log(data));
+const $deviceType = WorkWithIndividualDeviceGate.state.map(
+  ({ type }) => type || null,
+);
 
 const deviceInfoForm = createForm({
   fields: {
@@ -125,55 +127,55 @@ const deviceInfoForm = createForm({
       init: prepareDeviceReadings([]) as {
         [key: number]: PreparedForFormReadings;
       },
-      rules: [
-        {
-          name: 'required',
-          source: WorkWithIndividualDeviceGate.state,
-          validator: (value, _, type) => {
-            if (type === 'check') {
-              return true;
-            }
-            return Boolean(
-              compareReadingsArrWithSameIndex(
-                Object.values(value),
-                Object.values(prepareDeviceReadings([])),
-              )?.length,
-            );
-          },
-        },
-        {
-          name: 'validReadings',
-          validator: (value: { [key: number]: PreparedForFormReadings }) => {
-            return !Object.entries(value)
-              .map(([index, elem]) => {
-                let isValid: boolean = true;
+      // rules:
+      // {
+      //     name: 'required',
+      //     source: WorkWithIndividualDeviceGate.state,
+      //     validator: (value, _, type) => {
+      //       if (type === 'check') {
+      //         return true;
+      //       }
+      //       return Boolean(
+      //         compareReadingsArrWithSameIndex(
+      //           Object.values(value),
+      //           Object.values(prepareDeviceReadings([])),
+      //         )?.length,
+      //       );
+      //     },
+      //   },
+      //   {
+      //     name: 'validReadings',
+      //     validator: (value: { [key: number]: PreparedForFormReadings }) => {
+      //       return !Object.entries(value)
+      //         .map(([index, elem]) => {
+      //           let isValid: boolean = true;
 
-                for (let i = Number(index) + 1; i < 8; ++i) {
-                  const prev = value[i];
-                  if (!prev) {
-                    continue;
-                  }
-                  const { value1, value2, value3, value4 } = elem;
-                  if (value1) {
-                    isValid = isValid && Number(value1) >= Number(prev.value1);
-                  }
-                  if (value2) {
-                    isValid = isValid && Number(value2) >= Number(prev.value2);
-                  }
-                  if (value3) {
-                    isValid = isValid && Number(value3) >= Number(prev.value3);
-                  }
-                  if (value4) {
-                    isValid = isValid && Number(value4) >= Number(prev.value4);
-                  }
-                }
+      //           for (let i = Number(index) + 1; i < 8; ++i) {
+      //             const prev = value[i];
+      //             if (!prev) {
+      //               continue;
+      //             }
+      //             const { value1, value2, value3, value4 } = elem;
+      //             if (value1) {
+      //               isValid = isValid && Number(value1) >= Number(prev.value1);
+      //             }
+      //             if (value2) {
+      //               isValid = isValid && Number(value2) >= Number(prev.value2);
+      //             }
+      //             if (value3) {
+      //               isValid = isValid && Number(value3) >= Number(prev.value3);
+      //             }
+      //             if (value4) {
+      //               isValid = isValid && Number(value4) >= Number(prev.value4);
+      //             }
+      //           }
 
-                return isValid;
-              })
-              .includes(false);
-          },
-        },
-      ],
+      //           return isValid;
+      //         })
+      //         .includes(false);
+      //     },
+      //   },
+      // ],
     },
     resource: {
       init: null as EResourceType | null,
@@ -197,7 +199,7 @@ const switchIndividualDevice = createEvent();
 const checkIndividualDevice = createEvent();
 
 split({
-  source: WorkWithIndividualDeviceGate.state.map(({ type }) => type),
+  source: $deviceType,
   clock: submitAction,
   match: (type: WorkWithIndividualDeviceType): WorkWithIndividualDeviceType =>
     type,
@@ -209,7 +211,7 @@ split({
 });
 
 sample({
-  source: WorkWithIndividualDeviceGate.state.map(({ type }) => type),
+  source: $deviceType,
   clock: [deviceChecked, deviceSwitched],
   target: actionSucceed,
 });
@@ -302,12 +304,11 @@ sample({
 });
 
 sample({
-  clock: combine(
-    $individualDevice,
-    WorkWithIndividualDeviceGate.state,
-    (device, gate) => ({ device, gate }),
-  ),
-  fn: ({ device: values, gate }) => {
+  clock: combine($individualDevice, $deviceType, (device, type) => ({
+    device,
+    type,
+  })),
+  fn: ({ device: values, type }) => {
     if (!values) return {};
 
     const { bitDepth, scaleFactor } = getBitDepthAndScaleFactor(
@@ -315,9 +316,9 @@ sample({
     );
     const oldDeviceReadings = prepareDeviceReadings(values.readings || []);
 
-    const isCheck = gate.type === WorkWithIndividualDeviceType.check;
-    const isSwitch = gate.type === WorkWithIndividualDeviceType.switch;
-    const isReopen = gate.type === WorkWithIndividualDeviceType.reopen;
+    const isCheck = type === WorkWithIndividualDeviceType.check;
+    const isSwitch = type === WorkWithIndividualDeviceType.switch;
+    const isReopen = type === WorkWithIndividualDeviceType.reopen;
 
     const serialNumberAfterString = isReopen ? '*' : '';
 

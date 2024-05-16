@@ -38,9 +38,11 @@ sample({
   target: [apartmentActsListService.inputs.refetchApartmentActs, closeModal],
 });
 
+const $actId = $act.map((act) => act?.id || null);
+
 sample({
   source: sample({
-    source: $act.map((data) => data?.id),
+    source: $actId,
     filter: Boolean,
   }),
   clock: deleteActDocument,
@@ -48,10 +50,8 @@ sample({
 });
 
 sample({
-  source: sample({
-    source: $act.map((data) => data?.id),
-    filter: Boolean,
-  }),
+  source: $actId,
+  filter: Boolean,
   clock: handleSubmitForm,
   fn: (actId, act) => ({ actId, act }),
   target: editActFx,

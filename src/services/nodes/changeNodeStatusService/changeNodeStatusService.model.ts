@@ -41,11 +41,11 @@ sample({
   target: closeModal,
 });
 
+const $nodeId = $node.map((node) => node?.id || null);
+
 sample({
-  source: sample({
-    source: $node.map((node) => node?.id),
-    filter: Boolean,
-  }),
+  source: $nodeId,
+  filter: Boolean,
   clock: changeNodeStatus,
   fn: (nodeId, payload) => ({
     nodeId,

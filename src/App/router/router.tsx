@@ -45,7 +45,7 @@ import { NodeArchivePageContainer } from 'services/nodes/nodeArchiveService';
 import { EditNodeContainer } from 'services/nodes/editNodeService';
 import { StatisticsProfileContainer } from 'services/statistics/statisticsProfileService';
 import { AddIndividualDeviceContainer } from 'services/devices/individualDevices/addIndividualDeviceService';
-import { ResourceDisablingScheduleContainer } from 'services/settings/resourcesDisablingScheduleService/ResourceDisablingScheduleContainer';
+import { ResourceDisablingScheduleContainer } from 'services/settings/resourcesDisablingScheduleService/ResourceDisablingSchedule.container';
 import { WorkWithIndividualDeviceContainer } from 'services/devices/individualDevices/workWithIndividualDeviceService';
 import { WorkWithIndividualDeviceType } from 'services/devices/individualDevices/workWithIndividualDeviceService/workWithIndividualDeviceService.types';
 import { NonResidentialBuildingProfileContainer } from 'services/objects/nonResidentialBuildingProfileService';
@@ -70,6 +70,7 @@ import {
 import { currentOrganizationService } from 'services/currentOrganizationService';
 import { useUnit } from 'effector-react';
 import { tokensService } from 'api/tokensService';
+import { UserProfileContainer } from 'services/currentUserService/currentUserService.container';
 
 const {
   gates: { CurrentUserGate },
@@ -396,6 +397,10 @@ export const useRoutes = (
           ) : (
             <AccessDeniedPage />
           ),
+        },
+        {
+          path: '/currentUserProfile/:section?',
+          element: <UserProfileContainer />,
         },
         {
           path: '/calculators/:deviceId/edit',

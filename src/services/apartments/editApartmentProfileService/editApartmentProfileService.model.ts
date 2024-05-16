@@ -39,14 +39,21 @@ const $commonDataInitialValues = $apartment.map<EditCommonDataForm>(
   }),
 );
 
+const $apartmentId = ApartmentGate.state.map(
+  ({ apartmentId }) => apartmentId || null,
+);
+
 sample({
-  clock: ApartmentGate.open.map(({ apartmentId }) => apartmentId),
+  source: $apartmentId,
+  clock: ApartmentGate.open,
+  filter: Boolean,
   target: fetchApartmentFx,
 });
 
 sample({
-  source: ApartmentGate.state.map(({ apartmentId }) => apartmentId),
   clock: refetchAaprtment,
+  source: $apartmentId,
+  filter: Boolean,
   target: fetchApartmentFx,
 });
 

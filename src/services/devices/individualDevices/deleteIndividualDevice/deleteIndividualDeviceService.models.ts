@@ -24,8 +24,10 @@ sample({
     apartmentIndividualDevicesMetersService.inputs.refetchIndividualDevices,
 });
 
+const $deviceId = $currentIndividualDevice.map((device) => device?.id || null);
+
 sample({
-  source: $currentIndividualDevice.map((device) => device?.id),
+  source: $deviceId,
   clock: deleteIndividualDevice,
   filter: Boolean,
   target: deleteIndividualDeviceMutation.start,

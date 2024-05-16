@@ -125,6 +125,7 @@ const $filtrationValues = createStore<ReportFiltrationFormValues>({
   employeeReportType: null,
   employeeReportDatePeriodType: null,
   employeeReportDate: null,
+  actType: null,
 })
   .on(setFiltrationValues, (_, values) => values)
   .on(setCityFilter, (prev, city) => ({ ...prev, city }))

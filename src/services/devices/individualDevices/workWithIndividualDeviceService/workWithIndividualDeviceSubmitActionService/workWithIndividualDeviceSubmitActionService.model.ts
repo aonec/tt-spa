@@ -13,7 +13,7 @@ const $isOpen = createStore(false)
 
 const $typeOfAction =
   workWithIndividualDeviceService.gates.WorkWithIndividualDeviceGate.state.map(
-    ({ type }) => type,
+    ({ type }) => type || null,
   );
 
 sample({

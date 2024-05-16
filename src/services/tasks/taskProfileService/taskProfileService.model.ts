@@ -80,9 +80,11 @@ const $pipeNode = createStore<PipeNodeResponse | null>(null).on(
 );
 
 const addComment = createEvent();
-const addCommentFx = createEffect<AddCommentRequest, TaskCommentResponse>(
-  fetchAddComment,
-);
+const addCommentFx = createEffect<
+  AddCommentRequest,
+  TaskCommentResponse,
+  EffectFailDataAxiosError
+>(fetchAddComment);
 
 const $task = createStore<TaskResponse | null>(null)
   .on(getTasksFx.doneData, (_, task) => task)
@@ -131,13 +133,18 @@ const $isLoading = getTasksFx.pending;
 
 const $isTaskProfileOpen = TaskIdGate.state.map((data) => Boolean(data.taskId));
 
+const $taskGateId = TaskIdGate.state.map(({ taskId }) => taskId || null);
+
 sample({
-  clock: TaskIdGate.open.map(({ taskId }) => taskId),
+  source: $taskGateId,
+  filter: Boolean,
+  clock: TaskIdGate.open,
   target: getTasksFx,
 });
 
 sample({
-  source: TaskIdGate.state.map(({ taskId }) => taskId),
+  source: $taskGateId,
+  filter: Boolean,
   clock: refetchTask,
   target: getTasksFx,
 });
@@ -165,8 +172,11 @@ sample({
   target: closeDeleteDocumentModal,
 });
 
+const $nodeId = RelatedNodeIdGate.state.map(({ nodeId }) => nodeId || null);
+
 sample({
-  clock: RelatedNodeIdGate.state.map(({ nodeId }) => nodeId),
+  clock: $nodeId,
+  filter: Boolean,
   target: getNodeFx,
 });
 
@@ -209,10 +219,12 @@ sample({
   target: pushStageFx,
 });
 
+const $taskId = $task.map((task) => task?.id || null);
+
 sample({
-  source: $task.map((task) => task?.id),
+  source: $taskId,
   clock: handleRevertStage,
-  filter: (id): id is number => Boolean(id),
+  filter: Boolean,
   target: revertStageFx,
 });
 
@@ -228,6 +240,14 @@ sample({
 });
 
 const $isRevertStageLoading = revertStageFx.pending;
+
+addCommentFx.failData.watch((error) => {
+  message.error(
+    error.response.data.error.Text ||
+      error.response.data.error.Message ||
+      'Произошла ошибка',
+  );
+});
 
 export const taskProfileService = {
   inputs: {

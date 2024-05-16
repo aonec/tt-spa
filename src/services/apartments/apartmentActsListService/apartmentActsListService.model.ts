@@ -66,14 +66,20 @@ sample({
   target: saveFileFx,
 });
 
+const $apartmentId = ApartmentActsListGate.state.map(
+  ({ apartmentId }) => apartmentId || null,
+);
+
 sample({
-  source: ApartmentActsListGate.state.map(({ apartmentId }) => apartmentId),
   clock: refetchApartmentActs,
+  source: $apartmentId,
+  filter: Boolean,
   target: fetchActsListFx,
 });
 
 sample({
-  clock: ApartmentActsListGate.state.map(({ apartmentId }) => apartmentId),
+  clock: $apartmentId,
+  filter: Boolean,
   target: fetchActsListFx,
 });
 

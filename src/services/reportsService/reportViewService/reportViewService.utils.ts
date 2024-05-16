@@ -21,11 +21,14 @@ export const getReportPayloadValues = ({ values }: ReportPayload) => values;
 const getDatePeriod = (
   reportDatePeriod: ReportDatePeriod | null,
   dates: { from: dayjs.Dayjs | null; to: dayjs.Dayjs | null },
-) => {
+): {
+  from: string | null;
+  to: string | null;
+} | null => {
   if (!reportDatePeriod) return null;
 
-  let from = dayjs(),
-    to = dayjs();
+  let from: dayjs.Dayjs | null = dayjs(),
+    to: dayjs.Dayjs | null = dayjs();
 
   if (reportDatePeriod === ReportDatePeriod.FromStartOfMonth) {
     from = dayjs().startOf('month');
@@ -45,12 +48,28 @@ const getDatePeriod = (
     from = dayjs().add(-1, 'week').startOf('week');
   }
 
-  if (reportDatePeriod === ReportDatePeriod.AnyPeriod) {
-    from = dayjs(dates.from);
-    to = dayjs(dates.to);
+  if (reportDatePeriod === ReportDatePeriod.Expired) {
+    from = dayjs().add(-20, 'years');
   }
 
-  return { from: from?.format('YYYY-MM-DD'), to: to?.format('YYYY-MM-DD') };
+  if (reportDatePeriod === ReportDatePeriod.ExpiresInNextMonth) {
+    from = dayjs().startOf('month');
+    to = dayjs().endOf('month');
+  }
+  if (reportDatePeriod === ReportDatePeriod.ExpiresInNextTwoMonth) {
+    from = dayjs().add(1, 'month').startOf('month');
+    to = dayjs().add(2, 'month').endOf('month');
+  }
+
+  if (reportDatePeriod === ReportDatePeriod.AnyPeriod) {
+    from = dates.from ? dayjs(dates.from) : null;
+    to = dates.from ? dayjs(dates.to) : null;
+  }
+
+  return {
+    from: from?.format('YYYY-MM-DD') || null,
+    to: to?.format('YYYY-MM-DD') || null,
+  };
 };
 
 const getAddressId = (values: ReportFiltrationFormValues) => {
@@ -116,6 +135,7 @@ export const prepareActJournalReportRequestPayload = (
     From: dates?.from,
     To: dates?.to,
     Resources: values.actResources,
+    ActType: values.actType,
   };
 };
 

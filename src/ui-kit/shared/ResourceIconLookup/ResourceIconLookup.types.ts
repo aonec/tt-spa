@@ -1,8 +1,12 @@
-import { EActResourceType, EResourceType } from 'api/types';
+import {
+  EActResourceType,
+  EResourceType,
+  ETaskTargetObjectInfo,
+} from 'api/types';
 import { CSSProperties } from 'react';
 
 export type ResourceIconLookupProps = {
-  resource: EResourceType | EActResourceType;
+  resource: EResourceType | EActResourceType | ETaskTargetObjectInfo;
   style?: CSSProperties;
 };
 

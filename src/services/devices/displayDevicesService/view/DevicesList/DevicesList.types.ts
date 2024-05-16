@@ -9,9 +9,9 @@ export type DevicesListProps = {
   housingStocksDevices: DevicesByAddressInterface[];
   housingStocksAddressForSwitcher: BuildingByFilterResponse[];
   isLoading: boolean;
-  total?: number;
-  pageNumber?: number;
-  pageSize?: number;
+  total: number | null;
+  pageNumber: number | null;
+  pageSize: number | null;
   setPageNumber: (pageNumber: number) => void;
   setAddressBySwither: (address: NodesListRequestPayload) => void;
   mainFilterSearchType: DevicesSearchType;

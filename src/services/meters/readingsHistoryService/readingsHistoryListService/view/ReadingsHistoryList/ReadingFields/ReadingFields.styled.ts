@@ -1,10 +1,15 @@
-import { Input } from 'antd';
 import styled from 'styled-components';
 import { RequestStatusShared } from '../../../readingsHistoryListService.types';
 
 export const Prefix = styled.span`
   color: lightgray;
-  margin-right: 5px;
+  margin-right: 8px;
+`;
+
+export const Suffix = styled.div`
+  display: flex;
+  color: black;
+  white-space: nowrap;
 `;
 
 export const FieldsWrap = styled.div`
@@ -33,7 +38,7 @@ export const ValueLine = styled.div`
       : ''}
 `;
 
-export const EditableField = styled(Input)`
+export const EditableField = styled.input`
   color: black;
   background: white !important;
   border-color: rgba(0, 0, 0, 0);
@@ -54,6 +59,10 @@ const getColorByStatus = (status: RequestStatusShared) =>
   (status && statusColors[status]) || `#eeeeee`;
 
 export const EditableFieldWrap = styled.div`
+  display: flex;
+  align-items: center;
+  padding: 4px 8px;
+
   --border-color: ${({ status }: EditableFieldWrapProps) =>
     getColorByStatus(status)};
   border: 1px solid var(--border-color);

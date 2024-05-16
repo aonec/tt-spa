@@ -55,7 +55,7 @@ export const DevicesList: FC<DevicesListProps> = ({
             <>
               {housingStocksDevicesList}
               <Pagination
-                total={total}
+                total={total || 0}
                 showSizeChanger={false}
                 current={Number(pageNumber)}
                 pageSize={Number(pageSize)}
