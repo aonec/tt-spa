@@ -97,3 +97,15 @@ export const ArrowButtonBlock = styled.div`
   width: 30px;
   height: 30px;
 `;
+
+export const SourceWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+`;
+
+export const EntryDateWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+`;

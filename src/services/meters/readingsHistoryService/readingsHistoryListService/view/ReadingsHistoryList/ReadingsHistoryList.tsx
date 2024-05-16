@@ -6,6 +6,7 @@ import {
   IndividualDeviceReadingsMonthHistoryResponse,
   IndividualDeviceReadingsYearHistoryResponse,
   IndividualDeviceReadingsCreateRequest,
+  EIndividualDeviceReadingsSource,
 } from 'api/types';
 import { RenderReadingFields } from './ReadingFields';
 import { SourceName } from './SourceName/SourceName';
@@ -25,8 +26,10 @@ import {
 import {
   ArrowButton,
   ArrowButtonBlock,
+  EntryDateWrapper,
   Month,
   PreviousReading,
+  SourceWrapper,
   TableHeader,
   Wrapper,
   Year,
@@ -199,8 +202,19 @@ export const ReadingsHistoryList: FC<ReadingsHistoryListProps> = ({
         <SourceName sourceType={reading.source} user={reading.user} />
       );
 
+      const removedByUser = reading?.removedByUser && (
+        <SourceName
+          sourceType={EIndividualDeviceReadingsSource.Ttm}
+          user={reading.removedByUser}
+        />
+      );
+
       const entryDate = reading && (
         <div>{getTimeStringByUTC(reading.uploadTime)}</div>
+      );
+
+      const deleteDate = reading?.removedTime && (
+        <div>{getTimeStringByUTC(reading.removedTime)}</div>
       );
 
       const arrowButtonComponent =
@@ -238,8 +252,14 @@ export const ReadingsHistoryList: FC<ReadingsHistoryListProps> = ({
             <div>{readingsInputs}</div>
             <div>{consumption}</div>
             <div>{averageConsumption}</div>
-            <div>{source}</div>
-            <div>{entryDate}</div>
+            <SourceWrapper>
+              {removedByUser}
+              {source}
+            </SourceWrapper>
+            <EntryDateWrapper>
+              {deleteDate}
+              {entryDate}
+            </EntryDateWrapper>
             {arrowButtonComponent}
           </WrapComponent>
         </>
