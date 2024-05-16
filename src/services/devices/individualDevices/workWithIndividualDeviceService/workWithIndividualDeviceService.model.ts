@@ -118,55 +118,55 @@ const deviceInfoForm = createForm({
       init: prepareDeviceReadings([]) as {
         [key: number]: PreparedForFormReadings;
       },
-      rules: [
-        {
-          name: 'required',
-          source: WorkWithIndividualDeviceGate.state,
-          validator: (value, _, type) => {
-            if (type === 'check') {
-              return true;
-            }
-            return Boolean(
-              compareReadingsArrWithSameIndex(
-                Object.values(value),
-                Object.values(prepareDeviceReadings([])),
-              )?.length,
-            );
-          },
-        },
-        {
-          name: 'validReadings',
-          validator: (value: { [key: number]: PreparedForFormReadings }) => {
-            return !Object.entries(value)
-              .map(([index, elem]) => {
-                let isValid: boolean = true;
+      // rules:
+      // {
+      //     name: 'required',
+      //     source: WorkWithIndividualDeviceGate.state,
+      //     validator: (value, _, type) => {
+      //       if (type === 'check') {
+      //         return true;
+      //       }
+      //       return Boolean(
+      //         compareReadingsArrWithSameIndex(
+      //           Object.values(value),
+      //           Object.values(prepareDeviceReadings([])),
+      //         )?.length,
+      //       );
+      //     },
+      //   },
+      //   {
+      //     name: 'validReadings',
+      //     validator: (value: { [key: number]: PreparedForFormReadings }) => {
+      //       return !Object.entries(value)
+      //         .map(([index, elem]) => {
+      //           let isValid: boolean = true;
 
-                for (let i = Number(index) + 1; i < 8; ++i) {
-                  const prev = value[i];
-                  if (!prev) {
-                    continue;
-                  }
-                  const { value1, value2, value3, value4 } = elem;
-                  if (value1) {
-                    isValid = isValid && Number(value1) >= Number(prev.value1);
-                  }
-                  if (value2) {
-                    isValid = isValid && Number(value2) >= Number(prev.value2);
-                  }
-                  if (value3) {
-                    isValid = isValid && Number(value3) >= Number(prev.value3);
-                  }
-                  if (value4) {
-                    isValid = isValid && Number(value4) >= Number(prev.value4);
-                  }
-                }
+      //           for (let i = Number(index) + 1; i < 8; ++i) {
+      //             const prev = value[i];
+      //             if (!prev) {
+      //               continue;
+      //             }
+      //             const { value1, value2, value3, value4 } = elem;
+      //             if (value1) {
+      //               isValid = isValid && Number(value1) >= Number(prev.value1);
+      //             }
+      //             if (value2) {
+      //               isValid = isValid && Number(value2) >= Number(prev.value2);
+      //             }
+      //             if (value3) {
+      //               isValid = isValid && Number(value3) >= Number(prev.value3);
+      //             }
+      //             if (value4) {
+      //               isValid = isValid && Number(value4) >= Number(prev.value4);
+      //             }
+      //           }
 
-                return isValid;
-              })
-              .includes(false);
-          },
-        },
-      ],
+      //           return isValid;
+      //         })
+      //         .includes(false);
+      //     },
+      //   },
+      // ],
     },
     resource: {
       init: null as EResourceType | null,
