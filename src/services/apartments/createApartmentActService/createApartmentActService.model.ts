@@ -1,15 +1,15 @@
 import { createEffect, createEvent, createStore } from 'effector';
 import { sample } from 'effector';
-import { AddApartmentActRequest, EActResourceType, EActType } from 'api/types';
+import { AddApartmentActRequest } from 'api/types';
 import { apartmentActsListService } from '../apartmentActsListService';
 import { postApartmentAct } from './createApartmentActService.api';
 import { CreateActFormPayload } from './createApartmentActService.types';
-import { createForm } from 'effector-forms';
-import { required } from 'api/formRules';
 
 const $isModalOpen = createStore(false);
 const openModal = createEvent();
 const closeModal = createEvent();
+
+const handleSubmit = createEvent<CreateActFormPayload>();
 
 $isModalOpen.on(openModal, () => true).reset(closeModal);
 
@@ -17,36 +17,11 @@ const createActFx = createEffect<AddApartmentActRequest, void>(
   postApartmentAct,
 );
 
-const createActForm = createForm<CreateActFormPayload>({
-  fields: {
-    actJobDate: {
-      init: '' as string,
-      rules: [required()],
-    },
-    registryNumber: {
-      init: '' as string,
-      rules: [required()],
-    },
-    actResourceType: {
-      init: EActResourceType.All,
-      rules: [required()],
-    },
-    actType: {
-      init: EActType.Admission,
-      rules: [required()],
-    },
-    documentId: {
-      init: null,
-    },
-  },
-  validateOn: ['submit'],
-});
-
 const $createActIsLoading = createActFx.pending;
 
 sample({
   source: apartmentActsListService.gates.ApartmentActsListGate.state,
-  clock: createActForm.formValidated,
+  clock: handleSubmit,
   fn: (apartmentId, createActPayload) => ({
     ...apartmentId,
     ...createActPayload,
@@ -59,21 +34,14 @@ sample({
   target: [apartmentActsListService.inputs.refetchApartmentActs, closeModal],
 });
 
-sample({
-  clock: closeModal,
-  target: createActForm.reset,
-});
-
 export const createApartmentActService = {
   inputs: {
     openModal,
     closeModal,
+    handleSubmit,
   },
   outputs: {
     $isModalOpen,
     $createActIsLoading,
-  },
-  forms: {
-    createActForm,
   },
 };

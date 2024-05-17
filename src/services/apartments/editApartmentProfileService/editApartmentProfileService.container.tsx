@@ -4,7 +4,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { editApartmentProfileService } from './editApartmentProfileService.model';
 import { EditApartmentPage } from './view/EditApartmentPage';
 
-const { inputs, outputs, gates, forms } = editApartmentProfileService;
+const { inputs, outputs, gates } = editApartmentProfileService;
 const { ApartmentGate } = gates;
 
 export const EditApartmentProfileContainer = () => {
@@ -18,12 +18,16 @@ export const EditApartmentProfileContainer = () => {
     isUpdatingApartmentLoading,
     setTabSection,
     tabSection,
+    commonDataInitialValues,
+    handleEditCommonData,
   } = useUnit({
     setTabSection: inputs.setTabSection,
     apartment: outputs.$apartment,
     isLoading: outputs.$isLoading,
     tabSection: outputs.$tabSection,
     isUpdatingApartmentLoading: outputs.$isUpdatingApartmentLoading,
+    commonDataInitialValues: outputs.$commonDataInitialValues,
+    handleEditCommonData: inputs.handleEditCommonData,
   });
   const navigate = useNavigate();
 
@@ -42,7 +46,8 @@ export const EditApartmentProfileContainer = () => {
         apartment={apartment}
         isLoading={isLoading}
         isUpdatingApartmentLoading={isUpdatingApartmentLoading}
-        commonDataForm={forms.editApartmentCommonInfoForm}
+        commonDataInitialValues={commonDataInitialValues}
+        handleEditCommonData={handleEditCommonData}
       />
     </>
   );

@@ -1,6 +1,8 @@
 import React, { FC } from 'react';
-import { CloseIndividualDeviceFormProps } from './CloseIndividualDeviceForm.types';
-import { useForm } from 'effector-forms';
+import {
+  CloseIndividualDeviceFormType,
+  CloseIndividualDeviceFormProps,
+} from './CloseIndividualDeviceForm.types';
 import { Form } from 'antd';
 import { FormItem } from 'ui-kit/FormItem';
 import { EClosingReason } from 'api/types';
@@ -20,16 +22,34 @@ import {
 import { IndividualDeviceLastReadingBar } from './IndividualDeviceLastReadingBar';
 import { Alert } from 'ui-kit/Alert';
 import { AlertIconType, AlertType } from 'ui-kit/Alert/Alert.types';
+import { useFormik } from 'formik';
+import * as yup from 'yup';
+import { prepareDeviceReadings } from 'services/devices/individualDevices/workWithIndividualDeviceService/workWithIndividualDeviceService.utils';
 
 export const CloseIndividualDeviceForm: FC<CloseIndividualDeviceFormProps> = ({
-  form,
   formId,
   device,
   lastReading,
   isBannerShown,
   openReadingsHistoryModal,
+  handleSubmitForm,
+  handleSetClosingDate,
 }) => {
-  const { errorText, fields, submit } = useForm(form);
+  const { values, setFieldValue, errors, handleSubmit } =
+    useFormik<CloseIndividualDeviceFormType>({
+      initialValues: {
+        closingDate: dayjs() as dayjs.Dayjs,
+        closingReason: null,
+        deviceReadings: prepareDeviceReadings([]),
+      },
+      validationSchema: yup.object().shape({
+        closingReason: yup.string().nullable().required('Это поле обязательно'),
+      }),
+      validateOnChange: false,
+      onSubmit: (data) => {
+        handleSubmitForm(data);
+      },
+    });
 
   return (
     <>
@@ -53,28 +73,31 @@ export const CloseIndividualDeviceForm: FC<CloseIndividualDeviceFormProps> = ({
         </AlertWrapper>
       )}
 
-      <Form id={formId} onSubmitCapture={() => submit()}>
+      <Form id={formId} onSubmitCapture={() => handleSubmit()}>
         <GroupWrapper>
           <FormItem label="Дата снятия прибора с учета">
             <DatePicker
+              allowClear={false}
               picker="month"
               format="MMMM YYYY"
-              value={fields.closingDate.value}
-              onChange={(date) => fields.closingDate.onChange(date)}
+              value={values.closingDate}
+              onChange={(date) => {
+                setFieldValue('closingDate', date);
+                date && handleSetClosingDate(date);
+              }}
               disabledDate={(current) => {
                 return (
                   current && current > dayjs().add(1, 'month').endOf('month')
                 );
               }}
             />
-            <ErrorMessage>{errorText('closingDate')}</ErrorMessage>
           </FormItem>
           <FormItem label="Причина зыкрытия" style={{ width: '100%' }}>
             <Select
               placeholder="Выберите причину закрытия"
-              value={fields.closingReason.value || undefined}
+              value={values.closingReason || undefined}
               onChange={(reason) =>
-                fields.closingReason.onChange(reason as EClosingReason)
+                setFieldValue('closingReason', reason as EClosingReason)
               }
             >
               {Object.entries(ClosingReasonsDictionary).map(([key, elem]) => (
@@ -83,7 +106,7 @@ export const CloseIndividualDeviceForm: FC<CloseIndividualDeviceFormProps> = ({
                 </Select.Option>
               ))}
             </Select>
-            <ErrorMessage>{errorText('closingReason')}</ErrorMessage>
+            <ErrorMessage>{errors.closingReason}</ErrorMessage>
           </FormItem>
         </GroupWrapper>
 

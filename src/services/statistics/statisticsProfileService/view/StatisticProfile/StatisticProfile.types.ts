@@ -9,4 +9,5 @@ export type StatisticProfileProps = {
   searchType: SubscribersConsumptionSearchType;
   housingStockId: number | null;
   housingStockAddress: Partial<HousingStockAddressForm>;
+  handleClickExportResourceDisconnecting: () => void;
 };

@@ -1,7 +1,6 @@
 import { combine, createEffect, createEvent, createStore } from 'effector';
 import { sample } from 'effector';
 import {
-  EClosingReason,
   IndividualDeviceListItemResponse,
   IndividualDeviceReadingsSlimResponse,
 } from 'api/types';
@@ -10,16 +9,16 @@ import {
   getLastReading,
 } from './closeIndividualDeviceService.api';
 import { message } from 'antd';
-import { createForm } from 'effector-forms';
 import dayjs from 'api/dayjs';
-import { Document } from 'ui-kit/DocumentsService';
 import { apartmentIndividualDevicesMetersService } from 'services/meters/apartmentIndividualDevicesMetersService';
-import { prepareDeviceReadings } from '../workWithIndividualDeviceService/workWithIndividualDeviceService.utils';
-import { PreparedForFormReadings } from '../workWithIndividualDeviceService/workWithIndividualDeviceService.types';
 import { readingsHistoryService } from 'services/meters/readingsHistoryService/readingsHistoryService.model';
+import { CloseIndividualDeviceFormType } from './view/CloseIndividualDeviceForm/CloseIndividualDeviceForm.types';
 
 const closeModal = createEvent();
 const openModal = createEvent<IndividualDeviceListItemResponse>();
+
+const handleSubmitForm = createEvent<CloseIndividualDeviceFormType>();
+const handleSetClosingDate = createEvent<dayjs.Dayjs>();
 
 const getLastReadingFx = createEffect<
   string,
@@ -40,40 +39,13 @@ const $lastReading = createStore<IndividualDeviceReadingsSlimResponse | null>(
   .on(getLastReadingFx.doneData, (_, reading) => reading)
   .reset(closeModal);
 
-const closeIndividualDeviceForm = createForm({
-  fields: {
-    closingDate: {
-      init: dayjs() as dayjs.Dayjs | null,
-      rules: [
-        {
-          name: 'required',
-          errorText: 'Это поле обязательно',
-          validator: Boolean,
-        },
-      ],
-    },
-    closingReason: {
-      init: null as EClosingReason | null,
-      rules: [
-        {
-          name: 'required',
-          errorText: 'Это поле обязательно',
-          validator: Boolean,
-        },
-      ],
-    },
-    deviceReadings: {
-      init: prepareDeviceReadings([]) as {
-        [key: number]: PreparedForFormReadings;
-      },
-    },
-    documentsIds: { init: [] as Document[] },
-  },
-});
+const $closingDate = createStore<dayjs.Dayjs | null>(null)
+  .on(handleSetClosingDate, (_, date) => date)
+  .reset(closeModal);
 
 const $isBannerShown = combine(
   {
-    closingDate: closeIndividualDeviceForm.fields.closingDate.$value,
+    closingDate: $closingDate,
     lastReading: $lastReading,
   },
   ({ closingDate, lastReading }) => {
@@ -101,7 +73,7 @@ sample({
 
 sample({
   source: $closingDevice,
-  clock: closeIndividualDeviceForm.formValidated,
+  clock: handleSubmitForm,
   filter: Boolean,
   fn: ({ id }, form) => ({
     deviceId: id,
@@ -110,7 +82,6 @@ sample({
       : dayjs().month() + 1,
     closingYear: form.closingDate?.year(),
     closingReason: form.closingReason,
-    documentsIds: form.documentsIds.map((document) => document.id),
   }),
   target: closeIndivididualDeviceMutation.start,
 });
@@ -119,11 +90,6 @@ sample({
   clock: closeIndivididualDeviceMutation.finished.success,
   target:
     apartmentIndividualDevicesMetersService.inputs.refetchIndividualDevices,
-});
-
-sample({
-  clock: closeModal,
-  target: closeIndividualDeviceForm.reset,
 });
 
 sample({
@@ -154,7 +120,7 @@ closeIndivididualDeviceMutation.finished.success.watch(() =>
 );
 
 export const closeIndividualDeviceService = {
-  inputs: { closeModal, openModal },
+  inputs: { closeModal, openModal, handleSubmitForm, handleSetClosingDate },
   outputs: {
     $isOpen,
     $closingDevice,
@@ -162,5 +128,4 @@ export const closeIndividualDeviceService = {
     $lastReading,
     $isBannerShown,
   },
-  forms: { closeIndividualDeviceForm },
 };

@@ -4,18 +4,25 @@ import { editApartmentActService } from './editApartmentActService.model';
 import { EditApartmentActForm } from './view/EditApartmentActForm';
 import { useUnit } from 'effector-react';
 
-const { inputs, outputs, forms } = editApartmentActService;
+const { inputs, outputs } = editApartmentActService;
 const formId = 'edit-apartment-document';
 
 export const EditApartmentActModalContainer = () => {
-  const { handleClose, handleDeleteAct, initialValues, isLoading, isOpen } =
-    useUnit({
-      isOpen: outputs.$isModalOpen,
-      isLoading: outputs.$editActIsLoading,
-      initialValues: outputs.$act,
-      handleClose: inputs.closeModal,
-      handleDeleteAct: inputs.deleteActDocument,
-    });
+  const {
+    handleClose,
+    handleDeleteAct,
+    initialValues,
+    isLoading,
+    isOpen,
+    handleSubmitForm,
+  } = useUnit({
+    isOpen: outputs.$isModalOpen,
+    isLoading: outputs.$editActIsLoading,
+    initialValues: outputs.$act,
+    handleClose: inputs.closeModal,
+    handleDeleteAct: inputs.deleteActDocument,
+    handleSubmitForm: inputs.handleSubmitForm,
+  });
 
   const form = useMemo(
     () => (
@@ -23,10 +30,10 @@ export const EditApartmentActModalContainer = () => {
         formId={formId}
         handleDeleteAct={() => handleDeleteAct()}
         initialValues={initialValues}
-        form={forms.editActForm}
+        handleSubmitForm={handleSubmitForm}
       />
     ),
-    [initialValues, handleDeleteAct],
+    [initialValues, handleDeleteAct, handleSubmitForm],
   );
   return (
     <FormModal

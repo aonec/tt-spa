@@ -1,8 +1,6 @@
 import { ApartmentResponse } from 'api/types';
-import {
-  EditApartmentCommonInfoFormType,
-  TabsSection,
-} from '../../editApartmentProfileService.types';
+import { TabsSection } from '../../editApartmentProfileService.types';
+import { EditCommonDataForm } from './EditCommonDataForm/EditCommonDataForm.types';
 
 export type EditApartmentPageProps = {
   apartment: ApartmentResponse | null;
@@ -10,5 +8,6 @@ export type EditApartmentPageProps = {
   tabSection: TabsSection;
   setTabSection: (payload: TabsSection) => void;
   isUpdatingApartmentLoading: boolean;
-  commonDataForm: EditApartmentCommonInfoFormType;
+  commonDataInitialValues: EditCommonDataForm;
+  handleEditCommonData: (payload: EditCommonDataForm) => void;
 };

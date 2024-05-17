@@ -14,26 +14,44 @@ import { DocumentsUploadContainer, Document } from 'ui-kit/DocumentsService';
 import { Input } from 'ui-kit/Input';
 import { Select } from 'ui-kit/Select';
 import { ActTypesNamesLookup } from 'dictionaries';
-import { useForm } from 'effector-forms';
 import { getDatePickerValue } from 'utils/getDatePickerValue';
+import { useFormik } from 'formik';
+import * as yup from 'yup';
 
 export const EditApartmentActForm: FC<EditApartmentActFormProps> = ({
   formId,
   initialValues,
   handleDeleteAct,
-  form,
+  handleSubmitForm,
 }) => {
   const initialDocument = initialValues?.document;
   const [documents, setDocuments] = useState<Document[]>([]);
 
-  const { submit, fields } = useForm(form);
+  const { values, setFieldValue, errors, handleSubmit } = useFormik({
+    initialValues: {
+      actJobDate: initialValues?.actJobDate,
+      registryNumber: initialValues?.registryNumber,
+      actResourceType: initialValues?.actResourceType,
+      actType: initialValues?.actType,
+      documentId: initialDocument?.id,
+    },
+    validationSchema: yup.object().shape({
+      actJobDate: yup.string().required('Это поле обязательно'),
+      registryNumber: yup.string().required('Это поле обязательно'),
+      actResourceType: yup.string().required('Это поле обязательно'),
+      actType: yup.string().required('Это поле обязательно'),
+    }),
+    onSubmit: (data) => {
+      handleSubmitForm(data);
+    },
+  });
 
-  const handleSubmitForm = useCallback(() => {
+  const handleSubmitCapture = useCallback(() => {
     if (initialDocument && !documents[0]) {
       handleDeleteAct();
     }
-    submit();
-  }, [initialDocument, documents, handleDeleteAct, submit]);
+    handleSubmit();
+  }, [initialDocument, documents, handleDeleteAct, handleSubmit]);
 
   useEffect(() => {
     if (!initialDocument) return;
@@ -42,36 +60,36 @@ export const EditApartmentActForm: FC<EditApartmentActFormProps> = ({
   }, [initialDocument]);
 
   return (
-    <Form id={formId} onSubmitCapture={handleSubmitForm}>
+    <Form id={formId} onSubmitCapture={handleSubmitCapture}>
       <FieldsWrapper>
         <Form.Item label="Дата">
           <DatePickerSC
             format="DD.MM.YYYY"
+            value={getDatePickerValue(values.actJobDate)}
             onChange={(e) =>
-              fields.actJobDate?.onChange(e?.format('YYYY-MM-DD'))
+              setFieldValue('actJobDate', e?.format('YYYY-MM-DD'))
             }
-            value={getDatePickerValue(fields.actJobDate?.value)}
           />
-          <ErrorMessage>{fields.actJobDate?.errorText()}</ErrorMessage>
+          <ErrorMessage>{errors.actJobDate}</ErrorMessage>
         </Form.Item>
 
         <Form.Item label="Номер документа">
           <Input
-            value={fields.registryNumber?.value || undefined}
+            value={values.registryNumber || undefined}
             onChange={(e) =>
-              fields.registryNumber?.onChange(e.currentTarget.value)
+              setFieldValue('registryNumber', e.currentTarget.value)
             }
             placeholder="Введите номер"
           />
-          <ErrorMessage>{fields.registryNumber?.errorText()}</ErrorMessage>
+          <ErrorMessage>{errors.registryNumber}</ErrorMessage>
         </Form.Item>
 
         <Form.Item label="Ресурс">
           <Select
             placeholder="Выберите"
-            value={fields.actResourceType?.value || undefined}
+            value={values.actResourceType || undefined}
             onChange={(value) =>
-              fields.actResourceType?.onChange(value as EActResourceType)
+              setFieldValue('actResourceType', value as EActResourceType)
             }
           >
             {actResourceTypes?.map((elem) => (
@@ -80,15 +98,15 @@ export const EditApartmentActForm: FC<EditApartmentActFormProps> = ({
               </Select.Option>
             ))}
           </Select>
-          <ErrorMessage>{fields.actResourceType?.errorText()}</ErrorMessage>
+          <ErrorMessage>{errors.actResourceType}</ErrorMessage>
         </Form.Item>
 
         <Form.Item label="Тип акта">
           <SelectSC>
             <Select
               placeholder="Выберите"
-              value={fields.actType?.value || undefined}
-              onChange={(value) => fields.actType?.onChange(value as EActType)}
+              value={values.actType || undefined}
+              onChange={(value) => setFieldValue('actType', value as EActType)}
             >
               {Object.entries(ActTypesNamesLookup).map(([key, value]) => (
                 <Select.Option value={key} key={key}>
@@ -97,7 +115,7 @@ export const EditApartmentActForm: FC<EditApartmentActFormProps> = ({
               ))}
             </Select>
           </SelectSC>
-          <ErrorMessage>{fields.actType?.errorText()}</ErrorMessage>
+          <ErrorMessage>{errors.actType}</ErrorMessage>
         </Form.Item>
       </FieldsWrapper>
       <DocumentsUploadContainer
@@ -106,9 +124,9 @@ export const EditApartmentActForm: FC<EditApartmentActFormProps> = ({
         onChange={(files) => {
           setDocuments(files);
           if (files.length === 0) {
-            return fields.documentId?.onChange(null);
+            return setFieldValue('documentId', null);
           }
-          fields.documentId?.onChange(files[0]?.id);
+          setFieldValue('documentId', files[0]?.id);
         }}
         max={1}
         type={EDocumentType.Common}

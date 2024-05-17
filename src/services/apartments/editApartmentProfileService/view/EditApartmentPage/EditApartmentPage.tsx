@@ -20,7 +20,8 @@ export const EditApartmentPage: FC<EditApartmentPageProps> = ({
   tabSection,
   setTabSection,
   isUpdatingApartmentLoading,
-  commonDataForm,
+  commonDataInitialValues,
+  handleEditCommonData,
 }) => {
   const address = apartment?.housingStock?.address?.mainAddress;
   const additionalAddresses =
@@ -42,7 +43,8 @@ export const EditApartmentPage: FC<EditApartmentPageProps> = ({
     [TabsSection.CommonData]: apartment && (
       <EditCommonDataForm
         isUpdatingApartmentLoading={isUpdatingApartmentLoading}
-        form={commonDataForm}
+        initialValues={commonDataInitialValues}
+        handleEditCommonData={handleEditCommonData}
       />
     ),
     [TabsSection.ActsJournal]: <ApartmentActsListContainer />,

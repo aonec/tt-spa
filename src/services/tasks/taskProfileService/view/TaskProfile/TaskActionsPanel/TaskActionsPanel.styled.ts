@@ -33,3 +33,7 @@ export const BottomActionWrapper = styled.div`
 export const TaskActionInfoElementWrapper = styled.div`
   margin-bottom: 15px;
 `;
+
+export const Content = styled.div<{ visible?: boolean }>`
+  display: ${({ visible }) => (visible ? 'block' : 'none')};
+`;

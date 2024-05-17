@@ -10,7 +10,7 @@ import {
   PipeNodeResponse,
   DocumentResponse,
 } from 'api/types';
-import { currentUserService } from 'services/currentUserService';
+import { currentUserService } from 'services/currentUser/currentUserService';
 import { EffectFailDataAxiosError } from 'types';
 import {
   fetchAddComment,
@@ -72,7 +72,7 @@ const $pushStageRequestPayload = createStore<StagePushRequest>({})
 
     return { ...prev, ...dispatch };
   })
-  .reset(getTasksFx.doneData, pushStageFx.failData, revertStageFx.failData);
+  .reset(getTasksFx.doneData);
 
 const $pipeNode = createStore<PipeNodeResponse | null>(null).on(
   getNodeFx.doneData,

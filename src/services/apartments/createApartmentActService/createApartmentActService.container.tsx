@@ -5,17 +5,18 @@ import { createApartmentActService } from './createApartmentActService.model';
 import { CreateApartmentActForm } from './view/CreateApartmentActForm';
 
 const formId = 'create-apartment-document';
-const { inputs, outputs, forms } = createApartmentActService;
+const { inputs, outputs } = createApartmentActService;
 
 export const CreateApartmentActModalContainer = () => {
-  const { isLoading, isOpen, handleClose } = useUnit({
+  const { isLoading, isOpen, handleClose, handleSubmit } = useUnit({
     isOpen: outputs.$isModalOpen,
     isLoading: outputs.$createActIsLoading,
     handleClose: inputs.closeModal,
+    handleSubmit: inputs.handleSubmit,
   });
 
   const form = (
-    <CreateApartmentActForm formId={formId} form={forms.createActForm} />
+    <CreateApartmentActForm formId={formId} handleSubmit={handleSubmit} />
   );
 
   return (

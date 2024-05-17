@@ -4,6 +4,8 @@ import { Props, UserProfileSection } from './UserProfile.types';
 import { useNavigate, useParams } from 'react-router-dom';
 import { PageHeader } from 'ui-kit/shared/PageHeader';
 import { MainInfo } from './MainInfo';
+import { usePermission } from 'hooks/usePermission';
+import { ESecuredIdentityRoleName } from 'api/types';
 
 export const UserProfile: FC<Props> = ({ currentUser }) => {
   const navigate = useNavigate();
@@ -17,19 +19,25 @@ export const UserProfile: FC<Props> = ({ currentUser }) => {
     [],
   );
 
+  const isAdministrator = usePermission([
+    ESecuredIdentityRoleName.Administrator,
+  ]);
+
   return (
     <Wrapper>
       <PageHeader
         title="Ваш профиль"
-        // contextMenu={{
-        //   menuButtons: [
-        //     {
-        //       title: 'Редактировать',
-        //       // onClick: () => handleEditUser(),
-        //       hidden: UserProfileSection.Notifications === section,
-        //     },
-        //   ],
-        // }}
+        contextMenu={{
+          menuButtons: [
+            {
+              title: 'Редактировать',
+              onClick: () => navigate(`/currentUserEdit/${currentUser?.id}`),
+              hidden:
+                !isAdministrator ||
+                UserProfileSection.Notifications === section,
+            },
+          ],
+        }}
       />
 
       <TabsSC
