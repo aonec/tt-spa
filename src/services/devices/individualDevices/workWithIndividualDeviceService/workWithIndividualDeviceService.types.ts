@@ -5,7 +5,6 @@ import {
   SwitchIndividualDeviceReadingsCreateRequest,
   SwitchIndividualDeviceRequest,
 } from 'api/types';
-import { workWithIndividualDeviceService } from './workWithIndividualDeviceService.model';
 
 export type WorkWithIndividualDeviceContainerProps = {
   type: WorkWithIndividualDeviceType;
@@ -16,9 +15,6 @@ export enum WorkWithIndividualDeviceType {
   check = 'check',
   switch = 'switch',
 }
-
-export type WorkWithIndividualDeviceFormType =
-  typeof workWithIndividualDeviceService.forms.deviceInfoForm;
 
 export type PreparedForFormReadings = {
   value1: string;

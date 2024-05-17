@@ -1,6 +1,13 @@
-import { EditApartmentCommonInfoFormType } from 'services/apartments/editApartmentProfileService/editApartmentProfileService.types';
-
 export type EditCommonDataFormProps = {
   isUpdatingApartmentLoading: boolean;
-  form: EditApartmentCommonInfoFormType;
+  initialValues: EditCommonDataForm;
+  handleEditCommonData: (payload: EditCommonDataForm) => void;
+};
+
+export type EditCommonDataForm = {
+  Square: number | null;
+  NumberOfLiving: number | null;
+  NormativeNumberOfLiving: number | null;
+  ColdWaterRiserCount: number | null;
+  HotWaterRiserCount: number | null;
 };

@@ -1,9 +1,9 @@
 import { EActResourceType, EActType } from 'api/types';
-import { CreateActFormType } from '../../createApartmentActService.types';
+import { CreateActFormPayload } from '../../createApartmentActService.types';
 
 export type CreateApartmentActFormProps = {
   formId: string;
-  form: CreateActFormType;
+  handleSubmit: (payload: CreateActFormPayload) => void;
 };
 
 export const actResourceTypes = Object.values(EActResourceType);

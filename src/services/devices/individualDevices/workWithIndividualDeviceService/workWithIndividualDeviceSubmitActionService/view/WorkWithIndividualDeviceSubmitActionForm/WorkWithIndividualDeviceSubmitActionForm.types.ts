@@ -3,15 +3,13 @@ import {
   IndividualDeviceMountPlaceListResponse,
   IndividualDeviceResponse,
 } from 'api/types';
-import {
-  WorkWithIndividualDeviceFormType,
-  WorkWithIndividualDeviceType,
-} from '../../../workWithIndividualDeviceService.types';
+import { WorkWithIndividualDeviceType } from '../../../workWithIndividualDeviceService.types';
+import { WorkWithIndividualDeviceFormType } from '../../../view/WorkWithIndividualDevicePage/WorkWithIndividualDeviceForm/WorkWithIndividualDeviceForm.types';
 
 export type WorkWithIndividualDeviceSubmitActionFormProps = {
-  form: WorkWithIndividualDeviceFormType;
   contractors: ContractorListResponse[] | null;
   mountPlaces: IndividualDeviceMountPlaceListResponse[] | null;
   typeOfAction: WorkWithIndividualDeviceType;
   individualDevice: IndividualDeviceResponse;
+  form: WorkWithIndividualDeviceFormType | null;
 };

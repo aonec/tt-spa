@@ -1,16 +1,18 @@
 import { createEffect, createEvent, createStore } from 'effector';
 import { message } from 'antd';
-import { ApartmentResponse } from 'api/types';
 import { sample } from 'effector';
 import { createGate } from 'effector-react';
+import { ApartmentResponse } from 'api/types';
 import { PutApartment, TabsSection } from './editApartmentProfileService.types';
 import { getApartment, putApartment } from './editApartmentProfileService.api';
 import { EffectFailDataAxiosError } from 'types';
-import { createForm } from 'effector-forms';
+import { EditCommonDataForm } from './view/EditApartmentPage/EditCommonDataForm/EditCommonDataForm.types';
 
 const fetchApartmentFx = createEffect<number, ApartmentResponse>(getApartment);
 
 const refetchAaprtment = createEvent();
+
+const handleEditCommonData = createEvent<EditCommonDataForm>();
 
 const updateApartmentFx = createEffect<
   PutApartment,
@@ -27,16 +29,15 @@ const $apartment = createStore<ApartmentResponse | null>(null)
   )
   .reset(ApartmentGate.close);
 
-const editApartmentCommonInfoForm = createForm({
-  fields: {
-    Square: { init: null as string | null },
-    NumberOfLiving: { init: null as string | null },
-    NormativeNumberOfLiving: { init: null as string | null },
-    ColdWaterRiserCount: { init: null as string | null },
-    HotWaterRiserCount: { init: null as string | null },
-  },
-  validateOn: ['submit'],
-});
+const $commonDataInitialValues = $apartment.map<EditCommonDataForm>(
+  (apartment) => ({
+    Square: apartment?.square || null,
+    NumberOfLiving: apartment?.numberOfLiving || null,
+    NormativeNumberOfLiving: apartment?.normativeNumberOfLiving || null,
+    ColdWaterRiserCount: apartment?.coldWaterRiserCount || null,
+    HotWaterRiserCount: apartment?.hotWaterRiserCount || null,
+  }),
+);
 
 const $apartmentId = ApartmentGate.state.map(
   ({ apartmentId }) => apartmentId || null,
@@ -57,45 +58,18 @@ sample({
 });
 
 sample({
-  clock: $apartment,
-  filter: Boolean,
-  fn: (apartment) => ({
-    Square: apartment.square ? String(apartment.square) : null,
-    NumberOfLiving: apartment.numberOfLiving
-      ? String(apartment.numberOfLiving)
-      : null,
-    NormativeNumberOfLiving: apartment.normativeNumberOfLiving
-      ? String(apartment.normativeNumberOfLiving)
-      : null,
-    ColdWaterRiserCount: apartment.coldWaterRiserCount
-      ? String(apartment.coldWaterRiserCount)
-      : null,
-    HotWaterRiserCount: apartment.hotWaterRiserCount
-      ? String(apartment.hotWaterRiserCount)
-      : null,
-  }),
-  target: editApartmentCommonInfoForm.setInitialForm,
-});
-
-sample({
   source: $apartment,
   filter: Boolean,
-  clock: editApartmentCommonInfoForm.formValidated,
+  clock: handleEditCommonData,
   fn: (apartment, values) => ({
     ApartmentId: apartment.id,
-    Square: Number(values.Square) || undefined,
-    NumberOfLiving: Number(values.NumberOfLiving) || undefined,
-    ColdWaterRiserCount: Number(values.ColdWaterRiserCount) || undefined,
-    HotWaterRiserCount: Number(values.HotWaterRiserCount) || undefined,
-    NormativeNumberOfLiving:
-      Number(values.NormativeNumberOfLiving) || undefined,
+    Square: values.Square || undefined,
+    NumberOfLiving: values.NumberOfLiving || undefined,
+    ColdWaterRiserCount: values.ColdWaterRiserCount || undefined,
+    HotWaterRiserCount: values.HotWaterRiserCount || undefined,
+    NormativeNumberOfLiving: values.NormativeNumberOfLiving || undefined,
   }),
   target: updateApartmentFx,
-});
-
-sample({
-  clock: ApartmentGate.close,
-  target: editApartmentCommonInfoForm.reset,
 });
 
 const $isLoading = fetchApartmentFx.pending;
@@ -121,13 +95,14 @@ export const editApartmentProfileService = {
     setTabSection,
     refetchAaprtment,
     updateApartmentSuccess,
+    handleEditCommonData,
   },
   outputs: {
     $apartment,
     $isLoading,
     $tabSection,
     $isUpdatingApartmentLoading,
+    $commonDataInitialValues,
   },
   gates: { ApartmentGate },
-  forms: { editApartmentCommonInfoForm },
 };

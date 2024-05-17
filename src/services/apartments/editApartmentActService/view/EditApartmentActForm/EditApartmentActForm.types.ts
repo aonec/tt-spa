@@ -1,9 +1,9 @@
 import { ApartmentActResponse } from 'api/types';
-import { EditActFormType } from '../../editApartmentActService.types';
+import { EditActFormPayload } from '../../editApartmentActService.types';
 
 export type EditApartmentActFormProps = {
   formId: string;
   initialValues: ApartmentActResponse | null;
   handleDeleteAct: () => void;
-  form: EditActFormType;
+  handleSubmitForm: (payload: EditActFormPayload) => void;
 };

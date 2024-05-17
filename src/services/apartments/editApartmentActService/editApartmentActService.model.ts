@@ -1,6 +1,6 @@
 import { createEffect, createEvent, createStore } from 'effector';
 import { combine, sample } from 'effector';
-import { ApartmentActResponse, EActResourceType, EActType } from 'api/types';
+import { ApartmentActResponse } from 'api/types';
 import { apartmentActsListService } from '../apartmentActsListService';
 import {
   fetchDeleteActDocument,
@@ -10,11 +10,11 @@ import {
   EditActFormPayload,
   EditActRequestPayload,
 } from './editApartmentActService.types';
-import { createForm } from 'effector-forms';
-import { required } from 'api/formRules';
 
 const openModal = createEvent<ApartmentActResponse>();
 const closeModal = createEvent();
+
+const handleSubmitForm = createEvent<EditActFormPayload>();
 
 const $act = createStore<ApartmentActResponse | null>(null)
   .on(openModal, (_, act) => act)
@@ -25,31 +25,6 @@ const $isModalOpen = $act.map(Boolean);
 const deleteActDocument = createEvent();
 const deleteActDocumentFx = createEffect<number, void>(fetchDeleteActDocument);
 
-const editActForm = createForm<EditActFormPayload>({
-  fields: {
-    actJobDate: {
-      init: '' as string,
-      rules: [required()],
-    },
-    registryNumber: {
-      init: '' as string,
-      rules: [required()],
-    },
-    actResourceType: {
-      init: EActResourceType.All,
-      rules: [required()],
-    },
-    actType: {
-      init: EActType.Admission,
-      rules: [required()],
-    },
-    documentId: {
-      init: null,
-    },
-  },
-  validateOn: ['submit'],
-});
-
 const editActFx = createEffect<EditActRequestPayload, void>(updateApartmentAct);
 
 const $editActIsLoading = combine(
@@ -59,19 +34,8 @@ const $editActIsLoading = combine(
 );
 
 sample({
-  clock: $act,
-  fn: (values) => ({ ...values, document: values?.document?.id }),
-  target: editActForm.setInitialForm,
-});
-
-sample({
   clock: [editActFx.doneData, deleteActDocumentFx.doneData],
   target: [apartmentActsListService.inputs.refetchApartmentActs, closeModal],
-});
-
-sample({
-  clock: closeModal,
-  target: editActForm.reset,
 });
 
 const $actId = $act.map((act) => act?.id || null);
@@ -88,7 +52,7 @@ sample({
 sample({
   source: $actId,
   filter: Boolean,
-  clock: editActForm.formValidated,
+  clock: handleSubmitForm,
   fn: (actId, act) => ({ actId, act }),
   target: editActFx,
 });
@@ -98,13 +62,11 @@ export const editApartmentActService = {
     closeModal,
     openModal,
     deleteActDocument,
+    handleSubmitForm,
   },
   outputs: {
     $isModalOpen,
     $editActIsLoading,
     $act,
-  },
-  forms: {
-    editActForm,
   },
 };
