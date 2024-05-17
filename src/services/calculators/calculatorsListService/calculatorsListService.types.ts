@@ -10,8 +10,6 @@ import {
 import { DeviceConnectionType } from 'services/devices/devicesProfileService/view/DevicesProfile/ExtendedSearchForm/ExtendedSearchForm.constants';
 
 export interface CalculatorsListRequestPayload {
-  'Filter.DiameterRange.From'?: number;
-  'Filter.DiameterRange.To'?: number;
   'Filter.PipeDiameters'?: number[];
   'Filter.ExpiresCheckingDateAt'?: EExpiresDateAt;
   'Filter.ExpiresAdmissionActDateAt'?: EExpiresDateAt;
