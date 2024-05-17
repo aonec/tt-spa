@@ -4,6 +4,7 @@ import { Props, UserProfileSection } from './UserProfile.types';
 import { useNavigate, useParams } from 'react-router-dom';
 import { PageHeader } from 'ui-kit/shared/PageHeader';
 import { MainInfo } from './MainInfo';
+import { NotificationsContainer } from './notifications/notificationsService.container';
 
 export const UserProfile: FC<Props> = ({ currentUser }) => {
   const navigate = useNavigate();
@@ -12,7 +13,7 @@ export const UserProfile: FC<Props> = ({ currentUser }) => {
   const tabItems = useMemo(
     () => [
       { label: 'Общие данные', key: UserProfileSection.MainInfo },
-      // { label: 'Уведомления', key: UserProfileSection.Notifications },
+      { label: 'Уведомления', key: UserProfileSection.Notifications },
     ],
     [],
   );
@@ -21,15 +22,15 @@ export const UserProfile: FC<Props> = ({ currentUser }) => {
     <Wrapper>
       <PageHeader
         title="Ваш профиль"
-        // contextMenu={{
-        //   menuButtons: [
-        //     {
-        //       title: 'Редактировать',
-        //       // onClick: () => handleEditUser(),
-        //       hidden: UserProfileSection.Notifications === section,
-        //     },
-        //   ],
-        // }}
+        contextMenu={{
+          menuButtons: [
+            // {
+            //   title: 'Редактировать',
+            //   onClick: () => handleEditUser(),
+            //   hidden: UserProfileSection.Notifications === section,
+            // },
+          ],
+        }}
       />
 
       <TabsSC
@@ -43,7 +44,9 @@ export const UserProfile: FC<Props> = ({ currentUser }) => {
       {section === UserProfileSection.MainInfo && (
         <MainInfo currentUser={currentUser} />
       )}
-      {/* {section === UserProfileSection.Notifications && <Notifications />} */}
+      {section === UserProfileSection.Notifications && (
+        <NotificationsContainer />
+      )}
     </Wrapper>
   );
 };
