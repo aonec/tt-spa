@@ -1,6 +1,6 @@
 import { createEvent, createStore } from 'effector';
 import { sample } from 'effector';
-import { currentUserService } from 'services/currentUserService';
+import { currentUserService } from 'services/currentUser/currentUserService';
 
 const openModal = createEvent();
 const closeModal = createEvent();

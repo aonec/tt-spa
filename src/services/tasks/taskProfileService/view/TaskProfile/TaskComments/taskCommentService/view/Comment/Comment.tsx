@@ -18,7 +18,7 @@ import { PencilIconSC } from 'ui-kit/shared/SelectedEntityPanel/SelectedEntityPa
 import { TrashIconSC } from 'ui-kit/DocumentsService/view/DocumentsLineUpload/DocumentsLineUpload.styled';
 import { Button } from 'ui-kit/Button';
 import confirm from 'antd/es/modal/confirm';
-import { currentUserService } from 'services/currentUserService';
+import { currentUserService } from 'services/currentUser/currentUserService';
 import { useUnit } from 'effector-react';
 
 export const Comment: FC<CommentProps> = ({

@@ -1,46 +1,46 @@
 import React, { FC } from 'react';
-import { Footer, FormWrapper, Header } from './EditEmployee.styled';
-import { EditEmployeeProps } from './EditEmployee.types';
-import { FormItem } from 'ui-kit/FormItem';
-import { Input } from 'ui-kit/Input';
-import { ErrorMessage } from 'ui-kit/ErrorMessage';
-import { useFormik } from 'formik';
-import { GoBack } from 'ui-kit/shared/GoBack';
-import { Button } from 'ui-kit/Button';
+import { Props } from './EditUser.types';
 import { useNavigate, useParams } from 'react-router-dom';
+import { usePhoneMask } from 'hooks/usePhoneMask';
+import { useFormik } from 'formik';
+import * as yup from 'yup';
+import { GoBack } from 'ui-kit/shared/GoBack';
+import { FormItem } from 'ui-kit/FormItem';
+import { SelectMultiple } from 'ui-kit/SelectMultiple';
+import { Button } from 'ui-kit/Button';
+import { ErrorMessage } from 'ui-kit/ErrorMessage';
+import { Input } from 'ui-kit/Input';
+import { Footer, FormWrapper, Header } from './EditUser.styled';
 import {
   ESecuredIdentityRoleName,
   OrganizationUserUpdateRequest,
 } from 'api/types';
-import { usePhoneMask } from 'hooks/usePhoneMask';
-import * as yup from 'yup';
-import { SelectMultiple } from 'ui-kit/SelectMultiple';
 
-export const EditEmployee: FC<EditEmployeeProps> = ({
-  submitHandler,
-  isPending,
+export const EditUser: FC<Props> = ({
+  user,
   multipleSelectionCompetences,
   multipleSelectionUserRoles,
-  employeeData,
+  handleEdit,
+  isLoading,
 }) => {
   const params = useParams<{ id: string }>();
   const userId = Number(params.id);
 
   const navigate = useNavigate();
-  const onCancel = () => navigate('/companyProfile/staff');
+  const onCancel = () => navigate('/currentUserProfile/mainInfo');
 
   const phoneMask = usePhoneMask();
 
-  const preparedRoleTypes = employeeData?.roles?.map((elem) => elem.key || '');
-  const firmCompetencesId = employeeData?.competences?.map((elem) => elem.id);
+  const preparedRoleTypes = user?.roles?.map((elem) => elem.key || '');
+  const firmCompetencesId = user?.competences?.map((elem) => elem.id);
 
   const { handleSubmit, errors, setFieldValue, values } = useFormik({
     initialValues: {
-      email: employeeData?.email || null,
-      firstName: employeeData?.firstName || null,
-      lastName: employeeData?.lastName || null,
-      middleName: employeeData?.middleName || null,
-      cellphone: employeeData?.cellphone || null,
+      email: user?.email || null,
+      firstName: user?.firstName || null,
+      lastName: user?.lastName || null,
+      middleName: user?.middleName || null,
+      cellphone: user?.cellphone || null,
       roleTypes: preparedRoleTypes || null,
       firmCompetencesId: firmCompetencesId || null,
       userId: userId,
@@ -57,6 +57,10 @@ export const EditEmployee: FC<EditEmployeeProps> = ({
         .nullable()
         .min(2, 'Минимум два символа')
         .required('Обязательное поле'),
+      roleTypes: yup
+        .array()
+        .min(1, 'Выберите роль')
+        .required('Обязательное поле'),
     }),
     validateOnChange: false,
     onSubmit: (data) => {
@@ -71,14 +75,19 @@ export const EditEmployee: FC<EditEmployeeProps> = ({
         competenceIds: data.firmCompetencesId,
       };
 
-      submitHandler({ userId: userId, form: form });
+      handleEdit({ userId: userId, form });
     },
   });
+
+  const middlenameIntial = user?.middleName ? `${user?.middleName[0]}. ` : '';
+  const firstnameIntial = user?.firstName ? `${user.firstName[0]}. ` : '';
+  const lastname = user?.lastName ? `${user?.lastName} ` : '';
+  const fullNameInitials = `${lastname}${firstnameIntial}${middlenameIntial}`;
 
   return (
     <>
       <GoBack />
-      <Header>Информация о сотруднике. Редактирование </Header>
+      <Header>{fullNameInitials} Редактирование </Header>
 
       <FormWrapper>
         <FormItem label="Фамилия">
@@ -147,6 +156,7 @@ export const EditEmployee: FC<EditEmployeeProps> = ({
               setFieldValue('roleTypes', value);
             }}
             value={values.roleTypes || undefined}
+            disabled
           >
             {multipleSelectionUserRoles?.map((elem) => (
               <SelectMultiple.Option value={elem.value || ''} key={elem.value}>
@@ -154,6 +164,7 @@ export const EditEmployee: FC<EditEmployeeProps> = ({
               </SelectMultiple.Option>
             ))}
           </SelectMultiple>
+          <ErrorMessage>{errors.roleTypes}</ErrorMessage>
         </FormItem>
 
         <FormItem label="Компетенции">
@@ -171,8 +182,8 @@ export const EditEmployee: FC<EditEmployeeProps> = ({
         </FormItem>
 
         <Footer>
-          <Button onClick={() => handleSubmit()} isLoading={isPending}>
-            Сохранить
+          <Button onClick={() => handleSubmit()} isLoading={isLoading}>
+            Cохранить
           </Button>
           <Button type="ghost" onClick={onCancel}>
             Отмена

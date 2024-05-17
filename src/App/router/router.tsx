@@ -50,7 +50,7 @@ import { WorkWithIndividualDeviceContainer } from 'services/devices/individualDe
 import { WorkWithIndividualDeviceType } from 'services/devices/individualDevices/workWithIndividualDeviceService/workWithIndividualDeviceService.types';
 import { NonResidentialBuildingProfileContainer } from 'services/objects/nonResidentialBuildingProfileService';
 import { IndividualMeteringDeviceProfileContainer } from 'services/devices/individualMeteringDeviceProfile';
-import { currentUserService } from 'services/currentUserService';
+import { currentUserService } from 'services/currentUser/currentUserService';
 import { ObjectsProfileContainer } from 'services/objects/objectsProfileService';
 import { ReportsPageContainer } from 'services/reports';
 import { ReportsContainer } from 'services/reportsService';
@@ -70,7 +70,8 @@ import {
 import { currentOrganizationService } from 'services/currentOrganizationService';
 import { useUnit } from 'effector-react';
 import { tokensService } from 'api/tokensService';
-import { UserProfileContainer } from 'services/currentUserService/currentUserService.container';
+import { UserProfileContainer } from 'services/currentUser/currentUserService/currentUserService.container';
+import { CurrentUserEditServiceContainer } from 'services/currentUser/currentUserEditService';
 
 const {
   gates: { CurrentUserGate },
@@ -401,6 +402,10 @@ export const useRoutes = (
         {
           path: '/currentUserProfile/:section?',
           element: <UserProfileContainer />,
+        },
+        {
+          path: '/currentUserEdit/:id',
+          element: <CurrentUserEditServiceContainer />,
         },
         {
           path: '/calculators/:deviceId/edit',

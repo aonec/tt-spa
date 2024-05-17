@@ -10,7 +10,7 @@ import {
   PipeNodeResponse,
   DocumentResponse,
 } from 'api/types';
-import { currentUserService } from 'services/currentUserService';
+import { currentUserService } from 'services/currentUser/currentUserService';
 import { EffectFailDataAxiosError } from 'types';
 import {
   fetchAddComment,
