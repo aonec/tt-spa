@@ -35,7 +35,6 @@ import {
   validationSchema,
 } from './WorkWithIndividualDeviceForm.constants';
 import { useFormik } from 'formik';
-import * as yup from 'yup';
 import { prepareDeviceReadings } from '../../../workWithIndividualDeviceService.utils';
 
 const { IndividualDeviceMountPlacesGate } =
@@ -95,7 +94,7 @@ export const WorkWithIndividualDeviceForm: FC<
 
   useEffect(
     () => onSubmitCapture.watch(() => handleSubmit()).unsubscribe,
-    [onSubmitCapture],
+    [handleSubmit, onSubmitCapture],
   );
 
   const isSerialNumberAllreadyExist =
@@ -349,17 +348,17 @@ export const WorkWithIndividualDeviceForm: FC<
       <SpaceLine />
 
       {!isCheck && (
-          <WorkWithIndividualDeviceInputs
-            model={individualDevice.model || ''}
-            resource={individualDevice.resource}
-            serialNumber={individualDevice.serialNumber || ''}
-            rateType={individualDevice.rateType}
-            readings={values.oldDeviceReadings}
-            onChange={(readings) => {
-              setFieldValue('oldDeviceReadings', readings);
-            }}
-            title={OldIndividualDeviceTitleLookup[type]}
-          />
+        <WorkWithIndividualDeviceInputs
+          model={individualDevice.model || ''}
+          resource={individualDevice.resource}
+          serialNumber={individualDevice.serialNumber || ''}
+          rateType={individualDevice.rateType}
+          readings={values.oldDeviceReadings}
+          onChange={(readings) => {
+            setFieldValue('oldDeviceReadings', readings);
+          }}
+          title={OldIndividualDeviceTitleLookup[type]}
+        />
       )}
 
       <WorkWithIndividualDeviceInputs
