@@ -11,8 +11,8 @@ const {
 } = notificationsService;
 
 export const NotificationsContainer = () => {
-  const { notifications, isLoading, handleConnect } = useUnit({
-    notifications: notifiactionsQuery.$data,
+  const { channels, isLoading, handleConnect } = useUnit({
+    channels: notifiactionsQuery.$data,
     isLoading: notifiactionsQuery.$pending,
     handleConnect: connectNotificationsService.inputs.openModal,
   });
@@ -22,7 +22,7 @@ export const NotificationsContainer = () => {
       <NotificationsGate />
       <ConnectNotificationsContainer />
       <NotificationsPage
-        notifications={notifications || []}
+        channels={channels || []}
         isLoading={isLoading}
         handleConnect={handleConnect}
       />

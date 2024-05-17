@@ -1,7 +1,6 @@
 import { ChannelResponse } from 'api/types';
 
 export type Props = {
-  channels: ChannelResponse[];
-  isLoading: boolean;
+  channel: ChannelResponse;
   handleConnect: () => void;
 };
