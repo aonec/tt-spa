@@ -1,5 +1,5 @@
 import React from 'react';
-import { ReactComponent as TypeAddressToStartImg } from './assets/typeAddressToStart.svg';
+import TypeAddressToStartImg from './assets/typeAddressToStart.svg?react';
 import { Wrap } from './TypeToStart.styled';
 
 export const TypeAddressToStart = () => {

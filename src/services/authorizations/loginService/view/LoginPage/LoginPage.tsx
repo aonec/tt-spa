@@ -13,8 +13,8 @@ import {
   Title,
   TopHeader,
 } from './LoginPage.styled';
-import { ReactComponent as Emblem } from './assets/emblem.svg';
-import { ReactComponent as LoginPageBackground } from './assets/loginPageBackground.svg';
+import Emblem from './assets/emblem.svg?react';
+import LoginPageBackground from './assets/loginPageBackground.svg?react';
 import { Input } from 'ui-kit/Input';
 import { DevelopmentSettingsContainer } from 'services/developmentSettings/developmentSettings.container';
 import { useFormik } from 'formik';

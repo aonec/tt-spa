@@ -16,8 +16,8 @@ import {
   TopHeader,
 } from './RegistrationPage.styled';
 import { RegistrationPageProps } from './RegistrationPage.types';
-import { ReactComponent as Emblem } from '../../../loginService/view/LoginPage/assets/emblem.svg';
-import { ReactComponent as LoginPageBackground } from '../../../loginService/view/LoginPage/assets/loginPageBackground.svg';
+import  Emblem from '../../../loginService/view/LoginPage/assets/emblem.svg?react';
+import  LoginPageBackground from '../../../loginService/view/LoginPage/assets/loginPageBackground.svg?react';
 import { ErrorMessage } from 'ui-kit/ErrorMessage';
 
 export const RegistrationPage: FC<RegistrationPageProps> = ({

@@ -1,3 +1,3 @@
-import { ReactComponent as FallbackGraphIcon } from './fallbackGraph.svg';
+import FallbackGraphIcon from './fallbackGraph.svg?react';
 
 export { FallbackGraphIcon };
