@@ -194,8 +194,8 @@ const getEmployeeReportDatePeriod = (
     EmployeeReportDatePeriodDictionary[employeeReportDatePeriodType];
 
   return {
-    From: employeeReportDate.utcOffset(0).startOf(period).format('YYYY-MM-DD'),
-    To: employeeReportDate.utcOffset(0).endOf(period).format('YYYY-MM-DD'),
+    From: employeeReportDate.startOf(period).format('YYYY-MM-DD'),
+    To: employeeReportDate.endOf(period).format('YYYY-MM-DD'),
   };
 };
 
