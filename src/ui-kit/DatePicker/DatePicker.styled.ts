@@ -1,7 +1,8 @@
 import { DatePicker as AntDatePicker } from 'antd';
+import { Dayjs } from 'dayjs';
 import styled from 'styled-components';
 
-export const DatePicker = styled(AntDatePicker)<{ small?: boolean }>`
+export const DatePicker = styled(AntDatePicker<Dayjs>)<{ small?: boolean }>`
   height: ${({ small }) => (small ? '32px' : '48px')};
   width: 100%;
   border-radius: 4px;

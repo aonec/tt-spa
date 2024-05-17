@@ -677,20 +677,21 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
                     next(8);
                   }
                 })}
-                onSelect={() => {
-                  if (isNoAdditionalFieldsRequired) {
-                    next(5);
-                  }
-                  if (isOnlySourceNumberRequired) {
-                    next(6);
-                  }
-                  if (isOnlySubscriberRequired) {
-                    next(7);
-                  }
-                  if (isSubscriberAndSourceNumberRequired) {
-                    next(8);
-                  }
-                }}
+                // Todo
+                // onSelect={() => {
+                //   if (isNoAdditionalFieldsRequired) {
+                //     next(5);
+                //   }
+                //   if (isOnlySourceNumberRequired) {
+                //     next(6);
+                //   }
+                //   if (isOnlySubscriberRequired) {
+                //     next(7);
+                //   }
+                //   if (isSubscriberAndSourceNumberRequired) {
+                //     next(8);
+                //   }
+                // }}
               />
 
               <TimePickerMedium
