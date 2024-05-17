@@ -36,4 +36,7 @@ export default defineConfig({
       dictionaries: '/src/dictionaries',
     },
   },
+  build: {
+    outDir: 'build',
+  },
 });
