@@ -2,6 +2,7 @@ import React from 'react';
 import { AddTaskModal } from './view/AddTaskModal';
 import { addTaskFromDispatcherService } from './addTaskFromDispatcherService.models';
 import { useUnit } from 'effector-react';
+import { addressSearchService } from 'services/addressSearchService/addressSearchService.models';
 
 const { inputs, outputs } = addTaskFromDispatcherService;
 
@@ -28,6 +29,9 @@ export const AddTaskFromDispatcherContainer = () => {
     isSavePhoneNumberOpen,
     handleReplacePhoneNumber,
     handleClosePhoneNumber,
+    existingCities,
+    defaultCity,
+    handleChangeCity,
   } = useUnit({
     isModalOpen: outputs.$isModalOpen,
     handleCloseModal: inputs.handleCloseModal,
@@ -50,6 +54,9 @@ export const AddTaskFromDispatcherContainer = () => {
     handleReplacePhoneNumber: inputs.handleReplacePhoneNumber,
     handleClosePhoneNumber: inputs.handleClosePhoneNumber,
     isSavePhoneNumberOpen: outputs.$isSavePhoneNumberOpen,
+    existingCities: addressSearchService.outputs.$existingCities,
+    defaultCity: outputs.$defaultCity,
+    handleChangeCity: inputs.handleChangeCity,
   });
 
   return (
@@ -77,6 +84,9 @@ export const AddTaskFromDispatcherContainer = () => {
         handleReplacePhoneNumber={handleReplacePhoneNumber}
         handleClosePhoneNumber={handleClosePhoneNumber}
         onSuccessSavePhone={inputs.onSuccessSavePhone}
+        existingCities={existingCities}
+        defaultCity={defaultCity}
+        handleChangeCity={handleChangeCity}
       />
     </>
   );
