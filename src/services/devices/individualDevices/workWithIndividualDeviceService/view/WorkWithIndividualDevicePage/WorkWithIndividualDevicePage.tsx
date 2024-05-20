@@ -30,6 +30,7 @@ export const WorkWithIndividualDevicePage: FC<
   models,
   onSubmitCapture,
   handleSubmitForm,
+  deviceInfoForm,
 }) => {
   const navigate = useNavigate();
 
@@ -67,6 +68,7 @@ export const WorkWithIndividualDevicePage: FC<
               individualDevice={individualDevice}
               onSubmitCapture={onSubmitCapture}
               handleSubmitForm={handleSubmitForm}
+              deviceInfoForm={deviceInfoForm}
             />
             <FooterWrapper>
               <Button type="ghost" onClick={() => navigate(-1)}>

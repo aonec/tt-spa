@@ -24,6 +24,7 @@ export type WorkWithIndividualDeviceFormProps = {
   serialNumberForChecking: IndividualDeviceListResponseFromDevicePage[];
   onSubmitCapture: EventCallable<void>;
   handleSubmitForm: (payload: WorkWithIndividualDeviceFormType) => void;
+  deviceInfoForm: WorkWithIndividualDeviceFormType | null;
 };
 
 export type WorkWithIndividualDeviceFormType = {
