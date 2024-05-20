@@ -55,7 +55,9 @@ export const WorkWithIndividualDeviceContainer: FC<
       <WorkWithIndividualDeviceGate type={type} />
       <IndividualDeviceGate id={Number(deviceId)} />
       <ContractorsGate />
-      <WorkWithIndividualDeviceSubmitActionContainer deviceInfoForm={deviceInfoForm} />
+      <WorkWithIndividualDeviceSubmitActionContainer
+        deviceInfoForm={deviceInfoForm}
+      />
       <WithLoader isLoading={isDeviceLoading}>
         <WorkWithIndividualDevicePage
           individualDevice={individualDevice}
@@ -68,6 +70,7 @@ export const WorkWithIndividualDeviceContainer: FC<
           models={models}
           onSubmitCapture={inputs.onSubmitCapture}
           handleSubmitForm={handleSubmitForm}
+          deviceInfoForm={deviceInfoForm}
         />
       </WithLoader>
     </>
