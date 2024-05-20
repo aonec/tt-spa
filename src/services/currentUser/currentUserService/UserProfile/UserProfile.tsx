@@ -4,9 +4,9 @@ import { Props, UserProfileSection } from './UserProfile.types';
 import { useNavigate, useParams } from 'react-router-dom';
 import { PageHeader } from 'ui-kit/shared/PageHeader';
 import { MainInfo } from './MainInfo';
-import { NotificationsContainer } from './notifications/notificationsService.container';
 import { usePermission } from 'hooks/usePermission';
 import { ESecuredIdentityRoleName } from 'api/types';
+import { NotificationsContainer } from './notifications';
 
 export const UserProfile: FC<Props> = ({ currentUser }) => {
   const navigate = useNavigate();
