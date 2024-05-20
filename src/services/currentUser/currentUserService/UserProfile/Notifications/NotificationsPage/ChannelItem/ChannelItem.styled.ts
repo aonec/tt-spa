@@ -17,3 +17,24 @@ export const Title = styled.div`
   font-size: 16px;
   font-weight: 500;
 `;
+
+export const PanelContent = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 16px;
+`;
+
+export const ConnectedBadge = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #17b45a;
+`;
+
+export const ConfirmFooter = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 12px;
+  align-items: center;
+  gap: 16px;
+`;

@@ -1,10 +1,18 @@
-import React from 'react';
+import React, { useCallback, useState } from 'react';
 import { connectNotificationsService } from './connectNotificationsService.models';
 import { FormModal } from 'ui-kit/Modals/FormModal';
 import { useUnit } from 'effector-react';
 import { Input } from 'ui-kit/Input';
 import FormItem from 'antd/es/form/FormItem';
-// import { Input } from 'antd';
+import botQrCode from './assets/qr_bot.jpg';
+import {
+  Content,
+  OptionWrapper,
+  OptionsWrapper,
+  QrCodeImg,
+  Wrapper,
+} from './connectNotificationsService.styled';
+import { message } from 'antd';
 
 const { inputs, outputs } = connectNotificationsService;
 
@@ -16,16 +24,60 @@ export const ConnectNotificationsContainer = () => {
     handleClose: inputs.closeModal,
   });
 
+  const [code, setCode] = useState('');
+
+  const options = [
+    <>
+      Перейдите в телеграмм бота{' '}
+      <a
+        href="https://t.me/TT_Notification_Service_bot"
+        target="_blank"
+        rel="noreferrer"
+      >
+        @TT_Notification_Service_bot
+      </a>
+    </>,
+    <>
+      Нажмите кнопку <strong>/start</strong>
+    </>,
+    <>Скопируйте код и вставьте в поле</>,
+  ];
+
+  const handleSave = useCallback(() => {
+    if (!code) {
+      message.error('Введите код!');
+      return;
+    }
+  }, [code]);
+
   return (
     <FormModal
       visible={isOpen}
       title="Подключить уведомления"
       formId={FORM_ID}
       onCancel={handleClose}
+      onSubmit={handleSave}
       form={
-        <FormItem label="Введите код">
-          <Input placeholder="Введите код" style={{ width: '250px' }} />
-        </FormItem>
+        <Wrapper>
+          <QrCodeImg src={botQrCode} />
+          <Content>
+            <OptionsWrapper>
+              {options.map((option, index) => (
+                <OptionWrapper>
+                  {index + 1}. {option}
+                </OptionWrapper>
+              ))}
+            </OptionsWrapper>
+            <FormItem label="Введите код">
+              <Input
+                value={code}
+                onChange={(e) => setCode(e.target.value)}
+                placeholder="Введите код"
+                style={{ width: '250px' }}
+              />
+            </FormItem>
+          </Content>
+        </Wrapper>
       }
     />
   );

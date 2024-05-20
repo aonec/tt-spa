@@ -1,6 +1,8 @@
-import { ChannelResponse } from 'api/types';
+import { ChannelResponse, ChannelType } from 'api/types';
 
 export type Props = {
-  channel: ChannelResponse;
+  channel: ChannelResponse | null;
+  chennalType: ChannelType;
   handleConnect: () => void;
+  handleDisconnect: (channelId: string) => void;
 };

@@ -2,7 +2,10 @@ import React from 'react';
 import { notificationsService } from './notificationsService.models';
 import { NotificationsPage } from './NotificationsPage';
 import { useUnit } from 'effector-react';
-import { notifiactionsQuery } from './notificationsService.api';
+import {
+  disconnectChannalMutation,
+  notifiactionsQuery,
+} from './notificationsService.api';
 import { connectNotificationsService } from './connectNotifications/connectNotificationsService.models';
 import { ConnectNotificationsContainer } from './connectNotifications';
 
@@ -11,10 +14,11 @@ const {
 } = notificationsService;
 
 export const NotificationsContainer = () => {
-  const { channels, isLoading, handleConnect } = useUnit({
+  const { channels, isLoading, handleConnect, handleDisconnect } = useUnit({
     channels: notifiactionsQuery.$data,
     isLoading: notifiactionsQuery.$pending,
     handleConnect: connectNotificationsService.inputs.openModal,
+    handleDisconnect: disconnectChannalMutation.start,
   });
 
   return (
@@ -25,6 +29,7 @@ export const NotificationsContainer = () => {
         channels={channels || []}
         isLoading={isLoading}
         handleConnect={handleConnect}
+        handleDisconnect={handleDisconnect}
       />
     </>
   );
