@@ -23,7 +23,7 @@ disconnectChannalMutation.finished.success.watch(() => {
 });
 
 export const notificationsService = {
-  inputs: {},
+  inputs: { refreshNotifications },
   outputs: {},
   gates: { NotificationsGate },
 };

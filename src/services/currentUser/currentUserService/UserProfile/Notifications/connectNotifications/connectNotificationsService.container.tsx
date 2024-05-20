@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { connectNotificationsService } from './connectNotificationsService.models';
 import { FormModal } from 'ui-kit/Modals/FormModal';
 import { useUnit } from 'effector-react';
@@ -13,15 +13,17 @@ import {
   Wrapper,
 } from './connectNotificationsService.styled';
 import { message } from 'antd';
+import { connectChannelMutation } from './connectNotificationsService.api';
 
 const { inputs, outputs } = connectNotificationsService;
 
 const FORM_ID = 'notifications-modal-form';
 
 export const ConnectNotificationsContainer = () => {
-  const { isOpen, handleClose } = useUnit({
+  const { isOpen, handleClose, handleConnectChannel } = useUnit({
     isOpen: outputs.$isOpen,
     handleClose: inputs.closeModal,
+    handleConnectChannel: connectChannelMutation.start,
   });
 
   const [code, setCode] = useState('');
@@ -38,7 +40,7 @@ export const ConnectNotificationsContainer = () => {
       </a>
     </>,
     <>
-      Нажмите кнопку <strong>/start</strong>
+      Нажмите кнопку <strong>"Запустить"</strong>
     </>,
     <>Скопируйте код и вставьте в поле</>,
   ];
@@ -48,7 +50,13 @@ export const ConnectNotificationsContainer = () => {
       message.error('Введите код!');
       return;
     }
-  }, [code]);
+
+    handleConnectChannel(code);
+  }, [code, handleConnectChannel]);
+
+  useEffect(() => {
+    setCode('');
+  }, [isOpen]);
 
   return (
     <FormModal
