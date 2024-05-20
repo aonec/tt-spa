@@ -3,18 +3,10 @@ import { combine, sample, split } from 'effector';
 import { createGate } from 'effector-react';
 import {
   CheckIndividualDevicePayload,
-  PreparedForFormReadings,
   SwitchIndividualDevicePayload,
   WorkWithIndividualDeviceType,
 } from './workWithIndividualDeviceService.types';
 import { displayIndividualDeviceAndNamesService } from '../displayIndividualDeviceAndNamesService';
-import { createForm } from 'effector-forms';
-import {
-  EClosingReason,
-  EIndividualDeviceRateType,
-  EResourceType,
-  ESwitchingReason,
-} from 'api/types';
 import { getBitDepthAndScaleFactor } from 'utils/getBitDepthAndScaleFactor';
 import {
   checkIndividualDeviceMutation,
@@ -22,7 +14,6 @@ import {
   switchIndividualDeviceMutation,
 } from './workWithIndividualDeviceService.api';
 import {
-  checkingDateTest,
   compareReadingsArrWithSameIndex,
   prepareDeviceReadings,
 } from './workWithIndividualDeviceService.utils';
@@ -36,154 +27,21 @@ const WorkWithIndividualDeviceGate = createGate<{
 
 const onSubmitCapture = createEvent();
 
+const setInitialFormValues =
+  createEvent<WorkWithIndividualDeviceFormType | null>();
+
 const handleSubmitForm = createEvent<WorkWithIndividualDeviceFormType>();
 
 const $deviceInfoForm = createStore<WorkWithIndividualDeviceFormType | null>(
   null,
-).on(handleSubmitForm, (_, formData) => formData);
+)
+  .on(setInitialFormValues, (_, data) => data)
+  .on(handleSubmitForm, (_, formData) => formData)
+  .reset(WorkWithIndividualDeviceGate.close);
 
 const $deviceType = WorkWithIndividualDeviceGate.state.map(
   ({ type }) => type || null,
 );
-
-const deviceInfoForm = createForm({
-  fields: {
-    model: {
-      init: '',
-    },
-    serialNumber: {
-      init: '',
-      rules: [{ name: 'required', validator: Boolean }],
-    },
-    bitDepth: {
-      init: null as number | null,
-    },
-    scaleFactor: {
-      init: null as number | null,
-    },
-    rateType: {
-      init: EIndividualDeviceRateType.OneZone as EIndividualDeviceRateType,
-      rules: [{ name: 'required', validator: Boolean }],
-    },
-    sealNumber: {
-      init: null as null | string,
-    },
-    sealInstallationDate: {
-      init: null as null | string,
-    },
-    lastCheckingDate: {
-      init: null as string | null,
-      rules: [
-        {
-          name: 'required',
-          validator: Boolean,
-        },
-        {
-          name: 'incorrect',
-          validator: checkingDateTest,
-        },
-      ],
-    },
-    futureCheckingDate: {
-      init: null as string | null,
-      rules: [
-        {
-          name: 'required',
-          validator: Boolean,
-        },
-        {
-          name: 'incorrect',
-          validator: checkingDateTest,
-        },
-      ],
-    },
-    contractorId: {
-      init: null as number | null,
-    },
-    oldDeviceClosingReason: {
-      init: null as EClosingReason | ESwitchingReason | null,
-    },
-
-    lastCommercialAccountingDate: {
-      init: null as string | null,
-    },
-    documentsIds: {
-      init: [] as number[],
-    },
-    isPolling: {
-      init: false,
-    },
-
-    mountPlaceId: {
-      init: null as number | null,
-    },
-
-    oldDeviceReadings: {
-      init: prepareDeviceReadings([]) as {
-        [key: number]: PreparedForFormReadings;
-      },
-    },
-    newDeviceReadings: {
-      init: prepareDeviceReadings([]) as {
-        [key: number]: PreparedForFormReadings;
-      },
-      // rules:
-      // {
-      //     name: 'required',
-      //     source: WorkWithIndividualDeviceGate.state,
-      //     validator: (value, _, type) => {
-      //       if (type === 'check') {
-      //         return true;
-      //       }
-      //       return Boolean(
-      //         compareReadingsArrWithSameIndex(
-      //           Object.values(value),
-      //           Object.values(prepareDeviceReadings([])),
-      //         )?.length,
-      //       );
-      //     },
-      //   },
-      //   {
-      //     name: 'validReadings',
-      //     validator: (value: { [key: number]: PreparedForFormReadings }) => {
-      //       return !Object.entries(value)
-      //         .map(([index, elem]) => {
-      //           let isValid: boolean = true;
-
-      //           for (let i = Number(index) + 1; i < 8; ++i) {
-      //             const prev = value[i];
-      //             if (!prev) {
-      //               continue;
-      //             }
-      //             const { value1, value2, value3, value4 } = elem;
-      //             if (value1) {
-      //               isValid = isValid && Number(value1) >= Number(prev.value1);
-      //             }
-      //             if (value2) {
-      //               isValid = isValid && Number(value2) >= Number(prev.value2);
-      //             }
-      //             if (value3) {
-      //               isValid = isValid && Number(value3) >= Number(prev.value3);
-      //             }
-      //             if (value4) {
-      //               isValid = isValid && Number(value4) >= Number(prev.value4);
-      //             }
-      //           }
-
-      //           return isValid;
-      //         })
-      //         .includes(false);
-      //     },
-      //   },
-      // ],
-    },
-    resource: {
-      init: null as EResourceType | null,
-      rules: [{ name: 'required', validator: Boolean }],
-    },
-  },
-  validateOn: ['submit'],
-});
 
 const $individualDevice =
   displayIndividualDeviceAndNamesService.outputs.$individualDevice;
@@ -217,29 +75,30 @@ sample({
 });
 
 sample({
-  source: combine(deviceInfoForm.$values, $individualDevice, (info, device) => {
-    const {
-      lastCheckingDate,
-      futureCheckingDate,
-      newDeviceReadings,
-      oldDeviceReadings,
-    } = info;
+  source: combine(
+    $deviceInfoForm,
+    $individualDevice,
+    (deviceInfoForm, device) => {
+      const oldDeviceReadingsArr = Object.values(
+        deviceInfoForm?.oldDeviceReadings || [],
+      );
+      const newDeviceReadingsArr = Object.values(
+        deviceInfoForm?.newDeviceReadings || [],
+      );
 
-    const oldDeviceReadingsArr = Object.values(oldDeviceReadings);
-    const newDeviceReadingsArr = Object.values(newDeviceReadings);
+      const readingsAfterCheck = compareReadingsArrWithSameIndex(
+        newDeviceReadingsArr,
+        oldDeviceReadingsArr,
+      );
 
-    const readingsAfterCheck = compareReadingsArrWithSameIndex(
-      newDeviceReadingsArr,
-      oldDeviceReadingsArr,
-    );
-
-    return {
-      currentCheckingDate: lastCheckingDate,
-      futureCheckingDate,
-      readingsAfterCheck,
-      deviceId: device?.id || null,
-    };
-  }),
+      return {
+        currentCheckingDate: deviceInfoForm?.lastCheckingDate,
+        futureCheckingDate: deviceInfoForm?.futureCheckingDate,
+        readingsAfterCheck,
+        deviceId: device?.id || null,
+      };
+    },
+  ),
   clock: checkIndividualDevice,
   filter: (payload): payload is CheckIndividualDevicePayload =>
     Boolean(
@@ -251,34 +110,34 @@ sample({
 });
 
 const checkIndividualDevicePayload = combine(
-  deviceInfoForm.$values,
+  $deviceInfoForm,
   $individualDevice,
   (info, device) => ({
-    serialNumber: info.serialNumber,
-    rateType: info.rateType,
-    model: info.model,
-    contractorId: info.contractorId,
-    sealInstallationDate: info.sealInstallationDate
+    serialNumber: info?.serialNumber,
+    rateType: info?.rateType,
+    model: info?.model,
+    contractorId: info?.contractorId,
+    sealInstallationDate: info?.sealInstallationDate
       ? dayjs(info.sealInstallationDate).utcOffset(0, true).toISOString()
       : null,
-    sealNumber: info.sealNumber,
-    oldDeviceClosingReason: info.oldDeviceClosingReason || undefined,
-    isPolling: info.isPolling,
+    sealNumber: info?.sealNumber,
+    oldDeviceClosingReason: info?.oldDeviceClosingReason || undefined,
+    isPolling: info?.isPolling,
 
-    lastCheckingDate: info.lastCheckingDate
-      ? dayjs(info.lastCheckingDate).utcOffset(0).toISOString()
+    lastCheckingDate: info?.lastCheckingDate
+      ? dayjs(info?.lastCheckingDate).utcOffset(0).toISOString()
       : null,
-    futureCheckingDate: info.futureCheckingDate
+    futureCheckingDate: info?.futureCheckingDate
       ? dayjs(info.futureCheckingDate).utcOffset(0).toISOString()
       : null,
-    bitDepth: Number(info.bitDepth),
-    scaleFactor: Number(info.scaleFactor),
+    bitDepth: Number(info?.bitDepth),
+    scaleFactor: Number(info?.scaleFactor),
     oldDeviceReadings: compareReadingsArrWithSameIndex(
-      Object.values(info.oldDeviceReadings),
+      Object.values(info?.oldDeviceReadings || []),
       Object.values(prepareDeviceReadings(device?.readings || [])),
     ),
     newDeviceReadings: compareReadingsArrWithSameIndex(
-      Object.values(info.newDeviceReadings),
+      Object.values(info?.newDeviceReadings || []),
       Object.values(prepareDeviceReadings([])),
     ),
     deviceId: device?.id,
@@ -300,7 +159,7 @@ sample({
 
 sample({
   clock: WorkWithIndividualDeviceGate.close,
-  target: [deviceInfoForm.reset, getSerialNumberQuery.reset],
+  target: getSerialNumberQuery.reset,
 });
 
 sample({
@@ -309,7 +168,7 @@ sample({
     type,
   })),
   fn: ({ device: values, type }) => {
-    if (!values) return {};
+    if (!values) return null;
 
     const { bitDepth, scaleFactor } = getBitDepthAndScaleFactor(
       values.resource,
@@ -322,21 +181,33 @@ sample({
 
     const serialNumberAfterString = isReopen ? '*' : '';
 
-    return {
-      ...values,
+    const initialFormValues: WorkWithIndividualDeviceFormType = {
       bitDepth: values.bitDepth || bitDepth,
-      scaleFactor: values.scaleFactor || scaleFactor,
-      mountPlaceId: values.deviceMountPlace?.id,
+      contractorId: values.contractorId,
+      documentsIds: [],
+      futureCheckingDate:
+        isCheck || isSwitch ? null : values.futureCheckingDate,
+      lastCheckingDate: isCheck || isSwitch ? null : values.lastCheckingDate,
+      isPolling: values.isPolling,
+      lastCommercialAccountingDate: null,
+      model: isSwitch ? null : values.model,
+      mountPlaceId: values.deviceMountPlace?.id || null,
+      newDeviceReadings: prepareDeviceReadings([]),
       oldDeviceReadings,
-      serialNumber: `${values.serialNumber}${serialNumberAfterString}`,
-      ...(isCheck || isSwitch
-        ? { lastCheckingDate: null, futureCheckingDate: null }
-        : {}),
-
-      ...(isSwitch ? { model: '', serialNumber: '' } : {}),
+      oldDeviceClosingReason: null,
+      rateType: values.rateType,
+      resource: values.resource,
+      scaleFactor: values.scaleFactor || scaleFactor,
+      sealInstallationDate: values.sealInstallationDate,
+      sealNumber: values.sealNumber,
+      serialNumber: isSwitch
+        ? null
+        : `${values.serialNumber}${serialNumberAfterString}`,
     };
+
+    return initialFormValues;
   },
-  target: deviceInfoForm.set,
+  target: setInitialFormValues,
 });
 
 switchIndividualDeviceMutation.finished.failure.watch(({ error }) => {
