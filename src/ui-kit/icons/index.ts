@@ -92,6 +92,7 @@ import { ReactComponent as AscendingSortIcon } from './svg/ascendingSort.svg';
 import { ReactComponent as DescendingSortIcon } from './svg/descendingSort.svg';
 import { ReactComponent as DocumentBlueIcon } from './svg/documentBlue.svg';
 import { ReactComponent as ArrowTopIcon } from './svg/arrowTop.svg';
+import { ReactComponent as DoubleChevronLeft } from './svg/doubleChevronLeft.svg';
 
 export {
   FinishIcon,
@@ -188,4 +189,5 @@ export {
   DescendingSortIcon,
   DocumentBlueIcon,
   ArrowTopIcon,
+  DoubleChevronLeft,
 };
