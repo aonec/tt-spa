@@ -35,4 +35,7 @@ export type AddTaskModalProps = {
   handleReplacePhoneNumber: () => void;
   handleClosePhoneNumber: () => void;
   onSuccessSavePhone: Event<void>;
+  existingCities: string[] | null;
+  defaultCity: string | null;
+  handleChangeCity: (payload: string) => void;
 };

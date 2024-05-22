@@ -28,6 +28,9 @@ export const AddTaskModal: FC<AddTaskModalProps> = ({
   handleReplacePhoneNumber,
   handleClosePhoneNumber,
   onSuccessSavePhone,
+  existingCities,
+  defaultCity,
+  handleChangeCity,
 }) => {
   const [disableSubmit, setDisableSubmit] = useState(true);
 
@@ -62,6 +65,9 @@ export const AddTaskModal: FC<AddTaskModalProps> = ({
           handleReplacePhoneNumber={handleReplacePhoneNumber}
           handleClosePhoneNumber={handleClosePhoneNumber}
           onSuccessSavePhone={onSuccessSavePhone}
+          existingCities={existingCities}
+          defaultCity={defaultCity}
+          handleChangeCity={handleChangeCity}
         />
       }
       formId={formId}

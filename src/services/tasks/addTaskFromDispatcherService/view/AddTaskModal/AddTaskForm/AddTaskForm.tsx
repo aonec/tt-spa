@@ -53,6 +53,7 @@ import { DatePicker } from 'ui-kit/DatePicker';
 import { SavePhoneNumber } from './savePhoneNumberService';
 import { AlertIconType } from 'ui-kit/Alert/Alert.types';
 import { addTaskFromDispatcherService } from 'services/tasks/addTaskFromDispatcherService';
+import { getPreparedStreetsOptions } from 'services/objects/createObjectService/view/CreateObjectPage/CreateObjectAddressStage/CreateObjectAddressStage.utils';
 
 const {
   gates: { PageGate },
@@ -82,8 +83,15 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
   handleReplacePhoneNumber,
   handleClosePhoneNumber,
   onSuccessSavePhone,
+  existingCities,
+  defaultCity,
+  handleChangeCity,
 }) => {
   const initialSource = useMemo(() => ERPSources[0], [ERPSources]);
+  const initialCity = useMemo(
+    () => existingCities?.[0] || 'Город не найден',
+    [existingCities],
+  );
 
   const { values, handleSubmit, setFieldValue, isValid, setValues } =
     useFormik<AddTask>({
@@ -102,10 +110,11 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
         taskReasonSearch: null,
         taskReasonOrderNumber: null,
         taskDeadlineDate: null,
-        taskDeadlineTime: dayjs().subtract(2, 'hours'),
+        taskDeadlineTime: dayjs().subtract(2, 'minutes'),
         isSourceNumberRequired: initialSource?.isSourceNumberRequired || false,
         isSubscriberRequired: initialSource?.isSubscriberRequired || false,
         isManualDeadlineRequired: isManualDeadlineRequired,
+        city: defaultCity || initialCity,
       },
       validateOnBlur: true,
       validateOnMount: true,
@@ -299,6 +308,11 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
     [ERPSources],
   );
 
+  const preparedExistingCities = getPreparedStreetsOptions(
+    values.city || '',
+    existingCities || [],
+  );
+
   const statusTaskType = useMemo(() => {
     if (values.taskType === EisTaskType.Emergency) {
       return 'error';
@@ -371,6 +385,17 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
         </GridContainerExpandable>
 
         <GridContainerAsymmetricRight>
+          <FormItem label="Город">
+            <Select
+              onChange={(value) => {
+                setFieldValue('city', value);
+                handleChangeCity(value as string);
+              }}
+              value={values.city || undefined}
+              placeholder="Выберите из списка"
+              options={preparedExistingCities}
+            />
+          </FormItem>
           <FormItem label="Адрес">
             <AutoCompleteAntD
               defaultActiveFirstOption
