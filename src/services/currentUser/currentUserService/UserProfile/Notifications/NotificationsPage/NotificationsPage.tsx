@@ -1,9 +1,9 @@
 import React, { FC } from 'react';
-import { ListWrapper, Wrapper } from './NotificationsPage.styled';
 import { Props } from './NotificationsPage.types';
 import { WithLoader } from 'ui-kit/shared/WithLoader';
 import { ChannelItem } from './ChannelItem';
 import { ChannelType } from 'api/types';
+import { ListWrapper, Wrapper } from './NotificationsPage.styled';
 
 export const NotificationsPage: FC<Props> = ({
   channels,
