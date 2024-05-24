@@ -1,3 +1,4 @@
+import { Drawer } from 'antd';
 import styled from 'styled-components';
 
 export const Layout = styled.div<{ isMenuOpen: boolean }>`
@@ -8,4 +9,10 @@ export const Layout = styled.div<{ isMenuOpen: boolean }>`
 
 export const PageWrapper = styled.div`
   padding: 16px 52px;
+`;
+
+export const DrawerSC = styled(Drawer)`
+  .ant-drawer-body {
+    padding: 0;
+  }
 `;

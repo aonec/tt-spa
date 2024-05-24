@@ -6,10 +6,21 @@ import { Logo } from './Logo';
 export const Panel: FC<{
   isOpen: boolean;
   setIsOpen: (isOpen: boolean) => void;
-}> = ({ isOpen, setIsOpen }) => {
+  onMouseLeave?: () => void;
+  onMouseEnter?: () => void;
+  isChevronOpen: boolean;
+}> = ({ isOpen, setIsOpen, onMouseLeave, onMouseEnter, isChevronOpen }) => {
   const content = (
-    <Wrapper isOpen={isOpen}>
-      <Logo isOpen={isOpen} setIsOpen={setIsOpen} isChevronOpen={isOpen} />
+    <Wrapper
+      isOpen={isOpen}
+      onMouseLeave={onMouseLeave}
+      onMouseEnter={onMouseEnter}
+    >
+      <Logo
+        isOpen={isOpen}
+        setIsOpen={setIsOpen}
+        isChevronOpen={isChevronOpen}
+      />
       <MenuWrapper>
         <MenuContainer isOpen={isOpen} />
       </MenuWrapper>

@@ -1,6 +1,6 @@
 import { Navigate, Outlet } from 'react-router-dom';
 import React, { useMemo, useState } from 'react';
-import { Layout, PageWrapper } from './Router.styled';
+import { DrawerSC, Layout, PageWrapper } from './Router.styled';
 import { Panel } from 'App/Panel';
 import {
   ESecuredIdentityRoleName,
@@ -85,13 +85,37 @@ const { DistrictBordersGroupPageGate } = districtBordersByAddressService.gates;
 
 function RouterWrapper() {
   const [isOpen, setIsOpen] = useState(true);
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
   return (
     <Layout isMenuOpen={isOpen}>
       <CurrentUserGate />
       <CurrentManagingFirmGate />
+      <DrawerSC
+        open={isDrawerOpen}
+        title={<></>}
+        width={208}
+        closable={false}
+        maskClosable={true}
+        onClose={() => setIsDrawerOpen(false)}
+        style={{ padding: 0 }}
+        headerStyle={{ display: 'none' }}
+        placement="left"
+      >
+        <Panel
+          isChevronOpen={isOpen}
+          isOpen
+          setIsOpen={setIsOpen}
+          onMouseLeave={() => setIsDrawerOpen(false)}
+        />
+      </DrawerSC>
 
-      <Panel isOpen={isOpen} setIsOpen={setIsOpen} />
+      <Panel
+        isOpen={isOpen}
+        isChevronOpen={isOpen}
+        setIsOpen={setIsOpen}
+        onMouseEnter={() => !isOpen && setIsDrawerOpen(true)}
+      />
       <div />
       <PageWrapper>
         <Outlet />

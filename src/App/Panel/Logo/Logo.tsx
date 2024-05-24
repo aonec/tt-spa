@@ -11,8 +11,8 @@ import { DoubleChevronLeft } from 'ui-kit/icons';
 
 export const Logo: FC<{
   isOpen: boolean;
-  isChevronOpen: boolean;
   setIsOpen: (isOpen: boolean) => void;
+  isChevronOpen: boolean;
 }> = ({ isOpen, setIsOpen, isChevronOpen }) => {
   return (
     <Wrapper>
@@ -28,7 +28,7 @@ export const Logo: FC<{
       {isOpen && (
         <ChevronWrapper
           isOpen={isChevronOpen}
-          onClick={() => setIsOpen(!isOpen)}
+          onClick={() => setIsOpen(!isChevronOpen)}
         >
           <DoubleChevronLeft />
         </ChevronWrapper>
