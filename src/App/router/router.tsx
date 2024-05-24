@@ -1,5 +1,5 @@
 import { Navigate, Outlet } from 'react-router-dom';
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { DrawerSC, Layout, PageWrapper } from './Router.styled';
 import { Panel } from 'App/Panel';
 import {
@@ -86,6 +86,10 @@ const { DistrictBordersGroupPageGate } = districtBordersByAddressService.gates;
 function RouterWrapper() {
   const [isOpen, setIsOpen] = useState(true);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+
+  useEffect(() => {
+    if (isOpen) setIsDrawerOpen(false);
+  }, [isOpen]);
 
   return (
     <Layout isMenuOpen={isOpen}>
