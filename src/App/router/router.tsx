@@ -1,5 +1,5 @@
 import { Navigate, Outlet } from 'react-router-dom';
-import React, { useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 import { Layout, PageWrapper } from './Router.styled';
 import { Panel } from 'App/Panel';
 import {
@@ -84,12 +84,14 @@ const { TasksIsOpen } = tasksProfileService.gates;
 const { DistrictBordersGroupPageGate } = districtBordersByAddressService.gates;
 
 function RouterWrapper() {
+  const [isOpen, setIsOpen] = useState(true);
+
   return (
-    <Layout>
+    <Layout isMenuOpen={isOpen}>
       <CurrentUserGate />
       <CurrentManagingFirmGate />
 
-      <Panel />
+      <Panel isOpen={isOpen} setIsOpen={setIsOpen} />
       <div />
       <PageWrapper>
         <Outlet />

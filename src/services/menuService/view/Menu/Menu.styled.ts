@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 export const Footer = styled.div`
   position: absolute;
-  width: 206px;
+  width: 100%;
   bottom: 16px;
   padding: 16px 16px 0;
   border-top: 1px solid #dcdee4;

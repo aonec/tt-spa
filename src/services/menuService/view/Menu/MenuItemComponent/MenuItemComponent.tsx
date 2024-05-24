@@ -6,7 +6,10 @@ import { SubMenu } from './SubMenu';
 import { Wrapper } from './MenuItemComponent.styled';
 import { NavLink } from 'react-router-dom';
 
-export const MenuItemComponent: FC<MenuItemComponentProps> = ({ menuItem }) => {
+export const MenuItemComponent: FC<MenuItemComponentProps> = ({
+  menuItem,
+  isMenuOpen,
+}) => {
   const { title, icon: Icon, path } = menuItem;
   const [isOpen, setIsOpen] = useState(false);
 
@@ -30,13 +33,13 @@ export const MenuItemComponent: FC<MenuItemComponentProps> = ({ menuItem }) => {
           }}
         >
           {Icon && <Icon className="menu-item-icon" />}
-          <MenuItemTitle>{title}</MenuItemTitle>
+          {isMenuOpen && <MenuItemTitle>{title}</MenuItemTitle>}
         </NavLink>
-        {isSubMenuItemsExist && (
+        {isSubMenuItemsExist && isMenuOpen && (
           <Chevron open={isOpen} onClick={toggleChevron} />
         )}
       </Wrapper>
-      {isShowSubMenu && <SubMenu subMenuItems={menuItem.sub!} />}
+      {isShowSubMenu && isMenuOpen && <SubMenu subMenuItems={menuItem.sub!} />}
     </>
   );
 };

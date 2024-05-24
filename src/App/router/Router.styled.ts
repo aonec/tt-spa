@@ -1,9 +1,9 @@
 import styled from 'styled-components';
 
-export const Layout = styled.div`
+export const Layout = styled.div<{ isMenuOpen: boolean }>`
   height: 100vh;
   display: grid;
-  grid-template-columns: 208px 1fr;
+  grid-template-columns: ${({ isMenuOpen }) => (isMenuOpen ? '208px' : '48px')} 1fr;
 `;
 
 export const PageWrapper = styled.div`
