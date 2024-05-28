@@ -64,6 +64,7 @@ const handleChangeSubscriberName = createEvent<string | null>();
 const handleChangePhoneNumber = createEvent<string | null>();
 const handleReplacePhoneNumber = createEvent<void>();
 const handleClosePhoneNumber = createEvent<void>();
+const handleChangeCity = createEvent<string>();
 
 const setSelectedHousingId = createEvent<string | null>();
 const setSelectedApartmentId = createEvent<number | null>();
@@ -261,6 +262,12 @@ sample({
 });
 
 sample({
+  clock: handleChangeCity,
+  fn: (city) => ({ City: city }),
+  target: getAddressesFx,
+});
+
+sample({
   clock: handleSelectHousingAddress,
   source: $preparedForOptionsAddresses,
   fn: (optionAddresses, selectedAddress) => {
@@ -428,6 +435,7 @@ export const addTaskFromDispatcherService = {
     handleReplacePhoneNumber,
     handleClosePhoneNumber,
     onSuccessSavePhone,
+    handleChangeCity,
   },
   outputs: {
     $isModalOpen,
@@ -441,6 +449,7 @@ export const addTaskFromDispatcherService = {
     $selectedTaskReasonOption,
     $isManualDeadlineRequired,
     $isSavePhoneNumberOpen,
+    $defaultCity: currentOrganizationService.outputs.$defaultCity,
   },
   gates: { PageGate, AddTaskDataFetchGate },
 };

@@ -37,6 +37,8 @@ export type AddTask = {
   isSourceNumberRequired: boolean;
   isSubscriberRequired: boolean;
   isManualDeadlineRequired: boolean;
+
+  city: string;
 };
 
 export type AddTaskFormProps = {
@@ -61,6 +63,9 @@ export type AddTaskFormProps = {
   handleReplacePhoneNumber: () => void;
   handleClosePhoneNumber: () => void;
   onSuccessSavePhone: Event<void>;
+  existingCities: string[] | null;
+  defaultCity: string | null;
+  handleChangeCity: (payload: string) => void;
 };
 
 export type AddressOption = {
