@@ -8,7 +8,6 @@ import {
 import { Props } from './ChannelItem.types';
 import { OkIcon } from 'ui-kit/icons';
 import { Switch } from 'antd';
-import confirm from 'antd/es/modal/confirm';
 
 export const ChannelItem: FC<Props> = ({
   channel,
@@ -19,18 +18,7 @@ export const ChannelItem: FC<Props> = ({
   const handleClickSwitch = useCallback(() => {
     if (!channel) return handleConnect();
 
-    confirm({
-      title: 'Вы уверены что хотите отключить канал уведомлений?',
-      closable: true,
-      maskClosable: true,
-      type: 'warning',
-      okType: 'danger',
-      okButtonProps: { type: 'primary' },
-      okText: 'Отключить',
-      onOk: () => {
-        handleDisconnect(channel.id);
-      },
-    });
+    handleDisconnect(channel.id);
   }, [channel, handleConnect, handleDisconnect]);
 
   return (

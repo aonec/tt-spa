@@ -4,8 +4,6 @@ import { FormModal } from 'ui-kit/Modals/FormModal';
 import { useUnit } from 'effector-react';
 import { Input } from 'ui-kit/Input';
 import FormItem from 'antd/es/form/FormItem';
-import botStageQrCode from './assets/qr_stage_bot.jpg';
-import botProdQrCode from './assets/qr_bot.png';
 import {
   Content,
   OptionWrapper,
@@ -15,29 +13,18 @@ import {
 } from './connectNotificationsService.styled';
 import { message } from 'antd';
 import { connectChannelMutation } from './connectNotificationsService.api';
-import { isDevMode } from 'api/axios';
+import { botData } from './connectNotificationsService.contstants';
 
 const { inputs, outputs } = connectNotificationsService;
 
 const FORM_ID = 'notifications-modal-form';
 
-const botData = isDevMode
-  ? {
-      image: botStageQrCode,
-      link: 'https://t.me/TT_Notification_Service_bot',
-      name: '@TT_Notification_Service_bot',
-    }
-  : {
-      image: botProdQrCode,
-      link: 'https://t.me/TT_NotificationService_bot',
-      name: '@TT_NotificationService_bot',
-    };
-
 export const ConnectNotificationsContainer = () => {
-  const { isOpen, handleClose, handleConnectChannel } = useUnit({
+  const { isOpen, handleClose, handleConnectChannel, isLoading } = useUnit({
     isOpen: outputs.$isOpen,
     handleClose: inputs.closeModal,
     handleConnectChannel: connectChannelMutation.start,
+    isLoading: connectChannelMutation.$pending,
   });
 
   const [code, setCode] = useState('');
@@ -75,6 +62,7 @@ export const ConnectNotificationsContainer = () => {
       formId={FORM_ID}
       onCancel={handleClose}
       onSubmit={handleSave}
+      loading={isLoading}
       form={
         <Wrapper>
           <QrCodeImg src={botData.image} />
