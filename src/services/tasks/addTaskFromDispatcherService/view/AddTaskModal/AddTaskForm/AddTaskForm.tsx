@@ -86,6 +86,8 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
   existingCities,
   defaultCity,
   handleChangeCity,
+  handleSearchExecutor,
+  executorsList,
 }) => {
   const initialSource = useMemo(() => ERPSources[0], [ERPSources]);
   const initialCity = useMemo(
@@ -115,6 +117,7 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
         isSubscriberRequired: initialSource?.isSubscriberRequired || false,
         isManualDeadlineRequired: isManualDeadlineRequired,
         city: defaultCity || initialCity,
+        executorId: null,
       },
       validateOnBlur: true,
       validateOnMount: true,
@@ -238,6 +241,14 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
     }));
   }, [selectedTaskReasonOption]);
 
+  const executorsListOptions = useMemo(() => {
+    return executorsList.map((executor) => ({
+      label: executor.name,
+      value: executor.ttmId,
+      key: executor.ttmId,
+    }));
+  }, [executorsList]);
+
   useEffect(() => {
     if (taskTypeOptions.length === 1) {
       const singularTaskType = taskTypeOptions[0].value;
@@ -324,6 +335,7 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
   const [isReasonOpen, setReasonOpen] = useState(false);
   const [isTaskTypeOpen, setTaskTypeOpen] = useState(false);
   const [isDatePickerOpen, setDatePickerOpen] = useState(false);
+  const [isExecutorOpen, setExecutorOpen] = useState(false);
 
   return (
     <>
@@ -580,6 +592,8 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
                 setFieldValue('taskReasonSearch', name);
                 handleSelectTaskReason(name);
 
+                handleSearchExecutor();
+
                 setReasonOpen(false);
                 if (isNoAdditionalFieldsRequired) {
                   next(3);
@@ -659,6 +673,9 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
               onSelect={(taskType) => {
                 setTaskTypeOpen(false);
                 handleSelectTaskType(taskType as EisTaskType);
+
+                handleSearchExecutor();
+
                 if (isNoAdditionalFieldsRequired) {
                   next(4);
                 }
@@ -757,6 +774,52 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
             </GridContainerAsymmetricThreeColumn>
           </FormItem>
         </ContainerWithOutline>
+
+        <FormItem label="Исполнитель">
+          <Select
+            allowClear
+            placeholder="Начните вводить"
+            value={values.executorId}
+            onChange={(value) => {
+              setFieldValue('executorId', value);
+            }}
+            optionLabelProp="label"
+            options={executorsListOptions}
+            data-reading-input={dataKey}
+            open={isExecutorOpen}
+            onBlur={() => setExecutorOpen(false)}
+            onFocus={() => setExecutorOpen(true)}
+            onMouseDown={() => setExecutorOpen(true)}
+            onKeyDown={fromEnter(() => {
+              if (isNoAdditionalFieldsRequired) {
+                next(7);
+              }
+              if (isOnlySourceNumberRequired) {
+                next(8);
+              }
+              if (isOnlySubscriberRequired) {
+                next(9);
+              }
+              if (isSubscriberAndSourceNumberRequired) {
+                next(10);
+              }
+            })}
+            onSelect={() => {
+              if (isNoAdditionalFieldsRequired) {
+                next(7);
+              }
+              if (isOnlySourceNumberRequired) {
+                next(8);
+              }
+              if (isOnlySubscriberRequired) {
+                next(9);
+              }
+              if (isSubscriberAndSourceNumberRequired) {
+                next(10);
+              }
+            }}
+          />
+        </FormItem>
 
         <FormItem label="Описание проблемы">
           <TextareaSC
