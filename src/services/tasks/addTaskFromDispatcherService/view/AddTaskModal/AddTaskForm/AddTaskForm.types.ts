@@ -17,6 +17,7 @@ export type AddTask = {
   requestNumber?: string | null;
   taskType: null | EisTaskType;
   workTypeId: string | null;
+  executorId: number | null;
 
   requestDate: dayjs.Dayjs | null;
   requestTime: dayjs.Dayjs | null;
@@ -66,6 +67,7 @@ export type AddTaskFormProps = {
   existingCities: string[] | null;
   defaultCity: string | null;
   handleChangeCity: (payload: string) => void;
+  handleSearchExecutor: () => void;
 };
 
 export type AddressOption = {

@@ -86,6 +86,7 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
   existingCities,
   defaultCity,
   handleChangeCity,
+  handleSearchExecutor,
 }) => {
   const initialSource = useMemo(() => ERPSources[0], [ERPSources]);
   const initialCity = useMemo(
@@ -115,6 +116,7 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
         isSubscriberRequired: initialSource?.isSubscriberRequired || false,
         isManualDeadlineRequired: isManualDeadlineRequired,
         city: defaultCity || initialCity,
+        executorId: null,
       },
       validateOnBlur: true,
       validateOnMount: true,
@@ -580,6 +582,8 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
                 setFieldValue('taskReasonSearch', name);
                 handleSelectTaskReason(name);
 
+                handleSearchExecutor();
+
                 setReasonOpen(false);
                 if (isNoAdditionalFieldsRequired) {
                   next(3);
@@ -659,6 +663,9 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
               onSelect={(taskType) => {
                 setTaskTypeOpen(false);
                 handleSelectTaskType(taskType as EisTaskType);
+
+                handleSearchExecutor();
+
                 if (isNoAdditionalFieldsRequired) {
                   next(4);
                 }
@@ -757,6 +764,46 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
             </GridContainerAsymmetricThreeColumn>
           </FormItem>
         </ContainerWithOutline>
+
+        <FormItem label="Исполнитель">
+          <Select
+            allowClear
+            placeholder="Начните вводить"
+            value={values.taskType}
+            onChange={(value) => {}}
+            optionLabelProp="label"
+            options={taskTypeOptions}
+            data-reading-input={dataKey}
+            onKeyDown={fromEnter(() => {
+              if (isNoAdditionalFieldsRequired) {
+                next(4);
+              }
+              if (isOnlySourceNumberRequired) {
+                next(5);
+              }
+              if (isOnlySubscriberRequired) {
+                next(6);
+              }
+              if (isSubscriberAndSourceNumberRequired) {
+                next(7);
+              }
+            })}
+            onSelect={(taskType) => {
+              if (isNoAdditionalFieldsRequired) {
+                next(4);
+              }
+              if (isOnlySourceNumberRequired) {
+                next(5);
+              }
+              if (isOnlySubscriberRequired) {
+                next(6);
+              }
+              if (isSubscriberAndSourceNumberRequired) {
+                next(7);
+              }
+            }}
+          />
+        </FormItem>
 
         <FormItem label="Описание проблемы">
           <TextareaSC

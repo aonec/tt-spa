@@ -45,3 +45,12 @@ export type DeadlineRequest = {
   TaskReasonId: string;
   TaskType?: EisTaskType;
 };
+
+export type ExecutorsListRequest = {
+  TaskReasonId: string;
+  TaskType: EisTaskType;
+};
+
+export type ExecutorSearch = {
+  TaskType: EisTaskType;
+};

@@ -38,4 +38,5 @@ export type AddTaskModalProps = {
   existingCities: string[] | null;
   defaultCity: string | null;
   handleChangeCity: (payload: string) => void;
+  handleSearchExecutor: () => void;
 };
