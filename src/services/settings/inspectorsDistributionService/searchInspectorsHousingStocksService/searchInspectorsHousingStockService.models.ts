@@ -61,12 +61,19 @@ sample({
 });
 
 sample({
-  source: searchForm.$values,
   clock: searchForm.submit,
-  filter: (values) =>
-    Boolean(values.HouseManagement || values.InspectorId) ||
-    Boolean(values.City && values.Street),
-  fn: (values) => values,
+  source: searchForm.$values,
+  filter: (values) => {
+    console.log('d');
+    return (
+      Boolean(values.HouseManagement || values.InspectorId) ||
+      Boolean(values.City && values.Street)
+    );
+  },
+  fn: (values) => {
+    console.log('f');
+    return values;
+  },
   target: startSearchInspectorsHousingStocks,
 });
 
