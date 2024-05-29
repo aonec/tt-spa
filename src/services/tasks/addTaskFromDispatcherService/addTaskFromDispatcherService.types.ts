@@ -50,7 +50,3 @@ export type ExecutorsListRequest = {
   TaskReasonId: string;
   TaskType: EisTaskType;
 };
-
-export type ExecutorSearch = {
-  TaskType: EisTaskType;
-};

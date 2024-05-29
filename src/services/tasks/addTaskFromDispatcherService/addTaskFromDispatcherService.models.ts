@@ -39,7 +39,6 @@ import { EffectFailDataAxiosError } from 'types';
 import { AddTask } from './view/AddTaskModal/AddTaskForm/AddTaskForm.types';
 import {
   DeadlineRequest,
-  ExecutorSearch,
   ExecutorsListRequest,
   GetAddressesRequest,
   GetApartmentsRequest,
@@ -247,6 +246,7 @@ sample({
       subscriberFullName: data.subscriberName,
       taskDescription: data.taskDescription,
       taskDeadline: deadlineDateTimeUTC,
+      executorId: data.executorId,
     } as ErpCreateTaskRequest;
 
     const filteredByNullValuesPayload = _.pickBy(payload, _.identity);

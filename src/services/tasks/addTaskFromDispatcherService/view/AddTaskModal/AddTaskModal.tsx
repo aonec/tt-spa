@@ -32,6 +32,7 @@ export const AddTaskModal: FC<AddTaskModalProps> = ({
   defaultCity,
   handleChangeCity,
   handleSearchExecutor,
+  executorsList,
 }) => {
   const [disableSubmit, setDisableSubmit] = useState(true);
 
@@ -70,6 +71,7 @@ export const AddTaskModal: FC<AddTaskModalProps> = ({
           defaultCity={defaultCity}
           handleChangeCity={handleChangeCity}
           handleSearchExecutor={handleSearchExecutor}
+          executorsList={executorsList}
         />
       }
       formId={formId}

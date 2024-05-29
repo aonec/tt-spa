@@ -33,6 +33,7 @@ export const AddTaskFromDispatcherContainer = () => {
     defaultCity,
     handleChangeCity,
     handleSearchExecutor,
+    executorsList,
   } = useUnit({
     isModalOpen: outputs.$isModalOpen,
     handleCloseModal: inputs.handleCloseModal,
@@ -59,6 +60,7 @@ export const AddTaskFromDispatcherContainer = () => {
     defaultCity: outputs.$defaultCity,
     handleChangeCity: inputs.handleChangeCity,
     handleSearchExecutor: inputs.handleSearchExecutor,
+    executorsList: outputs.$executorsList,
   });
 
   return (
@@ -89,6 +91,7 @@ export const AddTaskFromDispatcherContainer = () => {
       defaultCity={defaultCity}
       handleChangeCity={handleChangeCity}
       handleSearchExecutor={handleSearchExecutor}
+      executorsList={executorsList}
     />
   );
 };

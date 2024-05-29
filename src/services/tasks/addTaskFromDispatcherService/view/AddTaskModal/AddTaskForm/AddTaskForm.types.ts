@@ -1,5 +1,6 @@
 import {
   EisTaskType,
+  ErpExecutorResponse,
   ErpSourceResponse,
   ErpTaskReasonGroupResponse,
   ResourceDisconnectingResponse,
@@ -68,6 +69,7 @@ export type AddTaskFormProps = {
   defaultCity: string | null;
   handleChangeCity: (payload: string) => void;
   handleSearchExecutor: () => void;
+  executorsList: ErpExecutorResponse[];
 };
 
 export type AddressOption = {

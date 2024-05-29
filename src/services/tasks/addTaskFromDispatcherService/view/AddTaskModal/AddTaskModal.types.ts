@@ -1,5 +1,6 @@
 import {
   EisTaskType,
+  ErpExecutorResponse,
   ErpSourceResponse,
   ErpTaskReasonGroupResponse,
   ResourceDisconnectingResponse,
@@ -39,4 +40,5 @@ export type AddTaskModalProps = {
   defaultCity: string | null;
   handleChangeCity: (payload: string) => void;
   handleSearchExecutor: () => void;
+  executorsList: ErpExecutorResponse[];
 };

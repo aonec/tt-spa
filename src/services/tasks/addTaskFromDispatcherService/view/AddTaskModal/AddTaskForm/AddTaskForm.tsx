@@ -87,6 +87,7 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
   defaultCity,
   handleChangeCity,
   handleSearchExecutor,
+  executorsList,
 }) => {
   const initialSource = useMemo(() => ERPSources[0], [ERPSources]);
   const initialCity = useMemo(
@@ -240,6 +241,14 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
     }));
   }, [selectedTaskReasonOption]);
 
+  const executorsListOptions = useMemo(() => {
+    return executorsList.map((executor) => ({
+      label: executor.name,
+      value: executor.ttmId,
+      key: executor.ttmId,
+    }));
+  }, [executorsList]);
+
   useEffect(() => {
     if (taskTypeOptions.length === 1) {
       const singularTaskType = taskTypeOptions[0].value;
@@ -326,6 +335,7 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
   const [isReasonOpen, setReasonOpen] = useState(false);
   const [isTaskTypeOpen, setTaskTypeOpen] = useState(false);
   const [isDatePickerOpen, setDatePickerOpen] = useState(false);
+  const [isExecutorOpen, setExecutorOpen] = useState(false);
 
   return (
     <>
@@ -769,37 +779,43 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
           <Select
             allowClear
             placeholder="Начните вводить"
-            value={values.taskType}
-            onChange={(value) => {}}
+            value={values.executorId}
+            onChange={(value) => {
+              setFieldValue('executorId', value);
+            }}
             optionLabelProp="label"
-            options={taskTypeOptions}
+            options={executorsListOptions}
             data-reading-input={dataKey}
+            open={isExecutorOpen}
+            onBlur={() => setExecutorOpen(false)}
+            onFocus={() => setExecutorOpen(true)}
+            onMouseDown={() => setExecutorOpen(true)}
             onKeyDown={fromEnter(() => {
               if (isNoAdditionalFieldsRequired) {
-                next(4);
+                next(7);
               }
               if (isOnlySourceNumberRequired) {
-                next(5);
+                next(8);
               }
               if (isOnlySubscriberRequired) {
-                next(6);
+                next(9);
               }
               if (isSubscriberAndSourceNumberRequired) {
-                next(7);
+                next(10);
               }
             })}
-            onSelect={(taskType) => {
+            onSelect={() => {
               if (isNoAdditionalFieldsRequired) {
-                next(4);
+                next(7);
               }
               if (isOnlySourceNumberRequired) {
-                next(5);
+                next(8);
               }
               if (isOnlySubscriberRequired) {
-                next(6);
+                next(9);
               }
               if (isSubscriberAndSourceNumberRequired) {
-                next(7);
+                next(10);
               }
             }}
           />
