@@ -3,11 +3,16 @@ import { message } from 'antd';
 import { createGate } from 'effector-react';
 import { ErpApplicationResponse } from 'api/types';
 import { EffectFailDataAxiosError } from 'types';
-import { getApplicationInfo } from './applicationInfoService.api';
+import {
+  deleteApplication,
+  getApplicationInfo,
+} from './applicationInfoService.api';
 
 const PageGate = createGate();
 
 const handleFetchApplicationInfo = createEvent<number>();
+
+const handleDelete = createEvent();
 
 const getApplicationInfoFx = createEffect<
   number,
@@ -15,15 +20,34 @@ const getApplicationInfoFx = createEffect<
   EffectFailDataAxiosError
 >(getApplicationInfo);
 
+const deleteApplicationFx = createEffect<
+  number,
+  void,
+  EffectFailDataAxiosError
+>(deleteApplication);
+
 const $applicationInfo = createStore<ErpApplicationResponse | null>(null)
   .on(getApplicationInfoFx.doneData, (_, data) => data)
   .reset(PageGate.close);
 
 const $isLoading = getApplicationInfoFx.pending;
 
+const $taskId = createStore<number | null>(null).on(
+  handleFetchApplicationInfo,
+  (_, id) => id,
+);
+
 sample({
   clock: handleFetchApplicationInfo,
   target: getApplicationInfoFx,
+});
+
+sample({
+  clock: handleDelete,
+  source: $taskId,
+  filter: (id) => Boolean(id),
+  fn: (id) => id!,
+  target: deleteApplicationFx,
 });
 
 getApplicationInfoFx.failData.watch((error) => {
@@ -34,8 +58,24 @@ getApplicationInfoFx.failData.watch((error) => {
   );
 });
 
+deleteApplicationFx.failData.watch((error) => {
+  message.error(
+    error.response.data.error.Text ||
+      error.response.data.error.Message ||
+      'Произошла ошибка',
+  );
+});
+
+deleteApplicationFx.doneData.watch(() => {
+  message.success('Задача удалена!');
+});
+
+const $isDeleting = deleteApplicationFx.pending;
+
+const onSuccessDelete = deleteApplicationFx.doneData;
+
 export const applicationInfoService = {
-  inputs: { handleFetchApplicationInfo },
-  outputs: { $applicationInfo, $isLoading },
+  inputs: { handleFetchApplicationInfo, handleDelete, onSuccessDelete },
+  outputs: { $applicationInfo, $isLoading, $isDeleting },
   gates: { PageGate },
 };

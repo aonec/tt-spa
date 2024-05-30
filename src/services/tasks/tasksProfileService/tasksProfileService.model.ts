@@ -30,6 +30,7 @@ import { getAcceptableSearchParams } from './tasksProfileService.utils';
 import { interval } from 'patronum';
 import { taskProfileService } from '../taskProfileService';
 import _ from 'lodash';
+import { applicationInfoService } from '../taskProfileService/applicationInfoService';
 
 const TasksIsOpen = createGate();
 const InitialGate = createGate();
@@ -111,9 +112,9 @@ sample({
     searchState: $searchState,
     isTaskProfileOpen: taskProfileService.outputs.$isTaskProfileOpen,
   },
-  clock: searchTasksTrigger,
+  clock: [searchTasksTrigger, applicationInfoService.inputs.onSuccessDelete],
   filter: ({ isTaskProfileOpen, searchState }) =>
-    !isTaskProfileOpen && Boolean(searchState.GroupType),
+    Boolean(searchState.GroupType),
 
   fn: ({ isTaskProfileOpen, searchState }) => {
     const filteredData = _.omitBy(searchState, _.isNil);
