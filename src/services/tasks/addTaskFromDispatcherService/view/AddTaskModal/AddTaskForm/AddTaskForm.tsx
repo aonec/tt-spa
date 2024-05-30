@@ -280,6 +280,14 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
     isNoAdditionalFieldsRequired,
   ]);
 
+  useEffect(() => {
+    if (executorsList.length === 1) {
+      const singularExecutorId = executorsList[0].ttmId;
+
+      setFieldValue('executorId', singularExecutorId);
+    }
+  }, [executorsList, setFieldValue]);
+
   const getResourceDisconnectionAlert = useCallback(
     (
       disconnectingType: ResourceDisconnectingTypeResponse | null,
