@@ -1,7 +1,7 @@
 import React, { FC, useCallback } from 'react';
 import { ExitIconSC, Text, Wrapper } from './ExitButton.styled';
 
-export const ExitButton: FC = () => {
+export const ExitButton: FC<{ isOpen: boolean }> = ({ isOpen }) => {
   const handleExit = useCallback(() => {
     localStorage.removeItem('token');
     localStorage.removeItem('refreshToken');
@@ -11,7 +11,7 @@ export const ExitButton: FC = () => {
   return (
     <Wrapper onClick={handleExit}>
       <ExitIconSC className="exit-button-icon" />
-      <Text>Выйти</Text>
+      {isOpen && <Text>Выйти</Text>}
     </Wrapper>
   );
 };

@@ -1,6 +1,6 @@
 import { Navigate, Outlet } from 'react-router-dom';
-import React, { useMemo } from 'react';
-import { Layout, PageWrapper } from './Router.styled';
+import React, { useEffect, useMemo, useState } from 'react';
+import { DrawerSC, Layout, PageWrapper } from './Router.styled';
 import { Panel } from 'App/Panel';
 import {
   ESecuredIdentityRoleName,
@@ -84,12 +84,42 @@ const { TasksIsOpen } = tasksProfileService.gates;
 const { DistrictBordersGroupPageGate } = districtBordersByAddressService.gates;
 
 function RouterWrapper() {
+  const [isOpen, setIsOpen] = useState(true);
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+
+  useEffect(() => {
+    if (isOpen) setIsDrawerOpen(false);
+  }, [isOpen]);
+
   return (
-    <Layout>
+    <Layout isMenuOpen={isOpen}>
       <CurrentUserGate />
       <CurrentManagingFirmGate />
+      <DrawerSC
+        open={isDrawerOpen}
+        title={<></>}
+        width={208}
+        closable={false}
+        maskClosable={true}
+        onClose={() => setIsDrawerOpen(false)}
+        style={{ padding: 0 }}
+        headerStyle={{ display: 'none' }}
+        placement="left"
+      >
+        <Panel
+          isChevronOpen={isOpen}
+          isOpen
+          setIsOpen={setIsOpen}
+          onMouseLeave={() => setIsDrawerOpen(false)}
+        />
+      </DrawerSC>
 
-      <Panel />
+      <Panel
+        isOpen={isOpen}
+        isChevronOpen={isOpen}
+        setIsOpen={setIsOpen}
+        onMouseEnter={() => !isOpen && setIsDrawerOpen(true)}
+      />
       <div />
       <PageWrapper>
         <Outlet />
