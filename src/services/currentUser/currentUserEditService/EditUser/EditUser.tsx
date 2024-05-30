@@ -11,10 +11,7 @@ import { Button } from 'ui-kit/Button';
 import { ErrorMessage } from 'ui-kit/ErrorMessage';
 import { Input } from 'ui-kit/Input';
 import { Footer, FormWrapper, Header } from './EditUser.styled';
-import {
-  ESecuredIdentityRoleName,
-  OrganizationUserUpdateRequest,
-} from 'api/types';
+import { OrganizationUserUpdateRequest } from 'api/types';
 
 export const EditUser: FC<Props> = ({
   user,
@@ -71,7 +68,6 @@ export const EditUser: FC<Props> = ({
         lastName: data.lastName,
         middleName: data.middleName,
         cellphone: data.cellphone,
-        roleTypes: data.roleTypes as ESecuredIdentityRoleName[] | null,
         competenceIds: data.firmCompetencesId,
       };
 

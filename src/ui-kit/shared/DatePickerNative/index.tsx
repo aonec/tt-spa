@@ -20,7 +20,7 @@ interface Props {
   inputData?: string;
 }
 
-export const DatePickerNative: React.FC<Props> = React.forwardRef(
+export const DatePickerNative = React.forwardRef<HTMLInputElement, Props>(
   (
     {
       value: incomingValue,

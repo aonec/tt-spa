@@ -35,7 +35,6 @@ import {
   validationSchema,
 } from './WorkWithIndividualDeviceForm.constants';
 import { useFormik } from 'formik';
-import * as yup from 'yup';
 import { prepareDeviceReadings } from '../../../workWithIndividualDeviceService.utils';
 
 const { IndividualDeviceMountPlacesGate } =
@@ -54,6 +53,7 @@ export const WorkWithIndividualDeviceForm: FC<
   serialNumberForChecking,
   onSubmitCapture,
   handleSubmitForm,
+  deviceInfoForm,
 }) => {
   const { id } = useParams<{ id: string }>();
 
@@ -68,25 +68,29 @@ export const WorkWithIndividualDeviceForm: FC<
   const { values, setFieldValue, errors, handleSubmit } =
     useFormik<WorkWithIndividualDeviceFormType>({
       initialValues: {
-        model: null,
-        serialNumber: null,
-        bitDepth: null,
-        scaleFactor: null,
-        rateType: EIndividualDeviceRateType.OneZone,
-        sealNumber: null,
-        sealInstallationDate: null,
-        lastCheckingDate: null,
-        futureCheckingDate: null,
-        contractorId: null,
-        oldDeviceClosingReason: null,
-        lastCommercialAccountingDate: null,
-        documentsIds: [],
-        isPolling: false,
-        mountPlaceId: null,
-        oldDeviceReadings: prepareDeviceReadings([]),
-        newDeviceReadings: prepareDeviceReadings([]),
-        resource: null,
+        model: deviceInfoForm?.model || null,
+        serialNumber: deviceInfoForm?.serialNumber || null,
+        bitDepth: deviceInfoForm?.bitDepth || null,
+        scaleFactor: deviceInfoForm?.scaleFactor || null,
+        rateType: deviceInfoForm?.rateType || EIndividualDeviceRateType.OneZone,
+        sealNumber: deviceInfoForm?.sealNumber || null,
+        sealInstallationDate: deviceInfoForm?.sealInstallationDate || null,
+        lastCheckingDate: deviceInfoForm?.lastCheckingDate || null,
+        futureCheckingDate: deviceInfoForm?.futureCheckingDate || null,
+        contractorId: deviceInfoForm?.contractorId || null,
+        oldDeviceClosingReason: deviceInfoForm?.oldDeviceClosingReason || null,
+        lastCommercialAccountingDate:
+          deviceInfoForm?.lastCommercialAccountingDate || null,
+        documentsIds: deviceInfoForm?.documentsIds || [],
+        isPolling: deviceInfoForm?.isPolling || false,
+        mountPlaceId: deviceInfoForm?.mountPlaceId || null,
+        oldDeviceReadings:
+          deviceInfoForm?.oldDeviceReadings || prepareDeviceReadings([]),
+        newDeviceReadings:
+          deviceInfoForm?.newDeviceReadings || prepareDeviceReadings([]),
+        resource: deviceInfoForm?.resource || null,
       },
+      enableReinitialize: true,
       validationSchema,
       onSubmit: (data) => {
         handleSubmitForm(data);
@@ -95,7 +99,7 @@ export const WorkWithIndividualDeviceForm: FC<
 
   useEffect(
     () => onSubmitCapture.watch(() => handleSubmit()).unsubscribe,
-    [onSubmitCapture],
+    [handleSubmit, onSubmitCapture],
   );
 
   const isSerialNumberAllreadyExist =
@@ -268,6 +272,7 @@ export const WorkWithIndividualDeviceForm: FC<
                   setFieldValue('oldDeviceClosingReason', value)
                 }
                 showAction={['focus']}
+                allowClear
               >
                 {Object.entries(SwitchingReasonsDictionary).map(
                   ([key, elem]) => (
@@ -323,7 +328,7 @@ export const WorkWithIndividualDeviceForm: FC<
                 .toISOString();
 
               !Boolean(values.futureCheckingDate) &&
-                setFieldValue('isPolling', nextDate);
+                setFieldValue('futureCheckingDate', nextDate);
             }}
           />
           <ErrorMessage>{errors.lastCheckingDate}</ErrorMessage>
@@ -349,17 +354,17 @@ export const WorkWithIndividualDeviceForm: FC<
       <SpaceLine />
 
       {!isCheck && (
-          <WorkWithIndividualDeviceInputs
-            model={individualDevice.model || ''}
-            resource={individualDevice.resource}
-            serialNumber={individualDevice.serialNumber || ''}
-            rateType={individualDevice.rateType}
-            readings={values.oldDeviceReadings}
-            onChange={(readings) => {
-              setFieldValue('oldDeviceReadings', readings);
-            }}
-            title={OldIndividualDeviceTitleLookup[type]}
-          />
+        <WorkWithIndividualDeviceInputs
+          model={individualDevice.model || ''}
+          resource={individualDevice.resource}
+          serialNumber={individualDevice.serialNumber || ''}
+          rateType={individualDevice.rateType}
+          readings={values.oldDeviceReadings}
+          onChange={(readings) => {
+            setFieldValue('oldDeviceReadings', readings);
+          }}
+          title={OldIndividualDeviceTitleLookup[type]}
+        />
       )}
 
       <WorkWithIndividualDeviceInputs
@@ -408,6 +413,7 @@ export const WorkWithIndividualDeviceForm: FC<
           onChange={(value) => setFieldValue('contractorId', value)}
           placeholder="Выберите монтажную организацию"
           showAction={['focus']}
+          allowClear
         >
           {(contractors || []).map((elem) => (
             <Select.Option value={elem.id} key={elem.id}>

@@ -3,6 +3,7 @@ import {
   ApartmentListResponsePagedList,
   EResourceDisconnectingStatus,
   ErpCreateTaskRequest,
+  ErpExecutorResponse,
   ErpSourceResponse,
   ErpTaskDeadlineResponse,
   ErpTaskReasonGroupResponse,
@@ -12,6 +13,7 @@ import {
 } from 'api/types';
 import {
   DeadlineRequest,
+  ExecutorsListRequest,
   GetAddressesRequest,
   GetApartmentsRequest,
   GetResourceDisconnectionRequest,
@@ -32,6 +34,12 @@ export const getErpTaskDeadline = (
   request: DeadlineRequest,
 ): Promise<ErpTaskDeadlineResponse> => {
   return axios.get('Tasks/ErpTaskDeadline', { params: request });
+};
+
+export const getExecutorsList = (
+  request: ExecutorsListRequest,
+): Promise<ErpExecutorResponse[]> => {
+  return axios.get('Tasks/ErpTaskExecutors', { params: request });
 };
 
 export const getTaskReasons = (): Promise<ErpTaskReasonGroupResponse[]> => {

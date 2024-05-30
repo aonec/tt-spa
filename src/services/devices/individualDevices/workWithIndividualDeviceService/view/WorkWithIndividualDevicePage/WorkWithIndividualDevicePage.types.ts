@@ -18,4 +18,5 @@ export type WorkWithIndividualDevicePageProps = {
   models: string[] | null;
   onSubmitCapture: EventCallable<void>;
   handleSubmitForm: (payload: WorkWithIndividualDeviceFormType) => void;
+  deviceInfoForm: WorkWithIndividualDeviceFormType | null;
 };

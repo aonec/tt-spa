@@ -24,6 +24,7 @@ export interface AddApartmentActRequest {
 }
 
 export interface AddHeatingStationRequest {
+  /** @minLength 1 */
   name: string;
   isThermalChamber?: boolean;
   address: CreateAddressRequest;
@@ -257,6 +258,7 @@ export interface ApartmentCheckResponseSuccessApiResponse {
 export interface ApartmentCreateRequest {
   /** @format int32 */
   housingStockId: number;
+  /** @minLength 1 */
   number: string;
   /** @format int32 */
   floor?: number | null;
@@ -434,7 +436,9 @@ export interface AppointmentCounterResponseSuccessApiResponse {
 export interface AppointmentCreateRequest {
   /** @format int32 */
   apartmentId: number;
+  /** @minLength 1 */
   homeownerFullName: string;
+  /** @minLength 1 */
   homeownerPhone: string;
   /** @format date-time */
   date: string;
@@ -595,7 +599,9 @@ export interface BuildingAddressCreateRequest {
   district?: string | null;
   /** @deprecated */
   city?: string | null;
+  /** @minLength 1 */
   street: string;
+  /** @minLength 1 */
   number: string;
   corpus?: string | null;
 }
@@ -945,6 +951,26 @@ export interface CallCenterWorkingConstructedReportResponseIEnumerableSuccessApi
   successResponse: CallCenterWorkingConstructedReportResponse[] | null;
 }
 
+export interface ChannelConfirmRequest {
+  token?: string | null;
+}
+
+export interface ChannelResponse {
+  /** @format uuid */
+  id: string;
+  type: ChannelType;
+  /** @format date-time */
+  confirmedAt: string;
+}
+
+export interface ChannelResponseICollectionSuccessApiResponse {
+  successResponse: ChannelResponse[] | null;
+}
+
+export enum ChannelType {
+  Telegram = 'Telegram',
+}
+
 export interface CheckDeviceRequest {
   /** @format int32 */
   deviceId: number;
@@ -1065,6 +1091,7 @@ export interface ComposeGroupReportRequest {
   /** @format date-time */
   to?: string | null;
   reportFormat?: EReportFormat;
+  /** @minLength 1 */
   fileName: string;
   /** @format uuid */
   groupReportId?: string | null;
@@ -1075,6 +1102,7 @@ export interface ComposeGroupReportRequest {
 }
 
 export interface ConfirmRequest {
+  /** @minLength 1 */
   token: string;
   /** @minLength 6 */
   password: string;
@@ -1150,7 +1178,9 @@ export interface ContractorUpdateRequest {
 }
 
 export interface ControllerCreateRequest {
+  /** @minLength 1 */
   firstName: string;
+  /** @minLength 1 */
   lastName: string;
   middleName?: string | null;
 }
@@ -1174,8 +1204,11 @@ export interface ControllerUpdateRequest {
 }
 
 export interface CreateAddressRequest {
+  /** @minLength 1 */
   city: string;
+  /** @minLength 1 */
   street: string;
+  /** @minLength 1 */
   number: string;
 }
 
@@ -1190,6 +1223,7 @@ export interface CreateApartmentCheckRequest {
 }
 
 export interface CreateCalculatorRequest {
+  /** @minLength 1 */
   serialNumber: string;
   sealNumber?: string | null;
   /** @format date-time */
@@ -1224,6 +1258,7 @@ export interface CreateCommunicationPipeRequest {
 }
 
 export interface CreateElectricHousingMeteringDeviceRequest {
+  /** @minLength 1 */
   serialNumber: string;
   sealNumber?: string | null;
   /** @format date-time */
@@ -1240,6 +1275,7 @@ export interface CreateElectricHousingMeteringDeviceRequest {
   /** @format date-time */
   openingDate?: string | null;
   housingMeteringDeviceType: EHousingMeteringDeviceType;
+  /** @minLength 1 */
   model: string;
   /** @format double */
   minReadingsValue?: number | null;
@@ -1264,6 +1300,7 @@ export interface CreateElectricHousingMeteringDeviceRequest {
 export interface CreateElectricNodeRequest {
   /** @format int32 */
   buildingId?: number;
+  /** @minLength 1 */
   title: string;
   /** @format int32 */
   nodeServiceZoneId?: number | null;
@@ -1291,7 +1328,9 @@ export interface CreateHousingMeteringDeviceReadingsRequest {
 }
 
 export interface CreateIndividualDeviceRequest {
+  /** @minLength 1 */
   model: string;
+  /** @minLength 1 */
   serialNumber: string;
   /** @format date-time */
   lastCheckingDate: string;
@@ -1330,10 +1369,12 @@ export interface CreateNodeCheckRequest {
   checkType: ENodeCheckType;
   /** @format int32 */
   documentId?: number | null;
+  /** @minLength 1 */
   registryNumber: string;
 }
 
 export interface CreatePipeHousingMeteringDeviceInNodeRequest {
+  /** @minLength 1 */
   serialNumber: string;
   sealNumber?: string | null;
   /** @format date-time */
@@ -1350,6 +1391,7 @@ export interface CreatePipeHousingMeteringDeviceInNodeRequest {
   /** @format date-time */
   openingDate?: string | null;
   housingMeteringDeviceType: EHousingMeteringDeviceType;
+  /** @minLength 1 */
   model: string;
   /** @format double */
   minReadingsValue?: number | null;
@@ -1358,6 +1400,7 @@ export interface CreatePipeHousingMeteringDeviceInNodeRequest {
 }
 
 export interface CreatePipeHousingMeteringDeviceRequest {
+  /** @minLength 1 */
   serialNumber: string;
   sealNumber?: string | null;
   /** @format date-time */
@@ -1374,6 +1417,7 @@ export interface CreatePipeHousingMeteringDeviceRequest {
   /** @format date-time */
   openingDate?: string | null;
   housingMeteringDeviceType: EHousingMeteringDeviceType;
+  /** @minLength 1 */
   model: string;
   /** @format double */
   minReadingsValue?: number | null;
@@ -1388,6 +1432,7 @@ export interface CreatePipeHousingMeteringDeviceRequest {
 export interface CreatePipeNodeRequest {
   /** @format int32 */
   buildingId?: number;
+  /** @minLength 1 */
   title: string;
   /** @format int32 */
   nodeServiceZoneId?: number | null;
@@ -1769,8 +1814,6 @@ export enum EManagingFirmTaskType {
   CurrentApplicationUnassigned = 'CurrentApplicationUnassigned',
   EmergencyApplicationUnassigned = 'EmergencyApplicationUnassigned',
   TemperatureNormativeDeviation = 'TemperatureNormativeDeviation',
-  CurrentApplicationUnassigned2 = 'CurrentApplicationUnassigned_2',
-  EmergencyApplicationUnassigned2 = 'EmergencyApplicationUnassigned_2',
 }
 
 export enum EMeteringDeviceType {
@@ -2332,6 +2375,8 @@ export interface ErpCreateTaskRequest {
   /** @format date-time */
   sourceDateTime: string;
   taskType: EisTaskType;
+  /** @format int32 */
+  executorId: number;
   taskDescription?: string | null;
   sourceNumber?: string | null;
   subscriberPhoneNumber?: string | null;
@@ -2385,7 +2430,7 @@ export interface ErpTaskReasonGroupResponseIEnumerableSuccessApiResponse {
 }
 
 export interface ErrorApiResponse {
-  errorResponse: ErrorResponse | null;
+  error: ErrorResponse | null;
 }
 
 export interface ErrorResponse {
@@ -2642,6 +2687,7 @@ export interface HomeownerAccount {
 }
 
 export interface HomeownerAccountAddPhoneNumberRequest {
+  /** @minLength 1 */
   phoneNumber: string;
 }
 
@@ -2653,7 +2699,9 @@ export interface HomeownerAccountCloseRequest {
 }
 
 export interface HomeownerAccountCreateRequest {
+  /** @minLength 1 */
   personalAccountNumber: string;
+  /** @minLength 1 */
   name: string;
   phoneNumbers?: string[] | null;
   personType?: EPersonType;
@@ -2668,7 +2716,9 @@ export interface HomeownerAccountCreateRequest {
 }
 
 export interface HomeownerAccountCreateUnattachedRequest {
+  /** @minLength 1 */
   personalAccountNumber: string;
+  /** @minLength 1 */
   name: string;
   phoneNumbers?: string[] | null;
   personType?: EPersonType;
@@ -2715,15 +2765,19 @@ export enum HomeownerAccountOrderRule {
 }
 
 export interface HomeownerAccountRemovePhoneNumberRequest {
+  /** @minLength 1 */
   phoneNumber: string;
 }
 
 export interface HomeownerAccountReplaceAllPhoneNumbersRequest {
+  /** @minLength 1 */
   phoneNumber: string;
 }
 
 export interface HomeownerAccountReplacePhoneNumberRequest {
+  /** @minLength 1 */
   oldPhoneNumber: string;
+  /** @minLength 1 */
   newPhoneNumber: string;
 }
 
@@ -3131,6 +3185,8 @@ export interface HousingStockCreateRequest {
   /** @format double */
   totalArea?: number | null;
   hasIndividualHeatingStation?: boolean;
+  /** @format uuid */
+  fiasId?: string | null;
 }
 
 export interface HousingStockListResponse {
@@ -3224,6 +3280,8 @@ export interface HousingStockUpdateRequest {
   houseArea?: number | null;
   /** @format double */
   totalArea?: number | null;
+  /** @format uuid */
+  fiasId?: string | null;
 }
 
 export interface HousingStockWithCoordinatesResponse {
@@ -3719,6 +3777,7 @@ export interface IndividualDevicesConstructedReportResponseIEnumerableSuccessApi
 }
 
 export interface InspectorCreateRequest {
+  /** @minLength 1 */
   fullName: string;
 }
 
@@ -3825,12 +3884,16 @@ export interface LastModifiedUserResponse {
 }
 
 export interface LoginRequest {
+  /** @minLength 1 */
   email: string;
+  /** @minLength 1 */
   password: string;
 }
 
 export interface LogoutRequest {
+  /** @minLength 1 */
   token: string;
+  /** @minLength 1 */
   refreshToken: string;
 }
 
@@ -4244,6 +4307,8 @@ export interface NonResidentialBuildingCreateRequest {
   /** @format double */
   totalArea?: number | null;
   hasIndividualHeatingStation?: boolean;
+  /** @format uuid */
+  fiasId?: string | null;
 }
 
 export interface NonResidentialBuildingResponse {
@@ -4307,6 +4372,8 @@ export interface NonResidentialBuildingUpdateRequest {
   houseArea?: number | null;
   /** @format double */
   totalArea?: number | null;
+  /** @format uuid */
+  fiasId?: string | null;
 }
 
 export interface NumberIdResponse {
@@ -4351,9 +4418,11 @@ export interface OrganizationResponse {
   /** @format int32 */
   id: number;
   name: string | null;
+  legalName: string | null;
   phoneNumber: string | null;
   information: string | null;
   email: string | null;
+  inn: string | null;
   workingTime: string | null;
   address: OrganizationAddressResponse | null;
   filtersConfiguration: ManagementFirmFiltersConfigurationResponse | null;
@@ -4801,7 +4870,9 @@ export interface RefreshResponseSuccessApiResponse {
 }
 
 export interface RefreshTokenRequest {
+  /** @minLength 1 */
   token: string;
+  /** @minLength 1 */
   refreshToken: string;
 }
 
@@ -4877,6 +4948,7 @@ export interface ReportRequestHistoryResponse {
 
 export interface ResourceDisconnectingCreateRequest {
   resource: EResourceType;
+  /** @minLength 1 */
   sender: string;
   /** @format uuid */
   heatingStationId?: string | null;
@@ -4963,7 +5035,10 @@ export interface ResourceDisconnectingUpdateRequest {
 }
 
 export interface SendGroupReportRequest {
-  /** @format email */
+  /**
+   * @format email
+   * @minLength 1
+   */
   email: string;
   report: ComposeGroupReportRequest;
 }
@@ -5176,7 +5251,9 @@ export interface SwitchCalculatorRequest {
 export interface SwitchElectricHousingDeviceRequest {
   /** @format int32 */
   deviceId: number;
+  /** @minLength 1 */
   model: string;
+  /** @minLength 1 */
   serialNumber: string;
   /** @format int32 */
   bitDepth: number;
@@ -5267,7 +5344,9 @@ export interface SwitchIndividualDeviceReadingsCreateRequest {
 }
 
 export interface SwitchIndividualDeviceRequest {
+  /** @minLength 1 */
   model: string;
+  /** @minLength 1 */
   serialNumber: string;
   /** @format int32 */
   bitDepth: number;
@@ -5313,6 +5392,8 @@ export interface TaskCommentResponse {
   author: string | null;
   /** @format date-time */
   createdAt: string;
+  /** @format date-time */
+  updatedAt: string | null;
   canBeEdited: boolean;
 }
 
@@ -5321,6 +5402,7 @@ export interface TaskCommentResponseSuccessApiResponse {
 }
 
 export interface TaskConfirmationRequest {
+  /** @minLength 1 */
   type: string;
   comment?: string | null;
 }
@@ -5397,12 +5479,6 @@ export interface TaskListResponse {
   closingStatus: ETaskClosingStatus | null;
   currentStage: StageResponse | null;
   address: TaskListAddress | null;
-  /** @deprecated */
-  perpetrator: OrganizationUserShortResponse | null;
-  /** @deprecated */
-  devices: MeteringDeviceSearchListResponse[] | null;
-  /** @deprecated */
-  pipeNode: PipeNodeResponse | null;
   targetObject: TaskTargetObjectResponse | null;
   taskConfirmation: TaskConfirmationResponse | null;
 }
@@ -5720,7 +5796,9 @@ export interface UpdateIndividualDeviceRequest {
 }
 
 export interface UpdateIndividualDeviceSealRequest {
+  /** @minLength 1 */
   serialNumber: string;
+  /** @minLength 1 */
   sealNumber: string;
   /** @format date-time */
   sealInstallationDate: string;
@@ -8110,6 +8188,66 @@ export class Api<
         method: 'GET',
         secure: true,
         format: 'json',
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Channels
+     * @name NotificationsChannelsList
+     * @request GET:/api/Notifications/Channels
+     * @secure
+     */
+    notificationsChannelsList: (params: RequestParams = {}) =>
+      this.request<
+        ChannelResponseICollectionSuccessApiResponse,
+        ErrorApiResponse
+      >({
+        path: `/api/Notifications/Channels`,
+        method: 'GET',
+        secure: true,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Channels
+     * @name NotificationsChannelsConfirmCreate
+     * @request POST:/api/Notifications/Channels/confirm
+     * @secure
+     */
+    notificationsChannelsConfirmCreate: (
+      data: ChannelConfirmRequest,
+      params: RequestParams = {},
+    ) =>
+      this.request<void, ErrorApiResponse>({
+        path: `/api/Notifications/Channels/confirm`,
+        method: 'POST',
+        body: data,
+        secure: true,
+        type: ContentType.Json,
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Channels
+     * @name NotificationsChannelsDelete
+     * @request DELETE:/api/Notifications/Channels/{channelId}
+     * @secure
+     */
+    notificationsChannelsDelete: (
+      channelId: string,
+      params: RequestParams = {},
+    ) =>
+      this.request<void, ErrorApiResponse>({
+        path: `/api/Notifications/Channels/${channelId}`,
+        method: 'DELETE',
+        secure: true,
         ...params,
       }),
 
@@ -12268,7 +12406,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li><li>Администратор УК без назначений задач</li>
+     * @description Роли:<li>Администратор</li><li>Администратор УК без назначений задач</li>
      *
      * @tags OrganizationUsers
      * @name OrganizationUsersCreate
@@ -12315,7 +12453,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li><li>Администратор УК без назначений задач</li>
+     * @description Роли:<li>Администратор</li><li>Администратор УК без назначений задач</li>
      *
      * @tags OrganizationUsers
      * @name OrganizationUsersUpdate
@@ -12397,7 +12535,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li><li>Администратор УК без назначений задач</li>
+     * @description Роли:<li>Администратор</li><li>Администратор УК без назначений задач</li>
      *
      * @tags OrganizationUsers
      * @name OrganizationUsersSuspendCreate
@@ -12421,7 +12559,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li><li>Администратор УК без назначений задач</li>
+     * @description Роли:<li>Администратор</li><li>Администратор УК без назначений задач</li>
      *
      * @tags OrganizationUsers
      * @name OrganizationUsersAddressesResetCreate
@@ -13867,8 +14005,6 @@ export class Api<
      */
     resourceDisconnectingList: (
       query?: {
-        /** @deprecated */
-        City?: string;
         addressCity?: string;
         addressStreet?: string;
         addressHousingStockNumber?: string;
@@ -13947,8 +14083,6 @@ export class Api<
      */
     resourceDisconnectingExportList: (
       query?: {
-        /** @deprecated */
-        City?: string;
         addressCity?: string;
         addressStreet?: string;
         addressHousingStockNumber?: string;
@@ -14779,6 +14913,35 @@ export class Api<
       ),
 
     /**
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Администратор УК без назначений задач</li><li>Контролёр</li>
+     *
+     * @tags Tasks
+     * @name TasksErpTaskExecutorsList
+     * @summary TasksRead
+     * @request GET:/api/Tasks/ErpTaskExecutors
+     * @secure
+     */
+    tasksErpTaskExecutorsList: (
+      query: {
+        /** @format uuid */
+        TaskReasonId: string;
+        TaskType: EisTaskType;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<
+        ErpExecutorResponseIEnumerableSuccessApiResponse,
+        ErrorApiResponse
+      >({
+        path: `/api/Tasks/ErpTaskExecutors`,
+        method: 'GET',
+        query: query,
+        secure: true,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
      * @description Роли:<li>Диспетчер УК</li>
      *
      * @tags Tasks
@@ -14797,6 +14960,23 @@ export class Api<
         body: data,
         secure: true,
         type: ContentType.Json,
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Диспетчер УК</li>
+     *
+     * @tags Tasks
+     * @name TasksErpTaskDelete
+     * @summary ErpTaskDelete
+     * @request DELETE:/api/Tasks/ErpTask/{taskId}
+     * @secure
+     */
+    tasksErpTaskDelete: (taskId: number, params: RequestParams = {}) =>
+      this.request<void, ErrorApiResponse>({
+        path: `/api/Tasks/ErpTask/${taskId}`,
+        method: 'DELETE',
+        secure: true,
         ...params,
       }),
 
