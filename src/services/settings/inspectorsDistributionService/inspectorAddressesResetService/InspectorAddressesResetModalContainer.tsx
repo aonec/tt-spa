@@ -3,26 +3,36 @@ import React, { FC } from 'react';
 import { inspectorAddressesResetService } from './inspectorAddressesResetService.models';
 import { InspectorAddressesResetModal } from './views/InspectorAddressesResetModal';
 
-export const InspectorAddressesResetModalContainer: FC = () => {
-  const { handleClose, handleResetAddress, inspectorsList, isOpen, loading } =
-    useUnit({
-      isOpen: inspectorAddressesResetService.outputs.$isModalOpen,
-      loading: inspectorAddressesResetService.outputs.$loading,
-      inspectorsList: inspectorAddressesResetService.outputs.$inspectorsList,
-      handleClose: inspectorAddressesResetService.inputs.closeModal,
-      handleResetAddress: inspectorAddressesResetService.inputs.resetAddresses,
-    });
+const { inputs, outputs } = inspectorAddressesResetService;
 
-  const form = inspectorAddressesResetService.form;
+export const InspectorAddressesResetModalContainer: FC = () => {
+  const {
+    handleClose,
+    handleResetAddress,
+    inspectorsList,
+    isOpen,
+    loading,
+    handleSelectInspector,
+    inspectorId,
+  } = useUnit({
+    isOpen: outputs.$isModalOpen,
+    loading: outputs.$loading,
+    inspectorsList: outputs.$inspectorsList,
+    handleClose: inputs.closeModal,
+    handleResetAddress: inputs.resetAddresses,
+    handleSelectInspector: inputs.handleSelectInspector,
+    inspectorId: outputs.$inspectorId,
+  });
 
   return (
     <InspectorAddressesResetModal
       inspectorsList={inspectorsList}
-      form={form}
       isOpen={isOpen}
       loading={loading}
       handleResetAddress={() => handleResetAddress()}
       handleClose={() => handleClose()}
+      handleSelectInspector={handleSelectInspector}
+      inspectorId={inspectorId}
     />
   );
 };
