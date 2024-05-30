@@ -32,6 +32,8 @@ export const AddTaskFromDispatcherContainer = () => {
     existingCities,
     defaultCity,
     handleChangeCity,
+    handleSearchExecutor,
+    executorsList,
   } = useUnit({
     isModalOpen: outputs.$isModalOpen,
     handleCloseModal: inputs.handleCloseModal,
@@ -57,37 +59,39 @@ export const AddTaskFromDispatcherContainer = () => {
     existingCities: addressSearchService.outputs.$existingCities,
     defaultCity: outputs.$defaultCity,
     handleChangeCity: inputs.handleChangeCity,
+    handleSearchExecutor: inputs.handleSearchExecutor,
+    executorsList: outputs.$executorsList,
   });
 
   return (
-    <>
-      <AddTaskModal
-        isModalOpen={isModalOpen}
-        handleCloseModal={handleCloseModal}
-        ERPSources={ERPSources}
-        preparedForOptionsAddresses={preparedForOptionsAddresses}
-        handleCreateTask={handleCreateTask}
-        isCreatePending={isCreatePending}
-        handleSelectHousingAddress={handleSelectHousingAddress}
-        existingApartmentNumbers={preparedApartmentNumbers}
-        resourceDisconnection={resourceDisconnection}
-        handleSelectApartmentNumber={handleSelectApartmentNumber}
-        apartmentHomeownerNames={apartmentHomeownerNames}
-        taskReasons={taskReasons}
-        handleSelectTaskReason={handleSelectTaskReason}
-        handleSelectTaskType={handleSelectTaskType}
-        isManualDeadlineRequired={isManualDeadlineRequired}
-        selectedTaskReasonOption={selectedTaskReasonOption}
-        handleChangeSubscriberName={handleChangeSubscriberName}
-        handleChangePhoneNumber={handleChangePhoneNumber}
-        isSavePhoneNumberOpen={isSavePhoneNumberOpen}
-        handleReplacePhoneNumber={handleReplacePhoneNumber}
-        handleClosePhoneNumber={handleClosePhoneNumber}
-        onSuccessSavePhone={inputs.onSuccessSavePhone}
-        existingCities={existingCities}
-        defaultCity={defaultCity}
-        handleChangeCity={handleChangeCity}
-      />
-    </>
+    <AddTaskModal
+      isModalOpen={isModalOpen}
+      handleCloseModal={handleCloseModal}
+      ERPSources={ERPSources}
+      preparedForOptionsAddresses={preparedForOptionsAddresses}
+      handleCreateTask={handleCreateTask}
+      isCreatePending={isCreatePending}
+      handleSelectHousingAddress={handleSelectHousingAddress}
+      existingApartmentNumbers={preparedApartmentNumbers}
+      resourceDisconnection={resourceDisconnection}
+      handleSelectApartmentNumber={handleSelectApartmentNumber}
+      apartmentHomeownerNames={apartmentHomeownerNames}
+      taskReasons={taskReasons}
+      handleSelectTaskReason={handleSelectTaskReason}
+      handleSelectTaskType={handleSelectTaskType}
+      isManualDeadlineRequired={isManualDeadlineRequired}
+      selectedTaskReasonOption={selectedTaskReasonOption}
+      handleChangeSubscriberName={handleChangeSubscriberName}
+      handleChangePhoneNumber={handleChangePhoneNumber}
+      isSavePhoneNumberOpen={isSavePhoneNumberOpen}
+      handleReplacePhoneNumber={handleReplacePhoneNumber}
+      handleClosePhoneNumber={handleClosePhoneNumber}
+      onSuccessSavePhone={inputs.onSuccessSavePhone}
+      existingCities={existingCities}
+      defaultCity={defaultCity}
+      handleChangeCity={handleChangeCity}
+      handleSearchExecutor={handleSearchExecutor}
+      executorsList={executorsList}
+    />
   );
 };

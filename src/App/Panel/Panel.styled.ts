@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
-export const Wrapper = styled.div`
-  width: 208px;
+export const Wrapper = styled.div<{ isOpen: boolean }>`
+  width: ${({ isOpen }) => (isOpen ? '208px' : '48px')};
   padding-top: 10px;
   position: fixed;
   height: 100vh;

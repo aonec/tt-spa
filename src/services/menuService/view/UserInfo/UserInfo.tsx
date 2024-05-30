@@ -15,6 +15,7 @@ export const UserInfo: FC<UserInfoProps> = ({
   isLoading,
   currentUser,
   currentManagingFirm,
+  isOpen,
 }) => {
   const isActive = Boolean(useMatch('/currentUserProfile/:section?'));
 
@@ -38,9 +39,11 @@ export const UserInfo: FC<UserInfoProps> = ({
         onClick={() => navigate('/currentUserProfile/mainInfo')}
       >
         <UserIconSC />
-        {userEmail}
+        {isOpen && userEmail}
       </UserEmailWrapper>
-      <UserManagingFirmName>{currentManagingFirm?.name}</UserManagingFirmName>
+      {isOpen && (
+        <UserManagingFirmName>{currentManagingFirm?.name}</UserManagingFirmName>
+      )}
     </UserInfoWrapper>
   );
 };

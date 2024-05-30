@@ -1,13 +1,38 @@
 import React, { FC } from 'react';
-import { CompanyName, Wrapper } from './Logo.styled';
+import {
+  ChevronWrapper,
+  CompanyName,
+  LogoImg,
+  LogoWrapper,
+  Wrapper,
+} from './Logo.styled';
 import logoEmblemMini from './assets/logoEmblemMini.svg';
+import { DoubleChevronLeft } from 'ui-kit/icons';
 
-export const Logo: FC = () => {
+export const Logo: FC<{
+  isOpen: boolean;
+  setIsOpen: (isOpen: boolean) => void;
+  isChevronOpen: boolean;
+}> = ({ isOpen, setIsOpen, isChevronOpen }) => {
   return (
     <Wrapper>
-      <img src={logoEmblemMini} alt="logotip" />
-      <CompanyName>TT</CompanyName>
-      Management
+      <LogoWrapper>
+        <LogoImg src={logoEmblemMini} alt="logotip" />
+        {isOpen && (
+          <div>
+            <CompanyName>TT</CompanyName>
+            Management
+          </div>
+        )}
+      </LogoWrapper>
+      {isOpen && (
+        <ChevronWrapper
+          isOpen={isChevronOpen}
+          onClick={() => setIsOpen(!isChevronOpen)}
+        >
+          <DoubleChevronLeft />
+        </ChevronWrapper>
+      )}
     </Wrapper>
   );
 };

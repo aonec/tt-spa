@@ -16,6 +16,7 @@ import {
   getApartments,
   getERPSources,
   getErpTaskDeadline,
+  getExecutorsList,
   getResourceDisconnection,
   getTaskReasons,
   replaceAllPhones,
@@ -25,6 +26,7 @@ import {
   ApartmentListResponsePagedList,
   EisTaskType,
   ErpCreateTaskRequest,
+  ErpExecutorResponse,
   ErpSourceResponse,
   ErpTaskDeadlineResponse,
   ErpTaskReasonGroupResponse,
@@ -37,6 +39,7 @@ import { EffectFailDataAxiosError } from 'types';
 import { AddTask } from './view/AddTaskModal/AddTaskForm/AddTaskForm.types';
 import {
   DeadlineRequest,
+  ExecutorsListRequest,
   GetAddressesRequest,
   GetApartmentsRequest,
   GetResourceDisconnectionRequest,
@@ -65,6 +68,7 @@ const handleChangePhoneNumber = createEvent<string | null>();
 const handleReplacePhoneNumber = createEvent<void>();
 const handleClosePhoneNumber = createEvent<void>();
 const handleChangeCity = createEvent<string>();
+const handleSearchExecutor = createEvent<void>();
 
 const setSelectedHousingId = createEvent<string | null>();
 const setSelectedApartmentId = createEvent<number | null>();
@@ -86,6 +90,11 @@ const getERPSourcesFx = createEffect<void, ErpSourceResponse[]>(getERPSources);
 const getTaskReasonsFx = createEffect<void, ErpTaskReasonGroupResponse[]>(
   getTaskReasons,
 );
+
+const getExecutorsListFx = createEffect<
+  ExecutorsListRequest,
+  ErpExecutorResponse[]
+>(getExecutorsList);
 
 const getErpTaskDeadlineFx = createEffect<
   DeadlineRequest,
@@ -197,6 +206,10 @@ const $isSavePhoneNumberOpen = createStore<boolean>(false)
   .on(handleClosePhoneNumber, () => false)
   .reset(handleReset);
 
+const $executorsList = createStore<ErpExecutorResponse[]>([])
+  .on(getExecutorsListFx.doneData, (_, data) => data || [])
+  .reset(handleReset);
+
 sample({
   clock: handleCreateTask,
   source: combine(
@@ -233,6 +246,7 @@ sample({
       subscriberFullName: data.subscriberName,
       taskDescription: data.taskDescription,
       taskDeadline: deadlineDateTimeUTC,
+      executorId: data.executorId,
     } as ErpCreateTaskRequest;
 
     const filteredByNullValuesPayload = _.pickBy(payload, _.identity);
@@ -386,6 +400,21 @@ sample({
   target: setPhoneNumberOpen,
 });
 
+sample({
+  clock: handleSearchExecutor,
+  source: {
+    selectedTaskReasonOption: $selectedTaskReasonOption,
+    selectedTaskType: $selectedTaskType,
+  },
+  filter: ({ selectedTaskReasonOption, selectedTaskType }) =>
+    Boolean(selectedTaskReasonOption?.id) && Boolean(selectedTaskType),
+  fn: ({ selectedTaskReasonOption, selectedTaskType }) => ({
+    TaskReasonId: selectedTaskReasonOption?.id!,
+    TaskType: selectedTaskType!,
+  }),
+  target: getExecutorsListFx,
+});
+
 const onSuccessCreation = createTaskFx.doneData;
 
 const $isCreatePending = createTaskFx.pending;
@@ -436,6 +465,7 @@ export const addTaskFromDispatcherService = {
     handleClosePhoneNumber,
     onSuccessSavePhone,
     handleChangeCity,
+    handleSearchExecutor,
   },
   outputs: {
     $isModalOpen,
@@ -450,6 +480,7 @@ export const addTaskFromDispatcherService = {
     $isManualDeadlineRequired,
     $isSavePhoneNumberOpen,
     $defaultCity: currentOrganizationService.outputs.$defaultCity,
+    $executorsList,
   },
   gates: { PageGate, AddTaskDataFetchGate },
 };
