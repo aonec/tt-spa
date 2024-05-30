@@ -15,14 +15,14 @@ export const NotificationsPage: FC<Props> = ({
     <Wrapper>
       <WithLoader isLoading={isLoading}>
         <ListWrapper>
-          {Object.values(ChannelType).map((channalType) => (
+          {Object.values(ChannelType).map((channelType) => (
             <ChannelItem
-              key={channalType}
+              key={channelType}
               channel={
-                channels?.find((channel) => channel.type === channalType) ||
+                channels?.find((channel) => channel.type === channelType) ||
                 null
               }
-              chennalType={channalType}
+              chennalType={channelType}
               handleConnect={handleConnect}
               handleDisconnect={handleDisconnect}
             />

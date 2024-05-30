@@ -3,7 +3,7 @@ import { notificationsService } from './notificationsService.models';
 import { NotificationsPage } from './NotificationsPage';
 import { useUnit } from 'effector-react';
 import {
-  disconnectChannalMutation,
+  disconnectChannelMutation,
   notifiactionsQuery,
 } from './notificationsService.api';
 import { connectNotificationsService } from './connectNotifications/connectNotificationsService.models';
@@ -35,8 +35,8 @@ export const NotificationsContainer = () => {
     closeDisconnectModal: inputs.closeDisconnectModal,
     isDisconnectModalOpen: outputs.$isDisconnectModalOpen,
     disconnectChennalId: outputs.$disconnectChannelId,
-    disconnectChannel: disconnectChannalMutation.start,
-    isDisconnectLoading: disconnectChannalMutation.$pending,
+    disconnectChannel: disconnectChannelMutation.start,
+    isDisconnectLoading: disconnectChannelMutation.$pending,
   });
 
   return (

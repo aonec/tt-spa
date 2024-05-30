@@ -1,7 +1,7 @@
 import { createEvent, createStore, sample } from 'effector';
 import { createGate } from 'effector-react';
 import {
-  disconnectChannalMutation,
+  disconnectChannelMutation,
   notifiactionsQuery,
 } from './notificationsService.api';
 import { message } from 'antd';
@@ -22,17 +22,17 @@ sample({
   clock: [
     NotificationsGate.open,
     refreshNotifications,
-    disconnectChannalMutation.finished.success,
+    disconnectChannelMutation.finished.success,
   ],
   target: notifiactionsQuery.start,
 });
 
 sample({
-  clock: disconnectChannalMutation.finished.success,
+  clock: disconnectChannelMutation.finished.success,
   target: closeDisconnectModal,
 });
 
-disconnectChannalMutation.finished.success.watch(() => {
+disconnectChannelMutation.finished.success.watch(() => {
   message.warning('Канал удален!');
 });
 

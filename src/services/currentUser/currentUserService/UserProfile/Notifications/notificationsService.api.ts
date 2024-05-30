@@ -6,6 +6,6 @@ export const notifiactionsQuery = createQuery<void, ChannelResponse[]>({
   handler: () => axios.get(`Notifications/Channels`),
 });
 
-export const disconnectChannalMutation = createMutation<string, void>({
+export const disconnectChannelMutation = createMutation<string, void>({
   handler: (channelId) => axios.delete(`Notifications/Channels/${channelId}`),
 });
