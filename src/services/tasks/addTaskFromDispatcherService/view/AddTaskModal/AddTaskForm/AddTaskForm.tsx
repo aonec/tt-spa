@@ -750,7 +750,14 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
                 onChange={(value) => {
                   setFieldValue('taskDeadlineTime', value);
                 }}
-                onKeyDown={(value) => {
+                onKeyDown={(event) => {
+                  if (
+                    event.key !== 'Backspace' &&
+                    event.currentTarget.value.length === 2
+                  ) {
+                    event.currentTarget.value = event.currentTarget.value + ':';
+                  }
+
                   fromEnter(() => {
                     if (isNoAdditionalFieldsRequired) {
                       next(6);
@@ -764,28 +771,7 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
                     if (isSubscriberAndSourceNumberRequired) {
                       next(9);
                     }
-                  });
-
-                  // if (
-                  //   value.key !== 'Backspace' &&
-                  //   value.currentTarget.value.length === 2
-                  // ) {
-                  //   value.currentTarget.value = value.currentTarget.value + ':';
-                  // }
-                }}
-                onSelect={() => {
-                  if (isNoAdditionalFieldsRequired) {
-                    next(6);
-                  }
-                  if (isOnlySourceNumberRequired) {
-                    next(7);
-                  }
-                  if (isOnlySubscriberRequired) {
-                    next(8);
-                  }
-                  if (isSubscriberAndSourceNumberRequired) {
-                    next(9);
-                  }
+                  })(event);
                 }}
               />
               <div></div>
