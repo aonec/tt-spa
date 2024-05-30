@@ -8,7 +8,7 @@ import fixReactVirtualized from 'esbuild-plugin-react-virtualized';
 export default defineConfig({
   optimizeDeps: {
     esbuildOptions: {
-      plugins: [fixReactVirtualized],
+      plugins: [fixReactVirtualized as any],
     },
   },
   plugins: [
