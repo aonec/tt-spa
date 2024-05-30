@@ -112,16 +112,25 @@ sample({
     searchState: $searchState,
     isTaskProfileOpen: taskProfileService.outputs.$isTaskProfileOpen,
   },
-  clock: [
-    searchTasksTrigger,
-    applicationInfoService.inputs.handleSuccessDelete,
-  ],
+  clock: searchTasksTrigger,
   filter: ({ isTaskProfileOpen, searchState }) =>
-    Boolean(searchState.GroupType),
-
+    !isTaskProfileOpen && Boolean(searchState.GroupType),
   fn: ({ isTaskProfileOpen, searchState }) => {
     const filteredData = _.omitBy(searchState, _.isNil);
+    const filteredDataByNull = _.omitBy(
+      filteredData,
+      (value) => value === 'null',
+    );
+    return filteredDataByNull;
+  },
+  target: searchTasksFx,
+});
 
+sample({
+  clock: applicationInfoService.inputs.handleSuccessDelete,
+  source: $searchState,
+  fn: (searchState) => {
+    const filteredData = _.omitBy(searchState, _.isNil);
     const filteredDataByNull = _.omitBy(
       filteredData,
       (value) => value === 'null',
@@ -129,7 +138,6 @@ sample({
 
     return filteredDataByNull;
   },
-
   target: searchTasksFx,
 });
 
