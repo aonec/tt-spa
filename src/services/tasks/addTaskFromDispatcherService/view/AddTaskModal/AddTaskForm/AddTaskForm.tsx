@@ -765,27 +765,28 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
                       next(9);
                     }
                   });
-                  if (
-                    value.key !== 'Backspace' &&
-                    value.currentTarget.value.length === 2
-                  ) {
-                    value.currentTarget.value = value.currentTarget.value + ':';
+
+                  // if (
+                  //   value.key !== 'Backspace' &&
+                  //   value.currentTarget.value.length === 2
+                  // ) {
+                  //   value.currentTarget.value = value.currentTarget.value + ':';
+                  // }
+                }}
+                onSelect={() => {
+                  if (isNoAdditionalFieldsRequired) {
+                    next(6);
+                  }
+                  if (isOnlySourceNumberRequired) {
+                    next(7);
+                  }
+                  if (isOnlySubscriberRequired) {
+                    next(8);
+                  }
+                  if (isSubscriberAndSourceNumberRequired) {
+                    next(9);
                   }
                 }}
-                // onSelect={() => {
-                //   if (isNoAdditionalFieldsRequired) {
-                //     next(6);
-                //   }
-                //   if (isOnlySourceNumberRequired) {
-                //     next(7);
-                //   }
-                //   if (isOnlySubscriberRequired) {
-                //     next(8);
-                //   }
-                //   if (isSubscriberAndSourceNumberRequired) {
-                //     next(9);
-                //   }
-                // }}
               />
               <div></div>
             </GridContainerAsymmetricThreeColumn>
