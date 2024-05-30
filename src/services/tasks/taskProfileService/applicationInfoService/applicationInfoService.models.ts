@@ -13,6 +13,7 @@ const PageGate = createGate();
 const handleFetchApplicationInfo = createEvent<number>();
 
 const handleDelete = createEvent();
+const handleSuccessDelete = createEvent<number>();
 
 const getApplicationInfoFx = createEffect<
   number,
@@ -74,8 +75,21 @@ const $isDeleting = deleteApplicationFx.pending;
 
 const onSuccessDelete = deleteApplicationFx.doneData;
 
+sample({
+  clock: onSuccessDelete,
+  source: $taskId,
+  filter: (id) => Boolean(id),
+  fn: (id) => id!,
+  target: handleSuccessDelete,
+});
+
 export const applicationInfoService = {
-  inputs: { handleFetchApplicationInfo, handleDelete, onSuccessDelete },
+  inputs: {
+    handleFetchApplicationInfo,
+    handleDelete,
+    onSuccessDelete,
+    handleSuccessDelete,
+  },
   outputs: { $applicationInfo, $isLoading, $isDeleting },
   gates: { PageGate },
 };

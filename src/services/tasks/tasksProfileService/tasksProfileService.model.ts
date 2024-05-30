@@ -112,7 +112,10 @@ sample({
     searchState: $searchState,
     isTaskProfileOpen: taskProfileService.outputs.$isTaskProfileOpen,
   },
-  clock: [searchTasksTrigger, applicationInfoService.inputs.onSuccessDelete],
+  clock: [
+    searchTasksTrigger,
+    applicationInfoService.inputs.handleSuccessDelete,
+  ],
   filter: ({ isTaskProfileOpen, searchState }) =>
     Boolean(searchState.GroupType),
 
