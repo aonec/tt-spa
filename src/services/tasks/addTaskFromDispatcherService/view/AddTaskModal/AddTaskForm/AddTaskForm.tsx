@@ -598,6 +598,7 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
 
                 setFieldValue('taskReasonOrderNumber', valueString);
                 setFieldValue('taskReasonSearch', name);
+                setFieldValue('executorId', null);
                 handleSelectTaskReason(name);
 
                 handleSearchExecutor();
@@ -656,6 +657,7 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
                   ...values,
                   taskType: value as EisTaskType | null,
                   taskDeadlineDate: null,
+                  executorId: null,
                 });
               }}
               optionLabelProp="label"
@@ -742,40 +744,33 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
                   }
                 }}
               />
-
               <TimePickerMedium
                 data-reading-input={dataKey}
                 value={values.taskDeadlineTime || undefined}
                 onChange={(value) => {
                   setFieldValue('taskDeadlineTime', value);
                 }}
-                onKeyDown={fromEnter(() => {
-                  if (isNoAdditionalFieldsRequired) {
-                    next(6);
+                onKeyDown={(value) => {
+                  if (
+                    value.key !== 'Backspace' &&
+                    value.currentTarget.value.length === 2
+                  ) {
+                    value.currentTarget.value = value.currentTarget.value + ':';
                   }
-                  if (isOnlySourceNumberRequired) {
-                    next(7);
-                  }
-                  if (isOnlySubscriberRequired) {
-                    next(8);
-                  }
-                  if (isSubscriberAndSourceNumberRequired) {
-                    next(9);
-                  }
-                })}
-                onSelect={() => {
-                  if (isNoAdditionalFieldsRequired) {
-                    next(6);
-                  }
-                  if (isOnlySourceNumberRequired) {
-                    next(7);
-                  }
-                  if (isOnlySubscriberRequired) {
-                    next(8);
-                  }
-                  if (isSubscriberAndSourceNumberRequired) {
-                    next(9);
-                  }
+                  fromEnter(() => {
+                    if (isNoAdditionalFieldsRequired) {
+                      next(6);
+                    }
+                    if (isOnlySourceNumberRequired) {
+                      next(7);
+                    }
+                    if (isOnlySubscriberRequired) {
+                      next(8);
+                    }
+                    if (isSubscriberAndSourceNumberRequired) {
+                      next(9);
+                    }
+                  });
                 }}
               />
               <div></div>
