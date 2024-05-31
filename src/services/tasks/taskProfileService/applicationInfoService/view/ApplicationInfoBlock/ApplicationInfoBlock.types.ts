@@ -5,4 +5,6 @@ export type ApplicationInfoBlockProps = {
   addressLinkPath: string;
   address: string | null;
   isLoading: boolean;
+  handleDelete: () => void;
+  isDeleting: boolean;
 };
