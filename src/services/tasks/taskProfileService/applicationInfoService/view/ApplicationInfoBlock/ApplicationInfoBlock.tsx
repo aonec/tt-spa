@@ -38,7 +38,7 @@ export const ApplicationInfoBlock: FC<ApplicationInfoBlockProps> = ({
         onSubmit={handleDelete}
         type="danger"
         description={'Вы уверены, что хотите удалить заявку?'}
-        title="Удаление заявки"
+        title="Удаление заявки "
         isLoading={isDeleting}
       />
     </>
