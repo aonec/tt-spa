@@ -37,8 +37,8 @@ export const ApplicationInfoBlock: FC<ApplicationInfoBlockProps> = ({
         onCancel={() => setOpen(false)}
         onSubmit={handleDelete}
         type="danger"
-        description={'Вы уверены, что хотите удалить задачу?'}
-        title="Удаление задачи"
+        description={'Вы уверены, что хотите удалить заявку?'}
+        title="Удаление заявки"
         isLoading={isDeleting}
       />
     </>
