@@ -1,4 +1,3 @@
-import { useForm } from 'effector-forms';
 import { useUnit } from 'effector-react';
 import React from 'react';
 import { searchInspectorsHousingStockService } from './searchInspectorsHousingStockService.models';
@@ -12,14 +11,12 @@ const { InspectorsGate } = displayInspectorsService.inputs;
 const { HousingStockFiltersGate } = displayHousingStockFiltersService.inputs;
 
 export const SearchInspectorsHousingStocksContainer = () => {
-  const form = useForm(searchInspectorsHousingStockService.forms.searchForm);
 
   const {
     handelExtendedSearchOpen,
     handleApplyFilters,
     handleClearExtendedSearchValues,
     handleExtendedSearchClose,
-    handleStartSearch,
     housingManagementList,
     inspectors,
     isExtendedSearchOpen,
@@ -35,8 +32,6 @@ export const SearchInspectorsHousingStocksContainer = () => {
       searchInspectorsHousingStockService.inputs.extendedSearchOpened,
     handleExtendedSearchClose:
       searchInspectorsHousingStockService.inputs.extendedSearchClosed,
-    handleStartSearch:
-      searchInspectorsHousingStockService.forms.searchForm.submit,
     handleClearExtendedSearchValues:
       searchInspectorsHousingStockService.inputs.clearExtendedSearch,
     handleApplyFilters:
@@ -53,14 +48,12 @@ export const SearchInspectorsHousingStocksContainer = () => {
       <HousingStockFiltersGate />
       <SearchInspectorsHousingStocks
         handleApplyFilters={() => handleApplyFilters()}
-        handleSearch={() => handleStartSearch()}
         handelExtendedSearchOpen={() => handelExtendedSearchOpen()}
         handleExtendedSearchClose={() => handleExtendedSearchClose()}
         handleClearExtendedSearchValues={() =>
           handleClearExtendedSearchValues()
         }
         isExtendedSearchOpen={isExtendedSearchOpen}
-        form={form}
         inspectors={inspectors}
         hosuingManagements={housingManagementList}
         isSearchError={isInspectorsFetched && !housingStocks?.length}

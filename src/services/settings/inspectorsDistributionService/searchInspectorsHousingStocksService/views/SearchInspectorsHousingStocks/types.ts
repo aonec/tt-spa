@@ -1,4 +1,3 @@
-import { Result } from 'effector-forms';
 import { GuidStringDictionaryItem, InspectorResponse } from 'api/types';
 
 export type SearchInspectorsHousingStocksProps = {
@@ -10,12 +9,5 @@ export type SearchInspectorsHousingStocksProps = {
   handleSearch: () => void;
   handleApplyFilters: () => void;
   handleClearExtendedSearchValues: () => void;
-  form: Result<{
-    City: string;
-    Street: string;
-    BuildingNumber: string;
-    HouseManagement: string;
-    InspectorId: string;
-  }>;
   isSearchError: boolean;
 };

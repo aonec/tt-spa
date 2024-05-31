@@ -78,9 +78,6 @@ sample({
 });
 
 export const searchInspectorsHousingStockService = {
-  forms: {
-    searchForm,
-  },
   inputs: {
     startSearchInspectorsHousingStocks,
     extendedSearchOpened,

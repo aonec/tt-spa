@@ -13,7 +13,6 @@ import { SearchFieldType } from 'services/addressSearchService/view/AddressSearc
 export const SearchInspectorsHousingStocks: FC<
   SearchInspectorsHousingStocksProps
 > = ({
-  form,
   isExtendedSearchOpen,
   handelExtendedSearchOpen,
   handleExtendedSearchClose,
