@@ -389,7 +389,7 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
           <FormItem label="Дата и время заявки">
             <GridContainerAsymmetricLeft>
               <DatePickerSc
-                format="DD.MM.YYYY"
+                format={{ format: 'DD.MM.YYYY', type: 'mask' }}
                 value={values.requestDate}
                 onChange={(value) => setFieldValue('requestDate', value)}
               />
@@ -708,7 +708,7 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
               <DatePicker
                 data-reading-input={dataKey}
                 allowClear
-                format="DD.MM.YYYY"
+                format={{ format: 'DD.MM.YYYY', type: 'mask' }}
                 open={isDatePickerOpen}
                 onBlur={() => setDatePickerOpen(false)}
                 onFocus={() => setDatePickerOpen(true)}

@@ -167,7 +167,7 @@ export const SubscribersConsumptionExtendedSearch: FC<
                 ]
               : null
           }
-          format="DD.MM.YYYY"
+          format={{ format: 'DD.MM.YYYY', type: 'mask' }}
           onChange={(dates) => handleChangeDateRange(dates)}
         />
 

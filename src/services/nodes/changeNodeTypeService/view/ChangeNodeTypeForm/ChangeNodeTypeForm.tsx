@@ -66,7 +66,7 @@ export const ChangeNodeTypeForm: FC<ChangeNodeTypeFormProps> = ({
         <FormItem label="Дата снятия с коммеречского учета">
           <DatePicker
             placeholder="Выберите дату"
-            format="DD.MM.YYYY"
+            format={{ format: 'DD.MM.YYYY', type: 'mask' }}
             value={getDatePickerValue(
               values.technicalTypeRequest
                 ?.commercialAccountingDeregistrationDate,

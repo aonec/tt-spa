@@ -54,14 +54,14 @@ export const AppointmentsJournalPage: FC<Props> = ({
           value={fields.from.value || undefined}
           onChange={(value) => fields.from.onChange(value || dayjs())}
           small
-          format="DD.MM.YYYY"
+          format={{ format: 'DD.MM.YYYY', type: 'mask' }}
           placeholder="От"
         />
         <DatePicker
           value={fields.to.value || undefined}
           onChange={fields.to.onChange}
           small
-          format="DD.MM.YYYY"
+          format={{ format: 'DD.MM.YYYY', type: 'mask' }}
           placeholder="До"
         />
       </SearchWrapper>
