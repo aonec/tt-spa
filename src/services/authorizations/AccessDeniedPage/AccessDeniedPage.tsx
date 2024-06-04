@@ -7,7 +7,7 @@ import {
   Wrapper,
 } from './AccessDeniedPage.styled';
 import { AccessDeniedPageProps } from './AccessDeniedPage.types';
-import { ReactComponent as Page403Icon } from './assets/403.svg';
+import  Page403Icon  from './assets/403.svg?react';
 import { Button } from 'ui-kit/Button';
 import { useNavigate } from 'react-router-dom';
 import { currentUserService } from 'services/currentUser/currentUserService';

@@ -12,7 +12,7 @@ import {
   PageWrapper,
 } from './Fallback.styled';
 import { message } from 'antd';
-import { ReactComponent as FallbackImg } from './assets/fallback.svg';
+import FallbackImg from './assets/fallback.svg?react';
 
 const DURATION_OF_MESSAGE = 5;
 

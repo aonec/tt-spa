@@ -729,7 +729,7 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
                     next(8);
                   }
                 })}
-                onSelect={() => {
+                onSelectCapture={() => {
                   if (isNoAdditionalFieldsRequired) {
                     next(5);
                   }
@@ -750,7 +750,7 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
                 onChange={(value) => {
                   setFieldValue('taskDeadlineTime', value);
                 }}
-                onKeyDown={(event) => {
+                onKeyDown={(event: any) => {
                   if (
                     event.key !== 'Backspace' &&
                     event.currentTarget.value.length === 2
