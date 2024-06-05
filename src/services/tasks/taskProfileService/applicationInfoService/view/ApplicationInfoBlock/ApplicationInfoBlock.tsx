@@ -12,6 +12,7 @@ export const ApplicationInfoBlock: FC<ApplicationInfoBlockProps> = ({
   isLoading,
   handleDelete,
   isDeleting,
+  isDispacher,
 }) => {
   const brigadeInfo = applicationInfo?.brigade || [];
 
@@ -28,9 +29,11 @@ export const ApplicationInfoBlock: FC<ApplicationInfoBlockProps> = ({
       />
       <BrigadeInfo brigadeInfo={brigadeInfo} />
 
-      <ButtonSc type="danger" size="small" onClick={() => setOpen(true)}>
-        Удалить заявку
-      </ButtonSc>
+      {isDispacher && (
+        <ButtonSc type="danger" size="small" onClick={() => setOpen(true)}>
+          Удалить заявку
+        </ButtonSc>
+      )}
 
       <Dialog
         isOpen={isOpen}
