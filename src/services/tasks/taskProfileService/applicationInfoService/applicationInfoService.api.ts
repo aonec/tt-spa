@@ -6,4 +6,4 @@ export const getApplicationInfo = (
 ): Promise<ErpApplicationResponse> => axios.get(`Tasks/${taskId}/application`);
 
 export const deleteApplication = (taskId: number): Promise<void> =>
-  axios.delete(`Tasks/${taskId}`);
+  axios.delete(`Tasks/ErpTask/${taskId}`);
