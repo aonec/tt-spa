@@ -22,6 +22,7 @@ export const Dialog: FC<DialogProps> = ({
   zIndex,
   children,
   isDisabled,
+  width = 800,
 }) => {
   const btnText = submitText || 'Подтвердить';
 
@@ -37,7 +38,7 @@ export const Dialog: FC<DialogProps> = ({
       open={isOpen}
       onOk={onSubmit}
       onCancel={onCancel}
-      width={800}
+      width={width}
       zIndex={zIndex}
       centered
       footer={

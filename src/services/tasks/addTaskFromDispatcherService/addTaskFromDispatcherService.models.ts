@@ -420,7 +420,7 @@ const onSuccessCreation = createTaskFx.doneData;
 const $isCreatePending = createTaskFx.pending;
 
 sample({
-  clock: [onSuccessCreation, PageGate.close],
+  clock: [onSuccessCreation, handleCloseModal],
   target: handleReset,
 });
 
