@@ -10,6 +10,7 @@ export default defineConfig({
     esbuildOptions: {
       plugins: [fixReactVirtualized as any],
     },
+    exclude: ['js-big-decimal'],
   },
   plugins: [
     react(),
