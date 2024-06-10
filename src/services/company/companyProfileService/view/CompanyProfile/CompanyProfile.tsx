@@ -25,6 +25,7 @@ export const CompanyProfile: FC<CompanyProfileProps> = ({
   handleOpenEditContractorModal,
   catchContractorData,
   currentManagingFirm,
+  currentUserId,
 }) => {
   const navigate = useNavigate();
   const { section } = useParams<{ section: CompanyProfileSection }>();
@@ -85,6 +86,7 @@ export const CompanyProfile: FC<CompanyProfileProps> = ({
           handleCatchEmployeeStatusData={handleCatchEmployeeStatusData}
           handleOpenDeleteModal={handleOpenDeleteModal}
           handleCatchEmployeeId={handleCatchEmployeeId}
+          currentUserId={currentUserId}
         />
       )}
 
