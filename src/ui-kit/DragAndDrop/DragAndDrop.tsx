@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react';
 import styled from 'styled-components';
-import { ReactComponent as FileUploadIcon } from './upload.svg';
+import  FileUploadIcon  from './upload.svg?react';
 import { DragAndDropProps } from './DragAndDrop.types';
 
 export const DragAndDrop: React.FC<DragAndDropProps> = (props) => {

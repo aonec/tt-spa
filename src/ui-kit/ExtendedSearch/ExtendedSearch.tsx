@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import { ChevronUp } from 'react-bootstrap-icons';
-import { ReactComponent as FilerIcon } from './assets/filter.svg';
+import FilerIcon from './assets/filter.svg?react';
 import {
   ExtendedSearchButton,
   ExtendedSearchWrap,

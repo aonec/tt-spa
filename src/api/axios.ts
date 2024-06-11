@@ -8,7 +8,11 @@ import { cancellableUrl } from 'services/cancelRequestService/cancelRequestServi
 import { cancelRequestService } from 'services/cancelRequestService';
 import { isUndefined } from 'lodash/fp';
 
-export const isDevMode = false;
+export const isDevMode =
+  import.meta.env.VITE_DEV_SETTINGS !== 'DISABLED' || true;
+
+let refreshPromise: null | Promise<any> = null;
+const clearPromise = () => (refreshPromise = null);
 
 axios.defaults.baseURL = apiService.outputs.$devUrl.getState();
 
@@ -64,8 +68,9 @@ axios.interceptors.response.use(
 
     return res;
   },
-  (error) => {
+  async (error) => {
     const status = error?.response?.status;
+    const config = error.config;
 
     if (!axios.isCancel(error) && isUndefined(status) && $isOnline.getState()) {
       notification.error({
@@ -82,7 +87,8 @@ axios.interceptors.response.use(
           forbiddenUrl.methods.includes(
             error?.response.config.method.toUpperCase(),
           ) && forbiddenUrl.regExp.test(error.config.url),
-      )
+      ) &&
+      !config._retry
     ) {
       message.error(
         'У вашего аккаунта нет доступа к выбранному действию. Уточните свои права у Администратора',
@@ -99,27 +105,16 @@ axios.interceptors.response.use(
     if (status === 401 && !checkUrl('login|Auth/confirm', error.config.url)) {
       const { config } = error;
 
-      return new Promise((resolve) => {
-        if (!$isRefreshRunning.getState()) {
-          setIsRefreshRunning(true);
-          const isRefreshTokenExist = Boolean(takeFromLocStor('refreshToken'));
+      config._retry = true;
 
-          if (isRefreshTokenExist) {
-            axios.post('/auth/refreshToken').then(() => {
-              setIsRefreshRunning(false);
+      if (!refreshPromise) {
+        refreshPromise = axios.post('/auth/refreshToken').finally(clearPromise);
+      }
 
-              return resolve(axios(config));
-            });
-          }
-        } else {
-          const subscription = $isRefreshRunning.watch((isRefreshStop) => {
-            if (!isRefreshStop) {
-              resolve(axios(config));
-              subscription.unsubscribe();
-            }
-          });
-        }
-      });
+      const token = await refreshPromise;
+      config.headers.authorization = `Bearer ${token}`;
+
+      return axios(config);
     }
 
     return Promise.reject(error);
@@ -141,12 +136,6 @@ function takeFromLocStor(name: string) {
 function checkUrl(str: string, url: string) {
   return new RegExp(str, 'gi').test(url);
 }
-
-const setIsRefreshRunning = createEvent<boolean>();
-const $isRefreshRunning = createStore(false).on(
-  setIsRefreshRunning,
-  (_, value) => value,
-);
 
 const setIsOffline = createEvent();
 const setIsOnline = createEvent();

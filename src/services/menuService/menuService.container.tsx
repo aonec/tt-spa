@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { FC, useMemo } from 'react';
 import { useUnit } from 'effector-react';
 import { useMenuItems } from './menuService.hook';
 import { menuService } from './menuService.model';
@@ -9,11 +9,12 @@ import { hidden, privates } from './menuService.constants';
 import { developmentSettingsService } from 'services/developmentSettings/developmentSettings.models';
 import { DevelopmentSettingsContainer } from 'services/developmentSettings/developmentSettings.container';
 import { currentOrganizationService } from 'services/currentOrganizationService';
+import { MenuContainerProps } from './menuService.types';
 
 const { outputs, gates } = menuService;
 const { UserRolesGate } = gates;
 
-export const MenuContainer = () => {
+export const MenuContainer: FC<MenuContainerProps> = ({ isOpen }) => {
   const {
     currentUser,
     isCurrentUserLoading,
@@ -47,11 +48,13 @@ export const MenuContainer = () => {
       <DevelopmentSettingsContainer isAuth />
       <UserRolesGate />
       <UserInfo
+        isOpen={isOpen}
         isLoading={isCurrentUserLoading}
         currentUser={currentUser}
         currentManagingFirm={currentManagingFirm}
       />
       <Menu
+        isOpen={isOpen}
         menuItems={filteredMenuItems}
         openDevSettingsModal={openDevSettingsModal}
       />

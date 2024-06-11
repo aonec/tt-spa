@@ -48,7 +48,7 @@ export const SearchDevices: FC<SearchDevicesProps> = ({
   );
 
   const handleChangeRange = useCallback(
-    (value: [number, number]) => {
+    (value: number[]) => {
       const firstIndex = diameters.findIndex((elem) => elem === value[0]);
       const secondIndex = diameters.findIndex((elem) => elem === value[1]) + 1;
 

@@ -32,7 +32,7 @@ export const GridContainerAsymmetricThreeColumn = styled.div`
 
 export const GridContainerAsymmetricRight = styled.div`
   display: grid;
-  grid-template-columns: 4fr 1fr;
+  grid-template-columns: 2fr 4fr 1fr;
   grid-gap: 4px 20px;
 `;
 
