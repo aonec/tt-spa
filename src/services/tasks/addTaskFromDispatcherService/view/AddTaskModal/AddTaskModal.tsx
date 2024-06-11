@@ -34,10 +34,10 @@ export const AddTaskModal: FC<AddTaskModalProps> = ({
   handleChangeCity,
   handleSearchExecutor,
   executorsList,
+  handleDialogOpen,
+  isDialogOpen,
 }) => {
   const [disableSubmit, setDisableSubmit] = useState(true);
-
-  const [isDialogOpen, setDialogOpen] = useState(false);
 
   return (
     <>
@@ -45,7 +45,7 @@ export const AddTaskModal: FC<AddTaskModalProps> = ({
         title="Создание новой задачи"
         submitBtnText="Создать задачу"
         visible={isModalOpen}
-        onCancel={() => setDialogOpen(true)}
+        onCancel={() => handleDialogOpen(true)}
         disabled={disableSubmit}
         loading={isCreatePending}
         form={
@@ -87,10 +87,10 @@ export const AddTaskModal: FC<AddTaskModalProps> = ({
         title="Вы уверены, что хотите выйти?"
         description="Введенные данные при создании заявки не будут сохранены. Если вы хотите сохранить прогресс, вернитесь назад и завершите создание заявки."
         isOpen={isDialogOpen}
-        onCancel={() => setDialogOpen(false)}
+        onCancel={() => handleDialogOpen(false)}
         onSubmit={() => {
           handleCloseModal();
-          setDialogOpen(false);
+          handleDialogOpen(false);
         }}
         submitText="Выйти"
         cancelText="Продолжить создание заявки"

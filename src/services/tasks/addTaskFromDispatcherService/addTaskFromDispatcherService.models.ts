@@ -56,6 +56,7 @@ const AddTaskDataFetchGate = createGate();
 
 const handleOpenModal = createEvent();
 const handleCloseModal = createEvent();
+const handleDialogOpen = createEvent<boolean>();
 
 const handleCreateTask = createEvent<AddTask>();
 
@@ -130,6 +131,10 @@ const replaceAllPhonesFx = createEffect<
 const $isModalOpen = createStore<boolean>(false)
   .on(handleOpenModal, () => true)
   .on(handleCloseModal, () => false)
+  .reset(handleReset);
+
+const $isDialogOpen = createStore<boolean>(false)
+  .on(handleDialogOpen, (_, isOpen) => isOpen)
   .reset(handleReset);
 
 const $ERPSources = createStore<ErpSourceResponse[]>([]).on(
@@ -466,6 +471,7 @@ export const addTaskFromDispatcherService = {
     onSuccessSavePhone,
     handleChangeCity,
     handleSearchExecutor,
+    handleDialogOpen,
   },
   outputs: {
     $isModalOpen,
@@ -481,6 +487,7 @@ export const addTaskFromDispatcherService = {
     $isSavePhoneNumberOpen,
     $defaultCity: currentOrganizationService.outputs.$defaultCity,
     $executorsList,
+    $isDialogOpen,
   },
   gates: { PageGate, AddTaskDataFetchGate },
 };
