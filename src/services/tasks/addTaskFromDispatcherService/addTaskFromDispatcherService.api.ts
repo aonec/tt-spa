@@ -26,14 +26,14 @@ export const createTask = (
   return axios.post('Tasks/ErpCreateTask', requestPayload);
 };
 
-export const getERPSources = (): Promise<ErpSourceResponse[]> => {
-  return axios.get('Tasks/ErpSources');
-};
-
 export const getErpTaskDeadline = (
   request: DeadlineRequest,
 ): Promise<ErpTaskDeadlineResponse> => {
   return axios.get('Tasks/ErpTaskDeadline', { params: request });
+};
+
+export const getERPSources = (): Promise<ErpSourceResponse[]> => {
+  return axios.get('Tasks/ErpSources');
 };
 
 export const getExecutorsList = (
