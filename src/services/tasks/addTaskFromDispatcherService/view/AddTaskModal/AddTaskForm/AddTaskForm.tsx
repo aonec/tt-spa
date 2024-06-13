@@ -49,11 +49,11 @@ import { Alert } from 'ui-kit/Alert';
 import { useSwitchInputOnEnter } from 'hooks/useSwitchInputOnEnter';
 import { fromEnter } from 'ui-kit/shared/DatePickerNative';
 import { validationSchema } from './AddTaskForm.constants';
-import { DatePicker } from 'ui-kit/DatePicker';
 import { SavePhoneNumber } from './savePhoneNumberService';
 import { AlertIconType } from 'ui-kit/Alert/Alert.types';
 import { addTaskFromDispatcherService } from 'services/tasks/addTaskFromDispatcherService';
 import { getPreparedStreetsOptions } from 'services/objects/createObjectService/view/CreateObjectPage/CreateObjectAddressStage/CreateObjectAddressStage.utils';
+import { DatePicker } from 'ui-kit/DatePicker';
 
 const {
   gates: { PageGate },
@@ -344,6 +344,8 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
   const [isTaskTypeOpen, setTaskTypeOpen] = useState(false);
   const [isDatePickerOpen, setDatePickerOpen] = useState(false);
   const [isExecutorOpen, setExecutorOpen] = useState(false);
+
+  console.log(isDatePickerOpen);
 
   return (
     <>
@@ -680,6 +682,7 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
               open={isTaskTypeOpen}
               onBlur={() => setTaskTypeOpen(false)}
               onFocus={() => setTaskTypeOpen(true)}
+              onMouseDown={() => setTaskTypeOpen(true)}
               onSelect={(taskType) => {
                 setTaskTypeOpen(false);
                 handleSelectTaskType(taskType as EisTaskType);
@@ -699,7 +702,6 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
                   next(7);
                 }
               }}
-              onMouseDown={() => setTaskTypeOpen(true)}
             />
           </FormItem>
 
@@ -710,26 +712,17 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
                 allowClear
                 format="DD.MM.YYYY"
                 open={isDatePickerOpen}
-                onBlur={() => setDatePickerOpen(false)}
                 onFocus={() => setDatePickerOpen(true)}
-                onMouseDown={() => setDatePickerOpen(true)}
+                onMouseDown={() => {
+                  setDatePickerOpen(!isDatePickerOpen);
+                }}
                 value={values.taskDeadlineDate}
-                onChange={(value) => setFieldValue('taskDeadlineDate', value)}
-                onKeyDown={fromEnter(() => {
-                  if (isNoAdditionalFieldsRequired) {
-                    next(5);
-                  }
-                  if (isOnlySourceNumberRequired) {
-                    next(6);
-                  }
-                  if (isOnlySubscriberRequired) {
-                    next(7);
-                  }
-                  if (isSubscriberAndSourceNumberRequired) {
-                    next(8);
-                  }
-                })}
-                onSelectCapture={() => {
+                onChange={(value) => {
+                  value !== undefined &&
+                    setFieldValue('taskDeadlineDate', value);
+                  setDatePickerOpen(false);
+                }}
+                onCalendarChange={() => {
                   if (isNoAdditionalFieldsRequired) {
                     next(5);
                   }
@@ -743,6 +736,24 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
                     next(8);
                   }
                 }}
+                onKeyDown={fromEnter(() => {
+                  console.log('fromEnter');
+                  setFieldValue('taskDeadlineDate', dayjs());
+                  setDatePickerOpen(false);
+
+                  if (isNoAdditionalFieldsRequired) {
+                    next(5);
+                  }
+                  if (isOnlySourceNumberRequired) {
+                    next(6);
+                  }
+                  if (isOnlySubscriberRequired) {
+                    next(7);
+                  }
+                  if (isSubscriberAndSourceNumberRequired) {
+                    next(8);
+                  }
+                })}
               />
               <TimePickerMedium
                 data-reading-input={dataKey}
