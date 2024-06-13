@@ -8,25 +8,34 @@ import {
   SearchWrapper,
   TableWrapper,
 } from './AppointmentsJournalPage.styled';
-import { Props } from './AppointmentsJournalPage.types';
+import { FormType, Props } from './AppointmentsJournalPage.types';
 import { GoBack } from 'ui-kit/shared/GoBack';
 import { PageHeader } from 'ui-kit/shared/PageHeader';
 import { DatePicker } from 'ui-kit/DatePicker';
-import { useForm } from 'effector-forms';
 import { Table } from 'ui-kit/Table';
 import dayjs from 'api/dayjs';
 import { DocumentLargeIcon, DownloadBlueIcon } from 'ui-kit/icons';
 import { ControllerResponse } from 'api/types';
 import { WithLoader } from 'ui-kit/shared/WithLoader';
+import { useFormik } from 'formik';
 
 export const AppointmentsJournalPage: FC<Props> = ({
-  form,
   assignmentslist,
   controllersList,
   isLoadingAssygnments,
   downloadWorkFile,
+  formValues,
+  setForm,
 }) => {
-  const { fields } = useForm(form);
+  const { values, submitForm, setFieldValue } = useFormik<FormType>({
+    initialValues: {
+      from: formValues.from,
+      to: formValues.to,
+    },
+    onSubmit: (values) => {
+      setForm(values);
+    },
+  });
 
   const controllersMap = useMemo(() => {
     return controllersList.reduce((acc, controller) => {
@@ -51,15 +60,22 @@ export const AppointmentsJournalPage: FC<Props> = ({
       </PageHeaderWrapper>
       <SearchWrapper>
         <DatePicker
-          value={fields.from.value || undefined}
-          onChange={(value) => fields.from.onChange(value || dayjs())}
+          value={values.from || undefined}
+          onChange={(value) => {
+            setFieldValue('from', value || dayjs());
+            submitForm();
+          }}
           small
           format="DD.MM.YYYY"
           placeholder="От"
+          allowClear={false}
         />
         <DatePicker
-          value={fields.to.value || undefined}
-          onChange={fields.to.onChange}
+          value={values.to || undefined}
+          onChange={(value) => {
+            setFieldValue('to', value);
+            submitForm();
+          }}
           small
           format="DD.MM.YYYY"
           placeholder="До"
