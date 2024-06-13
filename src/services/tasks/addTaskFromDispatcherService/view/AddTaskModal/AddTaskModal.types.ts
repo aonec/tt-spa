@@ -1,5 +1,6 @@
 import {
   EisTaskType,
+  ErpExecutorResponse,
   ErpSourceResponse,
   ErpTaskReasonGroupResponse,
   ResourceDisconnectingResponse,
@@ -35,4 +36,11 @@ export type AddTaskModalProps = {
   handleReplacePhoneNumber: () => void;
   handleClosePhoneNumber: () => void;
   onSuccessSavePhone: Event<void>;
+  existingCities: string[] | null;
+  defaultCity: string | null;
+  handleChangeCity: (payload: string) => void;
+  handleSearchExecutor: () => void;
+  executorsList: ErpExecutorResponse[];
+  handleDialogOpen: (payload: boolean) => void;
+  isDialogOpen: boolean;
 };

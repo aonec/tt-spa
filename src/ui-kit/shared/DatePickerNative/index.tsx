@@ -20,7 +20,7 @@ interface Props {
   inputData?: string;
 }
 
-export const DatePickerNative: React.FC<Props> = React.forwardRef(
+export const DatePickerNative = React.forwardRef<HTMLInputElement, Props>(
   (
     {
       value: incomingValue,
@@ -148,5 +148,6 @@ const InputSC = styled.input<{
   ${({ fullSize }) => fullSize && 'width: 100%'}
 `;
 
-export const fromEnter = (callback: (e: any) => void) => (e: any) =>
-  e?.key === 'Enter' && callback(e);
+export const fromEnter = (callback: (e: any) => void) => (e: any) => {
+  return e?.key === 'Enter' && callback(e);
+};

@@ -1,5 +1,6 @@
 import {
   EisTaskType,
+  ErpExecutorResponse,
   ErpSourceResponse,
   ErpTaskReasonGroupResponse,
   ResourceDisconnectingResponse,
@@ -17,6 +18,7 @@ export type AddTask = {
   requestNumber?: string | null;
   taskType: null | EisTaskType;
   workTypeId: string | null;
+  executorId: number | null;
 
   requestDate: dayjs.Dayjs | null;
   requestTime: dayjs.Dayjs | null;
@@ -37,6 +39,8 @@ export type AddTask = {
   isSourceNumberRequired: boolean;
   isSubscriberRequired: boolean;
   isManualDeadlineRequired: boolean;
+
+  city: string;
 };
 
 export type AddTaskFormProps = {
@@ -61,6 +65,11 @@ export type AddTaskFormProps = {
   handleReplacePhoneNumber: () => void;
   handleClosePhoneNumber: () => void;
   onSuccessSavePhone: Event<void>;
+  existingCities: string[] | null;
+  defaultCity: string | null;
+  handleChangeCity: (payload: string) => void;
+  handleSearchExecutor: () => void;
+  executorsList: ErpExecutorResponse[];
 };
 
 export type AddressOption = {

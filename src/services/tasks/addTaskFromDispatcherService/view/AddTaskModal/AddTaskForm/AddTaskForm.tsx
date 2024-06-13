@@ -53,6 +53,7 @@ import { DatePicker } from 'ui-kit/DatePicker';
 import { SavePhoneNumber } from './savePhoneNumberService';
 import { AlertIconType } from 'ui-kit/Alert/Alert.types';
 import { addTaskFromDispatcherService } from 'services/tasks/addTaskFromDispatcherService';
+import { getPreparedStreetsOptions } from 'services/objects/createObjectService/view/CreateObjectPage/CreateObjectAddressStage/CreateObjectAddressStage.utils';
 
 const {
   gates: { PageGate },
@@ -82,8 +83,17 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
   handleReplacePhoneNumber,
   handleClosePhoneNumber,
   onSuccessSavePhone,
+  existingCities,
+  defaultCity,
+  handleChangeCity,
+  handleSearchExecutor,
+  executorsList,
 }) => {
   const initialSource = useMemo(() => ERPSources[0], [ERPSources]);
+  const initialCity = useMemo(
+    () => existingCities?.[0] || 'Город не найден',
+    [existingCities],
+  );
 
   const { values, handleSubmit, setFieldValue, isValid, setValues } =
     useFormik<AddTask>({
@@ -102,10 +112,12 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
         taskReasonSearch: null,
         taskReasonOrderNumber: null,
         taskDeadlineDate: null,
-        taskDeadlineTime: dayjs().subtract(2, 'hours'),
+        taskDeadlineTime: dayjs().subtract(2, 'minutes'),
         isSourceNumberRequired: initialSource?.isSourceNumberRequired || false,
         isSubscriberRequired: initialSource?.isSubscriberRequired || false,
         isManualDeadlineRequired: isManualDeadlineRequired,
+        city: defaultCity || initialCity,
+        executorId: null,
       },
       validateOnBlur: true,
       validateOnMount: true,
@@ -229,6 +241,14 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
     }));
   }, [selectedTaskReasonOption]);
 
+  const executorsListOptions = useMemo(() => {
+    return executorsList.map((executor) => ({
+      label: executor.name,
+      value: executor.ttmId,
+      key: executor.ttmId,
+    }));
+  }, [executorsList]);
+
   useEffect(() => {
     if (taskTypeOptions.length === 1) {
       const singularTaskType = taskTypeOptions[0].value;
@@ -259,6 +279,14 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
     isOnlySubscriberRequired,
     isNoAdditionalFieldsRequired,
   ]);
+
+  useEffect(() => {
+    if (executorsList.length === 1) {
+      const singularExecutorId = executorsList[0].ttmId;
+
+      setFieldValue('executorId', singularExecutorId);
+    }
+  }, [executorsList, setFieldValue]);
 
   const getResourceDisconnectionAlert = useCallback(
     (
@@ -299,6 +327,11 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
     [ERPSources],
   );
 
+  const preparedExistingCities = getPreparedStreetsOptions(
+    values.city || '',
+    existingCities || [],
+  );
+
   const statusTaskType = useMemo(() => {
     if (values.taskType === EisTaskType.Emergency) {
       return 'error';
@@ -310,6 +343,7 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
   const [isReasonOpen, setReasonOpen] = useState(false);
   const [isTaskTypeOpen, setTaskTypeOpen] = useState(false);
   const [isDatePickerOpen, setDatePickerOpen] = useState(false);
+  const [isExecutorOpen, setExecutorOpen] = useState(false);
 
   return (
     <>
@@ -371,6 +405,17 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
         </GridContainerExpandable>
 
         <GridContainerAsymmetricRight>
+          <FormItem label="Город">
+            <Select
+              onChange={(value) => {
+                setFieldValue('city', value);
+                handleChangeCity(value as string);
+              }}
+              value={values.city || undefined}
+              placeholder="Выберите из списка"
+              options={preparedExistingCities}
+            />
+          </FormItem>
           <FormItem label="Адрес">
             <AutoCompleteAntD
               defaultActiveFirstOption
@@ -553,7 +598,10 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
 
                 setFieldValue('taskReasonOrderNumber', valueString);
                 setFieldValue('taskReasonSearch', name);
+                setFieldValue('executorId', null);
                 handleSelectTaskReason(name);
+
+                handleSearchExecutor();
 
                 setReasonOpen(false);
                 if (isNoAdditionalFieldsRequired) {
@@ -609,6 +657,7 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
                   ...values,
                   taskType: value as EisTaskType | null,
                   taskDeadlineDate: null,
+                  executorId: null,
                 });
               }}
               optionLabelProp="label"
@@ -634,6 +683,9 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
               onSelect={(taskType) => {
                 setTaskTypeOpen(false);
                 handleSelectTaskType(taskType as EisTaskType);
+
+                handleSearchExecutor();
+
                 if (isNoAdditionalFieldsRequired) {
                   next(4);
                 }
@@ -677,7 +729,7 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
                     next(8);
                   }
                 })}
-                onSelect={() => {
+                onSelectCapture={() => {
                   if (isNoAdditionalFieldsRequired) {
                     next(5);
                   }
@@ -692,46 +744,86 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
                   }
                 }}
               />
-
               <TimePickerMedium
                 data-reading-input={dataKey}
                 value={values.taskDeadlineTime || undefined}
                 onChange={(value) => {
                   setFieldValue('taskDeadlineTime', value);
                 }}
-                onKeyDown={fromEnter(() => {
-                  if (isNoAdditionalFieldsRequired) {
-                    next(6);
+                onKeyDown={(event: any) => {
+                  if (
+                    event.key !== 'Backspace' &&
+                    event.currentTarget.value.length === 2
+                  ) {
+                    event.currentTarget.value = event.currentTarget.value + ':';
                   }
-                  if (isOnlySourceNumberRequired) {
-                    next(7);
-                  }
-                  if (isOnlySubscriberRequired) {
-                    next(8);
-                  }
-                  if (isSubscriberAndSourceNumberRequired) {
-                    next(9);
-                  }
-                })}
-                onSelect={() => {
-                  if (isNoAdditionalFieldsRequired) {
-                    next(6);
-                  }
-                  if (isOnlySourceNumberRequired) {
-                    next(7);
-                  }
-                  if (isOnlySubscriberRequired) {
-                    next(8);
-                  }
-                  if (isSubscriberAndSourceNumberRequired) {
-                    next(9);
-                  }
+
+                  fromEnter(() => {
+                    if (isNoAdditionalFieldsRequired) {
+                      next(6);
+                    }
+                    if (isOnlySourceNumberRequired) {
+                      next(7);
+                    }
+                    if (isOnlySubscriberRequired) {
+                      next(8);
+                    }
+                    if (isSubscriberAndSourceNumberRequired) {
+                      next(9);
+                    }
+                  })(event);
                 }}
               />
               <div></div>
             </GridContainerAsymmetricThreeColumn>
           </FormItem>
         </ContainerWithOutline>
+
+        <FormItem label="Исполнитель">
+          <Select
+            allowClear
+            placeholder="Начните вводить"
+            value={values.executorId}
+            onChange={(value) => {
+              setFieldValue('executorId', value);
+            }}
+            optionLabelProp="label"
+            options={executorsListOptions}
+            data-reading-input={dataKey}
+            open={isExecutorOpen}
+            onBlur={() => setExecutorOpen(false)}
+            onFocus={() => setExecutorOpen(true)}
+            onMouseDown={() => setExecutorOpen(true)}
+            onKeyDown={fromEnter(() => {
+              if (isNoAdditionalFieldsRequired) {
+                next(7);
+              }
+              if (isOnlySourceNumberRequired) {
+                next(8);
+              }
+              if (isOnlySubscriberRequired) {
+                next(9);
+              }
+              if (isSubscriberAndSourceNumberRequired) {
+                next(10);
+              }
+            })}
+            onSelect={() => {
+              if (isNoAdditionalFieldsRequired) {
+                next(7);
+              }
+              if (isOnlySourceNumberRequired) {
+                next(8);
+              }
+              if (isOnlySubscriberRequired) {
+                next(9);
+              }
+              if (isSubscriberAndSourceNumberRequired) {
+                next(10);
+              }
+            }}
+          />
+        </FormItem>
 
         <FormItem label="Описание проблемы">
           <TextareaSC

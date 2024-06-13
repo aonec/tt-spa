@@ -44,7 +44,7 @@ export const ExtendedSearchForm: FC<ExtendedSearchFormProps> = ({
 }) => {
   const { marks, maxValue, minValue, diameters } = diametersConfig;
 
-  const dateFormat = 'YYYY-MM-DD';
+  const dateFormat = 'DD.MM.YYYY';
 
   const rangeValues: [number, number] = useMemo(() => {
     const first = _.first(values['DevicesFilter.PipeDiameters']);
@@ -55,7 +55,7 @@ export const ExtendedSearchForm: FC<ExtendedSearchFormProps> = ({
   }, [values, maxValue, minValue]);
 
   const handleChangeRange = useCallback(
-    (value: [number, number]) => {
+    (value: number[]) => {
       const firstIndex = diameters.findIndex((elem) => elem === value[0]);
       const secondIndex = diameters.findIndex((elem) => elem === value[1]) + 1;
       setFieldValue(
@@ -175,11 +175,11 @@ export const ExtendedSearchForm: FC<ExtendedSearchFormProps> = ({
               onChange={(value: RangeValue): void => {
                 setFieldValue(
                   "['CommercialDateRange.From']",
-                  (value?.length && value[0]?.format('YYYY-MM-DD')) || '',
+                  (value?.length && value[0]?.format(dateFormat)) || '',
                 );
                 setFieldValue(
                   "['CommercialDateRange.To']",
-                  (value?.length && value[1]?.format('YYYY-MM-DD')) || '',
+                  (value?.length && value[1]?.format(dateFormat)) || '',
                 );
               }}
               size="middle"

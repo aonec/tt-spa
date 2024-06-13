@@ -1,13 +1,13 @@
 import React from 'react';
-import { Form } from 'antd';
 import { FormItemProps } from 'antd/lib';
+import { FormItemSC } from './FormItem.styled';
 
 export const FormItem: React.FC<
   { children: React.ReactNode } & FormItemProps
 > = ({ children, ...attrs }) => {
   return (
-    <Form.Item colon={false} {...attrs}>
+    <FormItemSC colon={false} {...attrs}>
       {children}
-    </Form.Item>
+    </FormItemSC>
   );
 };

@@ -24,6 +24,7 @@ export type CompanyProfileProps = {
   handleOpenEditContractorModal: () => void;
   catchContractorData: (payload: ContractorDataType) => void;
   currentManagingFirm: OrganizationResponse | null;
+  currentUserId: number | null;
 };
 
 export enum CompanyProfileSection {

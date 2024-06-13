@@ -14,7 +14,10 @@ import { AccessDeniedPage } from 'services/authorizations/AccessDeniedPage';
 const { DistrictBordersGroupPageGate } = districtBordersByAddressService.gates;
 
 export const DistrictBordersRouter = () => {
-  const isOperator = usePermission([ESecuredIdentityRoleName.Operator]);
+  const isOperator = usePermission([
+    ESecuredIdentityRoleName.Operator,
+    ESecuredIdentityRoleName.SeniorOperator,
+  ]);
   const isSeniorOperator = usePermission([
     ESecuredIdentityRoleName.SeniorOperator,
   ]);

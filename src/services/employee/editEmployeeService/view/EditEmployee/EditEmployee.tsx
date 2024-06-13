@@ -57,6 +57,7 @@ export const EditEmployee: FC<EditEmployeeProps> = ({
         .nullable()
         .min(2, 'Минимум два символа')
         .required('Обязательное поле'),
+      roleTypes: yup.array().required('Назначьте роль'),
     }),
     validateOnChange: false,
     onSubmit: (data) => {
@@ -154,6 +155,7 @@ export const EditEmployee: FC<EditEmployeeProps> = ({
               </SelectMultiple.Option>
             ))}
           </SelectMultiple>
+          <ErrorMessage>{errors.roleTypes}</ErrorMessage>
         </FormItem>
 
         <FormItem label="Компетенции">

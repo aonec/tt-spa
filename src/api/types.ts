@@ -2375,6 +2375,8 @@ export interface ErpCreateTaskRequest {
   /** @format date-time */
   sourceDateTime: string;
   taskType: EisTaskType;
+  /** @format int32 */
+  executorId: number;
   taskDescription?: string | null;
   sourceNumber?: string | null;
   subscriberPhoneNumber?: string | null;
@@ -4416,9 +4418,11 @@ export interface OrganizationResponse {
   /** @format int32 */
   id: number;
   name: string | null;
+  legalName: string | null;
   phoneNumber: string | null;
   information: string | null;
   email: string | null;
+  inn: string | null;
   workingTime: string | null;
   address: OrganizationAddressResponse | null;
   filtersConfiguration: ManagementFirmFiltersConfigurationResponse | null;
@@ -5388,6 +5392,8 @@ export interface TaskCommentResponse {
   author: string | null;
   /** @format date-time */
   createdAt: string;
+  /** @format date-time */
+  updatedAt: string | null;
   canBeEdited: boolean;
 }
 
@@ -14907,6 +14913,35 @@ export class Api<
       ),
 
     /**
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Администратор УК без назначений задач</li><li>Контролёр</li>
+     *
+     * @tags Tasks
+     * @name TasksErpTaskExecutorsList
+     * @summary TasksRead
+     * @request GET:/api/Tasks/ErpTaskExecutors
+     * @secure
+     */
+    tasksErpTaskExecutorsList: (
+      query: {
+        /** @format uuid */
+        TaskReasonId: string;
+        TaskType: EisTaskType;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<
+        ErpExecutorResponseIEnumerableSuccessApiResponse,
+        ErrorApiResponse
+      >({
+        path: `/api/Tasks/ErpTaskExecutors`,
+        method: 'GET',
+        query: query,
+        secure: true,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
      * @description Роли:<li>Диспетчер УК</li>
      *
      * @tags Tasks
@@ -14925,6 +14960,23 @@ export class Api<
         body: data,
         secure: true,
         type: ContentType.Json,
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Диспетчер УК</li>
+     *
+     * @tags Tasks
+     * @name TasksErpTaskDelete
+     * @summary ErpTaskDelete
+     * @request DELETE:/api/Tasks/ErpTask/{taskId}
+     * @secure
+     */
+    tasksErpTaskDelete: (taskId: number, params: RequestParams = {}) =>
+      this.request<void, ErrorApiResponse>({
+        path: `/api/Tasks/ErpTask/${taskId}`,
+        method: 'DELETE',
+        secure: true,
         ...params,
       }),
 

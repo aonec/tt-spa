@@ -26,6 +26,7 @@ import dayjs from 'api/dayjs';
 import { getCountText } from 'utils/getCountText';
 import { Tooltip } from 'ui-kit/shared/Tooltip';
 import { DatePicker } from 'ui-kit/DatePicker';
+import { Dayjs } from 'dayjs';
 
 export const CreateSealAppointmentForm: FC<CreateSealAppointmentFormProps> = ({
   formId,
@@ -161,7 +162,7 @@ export const CreateSealAppointmentForm: FC<CreateSealAppointmentFormProps> = ({
             showToday={false}
             allowClear={false}
             cellRender={(day, info) => {
-              const formatedDay = day.format('YYYY-MM-DD');
+              const formatedDay = (day as Dayjs).format('YYYY-MM-DD');
               if (
                 info.today.diff(day, 'day') <= 0 &&
                 info.type === 'date' &&
@@ -177,7 +178,7 @@ export const CreateSealAppointmentForm: FC<CreateSealAppointmentFormProps> = ({
                     )})`}
                   >
                     <div className="ant-picker-cell-inner" title="">
-                      {day.format('DD')}
+                      {(day as dayjs.Dayjs).format('DD')}
                     </div>
                     <Circle />
                   </Tooltip>
@@ -186,7 +187,7 @@ export const CreateSealAppointmentForm: FC<CreateSealAppointmentFormProps> = ({
               return (
                 <Tooltip title={`${formatedDay}`}>
                   <div className="ant-picker-cell-inner" title="">
-                    {day.format('DD')}
+                    {(day as Dayjs).format('DD')}
                   </div>
                 </Tooltip>
               );

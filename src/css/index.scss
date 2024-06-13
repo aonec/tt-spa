@@ -1,5 +1,5 @@
 @import '../styles/fonts/fonts.css';
-@import '~antd/dist/reset.css';
+@import 'antd/dist/reset.css';
 
 $white: #ffffff;
 $blue: #189ee9;
@@ -281,6 +281,7 @@ sup {
   }
 
   .ant-form-item-label {
+    text-align: start !important;
     label {
       color: rgba(39, 47, 90, 0.7) !important;
       font-style: normal;

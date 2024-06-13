@@ -18,6 +18,7 @@ export const Staff: FC<StaffProps> = ({
   handleCatchEmployeeStatusData,
   handleOpenDeleteModal,
   handleCatchEmployeeId,
+  currentUserId,
 }) => {
   return (
     <>
@@ -33,6 +34,7 @@ export const Staff: FC<StaffProps> = ({
             handleCatchEmployeeStatusData={handleCatchEmployeeStatusData}
             handleOpenDeleteModal={handleOpenDeleteModal}
             handleCatchEmployeeId={handleCatchEmployeeId}
+            currentUserId={currentUserId}
           />
         ))}
       <ChangeStatusEmployeeContainer />

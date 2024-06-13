@@ -13,4 +13,5 @@ export type StaffProps = {
   }) => void;
   handleOpenDeleteModal: () => void;
   handleCatchEmployeeId: (payload: number) => void;
+  currentUserId: number | null;
 };

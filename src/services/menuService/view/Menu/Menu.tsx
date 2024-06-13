@@ -11,26 +11,36 @@ import {
 } from './Menu.styled';
 import { isDevMode } from 'api/axios';
 
-export const Menu: FC<MenuProps> = ({ menuItems, openDevSettingsModal }) => {
+export const Menu: FC<MenuProps> = ({
+  menuItems,
+  openDevSettingsModal,
+  isOpen,
+}) => {
   return (
     <div>
       <MenuItemWrapper>
         {menuItems.map((menuItem) => (
-          <MenuItemComponent menuItem={menuItem} key={menuItem.path} />
+          <MenuItemComponent
+            menuItem={menuItem}
+            key={menuItem.path}
+            isMenuOpen={isOpen}
+          />
         ))}
       </MenuItemWrapper>
       <Footer>
         <ExitButtonWrapper>
-          <ExitButton />
-          {isDevMode && (
+          <ExitButton isOpen={isOpen} />
+          {isDevMode && isOpen && (
             <DevSettingsButton onClick={openDevSettingsModal}>
               🛠️ dev
             </DevSettingsButton>
           )}
         </ExitButtonWrapper>
-        <UserGuideLink target="_blank" href="https://ttplatform.ru/help">
-          Руководство пользователя
-        </UserGuideLink>
+        {isOpen && (
+          <UserGuideLink target="_blank" href="https://ttplatform.ru/help">
+            Руководство пользователя
+          </UserGuideLink>
+        )}
       </Footer>
     </div>
   );
