@@ -7,7 +7,7 @@ import {
   PatchInspectorFormPayload,
   PatchInspectorPayload,
 } from './inspectorReassignmentService.types';
-import { searchInspectorsHousingStockService } from '../searchInspectorsHousingStocksService/searchInspectorsHousingStockService.models';
+import { searchInspectorsHousingStockService } from '../searchInspectorsHousingStocksService/searchInspectorsHousingStock.models';
 import { ReassingInspectorForm } from './views/ReassingInspectorModal/ReassingInspectorModal.types';
 
 const openModal = createEvent();
@@ -40,7 +40,7 @@ sample({
   clock: reassingInspectorsFx.doneData,
   target: [
     closeModal,
-    searchInspectorsHousingStockService.forms.searchForm.submit,
+    searchInspectorsHousingStockService.inputs.handleSearchInspector,
   ],
 });
 

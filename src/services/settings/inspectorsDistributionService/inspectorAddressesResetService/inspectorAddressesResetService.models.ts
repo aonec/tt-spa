@@ -2,7 +2,7 @@ import { message } from 'antd';
 import { InspectorResponse } from 'api/types';
 import { createEffect, createEvent, createStore, sample } from 'effector';
 import { displayInspectorsService } from 'services/inspectors/displayInspectorsService/displayInspectorsService.models';
-import { searchInspectorsHousingStockService } from '../searchInspectorsHousingStocksService/searchInspectorsHousingStockService.models';
+import { searchInspectorsHousingStockService } from '../searchInspectorsHousingStocksService/searchInspectorsHousingStock.models';
 import { resetInspectorHousingStocksAddresses } from './inspectorAddressesResetService.api';
 
 const openModal = createEvent();
@@ -37,7 +37,7 @@ sample({
   clock: resetAddressesFx.doneData,
   target: [
     closeModal,
-    searchInspectorsHousingStockService.forms.searchForm.submit,
+    searchInspectorsHousingStockService.inputs.handleSearchInspector,
   ],
 });
 

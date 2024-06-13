@@ -1,33 +1,16 @@
 import { createEvent, createStore } from 'effector';
 import { sample } from 'effector';
-import { createForm } from 'effector-forms';
 import { GetInspectorsHousingStocksRequestParams } from '../displayInspectorsHousingStocksService/types';
 import { addressSearchService } from 'services/addressSearchService/addressSearchService.models';
+import { FormType } from './searchInspectorsHousingStocks.types';
 
 const $isExtendedSearchOpen = createStore(false);
 
 const extendedSearchOpened = createEvent();
 const extendedSearchClosed = createEvent();
 
-const searchForm = createForm({
-  fields: {
-    City: {
-      init: '',
-    },
-    Street: {
-      init: '',
-    },
-    BuildingNumber: {
-      init: '',
-    },
-    HouseManagement: {
-      init: '',
-    },
-    InspectorId: {
-      init: '',
-    },
-  },
-});
+const handleSearchInspector = createEvent();
+const setForm = createEvent<FormType>();
 
 const clearExtendedSearch = createEvent();
 
@@ -36,44 +19,33 @@ const startSearchInspectorsHousingStocks =
 
 const applyExtendedFilters = createEvent();
 
-sample({
-  clock: addressSearchService.outputs.$existingCities.map((cities) =>
-    cities ? cities[cities.length - 1] : '',
-  ),
-  target: searchForm.fields.City.set,
-});
+const $formData = createStore<FormType>({
+  City: '',
+  Street: '',
+  BuildingNumber: '',
+  HouseManagement: '',
+  InspectorId: '',
+}).on(setForm, (_, form) => form);
 
 $isExtendedSearchOpen
   .on(extendedSearchOpened, () => true)
   .reset(extendedSearchClosed);
 
 sample({
-  clock: clearExtendedSearch,
-  target: [
-    searchForm.fields.HouseManagement.resetValue,
-    searchForm.fields.InspectorId.resetValue,
-  ],
-});
-
-sample({
   clock: applyExtendedFilters,
-  target: [searchForm.submit, extendedSearchClosed],
+  target: extendedSearchClosed,
 });
 
 sample({
-  clock: searchForm.submit,
-  source: searchForm.$values,
+  clock: handleSearchInspector,
+  source: $formData,
   filter: (values) => {
-    console.log('d');
     return (
       Boolean(values.HouseManagement || values.InspectorId) ||
       Boolean(values.City && values.Street)
     );
   },
-  fn: (values) => {
-    console.log('f');
-    return values;
-  },
+  fn: (values) => values,
   target: startSearchInspectorsHousingStocks,
 });
 
@@ -84,6 +56,8 @@ export const searchInspectorsHousingStockService = {
     extendedSearchClosed,
     clearExtendedSearch,
     applyExtendedFilters,
+    handleSearchInspector,
+    setForm,
   },
   outputs: { $isExtendedSearchOpen },
 };

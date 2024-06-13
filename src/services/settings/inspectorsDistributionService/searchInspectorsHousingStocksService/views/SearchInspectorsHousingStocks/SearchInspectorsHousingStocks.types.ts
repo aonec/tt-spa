@@ -1,4 +1,5 @@
 import { GuidStringDictionaryItem, InspectorResponse } from 'api/types';
+import { FormType } from '../../searchInspectorsHousingStocks.types';
 
 export type SearchInspectorsHousingStocksProps = {
   isExtendedSearchOpen: boolean;
@@ -6,8 +7,10 @@ export type SearchInspectorsHousingStocksProps = {
   handleExtendedSearchClose: () => void;
   inspectors: InspectorResponse[] | null;
   hosuingManagements?: GuidStringDictionaryItem[] | null;
-  handleSearch: () => void;
   handleApplyFilters: () => void;
   handleClearExtendedSearchValues: () => void;
   isSearchError: boolean;
+  initialCity: string;
+  handleSearchInspector: () => void;
+  setForm: (payload: FormType) => void;
 };
