@@ -15,4 +15,5 @@ export type DialogProps = {
   footer?: ReactNode;
   zIndex?: number;
   children?: ReactNode;
+  width?: number;
 };
