@@ -41,4 +41,6 @@ export type AddTaskModalProps = {
   handleChangeCity: (payload: string) => void;
   handleSearchExecutor: () => void;
   executorsList: ErpExecutorResponse[];
+  handleDialogOpen: (payload: boolean) => void;
+  isDialogOpen: boolean;
 };
