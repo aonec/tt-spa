@@ -346,8 +346,6 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
   const [isTimePickerOpen, setTimePickerOpen] = useState(false);
   const [isExecutorOpen, setExecutorOpen] = useState(false);
 
-  console.log(isDatePickerOpen);
-
   return (
     <>
       <PageGate />
