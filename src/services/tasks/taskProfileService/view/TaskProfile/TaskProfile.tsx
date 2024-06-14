@@ -18,6 +18,7 @@ import { TaskProfileProps } from './TaskProfile.types';
 import { TaskProfileHeader } from './TaskProfileHeader';
 import { TaskStages } from './TaskStages';
 import { ApplicationInfoContainer } from '../../applicationInfoService';
+import { EManagingFirmTaskType } from 'api/types';
 
 export const TaskProfile: FC<TaskProfileProps> = ({
   task,
@@ -72,6 +73,8 @@ export const TaskProfile: FC<TaskProfileProps> = ({
     [task.currentStage?.actions, task.currentStage?.additionalActions],
   );
 
+  const isEmergency = task.type === EManagingFirmTaskType.EmergencyApplication;
+
   return (
     <Wrapper>
       <GoBack />
@@ -85,6 +88,7 @@ export const TaskProfile: FC<TaskProfileProps> = ({
             title="Вы уверены, что хотите удалить документ?"
           />
           <TaskProfileHeader
+            isEmergency={isEmergency}
             name={name}
             devices={individualDevices || []}
             timeline={timeline}

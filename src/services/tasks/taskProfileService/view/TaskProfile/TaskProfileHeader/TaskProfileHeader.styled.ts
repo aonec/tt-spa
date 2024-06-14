@@ -54,3 +54,9 @@ export const Line = styled.div<{ color?: string }>`
 
   margin-right: 4px;
 `;
+
+export const TaskNamePanel = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 12px;
+`;
