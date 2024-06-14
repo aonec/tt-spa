@@ -343,6 +343,7 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
   const [isReasonOpen, setReasonOpen] = useState(false);
   const [isTaskTypeOpen, setTaskTypeOpen] = useState(false);
   const [isDatePickerOpen, setDatePickerOpen] = useState(false);
+  const [isTimePickerOpen, setTimePickerOpen] = useState(false);
   const [isExecutorOpen, setExecutorOpen] = useState(false);
 
   console.log(isDatePickerOpen);
@@ -737,7 +738,6 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
                   }
                 }}
                 onKeyDown={fromEnter(() => {
-                  console.log('fromEnter');
                   setFieldValue('taskDeadlineDate', dayjs());
                   setDatePickerOpen(false);
 
@@ -758,8 +758,13 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
               <TimePickerMedium
                 data-reading-input={dataKey}
                 value={values.taskDeadlineTime || undefined}
+                open={isTimePickerOpen}
+                onFocus={() => setTimePickerOpen(true)}
                 onChange={(value) => {
                   setFieldValue('taskDeadlineTime', value);
+                }}
+                onMouseDown={() => {
+                  setTimePickerOpen(!isTimePickerOpen);
                 }}
                 onKeyDown={(event: any) => {
                   if (
@@ -770,6 +775,8 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
                   }
 
                   fromEnter(() => {
+                    setTimePickerOpen(false);
+
                     if (isNoAdditionalFieldsRequired) {
                       next(6);
                     }
@@ -783,6 +790,21 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
                       next(9);
                     }
                   })(event);
+                }}
+                onOk={() => {
+                  setTimePickerOpen(false);
+                  if (isNoAdditionalFieldsRequired) {
+                    next(6);
+                  }
+                  if (isOnlySourceNumberRequired) {
+                    next(7);
+                  }
+                  if (isOnlySubscriberRequired) {
+                    next(8);
+                  }
+                  if (isSubscriberAndSourceNumberRequired) {
+                    next(9);
+                  }
                 }}
               />
               <div></div>
