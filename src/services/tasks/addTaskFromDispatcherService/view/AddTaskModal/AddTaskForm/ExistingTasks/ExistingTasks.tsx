@@ -1,5 +1,4 @@
 import React, { FC, useState } from 'react';
-import dayjs from 'api/dayjs';
 import {
   ButtonSC,
   ChevronSC,
@@ -16,7 +15,7 @@ import { CheckedBoxIcon } from 'ui-kit/icons';
 import { FormItem } from 'ui-kit/FormItem';
 import { Input } from 'ui-kit/Input';
 
-export const ExistingTasks: FC<ExistingTasksProps> = ({}) => {
+export const ExistingTasks: FC<ExistingTasksProps> = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (

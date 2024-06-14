@@ -30,7 +30,6 @@ export const InfoWrapper = styled.div`
 export const TimerRowWrapper = styled.div`
   display: flex;
   align-items: center;
-
   color: #272f5ab2;
 `;
 

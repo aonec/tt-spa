@@ -11,6 +11,7 @@ import {
 import { message } from 'antd';
 import { Input } from 'ui-kit/Input';
 
+// eslint-disable-next-line import/no-anonymous-default-export
 export default {
   title: 'Icons',
   parameters: { layout: 'centered' },
