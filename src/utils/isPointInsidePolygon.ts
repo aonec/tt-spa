@@ -6,6 +6,7 @@ function isPointOnLeftOfLine(
   yj: number,
 ) {
   return (
+    // eslint-disable-next-line no-mixed-operators
     yi > point[1] !== yj > point[1] &&
     point[0] < ((xj - xi) * (point[1] - yi)) / (yj - yi) + xi
   );

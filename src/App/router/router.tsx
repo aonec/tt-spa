@@ -201,7 +201,7 @@ export const useRoutes = (
     const defaultPath = '/tasks';
 
     return isOperator ? '/meters/apartments' : defaultPath;
-  }, [isOperator, isSeniorOperator, isAuth]);
+  }, [isOperator, isAuth]);
 
   const initialTasksPath = isSpectator
     ? `/tasks/list/${TaskGroupingFilter.Observing}`
@@ -250,12 +250,7 @@ export const useRoutes = (
         },
         {
           path: '/actsJournal',
-          element:
-            isOperator ? (
-              <ActsJournalContainer />
-            ) : (
-              <AccessDeniedPage />
-            ),
+          element: isOperator ? <ActsJournalContainer /> : <AccessDeniedPage />,
         },
         {
           path: '/buildings/create',
@@ -288,39 +283,35 @@ export const useRoutes = (
           children: [
             {
               path: '/districtBordersSettings/createByHousingStocksList',
-              element:
-                isOperator ? (
-                  <DistrictBordersByAddressContainer />
-                ) : (
-                  <AccessDeniedPage />
-                ),
+              element: isOperator ? (
+                <DistrictBordersByAddressContainer />
+              ) : (
+                <AccessDeniedPage />
+              ),
             },
             {
               path: '/districtBordersSettings/editDistrictBorders/:id',
-              element:
-                isOperator ? (
-                  <EditDistrictBordersContainer />
-                ) : (
-                  <AccessDeniedPage />
-                ),
+              element: isOperator ? (
+                <EditDistrictBordersContainer />
+              ) : (
+                <AccessDeniedPage />
+              ),
             },
             {
               path: '/districtBordersSettings/createByMap',
-              element:
-                isAdministrator ? (
-                  <CreateDistrictBorderMapContainer />
-                ) : (
-                  <AccessDeniedPage />
-                ),
+              element: isAdministrator ? (
+                <CreateDistrictBorderMapContainer />
+              ) : (
+                <AccessDeniedPage />
+              ),
             },
             {
               path: '/districtBordersSettings/manageDistricts',
-              element:
-                isAdministrator ? (
-                  <ManageDistrictsMapContainer />
-                ) : (
-                  <AccessDeniedPage />
-                ),
+              element: isAdministrator ? (
+                <ManageDistrictsMapContainer />
+              ) : (
+                <AccessDeniedPage />
+              ),
             },
           ],
         },
@@ -514,12 +505,11 @@ export const useRoutes = (
         },
         {
           path: '/settings/:section?',
-          element:
-            isOperator ? (
-              <SettingsPageContainer />
-            ) : (
-              <AccessDeniedPage />
-            ),
+          element: isOperator ? (
+            <SettingsPageContainer />
+          ) : (
+            <AccessDeniedPage />
+          ),
         },
         {
           path: '/adminSettings/:section?',
@@ -626,14 +616,13 @@ export const useRoutes = (
         },
         {
           path: '/apartment/:id/individualDevice/:deviceId/reopen',
-          element:
-            isOperator ? (
-              <WorkWithIndividualDeviceContainer
-                type={WorkWithIndividualDeviceType.reopen}
-              />
-            ) : (
-              <AccessDeniedPage />
-            ),
+          element: isOperator ? (
+            <WorkWithIndividualDeviceContainer
+              type={WorkWithIndividualDeviceType.reopen}
+            />
+          ) : (
+            <AccessDeniedPage />
+          ),
         },
         {
           path: '/apartment/:id/homeowners/add',

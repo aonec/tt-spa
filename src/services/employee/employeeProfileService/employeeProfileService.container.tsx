@@ -5,7 +5,10 @@ import { employeeProfileService } from './employeeProfileService.model';
 import { EmployeeProfile } from './view/EmployeeProfile';
 import { WithLoader } from 'ui-kit/shared/WithLoader';
 import { ChangeStatusEmployeeContainer } from 'services/employee/changeStatusEmployeeService';
-import { DeleteEmployeeContainer } from 'services/employee/deleteEmployeeService';
+import {
+  DeleteEmployeeContainer,
+  deleteEmployeeService,
+} from 'services/employee/deleteEmployeeService';
 
 const { inputs, outputs, gates } = employeeProfileService;
 const { FetchUserDataGate } = gates;
@@ -17,11 +20,13 @@ export const EmployeeProfileContainer = () => {
     handleOpenChangeStatusModal,
     handleOpenDeleteEmployeeModal,
     userData,
+    handleCatchEmployeeId,
   } = useUnit({
     userData: outputs.$userData,
     employeeDataPending: outputs.$employeeDataPending,
     handleOpenChangeStatusModal: inputs.handleOpenChangeStatusModal,
     handleOpenDeleteEmployeeModal: inputs.handleOpenDeleteEmployeeModal,
+    handleCatchEmployeeId: deleteEmployeeService.inputs.handleCatchEmployeeId,
   });
 
   if (!id) return null;
@@ -36,6 +41,7 @@ export const EmployeeProfileContainer = () => {
           userData={userData}
           handleOpenChangeStatusModal={() => handleOpenChangeStatusModal()}
           handleOpenDeleteEmployeeModal={() => handleOpenDeleteEmployeeModal()}
+          handleCatchEmployeeId={handleCatchEmployeeId}
         />
       </WithLoader>
     </>
