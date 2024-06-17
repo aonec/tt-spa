@@ -33,7 +33,6 @@ export const EditUser: FC<Props> = ({
 
   const { handleSubmit, errors, setFieldValue, values } = useFormik({
     initialValues: {
-      email: user?.email || null,
       firstName: user?.firstName || null,
       lastName: user?.lastName || null,
       middleName: user?.middleName || null,
@@ -63,7 +62,6 @@ export const EditUser: FC<Props> = ({
     onSubmit: (data) => {
       const userId = data.userId;
       const form: OrganizationUserUpdateRequest = {
-        email: data.email,
         firstName: data.firstName,
         lastName: data.lastName,
         middleName: data.middleName,
@@ -115,15 +113,6 @@ export const EditUser: FC<Props> = ({
             onChange={(value) =>
               setFieldValue('middleName', value.target.value)
             }
-          />
-        </FormItem>
-        <FormItem label="Электронная почта">
-          <Input
-            name="email"
-            type="text"
-            placeholder="Введите"
-            value={values.email || undefined}
-            onChange={(value) => setFieldValue('email', value.target.value)}
           />
         </FormItem>
         <FormItem label="Контактный телефон">
