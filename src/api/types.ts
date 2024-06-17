@@ -602,7 +602,7 @@ export interface BuildingAddressCreateRequest {
   /** @minLength 1 */
   street: string;
   /** @minLength 1 */
-  number: string;
+  number?: string;
   corpus?: string | null;
 }
 
@@ -2063,9 +2063,7 @@ export interface EResourceTypeStringDictionaryItem {
 export enum ESecuredIdentityRoleName {
   Administrator = 'Administrator',
   ManagingFirmExecutor = 'ManagingFirmExecutor',
-  Homeowner = 'Homeowner',
   Operator = 'Operator',
-  Admin = 'Admin',
   ManagingFirmSpectator = 'ManagingFirmSpectator',
   ManagingFirmDispatcher = 'ManagingFirmDispatcher',
   Controller = 'Controller',
@@ -2338,12 +2336,6 @@ export interface ElectricNodeResponseSuccessApiResponse {
   successResponse: ElectricNodeResponse | null;
 }
 
-export interface ErpApplicationBrigadeMemberResponse {
-  /** @format uuid */
-  erpId: string;
-  name: string | null;
-}
-
 export interface ErpApplicationResponse {
   /** @format uuid */
   id: string;
@@ -2358,7 +2350,6 @@ export interface ErpApplicationResponse {
   source: string | null;
   creator: ApplicationUserResponse | null;
   responsible: ApplicationUserResponse | null;
-  brigade: ErpApplicationBrigadeMemberResponse[] | null;
 }
 
 export interface ErpApplicationResponseSuccessApiResponse {
@@ -4594,8 +4585,6 @@ export interface OrganizationUserTaskReassignment {
 }
 
 export interface OrganizationUserUpdateRequest {
-  /** @format email */
-  email?: string | null;
   /** @minLength 2 */
   firstName?: string | null;
   lastName?: string | null;
@@ -11050,7 +11039,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Оператор</li><li>Администратор УК без назначений задач</li>
+     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li><li>Администратор УК без назначений задач</li>
      *
      * @tags Inspectors
      * @name InspectorsList
@@ -11068,7 +11057,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Оператор</li><li>Администратор УК без назначений задач</li>
+     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li><li>Администратор УК без назначений задач</li>
      *
      * @tags Inspectors
      * @name InspectorsCreate
@@ -11091,7 +11080,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Оператор</li><li>Администратор УК без назначений задач</li>
+     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li><li>Администратор УК без назначений задач</li>
      *
      * @tags Inspectors
      * @name InspectorsDetail
@@ -11112,7 +11101,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Оператор</li><li>Администратор УК без назначений задач</li>
+     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li><li>Администратор УК без назначений задач</li>
      *
      * @tags Inspectors
      * @name InspectorsPartialUpdate
@@ -11136,7 +11125,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Оператор</li><li>Администратор УК без назначений задач</li>
+     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li><li>Администратор УК без назначений задач</li>
      *
      * @tags Inspectors
      * @name InspectorsDelete
@@ -11153,7 +11142,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Оператор</li><li>Администратор УК без назначений задач</li>
+     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li><li>Администратор УК без назначений задач</li>
      *
      * @tags Inspectors
      * @name InspectorsHousingStocksPartialUpdate
@@ -11177,7 +11166,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Оператор</li><li>Администратор УК без назначений задач</li>
+     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li><li>Администратор УК без назначений задач</li>
      *
      * @tags Inspectors
      * @name InspectorsHousingStocksDelete
@@ -12547,14 +12536,10 @@ export class Api<
       userId: number,
       params: RequestParams = {},
     ) =>
-      this.request<
-        OrganizationUserResponseSuccessApiResponse,
-        ErrorApiResponse
-      >({
+      this.request<void, ErrorApiResponse>({
         path: `/api/OrganizationUsers/${userId}/suspend`,
         method: 'POST',
         secure: true,
-        format: 'json',
         ...params,
       }),
 
@@ -12576,11 +12561,10 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Администратор УК без назначений задач</li>
+     * No description
      *
      * @tags OrganizationUsers
      * @name OrganizationUsersRoleTypesList
-     * @summary UserRolesRead
      * @request GET:/api/OrganizationUsers/RoleTypes
      * @secure
      */
@@ -14506,23 +14490,6 @@ export class Api<
         method: 'GET',
         secure: true,
         format: 'json',
-        ...params,
-      }),
-
-    /**
-     * @description Роли:<li>Диспетчер УК</li>
-     *
-     * @tags Tasks
-     * @name TasksDelete
-     * @summary TaskDelete
-     * @request DELETE:/api/Tasks/{taskId}
-     * @secure
-     */
-    tasksDelete: (taskId: number, params: RequestParams = {}) =>
-      this.request<void, ErrorApiResponse>({
-        path: `/api/Tasks/${taskId}`,
-        method: 'DELETE',
-        secure: true,
         ...params,
       }),
 
