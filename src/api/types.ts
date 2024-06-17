@@ -602,7 +602,7 @@ export interface BuildingAddressCreateRequest {
   /** @minLength 1 */
   street: string;
   /** @minLength 1 */
-  number: string;
+  number?: string;
   corpus?: string | null;
 }
 
@@ -646,9 +646,7 @@ export interface BuildingFiltersResponse {
   houseCategories: EHouseCategoryStringDictionaryItem[] | null;
   totalAreaIntervals: MeasurableIntervalResponse[] | null;
   livingHouseTypes: ELivingHouseTypeStringDictionaryItem[] | null;
-  nonResidentialHouseTypes:
-    | ENonResidentialHouseTypeStringDictionaryItem[]
-    | null;
+  nonResidentialHouseTypes: ENonResidentialHouseTypeStringDictionaryItem[] | null;
 }
 
 export interface BuildingFiltersResponseSuccessApiResponse {
@@ -762,9 +760,7 @@ export interface CalculatorCommentResponseSuccessApiResponse {
 }
 
 export interface CalculatorFilterResponse {
-  nodeStatuses:
-    | ENodeCommercialAccountStatusNullableStringDictionaryItem[]
-    | null;
+  nodeStatuses: ENodeCommercialAccountStatusNullableStringDictionaryItem[] | null;
   houseCategories: EHouseCategoryStringDictionaryItem[] | null;
   resourceTypes: EResourceTypeNullableStringDictionaryItem[] | null;
   cities: string[] | null;
@@ -1907,9 +1903,7 @@ export interface EOrganizationUserWorkingStatusTypeStringDictionaryItem {
 }
 
 export interface EOrganizationUserWorkingStatusTypeStringDictionaryItemListSuccessApiResponse {
-  successResponse:
-    | EOrganizationUserWorkingStatusTypeStringDictionaryItem[]
-    | null;
+  successResponse: EOrganizationUserWorkingStatusTypeStringDictionaryItem[] | null;
 }
 
 export enum EPersonType {
@@ -2063,9 +2057,7 @@ export interface EResourceTypeStringDictionaryItem {
 export enum ESecuredIdentityRoleName {
   Administrator = 'Administrator',
   ManagingFirmExecutor = 'ManagingFirmExecutor',
-  Homeowner = 'Homeowner',
   Operator = 'Operator',
-  Admin = 'Admin',
   ManagingFirmSpectator = 'ManagingFirmSpectator',
   ManagingFirmDispatcher = 'ManagingFirmDispatcher',
   Controller = 'Controller',
@@ -2338,12 +2330,6 @@ export interface ElectricNodeResponseSuccessApiResponse {
   successResponse: ElectricNodeResponse | null;
 }
 
-export interface ErpApplicationBrigadeMemberResponse {
-  /** @format uuid */
-  erpId: string;
-  name: string | null;
-}
-
 export interface ErpApplicationResponse {
   /** @format uuid */
   id: string;
@@ -2358,7 +2344,6 @@ export interface ErpApplicationResponse {
   source: string | null;
   creator: ApplicationUserResponse | null;
   responsible: ApplicationUserResponse | null;
-  brigade: ErpApplicationBrigadeMemberResponse[] | null;
 }
 
 export interface ErpApplicationResponseSuccessApiResponse {
@@ -2505,9 +2490,7 @@ export interface GroupReportContractorResponse {
 export interface GroupReportFormResponse {
   groupReports: GroupReportResponse[] | null;
   nodeResourceTypes: EResourceTypeStringDictionaryItem[] | null;
-  nodeStatuses:
-    | ENodeCommercialAccountStatusNullableStringDictionaryItem[]
-    | null;
+  nodeStatuses: ENodeCommercialAccountStatusNullableStringDictionaryItem[] | null;
   housingStockGroups: GroupReportHousingStockGroupResponse[] | null;
   contractors: GroupReportContractorResponse[] | null;
 }
@@ -4594,8 +4577,6 @@ export interface OrganizationUserTaskReassignment {
 }
 
 export interface OrganizationUserUpdateRequest {
-  /** @format email */
-  email?: string | null;
   /** @minLength 2 */
   firstName?: string | null;
   lastName?: string | null;
@@ -4963,9 +4944,7 @@ export interface ResourceDisconnectingCreateRequest {
 }
 
 export interface ResourceDisconnectingFilterResponse {
-  disconnectingTypes:
-    | EResourceDisconnectingTypeNullableStringDictionaryItem[]
-    | null;
+  disconnectingTypes: EResourceDisconnectingTypeNullableStringDictionaryItem[] | null;
   resourceTypes: EResourceTypeNullableStringDictionaryItem[] | null;
   cities: string[] | null;
 }
@@ -5519,9 +5498,7 @@ export interface TaskResponse {
   comments: TaskCommentResponse[] | null;
   stages: StageListResponse[] | null;
   taskConfirmation: TaskConfirmationResponse | null;
-  allowableConfirmationTypes:
-    | ETaskConfirmationTypeStringDictionaryItem[]
-    | null;
+  allowableConfirmationTypes: ETaskConfirmationTypeStringDictionaryItem[] | null;
   buildingCoordinates: PointResponse | null;
   canBeReverted: boolean;
   isApplicationTask: boolean;
@@ -5919,22 +5896,16 @@ export interface FullRequestParams extends Omit<RequestInit, 'body'> {
   cancelToken?: CancelToken;
 }
 
-export type RequestParams = Omit<
-  FullRequestParams,
-  'body' | 'method' | 'query' | 'path'
->;
+export type RequestParams = Omit<FullRequestParams, 'body' | 'method' | 'query' | 'path'>;
 
 export interface ApiConfig<SecurityDataType = unknown> {
   baseUrl?: string;
   baseApiParams?: Omit<RequestParams, 'baseUrl' | 'cancelToken' | 'signal'>;
-  securityWorker?: (
-    securityData: SecurityDataType | null,
-  ) => Promise<RequestParams | void> | RequestParams | void;
+  securityWorker?: (securityData: SecurityDataType | null) => Promise<RequestParams | void> | RequestParams | void;
   customFetch?: typeof fetch;
 }
 
-export interface HttpResponse<D extends unknown, E extends unknown = unknown>
-  extends Response {
+export interface HttpResponse<D extends unknown, E extends unknown = unknown> extends Response {
   data: D;
   error: E;
 }
@@ -5953,8 +5924,7 @@ export class HttpClient<SecurityDataType = unknown> {
   private securityData: SecurityDataType | null = null;
   private securityWorker?: ApiConfig<SecurityDataType>['securityWorker'];
   private abortControllers = new Map<CancelToken, AbortController>();
-  private customFetch = (...fetchParams: Parameters<typeof fetch>) =>
-    fetch(...fetchParams);
+  private customFetch = (...fetchParams: Parameters<typeof fetch>) => fetch(...fetchParams);
 
   private baseApiParams: RequestParams = {
     credentials: 'same-origin',
@@ -5973,9 +5943,7 @@ export class HttpClient<SecurityDataType = unknown> {
 
   protected encodeQueryParam(key: string, value: any) {
     const encodedKey = encodeURIComponent(key);
-    return `${encodedKey}=${encodeURIComponent(
-      typeof value === 'number' ? value : `${value}`,
-    )}`;
+    return `${encodedKey}=${encodeURIComponent(typeof value === 'number' ? value : `${value}`)}`;
   }
 
   protected addQueryParam(query: QueryParamsType, key: string) {
@@ -5989,15 +5957,9 @@ export class HttpClient<SecurityDataType = unknown> {
 
   protected toQueryString(rawQuery?: QueryParamsType): string {
     const query = rawQuery || {};
-    const keys = Object.keys(query).filter(
-      (key) => 'undefined' !== typeof query[key],
-    );
+    const keys = Object.keys(query).filter((key) => 'undefined' !== typeof query[key]);
     return keys
-      .map((key) =>
-        Array.isArray(query[key])
-          ? this.addArrayQueryParam(query, key)
-          : this.addQueryParam(query, key),
-      )
+      .map((key) => (Array.isArray(query[key]) ? this.addArrayQueryParam(query, key) : this.addQueryParam(query, key)))
       .join('&');
   }
 
@@ -6008,13 +5970,8 @@ export class HttpClient<SecurityDataType = unknown> {
 
   private contentFormatters: Record<ContentType, (input: any) => any> = {
     [ContentType.Json]: (input: any) =>
-      input !== null && (typeof input === 'object' || typeof input === 'string')
-        ? JSON.stringify(input)
-        : input,
-    [ContentType.Text]: (input: any) =>
-      input !== null && typeof input !== 'string'
-        ? JSON.stringify(input)
-        : input,
+      input !== null && (typeof input === 'object' || typeof input === 'string') ? JSON.stringify(input) : input,
+    [ContentType.Text]: (input: any) => (input !== null && typeof input !== 'string' ? JSON.stringify(input) : input),
     [ContentType.FormData]: (input: any) =>
       Object.keys(input || {}).reduce((formData, key) => {
         const property = input[key];
@@ -6031,10 +5988,7 @@ export class HttpClient<SecurityDataType = unknown> {
     [ContentType.UrlEncoded]: (input: any) => this.toQueryString(input),
   };
 
-  protected mergeRequestParams(
-    params1: RequestParams,
-    params2?: RequestParams,
-  ): RequestParams {
+  protected mergeRequestParams(params1: RequestParams, params2?: RequestParams): RequestParams {
     return {
       ...this.baseApiParams,
       ...params1,
@@ -6047,9 +6001,7 @@ export class HttpClient<SecurityDataType = unknown> {
     };
   }
 
-  protected createAbortSignal = (
-    cancelToken: CancelToken,
-  ): AbortSignal | undefined => {
+  protected createAbortSignal = (cancelToken: CancelToken): AbortSignal | undefined => {
     if (this.abortControllers.has(cancelToken)) {
       const abortController = this.abortControllers.get(cancelToken);
       if (abortController) {
@@ -6093,28 +6045,15 @@ export class HttpClient<SecurityDataType = unknown> {
     const payloadFormatter = this.contentFormatters[type || ContentType.Json];
     const responseFormat = format || requestParams.format;
 
-    return this.customFetch(
-      `${baseUrl || this.baseUrl || ''}${path}${
-        queryString ? `?${queryString}` : ''
-      }`,
-      {
-        ...requestParams,
-        headers: {
-          ...(requestParams.headers || {}),
-          ...(type && type !== ContentType.FormData
-            ? { 'Content-Type': type }
-            : {}),
-        },
-        signal:
-          (cancelToken
-            ? this.createAbortSignal(cancelToken)
-            : requestParams.signal) || null,
-        body:
-          typeof body === 'undefined' || body === null
-            ? null
-            : payloadFormatter(body),
+    return this.customFetch(`${baseUrl || this.baseUrl || ''}${path}${queryString ? `?${queryString}` : ''}`, {
+      ...requestParams,
+      headers: {
+        ...(requestParams.headers || {}),
+        ...(type && type !== ContentType.FormData ? { 'Content-Type': type } : {}),
       },
-    ).then(async (response) => {
+      signal: (cancelToken ? this.createAbortSignal(cancelToken) : requestParams.signal) || null,
+      body: typeof body === 'undefined' || body === null ? null : payloadFormatter(body),
+    }).then(async (response) => {
       const r = response as HttpResponse<T, E>;
       r.data = null as unknown as T;
       r.error = null as unknown as E;
@@ -6149,9 +6088,7 @@ export class HttpClient<SecurityDataType = unknown> {
  * @title Transparent Management Api
  * @version 1.0
  */
-export class Api<
-  SecurityDataType extends unknown,
-> extends HttpClient<SecurityDataType> {
+export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDataType> {
   api = {
     /**
      * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Администратор УК без назначений задач</li>
@@ -6189,10 +6126,7 @@ export class Api<
       },
       params: RequestParams = {},
     ) =>
-      this.request<
-        ApartmentActResponsePagedListSuccessApiResponse,
-        ErrorApiResponse
-      >({
+      this.request<ApartmentActResponsePagedListSuccessApiResponse, ErrorApiResponse>({
         path: `/api/ApartmentActs`,
         method: 'GET',
         query: query,
@@ -6210,10 +6144,7 @@ export class Api<
      * @request POST:/api/ApartmentActs
      * @secure
      */
-    apartmentActsCreate: (
-      data: AddApartmentActRequest,
-      params: RequestParams = {},
-    ) =>
+    apartmentActsCreate: (data: AddApartmentActRequest, params: RequestParams = {}) =>
       this.request<ApartmentActResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/ApartmentActs`,
         method: 'POST',
@@ -6233,11 +6164,7 @@ export class Api<
      * @request PUT:/api/ApartmentActs/{actId}
      * @secure
      */
-    apartmentActsUpdate: (
-      actId: number,
-      data: UpdateApartmentActRequest,
-      params: RequestParams = {},
-    ) =>
+    apartmentActsUpdate: (actId: number, data: UpdateApartmentActRequest, params: RequestParams = {}) =>
       this.request<ApartmentActResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/ApartmentActs/${actId}`,
         method: 'PUT',
@@ -6275,10 +6202,7 @@ export class Api<
      * @request POST:/api/ApartmentActs/{actId}/DeleteDocument
      * @secure
      */
-    apartmentActsDeleteDocumentCreate: (
-      actId: number,
-      params: RequestParams = {},
-    ) =>
+    apartmentActsDeleteDocumentCreate: (actId: number, params: RequestParams = {}) =>
       this.request<void, ErrorApiResponse>({
         path: `/api/ApartmentActs/${actId}/DeleteDocument`,
         method: 'POST',
@@ -6296,10 +6220,7 @@ export class Api<
      * @secure
      */
     apartmentActsActTypesList: (params: RequestParams = {}) =>
-      this.request<
-        EActTypeStringDictionaryItemListSuccessApiResponse,
-        ErrorApiResponse
-      >({
+      this.request<EActTypeStringDictionaryItemListSuccessApiResponse, ErrorApiResponse>({
         path: `/api/ApartmentActs/ActTypes`,
         method: 'GET',
         secure: true,
@@ -6317,10 +6238,7 @@ export class Api<
      * @secure
      */
     apartmentActsActResourceTypesList: (params: RequestParams = {}) =>
-      this.request<
-        EActResourceTypeStringDictionaryItemListSuccessApiResponse,
-        ErrorApiResponse
-      >({
+      this.request<EActResourceTypeStringDictionaryItemListSuccessApiResponse, ErrorApiResponse>({
         path: `/api/ApartmentActs/ActResourceTypes`,
         method: 'GET',
         secure: true,
@@ -6337,10 +6255,7 @@ export class Api<
      * @request POST:/api/Apartments
      * @secure
      */
-    apartmentsCreate: (
-      data: ApartmentCreateRequest,
-      params: RequestParams = {},
-    ) =>
+    apartmentsCreate: (data: ApartmentCreateRequest, params: RequestParams = {}) =>
       this.request<ApartmentResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/Apartments`,
         method: 'POST',
@@ -6383,10 +6298,7 @@ export class Api<
       },
       params: RequestParams = {},
     ) =>
-      this.request<
-        ApartmentListResponsePagedListSuccessApiResponse,
-        ErrorApiResponse
-      >({
+      this.request<ApartmentListResponsePagedListSuccessApiResponse, ErrorApiResponse>({
         path: `/api/Apartments`,
         method: 'GET',
         query: query,
@@ -6404,11 +6316,7 @@ export class Api<
      * @request PUT:/api/Apartments/{apartmentId}
      * @secure
      */
-    apartmentsUpdate: (
-      apartmentId: number,
-      data: ApartmentUpdateRequest,
-      params: RequestParams = {},
-    ) =>
+    apartmentsUpdate: (apartmentId: number, data: ApartmentUpdateRequest, params: RequestParams = {}) =>
       this.request<ApartmentResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/Apartments/${apartmentId}`,
         method: 'PUT',
@@ -6447,10 +6355,7 @@ export class Api<
      * @secure
      */
     apartmentsApartmentStatusList: (params: RequestParams = {}) =>
-      this.request<
-        ApartmentListStatusResponseSuccessApiResponse,
-        ErrorApiResponse
-      >({
+      this.request<ApartmentListStatusResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/Apartments/ApartmentStatus`,
         method: 'GET',
         secure: true,
@@ -6474,10 +6379,7 @@ export class Api<
       },
       params: RequestParams = {},
     ) =>
-      this.request<
-        HomeownerAccountResponseICollectionSuccessApiResponse,
-        ErrorApiResponse
-      >({
+      this.request<HomeownerAccountResponseICollectionSuccessApiResponse, ErrorApiResponse>({
         path: `/api/Apartments/${apartmentId}/HomeownerAccounts`,
         method: 'GET',
         query: query,
@@ -6536,10 +6438,7 @@ export class Api<
       },
       params: RequestParams = {},
     ) =>
-      this.request<
-        ApartmentCheckResponsePagedListSuccessApiResponse,
-        ErrorApiResponse
-      >({
+      this.request<ApartmentCheckResponsePagedListSuccessApiResponse, ErrorApiResponse>({
         path: `/api/Apartments/${apartmentId}/ApartmentChecks`,
         method: 'GET',
         query: query,
@@ -6558,10 +6457,7 @@ export class Api<
      * @secure
      */
     apartmentsActsDetail: (apartmentId: number, params: RequestParams = {}) =>
-      this.request<
-        ApartmentCheckResponseListSuccessApiResponse,
-        ErrorApiResponse
-      >({
+      this.request<ApartmentCheckResponseListSuccessApiResponse, ErrorApiResponse>({
         path: `/api/Apartments/${apartmentId}/Acts`,
         method: 'GET',
         secure: true,
@@ -6590,10 +6486,7 @@ export class Api<
       },
       params: RequestParams = {},
     ) =>
-      this.request<
-        IndividualDeviceWithExpiredCheckingDateListResponseSuccessApiResponse,
-        ErrorApiResponse
-      >({
+      this.request<IndividualDeviceWithExpiredCheckingDateListResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/Apartments/${apartmentId}/SetStatusProblemDevices`,
         method: 'GET',
         query: query,
@@ -6616,10 +6509,7 @@ export class Api<
       data: ApartmentStatusSetRequest,
       params: RequestParams = {},
     ) =>
-      this.request<
-        IndividualDeviceWithExpiredCheckingDateListResponseSuccessApiResponse,
-        ErrorApiResponse
-      >({
+      this.request<IndividualDeviceWithExpiredCheckingDateListResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/Apartments/${apartmentId}/SetStatus`,
         method: 'PATCH',
         body: data,
@@ -6638,11 +6528,7 @@ export class Api<
      * @request POST:/api/Apartments/{apartmentId}/AddCheck
      * @secure
      */
-    apartmentsAddCheckCreate: (
-      apartmentId: number,
-      data: CreateApartmentCheckRequest,
-      params: RequestParams = {},
-    ) =>
+    apartmentsAddCheckCreate: (apartmentId: number, data: CreateApartmentCheckRequest, params: RequestParams = {}) =>
       this.request<ApartmentCheckResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/Apartments/${apartmentId}/AddCheck`,
         method: 'POST',
@@ -6687,11 +6573,7 @@ export class Api<
      * @request DELETE:/api/Apartments/{apartmentId}/RemoveCheck/{apartmentCheckId}
      * @secure
      */
-    apartmentsRemoveCheckDelete: (
-      apartmentId: number,
-      apartmentCheckId: number,
-      params: RequestParams = {},
-    ) =>
+    apartmentsRemoveCheckDelete: (apartmentId: number, apartmentCheckId: number, params: RequestParams = {}) =>
       this.request<ApartmentCheckResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/Apartments/${apartmentId}/RemoveCheck/${apartmentCheckId}`,
         method: 'DELETE',
@@ -6709,14 +6591,8 @@ export class Api<
      * @request GET:/api/Apartments/{apartmentId}/Documents
      * @secure
      */
-    apartmentsDocumentsDetail: (
-      apartmentId: number,
-      params: RequestParams = {},
-    ) =>
-      this.request<
-        DocumentResponseIEnumerableSuccessApiResponse,
-        ErrorApiResponse
-      >({
+    apartmentsDocumentsDetail: (apartmentId: number, params: RequestParams = {}) =>
+      this.request<DocumentResponseIEnumerableSuccessApiResponse, ErrorApiResponse>({
         path: `/api/Apartments/${apartmentId}/Documents`,
         method: 'GET',
         secure: true,
@@ -6788,10 +6664,7 @@ export class Api<
      * @secure
      */
     apartmentsCheckTypesList: (params: RequestParams = {}) =>
-      this.request<
-        ECheckTypeStringDictionaryItemListSuccessApiResponse,
-        ErrorApiResponse
-      >({
+      this.request<ECheckTypeStringDictionaryItemListSuccessApiResponse, ErrorApiResponse>({
         path: `/api/Apartments/CheckTypes`,
         method: 'GET',
         secure: true,
@@ -6819,16 +6692,14 @@ export class Api<
       },
       params: RequestParams = {},
     ) =>
-      this.request<AppointmentResponseListSuccessApiResponse, ErrorApiResponse>(
-        {
-          path: `/api/IndividualSeal/Appointments`,
-          method: 'GET',
-          query: query,
-          secure: true,
-          format: 'json',
-          ...params,
-        },
-      ),
+      this.request<AppointmentResponseListSuccessApiResponse, ErrorApiResponse>({
+        path: `/api/IndividualSeal/Appointments`,
+        method: 'GET',
+        query: query,
+        secure: true,
+        format: 'json',
+        ...params,
+      }),
 
     /**
      * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li><li>Администратор УК без назначений задач</li>
@@ -6839,10 +6710,7 @@ export class Api<
      * @request POST:/api/IndividualSeal/Appointments
      * @secure
      */
-    individualSealAppointmentsCreate: (
-      data: AppointmentCreateRequest,
-      params: RequestParams = {},
-    ) =>
+    individualSealAppointmentsCreate: (data: AppointmentCreateRequest, params: RequestParams = {}) =>
       this.request<string, ErrorApiResponse>({
         path: `/api/IndividualSeal/Appointments`,
         method: 'POST',
@@ -6862,10 +6730,7 @@ export class Api<
      * @request GET:/api/IndividualSeal/Appointments/{appointmentId}
      * @secure
      */
-    individualSealAppointmentsDetail: (
-      appointmentId: string,
-      params: RequestParams = {},
-    ) =>
+    individualSealAppointmentsDetail: (appointmentId: string, params: RequestParams = {}) =>
       this.request<AppointmentResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/IndividualSeal/Appointments/${appointmentId}`,
         method: 'GET',
@@ -6906,10 +6771,7 @@ export class Api<
      * @request DELETE:/api/IndividualSeal/Appointments/{appointmentId}
      * @secure
      */
-    individualSealAppointmentsDelete: (
-      appointmentId: string,
-      params: RequestParams = {},
-    ) =>
+    individualSealAppointmentsDelete: (appointmentId: string, params: RequestParams = {}) =>
       this.request<void, ErrorApiResponse>({
         path: `/api/IndividualSeal/Appointments/${appointmentId}`,
         method: 'DELETE',
@@ -6937,10 +6799,7 @@ export class Api<
       },
       params: RequestParams = {},
     ) =>
-      this.request<
-        AppointmentCounterResponseListSuccessApiResponse,
-        ErrorApiResponse
-      >({
+      this.request<AppointmentCounterResponseListSuccessApiResponse, ErrorApiResponse>({
         path: `/api/IndividualSeal/Appointments/Planning`,
         method: 'GET',
         query: query,
@@ -6959,10 +6818,7 @@ export class Api<
      * @secure
      */
     individualSealAppointmentsNearestList: (params: RequestParams = {}) =>
-      this.request<
-        TotalAppointmentCounterResponseSuccessApiResponse,
-        ErrorApiResponse
-      >({
+      this.request<TotalAppointmentCounterResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/IndividualSeal/Appointments/Nearest`,
         method: 'GET',
         secure: true,
@@ -6988,10 +6844,7 @@ export class Api<
       },
       params: RequestParams = {},
     ) =>
-      this.request<
-        AppointmentCounterResponseSuccessApiResponse,
-        ErrorApiResponse
-      >({
+      this.request<AppointmentCounterResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/IndividualSeal/Appointments/Counting`,
         method: 'GET',
         query: query,
@@ -7009,21 +6862,16 @@ export class Api<
      * @request POST:/api/IndividualSeal/Appointments/Set
      * @secure
      */
-    individualSealAppointmentsSetCreate: (
-      data: AppointmentsSetRequest,
-      params: RequestParams = {},
-    ) =>
-      this.request<AppointmentsSetResponseSuccessApiResponse, ErrorApiResponse>(
-        {
-          path: `/api/IndividualSeal/Appointments/Set`,
-          method: 'POST',
-          body: data,
-          secure: true,
-          type: ContentType.Json,
-          format: 'json',
-          ...params,
-        },
-      ),
+    individualSealAppointmentsSetCreate: (data: AppointmentsSetRequest, params: RequestParams = {}) =>
+      this.request<AppointmentsSetResponseSuccessApiResponse, ErrorApiResponse>({
+        path: `/api/IndividualSeal/Appointments/Set`,
+        method: 'POST',
+        body: data,
+        secure: true,
+        type: ContentType.Json,
+        format: 'json',
+        ...params,
+      }),
 
     /**
      * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li><li>Администратор УК без назначений задач</li>
@@ -7067,14 +6915,8 @@ export class Api<
      * @request GET:/api/IndividualSeal/Assignments/{assignmentId}
      * @secure
      */
-    individualSealAssignmentsDetail: (
-      assignmentId: string,
-      params: RequestParams = {},
-    ) =>
-      this.request<
-        AssignmentResponseSuccessApiResponse,
-        ErrorApiResponse | ProblemDetails
-      >({
+    individualSealAssignmentsDetail: (assignmentId: string, params: RequestParams = {}) =>
+      this.request<AssignmentResponseSuccessApiResponse, ErrorApiResponse | ProblemDetails>({
         path: `/api/IndividualSeal/Assignments/${assignmentId}`,
         method: 'GET',
         secure: true,
@@ -7091,10 +6933,7 @@ export class Api<
      * @request DELETE:/api/IndividualSeal/Assignments/{assignmentId}
      * @secure
      */
-    individualSealAssignmentsDelete: (
-      assignmentId: string,
-      params: RequestParams = {},
-    ) =>
+    individualSealAssignmentsDelete: (assignmentId: string, params: RequestParams = {}) =>
       this.request<void, ErrorApiResponse>({
         path: `/api/IndividualSeal/Assignments/${assignmentId}`,
         method: 'DELETE',
@@ -7111,10 +6950,7 @@ export class Api<
      * @request GET:/api/IndividualSeal/Assignments/{assignmentId}/File
      * @secure
      */
-    individualSealAssignmentsFileDetail: (
-      assignmentId: string,
-      params: RequestParams = {},
-    ) =>
+    individualSealAssignmentsFileDetail: (assignmentId: string, params: RequestParams = {}) =>
       this.request<void, ErrorApiResponse | ProblemDetails>({
         path: `/api/IndividualSeal/Assignments/${assignmentId}/File`,
         method: 'GET',
@@ -7149,10 +6985,7 @@ export class Api<
      * @request POST:/api/Auth/refreshToken
      * @secure
      */
-    authRefreshTokenCreate: (
-      data: RefreshTokenRequest,
-      params: RequestParams = {},
-    ) =>
+    authRefreshTokenCreate: (data: RefreshTokenRequest, params: RequestParams = {}) =>
       this.request<RefreshResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/Auth/refreshToken`,
         method: 'POST',
@@ -7225,10 +7058,7 @@ export class Api<
      * @request POST:/api/Auth/changePassword
      * @secure
      */
-    authChangePasswordCreate: (
-      data: ConfirmRequest,
-      params: RequestParams = {},
-    ) =>
+    authChangePasswordCreate: (data: ConfirmRequest, params: RequestParams = {}) =>
       this.request<void, ErrorApiResponse>({
         path: `/api/Auth/changePassword`,
         method: 'POST',
@@ -7373,10 +7203,7 @@ export class Api<
       },
       params: RequestParams = {},
     ) =>
-      this.request<
-        StreetWithBuildingNumbersResponsePagedListSuccessApiResponse,
-        ErrorApiResponse
-      >({
+      this.request<StreetWithBuildingNumbersResponsePagedListSuccessApiResponse, ErrorApiResponse>({
         path: `/api/Buildings/ExistingStreetsWithBuildingNumbers`,
         method: 'GET',
         query: query,
@@ -7400,10 +7227,7 @@ export class Api<
       },
       params: RequestParams = {},
     ) =>
-      this.request<
-        HouseManagementWithStreetsResponseIEnumerableSuccessApiResponse,
-        ErrorApiResponse
-      >({
+      this.request<HouseManagementWithStreetsResponseIEnumerableSuccessApiResponse, ErrorApiResponse>({
         path: `/api/Buildings/ExistingStreetsWithBuildingNumbersWithHouseManagement`,
         method: 'GET',
         query: query,
@@ -7421,13 +7245,8 @@ export class Api<
      * @request GET:/api/Buildings/ExistingStreetsWithBuildingNumbersWithHeatingStation
      * @secure
      */
-    buildingsExistingStreetsWithBuildingNumbersWithHeatingStationList: (
-      params: RequestParams = {},
-    ) =>
-      this.request<
-        HeatingStationWithStreetsResponseIEnumerableSuccessApiResponse,
-        ErrorApiResponse
-      >({
+    buildingsExistingStreetsWithBuildingNumbersWithHeatingStationList: (params: RequestParams = {}) =>
+      this.request<HeatingStationWithStreetsResponseIEnumerableSuccessApiResponse, ErrorApiResponse>({
         path: `/api/Buildings/ExistingStreetsWithBuildingNumbersWithHeatingStation`,
         method: 'GET',
         secure: true,
@@ -7520,10 +7339,7 @@ export class Api<
       },
       params: RequestParams = {},
     ) =>
-      this.request<
-        BuildingListResponsePagedListSuccessApiResponse,
-        ErrorApiResponse
-      >({
+      this.request<BuildingListResponsePagedListSuccessApiResponse, ErrorApiResponse>({
         path: `/api/Buildings`,
         method: 'GET',
         query: query,
@@ -7552,10 +7368,7 @@ export class Api<
       },
       params: RequestParams = {},
     ) =>
-      this.request<
-        InspectorOnBuildingResponseListSuccessApiResponse,
-        ErrorApiResponse
-      >({
+      this.request<InspectorOnBuildingResponseListSuccessApiResponse, ErrorApiResponse>({
         path: `/api/Buildings/inspectors`,
         method: 'GET',
         query: query,
@@ -7596,10 +7409,7 @@ export class Api<
      * @request DELETE:/api/Buildings/{buildingId}/inspector
      * @secure
      */
-    buildingsInspectorDelete: (
-      buildingId: number,
-      params: RequestParams = {},
-    ) =>
+    buildingsInspectorDelete: (buildingId: number, params: RequestParams = {}) =>
       this.request<void, ErrorApiResponse>({
         path: `/api/Buildings/${buildingId}/inspector`,
         method: 'DELETE',
@@ -7617,15 +7427,13 @@ export class Api<
      * @secure
      */
     buildingsFiltersList: (params: RequestParams = {}) =>
-      this.request<BuildingFiltersResponseSuccessApiResponse, ErrorApiResponse>(
-        {
-          path: `/api/Buildings/filters`,
-          method: 'GET',
-          secure: true,
-          format: 'json',
-          ...params,
-        },
-      ),
+      this.request<BuildingFiltersResponseSuccessApiResponse, ErrorApiResponse>({
+        path: `/api/Buildings/filters`,
+        method: 'GET',
+        secure: true,
+        format: 'json',
+        ...params,
+      }),
 
     /**
      * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Администратор УК без назначений задач</li><li>Контролёр</li>
@@ -7636,14 +7444,8 @@ export class Api<
      * @request GET:/api/Buildings/{buildingId}/Controller
      * @secure
      */
-    buildingsControllerDetail: (
-      buildingId: number,
-      params: RequestParams = {},
-    ) =>
-      this.request<
-        OrganizationUserShortResponseSuccessApiResponse,
-        ErrorApiResponse
-      >({
+    buildingsControllerDetail: (buildingId: number, params: RequestParams = {}) =>
+      this.request<OrganizationUserShortResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/Buildings/${buildingId}/Controller`,
         method: 'GET',
         secure: true,
@@ -7660,15 +7462,8 @@ export class Api<
      * @request POST:/api/Buildings/{buildingId}/ReassignController/{controllerId}
      * @secure
      */
-    buildingsReassignControllerCreate: (
-      buildingId: number,
-      controllerId: number,
-      params: RequestParams = {},
-    ) =>
-      this.request<
-        OrganizationUserShortResponseSuccessApiResponse,
-        ErrorApiResponse
-      >({
+    buildingsReassignControllerCreate: (buildingId: number, controllerId: number, params: RequestParams = {}) =>
+      this.request<OrganizationUserShortResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/Buildings/${buildingId}/ReassignController/${controllerId}`,
         method: 'POST',
         secure: true,
@@ -7685,11 +7480,7 @@ export class Api<
      * @request POST:/api/Buildings/{buildingId}/Addresses
      * @secure
      */
-    buildingsAddressesCreate: (
-      buildingId: number,
-      data: BuildingAddressCreateRequest,
-      params: RequestParams = {},
-    ) =>
+    buildingsAddressesCreate: (buildingId: number, data: BuildingAddressCreateRequest, params: RequestParams = {}) =>
       this.request<void, ErrorApiResponse>({
         path: `/api/Buildings/${buildingId}/Addresses`,
         method: 'POST',
@@ -7732,11 +7523,7 @@ export class Api<
      * @request DELETE:/api/Buildings/{buildingId}/Addresses/{addressId}
      * @secure
      */
-    buildingsAddressesDelete: (
-      buildingId: number,
-      addressId: number,
-      params: RequestParams = {},
-    ) =>
+    buildingsAddressesDelete: (buildingId: number, addressId: number, params: RequestParams = {}) =>
       this.request<void, ErrorApiResponse>({
         path: `/api/Buildings/${buildingId}/Addresses/${addressId}`,
         method: 'DELETE',
@@ -7754,10 +7541,7 @@ export class Api<
      * @secure
      */
     buildingsNodesDetail: (buildingId: number, params: RequestParams = {}) =>
-      this.request<
-        NodeOnHousingStockResponseListSuccessApiResponse,
-        ErrorApiResponse
-      >({
+      this.request<NodeOnHousingStockResponseListSuccessApiResponse, ErrorApiResponse>({
         path: `/api/Buildings/${buildingId}/Nodes`,
         method: 'GET',
         secure: true,
@@ -7774,14 +7558,8 @@ export class Api<
      * @request GET:/api/Buildings/{buildingId}/Calculators
      * @secure
      */
-    buildingsCalculatorsDetail: (
-      buildingId: number,
-      params: RequestParams = {},
-    ) =>
-      this.request<
-        CalculatorIntoHousingStockResponseArraySuccessApiResponse,
-        ErrorApiResponse
-      >({
+    buildingsCalculatorsDetail: (buildingId: number, params: RequestParams = {}) =>
+      this.request<CalculatorIntoHousingStockResponseArraySuccessApiResponse, ErrorApiResponse>({
         path: `/api/Buildings/${buildingId}/Calculators`,
         method: 'GET',
         secure: true,
@@ -7809,10 +7587,7 @@ export class Api<
       },
       params: RequestParams = {},
     ) =>
-      this.request<
-        BuildingWithTasksResponseIEnumerableSuccessApiResponse,
-        ErrorApiResponse
-      >({
+      this.request<BuildingWithTasksResponseIEnumerableSuccessApiResponse, ErrorApiResponse>({
         path: `/api/Buildings/BuildingsWithTasks`,
         method: 'GET',
         query: query,
@@ -7839,10 +7614,7 @@ export class Api<
       },
       params: RequestParams = {},
     ) =>
-      this.request<
-        BuildingByFilterResponseSuccessApiResponse,
-        ErrorApiResponse
-      >({
+      this.request<BuildingByFilterResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/Buildings/BuildingsByAddress`,
         method: 'GET',
         query: query,
@@ -7861,10 +7633,7 @@ export class Api<
      * @secure
      */
     calculatorInfosList: (params: RequestParams = {}) =>
-      this.request<
-        CalculatorInfoListWrappedResponseSuccessApiResponse,
-        ErrorApiResponse
-      >({
+      this.request<CalculatorInfoListWrappedResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/CalculatorInfos`,
         method: 'GET',
         secure: true,
@@ -7999,10 +7768,7 @@ export class Api<
       },
       params: RequestParams = {},
     ) =>
-      this.request<
-        CalculatorListResponsePagedListSuccessApiResponse,
-        ErrorApiResponse
-      >({
+      this.request<CalculatorListResponsePagedListSuccessApiResponse, ErrorApiResponse>({
         path: `/api/Calculators`,
         method: 'GET',
         query: query,
@@ -8020,10 +7786,7 @@ export class Api<
      * @request POST:/api/Calculators
      * @secure
      */
-    calculatorsCreate: (
-      data: CreateCalculatorRequest,
-      params: RequestParams = {},
-    ) =>
+    calculatorsCreate: (data: CreateCalculatorRequest, params: RequestParams = {}) =>
       this.request<MeteringDeviceResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/Calculators`,
         method: 'POST',
@@ -8061,11 +7824,7 @@ export class Api<
      * @request PUT:/api/Calculators/{deviceId}
      * @secure
      */
-    calculatorsUpdate: (
-      deviceId: number,
-      data: UpdateCalculatorRequest,
-      params: RequestParams = {},
-    ) =>
+    calculatorsUpdate: (deviceId: number, data: UpdateCalculatorRequest, params: RequestParams = {}) =>
       this.request<MeteringDeviceResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/Calculators/${deviceId}`,
         method: 'PUT',
@@ -8085,15 +7844,8 @@ export class Api<
      * @request POST:/api/Calculators/{deviceId}/comment
      * @secure
      */
-    calculatorsCommentCreate: (
-      deviceId: number,
-      data: CalculatorCommentBaseRequest,
-      params: RequestParams = {},
-    ) =>
-      this.request<
-        CalculatorCommentResponseSuccessApiResponse,
-        ErrorApiResponse
-      >({
+    calculatorsCommentCreate: (deviceId: number, data: CalculatorCommentBaseRequest, params: RequestParams = {}) =>
+      this.request<CalculatorCommentResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/Calculators/${deviceId}/comment`,
         method: 'POST',
         body: data,
@@ -8112,15 +7864,8 @@ export class Api<
      * @request PUT:/api/Calculators/{deviceId}/comment
      * @secure
      */
-    calculatorsCommentUpdate: (
-      deviceId: number,
-      data: CalculatorCommentBaseRequest,
-      params: RequestParams = {},
-    ) =>
-      this.request<
-        CalculatorCommentResponseSuccessApiResponse,
-        ErrorApiResponse
-      >({
+    calculatorsCommentUpdate: (deviceId: number, data: CalculatorCommentBaseRequest, params: RequestParams = {}) =>
+      this.request<CalculatorCommentResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/Calculators/${deviceId}/comment`,
         method: 'PUT',
         body: data,
@@ -8156,10 +7901,7 @@ export class Api<
      * @request POST:/api/Calculators/switch
      * @secure
      */
-    calculatorsSwitchCreate: (
-      data: SwitchCalculatorRequest,
-      params: RequestParams = {},
-    ) =>
+    calculatorsSwitchCreate: (data: SwitchCalculatorRequest, params: RequestParams = {}) =>
       this.request<MeteringDeviceResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/Calculators/switch`,
         method: 'POST',
@@ -8180,10 +7922,7 @@ export class Api<
      * @secure
      */
     calculatorsFiltersList: (params: RequestParams = {}) =>
-      this.request<
-        CalculatorFilterResponseSuccessApiResponse,
-        ErrorApiResponse
-      >({
+      this.request<CalculatorFilterResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/Calculators/filters`,
         method: 'GET',
         secure: true,
@@ -8200,10 +7939,7 @@ export class Api<
      * @secure
      */
     notificationsChannelsList: (params: RequestParams = {}) =>
-      this.request<
-        ChannelResponseICollectionSuccessApiResponse,
-        ErrorApiResponse
-      >({
+      this.request<ChannelResponseICollectionSuccessApiResponse, ErrorApiResponse>({
         path: `/api/Notifications/Channels`,
         method: 'GET',
         secure: true,
@@ -8219,10 +7955,7 @@ export class Api<
      * @request POST:/api/Notifications/Channels/confirm
      * @secure
      */
-    notificationsChannelsConfirmCreate: (
-      data: ChannelConfirmRequest,
-      params: RequestParams = {},
-    ) =>
+    notificationsChannelsConfirmCreate: (data: ChannelConfirmRequest, params: RequestParams = {}) =>
       this.request<void, ErrorApiResponse>({
         path: `/api/Notifications/Channels/confirm`,
         method: 'POST',
@@ -8240,10 +7973,7 @@ export class Api<
      * @request DELETE:/api/Notifications/Channels/{channelId}
      * @secure
      */
-    notificationsChannelsDelete: (
-      channelId: string,
-      params: RequestParams = {},
-    ) =>
+    notificationsChannelsDelete: (channelId: string, params: RequestParams = {}) =>
       this.request<void, ErrorApiResponse>({
         path: `/api/Notifications/Channels/${channelId}`,
         method: 'DELETE',
@@ -8261,10 +7991,7 @@ export class Api<
      * @secure
      */
     contractorsList: (params: RequestParams = {}) =>
-      this.request<
-        ContractorListResponsePagedListSuccessApiResponse,
-        ErrorApiResponse
-      >({
+      this.request<ContractorListResponsePagedListSuccessApiResponse, ErrorApiResponse>({
         path: `/api/Contractors`,
         method: 'GET',
         secure: true,
@@ -8281,10 +8008,7 @@ export class Api<
      * @request POST:/api/Contractors
      * @secure
      */
-    contractorsCreate: (
-      data: ContractorCreateRequest,
-      params: RequestParams = {},
-    ) =>
+    contractorsCreate: (data: ContractorCreateRequest, params: RequestParams = {}) =>
       this.request<ContractorResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/Contractors`,
         method: 'POST',
@@ -8322,11 +8046,7 @@ export class Api<
      * @request PUT:/api/Contractors/{contractorId}
      * @secure
      */
-    contractorsUpdate: (
-      contractorId: number,
-      data: ContractorUpdateRequest,
-      params: RequestParams = {},
-    ) =>
+    contractorsUpdate: (contractorId: number, data: ContractorUpdateRequest, params: RequestParams = {}) =>
       this.request<ContractorResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/Contractors/${contractorId}`,
         method: 'PUT',
@@ -8363,10 +8083,7 @@ export class Api<
      * @request POST:/api/IndividualSeal/Controllers
      * @secure
      */
-    individualSealControllersCreate: (
-      data: ControllerCreateRequest,
-      params: RequestParams = {},
-    ) =>
+    individualSealControllersCreate: (data: ControllerCreateRequest, params: RequestParams = {}) =>
       this.request<GuidSuccessApiResponse, ErrorApiResponse>({
         path: `/api/IndividualSeal/Controllers`,
         method: 'POST',
@@ -8427,10 +8144,7 @@ export class Api<
      * @request DELETE:/api/IndividualSeal/Controllers/{controllerId}
      * @secure
      */
-    individualSealControllersDelete: (
-      controllerId: string,
-      params: RequestParams = {},
-    ) =>
+    individualSealControllersDelete: (controllerId: string, params: RequestParams = {}) =>
       this.request<void, ErrorApiResponse>({
         path: `/api/IndividualSeal/Controllers/${controllerId}`,
         method: 'DELETE',
@@ -8455,16 +8169,14 @@ export class Api<
       },
       params: RequestParams = {},
     ) =>
-      this.request<AppointmentResponseListSuccessApiResponse, ErrorApiResponse>(
-        {
-          path: `/api/IndividualSeal/Controllers/${controllerId}/Work`,
-          method: 'GET',
-          query: query,
-          secure: true,
-          format: 'json',
-          ...params,
-        },
-      ),
+      this.request<AppointmentResponseListSuccessApiResponse, ErrorApiResponse>({
+        path: `/api/IndividualSeal/Controllers/${controllerId}/Work`,
+        method: 'GET',
+        query: query,
+        secure: true,
+        format: 'json',
+        ...params,
+      }),
 
     /**
      * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li><li>Администратор УК без назначений задач</li>
@@ -8525,10 +8237,7 @@ export class Api<
      * @request POST:/api/IndividualSeal/Districts
      * @secure
      */
-    individualSealDistrictsCreate: (
-      data: DistrictCreateRequest,
-      params: RequestParams = {},
-    ) =>
+    individualSealDistrictsCreate: (data: DistrictCreateRequest, params: RequestParams = {}) =>
       this.request<string, ErrorApiResponse>({
         path: `/api/IndividualSeal/Districts`,
         method: 'POST',
@@ -8576,11 +8285,7 @@ export class Api<
      * @request PUT:/api/IndividualSeal/Districts/{districtId}
      * @secure
      */
-    individualSealDistrictsUpdate: (
-      districtId: string,
-      data: DistrictUpdateRequest,
-      params: RequestParams = {},
-    ) =>
+    individualSealDistrictsUpdate: (districtId: string, data: DistrictUpdateRequest, params: RequestParams = {}) =>
       this.request<void, ErrorApiResponse>({
         path: `/api/IndividualSeal/Districts/${districtId}`,
         method: 'PUT',
@@ -8599,11 +8304,7 @@ export class Api<
      * @request POST:/api/IndividualSeal/Districts/{districtId}/AddHouse
      * @secure
      */
-    individualSealDistrictsAddHouseCreate: (
-      districtId: string,
-      data: number,
-      params: RequestParams = {},
-    ) =>
+    individualSealDistrictsAddHouseCreate: (districtId: string, data: number, params: RequestParams = {}) =>
       this.request<void, ErrorApiResponse>({
         path: `/api/IndividualSeal/Districts/${districtId}/AddHouse`,
         method: 'POST',
@@ -8622,11 +8323,7 @@ export class Api<
      * @request POST:/api/IndividualSeal/Districts/{districtId}/DeleteHouse
      * @secure
      */
-    individualSealDistrictsDeleteHouseCreate: (
-      districtId: string,
-      data: number,
-      params: RequestParams = {},
-    ) =>
+    individualSealDistrictsDeleteHouseCreate: (districtId: string, data: number, params: RequestParams = {}) =>
       this.request<void, ErrorApiResponse>({
         path: `/api/IndividualSeal/Districts/${districtId}/DeleteHouse`,
         method: 'POST',
@@ -8646,10 +8343,7 @@ export class Api<
      * @secure
      */
     documentsTypesList: (params: RequestParams = {}) =>
-      this.request<
-        EDocumentTypeStringDictionaryItemListSuccessApiResponse,
-        ErrorApiResponse
-      >({
+      this.request<EDocumentTypeStringDictionaryItemListSuccessApiResponse, ErrorApiResponse>({
         path: `/api/Documents/types`,
         method: 'GET',
         secure: true,
@@ -8675,10 +8369,7 @@ export class Api<
       },
       params: RequestParams = {},
     ) =>
-      this.request<
-        DocumentResponseIEnumerableSuccessApiResponse,
-        ErrorApiResponse
-      >({
+      this.request<DocumentResponseIEnumerableSuccessApiResponse, ErrorApiResponse>({
         path: `/api/Documents/upload`,
         method: 'POST',
         body: data,
@@ -8749,14 +8440,8 @@ export class Api<
      * @request GET:/api/ElectricHousingMeteringDevices/{deviceId}
      * @secure
      */
-    electricHousingMeteringDevicesDetail: (
-      deviceId: number,
-      params: RequestParams = {},
-    ) =>
-      this.request<
-        ElectricHousingMeteringDeviceResponseSuccessApiResponse,
-        ErrorApiResponse
-      >({
+    electricHousingMeteringDevicesDetail: (deviceId: number, params: RequestParams = {}) =>
+      this.request<ElectricHousingMeteringDeviceResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/ElectricHousingMeteringDevices/${deviceId}`,
         method: 'GET',
         secure: true,
@@ -8778,10 +8463,7 @@ export class Api<
       data: UpdateElectricHousingMeteringDeviceRequest,
       params: RequestParams = {},
     ) =>
-      this.request<
-        ElectricHousingMeteringDeviceResponseSuccessApiResponse,
-        ErrorApiResponse
-      >({
+      this.request<ElectricHousingMeteringDeviceResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/ElectricHousingMeteringDevices/${deviceId}`,
         method: 'PUT',
         body: data,
@@ -8804,10 +8486,7 @@ export class Api<
       data: CreateElectricHousingMeteringDeviceRequest,
       params: RequestParams = {},
     ) =>
-      this.request<
-        ElectricHousingMeteringDeviceResponseSuccessApiResponse,
-        ErrorApiResponse
-      >({
+      this.request<ElectricHousingMeteringDeviceResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/ElectricHousingMeteringDevices`,
         method: 'POST',
         body: data,
@@ -8830,10 +8509,7 @@ export class Api<
       data: SwitchElectricHousingDeviceRequest,
       params: RequestParams = {},
     ) =>
-      this.request<
-        ElectricHousingMeteringDeviceResponseSuccessApiResponse,
-        ErrorApiResponse
-      >({
+      this.request<ElectricHousingMeteringDeviceResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/ElectricHousingMeteringDevices/switch`,
         method: 'POST',
         body: data,
@@ -8870,11 +8546,7 @@ export class Api<
      * @request PUT:/api/ElectricNodes/{electricNodeId}
      * @secure
      */
-    electricNodesUpdate: (
-      electricNodeId: number,
-      data: UpdateElectricNodeRequest,
-      params: RequestParams = {},
-    ) =>
+    electricNodesUpdate: (electricNodeId: number, data: UpdateElectricNodeRequest, params: RequestParams = {}) =>
       this.request<ElectricNodeResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/ElectricNodes/${electricNodeId}`,
         method: 'PUT',
@@ -8894,10 +8566,7 @@ export class Api<
      * @request POST:/api/ElectricNodes
      * @secure
      */
-    electricNodesCreate: (
-      data: CreateElectricNodeRequest,
-      params: RequestParams = {},
-    ) =>
+    electricNodesCreate: (data: CreateElectricNodeRequest, params: RequestParams = {}) =>
       this.request<ElectricNodeResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/ElectricNodes`,
         method: 'POST',
@@ -9057,10 +8726,7 @@ export class Api<
      * @secure
      */
     heatingSeasonsList: (params: RequestParams = {}) =>
-      this.request<
-        HeatingSeasonPageResponseSuccessApiResponse,
-        ErrorApiResponse
-      >({
+      this.request<HeatingSeasonPageResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/HeatingSeasons`,
         method: 'GET',
         secure: true,
@@ -9107,10 +8773,7 @@ export class Api<
      * @request POST:/api/HeatingSeasons/Switch
      * @secure
      */
-    heatingSeasonsSwitchCreate: (
-      data: SwitchHeatingSeasonRequest,
-      params: RequestParams = {},
-    ) =>
+    heatingSeasonsSwitchCreate: (data: SwitchHeatingSeasonRequest, params: RequestParams = {}) =>
       this.request<HeatingSeasonResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/HeatingSeasons/Switch`,
         method: 'POST',
@@ -9154,10 +8817,7 @@ export class Api<
      * @secure
      */
     heatingStationList: (params: RequestParams = {}) =>
-      this.request<
-        HeatingStationResponsePagedListSuccessApiResponse,
-        ErrorApiResponse
-      >({
+      this.request<HeatingStationResponsePagedListSuccessApiResponse, ErrorApiResponse>({
         path: `/api/HeatingStation`,
         method: 'GET',
         secure: true,
@@ -9174,10 +8834,7 @@ export class Api<
      * @request POST:/api/HeatingStation
      * @secure
      */
-    heatingStationCreate: (
-      data: AddHeatingStationRequest,
-      params: RequestParams = {},
-    ) =>
+    heatingStationCreate: (data: AddHeatingStationRequest, params: RequestParams = {}) =>
       this.request<HeatingStationResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/HeatingStation`,
         method: 'POST',
@@ -9215,11 +8872,7 @@ export class Api<
      * @request PUT:/api/HeatingStation/{id}
      * @secure
      */
-    heatingStationUpdate: (
-      id: string,
-      data: UpdateHeatingStationRequest,
-      params: RequestParams = {},
-    ) =>
+    heatingStationUpdate: (id: string, data: UpdateHeatingStationRequest, params: RequestParams = {}) =>
       this.request<HeatingStationResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/HeatingStation/${id}`,
         method: 'PUT',
@@ -9274,10 +8927,7 @@ export class Api<
       },
       params: RequestParams = {},
     ) =>
-      this.request<
-        HomeownerAccountResponsePagedListSuccessApiResponse,
-        ErrorApiResponse
-      >({
+      this.request<HomeownerAccountResponsePagedListSuccessApiResponse, ErrorApiResponse>({
         path: `/api/HomeownerAccounts`,
         method: 'GET',
         query: query,
@@ -9302,10 +8952,7 @@ export class Api<
       },
       params: RequestParams = {},
     ) =>
-      this.request<
-        HomeownerAccountResponseSuccessApiResponse,
-        ErrorApiResponse
-      >({
+      this.request<HomeownerAccountResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/HomeownerAccounts`,
         method: 'POST',
         query: query,
@@ -9326,10 +8973,7 @@ export class Api<
      * @secure
      */
     homeownerAccountsDetail: (id: string, params: RequestParams = {}) =>
-      this.request<
-        HomeownerAccountResponseSuccessApiResponse,
-        ErrorApiResponse
-      >({
+      this.request<HomeownerAccountResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/HomeownerAccounts/${id}`,
         method: 'GET',
         secure: true,
@@ -9354,10 +8998,7 @@ export class Api<
       },
       params: RequestParams = {},
     ) =>
-      this.request<
-        HomeownerAccountResponseSuccessApiResponse,
-        ErrorApiResponse
-      >({
+      this.request<HomeownerAccountResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/HomeownerAccounts/${id}`,
         method: 'PUT',
         query: query,
@@ -9473,10 +9114,7 @@ export class Api<
      * @request POST:/api/HomeownerAccounts/Close
      * @secure
      */
-    homeownerAccountsCloseCreate: (
-      data: HomeownerAccountCloseRequest,
-      params: RequestParams = {},
-    ) =>
+    homeownerAccountsCloseCreate: (data: HomeownerAccountCloseRequest, params: RequestParams = {}) =>
       this.request<void, ErrorApiResponse>({
         path: `/api/HomeownerAccounts/Close`,
         method: 'POST',
@@ -9502,10 +9140,7 @@ export class Api<
       },
       params: RequestParams = {},
     ) =>
-      this.request<
-        HomeownerAccountResponseSuccessApiResponse,
-        ErrorApiResponse
-      >({
+      this.request<HomeownerAccountResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/HomeownerAccounts/Replace`,
         method: 'POST',
         query: query,
@@ -9525,14 +9160,8 @@ export class Api<
      * @request GET:/api/HomeownerAccounts/{id}/Certificate
      * @secure
      */
-    homeownerAccountsCertificateDetail: (
-      id: string,
-      params: RequestParams = {},
-    ) =>
-      this.request<
-        HomeownerCertificateResponseSuccessApiResponse,
-        ErrorApiResponse
-      >({
+    homeownerAccountsCertificateDetail: (id: string, params: RequestParams = {}) =>
+      this.request<HomeownerCertificateResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/HomeownerAccounts/${id}/Certificate`,
         method: 'GET',
         secure: true,
@@ -9556,10 +9185,7 @@ export class Api<
       },
       params: RequestParams = {},
     ) =>
-      this.request<
-        DataAfterSplittingHomeownerAccountResponseSuccessApiResponse,
-        ErrorApiResponse
-      >({
+      this.request<DataAfterSplittingHomeownerAccountResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/HomeownerAccounts/Split`,
         method: 'POST',
         query: query,
@@ -9584,17 +9210,15 @@ export class Api<
       data: UpdateHouseManagementRequest,
       params: RequestParams = {},
     ) =>
-      this.request<HouseManagementResponseSuccessApiResponse, ErrorApiResponse>(
-        {
-          path: `/api/HouseManagements/${houseManagementId}`,
-          method: 'POST',
-          body: data,
-          secure: true,
-          type: ContentType.Json,
-          format: 'json',
-          ...params,
-        },
-      ),
+      this.request<HouseManagementResponseSuccessApiResponse, ErrorApiResponse>({
+        path: `/api/HouseManagements/${houseManagementId}`,
+        method: 'POST',
+        body: data,
+        secure: true,
+        type: ContentType.Json,
+        format: 'json',
+        ...params,
+      }),
 
     /**
      * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Администратор УК без назначений задач</li><li>Контролёр</li>
@@ -9611,10 +9235,7 @@ export class Api<
       },
       params: RequestParams = {},
     ) =>
-      this.request<
-        HouseManagementResponseListSuccessApiResponse,
-        ErrorApiResponse
-      >({
+      this.request<HouseManagementResponseListSuccessApiResponse, ErrorApiResponse>({
         path: `/api/HouseManagements`,
         method: 'GET',
         query: query,
@@ -9639,10 +9260,7 @@ export class Api<
       },
       params: RequestParams = {},
     ) =>
-      this.request<
-        GetHousingMeteringDeviceReadingsResponseSuccessApiResponse,
-        ErrorApiResponse
-      >({
+      this.request<GetHousingMeteringDeviceReadingsResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/HousingMeteringDeviceReadings`,
         method: 'GET',
         query: query,
@@ -9664,10 +9282,7 @@ export class Api<
       data: CreateHousingMeteringDeviceReadingsRequest,
       params: RequestParams = {},
     ) =>
-      this.request<
-        HousingMeteringDeviceReadingsIncludingPlacementResponseSuccessApiResponse,
-        ErrorApiResponse
-      >({
+      this.request<HousingMeteringDeviceReadingsIncludingPlacementResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/HousingMeteringDeviceReadings`,
         method: 'POST',
         body: data,
@@ -9690,10 +9305,7 @@ export class Api<
       data: UpdateHousingMeteringDeviceReadingsRequest,
       params: RequestParams = {},
     ) =>
-      this.request<
-        HousingMeteringDeviceReadingsIncludingPlacementResponseSuccessApiResponse,
-        ErrorApiResponse
-      >({
+      this.request<HousingMeteringDeviceReadingsIncludingPlacementResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/HousingMeteringDeviceReadings`,
         method: 'PUT',
         body: data,
@@ -9712,14 +9324,8 @@ export class Api<
      * @request POST:/api/HousingMeteringDeviceReadings/{readingId}/remove
      * @secure
      */
-    housingMeteringDeviceReadingsRemoveCreate: (
-      readingId: string,
-      params: RequestParams = {},
-    ) =>
-      this.request<
-        HousingMeteringDeviceReadingsResponseSuccessApiResponse,
-        ErrorApiResponse
-      >({
+    housingMeteringDeviceReadingsRemoveCreate: (readingId: string, params: RequestParams = {}) =>
+      this.request<HousingMeteringDeviceReadingsResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/HousingMeteringDeviceReadings/${readingId}/remove`,
         method: 'POST',
         secure: true,
@@ -9781,10 +9387,7 @@ export class Api<
       },
       params: RequestParams = {},
     ) =>
-      this.request<
-        HousingMeteringDeviceIncludingReadingsResponsePagedListSuccessApiResponse,
-        ErrorApiResponse
-      >({
+      this.request<HousingMeteringDeviceIncludingReadingsResponsePagedListSuccessApiResponse, ErrorApiResponse>({
         path: `/api/HousingMeteringDevices`,
         method: 'GET',
         query: query,
@@ -9802,14 +9405,8 @@ export class Api<
      * @request GET:/api/HousingMeteringDevices/{deviceId}/comment
      * @secure
      */
-    housingMeteringDevicesCommentDetail: (
-      deviceId: number,
-      params: RequestParams = {},
-    ) =>
-      this.request<
-        HousingMeteringDeviceCommentResponseSuccessApiResponse,
-        ErrorApiResponse
-      >({
+    housingMeteringDevicesCommentDetail: (deviceId: number, params: RequestParams = {}) =>
+      this.request<HousingMeteringDeviceCommentResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/HousingMeteringDevices/${deviceId}/comment`,
         method: 'GET',
         secure: true,
@@ -9831,10 +9428,7 @@ export class Api<
       data: HousingMeteringDeviceAddCommentRequest,
       params: RequestParams = {},
     ) =>
-      this.request<
-        HousingMeteringDeviceCommentResponseSuccessApiResponse,
-        ErrorApiResponse
-      >({
+      this.request<HousingMeteringDeviceCommentResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/HousingMeteringDevices/${deviceId}/comment`,
         method: 'POST',
         body: data,
@@ -9858,10 +9452,7 @@ export class Api<
       data: HousingMeteringDeviceUpdateCommentRequest,
       params: RequestParams = {},
     ) =>
-      this.request<
-        HousingMeteringDeviceCommentResponseSuccessApiResponse,
-        ErrorApiResponse
-      >({
+      this.request<HousingMeteringDeviceCommentResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/HousingMeteringDevices/${deviceId}/comment`,
         method: 'PUT',
         body: data,
@@ -9880,10 +9471,7 @@ export class Api<
      * @request DELETE:/api/HousingMeteringDevices/{deviceId}/comment
      * @secure
      */
-    housingMeteringDevicesCommentDelete: (
-      deviceId: number,
-      params: RequestParams = {},
-    ) =>
+    housingMeteringDevicesCommentDelete: (deviceId: number, params: RequestParams = {}) =>
       this.request<void, ErrorApiResponse>({
         path: `/api/HousingMeteringDevices/${deviceId}/comment`,
         method: 'DELETE',
@@ -9900,14 +9488,8 @@ export class Api<
      * @request GET:/api/HousingMeteringDevices/{deviceId}/readingsHistory
      * @secure
      */
-    housingMeteringDevicesReadingsHistoryDetail: (
-      deviceId: number,
-      params: RequestParams = {},
-    ) =>
-      this.request<
-        HousingMeteringDeviceReadingsHistoryResponseSuccessApiResponse,
-        ErrorApiResponse
-      >({
+    housingMeteringDevicesReadingsHistoryDetail: (deviceId: number, params: RequestParams = {}) =>
+      this.request<HousingMeteringDeviceReadingsHistoryResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/HousingMeteringDevices/${deviceId}/readingsHistory`,
         method: 'GET',
         secure: true,
@@ -9950,10 +9532,7 @@ export class Api<
      * @request POST:/api/HousingStocks
      * @secure
      */
-    housingStocksCreate: (
-      data: HousingStockCreateRequest,
-      params: RequestParams = {},
-    ) =>
+    housingStocksCreate: (data: HousingStockCreateRequest, params: RequestParams = {}) =>
       this.request<HousingStockResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/HousingStocks`,
         method: 'POST',
@@ -9973,11 +9552,7 @@ export class Api<
      * @request PUT:/api/HousingStocks/{housingStockId}
      * @secure
      */
-    housingStocksUpdate: (
-      housingStockId: number,
-      data: HousingStockUpdateRequest,
-      params: RequestParams = {},
-    ) =>
+    housingStocksUpdate: (housingStockId: number, data: HousingStockUpdateRequest, params: RequestParams = {}) =>
       this.request<HousingStockResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/HousingStocks/${housingStockId}`,
         method: 'PUT',
@@ -10082,11 +9657,7 @@ export class Api<
      * @deprecated
      * @secure
      */
-    housingStocksAddressesDelete: (
-      housingStockId: number,
-      addressId: number,
-      params: RequestParams = {},
-    ) =>
+    housingStocksAddressesDelete: (housingStockId: number, addressId: number, params: RequestParams = {}) =>
       this.request<void, ErrorApiResponse>({
         path: `/api/HousingStocks/${housingStockId}/Addresses/${addressId}`,
         method: 'DELETE',
@@ -10104,14 +9675,8 @@ export class Api<
      * @deprecated
      * @secure
      */
-    housingStocksNodesDetail: (
-      housingStockId: number,
-      params: RequestParams = {},
-    ) =>
-      this.request<
-        NodeOnHousingStockResponseListSuccessApiResponse,
-        ErrorApiResponse
-      >({
+    housingStocksNodesDetail: (housingStockId: number, params: RequestParams = {}) =>
+      this.request<NodeOnHousingStockResponseListSuccessApiResponse, ErrorApiResponse>({
         path: `/api/HousingStocks/${housingStockId}/Nodes`,
         method: 'GET',
         secure: true,
@@ -10129,14 +9694,8 @@ export class Api<
      * @deprecated
      * @secure
      */
-    housingStocksCalculatorsDetail: (
-      housingStockId: number,
-      params: RequestParams = {},
-    ) =>
-      this.request<
-        CalculatorIntoHousingStockResponseArraySuccessApiResponse,
-        ErrorApiResponse
-      >({
+    housingStocksCalculatorsDetail: (housingStockId: number, params: RequestParams = {}) =>
+      this.request<CalculatorIntoHousingStockResponseArraySuccessApiResponse, ErrorApiResponse>({
         path: `/api/HousingStocks/${housingStockId}/Calculators`,
         method: 'GET',
         secure: true,
@@ -10153,10 +9712,7 @@ export class Api<
      * @request GET:/api/HousingStocks/{housingStockId}/ExistingApartmentNumber
      * @secure
      */
-    housingStocksExistingApartmentNumberDetail: (
-      housingStockId: number,
-      params: RequestParams = {},
-    ) =>
+    housingStocksExistingApartmentNumberDetail: (housingStockId: number, params: RequestParams = {}) =>
       this.request<NumberIdResponseArraySuccessApiResponse, ErrorApiResponse>({
         path: `/api/HousingStocks/${housingStockId}/ExistingApartmentNumber`,
         method: 'GET',
@@ -10208,10 +9764,7 @@ export class Api<
       },
       params: RequestParams = {},
     ) =>
-      this.request<
-        HousingStockWithTasksResponseIEnumerableSuccessApiResponse,
-        ErrorApiResponse
-      >({
+      this.request<HousingStockWithTasksResponseIEnumerableSuccessApiResponse, ErrorApiResponse>({
         path: `/api/HousingStocks/HousingStockWithTasks`,
         method: 'GET',
         query: query,
@@ -10238,10 +9791,7 @@ export class Api<
       },
       params: RequestParams = {},
     ) =>
-      this.request<
-        BuildingByFilterResponseSuccessApiResponse,
-        ErrorApiResponse
-      >({
+      this.request<BuildingByFilterResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/Devices/Individual/House`,
         method: 'GET',
         query: query,
@@ -10283,10 +9833,7 @@ export class Api<
       },
       params: RequestParams = {},
     ) =>
-      this.request<
-        ApartmentByAddressFilterResponsePagedListSuccessApiResponse,
-        ErrorApiResponse
-      >({
+      this.request<ApartmentByAddressFilterResponsePagedListSuccessApiResponse, ErrorApiResponse>({
         path: `/api/Devices/Individual/Apartments`,
         method: 'GET',
         query: query,
@@ -10304,14 +9851,8 @@ export class Api<
      * @request GET:/api/Devices/Individual/Apartments/{apartmentId}/Devices
      * @secure
      */
-    devicesIndividualApartmentsDevicesDetail: (
-      apartmentId: number,
-      params: RequestParams = {},
-    ) =>
-      this.request<
-        IndividualDeviceResponseFromDevicePageListSuccessApiResponse,
-        ErrorApiResponse
-      >({
+    devicesIndividualApartmentsDevicesDetail: (apartmentId: number, params: RequestParams = {}) =>
+      this.request<IndividualDeviceResponseFromDevicePageListSuccessApiResponse, ErrorApiResponse>({
         path: `/api/Devices/Individual/Apartments/${apartmentId}/Devices`,
         method: 'GET',
         secure: true,
@@ -10329,10 +9870,7 @@ export class Api<
      * @secure
      */
     devicesIndividualDetail: (deviceId: number, params: RequestParams = {}) =>
-      this.request<
-        IndividualDeviceResponseFromDevicePageSuccessApiResponse,
-        ErrorApiResponse | ProblemDetails
-      >({
+      this.request<IndividualDeviceResponseFromDevicePageSuccessApiResponse, ErrorApiResponse | ProblemDetails>({
         path: `/api/Devices/Individual/${deviceId}`,
         method: 'GET',
         secure: true,
@@ -10376,10 +9914,7 @@ export class Api<
       },
       params: RequestParams = {},
     ) =>
-      this.request<
-        IndividualDeviceListResponseFromDevicePagePagedListSuccessApiResponse,
-        ErrorApiResponse
-      >({
+      this.request<IndividualDeviceListResponseFromDevicePagePagedListSuccessApiResponse, ErrorApiResponse>({
         path: `/api/Devices/Individual`,
         method: 'GET',
         query: query,
@@ -10404,10 +9939,7 @@ export class Api<
       },
       params: RequestParams = {},
     ) =>
-      this.request<
-        IndividualDeviceMountPlaceListWrappedResponseSuccessApiResponse,
-        ErrorApiResponse
-      >({
+      this.request<IndividualDeviceMountPlaceListWrappedResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/IndividualDeviceMountPlaces`,
         method: 'GET',
         query: query,
@@ -10426,10 +9958,7 @@ export class Api<
      * @secure
      */
     individualDeviceMountPlacesAllList: (params: RequestParams = {}) =>
-      this.request<
-        IndividualDeviceMountPlaceForFilterResponseListSuccessApiResponse,
-        ErrorApiResponse
-      >({
+      this.request<IndividualDeviceMountPlaceForFilterResponseListSuccessApiResponse, ErrorApiResponse>({
         path: `/api/IndividualDeviceMountPlaces/All`,
         method: 'GET',
         secure: true,
@@ -10450,10 +9979,7 @@ export class Api<
       data: IndividualDeviceReadingsCreateRequest,
       params: RequestParams = {},
     ) =>
-      this.request<
-        IndividualDeviceReadingsResponseSuccessApiResponse,
-        ErrorApiResponse
-      >({
+      this.request<IndividualDeviceReadingsResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/IndividualDeviceReadings/createLite`,
         method: 'POST',
         body: data,
@@ -10472,14 +9998,8 @@ export class Api<
      * @request POST:/api/IndividualDeviceReadings/create
      * @secure
      */
-    individualDeviceReadingsCreateCreate: (
-      data: IndividualDeviceReadingsCreateRequest,
-      params: RequestParams = {},
-    ) =>
-      this.request<
-        IndividualDeviceReadingsCreateListResponseSuccessApiResponse,
-        ErrorApiResponse
-      >({
+    individualDeviceReadingsCreateCreate: (data: IndividualDeviceReadingsCreateRequest, params: RequestParams = {}) =>
+      this.request<IndividualDeviceReadingsCreateListResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/IndividualDeviceReadings/create`,
         method: 'POST',
         body: data,
@@ -10498,14 +10018,8 @@ export class Api<
      * @request POST:/api/IndividualDeviceReadings/{readingId}/remove
      * @secure
      */
-    individualDeviceReadingsRemoveCreate: (
-      readingId: number,
-      params: RequestParams = {},
-    ) =>
-      this.request<
-        IndividualDeviceReadingsResponseSuccessApiResponse,
-        ErrorApiResponse
-      >({
+    individualDeviceReadingsRemoveCreate: (readingId: number, params: RequestParams = {}) =>
+      this.request<IndividualDeviceReadingsResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/IndividualDeviceReadings/${readingId}/remove`,
         method: 'POST',
         secure: true,
@@ -10533,10 +10047,7 @@ export class Api<
       },
       params: RequestParams = {},
     ) =>
-      this.request<
-        GetDataForIndividualDevicesConsumptionPlotResponseSuccessApiResponse,
-        ErrorApiResponse
-      >({
+      this.request<GetDataForIndividualDevicesConsumptionPlotResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/IndividualDeviceReadings/DataForSubscriberAndNormativeConsumptionPlot`,
         method: 'GET',
         query: query,
@@ -10555,10 +10066,7 @@ export class Api<
      * @secure
      */
     individualDevicesDetail: (deviceId: number, params: RequestParams = {}) =>
-      this.request<
-        IndividualDeviceResponseSuccessApiResponse,
-        ErrorApiResponse
-      >({
+      this.request<IndividualDeviceResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/IndividualDevices/${deviceId}`,
         method: 'GET',
         secure: true,
@@ -10575,15 +10083,8 @@ export class Api<
      * @request PUT:/api/IndividualDevices/{deviceId}
      * @secure
      */
-    individualDevicesUpdate: (
-      deviceId: number,
-      data: UpdateIndividualDeviceRequest,
-      params: RequestParams = {},
-    ) =>
-      this.request<
-        IndividualDeviceResponseSuccessApiResponse,
-        ErrorApiResponse
-      >({
+    individualDevicesUpdate: (deviceId: number, data: UpdateIndividualDeviceRequest, params: RequestParams = {}) =>
+      this.request<IndividualDeviceResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/IndividualDevices/${deviceId}`,
         method: 'PUT',
         body: data,
@@ -10629,10 +10130,7 @@ export class Api<
       },
       params: RequestParams = {},
     ) =>
-      this.request<
-        IndividualDeviceListItemResponsePagedListSuccessApiResponse,
-        ErrorApiResponse
-      >({
+      this.request<IndividualDeviceListItemResponsePagedListSuccessApiResponse, ErrorApiResponse>({
         path: `/api/IndividualDevices`,
         method: 'GET',
         query: query,
@@ -10650,14 +10148,8 @@ export class Api<
      * @request POST:/api/IndividualDevices
      * @secure
      */
-    individualDevicesCreate: (
-      data: CreateIndividualDeviceRequest,
-      params: RequestParams = {},
-    ) =>
-      this.request<
-        IndividualDeviceResponseSuccessApiResponse,
-        ErrorApiResponse
-      >({
+    individualDevicesCreate: (data: CreateIndividualDeviceRequest, params: RequestParams = {}) =>
+      this.request<IndividualDeviceResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/IndividualDevices`,
         method: 'POST',
         body: data,
@@ -10681,10 +10173,7 @@ export class Api<
       data: UpdateIndividualDeviceSealRequest,
       params: RequestParams = {},
     ) =>
-      this.request<
-        IndividualDeviceResponseSuccessApiResponse,
-        ErrorApiResponse
-      >({
+      this.request<IndividualDeviceResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/IndividualDevices/${deviceId}/seal`,
         method: 'PUT',
         body: data,
@@ -10703,15 +10192,8 @@ export class Api<
      * @request POST:/api/IndividualDevices/{deviceId}/close
      * @secure
      */
-    individualDevicesCloseCreate: (
-      deviceId: number,
-      data: CloseIndividualDeviceRequest,
-      params: RequestParams = {},
-    ) =>
-      this.request<
-        IndividualDeviceResponseSuccessApiResponse,
-        ErrorApiResponse
-      >({
+    individualDevicesCloseCreate: (deviceId: number, data: CloseIndividualDeviceRequest, params: RequestParams = {}) =>
+      this.request<IndividualDeviceResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/IndividualDevices/${deviceId}/close`,
         method: 'POST',
         body: data,
@@ -10730,14 +10212,8 @@ export class Api<
      * @request POST:/api/IndividualDevices/{deviceId}/reopen
      * @secure
      */
-    individualDevicesReopenCreate: (
-      deviceId: number,
-      params: RequestParams = {},
-    ) =>
-      this.request<
-        IndividualDeviceResponseSuccessApiResponse,
-        ErrorApiResponse
-      >({
+    individualDevicesReopenCreate: (deviceId: number, params: RequestParams = {}) =>
+      this.request<IndividualDeviceResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/IndividualDevices/${deviceId}/reopen`,
         method: 'POST',
         secure: true,
@@ -10759,10 +10235,7 @@ export class Api<
       data: SwitchMagneticSealRequest,
       params: RequestParams = {},
     ) =>
-      this.request<
-        IndividualDeviceResponseSuccessApiResponse,
-        ErrorApiResponse
-      >({
+      this.request<IndividualDeviceResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/IndividualDevices/${deviceId}/SwitchMagneticSeal`,
         method: 'POST',
         body: data,
@@ -10786,10 +10259,7 @@ export class Api<
       data: SetMagneticSealRequest,
       params: RequestParams = {},
     ) =>
-      this.request<
-        IndividualDeviceResponseSuccessApiResponse,
-        ErrorApiResponse
-      >({
+      this.request<IndividualDeviceResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/IndividualDevices/${deviceId}/SetMagneticSeal`,
         method: 'POST',
         body: data,
@@ -10813,10 +10283,7 @@ export class Api<
       data: SwitchIndividualDeviceRequest,
       params: RequestParams = {},
     ) =>
-      this.request<
-        IndividualDeviceResponseSuccessApiResponse,
-        ErrorApiResponse
-      >({
+      this.request<IndividualDeviceResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/IndividualDevices/${deviceId}/switch`,
         method: 'POST',
         body: data,
@@ -10835,15 +10302,8 @@ export class Api<
      * @request POST:/api/IndividualDevices/{deviceId}/check
      * @secure
      */
-    individualDevicesCheckCreate: (
-      deviceId: number,
-      data: CheckIndividualDeviceRequest,
-      params: RequestParams = {},
-    ) =>
-      this.request<
-        IndividualDeviceResponseSuccessApiResponse,
-        ErrorApiResponse
-      >({
+    individualDevicesCheckCreate: (deviceId: number, data: CheckIndividualDeviceRequest, params: RequestParams = {}) =>
+      this.request<IndividualDeviceResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/IndividualDevices/${deviceId}/check`,
         method: 'POST',
         body: data,
@@ -10862,14 +10322,8 @@ export class Api<
      * @request GET:/api/IndividualDevices/{deviceId}/readingsHistory
      * @secure
      */
-    individualDevicesReadingsHistoryDetail: (
-      deviceId: number,
-      params: RequestParams = {},
-    ) =>
-      this.request<
-        IndividualDeviceReadingsHistoryResponseSuccessApiResponse,
-        ErrorApiResponse
-      >({
+    individualDevicesReadingsHistoryDetail: (deviceId: number, params: RequestParams = {}) =>
+      this.request<IndividualDeviceReadingsHistoryResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/IndividualDevices/${deviceId}/readingsHistory`,
         method: 'GET',
         secure: true,
@@ -10990,10 +10444,7 @@ export class Api<
      * @request POST:/api/IndividualDevices/{deviceId}/Delete
      * @secure
      */
-    individualDevicesDeleteCreate: (
-      deviceId: number,
-      params: RequestParams = {},
-    ) =>
+    individualDevicesDeleteCreate: (deviceId: number, params: RequestParams = {}) =>
       this.request<void, ErrorApiResponse>({
         path: `/api/IndividualDevices/${deviceId}/Delete`,
         method: 'POST',
@@ -11010,14 +10461,8 @@ export class Api<
      * @request GET:/api/IndividualDevices/{deviceId}/Consumption
      * @secure
      */
-    individualDevicesConsumptionDetail: (
-      deviceId: number,
-      params: RequestParams = {},
-    ) =>
-      this.request<
-        IndividualDeviceConsumptionResponseIEnumerableSuccessApiResponse,
-        ErrorApiResponse
-      >({
+    individualDevicesConsumptionDetail: (deviceId: number, params: RequestParams = {}) =>
+      this.request<IndividualDeviceConsumptionResponseIEnumerableSuccessApiResponse, ErrorApiResponse>({
         path: `/api/IndividualDevices/${deviceId}/Consumption`,
         method: 'GET',
         secure: true,
@@ -11034,14 +10479,8 @@ export class Api<
      * @request GET:/api/IndividualDevices/{deviceId}/LastReading
      * @secure
      */
-    individualDevicesLastReadingDetail: (
-      deviceId: number,
-      params: RequestParams = {},
-    ) =>
-      this.request<
-        IndividualDeviceReadingsSlimResponseSuccessApiResponse,
-        ErrorApiResponse
-      >({
+    individualDevicesLastReadingDetail: (deviceId: number, params: RequestParams = {}) =>
+      this.request<IndividualDeviceReadingsSlimResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/IndividualDevices/${deviceId}/LastReading`,
         method: 'GET',
         secure: true,
@@ -11050,7 +10489,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Оператор</li><li>Администратор УК без назначений задач</li>
+     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li><li>Администратор УК без назначений задач</li>
      *
      * @tags Inspectors
      * @name InspectorsList
@@ -11068,7 +10507,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Оператор</li><li>Администратор УК без назначений задач</li>
+     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li><li>Администратор УК без назначений задач</li>
      *
      * @tags Inspectors
      * @name InspectorsCreate
@@ -11076,10 +10515,7 @@ export class Api<
      * @request POST:/api/Inspectors
      * @secure
      */
-    inspectorsCreate: (
-      data: InspectorCreateRequest,
-      params: RequestParams = {},
-    ) =>
+    inspectorsCreate: (data: InspectorCreateRequest, params: RequestParams = {}) =>
       this.request<InspectorResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/Inspectors`,
         method: 'POST',
@@ -11091,7 +10527,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Оператор</li><li>Администратор УК без назначений задач</li>
+     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li><li>Администратор УК без назначений задач</li>
      *
      * @tags Inspectors
      * @name InspectorsDetail
@@ -11100,10 +10536,7 @@ export class Api<
      * @secure
      */
     inspectorsDetail: (inspectorId: number, params: RequestParams = {}) =>
-      this.request<
-        InspectorResponsePagedListSuccessApiResponse,
-        ErrorApiResponse
-      >({
+      this.request<InspectorResponsePagedListSuccessApiResponse, ErrorApiResponse>({
         path: `/api/Inspectors/${inspectorId}`,
         method: 'GET',
         secure: true,
@@ -11112,7 +10545,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Оператор</li><li>Администратор УК без назначений задач</li>
+     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li><li>Администратор УК без назначений задач</li>
      *
      * @tags Inspectors
      * @name InspectorsPartialUpdate
@@ -11120,11 +10553,7 @@ export class Api<
      * @request PATCH:/api/Inspectors/{inspectorId}
      * @secure
      */
-    inspectorsPartialUpdate: (
-      inspectorId: number,
-      data: InspectorUpdateRequest,
-      params: RequestParams = {},
-    ) =>
+    inspectorsPartialUpdate: (inspectorId: number, data: InspectorUpdateRequest, params: RequestParams = {}) =>
       this.request<InspectorResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/Inspectors/${inspectorId}`,
         method: 'PATCH',
@@ -11136,7 +10565,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Оператор</li><li>Администратор УК без назначений задач</li>
+     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li><li>Администратор УК без назначений задач</li>
      *
      * @tags Inspectors
      * @name InspectorsDelete
@@ -11153,7 +10582,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Оператор</li><li>Администратор УК без назначений задач</li>
+     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li><li>Администратор УК без назначений задач</li>
      *
      * @tags Inspectors
      * @name InspectorsHousingStocksPartialUpdate
@@ -11177,7 +10606,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Оператор</li><li>Администратор УК без назначений задач</li>
+     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li><li>Администратор УК без назначений задач</li>
      *
      * @tags Inspectors
      * @name InspectorsHousingStocksDelete
@@ -11185,10 +10614,7 @@ export class Api<
      * @request DELETE:/api/Inspectors/{inspectorId}/housingStocks
      * @secure
      */
-    inspectorsHousingStocksDelete: (
-      inspectorId: number,
-      params: RequestParams = {},
-    ) =>
+    inspectorsHousingStocksDelete: (inspectorId: number, params: RequestParams = {}) =>
       this.request<InspectorResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/Inspectors/${inspectorId}/housingStocks`,
         method: 'DELETE',
@@ -11206,14 +10632,8 @@ export class Api<
      * @request GET:/api/ManagingFirms/{managingFirmId}/ConsumptionRates
      * @secure
      */
-    managingFirmsConsumptionRatesDetail: (
-      managingFirmId: number,
-      params: RequestParams = {},
-    ) =>
-      this.request<
-        EResourceTypeConsumptionRateResponseDictionaryItemListSuccessApiResponse,
-        ErrorApiResponse
-      >({
+    managingFirmsConsumptionRatesDetail: (managingFirmId: number, params: RequestParams = {}) =>
+      this.request<EResourceTypeConsumptionRateResponseDictionaryItemListSuccessApiResponse, ErrorApiResponse>({
         path: `/api/ManagingFirms/${managingFirmId}/ConsumptionRates`,
         method: 'GET',
         secure: true,
@@ -11231,10 +10651,7 @@ export class Api<
      * @secure
      */
     managingFirmsTemperatureNormativesList: (params: RequestParams = {}) =>
-      this.request<
-        TemperatureNormativeResponseSuccessApiResponse,
-        ErrorApiResponse
-      >({
+      this.request<TemperatureNormativeResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/ManagingFirms/TemperatureNormatives`,
         method: 'GET',
         secure: true,
@@ -11251,10 +10668,7 @@ export class Api<
      * @request DELETE:/api/ManagingFirms/TemperatureNormatives
      * @secure
      */
-    managingFirmsTemperatureNormativesDelete: (
-      data: TemperatureNormativeDeleteRequest,
-      params: RequestParams = {},
-    ) =>
+    managingFirmsTemperatureNormativesDelete: (data: TemperatureNormativeDeleteRequest, params: RequestParams = {}) =>
       this.request<void, ErrorApiResponse>({
         path: `/api/ManagingFirms/TemperatureNormatives`,
         method: 'DELETE',
@@ -11277,10 +10691,7 @@ export class Api<
       data: TemperatureNormativeUpdateRequest,
       params: RequestParams = {},
     ) =>
-      this.request<
-        TemperatureNormativeResponseSuccessApiResponse,
-        ErrorApiResponse
-      >({
+      this.request<TemperatureNormativeResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/ManagingFirms/TemperatureNormatives/CreateOrUpdate`,
         method: 'POST',
         body: data,
@@ -11311,10 +10722,7 @@ export class Api<
       },
       params: RequestParams = {},
     ) =>
-      this.request<
-        TemperatureNormativeResponseSuccessApiResponse,
-        ErrorApiResponse
-      >({
+      this.request<TemperatureNormativeResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/ManagingFirms/TemperatureNormatives/CreateOrUpdateFromFile`,
         method: 'POST',
         body: data,
@@ -11333,9 +10741,7 @@ export class Api<
      * @request GET:/api/ManagingFirms/TemperatureNormatives/TemplateFile
      * @secure
      */
-    managingFirmsTemperatureNormativesTemplateFileList: (
-      params: RequestParams = {},
-    ) =>
+    managingFirmsTemperatureNormativesTemplateFileList: (params: RequestParams = {}) =>
       this.request<File, ErrorApiResponse>({
         path: `/api/ManagingFirms/TemperatureNormatives/TemplateFile`,
         method: 'GET',
@@ -11378,10 +10784,7 @@ export class Api<
       },
       params: RequestParams = {},
     ) =>
-      this.request<
-        MeteringDeviceListResponsePagedListSuccessApiResponse,
-        ErrorApiResponse
-      >({
+      this.request<MeteringDeviceListResponsePagedListSuccessApiResponse, ErrorApiResponse>({
         path: `/api/MeteringDevices`,
         method: 'GET',
         query: query,
@@ -11409,10 +10812,7 @@ export class Api<
       },
       params: RequestParams = {},
     ) =>
-      this.request<
-        MeteringDeviceSearchListResponseIEnumerableSuccessApiResponse,
-        ErrorApiResponse
-      >({
+      this.request<MeteringDeviceSearchListResponseIEnumerableSuccessApiResponse, ErrorApiResponse>({
         path: `/api/MeteringDevices/search`,
         method: 'GET',
         query: query,
@@ -11430,10 +10830,7 @@ export class Api<
      * @request GET:/api/MeteringDevices/{meteringDeviceId}
      * @secure
      */
-    meteringDevicesDetail: (
-      meteringDeviceId: number,
-      params: RequestParams = {},
-    ) =>
+    meteringDevicesDetail: (meteringDeviceId: number, params: RequestParams = {}) =>
       this.request<MeteringDeviceResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/MeteringDevices/${meteringDeviceId}`,
         method: 'GET',
@@ -11460,10 +10857,7 @@ export class Api<
       },
       params: RequestParams = {},
     ) =>
-      this.request<
-        MeteringDeviceListResponseIEnumerableSuccessApiResponse,
-        ErrorApiResponse
-      >({
+      this.request<MeteringDeviceListResponseIEnumerableSuccessApiResponse, ErrorApiResponse>({
         path: `/api/MeteringDevices/related`,
         method: 'GET',
         query: query,
@@ -11481,10 +10875,7 @@ export class Api<
      * @request POST:/api/MeteringDevices/close
      * @secure
      */
-    meteringDevicesCloseCreate: (
-      data: CloseDeviceRequest,
-      params: RequestParams = {},
-    ) =>
+    meteringDevicesCloseCreate: (data: CloseDeviceRequest, params: RequestParams = {}) =>
       this.request<any, ErrorApiResponse>({
         path: `/api/MeteringDevices/close`,
         method: 'POST',
@@ -11503,10 +10894,7 @@ export class Api<
      * @request POST:/api/MeteringDevices/check
      * @secure
      */
-    meteringDevicesCheckCreate: (
-      data: CheckDeviceRequest,
-      params: RequestParams = {},
-    ) =>
+    meteringDevicesCheckCreate: (data: CheckDeviceRequest, params: RequestParams = {}) =>
       this.request<any, ErrorApiResponse>({
         path: `/api/MeteringDevices/check`,
         method: 'POST',
@@ -11613,11 +11001,7 @@ export class Api<
      * @request POST:/api/Nodes/{nodeId}/Documents
      * @secure
      */
-    nodesDocumentsCreate: (
-      nodeId: number,
-      data: AddNodeDocumentsRequest,
-      params: RequestParams = {},
-    ) =>
+    nodesDocumentsCreate: (nodeId: number, data: AddNodeDocumentsRequest, params: RequestParams = {}) =>
       this.request<void, ErrorApiResponse>({
         path: `/api/Nodes/${nodeId}/Documents`,
         method: 'POST',
@@ -11651,10 +11035,7 @@ export class Api<
       },
       params: RequestParams = {},
     ) =>
-      this.request<
-        NodeCheckResponsePagedListSuccessApiResponse,
-        ErrorApiResponse
-      >({
+      this.request<NodeCheckResponsePagedListSuccessApiResponse, ErrorApiResponse>({
         path: `/api/Nodes/${nodeId}/Checks`,
         method: 'GET',
         query: query,
@@ -11672,11 +11053,7 @@ export class Api<
      * @request POST:/api/Nodes/{nodeId}/Checks
      * @secure
      */
-    nodesChecksCreate: (
-      nodeId: number,
-      data: CreateNodeCheckRequest,
-      params: RequestParams = {},
-    ) =>
+    nodesChecksCreate: (nodeId: number, data: CreateNodeCheckRequest, params: RequestParams = {}) =>
       this.request<NodeCheckResponse, ErrorApiResponse>({
         path: `/api/Nodes/${nodeId}/Checks`,
         method: 'POST',
@@ -11696,12 +11073,7 @@ export class Api<
      * @request PUT:/api/Nodes/{nodeId}/Checks/{checkId}
      * @secure
      */
-    nodesChecksUpdate: (
-      nodeId: number,
-      checkId: number,
-      data: UpdateNodeCheckRequest,
-      params: RequestParams = {},
-    ) =>
+    nodesChecksUpdate: (nodeId: number, checkId: number, data: UpdateNodeCheckRequest, params: RequestParams = {}) =>
       this.request<NodeCheckResponse, ErrorApiResponse>({
         path: `/api/Nodes/${nodeId}/Checks/${checkId}`,
         method: 'PUT',
@@ -11721,11 +11093,7 @@ export class Api<
      * @request DELETE:/api/Nodes/{nodeId}/Checks/{checkId}
      * @secure
      */
-    nodesChecksDelete: (
-      nodeId: number,
-      checkId: number,
-      params: RequestParams = {},
-    ) =>
+    nodesChecksDelete: (nodeId: number, checkId: number, params: RequestParams = {}) =>
       this.request<NodeCheckResponse, ErrorApiResponse>({
         path: `/api/Nodes/${nodeId}/Checks/${checkId}`,
         method: 'DELETE',
@@ -11813,10 +11181,7 @@ export class Api<
       },
       params: RequestParams = {},
     ) =>
-      this.request<
-        GetDataForHousingConsumptionPlotResponseSuccessApiResponse,
-        ErrorApiResponse
-      >({
+      this.request<GetDataForHousingConsumptionPlotResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/Nodes/DataForHousingConsumptionPlot`,
         method: 'GET',
         query: query,
@@ -11844,10 +11209,7 @@ export class Api<
       },
       params: RequestParams = {},
     ) =>
-      this.request<
-        GetSummaryHousingConsumptionsByResourcesResponseSuccessApiResponse,
-        ErrorApiResponse
-      >({
+      this.request<GetSummaryHousingConsumptionsByResourcesResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/Nodes/SummaryHousingConsumptionsByResources`,
         method: 'GET',
         query: query,
@@ -11866,10 +11228,7 @@ export class Api<
      * @secure
      */
     nodeServiceZonesList: (params: RequestParams = {}) =>
-      this.request<
-        NodeServiceZoneListResponseSuccessApiResponse,
-        ErrorApiResponse
-      >({
+      this.request<NodeServiceZoneListResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/NodeServiceZones`,
         method: 'GET',
         secure: true,
@@ -11886,21 +11245,16 @@ export class Api<
      * @request POST:/api/NodeServiceZones
      * @secure
      */
-    nodeServiceZonesCreate: (
-      data: NodeServiceZoneRequest,
-      params: RequestParams = {},
-    ) =>
-      this.request<NodeServiceZoneResponseSuccessApiResponse, ErrorApiResponse>(
-        {
-          path: `/api/NodeServiceZones`,
-          method: 'POST',
-          body: data,
-          secure: true,
-          type: ContentType.Json,
-          format: 'json',
-          ...params,
-        },
-      ),
+    nodeServiceZonesCreate: (data: NodeServiceZoneRequest, params: RequestParams = {}) =>
+      this.request<NodeServiceZoneResponseSuccessApiResponse, ErrorApiResponse>({
+        path: `/api/NodeServiceZones`,
+        method: 'POST',
+        body: data,
+        secure: true,
+        type: ContentType.Json,
+        format: 'json',
+        ...params,
+      }),
 
     /**
      * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Администратор УК без назначений задач</li><li>Контролёр</li>
@@ -11911,19 +11265,14 @@ export class Api<
      * @request GET:/api/NodeServiceZones/{nodeServiceZoneId}
      * @secure
      */
-    nodeServiceZonesDetail: (
-      nodeServiceZoneId: number,
-      params: RequestParams = {},
-    ) =>
-      this.request<NodeServiceZoneResponseSuccessApiResponse, ErrorApiResponse>(
-        {
-          path: `/api/NodeServiceZones/${nodeServiceZoneId}`,
-          method: 'GET',
-          secure: true,
-          format: 'json',
-          ...params,
-        },
-      ),
+    nodeServiceZonesDetail: (nodeServiceZoneId: number, params: RequestParams = {}) =>
+      this.request<NodeServiceZoneResponseSuccessApiResponse, ErrorApiResponse>({
+        path: `/api/NodeServiceZones/${nodeServiceZoneId}`,
+        method: 'GET',
+        secure: true,
+        format: 'json',
+        ...params,
+      }),
 
     /**
      * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Администратор УК без назначений задач</li>
@@ -11934,22 +11283,16 @@ export class Api<
      * @request PUT:/api/NodeServiceZones/{nodeServiceZoneId}
      * @secure
      */
-    nodeServiceZonesUpdate: (
-      nodeServiceZoneId: number,
-      data: NodeServiceZoneRequest,
-      params: RequestParams = {},
-    ) =>
-      this.request<NodeServiceZoneResponseSuccessApiResponse, ErrorApiResponse>(
-        {
-          path: `/api/NodeServiceZones/${nodeServiceZoneId}`,
-          method: 'PUT',
-          body: data,
-          secure: true,
-          type: ContentType.Json,
-          format: 'json',
-          ...params,
-        },
-      ),
+    nodeServiceZonesUpdate: (nodeServiceZoneId: number, data: NodeServiceZoneRequest, params: RequestParams = {}) =>
+      this.request<NodeServiceZoneResponseSuccessApiResponse, ErrorApiResponse>({
+        path: `/api/NodeServiceZones/${nodeServiceZoneId}`,
+        method: 'PUT',
+        body: data,
+        secure: true,
+        type: ContentType.Json,
+        format: 'json',
+        ...params,
+      }),
 
     /**
      * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Администратор УК без назначений задач</li>
@@ -11960,10 +11303,7 @@ export class Api<
      * @request DELETE:/api/NodeServiceZones/{nodeServiceZoneId}
      * @secure
      */
-    nodeServiceZonesDelete: (
-      nodeServiceZoneId: number,
-      params: RequestParams = {},
-    ) =>
+    nodeServiceZonesDelete: (nodeServiceZoneId: number, params: RequestParams = {}) =>
       this.request<void, ErrorApiResponse>({
         path: `/api/NodeServiceZones/${nodeServiceZoneId}`,
         method: 'DELETE',
@@ -11987,10 +11327,7 @@ export class Api<
       },
       params: RequestParams = {},
     ) =>
-      this.request<
-        AllNodeWorkingRangeResponseSuccessApiResponse,
-        ErrorApiResponse
-      >({
+      this.request<AllNodeWorkingRangeResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/NodeWorkingRange`,
         method: 'GET',
         query: query,
@@ -12016,10 +11353,7 @@ export class Api<
       },
       params: RequestParams = {},
     ) =>
-      this.request<
-        AllNodeWorkingRangeResponseSuccessApiResponse,
-        ErrorApiResponse
-      >({
+      this.request<AllNodeWorkingRangeResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/NodeWorkingRange/HouseManagement/${houseManagementId}`,
         method: 'GET',
         query: query,
@@ -12045,10 +11379,7 @@ export class Api<
       },
       params: RequestParams = {},
     ) =>
-      this.request<
-        AllNodeWorkingRangeResponseSuccessApiResponse,
-        ErrorApiResponse
-      >({
+      this.request<AllNodeWorkingRangeResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/NodeWorkingRange/HousingStock/${housingStockId}`,
         method: 'GET',
         query: query,
@@ -12073,10 +11404,7 @@ export class Api<
       },
       params: RequestParams = {},
     ) =>
-      this.request<
-        AllNodeWorkingRangeResponseSuccessApiResponse,
-        ErrorApiResponse
-      >({
+      this.request<AllNodeWorkingRangeResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/NodeWorkingRange/Node/${nodeId}`,
         method: 'GET',
         query: query,
@@ -12094,14 +11422,8 @@ export class Api<
      * @request POST:/api/NodeWorkingRange/AddOrUpdate
      * @secure
      */
-    nodeWorkingRangeAddOrUpdateCreate: (
-      data: AddOrUpdateNodeWorkingRangeRequest,
-      params: RequestParams = {},
-    ) =>
-      this.request<
-        ValueNodeWorkingRangeResponseSuccessApiResponse,
-        ErrorApiResponse
-      >({
+    nodeWorkingRangeAddOrUpdateCreate: (data: AddOrUpdateNodeWorkingRangeRequest, params: RequestParams = {}) =>
+      this.request<ValueNodeWorkingRangeResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/NodeWorkingRange/AddOrUpdate`,
         method: 'POST',
         body: data,
@@ -12120,10 +11442,7 @@ export class Api<
      * @request DELETE:/api/NodeWorkingRange/Disable
      * @secure
      */
-    nodeWorkingRangeDisableDelete: (
-      data: DisableNodeWorkingRangeRequest,
-      params: RequestParams = {},
-    ) =>
+    nodeWorkingRangeDisableDelete: (data: DisableNodeWorkingRangeRequest, params: RequestParams = {}) =>
       this.request<void, ErrorApiResponse>({
         path: `/api/NodeWorkingRange/Disable`,
         method: 'DELETE',
@@ -12143,10 +11462,7 @@ export class Api<
      * @secure
      */
     nodeWorkingRangeTypesList: (params: RequestParams = {}) =>
-      this.request<
-        ENodeWorkingRangeTypeStringDictionaryItemListSuccessApiResponse,
-        ErrorApiResponse
-      >({
+      this.request<ENodeWorkingRangeTypeStringDictionaryItemListSuccessApiResponse, ErrorApiResponse>({
         path: `/api/NodeWorkingRange/Types`,
         method: 'GET',
         secure: true,
@@ -12163,14 +11479,8 @@ export class Api<
      * @request POST:/api/NonResidentialBuildings
      * @secure
      */
-    nonResidentialBuildingsCreate: (
-      data: NonResidentialBuildingCreateRequest,
-      params: RequestParams = {},
-    ) =>
-      this.request<
-        NonResidentialBuildingResponseSuccessApiResponse,
-        ErrorApiResponse
-      >({
+    nonResidentialBuildingsCreate: (data: NonResidentialBuildingCreateRequest, params: RequestParams = {}) =>
+      this.request<NonResidentialBuildingResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/NonResidentialBuildings`,
         method: 'POST',
         body: data,
@@ -12194,10 +11504,7 @@ export class Api<
       data: NonResidentialBuildingUpdateRequest,
       params: RequestParams = {},
     ) =>
-      this.request<
-        NonResidentialBuildingResponseSuccessApiResponse,
-        ErrorApiResponse
-      >({
+      this.request<NonResidentialBuildingResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/NonResidentialBuildings/${buildingId}`,
         method: 'PUT',
         body: data,
@@ -12216,14 +11523,8 @@ export class Api<
      * @request GET:/api/NonResidentialBuildings/{buildingId}
      * @secure
      */
-    nonResidentialBuildingsDetail: (
-      buildingId: number,
-      params: RequestParams = {},
-    ) =>
-      this.request<
-        NonResidentialBuildingResponseSuccessApiResponse,
-        ErrorApiResponse
-      >({
+    nonResidentialBuildingsDetail: (buildingId: number, params: RequestParams = {}) =>
+      this.request<NonResidentialBuildingResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/NonResidentialBuildings/${buildingId}`,
         method: 'GET',
         secure: true,
@@ -12240,10 +11541,7 @@ export class Api<
      * @request DELETE:/api/NonResidentialBuildings/{buildingId}
      * @secure
      */
-    nonResidentialBuildingsDelete: (
-      buildingId: number,
-      params: RequestParams = {},
-    ) =>
+    nonResidentialBuildingsDelete: (buildingId: number, params: RequestParams = {}) =>
       this.request<void, ErrorApiResponse>({
         path: `/api/NonResidentialBuildings/${buildingId}`,
         method: 'DELETE',
@@ -12261,10 +11559,7 @@ export class Api<
      * @secure
      */
     organizationCompetencesList: (params: RequestParams = {}) =>
-      this.request<
-        ManagementFirmCompetencesListResponseSuccessApiResponse,
-        ErrorApiResponse
-      >({
+      this.request<ManagementFirmCompetencesListResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/OrganizationCompetences`,
         method: 'GET',
         secure: true,
@@ -12312,10 +11607,7 @@ export class Api<
       },
       params: RequestParams = {},
     ) =>
-      this.request<
-        OrganizationResponsePagedListSuccessApiResponse,
-        ErrorApiResponse
-      >({
+      this.request<OrganizationResponsePagedListSuccessApiResponse, ErrorApiResponse>({
         path: `/api/Organizations`,
         method: 'GET',
         query: query,
@@ -12351,11 +11643,7 @@ export class Api<
      * @request PUT:/api/Organizations/{managingFirmId}
      * @secure
      */
-    organizationsUpdate: (
-      managingFirmId: number,
-      data: OrganizationUpdateRequest,
-      params: RequestParams = {},
-    ) =>
+    organizationsUpdate: (managingFirmId: number, data: OrganizationUpdateRequest, params: RequestParams = {}) =>
       this.request<OrganizationResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/Organizations/${managingFirmId}`,
         method: 'PUT',
@@ -12393,10 +11681,7 @@ export class Api<
       },
       params: RequestParams = {},
     ) =>
-      this.request<
-        OrganizationUserListResponsePagedListSuccessApiResponse,
-        ErrorApiResponse
-      >({
+      this.request<OrganizationUserListResponsePagedListSuccessApiResponse, ErrorApiResponse>({
         path: `/api/OrganizationUsers`,
         method: 'GET',
         query: query,
@@ -12414,14 +11699,8 @@ export class Api<
      * @request POST:/api/OrganizationUsers
      * @secure
      */
-    organizationUsersCreate: (
-      data: OrganizationUserCreateRequest,
-      params: RequestParams = {},
-    ) =>
-      this.request<
-        OrganizationUserResponseSuccessApiResponse,
-        ErrorApiResponse
-      >({
+    organizationUsersCreate: (data: OrganizationUserCreateRequest, params: RequestParams = {}) =>
+      this.request<OrganizationUserResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/OrganizationUsers`,
         method: 'POST',
         body: data,
@@ -12441,10 +11720,7 @@ export class Api<
      * @secure
      */
     organizationUsersDetail: (userId: number, params: RequestParams = {}) =>
-      this.request<
-        OrganizationUserResponseSuccessApiResponse,
-        ErrorApiResponse
-      >({
+      this.request<OrganizationUserResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/OrganizationUsers/${userId}`,
         method: 'GET',
         secure: true,
@@ -12461,15 +11737,8 @@ export class Api<
      * @request PUT:/api/OrganizationUsers/{userId}
      * @secure
      */
-    organizationUsersUpdate: (
-      userId: number,
-      data: OrganizationUserUpdateRequest,
-      params: RequestParams = {},
-    ) =>
-      this.request<
-        OrganizationUserResponseSuccessApiResponse,
-        ErrorApiResponse
-      >({
+    organizationUsersUpdate: (userId: number, data: OrganizationUserUpdateRequest, params: RequestParams = {}) =>
+      this.request<OrganizationUserResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/OrganizationUsers/${userId}`,
         method: 'PUT',
         body: data,
@@ -12523,10 +11792,7 @@ export class Api<
      * @secure
      */
     organizationUsersCurrentList: (params: RequestParams = {}) =>
-      this.request<
-        OrganizationUserResponseSuccessApiResponse,
-        ErrorApiResponse
-      >({
+      this.request<OrganizationUserResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/OrganizationUsers/current`,
         method: 'GET',
         secure: true,
@@ -12543,18 +11809,11 @@ export class Api<
      * @request POST:/api/OrganizationUsers/{userId}/suspend
      * @secure
      */
-    organizationUsersSuspendCreate: (
-      userId: number,
-      params: RequestParams = {},
-    ) =>
-      this.request<
-        OrganizationUserResponseSuccessApiResponse,
-        ErrorApiResponse
-      >({
+    organizationUsersSuspendCreate: (userId: number, params: RequestParams = {}) =>
+      this.request<void, ErrorApiResponse>({
         path: `/api/OrganizationUsers/${userId}/suspend`,
         method: 'POST',
         secure: true,
-        format: 'json',
         ...params,
       }),
 
@@ -12576,19 +11835,15 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Администратор УК без назначений задач</li>
+     * No description
      *
      * @tags OrganizationUsers
      * @name OrganizationUsersRoleTypesList
-     * @summary UserRolesRead
      * @request GET:/api/OrganizationUsers/RoleTypes
      * @secure
      */
     organizationUsersRoleTypesList: (params: RequestParams = {}) =>
-      this.request<
-        ESecuredIdentityRoleNameStringDictionaryItemListSuccessApiResponse,
-        ErrorApiResponse
-      >({
+      this.request<ESecuredIdentityRoleNameStringDictionaryItemListSuccessApiResponse, ErrorApiResponse>({
         path: `/api/OrganizationUsers/RoleTypes`,
         method: 'GET',
         secure: true,
@@ -12615,10 +11870,7 @@ export class Api<
       },
       params: RequestParams = {},
     ) =>
-      this.request<
-        OrganizationUserStatisticsResponseSuccessApiResponse,
-        ErrorApiResponse
-      >({
+      this.request<OrganizationUserStatisticsResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/OrganizationUsers/${userId}/statistics`,
         method: 'GET',
         query: query,
@@ -12637,10 +11889,7 @@ export class Api<
      * @secure
      */
     organizationUserWorkingStatusesList: (params: RequestParams = {}) =>
-      this.request<
-        EOrganizationUserWorkingStatusTypeStringDictionaryItemListSuccessApiResponse,
-        ErrorApiResponse
-      >({
+      this.request<EOrganizationUserWorkingStatusTypeStringDictionaryItemListSuccessApiResponse, ErrorApiResponse>({
         path: `/api/OrganizationUserWorkingStatuses`,
         method: 'GET',
         secure: true,
@@ -12661,10 +11910,7 @@ export class Api<
       data: AddOrganizationUserWorkingStatusRequest,
       params: RequestParams = {},
     ) =>
-      this.request<
-        OrganizationUserWorkingStatusResponseSuccessApiResponse,
-        ErrorApiResponse
-      >({
+      this.request<OrganizationUserWorkingStatusResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/OrganizationUserWorkingStatuses`,
         method: 'POST',
         body: data,
@@ -12683,14 +11929,8 @@ export class Api<
      * @request GET:/api/PipeHousingMeteringDevices/{deviceId}
      * @secure
      */
-    pipeHousingMeteringDevicesDetail: (
-      deviceId: number,
-      params: RequestParams = {},
-    ) =>
-      this.request<
-        PipeHousingMeteringDeviceResponseSuccessApiResponse,
-        ErrorApiResponse
-      >({
+    pipeHousingMeteringDevicesDetail: (deviceId: number, params: RequestParams = {}) =>
+      this.request<PipeHousingMeteringDeviceResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/PipeHousingMeteringDevices/${deviceId}`,
         method: 'GET',
         secure: true,
@@ -12731,10 +11971,7 @@ export class Api<
      * @request DELETE:/api/PipeHousingMeteringDevices/{deviceId}
      * @secure
      */
-    pipeHousingMeteringDevicesDelete: (
-      deviceId: number,
-      params: RequestParams = {},
-    ) =>
+    pipeHousingMeteringDevicesDelete: (deviceId: number, params: RequestParams = {}) =>
       this.request<any, ErrorApiResponse>({
         path: `/api/PipeHousingMeteringDevices/${deviceId}`,
         method: 'DELETE',
@@ -12751,10 +11988,7 @@ export class Api<
      * @request POST:/api/PipeHousingMeteringDevices
      * @secure
      */
-    pipeHousingMeteringDevicesCreate: (
-      data: CreatePipeHousingMeteringDeviceRequest,
-      params: RequestParams = {},
-    ) =>
+    pipeHousingMeteringDevicesCreate: (data: CreatePipeHousingMeteringDeviceRequest, params: RequestParams = {}) =>
       this.request<MeteringDeviceResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/PipeHousingMeteringDevices`,
         method: 'POST',
@@ -12792,11 +12026,7 @@ export class Api<
      * @request PUT:/api/PipeNodes/{pipeNodeId}
      * @secure
      */
-    pipeNodesUpdate: (
-      pipeNodeId: number,
-      data: UpdatePipeNodeRequest,
-      params: RequestParams = {},
-    ) =>
+    pipeNodesUpdate: (pipeNodeId: number, data: UpdatePipeNodeRequest, params: RequestParams = {}) =>
       this.request<PipeNodeResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/PipeNodes/${pipeNodeId}`,
         method: 'PUT',
@@ -12816,10 +12046,7 @@ export class Api<
      * @request POST:/api/PipeNodes/validate
      * @secure
      */
-    pipeNodesValidateCreate: (
-      data: CreatePipeNodeRequest,
-      params: RequestParams = {},
-    ) =>
+    pipeNodesValidateCreate: (data: CreatePipeNodeRequest, params: RequestParams = {}) =>
       this.request<PipeNodeValidationResultResponse, ErrorApiResponse>({
         path: `/api/PipeNodes/validate`,
         method: 'POST',
@@ -12839,10 +12066,7 @@ export class Api<
      * @request POST:/api/PipeNodes
      * @secure
      */
-    pipeNodesCreate: (
-      data: CreatePipeNodeRequest,
-      params: RequestParams = {},
-    ) =>
+    pipeNodesCreate: (data: CreatePipeNodeRequest, params: RequestParams = {}) =>
       this.request<PipeNodeResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/PipeNodes`,
         method: 'POST',
@@ -12918,10 +12142,7 @@ export class Api<
       },
       params: RequestParams = {},
     ) =>
-      this.request<
-        CommunicationPipeForAddingDeviceListResponseSuccessApiResponse,
-        ErrorApiResponse
-      >({
+      this.request<CommunicationPipeForAddingDeviceListResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/PipeNodes/${pipeNodeId}/PipesForAddingDevice`,
         method: 'GET',
         query: query,
@@ -12945,10 +12166,7 @@ export class Api<
       },
       params: RequestParams = {},
     ) =>
-      this.request<
-        EMagistralTypeStringDictionaryItemListSuccessApiResponse,
-        ErrorApiResponse
-      >({
+      this.request<EMagistralTypeStringDictionaryItemListSuccessApiResponse, ErrorApiResponse>({
         path: `/api/PipeNodes/PipeMagistralTypes`,
         method: 'GET',
         query: query,
@@ -12966,10 +12184,7 @@ export class Api<
      * @request GET:/api/PipeNodes/{pipeNodeId}/MeteringDevices
      * @secure
      */
-    pipeNodesMeteringDevicesDetail: (
-      pipeNodeId: number,
-      params: RequestParams = {},
-    ) =>
+    pipeNodesMeteringDevicesDetail: (pipeNodeId: number, params: RequestParams = {}) =>
       this.request<PipeNodeMeteringDeviceResponse[], ErrorApiResponse>({
         path: `/api/PipeNodes/${pipeNodeId}/MeteringDevices`,
         method: 'GET',
@@ -13006,15 +12221,13 @@ export class Api<
      * @secure
      */
     reportsList: (params: RequestParams = {}) =>
-      this.request<GroupReportFormResponseSuccessApiResponse, ErrorApiResponse>(
-        {
-          path: `/api/Reports`,
-          method: 'GET',
-          secure: true,
-          format: 'json',
-          ...params,
-        },
-      ),
+      this.request<GroupReportFormResponseSuccessApiResponse, ErrorApiResponse>({
+        path: `/api/Reports`,
+        method: 'GET',
+        secure: true,
+        format: 'json',
+        ...params,
+      }),
 
     /**
      * @description Роли:<li>Администратор</li><li>Администратор УК без назначений задач</li>
@@ -13025,10 +12238,7 @@ export class Api<
      * @request POST:/api/Reports
      * @secure
      */
-    reportsCreate: (
-      data: CreateGroupReportRequest,
-      params: RequestParams = {},
-    ) =>
+    reportsCreate: (data: CreateGroupReportRequest, params: RequestParams = {}) =>
       this.request<GroupReportResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/Reports`,
         method: 'POST',
@@ -13174,10 +12384,7 @@ export class Api<
      * @request POST:/api/Reports/SendGroupReport
      * @secure
      */
-    reportsSendGroupReportCreate: (
-      data: SendGroupReportRequest,
-      params: RequestParams = {},
-    ) =>
+    reportsSendGroupReportCreate: (data: SendGroupReportRequest, params: RequestParams = {}) =>
       this.request<void, ErrorApiResponse>({
         path: `/api/Reports/SendGroupReport`,
         method: 'POST',
@@ -13262,9 +12469,7 @@ export class Api<
      * @request GET:/api/Reports/ApartmentsWithPreviousBrokenDevicesReport
      * @secure
      */
-    reportsApartmentsWithPreviousBrokenDevicesReportList: (
-      params: RequestParams = {},
-    ) =>
+    reportsApartmentsWithPreviousBrokenDevicesReportList: (params: RequestParams = {}) =>
       this.request<FileContentResultSuccessApiResponse, ErrorApiResponse>({
         path: `/api/Reports/ApartmentsWithPreviousBrokenDevicesReport`,
         method: 'GET',
@@ -13508,10 +12713,7 @@ export class Api<
       },
       params: RequestParams = {},
     ) =>
-      this.request<
-        ApartmentActsConstructedReportResponseSuccessApiResponse,
-        ErrorApiResponse
-      >({
+      this.request<ApartmentActsConstructedReportResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/Reports/ApartmentActsReport`,
         method: 'GET',
         query: query,
@@ -13580,10 +12782,7 @@ export class Api<
       },
       params: RequestParams = {},
     ) =>
-      this.request<
-        HousingDevicesConstructedReportResponseIEnumerableSuccessApiResponse,
-        ErrorApiResponse
-      >({
+      this.request<HousingDevicesConstructedReportResponseIEnumerableSuccessApiResponse, ErrorApiResponse>({
         path: `/api/Reports/HousingDevicesReport`,
         method: 'GET',
         query: query,
@@ -13647,10 +12846,7 @@ export class Api<
       },
       params: RequestParams = {},
     ) =>
-      this.request<
-        HomeownersConstructedReportResponseSuccessApiResponse,
-        ErrorApiResponse
-      >({
+      this.request<HomeownersConstructedReportResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/Reports/HomeownersReport`,
         method: 'GET',
         query: query,
@@ -13717,10 +12913,7 @@ export class Api<
       },
       params: RequestParams = {},
     ) =>
-      this.request<
-        IndividualDevicesConstructedReportResponseIEnumerableSuccessApiResponse,
-        ErrorApiResponse
-      >({
+      this.request<IndividualDevicesConstructedReportResponseIEnumerableSuccessApiResponse, ErrorApiResponse>({
         path: `/api/Reports/IndividualDevicesReport`,
         method: 'GET',
         query: query,
@@ -13784,10 +12977,7 @@ export class Api<
       },
       params: RequestParams = {},
     ) =>
-      this.request<
-        OperatorsConstructedReportResponseIEnumerableSuccessApiResponse,
-        ErrorApiResponse
-      >({
+      this.request<OperatorsConstructedReportResponseIEnumerableSuccessApiResponse, ErrorApiResponse>({
         path: `/api/Reports/OperatorsWorkingReport`,
         method: 'GET',
         query: query,
@@ -13841,10 +13031,7 @@ export class Api<
       },
       params: RequestParams = {},
     ) =>
-      this.request<
-        InspectorsConstructedReportResponseIEnumerableSuccessApiResponse,
-        ErrorApiResponse
-      >({
+      this.request<InspectorsConstructedReportResponseIEnumerableSuccessApiResponse, ErrorApiResponse>({
         path: `/api/Reports/InspectorsWorkingReport`,
         method: 'GET',
         query: query,
@@ -13898,10 +13085,7 @@ export class Api<
       },
       params: RequestParams = {},
     ) =>
-      this.request<
-        CallCenterWorkingConstructedReportResponseIEnumerableSuccessApiResponse,
-        ErrorApiResponse
-      >({
+      this.request<CallCenterWorkingConstructedReportResponseIEnumerableSuccessApiResponse, ErrorApiResponse>({
         path: `/api/Reports/CallCenterWorkingReport`,
         method: 'GET',
         query: query,
@@ -13955,10 +13139,7 @@ export class Api<
       },
       params: RequestParams = {},
     ) =>
-      this.request<
-        HouseManagementConstructedReportResponseIEnumerableSuccessApiResponse,
-        ErrorApiResponse
-      >({
+      this.request<HouseManagementConstructedReportResponseIEnumerableSuccessApiResponse, ErrorApiResponse>({
         path: `/api/Reports/HouseManagementsReport`,
         method: 'GET',
         query: query,
@@ -14034,10 +13215,7 @@ export class Api<
       },
       params: RequestParams = {},
     ) =>
-      this.request<
-        ResourceDisconnectingResponsePagedListSuccessApiResponse,
-        ErrorApiResponse
-      >({
+      this.request<ResourceDisconnectingResponsePagedListSuccessApiResponse, ErrorApiResponse>({
         path: `/api/ResourceDisconnecting`,
         method: 'GET',
         query: query,
@@ -14055,14 +13233,8 @@ export class Api<
      * @request POST:/api/ResourceDisconnecting
      * @secure
      */
-    resourceDisconnectingCreate: (
-      data: ResourceDisconnectingCreateRequest,
-      params: RequestParams = {},
-    ) =>
-      this.request<
-        ResourceDisconnectingResponseSuccessApiResponse,
-        ErrorApiResponse
-      >({
+    resourceDisconnectingCreate: (data: ResourceDisconnectingCreateRequest, params: RequestParams = {}) =>
+      this.request<ResourceDisconnectingResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/ResourceDisconnecting`,
         method: 'POST',
         body: data,
@@ -14131,10 +13303,7 @@ export class Api<
      * @secure
      */
     resourceDisconnectingDetail: (id: string, params: RequestParams = {}) =>
-      this.request<
-        ResourceDisconnectingResponseSuccessApiResponse,
-        ErrorApiResponse
-      >({
+      this.request<ResourceDisconnectingResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/ResourceDisconnecting/${id}`,
         method: 'GET',
         secure: true,
@@ -14153,15 +13322,8 @@ export class Api<
      * @duplicate
      * @secure
      */
-    resourceDisconnectingCreate2: (
-      id: string,
-      data: ResourceDisconnectingUpdateRequest,
-      params: RequestParams = {},
-    ) =>
-      this.request<
-        ResourceDisconnectingResponseSuccessApiResponse,
-        ErrorApiResponse
-      >({
+    resourceDisconnectingCreate2: (id: string, data: ResourceDisconnectingUpdateRequest, params: RequestParams = {}) =>
+      this.request<ResourceDisconnectingResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/ResourceDisconnecting/${id}`,
         method: 'POST',
         body: data,
@@ -14197,11 +13359,7 @@ export class Api<
      * @request POST:/api/ResourceDisconnecting/{id}/AddDocument/{documentId}
      * @secure
      */
-    resourceDisconnectingAddDocumentCreate: (
-      id: string,
-      documentId: number,
-      params: RequestParams = {},
-    ) =>
+    resourceDisconnectingAddDocumentCreate: (id: string, documentId: number, params: RequestParams = {}) =>
       this.request<void, ErrorApiResponse>({
         path: `/api/ResourceDisconnecting/${id}/AddDocument/${documentId}`,
         method: 'POST',
@@ -14218,10 +13376,7 @@ export class Api<
      * @request POST:/api/ResourceDisconnecting/{id}/DeleteDocument
      * @secure
      */
-    resourceDisconnectingDeleteDocumentCreate: (
-      id: string,
-      params: RequestParams = {},
-    ) =>
+    resourceDisconnectingDeleteDocumentCreate: (id: string, params: RequestParams = {}) =>
       this.request<void, ErrorApiResponse>({
         path: `/api/ResourceDisconnecting/${id}/DeleteDocument`,
         method: 'POST',
@@ -14238,10 +13393,7 @@ export class Api<
      * @request POST:/api/ResourceDisconnecting/{id}/Complete
      * @secure
      */
-    resourceDisconnectingCompleteCreate: (
-      id: string,
-      params: RequestParams = {},
-    ) =>
+    resourceDisconnectingCompleteCreate: (id: string, params: RequestParams = {}) =>
       this.request<void, ErrorApiResponse>({
         path: `/api/ResourceDisconnecting/${id}/Complete`,
         method: 'POST',
@@ -14259,10 +13411,7 @@ export class Api<
      * @secure
      */
     resourceDisconnectingFiltersList: (params: RequestParams = {}) =>
-      this.request<
-        ResourceDisconnectingFilterResponseSuccessApiResponse,
-        ErrorApiResponse
-      >({
+      this.request<ResourceDisconnectingFilterResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/ResourceDisconnecting/filters`,
         method: 'GET',
         secure: true,
@@ -14340,10 +13489,7 @@ export class Api<
       },
       params: RequestParams = {},
     ) =>
-      this.request<
-        SubscriberStatisticsСonsumptionResponseListSuccessApiResponse,
-        ErrorApiResponse
-      >({
+      this.request<SubscriberStatisticsСonsumptionResponseListSuccessApiResponse, ErrorApiResponse>({
         path: `/api/SubscriberStatistics`,
         method: 'GET',
         query: query,
@@ -14513,23 +13659,6 @@ export class Api<
      * @description Роли:<li>Диспетчер УК</li>
      *
      * @tags Tasks
-     * @name TasksDelete
-     * @summary TaskDelete
-     * @request DELETE:/api/Tasks/{taskId}
-     * @secure
-     */
-    tasksDelete: (taskId: number, params: RequestParams = {}) =>
-      this.request<void, ErrorApiResponse>({
-        path: `/api/Tasks/${taskId}`,
-        method: 'DELETE',
-        secure: true,
-        ...params,
-      }),
-
-    /**
-     * @description Роли:<li>Диспетчер УК</li>
-     *
-     * @tags Tasks
      * @name TasksCreateCreate
      * @summary TaskCreate
      * @request POST:/api/Tasks/create
@@ -14573,11 +13702,7 @@ export class Api<
      * @request POST:/api/Tasks/{taskId}/PushStage
      * @secure
      */
-    tasksPushStageCreate: (
-      taskId: number,
-      data: StagePushRequest,
-      params: RequestParams = {},
-    ) =>
+    tasksPushStageCreate: (taskId: number, data: StagePushRequest, params: RequestParams = {}) =>
       this.request<void, ErrorApiResponse>({
         path: `/api/Tasks/${taskId}/PushStage`,
         method: 'POST',
@@ -14596,11 +13721,7 @@ export class Api<
      * @request POST:/api/Tasks/{taskId}/RevertStage
      * @secure
      */
-    tasksRevertStageCreate: (
-      taskId: number,
-      data: StageRevertRequest,
-      params: RequestParams = {},
-    ) =>
+    tasksRevertStageCreate: (taskId: number, data: StageRevertRequest, params: RequestParams = {}) =>
       this.request<void, ErrorApiResponse>({
         path: `/api/Tasks/${taskId}/RevertStage`,
         method: 'POST',
@@ -14620,10 +13741,7 @@ export class Api<
      * @secure
      */
     tasksNextStagesDetail: (taskId: number, params: RequestParams = {}) =>
-      this.request<
-        StageListResponseWrappedListResponseSuccessApiResponse,
-        ErrorApiResponse
-      >({
+      this.request<StageListResponseWrappedListResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/Tasks/${taskId}/NextStages`,
         method: 'GET',
         secure: true,
@@ -14640,11 +13758,7 @@ export class Api<
      * @request POST:/api/Tasks/{taskId}/Comments
      * @secure
      */
-    tasksCommentsCreate: (
-      taskId: number,
-      data: TaskCommentRequest,
-      params: RequestParams = {},
-    ) =>
+    tasksCommentsCreate: (taskId: number, data: TaskCommentRequest, params: RequestParams = {}) =>
       this.request<TaskCommentResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/Tasks/${taskId}/Comments`,
         method: 'POST',
@@ -14664,12 +13778,7 @@ export class Api<
      * @request PUT:/api/Tasks/{taskId}/Comments/{commentId}
      * @secure
      */
-    tasksCommentsUpdate: (
-      taskId: number,
-      commentId: number,
-      data: TaskCommentRequest,
-      params: RequestParams = {},
-    ) =>
+    tasksCommentsUpdate: (taskId: number, commentId: number, data: TaskCommentRequest, params: RequestParams = {}) =>
       this.request<TaskCommentResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/Tasks/${taskId}/Comments/${commentId}`,
         method: 'PUT',
@@ -14689,11 +13798,7 @@ export class Api<
      * @request DELETE:/api/Tasks/{taskId}/Comments/{commentId}
      * @secure
      */
-    tasksCommentsDelete: (
-      taskId: number,
-      commentId: number,
-      params: RequestParams = {},
-    ) =>
+    tasksCommentsDelete: (taskId: number, commentId: number, params: RequestParams = {}) =>
       this.request<void, ErrorApiResponse>({
         path: `/api/Tasks/${taskId}/Comments/${commentId}`,
         method: 'DELETE',
@@ -14710,11 +13815,7 @@ export class Api<
      * @request DELETE:/api/Tasks/{taskId}/Documents/{documentId}
      * @secure
      */
-    tasksDocumentsDelete: (
-      taskId: number,
-      documentId: number,
-      params: RequestParams = {},
-    ) =>
+    tasksDocumentsDelete: (taskId: number, documentId: number, params: RequestParams = {}) =>
       this.request<void, ErrorApiResponse>({
         path: `/api/Tasks/${taskId}/Documents/${documentId}`,
         method: 'DELETE',
@@ -14810,10 +13911,7 @@ export class Api<
      * @secure
      */
     tasksErpSourcesList: (params: RequestParams = {}) =>
-      this.request<
-        ErpSourceResponseIEnumerableSuccessApiResponse,
-        ErrorApiResponse
-      >({
+      this.request<ErpSourceResponseIEnumerableSuccessApiResponse, ErrorApiResponse>({
         path: `/api/Tasks/ErpSources`,
         method: 'GET',
         secure: true,
@@ -14831,10 +13929,7 @@ export class Api<
      * @secure
      */
     tasksErpTaskReasonsList: (params: RequestParams = {}) =>
-      this.request<
-        ErpTaskReasonGroupResponseIEnumerableSuccessApiResponse,
-        ErrorApiResponse
-      >({
+      this.request<ErpTaskReasonGroupResponseIEnumerableSuccessApiResponse, ErrorApiResponse>({
         path: `/api/Tasks/ErpTaskReasons`,
         method: 'GET',
         secure: true,
@@ -14869,14 +13964,8 @@ export class Api<
      * @request GET:/api/Tasks/{taskId}/application/brigade
      * @secure
      */
-    tasksApplicationBrigadeDetail: (
-      taskId: number,
-      params: RequestParams = {},
-    ) =>
-      this.request<
-        ErpExecutorResponseIEnumerableSuccessApiResponse,
-        ErrorApiResponse
-      >({
+    tasksApplicationBrigadeDetail: (taskId: number, params: RequestParams = {}) =>
+      this.request<ErpExecutorResponseIEnumerableSuccessApiResponse, ErrorApiResponse>({
         path: `/api/Tasks/${taskId}/application/brigade`,
         method: 'GET',
         secure: true,
@@ -14901,16 +13990,14 @@ export class Api<
       },
       params: RequestParams = {},
     ) =>
-      this.request<ErpTaskDeadlineResponseSuccessApiResponse, ErrorApiResponse>(
-        {
-          path: `/api/Tasks/ErpTaskDeadline`,
-          method: 'GET',
-          query: query,
-          secure: true,
-          format: 'json',
-          ...params,
-        },
-      ),
+      this.request<ErpTaskDeadlineResponseSuccessApiResponse, ErrorApiResponse>({
+        path: `/api/Tasks/ErpTaskDeadline`,
+        method: 'GET',
+        query: query,
+        secure: true,
+        format: 'json',
+        ...params,
+      }),
 
     /**
      * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Администратор УК без назначений задач</li><li>Контролёр</li>
@@ -14929,10 +14016,7 @@ export class Api<
       },
       params: RequestParams = {},
     ) =>
-      this.request<
-        ErpExecutorResponseIEnumerableSuccessApiResponse,
-        ErrorApiResponse
-      >({
+      this.request<ErpExecutorResponseIEnumerableSuccessApiResponse, ErrorApiResponse>({
         path: `/api/Tasks/ErpTaskExecutors`,
         method: 'GET',
         query: query,
@@ -14950,10 +14034,7 @@ export class Api<
      * @request POST:/api/Tasks/ErpCreateTask
      * @secure
      */
-    tasksErpCreateTaskCreate: (
-      data: ErpCreateTaskRequest,
-      params: RequestParams = {},
-    ) =>
+    tasksErpCreateTaskCreate: (data: ErpCreateTaskRequest, params: RequestParams = {}) =>
       this.request<void, ErrorApiResponse>({
         path: `/api/Tasks/ErpCreateTask`,
         method: 'POST',
@@ -14991,10 +14072,7 @@ export class Api<
      * @secure
      */
     temperatureNormativeList: (params: RequestParams = {}) =>
-      this.request<
-        TemperatureNormativeResponseSuccessApiResponse,
-        ErrorApiResponse
-      >({
+      this.request<TemperatureNormativeResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/TemperatureNormative`,
         method: 'GET',
         secure: true,
@@ -15012,14 +14090,8 @@ export class Api<
      * @deprecated
      * @secure
      */
-    temperatureNormativeUpdate: (
-      data: TemperatureNormativeUpdateRequest,
-      params: RequestParams = {},
-    ) =>
-      this.request<
-        TemperatureNormativeResponseSuccessApiResponse,
-        ErrorApiResponse
-      >({
+    temperatureNormativeUpdate: (data: TemperatureNormativeUpdateRequest, params: RequestParams = {}) =>
+      this.request<TemperatureNormativeResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/TemperatureNormative`,
         method: 'PUT',
         body: data,
