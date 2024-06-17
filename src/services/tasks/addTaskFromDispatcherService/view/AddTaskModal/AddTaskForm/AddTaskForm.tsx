@@ -255,6 +255,7 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
 
       setFieldValue('taskType', singularTaskType);
       handleSelectTaskType(singularTaskType);
+      handleSearchExecutor();
 
       if (isNoAdditionalFieldsRequired) {
         next(4);
@@ -274,6 +275,7 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
     setFieldValue,
     next,
     handleSelectTaskType,
+    handleSearchExecutor,
     isSubscriberAndSourceNumberRequired,
     isOnlySourceNumberRequired,
     isOnlySubscriberRequired,
