@@ -30,8 +30,6 @@ const $EmployeeId = createStore<number | null>(null).on(
   (_, id) => id,
 );
 
-handleCatchEmployeeId.watch((id) => console.log(id) )
-
 sample({
   clock: handleDelete,
   source: $EmployeeId,

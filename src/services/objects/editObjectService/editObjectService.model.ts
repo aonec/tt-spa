@@ -99,7 +99,6 @@ sample({
   clock: handleCreateHousingStockAddress,
   source: ObjectIdGate.state,
   fn: (gateState, clockPayload) => {
-    console.log("1")
     return { housingStockId: gateState.buildingId, data: clockPayload };
   },
   target: createHousingStockAddressFx,
