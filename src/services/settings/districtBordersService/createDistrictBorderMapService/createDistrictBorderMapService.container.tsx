@@ -10,6 +10,7 @@ import {
 import { useNavigate } from 'react-router-dom';
 
 const {
+  inputs,
   outputs,
   gates: { CreateDistrictGate },
 } = createDistrictBorderMapService;
@@ -49,6 +50,7 @@ export const CreateDistrictBorderMapContainer = () => {
         preselectedDistrictPayload={preselectedDistrictPayload}
         organizationCoordinates={organizationCoordinates}
         isLoadingPostDistrict={isLoadingPostDistrict}
+        setDistrictPayload={inputs.setDistrictPayload}
       />
     </>
   );

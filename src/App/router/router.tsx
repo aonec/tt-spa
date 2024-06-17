@@ -289,7 +289,7 @@ export const useRoutes = (
             {
               path: '/districtBordersSettings/createByHousingStocksList',
               element:
-                isOperator ? (
+              isSeniorOperator || isOperator ? (
                   <DistrictBordersByAddressContainer />
                 ) : (
                   <AccessDeniedPage />
@@ -298,7 +298,7 @@ export const useRoutes = (
             {
               path: '/districtBordersSettings/editDistrictBorders/:id',
               element:
-                isOperator ? (
+              isSeniorOperator || isOperator ? (
                   <EditDistrictBordersContainer />
                 ) : (
                   <AccessDeniedPage />
@@ -307,7 +307,7 @@ export const useRoutes = (
             {
               path: '/districtBordersSettings/createByMap',
               element:
-                isAdministrator ? (
+              isSeniorOperator || isAdministrator ? (
                   <CreateDistrictBorderMapContainer />
                 ) : (
                   <AccessDeniedPage />
@@ -316,7 +316,7 @@ export const useRoutes = (
             {
               path: '/districtBordersSettings/manageDistricts',
               element:
-                isAdministrator ? (
+              isSeniorOperator || isAdministrator ? (
                   <ManageDistrictsMapContainer />
                 ) : (
                   <AccessDeniedPage />
