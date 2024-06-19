@@ -18,7 +18,7 @@ export const AutoComplete = styled(AutoCompleteAntD)<{ small?: boolean }>`
 
     .ant-select-selection-search .ant-select-selection-search-input {
       padding: 0px;
-      margin: ${({ small }) => (small ? '0px' : '8px')} 4px !important;
+      margin: 0px 4px !important;
     }
 
     ${({ small }) => !small && FormAutoCompleteStyles}
