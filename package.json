@@ -80,6 +80,7 @@
   "lint-staged": {
     "src/**/*.{js,jsx,ts,tsx,json,md}": [
       "prettier --write",
+      "tsc --noEmit",
       "eslint --max-warnings 0"
     ]
   },
@@ -111,6 +112,8 @@
     "@types/styled-components": "^5.1.7",
     "@types/yandex-maps": "^2.1.35",
     "@types/yup": "^0.29.11",
+    "@typescript-eslint/eslint-plugin": "^7.13.1",
+    "@typescript-eslint/parser": "^7.13.1",
     "@vitejs/plugin-react": "^4.2.1",
     "babel-plugin-named-exports-order": "^0.0.2",
     "esbuild-plugin-react-virtualized": "^1.0.4",
