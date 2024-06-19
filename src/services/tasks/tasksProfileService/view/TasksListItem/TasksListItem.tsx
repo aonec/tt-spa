@@ -22,6 +22,7 @@ import {
   Wrapper,
 } from './TasksListItem.styled';
 import { TasksListItemProps } from './TasksListItem.types';
+import { EmergencyPanel } from './EmergencyPanel';
 
 export const TasksListItem: FC<TasksListItemProps> = ({ task }) => {
   const {
@@ -75,13 +76,16 @@ export const TasksListItem: FC<TasksListItemProps> = ({ task }) => {
     );
   }, [DeviceIcon, targetObject]);
 
+  const isEmergency = task.type === EManagingFirmTaskType.EmergencyApplication;
+
   return (
     <Wrapper data-test="task-item">
       <Link to={`/tasks/profile/${id}`}>
-        <TaskItemWrapper>
+        <TaskItemWrapper isEmergency={isEmergency}>
           <NameRowWrapper>
             <TaskNameWrapper className="task-item-title">
               {preparedTaskTitle}
+              {isEmergency && <EmergencyPanel />}
             </TaskNameWrapper>
             <span>{currentStage && name}</span>
           </NameRowWrapper>
