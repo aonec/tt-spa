@@ -710,12 +710,17 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
             <GridContainerAsymmetricThreeColumn>
               <DatePicker
                 data-reading-input={dataKey}
+                preserveInvalidOnBlur={true}
                 allowClear
                 format="DD.MM.YYYY"
                 open={isDatePickerOpen}
-                onFocus={() => setDatePickerOpen(true)}
+                onFocus={() => {
+                  setDatePickerOpen(true);
+                }}
+                onBlur={() => setDatePickerOpen(false)}
                 onMouseDown={() => {
                   setDatePickerOpen(!isDatePickerOpen);
+                  setFieldValue('taskDeadlineDate', null);
                 }}
                 value={values.taskDeadlineDate}
                 onChange={(value) => {
@@ -737,34 +742,58 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
                     next(8);
                   }
                 }}
-                onKeyDown={fromEnter(() => {
-                  setFieldValue('taskDeadlineDate', dayjs());
-                  setDatePickerOpen(false);
+                onKeyDown={(event: any) => {
+                  if (
+                    (event.key !== 'Backspace' &&
+                      event.currentTarget.value.length === 2) ||
+                    (event.key !== 'Backspace' &&
+                      event.currentTarget.value.length === 5)
+                  ) {
+                    if (event.currentTarget.value.length === 2) {
+                      event.currentTarget.value =
+                        event.currentTarget.value + '.';
+                    }
+                    if (event.currentTarget.value.length === 5) {
+                      event.currentTarget.value =
+                        event.currentTarget.value + '.';
+                    }
+                  }
 
-                  if (isNoAdditionalFieldsRequired) {
-                    next(5);
-                  }
-                  if (isOnlySourceNumberRequired) {
-                    next(6);
-                  }
-                  if (isOnlySubscriberRequired) {
-                    next(7);
-                  }
-                  if (isSubscriberAndSourceNumberRequired) {
-                    next(8);
-                  }
-                })}
+                  fromEnter(() => {
+                    setFieldValue('taskDeadlineDate', dayjs());
+                    setDatePickerOpen(false);
+
+                    if (isNoAdditionalFieldsRequired) {
+                      next(5);
+                    }
+                    if (isOnlySourceNumberRequired) {
+                      next(6);
+                    }
+                    if (isOnlySubscriberRequired) {
+                      next(7);
+                    }
+                    if (isSubscriberAndSourceNumberRequired) {
+                      next(8);
+                    }
+                  })(event);
+                }}
               />
               <TimePickerMedium
+                needConfirm={false}
+                showNow={false}
                 data-reading-input={dataKey}
                 value={values.taskDeadlineTime || undefined}
                 open={isTimePickerOpen}
-                onFocus={() => setTimePickerOpen(true)}
+                onFocus={() => {
+                  setTimePickerOpen(true);
+                }}
+                onBlur={() => setTimePickerOpen(false)}
                 onChange={(value) => {
                   setFieldValue('taskDeadlineTime', value);
                 }}
                 onMouseDown={() => {
                   setTimePickerOpen(!isTimePickerOpen);
+                  setFieldValue('taskDeadlineTime', null);
                 }}
                 onKeyDown={(event: any) => {
                   if (
