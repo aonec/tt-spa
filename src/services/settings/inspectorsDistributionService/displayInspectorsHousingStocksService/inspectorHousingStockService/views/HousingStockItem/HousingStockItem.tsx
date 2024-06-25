@@ -17,6 +17,7 @@ export const HousingStockItem: FC<HousingStockItemProps> = ({
   updateInfo,
   updateHousingStock,
   handleOpenAddInspector,
+  handleDeleteInspector,
 }) => {
   const inspectedDatSelectRef = useRef<RefSelectProps | null>(null);
   const inspectorSelectRef = useRef<RefSelectProps | null>(null);
@@ -84,6 +85,7 @@ export const HousingStockItem: FC<HousingStockItemProps> = ({
                 <TrashIcon
                   onClick={(e) => {
                     e.stopPropagation();
+                    handleDeleteInspector(inspector.id);
                   }}
                 />
               )}

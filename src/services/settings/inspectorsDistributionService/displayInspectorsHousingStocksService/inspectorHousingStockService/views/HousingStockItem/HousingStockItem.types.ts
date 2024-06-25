@@ -12,4 +12,5 @@ export type HousingStockItemProps = {
   updateHousingStock: (updatedData: UpdateInspectorOnBuildingRequest) => void;
   handleOpenAddInspector: (payload: number | null) => void;
   updateInfo?: CurrentHousingStockUpdate;
+  handleDeleteInspector: (id: number) => void;
 };
