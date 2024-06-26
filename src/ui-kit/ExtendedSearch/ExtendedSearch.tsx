@@ -29,6 +29,7 @@ export const ExtendedSearch: FC<ExtendedSearchProps> = ({
   isShowClearButton = true,
   title,
   isPaddingSearch = true,
+  submitButtonDisabled = false,
 }) => {
   if (isOpen) {
     return (
@@ -54,7 +55,9 @@ export const ExtendedSearch: FC<ExtendedSearchProps> = ({
           <Button onClick={handleClose} type="ghost">
             Отмена
           </Button>
-          <Button onClick={handleApply}>Применить фильтры</Button>
+          <Button disabled={submitButtonDisabled} onClick={handleApply}>
+            Применить фильтры
+          </Button>
         </Footer>
       </ExtendedSearchWrap>
     );
