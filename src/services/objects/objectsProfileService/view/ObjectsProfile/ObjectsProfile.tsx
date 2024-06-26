@@ -98,6 +98,7 @@ export const ObjectsProfile: FC<ObjectsProfileProps> = ({
       {
         id: 'reports-export',
         title: 'Выгрузить отчет',
+        onClick: () => {},
         children: reportsMenuItems,
       },
       {

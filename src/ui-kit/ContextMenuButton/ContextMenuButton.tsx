@@ -93,7 +93,10 @@ export const ContextMenuButton: FC<ContextMenuButtonProps> = (props) => {
         disabled={disabled}
         open={isVisible}
         trigger={['click']}
-        onOpenChange={(visible) => setIsVisible(visible)}
+        onOpenChange={(visible, info) => {
+          const isOnMenuClick = info.source === 'menu';
+          !isOnMenuClick && setIsVisible(visible);
+        }}
       >
         <>
           {Boolean(children) && (
