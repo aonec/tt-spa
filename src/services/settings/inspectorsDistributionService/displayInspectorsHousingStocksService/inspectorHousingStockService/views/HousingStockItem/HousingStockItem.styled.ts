@@ -25,3 +25,9 @@ export const AddInspecor = styled.div`
   padding-top: 10px;
   padding-left: 14px;
 `;
+
+export const InspectorOption = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`;

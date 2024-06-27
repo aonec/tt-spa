@@ -601,8 +601,7 @@ export interface BuildingAddressCreateRequest {
   city?: string | null;
   /** @minLength 1 */
   street: string;
-  /** @minLength 1 */
-  number?: string;
+  number?: string | null;
   corpus?: string | null;
 }
 
@@ -6171,10 +6170,6 @@ export class Api<
         /** @format int32 */
         PageSize?: number;
         OrderBy?: EOrderByRule;
-        /** @format int32 */
-        Skip?: number;
-        /** @format int32 */
-        Take?: number;
       },
       params: RequestParams = {},
     ) =>
@@ -6365,10 +6360,6 @@ export class Api<
         /** @format int32 */
         PageSize?: number;
         OrderBy?: EOrderByRule;
-        /** @format int32 */
-        Skip?: number;
-        /** @format int32 */
-        Take?: number;
       },
       params: RequestParams = {},
     ) =>
@@ -6518,10 +6509,6 @@ export class Api<
         /** @format int32 */
         PageSize?: number;
         OrderBy?: EOrderByRule;
-        /** @format int32 */
-        Skip?: number;
-        /** @format int32 */
-        Take?: number;
       },
       params: RequestParams = {},
     ) =>
@@ -7262,10 +7249,6 @@ export class Api<
         /** @format int32 */
         PageSize?: number;
         OrderBy?: EOrderByRule;
-        /** @format int32 */
-        Skip?: number;
-        /** @format int32 */
-        Take?: number;
       },
       params: RequestParams = {},
     ) =>
@@ -7296,10 +7279,6 @@ export class Api<
         /** @format int32 */
         PageSize?: number;
         OrderBy?: EOrderByRule;
-        /** @format int32 */
-        Skip?: number;
-        /** @format int32 */
-        Take?: number;
       },
       params: RequestParams = {},
     ) =>
@@ -7355,10 +7334,6 @@ export class Api<
         /** @format int32 */
         PageSize?: number;
         OrderBy?: EOrderByRule;
-        /** @format int32 */
-        Skip?: number;
-        /** @format int32 */
-        Take?: number;
       },
       params: RequestParams = {},
     ) =>
@@ -7455,10 +7430,6 @@ export class Api<
         /** @format int32 */
         PageSize?: number;
         OrderBy?: EOrderByRule;
-        /** @format int32 */
-        Skip?: number;
-        /** @format int32 */
-        Take?: number;
       },
       params: RequestParams = {},
     ) =>
@@ -7502,10 +7473,6 @@ export class Api<
         /** @format int32 */
         PageSize?: number;
         OrderBy?: EOrderByRule;
-        /** @format int32 */
-        Skip?: number;
-        /** @format int32 */
-        Take?: number;
       },
       params: RequestParams = {},
     ) =>
@@ -7922,10 +7889,6 @@ export class Api<
         /** @format int32 */
         PageSize?: number;
         OrderBy?: EOrderByRule;
-        /** @format int32 */
-        Skip?: number;
-        /** @format int32 */
-        Take?: number;
       },
       params: RequestParams = {},
     ) =>
@@ -7981,10 +7944,6 @@ export class Api<
         /** @format int32 */
         PageSize?: number;
         OrderBy?: EOrderByRule;
-        /** @format int32 */
-        Skip?: number;
-        /** @format int32 */
-        Take?: number;
       },
       params: RequestParams = {},
     ) =>
@@ -9763,10 +9722,6 @@ export class Api<
         /** @format int32 */
         PageSize?: number;
         OrderBy?: EOrderByRule;
-        /** @format int32 */
-        Skip?: number;
-        /** @format int32 */
-        Take?: number;
       },
       params: RequestParams = {},
     ) =>
@@ -10265,10 +10220,6 @@ export class Api<
         /** @format int32 */
         PageSize?: number;
         OrderBy?: EOrderByRule;
-        /** @format int32 */
-        Skip?: number;
-        /** @format int32 */
-        Take?: number;
       },
       params: RequestParams = {},
     ) =>
@@ -10358,10 +10309,6 @@ export class Api<
         /** @format int32 */
         PageSize?: number;
         OrderBy?: EOrderByRule;
-        /** @format int32 */
-        Skip?: number;
-        /** @format int32 */
-        Take?: number;
       },
       params: RequestParams = {},
     ) =>
@@ -10611,10 +10558,6 @@ export class Api<
         /** @format int32 */
         PageSize?: number;
         OrderBy?: EOrderByRule;
-        /** @format int32 */
-        Skip?: number;
-        /** @format int32 */
-        Take?: number;
       },
       params: RequestParams = {},
     ) =>
@@ -11360,10 +11303,6 @@ export class Api<
         /** @format int32 */
         PageSize?: number;
         OrderBy?: EOrderByRule;
-        /** @format int32 */
-        Skip?: number;
-        /** @format int32 */
-        Take?: number;
       },
       params: RequestParams = {},
     ) =>
@@ -11523,10 +11462,6 @@ export class Api<
         /** @format int32 */
         PageSize?: number;
         OrderBy?: EOrderByRule;
-        /** @format int32 */
-        Skip?: number;
-        /** @format int32 */
-        Take?: number;
       },
       params: RequestParams = {},
     ) =>
@@ -11577,10 +11512,6 @@ export class Api<
         /** @format int32 */
         PageSize?: number;
         OrderBy?: EOrderByRule;
-        /** @format int32 */
-        Skip?: number;
-        /** @format int32 */
-        Take?: number;
       },
       params: RequestParams = {},
     ) =>
@@ -11633,10 +11564,6 @@ export class Api<
         /** @format int32 */
         PageSize?: number;
         OrderBy?: EOrderByRule;
-        /** @format int32 */
-        Skip?: number;
-        /** @format int32 */
-        Take?: number;
       },
       params: RequestParams = {},
     ) =>
@@ -12294,10 +12221,6 @@ export class Api<
         /** @format int32 */
         PageSize?: number;
         OrderBy?: EOrderByRule;
-        /** @format int32 */
-        Skip?: number;
-        /** @format int32 */
-        Take?: number;
       },
       params: RequestParams = {},
     ) =>
@@ -12375,10 +12298,6 @@ export class Api<
         /** @format int32 */
         PageSize?: number;
         OrderBy?: EOrderByRule;
-        /** @format int32 */
-        Skip?: number;
-        /** @format int32 */
-        Take?: number;
       },
       params: RequestParams = {},
     ) =>
@@ -12486,10 +12405,6 @@ export class Api<
         /** @format int32 */
         PageSize?: number;
         OrderBy?: EOrderByRule;
-        /** @format int32 */
-        Skip?: number;
-        /** @format int32 */
-        Take?: number;
       },
       params: RequestParams = {},
     ) =>
@@ -13369,10 +13284,6 @@ export class Api<
         /** @format int32 */
         PageSize?: number;
         OrderBy?: EOrderByRule;
-        /** @format int32 */
-        Skip?: number;
-        /** @format int32 */
-        Take?: number;
       },
       params: RequestParams = {},
     ) =>
@@ -14011,10 +13922,6 @@ export class Api<
         /** @format int32 */
         PageSize?: number;
         OrderBy?: EOrderByRule;
-        /** @format int32 */
-        Skip?: number;
-        /** @format int32 */
-        Take?: number;
       },
       params: RequestParams = {},
     ) =>
@@ -14089,10 +13996,6 @@ export class Api<
         /** @format int32 */
         PageSize?: number;
         OrderBy?: EOrderByRule;
-        /** @format int32 */
-        Skip?: number;
-        /** @format int32 */
-        Take?: number;
       },
       params: RequestParams = {},
     ) =>
@@ -14459,10 +14362,6 @@ export class Api<
         /** @format int32 */
         PageSize?: number;
         OrderBy?: EOrderByRule;
-        /** @format int32 */
-        Skip?: number;
-        /** @format int32 */
-        Take?: number;
       },
       params: RequestParams = {},
     ) =>
@@ -14751,10 +14650,6 @@ export class Api<
         /** @format int32 */
         PageSize?: number;
         OrderBy?: EOrderByRule;
-        /** @format int32 */
-        Skip?: number;
-        /** @format int32 */
-        Take?: number;
       },
       params: RequestParams = {},
     ) =>
