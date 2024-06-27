@@ -96,10 +96,9 @@ export const AddressTab: FC<AddressTabProps> = ({
 
         !currentInitialAdditionalAddress?.id &&
           submittedAdditionalAddress.street &&
-          submittedAdditionalAddress.number &&
           handleCreateHousingStockAddress({
             street: submittedAdditionalAddress.street,
-            number: submittedAdditionalAddress.number,
+            number: submittedAdditionalAddress.number || undefined,
             corpus: submittedAdditionalAddress.corpus,
           });
       });

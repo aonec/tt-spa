@@ -2,7 +2,6 @@ import React, { FC, useState } from 'react';
 import { ButtonSc, TitleWrapper } from './ApplicationInfoBlock.styled';
 import { ApplicationInfoBlockProps } from './ApplicationInfoBlock.types';
 import { ApplicationBaseInfo } from './ApplicationBaseInfo';
-import { BrigadeInfo } from './BrigadeInfo';
 import { Dialog } from 'ui-kit/shared/Dialog/Dialog';
 
 export const ApplicationInfoBlock: FC<ApplicationInfoBlockProps> = ({
@@ -12,9 +11,8 @@ export const ApplicationInfoBlock: FC<ApplicationInfoBlockProps> = ({
   isLoading,
   handleDelete,
   isDeleting,
+  isDispacher,
 }) => {
-  const brigadeInfo = applicationInfo?.brigade || [];
-
   const [isOpen, setOpen] = useState(false);
 
   return (
@@ -26,11 +24,12 @@ export const ApplicationInfoBlock: FC<ApplicationInfoBlockProps> = ({
         addressLinkPath={addressLinkPath}
         isLoading={isLoading}
       />
-      <BrigadeInfo brigadeInfo={brigadeInfo} />
 
-      <ButtonSc type="danger" size="small" onClick={() => setOpen(true)}>
-        Удалить заявку
-      </ButtonSc>
+      {isDispacher && (
+        <ButtonSc type="danger" size="small" onClick={() => setOpen(true)}>
+          Удалить заявку
+        </ButtonSc>
+      )}
 
       <Dialog
         isOpen={isOpen}

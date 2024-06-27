@@ -15,12 +15,15 @@ export const StaffItem: FC<StaffItemProps> = ({
   handleCatchEmployeeStatusData,
   handleOpenDeleteModal,
   handleCatchEmployeeId,
+  currentUserId,
 }) => {
   const navigate = useNavigate();
   const phoneMask = usePhoneMask();
 
   const { firstName, lastName, middleName, roles, id, cellphone, status } =
     staff;
+
+  const isCurrentUser = id === currentUserId;
 
   const sortedRoles = sortUserRoles(roles || []);
   const rolesString = sortedRoles?.map(({ value }) => value).join(', ');
@@ -50,6 +53,7 @@ export const StaffItem: FC<StaffItemProps> = ({
           {
             title: 'Открыть профиль сотрудника',
             onClick: () => navigate(`/userProfile/${id}`),
+            hidden: isCurrentUser,
           },
           {
             title: 'Изменить статус',
@@ -62,6 +66,7 @@ export const StaffItem: FC<StaffItemProps> = ({
             title: 'Редактировать информацию о сотруднике',
             onClick: () =>
               navigate(`/companyProfile/editManagingFirmUser/${id}`),
+            hidden: isCurrentUser,
           },
           {
             title: 'Удалить сотрудника',
@@ -70,6 +75,7 @@ export const StaffItem: FC<StaffItemProps> = ({
               handleCatchEmployeeId(id);
             },
             color: ContextMenuButtonColor.danger,
+            hidden: isCurrentUser,
           },
         ]}
       />

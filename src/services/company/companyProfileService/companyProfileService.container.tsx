@@ -2,6 +2,7 @@ import React from 'react';
 import { CompanyProfile } from './view/CompanyProfile';
 import { companyProfileService } from './companyProfileService.model';
 import { useUnit } from 'effector-react';
+import { currentUserService } from 'services/currentUser/currentUserService';
 
 const { inputs, outputs } = companyProfileService;
 const {
@@ -24,6 +25,7 @@ export const CompanyProfileContainer = () => {
     isLoadingContractors,
     isLoadingStaff,
     staffList,
+    currentUser,
   } = useUnit({
     currentManagingFirm: outputs.$currentManagingFirm,
     isLoadingStaff: outputs.$fetchStaffPending,
@@ -39,6 +41,7 @@ export const CompanyProfileContainer = () => {
     catchContractorId: inputs.catchContractorId,
     handleOpenEditContractorModal: inputs.handleOpenEditContractorModal,
     catchContractorData: inputs.catchContractorData,
+    currentUser: currentUserService.outputs.$currentUser,
   });
 
   return (
@@ -60,6 +63,7 @@ export const CompanyProfileContainer = () => {
         handleOpenEditContractorModal={() => handleOpenEditContractorModal()}
         catchContractorData={catchContractorData}
         currentManagingFirm={currentManagingFirm}
+        currentUserId={currentUser?.id || null}
       />
     </>
   );

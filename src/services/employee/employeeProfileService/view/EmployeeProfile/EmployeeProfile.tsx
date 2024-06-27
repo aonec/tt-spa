@@ -28,12 +28,15 @@ export const EmployeeProfile: FC<EmployeeProfileProps> = ({
   userData,
   handleOpenChangeStatusModal,
   handleOpenDeleteEmployeeModal,
+  handleCatchEmployeeId,
 }) => {
   const navigate = useNavigate();
 
   const userInitials = `${userData?.firstName || ''} ${
     userData?.middleName || ''
   } ${userData?.lastName || ''}`;
+
+  const userId = userData?.id;
 
   const phoneMask = usePhoneMask();
 
@@ -71,7 +74,10 @@ export const EmployeeProfile: FC<EmployeeProfileProps> = ({
             {
               title: 'Удалить сотрудника',
               color: ContextMenuButtonColor.danger,
-              onClick: () => handleOpenDeleteEmployeeModal(),
+              onClick: () => {
+                handleOpenDeleteEmployeeModal();
+                userId && handleCatchEmployeeId(userId);
+              },
             },
           ],
         }}

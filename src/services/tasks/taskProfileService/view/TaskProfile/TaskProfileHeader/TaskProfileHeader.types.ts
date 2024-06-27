@@ -14,4 +14,5 @@ export type TaskProfileHeaderProps = {
   timer: Timer;
   taskName: string;
   pipeNode: PipeNodeResponse | null;
+  isEmergency: boolean;
 };

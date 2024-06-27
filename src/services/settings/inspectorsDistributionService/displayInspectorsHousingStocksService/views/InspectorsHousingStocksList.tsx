@@ -17,6 +17,7 @@ export const InspectorsHousingStocksList: FC<
   loading,
   isInspectorsFetched,
   handleOpenAddInspector,
+  handleDeleteInspector,
 }) => {
   const loader = (
     <LoaderWrap>
@@ -42,6 +43,7 @@ export const InspectorsHousingStocksList: FC<
           })
         }
         handleOpenAddInspector={handleOpenAddInspector}
+        handleDeleteInspector={handleDeleteInspector}
       />
     );
   });

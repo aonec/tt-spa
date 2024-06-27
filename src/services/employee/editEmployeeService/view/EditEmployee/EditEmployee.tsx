@@ -36,7 +36,6 @@ export const EditEmployee: FC<EditEmployeeProps> = ({
 
   const { handleSubmit, errors, setFieldValue, values } = useFormik({
     initialValues: {
-      email: employeeData?.email || null,
       firstName: employeeData?.firstName || null,
       lastName: employeeData?.lastName || null,
       middleName: employeeData?.middleName || null,
@@ -57,12 +56,12 @@ export const EditEmployee: FC<EditEmployeeProps> = ({
         .nullable()
         .min(2, 'Минимум два символа')
         .required('Обязательное поле'),
+      roleTypes: yup.array().required('Назначьте роль'),
     }),
     validateOnChange: false,
     onSubmit: (data) => {
       const userId = data.userId;
       const form: OrganizationUserUpdateRequest = {
-        email: data.email,
         firstName: data.firstName,
         lastName: data.lastName,
         middleName: data.middleName,
@@ -112,15 +111,6 @@ export const EditEmployee: FC<EditEmployeeProps> = ({
             }
           />
         </FormItem>
-        <FormItem label="Электронная почта">
-          <Input
-            name="email"
-            type="text"
-            placeholder="Введите"
-            value={values.email || undefined}
-            onChange={(value) => setFieldValue('email', value.target.value)}
-          />
-        </FormItem>
         <FormItem label="Контактный телефон">
           <Input
             name="cellphone"
@@ -154,6 +144,7 @@ export const EditEmployee: FC<EditEmployeeProps> = ({
               </SelectMultiple.Option>
             ))}
           </SelectMultiple>
+          <ErrorMessage>{errors.roleTypes}</ErrorMessage>
         </FormItem>
 
         <FormItem label="Компетенции">

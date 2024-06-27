@@ -26,12 +26,13 @@ export const LoginContainer = () => {
           return window.location.replace(redirectUrl as string | URL);
         }
 
-        navigate(
-          successResponse?.roles?.includes('Operator') ? '/meters' : '/tasks',
-          {
-            replace: true,
-          },
-        );
+        const isOperator =
+          successResponse?.roles?.includes('Operator') ||
+          successResponse.roles?.includes('SeniorOperator');
+
+        navigate(isOperator ? '/meters' : '/tasks', {
+          replace: true,
+        });
       }).unsubscribe,
     [navigate, search],
   );

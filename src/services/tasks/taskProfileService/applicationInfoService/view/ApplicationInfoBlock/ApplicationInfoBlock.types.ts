@@ -7,4 +7,5 @@ export type ApplicationInfoBlockProps = {
   isLoading: boolean;
   handleDelete: () => void;
   isDeleting: boolean;
+  isDispacher: boolean;
 };

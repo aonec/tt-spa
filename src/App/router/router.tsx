@@ -172,7 +172,9 @@ export const useRoutes = (
   const isSeniorOperator = roles.includes(
     ESecuredIdentityRoleName.SeniorOperator,
   );
-  const isOperator = roles.includes(ESecuredIdentityRoleName.Operator);
+
+  const isOperator =
+    roles.includes(ESecuredIdentityRoleName.Operator) || isSeniorOperator;
 
   const isDispatcher = roles.includes(
     ESecuredIdentityRoleName.ManagingFirmDispatcher,
@@ -198,8 +200,8 @@ export const useRoutes = (
 
     const defaultPath = '/tasks';
 
-    return isSeniorOperator || isOperator ? '/meters/apartments' : defaultPath;
-  }, [isOperator, isSeniorOperator, isAuth]);
+    return isOperator ? '/meters/apartments' : defaultPath;
+  }, [isOperator, isAuth]);
 
   const initialTasksPath = isSpectator
     ? `/tasks/list/${TaskGroupingFilter.Observing}`
@@ -248,12 +250,7 @@ export const useRoutes = (
         },
         {
           path: '/actsJournal',
-          element:
-            isSeniorOperator || isOperator ? (
-              <ActsJournalContainer />
-            ) : (
-              <AccessDeniedPage />
-            ),
+          element: isOperator ? <ActsJournalContainer /> : <AccessDeniedPage />,
         },
         {
           path: '/buildings/create',
@@ -286,39 +283,35 @@ export const useRoutes = (
           children: [
             {
               path: '/districtBordersSettings/createByHousingStocksList',
-              element:
-                isSeniorOperator || isOperator ? (
-                  <DistrictBordersByAddressContainer />
-                ) : (
-                  <AccessDeniedPage />
-                ),
+              element: isOperator ? (
+                <DistrictBordersByAddressContainer />
+              ) : (
+                <AccessDeniedPage />
+              ),
             },
             {
               path: '/districtBordersSettings/editDistrictBorders/:id',
-              element:
-                isSeniorOperator || isOperator ? (
-                  <EditDistrictBordersContainer />
-                ) : (
-                  <AccessDeniedPage />
-                ),
+              element: isOperator ? (
+                <EditDistrictBordersContainer />
+              ) : (
+                <AccessDeniedPage />
+              ),
             },
             {
               path: '/districtBordersSettings/createByMap',
-              element:
-                isSeniorOperator || isAdministrator ? (
-                  <CreateDistrictBorderMapContainer />
-                ) : (
-                  <AccessDeniedPage />
-                ),
+              element: isAdministrator ? (
+                <CreateDistrictBorderMapContainer />
+              ) : (
+                <AccessDeniedPage />
+              ),
             },
             {
               path: '/districtBordersSettings/manageDistricts',
-              element:
-                isSeniorOperator || isAdministrator ? (
-                  <ManageDistrictsMapContainer />
-                ) : (
-                  <AccessDeniedPage />
-                ),
+              element: isAdministrator ? (
+                <ManageDistrictsMapContainer />
+              ) : (
+                <AccessDeniedPage />
+              ),
             },
           ],
         },
@@ -344,7 +337,7 @@ export const useRoutes = (
         {
           path: '/apartments/:apartmentId/edit',
           element:
-            isAdministrator || isSeniorOperator || isOperator ? (
+            isAdministrator || isOperator ? (
               <EditApartmentProfileContainer />
             ) : (
               <AccessDeniedPage />
@@ -391,7 +384,7 @@ export const useRoutes = (
         {
           path: '/electricNode/:deviceId/edit',
           element:
-            isAdministrator || isSeniorOperator || isOperator || isExecutor ? (
+            isAdministrator || isOperator || isExecutor ? (
               <EditElectricNodeContainer />
             ) : (
               <AccessDeniedPage />
@@ -466,7 +459,7 @@ export const useRoutes = (
         {
           path: '/housingMeteringDevices/:deviceId/edit',
           element:
-            isAdministrator || isExecutor || isSeniorOperator || isOperator ? (
+            isAdministrator || isExecutor || isOperator ? (
               <EditHousingMeteringDeviceContainer />
             ) : (
               <AccessDeniedPage />
@@ -479,7 +472,7 @@ export const useRoutes = (
         {
           path: '/individualDeviceProfile/:id',
           element:
-            isSeniorOperator || isExecutor || isAdministrator || isOperator ? (
+            isExecutor || isAdministrator || isOperator ? (
               <IndividualMeteringDeviceProfileContainer />
             ) : (
               <AccessDeniedPage />
@@ -488,7 +481,7 @@ export const useRoutes = (
         {
           path: '/individualDevices/:deviceId/edit',
           element:
-            isAdministrator || isSeniorOperator || isExecutor || isOperator ? (
+            isAdministrator || isExecutor || isOperator ? (
               <EditIndividualDeviceContainer />
             ) : (
               <AccessDeniedPage />
@@ -512,12 +505,11 @@ export const useRoutes = (
         },
         {
           path: '/settings/:section?',
-          element:
-            isSeniorOperator || isOperator ? (
-              <SettingsPageContainer />
-            ) : (
-              <AccessDeniedPage />
-            ),
+          element: isOperator ? (
+            <SettingsPageContainer />
+          ) : (
+            <AccessDeniedPage />
+          ),
         },
         {
           path: '/adminSettings/:section?',
@@ -594,7 +586,7 @@ export const useRoutes = (
         {
           path: '/apartment/:id/addIndividualDevice',
           element:
-            isAdministrator || isSeniorOperator || isOperator ? (
+            isAdministrator || isOperator ? (
               <AddIndividualDeviceContainer />
             ) : (
               <AccessDeniedPage />
@@ -603,7 +595,7 @@ export const useRoutes = (
         {
           path: '/apartment/:id/individualDevice/:deviceId/switch',
           element:
-            isAdministrator || isSeniorOperator || isOperator ? (
+            isAdministrator || isOperator ? (
               <WorkWithIndividualDeviceContainer
                 type={WorkWithIndividualDeviceType.switch}
               />
@@ -614,7 +606,7 @@ export const useRoutes = (
         {
           path: '/apartment/:id/individualDevice/:deviceId/check',
           element:
-            isAdministrator || isSeniorOperator || isOperator ? (
+            isAdministrator || isOperator ? (
               <WorkWithIndividualDeviceContainer
                 type={WorkWithIndividualDeviceType.check}
               />
@@ -624,19 +616,18 @@ export const useRoutes = (
         },
         {
           path: '/apartment/:id/individualDevice/:deviceId/reopen',
-          element:
-            isSeniorOperator || isOperator ? (
-              <WorkWithIndividualDeviceContainer
-                type={WorkWithIndividualDeviceType.reopen}
-              />
-            ) : (
-              <AccessDeniedPage />
-            ),
+          element: isOperator ? (
+            <WorkWithIndividualDeviceContainer
+              type={WorkWithIndividualDeviceType.reopen}
+            />
+          ) : (
+            <AccessDeniedPage />
+          ),
         },
         {
           path: '/apartment/:id/homeowners/add',
           element:
-            isAdministrator || isSeniorOperator || isOperator ? (
+            isAdministrator || isOperator ? (
               <AddPersonalNumberContainer />
             ) : (
               <AccessDeniedPage />
@@ -645,7 +636,7 @@ export const useRoutes = (
         {
           path: '/apartment/:id/homeowners/:homeownerId/split',
           element:
-            isAdministrator || isSeniorOperator || isOperator ? (
+            isAdministrator || isOperator ? (
               <SplitPersonalNumberContainer />
             ) : (
               <AccessDeniedPage />
@@ -654,7 +645,7 @@ export const useRoutes = (
         {
           path: '/apartment/:id/homeowners/:homeownerId/edit',
           element:
-            isAdministrator || isSeniorOperator || isOperator ? (
+            isAdministrator || isOperator ? (
               <EditPersonalNumberContainer />
             ) : (
               <AccessDeniedPage />
@@ -663,7 +654,7 @@ export const useRoutes = (
         {
           path: '/apartment/:id/homeowners/:homeownerId/switch',
           element:
-            isAdministrator || isSeniorOperator || isOperator ? (
+            isAdministrator || isOperator ? (
               <SwitchPersonalNumberContainer />
             ) : (
               <AccessDeniedPage />

@@ -2,9 +2,10 @@ import React, { FC, useEffect, useMemo } from 'react';
 import { useUnit } from 'effector-react';
 import { ApplicationInfoBlock } from './view/ApplicationInfoBlock';
 import { ApplicationInfoContainerProps } from './applicationInfoService.types';
-import { EHouseCategory } from 'api/types';
+import { EHouseCategory, ESecuredIdentityRoleName } from 'api/types';
 import { applicationInfoService } from './applicationInfoService.models';
 import { useNavigate } from 'react-router-dom';
+import { usePermission } from 'hooks/usePermission';
 
 const {
   inputs,
@@ -21,6 +22,10 @@ export const ApplicationInfoContainer: FC<ApplicationInfoContainerProps> = ({
     handleDelete: inputs.handleDelete,
     isDeleting: outputs.$isDeleting,
   });
+
+  const isDispacher = usePermission([
+    ESecuredIdentityRoleName.ManagingFirmDispatcher,
+  ]);
 
   const navigate = useNavigate();
 
@@ -54,6 +59,7 @@ export const ApplicationInfoContainer: FC<ApplicationInfoContainerProps> = ({
         isLoading={isLoading}
         handleDelete={handleDelete}
         isDeleting={isDeleting}
+        isDispacher={isDispacher}
       />
     </>
   );

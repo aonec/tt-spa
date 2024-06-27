@@ -12,11 +12,13 @@ import {
   InfoWrapper,
   Line,
   PageHeaderWrapper,
+  TaskNamePanel,
   TimelineRowWrapper,
   TimerRowWrapper,
   Wrapper,
 } from './TaskProfileHeader.styled';
 import { TaskProfileHeaderProps } from './TaskProfileHeader.types';
+import { EmergencyPanel } from 'services/tasks/tasksProfileService/view/TasksListItem/EmergencyPanel';
 
 export const TaskProfileHeader: FC<TaskProfileHeaderProps> = ({
   name,
@@ -26,6 +28,7 @@ export const TaskProfileHeader: FC<TaskProfileHeaderProps> = ({
   timer,
   taskName,
   pipeNode,
+  isEmergency,
 }) => {
   const lineColor = timer.closingStatus && LineColors[timer.closingStatus];
 
@@ -60,7 +63,10 @@ export const TaskProfileHeader: FC<TaskProfileHeaderProps> = ({
       {timeline && (
         <TimelineRowWrapper>
           <InfoWrapper>
-            {taskName}
+            <TaskNamePanel>
+              {isEmergency && <EmergencyPanel />}
+              {taskName}
+            </TaskNamePanel>
             <div>{stageStatusDescription}</div>
           </InfoWrapper>
 
