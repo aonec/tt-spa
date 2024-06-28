@@ -200,7 +200,7 @@ export const ConsumptionReportCalculatorForm: FC<
             <MarginTop>
               <RangePicker
                 placeholder={['Дата начала', 'Дата окончания']}
-                format="DD.MM.YYYY"
+                format={{ format: 'DD.MM.YYYY', type: 'mask' }}
                 disabled={values.archiveType !== ArchiveType.AnyPeriod}
                 value={values.period}
                 onChange={(value) => {

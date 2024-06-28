@@ -51,7 +51,7 @@ export const CreateApartmentActForm: FC<CreateApartmentActFormProps> = ({
       <FieldsWrapper>
         <Form.Item label="Дата">
           <DatePickerSC
-            format="DD.MM.YYYY"
+            format={{ format: 'DD.MM.YYYY', type: 'mask' }}
             value={getDatePickerValue(values.actJobDate)}
             onChange={(e) =>
               e && setFieldValue('actJobDate', e.format('YYYY-MM-DD'))

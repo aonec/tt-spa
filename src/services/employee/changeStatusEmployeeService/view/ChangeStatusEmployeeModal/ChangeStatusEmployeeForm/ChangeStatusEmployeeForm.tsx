@@ -85,7 +85,7 @@ export const ChangeStatusEmployeeForm: FC<ChangeStatusEmployeeFormProps> = ({
         <FormItem label="Период">
           <RangePicker
             placeholder={['Дата начала', 'Дата окончания']}
-            format="DD.MM.YYYY"
+            format={{ format: 'DD.MM.YYYY', type: 'mask' }}
             disabled={
               values.type === EOrganizationUserWorkingStatusType.Working
             }

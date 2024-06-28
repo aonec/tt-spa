@@ -85,7 +85,7 @@ export const DistributeAppointmentsModal: FC<Props> = ({
             <FormItem label="Дата">
               <DatePicker
                 placeholder="Выберите"
-                format="DD.MM.YYYY"
+                format={{ format: 'DD.MM.YYYY', type: 'mask' }}
                 value={appointmentDate ? dayjs(appointmentDate) : undefined}
                 disabled
               />

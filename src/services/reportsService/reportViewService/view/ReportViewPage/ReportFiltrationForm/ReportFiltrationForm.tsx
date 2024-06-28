@@ -183,7 +183,7 @@ export const ReportFiltrationForm: FC<ReportFiltrationFormProps> = ({
             {isCallCenterReport && (
               <RangePicker
                 value={[values.from, values.to]}
-                format="DD.MM.YYYY"
+                format={{ format: 'DD.MM.YYYY', type: 'mask' }}
                 onChange={(dates) => {
                   setFieldValue('from', dates?.[0]);
                   setFieldValue('to', dates?.[1]);
@@ -466,7 +466,7 @@ export const ReportFiltrationForm: FC<ReportFiltrationFormProps> = ({
                     isClosedDeviceOnOneOfRisers
                   }
                   value={[values.from, values.to]}
-                  format="DD.MM.YYYY"
+                  format={{ format: 'DD.MM.YYYY', type: 'mask' }}
                   onChange={(dates) => {
                     setFieldValue('from', dates?.[0] || null);
                     setFieldValue('to', dates?.[1] || null);

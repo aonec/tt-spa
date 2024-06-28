@@ -113,7 +113,7 @@ export const ChangeNodeStatusForm: FC<ChangeNodeStatusFormProps> = ({
         >
           <DatePicker
             placeholder="Выберите дату"
-            format="DD.MM.YYYY"
+            format={{ format: 'DD.MM.YYYY', type: 'mask' }}
             value={getDatePickerValue(values.firstDate)}
             onChange={(date) =>
               setFieldValue('firstDate', date?.format('YYYY-MM-DD'))
@@ -127,7 +127,7 @@ export const ChangeNodeStatusForm: FC<ChangeNodeStatusFormProps> = ({
           <FormItem label={'Дата окончания действия'}>
             <DatePicker
               placeholder="Выберите дату"
-              format="DD.MM.YYYY"
+              format={{ format: 'DD.MM.YYYY', type: 'mask' }}
               value={getDatePickerValue(values.secondDate)}
               onChange={(date) =>
                 setFieldValue('secondDate', date?.format('YYYY-MM-DD'))
