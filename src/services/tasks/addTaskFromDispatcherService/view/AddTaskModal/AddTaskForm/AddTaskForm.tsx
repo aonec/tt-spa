@@ -402,6 +402,14 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
                 onChange={(value) => {
                   setFieldValue('requestTime', value);
                 }}
+                onKeyDown={(event: any) => {
+                  if (
+                    event.key !== 'Backspace' &&
+                    event.currentTarget.value.length === 2
+                  ) {
+                    event.currentTarget.value = event.currentTarget.value + ':';
+                  }
+                }}
               />
             </GridContainerAsymmetricLeft>
           </FormItem>
@@ -742,41 +750,23 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
                     next(8);
                   }
                 }}
-                onKeyDown={(event: any) => {
-                  if (
-                    (event.key !== 'Backspace' &&
-                      event.currentTarget.value.length === 2) ||
-                    (event.key !== 'Backspace' &&
-                      event.currentTarget.value.length === 5)
-                  ) {
-                    if (event.currentTarget.value.length === 2) {
-                      event.currentTarget.value =
-                        event.currentTarget.value + '.';
-                    }
-                    if (event.currentTarget.value.length === 5) {
-                      event.currentTarget.value =
-                        event.currentTarget.value + '.';
-                    }
+                onKeyDown={fromEnter(() => {
+                  setFieldValue('taskDeadlineDate', dayjs());
+                  setDatePickerOpen(false);
+
+                  if (isNoAdditionalFieldsRequired) {
+                    next(5);
                   }
-
-                  fromEnter(() => {
-                    setFieldValue('taskDeadlineDate', dayjs());
-                    setDatePickerOpen(false);
-
-                    if (isNoAdditionalFieldsRequired) {
-                      next(5);
-                    }
-                    if (isOnlySourceNumberRequired) {
-                      next(6);
-                    }
-                    if (isOnlySubscriberRequired) {
-                      next(7);
-                    }
-                    if (isSubscriberAndSourceNumberRequired) {
-                      next(8);
-                    }
-                  })(event);
-                }}
+                  if (isOnlySourceNumberRequired) {
+                    next(6);
+                  }
+                  if (isOnlySubscriberRequired) {
+                    next(7);
+                  }
+                  if (isSubscriberAndSourceNumberRequired) {
+                    next(8);
+                  }
+                })}
               />
               <TimePickerMedium
                 needConfirm={false}

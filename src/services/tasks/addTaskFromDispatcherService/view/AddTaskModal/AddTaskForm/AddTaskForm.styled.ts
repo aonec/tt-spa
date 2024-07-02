@@ -135,7 +135,7 @@ export const SelectCaret = styled(Select)<{ isInitialSource: boolean }>`
 export const TimePickerLarge = styled(TimePicker).attrs({
   format: 'HH:mm',
   suffixIcon: null,
-  allowClear: false,
+  allowClear: true,
 })`
   border-radius: 4px;
 
