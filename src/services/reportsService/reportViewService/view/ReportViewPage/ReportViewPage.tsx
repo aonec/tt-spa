@@ -41,6 +41,8 @@ export const ReportViewPage: FC<ReportViewPageProps> = ({
   clearFiltrationValues,
   emloyeeReportData,
   organizations,
+  isSubmitButtonDisable,
+  setSubmitButtonDisable,
 }) => {
   const [isOpen, setIsOpen] = useState(true);
 
@@ -76,6 +78,7 @@ export const ReportViewPage: FC<ReportViewPageProps> = ({
             handleApply={handleApply}
             handleClear={clearFiltrationValues}
             isShowClearButton
+            submitButtonDisabled={isSubmitButtonDisable}
             extendedSearchContent={
               <ReportFiltrationForm
                 existingCities={existingCities}
@@ -86,6 +89,7 @@ export const ReportViewPage: FC<ReportViewPageProps> = ({
                 setFiltrationValues={setFiltrationValues}
                 reportType={reportType}
                 organizations={organizations}
+                setSubmitButtonDisable={setSubmitButtonDisable}
               />
             }
           >

@@ -64,6 +64,7 @@ export const ReportFiltrationForm: FC<ReportFiltrationFormProps> = ({
   setFiltrationValues,
   reportType,
   organizations,
+  setSubmitButtonDisable,
 }) => {
   const { values, setFieldValue, handleSubmit, resetForm } =
     useFormik<ReportFiltrationFormValues>({
@@ -73,6 +74,59 @@ export const ReportFiltrationForm: FC<ReportFiltrationFormProps> = ({
         setFiltrationValues(values);
       },
     });
+
+  const isSubmitButtonActive = useMemo(() => {
+    const isAddressSelected = Boolean(
+      values.housingStockId || values.organizationId || values.houseManagement,
+    );
+
+    if (reportType === ReportType.ActsJournal) {
+      return isAddressSelected;
+    }
+    if (reportType === ReportType.Employee) {
+      return Boolean(values.employeeReportType);
+    }
+    if (reportType === ReportType.Homeowners) {
+      return isAddressSelected;
+    }
+    if (reportType === ReportType.HousingDevices) {
+      return (
+        isAddressSelected &&
+        Boolean((values.from && values.to) || values.reportDatePeriod)
+      );
+    }
+    if (reportType === ReportType.IndividualDevices) {
+      const isClosedDeviceOnOneOfRisers =
+        values.reportOption ===
+        EIndividualDeviceReportOption.ClosedDeviceOnOneOfRisers;
+
+      if (isClosedDeviceOnOneOfRisers) {
+        return isAddressSelected && Boolean(values.reportOption);
+      }
+
+      return (
+        isAddressSelected &&
+        Boolean(values.reportOption) &&
+        Boolean(values.reportDatePeriod)
+      );
+    }
+
+    return false;
+  }, [
+    reportType,
+    values.housingStockId,
+    values.organizationId,
+    values.houseManagement,
+    values.employeeReportType,
+    values.from,
+    values.to,
+    values.reportOption,
+    values.reportDatePeriod,
+  ]);
+
+  useEffect(() => {
+    setSubmitButtonDisable(!isSubmitButtonActive);
+  }, [setSubmitButtonDisable, isSubmitButtonActive]);
 
   const availableResources = useMemo(
     () => getAvailableResource(reportType),
@@ -93,7 +147,10 @@ export const ReportFiltrationForm: FC<ReportFiltrationFormProps> = ({
   );
 
   useEffect(() => {
-    if (organizations?.items?.length === 1) {
+    if (
+      organizations?.items?.length === 1 &&
+      values.exportType === ExportReportType.ManagementFirm
+    ) {
       const singularOrganization = organizations?.items[0];
 
       setFieldValue('organizationId', singularOrganization.id);
