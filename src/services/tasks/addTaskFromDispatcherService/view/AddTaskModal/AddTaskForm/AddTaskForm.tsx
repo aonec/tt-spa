@@ -402,6 +402,14 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
                 onChange={(value) => {
                   setFieldValue('requestTime', value);
                 }}
+                onKeyDown={(event: any) => {
+                  if (
+                    event.key !== 'Backspace' &&
+                    event.currentTarget.value.length === 2
+                  ) {
+                    event.currentTarget.value = event.currentTarget.value + ':';
+                  }
+                }}
               />
             </GridContainerAsymmetricLeft>
           </FormItem>
@@ -723,22 +731,8 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
                     setFieldValue('taskDeadlineDate', value);
                   setDatePickerOpen(false);
                 }}
-                onCalendarChange={() => {
-                  if (isNoAdditionalFieldsRequired) {
-                    next(5);
-                  }
-                  if (isOnlySourceNumberRequired) {
-                    next(6);
-                  }
-                  if (isOnlySubscriberRequired) {
-                    next(7);
-                  }
-                  if (isSubscriberAndSourceNumberRequired) {
-                    next(8);
-                  }
-                }}
                 onKeyDown={fromEnter(() => {
-                  setFieldValue('taskDeadlineDate', dayjs());
+                  setFieldValue('taskDeadlineTime', dayjs());
                   setDatePickerOpen(false);
 
                   if (isNoAdditionalFieldsRequired) {
