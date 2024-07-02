@@ -318,7 +318,7 @@ export const CreateResourceDisconnectionForm: FC<
             <DatePicker
               disabled={isEdit}
               value={getDatePickerValue(values.startDate, 'DD.MM.YYYY')}
-              format="DD.MM.YYYY"
+              format={{ format: 'DD.MM.YYYY', type: 'mask' }}
               placeholder="Дата"
               onChange={(_, stringDate) =>
                 setFieldValue('startDate', stringDate)
@@ -347,7 +347,7 @@ export const CreateResourceDisconnectionForm: FC<
             <DatePicker
               disabled={!values.startDate || isInterHeatingSeason}
               value={getDatePickerValue(values.endDate, 'DD.MM.YYYY')}
-              format="DD.MM.YYYY"
+              format={{ format: 'DD.MM.YYYY', type: 'mask' }}
               placeholder="Дата"
               onChange={(_, stringDate) => setFieldValue('endDate', stringDate)}
               disabledDate={handleDisableDate}

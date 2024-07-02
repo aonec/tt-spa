@@ -49,7 +49,7 @@ export const CheckCalculatorForm: FC<CheckCalculatorFormProps> = ({
               setFieldValue('currentCheckingDate', date.format());
               setFieldValue('futureCheckingDate', date.add(4, 'year').format());
             }}
-            format="DD.MM.YYYY"
+            format={{ format: 'DD.MM.YYYY', type: 'mask' }}
           />
           <ErrorMessage>{errors.currentCheckingDate}</ErrorMessage>
         </FormItem>
@@ -62,7 +62,7 @@ export const CheckCalculatorForm: FC<CheckCalculatorFormProps> = ({
               }
               setFieldValue('futureCheckingDate', date.format());
             }}
-            format="DD.MM.YYYY"
+            format={{ format: 'DD.MM.YYYY', type: 'mask' }}
           />
           <ErrorMessage>{errors.futureCheckingDate}</ErrorMessage>
         </FormItem>

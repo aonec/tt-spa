@@ -9,6 +9,8 @@ import {
   AddInspectorContainer,
   addInspectorService,
 } from '../addInspectorService';
+import { DeleteInspectorContainer } from './deleteInspector';
+import { deleteInspectorService } from './deleteInspector/deleteInspectorService.models';
 
 const { DisplayInspectorsGate } = displayInspectorsHousingStocksService.gates;
 
@@ -21,6 +23,7 @@ export const InspectorsHousingStocksListContainer: FC = () => {
     updateInfo,
     isInspectorsFetched,
     handleOpenAddInspector,
+    handleDeleteInspector,
   } = useUnit({
     housingStocks:
       displayInspectorsHousingStocksService.outputs
@@ -33,6 +36,7 @@ export const InspectorsHousingStocksListContainer: FC = () => {
       inspectorHousingStockService.inputs.updateHousingStockInspectorInfo,
     isInspectorsFetched: getInspectorsHousingStocksQuery.$succeeded,
     handleOpenAddInspector: addInspectorService.inputs.setBuldingId,
+    handleDeleteInspector: deleteInspectorService.inputs.handleDelete,
   });
 
   const days = range(15, 26, 1);
@@ -41,6 +45,7 @@ export const InspectorsHousingStocksListContainer: FC = () => {
     <>
       <DisplayInspectorsGate />
       <AddInspectorContainer />
+      <DeleteInspectorContainer />
       <InspectorsHousingStocksList
         loading={loading}
         housingStocks={housingStocks}
@@ -50,6 +55,7 @@ export const InspectorsHousingStocksListContainer: FC = () => {
         updateInfo={updateInfo}
         isInspectorsFetched={isInspectorsFetched}
         handleOpenAddInspector={handleOpenAddInspector}
+        handleDeleteInspector={handleDeleteInspector}
       />
     </>
   );

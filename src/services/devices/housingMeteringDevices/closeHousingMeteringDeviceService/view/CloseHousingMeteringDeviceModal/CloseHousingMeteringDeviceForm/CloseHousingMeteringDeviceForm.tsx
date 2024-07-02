@@ -51,7 +51,7 @@ export const CloseHousingMeteringDeviceForm: FC<
               setFieldValue('closingDate', date);
             }}
             placeholder="Выберите"
-            format="DD.MM.YYYY"
+            format={{ format: 'DD.MM.YYYY', type: 'mask' }}
           />
           <ErrorMessage>{errors.closingDate as unknown as string}</ErrorMessage>
         </FormItem>

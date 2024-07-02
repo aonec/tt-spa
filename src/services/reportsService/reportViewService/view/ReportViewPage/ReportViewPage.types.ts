@@ -34,4 +34,6 @@ export type ReportViewPageProps = {
   clearFiltrationValues: () => void;
   emloyeeReportData: EmployeeReportResponse | null;
   organizations: OrganizationResponsePagedList | null;
+  isSubmitButtonDisable: boolean;
+  setSubmitButtonDisable: (payload: boolean) => void;
 };

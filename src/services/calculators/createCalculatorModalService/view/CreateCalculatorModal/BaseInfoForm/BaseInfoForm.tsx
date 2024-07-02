@@ -52,7 +52,7 @@ export const BaseInfoForm: FC<BaseInfoFormProps> = ({
         </FormItem>
         <FormItem label="Дата последней поверки прибора">
           <DatePicker
-            format="DD.MM.YYYY"
+            format={{ format: 'DD.MM.YYYY', type: 'mask' }}
             value={getDatePickerValue(values.lastCheckingDate)}
             onChange={(lastCheckingDate) => {
               setFieldValue(
@@ -64,7 +64,7 @@ export const BaseInfoForm: FC<BaseInfoFormProps> = ({
         </FormItem>
         <FormItem label="Дата следующей поверки прибора">
           <DatePicker
-            format="DD.MM.YYYY"
+            format={{ format: 'DD.MM.YYYY', type: 'mask' }}
             value={getDatePickerValue(values.futureCheckingDate)}
             onChange={(futureCheckingDate) => {
               setFieldValue(

@@ -65,7 +65,7 @@ export const GroupReportDatesSelect: FC<GroupReportDatesSelectProps> = ({
             return diff < 0;
           }}
           allowClear={false}
-          format="DD.MM.YYYY"
+          format={{ format: 'DD.MM.YYYY', type: 'mask' }}
           value={[dayjs(value.From), dayjs(value.To)]}
           onChange={(range) => {
             if (

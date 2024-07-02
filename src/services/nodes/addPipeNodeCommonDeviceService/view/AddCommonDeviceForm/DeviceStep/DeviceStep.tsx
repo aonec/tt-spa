@@ -83,7 +83,7 @@ export const DeviceStep: FC<DeviceStepProps> = ({
               setFieldValue('futureCheckingDate', dayjs(date).add(4, 'year'));
             }}
             placeholder="Выберите"
-            format="DD.MM.YYYY"
+            format={{ format: 'DD.MM.YYYY', type: 'mask' }}
           />
         </FormItem>
         <FormItem label="Дата следующей поверки прибора">
@@ -91,7 +91,7 @@ export const DeviceStep: FC<DeviceStepProps> = ({
             value={values.futureCheckingDate}
             onChange={(date) => setFieldValue('futureCheckingDate', date)}
             placeholder="Выберите"
-            format="DD.MM.YYYY"
+            format={{ format: 'DD.MM.YYYY', type: 'mask' }}
           />
         </FormItem>
       </LineWrapper>

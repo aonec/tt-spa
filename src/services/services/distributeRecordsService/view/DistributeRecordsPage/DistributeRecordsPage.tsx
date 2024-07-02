@@ -75,7 +75,7 @@ export const DistributeRecordsPage: FC<Props> = ({
           }}
           small
           style={{ width: 240 }}
-          format="DD.MM.YYYY"
+          format={{ format: 'DD.MM.YYYY', type: 'mask' }}
           allowClear={false}
           showToday={false}
         />

@@ -42,7 +42,7 @@ export const CloseHomeownerAccountContainer = () => {
         <Form id={formId} onSubmitCapture={handleSubmit}>
           <FormItem label="Дата закрытия">
             <DatePicker
-              format="DD.MM.YYYY"
+              format={{ format: 'DD.MM.YYYY', type: 'mask' }}
               value={closedAt}
               onChange={setClosedAt}
             />

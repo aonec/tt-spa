@@ -71,7 +71,7 @@ export const PauseApartmentForm: FC<Props> = ({
           onChange={(value: dayjs.Dayjs | null) =>
             setFieldValue('fromDate', value && value.format())
           }
-          format="DD.MM.YYYY"
+          format={{ format: 'DD.MM.YYYY', type: 'mask' }}
           disabledDate={(value) => value.diff(dayjs(values.toDate)) > 0}
         />
         <ErrorMessage>{errors.fromDate}</ErrorMessage>
@@ -84,7 +84,7 @@ export const PauseApartmentForm: FC<Props> = ({
             setFieldValue('toDate', value && value.format());
           }}
           disabledDate={(value) => value.diff(dayjs(values.fromDate)) < 0}
-          format="DD.MM.YYYY"
+          format={{ format: 'DD.MM.YYYY', type: 'mask' }}
         />
         <ErrorMessage>{errors.toDate}</ErrorMessage>
       </FormItem>

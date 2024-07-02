@@ -186,7 +186,7 @@ export const EditNodeCommonInfo: FC<EditNodeCommonInfoProps> = ({
         {lastCommercialAccountingDate && (
           <FormItem label="Дата начала действия акта-допуска">
             <DatePicker
-              format="DD.MM.YYYY"
+              format={{ format: 'DD.MM.YYYY', type: 'mask' }}
               placeholder="Укажите дату..."
               value={lastCommercialAccountingDate}
               allowClear={false}
@@ -198,7 +198,7 @@ export const EditNodeCommonInfo: FC<EditNodeCommonInfoProps> = ({
         {futureCommercialAccountingDate && (
           <FormItem label="Дата окончания действия акта-допуска">
             <DatePicker
-              format="DD.MM.YYYY"
+              format={{ format: 'DD.MM.YYYY', type: 'mask' }}
               placeholder="Укажите дату..."
               allowClear={false}
               value={futureCommercialAccountingDate}
