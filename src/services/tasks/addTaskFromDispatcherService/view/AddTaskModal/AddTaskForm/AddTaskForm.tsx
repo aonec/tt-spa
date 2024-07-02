@@ -725,7 +725,6 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
                 onFocus={() => {
                   setDatePickerOpen(true);
                 }}
-                onBlur={() => setDatePickerOpen(false)}
                 onMouseDown={() => {
                   setDatePickerOpen(!isDatePickerOpen);
                   setFieldValue('taskDeadlineDate', null);
@@ -735,20 +734,6 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
                   value !== undefined &&
                     setFieldValue('taskDeadlineDate', value);
                   setDatePickerOpen(false);
-                }}
-                onCalendarChange={() => {
-                  if (isNoAdditionalFieldsRequired) {
-                    next(5);
-                  }
-                  if (isOnlySourceNumberRequired) {
-                    next(6);
-                  }
-                  if (isOnlySubscriberRequired) {
-                    next(7);
-                  }
-                  if (isSubscriberAndSourceNumberRequired) {
-                    next(8);
-                  }
                 }}
                 onKeyDown={fromEnter(() => {
                   setFieldValue('taskDeadlineDate', dayjs());
@@ -777,7 +762,6 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
                 onFocus={() => {
                   setTimePickerOpen(true);
                 }}
-                onBlur={() => setTimePickerOpen(false)}
                 onChange={(value) => {
                   setFieldValue('taskDeadlineTime', value);
                 }}

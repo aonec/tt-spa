@@ -21,7 +21,7 @@ export const GridContainerExpandable = styled.div<{ isTwoColumn: boolean }>`
 
 export const GridContainerAsymmetricLeft = styled.div`
   display: grid;
-  grid-template-columns: 2fr 1fr;
+  grid-template-columns: 2fr 1.2fr;
   grid-gap: 4px 20px;
 `;
 export const GridContainerAsymmetricThreeColumn = styled.div`
