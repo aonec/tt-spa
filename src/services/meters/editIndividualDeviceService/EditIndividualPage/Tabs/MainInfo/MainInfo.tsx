@@ -152,20 +152,6 @@ export const MainInfo: FC<MainInfoProps> = ({
         </SwitchWrapper>
       )}
 
-      <FormItem label="Дата поверки">
-        <DatePicker
-          disabled
-          value={dayjs(values.lastCheckingDate)}
-          format={{ format: 'DD.MM.YYYY', type: 'mask' }}
-        />
-      </FormItem>
-      <FormItem label="Дата Следующей поверки">
-        <DatePicker
-          disabled
-          value={dayjs(values.futureCheckingDate)}
-          format={{ format: 'DD.MM.YYYY', type: 'mask' }}
-        />
-      </FormItem>
       <SpaceLine />
 
       <GridContainer>
