@@ -25,4 +25,6 @@ export type CreateNodePageProps = {
   openCreateNodeServiceZoneModal: () => void;
   validateNode: () => void;
   isValidationLoading: boolean;
+  handleDeleteServiceZone: (payload: number) => void;
+  isDialogOpen: boolean;
 };

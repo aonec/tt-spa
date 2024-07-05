@@ -55,6 +55,8 @@ export const CreateNodeContainer = () => {
     validateNode,
     validationResult,
     mountBuilding,
+    handleDeleteServiceZone,
+    isDialogOpen,
   } = useUnit({
     isBuildingLoading: outputs.$isLoadingBuilding,
     building: outputs.$building,
@@ -78,6 +80,8 @@ export const CreateNodeContainer = () => {
     closeConfiramtionModal: inputs.closeConfiramtionModal,
     handleSubmitForm: inputs.handleSubmitForm,
     mountBuilding: mountAddressService.outputs.$buildingListItem,
+    handleDeleteServiceZone: inputs.handleDeleteServiceZone,
+    isDialogOpen: outputs.$isDialogOpen,
   });
 
   useEffect(() => {
@@ -129,6 +133,8 @@ export const CreateNodeContainer = () => {
         nodeServiceZones={nodeServiceZones}
         openCreateNodeServiceZoneModal={() => openCreateNodeServiceZoneModal()}
         validateNode={() => validateNode()}
+        handleDeleteServiceZone={handleDeleteServiceZone}
+        isDialogOpen={isDialogOpen}
       />
     </>
   );

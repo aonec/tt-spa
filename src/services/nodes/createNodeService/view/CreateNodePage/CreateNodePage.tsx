@@ -10,6 +10,7 @@ import { ConnectionSettings } from './ConnectionSettings';
 import { AddressWrapper, PageHeaderSC, Wrapper } from './CreateNodePage.styled';
 import { CreateNodePageProps } from './CreateNodePage.types';
 import { MountAddress } from './MountAddress';
+import { Dialog } from 'ui-kit/shared/Dialog/Dialog';
 
 const { Step } = Steps;
 
@@ -29,6 +30,8 @@ export const CreateNodePage: FC<CreateNodePageProps> = ({
   openCreateNodeServiceZoneModal,
   validateNode,
   isValidationLoading,
+  handleDeleteServiceZone,
+  isDialogOpen,
 }) => {
   const stepComponentDictionary: { [key: number]: ReactNode } = {
     0: (
@@ -92,6 +95,20 @@ export const CreateNodePage: FC<CreateNodePageProps> = ({
           </Steps>
         </div>
       </Wrapper>
+      <Dialog
+        zIndex={1100}
+        width={600}
+        title={`Вы уверены, что хотите удалить зону “${zoneName}”?`}
+        description="Введенные данные при создании заявки не будут сохранены. Если вы хотите сохранить прогресс, вернитесь назад и завершите создание заявки."
+        isOpen={isDialogOpen}
+        onCancel={() => handleDeleteServiceZone(null)}
+        onSubmit={() => {
+          handleDialogOpen(false);
+        }}
+        submitText="Выйти"
+        cancelText="Продолжить создание заявки"
+        type="danger"
+      />
     </div>
   );
 };

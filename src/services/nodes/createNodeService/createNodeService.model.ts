@@ -65,6 +65,8 @@ const goPrevStep = createEvent();
 const openConfiramtionModal = createEvent();
 const closeConfiramtionModal = createEvent();
 
+const handleDeleteServiceZone = createEvent<number | null>();
+
 const validateNode = createEvent();
 const validateNodeFx = createEffect<
   CreatePipeNodeRequest,
@@ -119,6 +121,10 @@ const $isConfirmationModalOpen = createStore(false)
 const $nodeServiceZones = createStore<NodeServiceZoneListResponse | null>(null)
   .on(fetchNodeServiceZonesFx.doneData, (_, zones) => zones)
   .reset(CreateNodeGate.close);
+
+const $isDialogOpen = createStore(false).on(handleDeleteServiceZone, (_, id) =>
+  Boolean(id),
+);
 
 sample({
   clock: CreateNodeGate.open,
@@ -245,6 +251,7 @@ export const createNodeService = {
     handleSubmitForm,
     handlePipeNodeCreated,
     validateNode,
+    handleDeleteServiceZone,
   },
   outputs: {
     $building,
@@ -261,6 +268,7 @@ export const createNodeService = {
     $isCreatePipeNodeLoading,
     $validationResult,
     $isValidationLoading,
+    $isDialogOpen,
   },
   gates: {
     CreateNodeGate,
