@@ -67,7 +67,12 @@ export const ContextMenuButton: FC<ContextMenuButtonProps> = (props) => {
   const menuButtonsFiltered = menuButtons?.filter(({ hidden }) => !hidden);
 
   const menu = () => (
-    <Menu onClick={(e) => e.domEvent.stopPropagation()}>
+    <Menu
+      onClick={(e) => {
+        // @ts-ignore
+        e.domEvent.stopImmediatePropagation();
+      }}
+    >
       {menuButtonsFiltered &&
         getMenuButtons({
           menuButtons: menuButtonsFiltered,
@@ -93,10 +98,7 @@ export const ContextMenuButton: FC<ContextMenuButtonProps> = (props) => {
         disabled={disabled}
         open={isVisible}
         trigger={['click']}
-        onOpenChange={(visible, info) => {
-          const isOnMenuClick = info.source === 'menu';
-          !isOnMenuClick && setIsVisible(visible);
-        }}
+        onOpenChange={(visible) => setIsVisible(visible)}
       >
         <>
           {Boolean(children) && (
