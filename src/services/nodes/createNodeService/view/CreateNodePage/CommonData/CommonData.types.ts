@@ -2,7 +2,9 @@ import {
   ENodeCommercialAccountStatus,
   EPipeNodeConfig,
   NodeServiceZoneListResponse,
+  NodeServiceZoneResponse,
 } from 'api/types';
+import { Event } from 'effector';
 import { FC } from 'react';
 import {
   CreateNodeFormPayload,
@@ -15,6 +17,8 @@ export type CommonDataProps = {
   updateRequestPayload: UpdateNodeFormPayloadCallback;
   openCreateNodeServiceZoneModal: () => void;
   requestPayload: CreateNodeFormPayload;
+  handleDeleteServiceZone: (payload: NodeServiceZoneResponse | null) => void;
+  successDeleteServiceZone: Event<void>;
 };
 
 export type NodeResourcesList = {

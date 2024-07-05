@@ -7,7 +7,12 @@ import { getBuildingAddress } from 'utils/getBuildingAddress';
 import { CommonData } from './CommonData';
 import { ConnectedDevices } from './ConnectedDevices';
 import { ConnectionSettings } from './ConnectionSettings';
-import { AddressWrapper, PageHeaderSC, Wrapper } from './CreateNodePage.styled';
+import {
+  AddressWrapper,
+  DialogDescription,
+  PageHeaderSC,
+  Wrapper,
+} from './CreateNodePage.styled';
 import { CreateNodePageProps } from './CreateNodePage.types';
 import { MountAddress } from './MountAddress';
 import { Dialog } from 'ui-kit/shared/Dialog/Dialog';
@@ -32,6 +37,9 @@ export const CreateNodePage: FC<CreateNodePageProps> = ({
   isValidationLoading,
   handleDeleteServiceZone,
   isDialogOpen,
+  deletingServiceZone,
+  handleFinallyDeleteServiceZone,
+  successDeleteServiceZone,
 }) => {
   const stepComponentDictionary: { [key: number]: ReactNode } = {
     0: (
@@ -59,6 +67,8 @@ export const CreateNodePage: FC<CreateNodePageProps> = ({
         updateRequestPayload={updateRequestPayload}
         openCreateNodeServiceZoneModal={openCreateNodeServiceZoneModal}
         requestPayload={requestPayload}
+        handleDeleteServiceZone={handleDeleteServiceZone}
+        successDeleteServiceZone={successDeleteServiceZone}
       />
     ),
     3: (
@@ -96,17 +106,26 @@ export const CreateNodePage: FC<CreateNodePageProps> = ({
         </div>
       </Wrapper>
       <Dialog
-        zIndex={1100}
         width={600}
-        title={`Вы уверены, что хотите удалить зону “${zoneName}”?`}
-        description="Введенные данные при создании заявки не будут сохранены. Если вы хотите сохранить прогресс, вернитесь назад и завершите создание заявки."
+        title={`Вы уверены, что хотите удалить зону “${deletingServiceZone?.name}”?`}
+        description={
+          <DialogDescription>
+            <div>
+              Это зона используется на других узлах. При удалении зона будет
+              автоматически сброшена для всех узлов.
+            </div>
+            <div>Количество узлов: 10</div>
+          </DialogDescription>
+        }
         isOpen={isDialogOpen}
         onCancel={() => handleDeleteServiceZone(null)}
         onSubmit={() => {
-          handleDialogOpen(false);
+          handleDeleteServiceZone(null);
+          deletingServiceZone &&
+            handleFinallyDeleteServiceZone(deletingServiceZone.id);
         }}
-        submitText="Выйти"
-        cancelText="Продолжить создание заявки"
+        submitText="Удалить"
+        cancelText="Отмена"
         type="danger"
       />
     </div>

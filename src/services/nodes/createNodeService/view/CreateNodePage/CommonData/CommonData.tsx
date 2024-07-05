@@ -42,6 +42,8 @@ export const CommonData: FC<CommonDataProps> = ({
   openCreateNodeServiceZoneModal,
   requestPayload,
   updateRequestPayload,
+  handleDeleteServiceZone,
+  successDeleteServiceZone,
 }) => {
   const { values, handleChange, setFieldValue, errors, handleSubmit } =
     useFormik({
@@ -50,7 +52,6 @@ export const CommonData: FC<CommonDataProps> = ({
         title: requestPayload.title ? String(requestPayload.title) : '',
         registrationType: requestPayload?.registrationType || null,
         nodeServiceZoneName: null,
-
         commercialStatusRequest: requestPayload.commercialStatusRequest,
         communicationPipes: requestPayload.communicationPipes || [],
       },
@@ -94,6 +95,14 @@ export const CommonData: FC<CommonDataProps> = ({
         updateRequestPayload(payload);
       },
     });
+
+  useEffect(
+    () =>
+      successDeleteServiceZone.watch(() =>
+        setFieldValue('nodeServiceZoneName', null),
+      ).unsubscribe,
+    [successDeleteServiceZone, setFieldValue],
+  );
 
   const handleChangeCommercialStatus = useCallback(
     (commercialStatusRequest: ChangeNodeStatusFormPayload) =>
@@ -211,20 +220,19 @@ export const CommonData: FC<CommonDataProps> = ({
           <Select
             placeholder="Выберите"
             value={values.nodeServiceZoneName || undefined}
-            onChange={(value) => {
-              const selectedZone = nodeServiceZones?.nodeServiceZones?.find(
-                (zone) => zone.name === value,
-              );
-              console.log(selectedZone);
-              setFieldValue('nodeServiceZoneName', value);
-            }}
+            onChange={(value) => setFieldValue('nodeServiceZoneName', value)}
             labelRender={(props) => props.value}
           >
             {nodeServiceZones?.nodeServiceZones?.map((zone) => (
               <Select.Option key={zone.id} value={zone.name}>
                 <ZoneOption>
                   {zone.name}
-                  <TrashIconGrey onClick={() => console.log(zone.id)} />
+                  <TrashIconGrey
+                    onClick={(event) => {
+                      event.stopPropagation();
+                      handleDeleteServiceZone(zone);
+                    }}
+                  />
                 </ZoneOption>
               </Select.Option>
             ))}

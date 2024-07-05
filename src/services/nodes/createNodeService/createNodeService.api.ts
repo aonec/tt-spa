@@ -50,3 +50,7 @@ export const fetchValidateNode = (
   payload: CreatePipeNodeRequest,
 ): Promise<PipeNodeValidationResultResponse> =>
   axios.post('PipeNodes/validate', payload);
+
+export const deleteNodeServiceZone = (
+  nodeServiceZoneId: number,
+): Promise<void> => axios.delete(`NodeServiceZones/${nodeServiceZoneId}`);

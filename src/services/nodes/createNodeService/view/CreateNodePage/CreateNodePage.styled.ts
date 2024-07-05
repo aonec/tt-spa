@@ -22,6 +22,12 @@ export const AddressWrapper = styled.div`
   font-size: 14px;
 `;
 
+export const DialogDescription = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+`;
+
 export const PageHeaderSC = styled(PageHeader)`
   margin-top: 16px;
 `;

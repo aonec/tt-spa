@@ -57,6 +57,8 @@ export const CreateNodeContainer = () => {
     mountBuilding,
     handleDeleteServiceZone,
     isDialogOpen,
+    deletingServiceZone,
+    handleFinallyDeleteServiceZone,
   } = useUnit({
     isBuildingLoading: outputs.$isLoadingBuilding,
     building: outputs.$building,
@@ -82,6 +84,8 @@ export const CreateNodeContainer = () => {
     mountBuilding: mountAddressService.outputs.$buildingListItem,
     handleDeleteServiceZone: inputs.handleDeleteServiceZone,
     isDialogOpen: outputs.$isDialogOpen,
+    deletingServiceZone: outputs.$deletingServiceZone,
+    handleFinallyDeleteServiceZone: inputs.handleFinallyDeleteServiceZone,
   });
 
   useEffect(() => {
@@ -135,6 +139,9 @@ export const CreateNodeContainer = () => {
         validateNode={() => validateNode()}
         handleDeleteServiceZone={handleDeleteServiceZone}
         isDialogOpen={isDialogOpen}
+        deletingServiceZone={deletingServiceZone}
+        handleFinallyDeleteServiceZone={handleFinallyDeleteServiceZone}
+        successDeleteServiceZone={inputs.successDeleteServiceZone}
       />
     </>
   );
