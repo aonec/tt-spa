@@ -5,6 +5,7 @@ import {
   UpdatePipeNodeRequest,
 } from 'api/types';
 import { NodeEditGrouptype } from '../../editNodeService.constants';
+import { Event } from 'effector';
 
 export type EditNodePageProps = {
   node: PipeNodeResponse;
@@ -18,4 +19,9 @@ export type EditNodePageProps = {
   calculators: CalculatorIntoHousingStockResponse[];
   isUpdateLoading: boolean;
   openRemoveConnectionModal: (node: PipeNodeResponse) => void;
+  successDeleteServiceZone: Event<void>;
+  handleDeleteServiceZone: (payload: NodeServiceZoneResponse | null) => void;
+  handleFinallyDeleteServiceZone: (payload: number) => void;
+  deletingServiceZone: NodeServiceZoneResponse | null;
+  isDeleteServiceZoneDialogOpen: boolean;
 };

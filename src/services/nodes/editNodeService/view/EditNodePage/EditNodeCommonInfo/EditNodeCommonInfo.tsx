@@ -1,4 +1,4 @@
-import React, { FC, useCallback, useMemo } from 'react';
+import React, { FC, useCallback, useEffect, useMemo } from 'react';
 import { DatePicker } from 'ui-kit/DatePicker';
 import { Input } from 'ui-kit/Input';
 import { FormItem } from 'ui-kit/FormItem';
@@ -6,9 +6,11 @@ import { Select } from 'ui-kit/Select';
 import {
   AddZoneText,
   ButtonSC,
+  DialogDescription,
   FooterWrapper,
   InfoWrapper,
   ResourceText,
+  ZoneOption,
   ZoneWrapper,
 } from './EditNodeCommonInfo.styled';
 import { EditNodeCommonInfoProps } from './EditNodeCommonInfo.types';
@@ -24,6 +26,8 @@ import { validationSchema } from './EditNodeCommonInfo.constants';
 import { ErrorMessage } from 'ui-kit/ErrorMessage';
 import { filterCommunicationPipes } from './EditNodeCommonInfo.utils';
 import { Divider } from 'services/nodes/createNodeService/view/CreateNodePage/CommonData/CommonData.styled';
+import { Dialog } from 'ui-kit/shared/Dialog/Dialog';
+import { TrashIconGrey } from 'ui-kit/icons';
 
 export const EditNodeCommonInfo: FC<EditNodeCommonInfoProps> = ({
   node,
@@ -32,6 +36,11 @@ export const EditNodeCommonInfo: FC<EditNodeCommonInfoProps> = ({
   formId,
   updateNode,
   isLoading,
+  deletingServiceZone,
+  handleDeleteServiceZone,
+  handleFinallyDeleteServiceZone,
+  isDeleteServiceZoneDialogOpen,
+  successDeleteServiceZone,
 }) => {
   const navigate = useNavigate();
 
@@ -45,13 +54,17 @@ export const EditNodeCommonInfo: FC<EditNodeCommonInfoProps> = ({
 
   const { values, setFieldValue, handleSubmit, errors } = useFormik({
     initialValues: {
-      nodeServiceZoneId: node.nodeServiceZone?.id,
+      nodeServiceZoneName: node.nodeServiceZone?.name,
       title: node.title,
       communicationPipes: node.communicationPipes || [],
     },
     enableReinitialize: true,
     validationSchema,
     onSubmit: (values) => {
+      const selectedZoneId = nodeZones.find(
+        (zone) => zone.name === values.nodeServiceZoneName,
+      )?.id;
+
       const communicationPipes = values.communicationPipes.filter((pipe) =>
         filterCommunicationPipes({
           newPipe: pipe,
@@ -60,7 +73,8 @@ export const EditNodeCommonInfo: FC<EditNodeCommonInfoProps> = ({
       );
 
       updateNode({
-        ...values,
+        title: node.title,
+        nodeServiceZoneId: selectedZoneId,
         communicationPipes: communicationPipes.map((pipe) => ({
           ...pipe,
           communicationPipeId: pipe.id,
@@ -68,15 +82,6 @@ export const EditNodeCommonInfo: FC<EditNodeCommonInfoProps> = ({
       });
     },
   });
-
-  const selectZonesOptions = useMemo(
-    () =>
-      nodeZones.map((zone) => ({
-        value: zone.id,
-        label: zone.name,
-      })),
-    [nodeZones],
-  );
 
   const pipesErrors = useMemo(
     () =>
@@ -107,6 +112,14 @@ export const EditNodeCommonInfo: FC<EditNodeCommonInfoProps> = ({
     [values.communicationPipes],
   );
 
+  useEffect(
+    () =>
+      successDeleteServiceZone.watch(() =>
+        setFieldValue('nodeServiceZoneName', null),
+      ).unsubscribe,
+    [successDeleteServiceZone, setFieldValue],
+  );
+
   return (
     <>
       <Form id={formId} onSubmitCapture={handleSubmit}>
@@ -135,13 +148,25 @@ export const EditNodeCommonInfo: FC<EditNodeCommonInfoProps> = ({
         <FormItem label="Зона">
           <ZoneWrapper>
             <Select
-              value={values.nodeServiceZoneId || undefined}
-              onChange={(chosenInputId) =>
-                setFieldValue('nodeServiceZoneId', chosenInputId)
-              }
               placeholder="Зона"
-              options={selectZonesOptions}
-            />
+              value={values.nodeServiceZoneName || undefined}
+              onChange={(value) => setFieldValue('nodeServiceZoneName', value)}
+              labelRender={(props) => props.value}
+            >
+              {nodeZones.map((zone) => (
+                <Select.Option key={zone.id} value={zone.name}>
+                  <ZoneOption>
+                    {zone.name}
+                    <TrashIconGrey
+                      onClick={(event) => {
+                        event.stopPropagation();
+                        handleDeleteServiceZone(zone);
+                      }}
+                    />
+                  </ZoneOption>
+                </Select.Option>
+              ))}
+            </Select>
             <AddZoneText onClick={() => openAddNewZonesModal()}>
               + Добавить новую зону
             </AddZoneText>
@@ -217,6 +242,30 @@ export const EditNodeCommonInfo: FC<EditNodeCommonInfoProps> = ({
           Сохранить
         </ButtonSC>
       </FooterWrapper>
+
+      <Dialog
+        width={600}
+        title={`Вы уверены, что хотите удалить зону “${deletingServiceZone?.name}”?`}
+        description={
+          <DialogDescription>
+            <div>
+              Это зона используется на других узлах. При удалении зона будет
+              автоматически сброшена для всех узлов.
+            </div>
+            <div>Количество узлов: 10</div>
+          </DialogDescription>
+        }
+        isOpen={isDeleteServiceZoneDialogOpen}
+        onCancel={() => handleDeleteServiceZone(null)}
+        onSubmit={() => {
+          handleDeleteServiceZone(null);
+          deletingServiceZone &&
+            handleFinallyDeleteServiceZone(deletingServiceZone.id);
+        }}
+        submitText="Удалить"
+        cancelText="Отмена"
+        type="danger"
+      />
     </>
   );
 };

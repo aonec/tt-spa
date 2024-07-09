@@ -35,6 +35,10 @@ export const EditNodeContainer = () => {
     refetchNode,
     setGrouptype,
     updateNode,
+    handleDeleteServiceZone,
+    handleFinallyDeleteServiceZone,
+    deletingServiceZone,
+    isDeleteServiceZoneDialogOpen,
   } = useUnit({
     node: outputs.$node,
     isLoading: outputs.$isLoading,
@@ -50,6 +54,10 @@ export const EditNodeContainer = () => {
     openCreateCalculatorModal: createCalculatorModalService.inputs.openModal,
     openRemoveConnectionModal:
       removeNodeCalculatorConnectionService.inputs.openModal,
+    handleDeleteServiceZone: inputs.handleDeleteServiceZone,
+    handleFinallyDeleteServiceZone: inputs.handleFinallyDeleteServiceZone,
+    deletingServiceZone: outputs.$deletingServiceZone,
+    isDeleteServiceZoneDialogOpen: outputs.$isDeleteServiceZoneDialogOpen,
   });
 
   if (!nodeId) return null;
@@ -79,6 +87,11 @@ export const EditNodeContainer = () => {
               calculators={calculators || []}
               isUpdateLoading={isUpdateLoading}
               openRemoveConnectionModal={openRemoveConnectionModal}
+              successDeleteServiceZone={inputs.successDeleteServiceZone}
+              handleDeleteServiceZone={handleDeleteServiceZone}
+              handleFinallyDeleteServiceZone={handleFinallyDeleteServiceZone}
+              deletingServiceZone={deletingServiceZone}
+              isDeleteServiceZoneDialogOpen={isDeleteServiceZoneDialogOpen}
             />
           </>
         )}

@@ -18,3 +18,7 @@ export const fetchUpdateNode = ({
   pipeNodeId: string;
   payload: UpdatePipeNodeRequest;
 }): Promise<void> => axios.put(`PipeNodes/${pipeNodeId}`, payload);
+
+export const deleteNodeServiceZone = (
+  nodeServiceZoneId: number,
+): Promise<void> => axios.delete(`NodeServiceZones/${nodeServiceZoneId}`);

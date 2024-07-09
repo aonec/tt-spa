@@ -10,6 +10,7 @@ import {
 } from 'api/types';
 import { createNodeServiceZoneService } from 'services/nodes/createNodeServiceZoneService';
 import {
+  deleteNodeServiceZone,
   fetchNode,
   fetchServiceZones,
   fetchUpdateNode,
@@ -20,6 +21,9 @@ import { message } from 'antd';
 import { EffectFailDataAxiosError } from 'types';
 
 const clearStore = createEvent();
+
+const handleDeleteServiceZone = createEvent<NodeServiceZoneResponse | null>();
+const handleFinallyDeleteServiceZone = createEvent<number>();
 
 const setEditNodeGrouptype = createEvent<NodeEditGrouptype>();
 const $editNodeGrouptype = createStore<NodeEditGrouptype>(
@@ -52,6 +56,14 @@ const updateNodeFx = createEffect<
   EffectFailDataAxiosError
 >(fetchUpdateNode);
 
+const deleteNodeServiceZoneFx = createEffect<
+  number,
+  void,
+  EffectFailDataAxiosError
+>(deleteNodeServiceZone);
+
+const successDeleteServiceZone = deleteNodeServiceZoneFx.doneData;
+
 const NodeIdGate = createGate<{ nodeId: string }>();
 
 const NodeResourceGate = createGate<{ resource: EResourceType }>();
@@ -65,6 +77,12 @@ sample({
 });
 
 const $nodeId = NodeIdGate.state.map(({ nodeId }) => nodeId || null);
+
+const $deletingServiceZone = createStore<NodeServiceZoneResponse | null>(
+  null,
+).on(handleDeleteServiceZone, (_, data) => data);
+
+const $isDeleteServiceZoneDialogOpen = $deletingServiceZone.map(Boolean);
 
 sample({
   source: $nodeId,
@@ -81,7 +99,10 @@ sample({
 });
 
 sample({
-  clock: createNodeServiceZoneService.inputs.createNodeServiceZoneFx.doneData,
+  clock: [
+    createNodeServiceZoneService.inputs.createNodeServiceZoneFx.doneData,
+    successDeleteServiceZone,
+  ],
   target: getNodeZonesFx,
 });
 
@@ -101,6 +122,11 @@ sample({
   target: updateNodeFx,
 });
 
+sample({
+  clock: handleFinallyDeleteServiceZone,
+  target: deleteNodeServiceZoneFx,
+});
+
 updateNodeFx.failData.watch((error) => {
   return message.error(
     error.response.data.error.Text ||
@@ -109,11 +135,22 @@ updateNodeFx.failData.watch((error) => {
   );
 });
 
+deleteNodeServiceZoneFx.failData.watch((error) => {
+  return message.error(
+    error.response.data.error.Text ||
+      error.response.data.error.Message ||
+      'Ошибка удаления',
+  );
+});
+
 export const editNodeService = {
   inputs: {
     setEditNodeGrouptype,
     refetchNode,
     updateNode,
+    successDeleteServiceZone,
+    handleDeleteServiceZone,
+    handleFinallyDeleteServiceZone,
   },
   outputs: {
     $node,
@@ -121,6 +158,8 @@ export const editNodeService = {
     $editNodeGrouptype,
     $nodeZones,
     $isUpdateLoading,
+    $deletingServiceZone,
+    $isDeleteServiceZoneDialogOpen,
   },
   gates: { NodeIdGate, NodeResourceGate },
 };
