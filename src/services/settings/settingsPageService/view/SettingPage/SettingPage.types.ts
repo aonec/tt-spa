@@ -11,4 +11,5 @@ export enum SettingsPageSection {
   districtBorder = 'districtBorder',
   controllers = 'controllers',
   inspectors = 'inspectors',
+  mvitu = 'mvitu',
 }

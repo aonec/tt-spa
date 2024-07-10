@@ -14,6 +14,7 @@ import {
   TemperatureGraphContainer,
   temperatureGraphService,
 } from 'services/settings/temperatureGraphService';
+import { wrapItemByArray } from './SettingPage.utils';
 
 export const SettingPage: FC<SettingPageProps> = ({
   handleReassingInspector,
@@ -78,15 +79,24 @@ export const SettingPage: FC<SettingPageProps> = ({
     [SettingsPageSection.districtBorder]: <DistrictBordersContainer />,
     [SettingsPageSection.controllers]: <></>,
     [SettingsPageSection.inspectors]: <InspectorsDistributionPage />,
+    [SettingsPageSection.mvitu]: <></>,
   };
 
   const tabItems = useMemo(() => {
     if (isAdminSettings) {
       return [
-        ...(featureToggles.workingRanges
-          ? [{ label: 'Рабочие диапазоны узлов', key: 'operatingRanges' }]
-          : []),
+        ...wrapItemByArray(
+          {
+            label: 'Рабочие диапазоны узлов',
+            key: 'operatingRanges',
+          },
+          featureToggles.workingRanges,
+        ),
         { label: 'Температурный график', key: 'temperatureGraph' },
+        ...wrapItemByArray(
+          { label: 'Интеграция с ВИС МВИТУ', key: 'mvitu' },
+          featureToggles.mvitu,
+        ),
       ];
     }
 
@@ -101,9 +111,10 @@ export const SettingPage: FC<SettingPageProps> = ({
     ];
   }, [
     isAdminSettings,
-    featureToggles.controllersDistribution,
     featureToggles.districtsManage,
+    featureToggles.controllersDistribution,
     featureToggles.workingRanges,
+    featureToggles.mvitu,
   ]);
 
   useEffect(() => {
