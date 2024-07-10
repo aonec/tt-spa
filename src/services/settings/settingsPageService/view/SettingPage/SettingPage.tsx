@@ -15,6 +15,7 @@ import {
   temperatureGraphService,
 } from 'services/settings/temperatureGraphService';
 import { wrapItemByArray } from './SettingPage.utils';
+import { MvituContainer } from 'services/settings/mvituService';
 
 export const SettingPage: FC<SettingPageProps> = ({
   handleReassingInspector,
@@ -79,7 +80,7 @@ export const SettingPage: FC<SettingPageProps> = ({
     [SettingsPageSection.districtBorder]: <DistrictBordersContainer />,
     [SettingsPageSection.controllers]: <></>,
     [SettingsPageSection.inspectors]: <InspectorsDistributionPage />,
-    [SettingsPageSection.mvitu]: <></>,
+    [SettingsPageSection.mvitu]: <MvituContainer />,
   };
 
   const tabItems = useMemo(() => {
