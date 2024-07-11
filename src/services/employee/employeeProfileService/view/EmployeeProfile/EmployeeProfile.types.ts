@@ -4,4 +4,5 @@ export type EmployeeProfileProps = {
   userData: OrganizationUserResponse | null;
   handleOpenChangeStatusModal: () => void;
   handleOpenDeleteEmployeeModal: () => void;
+  handleCatchEmployeeId: (payload: number) => void;
 };

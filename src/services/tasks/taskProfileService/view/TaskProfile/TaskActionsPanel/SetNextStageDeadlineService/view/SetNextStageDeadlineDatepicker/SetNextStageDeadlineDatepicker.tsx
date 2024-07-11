@@ -23,7 +23,7 @@ export const SetNextStageDeadlineDatepicker: FC<
         onChange={(date) => handleChange(date)}
         allowClear
         placeholder="Выберите дату"
-        format="DD.MM.YYYY"
+        format={{ format: 'DD.MM.YYYY', type: 'mask' }}
       />
     </FormItem>
   );

@@ -49,11 +49,11 @@ import { Alert } from 'ui-kit/Alert';
 import { useSwitchInputOnEnter } from 'hooks/useSwitchInputOnEnter';
 import { fromEnter } from 'ui-kit/shared/DatePickerNative';
 import { validationSchema } from './AddTaskForm.constants';
-import { DatePicker } from 'ui-kit/DatePicker';
 import { SavePhoneNumber } from './savePhoneNumberService';
 import { AlertIconType } from 'ui-kit/Alert/Alert.types';
 import { addTaskFromDispatcherService } from 'services/tasks/addTaskFromDispatcherService';
 import { getPreparedStreetsOptions } from 'services/objects/createObjectService/view/CreateObjectPage/CreateObjectAddressStage/CreateObjectAddressStage.utils';
+import { DatePicker } from 'ui-kit/DatePicker';
 
 const {
   gates: { PageGate },
@@ -255,6 +255,7 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
 
       setFieldValue('taskType', singularTaskType);
       handleSelectTaskType(singularTaskType);
+      handleSearchExecutor();
 
       if (isNoAdditionalFieldsRequired) {
         next(4);
@@ -274,6 +275,7 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
     setFieldValue,
     next,
     handleSelectTaskType,
+    handleSearchExecutor,
     isSubscriberAndSourceNumberRequired,
     isOnlySourceNumberRequired,
     isOnlySubscriberRequired,
@@ -343,6 +345,7 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
   const [isReasonOpen, setReasonOpen] = useState(false);
   const [isTaskTypeOpen, setTaskTypeOpen] = useState(false);
   const [isDatePickerOpen, setDatePickerOpen] = useState(false);
+  const [isTimePickerOpen, setTimePickerOpen] = useState(false);
   const [isExecutorOpen, setExecutorOpen] = useState(false);
 
   return (
@@ -389,7 +392,7 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
           <FormItem label="Дата и время заявки">
             <GridContainerAsymmetricLeft>
               <DatePickerSc
-                format="DD.MM.YYYY"
+                format={{ format: 'DD.MM.YYYY', type: 'mask' }}
                 value={values.requestDate}
                 onChange={(value) => setFieldValue('requestDate', value)}
               />
@@ -398,6 +401,14 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
                 value={values.requestTime || undefined}
                 onChange={(value) => {
                   setFieldValue('requestTime', value);
+                }}
+                onKeyDown={(event: any) => {
+                  if (
+                    event.key !== 'Backspace' &&
+                    event.currentTarget.value.length === 2
+                  ) {
+                    event.currentTarget.value = event.currentTarget.value + ':';
+                  }
                 }}
               />
             </GridContainerAsymmetricLeft>
@@ -680,6 +691,7 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
               open={isTaskTypeOpen}
               onBlur={() => setTaskTypeOpen(false)}
               onFocus={() => setTaskTypeOpen(true)}
+              onMouseDown={() => setTaskTypeOpen(true)}
               onSelect={(taskType) => {
                 setTaskTypeOpen(false);
                 handleSelectTaskType(taskType as EisTaskType);
@@ -699,7 +711,6 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
                   next(7);
                 }
               }}
-              onMouseDown={() => setTaskTypeOpen(true)}
             />
           </FormItem>
 
@@ -707,15 +718,27 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
             <GridContainerAsymmetricThreeColumn>
               <DatePicker
                 data-reading-input={dataKey}
+                preserveInvalidOnBlur={true}
                 allowClear
-                format="DD.MM.YYYY"
+                format={{ format: 'DD.MM.YYYY', type: 'mask' }}
                 open={isDatePickerOpen}
-                onBlur={() => setDatePickerOpen(false)}
-                onFocus={() => setDatePickerOpen(true)}
-                onMouseDown={() => setDatePickerOpen(true)}
+                onFocus={() => {
+                  setDatePickerOpen(true);
+                }}
+                onMouseDown={() => {
+                  setDatePickerOpen(!isDatePickerOpen);
+                  setFieldValue('taskDeadlineDate', null);
+                }}
                 value={values.taskDeadlineDate}
-                onChange={(value) => setFieldValue('taskDeadlineDate', value)}
+                onChange={(value) => {
+                  value !== undefined &&
+                    setFieldValue('taskDeadlineDate', value);
+                  setDatePickerOpen(false);
+                }}
                 onKeyDown={fromEnter(() => {
+                  setFieldValue('taskDeadlineDate', dayjs());
+                  setDatePickerOpen(false);
+
                   if (isNoAdditionalFieldsRequired) {
                     next(5);
                   }
@@ -729,26 +752,22 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
                     next(8);
                   }
                 })}
-                onSelectCapture={() => {
-                  if (isNoAdditionalFieldsRequired) {
-                    next(5);
-                  }
-                  if (isOnlySourceNumberRequired) {
-                    next(6);
-                  }
-                  if (isOnlySubscriberRequired) {
-                    next(7);
-                  }
-                  if (isSubscriberAndSourceNumberRequired) {
-                    next(8);
-                  }
-                }}
               />
               <TimePickerMedium
+                needConfirm={false}
+                showNow={false}
                 data-reading-input={dataKey}
                 value={values.taskDeadlineTime || undefined}
+                open={isTimePickerOpen}
+                onFocus={() => {
+                  setTimePickerOpen(true);
+                }}
                 onChange={(value) => {
                   setFieldValue('taskDeadlineTime', value);
+                }}
+                onMouseDown={() => {
+                  setTimePickerOpen(!isTimePickerOpen);
+                  setFieldValue('taskDeadlineTime', null);
                 }}
                 onKeyDown={(event: any) => {
                   if (
@@ -759,6 +778,8 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
                   }
 
                   fromEnter(() => {
+                    setTimePickerOpen(false);
+
                     if (isNoAdditionalFieldsRequired) {
                       next(6);
                     }
@@ -772,6 +793,21 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
                       next(9);
                     }
                   })(event);
+                }}
+                onOk={() => {
+                  setTimePickerOpen(false);
+                  if (isNoAdditionalFieldsRequired) {
+                    next(6);
+                  }
+                  if (isOnlySourceNumberRequired) {
+                    next(7);
+                  }
+                  if (isOnlySubscriberRequired) {
+                    next(8);
+                  }
+                  if (isSubscriberAndSourceNumberRequired) {
+                    next(9);
+                  }
                 }}
               />
               <div></div>

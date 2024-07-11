@@ -47,7 +47,7 @@ export const NodeCheckForm: FC<NodeCheckFormProps> = ({
       <Wrapper>
         <FormItem label="Дата проверки">
           <DatePicker
-            format="DD.MM.YYYY"
+            format={{ format: 'DD.MM.YYYY', type: 'mask' }}
             onChange={(date) => {
               if (!date) {
                 return setFieldValue('checkingDate', date);

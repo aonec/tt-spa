@@ -15,6 +15,7 @@ export type ReportFiltrationFormProps = {
   setFiltrationValues: (payload: ReportFiltrationFormValues) => void;
   reportType: ReportType;
   organizations: OrganizationResponsePagedList | null;
+  setSubmitButtonDisable: (payload: boolean) => void;
 };
 
 export type Address = {

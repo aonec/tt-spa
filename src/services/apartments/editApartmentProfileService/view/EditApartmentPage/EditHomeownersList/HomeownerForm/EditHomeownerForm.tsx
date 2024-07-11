@@ -120,14 +120,18 @@ export const EditHomeownerForm: FC<EditHomeownerFormProps> = ({
               <DatePicker
                 value={values.openAt}
                 onChange={(date) => setFieldValue('openAt', date)}
-                format="DD.MM.YYYY"
+                format={{ format: 'DD.MM.YYYY', type: 'mask' }}
               />
               <ErrorMessage>{errors.openAt}</ErrorMessage>
             </>
           )}
 
           {isEdit && (
-            <DatePicker disabled value={values.openAt} format="DD.MM.YYYY" />
+            <DatePicker
+              disabled
+              value={values.openAt}
+              format={{ format: 'DD.MM.YYYY', type: 'mask' }}
+            />
           )}
         </FormItem>
         <FormItem label="Юридическое состояние">

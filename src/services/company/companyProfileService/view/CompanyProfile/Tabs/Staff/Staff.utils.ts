@@ -6,7 +6,6 @@ import {
 const UserRolesPriorityDictionary: {
   [key in ESecuredIdentityRoleName]: number;
 } = {
-  [ESecuredIdentityRoleName.Admin]: 0,
   [ESecuredIdentityRoleName.Administrator]: 1,
   [ESecuredIdentityRoleName.SeniorOperator]: 2,
   [ESecuredIdentityRoleName.Operator]: 3,
@@ -15,7 +14,6 @@ const UserRolesPriorityDictionary: {
   [ESecuredIdentityRoleName.Controller]: 6,
   [ESecuredIdentityRoleName.ManagingFirmSpectator]: 7,
   [ESecuredIdentityRoleName.ManagingFirmSpectatorRestricted]: 8,
-  [ESecuredIdentityRoleName.Homeowner]: 9,
   [ESecuredIdentityRoleName.ManagingFirmSpectatingAdministrator]: 10,
 };
 

@@ -46,7 +46,7 @@ export const SearchNodeArchiveFilters: FC<SearchNodeArchiveFiltersProps> = ({
         <Form.Item label="Период">
           <RangePicker
             value={[values.from, values.to]}
-            format="DD.MM.YYYY"
+            format={{ format: 'DD.MM.YYYY', type: 'mask' }}
             disabledDate={(date) => {
               const currentDate = dayjs().startOf('day');
               const pickerDate = date.startOf('day');

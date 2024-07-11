@@ -101,6 +101,8 @@ const clearFiltrationValues = createEvent();
 
 const setCityFilter = createEvent<string>();
 
+const setSubmitButtonDisable = createEvent<boolean>();
+
 const $addressesWithHouseManagements = createStore<
   HouseManagementWithStreetsResponse[]
 >([])
@@ -130,6 +132,11 @@ const $filtrationValues = createStore<ReportFiltrationFormValues>({
   .on(setFiltrationValues, (_, values) => values)
   .on(setCityFilter, (prev, city) => ({ ...prev, city }))
   .reset(ReportViewGate.close, clearFiltrationValues);
+
+const $isSubmitButtonDisable = createStore<boolean>(true).on(
+  setSubmitButtonDisable,
+  (_, value) => value,
+);
 
 sample({
   clock: ReportViewGate.open,
@@ -286,6 +293,7 @@ export const reportViewService = {
     setFiltrationValues,
     downloadReport,
     clearFiltrationValues,
+    setSubmitButtonDisable,
   },
   outputs: {
     $existingCities: addressSearchService.outputs.$existingCities,
@@ -299,6 +307,7 @@ export const reportViewService = {
     $homeownersReportData,
     $isReportFileDownloading,
     $emloyeeReportData,
+    $isSubmitButtonDisable,
   },
   gates: {
     ExistingCitiesGate: addressSearchService.gates.ExistingCitiesGate,

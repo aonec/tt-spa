@@ -17,7 +17,7 @@ import {
   RangeWrapper,
   ButtonSC,
 } from './GraphFilterForm.styled';
-import { RadioOptions, RangeOptions } from './GraphFilterForm.constants';
+import { RadioOptions } from './GraphFilterForm.constants';
 import { DatePicker } from 'ui-kit/DatePicker';
 import * as yup from 'yup';
 import { ErrorMessage } from 'ui-kit/ErrorMessage';
@@ -149,33 +149,38 @@ export const GraphFilterForm: React.FC<GraphFilterFormProps> = ({
                       setFieldValue('From', rangeValue?.[0] || null);
                       setFieldValue('To', rangeValue?.[1] || null);
                     }}
-                    onFocus={() => {
-                      setFieldValue('From', null);
-                      setFieldValue('To', null);
-                    }}
-                    ranges={{
-                      [RangeOptions.LastDay]: [
-                        dayjs().startOf('day'),
-                        dayjs().endOf('day'),
-                      ],
-                      [RangeOptions.LastWeek]: [
-                        dayjs()
-                          .subtract(1, 'week')
-                          .set('hour', 0)
-                          .set('minute', 0)
-                          .set('second', 0)
-                          .set('millisecond', 0),
-                        dayjs().startOf('day'),
-                      ],
-                      [RangeOptions.ThisMonth]: [
-                        dayjs().startOf('month'),
-                        dayjs().startOf('day'),
-                      ],
-                      [RangeOptions.LastMonth]: [
-                        dayjs().startOf('month').subtract(1, 'months'),
-                        dayjs().subtract(1, 'months').endOf('month'),
-                      ],
-                    }}
+                    presets={[
+                      {
+                        label: 'Последние сутки',
+                        value: [dayjs().startOf('day'), dayjs().endOf('day')],
+                      },
+                      {
+                        label: 'Последние 7 дней',
+                        value: [
+                          dayjs()
+                            .subtract(1, 'week')
+                            .set('hour', 0)
+                            .set('minute', 0)
+                            .set('second', 0)
+                            .set('millisecond', 0),
+                          dayjs().startOf('day'),
+                        ],
+                      },
+                      {
+                        label: 'С начала месяца',
+                        value: [
+                          dayjs().startOf('month'),
+                          dayjs().startOf('day'),
+                        ],
+                      },
+                      {
+                        label: 'За прошлый месяц',
+                        value: [
+                          dayjs().startOf('month').subtract(1, 'months'),
+                          dayjs().subtract(1, 'months').endOf('month'),
+                        ],
+                      },
+                    ]}
                   />
                 </RangeWrapper>
                 <ErrorsWrapper>

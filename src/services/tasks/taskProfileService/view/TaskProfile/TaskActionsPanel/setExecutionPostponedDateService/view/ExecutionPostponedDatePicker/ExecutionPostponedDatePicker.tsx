@@ -23,7 +23,7 @@ export const ExecutionPostponedDatePicker: FC<
         placeholder="Выберите дату"
         value={date && dayjs(date)}
         onChange={(date) => handleChange(date)}
-        format="DD.MM.YYYY"
+        format={{ format: 'DD.MM.YYYY', type: 'mask' }}
       />
     </FormItem>
   );

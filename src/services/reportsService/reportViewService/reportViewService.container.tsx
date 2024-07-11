@@ -37,6 +37,8 @@ export const ReportViewContainer = () => {
     isReportFileDownloading,
     setFiltrationValues,
     organizations,
+    isSubmitButtonDisable,
+    setSubmitButtonDisable,
   } = useUnit({
     setFiltrationValues: inputs.setFiltrationValues,
     downloadReport: inputs.downloadReport,
@@ -53,6 +55,8 @@ export const ReportViewContainer = () => {
     emloyeeReportData: outputs.$emloyeeReportData,
     isReportFileDownloading: outputs.$isReportFileDownloading,
     organizations: organizationsQuery.$data,
+    isSubmitButtonDisable: outputs.$isSubmitButtonDisable,
+    setSubmitButtonDisable: inputs.setSubmitButtonDisable,
   });
 
   if (!reportType) return null;
@@ -80,6 +84,8 @@ export const ReportViewContainer = () => {
         downloadReport={() => downloadReport()}
         clearFiltrationValues={() => clearFiltrationValues()}
         organizations={organizations}
+        isSubmitButtonDisable={isSubmitButtonDisable}
+        setSubmitButtonDisable={setSubmitButtonDisable}
       />
     </>
   );

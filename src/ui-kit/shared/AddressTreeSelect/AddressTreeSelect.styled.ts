@@ -23,6 +23,14 @@ const TreeSelectSmallStyles = css`
   .ant-select-arrow {
     margin-right: 0px;
   }
+
+  .ant-select-selector {
+    padding: 0px 4px !important;
+  }
+
+  .ant-select-selection-item-content {
+    line-height: 28px;
+  }
 `;
 
 export const TreeSelectSC = styled(TreeSelect)<{ small: boolean }>`

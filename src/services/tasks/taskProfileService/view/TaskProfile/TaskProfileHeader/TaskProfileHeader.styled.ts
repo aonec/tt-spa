@@ -30,7 +30,6 @@ export const InfoWrapper = styled.div`
 export const TimerRowWrapper = styled.div`
   display: flex;
   align-items: center;
-
   color: #272f5ab2;
 `;
 
@@ -53,4 +52,10 @@ export const Line = styled.div<{ color?: string }>`
   border-radius: 4px;
 
   margin-right: 4px;
+`;
+
+export const TaskNamePanel = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 12px;
 `;

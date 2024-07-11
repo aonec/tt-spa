@@ -137,7 +137,7 @@ export const CreateSealAppointmentForm: FC<CreateSealAppointmentFormProps> = ({
       <GroupWrapper>
         <FormItem label="Дата записи на опломбировку">
           <DatePicker
-            format="DD.MM.YYYY"
+            format={{ format: 'DD.MM.YYYY', type: 'mask' }}
             disabledDate={(date) => dayjs().diff(date, 'd') > 0}
             value={date}
             onChange={(date) =>

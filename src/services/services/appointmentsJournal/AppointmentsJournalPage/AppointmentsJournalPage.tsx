@@ -66,7 +66,7 @@ export const AppointmentsJournalPage: FC<Props> = ({
             submitForm();
           }}
           small
-          format="DD.MM.YYYY"
+          format={{ format: 'DD.MM.YYYY', type: 'mask' }}
           placeholder="От"
           allowClear={false}
         />
@@ -77,7 +77,7 @@ export const AppointmentsJournalPage: FC<Props> = ({
             submitForm();
           }}
           small
-          format="DD.MM.YYYY"
+          format={{ format: 'DD.MM.YYYY', type: 'mask' }}
           placeholder="До"
         />
       </SearchWrapper>

@@ -119,7 +119,7 @@ export const ConsolidatedReportForm: FC<ConsolidatedReportFormProps> = ({
             setFieldValue('period', value);
           }}
           disabled={values.archiveType !== ArchiveType.AnyPeriod}
-          format="DD.MM.YYYY"
+          format={{ format: 'DD.MM.YYYY', type: 'mask' }}
         />
       </FormItem>
     </Form>

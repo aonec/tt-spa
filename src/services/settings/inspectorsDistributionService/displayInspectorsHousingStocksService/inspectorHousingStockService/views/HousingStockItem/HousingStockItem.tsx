@@ -1,8 +1,14 @@
 import { RefSelectProps } from 'antd/lib/select';
 import React, { FC, useRef } from 'react';
-import { AddInspecor, Address, Wrap } from './HousingStockItem.styled';
+import {
+  AddInspecor,
+  Address,
+  InspectorOption,
+  Wrap,
+} from './HousingStockItem.styled';
 import { HousingStockItemProps } from './HousingStockItem.types';
 import { Select } from 'ui-kit/Select';
+import { TrashIcon } from 'ui-kit/icons';
 
 export const HousingStockItem: FC<HousingStockItemProps> = ({
   housingStock,
@@ -11,6 +17,7 @@ export const HousingStockItem: FC<HousingStockItemProps> = ({
   updateInfo,
   updateHousingStock,
   handleOpenAddInspector,
+  handleDeleteInspector,
 }) => {
   const inspectedDatSelectRef = useRef<RefSelectProps | null>(null);
   const inspectorSelectRef = useRef<RefSelectProps | null>(null);
@@ -72,7 +79,17 @@ export const HousingStockItem: FC<HousingStockItemProps> = ({
       >
         {inspectors?.map((inspector) => (
           <Select.Option key={inspector.id} value={inspector.id}>
-            {inspector.fullName}
+            <InspectorOption>
+              {inspector.fullName}{' '}
+              {inspector.id !== housingStock.inspectorId && (
+                <TrashIcon
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleDeleteInspector(inspector.id);
+                  }}
+                />
+              )}
+            </InspectorOption>
           </Select.Option>
         ))}
       </Select>

@@ -135,7 +135,7 @@ export const CreateEmployeeForm: FC<CreateEmployeeFormProps> = ({
           <DatePicker
             value={values.number}
             onChange={(date) => setFieldValue('number', date)}
-            format="DD.MM.YYYY"
+            format={{ format: 'DD.MM.YYYY', type: 'mask' }}
           />
         </FormItem>
       </GridContainer>
