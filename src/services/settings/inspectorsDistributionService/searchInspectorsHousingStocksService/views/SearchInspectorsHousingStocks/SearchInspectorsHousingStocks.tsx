@@ -9,7 +9,7 @@ import {
 import { AddressSearchContainer } from 'services/addressSearchService';
 import { SearchFieldType } from 'services/addressSearchService/view/AddressSearch/AddressSearch.types';
 import { useFormik } from 'formik';
-import { SearchInspectorsHousingStocksProps } from './searchInspectorsHousingStocks.types';
+import { SearchInspectorsHousingStocksProps } from './SearchInspectorsHousingStocks.types';
 
 export const SearchInspectorsHousingStocks: FC<
   SearchInspectorsHousingStocksProps
@@ -26,22 +26,20 @@ export const SearchInspectorsHousingStocks: FC<
   handleSearchInspector,
   setForm,
 }) => {
-  const { values, submitForm, setFieldValue, setValues } = useFormik(
-    {
-      initialValues: {
-        City: initialCity,
-        Street: '',
-        BuildingNumber: '',
-        HouseManagement: '',
-        InspectorId: '',
-      },
-      enableReinitialize: true,
-      onSubmit: (values) => {
-        setForm(values);
-        handleSearchInspector();
-      },
+  const { values, submitForm, setFieldValue, setValues } = useFormik({
+    initialValues: {
+      City: initialCity,
+      Street: '',
+      BuildingNumber: '',
+      HouseManagement: '',
+      InspectorId: '',
     },
-  );
+    enableReinitialize: true,
+    onSubmit: (values) => {
+      setForm(values);
+      handleSearchInspector();
+    },
+  });
 
   return (
     <>
@@ -51,7 +49,7 @@ export const SearchInspectorsHousingStocks: FC<
           handleClose={handleExtendedSearchClose}
           handleOpen={handelExtendedSearchOpen}
           handleApply={() => {
-            handleApplyFilters;
+            handleApplyFilters();
             submitForm();
           }}
           handleClear={() => {
