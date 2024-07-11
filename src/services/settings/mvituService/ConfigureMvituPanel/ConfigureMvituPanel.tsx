@@ -4,7 +4,7 @@ import { Props } from './ConfigureMvituPanel.types';
 import { ConnectionIcon } from 'ui-kit/icons';
 import { Button } from 'ui-kit/Button';
 
-export const ConfigureMvituPanel: FC<Props> = () => {
+export const ConfigureMvituPanel: FC<Props> = ({ handleConnect }) => {
   return (
     <Wrapper>
       <ConnectionIcon />
@@ -12,7 +12,7 @@ export const ConfigureMvituPanel: FC<Props> = () => {
       <Description>
         Вы можете подключить интеграцию с ВИС МВИТУ и управлять узлами
       </Description>
-      <Button>Подключить</Button>
+      <Button onClick={handleConnect}>Подключить</Button>
     </Wrapper>
   );
 };

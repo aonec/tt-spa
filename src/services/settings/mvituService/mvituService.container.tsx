@@ -1,13 +1,17 @@
-// import { mvituService } from './mvituService.models';
-
+import { useUnit } from 'effector-react';
 import { ConfigureMvituPanel } from './ConfigureMvituPanel';
-
-// const { inputs, outputs } = mvituService;
+import { CreateMvituIntegrationContainer } from './createMvituIntegration';
+import { createMvituIntegrationService } from './createMvituIntegration/createMvituIntegrationService.models';
 
 export const MvituContainer = () => {
+  const { connectIntegration } = useUnit({
+    connectIntegration: createMvituIntegrationService.inputs.openModal,
+  });
+
   return (
     <>
-      <ConfigureMvituPanel />
+      <CreateMvituIntegrationContainer />
+      <ConfigureMvituPanel handleConnect={connectIntegration} />
     </>
   );
 };
