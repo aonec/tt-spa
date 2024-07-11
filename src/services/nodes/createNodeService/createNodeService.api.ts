@@ -5,6 +5,7 @@ import {
   EHouseCategory,
   HousingStockResponse,
   NodeServiceZoneListResponse,
+  NodeServiceZoneWithNodeCountResponse,
   NonResidentialBuildingResponse,
   PipeNodeResponse,
   PipeNodeValidationResultResponse,
@@ -54,3 +55,8 @@ export const fetchValidateNode = (
 export const deleteNodeServiceZone = (
   nodeServiceZoneId: number,
 ): Promise<void> => axios.delete(`NodeServiceZones/${nodeServiceZoneId}`);
+
+export const getNodeServiceZone = (
+  nodeServiceZoneId: number,
+): Promise<NodeServiceZoneWithNodeCountResponse> =>
+  axios.get(`NodeServiceZones/${nodeServiceZoneId}`);

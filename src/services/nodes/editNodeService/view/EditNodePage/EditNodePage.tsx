@@ -42,6 +42,7 @@ export const EditNodePage: FC<EditNodePageProps> = ({
   handleFinallyDeleteServiceZone,
   isDeleteServiceZoneDialogOpen,
   successDeleteServiceZone,
+  deletingServiceZoneCount,
 }) => {
   const { title, address, resource, registrationType } = node;
 
@@ -98,6 +99,7 @@ export const EditNodePage: FC<EditNodePageProps> = ({
               handleFinallyDeleteServiceZone={handleFinallyDeleteServiceZone}
               deletingServiceZone={deletingServiceZone}
               isDeleteServiceZoneDialogOpen={isDeleteServiceZoneDialogOpen}
+              deletingServiceZoneCount={deletingServiceZoneCount}
             />
           </CommonInfoWrapper>
         </>
@@ -141,6 +143,7 @@ export const EditNodePage: FC<EditNodePageProps> = ({
       handleFinallyDeleteServiceZone,
       isDeleteServiceZoneDialogOpen,
       successDeleteServiceZone,
+      deletingServiceZoneCount,
     ],
   );
 

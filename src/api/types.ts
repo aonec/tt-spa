@@ -1331,6 +1331,13 @@ export interface CreateIndividualDeviceRequest {
   model: string;
   /** @minLength 1 */
   serialNumber: string;
+  /**
+   * @format int32
+   * @min 4
+   * @max 10
+   */
+  bitDepth: number;
+  rateType: EIndividualDeviceRateType;
   /** @format date-time */
   lastCheckingDate: string;
   /** @format date-time */
@@ -1338,28 +1345,21 @@ export interface CreateIndividualDeviceRequest {
   sealNumber?: string | null;
   /** @format date-time */
   sealInstallationDate?: string | null;
-  /**
-   * @format int32
-   * @min 4
-   * @max 10
-   */
-  bitDepth: number;
   /** @format date-time */
   openingDate?: string | null;
+  isConnected?: boolean;
+  documentsIds?: number[] | null;
+  isPolling?: boolean;
+  /** @format int32 */
+  contractorId?: number | null;
+  connection?: MeteringDeviceConnection | null;
   /** @format int32 */
   apartmentId: number;
   resource: EResourceType;
   /** @format int32 */
   mountPlaceId?: number | null;
-  rateType: EIndividualDeviceRateType;
   startupReadings: BaseIndividualDeviceReadingsCreateRequest;
   defaultReadings?: BaseIndividualDeviceReadingsCreateRequest | null;
-  connection?: MeteringDeviceConnection | null;
-  isConnected?: boolean;
-  isPolling?: boolean;
-  /** @format int32 */
-  contractorId?: number | null;
-  documentsIds?: number[] | null;
 }
 
 export interface CreateNodeCheckRequest {
@@ -1956,18 +1956,6 @@ export enum EPipeNodeValidationMessage {
 export interface EPipeNodeValidationMessageStringDictionaryItem {
   key?: EPipeNodeValidationMessage;
   value?: string | null;
-}
-
-export enum EPollActionType {
-  DuplicateReadings = 'DuplicateReadings',
-  IndividualCreateTasksWithoutReadings = 'IndividualCreateTasksWithoutReadings',
-  IndividualCloseWithoutReadings = 'IndividualCloseWithoutReadings',
-  IndividualCloseByCheckDate = 'IndividualCloseByCheckDate',
-  HousingCloseByCheckDate = 'HousingCloseByCheckDate',
-  IndividualExport = 'IndividualExport',
-  HousingExport = 'HousingExport',
-  MilurExport = 'MilurExport',
-  OpenIndividualDevicesReport = 'OpenIndividualDevicesReport',
 }
 
 export enum EPollState {
@@ -4203,6 +4191,18 @@ export interface NodeServiceZoneResponseSuccessApiResponse {
   successResponse: NodeServiceZoneResponse | null;
 }
 
+export interface NodeServiceZoneWithNodeCountResponse {
+  /** @format int32 */
+  id: number;
+  name: string | null;
+  /** @format int32 */
+  nodeCount: number;
+}
+
+export interface NodeServiceZoneWithNodeCountResponseSuccessApiResponse {
+  successResponse: NodeServiceZoneWithNodeCountResponse | null;
+}
+
 export interface NodeSetCommercialStatusRequest {
   commercialStatus?: ENodeCommercialAccountStatus;
   /** @format date-time */
@@ -4808,6 +4808,19 @@ export interface PointResponse {
   longitude: number;
 }
 
+export enum PollActionType {
+  DuplicateReadings = 'DuplicateReadings',
+  IndividualCreateTasksWithoutReadings = 'IndividualCreateTasksWithoutReadings',
+  IndividualCloseWithoutReadings = 'IndividualCloseWithoutReadings',
+  IndividualCloseByCheckDate = 'IndividualCloseByCheckDate',
+  HousingCloseByCheckDate = 'HousingCloseByCheckDate',
+  IndividualExport = 'IndividualExport',
+  HousingExport = 'HousingExport',
+  MilurExport = 'MilurExport',
+  OpenIndividualDevicesReport = 'OpenIndividualDevicesReport',
+  RunnersReports = 'RunnersReports',
+}
+
 export enum PollCommand {
   GetById = 'GetById',
   GetLast = 'GetLast',
@@ -4828,7 +4841,7 @@ export interface PollResponse {
   runningAt: string | null;
   /** @format date-time */
   doneAt: string | null;
-  actionType: EPollActionType;
+  actionType: PollActionType;
   hasFile: boolean;
 }
 
@@ -5336,31 +5349,35 @@ export interface SwitchIndividualDeviceRequest {
   model: string;
   /** @minLength 1 */
   serialNumber: string;
-  /** @format int32 */
+  /**
+   * @format int32
+   * @min 4
+   * @max 10
+   */
   bitDepth: number;
-  /** @format double */
-  scaleFactor: number;
-  rateType?: EIndividualDeviceRateType;
-  sealNumber?: string | null;
-  /** @format date-time */
-  sealInstallationDate?: string | null;
+  rateType: EIndividualDeviceRateType;
   /** @format date-time */
   lastCheckingDate: string;
   /** @format date-time */
   futureCheckingDate: string;
+  sealNumber?: string | null;
+  /** @format date-time */
+  sealInstallationDate?: string | null;
   /** @format date-time */
   openingDate?: string | null;
+  isConnected?: boolean;
+  documentsIds?: number[] | null;
+  isPolling?: boolean;
   /** @format int32 */
   contractorId?: number | null;
+  connection?: MeteringDeviceConnection | null;
+  /** @format double */
+  scaleFactor: number;
   oldDeviceClosingReason?: ESwitchingReason;
   /** @format int32 */
   newDeviceMountPlaceId?: number | null;
   oldDeviceReadings?: SwitchIndividualDeviceReadingsCreateRequest[] | null;
   newDeviceReadings: SwitchIndividualDeviceReadingsCreateRequest[];
-  connection?: MeteringDeviceConnection | null;
-  isConnected?: boolean;
-  documentsIds?: number[] | null;
-  isPolling?: boolean;
 }
 
 export interface SwitchMagneticSealRequest {
@@ -10872,6 +10889,11 @@ export class Api<
     individualDevicesCloseDevicesWithoutReadingsCreate: (
       query?: {
         ManagementFirmIds?: number[];
+        /**
+         * Кол-во месяцев без показаний от текущего
+         * @format int32
+         */
+        MonthsToCloseDevice?: number;
         Command?: PollCommand;
         /** @format int32 */
         PollId?: number;
@@ -11233,13 +11255,8 @@ export class Api<
      */
     managingFirmsTemperatureNormativesCreateOrUpdateFromFileCreate: (
       data: {
-        ContentType?: string;
-        ContentDisposition?: string;
-        Headers?: Record<string, string[]>;
-        /** @format int64 */
-        Length?: number;
-        Name?: string;
-        FileName?: string;
+        /** @format binary */
+        file: File;
       },
       params: RequestParams = {},
     ) =>
@@ -11831,15 +11848,16 @@ export class Api<
       nodeServiceZoneId: number,
       params: RequestParams = {},
     ) =>
-      this.request<NodeServiceZoneResponseSuccessApiResponse, ErrorApiResponse>(
-        {
-          path: `/api/NodeServiceZones/${nodeServiceZoneId}`,
-          method: 'GET',
-          secure: true,
-          format: 'json',
-          ...params,
-        },
-      ),
+      this.request<
+        NodeServiceZoneWithNodeCountResponseSuccessApiResponse,
+        ErrorApiResponse
+      >({
+        path: `/api/NodeServiceZones/${nodeServiceZoneId}`,
+        method: 'GET',
+        secure: true,
+        format: 'json',
+        ...params,
+      }),
 
     /**
      * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Администратор УК без назначений задач</li>
@@ -13182,15 +13200,16 @@ export class Api<
      * @secure
      */
     reportsRunnerReportsList: (
-      query: {
-        /** Первая/вторая половина года */
-        yearRange: YearRangeType;
-        /** Ресурс ИПУ по которым собирается отчет */
-        resource: DeviceResource;
-        /** Список Id домоуправлений */
-        hmIds?: string[];
-        /** Список Id домов, приоритетный параметр */
-        houseIds?: number[];
+      query?: {
+        YearRange?: YearRangeType;
+        Resource?: DeviceResource;
+        HmIds?: string[];
+        /** @format int32 */
+        ManagementFirmId?: number;
+        HouseIds?: number[];
+        Command?: PollCommand;
+        /** @format int32 */
+        PollId?: number;
       },
       params: RequestParams = {},
     ) =>

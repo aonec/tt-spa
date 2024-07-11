@@ -39,6 +39,7 @@ export const EditNodeContainer = () => {
     handleFinallyDeleteServiceZone,
     deletingServiceZone,
     isDeleteServiceZoneDialogOpen,
+    deletingServiceZoneCount,
   } = useUnit({
     node: outputs.$node,
     isLoading: outputs.$isLoading,
@@ -58,6 +59,7 @@ export const EditNodeContainer = () => {
     handleFinallyDeleteServiceZone: inputs.handleFinallyDeleteServiceZone,
     deletingServiceZone: outputs.$deletingServiceZone,
     isDeleteServiceZoneDialogOpen: outputs.$isDeleteServiceZoneDialogOpen,
+    deletingServiceZoneCount: outputs.$deletingServiceZoneCount,
   });
 
   if (!nodeId) return null;
@@ -92,6 +94,7 @@ export const EditNodeContainer = () => {
               handleFinallyDeleteServiceZone={handleFinallyDeleteServiceZone}
               deletingServiceZone={deletingServiceZone}
               isDeleteServiceZoneDialogOpen={isDeleteServiceZoneDialogOpen}
+              deletingServiceZoneCount={deletingServiceZoneCount}
             />
           </>
         )}

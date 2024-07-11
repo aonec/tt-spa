@@ -10,6 +10,7 @@ import {
   HousingStockResponse,
   NodeServiceZoneListResponse,
   NodeServiceZoneResponse,
+  NodeServiceZoneWithNodeCountResponse,
   NonResidentialBuildingResponse,
   PipeNodeResponse,
   PipeNodeValidationResultResponse,
@@ -19,6 +20,7 @@ import {
   fetchValidateNode,
   getBuilding,
   getCalculatorsList,
+  getNodeServiceZone,
   getNodeServiceZones,
   postPipeNode,
 } from './createNodeService.api';
@@ -53,6 +55,16 @@ const fetchNodeServiceZonesFx = createEffect<
   void,
   NodeServiceZoneListResponse | null
 >(getNodeServiceZones);
+
+const getNodeServiceZoneFx = createEffect<
+  number,
+  NodeServiceZoneWithNodeCountResponse
+>(getNodeServiceZone);
+
+const $deletingServiceZoneCount = createStore<number | null>(null).on(
+  getNodeServiceZoneFx.doneData,
+  (_, data) => data.nodeCount,
+);
 
 const CreateNodeGate = createGate<{
   buildingId: number;
@@ -250,6 +262,13 @@ sample({
   target: closeConfiramtionModal,
 });
 
+sample({
+  clock: handleDeleteServiceZone,
+  fn: (nodeServiceZone) => nodeServiceZone?.id as number,
+  filter: (nodeServiceZone) => Boolean(nodeServiceZone?.id),
+  target: getNodeServiceZoneFx,
+});
+
 createPipeNodeFx.failData.watch((error) => {
   return message.error(
     error.response.data.error.Text || error.response.data.error.Message,
@@ -299,6 +318,7 @@ export const createNodeService = {
     $isValidationLoading,
     $isDialogOpen,
     $deletingServiceZone,
+    $deletingServiceZoneCount,
   },
   gates: {
     CreateNodeGate,

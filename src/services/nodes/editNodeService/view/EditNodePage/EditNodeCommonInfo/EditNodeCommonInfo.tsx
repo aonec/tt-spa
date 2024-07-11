@@ -41,6 +41,7 @@ export const EditNodeCommonInfo: FC<EditNodeCommonInfoProps> = ({
   handleFinallyDeleteServiceZone,
   isDeleteServiceZoneDialogOpen,
   successDeleteServiceZone,
+  deletingServiceZoneCount,
 }) => {
   const navigate = useNavigate();
 
@@ -252,7 +253,7 @@ export const EditNodeCommonInfo: FC<EditNodeCommonInfoProps> = ({
               Это зона используется на других узлах. При удалении зона будет
               автоматически сброшена для всех узлов.
             </div>
-            <div>Количество узлов: 10</div>
+            <div>Количество узлов: {deletingServiceZoneCount || '-'}</div>
           </DialogDescription>
         }
         isOpen={isDeleteServiceZoneDialogOpen}

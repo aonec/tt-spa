@@ -40,6 +40,7 @@ export const CreateNodePage: FC<CreateNodePageProps> = ({
   deletingServiceZone,
   handleFinallyDeleteServiceZone,
   successDeleteServiceZone,
+  deletingServiceZoneCount,
 }) => {
   const stepComponentDictionary: { [key: number]: ReactNode } = {
     0: (
@@ -114,7 +115,7 @@ export const CreateNodePage: FC<CreateNodePageProps> = ({
               Это зона используется на других узлах. При удалении зона будет
               автоматически сброшена для всех узлов.
             </div>
-            <div>Количество узлов: 10</div>
+            <div>Количество узлов: {deletingServiceZoneCount || '-'}</div>
           </DialogDescription>
         }
         isOpen={isDialogOpen}

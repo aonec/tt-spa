@@ -17,4 +17,5 @@ export type EditNodeCommonInfoProps = {
   handleFinallyDeleteServiceZone: (payload: number) => void;
   deletingServiceZone: NodeServiceZoneResponse | null;
   isDeleteServiceZoneDialogOpen: boolean;
+  deletingServiceZoneCount: number | null;
 };

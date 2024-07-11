@@ -5,6 +5,7 @@ import {
   EResourceType,
   NodeServiceZoneListResponse,
   NodeServiceZoneResponse,
+  NodeServiceZoneWithNodeCountResponse,
   PipeNodeResponse,
   UpdatePipeNodeRequest,
 } from 'api/types';
@@ -14,6 +15,7 @@ import {
   fetchNode,
   fetchServiceZones,
   fetchUpdateNode,
+  getNodeServiceZone,
 } from './editNodeService.api';
 import { NodeEditGrouptype } from './editNodeService.constants';
 import { addHosuingMeteringDeviceService } from './view/EditNodePage/addHosuingMeteringDeviceService';
@@ -62,6 +64,11 @@ const deleteNodeServiceZoneFx = createEffect<
   EffectFailDataAxiosError
 >(deleteNodeServiceZone);
 
+const getNodeServiceZoneFx = createEffect<
+  number,
+  NodeServiceZoneWithNodeCountResponse
+>(getNodeServiceZone);
+
 const successDeleteServiceZone = deleteNodeServiceZoneFx.doneData;
 
 const NodeIdGate = createGate<{ nodeId: string }>();
@@ -81,6 +88,11 @@ const $nodeId = NodeIdGate.state.map(({ nodeId }) => nodeId || null);
 const $deletingServiceZone = createStore<NodeServiceZoneResponse | null>(
   null,
 ).on(handleDeleteServiceZone, (_, data) => data);
+
+const $deletingServiceZoneCount = createStore<number | null>(null).on(
+  getNodeServiceZoneFx.doneData,
+  (_, data) => data.nodeCount,
+);
 
 const $isDeleteServiceZoneDialogOpen = $deletingServiceZone.map(Boolean);
 
@@ -127,6 +139,13 @@ sample({
   target: deleteNodeServiceZoneFx,
 });
 
+sample({
+  clock: handleDeleteServiceZone,
+  fn: (nodeServiceZone) => nodeServiceZone?.id as number,
+  filter: (nodeServiceZone) => Boolean(nodeServiceZone?.id),
+  target: getNodeServiceZoneFx,
+});
+
 updateNodeFx.failData.watch((error) => {
   return message.error(
     error.response.data.error.Text ||
@@ -160,6 +179,7 @@ export const editNodeService = {
     $isUpdateLoading,
     $deletingServiceZone,
     $isDeleteServiceZoneDialogOpen,
+    $deletingServiceZoneCount,
   },
   gates: { NodeIdGate, NodeResourceGate },
 };

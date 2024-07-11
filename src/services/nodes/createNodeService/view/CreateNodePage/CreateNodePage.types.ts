@@ -32,4 +32,5 @@ export type CreateNodePageProps = {
   deletingServiceZone: NodeServiceZoneResponse | null;
   handleFinallyDeleteServiceZone: (payload: number) => void;
   successDeleteServiceZone: Event<void>;
+  deletingServiceZoneCount: number | null;
 };
