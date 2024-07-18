@@ -14,7 +14,7 @@ export interface AddNodeRequest {
   nodeId: number;
   /** @minLength 1 */
   addressSrt: string;
-  /** @minLength 1 */
+  /** @format uuid */
   fias: string;
   point?: Point | null;
   /**
@@ -34,10 +34,7 @@ export interface AddNodeRequest {
 export interface BuildingAddressResponse {
   /** @format int32 */
   buildingId: number;
-  city: string | null;
-  street: string | null;
-  number: string | null;
-  corpus: string | null;
+  address: string | null;
 }
 
 export interface BuildingResponse {
@@ -53,6 +50,14 @@ export interface BuildingResponse {
   buildingCode: string | null;
 }
 
+export interface Calculator {
+  /** @format int32 */
+  id?: number;
+  model?: string | null;
+  serialNumber?: string | null;
+  isConnected?: boolean;
+}
+
 export interface ChangeStatusRequest {
   expectedStatus?: ChangeStatusType;
 }
@@ -60,11 +65,6 @@ export interface ChangeStatusRequest {
 export enum ChangeStatusType {
   Active = 'Active',
   Pause = 'Pause',
-}
-
-export enum EHouseCategory {
-  Living = 'Living',
-  NonResidential = 'NonResidential',
 }
 
 export enum EOrderByRule {
@@ -112,14 +112,12 @@ export interface MvituBuildingResponse {
    * @format uuid
    */
   fias: string;
-  /** Узлы подключенные в объекте */
-  nodeIds: number[] | null;
 }
 
 export interface MvituNodeResponse {
   /** @format int32 */
   id: number;
-  buildingId: string | null;
+  building: MvituBuildingResponse | null;
   /** Состояние интеграции */
   status: NodeStatusType;
   /** Название узла */
@@ -131,27 +129,11 @@ export interface MvituNodeResponse {
    * @format int32
    */
   buildingInputNum: number;
-  /**
-   * Последний переданный архив, MinValue если передачи еще не происходило
-   * @format date-time
-   */
-  lastTransmittedArchiveTime: string;
-  /**
-   * Последний готовый к передаче архив, null - если все архивы переданы
-   * @format date-time
-   */
-  lastIsReadyTransmitArchiveTime: string | null;
+  /** Метрики по интеграции узла */
+  integrationStatus: NodeIntegrationStatus | null;
 }
 
-export interface NodeListResponse {
-  /** @format int32 */
-  id: number;
-  title: string | null;
-  resource: EResourceType;
-  address: BuildingAddressResponse | null;
-}
-
-export interface NodeListResponsePagedList {
+export interface MvituNodeResponsePagedList {
   /** @format int32 */
   totalItems: number;
   /** @format int32 */
@@ -166,15 +148,51 @@ export interface NodeListResponsePagedList {
   nextPageNumber: number;
   /** @format int32 */
   previousPageNumber: number;
-  items: NodeListResponse[] | null;
+  items: MvituNodeResponse[] | null;
+}
+
+export interface NodeIntegrationStatus {
+  /**
+   * Последний переданный архив, MinValue если передачи еще не происходило
+   * @format date-time
+   */
+  lastTransmittedArchiveTime?: string;
+  /**
+   * Последний готовый к передаче архив, null - если все архивы переданы
+   * @format date-time
+   */
+  lastIsReadyTransmitArchiveTime?: string | null;
+  /**
+   * Кол-во готовых к передаче архивов
+   * @format int32
+   */
+  isReadyTransmitTotalCount?: number;
+}
+
+export interface NodeListResponse {
+  /** @format int32 */
+  id: number;
+  title: string | null;
+  resource: EResourceType;
+  address: BuildingAddressResponse | null;
+  calculator: Calculator | null;
 }
 
 export interface NodeResponse {
   /** @format int32 */
   id: number;
   title: string | null;
+  /** Статус интеграции */
+  status: StatusType;
   building: BuildingResponse | null;
   resource: EResourceType;
+}
+
+export interface NodeSearchResponse {
+  nodes: NodeListResponse[] | null;
+  hasMore: boolean;
+  /** @format int32 */
+  totalCount: number;
 }
 
 /** Статус интеграции для узла */
@@ -201,10 +219,6 @@ export interface StatusResponse {
   /** Статус интеграции */
   status: StatusType;
   organizationInfo: OrganizationInfo | null;
-}
-
-export interface StatusResponseSuccessApiResponse {
-  successResponse: StatusResponse | null;
 }
 
 /** Статус интеграции */
@@ -473,107 +487,6 @@ export class Api<
     /**
      * No description
      *
-     * @tags Building
-     * @name MvituBuildingList
-     * @summary Список объектов подключенных к интеграции
-     * @request GET:/api/mvitu/Building
-     * @secure
-     */
-    mvituBuildingList: (params: RequestParams = {}) =>
-      this.request<MvituBuildingResponse[], ErrorApiResponse>({
-        path: `/api/mvitu/Building`,
-        method: 'GET',
-        secure: true,
-        format: 'json',
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Building
-     * @name MvituBuildingNodesDetail
-     * @summary Список узлов подключенных к интеграции по объекту
-     * @request GET:/api/mvitu/Building/{buildingId}/Nodes
-     * @secure
-     */
-    mvituBuildingNodesDetail: (
-      buildingId: string,
-      params: RequestParams = {},
-    ) =>
-      this.request<MvituNodeResponse[], ErrorApiResponse>({
-        path: `/api/mvitu/Building/${buildingId}/Nodes`,
-        method: 'GET',
-        secure: true,
-        format: 'json',
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Building
-     * @name MvituBuildingNodesChangeStatusCreate
-     * @summary Смена стратуса интеграции для узла
-     * @request POST:/api/mvitu/Building/Nodes/{nodeId}/ChangeStatus
-     * @secure
-     */
-    mvituBuildingNodesChangeStatusCreate: (
-      nodeId: string,
-      data: ChangeStatusRequest,
-      params: RequestParams = {},
-    ) =>
-      this.request<void, ErrorApiResponse>({
-        path: `/api/mvitu/Building/Nodes/${nodeId}/ChangeStatus`,
-        method: 'POST',
-        body: data,
-        secure: true,
-        type: ContentType.Json,
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Building
-     * @name MvituBuildingNodesCreate
-     * @summary Добавление узла
-     * @request POST:/api/mvitu/Building/Nodes
-     * @secure
-     */
-    mvituBuildingNodesCreate: (
-      data: AddNodeRequest,
-      params: RequestParams = {},
-    ) =>
-      this.request<void, ErrorApiResponse>({
-        path: `/api/mvitu/Building/Nodes`,
-        method: 'POST',
-        body: data,
-        secure: true,
-        type: ContentType.Json,
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Building
-     * @name MvituBuildingNodesDelete
-     * @summary Удаление узла из интеграции
-     * @request DELETE:/api/mvitu/Building/Nodes/{nodeId}
-     * @secure
-     */
-    mvituBuildingNodesDelete: (nodeId: string, params: RequestParams = {}) =>
-      this.request<void, ErrorApiResponse>({
-        path: `/api/mvitu/Building/Nodes/${nodeId}`,
-        method: 'DELETE',
-        secure: true,
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
      * @tags Integrations
      * @name MvituIntegrationsList
      * @summary Статус интеграции. Если настроена - данные по организации: ИНН и Юридическое наименование
@@ -581,7 +494,7 @@ export class Api<
      * @secure
      */
     mvituIntegrationsList: (params: RequestParams = {}) =>
-      this.request<StatusResponseSuccessApiResponse, ErrorApiResponse>({
+      this.request<StatusResponse, ErrorApiResponse>({
         path: `/api/mvitu/Integrations`,
         method: 'GET',
         secure: true,
@@ -653,21 +566,18 @@ export class Api<
     /**
      * No description
      *
-     * @tags Searching
-     * @name MvituSearchingNodesList
-     * @summary Поиск узлов
-     * @request GET:/api/mvitu/Searching/Nodes
+     * @tags Nodes
+     * @name MvituNodesList
+     * @summary Список узлов подключенных к интеграции
+     * @request GET:/api/mvitu/Nodes
      * @secure
      */
-    mvituSearchingNodesList: (
+    mvituNodesList: (
       query?: {
-        addressCity?: string;
-        addressStreet?: string;
-        addressHousingStockNumber?: string;
-        addressCorpus?: string;
-        addressHouseCategory?: EHouseCategory;
-        CalculatorSerialNumber?: string;
-        Resource?: EResourceType;
+        /** Строка адреса для поиска */
+        AddressTerm?: string;
+        /** Статус интеграции узла */
+        Status?: NodeStatusType;
         /** @format int32 */
         PageNumber?: number;
         /** @format int32 */
@@ -676,7 +586,95 @@ export class Api<
       },
       params: RequestParams = {},
     ) =>
-      this.request<NodeListResponsePagedList, ErrorApiResponse>({
+      this.request<MvituNodeResponsePagedList, ErrorApiResponse>({
+        path: `/api/mvitu/Nodes`,
+        method: 'GET',
+        query: query,
+        secure: true,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Nodes
+     * @name MvituNodesCreate
+     * @summary Добавление узла
+     * @request POST:/api/mvitu/Nodes
+     * @secure
+     */
+    mvituNodesCreate: (data: AddNodeRequest, params: RequestParams = {}) =>
+      this.request<void, ErrorApiResponse>({
+        path: `/api/mvitu/Nodes`,
+        method: 'POST',
+        body: data,
+        secure: true,
+        type: ContentType.Json,
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Nodes
+     * @name MvituNodesChangeStatusCreate
+     * @summary Смена статуса интеграции для узла
+     * @request POST:/api/mvitu/Nodes/{nodeId}/ChangeStatus
+     * @secure
+     */
+    mvituNodesChangeStatusCreate: (
+      nodeId: number,
+      data: ChangeStatusRequest,
+      params: RequestParams = {},
+    ) =>
+      this.request<void, ErrorApiResponse>({
+        path: `/api/mvitu/Nodes/${nodeId}/ChangeStatus`,
+        method: 'POST',
+        body: data,
+        secure: true,
+        type: ContentType.Json,
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Nodes
+     * @name MvituNodesDelete
+     * @summary Удаление узла из интеграции
+     * @request DELETE:/api/mvitu/Nodes/{nodeId}
+     * @secure
+     */
+    mvituNodesDelete: (nodeId: number, params: RequestParams = {}) =>
+      this.request<void, ErrorApiResponse>({
+        path: `/api/mvitu/Nodes/${nodeId}`,
+        method: 'DELETE',
+        secure: true,
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Searching
+     * @name MvituSearchingNodesList
+     * @summary Поиск узлов
+     * @request GET:/api/mvitu/Searching/Nodes
+     * @secure
+     */
+    mvituSearchingNodesList: (
+      query?: {
+        /** Загрузить все результаты */
+        LoadAll?: boolean;
+        /** Строка адреса для поиска. Разбивается по пробелам, поиск по StartsWith */
+        AddressTerm?: string;
+        /** Серийный номер вычислителя, поиск по StartsWith */
+        CalculatorSerialNumber?: string;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<NodeSearchResponse, ErrorApiResponse>({
         path: `/api/mvitu/Searching/Nodes`,
         method: 'GET',
         query: query,
@@ -694,7 +692,7 @@ export class Api<
      * @request GET:/api/mvitu/Searching/Nodes/{id}
      * @secure
      */
-    mvituSearchingNodesDetail: (id: string, params: RequestParams = {}) =>
+    mvituSearchingNodesDetail: (id: number, params: RequestParams = {}) =>
       this.request<NodeResponse, ErrorApiResponse>({
         path: `/api/mvitu/Searching/Nodes/${id}`,
         method: 'GET',
