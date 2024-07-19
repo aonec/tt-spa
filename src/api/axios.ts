@@ -49,7 +49,7 @@ axios.interceptors.response.use(
     const { url } = config;
 
     if (url && checkUrl('(login|refresh)', url)) {
-      const { token, refreshToken, roles, permissions } = data.successResponse;
+      const { token, refreshToken, roles, permissions } = data;
 
       tokensService.inputs.setToken(token);
       tokensService.inputs.setRefreshToken(refreshToken);
@@ -59,12 +59,12 @@ axios.interceptors.response.use(
     }
 
     if (url && checkUrl('(users/current)', url)) {
-      const user = data.successResponse;
+      const user = data;
       saveToLocalStorage('user', user);
     }
 
     setIsOnline();
-    const res = data.successResponse ?? data ?? {};
+    const res = data;
 
     return res;
   },

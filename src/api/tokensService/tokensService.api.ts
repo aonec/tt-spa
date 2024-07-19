@@ -1,11 +1,11 @@
 import { Contract, createJsonMutation } from '@farfetched/core';
 import { combine } from 'effector';
-import { RefreshResponseSuccessApiResponse } from 'api/types';
 import { tokensService } from './tokensService.model';
 import { currentOrganizationService } from 'services/currentOrganizationService';
+import { RefreshResponse } from 'api/types';
 
-const RefreshContract: Contract<unknown, RefreshResponseSuccessApiResponse> = {
-  isData: (res): res is RefreshResponseSuccessApiResponse => Boolean(res),
+const RefreshContract: Contract<unknown, RefreshResponse> = {
+  isData: (res): res is RefreshResponse => Boolean(res),
   getErrorMessages: () => ['Invalid data'],
 };
 
@@ -26,6 +26,6 @@ export const refreshMutation = createJsonMutation({
   },
   response: {
     contract: RefreshContract,
-    mapData: ({ result }) => result.successResponse,
+    mapData: ({ result }) => result,
   },
 });
