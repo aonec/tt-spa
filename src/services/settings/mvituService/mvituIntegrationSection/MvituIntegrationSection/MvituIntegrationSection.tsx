@@ -24,7 +24,17 @@ export const MvituIntegrationSection: FC<Props> = () => {
       </SearchWrapper>
       <Table
         floating
-        columns={[{ label: 'Адрес', size: '500px', render: () => <></> }]}
+        columns={[
+          { label: 'Адрес', size: '400px', render: () => <></> },
+          { label: 'Рес.', size: '100px', render: () => <></> },
+          { label: 'Наименование узла', size: '200px', render: () => <></> },
+          { label: 'Статус интеграции', size: '150px', render: () => <></> },
+          {
+            label: 'Дата последнего передан. архива',
+            size: '300px',
+            render: () => <></>,
+          },
+        ]}
         elements={[]}
       />
     </Wrapper>

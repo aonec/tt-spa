@@ -13,8 +13,12 @@ const stickyWrapperCss = css`
   flex-direction: column;
 `;
 
-export const Wrapper = styled.div<{ floating: boolean; isSticky?: boolean }>`
-  max-width: 1200px;
+export const Wrapper = styled.div<{
+  floating: boolean;
+  isSticky?: boolean;
+  maxWidth?: string;
+}>`
+  max-width: ${({ maxWidth }) => (maxWidth ? maxWidth : '1200px')};
   overflow-x: auto;
 
   width: ${({ floating }) => (floating ? '100%' : 'min-content')};
