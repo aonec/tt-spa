@@ -3737,18 +3737,6 @@ export interface NodeServiceZoneWithNodeCountResponse {
   nodeCount: number;
 }
 
-export interface NodeServiceZoneWithNodeCountResponse {
-  /** @format int32 */
-  id: number;
-  name: string | null;
-  /** @format int32 */
-  nodeCount: number;
-}
-
-export interface NodeServiceZoneWithNodeCountResponseSuccessApiResponse {
-  successResponse: NodeServiceZoneWithNodeCountResponse | null;
-}
-
 export interface NodeSetCommercialStatusRequest {
   commercialStatus?: ENodeCommercialAccountStatus;
   /** @format date-time */
@@ -11005,15 +10993,13 @@ export class Api<
       nodeServiceZoneId: number,
       params: RequestParams = {},
     ) =>
-      this.request<NodeServiceZoneResponseSuccessApiResponse, ErrorApiResponse>(
-        {
-          path: `/api/NodeServiceZones/${nodeServiceZoneId}`,
-          method: 'GET',
-          secure: true,
-          format: 'json',
-          ...params,
-        },
-      ),
+      this.request<NodeServiceZoneWithNodeCountResponse, ErrorApiResponse>({
+        path: `/api/NodeServiceZones/${nodeServiceZoneId}`,
+        method: 'GET',
+        secure: true,
+        format: 'json',
+        ...params,
+      }),
 
     /**
      * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Администратор УК без назначений задач</li>
