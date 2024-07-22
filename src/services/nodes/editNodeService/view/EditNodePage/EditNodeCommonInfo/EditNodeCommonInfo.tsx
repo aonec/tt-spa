@@ -6,7 +6,6 @@ import { Select } from 'ui-kit/Select';
 import {
   AddZoneText,
   ButtonSC,
-  DialogDescription,
   FooterWrapper,
   InfoWrapper,
   ResourceText,
@@ -26,8 +25,8 @@ import { validationSchema } from './EditNodeCommonInfo.constants';
 import { ErrorMessage } from 'ui-kit/ErrorMessage';
 import { filterCommunicationPipes } from './EditNodeCommonInfo.utils';
 import { Divider } from 'services/nodes/createNodeService/view/CreateNodePage/CommonData/CommonData.styled';
-import { Dialog } from 'ui-kit/shared/Dialog/Dialog';
 import { TrashIconGrey } from 'ui-kit/icons';
+import { DeleteDialog } from './components/DeleteDialog';
 
 export const EditNodeCommonInfo: FC<EditNodeCommonInfoProps> = ({
   node,
@@ -244,28 +243,16 @@ export const EditNodeCommonInfo: FC<EditNodeCommonInfoProps> = ({
         </ButtonSC>
       </FooterWrapper>
 
-      <Dialog
-        width={600}
-        title={`Вы уверены, что хотите удалить зону “${deletingServiceZone?.name}”?`}
-        description={
-          <DialogDescription>
-            <div>
-              Это зона используется на других узлах. При удалении зона будет
-              автоматически сброшена для всех узлов.
-            </div>
-            <div>Количество узлов: {deletingServiceZoneCount || '-'}</div>
-          </DialogDescription>
-        }
-        isOpen={isDeleteServiceZoneDialogOpen}
-        onCancel={() => handleDeleteServiceZone(null)}
-        onSubmit={() => {
+      <DeleteDialog
+        deletingServiceZone={deletingServiceZone}
+        deletingServiceZoneCount={deletingServiceZoneCount}
+        handleCancel={() => handleDeleteServiceZone(null)}
+        handleSubmit={() => {
           handleDeleteServiceZone(null);
           deletingServiceZone &&
             handleFinallyDeleteServiceZone(deletingServiceZone.id);
         }}
-        submitText="Удалить"
-        cancelText="Отмена"
-        type="danger"
+        isDeleteServiceZoneDialogOpen={isDeleteServiceZoneDialogOpen}
       />
     </>
   );

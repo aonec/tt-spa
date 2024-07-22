@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { ChevronIcon } from 'ui-kit/icons';
 
 export const Wrapper = styled.div`
-  max-width: 1200px;
+  max-width: 1000px;
 `;
 
 export const Title = styled.div`

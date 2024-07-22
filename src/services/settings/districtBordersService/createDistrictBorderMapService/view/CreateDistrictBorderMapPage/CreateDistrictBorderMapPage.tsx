@@ -14,17 +14,15 @@ import {
   getSelectedHouses,
   getWorkingDistrict,
 } from './CreateDistrictBorderMapPage.utils';
-import { Props } from './CreateDistrictBorderMapPage.types';
-import { useForm } from 'effector-forms';
-import { createDistrictBorderMapService } from '../../createDistrictBorderMapService.models';
+import { FormType, Props } from './CreateDistrictBorderMapPage.types';
 import { CreateDistrictFormPanel } from './CreateDistrictFormPanel';
 import { getPayloadFromDistricts } from 'utils/districtsData';
 import { findPolygonCenter } from 'utils/findPolygonCenter';
 import { MapZoomControl } from 'ui-kit/shared/MapZoomControl';
 import { SearchAddresses } from './SearchAddresses/SearchAddresses';
 import { BuildingWithCoordinatesResponse } from 'api/types';
-
-const { forms } = createDistrictBorderMapService;
+import { useFormik } from 'formik';
+import { DistrictColor } from 'types';
 
 export const CreateDistrictBorderMapPage: FC<Props> = ({
   existingHousingStocks,
@@ -33,33 +31,49 @@ export const CreateDistrictBorderMapPage: FC<Props> = ({
   preselectedDistrictPayload,
   organizationCoordinates,
   isLoadingPostDistrict,
+  setDistrictPayload,
 }) => {
+  const { values, setFieldValue, setValues } = useFormik<FormType>({
+    initialValues: {
+      isEditing: true,
+      selectedHouses: [],
+      name: '',
+      color: DistrictColor.Blue,
+      formSection: 0,
+    },
+    onSubmit: () => {},
+  });
+
+  useEffect(() => {
+    return setDistrictPayload.watch(({ housingStockIds }) =>
+      setValues({
+        ...values,
+        selectedHouses: housingStockIds,
+        isEditing: false,
+      }),
+    ).unsubscribe;
+  }, [setDistrictPayload, setValues, values]);
+
   const { map, mapRef } = useYMaps(organizationCoordinates);
   const [searchBuilding, setSearchBuilding] =
     useState<BuildingWithCoordinatesResponse | null>(null);
-  const { fields } = useForm(forms.createDistrictForm);
 
   const toggleHouse = useCallback(
     (id: number) => {
-      const isSelected = fields.selectedHouses.value.includes(id);
+      const isSelected = values.selectedHouses.includes(id);
 
       const newSelectedArray = isSelected
-        ? fields.selectedHouses.value.filter((elem) => elem !== id)
-        : [...fields.selectedHouses.value, id];
+        ? values.selectedHouses.filter((elem) => elem !== id)
+        : [...values.selectedHouses, id];
 
-      fields.selectedHouses.onChange(newSelectedArray);
+      setFieldValue('selectedHouses', newSelectedArray);
     },
-    [fields.selectedHouses],
+    [values.selectedHouses, setFieldValue],
   );
 
   const workingDistrictArray = useMemo(
-    () =>
-      getWorkingDistrict(
-        fields.isEditing.value,
-        fields.name.value,
-        fields.color.value,
-      ),
-    [fields.color.value, fields.isEditing.value, fields.name.value],
+    () => getWorkingDistrict(values.isEditing, values.name, values.color),
+    [values.isEditing, values.name, values.color],
   );
 
   const { savedDistricts } = useRenderDistricts(map, workingDistrictArray);
@@ -105,22 +119,24 @@ export const CreateDistrictBorderMapPage: FC<Props> = ({
   useEffect(() => {
     if (preselectedDistrictPayload) return;
 
-    fields.selectedHouses.onChange(housesInDistrict.map(({ id }) => id));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [housesInDistrict]);
+    setFieldValue(
+      'selectedHouses',
+      housesInDistrict.map(({ id }) => id),
+    );
+  }, [housesInDistrict, setFieldValue, preselectedDistrictPayload]);
 
   const buildingsPlacemarks = useMemo(
     () =>
       getBuildingPlacmearks(
         existingHousingStocks,
         housesInDistrict.map(({ id }) => id),
-        fields.selectedHouses.value,
+        values.selectedHouses,
         toggleHouse,
         searchBuilding && [searchBuilding.id],
       ),
     [
       existingHousingStocks,
-      fields.selectedHouses.value,
+      values.selectedHouses,
       housesInDistrict,
       searchBuilding,
       toggleHouse,
@@ -151,14 +167,14 @@ export const CreateDistrictBorderMapPage: FC<Props> = ({
           existingHousingStocks={existingHousingStocks}
         />
         <ControlButtonsWrapper>
-          {fields.isEditing.value && (
-            <Button onClick={() => fields.isEditing.onChange(false)}>
+          {values.isEditing && (
+            <Button onClick={() => setFieldValue('isEditing', false)}>
               Создать район
             </Button>
           )}
-          {!fields.isEditing.value && (
+          {!values.isEditing && (
             <Button
-              onClick={() => fields.isEditing.onChange(true)}
+              onClick={() => setFieldValue('isEditing', true)}
               icon={<PencilIcon />}
             >
               Редактировать
@@ -167,21 +183,21 @@ export const CreateDistrictBorderMapPage: FC<Props> = ({
         </ControlButtonsWrapper>
       </Header>
       <MapWrapper>
-        {!fields.isEditing.value && (
+        {!values.isEditing && (
           <CreateDistrictFormPanel
             isLoadingCreatingDistrict={isLoadingPostDistrict}
             isLoadingHousingStocks={false}
-            selectedHousingStocks={fields.selectedHouses.value}
+            selectedHousingStocks={values.selectedHouses}
             housingStocksInDistrict={housesInDistrict}
             handleClickHousingStock={toggleHouse}
-            handleCancel={() => fields.isEditing.onChange(true)}
-            setDistrictColor={fields.color.onChange}
-            districtColor={fields.color.value}
-            formSection={fields.formSection.value}
-            setFormSection={fields.formSection.onChange}
+            handleCancel={() => setFieldValue('isEditing', true)}
+            districtColor={values.color}
+            formSection={values.formSection}
             handleCreateDistrict={handleCreateDistrict}
-            districtName={fields.name.value}
-            setDistrictName={fields.name.onChange}
+            districtName={values.name}
+            setFormSection={(value) => setFieldValue('formSection', value)}
+            setDistrictColor={(value) => setFieldValue('color', value)}
+            setDistrictName={(value) => setFieldValue('name', value)}
             districtPolygonCoordinates={
               workingDistrict?.geometry?.getCoordinates()?.[0] || []
             }

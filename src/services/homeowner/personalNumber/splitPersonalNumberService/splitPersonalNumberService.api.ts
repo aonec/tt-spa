@@ -27,7 +27,7 @@ export const doesApartmentExist = async ({
 
   if (typeof res === 'number') return res;
 
-  return res?.successResponse;
+  return res;
 };
 
 export const getIndividualDevices = async (

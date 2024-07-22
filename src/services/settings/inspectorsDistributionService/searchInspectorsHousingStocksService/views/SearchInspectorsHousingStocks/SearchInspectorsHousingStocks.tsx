@@ -1,7 +1,6 @@
 import { ExtendedSearch } from 'ui-kit/ExtendedSearch';
 import { Form } from 'antd';
 import React, { FC } from 'react';
-import { SearchInspectorsHousingStocksProps } from './types';
 import { Select } from 'ui-kit/Select';
 import {
   ExtendedSearchWrap,
@@ -9,21 +8,39 @@ import {
 } from './SearchInspectorsHousingStocks.styled';
 import { AddressSearchContainer } from 'services/addressSearchService';
 import { SearchFieldType } from 'services/addressSearchService/view/AddressSearch/AddressSearch.types';
+import { useFormik } from 'formik';
+import { SearchInspectorsHousingStocksProps } from './SearchInspectorsHousingStocks.types';
 
 export const SearchInspectorsHousingStocks: FC<
   SearchInspectorsHousingStocksProps
 > = ({
-  form,
   isExtendedSearchOpen,
   handelExtendedSearchOpen,
   handleExtendedSearchClose,
   inspectors,
   hosuingManagements,
-  handleSearch,
   handleApplyFilters,
   handleClearExtendedSearchValues,
   isSearchError,
+  initialCity,
+  handleSearchInspector,
+  setForm,
 }) => {
+  const { values, submitForm, setFieldValue, setValues } = useFormik({
+    initialValues: {
+      City: initialCity,
+      Street: '',
+      BuildingNumber: '',
+      HouseManagement: '',
+      InspectorId: '',
+    },
+    enableReinitialize: true,
+    onSubmit: (values) => {
+      setForm(values);
+      handleSearchInspector();
+    },
+  });
+
   return (
     <>
       <Wrap>
@@ -31,20 +48,25 @@ export const SearchInspectorsHousingStocks: FC<
           isOpen={isExtendedSearchOpen}
           handleClose={handleExtendedSearchClose}
           handleOpen={handelExtendedSearchOpen}
-          handleApply={handleApplyFilters}
-          handleClear={handleClearExtendedSearchValues}
+          handleApply={() => {
+            handleApplyFilters();
+            submitForm();
+          }}
+          handleClear={() => {
+            setValues({ ...values, HouseManagement: '', InspectorId: '' });
+          }}
           extendedSearchContent={
             <ExtendedSearchWrap>
               <Form.Item label="Инспектор">
                 <Select
                   small
                   placeholder="Выберите из списка"
-                  value={form.fields.InspectorId.value || undefined}
+                  value={values.InspectorId || undefined}
                   onChange={(value) => {
                     if (!value) {
-                      form.fields.InspectorId.reset();
+                      setFieldValue('InspectorId', '');
                     } else {
-                      form.fields.InspectorId.onChange(value as string);
+                      setFieldValue('InspectorId', value);
                     }
                   }}
                   allowClear
@@ -59,12 +81,12 @@ export const SearchInspectorsHousingStocks: FC<
               <Form.Item label="Домоуправление">
                 <Select
                   small
-                  value={form.fields.HouseManagement.value || undefined}
+                  value={values.HouseManagement || undefined}
                   onChange={(value) => {
                     if (!value) {
-                      form.fields.HouseManagement.reset();
+                      setFieldValue('HouseManagement', '');
                     } else {
-                      form.fields.HouseManagement.onChange(value as string);
+                      setFieldValue('HouseManagement', value);
                     }
                   }}
                   allowClear
@@ -95,16 +117,18 @@ export const SearchInspectorsHousingStocks: FC<
               { fieldType: SearchFieldType.House, templateValue: '0.25fr' },
             ]}
             initialValues={{
-              city: form.fields.City.value,
-              street: form.fields.Street.value,
-              house: form.fields.BuildingNumber.value,
+              city: values.City,
+              street: values.Street,
+              house: values.BuildingNumber,
             }}
-            handleSubmit={(values) => {
-              form.fields.City.onChange(values.city as string);
-              form.fields.Street.onChange(values.street as string);
-              form.fields.BuildingNumber.onChange(values.house as string);
-
-              handleSearch();
+            handleSubmit={(submitValues) => {
+              setValues({
+                ...values,
+                City: submitValues.city as string,
+                Street: submitValues.street as string,
+                BuildingNumber: submitValues.house as string,
+              });
+              submitForm();
             }}
             isError={isSearchError}
           />

@@ -1,5 +1,4 @@
 import { Form } from 'antd';
-import { useForm } from 'effector-forms';
 import React, { FC } from 'react';
 import { FormWrap } from './components';
 import { InspectorAddressesResetModalProps } from './types';
@@ -12,11 +11,11 @@ export const InspectorAddressesResetModal: FC<
   isOpen,
   handleClose,
   handleResetAddress,
-  form,
   loading,
   inspectorsList,
+  handleSelectInspector,
+  inspectorId,
 }) => {
-  const { fields } = useForm(form);
   return (
     <FormModal
       formId="inspector-addresses-reset-modal"
@@ -32,10 +31,8 @@ export const InspectorAddressesResetModal: FC<
             <Select
               allowClear
               placeholder="Выберите из списка"
-              value={fields.inspectorId.value || undefined}
-              onChange={(value) =>
-                fields.inspectorId.onChange(Number(value) || null)
-              }
+              value={inspectorId || undefined}
+              onChange={(value) => handleSelectInspector(Number(value))}
             >
               {inspectorsList?.map((elem) => (
                 <Select.Option key={elem.id} value={elem.id}>

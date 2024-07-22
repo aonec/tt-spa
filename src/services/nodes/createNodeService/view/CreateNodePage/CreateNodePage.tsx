@@ -112,7 +112,7 @@ export const CreateNodePage: FC<CreateNodePageProps> = ({
         description={
           <DialogDescription>
             <div>
-              Это зона используется на других узлах. При удалении зона будет
+              Эта зона используется на других узлах. При удалении зона будет
               автоматически сброшена для всех узлов.
             </div>
             <div>Количество узлов: {deletingServiceZoneCount || '-'}</div>

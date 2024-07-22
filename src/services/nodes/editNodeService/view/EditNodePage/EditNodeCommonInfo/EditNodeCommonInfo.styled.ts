@@ -50,12 +50,6 @@ export const ButtonSC = styled(Button)`
   margin-left: 16px;
 `;
 
-export const DialogDescription = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-`;
-
 export const ZoneOption = styled.div`
   display: flex;
   align-items: center;
