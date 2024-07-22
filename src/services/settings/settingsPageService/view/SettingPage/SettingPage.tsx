@@ -16,6 +16,7 @@ import {
 } from 'services/settings/temperatureGraphService';
 import { wrapItemByArray } from './SettingPage.utils';
 import { MvituContainer } from 'services/settings/mvituService';
+import { mvituService } from 'services/settings/mvituService/mvituService.models';
 
 export const SettingPage: FC<SettingPageProps> = ({
   handleReassingInspector,
@@ -23,10 +24,13 @@ export const SettingPage: FC<SettingPageProps> = ({
   isAdminSettings,
   setModalOpen,
 }) => {
-  const { featureToggles, deletingRowIds } = useUnit({
-    featureToggles: developmentSettingsService.outputs.$featureToggles,
-    deletingRowIds: temperatureGraphService.outputs.$deletingRowIds,
-  });
+  const { featureToggles, deletingRowIds, handleAddNodeToIntegration } =
+    useUnit({
+      featureToggles: developmentSettingsService.outputs.$featureToggles,
+      deletingRowIds: temperatureGraphService.outputs.$deletingRowIds,
+      handleAddNodeToIntegration:
+        mvituService.inputs.handleAddNodeToIntegration,
+    });
 
   const isDeletingTemperatureNormativesMod = Boolean(deletingRowIds.length);
 
@@ -40,6 +44,15 @@ export const SettingPage: FC<SettingPageProps> = ({
 
   const menuButtons = useMemo(() => {
     if (isAdminSettings) {
+      if (section === 'mvitu') {
+        return [
+          {
+            title: 'Добавить узел в интеграцию',
+            onClick: handleAddNodeToIntegration,
+          },
+        ];
+      }
+
       return isDeletingTemperatureNormativesMod
         ? []
         : [
@@ -68,8 +81,10 @@ export const SettingPage: FC<SettingPageProps> = ({
   }, [
     isAdminSettings,
     handleReassingInspector,
+    section,
     isDeletingTemperatureNormativesMod,
     isTemperatureGraphTab,
+    handleAddNodeToIntegration,
     handleEditTemperatureNormative,
     setModalOpen,
   ]);

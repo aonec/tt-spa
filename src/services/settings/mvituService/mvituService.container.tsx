@@ -3,6 +3,7 @@ import { ConfigureMvituPanel } from './ConfigureMvituPanel';
 import { CreateMvituIntegrationContainer } from './createMvituIntegration';
 import { createMvituIntegrationService } from './createMvituIntegration/createMvituIntegrationService.models';
 import { MvituIntegrationSectionContainer } from './mvituIntegrationSection';
+import { AddNodeToIntegrationContainer } from './addNodeToIntegration';
 
 export const MvituContainer = () => {
   const { connectIntegration } = useUnit({
@@ -13,6 +14,7 @@ export const MvituContainer = () => {
 
   return (
     <>
+      <AddNodeToIntegrationContainer />
       <CreateMvituIntegrationContainer />
       {isMvituConnected && <MvituIntegrationSectionContainer />}
       {!isMvituConnected && (
