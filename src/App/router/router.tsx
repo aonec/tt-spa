@@ -283,35 +283,39 @@ export const useRoutes = (
           children: [
             {
               path: '/districtBordersSettings/createByHousingStocksList',
-              element: isOperator ? (
-                <DistrictBordersByAddressContainer />
-              ) : (
-                <AccessDeniedPage />
-              ),
+              element:
+                isOperator || isSeniorOperator ? (
+                  <DistrictBordersByAddressContainer />
+                ) : (
+                  <AccessDeniedPage />
+                ),
             },
             {
               path: '/districtBordersSettings/editDistrictBorders/:id',
-              element: isOperator ? (
-                <EditDistrictBordersContainer />
-              ) : (
-                <AccessDeniedPage />
-              ),
+              element:
+                isOperator || isSeniorOperator ? (
+                  <EditDistrictBordersContainer />
+                ) : (
+                  <AccessDeniedPage />
+                ),
             },
             {
               path: '/districtBordersSettings/createByMap',
-              element: isAdministrator ? (
-                <CreateDistrictBorderMapContainer />
-              ) : (
-                <AccessDeniedPage />
-              ),
+              element:
+                isAdministrator || isSeniorOperator ? (
+                  <CreateDistrictBorderMapContainer />
+                ) : (
+                  <AccessDeniedPage />
+                ),
             },
             {
               path: '/districtBordersSettings/manageDistricts',
-              element: isAdministrator ? (
-                <ManageDistrictsMapContainer />
-              ) : (
-                <AccessDeniedPage />
-              ),
+              element:
+                isAdministrator || isSeniorOperator ? (
+                  <ManageDistrictsMapContainer />
+                ) : (
+                  <AccessDeniedPage />
+                ),
             },
           ],
         },
