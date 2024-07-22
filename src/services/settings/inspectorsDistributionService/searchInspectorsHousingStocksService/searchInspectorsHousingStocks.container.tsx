@@ -1,51 +1,56 @@
-import { useForm } from 'effector-forms';
 import { useUnit } from 'effector-react';
 import React from 'react';
-import { searchInspectorsHousingStockService } from './searchInspectorsHousingStockService.models';
-import { SearchInspectorsHousingStocks } from './views/SearchInspectorsHousingStocks';
+import { searchInspectorsHousingStockService } from './searchInspectorsHousingStock.models';
+import { SearchInspectorsHousingStocks } from './views/SearchInspectorsHousingStocks/SearchInspectorsHousingStocks';
 import { displayInspectorsService } from 'services/inspectors/displayInspectorsService/displayInspectorsService.models';
 import { displayHousingStockFiltersService } from '../displayHosuingStockFiltersService/displayHosuingStockFiltersService.models';
 import { getInspectorsHousingStocksQuery } from '../displayInspectorsHousingStocksService/displayInspectorsHousingStocksService.api';
 import { displayInspectorsHousingStocksService } from '../displayInspectorsHousingStocksService/displayInspectorsHousingStocksService.models';
+import { currentUserService } from 'services/currentUser/currentUserService';
+import { addressSearchService } from 'services/addressSearchService/addressSearchService.models';
+import { currentOrganizationService } from 'services/currentOrganizationService';
+import _ from 'lodash';
 
 const { InspectorsGate } = displayInspectorsService.inputs;
 const { HousingStockFiltersGate } = displayHousingStockFiltersService.inputs;
 
-export const SearchInspectorsHousingStocksContainer = () => {
-  const form = useForm(searchInspectorsHousingStockService.forms.searchForm);
+const { inputs, outputs } = searchInspectorsHousingStockService;
 
+export const SearchInspectorsHousingStocksContainer = () => {
   const {
     handelExtendedSearchOpen,
     handleApplyFilters,
     handleClearExtendedSearchValues,
     handleExtendedSearchClose,
-    handleStartSearch,
     housingManagementList,
     inspectors,
     isExtendedSearchOpen,
     isInspectorsFetched,
     housingStocks,
+    defaultCity,
+    existingCities,
+    handleSearchInspector,
+    setForm,
   } = useUnit({
-    isExtendedSearchOpen:
-      searchInspectorsHousingStockService.outputs.$isExtendedSearchOpen,
+    isExtendedSearchOpen: outputs.$isExtendedSearchOpen,
     inspectors: displayInspectorsService.outputs.$inspectorsList,
     housingManagementList:
       displayHousingStockFiltersService.outputs.$hosuingManagementList,
-    handelExtendedSearchOpen:
-      searchInspectorsHousingStockService.inputs.extendedSearchOpened,
-    handleExtendedSearchClose:
-      searchInspectorsHousingStockService.inputs.extendedSearchClosed,
-    handleStartSearch:
-      searchInspectorsHousingStockService.forms.searchForm.submit,
-    handleClearExtendedSearchValues:
-      searchInspectorsHousingStockService.inputs.clearExtendedSearch,
-    handleApplyFilters:
-      searchInspectorsHousingStockService.inputs.applyExtendedFilters,
+    handelExtendedSearchOpen: inputs.extendedSearchOpened,
+    handleExtendedSearchClose: inputs.extendedSearchClosed,
+    handleClearExtendedSearchValues: inputs.clearExtendedSearch,
+    handleApplyFilters: inputs.applyExtendedFilters,
     isInspectorsFetched: getInspectorsHousingStocksQuery.$succeeded,
     housingStocks:
       displayInspectorsHousingStocksService.outputs
         .$inspectorsHousingStocksList,
+    defaultCity: currentOrganizationService.outputs.$defaultCity,
+    existingCities: addressSearchService.outputs.$existingCities,
+    handleSearchInspector: inputs.handleSearchInspector,
+    setForm: inputs.setForm,
   });
+
+  const initialCity = defaultCity || _.last(existingCities) || '';
 
   return (
     <>
@@ -53,17 +58,18 @@ export const SearchInspectorsHousingStocksContainer = () => {
       <HousingStockFiltersGate />
       <SearchInspectorsHousingStocks
         handleApplyFilters={() => handleApplyFilters()}
-        handleSearch={() => handleStartSearch()}
         handelExtendedSearchOpen={() => handelExtendedSearchOpen()}
         handleExtendedSearchClose={() => handleExtendedSearchClose()}
         handleClearExtendedSearchValues={() =>
           handleClearExtendedSearchValues()
         }
         isExtendedSearchOpen={isExtendedSearchOpen}
-        form={form}
         inspectors={inspectors}
         hosuingManagements={housingManagementList}
         isSearchError={isInspectorsFetched && !housingStocks?.length}
+        initialCity={initialCity}
+        handleSearchInspector={handleSearchInspector}
+        setForm={setForm}
       />
     </>
   );

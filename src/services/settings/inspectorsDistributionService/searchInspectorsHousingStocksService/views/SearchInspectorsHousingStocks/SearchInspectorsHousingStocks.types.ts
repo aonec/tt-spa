@@ -1,5 +1,5 @@
-import { Result } from 'effector-forms';
 import { GuidStringDictionaryItem, InspectorResponse } from 'api/types';
+import { FormType } from '../../searchInspectorsHousingStocks.types';
 
 export type SearchInspectorsHousingStocksProps = {
   isExtendedSearchOpen: boolean;
@@ -7,15 +7,10 @@ export type SearchInspectorsHousingStocksProps = {
   handleExtendedSearchClose: () => void;
   inspectors: InspectorResponse[] | null;
   hosuingManagements?: GuidStringDictionaryItem[] | null;
-  handleSearch: () => void;
   handleApplyFilters: () => void;
   handleClearExtendedSearchValues: () => void;
-  form: Result<{
-    City: string;
-    Street: string;
-    BuildingNumber: string;
-    HouseManagement: string;
-    InspectorId: string;
-  }>;
   isSearchError: boolean;
+  initialCity: string;
+  handleSearchInspector: () => void;
+  setForm: (payload: FormType) => void;
 };

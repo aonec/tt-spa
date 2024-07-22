@@ -13,14 +13,12 @@ export const ReassingInspectorModalContainer = () => {
       handleSave: inspectorReassignmentService.inputs.saveInspectorReassing,
     });
 
-  const form = inspectorReassignmentService.form.reassingmentInspectorsForm;
 
   return (
     <ReassingInspectorModal
       isOpen={isOpen}
       handleClose={() => handleClose()}
-      handleSave={() => handleSave()}
-      form={form}
+      handleSave={handleSave}
       inspectorsList={inspectorsList}
       isLoading={isLoading}
     />
