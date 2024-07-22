@@ -7,15 +7,10 @@ import { getBuildingAddress } from 'utils/getBuildingAddress';
 import { CommonData } from './CommonData';
 import { ConnectedDevices } from './ConnectedDevices';
 import { ConnectionSettings } from './ConnectionSettings';
-import {
-  AddressWrapper,
-  DialogDescription,
-  PageHeaderSC,
-  Wrapper,
-} from './CreateNodePage.styled';
+import { AddressWrapper, PageHeaderSC, Wrapper } from './CreateNodePage.styled';
 import { CreateNodePageProps } from './CreateNodePage.types';
 import { MountAddress } from './MountAddress';
-import { Dialog } from 'ui-kit/shared/Dialog/Dialog';
+import { DeleteDialog } from 'services/nodes/editNodeService/view/EditNodePage/EditNodeCommonInfo/components/DeleteDialog';
 
 const { Step } = Steps;
 
@@ -106,28 +101,17 @@ export const CreateNodePage: FC<CreateNodePageProps> = ({
           </Steps>
         </div>
       </Wrapper>
-      <Dialog
-        width={600}
-        title={`Вы уверены, что хотите удалить зону “${deletingServiceZone?.name}”?`}
-        description={
-          <DialogDescription>
-            <div>
-              Эта зона используется на других узлах. При удалении зона будет
-              автоматически сброшена для всех узлов.
-            </div>
-            <div>Количество узлов: {deletingServiceZoneCount || '-'}</div>
-          </DialogDescription>
-        }
-        isOpen={isDialogOpen}
-        onCancel={() => handleDeleteServiceZone(null)}
-        onSubmit={() => {
+
+      <DeleteDialog
+        deletingServiceZone={deletingServiceZone}
+        deletingServiceZoneCount={deletingServiceZoneCount}
+        handleCancel={() => handleDeleteServiceZone(null)}
+        handleSubmit={() => {
           handleDeleteServiceZone(null);
           deletingServiceZone &&
             handleFinallyDeleteServiceZone(deletingServiceZone.id);
         }}
-        submitText="Удалить"
-        cancelText="Отмена"
-        type="danger"
+        isDeleteServiceZoneDialogOpen={isDialogOpen}
       />
     </div>
   );
