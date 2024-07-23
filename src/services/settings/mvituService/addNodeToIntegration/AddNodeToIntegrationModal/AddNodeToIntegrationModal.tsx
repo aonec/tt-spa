@@ -1,5 +1,5 @@
 import { FC, useEffect, useMemo, useState } from 'react';
-import { Radio, Space } from 'antd';
+import { Radio, Skeleton, Space } from 'antd';
 import { FormModal } from 'ui-kit/Modals/FormModal';
 import { FormItem } from 'ui-kit/FormItem';
 import { Select } from 'ui-kit/Select';
@@ -28,6 +28,9 @@ export const AddNodeToIntegrationModal: FC<Props> = ({
   handleSearchNodes,
   nodesSearchList,
   isNodesSearchLoading,
+  handleSelectNode,
+  selectedNode,
+  isSelectedNodeLoading,
 }) => {
   const [searchType, setSearchType] = useState<SearchType>('AddressTerm');
   const [searchString, setSearchString] = useState('');
@@ -76,6 +79,7 @@ export const AddNodeToIntegrationModal: FC<Props> = ({
               showSearch
               filterOption={false}
               loading={isNodesSearchLoading}
+              onChange={(id) => handleSelectNode(id as number)}
             >
               {nodesSearchList?.nodes?.map((node) => (
                 <Select.Option key={node.id} value={node.id}>
@@ -84,33 +88,38 @@ export const AddNodeToIntegrationModal: FC<Props> = ({
               ))}
             </Select>
           </FormItem>
-          <SpaceLine noPadding />
-          <BaseInfoTitle>Основная информация по объекту</BaseInfoTitle>
-          <SpaceLine noPadding />
-          <FormItem label="Адрес">
-            <Input placeholder="Введите адрес" />
-          </FormItem>
-          <BaseInfoWrapper>
-            <FormItem label="Код объекта из системы ФИАС">
-              <Input placeholder="Введите код" />
-            </FormItem>
-            <FormItem label="Координаты">
-              <Space.Compact>
-                <Input placeholder="Широта" />
-                <Input placeholder="Долгота" />
-              </Space.Compact>
-            </FormItem>
-            <FormItem label="Тип объекта">
-              <Input placeholder="Введите тип" />
-            </FormItem>
-            <FormItem label="Код объекта">
-              <Input placeholder="Введите код" />
-            </FormItem>
-          </BaseInfoWrapper>
-          <BaseInfoTitle>Основная информация по узлу</BaseInfoTitle>
-          <FormItem label="№ ввода в здание" style={{ width: 250 }}>
-            <Input placeholder="Введите" />
-          </FormItem>
+          {isSelectedNodeLoading && <Skeleton active />}
+          {selectedNode && !isSelectedNodeLoading && (
+            <>
+              <SpaceLine noPadding />
+              <BaseInfoTitle>Основная информация по объекту</BaseInfoTitle>
+              <FormItem label="Адрес">
+                <Input placeholder="Введите адрес" />
+              </FormItem>
+              <BaseInfoWrapper>
+                <FormItem label="Код объекта из системы ФИАС">
+                  <Input placeholder="Введите код" />
+                </FormItem>
+                <FormItem label="Координаты">
+                  <Space.Compact>
+                    <Input placeholder="Широта" />
+                    <Input placeholder="Долгота" />
+                  </Space.Compact>
+                </FormItem>
+                <FormItem label="Тип объекта">
+                  <Input placeholder="Введите тип" />
+                </FormItem>
+                <FormItem label="Код объекта">
+                  <Input placeholder="Введите код" />
+                </FormItem>
+              </BaseInfoWrapper>
+              <SpaceLine noPadding />
+              <BaseInfoTitle>Основная информация по узлу</BaseInfoTitle>
+              <FormItem label="№ ввода в здание" style={{ width: 250 }}>
+                <Input placeholder="Введите" />
+              </FormItem>
+            </>
+          )}
         </Wrapper>
       }
     />
