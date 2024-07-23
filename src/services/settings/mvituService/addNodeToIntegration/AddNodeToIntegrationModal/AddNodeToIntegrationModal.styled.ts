@@ -29,3 +29,15 @@ export const NodeAddress = styled.div`
   text-align: right;
   padding-right: 16px;
 `;
+
+export const BaseInfoTitle = styled.div`
+  font-size: 16px;
+  font-weight: 500;
+  color: #272f5a;
+`;
+
+export const BaseInfoWrapper = styled.div`
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+`;

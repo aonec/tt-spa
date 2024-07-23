@@ -1,9 +1,11 @@
 import { FC, useEffect, useMemo, useState } from 'react';
-import { Radio } from 'antd';
+import { Radio, Space } from 'antd';
 import { FormModal } from 'ui-kit/Modals/FormModal';
 import { FormItem } from 'ui-kit/FormItem';
 import { Select } from 'ui-kit/Select';
 import {
+  BaseInfoTitle,
+  BaseInfoWrapper,
   NodeAddress,
   NodeInfo,
   NodeNumber,
@@ -15,6 +17,8 @@ import { useDebounce } from 'use-debounce';
 import { NodeListResponse } from 'api/mvitu.types';
 import { ResourceIconLookup } from 'ui-kit/shared/ResourceIconLookup';
 import { CalculatorIcon } from 'ui-kit/icons';
+import { SpaceLine } from 'ui-kit/SpaceLine';
+import { Input } from 'ui-kit/Input';
 
 type SearchType = 'AddressTerm' | 'CalculatorSerialNumber';
 
@@ -79,6 +83,33 @@ export const AddNodeToIntegrationModal: FC<Props> = ({
                 </Select.Option>
               ))}
             </Select>
+          </FormItem>
+          <SpaceLine noPadding />
+          <BaseInfoTitle>Основная информация по объекту</BaseInfoTitle>
+          <SpaceLine noPadding />
+          <FormItem label="Адрес">
+            <Input placeholder="Введите адрес" />
+          </FormItem>
+          <BaseInfoWrapper>
+            <FormItem label="Код объекта из системы ФИАС">
+              <Input placeholder="Введите код" />
+            </FormItem>
+            <FormItem label="Координаты">
+              <Space.Compact>
+                <Input placeholder="Широта" />
+                <Input placeholder="Долгота" />
+              </Space.Compact>
+            </FormItem>
+            <FormItem label="Тип объекта">
+              <Input placeholder="Введите тип" />
+            </FormItem>
+            <FormItem label="Код объекта">
+              <Input placeholder="Введите код" />
+            </FormItem>
+          </BaseInfoWrapper>
+          <BaseInfoTitle>Основная информация по узлу</BaseInfoTitle>
+          <FormItem label="№ ввода в здание" style={{ width: 250 }}>
+            <Input placeholder="Введите" />
           </FormItem>
         </Wrapper>
       }
