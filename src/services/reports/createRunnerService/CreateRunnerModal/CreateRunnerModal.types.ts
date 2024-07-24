@@ -2,8 +2,10 @@ import {
   HouseManagementResponse,
   HouseManagementWithStreetsResponse,
   OrganizationResponsePagedList,
+  YearRangeType,
 } from 'api/types';
 import { ExportReportType } from 'services/reportsService/reportViewService/reportViewService.types';
+import { RunnerPayload } from '../createRunnerService.types';
 
 export type Props = {
   existingCities: string[] | null;
@@ -12,12 +14,15 @@ export type Props = {
   addressesWithHouseManagements: HouseManagementWithStreetsResponse[];
   isOpen: boolean;
   setOpen: (payload: boolean) => void;
+  isGenerating: boolean;
+  handleGenerateReport: (payload: RunnerPayload) => void;
 };
 
-export type Form = {
+export type FormType = {
   exportType: ExportReportType | null;
   city: null | string;
   organizationId: null | number;
   houseManagement: null | string;
-  housingStockId: number | null;
+  housingStockIds: number[] | null;
+  yearRange: YearRangeType | null;
 };

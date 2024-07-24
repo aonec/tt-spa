@@ -14,8 +14,8 @@ export const ReportsPageContainer = () => {
 
   return (
     <>
-      <CreateReportModalContainer />
       <CreateRunnerContainer />
+      <CreateReportModalContainer />
       <ReportsPage onCreateReport={() => onCreateReport()} />
     </>
   );
