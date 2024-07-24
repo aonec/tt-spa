@@ -15,6 +15,7 @@ import {
   EmployeeReportDatePeriodType,
   EmployeeReportType,
 } from 'services/reportsService/reportViewService/view/ReportViewPage/ReportFiltrationForm/ReportFiltrationForm.types';
+import { createRunnerService } from '../createRunnerService/createRunnerService.models';
 
 const { outputs, gates, inputs } = reportsListService;
 const { ReportsHistoryGate } = gates;
@@ -29,6 +30,7 @@ export const ReportsListContainer = () => {
     setPageNumber,
     setIsShowActual,
     filtrationValues,
+    setRunnerModalOpen,
   } = useUnit({
     reportsHistoryListPagedData: outputs.$reportsHistoryPagedData,
     isLoading: outputs.$isLoading,
@@ -38,6 +40,7 @@ export const ReportsListContainer = () => {
     setPageNumber: inputs.setPageNumber,
     setIsShowActual: inputs.setIsShowActual,
     filtrationValues: reportViewService.outputs.$filtrationValues,
+    setRunnerModalOpen: createRunnerService.inputs.setOpen,
   });
 
   const navigate = useNavigate();
@@ -115,6 +118,7 @@ export const ReportsListContainer = () => {
         reportsList={reportsHistoryListPagedData?.items || null}
         isLoading={isLoading}
         openExistedReport={openExistedReport}
+        setRunnerModalOpen={setRunnerModalOpen}
       />
       {Boolean(reportsHistoryListPagedData?.items?.length) && (
         <Pagination

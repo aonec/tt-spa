@@ -3,6 +3,7 @@ import React from 'react';
 import { CreateReportModalContainer } from './CreateReportModal';
 import { reportsInputs } from './models';
 import { ReportsPage } from './ReportsPage';
+import { CreateRunnerContainer } from './createRunnerService';
 
 const { createReportButtonClicked } = reportsInputs;
 
@@ -14,6 +15,7 @@ export const ReportsPageContainer = () => {
   return (
     <>
       <CreateReportModalContainer />
+      <CreateRunnerContainer />
       <ReportsPage onCreateReport={() => onCreateReport()} />
     </>
   );
