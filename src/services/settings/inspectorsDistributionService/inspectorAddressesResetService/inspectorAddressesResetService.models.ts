@@ -1,16 +1,13 @@
 import { message } from 'antd';
 import { InspectorResponse } from 'api/types';
 import { createEffect, createEvent, createStore, sample } from 'effector';
-import { createForm } from 'effector-forms';
 import { displayInspectorsService } from 'services/inspectors/displayInspectorsService/displayInspectorsService.models';
-import { searchInspectorsHousingStockService } from '../searchInspectorsHousingStocksService/searchInspectorsHousingStockService.models';
+import { searchInspectorsHousingStockService } from '../searchInspectorsHousingStocksService/searchInspectorsHousingStock.models';
 import { resetInspectorHousingStocksAddresses } from './inspectorAddressesResetService.api';
-import { ResetAddressesFormPayload } from './inspectorAddressesResetService.types';
-
-const $isModalOpen = createStore(false);
 
 const openModal = createEvent();
 const closeModal = createEvent();
+const handleSelectInspector = createEvent<number>();
 
 const resetAddresses = createEvent();
 
@@ -20,38 +17,28 @@ const resetAddressesFx = createEffect<number, InspectorResponse | null>(
 
 const $loading = resetAddressesFx.pending;
 
-const resetAddressesForm = createForm({
-  fields: {
-    inspectorId: {
-      init: null as number | null,
-      rules: [{ name: 'required', validator: Boolean }],
-    },
-  },
-});
+const $inspectorId = createStore<number | null>(null)
+  .on(handleSelectInspector, (_, id) => id)
+  .reset(closeModal);
 
-$isModalOpen.on(openModal, () => true).reset(closeModal);
+const $isModalOpen = createStore(false)
+  .on(openModal, () => true)
+  .reset(closeModal);
 
 sample({
-  clock: closeModal,
-  target: resetAddressesForm.reset,
-});
-
-sample({
-  clock: resetAddressesForm.formValidated,
-  filter: (values): values is ResetAddressesFormPayload =>
-    Boolean(values.inspectorId),
-  fn: (values: ResetAddressesFormPayload) => values.inspectorId,
+  clock: resetAddresses,
+  source: $inspectorId,
+  filter: (id) => Boolean(id),
+  fn: (id) => id!,
   target: resetAddressesFx,
 });
 
 sample({
   clock: resetAddressesFx.doneData,
-  to: [closeModal, searchInspectorsHousingStockService.forms.searchForm.submit],
-});
-
-sample({
-  clock: resetAddresses,
-  target: resetAddressesForm.validate,
+  target: [
+    closeModal,
+    searchInspectorsHousingStockService.inputs.handleSearchInspector,
+  ],
 });
 
 resetAddressesFx.doneData.watch(() =>
@@ -66,11 +53,12 @@ export const inspectorAddressesResetService = {
     closeModal,
     resetAddresses,
     resetAddressesFx,
+    handleSelectInspector,
   },
   outputs: {
     $loading,
     $isModalOpen,
     $inspectorsList: displayInspectorsService.outputs.$inspectorsList,
+    $inspectorId,
   },
-  form: resetAddressesForm,
 };

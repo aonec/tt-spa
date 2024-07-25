@@ -1,22 +1,22 @@
-import { sample } from 'effector';
-import { createForm } from 'effector-forms';
-import dayjs from 'api/dayjs';
+import { createEvent, createStore, sample } from 'effector';
 import { individualSealAssignmentsQuery } from './appointmentsJournalService.api';
 import { createGate } from 'effector-react';
 import { individualSealControllersQuery } from '../distributeRecordsService/distributeRecordsService.api';
+import { FormType } from './AppointmentsJournalPage/AppointmentsJournalPage.types';
+import dayjs from 'dayjs';
 
 const AssignmentsJournalGate = createGate();
 
-const searchForm = createForm({
-  fields: {
-    from: { init: dayjs() as dayjs.Dayjs },
-    to: { init: null as null | dayjs.Dayjs },
-  },
-});
+const setForm = createEvent<FormType>();
+
+const $formValues = createStore<FormType>({
+  from: dayjs(),
+  to: null,
+}).on(setForm, (_, value) => value);
 
 sample({
-  clock: [AssignmentsJournalGate.open, searchForm.$values],
-  source: searchForm.$values,
+  clock: [AssignmentsJournalGate.open, $formValues.updates],
+  source: $formValues,
   fn: ({ from, to }) => ({
     from: from.format('YYYY-MM-DD'),
     to: to?.format('YYYY-MM-DD'),
@@ -30,6 +30,7 @@ sample({
 });
 
 export const appointmentsJournalService = {
-  forms: { searchForm },
+  inputs: { setForm },
+  outputs: { $formValues },
   gates: { AssignmentsJournalGate },
 };

@@ -49,10 +49,6 @@ sample({
   target: createDistrictForm.fields.isEditing.set,
 });
 
-sample({
-  clock: [createDistrictMutation.finished.success, CreateDistrictGate.close],
-  target: createDistrictForm.resetValues,
-});
 
 sample({
   clock: CreateDistrictGate.open,

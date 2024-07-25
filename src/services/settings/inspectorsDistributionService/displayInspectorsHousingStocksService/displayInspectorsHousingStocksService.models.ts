@@ -1,7 +1,7 @@
 import { createEvent, createStore, sample } from 'effector';
 import { getInspectorsHousingStocksQuery } from './displayInspectorsHousingStocksService.api';
 import { GetInspectorsHousingStocksRequestParams } from './types';
-import { searchInspectorsHousingStockService } from '../searchInspectorsHousingStocksService/searchInspectorsHousingStockService.models';
+import { searchInspectorsHousingStockService } from '../searchInspectorsHousingStocksService/searchInspectorsHousingStock.models';
 import { createGate } from 'effector-react';
 
 const { startSearchInspectorsHousingStocks } =
