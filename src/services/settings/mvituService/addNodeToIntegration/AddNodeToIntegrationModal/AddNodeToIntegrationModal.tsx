@@ -19,6 +19,7 @@ import { ResourceIconLookup } from 'ui-kit/shared/ResourceIconLookup';
 import { CalculatorIcon } from 'ui-kit/icons';
 import { SpaceLine } from 'ui-kit/SpaceLine';
 import { Input } from 'ui-kit/Input';
+import { useFormik } from 'formik';
 
 type SearchType = 'AddressTerm' | 'CalculatorSerialNumber';
 
@@ -36,6 +37,20 @@ export const AddNodeToIntegrationModal: FC<Props> = ({
   const [searchString, setSearchString] = useState('');
 
   const [debouncedSearch] = useDebounce(searchString, 500);
+
+  const building = selectedNode?.building;
+
+  const { values, handleChange } = useFormik({
+    initialValues: {
+      addressSrt: building?.addressSrt || '',
+      fias: building?.fias || '',
+      point: { latitude: '', longitude: '' },
+      buildingType: '',
+      buildingCode: '',
+    },
+    enableReinitialize: true,
+    onSubmit: () => {},
+  });
 
   useEffect(() => {
     if (!debouncedSearch) return;
@@ -94,23 +109,53 @@ export const AddNodeToIntegrationModal: FC<Props> = ({
               <SpaceLine noPadding />
               <BaseInfoTitle>Основная информация по объекту</BaseInfoTitle>
               <FormItem label="Адрес">
-                <Input placeholder="Введите адрес" />
+                <Input
+                  value={values.addressSrt}
+                  name="addressSrt"
+                  placeholder="Введите адрес"
+                  onChange={handleChange}
+                />
               </FormItem>
               <BaseInfoWrapper>
                 <FormItem label="Код объекта из системы ФИАС">
-                  <Input placeholder="Введите код" />
+                  <Input
+                    value={values.fias}
+                    name="buildingCode"
+                    placeholder="Введите код"
+                    onChange={handleChange}
+                  />
                 </FormItem>
                 <FormItem label="Координаты">
                   <Space.Compact>
-                    <Input placeholder="Широта" />
-                    <Input placeholder="Долгота" />
+                    <Input
+                      placeholder="Широта"
+                      value={values.point.latitude}
+                      name="point.latitude"
+                      onChange={handleChange}
+                    />
+                    <Input
+                      placeholder="Долгота"
+                      value={values.point.longitude}
+                      name="point.longitude"
+                      onChange={handleChange}
+                    />
                   </Space.Compact>
                 </FormItem>
                 <FormItem label="Тип объекта">
-                  <Input placeholder="Введите тип" />
+                  <Input
+                    placeholder="Введите тип"
+                    value={values.buildingType}
+                    name="buildingType"
+                    onChange={handleChange}
+                  />
                 </FormItem>
                 <FormItem label="Код объекта">
-                  <Input placeholder="Введите код" />
+                  <Input
+                    placeholder="Введите код"
+                    value={values.buildingCode}
+                    name="buildingCode"
+                    onChange={handleChange}
+                  />
                 </FormItem>
               </BaseInfoWrapper>
               <SpaceLine noPadding />
