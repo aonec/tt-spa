@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { createRunnerService } from './createRunnerService.models';
 import { CreateRunnerModal } from './CreateRunnerModal';
 import { useUnit } from 'effector-react';
@@ -9,6 +9,8 @@ import {
 } from 'services/organizations';
 import { houseManagementsService } from 'services/objects/houseManagementsService';
 import { reportViewService } from 'services/reportsService/reportViewService';
+import { RunnerGeneratingModal } from './RunnerGeneratingModal';
+import { RunnerDownloadModal } from './RunnerDownloadModal';
 
 const { inputs, outputs } = createRunnerService;
 const {
@@ -34,6 +36,7 @@ export const CreateRunnerContainer = () => {
     setOpen,
     handleGenerateReport,
     isGenerating,
+    isGeneratingDone,
   } = useUnit({
     existingCities: addressSearchService.outputs.$existingCities,
     organizations: organizationsQuery.$data,
@@ -43,17 +46,22 @@ export const CreateRunnerContainer = () => {
     setOpen: inputs.setOpen,
     isOpen: outputs.$isOpen,
     isGenerating: outputs.$isGenerating,
+    isGeneratingDone: outputs.$isGeneratingDone,
     handleGenerateReport: inputs.handleGenerateReport,
   });
 
-  console.log({
-    existingCities,
-    organizations,
-    houseManagements,
-    addressesWithHouseManagements,
-    isOpen,
-    setOpen,
-  });
+  let computedStageNumber: number = useMemo(() => {
+    if (!isGenerating && !isGeneratingDone) {
+      return 1;
+    }
+    if (isGenerating) {
+      return 2;
+    }
+    if (isGeneratingDone) {
+      return 3;
+    }
+    return 1;
+  }, [isGenerating, isGeneratingDone]);
 
   return (
     <>
@@ -61,16 +69,20 @@ export const CreateRunnerContainer = () => {
       <OrganizationsGate />
       <HouseManagementsGate />
       <AddressesWithHouseManagementsGate />
-      <CreateRunnerModal
-        existingCities={existingCities}
-        organizations={organizations}
-        houseManagements={houseManagements}
-        addressesWithHouseManagements={addressesWithHouseManagements}
-        isOpen={isOpen}
-        setOpen={setOpen}
-        isGenerating={isGenerating}
-        handleGenerateReport={handleGenerateReport}
-      />
+      {computedStageNumber === 1 && (
+        <CreateRunnerModal
+          existingCities={existingCities}
+          organizations={organizations}
+          houseManagements={houseManagements}
+          addressesWithHouseManagements={addressesWithHouseManagements}
+          isOpen={isOpen}
+          setOpen={setOpen}
+          isGenerating={isGenerating}
+          handleGenerateReport={handleGenerateReport}
+        />
+      )}
+     {computedStageNumber === 2 &&  <RunnerGeneratingModal />}
+     {computedStageNumber === 3 &&  <RunnerDownloadModal />}
     </>
   );
 };

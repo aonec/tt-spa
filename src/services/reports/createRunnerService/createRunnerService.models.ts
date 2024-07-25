@@ -22,9 +22,11 @@ const $runnerReportFile = createStore<File | null>(null).on(
   (_, file) => file,
 );
 
-sample({ clock: handleGenerateReport,   target: getRunnerReportFileFx });
+const $isGeneratingDone = $runnerReportFile.map(Boolean);
+
+sample({ clock: handleGenerateReport, target: getRunnerReportFileFx });
 
 export const createRunnerService = {
   inputs: { setOpen, handleGenerateReport },
-  outputs: { $isOpen, $isGenerating },
+  outputs: { $isOpen, $isGenerating, $isGeneratingDone },
 };
