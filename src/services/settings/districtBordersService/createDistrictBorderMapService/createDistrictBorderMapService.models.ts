@@ -49,7 +49,6 @@ sample({
   target: createDistrictForm.fields.isEditing.set,
 });
 
-
 sample({
   clock: CreateDistrictGate.open,
   target: [existingDistrictsQuery.start, existingHousingStocksQuery.start],

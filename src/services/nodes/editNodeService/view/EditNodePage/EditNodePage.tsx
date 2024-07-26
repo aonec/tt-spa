@@ -37,6 +37,12 @@ export const EditNodePage: FC<EditNodePageProps> = ({
   calculators,
   isUpdateLoading,
   openRemoveConnectionModal,
+  deletingServiceZone,
+  handleDeleteServiceZone,
+  handleFinallyDeleteServiceZone,
+  isDeleteServiceZoneDialogOpen,
+  successDeleteServiceZone,
+  deletingServiceZoneCount,
 }) => {
   const { title, address, resource, registrationType } = node;
 
@@ -88,6 +94,12 @@ export const EditNodePage: FC<EditNodePageProps> = ({
               formId={formId}
               updateNode={updateNode}
               isLoading={isUpdateLoading}
+              successDeleteServiceZone={successDeleteServiceZone}
+              handleDeleteServiceZone={handleDeleteServiceZone}
+              handleFinallyDeleteServiceZone={handleFinallyDeleteServiceZone}
+              deletingServiceZone={deletingServiceZone}
+              isDeleteServiceZoneDialogOpen={isDeleteServiceZoneDialogOpen}
+              deletingServiceZoneCount={deletingServiceZoneCount}
             />
           </CommonInfoWrapper>
         </>
@@ -126,6 +138,12 @@ export const EditNodePage: FC<EditNodePageProps> = ({
       updateNode,
       validationResultArray,
       openAddNewZonesModal,
+      deletingServiceZone,
+      handleDeleteServiceZone,
+      handleFinallyDeleteServiceZone,
+      isDeleteServiceZoneDialogOpen,
+      successDeleteServiceZone,
+      deletingServiceZoneCount,
     ],
   );
 

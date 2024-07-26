@@ -37,7 +37,7 @@ export const ReassingInspectorModal: FC<ReassingInspectorModalProps> = ({
           .required('Это поле обязательно'),
         newInspector: yup.number().nullable().required('Это поле обязательно'),
       }),
-      validateOnChange:false,
+      validateOnChange: false,
       onSubmit: (data) => handleSave(data),
     });
 

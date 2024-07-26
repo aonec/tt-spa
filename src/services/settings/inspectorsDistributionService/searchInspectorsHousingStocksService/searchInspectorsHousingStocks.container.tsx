@@ -6,7 +6,6 @@ import { displayInspectorsService } from 'services/inspectors/displayInspectorsS
 import { displayHousingStockFiltersService } from '../displayHosuingStockFiltersService/displayHosuingStockFiltersService.models';
 import { getInspectorsHousingStocksQuery } from '../displayInspectorsHousingStocksService/displayInspectorsHousingStocksService.api';
 import { displayInspectorsHousingStocksService } from '../displayInspectorsHousingStocksService/displayInspectorsHousingStocksService.models';
-import { currentUserService } from 'services/currentUser/currentUserService';
 import { addressSearchService } from 'services/addressSearchService/addressSearchService.models';
 import { currentOrganizationService } from 'services/currentOrganizationService';
 import _ from 'lodash';

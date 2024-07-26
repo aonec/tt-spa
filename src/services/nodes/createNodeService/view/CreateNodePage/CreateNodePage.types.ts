@@ -2,12 +2,14 @@ import {
   CalculatorIntoHousingStockResponse,
   HousingStockResponse,
   NodeServiceZoneListResponse,
+  NodeServiceZoneResponse,
   NonResidentialBuildingResponse,
 } from 'api/types';
 import {
   CreateNodeFormPayload,
   UpdateNodeFormPayloadCallback,
 } from '../../createNodeService.types';
+import { Event } from 'effector';
 
 export type CreateNodePageProps = {
   building: HousingStockResponse | NonResidentialBuildingResponse | null;
@@ -25,4 +27,10 @@ export type CreateNodePageProps = {
   openCreateNodeServiceZoneModal: () => void;
   validateNode: () => void;
   isValidationLoading: boolean;
+  handleDeleteServiceZone: (payload: NodeServiceZoneResponse | null) => void;
+  isDialogOpen: boolean;
+  deletingServiceZone: NodeServiceZoneResponse | null;
+  handleFinallyDeleteServiceZone: (payload: number) => void;
+  successDeleteServiceZone: Event<void>;
+  deletingServiceZoneCount: number | null;
 };
