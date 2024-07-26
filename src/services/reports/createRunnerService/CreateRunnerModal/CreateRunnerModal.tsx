@@ -11,6 +11,7 @@ import { TreeSelect } from 'ui-kit/TreeSelect';
 import { prepareAddressesTreeData } from 'services/reportsService/reportViewService/view/ReportViewPage/ReportFiltrationForm/ReportFiltrationForm.utils';
 import { Form } from 'antd';
 import { yearRangeTypeWithLabel } from './CreateRunnerModal.constants';
+import { SelectMultiple } from 'ui-kit/SelectMultiple';
 
 const formId = 'Create-Runner-Modal';
 
@@ -30,7 +31,7 @@ export const CreateRunnerModal: FC<Props> = ({
         initialValues: {
           city: null,
           exportType: null,
-          houseManagement: null,
+          houseManagementIds: null,
           housingStockIds: null,
           organizationId: null,
           yearRange: null,
@@ -39,6 +40,7 @@ export const CreateRunnerModal: FC<Props> = ({
           console.log('ff');
           handleGenerateReport({
             HouseIds: data.housingStockIds || undefined,
+            HmIds: data.houseManagementIds || undefined,
             ManagementFirmId: data.organizationId || undefined,
             YearRange: data.yearRange || undefined,
           });
@@ -47,7 +49,7 @@ export const CreateRunnerModal: FC<Props> = ({
 
     const addressesTreeData = prepareAddressesTreeData(
       addressesWithHouseManagements,
-      values.houseManagement,
+      null,
     );
 
     return (
@@ -104,11 +106,11 @@ export const CreateRunnerModal: FC<Props> = ({
             )}
             {values.exportType === ExportReportType.HouseManagement && (
               <FormItem label="Домоуправление">
-                <Select
-                  value={values.houseManagement}
+                <SelectMultiple
+                  value={values.houseManagementIds}
                   placeholder="Выберите из списка"
                   onChange={(value) => {
-                    setFieldValue('houseManagement', value || null);
+                    setFieldValue('houseManagementIds', value || null);
 
                     const houseManagement = addressesWithHouseManagements.find(
                       (elem) => elem.id === value,
@@ -141,7 +143,7 @@ export const CreateRunnerModal: FC<Props> = ({
                       {houseManagement.name}
                     </Select.Option>
                   ))}
-                </Select>
+                </SelectMultiple>
               </FormItem>
             )}
             {values.exportType === ExportReportType.Address && (

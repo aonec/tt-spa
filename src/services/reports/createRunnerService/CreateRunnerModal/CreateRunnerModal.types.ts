@@ -22,7 +22,7 @@ export type FormType = {
   exportType: ExportReportType | null;
   city: null | string;
   organizationId: null | number;
-  houseManagement: null | string;
+  houseManagementIds: null | string[];
   housingStockIds: number[] | null;
   yearRange: YearRangeType | null;
 };
