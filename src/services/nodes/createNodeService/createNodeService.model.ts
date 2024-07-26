@@ -9,14 +9,18 @@ import {
   EPipeNodeValidationMessageStringDictionaryItem,
   HousingStockResponse,
   NodeServiceZoneListResponse,
+  NodeServiceZoneResponse,
+  NodeServiceZoneWithNodeCountResponse,
   NonResidentialBuildingResponse,
   PipeNodeResponse,
   PipeNodeValidationResultResponse,
 } from 'api/types';
 import {
+  deleteNodeServiceZone,
   fetchValidateNode,
   getBuilding,
   getCalculatorsList,
+  getNodeServiceZone,
   getNodeServiceZones,
   postPipeNode,
 } from './createNodeService.api';
@@ -52,6 +56,16 @@ const fetchNodeServiceZonesFx = createEffect<
   NodeServiceZoneListResponse | null
 >(getNodeServiceZones);
 
+const getNodeServiceZoneFx = createEffect<
+  number,
+  NodeServiceZoneWithNodeCountResponse
+>(getNodeServiceZone);
+
+const $deletingServiceZoneCount = createStore<number | null>(null).on(
+  getNodeServiceZoneFx.doneData,
+  (_, data) => data.nodeCount,
+);
+
 const CreateNodeGate = createGate<{
   buildingId: number;
   houseCategory: EHouseCategory | null;
@@ -64,6 +78,9 @@ const goPrevStep = createEvent();
 
 const openConfiramtionModal = createEvent();
 const closeConfiramtionModal = createEvent();
+
+const handleDeleteServiceZone = createEvent<NodeServiceZoneResponse | null>();
+const handleFinallyDeleteServiceZone = createEvent<number>();
 
 const validateNode = createEvent();
 const validateNodeFx = createEffect<
@@ -78,6 +95,14 @@ const $validationResult = createStore<
     ...(result?.warnings || []),
   ])
   .reset(closeConfiramtionModal);
+
+const deleteNodeServiceZoneFx = createEffect<
+  number,
+  void,
+  EffectFailDataAxiosError
+>(deleteNodeServiceZone);
+
+const successDeleteServiceZone = deleteNodeServiceZoneFx.doneData;
 
 const $stepNumber = createStore(0)
   .on(goNextStep, (step) => step + 1)
@@ -119,6 +144,12 @@ const $isConfirmationModalOpen = createStore(false)
 const $nodeServiceZones = createStore<NodeServiceZoneListResponse | null>(null)
   .on(fetchNodeServiceZonesFx.doneData, (_, zones) => zones)
   .reset(CreateNodeGate.close);
+
+const $deletingServiceZone = createStore<NodeServiceZoneResponse | null>(null)
+  .on(handleDeleteServiceZone, (_, data) => data)
+  .reset(CreateNodeGate.close);
+
+const $isDialogOpen = $deletingServiceZone.map(Boolean);
 
 sample({
   clock: CreateNodeGate.open,
@@ -170,6 +201,7 @@ sample({
   clock: [
     CreateNodeGate.open,
     createNodeServiceZoneService.inputs.handleServiceZoneCreated,
+    successDeleteServiceZone,
   ],
   target: fetchNodeServiceZonesFx,
 });
@@ -195,6 +227,11 @@ sample({
 sample({
   clock: validateNodeFx.doneData,
   target: openConfiramtionModal,
+});
+
+sample({
+  clock: handleFinallyDeleteServiceZone,
+  target: deleteNodeServiceZoneFx,
 });
 
 const $selectedCalculator = combine(
@@ -225,9 +262,24 @@ sample({
   target: closeConfiramtionModal,
 });
 
+sample({
+  clock: handleDeleteServiceZone,
+  fn: (nodeServiceZone) => nodeServiceZone?.id as number,
+  filter: (nodeServiceZone) => Boolean(nodeServiceZone?.id),
+  target: getNodeServiceZoneFx,
+});
+
 createPipeNodeFx.failData.watch((error) => {
   return message.error(
     error.response.data.error.Text || error.response.data.error.Message,
+  );
+});
+
+deleteNodeServiceZoneFx.failData.watch((error) => {
+  return message.error(
+    error.response.data.error.Text ||
+      error.response.data.error.Message ||
+      'Ошибка удаления',
   );
 });
 
@@ -245,6 +297,9 @@ export const createNodeService = {
     handleSubmitForm,
     handlePipeNodeCreated,
     validateNode,
+    handleDeleteServiceZone,
+    handleFinallyDeleteServiceZone,
+    successDeleteServiceZone,
   },
   outputs: {
     $building,
@@ -261,6 +316,9 @@ export const createNodeService = {
     $isCreatePipeNodeLoading,
     $validationResult,
     $isValidationLoading,
+    $isDialogOpen,
+    $deletingServiceZone,
+    $deletingServiceZoneCount,
   },
   gates: {
     CreateNodeGate,

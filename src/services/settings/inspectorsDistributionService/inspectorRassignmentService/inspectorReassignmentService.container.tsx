@@ -13,7 +13,6 @@ export const ReassingInspectorModalContainer = () => {
       handleSave: inspectorReassignmentService.inputs.saveInspectorReassing,
     });
 
-
   return (
     <ReassingInspectorModal
       isOpen={isOpen}

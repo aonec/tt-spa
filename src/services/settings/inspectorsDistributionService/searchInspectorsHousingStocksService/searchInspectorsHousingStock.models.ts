@@ -1,7 +1,6 @@
 import { createEvent, createStore } from 'effector';
 import { sample } from 'effector';
 import { GetInspectorsHousingStocksRequestParams } from '../displayInspectorsHousingStocksService/types';
-import { addressSearchService } from 'services/addressSearchService/addressSearchService.models';
 import { FormType } from './searchInspectorsHousingStocks.types';
 
 const $isExtendedSearchOpen = createStore(false);
