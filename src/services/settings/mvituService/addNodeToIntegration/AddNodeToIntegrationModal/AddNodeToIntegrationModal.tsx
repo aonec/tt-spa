@@ -1,5 +1,5 @@
 import { FC, useEffect, useMemo, useState } from 'react';
-import { Radio, Skeleton, Space } from 'antd';
+import { message, Radio, Skeleton, Space } from 'antd';
 import { FormModal } from 'ui-kit/Modals/FormModal';
 import { FormItem } from 'ui-kit/FormItem';
 import { Select } from 'ui-kit/Select';
@@ -20,6 +20,8 @@ import { CalculatorIcon } from 'ui-kit/icons';
 import { SpaceLine } from 'ui-kit/SpaceLine';
 import { Input } from 'ui-kit/Input';
 import { useFormik } from 'formik';
+import { validationSchema } from './AddNodeToIntegrationModal.constants';
+import { ErrorMessage } from 'ui-kit/ErrorMessage';
 
 type SearchType = 'AddressTerm' | 'CalculatorSerialNumber';
 
@@ -32,6 +34,7 @@ export const AddNodeToIntegrationModal: FC<Props> = ({
   handleSelectNode,
   selectedNode,
   isSelectedNodeLoading,
+  handleAddNodeToIntegration,
 }) => {
   const [searchType, setSearchType] = useState<SearchType>('AddressTerm');
   const [searchString, setSearchString] = useState('');
@@ -40,17 +43,48 @@ export const AddNodeToIntegrationModal: FC<Props> = ({
 
   const building = selectedNode?.building;
 
-  const { values, handleChange } = useFormik({
+  const { values, handleChange, resetForm, errors, handleSubmit } = useFormik({
     initialValues: {
       addressSrt: building?.addressSrt || '',
       fias: building?.fias || '',
       point: { latitude: '', longitude: '' },
       buildingType: '',
       buildingCode: '',
+      buildingInputNum: '',
     },
     enableReinitialize: true,
-    onSubmit: () => {},
+    validationSchema,
+    onSubmit: (values) => {
+      const nodeId = selectedNode?.id;
+
+      const isPointCorrect =
+        Boolean(values.point.latitude) === Boolean(values.point.longitude);
+
+      if (!isPointCorrect) {
+        message.error('Введите координаты');
+
+        return;
+      }
+
+      if (!nodeId) return;
+
+      handleAddNodeToIntegration({
+        nodeId,
+        ...values,
+        point: {
+          latitude: Number(values.point.latitude),
+          longitude: Number(values.point.longitude),
+        },
+        buildingInputNum: Number(values.buildingInputNum),
+      });
+    },
   });
+
+  useEffect(() => {
+    if (isModalOpen) return;
+
+    resetForm();
+  }, [resetForm, isModalOpen]);
 
   useEffect(() => {
     if (!debouncedSearch) return;
@@ -75,6 +109,7 @@ export const AddNodeToIntegrationModal: FC<Props> = ({
       title="Добавить узел в интеграцию"
       visible={isModalOpen}
       onCancel={handleCloseModal}
+      onSubmit={handleSubmit}
       form={
         <Wrapper>
           <FormItem label="Поиск узла">
@@ -114,7 +149,9 @@ export const AddNodeToIntegrationModal: FC<Props> = ({
                   name="addressSrt"
                   placeholder="Введите адрес"
                   onChange={handleChange}
+                  status={errors.addressSrt && 'error'}
                 />
+                <ErrorMessage>{errors.addressSrt}</ErrorMessage>
               </FormItem>
               <BaseInfoWrapper>
                 <FormItem label="Код объекта из системы ФИАС">
@@ -123,7 +160,9 @@ export const AddNodeToIntegrationModal: FC<Props> = ({
                     name="buildingCode"
                     placeholder="Введите код"
                     onChange={handleChange}
+                    status={errors.buildingCode && 'error'}
                   />
+                  <ErrorMessage>{errors.buildingCode}</ErrorMessage>
                 </FormItem>
                 <FormItem label="Координаты">
                   <Space.Compact>
@@ -132,13 +171,17 @@ export const AddNodeToIntegrationModal: FC<Props> = ({
                       value={values.point.latitude}
                       name="point.latitude"
                       onChange={handleChange}
+                      status={errors.point?.latitude && 'error'}
                     />
+                    <ErrorMessage>{errors.point?.latitude}</ErrorMessage>
                     <Input
                       placeholder="Долгота"
                       value={values.point.longitude}
                       name="point.longitude"
                       onChange={handleChange}
+                      status={errors.point?.longitude && 'error'}
                     />
+                    <ErrorMessage>{errors.point?.longitude}</ErrorMessage>
                   </Space.Compact>
                 </FormItem>
                 <FormItem label="Тип объекта">
@@ -147,7 +190,9 @@ export const AddNodeToIntegrationModal: FC<Props> = ({
                     value={values.buildingType}
                     name="buildingType"
                     onChange={handleChange}
+                    status={errors.buildingType && 'error'}
                   />
+                  <ErrorMessage>{errors.buildingType}</ErrorMessage>
                 </FormItem>
                 <FormItem label="Код объекта">
                   <Input
@@ -161,7 +206,15 @@ export const AddNodeToIntegrationModal: FC<Props> = ({
               <SpaceLine noPadding />
               <BaseInfoTitle>Основная информация по узлу</BaseInfoTitle>
               <FormItem label="№ ввода в здание" style={{ width: 250 }}>
-                <Input placeholder="Введите" />
+                <Input
+                  placeholder="Введите"
+                  value={values.buildingInputNum}
+                  type="number"
+                  name="buildingInputNum"
+                  onChange={handleChange}
+                  status={errors.buildingInputNum && 'error'}
+                />
+                <ErrorMessage>{errors.buildingInputNum}</ErrorMessage>
               </FormItem>
             </>
           )}
