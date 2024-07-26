@@ -15,6 +15,7 @@ import {
   SecondLineWrapper,
   Divider,
   ButtonSC,
+  ZoneOption,
 } from './CommonData.styled';
 import { CommonDataProps } from './CommonData.types';
 import { useFormik } from 'formik';
@@ -31,6 +32,7 @@ import {
 } from './CommonData.utils';
 import { ConfiguratePipe } from './ConfiguratePipe';
 import { CreateNodeFormPayload } from 'services/nodes/createNodeService/createNodeService.types';
+import { TrashIconGrey } from 'ui-kit/icons';
 
 const { inputs } = createNodeServiceZoneService;
 
@@ -40,6 +42,8 @@ export const CommonData: FC<CommonDataProps> = ({
   openCreateNodeServiceZoneModal,
   requestPayload,
   updateRequestPayload,
+  handleDeleteServiceZone,
+  successDeleteServiceZone,
 }) => {
   const { values, handleChange, setFieldValue, errors, handleSubmit } =
     useFormik({
@@ -47,7 +51,7 @@ export const CommonData: FC<CommonDataProps> = ({
         configuration: requestPayload.configuration || null,
         title: requestPayload.title ? String(requestPayload.title) : '',
         registrationType: requestPayload?.registrationType || null,
-        nodeServiceZoneId: requestPayload.nodeServiceZoneId || null,
+        nodeServiceZoneName: null,
         commercialStatusRequest: requestPayload.commercialStatusRequest,
         communicationPipes: requestPayload.communicationPipes || [],
       },
@@ -58,7 +62,7 @@ export const CommonData: FC<CommonDataProps> = ({
           configuration,
           title,
           registrationType,
-          nodeServiceZoneId,
+          nodeServiceZoneName,
           commercialStatusRequest,
           communicationPipes,
         } = values;
@@ -72,10 +76,14 @@ export const CommonData: FC<CommonDataProps> = ({
           return;
         }
 
+        const selectedZoneId = nodeServiceZones?.nodeServiceZones?.find(
+          (zone) => zone.name === nodeServiceZoneName,
+        )?.id;
+
         let payload: CreateNodeFormPayload = {
           configuration,
           title: title,
-          nodeServiceZoneId,
+          nodeServiceZoneId: selectedZoneId,
           registrationType,
           communicationPipes,
         };
@@ -87,6 +95,14 @@ export const CommonData: FC<CommonDataProps> = ({
         updateRequestPayload(payload);
       },
     });
+
+  useEffect(
+    () =>
+      successDeleteServiceZone.watch(() =>
+        setFieldValue('nodeServiceZoneName', null),
+      ).unsubscribe,
+    [successDeleteServiceZone, setFieldValue],
+  );
 
   const handleChangeCommercialStatus = useCallback(
     (commercialStatusRequest: ChangeNodeStatusFormPayload) =>
@@ -203,16 +219,25 @@ export const CommonData: FC<CommonDataProps> = ({
         <FormItem label="Зона">
           <Select
             placeholder="Выберите"
-            value={values.nodeServiceZoneId || undefined}
-            onChange={(value) => setFieldValue('nodeServiceZoneId', value)}
+            value={values.nodeServiceZoneName || undefined}
+            onChange={(value) => setFieldValue('nodeServiceZoneName', value)}
+            labelRender={(props) => props.value}
           >
             {nodeServiceZones?.nodeServiceZones?.map((zone) => (
-              <Select.Option key={zone.id} value={zone.id}>
-                {zone.name}
+              <Select.Option key={zone.id} value={zone.name}>
+                <ZoneOption>
+                  {zone.name}
+                  <TrashIconGrey
+                    onClick={(event) => {
+                      event.stopPropagation();
+                      handleDeleteServiceZone(zone);
+                    }}
+                  />
+                </ZoneOption>
               </Select.Option>
             ))}
           </Select>
-          <ErrorMessage>{errors.nodeServiceZoneId}</ErrorMessage>
+          <ErrorMessage>{errors.nodeServiceZoneName}</ErrorMessage>
         </FormItem>
         <CreateNewZoneButtonWrapper>
           <LinkButton onClick={openCreateNodeServiceZoneModal}>

@@ -52,7 +52,7 @@ export const CreateDistrictBorderMapPage: FC<Props> = ({
         isEditing: false,
       }),
     ).unsubscribe;
-  }, [setDistrictPayload, setValues]);
+  }, [setDistrictPayload, setValues, values]);
 
   const { map, mapRef } = useYMaps(organizationCoordinates);
   const [searchBuilding, setSearchBuilding] =
@@ -68,7 +68,7 @@ export const CreateDistrictBorderMapPage: FC<Props> = ({
 
       setFieldValue('selectedHouses', newSelectedArray);
     },
-    [values.selectedHouses],
+    [values.selectedHouses, setFieldValue],
   );
 
   const workingDistrictArray = useMemo(
@@ -123,7 +123,7 @@ export const CreateDistrictBorderMapPage: FC<Props> = ({
       'selectedHouses',
       housesInDistrict.map(({ id }) => id),
     );
-  }, [housesInDistrict]);
+  }, [housesInDistrict, setFieldValue, preselectedDistrictPayload]);
 
   const buildingsPlacemarks = useMemo(
     () =>
