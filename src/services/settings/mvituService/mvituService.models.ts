@@ -1,7 +1,7 @@
 import { createEvent, sample } from 'effector';
 import { addNodeToIntegrationService } from './addNodeToIntegration/addNodeToIntegrationService.models';
 import { createGate } from 'effector-react';
-import { mvituIntegrationQuery } from './mvituService.api';
+// import { mvituIntegrationQuery } from './mvituService.api';
 
 const handleAddNodeToIntegration = createEvent();
 const MvituGate = createGate();
@@ -11,7 +11,8 @@ sample({
   target: addNodeToIntegrationService.inputs.handleOpenModal,
 });
 
-sample({ clock: MvituGate.open, target: mvituIntegrationQuery.start });
+// tofix
+// sample({ clock: MvituGate.open, target: mvituIntegrationQuery.start });
 
 export const mvituService = {
   inputs: { handleAddNodeToIntegration },
