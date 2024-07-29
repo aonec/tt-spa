@@ -1,5 +1,5 @@
-import { FC, useEffect, useMemo, useState } from 'react';
-import { message, Radio, Skeleton, Space } from 'antd';
+import { FC, useCallback, useEffect, useMemo, useState } from 'react';
+import { Divider, message, Radio, Skeleton, Space, Button } from 'antd';
 import { FormModal } from 'ui-kit/Modals/FormModal';
 import { FormItem } from 'ui-kit/FormItem';
 import { Select } from 'ui-kit/Select';
@@ -86,13 +86,21 @@ export const AddNodeToIntegrationModal: FC<Props> = ({
     resetForm();
   }, [resetForm, isModalOpen]);
 
-  useEffect(() => {
-    if (!debouncedSearch) return;
+  const runSeaschNodes = useCallback(
+    (loadAll: boolean) => {
+      if (!debouncedSearch) return;
 
-    handleSearchNodes({
-      [searchType]: debouncedSearch,
-    });
-  }, [handleSearchNodes, debouncedSearch, searchType]);
+      handleSearchNodes({
+        [searchType]: debouncedSearch,
+        LoadAll: loadAll,
+      });
+    },
+    [debouncedSearch, handleSearchNodes, searchType],
+  );
+
+  useEffect(() => {
+    runSeaschNodes(false);
+  }, [handleSearchNodes, debouncedSearch, searchType, runSeaschNodes]);
 
   const searchPlaceholder = useMemo(() => {
     const placeholders = {
@@ -130,6 +138,24 @@ export const AddNodeToIntegrationModal: FC<Props> = ({
               filterOption={false}
               loading={isNodesSearchLoading}
               onChange={(id) => handleSelectNode(id as number)}
+              dropdownRender={(menu) => (
+                <>
+                  {menu}
+                  {nodesSearchList?.hasMore && (
+                    <>
+                      <Divider style={{ margin: '8px 0 4px' }} />
+                      <Space style={{ padding: '0 8px 4px' }}>
+                        <Button
+                          type="link"
+                          onClick={() => runSeaschNodes(true)}
+                        >
+                          Показать все ({nodesSearchList.totalCount})
+                        </Button>
+                      </Space>
+                    </>
+                  )}
+                </>
+              )}
             >
               {nodesSearchList?.nodes?.map((node) => (
                 <Select.Option key={node.id} value={node.id}>
