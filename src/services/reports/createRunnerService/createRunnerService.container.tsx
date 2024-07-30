@@ -40,9 +40,10 @@ export const CreateRunnerContainer = () => {
     setOpen,
     handleGenerateReport,
     isGenerating,
-    isGeneratingDone,
     handleDownloadFile,
     isDownloading,
+    handleReset,
+    stageNumber,
   } = useUnit({
     existingCities: addressSearchService.outputs.$existingCities,
     organizations: organizationsQuery.$data,
@@ -52,24 +53,12 @@ export const CreateRunnerContainer = () => {
     setOpen: inputs.setOpen,
     isOpen: outputs.$isOpen,
     isGenerating: outputs.$isGenerating,
-    isGeneratingDone: outputs.$isGeneratingDone,
     handleGenerateReport: inputs.handleGenerateReport,
     handleDownloadFile: inputs.handleDownloadFile,
     isDownloading: outputs.$isDownloading,
+    handleReset: inputs.handleReset,
+    stageNumber: outputs.$stageNumber,
   });
-
-  let computedStageNumber: number = useMemo(() => {
-    if (!isGenerating && !isGeneratingDone) {
-      return 1;
-    }
-    if (isGenerating) {
-      return 2;
-    }
-    if (isGeneratingDone) {
-      return 3;
-    }
-    return 1;
-  }, [isGenerating, isGeneratingDone]);
 
   return (
     <>
@@ -78,7 +67,7 @@ export const CreateRunnerContainer = () => {
       <OrganizationsGate />
       <HouseManagementsGate />
       <AddressesWithHouseManagementsGate />
-      {computedStageNumber === 1 && (
+      {stageNumber === 1 && (
         <CreateRunnerModal
           existingCities={existingCities}
           organizations={organizations}
@@ -90,15 +79,16 @@ export const CreateRunnerContainer = () => {
           handleGenerateReport={handleGenerateReport}
         />
       )}
-      {computedStageNumber === 2 && (
+      {stageNumber === 2 && (
         <RunnerGeneratingModal isOpen={isOpen} setOpen={setOpen} />
       )}
-      {computedStageNumber === 3 && (
+      {stageNumber === 3 && (
         <RunnerDownloadModal
           isOpen={isOpen}
           setOpen={setOpen}
           handleDownloadFile={handleDownloadFile}
           isDownloading={isDownloading}
+          handleReset={handleReset}
         />
       )}
     </>

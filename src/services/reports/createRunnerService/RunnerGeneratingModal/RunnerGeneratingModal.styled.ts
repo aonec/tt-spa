@@ -1,6 +1,10 @@
 import styled from 'styled-components';
 
-export const Description = styled.div``;
+export const Description = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 8px;
+`;
 
 export const DescriptionBlock = styled.div`
   color: #272f5a;

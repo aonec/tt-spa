@@ -5,4 +5,5 @@ export type ReportsListProps = {
   isLoading: boolean;
   openExistedReport: (payload: Record<string, string>) => void;
   setRunnerModalOpen: (payload: boolean) => void;
+  runnerStageNumber: number;
 };

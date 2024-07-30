@@ -31,6 +31,7 @@ export const ReportsListContainer = () => {
     setIsShowActual,
     filtrationValues,
     setRunnerModalOpen,
+    runnerStageNumber,
   } = useUnit({
     reportsHistoryListPagedData: outputs.$reportsHistoryPagedData,
     isLoading: outputs.$isLoading,
@@ -41,6 +42,7 @@ export const ReportsListContainer = () => {
     setIsShowActual: inputs.setIsShowActual,
     filtrationValues: reportViewService.outputs.$filtrationValues,
     setRunnerModalOpen: createRunnerService.inputs.setOpen,
+    runnerStageNumber: createRunnerService.outputs.$stageNumber,
   });
 
   const navigate = useNavigate();
@@ -119,6 +121,7 @@ export const ReportsListContainer = () => {
         isLoading={isLoading}
         openExistedReport={openExistedReport}
         setRunnerModalOpen={setRunnerModalOpen}
+        runnerStageNumber={runnerStageNumber}
       />
       {Boolean(reportsHistoryListPagedData?.items?.length) && (
         <Pagination

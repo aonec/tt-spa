@@ -10,6 +10,7 @@ export const ReportsList: FC<ReportsListProps> = ({
   isLoading,
   openExistedReport,
   setRunnerModalOpen,
+  runnerStageNumber,
 }) => {
   return (
     <div>
@@ -32,7 +33,7 @@ export const ReportsList: FC<ReportsListProps> = ({
 
       <AdditionalWrapper>Дополнительно</AdditionalWrapper>
 
-      <RunnerPanel setRunnerModalOpen={setRunnerModalOpen} />
+      <RunnerPanel setRunnerModalOpen={setRunnerModalOpen} runnerStageNumber={runnerStageNumber} />
     </div>
   );
 };
