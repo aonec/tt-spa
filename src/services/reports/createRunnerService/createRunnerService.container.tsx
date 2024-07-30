@@ -12,7 +12,11 @@ import { reportViewService } from 'services/reportsService/reportViewService';
 import { RunnerGeneratingModal } from './RunnerGeneratingModal';
 import { RunnerDownloadModal } from './RunnerDownloadModal';
 
-const { inputs, outputs } = createRunnerService;
+const {
+  inputs,
+  outputs,
+  gates: { GetLastPollGate },
+} = createRunnerService;
 const {
   gates: { OrganizationsGate },
 } = organizationsService;
@@ -37,6 +41,8 @@ export const CreateRunnerContainer = () => {
     handleGenerateReport,
     isGenerating,
     isGeneratingDone,
+    handleDownloadFile,
+    isDownloading,
   } = useUnit({
     existingCities: addressSearchService.outputs.$existingCities,
     organizations: organizationsQuery.$data,
@@ -48,6 +54,8 @@ export const CreateRunnerContainer = () => {
     isGenerating: outputs.$isGenerating,
     isGeneratingDone: outputs.$isGeneratingDone,
     handleGenerateReport: inputs.handleGenerateReport,
+    handleDownloadFile: inputs.handleDownloadFile,
+    isDownloading: outputs.$isDownloading,
   });
 
   let computedStageNumber: number = useMemo(() => {
@@ -65,6 +73,7 @@ export const CreateRunnerContainer = () => {
 
   return (
     <>
+      <GetLastPollGate />
       <ExistingCitiesGate />
       <OrganizationsGate />
       <HouseManagementsGate />
@@ -81,8 +90,17 @@ export const CreateRunnerContainer = () => {
           handleGenerateReport={handleGenerateReport}
         />
       )}
-     {computedStageNumber === 2 &&  <RunnerGeneratingModal />}
-     {computedStageNumber === 3 &&  <RunnerDownloadModal />}
+      {computedStageNumber === 2 && (
+        <RunnerGeneratingModal isOpen={isOpen} setOpen={setOpen} />
+      )}
+      {computedStageNumber === 3 && (
+        <RunnerDownloadModal
+          isOpen={isOpen}
+          setOpen={setOpen}
+          handleDownloadFile={handleDownloadFile}
+          isDownloading={isDownloading}
+        />
+      )}
     </>
   );
 };

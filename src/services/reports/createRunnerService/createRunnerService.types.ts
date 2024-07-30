@@ -11,8 +11,8 @@ export type RunnerPayload = {
 };
 
 export enum PollStatus {
-  pending = 'Pending',
-  done = 'Done',
+  Running = 'Running',
+  Done = 'Done',
 }
 
 export type PollResponse = {

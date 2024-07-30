@@ -3,6 +3,7 @@ import { saveAs } from 'file-saver';
 import { PollResponse, RunnerPayload } from './createRunnerService.types';
 import { DeviceResource, PollCommand } from 'api/types';
 import queryString from 'query-string';
+import { downloadURI } from 'utils/downloadByURL';
 
 export const startRunnerReportPoll = (
   payload: RunnerPayload,
@@ -16,18 +17,24 @@ export const startRunnerReportPoll = (
     paramsSerializer: (params) => queryString.stringify(params),
   });
 
-export const getLastRunnerReportPoll = (
-  payload: RunnerPayload,
-): Promise<PollResponse> =>
+export const getLastRunnerReportPoll = (): // payload: RunnerPayload,
+Promise<PollResponse> =>
   axios.get('Reports/RunnerReports', {
     params: {
-      ...payload,
+      // ...payload,
       Resource: DeviceResource.Electricity,
       Command: PollCommand.GetLast,
     },
   });
 
 export const getRunnerReportFile = async (pollId: number) => {
-  const url: string = await axios.get(`Documents/poll/${pollId}/artifact`);
-  saveAs(url);
+  const res: string = await axios.get(`Documents/poll/${pollId}/artifact`, {
+    responseType: 'blob',
+    paramsSerializer: (params) => {
+      return queryString.stringify(params);
+    },
+  });
+  const url = window.URL.createObjectURL(new Blob([res]));
+
+  downloadURI(url, 'dededed2223');
 };

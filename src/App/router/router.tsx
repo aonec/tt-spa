@@ -72,6 +72,7 @@ import { useUnit } from 'effector-react';
 import { tokensService } from 'api/tokensService';
 import { UserProfileContainer } from 'services/currentUser/currentUserService/currentUserService.container';
 import { CurrentUserEditServiceContainer } from 'services/currentUser/currentUserEditService';
+import { createRunnerService } from 'services/reports/createRunnerService/createRunnerService.models';
 
 const {
   gates: { CurrentUserGate },
@@ -79,6 +80,9 @@ const {
 const {
   gates: { CurrentManagingFirmGate },
 } = currentOrganizationService;
+const {
+  gates: { GetLastPollGate },
+} = createRunnerService;
 
 const { TasksIsOpen } = tasksProfileService.gates;
 const { DistrictBordersGroupPageGate } = districtBordersByAddressService.gates;
@@ -95,6 +99,7 @@ function RouterWrapper() {
     <Layout isMenuOpen={isOpen}>
       <CurrentUserGate />
       <CurrentManagingFirmGate />
+      <GetLastPollGate />
       <DrawerSC
         open={isDrawerOpen}
         title={<></>}

@@ -26,7 +26,7 @@ export const CreateRunnerModal: FC<Props> = ({
   isGenerating,
 }) => {
   const RunnerForm = () => {
-    const { values, submitForm, setFieldValue, setValues } =
+    const { values, submitForm, setFieldValue } =
       useFormik<FormType>({
         initialValues: {
           city: null,
@@ -37,7 +37,6 @@ export const CreateRunnerModal: FC<Props> = ({
           yearRange: null,
         },
         onSubmit: (data) => {
-          console.log('ff');
           handleGenerateReport({
             HouseIds: data.housingStockIds || undefined,
             HmIds: data.houseManagementIds || undefined,
