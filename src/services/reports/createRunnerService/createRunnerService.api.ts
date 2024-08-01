@@ -1,5 +1,4 @@
 import { axios } from 'api/axios';
-import { saveAs } from 'file-saver';
 import { PollResponse, RunnerPayload } from './createRunnerService.types';
 import { DeviceResource, PollCommand } from 'api/types';
 import queryString from 'query-string';
@@ -17,11 +16,9 @@ export const startRunnerReportPoll = (
     paramsSerializer: (params) => queryString.stringify(params),
   });
 
-export const getLastRunnerReportPoll = (): // payload: RunnerPayload,
-Promise<PollResponse> =>
+export const getLastRunnerReportPoll = (): Promise<PollResponse> =>
   axios.get('Reports/RunnerReports', {
     params: {
-      // ...payload,
       Resource: DeviceResource.Electricity,
       Command: PollCommand.GetLast,
     },
@@ -36,5 +33,5 @@ export const getRunnerReportFile = async (pollId: number) => {
   });
   const url = window.URL.createObjectURL(new Blob([res]));
 
-  downloadURI(url, 'dededed2223');
+  downloadURI(url, 'Бегунок');
 };

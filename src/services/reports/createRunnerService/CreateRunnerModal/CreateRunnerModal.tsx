@@ -1,5 +1,10 @@
 import React, { FC } from 'react';
-import { BottomBlock, TopBlock, Wrapper } from './CreateRunnerModal.styled';
+import {
+  BottomBlock,
+  TopBlock,
+  TreeSelectMultiple,
+  Wrapper,
+} from './CreateRunnerModal.styled';
 import { FormType, Props } from './CreateRunnerModal.types';
 import { FormModal } from 'ui-kit/Modals/FormModal';
 import { useFormik } from 'formik';
@@ -7,7 +12,6 @@ import { FormItem } from 'ui-kit/FormItem';
 import { Select } from 'ui-kit/Select';
 import { ExportReportType } from 'services/reportsService/reportViewService/reportViewService.types';
 import { ExportReportTypeTranslatesLookup } from 'services/reportsService/reportViewService/reportViewService.constants';
-import { TreeSelect } from 'ui-kit/TreeSelect';
 import { prepareAddressesTreeData } from 'services/reportsService/reportViewService/view/ReportViewPage/ReportFiltrationForm/ReportFiltrationForm.utils';
 import { Form } from 'antd';
 import { yearRangeTypeWithLabel } from './CreateRunnerModal.constants';
@@ -23,28 +27,26 @@ export const CreateRunnerModal: FC<Props> = ({
   isOpen,
   setOpen,
   handleGenerateReport,
-  isGenerating,
 }) => {
   const RunnerForm = () => {
-    const { values, submitForm, setFieldValue } =
-      useFormik<FormType>({
-        initialValues: {
-          city: null,
-          exportType: null,
-          houseManagementIds: null,
-          housingStockIds: null,
-          organizationId: null,
-          yearRange: null,
-        },
-        onSubmit: (data) => {
-          handleGenerateReport({
-            HouseIds: data.housingStockIds || undefined,
-            HmIds: data.houseManagementIds || undefined,
-            ManagementFirmId: data.organizationId || undefined,
-            YearRange: data.yearRange || undefined,
-          });
-        },
-      });
+    const { values, submitForm, setFieldValue } = useFormik<FormType>({
+      initialValues: {
+        city: null,
+        exportType: null,
+        houseManagementIds: [],
+        housingStockIds: [],
+        organizationId: null,
+        yearRange: null,
+      },
+      onSubmit: (data) => {
+        handleGenerateReport({
+          HouseIds: data.housingStockIds || undefined,
+          HmIds: data.houseManagementIds || undefined,
+          ManagementFirmId: data.organizationId || undefined,
+          YearRange: data.yearRange || undefined,
+        });
+      },
+    });
 
     const addressesTreeData = prepareAddressesTreeData(
       addressesWithHouseManagements,
@@ -55,7 +57,7 @@ export const CreateRunnerModal: FC<Props> = ({
       <Form id={formId} onSubmitCapture={submitForm}>
         <Wrapper>
           <TopBlock>
-            <FormItem label="Город">
+            {/* <FormItem label="Город">
               <Select
                 placeholder="Выберите из списка"
                 value={values.city}
@@ -67,7 +69,7 @@ export const CreateRunnerModal: FC<Props> = ({
                   </Select.Option>
                 ))}
               </Select>
-            </FormItem>
+            </FormItem> */}
             <FormItem label="Тип выгрузки">
               <Select
                 placeholder="Выберите"
@@ -147,10 +149,11 @@ export const CreateRunnerModal: FC<Props> = ({
             )}
             {values.exportType === ExportReportType.Address && (
               <FormItem label="Адрес">
-                <TreeSelect
+                <TreeSelectMultiple
+                  multiple
                   treeData={addressesTreeData}
                   placeholder="Выберите адрес"
-                  showCheckedStrategy="SHOW_CHILD"
+                  // showCheckedStrategy="SHOW_CHILD"
                   // maxTagCount={0}
                   value={values.housingStockIds}
                   onChange={(housingStocksIds) => {

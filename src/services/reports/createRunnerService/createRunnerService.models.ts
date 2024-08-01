@@ -63,7 +63,10 @@ const $isGenerating = $runnerReportPollInfo.map(
 
 const $stageNumber = createStore(1)
   .on($runnerReportPollInfo, (_, pollInfo) => {
-    if (pollInfo?.status === PollStatus.Running) {
+    if (
+      pollInfo?.status === PollStatus.Running ||
+      pollInfo?.status === PollStatus.Pending
+    ) {
       return 2;
     }
     if (pollInfo?.status === PollStatus.Done) {
@@ -75,7 +78,7 @@ const $stageNumber = createStore(1)
 sample({ clock: handleGenerateReport, target: startRunnerReportPollFx });
 
 startRunnerReportPollFx.doneData.watch((pollData) => {
-  localStorage.setItem('runnerPollId', String(pollData.id));
+  localStorage.setItem('isPollRun', 'true');
   localStorage.setItem('runnerPollStatus', String(pollData.status));
 });
 
@@ -86,7 +89,7 @@ handleGenerateReport.watch((reportPayload) => {
 
 handleReset.watch(() => {
   localStorage.removeItem('runnerPollYearRange');
-  localStorage.removeItem('runnerPollId');
+  localStorage.removeItem('isPollRun');
   localStorage.removeItem('runnerPollStatus');
 });
 
@@ -103,12 +106,12 @@ sample({
 });
 
 sample({
-  clock: startRunnerReportPollFx.doneData,
+  clock: [startRunnerReportPollFx.doneData, GetLastPollGate.open],
   target: handleStartRefetchLastPoll,
 });
 
 sample({
-  clock: [handleReset],
+  clock: [handleReset, getLastRunnerReportPollFx.doneData],
   source: $runnerReportPollInfo,
   filter: (pollInfo) => pollInfo?.status !== PollStatus.Running,
   target: handleStopRefetchLastPoll,
@@ -116,13 +119,17 @@ sample({
 
 const { tick: handleRefetchLastPoll } = interval({
   start: handleStartRefetchLastPoll,
-  timeout: 30000,
+  timeout: 20000,
   stop: handleStopRefetchLastPoll,
   leading: false,
 });
 
 sample({
   clock: [GetLastPollGate.open, handleRefetchLastPoll],
+  filter: () => {
+    const isPollStarted = localStorage.getItem('isPollRun');
+    return Boolean(isPollStarted);
+  },
   target: getLastRunnerReportPollFx,
 });
 
