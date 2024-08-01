@@ -33,5 +33,5 @@ export const getRunnerReportFile = async (pollId: number) => {
   });
   const url = window.URL.createObjectURL(new Blob([res]));
 
-  downloadURI(url, 'Бегунок');
+  downloadURI(url, 'Бегунок', true);
 };
