@@ -10,6 +10,7 @@ import { ConnectionSettings } from './ConnectionSettings';
 import { AddressWrapper, PageHeaderSC, Wrapper } from './CreateNodePage.styled';
 import { CreateNodePageProps } from './CreateNodePage.types';
 import { MountAddress } from './MountAddress';
+import { DeleteDialog } from 'services/nodes/editNodeService/view/EditNodePage/EditNodeCommonInfo/components/DeleteDialog';
 
 const { Step } = Steps;
 
@@ -29,6 +30,12 @@ export const CreateNodePage: FC<CreateNodePageProps> = ({
   openCreateNodeServiceZoneModal,
   validateNode,
   isValidationLoading,
+  handleDeleteServiceZone,
+  isDialogOpen,
+  deletingServiceZone,
+  handleFinallyDeleteServiceZone,
+  successDeleteServiceZone,
+  deletingServiceZoneCount,
 }) => {
   const stepComponentDictionary: { [key: number]: ReactNode } = {
     0: (
@@ -56,6 +63,8 @@ export const CreateNodePage: FC<CreateNodePageProps> = ({
         updateRequestPayload={updateRequestPayload}
         openCreateNodeServiceZoneModal={openCreateNodeServiceZoneModal}
         requestPayload={requestPayload}
+        handleDeleteServiceZone={handleDeleteServiceZone}
+        successDeleteServiceZone={successDeleteServiceZone}
       />
     ),
     3: (
@@ -92,6 +101,18 @@ export const CreateNodePage: FC<CreateNodePageProps> = ({
           </Steps>
         </div>
       </Wrapper>
+
+      <DeleteDialog
+        deletingServiceZone={deletingServiceZone}
+        deletingServiceZoneCount={deletingServiceZoneCount}
+        handleCancel={() => handleDeleteServiceZone(null)}
+        handleSubmit={() => {
+          handleDeleteServiceZone(null);
+          deletingServiceZone &&
+            handleFinallyDeleteServiceZone(deletingServiceZone.id);
+        }}
+        isDeleteServiceZoneDialogOpen={isDialogOpen}
+      />
     </div>
   );
 };
