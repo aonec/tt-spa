@@ -1,14 +1,18 @@
 import React, { FC } from 'react';
 import {
   ChevronIconRight,
+  DownloadBlock,
   LeftBlock,
+  LoadingBlock,
   RightBlock,
   Wrapper,
 } from './RunnerPanel.styled';
 import { Props } from './RunnerPanel.types';
-import { DocumentBoldIcon } from 'ui-kit/icons';
-import { Loader } from 'ui-kit/Loader';
-import { CheckSquare } from 'react-bootstrap-icons';
+import {
+  CheckGreenIcon,
+  DocumentBoldIcon,
+  LoadingBlueIcon,
+} from 'ui-kit/icons';
 
 export const RunnerPanel: FC<Props> = ({
   setRunnerModalOpen,
@@ -22,8 +26,17 @@ export const RunnerPanel: FC<Props> = ({
       </LeftBlock>
       <RightBlock>
         {runnerStageNumber === 1 && <ChevronIconRight />}
-        {runnerStageNumber === 2 && <Loader show />}
-        {runnerStageNumber === 3 && <CheckSquare size={24} />}
+        {runnerStageNumber === 2 && (
+          <LoadingBlock>
+            <LoadingBlueIcon />
+            Формируется
+          </LoadingBlock>
+        )}
+        {runnerStageNumber === 3 && (
+          <DownloadBlock>
+            <CheckGreenIcon /> Готов к скачиванию
+          </DownloadBlock>
+        )}
       </RightBlock>
     </Wrapper>
   );

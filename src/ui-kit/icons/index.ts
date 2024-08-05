@@ -94,6 +94,8 @@ import DocumentBlueIcon from './svg/documentBlue.svg?react';
 import ArrowTopIcon from './svg/arrowTop.svg?react';
 import DoubleChevronLeft from './svg/doubleChevronLeft.svg?react';
 import DocumentBoldIcon from './svg/documentBold.svg?react';
+import LoadingBlueIcon from './svg/loadingBlue.svg?react';
+import CheckGreenIcon from './svg/checkGreen.svg?react';
 
 export {
   FinishIcon,
@@ -192,4 +194,6 @@ export {
   ArrowTopIcon,
   DoubleChevronLeft,
   DocumentBoldIcon,
+  LoadingBlueIcon,
+  CheckGreenIcon,
 };

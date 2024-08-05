@@ -29,3 +29,23 @@ export const RightBlock = styled.div`
 export const ChevronIconRight = styled(ChevronIcon)`
   transform: rotate(180deg);
 `;
+
+export const LoadingBlock = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  color: #189ee9;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 16px;
+`;
+
+export const DownloadBlock = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  color: #17b45a;
+  font-weight: 500;
+`;
