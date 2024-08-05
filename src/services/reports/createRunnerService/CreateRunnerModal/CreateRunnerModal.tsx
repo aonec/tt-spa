@@ -29,24 +29,25 @@ export const CreateRunnerModal: FC<Props> = ({
   handleGenerateReport,
 }) => {
   const RunnerForm = () => {
-    const { values, submitForm, setFieldValue } = useFormik<FormType>({
-      initialValues: {
-        city: null,
-        exportType: null,
-        houseManagementIds: [],
-        housingStockIds: [],
-        organizationId: null,
-        yearRange: null,
-      },
-      onSubmit: (data) => {
-        handleGenerateReport({
-          HouseIds: data.housingStockIds || undefined,
-          HmIds: data.houseManagementIds || undefined,
-          ManagementFirmId: data.organizationId || undefined,
-          YearRange: data.yearRange || undefined,
-        });
-      },
-    });
+    const { values, submitForm, setFieldValue, setValues } =
+      useFormik<FormType>({
+        initialValues: {
+          city: null,
+          exportType: null,
+          houseManagementIds: [],
+          housingStockIds: [],
+          organizationId: null,
+          yearRange: null,
+        },
+        onSubmit: (data) => {
+          handleGenerateReport({
+            HouseIds: data.housingStockIds || undefined,
+            HmIds: data.houseManagementIds || undefined,
+            ManagementFirmId: data.organizationId || undefined,
+            YearRange: data.yearRange || undefined,
+          });
+        },
+      });
 
     const addressesTreeData = prepareAddressesTreeData(
       addressesWithHouseManagements,
@@ -75,9 +76,12 @@ export const CreateRunnerModal: FC<Props> = ({
                 placeholder="Выберите"
                 value={values.exportType}
                 onChange={(exportType) => {
-                  setFieldValue('exportType', exportType);
-                  setFieldValue('houseManagement', null);
-                  setFieldValue('organizationId', null);
+                  setValues({
+                    ...values,
+                    exportType: exportType as ExportReportType,
+                    houseManagementIds: [],
+                    organizationId: null,
+                  });
                 }}
               >
                 {Object.values(ExportReportType).map((reportType) => (
@@ -153,8 +157,6 @@ export const CreateRunnerModal: FC<Props> = ({
                   multiple
                   treeData={addressesTreeData}
                   placeholder="Выберите адрес"
-                  // showCheckedStrategy="SHOW_CHILD"
-                  // maxTagCount={0}
                   value={values.housingStockIds}
                   onChange={(housingStocksIds) => {
                     setFieldValue('housingStockIds', housingStocksIds);
