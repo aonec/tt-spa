@@ -22,6 +22,7 @@ import {
 import { GroupReportRequestPayload } from './groupReportService.types';
 import { sendReportToEmailService } from './sendReportToEmailService';
 import { BlobResponseErrorType, EffectFailDataAxiosError } from 'types';
+import { houseManagementsService } from '../houseManagementsService';
 
 const openModal = createEvent();
 const closeModal = createEvent();
@@ -68,6 +69,7 @@ const $isDownloading = combine(
 );
 
 const GroupReportGate = createGate();
+
 
 sample({
   clock: setGroupReportPayload,

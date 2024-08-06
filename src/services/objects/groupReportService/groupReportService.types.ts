@@ -9,11 +9,13 @@ export type GroupReportRequestPayload = RegularUnloadSubscription & {
   To: string;
   From: string;
   FileName: string;
-  HouseManagementId: string | null;
   NodeResourceTypes: EResourceType[];
   ReportType: EReportType;
   ReportFormat?: EReportFormat;
   NodeStatus?: ENodeCommercialAccountStatus;
+  ManagementFirmId?: number | null;
+  HouseManagementId?: number | null;
+  BuildingIds?: number[];
 };
 
 export type RegularUnloadSubscription = {

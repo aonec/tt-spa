@@ -13,3 +13,9 @@ export const RowWrapper = styled.div`
 export const SelectSC = styled(Select)`
   min-height: 48px;
 `;
+
+export const Wrapper = styled.div`
+  display: grid;
+  grid-gap: 0 16px;
+  grid-template-columns: 1fr 1fr;
+`;

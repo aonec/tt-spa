@@ -6,9 +6,23 @@ import { groupReportFormId } from './groupReportService.constants';
 import { groupReportService } from './groupReportService.model';
 import { SendReportToEmailContainer } from './sendReportToEmailService';
 import { GroupReportForm } from './view/GroupReportForm';
+import {
+  organizationsQuery,
+  organizationsService,
+} from 'services/organizations';
+import { houseManagementsService } from '../houseManagementsService';
+import { reportViewService } from 'services/reportsService/reportViewService';
 
 const { inputs, outputs, gates } = groupReportService;
 const { GroupReportGate } = gates;
+
+const {
+  gates: { AddressesWithHouseManagementsGate, HouseManagementsGate },
+} = reportViewService;
+
+const {
+  gates: { OrganizationsGate },
+} = organizationsService;
 
 export const GroupReportContainer = () => {
   const {
@@ -18,6 +32,9 @@ export const GroupReportContainer = () => {
     isFiltersLoading,
     isOpen,
     reportFilters,
+    organizations,
+    houseManagements,
+    addressesWithHouseManagements,
   } = useUnit({
     isOpen: outputs.$isOpen,
     reportFilters: outputs.$reportFilters,
@@ -25,10 +42,19 @@ export const GroupReportContainer = () => {
     isDownloading: outputs.$isDownloading,
     handleCloseModal: inputs.closeModal,
     downloadReport: inputs.setGroupReportPayload,
+    organizations: organizationsQuery.$data,
+    houseManagements: houseManagementsService.outputs.$houseManagements,
+    addressesWithHouseManagements:
+      reportViewService.outputs.$addressesWithHouseManagements,
   });
+
+  console.log({ organizations });
 
   return (
     <>
+      <AddressesWithHouseManagementsGate />
+      <HouseManagementsGate />
+      <OrganizationsGate />
       <GroupReportGate />
       <SendReportToEmailContainer />
       <FormModal
@@ -45,6 +71,9 @@ export const GroupReportContainer = () => {
                 formId={groupReportFormId}
                 handleDownload={downloadReport}
                 reportFilters={reportFilters}
+                organizations={organizations}
+                houseManagements={houseManagements}
+                addressesWithHouseManagements={addressesWithHouseManagements}
               />
             )}
           </WithLoader>
