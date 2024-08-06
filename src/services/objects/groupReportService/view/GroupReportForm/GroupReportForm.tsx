@@ -14,7 +14,11 @@ import { FormItem } from 'ui-kit/FormItem';
 import { Select } from 'ui-kit/Select';
 import { Input } from 'ui-kit/Input';
 import dayjs from 'api/dayjs';
-import { RowWrapper, Wrapper } from './GroupReportForm.styled';
+import {
+  RowWrapper,
+  TreeSelectMultiple,
+  Wrapper,
+} from './GroupReportForm.styled';
 import { GroupReportDatesSelect } from './GroupReportDatesSelect';
 import { RadioGroupSC } from './GroupReportDatesSelect/GroupReportDatesSelect.styled';
 import { LabeledValue } from 'antd/lib/select';
@@ -22,7 +26,6 @@ import { ErrorMessage } from 'ui-kit/ErrorMessage';
 import { EReportFormat, EReportType } from 'api/types';
 import { SelectMultiple } from 'ui-kit/SelectMultiple';
 import { ExportReportTypeTranslatesLookup } from 'services/reportsService/reportViewService/reportViewService.constants';
-import { TreeSelect } from 'ui-kit/TreeSelect';
 import { prepareAddressesTreeData } from 'services/reportsService/reportViewService/view/ReportViewPage/ReportFiltrationForm/ReportFiltrationForm.utils';
 
 const withoutHouseMagement = 'withoutHouseMagement';
@@ -79,30 +82,6 @@ export const GroupReportForm: FC<GroupReportFormProps> = ({
     null,
   );
 
-  const groupReportsOptions = useMemo(
-    () => [
-      {
-        label: 'Без домоуправления',
-        value: withoutHouseMagement,
-        key: withoutHouseMagement,
-      },
-      ...(groupReports || []).reduce((acc, elem) => {
-        if (!elem.houseManagementId) {
-          return acc;
-        }
-        return [
-          ...acc,
-          {
-            value: elem.houseManagementId,
-            key: elem.houseManagementId,
-            label: elem.title || '',
-          },
-        ];
-      }, [] as LabeledValue[]),
-    ],
-    [groupReports],
-  );
-
   const nodeResourceTypesOptions = useMemo(
     () =>
       (nodeResourceTypes || []).reduce((acc, elem) => {
@@ -128,7 +107,7 @@ export const GroupReportForm: FC<GroupReportFormProps> = ({
     ) {
       const singularOrganization = organizations?.items[0];
 
-      setFieldValue('organizationId', singularOrganization.id);
+      setFieldValue('ManagementFirmId', singularOrganization.id);
     }
   }, [organizations, setFieldValue, values.exportType]);
 
@@ -224,6 +203,12 @@ export const GroupReportForm: FC<GroupReportFormProps> = ({
               }}
               allowClear
             >
+              <Select.Option
+                key={withoutHouseMagement}
+                value={withoutHouseMagement}
+              >
+                Без домоуправления
+              </Select.Option>
               {houseManagements?.map((houseManagement) => (
                 <Select.Option
                   key={houseManagement.id}
@@ -237,7 +222,8 @@ export const GroupReportForm: FC<GroupReportFormProps> = ({
         )}
         {values.exportType === ExportReportType.Address && (
           <FormItem label="Адрес">
-            <TreeSelect
+            <TreeSelectMultiple
+              multiple
               treeData={addressesTreeData}
               placeholder="Выберите адрес"
               value={values.BuildingIds}
