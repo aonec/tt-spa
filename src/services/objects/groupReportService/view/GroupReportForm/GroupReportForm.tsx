@@ -50,7 +50,6 @@ export const GroupReportForm: FC<GroupReportFormProps> = ({
       ManagementFirmId: null,
       HouseManagementId: null,
       BuildingIds: [],
-
       FileName: `Групповой_отчёт_${dayjs().format('DD.MM.YYYY')}`,
       ReportType: EReportType.Hourly,
       From: dayjs().startOf('month').format(),
@@ -199,7 +198,11 @@ export const GroupReportForm: FC<GroupReportFormProps> = ({
             <Select
               placeholder="Выберите"
               value={values.ManagementFirmId}
-              onChange={(id) => setFieldValue('ManagementFirmId', id)}
+              onChange={(id) => {
+                setFieldValue('ManagementFirmId', id);
+                setFieldValue('HouseManagementId', null);
+                setFieldValue('BuildingIds', []);
+              }}
             >
               {organizations?.items?.map((organization) => (
                 <Select.Option key={organization.id} value={organization.id}>
@@ -216,25 +219,8 @@ export const GroupReportForm: FC<GroupReportFormProps> = ({
               placeholder="Выберите из списка"
               onChange={(value) => {
                 setFieldValue('HouseManagementId', value || null);
-
-                const houseManagement = addressesWithHouseManagements.find(
-                  (elem) => elem.id === value,
-                );
-
-                const selectedHouseManagementHousingStocksIds = (
-                  houseManagement?.streets || []
-                ).reduce(
-                  (acc, street) => [
-                    ...acc,
-                    ...(street.addresses || []).map((elem) => elem.buildingId),
-                  ],
-                  [] as number[],
-                );
-
-                setFieldValue(
-                  'BuildingIds',
-                  selectedHouseManagementHousingStocksIds,
-                );
+                setFieldValue('ManagementFirmId', null);
+                setFieldValue('BuildingIds', []);
               }}
               allowClear
             >
@@ -254,11 +240,11 @@ export const GroupReportForm: FC<GroupReportFormProps> = ({
             <TreeSelect
               treeData={addressesTreeData}
               placeholder="Выберите адрес"
-              showCheckedStrategy="SHOW_CHILD"
-              maxTagCount={0}
               value={values.BuildingIds}
-              onChange={(housingStocksId) => {
-                setFieldValue('housingStockId', housingStocksId);
+              onChange={(buildingIds) => {
+                setFieldValue('BuildingIds', buildingIds);
+                setFieldValue('HouseManagementId', null);
+                setFieldValue('ManagementFirmId', null);
               }}
             />
           </FormItem>
