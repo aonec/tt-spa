@@ -203,10 +203,7 @@ export const GroupReportForm: FC<GroupReportFormProps> = ({
               }}
               allowClear
             >
-              <Select.Option
-                key={withoutHouseMagement}
-                value={withoutHouseMagement}
-              >
+              <Select.Option key={withoutHouseMagement} value={"null"}>
                 Без домоуправления
               </Select.Option>
               {houseManagements?.map((houseManagement) => (

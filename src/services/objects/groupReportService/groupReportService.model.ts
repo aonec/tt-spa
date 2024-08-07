@@ -119,6 +119,7 @@ sample({
 
 sample({
   clock: getGroupReport,
+  
   target: getGroupReportFx,
 });
 

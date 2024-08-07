@@ -14,7 +14,7 @@ export type GroupReportRequestPayload = RegularUnloadSubscription & {
   ReportFormat?: EReportFormat;
   NodeStatus?: ENodeCommercialAccountStatus;
   ManagementFirmId?: number | null;
-  HouseManagementId?: number | null;
+  HouseManagementId?: string | null;
   BuildingIds?: number[];
 };
 
