@@ -126,10 +126,7 @@ const { tick: handleRefetchLastPoll } = interval({
 
 sample({
   clock: [GetLastPollGate.open, handleRefetchLastPoll],
-  filter: () => {
-    const isPollStarted = localStorage.getItem('isPollRun');
-    return Boolean(isPollStarted);
-  },
+  filter: () => Boolean(localStorage.getItem('isPollRun')),
   target: getLastRunnerReportPollFx,
 });
 
