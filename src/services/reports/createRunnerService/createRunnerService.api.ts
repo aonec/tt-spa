@@ -19,7 +19,6 @@ export const startRunnerReportPoll = (
 export const getLastRunnerReportPoll = (): Promise<PollResponse> =>
   axios.get('Reports/RunnerReports', {
     params: {
-      Resource: DeviceResource.Electricity,
       Command: PollCommand.GetLast,
     },
   });

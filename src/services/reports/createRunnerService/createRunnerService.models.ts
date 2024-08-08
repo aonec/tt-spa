@@ -27,6 +27,8 @@ const handleReset = createEvent();
 const handleStartRefetchLastPoll = createEvent();
 const handleStopRefetchLastPoll = createEvent();
 
+const handleFailData = createEvent();
+
 const startRunnerReportPollFx = createEffect<
   RunnerPayload,
   PollResponse,
@@ -75,6 +77,20 @@ const $stageNumber = createStore(1)
   })
   .reset(handleReset);
 
+const $failDataCount = createStore(0)
+  .on(handleFailData, (prev, _) => {
+    console.log({ prev });
+    return prev + 1;
+  })
+  .reset(handleReset);
+
+$failDataCount.watch((count) => {
+  if (count === 2) {
+    handleReset();
+    message.error('Произошла ошибка формирования бегунка');
+  }
+});
+
 sample({ clock: handleGenerateReport, target: startRunnerReportPollFx });
 
 startRunnerReportPollFx.doneData.watch((pollData) => {
@@ -119,7 +135,7 @@ sample({
 
 const { tick: handleRefetchLastPoll } = interval({
   start: handleStartRefetchLastPoll,
-  timeout: 20000,
+  timeout: 2000,
   stop: handleStopRefetchLastPoll,
   leading: false,
 });
@@ -141,11 +157,16 @@ startRunnerReportPollFx.failData.watch((error) => {
       error.response.data.error.Message ||
       'Произошла ошибка',
   );
+  handleReset();
 });
 
 getLastRunnerReportPollFx.doneData.watch((pollInfo) => {
   if (pollInfo.status === PollStatus.Done)
     message.success('Бегунок ожидает загрузки');
+});
+
+getLastRunnerReportPollFx.failData.watch(() => {
+  handleFailData();
 });
 
 export const createRunnerService = {
