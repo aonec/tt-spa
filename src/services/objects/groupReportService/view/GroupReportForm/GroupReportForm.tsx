@@ -39,7 +39,6 @@ export const GroupReportForm: FC<GroupReportFormProps> = ({
   houseManagements,
 }) => {
   const {
-    groupReports,
     nodeResourceTypes,
     nodeStatuses,
     // contractors // todo: регулярная выгрузка
@@ -137,23 +136,6 @@ export const GroupReportForm: FC<GroupReportFormProps> = ({
 
   return (
     <Form id={formId} onSubmitCapture={handleSubmit}>
-      {/* <FormItem label="Группа">
-        <Select
-          value={
-            values.HouseManagementId === null
-              ? withoutHouseMagement
-              : values.HouseManagementId || undefined
-          }
-          onChange={(value) => {
-            if (value === withoutHouseMagement) {
-              return setFieldValue('HouseManagementId', null);
-            }
-            setFieldValue('HouseManagementId', value);
-          }}
-          options={groupReportsOptions}
-        />
-      </FormItem> */}
-
       <Wrapper>
         <FormItem label="Тип выгрузки">
           <Select
@@ -203,7 +185,7 @@ export const GroupReportForm: FC<GroupReportFormProps> = ({
               }}
               allowClear
             >
-              <Select.Option key={withoutHouseMagement} value={"null"}>
+              <Select.Option key={withoutHouseMagement} value={'null'}>
                 Без домоуправления
               </Select.Option>
               {houseManagements?.map((houseManagement) => (
