@@ -3,6 +3,7 @@ import { EActResourceType, EActType, EDocumentType } from 'api/types';
 import React, { FC, useState } from 'react';
 import { ResourceInfo } from 'ui-kit/shared/ResourceInfo';
 import {
+  Comment,
   DatePickerSC,
   ErrorMessage,
   FieldsWrapper,
@@ -31,6 +32,7 @@ export const CreateApartmentActForm: FC<CreateApartmentActFormProps> = ({
       actResourceType: EActResourceType.All,
       actType: EActType.Admission,
       documentId: null,
+      comment: '',
     },
     validationSchema: yup.object().shape({
       actJobDate: yup.string().required('Это поле обязательно'),
@@ -116,8 +118,12 @@ export const CreateApartmentActForm: FC<CreateApartmentActFormProps> = ({
         type={EDocumentType.Common}
       />
 
-
-      
+      <Comment
+        placeholder="Комментарий"
+        autoSize={{ minRows: 2, maxRows: 6 }}
+        value={values.comment as string}
+        onChange={(value) => setFieldValue('comment', value.target.value)}
+      />
     </Form>
   );
 };
