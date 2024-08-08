@@ -11,6 +11,7 @@ import {
   ActDate,
   ButtonSC,
   ButtonsWrapper,
+  Comment,
   Wrapper,
 } from './AddNewActForm.styled';
 import { Select } from 'ui-kit/Select';
@@ -34,6 +35,7 @@ export const AddNewActForm: FC<AddNewActFormProps> = ({
         registryNumber: '',
         actResourceType: null,
         actType: null,
+        comment: '',
       },
       onSubmit: (values) => {
         const { actResourceType, actType } = values;
@@ -134,6 +136,14 @@ export const AddNewActForm: FC<AddNewActFormProps> = ({
           dataKey={dataKey}
         />
       </Wrapper>
+
+      <Comment
+        placeholder="Комментарий"
+        autoSize={{ minRows: 2, maxRows: 6 }}
+        value={values.comment as string}
+        onChange={(value) => setFieldValue('comment', value.target.value)}
+      />
+
       <ButtonsWrapper>
         <Button
           type="ghost"

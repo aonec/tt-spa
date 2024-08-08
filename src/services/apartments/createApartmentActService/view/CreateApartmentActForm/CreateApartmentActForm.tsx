@@ -115,6 +115,9 @@ export const CreateApartmentActForm: FC<CreateApartmentActFormProps> = ({
         max={1}
         type={EDocumentType.Common}
       />
+
+
+      
     </Form>
   );
 };

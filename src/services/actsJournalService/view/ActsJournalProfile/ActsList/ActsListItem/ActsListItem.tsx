@@ -20,6 +20,7 @@ export const ActsListItem: FC<ActsListItemProps> = ({ act }) => {
           {actAddress}
         </ActAddress>
       )}
+      <div>{act.comment || "-"}</div>
       <div>{dayjs(act.actJobDate).format('DD.MM.YYYY')}</div>
     </Wrapper>
   );

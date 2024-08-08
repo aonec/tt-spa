@@ -4,6 +4,7 @@ import React, { FC } from 'react';
 import { DocumentIcon, PencilIcon, TrashIcon, UploadIcon } from 'ui-kit/icons';
 import {
   ActNumber,
+  Comment,
   DateWrapper,
   DocumentIconSC,
   DocumentIconWrapper,
@@ -26,8 +27,15 @@ export const ApartmentActItem: FC<ApartmentActItemProps> = ({
   saveFile,
   isPermitionToChangeApartmentAct,
 }) => {
-  const { actJobDate, id, actType, actResourceType, registryNumber, document } =
-    act;
+  const {
+    actJobDate,
+    id,
+    actType,
+    actResourceType,
+    registryNumber,
+    document,
+    comment,
+  } = act;
 
   const actTypeText = ActTypesNamesLookup[actType];
 
@@ -52,7 +60,12 @@ export const ApartmentActItem: FC<ApartmentActItemProps> = ({
 
       <DocumentType>
         <DocumentTypeText>{actTypeText}</DocumentTypeText>
-        <ManageIconsWrapper>
+ 
+      </DocumentType>
+
+      <Comment>{comment}</Comment>
+
+      <ManageIconsWrapper>
           {isPermitionToChangeApartmentAct && (
             <DocumentIconSC onClick={() => openEditActModal(act)}>
               <PencilIcon />
@@ -70,7 +83,6 @@ export const ApartmentActItem: FC<ApartmentActItemProps> = ({
             <UploadIcon />
           </DocumentIconSC>
         </ManageIconsWrapper>
-      </DocumentType>
     </ListItem>
   );
 };
