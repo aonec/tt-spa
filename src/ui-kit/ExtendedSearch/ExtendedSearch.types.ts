@@ -12,4 +12,5 @@ export type ExtendedSearchProps = {
   title?: string;
   children?: ReactNode;
   isPaddingSearch?: boolean;
+  submitButtonDisabled?: boolean;
 };

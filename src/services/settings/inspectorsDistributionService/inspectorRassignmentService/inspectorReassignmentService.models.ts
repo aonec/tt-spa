@@ -1,6 +1,5 @@
 import { createEffect, createEvent, createStore } from 'effector';
 import { sample } from 'effector';
-import { createForm } from 'effector-forms';
 import { message } from 'antd';
 import { displayInspectorsService } from 'services/inspectors/displayInspectorsService/displayInspectorsService.models';
 import { reassingHousingStockInspector } from './inspectorReassignmentService.api';
@@ -8,12 +7,13 @@ import {
   PatchInspectorFormPayload,
   PatchInspectorPayload,
 } from './inspectorReassignmentService.types';
-import { searchInspectorsHousingStockService } from '../searchInspectorsHousingStocksService/searchInspectorsHousingStockService.models';
+import { searchInspectorsHousingStockService } from '../searchInspectorsHousingStocksService/searchInspectorsHousingStock.models';
+import { ReassingInspectorForm } from './views/ReassingInspectorModal/ReassingInspectorModal.types';
 
 const openModal = createEvent();
 const closeModal = createEvent();
 
-const saveInspectorReassing = createEvent();
+const saveInspectorReassing = createEvent<ReassingInspectorForm>();
 
 const reassingInspectorsFx = createEffect<PatchInspectorPayload, void>(
   reassingHousingStockInspector,
@@ -21,40 +21,12 @@ const reassingInspectorsFx = createEffect<PatchInspectorPayload, void>(
 
 const $isLoading = reassingInspectorsFx.pending;
 
-const reassingmentInspectorsForm = createForm({
-  fields: {
-    currentInspector: {
-      init: null as number | null,
-      rules: [
-        {
-          name: 'required',
-          validator: Boolean,
-        },
-      ],
-    },
-    newInspector: {
-      init: null as number | null,
-      rules: [
-        {
-          name: 'required',
-          validator: Boolean,
-        },
-      ],
-    },
-  },
-});
-
 const $isModalOpen = createStore(false)
   .on(openModal, () => true)
   .reset(closeModal);
 
 sample({
   clock: saveInspectorReassing,
-  target: reassingmentInspectorsForm.validate,
-});
-
-sample({
-  clock: reassingmentInspectorsForm.formValidated,
   filter: (values): values is PatchInspectorFormPayload =>
     Boolean(values.currentInspector && values.newInspector),
   fn: (values: PatchInspectorFormPayload) => ({
@@ -65,15 +37,10 @@ sample({
 });
 
 sample({
-  clock: closeModal,
-  target: reassingmentInspectorsForm.reset,
-});
-
-sample({
   clock: reassingInspectorsFx.doneData,
   target: [
     closeModal,
-    searchInspectorsHousingStockService.forms.searchForm.submit,
+    searchInspectorsHousingStockService.inputs.handleSearchInspector,
   ],
 });
 
@@ -96,8 +63,5 @@ export const inspectorReassignmentService = {
     closeModal,
     saveInspectorReassing,
     reassingInspectorsFx,
-  },
-  form: {
-    reassingmentInspectorsForm,
   },
 };

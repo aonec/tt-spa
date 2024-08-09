@@ -5,6 +5,7 @@ import {
   EHouseCategory,
   HousingStockResponse,
   NodeServiceZoneListResponse,
+  NodeServiceZoneWithNodeCountResponse,
   NonResidentialBuildingResponse,
   PipeNodeResponse,
   PipeNodeValidationResultResponse,
@@ -50,3 +51,12 @@ export const fetchValidateNode = (
   payload: CreatePipeNodeRequest,
 ): Promise<PipeNodeValidationResultResponse> =>
   axios.post('PipeNodes/validate', payload);
+
+export const deleteNodeServiceZone = (
+  nodeServiceZoneId: number,
+): Promise<void> => axios.delete(`NodeServiceZones/${nodeServiceZoneId}`);
+
+export const getNodeServiceZone = (
+  nodeServiceZoneId: number,
+): Promise<NodeServiceZoneWithNodeCountResponse> =>
+  axios.get(`NodeServiceZones/${nodeServiceZoneId}`);

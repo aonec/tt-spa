@@ -1,6 +1,6 @@
 import React from 'react';
 import { InspectorsHousingStocksListContainer } from '../../displayInspectorsHousingStocksService/displayInspectorsHousingStocksService.container';
-import { SearchInspectorsHousingStocksContainer } from '../../searchInspectorsHousingStocksService/SearchInspectorsHousingStocksContainer';
+import { SearchInspectorsHousingStocksContainer } from '../../searchInspectorsHousingStocksService/searchInspectorsHousingStocks.container';
 import { Wrap } from './components';
 
 export const InspectorsDistributionPage = () => {

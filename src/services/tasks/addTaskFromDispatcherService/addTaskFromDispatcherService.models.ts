@@ -30,6 +30,7 @@ import {
   ErpSourceResponse,
   ErpTaskDeadlineResponse,
   ErpTaskReasonGroupResponse,
+  ESecuredIdentityRoleName,
   HomeownerAccountNameResponse,
   ResourceDisconnectingResponse,
   ResourceDisconnectingResponsePagedList,
@@ -50,6 +51,7 @@ import {
 import { prepareAddressesForTreeSelect } from './addTaskFromDispatcherService.utils';
 import { currentOrganizationService } from 'services/currentOrganizationService';
 import { addressSearchService } from 'services/addressSearchService/addressSearchService.models';
+import { currentUserService } from 'services/currentUser/currentUserService';
 
 const PageGate = createGate();
 const AddTaskDataFetchGate = createGate();
@@ -270,6 +272,7 @@ sample({
   source: {
     defaultCity: currentOrganizationService.outputs.$defaultCity,
     existingCities: addressSearchService.outputs.$existingCities,
+    userRolesKeys: currentUserService.outputs.$userRolesKeys,
   },
   fn: ({ defaultCity, existingCities }) => {
     const cityFromAddressSearchService = _.last(existingCities) || '';
@@ -277,6 +280,10 @@ sample({
       City: defaultCity || cityFromAddressSearchService,
     };
   },
+  filter: ({ userRolesKeys }) =>
+    Boolean(
+      userRolesKeys?.includes(ESecuredIdentityRoleName.ManagingFirmDispatcher),
+    ),
   target: getAddressesFx,
 });
 

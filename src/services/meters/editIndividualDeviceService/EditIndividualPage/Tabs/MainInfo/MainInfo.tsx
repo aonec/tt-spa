@@ -152,20 +152,6 @@ export const MainInfo: FC<MainInfoProps> = ({
         </SwitchWrapper>
       )}
 
-      <FormItem label="Дата поверки">
-        <DatePicker
-          disabled
-          value={dayjs(values.lastCheckingDate)}
-          format="DD.MM.YYYY"
-        />
-      </FormItem>
-      <FormItem label="Дата Следующей поверки">
-        <DatePicker
-          disabled
-          value={dayjs(values.futureCheckingDate)}
-          format="DD.MM.YYYY"
-        />
-      </FormItem>
       <SpaceLine />
 
       <GridContainer>
@@ -173,14 +159,14 @@ export const MainInfo: FC<MainInfoProps> = ({
           <DatePicker
             disabled
             value={dayjs(values.lastCheckingDate)}
-            format="DD.MM.YYYY"
+            format={{ format: 'DD.MM.YYYY', type: 'mask' }}
           />
         </FormItem>
         <FormItem label="Дата Следующей поверки">
           <DatePicker
             disabled
             value={dayjs(values.futureCheckingDate)}
-            format="DD.MM.YYYY"
+            format={{ format: 'DD.MM.YYYY', type: 'mask' }}
           />
         </FormItem>
       </GridContainer>
@@ -204,7 +190,7 @@ export const MainInfo: FC<MainInfoProps> = ({
         <FormItem label="Дата установки пломбы">
           <DatePicker
             value={values.sealInstallationDate}
-            format="DD.MM.YYYY"
+            format={{ format: 'DD.MM.YYYY', type: 'mask' }}
             onChange={(date) => {
               setFieldValue('sealInstallationDate', date);
             }}

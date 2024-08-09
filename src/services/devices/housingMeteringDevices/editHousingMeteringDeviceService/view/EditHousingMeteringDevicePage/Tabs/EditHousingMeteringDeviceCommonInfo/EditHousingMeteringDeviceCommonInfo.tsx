@@ -148,7 +148,7 @@ export const EditHousingMeteringDeviceCommonInfo: FC<
               );
             }}
             placeholder="Выберите"
-            format="DD.MM.YYYY"
+            format={{ format: 'DD.MM.YYYY', type: 'mask' }}
           />
         </FormItem>
 
@@ -157,7 +157,7 @@ export const EditHousingMeteringDeviceCommonInfo: FC<
             value={values.futureCheckingDate}
             onChange={(date) => setFieldValue('futureCheckingDate', date)}
             placeholder="Выберите"
-            format="DD.MM.YYYY"
+            format={{ format: 'DD.MM.YYYY', type: 'mask' }}
           />
         </FormItem>
       </GridContainer>

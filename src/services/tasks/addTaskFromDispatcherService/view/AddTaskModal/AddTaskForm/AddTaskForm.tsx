@@ -392,7 +392,7 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
           <FormItem label="Дата и время заявки">
             <GridContainerAsymmetricLeft>
               <DatePickerSc
-                format="DD.MM.YYYY"
+                format={{ format: 'DD.MM.YYYY', type: 'mask' }}
                 value={values.requestDate}
                 onChange={(value) => setFieldValue('requestDate', value)}
               />
@@ -401,6 +401,14 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
                 value={values.requestTime || undefined}
                 onChange={(value) => {
                   setFieldValue('requestTime', value);
+                }}
+                onKeyDown={(event: any) => {
+                  if (
+                    event.key !== 'Backspace' &&
+                    event.currentTarget.value.length === 2
+                  ) {
+                    event.currentTarget.value = event.currentTarget.value + ':';
+                  }
                 }}
               />
             </GridContainerAsymmetricLeft>
@@ -710,32 +718,22 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
             <GridContainerAsymmetricThreeColumn>
               <DatePicker
                 data-reading-input={dataKey}
+                preserveInvalidOnBlur={true}
                 allowClear
-                format="DD.MM.YYYY"
+                format={{ format: 'DD.MM.YYYY', type: 'mask' }}
                 open={isDatePickerOpen}
-                onFocus={() => setDatePickerOpen(true)}
+                onFocus={() => {
+                  setDatePickerOpen(true);
+                }}
                 onMouseDown={() => {
                   setDatePickerOpen(!isDatePickerOpen);
+                  setFieldValue('taskDeadlineDate', null);
                 }}
                 value={values.taskDeadlineDate}
                 onChange={(value) => {
                   value !== undefined &&
                     setFieldValue('taskDeadlineDate', value);
                   setDatePickerOpen(false);
-                }}
-                onCalendarChange={() => {
-                  if (isNoAdditionalFieldsRequired) {
-                    next(5);
-                  }
-                  if (isOnlySourceNumberRequired) {
-                    next(6);
-                  }
-                  if (isOnlySubscriberRequired) {
-                    next(7);
-                  }
-                  if (isSubscriberAndSourceNumberRequired) {
-                    next(8);
-                  }
                 }}
                 onKeyDown={fromEnter(() => {
                   setFieldValue('taskDeadlineDate', dayjs());
@@ -756,15 +754,20 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
                 })}
               />
               <TimePickerMedium
+                needConfirm={false}
+                showNow={false}
                 data-reading-input={dataKey}
                 value={values.taskDeadlineTime || undefined}
                 open={isTimePickerOpen}
-                onFocus={() => setTimePickerOpen(true)}
+                onFocus={() => {
+                  setTimePickerOpen(true);
+                }}
                 onChange={(value) => {
                   setFieldValue('taskDeadlineTime', value);
                 }}
                 onMouseDown={() => {
                   setTimePickerOpen(!isTimePickerOpen);
+                  setFieldValue('taskDeadlineTime', null);
                 }}
                 onKeyDown={(event: any) => {
                   if (

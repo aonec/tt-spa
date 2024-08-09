@@ -97,10 +97,6 @@ export interface AllNodeWorkingRangeResponse {
   nodeWorkingRanges: ValueNodeWorkingRangeListResponse[] | null;
 }
 
-export interface AllNodeWorkingRangeResponseSuccessApiResponse {
-  successResponse: AllNodeWorkingRangeResponse | null;
-}
-
 export interface ApartmentActResponse {
   /** @format int32 */
   id: number;
@@ -137,22 +133,10 @@ export interface ApartmentActResponsePagedList {
   items: ApartmentActResponse[] | null;
 }
 
-export interface ApartmentActResponsePagedListSuccessApiResponse {
-  successResponse: ApartmentActResponsePagedList | null;
-}
-
-export interface ApartmentActResponseSuccessApiResponse {
-  successResponse: ApartmentActResponse | null;
-}
-
 export interface ApartmentActsConstructedReportResponse {
   /** @format int32 */
   count: number;
   rows: ApartmentActsConstructedReportRowResponse[] | null;
-}
-
-export interface ApartmentActsConstructedReportResponseSuccessApiResponse {
-  successResponse: ApartmentActsConstructedReportResponse | null;
 }
 
 export interface ApartmentActsConstructedReportRowResponse {
@@ -206,10 +190,6 @@ export interface ApartmentByAddressFilterResponsePagedList {
   items: ApartmentByAddressFilterResponse[] | null;
 }
 
-export interface ApartmentByAddressFilterResponsePagedListSuccessApiResponse {
-  successResponse: ApartmentByAddressFilterResponsePagedList | null;
-}
-
 export interface ApartmentCheckResponse {
   /** @format int32 */
   id: number;
@@ -223,10 +203,6 @@ export interface ApartmentCheckResponse {
   registryNumber: string | null;
   checkingAct: DocumentResponse | null;
   actResourceType: EActResourceType;
-}
-
-export interface ApartmentCheckResponseListSuccessApiResponse {
-  successResponse: ApartmentCheckResponse[] | null;
 }
 
 export interface ApartmentCheckResponsePagedList {
@@ -245,14 +221,6 @@ export interface ApartmentCheckResponsePagedList {
   /** @format int32 */
   previousPageNumber: number;
   items: ApartmentCheckResponse[] | null;
-}
-
-export interface ApartmentCheckResponsePagedListSuccessApiResponse {
-  successResponse: ApartmentCheckResponsePagedList | null;
-}
-
-export interface ApartmentCheckResponseSuccessApiResponse {
-  successResponse: ApartmentCheckResponse | null;
 }
 
 export interface ApartmentCreateRequest {
@@ -312,16 +280,8 @@ export interface ApartmentListResponsePagedList {
   items: ApartmentListResponse[] | null;
 }
 
-export interface ApartmentListResponsePagedListSuccessApiResponse {
-  successResponse: ApartmentListResponsePagedList | null;
-}
-
 export interface ApartmentListStatusResponse {
   statuses: ApartmentStatusResponse[] | null;
-}
-
-export interface ApartmentListStatusResponseSuccessApiResponse {
-  successResponse: ApartmentListStatusResponse | null;
 }
 
 export interface ApartmentResponse {
@@ -355,10 +315,6 @@ export interface ApartmentResponse {
   /** @format int32 */
   deniedPermissionsCount: number | null;
   activeTaskIds: number[] | null;
-}
-
-export interface ApartmentResponseSuccessApiResponse {
-  successResponse: ApartmentResponse | null;
 }
 
 export interface ApartmentStatusResponse {
@@ -425,14 +381,6 @@ export interface AppointmentCounterResponse {
   notDistributed: number;
 }
 
-export interface AppointmentCounterResponseListSuccessApiResponse {
-  successResponse: AppointmentCounterResponse[] | null;
-}
-
-export interface AppointmentCounterResponseSuccessApiResponse {
-  successResponse: AppointmentCounterResponse | null;
-}
-
 export interface AppointmentCreateRequest {
   /** @format int32 */
   apartmentId: number;
@@ -472,14 +420,6 @@ export interface AppointmentResponse {
   modifiedDateTimeUtc: string | null;
 }
 
-export interface AppointmentResponseListSuccessApiResponse {
-  successResponse: AppointmentResponse[] | null;
-}
-
-export interface AppointmentResponseSuccessApiResponse {
-  successResponse: AppointmentResponse | null;
-}
-
 export interface AppointmentUpdateRequest {
   homeownerFullName?: string | null;
   homeownerPhone?: string | null;
@@ -503,10 +443,6 @@ export interface AppointmentsSetRequest {
 export interface AppointmentsSetResponse {
   /** @format uuid */
   assignmentId: string;
-}
-
-export interface AppointmentsSetResponseSuccessApiResponse {
-  successResponse: AppointmentsSetResponse | null;
 }
 
 export interface ArchivesDataGroup {
@@ -560,14 +496,6 @@ export interface AssignmentResponse {
   creatingUser: CreatingUser | null;
 }
 
-export interface AssignmentResponseListSuccessApiResponse {
-  successResponse: AssignmentResponse[] | null;
-}
-
-export interface AssignmentResponseSuccessApiResponse {
-  successResponse: AssignmentResponse | null;
-}
-
 export interface BaseIndividualDeviceReadingsCreateRequest {
   /** @format date-time */
   readingDate?: string | null;
@@ -601,8 +529,7 @@ export interface BuildingAddressCreateRequest {
   city?: string | null;
   /** @minLength 1 */
   street: string;
-  /** @minLength 1 */
-  number?: string;
+  number?: string | null;
   corpus?: string | null;
 }
 
@@ -637,10 +564,6 @@ export interface BuildingByFilterResponse {
   next: Building | null;
 }
 
-export interface BuildingByFilterResponseSuccessApiResponse {
-  successResponse: BuildingByFilterResponse | null;
-}
-
 export interface BuildingFiltersResponse {
   houseManagements: GuidStringDictionaryItem[] | null;
   houseCategories: EHouseCategoryStringDictionaryItem[] | null;
@@ -649,10 +572,6 @@ export interface BuildingFiltersResponse {
   nonResidentialHouseTypes:
     | ENonResidentialHouseTypeStringDictionaryItem[]
     | null;
-}
-
-export interface BuildingFiltersResponseSuccessApiResponse {
-  successResponse: BuildingFiltersResponse | null;
 }
 
 export interface BuildingListResponse {
@@ -688,10 +607,6 @@ export interface BuildingListResponsePagedList {
   items: BuildingListResponse[] | null;
 }
 
-export interface BuildingListResponsePagedListSuccessApiResponse {
-  successResponse: BuildingListResponsePagedList | null;
-}
-
 export interface BuildingShortResponse {
   /** @format int32 */
   id: number;
@@ -699,10 +614,6 @@ export interface BuildingShortResponse {
   managingFirmId: number;
   houseCategory: EHouseCategory;
   address: BuildingAddressResponse | null;
-}
-
-export interface BuildingShortResponseSuccessApiResponse {
-  successResponse: BuildingShortResponse | null;
 }
 
 export interface BuildingWithCoordinatesResponse {
@@ -738,10 +649,6 @@ export interface BuildingWithTasksResponse {
   tasks: TaskShortResponse[] | null;
 }
 
-export interface BuildingWithTasksResponseIEnumerableSuccessApiResponse {
-  successResponse: BuildingWithTasksResponse[] | null;
-}
-
 export interface CalculatorCommentBaseRequest {
   text?: string | null;
 }
@@ -757,10 +664,6 @@ export interface CalculatorCommentResponse {
   lastModifiedUser: LastModifiedUserResponse | null;
 }
 
-export interface CalculatorCommentResponseSuccessApiResponse {
-  successResponse: CalculatorCommentResponse | null;
-}
-
 export interface CalculatorFilterResponse {
   nodeStatuses:
     | ENodeCommercialAccountStatusNullableStringDictionaryItem[]
@@ -769,10 +672,6 @@ export interface CalculatorFilterResponse {
   resourceTypes: EResourceTypeNullableStringDictionaryItem[] | null;
   cities: string[] | null;
   streets: string[] | null;
-}
-
-export interface CalculatorFilterResponseSuccessApiResponse {
-  successResponse: CalculatorFilterResponse | null;
 }
 
 export interface CalculatorInfoListResponse {
@@ -785,10 +684,6 @@ export interface CalculatorInfoListWrappedResponse {
   items: CalculatorInfoListResponse[] | null;
 }
 
-export interface CalculatorInfoListWrappedResponseSuccessApiResponse {
-  successResponse: CalculatorInfoListWrappedResponse | null;
-}
-
 export interface CalculatorIntoHousingStockResponse {
   /** @format int32 */
   id: number;
@@ -796,10 +691,6 @@ export interface CalculatorIntoHousingStockResponse {
   model: string | null;
   /** @format int32 */
   calculatorInfoId: number | null;
-}
-
-export interface CalculatorIntoHousingStockResponseArraySuccessApiResponse {
-  successResponse: CalculatorIntoHousingStockResponse[] | null;
 }
 
 export interface CalculatorIntoNodeResponse {
@@ -882,10 +773,6 @@ export interface CalculatorListResponsePagedList {
   items: CalculatorListResponse[] | null;
 }
 
-export interface CalculatorListResponsePagedListSuccessApiResponse {
-  successResponse: CalculatorListResponsePagedList | null;
-}
-
 export interface CalculatorResponse {
   /** @format int32 */
   id: number;
@@ -922,10 +809,6 @@ export interface CalculatorResponse {
   comment: CalculatorCommentResponse | null;
 }
 
-export interface CalculatorResponseSuccessApiResponse {
-  successResponse: CalculatorResponse | null;
-}
-
 export interface CallCenterWorkingConstructedReportResponse {
   managingFirm: string | null;
   houseManagement: string | null;
@@ -947,10 +830,6 @@ export interface CallCenterWorkingConstructedReportResponse {
   heatValue: number;
 }
 
-export interface CallCenterWorkingConstructedReportResponseIEnumerableSuccessApiResponse {
-  successResponse: CallCenterWorkingConstructedReportResponse[] | null;
-}
-
 export interface ChannelConfirmRequest {
   token?: string | null;
 }
@@ -961,10 +840,6 @@ export interface ChannelResponse {
   type: ChannelType;
   /** @format date-time */
   confirmedAt: string;
-}
-
-export interface ChannelResponseICollectionSuccessApiResponse {
-  successResponse: ChannelResponse[] | null;
 }
 
 export enum ChannelType {
@@ -1048,10 +923,6 @@ export interface CommunicationPipeForAddingDeviceListResponse {
   entryNumber: number | null;
   magistralType: EMagistralType;
   pipes: CommunicationPipeForAddingDeviceResponse[] | null;
-}
-
-export interface CommunicationPipeForAddingDeviceListResponseSuccessApiResponse {
-  successResponse: CommunicationPipeForAddingDeviceListResponse | null;
 }
 
 export interface CommunicationPipeForAddingDeviceResponse {
@@ -1153,20 +1024,12 @@ export interface ContractorListResponsePagedList {
   items: ContractorListResponse[] | null;
 }
 
-export interface ContractorListResponsePagedListSuccessApiResponse {
-  successResponse: ContractorListResponsePagedList | null;
-}
-
 export interface ContractorResponse {
   /** @format int32 */
   id: number;
   name: string | null;
   cellphone: string | null;
   email: string | null;
-}
-
-export interface ContractorResponseSuccessApiResponse {
-  successResponse: ContractorResponse | null;
 }
 
 export interface ContractorUpdateRequest {
@@ -1191,10 +1054,6 @@ export interface ControllerResponse {
   firstName: string | null;
   lastName: string | null;
   middleName: string | null;
-}
-
-export interface ControllerResponseListSuccessApiResponse {
-  successResponse: ControllerResponse[] | null;
 }
 
 export interface ControllerUpdateRequest {
@@ -1332,6 +1191,13 @@ export interface CreateIndividualDeviceRequest {
   model: string;
   /** @minLength 1 */
   serialNumber: string;
+  /**
+   * @format int32
+   * @min 4
+   * @max 10
+   */
+  bitDepth: number;
+  rateType: EIndividualDeviceRateType;
   /** @format date-time */
   lastCheckingDate: string;
   /** @format date-time */
@@ -1339,28 +1205,21 @@ export interface CreateIndividualDeviceRequest {
   sealNumber?: string | null;
   /** @format date-time */
   sealInstallationDate?: string | null;
-  /**
-   * @format int32
-   * @min 4
-   * @max 10
-   */
-  bitDepth: number;
   /** @format date-time */
   openingDate?: string | null;
+  isConnected?: boolean;
+  documentsIds?: number[] | null;
+  isPolling?: boolean;
+  /** @format int32 */
+  contractorId?: number | null;
+  connection?: MeteringDeviceConnection | null;
   /** @format int32 */
   apartmentId: number;
   resource: EResourceType;
   /** @format int32 */
   mountPlaceId?: number | null;
-  rateType: EIndividualDeviceRateType;
   startupReadings: BaseIndividualDeviceReadingsCreateRequest;
   defaultReadings?: BaseIndividualDeviceReadingsCreateRequest | null;
-  connection?: MeteringDeviceConnection | null;
-  isConnected?: boolean;
-  isPolling?: boolean;
-  /** @format int32 */
-  contractorId?: number | null;
-  documentsIds?: number[] | null;
 }
 
 export interface CreateNodeCheckRequest {
@@ -1460,10 +1319,6 @@ export interface DataAfterSplittingHomeownerAccountResponse {
   newApartmentHomeownerAccount: HomeownerAccountResponse | null;
 }
 
-export interface DataAfterSplittingHomeownerAccountResponseSuccessApiResponse {
-  successResponse: DataAfterSplittingHomeownerAccountResponse | null;
-}
-
 export interface DateTimeDoubleDictionaryItem {
   /** @format date-time */
   key?: string;
@@ -1518,10 +1373,6 @@ export interface DistrictResponse {
   houses: House[] | null;
 }
 
-export interface DistrictResponseListSuccessApiResponse {
-  successResponse: DistrictResponse[] | null;
-}
-
 export interface DistrictUpdateRequest {
   title?: string | null;
   additionalInfo?: string | null;
@@ -1548,10 +1399,6 @@ export interface DocumentResponse {
   type: EDocumentType;
 }
 
-export interface DocumentResponseIEnumerableSuccessApiResponse {
-  successResponse: DocumentResponse[] | null;
-}
-
 export enum EActResourceType {
   All = 'All',
   ColdWaterSupply = 'ColdWaterSupply',
@@ -1563,10 +1410,6 @@ export enum EActResourceType {
 export interface EActResourceTypeStringDictionaryItem {
   key?: EActResourceType;
   value?: string | null;
-}
-
-export interface EActResourceTypeStringDictionaryItemListSuccessApiResponse {
-  successResponse: EActResourceTypeStringDictionaryItem[] | null;
 }
 
 export enum EActType {
@@ -1582,10 +1425,6 @@ export enum EActType {
 export interface EActTypeStringDictionaryItem {
   key?: EActType;
   value?: string | null;
-}
-
-export interface EActTypeStringDictionaryItemListSuccessApiResponse {
-  successResponse: EActTypeStringDictionaryItem[] | null;
 }
 
 export enum EApartmentStatus {
@@ -1608,10 +1447,6 @@ export enum ECheckType {
 export interface ECheckTypeStringDictionaryItem {
   key?: ECheckType;
   value?: string | null;
-}
-
-export interface ECheckTypeStringDictionaryItemListSuccessApiResponse {
-  successResponse: ECheckTypeStringDictionaryItem[] | null;
 }
 
 export enum EClosingReason {
@@ -1657,10 +1492,6 @@ export enum EDocumentType {
 export interface EDocumentTypeStringDictionaryItem {
   key?: EDocumentType;
   value?: string | null;
-}
-
-export interface EDocumentTypeStringDictionaryItemListSuccessApiResponse {
-  successResponse: EDocumentTypeStringDictionaryItem[] | null;
 }
 
 export enum EExpiresDateAt {
@@ -1747,10 +1578,6 @@ export enum EMagistralType {
 export interface EMagistralTypeStringDictionaryItem {
   key?: EMagistralType;
   value?: string | null;
-}
-
-export interface EMagistralTypeStringDictionaryItemListSuccessApiResponse {
-  successResponse: EMagistralTypeStringDictionaryItem[] | null;
 }
 
 export enum EManagementFirmEventType {
@@ -1874,10 +1701,6 @@ export interface ENodeWorkingRangeTypeStringDictionaryItem {
   value?: string | null;
 }
 
-export interface ENodeWorkingRangeTypeStringDictionaryItemListSuccessApiResponse {
-  successResponse: ENodeWorkingRangeTypeStringDictionaryItem[] | null;
-}
-
 export enum ENonResidentialHouseType {
   None = 'None',
   Social = 'Social',
@@ -1904,12 +1727,6 @@ export enum EOrganizationUserWorkingStatusType {
 export interface EOrganizationUserWorkingStatusTypeStringDictionaryItem {
   key?: EOrganizationUserWorkingStatusType;
   value?: string | null;
-}
-
-export interface EOrganizationUserWorkingStatusTypeStringDictionaryItemListSuccessApiResponse {
-  successResponse:
-    | EOrganizationUserWorkingStatusTypeStringDictionaryItem[]
-    | null;
 }
 
 export enum EPersonType {
@@ -1957,18 +1774,6 @@ export enum EPipeNodeValidationMessage {
 export interface EPipeNodeValidationMessageStringDictionaryItem {
   key?: EPipeNodeValidationMessage;
   value?: string | null;
-}
-
-export enum EPollActionType {
-  DuplicateReadings = 'DuplicateReadings',
-  IndividualCreateTasksWithoutReadings = 'IndividualCreateTasksWithoutReadings',
-  IndividualCloseWithoutReadings = 'IndividualCloseWithoutReadings',
-  IndividualCloseByCheckDate = 'IndividualCloseByCheckDate',
-  HousingCloseByCheckDate = 'HousingCloseByCheckDate',
-  IndividualExport = 'IndividualExport',
-  HousingExport = 'HousingExport',
-  MilurExport = 'MilurExport',
-  OpenIndividualDevicesReport = 'OpenIndividualDevicesReport',
 }
 
 export enum EPollState {
@@ -2040,10 +1845,6 @@ export interface EResourceTypeConsumptionRateResponseDictionaryItem {
   value?: ConsumptionRateResponse | null;
 }
 
-export interface EResourceTypeConsumptionRateResponseDictionaryItemListSuccessApiResponse {
-  successResponse: EResourceTypeConsumptionRateResponseDictionaryItem[] | null;
-}
-
 export interface EResourceTypeDoubleDictionaryItem {
   key?: EResourceType;
   /** @format double */
@@ -2075,10 +1876,6 @@ export enum ESecuredIdentityRoleName {
 export interface ESecuredIdentityRoleNameStringDictionaryItem {
   key?: ESecuredIdentityRoleName;
   value?: string | null;
-}
-
-export interface ESecuredIdentityRoleNameStringDictionaryItemListSuccessApiResponse {
-  successResponse: ESecuredIdentityRoleNameStringDictionaryItem[] | null;
 }
 
 export enum ESoiReportPeriod {
@@ -2306,10 +2103,6 @@ export interface ElectricHousingMeteringDeviceResponse {
   nodeId: number | null;
 }
 
-export interface ElectricHousingMeteringDeviceResponseSuccessApiResponse {
-  successResponse: ElectricHousingMeteringDeviceResponse | null;
-}
-
 export interface ElectricNodeResponse {
   /** @format int32 */
   id: number;
@@ -2332,10 +2125,6 @@ export interface ElectricNodeResponse {
   counter: ElectricHousingMeteringDeviceResponse | null;
 }
 
-export interface ElectricNodeResponseSuccessApiResponse {
-  successResponse: ElectricNodeResponse | null;
-}
-
 export interface ErpApplicationResponse {
   /** @format uuid */
   id: string;
@@ -2350,10 +2139,6 @@ export interface ErpApplicationResponse {
   source: string | null;
   creator: ApplicationUserResponse | null;
   responsible: ApplicationUserResponse | null;
-}
-
-export interface ErpApplicationResponseSuccessApiResponse {
-  successResponse: ErpApplicationResponse | null;
 }
 
 export interface ErpCreateTaskRequest {
@@ -2382,10 +2167,6 @@ export interface ErpExecutorResponse {
   name: string | null;
 }
 
-export interface ErpExecutorResponseIEnumerableSuccessApiResponse {
-  successResponse: ErpExecutorResponse[] | null;
-}
-
 export interface ErpSourceResponse {
   /** @format uuid */
   id: string;
@@ -2394,17 +2175,9 @@ export interface ErpSourceResponse {
   isSubscriberRequired: boolean;
 }
 
-export interface ErpSourceResponseIEnumerableSuccessApiResponse {
-  successResponse: ErpSourceResponse[] | null;
-}
-
 export interface ErpTaskDeadlineResponse {
   /** @format int32 */
   deadlineInHours: number | null;
-}
-
-export interface ErpTaskDeadlineResponseSuccessApiResponse {
-  successResponse: ErpTaskDeadlineResponse | null;
 }
 
 export interface ErpTaskReasonGroupResponse {
@@ -2414,10 +2187,6 @@ export interface ErpTaskReasonGroupResponse {
   type: EisTaskReasonType;
   name: string | null;
   taskTypes: EisTaskType[] | null;
-}
-
-export interface ErpTaskReasonGroupResponseIEnumerableSuccessApiResponse {
-  successResponse: ErpTaskReasonGroupResponse[] | null;
 }
 
 export interface ErrorApiResponse {
@@ -2434,11 +2203,6 @@ export interface ErrorResponse {
 
 export interface FeatureTogglesResponse {
   sealService: boolean;
-}
-
-export interface FileContentResultSuccessApiResponse {
-  /** @format binary */
-  successResponse: File | null;
 }
 
 export interface FullAddressResponse {
@@ -2458,33 +2222,17 @@ export interface GetDataForHousingConsumptionPlotResponse {
   housingConsumption: DateTimeDoubleDictionaryItem[] | null;
 }
 
-export interface GetDataForHousingConsumptionPlotResponseSuccessApiResponse {
-  successResponse: GetDataForHousingConsumptionPlotResponse | null;
-}
-
 export interface GetDataForIndividualDevicesConsumptionPlotResponse {
   normativeConsumption: DateTimeDoubleDictionaryItem[] | null;
   subscriberConsumption: DateTimeDoubleDictionaryItem[] | null;
-}
-
-export interface GetDataForIndividualDevicesConsumptionPlotResponseSuccessApiResponse {
-  successResponse: GetDataForIndividualDevicesConsumptionPlotResponse | null;
 }
 
 export interface GetHousingMeteringDeviceReadingsResponse {
   items: HousingMeteringDeviceReadingsIncludingPlacementResponse[] | null;
 }
 
-export interface GetHousingMeteringDeviceReadingsResponseSuccessApiResponse {
-  successResponse: GetHousingMeteringDeviceReadingsResponse | null;
-}
-
 export interface GetSummaryHousingConsumptionsByResourcesResponse {
   consumptions: EResourceTypeDoubleDictionaryItem[] | null;
-}
-
-export interface GetSummaryHousingConsumptionsByResourcesResponseSuccessApiResponse {
-  successResponse: GetSummaryHousingConsumptionsByResourcesResponse | null;
 }
 
 export interface GroupReportContractorResponse {
@@ -2501,10 +2249,6 @@ export interface GroupReportFormResponse {
     | null;
   housingStockGroups: GroupReportHousingStockGroupResponse[] | null;
   contractors: GroupReportContractorResponse[] | null;
-}
-
-export interface GroupReportFormResponseSuccessApiResponse {
-  successResponse: GroupReportFormResponse | null;
 }
 
 export interface GroupReportHousingStockGroupResponse {
@@ -2528,19 +2272,10 @@ export interface GroupReportResponse {
   title: string | null;
 }
 
-export interface GroupReportResponseSuccessApiResponse {
-  successResponse: GroupReportResponse | null;
-}
-
 export interface GuidStringDictionaryItem {
   /** @format uuid */
   key?: string;
   value?: string | null;
-}
-
-export interface GuidSuccessApiResponse {
-  /** @format uuid */
-  successResponse: string;
 }
 
 export interface HeatingSeasonAdjustmentResponse {
@@ -2602,20 +2337,12 @@ export interface HeatingSeasonPageResponse {
   houseManagementItems: HeatingSeasonHouseManagementListItemResponse[] | null;
 }
 
-export interface HeatingSeasonPageResponseSuccessApiResponse {
-  successResponse: HeatingSeasonPageResponse | null;
-}
-
 export interface HeatingSeasonResponse {
   /** @format uuid */
   heatingSeasonId: string;
   /** @format int32 */
   managementFirmId: number;
   adjustments: HeatingSeasonAdjustmentResponse[] | null;
-}
-
-export interface HeatingSeasonResponseSuccessApiResponse {
-  successResponse: HeatingSeasonResponse | null;
 }
 
 export interface HeatingStationResponse {
@@ -2645,14 +2372,6 @@ export interface HeatingStationResponsePagedList {
   items: HeatingStationResponse[] | null;
 }
 
-export interface HeatingStationResponsePagedListSuccessApiResponse {
-  successResponse: HeatingStationResponsePagedList | null;
-}
-
-export interface HeatingStationResponseSuccessApiResponse {
-  successResponse: HeatingStationResponse | null;
-}
-
 export interface HeatingStationShortResponse {
   /** @format uuid */
   id: string;
@@ -2665,10 +2384,6 @@ export interface HeatingStationWithStreetsResponse {
   id: string;
   name: string | null;
   streets: StreetWithBuildingNumbersResponse[] | null;
-}
-
-export interface HeatingStationWithStreetsResponseIEnumerableSuccessApiResponse {
-  successResponse: HeatingStationWithStreetsResponse[] | null;
 }
 
 export interface HomeownerAccount {
@@ -2800,10 +2515,6 @@ export interface HomeownerAccountResponse {
   replacedByAccount: ReplacementAccount | null;
 }
 
-export interface HomeownerAccountResponseICollectionSuccessApiResponse {
-  successResponse: HomeownerAccountResponse[] | null;
-}
-
 export interface HomeownerAccountResponsePagedList {
   /** @format int32 */
   totalItems: number;
@@ -2820,14 +2531,6 @@ export interface HomeownerAccountResponsePagedList {
   /** @format int32 */
   previousPageNumber: number;
   items: HomeownerAccountResponse[] | null;
-}
-
-export interface HomeownerAccountResponsePagedListSuccessApiResponse {
-  successResponse: HomeownerAccountResponsePagedList | null;
-}
-
-export interface HomeownerAccountResponseSuccessApiResponse {
-  successResponse: HomeownerAccountResponse | null;
 }
 
 export interface HomeownerAccountSplitRequest {
@@ -2854,10 +2557,6 @@ export interface HomeownerCertificateResponse {
   individualDevices: IndividualDeviceIntoHomeownerCertificateResponse[] | null;
 }
 
-export interface HomeownerCertificateResponseSuccessApiResponse {
-  successResponse: HomeownerCertificateResponse | null;
-}
-
 export interface HomeownersConstructedReportResponse {
   houseManagementName: string | null;
   city: string | null;
@@ -2870,10 +2569,6 @@ export interface HomeownersConstructedReportResponse {
   homeownerPhoneNumbers: string[] | null;
   /** @deprecated */
   homeownerPhoneNumber: string | null;
-}
-
-export interface HomeownersConstructedReportResponseSuccessApiResponse {
-  successResponse: HomeownersConstructedReportResponse | null;
 }
 
 export interface House {
@@ -2900,10 +2595,6 @@ export interface HouseManagementConstructedReportResponse {
   heatCount: number;
 }
 
-export interface HouseManagementConstructedReportResponseIEnumerableSuccessApiResponse {
-  successResponse: HouseManagementConstructedReportResponse[] | null;
-}
-
 export interface HouseManagementResponse {
   /** @format uuid */
   id: string;
@@ -2912,23 +2603,11 @@ export interface HouseManagementResponse {
   comment: string | null;
 }
 
-export interface HouseManagementResponseListSuccessApiResponse {
-  successResponse: HouseManagementResponse[] | null;
-}
-
-export interface HouseManagementResponseSuccessApiResponse {
-  successResponse: HouseManagementResponse | null;
-}
-
 export interface HouseManagementWithStreetsResponse {
   /** @format uuid */
   id: string;
   name: string | null;
   streets: StreetWithBuildingNumbersResponse[] | null;
-}
-
-export interface HouseManagementWithStreetsResponseIEnumerableSuccessApiResponse {
-  successResponse: HouseManagementWithStreetsResponse[] | null;
 }
 
 export interface HousingDeviceReadingOnRiserResponse {
@@ -2957,10 +2636,6 @@ export interface HousingDevicesConstructedReportResponse {
   consumption: number | null;
 }
 
-export interface HousingDevicesConstructedReportResponseIEnumerableSuccessApiResponse {
-  successResponse: HousingDevicesConstructedReportResponse[] | null;
-}
-
 export interface HousingMeteringDeviceAddCommentRequest {
   text?: string | null;
 }
@@ -2974,10 +2649,6 @@ export interface HousingMeteringDeviceCommentResponse {
   /** @format date-time */
   creationDateTime: string;
   lastModifiedUser: LastModifiedUserResponse | null;
-}
-
-export interface HousingMeteringDeviceCommentResponseSuccessApiResponse {
-  successResponse: HousingMeteringDeviceCommentResponse | null;
 }
 
 export interface HousingMeteringDeviceIncludingReadingsResponse {
@@ -3029,10 +2700,6 @@ export interface HousingMeteringDeviceIncludingReadingsResponsePagedList {
   items: HousingMeteringDeviceIncludingReadingsResponse[] | null;
 }
 
-export interface HousingMeteringDeviceIncludingReadingsResponsePagedListSuccessApiResponse {
-  successResponse: HousingMeteringDeviceIncludingReadingsResponsePagedList | null;
-}
-
 export interface HousingMeteringDeviceReadingsHistoryItemResponse {
   /** @format uuid */
   id: string;
@@ -3058,10 +2725,6 @@ export interface HousingMeteringDeviceReadingsHistoryItemResponse {
 
 export interface HousingMeteringDeviceReadingsHistoryResponse {
   yearReadings: HousingMeteringDeviceReadingsYearHistoryResponse[] | null;
-}
-
-export interface HousingMeteringDeviceReadingsHistoryResponseSuccessApiResponse {
-  successResponse: HousingMeteringDeviceReadingsHistoryResponse | null;
 }
 
 export interface HousingMeteringDeviceReadingsIncludingPlacementResponse {
@@ -3092,10 +2755,6 @@ export interface HousingMeteringDeviceReadingsIncludingPlacementResponse {
   magistralType: EMagistralType;
 }
 
-export interface HousingMeteringDeviceReadingsIncludingPlacementResponseSuccessApiResponse {
-  successResponse: HousingMeteringDeviceReadingsIncludingPlacementResponse | null;
-}
-
 export interface HousingMeteringDeviceReadingsMonthHistoryResponse {
   /** @format int32 */
   month: number;
@@ -3121,10 +2780,6 @@ export interface HousingMeteringDeviceReadingsResponse {
   /** @format date-time */
   removedTime: string | null;
   removedByUser: OrganizationUserShortResponse | null;
-}
-
-export interface HousingMeteringDeviceReadingsResponseSuccessApiResponse {
-  successResponse: HousingMeteringDeviceReadingsResponse | null;
 }
 
 export interface HousingMeteringDeviceReadingsYearHistoryResponse {
@@ -3234,10 +2889,6 @@ export interface HousingStockResponse {
   constructionYear: number | null;
 }
 
-export interface HousingStockResponseSuccessApiResponse {
-  successResponse: HousingStockResponse | null;
-}
-
 export interface HousingStockUpdateRequest {
   /** @format uuid */
   heatingStationId?: string | null;
@@ -3289,10 +2940,6 @@ export interface HousingStockWithTasksResponse {
   tasks: TaskShortResponse[] | null;
 }
 
-export interface HousingStockWithTasksResponseIEnumerableSuccessApiResponse {
-  successResponse: HousingStockWithTasksResponse[] | null;
-}
-
 export interface IndividualDeviceConsumption {
   /** @format double */
   consumption?: number;
@@ -3305,10 +2952,6 @@ export interface IndividualDeviceConsumptionResponse {
   consumption: number | null;
   /** @format date-time */
   date: string;
-}
-
-export interface IndividualDeviceConsumptionResponseIEnumerableSuccessApiResponse {
-  successResponse: IndividualDeviceConsumptionResponse[] | null;
 }
 
 export interface IndividualDeviceIntoHomeownerCertificateResponse {
@@ -3379,10 +3022,6 @@ export interface IndividualDeviceListItemResponsePagedList {
   items: IndividualDeviceListItemResponse[] | null;
 }
 
-export interface IndividualDeviceListItemResponsePagedListSuccessApiResponse {
-  successResponse: IndividualDeviceListItemResponsePagedList | null;
-}
-
 export interface IndividualDeviceListResponseFromDevicePage {
   /** @format int32 */
   id?: number;
@@ -3425,17 +3064,9 @@ export interface IndividualDeviceListResponseFromDevicePagePagedList {
   items: IndividualDeviceListResponseFromDevicePage[] | null;
 }
 
-export interface IndividualDeviceListResponseFromDevicePagePagedListSuccessApiResponse {
-  successResponse: IndividualDeviceListResponseFromDevicePagePagedList | null;
-}
-
 export interface IndividualDeviceMountPlaceForFilterResponse {
   name: string | null;
   description: string | null;
-}
-
-export interface IndividualDeviceMountPlaceForFilterResponseListSuccessApiResponse {
-  successResponse: IndividualDeviceMountPlaceForFilterResponse[] | null;
 }
 
 export interface IndividualDeviceMountPlaceListResponse {
@@ -3447,10 +3078,6 @@ export interface IndividualDeviceMountPlaceListResponse {
 
 export interface IndividualDeviceMountPlaceListWrappedResponse {
   items: IndividualDeviceMountPlaceListResponse[] | null;
-}
-
-export interface IndividualDeviceMountPlaceListWrappedResponseSuccessApiResponse {
-  successResponse: IndividualDeviceMountPlaceListWrappedResponse | null;
 }
 
 export interface IndividualDeviceOnTaskResponse {
@@ -3491,10 +3118,6 @@ export interface IndividualDeviceReadingsCreateListResponse {
   modified: IndividualDeviceReadingsCreateResponse[] | null;
 }
 
-export interface IndividualDeviceReadingsCreateListResponseSuccessApiResponse {
-  successResponse: IndividualDeviceReadingsCreateListResponse | null;
-}
-
 export interface IndividualDeviceReadingsCreateRequest {
   /** @format double */
   value1: number;
@@ -3528,10 +3151,6 @@ export interface IndividualDeviceReadingsCreateResponse {
 
 export interface IndividualDeviceReadingsHistoryResponse {
   yearReadings: IndividualDeviceReadingsYearHistoryResponse[] | null;
-}
-
-export interface IndividualDeviceReadingsHistoryResponseSuccessApiResponse {
-  successResponse: IndividualDeviceReadingsHistoryResponse | null;
 }
 
 export interface IndividualDeviceReadingsItemHistoryResponse {
@@ -3605,10 +3224,6 @@ export interface IndividualDeviceReadingsResponse {
   removedByUser: OrganizationUserShortResponse | null;
 }
 
-export interface IndividualDeviceReadingsResponseSuccessApiResponse {
-  successResponse: IndividualDeviceReadingsResponse | null;
-}
-
 export interface IndividualDeviceReadingsSlimResponse {
   /** @format int32 */
   id: number;
@@ -3624,10 +3239,6 @@ export interface IndividualDeviceReadingsSlimResponse {
   entryDate: string;
   source: EIndividualDeviceReadingsSource;
   user: OrganizationUserShortResponse | null;
-}
-
-export interface IndividualDeviceReadingsSlimResponseSuccessApiResponse {
-  successResponse: IndividualDeviceReadingsSlimResponse | null;
 }
 
 export interface IndividualDeviceReadingsYearHistoryResponse {
@@ -3700,24 +3311,8 @@ export interface IndividualDeviceResponseFromDevicePage {
   bitDepth?: number | null;
 }
 
-export interface IndividualDeviceResponseFromDevicePageListSuccessApiResponse {
-  successResponse: IndividualDeviceResponseFromDevicePage[] | null;
-}
-
-export interface IndividualDeviceResponseFromDevicePageSuccessApiResponse {
-  successResponse: IndividualDeviceResponseFromDevicePage | null;
-}
-
-export interface IndividualDeviceResponseSuccessApiResponse {
-  successResponse: IndividualDeviceResponse | null;
-}
-
 export interface IndividualDeviceWithExpiredCheckingDateListResponse {
   devices: IndividualDeviceWithExpiredCheckingDateResponse[] | null;
-}
-
-export interface IndividualDeviceWithExpiredCheckingDateListResponseSuccessApiResponse {
-  successResponse: IndividualDeviceWithExpiredCheckingDateListResponse | null;
 }
 
 export interface IndividualDeviceWithExpiredCheckingDateResponse {
@@ -3763,10 +3358,6 @@ export interface IndividualDevicesConstructedReportResponse {
   closedDevicesOption: ClosedDevicesConstructedReportResponse | null;
 }
 
-export interface IndividualDevicesConstructedReportResponseIEnumerableSuccessApiResponse {
-  successResponse: IndividualDevicesConstructedReportResponse[] | null;
-}
-
 export interface InspectorCreateRequest {
   /** @minLength 1 */
   fullName: string;
@@ -3787,10 +3378,6 @@ export interface InspectorOnBuildingResponse {
   inspectorId: number | null;
 }
 
-export interface InspectorOnBuildingResponseListSuccessApiResponse {
-  successResponse: InspectorOnBuildingResponse[] | null;
-}
-
 export interface InspectorReassignAllAddressesRequest {
   /** @format int32 */
   newInspectorId?: number;
@@ -3800,10 +3387,6 @@ export interface InspectorResponse {
   /** @format int32 */
   id: number;
   fullName: string | null;
-}
-
-export interface InspectorResponseListSuccessApiResponse {
-  successResponse: InspectorResponse[] | null;
 }
 
 export interface InspectorResponsePagedList {
@@ -3824,14 +3407,6 @@ export interface InspectorResponsePagedList {
   items: InspectorResponse[] | null;
 }
 
-export interface InspectorResponsePagedListSuccessApiResponse {
-  successResponse: InspectorResponsePagedList | null;
-}
-
-export interface InspectorResponseSuccessApiResponse {
-  successResponse: InspectorResponse | null;
-}
-
 export interface InspectorUpdateRequest {
   fullName?: string | null;
 }
@@ -3844,20 +3419,6 @@ export interface InspectorsConstructedReportResponse {
    */
   dayPlan: number;
   counts: number[] | null;
-}
-
-export interface InspectorsConstructedReportResponseIEnumerableSuccessApiResponse {
-  successResponse: InspectorsConstructedReportResponse[] | null;
-}
-
-export interface Int32NullableSuccessApiResponse {
-  /** @format int32 */
-  successResponse: number | null;
-}
-
-export interface Int32SuccessApiResponse {
-  /** @format int32 */
-  successResponse: number;
 }
 
 export interface InvalidCheckingDatesConstructedReportResponse {
@@ -3902,10 +3463,6 @@ export interface ManagementFirmCompetenceUserResponse {
 
 export interface ManagementFirmCompetencesListResponse {
   competences: ManagementFirmCompetenceResponse[] | null;
-}
-
-export interface ManagementFirmCompetencesListResponseSuccessApiResponse {
-  successResponse: ManagementFirmCompetencesListResponse | null;
 }
 
 export interface ManagementFirmEventDataApartmentResponse {
@@ -4029,10 +3586,6 @@ export interface MeteringDeviceListResponse {
   futureCheckingDate: string | null;
 }
 
-export interface MeteringDeviceListResponseIEnumerableSuccessApiResponse {
-  successResponse: MeteringDeviceListResponse[] | null;
-}
-
 export interface MeteringDeviceListResponsePagedList {
   /** @format int32 */
   totalItems: number;
@@ -4049,10 +3602,6 @@ export interface MeteringDeviceListResponsePagedList {
   /** @format int32 */
   previousPageNumber: number;
   items: MeteringDeviceListResponse[] | null;
-}
-
-export interface MeteringDeviceListResponsePagedListSuccessApiResponse {
-  successResponse: MeteringDeviceListResponsePagedList | null;
 }
 
 export interface MeteringDeviceResponse {
@@ -4092,10 +3641,6 @@ export interface MeteringDeviceResponse {
   resource: EResourceType | null;
 }
 
-export interface MeteringDeviceResponseSuccessApiResponse {
-  successResponse: MeteringDeviceResponse | null;
-}
-
 export interface MeteringDeviceSearchListResponse {
   /** @format int32 */
   id: number;
@@ -4112,10 +3657,6 @@ export interface MeteringDeviceSearchListResponse {
   /** @format int32 */
   deviceAddress: number | null;
   resource: EResourceType | null;
-}
-
-export interface MeteringDeviceSearchListResponseIEnumerableSuccessApiResponse {
-  successResponse: MeteringDeviceSearchListResponse[] | null;
 }
 
 export interface NodeCheckResponse {
@@ -4146,10 +3687,6 @@ export interface NodeCheckResponsePagedList {
   items: NodeCheckResponse[] | null;
 }
 
-export interface NodeCheckResponsePagedListSuccessApiResponse {
-  successResponse: NodeCheckResponsePagedList | null;
-}
-
 export interface NodeCommercialStatusResponse {
   value: ENodeCommercialAccountStatus;
   description: string | null;
@@ -4178,16 +3715,8 @@ export interface NodeOnHousingStockResponse {
   networkDevice: NodeNetworkDeviceResponse | null;
 }
 
-export interface NodeOnHousingStockResponseListSuccessApiResponse {
-  successResponse: NodeOnHousingStockResponse[] | null;
-}
-
 export interface NodeServiceZoneListResponse {
   nodeServiceZones: NodeServiceZoneResponse[] | null;
-}
-
-export interface NodeServiceZoneListResponseSuccessApiResponse {
-  successResponse: NodeServiceZoneListResponse | null;
 }
 
 export interface NodeServiceZoneRequest {
@@ -4200,8 +3729,12 @@ export interface NodeServiceZoneResponse {
   name: string | null;
 }
 
-export interface NodeServiceZoneResponseSuccessApiResponse {
-  successResponse: NodeServiceZoneResponse | null;
+export interface NodeServiceZoneWithNodeCountResponse {
+  /** @format int32 */
+  id: number;
+  name: string | null;
+  /** @format int32 */
+  nodeCount: number;
 }
 
 export interface NodeSetCommercialStatusRequest {
@@ -4264,10 +3797,6 @@ export interface NodesPagedList {
   previousPageNumber: number;
   pipeNodes: PipeNodeResponse[] | null;
   electricNodes: ElectricNodeResponse[] | null;
-}
-
-export interface NodesPagedListSuccessApiResponse {
-  successResponse: NodesPagedList | null;
 }
 
 export interface NonResidentialBuildingCreateRequest {
@@ -4335,10 +3864,6 @@ export interface NonResidentialBuildingResponse {
   constructionYear: number | null;
 }
 
-export interface NonResidentialBuildingResponseSuccessApiResponse {
-  successResponse: NonResidentialBuildingResponse | null;
-}
-
 export interface NonResidentialBuildingUpdateRequest {
   /** @format uuid */
   heatingStationId?: string | null;
@@ -4373,10 +3898,6 @@ export interface NumberIdResponse {
   number: string | null;
 }
 
-export interface NumberIdResponseArraySuccessApiResponse {
-  successResponse: NumberIdResponse[] | null;
-}
-
 export interface OperatorsConstructedReportResponse {
   name: string | null;
   /** @format int32 */
@@ -4387,10 +3908,6 @@ export interface OperatorsConstructedReportResponse {
   electricityCount: number;
   /** @format int32 */
   heatCount: number;
-}
-
-export interface OperatorsConstructedReportResponseIEnumerableSuccessApiResponse {
-  successResponse: OperatorsConstructedReportResponse[] | null;
 }
 
 export enum OrderByRule {
@@ -4440,14 +3957,6 @@ export interface OrganizationResponsePagedList {
   /** @format int32 */
   previousPageNumber: number;
   items: OrganizationResponse[] | null;
-}
-
-export interface OrganizationResponsePagedListSuccessApiResponse {
-  successResponse: OrganizationResponsePagedList | null;
-}
-
-export interface OrganizationResponseSuccessApiResponse {
-  successResponse: OrganizationResponse | null;
 }
 
 export interface OrganizationUpdateRequest {
@@ -4517,10 +4026,6 @@ export interface OrganizationUserListResponsePagedList {
   items: OrganizationUserListResponse[] | null;
 }
 
-export interface OrganizationUserListResponsePagedListSuccessApiResponse {
-  successResponse: OrganizationUserListResponsePagedList | null;
-}
-
 export interface OrganizationUserResponse {
   /** @format int32 */
   id: number;
@@ -4545,19 +4050,11 @@ export interface OrganizationUserResponse {
   buildings: BuildingShortResponse[] | null;
 }
 
-export interface OrganizationUserResponseSuccessApiResponse {
-  successResponse: OrganizationUserResponse | null;
-}
-
 export interface OrganizationUserShortResponse {
   /** @format int32 */
   id: number;
   name: string | null;
   email: string | null;
-}
-
-export interface OrganizationUserShortResponseSuccessApiResponse {
-  successResponse: OrganizationUserShortResponse | null;
 }
 
 export interface OrganizationUserStatisticsResponse {
@@ -4572,10 +4069,6 @@ export interface OrganizationUserStatisticsResponse {
   /** @format double */
   inTimeClosedTasksPercent: number;
   events: OrganizationUserEventResponse[] | null;
-}
-
-export interface OrganizationUserStatisticsResponseSuccessApiResponse {
-  successResponse: OrganizationUserStatisticsResponse | null;
 }
 
 export interface OrganizationUserTaskReassignment {
@@ -4604,10 +4097,6 @@ export interface OrganizationUserWorkingStatusResponse {
   startDate: string | null;
   /** @format date-time */
   endDate: string | null;
-}
-
-export interface OrganizationUserWorkingStatusResponseSuccessApiResponse {
-  successResponse: OrganizationUserWorkingStatusResponse | null;
 }
 
 export interface PipeHousingMeteringDeviceConnectionResponse {
@@ -4705,10 +4194,6 @@ export interface PipeHousingMeteringDeviceResponse {
   hubConnection: PipeHousingMeteringDeviceConnectionResponse | null;
 }
 
-export interface PipeHousingMeteringDeviceResponseSuccessApiResponse {
-  successResponse: PipeHousingMeteringDeviceResponse | null;
-}
-
 export interface PipeNodeHeatingSeasonListItemResponse {
   /** @format uuid */
   id: string;
@@ -4783,10 +4268,6 @@ export interface PipeNodeResponse {
   numberOfTasks: number;
 }
 
-export interface PipeNodeResponseSuccessApiResponse {
-  successResponse: PipeNodeResponse | null;
-}
-
 export interface PipeNodeValidationResultResponse {
   errors: EPipeNodeValidationMessageStringDictionaryItem[] | null;
   warnings: EPipeNodeValidationMessageStringDictionaryItem[] | null;
@@ -4809,6 +4290,19 @@ export interface PointResponse {
   longitude: number;
 }
 
+export enum PollActionType {
+  DuplicateReadings = 'DuplicateReadings',
+  IndividualCreateTasksWithoutReadings = 'IndividualCreateTasksWithoutReadings',
+  IndividualCloseWithoutReadings = 'IndividualCloseWithoutReadings',
+  IndividualCloseByCheckDate = 'IndividualCloseByCheckDate',
+  HousingCloseByCheckDate = 'HousingCloseByCheckDate',
+  IndividualExport = 'IndividualExport',
+  HousingExport = 'HousingExport',
+  MilurExport = 'MilurExport',
+  OpenIndividualDevicesReport = 'OpenIndividualDevicesReport',
+  RunnersReports = 'RunnersReports',
+}
+
 export enum PollCommand {
   GetById = 'GetById',
   GetLast = 'GetLast',
@@ -4829,12 +4323,8 @@ export interface PollResponse {
   runningAt: string | null;
   /** @format date-time */
   doneAt: string | null;
-  actionType: EPollActionType;
+  actionType: PollActionType;
   hasFile: boolean;
-}
-
-export interface PollResponseSuccessApiResponse {
-  successResponse: PollResponse | null;
 }
 
 export interface ProblemDetails {
@@ -4852,10 +4342,6 @@ export interface RefreshResponse {
   refreshToken: string | null;
   permissions: string[] | null;
   maintenanceMessage: string | null;
-}
-
-export interface RefreshResponseSuccessApiResponse {
-  successResponse: RefreshResponse | null;
 }
 
 export interface RefreshTokenRequest {
@@ -4959,10 +4445,6 @@ export interface ResourceDisconnectingFilterResponse {
   cities: string[] | null;
 }
 
-export interface ResourceDisconnectingFilterResponseSuccessApiResponse {
-  successResponse: ResourceDisconnectingFilterResponse | null;
-}
-
 export interface ResourceDisconnectingResponse {
   /** @format uuid */
   id: string;
@@ -4996,14 +4478,6 @@ export interface ResourceDisconnectingResponsePagedList {
   /** @format int32 */
   previousPageNumber: number;
   items: ResourceDisconnectingResponse[] | null;
-}
-
-export interface ResourceDisconnectingResponsePagedListSuccessApiResponse {
-  successResponse: ResourceDisconnectingResponsePagedList | null;
-}
-
-export interface ResourceDisconnectingResponseSuccessApiResponse {
-  successResponse: ResourceDisconnectingResponse | null;
 }
 
 export interface ResourceDisconnectingTypeResponse {
@@ -5063,10 +4537,6 @@ export interface StageListResponse {
 
 export interface StageListResponseWrappedListResponse {
   items: StageListResponse[] | null;
-}
-
-export interface StageListResponseWrappedListResponseSuccessApiResponse {
-  successResponse: StageListResponseWrappedListResponse | null;
 }
 
 export interface StagePushRequest {
@@ -5150,10 +4620,6 @@ export interface StreetWithBuildingNumbersResponsePagedList {
   items: StreetWithBuildingNumbersResponse[] | null;
 }
 
-export interface StreetWithBuildingNumbersResponsePagedListSuccessApiResponse {
-  successResponse: StreetWithBuildingNumbersResponsePagedList | null;
-}
-
 export interface StringPagedList {
   /** @format int32 */
   totalItems: number;
@@ -5170,14 +4636,6 @@ export interface StringPagedList {
   /** @format int32 */
   previousPageNumber: number;
   items: string[] | null;
-}
-
-export interface StringPagedListSuccessApiResponse {
-  successResponse: StringPagedList | null;
-}
-
-export interface StringSuccessApiResponse {
-  successResponse: string | null;
 }
 
 export interface SubscriberStatisticsСonsumptionResponse {
@@ -5207,10 +4665,6 @@ export interface SubscriberStatisticsСonsumptionResponse {
   homeownerAccountPhoneNumbers: string[] | null;
   /** @deprecated */
   homeownerAccountPhoneNumber: string | null;
-}
-
-export interface SubscriberStatisticsСonsumptionResponseListSuccessApiResponse {
-  successResponse: SubscriberStatisticsСonsumptionResponse[] | null;
 }
 
 export interface SwitchCalculatorRequest {
@@ -5337,31 +4791,35 @@ export interface SwitchIndividualDeviceRequest {
   model: string;
   /** @minLength 1 */
   serialNumber: string;
-  /** @format int32 */
+  /**
+   * @format int32
+   * @min 4
+   * @max 10
+   */
   bitDepth: number;
-  /** @format double */
-  scaleFactor: number;
-  rateType?: EIndividualDeviceRateType;
-  sealNumber?: string | null;
-  /** @format date-time */
-  sealInstallationDate?: string | null;
+  rateType: EIndividualDeviceRateType;
   /** @format date-time */
   lastCheckingDate: string;
   /** @format date-time */
   futureCheckingDate: string;
+  sealNumber?: string | null;
+  /** @format date-time */
+  sealInstallationDate?: string | null;
   /** @format date-time */
   openingDate?: string | null;
+  isConnected?: boolean;
+  documentsIds?: number[] | null;
+  isPolling?: boolean;
   /** @format int32 */
   contractorId?: number | null;
+  connection?: MeteringDeviceConnection | null;
+  /** @format double */
+  scaleFactor: number;
   oldDeviceClosingReason?: ESwitchingReason;
   /** @format int32 */
   newDeviceMountPlaceId?: number | null;
   oldDeviceReadings?: SwitchIndividualDeviceReadingsCreateRequest[] | null;
   newDeviceReadings: SwitchIndividualDeviceReadingsCreateRequest[];
-  connection?: MeteringDeviceConnection | null;
-  isConnected?: boolean;
-  documentsIds?: number[] | null;
-  isPolling?: boolean;
 }
 
 export interface SwitchMagneticSealRequest {
@@ -5384,10 +4842,6 @@ export interface TaskCommentResponse {
   /** @format date-time */
   updatedAt: string | null;
   canBeEdited: boolean;
-}
-
-export interface TaskCommentResponseSuccessApiResponse {
-  successResponse: TaskCommentResponse | null;
 }
 
 export interface TaskConfirmationRequest {
@@ -5418,10 +4872,6 @@ export interface TaskCreateResponse {
   type: EManagingFirmTaskType;
 }
 
-export interface TaskCreateResponseSuccessApiResponse {
-  successResponse: TaskCreateResponse | null;
-}
-
 export interface TaskCreationTargetObject {
   type?: ETaskTargetObjectRequestType;
   /** @format int32 */
@@ -5431,10 +4881,6 @@ export interface TaskCreationTargetObject {
 export interface TaskFilterResponse {
   taskTypes: EManagingFirmTaskFilterTypeNullableStringDictionaryItem[] | null;
   closingStatuses: ETaskClosingStatusNullableStringDictionaryItem[] | null;
-}
-
-export interface TaskFilterResponseSuccessApiResponse {
-  successResponse: TaskFilterResponse | null;
 }
 
 export enum TaskGroupingFilter {
@@ -5520,10 +4966,6 @@ export interface TaskResponse {
   lastTrigger: string | null;
 }
 
-export interface TaskResponseSuccessApiResponse {
-  successResponse: TaskResponse | null;
-}
-
 export interface TaskShortResponse {
   /** @format int32 */
   id: number;
@@ -5554,10 +4996,6 @@ export interface TaskStatisticsItem {
 
 export interface TaskStatisticsResponse {
   tasks: DateTimeTaskStatisticsItemArrayDictionaryItem[] | null;
-}
-
-export interface TaskStatisticsResponseSuccessApiResponse {
-  successResponse: TaskStatisticsResponse | null;
 }
 
 export interface TaskTargetObjectResponse {
@@ -5594,10 +5032,6 @@ export interface TasksPagedList {
   expiredTasksCount: number | null;
 }
 
-export interface TasksPagedListSuccessApiResponse {
-  successResponse: TasksPagedList | null;
-}
-
 export interface TemperatureNormativeDeleteRequest {
   outdoorTemperatures?: number[] | null;
   all?: boolean;
@@ -5609,10 +5043,6 @@ export interface TemperatureNormativeResponse {
   /** @format int32 */
   downTemperatureDeviationPercentLimit: number;
   rows: TemperatureNormativeRow[] | null;
-}
-
-export interface TemperatureNormativeResponseSuccessApiResponse {
-  successResponse: TemperatureNormativeResponse | null;
 }
 
 export interface TemperatureNormativeRow {
@@ -5661,10 +5091,6 @@ export interface TokenResponse {
   maintenanceMessage: string | null;
 }
 
-export interface TokenResponseSuccessApiResponse {
-  successResponse: TokenResponse | null;
-}
-
 export interface TotalAppointmentCounterResponse {
   /** @format date-time */
   date: string;
@@ -5673,10 +5099,6 @@ export interface TotalAppointmentCounterResponse {
   /** @format int32 */
   notDistributed: number;
   districtIds: string[] | null;
-}
-
-export interface TotalAppointmentCounterResponseSuccessApiResponse {
-  successResponse: TotalAppointmentCounterResponse | null;
 }
 
 export interface UpdateApartmentActRequest {
@@ -5875,10 +5297,6 @@ export interface ValueNodeWorkingRangeResponse {
   min: number | null;
   /** @format float */
   max: number | null;
-}
-
-export interface ValueNodeWorkingRangeResponseSuccessApiResponse {
-  successResponse: ValueNodeWorkingRangeResponse | null;
 }
 
 export enum YearRangeType {
@@ -6171,17 +5589,10 @@ export class Api<
         /** @format int32 */
         PageSize?: number;
         OrderBy?: EOrderByRule;
-        /** @format int32 */
-        Skip?: number;
-        /** @format int32 */
-        Take?: number;
       },
       params: RequestParams = {},
     ) =>
-      this.request<
-        ApartmentActResponsePagedListSuccessApiResponse,
-        ErrorApiResponse
-      >({
+      this.request<ApartmentActResponsePagedList, ErrorApiResponse>({
         path: `/api/ApartmentActs`,
         method: 'GET',
         query: query,
@@ -6203,7 +5614,7 @@ export class Api<
       data: AddApartmentActRequest,
       params: RequestParams = {},
     ) =>
-      this.request<ApartmentActResponseSuccessApiResponse, ErrorApiResponse>({
+      this.request<ApartmentActResponse, ErrorApiResponse>({
         path: `/api/ApartmentActs`,
         method: 'POST',
         body: data,
@@ -6227,7 +5638,7 @@ export class Api<
       data: UpdateApartmentActRequest,
       params: RequestParams = {},
     ) =>
-      this.request<ApartmentActResponseSuccessApiResponse, ErrorApiResponse>({
+      this.request<ApartmentActResponse, ErrorApiResponse>({
         path: `/api/ApartmentActs/${actId}`,
         method: 'PUT',
         body: data,
@@ -6247,7 +5658,7 @@ export class Api<
      * @secure
      */
     apartmentActsDelete: (actId: number, params: RequestParams = {}) =>
-      this.request<ApartmentActResponseSuccessApiResponse, ErrorApiResponse>({
+      this.request<ApartmentActResponse, ErrorApiResponse>({
         path: `/api/ApartmentActs/${actId}`,
         method: 'DELETE',
         secure: true,
@@ -6285,10 +5696,7 @@ export class Api<
      * @secure
      */
     apartmentActsActTypesList: (params: RequestParams = {}) =>
-      this.request<
-        EActTypeStringDictionaryItemListSuccessApiResponse,
-        ErrorApiResponse
-      >({
+      this.request<EActTypeStringDictionaryItem[], ErrorApiResponse>({
         path: `/api/ApartmentActs/ActTypes`,
         method: 'GET',
         secure: true,
@@ -6306,10 +5714,7 @@ export class Api<
      * @secure
      */
     apartmentActsActResourceTypesList: (params: RequestParams = {}) =>
-      this.request<
-        EActResourceTypeStringDictionaryItemListSuccessApiResponse,
-        ErrorApiResponse
-      >({
+      this.request<EActResourceTypeStringDictionaryItem[], ErrorApiResponse>({
         path: `/api/ApartmentActs/ActResourceTypes`,
         method: 'GET',
         secure: true,
@@ -6330,7 +5735,7 @@ export class Api<
       data: ApartmentCreateRequest,
       params: RequestParams = {},
     ) =>
-      this.request<ApartmentResponseSuccessApiResponse, ErrorApiResponse>({
+      this.request<ApartmentResponse, ErrorApiResponse>({
         path: `/api/Apartments`,
         method: 'POST',
         body: data,
@@ -6365,17 +5770,10 @@ export class Api<
         /** @format int32 */
         PageSize?: number;
         OrderBy?: EOrderByRule;
-        /** @format int32 */
-        Skip?: number;
-        /** @format int32 */
-        Take?: number;
       },
       params: RequestParams = {},
     ) =>
-      this.request<
-        ApartmentListResponsePagedListSuccessApiResponse,
-        ErrorApiResponse
-      >({
+      this.request<ApartmentListResponsePagedList, ErrorApiResponse>({
         path: `/api/Apartments`,
         method: 'GET',
         query: query,
@@ -6398,7 +5796,7 @@ export class Api<
       data: ApartmentUpdateRequest,
       params: RequestParams = {},
     ) =>
-      this.request<ApartmentResponseSuccessApiResponse, ErrorApiResponse>({
+      this.request<ApartmentResponse, ErrorApiResponse>({
         path: `/api/Apartments/${apartmentId}`,
         method: 'PUT',
         body: data,
@@ -6418,7 +5816,7 @@ export class Api<
      * @secure
      */
     apartmentsDetail: (apartmentId: number, params: RequestParams = {}) =>
-      this.request<ApartmentResponseSuccessApiResponse, ErrorApiResponse>({
+      this.request<ApartmentResponse, ErrorApiResponse>({
         path: `/api/Apartments/${apartmentId}`,
         method: 'GET',
         secure: true,
@@ -6436,10 +5834,7 @@ export class Api<
      * @secure
      */
     apartmentsApartmentStatusList: (params: RequestParams = {}) =>
-      this.request<
-        ApartmentListStatusResponseSuccessApiResponse,
-        ErrorApiResponse
-      >({
+      this.request<ApartmentListStatusResponse, ErrorApiResponse>({
         path: `/api/Apartments/ApartmentStatus`,
         method: 'GET',
         secure: true,
@@ -6463,10 +5858,7 @@ export class Api<
       },
       params: RequestParams = {},
     ) =>
-      this.request<
-        HomeownerAccountResponseICollectionSuccessApiResponse,
-        ErrorApiResponse
-      >({
+      this.request<HomeownerAccountResponse[], ErrorApiResponse>({
         path: `/api/Apartments/${apartmentId}/HomeownerAccounts`,
         method: 'GET',
         query: query,
@@ -6518,17 +5910,10 @@ export class Api<
         /** @format int32 */
         PageSize?: number;
         OrderBy?: EOrderByRule;
-        /** @format int32 */
-        Skip?: number;
-        /** @format int32 */
-        Take?: number;
       },
       params: RequestParams = {},
     ) =>
-      this.request<
-        ApartmentCheckResponsePagedListSuccessApiResponse,
-        ErrorApiResponse
-      >({
+      this.request<ApartmentCheckResponsePagedList, ErrorApiResponse>({
         path: `/api/Apartments/${apartmentId}/ApartmentChecks`,
         method: 'GET',
         query: query,
@@ -6547,10 +5932,7 @@ export class Api<
      * @secure
      */
     apartmentsActsDetail: (apartmentId: number, params: RequestParams = {}) =>
-      this.request<
-        ApartmentCheckResponseListSuccessApiResponse,
-        ErrorApiResponse
-      >({
+      this.request<ApartmentCheckResponse[], ErrorApiResponse>({
         path: `/api/Apartments/${apartmentId}/Acts`,
         method: 'GET',
         secure: true,
@@ -6580,7 +5962,7 @@ export class Api<
       params: RequestParams = {},
     ) =>
       this.request<
-        IndividualDeviceWithExpiredCheckingDateListResponseSuccessApiResponse,
+        IndividualDeviceWithExpiredCheckingDateListResponse,
         ErrorApiResponse
       >({
         path: `/api/Apartments/${apartmentId}/SetStatusProblemDevices`,
@@ -6606,7 +5988,7 @@ export class Api<
       params: RequestParams = {},
     ) =>
       this.request<
-        IndividualDeviceWithExpiredCheckingDateListResponseSuccessApiResponse,
+        IndividualDeviceWithExpiredCheckingDateListResponse,
         ErrorApiResponse
       >({
         path: `/api/Apartments/${apartmentId}/SetStatus`,
@@ -6632,7 +6014,7 @@ export class Api<
       data: CreateApartmentCheckRequest,
       params: RequestParams = {},
     ) =>
-      this.request<ApartmentCheckResponseSuccessApiResponse, ErrorApiResponse>({
+      this.request<ApartmentCheckResponse, ErrorApiResponse>({
         path: `/api/Apartments/${apartmentId}/AddCheck`,
         method: 'POST',
         body: data,
@@ -6657,7 +6039,7 @@ export class Api<
       data: EditApartmentCheckRequest,
       params: RequestParams = {},
     ) =>
-      this.request<ApartmentCheckResponseSuccessApiResponse, ErrorApiResponse>({
+      this.request<ApartmentCheckResponse, ErrorApiResponse>({
         path: `/api/Apartments/${apartmentId}/EditCheck/${apartmentCheckId}`,
         method: 'PUT',
         body: data,
@@ -6681,7 +6063,7 @@ export class Api<
       apartmentCheckId: number,
       params: RequestParams = {},
     ) =>
-      this.request<ApartmentCheckResponseSuccessApiResponse, ErrorApiResponse>({
+      this.request<ApartmentCheckResponse, ErrorApiResponse>({
         path: `/api/Apartments/${apartmentId}/RemoveCheck/${apartmentCheckId}`,
         method: 'DELETE',
         secure: true,
@@ -6702,10 +6084,7 @@ export class Api<
       apartmentId: number,
       params: RequestParams = {},
     ) =>
-      this.request<
-        DocumentResponseIEnumerableSuccessApiResponse,
-        ErrorApiResponse
-      >({
+      this.request<DocumentResponse[], ErrorApiResponse>({
         path: `/api/Apartments/${apartmentId}/Documents`,
         method: 'GET',
         secure: true,
@@ -6730,7 +6109,7 @@ export class Api<
       },
       params: RequestParams = {},
     ) =>
-      this.request<PollResponseSuccessApiResponse, ErrorApiResponse>({
+      this.request<PollResponse, ErrorApiResponse>({
         path: `/api/Apartments/DuplicateReadings`,
         method: 'POST',
         query: query,
@@ -6758,7 +6137,7 @@ export class Api<
       },
       params: RequestParams = {},
     ) =>
-      this.request<Int32SuccessApiResponse, ErrorApiResponse>({
+      this.request<number, ErrorApiResponse>({
         path: `/api/Apartments/FindApartmentId`,
         method: 'GET',
         query: query,
@@ -6777,10 +6156,7 @@ export class Api<
      * @secure
      */
     apartmentsCheckTypesList: (params: RequestParams = {}) =>
-      this.request<
-        ECheckTypeStringDictionaryItemListSuccessApiResponse,
-        ErrorApiResponse
-      >({
+      this.request<ECheckTypeStringDictionaryItem[], ErrorApiResponse>({
         path: `/api/Apartments/CheckTypes`,
         method: 'GET',
         secure: true,
@@ -6808,16 +6184,14 @@ export class Api<
       },
       params: RequestParams = {},
     ) =>
-      this.request<AppointmentResponseListSuccessApiResponse, ErrorApiResponse>(
-        {
-          path: `/api/IndividualSeal/Appointments`,
-          method: 'GET',
-          query: query,
-          secure: true,
-          format: 'json',
-          ...params,
-        },
-      ),
+      this.request<AppointmentResponse[], ErrorApiResponse>({
+        path: `/api/IndividualSeal/Appointments`,
+        method: 'GET',
+        query: query,
+        secure: true,
+        format: 'json',
+        ...params,
+      }),
 
     /**
      * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li><li>Администратор УК без назначений задач</li>
@@ -6855,7 +6229,7 @@ export class Api<
       appointmentId: string,
       params: RequestParams = {},
     ) =>
-      this.request<AppointmentResponseSuccessApiResponse, ErrorApiResponse>({
+      this.request<AppointmentResponse, ErrorApiResponse>({
         path: `/api/IndividualSeal/Appointments/${appointmentId}`,
         method: 'GET',
         secure: true,
@@ -6926,10 +6300,7 @@ export class Api<
       },
       params: RequestParams = {},
     ) =>
-      this.request<
-        AppointmentCounterResponseListSuccessApiResponse,
-        ErrorApiResponse
-      >({
+      this.request<AppointmentCounterResponse[], ErrorApiResponse>({
         path: `/api/IndividualSeal/Appointments/Planning`,
         method: 'GET',
         query: query,
@@ -6948,10 +6319,7 @@ export class Api<
      * @secure
      */
     individualSealAppointmentsNearestList: (params: RequestParams = {}) =>
-      this.request<
-        TotalAppointmentCounterResponseSuccessApiResponse,
-        ErrorApiResponse
-      >({
+      this.request<TotalAppointmentCounterResponse, ErrorApiResponse>({
         path: `/api/IndividualSeal/Appointments/Nearest`,
         method: 'GET',
         secure: true,
@@ -6977,10 +6345,7 @@ export class Api<
       },
       params: RequestParams = {},
     ) =>
-      this.request<
-        AppointmentCounterResponseSuccessApiResponse,
-        ErrorApiResponse
-      >({
+      this.request<AppointmentCounterResponse, ErrorApiResponse>({
         path: `/api/IndividualSeal/Appointments/Counting`,
         method: 'GET',
         query: query,
@@ -7002,17 +6367,15 @@ export class Api<
       data: AppointmentsSetRequest,
       params: RequestParams = {},
     ) =>
-      this.request<AppointmentsSetResponseSuccessApiResponse, ErrorApiResponse>(
-        {
-          path: `/api/IndividualSeal/Appointments/Set`,
-          method: 'POST',
-          body: data,
-          secure: true,
-          type: ContentType.Json,
-          format: 'json',
-          ...params,
-        },
-      ),
+      this.request<AppointmentsSetResponse, ErrorApiResponse>({
+        path: `/api/IndividualSeal/Appointments/Set`,
+        method: 'POST',
+        body: data,
+        secure: true,
+        type: ContentType.Json,
+        format: 'json',
+        ...params,
+      }),
 
     /**
      * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li><li>Администратор УК без назначений задач</li>
@@ -7038,7 +6401,7 @@ export class Api<
       },
       params: RequestParams = {},
     ) =>
-      this.request<AssignmentResponseListSuccessApiResponse, ErrorApiResponse>({
+      this.request<AssignmentResponse[], ErrorApiResponse>({
         path: `/api/IndividualSeal/Assignments`,
         method: 'GET',
         query: query,
@@ -7060,10 +6423,7 @@ export class Api<
       assignmentId: string,
       params: RequestParams = {},
     ) =>
-      this.request<
-        AssignmentResponseSuccessApiResponse,
-        ErrorApiResponse | ProblemDetails
-      >({
+      this.request<AssignmentResponse, ErrorApiResponse | ProblemDetails>({
         path: `/api/IndividualSeal/Assignments/${assignmentId}`,
         method: 'GET',
         secure: true,
@@ -7120,7 +6480,7 @@ export class Api<
      * @secure
      */
     authLoginCreate: (data: LoginRequest, params: RequestParams = {}) =>
-      this.request<TokenResponseSuccessApiResponse, ErrorApiResponse>({
+      this.request<TokenResponse, ErrorApiResponse>({
         path: `/api/Auth/login`,
         method: 'POST',
         body: data,
@@ -7142,7 +6502,7 @@ export class Api<
       data: RefreshTokenRequest,
       params: RequestParams = {},
     ) =>
-      this.request<RefreshResponseSuccessApiResponse, ErrorApiResponse>({
+      this.request<RefreshResponse, ErrorApiResponse>({
         path: `/api/Auth/refreshToken`,
         method: 'POST',
         body: data,
@@ -7237,7 +6597,7 @@ export class Api<
      * @secure
      */
     buildingsDetail: (buildingId: number, params: RequestParams = {}) =>
-      this.request<BuildingShortResponseSuccessApiResponse, ErrorApiResponse>({
+      this.request<BuildingShortResponse, ErrorApiResponse>({
         path: `/api/Buildings/${buildingId}`,
         method: 'GET',
         secure: true,
@@ -7262,14 +6622,10 @@ export class Api<
         /** @format int32 */
         PageSize?: number;
         OrderBy?: EOrderByRule;
-        /** @format int32 */
-        Skip?: number;
-        /** @format int32 */
-        Take?: number;
       },
       params: RequestParams = {},
     ) =>
-      this.request<StringPagedListSuccessApiResponse, ErrorApiResponse>({
+      this.request<StringPagedList, ErrorApiResponse>({
         path: `/api/Buildings/ExistingCities`,
         method: 'GET',
         query: query,
@@ -7296,14 +6652,10 @@ export class Api<
         /** @format int32 */
         PageSize?: number;
         OrderBy?: EOrderByRule;
-        /** @format int32 */
-        Skip?: number;
-        /** @format int32 */
-        Take?: number;
       },
       params: RequestParams = {},
     ) =>
-      this.request<StringPagedListSuccessApiResponse, ErrorApiResponse>({
+      this.request<StringPagedList, ErrorApiResponse>({
         path: `/api/Buildings/ExistingStreets`,
         method: 'GET',
         query: query,
@@ -7328,7 +6680,7 @@ export class Api<
       },
       params: RequestParams = {},
     ) =>
-      this.request<NumberIdResponseArraySuccessApiResponse, ErrorApiResponse>({
+      this.request<NumberIdResponse[], ErrorApiResponse>({
         path: `/api/Buildings/ExistingBuildingNumbers`,
         method: 'GET',
         query: query,
@@ -7355,15 +6707,11 @@ export class Api<
         /** @format int32 */
         PageSize?: number;
         OrderBy?: EOrderByRule;
-        /** @format int32 */
-        Skip?: number;
-        /** @format int32 */
-        Take?: number;
       },
       params: RequestParams = {},
     ) =>
       this.request<
-        StreetWithBuildingNumbersResponsePagedListSuccessApiResponse,
+        StreetWithBuildingNumbersResponsePagedList,
         ErrorApiResponse
       >({
         path: `/api/Buildings/ExistingStreetsWithBuildingNumbers`,
@@ -7389,10 +6737,7 @@ export class Api<
       },
       params: RequestParams = {},
     ) =>
-      this.request<
-        HouseManagementWithStreetsResponseIEnumerableSuccessApiResponse,
-        ErrorApiResponse
-      >({
+      this.request<HouseManagementWithStreetsResponse[], ErrorApiResponse>({
         path: `/api/Buildings/ExistingStreetsWithBuildingNumbersWithHouseManagement`,
         method: 'GET',
         query: query,
@@ -7413,10 +6758,7 @@ export class Api<
     buildingsExistingStreetsWithBuildingNumbersWithHeatingStationList: (
       params: RequestParams = {},
     ) =>
-      this.request<
-        HeatingStationWithStreetsResponseIEnumerableSuccessApiResponse,
-        ErrorApiResponse
-      >({
+      this.request<HeatingStationWithStreetsResponse[], ErrorApiResponse>({
         path: `/api/Buildings/ExistingStreetsWithBuildingNumbersWithHeatingStation`,
         method: 'GET',
         secure: true,
@@ -7455,10 +6797,6 @@ export class Api<
         /** @format int32 */
         PageSize?: number;
         OrderBy?: EOrderByRule;
-        /** @format int32 */
-        Skip?: number;
-        /** @format int32 */
-        Take?: number;
       },
       params: RequestParams = {},
     ) =>
@@ -7502,17 +6840,10 @@ export class Api<
         /** @format int32 */
         PageSize?: number;
         OrderBy?: EOrderByRule;
-        /** @format int32 */
-        Skip?: number;
-        /** @format int32 */
-        Take?: number;
       },
       params: RequestParams = {},
     ) =>
-      this.request<
-        BuildingListResponsePagedListSuccessApiResponse,
-        ErrorApiResponse
-      >({
+      this.request<BuildingListResponsePagedList, ErrorApiResponse>({
         path: `/api/Buildings`,
         method: 'GET',
         query: query,
@@ -7541,10 +6872,7 @@ export class Api<
       },
       params: RequestParams = {},
     ) =>
-      this.request<
-        InspectorOnBuildingResponseListSuccessApiResponse,
-        ErrorApiResponse
-      >({
+      this.request<InspectorOnBuildingResponse[], ErrorApiResponse>({
         path: `/api/Buildings/inspectors`,
         method: 'GET',
         query: query,
@@ -7606,15 +6934,13 @@ export class Api<
      * @secure
      */
     buildingsFiltersList: (params: RequestParams = {}) =>
-      this.request<BuildingFiltersResponseSuccessApiResponse, ErrorApiResponse>(
-        {
-          path: `/api/Buildings/filters`,
-          method: 'GET',
-          secure: true,
-          format: 'json',
-          ...params,
-        },
-      ),
+      this.request<BuildingFiltersResponse, ErrorApiResponse>({
+        path: `/api/Buildings/filters`,
+        method: 'GET',
+        secure: true,
+        format: 'json',
+        ...params,
+      }),
 
     /**
      * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Администратор УК без назначений задач</li><li>Контролёр</li>
@@ -7629,10 +6955,7 @@ export class Api<
       buildingId: number,
       params: RequestParams = {},
     ) =>
-      this.request<
-        OrganizationUserShortResponseSuccessApiResponse,
-        ErrorApiResponse
-      >({
+      this.request<OrganizationUserShortResponse, ErrorApiResponse>({
         path: `/api/Buildings/${buildingId}/Controller`,
         method: 'GET',
         secure: true,
@@ -7654,10 +6977,7 @@ export class Api<
       controllerId: number,
       params: RequestParams = {},
     ) =>
-      this.request<
-        OrganizationUserShortResponseSuccessApiResponse,
-        ErrorApiResponse
-      >({
+      this.request<OrganizationUserShortResponse, ErrorApiResponse>({
         path: `/api/Buildings/${buildingId}/ReassignController/${controllerId}`,
         method: 'POST',
         secure: true,
@@ -7743,10 +7063,7 @@ export class Api<
      * @secure
      */
     buildingsNodesDetail: (buildingId: number, params: RequestParams = {}) =>
-      this.request<
-        NodeOnHousingStockResponseListSuccessApiResponse,
-        ErrorApiResponse
-      >({
+      this.request<NodeOnHousingStockResponse[], ErrorApiResponse>({
         path: `/api/Buildings/${buildingId}/Nodes`,
         method: 'GET',
         secure: true,
@@ -7767,10 +7084,7 @@ export class Api<
       buildingId: number,
       params: RequestParams = {},
     ) =>
-      this.request<
-        CalculatorIntoHousingStockResponseArraySuccessApiResponse,
-        ErrorApiResponse
-      >({
+      this.request<CalculatorIntoHousingStockResponse[], ErrorApiResponse>({
         path: `/api/Buildings/${buildingId}/Calculators`,
         method: 'GET',
         secure: true,
@@ -7798,10 +7112,7 @@ export class Api<
       },
       params: RequestParams = {},
     ) =>
-      this.request<
-        BuildingWithTasksResponseIEnumerableSuccessApiResponse,
-        ErrorApiResponse
-      >({
+      this.request<BuildingWithTasksResponse[], ErrorApiResponse>({
         path: `/api/Buildings/BuildingsWithTasks`,
         method: 'GET',
         query: query,
@@ -7828,10 +7139,7 @@ export class Api<
       },
       params: RequestParams = {},
     ) =>
-      this.request<
-        BuildingByFilterResponseSuccessApiResponse,
-        ErrorApiResponse
-      >({
+      this.request<BuildingByFilterResponse, ErrorApiResponse>({
         path: `/api/Buildings/BuildingsByAddress`,
         method: 'GET',
         query: query,
@@ -7850,10 +7158,7 @@ export class Api<
      * @secure
      */
     calculatorInfosList: (params: RequestParams = {}) =>
-      this.request<
-        CalculatorInfoListWrappedResponseSuccessApiResponse,
-        ErrorApiResponse
-      >({
+      this.request<CalculatorInfoListWrappedResponse, ErrorApiResponse>({
         path: `/api/CalculatorInfos`,
         method: 'GET',
         secure: true,
@@ -7871,7 +7176,7 @@ export class Api<
      * @secure
      */
     calculatorsExportLiteList: (params: RequestParams = {}) =>
-      this.request<FileContentResultSuccessApiResponse, ErrorApiResponse>({
+      this.request<File, ErrorApiResponse>({
         path: `/api/Calculators/ExportLite`,
         method: 'GET',
         secure: true,
@@ -7922,14 +7227,10 @@ export class Api<
         /** @format int32 */
         PageSize?: number;
         OrderBy?: EOrderByRule;
-        /** @format int32 */
-        Skip?: number;
-        /** @format int32 */
-        Take?: number;
       },
       params: RequestParams = {},
     ) =>
-      this.request<FileContentResultSuccessApiResponse, ErrorApiResponse>({
+      this.request<File, ErrorApiResponse>({
         path: `/api/Calculators/Export`,
         method: 'GET',
         query: query,
@@ -7981,17 +7282,10 @@ export class Api<
         /** @format int32 */
         PageSize?: number;
         OrderBy?: EOrderByRule;
-        /** @format int32 */
-        Skip?: number;
-        /** @format int32 */
-        Take?: number;
       },
       params: RequestParams = {},
     ) =>
-      this.request<
-        CalculatorListResponsePagedListSuccessApiResponse,
-        ErrorApiResponse
-      >({
+      this.request<CalculatorListResponsePagedList, ErrorApiResponse>({
         path: `/api/Calculators`,
         method: 'GET',
         query: query,
@@ -8013,7 +7307,7 @@ export class Api<
       data: CreateCalculatorRequest,
       params: RequestParams = {},
     ) =>
-      this.request<MeteringDeviceResponseSuccessApiResponse, ErrorApiResponse>({
+      this.request<MeteringDeviceResponse, ErrorApiResponse>({
         path: `/api/Calculators`,
         method: 'POST',
         body: data,
@@ -8033,7 +7327,7 @@ export class Api<
      * @secure
      */
     calculatorsDetail: (deviceId: number, params: RequestParams = {}) =>
-      this.request<CalculatorResponseSuccessApiResponse, ErrorApiResponse>({
+      this.request<CalculatorResponse, ErrorApiResponse>({
         path: `/api/Calculators/${deviceId}`,
         method: 'GET',
         secure: true,
@@ -8055,7 +7349,7 @@ export class Api<
       data: UpdateCalculatorRequest,
       params: RequestParams = {},
     ) =>
-      this.request<MeteringDeviceResponseSuccessApiResponse, ErrorApiResponse>({
+      this.request<MeteringDeviceResponse, ErrorApiResponse>({
         path: `/api/Calculators/${deviceId}`,
         method: 'PUT',
         body: data,
@@ -8079,10 +7373,7 @@ export class Api<
       data: CalculatorCommentBaseRequest,
       params: RequestParams = {},
     ) =>
-      this.request<
-        CalculatorCommentResponseSuccessApiResponse,
-        ErrorApiResponse
-      >({
+      this.request<CalculatorCommentResponse, ErrorApiResponse>({
         path: `/api/Calculators/${deviceId}/comment`,
         method: 'POST',
         body: data,
@@ -8106,10 +7397,7 @@ export class Api<
       data: CalculatorCommentBaseRequest,
       params: RequestParams = {},
     ) =>
-      this.request<
-        CalculatorCommentResponseSuccessApiResponse,
-        ErrorApiResponse
-      >({
+      this.request<CalculatorCommentResponse, ErrorApiResponse>({
         path: `/api/Calculators/${deviceId}/comment`,
         method: 'PUT',
         body: data,
@@ -8149,7 +7437,7 @@ export class Api<
       data: SwitchCalculatorRequest,
       params: RequestParams = {},
     ) =>
-      this.request<MeteringDeviceResponseSuccessApiResponse, ErrorApiResponse>({
+      this.request<MeteringDeviceResponse, ErrorApiResponse>({
         path: `/api/Calculators/switch`,
         method: 'POST',
         body: data,
@@ -8169,10 +7457,7 @@ export class Api<
      * @secure
      */
     calculatorsFiltersList: (params: RequestParams = {}) =>
-      this.request<
-        CalculatorFilterResponseSuccessApiResponse,
-        ErrorApiResponse
-      >({
+      this.request<CalculatorFilterResponse, ErrorApiResponse>({
         path: `/api/Calculators/filters`,
         method: 'GET',
         secure: true,
@@ -8189,10 +7474,7 @@ export class Api<
      * @secure
      */
     notificationsChannelsList: (params: RequestParams = {}) =>
-      this.request<
-        ChannelResponseICollectionSuccessApiResponse,
-        ErrorApiResponse
-      >({
+      this.request<ChannelResponse[], ErrorApiResponse>({
         path: `/api/Notifications/Channels`,
         method: 'GET',
         secure: true,
@@ -8250,10 +7532,7 @@ export class Api<
      * @secure
      */
     contractorsList: (params: RequestParams = {}) =>
-      this.request<
-        ContractorListResponsePagedListSuccessApiResponse,
-        ErrorApiResponse
-      >({
+      this.request<ContractorListResponsePagedList, ErrorApiResponse>({
         path: `/api/Contractors`,
         method: 'GET',
         secure: true,
@@ -8274,7 +7553,7 @@ export class Api<
       data: ContractorCreateRequest,
       params: RequestParams = {},
     ) =>
-      this.request<ContractorResponseSuccessApiResponse, ErrorApiResponse>({
+      this.request<ContractorResponse, ErrorApiResponse>({
         path: `/api/Contractors`,
         method: 'POST',
         body: data,
@@ -8294,7 +7573,7 @@ export class Api<
      * @secure
      */
     contractorsDetail: (contractorId: number, params: RequestParams = {}) =>
-      this.request<ContractorResponseSuccessApiResponse, ErrorApiResponse>({
+      this.request<ContractorResponse, ErrorApiResponse>({
         path: `/api/Contractors/${contractorId}`,
         method: 'GET',
         secure: true,
@@ -8316,7 +7595,7 @@ export class Api<
       data: ContractorUpdateRequest,
       params: RequestParams = {},
     ) =>
-      this.request<ContractorResponseSuccessApiResponse, ErrorApiResponse>({
+      this.request<ContractorResponse, ErrorApiResponse>({
         path: `/api/Contractors/${contractorId}`,
         method: 'PUT',
         body: data,
@@ -8356,7 +7635,7 @@ export class Api<
       data: ControllerCreateRequest,
       params: RequestParams = {},
     ) =>
-      this.request<GuidSuccessApiResponse, ErrorApiResponse>({
+      this.request<string, ErrorApiResponse>({
         path: `/api/IndividualSeal/Controllers`,
         method: 'POST',
         body: data,
@@ -8376,7 +7655,7 @@ export class Api<
      * @secure
      */
     individualSealControllersList: (params: RequestParams = {}) =>
-      this.request<ControllerResponseListSuccessApiResponse, ErrorApiResponse>({
+      this.request<ControllerResponse[], ErrorApiResponse>({
         path: `/api/IndividualSeal/Controllers`,
         method: 'GET',
         secure: true,
@@ -8444,16 +7723,14 @@ export class Api<
       },
       params: RequestParams = {},
     ) =>
-      this.request<AppointmentResponseListSuccessApiResponse, ErrorApiResponse>(
-        {
-          path: `/api/IndividualSeal/Controllers/${controllerId}/Work`,
-          method: 'GET',
-          query: query,
-          secure: true,
-          format: 'json',
-          ...params,
-        },
-      ),
+      this.request<AppointmentResponse[], ErrorApiResponse>({
+        path: `/api/IndividualSeal/Controllers/${controllerId}/Work`,
+        method: 'GET',
+        query: query,
+        secure: true,
+        format: 'json',
+        ...params,
+      }),
 
     /**
      * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li><li>Администратор УК без назначений задач</li>
@@ -8496,7 +7773,7 @@ export class Api<
       },
       params: RequestParams = {},
     ) =>
-      this.request<DistrictResponseListSuccessApiResponse, ErrorApiResponse>({
+      this.request<DistrictResponse[], ErrorApiResponse>({
         path: `/api/IndividualSeal/Districts`,
         method: 'GET',
         query: query,
@@ -8635,10 +7912,7 @@ export class Api<
      * @secure
      */
     documentsTypesList: (params: RequestParams = {}) =>
-      this.request<
-        EDocumentTypeStringDictionaryItemListSuccessApiResponse,
-        ErrorApiResponse
-      >({
+      this.request<EDocumentTypeStringDictionaryItem[], ErrorApiResponse>({
         path: `/api/Documents/types`,
         method: 'GET',
         secure: true,
@@ -8664,10 +7938,7 @@ export class Api<
       },
       params: RequestParams = {},
     ) =>
-      this.request<
-        DocumentResponseIEnumerableSuccessApiResponse,
-        ErrorApiResponse
-      >({
+      this.request<DocumentResponse[], ErrorApiResponse>({
         path: `/api/Documents/upload`,
         method: 'POST',
         body: data,
@@ -8687,7 +7958,7 @@ export class Api<
      * @secure
      */
     documentsDetail: (documentId: number, params: RequestParams = {}) =>
-      this.request<StringSuccessApiResponse, ErrorApiResponse>({
+      this.request<string, ErrorApiResponse>({
         path: `/api/Documents/${documentId}`,
         method: 'GET',
         secure: true,
@@ -8742,10 +8013,7 @@ export class Api<
       deviceId: number,
       params: RequestParams = {},
     ) =>
-      this.request<
-        ElectricHousingMeteringDeviceResponseSuccessApiResponse,
-        ErrorApiResponse
-      >({
+      this.request<ElectricHousingMeteringDeviceResponse, ErrorApiResponse>({
         path: `/api/ElectricHousingMeteringDevices/${deviceId}`,
         method: 'GET',
         secure: true,
@@ -8767,10 +8035,7 @@ export class Api<
       data: UpdateElectricHousingMeteringDeviceRequest,
       params: RequestParams = {},
     ) =>
-      this.request<
-        ElectricHousingMeteringDeviceResponseSuccessApiResponse,
-        ErrorApiResponse
-      >({
+      this.request<ElectricHousingMeteringDeviceResponse, ErrorApiResponse>({
         path: `/api/ElectricHousingMeteringDevices/${deviceId}`,
         method: 'PUT',
         body: data,
@@ -8793,10 +8058,7 @@ export class Api<
       data: CreateElectricHousingMeteringDeviceRequest,
       params: RequestParams = {},
     ) =>
-      this.request<
-        ElectricHousingMeteringDeviceResponseSuccessApiResponse,
-        ErrorApiResponse
-      >({
+      this.request<ElectricHousingMeteringDeviceResponse, ErrorApiResponse>({
         path: `/api/ElectricHousingMeteringDevices`,
         method: 'POST',
         body: data,
@@ -8819,10 +8081,7 @@ export class Api<
       data: SwitchElectricHousingDeviceRequest,
       params: RequestParams = {},
     ) =>
-      this.request<
-        ElectricHousingMeteringDeviceResponseSuccessApiResponse,
-        ErrorApiResponse
-      >({
+      this.request<ElectricHousingMeteringDeviceResponse, ErrorApiResponse>({
         path: `/api/ElectricHousingMeteringDevices/switch`,
         method: 'POST',
         body: data,
@@ -8842,7 +8101,7 @@ export class Api<
      * @secure
      */
     electricNodesDetail: (electricNodeId: number, params: RequestParams = {}) =>
-      this.request<ElectricNodeResponseSuccessApiResponse, ErrorApiResponse>({
+      this.request<ElectricNodeResponse, ErrorApiResponse>({
         path: `/api/ElectricNodes/${electricNodeId}`,
         method: 'GET',
         secure: true,
@@ -8864,7 +8123,7 @@ export class Api<
       data: UpdateElectricNodeRequest,
       params: RequestParams = {},
     ) =>
-      this.request<ElectricNodeResponseSuccessApiResponse, ErrorApiResponse>({
+      this.request<ElectricNodeResponse, ErrorApiResponse>({
         path: `/api/ElectricNodes/${electricNodeId}`,
         method: 'PUT',
         body: data,
@@ -8887,7 +8146,7 @@ export class Api<
       data: CreateElectricNodeRequest,
       params: RequestParams = {},
     ) =>
-      this.request<ElectricNodeResponseSuccessApiResponse, ErrorApiResponse>({
+      this.request<ElectricNodeResponse, ErrorApiResponse>({
         path: `/api/ElectricNodes`,
         method: 'POST',
         body: data,
@@ -8965,7 +8224,7 @@ export class Api<
       },
       params: RequestParams = {},
     ) =>
-      this.request<PollResponseSuccessApiResponse, ErrorApiResponse>({
+      this.request<PollResponse, ErrorApiResponse>({
         path: `/api/Exports/MilurDevices`,
         method: 'GET',
         query: query,
@@ -8996,7 +8255,7 @@ export class Api<
       },
       params: RequestParams = {},
     ) =>
-      this.request<PollResponseSuccessApiResponse, ErrorApiResponse>({
+      this.request<PollResponse, ErrorApiResponse>({
         path: `/api/Exports/IndividualDeviceReadings`,
         method: 'GET',
         query: query,
@@ -9027,7 +8286,7 @@ export class Api<
       },
       params: RequestParams = {},
     ) =>
-      this.request<PollResponseSuccessApiResponse, ErrorApiResponse>({
+      this.request<PollResponse, ErrorApiResponse>({
         path: `/api/Exports/HousingDeviceReadings`,
         method: 'GET',
         query: query,
@@ -9046,10 +8305,7 @@ export class Api<
      * @secure
      */
     heatingSeasonsList: (params: RequestParams = {}) =>
-      this.request<
-        HeatingSeasonPageResponseSuccessApiResponse,
-        ErrorApiResponse
-      >({
+      this.request<HeatingSeasonPageResponse, ErrorApiResponse>({
         path: `/api/HeatingSeasons`,
         method: 'GET',
         secure: true,
@@ -9078,7 +8334,7 @@ export class Api<
       },
       params: RequestParams = {},
     ) =>
-      this.request<HeatingSeasonResponseSuccessApiResponse, ErrorApiResponse>({
+      this.request<HeatingSeasonResponse, ErrorApiResponse>({
         path: `/api/HeatingSeasons`,
         method: 'PUT',
         query: query,
@@ -9100,7 +8356,7 @@ export class Api<
       data: SwitchHeatingSeasonRequest,
       params: RequestParams = {},
     ) =>
-      this.request<HeatingSeasonResponseSuccessApiResponse, ErrorApiResponse>({
+      this.request<HeatingSeasonResponse, ErrorApiResponse>({
         path: `/api/HeatingSeasons/Switch`,
         method: 'POST',
         body: data,
@@ -9123,7 +8379,7 @@ export class Api<
       data: AddOrUpdateHeatingSeasonForHouseManagementRequest,
       params: RequestParams = {},
     ) =>
-      this.request<HeatingSeasonResponseSuccessApiResponse, ErrorApiResponse>({
+      this.request<HeatingSeasonResponse, ErrorApiResponse>({
         path: `/api/HeatingSeasons/AddOrUpdateForHouseManagement`,
         method: 'POST',
         body: data,
@@ -9143,10 +8399,7 @@ export class Api<
      * @secure
      */
     heatingStationList: (params: RequestParams = {}) =>
-      this.request<
-        HeatingStationResponsePagedListSuccessApiResponse,
-        ErrorApiResponse
-      >({
+      this.request<HeatingStationResponsePagedList, ErrorApiResponse>({
         path: `/api/HeatingStation`,
         method: 'GET',
         secure: true,
@@ -9167,7 +8420,7 @@ export class Api<
       data: AddHeatingStationRequest,
       params: RequestParams = {},
     ) =>
-      this.request<HeatingStationResponseSuccessApiResponse, ErrorApiResponse>({
+      this.request<HeatingStationResponse, ErrorApiResponse>({
         path: `/api/HeatingStation`,
         method: 'POST',
         body: data,
@@ -9187,7 +8440,7 @@ export class Api<
      * @secure
      */
     heatingStationDetail: (id: string, params: RequestParams = {}) =>
-      this.request<HeatingStationResponseSuccessApiResponse, ErrorApiResponse>({
+      this.request<HeatingStationResponse, ErrorApiResponse>({
         path: `/api/HeatingStation/${id}`,
         method: 'GET',
         secure: true,
@@ -9209,7 +8462,7 @@ export class Api<
       data: UpdateHeatingStationRequest,
       params: RequestParams = {},
     ) =>
-      this.request<HeatingStationResponseSuccessApiResponse, ErrorApiResponse>({
+      this.request<HeatingStationResponse, ErrorApiResponse>({
         path: `/api/HeatingStation/${id}`,
         method: 'PUT',
         body: data,
@@ -9263,10 +8516,7 @@ export class Api<
       },
       params: RequestParams = {},
     ) =>
-      this.request<
-        HomeownerAccountResponsePagedListSuccessApiResponse,
-        ErrorApiResponse
-      >({
+      this.request<HomeownerAccountResponsePagedList, ErrorApiResponse>({
         path: `/api/HomeownerAccounts`,
         method: 'GET',
         query: query,
@@ -9291,10 +8541,7 @@ export class Api<
       },
       params: RequestParams = {},
     ) =>
-      this.request<
-        HomeownerAccountResponseSuccessApiResponse,
-        ErrorApiResponse
-      >({
+      this.request<HomeownerAccountResponse, ErrorApiResponse>({
         path: `/api/HomeownerAccounts`,
         method: 'POST',
         query: query,
@@ -9315,10 +8562,7 @@ export class Api<
      * @secure
      */
     homeownerAccountsDetail: (id: string, params: RequestParams = {}) =>
-      this.request<
-        HomeownerAccountResponseSuccessApiResponse,
-        ErrorApiResponse
-      >({
+      this.request<HomeownerAccountResponse, ErrorApiResponse>({
         path: `/api/HomeownerAccounts/${id}`,
         method: 'GET',
         secure: true,
@@ -9343,10 +8587,7 @@ export class Api<
       },
       params: RequestParams = {},
     ) =>
-      this.request<
-        HomeownerAccountResponseSuccessApiResponse,
-        ErrorApiResponse
-      >({
+      this.request<HomeownerAccountResponse, ErrorApiResponse>({
         path: `/api/HomeownerAccounts/${id}`,
         method: 'PUT',
         query: query,
@@ -9491,10 +8732,7 @@ export class Api<
       },
       params: RequestParams = {},
     ) =>
-      this.request<
-        HomeownerAccountResponseSuccessApiResponse,
-        ErrorApiResponse
-      >({
+      this.request<HomeownerAccountResponse, ErrorApiResponse>({
         path: `/api/HomeownerAccounts/Replace`,
         method: 'POST',
         query: query,
@@ -9518,10 +8756,7 @@ export class Api<
       id: string,
       params: RequestParams = {},
     ) =>
-      this.request<
-        HomeownerCertificateResponseSuccessApiResponse,
-        ErrorApiResponse
-      >({
+      this.request<HomeownerCertificateResponse, ErrorApiResponse>({
         path: `/api/HomeownerAccounts/${id}/Certificate`,
         method: 'GET',
         secure: true,
@@ -9546,7 +8781,7 @@ export class Api<
       params: RequestParams = {},
     ) =>
       this.request<
-        DataAfterSplittingHomeownerAccountResponseSuccessApiResponse,
+        DataAfterSplittingHomeownerAccountResponse,
         ErrorApiResponse
       >({
         path: `/api/HomeownerAccounts/Split`,
@@ -9573,17 +8808,15 @@ export class Api<
       data: UpdateHouseManagementRequest,
       params: RequestParams = {},
     ) =>
-      this.request<HouseManagementResponseSuccessApiResponse, ErrorApiResponse>(
-        {
-          path: `/api/HouseManagements/${houseManagementId}`,
-          method: 'POST',
-          body: data,
-          secure: true,
-          type: ContentType.Json,
-          format: 'json',
-          ...params,
-        },
-      ),
+      this.request<HouseManagementResponse, ErrorApiResponse>({
+        path: `/api/HouseManagements/${houseManagementId}`,
+        method: 'POST',
+        body: data,
+        secure: true,
+        type: ContentType.Json,
+        format: 'json',
+        ...params,
+      }),
 
     /**
      * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Администратор УК без назначений задач</li><li>Контролёр</li>
@@ -9600,10 +8833,7 @@ export class Api<
       },
       params: RequestParams = {},
     ) =>
-      this.request<
-        HouseManagementResponseListSuccessApiResponse,
-        ErrorApiResponse
-      >({
+      this.request<HouseManagementResponse[], ErrorApiResponse>({
         path: `/api/HouseManagements`,
         method: 'GET',
         query: query,
@@ -9628,10 +8858,7 @@ export class Api<
       },
       params: RequestParams = {},
     ) =>
-      this.request<
-        GetHousingMeteringDeviceReadingsResponseSuccessApiResponse,
-        ErrorApiResponse
-      >({
+      this.request<GetHousingMeteringDeviceReadingsResponse, ErrorApiResponse>({
         path: `/api/HousingMeteringDeviceReadings`,
         method: 'GET',
         query: query,
@@ -9654,7 +8881,7 @@ export class Api<
       params: RequestParams = {},
     ) =>
       this.request<
-        HousingMeteringDeviceReadingsIncludingPlacementResponseSuccessApiResponse,
+        HousingMeteringDeviceReadingsIncludingPlacementResponse,
         ErrorApiResponse
       >({
         path: `/api/HousingMeteringDeviceReadings`,
@@ -9680,7 +8907,7 @@ export class Api<
       params: RequestParams = {},
     ) =>
       this.request<
-        HousingMeteringDeviceReadingsIncludingPlacementResponseSuccessApiResponse,
+        HousingMeteringDeviceReadingsIncludingPlacementResponse,
         ErrorApiResponse
       >({
         path: `/api/HousingMeteringDeviceReadings`,
@@ -9705,10 +8932,7 @@ export class Api<
       readingId: string,
       params: RequestParams = {},
     ) =>
-      this.request<
-        HousingMeteringDeviceReadingsResponseSuccessApiResponse,
-        ErrorApiResponse
-      >({
+      this.request<HousingMeteringDeviceReadingsResponse, ErrorApiResponse>({
         path: `/api/HousingMeteringDeviceReadings/${readingId}/remove`,
         method: 'POST',
         secure: true,
@@ -9763,15 +8987,11 @@ export class Api<
         /** @format int32 */
         PageSize?: number;
         OrderBy?: EOrderByRule;
-        /** @format int32 */
-        Skip?: number;
-        /** @format int32 */
-        Take?: number;
       },
       params: RequestParams = {},
     ) =>
       this.request<
-        HousingMeteringDeviceIncludingReadingsResponsePagedListSuccessApiResponse,
+        HousingMeteringDeviceIncludingReadingsResponsePagedList,
         ErrorApiResponse
       >({
         path: `/api/HousingMeteringDevices`,
@@ -9795,10 +9015,7 @@ export class Api<
       deviceId: number,
       params: RequestParams = {},
     ) =>
-      this.request<
-        HousingMeteringDeviceCommentResponseSuccessApiResponse,
-        ErrorApiResponse
-      >({
+      this.request<HousingMeteringDeviceCommentResponse, ErrorApiResponse>({
         path: `/api/HousingMeteringDevices/${deviceId}/comment`,
         method: 'GET',
         secure: true,
@@ -9820,10 +9037,7 @@ export class Api<
       data: HousingMeteringDeviceAddCommentRequest,
       params: RequestParams = {},
     ) =>
-      this.request<
-        HousingMeteringDeviceCommentResponseSuccessApiResponse,
-        ErrorApiResponse
-      >({
+      this.request<HousingMeteringDeviceCommentResponse, ErrorApiResponse>({
         path: `/api/HousingMeteringDevices/${deviceId}/comment`,
         method: 'POST',
         body: data,
@@ -9847,10 +9061,7 @@ export class Api<
       data: HousingMeteringDeviceUpdateCommentRequest,
       params: RequestParams = {},
     ) =>
-      this.request<
-        HousingMeteringDeviceCommentResponseSuccessApiResponse,
-        ErrorApiResponse
-      >({
+      this.request<HousingMeteringDeviceCommentResponse, ErrorApiResponse>({
         path: `/api/HousingMeteringDevices/${deviceId}/comment`,
         method: 'PUT',
         body: data,
@@ -9894,7 +9105,7 @@ export class Api<
       params: RequestParams = {},
     ) =>
       this.request<
-        HousingMeteringDeviceReadingsHistoryResponseSuccessApiResponse,
+        HousingMeteringDeviceReadingsHistoryResponse,
         ErrorApiResponse
       >({
         path: `/api/HousingMeteringDevices/${deviceId}/readingsHistory`,
@@ -9921,7 +9132,7 @@ export class Api<
       },
       params: RequestParams = {},
     ) =>
-      this.request<PollResponseSuccessApiResponse, ErrorApiResponse>({
+      this.request<PollResponse, ErrorApiResponse>({
         path: `/api/HousingMeteringDevices/closeDevicesByCheckingDate`,
         method: 'POST',
         query: query,
@@ -9943,7 +9154,7 @@ export class Api<
       data: HousingStockCreateRequest,
       params: RequestParams = {},
     ) =>
-      this.request<HousingStockResponseSuccessApiResponse, ErrorApiResponse>({
+      this.request<HousingStockResponse, ErrorApiResponse>({
         path: `/api/HousingStocks`,
         method: 'POST',
         body: data,
@@ -9967,7 +9178,7 @@ export class Api<
       data: HousingStockUpdateRequest,
       params: RequestParams = {},
     ) =>
-      this.request<HousingStockResponseSuccessApiResponse, ErrorApiResponse>({
+      this.request<HousingStockResponse, ErrorApiResponse>({
         path: `/api/HousingStocks/${housingStockId}`,
         method: 'PUT',
         body: data,
@@ -9987,7 +9198,7 @@ export class Api<
      * @secure
      */
     housingStocksDetail: (housingStockId: number, params: RequestParams = {}) =>
-      this.request<HousingStockResponseSuccessApiResponse, ErrorApiResponse>({
+      this.request<HousingStockResponse, ErrorApiResponse>({
         path: `/api/HousingStocks/${housingStockId}`,
         method: 'GET',
         secure: true,
@@ -10097,10 +9308,7 @@ export class Api<
       housingStockId: number,
       params: RequestParams = {},
     ) =>
-      this.request<
-        NodeOnHousingStockResponseListSuccessApiResponse,
-        ErrorApiResponse
-      >({
+      this.request<NodeOnHousingStockResponse[], ErrorApiResponse>({
         path: `/api/HousingStocks/${housingStockId}/Nodes`,
         method: 'GET',
         secure: true,
@@ -10122,10 +9330,7 @@ export class Api<
       housingStockId: number,
       params: RequestParams = {},
     ) =>
-      this.request<
-        CalculatorIntoHousingStockResponseArraySuccessApiResponse,
-        ErrorApiResponse
-      >({
+      this.request<CalculatorIntoHousingStockResponse[], ErrorApiResponse>({
         path: `/api/HousingStocks/${housingStockId}/Calculators`,
         method: 'GET',
         secure: true,
@@ -10146,7 +9351,7 @@ export class Api<
       housingStockId: number,
       params: RequestParams = {},
     ) =>
-      this.request<NumberIdResponseArraySuccessApiResponse, ErrorApiResponse>({
+      this.request<NumberIdResponse[], ErrorApiResponse>({
         path: `/api/HousingStocks/${housingStockId}/ExistingApartmentNumber`,
         method: 'GET',
         secure: true,
@@ -10168,7 +9373,7 @@ export class Api<
       apartmentNumber: string,
       params: RequestParams = {},
     ) =>
-      this.request<Int32NullableSuccessApiResponse, ErrorApiResponse>({
+      this.request<number, ErrorApiResponse>({
         path: `/api/HousingStocks/${housingStockId}/doesApartmentExist/${apartmentNumber}`,
         method: 'GET',
         secure: true,
@@ -10197,10 +9402,7 @@ export class Api<
       },
       params: RequestParams = {},
     ) =>
-      this.request<
-        HousingStockWithTasksResponseIEnumerableSuccessApiResponse,
-        ErrorApiResponse
-      >({
+      this.request<HousingStockWithTasksResponse[], ErrorApiResponse>({
         path: `/api/HousingStocks/HousingStockWithTasks`,
         method: 'GET',
         query: query,
@@ -10227,10 +9429,7 @@ export class Api<
       },
       params: RequestParams = {},
     ) =>
-      this.request<
-        BuildingByFilterResponseSuccessApiResponse,
-        ErrorApiResponse
-      >({
+      this.request<BuildingByFilterResponse, ErrorApiResponse>({
         path: `/api/Devices/Individual/House`,
         method: 'GET',
         query: query,
@@ -10265,24 +9464,19 @@ export class Api<
         /** @format int32 */
         PageSize?: number;
         OrderBy?: EOrderByRule;
-        /** @format int32 */
-        Skip?: number;
-        /** @format int32 */
-        Take?: number;
       },
       params: RequestParams = {},
     ) =>
-      this.request<
-        ApartmentByAddressFilterResponsePagedListSuccessApiResponse,
-        ErrorApiResponse
-      >({
-        path: `/api/Devices/Individual/Apartments`,
-        method: 'GET',
-        query: query,
-        secure: true,
-        format: 'json',
-        ...params,
-      }),
+      this.request<ApartmentByAddressFilterResponsePagedList, ErrorApiResponse>(
+        {
+          path: `/api/Devices/Individual/Apartments`,
+          method: 'GET',
+          query: query,
+          secure: true,
+          format: 'json',
+          ...params,
+        },
+      ),
 
     /**
      * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Администратор УК без назначений задач</li><li>Контролёр</li>
@@ -10297,10 +9491,7 @@ export class Api<
       apartmentId: number,
       params: RequestParams = {},
     ) =>
-      this.request<
-        IndividualDeviceResponseFromDevicePageListSuccessApiResponse,
-        ErrorApiResponse
-      >({
+      this.request<IndividualDeviceResponseFromDevicePage[], ErrorApiResponse>({
         path: `/api/Devices/Individual/Apartments/${apartmentId}/Devices`,
         method: 'GET',
         secure: true,
@@ -10319,7 +9510,7 @@ export class Api<
      */
     devicesIndividualDetail: (deviceId: number, params: RequestParams = {}) =>
       this.request<
-        IndividualDeviceResponseFromDevicePageSuccessApiResponse,
+        IndividualDeviceResponseFromDevicePage,
         ErrorApiResponse | ProblemDetails
       >({
         path: `/api/Devices/Individual/${deviceId}`,
@@ -10358,15 +9549,11 @@ export class Api<
         /** @format int32 */
         PageSize?: number;
         OrderBy?: EOrderByRule;
-        /** @format int32 */
-        Skip?: number;
-        /** @format int32 */
-        Take?: number;
       },
       params: RequestParams = {},
     ) =>
       this.request<
-        IndividualDeviceListResponseFromDevicePagePagedListSuccessApiResponse,
+        IndividualDeviceListResponseFromDevicePagePagedList,
         ErrorApiResponse
       >({
         path: `/api/Devices/Individual`,
@@ -10394,7 +9581,7 @@ export class Api<
       params: RequestParams = {},
     ) =>
       this.request<
-        IndividualDeviceMountPlaceListWrappedResponseSuccessApiResponse,
+        IndividualDeviceMountPlaceListWrappedResponse,
         ErrorApiResponse
       >({
         path: `/api/IndividualDeviceMountPlaces`,
@@ -10416,7 +9603,7 @@ export class Api<
      */
     individualDeviceMountPlacesAllList: (params: RequestParams = {}) =>
       this.request<
-        IndividualDeviceMountPlaceForFilterResponseListSuccessApiResponse,
+        IndividualDeviceMountPlaceForFilterResponse[],
         ErrorApiResponse
       >({
         path: `/api/IndividualDeviceMountPlaces/All`,
@@ -10439,10 +9626,7 @@ export class Api<
       data: IndividualDeviceReadingsCreateRequest,
       params: RequestParams = {},
     ) =>
-      this.request<
-        IndividualDeviceReadingsResponseSuccessApiResponse,
-        ErrorApiResponse
-      >({
+      this.request<IndividualDeviceReadingsResponse, ErrorApiResponse>({
         path: `/api/IndividualDeviceReadings/createLite`,
         method: 'POST',
         body: data,
@@ -10466,7 +9650,7 @@ export class Api<
       params: RequestParams = {},
     ) =>
       this.request<
-        IndividualDeviceReadingsCreateListResponseSuccessApiResponse,
+        IndividualDeviceReadingsCreateListResponse,
         ErrorApiResponse
       >({
         path: `/api/IndividualDeviceReadings/create`,
@@ -10491,10 +9675,7 @@ export class Api<
       readingId: number,
       params: RequestParams = {},
     ) =>
-      this.request<
-        IndividualDeviceReadingsResponseSuccessApiResponse,
-        ErrorApiResponse
-      >({
+      this.request<IndividualDeviceReadingsResponse, ErrorApiResponse>({
         path: `/api/IndividualDeviceReadings/${readingId}/remove`,
         method: 'POST',
         secure: true,
@@ -10523,7 +9704,7 @@ export class Api<
       params: RequestParams = {},
     ) =>
       this.request<
-        GetDataForIndividualDevicesConsumptionPlotResponseSuccessApiResponse,
+        GetDataForIndividualDevicesConsumptionPlotResponse,
         ErrorApiResponse
       >({
         path: `/api/IndividualDeviceReadings/DataForSubscriberAndNormativeConsumptionPlot`,
@@ -10544,10 +9725,7 @@ export class Api<
      * @secure
      */
     individualDevicesDetail: (deviceId: number, params: RequestParams = {}) =>
-      this.request<
-        IndividualDeviceResponseSuccessApiResponse,
-        ErrorApiResponse
-      >({
+      this.request<IndividualDeviceResponse, ErrorApiResponse>({
         path: `/api/IndividualDevices/${deviceId}`,
         method: 'GET',
         secure: true,
@@ -10569,10 +9747,7 @@ export class Api<
       data: UpdateIndividualDeviceRequest,
       params: RequestParams = {},
     ) =>
-      this.request<
-        IndividualDeviceResponseSuccessApiResponse,
-        ErrorApiResponse
-      >({
+      this.request<IndividualDeviceResponse, ErrorApiResponse>({
         path: `/api/IndividualDevices/${deviceId}`,
         method: 'PUT',
         body: data,
@@ -10611,24 +9786,19 @@ export class Api<
         /** @format int32 */
         PageSize?: number;
         OrderBy?: EOrderByRule;
-        /** @format int32 */
-        Skip?: number;
-        /** @format int32 */
-        Take?: number;
       },
       params: RequestParams = {},
     ) =>
-      this.request<
-        IndividualDeviceListItemResponsePagedListSuccessApiResponse,
-        ErrorApiResponse
-      >({
-        path: `/api/IndividualDevices`,
-        method: 'GET',
-        query: query,
-        secure: true,
-        format: 'json',
-        ...params,
-      }),
+      this.request<IndividualDeviceListItemResponsePagedList, ErrorApiResponse>(
+        {
+          path: `/api/IndividualDevices`,
+          method: 'GET',
+          query: query,
+          secure: true,
+          format: 'json',
+          ...params,
+        },
+      ),
 
     /**
      * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li><li>Администратор УК без назначений задач</li>
@@ -10643,10 +9813,7 @@ export class Api<
       data: CreateIndividualDeviceRequest,
       params: RequestParams = {},
     ) =>
-      this.request<
-        IndividualDeviceResponseSuccessApiResponse,
-        ErrorApiResponse
-      >({
+      this.request<IndividualDeviceResponse, ErrorApiResponse>({
         path: `/api/IndividualDevices`,
         method: 'POST',
         body: data,
@@ -10670,10 +9837,7 @@ export class Api<
       data: UpdateIndividualDeviceSealRequest,
       params: RequestParams = {},
     ) =>
-      this.request<
-        IndividualDeviceResponseSuccessApiResponse,
-        ErrorApiResponse
-      >({
+      this.request<IndividualDeviceResponse, ErrorApiResponse>({
         path: `/api/IndividualDevices/${deviceId}/seal`,
         method: 'PUT',
         body: data,
@@ -10697,10 +9861,7 @@ export class Api<
       data: CloseIndividualDeviceRequest,
       params: RequestParams = {},
     ) =>
-      this.request<
-        IndividualDeviceResponseSuccessApiResponse,
-        ErrorApiResponse
-      >({
+      this.request<IndividualDeviceResponse, ErrorApiResponse>({
         path: `/api/IndividualDevices/${deviceId}/close`,
         method: 'POST',
         body: data,
@@ -10723,10 +9884,7 @@ export class Api<
       deviceId: number,
       params: RequestParams = {},
     ) =>
-      this.request<
-        IndividualDeviceResponseSuccessApiResponse,
-        ErrorApiResponse
-      >({
+      this.request<IndividualDeviceResponse, ErrorApiResponse>({
         path: `/api/IndividualDevices/${deviceId}/reopen`,
         method: 'POST',
         secure: true,
@@ -10748,10 +9906,7 @@ export class Api<
       data: SwitchMagneticSealRequest,
       params: RequestParams = {},
     ) =>
-      this.request<
-        IndividualDeviceResponseSuccessApiResponse,
-        ErrorApiResponse
-      >({
+      this.request<IndividualDeviceResponse, ErrorApiResponse>({
         path: `/api/IndividualDevices/${deviceId}/SwitchMagneticSeal`,
         method: 'POST',
         body: data,
@@ -10775,10 +9930,7 @@ export class Api<
       data: SetMagneticSealRequest,
       params: RequestParams = {},
     ) =>
-      this.request<
-        IndividualDeviceResponseSuccessApiResponse,
-        ErrorApiResponse
-      >({
+      this.request<IndividualDeviceResponse, ErrorApiResponse>({
         path: `/api/IndividualDevices/${deviceId}/SetMagneticSeal`,
         method: 'POST',
         body: data,
@@ -10802,10 +9954,7 @@ export class Api<
       data: SwitchIndividualDeviceRequest,
       params: RequestParams = {},
     ) =>
-      this.request<
-        IndividualDeviceResponseSuccessApiResponse,
-        ErrorApiResponse
-      >({
+      this.request<IndividualDeviceResponse, ErrorApiResponse>({
         path: `/api/IndividualDevices/${deviceId}/switch`,
         method: 'POST',
         body: data,
@@ -10829,10 +9978,7 @@ export class Api<
       data: CheckIndividualDeviceRequest,
       params: RequestParams = {},
     ) =>
-      this.request<
-        IndividualDeviceResponseSuccessApiResponse,
-        ErrorApiResponse
-      >({
+      this.request<IndividualDeviceResponse, ErrorApiResponse>({
         path: `/api/IndividualDevices/${deviceId}/check`,
         method: 'POST',
         body: data,
@@ -10855,10 +10001,7 @@ export class Api<
       deviceId: number,
       params: RequestParams = {},
     ) =>
-      this.request<
-        IndividualDeviceReadingsHistoryResponseSuccessApiResponse,
-        ErrorApiResponse
-      >({
+      this.request<IndividualDeviceReadingsHistoryResponse, ErrorApiResponse>({
         path: `/api/IndividualDevices/${deviceId}/readingsHistory`,
         method: 'GET',
         secure: true,
@@ -10908,7 +10051,7 @@ export class Api<
       },
       params: RequestParams = {},
     ) =>
-      this.request<PollResponseSuccessApiResponse, ErrorApiResponse>({
+      this.request<PollResponse, ErrorApiResponse>({
         path: `/api/IndividualDevices/createTaskForDeviceWithoutReadings`,
         method: 'POST',
         query: query,
@@ -10929,13 +10072,18 @@ export class Api<
     individualDevicesCloseDevicesWithoutReadingsCreate: (
       query?: {
         ManagementFirmIds?: number[];
+        /**
+         * Кол-во месяцев без показаний от текущего
+         * @format int32
+         */
+        MonthsToCloseDevice?: number;
         Command?: PollCommand;
         /** @format int32 */
         PollId?: number;
       },
       params: RequestParams = {},
     ) =>
-      this.request<PollResponseSuccessApiResponse, ErrorApiResponse>({
+      this.request<PollResponse, ErrorApiResponse>({
         path: `/api/IndividualDevices/closeDevicesWithoutReadings`,
         method: 'POST',
         query: query,
@@ -10961,7 +10109,7 @@ export class Api<
       },
       params: RequestParams = {},
     ) =>
-      this.request<PollResponseSuccessApiResponse, ErrorApiResponse>({
+      this.request<PollResponse, ErrorApiResponse>({
         path: `/api/IndividualDevices/closeDevicesByCheckingDate`,
         method: 'POST',
         query: query,
@@ -11003,10 +10151,7 @@ export class Api<
       deviceId: number,
       params: RequestParams = {},
     ) =>
-      this.request<
-        IndividualDeviceConsumptionResponseIEnumerableSuccessApiResponse,
-        ErrorApiResponse
-      >({
+      this.request<IndividualDeviceConsumptionResponse[], ErrorApiResponse>({
         path: `/api/IndividualDevices/${deviceId}/Consumption`,
         method: 'GET',
         secure: true,
@@ -11027,10 +10172,7 @@ export class Api<
       deviceId: number,
       params: RequestParams = {},
     ) =>
-      this.request<
-        IndividualDeviceReadingsSlimResponseSuccessApiResponse,
-        ErrorApiResponse
-      >({
+      this.request<IndividualDeviceReadingsSlimResponse, ErrorApiResponse>({
         path: `/api/IndividualDevices/${deviceId}/LastReading`,
         method: 'GET',
         secure: true,
@@ -11048,7 +10190,7 @@ export class Api<
      * @secure
      */
     inspectorsList: (params: RequestParams = {}) =>
-      this.request<InspectorResponseListSuccessApiResponse, ErrorApiResponse>({
+      this.request<InspectorResponse[], ErrorApiResponse>({
         path: `/api/Inspectors`,
         method: 'GET',
         secure: true,
@@ -11069,7 +10211,7 @@ export class Api<
       data: InspectorCreateRequest,
       params: RequestParams = {},
     ) =>
-      this.request<InspectorResponseSuccessApiResponse, ErrorApiResponse>({
+      this.request<InspectorResponse, ErrorApiResponse>({
         path: `/api/Inspectors`,
         method: 'POST',
         body: data,
@@ -11089,10 +10231,7 @@ export class Api<
      * @secure
      */
     inspectorsDetail: (inspectorId: number, params: RequestParams = {}) =>
-      this.request<
-        InspectorResponsePagedListSuccessApiResponse,
-        ErrorApiResponse
-      >({
+      this.request<InspectorResponsePagedList, ErrorApiResponse>({
         path: `/api/Inspectors/${inspectorId}`,
         method: 'GET',
         secure: true,
@@ -11114,7 +10253,7 @@ export class Api<
       data: InspectorUpdateRequest,
       params: RequestParams = {},
     ) =>
-      this.request<InspectorResponseSuccessApiResponse, ErrorApiResponse>({
+      this.request<InspectorResponse, ErrorApiResponse>({
         path: `/api/Inspectors/${inspectorId}`,
         method: 'PATCH',
         body: data,
@@ -11155,7 +10294,7 @@ export class Api<
       data: InspectorReassignAllAddressesRequest,
       params: RequestParams = {},
     ) =>
-      this.request<InspectorResponseSuccessApiResponse, ErrorApiResponse>({
+      this.request<InspectorResponse, ErrorApiResponse>({
         path: `/api/Inspectors/${inspectorId}/housingStocks`,
         method: 'PATCH',
         body: data,
@@ -11178,7 +10317,7 @@ export class Api<
       inspectorId: number,
       params: RequestParams = {},
     ) =>
-      this.request<InspectorResponseSuccessApiResponse, ErrorApiResponse>({
+      this.request<InspectorResponse, ErrorApiResponse>({
         path: `/api/Inspectors/${inspectorId}/housingStocks`,
         method: 'DELETE',
         secure: true,
@@ -11200,7 +10339,7 @@ export class Api<
       params: RequestParams = {},
     ) =>
       this.request<
-        EResourceTypeConsumptionRateResponseDictionaryItemListSuccessApiResponse,
+        EResourceTypeConsumptionRateResponseDictionaryItem[],
         ErrorApiResponse
       >({
         path: `/api/ManagingFirms/${managingFirmId}/ConsumptionRates`,
@@ -11220,10 +10359,7 @@ export class Api<
      * @secure
      */
     managingFirmsTemperatureNormativesList: (params: RequestParams = {}) =>
-      this.request<
-        TemperatureNormativeResponseSuccessApiResponse,
-        ErrorApiResponse
-      >({
+      this.request<TemperatureNormativeResponse, ErrorApiResponse>({
         path: `/api/ManagingFirms/TemperatureNormatives`,
         method: 'GET',
         secure: true,
@@ -11266,10 +10402,7 @@ export class Api<
       data: TemperatureNormativeUpdateRequest,
       params: RequestParams = {},
     ) =>
-      this.request<
-        TemperatureNormativeResponseSuccessApiResponse,
-        ErrorApiResponse
-      >({
+      this.request<TemperatureNormativeResponse, ErrorApiResponse>({
         path: `/api/ManagingFirms/TemperatureNormatives/CreateOrUpdate`,
         method: 'POST',
         body: data,
@@ -11290,20 +10423,12 @@ export class Api<
      */
     managingFirmsTemperatureNormativesCreateOrUpdateFromFileCreate: (
       data: {
-        ContentType?: string;
-        ContentDisposition?: string;
-        Headers?: Record<string, string[]>;
-        /** @format int64 */
-        Length?: number;
-        Name?: string;
-        FileName?: string;
+        /** @format binary */
+        file: File;
       },
       params: RequestParams = {},
     ) =>
-      this.request<
-        TemperatureNormativeResponseSuccessApiResponse,
-        ErrorApiResponse
-      >({
+      this.request<TemperatureNormativeResponse, ErrorApiResponse>({
         path: `/api/ManagingFirms/TemperatureNormatives/CreateOrUpdateFromFile`,
         method: 'POST',
         body: data,
@@ -11360,17 +10485,10 @@ export class Api<
         /** @format int32 */
         PageSize?: number;
         OrderBy?: EOrderByRule;
-        /** @format int32 */
-        Skip?: number;
-        /** @format int32 */
-        Take?: number;
       },
       params: RequestParams = {},
     ) =>
-      this.request<
-        MeteringDeviceListResponsePagedListSuccessApiResponse,
-        ErrorApiResponse
-      >({
+      this.request<MeteringDeviceListResponsePagedList, ErrorApiResponse>({
         path: `/api/MeteringDevices`,
         method: 'GET',
         query: query,
@@ -11398,10 +10516,7 @@ export class Api<
       },
       params: RequestParams = {},
     ) =>
-      this.request<
-        MeteringDeviceSearchListResponseIEnumerableSuccessApiResponse,
-        ErrorApiResponse
-      >({
+      this.request<MeteringDeviceSearchListResponse[], ErrorApiResponse>({
         path: `/api/MeteringDevices/search`,
         method: 'GET',
         query: query,
@@ -11423,7 +10538,7 @@ export class Api<
       meteringDeviceId: number,
       params: RequestParams = {},
     ) =>
-      this.request<MeteringDeviceResponseSuccessApiResponse, ErrorApiResponse>({
+      this.request<MeteringDeviceResponse, ErrorApiResponse>({
         path: `/api/MeteringDevices/${meteringDeviceId}`,
         method: 'GET',
         secure: true,
@@ -11449,10 +10564,7 @@ export class Api<
       },
       params: RequestParams = {},
     ) =>
-      this.request<
-        MeteringDeviceListResponseIEnumerableSuccessApiResponse,
-        ErrorApiResponse
-      >({
+      this.request<MeteringDeviceListResponse[], ErrorApiResponse>({
         path: `/api/MeteringDevices/related`,
         method: 'GET',
         query: query,
@@ -11523,14 +10635,10 @@ export class Api<
         /** @format int32 */
         PageSize?: number;
         OrderBy?: EOrderByRule;
-        /** @format int32 */
-        Skip?: number;
-        /** @format int32 */
-        Take?: number;
       },
       params: RequestParams = {},
     ) =>
-      this.request<StringPagedListSuccessApiResponse, ErrorApiResponse>({
+      this.request<StringPagedList, ErrorApiResponse>({
         path: `/api/MeteringDevices/ExistingModels`,
         method: 'GET',
         query: query,
@@ -11577,14 +10685,10 @@ export class Api<
         /** @format int32 */
         PageSize?: number;
         OrderBy?: EOrderByRule;
-        /** @format int32 */
-        Skip?: number;
-        /** @format int32 */
-        Take?: number;
       },
       params: RequestParams = {},
     ) =>
-      this.request<NodesPagedListSuccessApiResponse, ErrorApiResponse>({
+      this.request<NodesPagedList, ErrorApiResponse>({
         path: `/api/Nodes`,
         method: 'GET',
         query: query,
@@ -11633,17 +10737,10 @@ export class Api<
         /** @format int32 */
         PageSize?: number;
         OrderBy?: EOrderByRule;
-        /** @format int32 */
-        Skip?: number;
-        /** @format int32 */
-        Take?: number;
       },
       params: RequestParams = {},
     ) =>
-      this.request<
-        NodeCheckResponsePagedListSuccessApiResponse,
-        ErrorApiResponse
-      >({
+      this.request<NodeCheckResponsePagedList, ErrorApiResponse>({
         path: `/api/Nodes/${nodeId}/Checks`,
         method: 'GET',
         query: query,
@@ -11773,7 +10870,7 @@ export class Api<
       },
       params: RequestParams = {},
     ) =>
-      this.request<TaskStatisticsResponseSuccessApiResponse, ErrorApiResponse>({
+      this.request<TaskStatisticsResponse, ErrorApiResponse>({
         path: `/api/Nodes/${nodeId}/TaskStatistics`,
         method: 'GET',
         query: query,
@@ -11802,10 +10899,7 @@ export class Api<
       },
       params: RequestParams = {},
     ) =>
-      this.request<
-        GetDataForHousingConsumptionPlotResponseSuccessApiResponse,
-        ErrorApiResponse
-      >({
+      this.request<GetDataForHousingConsumptionPlotResponse, ErrorApiResponse>({
         path: `/api/Nodes/DataForHousingConsumptionPlot`,
         method: 'GET',
         query: query,
@@ -11834,7 +10928,7 @@ export class Api<
       params: RequestParams = {},
     ) =>
       this.request<
-        GetSummaryHousingConsumptionsByResourcesResponseSuccessApiResponse,
+        GetSummaryHousingConsumptionsByResourcesResponse,
         ErrorApiResponse
       >({
         path: `/api/Nodes/SummaryHousingConsumptionsByResources`,
@@ -11855,10 +10949,7 @@ export class Api<
      * @secure
      */
     nodeServiceZonesList: (params: RequestParams = {}) =>
-      this.request<
-        NodeServiceZoneListResponseSuccessApiResponse,
-        ErrorApiResponse
-      >({
+      this.request<NodeServiceZoneListResponse, ErrorApiResponse>({
         path: `/api/NodeServiceZones`,
         method: 'GET',
         secure: true,
@@ -11879,17 +10970,15 @@ export class Api<
       data: NodeServiceZoneRequest,
       params: RequestParams = {},
     ) =>
-      this.request<NodeServiceZoneResponseSuccessApiResponse, ErrorApiResponse>(
-        {
-          path: `/api/NodeServiceZones`,
-          method: 'POST',
-          body: data,
-          secure: true,
-          type: ContentType.Json,
-          format: 'json',
-          ...params,
-        },
-      ),
+      this.request<NodeServiceZoneResponse, ErrorApiResponse>({
+        path: `/api/NodeServiceZones`,
+        method: 'POST',
+        body: data,
+        secure: true,
+        type: ContentType.Json,
+        format: 'json',
+        ...params,
+      }),
 
     /**
      * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Администратор УК без назначений задач</li><li>Контролёр</li>
@@ -11904,15 +10993,13 @@ export class Api<
       nodeServiceZoneId: number,
       params: RequestParams = {},
     ) =>
-      this.request<NodeServiceZoneResponseSuccessApiResponse, ErrorApiResponse>(
-        {
-          path: `/api/NodeServiceZones/${nodeServiceZoneId}`,
-          method: 'GET',
-          secure: true,
-          format: 'json',
-          ...params,
-        },
-      ),
+      this.request<NodeServiceZoneWithNodeCountResponse, ErrorApiResponse>({
+        path: `/api/NodeServiceZones/${nodeServiceZoneId}`,
+        method: 'GET',
+        secure: true,
+        format: 'json',
+        ...params,
+      }),
 
     /**
      * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Администратор УК без назначений задач</li>
@@ -11928,17 +11015,15 @@ export class Api<
       data: NodeServiceZoneRequest,
       params: RequestParams = {},
     ) =>
-      this.request<NodeServiceZoneResponseSuccessApiResponse, ErrorApiResponse>(
-        {
-          path: `/api/NodeServiceZones/${nodeServiceZoneId}`,
-          method: 'PUT',
-          body: data,
-          secure: true,
-          type: ContentType.Json,
-          format: 'json',
-          ...params,
-        },
-      ),
+      this.request<NodeServiceZoneResponse, ErrorApiResponse>({
+        path: `/api/NodeServiceZones/${nodeServiceZoneId}`,
+        method: 'PUT',
+        body: data,
+        secure: true,
+        type: ContentType.Json,
+        format: 'json',
+        ...params,
+      }),
 
     /**
      * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Администратор УК без назначений задач</li>
@@ -11976,10 +11061,7 @@ export class Api<
       },
       params: RequestParams = {},
     ) =>
-      this.request<
-        AllNodeWorkingRangeResponseSuccessApiResponse,
-        ErrorApiResponse
-      >({
+      this.request<AllNodeWorkingRangeResponse, ErrorApiResponse>({
         path: `/api/NodeWorkingRange`,
         method: 'GET',
         query: query,
@@ -12005,10 +11087,7 @@ export class Api<
       },
       params: RequestParams = {},
     ) =>
-      this.request<
-        AllNodeWorkingRangeResponseSuccessApiResponse,
-        ErrorApiResponse
-      >({
+      this.request<AllNodeWorkingRangeResponse, ErrorApiResponse>({
         path: `/api/NodeWorkingRange/HouseManagement/${houseManagementId}`,
         method: 'GET',
         query: query,
@@ -12034,10 +11113,7 @@ export class Api<
       },
       params: RequestParams = {},
     ) =>
-      this.request<
-        AllNodeWorkingRangeResponseSuccessApiResponse,
-        ErrorApiResponse
-      >({
+      this.request<AllNodeWorkingRangeResponse, ErrorApiResponse>({
         path: `/api/NodeWorkingRange/HousingStock/${housingStockId}`,
         method: 'GET',
         query: query,
@@ -12062,10 +11138,7 @@ export class Api<
       },
       params: RequestParams = {},
     ) =>
-      this.request<
-        AllNodeWorkingRangeResponseSuccessApiResponse,
-        ErrorApiResponse
-      >({
+      this.request<AllNodeWorkingRangeResponse, ErrorApiResponse>({
         path: `/api/NodeWorkingRange/Node/${nodeId}`,
         method: 'GET',
         query: query,
@@ -12087,10 +11160,7 @@ export class Api<
       data: AddOrUpdateNodeWorkingRangeRequest,
       params: RequestParams = {},
     ) =>
-      this.request<
-        ValueNodeWorkingRangeResponseSuccessApiResponse,
-        ErrorApiResponse
-      >({
+      this.request<ValueNodeWorkingRangeResponse, ErrorApiResponse>({
         path: `/api/NodeWorkingRange/AddOrUpdate`,
         method: 'POST',
         body: data,
@@ -12133,7 +11203,7 @@ export class Api<
      */
     nodeWorkingRangeTypesList: (params: RequestParams = {}) =>
       this.request<
-        ENodeWorkingRangeTypeStringDictionaryItemListSuccessApiResponse,
+        ENodeWorkingRangeTypeStringDictionaryItem[],
         ErrorApiResponse
       >({
         path: `/api/NodeWorkingRange/Types`,
@@ -12156,10 +11226,7 @@ export class Api<
       data: NonResidentialBuildingCreateRequest,
       params: RequestParams = {},
     ) =>
-      this.request<
-        NonResidentialBuildingResponseSuccessApiResponse,
-        ErrorApiResponse
-      >({
+      this.request<NonResidentialBuildingResponse, ErrorApiResponse>({
         path: `/api/NonResidentialBuildings`,
         method: 'POST',
         body: data,
@@ -12183,10 +11250,7 @@ export class Api<
       data: NonResidentialBuildingUpdateRequest,
       params: RequestParams = {},
     ) =>
-      this.request<
-        NonResidentialBuildingResponseSuccessApiResponse,
-        ErrorApiResponse
-      >({
+      this.request<NonResidentialBuildingResponse, ErrorApiResponse>({
         path: `/api/NonResidentialBuildings/${buildingId}`,
         method: 'PUT',
         body: data,
@@ -12209,10 +11273,7 @@ export class Api<
       buildingId: number,
       params: RequestParams = {},
     ) =>
-      this.request<
-        NonResidentialBuildingResponseSuccessApiResponse,
-        ErrorApiResponse
-      >({
+      this.request<NonResidentialBuildingResponse, ErrorApiResponse>({
         path: `/api/NonResidentialBuildings/${buildingId}`,
         method: 'GET',
         secure: true,
@@ -12250,10 +11311,7 @@ export class Api<
      * @secure
      */
     organizationCompetencesList: (params: RequestParams = {}) =>
-      this.request<
-        ManagementFirmCompetencesListResponseSuccessApiResponse,
-        ErrorApiResponse
-      >({
+      this.request<ManagementFirmCompetencesListResponse, ErrorApiResponse>({
         path: `/api/OrganizationCompetences`,
         method: 'GET',
         secure: true,
@@ -12294,17 +11352,10 @@ export class Api<
         /** @format int32 */
         PageSize?: number;
         OrderBy?: EOrderByRule;
-        /** @format int32 */
-        Skip?: number;
-        /** @format int32 */
-        Take?: number;
       },
       params: RequestParams = {},
     ) =>
-      this.request<
-        OrganizationResponsePagedListSuccessApiResponse,
-        ErrorApiResponse
-      >({
+      this.request<OrganizationResponsePagedList, ErrorApiResponse>({
         path: `/api/Organizations`,
         method: 'GET',
         query: query,
@@ -12323,7 +11374,7 @@ export class Api<
      * @secure
      */
     organizationsCurrentList: (params: RequestParams = {}) =>
-      this.request<OrganizationResponseSuccessApiResponse, ErrorApiResponse>({
+      this.request<OrganizationResponse, ErrorApiResponse>({
         path: `/api/Organizations/current`,
         method: 'GET',
         secure: true,
@@ -12345,7 +11396,7 @@ export class Api<
       data: OrganizationUpdateRequest,
       params: RequestParams = {},
     ) =>
-      this.request<OrganizationResponseSuccessApiResponse, ErrorApiResponse>({
+      this.request<OrganizationResponse, ErrorApiResponse>({
         path: `/api/Organizations/${managingFirmId}`,
         method: 'PUT',
         body: data,
@@ -12375,17 +11426,10 @@ export class Api<
         /** @format int32 */
         PageSize?: number;
         OrderBy?: EOrderByRule;
-        /** @format int32 */
-        Skip?: number;
-        /** @format int32 */
-        Take?: number;
       },
       params: RequestParams = {},
     ) =>
-      this.request<
-        OrganizationUserListResponsePagedListSuccessApiResponse,
-        ErrorApiResponse
-      >({
+      this.request<OrganizationUserListResponsePagedList, ErrorApiResponse>({
         path: `/api/OrganizationUsers`,
         method: 'GET',
         query: query,
@@ -12407,10 +11451,7 @@ export class Api<
       data: OrganizationUserCreateRequest,
       params: RequestParams = {},
     ) =>
-      this.request<
-        OrganizationUserResponseSuccessApiResponse,
-        ErrorApiResponse
-      >({
+      this.request<OrganizationUserResponse, ErrorApiResponse>({
         path: `/api/OrganizationUsers`,
         method: 'POST',
         body: data,
@@ -12430,10 +11471,7 @@ export class Api<
      * @secure
      */
     organizationUsersDetail: (userId: number, params: RequestParams = {}) =>
-      this.request<
-        OrganizationUserResponseSuccessApiResponse,
-        ErrorApiResponse
-      >({
+      this.request<OrganizationUserResponse, ErrorApiResponse>({
         path: `/api/OrganizationUsers/${userId}`,
         method: 'GET',
         secure: true,
@@ -12455,10 +11493,7 @@ export class Api<
       data: OrganizationUserUpdateRequest,
       params: RequestParams = {},
     ) =>
-      this.request<
-        OrganizationUserResponseSuccessApiResponse,
-        ErrorApiResponse
-      >({
+      this.request<OrganizationUserResponse, ErrorApiResponse>({
         path: `/api/OrganizationUsers/${userId}`,
         method: 'PUT',
         body: data,
@@ -12486,14 +11521,10 @@ export class Api<
         /** @format int32 */
         PageSize?: number;
         OrderBy?: EOrderByRule;
-        /** @format int32 */
-        Skip?: number;
-        /** @format int32 */
-        Take?: number;
       },
       params: RequestParams = {},
     ) =>
-      this.request<TasksPagedListSuccessApiResponse, ErrorApiResponse>({
+      this.request<TasksPagedList, ErrorApiResponse>({
         path: `/api/OrganizationUsers/${userId}/Tasks`,
         method: 'GET',
         query: query,
@@ -12512,10 +11543,7 @@ export class Api<
      * @secure
      */
     organizationUsersCurrentList: (params: RequestParams = {}) =>
-      this.request<
-        OrganizationUserResponseSuccessApiResponse,
-        ErrorApiResponse
-      >({
+      this.request<OrganizationUserResponse, ErrorApiResponse>({
         path: `/api/OrganizationUsers/current`,
         method: 'GET',
         secure: true,
@@ -12570,7 +11598,7 @@ export class Api<
      */
     organizationUsersRoleTypesList: (params: RequestParams = {}) =>
       this.request<
-        ESecuredIdentityRoleNameStringDictionaryItemListSuccessApiResponse,
+        ESecuredIdentityRoleNameStringDictionaryItem[],
         ErrorApiResponse
       >({
         path: `/api/OrganizationUsers/RoleTypes`,
@@ -12599,10 +11627,7 @@ export class Api<
       },
       params: RequestParams = {},
     ) =>
-      this.request<
-        OrganizationUserStatisticsResponseSuccessApiResponse,
-        ErrorApiResponse
-      >({
+      this.request<OrganizationUserStatisticsResponse, ErrorApiResponse>({
         path: `/api/OrganizationUsers/${userId}/statistics`,
         method: 'GET',
         query: query,
@@ -12622,7 +11647,7 @@ export class Api<
      */
     organizationUserWorkingStatusesList: (params: RequestParams = {}) =>
       this.request<
-        EOrganizationUserWorkingStatusTypeStringDictionaryItemListSuccessApiResponse,
+        EOrganizationUserWorkingStatusTypeStringDictionaryItem[],
         ErrorApiResponse
       >({
         path: `/api/OrganizationUserWorkingStatuses`,
@@ -12645,10 +11670,7 @@ export class Api<
       data: AddOrganizationUserWorkingStatusRequest,
       params: RequestParams = {},
     ) =>
-      this.request<
-        OrganizationUserWorkingStatusResponseSuccessApiResponse,
-        ErrorApiResponse
-      >({
+      this.request<OrganizationUserWorkingStatusResponse, ErrorApiResponse>({
         path: `/api/OrganizationUserWorkingStatuses`,
         method: 'POST',
         body: data,
@@ -12671,10 +11693,7 @@ export class Api<
       deviceId: number,
       params: RequestParams = {},
     ) =>
-      this.request<
-        PipeHousingMeteringDeviceResponseSuccessApiResponse,
-        ErrorApiResponse
-      >({
+      this.request<PipeHousingMeteringDeviceResponse, ErrorApiResponse>({
         path: `/api/PipeHousingMeteringDevices/${deviceId}`,
         method: 'GET',
         secure: true,
@@ -12696,7 +11715,7 @@ export class Api<
       data: UpdatePipeHousingMeteringDeviceRequest,
       params: RequestParams = {},
     ) =>
-      this.request<MeteringDeviceResponseSuccessApiResponse, ErrorApiResponse>({
+      this.request<MeteringDeviceResponse, ErrorApiResponse>({
         path: `/api/PipeHousingMeteringDevices/${deviceId}`,
         method: 'PUT',
         body: data,
@@ -12739,7 +11758,7 @@ export class Api<
       data: CreatePipeHousingMeteringDeviceRequest,
       params: RequestParams = {},
     ) =>
-      this.request<MeteringDeviceResponseSuccessApiResponse, ErrorApiResponse>({
+      this.request<MeteringDeviceResponse, ErrorApiResponse>({
         path: `/api/PipeHousingMeteringDevices`,
         method: 'POST',
         body: data,
@@ -12759,7 +11778,7 @@ export class Api<
      * @secure
      */
     pipeNodesDetail: (pipeNodeId: number, params: RequestParams = {}) =>
-      this.request<PipeNodeResponseSuccessApiResponse, ErrorApiResponse>({
+      this.request<PipeNodeResponse, ErrorApiResponse>({
         path: `/api/PipeNodes/${pipeNodeId}`,
         method: 'GET',
         secure: true,
@@ -12781,7 +11800,7 @@ export class Api<
       data: UpdatePipeNodeRequest,
       params: RequestParams = {},
     ) =>
-      this.request<PipeNodeResponseSuccessApiResponse, ErrorApiResponse>({
+      this.request<PipeNodeResponse, ErrorApiResponse>({
         path: `/api/PipeNodes/${pipeNodeId}`,
         method: 'PUT',
         body: data,
@@ -12827,7 +11846,7 @@ export class Api<
       data: CreatePipeNodeRequest,
       params: RequestParams = {},
     ) =>
-      this.request<PipeNodeResponseSuccessApiResponse, ErrorApiResponse>({
+      this.request<PipeNodeResponse, ErrorApiResponse>({
         path: `/api/PipeNodes`,
         method: 'POST',
         body: data,
@@ -12903,7 +11922,7 @@ export class Api<
       params: RequestParams = {},
     ) =>
       this.request<
-        CommunicationPipeForAddingDeviceListResponseSuccessApiResponse,
+        CommunicationPipeForAddingDeviceListResponse,
         ErrorApiResponse
       >({
         path: `/api/PipeNodes/${pipeNodeId}/PipesForAddingDevice`,
@@ -12929,10 +11948,7 @@ export class Api<
       },
       params: RequestParams = {},
     ) =>
-      this.request<
-        EMagistralTypeStringDictionaryItemListSuccessApiResponse,
-        ErrorApiResponse
-      >({
+      this.request<EMagistralTypeStringDictionaryItem[], ErrorApiResponse>({
         path: `/api/PipeNodes/PipeMagistralTypes`,
         method: 'GET',
         query: query,
@@ -12990,15 +12006,13 @@ export class Api<
      * @secure
      */
     reportsList: (params: RequestParams = {}) =>
-      this.request<GroupReportFormResponseSuccessApiResponse, ErrorApiResponse>(
-        {
-          path: `/api/Reports`,
-          method: 'GET',
-          secure: true,
-          format: 'json',
-          ...params,
-        },
-      ),
+      this.request<GroupReportFormResponse, ErrorApiResponse>({
+        path: `/api/Reports`,
+        method: 'GET',
+        secure: true,
+        format: 'json',
+        ...params,
+      }),
 
     /**
      * @description Роли:<li>Администратор</li><li>Администратор УК без назначений задач</li>
@@ -13013,7 +12027,7 @@ export class Api<
       data: CreateGroupReportRequest,
       params: RequestParams = {},
     ) =>
-      this.request<GroupReportResponseSuccessApiResponse, ErrorApiResponse>({
+      this.request<GroupReportResponse, ErrorApiResponse>({
         path: `/api/Reports`,
         method: 'POST',
         body: data,
@@ -13228,7 +12242,7 @@ export class Api<
       },
       params: RequestParams = {},
     ) =>
-      this.request<FileContentResultSuccessApiResponse, ErrorApiResponse>({
+      this.request<File, ErrorApiResponse>({
         path: `/api/Reports/ClosedDevicesReportXlsx`,
         method: 'GET',
         query: query,
@@ -13249,7 +12263,7 @@ export class Api<
     reportsApartmentsWithPreviousBrokenDevicesReportList: (
       params: RequestParams = {},
     ) =>
-      this.request<FileContentResultSuccessApiResponse, ErrorApiResponse>({
+      this.request<File, ErrorApiResponse>({
         path: `/api/Reports/ApartmentsWithPreviousBrokenDevicesReport`,
         method: 'GET',
         secure: true,
@@ -13267,15 +12281,16 @@ export class Api<
      * @secure
      */
     reportsRunnerReportsList: (
-      query: {
-        /** Первая/вторая половина года */
-        yearRange: YearRangeType;
-        /** Ресурс ИПУ по которым собирается отчет */
-        resource: DeviceResource;
-        /** Список Id домоуправлений */
-        hmIds?: string[];
-        /** Список Id домов, приоритетный параметр */
-        houseIds?: number[];
+      query?: {
+        YearRange?: YearRangeType;
+        Resource?: DeviceResource;
+        HmIds?: string[];
+        /** @format int32 */
+        ManagementFirmId?: number;
+        HouseIds?: number[];
+        Command?: PollCommand;
+        /** @format int32 */
+        PollId?: number;
       },
       params: RequestParams = {},
     ) =>
@@ -13369,10 +12384,6 @@ export class Api<
         /** @format int32 */
         PageSize?: number;
         OrderBy?: EOrderByRule;
-        /** @format int32 */
-        Skip?: number;
-        /** @format int32 */
-        Take?: number;
       },
       params: RequestParams = {},
     ) =>
@@ -13457,7 +12468,7 @@ export class Api<
       },
       params: RequestParams = {},
     ) =>
-      this.request<PollResponseSuccessApiResponse, ErrorApiResponse>({
+      this.request<PollResponse, ErrorApiResponse>({
         path: `/api/Reports/OpenIndividualDevicesReport`,
         method: 'GET',
         query: query,
@@ -13492,10 +12503,7 @@ export class Api<
       },
       params: RequestParams = {},
     ) =>
-      this.request<
-        ApartmentActsConstructedReportResponseSuccessApiResponse,
-        ErrorApiResponse
-      >({
+      this.request<ApartmentActsConstructedReportResponse, ErrorApiResponse>({
         path: `/api/Reports/ApartmentActsReport`,
         method: 'GET',
         query: query,
@@ -13530,7 +12538,7 @@ export class Api<
       },
       params: RequestParams = {},
     ) =>
-      this.request<FileContentResultSuccessApiResponse, ErrorApiResponse>({
+      this.request<File, ErrorApiResponse>({
         path: `/api/Reports/ApartmentActsReportXlsx`,
         method: 'GET',
         query: query,
@@ -13564,17 +12572,16 @@ export class Api<
       },
       params: RequestParams = {},
     ) =>
-      this.request<
-        HousingDevicesConstructedReportResponseIEnumerableSuccessApiResponse,
-        ErrorApiResponse
-      >({
-        path: `/api/Reports/HousingDevicesReport`,
-        method: 'GET',
-        query: query,
-        secure: true,
-        format: 'json',
-        ...params,
-      }),
+      this.request<HousingDevicesConstructedReportResponse[], ErrorApiResponse>(
+        {
+          path: `/api/Reports/HousingDevicesReport`,
+          method: 'GET',
+          query: query,
+          secure: true,
+          format: 'json',
+          ...params,
+        },
+      ),
 
     /**
      * @description Роли:<li>Старший оператор</li><li>Оператор</li>
@@ -13601,7 +12608,7 @@ export class Api<
       },
       params: RequestParams = {},
     ) =>
-      this.request<FileContentResultSuccessApiResponse, ErrorApiResponse>({
+      this.request<File, ErrorApiResponse>({
         path: `/api/Reports/HousingDevicesReportXlsx`,
         method: 'GET',
         query: query,
@@ -13631,10 +12638,7 @@ export class Api<
       },
       params: RequestParams = {},
     ) =>
-      this.request<
-        HomeownersConstructedReportResponseSuccessApiResponse,
-        ErrorApiResponse
-      >({
+      this.request<HomeownersConstructedReportResponse, ErrorApiResponse>({
         path: `/api/Reports/HomeownersReport`,
         method: 'GET',
         query: query,
@@ -13664,7 +12668,7 @@ export class Api<
       },
       params: RequestParams = {},
     ) =>
-      this.request<FileContentResultSuccessApiResponse, ErrorApiResponse>({
+      this.request<File, ErrorApiResponse>({
         path: `/api/Reports/HomeownersReportXlsx`,
         method: 'GET',
         query: query,
@@ -13702,7 +12706,7 @@ export class Api<
       params: RequestParams = {},
     ) =>
       this.request<
-        IndividualDevicesConstructedReportResponseIEnumerableSuccessApiResponse,
+        IndividualDevicesConstructedReportResponse[],
         ErrorApiResponse
       >({
         path: `/api/Reports/IndividualDevicesReport`,
@@ -13741,7 +12745,7 @@ export class Api<
       },
       params: RequestParams = {},
     ) =>
-      this.request<FileContentResultSuccessApiResponse, ErrorApiResponse>({
+      this.request<File, ErrorApiResponse>({
         path: `/api/Reports/IndividualDevicesReportXlsx`,
         method: 'GET',
         query: query,
@@ -13768,10 +12772,7 @@ export class Api<
       },
       params: RequestParams = {},
     ) =>
-      this.request<
-        OperatorsConstructedReportResponseIEnumerableSuccessApiResponse,
-        ErrorApiResponse
-      >({
+      this.request<OperatorsConstructedReportResponse[], ErrorApiResponse>({
         path: `/api/Reports/OperatorsWorkingReport`,
         method: 'GET',
         query: query,
@@ -13825,10 +12826,7 @@ export class Api<
       },
       params: RequestParams = {},
     ) =>
-      this.request<
-        InspectorsConstructedReportResponseIEnumerableSuccessApiResponse,
-        ErrorApiResponse
-      >({
+      this.request<InspectorsConstructedReportResponse[], ErrorApiResponse>({
         path: `/api/Reports/InspectorsWorkingReport`,
         method: 'GET',
         query: query,
@@ -13883,7 +12881,7 @@ export class Api<
       params: RequestParams = {},
     ) =>
       this.request<
-        CallCenterWorkingConstructedReportResponseIEnumerableSuccessApiResponse,
+        CallCenterWorkingConstructedReportResponse[],
         ErrorApiResponse
       >({
         path: `/api/Reports/CallCenterWorkingReport`,
@@ -13940,7 +12938,7 @@ export class Api<
       params: RequestParams = {},
     ) =>
       this.request<
-        HouseManagementConstructedReportResponseIEnumerableSuccessApiResponse,
+        HouseManagementConstructedReportResponse[],
         ErrorApiResponse
       >({
         path: `/api/Reports/HouseManagementsReport`,
@@ -14011,17 +13009,10 @@ export class Api<
         /** @format int32 */
         PageSize?: number;
         OrderBy?: EOrderByRule;
-        /** @format int32 */
-        Skip?: number;
-        /** @format int32 */
-        Take?: number;
       },
       params: RequestParams = {},
     ) =>
-      this.request<
-        ResourceDisconnectingResponsePagedListSuccessApiResponse,
-        ErrorApiResponse
-      >({
+      this.request<ResourceDisconnectingResponsePagedList, ErrorApiResponse>({
         path: `/api/ResourceDisconnecting`,
         method: 'GET',
         query: query,
@@ -14043,10 +13034,7 @@ export class Api<
       data: ResourceDisconnectingCreateRequest,
       params: RequestParams = {},
     ) =>
-      this.request<
-        ResourceDisconnectingResponseSuccessApiResponse,
-        ErrorApiResponse
-      >({
+      this.request<ResourceDisconnectingResponse, ErrorApiResponse>({
         path: `/api/ResourceDisconnecting`,
         method: 'POST',
         body: data,
@@ -14089,10 +13077,6 @@ export class Api<
         /** @format int32 */
         PageSize?: number;
         OrderBy?: EOrderByRule;
-        /** @format int32 */
-        Skip?: number;
-        /** @format int32 */
-        Take?: number;
       },
       params: RequestParams = {},
     ) =>
@@ -14115,10 +13099,7 @@ export class Api<
      * @secure
      */
     resourceDisconnectingDetail: (id: string, params: RequestParams = {}) =>
-      this.request<
-        ResourceDisconnectingResponseSuccessApiResponse,
-        ErrorApiResponse
-      >({
+      this.request<ResourceDisconnectingResponse, ErrorApiResponse>({
         path: `/api/ResourceDisconnecting/${id}`,
         method: 'GET',
         secure: true,
@@ -14142,10 +13123,7 @@ export class Api<
       data: ResourceDisconnectingUpdateRequest,
       params: RequestParams = {},
     ) =>
-      this.request<
-        ResourceDisconnectingResponseSuccessApiResponse,
-        ErrorApiResponse
-      >({
+      this.request<ResourceDisconnectingResponse, ErrorApiResponse>({
         path: `/api/ResourceDisconnecting/${id}`,
         method: 'POST',
         body: data,
@@ -14243,10 +13221,7 @@ export class Api<
      * @secure
      */
     resourceDisconnectingFiltersList: (params: RequestParams = {}) =>
-      this.request<
-        ResourceDisconnectingFilterResponseSuccessApiResponse,
-        ErrorApiResponse
-      >({
+      this.request<ResourceDisconnectingFilterResponse, ErrorApiResponse>({
         path: `/api/ResourceDisconnecting/filters`,
         method: 'GET',
         secure: true,
@@ -14324,17 +13299,16 @@ export class Api<
       },
       params: RequestParams = {},
     ) =>
-      this.request<
-        SubscriberStatisticsСonsumptionResponseListSuccessApiResponse,
-        ErrorApiResponse
-      >({
-        path: `/api/SubscriberStatistics`,
-        method: 'GET',
-        query: query,
-        secure: true,
-        format: 'json',
-        ...params,
-      }),
+      this.request<SubscriberStatisticsСonsumptionResponse[], ErrorApiResponse>(
+        {
+          path: `/api/SubscriberStatistics`,
+          method: 'GET',
+          query: query,
+          secure: true,
+          format: 'json',
+          ...params,
+        },
+      ),
 
     /**
      * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Администратор УК без назначений задач</li>
@@ -14406,7 +13380,7 @@ export class Api<
       },
       params: RequestParams = {},
     ) =>
-      this.request<FileContentResultSuccessApiResponse, ErrorApiResponse>({
+      this.request<File, ErrorApiResponse>({
         path: `/api/SubscriberStatistics/Export`,
         method: 'GET',
         query: query,
@@ -14459,14 +13433,10 @@ export class Api<
         /** @format int32 */
         PageSize?: number;
         OrderBy?: EOrderByRule;
-        /** @format int32 */
-        Skip?: number;
-        /** @format int32 */
-        Take?: number;
       },
       params: RequestParams = {},
     ) =>
-      this.request<TasksPagedListSuccessApiResponse, ErrorApiResponse>({
+      this.request<TasksPagedList, ErrorApiResponse>({
         path: `/api/Tasks`,
         method: 'GET',
         query: query,
@@ -14485,7 +13455,7 @@ export class Api<
      * @secure
      */
     tasksDetail: (taskId: number, params: RequestParams = {}) =>
-      this.request<TaskResponseSuccessApiResponse, ErrorApiResponse>({
+      this.request<TaskResponse, ErrorApiResponse>({
         path: `/api/Tasks/${taskId}`,
         method: 'GET',
         secure: true,
@@ -14503,7 +13473,7 @@ export class Api<
      * @secure
      */
     tasksCreateCreate: (data: TaskCreateRequest, params: RequestParams = {}) =>
-      this.request<TaskCreateResponseSuccessApiResponse, ErrorApiResponse>({
+      this.request<TaskCreateResponse, ErrorApiResponse>({
         path: `/api/Tasks/create`,
         method: 'POST',
         body: data,
@@ -14523,7 +13493,7 @@ export class Api<
      * @secure
      */
     tasksCloseCreate: (taskId: number, params: RequestParams = {}) =>
-      this.request<TaskResponseSuccessApiResponse, ErrorApiResponse>({
+      this.request<TaskResponse, ErrorApiResponse>({
         path: `/api/Tasks/${taskId}/close`,
         method: 'POST',
         secure: true,
@@ -14587,10 +13557,7 @@ export class Api<
      * @secure
      */
     tasksNextStagesDetail: (taskId: number, params: RequestParams = {}) =>
-      this.request<
-        StageListResponseWrappedListResponseSuccessApiResponse,
-        ErrorApiResponse
-      >({
+      this.request<StageListResponseWrappedListResponse, ErrorApiResponse>({
         path: `/api/Tasks/${taskId}/NextStages`,
         method: 'GET',
         secure: true,
@@ -14612,7 +13579,7 @@ export class Api<
       data: TaskCommentRequest,
       params: RequestParams = {},
     ) =>
-      this.request<TaskCommentResponseSuccessApiResponse, ErrorApiResponse>({
+      this.request<TaskCommentResponse, ErrorApiResponse>({
         path: `/api/Tasks/${taskId}/Comments`,
         method: 'POST',
         body: data,
@@ -14637,7 +13604,7 @@ export class Api<
       data: TaskCommentRequest,
       params: RequestParams = {},
     ) =>
-      this.request<TaskCommentResponseSuccessApiResponse, ErrorApiResponse>({
+      this.request<TaskCommentResponse, ErrorApiResponse>({
         path: `/api/Tasks/${taskId}/Comments/${commentId}`,
         method: 'PUT',
         body: data,
@@ -14699,7 +13666,7 @@ export class Api<
      * @secure
      */
     tasksFiltersList: (params: RequestParams = {}) =>
-      this.request<TaskFilterResponseSuccessApiResponse, ErrorApiResponse>({
+      this.request<TaskFilterResponse, ErrorApiResponse>({
         path: `/api/Tasks/filters`,
         method: 'GET',
         secure: true,
@@ -14751,10 +13718,6 @@ export class Api<
         /** @format int32 */
         PageSize?: number;
         OrderBy?: EOrderByRule;
-        /** @format int32 */
-        Skip?: number;
-        /** @format int32 */
-        Take?: number;
       },
       params: RequestParams = {},
     ) =>
@@ -14777,10 +13740,7 @@ export class Api<
      * @secure
      */
     tasksErpSourcesList: (params: RequestParams = {}) =>
-      this.request<
-        ErpSourceResponseIEnumerableSuccessApiResponse,
-        ErrorApiResponse
-      >({
+      this.request<ErpSourceResponse[], ErrorApiResponse>({
         path: `/api/Tasks/ErpSources`,
         method: 'GET',
         secure: true,
@@ -14798,10 +13758,7 @@ export class Api<
      * @secure
      */
     tasksErpTaskReasonsList: (params: RequestParams = {}) =>
-      this.request<
-        ErpTaskReasonGroupResponseIEnumerableSuccessApiResponse,
-        ErrorApiResponse
-      >({
+      this.request<ErpTaskReasonGroupResponse[], ErrorApiResponse>({
         path: `/api/Tasks/ErpTaskReasons`,
         method: 'GET',
         secure: true,
@@ -14819,7 +13776,7 @@ export class Api<
      * @secure
      */
     tasksApplicationDetail: (taskId: number, params: RequestParams = {}) =>
-      this.request<ErpApplicationResponseSuccessApiResponse, ErrorApiResponse>({
+      this.request<ErpApplicationResponse, ErrorApiResponse>({
         path: `/api/Tasks/${taskId}/application`,
         method: 'GET',
         secure: true,
@@ -14840,10 +13797,7 @@ export class Api<
       taskId: number,
       params: RequestParams = {},
     ) =>
-      this.request<
-        ErpExecutorResponseIEnumerableSuccessApiResponse,
-        ErrorApiResponse
-      >({
+      this.request<ErpExecutorResponse[], ErrorApiResponse>({
         path: `/api/Tasks/${taskId}/application/brigade`,
         method: 'GET',
         secure: true,
@@ -14868,16 +13822,14 @@ export class Api<
       },
       params: RequestParams = {},
     ) =>
-      this.request<ErpTaskDeadlineResponseSuccessApiResponse, ErrorApiResponse>(
-        {
-          path: `/api/Tasks/ErpTaskDeadline`,
-          method: 'GET',
-          query: query,
-          secure: true,
-          format: 'json',
-          ...params,
-        },
-      ),
+      this.request<ErpTaskDeadlineResponse, ErrorApiResponse>({
+        path: `/api/Tasks/ErpTaskDeadline`,
+        method: 'GET',
+        query: query,
+        secure: true,
+        format: 'json',
+        ...params,
+      }),
 
     /**
      * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Администратор УК без назначений задач</li><li>Контролёр</li>
@@ -14896,10 +13848,7 @@ export class Api<
       },
       params: RequestParams = {},
     ) =>
-      this.request<
-        ErpExecutorResponseIEnumerableSuccessApiResponse,
-        ErrorApiResponse
-      >({
+      this.request<ErpExecutorResponse[], ErrorApiResponse>({
         path: `/api/Tasks/ErpTaskExecutors`,
         method: 'GET',
         query: query,
@@ -14958,10 +13907,7 @@ export class Api<
      * @secure
      */
     temperatureNormativeList: (params: RequestParams = {}) =>
-      this.request<
-        TemperatureNormativeResponseSuccessApiResponse,
-        ErrorApiResponse
-      >({
+      this.request<TemperatureNormativeResponse, ErrorApiResponse>({
         path: `/api/TemperatureNormative`,
         method: 'GET',
         secure: true,
@@ -14983,10 +13929,7 @@ export class Api<
       data: TemperatureNormativeUpdateRequest,
       params: RequestParams = {},
     ) =>
-      this.request<
-        TemperatureNormativeResponseSuccessApiResponse,
-        ErrorApiResponse
-      >({
+      this.request<TemperatureNormativeResponse, ErrorApiResponse>({
         path: `/api/TemperatureNormative`,
         method: 'PUT',
         body: data,

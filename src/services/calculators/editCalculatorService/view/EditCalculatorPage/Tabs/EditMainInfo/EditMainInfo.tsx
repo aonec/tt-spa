@@ -101,7 +101,7 @@ export const EditMainInfo: FC<EditMainInfoProps> = ({
                 ? dayjs(values.lastCheckingDate)
                 : undefined
             }
-            format="DD.MM.YYYY"
+            format={{ format: 'DD.MM.YYYY', type: 'mask' }}
           />
           <ErrorMessage>{errors.lastCheckingDate}</ErrorMessage>
         </FormItem>
@@ -119,7 +119,7 @@ export const EditMainInfo: FC<EditMainInfoProps> = ({
                 ? dayjs(values.futureCheckingDate)
                 : undefined
             }
-            format="DD.MM.YYYY"
+            format={{ format: 'DD.MM.YYYY', type: 'mask' }}
           />
           <ErrorMessage>{errors.futureCheckingDate}</ErrorMessage>
         </FormItem>

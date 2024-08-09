@@ -63,7 +63,7 @@ export const CheckHousingMeteringDeviceForm: FC<
               );
             }}
             placeholder="Выберите"
-            format="DD.MM.YYYY"
+            format={{ format: 'DD.MM.YYYY', type: 'mask' }}
           />
           <ErrorMessage> {errors.lastCheckingDate} </ErrorMessage>
         </FormItem>
@@ -73,7 +73,7 @@ export const CheckHousingMeteringDeviceForm: FC<
             value={values.futureCheckingDate}
             onChange={(date) => setFieldValue('futureCheckingDate', date)}
             placeholder="Выберите"
-            format="DD.MM.YYYY"
+            format={{ format: 'DD.MM.YYYY', type: 'mask' }}
           />
           <ErrorMessage> {errors.futureCheckingDate} </ErrorMessage>
         </FormItem>

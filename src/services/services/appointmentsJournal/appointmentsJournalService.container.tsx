@@ -9,7 +9,8 @@ import {
 import { individualSealControllersQuery } from '../distributeRecordsService/distributeRecordsService.api';
 
 const {
-  forms,
+  inputs,
+  outputs,
   gates: { AssignmentsJournalGate },
 } = appointmentsJournalService;
 
@@ -24,15 +25,21 @@ export const AppointmentsJournalContainer = () => {
 
   const { start: downloadWorkFile } = useUnit(downloadСontrollerWorkFileQuery);
 
+  const { setForm, formValues } = useUnit({
+    setForm: inputs.setForm,
+    formValues: outputs.$formValues,
+  });
+
   return (
     <>
       <AssignmentsJournalGate />
       <AppointmentsJournalPage
         controllersList={controllersList || []}
-        form={forms.searchForm}
         assignmentslist={assignmentslist}
         isLoadingAssygnments={isLoadingAssygnments || isLoadingControllers}
         downloadWorkFile={downloadWorkFile}
+        setForm={setForm}
+        formValues={formValues}
       />
     </>
   );

@@ -1,8 +1,6 @@
 import { createEvent, createStore, sample } from 'effector';
 import { createGate } from 'effector-react';
-import { createForm } from 'effector-forms';
 import { message } from 'antd';
-import { DistrictColor } from 'types';
 import {
   createDistrictMutation,
   existingDistrictsQuery,
@@ -13,22 +11,6 @@ import { currentOrganizationService } from 'services/currentOrganizationService'
 
 const CreateDistrictGate = createGate();
 
-const createDistrictForm = createForm({
-  fields: {
-    isEditing: {
-      init: true,
-    },
-    selectedHouses: {
-      init: [] as number[],
-    },
-    name: { init: '' },
-    color: { init: DistrictColor.Blue },
-    formSection: {
-      init: 0,
-    },
-  },
-});
-
 const setDistrictPayload = createEvent<CreatingDistrictPayload>();
 
 const $preselectedDistrictPayload = createStore<CreatingDistrictPayload | null>(
@@ -36,23 +18,6 @@ const $preselectedDistrictPayload = createStore<CreatingDistrictPayload | null>(
 )
   .on(setDistrictPayload, (_, data) => data)
   .reset(CreateDistrictGate.close);
-
-sample({
-  clock: setDistrictPayload,
-  fn: ({ housingStockIds }) => housingStockIds,
-  target: createDistrictForm.fields.selectedHouses.set,
-});
-
-sample({
-  clock: setDistrictPayload,
-  fn: () => false,
-  target: createDistrictForm.fields.isEditing.set,
-});
-
-sample({
-  clock: [createDistrictMutation.finished.success, CreateDistrictGate.close],
-  target: createDistrictForm.resetValues,
-});
 
 sample({
   clock: CreateDistrictGate.open,
@@ -77,5 +42,4 @@ export const createDistrictBorderMapService = {
       currentOrganizationService.outputs.$organizationCoordinates,
   },
   gates: { CreateDistrictGate },
-  forms: { createDistrictForm },
 };

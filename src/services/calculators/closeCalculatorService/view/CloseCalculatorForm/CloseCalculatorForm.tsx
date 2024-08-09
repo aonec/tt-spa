@@ -47,7 +47,7 @@ export const CloseCalculatorForm: FC<CloseCalculatorFormProps> = ({
             }
             setFieldValue('closingDate', date.format());
           }}
-          format="DD.MM.YYYY"
+          format={{ format: 'DD.MM.YYYY', type: 'mask' }}
         />
         <ErrorMessage>{errors.closingDate}</ErrorMessage>
       </FormItem>

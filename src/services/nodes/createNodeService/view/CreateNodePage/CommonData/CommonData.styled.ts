@@ -33,3 +33,9 @@ export const SelectOptionWithIconWrapper = styled.div`
 export const ButtonSC = styled(Button)`
   padding: 0 40px;
 `;
+
+export const ZoneOption = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+`;

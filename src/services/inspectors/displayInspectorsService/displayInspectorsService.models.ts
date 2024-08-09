@@ -1,4 +1,4 @@
-import { createEffect, createStore } from 'effector';
+import { createEffect, createEvent, createStore } from 'effector';
 import { sample } from 'effector';
 import { createGate } from 'effector-react';
 import { InspectorResponse } from 'api/types';
@@ -10,6 +10,8 @@ const $inspectorsList = createStore<InspectorResponse[] | null>(null);
 const fetchInspectorsListFx = createEffect<void, InspectorResponse[] | null>(
   getInspectors,
 );
+
+const refetchInspectors = createEvent();
 
 const $loading = fetchInspectorsListFx.pending;
 
@@ -26,7 +28,7 @@ $inspectorsList
   .reset(InspectorsGate.close);
 
 sample({
-  clock: InspectorsGate.open,
+  clock: [InspectorsGate.open, refetchInspectors],
   target: fetchInspectorsListFx,
 });
 
@@ -34,6 +36,7 @@ export const displayInspectorsService = {
   inputs: {
     fetchInspectorsListFx,
     InspectorsGate,
+    refetchInspectors,
   },
   outputs: {
     $inspectorsList,

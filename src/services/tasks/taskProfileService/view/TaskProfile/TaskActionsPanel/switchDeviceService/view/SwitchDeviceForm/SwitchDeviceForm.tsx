@@ -114,21 +114,21 @@ export const SwitchDeviceForm: FC<SwitchDeviceFormProps> = ({
           <DatePicker
             value={values.lastCheckingDate}
             onChange={(date) => setFieldValue('lastCheckingDate', date)}
-            format="DD.MM.YYYY"
+            format={{ format: 'DD.MM.YYYY', type: 'mask' }}
           />
         </FormItem>
         <FormItem label="Дата следующей поверки прибора">
           <DatePicker
             value={values.futureCheckingDate}
             onChange={(date) => setFieldValue('futureCheckingDate', date)}
-            format="DD.MM.YYYY"
+            format={{ format: 'DD.MM.YYYY', type: 'mask' }}
           />
         </FormItem>
         <FormItem label="Дата установки прибора">
           <DatePicker
             value={values.openingDate}
             onChange={(date) => setFieldValue('openingDate', date)}
-            format="DD.MM.YYYY"
+            format={{ format: 'DD.MM.YYYY', type: 'mask' }}
           />
         </FormItem>
       </DeviceCheckingDatesWrapper>
