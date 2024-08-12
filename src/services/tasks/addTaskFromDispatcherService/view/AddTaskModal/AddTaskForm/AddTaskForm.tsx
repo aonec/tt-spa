@@ -1,4 +1,11 @@
-import React, { FC, useCallback, useEffect, useMemo, useState } from 'react';
+import React, {
+  FC,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 import { AutoComplete as AutoCompleteAntD, Form } from 'antd';
 import dayjs from 'api/dayjs';
 import {
@@ -347,6 +354,8 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
   const [isDatePickerOpen, setDatePickerOpen] = useState(false);
   const [isTimePickerOpen, setTimePickerOpen] = useState(false);
   const [isExecutorOpen, setExecutorOpen] = useState(false);
+
+  const timepiekerRef = useRef(null);
 
   return (
     <>
@@ -734,6 +743,19 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
                   value !== undefined &&
                     setFieldValue('taskDeadlineDate', value);
                   setDatePickerOpen(false);
+
+                  if (isNoAdditionalFieldsRequired) {
+                    next(5);
+                  }
+                  if (isOnlySourceNumberRequired) {
+                    next(6);
+                  }
+                  if (isOnlySubscriberRequired) {
+                    next(7);
+                  }
+                  if (isSubscriberAndSourceNumberRequired) {
+                    next(8);
+                  }
                 }}
                 onKeyDown={fromEnter(() => {
                   setFieldValue('taskDeadlineDate', dayjs());
@@ -751,18 +773,26 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
                   if (isSubscriberAndSourceNumberRequired) {
                     next(8);
                   }
+                  // timepiekerRef?.current?.focus();
+                  // timepiekerRef?.current?.select();
                 })}
               />
               <TimePickerMedium
+                ref={timepiekerRef}
                 needConfirm={false}
                 showNow={false}
                 data-reading-input={dataKey}
                 value={values.taskDeadlineTime || undefined}
                 open={isTimePickerOpen}
+                onClick={(event) => event.stopPropagation()}
+                onBlur={() => setTimePickerOpen(false)}
                 onFocus={() => {
                   setTimePickerOpen(true);
                 }}
                 onChange={(value) => {
+                  setFieldValue('taskDeadlineTime', value);
+                }}
+                onSelectCapture={(value) => {
                   setFieldValue('taskDeadlineTime', value);
                 }}
                 onMouseDown={() => {
