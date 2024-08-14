@@ -91,6 +91,8 @@ $failDataCount.watch((count) => {
   }
 });
 
+const $isStartRunnerPending = startRunnerReportPollFx.pending;
+
 sample({ clock: handleGenerateReport, target: startRunnerReportPollFx });
 
 startRunnerReportPollFx.doneData.watch((pollData) => {
@@ -122,15 +124,27 @@ sample({
 });
 
 sample({
-  clock: [startRunnerReportPollFx.doneData, GetLastPollGate.open],
+  clock: startRunnerReportPollFx.doneData,
+  target: handleStartRefetchLastPoll,
+});
+sample({
+  clock: GetLastPollGate.open,
+  filter: () => Boolean(localStorage.getItem('isPollRun')),
   target: handleStartRefetchLastPoll,
 });
 
 sample({
   clock: [handleReset, getLastRunnerReportPollFx.doneData],
   source: $runnerReportPollInfo,
-  filter: (pollInfo) => pollInfo?.status !== PollStatus.Running,
+  filter: (pollInfo) => pollInfo?.status === PollStatus.Done,
   target: handleStopRefetchLastPoll,
+});
+
+handleStartRefetchLastPoll.watch(() => {
+  console.log('start');
+});
+handleStopRefetchLastPoll.watch(() => {
+  console.log('Stop');
 });
 
 const { tick: handleRefetchLastPoll } = interval({
@@ -141,8 +155,8 @@ const { tick: handleRefetchLastPoll } = interval({
 });
 
 sample({
-  clock: [GetLastPollGate.open, handleRefetchLastPoll],
-  filter: () => Boolean(localStorage.getItem('isPollRun')),
+  clock: handleRefetchLastPoll,
+  // filter: () => Boolean(localStorage.getItem('isPollRun')),
   target: getLastRunnerReportPollFx,
 });
 
@@ -176,6 +190,7 @@ export const createRunnerService = {
     $isGenerating,
     $isDownloading,
     $stageNumber,
+    $isStartRunnerPending,
   },
   gates: { GetLastPollGate },
 };

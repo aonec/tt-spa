@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import { createRunnerService } from './createRunnerService.models';
 import { CreateRunnerModal } from './CreateRunnerModal';
 import { useUnit } from 'effector-react';
@@ -44,6 +44,7 @@ export const CreateRunnerContainer = () => {
     isDownloading,
     handleReset,
     stageNumber,
+    isStartRunnerPending,
   } = useUnit({
     existingCities: addressSearchService.outputs.$existingCities,
     organizations: organizationsQuery.$data,
@@ -58,6 +59,7 @@ export const CreateRunnerContainer = () => {
     isDownloading: outputs.$isDownloading,
     handleReset: inputs.handleReset,
     stageNumber: outputs.$stageNumber,
+    isStartRunnerPending: outputs.$isStartRunnerPending,
   });
 
   return (
@@ -77,6 +79,7 @@ export const CreateRunnerContainer = () => {
           setOpen={setOpen}
           isGenerating={isGenerating}
           handleGenerateReport={handleGenerateReport}
+          isStartRunnerPending={isStartRunnerPending}
         />
       )}
       {stageNumber === 2 && (

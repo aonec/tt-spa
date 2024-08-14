@@ -59,7 +59,7 @@ export const RunnerDownloadModal: FC<Props> = ({
           handleReset();
         }}
         submitText="Выйти"
-        cancelText="Продолжить сохранение"
+        cancelText="Продолжить"
         type="danger"
       />
     </>
