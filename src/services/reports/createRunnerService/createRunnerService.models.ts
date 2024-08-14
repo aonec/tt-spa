@@ -79,17 +79,18 @@ const $stageNumber = createStore(1)
 
 const $failDataCount = createStore(0)
   .on(handleFailData, (prev, _) => {
-    console.log({ prev });
     return prev + 1;
   })
   .reset(handleReset);
 
 $failDataCount.watch((count) => {
-  if (count === 2) {
-    handleReset();
+  if (count === 3) {
     message.error('Произошла ошибка формирования бегунка');
+    handleReset();
   }
 });
+
+handleReset.watch(() => console.log('ffff'));
 
 const $isStartRunnerPending = startRunnerReportPollFx.pending;
 
@@ -134,29 +135,26 @@ sample({
 });
 
 sample({
-  clock: [handleReset, getLastRunnerReportPollFx.doneData],
+  clock: getLastRunnerReportPollFx.doneData,
   source: $runnerReportPollInfo,
   filter: (pollInfo) => pollInfo?.status === PollStatus.Done,
   target: handleStopRefetchLastPoll,
 });
 
-handleStartRefetchLastPoll.watch(() => {
-  console.log('start');
-});
-handleStopRefetchLastPoll.watch(() => {
-  console.log('Stop');
+sample({
+  clock: handleReset,
+  target: handleStopRefetchLastPoll,
 });
 
 const { tick: handleRefetchLastPoll } = interval({
   start: handleStartRefetchLastPoll,
-  timeout: 2000,
+  timeout: 20000,
   stop: handleStopRefetchLastPoll,
   leading: false,
 });
 
 sample({
   clock: handleRefetchLastPoll,
-  // filter: () => Boolean(localStorage.getItem('isPollRun')),
   target: getLastRunnerReportPollFx,
 });
 
