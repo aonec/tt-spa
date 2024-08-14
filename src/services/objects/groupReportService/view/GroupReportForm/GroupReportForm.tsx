@@ -44,7 +44,7 @@ export const GroupReportForm: FC<GroupReportFormProps> = ({
     // contractors // todo: регулярная выгрузка
   } = reportFilters;
 
-  const { values, setFieldValue, handleSubmit, errors } = useFormik<
+  const { values, setFieldValue, handleSubmit, errors, setValues } = useFormik<
     Partial<GroupReportRequestPayload> & { exportType: ExportReportType | null } //  & { isRegular: boolean }  // todo: регулярная выгрузка
   >({
     initialValues: {
@@ -160,9 +160,12 @@ export const GroupReportForm: FC<GroupReportFormProps> = ({
               placeholder="Выберите"
               value={values.ManagementFirmId}
               onChange={(id) => {
-                setFieldValue('ManagementFirmId', id);
-                setFieldValue('HouseManagementId', null);
-                setFieldValue('BuildingIds', []);
+                setValues({
+                  ...values,
+                  ManagementFirmId: id as number,
+                  HouseManagementId: null,
+                  BuildingIds: [],
+                });
               }}
             >
               {organizations?.items?.map((organization) => (
@@ -179,9 +182,12 @@ export const GroupReportForm: FC<GroupReportFormProps> = ({
               value={values.HouseManagementId}
               placeholder="Выберите из списка"
               onChange={(value) => {
-                setFieldValue('HouseManagementId', value || null);
-                setFieldValue('ManagementFirmId', null);
-                setFieldValue('BuildingIds', []);
+                setValues({
+                  ...values,
+                  HouseManagementId: value as string,
+                  ManagementFirmId: null,
+                  BuildingIds: [],
+                });
               }}
               allowClear
             >
@@ -207,9 +213,12 @@ export const GroupReportForm: FC<GroupReportFormProps> = ({
               placeholder="Выберите адрес"
               value={values.BuildingIds}
               onChange={(buildingIds) => {
-                setFieldValue('BuildingIds', buildingIds);
-                setFieldValue('HouseManagementId', null);
-                setFieldValue('ManagementFirmId', null);
+                setValues({
+                  ...values,
+                  BuildingIds: buildingIds as number[],
+                  ManagementFirmId: null,
+                  HouseManagementId: null,
+                });
               }}
             />
           </FormItem>

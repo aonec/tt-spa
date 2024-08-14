@@ -69,7 +69,6 @@ const $isDownloading = combine(
 
 const GroupReportGate = createGate();
 
-
 sample({
   clock: setGroupReportPayload,
   filter: (payload): payload is GroupReportRequestPayload =>
@@ -119,7 +118,6 @@ sample({
 
 sample({
   clock: getGroupReport,
-  
   target: getGroupReportFx,
 });
 
