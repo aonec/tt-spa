@@ -1,9 +1,6 @@
 import styled from 'styled-components';
 import { Button } from 'ui-kit/Button';
-import {
-  actsJournalColumnsGridTemplate,
-  actsJournalColumnsGridTemplateWithoutComment,
-} from '../ActsJournalProfile.constants';
+import { actsJournalColumnsGridTemplateWithoutComment } from '../ActsJournalProfile.constants';
 import { Input } from 'ui-kit/Input';
 
 export const ButtonSC = styled(Button)`
@@ -12,16 +9,12 @@ export const ButtonSC = styled(Button)`
 `;
 
 export const ButtonsWrapper = styled.div`
-  padding: 0px 0px 16px 16px;
   display: flex;
-  justify-content: flex-end;
-
-  border-bottom: 2px solid #f3f3f3;
+  margin-top: 50px;
 `;
 
 export const Wrapper = styled.div`
   margin-top: 16px;
-
   display: grid;
   align-items: center;
   grid-template-columns: ${actsJournalColumnsGridTemplateWithoutComment};
@@ -40,8 +33,15 @@ export const Comment = styled(Input.TextArea)`
   border: 1px solid #dcdee4;
   border-radius: 4px;
   margin-top: 12px;
-  margin-left: 126px;
+  margin-left: 108px;
 
   width: 335px;
   height: 34px;
+`;
+
+export const BottomBlock = styled.div`
+  display: flex;
+  justify-content: space-between;
+  padding-bottom: 8px;
+  border-bottom: 2px solid #f3f3f3;
 `;

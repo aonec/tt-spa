@@ -9,6 +9,7 @@ import {
 } from './AddNewActForm.types';
 import {
   ActDate,
+  BottomBlock,
   ButtonSC,
   ButtonsWrapper,
   Comment,
@@ -137,27 +138,33 @@ export const AddNewActForm: FC<AddNewActFormProps> = ({
         />
       </Wrapper>
 
-      <Comment
-        placeholder="Комментарий"
-        autoSize={{ minRows: 2, maxRows: 6 }}
-        value={values.comment as string}
-        onChange={(value) => setFieldValue('comment', value.target.value)}
-      />
+      <BottomBlock>
+        <Comment
+          placeholder="Комментарий"
+          autoSize={{ minRows: 2, maxRows: 6 }}
+          value={values.comment as string}
+          onChange={(value) => setFieldValue('comment', value.target.value)}
+        />
 
-      <ButtonsWrapper>
-        <Button
-          type="ghost"
-          size="small"
-          onClick={() => {
-            resetForm();
-          }}
-        >
-          Сбросить
-        </Button>
-        <ButtonSC size="small" onClick={submitForm} isLoading={isCreateLoading}>
-          Сохранить
-        </ButtonSC>
-      </ButtonsWrapper>
+        <ButtonsWrapper>
+          <Button
+            type="ghost"
+            size="small"
+            onClick={() => {
+              resetForm();
+            }}
+          >
+            Сбросить
+          </Button>
+          <ButtonSC
+            size="small"
+            onClick={submitForm}
+            isLoading={isCreateLoading}
+          >
+            Сохранить
+          </ButtonSC>
+        </ButtonsWrapper>
+      </BottomBlock>
     </>
   );
 };

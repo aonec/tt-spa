@@ -1,10 +1,11 @@
 import React, { FC } from 'react';
-import { ActAddress, ActDate, Wrapper } from './ActsListItem.styled';
+import { ActAddress, ActDate, Comment, Wrapper } from './ActsListItem.styled';
 import { ActsListItemProps } from './ActsListItem.types';
 import dayjs from 'api/dayjs';
 import { ActTypesNamesLookup } from 'dictionaries';
 import { getApartmentFromFullAddress } from 'utils/getApartmentFromFullAddress';
 import { ResourceInfo } from 'ui-kit/shared/ResourceInfo';
+import { Tooltip } from 'ui-kit/shared/Tooltip';
 
 export const ActsListItem: FC<ActsListItemProps> = ({ act }) => {
   const actAddress = getApartmentFromFullAddress(act.apartment, false);
@@ -20,7 +21,9 @@ export const ActsListItem: FC<ActsListItemProps> = ({ act }) => {
           {actAddress}
         </ActAddress>
       )}
-      <div>{act.comment || "-"}</div>
+      <Tooltip title={act.comment}>
+        <Comment>{act.comment || '-'}</Comment>
+      </Tooltip>
       <div>{dayjs(act.actJobDate).format('DD.MM.YYYY')}</div>
     </Wrapper>
   );

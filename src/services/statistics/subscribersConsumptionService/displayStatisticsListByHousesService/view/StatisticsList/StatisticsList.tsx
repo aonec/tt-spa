@@ -2,6 +2,7 @@ import React from 'react';
 import dayjs from 'api/dayjs';
 import { Tooltip } from 'ui-kit/shared/Tooltip';
 import {
+  Comment,
   HeaderStyles,
   HomeownerNameWrapper,
   HomeownerNumberWrapper,
@@ -98,7 +99,7 @@ export const StatisticsList: React.FC<StatisticsListProps> = ({
           size: '160px',
           render: (apartment) => (
             <Tooltip title={apartment.lastCheckComment}>
-              {apartment.lastCheckComment}
+              <Comment>{apartment.lastCheckComment}</Comment>
             </Tooltip>
           ),
         },
