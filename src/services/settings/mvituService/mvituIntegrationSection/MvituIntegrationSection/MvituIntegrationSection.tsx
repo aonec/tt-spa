@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, useCallback } from 'react';
 import { Switch } from 'antd';
 import {
   IntegrationPanel,
@@ -12,13 +12,32 @@ import { Select } from 'ui-kit/Select';
 import { Table } from 'ui-kit/Table';
 import { ResourceIconLookup } from 'ui-kit/shared/ResourceIconLookup';
 import { NodeIntegrationStatus } from './NodeIntegrationStatus';
+import { ChangeStatusType, StatusType } from 'api/mvitu.types';
 
-export const MvituIntegrationSection: FC<Props> = ({ mvituNodesList }) => {
+export const MvituIntegrationSection: FC<Props> = ({
+  mvituNodesList,
+  integrationData,
+  handleUpdateStatus,
+  isUpdateStatusLoading,
+}) => {
+  const handleClickSwitch = useCallback(() => {
+    const newStatus: ChangeStatusType =
+      integrationData.status === StatusType.Active
+        ? ChangeStatusType.Pause
+        : ChangeStatusType.Active;
+
+    handleUpdateStatus({ expectedStatus: newStatus });
+  }, [handleUpdateStatus, integrationData]);
+
   return (
     <Wrapper>
       <IntegrationPanel>
         <IntegrationPanelTitle>Интеграция с ВИС МВИТУ</IntegrationPanelTitle>
-        <Switch />
+        <Switch
+          onClick={handleClickSwitch}
+          defaultChecked={integrationData.status === StatusType.Active}
+          loading={isUpdateStatusLoading}
+        />
       </IntegrationPanel>
       <SearchWrapper>
         <Input placeholder="Адрес" small />
