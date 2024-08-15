@@ -1,24 +1,26 @@
-const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
+// .storybook/main.js
 
 module.exports = {
-  stories: ['../src/**/*.stories.mdx', '../src/**/*.stories.@(js|jsx|ts|tsx)'],
+  stories: ['../src/**/*.stories.tsx)'],
+
   addons: [
     '@storybook/addon-links',
     '@storybook/addon-essentials',
     '@storybook/addon-interactions',
-    '@storybook/preset-create-react-app',
+    '@chromatic-com/storybook'
   ],
+
   framework: {
-    name: '@storybook/react-webpack5',
+    name: '@storybook/react-vite',
     options: {}
   },
-  webpackFinal: async (config) => {
-    config.resolve.plugins = [
-      ...(config.resolve.plugins || []),
-      new TsconfigPathsPlugin({
-        extensions: config.resolve.extensions,
-      }),
-    ];
+
+  async viteFinal(config) {
+    // если у вас есть специфическая конфигурация для Vite,
+    // добавьте её здесь.
+    config.build.sourcemap = false;
     return config;
   },
+
+  docs: {}
 };

@@ -19,7 +19,9 @@ export default defineConfig({
     svgr({
       include: '**/*.svg?react',
     }),
-    eslint()
+    eslint({
+      exclude: ['**/virtual:/@storybook/**', '**/node_modules/**'],
+    }),
   ],
   server: {
     open: true,

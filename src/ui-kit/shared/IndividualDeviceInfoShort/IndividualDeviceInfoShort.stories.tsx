@@ -3,10 +3,12 @@ import { Meta } from '@storybook/react';
 import { IndividualDeviceInfoShort } from '.';
 import { Device } from '../IndividualDeviceInfo/IndividualDeviceInfo.stories.constants';
 
-export default {
-  title: 'IndividualDeviceInfo',
+const meta: Meta<typeof IndividualDeviceInfoShort> = {
+  title: 'IndividualDeviceInfoShort',
   component: IndividualDeviceInfoShort,
   parameters: { layout: 'centered' },
-} as Meta<typeof IndividualDeviceInfoShort>;
+};
+
+export default meta;
 
 export const Short = () => <IndividualDeviceInfoShort device={Device} />;
