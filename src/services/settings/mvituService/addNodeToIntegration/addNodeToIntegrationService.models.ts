@@ -3,6 +3,7 @@ import {
   addNodeToIntegrationMutation,
   getNodeQuery,
 } from './addNodeToIntegrationService.api';
+import { mvituIntegrationSectionService } from '../mvituIntegrationSection/mvituIntegrationSectionService.models';
 
 const handleOpenModal = createEvent();
 const handleCloseModal = createEvent();
@@ -18,7 +19,10 @@ sample({
 
 sample({
   clock: addNodeToIntegrationMutation.finished.success,
-  target: handleCloseModal,
+  target: [
+    handleCloseModal,
+    mvituIntegrationSectionService.inputs.refetchNodesQuery,
+  ],
 });
 
 export const addNodeToIntegrationService = {
