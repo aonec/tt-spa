@@ -10,8 +10,10 @@ import { Props } from './MvituIntegrationSection.types';
 import { Input } from 'ui-kit/Input';
 import { Select } from 'ui-kit/Select';
 import { Table } from 'ui-kit/Table';
+import { ResourceIconLookup } from 'ui-kit/shared/ResourceIconLookup';
+import { NodeIntegrationStatus } from './NodeIntegrationStatus';
 
-export const MvituIntegrationSection: FC<Props> = () => {
+export const MvituIntegrationSection: FC<Props> = ({ mvituNodesList }) => {
   return (
     <Wrapper>
       <IntegrationPanel>
@@ -25,17 +27,32 @@ export const MvituIntegrationSection: FC<Props> = () => {
       <Table
         floating
         columns={[
-          { label: 'Адрес', size: '400px', render: () => <></> },
-          { label: 'Рес.', size: '100px', render: () => <></> },
-          { label: 'Наименование узла', size: '200px', render: () => <></> },
-          { label: 'Статус интеграции', size: '150px', render: () => <></> },
           {
-            label: 'Дата последнего передан. архива',
-            size: '300px',
-            render: () => <></>,
+            label: 'Адрес',
+            size: '350px',
+            render: (item) => <>{item.building?.addressStr}</>,
+          },
+          {
+            label: 'Рес.',
+            size: '100px',
+            render: (item) => <ResourceIconLookup resource={item.resource} />,
+          },
+          {
+            label: 'Наименование узла',
+            size: '200px',
+            render: (item) => <>Узел {item.title}</>,
+          },
+          {
+            label: 'Статус интеграции',
+            size: '150px',
+            render: (item) => (
+              <>
+                <NodeIntegrationStatus status={item.status} />
+              </>
+            ),
           },
         ]}
-        elements={[]}
+        elements={mvituNodesList?.items || []}
       />
     </Wrapper>
   );
