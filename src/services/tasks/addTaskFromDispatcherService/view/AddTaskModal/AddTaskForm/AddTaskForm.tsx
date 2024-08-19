@@ -61,6 +61,7 @@ import { AlertIconType } from 'ui-kit/Alert/Alert.types';
 import { addTaskFromDispatcherService } from 'services/tasks/addTaskFromDispatcherService';
 import { getPreparedStreetsOptions } from 'services/objects/createObjectService/view/CreateObjectPage/CreateObjectAddressStage/CreateObjectAddressStage.utils';
 import { DatePicker } from 'ui-kit/DatePicker';
+import { throttle } from 'lodash';
 
 const {
   gates: { PageGate },
@@ -118,7 +119,7 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
         taskDescription: null,
         taskReasonSearch: null,
         taskReasonOrderNumber: null,
-        taskDeadlineDate: null,
+        taskDeadlineDate: dayjs(),
         taskDeadlineTime: dayjs().subtract(2, 'minutes'),
         isSourceNumberRequired: initialSource?.isSourceNumberRequired || false,
         isSubscriberRequired: initialSource?.isSubscriberRequired || false,
@@ -134,6 +135,8 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
         handleCreateTask(filteredData);
       },
     });
+
+  const timePickerRef = useRef(null);
 
   const isInitialSource = useMemo(
     () => values.sourceId === initialSource?.id,
@@ -352,10 +355,34 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
   const [isReasonOpen, setReasonOpen] = useState(false);
   const [isTaskTypeOpen, setTaskTypeOpen] = useState(false);
   const [isDatePickerOpen, setDatePickerOpen] = useState(false);
-  const [isTimePickerOpen, setTimePickerOpen] = useState(false);
+  // const [isTimePickerOpen, setTimePickerOpen] = useState(false);
   const [isExecutorOpen, setExecutorOpen] = useState(false);
 
-  const timepiekerRef = useRef(null);
+  // console.log({ isTimePickerOpen });
+
+  const isTimePickerOpen = useRef(false);
+  console.log(isTimePickerOpen.current);
+
+  useEffect(() => {
+    document.addEventListener('keydown', (event) => {
+      if (isTimePickerOpen.current && event.key === 'Enter') {
+        console.log('test');
+
+        if (isNoAdditionalFieldsRequired) {
+          next(6);
+        }
+        if (isOnlySourceNumberRequired) {
+          next(7);
+        }
+        if (isOnlySubscriberRequired) {
+          next(8);
+        }
+        if (isSubscriberAndSourceNumberRequired) {
+          next(9);
+        }
+      }
+    });
+  }, []);
 
   return (
     <>
@@ -729,8 +756,8 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
                 data-reading-input={dataKey}
                 preserveInvalidOnBlur={true}
                 allowClear
-                format={{ format: 'DD.MM.YYYY', type: 'mask' }}
                 open={isDatePickerOpen}
+                format={{ format: 'DD.MM.YYYY', type: 'mask' }}
                 onFocus={() => {
                   setDatePickerOpen(true);
                 }}
@@ -763,31 +790,37 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
 
                   if (isNoAdditionalFieldsRequired) {
                     next(5);
+                    console.log(1);
                   }
                   if (isOnlySourceNumberRequired) {
                     next(6);
+                    console.log(2);
                   }
                   if (isOnlySubscriberRequired) {
                     next(7);
+                    console.log(3);
                   }
                   if (isSubscriberAndSourceNumberRequired) {
-                    next(8);
+                    throttle(() => next(8), 3300);
+                    console.log(4);
                   }
-                  // timepiekerRef?.current?.focus();
-                  // timepiekerRef?.current?.select();
                 })}
               />
               <TimePickerMedium
-                ref={timepiekerRef}
+                ref={timePickerRef}
                 needConfirm={false}
                 showNow={false}
                 data-reading-input={dataKey}
                 value={values.taskDeadlineTime || undefined}
-                open={isTimePickerOpen}
-                onClick={(event) => event.stopPropagation()}
-                onBlur={() => setTimePickerOpen(false)}
+                // open={false}
+                onBlur={(event) => {
+                  ('onBlur');
+                  isTimePickerOpen.current = false;
+                }}
                 onFocus={() => {
-                  setTimePickerOpen(true);
+                  // setTimePickerOpen(true);
+                  isTimePickerOpen.current = true;
+                  console.log('onFocus');
                 }}
                 onChange={(value) => {
                   setFieldValue('taskDeadlineTime', value);
@@ -796,7 +829,8 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
                   setFieldValue('taskDeadlineTime', value);
                 }}
                 onMouseDown={() => {
-                  setTimePickerOpen(!isTimePickerOpen);
+                  // setTimePickerOpen(!isTimePickerOpen);
+                  isTimePickerOpen.current = !isTimePickerOpen.current;
                   setFieldValue('taskDeadlineTime', null);
                 }}
                 onKeyDown={(event: any) => {
@@ -808,7 +842,8 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
                   }
 
                   fromEnter(() => {
-                    setTimePickerOpen(false);
+                    // setTimePickerOpen(false);
+                    isTimePickerOpen.current = false;
 
                     if (isNoAdditionalFieldsRequired) {
                       next(6);
@@ -825,7 +860,9 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
                   })(event);
                 }}
                 onOk={() => {
-                  setTimePickerOpen(false);
+                  // setTimePickerOpen(false);
+                  isTimePickerOpen.current = false;
+
                   if (isNoAdditionalFieldsRequired) {
                     next(6);
                   }
