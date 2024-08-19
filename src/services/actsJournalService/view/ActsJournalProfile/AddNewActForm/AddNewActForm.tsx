@@ -135,6 +135,7 @@ export const AddNewActForm: FC<AddNewActFormProps> = ({
           onChange={(date) => setFieldValue('actJobDate', date)}
           placeholder="Дата"
           dataKey={dataKey}
+          onKeyDown={fromEnter(() => next(6))}
         />
       </Wrapper>
 
@@ -143,7 +144,14 @@ export const AddNewActForm: FC<AddNewActFormProps> = ({
           placeholder="Комментарий"
           autoSize={{ minRows: 2, maxRows: 6 }}
           value={values.comment as string}
-          onChange={(value) => setFieldValue('comment', value.target.value)}
+          onChange={(value) => {
+            if (values.comment?.length === 0 && value.target.value === '\n') {
+              return;
+            }
+            setFieldValue('comment', value.target.value);
+          }}
+          data-reading-input={dataKey}
+          onKeyDown={fromEnter(() => console.log('first'))}
         />
 
         <ButtonsWrapper>
