@@ -17,6 +17,7 @@ import {
   reportsSelectItems,
 } from './ReportsPage.constants';
 import { ReportsListContainer } from 'services/reports/reportsListService';
+import { CreateRunnerContainer } from 'services/reports/createRunnerService';
 
 export const ReportsPage: FC<ReportsPageProps> = () => {
   const reportsListRef = useRef<HTMLDivElement>(null);
@@ -74,6 +75,7 @@ export const ReportsPage: FC<ReportsPageProps> = () => {
         </ReportsList>
       </ReportBlocksWrapper>
       <ReportsListContainer />
+      <CreateRunnerContainer />
     </Wrapper>
   );
 };

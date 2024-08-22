@@ -1,13 +1,16 @@
 import { Empty, Skeleton } from 'antd';
 import React, { FC } from 'react';
 import { ReportListItem } from './ReportListItem';
-import { SkeletonWrapper } from './ReportsList.styled';
+import { AdditionalWrapper, SkeletonWrapper } from './ReportsList.styled';
 import { ReportsListProps } from './ReportsList.types';
+import { RunnerPanel } from './RunnerPanel';
 
 export const ReportsList: FC<ReportsListProps> = ({
   reportsList,
   isLoading,
   openExistedReport,
+  setRunnerModalOpen,
+  runnerStageNumber,
 }) => {
   return (
     <div>
@@ -27,6 +30,13 @@ export const ReportsList: FC<ReportsListProps> = ({
             report={report}
           />
         ))}
+
+      <AdditionalWrapper>Дополнительно</AdditionalWrapper>
+
+      <RunnerPanel
+        setRunnerModalOpen={setRunnerModalOpen}
+        runnerStageNumber={runnerStageNumber}
+      />
     </div>
   );
 };

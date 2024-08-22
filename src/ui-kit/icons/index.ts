@@ -94,6 +94,9 @@ import DocumentBlueIcon from './svg/documentBlue.svg?react';
 import ArrowTopIcon from './svg/arrowTop.svg?react';
 import DoubleChevronLeft from './svg/doubleChevronLeft.svg?react';
 import ConnectionIcon from './svg/connection.svg?react';
+import DocumentBoldIcon from './svg/documentBold.svg?react';
+import LoadingBlueIcon from './svg/loadingBlue.svg?react';
+import CheckGreenIcon from './svg/checkGreen.svg?react';
 import TrashIconGrey from './svg/trashGrey.svg?react';
 
 export {
@@ -193,5 +196,8 @@ export {
   ArrowTopIcon,
   DoubleChevronLeft,
   ConnectionIcon,
+  DocumentBoldIcon,
+  LoadingBlueIcon,
+  CheckGreenIcon,
   TrashIconGrey,
 };
