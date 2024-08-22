@@ -14,7 +14,6 @@ import {
   TemperatureGraphContainer,
   temperatureGraphService,
 } from 'services/settings/temperatureGraphService';
-import { wrapItemByArray } from './SettingPage.utils';
 import { MvituContainer } from 'services/settings/mvituService';
 import { mvituService } from 'services/settings/mvituService/mvituService.models';
 
@@ -99,32 +98,40 @@ export const SettingPage: FC<SettingPageProps> = ({
   };
 
   const tabItems = useMemo(() => {
+    const tabsArray = [];
+
     if (isAdminSettings) {
-      return [
-        ...wrapItemByArray(
-          {
-            label: 'Рабочие диапазоны узлов',
-            key: 'operatingRanges',
-          },
-          featureToggles.workingRanges,
-        ),
-        { label: 'Температурный график', key: 'temperatureGraph' },
-        ...wrapItemByArray(
-          { label: 'Интеграция с ВИС МВИТУ', key: 'mvitu' },
-          featureToggles.mvitu,
-        ),
-      ];
+      if (featureToggles.workingRanges) {
+        tabsArray.push({
+          label: 'Рабочие диапазоны узлов',
+          key: 'operatingRanges',
+        });
+      }
+
+      tabsArray.push({
+        label: 'Температурный график',
+        key: 'temperatureGraph',
+      });
+
+      if (featureToggles.mvitu) {
+        tabsArray.push({ label: 'Интеграция с ВИС МВИТУ', key: 'mvitu' });
+      }
+
+      return tabsArray;
     }
 
-    return [
-      ...(featureToggles.districtsManage
-        ? [{ label: 'Границы районов', key: 'districtBorder' }]
-        : []),
-      ...(featureToggles.controllersDistribution
-        ? [{ label: 'Распределение контролеров', key: 'controllers' }]
-        : []),
-      { label: 'Распределение инспекторов', key: 'inspectors' },
-    ];
+    if (featureToggles.districtsManage) {
+      tabsArray.push({ label: 'Границы районов', key: 'districtBorder' });
+    }
+
+    if (featureToggles.controllersDistribution) {
+      tabsArray.push({
+        label: 'Распределение контролеров',
+        key: 'controllers',
+      });
+    }
+
+    return tabsArray;
   }, [
     isAdminSettings,
     featureToggles.districtsManage,
