@@ -1,4 +1,3 @@
-import React, { useMemo } from 'react';
 import { createRunnerService } from './createRunnerService.models';
 import { CreateRunnerModal } from './CreateRunnerModal';
 import { useUnit } from 'effector-react';
