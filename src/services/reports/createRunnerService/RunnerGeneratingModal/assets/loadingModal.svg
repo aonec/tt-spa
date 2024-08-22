@@ -1,0 +1,22 @@
+<svg width="736" height="178" viewBox="0 0 736 178" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect width="736" height="178" rx="16" fill="#F3F5F6"/>
+<rect x="510.5" y="68.5" width="165" height="69" rx="7.5" fill="white"/>
+<rect x="510.5" y="68.5" width="165" height="69" rx="7.5" stroke="#189EE9"/>
+<rect x="526" y="84" width="134" height="16" rx="4" fill="white"/>
+<rect x="526" y="106" width="110" height="16" rx="4" fill="white"/>
+<rect x="494.5" y="52.5" width="165" height="69" rx="7.5" fill="white"/>
+<rect x="494.5" y="52.5" width="165" height="69" rx="7.5" stroke="#189EE9"/>
+<rect x="510" y="68" width="134" height="16" rx="4" fill="white"/>
+<rect x="510" y="90" width="110" height="16" rx="4" fill="white"/>
+<rect x="478.5" y="41.5" width="165" height="69" rx="7.5" fill="white"/>
+<rect x="478.5" y="41.5" width="165" height="69" rx="7.5" stroke="#189EE9"/>
+<rect x="494" y="57" width="134" height="16" rx="4" fill="#189EE9" fill-opacity="0.16"/>
+<rect x="494" y="79" width="110" height="16" rx="4" fill="#189EE9" fill-opacity="0.16"/>
+<rect x="60" y="31" width="200" height="54" rx="8" fill="#DCDEE4" fill-opacity="0.5"/>
+<rect x="76" y="47" width="168" height="8" rx="4" fill="white"/>
+<rect x="76" y="61" width="110" height="8" rx="4" fill="white"/>
+<rect x="60" y="93" width="200" height="54" rx="8" fill="#DCDEE4" fill-opacity="0.5"/>
+<rect x="76" y="109" width="83" height="8" rx="4" fill="white"/>
+<rect x="76" y="123" width="145" height="8" rx="4" fill="white"/>
+<path d="M314 88C313.448 88 313 88.4477 313 89C313 89.5523 313.448 90 314 90V88ZM423.707 89.7071C424.098 89.3166 424.098 88.6834 423.707 88.2929L417.343 81.9289C416.953 81.5384 416.319 81.5384 415.929 81.9289C415.538 82.3195 415.538 82.9526 415.929 83.3431L421.586 89L415.929 94.6569C415.538 95.0474 415.538 95.6805 415.929 96.0711C416.319 96.4616 416.953 96.4616 417.343 96.0711L423.707 89.7071ZM314 90H315.946V88H314V90ZM319.839 90H323.732V88H319.839V90ZM327.625 90H331.518V88H327.625V90ZM335.411 90H339.304V88H335.411V90ZM343.196 90H347.089V88H343.196V90ZM350.982 90H354.875V88H350.982V90ZM358.768 90H362.661V88H358.768V90ZM366.554 90H370.446V88H366.554V90ZM374.339 90H378.232V88H374.339V90ZM382.125 90H386.018V88H382.125V90ZM389.911 90H393.804V88H389.911V90ZM397.696 90H401.589V88H397.696V90ZM405.482 90H409.375V88H405.482V90ZM413.268 90H417.161V88H413.268V90ZM421.054 90H423V88H421.054V90Z" fill="#189EE9"/>
+</svg>

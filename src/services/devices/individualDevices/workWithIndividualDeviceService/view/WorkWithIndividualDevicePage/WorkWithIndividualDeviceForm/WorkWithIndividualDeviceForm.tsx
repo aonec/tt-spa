@@ -132,7 +132,9 @@ export const WorkWithIndividualDeviceForm: FC<
 
             <FormItem label="Место установки">
               <Select
-                disabled
+                disabled={
+                  individualDevice.resource !== EResourceType.Electricity
+                }
                 placeholder="Выберите место установки"
                 value={values.mountPlaceId || undefined}
                 onChange={(value) => setFieldValue('mountPlaceId', value)}
