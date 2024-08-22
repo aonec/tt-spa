@@ -14,6 +14,9 @@ import {
   TemperatureGraphContainer,
   temperatureGraphService,
 } from 'services/settings/temperatureGraphService';
+import { wrapItemByArray } from './SettingPage.utils';
+import { MvituContainer } from 'services/settings/mvituService';
+import { mvituService } from 'services/settings/mvituService/mvituService.models';
 
 export const SettingPage: FC<SettingPageProps> = ({
   handleReassingInspector,
@@ -21,10 +24,13 @@ export const SettingPage: FC<SettingPageProps> = ({
   isAdminSettings,
   setModalOpen,
 }) => {
-  const { featureToggles, deletingRowIds } = useUnit({
-    featureToggles: developmentSettingsService.outputs.$featureToggles,
-    deletingRowIds: temperatureGraphService.outputs.$deletingRowIds,
-  });
+  const { featureToggles, deletingRowIds, handleAddNodeToIntegration } =
+    useUnit({
+      featureToggles: developmentSettingsService.outputs.$featureToggles,
+      deletingRowIds: temperatureGraphService.outputs.$deletingRowIds,
+      handleAddNodeToIntegration:
+        mvituService.inputs.handleAddNodeToIntegration,
+    });
 
   const isDeletingTemperatureNormativesMod = Boolean(deletingRowIds.length);
 
@@ -38,6 +44,15 @@ export const SettingPage: FC<SettingPageProps> = ({
 
   const menuButtons = useMemo(() => {
     if (isAdminSettings) {
+      if (section === 'mvitu') {
+        return [
+          {
+            title: 'Добавить узел в интеграцию',
+            onClick: handleAddNodeToIntegration,
+          },
+        ];
+      }
+
       return isDeletingTemperatureNormativesMod
         ? []
         : [
@@ -66,8 +81,10 @@ export const SettingPage: FC<SettingPageProps> = ({
   }, [
     isAdminSettings,
     handleReassingInspector,
+    section,
     isDeletingTemperatureNormativesMod,
     isTemperatureGraphTab,
+    handleAddNodeToIntegration,
     handleEditTemperatureNormative,
     setModalOpen,
   ]);
@@ -78,15 +95,24 @@ export const SettingPage: FC<SettingPageProps> = ({
     [SettingsPageSection.districtBorder]: <DistrictBordersContainer />,
     [SettingsPageSection.controllers]: <></>,
     [SettingsPageSection.inspectors]: <InspectorsDistributionPage />,
+    [SettingsPageSection.mvitu]: <MvituContainer />,
   };
 
   const tabItems = useMemo(() => {
     if (isAdminSettings) {
       return [
-        ...(featureToggles.workingRanges
-          ? [{ label: 'Рабочие диапазоны узлов', key: 'operatingRanges' }]
-          : []),
+        ...wrapItemByArray(
+          {
+            label: 'Рабочие диапазоны узлов',
+            key: 'operatingRanges',
+          },
+          featureToggles.workingRanges,
+        ),
         { label: 'Температурный график', key: 'temperatureGraph' },
+        ...wrapItemByArray(
+          { label: 'Интеграция с ВИС МВИТУ', key: 'mvitu' },
+          featureToggles.mvitu,
+        ),
       ];
     }
 
@@ -101,9 +127,10 @@ export const SettingPage: FC<SettingPageProps> = ({
     ];
   }, [
     isAdminSettings,
-    featureToggles.controllersDistribution,
     featureToggles.districtsManage,
+    featureToggles.controllersDistribution,
     featureToggles.workingRanges,
+    featureToggles.mvitu,
   ]);
 
   useEffect(() => {

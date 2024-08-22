@@ -112,36 +112,38 @@ sample({
 const checkIndividualDevicePayload = combine(
   $deviceInfoForm,
   $individualDevice,
-  (info, device) => ({
-    serialNumber: info?.serialNumber,
-    rateType: info?.rateType,
-    model: info?.model,
-    contractorId: info?.contractorId,
-    sealInstallationDate: info?.sealInstallationDate
-      ? dayjs(info.sealInstallationDate).utcOffset(0, true).toISOString()
-      : null,
-    sealNumber: info?.sealNumber,
-    oldDeviceClosingReason: info?.oldDeviceClosingReason || undefined,
-    isPolling: info?.isPolling,
+  (info, device) =>
+    ({
+      serialNumber: info?.serialNumber,
+      rateType: info?.rateType,
+      model: info?.model,
+      contractorId: info?.contractorId,
+      newDeviceMountPlaceId: info?.mountPlaceId,
+      sealInstallationDate: info?.sealInstallationDate
+        ? dayjs(info.sealInstallationDate).utcOffset(0, true).toISOString()
+        : null,
+      sealNumber: info?.sealNumber,
+      oldDeviceClosingReason: info?.oldDeviceClosingReason || undefined,
+      isPolling: info?.isPolling,
 
-    lastCheckingDate: info?.lastCheckingDate
-      ? dayjs(info?.lastCheckingDate).utcOffset(0).toISOString()
-      : null,
-    futureCheckingDate: info?.futureCheckingDate
-      ? dayjs(info.futureCheckingDate).utcOffset(0).toISOString()
-      : null,
-    bitDepth: Number(info?.bitDepth),
-    scaleFactor: Number(info?.scaleFactor),
-    oldDeviceReadings: compareReadingsArrWithSameIndex(
-      Object.values(info?.oldDeviceReadings || []),
-      Object.values(prepareDeviceReadings(device?.readings || [])),
-    ),
-    newDeviceReadings: compareReadingsArrWithSameIndex(
-      Object.values(info?.newDeviceReadings || []),
-      Object.values(prepareDeviceReadings([])),
-    ),
-    deviceId: device?.id,
-  }),
+      lastCheckingDate: info?.lastCheckingDate
+        ? dayjs(info?.lastCheckingDate).utcOffset(0).toISOString()
+        : null,
+      futureCheckingDate: info?.futureCheckingDate
+        ? dayjs(info.futureCheckingDate).utcOffset(0).toISOString()
+        : null,
+      bitDepth: Number(info?.bitDepth),
+      scaleFactor: Number(info?.scaleFactor),
+      oldDeviceReadings: compareReadingsArrWithSameIndex(
+        Object.values(info?.oldDeviceReadings || []),
+        Object.values(prepareDeviceReadings(device?.readings || [])),
+      ),
+      newDeviceReadings: compareReadingsArrWithSameIndex(
+        Object.values(info?.newDeviceReadings || []),
+        Object.values(prepareDeviceReadings([])),
+      ),
+      deviceId: device?.id,
+    } as SwitchIndividualDevicePayload),
 );
 
 sample({

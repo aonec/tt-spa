@@ -16,7 +16,7 @@ const FormSelectStyles = css`
   }
 
   .ant-select-selection-search-input {
-    transform: translate(6px, 8px);
+    /* transform: translate(6px, 8px); */
   }
 
   .ant-select-clear {
