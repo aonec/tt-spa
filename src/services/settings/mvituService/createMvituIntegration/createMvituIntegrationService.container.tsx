@@ -8,20 +8,31 @@ import { createOrUpdateIntegration } from './createMvituIntegrationService.api';
 import { useFormik } from 'formik';
 import { validationSchema } from './createMvituIntegrationService.constants';
 import { ErrorMessage } from 'ui-kit/ErrorMessage';
+import { mvituIntegrationQuery } from '../mvituService.api';
 
 const { inputs, outputs } = createMvituIntegrationService;
 
 export const CreateMvituIntegrationContainer = () => {
-  const { isModalOpen, closeModal, handleUpdateIntegration, isLoading } =
-    useUnit({
-      isModalOpen: outputs.$isModalOpen,
-      closeModal: inputs.closeModal,
-      handleUpdateIntegration: createOrUpdateIntegration.start,
-      isLoading: createOrUpdateIntegration.$pending,
-    });
+  const {
+    isModalOpen,
+    closeModal,
+    handleUpdateIntegration,
+    isLoading,
+    mvituIntegrationData,
+  } = useUnit({
+    isModalOpen: outputs.$isModalOpen,
+    closeModal: inputs.closeModal,
+    handleUpdateIntegration: createOrUpdateIntegration.start,
+    isLoading: createOrUpdateIntegration.$pending,
+    mvituIntegrationData: mvituIntegrationQuery.$data,
+  });
 
   const { values, handleChange, handleSubmit, errors } = useFormik({
-    initialValues: { inn: '', legalName: '' },
+    initialValues: {
+      inn: mvituIntegrationData?.organizationInfo?.inn || '',
+      legalName: mvituIntegrationData?.organizationInfo?.legalName || '',
+    },
+    enableReinitialize: true,
     onSubmit: (values) => {
       handleUpdateIntegration(values);
     },
@@ -32,7 +43,7 @@ export const CreateMvituIntegrationContainer = () => {
     <FormModal
       visible={isModalOpen}
       onCancel={closeModal}
-      title="Настройка интеграции с ВИС МВИТУ"
+      title={'Настройка интеграции с ВИС МВИТУ'}
       formId="mvitu-integration-configure"
       onSubmit={handleSubmit}
       loading={isLoading}

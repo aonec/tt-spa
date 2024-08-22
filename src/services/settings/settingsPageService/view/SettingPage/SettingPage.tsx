@@ -16,6 +16,7 @@ import {
 } from 'services/settings/temperatureGraphService';
 import { MvituContainer } from 'services/settings/mvituService';
 import { mvituService } from 'services/settings/mvituService/mvituService.models';
+import { createMvituIntegrationService } from 'services/settings/mvituService/createMvituIntegration/createMvituIntegrationService.models';
 
 export const SettingPage: FC<SettingPageProps> = ({
   handleReassingInspector,
@@ -23,13 +24,17 @@ export const SettingPage: FC<SettingPageProps> = ({
   isAdminSettings,
   setModalOpen,
 }) => {
-  const { featureToggles, deletingRowIds, handleAddNodeToIntegration } =
-    useUnit({
-      featureToggles: developmentSettingsService.outputs.$featureToggles,
-      deletingRowIds: temperatureGraphService.outputs.$deletingRowIds,
-      handleAddNodeToIntegration:
-        mvituService.inputs.handleAddNodeToIntegration,
-    });
+  const {
+    featureToggles,
+    deletingRowIds,
+    handleAddNodeToIntegration,
+    handleUpdateIntegration,
+  } = useUnit({
+    featureToggles: developmentSettingsService.outputs.$featureToggles,
+    deletingRowIds: temperatureGraphService.outputs.$deletingRowIds,
+    handleAddNodeToIntegration: mvituService.inputs.handleAddNodeToIntegration,
+    handleUpdateIntegration: createMvituIntegrationService.inputs.openModal,
+  });
 
   const isDeletingTemperatureNormativesMod = Boolean(deletingRowIds.length);
 
@@ -45,6 +50,10 @@ export const SettingPage: FC<SettingPageProps> = ({
     if (isAdminSettings) {
       if (section === 'mvitu') {
         return [
+          {
+            title: 'Редактировать интеграцию',
+            onClick: handleUpdateIntegration,
+          },
           {
             title: 'Добавить узел в интеграцию',
             onClick: handleAddNodeToIntegration,
@@ -83,6 +92,7 @@ export const SettingPage: FC<SettingPageProps> = ({
     section,
     isDeletingTemperatureNormativesMod,
     isTemperatureGraphTab,
+    handleUpdateIntegration,
     handleAddNodeToIntegration,
     handleEditTemperatureNormative,
     setModalOpen,
