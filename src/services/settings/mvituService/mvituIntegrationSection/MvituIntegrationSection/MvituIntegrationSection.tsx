@@ -49,7 +49,13 @@ export const MvituIntegrationSection: FC<Props> = ({
       </IntegrationPanel>
       <SearchWrapper>
         <Input placeholder="Адрес" small />
-        <Select placeholder="Статус" small />
+        <Select placeholder="Статус" small>
+          {Object.values(NodeStatusType).map((elem) => (
+            <Select.Option key={elem} value={elem}>
+              <NodeIntegrationStatus status={elem} />
+            </Select.Option>
+          ))}
+        </Select>
       </SearchWrapper>
       <Table
         isLoading={isLoading}

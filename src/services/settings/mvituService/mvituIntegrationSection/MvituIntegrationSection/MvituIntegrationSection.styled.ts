@@ -33,3 +33,9 @@ export const SearchWrapper = styled.div`
   align-items: center;
   gap: 16px;
 `;
+
+export const NodeStatusItem = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 8px;
+`;
