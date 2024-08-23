@@ -2,6 +2,7 @@ import { createEvent, createStore, sample } from 'effector';
 import {
   addNodeToIntegrationMutation,
   getNodeQuery,
+  searchNodesQuery,
 } from './addNodeToIntegrationService.api';
 import { mvituIntegrationSectionService } from '../mvituIntegrationSection/mvituIntegrationSectionService.models';
 import { message } from 'antd';
@@ -24,6 +25,11 @@ sample({
     handleCloseModal,
     mvituIntegrationSectionService.inputs.refetchNodesQuery,
   ],
+});
+
+sample({
+  clock: addNodeToIntegrationMutation.finished.success,
+  target: searchNodesQuery.reset,
 });
 
 addNodeToIntegrationMutation.finished.failure.watch((e) =>

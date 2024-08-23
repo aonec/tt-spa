@@ -162,3 +162,7 @@ export const TableElement = styled.div<{ css?: string }>`
 export const SortButtonSC = styled(SortButton)`
   margin-left: 4px;
 `;
+
+export const LoaderWrapper = styled.div`
+  margin-top: 16px;
+`;

@@ -3,7 +3,10 @@ import {
   MvituNodeResponsePagedList,
   StatusResponse,
 } from 'api/mvitu.types';
-import { ChangeNodeStatusRequestPayload } from '../mvituIntegrationSectionService.types';
+import {
+  ChangeNodeStatusRequestPayload,
+  GetMvituNodesRequestParams,
+} from '../mvituIntegrationSectionService.types';
 
 export type Props = {
   mvituNodesList: MvituNodeResponsePagedList | null;
@@ -12,4 +15,7 @@ export type Props = {
   isUpdateStatusLoading: boolean;
   changeNodeStatus: (payload: ChangeNodeStatusRequestPayload) => void;
   deleteNode: (payload: number) => void;
+  nodesListRequestPayload: GetMvituNodesRequestParams;
+  setPageNumber: (payload: number) => void;
+  isLoading: boolean;
 };

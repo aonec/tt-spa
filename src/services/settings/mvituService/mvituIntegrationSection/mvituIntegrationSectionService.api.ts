@@ -14,7 +14,8 @@ export const mvituNodesQuery = createQuery<
   GetMvituNodesRequestParams,
   MvituNodeResponsePagedList
 >({
-  handler: () => axios.get('mvitu/Nodes'),
+  handler: (params): Promise<MvituNodeResponsePagedList> =>
+    axios.get('mvitu/Nodes', { params }),
 });
 
 export const mvituIntegrationUpdateStatusMutation = createMutation({

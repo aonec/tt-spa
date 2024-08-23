@@ -11,23 +11,31 @@ import { mvituIntegrationQuery } from '../mvituService.api';
 
 const {
   gates: { MvituSectionGate },
+  outputs,
+  inputs,
 } = mvituIntegrationSectionService;
 
 export const MvituIntegrationSectionContainer = () => {
   const {
     mvituNodesList,
+    isLoading,
     integrationData,
     handleUpdateStatus,
     isUpdateStatusLoading,
     changeNodeStatus,
     deleteNode,
+    nodesListRequestPayload,
+    setPageNumber,
   } = useUnit({
     mvituNodesList: mvituNodesQuery.$data,
+    isLoading: mvituNodesQuery.$pending,
     integrationData: mvituIntegrationQuery.$data,
     handleUpdateStatus: mvituIntegrationUpdateStatusMutation.start,
     isUpdateStatusLoading: mvituIntegrationUpdateStatusMutation.$pending,
     changeNodeStatus: changeNodeStatusMutation.start,
     deleteNode: deleteNodeMutation.start,
+    nodesListRequestPayload: outputs.$nodesListRequestPayload,
+    setPageNumber: inputs.changePageNumber,
   });
 
   if (!integrationData) return null;
@@ -41,6 +49,9 @@ export const MvituIntegrationSectionContainer = () => {
         isUpdateStatusLoading={isUpdateStatusLoading}
         changeNodeStatus={changeNodeStatus}
         deleteNode={deleteNode}
+        nodesListRequestPayload={nodesListRequestPayload}
+        setPageNumber={setPageNumber}
+        isLoading={isLoading}
       />
     </>
   );

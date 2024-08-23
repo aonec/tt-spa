@@ -10,7 +10,15 @@ import { message } from 'antd';
 
 const MvituSectionGate = createGate();
 
-const $nodesListRequestPayload = createStore<GetMvituNodesRequestParams>({});
+const changePageNumber = createEvent<number>();
+
+const $nodesListRequestPayload = createStore<GetMvituNodesRequestParams>({
+  PageSize: 5,
+  PageNumber: 1,
+}).on(changePageNumber, (prev, pageNumber) => ({
+  ...prev,
+  PageNumber: pageNumber,
+}));
 
 const refetchNodesQuery = createEvent();
 
@@ -21,6 +29,7 @@ sample({
     refetchNodesQuery,
     changeNodeStatusMutation.finished.success,
     deleteNodeMutation.finished.success,
+    $nodesListRequestPayload.updates,
   ],
   target: mvituNodesQuery.start,
 });
@@ -34,7 +43,7 @@ deleteNodeMutation.finished.success.watch(() =>
 );
 
 export const mvituIntegrationSectionService = {
-  inputs: { refetchNodesQuery },
-  outputs: {},
+  inputs: { refetchNodesQuery, changePageNumber },
+  outputs: { $nodesListRequestPayload },
   gates: { MvituSectionGate },
 };

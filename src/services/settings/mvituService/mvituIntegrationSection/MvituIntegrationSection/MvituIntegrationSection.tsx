@@ -15,6 +15,7 @@ import { NodeIntegrationStatus } from './NodeIntegrationStatus';
 import { ChangeStatusType, NodeStatusType, StatusType } from 'api/mvitu.types';
 import { ContextMenuButton } from 'ui-kit/ContextMenuButton';
 import { ContextMenuButtonColor } from 'ui-kit/ContextMenuButton/ContextMenuButton.types';
+import { Pagination } from 'ui-kit/Pagination';
 
 export const MvituIntegrationSection: FC<Props> = ({
   mvituNodesList,
@@ -23,6 +24,9 @@ export const MvituIntegrationSection: FC<Props> = ({
   isUpdateStatusLoading,
   changeNodeStatus,
   deleteNode,
+  setPageNumber,
+  nodesListRequestPayload,
+  isLoading,
 }) => {
   const handleClickSwitch = useCallback(() => {
     const newStatus: ChangeStatusType =
@@ -48,6 +52,7 @@ export const MvituIntegrationSection: FC<Props> = ({
         <Select placeholder="Статус" small />
       </SearchWrapper>
       <Table
+        isLoading={isLoading}
         floating
         columns={[
           {
@@ -112,6 +117,12 @@ export const MvituIntegrationSection: FC<Props> = ({
           },
         ]}
         elements={mvituNodesList?.items || []}
+      />
+      <Pagination
+        pageSize={nodesListRequestPayload.PageSize}
+        total={mvituNodesList?.totalItems}
+        current={nodesListRequestPayload.PageNumber}
+        onChange={(pageNumber) => setPageNumber(pageNumber)}
       />
     </Wrapper>
   );

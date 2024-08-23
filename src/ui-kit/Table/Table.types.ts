@@ -24,4 +24,5 @@ export type TableProps<T> = {
   floating?: boolean;
   extraHeader?: ReactNode;
   maxWidth?: string;
+  isLoading?: boolean;
 };
