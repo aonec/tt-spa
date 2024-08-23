@@ -2,6 +2,7 @@ import { useUnit } from 'effector-react';
 import { MvituIntegrationSection } from './MvituIntegrationSection/MvituIntegrationSection';
 import { mvituIntegrationSectionService } from './mvituIntegrationSectionService.models';
 import {
+  changeNodeStatusMutation,
   mvituIntegrationUpdateStatusMutation,
   mvituNodesQuery,
 } from './mvituIntegrationSectionService.api';
@@ -17,11 +18,13 @@ export const MvituIntegrationSectionContainer = () => {
     integrationData,
     handleUpdateStatus,
     isUpdateStatusLoading,
+    changeNodeStatus,
   } = useUnit({
     mvituNodesList: mvituNodesQuery.$data,
     integrationData: mvituIntegrationQuery.$data,
     handleUpdateStatus: mvituIntegrationUpdateStatusMutation.start,
     isUpdateStatusLoading: mvituIntegrationUpdateStatusMutation.$pending,
+    changeNodeStatus: changeNodeStatusMutation.start,
   });
 
   if (!integrationData) return null;
@@ -33,6 +36,7 @@ export const MvituIntegrationSectionContainer = () => {
         integrationData={integrationData}
         handleUpdateStatus={handleUpdateStatus}
         isUpdateStatusLoading={isUpdateStatusLoading}
+        changeNodeStatus={changeNodeStatus}
       />
     </>
   );

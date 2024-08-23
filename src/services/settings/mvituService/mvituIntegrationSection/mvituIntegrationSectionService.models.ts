@@ -1,7 +1,10 @@
 import { createEvent, createStore, sample } from 'effector';
 import { createGate } from 'effector-react';
 import { GetMvituNodesRequestParams } from './mvituIntegrationSectionService.types';
-import { mvituNodesQuery } from './mvituIntegrationSectionService.api';
+import {
+  changeNodeStatusMutation,
+  mvituNodesQuery,
+} from './mvituIntegrationSectionService.api';
 
 const MvituSectionGate = createGate();
 
@@ -11,7 +14,11 @@ const refetchNodesQuery = createEvent();
 
 sample({
   source: $nodesListRequestPayload,
-  clock: [MvituSectionGate.open, refetchNodesQuery],
+  clock: [
+    MvituSectionGate.open,
+    refetchNodesQuery,
+    changeNodeStatusMutation.finished.success,
+  ],
   target: mvituNodesQuery.start,
 });
 

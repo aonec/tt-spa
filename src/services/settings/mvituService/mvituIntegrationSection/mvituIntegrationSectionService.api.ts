@@ -1,6 +1,9 @@
 import { createMutation, createQuery } from '@farfetched/core';
 import { axios } from 'api/axios';
-import { GetMvituNodesRequestParams } from './mvituIntegrationSectionService.types';
+import {
+  ChangeNodeStatusRequestPayload,
+  GetMvituNodesRequestParams,
+} from './mvituIntegrationSectionService.types';
 import {
   ChangeStatusRequest,
   MvituNodeResponsePagedList,
@@ -18,5 +21,12 @@ export const mvituIntegrationUpdateStatusMutation = createMutation({
   effect: createEffect<ChangeStatusRequest, void>(
     (data): Promise<void> =>
       axios.post('mvitu/Integrations/ChangeStatus', data),
+  ),
+});
+
+export const changeNodeStatusMutation = createMutation({
+  effect: createEffect<ChangeNodeStatusRequestPayload, void>(
+    ({ nodeId, ...payload }): Promise<void> =>
+      axios.post(`mvitu/Nodes/${nodeId}/ChangeStatus`, payload),
   ),
 });

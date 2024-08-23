@@ -12,13 +12,16 @@ import { Select } from 'ui-kit/Select';
 import { Table } from 'ui-kit/Table';
 import { ResourceIconLookup } from 'ui-kit/shared/ResourceIconLookup';
 import { NodeIntegrationStatus } from './NodeIntegrationStatus';
-import { ChangeStatusType, StatusType } from 'api/mvitu.types';
+import { ChangeStatusType, NodeStatusType, StatusType } from 'api/mvitu.types';
+import { ContextMenuButton } from 'ui-kit/ContextMenuButton';
+import { ContextMenuButtonColor } from 'ui-kit/ContextMenuButton/ContextMenuButton.types';
 
 export const MvituIntegrationSection: FC<Props> = ({
   mvituNodesList,
   integrationData,
   handleUpdateStatus,
   isUpdateStatusLoading,
+  changeNodeStatus,
 }) => {
   const handleClickSwitch = useCallback(() => {
     const newStatus: ChangeStatusType =
@@ -67,6 +70,41 @@ export const MvituIntegrationSection: FC<Props> = ({
             render: (item) => (
               <>
                 <NodeIntegrationStatus status={item.status} />
+              </>
+            ),
+          },
+          {
+            label: '',
+            size: '64px',
+            render: (item) => (
+              <>
+                <ContextMenuButton
+                  size="small"
+                  menuButtons={[
+                    {
+                      title: `Поменять статус на "${
+                        item.status === NodeStatusType.Active
+                          ? 'Не активно'
+                          : 'Активно'
+                      }"`,
+                      onClick: () => {
+                        const newStatus =
+                          item.status === NodeStatusType.Active
+                            ? ChangeStatusType.Pause
+                            : ChangeStatusType.Active;
+
+                        changeNodeStatus({
+                          nodeId: item.id,
+                          expectedStatus: newStatus,
+                        });
+                      },
+                    },
+                    {
+                      title: 'Удалить узел из интеграции',
+                      color: ContextMenuButtonColor.danger,
+                    },
+                  ]}
+                />
               </>
             ),
           },
