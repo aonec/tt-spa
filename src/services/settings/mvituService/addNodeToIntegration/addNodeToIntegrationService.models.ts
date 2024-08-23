@@ -4,6 +4,7 @@ import {
   getNodeQuery,
 } from './addNodeToIntegrationService.api';
 import { mvituIntegrationSectionService } from '../mvituIntegrationSection/mvituIntegrationSectionService.models';
+import { message } from 'antd';
 
 const handleOpenModal = createEvent();
 const handleCloseModal = createEvent();
@@ -24,6 +25,10 @@ sample({
     mvituIntegrationSectionService.inputs.refetchNodesQuery,
   ],
 });
+
+addNodeToIntegrationMutation.finished.failure.watch((e) =>
+  message.error(e.error.response.data.error.Text),
+);
 
 export const addNodeToIntegrationService = {
   inputs: { handleOpenModal, handleCloseModal },

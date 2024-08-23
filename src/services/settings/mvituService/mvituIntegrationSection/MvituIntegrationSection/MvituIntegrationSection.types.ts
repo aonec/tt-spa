@@ -11,4 +11,5 @@ export type Props = {
   handleUpdateStatus: (payload: ChangeStatusRequest) => void;
   isUpdateStatusLoading: boolean;
   changeNodeStatus: (payload: ChangeNodeStatusRequestPayload) => void;
+  deleteNode: (payload: number) => void;
 };

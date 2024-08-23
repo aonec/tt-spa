@@ -3,8 +3,10 @@ import { createGate } from 'effector-react';
 import { GetMvituNodesRequestParams } from './mvituIntegrationSectionService.types';
 import {
   changeNodeStatusMutation,
+  deleteNodeMutation,
   mvituNodesQuery,
 } from './mvituIntegrationSectionService.api';
+import { message } from 'antd';
 
 const MvituSectionGate = createGate();
 
@@ -18,9 +20,18 @@ sample({
     MvituSectionGate.open,
     refetchNodesQuery,
     changeNodeStatusMutation.finished.success,
+    deleteNodeMutation.finished.success,
   ],
   target: mvituNodesQuery.start,
 });
+
+changeNodeStatusMutation.finished.success.watch(() =>
+  message.success('Статус узла изменен'),
+);
+
+deleteNodeMutation.finished.success.watch(() =>
+  message.info('Узел удален из интеграции'),
+);
 
 export const mvituIntegrationSectionService = {
   inputs: { refetchNodesQuery },

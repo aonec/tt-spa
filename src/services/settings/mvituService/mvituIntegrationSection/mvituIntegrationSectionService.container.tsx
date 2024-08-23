@@ -3,6 +3,7 @@ import { MvituIntegrationSection } from './MvituIntegrationSection/MvituIntegrat
 import { mvituIntegrationSectionService } from './mvituIntegrationSectionService.models';
 import {
   changeNodeStatusMutation,
+  deleteNodeMutation,
   mvituIntegrationUpdateStatusMutation,
   mvituNodesQuery,
 } from './mvituIntegrationSectionService.api';
@@ -19,12 +20,14 @@ export const MvituIntegrationSectionContainer = () => {
     handleUpdateStatus,
     isUpdateStatusLoading,
     changeNodeStatus,
+    deleteNode,
   } = useUnit({
     mvituNodesList: mvituNodesQuery.$data,
     integrationData: mvituIntegrationQuery.$data,
     handleUpdateStatus: mvituIntegrationUpdateStatusMutation.start,
     isUpdateStatusLoading: mvituIntegrationUpdateStatusMutation.$pending,
     changeNodeStatus: changeNodeStatusMutation.start,
+    deleteNode: deleteNodeMutation.start,
   });
 
   if (!integrationData) return null;
@@ -37,6 +40,7 @@ export const MvituIntegrationSectionContainer = () => {
         handleUpdateStatus={handleUpdateStatus}
         isUpdateStatusLoading={isUpdateStatusLoading}
         changeNodeStatus={changeNodeStatus}
+        deleteNode={deleteNode}
       />
     </>
   );

@@ -35,6 +35,7 @@ export const AddNodeToIntegrationModal: FC<Props> = ({
   selectedNode,
   isSelectedNodeLoading,
   handleAddNodeToIntegration,
+  isAddNodeLoading,
 }) => {
   const [searchType, setSearchType] = useState<SearchType>('AddressTerm');
   const [searchString, setSearchString] = useState('');
@@ -118,6 +119,7 @@ export const AddNodeToIntegrationModal: FC<Props> = ({
       visible={isModalOpen}
       onCancel={handleCloseModal}
       onSubmit={handleSubmit}
+      loading={isAddNodeLoading}
       form={
         <Wrapper>
           <FormItem label="Поиск узла">

@@ -22,6 +22,7 @@ export const MvituIntegrationSection: FC<Props> = ({
   handleUpdateStatus,
   isUpdateStatusLoading,
   changeNodeStatus,
+  deleteNode,
 }) => {
   const handleClickSwitch = useCallback(() => {
     const newStatus: ChangeStatusType =
@@ -102,6 +103,7 @@ export const MvituIntegrationSection: FC<Props> = ({
                     {
                       title: 'Удалить узел из интеграции',
                       color: ContextMenuButtonColor.danger,
+                      onClick: () => deleteNode(item.id),
                     },
                   ]}
                 />

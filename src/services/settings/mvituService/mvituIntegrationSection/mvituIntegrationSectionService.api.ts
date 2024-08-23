@@ -30,3 +30,9 @@ export const changeNodeStatusMutation = createMutation({
       axios.post(`mvitu/Nodes/${nodeId}/ChangeStatus`, payload),
   ),
 });
+
+export const deleteNodeMutation = createMutation({
+  effect: createEffect<number, void>(
+    (nodeId): Promise<void> => axios.delete(`mvitu/Nodes/${nodeId}`),
+  ),
+});
