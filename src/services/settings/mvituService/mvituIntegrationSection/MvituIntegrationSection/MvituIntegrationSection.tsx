@@ -53,11 +53,10 @@ export const MvituIntegrationSection: FC<Props> = ({
       </SearchWrapper>
       <Table
         isLoading={isLoading}
-        floating
         columns={[
           {
             label: 'Адрес',
-            size: '350px',
+            size: 'minmax(350px, 500px)',
             render: (item) => <>{item.building?.addressStr}</>,
           },
           {
@@ -72,7 +71,7 @@ export const MvituIntegrationSection: FC<Props> = ({
           },
           {
             label: 'Статус интеграции',
-            size: '150px',
+            size: 'minmax(150px, 200px)',
             render: (item) => (
               <>
                 <NodeIntegrationStatus status={item.status} />

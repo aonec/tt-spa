@@ -6,7 +6,7 @@ export const NodeIntegrationStatusNamesLookup: {
   [key in keyof typeof NodeStatusType]: string;
 } = {
   [NodeStatusType.Active]: 'Активно',
-  [NodeStatusType.Paused]: 'На паузе',
+  [NodeStatusType.Paused]: 'Не активна',
 };
 
 export const NodeIntegrationStatusIconsLookup: {
