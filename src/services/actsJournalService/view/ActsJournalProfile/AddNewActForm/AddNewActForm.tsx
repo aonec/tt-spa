@@ -151,7 +151,6 @@ export const AddNewActForm: FC<AddNewActFormProps> = ({
             setFieldValue('comment', value.target.value);
           }}
           data-reading-input={dataKey}
-          onKeyDown={fromEnter(() => console.log('first'))}
         />
 
         <ButtonsWrapper>
