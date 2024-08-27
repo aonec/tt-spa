@@ -64,6 +64,7 @@ export const MvituIntegrationSection: FC<Props> = ({
           onChange={(value) =>
             setSearchParams({ Status: value as NodeStatusType })
           }
+          allowClear
         >
           {Object.values(NodeStatusType).map((elem) => (
             <Select.Option key={elem} value={elem}>

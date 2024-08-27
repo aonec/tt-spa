@@ -24,7 +24,7 @@ const $nodesListRequestPayload = createStore<GetMvituNodesRequestParams>({
     PageNumber: pageNumber,
   }))
   .on(setSearchParams, (prev, params) => {
-    return { ...prev, ...params };
+    return { ...prev, ...params, PageNumber: 1 };
   });
 
 const refetchNodesQuery = createEvent();
@@ -35,7 +35,7 @@ const $debouncedSearchParams = debounce({
 });
 
 sample({
-  source: $debouncedSearchParams,
+  source: $nodesListRequestPayload,
   clock: [
     MvituSectionGate.open,
     refetchNodesQuery,
