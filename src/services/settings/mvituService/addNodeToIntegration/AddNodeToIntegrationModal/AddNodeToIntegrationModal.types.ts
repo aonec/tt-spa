@@ -1,4 +1,8 @@
-import { NodeResponse, NodeSearchResponse } from 'api/mvitu.types';
+import {
+  AddNodeRequest,
+  NodeResponse,
+  NodeSearchResponse,
+} from 'api/mvitu.types';
 import { SearchNodeParams } from '../addNodeToIntegrationService.types';
 
 export type Props = {
@@ -10,4 +14,5 @@ export type Props = {
   handleSelectNode: (payload: number) => void;
   selectedNode: NodeResponse | null;
   isSelectedNodeLoading: boolean;
+  handleAddNodeToIntegration: (payload: AddNodeRequest) => void;
 };
