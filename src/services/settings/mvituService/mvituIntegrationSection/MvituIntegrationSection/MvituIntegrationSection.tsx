@@ -1,5 +1,6 @@
 import { FC, useCallback } from 'react';
 import { Switch } from 'antd';
+import dayjs from 'dayjs';
 import {
   IntegrationPanel,
   IntegrationPanelTitle,
@@ -16,6 +17,7 @@ import { ChangeStatusType, NodeStatusType, StatusType } from 'api/mvitu.types';
 import { ContextMenuButton } from 'ui-kit/ContextMenuButton';
 import { ContextMenuButtonColor } from 'ui-kit/ContextMenuButton/ContextMenuButton.types';
 import { Pagination } from 'ui-kit/Pagination';
+import { ChevronTopActive, ChevronTopDanger } from 'ui-kit/icons';
 
 export const MvituIntegrationSection: FC<Props> = ({
   mvituNodesList,
@@ -62,7 +64,7 @@ export const MvituIntegrationSection: FC<Props> = ({
         columns={[
           {
             label: 'Адрес',
-            size: 'minmax(350px, 500px)',
+            size: 'minmax(250px, 350px)',
             render: (item) => <>{item.building?.addressStr}</>,
           },
           {
@@ -72,7 +74,7 @@ export const MvituIntegrationSection: FC<Props> = ({
           },
           {
             label: 'Наименование узла',
-            size: '200px',
+            size: '100px',
             render: (item) => <>Узел {item.title}</>,
           },
           {
@@ -81,6 +83,45 @@ export const MvituIntegrationSection: FC<Props> = ({
             render: (item) => (
               <>
                 <NodeIntegrationStatus status={item.status} />
+              </>
+            ),
+          },
+          {
+            label: (
+              <div style={{ whiteSpace: 'pre-wrap', width: '150px' }}>
+                Дата последнего
+                {`
+`}
+                передан. архива
+              </div>
+            ),
+            size: '150px',
+            render: (item) => (
+              <>
+                {item.integrationStatus?.lastIsReadyTransmitArchiveTime &&
+                  dayjs(
+                    item.integrationStatus?.lastIsReadyTransmitArchiveTime,
+                  ).format('DD.MM.YYYY HH:mm')}
+              </>
+            ),
+          },
+          {
+            label: (
+              <div style={{ whiteSpace: 'pre-wrap', width: '100px' }}>
+                Статус
+                {`
+`}
+                передачи
+              </div>
+            ),
+            size: '100px',
+            render: (item) => (
+              <>
+                {item.integrationStatus?.isReadyTransmitTotalCount ? (
+                  <ChevronTopActive />
+                ) : (
+                  <ChevronTopDanger />
+                )}
               </>
             ),
           },
