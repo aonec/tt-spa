@@ -29,6 +29,7 @@ export const MvituIntegrationSection: FC<Props> = ({
   setPageNumber,
   nodesListRequestPayload,
   isLoading,
+  setSearchParams,
 }) => {
   const handleClickSwitch = useCallback(() => {
     const newStatus: ChangeStatusType =
@@ -50,8 +51,20 @@ export const MvituIntegrationSection: FC<Props> = ({
         />
       </IntegrationPanel>
       <SearchWrapper>
-        <Input placeholder="Адрес" small />
-        <Select placeholder="Статус" small>
+        <Input
+          value={nodesListRequestPayload.AddressTerm}
+          onChange={(e) => setSearchParams({ AddressTerm: e.target.value })}
+          placeholder="Адрес"
+          small
+        />
+        <Select
+          placeholder="Статус"
+          small
+          value={nodesListRequestPayload.Status}
+          onChange={(value) =>
+            setSearchParams({ Status: value as NodeStatusType })
+          }
+        >
           {Object.values(NodeStatusType).map((elem) => (
             <Select.Option key={elem} value={elem}>
               <NodeIntegrationStatus status={elem} />

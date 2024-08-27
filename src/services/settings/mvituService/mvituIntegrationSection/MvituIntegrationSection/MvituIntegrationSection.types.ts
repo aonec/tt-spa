@@ -18,4 +18,5 @@ export type Props = {
   nodesListRequestPayload: GetMvituNodesRequestParams;
   setPageNumber: (payload: number) => void;
   isLoading: boolean;
+  setSearchParams: (payload: Partial<GetMvituNodesRequestParams>) => void;
 };

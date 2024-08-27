@@ -7,29 +7,41 @@ import {
   mvituNodesQuery,
 } from './mvituIntegrationSectionService.api';
 import { message } from 'antd';
+import { debounce } from 'patronum';
 
 const MvituSectionGate = createGate();
 
 const changePageNumber = createEvent<number>();
 
+const setSearchParams = createEvent<Partial<GetMvituNodesRequestParams>>();
+
 const $nodesListRequestPayload = createStore<GetMvituNodesRequestParams>({
   PageSize: 5,
   PageNumber: 1,
-}).on(changePageNumber, (prev, pageNumber) => ({
-  ...prev,
-  PageNumber: pageNumber,
-}));
+})
+  .on(changePageNumber, (prev, pageNumber) => ({
+    ...prev,
+    PageNumber: pageNumber,
+  }))
+  .on(setSearchParams, (prev, params) => {
+    return { ...prev, ...params };
+  });
 
 const refetchNodesQuery = createEvent();
 
-sample({
+const $debouncedSearchParams = debounce({
   source: $nodesListRequestPayload,
+  timeout: 300,
+});
+
+sample({
+  source: $debouncedSearchParams,
   clock: [
     MvituSectionGate.open,
     refetchNodesQuery,
     changeNodeStatusMutation.finished.success,
     deleteNodeMutation.finished.success,
-    $nodesListRequestPayload.updates,
+    $debouncedSearchParams,
   ],
   target: mvituNodesQuery.start,
 });
@@ -43,7 +55,7 @@ deleteNodeMutation.finished.success.watch(() =>
 );
 
 export const mvituIntegrationSectionService = {
-  inputs: { refetchNodesQuery, changePageNumber },
+  inputs: { refetchNodesQuery, changePageNumber, setSearchParams },
   outputs: { $nodesListRequestPayload },
   gates: { MvituSectionGate },
 };

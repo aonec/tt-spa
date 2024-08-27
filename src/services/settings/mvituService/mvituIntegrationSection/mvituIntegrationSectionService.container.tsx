@@ -26,6 +26,7 @@ export const MvituIntegrationSectionContainer = () => {
     deleteNode,
     nodesListRequestPayload,
     setPageNumber,
+    setSearchParams,
   } = useUnit({
     mvituNodesList: mvituNodesQuery.$data,
     isLoading: mvituNodesQuery.$pending,
@@ -36,6 +37,7 @@ export const MvituIntegrationSectionContainer = () => {
     deleteNode: deleteNodeMutation.start,
     nodesListRequestPayload: outputs.$nodesListRequestPayload,
     setPageNumber: inputs.changePageNumber,
+    setSearchParams: inputs.setSearchParams,
   });
 
   if (!integrationData) return null;
@@ -52,6 +54,7 @@ export const MvituIntegrationSectionContainer = () => {
         nodesListRequestPayload={nodesListRequestPayload}
         setPageNumber={setPageNumber}
         isLoading={isLoading}
+        setSearchParams={setSearchParams}
       />
     </>
   );
