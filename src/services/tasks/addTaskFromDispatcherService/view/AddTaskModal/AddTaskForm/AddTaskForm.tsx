@@ -1,11 +1,4 @@
-import React, {
-  FC,
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from 'react';
+import React, { FC, useCallback, useEffect, useMemo, useState } from 'react';
 import { AutoComplete as AutoCompleteAntD, Form } from 'antd';
 import dayjs from 'api/dayjs';
 import {
@@ -61,7 +54,6 @@ import { AlertIconType } from 'ui-kit/Alert/Alert.types';
 import { addTaskFromDispatcherService } from 'services/tasks/addTaskFromDispatcherService';
 import { getPreparedStreetsOptions } from 'services/objects/createObjectService/view/CreateObjectPage/CreateObjectAddressStage/CreateObjectAddressStage.utils';
 import { DatePicker } from 'ui-kit/DatePicker';
-import { throttle } from 'lodash';
 
 const {
   gates: { PageGate },
@@ -135,8 +127,6 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
         handleCreateTask(filteredData);
       },
     });
-
-  const timePickerRef = useRef(null);
 
   const isInitialSource = useMemo(
     () => values.sourceId === initialSource?.id,
@@ -355,34 +345,7 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
   const [isReasonOpen, setReasonOpen] = useState(false);
   const [isTaskTypeOpen, setTaskTypeOpen] = useState(false);
   const [isDatePickerOpen, setDatePickerOpen] = useState(false);
-  // const [isTimePickerOpen, setTimePickerOpen] = useState(false);
   const [isExecutorOpen, setExecutorOpen] = useState(false);
-
-  // console.log({ isTimePickerOpen });
-
-  const isTimePickerOpen = useRef(false);
-  console.log(isTimePickerOpen.current);
-
-  useEffect(() => {
-    document.addEventListener('keydown', (event) => {
-      if (isTimePickerOpen.current && event.key === 'Enter') {
-        console.log('test');
-
-        if (isNoAdditionalFieldsRequired) {
-          next(6);
-        }
-        if (isOnlySourceNumberRequired) {
-          next(7);
-        }
-        if (isOnlySubscriberRequired) {
-          next(8);
-        }
-        if (isSubscriberAndSourceNumberRequired) {
-          next(9);
-        }
-      }
-    });
-  }, []);
 
   return (
     <>
@@ -790,38 +753,23 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
 
                   if (isNoAdditionalFieldsRequired) {
                     next(5);
-                    console.log(1);
                   }
                   if (isOnlySourceNumberRequired) {
                     next(6);
-                    console.log(2);
                   }
                   if (isOnlySubscriberRequired) {
                     next(7);
-                    console.log(3);
                   }
                   if (isSubscriberAndSourceNumberRequired) {
-                    throttle(() => next(8), 3300);
-                    console.log(4);
+                    next(8);
                   }
                 })}
               />
               <TimePickerMedium
-                ref={timePickerRef}
-                needConfirm={false}
+                needConfirm={true}
                 showNow={false}
                 data-reading-input={dataKey}
                 value={values.taskDeadlineTime || undefined}
-                // open={false}
-                onBlur={(event) => {
-                  ('onBlur');
-                  isTimePickerOpen.current = false;
-                }}
-                onFocus={() => {
-                  // setTimePickerOpen(true);
-                  isTimePickerOpen.current = true;
-                  console.log('onFocus');
-                }}
                 onChange={(value) => {
                   setFieldValue('taskDeadlineTime', value);
                 }}
@@ -829,8 +777,6 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
                   setFieldValue('taskDeadlineTime', value);
                 }}
                 onMouseDown={() => {
-                  // setTimePickerOpen(!isTimePickerOpen);
-                  isTimePickerOpen.current = !isTimePickerOpen.current;
                   setFieldValue('taskDeadlineTime', null);
                 }}
                 onKeyDown={(event: any) => {
@@ -842,9 +788,6 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
                   }
 
                   fromEnter(() => {
-                    // setTimePickerOpen(false);
-                    isTimePickerOpen.current = false;
-
                     if (isNoAdditionalFieldsRequired) {
                       next(6);
                     }
@@ -860,9 +803,6 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
                   })(event);
                 }}
                 onOk={() => {
-                  // setTimePickerOpen(false);
-                  isTimePickerOpen.current = false;
-
                   if (isNoAdditionalFieldsRequired) {
                     next(6);
                   }
