@@ -27,6 +27,7 @@ export const CreateRunnerModal: FC<Props> = ({
   isOpen,
   setOpen,
   handleGenerateReport,
+  isStartRunnerPending,
 }) => {
   const RunnerForm = () => {
     const { values, submitForm, setFieldValue, setValues } =
@@ -193,6 +194,7 @@ export const CreateRunnerModal: FC<Props> = ({
       submitBtnText="Сформировать"
       formId={formId}
       form={<RunnerForm />}
+      loading={isStartRunnerPending}
     />
   );
 };
