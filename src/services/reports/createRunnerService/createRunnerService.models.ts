@@ -79,7 +79,6 @@ const $stageNumber = createStore(1)
 
 const $failDataCount = createStore(0)
   .on(handleFailData, (prev, _) => {
-    console.log({ prev });
     return prev + 1;
   })
   .reset(handleReset);
