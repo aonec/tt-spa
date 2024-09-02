@@ -76,7 +76,10 @@ export const CreateResourceDisconnectionForm: FC<
 
   const initialValues = useMemo(() => {
     if (!isEdit || !resourceDisconnection) {
-      return formInitialValues;
+      return {
+        ...formInitialValues,
+        housingStockIds: preselectedBuilding ? [preselectedBuilding] : [],
+      };
     }
     return getFormValues(
       resourceDisconnection,
