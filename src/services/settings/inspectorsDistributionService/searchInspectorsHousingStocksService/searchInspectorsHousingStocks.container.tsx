@@ -1,5 +1,4 @@
 import { useUnit } from 'effector-react';
-import React from 'react';
 import { searchInspectorsHousingStockService } from './searchInspectorsHousingStock.models';
 import { SearchInspectorsHousingStocks } from './views/SearchInspectorsHousingStocks/SearchInspectorsHousingStocks';
 import { displayInspectorsService } from 'services/inspectors/displayInspectorsService/displayInspectorsService.models';

@@ -55,6 +55,7 @@ const $verifiedInitialValues = createStore<Partial<AddressSearchValues> | null>(
     return prev;
   }
 });
+
 const $withApartment = createStore<boolean>(false).on(
   setWithApartment,
   (_, data) => data,

@@ -15,10 +15,6 @@ const FormSelectStyles = css`
     line-height: 32px;
   }
 
-  .ant-select-selection-search-input {
-    transform: translate(6px, 8px);
-  }
-
   .ant-select-clear {
     padding: 0px 28px !important;
     height: 30%;

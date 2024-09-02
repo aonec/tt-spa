@@ -30,6 +30,7 @@ export function Table<T>({
   link,
   floating = false,
   extraHeader,
+  maxWidth,
 }: PropsWithChildren<TableProps<T>>) {
   const pageSize = pagination?.pageSize || Infinity;
 
@@ -112,7 +113,7 @@ export function Table<T>({
 
   return (
     <div>
-      <Wrapper floating={floating} isSticky={isSticky}>
+      <Wrapper floating={floating} isSticky={isSticky} maxWidth={maxWidth}>
         <HeaderWrapper isSticky={isSticky}>
           <Header temp={temp} css={headerStyles}>
             {columnsComponent}

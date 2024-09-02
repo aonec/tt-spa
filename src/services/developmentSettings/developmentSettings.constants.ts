@@ -9,4 +9,5 @@ export const FeatureTogglesTranslates: {
   services: 'Услуги',
   districtsManage: 'Районы',
   controllersDistribution: 'Распределение контролёров',
+  mvitu: 'Интеграция с ВИС МВИТУ',
 };

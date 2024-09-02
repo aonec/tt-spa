@@ -23,4 +23,5 @@ export type TableProps<T> = {
   isSticky?: boolean;
   floating?: boolean;
   extraHeader?: ReactNode;
+  maxWidth?: string;
 };

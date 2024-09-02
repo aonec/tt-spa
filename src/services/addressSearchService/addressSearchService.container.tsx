@@ -64,7 +64,7 @@ export const AddressSearchContainer: FC<AddressSearchContainerProps> = ({
   );
 
   useEffect(() => {
-    setInitialValues(initialValues || null);
+    initialValues && setInitialValues(initialValues);
   }, [initialValues, setInitialValues]);
 
   useEffect(() => {

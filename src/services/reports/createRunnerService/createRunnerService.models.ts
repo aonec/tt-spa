@@ -79,17 +79,20 @@ const $stageNumber = createStore(1)
 
 const $failDataCount = createStore(0)
   .on(handleFailData, (prev, _) => {
-    console.log({ prev });
     return prev + 1;
   })
   .reset(handleReset);
 
 $failDataCount.watch((count) => {
-  if (count === 2) {
-    handleReset();
+  if (count === 3) {
     message.error('Произошла ошибка формирования бегунка');
+    handleReset();
   }
 });
+
+handleReset.watch(() => console.log('ffff'));
+
+const $isStartRunnerPending = startRunnerReportPollFx.pending;
 
 sample({ clock: handleGenerateReport, target: startRunnerReportPollFx });
 
@@ -122,27 +125,36 @@ sample({
 });
 
 sample({
-  clock: [startRunnerReportPollFx.doneData, GetLastPollGate.open],
+  clock: startRunnerReportPollFx.doneData,
+  target: handleStartRefetchLastPoll,
+});
+sample({
+  clock: GetLastPollGate.open,
+  filter: () => Boolean(localStorage.getItem('isPollRun')),
   target: handleStartRefetchLastPoll,
 });
 
 sample({
-  clock: [handleReset, getLastRunnerReportPollFx.doneData],
+  clock: getLastRunnerReportPollFx.doneData,
   source: $runnerReportPollInfo,
-  filter: (pollInfo) => pollInfo?.status !== PollStatus.Running,
+  filter: (pollInfo) => pollInfo?.status === PollStatus.Done,
+  target: handleStopRefetchLastPoll,
+});
+
+sample({
+  clock: handleReset,
   target: handleStopRefetchLastPoll,
 });
 
 const { tick: handleRefetchLastPoll } = interval({
   start: handleStartRefetchLastPoll,
-  timeout: 2000,
+  timeout: 20000,
   stop: handleStopRefetchLastPoll,
   leading: false,
 });
 
 sample({
-  clock: [GetLastPollGate.open, handleRefetchLastPoll],
-  filter: () => Boolean(localStorage.getItem('isPollRun')),
+  clock: handleRefetchLastPoll,
   target: getLastRunnerReportPollFx,
 });
 
@@ -176,6 +188,7 @@ export const createRunnerService = {
     $isGenerating,
     $isDownloading,
     $stageNumber,
+    $isStartRunnerPending,
   },
   gates: { GetLastPollGate },
 };

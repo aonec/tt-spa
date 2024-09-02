@@ -33,7 +33,10 @@ export const ReportsList: FC<ReportsListProps> = ({
 
       <AdditionalWrapper>Дополнительно</AdditionalWrapper>
 
-      <RunnerPanel setRunnerModalOpen={setRunnerModalOpen} runnerStageNumber={runnerStageNumber} />
+      <RunnerPanel
+        setRunnerModalOpen={setRunnerModalOpen}
+        runnerStageNumber={runnerStageNumber}
+      />
     </div>
   );
 };

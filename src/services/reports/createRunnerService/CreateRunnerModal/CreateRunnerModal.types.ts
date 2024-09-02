@@ -16,6 +16,7 @@ export type Props = {
   setOpen: (payload: boolean) => void;
   isGenerating: boolean;
   handleGenerateReport: (payload: RunnerPayload) => void;
+  isStartRunnerPending: boolean;
 };
 
 export type FormType = {

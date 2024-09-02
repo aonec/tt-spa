@@ -14,6 +14,9 @@ import {
   TemperatureGraphContainer,
   temperatureGraphService,
 } from 'services/settings/temperatureGraphService';
+import { MvituContainer } from 'services/settings/mvituService';
+import { mvituService } from 'services/settings/mvituService/mvituService.models';
+import { createMvituIntegrationService } from 'services/settings/mvituService/createMvituIntegration/createMvituIntegrationService.models';
 
 export const SettingPage: FC<SettingPageProps> = ({
   handleReassingInspector,
@@ -21,9 +24,16 @@ export const SettingPage: FC<SettingPageProps> = ({
   isAdminSettings,
   setModalOpen,
 }) => {
-  const { featureToggles, deletingRowIds } = useUnit({
+  const {
+    featureToggles,
+    deletingRowIds,
+    handleAddNodeToIntegration,
+    handleUpdateIntegration,
+  } = useUnit({
     featureToggles: developmentSettingsService.outputs.$featureToggles,
     deletingRowIds: temperatureGraphService.outputs.$deletingRowIds,
+    handleAddNodeToIntegration: mvituService.inputs.handleAddNodeToIntegration,
+    handleUpdateIntegration: createMvituIntegrationService.inputs.openModal,
   });
 
   const isDeletingTemperatureNormativesMod = Boolean(deletingRowIds.length);
@@ -38,6 +48,19 @@ export const SettingPage: FC<SettingPageProps> = ({
 
   const menuButtons = useMemo(() => {
     if (isAdminSettings) {
+      if (section === 'mvitu') {
+        return [
+          {
+            title: 'Редактировать интеграцию',
+            onClick: handleUpdateIntegration,
+          },
+          {
+            title: 'Добавить узел в интеграцию',
+            onClick: handleAddNodeToIntegration,
+          },
+        ];
+      }
+
       return isDeletingTemperatureNormativesMod
         ? []
         : [
@@ -66,8 +89,11 @@ export const SettingPage: FC<SettingPageProps> = ({
   }, [
     isAdminSettings,
     handleReassingInspector,
+    section,
     isDeletingTemperatureNormativesMod,
     isTemperatureGraphTab,
+    handleUpdateIntegration,
+    handleAddNodeToIntegration,
     handleEditTemperatureNormative,
     setModalOpen,
   ]);
@@ -78,32 +104,50 @@ export const SettingPage: FC<SettingPageProps> = ({
     [SettingsPageSection.districtBorder]: <DistrictBordersContainer />,
     [SettingsPageSection.controllers]: <></>,
     [SettingsPageSection.inspectors]: <InspectorsDistributionPage />,
+    [SettingsPageSection.mvitu]: <MvituContainer />,
   };
 
   const tabItems = useMemo(() => {
+    const tabsArray = [];
+
     if (isAdminSettings) {
-      return [
-        ...(featureToggles.workingRanges
-          ? [{ label: 'Рабочие диапазоны узлов', key: 'operatingRanges' }]
-          : []),
-        { label: 'Температурный график', key: 'temperatureGraph' },
-      ];
+      if (featureToggles.workingRanges) {
+        tabsArray.push({
+          label: 'Рабочие диапазоны узлов',
+          key: 'operatingRanges',
+        });
+      }
+
+      tabsArray.push({
+        label: 'Температурный график',
+        key: 'temperatureGraph',
+      });
+
+      if (featureToggles.mvitu) {
+        tabsArray.push({ label: 'Интеграция с ВИС МВИТУ', key: 'mvitu' });
+      }
+
+      return tabsArray;
     }
 
-    return [
-      ...(featureToggles.districtsManage
-        ? [{ label: 'Границы районов', key: 'districtBorder' }]
-        : []),
-      ...(featureToggles.controllersDistribution
-        ? [{ label: 'Распределение контролеров', key: 'controllers' }]
-        : []),
-      { label: 'Распределение инспекторов', key: 'inspectors' },
-    ];
+    if (featureToggles.districtsManage) {
+      tabsArray.push({ label: 'Границы районов', key: 'districtBorder' });
+    }
+
+    if (featureToggles.controllersDistribution) {
+      tabsArray.push({
+        label: 'Распределение контролеров',
+        key: 'controllers',
+      });
+    }
+
+    return tabsArray;
   }, [
     isAdminSettings,
-    featureToggles.controllersDistribution,
     featureToggles.districtsManage,
+    featureToggles.controllersDistribution,
     featureToggles.workingRanges,
+    featureToggles.mvitu,
   ]);
 
   useEffect(() => {

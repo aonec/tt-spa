@@ -1,5 +1,8 @@
-import React, { FC, useMemo } from 'react';
-import { GroupReportFormProps } from './GroupReportForm.types';
+import React, { FC, useEffect, useMemo } from 'react';
+import {
+  ExportReportType,
+  GroupReportFormProps,
+} from './GroupReportForm.types';
 import { Divider, Form, Checkbox } from 'antd';
 import { GroupReportRequestPayload } from '../../groupReportService.types';
 import { useFormik } from 'formik';
@@ -11,13 +14,19 @@ import { FormItem } from 'ui-kit/FormItem';
 import { Select } from 'ui-kit/Select';
 import { Input } from 'ui-kit/Input';
 import dayjs from 'api/dayjs';
-import { RowWrapper } from './GroupReportForm.styled';
+import {
+  RowWrapper,
+  TreeSelectMultiple,
+  Wrapper,
+} from './GroupReportForm.styled';
 import { GroupReportDatesSelect } from './GroupReportDatesSelect';
 import { RadioGroupSC } from './GroupReportDatesSelect/GroupReportDatesSelect.styled';
 import { LabeledValue } from 'antd/lib/select';
 import { ErrorMessage } from 'ui-kit/ErrorMessage';
 import { EReportFormat, EReportType } from 'api/types';
 import { SelectMultiple } from 'ui-kit/SelectMultiple';
+import { ExportReportTypeTranslatesLookup } from 'services/reportsService/reportViewService/reportViewService.constants';
+import { prepareAddressesTreeData } from 'services/reportsService/reportViewService/view/ReportViewPage/ReportFiltrationForm/ReportFiltrationForm.utils';
 
 const withoutHouseMagement = 'withoutHouseMagement';
 
@@ -25,25 +34,29 @@ export const GroupReportForm: FC<GroupReportFormProps> = ({
   formId,
   handleDownload,
   reportFilters,
+  organizations,
+  addressesWithHouseManagements,
+  houseManagements,
 }) => {
   const {
-    groupReports,
     nodeResourceTypes,
     nodeStatuses,
     // contractors // todo: регулярная выгрузка
   } = reportFilters;
 
-  const { values, setFieldValue, handleSubmit, errors } = useFormik<
-    Partial<GroupReportRequestPayload>
-    //  & { isRegular: boolean }  // todo: регулярная выгрузка
+  const { values, setFieldValue, handleSubmit, errors, setValues } = useFormik<
+    Partial<GroupReportRequestPayload> & { exportType: ExportReportType | null } //  & { isRegular: boolean }  // todo: регулярная выгрузка
   >({
     initialValues: {
+      exportType: null,
+      ManagementFirmId: null,
+      HouseManagementId: null,
+      BuildingIds: [],
       FileName: `Групповой_отчёт_${dayjs().format('DD.MM.YYYY')}`,
       ReportType: EReportType.Hourly,
       From: dayjs().startOf('month').format(),
       To: dayjs().endOf('day').format(),
       // isRegular: false,  // todo: регулярная выгрузка
-      HouseManagementId: null,
       ReportFormat: EReportFormat.Consumption,
     },
     validationSchema,
@@ -63,28 +76,9 @@ export const GroupReportForm: FC<GroupReportFormProps> = ({
     },
   });
 
-  const groupReportsOptions = useMemo(
-    () => [
-      {
-        label: 'Без домоуправления',
-        value: withoutHouseMagement,
-        key: withoutHouseMagement,
-      },
-      ...(groupReports || []).reduce((acc, elem) => {
-        if (!elem.houseManagementId) {
-          return acc;
-        }
-        return [
-          ...acc,
-          {
-            value: elem.houseManagementId,
-            key: elem.houseManagementId,
-            label: elem.title || '',
-          },
-        ];
-      }, [] as LabeledValue[]),
-    ],
-    [groupReports],
+  const addressesTreeData = prepareAddressesTreeData(
+    addressesWithHouseManagements,
+    null,
   );
 
   const nodeResourceTypesOptions = useMemo(
@@ -104,6 +98,17 @@ export const GroupReportForm: FC<GroupReportFormProps> = ({
       }, [] as LabeledValue[]),
     [nodeResourceTypes],
   );
+
+  useEffect(() => {
+    if (
+      organizations?.items?.length === 1 &&
+      values.exportType === ExportReportType.ManagementFirm
+    ) {
+      const singularOrganization = organizations?.items[0];
+
+      setFieldValue('ManagementFirmId', singularOrganization.id);
+    }
+  }, [organizations, setFieldValue, values.exportType]);
 
   // todo: регулярная выгрузка
   // const handleChangeContractorIds = useCallback(
@@ -131,22 +136,95 @@ export const GroupReportForm: FC<GroupReportFormProps> = ({
 
   return (
     <Form id={formId} onSubmitCapture={handleSubmit}>
-      <FormItem label="Группа">
-        <Select
-          value={
-            values.HouseManagementId === null
-              ? withoutHouseMagement
-              : values.HouseManagementId || undefined
-          }
-          onChange={(value) => {
-            if (value === withoutHouseMagement) {
-              return setFieldValue('HouseManagementId', null);
-            }
-            setFieldValue('HouseManagementId', value);
-          }}
-          options={groupReportsOptions}
-        />
-      </FormItem>
+      <Wrapper>
+        <FormItem label="Тип выгрузки">
+          <Select
+            placeholder="Выберите"
+            value={values.exportType}
+            onChange={(exportType) => {
+              setFieldValue('exportType', exportType);
+              setFieldValue('houseManagement', null);
+              setFieldValue('organizationId', null);
+            }}
+          >
+            {Object.values(ExportReportType).map((reportType) => (
+              <Select.Option key={reportType} value={reportType}>
+                {ExportReportTypeTranslatesLookup[reportType]}
+              </Select.Option>
+            ))}
+          </Select>
+        </FormItem>
+        {values.exportType === ExportReportType.ManagementFirm && (
+          <FormItem label="Список УК">
+            <Select
+              placeholder="Выберите"
+              value={values.ManagementFirmId}
+              onChange={(id) => {
+                setValues({
+                  ...values,
+                  ManagementFirmId: id as number,
+                  HouseManagementId: null,
+                  BuildingIds: [],
+                });
+              }}
+            >
+              {organizations?.items?.map((organization) => (
+                <Select.Option key={organization.id} value={organization.id}>
+                  {organization.name}
+                </Select.Option>
+              ))}
+            </Select>
+          </FormItem>
+        )}
+        {values.exportType === ExportReportType.HouseManagement && (
+          <FormItem label="Домоуправление">
+            <Select
+              value={values.HouseManagementId}
+              placeholder="Выберите из списка"
+              onChange={(value) => {
+                setValues({
+                  ...values,
+                  HouseManagementId: value as string,
+                  ManagementFirmId: null,
+                  BuildingIds: [],
+                });
+              }}
+              allowClear
+            >
+              <Select.Option key={withoutHouseMagement} value={'null'}>
+                Без домоуправления
+              </Select.Option>
+              {houseManagements?.map((houseManagement) => (
+                <Select.Option
+                  key={houseManagement.id}
+                  value={houseManagement.id}
+                >
+                  {houseManagement.name}
+                </Select.Option>
+              ))}
+            </Select>
+          </FormItem>
+        )}
+        {values.exportType === ExportReportType.Address && (
+          <FormItem label="Адрес">
+            <TreeSelectMultiple
+              multiple
+              treeData={addressesTreeData}
+              placeholder="Выберите адрес"
+              value={values.BuildingIds}
+              onChange={(buildingIds) => {
+                setValues({
+                  ...values,
+                  BuildingIds: buildingIds as number[],
+                  ManagementFirmId: null,
+                  HouseManagementId: null,
+                });
+              }}
+            />
+          </FormItem>
+        )}
+      </Wrapper>
+
       <FormItem label="Название отчёта">
         <Input
           value={values.FileName}
