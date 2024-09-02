@@ -15,6 +15,7 @@ export const ActCardItem: FC<ActCardItemProps> = ({ act, handleSaveFile }) => {
   const document = act.document;
   const actNumber = act.registryNumber;
   const actType = ActTypesNamesLookup[act.actType];
+  const comment = act.comment;
 
   const jobDate = dayjs(act.actJobDate).format('DD.MM.YYYY');
 
@@ -22,6 +23,7 @@ export const ActCardItem: FC<ActCardItemProps> = ({ act, handleSaveFile }) => {
     <Wrapper>
       <NumberWrapper>№{actNumber}</NumberWrapper>
       <ActWrapper>{actType}</ActWrapper>
+      {comment}
       <BottomInfoWrapper>
         <NumberWrapper>{jobDate}</NumberWrapper>
         {document && (

@@ -90,6 +90,8 @@ export const ApartmentActsList: FC<ApartmentActsListProps> = ({
                 />
               </ExtendedSearchWrapper>
             </ColumnTitle>
+            <ColumnTitle>Комментарий</ColumnTitle>
+            <div></div>
           </ListHeader>
 
           {isShowActsList && actsList}
