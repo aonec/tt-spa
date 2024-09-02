@@ -1,7 +1,7 @@
-import { downloadURI } from 'services/reports/CreateReportModal/utils';
 import { axios } from 'api/axios';
 import { FeedBackFlowReportPayload } from './feedFlowBackReportService.types';
 import queryString from 'query-string';
+import { downloadURI } from 'utils/downloadByURL';
 
 export const getFeedBackFlowReport = async ({
   Name,
