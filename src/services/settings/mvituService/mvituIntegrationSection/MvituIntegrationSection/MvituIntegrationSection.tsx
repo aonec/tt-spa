@@ -1,10 +1,13 @@
 import { FC, useCallback } from 'react';
-import { Switch } from 'antd';
+import { Switch, Tooltip } from 'antd';
 import dayjs from 'dayjs';
 import {
+  DateWrapper,
   IntegrationPanel,
   IntegrationPanelTitle,
   SearchWrapper,
+  TooltipItem,
+  TooltipWrapper,
   Wrapper,
 } from './MvituIntegrationSection.styled';
 import { Props } from './MvituIntegrationSection.types';
@@ -112,9 +115,9 @@ export const MvituIntegrationSection: FC<Props> = ({
             size: '150px',
             render: (item) => (
               <>
-                {item.integrationStatus?.lastIsReadyTransmitArchiveTime &&
+                {item.integrationStatus?.lastTransmittedArchiveTime &&
                   dayjs(
-                    item.integrationStatus?.lastIsReadyTransmitArchiveTime,
+                    item.integrationStatus?.lastTransmittedArchiveTime,
                   ).format('DD.MM.YYYY HH:mm')}
               </>
             ),
@@ -130,13 +133,48 @@ export const MvituIntegrationSection: FC<Props> = ({
             ),
             size: '100px',
             render: (item) => (
-              <>
+              <Tooltip
+                placement="leftTop"
+                title={
+                  <TooltipWrapper>
+                    <TooltipItem>
+                      Фактическое время передачи архива
+                      <DateWrapper>
+                        {item.integrationStatus?.lastIsReadyTransmitArchiveTime
+                          ? dayjs(
+                              item.integrationStatus
+                                ?.lastIsReadyTransmitArchiveTime,
+                            ).format('DD.MM.YYYY')
+                          : '—'}
+                      </DateWrapper>
+                    </TooltipItem>
+                    <TooltipItem>
+                      Дата последнего доступного архива{' '}
+                      <DateWrapper>
+                        {item.integrationStatus?.lastTransmittedArchiveTime
+                          ? dayjs(
+                              item.integrationStatus
+                                ?.lastTransmittedArchiveTime,
+                            ).format('DD.MM.YYYY')
+                          : '—'}
+                      </DateWrapper>
+                    </TooltipItem>
+                    <TooltipItem>
+                      Количество доступных архивов для передачи
+                      <DateWrapper>
+                        {item.integrationStatus?.isReadyTransmitTotalCount ||
+                          '—'}
+                      </DateWrapper>
+                    </TooltipItem>
+                  </TooltipWrapper>
+                }
+              >
                 {item.integrationStatus?.isReadyTransmitTotalCount ? (
                   <ChevronTopActive />
                 ) : (
                   <ChevronTopDanger />
                 )}
-              </>
+              </Tooltip>
             ),
           },
           {

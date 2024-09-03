@@ -39,3 +39,26 @@ export const NodeStatusItem = styled.div`
   align-items: center;
   gap: 8px;
 `;
+
+export const TooltipWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+`;
+
+export const TooltipItem = styled.div`
+  font-weight: 400;
+  font-size: 12px;
+  border-bottom: 1px solid #ffffff1f;
+  padding-bottom: 6px;
+
+  &:last-child {
+    padding: 0;
+    border-bottom: none;
+  }
+`;
+
+export const DateWrapper = styled.div`
+  font-size: 14px;
+  font-weight: 500;
+`;
