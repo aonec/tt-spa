@@ -15,4 +15,5 @@ export type Props = {
   selectedNode: NodeResponse | null;
   isSelectedNodeLoading: boolean;
   handleAddNodeToIntegration: (payload: AddNodeRequest) => void;
+  isAddNodeLoading: boolean;
 };
