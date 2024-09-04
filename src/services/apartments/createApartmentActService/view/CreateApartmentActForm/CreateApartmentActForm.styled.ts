@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { DatePicker } from 'ui-kit/DatePicker';
+import { Input } from 'ui-kit/Input';
 
 export const FieldsWrapper = styled.div`
   display: grid;
@@ -19,4 +20,12 @@ export const SelectSC = styled.div`
 
 export const DatePickerSC = styled(DatePicker)`
   width: auto !important;
+`;
+
+export const Comment = styled(Input.TextArea)`
+  border: 1px solid #dcdee4;
+  border-radius: 4px;
+  margin-top: 16px;
+  font-size: 16px;
+  width: 50%;
 `;

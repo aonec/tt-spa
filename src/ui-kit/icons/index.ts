@@ -98,6 +98,8 @@ import DocumentBoldIcon from './svg/documentBold.svg?react';
 import LoadingBlueIcon from './svg/loadingBlue.svg?react';
 import CheckGreenIcon from './svg/checkGreen.svg?react';
 import TrashIconGrey from './svg/trashGrey.svg?react';
+import ChevronTopActive from './svg/chevronTopActive.svg?react';
+import ChevronTopDanger from './svg/chevronTopDanger.svg?react';
 
 export {
   FinishIcon,
@@ -200,4 +202,6 @@ export {
   LoadingBlueIcon,
   CheckGreenIcon,
   TrashIconGrey,
+  ChevronTopActive,
+  ChevronTopDanger,
 };

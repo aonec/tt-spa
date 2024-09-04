@@ -9,8 +9,10 @@ import {
 } from './AddNewActForm.types';
 import {
   ActDate,
+  BottomBlock,
   ButtonSC,
   ButtonsWrapper,
+  Comment,
   Wrapper,
 } from './AddNewActForm.styled';
 import { Select } from 'ui-kit/Select';
@@ -34,6 +36,7 @@ export const AddNewActForm: FC<AddNewActFormProps> = ({
         registryNumber: '',
         actResourceType: null,
         actType: null,
+        comment: '',
       },
       onSubmit: (values) => {
         const { actResourceType, actType } = values;
@@ -132,22 +135,43 @@ export const AddNewActForm: FC<AddNewActFormProps> = ({
           onChange={(date) => setFieldValue('actJobDate', date)}
           placeholder="Дата"
           dataKey={dataKey}
+          onKeyDown={fromEnter(() => next(6))}
         />
       </Wrapper>
-      <ButtonsWrapper>
-        <Button
-          type="ghost"
-          size="small"
-          onClick={() => {
-            resetForm();
+
+      <BottomBlock>
+        <Comment
+          placeholder="Комментарий"
+          autoSize={{ minRows: 2, maxRows: 6 }}
+          value={values.comment as string}
+          onChange={(value) => {
+            if (values.comment?.length === 0 && value.target.value === '\n') {
+              return;
+            }
+            setFieldValue('comment', value.target.value);
           }}
-        >
-          Сбросить
-        </Button>
-        <ButtonSC size="small" onClick={submitForm} isLoading={isCreateLoading}>
-          Сохранить
-        </ButtonSC>
-      </ButtonsWrapper>
+          data-reading-input={dataKey}
+        />
+
+        <ButtonsWrapper>
+          <Button
+            type="ghost"
+            size="small"
+            onClick={() => {
+              resetForm();
+            }}
+          >
+            Сбросить
+          </Button>
+          <ButtonSC
+            size="small"
+            onClick={submitForm}
+            isLoading={isCreateLoading}
+          >
+            Сохранить
+          </ButtonSC>
+        </ButtonsWrapper>
+      </BottomBlock>
     </>
   );
 };

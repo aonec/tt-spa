@@ -1,11 +1,11 @@
 import styled from 'styled-components';
-import { actsJournalColumnsGridTemplate } from '../ActsJournalProfile.constants';
+import { actsJournalColumnsGridTemplateWithoutComment } from '../ActsJournalProfile.constants';
 import { SortButton } from './SortButton';
 
 export const Wrapper = styled.div`
   display: grid;
   align-items: center;
-  grid-template-columns: ${actsJournalColumnsGridTemplate};
+  grid-template-columns: ${actsJournalColumnsGridTemplateWithoutComment};
   grid-gap: 16px;
 
   height: 48px;

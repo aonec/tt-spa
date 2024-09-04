@@ -36,3 +36,10 @@ export const ActAddress = styled(Link)`
     color: #38437a;
   }
 `;
+
+export const Comment = styled.div`
+  white-space: nowrap;
+  max-width: 200px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+`;

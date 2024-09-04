@@ -1,4 +1,8 @@
-import { EOrderByRule, NodeStatusType } from 'api/mvitu.types';
+import {
+  ChangeStatusRequest,
+  EOrderByRule,
+  NodeStatusType,
+} from 'api/mvitu.types';
 
 export type GetMvituNodesRequestParams = {
   /** Строка адреса для поиска */
@@ -10,4 +14,8 @@ export type GetMvituNodesRequestParams = {
   /** @format int32 */
   PageSize?: number;
   OrderBy?: EOrderByRule;
+};
+
+export type ChangeNodeStatusRequestPayload = ChangeStatusRequest & {
+  nodeId: number;
 };
