@@ -1,8 +1,8 @@
 import { axios } from 'api/axios';
+import { downloadURI } from 'services/reports/CreateReportModal/utils';
 import { StreetWithBuildingNumbersResponsePagedList } from 'api/types';
 import queryString from 'query-string';
 import { HeatIndividualDevicesReportPayload } from './heatIndividualDevicesReportService.types';
-import { downloadURI } from 'utils/downloadByURL';
 
 export const fetchDownloadHeatIndividualDeviceReport = async ({
   Name,

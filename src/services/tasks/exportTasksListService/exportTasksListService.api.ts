@@ -1,7 +1,7 @@
 import { axios } from 'api/axios';
+import { downloadURI } from 'services/reports/CreateReportModal/utils';
 import dayjs from 'api/dayjs';
 import { ExportTasksListRequestPayload } from './exportTasksListService.types';
-import { downloadURI } from 'utils/downloadByURL';
 
 export const downloadTasksList = async (
   params: ExportTasksListRequestPayload,

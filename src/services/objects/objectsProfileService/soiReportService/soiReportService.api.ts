@@ -1,4 +1,5 @@
 import { axios } from 'api/axios';
+import { downloadURI } from 'services/reports/CreateReportModal/utils';
 import { GetAddressesWithCityRequestPayload } from 'services/workingRanges/uniqueWorkingRangeService/uniqueWorkingRangeService.types';
 import { omit } from 'lodash';
 import {
@@ -10,7 +11,6 @@ import {
   GetHouseManagementsRequestPayload,
 } from './soiReportService.types';
 import queryString from 'query-string';
-import { downloadURI } from 'utils/downloadByURL';
 
 export const getSoiReport = async (
   params: CreateSoiReportRequestPayload,
