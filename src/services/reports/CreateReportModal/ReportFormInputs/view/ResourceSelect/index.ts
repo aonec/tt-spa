@@ -1,1 +1,0 @@
-export { ResourceSelect } from './ResourceSelect';
