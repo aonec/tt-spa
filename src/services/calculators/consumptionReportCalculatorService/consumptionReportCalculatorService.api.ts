@@ -1,6 +1,6 @@
 import { axios } from 'api/axios';
 import { GetCalculatorReportParams } from './consumptionReportCalculatorService.types';
-import { downloadURI } from 'utils/downloadByURL';
+import { downloadURI } from 'services/reports/CreateReportModal/utils';
 
 export const getReport = async ({
   Name,

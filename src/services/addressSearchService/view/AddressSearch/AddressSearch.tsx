@@ -110,7 +110,7 @@ export const AddressSearch: FC<AddressSearchProps> = ({
       data-reading-input={dataKey}
       onKeyDown={fromEnter(() => {
         handleSubmit();
-        handleSearchApartNumber(values);
+        handleSearchApartNumber();
         next(index);
       })}
       disabled={isDisabled}

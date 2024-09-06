@@ -36,6 +36,6 @@ export type AddressSearchProps = {
   className?: string;
   isError: boolean;
   isFocus: boolean;
-  handleSearchApartNumber: (payload: AddressSearchValues) => void;
+  handleSearchApartNumber: () => void;
   existingApartmentNumbers: ExistingApartmentNumberType[];
 };
