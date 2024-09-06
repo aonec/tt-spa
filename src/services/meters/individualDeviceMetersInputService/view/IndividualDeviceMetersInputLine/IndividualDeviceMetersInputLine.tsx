@@ -92,6 +92,10 @@ export const IndividualDeviceMetersInputLine: FC<
         hidden: !isDeviceClosed,
         onClick: () =>
           confirm({
+            closable: true,
+            maskClosable: true,
+            width: 600,
+            centered: true,
             title: `Вы действительно хотите открыть прибор ${device.model} (${device.serialNumber})?`,
             onOk: async () => {
               try {
