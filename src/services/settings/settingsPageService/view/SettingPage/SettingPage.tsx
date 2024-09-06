@@ -141,6 +141,11 @@ export const SettingPage: FC<SettingPageProps> = ({
       });
     }
 
+    tabsArray.push({
+      label: 'Распределение инспекторов',
+      key: 'inspectors',
+    });
+
     return tabsArray;
   }, [
     isAdminSettings,

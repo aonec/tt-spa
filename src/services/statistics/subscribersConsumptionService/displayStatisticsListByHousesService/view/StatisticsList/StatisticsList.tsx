@@ -2,6 +2,7 @@ import React from 'react';
 import dayjs from 'api/dayjs';
 import { Tooltip } from 'ui-kit/shared/Tooltip';
 import {
+  Comment,
   HeaderStyles,
   HomeownerNameWrapper,
   HomeownerNumberWrapper,
@@ -24,47 +25,47 @@ export const StatisticsList: React.FC<StatisticsListProps> = ({
       columns={[
         {
           label: '№',
-          size: '55px',
+          size: '45px',
           render: (apartment) => apartment.apartmentNumber,
           css: (isHeader) => `${!isHeader && 'font-weight: 700'}`,
         },
         {
           label: 'ХВС',
-          size: '110px',
+          size: '90px',
           render: (apartment) =>
             prepareConsumptions(apartment.coldWaterSupplyConsumption),
           sortedParam: (elem) => elem?.coldWaterSupplyConsumption,
         },
         {
           label: 'ГВС',
-          size: '110px',
+          size: '90px',
           render: (apartment) =>
             prepareConsumptions(apartment.hotWaterSupplyConsumption),
           sortedParam: (elem) => elem?.hotWaterSupplyConsumption,
         },
         {
           label: 'ЭЭ',
-          size: '110px',
+          size: '90px',
           render: (apartment) =>
             prepareConsumptions(apartment.electricityConsumption),
           sortedParam: (elem) => elem?.electricityConsumption,
         },
         {
           label: 'ТЭ',
-          size: '110px',
+          size: '90px',
           render: (apartment) => prepareConsumptions(apartment.heatConsumption),
           sortedParam: (elem) => elem?.electricityConsumption,
         },
         {
           label: 'Дата последней передачи показаний',
-          size: '135px',
+          size: '125px',
           render: (apartment) =>
             dayjs(apartment.dateLastTransmissionOfReading).format('DD.MM.YYYY'),
           css: (isHeader) => `${isHeader && 'white-space:normal;'}`,
         },
         {
           label: 'Дата последней проверки',
-          size: '135px',
+          size: '125px',
           render: (apartment) =>
             apartment.dateLastCheck
               ? dayjs(apartment.dateLastCheck).format('DD.MM.YYYY')
@@ -73,7 +74,7 @@ export const StatisticsList: React.FC<StatisticsListProps> = ({
         },
         {
           label: 'Абонент',
-          size: '290px',
+          size: '240px',
           render: (apartment) => (
             <div style={{ overflow: 'hidden' }}>
               <HomeownerNameWrapper>
@@ -91,6 +92,15 @@ export const StatisticsList: React.FC<StatisticsListProps> = ({
                 </Tooltip>
               </HomeownerNumberWrapper>
             </div>
+          ),
+        },
+        {
+          label: 'Комментарий',
+          size: '160px',
+          render: (apartment) => (
+            <Tooltip title={apartment.lastCheckComment}>
+              <Comment>{apartment.lastCheckComment}</Comment>
+            </Tooltip>
           ),
         },
       ]}

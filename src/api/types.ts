@@ -21,6 +21,7 @@ export interface AddApartmentActRequest {
   apartmentId: number;
   /** @format int32 */
   documentId?: number | null;
+  comment?: string | null;
 }
 
 export interface AddHeatingStationRequest {
@@ -113,6 +114,7 @@ export interface ApartmentActResponse {
   /** @format int32 */
   taskId: number | null;
   document: DocumentLiteResponse | null;
+  comment: string | null;
 }
 
 export interface ApartmentActResponsePagedList {
@@ -203,6 +205,7 @@ export interface ApartmentCheckResponse {
   registryNumber: string | null;
   checkingAct: DocumentResponse | null;
   actResourceType: EActResourceType;
+  comment: string | null;
 }
 
 export interface ApartmentCheckResponsePagedList {
@@ -966,8 +969,11 @@ export interface ComposeGroupReportRequest {
   fileName: string;
   /** @format uuid */
   groupReportId?: string | null;
+  /** @format int32 */
+  managementFirmId?: number | null;
   /** @format uuid */
   houseManagementId?: string | null;
+  buildingIds?: number[] | null;
   nodeResourceTypes?: EResourceType[] | null;
   nodeStatus?: ENodeCommercialAccountStatus | null;
 }
@@ -1079,6 +1085,7 @@ export interface CreateApartmentCheckRequest {
   documentId: number;
   registryNumber?: string | null;
   actResourceType?: EActResourceType;
+  comment?: string | null;
 }
 
 export interface CreateCalculatorRequest {
@@ -2043,6 +2050,7 @@ export interface EditApartmentCheckRequest {
   documentId?: number | null;
   registryNumber?: string | null;
   actResourceType?: EActResourceType | null;
+  comment?: string | null;
 }
 
 export interface EditIndividualDeviceReadingsHistoryRequest {
@@ -4657,6 +4665,7 @@ export interface SubscriberStatisticsСonsumptionResponse {
   dateLastTransmissionOfReading: string;
   /** @format date-time */
   dateLastCheck: string | null;
+  lastCheckComment: string | null;
   /** @format int32 */
   housingStockId: number;
   /** @format int32 */
@@ -5111,6 +5120,7 @@ export interface UpdateApartmentActRequest {
   apartmentId?: number | null;
   /** @format int32 */
   documentId?: number | null;
+  comment?: string | null;
 }
 
 export interface UpdateCalculatorRequest {
@@ -11337,7 +11347,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Старший оператор</li><li>Оператор</li>
+     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li>
      *
      * @tags Organizations
      * @name OrganizationsList
@@ -12141,8 +12151,11 @@ export class Api<
         FileName: string;
         /** @format uuid */
         GroupReportId?: string;
+        /** @format int32 */
+        ManagementFirmId?: number;
         /** @format uuid */
         HouseManagementId?: string;
+        BuildingIds?: number[];
         NodeResourceTypes?: EResourceType[];
         NodeStatus?: ENodeCommercialAccountStatus;
         ReportType?: EReportType;

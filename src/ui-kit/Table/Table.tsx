@@ -7,6 +7,7 @@ import React, {
 import {
   Header,
   HeaderWrapper,
+  LoaderWrapper,
   PaginationWrapper,
   Row,
   RowLink,
@@ -15,7 +16,7 @@ import {
   Wrapper,
 } from './Table.styled';
 import { TableProps } from './Table.types';
-import { Empty } from 'antd';
+import { Empty, Skeleton } from 'antd';
 import { EOrderByRule } from 'api/types';
 import _ from 'lodash';
 import { Pagination } from 'ui-kit/Pagination';
@@ -31,6 +32,7 @@ export function Table<T>({
   floating = false,
   extraHeader,
   maxWidth,
+  isLoading,
 }: PropsWithChildren<TableProps<T>>) {
   const pageSize = pagination?.pageSize || Infinity;
 
@@ -120,11 +122,18 @@ export function Table<T>({
           </Header>
           {extraHeader}
         </HeaderWrapper>
-        <div>
-          {sortedRows
-            .slice(start, end)
-            .map((elem, rowIndex) => renderRow(elem, rowIndex))}
-        </div>
+        {!isLoading && (
+          <div>
+            {sortedRows
+              .slice(start, end)
+              .map((elem, rowIndex) => renderRow(elem, rowIndex))}
+          </div>
+        )}
+        {isLoading && (
+          <LoaderWrapper>
+            <Skeleton active />
+          </LoaderWrapper>
+        )}
         {!elements.length && <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />}
       </Wrapper>
 

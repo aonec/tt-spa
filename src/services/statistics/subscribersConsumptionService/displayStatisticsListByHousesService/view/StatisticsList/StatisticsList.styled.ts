@@ -32,3 +32,7 @@ export const RowStyle = `
 export const HeaderStyles = `
   grid-gap: 0px;
 `;
+
+export const Comment = styled.div`
+  white-space: nowrap;
+`;
