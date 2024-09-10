@@ -86,17 +86,17 @@ export const MvituIntegrationSection: FC<Props> = ({
           },
           {
             label: 'Рес.',
-            size: '100px',
+            size: '60px',
             render: (item) => <ResourceIconLookup resource={item.resource} />,
           },
           {
             label: 'Наименование узла',
-            size: '100px',
-            render: (item) => <>Узел {item.title}</>,
+            size: 'minmax(150px, 200px)',
+            render: (item) => <>{item.nodeServiceZone?.name}</>,
           },
           {
             label: 'Статус интеграции',
-            size: 'minmax(150px, 200px)',
+            size: '150px',
             render: (item) => (
               <>
                 <NodeIntegrationStatus status={item.status} />
