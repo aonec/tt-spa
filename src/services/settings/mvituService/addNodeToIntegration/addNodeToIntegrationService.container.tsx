@@ -23,13 +23,17 @@ export const AddNodeToIntegrationContainer = () => {
     handleAddNodeToIntegration,
     isAddNodeLoading,
     integrationData,
+    resetSelectedNode,
+    resetNodesSearchingList,
   } = useUnit({
     isModalOpen: outputs.$isModalOpen,
     handleCloseModal: inputs.handleCloseModal,
     handleSearchNodes: searchNodesQuery.start,
     nodesSearchList: searchNodesQuery.$data,
+    resetNodesSearchingList: searchNodesQuery.reset,
     isNodesSearchLoading: searchNodesQuery.$pending,
     selectedNode: getNodeQuery.$data,
+    resetSelectedNode: getNodeQuery.reset,
     handleSelectNode: getNodeQuery.start,
     isSelectedNodeLoading: getNodeQuery.$pending,
     handleAddNodeToIntegration: addNodeToIntegrationMutation.start,
@@ -50,6 +54,8 @@ export const AddNodeToIntegrationContainer = () => {
       handleAddNodeToIntegration={handleAddNodeToIntegration}
       isAddNodeLoading={isAddNodeLoading}
       integrationData={integrationData}
+      resetSelectedNode={resetSelectedNode}
+      resetNodesSearchingList={resetNodesSearchingList}
     />
   );
 };

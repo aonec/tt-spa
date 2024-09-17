@@ -37,6 +37,8 @@ export const AddNodeToIntegrationModal: FC<Props> = ({
   handleAddNodeToIntegration,
   isAddNodeLoading,
   integrationData,
+  resetSelectedNode,
+  resetNodesSearchingList,
 }) => {
   const [searchType, setSearchType] = useState<SearchType>('AddressTerm');
   const [searchString, setSearchString] = useState('');
@@ -88,6 +90,12 @@ export const AddNodeToIntegrationModal: FC<Props> = ({
     resetForm();
   }, [resetForm, isModalOpen]);
 
+  useEffect(() => {
+    resetSelectedNode();
+    resetNodesSearchingList();
+    setSearchString('');
+  }, [resetNodesSearchingList, resetSelectedNode, searchType]);
+
   const runSeaschNodes = useCallback(
     (loadAll: boolean) => {
       if (!debouncedSearch) return;
@@ -121,7 +129,7 @@ export const AddNodeToIntegrationModal: FC<Props> = ({
       onCancel={handleCloseModal}
       onSubmit={handleSubmit}
       loading={isAddNodeLoading}
-      disabled={integrationData?.status !== StatusType.Active}
+      disabled={integrationData?.status !== StatusType.Active || !building}
       form={
         <Wrapper>
           <FormItem label="Поиск узла">
@@ -141,6 +149,7 @@ export const AddNodeToIntegrationModal: FC<Props> = ({
               showSearch
               filterOption={false}
               loading={isNodesSearchLoading}
+              value={selectedNode?.id}
               onChange={(id) => handleSelectNode(id as number)}
               dropdownRender={(menu) => (
                 <>

@@ -18,4 +18,6 @@ export type Props = {
   handleAddNodeToIntegration: (payload: AddNodeRequest) => void;
   isAddNodeLoading: boolean;
   integrationData: StatusResponse | null;
+  resetSelectedNode: () => void;
+  resetNodesSearchingList: () => void;
 };
