@@ -14,7 +14,7 @@ import {
 } from './AddNodeToIntegrationModal.styled';
 import { Props } from './AddNodeToIntegrationModal.types';
 import { useDebounce } from 'use-debounce';
-import { NodeListResponse } from 'api/mvitu.types';
+import { NodeListResponse, StatusType } from 'api/mvitu.types';
 import { ResourceIconLookup } from 'ui-kit/shared/ResourceIconLookup';
 import { CalculatorIcon } from 'ui-kit/icons';
 import { SpaceLine } from 'ui-kit/SpaceLine';
@@ -36,6 +36,7 @@ export const AddNodeToIntegrationModal: FC<Props> = ({
   isSelectedNodeLoading,
   handleAddNodeToIntegration,
   isAddNodeLoading,
+  integrationData,
 }) => {
   const [searchType, setSearchType] = useState<SearchType>('AddressTerm');
   const [searchString, setSearchString] = useState('');
@@ -120,6 +121,7 @@ export const AddNodeToIntegrationModal: FC<Props> = ({
       onCancel={handleCloseModal}
       onSubmit={handleSubmit}
       loading={isAddNodeLoading}
+      disabled={integrationData?.status !== StatusType.Active}
       form={
         <Wrapper>
           <FormItem label="Поиск узла">

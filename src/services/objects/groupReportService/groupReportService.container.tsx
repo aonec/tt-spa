@@ -48,8 +48,6 @@ export const GroupReportContainer = () => {
       reportViewService.outputs.$addressesWithHouseManagements,
   });
 
-  console.log({ organizations });
-
   return (
     <>
       <AddressesWithHouseManagementsGate />

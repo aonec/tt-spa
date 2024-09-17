@@ -6,6 +6,7 @@ import {
   getNodeQuery,
   searchNodesQuery,
 } from './addNodeToIntegrationService.api';
+import { mvituIntegrationQuery } from '../mvituService.api';
 
 const { inputs, outputs } = addNodeToIntegrationService;
 
@@ -21,6 +22,7 @@ export const AddNodeToIntegrationContainer = () => {
     isSelectedNodeLoading,
     handleAddNodeToIntegration,
     isAddNodeLoading,
+    integrationData,
   } = useUnit({
     isModalOpen: outputs.$isModalOpen,
     handleCloseModal: inputs.handleCloseModal,
@@ -32,6 +34,7 @@ export const AddNodeToIntegrationContainer = () => {
     isSelectedNodeLoading: getNodeQuery.$pending,
     handleAddNodeToIntegration: addNodeToIntegrationMutation.start,
     isAddNodeLoading: addNodeToIntegrationMutation.$pending,
+    integrationData: mvituIntegrationQuery.$data,
   });
 
   return (
@@ -46,6 +49,7 @@ export const AddNodeToIntegrationContainer = () => {
       isSelectedNodeLoading={isSelectedNodeLoading}
       handleAddNodeToIntegration={handleAddNodeToIntegration}
       isAddNodeLoading={isAddNodeLoading}
+      integrationData={integrationData}
     />
   );
 };
