@@ -9,6 +9,7 @@ import { Params } from './apartmentIndividualDevicesMetersService.types';
 import { EditReadingsHistoryContainer } from '../editReadingsHistoryService';
 import { CloseIndividualDeviceContainer } from 'services/devices/individualDevices/closeIndividualDeviceService';
 import { ConfirmReadingValueContainer } from '../readingsHistoryService/confirmReadingService';
+import { OpenIndividualDeviceContainer } from 'services/devices/individualDevices/openIndividualDevice';
 
 const {
   inputs,
@@ -65,6 +66,7 @@ export const ApartmentIndividualDevicesMetersContainer: FC<Params> = ({
       <ConfirmReadingValueContainer />
       <EditReadingsHistoryContainer />
       <DeleteIndividualDeviceModalContainer />
+      <OpenIndividualDeviceContainer />
       <ApartmentIndividualDevicesMeters
         individualDevicesList={individualDevicesList}
         isLoading={isLoading}
