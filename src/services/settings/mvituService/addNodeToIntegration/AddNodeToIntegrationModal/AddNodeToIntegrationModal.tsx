@@ -22,6 +22,8 @@ import { Input } from 'ui-kit/Input';
 import { useFormik } from 'formik';
 import { validationSchema } from './AddNodeToIntegrationModal.constants';
 import { ErrorMessage } from 'ui-kit/ErrorMessage';
+import { Alert } from 'ui-kit/Alert';
+import { AlertIconType } from 'ui-kit/Alert/Alert.types';
 
 type SearchType = 'AddressTerm' | 'CalculatorSerialNumber';
 
@@ -121,6 +123,8 @@ export const AddNodeToIntegrationModal: FC<Props> = ({
     return placeholders[searchType];
   }, [searchType]);
 
+  const isIntegrationPaused = integrationData?.status !== StatusType.Active;
+
   return (
     <FormModal
       formId="add-node-to-integration-modal"
@@ -129,9 +133,15 @@ export const AddNodeToIntegrationModal: FC<Props> = ({
       onCancel={handleCloseModal}
       onSubmit={handleSubmit}
       loading={isAddNodeLoading}
-      disabled={integrationData?.status !== StatusType.Active || !building}
+      disabled={isIntegrationPaused || !building}
       form={
         <Wrapper>
+          {isIntegrationPaused && (
+            <Alert icon={AlertIconType.stop}>
+              Возможность добавления узлов приостановлена, включите интеграцию
+              для продолжения
+            </Alert>
+          )}
           <FormItem label="Поиск узла">
             <Radio.Group
               value={searchType}
