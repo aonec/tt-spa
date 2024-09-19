@@ -3,4 +3,5 @@ export enum CalculatorProfileGrouptype {
   Connection = 'Apartments',
   Nodes = 'Nodes',
   Documents = 'Documents',
+  Statistics = 'Statistics',
 }
