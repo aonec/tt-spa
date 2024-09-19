@@ -5,7 +5,7 @@ import { PencilIcon } from 'ui-kit/icons';
 export const Wrapper = styled.div`
   padding: 16px;
   display: grid;
-  grid-template-columns: 1fr 1fr 0.3fr;
+  grid-template-columns: 1fr 1fr 1fr 0.1fr;
   border-top: 1px solid #e1e1e1;
   color: #272f5ab2;
   font-weight: 500;
@@ -55,3 +55,9 @@ export const DeviceInfoWrapper = styled.div`
 export const PencilIconSC = styled(PencilIcon)`
   cursor: pointer;
 `;
+
+export const DeviceTitleWrapper = styled.div`
+display: flex;
+align-items: center;
+gap: 12px;
+`
