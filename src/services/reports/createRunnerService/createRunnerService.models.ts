@@ -90,8 +90,6 @@ $failDataCount.watch((count) => {
   }
 });
 
-handleReset.watch(() => console.log('ffff'));
-
 const $isStartRunnerPending = startRunnerReportPollFx.pending;
 
 sample({ clock: handleGenerateReport, target: startRunnerReportPollFx });
