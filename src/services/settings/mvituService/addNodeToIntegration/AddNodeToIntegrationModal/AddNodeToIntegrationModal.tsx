@@ -27,6 +27,8 @@ import { AlertIconType } from 'ui-kit/Alert/Alert.types';
 
 type SearchType = 'AddressTerm' | 'CalculatorSerialNumber';
 
+// test
+
 export const AddNodeToIntegrationModal: FC<Props> = ({
   isModalOpen,
   handleCloseModal,
