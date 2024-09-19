@@ -18,6 +18,7 @@ import {
   AscendingSortIconSC,
   CheckboxSC,
   DescendingSortIconSC,
+  OptionSC,
   SearchFieldsWrapper,
   SelectSC,
   SortByWrapper,
@@ -164,30 +165,30 @@ export const IndividualDevicesViewBySerialNumberSearch: FC<
               }
               allowClear
             >
-              <SelectSC.Option
+              <OptionSC
                 small
                 value={`${EIndividualDeviceOrderRule.CheckingDate};${EOrderByRule.Descending}`}
               >
                 <DescendingSortIconSC /> Дате поверки
-              </SelectSC.Option>
-              <SelectSC.Option
+              </OptionSC>
+              <OptionSC
                 small
                 value={`${EIndividualDeviceOrderRule.CheckingDate};${EOrderByRule.Ascending}`}
               >
                 <AscendingSortIconSC /> Дате поверки
-              </SelectSC.Option>
-              <SelectSC.Option
+              </OptionSC>
+              <OptionSC
                 small
                 value={`${EIndividualDeviceOrderRule.BitDepth};${EOrderByRule.Descending}`}
               >
                 <DescendingSortIconSC /> Разрядности
-              </SelectSC.Option>
-              <SelectSC.Option
+              </OptionSC>
+              <OptionSC
                 small
                 value={`${EIndividualDeviceOrderRule.BitDepth};${EOrderByRule.Ascending}`}
               >
                 <AscendingSortIconSC /> Разрядности
-              </SelectSC.Option>
+              </OptionSC>
             </SelectSC>
           </SortByWrapper>
           <Button

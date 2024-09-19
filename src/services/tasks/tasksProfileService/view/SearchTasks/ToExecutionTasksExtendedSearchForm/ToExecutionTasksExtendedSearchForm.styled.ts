@@ -18,6 +18,8 @@ export const OverFlowSelectSC = styled(Select)`
   }
 `;
 
+export const OptionSC = styled(Select.Option)``;
+
 export const StyledContainerAdressSection = styled.div`
   display: flex;
   align-items: center;

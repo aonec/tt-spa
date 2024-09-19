@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-export const Device = styled.div`
+export const Device = styled.div<{ selected?: boolean }>`
   display: flex;
   align-items: center;
   padding: 12px;
