@@ -13,7 +13,7 @@ export const validationSchema = Yup.object().shape({
   ReportType: Yup.mixed<EReportType>()
     .oneOf(Object.values(EReportType))
     .required('Это поле обязательное'),
-  NodeResourceTypes: Yup.array<EResourceType>(
+  NodeResourceTypes: Yup.array(
     Yup.mixed<EResourceType>().oneOf(Object.values(EResourceType)),
   ).required('Это поле обязательное'),
 
@@ -22,9 +22,8 @@ export const validationSchema = Yup.object().shape({
   isRegular: Yup.bool(),
   'Subscription.Email': Yup.string().when('isRegular', {
     is: true,
-    then: Yup.string()
-      .required('Это поле обязательное')
-      .email('Корректно введите Email'),
+    then: (schema) =>
+      schema.required('Это поле обязательное').email('Корректно введите Email'),
   }),
   'Subscription.TriggerAt': Yup.string(),
   // 'Subscription.Type': Yup.mixed<EEmailSubscriptionType>().oneOf(  // todo: регулярная выгрузка

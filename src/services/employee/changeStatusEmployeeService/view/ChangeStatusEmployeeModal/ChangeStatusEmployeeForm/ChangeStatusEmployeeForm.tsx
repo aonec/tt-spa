@@ -49,16 +49,16 @@ export const ChangeStatusEmployeeForm: FC<ChangeStatusEmployeeFormProps> = ({
           ],
           {
             is: true,
-            then: yup
-              .array()
-              .of(
-                yup
-                  .date()
-                  .required('Укажите период')
-                  .typeError('Укажите период'),
-              )
-              .typeError('Укажите период')
-              .required('Укажите период'),
+            then: (schema) =>
+              schema
+                .of(
+                  yup
+                    .date()
+                    .required('Укажите период')
+                    .typeError('Укажите период'),
+                )
+                .typeError('Укажите период')
+                .required('Укажите период'),
           },
         ),
     }),
