@@ -54,7 +54,7 @@ export const Certificate: FC<Props> = ({ certificate, isPJKH }) => {
             <>
               отдел по работе с ИПУ
               <br />
-              ООО УК "ПЖКХ-17"
+              ООО УК "Эйбэт"
             </>
           )}
         </div>

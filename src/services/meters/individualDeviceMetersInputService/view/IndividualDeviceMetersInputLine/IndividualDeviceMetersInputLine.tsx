@@ -1,7 +1,6 @@
-import React, { FC, useMemo, useState } from 'react';
+import { FC, useMemo, useState } from 'react';
 import { useUnit } from 'effector-react';
-import { message, Tooltip } from 'antd';
-import confirm from 'antd/lib/modal/confirm';
+import { Tooltip } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import { ESecuredIdentityRoleName } from 'api/types';
 import { HistoryIcon, StarIcon } from 'ui-kit/icons';
@@ -16,7 +15,6 @@ import {
 } from './IndividualDeviceMetersInputLine.styled';
 import { IndividualDeviceMetersInputLineProps } from './IndividualDeviceMetersInputLine.types';
 import { getPreviousMeterTooltipTitle } from './individualDeviceMetersInputLine.utils';
-import { apartmentIndividualDevicesMetersService } from 'services/meters/apartmentIndividualDevicesMetersService';
 import { editReadingsHistoryService } from 'services/meters/editReadingsHistoryService';
 import { SelectSwitchDeviceTypeModal } from './SelectSwitchDeviceTypeModal';
 import { IndividualDeviceInfoExtended } from 'ui-kit/shared/IndividualDeviceInfoExtended';
@@ -26,7 +24,7 @@ import {
   ContextMenuElement,
 } from 'ui-kit/ContextMenuButton/ContextMenuButton.types';
 import { closeIndividualDeviceService } from 'services/devices/individualDevices/closeIndividualDeviceService';
-import { reopenIndividualDevice } from '../../individualDeviceMetersInputService.api';
+import { openIndividualDeviceService } from 'services/devices/individualDevices/openIndividualDevice/openIndividualDeviceService.models';
 
 export const IndividualDeviceMetersInputLine: FC<
   IndividualDeviceMetersInputLineProps
@@ -52,12 +50,14 @@ export const IndividualDeviceMetersInputLine: FC<
     onDeleteIndividualDevice,
     openCloseIndividualDeviceModal,
     openEditReadingsHistoryModal,
+    handleOpenDevice,
   } = useUnit({
     onDeleteIndividualDevice: deleteIndividualDeviceService.inputs.openModal,
     openEditReadingsHistoryModal: editReadingsHistoryService.inputs.openModal,
     openCloseIndividualDeviceModal:
       closeIndividualDeviceService.inputs.openModal,
     managementFirmUser: currentUserService.outputs.$currentUser,
+    handleOpenDevice: openIndividualDeviceService.inputs.openModal,
   });
 
   const isDeviceClosed = Boolean(device.closingDate);
@@ -90,23 +90,7 @@ export const IndividualDeviceMetersInputLine: FC<
       {
         title: 'Открыть прибор',
         hidden: !isDeviceClosed,
-        onClick: () =>
-          confirm({
-            title: `Вы действительно хотите открыть прибор ${device.model} (${device.serialNumber})?`,
-            onOk: async () => {
-              try {
-                await reopenIndividualDevice(device.id);
-
-                message.success('Прибор успешно переоткрыт');
-
-                apartmentIndividualDevicesMetersService.inputs.refetchIndividualDevices();
-              } catch (error) {
-                message.error('Не удалось открыть прибор');
-              }
-            },
-            okText: 'Да',
-            cancelText: 'Отмена',
-          }),
+        onClick: () => handleOpenDevice(device),
       },
       {
         title: 'Закрытие прибора',
@@ -122,13 +106,14 @@ export const IndividualDeviceMetersInputLine: FC<
       },
     ],
     [
-      device,
+      isDeviceClosed,
       isSeniorOperator,
       navigate,
-      onDeleteIndividualDevice,
-      isDeviceClosed,
+      device,
       openEditReadingsHistoryModal,
+      handleOpenDevice,
       openCloseIndividualDeviceModal,
+      onDeleteIndividualDevice,
     ],
   );
 

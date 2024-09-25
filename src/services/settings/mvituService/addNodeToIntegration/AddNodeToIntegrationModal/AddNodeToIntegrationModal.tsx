@@ -14,7 +14,7 @@ import {
 } from './AddNodeToIntegrationModal.styled';
 import { Props } from './AddNodeToIntegrationModal.types';
 import { useDebounce } from 'use-debounce';
-import { NodeListResponse } from 'api/mvitu.types';
+import { NodeListResponse, StatusType } from 'api/mvitu.types';
 import { ResourceIconLookup } from 'ui-kit/shared/ResourceIconLookup';
 import { CalculatorIcon } from 'ui-kit/icons';
 import { SpaceLine } from 'ui-kit/SpaceLine';
@@ -22,8 +22,12 @@ import { Input } from 'ui-kit/Input';
 import { useFormik } from 'formik';
 import { validationSchema } from './AddNodeToIntegrationModal.constants';
 import { ErrorMessage } from 'ui-kit/ErrorMessage';
+import { Alert } from 'ui-kit/Alert';
+import { AlertIconType } from 'ui-kit/Alert/Alert.types';
 
 type SearchType = 'AddressTerm' | 'CalculatorSerialNumber';
+
+// test
 
 export const AddNodeToIntegrationModal: FC<Props> = ({
   isModalOpen,
@@ -36,6 +40,9 @@ export const AddNodeToIntegrationModal: FC<Props> = ({
   isSelectedNodeLoading,
   handleAddNodeToIntegration,
   isAddNodeLoading,
+  integrationData,
+  resetSelectedNode,
+  resetNodesSearchingList,
 }) => {
   const [searchType, setSearchType] = useState<SearchType>('AddressTerm');
   const [searchString, setSearchString] = useState('');
@@ -87,6 +94,12 @@ export const AddNodeToIntegrationModal: FC<Props> = ({
     resetForm();
   }, [resetForm, isModalOpen]);
 
+  useEffect(() => {
+    resetSelectedNode();
+    resetNodesSearchingList();
+    setSearchString('');
+  }, [resetNodesSearchingList, resetSelectedNode, searchType]);
+
   const runSeaschNodes = useCallback(
     (loadAll: boolean) => {
       if (!debouncedSearch) return;
@@ -112,6 +125,8 @@ export const AddNodeToIntegrationModal: FC<Props> = ({
     return placeholders[searchType];
   }, [searchType]);
 
+  const isIntegrationPaused = integrationData?.status !== StatusType.Active;
+
   return (
     <FormModal
       formId="add-node-to-integration-modal"
@@ -120,8 +135,15 @@ export const AddNodeToIntegrationModal: FC<Props> = ({
       onCancel={handleCloseModal}
       onSubmit={handleSubmit}
       loading={isAddNodeLoading}
+      disabled={isIntegrationPaused || !building}
       form={
         <Wrapper>
+          {isIntegrationPaused && (
+            <Alert icon={AlertIconType.stop}>
+              Возможность добавления узлов приостановлена, включите интеграцию
+              для продолжения
+            </Alert>
+          )}
           <FormItem label="Поиск узла">
             <Radio.Group
               value={searchType}
@@ -139,6 +161,7 @@ export const AddNodeToIntegrationModal: FC<Props> = ({
               showSearch
               filterOption={false}
               loading={isNodesSearchLoading}
+              value={selectedNode?.id}
               onChange={(id) => handleSelectNode(id as number)}
               dropdownRender={(menu) => (
                 <>
