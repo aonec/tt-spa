@@ -129,7 +129,7 @@ export const GraphView: React.FC<GraphViewProps> = ({
       >
         <VictoryAxis
           tickComponent={<TickComponent />}
-          tickFormat={(x: any) =>
+          tickFormat={(x: string) =>
             ticksData.includes(x)
               ? getTickFormat(archiveLength, reportType, x)
               : ''
