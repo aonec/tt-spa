@@ -30,8 +30,8 @@ export const ChangeStatusEmployeeForm: FC<ChangeStatusEmployeeFormProps> = ({
       const payload = {
         userId: data.userId || undefined,
         type: data.type || undefined,
-        startDate: (data.period[0] && data.period[0].toISOString()) || null,
-        endDate: (data.period[1] && data.period[1].toISOString()) || null,
+        startDate: data.period[0] ? data.period[0].toISOString() : null,
+        endDate: data.period[1] ? data.period[1].toISOString() : null,
       };
 
       handleUpdateStatus(payload);
@@ -39,31 +39,25 @@ export const ChangeStatusEmployeeForm: FC<ChangeStatusEmployeeFormProps> = ({
     validateOnChange: false,
     validationSchema: yup.object({
       type: yup.string().nullable().required('Выберите Статус'),
-      period: yup
-        .array()
-        .when(
-          [
-            EOrganizationUserWorkingStatusType.OnDuty,
-            EOrganizationUserWorkingStatusType.OnVacation,
-            EOrganizationUserWorkingStatusType.Sick,
-          ],
-          {
-            is: true,
-            then: yup
-              .array()
-              .of(
-                yup
-                  .date()
-                  .required('Укажите период')
-                  .typeError('Укажите период'),
-              )
-              .typeError('Укажите период')
-              .required('Укажите период'),
-          },
-        ),
+      period: yup.array().when('type', {
+        is: (type: EOrganizationUserWorkingStatusType) =>  [
+          EOrganizationUserWorkingStatusType.OnDuty,
+          EOrganizationUserWorkingStatusType.OnVacation,
+          EOrganizationUserWorkingStatusType.Sick,
+        ].includes(type),
+        then: (schema) => {
+          console.log({schema})
+          return schema
+            .of(
+              yup.date().required('Укажите период').typeError('Укажите период'),
+            )
+            .typeError('Укажите период')
+            .required('Укажите период');
+        },
+      }),
     }),
   });
-
+ 
   return (
     <Form id={formId} onSubmitCapture={handleSubmit}>
       <GridContainer>

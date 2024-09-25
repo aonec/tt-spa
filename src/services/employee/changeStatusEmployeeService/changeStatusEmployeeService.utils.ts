@@ -14,18 +14,22 @@ export const prepareUpdateStatusPayload = (
 ) => {
   return {
     ...data,
-    startDate: dayjs(data?.startDate)
-      .set('hour', 0)
-      .set('minute', 0)
-      .set('second', 0)
-      .set('millisecond', 0)
-      .format(),
-    endDate: dayjs(data?.endDate)
-      .set('hour', 0)
-      .set('minute', 0)
-      .set('second', 0)
-      .set('millisecond', 0)
-      .format(),
+    startDate: data?.startDate
+      ? dayjs(data?.startDate)
+          .set('hour', 0)
+          .set('minute', 0)
+          .set('second', 0)
+          .set('millisecond', 0)
+          .format()
+      : null,
+    endDate: data?.endDate
+      ? dayjs(data?.endDate)
+          .set('hour', 0)
+          .set('minute', 0)
+          .set('second', 0)
+          .set('millisecond', 0)
+          .format()
+      : null,
   };
 };
 
