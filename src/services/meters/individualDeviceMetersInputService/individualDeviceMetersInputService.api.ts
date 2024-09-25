@@ -11,7 +11,3 @@ export const uploadReading = (
 
 export const removeReading = (id: number): Promise<void> =>
   axios.post(`IndividualDeviceReadings/${id}/remove`);
-
-export const reopenIndividualDevice = async (deviceId: number) => {
-  return await axios.post(`IndividualDevices/${deviceId}/reopen`);
-};

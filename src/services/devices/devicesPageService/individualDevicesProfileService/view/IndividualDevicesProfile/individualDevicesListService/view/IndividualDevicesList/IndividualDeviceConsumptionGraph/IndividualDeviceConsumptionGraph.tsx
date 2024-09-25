@@ -65,7 +65,7 @@ export const IndividualDeviceConsumptionGraph: FC<
             tickLabels: { fontSize: '10' },
           }}
           offsetY={10}
-          tickFormat={(date: any) =>
+          tickFormat={(date: string) =>
             ticksData.includes(date) ? dayjs(date).format('MMMM') : ''
           }
           tickValues={preparedData
