@@ -3,6 +3,7 @@ import { useFormik } from 'formik';
 import dayjs from 'api/dayjs';
 import React, { FC, useState } from 'react';
 import {
+  OptionSC,
   SearchFieldsWrapper,
   SelectCitySC,
   SelectManagingFirmSC,
@@ -80,9 +81,9 @@ export const ManagingFirmSearch: FC<ManagingFirmSearchProps> = ({
             onChange={(city) => selectCity(String(city))}
           >
             {cities.map((city) => (
-              <SelectCitySC.Option key={city} value={city}>
+              <OptionSC key={city} value={city}>
                 {city}
-              </SelectCitySC.Option>
+              </OptionSC>
             ))}
           </SelectCitySC>
           <SelectManagingFirmSC
@@ -99,9 +100,9 @@ export const ManagingFirmSearch: FC<ManagingFirmSearchProps> = ({
                 return null;
               }
               return (
-                <SelectManagingFirmSC.Option key={key} value={key}>
+                <OptionSC key={key} value={key}>
                   {value}
-                </SelectManagingFirmSC.Option>
+                </OptionSC>
               );
             })}
           </SelectManagingFirmSC>
