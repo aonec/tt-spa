@@ -16,6 +16,7 @@ import { Tooltip } from 'ui-kit/shared/Tooltip';
 import { AddressSearchFieldsNameLookup } from '../SearchTasks.constants';
 import {
   ApartmentNumberWrapper,
+  OptionSC,
   OverFlowSelectSC,
   StyledContainerAdressSection,
   StyledContainerThreeItemsMainTypes,
@@ -242,11 +243,7 @@ export const ToExecutionTasksExtendedSearchForm: FC<
             }}
             onKeyDown={fromEnter(() => next(5))}
           >
-            {
-              <OverFlowSelectSC.Option value={null}>
-                Все
-              </OverFlowSelectSC.Option>
-            }
+            {<OptionSC value={null}>Все</OptionSC>}
             {taskTypeOptions}
           </OverFlowSelectSC>
         </FormItem>

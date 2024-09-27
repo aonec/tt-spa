@@ -45,6 +45,8 @@ export const SelectSC = styled(Select)`
   }
 `;
 
+export const OptionSC = styled(Select.Option)``;
+
 export const AscendingSortIconSC = styled(AscendingSortIcon)`
   transform: translateY(4px);
 `;

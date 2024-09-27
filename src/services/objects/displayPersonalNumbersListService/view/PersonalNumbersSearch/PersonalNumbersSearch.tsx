@@ -4,6 +4,7 @@ import { useFormik } from 'formik';
 import { last } from 'lodash';
 import React, { FC, useEffect } from 'react';
 import {
+  OptionSC,
   PersonalNumberInput,
   SearchFieldsWrapper,
   SelectCitySC,
@@ -49,9 +50,9 @@ export const PersonalNumbersSearch: FC<PersonalNumbersSearchProps> = ({
             onChange={(value) => setFieldValue('City', value)}
           >
             {cities?.map((city) => (
-              <SelectCitySC.Option key={city} value={city}>
+              <OptionSC key={city} value={city}>
                 {city}
-              </SelectCitySC.Option>
+              </OptionSC>
             )) || null}
           </SelectCitySC>
 

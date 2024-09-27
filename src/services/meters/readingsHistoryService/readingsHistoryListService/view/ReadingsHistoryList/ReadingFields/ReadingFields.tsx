@@ -87,7 +87,7 @@ export const RenderReadingFields: React.FC<ReadingFieldsProps> = (props) => {
         ref={wrapRef}
         onKeyDown={onKeyHandler}
         isOnlyOne={isOnlyOne || values?.length === 1}
-        status={status!}
+        status={status}
       >
         <Prefix>{prefix}</Prefix>
         <EditableField
