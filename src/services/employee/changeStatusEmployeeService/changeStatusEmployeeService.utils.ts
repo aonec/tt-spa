@@ -6,7 +6,16 @@ import {
 import { UserTasksByRoles } from './changeStatusEmployeeService.types';
 
 export const getTasksCount = (tasksByRoles: UserTasksByRoles) => {
-  return tasksByRoles.reduce((acc, { tasks }) => acc + tasks.length, 0);
+  return tasksByRoles.reduce(
+    (acc, tasksByRole) =>
+      acc +
+      Number(tasksByRole.tasks?.activeTasksCount) +
+      Number(tasksByRole.tasks?.executingTasksCount) +
+      Number(tasksByRole.tasks?.expiredTasksCount) +
+      Number(tasksByRole.tasks?.observingTasksCount) +
+      Number(tasksByRole.tasks?.runningOutTasksCount),
+    0,
+  );
 };
 
 export const prepareUpdateStatusPayload = (

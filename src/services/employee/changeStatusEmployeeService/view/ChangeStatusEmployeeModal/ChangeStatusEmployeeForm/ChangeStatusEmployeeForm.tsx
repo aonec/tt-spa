@@ -40,13 +40,13 @@ export const ChangeStatusEmployeeForm: FC<ChangeStatusEmployeeFormProps> = ({
     validationSchema: yup.object({
       type: yup.string().nullable().required('Выберите Статус'),
       period: yup.array().when('type', {
-        is: (type: EOrganizationUserWorkingStatusType) =>  [
-          EOrganizationUserWorkingStatusType.OnDuty,
-          EOrganizationUserWorkingStatusType.OnVacation,
-          EOrganizationUserWorkingStatusType.Sick,
-        ].includes(type),
+        is: (type: EOrganizationUserWorkingStatusType) =>
+          [
+            EOrganizationUserWorkingStatusType.OnDuty,
+            EOrganizationUserWorkingStatusType.OnVacation,
+            EOrganizationUserWorkingStatusType.Sick,
+          ].includes(type),
         then: (schema) => {
-          console.log({schema})
           return schema
             .of(
               yup.date().required('Укажите период').typeError('Укажите период'),
@@ -57,7 +57,7 @@ export const ChangeStatusEmployeeForm: FC<ChangeStatusEmployeeFormProps> = ({
       }),
     }),
   });
- 
+
   return (
     <Form id={formId} onSubmitCapture={handleSubmit}>
       <GridContainer>
