@@ -31,8 +31,7 @@ export const createResourceDisconnectionValidationSchema = yup.object().shape({
     .nullable()
     .when('disconnectingType', {
       is: EResourceDisconnectingType.InterHeatingSeason,
-      then: (id: yup.NumberSchema) =>
-        id.required('Прикрепите документ или акт'),
+      then: (schema) => schema.required('Прикрепите документ или акт'),
     }),
 });
 

@@ -7,9 +7,8 @@ export const validationSchema = Yup.object().shape({
     .nullable()
     .when('registrationType', {
       is: ENodeRegistrationType.Technical,
-      then: Yup.object()
-        .nullable()
-        .shape({
+      then: (schema) =>
+        schema.nullable().shape({
           commercialAccountingDeregistrationDate: Yup.string()
             .nullable()
             .required('Это поле обязательное'),

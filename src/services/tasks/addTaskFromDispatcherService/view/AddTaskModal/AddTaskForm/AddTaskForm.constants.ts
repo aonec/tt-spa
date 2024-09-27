@@ -13,21 +13,21 @@ export const validationSchema = yup.object().shape({
     .nullable()
     .when('isSourceNumberRequired', {
       is: true,
-      then: yup.string().nullable().required('Обязательное поле'),
+      then: (schema) => schema.nullable().required('Обязательное поле'),
     }),
   subscriberName: yup
     .string()
     .nullable()
     .when('isSubscriberRequired', {
       is: true,
-      then: yup.string().nullable().required('Обязательное поле'),
+      then: (schema) => schema.nullable().required('Обязательное поле'),
     }),
   phoneNumber: yup
     .string()
     .nullable()
     .when('isSubscriberRequired', {
       is: true,
-      then: yup.string().nullable().required('Обязательное поле'),
+      then: (schema) => schema.nullable().required('Обязательное поле'),
     }),
   taskDeadlineDate: yup.string().nullable().required('Обязательное поле'),
 });
