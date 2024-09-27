@@ -29,7 +29,7 @@ export const validationSchema = yup.object().shape({
       is: (
         dayFeedFlowTemperature: number,
         dayFeedBackFlowTemperature: number,
-      ) => dayFeedFlowTemperature > dayFeedBackFlowTemperature, // alternatively: (val) => val == true
+      ) => dayFeedFlowTemperature > dayFeedBackFlowTemperature,
       then: (schema) =>
         schema
           .max(200, 'превышает 200°')
@@ -47,7 +47,7 @@ export const validationSchema = yup.object().shape({
       is: (
         nightFeedBackFlowTemperature: number,
         nightFeedFlowTemperature: number,
-      ) => nightFeedBackFlowTemperature > nightFeedFlowTemperature, // alternatively: (val) => val == true
+      ) => nightFeedBackFlowTemperature > nightFeedFlowTemperature,
       then: (schema) =>
         schema
           .max(200, 'превышает 200°')
