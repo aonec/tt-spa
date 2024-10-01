@@ -4,6 +4,7 @@ import {
   MarginTop,
   StyledRadioGroup,
   StyledTab,
+  UndersupplyCheckbox,
 } from './ConsumptionReportCalculatorForm.styled';
 import {
   ArchiveType,
@@ -292,8 +293,7 @@ export const ConsumptionReportCalculatorForm: FC<
       )}
 
       {values.currentResourceType === EResourceType.HotWaterSupply && (
-        <>
-          <div style={{ height: 12 }} />
+        <UndersupplyCheckbox>
           <Checkbox
             checked={values.isUndersupply}
             onChange={(value) =>
@@ -302,7 +302,7 @@ export const ConsumptionReportCalculatorForm: FC<
           >
             Выгрузка отчета с коэффициентом недопоставки
           </Checkbox>
-        </>
+        </UndersupplyCheckbox>
       )}
     </Form>
   );
