@@ -1,30 +1,4 @@
-import styled, { css, keyframes } from 'styled-components';
-
-const slide = keyframes`
-  0% {
-		background-position: 100% 0%;
-	}
-	100% {
-		background-position: 0% 0%;
-	} 
-`;
-
-export const GradientLoader = styled.div`
-  background: ${(props: { loading: boolean }) =>
-    props.loading
-      ? `repeating-linear-gradient(
-    45deg,
-    #e8ebff,
-    #e8ebff 10px,
-    #7584d6 10px,
-    #7584d6 20px
-  )`
-      : 'none'};
-  height: 5px;
-  background-size: 400% 400%;
-  animation: ${slide} 40s linear infinite;
-  transform: scale(1, -1);
-`;
+import styled, { css } from 'styled-components';
 
 const modalWrapperStyles = css`
   max-height: 520px;

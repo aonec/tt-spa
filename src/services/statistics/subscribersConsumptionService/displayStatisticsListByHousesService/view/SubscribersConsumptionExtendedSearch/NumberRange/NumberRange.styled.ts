@@ -2,11 +2,7 @@ import styled from 'styled-components';
 
 export const Input = styled.input``;
 
-type WrapProps = {
-  disabled?: boolean;
-};
-
-export const Wrapper = styled.div`
+export const Wrapper = styled.div<{ disabled?: boolean }>`
   display: grid;
   grid-template-columns: 0.5fr 20px 0.5fr;
   grid-gap: 10px;
@@ -23,7 +19,7 @@ export const Wrapper = styled.div`
   padding: 0 10px;
   transition: 0.2s;
 
-  ${({ disabled }: WrapProps) =>
+  ${({ disabled }) =>
     disabled
       ? `
         background: #f3f3f3; 
