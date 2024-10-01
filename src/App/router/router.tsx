@@ -254,6 +254,18 @@ export const useRoutes = (
           element: <Navigate replace to={redirectRoute} />,
         },
         {
+          path: '/supervisor/currentAnalytics',
+          element: <>Текущая ситуация</>,
+        },
+        {
+          path: '/supervisor/commonAnalytics',
+          element: <>Общая аналитика</>,
+        },
+        {
+          path: '/supervisor/consumption',
+          element: <>Потребление ресурсов</>,
+        },
+        {
           path: '/actsJournal',
           element: isOperator ? <ActsJournalContainer /> : <AccessDeniedPage />,
         },

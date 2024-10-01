@@ -27,9 +27,17 @@ export const privates: MenuFiltrationConfig = {
   [MenuType.DisabledResourcesDispatcher]: [
     ESecuredIdentityRoleName.ManagingFirmDispatcher,
   ],
+  [MenuType.SupervisorAnalytics]: [15 as any],
 };
 
 export const hidden: MenuFiltrationConfig = {
-  [MenuType.Devices]: [ESecuredIdentityRoleName.ManagingFirmDispatcher],
-  [MenuType.Statistics]: [ESecuredIdentityRoleName.ManagingFirmDispatcher],
+  [MenuType.Devices]: [
+    ESecuredIdentityRoleName.ManagingFirmDispatcher,
+    15 as any,
+  ],
+  [MenuType.Statistics]: [
+    ESecuredIdentityRoleName.ManagingFirmDispatcher,
+    15 as any,
+  ],
+  [MenuType.Buildings]: [15 as any],
 };
