@@ -73,6 +73,7 @@ import { tokensService } from 'api/tokensService';
 import { UserProfileContainer } from 'services/currentUser/currentUserService/currentUserService.container';
 import { CurrentUserEditServiceContainer } from 'services/currentUser/currentUserEditService';
 import { createRunnerService } from 'services/reports/createRunnerService/createRunnerService.models';
+import { CurrentAnalyticsContainer } from 'services/supervisor/currentAnalytics';
 
 const {
   gates: { CurrentUserGate },
@@ -255,7 +256,7 @@ export const useRoutes = (
         },
         {
           path: '/supervisor/currentAnalytics',
-          element: <>Текущая ситуация</>,
+          element: <CurrentAnalyticsContainer />,
         },
         {
           path: '/supervisor/commonAnalytics',
