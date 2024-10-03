@@ -1,9 +1,10 @@
-import React, { FC, useMemo } from 'react';
+import React, { FC, useEffect, useMemo } from 'react';
 import {
   GridContainer,
   MarginTop,
   StyledRadioGroup,
   StyledTab,
+  UndersupplyCheckbox,
 } from './ConsumptionReportCalculatorForm.styled';
 import {
   ArchiveType,
@@ -15,7 +16,6 @@ import { Tabs } from 'ui-kit/Tabs';
 import _ from 'lodash';
 import {
   EHousingMeteringDeviceType,
-  EReportFormat,
   EReportType,
   EResourceType,
 } from 'api/types';
@@ -27,7 +27,10 @@ import { Input } from 'ui-kit/Input';
 import { Select } from 'ui-kit/Select';
 import { RangePicker } from 'ui-kit/RangePicker';
 import { SpaceLine } from 'ui-kit/SpaceLine';
-import { getDatePeriod } from './ConsumptionReportCalculatorForm.utils';
+import {
+  getDatePeriod,
+  getReportFormat,
+} from './ConsumptionReportCalculatorForm.utils';
 import { ErrorMessage } from 'ui-kit/ErrorMessage';
 import { GetCalculatorReportParams } from 'services/calculators/consumptionReportCalculatorService/consumptionReportCalculatorService.types';
 import { ResourceNamesDictionary } from 'dictionaries';
@@ -64,6 +67,7 @@ export const ConsumptionReportCalculatorForm: FC<
       nodeId: isSono ? nodeIdForSono : null,
       customPeriodDisabled: true,
       withNS: false,
+      isUndersupply: false,
       currentResourceType: resourcesSortedByOrder[0],
       reportName: reportName,
     },
@@ -88,9 +92,7 @@ export const ConsumptionReportCalculatorForm: FC<
         ReportType: data.detail as EReportType,
         From: From,
         To: To,
-        ReportFormat: data.withNS
-          ? EReportFormat.Rso
-          : EReportFormat.Consumption,
+        ReportFormat: getReportFormat(data.withNS, data.isUndersupply),
       };
 
       handleSubmitForm(params);
@@ -141,6 +143,10 @@ export const ConsumptionReportCalculatorForm: FC<
       };
     });
   }, [resourcesSortedByOrder]);
+
+  useEffect(() => {
+    setFieldValue('isUndersupply', false);
+  }, [setFieldValue, values.currentResourceType]);
 
   return (
     <Form id={formId} onSubmitCapture={handleSubmit}>
@@ -284,6 +290,19 @@ export const ConsumptionReportCalculatorForm: FC<
             Выгрузка отчета с кодами НС
           </Checkbox>
         </>
+      )}
+
+      {values.currentResourceType === EResourceType.HotWaterSupply && (
+        <UndersupplyCheckbox>
+          <Checkbox
+            checked={values.isUndersupply}
+            onChange={(value) =>
+              setFieldValue('isUndersupply', value.target.checked)
+            }
+          >
+            Выгрузка отчета с коэффициентом недопоставки
+          </Checkbox>
+        </UndersupplyCheckbox>
       )}
     </Form>
   );
