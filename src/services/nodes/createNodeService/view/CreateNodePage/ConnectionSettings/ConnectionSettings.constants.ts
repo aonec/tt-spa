@@ -14,12 +14,12 @@ export const validationSchema = Yup.object().shape({
     .nullable()
     .when('connectionType', {
       is: CalculatorConnectionType.Connected,
-      then: Yup.string().nullable().required('Это поле обязательное'),
+      then: (schema) => schema.nullable().required('Это поле обязательное'),
     }),
   entryNumber: Yup.number()
     .nullable()
     .when('connectionType', {
       is: CalculatorConnectionType.Connected,
-      then: Yup.number().nullable().required('Это поле обязательное'),
+      then: (schema) => schema.nullable().required('Это поле обязательное'),
     }),
 });

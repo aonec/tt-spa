@@ -6,7 +6,7 @@ import {
 import * as yup from 'yup';
 
 export const validationSchema = yup.object().shape({
-  houseManagement: yup.string().nullable(true),
+  houseManagement: yup.string().nullable(),
   objectCategory: yup.string().nullable().required('Обязательное поле'),
 
   livingHouseType: yup
@@ -14,7 +14,7 @@ export const validationSchema = yup.object().shape({
     .nullable()
     .when('objectCategory', {
       is: EHouseCategory.Living,
-      then: yup.string().required('Обязательное поле'),
+      then: (schema) => schema.required('Обязательное поле'),
     }),
 
   nonResidentialHouseType: yup
@@ -22,7 +22,7 @@ export const validationSchema = yup.object().shape({
     .nullable()
     .when('objectCategory', {
       is: EHouseCategory.NonResidential,
-      then: yup.string().required('Обязательное поле'),
+      then: (schema) => schema.required('Обязательное поле'),
     }),
 
   heatingStationId: yup.string().nullable().required('Обязательное поле'),
