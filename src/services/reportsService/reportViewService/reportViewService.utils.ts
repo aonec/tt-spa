@@ -195,7 +195,7 @@ const getEmployeeReportDatePeriod = (
 
   return {
     From: employeeReportDate.startOf(period).format('YYYY-MM-DD'),
-    To: employeeReportDate.endOf(period).format('YYYY-MM-DD'),
+    To: employeeReportDate.add(1, period).startOf(period).format('YYYY-MM-DD'),
   };
 };
 
