@@ -3,6 +3,7 @@ import {
   ArchiveType,
   DatePeriod,
 } from './ConsumptionReportCalculatorForm.types';
+import { EReportFormat } from 'api/types';
 
 export const getDatePeriod = (
   archiveType: ArchiveType,
@@ -35,4 +36,19 @@ export const getDatePeriod = (
     : period[1].endOf(format).format('YYYY-MM-DDTHH:mm:ss');
 
   return { From, To };
+};
+
+export const getReportFormat = (
+  withNs: boolean,
+  isUndersupply: boolean,
+): EReportFormat => {
+  if (withNs && isUndersupply) {
+    return EReportFormat.RsoWithUndersupply;
+  }
+
+  if (withNs && !isUndersupply) return EReportFormat.Rso;
+
+  if (!withNs && isUndersupply) return EReportFormat.Undersupply;
+
+  return EReportFormat.Consumption;
 };
