@@ -11,6 +11,8 @@ export const SelectSC = styled(Select)`
   width: 100%;
 `;
 
+export const OptionSC = styled(Select.Option)``;
+
 export const Footer = styled.div`
   height: 96px;
   display: flex;

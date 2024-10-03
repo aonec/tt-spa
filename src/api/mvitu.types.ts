@@ -117,6 +117,7 @@ export interface MvituBuildingResponse {
 export interface MvituNodeResponse {
   /** @format int32 */
   id: number;
+  nodeServiceZone: NodeServiceZoneResponse | null;
   building: MvituBuildingResponse | null;
   /** Состояние интеграции */
   status: NodeStatusType;
@@ -153,10 +154,10 @@ export interface MvituNodeResponsePagedList {
 
 export interface NodeIntegrationStatus {
   /**
-   * Последний переданный архив, MinValue если передачи еще не происходило
+   * Последний переданный архив, null - если передачи еще не происходило
    * @format date-time
    */
-  lastTransmittedArchiveTime?: string;
+  lastTransmittedArchiveTime?: string | null;
   /**
    * Последний готовый к передаче архив, null - если все архивы переданы
    * @format date-time
@@ -176,6 +177,7 @@ export interface NodeListResponse {
   resource: EResourceType;
   address: BuildingAddressResponse | null;
   calculator: Calculator | null;
+  nodeServiceZone: NodeServiceZoneResponse | null;
 }
 
 export interface NodeResponse {
@@ -186,6 +188,7 @@ export interface NodeResponse {
   status: StatusType;
   building: BuildingResponse | null;
   resource: EResourceType;
+  nodeServiceZone: NodeServiceZoneResponse | null;
 }
 
 export interface NodeSearchResponse {
@@ -193,6 +196,12 @@ export interface NodeSearchResponse {
   hasMore: boolean;
   /** @format int32 */
   totalCount: number;
+}
+
+export interface NodeServiceZoneResponse {
+  /** @format int32 */
+  id: number;
+  name: string | null;
 }
 
 /** Статус интеграции для узла */

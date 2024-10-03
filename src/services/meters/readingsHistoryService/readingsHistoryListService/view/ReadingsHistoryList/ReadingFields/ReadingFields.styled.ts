@@ -12,20 +12,23 @@ export const Suffix = styled.div`
   white-space: nowrap;
 `;
 
-export const FieldsWrap = styled.div`
+export const FieldsWrap = styled.div<{
+  removed?: boolean;
+  isReading?: boolean;
+}>`
   margin-right: 20px;
   counter-reset: section;
 
-  ${({ removed }: { removed?: boolean }) => (removed ? 'color: red;' : '')}
+  ${({ removed }) => (removed ? 'color: red;' : '')}
 `;
 
-export const ValueLine = styled.div`
+export const ValueLine = styled.div<{ isReading?: boolean }>`
   display: flex;
   align-items: center;
   height: 30px;
 
-  ${(props: { isReading?: boolean }) =>
-    props.isReading
+  ${({ isReading }) =>
+    isReading
       ? `
     &:before {
       counter-increment: section;
@@ -44,11 +47,6 @@ export const EditableField = styled.input`
   border-color: rgba(0, 0, 0, 0);
 `;
 
-interface EditableFieldWrapProps {
-  status: RequestStatusShared;
-  isOnlyOne: boolean;
-}
-
 const statusColors = {
   pending: '#ffd476',
   done: '#0ddf53',
@@ -58,13 +56,15 @@ const statusColors = {
 const getColorByStatus = (status: RequestStatusShared) =>
   (status && statusColors[status]) || `#eeeeee`;
 
-export const EditableFieldWrap = styled.div`
+export const EditableFieldWrap = styled.div<{
+  status?: RequestStatusShared;
+  isOnlyOne?: boolean;
+}>`
   display: flex;
   align-items: center;
   padding: 4px 8px;
 
-  --border-color: ${({ status }: EditableFieldWrapProps) =>
-    getColorByStatus(status)};
+  --border-color: ${({ status }) => status && getColorByStatus(status)};
   border: 1px solid var(--border-color);
   border-radius: 0;
   border-bottom-color: white;
@@ -79,8 +79,8 @@ export const EditableFieldWrap = styled.div`
     box-shadow: 0;
   }
 
-  ${(props: EditableFieldWrapProps) =>
-    props.isOnlyOne
+  ${({ isOnlyOne }) =>
+    isOnlyOne
       ? `
       border-radius: 8px;
       .ant-input-affix-wrapper {

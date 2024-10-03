@@ -2,7 +2,12 @@ import React, { FC, useMemo, useState } from 'react';
 import { ChoosePersonalNumberModalProps } from './ChoosePersonalNumberModal.types';
 import { FormModal } from 'ui-kit/Modals/FormModal';
 import { CrownIcon, PencilBigIcon } from 'ui-kit/icons';
-import { Footer, SelectSC, Title } from './ChoosePersonalNumberModal.styled';
+import {
+  Footer,
+  OptionSC,
+  SelectSC,
+  Title,
+} from './ChoosePersonalNumberModal.styled';
 import { Button } from 'ui-kit/Button';
 import { useNavigate } from 'react-router-dom';
 import { PersonalNumberActions } from '../../selectPersonalNumberActionService.types';
@@ -79,11 +84,11 @@ export const ChoosePersonalNumberModal: FC<ChoosePersonalNumberModalProps> = ({
           onChange={(value) => setHomeownerId(value as string)}
         >
           {activeHomeownerAccounts.map((account) => (
-            <SelectSC.Option value={account.id} key={account.id}>
+            <OptionSC value={account.id} key={account.id}>
               {account.isMainPersonalAccountNumber && <CrownIcon />}{' '}
               {account.personalAccountNumber} (
               {account?.name?.replaceAll('unknown', '')})
-            </SelectSC.Option>
+            </OptionSC>
           ))}
         </SelectSC>
       }
