@@ -1,0 +1,1 @@
+export { AnalitycsDetail } from './AnalitycsDetail';
