@@ -1,0 +1,1 @@
+export { ResourceStatistic } from './ResourceStatistic';

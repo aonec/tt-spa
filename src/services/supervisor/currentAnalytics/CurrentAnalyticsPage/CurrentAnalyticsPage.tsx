@@ -1,11 +1,12 @@
 import { FC, useState } from 'react';
-import { Wrapper } from './CurrentAnalyticsPage.styled';
+import { DashboardPanelWrapper, Wrapper } from './CurrentAnalyticsPage.styled';
 import { Props } from './CurrentAnalyticsPage.types';
 import { PageHeader } from 'ui-kit/shared/PageHeader';
 import { AnalyticsSearch } from './AnalyticsSearch';
 import { WithLoader } from 'ui-kit/shared/WithLoader';
 import { InfoOptionsPanels } from './InfoOptionsPanels';
 import { DashboardDataType } from '../currentAnalyticsService.types';
+import { DashboardPanel } from './DashboardPanel';
 
 export const CurrentAnalyticsPage: FC<Props> = ({
   isLoading,
@@ -24,7 +25,13 @@ export const CurrentAnalyticsPage: FC<Props> = ({
         currentDashboardType={currentDashboardType}
         setCurrentDashboardType={setCurrentDashboardType}
       />
-      <WithLoader isLoading={isLoading}></WithLoader>
+      <WithLoader isLoading={isLoading}>
+        <DashboardPanelWrapper>
+          {dashboardData?.dashboardPanels?.map((data) => (
+            <DashboardPanel data={data} />
+          ))}
+        </DashboardPanelWrapper>
+      </WithLoader>
     </Wrapper>
   );
 };
