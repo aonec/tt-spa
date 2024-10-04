@@ -10,32 +10,10 @@ import {
 import { Props } from './DashboardPanel.types';
 import { ResourceStatistic } from './ResourceStatistic';
 import { LinkButton } from 'ui-kit/shared/LinkButton';
+import { getRatioOfTasksCount } from './DashboardPanel.utils';
 
 export const DashboardPanel: FC<Props> = ({ data }) => {
-  const ratioOfTasksCount = data.details?.reduce(
-    (acc, elem) => {
-      const res = elem.items?.reduce(
-        (acc, elem) => ({
-          ...acc,
-          danger: acc.danger + (elem?.notClosedTasksCount || 0),
-          all: acc.all + (elem?.totalTasksCount || 0),
-        }),
-        {
-          danger: 0,
-          all: 0,
-        },
-      );
-
-      return {
-        danger: (res?.danger || 0) + acc.danger,
-        all: (res?.all || 0) + acc.all,
-      };
-    },
-    {
-      danger: 0,
-      all: 0,
-    },
-  );
+  const ratioOfTasksCount = getRatioOfTasksCount(data.details || []);
 
   return (
     <Wrapper>
