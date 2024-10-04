@@ -29,8 +29,6 @@ export const ChangeNodeTypeForm: FC<ChangeNodeTypeFormProps> = ({
     },
     validationSchema,
     validateOnBlur: true,
-    validateOnChange: true,
-    validateOnMount: true,
     onSubmit: (values) => {
       const { registrationType, technicalTypeRequest } = values;
 
