@@ -6,9 +6,10 @@ export const OptionPanelButton: FC<Props> = ({
   isActive = false,
   title,
   children,
+  onClick,
 }) => {
   return (
-    <Wrapper isActive={isActive}>
+    <Wrapper isActive={isActive} onClick={onClick}>
       <Content>{children}</Content>
       <Title>{title}</Title>
     </Wrapper>

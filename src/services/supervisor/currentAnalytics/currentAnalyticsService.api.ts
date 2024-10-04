@@ -4,7 +4,7 @@ import { DashboardCurrentAnalitycsResponse } from 'api/types';
 
 export const dashboardDataQuery = createQuery<
   void,
-  DashboardCurrentAnalitycsResponse[]
+  DashboardCurrentAnalitycsResponse
 >({
   handler: () => axios.get(`/Dashboard/current`),
 });
