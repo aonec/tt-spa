@@ -1,4 +1,7 @@
-import { DashboardCurrentAnalitycsDetailsResourceModel } from 'api/types';
+import {
+  DashboardCurrentAnalitycsDetailsOthersResponse,
+  DashboardCurrentAnalitycsDetailsResourceModel,
+} from 'api/types';
 
 export const getRatioOfTasksCount = (
   data: DashboardCurrentAnalitycsDetailsResourceModel[],
@@ -22,6 +25,21 @@ export const getRatioOfTasksCount = (
         all: (res?.all || 0) + acc.all,
       };
     },
+    {
+      danger: 0,
+      all: 0,
+    },
+  );
+};
+
+export const getRatioOfTasksCountByOthers = (
+  data: DashboardCurrentAnalitycsDetailsOthersResponse,
+) => {
+  return data.items?.reduce(
+    (acc, elem) => ({
+      all: acc.all + (elem.totalTasksCount || 0),
+      danger: acc.danger + (elem.notClosedTasksCount || 0),
+    }),
     {
       danger: 0,
       all: 0,

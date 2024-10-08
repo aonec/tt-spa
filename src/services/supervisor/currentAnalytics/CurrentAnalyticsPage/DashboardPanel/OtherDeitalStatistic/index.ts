@@ -1,0 +1,1 @@
+export { OtherDeitalStatistic } from './OtherDeitalStatistic';

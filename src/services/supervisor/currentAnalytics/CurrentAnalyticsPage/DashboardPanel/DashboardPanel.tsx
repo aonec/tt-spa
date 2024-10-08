@@ -10,9 +10,39 @@ import {
 import { Props } from './DashboardPanel.types';
 import { ResourceStatistic } from './ResourceStatistic';
 import { LinkButton } from 'ui-kit/shared/LinkButton';
-import { getRatioOfTasksCount } from './DashboardPanel.utils';
+import {
+  getRatioOfTasksCount,
+  getRatioOfTasksCountByOthers,
+} from './DashboardPanel.utils';
+import { OtherDeitalStatistic } from './OtherDeitalStatistic';
 
-export const DashboardPanel: FC<Props> = ({ data }) => {
+export const DashboardPanel: FC<Props> = ({ data, otherData }) => {
+  if (otherData) {
+    const ratioOfOthers = getRatioOfTasksCountByOthers(otherData);
+
+    return (
+      <Wrapper>
+        <Title>{otherData.title}</Title>
+        <RatioWrapper>
+          <DangerWrapper isPositive={(ratioOfOthers?.danger || 0) > 0}>
+            {ratioOfOthers?.danger}
+          </DangerWrapper>{' '}
+          / {ratioOfOthers?.all}
+        </RatioWrapper>
+        <ResourceStatisticsWrapper>
+          {otherData.items?.map((item) => (
+            <OtherDeitalStatistic item={item} />
+          ))}
+        </ResourceStatisticsWrapper>
+        <LinkButtonWrapper>
+          <LinkButton onClick={() => void 0}>Показать больше</LinkButton>
+        </LinkButtonWrapper>
+      </Wrapper>
+    );
+  }
+
+  if (!data) return null;
+
   const ratioOfTasksCount = getRatioOfTasksCount(data.details || []);
 
   return (

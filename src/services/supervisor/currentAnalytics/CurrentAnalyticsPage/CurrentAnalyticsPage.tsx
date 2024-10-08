@@ -30,6 +30,9 @@ export const CurrentAnalyticsPage: FC<Props> = ({
           {dashboardData?.dashboardPanels?.map((data) => (
             <DashboardPanel data={data} />
           ))}
+          {dashboardData?.dashboardOthers && (
+            <DashboardPanel otherData={dashboardData.dashboardOthers} />
+          )}
         </DashboardPanelWrapper>
       </WithLoader>
     </Wrapper>

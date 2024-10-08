@@ -1,8 +1,8 @@
 import { FC } from 'react';
-import { Name, NotClosedTasksCount, Wrapper } from './AnalitycsDetail.styled';
-import { Props } from './AnalitycsDetail.types';
+import { Name, NotClosedTasksCount, Wrapper } from './AnalyticsDetail.styled';
+import { Props } from './AnalyticsDetail.types';
 
-export const AnalitycsDetail: FC<Props> = ({ data }) => {
+export const AnalyticsDetail: FC<Props> = ({ data }) => {
   const isDanger = data.notClosedTasksCount !== 0;
 
   return (
