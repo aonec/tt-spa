@@ -89,6 +89,8 @@ const $organizationUserTasksByRoles = createStore<UserTasksByRoles | null>(null)
   .on(fetchOrganizationUserTasksByRolesFx.doneData, (_, data) => data)
   .reset(handleCloseModal);
 
+$organizationUserTasksByRoles.watch((data) => console.log(data));
+
 const $userStatusChangeRequestPayload =
   createStore<AddOrganizationUserWorkingStatusRequest | null>(null)
     .on(handleUpdateStatus, (_, data) => data)

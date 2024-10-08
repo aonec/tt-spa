@@ -27,7 +27,7 @@ export const getOrganizationUser = (
 ): Promise<OrganizationUserResponse> =>
   axios.get(`OrganizationUsers/${userId}`);
 
-export const getOrganizationUserTasks = ({
+const getOrganizationUserTasks = ({
   userId,
   ...params
 }: GetOrganizationUserTasksRequestParams): Promise<TasksPagedList | null> =>
@@ -44,7 +44,9 @@ export const getOrganizationUserTasksByRoles = ({
         CurrentStageRequiredUserRole: role.key,
       });
 
-      return { role, tasks: pagedTasksList?.items || [] };
+      console.log({ pagedTasksList });
+
+      return { role, tasks: pagedTasksList };
     }),
   );
 };
