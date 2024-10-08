@@ -25,36 +25,12 @@ export const validationSchema = yup.object().shape({
     .number()
     .max(200, 'превышает 200°')
     .min(0, 'ниже 0°')
-    .when(['dayFeedFlowTemperature', 'dayFeedBackFlowTemperature'], {
-      is: (
-        dayFeedFlowTemperature: number,
-        dayFeedBackFlowTemperature: number,
-      ) => dayFeedFlowTemperature > dayFeedBackFlowTemperature,
-      then: (schema) =>
-        schema
-          .max(200, 'превышает 200°')
-          .min(0, 'ниже 0°')
-          .required('Выше подающей'),
-      otherwise: (schema) =>
-        schema.max(200, 'превышает 200°').min(0, 'ниже 0°'),
-    })
+    .lessThan(yup.ref('dayFeedFlowTemperature'), 'Выше подающей')
     .required('Это поле обязательное'),
   nightFeedBackFlowTemperature: yup
     .number()
     .max(200, 'превышает 200°')
     .min(0, 'ниже 0°')
-    .when(['nightFeedBackFlowTemperature', 'nightFeedFlowTemperature'], {
-      is: (
-        nightFeedBackFlowTemperature: number,
-        nightFeedFlowTemperature: number,
-      ) => nightFeedBackFlowTemperature > nightFeedFlowTemperature,
-      then: (schema) =>
-        schema
-          .max(200, 'превышает 200°')
-          .min(0, 'ниже 0°')
-          .required('Выше подающей'),
-      otherwise: (schema) =>
-        schema.max(200, 'превышает 200°').min(0, 'ниже 0°'),
-    })
+    .lessThan(yup.ref('nightFeedFlowTemperature'), 'Выше подающей')
     .required('Это поле обязательное'),
 });
