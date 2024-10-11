@@ -4,7 +4,7 @@ import { ExportResourceDisconnectingParams } from './exportResourceDisconnection
 import queryString from 'query-string';
 
 export const exportResourceDisconnectionsQuery = createQuery<
-  ExportResourceDisconnectingParams,
+  [ExportResourceDisconnectingParams],
   File
 >({
   handler: (params): Promise<File> =>

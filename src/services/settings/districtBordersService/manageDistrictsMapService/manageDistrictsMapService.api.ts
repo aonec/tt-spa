@@ -6,7 +6,7 @@ import { DistrictResponse } from 'api/types';
 import { UpdateDistrictRequestPayload } from './manageDistrictsMapService.types';
 
 export const existingDistrictsQuery = createQuery<
-  void,
+  [],
   DistrictResponse[] | null
 >({
   handler: async () => {

@@ -4,7 +4,7 @@ import { createQuery } from '@farfetched/core';
 import axios from 'api/axios';
 
 export const apartmentActsListQuery = createQuery<
-  ApartmentActsRequestQuery,
+  [ApartmentActsRequestQuery],
   ApartmentActResponsePagedList
 >({
   handler: (query) => axios.get('ApartmentActs', { params: query }),

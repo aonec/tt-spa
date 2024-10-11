@@ -11,7 +11,7 @@ import {
 import { createEffect } from 'effector';
 
 export const mvituNodesQuery = createQuery<
-  GetMvituNodesRequestParams,
+  [GetMvituNodesRequestParams],
   MvituNodeResponsePagedList
 >({
   handler: (params): Promise<MvituNodeResponsePagedList> =>
