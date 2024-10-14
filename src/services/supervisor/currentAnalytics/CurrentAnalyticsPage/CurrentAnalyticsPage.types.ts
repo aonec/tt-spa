@@ -1,6 +1,9 @@
-import { DashboardCurrentAnalitycsResponse } from 'api/types';
+import { DashboardSummaryResponse } from 'api/types';
+import { DashboardDataType } from '../currentAnalyticsService.types';
 
 export type Props = {
   isLoading: boolean;
-  dashboardData: DashboardCurrentAnalitycsResponse | null;
+  dashboardSummary: DashboardSummaryResponse | null;
+  currentDashboardType: DashboardDataType;
+  setCurrentDashboardType: (payload: DashboardDataType) => void;
 };

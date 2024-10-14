@@ -1,24 +1,35 @@
 import { useUnit } from 'effector-react';
 import { CurrentAnalyticsPage } from './CurrentAnalyticsPage';
-import { dashboardDataQuery } from './currentAnalyticsService.api';
+import { dashboardSummaryQuery } from './currentAnalyticsService.api';
 import { currentAnalyticsService } from './currentAnalyticsService.models';
 
 const {
+  inputs,
+  outputs,
   gates: { CurrentAnalyticsGate },
 } = currentAnalyticsService;
 
 export const CurrentAnalyticsContainer = () => {
-  const { dashboardData, isLoading } = useUnit({
-    dashboardData: dashboardDataQuery.$data,
-    isLoading: dashboardDataQuery.$pending,
+  const {
+    dashboardSummary,
+    isLoading,
+    currentDashboardType,
+    setCurrentDashboardType,
+  } = useUnit({
+    dashboardSummary: dashboardSummaryQuery.$data,
+    isLoading: dashboardSummaryQuery.$pending,
+    currentDashboardType: outputs.$currentDashboardType,
+    setCurrentDashboardType: inputs.setCurrentDashboardType,
   });
 
   return (
     <>
       <CurrentAnalyticsGate />
       <CurrentAnalyticsPage
-        dashboardData={dashboardData}
+        dashboardSummary={dashboardSummary}
         isLoading={isLoading}
+        currentDashboardType={currentDashboardType}
+        setCurrentDashboardType={setCurrentDashboardType}
       />
     </>
   );
