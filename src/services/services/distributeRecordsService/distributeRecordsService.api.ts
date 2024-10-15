@@ -18,7 +18,7 @@ import { EffectFailDataAxiosError } from 'types';
 import { createEffect } from 'effector';
 import dayjs from 'api/dayjs';
 
-export const districtsQuery = createQuery<void, DistrictResponse[] | null>({
+export const districtsQuery = createQuery<[], DistrictResponse[] | null>({
   handler: async () => {
     const districts: DistrictResponse[] = await axios.get(
       'IndividualSeal/Districts',
@@ -31,7 +31,7 @@ export const districtsQuery = createQuery<void, DistrictResponse[] | null>({
 });
 
 export const appointmentsCountingQuery = createQuery<
-  GetDistrictsAppointmentsCountingRequestPayload,
+  [GetDistrictsAppointmentsCountingRequestPayload],
   AppointmentsCountingByDistrictsResponse
 >({
   handler: async ({ districtIds, date }) => {
@@ -53,7 +53,7 @@ export const appointmentsCountingQuery = createQuery<
 });
 
 export const districtAppointmentsQuery = createQuery<
-  GetDistrictAppointmentsRequestPayload,
+  [GetDistrictAppointmentsRequestPayload],
   AppointmentResponse[]
 >({
   handler: (data) =>
@@ -66,12 +66,12 @@ export const districtAppointmentsQuery = createQuery<
 });
 
 export const nearestAppointmentsDateQuery = createQuery<
-  void,
+  [],
   TotalAppointmentCounterResponse
 >({ handler: () => axios.get('IndividualSeal/Appointments/Nearest') });
 
 export const individualSealControllersQuery = createQuery<
-  void,
+  [],
   ControllerResponse[]
 >({
   handler: () => axios.get('IndividualSeal/Controllers'),
@@ -86,10 +86,12 @@ export const setAppointmentsToControllerMutation = createMutation({
 });
 
 export const individualSealTaskDocumentQuery = createQuery<
-  {
-    controllerId: string;
-    appointmentDate: string;
-  },
+  [
+    {
+      controllerId: string;
+      appointmentDate: string;
+    },
+  ],
   string
 >({
   handler: ({ controllerId, appointmentDate }) => {

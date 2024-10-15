@@ -13,7 +13,7 @@ import {
 } from './workWithIndividualDeviceService.types';
 
 export const getSerialNumberQuery = createQuery<
-  string,
+  [string],
   IndividualDeviceListResponseFromDevicePage[]
 >({
   handler: async (serialNumber) => {

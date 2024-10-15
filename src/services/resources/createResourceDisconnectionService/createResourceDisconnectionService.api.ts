@@ -30,7 +30,7 @@ export const fetchExistingBuildingsWithHeatingStation = (): Promise<
   axios.get('Buildings/ExistingStreetsWithBuildingNumbersWithHeatingStation');
 
 export const preselectedBuildingQuery = createQuery<
-  number,
+  [number],
   BuildingShortResponse
 >({
   handler: (id) => axios.get(`Buildings/${id}`),
