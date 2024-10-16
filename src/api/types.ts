@@ -1321,6 +1321,43 @@ export interface CreatingUser {
   middleName?: string | null;
 }
 
+export interface DashboardCurrentAnalitycsDetailsOthersResponse {
+  title: string | null;
+  items: DashboardCurrentAnalitycsDetailsResourceItemModel[] | null;
+}
+
+export interface DashboardCurrentAnalitycsDetailsResourceItemModel {
+  name?: string | null;
+  /** @format int32 */
+  totalTasksCount?: number;
+  /** @format int32 */
+  notClosedTasksCount?: number;
+}
+
+export interface DashboardCurrentAnalitycsDetailsResourceModel {
+  resourceType?: TaskTargetObjectInfo;
+  items?: DashboardCurrentAnalitycsDetailsResourceItemModel[] | null;
+}
+
+export interface DashboardCurrentAnalitycsDetailsResponse {
+  title: string | null;
+  details: DashboardCurrentAnalitycsDetailsResourceModel[] | null;
+}
+
+export interface DashboardCurrentAnalitycsResponse {
+  /** @format int32 */
+  dashboardTasksCount: number;
+  /** @format int32 */
+  dashboardPipeRupturesCount: number;
+  /** @format int32 */
+  dashboardResourceDisconnectsCount: number;
+  /** @format int32 */
+  dashboardMalfunctionsCount: number;
+  dashboardAverageCompletionTime: string | null;
+  dashboardPanels: DashboardCurrentAnalitycsDetailsResponse[] | null;
+  dashboardOthers: DashboardCurrentAnalitycsDetailsOthersResponse | null;
+}
+
 export interface DataAfterSplittingHomeownerAccountResponse {
   splittedApartmentHomeownerAccount: HomeownerAccountResponse | null;
   newApartmentHomeownerAccount: HomeownerAccountResponse | null;
@@ -2213,6 +2250,7 @@ export interface ErrorResponse {
 
 export interface FeatureTogglesResponse {
   sealService: boolean;
+  mvituService: boolean;
 }
 
 export interface FullAddressResponse {
@@ -5009,6 +5047,15 @@ export interface TaskStatisticsResponse {
   tasks: DateTimeTaskStatisticsItemArrayDictionaryItem[] | null;
 }
 
+export enum TaskTargetObjectInfo {
+  ColdWaterSupply = 'ColdWaterSupply',
+  HotWaterSupply = 'HotWaterSupply',
+  Electricity = 'Electricity',
+  Heat = 'Heat',
+  MultipleResources = 'MultipleResources',
+  Calculator = 'Calculator',
+}
+
 export interface TaskTargetObjectResponse {
   targetObjectInfo: ETaskTargetObjectInfo;
   title: string | null;
@@ -7766,6 +7813,24 @@ export class Api<
         method: 'GET',
         query: query,
         secure: true,
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Супервайзер</li>
+     *
+     * @tags Dashboard
+     * @name DashboardCurrentList
+     * @summary DashboardView
+     * @request GET:/api/Dashboard/current
+     * @secure
+     */
+    dashboardCurrentList: (params: RequestParams = {}) =>
+      this.request<DashboardCurrentAnalitycsResponse[], ErrorApiResponse>({
+        path: `/api/Dashboard/current`,
+        method: 'GET',
+        secure: true,
+        format: 'json',
         ...params,
       }),
 
@@ -11349,7 +11414,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li>
+     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li><li>Супервайзер</li>
      *
      * @tags Organizations
      * @name OrganizationsList
