@@ -1,12 +1,12 @@
-import { DashboardCurrentAnalitycsDetailsOthersResponse } from 'api/types';
+import { DashboardTaskResourceResponse } from 'api/types';
 
 export const getRatioOfTasksCountByOthers = (
-  data: DashboardCurrentAnalitycsDetailsOthersResponse,
+  data: DashboardTaskResourceResponse[],
 ) => {
-  return data.items?.reduce(
+  return data?.reduce(
     (acc, elem) => ({
       all: acc.all + (elem.totalTasksCount || 0),
-      danger: acc.danger + (elem.notClosedTasksCount || 0),
+      danger: acc.danger + (elem.expiredTasksCount || 0),
     }),
     {
       danger: 0,

@@ -11,16 +11,16 @@ export const OtherDeitalStatistic: FC<Props> = ({ item }) => {
   return (
     <Wrapper>
       <Title>
-        {item.name}
+        {item.title}
         <div>
-          <NotClosedTaskCount isPositive={item.notClosedTasksCount! > 0}>
-            {item.notClosedTasksCount}
+          <NotClosedTaskCount isPositive={item.expiredTasksCount! > 0}>
+            {item.expiredTasksCount}
           </NotClosedTaskCount>{' '}
           / {item.totalTasksCount}
         </div>
       </Title>
       <Progress
-        percent={(item.notClosedTasksCount! / item.totalTasksCount!) * 100}
+        percent={(item.expiredTasksCount! / item.totalTasksCount!) * 100}
         showInfo={false}
         strokeColor={'#272F5A'}
         size={['100%', 3]}
