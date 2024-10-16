@@ -7,9 +7,9 @@ import { DatePicker } from 'ui-kit/DatePicker';
 import { FormItem } from 'ui-kit/FormItem';
 import { Input } from 'ui-kit/Input';
 import { Select } from 'ui-kit/Select';
-// import { RadioGroupSC } from '../GroupReportDatesSelect/GroupReportDatesSelect.styled'; // todo: регулярная выгрузка
+import { RadioGroupSC } from '../GroupReportDatesSelect/GroupReportDatesSelect.styled'; // todo: регулярная выгрузка
 import { RowWrapper } from '../GroupReportForm.styled';
-// import { SubsTypeRadioOptions } from './RegularUnloading.constants'; // todo: регулярная выгрузка
+import { SubsTypeRadioOptions } from './RegularUnloading.constants'; // todo: регулярная выгрузка
 import { SwitchWrapper, Wrapper } from './RegularUnloading.styled';
 import { RegularUnloadingProps } from './RegularUnloading.types';
 
@@ -17,7 +17,7 @@ export const RegularUnloading: FC<RegularUnloadingProps> = ({
   contractors,
   handleChangeContractorIds,
   handleChangeEmail,
-  // handleChangeSubsType, // todo: регулярная выгрузка
+  handleChangeSubsType, // todo: регулярная выгрузка
   handleThriggerAt,
   handleChangeIsRegular,
   values,
@@ -39,14 +39,14 @@ export const RegularUnloading: FC<RegularUnloadingProps> = ({
     if (!isRegular) {
       handleChangeContractorIds();
       handleChangeEmail();
-      // handleChangeSubsType(); // todo: регулярная выгрузка
+      handleChangeSubsType(); // todo: регулярная выгрузка
       handleThriggerAt();
     }
   }, [
     isRegular,
     handleChangeContractorIds,
     handleChangeEmail,
-    // handleChangeSubsType, // todo: регулярная выгрузка
+    handleChangeSubsType, // todo: регулярная выгрузка
     handleThriggerAt,
   ]);
 
@@ -75,13 +75,15 @@ export const RegularUnloading: FC<RegularUnloadingProps> = ({
           <RowWrapper>
             <FormItem label="Email">
               <Input
+                placeholder="Введите email"
                 value={values['Subscription.Email']}
                 onChange={(e) => handleChangeEmail(e.target.value)}
               />
               <ErrorMessage>{errors['Subscription.Email']}</ErrorMessage>
             </FormItem>
-            <FormItem label="Подрядчики">
+            <FormItem label="Контрагенты">
               <Select
+                placeholder="Выберите из списка"
                 options={contractorsOptions}
                 value={contractorValue}
                 onChange={(id) => handleChangeContractorIds([Number(id)])}
@@ -96,7 +98,7 @@ export const RegularUnloading: FC<RegularUnloadingProps> = ({
                     ? dayjs(values['Subscription.TriggerAt'])
                     : undefined
                 }
-                placeholder={'Введите дату'}
+                placeholder="Введите дату"
                 onChange={(date) =>
                   handleThriggerAt(date?.format('YYYY-MM-DD'))
                 }
@@ -106,14 +108,14 @@ export const RegularUnloading: FC<RegularUnloadingProps> = ({
               <ErrorMessage>{errors['Subscription.TriggerAt']}</ErrorMessage>
             </FormItem>
           </RowWrapper>
-          {/* <FormItem label="Период"> // todo: регулярная выгрузка
+          <FormItem label="Период">
             <RadioGroupSC
               options={SubsTypeRadioOptions}
               onChange={(e) => handleChangeSubsType(e.target.value)}
               value={values['Subscription.Type']}
             />
             <ErrorMessage>{errors['Subscription.Type']}</ErrorMessage>
-          </FormItem> */}
+          </FormItem>
         </>
       )}
     </Wrapper>

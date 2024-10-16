@@ -1,7 +1,7 @@
 import { createEffect, createEvent, createStore } from 'effector';
 import { message } from 'antd';
 import { combine, sample } from 'effector';
-import { delay, not } from 'patronum';
+import { delay } from 'patronum';
 import { createGate } from 'effector-react';
 import dayjs from 'api/dayjs';
 import {
@@ -149,8 +149,8 @@ const $isSendByEmailWithError = createStore<boolean>(false)
 sample({
   clock: delayedPendingByEmailFx,
   source: $isSendByEmailWithError,
-  // filter: (isSendByEmailWithError) => !isSendByEmailWithError, //todo: регулярная выгрузка
-  filter: not($isSendByEmailWithError),
+  filter: (isSendByEmailWithError) => !isSendByEmailWithError, //todo: регулярная выгрузка
+  // filter: not($isSendByEmailWithError),
   target: closeModal,
 });
 

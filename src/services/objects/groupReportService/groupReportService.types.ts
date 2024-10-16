@@ -4,6 +4,7 @@ import {
   EReportType,
   EResourceType,
 } from 'api/types';
+import { EEmailSubscriptionType } from './view/GroupReportForm/RegularUnloading/RegularUnloading.constants';
 
 export type GroupReportRequestPayload = RegularUnloadSubscription & {
   To: string;
@@ -22,4 +23,5 @@ export type RegularUnloadSubscription = {
   'Subscription.Email'?: string;
   'Subscription.ContractorIds'?: number[];
   'Subscription.TriggerAt'?: string;
+  'Subscription.Type'?: EEmailSubscriptionType;
 };
