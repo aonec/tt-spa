@@ -1,6 +1,9 @@
-import { createEvent, createStore, sample } from 'effector';
+import { createEvent, createStore, sample, split } from 'effector';
 import { createGate } from 'effector-react';
-import { dashboardSummaryQuery } from './currentAnalyticsService.api';
+import {
+  dashboardPiperuptersQuery,
+  dashboardSummaryQuery,
+} from './currentAnalyticsService.api';
 import { DashboardDataType } from './currentAnalyticsService.types';
 
 const CurrentAnalyticsGate = createGate();
@@ -12,7 +15,16 @@ const $currentDashboardType = createStore<DashboardDataType>(
 
 sample({
   clock: CurrentAnalyticsGate.open,
-  target: dashboardSummaryQuery.start,
+  target: [dashboardSummaryQuery.start],
+});
+
+split({
+  source: $currentDashboardType,
+  clock: [$currentDashboardType.updates, CurrentAnalyticsGate.open],
+  match: (type: DashboardDataType) => type,
+  cases: {
+    [DashboardDataType.PipeRupturesCount]: dashboardPiperuptersQuery.start,
+  },
 });
 
 export const currentAnalyticsService = {

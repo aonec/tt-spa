@@ -22,7 +22,7 @@ export const DashboardPanel: FC<Props> = ({ data, otherData }) => {
 
     return (
       <Wrapper>
-        <Title>{otherData.title}</Title>
+        <Title>Остальные округа</Title>
         <RatioWrapper>
           <DangerWrapper isPositive={(ratioOfOthers?.danger || 0) > 0}>
             {ratioOfOthers?.danger}
@@ -30,7 +30,7 @@ export const DashboardPanel: FC<Props> = ({ data, otherData }) => {
           / {ratioOfOthers?.all}
         </RatioWrapper>
         <ResourceStatisticsWrapper>
-          {otherData.items?.map((item) => (
+          {otherData.map((item) => (
             <OtherDeitalStatistic item={item} />
           ))}
         </ResourceStatisticsWrapper>

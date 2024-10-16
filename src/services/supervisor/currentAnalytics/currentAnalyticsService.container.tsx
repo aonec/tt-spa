@@ -1,6 +1,9 @@
 import { useUnit } from 'effector-react';
 import { CurrentAnalyticsPage } from './CurrentAnalyticsPage';
-import { dashboardSummaryQuery } from './currentAnalyticsService.api';
+import {
+  dashboardPiperuptersQuery,
+  dashboardSummaryQuery,
+} from './currentAnalyticsService.api';
 import { currentAnalyticsService } from './currentAnalyticsService.models';
 
 const {
@@ -15,11 +18,13 @@ export const CurrentAnalyticsContainer = () => {
     isLoading,
     currentDashboardType,
     setCurrentDashboardType,
+    dashboardPiperuptersList,
   } = useUnit({
     dashboardSummary: dashboardSummaryQuery.$data,
     isLoading: dashboardSummaryQuery.$pending,
     currentDashboardType: outputs.$currentDashboardType,
     setCurrentDashboardType: inputs.setCurrentDashboardType,
+    dashboardPiperuptersList: dashboardPiperuptersQuery.$data,
   });
 
   return (
@@ -30,6 +35,7 @@ export const CurrentAnalyticsContainer = () => {
         isLoading={isLoading}
         currentDashboardType={currentDashboardType}
         setCurrentDashboardType={setCurrentDashboardType}
+        dashboardPiperuptersList={dashboardPiperuptersList}
       />
     </>
   );

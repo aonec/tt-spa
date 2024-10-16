@@ -1,4 +1,7 @@
-import { DashboardSummaryResponse } from 'api/types';
+import {
+  DashboardSummaryResponse,
+  DashboardTaskResourceResponse,
+} from 'api/types';
 import { DashboardDataType } from '../currentAnalyticsService.types';
 
 export type Props = {
@@ -6,4 +9,5 @@ export type Props = {
   dashboardSummary: DashboardSummaryResponse | null;
   currentDashboardType: DashboardDataType;
   setCurrentDashboardType: (payload: DashboardDataType) => void;
+  dashboardPiperuptersList: DashboardTaskResourceResponse[] | null;
 };

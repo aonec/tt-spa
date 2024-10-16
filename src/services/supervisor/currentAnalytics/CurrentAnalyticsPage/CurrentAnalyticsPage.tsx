@@ -5,14 +5,20 @@ import { PageHeader } from 'ui-kit/shared/PageHeader';
 import { AnalyticsSearch } from './AnalyticsSearch';
 import { WithLoader } from 'ui-kit/shared/WithLoader';
 import { InfoOptionsPanels } from './InfoOptionsPanels';
-// import { DashboardPanel } from './DashboardPanel';
+import { splitArrayForDashboard } from './CurrentAnalyticsPage.utils';
+import { DashboardPanel } from './DashboardPanel';
 
 export const CurrentAnalyticsPage: FC<Props> = ({
   isLoading,
   dashboardSummary,
   currentDashboardType,
   setCurrentDashboardType,
+  dashboardPiperuptersList,
 }) => {
+  const dashboardData =
+    dashboardPiperuptersList &&
+    splitArrayForDashboard(dashboardPiperuptersList);
+
   return (
     <Wrapper>
       <PageHeader title="Текущая ситуация" contextMenu={{}} />
@@ -24,12 +30,12 @@ export const CurrentAnalyticsPage: FC<Props> = ({
       />
       <WithLoader isLoading={isLoading}>
         <DashboardPanelWrapper>
-          {/* {dashboardData?.dashboardPanels?.map((data) => (
+          {dashboardData?.panels?.map((data) => (
             <DashboardPanel data={data} />
           ))}
-          {dashboardData?.dashboardOthers && (
-            <DashboardPanel otherData={dashboardData.dashboardOthers} />
-          )} */}
+          {dashboardData?.others && (
+            <DashboardPanel otherData={dashboardData.others} />
+          )}
         </DashboardPanelWrapper>
       </WithLoader>
     </Wrapper>
