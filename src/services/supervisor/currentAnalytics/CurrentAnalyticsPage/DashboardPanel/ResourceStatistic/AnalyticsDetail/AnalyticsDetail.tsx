@@ -3,14 +3,14 @@ import { Name, NotClosedTasksCount, Wrapper } from './AnalyticsDetail.styled';
 import { Props } from './AnalyticsDetail.types';
 
 export const AnalyticsDetail: FC<Props> = ({ data }) => {
-  const isDanger = data.notClosedTasksCount !== 0;
+  const isDanger = data.expiredTasksCount !== 0;
 
   return (
     <Wrapper danger={isDanger}>
-      <Name>{data.name}</Name>
+      <Name>{data.label}</Name>
       <div>
         <NotClosedTasksCount danger={isDanger}>
-          {data.notClosedTasksCount}
+          {data.expiredTasksCount}
         </NotClosedTasksCount>{' '}
         / {data.totalTasksCount}
       </div>
