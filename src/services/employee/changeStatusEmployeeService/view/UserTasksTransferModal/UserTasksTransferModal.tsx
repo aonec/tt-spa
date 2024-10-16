@@ -86,18 +86,13 @@ export const UserTasksTransferModal: FC<UserTasksTransferModalProps> = ({
     userSearchText,
   ]);
 
-  console.log({ organizationUserTasksByRoles });
-
   const filteredTasks = useMemo(() => {
     return (
       organizationUserTasksByRoles?.find((elem) => {
-        console.log(elem.role.key, selectedRole);
         return elem.role.key === selectedRole;
       })?.tasks || null
     );
   }, [organizationUserTasksByRoles, selectedRole]);
-
-  console.log({ filteredTasks });
 
   const currentSelectedUser = useMemo(() => {
     return (

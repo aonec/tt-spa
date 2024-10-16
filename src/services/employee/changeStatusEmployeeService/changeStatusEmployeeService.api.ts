@@ -44,8 +44,6 @@ export const getOrganizationUserTasksByRoles = ({
         CurrentStageRequiredUserRole: role.key,
       });
 
-      console.log({ pagedTasksList });
-
       return { role, tasks: pagedTasksList };
     }),
   );
