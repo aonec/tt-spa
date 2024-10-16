@@ -19,7 +19,7 @@ export default defineConfig({
     svgr({
       include: '**/*.svg?react',
     }),
-    eslint()
+    eslint(),
   ],
   server: {
     open: true,
@@ -42,4 +42,5 @@ export default defineConfig({
   build: {
     outDir: 'build',
   },
+  assetsInclude: ['/sb-preview/runtime.js'],
 });
