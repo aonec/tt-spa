@@ -1,5 +1,5 @@
-import { DashboardCurrentAnalitycsDetailsResourceModel } from 'api/types';
+import { DashboardTaskResourceDetailsModel } from 'api/types';
 
 export type Props = {
-  data: DashboardCurrentAnalitycsDetailsResourceModel;
+  data: DashboardTaskResourceDetailsModel;
 };

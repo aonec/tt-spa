@@ -1,9 +1,6 @@
-import {
-  DashboardCurrentAnalitycsDetailsOthersResponse,
-  DashboardCurrentAnalitycsDetailsResponse,
-} from 'api/types';
+import { DashboardTaskResourceResponse } from "api/types";
 
 export type Props = {
-  data?: DashboardCurrentAnalitycsDetailsResponse;
-  otherData?: DashboardCurrentAnalitycsDetailsOthersResponse;
+  data?: DashboardTaskResourceResponse;
+  otherData?: DashboardTaskResourceResponse[];
 };
