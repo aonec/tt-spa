@@ -1,7 +1,9 @@
-import { createEvent, createStore, sample, split } from 'effector';
+import { combine, createEvent, createStore, sample, split } from 'effector';
 import { createGate } from 'effector-react';
 import {
+  dashboardMalfunctionsQuery,
   dashboardPiperuptersQuery,
+  dashboardResourceDisconnectionQuery,
   dashboardSummaryQuery,
 } from './currentAnalyticsService.api';
 import { DashboardDataType } from './currentAnalyticsService.types';
@@ -24,11 +26,21 @@ split({
   match: (type: DashboardDataType) => type,
   cases: {
     [DashboardDataType.PipeRupturesCount]: dashboardPiperuptersQuery.start,
+    [DashboardDataType.ResourceDisconnectsCount]:
+      dashboardResourceDisconnectionQuery.start,
+    [DashboardDataType.MalfunctionsCount]: dashboardMalfunctionsQuery.start,
   },
 });
 
+const $isLoading = combine(
+  dashboardPiperuptersQuery.$pending,
+  dashboardResourceDisconnectionQuery.$pending,
+  dashboardMalfunctionsQuery.$pending,
+  (...params) => params.some((value) => value),
+);
+
 export const currentAnalyticsService = {
   inputs: { setCurrentDashboardType },
-  outputs: { $currentDashboardType },
+  outputs: { $currentDashboardType, $isLoading },
   gates: { CurrentAnalyticsGate },
 };

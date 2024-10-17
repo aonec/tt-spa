@@ -10,4 +10,7 @@ export type Props = {
   currentDashboardType: DashboardDataType;
   setCurrentDashboardType: (payload: DashboardDataType) => void;
   dashboardPiperuptersList: DashboardTaskResourceResponse[] | null;
+  dashboardResourceDisconnection: DashboardTaskResourceResponse[] | null;
+  dashboardMalfunctions: DashboardTaskResourceResponse[] | null;
+  isLoadingPanels: boolean;
 };

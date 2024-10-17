@@ -18,3 +18,17 @@ export const dashboardPiperuptersQuery = createQuery<
 >({
   handler: () => axios.get(`/Dashboard/current/piperuptures`),
 });
+
+export const dashboardResourceDisconnectionQuery = createQuery<
+  void,
+  DashboardTaskResourceResponse[]
+>({
+  handler: () => axios.get(`/Dashboard/current/resourcedisconnects`),
+});
+
+export const dashboardMalfunctionsQuery = createQuery<
+  void,
+  DashboardTaskResourceResponse[]
+>({
+  handler: () => axios.get(`/Dashboard/current/malfunctions`),
+});

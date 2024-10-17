@@ -1,7 +1,9 @@
 import { useUnit } from 'effector-react';
 import { CurrentAnalyticsPage } from './CurrentAnalyticsPage';
 import {
+  dashboardMalfunctionsQuery,
   dashboardPiperuptersQuery,
+  dashboardResourceDisconnectionQuery,
   dashboardSummaryQuery,
 } from './currentAnalyticsService.api';
 import { currentAnalyticsService } from './currentAnalyticsService.models';
@@ -15,16 +17,22 @@ const {
 export const CurrentAnalyticsContainer = () => {
   const {
     dashboardSummary,
-    isLoading,
+    isLoadingSummary,
     currentDashboardType,
     setCurrentDashboardType,
     dashboardPiperuptersList,
+    isLoadingPanels,
+    dashboardResourceDisconnection,
+    dashboardMalfunctions,
   } = useUnit({
     dashboardSummary: dashboardSummaryQuery.$data,
-    isLoading: dashboardSummaryQuery.$pending,
+    isLoadingSummary: dashboardSummaryQuery.$pending,
     currentDashboardType: outputs.$currentDashboardType,
     setCurrentDashboardType: inputs.setCurrentDashboardType,
     dashboardPiperuptersList: dashboardPiperuptersQuery.$data,
+    dashboardResourceDisconnection: dashboardResourceDisconnectionQuery.$data,
+    dashboardMalfunctions: dashboardMalfunctionsQuery.$data,
+    isLoadingPanels: outputs.$isLoading,
   });
 
   return (
@@ -32,10 +40,13 @@ export const CurrentAnalyticsContainer = () => {
       <CurrentAnalyticsGate />
       <CurrentAnalyticsPage
         dashboardSummary={dashboardSummary}
-        isLoading={isLoading}
+        isLoading={isLoadingSummary}
         currentDashboardType={currentDashboardType}
         setCurrentDashboardType={setCurrentDashboardType}
         dashboardPiperuptersList={dashboardPiperuptersList}
+        dashboardResourceDisconnection={dashboardResourceDisconnection}
+        dashboardMalfunctions={dashboardMalfunctions}
+        isLoadingPanels={isLoadingPanels}
       />
     </>
   );
