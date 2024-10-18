@@ -46,7 +46,7 @@ export const CreateEmployeeForm: FC<CreateEmployeeFormProps> = ({
         .min(2, 'Минимум два символа')
         .required('Обязательное поле'),
       email: yup.string().nullable().required('Обязательное поле'),
-      roleTypes: yup.string().nullable().required('Обязательное поле'),
+      roleTypes: yup.array().nullable().required('Обязательное поле'),
     }),
   });
 
