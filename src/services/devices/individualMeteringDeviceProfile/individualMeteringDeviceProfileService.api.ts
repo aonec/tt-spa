@@ -3,7 +3,7 @@ import { axios } from 'api/axios';
 import { IndividualDeviceResponse } from 'api/types';
 
 export const individualDeviceQuery = createQuery<
-  number,
+  [number],
   IndividualDeviceResponse
 >({
   handler: (id) => axios.get(`IndividualDevices/${id}`),

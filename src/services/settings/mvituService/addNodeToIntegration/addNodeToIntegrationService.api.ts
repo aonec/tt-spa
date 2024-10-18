@@ -10,14 +10,14 @@ import { createEffect } from 'effector';
 import { EffectFailDataAxiosError } from 'types';
 
 export const searchNodesQuery = createQuery<
-  SearchNodeParams,
+  [SearchNodeParams],
   NodeSearchResponse
 >({
   handler: (params): Promise<NodeSearchResponse> =>
     axios.get('mvitu/Searching/Nodes', { params }),
 });
 
-export const getNodeQuery = createQuery<number, NodeResponse>({
+export const getNodeQuery = createQuery<[number], NodeResponse>({
   handler: (id) => axios.get(`mvitu/Searching/Nodes/${id}`),
 });
 
