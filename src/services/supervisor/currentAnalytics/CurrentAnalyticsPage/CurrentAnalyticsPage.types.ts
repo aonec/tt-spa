@@ -1,5 +1,6 @@
 import {
   DashboardSummaryResponse,
+  DashboardTaskMalfunctionResponse,
   DashboardTaskResourceResponse,
 } from 'api/types';
 import { DashboardDataType } from '../currentAnalyticsService.types';
@@ -11,6 +12,6 @@ export type Props = {
   setCurrentDashboardType: (payload: DashboardDataType) => void;
   dashboardPiperuptersList: DashboardTaskResourceResponse[] | null;
   dashboardResourceDisconnection: DashboardTaskResourceResponse[] | null;
-  dashboardMalfunctions: DashboardTaskResourceResponse[] | null;
+  dashboardMalfunctions: DashboardTaskMalfunctionResponse[] | null;
   isLoadingPanels: boolean;
 };

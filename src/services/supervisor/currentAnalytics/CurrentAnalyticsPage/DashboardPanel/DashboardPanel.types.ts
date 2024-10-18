@@ -1,6 +1,12 @@
-import { DashboardTaskResourceResponse } from "api/types";
+import {
+  DashboardTaskMalfunctionResponse,
+  DashboardTaskResourceResponse,
+} from 'api/types';
 
 export type Props = {
-  data?: DashboardTaskResourceResponse;
-  otherData?: DashboardTaskResourceResponse[];
+  data?: DashboardTaskResourceResponse | DashboardTaskMalfunctionResponse;
+  otherData?: (
+    | DashboardTaskResourceResponse
+    | DashboardTaskMalfunctionResponse
+  )[];
 };

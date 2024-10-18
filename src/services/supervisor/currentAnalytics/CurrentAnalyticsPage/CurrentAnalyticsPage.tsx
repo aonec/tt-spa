@@ -8,6 +8,10 @@ import { InfoOptionsPanels } from './InfoOptionsPanels';
 import { splitArrayForDashboard } from './CurrentAnalyticsPage.utils';
 import { DashboardPanel } from './DashboardPanel';
 import { DashboardDataType } from '../currentAnalyticsService.types';
+import {
+  DashboardTaskMalfunctionResponse,
+  DashboardTaskResourceResponse,
+} from 'api/types';
 
 export const CurrentAnalyticsPage: FC<Props> = ({
   isLoading,
@@ -31,7 +35,12 @@ export const CurrentAnalyticsPage: FC<Props> = ({
 
     const dataList = dataMap[currentDashboardType];
 
-    return dataList && splitArrayForDashboard(dataList);
+    return (
+      dataList &&
+      splitArrayForDashboard<
+        DashboardTaskMalfunctionResponse | DashboardTaskResourceResponse
+      >(dataList)
+    );
   }, [
     currentDashboardType,
     dashboardMalfunctions,

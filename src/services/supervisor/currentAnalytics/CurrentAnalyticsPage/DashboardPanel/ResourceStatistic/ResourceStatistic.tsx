@@ -7,26 +7,37 @@ import {
 } from './ResourceStatistic.styled';
 import { Props } from './ResourceStatistic.types';
 import { ResourceInfo } from 'ui-kit/shared/ResourceInfo';
-import { EResourceType } from 'api/types';
+import {
+  DashboardTaskMalfunctionDetailsModel,
+  DashboardTaskResourceDetailsModel,
+} from 'api/types';
 import { Progress } from 'antd';
 import { AnalitycsDetail } from './AnalyticsDetail';
+import { MalfunctionIcon } from './MalfunctionIcon';
 
 export const ResourceStatistic: FC<Props> = ({ data }) => {
   return (
     <Wrapper>
-      {data.resourceType && (
-        <Title>
-          <ResourceInfo
-            resource={data.resourceType as unknown as EResourceType}
-          />
-          <div>
-            <NotClosedTaskCount isPositive={data.notClosedTasksCount! > 0}>
-              {data.notClosedTasksCount}
-            </NotClosedTaskCount>{' '}
-            / {data.totalTasksCount}
-          </div>
-        </Title>
-      )}
+      <Title>
+        <div>
+          {(data as DashboardTaskMalfunctionDetailsModel)?.malfunctionType && (
+            <MalfunctionIcon
+              type={
+                (data as DashboardTaskMalfunctionDetailsModel).malfunctionType!
+              }
+            />
+          )}
+          {(data as DashboardTaskResourceDetailsModel)?.resourceType && (
+            <ResourceInfo resource={(data as any).resourceType as any} />
+          )}
+        </div>
+        <div>
+          <NotClosedTaskCount isPositive={data.notClosedTasksCount! > 0}>
+            {data.notClosedTasksCount}
+          </NotClosedTaskCount>{' '}
+          / {data.totalTasksCount}
+        </div>
+      </Title>
       <Progress
         percent={(data.notClosedTasksCount! / data.totalTasksCount!) * 100}
         showInfo={false}

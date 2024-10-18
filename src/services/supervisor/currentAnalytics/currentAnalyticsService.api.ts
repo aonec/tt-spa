@@ -2,6 +2,7 @@ import { createQuery } from '@farfetched/core';
 import { axios } from 'api/axios';
 import {
   DashboardSummaryResponse,
+  DashboardTaskMalfunctionResponse,
   DashboardTaskResourceResponse,
 } from 'api/types';
 
@@ -28,7 +29,7 @@ export const dashboardResourceDisconnectionQuery = createQuery<
 
 export const dashboardMalfunctionsQuery = createQuery<
   void,
-  DashboardTaskResourceResponse[]
+  DashboardTaskMalfunctionResponse[]
 >({
   handler: () => axios.get(`/Dashboard/current/malfunctions`),
 });
