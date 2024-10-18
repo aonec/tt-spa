@@ -1,9 +1,12 @@
 import {
-  DashboardCurrentAnalitycsDetailsOthersResponse,
-  DashboardCurrentAnalitycsDetailsResponse,
+  DashboardTaskMalfunctionResponse,
+  DashboardTaskResourceResponse,
 } from 'api/types';
 
 export type Props = {
-  data?: DashboardCurrentAnalitycsDetailsResponse;
-  otherData?: DashboardCurrentAnalitycsDetailsOthersResponse;
+  data?: DashboardTaskResourceResponse | DashboardTaskMalfunctionResponse;
+  otherData?: (
+    | DashboardTaskResourceResponse
+    | DashboardTaskMalfunctionResponse
+  )[];
 };

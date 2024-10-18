@@ -5,7 +5,7 @@ import { OptionPanelButton } from 'ui-kit/shared/OptionPanelButton';
 import { DashboardDataType } from '../../currentAnalyticsService.types';
 
 export const InfoOptionsPanels: FC<Props> = ({
-  dashboardData,
+  dashboardSummary,
   currentDashboardType,
   setCurrentDashboardType,
 }) => {
@@ -13,28 +13,28 @@ export const InfoOptionsPanels: FC<Props> = ({
     const options = [
       {
         title: 'Порывы',
-        value: dashboardData?.dashboardPipeRupturesCount,
+        value: dashboardSummary?.dashboardPipeRupturesCount,
         type: DashboardDataType.PipeRupturesCount,
       },
       {
         title: 'Отключения',
-        value: dashboardData?.dashboardResourceDisconnectsCount,
+        value: dashboardSummary?.dashboardResourceDisconnectsCount,
         type: DashboardDataType.ResourceDisconnectsCount,
       },
       {
         title: 'Неисправности',
-        value: dashboardData?.dashboardMalfunctionsCount,
+        value: dashboardSummary?.dashboardMalfunctionsCount,
         type: DashboardDataType.MalfunctionsCount,
       },
       {
         title: 'Время на задачу',
-        value: dashboardData?.dashboardAverageCompletionTime,
+        value: dashboardSummary?.dashboardAverageCompletionTime,
         unit: 'мин',
         type: DashboardDataType.AverageCompletionTime,
       },
       {
         title: 'Качество услуг',
-        value: dashboardData?.dashboardTasksCount,
+        value: dashboardSummary?.dashboardTasksCount,
         unit: 'задач',
         type: DashboardDataType.TasksCount,
       },
@@ -46,11 +46,11 @@ export const InfoOptionsPanels: FC<Props> = ({
     }));
   }, [
     currentDashboardType,
-    dashboardData?.dashboardAverageCompletionTime,
-    dashboardData?.dashboardMalfunctionsCount,
-    dashboardData?.dashboardPipeRupturesCount,
-    dashboardData?.dashboardResourceDisconnectsCount,
-    dashboardData?.dashboardTasksCount,
+    dashboardSummary?.dashboardAverageCompletionTime,
+    dashboardSummary?.dashboardMalfunctionsCount,
+    dashboardSummary?.dashboardPipeRupturesCount,
+    dashboardSummary?.dashboardResourceDisconnectsCount,
+    dashboardSummary?.dashboardTasksCount,
   ]);
 
   return (
