@@ -1,0 +1,1 @@
+export { InfoOptionsPanels } from './InfoOptionsPanels';
