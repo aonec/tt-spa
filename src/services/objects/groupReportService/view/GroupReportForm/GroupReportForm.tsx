@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useMemo } from 'react';
+import React, { FC, useCallback, useEffect, useMemo } from 'react';
 import {
   ExportReportType,
   GroupReportFormProps,
@@ -27,6 +27,8 @@ import { EReportFormat, EReportType } from 'api/types';
 import { SelectMultiple } from 'ui-kit/SelectMultiple';
 import { ExportReportTypeTranslatesLookup } from 'services/reportsService/reportViewService/reportViewService.constants';
 import { prepareAddressesTreeData } from 'services/reportsService/reportViewService/view/ReportViewPage/ReportFiltrationForm/ReportFiltrationForm.utils';
+import { RegularUnloading } from './RegularUnloading';
+import { EEmailSubscriptionType } from './RegularUnloading/RegularUnloading.constants';
 
 const withoutHouseMagement = 'withoutHouseMagement';
 
@@ -41,11 +43,13 @@ export const GroupReportForm: FC<GroupReportFormProps> = ({
   const {
     nodeResourceTypes,
     nodeStatuses,
-    // contractors // todo: регулярная выгрузка
+    contractors, // todo: регулярная выгрузка
   } = reportFilters;
 
   const { values, setFieldValue, handleSubmit, errors, setValues } = useFormik<
-    Partial<GroupReportRequestPayload> & { exportType: ExportReportType | null } //  & { isRegular: boolean }  // todo: регулярная выгрузка
+    Partial<GroupReportRequestPayload> & {
+      exportType: ExportReportType | null;
+    } & { isRegular: boolean } // todo: регулярная выгрузка
   >({
     initialValues: {
       exportType: null,
@@ -56,7 +60,7 @@ export const GroupReportForm: FC<GroupReportFormProps> = ({
       ReportType: EReportType.Hourly,
       From: dayjs().startOf('month').format(),
       To: dayjs().endOf('day').format(),
-      // isRegular: false,  // todo: регулярная выгрузка
+      isRegular: false, // todo: регулярная выгрузка
       ReportFormat: EReportFormat.Consumption,
     },
     validationSchema,
@@ -64,7 +68,7 @@ export const GroupReportForm: FC<GroupReportFormProps> = ({
     validateOnChange: false,
     onSubmit: (values) => {
       const {
-        //  isRegular, // todo: регулярная выгрузка
+        isRegular, // todo: регулярная выгрузка
         ...payload
       } = values;
 
@@ -111,28 +115,28 @@ export const GroupReportForm: FC<GroupReportFormProps> = ({
   }, [organizations, setFieldValue, values.exportType]);
 
   // todo: регулярная выгрузка
-  // const handleChangeContractorIds = useCallback(
-  //   (ids?: number[]) => setFieldValue("['Subscription.ContractorIds']", ids),
-  //   [setFieldValue],
-  // );
-  // const handleChangeEmail = useCallback(
-  //   (email?: string) => setFieldValue("['Subscription.Email']", email),
-  //   [setFieldValue],
-  // );
-  // const handleChangeSubsType = useCallback(
-  //   (type?: EEmailSubscriptionType) =>
-  //     setFieldValue("['Subscription.Type']", type),
-  //   [setFieldValue],
-  // );
-  // const handleThriggerAt = useCallback(
-  //   (date?: string) => setFieldValue("['Subscription.TriggerAt']", date),
-  //   [setFieldValue],
-  // );
+  const handleChangeContractorIds = useCallback(
+    (ids?: number[]) => setFieldValue("['Subscription.ContractorIds']", ids),
+    [setFieldValue],
+  );
+  const handleChangeEmail = useCallback(
+    (email?: string) => setFieldValue("['Subscription.Email']", email),
+    [setFieldValue],
+  );
+  const handleChangeSubsType = useCallback(
+    (type?: EEmailSubscriptionType) =>
+      setFieldValue("['Subscription.Type']", type),
+    [setFieldValue],
+  );
+  const handleThriggerAt = useCallback(
+    (date?: string) => setFieldValue("['Subscription.TriggerAt']", date),
+    [setFieldValue],
+  );
 
-  // const handleChangeIsRegular = useCallback(
-  //   (isRegular: boolean) => setFieldValue('isRegular', isRegular),
-  //   [setFieldValue],
-  // );
+  const handleChangeIsRegular = useCallback(
+    (isRegular: boolean) => setFieldValue('isRegular', isRegular),
+    [setFieldValue],
+  );
 
   return (
     <Form id={formId} onSubmitCapture={handleSubmit}>
@@ -284,10 +288,24 @@ export const GroupReportForm: FC<GroupReportFormProps> = ({
         </FormItem>
       </RowWrapper>
 
+      <Checkbox
+        checked={values.ReportFormat === EReportFormat.Rso}
+        onChange={(value) =>
+          setFieldValue(
+            'ReportFormat',
+            value.target.checked
+              ? EReportFormat.Rso
+              : EReportFormat.Consumption,
+          )
+        }
+      >
+        Выгрузка отчета с кодами НС
+      </Checkbox>
+
       <Divider type="horizontal" />
 
       {/* // todo: регулярная выгрузка */}
-      {/* <RegularUnloading
+      <RegularUnloading
         handleChangeContractorIds={handleChangeContractorIds}
         handleChangeEmail={handleChangeEmail}
         handleChangeSubsType={handleChangeSubsType}
@@ -302,21 +320,7 @@ export const GroupReportForm: FC<GroupReportFormProps> = ({
           isRegular: values.isRegular,
         }}
         errors={errors}
-      /> */}
-
-      <Checkbox
-        checked={values.ReportFormat === EReportFormat.Rso}
-        onChange={(value) =>
-          setFieldValue(
-            'ReportFormat',
-            value.target.checked
-              ? EReportFormat.Rso
-              : EReportFormat.Consumption,
-          )
-        }
-      >
-        Выгрузка отчета с кодами НС
-      </Checkbox>
+      />
     </Form>
   );
 };
