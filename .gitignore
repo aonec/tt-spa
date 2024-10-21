@@ -27,3 +27,5 @@ yarn-error.log*
 .now
 
 debug.log
+
+*storybook.log
