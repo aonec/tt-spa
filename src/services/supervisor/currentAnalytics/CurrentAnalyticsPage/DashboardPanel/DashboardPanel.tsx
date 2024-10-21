@@ -10,10 +10,7 @@ import {
 import { Props } from './DashboardPanel.types';
 import { ResourceStatistic } from './ResourceStatistic';
 import { LinkButton } from 'ui-kit/shared/LinkButton';
-import {
-  getRatioOfTasksCount,
-  getRatioOfTasksCountByOthers,
-} from './DashboardPanel.utils';
+import { getRatioOfTasksCountByOthers } from './DashboardPanel.utils';
 import { OtherDeitalStatistic } from './OtherDeitalStatistic';
 
 export const DashboardPanel: FC<Props> = ({ data, otherData }) => {
@@ -22,7 +19,7 @@ export const DashboardPanel: FC<Props> = ({ data, otherData }) => {
 
     return (
       <Wrapper>
-        <Title>{otherData.title}</Title>
+        <Title>Остальные округа</Title>
         <RatioWrapper>
           <DangerWrapper isPositive={(ratioOfOthers?.danger || 0) > 0}>
             {ratioOfOthers?.danger}
@@ -30,7 +27,7 @@ export const DashboardPanel: FC<Props> = ({ data, otherData }) => {
           / {ratioOfOthers?.all}
         </RatioWrapper>
         <ResourceStatisticsWrapper>
-          {otherData.items?.map((item) => (
+          {otherData.map((item) => (
             <OtherDeitalStatistic item={item} />
           ))}
         </ResourceStatisticsWrapper>
@@ -43,16 +40,14 @@ export const DashboardPanel: FC<Props> = ({ data, otherData }) => {
 
   if (!data) return null;
 
-  const ratioOfTasksCount = getRatioOfTasksCount(data.details || []);
-
   return (
     <Wrapper>
       <Title>{data.title}</Title>
       <RatioWrapper>
-        <DangerWrapper isPositive={(ratioOfTasksCount?.danger || 0) > 0}>
-          {ratioOfTasksCount?.danger}
+        <DangerWrapper isPositive={(data.expiredTasksCount || 0) > 0}>
+          {data.expiredTasksCount}
         </DangerWrapper>{' '}
-        / {ratioOfTasksCount?.all}
+        / {data.totalTasksCount}
       </RatioWrapper>
       <ResourceStatisticsWrapper>
         {data.details?.map((detail) => (
