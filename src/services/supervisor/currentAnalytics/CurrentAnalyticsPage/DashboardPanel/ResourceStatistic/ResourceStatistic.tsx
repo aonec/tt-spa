@@ -21,11 +21,17 @@ export const ResourceStatistic: FC<Props> = ({ data }) => {
       <Title>
         <div>
           {(data as DashboardTaskMalfunctionDetailsModel)?.malfunctionType && (
-            <MalfunctionIcon
-              type={
-                (data as DashboardTaskMalfunctionDetailsModel).malfunctionType!
-              }
-            />
+            <>
+              {
+                <MalfunctionIcon
+                  type={
+                    (data as DashboardTaskMalfunctionDetailsModel)
+                      .malfunctionType!
+                  }
+                />
+              }{' '}
+              {(data as DashboardTaskMalfunctionDetailsModel).malfunctionType}
+            </>
           )}
           {(data as DashboardTaskResourceDetailsModel)?.resourceType && (
             <ResourceInfo resource={(data as any).resourceType as any} />
