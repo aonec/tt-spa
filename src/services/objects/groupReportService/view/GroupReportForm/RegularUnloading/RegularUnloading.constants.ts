@@ -1,13 +1,9 @@
 // Доработывает бэк //регулярная выгрузка
 
-export enum EEmailSubscriptionType {
-  OncePerTwoWeeks = 'OncePerTwoWeeks',
-  OncePerMonth = 'OncePerMonth',
-  OncePerQuarter = 'OncePerQuarter',
-}
+import { GroupReportSchedulePeriod } from 'api/types';
 
 export const SubsTypeRadioOptions = [
-  { value: EEmailSubscriptionType.OncePerTwoWeeks, label: '1 раз в 2 недели' },
-  { value: EEmailSubscriptionType.OncePerMonth, label: '1 раз в месяц' },
-  { value: EEmailSubscriptionType.OncePerQuarter, label: '1 раз в квартал' },
+  { value: GroupReportSchedulePeriod.EveryTwoWeeks, label: '1 раз в 2 недели' },
+  { value: GroupReportSchedulePeriod.EveryMonth, label: '1 раз в месяц' },
+  { value: GroupReportSchedulePeriod.EveryQuarter, label: '1 раз в квартал' },
 ];

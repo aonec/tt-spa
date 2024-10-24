@@ -5,6 +5,7 @@ import { delay } from 'patronum';
 import { createGate } from 'effector-react';
 import dayjs from 'api/dayjs';
 import {
+  CreateGroupReportScheduleRequest,
   EReportType,
   GroupReportFormResponse,
   SendGroupReportRequest,
@@ -13,6 +14,7 @@ import {
   downloadGroupReportRequest,
   fetchFilters,
   fetchGroupReport,
+  postRegularUpload,
   sendByEmail,
 } from './groupReportService.api';
 import {
@@ -29,6 +31,14 @@ const closeModal = createEvent();
 const $isOpen = createStore(false)
   .on(openModal, () => true)
   .on(closeModal, () => false);
+
+const setRegularUpload = createEvent<boolean>();
+const $isRegularUpload = createStore(false).on(
+  setRegularUpload,
+  (_, data) => data,
+);
+
+$isRegularUpload.watch((data) => console.log(data));
 
 const getReportFiltersFx = createEffect<void, GroupReportFormResponse>(
   fetchFilters,
@@ -58,6 +68,12 @@ const setGroupReportPayload = createEvent<Partial<GroupReportRequestPayload>>();
 const $downloadReportPayload = createStore<GroupReportRequestPayload | null>(
   null,
 );
+
+const postRegularUploadFx = createEffect<
+  CreateGroupReportScheduleRequest,
+  void,
+  EffectFailDataAxiosError
+>(postRegularUpload);
 
 const $isFiltersLoading = getReportFiltersFx.pending;
 const $isDownloading = combine(
@@ -97,6 +113,37 @@ sample({
     return isExist && (isNotTooLongDaily || isNotTooLongHourly);
   },
   target: downloadGroupReportFx,
+});
+
+sample({
+  clock: $downloadReportPayload,
+  source: $isRegularUpload,
+  filter: (isRegularUpload) => isRegularUpload,
+  fn: (_, clock) => {
+    const payload = {
+      report: {
+        fileName: clock?.FileName,
+        buildingIds: clock?.BuildingIds,
+        from: clock?.From,
+        houseManagementId: clock?.HouseManagementId,
+        managementFirmId: clock?.ManagementFirmId,
+        nodeResourceTypes: clock?.NodeResourceTypes,
+        nodeStatus: clock?.NodeStatus,
+        reportFormat: clock?.ReportFormat,
+        reportType: clock?.ReportType,
+        to: clock?.To,
+      },
+      reportScheduleDetails: {
+        emails: [clock?.['Subscription.Email']],
+        contractorIds: clock?.['Subscription.ContractorIds'],
+        initialDate: clock?.['Subscription.TriggerAt'],
+        reportSchedulePeriod: clock?.['Subscription.Type'],
+      },
+    } as CreateGroupReportScheduleRequest;
+
+    return payload;
+  },
+  target: postRegularUploadFx,
 });
 
 sample({
@@ -216,6 +263,7 @@ export const groupReportService = {
     closeModal,
     setGroupReportPayload,
     getGroupReport,
+    setRegularUpload,
   },
   outputs: {
     $isOpen,

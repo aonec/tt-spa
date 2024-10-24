@@ -22,6 +22,7 @@ export const RegularUnloading: FC<RegularUnloadingProps> = ({
   handleChangeIsRegular,
   values,
   errors,
+  setRegularUpload,
 }) => {
   const { isRegular } = values;
 
@@ -60,7 +61,12 @@ export const RegularUnloading: FC<RegularUnloadingProps> = ({
 
   return (
     <Wrapper>
-      <SwitchWrapper onClick={() => handleChangeIsRegular(!isRegular)}>
+      <SwitchWrapper
+        onClick={() => {
+          handleChangeIsRegular(!isRegular);
+          setRegularUpload(!isRegular);
+        }}
+      >
         <Switch checked={isRegular} />
         <div>
           <label>Регулярная выгрузка отчёта</label>

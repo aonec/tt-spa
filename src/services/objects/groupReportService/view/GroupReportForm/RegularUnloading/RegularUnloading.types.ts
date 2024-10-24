@@ -1,6 +1,8 @@
-import { GroupReportContractorResponse } from 'api/types';
+import {
+  GroupReportContractorResponse,
+  GroupReportSchedulePeriod,
+} from 'api/types';
 import { RegularUnloadSubscription } from 'services/objects/groupReportService/groupReportService.types';
-import { EEmailSubscriptionType } from './RegularUnloading.constants';
 
 export type RegularUnloadingProps = {
   handleChangeEmail: (email?: string) => void;
@@ -10,7 +12,8 @@ export type RegularUnloadingProps = {
   contractors: GroupReportContractorResponse[];
   values: RegularUnloadSubscription & { isRegular: boolean };
   errors: RegularUnloadingErrors;
-  handleChangeSubsType: (value?: EEmailSubscriptionType) => void;
+  handleChangeSubsType: (value?: GroupReportSchedulePeriod) => void;
+  setRegularUpload: (payload: boolean) => void;
 };
 
 type RegularUnloadingErrors = {

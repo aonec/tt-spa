@@ -23,12 +23,15 @@ import { GroupReportDatesSelect } from './GroupReportDatesSelect';
 import { RadioGroupSC } from './GroupReportDatesSelect/GroupReportDatesSelect.styled';
 import { LabeledValue } from 'antd/lib/select';
 import { ErrorMessage } from 'ui-kit/ErrorMessage';
-import { EReportFormat, EReportType } from 'api/types';
+import {
+  EReportFormat,
+  EReportType,
+  GroupReportSchedulePeriod,
+} from 'api/types';
 import { SelectMultiple } from 'ui-kit/SelectMultiple';
 import { ExportReportTypeTranslatesLookup } from 'services/reportsService/reportViewService/reportViewService.constants';
 import { prepareAddressesTreeData } from 'services/reportsService/reportViewService/view/ReportViewPage/ReportFiltrationForm/ReportFiltrationForm.utils';
 import { RegularUnloading } from './RegularUnloading';
-import { EEmailSubscriptionType } from './RegularUnloading/RegularUnloading.constants';
 
 const withoutHouseMagement = 'withoutHouseMagement';
 
@@ -39,6 +42,7 @@ export const GroupReportForm: FC<GroupReportFormProps> = ({
   organizations,
   addressesWithHouseManagements,
   houseManagements,
+  setRegularUpload,
 }) => {
   const {
     nodeResourceTypes,
@@ -124,7 +128,7 @@ export const GroupReportForm: FC<GroupReportFormProps> = ({
     [setFieldValue],
   );
   const handleChangeSubsType = useCallback(
-    (type?: EEmailSubscriptionType) =>
+    (type?: GroupReportSchedulePeriod) =>
       setFieldValue("['Subscription.Type']", type),
     [setFieldValue],
   );
@@ -320,6 +324,7 @@ export const GroupReportForm: FC<GroupReportFormProps> = ({
           isRegular: values.isRegular,
         }}
         errors={errors}
+        setRegularUpload={setRegularUpload}
       />
     </Form>
   );
