@@ -6,7 +6,7 @@ import { EffectFailDataAxiosError } from 'types';
 import { createEffect } from 'effector';
 
 export const homeownerAccountQuery = createQuery<
-  string,
+  [string],
   HomeownerAccountResponse
 >({
   handler: (id) => axios.get(`/HomeownerAccounts/${id}`),

@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import { FC } from 'react';
 import { ConsumptionReportCalculatorModalProps } from './ConsumptionReportCalculatorModal.types';
 import { FormModal } from 'ui-kit/Modals/FormModal';
 import { ConsumptionReportCalculatorForm } from './ConsumptionReportCalculatorForm/ConsumptionReportCalculatorForm';

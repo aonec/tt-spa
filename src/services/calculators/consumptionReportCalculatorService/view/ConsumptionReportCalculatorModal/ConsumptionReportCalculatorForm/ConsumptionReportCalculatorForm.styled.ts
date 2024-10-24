@@ -23,3 +23,7 @@ export const GridContainer = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr;
 `;
+
+export const UndersupplyCheckbox = styled.div`
+  margin-top: 12px;
+`;

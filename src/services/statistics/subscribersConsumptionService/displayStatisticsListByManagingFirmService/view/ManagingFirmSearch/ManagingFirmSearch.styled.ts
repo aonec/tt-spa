@@ -14,6 +14,8 @@ export const SelectCitySC = styled(Select)`
   width: 200px;
 `;
 
+export const OptionSC = styled(Select.Option)``;
+
 export const SelectManagingFirmSC = styled(Select)`
   margin-left: 8px;
 `;

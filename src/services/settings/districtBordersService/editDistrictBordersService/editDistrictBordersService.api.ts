@@ -13,14 +13,14 @@ import {
 } from './editDistrictBordersService.types';
 
 export const existingHousingStocksQuery = createQuery<
-  void,
+  [],
   BuildingWithCoordinatesResponsePagedList
 >({
   handler: () => axios.get('Buildings/Lite'),
 });
 
 export const existingDistrictsQuery = createQuery<
-  void,
+  [],
   DistrictResponse[] | null
 >({
   handler: async () => {
