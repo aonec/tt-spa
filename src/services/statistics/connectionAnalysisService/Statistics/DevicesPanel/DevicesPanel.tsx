@@ -16,7 +16,7 @@ import { CalculatorDevices } from './CalculatorDevices';
 import { getDevicesCountText } from 'services/nodes/createNodeService/view/CreateNodePage/ConnectedDevices/CommunicationPipeListItem/CommunicationPipeListItem.utils';
 import { mockDevices } from '../Statistics.mock';
 import { PanelTitle } from '../Statistics.types';
-import { CheckConnection, CheckIcon } from 'ui-kit/icons';
+import { CheckGreenIcon, WarningIcon } from 'ui-kit/icons';
 import { PanelTitleDictionary } from '../Statistics.constants';
 
 export const DevicesPanel: FC<Props> = ({ panelTitle }) => {
@@ -28,9 +28,9 @@ export const DevicesPanel: FC<Props> = ({ panelTitle }) => {
 
   const panelIcon = useMemo(() => {
     if (panelTitle === PanelTitle.Normal) {
-      return <CheckIcon />;
+      return <CheckGreenIcon />;
     } else {
-      return <CheckConnection />;
+      return <WarningIcon />;
     }
   }, [panelTitle]);
 

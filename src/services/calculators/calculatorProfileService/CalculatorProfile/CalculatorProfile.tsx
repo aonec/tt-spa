@@ -25,7 +25,6 @@ import { NodeDocumentsList } from './NodeDocumentsList';
 import { RelatedNodesList } from './RelatedNodesList';
 import { ContextMenuButtonColor } from 'ui-kit/ContextMenuButton/ContextMenuButton.types';
 import { EHouseCategory, TaskGroupingFilter } from 'api/types';
-import { Statistics } from './Statistics';
 
 export const CalculatorProfile: FC<CalculatorProfileProps> = ({
   calculator,
@@ -151,7 +150,6 @@ export const CalculatorProfile: FC<CalculatorProfileProps> = ({
           openDevicesListModal={openDevicesListModal}
         />
       ),
-      [CalculatorProfileGrouptype.Statistics]: <Statistics />,
       [CalculatorProfileGrouptype.Documents]: (
         <NodeDocumentsList documents={documents || []} />
       ),
@@ -168,7 +166,6 @@ export const CalculatorProfile: FC<CalculatorProfileProps> = ({
         key: CalculatorProfileGrouptype.Connection,
       },
       { label: 'Узлы', key: CalculatorProfileGrouptype.Nodes },
-      { label: 'Статистика', key: CalculatorProfileGrouptype.Statistics },
       { label: 'Документы', key: CalculatorProfileGrouptype.Documents },
     ],
     [],
