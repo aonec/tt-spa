@@ -1192,6 +1192,11 @@ export interface CreateGroupReportRequest {
   housingStockIds?: number[] | null;
 }
 
+export interface CreateGroupReportScheduleRequest {
+  reportScheduleDetails: GroupReportScheduleDetailsRequest;
+  report: ComposeGroupReportRequest;
+}
+
 export interface CreateHousingMeteringDeviceReadingsRequest {
   /** @format date-time */
   readingDate: string;
@@ -2372,6 +2377,20 @@ export interface GroupReportResponse {
   /** @format uuid */
   houseManagementId: string | null;
   title: string | null;
+}
+
+export interface GroupReportScheduleDetailsRequest {
+  emails: string[];
+  contractorIds?: number[] | null;
+  /** @format date-time */
+  initialDate?: string;
+  reportSchedulePeriod: GroupReportSchedulePeriod;
+}
+
+export enum GroupReportSchedulePeriod {
+  EveryTwoWeeks = 'EveryTwoWeeks',
+  EveryMonth = 'EveryMonth',
+  EveryQuarter = 'EveryQuarter',
 }
 
 export interface GuidStringDictionaryItem {
@@ -12429,6 +12448,45 @@ export class Api<
         body: data,
         secure: true,
         type: ContentType.Json,
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Администратор УК без назначений задач</li>
+     *
+     * @tags Reports
+     * @name ReportsCreategroupreportscheduleCreate
+     * @summary ReportRead
+     * @request POST:/api/Reports/creategroupreportschedule
+     * @secure
+     */
+    reportsCreategroupreportscheduleCreate: (
+      data: CreateGroupReportScheduleRequest,
+      params: RequestParams = {},
+    ) =>
+      this.request<void, ErrorApiResponse>({
+        path: `/api/Reports/creategroupreportschedule`,
+        method: 'POST',
+        body: data,
+        secure: true,
+        type: ContentType.Json,
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Администратор УК без назначений задач</li>
+     *
+     * @tags Reports
+     * @name ReportsGetgroupreportscheduleList
+     * @summary ReportRead
+     * @request GET:/api/Reports/getgroupreportschedule
+     * @secure
+     */
+    reportsGetgroupreportscheduleList: (params: RequestParams = {}) =>
+      this.request<void, ErrorApiResponse>({
+        path: `/api/Reports/getgroupreportschedule`,
+        method: 'GET',
+        secure: true,
         ...params,
       }),
 
