@@ -22,7 +22,7 @@ export const getNearestAppointmentForApartment = (
   axios.get('IndividualSeal/Appointments', { params: { ApartmentId } });
 
 export const existingDistrictsQuery = createQuery<
-  void,
+  [],
   DistrictResponse[] | null
 >({
   handler: async () => {

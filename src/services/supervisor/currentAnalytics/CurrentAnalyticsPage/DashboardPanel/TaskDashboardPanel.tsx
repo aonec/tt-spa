@@ -13,7 +13,7 @@ import { LinkButton } from 'ui-kit/shared/LinkButton';
 import { getRatioOfTasksCountByOthers } from './DashboardPanel.utils';
 import { OtherDeitalStatistic } from './OtherDeitalStatistic';
 
-export const DashboardPanel: FC<Props> = ({ data, otherData }) => {
+export const TaskDashboardPanel: FC<Props> = ({ data, otherData }) => {
   if (otherData) {
     const ratioOfOthers = getRatioOfTasksCountByOthers(otherData);
 

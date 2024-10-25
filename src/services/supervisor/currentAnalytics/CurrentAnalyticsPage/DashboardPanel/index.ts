@@ -1,1 +1,1 @@
-export { DashboardPanel } from './DashboardPanel';
+export { TaskDashboardPanel as DashboardPanel } from './TaskDashboardPanel';

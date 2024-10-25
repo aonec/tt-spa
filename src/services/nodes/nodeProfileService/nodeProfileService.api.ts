@@ -3,7 +3,7 @@ import axios from 'api/axios';
 import { PipeNodeResponse } from 'api/types';
 
 export const getPipeNodeQuery = createQuery<
-  { pipeNodeId: number },
+  [{ pipeNodeId: number }],
   PipeNodeResponse | null
 >({
   handler: ({ pipeNodeId }) => axios.get(`PipeNodes/${pipeNodeId}`),

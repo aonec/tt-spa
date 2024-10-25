@@ -25,18 +25,18 @@ export const validationSchema = yup.object().shape({
     .nullable()
     .when('rateType', {
       is: EIndividualDeviceRateType.TwoZone,
-      then: yup.number().required('Это поле обязательно'),
+      then: (schema) => schema.required('Это поле обязательно'),
     })
     .when('rateType', {
       is: EIndividualDeviceRateType.ThreeZone,
-      then: yup.number().required('Это поле обязательно'),
+      then: (schema) => schema.required('Это поле обязательно'),
     }),
   startupReadings3: yup
     .number()
     .nullable()
     .when('rateType', {
       is: EIndividualDeviceRateType.ThreeZone,
-      then: yup.number().required('Это поле обязательно'),
+      then: (schema) => schema.required('Это поле обязательно'),
     }),
 
   defaultReadings1: yup.number().nullable().required('Это поле обязательно'),
@@ -45,17 +45,17 @@ export const validationSchema = yup.object().shape({
     .nullable()
     .when('rateType', {
       is: EIndividualDeviceRateType.TwoZone,
-      then: yup.number().required('Это поле обязательно'),
+      then: (schema) => schema.required('Это поле обязательно'),
     })
     .when('rateType', {
       is: EIndividualDeviceRateType.ThreeZone,
-      then: yup.number().required('Это поле обязательно'),
+      then: (schema) => schema.required('Это поле обязательно'),
     }),
   defaultReadings3: yup
     .number()
     .nullable()
     .when('rateType', {
       is: EIndividualDeviceRateType.ThreeZone,
-      then: yup.number().required('Это поле обязательно'),
+      then: (schema) => schema.required('Это поле обязательно'),
     }),
 });

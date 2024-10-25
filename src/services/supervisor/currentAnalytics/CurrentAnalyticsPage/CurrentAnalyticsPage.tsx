@@ -35,12 +35,13 @@ export const CurrentAnalyticsPage: FC<Props> = ({
 
     const dataList = dataMap[currentDashboardType];
 
-    return (
+    const splittedData =
       dataList &&
       splitArrayForDashboard<
         DashboardTaskMalfunctionResponse | DashboardTaskResourceResponse
-      >(dataList)
-    );
+      >(dataList);
+
+    return splittedData;
   }, [
     currentDashboardType,
     dashboardMalfunctions,
