@@ -1,10 +1,11 @@
-import { PanelTitle } from './Statistics.types';
+import { EConnectionStatusType } from 'api/types';
 
 export const PanelTitleDictionary: {
-  [key in PanelTitle]: string;
+  [key in EConnectionStatusType]: string;
 } = {
-  [PanelTitle.Normal]: 'В норме',
-  [PanelTitle.NotPolled]: 'Не опрашиваются',
-  [PanelTitle.Error]: 'С ошибкой',
-  [PanelTitle.NoArchives]: 'Нет архивов',
+  [EConnectionStatusType.Success]: 'В норме',
+  [EConnectionStatusType.NoConnection]: 'Нет связи',
+  [EConnectionStatusType.DeviceMalfunction]: 'Прибор неисправен',
+  [EConnectionStatusType.UnstableConnection]: 'Нестабильная связь',
+  [EConnectionStatusType.Unknown]: 'Не опрашивается',
 };

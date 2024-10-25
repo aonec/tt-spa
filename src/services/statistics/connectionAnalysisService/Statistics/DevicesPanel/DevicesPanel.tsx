@@ -11,11 +11,10 @@ import {
 } from './DevicesPanel.styled';
 import { Props } from './DevicesPanel.types';
 import { ListOpeningChevron } from 'ui-kit/shared/ListOpeningChevron';
-import { EResourceType } from 'api/types';
+import { EConnectionStatusType, EResourceType } from 'api/types';
 import { CalculatorDevices } from './CalculatorDevices';
 import { getDevicesCountText } from 'services/nodes/createNodeService/view/CreateNodePage/ConnectedDevices/CommunicationPipeListItem/CommunicationPipeListItem.utils';
 import { mockDevices } from '../Statistics.mock';
-import { PanelTitle } from '../Statistics.types';
 import { CheckGreenIcon, WarningIcon } from 'ui-kit/icons';
 import { PanelTitleDictionary } from '../Statistics.constants';
 
@@ -27,10 +26,20 @@ export const DevicesPanel: FC<Props> = ({ panelTitle }) => {
   const devicesCountText = getDevicesCountText(devicesCount);
 
   const panelIcon = useMemo(() => {
-    if (panelTitle === PanelTitle.Normal) {
+    if (panelTitle === EConnectionStatusType.Success) {
       return <CheckGreenIcon />;
-    } else {
-      return <WarningIcon />;
+    }
+    if (panelTitle === EConnectionStatusType.DeviceMalfunction) {
+      return <CheckGreenIcon />;
+    }
+    if (panelTitle === EConnectionStatusType.NoConnection) {
+      return <CheckGreenIcon />;
+    }
+    if (panelTitle === EConnectionStatusType.Unknown) {
+      return <CheckGreenIcon />;
+    }
+    if (panelTitle === EConnectionStatusType.UnstableConnection) {
+      return <CheckGreenIcon />;
     }
   }, [panelTitle]);
 

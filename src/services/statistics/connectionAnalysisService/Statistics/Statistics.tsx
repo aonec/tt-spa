@@ -1,22 +1,22 @@
 import React, { FC } from 'react';
-import { LeftBlock, RightBlock, TotalDevicesWrapper, Wrapper } from './Statistics.styled';
-import { PanelTitle, Props } from './Statistics.types';
-import { DeviceIcon } from 'ui-kit/icons';
+import {
+  LeftBlock,
+  RightBlock,
+  TotalDevicesWrapper,
+  Wrapper,
+} from './Statistics.styled';
+import { Props } from './Statistics.types';
 import { DevicesPanel } from './DevicesPanel';
+import { EConnectionStatusType } from 'api/types';
 
-export const Statistics: FC<Props> = ({}) => {
+export const Statistics: FC<Props> = ({ calculatorsSortedList }) => {
   return (
     <Wrapper>
-      <TotalDevicesWrapper>
-        <LeftBlock>
-            <DeviceIcon/>
-            Всего приборов
-        </LeftBlock>
-        <RightBlock>100</RightBlock>
-      </TotalDevicesWrapper>
-
-      <DevicesPanel panelTitle={PanelTitle.Normal}/>
-      <DevicesPanel panelTitle={PanelTitle.NoArchives}/>
+      <DevicesPanel panelTitle={EConnectionStatusType.Success} />
+      <DevicesPanel panelTitle={EConnectionStatusType.NoConnection} />
+      <DevicesPanel panelTitle={EConnectionStatusType.DeviceMalfunction} />
+      <DevicesPanel panelTitle={EConnectionStatusType.UnstableConnection} />
+      <DevicesPanel panelTitle={EConnectionStatusType.Unknown} />
     </Wrapper>
   );
 };

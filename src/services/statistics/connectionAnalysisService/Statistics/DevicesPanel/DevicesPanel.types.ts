@@ -1,5 +1,5 @@
-import { PanelTitle } from '../Statistics.types';
+import { EConnectionStatusType } from 'api/types';
 
 export type Props = {
-  panelTitle: PanelTitle;
+  panelTitle: EConnectionStatusType;
 };

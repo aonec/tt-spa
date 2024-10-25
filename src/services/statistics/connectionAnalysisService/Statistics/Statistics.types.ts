@@ -1,8 +1,6 @@
-export type Props = {};
+import { EConnectionStatusType } from 'api/types';
+import { CalculatorsSortedList } from '../connectionAnalysisService.types';
 
-export enum PanelTitle {
-  Normal = 'Normal',
-  NotPolled = 'NotPolled',
-  Error = 'Error',
-  NoArchives = 'NoArchives',
-}
+export type Props = {
+  calculatorsSortedList: CalculatorsSortedList | null;
+};
