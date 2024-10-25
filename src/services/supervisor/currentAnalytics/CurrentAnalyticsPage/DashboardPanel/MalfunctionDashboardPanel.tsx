@@ -12,12 +12,11 @@ import { ResourceStatistic } from './ResourceStatistic';
 import { LinkButton } from 'ui-kit/shared/LinkButton';
 import { getRatioOfTasksCountByOthers } from './DashboardPanel.utils';
 import { OtherDeitalStatistic } from './OtherDeitalStatistic';
-import { DashboardTaskResourceResponse } from 'api/types';
+import { DashboardTaskMalfunctionResponse } from 'api/types';
 
-export const TaskDashboardPanel: FC<Props<DashboardTaskResourceResponse>> = ({
-  data,
-  otherData,
-}) => {
+export const MalfunctionDashboardPanel: FC<
+  Props<DashboardTaskMalfunctionResponse>
+> = ({ data, otherData }) => {
   if (otherData) {
     const ratioOfOthers = getRatioOfTasksCountByOthers(otherData);
 

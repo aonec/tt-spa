@@ -6,12 +6,8 @@ import { AnalyticsSearch } from './AnalyticsSearch';
 import { WithLoader } from 'ui-kit/shared/WithLoader';
 import { InfoOptionsPanels } from './InfoOptionsPanels';
 import { splitArrayForDashboard } from './CurrentAnalyticsPage.utils';
-import { DashboardPanel } from './DashboardPanel';
+import { TaskDashboardPanel } from './DashboardPanel';
 import { DashboardDataType } from '../currentAnalyticsService.types';
-import {
-  DashboardTaskMalfunctionResponse,
-  DashboardTaskResourceResponse,
-} from 'api/types';
 
 export const CurrentAnalyticsPage: FC<Props> = ({
   isLoading,
@@ -23,25 +19,63 @@ export const CurrentAnalyticsPage: FC<Props> = ({
   dashboardResourceDisconnection,
   dashboardMalfunctions,
 }) => {
-  const dashboardData = useMemo(() => {
+  const Dashboard = useMemo(() => {
     const dataMap = {
-      [DashboardDataType.PipeRupturesCount]: dashboardPiperuptersList,
-      [DashboardDataType.ResourceDisconnectsCount]:
-        dashboardResourceDisconnection,
-      [DashboardDataType.MalfunctionsCount]: dashboardMalfunctions,
+      [DashboardDataType.PipeRupturesCount]: () => {
+        if (!dashboardPiperuptersList) return;
+
+        const dashboardData = splitArrayForDashboard(dashboardPiperuptersList);
+
+        return (
+          <>
+            {dashboardData?.panels?.map((data) => (
+              <TaskDashboardPanel data={data} />
+            ))}
+            {dashboardData?.others && (
+              <TaskDashboardPanel otherData={dashboardData.others} />
+            )}
+          </>
+        );
+      },
+      [DashboardDataType.ResourceDisconnectsCount]: () => {
+        if (!dashboardMalfunctions) return;
+
+        const dashboardData = splitArrayForDashboard(dashboardMalfunctions);
+
+        return (
+          <>
+            {dashboardData?.panels?.map((data) => (
+              <TaskDashboardPanel data={data} />
+            ))}
+            {dashboardData?.others && (
+              <TaskDashboardPanel otherData={dashboardData.others} />
+            )}
+          </>
+        );
+      },
+      [DashboardDataType.MalfunctionsCount]: () => {
+        if (!dashboardResourceDisconnection) return;
+
+        const dashboardData = splitArrayForDashboard(
+          dashboardResourceDisconnection,
+        );
+
+        return (
+          <>
+            {dashboardData?.panels?.map((data) => (
+              <TaskDashboardPanel data={data} />
+            ))}
+            {dashboardData?.others && (
+              <TaskDashboardPanel otherData={dashboardData.others} />
+            )}
+          </>
+        );
+      },
       [DashboardDataType.AverageCompletionTime]: null,
       [DashboardDataType.TasksCount]: null,
     };
 
-    const dataList = dataMap[currentDashboardType];
-
-    const splittedData =
-      dataList &&
-      splitArrayForDashboard<
-        DashboardTaskMalfunctionResponse | DashboardTaskResourceResponse
-      >(dataList);
-
-    return splittedData;
+    return dataMap[currentDashboardType];
   }, [
     currentDashboardType,
     dashboardMalfunctions,
@@ -60,12 +94,7 @@ export const CurrentAnalyticsPage: FC<Props> = ({
       />
       <WithLoader isLoading={isLoading || isLoadingPanels}>
         <DashboardPanelWrapper>
-          {dashboardData?.panels?.map((data) => (
-            <DashboardPanel data={data} />
-          ))}
-          {dashboardData?.others && (
-            <DashboardPanel otherData={dashboardData.others} />
-          )}
+          {Dashboard && <Dashboard />}
         </DashboardPanelWrapper>
       </WithLoader>
     </Wrapper>
