@@ -2,69 +2,61 @@ import React, { FC, useMemo, useState } from 'react';
 import {
   DevicesAmount,
   InfoWrapper,
-  PipeEntryNumber,
-  PipeIconWrapper,
-  PipeInfo,
-  PipeNumber,
   RighContentWrapper,
+  TitleWrapper,
   Wrapper,
 } from './DevicesPanel.styled';
 import { Props } from './DevicesPanel.types';
 import { ListOpeningChevron } from 'ui-kit/shared/ListOpeningChevron';
-import { EConnectionStatusType, EResourceType } from 'api/types';
-import { CalculatorDevices } from './CalculatorDevices';
+import { CalculatorInfo } from './CalculatorDevices';
 import { getDevicesCountText } from 'services/nodes/createNodeService/view/CreateNodePage/ConnectedDevices/CommunicationPipeListItem/CommunicationPipeListItem.utils';
-import { mockDevices } from '../Statistics.mock';
-import { CheckGreenIcon, WarningIcon } from 'ui-kit/icons';
+import {
+  CheckGreenIcon,
+  MagnifierIcon,
+  StopOrangeIcon,
+  WarningIcon,
+} from 'ui-kit/icons';
 import { PanelTitleDictionary } from '../Statistics.constants';
+import { ConnectionStatuses } from '../../connectionAnalysisService.types';
 
-export const DevicesPanel: FC<Props> = ({ panelTitle }) => {
-  const [isOpen, setIsOpen] = useState(true);
+export const DevicesPanel: FC<Props> = ({ panelTitle, calculators }) => {
+  const [isOpen, setIsOpen] = useState(false);
 
-  const devicesCount = 2;
+  const devicesCount = calculators.length;
 
   const devicesCountText = getDevicesCountText(devicesCount);
 
   const panelIcon = useMemo(() => {
-    if (panelTitle === EConnectionStatusType.Success) {
+    if (panelTitle === ConnectionStatuses.Success) {
       return <CheckGreenIcon />;
     }
-    if (panelTitle === EConnectionStatusType.DeviceMalfunction) {
-      return <CheckGreenIcon />;
+    if (panelTitle === ConnectionStatuses.NotPolled) {
+      return <StopOrangeIcon />;
     }
-    if (panelTitle === EConnectionStatusType.NoConnection) {
-      return <CheckGreenIcon />;
+    if (panelTitle === ConnectionStatuses.WithError) {
+      return <WarningIcon />;
     }
-    if (panelTitle === EConnectionStatusType.Unknown) {
-      return <CheckGreenIcon />;
-    }
-    if (panelTitle === EConnectionStatusType.UnstableConnection) {
-      return <CheckGreenIcon />;
+    if (panelTitle === ConnectionStatuses.NoArchive) {
+      return <MagnifierIcon />;
     }
   }, [panelTitle]);
 
   return (
-    <Wrapper>
+    <Wrapper onClick={() => setIsOpen((prev) => !prev)}>
       <InfoWrapper>
-        <div>
+        <TitleWrapper>
           {panelIcon} {PanelTitleDictionary[panelTitle]}
-        </div>
+        </TitleWrapper>
         <RighContentWrapper>
           <DevicesAmount>
             {devicesCount} {devicesCountText}
           </DevicesAmount>
-          <ListOpeningChevron
-            isOpen={isOpen}
-            onClick={() => setIsOpen((prev) => !prev)}
-          />
+          <ListOpeningChevron isOpen={isOpen} />
         </RighContentWrapper>
       </InfoWrapper>
       {isOpen &&
-        mockDevices.map((device) => (
-          <CalculatorDevices
-            device={device}
-            resource={EResourceType.HotWaterSupply}
-          />
+        calculators.map((device) => (
+          <CalculatorInfo device={device} key={device.id} />
         ))}
     </Wrapper>
   );

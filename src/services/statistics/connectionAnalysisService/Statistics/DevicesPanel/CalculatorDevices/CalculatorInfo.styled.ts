@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { PencilIcon } from 'ui-kit/icons';
 
 export const Wrapper = styled.div`
+  height: 52px;
   padding: 16px;
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 0.1fr;
@@ -19,12 +20,12 @@ export const InfoWrapper = styled.div`
 
 export const SerialNumber = styled.div`
   font-size: 16px;
-  font-weight: 500;
+  font-weight: 400;
   color: #272f5a;
 `;
 
 export const Model = styled.div`
-  font-weight: 400;
+  font-weight: 500;
   font-size: 16px;
 `;
 
@@ -57,7 +58,7 @@ export const PencilIconSC = styled(PencilIcon)`
 `;
 
 export const DeviceTitleWrapper = styled.div`
-display: flex;
-align-items: center;
-gap: 12px;
-`
+  display: flex;
+  align-items: center;
+  gap: 12px;
+`;

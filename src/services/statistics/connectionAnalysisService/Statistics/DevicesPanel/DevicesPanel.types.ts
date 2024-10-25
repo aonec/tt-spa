@@ -1,5 +1,9 @@
-import { EConnectionStatusType } from 'api/types';
+import {
+  CalculatorAnalysisType,
+  ConnectionStatuses,
+} from '../../connectionAnalysisService.types';
 
 export type Props = {
-  panelTitle: EConnectionStatusType;
+  panelTitle: ConnectionStatuses;
+  calculators: CalculatorAnalysisType[];
 };

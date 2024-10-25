@@ -13,3 +13,10 @@ export type CalculatorsSortedList = {
   WithError: CalculatorAnalysisType[];
   NoArchive: CalculatorAnalysisType[];
 };
+
+export enum ConnectionStatuses {
+  Success = 'Success',
+  NotPolled = 'NotPolled',
+  WithError = 'WithError',
+  NoArchive = 'NoArchive',
+}

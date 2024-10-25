@@ -3,10 +3,8 @@ import { connectionAnalysisService } from './connectionAnalysisService.models';
 import { Statistics } from './Statistics';
 import { useUnit } from 'effector-react';
 
-const { inputs, outputs, gates } = connectionAnalysisService;
+const { outputs, gates } = connectionAnalysisService;
 const { PageGate } = gates;
-
-
 
 export const ConnectionAnalysisContainer = () => {
   const { calculatorsSortedList } = useUnit({

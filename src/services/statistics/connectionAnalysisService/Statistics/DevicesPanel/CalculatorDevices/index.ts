@@ -1,1 +1,1 @@
-export { CalculatorDevices } from './CalculatorDevices';
+export { CalculatorInfo } from './CalculatorInfo';

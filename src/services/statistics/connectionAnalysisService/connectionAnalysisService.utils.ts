@@ -7,7 +7,6 @@ import {
 export const sortCalculator = (
   list: CalculatorListResponse[],
 ): CalculatorsSortedList => {
-  // Инициализируем объект для хранения отсортированных калькуляторов
   const sortedList: CalculatorsSortedList = {
     Success: [],
     NotPolled: [],
@@ -15,7 +14,6 @@ export const sortCalculator = (
     NoArchive: [],
   };
 
-  // Проходим по каждому элементу массива list
   list.forEach((calculator) => {
     const connectionStatus =
       calculator.connectionInfo?.connectionStatus ||
@@ -32,11 +30,16 @@ export const sortCalculator = (
         EConnectionStatusType.Unknown,
     };
 
-    if(calculator.isConnected === false){
-        sortedList.NotPolled.push(preparedCalculator)
+    if (!calculator.connectionInfo) {
+      sortedList.NoArchive.push(preparedCalculator);
+      return;
     }
 
-    // Добавляем элемент в соответствующий массив в зависимости от connectionStatus
+    if (calculator.isConnected === false) {
+      sortedList.NotPolled.push(preparedCalculator);
+      return;
+    }
+
     switch (connectionStatus) {
       case EConnectionStatusType.Success:
         sortedList.Success.push(preparedCalculator);
@@ -50,8 +53,11 @@ export const sortCalculator = (
       case EConnectionStatusType.DeviceMalfunction:
         sortedList.WithError.push(preparedCalculator);
         break;
-      default:
+      case EConnectionStatusType.Unknown:
         sortedList.NotPolled.push(preparedCalculator);
+        break;
+      default:
+        sortedList.NoArchive.push(preparedCalculator);
         break;
     }
   });

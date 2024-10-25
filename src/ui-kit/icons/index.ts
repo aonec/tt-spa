@@ -100,6 +100,8 @@ import CheckGreenIcon from './svg/checkGreen.svg?react';
 import TrashIconGrey from './svg/trashGrey.svg?react';
 import ChevronTopActive from './svg/chevronTopActive.svg?react';
 import ChevronTopDanger from './svg/chevronTopDanger.svg?react';
+import MagnifierIcon from './svg/magnifier.svg?react';
+import StopOrangeIcon from './svg/stopOrange.svg?react';
 
 export {
   FinishIcon,
@@ -204,4 +206,6 @@ export {
   TrashIconGrey,
   ChevronTopActive,
   ChevronTopDanger,
+  MagnifierIcon,
+  StopOrangeIcon,
 };
