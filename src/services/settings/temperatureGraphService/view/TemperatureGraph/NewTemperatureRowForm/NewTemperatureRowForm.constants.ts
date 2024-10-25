@@ -25,28 +25,12 @@ export const validationSchema = yup.object().shape({
     .number()
     .max(200, 'превышает 200°')
     .min(0, 'ниже 0°')
-    .when('dayFeedFlowTemperature', (value) => {
-      if (value) {
-        return yup
-          .number()
-          .max(200, 'превышает 200°')
-          .min(0, 'ниже 0°')
-          .lessThan(value, 'Выше подающей');
-      }
-    })
+    .lessThan(yup.ref('dayFeedFlowTemperature'), 'Выше подающей')
     .required('Это поле обязательное'),
   nightFeedBackFlowTemperature: yup
     .number()
     .max(200, 'превышает 200°')
     .min(0, 'ниже 0°')
-    .when('nightFeedFlowTemperature', (value) => {
-      if (value) {
-        return yup
-          .number()
-          .max(200, 'превышает 200°')
-          .min(0, 'ниже 0°')
-          .lessThan(value, 'Выше подающей');
-      }
-    })
+    .lessThan(yup.ref('nightFeedFlowTemperature'), 'Выше подающей')
     .required('Это поле обязательное'),
 });

@@ -18,8 +18,9 @@ export const pushStagePayloadValidationsArray = [
             }" обязательное`,
           ),
         comment: yup.string().when('type', {
-          is: (value) => Boolean(value),
-          then: yup.string().required(`Поле "Комментарий" обязательно`),
+          is: (value: string | undefined) => Boolean(value),
+          then: (schema) =>
+            schema.required(`Поле "Комментарий" обязательно`),
         }),
       }),
     }),

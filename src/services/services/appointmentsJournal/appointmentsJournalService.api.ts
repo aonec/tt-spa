@@ -8,14 +8,14 @@ import {
 import { downloadURI } from 'utils/downloadByURL';
 
 export const individualSealAssignmentsQuery = createQuery<
-  GetAssigmentsRequestPayload,
+  [GetAssigmentsRequestPayload],
   AssignmentResponse[]
 >({
   handler: (params) => axios.get('IndividualSeal/Assignments', { params }),
 });
 
 export const downloadСontrollerWorkFileQuery = createQuery<
-  DownloadControllerWorkFileRequestPayload,
+  [DownloadControllerWorkFileRequestPayload],
   void
 >({
   handler: async ({ assignmentId }) => {

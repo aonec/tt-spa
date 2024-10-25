@@ -67,7 +67,7 @@ export const MainInfoTab: FC<MainInfoTabProps> = ({
     },
     validateOnChange: false,
     validationSchema: yup.object().shape({
-      houseManagement: yup.string().nullable(true),
+      houseManagement: yup.string().nullable(),
       heatingStationId: yup.string().nullable().required('Обязательное поле'),
     }),
   });

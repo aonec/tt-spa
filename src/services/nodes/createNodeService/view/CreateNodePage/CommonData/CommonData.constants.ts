@@ -31,33 +31,37 @@ export const validationSchema = Yup.object().shape({
     .nullable()
     .when('registrationType', {
       is: ENodeRegistrationType.Commercial,
-      then: Yup.object().shape({
-        commercialStatus: Yup.string()
-          .nullable()
-          .required('Укажите коммерческий статус узла'),
-        documentId: Yup.string()
-          .nullable()
-          .when('commercialStatus', {
-            is: ENodeCommercialAccountStatus.Registered,
-            then: Yup.string().nullable().required('Прикрепите документ'),
-          }),
-        startCommercialAccountingDate: Yup.string()
-          .nullable()
-          .when('commercialStatus', {
-            is: ENodeCommercialAccountStatus.Registered,
-            then: Yup.string()
-              .nullable()
-              .required('Укажите дату начала действия акта-допуска'),
-          }),
+      then: (schema) =>
+        schema.shape({
+          commercialStatus: Yup.string()
+            .nullable()
+            .required('Укажите коммерческий статус узла'),
+          documentId: Yup.string()
+            .nullable()
+            .when('commercialStatus', {
+              is: ENodeCommercialAccountStatus.Registered,
+              then: (schema) =>
+                schema.nullable().required('Прикрепите документ'),
+            }),
+          startCommercialAccountingDate: Yup.string()
+            .nullable()
+            .when('commercialStatus', {
+              is: ENodeCommercialAccountStatus.Registered,
+              then: (schema) =>
+                schema
+                  .nullable()
+                  .required('Укажите дату начала действия акта-допуска'),
+            }),
 
-        endCommercialAccountingDate: Yup.string()
-          .nullable()
-          .when('commercialStatus', {
-            is: ENodeCommercialAccountStatus.Registered,
-            then: Yup.string()
-              .nullable()
-              .required('Укажите дату окончания действия акта-допуска'),
-          }),
-      }),
+          endCommercialAccountingDate: Yup.string()
+            .nullable()
+            .when('commercialStatus', {
+              is: ENodeCommercialAccountStatus.Registered,
+              then: (schema) =>
+                schema
+                  .nullable()
+                  .required('Укажите дату окончания действия акта-допуска'),
+            }),
+        }),
     }),
 });
