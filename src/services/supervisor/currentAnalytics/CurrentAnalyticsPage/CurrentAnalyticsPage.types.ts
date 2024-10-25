@@ -1,5 +1,6 @@
 import {
   DashboardSummaryResponse,
+  DashboardTaskAverageTimeResponse,
   DashboardTaskMalfunctionResponse,
   DashboardTaskResourceResponse,
 } from 'api/types';
@@ -13,5 +14,6 @@ export type Props = {
   dashboardPiperuptersList: DashboardTaskResourceResponse[] | null;
   dashboardResourceDisconnection: DashboardTaskResourceResponse[] | null;
   dashboardMalfunctions: DashboardTaskMalfunctionResponse[] | null;
+  dashboardAverageTime: DashboardTaskAverageTimeResponse[] | null;
   isLoadingPanels: boolean;
 };

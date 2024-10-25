@@ -8,6 +8,7 @@ import { InfoOptionsPanels } from './InfoOptionsPanels';
 import { splitArrayForDashboard } from './CurrentAnalyticsPage.utils';
 import { TaskDashboardPanel } from './DashboardPanel';
 import { DashboardDataType } from '../currentAnalyticsService.types';
+import { AverageTimeDashboardPanel } from './DashboardPanel/AverageTimeDashboardPanel';
 
 export const CurrentAnalyticsPage: FC<Props> = ({
   isLoading,
@@ -18,6 +19,7 @@ export const CurrentAnalyticsPage: FC<Props> = ({
   dashboardPiperuptersList,
   dashboardResourceDisconnection,
   dashboardMalfunctions,
+  dashboardAverageTime,
 }) => {
   const Dashboard = useMemo(() => {
     const dataMap = {
@@ -38,22 +40,6 @@ export const CurrentAnalyticsPage: FC<Props> = ({
         );
       },
       [DashboardDataType.ResourceDisconnectsCount]: () => {
-        if (!dashboardMalfunctions) return;
-
-        const dashboardData = splitArrayForDashboard(dashboardMalfunctions);
-
-        return (
-          <>
-            {dashboardData?.panels?.map((data) => (
-              <TaskDashboardPanel data={data} />
-            ))}
-            {dashboardData?.others && (
-              <TaskDashboardPanel otherData={dashboardData.others} />
-            )}
-          </>
-        );
-      },
-      [DashboardDataType.MalfunctionsCount]: () => {
         if (!dashboardResourceDisconnection) return;
 
         const dashboardData = splitArrayForDashboard(
@@ -71,7 +57,38 @@ export const CurrentAnalyticsPage: FC<Props> = ({
           </>
         );
       },
-      [DashboardDataType.AverageCompletionTime]: null,
+      [DashboardDataType.MalfunctionsCount]: () => {
+        if (!dashboardMalfunctions) return;
+
+        const dashboardData = splitArrayForDashboard(dashboardMalfunctions);
+
+        return (
+          <>
+            {dashboardData?.panels?.map((data) => (
+              <TaskDashboardPanel data={data} />
+            ))}
+            {dashboardData?.others && (
+              <TaskDashboardPanel otherData={dashboardData.others} />
+            )}
+          </>
+        );
+      },
+      [DashboardDataType.AverageCompletionTime]: () => {
+        if (!dashboardAverageTime) return;
+
+        const dashboardData = splitArrayForDashboard(dashboardAverageTime);
+
+        return (
+          <>
+            {dashboardData?.panels?.map((data) => (
+              <AverageTimeDashboardPanel data={data} />
+            ))}
+            {dashboardData?.others && (
+              <AverageTimeDashboardPanel otherData={dashboardData.others} />
+            )}
+          </>
+        );
+      },
       [DashboardDataType.TasksCount]: null,
     };
 

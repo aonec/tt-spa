@@ -1,6 +1,7 @@
 import { combine, createEvent, createStore, sample, split } from 'effector';
 import { createGate } from 'effector-react';
 import {
+  dashboardAverageTimeQuery,
   dashboardMalfunctionsQuery,
   dashboardPiperuptersQuery,
   dashboardResourceDisconnectionQuery,
@@ -29,6 +30,7 @@ split({
     [DashboardDataType.ResourceDisconnectsCount]:
       dashboardResourceDisconnectionQuery.start,
     [DashboardDataType.MalfunctionsCount]: dashboardMalfunctionsQuery.start,
+    [DashboardDataType.AverageCompletionTime]: dashboardAverageTimeQuery.start,
   },
 });
 
@@ -36,6 +38,7 @@ const $isLoading = combine(
   dashboardPiperuptersQuery.$pending,
   dashboardResourceDisconnectionQuery.$pending,
   dashboardMalfunctionsQuery.$pending,
+  dashboardAverageTimeQuery.$pending,
   (...params) => params.some((value) => value),
 );
 

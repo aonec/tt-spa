@@ -1,6 +1,7 @@
 import { useUnit } from 'effector-react';
 import { CurrentAnalyticsPage } from './CurrentAnalyticsPage';
 import {
+  dashboardAverageTimeQuery,
   dashboardMalfunctionsQuery,
   dashboardPiperuptersQuery,
   dashboardResourceDisconnectionQuery,
@@ -24,6 +25,7 @@ export const CurrentAnalyticsContainer = () => {
     isLoadingPanels,
     dashboardResourceDisconnection,
     dashboardMalfunctions,
+    dashboardAverageTime,
   } = useUnit({
     dashboardSummary: dashboardSummaryQuery.$data,
     isLoadingSummary: dashboardSummaryQuery.$pending,
@@ -32,6 +34,7 @@ export const CurrentAnalyticsContainer = () => {
     dashboardPiperuptersList: dashboardPiperuptersQuery.$data,
     dashboardResourceDisconnection: dashboardResourceDisconnectionQuery.$data,
     dashboardMalfunctions: dashboardMalfunctionsQuery.$data,
+    dashboardAverageTime: dashboardAverageTimeQuery.$data,
     isLoadingPanels: outputs.$isLoading,
   });
 
@@ -46,6 +49,7 @@ export const CurrentAnalyticsContainer = () => {
         dashboardPiperuptersList={dashboardPiperuptersList}
         dashboardResourceDisconnection={dashboardResourceDisconnection}
         dashboardMalfunctions={dashboardMalfunctions}
+        dashboardAverageTime={dashboardAverageTime}
         isLoadingPanels={isLoadingPanels}
       />
     </>
