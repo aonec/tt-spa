@@ -11,7 +11,7 @@ import { Props } from './DashboardPanel.types';
 import { TaskResourceDetail } from './ResourceStatistic';
 import { LinkButton } from 'ui-kit/shared/LinkButton';
 import { getRatioOfTasksCountByOthers } from './DashboardPanel.utils';
-import { OtherDeitalStatistic } from './OtherDeitalStatistic';
+import { OtherDetailStatistic } from './OtherDetailStatistic';
 import { DashboardTaskResourceResponse } from 'api/types';
 
 export const TaskDashboardPanel: FC<Props<DashboardTaskResourceResponse>> = ({
@@ -32,7 +32,7 @@ export const TaskDashboardPanel: FC<Props<DashboardTaskResourceResponse>> = ({
         </RatioWrapper>
         <ResourceStatisticsWrapper>
           {otherData.map((item) => (
-            <OtherDeitalStatistic item={item} />
+            <OtherDetailStatistic item={item} />
           ))}
         </ResourceStatisticsWrapper>
         <LinkButtonWrapper>

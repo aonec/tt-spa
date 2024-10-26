@@ -11,7 +11,7 @@ import { Props } from './DashboardPanel.types';
 import { MalfunctionDetail } from './ResourceStatistic';
 import { LinkButton } from 'ui-kit/shared/LinkButton';
 import { getRatioOfTasksCountByOthers } from './DashboardPanel.utils';
-import { OtherDeitalStatistic } from './OtherDeitalStatistic';
+import { OtherDetailStatistic } from './OtherDetailStatistic';
 import { DashboardTaskMalfunctionResponse } from 'api/types';
 
 export const MalfunctionDashboardPanel: FC<
@@ -31,7 +31,7 @@ export const MalfunctionDashboardPanel: FC<
         </RatioWrapper>
         <ResourceStatisticsWrapper>
           {otherData.map((item) => (
-            <OtherDeitalStatistic item={item} />
+            <OtherDetailStatistic item={item} />
           ))}
         </ResourceStatisticsWrapper>
         <LinkButtonWrapper>

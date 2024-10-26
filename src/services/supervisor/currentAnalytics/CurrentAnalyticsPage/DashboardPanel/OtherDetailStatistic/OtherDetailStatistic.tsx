@@ -3,11 +3,14 @@ import {
   NotClosedTaskCount,
   Title,
   Wrapper,
-} from './OtherDeitalStatistic.styled';
-import { Props } from './OtherDeitalStatistic.types';
+} from './OtherDetailStatistic.styled';
+import { Props } from './OtherDetailStatistic.types';
 import { Progress } from 'antd';
+import { DashboardTaskResourceResponse } from 'api/types';
 
-export const OtherDeitalStatistic: FC<Props> = ({ item }) => {
+export const OtherDetailStatistic: FC<Props<DashboardTaskResourceResponse>> = ({
+  item,
+}) => {
   return (
     <Wrapper>
       <Title>

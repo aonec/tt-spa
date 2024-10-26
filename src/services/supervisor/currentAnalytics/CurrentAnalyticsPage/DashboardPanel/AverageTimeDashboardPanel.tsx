@@ -13,6 +13,7 @@ import {
   AverageTime,
   AverageTimeDescription,
 } from './ResourceStatistic/ResourceStatistic.styled';
+import { OtherAverageTimeDetailStatistic } from './OtherDetailStatistic/OtherAverageTimeDetailStatistic';
 
 export const AverageTimeDashboardPanel: FC<
   Props<DashboardTaskAverageTimeResponse>
@@ -33,9 +34,9 @@ export const AverageTimeDashboardPanel: FC<
           <AverageTimeDescription>мин</AverageTimeDescription>
         </AverageTime>
         <ResourceStatisticsWrapper>
-          {/* {otherData.map((item) => (
-            <OtherDeitalStatistic item={item} />
-          ))} */}
+          {otherData.map((item) => (
+            <OtherAverageTimeDetailStatistic item={item} />
+          ))}
         </ResourceStatisticsWrapper>
         <LinkButtonWrapper>
           <LinkButton onClick={() => void 0}>Показать больше</LinkButton>

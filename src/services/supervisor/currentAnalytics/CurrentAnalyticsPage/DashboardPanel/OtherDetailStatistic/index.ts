@@ -1,0 +1,1 @@
+export { OtherDetailStatistic } from './OtherDetailStatistic';
