@@ -6,35 +6,23 @@ import {
   Wrapper,
 } from './ResourceStatistic.styled';
 import { Props } from './ResourceStatistic.types';
-import { ResourceInfo } from 'ui-kit/shared/ResourceInfo';
-import {
-  DashboardTaskMalfunctionDetailsModel,
-  DashboardTaskResourceDetailsModel,
-} from 'api/types';
+import { DashboardTaskMalfunctionDetailsModel } from 'api/types';
 import { Progress } from 'antd';
 import { AnalitycsDetail } from './AnalyticsDetail';
 import { MalfunctionIcon } from './MalfunctionIcon';
 
-export const ResourceStatistic: FC<Props> = ({ data }) => {
+export const MalfunctionDetail: FC<
+  Props<DashboardTaskMalfunctionDetailsModel>
+> = ({ data }) => {
   return (
     <Wrapper>
       <Title>
         <div>
-          {(data as DashboardTaskMalfunctionDetailsModel)?.malfunctionType && (
+          {data.malfunctionType && (
             <>
-              {
-                <MalfunctionIcon
-                  type={
-                    (data as DashboardTaskMalfunctionDetailsModel)
-                      .malfunctionType!
-                  }
-                />
-              }{' '}
-              {(data as DashboardTaskMalfunctionDetailsModel).malfunctionType}
+              <MalfunctionIcon type={data.malfunctionType} />{' '}
+              {data.malfunctionTypeDescription}
             </>
-          )}
-          {(data as DashboardTaskResourceDetailsModel)?.resourceType && (
-            <ResourceInfo resource={(data as any).resourceType as any} />
           )}
         </div>
         <div>

@@ -6,9 +6,13 @@ import {
   Wrapper,
 } from './DashboardPanel.styled';
 import { Props } from './DashboardPanel.types';
-import { ResourceStatistic } from './ResourceStatistic';
+import { TaskAverageTimeDetail } from './ResourceStatistic';
 import { LinkButton } from 'ui-kit/shared/LinkButton';
 import { DashboardTaskAverageTimeResponse } from 'api/types';
+import {
+  AverageTime,
+  AverageTimeDescription,
+} from './ResourceStatistic/ResourceStatistic.styled';
 
 export const AverageTimeDashboardPanel: FC<
   Props<DashboardTaskAverageTimeResponse>
@@ -17,12 +21,17 @@ export const AverageTimeDashboardPanel: FC<
     return (
       <Wrapper>
         <Title>Остальные округа</Title>
-        {/* <RatioWrapper>
-          <DangerWrapper isPositive={(ratioOfOthers?.danger || 0) > 0}>
-            {ratioOfOthers?.danger}
-          </DangerWrapper>{' '}
-          / {ratioOfOthers?.all}
-        </RatioWrapper> */}
+        <AverageTime>
+          {otherData.reduce(
+            (acc, elem) =>
+              acc +
+              (elem?.averageCompletionTime
+                ? Number(elem?.averageCompletionTime)
+                : 0),
+            0,
+          )}{' '}
+          <AverageTimeDescription>мин</AverageTimeDescription>
+        </AverageTime>
         <ResourceStatisticsWrapper>
           {/* {otherData.map((item) => (
             <OtherDeitalStatistic item={item} />
@@ -40,15 +49,13 @@ export const AverageTimeDashboardPanel: FC<
   return (
     <Wrapper>
       <Title>{data.title}</Title>
-      {/* <RatioWrapper>
-        <DangerWrapper isPositive={(data.expiredTasksCount || 0) > 0}>
-          {data.expiredTasksCount}
-        </DangerWrapper>{' '}
-        / {data.totalTasksCount}
-      </RatioWrapper> */}
+      <AverageTime>
+        {data.averageCompletionTime}{' '}
+        <AverageTimeDescription>мин</AverageTimeDescription>
+      </AverageTime>
       <ResourceStatisticsWrapper>
         {data.details?.map((detail) => (
-          <ResourceStatistic data={detail} />
+          <TaskAverageTimeDetail data={detail} />
         ))}
       </ResourceStatisticsWrapper>
       <LinkButtonWrapper>

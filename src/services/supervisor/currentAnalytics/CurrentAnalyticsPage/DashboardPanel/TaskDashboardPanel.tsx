@@ -8,7 +8,7 @@ import {
   Wrapper,
 } from './DashboardPanel.styled';
 import { Props } from './DashboardPanel.types';
-import { ResourceStatistic } from './ResourceStatistic';
+import { TaskResourceDetail } from './ResourceStatistic';
 import { LinkButton } from 'ui-kit/shared/LinkButton';
 import { getRatioOfTasksCountByOthers } from './DashboardPanel.utils';
 import { OtherDeitalStatistic } from './OtherDeitalStatistic';
@@ -55,7 +55,7 @@ export const TaskDashboardPanel: FC<Props<DashboardTaskResourceResponse>> = ({
       </RatioWrapper>
       <ResourceStatisticsWrapper>
         {data.details?.map((detail) => (
-          <ResourceStatistic data={detail} />
+          <TaskResourceDetail data={detail} />
         ))}
       </ResourceStatisticsWrapper>
       <LinkButtonWrapper>

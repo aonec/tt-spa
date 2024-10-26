@@ -6,7 +6,10 @@ import { AnalyticsSearch } from './AnalyticsSearch';
 import { WithLoader } from 'ui-kit/shared/WithLoader';
 import { InfoOptionsPanels } from './InfoOptionsPanels';
 import { splitArrayForDashboard } from './CurrentAnalyticsPage.utils';
-import { TaskDashboardPanel } from './DashboardPanel';
+import {
+  MalfunctionDashboardPanel,
+  TaskDashboardPanel,
+} from './DashboardPanel';
 import { DashboardDataType } from '../currentAnalyticsService.types';
 import { AverageTimeDashboardPanel } from './DashboardPanel/AverageTimeDashboardPanel';
 
@@ -65,10 +68,10 @@ export const CurrentAnalyticsPage: FC<Props> = ({
         return (
           <>
             {dashboardData?.panels?.map((data) => (
-              <TaskDashboardPanel data={data} />
+              <MalfunctionDashboardPanel data={data} />
             ))}
             {dashboardData?.others && (
-              <TaskDashboardPanel otherData={dashboardData.others} />
+              <MalfunctionDashboardPanel otherData={dashboardData.others} />
             )}
           </>
         );
@@ -95,6 +98,7 @@ export const CurrentAnalyticsPage: FC<Props> = ({
     return dataMap[currentDashboardType];
   }, [
     currentDashboardType,
+    dashboardAverageTime,
     dashboardMalfunctions,
     dashboardPiperuptersList,
     dashboardResourceDisconnection,

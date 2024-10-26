@@ -8,7 +8,7 @@ import {
   Wrapper,
 } from './DashboardPanel.styled';
 import { Props } from './DashboardPanel.types';
-import { ResourceStatistic } from './ResourceStatistic';
+import { MalfunctionDetail } from './ResourceStatistic';
 import { LinkButton } from 'ui-kit/shared/LinkButton';
 import { getRatioOfTasksCountByOthers } from './DashboardPanel.utils';
 import { OtherDeitalStatistic } from './OtherDeitalStatistic';
@@ -54,7 +54,7 @@ export const MalfunctionDashboardPanel: FC<
       </RatioWrapper>
       <ResourceStatisticsWrapper>
         {data.details?.map((detail) => (
-          <ResourceStatistic data={detail} />
+          <MalfunctionDetail data={detail} />
         ))}
       </ResourceStatisticsWrapper>
       <LinkButtonWrapper>

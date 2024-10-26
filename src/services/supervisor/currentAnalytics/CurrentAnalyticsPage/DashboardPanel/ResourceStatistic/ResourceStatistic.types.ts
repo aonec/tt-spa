@@ -3,8 +3,6 @@ import {
   DashboardTaskResourceDetailsModel,
 } from 'api/types';
 
-export type Props = {
-  data:
-    | DashboardTaskResourceDetailsModel
-    | DashboardTaskMalfunctionDetailsModel;
+export type Props<T> = {
+  data: T;
 };
