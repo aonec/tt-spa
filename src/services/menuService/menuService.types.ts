@@ -21,6 +21,7 @@ export enum MenuType {
   Services = 'Services',
   ServicesSeal = 'ServicesSeal',
   DisabledResourcesDispatcher = 'DisabledResourcesDispatcher',
+  WorkWithReadings = 'WorkWithReadings',
 }
 
 type Icon = React.FunctionComponent<

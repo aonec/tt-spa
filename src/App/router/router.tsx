@@ -73,6 +73,7 @@ import { tokensService } from 'api/tokensService';
 import { UserProfileContainer } from 'services/currentUser/currentUserService/currentUserService.container';
 import { CurrentUserEditServiceContainer } from 'services/currentUser/currentUserEditService';
 import { createRunnerService } from 'services/reports/createRunnerService/createRunnerService.models';
+import { WorkWithReadingsContainer } from 'services/workWithReadings';
 
 const {
   gates: { CurrentUserGate },
@@ -355,6 +356,10 @@ export const useRoutes = (
         {
           path: '/apartments/:apartmentId/:tabSection?',
           element: <ApartmentProfileContainer />,
+        },
+        {
+          path: '/workWithReadings',
+          element: <WorkWithReadingsContainer />,
         },
         {
           path: '/buildings/:searchType?',
