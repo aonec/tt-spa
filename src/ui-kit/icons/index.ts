@@ -104,6 +104,9 @@ import ExportIcon from './svg/export.svg?react';
 import DownloadGrayIcon from './svg/downloadGray.svg?react';
 import DocumentBigIcon from './svg/documentBig.svg?react';
 import DeviceBigIcon from './svg/deviceBig.svg?react';
+import CheckCircleIcon from './svg/checkCircle.svg?react';
+import QuestionMarkCircleIcon from './svg/questionMarkCircle.svg?react';
+import XCircleIcon from './svg/xCircle.svg?react';
 
 export {
   FinishIcon,
@@ -212,4 +215,7 @@ export {
   DownloadGrayIcon,
   DocumentBigIcon,
   DeviceBigIcon,
+  CheckCircleIcon,
+  QuestionMarkCircleIcon,
+  XCircleIcon,
 };

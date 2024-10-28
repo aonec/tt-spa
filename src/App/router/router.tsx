@@ -74,6 +74,7 @@ import { UserProfileContainer } from 'services/currentUser/currentUserService/cu
 import { CurrentUserEditServiceContainer } from 'services/currentUser/currentUserEditService';
 import { createRunnerService } from 'services/reports/createRunnerService/createRunnerService.models';
 import { WorkWithReadingsContainer } from 'services/workWithReadings';
+import { StandartReportContainer } from 'services/workWithReadings/standartReport';
 
 const {
   gates: { CurrentUserGate },
@@ -360,6 +361,10 @@ export const useRoutes = (
         {
           path: '/workWithReadings',
           element: <WorkWithReadingsContainer />,
+        },
+        {
+          path: '/workWithReadings/standart',
+          element: <StandartReportContainer />,
         },
         {
           path: '/buildings/:searchType?',
