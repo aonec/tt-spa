@@ -12,6 +12,7 @@ import {
 } from './DashboardPanel';
 import { DashboardDataType } from '../currentAnalyticsService.types';
 import { AverageTimeDashboardPanel } from './DashboardPanel/AverageTimeDashboardPanel';
+import { TaskQualityDashboardPanel } from './DashboardPanel/TaskQualityDashboardPanel';
 
 export const CurrentAnalyticsPage: FC<Props> = ({
   isLoading,
@@ -23,6 +24,7 @@ export const CurrentAnalyticsPage: FC<Props> = ({
   dashboardResourceDisconnection,
   dashboardMalfunctions,
   dashboardAverageTime,
+  dashboardServiceQuality,
 }) => {
   const Dashboard = useMemo(() => {
     const dataMap = {
@@ -92,7 +94,22 @@ export const CurrentAnalyticsPage: FC<Props> = ({
           </>
         );
       },
-      [DashboardDataType.TasksCount]: null,
+      [DashboardDataType.TasksCount]: () => {
+        if (!dashboardServiceQuality) return;
+
+        const dashboardData = splitArrayForDashboard(dashboardServiceQuality);
+
+        return (
+          <>
+            {dashboardData?.panels?.map((data) => (
+              <TaskQualityDashboardPanel data={data} />
+            ))}
+            {dashboardData?.others && (
+              <TaskQualityDashboardPanel otherData={dashboardData.others} />
+            )}
+          </>
+        );
+      },
     };
 
     return dataMap[currentDashboardType];
@@ -102,6 +119,7 @@ export const CurrentAnalyticsPage: FC<Props> = ({
     dashboardMalfunctions,
     dashboardPiperuptersList,
     dashboardResourceDisconnection,
+    dashboardServiceQuality,
   ]);
 
   return (

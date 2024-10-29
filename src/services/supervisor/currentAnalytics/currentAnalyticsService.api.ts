@@ -4,6 +4,7 @@ import {
   DashboardSummaryResponse,
   DashboardTaskAverageTimeResponse,
   DashboardTaskMalfunctionResponse,
+  DashboardTaskQualityResponse,
   DashboardTaskResourceResponse,
 } from 'api/types';
 
@@ -40,4 +41,11 @@ export const dashboardAverageTimeQuery = createQuery<
   DashboardTaskAverageTimeResponse[]
 >({
   handler: () => axios.get(`/Dashboard/current/averagetime`),
+});
+
+export const dashboardServiceQualityQuery = createQuery<
+  [void],
+  DashboardTaskQualityResponse[]
+>({
+  handler: () => axios.get(`/Dashboard/current/servicequality`),
 });

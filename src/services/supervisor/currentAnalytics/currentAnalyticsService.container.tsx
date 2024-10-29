@@ -5,6 +5,7 @@ import {
   dashboardMalfunctionsQuery,
   dashboardPiperuptersQuery,
   dashboardResourceDisconnectionQuery,
+  dashboardServiceQualityQuery,
   dashboardSummaryQuery,
 } from './currentAnalyticsService.api';
 import { currentAnalyticsService } from './currentAnalyticsService.models';
@@ -26,6 +27,7 @@ export const CurrentAnalyticsContainer = () => {
     dashboardResourceDisconnection,
     dashboardMalfunctions,
     dashboardAverageTime,
+    dashboardServiceQuality,
   } = useUnit({
     dashboardSummary: dashboardSummaryQuery.$data,
     isLoadingSummary: dashboardSummaryQuery.$pending,
@@ -35,6 +37,7 @@ export const CurrentAnalyticsContainer = () => {
     dashboardResourceDisconnection: dashboardResourceDisconnectionQuery.$data,
     dashboardMalfunctions: dashboardMalfunctionsQuery.$data,
     dashboardAverageTime: dashboardAverageTimeQuery.$data,
+    dashboardServiceQuality: dashboardServiceQualityQuery.$data,
     isLoadingPanels: outputs.$isLoading,
   });
 
@@ -50,6 +53,7 @@ export const CurrentAnalyticsContainer = () => {
         dashboardResourceDisconnection={dashboardResourceDisconnection}
         dashboardMalfunctions={dashboardMalfunctions}
         dashboardAverageTime={dashboardAverageTime}
+        dashboardServiceQuality={dashboardServiceQuality}
         isLoadingPanels={isLoadingPanels}
       />
     </>

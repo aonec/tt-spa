@@ -5,6 +5,7 @@ import {
   dashboardMalfunctionsQuery,
   dashboardPiperuptersQuery,
   dashboardResourceDisconnectionQuery,
+  dashboardServiceQualityQuery,
   dashboardSummaryQuery,
 } from './currentAnalyticsService.api';
 import { DashboardDataType } from './currentAnalyticsService.types';
@@ -31,6 +32,7 @@ split({
       dashboardResourceDisconnectionQuery.start,
     [DashboardDataType.MalfunctionsCount]: dashboardMalfunctionsQuery.start,
     [DashboardDataType.AverageCompletionTime]: dashboardAverageTimeQuery.start,
+    [DashboardDataType.TasksCount]: dashboardServiceQualityQuery.start,
   },
 });
 
@@ -39,6 +41,7 @@ const $isLoading = combine(
   dashboardResourceDisconnectionQuery.$pending,
   dashboardMalfunctionsQuery.$pending,
   dashboardAverageTimeQuery.$pending,
+  dashboardServiceQualityQuery.$pending,
   (...params) => params.some((value) => value),
 );
 
