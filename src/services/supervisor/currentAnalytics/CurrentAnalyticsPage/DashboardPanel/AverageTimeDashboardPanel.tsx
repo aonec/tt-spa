@@ -30,7 +30,7 @@ export const AverageTimeDashboardPanel: FC<
                 ? Number(elem?.averageCompletionTime)
                 : 0),
             0,
-          )}{' '}
+          ) / otherData.length}{' '}
           <AverageTimeDescription>мин</AverageTimeDescription>
         </AverageTime>
         <ResourceStatisticsWrapper>
