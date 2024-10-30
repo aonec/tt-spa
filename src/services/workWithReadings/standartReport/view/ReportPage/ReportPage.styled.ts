@@ -1,7 +1,18 @@
 import styled from 'styled-components';
 
-export const Wrapper = styled.div`
+export const Wrapper = styled.div``;
+
+export const Container = styled.div`
   width: 880px;
+`;
+
+export const Footer = styled.div`
+  display: flex;
+  height: 40px;
+  gap: 10px;
+
+  border-top: 1px solid black;
+  
 `;
 
 export const Info = styled.div`
@@ -11,6 +22,8 @@ export const Info = styled.div`
 export const Blue = styled.div`
   color: rgba(24, 158, 233, 1);
   font-weight: 500;
+
+  cursor: pointer;
 `;
 
 export const LeftBlock = styled.div`
