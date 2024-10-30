@@ -1,6 +1,6 @@
 import { FC } from 'react';
 import {
-  AnalitycsDetailWrapper,
+  AnalyticsDetailWrapper,
   NotClosedTaskCount,
   ProgressSC,
   Title,
@@ -8,7 +8,7 @@ import {
 } from './ResourceStatistic.styled';
 import { Props } from './ResourceStatistic.types';
 import { DashboardTaskMalfunctionDetailsModel } from 'api/types';
-import { AnalitycsDetail } from './AnalyticsDetail';
+import { AnalyticsDetail } from './AnalyticsDetail';
 import { MalfunctionIcon } from './MalfunctionIcon';
 
 export const MalfunctionDetail: FC<
@@ -38,11 +38,11 @@ export const MalfunctionDetail: FC<
         strokeColor={'#272F5A'}
         size={['100%', 3]}
       />
-      <AnalitycsDetailWrapper>
+      <AnalyticsDetailWrapper>
         {data.items?.map((data) => (
-          <AnalitycsDetail data={data} />
+          <AnalyticsDetail data={data} />
         ))}
-      </AnalitycsDetailWrapper>
+      </AnalyticsDetailWrapper>
     </Wrapper>
   );
 };

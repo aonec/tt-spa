@@ -7,7 +7,7 @@ export const Wrapper = styled.div`
   gap: 8px;
 `;
 
-export const AnalitycsDetailWrapper = styled.div`
+export const AnalyticsDetailWrapper = styled.div`
   display: flex;
   gap: 8px;
   flex-wrap: wrap;

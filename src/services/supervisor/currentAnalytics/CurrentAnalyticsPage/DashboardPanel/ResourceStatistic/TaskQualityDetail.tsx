@@ -1,6 +1,6 @@
 import { FC } from 'react';
 import {
-  AnalitycsDetailWrapper,
+  AnalyticsDetailWrapper,
   DiviationTitle,
   NotClosedTaskCount,
   ProgressSC,
@@ -12,7 +12,7 @@ import {
   DashboardServiceQualityDetailsModel,
   ETemperatureNormativeDeviationType,
 } from 'api/types';
-import { AnalitycsDetail } from './AnalyticsDetail';
+import { AnalyticsDetail } from './AnalyticsDetail';
 import { ArrowDown, ArrowUp } from 'react-bootstrap-icons';
 
 export const TaskQualityDetail: FC<
@@ -41,11 +41,11 @@ export const TaskQualityDetail: FC<
         size={['100%', 3]}
       />
 
-      <AnalitycsDetailWrapper>
+      <AnalyticsDetailWrapper>
         {data.items?.map((data) => (
-          <AnalitycsDetail hideExpired data={data} />
+          <AnalyticsDetail data={data} />
         ))}
-      </AnalitycsDetailWrapper>
+      </AnalyticsDetailWrapper>
     </Wrapper>
   );
 };

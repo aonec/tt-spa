@@ -101,6 +101,7 @@ import TrashIconGrey from './svg/trashGrey.svg?react';
 import ChevronTopActive from './svg/chevronTopActive.svg?react';
 import ChevronTopDanger from './svg/chevronTopDanger.svg?react';
 import ResetIcon from './svg/reset.svg?react';
+import CitySmallGrayIcon from './svg/citySmallGray.svg?react';
 
 export {
   FinishIcon,
@@ -206,4 +207,5 @@ export {
   ChevronTopActive,
   ChevronTopDanger,
   ResetIcon,
+  CitySmallGrayIcon,
 };

@@ -2,6 +2,8 @@ import { FC } from 'react';
 import {
   LinkButtonWrapper,
   ResourceStatisticsWrapper,
+  TaskQualityAnalyticsTitle,
+  TaskQualityAnalyticsWrapper,
   Title,
   Wrapper,
 } from './DashboardPanel.styled';
@@ -14,25 +16,44 @@ import {
 } from './ResourceStatistic/ResourceStatistic.styled';
 import { OtherTaskQualityDetailStatistic } from './OtherDetailStatistic/OtherTaskQualityDetailStatistic';
 import { TaskQualityDetail } from './ResourceStatistic/TaskQualityDetail';
+import { CitySmallGrayIcon, TimerIcon } from 'ui-kit/icons';
+import { SpaceLine } from 'ui-kit/SpaceLine';
+import { getTaskQualityOtherData } from './utils';
 
 export const TaskQualityDashboardPanel: FC<
   Props<DashboardTaskQualityResponse>
 > = ({ data, otherData }) => {
   if (otherData) {
+    const {
+      allTasksCount,
+      totalBuildingCount,
+      buildingsWithTasksCount,
+      averageCompletionTime,
+    } = getTaskQualityOtherData(otherData);
+
     return (
       <Wrapper>
         <Title>Остальные округа</Title>
         <AverageTime>
-          {otherData.reduce(
-            (acc, elem) =>
-              acc +
-              (elem?.averageCompletionTime
-                ? Number(elem?.averageCompletionTime)
-                : 0),
-            0,
-          ) / otherData.length}{' '}
-          <AverageTimeDescription>задач</AverageTimeDescription>
+          {allTasksCount} <AverageTimeDescription>задач</AverageTimeDescription>
         </AverageTime>
+
+        <TaskQualityAnalyticsWrapper>
+          <TaskQualityAnalyticsTitle>
+            <CitySmallGrayIcon /> Объекты
+          </TaskQualityAnalyticsTitle>
+          {buildingsWithTasksCount} / {totalBuildingCount}
+        </TaskQualityAnalyticsWrapper>
+
+        <TaskQualityAnalyticsWrapper>
+          <TaskQualityAnalyticsTitle>
+            <TimerIcon /> Среднее время на закрытие
+          </TaskQualityAnalyticsTitle>
+          {averageCompletionTime} мин
+        </TaskQualityAnalyticsWrapper>
+
+        <SpaceLine noPadding noTop />
+
         <ResourceStatisticsWrapper>
           {otherData.map((item) => (
             <OtherTaskQualityDetailStatistic item={item} />
@@ -51,9 +72,26 @@ export const TaskQualityDashboardPanel: FC<
     <Wrapper>
       <Title>{data.title}</Title>
       <AverageTime>
-        {data.averageCompletionTime}{' '}
+        {data.totalTasksCount}{' '}
         <AverageTimeDescription>задач</AverageTimeDescription>
       </AverageTime>
+
+      <TaskQualityAnalyticsWrapper>
+        <TaskQualityAnalyticsTitle>
+          <CitySmallGrayIcon /> Объекты
+        </TaskQualityAnalyticsTitle>
+        {data.buildingsWithTasksCount} / {data.totalBuildingCount}
+      </TaskQualityAnalyticsWrapper>
+
+      <TaskQualityAnalyticsWrapper>
+        <TaskQualityAnalyticsTitle>
+          <TimerIcon /> Среднее время на закрытие
+        </TaskQualityAnalyticsTitle>
+        {data.averageCompletionTime} мин
+      </TaskQualityAnalyticsWrapper>
+
+      <SpaceLine noPadding noTop />
+
       <ResourceStatisticsWrapper>
         {data.details?.map((detail) => (
           <TaskQualityDetail data={detail} />

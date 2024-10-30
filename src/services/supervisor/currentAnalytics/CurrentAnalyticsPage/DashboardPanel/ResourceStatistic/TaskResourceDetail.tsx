@@ -1,6 +1,6 @@
 import { FC } from 'react';
 import {
-  AnalitycsDetailWrapper,
+  AnalyticsDetailWrapper,
   NotClosedTaskCount,
   ProgressSC,
   Title,
@@ -9,7 +9,7 @@ import {
 import { Props } from './ResourceStatistic.types';
 import { ResourceInfo } from 'ui-kit/shared/ResourceInfo';
 import { DashboardTaskResourceDetailsModel } from 'api/types';
-import { AnalitycsDetail } from './AnalyticsDetail';
+import { AnalyticsDetail } from './AnalyticsDetail';
 
 export const TaskResourceDetail: FC<
   Props<DashboardTaskResourceDetailsModel>
@@ -35,11 +35,11 @@ export const TaskResourceDetail: FC<
         strokeColor={'#272F5A'}
         size={['100%', 3]}
       />
-      <AnalitycsDetailWrapper>
+      <AnalyticsDetailWrapper>
         {data.items?.map((data) => (
-          <AnalitycsDetail data={data} />
+          <AnalyticsDetail data={data} />
         ))}
-      </AnalitycsDetailWrapper>
+      </AnalyticsDetailWrapper>
     </Wrapper>
   );
 };

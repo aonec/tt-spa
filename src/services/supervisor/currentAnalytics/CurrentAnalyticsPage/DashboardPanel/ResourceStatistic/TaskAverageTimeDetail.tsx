@@ -1,13 +1,13 @@
 import { FC } from 'react';
 import {
-  AnalitycsDetailWrapper,
+  AnalyticsDetailWrapper,
   NotClosedTaskCount,
   Title,
   Wrapper,
 } from './ResourceStatistic.styled';
 import { Props } from './ResourceStatistic.types';
 import { DashboardTaskAverageTimeDetailsModel } from 'api/types';
-import { AnalitycsDetail } from './AnalyticsDetail';
+import { AnalyticsDetail } from './AnalyticsDetail';
 import { MalfunctionIcon } from './MalfunctionIcon';
 
 export const TaskAverageTimeDetail: FC<
@@ -29,11 +29,11 @@ export const TaskAverageTimeDetail: FC<
         </NotClosedTaskCount>{' '}
       </Title>
 
-      <AnalitycsDetailWrapper>
+      <AnalyticsDetailWrapper>
         {data.items?.map((data) => (
-          <AnalitycsDetail hideExpired data={data} />
+          <AnalyticsDetail hideExpired data={data} />
         ))}
-      </AnalitycsDetailWrapper>
+      </AnalyticsDetailWrapper>
     </Wrapper>
   );
 };
