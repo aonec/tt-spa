@@ -2,13 +2,13 @@ import { FC } from 'react';
 import {
   AnalitycsDetailWrapper,
   NotClosedTaskCount,
+  ProgressSC,
   Title,
   Wrapper,
 } from './ResourceStatistic.styled';
 import { Props } from './ResourceStatistic.types';
 import { ResourceInfo } from 'ui-kit/shared/ResourceInfo';
 import { DashboardTaskResourceDetailsModel } from 'api/types';
-import { Progress } from 'antd';
 import { AnalitycsDetail } from './AnalyticsDetail';
 
 export const TaskResourceDetail: FC<
@@ -23,14 +23,14 @@ export const TaskResourceDetail: FC<
           )}
         </div>
         <div>
-          <NotClosedTaskCount isPositive={data.notClosedTasksCount! > 0}>
-            {data.notClosedTasksCount}
+          <NotClosedTaskCount isPositive={data.expiredTasksCount! > 0}>
+            {data.expiredTasksCount}
           </NotClosedTaskCount>{' '}
           / {data.totalTasksCount}
         </div>
       </Title>
-      <Progress
-        percent={(data.notClosedTasksCount! / data.totalTasksCount!) * 100}
+      <ProgressSC
+        percent={(data.expiredTasksCount! / data.totalTasksCount!) * 100}
         showInfo={false}
         strokeColor={'#272F5A'}
         size={['100%', 3]}

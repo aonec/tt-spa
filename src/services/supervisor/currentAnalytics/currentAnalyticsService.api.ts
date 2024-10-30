@@ -6,6 +6,7 @@ import {
   DashboardTaskMalfunctionResponse,
   DashboardTaskQualityResponse,
   DashboardTaskResourceResponse,
+  HouseManagementWithStreetsResponse,
 } from 'api/types';
 
 export const dashboardSummaryQuery = createQuery<
@@ -13,6 +14,14 @@ export const dashboardSummaryQuery = createQuery<
   DashboardSummaryResponse
 >({
   handler: () => axios.get(`/Dashboard/summary`),
+});
+
+export const managementFirmsWithObjectsQuery = createQuery<
+  [void],
+  HouseManagementWithStreetsResponse[]
+>({
+  handler: (): Promise<HouseManagementWithStreetsResponse[]> =>
+    axios.get(`/Dashboard/managementfirms`),
 });
 
 export const dashboardPiperuptersQuery = createQuery<
@@ -47,5 +56,8 @@ export const dashboardServiceQualityQuery = createQuery<
   [void],
   DashboardTaskQualityResponse[]
 >({
-  handler: () => axios.get(`/Dashboard/current/servicequality`),
+  handler: () =>
+    axios.get(`/Dashboard/current/servicequality`, {
+      params: { isTest: true },
+    }),
 });

@@ -6,13 +6,14 @@ import {
   Wrapper,
 } from './DashboardPanel.styled';
 import { Props } from './DashboardPanel.types';
-import { TaskAverageTimeDetail } from './ResourceStatistic';
 import { LinkButton } from 'ui-kit/shared/LinkButton';
 import { DashboardTaskQualityResponse } from 'api/types';
 import {
   AverageTime,
   AverageTimeDescription,
 } from './ResourceStatistic/ResourceStatistic.styled';
+import { OtherTaskQualityDetailStatistic } from './OtherDetailStatistic/OtherTaskQualityDetailStatistic';
+import { TaskQualityDetail } from './ResourceStatistic/TaskQualityDetail';
 
 export const TaskQualityDashboardPanel: FC<
   Props<DashboardTaskQualityResponse>
@@ -30,12 +31,12 @@ export const TaskQualityDashboardPanel: FC<
                 : 0),
             0,
           ) / otherData.length}{' '}
-          <AverageTimeDescription>мин</AverageTimeDescription>
+          <AverageTimeDescription>задач</AverageTimeDescription>
         </AverageTime>
         <ResourceStatisticsWrapper>
-          {/* {otherData.map((item) => (
-            <OtherAverageTimeDetailStatistic item={item} />
-          ))} */}
+          {otherData.map((item) => (
+            <OtherTaskQualityDetailStatistic item={item} />
+          ))}
         </ResourceStatisticsWrapper>
         <LinkButtonWrapper>
           <LinkButton onClick={() => void 0}>Показать больше</LinkButton>
@@ -51,11 +52,11 @@ export const TaskQualityDashboardPanel: FC<
       <Title>{data.title}</Title>
       <AverageTime>
         {data.averageCompletionTime}{' '}
-        <AverageTimeDescription>мин</AverageTimeDescription>
+        <AverageTimeDescription>задач</AverageTimeDescription>
       </AverageTime>
       <ResourceStatisticsWrapper>
         {data.details?.map((detail) => (
-          <TaskAverageTimeDetail data={detail} />
+          <TaskQualityDetail data={detail} />
         ))}
       </ResourceStatisticsWrapper>
       <LinkButtonWrapper>

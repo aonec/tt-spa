@@ -1,10 +1,10 @@
 import { FC } from 'react';
 import { Title, Wrapper } from './OtherDetailStatistic.styled';
 import { Props } from './OtherDetailStatistic.types';
-import { DashboardTaskAverageTimeResponse } from 'api/types';
+import { DashboardTaskQualityResponse } from 'api/types';
 
-export const OtherAverageTimeDetailStatistic: FC<
-  Props<DashboardTaskAverageTimeResponse>
+export const OtherTaskQualityDetailStatistic: FC<
+  Props<DashboardTaskQualityResponse>
 > = ({ item }) => {
   return (
     <Wrapper>
