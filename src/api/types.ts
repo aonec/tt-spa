@@ -667,6 +667,14 @@ export interface CalculatorCommentResponse {
   lastModifiedUser: LastModifiedUserResponse | null;
 }
 
+export interface CalculatorConnectionInfoResponse {
+  connectionStatus: EConnectionStatusType | null;
+  /** @format date-time */
+  lastDailyArchiveTime: string | null;
+  /** @format date-time */
+  lastHourlyArchiveTime: string | null;
+}
+
 export interface CalculatorFilterResponse {
   nodeStatuses:
     | ENodeCommercialAccountStatusNullableStringDictionaryItem[]
@@ -725,6 +733,7 @@ export interface CalculatorIntoNodeResponse {
   address: BuildingShortResponse | null;
   /** @format int32 */
   infoId: number | null;
+  connectionInfo: CalculatorConnectionInfoResponse | null;
 }
 
 export interface CalculatorListResponse {
@@ -756,6 +765,7 @@ export interface CalculatorListResponse {
   /** @format int32 */
   numberOfTasks: number | null;
   comment: CalculatorCommentResponse | null;
+  connectionInfo: CalculatorConnectionInfoResponse | null;
 }
 
 export interface CalculatorListResponsePagedList {
@@ -810,6 +820,7 @@ export interface CalculatorResponse {
   /** @format int32 */
   numberOfTasks: number | null;
   comment: CalculatorCommentResponse | null;
+  connectionInfo: CalculatorConnectionInfoResponse | null;
 }
 
 export interface CallCenterWorkingConstructedReportResponse {
@@ -1182,6 +1193,11 @@ export interface CreateGroupReportRequest {
   housingStockIds?: number[] | null;
 }
 
+export interface CreateGroupReportScheduleRequest {
+  reportScheduleDetails: GroupReportScheduleDetailsRequest;
+  report: ComposeGroupReportRequest;
+}
+
 export interface CreateHousingMeteringDeviceReadingsRequest {
   /** @format date-time */
   readingDate: string;
@@ -1321,30 +1337,24 @@ export interface CreatingUser {
   middleName?: string | null;
 }
 
-export interface DashboardCurrentAnalitycsDetailsOthersResponse {
-  title: string | null;
-  items: DashboardCurrentAnalitycsDetailsResourceItemModel[] | null;
-}
-
-export interface DashboardCurrentAnalitycsDetailsResourceItemModel {
-  name?: string | null;
+export interface DashboardBaseTaskItemModel {
+  label?: string | null;
   /** @format int32 */
   totalTasksCount?: number;
   /** @format int32 */
-  notClosedTasksCount?: number;
+  expiredTasksCount?: number;
 }
 
-export interface DashboardCurrentAnalitycsDetailsResourceModel {
-  resourceType?: TaskTargetObjectInfo;
-  items?: DashboardCurrentAnalitycsDetailsResourceItemModel[] | null;
+export interface DashboardServiceQualityDetailsModel {
+  /** @format int32 */
+  totalTasksCount?: number;
+  /** @format int32 */
+  expiredTasksCount?: number;
+  deviationType?: ETemperatureNormativeDeviationType;
+  items?: DashboardBaseTaskItemModel[] | null;
 }
 
-export interface DashboardCurrentAnalitycsDetailsResponse {
-  title: string | null;
-  details: DashboardCurrentAnalitycsDetailsResourceModel[] | null;
-}
-
-export interface DashboardCurrentAnalitycsResponse {
+export interface DashboardSummaryResponse {
   /** @format int32 */
   dashboardTasksCount: number;
   /** @format int32 */
@@ -1354,8 +1364,74 @@ export interface DashboardCurrentAnalitycsResponse {
   /** @format int32 */
   dashboardMalfunctionsCount: number;
   dashboardAverageCompletionTime: string | null;
-  dashboardPanels: DashboardCurrentAnalitycsDetailsResponse[] | null;
-  dashboardOthers: DashboardCurrentAnalitycsDetailsOthersResponse | null;
+  /** @format int32 */
+  dashboardServiceQualityCount: number;
+}
+
+export interface DashboardTaskAverageTimeDetailsModel {
+  /** @format double */
+  averageCompletionTime?: number;
+  malfunctionType?: ManagingFirmTaskType;
+  malfunctionTypeDescription?: string | null;
+  items?: DashboardBaseTaskItemModel[] | null;
+}
+
+export interface DashboardTaskAverageTimeResponse {
+  title: string | null;
+  averageCompletionTime: string | null;
+  details: DashboardTaskAverageTimeDetailsModel[] | null;
+}
+
+export interface DashboardTaskMalfunctionDetailsModel {
+  /** @format int32 */
+  totalTasksCount?: number;
+  /** @format int32 */
+  expiredTasksCount?: number;
+  malfunctionType?: ManagingFirmTaskType;
+  malfunctionTypeDescription?: string | null;
+  items?: DashboardBaseTaskItemModel[] | null;
+}
+
+export interface DashboardTaskMalfunctionResponse {
+  title: string | null;
+  /** @format int32 */
+  totalTasksCount: number;
+  /** @format int32 */
+  expiredTasksCount: number;
+  details: DashboardTaskMalfunctionDetailsModel[] | null;
+}
+
+export interface DashboardTaskQualityResponse {
+  title: string | null;
+  /** @format int32 */
+  totalTasksCount: number;
+  /** @format int32 */
+  expiredTasksCount: number;
+  /** @format int32 */
+  totalBuildingCount: number;
+  /** @format int32 */
+  buildingsWithTasksCount: number;
+  /** @format double */
+  averageCompletionTime: number;
+  details: DashboardServiceQualityDetailsModel[] | null;
+}
+
+export interface DashboardTaskResourceDetailsModel {
+  /** @format int32 */
+  totalTasksCount?: number;
+  /** @format int32 */
+  expiredTasksCount?: number;
+  resourceType?: ResourceType;
+  items?: DashboardBaseTaskItemModel[] | null;
+}
+
+export interface DashboardTaskResourceResponse {
+  title: string | null;
+  /** @format int32 */
+  totalTasksCount: number;
+  /** @format int32 */
+  expiredTasksCount: number;
+  details: DashboardTaskResourceDetailsModel[] | null;
 }
 
 export interface DataAfterSplittingHomeownerAccountResponse {
@@ -1502,6 +1578,14 @@ export enum EClosingReason {
   CertificateIssued = 'CertificateIssued',
   MaintainingStopped = 'MaintainingStopped',
   ByLetter = 'ByLetter',
+}
+
+export enum EConnectionStatusType {
+  Unknown = 'Unknown',
+  Success = 'Success',
+  NoConnection = 'NoConnection',
+  UnstableConnection = 'UnstableConnection',
+  DeviceMalfunction = 'DeviceMalfunction',
 }
 
 export enum EConstructedReportDeviceStatus {
@@ -1917,6 +2001,7 @@ export enum ESecuredIdentityRoleName {
   SeniorOperator = 'SeniorOperator',
   ManagingFirmSpectatorRestricted = 'ManagingFirmSpectatorRestricted',
   ManagingFirmSpectatingAdministrator = 'ManagingFirmSpectatingAdministrator',
+  Supervisor = 'Supervisor',
 }
 
 export interface ESecuredIdentityRoleNameStringDictionaryItem {
@@ -2065,6 +2150,11 @@ export enum ETasksState {
   NoTasks = 'NoTasks',
   OnTime = 'OnTime',
   MissedDeadline = 'MissedDeadline',
+}
+
+export enum ETemperatureNormativeDeviationType {
+  Overheating = 'Overheating',
+  Underheating = 'Underheating',
 }
 
 export enum EValueNodeWorkingRangeRelation {
@@ -2318,6 +2408,20 @@ export interface GroupReportResponse {
   /** @format uuid */
   houseManagementId: string | null;
   title: string | null;
+}
+
+export interface GroupReportScheduleDetailsRequest {
+  emails: string[];
+  contractorIds?: number[] | null;
+  /** @format date-time */
+  initialDate?: string;
+  reportSchedulePeriod: GroupReportSchedulePeriod;
+}
+
+export enum GroupReportSchedulePeriod {
+  EveryTwoWeeks = 'EveryTwoWeeks',
+  EveryMonth = 'EveryMonth',
+  EveryQuarter = 'EveryQuarter',
 }
 
 export interface GuidStringDictionaryItem {
@@ -3597,6 +3701,27 @@ export interface ManagementFirmLiteResponse {
   workingTime: string | null;
 }
 
+export enum ManagingFirmTaskType {
+  CalculatorMalfunction = 'CalculatorMalfunction',
+  CalculatorMalfunctionNonCommercial = 'CalculatorMalfunctionNonCommercial',
+  HousingDeviceMalfunction = 'HousingDeviceMalfunction',
+  HousingDeviceMalfunctionNonCommercial = 'HousingDeviceMalfunctionNonCommercial',
+  CalculatorLackOfConnection = 'CalculatorLackOfConnection',
+  IndividualDeviceCheck = 'IndividualDeviceCheck',
+  PipeRupture = 'PipeRupture',
+  CurrentApplication = 'CurrentApplication',
+  EmergencyApplication = 'EmergencyApplication',
+  IndividualDeviceReadingsCheck = 'IndividualDeviceReadingsCheck',
+  MeasurementErrorCommercial = 'MeasurementErrorCommercial',
+  MeasurementErrorNonCommercial = 'MeasurementErrorNonCommercial',
+  IndividualDeviceCheckNoReadings = 'IndividualDeviceCheckNoReadings',
+  RiserNoReadings = 'RiserNoReadings',
+  ResourceDisconnecting = 'ResourceDisconnecting',
+  CurrentApplicationUnassigned = 'CurrentApplicationUnassigned',
+  EmergencyApplicationUnassigned = 'EmergencyApplicationUnassigned',
+  TemperatureNormativeDeviation = 'TemperatureNormativeDeviation',
+}
+
 export interface MeasurableIntervalResponse {
   /** @format double */
   maxValue: number | null;
@@ -4545,6 +4670,14 @@ export interface ResourceDisconnectingUpdateRequest {
   documentId?: number | null;
 }
 
+export enum ResourceType {
+  None = 'None',
+  Heat = 'Heat',
+  HotWaterSupply = 'HotWaterSupply',
+  ColdWaterSupply = 'ColdWaterSupply',
+  Electricity = 'Electricity',
+}
+
 export interface SendGroupReportRequest {
   /**
    * @format email
@@ -5045,15 +5178,6 @@ export interface TaskStatisticsItem {
 
 export interface TaskStatisticsResponse {
   tasks: DateTimeTaskStatisticsItemArrayDictionaryItem[] | null;
-}
-
-export enum TaskTargetObjectInfo {
-  ColdWaterSupply = 'ColdWaterSupply',
-  HotWaterSupply = 'HotWaterSupply',
-  Electricity = 'Electricity',
-  Heat = 'Heat',
-  MultipleResources = 'MultipleResources',
-  Calculator = 'Calculator',
 }
 
 export interface TaskTargetObjectResponse {
@@ -5581,7 +5705,7 @@ export class HttpClient<SecurityDataType = unknown> {
             : payloadFormatter(body),
       },
     ).then(async (response) => {
-      const r = response as HttpResponse<T, E>;
+      const r = response.clone() as HttpResponse<T, E>;
       r.data = null as unknown as T;
       r.error = null as unknown as E;
 
@@ -7275,6 +7399,7 @@ export class Api<
         filterHousingStockId?: number;
         filterNodeStatus?: ENodeCommercialAccountStatus;
         filterNodeRegistrationType?: ENodeRegistrationType;
+        filterConnectionStatus?: EConnectionStatusType;
         Question?: string;
         OrderRule?: ECalculatorOrderRule;
         IsConnected?: boolean;
@@ -7330,6 +7455,7 @@ export class Api<
         filterHousingStockId?: number;
         filterNodeStatus?: ENodeCommercialAccountStatus;
         filterNodeRegistrationType?: ENodeRegistrationType;
+        filterConnectionStatus?: EConnectionStatusType;
         Question?: string;
         OrderRule?: ECalculatorOrderRule;
         IsConnected?: boolean;
@@ -7820,15 +7946,277 @@ export class Api<
      * @description Роли:<li>Супервайзер</li>
      *
      * @tags Dashboard
-     * @name DashboardCurrentList
+     * @name DashboardSummaryList
      * @summary DashboardView
-     * @request GET:/api/Dashboard/current
+     * @request GET:/api/Dashboard/summary
      * @secure
      */
-    dashboardCurrentList: (params: RequestParams = {}) =>
-      this.request<DashboardCurrentAnalitycsResponse[], ErrorApiResponse>({
-        path: `/api/Dashboard/current`,
+    dashboardSummaryList: (
+      query?: {
+        /** @format date-time */
+        From?: string;
+        /** @format date-time */
+        To?: string;
+        /** @format int32 */
+        MunicipalDistrictId?: number;
+        /** @format int32 */
+        RegionId?: number;
+        /** @format int32 */
+        ManagementFirmId?: number;
+        BuildingIds?: number[];
+        /** @format date-time */
+        Date?: string;
+        addressCity?: string;
+        addressStreet?: string;
+        /** @format int32 */
+        addressHousingManagementId?: number;
+        addressAddress?: string;
+        IsTest?: boolean;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<DashboardSummaryResponse[], ErrorApiResponse>({
+        path: `/api/Dashboard/summary`,
         method: 'GET',
+        query: query,
+        secure: true,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Супервайзер</li>
+     *
+     * @tags Dashboard
+     * @name DashboardCurrentPiperupturesList
+     * @summary DashboardView
+     * @request GET:/api/Dashboard/current/piperuptures
+     * @secure
+     */
+    dashboardCurrentPiperupturesList: (
+      query?: {
+        /** @format date-time */
+        From?: string;
+        /** @format date-time */
+        To?: string;
+        /** @format int32 */
+        MunicipalDistrictId?: number;
+        /** @format int32 */
+        RegionId?: number;
+        /** @format int32 */
+        ManagementFirmId?: number;
+        BuildingIds?: number[];
+        /** @format date-time */
+        Date?: string;
+        addressCity?: string;
+        addressStreet?: string;
+        /** @format int32 */
+        addressHousingManagementId?: number;
+        addressAddress?: string;
+        IsTest?: boolean;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<DashboardTaskResourceResponse[], ErrorApiResponse>({
+        path: `/api/Dashboard/current/piperuptures`,
+        method: 'GET',
+        query: query,
+        secure: true,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Супервайзер</li>
+     *
+     * @tags Dashboard
+     * @name DashboardCurrentResourcedisconnectsList
+     * @summary DashboardView
+     * @request GET:/api/Dashboard/current/resourcedisconnects
+     * @secure
+     */
+    dashboardCurrentResourcedisconnectsList: (
+      query?: {
+        /** @format date-time */
+        From?: string;
+        /** @format date-time */
+        To?: string;
+        /** @format int32 */
+        MunicipalDistrictId?: number;
+        /** @format int32 */
+        RegionId?: number;
+        /** @format int32 */
+        ManagementFirmId?: number;
+        BuildingIds?: number[];
+        /** @format date-time */
+        Date?: string;
+        addressCity?: string;
+        addressStreet?: string;
+        /** @format int32 */
+        addressHousingManagementId?: number;
+        addressAddress?: string;
+        IsTest?: boolean;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<DashboardTaskResourceResponse[], ErrorApiResponse>({
+        path: `/api/Dashboard/current/resourcedisconnects`,
+        method: 'GET',
+        query: query,
+        secure: true,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Супервайзер</li>
+     *
+     * @tags Dashboard
+     * @name DashboardCurrentMalfunctionsList
+     * @summary DashboardView
+     * @request GET:/api/Dashboard/current/malfunctions
+     * @secure
+     */
+    dashboardCurrentMalfunctionsList: (
+      query?: {
+        /** @format date-time */
+        From?: string;
+        /** @format date-time */
+        To?: string;
+        /** @format int32 */
+        MunicipalDistrictId?: number;
+        /** @format int32 */
+        RegionId?: number;
+        /** @format int32 */
+        ManagementFirmId?: number;
+        BuildingIds?: number[];
+        /** @format date-time */
+        Date?: string;
+        addressCity?: string;
+        addressStreet?: string;
+        /** @format int32 */
+        addressHousingManagementId?: number;
+        addressAddress?: string;
+        IsTest?: boolean;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<DashboardTaskMalfunctionResponse[], ErrorApiResponse>({
+        path: `/api/Dashboard/current/malfunctions`,
+        method: 'GET',
+        query: query,
+        secure: true,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Супервайзер</li>
+     *
+     * @tags Dashboard
+     * @name DashboardCurrentAveragetimeList
+     * @summary DashboardView
+     * @request GET:/api/Dashboard/current/averagetime
+     * @secure
+     */
+    dashboardCurrentAveragetimeList: (
+      query?: {
+        /** @format date-time */
+        From?: string;
+        /** @format date-time */
+        To?: string;
+        /** @format int32 */
+        MunicipalDistrictId?: number;
+        /** @format int32 */
+        RegionId?: number;
+        /** @format int32 */
+        ManagementFirmId?: number;
+        BuildingIds?: number[];
+        /** @format date-time */
+        Date?: string;
+        addressCity?: string;
+        addressStreet?: string;
+        /** @format int32 */
+        addressHousingManagementId?: number;
+        addressAddress?: string;
+        IsTest?: boolean;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<DashboardTaskAverageTimeResponse[], ErrorApiResponse>({
+        path: `/api/Dashboard/current/averagetime`,
+        method: 'GET',
+        query: query,
+        secure: true,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Супервайзер</li>
+     *
+     * @tags Dashboard
+     * @name DashboardCurrentServicequalityList
+     * @summary DashboardView
+     * @request GET:/api/Dashboard/current/servicequality
+     * @secure
+     */
+    dashboardCurrentServicequalityList: (
+      query?: {
+        /** @format date-time */
+        From?: string;
+        /** @format date-time */
+        To?: string;
+        /** @format int32 */
+        MunicipalDistrictId?: number;
+        /** @format int32 */
+        RegionId?: number;
+        /** @format int32 */
+        ManagementFirmId?: number;
+        BuildingIds?: number[];
+        /** @format date-time */
+        Date?: string;
+        addressCity?: string;
+        addressStreet?: string;
+        /** @format int32 */
+        addressHousingManagementId?: number;
+        addressAddress?: string;
+        IsTest?: boolean;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<DashboardTaskQualityResponse[], ErrorApiResponse>({
+        path: `/api/Dashboard/current/servicequality`,
+        method: 'GET',
+        query: query,
+        secure: true,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Администратор УК без назначений задач</li><li>Контролёр</li><li>Супервайзер</li>
+     *
+     * @tags Dashboard
+     * @name DashboardManagementfirmsList
+     * @summary HousingStocksRead
+     * @request GET:/api/Dashboard/managementfirms
+     * @secure
+     */
+    dashboardManagementfirmsList: (
+      query?: {
+        City?: string;
+        Street?: string;
+        /** @format int32 */
+        HousingManagementId?: number;
+        Address?: string;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<HouseManagementWithStreetsResponse[], ErrorApiResponse>({
+        path: `/api/Dashboard/managementfirms`,
+        method: 'GET',
+        query: query,
         secure: true,
         format: 'json',
         ...params,
@@ -12262,6 +12650,45 @@ export class Api<
         body: data,
         secure: true,
         type: ContentType.Json,
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Администратор УК без назначений задач</li>
+     *
+     * @tags Reports
+     * @name ReportsCreategroupreportscheduleCreate
+     * @summary ReportRead
+     * @request POST:/api/Reports/creategroupreportschedule
+     * @secure
+     */
+    reportsCreategroupreportscheduleCreate: (
+      data: CreateGroupReportScheduleRequest,
+      params: RequestParams = {},
+    ) =>
+      this.request<void, ErrorApiResponse>({
+        path: `/api/Reports/creategroupreportschedule`,
+        method: 'POST',
+        body: data,
+        secure: true,
+        type: ContentType.Json,
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Администратор УК без назначений задач</li>
+     *
+     * @tags Reports
+     * @name ReportsGetgroupreportscheduleList
+     * @summary ReportRead
+     * @request GET:/api/Reports/getgroupreportschedule
+     * @secure
+     */
+    reportsGetgroupreportscheduleList: (params: RequestParams = {}) =>
+      this.request<void, ErrorApiResponse>({
+        path: `/api/Reports/getgroupreportschedule`,
+        method: 'GET',
+        secure: true,
         ...params,
       }),
 
