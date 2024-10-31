@@ -1,1 +1,1 @@
-export { AnalyticsDetail as AnalyticsDetail } from './AnalyticsDetail';
+export { AnalyticsDetail } from './AnalyticsDetail';
