@@ -8,7 +8,6 @@ import {
 import {
   BuildingByFilterResponse,
   EOrderByRule,
-  EResourceType,
   NodesPagedList,
 } from 'api/types';
 import { createGate } from 'effector-react';
@@ -113,19 +112,6 @@ sample({
 sample({
   source: $searchPayload,
   clock: CalculatorsGate.open,
-  fn: (searchPayload) => {
-    if (!searchPayload.Resource) {
-      return {
-        ...searchPayload,
-        Resource: [
-          EResourceType.ColdWaterSupply,
-          EResourceType.Heat,
-          EResourceType.HotWaterSupply,
-        ],
-      };
-    }
-    return searchPayload;
-  },
   target: getNodesListQuery.start,
 });
 
@@ -155,20 +141,7 @@ sample({
         ? Boolean(payload['Address.Street'])
         : true,
   }),
-  fn: (searchPayload) => {
-    console.log(searchPayload.Resource);
-    if (!searchPayload.Resource) {
-      return {
-        ...searchPayload,
-        Resource: [
-          EResourceType.ColdWaterSupply,
-          EResourceType.Heat,
-          EResourceType.HotWaterSupply,
-        ],
-      };
-    }
-    return searchPayload;
-  },
+
   target: getNodesListQuery.start,
 });
 
