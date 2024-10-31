@@ -2250,6 +2250,7 @@ export interface ErrorResponse {
 
 export interface FeatureTogglesResponse {
   sealService: boolean;
+  mvituService: boolean;
 }
 
 export interface FullAddressResponse {

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Meta, ComponentStory } from '@storybook/react';
+import { Meta } from '@storybook/react';
 import { Button } from '.';
 import { SettingsIcon } from 'ui-kit/icons';
 
@@ -19,13 +19,6 @@ export default {
     },
   },
 } as Meta<typeof Button>;
-
-export const Basic: ComponentStory<typeof Button> = (args) => (
-  <div style={{ width: 300, display: 'flex', justifyContent: 'center' }}>
-    <Button {...args} />
-  </div>
-);
-Basic.args = { children: 'Click me' };
 
 export const All = () => (
   <div style={{ display: 'flex', gap: 20, padding: 32 }}>

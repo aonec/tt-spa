@@ -56,7 +56,7 @@ export const Footer = styled.div`
   align-items: end;
   justify-content: flex-end;
   gap: 16px;
-  height: 280px;
+  height: 60px;
   background-color: white;
 `;
 

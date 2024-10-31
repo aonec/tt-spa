@@ -23,7 +23,7 @@ export const getDistrict = (HouseId: number): Promise<DistrictResponse[]> =>
   axios.get('IndividualSeal/Districts', { params: { HouseId } });
 
 export const districtAppoinmtentsOnMonthQuery = createQuery<
-  GetDistrictAppointmentsRequestPayload,
+  [GetDistrictAppointmentsRequestPayload],
   {
     [key: string]: number;
   }

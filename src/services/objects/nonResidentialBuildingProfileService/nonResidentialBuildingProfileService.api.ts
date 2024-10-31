@@ -7,14 +7,14 @@ import {
 } from 'api/types';
 
 export const nonResidentialBuildingQuery = createQuery<
-  number,
+  [number],
   NonResidentialBuildingResponse
 >({
   handler: (id) => axios.get(`NonResidentialBuildings/${id}`),
 });
 
 export const resourceDisconnectionQuery = createQuery<
-  number,
+  [number],
   ResourceDisconnectingResponsePagedList
 >({
   handler: (BuildingId) =>
