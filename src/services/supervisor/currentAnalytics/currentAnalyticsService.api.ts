@@ -8,56 +8,61 @@ import {
   DashboardTaskResourceResponse,
   HouseManagementWithStreetsResponse,
 } from 'api/types';
+import {
+  DashboardQueryParams,
+  ManagementFirmsQueryParams,
+} from './currentAnalyticsService.types';
 
 export const dashboardSummaryQuery = createQuery<
-  [void],
+  [DashboardQueryParams],
   DashboardSummaryResponse
 >({
-  handler: () => axios.get(`/Dashboard/summary`),
+  handler: (params) => axios.get(`/Dashboard/summary`, { params }),
 });
 
-export const managementFirmsWithObjectsQuery = createQuery<
-  [void],
+export const managementFirmsWithBuildingsQuery = createQuery<
+  [ManagementFirmsQueryParams],
   HouseManagementWithStreetsResponse[]
 >({
-  handler: (): Promise<HouseManagementWithStreetsResponse[]> =>
-    axios.get(`/Dashboard/managementfirms`),
+  handler: (params): Promise<HouseManagementWithStreetsResponse[]> =>
+    axios.get(`/Dashboard/managementfirms`, { params }),
 });
 
 export const dashboardPiperuptersQuery = createQuery<
-  [void],
+  [DashboardQueryParams],
   DashboardTaskResourceResponse[]
 >({
-  handler: () => axios.get(`/Dashboard/current/piperuptures`),
+  handler: (params) => axios.get(`/Dashboard/current/piperuptures`, { params }),
 });
 
 export const dashboardResourceDisconnectionQuery = createQuery<
-  [void],
+  [DashboardQueryParams],
   DashboardTaskResourceResponse[]
 >({
-  handler: () => axios.get(`/Dashboard/current/resourcedisconnects`),
+  handler: (params) =>
+    axios.get(`/Dashboard/current/resourcedisconnects`, { params }),
 });
 
 export const dashboardMalfunctionsQuery = createQuery<
-  [void],
+  [DashboardQueryParams],
   DashboardTaskMalfunctionResponse[]
 >({
-  handler: () => axios.get(`/Dashboard/current/malfunctions`),
+  handler: (params) => axios.get(`/Dashboard/current/malfunctions`, { params }),
 });
 
 export const dashboardAverageTimeQuery = createQuery<
-  [void],
+  [DashboardQueryParams],
   DashboardTaskAverageTimeResponse[]
 >({
-  handler: () => axios.get(`/Dashboard/current/averagetime`),
+  handler: (params) => axios.get(`/Dashboard/current/averagetime`, { params }),
 });
 
 export const dashboardServiceQualityQuery = createQuery<
-  [void],
+  [DashboardQueryParams],
   DashboardTaskQualityResponse[]
 >({
-  handler: () =>
+  handler: (params) =>
     axios.get(`/Dashboard/current/servicequality`, {
-      params: { isTest: true },
+      params: { params },
     }),
 });

@@ -7,6 +7,7 @@ import {
   dashboardResourceDisconnectionQuery,
   dashboardServiceQualityQuery,
   dashboardSummaryQuery,
+  managementFirmsWithBuildingsQuery,
 } from './currentAnalyticsService.api';
 import { currentAnalyticsService } from './currentAnalyticsService.models';
 
@@ -28,8 +29,10 @@ export const CurrentAnalyticsContainer = () => {
     dashboardMalfunctions,
     dashboardAverageTime,
     dashboardServiceQuality,
+    managementFirms,
   } = useUnit({
     dashboardSummary: dashboardSummaryQuery.$data,
+    managementFirms: managementFirmsWithBuildingsQuery.$data,
     isLoadingSummary: dashboardSummaryQuery.$pending,
     currentDashboardType: outputs.$currentDashboardType,
     setCurrentDashboardType: inputs.setCurrentDashboardType,
@@ -55,6 +58,7 @@ export const CurrentAnalyticsContainer = () => {
         dashboardAverageTime={dashboardAverageTime}
         dashboardServiceQuality={dashboardServiceQuality}
         isLoadingPanels={isLoadingPanels}
+        managementFirms={managementFirms}
       />
     </>
   );

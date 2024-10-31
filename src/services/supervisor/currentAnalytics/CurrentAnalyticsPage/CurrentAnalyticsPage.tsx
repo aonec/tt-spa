@@ -17,6 +17,7 @@ import { TaskQualityDashboardPanel } from './DashboardPanel/TaskQualityDashboard
 export const CurrentAnalyticsPage: FC<Props> = ({
   isLoading,
   isLoadingPanels,
+  managementFirms,
   dashboardSummary,
   currentDashboardType,
   setCurrentDashboardType,
@@ -125,7 +126,7 @@ export const CurrentAnalyticsPage: FC<Props> = ({
   return (
     <Wrapper>
       <PageHeader title="Текущая ситуация" contextMenu={{}} />
-      <AnalyticsSearch />
+      <AnalyticsSearch managementFirms={managementFirms} />
       <InfoOptionsPanels
         dashboardSummary={dashboardSummary}
         currentDashboardType={currentDashboardType}
