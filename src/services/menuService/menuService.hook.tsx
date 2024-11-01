@@ -3,6 +3,7 @@ import {
   CompanyProfileIcon,
   DeviceIcon,
   DocumentIcon,
+  DownloadIcon,
   ListIcon,
   ObjectsIcon,
   ReportsIcon,
@@ -95,6 +96,16 @@ export const useMenuItems = (): MenuItem[] => {
                 type: MenuType.ServicesSeal,
               },
             ],
+          },
+        ]
+      : ([] as MenuItem[])),
+    ...(featureToggles.workWithReadings
+      ? [
+          {
+            title: 'Работа с показаниями',
+            path: `/workWithReadings`,
+            icon: DownloadIcon,
+            type: MenuType.WorkWithReadings,
           },
         ]
       : ([] as MenuItem[])),
