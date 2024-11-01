@@ -12,12 +12,17 @@ import {
   DashboardQueryParams,
   ManagementFirmsQueryParams,
 } from './currentAnalyticsService.types';
+import { stringify } from 'query-string';
 
 export const dashboardSummaryQuery = createQuery<
   [DashboardQueryParams],
   DashboardSummaryResponse
 >({
-  handler: (params) => axios.get(`/Dashboard/summary`, { params }),
+  handler: (params) =>
+    axios.get(`/Dashboard/summary`, {
+      params,
+      paramsSerializer: (params) => stringify(params),
+    }),
 });
 
 export const managementFirmsWithBuildingsQuery = createQuery<
@@ -25,14 +30,21 @@ export const managementFirmsWithBuildingsQuery = createQuery<
   HouseManagementWithStreetsResponse[]
 >({
   handler: (params): Promise<HouseManagementWithStreetsResponse[]> =>
-    axios.get(`/Dashboard/managementfirms`, { params }),
+    axios.get(`/Dashboard/managementfirms`, {
+      params,
+      paramsSerializer: (params) => stringify(params),
+    }),
 });
 
 export const dashboardPiperuptersQuery = createQuery<
   [DashboardQueryParams],
   DashboardTaskResourceResponse[]
 >({
-  handler: (params) => axios.get(`/Dashboard/current/piperuptures`, { params }),
+  handler: (params) =>
+    axios.get(`/Dashboard/current/piperuptures`, {
+      params,
+      paramsSerializer: (params) => stringify(params),
+    }),
 });
 
 export const dashboardResourceDisconnectionQuery = createQuery<
@@ -40,21 +52,32 @@ export const dashboardResourceDisconnectionQuery = createQuery<
   DashboardTaskResourceResponse[]
 >({
   handler: (params) =>
-    axios.get(`/Dashboard/current/resourcedisconnects`, { params }),
+    axios.get(`/Dashboard/current/resourcedisconnects`, {
+      params,
+      paramsSerializer: (params) => stringify(params),
+    }),
 });
 
 export const dashboardMalfunctionsQuery = createQuery<
   [DashboardQueryParams],
   DashboardTaskMalfunctionResponse[]
 >({
-  handler: (params) => axios.get(`/Dashboard/current/malfunctions`, { params }),
+  handler: (params) =>
+    axios.get(`/Dashboard/current/malfunctions`, {
+      params,
+      paramsSerializer: (params) => stringify(params),
+    }),
 });
 
 export const dashboardAverageTimeQuery = createQuery<
   [DashboardQueryParams],
   DashboardTaskAverageTimeResponse[]
 >({
-  handler: (params) => axios.get(`/Dashboard/current/averagetime`, { params }),
+  handler: (params) =>
+    axios.get(`/Dashboard/current/averagetime`, {
+      params,
+      paramsSerializer: (params) => stringify(params),
+    }),
 });
 
 export const dashboardServiceQualityQuery = createQuery<
@@ -63,6 +86,9 @@ export const dashboardServiceQualityQuery = createQuery<
 >({
   handler: (params) =>
     axios.get(`/Dashboard/current/servicequality`, {
-      params: { params },
+      params: {
+        params,
+        paramsSerializer: (params: Record<string, any>) => stringify(params),
+      },
     }),
 });

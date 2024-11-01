@@ -30,6 +30,9 @@ export const CurrentAnalyticsContainer = () => {
     dashboardAverageTime,
     dashboardServiceQuality,
     managementFirms,
+    dashboardFilters,
+    setDashboardFilters,
+    resetDashboardFilters,
   } = useUnit({
     dashboardSummary: dashboardSummaryQuery.$data,
     managementFirms: managementFirmsWithBuildingsQuery.$data,
@@ -42,6 +45,9 @@ export const CurrentAnalyticsContainer = () => {
     dashboardAverageTime: dashboardAverageTimeQuery.$data,
     dashboardServiceQuality: dashboardServiceQualityQuery.$data,
     isLoadingPanels: outputs.$isLoading,
+    dashboardFilters: outputs.$dashboardFilters,
+    setDashboardFilters: inputs.setDashboardFilters,
+    resetDashboardFilters: inputs.resetDashboardFilters,
   });
 
   return (
@@ -59,6 +65,9 @@ export const CurrentAnalyticsContainer = () => {
         dashboardServiceQuality={dashboardServiceQuality}
         isLoadingPanels={isLoadingPanels}
         managementFirms={managementFirms}
+        dashboardFilters={dashboardFilters}
+        setDashboardFilters={setDashboardFilters}
+        resetDashboardFilters={resetDashboardFilters}
       />
     </>
   );

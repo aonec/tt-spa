@@ -16,12 +16,18 @@ import {
 
 const CurrentAnalyticsGate = createGate();
 const setCurrentDashboardType = createEvent<DashboardDataType>();
+const setDashboardFilters = createEvent<DashboardQueryParams>();
+const resetDashboardFilters = createEvent();
 
 const $currentDashboardType = createStore<DashboardDataType>(
   DashboardDataType.PipeRupturesCount,
 ).on(setCurrentDashboardType, (_, type) => type);
 
-const $dashboardFilters = createStore<DashboardQueryParams>({ IsTest: true });
+const $dashboardFilters = createStore<DashboardQueryParams>({
+  IsTest: true,
+})
+  .on(setDashboardFilters, (prev, data) => ({ ...prev, ...data }))
+  .reset(resetDashboardFilters);
 
 sample({
   source: $dashboardFilters,
@@ -65,7 +71,11 @@ const $isLoading = combine(
 );
 
 export const currentAnalyticsService = {
-  inputs: { setCurrentDashboardType },
-  outputs: { $currentDashboardType, $isLoading },
+  inputs: {
+    setCurrentDashboardType,
+    setDashboardFilters,
+    resetDashboardFilters,
+  },
+  outputs: { $currentDashboardType, $isLoading, $dashboardFilters },
   gates: { CurrentAnalyticsGate },
 };

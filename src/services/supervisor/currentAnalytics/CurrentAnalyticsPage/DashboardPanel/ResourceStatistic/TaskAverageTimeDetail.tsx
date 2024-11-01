@@ -25,7 +25,7 @@ export const TaskAverageTimeDetail: FC<
           )}
         </div>
         <NotClosedTaskCount isPositive={false}>
-          {data.averageCompletionTime}
+          {Number(data.averageCompletionTime).toFixed(1)}
         </NotClosedTaskCount>{' '}
       </Title>
 

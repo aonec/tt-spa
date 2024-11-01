@@ -87,7 +87,7 @@ export const TaskQualityDashboardPanel: FC<
         <TaskQualityAnalyticsTitle>
           <TimerIcon /> Среднее время на закрытие
         </TaskQualityAnalyticsTitle>
-        {data.averageCompletionTime} мин
+        {Number(data.averageCompletionTime).toFixed(1)} мин
       </TaskQualityAnalyticsWrapper>
 
       <SpaceLine noPadding noTop />

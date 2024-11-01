@@ -6,7 +6,10 @@ import {
   DashboardTaskResourceResponse,
   HouseManagementWithStreetsResponse,
 } from 'api/types';
-import { DashboardDataType } from '../currentAnalyticsService.types';
+import {
+  DashboardDataType,
+  DashboardQueryParams,
+} from '../currentAnalyticsService.types';
 
 export type Props = {
   isLoading: boolean;
@@ -20,4 +23,7 @@ export type Props = {
   dashboardAverageTime: DashboardTaskAverageTimeResponse[] | null;
   dashboardServiceQuality: DashboardTaskQualityResponse[] | null;
   isLoadingPanels: boolean;
+  dashboardFilters: DashboardQueryParams;
+  setDashboardFilters: (payload: DashboardQueryParams) => void;
+  resetDashboardFilters: () => void;
 };

@@ -8,8 +8,14 @@ import { ResetIcon } from 'ui-kit/icons';
 import { Tooltip } from 'antd';
 import { AddressTreeSelect } from 'ui-kit/shared/AddressTreeSelect';
 import { getTreeDataOfManagementFirms } from './AnalyticsSearch.utils';
+import dayjs from 'dayjs';
 
-export const AnalyticsSearch: FC<Props> = ({ managementFirms }) => {
+export const AnalyticsSearch: FC<Props> = ({
+  managementFirms,
+  dashboardFilters,
+  setDashboardFilters,
+  resetDashboardFilters,
+}) => {
   const treeData = useMemo(
     () => getTreeDataOfManagementFirms(managementFirms),
     [managementFirms],
@@ -17,10 +23,32 @@ export const AnalyticsSearch: FC<Props> = ({ managementFirms }) => {
 
   return (
     <Wrapper>
-      <RangePicker small format="DD.MM.YYYY" />
+      <RangePicker
+        small
+        format="DD.MM.YYYY"
+        value={
+          Boolean(dashboardFilters.From && dashboardFilters.To)
+            ? [dayjs(dashboardFilters.From), dayjs(dashboardFilters.To)]
+            : [null, null]
+        }
+        onChange={(value) => {
+          setDashboardFilters({
+            From: value?.[0]?.toISOString(),
+            To: value?.[1]?.toISOString(),
+          });
+        }}
+      />
       <Select placeholder="Округ" small />
       <Select placeholder="Район" small />
-      <Select placeholder="УК" small>
+      <Select
+        placeholder="УК"
+        small
+        value={dashboardFilters.addressHousingManagementId}
+        onChange={(value) =>
+          setDashboardFilters({ addressHousingManagementId: value as any })
+        }
+        allowClear
+      >
         {managementFirms?.map((elem) => (
           <Select.Option key={elem.id} value={elem.id}>
             {elem.name}
@@ -30,13 +58,14 @@ export const AnalyticsSearch: FC<Props> = ({ managementFirms }) => {
       <AddressTreeSelect
         small
         placeholder="Адрес"
-        selectedHousingStockIds={[]}
+        selectedHousingStockIds={dashboardFilters.BuildingIds || []}
         treeData={treeData}
-        onChange={(values) => {}}
-        // setFieldValue('housingStockIds', values)
+        onChange={(values) => {
+          setDashboardFilters({ BuildingIds: values });
+        }}
       />
       <Tooltip title="Сбросить фильтры">
-        <StyledMenuButton size="small">
+        <StyledMenuButton size="small" onClick={resetDashboardFilters}>
           <ResetIcon />
         </StyledMenuButton>
       </Tooltip>

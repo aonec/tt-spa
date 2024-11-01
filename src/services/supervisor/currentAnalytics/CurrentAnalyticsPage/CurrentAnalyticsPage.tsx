@@ -26,6 +26,9 @@ export const CurrentAnalyticsPage: FC<Props> = ({
   dashboardMalfunctions,
   dashboardAverageTime,
   dashboardServiceQuality,
+  dashboardFilters,
+  setDashboardFilters,
+  resetDashboardFilters,
 }) => {
   const Dashboard = useMemo(() => {
     const dataMap = {
@@ -126,7 +129,12 @@ export const CurrentAnalyticsPage: FC<Props> = ({
   return (
     <Wrapper>
       <PageHeader title="Текущая ситуация" contextMenu={{}} />
-      <AnalyticsSearch managementFirms={managementFirms} />
+      <AnalyticsSearch
+        managementFirms={managementFirms}
+        dashboardFilters={dashboardFilters}
+        setDashboardFilters={setDashboardFilters}
+        resetDashboardFilters={resetDashboardFilters}
+      />
       <InfoOptionsPanels
         dashboardSummary={dashboardSummary}
         currentDashboardType={currentDashboardType}
