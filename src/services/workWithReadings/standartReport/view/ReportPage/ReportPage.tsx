@@ -88,8 +88,8 @@ export const ReportPage: FC<Props> = ({}) => {
       </Container>
 
       <Footer>
+        <Button size="small" disabled >Экспортировать</Button>
         <Button size="small" type='ghost' >Отправить на email</Button>
-        <Button size="small" >Экспортировать</Button>
       </Footer>
     </Wrapper>
   );

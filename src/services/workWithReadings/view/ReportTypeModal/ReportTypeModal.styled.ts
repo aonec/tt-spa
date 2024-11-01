@@ -11,6 +11,8 @@ export const Bottom = styled.div`
 
 export const Blue = styled.div`
   color: rgba(24, 158, 233, 1);
+
+  cursor: pointer;
 `;
 
 export const Panel = styled.div`
@@ -23,6 +25,8 @@ export const Panel = styled.div`
   background: #fff;
   margin-top: 16px;
   font-weight: 500;
+
+  cursor: pointer;
 
   &:hover {
     border: 1px solid rgba(24, 158, 233, 0.6);

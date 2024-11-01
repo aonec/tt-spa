@@ -30,6 +30,8 @@ export const LeftBlock = styled.div`
   align-items: center;
   gap: 8px;
   font-weight: 500;
+
+  cursor: pointer;
 `;
 
 export const RightBlock = styled.div`

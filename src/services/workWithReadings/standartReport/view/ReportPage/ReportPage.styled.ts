@@ -1,18 +1,29 @@
 import styled from 'styled-components';
 
-export const Wrapper = styled.div``;
+export const Wrapper = styled.div`
+  position: relative;
+  min-height: 100%;
+`;
 
 export const Container = styled.div`
-  width: 880px;
+  width: 1000px;
 `;
 
 export const Footer = styled.div`
   display: flex;
-  height: 40px;
-  gap: 10px;
+  flex-direction: row-reverse;
+  margin-left: -10%;
+  padding-right: 10%;
+  height: 60px;
+  min-width: 114%;
+  gap: 12px;
+  padding-top: 16px;
 
-  border-top: 1px solid black;
-  
+  position: absolute;
+  bottom: 0;
+  left: 0;
+
+  box-shadow: 0px 0px 12px 0px rgba(0, 0, 0, 0.1);
 `;
 
 export const Info = styled.div`
