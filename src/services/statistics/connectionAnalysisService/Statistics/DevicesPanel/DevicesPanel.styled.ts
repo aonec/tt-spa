@@ -15,11 +15,21 @@ export const Wrapper = styled.div`
 
 export const InfoWrapper = styled.div`
   display: flex;
+  align-items: center;
+
   justify-content: space-between;
   font-size: 14px;
   padding: 16px;
   color: #272f5ab2;
   font-weight: 500;
+
+  cursor: pointer;
+`;
+
+export const Title = styled.div`
+  font-weight: 500;
+  color: rgba(39, 47, 90, 1);
+  font-size: 16px;
 `;
 
 export const RighContentWrapper = styled.div`

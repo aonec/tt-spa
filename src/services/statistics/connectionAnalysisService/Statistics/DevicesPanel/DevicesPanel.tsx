@@ -3,6 +3,7 @@ import {
   DevicesAmount,
   InfoWrapper,
   RighContentWrapper,
+  Title,
   TitleWrapper,
   Wrapper,
 } from './DevicesPanel.styled';
@@ -45,7 +46,7 @@ export const DevicesPanel: FC<Props> = ({ panelTitle, calculators }) => {
     <Wrapper onClick={() => setIsOpen((prev) => !prev)}>
       <InfoWrapper>
         <TitleWrapper>
-          {panelIcon} {PanelTitleDictionary[panelTitle]}
+          {panelIcon} <Title>{PanelTitleDictionary[panelTitle]}</Title>
         </TitleWrapper>
         <RighContentWrapper>
           <DevicesAmount>

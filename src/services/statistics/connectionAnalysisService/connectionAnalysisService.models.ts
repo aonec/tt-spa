@@ -11,6 +11,8 @@ const getCalculatorsFx = createEffect<void, CalculatorListResponsePagedList>(
   getCalculators,
 );
 
+const $isLoading = getCalculatorsFx.pending;
+
 const $calculatorsSortedList = createStore<CalculatorsSortedList | null>(
   null,
 ).on(getCalculatorsFx.doneData, (_, data) => {
@@ -30,6 +32,6 @@ sample({
 
 export const connectionAnalysisService = {
   inputs: {},
-  outputs: { $calculatorsSortedList },
+  outputs: { $calculatorsSortedList, $isLoading },
   gates: { PageGate },
 };

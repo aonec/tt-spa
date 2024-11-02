@@ -14,8 +14,8 @@ import { CalculatorIcon } from 'ui-kit/icons';
 export const CalculatorInfo: FC<Props> = ({ device }) => {
   const deviceInfo = (
     <DeviceInfoWrapper>
-      <Model>({device.model})</Model>
-      <SerialNumber>{device.serialNumber}</SerialNumber>
+      <Model>{device.model}</Model>
+      <SerialNumber>({device.serialNumber})</SerialNumber>
     </DeviceInfoWrapper>
   );
 
@@ -25,9 +25,7 @@ export const CalculatorInfo: FC<Props> = ({ device }) => {
         <CalculatorIcon />
 
         {device.id && (
-          <Link to={`/housingMeteringDevices/${device.id}/profile`}>
-            {deviceInfo}
-          </Link>
+          <Link to={`/calculators/${device.id}/profile`}>{deviceInfo}</Link>
         )}
         {!device.id && deviceInfo}
       </DeviceTitleWrapper>
