@@ -10,7 +10,10 @@ import { DocumentCardItemProps } from './DocumentCardItem.types';
 import { saveAs } from 'file-saver';
 import dayjs from 'api/dayjs';
 
-export const DocumentCardItem: FC<DocumentCardItemProps> = ({ document }) => {
+export const DocumentCardItem: FC<DocumentCardItemProps> = ({
+  document,
+  saveFile,
+}) => {
   const { url, name, uploadingTime } = document;
 
   const formatedUploadingTime = dayjs(uploadingTime).format('DD.MM.YYYY');
@@ -18,6 +21,8 @@ export const DocumentCardItem: FC<DocumentCardItemProps> = ({ document }) => {
   const handleDownloadFile = () => {
     if (url && name) {
       saveAs(url, name);
+    } else {
+      saveFile(document);
     }
   };
 
