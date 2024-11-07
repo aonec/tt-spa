@@ -7,9 +7,9 @@ import { DatePicker } from 'ui-kit/DatePicker';
 import { FormItem } from 'ui-kit/FormItem';
 import { Input } from 'ui-kit/Input';
 import { Select } from 'ui-kit/Select';
-import { RadioGroupSC } from '../GroupReportDatesSelect/GroupReportDatesSelect.styled'; // todo: регулярная выгрузка
+import { RadioGroupSC } from '../GroupReportDatesSelect/GroupReportDatesSelect.styled';
 import { RowWrapper } from '../GroupReportForm.styled';
-import { SubsTypeRadioOptions } from './RegularUnloading.constants'; // todo: регулярная выгрузка
+import { SubsTypeRadioOptions } from './RegularUnloading.constants';
 import { SwitchWrapper, Wrapper } from './RegularUnloading.styled';
 import { RegularUnloadingProps } from './RegularUnloading.types';
 
@@ -17,7 +17,7 @@ export const RegularUnloading: FC<RegularUnloadingProps> = ({
   contractors,
   handleChangeContractorIds,
   handleChangeEmail,
-  handleChangeSubsType, // todo: регулярная выгрузка
+  handleChangeSubsType,
   handleThriggerAt,
   handleChangeIsRegular,
   values,
@@ -40,14 +40,14 @@ export const RegularUnloading: FC<RegularUnloadingProps> = ({
     if (!isRegular) {
       handleChangeContractorIds();
       handleChangeEmail();
-      handleChangeSubsType(); // todo: регулярная выгрузка
+      handleChangeSubsType();
       handleThriggerAt();
     }
   }, [
     isRegular,
     handleChangeContractorIds,
     handleChangeEmail,
-    handleChangeSubsType, // todo: регулярная выгрузка
+    handleChangeSubsType,
     handleThriggerAt,
   ]);
 

@@ -27,7 +27,6 @@ export const validationSchema = Yup.object().shape({
   }),
   'Subscription.TriggerAt': Yup.string(),
   'Subscription.Type': Yup.mixed<GroupReportSchedulePeriod>().oneOf(
-    // todo: регулярная выгрузка
     Object.values(GroupReportSchedulePeriod),
   ),
   'Subscription.ContractorIds': Yup.array(Yup.number()),

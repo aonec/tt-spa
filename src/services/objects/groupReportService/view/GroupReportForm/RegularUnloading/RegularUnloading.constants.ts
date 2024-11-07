@@ -1,5 +1,3 @@
-// Доработывает бэк //регулярная выгрузка
-
 import { GroupReportSchedulePeriod } from 'api/types';
 
 export const SubsTypeRadioOptions = [

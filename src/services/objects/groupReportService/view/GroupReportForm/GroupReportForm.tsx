@@ -44,16 +44,12 @@ export const GroupReportForm: FC<GroupReportFormProps> = ({
   houseManagements,
   setRegularUpload,
 }) => {
-  const {
-    nodeResourceTypes,
-    nodeStatuses,
-    contractors, // todo: регулярная выгрузка
-  } = reportFilters;
+  const { nodeResourceTypes, nodeStatuses, contractors } = reportFilters;
 
   const { values, setFieldValue, handleSubmit, errors, setValues } = useFormik<
     Partial<GroupReportRequestPayload> & {
       exportType: ExportReportType | null;
-    } & { isRegular: boolean } // todo: регулярная выгрузка
+    } & { isRegular: boolean }
   >({
     initialValues: {
       exportType: null,
@@ -64,17 +60,14 @@ export const GroupReportForm: FC<GroupReportFormProps> = ({
       ReportType: EReportType.Hourly,
       From: dayjs().startOf('month').format(),
       To: dayjs().endOf('day').format(),
-      isRegular: false, // todo: регулярная выгрузка
+      isRegular: false,
       ReportFormat: EReportFormat.Consumption,
     },
     validationSchema,
     validateOnBlur: false,
     validateOnChange: false,
     onSubmit: (values) => {
-      const {
-        isRegular, // todo: регулярная выгрузка
-        ...payload
-      } = values;
+      const { isRegular, ...payload } = values;
 
       handleDownload({
         ...payload,
@@ -118,7 +111,6 @@ export const GroupReportForm: FC<GroupReportFormProps> = ({
     }
   }, [organizations, setFieldValue, values.exportType]);
 
-  // todo: регулярная выгрузка
   const handleChangeContractorIds = useCallback(
     (ids?: number[]) => setFieldValue("['Subscription.ContractorIds']", ids),
     [setFieldValue],
@@ -308,7 +300,6 @@ export const GroupReportForm: FC<GroupReportFormProps> = ({
 
       <Divider type="horizontal" />
 
-      {/* // todo: регулярная выгрузка */}
       <RegularUnloading
         handleChangeContractorIds={handleChangeContractorIds}
         handleChangeEmail={handleChangeEmail}

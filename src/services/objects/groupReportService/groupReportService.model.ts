@@ -117,9 +117,8 @@ sample({
 
 sample({
   clock: $downloadReportPayload,
-  source: $isRegularUpload,
-  filter: (isRegularUpload) => isRegularUpload,
-  fn: (_, clock) => {
+  filter: $isRegularUpload,
+  fn: (clock) => {
     const payload = {
       report: {
         fileName: clock?.FileName,
@@ -196,8 +195,7 @@ const $isSendByEmailWithError = createStore<boolean>(false)
 sample({
   clock: delayedPendingByEmailFx,
   source: $isSendByEmailWithError,
-  filter: (isSendByEmailWithError) => !isSendByEmailWithError, //todo: регулярная выгрузка
-  // filter: not($isSendByEmailWithError),
+  filter: (isSendByEmailWithError) => !isSendByEmailWithError,
   target: closeModal,
 });
 
