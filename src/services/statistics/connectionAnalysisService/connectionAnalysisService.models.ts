@@ -21,10 +21,6 @@ const $calculatorsSortedList = createStore<CalculatorsSortedList | null>(
   return sortCalculator(list);
 });
 
-$calculatorsSortedList.watch((data) => {
-  console.log(data);
-});
-
 sample({
   clock: PageGate.open,
   target: getCalculatorsFx,

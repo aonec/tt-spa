@@ -19,7 +19,6 @@ export const sortCalculator = (
       calculator.connectionInfo?.connectionStatus ||
       EConnectionStatusType.Unknown;
 
-    // Создаем объект типа CalculatorAnalysisType
     const preparedCalculator: CalculatorAnalysisType = {
       id: calculator.id,
       model: calculator.model || '',

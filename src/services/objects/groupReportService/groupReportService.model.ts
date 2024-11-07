@@ -38,8 +38,6 @@ const $isRegularUpload = createStore(false).on(
   (_, data) => data,
 );
 
-$isRegularUpload.watch((data) => console.log(data));
-
 const getReportFiltersFx = createEffect<void, GroupReportFormResponse>(
   fetchFilters,
 );
