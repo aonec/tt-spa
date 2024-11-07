@@ -35,6 +35,7 @@ export const GroupReportContainer = () => {
     organizations,
     houseManagements,
     addressesWithHouseManagements,
+    setRegularUpload,
   } = useUnit({
     isOpen: outputs.$isOpen,
     reportFilters: outputs.$reportFilters,
@@ -46,6 +47,7 @@ export const GroupReportContainer = () => {
     houseManagements: houseManagementsService.outputs.$houseManagements,
     addressesWithHouseManagements:
       reportViewService.outputs.$addressesWithHouseManagements,
+    setRegularUpload: inputs.setRegularUpload,
   });
 
   return (
@@ -72,6 +74,7 @@ export const GroupReportContainer = () => {
                 organizations={organizations}
                 houseManagements={houseManagements}
                 addressesWithHouseManagements={addressesWithHouseManagements}
+                setRegularUpload={setRegularUpload}
               />
             )}
           </WithLoader>

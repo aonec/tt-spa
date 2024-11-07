@@ -6,11 +6,7 @@ export const validationSchema = Yup.object().shape({
   documentId: Yup.string()
     .nullable()
     .when('commercialStatus', {
-      is: (status: ENodeCommercialAccountStatus) =>
-        [
-          ENodeCommercialAccountStatus.NotRegistered,
-          ENodeCommercialAccountStatus.Registered,
-        ].includes(status),
+      is: () => ENodeCommercialAccountStatus.Registered,
       then: (schema) => schema.nullable().required('Это поле обязательное'),
     }),
   firstDate: Yup.string().nullable().required('Это поле обязательное'),
@@ -24,6 +20,7 @@ export const validationSchema = Yup.object().shape({
 
 export const createNodeStatusValidationSchema = Yup.object().shape({
   commercialStatus: Yup.string().nullable().required('Это поле обязательное'),
+  firstDate: Yup.string().required('Это поле обязательное'),
 });
 
 export const DocumentUploaderLabels = {
