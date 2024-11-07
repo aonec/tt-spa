@@ -155,9 +155,7 @@ export const AddressSearch: FC<AddressSearchProps> = ({
         }}
         onKeyDown={fromEnter(() => {
           next(index);
-          if (!existingApartmentNumbers.length) {
-            handleSubmit();
-          }
+          handleSubmit();
         })}
         onBlur={() => setOpen(false)}
         filterOption={(inputValue, option) =>

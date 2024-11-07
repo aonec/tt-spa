@@ -6,7 +6,16 @@ import {
 import { UserTasksByRoles } from './changeStatusEmployeeService.types';
 
 export const getTasksCount = (tasksByRoles: UserTasksByRoles) => {
-  return tasksByRoles.reduce((acc, { tasks }) => acc + tasks.length, 0);
+  return tasksByRoles.reduce(
+    (acc, tasksByRole) =>
+      acc +
+      Number(tasksByRole.tasks?.activeTasksCount) +
+      Number(tasksByRole.tasks?.executingTasksCount) +
+      Number(tasksByRole.tasks?.expiredTasksCount) +
+      Number(tasksByRole.tasks?.observingTasksCount) +
+      Number(tasksByRole.tasks?.runningOutTasksCount),
+    0,
+  );
 };
 
 export const prepareUpdateStatusPayload = (
@@ -14,18 +23,22 @@ export const prepareUpdateStatusPayload = (
 ) => {
   return {
     ...data,
-    startDate: dayjs(data?.startDate)
-      .set('hour', 0)
-      .set('minute', 0)
-      .set('second', 0)
-      .set('millisecond', 0)
-      .format(),
-    endDate: dayjs(data?.endDate)
-      .set('hour', 0)
-      .set('minute', 0)
-      .set('second', 0)
-      .set('millisecond', 0)
-      .format(),
+    startDate: data?.startDate
+      ? dayjs(data?.startDate)
+          .set('hour', 0)
+          .set('minute', 0)
+          .set('second', 0)
+          .set('millisecond', 0)
+          .format()
+      : null,
+    endDate: data?.endDate
+      ? dayjs(data?.endDate)
+          .set('hour', 0)
+          .set('minute', 0)
+          .set('second', 0)
+          .set('millisecond', 0)
+          .format()
+      : null,
   };
 };
 
