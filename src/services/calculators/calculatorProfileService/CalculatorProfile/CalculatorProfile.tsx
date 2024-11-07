@@ -17,9 +17,9 @@ import {
   TabsSC,
   PanelsWrapper,
   PageHeaderSC,
-  WarningIconSc,
+  WarningIconSС,
   NoConnectionIconSC,
-  CheckConnectionSc,
+  CheckConnectionSС,
 } from './CalculatorProfile.styled';
 import { CalculatorProfileProps } from './CalculatorProfile.types';
 import { ConnectionInfo } from './ConnectionInfo';
@@ -220,12 +220,12 @@ export const CalculatorProfile: FC<CalculatorProfileProps> = ({
             )}
             {isConnected && isConnectionError && (
               <Tooltip title="Проверьте настройки соединения">
-                <CheckConnectionSc />
+                <CheckConnectionSС />
               </Tooltip>
             )}
             {isMalfunction && (
               <Tooltip title="Вычислитель неисправен">
-                <WarningIconSc />
+                <WarningIconSС />
               </Tooltip>
             )}
           </>

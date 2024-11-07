@@ -56,13 +56,13 @@ export const NoConnectionIconSC = styled(NoConnectionIcon)`
   margin-left: 8px;
 `;
 
-export const CheckConnectionSc = styled(CheckConnection)`
+export const CheckConnectionSС = styled(CheckConnection)`
   width: 22px;
   height: 22px;
   margin-left: 8px;
 `;
 
-export const WarningIconSc = styled(WarningIcon)`
+export const WarningIconSС = styled(WarningIcon)`
   width: 22px;
   height: 22px;
   margin-left: 8px;
