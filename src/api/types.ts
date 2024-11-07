@@ -6978,6 +6978,8 @@ export class Api<
         HouseManagementId?: string;
         HouseCategory?: EHouseCategory;
         /** @format int32 */
+        ManagementFirmId?: number;
+        /** @format int32 */
         PageNumber?: number;
         /** @format int32 */
         PageSize?: number;
@@ -7020,6 +7022,8 @@ export class Api<
         /** @format uuid */
         HouseManagementId?: string;
         HouseCategory?: EHouseCategory;
+        /** @format int32 */
+        ManagementFirmId?: number;
         /** @format int32 */
         PageNumber?: number;
         /** @format int32 */
@@ -8357,6 +8361,48 @@ export class Api<
     ) =>
       this.request<DashboardTaskQualityResponse[], ErrorApiResponse>({
         path: `/api/Dashboard/current/servicequality`,
+        method: 'GET',
+        query: query,
+        secure: true,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Супервайзер</li>
+     *
+     * @tags Dashboard
+     * @name DashboardCurrentServicequalityDetailList
+     * @summary DashboardView
+     * @request GET:/api/Dashboard/current/servicequality/detail
+     * @secure
+     */
+    dashboardCurrentServicequalityDetailList: (
+      query?: {
+        /** @format date-time */
+        From?: string;
+        /** @format date-time */
+        To?: string;
+        /** @format int32 */
+        MunicipalDistrictId?: number;
+        /** @format int32 */
+        RegionId?: number;
+        /** @format int32 */
+        ManagementFirmId?: number;
+        BuildingIds?: number[];
+        /** @format date-time */
+        Date?: string;
+        addressCity?: string;
+        addressStreet?: string;
+        /** @format int32 */
+        addressHousingManagementId?: number;
+        addressAddress?: string;
+        IsTest?: boolean;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<DashboardTaskQualityResponse, ErrorApiResponse>({
+        path: `/api/Dashboard/current/servicequality/detail`,
         method: 'GET',
         query: query,
         secure: true,
