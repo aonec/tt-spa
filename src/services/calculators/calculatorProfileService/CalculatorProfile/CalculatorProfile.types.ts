@@ -1,5 +1,6 @@
 import {
   CalculatorResponse,
+  DocumentResponse,
   NodeOnHousingStockResponse,
   PipeNodeIntoCalculatorResponse,
 } from 'api/types';
@@ -16,4 +17,5 @@ export type CalculatorProfileProps = {
     payload: NodeOnHousingStockResponse | PipeNodeIntoCalculatorResponse,
   ) => void;
   isPermitionToCalculatorActions: boolean;
+  saveFile: (payload: DocumentResponse) => void;
 };

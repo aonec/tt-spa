@@ -43,6 +43,7 @@ export const CalculatorProfile: FC<CalculatorProfileProps> = ({
   handleOpenConsumptionReportModal,
   openDevicesListModal,
   isPermitionToCalculatorActions,
+  saveFile,
 }) => {
   const navigate = useNavigate();
 
@@ -175,7 +176,7 @@ export const CalculatorProfile: FC<CalculatorProfileProps> = ({
         />
       ),
       [CalculatorProfileGrouptype.Documents]: (
-        <NodeDocumentsList documents={documents || []} />
+        <NodeDocumentsList documents={documents || []} saveFile={saveFile}/>
       ),
     };
   }, [calculator, commonInfo, openDevicesListModal]);
@@ -259,6 +260,7 @@ export const CalculatorProfile: FC<CalculatorProfileProps> = ({
               setGrouptype(CalculatorProfileGrouptype.Documents)
             }
             documents={documents || []}
+            saveFile={saveFile}
           />
         </PanelsWrapper>
       </ContentWrapper>

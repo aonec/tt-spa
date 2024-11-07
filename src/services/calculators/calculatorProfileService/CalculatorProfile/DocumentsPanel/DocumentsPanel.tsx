@@ -12,6 +12,7 @@ import dayjs from 'api/dayjs';
 export const DocumentsPanel: FC<DocumentsPanelProps> = ({
   handleClick,
   documents,
+  saveFile,
 }) => {
   const preparedDocuments = documents
     .sort((first, second) =>
@@ -20,7 +21,7 @@ export const DocumentsPanel: FC<DocumentsPanelProps> = ({
     .slice(0, 2);
 
   const cards = preparedDocuments.map((document) => (
-    <DocumentCardItem document={document} key={document.id} />
+    <DocumentCardItem document={document} saveFile={saveFile} />
   ));
 
   return (
