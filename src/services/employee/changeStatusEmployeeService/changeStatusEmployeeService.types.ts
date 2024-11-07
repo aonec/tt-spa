@@ -4,7 +4,7 @@ import {
   ESecuredIdentityRoleName,
   ESecuredIdentityRoleNameStringDictionaryItem,
   OrganizationUserListResponse,
-  TaskListResponse,
+  TasksPagedList,
   UserStatusResponse,
 } from 'api/types';
 
@@ -24,7 +24,7 @@ export type GetOrganizationUserTasksByRolesRequestParams = {
 
 export type UserTasksByRoles = {
   role: ESecuredIdentityRoleNameStringDictionaryItem;
-  tasks: TaskListResponse[];
+  tasks: TasksPagedList | null;
 }[];
 
 export type EmployeeStatus = { id: number; status: UserStatusResponse | null };

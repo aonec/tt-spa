@@ -5182,6 +5182,15 @@ export interface TaskStatisticsResponse {
   tasks: DateTimeTaskStatisticsItemArrayDictionaryItem[] | null;
 }
 
+export enum TaskTargetObjectInfo {
+  ColdWaterSupply = 'ColdWaterSupply',
+  HotWaterSupply = 'HotWaterSupply',
+  Electricity = 'Electricity',
+  Heat = 'Heat',
+  MultipleResources = 'MultipleResources',
+  Calculator = 'Calculator',
+}
+
 export interface TaskTargetObjectResponse {
   targetObjectInfo: ETaskTargetObjectInfo;
   title: string | null;

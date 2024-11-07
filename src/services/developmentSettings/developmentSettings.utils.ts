@@ -5,7 +5,7 @@ const togglesDisctionary: {
   [key in keyof FeatureTogglesResponse]: string[];
 } = {
   sealService: ['services', 'districtsManage'],
-  mvituService: [],
+  mvituService: ['mvitu'],
 };
 
 export const prepareFeatureToggles = (

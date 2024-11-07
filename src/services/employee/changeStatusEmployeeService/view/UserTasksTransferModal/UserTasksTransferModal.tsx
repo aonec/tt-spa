@@ -88,9 +88,9 @@ export const UserTasksTransferModal: FC<UserTasksTransferModalProps> = ({
 
   const filteredTasks = useMemo(() => {
     return (
-      organizationUserTasksByRoles?.find(
-        (elem) => elem.role.key === selectedRole,
-      )?.tasks || []
+      organizationUserTasksByRoles?.find((elem) => {
+        return elem.role.key === selectedRole;
+      })?.tasks || null
     );
   }, [organizationUserTasksByRoles, selectedRole]);
 
@@ -107,7 +107,7 @@ export const UserTasksTransferModal: FC<UserTasksTransferModalProps> = ({
         ({ role }) => role.key === reassingment.role,
       );
 
-      return Boolean(tasksByRole?.tasks?.length);
+      return Boolean(tasksByRole?.tasks?.items?.length);
     });
 
     return !neededReassignments.every((reassingment) =>
@@ -150,7 +150,7 @@ export const UserTasksTransferModal: FC<UserTasksTransferModalProps> = ({
             ({ role: paramRole }) => paramRole.key === role?.key,
           );
 
-          const isReassignmentNotNeed = !tasksByRole?.tasks?.length;
+          const isReassignmentNotNeed = !tasksByRole?.tasks?.items?.length;
           const isReassignmentFilled = Boolean(reassingmentByRole?.userId);
 
           return (
@@ -181,7 +181,7 @@ export const UserTasksTransferModal: FC<UserTasksTransferModalProps> = ({
         <ContentWrapper>
           {header}
           <TasksListPanel
-            filteredTasks={filteredTasks}
+            filteredTasks={filteredTasks?.items || []}
             selectedRole={selectedRole}
           />
           <SearchWrapper>
