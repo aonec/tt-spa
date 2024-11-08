@@ -1,6 +1,10 @@
 import { axios } from 'api/axios';
 import queryString from 'query-string';
-import { GroupReportFormResponse, SendGroupReportRequest } from 'api/types';
+import {
+  CreateGroupReportScheduleRequest,
+  GroupReportFormResponse,
+  SendGroupReportRequest,
+} from 'api/types';
 import { GroupReportRequestPayload } from './groupReportService.types';
 
 export const downloadGroupReportRequest = async (
@@ -32,3 +36,7 @@ export const fetchFilters = (): Promise<GroupReportFormResponse> =>
 
 export const sendByEmail = (payload: SendGroupReportRequest): Promise<void> =>
   axios.post('/Reports/SendGroupReport', payload);
+
+export const postRegularUpload = (
+  payload: CreateGroupReportScheduleRequest,
+): Promise<void> => axios.post('/Reports/creategroupreportschedule', payload);
