@@ -3,17 +3,28 @@ import { Name, NotClosedTasksCount, Wrapper } from './AnalyticsDetail.styled';
 import { Props } from './AnalyticsDetail.types';
 import { useUnit } from 'effector-react';
 import { currentAnalyticsService } from 'services/supervisor/currentAnalytics/currentAnalyticsService.models';
+import { useNavigate } from 'react-router-dom';
 
 export const AnalyticsDetail: FC<Props> = ({ data, hideExpired }) => {
   const isDanger = data.expiredTasksCount !== 0;
-  const setFilters = useUnit(
-    currentAnalyticsService.inputs.setDashboardFilters,
-  );
+  const { setFilters, filters } = useUnit({
+    filters: currentAnalyticsService.outputs.$dashboardFilters,
+    setFilters: currentAnalyticsService.inputs.setDashboardFilters,
+  });
+  const navigate = useNavigate();
 
   return (
     <Wrapper
       danger={isDanger}
-      onClick={() => setFilters({ ManagementFirmId: data.id })}
+      onClick={() => {
+        if (filters.ManagementFirmId) {
+          navigate(`/tasks/list/Observing?housingStockId=${data.id}`);
+
+          return;
+        }
+
+        setFilters({ ManagementFirmId: data.id });
+      }}
     >
       <Name>{data.label}</Name>
       <div>

@@ -43,7 +43,7 @@ export const CurrentAnalyticsPage: FC<Props> = ({
             {dashboardData?.panels?.map((data) => (
               <TaskDashboardPanel data={data} />
             ))}
-            {dashboardData?.others && (
+            {Boolean(dashboardData?.others?.length) && (
               <TaskDashboardPanel otherData={dashboardData.others} />
             )}
           </>
@@ -61,7 +61,7 @@ export const CurrentAnalyticsPage: FC<Props> = ({
             {dashboardData?.panels?.map((data) => (
               <TaskDashboardPanel data={data} />
             ))}
-            {dashboardData?.others && (
+            {Boolean(dashboardData?.others.length) && (
               <TaskDashboardPanel otherData={dashboardData.others} />
             )}
           </>
@@ -77,7 +77,7 @@ export const CurrentAnalyticsPage: FC<Props> = ({
             {dashboardData?.panels?.map((data) => (
               <MalfunctionDashboardPanel data={data} />
             ))}
-            {dashboardData?.others && (
+            {Boolean(dashboardData?.others?.length) && (
               <MalfunctionDashboardPanel otherData={dashboardData.others} />
             )}
           </>
@@ -93,7 +93,7 @@ export const CurrentAnalyticsPage: FC<Props> = ({
             {dashboardData?.panels?.map((data) => (
               <AverageTimeDashboardPanel data={data} />
             ))}
-            {dashboardData?.others && (
+            {Boolean(dashboardData?.others?.length) && (
               <AverageTimeDashboardPanel otherData={dashboardData.others} />
             )}
           </>
@@ -109,7 +109,7 @@ export const CurrentAnalyticsPage: FC<Props> = ({
             {dashboardData?.panels?.map((data) => (
               <TaskQualityDashboardPanel data={data} />
             ))}
-            {dashboardData?.others && (
+            {Boolean(dashboardData?.others?.length) && (
               <TaskQualityDashboardPanel otherData={dashboardData.others} />
             )}
           </>
