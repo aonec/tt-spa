@@ -13,6 +13,7 @@ import {
 import { DashboardDataType } from '../currentAnalyticsService.types';
 import { AverageTimeDashboardPanel } from './DashboardPanel/AverageTimeDashboardPanel';
 import { TaskQualityDashboardPanel } from './DashboardPanel/TaskQualityDashboardPanel';
+import { GoBackPure } from 'ui-kit/shared/GoBack/GoBack';
 
 export const CurrentAnalyticsPage: FC<Props> = ({
   isLoading,
@@ -141,6 +142,11 @@ export const CurrentAnalyticsPage: FC<Props> = ({
         setCurrentDashboardType={setCurrentDashboardType}
       />
       <WithLoader isLoading={isLoading || isLoadingPanels}>
+        {dashboardFilters.ManagementFirmId && (
+          <GoBackPure
+            onClick={() => setDashboardFilters({ ManagementFirmId: null })}
+          />
+        )}
         <DashboardPanelWrapper>
           {Dashboard && <Dashboard />}
         </DashboardPanelWrapper>

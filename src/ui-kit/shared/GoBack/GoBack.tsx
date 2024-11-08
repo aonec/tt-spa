@@ -14,3 +14,12 @@ export const GoBack: FC<GoBackTypes> = ({ path = '' }) => {
     </GoBackSC>
   );
 };
+
+export const GoBackPure: FC<{ onClick?: () => void }> = ({ onClick }) => {
+  return (
+    <GoBackSC onClick={onClick}>
+      <ChevronIconSC />
+      <div>Назад</div>
+    </GoBackSC>
+  );
+};

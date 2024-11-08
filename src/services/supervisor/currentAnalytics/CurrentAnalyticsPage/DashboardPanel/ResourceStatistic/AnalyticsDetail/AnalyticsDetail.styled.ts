@@ -8,6 +8,7 @@ export const Wrapper = styled.div<{ danger: boolean }>`
   gap: 6px;
   align-items: center;
   color: #272f5aa6;
+  cursor: pointer;
 `;
 
 export const Name = styled.div`

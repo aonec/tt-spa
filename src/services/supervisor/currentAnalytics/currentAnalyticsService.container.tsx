@@ -10,6 +10,7 @@ import {
   managementFirmsWithBuildingsQuery,
 } from './currentAnalyticsService.api';
 import { currentAnalyticsService } from './currentAnalyticsService.models';
+import { getItemArray } from './currentAnalyticsService.utils';
 
 const {
   inputs,
@@ -58,11 +59,13 @@ export const CurrentAnalyticsContainer = () => {
         isLoading={isLoadingSummary}
         currentDashboardType={currentDashboardType}
         setCurrentDashboardType={setCurrentDashboardType}
-        dashboardPiperuptersList={dashboardPiperuptersList}
-        dashboardResourceDisconnection={dashboardResourceDisconnection}
-        dashboardMalfunctions={dashboardMalfunctions}
-        dashboardAverageTime={dashboardAverageTime}
-        dashboardServiceQuality={dashboardServiceQuality}
+        dashboardPiperuptersList={getItemArray(dashboardPiperuptersList)}
+        dashboardResourceDisconnection={getItemArray(
+          dashboardResourceDisconnection,
+        )}
+        dashboardMalfunctions={getItemArray(dashboardMalfunctions)}
+        dashboardAverageTime={getItemArray(dashboardAverageTime)}
+        dashboardServiceQuality={getItemArray(dashboardServiceQuality)}
         isLoadingPanels={isLoadingPanels}
         managementFirms={managementFirms}
         dashboardFilters={dashboardFilters}

@@ -23,9 +23,7 @@ const $currentDashboardType = createStore<DashboardDataType>(
   DashboardDataType.PipeRupturesCount,
 ).on(setCurrentDashboardType, (_, type) => type);
 
-const $dashboardFilters = createStore<DashboardQueryParams>({
-  IsTest: true,
-})
+const $dashboardFilters = createStore<DashboardQueryParams>({})
   .on(setDashboardFilters, (prev, data) => ({ ...prev, ...data }))
   .reset(resetDashboardFilters);
 
