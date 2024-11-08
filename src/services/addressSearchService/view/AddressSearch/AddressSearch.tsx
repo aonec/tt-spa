@@ -170,7 +170,7 @@ export const AddressSearch: FC<AddressSearchProps> = ({
           small
           placeholder="Квартирa"
           data-reading-input={dataKey}
-          onClick={() => {
+          onMouseDown={() => {
             clearFields(index);
             setOpen(true);
           }}
