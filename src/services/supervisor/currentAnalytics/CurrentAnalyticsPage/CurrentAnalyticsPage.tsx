@@ -41,7 +41,7 @@ export const CurrentAnalyticsPage: FC<Props> = ({
         return (
           <>
             {dashboardData?.panels?.map((data) => (
-              <TaskDashboardPanel data={data} />
+              <TaskDashboardPanel key={data.title} data={data} />
             ))}
             {Boolean(dashboardData?.others?.length) && (
               <TaskDashboardPanel otherData={dashboardData.others} />
@@ -59,7 +59,7 @@ export const CurrentAnalyticsPage: FC<Props> = ({
         return (
           <>
             {dashboardData?.panels?.map((data) => (
-              <TaskDashboardPanel data={data} />
+              <TaskDashboardPanel key={data.title} data={data} />
             ))}
             {Boolean(dashboardData?.others.length) && (
               <TaskDashboardPanel otherData={dashboardData.others} />
@@ -75,7 +75,7 @@ export const CurrentAnalyticsPage: FC<Props> = ({
         return (
           <>
             {dashboardData?.panels?.map((data) => (
-              <MalfunctionDashboardPanel data={data} />
+              <MalfunctionDashboardPanel key={data.title} data={data} />
             ))}
             {Boolean(dashboardData?.others?.length) && (
               <MalfunctionDashboardPanel otherData={dashboardData.others} />
@@ -91,7 +91,7 @@ export const CurrentAnalyticsPage: FC<Props> = ({
         return (
           <>
             {dashboardData?.panels?.map((data) => (
-              <AverageTimeDashboardPanel data={data} />
+              <AverageTimeDashboardPanel key={data.title} data={data} />
             ))}
             {Boolean(dashboardData?.others?.length) && (
               <AverageTimeDashboardPanel otherData={dashboardData.others} />
@@ -107,7 +107,7 @@ export const CurrentAnalyticsPage: FC<Props> = ({
         return (
           <>
             {dashboardData?.panels?.map((data) => (
-              <TaskQualityDashboardPanel data={data} />
+              <TaskQualityDashboardPanel key={data.title} data={data} />
             ))}
             {Boolean(dashboardData?.others?.length) && (
               <TaskQualityDashboardPanel otherData={dashboardData.others} />
