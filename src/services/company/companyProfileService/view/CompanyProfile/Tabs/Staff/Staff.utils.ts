@@ -6,6 +6,7 @@ import {
 const UserRolesPriorityDictionary: {
   [key in ESecuredIdentityRoleName]: number;
 } = {
+  [ESecuredIdentityRoleName.Supervisor]: 0,
   [ESecuredIdentityRoleName.Administrator]: 1,
   [ESecuredIdentityRoleName.SeniorOperator]: 2,
   [ESecuredIdentityRoleName.Operator]: 3,

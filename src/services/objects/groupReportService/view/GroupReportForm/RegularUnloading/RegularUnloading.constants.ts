@@ -1,10 +1,7 @@
-export {};
-// Доработывает бэк //регулярная выгрузка
+import { GroupReportSchedulePeriod } from 'api/types';
 
-// import { EEmailSubscriptionType } from 'api/types';
-
-// export const SubsTypeRadioOptions = [
-//   { value: EEmailSubscriptionType.OncePerTwoWeeks, label: '1 раз в 2 недели' },
-//   { value: EEmailSubscriptionType.OncePerMonth, label: '1 раз в месяц' },
-//   { value: EEmailSubscriptionType.OncePerQuarter, label: '1 раз в квартал' },
-// ];
+export const SubsTypeRadioOptions = [
+  { value: GroupReportSchedulePeriod.EveryTwoWeeks, label: '1 раз в 2 недели' },
+  { value: GroupReportSchedulePeriod.EveryMonth, label: '1 раз в месяц' },
+  { value: GroupReportSchedulePeriod.EveryQuarter, label: '1 раз в квартал' },
+];

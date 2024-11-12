@@ -52,7 +52,13 @@ export const validationSchema = Yup.object().shape({
                   .nullable()
                   .required('Укажите дату начала действия акта-допуска'),
             }),
-
+          commercialAccountingDeregistrationDate: Yup.string()
+            .nullable()
+            .when('commercialStatus', {
+              is: ENodeCommercialAccountStatus.NotRegistered,
+              then: (schema) =>
+                schema.nullable().required('Укажите дату снятия'),
+            }),
           endCommercialAccountingDate: Yup.string()
             .nullable()
             .when('commercialStatus', {

@@ -13,6 +13,7 @@ export type GroupReportFormProps = {
   organizations: OrganizationResponsePagedList | null;
   houseManagements: HouseManagementResponse[] | null;
   addressesWithHouseManagements: HouseManagementWithStreetsResponse[];
+  setRegularUpload: (payload: boolean) => void;
 };
 
 export enum ExportReportType {
