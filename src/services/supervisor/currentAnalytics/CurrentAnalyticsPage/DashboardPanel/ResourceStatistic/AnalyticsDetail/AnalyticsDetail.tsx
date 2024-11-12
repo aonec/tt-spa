@@ -2,17 +2,19 @@ import { FC } from 'react';
 import { Name, NotClosedTasksCount, Wrapper } from './AnalyticsDetail.styled';
 import { Props } from './AnalyticsDetail.types';
 
-export const AnalyticsDetail: FC<Props> = ({ data }) => {
-  const isDanger = data.notClosedTasksCount !== 0;
+export const AnalyticsDetail: FC<Props> = ({ data, hideExpired }) => {
+  const isDanger = data.expiredTasksCount !== 0;
 
   return (
     <Wrapper danger={isDanger}>
-      <Name>{data.name}</Name>
+      <Name>{data.label}</Name>
       <div>
-        <NotClosedTasksCount danger={isDanger}>
-          {data.notClosedTasksCount}
-        </NotClosedTasksCount>{' '}
-        / {data.totalTasksCount}
+        {!hideExpired && (
+          <NotClosedTasksCount danger={isDanger}>
+            {data.expiredTasksCount}
+          </NotClosedTasksCount>
+        )}{' '}
+        {!hideExpired && '/'} {data.totalTasksCount}
       </div>
     </Wrapper>
   );

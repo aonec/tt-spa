@@ -8,21 +8,21 @@ import {
   Wrapper,
 } from './DashboardPanel.styled';
 import { Props } from './DashboardPanel.types';
-import { ResourceStatistic } from './ResourceStatistic';
+import { MalfunctionDetail } from './ResourceStatistic';
 import { LinkButton } from 'ui-kit/shared/LinkButton';
-import {
-  getRatioOfTasksCount,
-  getRatioOfTasksCountByOthers,
-} from './DashboardPanel.utils';
-import { OtherDeitalStatistic } from './OtherDeitalStatistic';
+import { getRatioOfTasksCountByOthers } from './DashboardPanel.utils';
+import { OtherDetailStatistic } from './OtherDetailStatistic';
+import { DashboardTaskMalfunctionResponse } from 'api/types';
 
-export const DashboardPanel: FC<Props> = ({ data, otherData }) => {
+export const MalfunctionDashboardPanel: FC<
+  Props<DashboardTaskMalfunctionResponse>
+> = ({ data, otherData }) => {
   if (otherData) {
     const ratioOfOthers = getRatioOfTasksCountByOthers(otherData);
 
     return (
       <Wrapper>
-        <Title>{otherData.title}</Title>
+        <Title>Остальные округа</Title>
         <RatioWrapper>
           <DangerWrapper isPositive={(ratioOfOthers?.danger || 0) > 0}>
             {ratioOfOthers?.danger}
@@ -30,8 +30,8 @@ export const DashboardPanel: FC<Props> = ({ data, otherData }) => {
           / {ratioOfOthers?.all}
         </RatioWrapper>
         <ResourceStatisticsWrapper>
-          {otherData.items?.map((item) => (
-            <OtherDeitalStatistic item={item} />
+          {otherData.map((item) => (
+            <OtherDetailStatistic item={item} />
           ))}
         </ResourceStatisticsWrapper>
         <LinkButtonWrapper>
@@ -43,20 +43,18 @@ export const DashboardPanel: FC<Props> = ({ data, otherData }) => {
 
   if (!data) return null;
 
-  const ratioOfTasksCount = getRatioOfTasksCount(data.details || []);
-
   return (
     <Wrapper>
       <Title>{data.title}</Title>
       <RatioWrapper>
-        <DangerWrapper isPositive={(ratioOfTasksCount?.danger || 0) > 0}>
-          {ratioOfTasksCount?.danger}
+        <DangerWrapper isPositive={(data.expiredTasksCount || 0) > 0}>
+          {data.expiredTasksCount}
         </DangerWrapper>{' '}
-        / {ratioOfTasksCount?.all}
+        / {data.totalTasksCount}
       </RatioWrapper>
       <ResourceStatisticsWrapper>
         {data.details?.map((detail) => (
-          <ResourceStatistic data={detail} />
+          <MalfunctionDetail data={detail} />
         ))}
       </ResourceStatisticsWrapper>
       <LinkButtonWrapper>

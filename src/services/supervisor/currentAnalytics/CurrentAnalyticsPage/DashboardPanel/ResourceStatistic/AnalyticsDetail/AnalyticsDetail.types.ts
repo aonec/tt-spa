@@ -1,5 +1,6 @@
-import { DashboardCurrentAnalitycsDetailsResourceItemModel } from 'api/types';
+import { DashboardBaseTaskItemModel } from 'api/types';
 
 export type Props = {
-  data: DashboardCurrentAnalitycsDetailsResourceItemModel;
+  data: DashboardBaseTaskItemModel;
+  hideExpired?: boolean;
 };

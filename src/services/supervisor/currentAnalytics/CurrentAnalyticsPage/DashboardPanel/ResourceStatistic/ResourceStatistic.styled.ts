@@ -22,3 +22,13 @@ export const NotClosedTaskCount = styled.span<{ isPositive?: boolean }>`
   color: ${({ isPositive }) => isPositive && '#f5222d'};
   font-weight: ${({ isPositive }) => isPositive && 700};
 `;
+
+export const AverageTime = styled.div`
+  font-size: 32px;
+  font-weight: 500;
+  color: #272f5a;
+`;
+
+export const AverageTimeDescription = styled.span`
+  font-size: 20px;
+`;

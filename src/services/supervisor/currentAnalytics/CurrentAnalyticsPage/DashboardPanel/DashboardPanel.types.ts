@@ -1,9 +1,4 @@
-import {
-  DashboardCurrentAnalitycsDetailsOthersResponse,
-  DashboardCurrentAnalitycsDetailsResponse,
-} from 'api/types';
-
-export type Props = {
-  data?: DashboardCurrentAnalitycsDetailsResponse;
-  otherData?: DashboardCurrentAnalitycsDetailsOthersResponse;
+export type Props<T> = {
+  data?: T;
+  otherData?: T[];
 };
