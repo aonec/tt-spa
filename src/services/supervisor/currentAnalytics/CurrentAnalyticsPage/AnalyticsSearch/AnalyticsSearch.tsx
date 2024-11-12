@@ -38,8 +38,7 @@ export const AnalyticsSearch: FC<Props> = ({
           });
         }}
       />
-      <Select placeholder="Округ" small />
-      <Select placeholder="Район" small />
+      <Select placeholder="Город" small />
       <Select
         placeholder="УК"
         small
