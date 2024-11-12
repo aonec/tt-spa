@@ -1,14 +1,14 @@
 import { FC } from 'react';
 import {
-  AnalitycsDetailWrapper,
+  AnalyticsDetailWrapper,
   NotClosedTaskCount,
+  ProgressSC,
   Title,
   Wrapper,
 } from './ResourceStatistic.styled';
 import { Props } from './ResourceStatistic.types';
 import { DashboardTaskMalfunctionDetailsModel } from 'api/types';
-import { Progress } from 'antd';
-import { AnalitycsDetail } from './AnalyticsDetail';
+import { AnalyticsDetail } from './AnalyticsDetail';
 import { MalfunctionIcon } from './MalfunctionIcon';
 
 export const MalfunctionDetail: FC<
@@ -26,23 +26,23 @@ export const MalfunctionDetail: FC<
           )}
         </div>
         <div>
-          <NotClosedTaskCount isPositive={data.notClosedTasksCount! > 0}>
-            {data.notClosedTasksCount}
+          <NotClosedTaskCount isPositive={data.expiredTasksCount! > 0}>
+            {data.totalTasksCount}
           </NotClosedTaskCount>{' '}
           / {data.totalTasksCount}
         </div>
       </Title>
-      <Progress
-        percent={(data.notClosedTasksCount! / data.totalTasksCount!) * 100}
+      <ProgressSC
+        percent={(data.expiredTasksCount! / data.totalTasksCount!) * 100}
         showInfo={false}
         strokeColor={'#272F5A'}
         size={['100%', 3]}
       />
-      <AnalitycsDetailWrapper>
+      <AnalyticsDetailWrapper>
         {data.items?.map((data) => (
-          <AnalitycsDetail data={data} />
+          <AnalyticsDetail data={data} />
         ))}
-      </AnalitycsDetailWrapper>
+      </AnalyticsDetailWrapper>
     </Wrapper>
   );
 };

@@ -1,3 +1,4 @@
+import { Progress } from 'antd';
 import styled from 'styled-components';
 
 export const Wrapper = styled.div`
@@ -6,7 +7,7 @@ export const Wrapper = styled.div`
   gap: 8px;
 `;
 
-export const AnalitycsDetailWrapper = styled.div`
+export const AnalyticsDetailWrapper = styled.div`
   display: flex;
   gap: 8px;
   flex-wrap: wrap;
@@ -31,4 +32,15 @@ export const AverageTime = styled.div`
 
 export const AverageTimeDescription = styled.span`
   font-size: 20px;
+`;
+
+export const DiviationTitle = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-weight: 500;
+`;
+
+export const ProgressSC = styled(Progress)`
+  margin: -8px 0 -2px;
 `;

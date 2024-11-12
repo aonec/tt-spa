@@ -18,7 +18,7 @@ import { OtherAverageTimeDetailStatistic } from './OtherDetailStatistic/OtherAve
 export const AverageTimeDashboardPanel: FC<
   Props<DashboardTaskAverageTimeResponse>
 > = ({ data, otherData }) => {
-  if (otherData) {
+  if (otherData?.length) {
     return (
       <Wrapper>
         <Title>Остальные округа</Title>
@@ -51,7 +51,7 @@ export const AverageTimeDashboardPanel: FC<
     <Wrapper>
       <Title>{data.title}</Title>
       <AverageTime>
-        {data.averageCompletionTime}{' '}
+        {Number(data.averageCompletionTime).toFixed(1)}{' '}
         <AverageTimeDescription>мин</AverageTimeDescription>
       </AverageTime>
       <ResourceStatisticsWrapper>

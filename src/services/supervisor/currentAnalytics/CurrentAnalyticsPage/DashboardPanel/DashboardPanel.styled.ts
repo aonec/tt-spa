@@ -35,3 +35,16 @@ export const DangerWrapper = styled.span<{ isPositive: boolean }>`
 export const LinkButtonWrapper = styled.div`
   margin-top: auto;
 `;
+
+export const TaskQualityAnalyticsWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+`;
+
+export const TaskQualityAnalyticsTitle = styled.div`
+  display: grid;
+  align-items: center;
+  grid-template-columns: 20px 1fr;
+  font-weight: 500;
+`;

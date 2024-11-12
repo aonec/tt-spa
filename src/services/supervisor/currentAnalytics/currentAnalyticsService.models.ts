@@ -5,32 +5,57 @@ import {
   dashboardMalfunctionsQuery,
   dashboardPiperuptersQuery,
   dashboardResourceDisconnectionQuery,
+  dashboardServiceQualityQuery,
   dashboardSummaryQuery,
+  managementFirmsWithBuildingsQuery,
 } from './currentAnalyticsService.api';
-import { DashboardDataType } from './currentAnalyticsService.types';
+import {
+  DashboardDataType,
+  DashboardQueryParams,
+} from './currentAnalyticsService.types';
 
 const CurrentAnalyticsGate = createGate();
 const setCurrentDashboardType = createEvent<DashboardDataType>();
+const setDashboardFilters = createEvent<DashboardQueryParams>();
+const resetDashboardFilters = createEvent();
 
 const $currentDashboardType = createStore<DashboardDataType>(
   DashboardDataType.PipeRupturesCount,
 ).on(setCurrentDashboardType, (_, type) => type);
 
+const $dashboardFilters = createStore<DashboardQueryParams>({})
+  .on(setDashboardFilters, (prev, data) => ({ ...prev, ...data }))
+  .reset(resetDashboardFilters);
+
 sample({
+  source: $dashboardFilters,
   clock: CurrentAnalyticsGate.open,
   target: [dashboardSummaryQuery.start],
 });
 
+sample({
+  source: {},
+  clock: CurrentAnalyticsGate.open,
+  target: managementFirmsWithBuildingsQuery.start,
+});
+
+const $dashboardParams = combine(
+  $dashboardFilters,
+  $currentDashboardType,
+  (params, dashboardType) => ({ ...params, dashboardType }),
+);
+
 split({
-  source: $currentDashboardType,
-  clock: [$currentDashboardType.updates, CurrentAnalyticsGate.open],
-  match: (type: DashboardDataType) => type,
+  source: $dashboardParams,
+  clock: [$dashboardParams.updates, CurrentAnalyticsGate.open],
+  match: (data) => data.dashboardType,
   cases: {
     [DashboardDataType.PipeRupturesCount]: dashboardPiperuptersQuery.start,
     [DashboardDataType.ResourceDisconnectsCount]:
       dashboardResourceDisconnectionQuery.start,
     [DashboardDataType.MalfunctionsCount]: dashboardMalfunctionsQuery.start,
     [DashboardDataType.AverageCompletionTime]: dashboardAverageTimeQuery.start,
+    [DashboardDataType.TasksCount]: dashboardServiceQualityQuery.start,
   },
 });
 
@@ -39,11 +64,16 @@ const $isLoading = combine(
   dashboardResourceDisconnectionQuery.$pending,
   dashboardMalfunctionsQuery.$pending,
   dashboardAverageTimeQuery.$pending,
+  dashboardServiceQualityQuery.$pending,
   (...params) => params.some((value) => value),
 );
 
 export const currentAnalyticsService = {
-  inputs: { setCurrentDashboardType },
-  outputs: { $currentDashboardType, $isLoading },
+  inputs: {
+    setCurrentDashboardType,
+    setDashboardFilters,
+    resetDashboardFilters,
+  },
+  outputs: { $currentDashboardType, $isLoading, $dashboardFilters },
   gates: { CurrentAnalyticsGate },
 };

@@ -12,10 +12,13 @@ import {
 } from './DashboardPanel';
 import { DashboardDataType } from '../currentAnalyticsService.types';
 import { AverageTimeDashboardPanel } from './DashboardPanel/AverageTimeDashboardPanel';
+import { TaskQualityDashboardPanel } from './DashboardPanel/TaskQualityDashboardPanel';
+import { GoBackPure } from 'ui-kit/shared/GoBack/GoBack';
 
 export const CurrentAnalyticsPage: FC<Props> = ({
   isLoading,
   isLoadingPanels,
+  managementFirms,
   dashboardSummary,
   currentDashboardType,
   setCurrentDashboardType,
@@ -23,6 +26,10 @@ export const CurrentAnalyticsPage: FC<Props> = ({
   dashboardResourceDisconnection,
   dashboardMalfunctions,
   dashboardAverageTime,
+  dashboardServiceQuality,
+  dashboardFilters,
+  setDashboardFilters,
+  resetDashboardFilters,
 }) => {
   const Dashboard = useMemo(() => {
     const dataMap = {
@@ -34,9 +41,9 @@ export const CurrentAnalyticsPage: FC<Props> = ({
         return (
           <>
             {dashboardData?.panels?.map((data) => (
-              <TaskDashboardPanel data={data} />
+              <TaskDashboardPanel key={data.title} data={data} />
             ))}
-            {dashboardData?.others && (
+            {Boolean(dashboardData?.others?.length) && (
               <TaskDashboardPanel otherData={dashboardData.others} />
             )}
           </>
@@ -52,9 +59,9 @@ export const CurrentAnalyticsPage: FC<Props> = ({
         return (
           <>
             {dashboardData?.panels?.map((data) => (
-              <TaskDashboardPanel data={data} />
+              <TaskDashboardPanel key={data.title} data={data} />
             ))}
-            {dashboardData?.others && (
+            {Boolean(dashboardData?.others.length) && (
               <TaskDashboardPanel otherData={dashboardData.others} />
             )}
           </>
@@ -68,9 +75,9 @@ export const CurrentAnalyticsPage: FC<Props> = ({
         return (
           <>
             {dashboardData?.panels?.map((data) => (
-              <MalfunctionDashboardPanel data={data} />
+              <MalfunctionDashboardPanel key={data.title} data={data} />
             ))}
-            {dashboardData?.others && (
+            {Boolean(dashboardData?.others?.length) && (
               <MalfunctionDashboardPanel otherData={dashboardData.others} />
             )}
           </>
@@ -84,15 +91,30 @@ export const CurrentAnalyticsPage: FC<Props> = ({
         return (
           <>
             {dashboardData?.panels?.map((data) => (
-              <AverageTimeDashboardPanel data={data} />
+              <AverageTimeDashboardPanel key={data.title} data={data} />
             ))}
-            {dashboardData?.others && (
+            {Boolean(dashboardData?.others?.length) && (
               <AverageTimeDashboardPanel otherData={dashboardData.others} />
             )}
           </>
         );
       },
-      [DashboardDataType.TasksCount]: null,
+      [DashboardDataType.TasksCount]: () => {
+        if (!dashboardServiceQuality) return;
+
+        const dashboardData = splitArrayForDashboard(dashboardServiceQuality);
+
+        return (
+          <>
+            {dashboardData?.panels?.map((data) => (
+              <TaskQualityDashboardPanel key={data.title} data={data} />
+            ))}
+            {Boolean(dashboardData?.others?.length) && (
+              <TaskQualityDashboardPanel otherData={dashboardData.others} />
+            )}
+          </>
+        );
+      },
     };
 
     return dataMap[currentDashboardType];
@@ -102,18 +124,29 @@ export const CurrentAnalyticsPage: FC<Props> = ({
     dashboardMalfunctions,
     dashboardPiperuptersList,
     dashboardResourceDisconnection,
+    dashboardServiceQuality,
   ]);
 
   return (
     <Wrapper>
       <PageHeader title="Текущая ситуация" contextMenu={{}} />
-      <AnalyticsSearch />
+      <AnalyticsSearch
+        managementFirms={managementFirms}
+        dashboardFilters={dashboardFilters}
+        setDashboardFilters={setDashboardFilters}
+        resetDashboardFilters={resetDashboardFilters}
+      />
       <InfoOptionsPanels
         dashboardSummary={dashboardSummary}
         currentDashboardType={currentDashboardType}
         setCurrentDashboardType={setCurrentDashboardType}
       />
       <WithLoader isLoading={isLoading || isLoadingPanels}>
+        {dashboardFilters.ManagementFirmId && (
+          <GoBackPure
+            onClick={() => setDashboardFilters({ ManagementFirmId: null })}
+          />
+        )}
         <DashboardPanelWrapper>
           {Dashboard && <Dashboard />}
         </DashboardPanelWrapper>

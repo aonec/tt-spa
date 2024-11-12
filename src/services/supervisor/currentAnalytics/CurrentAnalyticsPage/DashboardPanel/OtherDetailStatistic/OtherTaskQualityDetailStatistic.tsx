@@ -1,25 +1,18 @@
 import { FC } from 'react';
-import {
-  NotClosedTaskCount,
-  Title,
-  Wrapper,
-} from './OtherDetailStatistic.styled';
+import { Title, Wrapper } from './OtherDetailStatistic.styled';
 import { Props } from './OtherDetailStatistic.types';
-import { DashboardTaskResourceResponse } from 'api/types';
+import { DashboardTaskQualityResponse } from 'api/types';
 import { ProgressSC } from '../ResourceStatistic/ResourceStatistic.styled';
 
-export const OtherDetailStatistic: FC<Props<DashboardTaskResourceResponse>> = ({
-  item,
-}) => {
+export const OtherTaskQualityDetailStatistic: FC<
+  Props<DashboardTaskQualityResponse>
+> = ({ item }) => {
   return (
     <Wrapper>
       <Title>
         {item.title}
         <div>
-          <NotClosedTaskCount isPositive={item.expiredTasksCount! > 0}>
-            {item.expiredTasksCount}
-          </NotClosedTaskCount>{' '}
-          / {item.totalTasksCount}
+          {item.expiredTasksCount} / {item.totalTasksCount}
         </div>
       </Title>
       <ProgressSC

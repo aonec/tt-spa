@@ -1350,6 +1350,28 @@ export interface DashboardChartModel {
   value?: number;
 }
 
+export interface DashboardFilterParameters {
+  /** @format date-time */
+  from?: string | null;
+  /** @format date-time */
+  to?: string | null;
+  city?: string | null;
+  /** @format int32 */
+  managementFirmId?: number | null;
+  buildingIds?: number[] | null;
+  resourceType?: ResourceType | null;
+  malfunctionType?: ManagingFirmTaskType | null;
+  deviationType?: ETemperatureNormativeDeviationType | null;
+  isTest?: boolean;
+}
+
+export interface DashboardNavigationBreadCrumbs {
+  city?: string | null;
+  managingFirmName?: string | null;
+  /** @format int32 */
+  managingFirmId?: number | null;
+}
+
 export interface DashboardServiceQualityDetailsModel {
   /** @format int32 */
   totalTasksCount?: number;
@@ -1383,6 +1405,8 @@ export interface DashboardSummaryResponse {
   dashboardServiceQualityCount: number;
   /** @format double */
   dashboardServiceQualityPercentage: number;
+  filter: DashboardFilterParameters | null;
+  breadCrumbs: DashboardNavigationBreadCrumbs | null;
 }
 
 export interface DashboardTaskAverageTimeDetailsModel {
@@ -1443,6 +1467,18 @@ export interface DashboardTaskResourceDetailsModel {
   expiredTasksCount?: number;
   resourceType?: ResourceType;
   items?: DashboardBaseTaskItemModel[] | null;
+}
+
+export interface DashboardTaskResourceModel {
+  title?: string | null;
+  /** @format int32 */
+  totalTasksCount?: number;
+  /** @format double */
+  totalTasksPercentage?: number | null;
+  /** @format int32 */
+  expiredTasksCount?: number;
+  details?: DashboardTaskResourceDetailsModel[] | null;
+  chart?: DashboardChartModel[] | null;
 }
 
 export interface DashboardTaskResourceResponse {
@@ -7814,20 +7850,13 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         From?: string;
         /** @format date-time */
         To?: string;
-        /** @format int32 */
-        MunicipalDistrictId?: number;
-        /** @format int32 */
-        RegionId?: number;
+        City?: string;
         /** @format int32 */
         ManagementFirmId?: number;
         BuildingIds?: number[];
-        /** @format date-time */
-        Date?: string;
-        addressCity?: string;
-        addressStreet?: string;
-        /** @format int32 */
-        addressHousingManagementId?: number;
-        addressAddress?: string;
+        ResourceType?: ResourceType;
+        MalfunctionType?: ManagingFirmTaskType;
+        DeviationType?: ETemperatureNormativeDeviationType;
         IsTest?: boolean;
       },
       params: RequestParams = {},
@@ -7856,26 +7885,54 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         From?: string;
         /** @format date-time */
         To?: string;
-        /** @format int32 */
-        MunicipalDistrictId?: number;
-        /** @format int32 */
-        RegionId?: number;
+        City?: string;
         /** @format int32 */
         ManagementFirmId?: number;
         BuildingIds?: number[];
-        /** @format date-time */
-        Date?: string;
-        addressCity?: string;
-        addressStreet?: string;
-        /** @format int32 */
-        addressHousingManagementId?: number;
-        addressAddress?: string;
+        ResourceType?: ResourceType;
+        MalfunctionType?: ManagingFirmTaskType;
+        DeviationType?: ETemperatureNormativeDeviationType;
         IsTest?: boolean;
       },
       params: RequestParams = {},
     ) =>
       this.request<DashboardTaskResourceResponse[], ErrorApiResponse>({
         path: `/api/Dashboard/current/piperuptures`,
+        method: 'GET',
+        query: query,
+        secure: true,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Супервайзер</li>
+     *
+     * @tags Dashboard
+     * @name DashboardCurrentPiperupturesCityList
+     * @summary DashboardView
+     * @request GET:/api/Dashboard/current/piperuptures/city
+     * @secure
+     */
+    dashboardCurrentPiperupturesCityList: (
+      query?: {
+        /** @format date-time */
+        From?: string;
+        /** @format date-time */
+        To?: string;
+        City?: string;
+        /** @format int32 */
+        ManagementFirmId?: number;
+        BuildingIds?: number[];
+        ResourceType?: ResourceType;
+        MalfunctionType?: ManagingFirmTaskType;
+        DeviationType?: ETemperatureNormativeDeviationType;
+        IsTest?: boolean;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<DashboardTaskResourceModel[], ErrorApiResponse>({
+        path: `/api/Dashboard/current/piperuptures/city`,
         method: 'GET',
         query: query,
         secure: true,
@@ -7898,20 +7955,13 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         From?: string;
         /** @format date-time */
         To?: string;
-        /** @format int32 */
-        MunicipalDistrictId?: number;
-        /** @format int32 */
-        RegionId?: number;
+        City?: string;
         /** @format int32 */
         ManagementFirmId?: number;
         BuildingIds?: number[];
-        /** @format date-time */
-        Date?: string;
-        addressCity?: string;
-        addressStreet?: string;
-        /** @format int32 */
-        addressHousingManagementId?: number;
-        addressAddress?: string;
+        ResourceType?: ResourceType;
+        MalfunctionType?: ManagingFirmTaskType;
+        DeviationType?: ETemperatureNormativeDeviationType;
         IsTest?: boolean;
       },
       params: RequestParams = {},
@@ -7940,26 +7990,54 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         From?: string;
         /** @format date-time */
         To?: string;
-        /** @format int32 */
-        MunicipalDistrictId?: number;
-        /** @format int32 */
-        RegionId?: number;
+        City?: string;
         /** @format int32 */
         ManagementFirmId?: number;
         BuildingIds?: number[];
-        /** @format date-time */
-        Date?: string;
-        addressCity?: string;
-        addressStreet?: string;
-        /** @format int32 */
-        addressHousingManagementId?: number;
-        addressAddress?: string;
+        ResourceType?: ResourceType;
+        MalfunctionType?: ManagingFirmTaskType;
+        DeviationType?: ETemperatureNormativeDeviationType;
         IsTest?: boolean;
       },
       params: RequestParams = {},
     ) =>
       this.request<DashboardTaskResourceResponse[], ErrorApiResponse>({
         path: `/api/Dashboard/current/resourcedisconnects`,
+        method: 'GET',
+        query: query,
+        secure: true,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Супервайзер</li>
+     *
+     * @tags Dashboard
+     * @name DashboardCurrentResourcedisconnectsCityList
+     * @summary DashboardView
+     * @request GET:/api/Dashboard/current/resourcedisconnects/city
+     * @secure
+     */
+    dashboardCurrentResourcedisconnectsCityList: (
+      query?: {
+        /** @format date-time */
+        From?: string;
+        /** @format date-time */
+        To?: string;
+        City?: string;
+        /** @format int32 */
+        ManagementFirmId?: number;
+        BuildingIds?: number[];
+        ResourceType?: ResourceType;
+        MalfunctionType?: ManagingFirmTaskType;
+        DeviationType?: ETemperatureNormativeDeviationType;
+        IsTest?: boolean;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<DashboardTaskResourceResponse[], ErrorApiResponse>({
+        path: `/api/Dashboard/current/resourcedisconnects/city`,
         method: 'GET',
         query: query,
         secure: true,
@@ -7982,20 +8060,13 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         From?: string;
         /** @format date-time */
         To?: string;
-        /** @format int32 */
-        MunicipalDistrictId?: number;
-        /** @format int32 */
-        RegionId?: number;
+        City?: string;
         /** @format int32 */
         ManagementFirmId?: number;
         BuildingIds?: number[];
-        /** @format date-time */
-        Date?: string;
-        addressCity?: string;
-        addressStreet?: string;
-        /** @format int32 */
-        addressHousingManagementId?: number;
-        addressAddress?: string;
+        ResourceType?: ResourceType;
+        MalfunctionType?: ManagingFirmTaskType;
+        DeviationType?: ETemperatureNormativeDeviationType;
         IsTest?: boolean;
       },
       params: RequestParams = {},
@@ -8024,26 +8095,54 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         From?: string;
         /** @format date-time */
         To?: string;
-        /** @format int32 */
-        MunicipalDistrictId?: number;
-        /** @format int32 */
-        RegionId?: number;
+        City?: string;
         /** @format int32 */
         ManagementFirmId?: number;
         BuildingIds?: number[];
-        /** @format date-time */
-        Date?: string;
-        addressCity?: string;
-        addressStreet?: string;
-        /** @format int32 */
-        addressHousingManagementId?: number;
-        addressAddress?: string;
+        ResourceType?: ResourceType;
+        MalfunctionType?: ManagingFirmTaskType;
+        DeviationType?: ETemperatureNormativeDeviationType;
         IsTest?: boolean;
       },
       params: RequestParams = {},
     ) =>
       this.request<DashboardTaskMalfunctionResponse[], ErrorApiResponse>({
         path: `/api/Dashboard/current/malfunctions`,
+        method: 'GET',
+        query: query,
+        secure: true,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Супервайзер</li>
+     *
+     * @tags Dashboard
+     * @name DashboardCurrentMalfunctionsCityList
+     * @summary DashboardView
+     * @request GET:/api/Dashboard/current/malfunctions/city
+     * @secure
+     */
+    dashboardCurrentMalfunctionsCityList: (
+      query?: {
+        /** @format date-time */
+        From?: string;
+        /** @format date-time */
+        To?: string;
+        City?: string;
+        /** @format int32 */
+        ManagementFirmId?: number;
+        BuildingIds?: number[];
+        ResourceType?: ResourceType;
+        MalfunctionType?: ManagingFirmTaskType;
+        DeviationType?: ETemperatureNormativeDeviationType;
+        IsTest?: boolean;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<DashboardTaskMalfunctionResponse[], ErrorApiResponse>({
+        path: `/api/Dashboard/current/malfunctions/city`,
         method: 'GET',
         query: query,
         secure: true,
@@ -8066,20 +8165,13 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         From?: string;
         /** @format date-time */
         To?: string;
-        /** @format int32 */
-        MunicipalDistrictId?: number;
-        /** @format int32 */
-        RegionId?: number;
+        City?: string;
         /** @format int32 */
         ManagementFirmId?: number;
         BuildingIds?: number[];
-        /** @format date-time */
-        Date?: string;
-        addressCity?: string;
-        addressStreet?: string;
-        /** @format int32 */
-        addressHousingManagementId?: number;
-        addressAddress?: string;
+        ResourceType?: ResourceType;
+        MalfunctionType?: ManagingFirmTaskType;
+        DeviationType?: ETemperatureNormativeDeviationType;
         IsTest?: boolean;
       },
       params: RequestParams = {},
@@ -8108,26 +8200,54 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         From?: string;
         /** @format date-time */
         To?: string;
-        /** @format int32 */
-        MunicipalDistrictId?: number;
-        /** @format int32 */
-        RegionId?: number;
+        City?: string;
         /** @format int32 */
         ManagementFirmId?: number;
         BuildingIds?: number[];
-        /** @format date-time */
-        Date?: string;
-        addressCity?: string;
-        addressStreet?: string;
-        /** @format int32 */
-        addressHousingManagementId?: number;
-        addressAddress?: string;
+        ResourceType?: ResourceType;
+        MalfunctionType?: ManagingFirmTaskType;
+        DeviationType?: ETemperatureNormativeDeviationType;
         IsTest?: boolean;
       },
       params: RequestParams = {},
     ) =>
       this.request<DashboardTaskAverageTimeResponse[], ErrorApiResponse>({
         path: `/api/Dashboard/current/averagetime`,
+        method: 'GET',
+        query: query,
+        secure: true,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Супервайзер</li>
+     *
+     * @tags Dashboard
+     * @name DashboardCurrentAveragetimeCityList
+     * @summary DashboardView
+     * @request GET:/api/Dashboard/current/averagetime/city
+     * @secure
+     */
+    dashboardCurrentAveragetimeCityList: (
+      query?: {
+        /** @format date-time */
+        From?: string;
+        /** @format date-time */
+        To?: string;
+        City?: string;
+        /** @format int32 */
+        ManagementFirmId?: number;
+        BuildingIds?: number[];
+        ResourceType?: ResourceType;
+        MalfunctionType?: ManagingFirmTaskType;
+        DeviationType?: ETemperatureNormativeDeviationType;
+        IsTest?: boolean;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<DashboardTaskAverageTimeResponse[], ErrorApiResponse>({
+        path: `/api/Dashboard/current/averagetime/city`,
         method: 'GET',
         query: query,
         secure: true,
@@ -8150,20 +8270,13 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         From?: string;
         /** @format date-time */
         To?: string;
-        /** @format int32 */
-        MunicipalDistrictId?: number;
-        /** @format int32 */
-        RegionId?: number;
+        City?: string;
         /** @format int32 */
         ManagementFirmId?: number;
         BuildingIds?: number[];
-        /** @format date-time */
-        Date?: string;
-        addressCity?: string;
-        addressStreet?: string;
-        /** @format int32 */
-        addressHousingManagementId?: number;
-        addressAddress?: string;
+        ResourceType?: ResourceType;
+        MalfunctionType?: ManagingFirmTaskType;
+        DeviationType?: ETemperatureNormativeDeviationType;
         IsTest?: boolean;
       },
       params: RequestParams = {},
@@ -8192,26 +8305,54 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         From?: string;
         /** @format date-time */
         To?: string;
-        /** @format int32 */
-        MunicipalDistrictId?: number;
-        /** @format int32 */
-        RegionId?: number;
+        City?: string;
         /** @format int32 */
         ManagementFirmId?: number;
         BuildingIds?: number[];
-        /** @format date-time */
-        Date?: string;
-        addressCity?: string;
-        addressStreet?: string;
-        /** @format int32 */
-        addressHousingManagementId?: number;
-        addressAddress?: string;
+        ResourceType?: ResourceType;
+        MalfunctionType?: ManagingFirmTaskType;
+        DeviationType?: ETemperatureNormativeDeviationType;
         IsTest?: boolean;
       },
       params: RequestParams = {},
     ) =>
       this.request<DashboardTaskQualityResponse[], ErrorApiResponse>({
         path: `/api/Dashboard/current/servicequality`,
+        method: 'GET',
+        query: query,
+        secure: true,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Супервайзер</li>
+     *
+     * @tags Dashboard
+     * @name DashboardCurrentServicequalityCityList
+     * @summary DashboardView
+     * @request GET:/api/Dashboard/current/servicequality/city
+     * @secure
+     */
+    dashboardCurrentServicequalityCityList: (
+      query?: {
+        /** @format date-time */
+        From?: string;
+        /** @format date-time */
+        To?: string;
+        City?: string;
+        /** @format int32 */
+        ManagementFirmId?: number;
+        BuildingIds?: number[];
+        ResourceType?: ResourceType;
+        MalfunctionType?: ManagingFirmTaskType;
+        DeviationType?: ETemperatureNormativeDeviationType;
+        IsTest?: boolean;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<DashboardTaskQualityResponse[], ErrorApiResponse>({
+        path: `/api/Dashboard/current/servicequality/city`,
         method: 'GET',
         query: query,
         secure: true,
@@ -8234,20 +8375,13 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         From?: string;
         /** @format date-time */
         To?: string;
-        /** @format int32 */
-        MunicipalDistrictId?: number;
-        /** @format int32 */
-        RegionId?: number;
+        City?: string;
         /** @format int32 */
         ManagementFirmId?: number;
         BuildingIds?: number[];
-        /** @format date-time */
-        Date?: string;
-        addressCity?: string;
-        addressStreet?: string;
-        /** @format int32 */
-        addressHousingManagementId?: number;
-        addressAddress?: string;
+        ResourceType?: ResourceType;
+        MalfunctionType?: ManagingFirmTaskType;
+        DeviationType?: ETemperatureNormativeDeviationType;
         IsTest?: boolean;
       },
       params: RequestParams = {},
@@ -8276,20 +8410,13 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         From?: string;
         /** @format date-time */
         To?: string;
-        /** @format int32 */
-        MunicipalDistrictId?: number;
-        /** @format int32 */
-        RegionId?: number;
+        City?: string;
         /** @format int32 */
         ManagementFirmId?: number;
         BuildingIds?: number[];
-        /** @format date-time */
-        Date?: string;
-        addressCity?: string;
-        addressStreet?: string;
-        /** @format int32 */
-        addressHousingManagementId?: number;
-        addressAddress?: string;
+        ResourceType?: ResourceType;
+        MalfunctionType?: ManagingFirmTaskType;
+        DeviationType?: ETemperatureNormativeDeviationType;
         IsTest?: boolean;
       },
       params: RequestParams = {},
@@ -8318,20 +8445,13 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         From?: string;
         /** @format date-time */
         To?: string;
-        /** @format int32 */
-        MunicipalDistrictId?: number;
-        /** @format int32 */
-        RegionId?: number;
+        City?: string;
         /** @format int32 */
         ManagementFirmId?: number;
         BuildingIds?: number[];
-        /** @format date-time */
-        Date?: string;
-        addressCity?: string;
-        addressStreet?: string;
-        /** @format int32 */
-        addressHousingManagementId?: number;
-        addressAddress?: string;
+        ResourceType?: ResourceType;
+        MalfunctionType?: ManagingFirmTaskType;
+        DeviationType?: ETemperatureNormativeDeviationType;
         IsTest?: boolean;
       },
       params: RequestParams = {},
@@ -8360,20 +8480,13 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         From?: string;
         /** @format date-time */
         To?: string;
-        /** @format int32 */
-        MunicipalDistrictId?: number;
-        /** @format int32 */
-        RegionId?: number;
+        City?: string;
         /** @format int32 */
         ManagementFirmId?: number;
         BuildingIds?: number[];
-        /** @format date-time */
-        Date?: string;
-        addressCity?: string;
-        addressStreet?: string;
-        /** @format int32 */
-        addressHousingManagementId?: number;
-        addressAddress?: string;
+        ResourceType?: ResourceType;
+        MalfunctionType?: ManagingFirmTaskType;
+        DeviationType?: ETemperatureNormativeDeviationType;
         IsTest?: boolean;
       },
       params: RequestParams = {},
@@ -8402,54 +8515,19 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         From?: string;
         /** @format date-time */
         To?: string;
-        /** @format int32 */
-        MunicipalDistrictId?: number;
-        /** @format int32 */
-        RegionId?: number;
+        City?: string;
         /** @format int32 */
         ManagementFirmId?: number;
         BuildingIds?: number[];
-        /** @format date-time */
-        Date?: string;
-        addressCity?: string;
-        addressStreet?: string;
-        /** @format int32 */
-        addressHousingManagementId?: number;
-        addressAddress?: string;
+        ResourceType?: ResourceType;
+        MalfunctionType?: ManagingFirmTaskType;
+        DeviationType?: ETemperatureNormativeDeviationType;
         IsTest?: boolean;
       },
       params: RequestParams = {},
     ) =>
       this.request<DashboardTaskMalfunctionResponse[], ErrorApiResponse>({
         path: `/api/Dashboard/common/malfunctions`,
-        method: 'GET',
-        query: query,
-        secure: true,
-        format: 'json',
-        ...params,
-      }),
-
-    /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Администратор УК без назначений задач</li><li>Контролёр</li><li>Супервайзер</li>
-     *
-     * @tags Dashboard
-     * @name DashboardManagementfirmsList
-     * @summary HousingStocksRead
-     * @request GET:/api/Dashboard/managementfirms
-     * @secure
-     */
-    dashboardManagementfirmsList: (
-      query?: {
-        City?: string;
-        Street?: string;
-        /** @format int32 */
-        HousingManagementId?: number;
-        Address?: string;
-      },
-      params: RequestParams = {},
-    ) =>
-      this.request<HouseManagementWithStreetsResponse[], ErrorApiResponse>({
-        path: `/api/Dashboard/managementfirms`,
         method: 'GET',
         query: query,
         secure: true,
