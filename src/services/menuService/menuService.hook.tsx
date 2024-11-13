@@ -28,18 +28,18 @@ export const useMenuItems = (): MenuItem[] => {
       icon: StatisticIcon,
       type: MenuType.SupervisorAnalytics,
     },
-    {
-      title: 'Общая аналитика',
-      path: `/supervisor/commonAnalytics`,
-      icon: StatisticIcon,
-      type: MenuType.SupervisorAnalytics,
-    },
-    {
-      title: 'Потребление ресурсов',
-      path: `/supervisor/consumption`,
-      icon: StatisticIcon,
-      type: MenuType.SupervisorAnalytics,
-    },
+    // {
+    //   title: 'Общая аналитика',
+    //   path: `/supervisor/commonAnalytics`,
+    //   icon: StatisticIcon,
+    //   type: MenuType.SupervisorAnalytics,
+    // },
+    // {
+    //   title: 'Потребление ресурсов',
+    //   path: `/supervisor/consumption`,
+    //   icon: StatisticIcon,
+    //   type: MenuType.SupervisorAnalytics,
+    // },
     {
       title: 'Задачи',
       path: '/tasks',
