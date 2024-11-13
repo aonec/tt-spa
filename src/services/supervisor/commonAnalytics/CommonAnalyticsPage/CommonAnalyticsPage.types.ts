@@ -1,5 +1,6 @@
 import {
   DashboardSummaryResponse,
+  DashboardTaskResourceResponse,
   HouseManagementWithStreetsResponse,
 } from 'api/types';
 import {
@@ -15,4 +16,5 @@ export type Props = {
   dashboardSummary: DashboardSummaryResponse | null;
   currentDashboardType: DashboardDataType;
   setCurrentDashboardType: (payload: DashboardDataType) => void;
+  piperuptersStatistics: DashboardTaskResourceResponse[] | null;
 };

@@ -6,7 +6,11 @@ import {
 } from '../currentAnalytics/currentAnalyticsService.types';
 import { managementFirmsWithBuildingsQuery } from '../currentAnalytics/currentAnalyticsService.api';
 import { CommonDashboardQueryParams } from './commonAnalyticsService.types';
-import { commonSummaryQuery } from './commonAnalyticsService.api';
+import {
+  commonSummaryQuery,
+  dashboardPiperuptersQuery,
+} from './commonAnalyticsService.api';
+import dayjs from 'dayjs';
 
 const CommonAnalyticsGate = createGate();
 const setCurrentDashboardType = createEvent<DashboardDataType>();
@@ -17,7 +21,10 @@ const $currentDashboardType = createStore<DashboardDataType>(
   DashboardDataType.PipeRupturesCount,
 ).on(setCurrentDashboardType, (_, type) => type);
 
-const $dashboardFilters = createStore<DashboardQueryParams>({})
+const $dashboardFilters = createStore<DashboardQueryParams>({
+  From: dayjs().subtract(1, 'week').format(),
+  To: dayjs().format(),
+})
   .on(setDashboardFilters, (prev, data) => ({ ...prev, ...data }))
   .reset(resetDashboardFilters);
 
@@ -25,6 +32,21 @@ sample({
   source: $dashboardFilters,
   clock: CommonAnalyticsGate.open,
   target: [commonSummaryQuery.start],
+});
+
+sample({
+  source: $dashboardFilters,
+  clock: CommonAnalyticsGate.open,
+  target: [dashboardPiperuptersQuery.start],
+});
+
+sample({
+  source: $dashboardFilters,
+  target: [dashboardPiperuptersQuery.start, commonSummaryQuery.start],
+});
+
+$dashboardFilters.watch((data) => {
+  console.log(data);
 });
 
 sample({

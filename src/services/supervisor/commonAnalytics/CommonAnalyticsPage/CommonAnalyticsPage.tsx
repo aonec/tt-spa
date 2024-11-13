@@ -6,6 +6,7 @@ import { AnalyticsSearch } from 'services/supervisor/currentAnalytics/CurrentAna
 import { InfoOptionsPanels } from 'services/supervisor/currentAnalytics/CurrentAnalyticsPage/InfoOptionsPanels';
 import { WithLoader } from 'ui-kit/shared/WithLoader';
 import { GoBackPure } from 'ui-kit/shared/GoBack/GoBack';
+import { StatisticItem } from './StatisticItem';
 
 export const CommonAnalyticsPage: FC<Props> = ({
   dashboardFilters,
@@ -15,10 +16,11 @@ export const CommonAnalyticsPage: FC<Props> = ({
   currentDashboardType,
   dashboardSummary,
   setCurrentDashboardType,
+  piperuptersStatistics,
 }) => {
   return (
     <Wrapper>
-      <PageHeader title="Текущая ситуация" contextMenu={{}} />
+      <PageHeader title="Общая аналитика" contextMenu={{}} />
       <AnalyticsSearch
         managementFirms={managementFirms}
         dashboardFilters={dashboardFilters}
@@ -30,6 +32,9 @@ export const CommonAnalyticsPage: FC<Props> = ({
         currentDashboardType={currentDashboardType}
         setCurrentDashboardType={setCurrentDashboardType}
       />
+      {piperuptersStatistics?.map((piperuptersStatistic) => (
+        <StatisticItem data={piperuptersStatistic}/>
+      ))}
     </Wrapper>
   );
 };

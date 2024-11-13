@@ -5,6 +5,10 @@ import {
   dashboardSummaryQuery,
   managementFirmsWithBuildingsQuery,
 } from '../currentAnalytics/currentAnalyticsService.api';
+import {
+  commonSummaryQuery,
+  dashboardPiperuptersQuery,
+} from './commonAnalyticsService.api';
 
 const { inputs, outputs, gates } = commonAnalyticsService;
 
@@ -19,14 +23,16 @@ export const CommonAnalyticsContainer = () => {
     dashboardSummary,
     currentDashboardType,
     setCurrentDashboardType,
+    piperuptersStatistics,
   } = useUnit({
     setDashboardFilters: inputs.setDashboardFilters,
     dashboardFilters: outputs.$dashboardFilters,
     managementFirms: managementFirmsWithBuildingsQuery.$data,
     resetDashboardFilters: inputs.resetDashboardFilters,
-    dashboardSummary: dashboardSummaryQuery.$data,
+    dashboardSummary: commonSummaryQuery.$data,
     currentDashboardType: outputs.$currentDashboardType,
     setCurrentDashboardType: inputs.setCurrentDashboardType,
+    piperuptersStatistics: dashboardPiperuptersQuery.$data,
   });
 
   return (
@@ -40,6 +46,7 @@ export const CommonAnalyticsContainer = () => {
         dashboardSummary={dashboardSummary}
         currentDashboardType={currentDashboardType}
         setCurrentDashboardType={setCurrentDashboardType}
+        piperuptersStatistics={piperuptersStatistics}
       />
     </>
   );
