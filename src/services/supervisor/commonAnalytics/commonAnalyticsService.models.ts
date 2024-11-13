@@ -61,6 +61,10 @@ const $dashboardParams = combine(
   (params, dashboardType) => ({ ...params, dashboardType }),
 );
 
+const $isLoading = combine(dashboardPiperuptersQuery.$pending, (...params) =>
+  params.some((value) => value),
+);
+
 // split({
 //   source: $dashboardParams,
 //   clock: [$dashboardParams.updates, CurrentAnalyticsGate.open],
@@ -75,21 +79,12 @@ const $dashboardParams = combine(
 //   },
 // });
 
-// const $isLoading = combine(
-//   dashboardPiperuptersQuery.$pending,
-//   dashboardResourceDisconnectionQuery.$pending,
-//   dashboardMalfunctionsQuery.$pending,
-//   dashboardAverageTimeQuery.$pending,
-//   dashboardServiceQualityQuery.$pending,
-//   (...params) => params.some((value) => value),
-// );
-
 export const commonAnalyticsService = {
   inputs: {
     setDashboardFilters,
     resetDashboardFilters,
     setCurrentDashboardType,
   },
-  outputs: { $dashboardFilters, $currentDashboardType },
+  outputs: { $dashboardFilters, $currentDashboardType, $isLoading },
   gates: { CommonAnalyticsGate },
 };

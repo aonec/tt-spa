@@ -6,4 +6,11 @@ export type Props = {
   dashboardFilters: DashboardQueryParams;
   setDashboardFilters: (payload: DashboardQueryParams) => void;
   resetDashboardFilters: () => void;
+  isCommon?: boolean;
 };
+
+export enum EDateRange {
+  Week = 'Week',
+  Month = 'Month',
+  Quarter = 'Quarter',
+}

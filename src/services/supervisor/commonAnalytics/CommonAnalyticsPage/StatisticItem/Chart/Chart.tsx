@@ -26,13 +26,11 @@ export const Chart: FC<Props> = ({ chart }) => {
   console.log(chartData, chart);
 
   const mock = [
-    { x: '1 авг', y: 2 },
-    { x: '2 авг', y: 5 },
-    { x: '3 авг', y: 10 },
-    { x: '4 авг', y: 0 },
-    { x: '5 авг', y: 12 },
-    { x: '6 авг', y: 0 },
-    { x: '7 авг', y: 7 },
+    { x: ' ', y: 0 },
+    { x: ' ', y: 0 },
+    { x: ' ', y: 0 },
+    { x: ' ', y: 0 },
+    { x: ' ', y: 0 },
   ];
   return (
     <VictoryChart
@@ -51,11 +49,15 @@ export const Chart: FC<Props> = ({ chart }) => {
       <VictoryAxis
         dependentAxis
         style={verticalAxisStyle}
-        tickFormat={(tick) => tick}
+        tickFormat={(tick) => {
+          if (tick % 1 === 0) {
+            return tick;
+          }
+        }}
       />
       <VictoryBar
         style={{ data: { fill: 'rgba(24, 158, 233, 1)' } }}
-        data={chartData}
+        data={chartData || mock}
       />
     </VictoryChart>
   );
