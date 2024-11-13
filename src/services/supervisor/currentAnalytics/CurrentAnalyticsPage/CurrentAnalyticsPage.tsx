@@ -14,6 +14,7 @@ import { DashboardDataType } from '../currentAnalyticsService.types';
 import { AverageTimeDashboardPanel } from './DashboardPanel/AverageTimeDashboardPanel';
 import { TaskQualityDashboardPanel } from './DashboardPanel/TaskQualityDashboardPanel';
 import { GoBackPure } from 'ui-kit/shared/GoBack/GoBack';
+import { Empty } from 'antd';
 
 export const CurrentAnalyticsPage: FC<Props> = ({
   isLoading,
@@ -31,6 +32,28 @@ export const CurrentAnalyticsPage: FC<Props> = ({
   setDashboardFilters,
   resetDashboardFilters,
 }) => {
+  const dataList = useMemo(() => {
+    const dataMap = {
+      [DashboardDataType.PipeRupturesCount]: dashboardPiperuptersList,
+      [DashboardDataType.ResourceDisconnectsCount]:
+        dashboardResourceDisconnection,
+      [DashboardDataType.MalfunctionsCount]: dashboardMalfunctions,
+      [DashboardDataType.AverageCompletionTime]: dashboardAverageTime,
+      [DashboardDataType.TasksCount]: dashboardServiceQuality,
+    };
+
+    return dataMap[currentDashboardType];
+  }, [
+    currentDashboardType,
+    dashboardAverageTime,
+    dashboardMalfunctions,
+    dashboardPiperuptersList,
+    dashboardResourceDisconnection,
+    dashboardServiceQuality,
+  ]);
+
+  const isEmpty = !dataList?.length;
+
   const Dashboard = useMemo(() => {
     const dataMap = {
       [DashboardDataType.PipeRupturesCount]: () => {
@@ -147,6 +170,7 @@ export const CurrentAnalyticsPage: FC<Props> = ({
             onClick={() => setDashboardFilters({ ManagementFirmId: null })}
           />
         )}
+        {isEmpty && <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />}
         <DashboardPanelWrapper>
           {Dashboard && <Dashboard />}
         </DashboardPanelWrapper>
