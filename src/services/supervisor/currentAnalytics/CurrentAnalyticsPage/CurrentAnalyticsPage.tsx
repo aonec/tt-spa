@@ -17,7 +17,7 @@ import { Empty } from 'antd';
 import { BreadCrumbs } from './BreadCrumbs';
 
 export const CurrentAnalyticsPage: FC<Props> = ({
-  isLoading,
+  isLoadingSummary,
   isLoadingPanels,
   dashboardSummary,
   currentDashboardType,
@@ -166,6 +166,7 @@ export const CurrentAnalyticsPage: FC<Props> = ({
         resetDashboardFilters={resetDashboardFilters}
       />
       <InfoOptionsPanels
+        isLoading={isLoadingSummary}
         dashboardSummary={dashboardSummary}
         currentDashboardType={currentDashboardType}
         setCurrentDashboardType={setCurrentDashboardType}
@@ -174,7 +175,7 @@ export const CurrentAnalyticsPage: FC<Props> = ({
         setDashboardFilters={setDashboardFilters}
         dashboardSummary={dashboardSummary}
       />
-      <WithLoader isLoading={isLoading || isLoadingPanels}>
+      <WithLoader isLoading={isLoadingSummary || isLoadingPanels}>
         {isEmpty && <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />}
         {!isEmpty && (
           <DashboardPanelWrapper>

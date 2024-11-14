@@ -11,7 +11,7 @@ import {
 } from '../currentAnalyticsService.types';
 
 export type Props = {
-  isLoading: boolean;
+  isLoadingSummary: boolean;
   dashboardSummary: DashboardSummaryResponse | null;
   currentDashboardType: DashboardDataType;
   setCurrentDashboardType: (payload: DashboardDataType) => void;

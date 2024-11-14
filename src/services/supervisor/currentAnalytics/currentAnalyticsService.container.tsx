@@ -53,7 +53,7 @@ export const CurrentAnalyticsContainer = () => {
       <CurrentAnalyticsGate />
       <CurrentAnalyticsPage
         dashboardSummary={dashboardSummary}
-        isLoading={isLoadingSummary}
+        isLoadingSummary={isLoadingSummary}
         currentDashboardType={currentDashboardType}
         setCurrentDashboardType={setCurrentDashboardType}
         dashboardPiperuptersList={getItemArray(dashboardPiperuptersList)}

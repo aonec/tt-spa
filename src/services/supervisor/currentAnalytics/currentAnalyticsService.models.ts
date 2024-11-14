@@ -39,8 +39,8 @@ const $dashboardParams = combine(
 );
 
 sample({
-  source: $dashboardParams,
-  clock: [CurrentAnalyticsGate.open, $dashboardParams.updates],
+  source: $dashboardFilters,
+  clock: [CurrentAnalyticsGate.open, $dashboardFilters.updates],
   target: [dashboardSummaryQuery.start],
 });
 

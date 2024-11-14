@@ -3,11 +3,13 @@ import { UnitWrapper, Wrapper } from './InfoOptionsPanels.styled';
 import { Props } from './InfoOptionsPanels.types';
 import { OptionPanelButton } from 'ui-kit/shared/OptionPanelButton';
 import { DashboardDataType } from '../../currentAnalyticsService.types';
+import { Skeleton } from 'antd';
 
 export const InfoOptionsPanels: FC<Props> = ({
   dashboardSummary,
   currentDashboardType,
   setCurrentDashboardType,
+  isLoading,
 }) => {
   const optionsList = useMemo(() => {
     const options = [
@@ -62,7 +64,19 @@ export const InfoOptionsPanels: FC<Props> = ({
           isActive={active}
           onClick={() => setCurrentDashboardType(type)}
         >
-          {String(value).replace('.', ',')} <UnitWrapper>{unit}</UnitWrapper>
+          {isLoading && (
+            <Skeleton.Input
+              active
+              size="small"
+              style={{ transform: 'translateY(-6px)' }}
+            />
+          )}
+          {!isLoading && value && (
+            <>
+              {String(value).replace('.', ',')}{' '}
+              <UnitWrapper>{unit}</UnitWrapper>
+            </>
+          )}
         </OptionPanelButton>
       ))}
     </Wrapper>
