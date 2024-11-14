@@ -1,9 +1,14 @@
 import { ManagingFirmTaskType } from 'api/types';
 import { ReactNode } from 'react';
-import { CalculatorIcon } from 'ui-kit/icons';
+import {
+  CalculatorIcon,
+  IndividualDeviceSmallIcon,
+  MeasurementSmallIcon,
+  NoConnectionIcon,
+} from 'ui-kit/icons';
 
 export const MalfunctionIcons: { [key in ManagingFirmTaskType]: ReactNode } = {
-  [ManagingFirmTaskType.CalculatorLackOfConnection]: <CalculatorIcon />,
+  [ManagingFirmTaskType.CalculatorLackOfConnection]: <NoConnectionIcon />,
   [ManagingFirmTaskType.CalculatorMalfunction]: <CalculatorIcon />,
   [ManagingFirmTaskType.CalculatorMalfunctionNonCommercial]: <CalculatorIcon />,
   [ManagingFirmTaskType.CurrentApplication]: <CalculatorIcon />,
@@ -14,11 +19,17 @@ export const MalfunctionIcons: { [key in ManagingFirmTaskType]: ReactNode } = {
   [ManagingFirmTaskType.HousingDeviceMalfunctionNonCommercial]: (
     <CalculatorIcon />
   ),
-  [ManagingFirmTaskType.IndividualDeviceCheck]: <CalculatorIcon />,
-  [ManagingFirmTaskType.IndividualDeviceCheckNoReadings]: <CalculatorIcon />,
-  [ManagingFirmTaskType.IndividualDeviceReadingsCheck]: <CalculatorIcon />,
-  [ManagingFirmTaskType.MeasurementErrorCommercial]: <CalculatorIcon />,
-  [ManagingFirmTaskType.MeasurementErrorNonCommercial]: <CalculatorIcon />,
+  [ManagingFirmTaskType.IndividualDeviceCheck]: <IndividualDeviceSmallIcon />,
+  [ManagingFirmTaskType.IndividualDeviceCheckNoReadings]: (
+    <IndividualDeviceSmallIcon />
+  ),
+  [ManagingFirmTaskType.IndividualDeviceReadingsCheck]: (
+    <IndividualDeviceSmallIcon />
+  ),
+  [ManagingFirmTaskType.MeasurementErrorCommercial]: <MeasurementSmallIcon />,
+  [ManagingFirmTaskType.MeasurementErrorNonCommercial]: (
+    <MeasurementSmallIcon />
+  ),
   [ManagingFirmTaskType.PipeRupture]: <CalculatorIcon />,
   [ManagingFirmTaskType.ResourceDisconnecting]: <CalculatorIcon />,
   [ManagingFirmTaskType.RiserNoReadings]: <CalculatorIcon />,

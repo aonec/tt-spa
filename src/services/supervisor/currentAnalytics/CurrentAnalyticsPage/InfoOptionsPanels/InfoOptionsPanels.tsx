@@ -74,7 +74,10 @@ export const InfoOptionsPanels: FC<Props> = ({
           )}
           {!isLoading && value && (
             <>
-              {formatCompletionTime(value)} <UnitWrapper>{unit}</UnitWrapper>
+              {type === DashboardDataType.AverageCompletionTime
+                ? formatCompletionTime(value)
+                : value}{' '}
+              <UnitWrapper>{unit}</UnitWrapper>
             </>
           )}
         </OptionPanelButton>
