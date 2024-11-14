@@ -36,8 +36,8 @@ export const TaskResourceDetail: FC<
         size={['100%', 3]}
       />
       <AnalyticsDetailWrapper>
-        {data.items?.map((data) => (
-          <AnalyticsDetail data={data} />
+        {data.items?.map((item) => (
+          <AnalyticsDetail data={item} resourceType={data?.resourceType} />
         ))}
       </AnalyticsDetailWrapper>
     </Wrapper>

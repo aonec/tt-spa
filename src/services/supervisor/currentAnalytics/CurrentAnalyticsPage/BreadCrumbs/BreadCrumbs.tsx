@@ -15,13 +15,22 @@ export const BreadCrumbs: FC<Props> = ({
 
     return [
       {
-        value: { ManagementFirmId: null, City: null },
+        value: {
+          ManagementFirmId: null,
+          City: null,
+          ResourceType: null,
+          DeviationType: null,
+          MalfunctionType: null,
+        },
         title: `Все города`,
       },
       {
         value: {
           ManagementFirmId: null,
           City: dashboardSummary.breadCrumbs?.city || '',
+          ResourceType: null,
+          DeviationType: null,
+          MalfunctionType: null,
         },
         title: dashboardSummary.breadCrumbs?.city || null,
       },

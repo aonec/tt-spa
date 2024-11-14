@@ -5,7 +5,13 @@ import { useUnit } from 'effector-react';
 import { currentAnalyticsService } from 'services/supervisor/currentAnalytics/currentAnalyticsService.models';
 import { useNavigate } from 'react-router-dom';
 
-export const AnalyticsDetail: FC<Props> = ({ data, hideExpired }) => {
+export const AnalyticsDetail: FC<Props> = ({
+  data,
+  hideExpired,
+  malfunctionType,
+  deviationType,
+  resourceType,
+}) => {
   const isDanger = data.expiredTasksCount !== 0;
   const { setFilters, filters } = useUnit({
     filters: currentAnalyticsService.outputs.$dashboardFilters,
@@ -23,7 +29,12 @@ export const AnalyticsDetail: FC<Props> = ({ data, hideExpired }) => {
           return;
         }
 
-        setFilters({ ManagementFirmId: data.id });
+        setFilters({
+          ManagementFirmId: data.id,
+          DeviationType: deviationType,
+          MalfunctionType: malfunctionType,
+          ResourceType: resourceType,
+        });
       }}
     >
       <Name>{data.label}</Name>
