@@ -13,6 +13,7 @@ import { LinkButton } from 'ui-kit/shared/LinkButton';
 import { getRatioOfTasksCountByOthers } from './DashboardPanel.utils';
 import { OtherDetailStatistic } from './OtherDetailStatistic';
 import { DashboardTaskResourceResponse } from 'api/types';
+import { DetailButton } from './DetailButton';
 
 export const TaskDashboardPanel: FC<Props<DashboardTaskResourceResponse>> = ({
   data,
@@ -58,9 +59,7 @@ export const TaskDashboardPanel: FC<Props<DashboardTaskResourceResponse>> = ({
           <TaskResourceDetail data={detail} />
         ))}
       </ResourceStatisticsWrapper>
-      <LinkButtonWrapper>
-        <LinkButton onClick={() => void 0}>Подробнее</LinkButton>
-      </LinkButtonWrapper>
+      <DetailButton value={data.title} />
     </Wrapper>
   );
 };

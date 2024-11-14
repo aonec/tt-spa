@@ -19,6 +19,7 @@ import { TaskQualityDetail } from './ResourceStatistic/TaskQualityDetail';
 import { CitySmallGrayIcon, TimerIcon } from 'ui-kit/icons';
 import { SpaceLine } from 'ui-kit/SpaceLine';
 import { getTaskQualityOtherData } from './utils';
+import { DetailButton } from './DetailButton';
 
 export const TaskQualityDashboardPanel: FC<
   Props<DashboardTaskQualityResponse>
@@ -75,31 +76,25 @@ export const TaskQualityDashboardPanel: FC<
         {data.totalTasksCount}{' '}
         <AverageTimeDescription>задач</AverageTimeDescription>
       </AverageTime>
-
       <TaskQualityAnalyticsWrapper>
         <TaskQualityAnalyticsTitle>
           <CitySmallGrayIcon /> Объекты
         </TaskQualityAnalyticsTitle>
         {data.buildingsWithTasksCount} / {data.totalBuildingCount}
       </TaskQualityAnalyticsWrapper>
-
       <TaskQualityAnalyticsWrapper>
         <TaskQualityAnalyticsTitle>
           <TimerIcon /> Среднее время на закрытие
         </TaskQualityAnalyticsTitle>
-        {Number(data.averageCompletionTime).toFixed(1)} мин
+        {Number(data.averageCompletionTime).toFixed(1).replace('.', ',')} мин
       </TaskQualityAnalyticsWrapper>
-
       <SpaceLine noPadding noTop />
-
       <ResourceStatisticsWrapper>
         {data.details?.map((detail) => (
           <TaskQualityDetail data={detail} />
         ))}
       </ResourceStatisticsWrapper>
-      <LinkButtonWrapper>
-        <LinkButton onClick={() => void 0}>Подробнее</LinkButton>
-      </LinkButtonWrapper>
+      <DetailButton value={data.title} />
     </Wrapper>
   );
 };

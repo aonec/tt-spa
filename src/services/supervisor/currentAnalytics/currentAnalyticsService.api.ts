@@ -75,9 +75,7 @@ export const dashboardServiceQualityQuery = createQuery<
 >({
   handler: (params) =>
     axios.get(`/Dashboard/current/servicequality/${getDetailSuffix(params)}`, {
-      params: {
-        params,
-        paramsSerializer: (params: Record<string, any>) => stringify(params),
-      },
+      params,
+      paramsSerializer: (params) => stringify(params),
     }),
 });

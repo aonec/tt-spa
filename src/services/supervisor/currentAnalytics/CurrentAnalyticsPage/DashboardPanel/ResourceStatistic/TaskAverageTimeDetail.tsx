@@ -25,7 +25,7 @@ export const TaskAverageTimeDetail: FC<
           )}
         </div>
         <NotClosedTaskCount isPositive={false}>
-          {Number(data.averageCompletionTime).toFixed(1)}
+          {Number(data.averageCompletionTime).toFixed(1).replace('.', ',')}
         </NotClosedTaskCount>{' '}
       </Title>
 

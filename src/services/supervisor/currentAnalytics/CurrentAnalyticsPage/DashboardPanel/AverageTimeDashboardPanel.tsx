@@ -14,6 +14,7 @@ import {
   AverageTimeDescription,
 } from './ResourceStatistic/ResourceStatistic.styled';
 import { OtherAverageTimeDetailStatistic } from './OtherDetailStatistic/OtherAverageTimeDetailStatistic';
+import { DetailButton } from './DetailButton';
 
 export const AverageTimeDashboardPanel: FC<
   Props<DashboardTaskAverageTimeResponse>
@@ -23,14 +24,16 @@ export const AverageTimeDashboardPanel: FC<
       <Wrapper>
         <Title>Остальные округа</Title>
         <AverageTime>
-          {otherData.reduce(
-            (acc, elem) =>
-              acc +
-              (elem?.averageCompletionTime
-                ? Number(elem?.averageCompletionTime)
-                : 0),
-            0,
-          ) / otherData.length}{' '}
+          {String(
+            otherData.reduce(
+              (acc, elem) =>
+                acc +
+                (elem?.averageCompletionTime
+                  ? Number(elem?.averageCompletionTime)
+                  : 0),
+              0,
+            ) / otherData.length,
+          ).replace('.', ',')}{' '}
           <AverageTimeDescription>мин</AverageTimeDescription>
         </AverageTime>
         <ResourceStatisticsWrapper>
@@ -51,7 +54,7 @@ export const AverageTimeDashboardPanel: FC<
     <Wrapper>
       <Title>{data.title}</Title>
       <AverageTime>
-        {Number(data.averageCompletionTime).toFixed(1)}{' '}
+        {Number(data.averageCompletionTime).toFixed(1).replace('.', ',')}{' '}
         <AverageTimeDescription>мин</AverageTimeDescription>
       </AverageTime>
       <ResourceStatisticsWrapper>
@@ -59,9 +62,7 @@ export const AverageTimeDashboardPanel: FC<
           <TaskAverageTimeDetail data={detail} />
         ))}
       </ResourceStatisticsWrapper>
-      <LinkButtonWrapper>
-        <LinkButton onClick={() => void 0}>Подробнее</LinkButton>
-      </LinkButtonWrapper>
+      <DetailButton value={data.title} />
     </Wrapper>
   );
 };

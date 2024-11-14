@@ -62,7 +62,7 @@ export const InfoOptionsPanels: FC<Props> = ({
           isActive={active}
           onClick={() => setCurrentDashboardType(type)}
         >
-          {value} <UnitWrapper>{unit}</UnitWrapper>
+          {String(value).replace('.', ',')} <UnitWrapper>{unit}</UnitWrapper>
         </OptionPanelButton>
       ))}
     </Wrapper>

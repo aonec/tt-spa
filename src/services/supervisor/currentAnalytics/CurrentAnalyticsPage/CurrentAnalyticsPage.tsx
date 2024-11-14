@@ -51,7 +51,15 @@ export const CurrentAnalyticsPage: FC<Props> = ({
     dashboardServiceQuality,
   ]);
 
-  const isEmpty = !dataList?.length;
+  const isEmpty = useMemo(() => {
+    if (!dataList?.length) return true;
+
+    if (dataList.length === 1 && !dataList[0].details?.length) {
+      return true;
+    }
+
+    return false;
+  }, [dataList]);
 
   const Dashboard = useMemo(() => {
     const dataMap = {
@@ -168,9 +176,11 @@ export const CurrentAnalyticsPage: FC<Props> = ({
       />
       <WithLoader isLoading={isLoading || isLoadingPanels}>
         {isEmpty && <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />}
-        <DashboardPanelWrapper>
-          {Dashboard && <Dashboard />}
-        </DashboardPanelWrapper>
+        {!isEmpty && (
+          <DashboardPanelWrapper>
+            {Dashboard && <Dashboard />}
+          </DashboardPanelWrapper>
+        )}
       </WithLoader>
     </Wrapper>
   );
