@@ -21,26 +21,22 @@ export const AnalyticsSearch: FC<Props> = ({
         format="DD.MM.YYYY"
         value={
           Boolean(dashboardFilters.From && dashboardFilters.To)
-            ? [dayjs(dashboardFilters.From), dayjs(dashboardFilters.To)]
+            ? [
+                dayjs(dashboardFilters.From).utc(),
+                dayjs(dashboardFilters.To).utc(),
+              ]
             : [null, null]
         }
         onChange={(value) => {
           setDashboardFilters({
-            From: value?.[0]?.toISOString(),
-            To: value?.[1]?.toISOString(),
+            From: value?.[0]?.startOf('day').utc(true).toISOString(),
+            To: value?.[1]?.endOf('day').utc(true).toISOString(),
           });
         }}
+        disabledDate={(date) => date.isAfter(dayjs())}
       />
       <Select placeholder="Город" small />
-      <Select
-        placeholder="УК"
-        small
-        // value={dashboardFilters.addressHousingManagementId}
-        // onChange={(value) =>
-        //   setDashboardFilters({ addressHousingManagementId: value as any })
-        // }
-        allowClear
-      ></Select>
+      <Select placeholder="УК" small allowClear></Select>
       <AddressTreeSelect
         small
         placeholder="Адрес"

@@ -12,6 +12,7 @@ import {
   DashboardDataType,
   DashboardQueryParams,
 } from './currentAnalyticsService.types';
+import dayjs from 'dayjs';
 
 const CurrentAnalyticsGate = createGate();
 const setCurrentDashboardType = createEvent<DashboardDataType>();
@@ -22,15 +23,12 @@ const $currentDashboardType = createStore<DashboardDataType>(
   DashboardDataType.PipeRupturesCount,
 ).on(setCurrentDashboardType, (_, type) => type);
 
-const $dashboardFilters = createStore<DashboardQueryParams>({})
+const $dashboardFilters = createStore<DashboardQueryParams>({
+  From: dayjs().startOf('day').utc(true).toISOString(),
+  To: dayjs().endOf('day').utc(true).toISOString(),
+})
   .on(setDashboardFilters, (prev, data) => ({ ...prev, ...data }))
   .reset(resetDashboardFilters);
-
-// sample({
-//   source: {},
-//   clock: CurrentAnalyticsGate.open,
-//   target: managementFirmsWithBuildingsQuery.start,
-// });
 
 const $dashboardParams = combine(
   $dashboardFilters,

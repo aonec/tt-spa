@@ -36,7 +36,7 @@ export const InfoOptionsPanels: FC<Props> = ({
       },
       {
         title: 'Качество услуг',
-        value: dashboardSummary?.dashboardTasksCount,
+        value: dashboardSummary?.dashboardServiceQualityCount,
         unit: 'задач',
         type: DashboardDataType.TasksCount,
       },
@@ -52,7 +52,7 @@ export const InfoOptionsPanels: FC<Props> = ({
     dashboardSummary?.dashboardMalfunctionsCount,
     dashboardSummary?.dashboardPipeRupturesCount,
     dashboardSummary?.dashboardResourceDisconnectsCount,
-    dashboardSummary?.dashboardTasksCount,
+    dashboardSummary?.dashboardServiceQualityCount,
   ]);
 
   return (
