@@ -4,6 +4,7 @@ import { Props } from './InfoOptionsPanels.types';
 import { OptionPanelButton } from 'ui-kit/shared/OptionPanelButton';
 import { DashboardDataType } from '../../currentAnalyticsService.types';
 import { Skeleton } from 'antd';
+import { formatCompletionTime } from '../DashboardPanel/utils';
 
 export const InfoOptionsPanels: FC<Props> = ({
   dashboardSummary,
@@ -73,8 +74,7 @@ export const InfoOptionsPanels: FC<Props> = ({
           )}
           {!isLoading && value && (
             <>
-              {String(value).replace('.', ',')}{' '}
-              <UnitWrapper>{unit}</UnitWrapper>
+              {formatCompletionTime(value)} <UnitWrapper>{unit}</UnitWrapper>
             </>
           )}
         </OptionPanelButton>

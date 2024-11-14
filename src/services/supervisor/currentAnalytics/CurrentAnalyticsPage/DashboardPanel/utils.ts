@@ -21,3 +21,7 @@ export function getTaskQualityOtherData(
     },
   );
 }
+
+export function formatCompletionTime(time: number | string) {
+  return Number(time).toFixed(1).replace('.', ',');
+}

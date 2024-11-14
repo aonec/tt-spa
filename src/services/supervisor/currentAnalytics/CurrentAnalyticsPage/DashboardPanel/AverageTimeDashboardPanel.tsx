@@ -13,6 +13,7 @@ import {
 } from './ResourceStatistic/ResourceStatistic.styled';
 import { OtherAverageTimeDetailStatistic } from './OtherDetailStatistic/OtherAverageTimeDetailStatistic';
 import { DetailButton } from './DetailButton';
+import { formatCompletionTime } from './utils';
 
 export const AverageTimeDashboardPanel: FC<
   Props<DashboardTaskAverageTimeResponse>
@@ -22,7 +23,7 @@ export const AverageTimeDashboardPanel: FC<
       <Wrapper>
         <Title>Остальные округа</Title>
         <AverageTime>
-          {String(
+          {formatCompletionTime(
             otherData.reduce(
               (acc, elem) =>
                 acc +
@@ -31,7 +32,7 @@ export const AverageTimeDashboardPanel: FC<
                   : 0),
               0,
             ) / otherData.length,
-          ).replace('.', ',')}{' '}
+          )}{' '}
           <AverageTimeDescription>мин</AverageTimeDescription>
         </AverageTime>
         <ResourceStatisticsWrapper>
@@ -49,7 +50,7 @@ export const AverageTimeDashboardPanel: FC<
     <Wrapper>
       <Title>{data.title}</Title>
       <AverageTime>
-        {Number(data.averageCompletionTime).toFixed(1).replace('.', ',')}{' '}
+        {formatCompletionTime(data.averageCompletionTime || 0)}{' '}
         <AverageTimeDescription>мин</AverageTimeDescription>
       </AverageTime>
       <ResourceStatisticsWrapper>

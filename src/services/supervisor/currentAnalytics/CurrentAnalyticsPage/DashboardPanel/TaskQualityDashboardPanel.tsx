@@ -16,7 +16,7 @@ import { OtherTaskQualityDetailStatistic } from './OtherDetailStatistic/OtherTas
 import { TaskQualityDetail } from './ResourceStatistic/TaskQualityDetail';
 import { CitySmallGrayIcon, TimerIcon } from 'ui-kit/icons';
 import { SpaceLine } from 'ui-kit/SpaceLine';
-import { getTaskQualityOtherData } from './utils';
+import { formatCompletionTime, getTaskQualityOtherData } from './utils';
 import { DetailButton } from './DetailButton';
 
 export const TaskQualityDashboardPanel: FC<
@@ -48,7 +48,7 @@ export const TaskQualityDashboardPanel: FC<
           <TaskQualityAnalyticsTitle>
             <TimerIcon /> Среднее время на закрытие
           </TaskQualityAnalyticsTitle>
-          {averageCompletionTime} мин
+          {formatCompletionTime(averageCompletionTime)} мин
         </TaskQualityAnalyticsWrapper>
 
         <SpaceLine noPadding noTop />
@@ -81,7 +81,7 @@ export const TaskQualityDashboardPanel: FC<
         <TaskQualityAnalyticsTitle>
           <TimerIcon /> Среднее время на закрытие
         </TaskQualityAnalyticsTitle>
-        {Number(data.averageCompletionTime).toFixed(1).replace('.', ',')} мин
+        {formatCompletionTime(data.averageCompletionTime)} мин
       </TaskQualityAnalyticsWrapper>
       <SpaceLine noPadding noTop />
       <ResourceStatisticsWrapper>

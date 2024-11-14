@@ -9,6 +9,7 @@ import { Props } from './ResourceStatistic.types';
 import { DashboardTaskAverageTimeDetailsModel } from 'api/types';
 import { AnalyticsDetail } from './AnalyticsDetail';
 import { MalfunctionIcon } from './MalfunctionIcon';
+import { formatCompletionTime } from '../utils';
 
 export const TaskAverageTimeDetail: FC<
   Props<DashboardTaskAverageTimeDetailsModel>
@@ -25,7 +26,7 @@ export const TaskAverageTimeDetail: FC<
           )}
         </div>
         <NotClosedTaskCount isPositive={false}>
-          {Number(data.averageCompletionTime).toFixed(1).replace('.', ',')}
+          {formatCompletionTime(data.averageCompletionTime || 0)}
         </NotClosedTaskCount>{' '}
       </Title>
 
