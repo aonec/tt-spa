@@ -1,4 +1,4 @@
-import { FC, useMemo } from 'react';
+import { FC } from 'react';
 import { Wrapper } from './AnalyticsSearch.styled';
 import { Props } from './AnalyticsSearch.types';
 import { RangePicker } from 'ui-kit/RangePicker';
@@ -7,20 +7,13 @@ import { StyledMenuButton } from 'ui-kit/ContextMenuButton/ContextMenuButton.sty
 import { ResetIcon } from 'ui-kit/icons';
 import { Tooltip } from 'antd';
 import { AddressTreeSelect } from 'ui-kit/shared/AddressTreeSelect';
-import { getTreeDataOfManagementFirms } from './AnalyticsSearch.utils';
 import dayjs from 'dayjs';
 
 export const AnalyticsSearch: FC<Props> = ({
-  managementFirms,
   dashboardFilters,
   setDashboardFilters,
   resetDashboardFilters,
 }) => {
-  const treeData = useMemo(
-    () => getTreeDataOfManagementFirms(managementFirms),
-    [managementFirms],
-  );
-
   return (
     <Wrapper>
       <RangePicker
@@ -42,23 +35,17 @@ export const AnalyticsSearch: FC<Props> = ({
       <Select
         placeholder="УК"
         small
-        value={dashboardFilters.addressHousingManagementId}
-        onChange={(value) =>
-          setDashboardFilters({ addressHousingManagementId: value as any })
-        }
+        // value={dashboardFilters.addressHousingManagementId}
+        // onChange={(value) =>
+        //   setDashboardFilters({ addressHousingManagementId: value as any })
+        // }
         allowClear
-      >
-        {managementFirms?.map((elem) => (
-          <Select.Option key={elem.id} value={elem.id}>
-            {elem.name}
-          </Select.Option>
-        ))}
-      </Select>
+      ></Select>
       <AddressTreeSelect
         small
         placeholder="Адрес"
         selectedHousingStockIds={dashboardFilters.BuildingIds || []}
-        treeData={treeData}
+        treeData={[]}
         onChange={(values) => {
           setDashboardFilters({ BuildingIds: values });
         }}

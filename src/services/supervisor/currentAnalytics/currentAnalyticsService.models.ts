@@ -7,7 +7,6 @@ import {
   dashboardResourceDisconnectionQuery,
   dashboardServiceQualityQuery,
   dashboardSummaryQuery,
-  managementFirmsWithBuildingsQuery,
 } from './currentAnalyticsService.api';
 import {
   DashboardDataType,
@@ -27,23 +26,23 @@ const $dashboardFilters = createStore<DashboardQueryParams>({})
   .on(setDashboardFilters, (prev, data) => ({ ...prev, ...data }))
   .reset(resetDashboardFilters);
 
-sample({
-  source: $dashboardFilters,
-  clock: CurrentAnalyticsGate.open,
-  target: [dashboardSummaryQuery.start],
-});
-
-sample({
-  source: {},
-  clock: CurrentAnalyticsGate.open,
-  target: managementFirmsWithBuildingsQuery.start,
-});
+// sample({
+//   source: {},
+//   clock: CurrentAnalyticsGate.open,
+//   target: managementFirmsWithBuildingsQuery.start,
+// });
 
 const $dashboardParams = combine(
   $dashboardFilters,
   $currentDashboardType,
   (params, dashboardType) => ({ ...params, dashboardType }),
 );
+
+sample({
+  source: $dashboardParams,
+  clock: [CurrentAnalyticsGate.open, $dashboardParams.updates],
+  target: [dashboardSummaryQuery.start],
+});
 
 split({
   source: $dashboardParams,

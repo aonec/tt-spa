@@ -13,13 +13,12 @@ import {
 import { DashboardDataType } from '../currentAnalyticsService.types';
 import { AverageTimeDashboardPanel } from './DashboardPanel/AverageTimeDashboardPanel';
 import { TaskQualityDashboardPanel } from './DashboardPanel/TaskQualityDashboardPanel';
-import { GoBackPure } from 'ui-kit/shared/GoBack/GoBack';
 import { Empty } from 'antd';
+import { BreadCrumbs } from './BreadCrumbs';
 
 export const CurrentAnalyticsPage: FC<Props> = ({
   isLoading,
   isLoadingPanels,
-  managementFirms,
   dashboardSummary,
   currentDashboardType,
   setCurrentDashboardType,
@@ -154,7 +153,6 @@ export const CurrentAnalyticsPage: FC<Props> = ({
     <Wrapper>
       <PageHeader title="Текущая ситуация" contextMenu={{}} />
       <AnalyticsSearch
-        managementFirms={managementFirms}
         dashboardFilters={dashboardFilters}
         setDashboardFilters={setDashboardFilters}
         resetDashboardFilters={resetDashboardFilters}
@@ -164,12 +162,11 @@ export const CurrentAnalyticsPage: FC<Props> = ({
         currentDashboardType={currentDashboardType}
         setCurrentDashboardType={setCurrentDashboardType}
       />
+      <BreadCrumbs
+        setDashboardFilters={setDashboardFilters}
+        dashboardSummary={dashboardSummary}
+      />
       <WithLoader isLoading={isLoading || isLoadingPanels}>
-        {dashboardFilters.ManagementFirmId && (
-          <GoBackPure
-            onClick={() => setDashboardFilters({ ManagementFirmId: null })}
-          />
-        )}
         {isEmpty && <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />}
         <DashboardPanelWrapper>
           {Dashboard && <Dashboard />}

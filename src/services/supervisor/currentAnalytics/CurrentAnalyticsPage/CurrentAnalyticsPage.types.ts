@@ -4,7 +4,6 @@ import {
   DashboardTaskMalfunctionResponse,
   DashboardTaskQualityResponse,
   DashboardTaskResourceResponse,
-  HouseManagementWithStreetsResponse,
 } from 'api/types';
 import {
   DashboardDataType,
@@ -15,7 +14,6 @@ export type Props = {
   isLoading: boolean;
   dashboardSummary: DashboardSummaryResponse | null;
   currentDashboardType: DashboardDataType;
-  managementFirms: HouseManagementWithStreetsResponse[] | null;
   setCurrentDashboardType: (payload: DashboardDataType) => void;
   dashboardPiperuptersList: DashboardTaskResourceResponse[] | null;
   dashboardResourceDisconnection: DashboardTaskResourceResponse[] | null;

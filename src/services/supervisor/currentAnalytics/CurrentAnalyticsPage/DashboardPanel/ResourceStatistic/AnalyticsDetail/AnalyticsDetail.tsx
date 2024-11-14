@@ -17,7 +17,7 @@ export const AnalyticsDetail: FC<Props> = ({ data, hideExpired }) => {
     <Wrapper
       danger={isDanger}
       onClick={() => {
-        if (filters.ManagementFirmId) {
+        if (filters.ManagementFirmId || filters.City) {
           navigate(`/tasks/list/Observing?housingStockId=${data.id}`);
 
           return;
