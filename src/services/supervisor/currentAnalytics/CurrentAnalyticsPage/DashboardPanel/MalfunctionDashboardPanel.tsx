@@ -30,7 +30,7 @@ export const MalfunctionDashboardPanel: FC<
         </RatioWrapper>
         <ResourceStatisticsWrapper>
           {otherData.map((item) => (
-            <OtherDetailStatistic item={item} />
+            <OtherDetailStatistic key={item.title} item={item} />
           ))}
         </ResourceStatisticsWrapper>
       </Wrapper>

@@ -31,7 +31,7 @@ export const TaskDashboardPanel: FC<Props<DashboardTaskResourceResponse>> = ({
         </RatioWrapper>
         <ResourceStatisticsWrapper>
           {otherData.map((item) => (
-            <OtherDetailStatistic item={item} />
+            <OtherDetailStatistic key={item.title} item={item} />
           ))}
         </ResourceStatisticsWrapper>
       </Wrapper>

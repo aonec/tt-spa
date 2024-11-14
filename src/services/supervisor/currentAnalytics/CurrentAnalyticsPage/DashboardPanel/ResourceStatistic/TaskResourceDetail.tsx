@@ -18,9 +18,7 @@ export const TaskResourceDetail: FC<
     <Wrapper>
       <Title>
         <div>
-          {data?.resourceType && (
-            <ResourceInfo resource={(data as any).resourceType as any} />
-          )}
+          {data?.resourceType && <ResourceInfo resource={data.resourceType} />}
         </div>
         <div>
           <NotClosedTaskCount isPositive={data.expiredTasksCount! > 0}>
