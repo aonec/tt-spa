@@ -19,15 +19,15 @@ export const DetailButton: FC<Props> = ({ value, children }) => {
     return !summary?.breadCrumbs?.city && !summary?.breadCrumbs?.managingFirmId;
   }, [summary?.breadCrumbs?.city, summary?.breadCrumbs?.managingFirmId]);
 
-  if (!isShow || !value) return null;
-
   if (children) {
     return (
-      <Wrapper onClick={() => setDashboardFilters({ City: value })}>
+      <Wrapper onClick={() => isShow && setDashboardFilters({ City: value })}>
         {children}
       </Wrapper>
     );
   }
+
+  if (!isShow || !value) return null;
 
   return (
     <LinkButtonWrapper>

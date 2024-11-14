@@ -8,12 +8,18 @@ import { ResetIcon } from 'ui-kit/icons';
 import { Tooltip } from 'antd';
 import { AddressTreeSelect } from 'ui-kit/shared/AddressTreeSelect';
 import dayjs from 'dayjs';
+import { useUnit } from 'effector-react';
+import { addressSearchService } from 'services/addressSearchService/addressSearchService.models';
 
 export const AnalyticsSearch: FC<Props> = ({
   dashboardFilters,
   setDashboardFilters,
   resetDashboardFilters,
 }) => {
+  const { existingCities } = useUnit({
+    existingCities: addressSearchService.outputs.$existingCities,
+  });
+
   return (
     <Wrapper>
       <RangePicker
@@ -35,7 +41,19 @@ export const AnalyticsSearch: FC<Props> = ({
         }}
         disabledDate={(date) => date.isAfter(dayjs())}
       />
-      <Select placeholder="Город" small />
+      <Select
+        placeholder="Город"
+        small
+        value={dashboardFilters.City}
+        allowClear
+        onChange={(city) => setDashboardFilters({ City: city as string })}
+      >
+        {existingCities?.map((city) => (
+          <Select.Option key={city} value={city}>
+            {city}
+          </Select.Option>
+        ))}
+      </Select>
       <Select placeholder="УК" small allowClear></Select>
       <AddressTreeSelect
         small
