@@ -205,6 +205,8 @@ export const accountingNodesReadingsInputService = {
     removeReading,
     openConfirmReadingModal:
       confirmReadingService.inputs.openConfirmReadingModal,
+    closeConfirmReadingModal:
+      confirmReadingService.inputs.closeConfirmReadingModal,
   },
   outputs: {
     $readings,

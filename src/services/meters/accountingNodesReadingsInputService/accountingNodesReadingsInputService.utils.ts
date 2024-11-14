@@ -58,3 +58,36 @@ export const getELectricNodeInputStatuses = (
     (acc, elem) => ({ ...acc, [elem]: status }),
     {} as NodeReadingsStatuses,
   );
+
+export function getLastReading(
+  date: string,
+  readings: HousingMeteringDeviceReadingsIncludingPlacementResponse[],
+): HousingMeteringDeviceReadingsIncludingPlacementResponse | null {
+  const targetDate = new Date(date).getTime();
+
+  const validReadings = readings.filter(
+    (reading) =>
+      !reading.isArchived &&
+      !reading.isRemoved &&
+      new Date(reading.readingDate).getTime() < targetDate,
+  );
+
+  if (validReadings.length === 0) return null;
+
+  // Найти запись с минимальной разницей по времени
+  let closestReading = validReadings[0];
+  let minTimeDifference =
+    targetDate - new Date(closestReading.readingDate).getTime();
+
+  for (const reading of validReadings) {
+    const readingTime = new Date(reading.readingDate).getTime();
+    const timeDifference = targetDate - readingTime;
+
+    if (timeDifference < minTimeDifference) {
+      closestReading = reading;
+      minTimeDifference = timeDifference;
+    }
+  }
+
+  return closestReading;
+}
