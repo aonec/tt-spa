@@ -40,7 +40,11 @@ export const MalfunctionDetail: FC<
       />
       <AnalyticsDetailWrapper>
         {data.items?.map((item) => (
-          <AnalyticsDetail data={item} malfunctionType={data.malfunctionType} />
+          <AnalyticsDetail
+            key={item.id}
+            data={item}
+            malfunctionType={data.malfunctionType}
+          />
         ))}
       </AnalyticsDetailWrapper>
     </Wrapper>

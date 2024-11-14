@@ -37,7 +37,11 @@ export const TaskResourceDetail: FC<
       />
       <AnalyticsDetailWrapper>
         {data.items?.map((item) => (
-          <AnalyticsDetail data={item} resourceType={data?.resourceType} />
+          <AnalyticsDetail
+            key={item.id}
+            data={item}
+            resourceType={data?.resourceType}
+          />
         ))}
       </AnalyticsDetailWrapper>
     </Wrapper>

@@ -33,6 +33,7 @@ export const TaskAverageTimeDetail: FC<
       <AnalyticsDetailWrapper>
         {data.items?.map((item) => (
           <AnalyticsDetail
+            key={item.id}
             hideExpired
             data={item}
             malfunctionType={data.malfunctionType}
