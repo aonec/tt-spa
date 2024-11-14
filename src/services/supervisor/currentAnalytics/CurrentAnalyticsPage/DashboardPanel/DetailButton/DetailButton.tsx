@@ -5,10 +5,11 @@ import { currentAnalyticsService } from 'services/supervisor/currentAnalytics/cu
 import { dashboardSummaryQuery } from 'services/supervisor/currentAnalytics/currentAnalyticsService.api';
 import { LinkButtonWrapper } from '../DashboardPanel.styled';
 import { LinkButton } from 'ui-kit/shared/LinkButton';
+import { Wrapper } from './DetailButton.styled';
 
 const { inputs } = currentAnalyticsService;
 
-export const DetailButton: FC<Props> = ({ value }) => {
+export const DetailButton: FC<Props> = ({ value, children }) => {
   const { setDashboardFilters, summary } = useUnit({
     setDashboardFilters: inputs.setDashboardFilters,
     summary: dashboardSummaryQuery.$data,
@@ -19,6 +20,14 @@ export const DetailButton: FC<Props> = ({ value }) => {
   }, [summary?.breadCrumbs?.city, summary?.breadCrumbs?.managingFirmId]);
 
   if (!isShow || !value) return null;
+
+  if (children) {
+    return (
+      <Wrapper onClick={() => setDashboardFilters({ City: value })}>
+        {children}
+      </Wrapper>
+    );
+  }
 
   return (
     <LinkButtonWrapper>

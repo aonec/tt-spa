@@ -1,18 +1,15 @@
 import { FC } from 'react';
-import {
-  NotClosedTaskCount,
-  Title,
-  Wrapper,
-} from './OtherDetailStatistic.styled';
+import { NotClosedTaskCount, Title } from './OtherDetailStatistic.styled';
 import { Props } from './OtherDetailStatistic.types';
 import { DashboardTaskResourceResponse } from 'api/types';
 import { ProgressSC } from '../ResourceStatistic/ResourceStatistic.styled';
+import { DetailButton } from '../DetailButton';
 
 export const OtherDetailStatistic: FC<Props<DashboardTaskResourceResponse>> = ({
   item,
 }) => {
   return (
-    <Wrapper>
+    <DetailButton value={item.title}>
       <Title>
         {item.title}
         <div>
@@ -28,6 +25,6 @@ export const OtherDetailStatistic: FC<Props<DashboardTaskResourceResponse>> = ({
         strokeColor={'#272F5A'}
         size={['100%', 3]}
       />
-    </Wrapper>
+    </DetailButton>
   );
 };

@@ -1,14 +1,15 @@
 import { FC } from 'react';
-import { Title, Wrapper } from './OtherDetailStatistic.styled';
+import { Title } from './OtherDetailStatistic.styled';
 import { Props } from './OtherDetailStatistic.types';
 import { DashboardTaskQualityResponse } from 'api/types';
 import { ProgressSC } from '../ResourceStatistic/ResourceStatistic.styled';
+import { DetailButton } from '../DetailButton';
 
 export const OtherTaskQualityDetailStatistic: FC<
   Props<DashboardTaskQualityResponse>
 > = ({ item }) => {
   return (
-    <Wrapper>
+    <DetailButton value={item.title}>
       <Title>
         {item.title}
         <div>
@@ -21,6 +22,6 @@ export const OtherTaskQualityDetailStatistic: FC<
         strokeColor={'#272F5A'}
         size={['100%', 3]}
       />
-    </Wrapper>
+    </DetailButton>
   );
 };
