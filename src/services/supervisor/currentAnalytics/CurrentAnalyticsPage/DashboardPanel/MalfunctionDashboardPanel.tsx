@@ -1,7 +1,6 @@
 import { FC } from 'react';
 import {
   DangerWrapper,
-  LinkButtonWrapper,
   RatioWrapper,
   ResourceStatisticsWrapper,
   Title,
@@ -9,7 +8,6 @@ import {
 } from './DashboardPanel.styled';
 import { Props } from './DashboardPanel.types';
 import { MalfunctionDetail } from './ResourceStatistic';
-import { LinkButton } from 'ui-kit/shared/LinkButton';
 import { getRatioOfTasksCountByOthers } from './DashboardPanel.utils';
 import { OtherDetailStatistic } from './OtherDetailStatistic';
 import { DashboardTaskMalfunctionResponse } from 'api/types';
@@ -35,9 +33,6 @@ export const MalfunctionDashboardPanel: FC<
             <OtherDetailStatistic item={item} />
           ))}
         </ResourceStatisticsWrapper>
-        <LinkButtonWrapper>
-          <LinkButton onClick={() => void 0}>Показать больше</LinkButton>
-        </LinkButtonWrapper>
       </Wrapper>
     );
   }
