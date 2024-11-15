@@ -3,6 +3,7 @@ import { Wrapper } from './AnalyticsSearch.styled';
 import { EDateRange, Props } from './AnalyticsSearch.types';
 import { RangePicker } from 'ui-kit/RangePicker';
 import { Select } from 'ui-kit/Select';
+
 import { StyledMenuButton } from 'ui-kit/ContextMenuButton/ContextMenuButton.styled';
 import { ResetIcon } from 'ui-kit/icons';
 import { Tooltip } from 'antd';
