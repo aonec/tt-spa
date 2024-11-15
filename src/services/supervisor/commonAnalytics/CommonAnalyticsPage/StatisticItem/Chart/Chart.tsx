@@ -16,8 +16,8 @@ export const Chart: FC<Props> = ({ chart }) => {
     <VictoryChart
       domainPadding={{ x: 40 }}
       theme={VictoryTheme.material}
-      width={500}
-      height={200}
+      width={600}
+      height={300}
       style={{
         parent: {
           overflow: 'visible',

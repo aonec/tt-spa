@@ -18,7 +18,6 @@ export const Count = styled.div`
   font-weight: 600;
   font-size: 30px;
   display: flex;
-  /* align-items: end; */
 `;
 
 export const Dictrict = styled.div`
@@ -42,9 +41,8 @@ export const Percentage = styled.div<{ isPositive: boolean }>`
 export const StatisticsWrapper = styled.div`
   display: grid;
   grid-template-columns: 2fr 1fr;
-  grid-gap: 6px;
   align-items: center;
-  min-height: 200px;
+  margin-top: -36px;
 `;
 
 export const Resource = styled.div`

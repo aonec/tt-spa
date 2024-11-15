@@ -2,7 +2,6 @@ import { FC } from 'react';
 import {
   Count,
   Dictrict,
-  More,
   Resource,
   StatisticsWrapper,
   TitleWrapper,
@@ -40,8 +39,6 @@ export const EmptyStatisticItem: FC<Props> = ({ isLoading }) => {
           </Resource>
         )}
       </StatisticsWrapper>
-
-      <More>Подробнее</More>
     </Wrapper>
   );
 };

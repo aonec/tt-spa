@@ -2,7 +2,6 @@ import { FC, useMemo } from 'react';
 import {
   Count,
   Dictrict,
-  More,
   Percentage,
   Resource,
   StatisticsWrapper,
@@ -65,8 +64,6 @@ export const StatisticItem: FC<Props> = ({
           ))}
         </Resource>
       </StatisticsWrapper>
-
-      <More>Подробнее</More>
     </Wrapper>
   );
 };
