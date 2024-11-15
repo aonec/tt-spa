@@ -12,9 +12,12 @@ export const horizontalAxisStyle = {
 };
 
 export const verticalAxisStyle = {
-  parent: { width: '100%' },
   axis: { stroke: 'none' },
   ticks: { stroke: 'none' },
-  tickLabels: { fill: 'var(--main-70)' },
+  tickLabels: {
+    fill: 'var(--main-70)',
+    fontSize: 8,
+    borderBottom: '1px solid black',
+  },
   grid: { stroke: 'var(--frame)', strokeDasharray: '0' },
 };

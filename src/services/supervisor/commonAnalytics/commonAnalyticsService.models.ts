@@ -26,8 +26,8 @@ const $currentDashboardType = createStore<DashboardDataType>(
 ).on(setCurrentDashboardType, (_, type) => type);
 
 const $dashboardFilters = createStore<DashboardQueryParams>({
-  From: dayjs().subtract(1, 'week').format(),
-  To: dayjs().format(),
+  From: dayjs().subtract(1, 'week').startOf('day').utc(true).toISOString(),
+  To: dayjs().endOf('day').utc(true).toISOString(),
 })
   .on(setDashboardFilters, (prev, data) => ({
     ...prev,
@@ -36,25 +36,17 @@ const $dashboardFilters = createStore<DashboardQueryParams>({
   }))
   .reset(resetDashboardFilters);
 
+sample({ clock: CommonAnalyticsGate.close, target: resetDashboardFilters });
+
 sample({
   source: $dashboardFilters,
   clock: CommonAnalyticsGate.open,
   target: [commonSummaryQuery.start],
 });
 
-// sample({
-//   source: $dashboardFilters,
-//   clock: CommonAnalyticsGate.open,
-//   target: [dashboardPiperuptersQuery.start],
-// });
-
 sample({
   source: $dashboardFilters,
   target: [commonSummaryQuery.start],
-});
-
-$dashboardFilters.watch((data) => {
-  console.log(data);
 });
 
 const $dashboardParams = combine(

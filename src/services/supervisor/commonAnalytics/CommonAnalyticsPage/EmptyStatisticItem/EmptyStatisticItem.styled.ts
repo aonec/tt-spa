@@ -41,7 +41,12 @@ export const StatisticsWrapper = styled.div`
 `;
 
 export const Resource = styled.div`
-  border: 1px solid rgba(220, 222, 228, 1);
+  background: #00000005;
+  border-radius: 12px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
 `;
 
 export const More = styled.div`

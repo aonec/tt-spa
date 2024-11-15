@@ -13,7 +13,7 @@ import { formatCompletionTime } from '../utils';
 
 export const TaskAverageTimeDetail: FC<
   Props<DashboardTaskAverageTimeDetailsModel>
-> = ({ data }) => {
+> = ({ data, title }) => {
   return (
     <Wrapper>
       <Title>
@@ -36,6 +36,7 @@ export const TaskAverageTimeDetail: FC<
             key={item.id}
             hideExpired
             data={item}
+            title={title}
             malfunctionType={data.malfunctionType}
           />
         ))}

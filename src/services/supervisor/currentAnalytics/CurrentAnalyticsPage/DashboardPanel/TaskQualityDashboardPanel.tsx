@@ -86,7 +86,7 @@ export const TaskQualityDashboardPanel: FC<
       <SpaceLine noPadding noTop />
       <ResourceStatisticsWrapper>
         {data.details?.map((detail) => (
-          <TaskQualityDetail data={detail} />
+          <TaskQualityDetail data={detail} title={data.title} />
         ))}
       </ResourceStatisticsWrapper>
       <DetailButton value={data.title} />

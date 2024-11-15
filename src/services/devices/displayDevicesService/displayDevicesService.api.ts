@@ -3,6 +3,7 @@ import {
   NodesPagedList,
   EMeteringDeviceType,
   EOrderByRule,
+  ENodeType,
 } from 'api/types';
 import { axios } from 'api/axios';
 import { GetHousingByFilterRequestPayload } from '../devicesPageService/individualDevicesProfileService/view/IndividualDevicesProfile/individualDevicesViewByAddressService/individualDevicesViewByAddressService.types';
@@ -18,7 +19,7 @@ export const getNodesListQuery = createQuery({
       await axios.get('Nodes', {
         params,
         paramsSerializer: (params) => {
-          return queryString.stringify(params);
+          return queryString.stringify({ ...params, Type: ENodeType.PipeNode });
         },
       }),
   ),

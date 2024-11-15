@@ -11,6 +11,7 @@ export const AnalyticsDetail: FC<Props> = ({
   malfunctionType,
   deviationType,
   resourceType,
+  title,
 }) => {
   const isDanger = data.expiredTasksCount !== 0;
   const { setFilters, filters } = useUnit({
@@ -30,6 +31,7 @@ export const AnalyticsDetail: FC<Props> = ({
         }
 
         setFilters({
+          City: title,
           ManagementFirmId: data.id,
           DeviationType: deviationType,
           MalfunctionType: malfunctionType,

@@ -14,10 +14,10 @@ export const TitleWrapper = styled.div`
 `;
 
 export const Count = styled.div`
-  display: flex;
   gap: 8px;
   font-weight: 600;
   font-size: 30px;
+  display: flex;
 `;
 
 export const Dictrict = styled.div`
@@ -25,19 +25,24 @@ export const Dictrict = styled.div`
   font-weight: 500;
 `;
 
-export const Percentage = styled.div`
-  margin-top: 6px;
+export const Percentage = styled.div<{ isPositive: boolean }>`
+  width: max-content;
   font-size: 12px;
-  color: rgba(252, 82, 91, 1);
   font-weight: 500;
+  transform: translateY(2px);
+  padding: 1px 4px;
+  border-radius: 4px;
+  background-color: ${({ isPositive }) =>
+    isPositive ? '#17b45b23' : '#fc525a21'};
+
+  color: ${({ isPositive }) => (isPositive ? '#17B45A' : '#FC525B')};
 `;
 
 export const StatisticsWrapper = styled.div`
   display: grid;
   grid-template-columns: 2fr 1fr;
-  grid-gap: 6px;
   align-items: center;
-  min-height: 200px;
+  margin-top: -36px;
 `;
 
 export const Resource = styled.div`

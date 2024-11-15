@@ -16,6 +16,7 @@ export const CommonAnalyticsPage: FC<Props> = ({
   dashboardSummary,
   setCurrentDashboardType,
   isLoading,
+  isLoadingSummary,
   analyticsData,
 }) => {
   const isEmpty = useMemo(
@@ -40,7 +41,7 @@ export const CommonAnalyticsPage: FC<Props> = ({
         dashboardSummary={dashboardSummary}
         currentDashboardType={currentDashboardType}
         setCurrentDashboardType={setCurrentDashboardType}
-        isLoading={isLoading}
+        isLoading={isLoadingSummary}
       />
       {isEmpty && <EmptyStatisticItem isLoading={isLoading} />}
       {!isLoading &&

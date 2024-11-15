@@ -2,7 +2,6 @@ import { FC, useMemo } from 'react';
 import {
   Count,
   Dictrict,
-  More,
   Percentage,
   Resource,
   StatisticsWrapper,
@@ -24,7 +23,7 @@ export const StatisticItem: FC<Props> = ({
   const { chart, details, title, totalTasksCount, totalTasksPercentage } = data;
 
   const preparedChart = useMemo(() => {
-    return chart && prepareChartData(chart, selectValue);
+    return chart ? prepareChartData(chart, selectValue) : [];
   }, [selectValue, chart]);
 
   const DetailComponent = useMemo(() => {
@@ -41,13 +40,20 @@ export const StatisticItem: FC<Props> = ({
     return components[currentDashboardType];
   }, [currentDashboardType]);
 
+  const isPositive = (totalTasksPercentage || 0) > 0;
+
   return (
     <Wrapper>
       <TitleWrapper>
         <Dictrict>{title}</Dictrict>
         <Count>
-          {totalTasksCount}
-          <Percentage>{totalTasksPercentage}%</Percentage>
+          {totalTasksCount}{' '}
+          {Boolean(totalTasksPercentage) && (
+            <Percentage isPositive={isPositive}>
+              {isPositive && '+'}
+              {totalTasksPercentage}%
+            </Percentage>
+          )}
         </Count>
       </TitleWrapper>
       <StatisticsWrapper>
@@ -58,8 +64,6 @@ export const StatisticItem: FC<Props> = ({
           ))}
         </Resource>
       </StatisticsWrapper>
-
-      <More>Подробнее</More>
     </Wrapper>
   );
 };

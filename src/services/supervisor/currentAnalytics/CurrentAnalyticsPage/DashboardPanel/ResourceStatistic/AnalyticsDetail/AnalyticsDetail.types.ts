@@ -11,4 +11,5 @@ export type Props = {
   resourceType?: ResourceType;
   malfunctionType?: ManagingFirmTaskType;
   deviationType?: ETemperatureNormativeDeviationType;
+  title?: string | null;
 };

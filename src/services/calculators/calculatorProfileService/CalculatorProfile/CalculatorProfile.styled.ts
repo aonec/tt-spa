@@ -1,7 +1,12 @@
 import { PageHeader } from 'ui-kit/shared/PageHeader';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import { CalculatorIcon } from 'ui-kit/icons';
+import {
+  CalculatorIcon,
+  CheckConnection,
+  NoConnectionIcon,
+  WarningIcon,
+} from 'ui-kit/icons';
 import { Tabs } from 'ui-kit/Tabs';
 
 export const HeaderTitleWrapper = styled.div`
@@ -43,6 +48,24 @@ export const CalculatorIconSC = styled(CalculatorIcon)`
   width: 24px;
   height: 16px;
   margin-right: 8px;
+`;
+
+export const NoConnectionIconSC = styled(NoConnectionIcon)`
+  width: 22px;
+  height: 22px;
+  margin-left: 8px;
+`;
+
+export const CheckConnectionSС = styled(CheckConnection)`
+  width: 22px;
+  height: 22px;
+  margin-left: 8px;
+`;
+
+export const WarningIconSС = styled(WarningIcon)`
+  width: 22px;
+  height: 22px;
+  margin-left: 8px;
 `;
 
 export const PanelsWrapper = styled.div`
