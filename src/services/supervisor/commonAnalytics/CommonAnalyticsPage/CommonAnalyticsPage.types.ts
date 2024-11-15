@@ -1,7 +1,6 @@
 import {
   DashboardSummaryResponse,
   DashboardTaskResourceResponse,
-  HouseManagementWithStreetsResponse,
 } from 'api/types';
 import {
   DashboardDataType,
@@ -11,7 +10,6 @@ import {
 export type Props = {
   setDashboardFilters: (payload: DashboardQueryParams) => void;
   dashboardFilters: DashboardQueryParams;
-  managementFirms: HouseManagementWithStreetsResponse[] | null;
   resetDashboardFilters: () => void;
   dashboardSummary: DashboardSummaryResponse | null;
   currentDashboardType: DashboardDataType;

@@ -23,28 +23,23 @@ export const useMenuItems = (): MenuItem[] => {
 
   return [
     {
-      title: 'Аналитика',
-      path: '/supervisor/currentAnalytics',
-      type: MenuType.SupervisorAnalytics,
+      title: 'Текущая ситуация',
+      path: `/supervisor/currentAnalytics`,
       icon: StatisticIcon,
-      sub: [
-        {
-          title: 'Текущая ситуация',
-          path: `/supervisor/currentAnalytics`,
-          type: MenuType.MetersApartments,
-        },
-        {
-          title: 'Общая аналитика',
-          path: `/supervisor/commonAnalytics`,
-          type: MenuType.MetersApartments,
-        },
-        {
-          title: 'Потребление ресурсов',
-          path: `/supervisor/consumption`,
-          type: MenuType.MetersApartments,
-        },
-      ],
+      type: MenuType.SupervisorAnalytics,
     },
+    // {
+    //   title: 'Общая аналитика',
+    //   path: `/supervisor/commonAnalytics`,
+    //   icon: StatisticIcon,
+    //   type: MenuType.SupervisorAnalytics,
+    // },
+    // {
+    //   title: 'Потребление ресурсов',
+    //   path: `/supervisor/consumption`,
+    //   icon: StatisticIcon,
+    //   type: MenuType.SupervisorAnalytics,
+    // },
     {
       title: 'Задачи',
       path: '/tasks',

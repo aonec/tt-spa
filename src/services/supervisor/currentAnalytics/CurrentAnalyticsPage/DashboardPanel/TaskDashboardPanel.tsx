@@ -1,7 +1,6 @@
 import { FC } from 'react';
 import {
   DangerWrapper,
-  LinkButtonWrapper,
   RatioWrapper,
   ResourceStatisticsWrapper,
   Title,
@@ -9,10 +8,10 @@ import {
 } from './DashboardPanel.styled';
 import { Props } from './DashboardPanel.types';
 import { TaskResourceDetail } from './ResourceStatistic';
-import { LinkButton } from 'ui-kit/shared/LinkButton';
 import { getRatioOfTasksCountByOthers } from './DashboardPanel.utils';
 import { OtherDetailStatistic } from './OtherDetailStatistic';
 import { DashboardTaskResourceResponse } from 'api/types';
+import { DetailButton } from './DetailButton';
 
 export const TaskDashboardPanel: FC<Props<DashboardTaskResourceResponse>> = ({
   data,
@@ -32,12 +31,9 @@ export const TaskDashboardPanel: FC<Props<DashboardTaskResourceResponse>> = ({
         </RatioWrapper>
         <ResourceStatisticsWrapper>
           {otherData.map((item) => (
-            <OtherDetailStatistic item={item} />
+            <OtherDetailStatistic key={item.title} item={item} />
           ))}
         </ResourceStatisticsWrapper>
-        <LinkButtonWrapper>
-          <LinkButton onClick={() => void 0}>Показать больше</LinkButton>
-        </LinkButtonWrapper>
       </Wrapper>
     );
   }
@@ -58,9 +54,7 @@ export const TaskDashboardPanel: FC<Props<DashboardTaskResourceResponse>> = ({
           <TaskResourceDetail data={detail} />
         ))}
       </ResourceStatisticsWrapper>
-      <LinkButtonWrapper>
-        <LinkButton onClick={() => void 0}>Подробнее</LinkButton>
-      </LinkButtonWrapper>
+      <DetailButton value={data.title} />
     </Wrapper>
   );
 };

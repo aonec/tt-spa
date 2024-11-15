@@ -4,8 +4,6 @@ import { Props } from './CommonAnalyticsPage.types';
 import { PageHeader } from 'ui-kit/shared/PageHeader';
 import { AnalyticsSearch } from 'services/supervisor/currentAnalytics/CurrentAnalyticsPage/AnalyticsSearch';
 import { InfoOptionsPanels } from 'services/supervisor/currentAnalytics/CurrentAnalyticsPage/InfoOptionsPanels';
-import { WithLoader } from 'ui-kit/shared/WithLoader';
-import { GoBackPure } from 'ui-kit/shared/GoBack/GoBack';
 import { StatisticItem } from './StatisticItem';
 import { EmptyStatisticItem } from './EmptyStatisticItem';
 import { EDateRange } from 'services/supervisor/currentAnalytics/CurrentAnalyticsPage/AnalyticsSearch/AnalyticsSearch.types';
@@ -13,7 +11,6 @@ import { EDateRange } from 'services/supervisor/currentAnalytics/CurrentAnalytic
 export const CommonAnalyticsPage: FC<Props> = ({
   dashboardFilters,
   setDashboardFilters,
-  managementFirms,
   resetDashboardFilters,
   currentDashboardType,
   dashboardSummary,
@@ -33,7 +30,6 @@ export const CommonAnalyticsPage: FC<Props> = ({
       <PageHeader title="Общая аналитика" contextMenu={{}} />
       <AnalyticsSearch
         isCommon
-        managementFirms={managementFirms}
         dashboardFilters={dashboardFilters}
         setDashboardFilters={setDashboardFilters}
         resetDashboardFilters={resetDashboardFilters}
@@ -44,6 +40,7 @@ export const CommonAnalyticsPage: FC<Props> = ({
         dashboardSummary={dashboardSummary}
         currentDashboardType={currentDashboardType}
         setCurrentDashboardType={setCurrentDashboardType}
+        isLoading={isLoading}
       />
       {isEmpty && <EmptyStatisticItem isLoading={isLoading} />}
       {!isLoading &&

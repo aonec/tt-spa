@@ -3,11 +3,14 @@ import { UnitWrapper, Wrapper } from './InfoOptionsPanels.styled';
 import { Props } from './InfoOptionsPanels.types';
 import { OptionPanelButton } from 'ui-kit/shared/OptionPanelButton';
 import { DashboardDataType } from '../../currentAnalyticsService.types';
+import { Skeleton } from 'antd';
+import { formatCompletionTime } from '../DashboardPanel/utils';
 
 export const InfoOptionsPanels: FC<Props> = ({
   dashboardSummary,
   currentDashboardType,
   setCurrentDashboardType,
+  isLoading,
 }) => {
   const optionsList = useMemo(() => {
     const options = [
@@ -34,7 +37,7 @@ export const InfoOptionsPanels: FC<Props> = ({
       },
       {
         title: 'Качество услуг',
-        value: dashboardSummary?.dashboardTasksCount,
+        value: dashboardSummary?.dashboardServiceQualityCount,
         unit: 'задач',
         type: DashboardDataType.TasksCount,
       },
@@ -50,7 +53,7 @@ export const InfoOptionsPanels: FC<Props> = ({
     dashboardSummary?.dashboardMalfunctionsCount,
     dashboardSummary?.dashboardPipeRupturesCount,
     dashboardSummary?.dashboardResourceDisconnectsCount,
-    dashboardSummary?.dashboardTasksCount,
+    dashboardSummary?.dashboardServiceQualityCount,
   ]);
 
   return (
@@ -62,7 +65,21 @@ export const InfoOptionsPanels: FC<Props> = ({
           isActive={active}
           onClick={() => setCurrentDashboardType(type)}
         >
-          {value} <UnitWrapper>{unit}</UnitWrapper>
+          {isLoading && (
+            <Skeleton.Input
+              active
+              size="small"
+              style={{ transform: 'translateY(-6px)' }}
+            />
+          )}
+          {!isLoading && value && (
+            <>
+              {type === DashboardDataType.AverageCompletionTime
+                ? formatCompletionTime(value)
+                : value}{' '}
+              <UnitWrapper>{unit}</UnitWrapper>
+            </>
+          )}
         </OptionPanelButton>
       ))}
     </Wrapper>

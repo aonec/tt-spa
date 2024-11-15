@@ -4,8 +4,6 @@ import {
   DashboardDataType,
   DashboardQueryParams,
 } from '../currentAnalytics/currentAnalyticsService.types';
-import { managementFirmsWithBuildingsQuery } from '../currentAnalytics/currentAnalyticsService.api';
-import { CommonDashboardQueryParams } from './commonAnalyticsService.types';
 import {
   commonSummaryQuery,
   dashboardMalfunctionsQuery,
@@ -28,7 +26,11 @@ const $dashboardFilters = createStore<DashboardQueryParams>({
   From: dayjs().subtract(1, 'week').format(),
   To: dayjs().format(),
 })
-  .on(setDashboardFilters, (prev, data) => ({ ...prev, ...data, From: data.From }))
+  .on(setDashboardFilters, (prev, data) => ({
+    ...prev,
+    ...data,
+    From: data.From,
+  }))
   .reset(resetDashboardFilters);
 
 sample({
@@ -50,12 +52,6 @@ sample({
 
 $dashboardFilters.watch((data) => {
   console.log(data);
-});
-
-sample({
-  source: {},
-  clock: CommonAnalyticsGate.open,
-  target: managementFirmsWithBuildingsQuery.start,
 });
 
 const $dashboardParams = combine(

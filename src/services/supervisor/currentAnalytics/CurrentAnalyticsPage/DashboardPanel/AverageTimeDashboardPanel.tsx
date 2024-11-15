@@ -1,19 +1,19 @@
 import { FC } from 'react';
 import {
-  LinkButtonWrapper,
   ResourceStatisticsWrapper,
   Title,
   Wrapper,
 } from './DashboardPanel.styled';
 import { Props } from './DashboardPanel.types';
 import { TaskAverageTimeDetail } from './ResourceStatistic';
-import { LinkButton } from 'ui-kit/shared/LinkButton';
 import { DashboardTaskAverageTimeResponse } from 'api/types';
 import {
   AverageTime,
   AverageTimeDescription,
 } from './ResourceStatistic/ResourceStatistic.styled';
 import { OtherAverageTimeDetailStatistic } from './OtherDetailStatistic/OtherAverageTimeDetailStatistic';
+import { DetailButton } from './DetailButton';
+import { formatCompletionTime } from './utils';
 
 export const AverageTimeDashboardPanel: FC<
   Props<DashboardTaskAverageTimeResponse>
@@ -23,14 +23,16 @@ export const AverageTimeDashboardPanel: FC<
       <Wrapper>
         <Title>Остальные округа</Title>
         <AverageTime>
-          {otherData.reduce(
-            (acc, elem) =>
-              acc +
-              (elem?.averageCompletionTime
-                ? Number(elem?.averageCompletionTime)
-                : 0),
-            0,
-          ) / otherData.length}{' '}
+          {formatCompletionTime(
+            otherData.reduce(
+              (acc, elem) =>
+                acc +
+                (elem?.averageCompletionTime
+                  ? Number(elem?.averageCompletionTime)
+                  : 0),
+              0,
+            ) / otherData.length,
+          )}{' '}
           <AverageTimeDescription>мин</AverageTimeDescription>
         </AverageTime>
         <ResourceStatisticsWrapper>
@@ -38,9 +40,6 @@ export const AverageTimeDashboardPanel: FC<
             <OtherAverageTimeDetailStatistic item={item} />
           ))}
         </ResourceStatisticsWrapper>
-        <LinkButtonWrapper>
-          <LinkButton onClick={() => void 0}>Показать больше</LinkButton>
-        </LinkButtonWrapper>
       </Wrapper>
     );
   }
@@ -51,7 +50,7 @@ export const AverageTimeDashboardPanel: FC<
     <Wrapper>
       <Title>{data.title}</Title>
       <AverageTime>
-        {Number(data.averageCompletionTime).toFixed(1)}{' '}
+        {formatCompletionTime(data.averageCompletionTime || 0)}{' '}
         <AverageTimeDescription>мин</AverageTimeDescription>
       </AverageTime>
       <ResourceStatisticsWrapper>
@@ -59,9 +58,7 @@ export const AverageTimeDashboardPanel: FC<
           <TaskAverageTimeDetail data={detail} />
         ))}
       </ResourceStatisticsWrapper>
-      <LinkButtonWrapper>
-        <LinkButton onClick={() => void 0}>Подробнее</LinkButton>
-      </LinkButtonWrapper>
+      <DetailButton value={data.title} />
     </Wrapper>
   );
 };

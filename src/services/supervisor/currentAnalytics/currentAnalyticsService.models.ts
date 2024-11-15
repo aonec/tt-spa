@@ -7,12 +7,12 @@ import {
   dashboardResourceDisconnectionQuery,
   dashboardServiceQualityQuery,
   dashboardSummaryQuery,
-  managementFirmsWithBuildingsQuery,
 } from './currentAnalyticsService.api';
 import {
   DashboardDataType,
   DashboardQueryParams,
 } from './currentAnalyticsService.types';
+import dayjs from 'dayjs';
 
 const CurrentAnalyticsGate = createGate();
 const setCurrentDashboardType = createEvent<DashboardDataType>();
@@ -23,27 +23,24 @@ const $currentDashboardType = createStore<DashboardDataType>(
   DashboardDataType.PipeRupturesCount,
 ).on(setCurrentDashboardType, (_, type) => type);
 
-const $dashboardFilters = createStore<DashboardQueryParams>({})
+const $dashboardFilters = createStore<DashboardQueryParams>({
+  From: dayjs().startOf('day').utc(true).toISOString(),
+  To: dayjs().endOf('day').utc(true).toISOString(),
+})
   .on(setDashboardFilters, (prev, data) => ({ ...prev, ...data }))
   .reset(resetDashboardFilters);
-
-sample({
-  source: $dashboardFilters,
-  clock: CurrentAnalyticsGate.open,
-  target: [dashboardSummaryQuery.start],
-});
-
-sample({
-  source: {},
-  clock: CurrentAnalyticsGate.open,
-  target: managementFirmsWithBuildingsQuery.start,
-});
 
 const $dashboardParams = combine(
   $dashboardFilters,
   $currentDashboardType,
   (params, dashboardType) => ({ ...params, dashboardType }),
 );
+
+sample({
+  source: $dashboardFilters,
+  clock: [CurrentAnalyticsGate.open, $dashboardFilters.updates],
+  target: [dashboardSummaryQuery.start],
+});
 
 split({
   source: $dashboardParams,
