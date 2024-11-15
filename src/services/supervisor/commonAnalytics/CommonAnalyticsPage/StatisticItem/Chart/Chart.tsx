@@ -12,19 +12,8 @@ import {
   VictoryTheme,
   VictoryVoronoiContainer,
 } from 'victory';
-import dayjs from 'dayjs';
 
 export const Chart: FC<Props> = ({ chart }) => {
-  const chartData = chart?.map((chart) => ({
-    x: dayjs(chart.date)
-      .format('DD MMMM')
-      .replace(/(\d+)\s([а-яА-Я]{3})[а-яА-Я]*/u, '$1 $2'),
-
-    y: chart.value,
-  }));
-
-  console.log(chartData, chart);
-
   const mock = [
     { x: ' ', y: 0 },
     { x: ' ', y: 0 },
@@ -57,7 +46,7 @@ export const Chart: FC<Props> = ({ chart }) => {
       />
       <VictoryBar
         style={{ data: { fill: 'rgba(24, 158, 233, 1)' } }}
-        data={chartData || mock}
+        data={chart || mock}
       />
     </VictoryChart>
   );

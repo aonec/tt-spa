@@ -23,8 +23,8 @@ export const CommonAnalyticsContainer = () => {
     dashboardSummary,
     currentDashboardType,
     setCurrentDashboardType,
-    piperuptersStatistics,
     isLoading,
+    analyticsData,
   } = useUnit({
     setDashboardFilters: inputs.setDashboardFilters,
     dashboardFilters: outputs.$dashboardFilters,
@@ -33,8 +33,8 @@ export const CommonAnalyticsContainer = () => {
     dashboardSummary: commonSummaryQuery.$data,
     currentDashboardType: outputs.$currentDashboardType,
     setCurrentDashboardType: inputs.setCurrentDashboardType,
-    piperuptersStatistics: dashboardPiperuptersQuery.$data,
     isLoading: outputs.$isLoading,
+    analyticsData: outputs.$analyticsData,
   });
 
   return (
@@ -48,8 +48,8 @@ export const CommonAnalyticsContainer = () => {
         dashboardSummary={dashboardSummary}
         currentDashboardType={currentDashboardType}
         setCurrentDashboardType={setCurrentDashboardType}
-        piperuptersStatistics={piperuptersStatistics}
         isLoading={isLoading}
+        analyticsData={analyticsData}
       />
     </>
   );

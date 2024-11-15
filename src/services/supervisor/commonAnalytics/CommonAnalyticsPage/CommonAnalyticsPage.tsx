@@ -1,4 +1,4 @@
-import { FC, useMemo } from 'react';
+import { FC, useMemo, useState } from 'react';
 import { Wrapper } from './CommonAnalyticsPage.styled';
 import { Props } from './CommonAnalyticsPage.types';
 import { PageHeader } from 'ui-kit/shared/PageHeader';
@@ -8,6 +8,7 @@ import { WithLoader } from 'ui-kit/shared/WithLoader';
 import { GoBackPure } from 'ui-kit/shared/GoBack/GoBack';
 import { StatisticItem } from './StatisticItem';
 import { EmptyStatisticItem } from './EmptyStatisticItem';
+import { EDateRange } from 'services/supervisor/currentAnalytics/CurrentAnalyticsPage/AnalyticsSearch/AnalyticsSearch.types';
 
 export const CommonAnalyticsPage: FC<Props> = ({
   dashboardFilters,
@@ -17,13 +18,15 @@ export const CommonAnalyticsPage: FC<Props> = ({
   currentDashboardType,
   dashboardSummary,
   setCurrentDashboardType,
-  piperuptersStatistics,
   isLoading,
+  analyticsData,
 }) => {
   const isEmpty = useMemo(
-    () => !piperuptersStatistics || !piperuptersStatistics.length || isLoading,
-    [piperuptersStatistics, isLoading],
+    () => !analyticsData || !analyticsData.length || isLoading,
+    [analyticsData, isLoading],
   );
+
+  const [selectValue, setValue] = useState(EDateRange.Week);
 
   return (
     <Wrapper>
@@ -34,6 +37,8 @@ export const CommonAnalyticsPage: FC<Props> = ({
         dashboardFilters={dashboardFilters}
         setDashboardFilters={setDashboardFilters}
         resetDashboardFilters={resetDashboardFilters}
+        selectValue={selectValue}
+        setValue={setValue}
       />
       <InfoOptionsPanels
         dashboardSummary={dashboardSummary}
@@ -42,8 +47,8 @@ export const CommonAnalyticsPage: FC<Props> = ({
       />
       {isEmpty && <EmptyStatisticItem isLoading={isLoading} />}
       {!isLoading &&
-        piperuptersStatistics?.map((piperuptersStatistic) => (
-          <StatisticItem data={piperuptersStatistic} />
+        analyticsData?.map((analyticsData) => (
+          <StatisticItem data={analyticsData} selectValue={selectValue} />
         ))}
     </Wrapper>
   );

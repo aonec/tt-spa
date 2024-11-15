@@ -16,6 +16,6 @@ export type Props = {
   dashboardSummary: DashboardSummaryResponse | null;
   currentDashboardType: DashboardDataType;
   setCurrentDashboardType: (payload: DashboardDataType) => void;
-  piperuptersStatistics: DashboardTaskResourceResponse[] | null;
   isLoading: boolean;
+  analyticsData: DashboardTaskResourceResponse[] | null;
 };

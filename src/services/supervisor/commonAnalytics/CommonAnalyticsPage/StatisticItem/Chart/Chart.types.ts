@@ -1,5 +1,5 @@
-import { DashboardChartModel } from 'api/types';
+import { ChartType } from '../StatisticItem.types';
 
 export type Props = {
-  chart: DashboardChartModel[] | null;
+  chart: ChartType[] | null;
 };

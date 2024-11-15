@@ -1,4 +1,4 @@
-import { FC, useMemo } from 'react';
+import { FC, useMemo, useState } from 'react';
 import { Wrapper } from './AnalyticsSearch.styled';
 import { EDateRange, Props } from './AnalyticsSearch.types';
 import { RangePicker } from 'ui-kit/RangePicker';
@@ -16,6 +16,8 @@ export const AnalyticsSearch: FC<Props> = ({
   setDashboardFilters,
   resetDashboardFilters,
   isCommon,
+  selectValue,
+  setValue,
 }) => {
   const treeData = useMemo(
     () => getTreeDataOfManagementFirms(managementFirms),
@@ -45,18 +47,21 @@ export const AnalyticsSearch: FC<Props> = ({
         <Select
           placeholder="Выберите"
           small
+          value={selectValue}
           onChange={(value) => {
             if (value === EDateRange.Week) {
               setDashboardFilters({
                 From: dayjs().subtract(1, 'week').startOf('day').toISOString(),
                 To: dayjs().startOf('day').toISOString(),
               });
+              setValue && setValue(value);
             }
             if (value === EDateRange.Month) {
               setDashboardFilters({
                 From: dayjs().subtract(1, 'month').startOf('day').toISOString(),
                 To: dayjs().startOf('day').toISOString(),
               });
+              setValue && setValue(value);
             }
             if (value === EDateRange.Quarter) {
               setDashboardFilters({
@@ -66,6 +71,7 @@ export const AnalyticsSearch: FC<Props> = ({
                   .toISOString(),
                 To: dayjs().startOf('day').toISOString(),
               });
+              setValue && setValue(value);
             }
           }}
         >

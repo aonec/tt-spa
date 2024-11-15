@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, useMemo } from 'react';
 import {
   Count,
   Dictrict,
@@ -11,8 +11,10 @@ import {
 } from './StatisticItem.styled';
 import { Props } from './StatisticItem.types';
 import { Chart } from './Chart';
+import { EDateRange } from 'services/supervisor/currentAnalytics/CurrentAnalyticsPage/AnalyticsSearch/AnalyticsSearch.types';
+import { prepareChartData } from './StatisticItem.utils';
 
-export const StatisticItem: FC<Props> = ({ data }) => {
+export const StatisticItem: FC<Props> = ({ data, selectValue }) => {
   const {
     chart,
     details,
@@ -21,6 +23,10 @@ export const StatisticItem: FC<Props> = ({ data }) => {
     totalTasksCount,
     totalTasksPercentage,
   } = data;
+
+  const preparedChart = useMemo(() => {
+    return chart && prepareChartData(chart, selectValue);
+  }, [selectValue, chart]);
 
   return (
     <Wrapper>
@@ -32,7 +38,7 @@ export const StatisticItem: FC<Props> = ({ data }) => {
         </Count>
       </TitleWrapper>
       <StatisticsWrapper>
-        <Chart chart={chart} />
+        <Chart chart={preparedChart} />
         <Resource></Resource>
       </StatisticsWrapper>
 

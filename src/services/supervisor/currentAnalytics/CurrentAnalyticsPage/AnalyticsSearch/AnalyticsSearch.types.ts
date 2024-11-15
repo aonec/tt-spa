@@ -7,6 +7,8 @@ export type Props = {
   setDashboardFilters: (payload: DashboardQueryParams) => void;
   resetDashboardFilters: () => void;
   isCommon?: boolean;
+  selectValue?: EDateRange;
+  setValue?: React.Dispatch<React.SetStateAction<EDateRange>>;
 };
 
 export enum EDateRange {
