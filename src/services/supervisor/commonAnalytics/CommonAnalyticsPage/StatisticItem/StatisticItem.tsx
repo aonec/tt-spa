@@ -41,13 +41,18 @@ export const StatisticItem: FC<Props> = ({
     return components[currentDashboardType];
   }, [currentDashboardType]);
 
+  const isPositive = (totalTasksPercentage || 0) > 0;
+
   return (
     <Wrapper>
       <TitleWrapper>
         <Dictrict>{title}</Dictrict>
         <Count>
-          {totalTasksCount}
-          <Percentage>{totalTasksPercentage}%</Percentage>
+          {totalTasksCount}{' '}
+          <Percentage isPositive={isPositive}>
+            {isPositive && '+'}
+            {totalTasksPercentage}%
+          </Percentage>
         </Count>
       </TitleWrapper>
       <StatisticsWrapper>
