@@ -17,7 +17,7 @@ import { ArrowDown, ArrowUp } from 'react-bootstrap-icons';
 
 export const TaskQualityDetail: FC<
   Props<DashboardServiceQualityDetailsModel>
-> = ({ data }) => {
+> = ({ data, title }) => {
   return (
     <Wrapper>
       <Title>
@@ -47,6 +47,7 @@ export const TaskQualityDetail: FC<
             key={item.id}
             data={item}
             deviationType={data.deviationType}
+            title={title}
           />
         ))}
       </AnalyticsDetailWrapper>

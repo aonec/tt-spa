@@ -50,7 +50,7 @@ export const MalfunctionDashboardPanel: FC<
       </RatioWrapper>
       <ResourceStatisticsWrapper>
         {data.details?.map((detail) => (
-          <MalfunctionDetail data={detail} />
+          <MalfunctionDetail data={detail} title={data.title} />
         ))}
       </ResourceStatisticsWrapper>
       <DetailButton value={data.title} />
