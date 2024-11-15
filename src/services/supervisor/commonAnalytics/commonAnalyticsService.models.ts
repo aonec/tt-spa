@@ -11,7 +11,10 @@ import {
   dashboardResourcedisconnectsQuery,
 } from './commonAnalyticsService.api';
 import dayjs from 'dayjs';
-import { DashboardTaskResourceResponse } from 'api/types';
+import {
+  DashboardTaskMalfunctionResponse,
+  DashboardTaskResourceResponse,
+} from 'api/types';
 
 const CommonAnalyticsGate = createGate();
 const setCurrentDashboardType = createEvent<DashboardDataType>();
@@ -79,7 +82,9 @@ const $isLoading = combine(
   (...params) => params.some((value) => value),
 );
 
-const $analyticsData = createStore<DashboardTaskResourceResponse[] | null>(null)
+const $analyticsData = createStore<
+  DashboardTaskResourceResponse[] | DashboardTaskMalfunctionResponse[] | null
+>(null)
   .on(dashboardPiperuptersQuery.$data, (_, data) => data)
   .on(dashboardResourcedisconnectsQuery.$data, (_, data) => data)
   .on(dashboardMalfunctionsQuery.$data, (_, data) => data);

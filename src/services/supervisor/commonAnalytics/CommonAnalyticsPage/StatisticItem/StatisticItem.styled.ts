@@ -36,12 +36,14 @@ export const StatisticsWrapper = styled.div`
   display: grid;
   grid-template-columns: 2fr 1fr;
   grid-gap: 6px;
+  align-items: center;
   min-height: 200px;
-
 `;
 
 export const Resource = styled.div`
-  border: 1px solid rgba(220, 222, 228, 1);
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
 `;
 
 export const More = styled.div`

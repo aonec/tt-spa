@@ -32,7 +32,7 @@ export const dashboardPiperuptersQuery = createQuery<
 
 export const dashboardMalfunctionsQuery = createQuery<
   [DashboardQueryParams],
-  DashboardTaskResourceResponse[]
+  DashboardTaskMalfunctionResponse[]
 >({
   handler: (params) =>
     axios.get(`/Dashboard/common/malfunctions`, {

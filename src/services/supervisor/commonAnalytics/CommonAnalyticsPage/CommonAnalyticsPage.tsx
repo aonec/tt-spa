@@ -45,7 +45,11 @@ export const CommonAnalyticsPage: FC<Props> = ({
       {isEmpty && <EmptyStatisticItem isLoading={isLoading} />}
       {!isLoading &&
         analyticsData?.map((analyticsData) => (
-          <StatisticItem data={analyticsData} selectValue={selectValue} />
+          <StatisticItem
+            data={analyticsData}
+            selectValue={selectValue}
+            currentDashboardType={currentDashboardType}
+          />
         ))}
     </Wrapper>
   );

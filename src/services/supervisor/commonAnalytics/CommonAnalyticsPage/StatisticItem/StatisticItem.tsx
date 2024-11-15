@@ -11,22 +11,35 @@ import {
 } from './StatisticItem.styled';
 import { Props } from './StatisticItem.types';
 import { Chart } from './Chart';
-import { EDateRange } from 'services/supervisor/currentAnalytics/CurrentAnalyticsPage/AnalyticsSearch/AnalyticsSearch.types';
 import { prepareChartData } from './StatisticItem.utils';
+import { DashboardResourceAnalyticsDetail } from './DashboardAnalyticsDetail/DashboardAnalyticsDetail.resource';
+import { DashboardDataType } from 'services/supervisor/currentAnalytics/currentAnalyticsService.types';
+import { DashboardMalfunctionAnalyticsDetail } from './DashboardAnalyticsDetail/DashboardAnalyticsDetail.malfunction';
 
-export const StatisticItem: FC<Props> = ({ data, selectValue }) => {
-  const {
-    chart,
-    details,
-    expiredTasksCount,
-    title,
-    totalTasksCount,
-    totalTasksPercentage,
-  } = data;
+export const StatisticItem: FC<Props> = ({
+  data,
+  selectValue,
+  currentDashboardType,
+}) => {
+  const { chart, details, title, totalTasksCount, totalTasksPercentage } = data;
 
   const preparedChart = useMemo(() => {
     return chart && prepareChartData(chart, selectValue);
   }, [selectValue, chart]);
+
+  const DetailComponent = useMemo(() => {
+    const components = {
+      [DashboardDataType.AverageCompletionTime]: () => null,
+      [DashboardDataType.MalfunctionsCount]:
+        DashboardMalfunctionAnalyticsDetail,
+      [DashboardDataType.PipeRupturesCount]: DashboardResourceAnalyticsDetail,
+      [DashboardDataType.ResourceDisconnectsCount]:
+        DashboardResourceAnalyticsDetail,
+      [DashboardDataType.TasksCount]: () => null,
+    };
+
+    return components[currentDashboardType];
+  }, [currentDashboardType]);
 
   return (
     <Wrapper>
@@ -39,7 +52,11 @@ export const StatisticItem: FC<Props> = ({ data, selectValue }) => {
       </TitleWrapper>
       <StatisticsWrapper>
         <Chart chart={preparedChart} />
-        <Resource></Resource>
+        <Resource>
+          {details?.map((elem) => (
+            <DetailComponent key={elem.resourceType} data={elem} />
+          ))}
+        </Resource>
       </StatisticsWrapper>
 
       <More>Подробнее</More>
