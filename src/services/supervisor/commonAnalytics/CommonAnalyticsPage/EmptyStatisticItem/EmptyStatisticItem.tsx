@@ -3,7 +3,6 @@ import {
   Count,
   Dictrict,
   More,
-  Percentage,
   Resource,
   StatisticsWrapper,
   TitleWrapper,
@@ -19,13 +18,15 @@ export const EmptyStatisticItem: FC<Props> = ({ isLoading }) => {
       <TitleWrapper>
         <Dictrict>
           {isLoading ? (
-            <Skeleton.Button active={true} size="small" />
+            <Skeleton.Button active={true} style={{ width: 180, height: 26 }} />
           ) : (
             'Нет данных за выбранный период'
           )}
         </Dictrict>
         <Count>
-          {isLoading && <Skeleton.Button active={true} size="default" />}
+          {isLoading && (
+            <Skeleton.Button active={true} style={{ width: 90, height: 34 }} />
+          )}
         </Count>
       </TitleWrapper>
       <StatisticsWrapper>
