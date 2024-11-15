@@ -24,7 +24,7 @@ export const StatisticItem: FC<Props> = ({
   const { chart, details, title, totalTasksCount, totalTasksPercentage } = data;
 
   const preparedChart = useMemo(() => {
-    return chart && prepareChartData(chart, selectValue);
+    return chart ? prepareChartData(chart, selectValue) : [];
   }, [selectValue, chart]);
 
   const DetailComponent = useMemo(() => {

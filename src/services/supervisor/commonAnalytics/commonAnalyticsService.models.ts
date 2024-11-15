@@ -36,25 +36,17 @@ const $dashboardFilters = createStore<DashboardQueryParams>({
   }))
   .reset(resetDashboardFilters);
 
+sample({ clock: CommonAnalyticsGate.close, target: resetDashboardFilters });
+
 sample({
   source: $dashboardFilters,
   clock: CommonAnalyticsGate.open,
   target: [commonSummaryQuery.start],
 });
 
-// sample({
-//   source: $dashboardFilters,
-//   clock: CommonAnalyticsGate.open,
-//   target: [dashboardPiperuptersQuery.start],
-// });
-
 sample({
   source: $dashboardFilters,
   target: [commonSummaryQuery.start],
-});
-
-$dashboardFilters.watch((data) => {
-  console.log(data);
 });
 
 const $dashboardParams = combine(
