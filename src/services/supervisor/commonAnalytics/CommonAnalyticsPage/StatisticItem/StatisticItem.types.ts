@@ -1,9 +1,12 @@
-import { DashboardTaskResourceResponse } from 'api/types';
+import {
+  DashboardTaskMalfunctionResponse,
+  DashboardTaskResourceResponse,
+} from 'api/types';
 import { EDateRange } from 'services/supervisor/currentAnalytics/CurrentAnalyticsPage/AnalyticsSearch/AnalyticsSearch.types';
 import { DashboardDataType } from 'services/supervisor/currentAnalytics/currentAnalyticsService.types';
 
 export type Props = {
-  data: DashboardTaskResourceResponse;
+  data: DashboardTaskResourceResponse & DashboardTaskMalfunctionResponse;
   selectValue: EDateRange;
   currentDashboardType: DashboardDataType;
 };

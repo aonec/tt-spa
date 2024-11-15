@@ -1,5 +1,6 @@
 import {
   DashboardSummaryResponse,
+  DashboardTaskMalfunctionResponse,
   DashboardTaskResourceResponse,
 } from 'api/types';
 import {
@@ -15,5 +16,8 @@ export type Props = {
   currentDashboardType: DashboardDataType;
   setCurrentDashboardType: (payload: DashboardDataType) => void;
   isLoading: boolean;
-  analyticsData: DashboardTaskResourceResponse[] | null;
+  analyticsData:
+    | DashboardTaskResourceResponse[]
+    | DashboardTaskMalfunctionResponse[]
+    | null;
 };

@@ -1,6 +1,5 @@
 import { DashboardChartModel } from 'api/types';
 import dayjs from 'dayjs';
-import isoWeek from 'dayjs/plugin/isoWeek';
 import { EDateRange } from 'services/supervisor/currentAnalytics/CurrentAnalyticsPage/AnalyticsSearch/AnalyticsSearch.types';
 import { ChartType } from './StatisticItem.types';
 
@@ -31,7 +30,6 @@ export function prepareChartData(
 
     data.forEach((item) => {
       if (item.date) {
-  
         const weekNumber = dayjs(item.date).format('ww');
         const weekKey = `${weekNumber} неделя`;
 
