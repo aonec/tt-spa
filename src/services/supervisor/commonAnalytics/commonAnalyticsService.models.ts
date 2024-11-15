@@ -26,8 +26,8 @@ const $currentDashboardType = createStore<DashboardDataType>(
 ).on(setCurrentDashboardType, (_, type) => type);
 
 const $dashboardFilters = createStore<DashboardQueryParams>({
-  From: dayjs().subtract(1, 'week').format(),
-  To: dayjs().format(),
+  From: dayjs().subtract(1, 'week').startOf('day').utc(true).toISOString(),
+  To: dayjs().endOf('day').utc(true).toISOString(),
 })
   .on(setDashboardFilters, (prev, data) => ({
     ...prev,
