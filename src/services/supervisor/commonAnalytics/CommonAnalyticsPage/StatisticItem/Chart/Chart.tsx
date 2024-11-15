@@ -1,9 +1,5 @@
 import { FC } from 'react';
-import {
-  horizontalAxisStyle,
-  verticalAxisStyle,
-  Wrapper,
-} from './Chart.styled';
+import { horizontalAxisStyle, verticalAxisStyle } from './Chart.styled';
 import { Props } from './Chart.types';
 import {
   VictoryAxis,
@@ -12,18 +8,13 @@ import {
   VictoryTheme,
   VictoryVoronoiContainer,
 } from 'victory';
+import { TickComponent } from 'ui-kit/shared/GraphComponents/TickComponent';
 
 export const Chart: FC<Props> = ({ chart }) => {
-  const mock = [
-    { x: ' ', y: 0 },
-    { x: ' ', y: 0 },
-    { x: ' ', y: 0 },
-    { x: ' ', y: 0 },
-    { x: ' ', y: 0 },
-  ];
+  const mock = [{ x: ' ', y: 0 }];
   return (
     <VictoryChart
-      domainPadding={{ x: 20 }}
+      domainPadding={{ x: 40 }}
       theme={VictoryTheme.material}
       width={500}
       height={200}
@@ -34,7 +25,10 @@ export const Chart: FC<Props> = ({ chart }) => {
       }}
       containerComponent={<VictoryVoronoiContainer />}
     >
-      <VictoryAxis style={horizontalAxisStyle} />
+      <VictoryAxis
+        style={horizontalAxisStyle}
+        tickComponent={<TickComponent />}
+      />
       <VictoryAxis
         dependentAxis
         style={verticalAxisStyle}
@@ -43,10 +37,16 @@ export const Chart: FC<Props> = ({ chart }) => {
             return tick;
           }
         }}
+        // domainPadding={400}
       />
+
       <VictoryBar
         style={{ data: { fill: 'rgba(24, 158, 233, 1)' } }}
         data={chart || mock}
+        barWidth={40}
+        // barRatio={1}
+        cornerRadius={2}
+        labels={({ datum }) => datum.y}
       />
     </VictoryChart>
   );
