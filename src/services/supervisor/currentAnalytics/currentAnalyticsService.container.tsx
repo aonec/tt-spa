@@ -10,12 +10,17 @@ import {
 } from './currentAnalyticsService.api';
 import { currentAnalyticsService } from './currentAnalyticsService.models';
 import { getItemArray } from './currentAnalyticsService.utils';
+import { addressSearchService } from 'services/addressSearchService/addressSearchService.models';
 
 const {
   inputs,
   outputs,
   gates: { CurrentAnalyticsGate },
 } = currentAnalyticsService;
+
+const {
+  gates: { ExistingCitiesGate },
+} = addressSearchService;
 
 export const CurrentAnalyticsContainer = () => {
   const {
@@ -50,6 +55,7 @@ export const CurrentAnalyticsContainer = () => {
 
   return (
     <>
+      <ExistingCitiesGate />
       <CurrentAnalyticsGate />
       <CurrentAnalyticsPage
         dashboardSummary={dashboardSummary}
