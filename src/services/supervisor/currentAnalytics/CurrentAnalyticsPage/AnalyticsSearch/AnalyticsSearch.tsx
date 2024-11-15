@@ -105,7 +105,9 @@ export const AnalyticsSearch: FC<Props> = ({
         small
         value={dashboardFilters.City}
         allowClear
-        onChange={(city) => setDashboardFilters({ City: city as string })}
+        onChange={(city) =>
+          setDashboardFilters({ City: city as string, ManagementFirmId: null })
+        }
       >
         {existingCities?.map((city) => (
           <Select.Option key={city} value={city}>
