@@ -15,7 +15,7 @@ export function getItemArray<T>(data: null | T | T[]): T[] | null {
 export function getDetailSuffix(params: DashboardQueryParams) {
   if (!params.ManagementFirmId && !params.City) return '';
 
-  if (params.City) return 'city';
+  if (params.ManagementFirmId) return 'detail';
 
-  return 'detail';
+  return 'city';
 }
