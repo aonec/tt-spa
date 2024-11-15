@@ -13,9 +13,12 @@ import {
   CalculatorIcon,
   CheckConnection,
   NoConnectionIcon,
+  WarningIcon,
 } from 'ui-kit/icons';
 import { NodeDevices } from './NodeDevices';
 import { DateRange } from 'ui-kit/shared/DateRange';
+import { EConnectionStatusType } from 'api/types';
+import { Tooltip } from 'ui-kit/shared/Tooltip';
 
 export const CalculatorNodes: FC<CalculatorNodesProps> = ({ devices }) => {
   const calculator = devices[0].calculator;
@@ -32,10 +35,14 @@ export const CalculatorNodes: FC<CalculatorNodesProps> = ({ devices }) => {
     );
   }
 
-  const { isConnected } = calculator;
+  const { isConnected, connectionInfo } = calculator;
   const isConnectionError = !(
     calculator.connection?.port && calculator.connection?.ipV4
   );
+
+  const isMalfunction =
+    connectionInfo?.connectionStatus ===
+    EConnectionStatusType.DeviceMalfunction;
 
   return (
     <>
@@ -51,8 +58,21 @@ export const CalculatorNodes: FC<CalculatorNodesProps> = ({ devices }) => {
             </CalculatorModelWrapper>
           </DeviceLink>
 
-          {!isConnected && <NoConnectionIcon />}
-          {isConnected && isConnectionError && <CheckConnection />}
+          {!isConnected && (
+            <Tooltip title="Вычислитель не опрашивается">
+              <NoConnectionIcon />
+            </Tooltip>
+          )}
+          {isConnected && isConnectionError && (
+            <Tooltip title="Проверьте настройки соединения">
+              <CheckConnection />
+            </Tooltip>
+          )}
+          {isMalfunction && (
+            <Tooltip title="Вычислитель неисправен">
+              <WarningIcon />
+            </Tooltip>
+          )}
         </CalculatorWithStatusWrapper>
 
         <DateRange
