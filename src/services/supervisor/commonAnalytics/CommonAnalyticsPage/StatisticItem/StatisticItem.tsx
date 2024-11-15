@@ -49,10 +49,12 @@ export const StatisticItem: FC<Props> = ({
         <Dictrict>{title}</Dictrict>
         <Count>
           {totalTasksCount}{' '}
-          <Percentage isPositive={isPositive}>
-            {isPositive && '+'}
-            {totalTasksPercentage}%
-          </Percentage>
+          {Boolean(totalTasksPercentage) && (
+            <Percentage isPositive={isPositive}>
+              {isPositive && '+'}
+              {totalTasksPercentage}%
+            </Percentage>
+          )}
         </Count>
       </TitleWrapper>
       <StatisticsWrapper>

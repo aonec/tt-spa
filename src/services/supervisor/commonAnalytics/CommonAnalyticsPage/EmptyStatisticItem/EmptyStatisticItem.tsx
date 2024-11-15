@@ -31,7 +31,14 @@ export const EmptyStatisticItem: FC<Props> = ({ isLoading }) => {
       </TitleWrapper>
       <StatisticsWrapper>
         <Chart chart={null} />
-        <Resource></Resource>
+        {isLoading && (
+          <Resource>
+            <Skeleton.Input active size="small" style={{ width: 120 }} />
+            <Skeleton.Input active size="large" style={{ width: 260 }} />
+            <Skeleton.Input active size="small" />
+            <Skeleton.Input active size="large" style={{ width: 220 }} />
+          </Resource>
+        )}
       </StatisticsWrapper>
 
       <More>Подробнее</More>

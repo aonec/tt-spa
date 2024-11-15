@@ -16,6 +16,7 @@ export type Props = {
   currentDashboardType: DashboardDataType;
   setCurrentDashboardType: (payload: DashboardDataType) => void;
   isLoading: boolean;
+  isLoadingSummary: boolean;
   analyticsData:
     | DashboardTaskResourceResponse[]
     | DashboardTaskMalfunctionResponse[]

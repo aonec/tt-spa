@@ -1,9 +1,7 @@
 import { useUnit } from 'effector-react';
 import { CommonAnalyticsPage } from './CommonAnalyticsPage';
 import { commonAnalyticsService } from './commonAnalyticsService.models';
-import {
-  commonSummaryQuery,
-} from './commonAnalyticsService.api';
+import { commonSummaryQuery } from './commonAnalyticsService.api';
 
 const { inputs, outputs, gates } = commonAnalyticsService;
 
@@ -18,6 +16,7 @@ export const CommonAnalyticsContainer = () => {
     currentDashboardType,
     setCurrentDashboardType,
     isLoading,
+    isLoadingSummary,
     analyticsData,
   } = useUnit({
     setDashboardFilters: inputs.setDashboardFilters,
@@ -27,6 +26,7 @@ export const CommonAnalyticsContainer = () => {
     currentDashboardType: outputs.$currentDashboardType,
     setCurrentDashboardType: inputs.setCurrentDashboardType,
     isLoading: outputs.$isLoading,
+    isLoadingSummary: commonSummaryQuery.$pending,
     analyticsData: outputs.$analyticsData,
   });
 
@@ -41,6 +41,7 @@ export const CommonAnalyticsContainer = () => {
         currentDashboardType={currentDashboardType}
         setCurrentDashboardType={setCurrentDashboardType}
         isLoading={isLoading}
+        isLoadingSummary={isLoadingSummary}
         analyticsData={analyticsData}
       />
     </>
