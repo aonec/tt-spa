@@ -42,8 +42,12 @@ export const TaskQualityDetail: FC<
       />
 
       <AnalyticsDetailWrapper>
-        {data.items?.map((data) => (
-          <AnalyticsDetail data={data} />
+        {data.items?.map((item) => (
+          <AnalyticsDetail
+            key={item.id}
+            data={item}
+            deviationType={data.deviationType}
+          />
         ))}
       </AnalyticsDetailWrapper>
     </Wrapper>

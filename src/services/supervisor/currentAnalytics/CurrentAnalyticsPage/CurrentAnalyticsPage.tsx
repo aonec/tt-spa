@@ -13,12 +13,12 @@ import {
 import { DashboardDataType } from '../currentAnalyticsService.types';
 import { AverageTimeDashboardPanel } from './DashboardPanel/AverageTimeDashboardPanel';
 import { TaskQualityDashboardPanel } from './DashboardPanel/TaskQualityDashboardPanel';
-import { GoBackPure } from 'ui-kit/shared/GoBack/GoBack';
+import { Empty } from 'antd';
+import { BreadCrumbs } from './BreadCrumbs';
 
 export const CurrentAnalyticsPage: FC<Props> = ({
-  isLoading,
+  isLoadingSummary,
   isLoadingPanels,
-  managementFirms,
   dashboardSummary,
   currentDashboardType,
   setCurrentDashboardType,
@@ -31,6 +31,36 @@ export const CurrentAnalyticsPage: FC<Props> = ({
   setDashboardFilters,
   resetDashboardFilters,
 }) => {
+  const dataList = useMemo(() => {
+    const dataMap = {
+      [DashboardDataType.PipeRupturesCount]: dashboardPiperuptersList,
+      [DashboardDataType.ResourceDisconnectsCount]:
+        dashboardResourceDisconnection,
+      [DashboardDataType.MalfunctionsCount]: dashboardMalfunctions,
+      [DashboardDataType.AverageCompletionTime]: dashboardAverageTime,
+      [DashboardDataType.TasksCount]: dashboardServiceQuality,
+    };
+
+    return dataMap[currentDashboardType];
+  }, [
+    currentDashboardType,
+    dashboardAverageTime,
+    dashboardMalfunctions,
+    dashboardPiperuptersList,
+    dashboardResourceDisconnection,
+    dashboardServiceQuality,
+  ]);
+
+  const isEmpty = useMemo(() => {
+    if (!dataList?.length) return true;
+
+    if (dataList.length === 1 && !dataList[0].details?.length) {
+      return true;
+    }
+
+    return false;
+  }, [dataList]);
+
   const Dashboard = useMemo(() => {
     const dataMap = {
       [DashboardDataType.PipeRupturesCount]: () => {
@@ -131,25 +161,27 @@ export const CurrentAnalyticsPage: FC<Props> = ({
     <Wrapper>
       <PageHeader title="Текущая ситуация" contextMenu={{}} />
       <AnalyticsSearch
-        managementFirms={managementFirms}
         dashboardFilters={dashboardFilters}
         setDashboardFilters={setDashboardFilters}
         resetDashboardFilters={resetDashboardFilters}
       />
       <InfoOptionsPanels
+        isLoading={isLoadingSummary}
         dashboardSummary={dashboardSummary}
         currentDashboardType={currentDashboardType}
         setCurrentDashboardType={setCurrentDashboardType}
       />
-      <WithLoader isLoading={isLoading || isLoadingPanels}>
-        {dashboardFilters.ManagementFirmId && (
-          <GoBackPure
-            onClick={() => setDashboardFilters({ ManagementFirmId: null })}
-          />
+      <BreadCrumbs
+        setDashboardFilters={setDashboardFilters}
+        dashboardSummary={dashboardSummary}
+      />
+      <WithLoader isLoading={isLoadingSummary || isLoadingPanels}>
+        {isEmpty && <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />}
+        {!isEmpty && (
+          <DashboardPanelWrapper>
+            {Dashboard && <Dashboard />}
+          </DashboardPanelWrapper>
         )}
-        <DashboardPanelWrapper>
-          {Dashboard && <Dashboard />}
-        </DashboardPanelWrapper>
       </WithLoader>
     </Wrapper>
   );

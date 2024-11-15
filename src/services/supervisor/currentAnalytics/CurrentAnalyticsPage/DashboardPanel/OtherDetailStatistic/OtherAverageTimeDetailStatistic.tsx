@@ -1,17 +1,19 @@
 import { FC } from 'react';
-import { Title, Wrapper } from './OtherDetailStatistic.styled';
+import { Title } from './OtherDetailStatistic.styled';
 import { Props } from './OtherDetailStatistic.types';
 import { DashboardTaskAverageTimeResponse } from 'api/types';
+import { formatCompletionTime } from '../utils';
+import { DetailButton } from '../DetailButton';
 
 export const OtherAverageTimeDetailStatistic: FC<
   Props<DashboardTaskAverageTimeResponse>
 > = ({ item }) => {
   return (
-    <Wrapper>
+    <DetailButton value={item.title}>
       <Title>
         {item.title}
-        <div>{item.averageCompletionTime}</div>
+        <div>{formatCompletionTime(item.averageCompletionTime || 0)}</div>
       </Title>
-    </Wrapper>
+    </DetailButton>
   );
 };

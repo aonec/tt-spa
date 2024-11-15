@@ -102,6 +102,8 @@ import ChevronTopActive from './svg/chevronTopActive.svg?react';
 import ChevronTopDanger from './svg/chevronTopDanger.svg?react';
 import ResetIcon from './svg/reset.svg?react';
 import CitySmallGrayIcon from './svg/citySmallGray.svg?react';
+import IndividualDeviceSmallIcon from './svg/individualDeviceSmall.svg?react';
+import MeasurementSmallIcon from './svg/measurementSmall.svg?react';
 
 export {
   FinishIcon,
@@ -208,4 +210,6 @@ export {
   ChevronTopDanger,
   ResetIcon,
   CitySmallGrayIcon,
+  IndividualDeviceSmallIcon,
+  MeasurementSmallIcon,
 };

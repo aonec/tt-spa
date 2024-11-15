@@ -4,7 +4,6 @@ import {
   DashboardTaskMalfunctionResponse,
   DashboardTaskQualityResponse,
   DashboardTaskResourceResponse,
-  HouseManagementWithStreetsResponse,
 } from 'api/types';
 import {
   DashboardDataType,
@@ -12,10 +11,9 @@ import {
 } from '../currentAnalyticsService.types';
 
 export type Props = {
-  isLoading: boolean;
+  isLoadingSummary: boolean;
   dashboardSummary: DashboardSummaryResponse | null;
   currentDashboardType: DashboardDataType;
-  managementFirms: HouseManagementWithStreetsResponse[] | null;
   setCurrentDashboardType: (payload: DashboardDataType) => void;
   dashboardPiperuptersList: DashboardTaskResourceResponse[] | null;
   dashboardResourceDisconnection: DashboardTaskResourceResponse[] | null;

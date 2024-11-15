@@ -6,12 +6,8 @@ import {
   DashboardTaskMalfunctionResponse,
   DashboardTaskQualityResponse,
   DashboardTaskResourceResponse,
-  HouseManagementWithStreetsResponse,
 } from 'api/types';
-import {
-  DashboardQueryParams,
-  ManagementFirmsQueryParams,
-} from './currentAnalyticsService.types';
+import { DashboardQueryParams } from './currentAnalyticsService.types';
 import { stringify } from 'query-string';
 import { getDetailSuffix } from './currentAnalyticsService.utils';
 
@@ -21,17 +17,6 @@ export const dashboardSummaryQuery = createQuery<
 >({
   handler: (params) =>
     axios.get(`/Dashboard/current/summary`, {
-      params,
-      paramsSerializer: (params) => stringify(params),
-    }),
-});
-
-export const managementFirmsWithBuildingsQuery = createQuery<
-  [ManagementFirmsQueryParams],
-  HouseManagementWithStreetsResponse[]
->({
-  handler: (params): Promise<HouseManagementWithStreetsResponse[]> =>
-    axios.get(`/Dashboard/managementfirms`, {
       params,
       paramsSerializer: (params) => stringify(params),
     }),
@@ -90,9 +75,7 @@ export const dashboardServiceQualityQuery = createQuery<
 >({
   handler: (params) =>
     axios.get(`/Dashboard/current/servicequality/${getDetailSuffix(params)}`, {
-      params: {
-        params,
-        paramsSerializer: (params: Record<string, any>) => stringify(params),
-      },
+      params,
+      paramsSerializer: (params) => stringify(params),
     }),
 });

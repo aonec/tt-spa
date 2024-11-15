@@ -1,6 +1,5 @@
 import { FC } from 'react';
 import {
-  LinkButtonWrapper,
   ResourceStatisticsWrapper,
   TaskQualityAnalyticsTitle,
   TaskQualityAnalyticsWrapper,
@@ -8,7 +7,6 @@ import {
   Wrapper,
 } from './DashboardPanel.styled';
 import { Props } from './DashboardPanel.types';
-import { LinkButton } from 'ui-kit/shared/LinkButton';
 import { DashboardTaskQualityResponse } from 'api/types';
 import {
   AverageTime,
@@ -18,7 +16,8 @@ import { OtherTaskQualityDetailStatistic } from './OtherDetailStatistic/OtherTas
 import { TaskQualityDetail } from './ResourceStatistic/TaskQualityDetail';
 import { CitySmallGrayIcon, TimerIcon } from 'ui-kit/icons';
 import { SpaceLine } from 'ui-kit/SpaceLine';
-import { getTaskQualityOtherData } from './utils';
+import { formatCompletionTime, getTaskQualityOtherData } from './utils';
+import { DetailButton } from './DetailButton';
 
 export const TaskQualityDashboardPanel: FC<
   Props<DashboardTaskQualityResponse>
@@ -49,7 +48,7 @@ export const TaskQualityDashboardPanel: FC<
           <TaskQualityAnalyticsTitle>
             <TimerIcon /> Среднее время на закрытие
           </TaskQualityAnalyticsTitle>
-          {averageCompletionTime} мин
+          {formatCompletionTime(averageCompletionTime)} мин
         </TaskQualityAnalyticsWrapper>
 
         <SpaceLine noPadding noTop />
@@ -59,9 +58,6 @@ export const TaskQualityDashboardPanel: FC<
             <OtherTaskQualityDetailStatistic item={item} />
           ))}
         </ResourceStatisticsWrapper>
-        <LinkButtonWrapper>
-          <LinkButton onClick={() => void 0}>Показать больше</LinkButton>
-        </LinkButtonWrapper>
       </Wrapper>
     );
   }
@@ -75,31 +71,25 @@ export const TaskQualityDashboardPanel: FC<
         {data.totalTasksCount}{' '}
         <AverageTimeDescription>задач</AverageTimeDescription>
       </AverageTime>
-
       <TaskQualityAnalyticsWrapper>
         <TaskQualityAnalyticsTitle>
           <CitySmallGrayIcon /> Объекты
         </TaskQualityAnalyticsTitle>
         {data.buildingsWithTasksCount} / {data.totalBuildingCount}
       </TaskQualityAnalyticsWrapper>
-
       <TaskQualityAnalyticsWrapper>
         <TaskQualityAnalyticsTitle>
           <TimerIcon /> Среднее время на закрытие
         </TaskQualityAnalyticsTitle>
-        {Number(data.averageCompletionTime).toFixed(1)} мин
+        {formatCompletionTime(data.averageCompletionTime)} мин
       </TaskQualityAnalyticsWrapper>
-
       <SpaceLine noPadding noTop />
-
       <ResourceStatisticsWrapper>
         {data.details?.map((detail) => (
           <TaskQualityDetail data={detail} />
         ))}
       </ResourceStatisticsWrapper>
-      <LinkButtonWrapper>
-        <LinkButton onClick={() => void 0}>Подробнее</LinkButton>
-      </LinkButtonWrapper>
+      <DetailButton value={data.title} />
     </Wrapper>
   );
 };

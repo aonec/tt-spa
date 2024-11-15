@@ -18,9 +18,7 @@ export const TaskResourceDetail: FC<
     <Wrapper>
       <Title>
         <div>
-          {data?.resourceType && (
-            <ResourceInfo resource={(data as any).resourceType as any} />
-          )}
+          {data?.resourceType && <ResourceInfo resource={data.resourceType} />}
         </div>
         <div>
           <NotClosedTaskCount isPositive={data.expiredTasksCount! > 0}>
@@ -36,8 +34,12 @@ export const TaskResourceDetail: FC<
         size={['100%', 3]}
       />
       <AnalyticsDetailWrapper>
-        {data.items?.map((data) => (
-          <AnalyticsDetail data={data} />
+        {data.items?.map((item) => (
+          <AnalyticsDetail
+            key={item.id}
+            data={item}
+            resourceType={data?.resourceType}
+          />
         ))}
       </AnalyticsDetailWrapper>
     </Wrapper>

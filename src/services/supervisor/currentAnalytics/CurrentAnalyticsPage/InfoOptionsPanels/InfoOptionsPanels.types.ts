@@ -5,4 +5,5 @@ export type Props = {
   dashboardSummary: DashboardSummaryResponse | null;
   currentDashboardType: DashboardDataType;
   setCurrentDashboardType: (type: DashboardDataType) => void;
+  isLoading: boolean;
 };

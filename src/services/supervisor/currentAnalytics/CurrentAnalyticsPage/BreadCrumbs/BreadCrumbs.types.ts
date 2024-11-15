@@ -1,7 +1,7 @@
+import { DashboardSummaryResponse } from 'api/types';
 import { DashboardQueryParams } from '../../currentAnalyticsService.types';
 
 export type Props = {
-  dashboardFilters: DashboardQueryParams;
+  dashboardSummary: DashboardSummaryResponse | null;
   setDashboardFilters: (payload: DashboardQueryParams) => void;
-  resetDashboardFilters: () => void;
 };
