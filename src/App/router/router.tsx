@@ -74,6 +74,7 @@ import { UserProfileContainer } from 'services/currentUser/currentUserService/cu
 import { CurrentUserEditServiceContainer } from 'services/currentUser/currentUserEditService';
 import { createRunnerService } from 'services/reports/createRunnerService/createRunnerService.models';
 import { CurrentAnalyticsContainer } from 'services/supervisor/currentAnalytics';
+import { CommonAnalyticsContainer } from 'services/supervisor/commonAnalytics';
 
 const {
   gates: { CurrentUserGate },
@@ -271,7 +272,7 @@ export const useRoutes = (
         },
         {
           path: '/supervisor/commonAnalytics',
-          element: <>Общая аналитика</>,
+          element: <CommonAnalyticsContainer />,
         },
         {
           path: '/supervisor/consumption',
