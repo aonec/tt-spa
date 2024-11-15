@@ -104,6 +104,7 @@ import ResetIcon from './svg/reset.svg?react';
 import CitySmallGrayIcon from './svg/citySmallGray.svg?react';
 import IndividualDeviceSmallIcon from './svg/individualDeviceSmall.svg?react';
 import MeasurementSmallIcon from './svg/measurementSmall.svg?react';
+import CurrentAnalyticsIcon from './svg/currentAnalytics.svg?react';
 
 export {
   FinishIcon,
@@ -212,4 +213,5 @@ export {
   CitySmallGrayIcon,
   IndividualDeviceSmallIcon,
   MeasurementSmallIcon,
+  CurrentAnalyticsIcon,
 };

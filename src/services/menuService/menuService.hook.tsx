@@ -1,6 +1,7 @@
 import { useUnit } from 'effector-react';
 import {
   CompanyProfileIcon,
+  CurrentAnalyticsIcon,
   DeviceIcon,
   DocumentIcon,
   ListIcon,
@@ -25,15 +26,15 @@ export const useMenuItems = (): MenuItem[] => {
     {
       title: 'Текущая ситуация',
       path: `/supervisor/currentAnalytics`,
+      icon: CurrentAnalyticsIcon,
+      type: MenuType.SupervisorAnalytics,
+    },
+    {
+      title: 'Общая аналитика',
+      path: `/supervisor/commonAnalytics`,
       icon: StatisticIcon,
       type: MenuType.SupervisorAnalytics,
     },
-    // {
-    //   title: 'Общая аналитика',
-    //   path: `/supervisor/commonAnalytics`,
-    //   icon: StatisticIcon,
-    //   type: MenuType.SupervisorAnalytics,
-    // },
     // {
     //   title: 'Потребление ресурсов',
     //   path: `/supervisor/consumption`,
