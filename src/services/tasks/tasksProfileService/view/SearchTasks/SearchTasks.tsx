@@ -1,4 +1,4 @@
-import React, {
+import {
   ChangeEvent,
   FC,
   useCallback,
@@ -128,10 +128,6 @@ export const SearchTasks: FC<SearchTasksProps> = ({
     setFieldValue('OrderBy', order);
     handleSubmit();
   };
-
-  // reset all filters after exiting the page
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  useEffect(() => clearAllFilters, []);
 
   return (
     <ExtendedSearch
