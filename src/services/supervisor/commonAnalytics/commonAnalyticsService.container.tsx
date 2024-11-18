@@ -2,10 +2,15 @@ import { useUnit } from 'effector-react';
 import { CommonAnalyticsPage } from './CommonAnalyticsPage';
 import { commonAnalyticsService } from './commonAnalyticsService.models';
 import { commonSummaryQuery } from './commonAnalyticsService.api';
+import { addressSearchService } from 'services/addressSearchService/addressSearchService.models';
 
 const { inputs, outputs, gates } = commonAnalyticsService;
 
 const { CommonAnalyticsGate } = gates;
+
+const {
+  gates: { ExistingCitiesGate },
+} = addressSearchService;
 
 export const CommonAnalyticsContainer = () => {
   const {
@@ -32,6 +37,7 @@ export const CommonAnalyticsContainer = () => {
 
   return (
     <>
+      <ExistingCitiesGate />
       <CommonAnalyticsGate />
       <CommonAnalyticsPage
         setDashboardFilters={setDashboardFilters}
