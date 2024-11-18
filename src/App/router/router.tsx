@@ -75,6 +75,7 @@ import { CurrentUserEditServiceContainer } from 'services/currentUser/currentUse
 import { createRunnerService } from 'services/reports/createRunnerService/createRunnerService.models';
 import { CurrentAnalyticsContainer } from 'services/supervisor/currentAnalytics';
 import { CommonAnalyticsContainer } from 'services/supervisor/commonAnalytics';
+import { usePermission } from 'hooks/usePermission';
 
 const {
   gates: { CurrentUserGate },
@@ -195,9 +196,10 @@ export const useRoutes = (
     ESecuredIdentityRoleName.ManagingFirmExecutor,
   );
 
-  const isSpectator = roles.includes(
+  const isSpectator = usePermission([
     ESecuredIdentityRoleName.ManagingFirmSpectator,
-  );
+    ESecuredIdentityRoleName.Supervisor,
+  ]);
 
   const isSpectatingAdministrator = roles.includes(
     ESecuredIdentityRoleName.ManagingFirmSpectatingAdministrator,
