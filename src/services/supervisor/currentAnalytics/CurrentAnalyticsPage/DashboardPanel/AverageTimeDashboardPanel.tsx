@@ -21,7 +21,7 @@ export const AverageTimeDashboardPanel: FC<
   if (otherData?.length) {
     return (
       <Wrapper>
-        <Title>Остальные округа</Title>
+        <Title>Прочее</Title>
         <AverageTime>
           {formatCompletionTime(
             otherData.reduce(
