@@ -1,7 +1,7 @@
 import {
-  // EEmailSubscriptionType, // todo: регулярная выгрузка
   EReportType,
   EResourceType,
+  GroupReportSchedulePeriod,
 } from 'api/types';
 import * as Yup from 'yup';
 
@@ -26,9 +26,9 @@ export const validationSchema = Yup.object().shape({
       schema.required('Это поле обязательное').email('Корректно введите Email'),
   }),
   'Subscription.TriggerAt': Yup.string(),
-  // 'Subscription.Type': Yup.mixed<EEmailSubscriptionType>().oneOf(  // todo: регулярная выгрузка
-  //   Object.values(EEmailSubscriptionType),
-  // ),
+  'Subscription.Type': Yup.mixed<GroupReportSchedulePeriod>().oneOf(
+    Object.values(GroupReportSchedulePeriod),
+  ),
   'Subscription.ContractorIds': Yup.array(Yup.number()),
 });
 

@@ -73,6 +73,8 @@ import { tokensService } from 'api/tokensService';
 import { UserProfileContainer } from 'services/currentUser/currentUserService/currentUserService.container';
 import { CurrentUserEditServiceContainer } from 'services/currentUser/currentUserEditService';
 import { createRunnerService } from 'services/reports/createRunnerService/createRunnerService.models';
+import { CurrentAnalyticsContainer } from 'services/supervisor/currentAnalytics';
+import { CommonAnalyticsContainer } from 'services/supervisor/commonAnalytics';
 
 const {
   gates: { CurrentUserGate },
@@ -160,13 +162,16 @@ export const useRoutes = (
     developmentSettingsService.outputs.$featureToggles,
   );
 
-  const roles =
-    currentUserRoles?.reduce((acc, { key }) => {
-      if (!key) {
-        return acc;
-      }
-      return [...acc, key];
-    }, [] as ESecuredIdentityRoleName[]) || [];
+  const roles = useMemo(() => {
+    return (
+      currentUserRoles?.reduce((acc, { key }) => {
+        if (!key) {
+          return acc;
+        }
+        return [...acc, key];
+      }, [] as ESecuredIdentityRoleName[]) || []
+    );
+  }, [currentUserRoles]);
 
   const isAdministrator =
     roles.includes(ESecuredIdentityRoleName.Administrator) ||
@@ -180,6 +185,8 @@ export const useRoutes = (
 
   const isOperator =
     roles.includes(ESecuredIdentityRoleName.Operator) || isSeniorOperator;
+
+  const isSupervisor = roles.includes(ESecuredIdentityRoleName.Supervisor);
 
   const isDispatcher = roles.includes(
     ESecuredIdentityRoleName.ManagingFirmDispatcher,
@@ -200,17 +207,23 @@ export const useRoutes = (
     ESecuredIdentityRoleName.ManagingFirmSpectatorRestricted,
   );
 
-  const redirectRoute = useMemo(() => {
-    if (!isAuth) return '/login';
-
-    const defaultPath = '/tasks';
-
-    return isOperator ? '/meters/apartments' : defaultPath;
-  }, [isOperator, isAuth]);
-
   const initialTasksPath = isSpectator
     ? `/tasks/list/${TaskGroupingFilter.Observing}`
     : `/tasks/list/${TaskGroupingFilter.Executing}`;
+
+  const redirectRoute = useMemo(() => {
+    if (!roles.length) return '/';
+
+    if (isSupervisor) {
+      return '/supervisor/currentAnalytics';
+    }
+
+    if (isOperator) {
+      return '/meters/apartments';
+    }
+
+    return initialTasksPath;
+  }, [roles.length, isSupervisor, isOperator, initialTasksPath]);
 
   const isShowNodeArchivePage =
     isAdministrator ||
@@ -252,6 +265,18 @@ export const useRoutes = (
         {
           path: '/',
           element: <Navigate replace to={redirectRoute} />,
+        },
+        {
+          path: '/supervisor/currentAnalytics',
+          element: <CurrentAnalyticsContainer />,
+        },
+        {
+          path: '/supervisor/commonAnalytics',
+          element: <CommonAnalyticsContainer />,
+        },
+        {
+          path: '/supervisor/consumption',
+          element: <>Потребление ресурсов</>,
         },
         {
           path: '/actsJournal',

@@ -100,6 +100,13 @@ import CheckGreenIcon from './svg/checkGreen.svg?react';
 import TrashIconGrey from './svg/trashGrey.svg?react';
 import ChevronTopActive from './svg/chevronTopActive.svg?react';
 import ChevronTopDanger from './svg/chevronTopDanger.svg?react';
+import ResetIcon from './svg/reset.svg?react';
+import CitySmallGrayIcon from './svg/citySmallGray.svg?react';
+import IndividualDeviceSmallIcon from './svg/individualDeviceSmall.svg?react';
+import MeasurementSmallIcon from './svg/measurementSmall.svg?react';
+import CurrentAnalyticsIcon from './svg/currentAnalytics.svg?react';
+import MagnifierIcon from './svg/magnifier.svg?react';
+import StopOrangeIcon from './svg/stopOrange.svg?react';
 
 export {
   FinishIcon,
@@ -204,4 +211,11 @@ export {
   TrashIconGrey,
   ChevronTopActive,
   ChevronTopDanger,
+  ResetIcon,
+  CitySmallGrayIcon,
+  IndividualDeviceSmallIcon,
+  MeasurementSmallIcon,
+  CurrentAnalyticsIcon,
+  MagnifierIcon,
+  StopOrangeIcon,
 };

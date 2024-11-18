@@ -41,7 +41,7 @@ export const prepareFilterBeforeSenging = (
   if (HotWaterSupply) {
     payload = {
       ...payload,
-      'HotWaterSupplyFilter.From': filter['ElectricityFilter.From'],
+      'HotWaterSupplyFilter.From': filter['HotWaterSupplyFilter.From'],
       'HotWaterSupplyFilter.To': filter['HotWaterSupplyFilter.To'],
     };
   }
@@ -52,5 +52,6 @@ export const prepareFilterBeforeSenging = (
       'HeatFilter.To': filter['HeatFilter.To'],
     };
   }
+
   return payload;
 };

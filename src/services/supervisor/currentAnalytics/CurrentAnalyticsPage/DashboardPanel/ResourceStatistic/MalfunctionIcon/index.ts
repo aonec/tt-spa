@@ -1,0 +1,1 @@
+export { MalfunctionIcon } from './MalfunctionIcon';
