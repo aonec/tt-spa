@@ -70,7 +70,7 @@ import { useUnit } from 'effector-react';
 import { tokensService } from 'api/tokensService';
 import { UserProfileContainer } from 'services/currentUser/currentUserService/currentUserService.container';
 import { CurrentUserEditServiceContainer } from 'services/currentUser/currentUserEditService';
-import { createRunnerService } from 'services/reports/createRunnerService/createRunnerService.models';
+import { createRunnerService } from 'services/reportsService/createRunnerService/createRunnerService.models';
 import { CurrentAnalyticsContainer } from 'services/supervisor/currentAnalytics';
 import { CommonAnalyticsContainer } from 'services/supervisor/commonAnalytics';
 

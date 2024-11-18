@@ -1,7 +1,7 @@
-import { reportsListService } from 'services/reports/reportsListService';
 import { sample } from 'effector';
 import { closedIndividualDevicesFormService } from './closedIndividualDevicesFormService.model';
 import { UnloadingType } from './closedIndividualDevicesFormService.types';
+import { reportsListService } from 'services/reportsService/reportsListService';
 
 sample({
   clock: reportsListService.inputs.openExistedReport,

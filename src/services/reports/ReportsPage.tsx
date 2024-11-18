@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import { PageHeader } from 'ui-kit/shared/PageHeader';
-import { ReportsListContainer } from './reportsListService';
 import { Wrapper } from './ReportsPage.styled';
+import { ReportsListContainer } from 'services/reportsService/reportsListService';
 
 interface Props {
   onCreateReport(): void;

@@ -9,10 +9,10 @@ import { createForm } from 'effector-forms';
 import { reportsInputs } from '../models';
 import { getReportTypeTitleName, RangePeriod, ReportType } from './types';
 import { UnloadTypeFieldsDictionary } from './CreateReport.constants';
-import { reportsListService } from '../reportsListService';
 import { EffectFailDataAxiosError } from '../../../types/index';
 import { closedIndividualDevicesFormService } from './ReportFormInputs/closedIndividualDevicesFormService';
 import { downloadURI } from 'utils/downloadByURL';
+import { reportsListService } from 'services/reportsService/reportsListService';
 
 const openModalButtonClicked = createEvent();
 const closeModalButonClicked = createEvent();

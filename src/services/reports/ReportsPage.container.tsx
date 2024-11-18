@@ -3,7 +3,7 @@ import React from 'react';
 import { CreateReportModalContainer } from './CreateReportModal';
 import { reportsInputs } from './models';
 import { ReportsPage } from './ReportsPage';
-import { CreateRunnerContainer } from './createRunnerService';
+import { CreateRunnerContainer } from '../reportsService/createRunnerService';
 
 const { createReportButtonClicked } = reportsInputs;
 
