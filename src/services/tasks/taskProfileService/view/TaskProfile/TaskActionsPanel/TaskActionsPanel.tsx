@@ -25,7 +25,7 @@ export const TaskActionsPanel: FC<TaskActionsPanelProps> = ({
   handleChangePushStagePayload,
   pushStageRequestPayload,
 }) => {
-  let { halfSizeActions, fullSizeActions, bottomActions } =
+  const { halfSizeActions, fullSizeActions, bottomActions } =
     useTaskPanelActions(actions);
 
   const renderTaskAction = useCallback(

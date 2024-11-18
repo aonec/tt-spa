@@ -52,8 +52,7 @@ export const AddNewApartmentStage: FC<AddNewApartmentStageProps> = ({
     validateOnChange: false,
     enableReinitialize: true,
     onSubmit: (data) => {
-      apartmentId &&
-        data.apartmentNumber &&
+      if (apartmentId && data.apartmentNumber) {
         handleSubmitAddNewApartmentStage({
           apartmentNumber: data.apartmentNumber,
           personalAccountNumber: data.personalAccountNumber,
@@ -64,6 +63,7 @@ export const AddNewApartmentStage: FC<AddNewApartmentStageProps> = ({
           paymentCode: data.paymentCode,
           apartmentId: apartmentId,
         });
+      }
     },
   });
 

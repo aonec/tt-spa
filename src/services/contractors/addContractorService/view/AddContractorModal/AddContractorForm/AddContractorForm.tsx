@@ -24,11 +24,11 @@ export const AddContractorForm: FC<AddContractorFormProps> = ({
       cellphone: contractorData?.cellphone || null || '',
     },
     onSubmit: (data) => {
-      handleAddcontractor && handleAddcontractor(data);
+      if (handleAddcontractor) handleAddcontractor(data);
 
-      handleEditcontractor &&
-        contractorData &&
+      if (handleEditcontractor && contractorData) {
         handleEditcontractor({ contractorId: contractorData.id, data });
+      }
     },
     validateOnChange: false,
     validationSchema: yup.object().shape({

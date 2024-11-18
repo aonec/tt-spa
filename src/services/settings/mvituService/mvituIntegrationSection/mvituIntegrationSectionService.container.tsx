@@ -1,4 +1,4 @@
-import { useUnit } from 'effector-react';
+import React, { useUnit } from 'effector-react';
 import { MvituIntegrationSection } from './MvituIntegrationSection/MvituIntegrationSection';
 import { mvituIntegrationSectionService } from './mvituIntegrationSectionService.models';
 import {

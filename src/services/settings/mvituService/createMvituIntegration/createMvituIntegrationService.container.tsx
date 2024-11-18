@@ -1,3 +1,4 @@
+import React from 'react';
 import { FormModal } from 'ui-kit/Modals/FormModal';
 import { createMvituIntegrationService } from './createMvituIntegrationService.models';
 import { Wrapper } from './createMvituIntegrationService.styled';

@@ -1,12 +1,9 @@
 import React, { FC } from 'react';
 import { ChevronIconRight, Panel, Wrapper } from './WorkingRangeTab.styled';
-import {
-  WorkingRangeTabProps,
-  WorkingRangeType,
-} from './WorkingRangeTab.types';
+import { WorkingRangeType } from './WorkingRangeTab.types';
 import { useNavigate } from 'react-router-dom';
 
-export const WorkingRangeTab: FC<WorkingRangeTabProps> = () => {
+export const WorkingRangeTab: FC = () => {
   const navigate = useNavigate();
 
   return (

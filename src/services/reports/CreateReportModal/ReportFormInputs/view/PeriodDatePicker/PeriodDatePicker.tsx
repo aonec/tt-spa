@@ -13,7 +13,7 @@ interface Props {
 export const PeriodDatePicker: FC<Props> = ({ date, onChange, format }) => {
   const handleChange = useCallback(
     (value: dayjs.Dayjs | null) => {
-      value && onChange(value);
+      if (value) onChange(value);
     },
     [onChange],
   );

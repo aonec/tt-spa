@@ -18,7 +18,6 @@ import {
 import { reportTypes } from './SearchNodeArchiveFilters.utils';
 
 export const SearchNodeArchiveFilters: FC<SearchNodeArchiveFiltersProps> = ({
-  loading,
   handleSubmit,
 }) => {
   const { values, setFieldValue, resetForm, submitForm } =

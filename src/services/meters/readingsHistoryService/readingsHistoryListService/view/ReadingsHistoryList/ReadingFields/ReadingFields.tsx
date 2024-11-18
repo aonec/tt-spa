@@ -25,7 +25,7 @@ export const RenderReadingFields: React.FC<ReadingFieldsProps> = (props) => {
     rateNum,
   } = props;
 
-  const wrapRef = useRef<any>();
+  const wrapRef = useRef<HTMLDivElement>(null);
 
   const preparedValuesArray = useMemo(
     () =>
@@ -52,18 +52,20 @@ export const RenderReadingFields: React.FC<ReadingFieldsProps> = (props) => {
       prev.map((elem, i) => (i === index ? e.target.value : elem)),
     );
 
-    onChange && onChange(e.target.value, index + 1);
+    if (onChange) onChange(e.target.value, index + 1);
   };
 
   const onBlurHandler = onBlur;
 
-  const onKeyHandler = (e: any) => {
+  const onKeyHandler = (e: React.KeyboardEvent<HTMLDivElement>) => {
     if (e.key === 'Enter') {
       const clearValues = valuesArray.map((value) =>
         value === null ? null : Number(value),
       );
-      onEnter && onEnter(clearValues);
-      e.target.blur();
+
+      if (onEnter) onEnter(clearValues);
+
+      (e.target as HTMLDivElement).blur();
     }
   };
 

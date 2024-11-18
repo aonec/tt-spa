@@ -53,8 +53,10 @@ export const createTimelineForTaskHeader = (
 
   return {
     timelineStyle: {
-      color: ColorLookup[currentStage?.timeStatus!],
-      width: `${currentStage?.timeProgress!}%`,
+      color: currentStage?.timeStatus
+        ? ColorLookup[currentStage.timeStatus]
+        : ColorLookup.Normal,
+      width: `${currentStage?.timeProgress}%`,
     },
     deadlineDate: `(до ${new Date(deadline).toLocaleDateString()})`,
     remainingTime,
@@ -144,8 +146,10 @@ export const createTimeline = (
 
   return {
     timelineStyle: {
-      color: ColorLookup[currentStage?.timeStatus!],
-      width: `${currentStage?.timeProgress!}%`,
+      color: currentStage?.timeStatus
+        ? ColorLookup[currentStage.timeStatus]
+        : ColorLookup.Normal,
+      width: `${currentStage?.timeProgress}%`,
     },
     deadlineDate: `(до ${new Date(deadline).toLocaleDateString()})`,
     remainingTime,

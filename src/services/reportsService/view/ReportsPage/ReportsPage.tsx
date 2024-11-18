@@ -19,7 +19,7 @@ import {
 import { ReportsListContainer } from 'services/reports/reportsListService';
 import { CreateRunnerContainer } from 'services/reports/createRunnerService';
 
-export const ReportsPage: FC<ReportsPageProps> = () => {
+export const ReportsPage: FC = () => {
   const reportsListRef = useRef<HTMLDivElement>(null);
 
   const [scrollX, setScrollX] = useState<number>(0);
