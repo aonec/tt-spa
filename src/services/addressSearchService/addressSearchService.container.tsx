@@ -14,7 +14,6 @@ const { ExistingCitiesGate, ExistingStreetsGate, AddressSearchGate } = gates;
 export const AddressSearchContainer: FC<AddressSearchContainerProps> = ({
   fields,
   handleSubmit: onSubmit,
-  initialValues,
   customTemplate,
   showLabels,
   disabledFields,
@@ -32,8 +31,6 @@ export const AddressSearchContainer: FC<AddressSearchContainerProps> = ({
     handleSearchApartNumber,
     setWithApartment,
     existingApartmentNumbers,
-    setInitialValues,
-    verifiedInitialValues,
     defaultOrganizationCity,
   } = useUnit({
     cities: outputs.$existingCities,
@@ -42,28 +39,22 @@ export const AddressSearchContainer: FC<AddressSearchContainerProps> = ({
     handleSearchApartNumber: inputs.handleSearchApartNumber,
     setWithApartment: inputs.setWithApartment,
     existingApartmentNumbers: outputs.$existingApartmentNumbers,
-    setInitialValues: inputs.setInitialValues,
-    verifiedInitialValues: outputs.$verifiedInitialValues,
     defaultOrganizationCity: currentOrganizationService.outputs.$defaultCity,
   });
 
   const { values, setFieldValue, handleSubmit } = useFormik({
     initialValues: {
-      apartment: verifiedInitialValues?.apartment || '',
-      corpus: verifiedInitialValues?.corpus || '',
-      house: verifiedInitialValues?.house || '',
-      question: verifiedInitialValues?.question || '',
-      street: verifiedInitialValues?.street || '',
-      city: verifiedInitialValues?.city || '',
+      apartment: '',
+      corpus: '',
+      house: '',
+      question: '',
+      street: '',
+      city: '',
     },
     onSubmit: (data) => {
       onSubmit && onSubmit(data);
     },
   });
-
-  useEffect(() => {
-    initialValues && setInitialValues(initialValues);
-  }, [initialValues, setInitialValues]);
 
   const preparedFields = useMemo(
     () =>
@@ -84,7 +75,7 @@ export const AddressSearchContainer: FC<AddressSearchContainerProps> = ({
   }, [preparedFields, setWithApartment]);
 
   useEffect(() => {
-    if (!cities?.length || verifiedInitialValues?.city) return;
+    if (!cities?.length) return;
 
     const defaultCity = defaultOrganizationCity || last(cities) || '';
 
@@ -99,7 +90,6 @@ export const AddressSearchContainer: FC<AddressSearchContainerProps> = ({
     }
   }, [
     cities,
-    verifiedInitialValues,
     setFieldValue,
     onChange,
     handleSubmit,
