@@ -8,11 +8,11 @@ import { EClosingReason, EResourceType } from 'api/types';
 import { createForm } from 'effector-forms';
 import { reportsInputs } from '../models';
 import { getReportTypeTitleName, RangePeriod, ReportType } from './types';
-import { downloadURI } from './utils';
 import { UnloadTypeFieldsDictionary } from './CreateReport.constants';
 import { reportsListService } from '../reportsListService';
 import { EffectFailDataAxiosError } from '../../../types/index';
 import { closedIndividualDevicesFormService } from './ReportFormInputs/closedIndividualDevicesFormService';
+import { downloadURI } from 'utils/downloadByURL';
 
 const openModalButtonClicked = createEvent();
 const closeModalButonClicked = createEvent();
