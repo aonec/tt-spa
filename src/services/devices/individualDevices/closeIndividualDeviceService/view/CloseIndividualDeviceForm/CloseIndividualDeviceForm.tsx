@@ -83,7 +83,7 @@ export const CloseIndividualDeviceForm: FC<CloseIndividualDeviceFormProps> = ({
               value={values.closingDate}
               onChange={(date) => {
                 setFieldValue('closingDate', date);
-                date && handleSetClosingDate(date);
+                if (date) handleSetClosingDate(date);
               }}
               disabledDate={(current) => {
                 return (

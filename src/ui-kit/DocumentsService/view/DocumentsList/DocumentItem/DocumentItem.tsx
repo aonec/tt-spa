@@ -52,7 +52,9 @@ export const DocumentItem: FC<DocumentItemProps> = ({
             onClick={async () => {
               try {
                 await axios.delete(`Documents/${document.id}`);
-              } catch (error) {}
+              } catch (error) {
+                console.error(error);
+              }
               handleRemoveDocument();
             }}
           />

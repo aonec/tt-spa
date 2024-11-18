@@ -16,7 +16,7 @@ interface Props {
     | RefObject<HTMLInputElement>
     | null
     | undefined;
-  onKeyDown?: (e: any) => any;
+  onKeyDown?: (e: React.KeyboardEvent<HTMLInputElement>) => void;
   inputData?: string;
 }
 
@@ -47,8 +47,13 @@ export const DatePickerNative = React.forwardRef<HTMLInputElement, Props>(
     };
 
     function onChangeGlobal() {
-      if (innerValue && currentValueTodayjs && isCurrentValueValid) {
-        onChange && onChange(currentValueTodayjs.toISOString());
+      if (
+        innerValue &&
+        currentValueTodayjs &&
+        isCurrentValueValid &&
+        onChange
+      ) {
+        onChange(currentValueTodayjs.toISOString());
       }
 
       if (isCurrentValueValid) setInitialInnerValue();
@@ -65,13 +70,7 @@ export const DatePickerNative = React.forwardRef<HTMLInputElement, Props>(
         disabled={disabled}
         ref={ref}
         onKeyDown={(e) => {
-          onKeyDown && onKeyDown(e);
-          fromEnter((e) => {
-            isCurrentValueValid && e.target.blur();
-          });
-          fromEnter((e) => {
-            isCurrentValueValid && e.target.blur();
-          });
+          if (onKeyDown) onKeyDown(e);
         }}
         onBlur={onChangeGlobal}
         value={innerValue || ''}
@@ -84,6 +83,8 @@ export const DatePickerNative = React.forwardRef<HTMLInputElement, Props>(
     );
   },
 );
+
+DatePickerNative.displayName = 'DatePickerNative';
 
 const InputSC = styled.input<{
   searchStyle?: boolean;
@@ -148,6 +149,8 @@ const InputSC = styled.input<{
   ${({ fullSize }) => fullSize && 'width: 100%'}
 `;
 
-export const fromEnter = (callback: (e: any) => void) => (e: any) => {
-  return e?.key === 'Enter' && callback(e);
-};
+export const fromEnter =
+  (callback: (e: React.KeyboardEvent<HTMLInputElement>) => void) =>
+  (e: React.KeyboardEvent<HTMLInputElement>) => {
+    return e?.key === 'Enter' && callback(e);
+  };

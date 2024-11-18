@@ -126,10 +126,11 @@ export const MetersInputsBlock: FC<MetersInputsBlockProps> = ({
         meterId: reading?.id,
       };
 
-      handleUploadReading &&
+      if (handleUploadReading) {
         handleUploadReading(readingPayload, isPrevious, setFailed)
           .then(() => next())
           .catch(() => setStatus(MetersInputBlockStatus.Failed));
+      }
     },
     [
       bufferedReadingValues,

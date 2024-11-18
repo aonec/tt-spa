@@ -40,12 +40,12 @@ const getMenuButtons = (props: {
         key={index + id}
         onClick={() => {
           if (button.children) {
-            id && toggle(id);
+            if (id) toggle(id);
           } else {
             handleClose();
           }
 
-          onClick && onClick();
+          onClick?.();
         }}
         color={currentColor}
       >

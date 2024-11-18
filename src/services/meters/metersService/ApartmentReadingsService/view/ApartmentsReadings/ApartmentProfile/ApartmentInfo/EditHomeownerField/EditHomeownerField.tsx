@@ -91,7 +91,7 @@ export const EditHomeownerField: FC<EditHomeownerFieldProps> = ({
             size="small"
             onClick={handleSave}
             isLoading={isUpdateHomeownerLoading}
-            disabled={!Boolean(fieldCurrentValue)}
+            disabled={!fieldCurrentValue}
           >
             Сохранить
           </Button>

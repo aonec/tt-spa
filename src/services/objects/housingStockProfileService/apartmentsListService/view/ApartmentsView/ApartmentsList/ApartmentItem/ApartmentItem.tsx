@@ -14,7 +14,6 @@ import { ApartmentItemProps } from './ApartmentItem.types';
 
 export const ApartmentItem: FC<ApartmentItemProps> = ({
   apartment,
-  hosuingStockId,
   setCurrentApartmentId,
 }) => {
   const additionalHomeownersCount = (apartment?.homeownersCount || 1) - 1;
