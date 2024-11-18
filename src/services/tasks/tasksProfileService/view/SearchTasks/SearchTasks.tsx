@@ -129,6 +129,10 @@ export const SearchTasks: FC<SearchTasksProps> = ({
     handleSubmit();
   };
 
+  // reset all filters after exiting the page
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  useEffect(() => clearAllFilters, []);
+
   return (
     <ExtendedSearch
       isOpen={isExtendedSearchOpen}
