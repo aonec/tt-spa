@@ -22,7 +22,7 @@ export const TaskDashboardPanel: FC<Props<DashboardTaskResourceResponse>> = ({
 
     return (
       <Wrapper>
-        <Title>Прочее</Title>
+        <Title>Прочие</Title>
         <RatioWrapper>
           <DangerWrapper isPositive={(ratioOfOthers?.danger || 0) > 0}>
             {ratioOfOthers?.danger}

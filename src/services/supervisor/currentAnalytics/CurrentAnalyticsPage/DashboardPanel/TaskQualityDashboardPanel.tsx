@@ -32,7 +32,7 @@ export const TaskQualityDashboardPanel: FC<
 
     return (
       <Wrapper>
-        <Title>Прочее</Title>
+        <Title>Прочие</Title>
         <AverageTime>
           {allTasksCount} <AverageTimeDescription>задач</AverageTimeDescription>
         </AverageTime>
