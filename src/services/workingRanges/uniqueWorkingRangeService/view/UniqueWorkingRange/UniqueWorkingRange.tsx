@@ -86,13 +86,14 @@ export const UniqueWorkingRange: FC<UniqueWorkingRangeProps> = ({
 
     const housingStockId = chosenBuilding?.buildingId;
 
-    !nodeId &&
-      housingStockId &&
+    if (!nodeId &&
+      housingStockId) {
       handleOnSearchDataChange({
         nodeResourceType,
         season,
         housingStockId,
       });
+    }
 
     nodeId && handleNodeChoosen({ season, nodeId });
   };

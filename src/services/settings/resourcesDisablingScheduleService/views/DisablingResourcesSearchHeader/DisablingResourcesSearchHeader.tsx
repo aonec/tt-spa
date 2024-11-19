@@ -155,7 +155,7 @@ export const DisablingResourcesSearch: React.FC<
                 <Option value={''}>{'Все классы отключения'}</Option>
                 {Object.keys(EResourceDisconnectingType).map((el) => {
                   return (
-                    <Option value={el}>
+                    <Option value={el} key={el}>
                       {
                         ResourceDisconnectingClassLookUp[
                           el as EResourceDisconnectingType
