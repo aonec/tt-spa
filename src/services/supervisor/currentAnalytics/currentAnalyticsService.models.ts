@@ -29,6 +29,12 @@ const $dashboardFilters = createStore<DashboardQueryParams>({
   To: dayjs().endOf('day').utc(true).toISOString(),
 })
   .on(setDashboardFilters, (prev, data) => ({ ...prev, ...data }))
+  .on(setCurrentDashboardType, (prev) => ({
+    ...prev,
+    ResourceType: null,
+    DeviationType: null,
+    MalfunctionType: null,
+  }))
   .reset(resetDashboardFilters);
 
 const $dashboardParams = combine(

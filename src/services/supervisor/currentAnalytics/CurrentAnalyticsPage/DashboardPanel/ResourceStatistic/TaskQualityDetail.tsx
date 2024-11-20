@@ -55,14 +55,14 @@ export const TaskQualityDetail: FC<
   );
 };
 
-const DeviationTypeDescriptionsLookup = {
+export const DeviationTypeDescriptionsLookup = {
   [ETemperatureNormativeDeviationType.Overheating]:
     'Превышение температурного графика',
   [ETemperatureNormativeDeviationType.Underheating]:
     'Занижение температурного графика',
 };
 
-const DeviationTypeIconLookup = {
+export const DeviationTypeIconLookup = {
   [ETemperatureNormativeDeviationType.Overheating]: <ArrowUp />,
   [ETemperatureNormativeDeviationType.Underheating]: <ArrowDown />,
 };
