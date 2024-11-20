@@ -3,6 +3,7 @@ import { createGate } from 'effector-react';
 import {
   dashboardAverageTimeQuery,
   dashboardMalfunctionsQuery,
+  dashboardOrganizationsQuery,
   dashboardPiperuptersQuery,
   dashboardResourceDisconnectionQuery,
   dashboardServiceQualityQuery,
@@ -79,6 +80,11 @@ split({
     [DashboardDataType.AverageCompletionTime]: dashboardAverageTimeQuery.start,
     [DashboardDataType.TasksCount]: dashboardServiceQualityQuery.start,
   },
+});
+
+sample({
+  clock: CurrentAnalyticsGate.open,
+  target: dashboardOrganizationsQuery.start,
 });
 
 const $isLoading = combine(

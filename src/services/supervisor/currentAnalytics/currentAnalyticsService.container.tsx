@@ -3,6 +3,7 @@ import { CurrentAnalyticsPage } from './CurrentAnalyticsPage';
 import {
   dashboardAverageTimeQuery,
   dashboardMalfunctionsQuery,
+  dashboardOrganizationsQuery,
   dashboardPiperuptersQuery,
   dashboardResourceDisconnectionQuery,
   dashboardServiceQualityQuery,
@@ -37,6 +38,7 @@ export const CurrentAnalyticsContainer = () => {
     dashboardFilters,
     setDashboardFilters,
     resetDashboardFilters,
+    organizationsList,
   } = useUnit({
     dashboardSummary: dashboardSummaryQuery.$data,
     isLoadingSummary: dashboardSummaryQuery.$pending,
@@ -51,6 +53,7 @@ export const CurrentAnalyticsContainer = () => {
     dashboardFilters: outputs.$dashboardFilters,
     setDashboardFilters: inputs.setDashboardFilters,
     resetDashboardFilters: inputs.resetDashboardFilters,
+    organizationsList: dashboardOrganizationsQuery.$data,
   });
 
   return (
@@ -73,6 +76,7 @@ export const CurrentAnalyticsContainer = () => {
         dashboardFilters={dashboardFilters}
         setDashboardFilters={setDashboardFilters}
         resetDashboardFilters={resetDashboardFilters}
+        organizationsList={organizationsList}
       />
     </>
   );

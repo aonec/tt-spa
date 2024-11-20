@@ -4,6 +4,7 @@ import {
   DashboardTaskMalfunctionResponse,
   DashboardTaskQualityResponse,
   DashboardTaskResourceResponse,
+  OrganizationResponsePagedList,
 } from 'api/types';
 import {
   DashboardDataType,
@@ -24,4 +25,5 @@ export type Props = {
   dashboardFilters: DashboardQueryParams;
   setDashboardFilters: (payload: DashboardQueryParams) => void;
   resetDashboardFilters: () => void;
+  organizationsList: OrganizationResponsePagedList | null;
 };

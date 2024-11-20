@@ -30,6 +30,7 @@ export const CurrentAnalyticsPage: FC<Props> = ({
   dashboardFilters,
   setDashboardFilters,
   resetDashboardFilters,
+  organizationsList,
 }) => {
   const dataList = useMemo(() => {
     const dataMap = {
@@ -164,6 +165,7 @@ export const CurrentAnalyticsPage: FC<Props> = ({
         dashboardFilters={dashboardFilters}
         setDashboardFilters={setDashboardFilters}
         resetDashboardFilters={resetDashboardFilters}
+        organizationsList={organizationsList}
       />
       <InfoOptionsPanels
         isLoading={isLoadingSummary}

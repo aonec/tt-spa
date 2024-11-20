@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, useMemo } from 'react';
 import { Wrapper } from './AnalyticsSearch.styled';
 import { EDateRange, Props } from './AnalyticsSearch.types';
 import { RangePicker } from 'ui-kit/RangePicker';
@@ -21,12 +21,23 @@ export const AnalyticsSearch: FC<Props> = ({
   isCommon,
   selectValue,
   setValue,
+  organizationsList,
 }) => {
   const { existingCities, periodType, setPeriodType } = useUnit({
     existingCities: addressSearchService.outputs.$existingCities,
     periodType: currentAnalyticsService.outputs.$periodType,
     setPeriodType: currentAnalyticsService.inputs.setPeriodType,
   });
+
+  const filteredOrganizations = useMemo(() => {
+    if (!dashboardFilters.City) return organizationsList?.items || [];
+
+    return (
+      organizationsList?.items?.filter(
+        (elem) => elem.address?.city === dashboardFilters.City,
+      ) || []
+    );
+  }, [organizationsList, dashboardFilters.City]);
 
   return (
     <Wrapper isCommon={Boolean(isCommon)}>
@@ -139,7 +150,21 @@ export const AnalyticsSearch: FC<Props> = ({
           </Select.Option>
         ))}
       </Select>
-      <Select placeholder="УК" small allowClear></Select>
+      <Select
+        placeholder="УК"
+        small
+        allowClear
+        value={dashboardFilters.ManagementFirmId}
+        onChange={(value) =>
+          setDashboardFilters({ ManagementFirmId: value as number })
+        }
+      >
+        {filteredOrganizations.map((elem) => (
+          <Select key={elem.id} value={elem.id}>
+            {elem.name}
+          </Select>
+        ))}
+      </Select>
       <AddressTreeSelect
         small
         placeholder="Адрес"
