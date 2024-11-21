@@ -253,6 +253,8 @@ export const getAcceptableSearchParams = () => {
     deviceId:
       searchParams.get('calculatorId') ||
       searchParams.get('housingMeteringDeviceId'),
+    resource: searchParams.get('resource'),
+    taskType: searchParams.get('taskType'),
   };
 
   return params;

@@ -6,6 +6,7 @@ import { currentAnalyticsService } from 'services/supervisor/currentAnalytics/cu
 import { useNavigate } from 'react-router-dom';
 import { dashboardSummaryQuery } from 'services/supervisor/currentAnalytics/currentAnalyticsService.api';
 import { stringify } from 'query-string';
+import { getTasksFilters } from './AnalyticsDetail.utils';
 
 export const AnalyticsDetail: FC<Props> = ({
   data,
@@ -16,10 +17,11 @@ export const AnalyticsDetail: FC<Props> = ({
   title,
 }) => {
   const isDanger = data.expiredTasksCount !== 0;
-  const { setFilters, dashboardSummary } = useUnit({
+  const { setFilters, dashboardSummary, dashboardType } = useUnit({
     filters: currentAnalyticsService.outputs.$dashboardFilters,
     setFilters: currentAnalyticsService.inputs.setDashboardFilters,
     dashboardSummary: dashboardSummaryQuery.$data,
+    dashboardType: currentAnalyticsService.outputs.$currentDashboardType,
   });
   const navigate = useNavigate();
 
@@ -34,6 +36,11 @@ export const AnalyticsDetail: FC<Props> = ({
           const queryString = stringify({
             city: dashboardSummary?.breadCrumbs?.city,
             street: data.label,
+            ...getTasksFilters({
+              dashboardType,
+              resourceType,
+              malfunctionType,
+            }),
           });
           navigate(`/tasks/list/Observing?${queryString}`);
 

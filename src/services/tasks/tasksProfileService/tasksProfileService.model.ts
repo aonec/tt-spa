@@ -3,7 +3,9 @@ import { sample, split } from 'effector';
 import { createGate } from 'effector-react';
 import {
   ApartmentResponse,
+  EManagingFirmTaskFilterType,
   EOrderByRule,
+  EResourceType,
   HousingStockResponse,
   TaskGroupingFilter,
   TaskPaginationOrderRule,
@@ -46,7 +48,12 @@ const changeFiltersByGroupType = createEvent<TaskGroupingFilter>();
 const changeGroupType = createEvent<TaskGroupingFilter>();
 const changePageNumber = createEvent<number>();
 const searchTasks = createEvent<GetTasksListRequestPayload>();
-const setAddress = createEvent<{ city: string; street: string }>();
+const setAddress = createEvent<{
+  city: string;
+  street: string;
+  resource?: EResourceType;
+  taskType?: EManagingFirmTaskFilterType;
+}>();
 
 const getApartmentFx = createEffect<FiltersGatePayload, ApartmentResponse>(
   fetchApartment,
@@ -82,10 +89,12 @@ const $searchState = createStore<GetTasksListRequestPayload>({
     ...filters,
     PageNumber: 1,
   }))
-  .on(setAddress, (filters, address) => ({
+  .on(setAddress, (filters, paylaod) => ({
     ...filters,
-    City: address.city,
-    Street: address.street,
+    City: paylaod.city,
+    Street: paylaod.street,
+    TaskType: paylaod.taskType,
+    Resource: paylaod.resource,
   }))
   .on(changeFiltersByGroupType, ({ City }, GroupType) => ({
     GroupType,
